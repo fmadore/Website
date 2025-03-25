@@ -1,9 +1,14 @@
 import type { Activity } from '$lib/types';
+import { formatDisplayDate } from '$lib/utils/date-formatter';
+
+// Define the ISO date first
+const activityDateISO = "2024-12-09";
 
 export const authorMeetsCritic: Activity = {
     id: "author-meets-critic-faith-based-student-activism",
     title: "Author Meets Critic. Faith-based Student Activism in Togo and Benin: Muslims and Christians on University Campuses",
-    date: "9 December 2024",
+    dateISO: activityDateISO,
+    date: formatDisplayDate(activityDateISO), // This will format to "9 December 2024"
     year: 2024,
     description: "Panel discussion at the American Academy of Religion annual meeting.",
     content: `
@@ -13,5 +18,10 @@ export const authorMeetsCritic: Activity = {
         
         <p>I am grateful to the panel organizers and participants for their insightful comments and questions, which have already prompted me to think about future research directions and potential collaborations.</p>
     `,
-    tags: ["conference", "book", "panel", "AAR", "discussion"]
+    tags: ["conference", "book", "panel", "AAR", "discussion"],
+    heroImage: {
+        src: "images/aar-panel-discussion.jpg",
+        alt: "Author Meets Critics panel at the American Academy of Religion annual meeting",
+        caption: "Panel discussion on faith-based student activism at the AAR conference in San Diego"
+    }
 }; 
