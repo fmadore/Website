@@ -1,16 +1,16 @@
 <script lang="ts">
 	// Social media links
 	const socialLinks = [
-		{ name: 'Email', icon: 'email', url: 'mailto:contact@frederickmadore.com' },
-		{ name: 'LinkedIn', icon: 'linkedin', url: 'https://linkedin.com/in/username' },
-		{ name: 'GitHub', icon: 'github', url: 'https://github.com/username' },
-		{ name: 'ORCID', icon: 'orcid', url: 'https://orcid.org/0000-0000-0000-0000' },
-		{ name: 'Bluesky', icon: 'bluesky', url: 'https://bluesky.com/username' },
-		{ name: 'Mastodon', icon: 'mastodon', url: 'https://mastodon.social/@username' },
-		{ name: 'Google Scholar', icon: 'google-scholar', url: 'https://scholar.google.com/citations?user=userid' },
-		{ name: 'ResearchGate', icon: 'researchgate', url: 'https://researchgate.net/profile/username' },
-		{ name: 'Knowledge Commons', icon: 'commons', url: 'https://knowledgecommons.org/username' },
-		{ name: 'Academia.edu', icon: 'academia', url: 'https://academia.edu/username' }
+		{ name: 'Email', icon: 'email', url: 'mailto:frederick.madore@zmo.de' },
+		{ name: 'LinkedIn', icon: 'linkedin', url: 'https://www.linkedin.com/in/frederickmadore/' },
+		{ name: 'GitHub', icon: 'github', url: 'https://github.com/fmadore' },
+		{ name: 'ORCID', icon: 'orcid', url: 'https://orcid.org/0000-0003-0959-2092' },
+		{ name: 'Bluesky', icon: 'bluesky', url: 'https://bsky.app/profile/fmadore.bsky.social' },
+		{ name: 'Mastodon', icon: 'mastodon', url: 'https://hcommons.social/@fmadore' },
+		{ name: 'Google Scholar', icon: 'google-scholar', url: 'https://scholar.google.com/citations?user=naUK0RQAAAAJ&' },
+		{ name: 'ResearchGate', icon: 'researchgate', url: 'https://www.researchgate.net/profile/Frederick-Madore' },
+		{ name: 'Knowledge Commons', icon: 'commons', url: 'https://hcommons.org/members/fmadore/' },
+		{ name: 'Academia.edu', icon: 'academia', url: 'https://zmo.academia.edu/FrederickMadore' }
 	];
 </script>
 
