@@ -32,30 +32,30 @@
     ];
 </script>
 
-<div class="prose prose-lg max-w-none">
-    <h1 class="text-4xl font-bold mb-8">Research</h1>
+<div class="prose">
+    <h1 class="project-section-title">Research</h1>
     
     <p class="text-xl mb-10">My research focuses on the history of Islam and Muslim societies in francophone West Africa from the 1960s to the present. I have conducted extensive fieldwork and archival research in Benin, Togo, Côte d'Ivoire, and Burkina Faso, examining various aspects of Islamic activism, media use, and Muslim politics.</p>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+    <div class="research-grid">
         {#each researchProjects as project}
-            <div class="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                <div class="h-48 bg-gray-200 flex items-center justify-center">
+            <div class="project-card">
+                <div class="project-card-image">
                     <div class="text-gray-400 text-center p-4">
                         {project.title}
                         <br>
                         <span class="text-sm">[Image placeholder]</span>
                     </div>
                 </div>
-                <div class="p-6">
-                    <h2 class="text-xl font-semibold mb-2">
-                        <a href={`/research/${project.id}`} class="text-gray-900 hover:text-gray-700">
+                <div class="project-card-body">
+                    <h2 class="project-card-title">
+                        <a href={`/research/${project.id}`} class="text-dark hover:text-primary">
                             {project.title}
                         </a>
                     </h2>
-                    <p class="text-sm text-gray-500 mb-3">{project.years}</p>
-                    <p class="text-gray-700">{project.shortDescription}</p>
-                    <a href={`/research/${project.id}`} class="inline-block mt-4 text-blue-600 hover:text-blue-800 font-medium">
+                    <p class="project-card-years">{project.years}</p>
+                    <p class="project-card-description">{project.shortDescription}</p>
+                    <a href={`/research/${project.id}`} class="project-card-link">
                         Read more →
                     </a>
                 </div>

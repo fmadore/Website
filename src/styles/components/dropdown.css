@@ -1,0 +1,134 @@
+/* Dropdown styles */
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  cursor: pointer;
+}
+
+.dropdown-toggle-icon {
+  font-size: 0.625rem;
+  transition: transform 0.2s ease;
+}
+
+.dropdown:hover .dropdown-toggle-icon {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  min-width: 10rem;
+  padding: var(--spacing-2) 0;
+  margin: var(--spacing-1) 0 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-4);
+  clear: both;
+  font-weight: 400;
+  color: var(--color-text);
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+  text-decoration: none;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  color: var(--color-text);
+  text-decoration: none;
+  background-color: #f8f9fa;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  color: #fff;
+  text-decoration: none;
+  background-color: var(--color-primary);
+}
+
+.dropdown-divider {
+  height: 0;
+  margin: var(--spacing-2) 0;
+  overflow: hidden;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Dropdown positions */
+.dropdown-menu-right {
+  right: 0;
+  left: auto;
+}
+
+.dropdown-menu-center {
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Dropdown sizes */
+.dropdown-menu-sm {
+  min-width: 8rem;
+  padding: var(--spacing-1) 0;
+  font-size: var(--font-size-xs);
+}
+
+.dropdown-menu-lg {
+  min-width: 16rem;
+  padding: var(--spacing-3) 0;
+}
+
+/* Dropdown animations */
+.dropdown-menu-animate {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.dropdown:hover .dropdown-menu-animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Dropdown media items */
+.dropdown-item-with-icon {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.dropdown-item-icon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-light);
+} 

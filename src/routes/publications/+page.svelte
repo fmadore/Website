@@ -92,34 +92,38 @@
     };
 </script>
 
-<div class="prose prose-lg max-w-none">
-    <h1 class="text-4xl font-bold mb-8">Publications</h1>
+<div class="prose">
+    <h1 class="publications-title">Publications</h1>
     
-    <div class="mb-12">
-        <h2 class="text-2xl font-bold mb-4">Books</h2>
-        <ul class="space-y-4">
+    <div class="publications-section">
+        <h2 class="publication-type">Books</h2>
+        <ul class="publication-list">
             {#each publications.books as book}
-                <li>
-                    <a href={book.url} class="text-blue-600 hover:text-blue-800 font-semibold">
-                        {book.title}
-                    </a>
-                    <p class="text-gray-700">{book.publisher}, {book.year}</p>
+                <li class="publication-item">
+                    <div class="publication-title">
+                        <a href={book.url}>
+                            {book.title}
+                        </a>
+                    </div>
+                    <p class="publication-meta">{book.publisher}, {book.year}</p>
                 </li>
             {/each}
         </ul>
     </div>
     
-    <div class="mb-12">
-        <h2 class="text-2xl font-bold mb-4">Edited Volumes</h2>
-        <ul class="space-y-4">
+    <div class="publications-section">
+        <h2 class="publication-type">Edited Volumes</h2>
+        <ul class="publication-list">
             {#each publications.editedVolumes as volume}
-                <li>
-                    <a href={volume.url} class="text-blue-600 hover:text-blue-800 font-semibold">
-                        {volume.title}
-                    </a>
-                    <p class="text-gray-700">
+                <li class="publication-item">
+                    <div class="publication-title">
+                        <a href={volume.url}>
+                            {volume.title}
+                        </a>
+                    </div>
+                    <p class="publication-meta">
                         {#if volume.coEditors.length > 0}
-                            Co-edited with {volume.coEditors.join(', ')}.
+                            <span class="edited-with">Co-edited with {volume.coEditors.join(', ')}.</span>
                         {/if}
                         {volume.publisher}, {volume.year}
                     </p>
@@ -128,18 +132,20 @@
         </ul>
     </div>
     
-    <div class="mb-12">
-        <h2 class="text-2xl font-bold mb-4">Special Journal Issues</h2>
-        <ul class="space-y-4">
+    <div class="publications-section">
+        <h2 class="publication-type">Special Journal Issues</h2>
+        <ul class="publication-list">
             {#each publications.specialIssues as issue}
-                <li>
-                    <a href={issue.url} class="text-blue-600 hover:text-blue-800 font-semibold">
-                        {issue.title}
-                    </a>
-                    <p class="text-gray-700">
+                <li class="publication-item">
+                    <div class="publication-title">
+                        <a href={issue.url}>
+                            {issue.title}
+                        </a>
+                    </div>
+                    <p class="publication-meta">
                         {issue.journal}, {issue.years}
                         {#if issue.coEditors.length > 0}
-                            <br>Co-edited with {issue.coEditors.join(', ')}
+                            <span class="edited-with">Co-edited with {issue.coEditors.join(', ')}</span>
                         {/if}
                     </p>
                 </li>
@@ -147,15 +153,17 @@
         </ul>
     </div>
     
-    <div class="mb-12">
-        <h2 class="text-2xl font-bold mb-4">Journal Articles</h2>
-        <ul class="space-y-4">
+    <div class="publications-section">
+        <h2 class="publication-type">Journal Articles</h2>
+        <ul class="publication-list">
             {#each publications.journalArticles as article}
-                <li>
-                    <a href={article.url} class="text-blue-600 hover:text-blue-800 font-semibold">
-                        {article.title}
-                    </a>
-                    <p class="text-gray-700">
+                <li class="publication-item">
+                    <div class="publication-title">
+                        <a href={article.url}>
+                            {article.title}
+                        </a>
+                    </div>
+                    <p class="publication-meta">
                         <em>{article.journal}</em>, vol. {article.volume}, no. {article.issue}, {article.year}, pp. {article.pages}
                     </p>
                 </li>
@@ -163,15 +171,17 @@
         </ul>
     </div>
     
-    <div class="mb-12">
-        <h2 class="text-2xl font-bold mb-4">Book Chapters</h2>
-        <ul class="space-y-4">
+    <div class="publications-section">
+        <h2 class="publication-type">Book Chapters</h2>
+        <ul class="publication-list">
             {#each publications.bookChapters as chapter}
-                <li>
-                    <a href={chapter.url} class="text-blue-600 hover:text-blue-800 font-semibold">
-                        {chapter.title}
-                    </a>
-                    <p class="text-gray-700">
+                <li class="publication-item">
+                    <div class="publication-title">
+                        <a href={chapter.url}>
+                            {chapter.title}
+                        </a>
+                    </div>
+                    <p class="publication-meta">
                         In <em>{chapter.book}</em>, edited by {chapter.editors}. {chapter.publisher}, {chapter.year}, pp. {chapter.pages}
                     </p>
                 </li>

@@ -1,0 +1,126 @@
+/* Home page styles */
+
+.home-intro {
+  margin-bottom: var(--spacing-12);
+}
+
+.home-heading {
+  font-size: var(--font-size-4xl);
+  font-weight: 700;
+  margin-bottom: var(--spacing-8);
+}
+
+/* Activity list section */
+.activity-section {
+  margin-top: var(--spacing-10);
+  margin-bottom: var(--spacing-8);
+}
+
+.activity-section-title {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  margin-bottom: var(--spacing-6);
+}
+
+.activity-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: var(--spacing-4);
+}
+
+.activity-item {
+  border-left: 4px solid var(--color-border);
+  padding-left: var(--spacing-4);
+  margin-bottom: var(--spacing-4);
+}
+
+.activity-title {
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-1);
+  transition: color 0.2s ease;
+}
+
+.activity-title:hover {
+  color: var(--color-primary);
+}
+
+.activity-date {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-light);
+}
+
+.see-more-link {
+  display: inline-block;
+  margin-top: var(--spacing-4);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+/* Year filters */
+.year-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  margin-top: var(--spacing-6);
+}
+
+.year-filter {
+  display: inline-block;
+  padding: var(--spacing-1) var(--spacing-3);
+  background-color: #f1f5f9;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.year-filter:hover {
+  background-color: #e2e8f0;
+}
+
+/* Profile section */
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-8);
+  margin-bottom: var(--spacing-12);
+}
+
+@media (min-width: 768px) {
+  .profile-section {
+    flex-direction: row;
+  }
+}
+
+.profile-image {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: var(--border-radius);
+}
+
+.profile-content {
+  flex: 1;
+}
+
+/* CV button */
+.cv-button {
+  display: inline-block;
+  padding: var(--spacing-2) var(--spacing-4);
+  background-color: var(--color-footer-bg);
+  color: white;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  margin-top: var(--spacing-4);
+  margin-bottom: var(--spacing-8);
+}
+
+.cv-button:hover {
+  background-color: #374151;
+} 

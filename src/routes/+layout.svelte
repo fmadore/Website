@@ -45,30 +45,30 @@
 	];
 </script>
 
-<div class="min-h-screen flex flex-col">
-	<header class="bg-white shadow">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-			<div class="flex flex-col md:flex-row md:justify-between md:items-center">
-				<div class="text-center md:text-left">
-					<a href="/" class="text-2xl font-bold text-gray-900 hover:text-gray-700">
+<div class="site-container">
+	<header class="bg-white">
+		<div class="container mx-auto p-6">
+			<div class="site-header">
+				<div class="text-center">
+					<a href="/" class="site-title">
 						Frédérick Madore
 					</a>
 				</div>
 				
-				<nav class="mt-4 md:mt-0">
-					<ul class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-6 justify-center">
+				<nav class="main-nav">
+					<ul class="nav-list">
 						{#each navItems as item}
-							<li class="relative group">
-								<a href={item.path} class="text-gray-700 hover:text-gray-900 font-medium">
+							<li class="nav-item dropdown-container">
+								<a href={item.path} class="nav-link dropdown-trigger">
 									{item.name} {item.dropdown ? '▾' : ''}
 								</a>
 								
 								{#if item.dropdown}
-									<div class="absolute left-0 mt-2 w-64 bg-white border border-gray-200 rounded shadow-lg hidden group-hover:block z-10">
-										<ul class="py-2">
+									<div class="dropdown-menu">
+										<ul>
 											{#each item.dropdown as subItem}
 												<li>
-													<a href={subItem.path} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+													<a href={subItem.path} class="dropdown-item">
 														{subItem.name}
 													</a>
 												</li>
@@ -84,26 +84,98 @@
 		</div>
 	</header>
 
-	<main class="flex-grow">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+	<main class="site-main">
+		<div class="container mx-auto p-8">
 			{@render children()}
 		</div>
 	</main>
 
-	<footer class="bg-gray-800 text-white py-8">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<div class="flex flex-wrap justify-center space-x-4">
+	<footer class="site-footer bg-gray-800">
+		<div class="container mx-auto p-8">
+			<div class="footer-links">
 				{#each socialLinks as link}
-					<a href={link.url} class="text-gray-300 hover:text-white" target="_blank" rel="noopener noreferrer">
+					<a href={link.url} class="footer-link" target="_blank" rel="noopener noreferrer">
 						{link.name}
 					</a>
 				{/each}
 			</div>
 			
-			<div class="mt-6 text-center text-sm text-gray-400">
+			<div class="footer-copyright mt-6 text-center">
 				<p>Copyright © {new Date().getFullYear()} Frédérick Madore, Ph.D.</p>
 				<p class="mt-1">Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)</p>
 			</div>
 		</div>
 	</footer>
 </div>
+
+<style>
+	.site-container {
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+	}
+	
+	.container {
+		max-width: 1280px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
+	.site-header {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	
+	@media (min-width: 768px) {
+		.site-header {
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+		}
+	}
+	
+	.site-title {
+		font-size: var(--font-size-2xl);
+		font-weight: 700;
+		color: var(--color-text);
+		text-decoration: none;
+	}
+	
+	.site-title:hover {
+		color: var(--color-primary);
+	}
+	
+	.site-main {
+		flex-grow: 1;
+	}
+	
+	.site-footer {
+		background-color: var(--color-footer-bg);
+		color: var(--color-footer-text);
+		padding: var(--spacing-8) 0;
+	}
+	
+	.footer-links {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: var(--spacing-4);
+	}
+	
+	.footer-link {
+		color: rgba(255, 255, 255, 0.7);
+		text-decoration: none;
+	}
+	
+	.footer-link:hover {
+		color: white;
+	}
+	
+	.footer-copyright {
+		margin-top: var(--spacing-6);
+		text-align: center;
+		font-size: var(--font-size-sm);
+		color: rgba(255, 255, 255, 0.7);
+	}
+</style>

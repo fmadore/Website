@@ -1,2 +1,33 @@
+/* Main CSS entry point */
 @import 'tailwindcss';
-@plugin '@tailwindcss/typography';
+
+/* Tailwind plugins */
+/* Using @tailwindcss/typography plugin */
+
+/* Base styles */
+@import './styles/base/reset.css';
+@import './styles/base/typography.css';
+@import './styles/base/variables.css';
+
+/* Layout components */
+@import './styles/layout/header.css';
+@import './styles/layout/footer.css';
+@import './styles/layout/container.css';
+@import './styles/layout/grid.css';
+
+/* UI Components */
+@import './styles/components/buttons.css';
+@import './styles/components/cards.css';
+@import './styles/components/navigation.css';
+@import './styles/components/dropdown.css';
+@import './styles/components/activity-list.css';
+
+/* Page-specific styles */
+@import './styles/pages/home.css';
+@import './styles/pages/research.css';
+@import './styles/pages/publications.css';
+@import './styles/pages/contact.css';
+
+/* Utilities */
+@import './styles/utilities/spacing.css';
+@import './styles/utilities/colors.css';

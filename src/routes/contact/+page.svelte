@@ -13,20 +13,20 @@
     ];
 </script>
 
-<div class="prose prose-lg max-w-none">
-    <h1 class="text-4xl font-bold mb-8">Contact</h1>
+<div class="prose">
+    <h1 class="contact-section-title">Contact</h1>
     
-    <div class="mb-12">
-        <h2 class="text-2xl font-bold mb-4">Contact Information</h2>
-        <div class="space-y-3">
+    <div class="contact-section">
+        <h2 class="section-title">Contact Information</h2>
+        <div class="contact-info">
             <p>
                 <strong>Email:</strong> 
-                <a href="mailto:contact@frederickmadore.com" class="text-blue-600 hover:text-blue-800">
+                <a href="mailto:contact@frederickmadore.com">
                     contact@frederickmadore.com
                 </a>
             </p>
             
-            <p>
+            <p class="contact-address">
                 <strong>Institutional Address:</strong><br>
                 Leibniz-Zentrum Moderner Orient (ZMO)<br>
                 Kirchweg 33<br>
@@ -36,20 +36,20 @@
         </div>
     </div>
     
-    <div class="mb-12">
-        <h2 class="text-2xl font-bold mb-4">Connect with me</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="contact-section">
+        <h2 class="section-title">Connect with me</h2>
+        <div class="social-links-grid">
             {#each socialLinks as link}
                 <a href={link.url} 
-                   class="flex items-center p-4 border rounded-lg hover:bg-gray-50 transition-colors"
+                   class="social-link-card"
                    target="_blank" 
                    rel="noopener noreferrer">
-                    <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center mr-4">
-                        <span class="text-gray-600">{link.name.charAt(0)}</span>
+                    <div class="social-icon">
+                        <span class="social-icon-letter">{link.name.charAt(0)}</span>
                     </div>
-                    <div>
-                        <h3 class="font-medium text-gray-900">{link.name}</h3>
-                        <p class="text-sm text-gray-600">{link.description}</p>
+                    <div class="social-link-content">
+                        <h3>{link.name}</h3>
+                        <p class="social-link-description">{link.description}</p>
                     </div>
                 </a>
             {/each}

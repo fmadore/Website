@@ -1,0 +1,123 @@
+/* Activity list styles */
+
+.activity-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.activity-item {
+  margin-bottom: var(--spacing-4);
+  padding-left: var(--spacing-4);
+  border-left: 4px solid var(--color-border);
+  position: relative;
+}
+
+.activity-item:last-child {
+  margin-bottom: 0;
+}
+
+.activity-item:hover {
+  border-left-color: var(--color-primary);
+}
+
+.activity-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.activity-title {
+  font-weight: 500;
+  margin-bottom: var(--spacing-1);
+  color: var(--color-text);
+  transition: color 0.2s ease;
+}
+
+.activity-link:hover .activity-title {
+  color: var(--color-primary);
+}
+
+.activity-date {
+  display: block;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-light);
+  margin-top: var(--spacing-1);
+}
+
+/* Activity filter */
+.activity-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-6);
+}
+
+.filter-tag {
+  display: inline-block;
+  padding: var(--spacing-1) var(--spacing-3);
+  background-color: #f1f5f9;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+}
+
+.filter-tag:hover {
+  background-color: #e2e8f0;
+}
+
+.filter-tag.active {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+/* Year tags */
+.year-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-1) var(--spacing-3);
+  background-color: #f1f5f9;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.year-tag:hover {
+  background-color: #e2e8f0;
+}
+
+.year-count {
+  margin-left: var(--spacing-1);
+  display: inline-block;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-light);
+}
+
+/* Activity summary */
+.activity-summary {
+  margin-top: var(--spacing-2);
+  color: var(--color-text-light);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+}
+
+/* See more link */
+.see-more {
+  display: inline-block;
+  margin-top: var(--spacing-4);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.see-more:hover {
+  text-decoration: underline;
+} 
