@@ -36,11 +36,22 @@ const chapterPublications: Publication[] = Object.values(chapterContext)
     })
     .filter(pub => pub.id && pub.id !== 'chapter-template-id'); // Filter out templates
 
+// Dynamically import all special issue files
+const specialIssueContext = import.meta.glob<ModuleType>('./special-issues/*.ts', { eager: true });
+const specialIssuePublications: Publication[] = Object.values(specialIssueContext)
+    .filter((module): module is ModuleType => !!module && (typeof module === 'object'))
+    .map(module => {
+        const publication = 'default' in module ? module.default : Object.values(module)[0];
+        return publication as Publication;
+    })
+    .filter(pub => pub.id && pub.id !== 'special-issue-template-id'); // Filter out templates
+
 // Combine all publications
 const allPublications: Publication[] = [
     ...bookPublications,
     ...articlePublications,
-    ...chapterPublications
+    ...chapterPublications,
+    ...specialIssuePublications
 ];
 
 // Sort by date (most recent first)

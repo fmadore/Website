@@ -1,6 +1,6 @@
 export type Publication = {
     id: string;           // URL-friendly ID for routing
-    type: 'book' | 'article' | 'chapter'; // Publication type for faceting
+    type: 'book' | 'article' | 'chapter' | 'special-issue'; // Publication type for faceting
     title: string;        // Publication title
     authors: string[];    // Array of authors
     date: string;         // Display date (e.g., "2025")
@@ -12,8 +12,9 @@ export type Publication = {
     language: string;     // Publication language
     isbn?: string;        // ISBN for books
     doi?: string;         // DOI for articles
-    abstract: string;     // Abstract or description
+    abstract?: string;    // Abstract or description (optional)
     url?: string;         // Optional: external URL if applicable
+    additionalUrls?: Array<{label: string, url: string}>; // Additional URLs with labels
     tags?: string[];      // Optional tags for categorization
     image?: string;       // Optional cover image path
     heroImage?: {         // Optional hero image configuration
@@ -31,5 +32,6 @@ export type Publication = {
     editors?: string;     // Book editors for chapters
     // Additional fields for edited volumes
     isEditedVolume?: boolean; // Flag for edited volumes
+    isEditedWork?: boolean;   // Flag for any edited work (volumes or special issues)
     series?: string;      // Series name and number
 }; 

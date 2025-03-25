@@ -6,6 +6,7 @@
     const books = publicationsByType['book'] || [];
     const articles = publicationsByType['article'] || [];
     const chapters = publicationsByType['chapter'] || [];
+    const specialIssues = publicationsByType['special-issue'] || [];
 
     // Get the most recent year for sorting
     const years = Object.keys(publicationsByYear).map(Number).sort((a, b) => b - a);
@@ -63,7 +64,9 @@
                                                 <br>ISBN: {book.isbn}
                                             {/if}
                                         </p>
-                                        <p class="publication-abstract">{book.abstract}</p>
+                                        {#if book.abstract}
+                                            <p class="publication-abstract">{book.abstract}</p>
+                                        {/if}
                                         {#if book.tags && book.tags.length > 0}
                                             <div class="publication-tags">
                                                 {#each book.tags as tag}
@@ -117,7 +120,9 @@
                                                 , pp. {article.pages}
                                             {/if}
                                         </p>
-                                        <p class="publication-abstract">{article.abstract}</p>
+                                        {#if article.abstract}
+                                            <p class="publication-abstract">{article.abstract}</p>
+                                        {/if}
                                         {#if article.tags && article.tags.length > 0}
                                             <div class="publication-tags">
                                                 {#each article.tags as tag}
@@ -166,10 +171,72 @@
                                                 , pp. {chapter.pages}
                                             {/if}
                                         </p>
-                                        <p class="publication-abstract">{chapter.abstract}</p>
+                                        {#if chapter.abstract}
+                                            <p class="publication-abstract">{chapter.abstract}</p>
+                                        {/if}
                                         {#if chapter.tags && chapter.tags.length > 0}
                                             <div class="publication-tags">
                                                 {#each chapter.tags as tag}
+                                                    <span class="tag">{tag}</span>
+                                                {/each}
+                                            </div>
+                                        {/if}
+                                    </div>
+                                </div>
+                            </li>
+                        {/each}
+                    </ul>
+                </div>
+            {/if}
+
+            {#if publicationsByYear[year].some(pub => pub.type === 'special-issue')}
+                <div class="publications-section">
+                    <h3 class="publication-type">Special Issues</h3>
+                    <ul class="publication-list">
+                        {#each publicationsByYear[year].filter(pub => pub.type === 'special-issue') as issue}
+                            <li class="publication-item">
+                                <div class="publication-layout">
+                                    {#if issue.heroImage?.src || issue.image}
+                                        <div class="publication-image">
+                                            <img 
+                                                src={issue.heroImage?.src || issue.image} 
+                                                alt={issue.heroImage?.alt || `Cover of ${issue.title}`}
+                                                class="cover-image"
+                                            />
+                                            {#if issue.heroImage?.caption}
+                                                <div class="image-caption">{issue.heroImage.caption}</div>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                    
+                                    <div class="publication-content">
+                                        <div class="publication-title">
+                                            <a href={issue.url}>
+                                                {issue.title}
+                                            </a>
+                                        </div>
+                                        <p class="publication-meta">
+                                            Edited by {issue.editors}. <em>{issue.journal}</em>, {issue.volume}
+                                            {#if issue.publisher}
+                                                , {issue.publisher}
+                                            {/if}
+                                            , {issue.date}
+                                        </p>
+                                        {#if issue.additionalUrls && issue.additionalUrls.length > 0}
+                                            <p class="additional-urls">
+                                                Additional links: 
+                                                {#each issue.additionalUrls as link, i}
+                                                    <a href={link.url} class="additional-link">{link.label}</a>
+                                                    {#if i < issue.additionalUrls.length - 1}, {/if}
+                                                {/each}
+                                            </p>
+                                        {/if}
+                                        {#if issue.abstract}
+                                            <p class="publication-abstract">{issue.abstract}</p>
+                                        {/if}
+                                        {#if issue.tags && issue.tags.length > 0}
+                                            <div class="publication-tags">
+                                                {#each issue.tags as tag}
                                                     <span class="tag">{tag}</span>
                                                 {/each}
                                             </div>
@@ -301,5 +368,20 @@
             margin-bottom: 1rem;
             max-width: 200px;
         }
+    }
+
+    .additional-urls {
+        color: #4a5568;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .additional-link {
+        color: #2b6cb0;
+        text-decoration: none;
+    }
+
+    .additional-link:hover {
+        text-decoration: underline;
     }
 </style> 
