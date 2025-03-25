@@ -5,7 +5,6 @@
 	
 	// Navigation items based on the WordPress site
 	const navItems = [
-		{ name: 'About', path: '/about' },
 		{ 
 			name: 'Research', 
 			path: '/research',
@@ -17,6 +16,7 @@
 			] 
 		},
 		{ name: 'Publications', path: '/publications' },
+		{ name: 'Activities', path: '/activities' },
 		{ 
 			name: 'Digital Humanities', 
 			path: '/digital-humanities',
