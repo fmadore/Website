@@ -12,6 +12,7 @@ export const religiousActivismCampuses: Publication = {
     publisher: "De Gruyter",
     language: "English",
     isbn: "978-3-11-142790-4",
+    series: "ZMO-Studien 48",
     doi: "10.1515/9783111428895",
     url: "https://doi.org/10.1515/9783111428895",
     abstract: `Although religious organisations have coexisted with student unions at the Université de Lomé and the Université d'Abomey-Calavi since the 1970s, much of the literature has tended to focus on the role of student protests in triggering national conferences in Benin and Togo in the early 1990s, overlooking religion. Based on interviews with different generations of activists and the press in both countries, this book uncovers the neglected history of Christian and Muslim student associations on these campuses, originally strongholds of leftist, anti-imperialist and secular ideologies. It analyses the emergence of these associations under a one-party dictatorship in Togo and a Marxist-Leninist regime in Benin, and explores the implications of growing religiosity for these public universities as secular institutions.

@@ -29,4 +29,7 @@ export type Publication = {
     // Additional fields for book chapters
     book?: string;        // Book title for chapters
     editors?: string;     // Book editors for chapters
+    // Additional fields for edited volumes
+    isEditedVolume?: boolean; // Flag for edited volumes
+    series?: string;      // Series name and number
 }; 

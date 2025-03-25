@@ -4,6 +4,7 @@ import type { Publication } from '$lib/types';
 const publicationFiles: Promise<{ [key: string]: Publication }>[] = [
     import('./religious-activism-campuses'),
     import('./sphere-publique-musulmane'),
+    import('./religiosity-university-campuses'),
     // Add other publication imports here
     // import('./book-template'),
     // import('./other-publications'),

@@ -51,7 +51,14 @@
                                             </a>
                                         </div>
                                         <p class="publication-meta">
-                                            {book.authors.join(', ')}. {book.publisher}, {book.placeOfPublication}, {book.year}
+                                            {#if book.isEditedVolume}
+                                                Edited by {book.editors}. {book.publisher}, {book.placeOfPublication}, {book.year}
+                                                {#if book.series}
+                                                    <br>{book.series}
+                                                {/if}
+                                            {:else}
+                                                {book.authors.join(', ')}. {book.publisher}, {book.placeOfPublication}, {book.year}
+                                            {/if}
                                             {#if book.isbn}
                                                 <br>ISBN: {book.isbn}
                                             {/if}

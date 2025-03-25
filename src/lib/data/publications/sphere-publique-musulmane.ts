@@ -12,6 +12,7 @@ export const spherePubliqueMusulmane: Publication = {
     publisher: "Presses de l'Université Laval/Hermann",
     language: "French",
     isbn: "978-2-7637-2811-7",
+    series: "Religions, cultures et sociétés",
     doi: "10.58144/20241205-000",
     url: "https://doi.org/10.58144/20241205-000",
     abstract: `L'islam a connu une progression fulgurante au Burkina Faso depuis les dernières décennies. Ce pays, autrefois qualifié de "fille aimée de l'Église", compte aujourd'hui plus de 60 % de musulmans. Outre leur importance numérique, ceux-ci se sont montrés dynamiques depuis le tournant des années 1990, notamment avec un foisonnement associatif particulièrement important, comme en témoignent les 240 associations islamiques officielles à l'échelle nationale. Ouagadougou, la capitale, compte à elle seule plus de 600 mosquées.
