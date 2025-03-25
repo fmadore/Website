@@ -1,22 +1,47 @@
 import type { Publication } from '$lib/types';
 
-// Import all publication files
-const publicationFiles: Promise<{ [key: string]: Publication }>[] = [
-    import('./religious-activism-campuses'),
-    import('./sphere-publique-musulmane'),
-    import('./religiosity-university-campuses'),
-    // Add other publication imports here
-    // import('./book-template'),
-    // import('./other-publications'),
-];
+// Define a type for module imports
+type ModuleType = Record<string, any>;
 
-// Convert the modules to an array of publications
-const allPublications: Publication[] = await Promise.all(
-    publicationFiles.map(async (module) => {
-        const publication = Object.values(await module)[0] as Publication;
-        return publication;
+// Dynamically import all book files
+const bookContext = import.meta.glob<ModuleType>('./books/*.ts', { eager: true });
+const bookPublications: Publication[] = Object.values(bookContext)
+    .filter((module): module is ModuleType => !!module && (typeof module === 'object'))
+    .map(module => {
+        // If there's a default export, use it, otherwise take the first exported value
+        const publication = 'default' in module 
+            ? module.default 
+            : Object.values(module)[0];
+        return publication as Publication;
     })
-);
+    .filter(pub => pub.id && pub.id !== 'book-template-id' && pub.id !== 'edited-volume-template-id'); // Filter out templates
+
+// Dynamically import all article files
+const articleContext = import.meta.glob<ModuleType>('./articles/*.ts', { eager: true });
+const articlePublications: Publication[] = Object.values(articleContext)
+    .filter((module): module is ModuleType => !!module && (typeof module === 'object'))
+    .map(module => {
+        const publication = 'default' in module ? module.default : Object.values(module)[0];
+        return publication as Publication;
+    })
+    .filter(pub => pub.id && pub.id !== 'article-template-id'); // Filter out templates
+
+// Dynamically import all chapter files
+const chapterContext = import.meta.glob<ModuleType>('./chapters/*.ts', { eager: true });
+const chapterPublications: Publication[] = Object.values(chapterContext)
+    .filter((module): module is ModuleType => !!module && (typeof module === 'object'))
+    .map(module => {
+        const publication = 'default' in module ? module.default : Object.values(module)[0];
+        return publication as Publication;
+    })
+    .filter(pub => pub.id && pub.id !== 'chapter-template-id'); // Filter out templates
+
+// Combine all publications
+const allPublications: Publication[] = [
+    ...bookPublications,
+    ...articlePublications,
+    ...chapterPublications
+];
 
 // Sort by date (most recent first)
 export const publicationsByDate = [...allPublications].sort((a, b) => {
