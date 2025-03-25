@@ -1,27 +1,23 @@
-import { religiousActivismCampuses } from './religious-activism-campuses';
-import { etablirFaitiereIslamique } from './etablir-faitiere-islamique';
-import { authorMeetsCritic } from './author-meets-critic';
-import { guestLectureFlorida } from './guest-lecture-florida';
 import type { Activity } from '$lib/types';
 import { getYearFromISODate } from '$lib/utils/date-formatter';
 
-// Export individual activities for direct access
-export {
-    religiousActivismCampuses,
-    etablirFaitiereIslamique,
-    authorMeetsCritic,
-    guestLectureFlorida
-};
-
-// Export the full list of activities 
-export const allActivities: Activity[] = [
-    religiousActivismCampuses,
-    etablirFaitiereIslamique,
-    authorMeetsCritic,
-    guestLectureFlorida
+// Import all activity files
+const activityFiles = [
+    import('./religious-activism-campuses'),
+    import('./etablir-faitiere-islamique'),
+    import('./author-meets-critic'),
+    import('./guest-lecture-florida')
 ];
 
-// Sorted by date (most recent first)
+// Convert the modules to an array of activities
+const allActivities: Activity[] = await Promise.all(
+    activityFiles.map(async (module) => {
+        const activity = Object.values(await module)[0] as Activity;
+        return activity;
+    })
+);
+
+// Sort by date (most recent first)
 export const activitiesByDate = [...allActivities].sort((a, b) => {
     // Use dateISO for sorting if available, otherwise fall back to the current method
     if (a.dateISO && b.dateISO) {
@@ -46,4 +42,7 @@ export const activitiesByYear = allActivities.reduce<Record<number, Activity[]>>
     }
     acc[year].push(activity);
     return acc;
-}, {}); 
+}, {});
+
+// Export the full list of activities
+export { allActivities }; 

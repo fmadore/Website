@@ -1,5 +1,6 @@
 <script>
     import LatestActivities from '$lib/LatestActivities.svelte';
+    import SEO from '$lib/SEO.svelte';
 
     // Data for latest activities
     const latestActivities = [
@@ -30,6 +31,8 @@
         { year: 2016, count: 1 }
     ];
 </script>
+
+<SEO />
 
 <div class="profile-container">
     <div class="profile-header">

@@ -2,6 +2,7 @@
     import { page } from '$app/stores';
     import { getActivityById, type Activity } from '$lib/stores/activities';
     import { error } from '@sveltejs/kit';
+    import SEO from '$lib/SEO.svelte';
     
     // Get the activity ID from the URL
     $: id = $page.params.id;
@@ -13,7 +14,77 @@
             message: 'Activity not found'
         });
     }
+
+    // Define the JSON-LD structure interface
+    interface JsonLd {
+        "@context": string;
+        "@type": string;
+        name: string;
+        description: string;
+        datePublished: string;
+        author: {
+            "@type": string;
+            name: string;
+            jobTitle: string;
+            affiliation: {
+                "@type": string;
+                name: string;
+            };
+        };
+        image?: string;
+        keywords?: string;
+    }
+
+    // Function to create JSON-LD structured data
+    function getJsonLd(activity: Activity): string {
+        const jsonLd: JsonLd = {
+            "@context": "https://schema.org",
+            "@type": activity.tags?.includes('article') ? "ScholarlyArticle" : 
+                      activity.tags?.includes('book') ? "Book" : 
+                      activity.tags?.includes('conference') ? "Event" : "CreativeWork",
+            "name": activity.title,
+            "description": activity.description,
+            "datePublished": activity.dateISO,
+            "author": {
+                "@type": "Person",
+                "name": "Frédérick Madore",
+                "jobTitle": "Research Fellow",
+                "affiliation": {
+                    "@type": "Organization",
+                    "name": "Leibniz-Zentrum Moderner Orient (ZMO)"
+                }
+            }
+        };
+
+        if (activity.heroImage) {
+            jsonLd.image = activity.heroImage.src;
+        }
+
+        if (activity.tags) {
+            jsonLd.keywords = activity.tags.join(", ");
+        }
+
+        return JSON.stringify(jsonLd);
+    }
 </script>
+
+<svelte:head>
+    {#if activity}
+        <script type="application/ld+json">
+            {getJsonLd(activity)}
+        </script>
+    {/if}
+</svelte:head>
+
+{#if activity}
+    <SEO 
+        title={`${activity.title} | Frédérick Madore`}
+        description={activity.description}
+        keywords={activity.tags ? activity.tags.join(', ') + ', Frédérick Madore, research' : 'Frédérick Madore, research'}
+        type="article"
+        ogImage={activity.heroImage?.src || '/images/Profile-picture.jpg'}
+    />
+{/if}
 
 <div class="prose activity-detail">
     <div class="activity-meta">
