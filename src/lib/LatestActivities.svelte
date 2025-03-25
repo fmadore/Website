@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { activities, type Activity } from './stores/activities';
+    import { activities } from './stores/activities';
+    import type { Activity } from '$lib/types';
     
     // Props - limit the number of activities to show
     export let limit = 4;
