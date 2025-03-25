@@ -21,4 +21,12 @@ export type Publication = {
         alt: string;      // Alt text for accessibility
         caption?: string; // Optional caption for the image
     };
+    // Additional fields for articles
+    journal?: string;     // Journal name for articles
+    volume?: string;      // Volume number for articles
+    issue?: string;       // Issue number for articles
+    pages?: string;       // Page range for articles and chapters
+    // Additional fields for book chapters
+    book?: string;        // Book title for chapters
+    editors?: string;     // Book editors for chapters
 }; 
