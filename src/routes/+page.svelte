@@ -41,7 +41,6 @@
         
             <div class="action-buttons">
                 <a href="/files/CV-F.Madore-2025-03-21.pdf" class="btn btn-primary">Download CV</a>
-                <a href="/contact" class="btn btn-secondary">Contact Me</a>
             </div>
         </div>
         
