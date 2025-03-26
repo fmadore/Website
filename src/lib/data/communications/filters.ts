@@ -1,6 +1,26 @@
 import { writable, derived } from 'svelte/store';
 import type { Communication } from '$lib/types/communication';
-import { allCommunications, communicationsByType, communicationsByYear, allTags, communicationsByCountry } from './index';
+
+// Import safely handling any errors
+let allCommunications: Communication[] = [];
+let communicationsByType: Record<string, Communication[]> = {};
+let communicationsByYear: Record<number, Communication[]> = {};
+let allTags: string[] = [];
+let communicationsByCountry: Record<string, Communication[]> = {};
+
+try {
+    const commModule = import.meta.glob<Record<string, any>>('./index.ts', { eager: true });
+    const indexModule = Object.values(commModule)[0];
+    if (indexModule) {
+        allCommunications = indexModule.allCommunications || [];
+        communicationsByType = indexModule.communicationsByType || {};
+        communicationsByYear = indexModule.communicationsByYear || {};
+        allTags = indexModule.allTags || [];
+        communicationsByCountry = indexModule.communicationsByCountry || {};
+    }
+} catch (error) {
+    console.error('Error importing communications module:', error);
+}
 
 // Create a store for active filters
 export const activeFilters = writable({
@@ -17,8 +37,8 @@ const safeAllCommunications = allCommunications || [];
 // Extract all unique languages from communications (safely)
 export const allLanguages = Array.from(new Set(
     safeAllCommunications
-        .filter(comm => comm && comm.language)
-        .map(comm => comm.language as string)
+        .filter((comm: Communication) => comm && comm.language)
+        .map((comm: Communication) => comm.language as string)
 )).sort();
 
 // Extract all unique countries (safely)
@@ -37,7 +57,7 @@ export const filterOptions = writable({
 export const filteredCommunications = derived(
     [activeFilters],
     ([$activeFilters]) => {
-        return safeAllCommunications.filter(comm => {
+        return safeAllCommunications.filter((comm: Communication) => {
             if (!comm) return false;
             
             // Filter by communication type
@@ -54,7 +74,7 @@ export const filteredCommunications = derived(
             
             // Filter by tags (if communication has at least one of the selected tags)
             if ($activeFilters.tags.length > 0 && 
-                (!comm.tags || !comm.tags.some(tag => $activeFilters.tags.includes(tag)))) {
+                (!comm.tags || !comm.tags.some((tag: string) => $activeFilters.tags.includes(tag)))) {
                 return false;
             }
             
@@ -142,7 +162,7 @@ export const tagCounts = derived(
     [filteredCommunications],
     ([$filteredCommunications]) => {
         const counts: Record<string, number> = {};
-        ($filteredCommunications || []).forEach(comm => {
+        ($filteredCommunications || []).forEach((comm: Communication) => {
             if (comm && comm.tags) {
                 comm.tags.forEach(tag => {
                     counts[tag] = (counts[tag] || 0) + 1;
@@ -158,7 +178,7 @@ export const countryCounts = derived(
     [filteredCommunications],
     ([$filteredCommunications]) => {
         const counts: Record<string, number> = {};
-        ($filteredCommunications || []).forEach(comm => {
+        ($filteredCommunications || []).forEach((comm: Communication) => {
             if (comm && comm.country) {
                 counts[comm.country] = (counts[comm.country] || 0) + 1;
             }

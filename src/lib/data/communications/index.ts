@@ -5,21 +5,52 @@ type ModuleType = Record<string, any>;
 
 // Dynamically import all communication files (including subdirectories)
 const communicationContext = import.meta.glob<ModuleType>('./**/*.ts', { eager: true });
+
+// Debug: Log the keys we're importing
+console.log('Communication files being loaded:', Object.keys(communicationContext));
+
 const allCommunications: Communication[] = Object.values(communicationContext)
-    .filter((module): module is ModuleType => !!module && (typeof module === 'object'))
-    .map(module => {
+    .filter((module): module is ModuleType => {
+        if (!module || typeof module !== 'object') {
+            console.warn('Skipping module that is not an object:', module);
+            return false;
+        }
+        return true;
+    })
+    .map((module, index) => {
         try {
+            // Log the module keys to see what's being processed
+            const moduleKeys = Object.keys(module);
             // If there's a default export, use it, otherwise take the first exported value
             const communication = 'default' in module 
                 ? module.default 
                 : Object.values(module)[0];
+                
+            // Check for circular references that might cause serialization issues
+            if (communication === module) {
+                console.warn('Circular reference detected in module:', moduleKeys);
+                return null;
+            }
+            
             return communication as Communication;
         } catch (error) {
-            console.warn('Error processing communication module:', error);
+            // Include more context about which file caused the error
+            const files = Object.keys(communicationContext);
+            const fileName = files[index] || 'unknown';
+            console.warn(`Error processing communication module ${fileName}:`, error);
             return null;
         }
     })
-    .filter((comm): comm is Communication => !!comm && !!comm.id && comm.id !== 'communication-template-id'); // Filter out template and invalid communications
+    .filter((comm): comm is Communication => {
+        if (!comm) {
+            return false;
+        }
+        if (!comm.id) {
+            console.warn('Communication missing id:', comm);
+            return false;
+        }
+        return comm.id !== 'communication-template-id'; // Filter out template and invalid communications
+    });
 
 // Sort by date (most recent first)
 export const communicationsByDate = [...allCommunications].sort((a, b) => {
