@@ -11,7 +11,8 @@
         'chapter': 'Book Chapter',
         'special-issue': 'Special Issue',
         'report': 'Report',
-        'encyclopedia': 'Encyclopedia Entry'
+        'encyclopedia': 'Encyclopedia Entry',
+        'blogpost': 'Blog Post'
     };
     
     // Helper function to handle authors that might be string or array

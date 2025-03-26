@@ -66,6 +66,16 @@ const encyclopediaPublications: Publication[] = Object.values(encyclopediaContex
     })
     .filter(pub => pub.id && pub.id !== 'encyclopedia-template-id'); // Filter out templates
 
+// Dynamically import all blog post files
+const blogpostContext = import.meta.glob<ModuleType>('./blogposts/*.ts', { eager: true });
+const blogpostPublications: Publication[] = Object.values(blogpostContext)
+    .filter((module): module is ModuleType => !!module && (typeof module === 'object'))
+    .map(module => {
+        const publication = 'default' in module ? module.default : Object.values(module)[0];
+        return publication as Publication;
+    })
+    .filter(pub => pub.id && pub.id !== 'blogpost-template-id'); // Filter out templates
+
 // Combine all publications
 const allPublications: Publication[] = [
     ...bookPublications,
@@ -73,7 +83,8 @@ const allPublications: Publication[] = [
     ...chapterPublications,
     ...specialIssuePublications,
     ...reportPublications,
-    ...encyclopediaPublications
+    ...encyclopediaPublications,
+    ...blogpostPublications
 ];
 
 // Sort by date (most recent first)

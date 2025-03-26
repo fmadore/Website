@@ -20,7 +20,8 @@
         'chapter': 'Book Chapters',
         'special-issue': 'Special Issues',
         'report': 'Reports',
-        'encyclopedia': 'Encyclopedia Entries'
+        'encyclopedia': 'Encyclopedia Entries',
+        'blogpost': 'Blog Posts'
     };
 </script>
 
