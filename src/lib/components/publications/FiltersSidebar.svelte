@@ -21,7 +21,8 @@
         'special-issue': 'Special Issues',
         'report': 'Reports',
         'encyclopedia': 'Encyclopedia Entries',
-        'blogpost': 'Blog Posts'
+        'blogpost': 'Blog Posts',
+        'dissertation': 'Ph.D. Dissertations'
     };
 </script>
 

@@ -1,6 +1,6 @@
 export type Publication = {
     id: string;           // URL-friendly ID for routing
-    type: 'book' | 'article' | 'chapter' | 'special-issue' | 'report' | 'encyclopedia' | 'blogpost'; // Publication type for faceting
+    type: 'book' | 'article' | 'chapter' | 'special-issue' | 'report' | 'encyclopedia' | 'blogpost' | 'dissertation'; // Publication type for faceting
     title: string;        // Publication title
     authors: string[];    // Array of authors
     date: string;         // Display date (e.g., "2025")
@@ -37,4 +37,8 @@ export type Publication = {
     prefacedBy?: string;  // Author of the preface
     // Additional fields for encyclopedia entries
     encyclopediaTitle?: string; // Encyclopedia title
+    // Additional fields for dissertations
+    department?: string;  // Academic department
+    university?: string;  // University where the dissertation was defended
+    advisors?: string[];  // Dissertation advisors/supervisors
 }; 

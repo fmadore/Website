@@ -12,7 +12,8 @@
         'special-issue': 'Special Issue',
         'report': 'Report',
         'encyclopedia': 'Encyclopedia Entry',
-        'blogpost': 'Blog Post'
+        'blogpost': 'Blog Post',
+        'dissertation': 'Ph.D. Dissertation'
     };
     
     // Helper function to handle authors that might be string or array
@@ -57,7 +58,7 @@
             
             <div class="text-light mb-2">
                 <!-- Authors rendering -->
-                {#if publication.type === 'book' || publication.type === 'article' || publication.type === 'chapter' || publication.type === 'encyclopedia' || publication.type === 'report'}
+                {#if publication.type === 'book' || publication.type === 'article' || publication.type === 'chapter' || publication.type === 'encyclopedia' || publication.type === 'report' || publication.type === 'blogpost' || publication.type === 'dissertation'}
                     {#if publication.authors}
                         {#each getAuthorsArray(publication.authors) as author, i}
                             {#if author !== "Frédérick Madore"}
@@ -95,7 +96,31 @@
                 <span>. </span>
                 
                 <!-- Publication details -->
-                {#if publication.type === 'encyclopedia' && publication.encyclopediaTitle}
+                {#if publication.type === 'dissertation'}
+                    <span>"{publication.title}", </span>
+                    <span>Ph.D. thesis</span>
+                    {#if publication.department}
+                        <span>, {publication.department}</span>
+                    {/if}
+                    {#if publication.university}
+                        <span>, {publication.university}</span>
+                    {/if}
+                    {#if publication.year}
+                        <span>, {publication.year}</span>
+                    {/if}
+                    <span>.</span>
+                    {#if publication.advisors && publication.advisors.length > 0}
+                        <div class="mt-1">
+                            <span>Supervised by </span>
+                            {#each publication.advisors as advisor, i}
+                                <span>{advisor}</span>
+                                {#if i < publication.advisors.length - 1}
+                                    <span> and </span>
+                                {/if}
+                            {/each}
+                        </div>
+                    {/if}
+                {:else if publication.type === 'encyclopedia' && publication.encyclopediaTitle}
                     <span>"{publication.title}", </span>
                     <span>{publication.encyclopediaTitle}</span>
                     {#if publication.pages}

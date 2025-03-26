@@ -76,6 +76,16 @@ const blogpostPublications: Publication[] = Object.values(blogpostContext)
     })
     .filter(pub => pub.id && pub.id !== 'blogpost-template-id'); // Filter out templates
 
+// Dynamically import all dissertation files
+const dissertationContext = import.meta.glob<ModuleType>('./dissertations/*.ts', { eager: true });
+const dissertationPublications: Publication[] = Object.values(dissertationContext)
+    .filter((module): module is ModuleType => !!module && (typeof module === 'object'))
+    .map(module => {
+        const publication = 'default' in module ? module.default : Object.values(module)[0];
+        return publication as Publication;
+    })
+    .filter(pub => pub.id && pub.id !== 'dissertation-template-id'); // Filter out templates
+
 // Combine all publications
 const allPublications: Publication[] = [
     ...bookPublications,
@@ -84,7 +94,8 @@ const allPublications: Publication[] = [
     ...specialIssuePublications,
     ...reportPublications,
     ...encyclopediaPublications,
-    ...blogpostPublications
+    ...blogpostPublications,
+    ...dissertationPublications
 ];
 
 // Sort by date (most recent first)
