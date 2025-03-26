@@ -98,7 +98,7 @@
                 <!-- Publication details -->
                 {#if publication.type === 'dissertation'}
                     <span>"{publication.title}", </span>
-                    <span>Ph.D. thesis</span>
+                    <span>Ph.D. dissertation</span>
                     {#if publication.department}
                         <span>, {publication.department}</span>
                     {/if}
