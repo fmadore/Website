@@ -18,7 +18,8 @@
         'book': 'Books',
         'article': 'Journal Articles',
         'chapter': 'Book Chapters',
-        'special-issue': 'Special Issues'
+        'special-issue': 'Special Issues',
+        'report': 'Reports'
     };
 </script>
 

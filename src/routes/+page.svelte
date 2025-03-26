@@ -136,15 +136,7 @@
     .btn-primary:hover {
         background-color: var(--color-primary-dark);
     }
-    
-    .btn-secondary {
-        background-color: var(--color-gray-200);
-        color: var(--color-text);
-    }
-    
-    .btn-secondary:hover {
-        background-color: var(--color-gray-300);
-    }
+
     
     .rounded-full {
         border-radius: 9999px;

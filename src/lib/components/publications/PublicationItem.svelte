@@ -9,7 +9,8 @@
         'book': 'Book',
         'article': 'Journal Article',
         'chapter': 'Book Chapter',
-        'special-issue': 'Special Issue'
+        'special-issue': 'Special Issue',
+        'report': 'Report'
     };
     
     // Helper function to handle authors that might be string or array

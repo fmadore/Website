@@ -46,12 +46,23 @@ const specialIssuePublications: Publication[] = Object.values(specialIssueContex
     })
     .filter(pub => pub.id && pub.id !== 'special-issue-template-id'); // Filter out templates
 
+// Dynamically import all report files
+const reportContext = import.meta.glob<ModuleType>('./reports/*.ts', { eager: true });
+const reportPublications: Publication[] = Object.values(reportContext)
+    .filter((module): module is ModuleType => !!module && (typeof module === 'object'))
+    .map(module => {
+        const publication = 'default' in module ? module.default : Object.values(module)[0];
+        return publication as Publication;
+    })
+    .filter(pub => pub.id && pub.id !== 'report-template-id'); // Filter out templates
+
 // Combine all publications
 const allPublications: Publication[] = [
     ...bookPublications,
     ...articlePublications,
     ...chapterPublications,
-    ...specialIssuePublications
+    ...specialIssuePublications,
+    ...reportPublications
 ];
 
 // Sort by date (most recent first)

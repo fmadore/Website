@@ -1,6 +1,6 @@
 export type Publication = {
     id: string;           // URL-friendly ID for routing
-    type: 'book' | 'article' | 'chapter' | 'special-issue'; // Publication type for faceting
+    type: 'book' | 'article' | 'chapter' | 'special-issue' | 'report'; // Publication type for faceting
     title: string;        // Publication title
     authors: string[];    // Array of authors
     date: string;         // Display date (e.g., "2025")
