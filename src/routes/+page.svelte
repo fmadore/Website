@@ -1,35 +1,13 @@
 <script>
     import LatestActivities from '$lib/LatestActivities.svelte';
     import SEO from '$lib/SEO.svelte';
+    import { activitiesByYear } from '$lib/data/activities';
 
-    // Data for latest activities
-    const latestActivities = [
-        {
-            title: "Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023",
-            date: "21 March 2025",
-            url: "/research/religious-activism-campuses-togo-benin"
-        },
-        {
-            title: "Établir une faîtière islamique à l'échelle nationale: le cas de 4 pays d'Afrique de l'Ouest francophone",
-            date: "4 March 2025",
-            url: "/research/etablir-une-faitiere-islamique"
-        },
-        {
-            title: "Author Meets Critic. Faith-based Student Activism in Togo and Benin: Muslims and Christians on University Campuses",
-            date: "9 December 2024",
-            url: "/conference-activity/author-meets-critic-faith-based-student-activism"
-        }
-    ];
-
-    // Years with content
-    const years = [
-        { year: 2025, count: 2 },
-        { year: 2024, count: 13 },
-        { year: 2023, count: 10 },
-        { year: 2022, count: 13 },
-        { year: 2020, count: 1 },
-        { year: 2016, count: 1 }
-    ];
+    // Years with content - dynamically created from activities data
+    const years = Object.entries(activitiesByYear).map(([year, activities]) => ({
+        year: parseInt(year),
+        count: activities.length
+    })).sort((a, b) => b.year - a.year);
 </script>
 
 <SEO />
