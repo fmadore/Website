@@ -84,7 +84,9 @@ export const allTags = Array.from(new Set(
 
 // Get all unique languages
 export const allLanguages = Array.from(new Set(
-    allPublications.map(pub => pub.language)
+    allPublications.flatMap(pub => 
+        pub.language ? pub.language.split(',').map(lang => lang.trim()) : []
+    )
 )).sort();
 
 // Export the full list of publications

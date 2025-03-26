@@ -69,8 +69,12 @@ export const filteredPublications = derived(
             }
             
             // Filter by language
-            if ($activeFilters.languages.length > 0 && !$activeFilters.languages.includes(pub.language)) {
-                return false;
+            if ($activeFilters.languages.length > 0) {
+                // Split comma-separated language values
+                const pubLanguages = pub.language ? pub.language.split(',').map(lang => lang.trim()) : [];
+                if (!pubLanguages.some(lang => $activeFilters.languages.includes(lang))) {
+                    return false;
+                }
             }
             
             // Filter by author (if publication has at least one of the selected authors)

@@ -35,7 +35,9 @@
         <div class="{publication.image ? 'col-span-3' : 'col-span-4'}">
             <div class="mb-2">
                 <span class="text-primary text-sm">{typeLabels[publication.type] || publication.type}</span>
-                {#if publication.language && publication.language !== 'English'}
+                {#if publication.language && publication.language.includes(',')}
+                    <span class="text-light text-sm ml-2">({publication.language})</span>
+                {:else if publication.language && publication.language !== 'English'}
                     <span class="text-light text-sm ml-2">({publication.language})</span>
                 {/if}
             </div>

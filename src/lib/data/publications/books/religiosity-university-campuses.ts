@@ -11,7 +11,7 @@ export const religiosityUniversityCampuses: Publication = {
     year: 2023,
     placeOfPublication: "Berlin",
     publisher: "LIT Verlag",
-    language: "English",
+    language: "English, French",
     isbn: "978-3-643-91429-3",
     series: "Afrikanische Studien/African Studies 64",
     doi: "10.58144/20241107-000",
