@@ -11,63 +11,27 @@
     keywords="publications, books, journal articles, research, Islam, West Africa, Frédérick Madore"
 />
 
-<div class="publications-container">
-    <FiltersSidebar />
-
-    <main class="publications-content">
-        <h1 class="publications-title">Publications</h1>
-        
-        <div class="results-info">
-            Showing {$filteredPublications.length} publications
-            {#if Object.values($activeFilters).some(arr => arr.length > 0)}
-                <span class="filters-applied">(Filters applied)</span>
-            {/if}
+<div class="container mx-auto py-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="md:col-span-1">
+            <FiltersSidebar />
         </div>
-        
-        <ul class="publication-list">
-            {#each $filteredPublications as publication}
-                <PublicationItem {publication} />
-            {/each}
-        </ul>
-    </main>
-</div>
 
-<style>
-    .publications-container {
-        display: grid;
-        grid-template-columns: 250px 1fr;
-        gap: 2rem;
-    }
-    
-    .publications-content {
-        flex: 1;
-    }
-    
-    .publications-title {
-        margin-bottom: 1rem;
-        color: #2d3748;
-        font-size: 2rem;
-    }
-    
-    .results-info {
-        margin-bottom: 1.5rem;
-        font-size: 0.9rem;
-        color: #4a5568;
-    }
-    
-    .filters-applied {
-        font-style: italic;
-    }
-    
-    .publication-list {
-        list-style: none;
-        padding: 0;
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 900px) {
-        .publications-container {
-            grid-template-columns: 1fr;
-        }
-    }
-</style> 
+        <main class="md:col-span-3">
+            <h1 class="text-dark text-2xl mb-4">Publications</h1>
+            
+            <div class="text-light mb-6">
+                Showing {$filteredPublications.length} publications
+                {#if Object.values($activeFilters).some(arr => arr.length > 0)}
+                    <span class="text-accent">(Filters applied)</span>
+                {/if}
+            </div>
+            
+            <ul class="list-none p-0">
+                {#each $filteredPublications as publication}
+                    <PublicationItem {publication} />
+                {/each}
+            </ul>
+        </main>
+    </div>
+</div> 

@@ -22,32 +22,32 @@
     };
 </script>
 
-<aside class="card bg-gray-50 border-gray-200 p-6 sticky-top">
-    <div class="mb-6">
-        <h3 class="text-dark font-weight-600 mb-2 pb-2 border-gray-200">Publication Types</h3>
+<aside class="p-6 bg-gray-50 border border-gray-200 rounded shadow-sm sticky-top">
+    <div class="filter-section">
+        <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Publication Types</h3>
         <div class="flex-column gap-2">
             {#each $filterOptions.types as type}
-                <div>
-                    <label class="flex items-center gap-2 text-light cursor-pointer">
+                <div class="mb-2">
+                    <label class="flex items-center gap-2 cursor-pointer">
                         <input 
                             type="checkbox" 
                             checked={$activeFilters.types.includes(type)} 
                             on:change={() => toggleTypeFilter(type)}
                         />
                         <span>{typeLabels[type] || type}</span>
-                        <span class="text-light">({publicationsByType[type]?.length || 0})</span>
+                        <span class="text-light text-sm">({publicationsByType[type]?.length || 0})</span>
                     </label>
                 </div>
             {/each}
         </div>
     </div>
 
-    <div class="mb-6">
-        <h3 class="text-dark font-weight-600 mb-2 pb-2 border-gray-200">Years</h3>
-        <div class="grid grid-cols-3 gap-2">
+    <div class="filter-section">
+        <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Years</h3>
+        <div class="grid grid-cols-2 gap-2">
             {#each $filterOptions.years as year}
-                <div>
-                    <label class="flex items-center gap-2 text-light cursor-pointer">
+                <div class="mb-2">
+                    <label class="flex items-center gap-2 cursor-pointer">
                         <input 
                             type="checkbox" 
                             checked={$activeFilters.years.includes(year)} 
@@ -60,31 +60,31 @@
         </div>
     </div>
 
-    <div class="mb-6">
-        <h3 class="text-dark font-weight-600 mb-2 pb-2 border-gray-200">Co-Authors</h3>
+    <div class="filter-section">
+        <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Co-Authors</h3>
         <div class="authors-scrollable">
             {#each $filterOptions.authors as author}
-                <div>
-                    <label class="flex items-center gap-2 text-light cursor-pointer">
+                <div class="mb-2">
+                    <label class="flex items-center gap-2 cursor-pointer">
                         <input 
                             type="checkbox" 
                             checked={$activeFilters.authors.includes(author)} 
                             on:change={() => toggleAuthorFilter(author)}
                         />
                         <span>{author}</span>
-                        <span class="text-light">({$authorCounts[author] || 0})</span>
+                        <span class="text-light text-sm">({$authorCounts[author] || 0})</span>
                     </label>
                 </div>
             {/each}
         </div>
     </div>
 
-    <div class="mb-6">
-        <h3 class="text-dark font-weight-600 mb-2 pb-2 border-gray-200">Languages</h3>
+    <div class="filter-section">
+        <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Languages</h3>
         <div class="flex-column gap-2">
             {#each $filterOptions.languages as language}
-                <div>
-                    <label class="flex items-center gap-2 text-light cursor-pointer">
+                <div class="mb-2">
+                    <label class="flex items-center gap-2 cursor-pointer">
                         <input 
                             type="checkbox" 
                             checked={$activeFilters.languages.includes(language)} 
@@ -97,23 +97,23 @@
         </div>
     </div>
 
-    <div class="mb-6">
-        <h3 class="text-dark font-weight-600 mb-2 pb-2 border-gray-200">Tags</h3>
+    <div class="filter-section">
+        <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Tags</h3>
         <div class="flex flex-wrap gap-2">
             {#each $filterOptions.tags as tag}
                 <button 
-                    class="btn-sm bg-gray-200 hover:bg-gray-300 rounded-full border-0"
-                    class:btn-primary={$activeFilters.tags.includes(tag)}
+                    class="tag-button"
+                    class:active={$activeFilters.tags.includes(tag)}
                     on:click={() => toggleTagFilter(tag)}
                 >
                     {tag}
-                    <span class="text-light">({$tagCounts[tag] || 0})</span>
+                    <span class="tag-count">({$tagCounts[tag] || 0})</span>
                 </button>
             {/each}
         </div>
     </div>
 
-    <button class="btn btn-block btn-outline-secondary" on:click={clearAllFilters}>
+    <button class="clear-filters" on:click={clearAllFilters}>
         Clear all filters
     </button>
 </aside>
@@ -126,6 +126,10 @@
         height: fit-content;
     }
     
+    .filter-section {
+        margin-bottom: 1.5rem;
+    }
+    
     .authors-scrollable {
         max-height: 200px;
         overflow-y: auto;
@@ -135,7 +139,6 @@
         gap: 0.5rem;
     }
     
-    /* These are minimal custom styles that aren't covered by our CSS architecture */
     .border-gray-200 {
         border-bottom: 1px solid #e2e8f0;
     }
@@ -157,8 +160,47 @@
         gap: 0.5rem;
     }
     
-    .rounded-full {
+    .tag-button {
+        background-color: #e2e8f0;
+        color: #4a5568;
+        padding: 0.25rem 0.5rem;
         border-radius: 9999px;
+        font-size: 0.8rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-bottom: 0.5rem;
+    }
+    
+    .tag-button.active {
+        background-color: #2b6cb0;
+        color: white;
+    }
+    
+    .tag-count {
+        opacity: 0.7;
+        margin-left: 2px;
+        font-size: 0.7rem;
+    }
+    
+    .clear-filters {
+        width: 100%;
+        padding: 0.5rem;
+        background-color: #e2e8f0;
+        color: #4a5568;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+    }
+    
+    .clear-filters:hover {
+        background-color: #cbd5e0;
+    }
+    
+    .text-sm {
+        font-size: 0.875rem;
     }
     
     /* Media query */
