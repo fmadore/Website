@@ -10,7 +10,7 @@ export const communauteMusulmaneBurkinaFaso: Publication = {
     year: 2014,
     publisher: "Brill",
     encyclopediaTitle: "The Encyclopaedia of Islam, Three",
-    editors: "Kate Fleet, Gudrun Krämer, Denis Matringe, John Nawas, everett rowson",
+    editors: "Kate Fleet, Gudrun Krämer, Denis Matringe, John Nawas, Everett Rowson",
     placeOfPublication: "Leiden",
     pages: "66-67",
     language: "English",
