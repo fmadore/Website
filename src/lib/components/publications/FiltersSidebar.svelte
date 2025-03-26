@@ -22,32 +22,32 @@
     };
 </script>
 
-<aside class="filters-sidebar">
-    <div class="filter-section">
-        <h3 class="filter-title">Publication Types</h3>
-        <div class="filter-options">
+<aside class="card bg-gray-50 border-gray-200 p-6 sticky-top">
+    <div class="mb-6">
+        <h3 class="text-dark font-weight-600 mb-2 pb-2 border-gray-200">Publication Types</h3>
+        <div class="flex-column gap-2">
             {#each $filterOptions.types as type}
-                <div class="filter-option">
-                    <label>
+                <div>
+                    <label class="flex items-center gap-2 text-light cursor-pointer">
                         <input 
                             type="checkbox" 
                             checked={$activeFilters.types.includes(type)} 
                             on:change={() => toggleTypeFilter(type)}
                         />
                         <span>{typeLabels[type] || type}</span>
-                        <span class="count">({publicationsByType[type]?.length || 0})</span>
+                        <span class="text-light">({publicationsByType[type]?.length || 0})</span>
                     </label>
                 </div>
             {/each}
         </div>
     </div>
 
-    <div class="filter-section">
-        <h3 class="filter-title">Years</h3>
-        <div class="filter-options years-grid">
+    <div class="mb-6">
+        <h3 class="text-dark font-weight-600 mb-2 pb-2 border-gray-200">Years</h3>
+        <div class="grid grid-cols-3 gap-2">
             {#each $filterOptions.years as year}
-                <div class="filter-option year-option">
-                    <label>
+                <div>
+                    <label class="flex items-center gap-2 text-light cursor-pointer">
                         <input 
                             type="checkbox" 
                             checked={$activeFilters.years.includes(year)} 
@@ -60,31 +60,31 @@
         </div>
     </div>
 
-    <div class="filter-section">
-        <h3 class="filter-title">Co-Authors</h3>
-        <div class="filter-options authors-list">
+    <div class="mb-6">
+        <h3 class="text-dark font-weight-600 mb-2 pb-2 border-gray-200">Co-Authors</h3>
+        <div class="authors-scrollable">
             {#each $filterOptions.authors as author}
-                <div class="filter-option">
-                    <label>
+                <div>
+                    <label class="flex items-center gap-2 text-light cursor-pointer">
                         <input 
                             type="checkbox" 
                             checked={$activeFilters.authors.includes(author)} 
                             on:change={() => toggleAuthorFilter(author)}
                         />
                         <span>{author}</span>
-                        <span class="count">({$authorCounts[author] || 0})</span>
+                        <span class="text-light">({$authorCounts[author] || 0})</span>
                     </label>
                 </div>
             {/each}
         </div>
     </div>
 
-    <div class="filter-section">
-        <h3 class="filter-title">Languages</h3>
-        <div class="filter-options">
+    <div class="mb-6">
+        <h3 class="text-dark font-weight-600 mb-2 pb-2 border-gray-200">Languages</h3>
+        <div class="flex-column gap-2">
             {#each $filterOptions.languages as language}
-                <div class="filter-option">
-                    <label>
+                <div>
+                    <label class="flex items-center gap-2 text-light cursor-pointer">
                         <input 
                             type="checkbox" 
                             checked={$activeFilters.languages.includes(language)} 
@@ -97,142 +97,73 @@
         </div>
     </div>
 
-    <div class="filter-section">
-        <h3 class="filter-title">Tags</h3>
-        <div class="filter-options tags-cloud">
+    <div class="mb-6">
+        <h3 class="text-dark font-weight-600 mb-2 pb-2 border-gray-200">Tags</h3>
+        <div class="flex flex-wrap gap-2">
             {#each $filterOptions.tags as tag}
                 <button 
-                    class="tag-button" 
-                    class:active={$activeFilters.tags.includes(tag)}
+                    class="btn-sm bg-gray-200 hover:bg-gray-300 rounded-full border-0"
+                    class:btn-primary={$activeFilters.tags.includes(tag)}
                     on:click={() => toggleTagFilter(tag)}
                 >
                     {tag}
-                    <span class="tag-count">({$tagCounts[tag] || 0})</span>
+                    <span class="text-light">({$tagCounts[tag] || 0})</span>
                 </button>
             {/each}
         </div>
     </div>
 
-    <button class="clear-filters" on:click={clearAllFilters}>
+    <button class="btn btn-block btn-outline-secondary" on:click={clearAllFilters}>
         Clear all filters
     </button>
 </aside>
 
 <style>
-    .filters-sidebar {
+    /* Only keep styles that aren't in our CSS architecture */
+    .sticky-top {
         position: sticky;
         top: 2rem;
         height: fit-content;
-        padding: 1.5rem;
-        background-color: #f7fafc;
-        border-radius: 8px;
-        border: 1px solid #e2e8f0;
     }
     
-    .filter-section {
-        margin-bottom: 1.5rem;
-    }
-    
-    .filter-title {
-        font-size: 1rem;
-        font-weight: 600;
-        color: #2d3748;
-        margin-bottom: 0.75rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid #e2e8f0;
-    }
-    
-    .filter-options {
+    .authors-scrollable {
+        max-height: 200px;
+        overflow-y: auto;
+        padding-right: 5px;
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
     }
     
-    .years-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-        gap: 0.5rem;
+    /* These are minimal custom styles that aren't covered by our CSS architecture */
+    .border-gray-200 {
+        border-bottom: 1px solid #e2e8f0;
     }
     
-    .authors-list {
-        max-height: 200px;
-        overflow-y: auto;
-        padding-right: 5px;
+    .font-weight-600 {
+        font-weight: 600;
     }
     
-    .authors-list::-webkit-scrollbar {
-        width: 4px;
-    }
-    
-    .authors-list::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 4px;
-    }
-    
-    .authors-list::-webkit-scrollbar-thumb {
-        background: #c5c5c5;
-        border-radius: 4px;
-    }
-    
-    .filter-option label {
+    .flex-column {
         display: flex;
+        flex-direction: column;
+    }
+    
+    .items-center {
         align-items: center;
-        gap: 0.5rem;
-        cursor: pointer;
-        font-size: 0.9rem;
     }
     
-    .count {
-        color: #718096;
-        font-size: 0.8rem;
-    }
-    
-    .tags-cloud {
-        display: flex;
-        flex-wrap: wrap;
+    .gap-2 {
         gap: 0.5rem;
     }
     
-    .tag-button {
-        background-color: #e2e8f0;
-        color: #4a5568;
-        padding: 0.25rem 0.5rem;
+    .rounded-full {
         border-radius: 9999px;
-        font-size: 0.8rem;
-        border: none;
-        cursor: pointer;
-        transition: all 0.2s;
     }
     
-    .tag-button.active {
-        background-color: #2b6cb0;
-        color: white;
-    }
-    
-    .tag-count {
-        opacity: 0.7;
-        margin-left: 2px;
-    }
-    
-    .clear-filters {
-        width: 100%;
-        padding: 0.5rem;
-        background-color: #e2e8f0;
-        color: #4a5568;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: all 0.2s;
-    }
-    
-    .clear-filters:hover {
-        background-color: #cbd5e0;
-    }
-    
-    /* Responsive adjustments for smaller screens */
+    /* Media query */
     @media (max-width: 900px) {
-        .filters-sidebar {
+        .sticky-top {
             position: static;
             margin-bottom: 2rem;
         }
