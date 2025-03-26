@@ -1,6 +1,6 @@
 <script lang="ts">
     // SEO props
-    export let title = "Frédérick Madore - Research Fellow at ZMO";
+    export let title = "Frédérick Madore | Historian West Africa | Digital Humanist";
     export let description = "Academic website of Frédérick Madore, Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO), focusing on Islam in West Africa.";
     export let keywords = "Frédérick Madore, Islam, West Africa, Digital Humanities, Research, ZMO";
     export let canonical = "";
