@@ -6,9 +6,9 @@ import { allPublications, publicationsByType, publicationsByYear, allTags, allLa
 function extractEditors(publication: Publication): string[] {
     if (!publication.editors) return [];
     
-    // Handle string format (e.g., "Editor1 and Editor2")
+    // Handle string format (e.g., "Editor1, Editor2" or "Editor1 and Editor2")
     if (typeof publication.editors === 'string') {
-        return publication.editors.split(' and ').map(name => name.trim());
+        return publication.editors.split(/\s*(?:,|and)\s*/).map(name => name.trim());
     }
     
     // Handle array format
@@ -86,7 +86,7 @@ export const filteredPublications = derived(
                 // Check editors (could be string or array)
                 const hasMatchingEditor = pub.editors && (
                     (typeof pub.editors === 'string' && 
-                        pub.editors.split(' and ')
+                        pub.editors.split(/\s*(?:,|and)\s*/)
                             .map(name => name.trim())
                             .some(editor => $activeFilters.authors.includes(editor))) ||
                     (Array.isArray(pub.editors) && 

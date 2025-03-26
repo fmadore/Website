@@ -1,17 +1,17 @@
 import type { Publication } from '$lib/types';
 
-export const muslimMinoritiesAfrica: Publication = {
-    id: "muslim-minorities-africa",
+export const muslimMinoritiesAfrica1: Publication = {
+    id: "muslim-minorities-africa-1",
     type: "special-issue",
-    title: "Muslim Minorities in Africa, Part 1 & Part 2",
+    title: "Muslim Minorities in Africa, Part 1",
     authors: ["Frédérick Madore", "Dorothea Schulz"],
-    editors: "Frédérick Madore and Dorothea Schulz",
-    date: "2021-2022",
-    dateISO: "2021-07", // Using the earliest part's date for sorting
-    year: 2021, // Using the earliest year
+    editors: "Frédérick Madore, Dorothea Schulz",
+    date: "2021",
+    dateISO: "2021-07", 
+    year: 2021,
     journal: "Islamic Africa",
-    volume: "12 / 13",
-    issue: "2/1",
+    volume: "12",
+    issue: "2",
     language: "English",
     publisher: "Brill",
     tags: ["Islam", "Africa", "religious minorities", "Muslim communities", "interfaith relations", "special issue", "religious coexistence"],
@@ -20,13 +20,7 @@ export const muslimMinoritiesAfrica: Publication = {
     heroImage: {
         src: "images/publications/muslim-minorities-africa-hero.jpg",
         alt: "Cover of the special issue on Muslim Minorities in Africa",
-        caption: "Special issue of Islamic Africa on Muslim Minorities in Africa"
+        caption: "Special issue of Islamic Africa on Muslim Minorities in Africa, Part 1"
     },
-    isEditedWork: true,
-    additionalUrls: [
-        { 
-            label: "Part 2",
-            url: "https://brill.com/view/journals/iafr/13/1/iafr.13.issue-1.xml"
-        }
-    ]
+    isEditedWork: true
 }; 

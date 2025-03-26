@@ -6,7 +6,7 @@ export const specialIssueTemplate: Publication = {
     type: "special-issue",
     title: "Special Issue Title",
     authors: ["Editor Name", "Second Editor"], // Add all editors in the array
-    editors: "Editor Name and Second Editor", // Format: "Editor 1 and Editor 2"
+    editors: "Editor Name, Second Editor", // Format: "Editor 1, Editor 2"
     date: "2025", // Publication year
     dateISO: "2025", // Same as date for special issues
     year: 2025,

@@ -26,7 +26,7 @@ export const bookTemplate: Publication = {
     },
     // For edited volumes only:
     // isEditedVolume: true, // Uncomment this line if this is an edited volume
-    // editors: "Editor Name and Second Editor Name", // Format: "Editor 1 and Editor 2"
+    // editors: "Editor Name, Second Editor Name", // Format: "Editor 1, Editor 2"
     // series: "Series Name 00", // Optional: series name and number
 };
 
@@ -36,7 +36,7 @@ export const editedVolumeTemplate: Publication = {
     type: "book",
     title: "Edited Volume Title",
     authors: ["Editor Name", "Second Editor Name"], // Add all editors in the array
-    editors: "Editor Name and Second Editor Name", // Format: "Editor 1 and Editor 2"
+    editors: "Editor Name, Second Editor Name", // Format: "Editor 1, Editor 2"
     date: "2025", // Publication year
     dateISO: "2025", // Same as date for books
     year: 2025,

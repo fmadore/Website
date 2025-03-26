@@ -74,7 +74,7 @@
                     {#if publication.editors}
                         <span>Edited by </span>
                         {#if typeof publication.editors === 'string'}
-                            {#each publication.editors.split(' and ') as editor, i}
+                            {#each publication.editors.split(/\s*(?:,|and)\s*/).map(name => name.trim()) as editor, i}
                                 {#if editor !== "Frédérick Madore"}
                                     <button class="author-btn" on:click={() => toggleAuthorFilter(editor)}>
                                         {editor}
@@ -82,8 +82,8 @@
                                 {:else}
                                     <span>{editor}</span>
                                 {/if}
-                                {#if i < publication.editors.split(' and ').length - 1}
-                                    <span> and </span>
+                                {#if i < publication.editors.split(/\s*(?:,|and)\s*/).map(name => name.trim()).length - 1}
+                                    <span>, </span>
                                 {/if}
                             {/each}
                         {/if}
