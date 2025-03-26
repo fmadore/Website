@@ -55,14 +55,14 @@
             
             <p>I am the author of <em>La construction d'une sphère publique musulmane en Afrique de l'Ouest</em> (Presses de l'Université Laval/Hermann, 2016) and co-editor of <em>Religiosity on University Campuses in Africa: Trends and Experiences</em> (Lit Verlag, 2023). I have also co-edited two special journal issues: "Muslim Minorities in Africa, Part 1 & Part 2" (<em>Islamic Africa</em>, 2021-22) and "​Les acteurs religieux africains à l'ère du numérique" (<em>Émulations</em>, 2017). My research has been published in eleven peer-reviewed journals and six edited volumes.</p>
             
-            <p>Prior to my current position, I was a Banting Postdoctoral Fellow at the Center for African Studies at the University of Florida, and a Part-Time Professor at the University of Ottawa. I received my Ph.D. in History from the Université Laval (Canada) in 2018 with distinction.</p>
+            <p>Prior to my current position, I was a <a href="https://banting.fellowships-bourses.gc.ca/en/home-accueil.html" target="_blank" rel="noopener noreferrer">Banting Postdoctoral Fellow</a> at the Center for African Studies at the University of Florida, and a Part-Time Professor at the University of Ottawa. I received my Ph.D. in History from the Université Laval (Canada) in 2018 with distinction.</p>
             
             <p>Since 2025, I have been working as a consultant for Communitology, a US-based company that integrates social science expertise into asylum and immigration processes. In this role, I prepare specialised Country of Origin Information (COI) reports for cases focusing on Benin, Togo, and Côte d'Ivoire.</p>
             
             <p>Through my ongoing research and DH projects, I continue to explore new approaches to understanding the dynamics of Muslim societies in Francophone West Africa, combining traditional historical methods with innovative computational techniques.</p>
         
             <div class="action-buttons">
-                <a href="/files/cv.pdf" class="btn btn-primary">Download CV</a>
+                <a href="/files/CV-F.Madore-2025-03-21.pdf" class="btn btn-primary">Download CV</a>
                 <a href="/contact" class="btn btn-secondary">Contact Me</a>
             </div>
         </div>
