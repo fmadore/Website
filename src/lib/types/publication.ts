@@ -34,4 +34,5 @@ export type Publication = {
     isEditedVolume?: boolean; // Flag for edited volumes
     isEditedWork?: boolean;   // Flag for any edited work (volumes or special issues)
     series?: string;      // Series name and number
+    prefacedBy?: string;  // Author of the preface
 }; 

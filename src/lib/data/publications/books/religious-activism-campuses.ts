@@ -5,6 +5,7 @@ export const religiousActivismCampuses: Publication = {
     type: "book",
     title: "Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023",
     authors: ["Frédérick Madore"],
+    prefacedBy: "Abdoulaye Sounaye",
     date: "2025",
     dateISO: "2025-03-31",
     year: 2025,

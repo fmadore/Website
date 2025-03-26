@@ -24,7 +24,9 @@ export const allAuthors = Array.from(new Set([
     // Get authors from publications
     ...allPublications.flatMap(pub => pub.authors || []),
     // Get editors from publications
-    ...allPublications.flatMap(pub => extractEditors(pub))
+    ...allPublications.flatMap(pub => extractEditors(pub)),
+    // Get preface authors
+    ...allPublications.filter(pub => pub.prefacedBy).map(pub => pub.prefacedBy as string)
 ]))
 .filter(author => author !== "Frédérick Madore")
 .sort();
@@ -93,8 +95,12 @@ export const filteredPublications = derived(
                         pub.editors.some(editor => $activeFilters.authors.includes(editor)))
                 );
                 
-                // If neither authors nor editors match, filter out this publication
-                if (!hasMatchingAuthor && !hasMatchingEditor) {
+                // Check preface author
+                const hasMatchingPrefaceAuthor = pub.prefacedBy && 
+                    $activeFilters.authors.includes(pub.prefacedBy);
+                
+                // If neither authors, editors, nor preface author match, filter out this publication
+                if (!hasMatchingAuthor && !hasMatchingEditor && !hasMatchingPrefaceAuthor) {
                     return false;
                 }
             }
@@ -208,6 +214,11 @@ export const authorCounts = derived(
                         counts[editor] = (counts[editor] || 0) + 1;
                     }
                 });
+            }
+            
+            // Count preface authors
+            if (pub.prefacedBy && pub.prefacedBy !== "Frédérick Madore") {
+                counts[pub.prefacedBy] = (counts[pub.prefacedBy] || 0) + 1;
             }
         });
         

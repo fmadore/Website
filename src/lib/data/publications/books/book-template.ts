@@ -6,6 +6,7 @@ export const bookTemplate: Publication = {
     type: "book",
     title: "Book Title",
     authors: ["Author Name"], // Add all authors in the array
+    prefacedBy: "", // Optional: author of the preface
     date: "2025", // Publication year
     dateISO: "2025", // Same as date for books
     year: 2025,
@@ -37,6 +38,7 @@ export const editedVolumeTemplate: Publication = {
     title: "Edited Volume Title",
     authors: ["Editor Name", "Second Editor Name"], // Add all editors in the array
     editors: "Editor Name, Second Editor Name", // Format: "Editor 1, Editor 2"
+    prefacedBy: "", // Optional: author of the preface
     date: "2025", // Publication year
     dateISO: "2025", // Same as date for books
     year: 2025,

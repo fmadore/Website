@@ -113,6 +113,16 @@
                     {/if}
                 {/if}
                 <span>.</span>
+                
+                <!-- Preface information -->
+                {#if publication.prefacedBy}
+                    <div class="mt-1">
+                        <span>Preface by </span>
+                        <button class="author-btn" on:click={() => toggleAuthorFilter(publication.prefacedBy || '')}>
+                            {publication.prefacedBy}
+                        </button>
+                    </div>
+                {/if}
             </div>
             
             {#if publication.abstract}
