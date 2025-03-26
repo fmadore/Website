@@ -15,8 +15,8 @@
 </script>
 
 <li class="card p-4 mb-4 hover-shadow">
-    <div class="grid md:grid-cols-{communication.image ? '4' : '1'} gap-4">
-        {#if communication.image}
+    <div class="grid md:grid-cols-1 gap-4">
+        {#if communication?.image}
             <div class="col-span-1">
                 <img 
                     src={communication.image} 
@@ -26,27 +26,27 @@
             </div>
         {/if}
         
-        <div class="{communication.image ? 'col-span-3' : 'col-span-4'}">
+        <div class="col-span-1">
             <div class="mb-2">
-                <span class="text-primary text-sm">{typeLabels[communication.type || 'conference'] || communication.type}</span>
-                {#if communication.language && communication.language !== 'English'}
+                <span class="text-primary text-sm">{typeLabels[communication?.type || 'conference'] || communication?.type || 'Conference'}</span>
+                {#if communication?.language && communication.language !== 'English'}
                     <span class="text-light text-sm ml-2">({communication.language})</span>
                 {/if}
             </div>
             
             <h3 class="text-dark font-weight-500 mb-2">
-                {#if communication.url}
+                {#if communication?.url}
                     <a href={communication.url} target="_blank" rel="noopener noreferrer" class="hover:text-primary">
-                        {communication.title}
+                        {communication?.title || 'Untitled Communication'}
                     </a>
                 {:else}
-                    {communication.title}
+                    {communication?.title || 'Untitled Communication'}
                 {/if}
             </h3>
             
             <div class="communication-details text-light mb-2">
                 <!-- Authors -->
-                {#if communication.authors && communication.authors.length > 0}
+                {#if communication?.authors && communication.authors.length > 0}
                     <div>
                         {communication.authors.join(' and ')}
                     </div>
@@ -54,28 +54,28 @@
                 
                 <!-- Conference details -->
                 <div>
-                    <span>{communication.conference}</span>
-                    {#if communication.location}
+                    <span>{communication?.conference || 'Unknown Conference'}</span>
+                    {#if communication?.location}
                         <span>, {communication.location}</span>
                     {/if}
-                    <button class="country-btn" on:click={() => toggleCountryFilter(communication.country)}>
-                        {#if communication.country}
+                    {#if communication?.country}
+                        <button class="country-btn" on:click={() => toggleCountryFilter(communication.country)}>
                             <span>, {communication.country}</span>
-                        {/if}
-                    </button>
-                    {#if communication.date}
+                        </button>
+                    {/if}
+                    {#if communication?.date}
                         <span>, {communication.date}</span>
                     {/if}
                 </div>
             </div>
             
-            {#if communication.abstract}
+            {#if communication?.abstract}
                 <div class="text-light text-sm mb-4">
                     {communication.abstract}
                 </div>
             {/if}
             
-            {#if communication.tags && communication.tags.length > 0}
+            {#if communication?.tags && communication.tags.length > 0}
                 <div class="mt-3 flex flex-wrap gap-2">
                     {#each communication.tags as tag}
                         <button 
@@ -88,7 +88,7 @@
                 </div>
             {/if}
             
-            {#if communication.additionalUrls && communication.additionalUrls.length > 0}
+            {#if communication?.additionalUrls && communication.additionalUrls.length > 0}
                 <div class="mt-3">
                     {#each communication.additionalUrls as url, i}
                         <a 

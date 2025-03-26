@@ -11,21 +11,24 @@ export const activeFilters = writable({
     countries: [] as string[]
 });
 
-// Extract all unique languages from communications
+// Ensure allCommunications is defined
+const safeAllCommunications = allCommunications || [];
+
+// Extract all unique languages from communications (safely)
 export const allLanguages = Array.from(new Set(
-    allCommunications
-        .filter(comm => comm.language)
+    safeAllCommunications
+        .filter(comm => comm && comm.language)
         .map(comm => comm.language as string)
 )).sort();
 
-// Extract all unique countries
-export const allCountries = Object.keys(communicationsByCountry).sort();
+// Extract all unique countries (safely)
+export const allCountries = Object.keys(communicationsByCountry || {}).sort();
 
 // Create a store for available filter options
 export const filterOptions = writable({
-    types: Object.keys(communicationsByType).sort(),
-    years: Object.keys(communicationsByYear).map(Number).sort((a, b) => b - a),
-    tags: allTags,
+    types: Object.keys(communicationsByType || {}).sort(),
+    years: Object.keys(communicationsByYear || {}).map(Number).sort((a, b) => b - a),
+    tags: allTags || [],
     languages: allLanguages,
     countries: allCountries
 });
@@ -34,7 +37,9 @@ export const filterOptions = writable({
 export const filteredCommunications = derived(
     [activeFilters],
     ([$activeFilters]) => {
-        return allCommunications.filter(comm => {
+        return safeAllCommunications.filter(comm => {
+            if (!comm) return false;
+            
             // Filter by communication type
             if ($activeFilters.types.length > 0 && 
                 (!comm.type || !$activeFilters.types.includes(comm.type))) {
@@ -42,7 +47,8 @@ export const filteredCommunications = derived(
             }
             
             // Filter by year
-            if ($activeFilters.years.length > 0 && !$activeFilters.years.includes(comm.year)) {
+            if ($activeFilters.years.length > 0 && 
+                (!comm.year || !$activeFilters.years.includes(comm.year))) {
                 return false;
             }
             
@@ -136,8 +142,8 @@ export const tagCounts = derived(
     [filteredCommunications],
     ([$filteredCommunications]) => {
         const counts: Record<string, number> = {};
-        $filteredCommunications.forEach(comm => {
-            if (comm.tags) {
+        ($filteredCommunications || []).forEach(comm => {
+            if (comm && comm.tags) {
                 comm.tags.forEach(tag => {
                     counts[tag] = (counts[tag] || 0) + 1;
                 });
@@ -152,8 +158,8 @@ export const countryCounts = derived(
     [filteredCommunications],
     ([$filteredCommunications]) => {
         const counts: Record<string, number> = {};
-        $filteredCommunications.forEach(comm => {
-            if (comm.country) {
+        ($filteredCommunications || []).forEach(comm => {
+            if (comm && comm.country) {
                 counts[comm.country] = (counts[comm.country] || 0) + 1;
             }
         });

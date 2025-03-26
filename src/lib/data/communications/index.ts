@@ -8,13 +8,18 @@ const communicationContext = import.meta.glob<ModuleType>('./**/*.ts', { eager: 
 const allCommunications: Communication[] = Object.values(communicationContext)
     .filter((module): module is ModuleType => !!module && (typeof module === 'object'))
     .map(module => {
-        // If there's a default export, use it, otherwise take the first exported value
-        const communication = 'default' in module 
-            ? module.default 
-            : Object.values(module)[0];
-        return communication as Communication;
+        try {
+            // If there's a default export, use it, otherwise take the first exported value
+            const communication = 'default' in module 
+                ? module.default 
+                : Object.values(module)[0];
+            return communication as Communication;
+        } catch (error) {
+            console.warn('Error processing communication module:', error);
+            return null;
+        }
     })
-    .filter(comm => comm.id && comm.id !== 'communication-template-id'); // Filter out template
+    .filter((comm): comm is Communication => !!comm && !!comm.id && comm.id !== 'communication-template-id'); // Filter out template and invalid communications
 
 // Sort by date (most recent first)
 export const communicationsByDate = [...allCommunications].sort((a, b) => {
@@ -23,10 +28,12 @@ export const communicationsByDate = [...allCommunications].sort((a, b) => {
 
 // Group communications by year
 export const communicationsByYear = allCommunications.reduce<Record<number, Communication[]>>((acc, communication) => {
-    if (!acc[communication.year]) {
+    if (communication.year && !acc[communication.year]) {
         acc[communication.year] = [];
     }
-    acc[communication.year].push(communication);
+    if (communication.year) {
+        acc[communication.year].push(communication);
+    }
     return acc;
 }, {});
 
@@ -43,10 +50,12 @@ export const communicationsByType = allCommunications.reduce<Record<string, Comm
 
 // Group communications by country
 export const communicationsByCountry = allCommunications.reduce<Record<string, Communication[]>>((acc, communication) => {
-    if (!acc[communication.country]) {
-        acc[communication.country] = [];
+    if (communication.country) {
+        if (!acc[communication.country]) {
+            acc[communication.country] = [];
+        }
+        acc[communication.country].push(communication);
     }
-    acc[communication.country].push(communication);
     return acc;
 }, {});
 

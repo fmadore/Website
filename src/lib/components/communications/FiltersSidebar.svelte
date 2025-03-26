@@ -21,37 +21,47 @@
         'lecture': 'Lectures',
         'panel': 'Panels'
     };
+    
+    // Ensure we have values to avoid undefined errors
+    $: types = $filterOptions?.types || [];
+    $: years = $filterOptions?.years || [];
+    $: countries = $filterOptions?.countries || [];
+    $: languages = $filterOptions?.languages || [];
+    $: tags = $filterOptions?.tags || [];
 </script>
 
 <aside class="p-6 bg-gray-50 border border-gray-200 rounded shadow-sm sticky-top">
+    {#if types.length > 0}
     <div class="filter-section">
         <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Event Types</h3>
         <div class="flex-column gap-2">
-            {#each $filterOptions.types as type}
+            {#each types as type}
                 <div class="mb-2">
                     <label class="flex items-center gap-2 cursor-pointer">
                         <input 
                             type="checkbox" 
-                            checked={$activeFilters.types.includes(type)} 
+                            checked={$activeFilters?.types?.includes(type) || false} 
                             on:change={() => toggleTypeFilter(type)}
                         />
                         <span>{typeLabels[type] || type}</span>
-                        <span class="text-light text-sm">({communicationsByType[type]?.length || 0})</span>
+                        <span class="text-light text-sm">({communicationsByType?.[type]?.length || 0})</span>
                     </label>
                 </div>
             {/each}
         </div>
     </div>
+    {/if}
 
+    {#if years.length > 0}
     <div class="filter-section">
         <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Years</h3>
         <div class="grid grid-cols-2 gap-2">
-            {#each $filterOptions.years as year}
+            {#each years as year}
                 <div class="mb-2">
                     <label class="flex items-center gap-2 cursor-pointer">
                         <input 
                             type="checkbox" 
-                            checked={$activeFilters.years.includes(year)} 
+                            checked={$activeFilters?.years?.includes(year) || false} 
                             on:change={() => toggleYearFilter(year)}
                         />
                         <span>{year}</span>
@@ -60,35 +70,39 @@
             {/each}
         </div>
     </div>
+    {/if}
 
+    {#if countries.length > 0}
     <div class="filter-section">
         <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Countries</h3>
         <div class="countries-scrollable">
-            {#each $filterOptions.countries as country}
+            {#each countries as country}
                 <div class="mb-2">
                     <label class="flex items-center gap-2 cursor-pointer">
                         <input 
                             type="checkbox" 
-                            checked={$activeFilters.countries.includes(country)} 
+                            checked={$activeFilters?.countries?.includes(country) || false} 
                             on:change={() => toggleCountryFilter(country)}
                         />
                         <span>{country}</span>
-                        <span class="text-light text-sm">({$countryCounts[country] || communicationsByCountry[country]?.length || 0})</span>
+                        <span class="text-light text-sm">({$countryCounts?.[country] || communicationsByCountry?.[country]?.length || 0})</span>
                     </label>
                 </div>
             {/each}
         </div>
     </div>
+    {/if}
 
+    {#if languages.length > 0}
     <div class="filter-section">
         <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Languages</h3>
         <div class="flex-column gap-2">
-            {#each $filterOptions.languages as language}
+            {#each languages as language}
                 <div class="mb-2">
                     <label class="flex items-center gap-2 cursor-pointer">
                         <input 
                             type="checkbox" 
-                            checked={$activeFilters.languages.includes(language)} 
+                            checked={$activeFilters?.languages?.includes(language) || false} 
                             on:change={() => toggleLanguageFilter(language)}
                         />
                         <span>{language}</span>
@@ -97,22 +111,25 @@
             {/each}
         </div>
     </div>
+    {/if}
 
+    {#if tags.length > 0}
     <div class="filter-section">
         <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Tags</h3>
         <div class="flex flex-wrap gap-2">
-            {#each $filterOptions.tags as tag}
+            {#each tags as tag}
                 <button 
                     class="tag-button"
-                    class:active={$activeFilters.tags.includes(tag)}
+                    class:active={$activeFilters?.tags?.includes(tag) || false}
                     on:click={() => toggleTagFilter(tag)}
                 >
                     {tag}
-                    <span class="tag-count">({$tagCounts[tag] || 0})</span>
+                    <span class="tag-count">({$tagCounts?.[tag] || 0})</span>
                 </button>
             {/each}
         </div>
     </div>
+    {/if}
 
     <button class="clear-filters" on:click={clearAllFilters}>
         Clear all filters
