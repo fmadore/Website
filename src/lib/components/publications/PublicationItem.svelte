@@ -10,7 +10,8 @@
         'article': 'Journal Article',
         'chapter': 'Book Chapter',
         'special-issue': 'Special Issue',
-        'report': 'Report'
+        'report': 'Report',
+        'encyclopedia': 'Encyclopedia Entry'
     };
     
     // Helper function to handle authors that might be string or array
@@ -55,7 +56,7 @@
             
             <div class="text-light mb-2">
                 <!-- Authors rendering -->
-                {#if publication.type === 'book' || publication.type === 'article' || publication.type === 'chapter'}
+                {#if publication.type === 'book' || publication.type === 'article' || publication.type === 'chapter' || publication.type === 'encyclopedia' || publication.type === 'report'}
                     {#if publication.authors}
                         {#each getAuthorsArray(publication.authors) as author, i}
                             {#if author !== "Frédérick Madore"}
@@ -93,11 +94,31 @@
                 <span>. </span>
                 
                 <!-- Publication details -->
-                {#if publication.publisher}
+                {#if publication.type === 'encyclopedia' && publication.encyclopediaTitle}
+                    <span>"{publication.title}", </span>
+                    <span>{publication.encyclopediaTitle}</span>
+                    {#if publication.pages}
+                        <span>, {publication.pages}</span>
+                    {/if}
+                    {#if publication.placeOfPublication}
+                        <span>. {publication.placeOfPublication}</span>
+                    {/if}
+                    {#if publication.publisher}
+                        <span>: {publication.publisher}</span>
+                    {/if}
+                    {#if publication.year}
+                        <span>, {publication.year}</span>
+                    {/if}
+                    <span>.</span>
+                    {#if publication.editors}
+                        <span> Edited by {publication.editors}.</span>
+                    {/if}
+                {:else if publication.publisher}
                     <span>{publication.publisher}</span>
                     {#if publication.year}
                         <span>, {publication.year}</span>
                     {/if}
+                    <span>.</span>
                 {:else if publication.journal}
                     <span>{publication.journal}</span>
                     {#if publication.volume}
@@ -112,8 +133,8 @@
                     {#if publication.year}
                         <span>, {publication.year}</span>
                     {/if}
+                    <span>.</span>
                 {/if}
-                <span>.</span>
                 
                 <!-- Preface information -->
                 {#if publication.prefacedBy}

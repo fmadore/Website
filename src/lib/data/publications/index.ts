@@ -56,13 +56,24 @@ const reportPublications: Publication[] = Object.values(reportContext)
     })
     .filter(pub => pub.id && pub.id !== 'report-template-id'); // Filter out templates
 
+// Dynamically import all encyclopedia files
+const encyclopediaContext = import.meta.glob<ModuleType>('./encyclopedia/*.ts', { eager: true });
+const encyclopediaPublications: Publication[] = Object.values(encyclopediaContext)
+    .filter((module): module is ModuleType => !!module && (typeof module === 'object'))
+    .map(module => {
+        const publication = 'default' in module ? module.default : Object.values(module)[0];
+        return publication as Publication;
+    })
+    .filter(pub => pub.id && pub.id !== 'encyclopedia-template-id'); // Filter out templates
+
 // Combine all publications
 const allPublications: Publication[] = [
     ...bookPublications,
     ...articlePublications,
     ...chapterPublications,
     ...specialIssuePublications,
-    ...reportPublications
+    ...reportPublications,
+    ...encyclopediaPublications
 ];
 
 // Sort by date (most recent first)

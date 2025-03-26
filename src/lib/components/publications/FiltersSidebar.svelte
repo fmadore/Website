@@ -19,7 +19,8 @@
         'article': 'Journal Articles',
         'chapter': 'Book Chapters',
         'special-issue': 'Special Issues',
-        'report': 'Reports'
+        'report': 'Reports',
+        'encyclopedia': 'Encyclopedia Entries'
     };
 </script>
 

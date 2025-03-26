@@ -1,6 +1,6 @@
 export type Publication = {
     id: string;           // URL-friendly ID for routing
-    type: 'book' | 'article' | 'chapter' | 'special-issue' | 'report'; // Publication type for faceting
+    type: 'book' | 'article' | 'chapter' | 'special-issue' | 'report' | 'encyclopedia'; // Publication type for faceting
     title: string;        // Publication title
     authors: string[];    // Array of authors
     date: string;         // Display date (e.g., "2025")
@@ -35,4 +35,6 @@ export type Publication = {
     isEditedWork?: boolean;   // Flag for any edited work (volumes or special issues)
     series?: string;      // Series name and number
     prefacedBy?: string;  // Author of the preface
+    // Additional fields for encyclopedia entries
+    encyclopediaTitle?: string; // Encyclopedia title
 }; 
