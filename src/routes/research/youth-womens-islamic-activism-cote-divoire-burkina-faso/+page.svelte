@@ -7,16 +7,17 @@
 
 <div class="content-wrapper">
     <div class="main-content prose">
-        <h1 class="project-title">Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso​</h1>
-        <p class="project-meta">Research project | 2013-2018</p>
+        <div class="project-header">
+            <h1 class="project-title">Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso​</h1>
+            <p class="project-years">2013-2018</p>
+            <p class="project-meta">Project funded by the Fonds Québécois de la Recherche sur la Société et la Culture and the Joseph-Armand Bombardier Canada Graduate Scholarships Program</p>
+        </div>
         
         <div class="project-image">
             <img src="/images/research/youth-women-activism.webp" alt="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso" class="w-full h-auto" />
         </div>
         
-        <div class="project-section">
-            <p class="funding-info">Project funded by the Fonds Québécois de la Recherche sur la Société et la Culture and the Joseph-Armand Bombardier Canada Graduate Scholarships Program Doctoral Scholarship (2013-2018)</p>
-            
+        <div class="project-content">
             <p>This research project was a comparative historical study of the role of marginalised Muslims in the transformation of Islam in Burkina Faso and Côte d'Ivoire over the past sixty years. The parallel religious demographics of these two countries – with Islam as the dominant religion (60% in Burkina Faso; 43% in Côte d'Ivoire), but Muslims historically in a subordinate political position – made this comparison particularly compelling. The research drew on a wide range of sources, including twelve months of ethnographic fieldwork in Abidjan and Ouagadougou (2011; 2014-15), as well as extensive archival material, national newspaper articles, and documents produced by Islamic organisations.</p>
             
             <p>The central argument was that intergenerational and gender relations are crucial to the dynamics that have (re)structured the Islamic field in recent decades, and that these relations are inextricably linked to issues of power and religious authority. The study assessed the individual and collective capacity of youth and women to both challenge and conform to social constraints through Islamic activism. It found that the generational and gender differences that strongly favoured male leaders in both countries in the 1970s and 1980s had diminished over time, although tensions remained. This was particularly evident in Burkina Faso, where strong gerontocratic principles still prevailed within Islamic organisations and deference to the older generation often remained an important social norm.</p>
@@ -67,11 +68,24 @@
         margin-top: var(--spacing-8);
     }
     
+    .project-header {
+        margin-bottom: var(--spacing-6);
+    }
+    
     .project-title {
         font-size: var(--font-size-3xl);
         font-weight: 700;
         color: var(--color-primary);
         margin-bottom: var(--spacing-2);
+    }
+    
+    .project-years {
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+        color: var(--color-primary);
+        margin-bottom: var(--spacing-2);
+        border-left: 4px solid var(--color-primary);
+        padding-left: var(--spacing-2);
     }
     
     .project-meta {
@@ -93,10 +107,8 @@
         display: block;
     }
     
-    .funding-info {
-        font-style: italic;
-        color: var(--color-text-secondary);
-        margin-bottom: var(--spacing-6);
+    .project-content {
+        margin-bottom: var(--spacing-10);
     }
     
     .project-section {

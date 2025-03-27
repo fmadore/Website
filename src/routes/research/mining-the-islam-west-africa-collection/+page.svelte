@@ -7,8 +7,11 @@
 
 <div class="content-wrapper">
     <div class="main-content prose">
-        <h1 class="project-title">Mining the Islam West Africa Collection: Mapping Print Culture and Intellectual Networks in Francophone Regions</h1>
-        <p class="project-meta">Project conducted at Leibniz-Zentrum Moderner Orient (ZMO) in the "Religion and Intellectual Culture" research unit (2025)</p>
+        <div class="project-header">
+            <h1 class="project-title">Mining the Islam West Africa Collection: Mapping Print Culture and Intellectual Networks in Francophone Regions</h1>
+            <p class="project-years">2025</p>
+            <p class="project-meta">Project conducted at Leibniz-Zentrum Moderner Orient (ZMO) in the "Religion and Intellectual Culture" research unit</p>
+        </div>
         
         <div class="project-image">
             <img src="/images/research/IWAC.webp" alt="Mining the Islam West Africa Collection" class="w-full h-auto" />
@@ -52,11 +55,24 @@
         margin-top: var(--spacing-8);
     }
     
+    .project-header {
+        margin-bottom: var(--spacing-6);
+    }
+    
     .project-title {
         font-size: var(--font-size-3xl);
         font-weight: 700;
         color: var(--color-primary);
         margin-bottom: var(--spacing-2);
+    }
+    
+    .project-years {
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+        color: var(--color-primary);
+        margin-bottom: var(--spacing-2);
+        border-left: 4px solid var(--color-primary);
+        padding-left: var(--spacing-2);
     }
     
     .project-meta {
