@@ -1,6 +1,6 @@
 <script>
     import SEO from '$lib/SEO.svelte';
-    import LatestActivities from '$lib/LatestActivities.svelte';
+    import RelevantPublications from '$lib/RelevantPublications.svelte';
 </script>
 
 <SEO title="Muslim Minorities in Southern Cities of Benin and Togo" />
@@ -36,7 +36,7 @@
     </div>
     
     <div class="sidebar">
-        <LatestActivities limit={3} />
+        <RelevantPublications projectName="Muslim Minorities in Southern Cities of Benin and Togo" limit={5} />
     </div>
 </div>
 
