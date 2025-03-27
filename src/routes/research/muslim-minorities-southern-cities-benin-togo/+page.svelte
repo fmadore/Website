@@ -11,11 +11,7 @@
         <p class="project-meta">Research project | 2018-2020</p>
         
         <div class="project-image">
-            <div class="text-gray-400 text-center p-4">
-                Central mosque of Fidjrossè (Cotonou, Benin)
-                <br>
-                <span class="text-sm">[Image placeholder]</span>
-            </div>
+            <img src="/images/research/muslim-minorities.webp" alt="Muslim Minorities in Southern Cities of Benin and Togo" class="w-full h-auto" />
         </div>
         
         <div class="project-section">

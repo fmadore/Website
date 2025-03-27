@@ -32,7 +32,7 @@
     ];
 </script>
 
-<div class="prose">
+<div class="container">
     <h1 class="project-section-title">Research</h1>
     
     <p class="text-xl mb-10">My research focuses on the history of Islam and Muslim societies in francophone West Africa from the 1960s to the present. I have conducted extensive fieldwork and archival research in Benin, Togo, Côte d'Ivoire, and Burkina Faso, examining various aspects of Islamic activism, media use, and Muslim politics.</p>
@@ -58,4 +58,106 @@
             </div>
         {/each}
     </div>
-</div> 
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+    
+    .project-section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--color-primary, #333);
+    }
+    
+    .research-grid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+    
+    .project-card {
+        display: flex;
+        flex-direction: column;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .project-card-image {
+        overflow: hidden;
+        max-height: 250px;
+    }
+    
+    .project-card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    
+    .project-card:hover .project-card-image img {
+        transform: scale(1.05);
+    }
+    
+    .project-card-body {
+        padding: 1.5rem;
+        background-color: white;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .project-card-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+    }
+    
+    .project-card-years {
+        font-size: 0.9rem;
+        color: var(--color-text-secondary, #666);
+        margin-bottom: 1rem;
+    }
+    
+    .project-card-description {
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
+    }
+    
+    .project-card-link {
+        display: inline-block;
+        color: var(--color-primary, #0066cc);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+    
+    .project-card-link:hover {
+        color: var(--color-primary-dark, #004c99);
+        text-decoration: underline;
+    }
+    
+    @media (min-width: 640px) {
+        .research-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (min-width: 1024px) {
+        .research-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+</style> 

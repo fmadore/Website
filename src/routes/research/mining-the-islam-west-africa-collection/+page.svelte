@@ -3,9 +3,7 @@
     <p class="project-meta">Project conducted at Leibniz-Zentrum Moderner Orient (ZMO) in the "Religion and Intellectual Culture" research unit (2025)</p>
     
     <div class="project-image">
-        <div class="text-gray-400 text-center p-4">
-            IWAC Project Image Placeholder
-        </div>
+        <img src="/images/research/IWAC.webp" alt="Mining the Islam West Africa Collection" class="w-full h-auto" />
     </div>
     
     <div class="project-content">

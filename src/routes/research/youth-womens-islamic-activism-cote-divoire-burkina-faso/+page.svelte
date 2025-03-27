@@ -11,11 +11,7 @@
         <p class="project-meta">Research project | 2013-2018</p>
         
         <div class="project-image">
-            <div class="text-gray-400 text-center p-4">
-                Ouagadougou 2015
-                <br>
-                <span class="text-sm">[Image placeholder]</span>
-            </div>
+            <img src="/images/research/youth-women-activism.webp" alt="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso" class="w-full h-auto" />
         </div>
         
         <div class="project-section">

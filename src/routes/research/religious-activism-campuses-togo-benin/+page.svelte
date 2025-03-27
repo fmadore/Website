@@ -3,9 +3,7 @@
     <p class="project-meta">Research project | 2021-2024</p>
     
     <div class="project-image">
-        <div class="text-light text-center p-4">
-            Project Image Placeholder
-        </div>
+        <img src="/images/research/campus-activism.webp" alt="Religious Activism on Campuses in Togo and Benin" class="w-full h-auto" />
     </div>
     
     <div class="project-section">
