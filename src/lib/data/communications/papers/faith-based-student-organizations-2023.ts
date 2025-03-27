@@ -7,7 +7,7 @@ export const faithBasedStudentOrganizations: Communication = {
     date: "2023-06-02",
     dateISO: "2023-06-02",
     year: 2023,
-    conference: "9th European Conference on African Studies",
+    conference: "9th European Conference on African Studies (ECAS)",
     location: "University of Cologne",
     country: "Germany",
     type: "conference",
