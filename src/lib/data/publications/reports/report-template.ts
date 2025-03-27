@@ -26,4 +26,7 @@ export const reportTemplate: Publication = {
     volume: "", // Volume number if applicable
     issue: "", // Issue number if applicable
     placeOfPublication: "", // Place of publication if applicable
+    // New fields
+    country: ["Country Name"], // Countries covered in the publication
+    project: "" // Options: "Mining the Islam West Africa Collection", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Other"
 }; 

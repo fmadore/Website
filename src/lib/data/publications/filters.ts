@@ -31,13 +31,25 @@ export const allAuthors = Array.from(new Set([
 .filter(author => author !== "Frédérick Madore")
 .sort();
 
+// Extract all unique countries from publications
+export const allCountries = Array.from(new Set(
+    allPublications.flatMap(pub => pub.country || [])
+)).sort();
+
+// Extract all unique projects from publications
+export const allProjects = Array.from(new Set(
+    allPublications.map(pub => pub.project).filter(Boolean) as string[]
+)).sort();
+
 // Create a store for active filters
 export const activeFilters = writable({
     types: [] as string[],
     years: [] as number[],
     tags: [] as string[],
     languages: [] as string[],
-    authors: [] as string[]
+    authors: [] as string[],
+    countries: [] as string[],
+    projects: [] as string[]
 });
 
 // Create a store for available filter options (automatically derived from publications)
@@ -46,7 +58,9 @@ export const filterOptions = writable({
     years: Object.keys(publicationsByYear).map(Number).sort((a, b) => b - a),
     tags: allTags,
     languages: allLanguages,
-    authors: allAuthors
+    authors: allAuthors,
+    countries: allCountries,
+    projects: allProjects
 });
 
 // A derived store that filters publications based on active filters
@@ -105,6 +119,18 @@ export const filteredPublications = derived(
                 }
             }
             
+            // Filter by country
+            if ($activeFilters.countries.length > 0 && 
+                (!pub.country || !pub.country.some(country => $activeFilters.countries.includes(country)))) {
+                return false;
+            }
+            
+            // Filter by project
+            if ($activeFilters.projects.length > 0 && 
+                (!pub.project || !$activeFilters.projects.includes(pub.project))) {
+                return false;
+            }
+            
             return true;
         });
     }
@@ -161,6 +187,26 @@ export function toggleAuthorFilter(author: string) {
     });
 }
 
+export function toggleCountryFilter(country: string) {
+    activeFilters.update(filters => {
+        if (filters.countries.includes(country)) {
+            return { ...filters, countries: filters.countries.filter(c => c !== country) };
+        } else {
+            return { ...filters, countries: [...filters.countries, country] };
+        }
+    });
+}
+
+export function toggleProjectFilter(project: string) {
+    activeFilters.update(filters => {
+        if (filters.projects.includes(project)) {
+            return { ...filters, projects: filters.projects.filter(p => p !== project) };
+        } else {
+            return { ...filters, projects: [...filters.projects, project] };
+        }
+    });
+}
+
 // Function to clear all filters
 export function clearAllFilters() {
     activeFilters.set({
@@ -168,7 +214,9 @@ export function clearAllFilters() {
         years: [],
         tags: [],
         languages: [],
-        authors: []
+        authors: [],
+        countries: [],
+        projects: []
     });
 }
 
@@ -222,6 +270,36 @@ export const authorCounts = derived(
             }
         });
         
+        return counts;
+    }
+);
+
+// Get available country counts for current filtered publications
+export const countryCounts = derived(
+    [filteredPublications],
+    ([$filteredPublications]) => {
+        const counts: Record<string, number> = {};
+        $filteredPublications.forEach(pub => {
+            if (pub.country) {
+                pub.country.forEach(country => {
+                    counts[country] = (counts[country] || 0) + 1;
+                });
+            }
+        });
+        return counts;
+    }
+);
+
+// Get available project counts for current filtered publications
+export const projectCounts = derived(
+    [filteredPublications],
+    ([$filteredPublications]) => {
+        const counts: Record<string, number> = {};
+        $filteredPublications.forEach(pub => {
+            if (pub.project) {
+                counts[pub.project] = (counts[pub.project] || 0) + 1;
+            }
+        });
         return counts;
     }
 ); 

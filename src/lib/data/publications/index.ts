@@ -133,5 +133,15 @@ export const allLanguages = Array.from(new Set(
     )
 )).sort();
 
+// Get all unique countries
+export const allCountries = Array.from(new Set(
+    allPublications.flatMap(pub => pub.country || [])
+)).sort();
+
+// Get all unique projects
+export const allProjects = Array.from(new Set(
+    allPublications.map(pub => pub.project).filter(Boolean) as string[]
+)).sort();
+
 // Export the full list of publications
 export { allPublications }; 

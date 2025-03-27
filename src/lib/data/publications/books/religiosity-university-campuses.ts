@@ -24,5 +24,6 @@ export const religiosityUniversityCampuses: Publication = {
         alt: "Cover of Religiosity on University Campuses in Africa",
         caption: "Cover image of the edited volume Religiosity on University Campuses in Africa"
     },
-    isEditedVolume: true
+    isEditedVolume: true,
+    project: "Religious Activism on Campuses in Togo and Benin"
 }; 

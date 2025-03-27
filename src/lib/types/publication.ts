@@ -41,4 +41,7 @@ export type Publication = {
     department?: string;  // Academic department
     university?: string;  // University where the dissertation was defended
     advisors?: string[];  // Dissertation advisors/supervisors
+    // New fields
+    country?: string[];   // Countries covered in the publication
+    project?: string;     // Project name the publication relates to
 }; 

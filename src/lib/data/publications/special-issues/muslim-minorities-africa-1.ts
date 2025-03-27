@@ -22,5 +22,6 @@ export const muslimMinoritiesAfrica1: Publication = {
         alt: "Cover of the special issue on Muslim Minorities in Africa",
         caption: "Special issue of Islamic Africa on Muslim Minorities in Africa, Part 1"
     },
-    isEditedWork: true
+    isEditedWork: true,
+    project: "Muslim Minorities in Southern Cities of Benin and Togo"
 }; 

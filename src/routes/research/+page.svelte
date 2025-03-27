@@ -3,28 +3,28 @@
     const researchProjects = [
         {
             id: "mining-the-islam-west-africa-collection",
-            title: "Mining the Islam West Africa Collection (2025-)",
-            years: "2025",
-            shortDescription: "Using AI and machine learning to analyze the Islam West Africa Collection digital database.",
+            title: "Mining the Islam West Africa Collection",
+            years: "2025-",
+            shortDescription: "Using AI and machine learning to analyze the Islam West Africa Collection (IWAC) digital database.",
             imageUrl: "/images/research/IWAC.webp"
         },
         {
             id: "religious-activism-campuses-togo-benin",
-            title: "Religious Activism on Campuses in Togo and Benin (2021-24)",
+            title: "Religious Activism on Campuses in Togo and Benin",
             years: "2021-2024",
             shortDescription: "Examining how Christian and Muslim student associations transformed university life at the Université de Lomé and the Université d'Abomey-Calavi.",
             imageUrl: "/images/research/campus-activism.webp"
         },
         {
             id: "muslim-minorities-southern-cities-benin-togo",
-            title: "Muslim Minorities in Southern Cities of Benin and Togo (2018-20)",
+            title: "Muslim Minorities in Southern Cities of Benin and Togo",
             years: "2018-2020",
             shortDescription: "Investigating the experiences and integration of Muslim minority communities in southern urban areas of Benin and Togo.",
             imageUrl: "/images/research/muslim-minorities.webp"
         },
         {
             id: "youth-womens-islamic-activism-cote-divoire-burkina-faso",
-            title: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso​ (2013-18)",
+            title: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
             years: "2013-2018",
             shortDescription: "Analyzing the evolving roles of youth and women in Islamic movements and organizations in Côte d'Ivoire and Burkina Faso.",
             imageUrl: "/images/research/youth-women-activism.webp"

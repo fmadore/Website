@@ -25,6 +25,9 @@ export const bookTemplate: Publication = {
         alt: "Descriptive alt text for the book cover", 
         caption: "Optional caption for the book cover" 
     },
+    // New fields
+    country: ["Country Name"], // Countries covered in the publication
+    project: "", // Options: "Mining the Islam West Africa Collection", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Other"
     // For edited volumes only:
     // isEditedVolume: true, // Uncomment this line if this is an edited volume
     // editors: "Editor Name, Second Editor Name", // Format: "Editor 1, Editor 2"
@@ -58,4 +61,7 @@ export const editedVolumeTemplate: Publication = {
         caption: "Optional caption for the edited volume cover" 
     },
     isEditedVolume: true,
+    // New fields
+    country: ["Country Name"], // Countries covered in the publication
+    project: "" // Options: "Mining the Islam West Africa Collection", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Other"
 };
