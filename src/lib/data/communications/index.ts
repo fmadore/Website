@@ -3,13 +3,17 @@ import type { Communication } from '$lib/types/communication';
 // Define a type for module imports
 type ModuleType = Record<string, any>;
 
-// Dynamically import all communication files (including subdirectories)
-const communicationContext = import.meta.glob<ModuleType>('./**/*.ts', { eager: true });
+// Dynamically import all communication files from both papers and panels subfolders
+const communicationContext = import.meta.glob<ModuleType>('./papers/**/*.ts', { eager: true });
+const panelContext = import.meta.glob<ModuleType>('./panels/**/*.ts', { eager: true });
+
+// Merge the contexts
+const allContexts = { ...communicationContext, ...panelContext };
 
 // Debug: Log the keys we're importing
-console.log('Communication files being loaded:', Object.keys(communicationContext));
+console.log('Communication files being loaded:', Object.keys(allContexts));
 
-const allCommunications: Communication[] = Object.values(communicationContext)
+const allCommunications: Communication[] = Object.values(allContexts)
     .filter((module): module is ModuleType => {
         if (!module || typeof module !== 'object') {
             console.warn('Skipping module that is not an object:', module);
@@ -35,7 +39,7 @@ const allCommunications: Communication[] = Object.values(communicationContext)
             return communication as Communication;
         } catch (error) {
             // Include more context about which file caused the error
-            const files = Object.keys(communicationContext);
+            const files = Object.keys(allContexts);
             const fileName = files[index] || 'unknown';
             console.warn(`Error processing communication module ${fileName}:`, error);
             return null;
@@ -49,7 +53,8 @@ const allCommunications: Communication[] = Object.values(communicationContext)
             console.warn('Communication missing id:', comm);
             return false;
         }
-        return comm.id !== 'communication-template-id'; // Filter out template and invalid communications
+        // Filter out template and invalid communications
+        return comm.id !== 'paper-template-id' && comm.id !== 'panel-template-id'; 
     });
 
 // Sort by date (most recent first)
