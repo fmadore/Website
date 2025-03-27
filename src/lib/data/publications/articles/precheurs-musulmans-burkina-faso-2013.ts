@@ -18,4 +18,6 @@ export const precheursMusulmansBurkinaFaso: Publication = {
     tags: ["Burkina Faso", "Muslim preachers", "communication strategies", "gender", "religious conversion"],
     url: "https://doi.org/10.7202/1028465ar",
     image: "images/publications/Theologiques.jpg",
+    country: ["Burkina Faso"],
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 

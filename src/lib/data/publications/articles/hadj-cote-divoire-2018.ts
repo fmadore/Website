@@ -17,4 +17,6 @@ export const hadjCoteDIvoire: Publication = {
     tags: ["Côte d'Ivoire", "Hajj", "Muslim community", "religious organization", "pilgrimage"],
     url: "https://doi.org/10.4000/etudesafricaines.21880",
     image: "images/publications/Cahiers-détudes-africaines-229.jpg",
+    country: ["Côte d'Ivoire"],
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 

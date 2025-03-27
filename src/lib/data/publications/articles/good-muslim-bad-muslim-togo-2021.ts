@@ -18,4 +18,6 @@ export const goodMuslimBadMuslimTogo: Publication = {
     tags: ["Togo", "Muslim identity", "religious minorities", "sociopolitical crisis", "identity construction"],
     url: "https://doi.org/10.1017/S0022278X21000094",
     image: "images/publications/the-journal-of-modern-african-studies.jpg",
+    country: ["Togo"],
+    project: "Muslim Minorities in Southern Cities of Benin and Togo"
 }; 

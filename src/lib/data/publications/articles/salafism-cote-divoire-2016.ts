@@ -18,4 +18,6 @@ export const salafismCoteDIvoire: Publication = {
     tags: ["Côte d'Ivoire", "Salafism", "radicalization", "Islam", "religious movements"],
     url: "https://doi.org/10.1163/15700666-12340090",
     image: "images/publications/journal-of-religion-in-africa.jpg",
+    country: ["Côte d'Ivoire"],
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 

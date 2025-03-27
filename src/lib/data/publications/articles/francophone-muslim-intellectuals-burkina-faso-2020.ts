@@ -18,4 +18,6 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
     tags: ["Burkina Faso", "Muslim intellectuals", "religious authority", "Islamic associations", "Francophone"],
     url: "https://doi.org/10.1017/S0001972020000108",
     image: "images/publications/africa.jpg",
+    country: ["Burkina Faso"],
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 

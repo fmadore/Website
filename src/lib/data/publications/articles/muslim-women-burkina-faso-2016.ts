@@ -18,4 +18,6 @@ export const muslimWomenBurkinaFaso: Publication = {
     tags: ["Burkina Faso", "Muslim women", "religious authority", "gender"],
     url: "https://doi.org/10.1163/21540993-00702001",
     image: "images/publications/muslim-minorities-africa.jpg",
+    country: ["Burkina Faso"],
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 

@@ -18,4 +18,6 @@ export const beninImamElection: Publication = {
     tags: ["Benin", "Muslim leadership", "elections", "politics", "minority context"],
     url: "https://doi.org/10.1163/21540993-01202004",
     image: "images/publications/muslim-minorities-africa.jpg",
+    country: ["Benin"],
+    project: "Muslim Minorities in Southern Cities of Benin and Togo"
 }; 

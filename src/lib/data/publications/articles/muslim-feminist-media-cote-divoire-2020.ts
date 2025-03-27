@@ -18,4 +18,6 @@ export const muslimFeministMediaCoteDIvoire: Publication = {
     tags: ["Côte d'Ivoire", "Muslim feminist", "religious entrepreneurship", "media", "women leaders"],
     url: "https://doi.org/10.2979/africatoday.67.2_3.02",
     image: "images/publications/africa-today.jpg",
+    country: ["Côte d'Ivoire"],
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 
