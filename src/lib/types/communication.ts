@@ -25,4 +25,14 @@ export type Communication = {
     type?: 'conference' | 'workshop' | 'seminar' | 'lecture' | 'panel'; // Type of communication
     language?: string;      // Language of the communication
     coAuthors?: string[];   // Additional co-authors
+    papers?: Array<{        // Papers presented at the panel
+        title: string;      // Paper title
+        authors: string[];  // Paper authors
+        abstract?: string;  // Optional paper abstract
+    }>;
+    participants?: Array<{  // Additional participants
+        name: string;       // Participant name
+        role?: string;      // Optional role (chair, discussant, etc.)
+        affiliation?: string; // Optional institutional affiliation
+    }>;
 }; 
