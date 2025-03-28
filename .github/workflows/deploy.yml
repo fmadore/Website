@@ -37,6 +37,9 @@ jobs:
       - name: Build with SvelteKit
         run: npm run build
       
+      - name: List build directory contents (for debugging)
+        run: find build -type f | sort
+      
       - name: Create .nojekyll file
         run: touch build/.nojekyll
       

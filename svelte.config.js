@@ -17,6 +17,10 @@ const config = {
 		}),
 		paths: {
 			base: dev ? '' : '/Website'
+		},
+		// Make sure all pages are pre-rendered as static HTML
+		prerender: {
+			default: true
 		}
 	},
 	extensions: ['.svelte', '.svx']
