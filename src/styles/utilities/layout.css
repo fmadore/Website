@@ -1,0 +1,6 @@
+/* Layout utility classes */
+
+/* SvelteKit body container - replaces the inline style that was in app.html */
+.sveltekit-body-container {
+  display: contents;
+} 
