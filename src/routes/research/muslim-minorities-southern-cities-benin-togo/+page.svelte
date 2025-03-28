@@ -97,35 +97,6 @@
         margin-bottom: var(--spacing-10);
     }
     
-    .project-section {
-        margin-bottom: var(--spacing-10);
-    }
-    
-    .project-section-title {
-        font-size: var(--font-size-xl);
-        font-weight: 600;
-        color: var(--color-primary);
-        margin-bottom: var(--spacing-4);
-    }
-    
-    .publications-list {
-        list-style-type: none;
-        padding-left: 0;
-    }
-    
-    .publications-list li {
-        margin-bottom: var(--spacing-4);
-        padding-left: var(--spacing-6);
-        position: relative;
-    }
-    
-    .publications-list li::before {
-        content: "•";
-        position: absolute;
-        left: 0;
-        color: var(--color-primary);
-    }
-    
     .project-card-link {
         display: inline-block;
         color: var(--color-primary);
@@ -153,12 +124,6 @@
         .sidebar {
             width: 20%;
             margin-top: 0;
-        }
-    }
-    
-    @media (max-width: 640px) {
-        .publications-list li {
-            padding-left: var(--spacing-4);
         }
     }
 </style> 
