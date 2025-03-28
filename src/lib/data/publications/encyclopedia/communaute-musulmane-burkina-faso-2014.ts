@@ -18,4 +18,6 @@ export const communauteMusulmaneBurkinaFaso: Publication = {
     url: "https://doi.org/10.1163/1573-3912_ei3_com_27698",
     image: "images/publications/encyclopaedia-of-islam.jpg",
     tags: ["Burkina Faso", "Islam", "CMBF"],
+    country: ["Burkina Faso"],
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 

@@ -16,5 +16,7 @@ export const imamsIslamicPreachersOuagadougou: Publication = {
     language: "English",
     tags: ["Burkina Faso", "Ouagadougou", "imams", "Islamic preachers", "public space", "Muslim public sphere", "intergenerational relationships"],
     url: "https://cap-press.com/books/isbn/9781531007317/Perspectives-on-Religious-Landscape-in-Africa",
-    image: "images/publications/imams-ouagadougou-2020.png"
+    image: "images/publications/imams-ouagadougou-2020.png",
+    country: ["Burkina Faso"],
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 

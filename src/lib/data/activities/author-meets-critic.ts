@@ -16,7 +16,7 @@ export const authorMeetsCritic: Activity = {
         
         <p>The panel will be chaired by K.D. Thompson (University of Wisconsin–Madison) and will include Marius Kothor (Harvard University), Ebenezer Obadare (Council on Foreign Relations), Benjamin Lawrance (University of Arizona), and Leonardo A. Villalón (University of Florida).</p>
     `,
-    tags: ["conference", "book", "panel", "ASA", "discussion"],
+    tags: ["conference", "book", "ASA", "discussion"],
     heroImage: {
         src: "images/activities/asa-panel-discussion.png",
         alt: "Author Meets Critics panel at the African Studies Association annual meeting",

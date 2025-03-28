@@ -25,5 +25,7 @@ The history of these associations reveals the campus as a microcosm reflecting w
         src: "images/publications/religious-activism-campuses-hero.jpg",
         alt: "Cover of Religious Activism on Campuses in Togo and Benin",
         caption: "Cover image of the book Religious Activism on Campuses in Togo and Benin"
-    }
+    },
+    country: ["Benin", "Togo"],
+    project: "Religious Activism on Campuses in Togo and Benin"
 }; 

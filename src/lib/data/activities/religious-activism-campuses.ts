@@ -6,13 +6,13 @@ const activityDateISO = "2025-03-21";
 
 export const religiousActivismCampuses: Activity = {
     id: "religious-activism-on-campuses-in-togo-and-benin",
-    title: "Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023",
+    title: "Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970-2023",
     dateISO: activityDateISO,
     date: formatDisplayDate(activityDateISO), // This will format to "21 March 2025"
     year: 2025,
     description: "New book publication based on research conducted at Leibniz-Zentrum Moderner Orient since 2021.",
     content: `
-        <p>I'm delighted to announce the publication of my new book, <em>Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023</em>, based on research conducted at Leibniz-Zentrum Moderner Orient since 2021 as part of the project "Religion, Morality and Boko in West Africa: Students Training for a Good Life" (Remoboko). It's taken a little longer than expected to complete, but I'm excited to finally share it with you. The book is in open access and the PDF can be downloaded for free.</p>
+        <p>I'm delighted to announce the publication of my new book, <em>Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970-2023</em>, based on research conducted at Leibniz-Zentrum Moderner Orient since 2021 as part of the project "Religion, Morality and Boko in West Africa: Students Training for a Good Life" (Remoboko). It's taken a little longer than expected to complete, but I'm excited to finally share it with you. The book is in open access and the PDF can be downloaded for free.</p>
         
         <h2>Abstract</h2>
         
