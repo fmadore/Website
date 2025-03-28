@@ -96,9 +96,25 @@ export const communicationsByCountry = allCommunications.reduce<Record<string, C
     return acc;
 }, {});
 
+// Group communications by project
+export const communicationsByProject = allCommunications.reduce<Record<string, Communication[]>>((acc, communication) => {
+    if (communication.project) {
+        if (!acc[communication.project]) {
+            acc[communication.project] = [];
+        }
+        acc[communication.project].push(communication);
+    }
+    return acc;
+}, {});
+
 // Get all unique tags
 export const allTags = Array.from(new Set(
     allCommunications.flatMap(comm => comm.tags || [])
+)).sort();
+
+// Get all unique projects
+export const allProjects = Array.from(new Set(
+    allCommunications.map(comm => comm.project).filter(Boolean)
 )).sort();
 
 // Get all coordinates for map visualization

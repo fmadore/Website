@@ -28,7 +28,8 @@ export const activeFilters = writable({
     years: [] as number[],
     tags: [] as string[],
     languages: [] as string[],
-    countries: [] as string[]
+    countries: [] as string[],
+    projects: [] as string[]
 });
 
 // Ensure allCommunications is defined
@@ -44,13 +45,21 @@ export const allLanguages = Array.from(new Set(
 // Extract all unique countries (safely)
 export const allCountries = Object.keys(communicationsByCountry || {}).sort();
 
+// Extract all unique projects (safely)
+export const allProjects = Array.from(new Set(
+    safeAllCommunications
+        .filter((comm: Communication) => comm && comm.project)
+        .map((comm: Communication) => comm.project as string)
+)).sort();
+
 // Create a store for available filter options
 export const filterOptions = writable({
     types: Object.keys(communicationsByType || {}).sort(),
     years: Object.keys(communicationsByYear || {}).map(Number).sort((a, b) => b - a),
     tags: allTags || [],
     languages: allLanguages,
-    countries: allCountries
+    countries: allCountries,
+    projects: allProjects
 });
 
 // A derived store that filters communications based on active filters
@@ -87,6 +96,12 @@ export const filteredCommunications = derived(
             // Filter by country
             if ($activeFilters.countries.length > 0 && 
                 (!comm.country || !$activeFilters.countries.includes(comm.country))) {
+                return false;
+            }
+            
+            // Filter by project
+            if ($activeFilters.projects.length > 0 && 
+                (!comm.project || !$activeFilters.projects.includes(comm.project))) {
                 return false;
             }
             
@@ -146,6 +161,16 @@ export function toggleCountryFilter(country: string) {
     });
 }
 
+export function toggleProjectFilter(project: string) {
+    activeFilters.update(filters => {
+        if (filters.projects.includes(project)) {
+            return { ...filters, projects: filters.projects.filter(p => p !== project) };
+        } else {
+            return { ...filters, projects: [...filters.projects, project] };
+        }
+    });
+}
+
 // Function to clear all filters
 export function clearAllFilters() {
     activeFilters.set({
@@ -153,7 +178,8 @@ export function clearAllFilters() {
         years: [],
         tags: [],
         languages: [],
-        countries: []
+        countries: [],
+        projects: []
     });
 }
 
@@ -181,6 +207,20 @@ export const countryCounts = derived(
         ($filteredCommunications || []).forEach((comm: Communication) => {
             if (comm && comm.country) {
                 counts[comm.country] = (counts[comm.country] || 0) + 1;
+            }
+        });
+        return counts;
+    }
+);
+
+// Get available project counts for current filtered communications
+export const projectCounts = derived(
+    [filteredCommunications],
+    ([$filteredCommunications]) => {
+        const counts: Record<string, number> = {};
+        ($filteredCommunications || []).forEach((comm: Communication) => {
+            if (comm && comm.project) {
+                counts[comm.project] = (counts[comm.project] || 0) + 1;
             }
         });
         return counts;

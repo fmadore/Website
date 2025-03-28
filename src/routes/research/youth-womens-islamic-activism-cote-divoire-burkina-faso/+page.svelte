@@ -1,6 +1,7 @@
 <script>
     import SEO from '$lib/SEO.svelte';
     import RelevantPublications from '$lib/RelevantPublications.svelte';
+    import RelevantCommunications from '$lib/RelevantCommunications.svelte';
     import { base } from '$app/paths';
 </script>
 
@@ -48,6 +49,9 @@
     
     <div class="sidebar">
         <RelevantPublications projectName="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso" limit={5} />
+        <div class="mt-6">
+            <RelevantCommunications projectName="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso" limit={5} />
+        </div>
     </div>
 </div>
 
