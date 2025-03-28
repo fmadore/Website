@@ -18,9 +18,9 @@ const config = {
 		paths: {
 			base: dev ? '' : '/Website'
 		},
-		// Make sure all pages are pre-rendered as static HTML
+		// Make sure all pages are pre-rendered
 		prerender: {
-			default: true
+			entries: ['*']
 		}
 	},
 	extensions: ['.svelte', '.svx']
