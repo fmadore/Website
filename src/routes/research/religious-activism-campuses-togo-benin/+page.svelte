@@ -7,7 +7,7 @@
 <SEO title="Religious Activism on Campuses in Togo and Benin" />
 
 <div class="content-wrapper">
-    <div class="main-content prose">
+    <div class="main-content">
         <div class="project-header">
             <h1 class="project-title">Religious Activism on Campuses in Togo and Benin</h1>
             <p class="project-years">2021-2024</p>

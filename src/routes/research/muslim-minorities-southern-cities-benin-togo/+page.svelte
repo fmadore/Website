@@ -7,7 +7,7 @@
 <SEO title="Muslim Minorities in Southern Cities of Benin and Togo" />
 
 <div class="content-wrapper">
-    <div class="main-content prose">
+    <div class="main-content">
         <div class="project-header">
             <h1 class="project-title">Muslim Minorities in Southern Cities of Benin and Togo</h1>
             <p class="project-years">2018-2020</p>

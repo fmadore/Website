@@ -7,7 +7,7 @@
 <SEO title="Mining the Islam West Africa Collection" />
 
 <div class="content-wrapper">
-    <div class="main-content prose">
+    <div class="main-content">
         <div class="project-header">
             <h1 class="project-title">Mining the Islam West Africa Collection: Mapping Print Culture and Intellectual Networks in Francophone Regions</h1>
             <p class="project-years">2025-</p>

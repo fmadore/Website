@@ -7,7 +7,7 @@
 <SEO title="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso" />
 
 <div class="content-wrapper">
-    <div class="main-content prose">
+    <div class="main-content">
         <div class="project-header">
             <h1 class="project-title">Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso​</h1>
             <p class="project-years">2013-2018</p>
