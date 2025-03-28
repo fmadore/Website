@@ -23,16 +23,6 @@
             <p>This research project examined the understudied Muslim minority communities of southern Benin and Togo since the late colonial era (1950s). While recent reports on the deteriorating security situation in Burkina Faso have raised fears of jihadism spreading to neighbouring states bordering the Gulf of Guinea, including Benin and Togo, Islam in this region remains largely unknown. The project aimed to move beyond a reductive focus on "radicalisation" by interrogating how Muslims' political position as a minority in Christian-majority settings affects their experiences, self-understandings, and political stakes. It also explored the plurality of ways in which Muslim youth and women make their religious identity meaningful in their everyday lives, beyond established analytical categories (Sufi, reformist, Salafi).</p>
         </div>
         
-        <div class="project-section">
-            <h2 class="project-section-title">Relevant publications</h2>
-            <ul class="publications-list">
-                <li>2021-2022. <strong>Madore F.</strong> and D. Schulz (eds.), "Muslim Minorities in Africa, Part 1 & Part 2." <em>Islamic Africa</em> 12 (2) / 13 (1). <a href="https://brill.com/view/journals/iafr/12/2/iafr.12.issue-2.xml" target="_blank" rel="noopener noreferrer">https://brill.com/view/journals/iafr/12/2/iafr.12.issue-2.xml</a> / <a href="https://brill.com/view/journals/iafr/13/1/iafr.13.issue-1.xml" target="_blank" rel="noopener noreferrer">https://brill.com/view/journals/iafr/13/1/iafr.13.issue-1.xml</a>.</li>
-                <li>2022. "A Beninese Imam's Controversial 2019 Election Campaign: Muslim Leadership and Political Engagement in a Minority Context". <em>Islamic Africa</em> 13 (1): 1–26. <a href="https://doi.org/10.1163/21540993-01202004" target="_blank" rel="noopener noreferrer">https://doi.org/10.1163/21540993-01202004</a>.</li>
-                <li>2021. "'Good Muslim, bad Muslim' in Togo: religious minority identity construction amid a sociopolitical crisis (2017–2018)." <em>The Journal of Modern African Studies</em> 59 (2): 197–217.</li>
-                <li>2022. "Lutte contre le terrorisme et sécuritisation du salafisme au Bénin et au Togo: instrumentalisations diverses d'une 'menace étrangère'", <em>Bulletin FrancoPaix</em> 7 (8): 2–7. <a href="https://dandurand.uqam.ca/publication/lutte-contre-le-terrorisme-et-securitisation-du-salafisme-au-benin-et-au-togo-instrumentalisations-diverses-dune-menace-etrangere/" target="_blank" rel="noopener noreferrer">https://dandurand.uqam.ca/publication/lutte-contre-le-terrorisme-et-securitisation-du-salafisme-au-benin-et-au-togo-instrumentalisations-diverses-dune-menace-etrangere/</a>.</li>
-            </ul>
-        </div>
-        
         <div class="mt-4 pt-4 border-t">
             <a href="{base}/research" class="project-card-link">← Back to Research Projects</a>
         </div>
