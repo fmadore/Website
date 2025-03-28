@@ -3,6 +3,7 @@
     import { getActivityById, type Activity } from '$lib/stores/activities';
     import { error } from '@sveltejs/kit';
     import SEO from '$lib/SEO.svelte';
+    import { base } from '$app/paths';
     
     // Get the activity ID from the URL
     $: id = $page.params.id;
@@ -66,6 +67,9 @@
 
         return JSON.stringify(jsonLd);
     }
+
+    // Format the tags for display
+    const formattedTags = activity?.tags ? activity.tags.join(', ') : '';
 </script>
 
 <svelte:head>
@@ -80,9 +84,9 @@
     <SEO 
         title={`${activity.title} | Frédérick Madore`}
         description={activity.description}
-        keywords={activity.tags ? activity.tags.join(', ') + ', Frédérick Madore, research' : 'Frédérick Madore, research'}
+        keywords={formattedTags}
         type="article"
-        ogImage={activity.heroImage?.src || '/images/Profile-picture.jpg'}
+        ogImage={activity.heroImage?.src ? `${base}/${activity.heroImage.src}` : `${base}/images/Profile-picture.jpg`}
     />
 {/if}
 

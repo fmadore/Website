@@ -1,10 +1,12 @@
 <script lang="ts">
+    import { base } from '$app/paths';
+    
     // SEO props
-    export let title = "Frédérick Madore | Historian West Africa | Digital Humanist";
-    export let description = "Academic website of Frédérick Madore, Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO), focusing on Islam in West Africa.";
-    export let keywords = "Frédérick Madore, Islam, West Africa, Digital Humanities, Research, ZMO";
+    export let title = "Frédérick Madore - Academic Website";
+    export let description = "Personal academic website of Frédérick Madore, Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)";
+    export let keywords = "Frédérick Madore, Islam, West Africa, Digital Humanities, Research";
     export let canonical = "";
-    export let ogImage = "/images/Profile-picture.jpg";
+    export let ogImage = `${base}/images/Profile-picture.jpg`;
     export let type = "website";
 </script>
 

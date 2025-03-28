@@ -2,6 +2,7 @@
     import LatestActivities from '$lib/LatestActivities.svelte';
     import SEO from '$lib/SEO.svelte';
     import { activitiesByYear } from '$lib/data/activities';
+    import { base } from '$app/paths';
 
     // Years with content - dynamically created from activities data
     const years = Object.entries(activitiesByYear).map(([year, activities]) => ({
@@ -15,7 +16,7 @@
 <div class="profile-container">
     <div class="profile-header">
         <div class="profile-photo">
-            <img src="/images/Profile-picture.jpg" alt="Frédérick Madore" class="rounded-full">
+            <img src="{base}/images/Profile-picture.jpg" alt="Frédérick Madore" class="rounded-full">
         </div>
         <div class="profile-title">
             <h1>About</h1>
