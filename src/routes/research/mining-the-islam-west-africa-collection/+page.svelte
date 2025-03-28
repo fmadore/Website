@@ -26,6 +26,12 @@
             <p>Network analysis of the IWAC data will map Islamic networks in Francophone West Africa, focusing on understudied local NGOs and "Islamic Francophonie" networks. By analysing connections between individuals, organisations, and institutions, I examine how French has emerged as a vehicle for Islamic discourse among urban elites. This regional focus, which departs from the typical emphasis on global Arab-Islamic connections, reveals how local Islamic networks evolved in response to social and political change.</p>
             
             <p>By combining these computational approaches with ethnographic fieldwork, I aim to provide a comprehensive understanding that neither method could achieve alone. This innovative synthesis promises new insights into the intellectual history and translocal dynamics of Muslims in Francophone West Africa, and contributes significantly to our understanding of how religiosity interacts with morality, intellectual culture and socio-political issues in this context.</p>
+            
+            <div class="visualization-container">
+                <div class="iframe-wrapper">
+                    <iframe src="https://fmadore.github.io/IWAC-overview/" title="IWAC Visualization" frameborder="0" scrolling="no" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
         </div>
         
         <div class="mt-4 pt-4 border-t">
@@ -110,5 +116,65 @@
             width: 20%;
             margin-top: 0;
         }
+    }
+    
+    /* Visualization styles */
+    .visualization-container {
+        margin-top: var(--spacing-8);
+        margin-bottom: var(--spacing-8);
+        border-radius: var(--border-radius-md);
+        overflow: hidden;
+        background-color: var(--color-background-light);
+        padding: var(--spacing-4);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .visualization-title {
+        font-size: var(--font-size-xl);
+        font-weight: 600;
+        color: var(--color-primary);
+        margin-bottom: var(--spacing-4);
+        text-align: center;
+    }
+    
+    .iframe-wrapper {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-bottom: 100%;
+        overflow: hidden;
+        border-radius: var(--border-radius-md);
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+    }
+    
+    .iframe-wrapper::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .iframe-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 1px solid var(--color-border);
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+    }
+    
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .iframe-wrapper iframe::-webkit-scrollbar {
+        display: none;
+    }
+    
+    /* Add this CSS to handle scrollbars in the iframe content */
+    .visualization-container iframe {
+        overflow: hidden !important;
+    }
+    
+    /* Try to target the iframe directly using different styling */
+    .iframe-wrapper iframe {
+        scrolling: no;
     }
 </style> 
