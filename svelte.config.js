@@ -17,8 +17,7 @@ const config = {
 		}),
 		paths: {
 			base: dev ? '' : '/Website'
-		},
-		trailingSlash: 'always'
+		}
 	},
 	extensions: ['.svelte', '.svx']
 };
