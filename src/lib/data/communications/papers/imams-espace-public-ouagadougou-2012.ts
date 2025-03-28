@@ -17,5 +17,6 @@ export const imamsEspacePublicOuagadougou: Communication = {
     coordinates: {
         latitude: 46.7793,  // Coordinates for Université Laval, Québec
         longitude: -71.2825
-    }
+    },
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 

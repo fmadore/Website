@@ -17,5 +17,6 @@ export const generationsImamBenin: Communication = {
     coordinates: {
         latitude: 59.8586,  // Coordinates for Uppsala University
         longitude: 17.6389
-    }
+    },
+    project: "Muslim Minorities in Southern Cities of Benin and Togo"
 }; 

@@ -17,5 +17,6 @@ export const collectionIslamHumanites: Communication = {
     coordinates: {
         latitude: 12.65281204482263,
         longitude: -7.929792400856658
-    }
+    },
+    project: "Mining the Islam West Africa Collection"
 }; 

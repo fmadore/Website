@@ -17,5 +17,6 @@ export const faithBasedStudentOrganizations: Communication = {
     coordinates: {
         latitude: 50.9280,  // Coordinates for University of Cologne
         longitude: 6.9290
-    }
+    },
+    project: "Religious Activism on Campuses in Togo and Benin"
 }; 

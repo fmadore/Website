@@ -17,5 +17,6 @@ export const mediatisationIslamOuagadougou: Communication = {
     coordinates: {
         latitude: 45.4231,
         longitude: -75.6831
-    }
+    },
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 

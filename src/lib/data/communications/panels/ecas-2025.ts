@@ -36,5 +36,6 @@ export const ecas2025Panel: Communication = {
             role: "Chair",
             affiliation: "King's College London"
         }
-    ]
+    ],
+    project: "Mining the Islam West Africa Collection"
 }; 

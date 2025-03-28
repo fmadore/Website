@@ -17,5 +17,6 @@ export const imamsIslamicPreachersOuagadougou: Communication = {
     coordinates: {
         latitude: 30.2849,  // Coordinates for University of Texas at Austin
         longitude: -97.7341
-    }
+    },
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 

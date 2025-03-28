@@ -17,5 +17,6 @@ export const islamBurkinaFasoCollectionOmeka: Communication = {
     coordinates: {
         latitude: 49.9427,
         longitude: 11.5674
-    }
+    },
+    project: "Mining the Islam West Africa Collection"
 }; 

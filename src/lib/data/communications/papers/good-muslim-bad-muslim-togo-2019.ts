@@ -17,5 +17,6 @@ export const goodMuslimBadMuslimTogo: Communication = {
     coordinates: {
         latitude: 42.346757140313436,
         longitude: -71.07895521140732
-    }
+    },
+    project: "Muslim Minorities in Southern Cities of Benin and Togo"
 }; 

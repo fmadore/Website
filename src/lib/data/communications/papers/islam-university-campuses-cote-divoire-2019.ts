@@ -17,5 +17,6 @@ export const islamUniversityCampusesCoteDIvoire: Communication = {
     coordinates: {
         latitude: 55.9445,
         longitude: -3.1892
-    }
+    },
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 

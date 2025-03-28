@@ -17,5 +17,6 @@ export const publishingIslamBurkinaFasoCollection: Communication = {
     coordinates: {
         latitude: 52.4537,
         longitude: 13.2879
-    }
+    },
+    project: "Mining the Islam West Africa Collection"
 }; 

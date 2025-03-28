@@ -17,5 +17,6 @@ export const precheursPrecheusesaBurkinaFaso: Communication = {
     coordinates: {
         latitude: 46.7793,
         longitude: -71.2825
-    }
+    },
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 

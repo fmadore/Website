@@ -17,5 +17,6 @@ export const militantismeIslamiqueFemininBurkina: Communication = {
     coordinates: {
         latitude: 47.4739,
         longitude: -0.5515
-    }
+    },
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 

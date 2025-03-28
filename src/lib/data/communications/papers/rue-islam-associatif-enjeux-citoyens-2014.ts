@@ -17,5 +17,6 @@ export const rueIslamAssociatifEnjeuxCitoyens: Communication = {
     coordinates: {
         latitude: 16.0598,
         longitude: -16.4244
-    }
+    },
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 

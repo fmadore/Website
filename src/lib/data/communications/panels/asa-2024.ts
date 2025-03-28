@@ -49,5 +49,6 @@ export const asa2024Panel: Communication = {
             role: "Chair",
             affiliation: "University of Wisconsin-Madison"
         }
-    ]
+    ],
+    project: "Religious Activism on Campuses in Togo and Benin"
 }; 

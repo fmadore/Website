@@ -51,5 +51,6 @@ export const asa2019Panel: Communication = {
             role: "Chair",
             affiliation: "University of Florida"
         }
-    ]
+    ],
+    project: "Muslim Minorities in Southern Cities of Benin and Togo"
 }; 

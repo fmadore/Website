@@ -17,5 +17,6 @@ export const hajjOrganizationStateCoteDIvoire: Communication = {
     coordinates: {
         latitude: 38.92446346750211,
         longitude: -77.05449990304827
-    }
+    },
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 

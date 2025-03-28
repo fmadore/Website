@@ -16,5 +16,6 @@ export const aiArchivesHumanistica: Communication = {
     coordinates: {
         latitude: 14.6937,
         longitude: -17.4665
-    }
+    },
+    project: "Mining the Islam West Africa Collection"
 }; 

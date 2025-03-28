@@ -17,5 +17,6 @@ export const nouveauDynamismeSalafismeCoteDIvoire: Communication = {
     coordinates: {
         latitude: 5.1998,
         longitude: -3.7340
-    }
+    },
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 
