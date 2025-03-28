@@ -48,11 +48,11 @@
     }
     
     .main-content {
-        flex: 3;
+        width: 100%;
     }
     
     .sidebar {
-        flex: 1;
+        width: 100%;
         margin-top: var(--spacing-8);
     }
     
@@ -102,7 +102,12 @@
             gap: var(--spacing-8);
         }
         
+        .main-content {
+            width: 80%;
+        }
+        
         .sidebar {
+            width: 20%;
             margin-top: 0;
         }
     }
