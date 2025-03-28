@@ -1,5 +1,6 @@
 <script>
     import SEO from '$lib/SEO.svelte';
+    import { base } from '$app/paths';
 </script>
 
 <SEO title="Islam West Africa Collection" description="Explore the Islam West Africa Collection (IWAC), an open-access digital database of over 12,500 documents on Islam in West Africa." />
@@ -9,13 +10,13 @@
 
     <div class="project-header">
         <div class="project-image">
-            <img src="/images/iwac-screenshot.jpg" alt="Screenshot of the Islam West Africa Collection website" class="rounded">
+            <img src="{base}/images/iwac-screenshot.jpg" alt="Screenshot of the Islam West Africa Collection website" class="rounded">
         </div>
         <div class="project-overview">
             <p class="lead">An open-access digital database containing over 12,500 documents on Islam in West Africa.</p>
             <div class="project-links">
                 <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Visit IWAC</a>
-                <a href="/digital-humanities/visualising-the-iwac" class="btn btn-secondary">View Visualizations</a>
+                <a href="{base}/digital-humanities/visualising-the-iwac" class="btn btn-secondary">View Visualizations</a>
             </div>
         </div>
     </div>

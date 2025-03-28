@@ -1,29 +1,31 @@
 <script lang="ts">
+	import { base } from '$app/paths';
+	
 	// Navigation items based on the WordPress site
 	const navItems = [
 		{ 
 			name: 'Research', 
-			path: '/research',
+			path: `${base}/research`,
 			dropdown: [
-				{ name: 'Mining the Islam West Africa Collection (2025)', path: '/research/mining-the-islam-west-africa-collection' },
-				{ name: 'Religious Activism on Campuses in Togo and Benin (2021-24)', path: '/research/religious-activism-campuses-togo-benin' },
-				{ name: 'Muslim Minorities in Southern Cities of Benin and Togo (2018-20)', path: '/research/muslim-minorities-southern-cities-benin-togo' },
-				{ name: 'Youth and Women\'s Islamic Activism in Côte d\'Ivoire and Burkina Faso​ (2013-18)', path: '/research/youth-womens-islamic-activism-cote-divoire-burkina-faso' }
+				{ name: 'Mining the Islam West Africa Collection (2025)', path: `${base}/research/mining-the-islam-west-africa-collection` },
+				{ name: 'Religious Activism on Campuses in Togo and Benin (2021-24)', path: `${base}/research/religious-activism-campuses-togo-benin` },
+				{ name: 'Muslim Minorities in Southern Cities of Benin and Togo (2018-20)', path: `${base}/research/muslim-minorities-southern-cities-benin-togo` },
+				{ name: 'Youth and Women\'s Islamic Activism in Côte d\'Ivoire and Burkina Faso​ (2013-18)', path: `${base}/research/youth-womens-islamic-activism-cote-divoire-burkina-faso` }
 			] 
 		},
-		{ name: 'Publications', path: '/publications' },
-		{ name: 'Activities', path: '/activities' },
+		{ name: 'Publications', path: `${base}/publications` },
+		{ name: 'Activities', path: `${base}/activities` },
 		{ 
 			name: 'Digital Humanities', 
-			path: '/digital-humanities',
+			path: `${base}/digital-humanities`,
 			dropdown: [
-				{ name: 'Islam West Africa Collection', path: '/digital-humanities/islam-west-africa-collection' },
-				{ name: 'Visualising the IWAC', path: '/digital-humanities/visualising-the-iwac' }
+				{ name: 'Islam West Africa Collection', path: `${base}/digital-humanities/islam-west-africa-collection` },
+				{ name: 'Visualising the IWAC', path: `${base}/digital-humanities/visualising-the-iwac` }
 			] 
 		},
-		{ name: 'Conference Activity', path: '/conference-activity' },
-		{ name: 'Teaching', path: '/teaching' },
-		{ name: 'Contact', path: '/contact' }
+		{ name: 'Conference Activity', path: `${base}/conference-activity` },
+		{ name: 'Teaching', path: `${base}/teaching` },
+		{ name: 'Contact', path: `${base}/contact` }
 	];
 
 	// State for mobile menu toggle
@@ -74,7 +76,7 @@
 	<div class="container">
 		<div class="header-inner">
 			<div class="header-logo">
-				<a href="/" class="site-title">
+				<a href="{base}/" class="site-title">
 					Frédérick Madore
 				</a>
 			</div>

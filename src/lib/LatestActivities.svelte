@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
     import { activities } from './stores/activities';
     import type { Activity } from '$lib/types';
+    import { base } from '$app/paths';
     
     // Props - limit the number of activities to show
     export let limit = 4;
@@ -33,7 +34,7 @@
         {#each activityList as activity}
             <li class="activity-item">
                 <div class="activity-date">{activity.date}</div>
-                <a href={`/activities/${activity.id}`} class="activity-title">
+                <a href="{base}/activities/{activity.id}" class="activity-title">
                     {activity.title}
                 </a>
                 {#if activity.description}
@@ -50,7 +51,7 @@
             <span class="text-sm text-gray-600">Browse by year:</span>
             <div class="flex flex-wrap gap-2 mt-2">
                 {#each years as year}
-                    <a href={`/activities/year/${year}`} class="year-tag">
+                    <a href="{base}/activities/year/{year}" class="year-tag">
                         {year}
                     </a>
                 {/each}
@@ -59,7 +60,7 @@
     {/if}
     
     <div class="mt-4 text-right">
-        <a href="/activities" class="view-all">View all activities</a>
+        <a href="{base}/activities" class="view-all">View all activities</a>
     </div>
 </div>
 

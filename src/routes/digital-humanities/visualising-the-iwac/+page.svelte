@@ -1,5 +1,6 @@
 <script>
     import SEO from '$lib/SEO.svelte';
+    import { base } from '$app/paths';
 </script>
 
 <SEO title="Visualising the IWAC" description="Explore visualizations of the Islam West Africa Collection using AI and machine learning techniques." />

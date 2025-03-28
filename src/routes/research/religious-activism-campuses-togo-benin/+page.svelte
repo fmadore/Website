@@ -1,6 +1,7 @@
 <script>
     import SEO from '$lib/SEO.svelte';
     import RelevantPublications from '$lib/RelevantPublications.svelte';
+    import { base } from '$app/paths';
 </script>
 
 <SEO title="Religious Activism on Campuses in Togo and Benin" />
@@ -14,7 +15,7 @@
         </div>
         
         <div class="project-image">
-            <img src="/images/research/campus-activism.webp" alt="Religious Activism on Campuses in Togo and Benin" class="w-full h-auto" />
+            <img src="{base}/images/research/campus-activism.webp" alt="Religious Activism on Campuses in Togo and Benin" class="w-full h-auto" />
         </div>
         
         <div class="project-content">
@@ -28,7 +29,7 @@
         </div>
         
         <div class="mt-4 pt-4 border-t">
-            <a href="/research" class="project-card-link">← Back to Research Projects</a>
+            <a href="{base}/research" class="project-card-link">← Back to Research Projects</a>
         </div>
     </div>
     
