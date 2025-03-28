@@ -2,8 +2,8 @@
     import { base } from '$app/paths';
     
     // SEO props
-    export let title = "Frédérick Madore - Academic Website";
-    export let description = "Personal academic website of Frédérick Madore, Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)";
+    export let title = "Frédérick Madore - Research Fellow at ZMO";
+    export let description = "Personal website of Frédérick Madore, Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)";
     export let keywords = "Frédérick Madore, Islam, West Africa, Digital Humanities, Research";
     export let canonical = "";
     export let ogImage = `${base}/images/Profile-picture.jpg`;
