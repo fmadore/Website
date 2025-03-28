@@ -129,14 +129,6 @@
         box-shadow: var(--shadow-md);
     }
     
-    .visualization-title {
-        font-size: var(--font-size-xl);
-        font-weight: 600;
-        color: var(--color-primary);
-        margin-bottom: var(--spacing-4);
-        text-align: center;
-    }
-    
     .iframe-wrapper {
         position: relative;
         width: 100%;
@@ -171,10 +163,5 @@
     /* Add this CSS to handle scrollbars in the iframe content */
     .visualization-container iframe {
         overflow: hidden !important;
-    }
-    
-    /* Try to target the iframe directly using different styling */
-    .iframe-wrapper iframe {
-        scrolling: no;
     }
 </style> 
