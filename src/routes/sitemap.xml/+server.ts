@@ -2,7 +2,7 @@ import { activitiesByDate } from '$lib/data/activities';
 import type { RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async () => {
-    const website = "https://frederickmadore.com"; // Replace with your actual domain
+    const website = "https://frederickmadore.com";
     
     // Static pages
     const pages = [

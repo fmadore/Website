@@ -1,21 +1,16 @@
 import type { Activity } from '$lib/types';
 import { getYearFromISODate } from '$lib/utils/date-formatter';
 
-// Import all activity files
-const activityFiles = [
-    import('./religious-activism-campuses'),
-    import('./etablir-faitiere-islamique'),
-    import('./author-meets-critic'),
-    import('./guest-lecture-florida')
-];
+// Dynamically import all activity files
+const activityModules = import.meta.glob<{ [key: string]: Activity }>('./*.ts', { eager: true });
 
-// Convert the modules to an array of activities
-const allActivities: Activity[] = await Promise.all(
-    activityFiles.map(async (module) => {
-        const activity = Object.values(await module)[0] as Activity;
+// Convert the modules to an array of activities, excluding the index file and template
+const allActivities: Activity[] = Object.entries(activityModules)
+    .filter(([path]) => !path.includes('index.ts') && !path.includes('activity-template.ts'))
+    .map(([_, module]) => {
+        const activity = Object.values(module)[0] as Activity;
         return activity;
-    })
-);
+    });
 
 // Sort by date (most recent first)
 export const activitiesByDate = [...allActivities].sort((a, b) => {

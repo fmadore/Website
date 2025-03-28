@@ -2,26 +2,24 @@ import type { Activity } from '$lib/types';
 import { formatDisplayDate } from '$lib/utils/date-formatter';
 
 // Define the ISO date first
-const activityDateISO = "2024-12-09";
+const activityDateISO = "2024-12-12";
 
 export const authorMeetsCritic: Activity = {
     id: "author-meets-critic-faith-based-student-activism",
-    title: "Author Meets Critic. Faith-based Student Activism in Togo and Benin: Muslims and Christians on University Campuses",
+    title: "Author Meets Critic: Religious Activism on Campuses in Togo and Benin",
     dateISO: activityDateISO,
-    date: formatDisplayDate(activityDateISO), // This will format to "9 December 2024"
+    date: formatDisplayDate(activityDateISO), // This will format to "12 December 2024"
     year: 2024,
-    description: "Panel discussion at the American Academy of Religion annual meeting.",
+    description: "Panel discussion at the 67th Annual Meeting of the African Studies Association (ASA).",
     content: `
-        <p>I participated in an "Author Meets Critics" session at the American Academy of Religion annual meeting in San Diego, where my book on faith-based student activism in Togo and Benin was the focus of discussion. The panel brought together scholars from religious studies, anthropology, and African studies to engage with the book's findings and implications.</p>
+        <p>I'm honoured to be participating in an Author Meets Critic roundtable at the 67th Annual Meeting of the African Studies Association (ASA) in Chicago. The session, which focuses on my forthcoming book Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023, will take place on 12 December 2024 from 10:15 to 12:00 in the Purdue Room.</p>
         
-        <p>The discussion explored the significance of religious activism on secular university campuses, the methodological challenges of studying faith-based groups in academic settings, and the theoretical contributions of the book to understanding the interplay between religion, education, and politics in West Africa.</p>
-        
-        <p>I am grateful to the panel organizers and participants for their insightful comments and questions, which have already prompted me to think about future research directions and potential collaborations.</p>
+        <p>The panel will be chaired by K.D. Thompson (University of Wisconsin–Madison) and will include Marius Kothor (Harvard University), Ebenezer Obadare (Council on Foreign Relations), Benjamin Lawrance (University of Arizona), and Leonardo A. Villalón (University of Florida).</p>
     `,
-    tags: ["conference", "book", "panel", "AAR", "discussion"],
+    tags: ["conference", "book", "panel", "ASA", "discussion"],
     heroImage: {
-        src: "images/aar-panel-discussion.jpg",
-        alt: "Author Meets Critics panel at the American Academy of Religion annual meeting",
-        caption: "Panel discussion on faith-based student activism at the AAR conference in San Diego"
+        src: "images/activities/asa-panel-discussion.png",
+        alt: "Author Meets Critics panel at the African Studies Association annual meeting",
+        caption: "Panel discussion on religious activism at the ASA conference in Chicago"
     }
 }; 
