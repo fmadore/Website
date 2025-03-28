@@ -2,6 +2,7 @@
     import { page } from '$app/stores';
     import { activities, type Activity } from '$lib/stores/activities';
     import { onMount } from 'svelte';
+    import { base } from '$app/paths';
     
     // Get the year parameter from the URL
     $: year = parseInt($page.params.year);
@@ -31,53 +32,72 @@
     }
 </script>
 
-<div class="prose">
-    <h1>Activities from {year}</h1>
-    
-    <div class="year-filters mb-8">
-        <h2>Browse Other Years</h2>
-        <div class="flex flex-wrap gap-2 mt-2">
+<div class="container mx-auto py-6">
+    <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-4">
+            <a href="{base}/activities" class="text-primary hover:underline flex items-center gap-1">
+                <span>←</span> <span>Back to all activities</span>
+            </a>
+        </div>
+        
+        <h1 class="text-3xl font-bold text-primary">Activities in {year}</h1>
+        
+        <div class="year-filters flex gap-2 overflow-x-auto py-2">
             {#each allYears as y}
-                <a href={`/activities/year/${y}`} class="year-tag {y === year ? 'active' : ''}">
+                <a 
+                    href="{base}/activities/year/{y}" 
+                    class="year-tag {y === year ? 'active' : ''}"
+                >
                     {y}
                 </a>
             {/each}
         </div>
-    </div>
-    
-    {#if filteredActivities.length > 0}
-        <ul class="activity-list mt-6">
-            {#each filteredActivities as activity}
-                <li class="activity-item">
-                    <div class="activity-meta">
-                        <div class="activity-date">{activity.date}</div>
-                        {#if activity.tags && activity.tags.length > 0}
-                            <div class="activity-tags">
-                                {#each activity.tags as tag}
-                                    <span class="tag">{tag}</span>
-                                {/each}
+        
+        {#if filteredActivities.length > 0}
+            <div class="activity-grid">
+                {#each filteredActivities as activity}
+                    <div class="activity-card">
+                        {#if activity.heroImage}
+                            <div class="activity-image">
+                                <img 
+                                    src="{base}/{activity.heroImage.src}" 
+                                    alt={activity.heroImage.alt} 
+                                    class="w-full h-48 object-cover"
+                                >
                             </div>
                         {/if}
-                    </div>
-                    
-                    <a href={`/activities/${activity.id}`} class="activity-title">
-                        {activity.title}
-                    </a>
-                    
-                    {#if activity.description}
-                        <div class="activity-description">
-                            {activity.description}
+                        
+                        <div class="activity-content">
+                            <div class="activity-date">{activity.date}</div>
+                            
+                            <h3 class="activity-title">
+                                <a href="{base}/activities/{activity.id}">
+                                    {activity.title}
+                                </a>
+                            </h3>
+                            
+                            <p class="activity-description">{activity.description}</p>
+                            
+                            {#if activity.tags && activity.tags.length > 0}
+                                <div class="activity-tags">
+                                    {#each activity.tags as tag}
+                                        <span class="tag">{tag}</span>
+                                    {/each}
+                                </div>
+                            {/if}
+                            
+                            <a href="{base}/activities/{activity.id}" class="read-more">
+                                Read more →
+                            </a>
                         </div>
-                    {/if}
-                </li>
-            {/each}
-        </ul>
-    {:else}
-        <p>No activities found for {year}.</p>
-    {/if}
-    
-    <div class="mt-8">
-        <a href="/activities" class="btn btn-primary">View All Activities</a>
+                    </div>
+                {/each}
+            </div>
+        {:else}
+            <div class="empty-state">
+                <p>No activities found for {year}.</p>
+            </div>
+        {/if}
     </div>
 </div>
 

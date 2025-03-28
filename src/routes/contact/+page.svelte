@@ -1,4 +1,6 @@
 <script>
+    import { base } from '$app/paths';
+    
     // Social media links
     const socialLinks = [
         { name: 'LinkedIn', icon: 'linkedin', url: 'https://linkedin.com/in/username', description: 'Connect with me on LinkedIn' },

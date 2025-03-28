@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
     import { allPublications } from './data/publications/index';
     import type { Publication } from '$lib/types';
+    import { base } from '$app/paths';
     
     // Props - project name and limit
     export let projectName: string;
@@ -61,7 +62,7 @@
                         <span class="publication-type">{formatType(publication.type)}</span>
                         <span class="publication-date">{publication.date}</span>
                     </div>
-                    <a href={`/publications/${publication.id}`} class="publication-title">
+                    <a href="{base}/publications/{publication.id}" class="publication-title">
                         {publication.title}
                     </a>
                     <div class="publication-authors">
@@ -81,7 +82,7 @@
                 <span class="text-sm text-gray-600">Browse by type:</span>
                 <div class="flex flex-wrap gap-2 mt-2">
                     {#each publicationTypes as type}
-                        <a href={`/publications/type/${type}`} class="type-tag">
+                        <a href="{base}/publications/type/{type}" class="type-tag">
                             {formatType(type)}
                         </a>
                     {/each}
@@ -90,7 +91,7 @@
         {/if}
         
         <div class="mt-4 text-right">
-            <a href="/publications?project={encodeURIComponent(projectName)}" class="view-all">View all publications</a>
+            <a href="{base}/publications?project={encodeURIComponent(projectName)}" class="view-all">View all publications</a>
         </div>
     {/if}
 </div>

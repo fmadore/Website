@@ -6,14 +6,14 @@
     import { base } from '$app/paths';
     
     // Get the activity ID from the URL
-    $: id = $page.params.id;
-    $: activity = getActivityById(id);
+    const activityId = $page.params.id;
     
-    // If activity not found, throw 404 error
-    $: if (!activity) {
-        throw error(404, {
-            message: 'Activity not found'
-        });
+    // Get the activity details
+    const activity = getActivityById(activityId);
+    
+    // If activity not found, throw 404
+    if (!activity) {
+        throw error(404, 'Activity not found');
     }
 
     // Define the JSON-LD structure interface
@@ -90,42 +90,54 @@
     />
 {/if}
 
-<div class="prose activity-detail">
-    <div class="activity-meta">
-        <div class="activity-date">{activity?.date}</div>
-        {#if activity?.tags && activity.tags.length > 0}
-            <div class="activity-tags">
-                {#each activity.tags as tag}
-                    <span class="tag">{tag}</span>
-                {/each}
-            </div>
-        {/if}
-    </div>
-
-    <h1>{activity?.title}</h1>
-    
-    {#if activity?.content}
-        <div class="activity-content">
-            {@html activity.content}
+<div class="container mx-auto py-6">
+    <div class="activity-header">
+        <a href="{base}/activities" class="back-link">
+            ← Back to all activities
+        </a>
+        
+        <div class="activity-meta">
+            <div class="activity-date">{activity.date}</div>
+            
+            {#if activity.tags && activity.tags.length > 0}
+                <div class="activity-tags">
+                    {#each activity.tags as tag}
+                        <span class="tag">{tag}</span>
+                    {/each}
+                </div>
+            {/if}
         </div>
-    {:else}
-        <p>{activity?.description || 'No content available.'}</p>
+        
+        <h1 class="activity-title">{activity.title}</h1>
+    </div>
+    
+    {#if activity.heroImage}
+        <div class="activity-hero">
+            <img 
+                src="{base}/{activity.heroImage.src}" 
+                alt={activity.heroImage.alt} 
+                class="activity-image"
+            >
+            {#if activity.heroImage.caption}
+                <figcaption class="activity-image-caption">
+                    {activity.heroImage.caption}
+                </figcaption>
+            {/if}
+        </div>
     {/if}
     
-    <div class="activity-actions">
-        <a href="/activities" class="btn btn-secondary">Back to Activities</a>
+    <div class="activity-content">
+        {@html activity.content || ''}
+    </div>
+    
+    <div class="activity-footer">
+        <div class="share-buttons">
+            <!-- Share buttons could go here -->
+        </div>
         
-        {#if activity?.tags && activity.tags.includes('book')}
-            <a href="/publications" class="btn btn-primary">View Publications</a>
-        {/if}
-        
-        {#if activity?.tags && activity.tags.includes('conference')}
-            <a href="/conference-activity" class="btn btn-primary">View Conference Activity</a>
-        {/if}
-        
-        {#if activity?.url}
-            <a href={activity.url} class="btn btn-primary">External Link</a>
-        {/if}
+        <a href="{base}/activities" class="back-button">
+            View all activities
+        </a>
     </div>
 </div>
 

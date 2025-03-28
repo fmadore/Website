@@ -1,5 +1,6 @@
 <script>
     import SEO from '$lib/SEO.svelte';
+    import { base } from '$app/paths';
 </script>
 
 <SEO title="Digital Humanities" description="Discover Frédérick Madore's digital humanities projects including the Islam West Africa Collection (IWAC) and Islam Burkina Faso Collection." />
