@@ -68,10 +68,12 @@
     }
     
     .project-years {
-        font-size: 0.9rem;
-        color: var(--color-text-secondary, #666);
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+        color: var(--color-primary);
         margin-bottom: var(--spacing-2);
-        font-weight: normal;
+        border-left: 4px solid var(--color-primary);
+        padding-left: var(--spacing-2);
     }
     
     .project-meta {
