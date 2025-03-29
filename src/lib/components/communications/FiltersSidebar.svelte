@@ -19,7 +19,8 @@
         'workshop': 'Workshops',
         'seminar': 'Seminars',
         'lecture': 'Lectures',
-        'panel': 'Panels'
+        'panel': 'Panels',
+        'event': 'Academic Events'
     };
     
     // Ensure we have values to avoid undefined errors

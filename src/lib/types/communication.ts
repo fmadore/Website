@@ -22,7 +22,7 @@ export type Communication = {
         latitude: number;   // Latitude
         longitude: number;  // Longitude
     };
-    type?: 'conference' | 'workshop' | 'seminar' | 'lecture' | 'panel'; // Type of communication
+    type?: 'conference' | 'workshop' | 'seminar' | 'lecture' | 'panel' | 'event'; // Type of communication
     language?: string;      // Language of the communication
     coAuthors?: string[];   // Additional co-authors
     papers?: Array<{        // Papers presented at the panel

@@ -3,13 +3,14 @@ import type { Communication } from '$lib/types/communication';
 // Define a type for module imports
 type ModuleType = Record<string, any>;
 
-// Dynamically import all communication files from papers, panels, and talks subfolders
+// Dynamically import all communication files from papers, panels, talks, and events subfolders
 const communicationContext = import.meta.glob<ModuleType>('./papers/**/*.ts', { eager: true });
 const panelContext = import.meta.glob<ModuleType>('./panels/**/*.ts', { eager: true });
 const talkContext = import.meta.glob<ModuleType>('./talks/**/*.ts', { eager: true });
+const eventContext = import.meta.glob<ModuleType>('./events/**/*.ts', { eager: true });
 
 // Merge the contexts
-const allContexts = { ...communicationContext, ...panelContext, ...talkContext };
+const allContexts = { ...communicationContext, ...panelContext, ...talkContext, ...eventContext };
 
 // Debug: Log the keys we're importing
 console.log('Communication files being loaded:', Object.keys(allContexts));
@@ -55,7 +56,7 @@ const allCommunications: Communication[] = Object.values(allContexts)
             return false;
         }
         // Filter out template and invalid communications
-        return comm.id !== 'paper-template-id' && comm.id !== 'panel-template-id' && comm.id !== 'talk-template-id'; 
+        return comm.id !== 'paper-template-id' && comm.id !== 'panel-template-id' && comm.id !== 'talk-template-id' && comm.id !== 'event-template-id'; 
     });
 
 // Sort by date (most recent first)

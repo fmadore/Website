@@ -28,7 +28,8 @@
             'workshop': 'Workshop',
             'seminar': 'Seminar',
             'lecture': 'Lecture',
-            'panel': 'Panel'
+            'panel': 'Panel',
+            'event': 'Academic Event'
         };
         
         return typeMap[type] || type;
