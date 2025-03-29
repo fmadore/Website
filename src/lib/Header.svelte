@@ -59,6 +59,11 @@
 		mobileMenuOpen = !mobileMenuOpen;
 	}
 	
+	// Close mobile menu
+	function closeMobileMenu() {
+		mobileMenuOpen = false;
+	}
+	
 	// Close mobile menu when clicked outside
 	function handleClickOutside(event: MouseEvent) {
 		const target = event.target as HTMLElement;
@@ -125,7 +130,7 @@
 					<ul class="mobile-nav-list">
 						{#each navItems as item}
 							<li class="mobile-nav-item">
-								<a href={item.path} class="mobile-nav-link">
+								<a href={item.path} class="mobile-nav-link" on:click={closeMobileMenu}>
 									{item.name}
 								</a>
 								
@@ -133,7 +138,7 @@
 									<ul class="mobile-dropdown">
 										{#each item.dropdown as subItem}
 											<li class="mobile-dropdown-item">
-												<a href={subItem.path} class="mobile-dropdown-link">
+												<a href={subItem.path} class="mobile-dropdown-link" on:click={closeMobileMenu}>
 													{subItem.name}
 												</a>
 											</li>
@@ -342,7 +347,7 @@
 		border: none;
 		cursor: pointer;
 		padding: 0;
-		z-index: 10;
+		z-index: 210;
 	}
 	
 	.hamburger-line {
