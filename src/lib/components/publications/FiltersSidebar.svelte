@@ -12,6 +12,7 @@
         authorCounts
     } from '$lib/data/publications/filters';
     import { publicationsByType } from '$lib/data/publications';
+    import FilterSectionCheckbox from '$lib/components/filters/FilterSectionCheckbox.svelte';
 
     // Human-readable labels for publication types
     const typeLabels: {[key: string]: string} = {
@@ -24,27 +25,23 @@
         'blogpost': 'Blog Posts',
         'dissertation': 'Ph.D. Dissertations'
     };
+
+    // Calculate counts for publication types
+    $: typeCounts = $filterOptions.types.reduce((acc, type) => {
+        acc[type] = publicationsByType[type]?.length || 0;
+        return acc;
+    }, {} as { [key: string]: number });
 </script>
 
 <aside class="p-6 bg-gray-50 border border-gray-200 rounded shadow-sm sticky-top">
-    <div class="filter-section">
-        <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Publication Types</h3>
-        <div class="flex-column gap-2">
-            {#each $filterOptions.types as type}
-                <div class="mb-2">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input 
-                            type="checkbox" 
-                            checked={$activeFilters.types.includes(type)} 
-                            on:change={() => toggleTypeFilter(type)}
-                        />
-                        <span>{typeLabels[type] || type}</span>
-                        <span class="text-light text-sm">({publicationsByType[type]?.length || 0})</span>
-                    </label>
-                </div>
-            {/each}
-        </div>
-    </div>
+    <FilterSectionCheckbox 
+        title="Publication Types"
+        items={$filterOptions.types}
+        itemLabels={typeLabels}
+        activeItems={$activeFilters.types}
+        toggleItem={toggleTypeFilter}
+        counts={typeCounts}
+    />
 
     <div class="filter-section">
         <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Years</h3>

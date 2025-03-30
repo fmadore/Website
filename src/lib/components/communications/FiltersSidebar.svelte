@@ -12,6 +12,7 @@
         countryCounts
     } from '$lib/data/communications/filters';
     import { communicationsByType, communicationsByCountry } from '$lib/data/communications';
+    import FilterSectionCheckbox from '$lib/components/filters/FilterSectionCheckbox.svelte';
 
     // Human-readable labels for communication types
     const typeLabels: {[key: string]: string} = {
@@ -29,28 +30,24 @@
     $: countries = $filterOptions?.countries || [];
     $: languages = $filterOptions?.languages || [];
     $: tags = $filterOptions?.tags || [];
+
+    // Calculate counts for communication types
+    $: typeCounts = types.reduce((acc, type) => {
+        acc[type] = communicationsByType?.[type]?.length || 0;
+        return acc;
+    }, {} as { [key: string]: number });
 </script>
 
 <aside class="p-6 bg-gray-50 border border-gray-200 rounded shadow-sm sticky-top">
     {#if types.length > 0}
-    <div class="filter-section">
-        <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Event Types</h3>
-        <div class="flex-column gap-2">
-            {#each types as type}
-                <div class="mb-2">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input 
-                            type="checkbox" 
-                            checked={$activeFilters?.types?.includes(type) || false} 
-                            on:change={() => toggleTypeFilter(type)}
-                        />
-                        <span>{typeLabels[type] || type}</span>
-                        <span class="text-light text-sm">({communicationsByType?.[type]?.length || 0})</span>
-                    </label>
-                </div>
-            {/each}
-        </div>
-    </div>
+    <FilterSectionCheckbox 
+        title="Event Types"
+        items={types}
+        itemLabels={typeLabels}
+        activeItems={$activeFilters?.types || []}
+        toggleItem={toggleTypeFilter}
+        counts={typeCounts}
+    />
     {/if}
 
     {#if years.length > 0}
