@@ -72,16 +72,15 @@
             if (item.coordinates) {
                 const marker = L!.marker([item.coordinates.latitude, item.coordinates.longitude]);
                 
-                // Construct popup content with a link
                 const linkUrl = `${base}/communications/${item.id}`;
                 const popupContent = `
-                    <a href="${linkUrl}" target="_self" style="text-decoration: none; color: inherit;">
+                    <a href="${linkUrl}" target="_self" class="map-popup-link">
                         <strong>${item.title}</strong>
-                        ${item.year ? '<br><span style="font-size: 0.9em; opacity: 0.8;">(' + item.year + ')</span>' : ''}
+                        ${item.year ? '<br><span class="map-popup-year">(' + item.year + ')</span>' : ''}
                     </a>
                 `;
 
-                marker.bindPopup(popupContent);
+                marker.bindPopup(popupContent, { className: 'map-popup' });
                 markersLayer?.addLayer(marker);
             }
         });
@@ -122,6 +121,53 @@
         position: relative;
         border-radius: var(--border-radius-md, 4px);
         overflow: hidden; 
+    }
+
+    /* Custom Popup Styles */
+    :global(.map-popup .leaflet-popup-content-wrapper) {
+        background-color: var(--color-background, white);
+        color: var(--color-text, #333);
+        border-radius: var(--border-radius-md, 4px);
+        box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0,0,0,0.1));
+        padding: var(--spacing-1, 0.25rem); /* Reduce default padding */
+    }
+
+    :global(.map-popup .leaflet-popup-content) {
+        margin: var(--spacing-2, 0.5rem) var(--spacing-3, 0.75rem); /* Adjust internal margins */
+        line-height: 1.4;
+        font-size: var(--font-size-sm, 0.875rem);
+    }
+
+    :global(.map-popup .leaflet-popup-tip) {
+        background-color: var(--color-background, white);
+        box-shadow: none; /* Remove default tip shadow if desired */
+    }
+
+    :global(.map-popup a.leaflet-popup-close-button) {
+        color: var(--color-text-muted, #777);
+        padding: var(--spacing-1, 0.25rem) var(--spacing-1, 0.25rem) 0 0;
+        font-size: 1.2em;
+    }
+    
+    :global(.map-popup a.leaflet-popup-close-button:hover) {
+        color: var(--color-text, #333);
+        background-color: transparent;
+    }
+
+    /* Style link inside popup */
+    :global(.map-popup .map-popup-link) {
+        color: var(--color-primary, #2b6cb0); /* Link color */
+        text-decoration: none;
+    }
+    
+    :global(.map-popup .map-popup-link:hover) {
+        text-decoration: underline;
+    }
+
+    :global(.map-popup .map-popup-year) {
+        font-size: 0.9em;
+        opacity: 0.8;
+        color: var(--color-text-secondary, #555);
     }
 
     /* Ensure Leaflet controls are visible/styled if needed */
