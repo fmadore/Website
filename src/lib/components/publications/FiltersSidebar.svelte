@@ -15,6 +15,7 @@
     import { publicationsByType } from '$lib/data/publications';
     import FilterSectionCheckbox from '$lib/components/filters/FilterSectionCheckbox.svelte';
     import FilterSectionRangeSlider from '$lib/components/filters/FilterSectionRangeSlider.svelte';
+    import FilterSectionButtons from '$lib/components/filters/FilterSectionButtons.svelte';
 
     // Human-readable labels for publication types
     const typeLabels: {[key: string]: string} = {
@@ -74,21 +75,13 @@
         counts={undefined}
     />
 
-    <div class="filter-section">
-        <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Tags</h3>
-        <div class="flex flex-wrap gap-2">
-            {#each $filterOptions.tags as tag}
-                <button 
-                    class="tag-button"
-                    class:active={$activeFilters.tags.includes(tag)}
-                    on:click={() => toggleTagFilter(tag)}
-                >
-                    {tag}
-                    <span class="tag-count">({$tagCounts[tag] || 0})</span>
-                </button>
-            {/each}
-        </div>
-    </div>
+    <FilterSectionButtons 
+        title="Tags"
+        items={$filterOptions.tags}
+        activeItems={$activeFilters.tags}
+        toggleItem={toggleTagFilter}
+        counts={$tagCounts}
+    />
 
     <button class="clear-filters" on:click={clearAllFilters}>
         Clear all filters
@@ -139,11 +132,6 @@
         }
     }
     
-    .filter-section {
-        /* Use spacing variable, e.g., --spacing-6 */
-        margin-bottom: var(--spacing-6, 1.5rem);
-    }
-    
     .authors-scrollable {
         max-height: 200px; /* Keep fixed height or use variable if available */
         overflow-y: auto;
@@ -153,38 +141,6 @@
         flex-direction: column;
         /* Use spacing variable, e.g., --spacing-2 */
         gap: var(--spacing-2, 0.5rem); 
-    }
-    
-    .tag-button {
-        /* Use color variables, e.g., --color-gray-200, --color-gray-700 */
-        background-color: var(--color-gray-200, #e2e8f0);
-        color: var(--color-gray-700, #4a5568);
-        /* Use spacing variables, e.g., --spacing-1, --spacing-2 */
-        padding: var(--spacing-1, 0.25rem) var(--spacing-2, 0.5rem);
-        /* Use border-radius variable, e.g., --border-radius-full */
-        border-radius: var(--border-radius-full, 9999px);
-        /* Use font-size variable, e.g., --font-size-xs */
-        font-size: var(--font-size-xs, 0.8rem);
-        border: none;
-        cursor: pointer;
-        /* Use transition variable if defined, or keep value */
-        transition: all 0.2s;
-        /* Use spacing variable, e.g., --spacing-2 */
-        margin-bottom: var(--spacing-2, 0.5rem);
-    }
-    
-    .tag-button.active {
-        /* Use color variables, e.g., --color-primary, --color-white */
-        background-color: var(--color-primary, #2b6cb0);
-        color: var(--color-white, white);
-    }
-    
-    .tag-count {
-        opacity: 0.7; /* Keep opacity or use variable */
-        /* Use spacing variable, e.g., --spacing-px */
-        margin-left: var(--spacing-px, 2px); 
-        /* Use font-size variable, e.g., --font-size-xxs */
-        font-size: var(--font-size-xxs, 0.7rem);
     }
     
     .clear-filters {
