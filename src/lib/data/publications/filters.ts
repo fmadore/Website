@@ -41,10 +41,14 @@ export const allProjects = Array.from(new Set(
     allPublications.map(pub => pub.project).filter(Boolean) as string[]
 )).sort();
 
+// Define type for year range
+type YearRange = { min: number; max: number };
+
 // Create a store for active filters
 export const activeFilters = writable({
     types: [] as string[],
-    years: [] as number[],
+    // Replace years array with yearRange object
+    yearRange: null as YearRange | null,
     tags: [] as string[],
     languages: [] as string[],
     authors: [] as string[],
@@ -55,6 +59,7 @@ export const activeFilters = writable({
 // Create a store for available filter options (automatically derived from publications)
 export const filterOptions = writable({
     types: Object.keys(publicationsByType).sort(),
+    // Years remain the same here, representing all available options
     years: Object.keys(publicationsByYear).map(Number).sort((a, b) => b - a),
     tags: allTags,
     languages: allLanguages,
@@ -73,8 +78,9 @@ export const filteredPublications = derived(
                 return false;
             }
             
-            // Filter by year
-            if ($activeFilters.years.length > 0 && !$activeFilters.years.includes(pub.year)) {
+            // Filter by year range
+            if ($activeFilters.yearRange && 
+                (pub.year < $activeFilters.yearRange.min || pub.year > $activeFilters.yearRange.max)) {
                 return false;
             }
             
@@ -147,14 +153,14 @@ export function toggleTypeFilter(type: string) {
     });
 }
 
-export function toggleYearFilter(year: number) {
-    activeFilters.update(filters => {
-        if (filters.years.includes(year)) {
-            return { ...filters, years: filters.years.filter(y => y !== year) };
-        } else {
-            return { ...filters, years: [...filters.years, year] };
-        }
-    });
+// Add function to update year range
+export function updateYearRange(min: number, max: number) {
+    activeFilters.update(filters => ({ ...filters, yearRange: { min, max } }));
+}
+
+// Add function to reset year range filter
+export function resetYearRange() {
+    activeFilters.update(filters => ({ ...filters, yearRange: null }));
 }
 
 export function toggleTagFilter(tag: string) {
@@ -211,7 +217,8 @@ export function toggleProjectFilter(project: string) {
 export function clearAllFilters() {
     activeFilters.set({
         types: [],
-        years: [],
+        // Reset yearRange to null
+        yearRange: null,
         tags: [],
         languages: [],
         authors: [],

@@ -3,7 +3,8 @@
         activeFilters, 
         filterOptions, 
         toggleTypeFilter, 
-        toggleYearFilter, 
+        updateYearRange,
+        resetYearRange,
         toggleTagFilter, 
         toggleLanguageFilter, 
         toggleAuthorFilter,
@@ -13,6 +14,7 @@
     } from '$lib/data/publications/filters';
     import { publicationsByType } from '$lib/data/publications';
     import FilterSectionCheckbox from '$lib/components/filters/FilterSectionCheckbox.svelte';
+    import FilterSectionRangeSlider from '$lib/components/filters/FilterSectionRangeSlider.svelte';
 
     // Human-readable labels for publication types
     const typeLabels: {[key: string]: string} = {
@@ -31,6 +33,9 @@
         acc[type] = publicationsByType[type]?.length || 0;
         return acc;
     }, {} as { [key: string]: number });
+
+    // Ensure years are sorted ascending for the slider
+    $: sortedYearsAsc = $filterOptions.years.slice().sort((a, b) => a - b);
 </script>
 
 <aside class="p-6 bg-gray-50 border border-gray-200 rounded shadow-sm sticky-top">
@@ -43,23 +48,13 @@
         counts={typeCounts}
     />
 
-    <div class="filter-section">
-        <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Years</h3>
-        <div class="grid grid-cols-2 gap-2">
-            {#each $filterOptions.years as year}
-                <div class="mb-2">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input 
-                            type="checkbox" 
-                            checked={$activeFilters.years.includes(year)} 
-                            on:change={() => toggleYearFilter(year)}
-                        />
-                        <span>{year}</span>
-                    </label>
-                </div>
-            {/each}
-        </div>
-    </div>
+    <FilterSectionRangeSlider 
+        title="Years"
+        allYears={sortedYearsAsc}
+        activeRange={$activeFilters.yearRange}
+        updateRange={updateYearRange}
+        resetRange={resetYearRange}
+    />
 
     <div class="filter-section">
         <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Co-Authors</h3>
@@ -120,95 +115,92 @@
 </aside>
 
 <style>
-    /* Only keep styles that aren't in our CSS architecture */
+    /* Custom component styles using CSS variables */
     .sticky-top {
         position: sticky;
-        top: 2rem;
+        /* Use spacing variable, e.g., --spacing-8 */
+        top: var(--spacing-8, 2rem); 
         height: fit-content;
     }
     
     .filter-section {
-        margin-bottom: 1.5rem;
+        /* Use spacing variable, e.g., --spacing-6 */
+        margin-bottom: var(--spacing-6, 1.5rem);
     }
     
     .authors-scrollable {
-        max-height: 200px;
+        max-height: 200px; /* Keep fixed height or use variable if available */
         overflow-y: auto;
-        padding-right: 5px;
+        /* Use spacing variable, e.g., --spacing-1 */
+        padding-right: var(--spacing-1, 5px); 
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
-    }
-    
-    .border-gray-200 {
-        border-bottom: 1px solid #e2e8f0;
-    }
-    
-    .font-weight-600 {
-        font-weight: 600;
-    }
-    
-    .flex-column {
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .items-center {
-        align-items: center;
-    }
-    
-    .gap-2 {
-        gap: 0.5rem;
+        /* Use spacing variable, e.g., --spacing-2 */
+        gap: var(--spacing-2, 0.5rem); 
     }
     
     .tag-button {
-        background-color: #e2e8f0;
-        color: #4a5568;
-        padding: 0.25rem 0.5rem;
-        border-radius: 9999px;
-        font-size: 0.8rem;
+        /* Use color variables, e.g., --color-gray-200, --color-gray-700 */
+        background-color: var(--color-gray-200, #e2e8f0);
+        color: var(--color-gray-700, #4a5568);
+        /* Use spacing variables, e.g., --spacing-1, --spacing-2 */
+        padding: var(--spacing-1, 0.25rem) var(--spacing-2, 0.5rem);
+        /* Use border-radius variable, e.g., --border-radius-full */
+        border-radius: var(--border-radius-full, 9999px);
+        /* Use font-size variable, e.g., --font-size-xs */
+        font-size: var(--font-size-xs, 0.8rem);
         border: none;
         cursor: pointer;
+        /* Use transition variable if defined, or keep value */
         transition: all 0.2s;
-        margin-bottom: 0.5rem;
+        /* Use spacing variable, e.g., --spacing-2 */
+        margin-bottom: var(--spacing-2, 0.5rem);
     }
     
     .tag-button.active {
-        background-color: #2b6cb0;
-        color: white;
+        /* Use color variables, e.g., --color-primary, --color-white */
+        background-color: var(--color-primary, #2b6cb0);
+        color: var(--color-white, white);
     }
     
     .tag-count {
-        opacity: 0.7;
-        margin-left: 2px;
-        font-size: 0.7rem;
+        opacity: 0.7; /* Keep opacity or use variable */
+        /* Use spacing variable, e.g., --spacing-px */
+        margin-left: var(--spacing-px, 2px); 
+        /* Use font-size variable, e.g., --font-size-xxs */
+        font-size: var(--font-size-xxs, 0.7rem);
     }
     
     .clear-filters {
         width: 100%;
-        padding: 0.5rem;
-        background-color: #e2e8f0;
-        color: #4a5568;
+        /* Use spacing variable, e.g., --spacing-2 */
+        padding: var(--spacing-2, 0.5rem);
+        /* Use color variables */
+        background-color: var(--color-gray-200, #e2e8f0);
+        color: var(--color-gray-700, #4a5568);
         border: none;
-        border-radius: 4px;
+        /* Use border-radius variable, e.g., --border-radius-md */
+        border-radius: var(--border-radius-md, 4px);
         cursor: pointer;
-        font-size: 0.9rem;
+        /* Use font-size variable, e.g., --font-size-sm */
+        font-size: var(--font-size-sm, 0.9rem);
         transition: all 0.2s;
     }
     
     .clear-filters:hover {
-        background-color: #cbd5e0;
+        /* Use color variable, e.g., --color-gray-300 */
+        background-color: var(--color-gray-300, #cbd5e0);
     }
     
-    .text-sm {
-        font-size: 0.875rem;
-    }
-    
+    /* Removed redundant utility classes like .border-gray-200, .font-weight-600, .flex-column, etc. */
+    /* Assuming they are globally available */
+
     /* Media query */
     @media (max-width: 900px) {
         .sticky-top {
             position: static;
-            margin-bottom: 2rem;
+            /* Use spacing variable */
+            margin-bottom: var(--spacing-8, 2rem);
         }
     }
 </style> 

@@ -3,7 +3,8 @@
         activeFilters, 
         filterOptions, 
         toggleTypeFilter, 
-        toggleYearFilter, 
+        updateYearRange,
+        resetYearRange,
         toggleTagFilter, 
         toggleLanguageFilter, 
         toggleCountryFilter,
@@ -13,6 +14,7 @@
     } from '$lib/data/communications/filters';
     import { communicationsByType, communicationsByCountry } from '$lib/data/communications';
     import FilterSectionCheckbox from '$lib/components/filters/FilterSectionCheckbox.svelte';
+    import FilterSectionRangeSlider from '$lib/components/filters/FilterSectionRangeSlider.svelte';
 
     // Human-readable labels for communication types
     const typeLabels: {[key: string]: string} = {
@@ -36,6 +38,9 @@
         acc[type] = communicationsByType?.[type]?.length || 0;
         return acc;
     }, {} as { [key: string]: number });
+
+    // Ensure years are sorted ascending for the slider
+    $: sortedYearsAsc = years.slice().sort((a, b) => a - b);
 </script>
 
 <aside class="p-6 bg-gray-50 border border-gray-200 rounded shadow-sm sticky-top">
@@ -51,23 +56,13 @@
     {/if}
 
     {#if years.length > 0}
-    <div class="filter-section">
-        <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Years</h3>
-        <div class="grid grid-cols-2 gap-2">
-            {#each years as year}
-                <div class="mb-2">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input 
-                            type="checkbox" 
-                            checked={$activeFilters?.years?.includes(year) || false} 
-                            on:change={() => toggleYearFilter(year)}
-                        />
-                        <span>{year}</span>
-                    </label>
-                </div>
-            {/each}
-        </div>
-    </div>
+    <FilterSectionRangeSlider 
+        title="Years"
+        allYears={sortedYearsAsc}
+        activeRange={$activeFilters?.yearRange || null}
+        updateRange={updateYearRange}
+        resetRange={resetYearRange}
+    />
     {/if}
 
     {#if countries.length > 0}
@@ -135,24 +130,24 @@
 </aside>
 
 <style>
-    /* Only keep styles that aren't in our CSS architecture */
+    /* Custom component styles using CSS variables */
     .sticky-top {
         position: sticky;
-        top: 2rem;
+        top: var(--spacing-8, 2rem);
         height: fit-content;
     }
     
     .filter-section {
-        margin-bottom: 1.5rem;
+        margin-bottom: var(--spacing-6, 1.5rem);
     }
     
-    .countries-scrollable {
+    .countries-scrollable { /* Renamed from authors-scrollable */
         max-height: 200px;
         overflow-y: auto;
-        padding-right: 5px;
+        padding-right: var(--spacing-1, 5px);
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: var(--spacing-2, 0.5rem);
     }
     
     .border-gray-200 {
@@ -177,42 +172,42 @@
     }
     
     .tag-button {
-        background-color: #e2e8f0;
-        color: #4a5568;
-        padding: 0.25rem 0.5rem;
-        border-radius: 9999px;
-        font-size: 0.8rem;
+        background-color: var(--color-gray-200, #e2e8f0);
+        color: var(--color-gray-700, #4a5568);
+        padding: var(--spacing-1, 0.25rem) var(--spacing-2, 0.5rem);
+        border-radius: var(--border-radius-full, 9999px);
+        font-size: var(--font-size-xs, 0.8rem);
         border: none;
         cursor: pointer;
         transition: all 0.2s;
-        margin-bottom: 0.5rem;
+        margin-bottom: var(--spacing-2, 0.5rem);
     }
     
     .tag-button.active {
-        background-color: #2b6cb0;
-        color: white;
+        background-color: var(--color-primary, #2b6cb0);
+        color: var(--color-white, white);
     }
     
     .tag-count {
         opacity: 0.7;
-        margin-left: 2px;
-        font-size: 0.7rem;
+        margin-left: var(--spacing-px, 2px);
+        font-size: var(--font-size-xxs, 0.7rem);
     }
     
     .clear-filters {
         width: 100%;
-        padding: 0.5rem;
-        background-color: #e2e8f0;
-        color: #4a5568;
+        padding: var(--spacing-2, 0.5rem);
+        background-color: var(--color-gray-200, #e2e8f0);
+        color: var(--color-gray-700, #4a5568);
         border: none;
-        border-radius: 4px;
+        border-radius: var(--border-radius-md, 4px);
         cursor: pointer;
-        font-size: 0.9rem;
+        font-size: var(--font-size-sm, 0.9rem);
         transition: all 0.2s;
     }
     
     .clear-filters:hover {
-        background-color: #cbd5e0;
+        background-color: var(--color-gray-300, #cbd5e0);
     }
     
     .text-sm {
@@ -223,7 +218,7 @@
     @media (max-width: 900px) {
         .sticky-top {
             position: static;
-            margin-bottom: 2rem;
+            margin-bottom: var(--spacing-8, 2rem);
         }
     }
 </style> 

@@ -22,10 +22,13 @@ try {
     console.error('Error importing communications module:', error);
 }
 
+// Define type for year range
+type YearRange = { min: number; max: number };
+
 // Create a store for active filters
 export const activeFilters = writable({
     types: [] as string[],
-    years: [] as number[],
+    yearRange: null as YearRange | null,
     tags: [] as string[],
     languages: [] as string[],
     countries: [] as string[],
@@ -75,9 +78,9 @@ export const filteredCommunications = derived(
                 return false;
             }
             
-            // Filter by year
-            if ($activeFilters.years.length > 0 && 
-                (!comm.year || !$activeFilters.years.includes(comm.year))) {
+            // Filter by year range
+            if ($activeFilters.yearRange && 
+                (!comm.year || comm.year < $activeFilters.yearRange.min || comm.year > $activeFilters.yearRange.max)) {
                 return false;
             }
             
@@ -121,14 +124,14 @@ export function toggleTypeFilter(type: string) {
     });
 }
 
-export function toggleYearFilter(year: number) {
-    activeFilters.update(filters => {
-        if (filters.years.includes(year)) {
-            return { ...filters, years: filters.years.filter(y => y !== year) };
-        } else {
-            return { ...filters, years: [...filters.years, year] };
-        }
-    });
+// Add function to update year range
+export function updateYearRange(min: number, max: number) {
+    activeFilters.update(filters => ({ ...filters, yearRange: { min, max } }));
+}
+
+// Reset year range filter
+export function resetYearRange() {
+    activeFilters.update(filters => ({ ...filters, yearRange: null }));
 }
 
 export function toggleTagFilter(tag: string) {
@@ -175,7 +178,7 @@ export function toggleProjectFilter(project: string) {
 export function clearAllFilters() {
     activeFilters.set({
         types: [],
-        years: [],
+        yearRange: null, // Reset yearRange
         tags: [],
         languages: [],
         countries: [],

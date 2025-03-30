@@ -22,7 +22,7 @@
             
             <div class="text-light mb-6">
                 Showing {$filteredPublications.length} publications
-                {#if Object.values($activeFilters).some(arr => arr.length > 0)}
+                {#if Object.values($activeFilters).some(val => Array.isArray(val) && val.length > 0) || $activeFilters.yearRange !== null}
                     <span class="text-accent">(Filters applied)</span>
                 {/if}
             </div>
