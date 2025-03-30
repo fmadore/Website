@@ -12,6 +12,7 @@
     import { onMount, onDestroy, afterUpdate } from 'svelte';
     import type { Map as LeafletMap, FeatureGroup as LeafletFeatureGroup } from 'leaflet'; // Import types only
     import 'leaflet/dist/leaflet.css';
+    import { base } from '$app/paths'; // Import base path
 
     export let markersData: MarkerData[] = [];
 
@@ -70,7 +71,16 @@
         data.forEach(item => {
             if (item.coordinates) {
                 const marker = L!.marker([item.coordinates.latitude, item.coordinates.longitude]);
-                const popupContent = `${item.title}${item.year ? ' (' + item.year + ')' : ''}`;
+                
+                // Construct popup content with a link
+                const linkUrl = `${base}/communications/${item.id}`;
+                const popupContent = `
+                    <a href="${linkUrl}" target="_self" style="text-decoration: none; color: inherit;">
+                        <strong>${item.title}</strong>
+                        ${item.year ? '<br><span style="font-size: 0.9em; opacity: 0.8;">(' + item.year + ')</span>' : ''}
+                    </a>
+                `;
+
                 marker.bindPopup(popupContent);
                 markersLayer?.addLayer(marker);
             }

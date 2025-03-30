@@ -3,10 +3,19 @@
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
     import type { Communication } from '$lib/types/communication';
+    import MapVisualization from '$lib/components/communications/MapVisualization.svelte';
     
     // Get communication from the page data
     export let data;
-    const communication = data.communication;
+    const communication = data.communication as Communication;
+    
+    // Prepare marker data for the map (array with one item)
+    $: singleMarkerData = communication.coordinates ? [{
+        id: communication.id,
+        title: communication.title,
+        coordinates: communication.coordinates,
+        year: communication.year
+    }] : [];
     
     // Format date for display
     function formatDate(dateString: string): string {
@@ -188,11 +197,8 @@
         {#if communication.coordinates}
             <section class="mb-6">
                 <h2 class="text-lg font-semibold mb-2">Location</h2>
-                <div class="aspect-video bg-gray-100 rounded-md">
-                    <!-- Placeholder for map - you could integrate with a map library here -->
-                    <div class="flex items-center justify-center h-full text-text-muted">
-                        <span>Map: {communication.coordinates.latitude}, {communication.coordinates.longitude}</span>
-                    </div>
+                <div class="map-container-wrapper rounded-md overflow-hidden shadow-sm">
+                     <MapVisualization markersData={singleMarkerData} />
                 </div>
             </section>
         {/if}
