@@ -1,8 +1,23 @@
 <script lang="ts">
     import SEO from '$lib/SEO.svelte';
-    import { filteredPublications, activeFilters } from '$lib/data/publications/filters';
+    import { 
+        filteredPublications, 
+        activeFilters,
+        toggleTagFilter,
+        toggleAuthorFilter
+    } from '$lib/data/publications/filters';
     import FiltersSidebar from '$lib/components/publications/FiltersSidebar.svelte';
     import PublicationItem from '$lib/components/publications/PublicationItem.svelte';
+
+    function handleFilterRequest(event: CustomEvent<{ type: string; value: string }>) {
+        const { type, value } = event.detail;
+        console.log('Filter request received:', type, value);
+        if (type === 'tag') {
+            toggleTagFilter(value);
+        } else if (type === 'author') {
+            toggleAuthorFilter(value);
+        }
+    }
 </script>
 
 <SEO 
@@ -29,7 +44,10 @@
             
             <ul class="list-none p-0">
                 {#each $filteredPublications as publication}
-                    <PublicationItem {publication} />
+                    <PublicationItem 
+                        {publication} 
+                        on:filterrequest={handleFilterRequest}
+                    />
                 {/each}
             </ul>
         </main>

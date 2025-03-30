@@ -1,8 +1,10 @@
 <script lang="ts">
     import type { Publication } from '$lib/types/publication';
-    import { toggleAuthorFilter, toggleTagFilter } from '$lib/data/publications/filters';
+    import { createEventDispatcher } from 'svelte';
     
     export let publication: Publication;
+    
+    const dispatch = createEventDispatcher();
     
     // Human-readable labels for publication types
     const typeLabels: {[key: string]: string} = {
@@ -62,7 +64,10 @@
                     {#if publication.authors}
                         {#each getAuthorsArray(publication.authors) as author, i}
                             {#if author !== "Frédérick Madore"}
-                                <button class="author-btn" on:click={() => toggleAuthorFilter(author)}>
+                                <button 
+                                    class="author-btn" 
+                                    on:click={() => dispatch('filterrequest', { type: 'author', value: author })}
+                                >
                                     {author}
                                 </button>
                             {:else}
@@ -80,7 +85,10 @@
                         {#if typeof publication.editors === 'string'}
                             {#each publication.editors.split(/\s*(?:,|and)\s*/).map(name => name.trim()) as editor, i}
                                 {#if editor !== "Frédérick Madore"}
-                                    <button class="author-btn" on:click={() => toggleAuthorFilter(editor)}>
+                                    <button 
+                                        class="author-btn" 
+                                        on:click={() => dispatch('filterrequest', { type: 'author', value: editor })}
+                                    >
                                         {editor}
                                     </button>
                                 {:else}
@@ -166,7 +174,10 @@
                 {#if publication.prefacedBy}
                     <div class="mt-1">
                         <span>Preface by </span>
-                        <button class="author-btn" on:click={() => toggleAuthorFilter(publication.prefacedBy || '')}>
+                        <button 
+                            class="author-btn" 
+                            on:click={() => dispatch('filterrequest', { type: 'author', value: publication.prefacedBy || '' })}
+                        >
                             {publication.prefacedBy}
                         </button>
                     </div>
@@ -184,7 +195,7 @@
                     {#each publication.tags as tag}
                         <button 
                             class="btn-sm bg-gray-100 hover:bg-gray-200 rounded-full border-0 text-sm"
-                            on:click={() => toggleTagFilter(tag)}
+                            on:click={() => dispatch('filterrequest', { type: 'tag', value: tag })}
                         >
                             {tag}
                         </button>

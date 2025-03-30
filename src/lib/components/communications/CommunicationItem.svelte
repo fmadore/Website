@@ -1,8 +1,10 @@
 <script lang="ts">
     import type { Communication } from '$lib/types/communication';
-    import { toggleTagFilter, toggleCountryFilter } from '$lib/data/communications/filters';
+    import { createEventDispatcher } from 'svelte';
     
     export let communication: Communication;
+    
+    const dispatch = createEventDispatcher();
     
     // Human-readable labels for communication types
     const typeLabels: {[key: string]: string} = {
@@ -60,7 +62,10 @@
                         <span>, {communication.location}</span>
                     {/if}
                     {#if communication?.country}
-                        <button class="country-btn" on:click={() => toggleCountryFilter(communication.country)}>
+                        <button 
+                            class="country-btn" 
+                            on:click={() => dispatch('filterrequest', { type: 'country', value: communication.country })}
+                        >
                             <span>, {communication.country}</span>
                         </button>
                     {/if}
@@ -81,7 +86,7 @@
                     {#each communication.tags as tag}
                         <button 
                             class="btn-sm bg-gray-100 hover:bg-gray-200 rounded-full border-0 text-sm"
-                            on:click={() => toggleTagFilter(tag)}
+                            on:click={() => dispatch('filterrequest', { type: 'tag', value: tag })}
                         >
                             {tag}
                         </button>
