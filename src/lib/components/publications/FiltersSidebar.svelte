@@ -97,11 +97,46 @@
 
 <style>
     /* Custom component styles using CSS variables */
+    /* Base (Mobile) styles: Sidebar is static by default below 900px */
     .sticky-top {
-        position: sticky;
-        /* Use spacing variable, e.g., --spacing-8 */
-        top: var(--spacing-8, 2rem); 
-        height: fit-content;
+        position: static; 
+        max-height: none;
+        overflow-y: visible; /* Ensure overflow isn't hidden */
+        margin-bottom: var(--spacing-8, 2rem); /* Keep bottom margin for mobile */
+    }
+
+    /* Desktop styles (901px and up) */
+    @media (min-width: 901px) {
+        .sticky-top {
+            position: sticky;
+            top: var(--spacing-8, 2rem); 
+            max-height: calc(100vh - var(--spacing-8, 2rem) - 2rem);
+            overflow-y: auto;
+            margin-bottom: 0;
+
+            /* Subtle scrollbar styling for Firefox */
+            scrollbar-width: thin; /* Or use a variable like var(--scrollbar-width, thin) if defined */
+            scrollbar-color: var(--color-gray-400, #a0aec0) transparent; /* thumb track */
+        }
+
+        /* Subtle scrollbar styling for WebKit browsers using CSS Variables */
+        .sticky-top::-webkit-scrollbar {
+            width: var(--scrollbar-width, var(--spacing-1-5, 6px)); /* Use variable for width */
+        }
+
+        .sticky-top::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sticky-top::-webkit-scrollbar-thumb {
+            background-color: var(--color-gray-300, #d1d5db); /* Use color variable */
+            border-radius: var(--scrollbar-thumb-radius, var(--border-radius-sm, 3px)); /* Use radius variable */
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .sticky-top:hover::-webkit-scrollbar-thumb {
+            background-color: var(--color-gray-400, #a0aec0); /* Use color variable for hover */
+        }
     }
     
     .filter-section {
@@ -175,13 +210,4 @@
     
     /* Removed redundant utility classes like .border-gray-200, .font-weight-600, .flex-column, etc. */
     /* Assuming they are globally available */
-
-    /* Media query */
-    @media (max-width: 900px) {
-        .sticky-top {
-            position: static;
-            /* Use spacing variable */
-            margin-bottom: var(--spacing-8, 2rem);
-        }
-    }
 </style> 

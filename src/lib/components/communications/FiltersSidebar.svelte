@@ -127,12 +127,48 @@
 
 <style>
     /* Custom component styles using CSS variables */
+    /* Base (Mobile) styles */
     .sticky-top {
-        position: sticky;
-        top: var(--spacing-8, 2rem);
-        height: fit-content;
+        position: static;
+        max-height: none;
+        overflow-y: visible;
+        margin-bottom: var(--spacing-8, 2rem);
     }
-    
+
+    /* Desktop styles (901px and up) */
+    @media (min-width: 901px) {
+        .sticky-top {
+            position: sticky;
+            top: var(--spacing-8, 2rem);
+            max-height: calc(100vh - var(--spacing-8, 2rem) - 2rem);
+            overflow-y: auto;
+            margin-bottom: 0;
+
+            /* Subtle scrollbar styling for Firefox */
+            scrollbar-width: thin;
+            scrollbar-color: var(--color-gray-400, #a0aec0) transparent;
+        }
+
+        /* Subtle scrollbar styling for WebKit browsers using CSS Variables */
+        .sticky-top::-webkit-scrollbar {
+            width: var(--scrollbar-width, var(--spacing-1-5, 6px));
+        }
+
+        .sticky-top::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sticky-top::-webkit-scrollbar-thumb {
+            background-color: var(--color-gray-300, #d1d5db);
+            border-radius: var(--scrollbar-thumb-radius, var(--border-radius-sm, 3px));
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .sticky-top:hover::-webkit-scrollbar-thumb {
+            background-color: var(--color-gray-400, #a0aec0);
+        }
+    }
+
     .filter-section {
         margin-bottom: var(--spacing-6, 1.5rem);
     }
@@ -195,13 +231,5 @@
     
     .clear-filters:hover {
         background-color: var(--color-gray-300, #cbd5e0);
-    }
-    
-    /* Media query */
-    @media (max-width: 900px) {
-        .sticky-top {
-            position: static;
-            margin-bottom: var(--spacing-8, 2rem);
-        }
     }
 </style> 
