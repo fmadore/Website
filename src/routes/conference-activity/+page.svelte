@@ -9,6 +9,7 @@
     import FiltersSidebar from '$lib/components/communications/FiltersSidebar.svelte';
     import CommunicationItem from '$lib/components/communications/CommunicationItem.svelte';
     import MapVisualization from '$lib/components/communications/MapVisualization.svelte'; // Import map
+    import ToggleButton from '$lib/components/common/ToggleButton.svelte'; // Import the new component
     
     let showMap = false; // State for map visibility
 
@@ -61,13 +62,12 @@
         <main class="md:col-span-3">
             <div class="flex justify-between items-center mb-4">
                  <h1 class="text-dark text-2xl">Conference Activity</h1>
-                 <!-- Toggle Map Button -->
-                 <button 
-                    class="btn btn-sm btn-outline-secondary" 
-                    on:click={() => showMap = !showMap}
-                 >
-                    {showMap ? 'Hide' : 'Show'} Map
-                 </button>
+                 <!-- Use ToggleButton component -->
+                 <ToggleButton 
+                    baseText="Map"
+                    bind:isToggled={showMap} 
+                    on:toggle={() => showMap = !showMap}
+                 />
             </div>
             
             <!-- Conditionally render Map Visualization -->
