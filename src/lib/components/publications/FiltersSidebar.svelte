@@ -56,42 +56,23 @@
         resetRange={resetYearRange}
     />
 
-    <div class="filter-section">
-        <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Co-Authors</h3>
-        <div class="authors-scrollable">
-            {#each $filterOptions.authors as author}
-                <div class="mb-2">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input 
-                            type="checkbox" 
-                            checked={$activeFilters.authors.includes(author)} 
-                            on:change={() => toggleAuthorFilter(author)}
-                        />
-                        <span>{author}</span>
-                        <span class="text-light text-sm">({$authorCounts[author] || 0})</span>
-                    </label>
-                </div>
-            {/each}
-        </div>
+    <div class="authors-scrollable">
+        <FilterSectionCheckbox 
+            title="Co-Authors"
+            items={$filterOptions.authors}
+            activeItems={$activeFilters.authors}
+            toggleItem={toggleAuthorFilter}
+            counts={$authorCounts}
+        />
     </div>
 
-    <div class="filter-section">
-        <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Languages</h3>
-        <div class="flex-column gap-2">
-            {#each $filterOptions.languages as language}
-                <div class="mb-2">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input 
-                            type="checkbox" 
-                            checked={$activeFilters.languages.includes(language)} 
-                            on:change={() => toggleLanguageFilter(language)}
-                        />
-                        <span>{language}</span>
-                    </label>
-                </div>
-            {/each}
-        </div>
-    </div>
+    <FilterSectionCheckbox 
+        title="Languages"
+        items={$filterOptions.languages}
+        activeItems={$activeFilters.languages}
+        toggleItem={toggleLanguageFilter}
+        counts={undefined}
+    />
 
     <div class="filter-section">
         <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Tags</h3>

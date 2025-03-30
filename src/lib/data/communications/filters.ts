@@ -31,12 +31,25 @@ export const activeFilters = writable({
     yearRange: null as YearRange | null,
     tags: [] as string[],
     languages: [] as string[],
+    authors: [] as string[],
     countries: [] as string[],
     projects: [] as string[]
 });
 
 // Ensure allCommunications is defined
 const safeAllCommunications = allCommunications || [];
+
+// Extract all unique co-authors/participants, excluding "Frédérick Madore"
+export const allCoAuthors = Array.from(new Set(
+    safeAllCommunications.flatMap(comm => [
+        ...(comm.authors || []),
+        ...(comm.coAuthors || []),
+        ...(comm.papers?.flatMap(p => p.authors || []) || []),
+        ...(comm.participants?.map(p => p.name) || [])
+    ])
+))
+.filter(author => author !== "Frédérick Madore") // Exclude primary author
+.sort();
 
 // Extract all unique languages from communications (safely)
 export const allLanguages = Array.from(new Set(
@@ -61,6 +74,7 @@ export const filterOptions = writable({
     years: Object.keys(communicationsByYear || {}).map(Number).sort((a, b) => b - a),
     tags: allTags || [],
     languages: allLanguages,
+    authors: allCoAuthors,
     countries: allCountries,
     projects: allProjects
 });
@@ -94,6 +108,19 @@ export const filteredCommunications = derived(
             if ($activeFilters.languages.length > 0 && 
                 (!comm.language || !$activeFilters.languages.includes(comm.language))) {
                 return false;
+            }
+            
+            // Filter by author (check all relevant fields)
+            if ($activeFilters.authors.length > 0) {
+                const communicationAuthors = [
+                    ...(comm.authors || []),
+                    ...(comm.coAuthors || []),
+                    ...(comm.papers?.flatMap(p => p.authors || []) || []),
+                    ...(comm.participants?.map(p => p.name) || [])
+                ];
+                if (!communicationAuthors.some(author => $activeFilters.authors.includes(author))) {
+                    return false;
+                }
             }
             
             // Filter by country
@@ -174,13 +201,25 @@ export function toggleProjectFilter(project: string) {
     });
 }
 
+// Add function to toggle author filter
+export function toggleAuthorFilter(author: string) {
+    activeFilters.update(filters => {
+        if (filters.authors.includes(author)) {
+            return { ...filters, authors: filters.authors.filter(a => a !== author) };
+        } else {
+            return { ...filters, authors: [...filters.authors, author] };
+        }
+    });
+}
+
 // Function to clear all filters
 export function clearAllFilters() {
     activeFilters.set({
         types: [],
-        yearRange: null, // Reset yearRange
+        yearRange: null,
         tags: [],
         languages: [],
+        authors: [],
         countries: [],
         projects: []
     });
@@ -211,6 +250,29 @@ export const countryCounts = derived(
             if (comm && comm.country) {
                 counts[comm.country] = (counts[comm.country] || 0) + 1;
             }
+        });
+        return counts;
+    }
+);
+
+// Get available author counts for current filtered communications
+export const authorCounts = derived(
+    [filteredCommunications],
+    ([$filteredCommunications]) => {
+        const counts: Record<string, number> = {};
+        ($filteredCommunications || []).forEach((comm: Communication) => {
+            const communicationAuthors = new Set([
+                ...(comm.authors || []),
+                ...(comm.coAuthors || []),
+                ...(comm.papers?.flatMap(p => p.authors || []) || []),
+                ...(comm.participants?.map(p => p.name) || [])
+            ]);
+            communicationAuthors.forEach(author => {
+                 // Only count co-authors, not the site owner
+                 if (author !== "Frédérick Madore") {
+                    counts[author] = (counts[author] || 0) + 1;
+                 }
+            });
         });
         return counts;
     }

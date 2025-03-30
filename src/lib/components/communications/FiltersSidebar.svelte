@@ -8,9 +8,11 @@
         toggleTagFilter, 
         toggleLanguageFilter, 
         toggleCountryFilter,
+        toggleAuthorFilter,
         clearAllFilters,
         tagCounts,
-        countryCounts
+        countryCounts,
+        authorCounts
     } from '$lib/data/communications/filters';
     import { communicationsByType, communicationsByCountry } from '$lib/data/communications';
     import FilterSectionCheckbox from '$lib/components/filters/FilterSectionCheckbox.svelte';
@@ -32,6 +34,7 @@
     $: countries = $filterOptions?.countries || [];
     $: languages = $filterOptions?.languages || [];
     $: tags = $filterOptions?.tags || [];
+    $: authors = $filterOptions?.authors || [];
 
     // Calculate counts for communication types
     $: typeCounts = types.reduce((acc, type) => {
@@ -65,45 +68,38 @@
     />
     {/if}
 
+    {#if authors.length > 0}
+    <div class="authors-scrollable">
+        <FilterSectionCheckbox 
+            title="Co-authors / Participants"
+            items={authors}
+            activeItems={$activeFilters?.authors || []}
+            toggleItem={toggleAuthorFilter}
+            counts={$authorCounts}
+        />
+    </div>
+    {/if}
+
     {#if countries.length > 0}
-    <div class="filter-section">
-        <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Countries</h3>
-        <div class="countries-scrollable">
-            {#each countries as country}
-                <div class="mb-2">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input 
-                            type="checkbox" 
-                            checked={$activeFilters?.countries?.includes(country) || false} 
-                            on:change={() => toggleCountryFilter(country)}
-                        />
-                        <span>{country}</span>
-                        <span class="text-light text-sm">({$countryCounts?.[country] || communicationsByCountry?.[country]?.length || 0})</span>
-                    </label>
-                </div>
-            {/each}
-        </div>
+    <div class="authors-scrollable">
+        <FilterSectionCheckbox 
+            title="Countries"
+            items={countries}
+            activeItems={$activeFilters?.countries || []}
+            toggleItem={toggleCountryFilter}
+            counts={$countryCounts}
+        />
     </div>
     {/if}
 
     {#if languages.length > 0}
-    <div class="filter-section">
-        <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">Languages</h3>
-        <div class="flex-column gap-2">
-            {#each languages as language}
-                <div class="mb-2">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input 
-                            type="checkbox" 
-                            checked={$activeFilters?.languages?.includes(language) || false} 
-                            on:change={() => toggleLanguageFilter(language)}
-                        />
-                        <span>{language}</span>
-                    </label>
-                </div>
-            {/each}
-        </div>
-    </div>
+    <FilterSectionCheckbox 
+        title="Languages"
+        items={languages}
+        activeItems={$activeFilters?.languages || []}
+        toggleItem={toggleLanguageFilter}
+        counts={undefined}
+    />
     {/if}
 
     {#if tags.length > 0}
@@ -141,7 +137,7 @@
         margin-bottom: var(--spacing-6, 1.5rem);
     }
     
-    .countries-scrollable { /* Renamed from authors-scrollable */
+    .authors-scrollable { /* Renamed back from countries-scrollable */
         max-height: 200px;
         overflow-y: auto;
         padding-right: var(--spacing-1, 5px);
@@ -156,15 +152,6 @@
     
     .font-weight-600 {
         font-weight: 600;
-    }
-    
-    .flex-column {
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .items-center {
-        align-items: center;
     }
     
     .gap-2 {
@@ -208,10 +195,6 @@
     
     .clear-filters:hover {
         background-color: var(--color-gray-300, #cbd5e0);
-    }
-    
-    .text-sm {
-        font-size: 0.875rem;
     }
     
     /* Media query */

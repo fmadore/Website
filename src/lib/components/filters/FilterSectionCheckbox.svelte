@@ -1,7 +1,7 @@
 <script lang="ts">
     export let title: string;
-    export let items: string[]; // e.g., ['book', 'article']
-    export let itemLabels: { [key: string]: string }; // e.g., {'book': 'Books'}
+    export let items: string[]; // e.g., ['book', 'article'] or ['Author One', 'Author Two']
+    export let itemLabels: { [key: string]: string } | undefined = undefined; // Made optional
     export let activeItems: string[]; // The reactive list of active filters (e.g., $activeFilters.types)
     export let toggleItem: (item: string) => void; // Function to toggle an item
     export let counts: { [key: string]: number | undefined } | undefined; // e.g., { 'book': 10, 'article': 5 }
@@ -23,7 +23,7 @@
                         checked={activeItems.includes(item)} 
                         on:change={() => toggleItem(item)}
                     />
-                    <span>{itemLabels[item] || item}</span>
+                    <span>{itemLabels?.[item] ?? item}</span>
                     {#if counts !== undefined}
                     <span class="text-light text-sm">({getCount(item)})</span>
                     {/if}
