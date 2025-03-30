@@ -3,13 +3,11 @@
     import { 
         filteredCommunications, 
         activeFilters,
-        // Import necessary filter functions
         toggleTagFilter,
         toggleCountryFilter 
     } from '$lib/data/communications/filters';
     import FiltersSidebar from '$lib/components/communications/FiltersSidebar.svelte';
     import CommunicationItem from '$lib/components/communications/CommunicationItem.svelte';
-    import MapVisualization from '$lib/components/communications/MapVisualization.svelte'; // Assuming you have this
 
     // Function to handle filter requests from items
     function handleFilterRequest(event: CustomEvent<{ type: string; value: string }>) {
@@ -36,12 +34,20 @@
         </div>
         <div class="md:col-span-3">
             <main>
-                <h1>Communications</h1>
+                <h1 class="mb-4">Communications</h1>
+
+                <div class="text-light mb-6">
+                    Showing {$filteredCommunications.length} communications
+                    {#if Object.values($activeFilters).some(val => Array.isArray(val) && val.length > 0) || $activeFilters.yearRange !== null}
+                        <span class="text-accent">(Filters applied)</span>
+                    {/if}
+                </div>
+
                 <ul class="list-none p-0">
                     {#each $filteredCommunications as communication}
                         <CommunicationItem 
                             {communication} 
-                            on:filterrequest={handleFilterRequest} /* Listen for event */
+                            on:filterrequest={handleFilterRequest}
                         />
                     {/each}
                 </ul>
