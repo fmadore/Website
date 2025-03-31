@@ -94,10 +94,10 @@
                 <img 
                     src="{base}/{publication.heroImage.src}" 
                     alt="{publication.heroImage.alt || publication.title}"
-                    class="w-full h-auto rounded-md"
+                    class="w-full max-w-md h-auto rounded-md mx-auto"
                 >
                 {#if publication.heroImage.caption}
-                    <figcaption class="text-text-muted text-sm mt-2 italic">
+                    <figcaption class="text-text-muted text-sm mt-2 italic text-center">
                         {publication.heroImage.caption}
                     </figcaption>
                 {/if}
