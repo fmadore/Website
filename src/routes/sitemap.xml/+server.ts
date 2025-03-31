@@ -4,7 +4,7 @@ import { allCommunications } from '$lib/data/communications/index';
 import type { RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async () => {
-    const website = "https://frederickmadore.com";
+    const website = "https://fmadore.github.io/Website";
     
     // Static pages
     const pages = [
