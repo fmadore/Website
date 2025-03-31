@@ -7,7 +7,7 @@
     
     // Get communication from the page data
     export let data;
-    const communication = data.communication as Communication;
+    $: communication = data.communication as Communication;
     
     // Prepare marker data for the map (array with one item)
     $: singleMarkerData = communication.coordinates ? [{
