@@ -6,7 +6,7 @@
     
     // Get publication from the page data
     export let data;
-    const publication = data.publication;
+    $: publication = data.publication;
     
     // Format date for display
     function formatDate(dateString: string): string {

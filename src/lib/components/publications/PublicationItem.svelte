@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { Publication } from '$lib/types/publication';
     import { createEventDispatcher } from 'svelte';
+    import { base } from '$app/paths';
     
     export let publication: Publication;
     
@@ -49,13 +50,9 @@
             </div>
             
             <h3 class="text-dark font-weight-500 mb-2">
-                {#if publication.url}
-                    <a href={publication.url} target="_blank" rel="noopener noreferrer" class="hover:text-primary">
-                        {publication.title}
-                    </a>
-                {:else}
+                <a href="{base}/publications/{publication.id}" class="hover:text-primary">
                     {publication.title}
-                {/if}
+                </a>
             </h3>
             
             <div class="text-light mb-2">
