@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { Communication } from '$lib/types/communication';
     import { createEventDispatcher } from 'svelte';
+    import { base } from '$app/paths';
     
     export let communication: Communication;
     
@@ -38,13 +39,9 @@
             </div>
             
             <h3 class="text-dark font-weight-500 mb-2">
-                {#if communication?.url}
-                    <a href={communication.url} target="_blank" rel="noopener noreferrer" class="hover:text-primary">
-                        {communication?.title || 'Untitled Communication'}
-                    </a>
-                {:else}
+                <a href="{base}/communications/{communication.id}" class="hover:text-primary">
                     {communication?.title || 'Untitled Communication'}
-                {/if}
+                </a>
             </h3>
             
             <div class="communication-details text-light mb-2">
