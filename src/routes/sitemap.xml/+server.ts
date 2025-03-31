@@ -1,4 +1,6 @@
 import { activitiesByDate } from '$lib/data/activities';
+import { allPublications } from '$lib/data/publications/index';
+import { allCommunications } from '$lib/data/communications/index';
 import type { RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async () => {
@@ -11,8 +13,11 @@ export const GET: RequestHandler = async () => {
         "/publications",
         "/activities",
         "/digital-humanities",
+        "/digital-humanities/islam-west-africa-collection",
+        "/digital-humanities/visualising-the-iwac",
         "/conference-activity",
         "/teaching",
+        "/teaching/guest-lectures",
         "/contact"
     ];
     
@@ -24,15 +29,27 @@ export const GET: RequestHandler = async () => {
         "/research/youth-womens-islamic-activism-cote-divoire-burkina-faso"
     ];
 
-    // Create path for each activity
+    // Dynamic activity paths
     const activityPaths = activitiesByDate.map(activity => `/activities/${activity.id}`);
-    
-    // Create path for each year of activities
     const activityYears = [...new Set(activitiesByDate.map(activity => activity.year))];
     const yearPaths = activityYears.map(year => `/activities/year/${year}`);
     
+    // Dynamic publication paths
+    const publicationPaths = allPublications.map(pub => `/publications/${pub.id}`);
+    
+    // Dynamic communication paths 
+    // Note: Individual communications are under /communications/[id]
+    const communicationPaths = allCommunications.map(comm => `/communications/${comm.id}`);
+    
     // Combine all paths
-    const allPaths = [...pages, ...researchProjects, ...activityPaths, ...yearPaths];
+    const allPaths = [
+        ...pages, 
+        ...researchProjects, 
+        ...activityPaths, 
+        ...yearPaths,
+        ...publicationPaths,
+        ...communicationPaths
+    ];
     
     // Build the sitemap XML
     const sitemap = `<?xml version="1.0" encoding="UTF-8" ?>
