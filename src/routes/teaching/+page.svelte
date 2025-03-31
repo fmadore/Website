@@ -1,6 +1,7 @@
 <script>
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths'; // Import base path for images
+    import Card from '$lib/components/Card.svelte'; // Import Card component
 
     // Unified teaching items data for cards
     const teachingItems = [
@@ -24,7 +25,7 @@
             period: "spring 2020",
             description: "Exploring the history, politics, and societies of French-speaking West African nations.",
             imageUrl: `${base}/images/teaching/university-of-florida-logo.png`,
-            syllabusUrl: `${base}/files/syllabus-francophone-west-africa.pdf`
+            syllabusUrl: `${base}/syllabi/francophone-west-africa.pdf`
         },
         {
             id: "dissertation-historique",
@@ -41,10 +42,9 @@
             type: 'guest_lecture', // Differentiate this type
             title: "Guest Lecturer",
             institution: "Various Institutions",
-            topic: "Topics in African History & Islamic Studies", // Placeholder - Update as needed
-            period: "Ongoing", // Placeholder - Update as needed
-            description: "Invited talks and lectures delivered at various academic institutions.", // Placeholder description
-            imageUrl: `${base}/images/teaching/guest-lecture.webp` // Placeholder image
+            description: "A list of invited talks and lectures delivered at various academic institutions.", // Updated description
+            imageUrl: `${base}/images/teaching/guest-lecture.webp`, // Placeholder image
+            linkUrl: `${base}/teaching/guest-lectures` // <-- Link to new page
         }
     ];
 </script>
@@ -60,35 +60,37 @@
         <!-- Card Grid Layout -->
         <div class="teaching-grid">
             {#each teachingItems as item (item.id)}
-                <div class="teaching-card">
-                    {#if item.imageUrl}
-                        <div class="teaching-card-image">
-                            <img src={item.imageUrl} alt={item.title} class="w-full h-auto" />
-                        </div>
-                    {/if}
-                    <div class="teaching-card-body">
-                        <h2 class="teaching-card-title">{item.title}</h2>
-                        <p class="teaching-card-details">
-                            <span class="institution">{item.institution}</span><br>
-                            {#if item.type === 'course'}
-                                <span class="level">Level: {item.level}</span><br>
-                                <span class="period">Period: {item.period}</span>
-                            {:else if item.type === 'guest_lecture'}
-                                <span class="topic">Topic: {item.topic}</span><br>
-                                <span class="period">Period: {item.period}</span>
-                            {/if}
-                        </p>
-                        {#if item.description}
-                            <p class="teaching-card-description">{item.description}</p>
+                <Card
+                    title={item.title}
+                    imageUrl={item.imageUrl}
+                    linkUrl={item.linkUrl}
+                    target={item.type === 'guest_lecture' ? '_self' : '_blank'}
+                >
+                    <span slot="subtitle">{item.institution}</span>
+
+                    <div slot="details" class="teaching-card-specific-details">
+                        {#if item.type === 'course'}
+                            <p><span class="label">Level:</span> {item.level}</p>
+                            <p><span class="label">Period:</span> {item.period}</p>
+                        {:else if item.type === 'guest_lecture'}
+                            <!-- Specific details not shown on card, link provided -->
                         {/if}
-                        <!-- Conditionally display syllabus link -->
+                    </div>
+
+                    {item.description}
+
+                    <div slot="action">
                         {#if item.syllabusUrl}
-                            <a href={item.syllabusUrl} target="_blank" rel="noopener noreferrer" class="teaching-card-link">
+                            <a href={item.syllabusUrl} target="_blank" rel="noopener noreferrer">
                                 View Syllabus →
+                            </a>
+                        {:else if item.linkUrl && item.type === 'guest_lecture'}
+                            <a href={item.linkUrl}>
+                                View List →
                             </a>
                         {/if}
                     </div>
-                </div>
+                </Card>
             {/each}
         </div>
     </div>
@@ -123,93 +125,20 @@
     .teaching-grid {
         display: grid;
         grid-template-columns: repeat(1, 1fr);
-        gap: 2rem;
-        margin-top: 2rem;
+        gap: var(--spacing-8);
+        margin-top: var(--spacing-8);
     }
     
-    .teaching-card {
-        display: flex;
-        flex-direction: column;
-        border-radius: 0.5rem;
-        overflow: hidden;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        background-color: white;
+    .teaching-card-specific-details p {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+        margin-bottom: var(--spacing-1);
     }
-    
-    .teaching-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    }
-    
-    .teaching-card-image {
-        overflow: hidden;
-        max-height: 200px;
-        background-color: var(--color-gray-200);
-    }
-    
-    .teaching-card-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-    }
-    
-    .teaching-card:hover .teaching-card-image img {
-        transform: scale(1.05);
-    }
-    
-    .teaching-card-body {
-        padding: 1.5rem;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .teaching-card-title {
-        font-size: var(--font-size-xl);
-        margin-top: 0;
-        margin-bottom: 0.75rem;
-        line-height: 1.3;
-        font-weight: 600;
-        color: var(--color-primary);
-    }
-    
-    .teaching-card-details {
-        font-size: 0.9rem;
-        color: var(--color-text-secondary, #555);
-        margin-bottom: 1rem;
-        line-height: 1.5;
-    }
-    
-    .teaching-card-details .institution {
+    .teaching-card-specific-details .label {
         font-weight: 500;
-        color: var(--color-text, #333);
-    }
-    
-    .teaching-card-description {
-        margin-bottom: 1.5rem;
-        flex-grow: 1;
-        line-height: 1.6;
-        font-size: 0.95rem;
+        color: var(--color-text);
     }
 
-    /* Re-added teaching-card-link styles */
-    .teaching-card-link {
-        display: inline-block;
-        color: var(--color-primary, #0066cc);
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.2s ease;
-        margin-top: auto; /* Pushes link to bottom */
-        align-self: flex-start; /* Align link to the left */
-    }
-
-    .teaching-card-link:hover {
-        color: var(--color-primary-dark, #004c99);
-        text-decoration: underline;
-    }
-    
     @media (min-width: 640px) {
         .teaching-grid {
             grid-template-columns: repeat(2, 1fr);

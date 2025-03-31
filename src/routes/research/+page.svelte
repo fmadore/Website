@@ -1,5 +1,6 @@
 <script>
     import { base } from '$app/paths';
+    import Card from '$lib/components/Card.svelte'; // Import the Card component
     
     // Research projects data
     const researchProjects = [
@@ -41,23 +42,17 @@
     
     <div class="research-grid">
         {#each researchProjects as project}
-            <div class="project-card">
-                <div class="project-card-image">
-                    <img src={project.imageUrl} alt={project.title} class="w-full h-auto" />
-                </div>
-                <div class="project-card-body">
-                    <h2 class="project-card-title">
-                        <a href={`${base}/research/${project.id}`} class="text-dark hover:text-primary">
-                            {project.title}
-                        </a>
-                    </h2>
-                    <p class="project-card-years">{project.years}</p>
-                    <p class="project-card-description">{project.shortDescription}</p>
-                    <a href={`${base}/research/${project.id}`} class="project-card-link">
-                        Read more →
-                    </a>
-                </div>
-            </div>
+            <Card 
+                title={project.title} 
+                imageUrl={project.imageUrl} 
+                linkUrl={`${base}/research/${project.id}`} 
+                target="_self"
+            >
+                <span slot="subtitle">{project.years}</span>
+                <!-- Default slot for description -->
+                {project.shortDescription}
+                <a slot="action" href={`${base}/research/${project.id}`}>Read more →</a>
+            </Card>
         {/each}
     </div>
 </div>
@@ -70,96 +65,38 @@
     }
     
     .project-section-title {
-        font-size: 2.5rem;
+        font-size: 2.5rem; /* Consider var(--font-size-3xl) or similar */
         font-weight: 700;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.5rem; /* Consider var(--spacing-6) */
         color: var(--color-primary, #333);
+    }
+
+    .text-xl {
+         /* Already defined in typography.css - maybe remove if not needed */
+         font-size: 1.25rem; /* Consider var(--font-size-xl) */
+    }
+    .mb-10 {
+        /* Already defined in spacing.css - maybe remove if not needed */
+        margin-bottom: 2.5rem; /* Consider var(--spacing-10) */
     }
     
     .research-grid {
         display: grid;
         grid-template-columns: repeat(1, 1fr);
-        gap: 2rem;
-        margin-top: 2rem;
+        gap: var(--spacing-8); /* Use variable */
+        margin-top: 2rem; /* Consider var(--spacing-8) */
     }
+        
+    /* Remove old card styles - Handled by Card component */
+    /* .project-card, .project-card:hover, .project-card-image, ... etc. */
     
-    .project-card {
-        display: flex;
-        flex-direction: column;
-        border-radius: 0.5rem;
-        overflow: hidden;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .project-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    }
-    
-    .project-card-image {
-        overflow: hidden;
-        max-height: 250px;
-    }
-    
-    .project-card-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-    }
-    
-    .project-card:hover .project-card-image img {
-        transform: scale(1.05);
-    }
-    
-    .project-card-body {
-        padding: 1.5rem;
-        background-color: white;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .project-card-title {
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
-        line-height: 1.3;
-    }
-    
-    .project-card-years {
-        font-size: 0.9rem;
-        color: var(--color-text-secondary, #666);
-        margin-bottom: 1rem;
-    }
-    
-    .project-card-description {
-        margin-bottom: 1.5rem;
-        flex-grow: 1;
-    }
-    
-    .project-card-link {
-        display: inline-block;
-        color: var(--color-primary, #0066cc);
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.2s ease;
-    }
-    
-    .project-card-link:hover {
-        color: var(--color-primary-dark, #004c99);
-        text-decoration: underline;
-    }
-    
+    /* Responsive grid adjustments */
     @media (min-width: 640px) {
         .research-grid {
             grid-template-columns: repeat(2, 1fr);
         }
     }
     
-    @media (min-width: 1024px) {
-        .research-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
+    /* No need for 1024px breakpoint adjustment if 2 columns is sufficient */
+
 </style> 
