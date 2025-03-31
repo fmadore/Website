@@ -113,7 +113,7 @@
     
     {#if activity.heroImage}
         <div class="activity-hero">
-            <img 
+            <figure> <img 
                 src="{base}/{activity.heroImage.src}" 
                 alt={activity.heroImage.alt} 
                 class="activity-image"
@@ -122,7 +122,7 @@
                 <figcaption class="activity-image-caption">
                     {activity.heroImage.caption}
                 </figcaption>
-            {/if}
+            {/if} </figure>
         </div>
     {/if}
     
@@ -142,11 +142,6 @@
 </div>
 
 <style>
-    .activity-detail {
-        max-width: 800px;
-        margin: 0 auto;
-    }
-    
     .activity-meta {
         display: flex;
         flex-wrap: wrap;
@@ -191,39 +186,5 @@
     .activity-content :global(p) {
         margin-bottom: var(--spacing-4);
         line-height: 1.7;
-    }
-    
-    .activity-actions {
-        margin-top: var(--spacing-8);
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--spacing-4);
-    }
-    
-    .btn {
-        display: inline-block;
-        padding: 0.5rem 1.5rem;
-        text-decoration: none;
-        border-radius: var(--border-radius-md);
-        font-weight: 600;
-        transition: background-color 0.2s;
-    }
-    
-    .btn-primary {
-        background-color: var(--color-primary);
-        color: white;
-    }
-    
-    .btn-primary:hover {
-        background-color: var(--color-primary-dark);
-    }
-    
-    .btn-secondary {
-        background-color: var(--color-gray-200);
-        color: var(--color-text);
-    }
-    
-    .btn-secondary:hover {
-        background-color: var(--color-gray-300);
     }
 </style> 
