@@ -94,7 +94,7 @@
                 <img 
                     src="{base}/{publication.heroImage.src}" 
                     alt="{publication.heroImage.alt || publication.title}"
-                    class="w-full max-w-md h-auto rounded-md mx-auto"
+                    class="w-full max-w-xs h-auto rounded-md mx-auto"
                 >
                 {#if publication.heroImage.caption}
                     <figcaption class="text-text-muted text-sm mt-2 italic text-center">
@@ -106,7 +106,7 @@
             <img 
                 src="{base}/{publication.image}" 
                 alt="{publication.title}"
-                class="mb-6 w-full max-w-md h-auto rounded-md mx-auto"
+                class="mb-6 w-full max-w-xs h-auto rounded-md mx-auto"
             >
         {/if}
         
