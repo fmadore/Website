@@ -239,8 +239,20 @@
                 </div>
             {/if}
             {#if publication.project}
+                {@const projectMappings: Record<string, string> = {
+                    "Religious Activism on Campuses in Togo and Benin": `${base}/research/religious-activism-campuses-togo-benin`,
+                    "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso": `${base}/research/youth-womens-islamic-activism-cote-divoire-burkina-faso`,
+                    "Muslim Minorities in Southern Cities of Benin and Togo": `${base}/research/muslim-minorities-southern-cities-benin-togo`,
+                    "Mining the Islam West Africa Collection": `${base}/research/mining-the-islam-west-africa-collection}`
+                }}
+                {@const projectUrl = projectMappings[publication.project]}
                 <div>
-                    <strong>Project:</strong> <a href="{base}/research/{publication.project.toLowerCase().replace(/\s+/g, '-')}" class="text-primary hover:underline">{publication.project}</a>
+                    <strong>Project:</strong> 
+                    {#if projectUrl}
+                        <a href="{projectUrl}" class="text-primary hover:underline">{publication.project}</a>
+                    {:else}
+                        {publication.project} <!-- Display as text if no mapping exists -->
+                    {/if}
                 </div>
             {/if}
             {#if publication.country && publication.country.length > 0}
