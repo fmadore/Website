@@ -125,26 +125,6 @@
         color: white;
     }
     
-    .activity-list {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-    }
-    
-    .activity-item {
-        margin-bottom: var(--spacing-6);
-        padding-bottom: var(--spacing-6);
-        border-bottom: 1px solid var(--color-border-light);
-    }
-    
-    .activity-meta {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: var(--spacing-4);
-        margin-bottom: var(--spacing-2);
-    }
-    
     .activity-date {
         font-size: var(--font-size-sm);
         color: var(--color-text-muted);
@@ -182,23 +162,5 @@
     .activity-description {
         margin-top: var(--spacing-2);
         color: var(--color-text-secondary);
-    }
-    
-    .btn {
-        display: inline-block;
-        padding: 0.5rem 1.5rem;
-        text-decoration: none;
-        border-radius: var(--border-radius-md);
-        font-weight: 600;
-        transition: background-color 0.2s;
-    }
-    
-    .btn-primary {
-        background-color: var(--color-primary);
-        color: white;
-    }
-    
-    .btn-primary:hover {
-        background-color: var(--color-primary-dark);
     }
 </style> 
