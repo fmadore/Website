@@ -18,5 +18,6 @@ export const publishingIslamBurkinaFasoCollection: Communication = {
         latitude: 52.4537,
         longitude: 13.2879
     },
+    image: "images/communications/publishing-islam-burkina-faso-collection-2022.jpg",
     project: "Mining the Islam West Africa Collection"
 }; 
