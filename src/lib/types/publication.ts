@@ -1,3 +1,12 @@
+// Define the structure for a work that cites this publication
+export type CitingWork = {
+    authors: string[];    // Array of authors of the citing work
+    year: number;         // Year of publication of the citing work
+    title: string;        // Title of the citing work
+    source?: string;      // Optional: Journal, book title, etc.
+    url?: string;         // Optional: URL or DOI to the citing work
+};
+
 export type Publication = {
     id: string;           // URL-friendly ID for routing
     type: 'book' | 'article' | 'chapter' | 'special-issue' | 'report' | 'encyclopedia' | 'blogpost' | 'dissertation'; // Publication type for faceting
@@ -44,4 +53,5 @@ export type Publication = {
     // New fields
     country?: string[];   // Countries covered in the publication
     project?: string;     // Project name the publication relates to
+    citedBy?: CitingWork[]; // Optional: Array of works citing this publication
 }; 
