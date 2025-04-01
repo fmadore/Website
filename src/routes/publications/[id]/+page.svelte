@@ -3,6 +3,7 @@
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
     import type { Publication } from '$lib/types';
+    import CitedBy from '$lib/components/publications/CitedBy.svelte';
     
     // Get publication from the page data
     export let data;
@@ -296,33 +297,8 @@
         </section>
     </article>
 
-    <!-- Cited By section -->
-    {#if publication.citedBy && publication.citedBy.length > 0}
-        <section class="mt-8 cited-by-section">
-            <h2 class="text-xl font-semibold mb-4">Cited By</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {#each publication.citedBy as citingWork}
-                    <div class="citing-work-card bg-gray-50 p-4 rounded-md shadow-sm border border-gray-100">
-                        <div class="font-semibold text-lg mb-1">
-                            {#if citingWork.url}
-                                <a href="{citingWork.url}" target="_blank" rel="noopener" class="text-primary hover:underline">{citingWork.title}</a>
-                            {:else}
-                                {citingWork.title}
-                            {/if}
-                        </div>
-                        <div class="text-sm text-text-secondary mb-1">
-                            {citingWork.authors.join(', ')} ({citingWork.year})
-                        </div>
-                        {#if citingWork.source}
-                            <div class="text-sm italic text-text-muted">
-                                {citingWork.source}
-                            </div>
-                        {/if}
-                    </div>
-                {/each}
-            </div>
-        </section>
-    {/if}
+    <!-- Use the CitedBy component -->
+    <CitedBy citedBy={publication.citedBy} />
 
     <!-- Related publications by same project, if any -->
     {#if publication.project}
