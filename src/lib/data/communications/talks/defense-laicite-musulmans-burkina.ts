@@ -13,7 +13,7 @@ export const defenseLaiciteMusulmansBurkina: Communication = {
     type: "workshop",
     language: "French",
     tags: ["Secularism", "Burkina Faso", "Islam", "Political Claims", "State-Religion Relations"],
-    image: "images/communications/defense-laicite-musulmans-burkina.jpg",
+    image: "images/communications/workshop-Dakar-2019.jpg",
     coordinates: {
         latitude: 14.690999882866137,
         longitude: -17.471180613754807
