@@ -14,7 +14,7 @@ export const salafismePentecotismeCampusBeninTogo: Communication = {
     language: "French",
     abstract: "Généralement présentées comme étant à l’avant-garde de la lutte contre le (néo) colonialisme, une pépinière d’élites en devenir, un bastion des idéologies révolutionnaires de gauche ou encore un haut lieu de contestation des régimes autoritaires, les universités d’Afrique subsaharienne sont pourtant caractérisées par la forte présence du religieux depuis les années 1990. Ce phénomène, qui demeure sous-étudié, s’est notamment traduit par la multiplication d’associations islamiques et chrétiennes sur les campus. Cette conférence présentera les premiers résultats d’un nouveau projet de recherche sur la concurrence entre les groupes salafistes et (néo) pentecôtistes dans les universités du Bénin et du Togo. L’activisme religieux dans la sphère universitaire amène à s’interroger sur la laïcité dans les établissements d’enseignement supérieur de la région.",
     tags: ["Salafism", "Pentecostalism", "Universities", "Benin", "Togo", "Secularism"],
-    image: "images/communications/salafisme-pentecotisme-campus-benin-togo.jpg",
+    image: "images/communications/salafisme-pentecotisme-campus-benin-togo.png",
     coordinates: {
         latitude: 46.7793,
         longitude: -71.2825
