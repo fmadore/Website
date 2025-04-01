@@ -18,5 +18,6 @@ export const islamUniversityCampusesCoteDIvoire: Communication = {
         latitude: 55.9445,
         longitude: -3.1892
     },
+    image: "images/communications/islam-university-campuses-cote-divoire-2019.jpg",
     project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 
