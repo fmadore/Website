@@ -12,9 +12,11 @@
     let allYears: number[] = [];
     
     // Subscribe to the store and update data
-    const unsubscribe = activities.subscribe(value => {
-        filteredActivities = value.filter(a => a.year === year);
-        allYears = [...new Set(value.map(a => a.year))].sort((a, b) => b - a);
+    const unsubscribe = activities.subscribe((value: Activity[]) => {
+        filteredActivities = value.filter((a: Activity) => a.year === year);
+        allYears = [
+            ...new Set(value.map((a: Activity) => a.year))
+        ].sort((a: number, b: number) => b - a);
     });
     
     // Clean up subscription on component destroy
@@ -26,8 +28,8 @@
     
     // Update filtered activities when year changes
     $: if (year) {
-        activities.subscribe(value => {
-            filteredActivities = value.filter(a => a.year === year);
+        activities.subscribe((value: Activity[]) => {
+            filteredActivities = value.filter((a: Activity) => a.year === year);
         })();
     }
 </script>

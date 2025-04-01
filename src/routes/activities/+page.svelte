@@ -8,9 +8,11 @@
     let years: number[] = [];
     
     // Subscribe to the activities store
-    const unsubscribe = activities.subscribe(value => {
+    const unsubscribe = activities.subscribe((value: Activity[]) => {
         activityList = value;
-        years = [...new Set(value.map(activity => activity.year))].sort((a, b) => b - a);
+        years = [
+            ...new Set(value.map((activity: Activity) => activity.year))
+        ].sort((a: number, b: number) => b - a);
     });
     
     // Clean up subscription on component destroy
@@ -22,7 +24,7 @@
     
     // Get activities count by year for display
     function getCountByYear(year: number): number {
-        return activityList.filter(activity => activity.year === year).length;
+        return activityList.filter((activity: Activity) => activity.year === year).length;
     }
 </script>
 

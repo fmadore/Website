@@ -3,8 +3,6 @@
 	import Header from '$lib/Header.svelte';
 	import Footer from '$lib/Footer.svelte';
 	import SpaRedirectHandler from '$lib/SpaRedirectHandler.svelte';
-
-	let { children } = $props();
 </script>
 
 <SpaRedirectHandler />
@@ -14,7 +12,6 @@
 
 	<main class="site-main">
 		<div class="container mx-auto p-8">
-			{@render children()}
 		</div>
 	</main>
 

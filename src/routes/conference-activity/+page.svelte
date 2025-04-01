@@ -6,6 +6,8 @@
         clearAllFilters // Import clear function for button
     } from '$lib/data/communications/filters';
     import { allCoordinates } from '$lib/data/communications'; // Import coordinates
+    // Import the Communication type
+    import type { Communication } from '$lib/types/communication';
     import FiltersSidebar from '$lib/components/communications/FiltersSidebar.svelte';
     import CommunicationItem from '$lib/components/communications/CommunicationItem.svelte';
     import MapVisualization from '$lib/components/communications/MapVisualization.svelte'; // Import map
@@ -15,11 +17,13 @@
 
     // Reactive statement to update markers based on filtered communications
     $: mapMarkers = $filteredCommunications
-        ?.filter(comm => comm.coordinates) // Only include those with coordinates
-        .map(comm => ({
+        // Add explicit type to filter callback parameter
+        ?.filter((comm: Communication) => comm.coordinates) // Only include those with coordinates
+        // Add explicit type to map callback parameter
+        .map((comm: Communication) => ({
             id: comm.id,
             title: comm.title,
-            coordinates: comm.coordinates!,
+            coordinates: comm.coordinates!, // Non-null assertion because we filtered
             year: comm.year
         })) || []; // Default to empty array if filteredCommunications is null/undefined
 
