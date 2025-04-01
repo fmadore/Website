@@ -13,7 +13,6 @@ export const politicalMobilizationsBurkinaFaso: Communication = {
     type: "workshop",
     language: "English",
     tags: ["Political Mobilization", "Burkina Faso", "West Africa", "Political Studies"],
-    image: "images/communications/political-mobilizations-burkina-faso.jpg",
     coordinates: {
         latitude: 45.4231,
         longitude: -75.6831
