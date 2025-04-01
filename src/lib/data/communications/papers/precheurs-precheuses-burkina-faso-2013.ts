@@ -18,5 +18,6 @@ export const precheursPrecheusesaBurkinaFaso: Communication = {
         latitude: 46.7793,
         longitude: -71.2825
     },
+    image: "images/communications/acfas_81e.webp",
     project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 
