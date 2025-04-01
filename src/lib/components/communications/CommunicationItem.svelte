@@ -19,7 +19,7 @@
 </script>
 
 <li class="card p-4 mb-4 hover-shadow">
-    <div class="grid md:grid-cols-1 gap-4">
+    <div class="grid md:grid-cols-4 gap-4">
         {#if communication?.image}
             <div class="col-span-1">
                 <img 
@@ -30,7 +30,7 @@
             </div>
         {/if}
         
-        <div class="col-span-1">
+        <div class="{communication.image ? 'col-span-3' : 'col-span-4'}">
             <div class="mb-2">
                 <span class="text-primary text-sm">{typeLabels[communication?.type || 'conference'] || communication?.type || 'Conference'}</span>
                 {#if communication?.language && communication.language !== 'English'}
@@ -144,7 +144,8 @@
     
     .communication-image {
         width: 100%;
-        height: auto;
+        max-height: 200px; /* Limit height */
+        object-fit: cover; /* Ensure image covers the area well */
         border-radius: 4px;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
