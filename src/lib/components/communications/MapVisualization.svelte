@@ -31,7 +31,10 @@
     import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
 
     onMount(async () => {
+        // Dynamically import Leaflet first
         L = (await import('leaflet')).default;
+        // THEN dynamically import the marker cluster plugin
+        await import('leaflet.markercluster');
 
         delete (L.Icon.Default.prototype as any)._getIconUrl;
         L.Icon.Default.mergeOptions({
