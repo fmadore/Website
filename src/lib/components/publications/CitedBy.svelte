@@ -5,7 +5,7 @@
     export let citedBy: CitingWork[] = [];
 
     // Sort the array by year descending
-    $: sortedCitedBy = citedBy.sort((a, b) => b.year - a.year);
+    $: sortedCitedBy = (citedBy || []).sort((a, b) => b.year - a.year);
 </script>
 
 {#if sortedCitedBy && sortedCitedBy.length > 0}
