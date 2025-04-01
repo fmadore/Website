@@ -13,6 +13,8 @@
             // Clean up the URL without causing a page reload
             const cleanPath = `${base}${path}`;
             window.history.replaceState(null, '', cleanPath);
+            // Navigate to the correct path within the SPA
+            goto(cleanPath, { replaceState: true });
         }
     });
 </script> 
