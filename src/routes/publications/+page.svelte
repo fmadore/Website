@@ -27,13 +27,14 @@
 />
 
 <div class="container mx-auto py-6">
+    <h1 class="mb-6 text-primary">Publications</h1>
+
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div class="md:col-span-1">
             <FiltersSidebar />
         </div>
 
         <main class="md:col-span-3">
-            <h1 class="text-dark text-2xl mb-4">Publications</h1>
             
             <div class="text-light mb-6">
                 Showing {$filteredPublications.length} publications

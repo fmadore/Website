@@ -58,21 +58,24 @@
 />
 
 <div class="container mx-auto py-6">
+    <!-- Moved Title and Toggle Button outside the grid -->
+    <div class="flex justify-between items-center mb-6"> 
+         <h1 class="text-primary">Conference Activity</h1> <!-- Added text-primary -->
+         <!-- Use ToggleButton component -->
+         <ToggleButton 
+            baseText="Map"
+            bind:isToggled={showMap} 
+            on:toggle={() => showMap = !showMap}
+         />
+    </div>
+
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div class="md:col-span-1">
             <FiltersSidebar />
         </div>
 
         <main class="md:col-span-3">
-            <div class="flex justify-between items-center mb-4">
-                 <h1 class="text-dark text-2xl">Conference Activity</h1>
-                 <!-- Use ToggleButton component -->
-                 <ToggleButton 
-                    baseText="Map"
-                    bind:isToggled={showMap} 
-                    on:toggle={() => showMap = !showMap}
-                 />
-            </div>
+            <!-- Removed Title and Toggle Button div from here -->
             
             <!-- Conditionally render Map Visualization -->
             {#if showMap}
