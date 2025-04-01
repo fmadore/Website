@@ -18,5 +18,6 @@ export const islamBurkinaFasoCollectionOmeka: Communication = {
         latitude: 49.9427,
         longitude: 11.5674
     },
+    image: "images/communications/islam-burkina-faso-collection-omeka-2022.jpg",
     project: "Mining the Islam West Africa Collection"
 }; 
