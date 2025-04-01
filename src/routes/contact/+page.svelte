@@ -1,60 +1,116 @@
-<script>
-    import { base } from '$app/paths';
-    
-    // Social media links
-    const socialLinks = [
-        { name: 'LinkedIn', icon: 'linkedin', url: 'https://linkedin.com/in/username', description: 'Connect with me on LinkedIn' },
-        { name: 'GitHub', icon: 'github', url: 'https://github.com/username', description: 'View my code repositories' },
-        { name: 'ORCID', icon: 'orcid', url: 'https://orcid.org/0000-0000-0000-0000', description: 'View my ORCID profile' },
-        { name: 'Bluesky', icon: 'bluesky', url: 'https://bluesky.com/username', description: 'Follow me on Bluesky' },
-        { name: 'Mastodon', icon: 'mastodon', url: 'https://mastodon.social/@username', description: 'Follow me on Mastodon' },
-        { name: 'Google Scholar', icon: 'google-scholar', url: 'https://scholar.google.com/citations?user=userid', description: 'View my publications on Google Scholar' },
-        { name: 'ResearchGate', icon: 'researchgate', url: 'https://researchgate.net/profile/username', description: 'Follow my research on ResearchGate' },
-        { name: 'Knowledge Commons', icon: 'commons', url: 'https://knowledgecommons.org/username', description: 'View my shared research' },
-        { name: 'Academia.edu', icon: 'academia', url: 'https://academia.edu/username', description: 'Follow me on Academia.edu' }
-    ];
+<script lang="ts">
+	import { base } from '$app/paths';
+	import {
+		Mail,
+		Linkedin,
+		Github,
+		Info,
+		Cloud,
+		MessageSquare, // Mastodon substitute
+		GraduationCap, // Google Scholar / Academia substitute
+		Network, // ResearchGate substitute
+		Library, // Knowledge Commons substitute
+		Download // Added for button
+	} from 'lucide-svelte';
+
+	// Correct social media links (matching Footer)
+	const socialLinks = [
+		// Email is handled separately
+		{ name: 'LinkedIn', icon: 'linkedin', url: 'https://www.linkedin.com/in/frederickmadore/', description: 'Connect professionally' },
+		{ name: 'GitHub', icon: 'github', url: 'https://github.com/fmadore', description: 'View code projects' },
+		{ name: 'ORCID', icon: 'orcid', url: 'https://orcid.org/0000-0003-0959-2092', description: 'Academic identifier' },
+		{ name: 'Bluesky', icon: 'bluesky', url: 'https://bsky.app/profile/fmadore.bsky.social', description: 'Follow on Bluesky' },
+		{ name: 'Mastodon', icon: 'mastodon', url: 'https://hcommons.social/@fmadore', description: 'Follow on Mastodon' },
+		{ name: 'Google Scholar', icon: 'google-scholar', url: 'https://scholar.google.com/citations?user=naUK0RQAAAAJ&', description: 'View publications' },
+		{ name: 'ResearchGate', icon: 'researchgate', url: 'https://www.researchgate.net/profile/Frederick-Madore', description: 'Follow research updates' },
+		{ name: 'Knowledge Commons', icon: 'commons', url: 'https://hcommons.org/members/fmadore/', description: 'Humanities Commons profile' },
+		{ name: 'Academia.edu', icon: 'academia', url: 'https://zmo.academia.edu/FrederickMadore', description: 'Follow on Academia.edu' }
+	];
+
+	// Map icon names to Lucide components (matching Footer)
+	const iconMap = {
+		// email: Mail, // Not used in this list
+		linkedin: Linkedin,
+		github: Github,
+		orcid: Info, // Substitute
+		bluesky: Cloud, // Substitute
+		mastodon: MessageSquare, // Substitute
+		'google-scholar': GraduationCap, // Substitute
+		researchgate: Network, // Substitute
+		commons: Library, // Substitute
+		academia: GraduationCap // Substitute
+	};
+
+	type IconKey = keyof typeof iconMap;
+
 </script>
 
-<div class="prose">
-    <h1 class="contact-section-title">Contact</h1>
-    
-    <div class="contact-section">
-        <h2 class="section-title">Contact Information</h2>
-        <div class="contact-info">
-            <p>
-                <strong>Email:</strong> 
-                <a href="mailto:contact@frederickmadore.com">
-                    contact@frederickmadore.com
-                </a>
-            </p>
-            
-            <p class="contact-address">
-                <strong>Institutional Address:</strong><br>
-                Leibniz-Zentrum Moderner Orient (ZMO)<br>
-                Kirchweg 33<br>
-                14129 Berlin<br>
-                Germany
-            </p>
-        </div>
-    </div>
-    
-    <div class="contact-section">
-        <h2 class="section-title">Connect with me</h2>
-        <div class="social-links-grid">
-            {#each socialLinks as link}
-                <a href={link.url} 
-                   class="social-link-card"
-                   target="_blank" 
-                   rel="noopener noreferrer">
-                    <div class="social-icon">
-                        <span class="social-icon-letter">{link.name.charAt(0)}</span>
-                    </div>
-                    <div class="social-link-content">
-                        <h3>{link.name}</h3>
-                        <p class="social-link-description">{link.description}</p>
-                    </div>
-                </a>
-            {/each}
-        </div>
-    </div>
+<div class="container py-12">
+	<h1 class="text-3xl font-bold mb-8 text-primary">Contact</h1>
+
+	<div class="grid md:grid-cols-2 gap-12">
+		<div class="contact-section">
+			<h2 class="contact-section-title">Contact Information</h2>
+			<div class="contact-info space-y-4">
+				<p>
+					<strong>Email:</strong>
+					<a href="mailto:frederick.madore@zmo.de" class="hover:underline">
+						frederick.madore@zmo.de
+					</a>
+				</p>
+
+				<!-- Business Card Download Button -->
+				<a 
+					href="{base}/files/visitenkarte.pdf" 
+					class="btn btn-primary btn-icon mt-4"
+					target="_blank" rel="noopener noreferrer"
+					>
+					<Download size={18} aria-hidden="true" />
+					View Business Card
+				</a>
+
+				<div>
+					<p class="contact-address mb-4">
+						<strong>Institutional Address:</strong><br />
+						Leibniz-Zentrum Moderner Orient (ZMO)<br />
+						Kirchweg 33<br />
+						14129 Berlin<br />
+						Germany
+					</p>
+					<img 
+						src="{base}/images/zmo.webp" 
+						alt="Leibniz-Zentrum Moderner Orient (ZMO) building exterior"
+						class="rounded-lg shadow-md w-full max-w-sm"
+					/>
+				</div>
+			</div>
+		</div>
+
+		<div class="contact-section">
+			<h2 class="contact-section-title">Connect Online</h2>
+			<div class="social-links-grid">
+				{#each socialLinks as link}
+					{@const iconComponent = iconMap[link.icon as IconKey]}
+					<a
+						href={link.url}
+						class="social-link-card"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<div class="social-icon">
+							{#if iconComponent}
+								<svelte:component this={iconComponent} size={24} aria-hidden="true" class="text-secondary"/>
+							{:else}
+								<span class="social-icon-letter">{link.name.charAt(0)}</span>
+							{/if}
+						</div>
+						<div class="social-link-content">
+							<h3 class="text-lg font-medium">{link.name}</h3>
+							<p class="social-link-description">{link.description}</p>
+						</div>
+					</a>
+				{/each}
+			</div>
+		</div>
+	</div>
 </div> 

@@ -18,13 +18,14 @@
   margin-bottom: var(--spacing-3);
 }
 
-.contact-info a {
+/* Apply color only to links that are NOT buttons */
+.contact-info a:not(.btn) {
   color: var(--color-primary);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
-.contact-info a:hover {
+.contact-info a:not(.btn):hover {
   color: var(--color-primary-dark);
 }
 
