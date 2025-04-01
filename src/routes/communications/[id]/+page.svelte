@@ -109,6 +109,12 @@
                 </div>
             {/if}
             
+            {#if communication.type === 'conference' && communication.panelTitle}
+                <div>
+                    <strong>Panel:</strong> {communication.panelTitle}
+                </div>
+            {/if}
+            
             {#if communication.location}
                 <div>
                     <strong>Location:</strong> {communication.location}

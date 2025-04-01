@@ -9,6 +9,7 @@ export const paperTemplate: Communication = {
     dateISO: "2025-06-15", // Use YYYY-MM-DD format for sorting
     year: 2025,
     conference: "Conference Name", // Name of the conference or event
+    panelTitle: "Optional Panel Title", // Optional: Title of the panel the paper was part of
     location: "City, Venue", // City and venue where the paper was presented
     country: "Country", // Country where the conference was held
     type: "conference", // Options: 'conference', 'workshop', 'seminar', 'lecture', 'panel'

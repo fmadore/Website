@@ -6,6 +6,7 @@ export type Communication = {
     dateISO: string;        // ISO date format (YYYY-MM-DD) for sorting
     year: number;           // Year for filtering
     conference: string;     // Name of the conference
+    panelTitle?: string;    // Optional: Title of the panel the paper was presented in
     location: string;       // City/venue
     country: string;        // Country where the conference took place
     abstract?: string;      // Abstract or description (optional)
