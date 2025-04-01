@@ -18,5 +18,6 @@ export const islamIvoirienBurkinabeNumerique: Communication = {
         latitude: 48.8290,
         longitude: 2.3820
     },
+    image: "images/communications/islam-ivoirien-burkinabe-numerique-2016.jpg",
     project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 
