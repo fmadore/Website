@@ -17,11 +17,6 @@ export const muslimMinoritiesAfrica1: Publication = {
     tags: ["Islam", "Africa", "religious minorities", "Muslim communities", "interfaith relations", "special issue", "religious coexistence"],
     url: "https://brill.com/view/journals/iafr/12/2/iafr.12.issue-2.xml",
     image: "images/publications/muslim-minorities-africa.jpg",
-    heroImage: {
-        src: "images/publications/muslim-minorities-africa-hero.jpg",
-        alt: "Cover of the special issue on Muslim Minorities in Africa",
-        caption: "Special issue of Islamic Africa on Muslim Minorities in Africa, Part 1"
-    },
     isEditedWork: true,
     project: "Muslim Minorities in Southern Cities of Benin and Togo"
 }; 
