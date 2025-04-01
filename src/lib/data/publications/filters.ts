@@ -155,7 +155,10 @@ export function toggleTypeFilter(type: string) {
 
 // Add function to update year range
 export function updateYearRange(min: number, max: number) {
-    activeFilters.update(filters => ({ ...filters, yearRange: { min, max } }));
+    // Ensure min is not greater than max before updating
+    const validatedMin = Math.min(min, max);
+    const validatedMax = Math.max(min, max);
+    activeFilters.update(filters => ({ ...filters, yearRange: { min: validatedMin, max: validatedMax } }));
 }
 
 // Add function to reset year range filter
