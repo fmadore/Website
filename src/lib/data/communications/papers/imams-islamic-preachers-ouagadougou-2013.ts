@@ -8,6 +8,7 @@ export const imamsIslamicPreachersOuagadougou: Communication = {
     dateISO: "2013-03-29",
     year: 2013,
     conference: "2013 Africa Conference",
+    panelTitle: "Uses of Media in African Social Movements",
     location: "University of Texas at Austin",
     country: "United States",
     type: "conference",
