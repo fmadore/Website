@@ -10,15 +10,19 @@
 
 <script lang="ts">
     import { onMount, onDestroy, afterUpdate } from 'svelte';
-    import type { Map as LeafletMap, FeatureGroup as LeafletFeatureGroup } from 'leaflet'; // Import types only
+    import type { Map as LeafletMap, FeatureGroup as LeafletFeatureGroup, MarkerClusterGroup } from 'leaflet'; // Import types only
     import 'leaflet/dist/leaflet.css';
     import { base } from '$app/paths'; // Import base path
+    // Import marker cluster styles
+    import 'leaflet.markercluster/dist/MarkerCluster.css';
+    import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
     export let markersData: MarkerData[] = [];
 
     let mapContainer: HTMLElement;
     let map: LeafletMap | null = null;
-    let markersLayer: LeafletFeatureGroup | null = null;
+    // let markersLayer: LeafletFeatureGroup | null = null; // Replace FeatureGroup
+    let clusterLayer: MarkerClusterGroup | null = null; // Use MarkerClusterGroup
     let L: typeof import('leaflet') | null = null;
 
     // Icon paths remain static imports
@@ -49,8 +53,9 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
         
-        // Initialize marker layer group
-        markersLayer = L.featureGroup().addTo(map);
+        // Initialize marker cluster layer group
+        // markersLayer = L.featureGroup().addTo(map);
+        clusterLayer = L.markerClusterGroup().addTo(map); // Initialize cluster group
 
         // Add initial markers
         addMarkers(markersData);
@@ -60,13 +65,13 @@
 
     // Function to add/update markers
     function addMarkers(data: MarkerData[]) {
-        // Check for L, map, and markersLayer
-        if (!L || !map || !markersLayer) {
-            console.warn('Leaflet library or map/markers layer not ready.');
+        // Check for L, map, and clusterLayer
+        if (!L || !map || !clusterLayer) {
+            console.warn('Leaflet library, map, or cluster layer not ready.');
             return;
         }
 
-        markersLayer.clearLayers();
+        clusterLayer.clearLayers(); // Clear the cluster layer
 
         data.forEach(item => {
             if (item.coordinates) {
@@ -81,12 +86,12 @@
                 `;
 
                 marker.bindPopup(popupContent, { className: 'map-popup' });
-                markersLayer?.addLayer(marker);
+                clusterLayer?.addLayer(marker); // Add marker to cluster layer
             }
         });
 
-         if (data.length > 0 && markersLayer.getLayers().length > 0) {
-            const bounds = markersLayer.getBounds();
+         if (data.length > 0 && clusterLayer.getLayers().length > 0) {
+            const bounds = clusterLayer.getBounds();
             if (bounds.isValid()) {
                 map.fitBounds(bounds, { padding: [50, 50], maxZoom: 10 });
             }
