@@ -13,7 +13,6 @@ export const formationRechercheEnLigneNiamey: Communication = {
     type: "lecture",
     language: "French",
     tags: ["Research Methods", "Online Research", "Training", "Niger"],
-    image: "images/communications/formation-recherche-en-ligne-niamey.jpg",
     coordinates: {
         latitude: 13.51766342197132,
         longitude: 2.101838007060417
