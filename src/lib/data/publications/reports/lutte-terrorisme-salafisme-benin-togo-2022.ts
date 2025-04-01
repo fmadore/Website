@@ -26,6 +26,27 @@ export const lutteTerrorismeSalafismeBeninTogo: Publication = {
             title: "Réactions citoyennes face à l'extrémisme violent dans la ville de Sokodé au Togo : la négligence d'une menace sérieuse",
             source: "Cahiers de Conflits, no. 10, pp. 57-84",
             url: "https://doi.org/10.3917/cdc.252.0057"
+        },
+        {
+            authors: ["Maxime Ricard"],
+            year: 2023,
+            title: "Sortir de l'engrenage ? Les États côtiers d'Afrique de l'Ouest face au développement des insurrections djihadistes",
+            source: "Diplomatie, no. 122, pp. 52-55",
+            url: "https://www.jstor.org/stable/48737926"
+        },
+        {
+            authors: ["Sinagabe O. Ulysse Korogone"],
+            year: 2023,
+            title: "Insécurité et criminalité liée aux espèces sauvages dans les aires protégées : implication pour la conservation des espèces CITES au Bénin",
+            source: "Masters Thesis, International University of Andalucía",
+            url: "https://dspace.unia.es/handle/10334/7996"
+        },
+        {
+            authors: ["Jeannett Martin", "Abiguël Elijan", "Nikolaus Schareika"],
+            year: 2025,
+            title: "Covid-19 and Pastoralism in Northern Benin",
+            source: "Nomadic Peoples",
+            url: "https://doi.org/10.3828/whpnp.63837646691073"
         }
     ]
 }; 
