@@ -18,5 +18,6 @@ export const salafismeSecuritisationBeninTogo: Communication = {
         latitude: 10.6124,
         longitude: 14.3244
     },
+    image: "images/communications/salafisme-securitisation-benin-togo-2022.jpg",
     project: "Muslim Minorities in Southern Cities of Benin and Togo"
 }; 
