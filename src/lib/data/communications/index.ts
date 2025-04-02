@@ -1,63 +1,37 @@
 import type { Communication } from '$lib/types/communication';
+import { loadData } from '$lib/utils/dataLoader'; // Import the new utility function
 
-// Define a type for module imports
+// Define a type for module imports (can be kept or potentially inferred)
 type ModuleType = Record<string, any>;
 
-// Dynamically import all communication files from papers, panels, talks, and events subfolders
-const communicationContext = import.meta.glob<ModuleType>('./papers/**/*.ts', { eager: true });
-const panelContext = import.meta.glob<ModuleType>('./panels/**/*.ts', { eager: true });
-const talkContext = import.meta.glob<ModuleType>('./talks/**/*.ts', { eager: true });
-const eventContext = import.meta.glob<ModuleType>('./events/**/*.ts', { eager: true });
+// Define all template IDs to filter out
+const templateIds = [
+    'paper-template-id',
+    'panel-template-id',
+    'talk-template-id',
+    'event-template-id'
+];
 
-// Merge the contexts
-const allContexts = { ...communicationContext, ...panelContext, ...talkContext, ...eventContext };
+// Dynamically import all communication files from relevant subfolders
+const communicationModules = import.meta.glob<ModuleType>(
+    [
+        './papers/**/*.ts',
+        './panels/**/*.ts',
+        './talks/**/*.ts',
+        './events/**/*.ts'
+    ],
+    { eager: true }
+);
 
-// Debug: Log the keys we're importing
-console.log('Communication files being loaded:', Object.keys(allContexts));
+// Debug: Log the keys we're importing (optional, can be removed)
+console.log('Communication files being loaded (using glob): ', Object.keys(communicationModules));
 
-const allCommunications: Communication[] = Object.values(allContexts)
-    .filter((module): module is ModuleType => {
-        if (!module || typeof module !== 'object') {
-            console.warn('Skipping module that is not an object:', module);
-            return false;
-        }
-        return true;
-    })
-    .map((module, index) => {
-        try {
-            // Log the module keys to see what's being processed
-            const moduleKeys = Object.keys(module);
-            // If there's a default export, use it, otherwise take the first exported value
-            const communication = 'default' in module 
-                ? module.default 
-                : Object.values(module)[0];
-                
-            // Check for circular references that might cause serialization issues
-            if (communication === module) {
-                console.warn('Circular reference detected in module:', moduleKeys);
-                return null;
-            }
-            
-            return communication as Communication;
-        } catch (error) {
-            // Include more context about which file caused the error
-            const files = Object.keys(allContexts);
-            const fileName = files[index] || 'unknown';
-            console.warn(`Error processing communication module ${fileName}:`, error);
-            return null;
-        }
-    })
-    .filter((comm): comm is Communication => {
-        if (!comm) {
-            return false;
-        }
-        if (!comm.id) {
-            console.warn('Communication missing id:', comm);
-            return false;
-        }
-        // Filter out template and invalid communications
-        return comm.id !== 'paper-template-id' && comm.id !== 'panel-template-id' && comm.id !== 'talk-template-id' && comm.id !== 'event-template-id'; 
-    });
+// Load and filter all communications using the utility function
+const allCommunications: Communication[] = loadData<Communication>(
+    communicationModules,
+    templateIds,
+    'communication' // Optional type name for logging
+);
 
 // Sort by date (most recent first)
 export const communicationsByDate = [...allCommunications].sort((a, b) => {

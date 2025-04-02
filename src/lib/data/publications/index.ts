@@ -1,102 +1,43 @@
 import type { Publication } from '$lib/types';
+import { loadData } from '$lib/utils/dataLoader'; // Import the new utility function
 
-// Define a type for module imports
+// Define a type for module imports (can be kept or potentially inferred)
 type ModuleType = Record<string, any>;
 
-// Dynamically import all book files
-const bookContext = import.meta.glob<ModuleType>('./books/*.ts', { eager: true });
-const bookPublications: Publication[] = Object.values(bookContext)
-    .filter((module): module is ModuleType => !!module && (typeof module === 'object'))
-    .map(module => {
-        // If there's a default export, use it, otherwise take the first exported value
-        const publication = 'default' in module 
-            ? module.default 
-            : Object.values(module)[0];
-        return publication as Publication;
-    })
-    .filter(pub => pub.id && pub.id !== 'book-template-id' && pub.id !== 'edited-volume-template-id'); // Filter out templates
-
-// Dynamically import all article files
-const articleContext = import.meta.glob<ModuleType>('./articles/*.ts', { eager: true });
-const articlePublications: Publication[] = Object.values(articleContext)
-    .filter((module): module is ModuleType => !!module && (typeof module === 'object'))
-    .map(module => {
-        const publication = 'default' in module ? module.default : Object.values(module)[0];
-        return publication as Publication;
-    })
-    .filter(pub => pub.id && pub.id !== 'article-template-id'); // Filter out templates
-
-// Dynamically import all chapter files
-const chapterContext = import.meta.glob<ModuleType>('./chapters/*.ts', { eager: true });
-const chapterPublications: Publication[] = Object.values(chapterContext)
-    .filter((module): module is ModuleType => !!module && (typeof module === 'object'))
-    .map(module => {
-        const publication = 'default' in module ? module.default : Object.values(module)[0];
-        return publication as Publication;
-    })
-    .filter(pub => pub.id && pub.id !== 'chapter-template-id'); // Filter out templates
-
-// Dynamically import all special issue files
-const specialIssueContext = import.meta.glob<ModuleType>('./special-issues/*.ts', { eager: true });
-const specialIssuePublications: Publication[] = Object.values(specialIssueContext)
-    .filter((module): module is ModuleType => !!module && (typeof module === 'object'))
-    .map(module => {
-        const publication = 'default' in module ? module.default : Object.values(module)[0];
-        return publication as Publication;
-    })
-    .filter(pub => pub.id && pub.id !== 'special-issue-template-id'); // Filter out templates
-
-// Dynamically import all report files
-const reportContext = import.meta.glob<ModuleType>('./reports/*.ts', { eager: true });
-const reportPublications: Publication[] = Object.values(reportContext)
-    .filter((module): module is ModuleType => !!module && (typeof module === 'object'))
-    .map(module => {
-        const publication = 'default' in module ? module.default : Object.values(module)[0];
-        return publication as Publication;
-    })
-    .filter(pub => pub.id && pub.id !== 'report-template-id'); // Filter out templates
-
-// Dynamically import all encyclopedia files
-const encyclopediaContext = import.meta.glob<ModuleType>('./encyclopedia/*.ts', { eager: true });
-const encyclopediaPublications: Publication[] = Object.values(encyclopediaContext)
-    .filter((module): module is ModuleType => !!module && (typeof module === 'object'))
-    .map(module => {
-        const publication = 'default' in module ? module.default : Object.values(module)[0];
-        return publication as Publication;
-    })
-    .filter(pub => pub.id && pub.id !== 'encyclopedia-template-id'); // Filter out templates
-
-// Dynamically import all blog post files
-const blogpostContext = import.meta.glob<ModuleType>('./blogposts/*.ts', { eager: true });
-const blogpostPublications: Publication[] = Object.values(blogpostContext)
-    .filter((module): module is ModuleType => !!module && (typeof module === 'object'))
-    .map(module => {
-        const publication = 'default' in module ? module.default : Object.values(module)[0];
-        return publication as Publication;
-    })
-    .filter(pub => pub.id && pub.id !== 'blogpost-template-id'); // Filter out templates
-
-// Dynamically import all dissertation files
-const dissertationContext = import.meta.glob<ModuleType>('./dissertations/*.ts', { eager: true });
-const dissertationPublications: Publication[] = Object.values(dissertationContext)
-    .filter((module): module is ModuleType => !!module && (typeof module === 'object'))
-    .map(module => {
-        const publication = 'default' in module ? module.default : Object.values(module)[0];
-        return publication as Publication;
-    })
-    .filter(pub => pub.id && pub.id !== 'dissertation-template-id'); // Filter out templates
-
-// Combine all publications
-const allPublications: Publication[] = [
-    ...bookPublications,
-    ...articlePublications,
-    ...chapterPublications,
-    ...specialIssuePublications,
-    ...reportPublications,
-    ...encyclopediaPublications,
-    ...blogpostPublications,
-    ...dissertationPublications
+// Define all template IDs to filter out
+const templateIds = [
+    'book-template-id',
+    'edited-volume-template-id',
+    'article-template-id',
+    'chapter-template-id',
+    'special-issue-template-id',
+    'report-template-id',
+    'encyclopedia-template-id',
+    'blogpost-template-id',
+    'dissertation-template-id'
 ];
+
+// Dynamically import all publication files from all relevant subdirectories at once
+const publicationModules = import.meta.glob<ModuleType>(
+    [
+        './books/*.ts',
+        './articles/*.ts',
+        './chapters/*.ts',
+        './special-issues/*.ts',
+        './reports/*.ts',
+        './encyclopedia/*.ts',
+        './blogposts/*.ts',
+        './dissertations/*.ts'
+    ], 
+    { eager: true }
+);
+
+// Load and filter all publications using the utility function
+const allPublications: Publication[] = loadData<Publication>(
+    publicationModules, 
+    templateIds, 
+    'publication' // Optional type name for logging
+);
 
 // Sort by date (most recent first)
 export const publicationsByDate = [...allPublications].sort((a, b) => {
