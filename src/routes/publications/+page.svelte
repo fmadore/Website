@@ -4,10 +4,13 @@
         filteredPublications, 
         activeFilters,
         toggleTagFilter,
-        toggleAuthorFilter
+        toggleAuthorFilter,
+        clearAllFilters
     } from '$lib/data/publications/filters';
     import FiltersSidebar from '$lib/components/publications/FiltersSidebar.svelte';
     import PublicationItem from '$lib/components/publications/PublicationItem.svelte';
+    import EntityListPageLayout from '$lib/components/common/EntityListPageLayout.svelte';
+    import FilteredListDisplay from '$lib/components/common/FilteredListDisplay.svelte';
 
     function handleFilterRequest(event: CustomEvent<{ type: string; value: string }>) {
         const { type, value } = event.detail;
@@ -18,6 +21,15 @@
             toggleAuthorFilter(value);
         }
     }
+
+    // Helper to check if any filters are active
+    function areFiltersActive(filters: typeof $activeFilters): boolean {
+        if (!filters) return false;
+        return Object.values(filters).some(val => 
+            (Array.isArray(val) && val.length > 0) || 
+            (val !== null && val !== undefined)
+        );
+    }
 </script>
 
 <SEO 
@@ -26,31 +38,21 @@
     keywords="publications, books, journal articles, research, Islam, West Africa, Frédérick Madore"
 />
 
-<div class="container mx-auto py-6">
-    <h1 class="mb-6 text-primary">Publications</h1>
-
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div class="md:col-span-1">
-            <FiltersSidebar />
-        </div>
-
-        <main class="md:col-span-3">
-            
-            <div class="text-light mb-6">
-                Showing {$filteredPublications.length} publications
-                {#if Object.values($activeFilters).some(val => Array.isArray(val) && val.length > 0) || $activeFilters.yearRange !== null}
-                    <span class="text-accent">(Filters applied)</span>
-                {/if}
-            </div>
-            
-            <ul class="list-none p-0">
-                {#each $filteredPublications as publication}
-                    <PublicationItem 
-                        {publication} 
-                        on:filterrequest={handleFilterRequest}
-                    />
-                {/each}
-            </ul>
-        </main>
-    </div>
-</div> 
+<EntityListPageLayout title="Publications">
+    <!-- Sidebar slot for filters -->
+    <svelte:fragment slot="sidebar">
+        <FiltersSidebar />
+    </svelte:fragment>
+    
+    <!-- Default slot for main content -->
+    <FilteredListDisplay
+        filteredItems={filteredPublications}
+        itemComponent={PublicationItem}
+        itemPropName="publication"
+        entityName="publications"
+        areFiltersActive={areFiltersActive($activeFilters)}
+        {clearAllFilters}
+        emptyStateNoFiltersMessage="No publications found. Try adding some publications to the system."
+        onItemEvent={handleFilterRequest}
+    />
+</EntityListPageLayout> 
