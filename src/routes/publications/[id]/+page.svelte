@@ -298,11 +298,11 @@
         </section>
     </article>
 
-    <!-- Use the CitedBy component -->
-    <CitedBy citedBy={publication.citedBy} />
-
     <!-- Use the Reviews component -->
     <Reviews reviewedBy={publication.reviewedBy} />
+
+    <!-- Use the CitedBy component -->
+    <CitedBy citedBy={publication.citedBy} />
 
     <!-- Related publications by same project, if any -->
     {#if publication.project}
