@@ -3,7 +3,7 @@ import type { Communication } from '$lib/types/communication';
 export const launchIslamWestAfricaCollection: Communication = {
     id: "launch-islam-west-africa-collection", 
     title: "Launch of the Islam West Africa Collection",
-    authors: ["Media in Cooperation and Transition (MiCT)"], 
+    authors: ["Frédérick Madore"], 
     date: "9 November 2023", 
     dateISO: "2023-11-09", 
     year: 2023,
