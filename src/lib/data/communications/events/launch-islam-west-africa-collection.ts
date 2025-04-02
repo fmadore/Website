@@ -21,7 +21,7 @@ export const launchIslamWestAfricaCollection: Communication = {
         longitude: 13.400499597613717
     },
     participants: [
-        { name: "Frédérick Madore", role: "Speaker", affiliation: "Leibniz-Zentrum Moderner Orient" },
+        { name: "Frédérick Madore", role: "Speaker and Organizer", affiliation: "Leibniz-Zentrum Moderner Orient" },
         { name: "Ulrike Freitag", role: "Speaker", affiliation: "Leibniz-Zentrum Moderner Orient" },
         { name: "Mauro Nobili", role: "Speaker", affiliation: "University of Illinois at Urbana Champaign, USA" },
         { name: "Issouf Binaté", role: "Speaker", affiliation: "Université Alassane Ouattara, Côte d'Ivoire" },
