@@ -164,7 +164,7 @@
             </section>
         {/if}
         
-        {#if communication.type === 'panel' && communication.participants && communication.participants.length > 0}
+        {#if communication.participants && communication.participants.length > 0}
             <section class="mb-6">
                 <h2 class="text-xl font-semibold mb-3">Participants</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
