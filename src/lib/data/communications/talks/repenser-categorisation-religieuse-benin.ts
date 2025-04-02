@@ -13,7 +13,6 @@ export const repenserCategorisationReligieuse: Communication = {
     type: "workshop",
     language: "French",
     tags: ["Benin", "Religious Categorization", "Vodun", "West Africa"],
-    image: "images/communications/repenser-categorisation-religieuse-benin.jpg",
     coordinates: {
         latitude: 48.85569290213881,
         longitude: 2.331850397015674
