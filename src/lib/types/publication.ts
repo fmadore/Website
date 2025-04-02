@@ -7,6 +7,20 @@ export type CitingWork = {
     url?: string;         // Optional: URL or DOI to the citing work
 };
 
+// Define the structure for a review of this publication
+export type ReviewWork = {
+    author: string;       // Author of the review
+    year: number;         // Year of publication of the review
+    title: string;        // Title of the review
+    journal: string;      // Journal where the review was published
+    volume?: string;      // Volume number
+    issue?: string;       // Issue number
+    pages?: string;       // Page range
+    doi?: string;         // DOI of the review
+    url?: string;         // URL to the review
+    excerpt?: string;     // Optional excerpt from the review
+};
+
 export type Publication = {
     id: string;           // URL-friendly ID for routing
     type: 'book' | 'article' | 'chapter' | 'special-issue' | 'report' | 'encyclopedia' | 'blogpost' | 'dissertation'; // Publication type for faceting
@@ -54,4 +68,5 @@ export type Publication = {
     country?: string[];   // Countries covered in the publication
     project?: string;     // Project name the publication relates to
     citedBy?: CitingWork[]; // Optional: Array of works citing this publication
+    reviewedBy?: ReviewWork[]; // Optional: Array of reviews of this publication
 }; 

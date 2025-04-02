@@ -4,6 +4,7 @@
     import { base } from '$app/paths';
     import type { Publication } from '$lib/types';
     import CitedBy from '$lib/components/publications/CitedBy.svelte';
+    import Reviews from '$lib/components/publications/Reviews.svelte';
     
     // Get publication from the page data
     export let data;
@@ -299,6 +300,9 @@
 
     <!-- Use the CitedBy component -->
     <CitedBy citedBy={publication.citedBy} />
+
+    <!-- Use the Reviews component -->
+    <Reviews reviewedBy={publication.reviewedBy} />
 
     <!-- Related publications by same project, if any -->
     {#if publication.project}
