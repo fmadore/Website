@@ -1,6 +1,6 @@
 <script>
     import { base } from '$app/paths';
-    import Card from '$lib/components/Card.svelte'; // Import the Card component
+    import Card from '$lib/components/common/Card.svelte'; // Import the Card component
     
     // Research projects data
     const researchProjects = [

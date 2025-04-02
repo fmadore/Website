@@ -9,7 +9,7 @@ This directory contains documentation for all reusable components in the applica
 ## Display Components
 
 - [FilteredListDisplay](./FilteredListDisplay.md) - A component for displaying filtered lists with empty states
-- [Card](./Card.md) - A versatile card component for displaying content with image, title, and various sections
+- [Card](./Card.md) - A versatile card component for displaying content with image, title, and various sections (moved to common/)
 
 ## Interface Components
 
@@ -38,7 +38,8 @@ src/lib/components/
 ├── common/
 │   ├── EntityListPageLayout.svelte
 │   ├── FilteredListDisplay.svelte
-│   └── ToggleButton.svelte
+│   ├── ToggleButton.svelte
+│   └── Card.svelte
 ├── filters/
 │   ├── FilterSectionButtons.svelte
 │   ├── FilterSectionCheckbox.svelte
@@ -52,7 +53,6 @@ src/lib/components/
 │   ├── CommunicationItem.svelte
 │   ├── FiltersSidebar.svelte
 │   └── MapVisualization.svelte
-└── Card.svelte
 ```
 
 ## Usage Patterns

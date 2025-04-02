@@ -6,7 +6,7 @@ A versatile card component for displaying content with an optional image, title,
 
 ```svelte
 <script>
-  import Card from '$lib/components/Card.svelte';
+  import Card from '$lib/components/common/Card.svelte';
 </script>
 
 <Card 

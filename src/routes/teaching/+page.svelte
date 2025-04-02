@@ -1,7 +1,7 @@
 <script>
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths'; // Import base path for images
-    import Card from '$lib/components/Card.svelte'; // Import Card component
+    import Card from '$lib/components/common/Card.svelte'; // Import Card component
 
     // Unified teaching items data for cards
     const teachingItems = [

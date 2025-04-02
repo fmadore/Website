@@ -1,7 +1,7 @@
 <script>
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
-    import Card from '$lib/components/Card.svelte'; // Import Card component
+    import Card from '$lib/components/common/Card.svelte'; // Import Card component
 
     // Digital Humanities projects data
     const dhProjects = [
