@@ -8,11 +8,11 @@ export const launchIslamWestAfricaCollection: Communication = {
     dateISO: "2023-11-09", 
     year: 2023,
     conference: "Launch of the Islam West Africa Collection", 
-    location: "Media in Cooperation and Transition (MiCT), Berlin", 
+    location: "Berlin", 
     country: "Germany", 
     type: "conference", 
     language: "English", 
-    abstract: "On 9 November 2023, the Leibniz-Zentrum Moderner Orient (ZMO) officially launched the 'Islam West Africa Collection' in Berlin. Ulrike Freitag (ZMO), Mauro Nobili (University of Illinois at Urbana-Champaign, USA), Issouf Binaté (Université Alassane Ouattara, Côte d'Ivoire) and Kai Kresse (ZMO) commented on the project.",
+    abstract: "Launch event for the Islam West Africa Collection hosted by Media in Cooperation and Transition (MiCT) in Berlin.",
     tags: ["IWAC", "West Africa", "Collection", "Launch"], 
     url: "https://islam.zmo.de/s/westafrica/item/244", 
     image: "images/communications/poster-launch- IWAC.jpg", 
@@ -21,6 +21,7 @@ export const launchIslamWestAfricaCollection: Communication = {
         longitude: 13.400499597613717
     },
     participants: [
+        { name: "Frédérick Madore", role: "Speaker", affiliation: "Leibniz-Zentrum Moderner Orient" },
         { name: "Ulrike Freitag", role: "Speaker", affiliation: "Leibniz-Zentrum Moderner Orient" },
         { name: "Mauro Nobili", role: "Speaker", affiliation: "University of Illinois at Urbana Champaign, USA" },
         { name: "Issouf Binaté", role: "Speaker", affiliation: "Université Alassane Ouattara, Côte d'Ivoire" },
