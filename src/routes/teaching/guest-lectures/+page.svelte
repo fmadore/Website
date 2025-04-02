@@ -1,6 +1,7 @@
 <script>
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
+	import PageHeader from '$lib/components/common/PageHeader.svelte';
 
     const guestLecturesByInstitution = {
         "Universität Bayreuth": [
@@ -24,7 +25,7 @@
 <SEO title="Guest Lectures" description="List of guest lectures delivered by Frédérick Madore." />
 
 <div class="guest-lectures-container">
-    <h1>Guest Lectures</h1>
+	<PageHeader title="Guest Lectures" />
 
     {#each Object.entries(guestLecturesByInstitution) as [institution, lectures] (institution)}
         <section class="institution-section">
@@ -49,14 +50,6 @@
         max-width: 900px; /* Adjust width as needed */
         margin: 0 auto;
         padding: var(--spacing-4) var(--spacing-4) var(--spacing-10); /* Add bottom padding */
-    }
-
-    h1 {
-        font-size: var(--font-size-3xl);
-        color: var(--color-primary);
-        margin-bottom: var(--spacing-8);
-        border-bottom: 2px solid var(--color-border);
-        padding-bottom: var(--spacing-2);
     }
 
     .institution-section {

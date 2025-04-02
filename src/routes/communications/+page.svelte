@@ -8,6 +8,7 @@
     } from '$lib/data/communications/filters';
     import FiltersSidebar from '$lib/components/communications/FiltersSidebar.svelte';
     import CommunicationItem from '$lib/components/communications/CommunicationItem.svelte';
+	import PageHeader from '$lib/components/common/PageHeader.svelte';
 
     // Function to handle filter requests from items
     function handleFilterRequest(event: CustomEvent<{ type: string; value: string }>) {
@@ -34,7 +35,7 @@
         </div>
         <div class="md:col-span-3">
             <main>
-                <h1 class="mb-4">Communications</h1>
+				<PageHeader title="Communications" />
 
                 <div class="text-light mb-6">
                     Showing {$filteredCommunications.length} communications

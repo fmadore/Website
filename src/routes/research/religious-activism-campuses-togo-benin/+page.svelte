@@ -3,18 +3,19 @@
     import RelevantPublications from '$lib/RelevantPublications.svelte';
     import RelevantCommunications from '$lib/RelevantCommunications.svelte';
     import { base } from '$app/paths';
+	import PageHeader from '$lib/components/common/PageHeader.svelte';
 </script>
 
 <SEO title="Religious Activism on Campuses in Togo and Benin" />
 
 <div class="content-wrapper">
     <div class="main-content">
-        <div class="project-header">
-            <h1 class="project-title">Religious Activism on Campuses in Togo and Benin</h1>
-            <p class="project-years">2021-2024</p>
-            <p class="project-meta">Project funded by the "Remoboko" Leibniz Junior Research Group</p>
-        </div>
-        
+		<PageHeader 
+			title="Religious Activism on Campuses in Togo and Benin"
+			backLinkHref="research"
+			backLinkLabel="Back to Research Projects"
+		/>
+
         <div class="project-image">
             <img src="{base}/images/research/campus-activism.webp" alt="Religious Activism on Campuses in Togo and Benin" class="w-full h-auto" />
         </div>
@@ -27,10 +28,6 @@
             <p>The study reveals the university campus as a microcosm reflecting broader national socio-political trends, while also highlighting the importance of translocal factors in shaping the internal dynamics of these groups. Amidst the massification of university enrolments and rising graduate unemployment in recent decades, faith-based associations have expanded their role beyond religious guidance. Increasingly, they offer a "social curriculum", providing a space for socialisation and a set of skills, norms and moral values that complement the secular academic curriculum.</p>
             
             <p>By analysing the interplay between religion, politics and education, this book provides new insights into the evolving role of faith in public universities and broader societal transformations in West Africa. It explores the implications of growing religiosity for these public universities as secular institutions, and contributes to our understanding of how religious organisations have coexisted with, and sometimes challenged, traditional student associations since the 1970s.</p>
-        </div>
-        
-        <div class="mt-4 pt-4 border-t">
-            <a href="{base}/research" class="project-card-link">← Back to Research Projects</a>
         </div>
     </div>
     
@@ -60,32 +57,6 @@
         margin-top: var(--spacing-8);
     }
     
-    .project-header {
-        margin-bottom: var(--spacing-6);
-    }
-    
-    .project-title {
-        font-size: var(--font-size-3xl);
-        font-weight: 700;
-        color: var(--color-primary);
-        margin-bottom: var(--spacing-2);
-    }
-    
-    .project-years {
-        font-size: var(--font-size-lg);
-        font-weight: 600;
-        color: var(--color-primary);
-        margin-bottom: var(--spacing-2);
-        border-left: 4px solid var(--color-primary);
-        padding-left: var(--spacing-2);
-    }
-    
-    .project-meta {
-        font-size: var(--font-size-lg);
-        color: var(--color-text-secondary);
-        margin-bottom: var(--spacing-6);
-    }
-    
     .project-image {
         margin-bottom: var(--spacing-8);
         border-radius: var(--border-radius-md);
@@ -101,19 +72,6 @@
     
     .project-content {
         margin-bottom: var(--spacing-10);
-    }
-    
-    .project-card-link {
-        display: inline-block;
-        color: var(--color-primary);
-        text-decoration: none;
-        font-weight: 500;
-        transition: all 0.2s ease;
-    }
-    
-    .project-card-link:hover {
-        color: var(--color-primary-dark);
-        text-decoration: underline;
     }
     
     /* Media queries for responsive layout */

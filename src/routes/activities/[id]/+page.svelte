@@ -4,6 +4,7 @@
     import { error } from '@sveltejs/kit';
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
+    import PageHeader from '$lib/components/common/PageHeader.svelte';
     
     // Get the activity ID from the URL
     const activityId = $page.params.id;
@@ -69,7 +70,7 @@
     }
 
     // Format the tags for display
-    const formattedTags = activity?.tags ? activity.tags.join(', ') : '';
+    const formattedTags = activity?.tags ? activity.tags : [];
 </script>
 
 <svelte:head>
@@ -84,35 +85,25 @@
     <SEO 
         title={`${activity.title} | Frédérick Madore`}
         description={activity.description}
-        keywords={formattedTags}
+        keywords={formattedTags.join(', ')}
         type="article"
         ogImage={activity.heroImage?.src ? `${base}/${activity.heroImage.src}` : `${base}/images/Profile-picture.jpg`}
     />
 {/if}
 
-<div class="container mx-auto py-6">
-    <div class="activity-header">
-        <a href="{base}/activities" class="back-link">
-            ← Back to all activities
-        </a>
-        
-        <div class="activity-meta">
-            <div class="activity-date">{activity.date}</div>
-            
-            {#if activity.tags && activity.tags.length > 0}
-                <div class="activity-tags">
-                    {#each activity.tags as tag}
-                        <span class="tag">{tag}</span>
-                    {/each}
-                </div>
-            {/if}
-        </div>
-        
-        <h1 class="activity-title">{activity.title}</h1>
-    </div>
+<div class="container mx-auto py-6 px-4">
+    {#if activity}
+        <PageHeader 
+            title={activity.title}
+            backLinkHref="activities"
+            backLinkLabel="← Back to all activities"
+            date={activity.date}
+            tags={formattedTags}
+        />
+    {/if}
     
     {#if activity.heroImage}
-        <div class="activity-hero">
+        <div class="activity-hero mb-6">
             <figure> <img 
                 src="{base}/{activity.heroImage.src}" 
                 alt={activity.heroImage.alt} 
@@ -142,35 +133,19 @@
 </div>
 
 <style>
-    .activity-meta {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: var(--spacing-4);
-        margin-bottom: var(--spacing-4);
-    }
+    /* Removed styles for .activity-header, .back-link, .activity-meta */
     
-    .activity-date {
-        font-size: var(--font-size-sm);
-        color: var(--color-text-muted);
-    }
+    /* Keep .activity-date styling if needed elsewhere, or move to PageHeader/global */
+    /* Removed .activity-date */
     
-    .activity-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--spacing-2);
-    }
+    /* Keep .activity-tags styling if needed elsewhere, or move to PageHeader/global */
+    /* Removed .activity-tags */
     
-    .tag {
-        display: inline-block;
-        padding: 0.2rem 0.6rem;
-        font-size: var(--font-size-xs);
-        background-color: var(--color-primary-light);
-        color: var(--color-primary-dark);
-        border-radius: var(--border-radius-full);
-        font-weight: 500;
-    }
-    
+    /* Keep .tag styling if needed elsewhere, or move to PageHeader/global */
+    /* Removed .tag */
+
+    /* Removed .activity-title */
+
     .activity-content {
         margin-top: var(--spacing-6);
     }

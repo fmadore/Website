@@ -4,6 +4,7 @@
     import { base } from '$app/paths';
     import type { Communication } from '$lib/types/communication';
     import MapVisualization from '$lib/components/communications/MapVisualization.svelte';
+    import PageHeader from '$lib/components/common/PageHeader.svelte';
     
     // Get communication from the page data
     export let data;
@@ -20,6 +21,18 @@
     // Format date for display
     function formatDate(dateString: string): string {
         return dateString || '';
+    }
+
+    // Helper to get badge text
+    function getTypeBadgeText(type: string): string {
+        switch (type) {
+            case 'conference': return 'Conference Paper';
+            case 'workshop': return 'Workshop Presentation';
+            case 'seminar': return 'Seminar';
+            case 'lecture': return 'Lecture';
+            case 'panel': return 'Panel';
+            default: return type;
+        }
     }
 </script>
 
@@ -39,39 +52,16 @@
 />
 
 <div class="container mx-auto py-8 px-4">
-    <a href="{base}/communications" class="text-primary hover:underline mb-4 inline-block">
-        ← Back to Communications
-    </a>
-    
     <article class="bg-white rounded-lg shadow-md p-6 mb-8">
-        <header class="mb-6">
-            <div class="flex justify-between items-start mb-2">
-                <div class="communication-type-badge">
-                    {#if communication.type === 'conference'}
-                        Conference Paper
-                    {:else if communication.type === 'workshop'}
-                        Workshop Presentation
-                    {:else if communication.type === 'seminar'}
-                        Seminar
-                    {:else if communication.type === 'lecture'}
-                        Lecture
-                    {:else if communication.type === 'panel'}
-                        Panel
-                    {:else}
-                        {communication.type}
-                    {/if}
-                </div>
-                <div class="text-text-muted">{communication.date}</div>
-            </div>
-            
-            <h1 class="text-2xl font-bold mb-2">{communication.title}</h1>
-            
-            <div class="text-lg mb-2">
-                {#if communication.authors && communication.authors.length > 0}
-                    {communication.authors.join(', ')}
-                {/if}
-            </div>
-        </header>
+        <PageHeader 
+            title={communication.title}
+            backLinkHref="communications"
+            backLinkLabel="← Back to Communications"
+            date={communication.date}
+            typeBadgeText={getTypeBadgeText(communication.type || '')}
+            authors={communication.authors}
+            tags={communication.tags}
+        />
         
         {#if communication.heroImage?.src}
             <figure class="mb-6">
@@ -246,17 +236,6 @@
 </div>
 
 <style>
-    .communication-type-badge {
-        display: inline-block;
-        background-color: var(--color-primary-light);
-        color: var(--color-primary-dark);
-        font-size: var(--font-size-xs);
-        font-weight: 600;
-        text-transform: uppercase;
-        padding: 0.25rem 0.75rem;
-        border-radius: var(--border-radius-full);
-    }
-    
     .communication-details > div {
         padding: 0.5rem;
         border-bottom: 1px solid var(--color-border-light);

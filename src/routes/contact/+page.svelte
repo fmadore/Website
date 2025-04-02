@@ -12,6 +12,7 @@
 		Library, // Knowledge Commons substitute
 		Download // Added for button
 	} from 'lucide-svelte';
+	import PageHeader from '$lib/components/common/PageHeader.svelte';
 
 	// Correct social media links (matching Footer)
 	const socialLinks = [
@@ -46,7 +47,7 @@
 </script>
 
 <div class="container py-12">
-	<h1 class="text-3xl font-bold mb-8 text-primary">Contact</h1>
+	<PageHeader title="Contact" />
 
 	<div class="grid md:grid-cols-2 gap-12">
 		<div class="contact-section">

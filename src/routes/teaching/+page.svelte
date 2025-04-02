@@ -2,6 +2,7 @@
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths'; // Import base path for images
     import Card from '$lib/components/common/Card.svelte'; // Import Card component
+	import PageHeader from '$lib/components/common/PageHeader.svelte';
 
     // Unified teaching items data for cards
     const teachingItems = [
@@ -53,7 +54,7 @@
 
 <div class="teaching-container">
     <div class="main-content">
-        <h1>Teaching</h1>
+		<PageHeader title="Teaching" />
         
         <p class="text-xl mb-10">Teaching interests: African History (pre-modern and modern periods), Islam in sub-Saharan Africa, West African history.</p>
         
@@ -105,13 +106,6 @@
     
     .main-content {
         width: 100%;
-    }
-    
-    h1 {
-        font-size: var(--font-size-3xl);
-        font-weight: 700;
-        margin-bottom: var(--spacing-4);
-        color: var(--color-primary, #333);
     }
     
     .text-xl {

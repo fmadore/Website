@@ -1,12 +1,13 @@
 <script>
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
+	import PageHeader from '$lib/components/common/PageHeader.svelte';
 </script>
 
 <SEO title="Visualising the IWAC" description="Explore visualizations of the Islam West Africa Collection using AI and machine learning techniques." />
 
 <div class="container">
-    <h1>Visualising the <em>Islam West Africa Collection</em></h1>
+	<PageHeader title="Visualising the Islam West Africa Collection" />
 
     <p>This page features various visualizations and computational analyses of the <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer"><em>Islam West Africa Collection</em></a>. Using artificial intelligence and machine learning techniques, I explore patterns and trends in the vast corpus of documents related to Islam in West Africa.</p>
 
@@ -43,12 +44,6 @@
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 var(--spacing-4);
-    }
-
-    h1 {
-        font-size: var(--font-size-3xl);
-        color: var(--color-primary);
-        margin-bottom: var(--spacing-8);
     }
 
     h2 {

@@ -1,6 +1,7 @@
 <script>
     import { base } from '$app/paths';
     import Card from '$lib/components/common/Card.svelte'; // Import the Card component
+	import PageHeader from '$lib/components/common/PageHeader.svelte';
     
     // Research projects data
     const researchProjects = [
@@ -36,7 +37,7 @@
 </script>
 
 <div class="container">
-    <h1 class="project-section-title">Research</h1>
+	<PageHeader title="Research" />
     
     <p class="text-xl mb-10">My research focuses on the history of Islam and Muslim societies in francophone West Africa from the 1960s to the present. I have conducted extensive fieldwork and archival research in Benin, Togo, Côte d'Ivoire, and Burkina Faso, examining various aspects of Islamic activism, media use, and Muslim politics.</p>
     
@@ -64,13 +65,6 @@
         padding: 0 1rem;
     }
     
-    .project-section-title {
-        font-size: 2.5rem; /* Consider var(--font-size-3xl) or similar */
-        font-weight: 700;
-        margin-bottom: 1.5rem; /* Consider var(--spacing-6) */
-        color: var(--color-primary, #333);
-    }
-
     .text-xl {
          /* Already defined in typography.css - maybe remove if not needed */
          font-size: 1.25rem; /* Consider var(--font-size-xl) */

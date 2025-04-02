@@ -3,17 +3,18 @@
     import RelevantPublications from '$lib/RelevantPublications.svelte';
     import RelevantCommunications from '$lib/RelevantCommunications.svelte';
     import { base } from '$app/paths';
+	import PageHeader from '$lib/components/common/PageHeader.svelte';
 </script>
 
 <SEO title="Mining the Islam West Africa Collection" />
 
 <div class="content-wrapper">
     <div class="main-content">
-        <div class="project-header">
-            <h1 class="project-title">Mining the Islam West Africa Collection: Mapping Print Culture and Intellectual Networks in Francophone Regions</h1>
-            <p class="project-years">2025-</p>
-            <p class="project-meta">Project conducted at Leibniz-Zentrum Moderner Orient (ZMO) in the "Religion and Intellectual Culture" research unit</p>
-        </div>
+		<PageHeader 
+			title="Mining the Islam West Africa Collection: Mapping Print Culture and Intellectual Networks in Francophone Regions" 
+			backLinkHref="research"
+			backLinkLabel="Back to Research Projects"
+		/>
         
         <div class="project-image">
             <img src="{base}/images/research/IWAC.webp" alt="Mining the Islam West Africa Collection" class="w-full h-auto" />
@@ -33,10 +34,6 @@
                     <iframe src="https://fmadore.github.io/IWAC-overview/" title="IWAC Visualization" frameborder="0" scrolling="no" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
-        </div>
-        
-        <div class="mt-4 pt-4 border-t">
-            <a href="{base}/research" class="text-primary hover:text-primary-dark">← Back to Research Projects</a>
         </div>
     </div>
     
@@ -64,32 +61,6 @@
     .sidebar {
         width: 100%;
         margin-top: var(--spacing-8);
-    }
-    
-    .project-header {
-        margin-bottom: var(--spacing-6);
-    }
-    
-    .project-title {
-        font-size: var(--font-size-3xl);
-        font-weight: 700;
-        color: var(--color-primary);
-        margin-bottom: var(--spacing-2);
-    }
-    
-    .project-years {
-        font-size: var(--font-size-lg);
-        font-weight: 600;
-        color: var(--color-primary);
-        margin-bottom: var(--spacing-2);
-        border-left: 4px solid var(--color-primary);
-        padding-left: var(--spacing-2);
-    }
-    
-    .project-meta {
-        font-size: var(--font-size-lg);
-        color: var(--color-text-secondary);
-        margin-bottom: var(--spacing-6);
     }
     
     .project-image {

@@ -2,6 +2,7 @@
     import { activities, type Activity } from '$lib/stores/activities';
     import { onMount } from 'svelte';
     import { base } from '$app/paths';
+	import PageHeader from '$lib/components/common/PageHeader.svelte';
     
     // Local activities array
     let activityList: Activity[] = [];
@@ -29,7 +30,7 @@
 </script>
 
 <div class="container mx-auto py-8">
-    <h1 class="text-3xl font-bold mb-8 text-primary">Activities</h1>
+	<PageHeader title="Activities" />
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div class="md:col-span-1">

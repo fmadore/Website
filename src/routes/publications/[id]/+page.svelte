@@ -5,6 +5,7 @@
     import type { Publication } from '$lib/types';
     import CitedBy from '$lib/components/publications/CitedBy.svelte';
     import Reviews from '$lib/components/publications/Reviews.svelte';
+    import PageHeader from '$lib/components/common/PageHeader.svelte';
     
     // Get publication from the page data
     export let data;
@@ -15,17 +16,19 @@
         return dateString || '';
     }
     
-    // Format editor names
-    function formatEditors(editors: string | string[] | undefined): string {
-        if (!editors) return '';
-        
-        if (typeof editors === 'string') {
-            return editors;
+    // Helper to get badge text
+    function getTypeBadgeText(type: string): string {
+        switch (type) {
+            case 'article': return 'Journal Article';
+            case 'book': return 'Book';
+            case 'chapter': return 'Book Chapter';
+            case 'special-issue': return 'Special Issue';
+            case 'report': return 'Report';
+            case 'encyclopedia': return 'Encyclopedia Entry';
+            case 'blogpost': return 'Blog Post';
+            case 'dissertation': return 'Dissertation';
+            default: return type;
         }
-        
-        if (editors.length === 1) return editors[0];
-        if (editors.length === 2) return `${editors[0]} and ${editors[1]}`;
-        return editors.join(', ');
     }
 </script>
 
@@ -45,51 +48,17 @@
 />
 
 <div class="container mx-auto py-8 px-4">
-    <a href="{base}/publications" class="text-primary hover:underline mb-4 inline-block">
-        ← Back to Publications
-    </a>
-    
     <article class="bg-white rounded-lg shadow-md p-6 mb-8">
-        <header class="mb-6">
-            <div class="flex justify-between items-start mb-2">
-                <div class="publication-type-badge">
-                    {#if publication.type === 'article'}
-                        Journal Article
-                    {:else if publication.type === 'book'}
-                        Book
-                    {:else if publication.type === 'chapter'}
-                        Book Chapter
-                    {:else if publication.type === 'special-issue'}
-                        Special Issue
-                    {:else if publication.type === 'report'}
-                        Report
-                    {:else if publication.type === 'encyclopedia'}
-                        Encyclopedia Entry
-                    {:else if publication.type === 'blogpost'}
-                        Blog Post
-                    {:else if publication.type === 'dissertation'}
-                        Dissertation
-                    {:else}
-                        {publication.type}
-                    {/if}
-                </div>
-                <div class="text-text-muted">{publication.date}</div>
-            </div>
-            
-            <h1 class="text-2xl font-bold mb-2">{publication.title}</h1>
-            
-            <div class="text-lg mb-2">
-                {#if publication.authors && publication.authors.length > 0}
-                    {publication.authors.join(', ')}
-                {/if}
-            </div>
-            
-            {#if publication.editors}
-                <div class="text-text-secondary mb-2">
-                    Edited by {formatEditors(publication.editors)}
-                </div>
-            {/if}
-        </header>
+        <PageHeader 
+            title={publication.title}
+            backLinkHref="publications"
+            backLinkLabel="← Back to Publications"
+            date={publication.date}
+            typeBadgeText={getTypeBadgeText(publication.type)}
+            authors={publication.authors}
+            editors={publication.editors}
+            tags={publication.tags}
+        />
         
         {#if publication.heroImage?.src}
             <figure class="mb-6">
@@ -157,7 +126,7 @@
                 </div>
                 {#if publication.editors}
                     <div>
-                        <strong>Edited by:</strong> {formatEditors(publication.editors)}
+                        <strong>Edited by:</strong> {Array.isArray(publication.editors) ? publication.editors.join(', ') : publication.editors}
                     </div>
                 {/if}
                 {#if publication.publisher}
@@ -322,17 +291,6 @@
 </div>
 
 <style>
-    .publication-type-badge {
-        display: inline-block;
-        background-color: var(--color-primary-light);
-        color: var(--color-primary-dark);
-        font-size: var(--font-size-xs);
-        font-weight: 600;
-        text-transform: uppercase;
-        padding: 0.25rem 0.75rem;
-        border-radius: var(--border-radius-full);
-    }
-    
     .publication-details > div {
         padding: 0.5rem;
         border-bottom: 1px solid var(--color-border-light);

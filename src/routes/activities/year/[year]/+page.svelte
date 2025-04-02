@@ -3,6 +3,7 @@
     import { activities, type Activity } from '$lib/stores/activities';
     import { onMount } from 'svelte';
     import { base } from '$app/paths';
+	import PageHeader from '$lib/components/common/PageHeader.svelte';
     
     // Get the year parameter from the URL
     $: year = parseInt($page.params.year);
@@ -36,13 +37,11 @@
 
 <div class="container mx-auto py-6">
     <div class="flex flex-col gap-4">
-        <div class="flex items-center gap-4">
-            <a href="{base}/activities" class="text-primary hover:underline flex items-center gap-1">
-                <span>←</span> <span>Back to all activities</span>
-            </a>
-        </div>
-        
-        <h1 class="text-3xl font-bold text-primary">Activities in {year}</h1>
+		<PageHeader 
+			title={`Activities in ${year}`} 
+			backLinkHref="activities" 
+			backLinkLabel="Back to all activities"
+		/>
         
         <div class="year-filters flex gap-2 overflow-x-auto py-2">
             {#each allYears as y}

@@ -1,12 +1,13 @@
 <script>
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
+	import PageHeader from '$lib/components/common/PageHeader.svelte';
 </script>
 
 <SEO title="Islam West Africa Collection" description="Explore the Islam West Africa Collection (IWAC), an open-access digital database of over 12,500 documents on Islam in West Africa." />
 
 <div class="container">
-    <h1><em>Islam West Africa Collection</em></h1>
+	<PageHeader title="Islam West Africa Collection" />
 
     <div class="project-header">
         <div class="project-image">
@@ -66,12 +67,6 @@
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 var(--spacing-4);
-    }
-
-    h1 {
-        font-size: var(--font-size-3xl);
-        color: var(--color-primary);
-        margin-bottom: var(--spacing-8);
     }
 
     h2 {

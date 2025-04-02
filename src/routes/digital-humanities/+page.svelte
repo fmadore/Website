@@ -2,6 +2,7 @@
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
     import Card from '$lib/components/common/Card.svelte'; // Import Card component
+	import PageHeader from '$lib/components/common/PageHeader.svelte';
 
     // Digital Humanities projects data
     const dhProjects = [
@@ -33,7 +34,7 @@
 <SEO title="Digital Humanities" description="Discover Frédérick Madore's digital humanities projects including the Islam West Africa Collection (IWAC) and Islam Burkina Faso Collection." />
 
 <div class="container">
-    <h1 class="dh-section-title">Digital Humanities</h1>
+	<PageHeader title="Digital Humanities" />
 
     <div class="dh-grid">
         {#each dhProjects as project (project.id)}
@@ -93,13 +94,6 @@
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 var(--spacing-4); /* Use existing spacing variable */
-    }
-
-    .dh-section-title {
-        font-size: var(--font-size-3xl); /* Use existing font size variable */
-        font-weight: 700;
-        margin-bottom: var(--spacing-8); /* Use existing spacing variable */
-        color: var(--color-primary, #333);
     }
 
     .dh-grid {
