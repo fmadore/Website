@@ -15,10 +15,10 @@ const templateIds = [
 // Dynamically import all communication files from relevant subfolders
 const communicationModules = import.meta.glob<ModuleType>(
     [
-        './papers/**/*.ts',
-        './panels/**/*.ts',
-        './talks/**/*.ts',
-        './events/**/*.ts'
+        './papers/*.ts',
+        './panels/*.ts',
+        './talks/*.ts',
+        './events/*.ts'
     ],
     { eager: true }
 );
@@ -26,9 +26,16 @@ const communicationModules = import.meta.glob<ModuleType>(
 // Debug: Log the keys we're importing (optional, can be removed)
 console.log('Communication files being loaded (using glob): ', Object.keys(communicationModules));
 
+// Filter out index.ts and template.ts files explicitly
+const filteredModules = Object.fromEntries(
+    Object.entries(communicationModules).filter(([path]) => 
+        !path.endsWith('index.ts') && !path.endsWith('template.ts')
+    )
+);
+
 // Load and filter all communications using the utility function
 const allCommunications: Communication[] = loadData<Communication>(
-    communicationModules,
+    filteredModules, // Use the filtered modules
     templateIds,
     'communication' // Optional type name for logging
 );

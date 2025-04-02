@@ -39,24 +39,36 @@ export function loadData<T extends DataItem>(
     return validModuleEntries
         .map(([path, module]) => { // module is now guaranteed to be DataModule
             try {
-                // If there's a default export, use it, otherwise take the first exported value
-                const dataItem = 'default' in module
-                    ? module.default
-                    : Object.values(module)[0];
+                let dataItem: T | null = null;
 
-                // Basic check if it looks like a valid data item (has an id)
-                if (!dataItem || typeof dataItem !== 'object' || !('id' in dataItem)) {
-                     console.warn(`Module at path ${path} does not seem to contain a valid ${dataTypeName} (missing id or not an object):`, dataItem);
+                if ('default' in module && typeof module.default === 'object' && module.default !== null && 'id' in module.default) {
+                    dataItem = module.default as T;
+                } else {
+                    // Find the first exported value that looks like a valid data item (object with an id)
+                    for (const key in module) {
+                        if (Object.prototype.hasOwnProperty.call(module, key)) {
+                            const potentialItem = module[key];
+                            if (potentialItem && typeof potentialItem === 'object' && 'id' in potentialItem) {
+                                dataItem = potentialItem as T;
+                                break; // Found the first valid item
+                            }
+                        }
+                    }
+                }
+
+                // Check if a valid data item was found
+                if (!dataItem) {
+                     console.warn(`Module at path ${path} does not seem to contain a valid ${dataTypeName} (no suitable export found):`, module);
                      return null;
                 }
 
-                // Check for circular references explicitly
+                // Check for circular references explicitly (though less likely with this approach)
                  if (dataItem === module) {
                     console.warn(`Circular reference detected in module at path ${path}`);
                     return null;
                 }
 
-                return dataItem as T; // Cast to the specific data type T
+                return dataItem; // Return the found data item
             } catch (error) {
                 console.error(`Error processing ${dataTypeName} module at path ${path}:`, error);
                 return null;
