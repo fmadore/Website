@@ -4,6 +4,7 @@
     import { onMount } from 'svelte';
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+    import SEO from '$lib/SEO.svelte';
     
     // Get the year parameter from the URL
     $: year = parseInt($page.params.year);
@@ -34,6 +35,8 @@
         })();
     }
 </script>
+
+<SEO title={`Activities (${year}) | Frédérick Madore`} />
 
 <div class="container mx-auto py-6">
     <div class="flex flex-col gap-4">

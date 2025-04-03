@@ -50,7 +50,7 @@
     ];
 </script>
 
-<SEO title="Teaching" />
+<SEO title="Teaching | Frédérick Madore" />
 
 <div class="teaching-container">
     <div class="main-content">

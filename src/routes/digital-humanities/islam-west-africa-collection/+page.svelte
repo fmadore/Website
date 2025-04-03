@@ -4,7 +4,7 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 </script>
 
-<SEO title="Islam West Africa Collection" description="Explore the Islam West Africa Collection (IWAC), an open-access digital database of over 12,500 documents on Islam in West Africa." />
+<SEO title="Islam West Africa Collection | Frédérick Madore" description="Explore the Islam West Africa Collection (IWAC), an open-access digital database of over 12,500 documents on Islam in West Africa." />
 
 <div class="container">
 	<PageHeader title="Islam West Africa Collection" />

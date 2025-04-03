@@ -2,7 +2,7 @@
     import { base } from '$app/paths';
     
     // SEO props
-    export let title = "Frédérick Madore - Research Fellow at ZMO";
+    export let title = "Frédérick Madore | Historian | Digital Humanist";
     export let description = "Personal website of Frédérick Madore, Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)";
     export let keywords = "Frédérick Madore, Islam, West Africa, Digital Humanities, Research";
     export let canonical = "";

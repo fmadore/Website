@@ -1,6 +1,7 @@
 <script>
     import LatestActivities from '$lib/LatestActivities.svelte';
     import SEO from '$lib/SEO.svelte';
+    import { Download } from 'lucide-svelte';
     import { activitiesByYear } from '$lib/data/activities';
     import { base } from '$app/paths';
 
@@ -39,7 +40,10 @@
             <p>I hold a Ph.D. with distinction in History from <a href="https://www.ulaval.ca/" target="_blank" rel="noopener noreferrer">Université Laval</a> and was previously a <a href="https://banting.fellowships-bourses.gc.ca/en/home-accueil.html" target="_blank" rel="noopener noreferrer">Banting Postdoctoral Fellow</a> at the <a href="https://www.ufl.edu/" target="_blank" rel="noopener noreferrer">University of Florida</a>. Through my ongoing <a href="{base}/research">research</a> and <a href="{base}/digital-humanities">DH projects</a>, I continue to explore new approaches to understanding the dynamics of Muslim societies in Francophone West Africa, combining traditional historical methods with innovative computational techniques.</p>
         
             <div class="action-buttons">
-                <a href="{base}/files/CV-F.Madore-2025-03-21.pdf" class="btn btn-primary">Download CV</a>
+                <a href="{base}/files/CV-F.Madore-2025-03-21.pdf" class="btn btn-primary btn-icon">
+                    <Download size={18} aria-hidden="true" />
+                    Download CV
+                </a>
             </div>
         </div>
         
@@ -135,7 +139,12 @@
     .btn-primary:hover {
         background-color: var(--color-primary-dark);
     }
-
+    
+    .btn-icon {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-2);
+    }
     
     .rounded-full {
         border-radius: 9999px;

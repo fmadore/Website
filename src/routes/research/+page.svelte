@@ -2,6 +2,7 @@
     import { base } from '$app/paths';
     import Card from '$lib/components/common/Card.svelte'; // Import the Card component
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+    import SEO from '$lib/SEO.svelte';
     
     // Research projects data
     const researchProjects = [
@@ -35,6 +36,8 @@
         }
     ];
 </script>
+
+<SEO title="Research | Frédérick Madore" />
 
 <div class="container">
 	<PageHeader title="Research" />

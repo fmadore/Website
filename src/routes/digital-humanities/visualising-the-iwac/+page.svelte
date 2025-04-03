@@ -4,7 +4,7 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 </script>
 
-<SEO title="Visualising the IWAC" description="Explore visualizations of the Islam West Africa Collection using AI and machine learning techniques." />
+<SEO title="Visualising the IWAC | Frédérick Madore" description="Explore visualizations of the Islam West Africa Collection using AI and machine learning techniques." />
 
 <div class="container">
 	<PageHeader title="Visualising the Islam West Africa Collection" />

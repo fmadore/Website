@@ -3,6 +3,7 @@
     import { onMount } from 'svelte';
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+    import SEO from '$lib/SEO.svelte';
     
     // Local activities array
     let activityList: Activity[] = [];
@@ -28,6 +29,8 @@
         return activityList.filter((activity: Activity) => activity.year === year).length;
     }
 </script>
+
+<SEO title="Activities | Frédérick Madore" />
 
 <div class="container mx-auto py-8">
 	<PageHeader title="Activities" />

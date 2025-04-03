@@ -22,7 +22,7 @@
 
 </script>
 
-<SEO title="Guest Lectures" description="List of guest lectures delivered by Frédérick Madore." />
+<SEO title="Guest Lectures | Frédérick Madore" description="List of guest lectures delivered by Frédérick Madore." />
 
 <div class="guest-lectures-container">
 	<PageHeader title="Guest Lectures" />

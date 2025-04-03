@@ -31,7 +31,7 @@
     ];
 </script>
 
-<SEO title="Digital Humanities" description="Discover Frédérick Madore's digital humanities projects including the Islam West Africa Collection (IWAC) and Islam Burkina Faso Collection." />
+<SEO title="Digital Humanities | Frédérick Madore" description="Discover Frédérick Madore's digital humanities projects including the Islam West Africa Collection (IWAC) and Islam Burkina Faso Collection." />
 
 <div class="container">
 	<PageHeader title="Digital Humanities" />

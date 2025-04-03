@@ -13,6 +13,7 @@
 		Download // Added for button
 	} from 'lucide-svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+	import SEO from '$lib/SEO.svelte';
 
 	// Correct social media links (matching Footer)
 	const socialLinks = [
@@ -45,6 +46,8 @@
 	type IconKey = keyof typeof iconMap;
 
 </script>
+
+<SEO title="Contact | Frédérick Madore" />
 
 <div class="container py-12">
 	<PageHeader title="Contact" />
