@@ -4,6 +4,7 @@
     import RelevantCommunications from '$lib/RelevantCommunications.svelte';
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+    import PublicationReference from '$lib/components/common/PublicationReference.svelte';
 </script>
 
 <SEO title="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso" />
@@ -21,11 +22,17 @@
         </div>
         
         <div class="project-content">
-            <p>This research project was a comparative historical study of the role of marginalised Muslims in the transformation of Islam in Burkina Faso and Côte d'Ivoire over the past sixty years. The parallel religious demographics of these two countries – with Islam as the dominant religion (60% in Burkina Faso; 43% in Côte d'Ivoire), but Muslims historically in a subordinate political position – made this comparison particularly compelling. The research drew on a wide range of sources, including twelve months of ethnographic fieldwork in Abidjan and Ouagadougou (2011; 2014-15), as well as extensive archival material, national newspaper articles, and documents produced by Islamic organisations.</p>
-            
-            <p>The central argument was that intergenerational and gender relations are crucial to the dynamics that have (re)structured the Islamic field in recent decades, and that these relations are inextricably linked to issues of power and religious authority. The study assessed the individual and collective capacity of youth and women to both challenge and conform to social constraints through Islamic activism. It found that the generational and gender differences that strongly favoured male leaders in both countries in the 1970s and 1980s had diminished over time, although tensions remained. This was particularly evident in Burkina Faso, where strong gerontocratic principles still prevailed within Islamic organisations and deference to the older generation often remained an important social norm.</p>
-            
-            <p>Recent developments in both countries also reflected the diversification of types and sources of religious authority observed elsewhere in the contemporary Muslim world. An increasing number of individuals and groups from different segments of society, including youth and women, had begun to claim the right to speak on behalf of Islam. In particular, French-speaking "Muslim intellectuals" had spearheaded the emergence of a "civil Islam", developing new forms of civic engagement and entrepreneurship for socio-economic development.</p>
+            <p>This research project is situated in the context of the increasing visibility of Islam in the Ivorian and Burkinabe public sphere, particularly since the 1990s, and the growing engagement of youth and women within this religious dynamic. The project explores the emerging new forms of Islamic activism, with a particular focus on the role of young people and women, their communication strategies and their contribution to reshaping the religious and social landscape.</p>
+
+            <p>An important focus of this research is the impact of the increasing mediatisation of Islam, both through traditional media (radio, periodicals) and new information and communication technologies (internet, social media). It analyses how these tools are used by religious actors, especially youth and women, to disseminate their discourse, assert their presence in the public sphere and negotiate social and religious norms. The project highlights the emergence of new mediatised religious figures, including women, who are gaining significant authority and visibility.</p>
+
+            <p>The project also includes an in-depth study of the presence of Ivorian and Burkinabe Islam in the digital age. This analysis reveals how the internet and social media are being used by Islamic associations, Muslim intellectuals and individual religious figures to disseminate the religious message, construct transnational community identities and belonging, and promote new forms of online religiosity. The research highlights the challenges and limitations of this digital transition for some organisations, as well as the crucial role of individual initiatives, often led by young people, in harnessing the potential of the web.</p>
+
+            <p>Another important strand of the project is concerned with intergenerational dynamics within Muslim communities. It analyses how the rise of a young Arabophone and Francophone elite, more familiar with new technologies, is challenging traditional forms of religious authority and seeking to position itself as the spokesperson for a 'civil Islam'. This research highlights the tensions and convergences between generations in the construction of contemporary Islam in Côte d'Ivoire and Burkina Faso.</p>
+
+            <p>Specific themes explored in this project include the role of "francophone Muslim intellectuals" in the Burkinabe public sphere after the departure of President Blaise Compaoré (2014), the vitality and dynamism of Salafism in Côte d'Ivoire, and the organisation of the Hajj pilgrimage to Mecca in Côte d'Ivoire and the stakes involved. Special attention is also given to the emergence of influential female figures, such as Aminata Kane Koné <PublicationReference id="muslim-feminist-media-cote-divoire-2020" />, and their role as religious entrepreneurs and media personalities.</p>
+
+            <p>By combining qualitative research methods - notably interviews with Muslim actors, media content analysis (print media, websites, social media) and a socio-historical approach - this project contributes to a better understanding of the profound transformations taking place within Islam in West Africa, with a particular focus on the engagement and strategies of youth and women. It highlights the complexity of religious dynamics, the diversity of actors and discourses, and the socio-political stakes involved in the assertion of Islam in the Ivorian and Burkinabe contexts.</p>
         </div>
     </div>
     
