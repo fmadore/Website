@@ -39,25 +39,44 @@
     keywords="publications, books, journal articles, research, Islam, West Africa, Frédérick Madore"
 />
 
-<div class="container mx-auto py-6">
-    <PageHeader title="Publications" />
+<div class="teaching-container">
+    <div class="main-content">
+        <PageHeader title="Publications" />
 
-    <EntityListPageLayout>
-        <!-- Sidebar slot for filters -->
-        <svelte:fragment slot="sidebar">
-            <FiltersSidebar />
-        </svelte:fragment>
-        
-        <!-- Default slot for main content -->
-        <FilteredListDisplay
-            filteredItems={filteredPublications}
-            itemComponent={PublicationItem}
-            itemPropName="publication"
-            entityName="publications"
-            areFiltersActive={areFiltersActive($activeFilters)}
-            {clearAllFilters}
-            emptyStateNoFiltersMessage="No publications found. Try adding some publications to the system."
-            onItemEvent={handleFilterRequest}
-        />
-    </EntityListPageLayout>
+        <EntityListPageLayout>
+            <!-- Sidebar slot for filters -->
+            <svelte:fragment slot="sidebar">
+                <FiltersSidebar />
+            </svelte:fragment>
+            
+            <!-- Default slot for main content -->
+            <FilteredListDisplay
+                filteredItems={filteredPublications}
+                itemComponent={PublicationItem}
+                itemPropName="publication"
+                entityName="publications"
+                areFiltersActive={areFiltersActive($activeFilters)}
+                {clearAllFilters}
+                emptyStateNoFiltersMessage="No publications found. Try adding some publications to the system."
+                onItemEvent={handleFilterRequest}
+            />
+        </EntityListPageLayout>
+    </div>
 </div> 
+
+<style>
+    .teaching-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 var(--spacing-4); /* Same padding as teaching */
+    }
+    
+    .main-content {
+        width: 100%;
+    }
+
+    /* You might need other styles specific to the publications page here */
+    /* For example, if you had custom padding or margins before, 
+       they might need adjustment or re-integration if they weren't 
+       part of the standard 'container' styles. */
+</style> 

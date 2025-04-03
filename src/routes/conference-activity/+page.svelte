@@ -54,43 +54,81 @@
     keywords="conferences, presentations, workshops, panels, lectures, Islam, West Africa, Frédérick Madore"
 />
 
-<div class="container mx-auto py-6">
-    <PageHeader title="Conference Activity" />
+<div class="teaching-container"> 
+    <div class="main-content">
+        <PageHeader title="Conference Activity" />
 
-    <p class="text-xl mb-10">Over the last decade, I have given talks to audiences in 13 countries across Africa, Europe, and North America.</p>
+        <p class="text-xl mb-10">Over the last decade, I have given talks to audiences in 13 countries across Africa, Europe, and North America.</p>
 
-    <div class="flex justify-end mb-4">
-        <ToggleButton 
-            baseText="Map"
-            bind:isToggled={showMap} 
-            on:toggle={() => showMap = !showMap}
-        />
+        <div class="flex justify-end mb-4">
+            <ToggleButton 
+                baseText="Map"
+                bind:isToggled={showMap} 
+                on:toggle={() => showMap = !showMap}
+            />
+        </div>
+
+        <EntityListPageLayout 
+        >
+            <!-- Sidebar slot for filters -->
+            <svelte:fragment slot="sidebar">
+                <FiltersSidebar />
+            </svelte:fragment>
+            
+            <!-- Default slot for main content -->
+            <!-- Conditionally render Map Visualization -->
+            {#if showMap}
+                <div class="mb-6">
+                    <MapVisualization markersData={mapMarkers} />
+                </div>
+            {/if}
+            
+            <FilteredListDisplay
+                filteredItems={filteredCommunications}
+                itemComponent={CommunicationItem}
+                itemPropName="communication"
+                entityName="conference activities"
+                areFiltersActive={areFiltersActive($activeFilters)}
+                {clearAllFilters}
+                emptyStateNoFiltersMessage="Try adding some conference activities to the 'communications' folder."
+                onItemEvent={handleFilterRequest}
+            />
+        </EntityListPageLayout>
     </div>
-
-    <EntityListPageLayout 
-    >
-        <!-- Sidebar slot for filters -->
-        <svelte:fragment slot="sidebar">
-            <FiltersSidebar />
-        </svelte:fragment>
-        
-        <!-- Default slot for main content -->
-        <!-- Conditionally render Map Visualization -->
-        {#if showMap}
-            <div class="mb-6">
-                <MapVisualization markersData={mapMarkers} />
-            </div>
-        {/if}
-        
-        <FilteredListDisplay
-            filteredItems={filteredCommunications}
-            itemComponent={CommunicationItem}
-            itemPropName="communication"
-            entityName="conference activities"
-            areFiltersActive={areFiltersActive($activeFilters)}
-            {clearAllFilters}
-            emptyStateNoFiltersMessage="Try adding some conference activities to the 'communications' folder."
-            onItemEvent={handleFilterRequest}
-        />
-    </EntityListPageLayout>
 </div> 
+
+<style>
+    .teaching-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 var(--spacing-4);
+    }
+    
+    .main-content {
+        width: 100%;
+    }
+    
+    /* Keep existing utility classes if needed, or remove if redundant */
+    .text-xl {
+        font-size: var(--font-size-xl);
+    }
+    
+    .mb-10 {
+        margin-bottom: var(--spacing-10);
+    }
+    
+    /* Keep other specific styles for this page */
+    .flex {
+        display: flex;
+    }
+    .justify-end {
+        justify-content: flex-end;
+    }
+    .mb-4 {
+        margin-bottom: var(--spacing-4);
+    }
+    .mb-6 {
+        margin-bottom: var(--spacing-6);
+    }
+
+</style> 
