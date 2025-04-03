@@ -1,11 +1,12 @@
 import type { Publication } from '$lib/types/publication'; // Assuming this is the primary type for now
 import type { Communication } from '$lib/types/communication'; // Add communication type
+import type { Fieldwork } from '$lib/types/fieldwork'; // Add fieldwork type
 
 // Define a generic type for the expected module structure
 type DataModule = Record<string, any>;
 
 // Define a union type for the data items we expect to load
-type DataItem = Publication | Communication; // Add other types as needed
+type DataItem = Publication | Communication | Fieldwork; // Add other types as needed
 
 /**
  * Loads and processes data modules based on a glob pattern.
