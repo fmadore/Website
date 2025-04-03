@@ -27,6 +27,14 @@
                 { text: "Review by Vincent Hiribarren", url: "https://doi.org/10.2979/mnd.2022.a908483" }
             ],
             publication: { text: "Learn more about the project", url: "https://doi.org/10.51185/journals/rhca.2021.e610" }
+        },
+        {
+            id: "remoboko",
+            title: "Remoboko: Religion, Morality and Boko in West Africa",
+            years: "2021-2024",
+            shortDescription: "Research group exploring religion, morality, and student life in West African higher education. Includes interactive visualizations.",
+            imageUrl: `${base}/images/digital-humanities/remoboko.png`,
+            linkUrl: `${base}/digital-humanities/remoboko` // Link to the internal page
         }
     ];
 </script>
@@ -38,11 +46,12 @@
 
     <div class="dh-grid">
         {#each dhProjects as project (project.id)}
+            <!-- Open internal link in same tab for Remoboko -->
             <Card 
                 title={project.title} 
                 imageUrl={project.imageUrl}
                 linkUrl={project.linkUrl}
-                target="_blank"
+                target={project.id === 'remoboko' ? '_self' : '_blank'} 
             >
                 <span slot="subtitle">{project.years}</span>
                 
@@ -50,30 +59,38 @@
                 {project.shortDescription}
 
                 <!-- Details slot for award, reviews, etc. -->
-                <div slot="details" class="dh-card-extras">
-                    {#if project.award}
-                        <p class="award"><strong>Award:</strong> {project.award}</p>
-                    {/if}
-                    {#if project.publication}
-                         <p class="publication-link">
-                             <a href={project.publication.url} target="_blank" rel="noopener noreferrer">{project.publication.text}</a>
-                         </p>
-                    {/if}
-                    {#if project.reviews && project.reviews.length > 0}
-                        <div class="reviews">
-                            <strong>Reviews:</strong>
-                            <ul>
-                                {#each project.reviews as review}
-                                    <li><a href={review.url} target="_blank" rel="noopener noreferrer">{review.text}</a></li>
-                                {/each}
-                            </ul>
+                <div slot="details">
+                    {#if project.award || project.publication || project.reviews}
+                        <div class="dh-card-extras">
+                            {#if project.award}
+                                <p class="award"><strong>Award:</strong> {project.award}</p>
+                            {/if}
+                            {#if project.publication}
+                                 <p class="publication-link">
+                                     <a href={project.publication.url} target="_blank" rel="noopener noreferrer">{project.publication.text}</a>
+                                 </p>
+                            {/if}
+                            {#if project.reviews && project.reviews.length > 0}
+                                <div class="reviews">
+                                    <strong>Reviews:</strong>
+                                    <ul>
+                                        {#each project.reviews as review}
+                                            <li><a href={review.url} target="_blank" rel="noopener noreferrer">{review.text}</a></li>
+                                        {/each}
+                                    </ul>
+                                </div>
+                            {/if}
                         </div>
                     {/if}
                 </div>
                 
                 <!-- Action slot for the main link -->
-                <a slot="action" href={project.linkUrl} target="_blank" rel="noopener noreferrer">
-                    Visit Collection →
+                <a slot="action" href={project.linkUrl} target={project.id === 'remoboko' ? '_self' : '_blank'} rel="noopener noreferrer">
+                    {#if project.id === 'remoboko'}
+                        View Visualizations →
+                    {:else}
+                        Visit Collection →
+                    {/if}
                 </a>
             </Card>
         {/each}
