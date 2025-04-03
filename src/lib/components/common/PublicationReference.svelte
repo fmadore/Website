@@ -88,48 +88,83 @@
         text-decoration: underline;
         text-decoration-style: dotted;
         font-size: 0.9em; 
+        transition: color 0.2s ease, text-decoration-style 0.2s ease; /* Add transition */
     }
     
     .reference-link:hover, .reference-link:focus {
+        color: var(--color-primary-dark); /* Darken color on hover */
         text-decoration-style: solid;
-        outline: none; /* Remove default focus outline if custom style is applied or not needed */
+        outline: none; 
     }
 
     .preview-card {
         position: absolute;
-        bottom: calc(100% + 8px); /* Position above the reference with some space */
+        bottom: calc(100% + 10px); /* Increase space slightly */
         left: 50%;
         transform: translateX(-50%);
-        background-color: white;
+        background-color: var(--color-background); /* Use variable */
         border: 1px solid var(--color-border);
-        border-radius: var(--border-radius-md);
-        box-shadow: var(--shadow-lg);
-        padding: 0; /* Remove padding to let image/content fill */
-        width: 300px; /* Max width */
-        max-width: 80vw;
-        z-index: 50; /* Ensure it's above other content */
+        border-radius: var(--border-radius-md); /* Use variable */
+        box-shadow: var(--shadow-lg); /* Use variable */
+        padding: 0; 
+        width: 320px; /* Slightly wider */
+        max-width: 90vw;
+        z-index: 50; 
         opacity: 1;
-        transition: opacity 0.15s ease-in-out;
-        pointer-events: none; /* Prevent card from blocking hover on reference */
+        /* Add subtle fade-in transition */
+        transition: opacity 0.2s ease-in-out, bottom 0.2s ease-in-out;
+        pointer-events: none; 
         text-align: left; 
-        font-size: 0.8rem; 
+        font-size: var(--font-size-sm); /* Use base small font size */
         line-height: 1.4; 
         color: var(--color-text); 
-        overflow: hidden; /* Ensure image corners are rounded */
+        overflow: hidden; 
+    }
+    
+    /* Hide initially for transition */
+    .publication-reference:not(:hover):not(:focus-within) .preview-card {
+        opacity: 0;
+        bottom: calc(100% + 5px); /* Start closer for animation */
+        visibility: hidden;
+        transition: opacity 0.15s ease-out, bottom 0.15s ease-out, visibility 0s linear 0.15s;
+    }
+    
+    /* Make visible on hover/focus */
+    .publication-reference:hover .preview-card,
+    .publication-reference:focus-within .preview-card {
+        opacity: 1;
+        bottom: calc(100% + 10px);
+        visibility: visible;
+        transition: opacity 0.2s ease-in, bottom 0.2s ease-in;
     }
 
     .card-image {
         width: 100%;
         height: auto;
-        max-height: 120px; /* Limit image height */
-        object-fit: cover; /* Cover the area */
+        max-height: 100px; /* Slightly smaller max height */
+        object-fit: cover; 
         display: block;
+        border-bottom: 1px solid var(--color-border); /* Separator line */
     }
     
     .card-content {
-        padding: var(--spacing-3); /* Add padding back for text content */
+        padding: var(--spacing-3); /* Use variable */
     }
 
+    /* Small arrow pointing down */
+    .preview-card::after {
+        content: '';
+        position: absolute;
+        top: 100%; 
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 7px; /* Slightly larger arrow */
+        border-style: solid;
+        border-color: var(--color-background) transparent transparent transparent; 
+        /* Add shadow matching the card's border */
+        filter: drop-shadow(0 1px 0px var(--color-border)); 
+    }
+    
     .card-link {
         text-decoration: none;
         color: inherit;
@@ -137,15 +172,17 @@
     }
 
     .card-title {
-        font-weight: 600;
+        font-weight: 600; /* Use semibold */
         margin-bottom: var(--spacing-1);
-        color: var(--color-primary); 
+        color: var(--color-primary); /* Use primary color */
         line-height: 1.3;
+        font-size: var(--font-size-base); /* Slightly larger title */
     }
 
     .card-authors, .card-date, .card-meta {
         margin-bottom: var(--spacing-1);
-        color: var(--color-text-secondary); 
+        color: var(--color-text-secondary); /* Use secondary text color */
+        font-size: var(--font-size-xs); /* Smaller meta text */
     }
 
     .card-meta em {
@@ -153,7 +190,7 @@
      }
 
     .publication-reference-error {
-        color: #d9534f; /* Bootstrap danger color */
+        color: #d9534f; 
         font-style: italic;
         font-size: 0.9em;
         cursor: not-allowed;
