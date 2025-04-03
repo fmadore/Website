@@ -2,7 +2,8 @@
     import { allPublications } from '$lib/data/publications/index';
     import type { Publication } from '$lib/types';
     import { base } from '$app/paths';
-    import { onMount, onDestroy } from 'svelte';
+    import { onMount, onDestroy, tick } from 'svelte';
+    import { browser } from '$app/environment'; // Import browser
 
     // Prop: ID of the publication to reference
     export let id: string;
@@ -15,6 +16,52 @@
     let referenceElement: HTMLElement | null = null; // Bind to the main span
     let cardElement: HTMLElement | null = null; // Bind to the card div
     let closeTimeoutId: number | null = null; // Timeout ID for delayed close
+    let positionClass = ''; // Class for positioning ('' or 'position-below')
+
+    // --- Positioning Logic ---
+    async function positionCard() {
+        if (!browser || !referenceElement || !cardElement) return;
+
+        await tick(); // Wait for Svelte state/DOM updates
+
+        // Use requestAnimationFrame to measure after browser layout/paint
+        requestAnimationFrame(() => {
+            // Re-check elements exist in case they were removed quickly
+            if (!cardElement || !referenceElement) return; 
+
+            const refRect = referenceElement.getBoundingClientRect();
+            const cardHeight = cardElement.offsetHeight;
+            const spaceAbove = refRect.top;
+            const spaceBelow = window.innerHeight - refRect.bottom;
+            const margin = 15; // Required space including arrow etc.
+
+            let newPositionClass = ''; // Determine desired class
+
+            // Prefer position above unless not enough space
+            if (spaceAbove >= cardHeight + margin) {
+                newPositionClass = '';
+            } else if (spaceBelow >= cardHeight + margin) {
+                // Flip below if not enough space above BUT enough space below
+                newPositionClass = 'position-below';
+            } else {
+                // Default to above if neither fits well (least bad option?)
+                newPositionClass = '';
+            }
+            
+            // Only update the Svelte state variable if the class needs to change
+            // This prevents potential infinite loops if measurement fluctuates slightly
+            if (positionClass !== newPositionClass) {
+                positionClass = newPositionClass;
+            }
+        });
+    }
+
+    // Re-position when preview becomes visible
+    $: if (showPreview && browser) {
+        positionCard();
+    } else if (!showPreview) {
+        positionClass = ''; // Reset class when hidden
+    }
 
     // --- Event Handlers ---
 
@@ -135,11 +182,15 @@
     // --- Lifecycle ---
 
     onMount(() => {
-        document.addEventListener('click', handleClickOutside, true); // Use capture phase
+        if (browser) { // <-- Check if in browser
+            document.addEventListener('click', handleClickOutside, true); // Use capture phase
+        }
     });
 
     onDestroy(() => {
-        document.removeEventListener('click', handleClickOutside, true);
+        if (browser) { // <-- Check if in browser
+            document.removeEventListener('click', handleClickOutside, true);
+        }
     });
 
     // --- Reactive Computations ---
@@ -179,7 +230,7 @@
         {#if showPreview}
             <div 
                 bind:this={cardElement}
-                class="preview-card"
+                class="preview-card {positionClass}"
                 id="pub-preview-{id}" 
                 role="dialog" 
                 aria-label="Publication Preview"
@@ -258,7 +309,7 @@
         padding: 0; 
         width: 320px;
         max-width: 90vw;
-        z-index: 50; 
+        z-index: 1000; /* Increased z-index to appear above header */
         opacity: 0;
         visibility: hidden;
         transform: translateX(-50%) scale(0.95);
@@ -303,9 +354,23 @@
         border-width: 7px;
         border-style: solid;
         border-color: var(--color-background) transparent transparent transparent; 
-        filter: drop-shadow(0 1px 0px var(--color-border)); 
+        filter: drop-shadow(0 1px 0px rgba(0,0,0,0.08)); /* Adjusted shadow slightly */
     }
     
+    /* Styles for when card is positioned below */
+    .preview-card.position-below {
+        bottom: auto; /* Override default bottom */
+        top: calc(100% + 10px); /* Position below */
+        transform-origin: top center; /* Adjust transform origin */
+    }
+    
+    .preview-card.position-below::after {
+        top: auto; /* Override default top */
+        bottom: 100%; /* Position arrow above the card */
+        border-color: transparent transparent var(--color-background) transparent; /* Flip arrow direction */
+        filter: drop-shadow(0 -1px 0px rgba(0,0,0,0.08)); /* Adjust shadow */
+    }
+
     .card-link {
         text-decoration: none;
         color: inherit;

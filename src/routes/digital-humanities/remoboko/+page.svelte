@@ -1,8 +1,8 @@
 <script>
     import SEO from '$lib/SEO.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+	import PublicationReference from '$lib/components/common/PublicationReference.svelte';
 
-    // TODO: Add imports and logic for embedding Plotly visualizations if needed
 </script>
 
 <SEO 
@@ -12,6 +12,14 @@
 
 <div class="container">
     <PageHeader title="Remoboko Visualizations" />
+
+    <section class="visualization-section">
+        <h2>Fieldwork Locations / Points of Interest</h2>
+        <p>Interactive map showing the main locations mentioned in my recent book <PublicationReference id="religious-activism-campuses" />.</p> 
+        <div class="visualization-embed">
+            <iframe src="https://fmadore.github.io/Remoboko/Book_DeGruyter/Maps/points_of_interest.html" width="100%" height="600" frameborder="0" title="Points of Interest Map"></iframe>
+        </div>
+    </section>
 
     <section class="visualization-section">
         <h2>Collaborators Overview</h2>
@@ -68,11 +76,18 @@
 
     .visualization-section {
         margin-top: var(--spacing-8);
-        padding: var(--spacing-6);
-        background-color: var(--color-background-alt); /* Or another suitable background */
+        padding: var(--spacing-8) var(--spacing-6); /* Increased vertical padding */
+        background-color: var(--color-background-alt, #f9fafb); /* Added fallback */
         border-radius: var(--border-radius);
         box-shadow: var(--shadow-sm);
+        /* Optional: Add transition for hover effect */
+        /* transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out; */
     }
+    /* Optional hover effect */
+    /* .visualization-section:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+    } */
 
     .visualization-section h2 {
         margin-bottom: var(--spacing-4);
@@ -112,7 +127,8 @@
         max-width: 100%;
         height: auto;
         display: block; /* Remove extra space below image */
-        border: 1px solid var(--color-border); /* Optional: consistent styling */
-         box-shadow: var(--shadow-sm);
+        border: 1px solid var(--color-border);
+        box-shadow: var(--shadow-sm);
+        border-radius: var(--border-radius); /* Added border-radius */
     }
 </style> 
