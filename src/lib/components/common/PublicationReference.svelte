@@ -2,6 +2,7 @@
     import { allPublications } from '$lib/data/publications/index';
     import type { Publication } from '$lib/types';
     import { base } from '$app/paths';
+    import { onMount, onDestroy } from 'svelte';
 
     // Prop: ID of the publication to reference
     export let id: string;
@@ -9,18 +10,140 @@
     // Find the publication data
     let publication: Publication | undefined = allPublications.find(p => p.id === id);
 
-    // State for hover visibility
-    let showPreview = false;
+    let showPreview = false; // Controls visibility
+    let isOpenedByClick = false; // Track if opened via click/tap
+    let referenceElement: HTMLElement | null = null; // Bind to the main span
+    let cardElement: HTMLElement | null = null; // Bind to the card div
+    let closeTimeoutId: number | null = null; // Timeout ID for delayed close
 
-    function handleMouseOver() {
-        showPreview = true;
+    // --- Event Handlers ---
+
+    function cancelCloseTimer() {
+        if (closeTimeoutId) {
+            clearTimeout(closeTimeoutId);
+            closeTimeoutId = null;
+        }
     }
 
-    function handleMouseOut() {
-        showPreview = false;
+    function startCloseTimer() {
+        cancelCloseTimer(); // Clear any existing timer
+        closeTimeoutId = window.setTimeout(() => {
+            if (!isOpenedByClick) { // Only close if not opened by click
+                 showPreview = false;
+            }
+            closeTimeoutId = null;
+        }, 150); // 150ms delay
     }
 
-    // Generate a short reference string (e.g., Author Year)
+    function handlePointerEnterReference() {
+        cancelCloseTimer();
+        if (!isOpenedByClick) {
+            showPreview = true;
+        }
+    }
+
+    function handlePointerLeaveReference() {
+        startCloseTimer();
+    }
+    
+    function handlePointerEnterCard() {
+        // Entering the card also cancels the close timer
+        cancelCloseTimer();
+    }
+
+    function handlePointerLeaveCard() {
+        // Leaving the card restarts the close timer
+        startCloseTimer();
+    }
+
+    function handleFocusIn() {
+        cancelCloseTimer();
+        if (!isOpenedByClick) {
+            showPreview = true;
+        }
+    }
+
+    function handleFocusOut(event: FocusEvent) {
+        // Check if focus moved completely outside the component (span + card)
+        if (referenceElement && !referenceElement.contains(event.relatedTarget as Node) && 
+            cardElement && !cardElement.contains(event.relatedTarget as Node)) {
+             if (!isOpenedByClick) {
+                 showPreview = false;
+             }
+        }
+        // If focus moves between span and card, don't close immediately
+    }
+
+    // Combined click/tap handler for the reference span
+    function handleClick(event: MouseEvent | TouchEvent | KeyboardEvent) {
+        // If the click/touch/key event originated inside the card, let it bubble naturally.
+        // The span's handler should not interfere with card interactions.
+        if (cardElement && cardElement.contains(event.target as Node)) {
+            // Exception: If it was a keyboard event on the span itself, handle it.
+            if (!(event instanceof KeyboardEvent && event.target === referenceElement)) {
+                 return; 
+            }
+        }
+        
+        let targetElement = event.target as HTMLElement;
+        let isTargetLink = targetElement.closest('.reference-link') !== null;
+
+        if (!showPreview) {
+            cancelCloseTimer(); // Ensure timer is cleared when opening via click
+            showPreview = true;
+            isOpenedByClick = true;
+            if (!(event instanceof KeyboardEvent)) event.preventDefault(); 
+        } else if (showPreview && isOpenedByClick) {
+            if (isTargetLink && !(event instanceof KeyboardEvent)) {
+                // Allow link navigation
+            } else {
+                showPreview = false;
+                isOpenedByClick = false;
+                if (!(event instanceof KeyboardEvent)) event.preventDefault();
+            }
+        } else if (showPreview && !isOpenedByClick) {
+             cancelCloseTimer();
+             isOpenedByClick = true; 
+             if (!(event instanceof KeyboardEvent)) event.preventDefault();
+        }
+    }
+
+    // Keyboard handler for accessibility
+    function handleKeyDown(event: KeyboardEvent) {
+        if (event.key === 'Enter' || event.key === ' ') {
+            if (event.key === ' ') event.preventDefault();
+            handleClick(event);
+        }
+        // Allow Escape key to close the card if opened by click
+        if (event.key === 'Escape' && showPreview && isOpenedByClick) {
+            showPreview = false;
+            isOpenedByClick = false;
+        }
+    }
+
+    // Global click listener to handle clicking outside
+    function handleClickOutside(event: MouseEvent) {
+        if (referenceElement && !referenceElement.contains(event.target as Node) && 
+            cardElement && !cardElement.contains(event.target as Node)) { // Also check card
+            if (showPreview && isOpenedByClick) {
+                showPreview = false;
+                isOpenedByClick = false;
+            }
+        }
+    }
+
+    // --- Lifecycle ---
+
+    onMount(() => {
+        document.addEventListener('click', handleClickOutside, true); // Use capture phase
+    });
+
+    onDestroy(() => {
+        document.removeEventListener('click', handleClickOutside, true);
+    });
+
+    // --- Reactive Computations ---
+    
     $: referenceText = publication 
         ? `(${(publication.authors?.[0]?.split(' ').pop() || 'N/A' )}, ${publication.date?.substring(0, 4) || 'N/D'})`
         : `(${id})`; 
@@ -28,21 +151,42 @@
 
 {#if publication}
     <span 
+        bind:this={referenceElement} 
+        class:preview-visible={showPreview}
         class="publication-reference" 
-        on:mouseenter={handleMouseOver} 
-        on:mouseleave={handleMouseOut}
-        on:focusin={handleMouseOver}
-        on:focusout={handleMouseOut}
+        on:pointerenter={handlePointerEnterReference} 
+        on:pointerleave={handlePointerLeaveReference}
+        on:focusin={handleFocusIn}
+        on:focusout={handleFocusOut}
+        on:click={handleClick}
+        on:touchstart={handleClick}
+        on:keydown={handleKeyDown}
         tabindex="0"
-        role="link"
-        aria-describedby="pub-preview-{id}"
+        role="button"
+        aria-haspopup="dialog"
+        aria-expanded={showPreview}
+        aria-controls="pub-preview-{id}"
     >
-        <a href="{base}/publications/{publication.id}" class="reference-link" aria-label="View publication: {publication.title}">
+        <a 
+            href="{base}/publications/{publication.id}" 
+            class="reference-link" 
+            aria-label="View publication: {publication.title}"
+            tabindex="-1" 
+        >
             {referenceText}
         </a>
 
         {#if showPreview}
-            <div class="preview-card" id="pub-preview-{id}" role="tooltip">
+            <div 
+                bind:this={cardElement}
+                class="preview-card"
+                id="pub-preview-{id}" 
+                role="dialog" 
+                aria-label="Publication Preview"
+                aria-modal="false"
+                on:pointerenter={handlePointerEnterCard}
+                on:pointerleave={handlePointerLeaveCard}
+            >
                 <a href="{base}/publications/{publication.id}" class="card-link" tabindex="-1">
                     {#if publication.heroImage?.src || publication.image}
                         <img 
@@ -78,9 +222,10 @@
 
 <style>
     .publication-reference {
-        position: relative; /* Needed for absolute positioning of the card */
+        position: relative;
         display: inline-block; 
-        cursor: help; /* Indicate interactivity */
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
     }
 
     .reference-link {
@@ -88,80 +233,76 @@
         text-decoration: underline;
         text-decoration-style: dotted;
         font-size: 0.9em; 
-        transition: color 0.2s ease, text-decoration-style 0.2s ease; /* Add transition */
+        transition: color 0.2s ease, text-decoration-style 0.2s ease;
+        pointer-events: none; /* Let span handle interactions */
     }
     
-    .reference-link:hover, .reference-link:focus {
-        color: var(--color-primary-dark); /* Darken color on hover */
+    .publication-reference:hover .reference-link,
+    .publication-reference:focus .reference-link {
+        color: var(--color-primary-dark); 
         text-decoration-style: solid;
-        outline: none; 
+    }
+    
+    .publication-reference:focus {
+        outline: none; /* Remove default focus outline */
     }
 
     .preview-card {
         position: absolute;
-        bottom: calc(100% + 10px); /* Increase space slightly */
+        bottom: calc(100% + 10px);
         left: 50%;
-        transform: translateX(-50%);
-        background-color: var(--color-background); /* Use variable */
+        background-color: var(--color-background);
         border: 1px solid var(--color-border);
-        border-radius: var(--border-radius-md); /* Use variable */
-        box-shadow: var(--shadow-lg); /* Use variable */
+        border-radius: var(--border-radius-md);
+        box-shadow: var(--shadow-lg);
         padding: 0; 
-        width: 320px; /* Slightly wider */
+        width: 320px;
         max-width: 90vw;
         z-index: 50; 
-        opacity: 1;
-        /* Add subtle fade-in transition */
-        transition: opacity 0.2s ease-in-out, bottom 0.2s ease-in-out;
-        pointer-events: none; 
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(-50%) scale(0.95);
+        transform-origin: bottom center;
+        transition: opacity 0.15s ease-out, transform 0.15s ease-out, visibility 0s linear 0.15s;
+        pointer-events: auto; 
         text-align: left; 
-        font-size: var(--font-size-sm); /* Use base small font size */
+        font-size: var(--font-size-sm);
         line-height: 1.4; 
         color: var(--color-text); 
         overflow: hidden; 
     }
     
-    /* Hide initially for transition */
-    .publication-reference:not(:hover):not(:focus-within) .preview-card {
-        opacity: 0;
-        bottom: calc(100% + 5px); /* Start closer for animation */
-        visibility: hidden;
-        transition: opacity 0.15s ease-out, bottom 0.15s ease-out, visibility 0s linear 0.15s;
-    }
-    
-    /* Make visible on hover/focus */
-    .publication-reference:hover .preview-card,
-    .publication-reference:focus-within .preview-card {
+    /* Use class binding for visible state */
+    .publication-reference.preview-visible .preview-card {
         opacity: 1;
-        bottom: calc(100% + 10px);
         visibility: visible;
-        transition: opacity 0.2s ease-in, bottom 0.2s ease-in;
+        transform: translateX(-50%) scale(1);
+        transition: opacity 0.2s ease-in, transform 0.2s ease-in, visibility 0s linear;
     }
 
     .card-image {
         width: 100%;
         height: auto;
-        max-height: 100px; /* Slightly smaller max height */
+        max-height: 100px;
         object-fit: cover; 
         display: block;
-        border-bottom: 1px solid var(--color-border); /* Separator line */
+        border-bottom: 1px solid var(--color-border);
     }
     
     .card-content {
-        padding: var(--spacing-3); /* Use variable */
+        padding: var(--spacing-3);
     }
 
-    /* Small arrow pointing down */
+    /* Arrow */
     .preview-card::after {
         content: '';
         position: absolute;
         top: 100%; 
         left: 50%;
         transform: translateX(-50%);
-        border-width: 7px; /* Slightly larger arrow */
+        border-width: 7px;
         border-style: solid;
         border-color: var(--color-background) transparent transparent transparent; 
-        /* Add shadow matching the card's border */
         filter: drop-shadow(0 1px 0px var(--color-border)); 
     }
     
@@ -172,17 +313,17 @@
     }
 
     .card-title {
-        font-weight: 600; /* Use semibold */
+        font-weight: 600;
         margin-bottom: var(--spacing-1);
-        color: var(--color-primary); /* Use primary color */
+        color: var(--color-primary);
         line-height: 1.3;
-        font-size: var(--font-size-base); /* Slightly larger title */
+        font-size: var(--font-size-base);
     }
 
     .card-authors, .card-date, .card-meta {
         margin-bottom: var(--spacing-1);
-        color: var(--color-text-secondary); /* Use secondary text color */
-        font-size: var(--font-size-xs); /* Smaller meta text */
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-xs);
     }
 
     .card-meta em {
