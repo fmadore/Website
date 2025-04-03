@@ -2,6 +2,7 @@
     import type { Communication } from '$lib/types/communication';
     import { createEventDispatcher } from 'svelte';
     import { base } from '$app/paths';
+    import { truncateAbstract } from '$lib/utils/textUtils';
     
     export let communication: Communication;
     
@@ -16,6 +17,13 @@
         'panel': 'Panel',
         'event': 'Academic Event'
     };
+
+    // Helper function to truncate abstract
+    // function truncateAbstract(abstract: string | undefined, maxLength: number = 200): string {
+    //     if (!abstract) return '';
+    //     if (abstract.length <= maxLength) return abstract;
+    //     return abstract.substring(0, maxLength) + '...';
+    // }
 </script>
 
 <li class="card p-4 mb-4 hover-shadow">
@@ -74,7 +82,7 @@
             
             {#if communication?.abstract}
                 <div class="text-light text-sm mb-4">
-                    {communication.abstract}
+                    {truncateAbstract(communication.abstract)}
                 </div>
             {/if}
             

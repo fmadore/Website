@@ -2,6 +2,7 @@
     import type { Publication } from '$lib/types/publication';
     import { createEventDispatcher } from 'svelte';
     import { base } from '$app/paths';
+    import { truncateAbstract } from '$lib/utils/textUtils';
     
     export let publication: Publication;
     
@@ -25,6 +26,13 @@
         if (typeof authors === 'string') return authors.split(' and ');
         return authors;
     }
+
+    // Helper function to truncate abstract
+    // function truncateAbstract(abstract: string | undefined, maxLength: number = 200): string {
+    //     if (!abstract) return '';
+    //     if (abstract.length <= maxLength) return abstract;
+    //     return abstract.substring(0, maxLength) + '...';
+    // }
 </script>
 
 <li class="card p-4 mb-4 hover-shadow">
@@ -183,7 +191,7 @@
             
             {#if publication.abstract}
                 <div class="text-light text-sm mb-4">
-                    {publication.abstract}
+                    {truncateAbstract(publication.abstract)}
                 </div>
             {/if}
             
