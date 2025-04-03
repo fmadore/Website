@@ -6,7 +6,7 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 </script>
 
-<SEO title="Muslim Minorities in Southern Cities of Benin and Togo" />
+<SEO title="Muslim Minorities in Southern Cities of Benin and Togo | Frédérick Madore" />
 
 <div class="content-wrapper">
     <div class="main-content">

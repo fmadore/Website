@@ -6,7 +6,7 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 </script>
 
-<SEO title="Mining the Islam West Africa Collection" />
+<SEO title="Mining the Islam West Africa Collection | Frédérick Madore" />
 
 <div class="content-wrapper">
     <div class="main-content">

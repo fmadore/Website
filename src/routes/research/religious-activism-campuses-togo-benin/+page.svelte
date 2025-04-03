@@ -6,7 +6,7 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 </script>
 
-<SEO title="Religious Activism on Campuses in Togo and Benin" />
+<SEO title="Religious Activism on Campuses in Togo and Benin | Frédérick Madore" />
 
 <div class="content-wrapper">
     <div class="main-content">

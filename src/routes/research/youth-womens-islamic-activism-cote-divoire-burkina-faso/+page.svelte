@@ -7,7 +7,7 @@
     import PublicationReference from '$lib/components/common/PublicationReference.svelte';
 </script>
 
-<SEO title="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso" />
+<SEO title="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso | Frédérick Madore" />
 
 <div class="content-wrapper">
     <div class="main-content">
