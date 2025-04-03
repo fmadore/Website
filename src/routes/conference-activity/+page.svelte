@@ -57,6 +57,8 @@
 <div class="container mx-auto py-6">
     <PageHeader title="Conference Activity" />
 
+    <p class="text-xl mb-10">Over the last decade, I have given talks to audiences in 13 countries across Africa, Europe, and North America.</p>
+
     <div class="flex justify-end mb-4">
         <ToggleButton 
             baseText="Map"
