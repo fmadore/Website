@@ -31,32 +31,40 @@
         {
             id: "remoboko",
             title: "Remoboko: Religion, Morality and Boko in West Africa",
-            years: "2021-2024",
+            years: "2024",
             shortDescription: "Research group exploring religion, morality, and student life in West African higher education. Includes interactive visualizations.",
             imageUrl: `${base}/images/digital-humanities/remoboko.png`,
             linkUrl: `${base}/digital-humanities/remoboko` // Link to the internal page
+        },
+        {
+            id: "zmo-units",
+            title: "ZMO Research Units Word Cloud",
+            years: "2025",
+            shortDescription: 'Word cloud generated from the research projects\' titles and abstracts. See the <a href="https://www.zmo.de/en/research/overview-of-main-research-programme-2025" target="_blank" rel="noopener noreferrer">ZMO Research Programme</a>.',
+            imageUrl: `${base}/images/digital-humanities/zmo_units_wordcloud.png`, // Placeholder - You'll need to add this image
+            linkUrl: `${base}/digital-humanities/zmo-units` // Link to the internal page
         }
     ];
 </script>
 
-<SEO title="Digital Humanities | Frédérick Madore" description="Discover Frédérick Madore's digital humanities projects including the Islam West Africa Collection (IWAC) and Islam Burkina Faso Collection." />
+<SEO title="Digital Humanities | Frédérick Madore" description="Discover Frédérick Madore's digital humanities projects including the Islam West Africa Collection (IWAC)." />
 
 <div class="container">
 	<PageHeader title="Digital Humanities" />
 
     <div class="dh-grid">
         {#each dhProjects as project (project.id)}
-            <!-- Open internal link in same tab for Remoboko -->
-            <Card 
-                title={project.title} 
+            <!-- Open internal link in same tab for Remoboko and ZMO Units -->
+            <Card
+                title={project.title}
                 imageUrl={project.imageUrl}
                 linkUrl={project.linkUrl}
-                target={project.id === 'remoboko' ? '_self' : '_blank'} 
+                target={(project.id === 'remoboko' || project.id === 'zmo-units') ? '_self' : '_blank'}
             >
                 <span slot="subtitle">{project.years}</span>
                 
-                <!-- Default slot for description -->
-                {project.shortDescription}
+                <!-- Default slot for description - Render HTML -->
+                {@html project.shortDescription}
 
                 <!-- Details slot for award, reviews, etc. -->
                 <div slot="details">
@@ -85,8 +93,8 @@
                 </div>
                 
                 <!-- Action slot for the main link -->
-                <a slot="action" href={project.linkUrl} target={project.id === 'remoboko' ? '_self' : '_blank'} rel="noopener noreferrer">
-                    {#if project.id === 'remoboko'}
+                <a slot="action" href={project.linkUrl} target={(project.id === 'remoboko' || project.id === 'zmo-units') ? '_self' : '_blank'} rel="noopener noreferrer">
+                    {#if project.id === 'remoboko' || project.id === 'zmo-units'}
                         View Visualizations →
                     {:else}
                         Visit Collection →
