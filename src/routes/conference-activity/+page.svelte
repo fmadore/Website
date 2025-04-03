@@ -15,6 +15,7 @@
     // Import new components
     import EntityListPageLayout from '$lib/components/common/EntityListPageLayout.svelte';
     import FilteredListDisplay from '$lib/components/common/FilteredListDisplay.svelte';
+    import PageHeader from '$lib/components/common/PageHeader.svelte';
     
     let showMap = false; // State for map visibility
 
@@ -53,40 +54,41 @@
     keywords="conferences, presentations, workshops, panels, lectures, Islam, West Africa, Frédérick Madore"
 />
 
-<EntityListPageLayout 
-    title="Conference Activity"
-    showTopArea={true}
->
-    <!-- Top area slot for toggle button -->
-    <svelte:fragment slot="top-area">
+<div class="container mx-auto py-6">
+    <PageHeader title="Conference Activity" />
+
+    <div class="flex justify-end mb-4">
         <ToggleButton 
             baseText="Map"
             bind:isToggled={showMap} 
             on:toggle={() => showMap = !showMap}
         />
-    </svelte:fragment>
-    
-    <!-- Sidebar slot for filters -->
-    <svelte:fragment slot="sidebar">
-        <FiltersSidebar />
-    </svelte:fragment>
-    
-    <!-- Default slot for main content -->
-    <!-- Conditionally render Map Visualization -->
-    {#if showMap}
-        <div class="mb-6">
-            <MapVisualization markersData={mapMarkers} />
-        </div>
-    {/if}
-    
-    <FilteredListDisplay
-        filteredItems={filteredCommunications}
-        itemComponent={CommunicationItem}
-        itemPropName="communication"
-        entityName="conference activities"
-        areFiltersActive={areFiltersActive($activeFilters)}
-        {clearAllFilters}
-        emptyStateNoFiltersMessage="Try adding some conference activities to the 'communications' folder."
-        onItemEvent={handleFilterRequest}
-    />
-</EntityListPageLayout> 
+    </div>
+
+    <EntityListPageLayout 
+    >
+        <!-- Sidebar slot for filters -->
+        <svelte:fragment slot="sidebar">
+            <FiltersSidebar />
+        </svelte:fragment>
+        
+        <!-- Default slot for main content -->
+        <!-- Conditionally render Map Visualization -->
+        {#if showMap}
+            <div class="mb-6">
+                <MapVisualization markersData={mapMarkers} />
+            </div>
+        {/if}
+        
+        <FilteredListDisplay
+            filteredItems={filteredCommunications}
+            itemComponent={CommunicationItem}
+            itemPropName="communication"
+            entityName="conference activities"
+            areFiltersActive={areFiltersActive($activeFilters)}
+            {clearAllFilters}
+            emptyStateNoFiltersMessage="Try adding some conference activities to the 'communications' folder."
+            onItemEvent={handleFilterRequest}
+        />
+    </EntityListPageLayout>
+</div> 

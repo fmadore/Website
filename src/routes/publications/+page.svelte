@@ -11,6 +11,7 @@
     import PublicationItem from '$lib/components/publications/PublicationItem.svelte';
     import EntityListPageLayout from '$lib/components/common/EntityListPageLayout.svelte';
     import FilteredListDisplay from '$lib/components/common/FilteredListDisplay.svelte';
+    import PageHeader from '$lib/components/common/PageHeader.svelte';
 
     function handleFilterRequest(event: CustomEvent<{ type: string; value: string }>) {
         const { type, value } = event.detail;
@@ -38,21 +39,25 @@
     keywords="publications, books, journal articles, research, Islam, West Africa, Frédérick Madore"
 />
 
-<EntityListPageLayout title="Publications">
-    <!-- Sidebar slot for filters -->
-    <svelte:fragment slot="sidebar">
-        <FiltersSidebar />
-    </svelte:fragment>
-    
-    <!-- Default slot for main content -->
-    <FilteredListDisplay
-        filteredItems={filteredPublications}
-        itemComponent={PublicationItem}
-        itemPropName="publication"
-        entityName="publications"
-        areFiltersActive={areFiltersActive($activeFilters)}
-        {clearAllFilters}
-        emptyStateNoFiltersMessage="No publications found. Try adding some publications to the system."
-        onItemEvent={handleFilterRequest}
-    />
-</EntityListPageLayout> 
+<div class="container mx-auto py-6">
+    <PageHeader title="Publications" />
+
+    <EntityListPageLayout>
+        <!-- Sidebar slot for filters -->
+        <svelte:fragment slot="sidebar">
+            <FiltersSidebar />
+        </svelte:fragment>
+        
+        <!-- Default slot for main content -->
+        <FilteredListDisplay
+            filteredItems={filteredPublications}
+            itemComponent={PublicationItem}
+            itemPropName="publication"
+            entityName="publications"
+            areFiltersActive={areFiltersActive($activeFilters)}
+            {clearAllFilters}
+            emptyStateNoFiltersMessage="No publications found. Try adding some publications to the system."
+            onItemEvent={handleFilterRequest}
+        />
+    </EntityListPageLayout>
+</div> 
