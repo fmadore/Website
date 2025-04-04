@@ -312,4 +312,55 @@ export const projectCounts = derived(
         });
         return counts;
     }
+);
+
+// Functions to set filters directly (needed for URL sync)
+export function setTypes(types: string[]) {
+    activeFilters.update(filters => ({ ...filters, types }));
+}
+
+export function setTags(tags: string[]) {
+    activeFilters.update(filters => ({ ...filters, tags }));
+}
+
+export function setLanguages(languages: string[]) {
+    activeFilters.update(filters => ({ ...filters, languages }));
+}
+
+export function setAuthors(authors: string[]) {
+    activeFilters.update(filters => ({ ...filters, authors }));
+}
+
+export function setCountries(countries: string[]) {
+    activeFilters.update(filters => ({ ...filters, countries }));
+}
+
+export function setProjects(projects: string[]) {
+    activeFilters.update(filters => ({ ...filters, projects }));
+}
+
+// Set year range (uses existing update/reset functions)
+export function setYearRange(range: YearRange | null) {
+    if (range) {
+        updateYearRange(range.min, range.max);
+    } else {
+        resetYearRange();
+    }
+}
+
+// Get available language counts for current filtered publications
+export const languageCounts = derived(
+    [filteredPublications],
+    ([$filteredPublications]) => {
+        const counts: Record<string, number> = {};
+        $filteredPublications.forEach(pub => {
+            if (pub.language) {
+                const langs = pub.language.split(',').map(l => l.trim());
+                langs.forEach(lang => {
+                    counts[lang] = (counts[lang] || 0) + 1;
+                });
+            }
+        });
+        return counts;
+    }
 ); 

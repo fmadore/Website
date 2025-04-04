@@ -3,7 +3,15 @@
     import { 
         filteredCommunications, 
         activeFilters,
-        clearAllFilters
+        clearAllFilters,
+        // Import setters needed for the action
+        setTypes,
+        setTags,
+        setLanguages,
+        setAuthors,
+        setCountries,
+        setProjects,
+        setYearRange
     } from '$lib/data/communications/filters';
     import { allCoordinates } from '$lib/data/communications';
     // Import the Communication type
@@ -16,6 +24,7 @@
     import EntityListPageLayout from '$lib/components/common/EntityListPageLayout.svelte';
     import FilteredListDisplay from '$lib/components/common/FilteredListDisplay.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
+    import { urlFilterSync } from '$lib/actions/urlFilterSync'; // Import the action
     
     let showMap = false; // State for map visibility
 
@@ -45,7 +54,19 @@
     // Need event handler if items dispatch events
     function handleFilterRequest(event: CustomEvent<{ type: string; value: string }>) {
         console.log("Filter request received (needs handler)", event.detail);
+        // TODO: Implement toggling based on event if CommunicationItem dispatches them
     }
+
+    // Prepare setters object for the action
+    const filterSetters = {
+        setTypes,
+        setTags,
+        setLanguages,
+        setAuthors,
+        setCountries,
+        setProjects,
+        setYearRange
+    };
 </script>
 
 <SEO 
@@ -54,7 +75,10 @@
     keywords="conferences, presentations, workshops, panels, lectures, Islam, West Africa, Frédérick Madore"
 />
 
-<div class="teaching-container"> 
+<div 
+    class="teaching-container"
+    use:urlFilterSync={{ filtersStore: activeFilters, setters: filterSetters }}
+> 
     <div class="main-content">
         <PageHeader title="Conference Activity" />
 

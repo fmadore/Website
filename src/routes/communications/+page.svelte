@@ -1,55 +1,58 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
-    import { page } from '$app/stores';
+    // import { onMount } from 'svelte'; // Remove onMount import
+    // import { page } from '$app/stores'; // Remove page store import
     import SEO from '$lib/SEO.svelte';
     import { 
         filteredCommunications, 
-        activeFilters,
-        toggleTagFilter,
-        toggleCountryFilter,
-        toggleTypeFilter
+        activeFilters, // Keep activeFilters imported
+        toggleTagFilter, 
+        toggleCountryFilter, 
+        toggleTypeFilter, // Keep toggleTypeFilter imported
+        // Import setters needed for the action
+        setTypes,
+        setTags,
+        setLanguages,
+        setAuthors,
+        setCountries,
+        setProjects,
+        setYearRange
     } from '$lib/data/communications/filters';
     import FiltersSidebar from '$lib/components/communications/FiltersSidebar.svelte';
     import CommunicationItem from '$lib/components/communications/CommunicationItem.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+    import { urlFilterSync } from '$lib/actions/urlFilterSync'; // Import the action
 
-    // Function to handle filter requests from items
+    // Function to handle filter requests from items (delegated from CommunicationItem)
     function handleFilterRequest(event: CustomEvent<{ type: string; value: string }>) {
         const { type, value } = event.detail;
         if (type === 'tag') {
             toggleTagFilter(value);
         } else if (type === 'country') {
             toggleCountryFilter(value);
-        } else if (type === 'type') {
+        } else if (type === 'type') { 
             toggleTypeFilter(value);
         }
         // Add other types (like author) if CommunicationItem dispatches them
     }
     
-    // Handle initial type filter from URL query parameter
+    // Remove the onMount block that handled initial URL params
+    /*
     onMount(() => {
-        const typeFromUrl = $page.url.searchParams.get('type');
-        if (typeFromUrl) {
-            let currentTypes: string[] = [];
-            const unsubscribe = activeFilters.subscribe(value => {
-                currentTypes = value.types;
-            });
-            unsubscribe();
-            
-            if (!(currentTypes.length === 1 && currentTypes[0] === typeFromUrl)) {
-                currentTypes.forEach(activeType => {
-                    toggleTypeFilter(activeType); 
-                });
-                toggleTypeFilter(typeFromUrl); 
-            }
-        }
-        // Handle project filter from URL (Added based on link in RelevantCommunications.svelte)
-        const projectFromUrl = $page.url.searchParams.get('project');
-        if (projectFromUrl) {
-            console.log("Project filter from URL:", projectFromUrl);
-            // TODO: Implement project filtering logic similar to type filtering if required.
-        }
+        // ... removed code ...
     });
+    */
+
+    // Prepare setters object for the action
+    const filterSetters = {
+        setTypes,
+        setTags,
+        setLanguages,
+        setAuthors,
+        setCountries,
+        setProjects,
+        setYearRange
+    };
+
 </script>
 
 <SEO 
@@ -58,7 +61,10 @@
     keywords="communications, talks, conferences, workshops, seminars, lectures, panels, Frédérick Madore"
 />
 
-<div class="container mx-auto py-6">
+<div 
+    class="container mx-auto py-6"
+    use:urlFilterSync={{ filtersStore: activeFilters, setters: filterSetters }}
+>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div class="md:col-span-1">
             <FiltersSidebar />
@@ -69,7 +75,7 @@
 
                 <div class="text-light mb-6">
                     Showing {$filteredCommunications.length} communications
-                    {#if Object.values($activeFilters).some(val => Array.isArray(val) && val.length > 0) || $activeFilters.yearRange !== null}
+                    {#if Object.values($activeFilters).some(val => (Array.isArray(val) && val.length > 0) || (val && typeof val === 'object' && Object.keys(val).length > 0))}
                         <span class="text-accent">(Filters applied)</span>
                     {/if}
                 </div>

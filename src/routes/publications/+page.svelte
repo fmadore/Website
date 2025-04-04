@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
-    import { page } from '$app/stores';
     import SEO from '$lib/SEO.svelte';
     import { 
         filteredPublications, 
@@ -9,13 +7,21 @@
         toggleAuthorFilter,
         toggleTypeFilter,
         toggleProjectFilter,
-        clearAllFilters
+        clearAllFilters,
+        setTypes,
+        setTags,
+        setLanguages,
+        setAuthors,
+        setCountries,
+        setProjects,
+        setYearRange
     } from '$lib/data/publications/filters';
     import FiltersSidebar from '$lib/components/publications/FiltersSidebar.svelte';
     import PublicationItem from '$lib/components/publications/PublicationItem.svelte';
     import EntityListPageLayout from '$lib/components/common/EntityListPageLayout.svelte';
     import FilteredListDisplay from '$lib/components/common/FilteredListDisplay.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
+    import { urlFilterSync } from '$lib/actions/urlFilterSync';
 
     function handleFilterRequest(event: CustomEvent<{ type: string; value: string }>) {
         const { type, value } = event.detail;
@@ -41,40 +47,16 @@
         );
     }
 
-    // Handle initial filters from URL query parameters
-    onMount(() => {
-        const typeFromUrl = $page.url.searchParams.get('type');
-        if (typeFromUrl) {
-            let currentTypes: string[] = [];
-            const unsubscribeTypes = activeFilters.subscribe(value => { 
-                currentTypes = value.types;
-            });
-            unsubscribeTypes(); 
-            
-            if (!(currentTypes.length === 1 && currentTypes[0] === typeFromUrl)) {
-                 currentTypes.forEach(activeType => {
-                    toggleTypeFilter(activeType); 
-                 });
-                 toggleTypeFilter(typeFromUrl); 
-            }
-        }
-
-        const projectFromUrl = $page.url.searchParams.get('project');
-        if (projectFromUrl) {
-            let currentProjects: string[] = [];
-            const unsubscribeProjects = activeFilters.subscribe(value => {
-                 currentProjects = value.projects;
-            });
-            unsubscribeProjects();
-            
-            if (!(currentProjects.length === 1 && currentProjects[0] === projectFromUrl)) {
-                 currentProjects.forEach(activeProject => {
-                    toggleProjectFilter(activeProject);
-                 });
-                 toggleProjectFilter(projectFromUrl);
-            }
-        }
-    });
+    // Prepare setters object for the action
+    const filterSetters = {
+        setTypes,
+        setTags,
+        setLanguages,
+        setAuthors,
+        setCountries,
+        setProjects,
+        setYearRange
+    };
 </script>
 
 <SEO 
@@ -83,7 +65,10 @@
     keywords="publications, books, journal articles, research, Islam, West Africa, Frédérick Madore"
 />
 
-<div class="teaching-container">
+<div 
+    class="teaching-container" 
+    use:urlFilterSync={{ filtersStore: activeFilters, setters: filterSetters }}
+>
     <div class="main-content">
         <PageHeader title="Publications" />
 
