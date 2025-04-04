@@ -2,6 +2,10 @@ import { activitiesByDate } from '$lib/data/activities';
 import { allPublications } from '$lib/data/publications/index';
 import { allCommunications } from '$lib/data/communications/index';
 import type { RequestHandler } from '@sveltejs/kit';
+import { base } from '$app/paths';
+
+// Explicitly prerender this endpoint
+export const prerender = true;
 
 export const GET: RequestHandler = async () => {
     const website = "https://fmadore.github.io/Website";
