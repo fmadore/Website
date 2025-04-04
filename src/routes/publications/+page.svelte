@@ -22,6 +22,18 @@
     import FilteredListDisplay from '$lib/components/common/FilteredListDisplay.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
     import { urlFilterSync } from '$lib/actions/urlFilterSync';
+    import Sorter from '$lib/components/common/Sorter.svelte';
+    import { sortItems } from '$lib/utils/sortUtils';
+    import { writable, derived } from 'svelte/store';
+
+    // State for the current sort order
+    const activeSort = writable<'date' | 'title'>('date'); // Use a writable store for sort order
+
+    // Create a derived store for sorted publications
+    const sortedPublications = derived(
+        [filteredPublications, activeSort], // Depends on these stores
+        ([$filteredPublications, $activeSort]) => sortItems($filteredPublications, $activeSort)
+    );
 
     function handleFilterRequest(event: CustomEvent<{ type: string; value: string }>) {
         const { type, value } = event.detail;
@@ -35,6 +47,11 @@
         } else if (type === 'project') {
             toggleProjectFilter(value);
         }
+    }
+
+    // Handler for the sortChange event from the Sorter component
+    function handleSortChange(event: CustomEvent<{ sortBy: 'date' | 'title' }>) {
+        activeSort.set(event.detail.sortBy); // Update the store value
     }
 
     // Helper to check if any filters are active
@@ -79,8 +96,11 @@
             </svelte:fragment>
             
             <!-- Default slot for main content -->
+            <div class="flex justify-end mb-4">
+                <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
+            </div>
             <FilteredListDisplay
-                filteredItems={filteredPublications}
+                filteredItems={sortedPublications}
                 itemComponent={PublicationItem}
                 itemPropName="publication"
                 entityName="publications"
