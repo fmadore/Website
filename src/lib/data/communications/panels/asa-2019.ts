@@ -4,7 +4,7 @@ export const asa2019Panel: Communication = {
     id: "muslim-minorities-africa-2019",
     title: "Muslim Minorities in Africa",
     authors: ["Frédérick Madore"],
-    date: "2019-11-21",
+    date: "21 November 2019",
     dateISO: "2019-11-21",
     year: 2019,
     conference: "62nd Meeting of the African Studies Association (ASA)",

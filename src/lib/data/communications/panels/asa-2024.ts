@@ -4,7 +4,7 @@ export const asa2024Panel: Communication = {
     id: "author-meets-critic-faith-activism-2024",
     title: "Author Meets Critic. Faith-based Student Activism in Togo and Benin: Muslims and Christians on University Campuses",
     authors: ["Frédérick Madore"],
-    date: "2024-12-12",
+    date: "12 December 2024",
     dateISO: "2024-12-12",
     year: 2024,
     conference: "67th Meeting of the African Studies Association (ASA)",
