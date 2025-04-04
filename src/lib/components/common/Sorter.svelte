@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { ArrowDownAZ } from 'lucide-svelte';
+    import { ArrowDownAZ, SortDesc } from 'lucide-svelte';
     import { createEventDispatcher } from 'svelte';
 
     export let activeSort: 'date' | 'title' = 'date'; // Default sort
@@ -7,22 +7,40 @@
     const dispatch = createEventDispatcher();
 
     function toggleSort() {
-        // Simple toggle for now: default (date) -> title (A-Z)
+        // Toggle between 'date' and 'title'
         const newSort = activeSort === 'date' ? 'title' : 'date';
         dispatch('sortChange', { sortBy: newSort });
+    }
+
+    // Determine button text and title based on the *next* sort state
+    let buttonText: string;
+    let buttonTitle: string;
+    $: {
+        if (activeSort === 'date') {
+            buttonText = 'Sort A-Z';
+            buttonTitle = 'Sort by Title (A-Z)';
+        } else {
+            buttonText = 'Sort by Date';
+            buttonTitle = 'Sort by Date (Newest First)';
+        }
     }
 </script>
 
 <button 
     on:click={toggleSort}
     class="sorter-button btn btn-outline p-2 flex items-center space-x-1"
-    aria-label={activeSort === 'title' ? "Sort by Date (Default)" : "Sort by Title (A-Z)"}
-    title={activeSort === 'title' ? "Sort by Date (Default)" : "Sort by Title (A-Z)"}
+    aria-label={buttonTitle}
+    title={buttonTitle}
 >
-    <ArrowDownAZ size={18} class={activeSort === 'title' ? 'text-primary' : 'text-text-muted'} />
-    <span class="text-sm {activeSort === 'title' ? 'text-primary' : 'text-text-muted'}">
-        {activeSort === 'title' ? 'Sorted A-Z' : 'Sort A-Z'}
-    </span>
+    {#if activeSort === 'date'}
+        <SortDesc size={18} class="text-primary" />
+        <span class="text-sm text-primary">Sorted by Date</span>
+    {:else}
+        <ArrowDownAZ size={18} class="text-primary" />
+        <span class="text-sm text-primary">Sorted A-Z</span>
+    {/if}
+    <!-- Optional: Add text indicating the next action -->
+    <!-- <span class="text-sm text-text-muted ml-2">({buttonText})</span> -->
 </button>
 
 <style>
@@ -33,7 +51,7 @@
     .sorter-button:hover {
         background-color: var(--color-border-hover);
     }
-    .text-text-muted {
-        color: var(--color-text-muted);
+    .text-primary {
+        color: var(--color-primary);
     }
 </style> 

@@ -25,8 +25,20 @@
     import FilteredListDisplay from '$lib/components/common/FilteredListDisplay.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
     import { urlFilterSync } from '$lib/actions/urlFilterSync'; // Import the action
+    import Sorter from '$lib/components/common/Sorter.svelte'; // Import Sorter
+    import { sortItems } from '$lib/utils/sortUtils'; // Import sort utility
+    import { writable, derived } from 'svelte/store'; // Import stores
     
     let showMap = false; // State for map visibility
+
+    // State for the current sort order
+    const activeSort = writable<'date' | 'title'>('date');
+
+    // Create a derived store for sorted communications
+    const sortedCommunications = derived(
+        [filteredCommunications, activeSort],
+        ([$filteredCommunications, $activeSort]) => sortItems($filteredCommunications, $activeSort)
+    );
 
     // Reactive statement to update markers based on filtered communications
     $: mapMarkers = $filteredCommunications
@@ -57,6 +69,11 @@
         // TODO: Implement toggling based on event if CommunicationItem dispatches them
     }
 
+    // Handler for the sortChange event from the Sorter component
+    function handleSortChange(event: CustomEvent<{ sortBy: 'date' | 'title' }>) {
+        activeSort.set(event.detail.sortBy);
+    }
+
     // Prepare setters object for the action
     const filterSetters = {
         setTypes,
@@ -84,12 +101,13 @@
 
         <p class="text-xl mb-10">Over the last decade, I have given talks to audiences in 13 countries across Africa, Europe, and North America.</p>
 
-        <div class="flex justify-end mb-4">
+        <div class="flex justify-end items-center space-x-2 mb-4">
             <ToggleButton 
                 baseText="Map"
                 bind:isToggled={showMap} 
                 on:toggle={() => showMap = !showMap}
             />
+            <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
         </div>
 
         <EntityListPageLayout 
@@ -108,7 +126,7 @@
             {/if}
             
             <FilteredListDisplay
-                filteredItems={filteredCommunications}
+                filteredItems={sortedCommunications}
                 itemComponent={CommunicationItem}
                 itemPropName="communication"
                 entityName="conference activities"
