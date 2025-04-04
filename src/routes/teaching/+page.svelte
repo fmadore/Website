@@ -26,7 +26,7 @@
             period: "spring 2020",
             description: "Exploring the history, politics, and societies of French-speaking West African nations.",
             imageUrl: `${base}/images/teaching/university-of-florida-logo.png`,
-            syllabusUrl: '/syllabi/syllabus-francophone-west-africa.pdf'
+            syllabusUrl: `${base}/syllabi/syllabus-francophone-west-africa.pdf`
         },
         {
             id: "dissertation-historique",
