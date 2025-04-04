@@ -58,7 +58,7 @@
         <h2>Digital Humanities Approach</h2>
         <p>Beyond providing access to primary sources, the IWAC project employs digital humanities methodologies to analyze this vast corpus. Using artificial intelligence and machine learning techniques, we can uncover patterns and trends in Francophone West African Muslim societies that traditional research methods might miss.</p>
         
-        <p>Visit our <a href="/digital-humanities/visualising-the-iwac">Visualising the IWAC</a> page to explore interactive visualizations and computational analyses of the collection.</p>
+        <p>Visit our <a href="{base}/digital-humanities/visualising-the-iwac">Visualising the IWAC</a> page to explore interactive visualizations and computational analyses of the collection.</p>
     </section>
 </div>
 
