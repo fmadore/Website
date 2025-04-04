@@ -4,7 +4,7 @@ export const faithBasedStudentOrganizations: Communication = {
     id: "faith-based-student-organizations-2023",
     title: "'Too Young,' 'Immature,' and not Committed Enough: The Decline of Faith-Based Student Organizations in Togo and Benin?",
     authors: ["Frédérick Madore"],
-    date: "2023-06-02",
+    date: "2 June 2023",
     dateISO: "2023-06-02",
     year: 2023,
     conference: "9th European Conference on African Studies (ECAS)",

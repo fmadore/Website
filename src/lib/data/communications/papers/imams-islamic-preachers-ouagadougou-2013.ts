@@ -4,7 +4,7 @@ export const imamsIslamicPreachersOuagadougou: Communication = {
     id: "imams-islamic-preachers-ouagadougou-2013",
     title: "Imams, Islamic Preachers and Public Space in Ouagadougou (Burkina Faso) since the 1990s: Toward New Intergenerational Relationships and a Muslim Public Sphere",
     authors: ["Frédérick Madore"],
-    date: "2013-03-29",
+    date: "29 March 2013",
     dateISO: "2013-03-29",
     year: 2013,
     conference: "2013 Africa Conference",

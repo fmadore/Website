@@ -4,7 +4,7 @@ export const collectionIslamHumanites: Communication = {
     id: "collection-islam-humanites-2024",
     title: "La Collection Islam Afrique de l'Ouest: enjeux éthiques et décolonisation des humanités numériques",
     authors: ["Frédérick Madore"],
-    date: "2024-06-28",
+    date: "28 June 2024",
     dateISO: "2024-06-28",
     year: 2024,
     conference: "12th International Conference on Mande Studies",

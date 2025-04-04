@@ -4,7 +4,7 @@ export const rueIslamAssociatifEnjeuxCitoyens: Communication = {
     id: "rue-islam-associatif-enjeux-citoyens-2014",
     title: "Rue, islam associatif et enjeux citoyens: retour sur des orientations récentes au Sénégal, au Burkina Faso et en Côte d'Ivoire",
     authors: ["Muriel Gomez-Perez", "Frédérick Madore", "Mathias Boukary Savadogo"],
-    date: "2014-10-29",
+    date: "29 October 2014",
     dateISO: "2014-10-29",
     year: 2014,
     conference: "International Conference Le clos et l'ouvert. Acteurs religieux, acteurs sociaux et usages de la rue (Europe, Afrique, Asie, Amériques)",

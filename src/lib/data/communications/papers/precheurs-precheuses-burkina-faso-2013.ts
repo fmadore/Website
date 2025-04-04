@@ -4,7 +4,7 @@ export const precheursPrecheusesaBurkinaFaso: Communication = {
     id: "precheurs-precheuses-burkina-faso-2013",
     title: "Prêcheurs et prêcheuses au Burkina Faso: regards croisés sur leurs stratégies de communication religieuse depuis 1990",
     authors: ["Muriel Gomez-Perez", "Frédérick Madore"],
-    date: "2013-05-07",
+    date: "7 May 2013",
     dateISO: "2013-05-07",
     year: 2013,
     conference: "81e Congrès de l'Association Francophone pour le Savoir (Acfas)",

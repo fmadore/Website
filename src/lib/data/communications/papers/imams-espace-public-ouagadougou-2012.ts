@@ -4,7 +4,7 @@ export const imamsEspacePublicOuagadougou: Communication = {
     id: "imams-espace-public-ouagadougou-2012",
     title: "Imams et espace public à Ouagadougou depuis 1990: entre visibilité nouvelle et concertation entre les générations",
     authors: ["Frédérick Madore"],
-    date: "2012-05-04",
+    date: "4 May 2012",
     dateISO: "2012-05-04",
     year: 2012,
     conference: "42nd Annual Canadian Association of African Studies Conference (CAAS)",

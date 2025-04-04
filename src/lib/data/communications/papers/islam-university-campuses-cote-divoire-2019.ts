@@ -4,7 +4,7 @@ export const islamUniversityCampusesCoteDIvoire: Communication = {
     id: "islam-university-campuses-cote-divoire-2019",
     title: "Islam on University Campuses in Côte d'Ivoire since the 1970s: 'Muslim Intellectuals' and Francophone Salafism",
     authors: ["Issouf Binaté", "Frédérick Madore"],
-    date: "2019-06-12",
+    date: "12 June 2019",
     dateISO: "2019-06-12",
     year: 2019,
     conference: "8th European Conference on African Studies (ECAS)",

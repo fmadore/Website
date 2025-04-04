@@ -4,7 +4,7 @@ export const generationsImamBenin: Communication = {
     id: "generations-imam-benin-2021",
     title: "Generations at Odds: The Controversial Political Candidacy of an Imam in Benin (2019)",
     authors: ["Frédérick Madore"],
-    date: "2021-06-18",
+    date: "18 June 2021",
     dateISO: "2021-06-18",
     year: 2021,
     conference: "11th International Conference of the Mande Studies Association (MANSA)",

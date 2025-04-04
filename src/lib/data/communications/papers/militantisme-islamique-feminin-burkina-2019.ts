@@ -4,7 +4,7 @@ export const militantismeIslamiqueFemininBurkina: Communication = {
     id: "militantisme-islamique-feminin-burkina-2019",
     title: "Militantisme islamique féminin au Burkina Faso: des processus sinueux d'émancipation religieuse",
     authors: ["Frédérick Madore"],
-    date: "2019-08-27",
+    date: "27 August 2019",
     dateISO: "2019-08-27",
     year: 2019,
     conference: "IIe Congrès international de l'Institut du Genre",

@@ -4,7 +4,7 @@ export const islamBurkinaFasoCollectionOmeka: Communication = {
     id: "islam-burkina-faso-collection-omeka-2022",
     title: "Publishing the Islam Burkina Faso Collection with Omeka S",
     authors: ["Frédérick Madore"],
-    date: "2022-07-08",
+    date: "8 July 2022",
     dateISO: "2022-07-08",
     year: 2022,
     conference: "3rd Annual conference of the Africa Multiple Cluster of Excellence \"Medialities\"",

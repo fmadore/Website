@@ -4,7 +4,7 @@ export const islamIvoirienBurkinabeNumerique: Communication = {
     id: "islam-ivoirien-burkinabe-numerique-2016",
     title: "L'islam ivoirien et burkinabé à l'ère du numérique: des communautés musulmanes 2.0?",
     authors: ["Frédérick Madore"],
-    date: "2016-01-14",
+    date: "14 January 2016",
     dateISO: "2016-01-14",
     year: 2016,
     conference: "3ème rencontre des Jeunes Chercheur.e.s en Études Africaines",

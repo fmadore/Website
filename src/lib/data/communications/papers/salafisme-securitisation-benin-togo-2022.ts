@@ -4,7 +4,7 @@ export const salafismeSecuritisationBeninTogo: Communication = {
     id: "salafisme-securitisation-benin-togo-2022",
     title: "Salafisme et sécuritisation de l'islam au Bénin et au Togo: instrumentalisations diverses d'une 'menace étrangère'",
     authors: ["Frédérick Madore"],
-    date: "2022-06-02",
+    date: "2 June 2022",
     dateISO: "2022-06-02",
     year: 2022,
     conference: "Islamist Protest, Terrorism and (In)Security in Africa Conference",

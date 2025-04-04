@@ -4,7 +4,7 @@ export const aiArchivesHumanistica: Communication = {
     id: "ai-archives-humanistica-2025",
     title: "Intelligence artificielle et traitement des archives numériques : applications et enjeux dans la Collection Islam Afrique de l'Ouest",
     authors: ["Frédérick Madore"],
-    date: "2025-04-22",
+    date: "22 April 2025",
     dateISO: "2025-04-22",
     year: 2025,
     conference: "Colloque annuel Humanistica 2025",

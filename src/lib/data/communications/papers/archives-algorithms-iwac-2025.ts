@@ -4,7 +4,7 @@ export const archivesAlgorithmsIwac: Communication = {
     id: "archives-algorithms-iwac-2025",
     title: "From Archives to Algorithms: Uncovering Transregional Islamic Connections through the Islam West Africa Collection (IWAC)",
     authors: ["Frédérick Madore"],
-    date: "2025-09-10",
+    date: "10 September 2025",
     dateISO: "2025-09-10",
     year: 2025,
     conference: "Eighth European Congress on World and Global History",

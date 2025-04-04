@@ -4,7 +4,7 @@ export const nouveauDynamismeSalafismeCoteDIvoire: Communication = {
     id: "nouveau-dynamisme-salafisme-cote-divoire-2017",
     title: "Le nouveau dynamisme du salafisme en Côte d'Ivoire: vers une radicalisation de l'islam ivoirien?",
     authors: ["Frédérick Madore"],
-    date: "2017-08-03",
+    date: "3 August 2017",
     dateISO: "2017-08-03",
     year: 2017,
     conference: "10th International Conference of the Mande Studies Association (MANSA)",

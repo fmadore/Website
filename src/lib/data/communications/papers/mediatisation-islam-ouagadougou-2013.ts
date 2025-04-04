@@ -4,7 +4,7 @@ export const mediatisationIslamOuagadougou: Communication = {
     id: "mediatisation-islam-ouagadougou-2013",
     title: "La médiatisation de l'islam à Ouagadougou depuis 1991: entre normalisation des discours et nouvelle agency des musulmans",
     authors: ["Frédérick Madore"],
-    date: "2013-05-03",
+    date: "3 May 2013",
     dateISO: "2013-05-03",
     year: 2013,
     conference: "43rd Annual Canadian Association of African Studies Conference (CAAS)",

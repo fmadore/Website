@@ -4,7 +4,7 @@ export const publishingIslamBurkinaFasoCollection: Communication = {
     id: "publishing-islam-burkina-faso-collection-2022",
     title: "Publishing the Islam Burkina Faso Collection: Collaboration for Digital Scholarship",
     authors: ["Frédérick Madore", "Perry Collins"],
-    date: "2022-09-15",
+    date: "15 September 2022",
     dateISO: "2022-09-15",
     year: 2022,
     conference: "34th Deutscher Orientalistentag (DOT)",

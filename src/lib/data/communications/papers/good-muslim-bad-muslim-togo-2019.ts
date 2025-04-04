@@ -4,7 +4,7 @@ export const goodMuslimBadMuslimTogo: Communication = {
     id: "good-muslim-bad-muslim-togo-2019",
     title: "'Good Muslim, Bad Muslim' in Togo: The Construction of a Religious Minority Amid a Constitutional Crisis (2017–2018)",
     authors: ["Frédérick Madore"],
-    date: "2019-11-21",
+    date: "21 November 2019",
     dateISO: "2019-11-21",
     year: 2019,
     conference: "62nd Meeting of the African Studies Association (ASA)",

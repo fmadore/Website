@@ -4,7 +4,7 @@ export const hajjOrganizationStateCoteDIvoire: Communication = {
     id: "hajj-organization-state-cote-divoire-2016",
     title: "The Organization of the Hajj and the State: Cohesion and Rivalries within the Muslim Community of Côte d'Ivoire (1993-2006)",
     authors: ["Frédérick Madore"],
-    date: "2016-12-03",
+    date: "3 December 2016",
     dateISO: "2016-12-03",
     year: 2016,
     conference: "59th Annual Meeting of the African Studies Association (ASA)",

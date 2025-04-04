@@ -2,7 +2,7 @@ import type { Communication } from '$lib/types/communication';
 
 export const etablirFaitiereIslamique: Communication = {
     id: "etablir-faitiere-islamique", 
-    title: "L’ambition fédératrice à l'épreuve de la diversité : étude comparative des faîtières islamiques au Burkina Faso, Togo, Bénin et Côte d'Ivoire",
+    title: "L'ambition fédératrice à l'épreuve de la diversité : étude comparative des faîtières islamiques au Burkina Faso, Togo, Bénin et Côte d'Ivoire",
     authors: ["Frédérick Madore"],
     date: "4 March 2025",
     dateISO: "2025-03-04", 
