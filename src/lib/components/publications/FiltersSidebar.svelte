@@ -39,7 +39,7 @@
     $: sortedYearsAsc = $filterOptions.years.slice().sort((a, b) => a - b);
 </script>
 
-<aside class="p-6 bg-gray-50 border border-gray-200 rounded shadow-sm sticky-top">
+<aside class="p-6 border rounded shadow-sm sticky-top">
     <FilterSectionCheckbox 
         title="Publication Types"
         items={$filterOptions.types}
@@ -89,6 +89,12 @@
 </aside>
 
 <style>
+    aside.sticky-top {
+        background-color: var(--color-background);
+        border: 1px solid var(--color-border);
+        transition: background-color 0.3s ease, border-color 0.3s ease; 
+    }
+
     /* Custom component styles using CSS variables */
     /* Base (Mobile) styles: Sidebar is static by default below 900px */
     .sticky-top {
@@ -109,7 +115,7 @@
 
             /* Subtle scrollbar styling for Firefox */
             scrollbar-width: thin; /* Or use a variable like var(--scrollbar-width, thin) if defined */
-            scrollbar-color: var(--color-gray-400, #a0aec0) transparent; /* thumb track */
+            scrollbar-color: var(--color-text-light) transparent; /* Use theme variable */
         }
 
         /* Subtle scrollbar styling for WebKit browsers using CSS Variables */
@@ -122,13 +128,13 @@
         }
 
         .sticky-top::-webkit-scrollbar-thumb {
-            background-color: var(--color-gray-300, #d1d5db); /* Use color variable */
+            background-color: var(--color-text-light); /* Use theme variable */
             border-radius: var(--scrollbar-thumb-radius, var(--border-radius-sm, 3px)); /* Use radius variable */
             transition: background-color 0.2s ease-in-out;
         }
 
         .sticky-top:hover::-webkit-scrollbar-thumb {
-            background-color: var(--color-gray-400, #a0aec0); /* Use color variable for hover */
+            background-color: var(--color-text); /* Use theme variable for hover */
         }
     }
     
@@ -148,8 +154,8 @@
         /* Use spacing variable, e.g., --spacing-2 */
         padding: var(--spacing-2, 0.5rem);
         /* Use color variables */
-        background-color: var(--color-gray-200, #e2e8f0);
-        color: var(--color-gray-700, #4a5568);
+        background-color: var(--color-border); /* Use theme variable */
+        color: var(--color-text); /* Use theme variable */
         border: none;
         /* Use border-radius variable, e.g., --border-radius-md */
         border-radius: var(--border-radius-md, 4px);
@@ -161,7 +167,8 @@
     
     .clear-filters:hover {
         /* Use color variable, e.g., --color-gray-300 */
-        background-color: var(--color-gray-300, #cbd5e0);
+        background-color: var(--color-text-light); /* Use theme variable */
+        color: var(--color-background); /* Contrast */
     }
     
     /* Removed redundant utility classes like .border-gray-200, .font-weight-600, .flex-column, etc. */

@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import { theme, toggleTheme } from '$lib/stores/themeStore'; // Import theme store
+	import { Moon, Sun } from 'lucide-svelte'; // Import Lucide icons
 	
 	// Navigation items based on the WordPress site
 	const navItems = [
@@ -93,36 +95,51 @@
 				<span class="hamburger-line"></span>
 			</button>
 			
-			<!-- Desktop Navigation -->
-			<nav class="desktop-nav">
-				<ul class="nav-list">
-					{#each navItems as item, i}
-						<li 
-							class="nav-item dropdown-container"
-							on:mouseenter={() => item.dropdown && showDropdown(i)}
-							on:mouseleave={hideDropdown}
-						>
-							<a href={item.path} class="nav-link dropdown-trigger">
-								{item.name} {#if item.dropdown}<span class="dropdown-icon">▾</span>{/if}
-							</a>
-							
-							{#if item.dropdown}
-								<div class="dropdown-menu" class:active={activeDropdown === i}>
-									<ul>
-										{#each item.dropdown as subItem}
-											<li>
-												<a href={subItem.path} class="dropdown-item">
-													{subItem.name}
-												</a>
-											</li>
-										{/each}
-									</ul>
-								</div>
-							{/if}
-						</li>
-					{/each}
-				</ul>
-			</nav>
+			<!-- Desktop Navigation & Theme Toggle -->
+			<div class="desktop-controls">
+				<nav class="desktop-nav">
+					<ul class="nav-list">
+						{#each navItems as item, i}
+							<li 
+								class="nav-item dropdown-container"
+								on:mouseenter={() => item.dropdown && showDropdown(i)}
+								on:mouseleave={hideDropdown}
+							>
+								<a href={item.path} class="nav-link dropdown-trigger">
+									{item.name} {#if item.dropdown}<span class="dropdown-icon">▾</span>{/if}
+								</a>
+								
+								{#if item.dropdown}
+									<div class="dropdown-menu" class:active={activeDropdown === i}>
+										<ul>
+											{#each item.dropdown as subItem}
+												<li>
+													<a href={subItem.path} class="dropdown-item">
+														{subItem.name}
+													</a>
+												</li>
+											{/each}
+										</ul>
+									</div>
+								{/if}
+							</li>
+						{/each}
+					</ul>
+				</nav>
+				
+				<!-- Theme Toggle Button -->
+				<button 
+					class="theme-toggle" 
+					on:click={toggleTheme}
+					aria-label="Toggle theme"
+				>
+					{#if $theme === 'light'}
+						<Moon size={20} />
+					{:else}
+						<Sun size={20} />
+					{/if}
+				</button>
+			</div>
 			
 			<!-- Mobile Navigation -->
 			<div class="mobile-nav-container" class:active={mobileMenuOpen}>
@@ -156,16 +173,16 @@
 
 <style>
 	.site-header {
-		background-color: white;
-		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+		background-color: var(--color-background);
+		box-shadow: var(--shadow);
 		position: sticky;
 		top: 0;
 		z-index: 1000;
-		transition: all 0.3s ease;
+		transition: background-color 0.3s ease, box-shadow 0.3s ease;
 	}
 	
 	.site-header:hover {
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+		box-shadow: var(--shadow-md);
 	}
 	
 	.container {
@@ -204,6 +221,12 @@
 	/* Desktop Navigation */
 	.desktop-nav {
 		display: none;
+	}
+	
+	.desktop-controls { /* New wrapper */
+		display: none;
+		align-items: center;
+		gap: var(--spacing-6);
 	}
 	
 	.nav-list {
@@ -282,8 +305,8 @@
 		transform: translateX(-50%);
 		z-index: 10;
 		min-width: 240px;
-		background-color: white;
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+		background-color: var(--color-background);
+		box-shadow: var(--shadow-md);
 		border-radius: var(--border-radius-md);
 		padding: var(--spacing-2);
 		opacity: 0;
@@ -309,7 +332,7 @@
 		transform: translateX(-50%);
 		width: 12px;
 		height: 12px;
-		background-color: white;
+		background-color: var(--color-background);
 		transform: translateX(-50%) rotate(45deg);
 		z-index: -1;
 	}
@@ -331,9 +354,27 @@
 	}
 	
 	.dropdown-item:hover {
-		background-color: var(--color-gray-100);
+		background-color: var(--color-border);
 		color: var(--color-primary);
 		transform: translateX(4px);
+	}
+	
+	/* Theme Toggle Button */
+	.theme-toggle {
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: var(--spacing-1);
+		color: var(--color-text);
+		border-radius: 50%;
+		transition: background-color 0.2s ease;
+		display: inline-flex; /* Ensure it displays on desktop */
+		align-items: center;
+		justify-content: center;
+	}
+	
+	.theme-toggle:hover {
+		background-color: var(--color-border);
 	}
 	
 	/* Hamburger Menu */
@@ -365,11 +406,11 @@
 		height: 100vh;
 		width: 100%;
 		max-width: 300px;
-		background-color: white;
+		background-color: var(--color-background);
 		z-index: 200;
 		box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
 		transform: translateX(100%);
-		transition: transform 0.3s ease-in-out;
+		transition: transform 0.3s ease-in-out, background-color 0.3s ease;
 		overflow-y: auto;
 	}
 	
@@ -436,6 +477,10 @@
 		
 		.desktop-nav {
 			display: block;
+		}
+
+		.desktop-controls { /* Show desktop controls wrapper */
+			display: flex;
 		}
 	}
 </style> 

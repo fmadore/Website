@@ -66,10 +66,11 @@
 
 <style>
     .latest-activities {
-        background-color: white;
+        background-color: var(--color-background);
         border-radius: var(--border-radius-md);
         box-shadow: var(--shadow-sm);
         padding: var(--spacing-4);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
     
     .card-title {
@@ -90,7 +91,7 @@
     .activity-item {
         margin-bottom: var(--spacing-4);
         padding-bottom: var(--spacing-4);
-        border-bottom: 1px solid var(--color-border-light);
+        border-bottom: 1px solid var(--color-border);
     }
     
     .activity-item:last-child {
@@ -99,7 +100,7 @@
     
     .activity-date {
         font-size: var(--font-size-sm);
-        color: var(--color-text-muted);
+        color: var(--color-text-light);
         margin-bottom: var(--spacing-1);
     }
     
@@ -118,15 +119,15 @@
     .activity-description {
         font-size: var(--font-size-sm);
         margin-top: var(--spacing-1);
-        color: var(--color-text-secondary);
+        color: var(--color-text-light);
         line-height: 1.5;
     }
     
     .year-tag {
         display: inline-block;
         padding: 0.25rem 0.75rem;
-        background-color: var(--color-primary-light);
-        color: var(--color-primary-dark);
+        background-color: var(--color-border);
+        color: var(--color-text);
         border-radius: var(--border-radius-full);
         font-size: var(--font-size-sm);
         font-weight: 600;
@@ -135,7 +136,7 @@
     
     .year-tag:hover {
         background-color: var(--color-primary);
-        color: white;
+        color: var(--color-background);
     }
     
     .view-all {

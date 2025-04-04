@@ -150,6 +150,13 @@
         margin-top: var(--spacing-6);
     }
     
+    .activity-hero figcaption {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-light);
+        text-align: center;
+        margin-top: var(--spacing-2);
+    }
+    
     .activity-content :global(h2) {
         font-size: var(--font-size-2xl);
         margin-top: var(--spacing-8);

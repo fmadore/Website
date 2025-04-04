@@ -47,7 +47,7 @@
     $: sortedYearsAsc = years.slice().sort((a, b) => a - b);
 </script>
 
-<aside class="p-6 bg-gray-50 border border-gray-200 rounded shadow-sm sticky-top">
+<aside class="p-6 border rounded shadow-sm sticky-top">
     {#if types.length > 0}
     <FilterSectionCheckbox 
         title="Event Types"
@@ -119,6 +119,12 @@
 </aside>
 
 <style>
+    aside.sticky-top {
+        background-color: var(--color-background);
+        border: 1px solid var(--color-border);
+        transition: background-color 0.3s ease, border-color 0.3s ease; 
+    }
+
     /* Custom component styles using CSS variables */
     /* Base (Mobile) styles */
     .sticky-top {
@@ -139,7 +145,7 @@
 
             /* Subtle scrollbar styling for Firefox */
             scrollbar-width: thin;
-            scrollbar-color: var(--color-gray-400, #a0aec0) transparent;
+            scrollbar-color: var(--color-text-light) transparent;
         }
 
         /* Subtle scrollbar styling for WebKit browsers using CSS Variables */
@@ -152,13 +158,13 @@
         }
 
         .sticky-top::-webkit-scrollbar-thumb {
-            background-color: var(--color-gray-300, #d1d5db);
+            background-color: var(--color-text-light);
             border-radius: var(--scrollbar-thumb-radius, var(--border-radius-sm, 3px));
             transition: background-color 0.2s ease-in-out;
         }
 
         .sticky-top:hover::-webkit-scrollbar-thumb {
-            background-color: var(--color-gray-400, #a0aec0);
+            background-color: var(--color-text);
         }
     }
 
@@ -174,8 +180,8 @@
     .clear-filters {
         width: 100%;
         padding: var(--spacing-2, 0.5rem);
-        background-color: var(--color-gray-200, #e2e8f0);
-        color: var(--color-gray-700, #4a5568);
+        background-color: var(--color-border);
+        color: var(--color-text);
         border: none;
         border-radius: var(--border-radius-md, 4px);
         cursor: pointer;
@@ -184,6 +190,7 @@
     }
     
     .clear-filters:hover {
-        background-color: var(--color-gray-300, #cbd5e0);
+        background-color: var(--color-text-light);
+        color: var(--color-background);
     }
 </style> 

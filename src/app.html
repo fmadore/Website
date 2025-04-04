@@ -5,6 +5,25 @@
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>Frédérick Madore | Historian | Digital Humanist</title>
+		
+		<!-- Theme initialization script -->
+		<script>
+			(function() {
+				const theme = localStorage.getItem('theme');
+				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				const defaultTheme = 'light'; // Default theme if nothing else is set
+				
+				let initialTheme = defaultTheme;
+				if (theme && ['light', 'dark'].includes(theme)) {
+					initialTheme = theme;
+				} else if (!theme && prefersDark) {
+					initialTheme = 'dark';
+				}
+				
+				document.documentElement.classList.add(initialTheme);
+			})();
+		</script>
+		
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">

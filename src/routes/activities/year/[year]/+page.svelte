@@ -109,8 +109,8 @@
     .year-tag {
         display: inline-block;
         padding: 0.35rem 1rem;
-        background-color: var(--color-primary-light);
-        color: var(--color-primary-dark);
+        background-color: var(--color-border);
+        color: var(--color-text);
         border-radius: var(--border-radius-full);
         font-size: var(--font-size-base);
         font-weight: 600;
@@ -121,31 +121,56 @@
     
     .year-tag:hover {
         background-color: var(--color-primary);
-        color: white;
+        color: var(--color-background);
     }
     
     .year-tag.active {
-        background-color: var(--color-primary-dark);
-        color: white;
+        background-color: var(--color-primary);
+        color: var(--color-background);
+    }
+    
+    .activity-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: var(--spacing-6);
+    }
+    
+    .activity-card {
+        background-color: var(--color-background);
+        border-radius: var(--border-radius-lg);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .activity-content {
+        padding: var(--spacing-4);
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
     }
     
     .activity-date {
         font-size: var(--font-size-sm);
-        color: var(--color-text-muted);
+        color: var(--color-text-light);
+        margin-bottom: var(--spacing-1);
     }
     
     .activity-tags {
         display: flex;
         flex-wrap: wrap;
         gap: var(--spacing-2);
+        margin-top: var(--spacing-3);
     }
     
     .tag {
         display: inline-block;
         padding: 0.2rem 0.6rem;
         font-size: var(--font-size-xs);
-        background-color: var(--color-primary-light);
-        color: var(--color-primary-dark);
+        background-color: var(--color-border);
+        color: var(--color-text);
         border-radius: var(--border-radius-full);
         font-weight: 500;
     }
@@ -165,6 +190,28 @@
     
     .activity-description {
         margin-top: var(--spacing-2);
-        color: var(--color-text-secondary);
+        color: var(--color-text-light);
+        font-size: var(--font-size-sm);
+        line-height: 1.5;
+        flex-grow: 1;
+        margin-bottom: var(--spacing-3);
+    }
+    
+    .read-more {
+        color: var(--color-primary);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: var(--font-size-sm);
+        margin-top: auto;
+    }
+    
+    .read-more:hover {
+        text-decoration: underline;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: var(--spacing-8);
+        color: var(--color-text-light);
     }
 </style> 

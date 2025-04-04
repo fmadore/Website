@@ -37,15 +37,15 @@
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div class="md:col-span-1">
-            <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="year-sidebar rounded-lg p-6">
                 <h2 class="text-xl font-semibold mb-4">Browse by Year</h2>
                 
                 <ul class="space-y-3">
                     {#each years as year}
                         <li>
-                            <a href="{base}/activities/year/{year}" class="flex justify-between items-center hover:bg-gray-50 p-2 rounded transition-colors">
+                            <a href="{base}/activities/year/{year}" class="year-link flex justify-between items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                 <span>{year}</span>
-                                <span class="bg-primary-50 text-primary px-2 py-1 rounded-full text-xs font-medium">
+                                <span class="year-count-badge bg-primary-50 text-primary px-2 py-1 rounded-full text-xs font-medium">
                                     {getCountByYear(year)}
                                 </span>
                             </a>
@@ -56,7 +56,7 @@
         </div>
         
         <div class="md:col-span-2">
-            <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="activity-list-container rounded-lg p-6">
                 <h2 class="text-xl font-semibold mb-6 border-b pb-2">All Activities</h2>
                 
                 <div class="space-y-8">
@@ -74,12 +74,12 @@
                                 {/if}
                                 
                                 <div class={activity.heroImage ? "md:w-2/3" : "w-full"}>
-                                    <div class="mb-2 flex items-center text-sm text-gray-500">
+                                    <div class="mb-2 flex items-center text-sm text-gray-500 activity-meta">
                                         <span class="mr-3">{activity.date}</span>
                                         {#if activity.tags && activity.tags.length > 0}
                                             <div class="flex gap-2 flex-wrap">
                                                 {#each activity.tags as tag}
-                                                    <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs">
+                                                    <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs">
                                                         {tag}
                                                     </span>
                                                 {/each}
@@ -93,7 +93,7 @@
                                         </a>
                                     </h3>
                                     
-                                    <p class="text-gray-600">{activity.description}</p>
+                                    <p class="text-gray-600 activity-description">{activity.description}</p>
                                     
                                     <div class="mt-4">
                                         <a href="{base}/activities/{activity.id}" class="text-primary hover:underline font-medium text-sm">
@@ -111,5 +111,41 @@
 </div>
 
 <style>
-    /* Remove all styles from here */
+    /* Apply theme variables to the main containers */
+    .year-sidebar,
+    .activity-list-container {
+        background-color: var(--color-background);
+        box-shadow: var(--shadow-md);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Adjust title border color */
+    .activity-list-container h2 {
+        border-color: var(--color-border);
+    }
+
+    /* Adjust year link hover background and badge colors */
+    .year-link:hover {
+        background-color: var(--color-border) !important; /* Override Tailwind */
+    }
+    .year-count-badge {
+        background-color: var(--color-border) !important; /* Override Tailwind */
+        color: var(--color-primary) !important; /* Override Tailwind */
+    }
+
+    /* Adjust activity meta text color */
+    .activity-meta {
+        color: var(--color-text-light) !important; /* Override Tailwind */
+    }
+
+    /* Adjust tag background and text color */
+    .tag {
+        background-color: var(--color-border) !important; /* Override Tailwind */
+        color: var(--color-text) !important; /* Override Tailwind */
+    }
+
+    /* Adjust activity description text color */
+    .activity-description {
+        color: var(--color-text-light) !important; /* Override Tailwind */
+    }
 </style> 

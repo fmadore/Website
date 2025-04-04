@@ -52,7 +52,7 @@
 />
 
 <div class="container mx-auto py-8 px-4">
-    <article class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <article class="communication-article rounded-lg p-6 mb-8">
         <PageHeader 
             title={communication.title}
             backLinkHref="communications"
@@ -136,10 +136,10 @@
                 <h2 class="text-xl font-semibold mb-3">Papers in this Panel</h2>
                 <div class="space-y-4">
                     {#each communication.papers as paper, index}
-                        <div class="panel-paper bg-gray-50 p-4 rounded-md">
+                        <div class="panel-paper p-4 rounded-md">
                             <h3 class="font-semibold text-lg">{paper.title}</h3>
                             {#if paper.authors && paper.authors.length > 0}
-                                <div class="text-sm text-text-secondary mt-1">
+                                <div class="text-sm text-text-secondary mt-1 panel-paper-authors">
                                     {paper.authors.join(', ')}
                                 </div>
                             {/if}
@@ -159,10 +159,10 @@
                 <h2 class="text-xl font-semibold mb-3">Participants</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {#each communication.participants as participant}
-                        <div class="panel-participant bg-gray-50 p-3 rounded-md">
+                        <div class="panel-participant p-3 rounded-md">
                             <div class="font-medium">{participant.name}</div>
                             {#if participant.role}
-                                <div class="text-sm text-text-secondary">
+                                <div class="text-sm text-text-secondary participant-role">
                                     {participant.role}
                                 </div>
                             {/if}
@@ -182,7 +182,7 @@
                 <h2 class="text-lg font-semibold mb-2">Tags</h2>
                 <div class="flex flex-wrap gap-2">
                     {#each communication.tags as tag}
-                        <a href="{base}/communications?tag={encodeURIComponent(tag)}" class="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-text-secondary">
+                        <a href="{base}/communications?tag={encodeURIComponent(tag)}" class="tag-link text-sm px-3 py-1 rounded-full">
                             {tag}
                         </a>
                     {/each}
@@ -225,10 +225,10 @@
         <h2 class="text-xl font-semibold mb-4">More {communication.type === 'panel' ? 'Panels' : communication.type === 'conference' ? 'Conference Papers' : 'Presentations'}</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {#each allCommunications.filter(c => c.type === communication.type && c.id !== communication.id).slice(0, 3) as relatedComm}
-                <a href="{base}/communications/{relatedComm.id}" class="bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
-                    <div class="text-sm text-text-muted mb-1">{relatedComm.date}</div>
+                <a href="{base}/communications/{relatedComm.id}" class="related-item rounded-lg p-4 transition-shadow">
+                    <div class="related-date text-sm mb-1">{relatedComm.date}</div>
                     <h3 class="font-medium text-primary">{relatedComm.title}</h3>
-                    <div class="text-sm mt-1">{relatedComm.authors?.join(', ')}</div>
+                    <div class="related-authors text-sm mt-1">{relatedComm.authors?.join(', ')}</div>
                 </a>
             {/each}
         </div>
@@ -238,11 +238,11 @@
 <style>
     .communication-details > div {
         padding: 0.5rem;
-        border-bottom: 1px solid var(--color-border-light);
+        border-bottom: 1px solid var(--color-border);
     }
     
     .communication-details strong {
-        color: var(--color-text-secondary);
+        color: var(--color-text-light);
         font-weight: 600;
         margin-right: 0.5rem;
     }
@@ -272,6 +272,54 @@
     }
     
     .btn-outline:hover {
-        background-color: var(--color-background-alt);
+        background-color: var(--color-border);
+    }
+
+    /* Theme styles for main article container */
+    .communication-article {
+        background-color: var(--color-background);
+        box-shadow: var(--shadow-md);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Theme styles for panel paper/participant divs */
+    .panel-paper,
+    .panel-participant {
+        background-color: var(--color-border);
+        transition: background-color 0.3s ease;
+    }
+    .panel-paper-authors,
+    .participant-role {
+        color: var(--color-text-light);
+    }
+
+    /* Theme styles for tags */
+    .tag-link {
+        background-color: var(--color-border);
+        color: var(--color-text-light);
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .tag-link:hover {
+        background-color: var(--color-primary);
+        color: var(--color-background);
+    }
+
+    /* Theme styles for related items */
+    .related-item {
+        background-color: var(--color-background);
+        box-shadow: var(--shadow-sm);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .related-item:hover {
+        box-shadow: var(--shadow-md);
+    }
+    .related-date,
+    .related-authors {
+        color: var(--color-text-light);
+    }
+
+    /* Theme style for image caption */
+    .communication-article figcaption {
+        color: var(--color-text-light);
     }
 </style> 

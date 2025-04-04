@@ -96,10 +96,11 @@
 
 <style>
     .relevant-communications {
-        background-color: white;
+        background-color: var(--color-background);
         border-radius: var(--border-radius-md);
         box-shadow: var(--shadow-sm);
         padding: var(--spacing-4);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
     
     .card-title {
@@ -120,7 +121,7 @@
     .communication-item {
         margin-bottom: var(--spacing-4);
         padding-bottom: var(--spacing-4);
-        border-bottom: 1px solid var(--color-border-light);
+        border-bottom: 1px solid var(--color-border);
     }
     
     .communication-item:last-child {
@@ -138,14 +139,14 @@
         text-transform: uppercase;
         font-weight: 600;
         color: var(--color-primary);
-        background-color: var(--color-primary-light);
+        background-color: var(--color-border);
         padding: 0.1rem 0.5rem;
         border-radius: var(--border-radius-sm);
     }
     
     .communication-date {
         font-size: var(--font-size-sm);
-        color: var(--color-text-muted);
+        color: var(--color-text-light);
     }
     
     .communication-title {
@@ -163,7 +164,7 @@
     
     .communication-authors {
         font-size: var(--font-size-sm);
-        color: var(--color-text-secondary);
+        color: var(--color-text-light);
         font-style: italic;
         margin-bottom: var(--spacing-1);
     }
@@ -171,13 +172,13 @@
     .communication-abstract {
         font-size: var(--font-size-sm);
         margin-top: var(--spacing-1);
-        color: var(--color-text-secondary);
+        color: var(--color-text-light);
         line-height: 1.5;
     }
     
     .no-communications {
         font-style: italic;
-        color: var(--color-text-muted);
+        color: var(--color-text-light);
         text-align: center;
         padding: var(--spacing-4) 0;
     }
@@ -185,8 +186,8 @@
     .type-tag {
         display: inline-block;
         padding: 0.25rem 0.75rem;
-        background-color: var(--color-primary-light);
-        color: var(--color-primary-dark);
+        background-color: var(--color-border);
+        color: var(--color-text);
         border-radius: var(--border-radius-full);
         font-size: var(--font-size-sm);
         font-weight: 600;
@@ -195,7 +196,7 @@
     
     .type-tag:hover {
         background-color: var(--color-primary);
-        color: white;
+        color: var(--color-background);
     }
     
     .view-all {
