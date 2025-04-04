@@ -44,7 +44,7 @@
             title: "Guest Lecturer",
             institution: "Various Institutions",
             description: "A list of invited talks and lectures delivered at various academic institutions.", // Updated description
-            imageUrl: `${base}/images/teaching/guest-lecture.webp`, // Placeholder image
+            imageUrl: `${base}/images/teaching/guest-lecture.jpg`,
             linkUrl: `${base}/teaching/guest-lectures` // <-- Link to new page
         }
     ];
