@@ -1,10 +1,13 @@
 <script lang="ts">
+    import { onMount } from 'svelte';
+    import { page } from '$app/stores';
     import SEO from '$lib/SEO.svelte';
     import { 
         filteredCommunications, 
         activeFilters,
         toggleTagFilter,
-        toggleCountryFilter 
+        toggleCountryFilter,
+        toggleTypeFilter
     } from '$lib/data/communications/filters';
     import FiltersSidebar from '$lib/components/communications/FiltersSidebar.svelte';
     import CommunicationItem from '$lib/components/communications/CommunicationItem.svelte';
@@ -17,9 +20,36 @@
             toggleTagFilter(value);
         } else if (type === 'country') {
             toggleCountryFilter(value);
+        } else if (type === 'type') {
+            toggleTypeFilter(value);
         }
         // Add other types (like author) if CommunicationItem dispatches them
     }
+    
+    // Handle initial type filter from URL query parameter
+    onMount(() => {
+        const typeFromUrl = $page.url.searchParams.get('type');
+        if (typeFromUrl) {
+            let currentTypes: string[] = [];
+            const unsubscribe = activeFilters.subscribe(value => {
+                currentTypes = value.types;
+            });
+            unsubscribe();
+            
+            if (!(currentTypes.length === 1 && currentTypes[0] === typeFromUrl)) {
+                currentTypes.forEach(activeType => {
+                    toggleTypeFilter(activeType); 
+                });
+                toggleTypeFilter(typeFromUrl); 
+            }
+        }
+        // Handle project filter from URL (Added based on link in RelevantCommunications.svelte)
+        const projectFromUrl = $page.url.searchParams.get('project');
+        if (projectFromUrl) {
+            console.log("Project filter from URL:", projectFromUrl);
+            // TODO: Implement project filtering logic similar to type filtering if required.
+        }
+    });
 </script>
 
 <SEO 

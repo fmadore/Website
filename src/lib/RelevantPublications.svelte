@@ -82,7 +82,7 @@
                 <span class="text-sm text-gray-600">Browse by type:</span>
                 <div class="flex flex-wrap gap-2 mt-2">
                     {#each publicationTypes as type}
-                        <a href="{base}/publications/type/{type}" class="type-tag">
+                        <a href="{base}/publications?type={type}" class="type-tag">
                             {formatType(type)}
                         </a>
                     {/each}

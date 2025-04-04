@@ -44,7 +44,7 @@
         'West Africa',
         'Frédérick Madore'
     ].join(', ')}"
-    ogImage="{publication.image}"
+    ogImage="{base}/{publication.image}"
 />
 
 <div class="container mx-auto py-8 px-4">

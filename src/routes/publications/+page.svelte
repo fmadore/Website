@@ -1,10 +1,14 @@
 <script lang="ts">
+    import { onMount } from 'svelte';
+    import { page } from '$app/stores';
     import SEO from '$lib/SEO.svelte';
     import { 
         filteredPublications, 
         activeFilters,
         toggleTagFilter,
         toggleAuthorFilter,
+        toggleTypeFilter,
+        toggleProjectFilter,
         clearAllFilters
     } from '$lib/data/publications/filters';
     import FiltersSidebar from '$lib/components/publications/FiltersSidebar.svelte';
@@ -20,6 +24,10 @@
             toggleTagFilter(value);
         } else if (type === 'author') {
             toggleAuthorFilter(value);
+        } else if (type === 'type') {
+            toggleTypeFilter(value);
+        } else if (type === 'project') {
+            toggleProjectFilter(value);
         }
     }
 
@@ -28,9 +36,45 @@
         if (!filters) return false;
         return Object.values(filters).some(val => 
             (Array.isArray(val) && val.length > 0) || 
-            (val !== null && val !== undefined)
+            (val !== null && val !== undefined && typeof val === 'object' && Object.keys(val).length > 0) ||
+            (typeof val !== 'object' && val !== null && val !== undefined) 
         );
     }
+
+    // Handle initial filters from URL query parameters
+    onMount(() => {
+        const typeFromUrl = $page.url.searchParams.get('type');
+        if (typeFromUrl) {
+            let currentTypes: string[] = [];
+            const unsubscribeTypes = activeFilters.subscribe(value => { 
+                currentTypes = value.types;
+            });
+            unsubscribeTypes(); 
+            
+            if (!(currentTypes.length === 1 && currentTypes[0] === typeFromUrl)) {
+                 currentTypes.forEach(activeType => {
+                    toggleTypeFilter(activeType); 
+                 });
+                 toggleTypeFilter(typeFromUrl); 
+            }
+        }
+
+        const projectFromUrl = $page.url.searchParams.get('project');
+        if (projectFromUrl) {
+            let currentProjects: string[] = [];
+            const unsubscribeProjects = activeFilters.subscribe(value => {
+                 currentProjects = value.projects;
+            });
+            unsubscribeProjects();
+            
+            if (!(currentProjects.length === 1 && currentProjects[0] === projectFromUrl)) {
+                 currentProjects.forEach(activeProject => {
+                    toggleProjectFilter(activeProject);
+                 });
+                 toggleProjectFilter(projectFromUrl);
+            }
+        }
+    });
 </script>
 
 <SEO 
