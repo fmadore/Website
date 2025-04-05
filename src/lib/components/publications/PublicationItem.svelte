@@ -106,7 +106,7 @@
             <div class="text-light mb-2">
                 <!-- Render prefix and the constructed author string -->
                 {listPrefix}{authorString}
-                 <!-- Space, then (Year). -->
+                 <!-- Space, then (Year). Only if year is defined -->
                  {#if formattedCitation.year} ({formattedCitation.year}). {/if}
 
                 <!-- Add type-specific prefixes before detailsHtml -->
