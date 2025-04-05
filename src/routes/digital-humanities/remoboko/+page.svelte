@@ -15,8 +15,8 @@
         title="REMOBOKO"
     />
 
-    <div class="bg-base-100 rounded-box shadow-md p-6 mb-8">
-        <p>Interactive map showing the main locations mentioned in my recent book <ItemReference id="religious-activism-campuses" />.</p>
+    <div class="rounded-box shadow-md p-6 mb-8">
+
     </div>
 
     <section class="visualization-section">
@@ -83,7 +83,7 @@
     .visualization-section {
         margin-top: var(--spacing-8);
         padding: var(--spacing-8) var(--spacing-6); /* Increased vertical padding */
-        background-color: var(--color-background-alt, #f9fafb); /* Added fallback */
+        background-color: var(--color-background); /* Use defined background variable */
         border-radius: var(--border-radius);
         box-shadow: var(--shadow-sm);
         /* Optional: Add transition for hover effect */
@@ -97,17 +97,17 @@
 
     .visualization-section h2 {
         margin-bottom: var(--spacing-4);
-        color: var(--color-heading);
+        color: var(--color-text); /* Use defined text variable */
     }
     .visualization-section h3 {
         margin-top: var(--spacing-6);
         margin-bottom: var(--spacing-3);
-        color: var(--color-heading);
+        color: var(--color-text); /* Use defined text variable */
     }
      .visualization-section h4 {
         margin-top: var(--spacing-5);
         margin-bottom: var(--spacing-2);
-        color: var(--color-heading);
+        color: var(--color-text); /* Use defined text variable */
         font-size: 1.1rem;
     }
 
