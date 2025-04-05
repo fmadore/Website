@@ -1,7 +1,10 @@
 <script lang="ts">
     import { 
         activeFilters, 
-        filterOptions, 
+        displayedAuthors,
+        displayedTypes,
+        displayedTags,
+        displayedLanguages,
         toggleTypeFilter, 
         updateYearRange,
         resetYearRange,
@@ -10,7 +13,10 @@
         toggleAuthorFilter,
         clearAllFilters,
         tagCounts,
-        authorCounts
+        authorCounts,
+        typeCounts,
+        languageCounts,
+        filterOptions
     } from '$lib/data/publications/filters';
     import { publicationsByType } from '$lib/data/publications';
     import FilterSectionCheckbox from '$lib/components/filters/FilterSectionCheckbox.svelte';
@@ -29,12 +35,6 @@
         'dissertation': 'Ph.D. Dissertations'
     };
 
-    // Calculate counts for publication types
-    $: typeCounts = $filterOptions.types.reduce((acc, type) => {
-        acc[type] = publicationsByType[type]?.length || 0;
-        return acc;
-    }, {} as { [key: string]: number });
-
     // Ensure years are sorted ascending for the slider
     $: sortedYearsAsc = $filterOptions.years.slice().sort((a, b) => a - b);
 </script>
@@ -42,11 +42,11 @@
 <aside class="p-6 border rounded shadow-sm sticky-top">
     <FilterSectionCheckbox 
         title="Publication Types"
-        items={$filterOptions.types}
+        items={$displayedTypes}
         itemLabels={typeLabels}
         activeItems={$activeFilters.types}
         toggleItem={toggleTypeFilter}
-        counts={typeCounts}
+        counts={$typeCounts}
     />
 
     <FilterSectionRangeSlider 
@@ -60,7 +60,7 @@
     <div class="authors-scrollable">
         <FilterSectionCheckbox 
             title="Co-Authors"
-            items={$filterOptions.authors}
+            items={$displayedAuthors}
             activeItems={$activeFilters.authors}
             toggleItem={toggleAuthorFilter}
             counts={$authorCounts}
@@ -69,15 +69,15 @@
 
     <FilterSectionCheckbox 
         title="Languages"
-        items={$filterOptions.languages}
+        items={$displayedLanguages}
         activeItems={$activeFilters.languages}
         toggleItem={toggleLanguageFilter}
-        counts={undefined}
+        counts={$languageCounts}
     />
 
     <FilterSectionButtons 
         title="Tags"
-        items={$filterOptions.tags}
+        items={$displayedTags}
         activeItems={$activeFilters.tags}
         toggleItem={toggleTagFilter}
         counts={$tagCounts}
@@ -139,8 +139,8 @@
     }
     
     .authors-scrollable {
-        max-height: 200px; /* Keep fixed height or use variable if available */
-        overflow-y: auto;
+        /* max-height: 200px;  Removed fixed height */
+        /* overflow-y: auto; Removed overflow */
         /* Use spacing variable, e.g., --spacing-1 */
         padding-right: var(--spacing-1, 5px); 
         display: flex;

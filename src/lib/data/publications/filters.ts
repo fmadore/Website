@@ -247,6 +247,79 @@ export const tagCounts = derived(
     }
 );
 
+// Derive displayed authors based on selected publication types, year range, tags, and languages
+export const displayedAuthors = derived(
+    activeFilters, // Depend only on activeFilters
+    ($activeFilters) => {
+        const noTypeFilter = $activeFilters.types.length === 0;
+        const noYearFilter = !$activeFilters.yearRange;
+        const noTagFilter = $activeFilters.tags.length === 0;
+        const noLanguageFilter = $activeFilters.languages.length === 0;
+
+        // If no types, years, tags, or languages are filtered, show all available authors
+        if (noTypeFilter && noYearFilter && noTagFilter && noLanguageFilter) {
+            return allAuthors; // Use the static allAuthors list
+        }
+
+        // Filter publications based on active types, year range, tags, and languages
+        const relevantPublications = allPublications.filter(pub => {
+            // Type filter
+            if (!noTypeFilter && !$activeFilters.types.includes(pub.type)) {
+                return false;
+            }
+            // Year range filter
+            if (!noYearFilter && 
+                (pub.year < $activeFilters.yearRange!.min || pub.year > $activeFilters.yearRange!.max)) {
+                return false;
+            }
+            // Tag filter
+            if (!noTagFilter && 
+                (!pub.tags || !pub.tags.some(tag => $activeFilters.tags.includes(tag)))) {
+                return false;
+            }
+            // Language filter
+            if (!noLanguageFilter) {
+                const pubLanguages = pub.language ? pub.language.split(',').map(lang => lang.trim()) : [];
+                if (!pubLanguages.some(lang => $activeFilters.languages.includes(lang))) {
+                    return false;
+                }
+            }
+            return true;
+        });
+
+        // Extract authors and applicable editors from these relevant publications
+        const authorsFromRelevantPubs = new Set<string>();
+        relevantPublications.forEach(pub => {
+            // Add authors
+            if (pub.authors) {
+                pub.authors.forEach(author => {
+                    if (author !== "Frédérick Madore") {
+                        authorsFromRelevantPubs.add(author);
+                    }
+                });
+            }
+            
+            // Add editors, excluding chapter and encyclopedia types
+            if (pub.editors && pub.type !== 'chapter' && pub.type !== 'encyclopedia') {
+                const editorNames = extractEditors(pub);
+                editorNames.forEach(editor => {
+                    if (editor !== "Frédérick Madore") {
+                        authorsFromRelevantPubs.add(editor);
+                    }
+                });
+            }
+            
+            // Add preface authors
+            if (pub.prefacedBy && pub.prefacedBy !== "Frédérick Madore") {
+                authorsFromRelevantPubs.add(pub.prefacedBy);
+            }
+        });
+
+        // Convert Set to array and sort
+        return Array.from(authorsFromRelevantPubs).sort();
+    }
+);
+
 // Get available author counts for current filtered publications
 export const authorCounts = derived(
     [filteredPublications],
@@ -315,6 +388,18 @@ export const projectCounts = derived(
     }
 );
 
+// Get available type counts for current filtered publications
+export const typeCounts = derived(
+    [filteredPublications],
+    ([$filteredPublications]) => {
+        const counts: Record<string, number> = {};
+        $filteredPublications.forEach(pub => {
+            counts[pub.type] = (counts[pub.type] || 0) + 1;
+        });
+        return counts;
+    }
+);
+
 // Functions to set filters directly (needed for URL sync)
 export function setTypes(types: string[]) {
     activeFilters.update(filters => ({ ...filters, types }));
@@ -363,5 +448,92 @@ export const languageCounts = derived(
             }
         });
         return counts;
+    }
+);
+
+// Derive displayed types based on other active filters
+export const displayedTypes = derived(
+    activeFilters,
+    ($activeFilters) => {
+        const relevantPublications = allPublications.filter(pub => {
+            // Year range filter
+            if ($activeFilters.yearRange && (pub.year < $activeFilters.yearRange.min || pub.year > $activeFilters.yearRange.max)) return false;
+            // Tag filter
+            if ($activeFilters.tags.length > 0 && (!pub.tags || !pub.tags.some(tag => $activeFilters.tags.includes(tag)))) return false;
+            // Language filter
+            if ($activeFilters.languages.length > 0) {
+                const pubLanguages = pub.language ? pub.language.split(',').map(lang => lang.trim()) : [];
+                if (!pubLanguages.some(lang => $activeFilters.languages.includes(lang))) return false;
+            }
+            // Author filter
+            if ($activeFilters.authors.length > 0) {
+                const hasMatchingAuthor = pub.authors && pub.authors.some(author => $activeFilters.authors.includes(author));
+                const isExcludedType = pub.type === 'chapter' || pub.type === 'encyclopedia';
+                const hasMatchingEditor = !isExcludedType && pub.editors && extractEditors(pub).some(editor => $activeFilters.authors.includes(editor));
+                const hasMatchingPrefaceAuthor = pub.prefacedBy && $activeFilters.authors.includes(pub.prefacedBy);
+                if (!hasMatchingAuthor && !hasMatchingEditor && !hasMatchingPrefaceAuthor) return false;
+            }
+            // TODO: Add Country & Project filters if needed for consistency
+            return true;
+        });
+        const types = new Set(relevantPublications.map(pub => pub.type));
+        return Array.from(types).sort();
+    }
+);
+
+// Derive displayed tags based on other active filters
+export const displayedTags = derived(
+    activeFilters,
+    ($activeFilters) => {
+        const relevantPublications = allPublications.filter(pub => {
+            // Type filter
+            if ($activeFilters.types.length > 0 && !$activeFilters.types.includes(pub.type)) return false;
+            // Year range filter
+            if ($activeFilters.yearRange && (pub.year < $activeFilters.yearRange.min || pub.year > $activeFilters.yearRange.max)) return false;
+            // Language filter
+            if ($activeFilters.languages.length > 0) {
+                const pubLanguages = pub.language ? pub.language.split(',').map(lang => lang.trim()) : [];
+                if (!pubLanguages.some(lang => $activeFilters.languages.includes(lang))) return false;
+            }
+            // Author filter
+            if ($activeFilters.authors.length > 0) {
+                const hasMatchingAuthor = pub.authors && pub.authors.some(author => $activeFilters.authors.includes(author));
+                const isExcludedType = pub.type === 'chapter' || pub.type === 'encyclopedia';
+                const hasMatchingEditor = !isExcludedType && pub.editors && extractEditors(pub).some(editor => $activeFilters.authors.includes(editor));
+                const hasMatchingPrefaceAuthor = pub.prefacedBy && $activeFilters.authors.includes(pub.prefacedBy);
+                if (!hasMatchingAuthor && !hasMatchingEditor && !hasMatchingPrefaceAuthor) return false;
+            }
+            // TODO: Add Country & Project filters if needed for consistency
+            return true;
+        });
+        const tags = new Set(relevantPublications.flatMap(pub => pub.tags || []));
+        return Array.from(tags).sort();
+    }
+);
+
+// Derive displayed languages based on other active filters
+export const displayedLanguages = derived(
+    activeFilters,
+    ($activeFilters) => {
+        const relevantPublications = allPublications.filter(pub => {
+            // Type filter
+            if ($activeFilters.types.length > 0 && !$activeFilters.types.includes(pub.type)) return false;
+            // Year range filter
+            if ($activeFilters.yearRange && (pub.year < $activeFilters.yearRange.min || pub.year > $activeFilters.yearRange.max)) return false;
+            // Tag filter
+            if ($activeFilters.tags.length > 0 && (!pub.tags || !pub.tags.some(tag => $activeFilters.tags.includes(tag)))) return false;
+            // Author filter
+            if ($activeFilters.authors.length > 0) {
+                const hasMatchingAuthor = pub.authors && pub.authors.some(author => $activeFilters.authors.includes(author));
+                const isExcludedType = pub.type === 'chapter' || pub.type === 'encyclopedia';
+                const hasMatchingEditor = !isExcludedType && pub.editors && extractEditors(pub).some(editor => $activeFilters.authors.includes(editor));
+                const hasMatchingPrefaceAuthor = pub.prefacedBy && $activeFilters.authors.includes(pub.prefacedBy);
+                if (!hasMatchingAuthor && !hasMatchingEditor && !hasMatchingPrefaceAuthor) return false;
+            }
+            // TODO: Add Country & Project filters if needed for consistency
+            return true;
+        });
+        const languages = new Set(relevantPublications.flatMap(pub => pub.language ? pub.language.split(',').map(l => l.trim()) : []));
+        return Array.from(languages).sort();
     }
 ); 
