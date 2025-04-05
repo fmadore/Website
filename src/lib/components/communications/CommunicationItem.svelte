@@ -90,7 +90,7 @@
                 <div class="mt-3 flex flex-wrap gap-2">
                     {#each communication.tags as tag}
                         <button 
-                            class="btn-sm bg-gray-100 hover:bg-gray-200 rounded-full border-0 text-sm"
+                            class="btn-sm tag-button rounded-full text-sm"
                             on:click={() => dispatch('filterrequest', { type: 'tag', value: tag })}
                         >
                             {tag}
@@ -121,17 +121,30 @@
     .country-btn {
         background: none;
         border: none;
-        padding: 0;
+        padding: 0 var(--spacing-1); /* Add small padding */
         font-size: inherit;
         font-family: inherit;
-        color: inherit;
-        text-decoration: underline;
+        color: var(--color-primary); /* Use theme primary color */
+        text-decoration: none; /* Remove default underline */
         cursor: pointer;
         display: inline;
+        border-radius: var(--border-radius-sm); /* Add slight rounding */
     }
     
     .country-btn:hover {
-        color: var(--color-primary);
+        /* Use primary color with low opacity for background */
+        background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+        text-decoration: underline; /* Add underline on hover */
+    }
+
+    .tag-button {
+        background-color: color-mix(in srgb, var(--color-border) 80%, transparent); /* Use theme border color with transparency */
+        color: var(--color-text-light);
+        border: 1px solid var(--color-border); /* Use theme border color */
+    }
+    .tag-button:hover {
+        background-color: var(--color-border); /* Use solid theme border color on hover */
+        color: var(--color-text);
     }
     
     .hover-shadow:hover {
