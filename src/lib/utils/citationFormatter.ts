@@ -83,11 +83,12 @@ export function formatCitation(publication: Publication): FormattedCitation {
         }
         if (publication.pages) {
             if (hasBookInfo) details += ', ';
-            details += `pp. ${publication.pages}`; // Use standard pp. notation
+            details += `${publication.pages}`; 
             hasBookInfo = true;
         }
         if (hasBookInfo) details += '. ';// Separator after main book/editor/page info
 
+        // Build and append book publication info
         let bookPubInfo = '';
         if (publication.placeOfPublication) {
             bookPubInfo += publication.placeOfPublication;
@@ -95,8 +96,13 @@ export function formatCitation(publication: Publication): FormattedCitation {
         }
         if (publication.placeOfPublication && publication.publisher) bookPubInfo += ' ';
         if (publication.publisher) bookPubInfo += publication.publisher;
+        
+        // Append the publication info
+        details += bookPubInfo;
+
+        // Ensure final period after all details
         if (details.trim() && !details.trim().endsWith('.')) {
-            details += '.'; // Ensure final period
+            details += '.'; 
         }
         detailsHtml = details;
         year = publication.year;
