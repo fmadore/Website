@@ -1,15 +1,30 @@
 <script lang="ts">
     import { allPublications } from '$lib/data/publications/index';
-    import type { Publication } from '$lib/types';
+    import { allCommunications } from '$lib/data/communications/index';
+    import type { Publication, Communication } from '$lib/types';
     import { base } from '$app/paths';
     import { onMount, onDestroy, tick } from 'svelte';
     import { browser } from '$app/environment'; // Import browser
 
-    // Prop: ID of the publication to reference
+    // Prop: ID of the item to reference
     export let id: string;
 
-    // Find the publication data
-    let publication: Publication | undefined = allPublications.find(p => p.id === id);
+    // Find the item data and type
+    let item: Publication | Communication | undefined;
+    let itemType: 'publication' | 'communication' | undefined;
+
+    // Search logic
+    $: {
+        item = allPublications.find(p => p.id === id);
+        if (item) {
+            itemType = 'publication';
+        } else {
+            item = allCommunications.find(c => c.id === id);
+            if (item) {
+                itemType = 'communication';
+            }
+        }
+    }
 
     let showPreview = false; // Controls visibility
     let isOpenedByClick = false; // Track if opened via click/tap
@@ -195,16 +210,46 @@
 
     // --- Reactive Computations ---
     
-    $: referenceText = publication 
-        ? `(${(publication.authors?.[0]?.split(' ').pop() || 'N/A' )}, ${publication.date?.substring(0, 4) || 'N/D'})`
+    // Helper to get year consistently
+    function getYear(item: Publication | Communication): string {
+        if ('dateISO' in item && item.dateISO) return item.dateISO.substring(0, 4);
+        if ('date' in item && item.date) return item.date.substring(0, 4);
+        if ('year' in item && item.year) return item.year.toString();
+        return 'N/D';
+    }
+
+    // Helper to get first author's last name
+    function getFirstAuthorLastName(item: Publication | Communication): string {
+        const authors = item.authors;
+        if (authors && authors.length > 0 && typeof authors[0] === 'string') {
+            return authors[0].split(' ').pop() || 'N/A';
+        }
+        return 'N/A';
+    }
+
+    $: referenceText = item
+        ? `(${getFirstAuthorLastName(item)}, ${getYear(item)})`
         : `(${id})`; 
+
+    $: itemUrl = item && itemType
+        ? `${base}/${itemType === 'publication' ? 'publications' : 'communications'}/${item.id}`
+        : '#';
+
+    $: ariaLabel = item
+        ? `View ${itemType || 'item'}: ${item.title}`
+        : `Reference ${id}`;
+
+    // Consolidate image source logic
+    $: imageSrc = item && (('heroImage' in item && item.heroImage?.src) || ('image' in item && item.image))
+        ? `${base}/${('heroImage' in item && item.heroImage?.src) || ('image' in item && item.image)}`
+        : null;
 </script>
 
-{#if publication}
+{#if item && itemType}
     <span 
         bind:this={referenceElement} 
         class:preview-visible={showPreview}
-        class="publication-reference" 
+        class="item-reference"
         on:pointerenter={handlePointerEnterReference} 
         on:pointerleave={handlePointerLeaveReference}
         on:focusin={handleFocusIn}
@@ -216,12 +261,12 @@
         role="button"
         aria-haspopup="dialog"
         aria-expanded={showPreview}
-        aria-controls="pub-preview-{id}"
+        aria-controls="item-preview-{id}"
     >
         <a 
-            href="{base}/publications/{publication.id}" 
+            href={itemUrl} 
             class="reference-link" 
-            aria-label="View publication: {publication.title}"
+            aria-label={ariaLabel}
             tabindex="-1" 
         >
             {referenceText}
@@ -231,35 +276,50 @@
             <div 
                 bind:this={cardElement}
                 class="preview-card {positionClass}"
-                id="pub-preview-{id}" 
+                id="item-preview-{id}" 
                 role="dialog" 
-                aria-label="Publication Preview"
+                aria-label="Item Preview"
                 aria-modal="false"
                 on:pointerenter={handlePointerEnterCard}
                 on:pointerleave={handlePointerLeaveCard}
             >
-                <a href="{base}/publications/{publication.id}" class="card-link" tabindex="-1">
-                    {#if publication.heroImage?.src || publication.image}
+                <a href={itemUrl} class="card-link" tabindex="-1">
+                    {#if imageSrc}
                         <img 
-                            src="{base}/{publication.heroImage?.src || publication.image}" 
-                            alt="{publication.title}" 
+                            src={imageSrc} 
+                            alt={item.title} 
                             class="card-image"
                         />
                     {/if}
                     <div class="card-content">
-                        <h4 class="card-title">{publication.title}</h4>
-                        {#if publication.authors}
-                            <p class="card-authors">{publication.authors.join(', ')}</p>
+                        <h4 class="card-title">{item.title}</h4>
+                        {#if item.authors && item.authors.length > 0}
+                            <p class="card-authors">{item.authors.join(', ')}</p>
                         {/if}
-                        <p class="card-date">{publication.date}</p>
-                        {#if publication.type === 'article' && publication.journal}
-                            <p class="card-meta"><em>{publication.journal}</em></p>
-                        {:else if publication.type === 'chapter' && publication.book}
-                            <p class="card-meta">In: <em>{publication.book}</em></p>
-                        {:else if publication.type === 'book' && publication.publisher}
-                            <p class="card-meta">{publication.publisher}</p>
-                         {:else if publication.type === 'special-issue' && publication.journal}
-                            <p class="card-meta">Special Issue: <em>{publication.journal}</em></p>
+                        <p class="card-date">{item.date || getYear(item)}</p>
+                        {#if itemType === 'publication'}
+                            {#if item.type === 'article' && item.journal}
+                                <p class="card-meta"><em>{item.journal}</em></p>
+                            {:else if item.type === 'chapter' && item.book}
+                                <p class="card-meta">In: <em>{item.book}</em></p>
+                            {:else if item.type === 'book' && item.publisher}
+                                <p class="card-meta">{item.publisher}</p>
+                            {:else if item.type === 'special-issue' && item.journal}
+                                <p class="card-meta">Special Issue: <em>{item.journal}</em></p>
+                            {/if}
+                        {:else if itemType === 'communication'}
+                            {#if item.type}
+                                <p class="card-meta">Type: {item.type}</p>
+                            {/if}
+                            {#if 'event' in item && item.event}
+                                <p class="card-meta">Event: {item.event}</p>
+                            {/if}
+                            {#if 'conference' in item && item.conference}
+                                <p class="card-meta">Conference: {item.conference}</p>
+                            {/if}
+                            {#if 'location' in item && item.location}
+                                <p class="card-meta">Location: {item.location}</p>
+                            {/if}
                         {/if}
                     </div>
                 </a>
@@ -267,12 +327,12 @@
         {/if}
     </span>
 {:else}
-    <!-- Fallback if publication ID is not found -->
-    <span class="publication-reference-error">[Pub: {id}?]</span>
+    <!-- Fallback if item ID is not found -->
+    <span class="item-reference-error">[Ref: {id}?]</span>
 {/if}
 
 <style>
-    .publication-reference {
+    .item-reference {
         position: relative;
         display: inline-block; 
         cursor: pointer;
@@ -288,13 +348,13 @@
         pointer-events: none; /* Let span handle interactions */
     }
     
-    .publication-reference:hover .reference-link,
-    .publication-reference:focus .reference-link {
+    .item-reference:hover .reference-link,
+    .item-reference:focus .reference-link {
         color: var(--color-primary-dark); 
         text-decoration-style: solid;
     }
     
-    .publication-reference:focus {
+    .item-reference:focus {
         outline: none; /* Remove default focus outline */
     }
 
@@ -324,7 +384,7 @@
     }
     
     /* Use class binding for visible state */
-    .publication-reference.preview-visible .preview-card {
+    .item-reference.preview-visible .preview-card {
         opacity: 1;
         visibility: visible;
         transform: translateX(-50%) scale(1);
@@ -395,7 +455,7 @@
          font-style: italic;
      }
 
-    .publication-reference-error {
+    .item-reference-error {
         color: #d9534f; 
         font-style: italic;
         font-size: 0.9em;

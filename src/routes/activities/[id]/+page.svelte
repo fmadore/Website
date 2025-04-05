@@ -5,6 +5,7 @@
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
+    import ItemReference from '$lib/components/common/ItemReference.svelte';
     
     // Get the activity ID from the URL
     const activityId = $page.params.id;
@@ -72,13 +73,39 @@
     // Format the tags for display
     const formattedTags = activity?.tags ? activity.tags : [];
 
-    // Prepend base path to relative links in content
-    let processedContent: string | undefined;
-    $: if (activity?.content) {
-        processedContent = activity.content.replace(/href="\/([^\/])/g, `href="${base}/$1`);
-    } else {
-        processedContent = '';
+    // --- New Content Parsing Logic ---
+    interface ContentSegment {
+        type: 'html' | 'ItemReference';
+        value?: string; // For html type
+        id?: string;    // For ItemReference type
     }
+
+    let contentSegments: ContentSegment[] = [];
+    $: if (activity?.content) {
+        const rawContent = activity.content.replace(/href="\/([^\/])/g, `href="${base}/$1`); // Apply base path processing first
+        const regex = /<ItemReference\s+id="([^"]+)"\s*\/>/g;
+        const segments: ContentSegment[] = [];
+        let lastIndex = 0;
+        let match;
+
+        while ((match = regex.exec(rawContent)) !== null) {
+            // Add preceding text segment
+            if (match.index > lastIndex) {
+                segments.push({ type: 'html', value: rawContent.substring(lastIndex, match.index) });
+            }
+            // Add the component placeholder
+            segments.push({ type: 'ItemReference', id: match[1] });
+            lastIndex = regex.lastIndex;
+        }
+        // Add any remaining text after the last match
+        if (lastIndex < rawContent.length) {
+            segments.push({ type: 'html', value: rawContent.substring(lastIndex) });
+        }
+        contentSegments = segments;
+    } else {
+        contentSegments = [];
+    }
+    // --- End New Content Parsing Logic ---
 </script>
 
 <svelte:head>
@@ -126,7 +153,14 @@
     {/if}
     
     <div class="activity-content">
-        {@html processedContent || ''}
+        <!-- Render parsed content segments -->
+        {#each contentSegments as segment}
+            {#if segment.type === 'html'}
+                {@html segment.value}
+            {:else if segment.type === 'ItemReference' && segment.id}
+                <ItemReference id={segment.id} />
+            {/if}
+        {/each}
     </div>
 
     {#if activity.pdfPath}
@@ -195,6 +229,12 @@
     .activity-content :global(p) {
         margin-bottom: var(--spacing-4);
         line-height: 1.7;
+    }
+
+    /* Allow inline display for ItemReference within paragraphs */
+    .activity-content :global(.item-reference) {
+        display: inline;
+        margin: 0 0.1em; /* Add slight spacing around the reference */
     }
 
     .pdf-section iframe {

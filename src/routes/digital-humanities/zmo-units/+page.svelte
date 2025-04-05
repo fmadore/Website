@@ -1,8 +1,11 @@
 <script>
     import SEO from '$lib/SEO.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
+    // Removed UnitNetworkGraph import as path is unknown
     // You might not need PublicationReference here unless you cite publications
     // import PublicationReference from '$lib/components/common/PublicationReference.svelte';
+    // You might not need ItemReference here unless you cite publications
+    // import ItemReference from '$lib/components/common/ItemReference.svelte';
 
 </script>
 

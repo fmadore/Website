@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
     import SEO from '$lib/SEO.svelte';
     import RelevantPublications from '$lib/RelevantPublications.svelte';
     import RelevantCommunications from '$lib/RelevantCommunications.svelte';
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
-    import PublicationReference from '$lib/components/common/PublicationReference.svelte';
+    import ItemReference from '$lib/components/common/ItemReference.svelte';
 </script>
 
 <SEO title="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso | Frédérick Madore" />
@@ -30,7 +30,7 @@
 
             <p>Another important strand of the project is concerned with intergenerational dynamics within Muslim communities. It analyses how the rise of a young Arabophone and Francophone elite, more familiar with new technologies, is challenging traditional forms of religious authority and seeking to position itself as the spokesperson for a 'civil Islam'. This research highlights the tensions and convergences between generations in the construction of contemporary Islam in Côte d'Ivoire and Burkina Faso.</p>
 
-            <p>Specific themes explored in this project include the role of "francophone Muslim intellectuals" in the Burkinabe public sphere after the departure of President Blaise Compaoré (2014), the vitality and dynamism of Salafism in Côte d'Ivoire, and the organisation of the Hajj pilgrimage to Mecca in Côte d'Ivoire and the stakes involved. Special attention is also given to the emergence of influential female figures, such as Aminata Kane Koné <PublicationReference id="muslim-feminist-media-cote-divoire-2020" />, and their role as religious entrepreneurs and media personalities.</p>
+            <p>Specific themes explored in this project include the role of "francophone Muslim intellectuals" in the Burkinabe public sphere after the departure of President Blaise Compaoré (2014), the vitality and dynamism of Salafism in Côte d'Ivoire, and the organisation of the Hajj pilgrimage to Mecca in Côte d'Ivoire and the stakes involved. Special attention is also given to the emergence of influential female figures, such as Aminata Kane Koné <ItemReference id="muslim-feminist-media-cote-divoire-2020" />, and their role as religious entrepreneurs and media personalities.</p>
 
             <p>By combining qualitative research methods - notably interviews with Muslim actors, media content analysis (print media, websites, social media) and a socio-historical approach - this project contributes to a better understanding of the profound transformations taking place within Islam in West Africa, with a particular focus on the engagement and strategies of youth and women. It highlights the complexity of religious dynamics, the diversity of actors and discourses, and the socio-political stakes involved in the assertion of Islam in the Ivorian and Burkinabe contexts.</p>
         </div>

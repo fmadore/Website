@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
     import SEO from '$lib/SEO.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import PublicationReference from '$lib/components/common/PublicationReference.svelte';
+	import ItemReference from '$lib/components/common/ItemReference.svelte';
 
 </script>
 
@@ -10,12 +10,18 @@
     description="Interactive visualizations from the Remoboko research group on religion, morality, and student life in West Africa." 
 />
 
-<div class="container">
-    <PageHeader title="Remoboko Visualizations" />
+<div class="container mx-auto px-4 py-8">
+    <PageHeader 
+        title="REMOBOKO"
+    />
+
+    <div class="bg-base-100 rounded-box shadow-md p-6 mb-8">
+        <p>Interactive map showing the main locations mentioned in my recent book <ItemReference id="religious-activism-campuses" />.</p>
+    </div>
 
     <section class="visualization-section">
         <h2>Fieldwork Locations / Points of Interest</h2>
-        <p>Interactive map showing the main locations mentioned in my recent book <PublicationReference id="religious-activism-campuses" />.</p> 
+        <p>Interactive map showing the main locations mentioned in my recent book <ItemReference id="religious-activism-campuses" />.</p> 
         <div class="visualization-embed">
             <iframe src="https://fmadore.github.io/Remoboko/Book_DeGruyter/Maps/points_of_interest.html" width="100%" height="600" frameborder="0" title="Points of Interest Map"></iframe>
         </div>
