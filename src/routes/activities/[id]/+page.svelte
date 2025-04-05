@@ -71,6 +71,14 @@
 
     // Format the tags for display
     const formattedTags = activity?.tags ? activity.tags : [];
+
+    // Prepend base path to relative links in content
+    let processedContent: string | undefined;
+    $: if (activity?.content) {
+        processedContent = activity.content.replace(/href="\/([^\/])/g, `href="${base}/$1`);
+    } else {
+        processedContent = '';
+    }
 </script>
 
 <svelte:head>
@@ -118,7 +126,7 @@
     {/if}
     
     <div class="activity-content">
-        {@html activity.content || ''}
+        {@html processedContent || ''}
     </div>
 
     {#if activity.pdfPath}
