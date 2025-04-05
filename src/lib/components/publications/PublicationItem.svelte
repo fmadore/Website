@@ -3,136 +3,59 @@
     import { createEventDispatcher } from 'svelte';
     import { base } from '$app/paths';
     import { truncateAbstract } from '$lib/utils/textUtils';
-    import MetadataList from './MetadataList.svelte';
+    // Import the necessary functions from the new formatter
+    import { formatCitation, getAuthorsArray } from '$lib/utils/citationFormatter';
     
     export let publication: Publication;
     
     const dispatch = createEventDispatcher();
     
-    // Human-readable labels for publication types
-    const typeLabels: {[key: string]: string} = {
-        'book': 'Book',
-        'article': 'Journal Article',
-        'chapter': 'Book Chapter',
-        'special-issue': 'Special Issue',
-        'report': 'Report',
-        'encyclopedia': 'Encyclopedia Entry',
-        'blogpost': 'Blog Post',
-        'dissertation': 'Ph.D. Dissertation'
-    };
-    
-    // Helper function to handle authors that might be string or array
-    function getAuthorsArray(authors: string[] | string | undefined): string[] {
-        if (!authors) return [];
-        if (typeof authors === 'string') return authors.split(' and ');
-        return authors;
+    // Reactive computation using the citation formatter
+    $: formattedCitation = formatCitation(publication);
+
+    // Define structure for display list items
+    interface DisplayListItem {
+        name: string;
+        isClickable: boolean;
     }
 
-    // Define type for metadata items
-    type MetadataItem = { label: string; value: string | number | undefined | null };
-
-    // Reactive computation for metadata list
-    $: publicationMetadata = (() => {
-        const common: MetadataItem[] = [];
-        const bookDetails: MetadataItem[] = [];
-        const other: MetadataItem[] = [];
-
-        // Construct book details string if type is 'book'
-        if (publication.type === 'book') {
-            let details = '';
-            if (publication.placeOfPublication) {
-                details += publication.placeOfPublication;
-                if (publication.publisher) {
-                    details += ':';
-                }
-            }
-            if (publication.placeOfPublication && publication.publisher) {
-                details += ' '; // Use space instead of &nbsp; here
-            }
-            if (publication.publisher) {
-                details += publication.publisher;
-            }
-            if ((publication.placeOfPublication || publication.publisher) && publication.year) {
-                details += ', '; // Use space
-            }
-            if (publication.year) {
-                details += publication.year;
-            }
-            if (details) {
-                // Use empty label to signal MetadataList to hide it
-                bookDetails.push({ label: '', value: details });
-            }
-        } else {
-            // Add individual items for non-book types
-            other.push({ label: 'Publisher', value: publication.publisher });
-            other.push({ label: 'Place', value: publication.placeOfPublication });
-            other.push({ label: 'Year', value: publication.year });
-            other.push({ label: 'Journal', value: publication.journal });
-            other.push({ label: 'Volume', value: publication.volume });
-            other.push({ label: 'Issue', value: publication.issue });
-            other.push({ label: 'Pages', value: publication.pages });
-            other.push({ label: 'Encyclopedia', value: publication.encyclopediaTitle });
-            other.push({ label: 'Editors', value: publication.editors });
-        }
-
-        // Combine and filter out empty items
-        return [...common, ...bookDetails, ...other].filter(
-            item => item.value !== undefined && item.value !== null && item.value !== ''
-        );
-    })();
-
-    // Reactive computation for Author/Editor HTML string
-    let authorDisplayHtml = '';
+    // Reactive computation for Author/Editor list (not HTML string)
+    let displayList: DisplayListItem[] = [];
+    let listPrefix = ''; // e.g., "Edited by "
     $: {
-        let html = '';
         const type = publication.type;
         const authors = publication.authors;
         const editors = publication.editors;
+        const selfName = "Frédérick Madore"; // Define self name
+
+        let items: DisplayListItem[] = [];
+        listPrefix = ''; // Reset prefix
 
         if (type === 'book' || type === 'article' || type === 'chapter' || type === 'encyclopedia' || type === 'report' || type === 'blogpost' || type === 'dissertation') {
             if (authors) {
                 const authorsArray = getAuthorsArray(authors);
-                authorsArray.forEach((author, i) => {
-                    if (author !== "Frédérick Madore") {
-                        // IMPORTANT: Need a way to dispatch event from @html. 
-                        // This approach breaks the on:click dispatch. Reverting temporarily.
-                        // Using JS functions within @html is complex and potentially unsafe.
-                        // Let's stick to template logic but be EXTREMELY precise with whitespace.
-                        // html += `<button class="author-btn" data-author="${author}">${author}</button>`; // Cannot easily dispatch
-                        html += `<span>${author}</span>`; // Fallback to span for now
-                    } else {
-                        html += `<span>${author}</span>`;
-                    }
-                    if (i < authorsArray.length - 1) {
-                        html += ' and ';
-                    } else {
-                        html += '.';
-                    }
-                });
+                items = authorsArray.map(author => ({
+                    name: author,
+                    isClickable: author !== selfName
+                }));
             }
         } else if (type === 'special-issue') {
             if (editors) {
-                html += 'Edited by ';
+                listPrefix = 'Edited by ';
                 if (typeof editors === 'string') {
-                    const editorsArray = editors.split(/\s*(?:,|and)\s*/).map(name => name.trim());
-                    editorsArray.forEach((editor, i) => {
-                         if (editor !== "Frédérick Madore") {
-                            // html += `<button class="author-btn" data-editor="${editor}">${editor}</button>`; // Cannot easily dispatch
-                            html += `<span>${editor}</span>`; // Fallback to span
-                        } else {
-                            html += `<span>${editor}</span>`;
-                        }
-                        if (i < editorsArray.length - 1) {
-                            html += ', ';
-                        } else {
-                            html += '.';
-                        }
-                    });
-                } 
-                // Add logic for array editors if needed
+                    const editorsArray = editors.split(' and ').flatMap(part => part.split(', ')).map(name => name.trim()).filter(Boolean);
+                    items = editorsArray.map(editor => ({
+                        name: editor,
+                        isClickable: editor !== selfName
+                    }));
+                }
+                 // Add logic for array editors if needed
             }
         }
-        authorDisplayHtml = html;
+        // Handle advisors separately in the template as before
+        // Handle prefacedBy separately in the template as before
+
+        displayList = items;
     }
 
 </script>
@@ -151,7 +74,8 @@
         
         <div class="{publication.image ? 'col-span-3' : 'col-span-4'}">
             <div class="mb-2">
-                <span class="text-primary text-sm">{typeLabels[publication.type] || publication.type}</span>
+                <!-- Use typeLabel from formattedCitation -->
+                <span class="text-primary text-sm">{formattedCitation.typeLabel}</span>
                 {#if publication.language && publication.language.includes(',')}
                     <span class="text-light text-sm ml-2">({publication.language})</span>
                 {:else if publication.language && publication.language !== 'English'}
@@ -166,27 +90,55 @@
             </h3>
             
             <div class="text-light mb-2">
-                <!-- Render the pre-computed author/editor HTML -->
-                {@html authorDisplayHtml}
+                <!-- Render prefix (e.g., "Edited by ") -->
+                {listPrefix}
+                <!-- Iterate over authors/editors -->
+                {#each displayList as item, i}
+                    {#if item.isClickable}
+                        <button
+                            class="author-btn"
+                            on:click={() => dispatch('filterrequest', { type: 'author', value: item.name })}
+                        >
+                            {item.name}
+                        </button>
+                    {:else}
+                        <span>{item.name}</span>
+                    {/if}
+                    <!-- Add separators -->
+                    {#if i < displayList.length - 1}
+                        {#if publication.type === 'special-issue'}
+                            {#if i === displayList.length - 2}
+                                {' and '}
+                            {:else}
+                                {', '}
+                            {/if}
+                        {:else}
+                            {' and '}
+                        {/if}
+                    {/if}
+                {/each}
+                 <!-- Space, then (Year). -->
+                 {#if formattedCitation.year} ({formattedCitation.year}). {/if}
 
-                <!-- Publication details -->
+                <!-- Add type-specific prefixes before detailsHtml -->
                 {#if publication.type === 'dissertation'}
-                    <span>"{publication.title}", </span>
-                    <span>Ph.D. dissertation</span>
-                    {#if publication.department}
-                        <span>, {publication.department}</span>
-                    {/if}
-                    {#if publication.university}
-                        <span>, {publication.university}</span>
-                    {/if}
-                    {#if publication.year}
-                        <span>, {publication.year}</span>
-                    {/if}
+                    <span>"{publication.title}". </span>
+                    {@html formattedCitation.detailsHtml}
+                    <!-- Supervisor info remains separate -->
                     {#if publication.advisors && publication.advisors.length > 0}
                         <div class="mt-1">
                             <span>Supervised by </span>
                             {#each publication.advisors as advisor, i}
-                                <span>{advisor}</span>
+                                {#if advisor !== "Frédérick Madore"}
+                                    <button
+                                        class="author-btn"
+                                        on:click={() => dispatch('filterrequest', { type: 'author', value: advisor })}
+                                    >
+                                        {advisor}
+                                    </button>
+                                {:else}
+                                     <span>{advisor}</span>
+                                {/if}
                                 {#if i < publication.advisors.length - 1}
                                     <span> and </span>
                                 {/if}
@@ -194,24 +146,27 @@
                         </div>
                     {/if}
                 {:else if publication.type === 'encyclopedia'}
-                    <!-- Specific encyclopedia handling remains for title linking etc -->
-                    <span>"{publication.title}", </span>
-                    <MetadataList metadata={publicationMetadata} /><span>.</span>
-                {:else}
-                    <!-- Use MetadataList for other types (article, chapter, report, etc.) -->
-                    <MetadataList metadata={publicationMetadata} /><span>.</span>
+                     <span>"{publication.title}". </span>
+                     {@html formattedCitation.detailsHtml}
+                 {:else}
+                    <!-- Render details generated by formatter (covers article, chapter, book, report, special-issue, blogpost) -->
+                    {@html formattedCitation.detailsHtml}
                 {/if}
                 
                 <!-- Preface information -->
                 {#if publication.prefacedBy}
                     <div class="mt-1">
                         <span>Preface by </span>
-                        <button 
-                            class="author-btn" 
-                            on:click={() => dispatch('filterrequest', { type: 'author', value: publication.prefacedBy || '' })}
-                        >
-                            {publication.prefacedBy}
-                        </button>
+                         {#if publication.prefacedBy !== "Frédérick Madore"}
+                             <button
+                                class="author-btn"
+                                on:click={() => dispatch('filterrequest', { type: 'author', value: publication.prefacedBy || '' })}
+                            >
+                                {publication.prefacedBy}
+                            </button>
+                         {:else}
+                            <span>{publication.prefacedBy}</span>
+                         {/if}
                     </div>
                 {/if}
             </div>
