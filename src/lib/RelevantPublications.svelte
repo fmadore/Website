@@ -79,7 +79,7 @@
         
         {#if showTypeFilters && publicationTypes.length > 1}
             <div class="type-filters mt-4">
-                <span class="text-sm text-gray-600">Browse by type:</span>
+                <span class="text-sm text-light">Browse by type:</span>
                 <div class="flex flex-wrap gap-2 mt-2">
                     {#each publicationTypes as type}
                         <a href="{base}/publications?type={type}" class="type-tag">
