@@ -24,5 +24,7 @@ export const activityTemplate: Activity = {
         src: "images/activities/hero-image.jpg", 
         alt: "Descriptive alt text for the hero image", 
         caption: "Optional caption for the hero image" 
-    }
+    },
+    pdfPath: "", // Optional: path to a PDF file (e.g., "pdfs/activities/my-activity.pdf")
+    pdfTitle: "" // Optional: title for the PDF section (defaults to "Associated PDF Document")
 }; 

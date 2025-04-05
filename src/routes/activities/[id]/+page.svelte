@@ -120,6 +120,25 @@
     <div class="activity-content">
         {@html activity.content || ''}
     </div>
+
+    {#if activity.pdfPath}
+        <div class="pdf-section mt-8">
+            <h2 class="text-xl font-semibold mb-4">
+                {activity.pdfTitle || 'Associated PDF Document'}
+            </h2>
+            <iframe 
+                src="{base}/{activity.pdfPath}" 
+                title="{activity.title} PDF Document" 
+                width="100%" 
+                height="800px" 
+                style="border: 1px solid var(--color-border);" 
+                loading="lazy"
+            ></iframe>
+            <a href="{base}/{activity.pdfPath}" download="{activity.id}.pdf" class="pdf-download-link mt-4 inline-block">
+                Download PDF
+            </a>
+        </div>
+    {/if}
     
     <div class="activity-footer">
         <div class="share-buttons">
@@ -168,5 +187,23 @@
     .activity-content :global(p) {
         margin-bottom: var(--spacing-4);
         line-height: 1.7;
+    }
+
+    .pdf-section iframe {
+        margin-bottom: var(--spacing-4);
+    }
+
+    .pdf-download-link {
+        /* Add styling for the download link */
+        background-color: var(--color-primary);
+        color: white;
+        padding: var(--spacing-2) var(--spacing-4);
+        border-radius: var(--border-radius);
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .pdf-download-link:hover {
+        background-color: var(--color-primary-dark);
     }
 </style> 

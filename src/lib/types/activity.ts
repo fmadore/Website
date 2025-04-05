@@ -14,4 +14,6 @@ export type Activity = {
         alt: string;      // Alt text for accessibility
         caption?: string; // Optional caption for the image
     };
+    pdfPath?: string;     // Optional path to an associated PDF file
+    pdfTitle?: string;    // Optional title for the PDF section
 }; 
