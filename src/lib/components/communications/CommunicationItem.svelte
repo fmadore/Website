@@ -141,6 +141,7 @@
         background-color: color-mix(in srgb, var(--color-border) 80%, transparent); /* Use theme border color with transparency */
         color: var(--color-text-light);
         border: 1px solid var(--color-border); /* Use theme border color */
+        cursor: pointer; /* Add pointer cursor */
     }
     .tag-button:hover {
         background-color: var(--color-border); /* Use solid theme border color on hover */
