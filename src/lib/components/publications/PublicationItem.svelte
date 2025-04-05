@@ -22,6 +22,7 @@
     // Reactive computation for Author/Editor list (not HTML string)
     let displayList: DisplayListItem[] = [];
     let listPrefix = ''; // e.g., "Edited by "
+    let authorString = ''; // Holds the fully formatted author/editor string
     $: {
         const type = publication.type;
         const authors = publication.authors;
@@ -36,7 +37,7 @@
                 const authorsArray = getAuthorsArray(authors);
                 items = authorsArray.map(author => ({
                     name: author,
-                    isClickable: author !== selfName
+                    isClickable: false // No longer needed, but keep structure for now
                 }));
             }
         } else if (type === 'special-issue') {
@@ -46,7 +47,7 @@
                     const editorsArray = editors.split(' and ').flatMap(part => part.split(', ')).map(name => name.trim()).filter(Boolean);
                     items = editorsArray.map(editor => ({
                         name: editor,
-                        isClickable: editor !== selfName
+                        isClickable: false // No longer needed
                     }));
                 }
                  // Add logic for array editors if needed
@@ -56,6 +57,19 @@
         // Handle prefacedBy separately in the template as before
 
         displayList = items;
+
+        // Build the authorString
+        let builtString = '';
+        const listLength = displayList.length;
+        displayList.forEach((item, i) => {
+            builtString += item.name; // Add name
+            if (i < listLength - 1) { // If not the last item
+                // Use ', ' for all but the last join, which is ' and '.
+                const separator = (i === listLength - 2) ? ' and ' : ', ';
+                builtString += separator;
+            }
+        });
+        authorString = builtString;
     }
 
 </script>
@@ -90,33 +104,8 @@
             </h3>
             
             <div class="text-light mb-2">
-                <!-- Render prefix (e.g., "Edited by ") -->
-                {listPrefix}
-                <!-- Iterate over authors/editors -->
-                {#each displayList as item, i}
-                    {#if item.isClickable}
-                        <button
-                            class="author-btn"
-                            on:click={() => dispatch('filterrequest', { type: 'author', value: item.name })}
-                        >
-                            {item.name}
-                        </button>
-                    {:else}
-                        <span>{item.name}</span>
-                    {/if}
-                    <!-- Add separators -->
-                    {#if i < displayList.length - 1}
-                        {#if publication.type === 'special-issue'}
-                            {#if i === displayList.length - 2}
-                                {' and '}
-                            {:else}
-                                {', '}
-                            {/if}
-                        {:else}
-                            {' and '}
-                        {/if}
-                    {/if}
-                {/each}
+                <!-- Render prefix and the constructed author string -->
+                {listPrefix}{authorString}
                  <!-- Space, then (Year). -->
                  {#if formattedCitation.year} ({formattedCitation.year}). {/if}
 
