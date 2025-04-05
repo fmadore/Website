@@ -90,14 +90,6 @@
         font-weight: var(--font-weight-semibold, 600);
     }
 
-    .text-dark {
-         color: var(--color-gray-800, #2d3748);
-    }
-
-    .text-light {
-        color: var(--color-gray-600, #718096);
-    }
-
     .text-sm {
         font-size: var(--font-size-sm, 0.875rem);
     }
@@ -131,17 +123,17 @@
         align-items: center;
     }
 
-    /* Style overrides for the slider */
+    /* Style overrides for the slider using theme variables */
     .slider-container :global(.rangeSlider) {
         height: 4px;
-        background-color: var(--color-gray-300, #d1d5db);
+        background-color: var(--color-border); /* Use theme border color */
         border-radius: 2px;
     }
 
     .slider-container :global(.rangeHandle) {
         width: 16px;
         height: 16px;
-        background-color: var(--color-primary, #2b6cb0); /* Use primary color variable */
+        background-color: var(--color-primary); /* Use theme primary color */
         border-radius: 50%;
         box-shadow: none;
         border: none;
@@ -149,12 +141,13 @@
     }
     
     .slider-container :global(.rangeHandle.active) {
-        box-shadow: 0 0 0 4px var(--color-primary-light, rgba(43, 108, 176, 0.3)); /* Focus ring */
+         /* Use theme primary color with alpha for focus ring */
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 30%, transparent);
     }
 
     .slider-container :global(.rangeFloat) {
-        background-color: var(--color-primary, #2b6cb0);
-        color: white;
+        background-color: var(--color-primary); /* Use theme primary color */
+        color: white; /* Keep text white */
         padding: 2px 6px;
         font-size: var(--font-size-xs, 0.75rem);
         border-radius: 4px;
@@ -167,7 +160,7 @@
     .slider-container :global(.pip) {
         width: 1px;
         height: 5px;
-        background-color: var(--color-gray-400, #a0aec0);
+        background-color: var(--color-text-light); /* Use theme light text color for pips */
         border: none;
         margin-left: -0.5px;
     }
@@ -178,7 +171,7 @@
 
     .slider-container :global(.rangeLabel) {
         font-size: var(--font-size-xs, 0.75rem);
-        color: var(--color-gray-500, #6b7280);
+        color: var(--color-text-light); /* Use theme light text color for labels */
         margin-top: 4px;
     }
 </style> 
