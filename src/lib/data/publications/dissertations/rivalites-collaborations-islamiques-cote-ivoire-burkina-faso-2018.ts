@@ -9,7 +9,6 @@ export const rivalitesCollaborationsIslam: Publication = {
     dateISO: "2018",
     year: 2018,
     university: "Université Laval",
-    department: "Département d'histoire",
     placeOfPublication: "Québec",
     language: "French",
     url: "http://hdl.handle.net/20.500.11794/33246",
