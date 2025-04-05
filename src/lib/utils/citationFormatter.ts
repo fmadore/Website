@@ -60,7 +60,24 @@ export function formatCitation(publication: Publication): FormattedCitation {
         }
         if (publication.editors) {
             if (hasBookInfo) details += ', ';
-            details += `ed. ${publication.editors}`; // Assuming editors is already formatted string
+            // Parse and format editors string
+            let editorsFormatted = 'ed. ';
+            if (typeof publication.editors === 'string') {
+                // Replace " and " with ", " then split by comma, trim, and filter empty
+                const editorsArray = publication.editors.replace(/\s+and\s+/g, ', ').split(',').map(name => name.trim()).filter(Boolean);
+                const numEditors = editorsArray.length;
+                editorsArray.forEach((editor, i) => {
+                    editorsFormatted += editor;
+                    if (i < numEditors - 1) {
+                        // Use " and " before the last editor, ", " otherwise
+                        editorsFormatted += (i === numEditors - 2) ? ' and ' : ', ';
+                    }
+                });
+            } else {
+                 // Fallback for non-string (though data seems to use string)
+                 editorsFormatted += publication.editors;
+            }
+            details += editorsFormatted;
             hasBookInfo = true;
         }
         if (publication.pages) {
