@@ -12,7 +12,7 @@ export const religiousActivismCampuses: Activity = {
     year: 2025,
     description: "New book publication based on research conducted at Leibniz-Zentrum Moderner Orient since 2021.",
     content: `
-        <p>I'm delighted to announce the publication of my new book, <em>Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970-2023</em>, based on research conducted at Leibniz-Zentrum Moderner Orient since 2021 as part of the project "Religion, Morality and Boko in West Africa: Students Training for a Good Life" (Remoboko). It's taken a little longer than expected to complete, but I'm excited to finally share it with you. The book is in open access and the PDF can be downloaded for free.</p>
+        <p>I'm delighted to announce the publication of my new book, <a href="https://doi.org/10.1515/9783111428895" target="_blank" rel="noopener noreferrer"><em>Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970-2023</em></a>, based on research conducted at <a href="https://www.zmo.de/en" target="_blank" rel="noopener noreferrer">Leibniz-Zentrum Moderner Orient</a> since 2021 as part of the project "<a href="https://www.zmo.de/en/research/mainresearchprogram/contested-religion/remoboko" target="_blank" rel="noopener noreferrer">Religion, Morality and Boko in West Africa: Students Training for a Good Life</a>" (Remoboko). It's taken a little longer than expected to complete, but I'm excited to finally share it with you. The book is in open access and the PDF can be downloaded for free.</p>
         
         <h2>Abstract</h2>
         
