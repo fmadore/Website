@@ -19,6 +19,23 @@ export function getAuthorsArray(authors: string[] | string | undefined): string[
     return authors;
 }
 
+// Helper function to format editor string (e.g., "Name1, Name2 and Name3")
+function formatEditors(editors: string | undefined): string {
+    if (!editors) return '';
+    // Replace " and " with ", " then split by comma, trim, and filter empty
+    const editorsArray = editors.replace(/\s+and\s+/g, ', ').split(',').map(name => name.trim()).filter(Boolean);
+    const numEditors = editorsArray.length;
+    let formatted = '';
+    editorsArray.forEach((editor, i) => {
+        formatted += editor;
+        if (i < numEditors - 1) {
+            // Use " and " before the last editor, ", " otherwise
+            formatted += (i === numEditors - 2) ? ' and ' : ', ';
+        }
+    });
+    return formatted;
+}
+
 // Define type for metadata items (kept for internal use within formatter)
 type MetadataItem = { label: string; value: string | number | undefined | null };
 
@@ -61,25 +78,12 @@ export function formatCitation(publication: Publication): FormattedCitation {
         }
         if (publication.editors) {
             if (hasBookInfo) details += ', ';
-            // Parse and format editors string
-            let editorsFormatted = 'ed. ';
-            if (typeof publication.editors === 'string') {
-                // Replace " and " with ", " then split by comma, trim, and filter empty
-                const editorsArray = publication.editors.replace(/\s+and\s+/g, ', ').split(',').map(name => name.trim()).filter(Boolean);
-                const numEditors = editorsArray.length;
-                editorsArray.forEach((editor, i) => {
-                    editorsFormatted += editor;
-                    if (i < numEditors - 1) {
-                        // Use " and " before the last editor, ", " otherwise
-                        editorsFormatted += (i === numEditors - 2) ? ' and ' : ', ';
-                    }
-                });
-            } else {
-                 // Fallback for non-string (though data seems to use string)
-                 editorsFormatted += publication.editors;
+            // Use the helper function
+            const editorsFormatted = formatEditors(publication.editors);
+            if (editorsFormatted) {
+                details += `ed. ${editorsFormatted}`;
+                hasBookInfo = true;
             }
-            details += editorsFormatted;
-            hasBookInfo = true;
         }
         if (publication.pages) {
             if (hasBookInfo) details += ', ';
@@ -121,10 +125,20 @@ export function formatCitation(publication: Publication): FormattedCitation {
 
     } else if (type === 'encyclopedia') {
         let details = `In <em>${publication.encyclopediaTitle || ''}</em>`;
-        if (publication.editors) details += `, ed. ${publication.editors}`;
-        if (publication.pages) details += `, pp. ${publication.pages}`;
-        details += '. '; // Separator
+        if (publication.editors) {
+            // Use the helper function
+            const editorsFormatted = formatEditors(publication.editors);
+            if (editorsFormatted) {
+                details += `, ed. ${editorsFormatted}`;
+            }
+        }
+        if (publication.pages) {
+            // Remove "pp." prefix and add comma separator
+            details += `, ${publication.pages}`;
+        }
+        details += '. '; // Separator after title/editors/pages info
 
+        // Build and append publication info like chapters (place: publisher)
         let pubInfo = '';
          if (publication.placeOfPublication) {
             pubInfo += publication.placeOfPublication;
@@ -132,8 +146,12 @@ export function formatCitation(publication: Publication): FormattedCitation {
         }
         if (publication.placeOfPublication && publication.publisher) pubInfo += ' ';
         if (publication.publisher) pubInfo += publication.publisher;
+
+        details += pubInfo; // Append the publication info
+
+        // Ensure final period
         if (details.trim() && !details.trim().endsWith('.')) {
-            details += '.'; // Ensure final period
+            details += '.'; 
         }
         detailsHtml = details;
         year = publication.year;
