@@ -183,8 +183,18 @@ export function formatCitation(publication: Publication): FormattedCitation {
         detailsHtml = details;
         year = undefined; // Year is included in the full date
     } else if (type === 'report') { 
-        // TODO: Add formatting for report type if needed
-        detailsHtml = ''; // Placeholder
+        // Format similar to article: *Publisher* Volume(Issue): Pages.
+        let details = '';
+        if (publication.publisher) details += `<em>${publication.publisher}</em>`;
+        if (publication.volume) details += ` ${publication.volume}`; // Space before volume
+        if (publication.issue) details += ` (${publication.issue})`; // Issue in parentheses
+        if (publication.pages) details += `: ${publication.pages}`; // Colon before pages
+
+        // Ensure final period
+        if (details.trim() && !details.trim().endsWith('.')) {
+            details += '.'; 
+        }
+        detailsHtml = details;
         year = publication.year;
     } else if (type === 'special-issue') {
         // Format: *Journal Name* Volume(Issue).
