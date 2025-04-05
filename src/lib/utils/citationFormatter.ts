@@ -187,8 +187,17 @@ export function formatCitation(publication: Publication): FormattedCitation {
         detailsHtml = ''; // Placeholder
         year = publication.year;
     } else if (type === 'special-issue') {
-        // TODO: Add formatting for special-issue type if needed
-        detailsHtml = ''; // Placeholder
+        // Format: *Journal Name* Volume(Issue).
+        let details = '';
+        if (publication.journal) details += `<em>${publication.journal}</em>`;
+        if (publication.volume) details += ` ${publication.volume}`; // Space before volume
+        if (publication.issue) details += ` (${publication.issue})`; // Issue in parentheses
+        
+        // Ensure final period
+        if (details.trim() && !details.trim().endsWith('.')) {
+            details += '.'; 
+        }
+        detailsHtml = details;
         year = publication.year;
     }
 
