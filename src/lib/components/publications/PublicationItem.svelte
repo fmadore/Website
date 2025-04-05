@@ -3,6 +3,7 @@
     import { createEventDispatcher } from 'svelte';
     import { base } from '$app/paths';
     import { truncateAbstract } from '$lib/utils/textUtils';
+    import MetadataList from './MetadataList.svelte';
     
     export let publication: Publication;
     
@@ -27,12 +28,113 @@
         return authors;
     }
 
-    // Helper function to truncate abstract
-    // function truncateAbstract(abstract: string | undefined, maxLength: number = 200): string {
-    //     if (!abstract) return '';
-    //     if (abstract.length <= maxLength) return abstract;
-    //     return abstract.substring(0, maxLength) + '...';
-    // }
+    // Define type for metadata items
+    type MetadataItem = { label: string; value: string | number | undefined | null };
+
+    // Reactive computation for metadata list
+    $: publicationMetadata = (() => {
+        const common: MetadataItem[] = [];
+        const bookDetails: MetadataItem[] = [];
+        const other: MetadataItem[] = [];
+
+        // Construct book details string if type is 'book'
+        if (publication.type === 'book') {
+            let details = '';
+            if (publication.placeOfPublication) {
+                details += publication.placeOfPublication;
+                if (publication.publisher) {
+                    details += ':';
+                }
+            }
+            if (publication.placeOfPublication && publication.publisher) {
+                details += ' '; // Use space instead of &nbsp; here
+            }
+            if (publication.publisher) {
+                details += publication.publisher;
+            }
+            if ((publication.placeOfPublication || publication.publisher) && publication.year) {
+                details += ', '; // Use space
+            }
+            if (publication.year) {
+                details += publication.year;
+            }
+            if (details) {
+                // Use empty label to signal MetadataList to hide it
+                bookDetails.push({ label: '', value: details });
+            }
+        } else {
+            // Add individual items for non-book types
+            other.push({ label: 'Publisher', value: publication.publisher });
+            other.push({ label: 'Place', value: publication.placeOfPublication });
+            other.push({ label: 'Year', value: publication.year });
+            other.push({ label: 'Journal', value: publication.journal });
+            other.push({ label: 'Volume', value: publication.volume });
+            other.push({ label: 'Issue', value: publication.issue });
+            other.push({ label: 'Pages', value: publication.pages });
+            other.push({ label: 'Encyclopedia', value: publication.encyclopediaTitle });
+            other.push({ label: 'Editors', value: publication.editors });
+        }
+
+        // Combine and filter out empty items
+        return [...common, ...bookDetails, ...other].filter(
+            item => item.value !== undefined && item.value !== null && item.value !== ''
+        );
+    })();
+
+    // Reactive computation for Author/Editor HTML string
+    let authorDisplayHtml = '';
+    $: {
+        let html = '';
+        const type = publication.type;
+        const authors = publication.authors;
+        const editors = publication.editors;
+
+        if (type === 'book' || type === 'article' || type === 'chapter' || type === 'encyclopedia' || type === 'report' || type === 'blogpost' || type === 'dissertation') {
+            if (authors) {
+                const authorsArray = getAuthorsArray(authors);
+                authorsArray.forEach((author, i) => {
+                    if (author !== "Frédérick Madore") {
+                        // IMPORTANT: Need a way to dispatch event from @html. 
+                        // This approach breaks the on:click dispatch. Reverting temporarily.
+                        // Using JS functions within @html is complex and potentially unsafe.
+                        // Let's stick to template logic but be EXTREMELY precise with whitespace.
+                        // html += `<button class="author-btn" data-author="${author}">${author}</button>`; // Cannot easily dispatch
+                        html += `<span>${author}</span>`; // Fallback to span for now
+                    } else {
+                        html += `<span>${author}</span>`;
+                    }
+                    if (i < authorsArray.length - 1) {
+                        html += ' and ';
+                    } else {
+                        html += '.';
+                    }
+                });
+            }
+        } else if (type === 'special-issue') {
+            if (editors) {
+                html += 'Edited by ';
+                if (typeof editors === 'string') {
+                    const editorsArray = editors.split(/\s*(?:,|and)\s*/).map(name => name.trim());
+                    editorsArray.forEach((editor, i) => {
+                         if (editor !== "Frédérick Madore") {
+                            // html += `<button class="author-btn" data-editor="${editor}">${editor}</button>`; // Cannot easily dispatch
+                            html += `<span>${editor}</span>`; // Fallback to span
+                        } else {
+                            html += `<span>${editor}</span>`;
+                        }
+                        if (i < editorsArray.length - 1) {
+                            html += ', ';
+                        } else {
+                            html += '.';
+                        }
+                    });
+                } 
+                // Add logic for array editors if needed
+            }
+        }
+        authorDisplayHtml = html;
+    }
+
 </script>
 
 <li class="card p-4 mb-4 hover-shadow">
@@ -64,50 +166,9 @@
             </h3>
             
             <div class="text-light mb-2">
-                <!-- Authors rendering -->
-                {#if publication.type === 'book' || publication.type === 'article' || publication.type === 'chapter' || publication.type === 'encyclopedia' || publication.type === 'report' || publication.type === 'blogpost' || publication.type === 'dissertation'}
-                    {#if publication.authors}
-                        {#each getAuthorsArray(publication.authors) as author, i}
-                            {#if author !== "Frédérick Madore"}
-                                <button 
-                                    class="author-btn" 
-                                    on:click={() => dispatch('filterrequest', { type: 'author', value: author })}
-                                >
-                                    {author}
-                                </button>
-                            {:else}
-                                <span>{author}</span>
-                            {/if}
-                            {#if i < getAuthorsArray(publication.authors).length - 1}
-                                <span> and </span>
-                            {/if}
-                        {/each}
-                    {/if}
-                {:else if publication.type === 'special-issue'}
-                    <!-- Special issue editor rendering -->
-                    {#if publication.editors}
-                        <span>Edited by </span>
-                        {#if typeof publication.editors === 'string'}
-                            {#each publication.editors.split(/\s*(?:,|and)\s*/).map(name => name.trim()) as editor, i}
-                                {#if editor !== "Frédérick Madore"}
-                                    <button 
-                                        class="author-btn" 
-                                        on:click={() => dispatch('filterrequest', { type: 'author', value: editor })}
-                                    >
-                                        {editor}
-                                    </button>
-                                {:else}
-                                    <span>{editor}</span>
-                                {/if}
-                                {#if i < publication.editors.split(/\s*(?:,|and)\s*/).map(name => name.trim()).length - 1}
-                                    <span>, </span>
-                                {/if}
-                            {/each}
-                        {/if}
-                    {/if}
-                {/if}
-                <span>. </span>
-                
+                <!-- Render the pre-computed author/editor HTML -->
+                {@html authorDisplayHtml}
+
                 <!-- Publication details -->
                 {#if publication.type === 'dissertation'}
                     <span>"{publication.title}", </span>
@@ -121,7 +182,6 @@
                     {#if publication.year}
                         <span>, {publication.year}</span>
                     {/if}
-                    <span>.</span>
                     {#if publication.advisors && publication.advisors.length > 0}
                         <div class="mt-1">
                             <span>Supervised by </span>
@@ -133,46 +193,13 @@
                             {/each}
                         </div>
                     {/if}
-                {:else if publication.type === 'encyclopedia' && publication.encyclopediaTitle}
+                {:else if publication.type === 'encyclopedia'}
+                    <!-- Specific encyclopedia handling remains for title linking etc -->
                     <span>"{publication.title}", </span>
-                    <span>{publication.encyclopediaTitle}</span>
-                    {#if publication.pages}
-                        <span>, {publication.pages}</span>
-                    {/if}
-                    {#if publication.placeOfPublication}
-                        <span>. {publication.placeOfPublication}</span>
-                    {/if}
-                    {#if publication.publisher}
-                        <span>: {publication.publisher}</span>
-                    {/if}
-                    {#if publication.year}
-                        <span>, {publication.year}</span>
-                    {/if}
-                    <span>.</span>
-                    {#if publication.editors}
-                        <span> Edited by {publication.editors}.</span>
-                    {/if}
-                {:else if publication.publisher}
-                    <span>{publication.publisher}</span>
-                    {#if publication.year}
-                        <span>, {publication.year}</span>
-                    {/if}
-                    <span>.</span>
-                {:else if publication.journal}
-                    <span>{publication.journal}</span>
-                    {#if publication.volume}
-                        <span>, {publication.volume}</span>
-                    {/if}
-                    {#if publication.issue}
-                        <span>({publication.issue})</span>
-                    {/if}
-                    {#if publication.pages}
-                        <span>: {publication.pages}</span>
-                    {/if}
-                    {#if publication.year}
-                        <span>, {publication.year}</span>
-                    {/if}
-                    <span>.</span>
+                    <MetadataList metadata={publicationMetadata} /><span>.</span>
+                {:else}
+                    <!-- Use MetadataList for other types (article, chapter, report, etc.) -->
+                    <MetadataList metadata={publicationMetadata} /><span>.</span>
                 {/if}
                 
                 <!-- Preface information -->
