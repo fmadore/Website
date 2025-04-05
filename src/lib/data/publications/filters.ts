@@ -23,8 +23,8 @@ function extractEditors(publication: Publication): string[] {
 export const allAuthors = Array.from(new Set([
     // Get authors from publications
     ...allPublications.flatMap(pub => pub.authors || []),
-    // Get editors from publications
-    ...allPublications.flatMap(pub => extractEditors(pub)),
+    // Get editors from publications, excluding chapters and encyclopedia entries
+    ...allPublications.filter(pub => pub.type !== 'chapter' && pub.type !== 'encyclopedia').flatMap(pub => extractEditors(pub)),
     // Get preface authors
     ...allPublications.filter(pub => pub.prefacedBy).map(pub => pub.prefacedBy as string)
 ]))
@@ -105,8 +105,9 @@ export const filteredPublications = derived(
                 const hasMatchingAuthor = pub.authors && 
                     pub.authors.some(author => $activeFilters.authors.includes(author));
                 
-                // Check editors (could be string or array)
-                const hasMatchingEditor = pub.editors && (
+                // Check editors, but only if the publication type is not chapter or encyclopedia
+                const isExcludedType = pub.type === 'chapter' || pub.type === 'encyclopedia';
+                const hasMatchingEditor = !isExcludedType && pub.editors && (
                     (typeof pub.editors === 'string' && 
                         pub.editors.split(/\s*(?:,|and)\s*/)
                             .map(name => name.trim())
@@ -119,7 +120,7 @@ export const filteredPublications = derived(
                 const hasMatchingPrefaceAuthor = pub.prefacedBy && 
                     $activeFilters.authors.includes(pub.prefacedBy);
                 
-                // If neither authors, editors, nor preface author match, filter out this publication
+                // If neither authors, valid editors, nor preface author match, filter out this publication
                 if (!hasMatchingAuthor && !hasMatchingEditor && !hasMatchingPrefaceAuthor) {
                     return false;
                 }
@@ -263,8 +264,8 @@ export const authorCounts = derived(
                 });
             }
             
-            // Count editors
-            if (pub.editors) {
+            // Count editors, but only if the publication type is not 'chapter' or 'encyclopedia'
+            if (pub.editors && pub.type !== 'chapter' && pub.type !== 'encyclopedia') {
                 const editorNames = extractEditors(pub);
                 editorNames.forEach(editor => {
                     // Only count co-editors, not the site owner

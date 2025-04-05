@@ -35,8 +35,9 @@
         margin-bottom: var(--spacing-6, 1.5rem);
     }
 
+    /* Use theme variable directly */
     .text-dark {
-         color: var(--color-gray-800, #2d3748);
+         color: var(--color-text); 
     }
 
     .font-weight-600 {
@@ -51,8 +52,9 @@
         padding-bottom: var(--spacing-2, 0.5rem);
     }
 
+    /* Use theme variable directly */
     .border-gray-200 {
-        border-bottom: 1px solid var(--color-gray-200, #e2e8f0);
+        border-bottom: 1px solid var(--color-border);
     }
 
     .flex {
@@ -68,8 +70,9 @@
     }
 
     .tag-button {
-        background-color: var(--color-gray-200, #e2e8f0);
-        color: var(--color-gray-700, #4a5568);
+        /* Use theme variables for background and text */
+        background-color: color-mix(in srgb, var(--color-border) 80%, transparent); /* Use theme border color with transparency */
+        color: var(--color-text-light); /* Use theme light text color */
         padding: var(--spacing-1, 0.25rem) var(--spacing-2, 0.5rem);
         border-radius: var(--border-radius-full, 9999px);
         font-size: var(--font-size-xs, 0.8rem);
@@ -79,6 +82,11 @@
         margin-bottom: var(--spacing-2, 0.5rem);
     }
     
+    .tag-button:hover {
+        background-color: var(--color-border); /* Use solid theme border color on hover */
+        color: var(--color-text);
+    }
+
     .tag-button.active {
         background-color: var(--color-primary, #2b6cb0);
         color: var(--color-white, white);

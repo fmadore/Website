@@ -199,7 +199,7 @@
                 <div class="mt-3 flex flex-wrap gap-2">
                     {#each publication.tags as tag}
                         <button 
-                            class="btn-sm tag-button rounded-full text-sm"
+                            class="tag-button text-sm"
                             on:click={() => dispatch('filterrequest', { type: 'tag', value: tag })}
                         >
                             {tag}
@@ -252,6 +252,9 @@
         color: var(--color-text-light);
         border: 1px solid var(--color-border); /* Use theme border color */
         cursor: pointer; /* Add pointer cursor */
+        border-radius: var(--border-radius-full); /* Make it pill-shaped */
+        padding: var(--spacing-1) var(--spacing-2); /* Add padding */
+        transition: all 0.2s ease;
     }
     .tag-button:hover {
         background-color: var(--color-border); /* Use solid theme border color on hover */
