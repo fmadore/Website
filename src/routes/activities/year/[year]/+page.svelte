@@ -5,6 +5,7 @@
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
     import SEO from '$lib/SEO.svelte';
+    import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
     
     // Get the year parameter from the URL
     $: year = parseInt($page.params.year);
@@ -59,42 +60,8 @@
         
         {#if filteredActivities.length > 0}
             <div class="activity-grid">
-                {#each filteredActivities as activity}
-                    <div class="activity-card">
-                        {#if activity.heroImage}
-                            <div class="activity-image">
-                                <img 
-                                    src="{base}/{activity.heroImage.src}" 
-                                    alt={activity.heroImage.alt} 
-                                    class="w-full h-48 object-cover"
-                                >
-                            </div>
-                        {/if}
-                        
-                        <div class="activity-content">
-                            <div class="activity-date">{activity.date}</div>
-                            
-                            <h3 class="activity-title">
-                                <a href="{base}/activities/{activity.id}">
-                                    {activity.title}
-                                </a>
-                            </h3>
-                            
-                            <p class="activity-description">{activity.description}</p>
-                            
-                            {#if activity.tags && activity.tags.length > 0}
-                                <div class="activity-tags">
-                                    {#each activity.tags as tag}
-                                        <span class="tag">{tag}</span>
-                                    {/each}
-                                </div>
-                            {/if}
-                            
-                            <a href="{base}/activities/{activity.id}" class="read-more">
-                                Read more →
-                            </a>
-                        </div>
-                    </div>
+                {#each filteredActivities as activity (activity.id)}
+                    <ActivityItem {activity} />
                 {/each}
             </div>
         {:else}
@@ -133,80 +100,6 @@
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: var(--spacing-6);
-    }
-    
-    .activity-card {
-        background-color: var(--color-background);
-        border-radius: var(--border-radius-lg);
-        box-shadow: var(--shadow);
-        overflow: hidden;
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .activity-content {
-        padding: var(--spacing-4);
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .activity-date {
-        font-size: var(--font-size-sm);
-        color: var(--color-text-light);
-        margin-bottom: var(--spacing-1);
-    }
-    
-    .activity-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--spacing-2);
-        margin-top: var(--spacing-3);
-    }
-    
-    .tag {
-        display: inline-block;
-        padding: 0.2rem 0.6rem;
-        font-size: var(--font-size-xs);
-        background-color: var(--color-border);
-        color: var(--color-text);
-        border-radius: var(--border-radius-full);
-        font-weight: 500;
-    }
-    
-    .activity-title {
-        font-weight: 600;
-        color: var(--color-text);
-        text-decoration: none;
-        display: block;
-        line-height: 1.4;
-        font-size: var(--font-size-lg);
-    }
-    
-    .activity-title:hover {
-        color: var(--color-primary);
-    }
-    
-    .activity-description {
-        margin-top: var(--spacing-2);
-        color: var(--color-text-light);
-        font-size: var(--font-size-sm);
-        line-height: 1.5;
-        flex-grow: 1;
-        margin-bottom: var(--spacing-3);
-    }
-    
-    .read-more {
-        color: var(--color-primary);
-        text-decoration: none;
-        font-weight: 500;
-        font-size: var(--font-size-sm);
-        margin-top: auto;
-    }
-    
-    .read-more:hover {
-        text-decoration: underline;
     }
     
     .empty-state {

@@ -4,6 +4,7 @@
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
     import SEO from '$lib/SEO.svelte';
+    import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
     
     // Local activities array
     let activityList: Activity[] = [];
@@ -60,49 +61,8 @@
                 <h2 class="text-xl font-semibold mb-6 border-b pb-2">All Activities</h2>
                 
                 <div class="space-y-8">
-                    {#each activityList as activity}
-                        <div class="activity-card">
-                            <div class="flex flex-col md:flex-row gap-4">
-                                {#if activity.heroImage}
-                                    <div class="activity-image-container md:w-1/3 flex-shrink-0">
-                                        <img 
-                                            src="{base}/{activity.heroImage.src}" 
-                                            alt={activity.heroImage.alt} 
-                                            class="w-full h-auto rounded-md"
-                                        >
-                                    </div>
-                                {/if}
-                                
-                                <div class={activity.heroImage ? "md:w-2/3" : "w-full"}>
-                                    <div class="mb-2 flex items-center text-sm text-gray-500 activity-meta">
-                                        <span class="mr-3">{activity.date}</span>
-                                        {#if activity.tags && activity.tags.length > 0}
-                                            <div class="flex gap-2 flex-wrap">
-                                                {#each activity.tags as tag}
-                                                    <span class="tag bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs">
-                                                        {tag}
-                                                    </span>
-                                                {/each}
-                                            </div>
-                                        {/if}
-                                    </div>
-                                    
-                                    <h3 class="text-xl font-medium mb-2">
-                                        <a href="{base}/activities/{activity.id}" class="text-primary hover:underline">
-                                            {activity.title}
-                                        </a>
-                                    </h3>
-                                    
-                                    <p class="text-gray-600 activity-description">{activity.description}</p>
-                                    
-                                    <div class="mt-4">
-                                        <a href="{base}/activities/{activity.id}" class="text-primary hover:underline font-medium text-sm">
-                                            Read more →
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    {#each activityList as activity (activity.id)}
+                        <ActivityItem {activity} />
                     {/each}
                 </div>
             </div>
@@ -133,19 +93,20 @@
         color: var(--color-primary) !important; /* Override Tailwind */
     }
 
-    /* Adjust activity meta text color */
-    .activity-meta {
-        color: var(--color-text-light) !important; /* Override Tailwind */
+    /* Styles for elements within ActivityItem might be needed here 
+       if overriding Tailwind or base styles specifically for this page */
+    /* Example: Keep these if they are necessary overrides */
+    /* 
+    :global(.activity-meta) {
+        color: var(--color-text-light) !important;
     }
-
-    /* Adjust tag background and text color */
-    .tag {
-        background-color: var(--color-border) !important; /* Override Tailwind */
-        color: var(--color-text) !important; /* Override Tailwind */
+    :global(.tag) {
+        background-color: var(--color-border) !important; 
+        color: var(--color-text) !important; 
     }
-
-    /* Adjust activity description text color */
-    .activity-description {
-        color: var(--color-text-light) !important; /* Override Tailwind */
+    :global(.activity-description) {
+       color: var(--color-text-light) !important; 
     }
+    */
+    /* Let's remove them for now and see if they are needed */
 </style> 
