@@ -2,6 +2,7 @@
 	import SEO from '$lib/SEO.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import { ExternalLinkIcon } from 'lucide-svelte'; // Using an icon for external links
+    import { base } from '$app/paths'; // Import base path
 </script>
 
 <SEO
@@ -12,7 +13,7 @@
 <div class="container">
 	<PageHeader title="Islam Burkina Faso Collection (2018-2023)" />
 
-    <img src="/images/digital-humanities/islam-burkinafaso-banner.webp" alt="Banner for Islam Burkina Faso Collection" class="banner-image" />
+    <img src="{base}/images/digital-humanities/islam-burkinafaso-banner.webp" alt="Banner for Islam Burkina Faso Collection" class="banner-image" />
 
 	<section class="content-section">
 		<p>
@@ -49,12 +50,7 @@
 
 	<section class="content-section">
 		<h2>Award</h2>
-		<p>
-			I won a <em>2023 Emerging Open Scholarship Award</em>, sponsored by the Canadian Social
-			Knowledge Institute (C-SKI) and its partners, for my work on the <em
-				>Islam Burkina Faso Collection</em
-			>.
-		</p>
+		<p>I won a <a href="https://etcl.uvic.ca/2023/01/17/2023-open-scholarship-awards/" target="_blank" rel="noreferrer noopener"><em>2023 Emerging Open Scholarship Award</em></a>,&nbsp;sponsored by the <a href="https://c-ski.ca/" target="_blank" rel="noreferrer noopener">Canadian Social Knowledge Institute (C-SKI)</a> and its partners,&nbsp;for my work on the <em>Islam Burkina Faso Collection</em>.</p>
 	</section>
 
 	<section class="content-section">
