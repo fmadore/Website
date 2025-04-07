@@ -175,7 +175,7 @@
 
         <p class="text-xl mb-10">Over the last decade, I have given talks to audiences in 13 countries across Africa, Europe, and North America.</p>
 
-        <div class="flex justify-end items-center space-x-2 mb-4">
+        <div class="flex justify-end items-center mb-4">
             <ToggleButton 
                 baseText="Map"
                 bind:isToggled={showMap} 
@@ -238,9 +238,7 @@
     }
     .items-center {
         align-items: center;
-    }
-    .space-x-2 > :not([hidden]) ~ :not([hidden]) {
-       margin-left: var(--spacing-2);
+        gap: var(--spacing-2);
     }
     .mb-4 {
         margin-bottom: var(--spacing-4);
