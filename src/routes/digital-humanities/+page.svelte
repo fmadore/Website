@@ -1,11 +1,32 @@
-<script>
+<script lang="ts">
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
     import Card from '$lib/components/common/Card.svelte'; // Import Card component
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 
+    // Define the structure for a project
+    interface ProjectType {
+        id: string;
+        title: string;
+        years: string;
+        shortDescription: string;
+        imageUrl: string;
+        linkUrl?: string; // Optional: Some projects might not have an external/internal link yet
+        award?: string; // Optional
+        reviews?: { text: string; url: string }[]; // Optional array of review objects
+        publication?: { text: string; url: string }; // Optional publication object
+    }
+
     // Digital Humanities projects data
-    const dhProjects = [
+    const dhProjects: ProjectType[] = [
+        {
+            id: "iwac-overview",
+            title: "Islam West Africa Collection Overview",
+            years: "2025",
+            shortDescription: "Exploring the Islam West Africa Collection (IWAC) through digital methods and visualizations.",
+            imageUrl: `${base}/images/digital-humanities/iwac-overview.jpg`
+            // No linkUrl, award, reviews, or publication needed here
+        },
         {
             id: "iwac",
             title: "Islam West Africa Collection",
@@ -34,15 +55,15 @@
             years: "2024",
             shortDescription: "Research group exploring religion, morality, and student life in West African higher education. Includes interactive visualizations.",
             imageUrl: `${base}/images/digital-humanities/remoboko.png`,
-            linkUrl: `${base}/digital-humanities/remoboko` // Link to the internal page
+            linkUrl: `${base}/digital-humanities/remoboko`
         },
         {
             id: "zmo-units",
             title: "ZMO Research Units Word Cloud",
             years: "2025",
             shortDescription: 'Word cloud generated from the research projects\' titles and abstracts. See the <a href="https://www.zmo.de/en/research/overview-of-main-research-programme-2025" target="_blank" rel="noopener noreferrer">ZMO Research Programme</a>.',
-            imageUrl: `${base}/images/digital-humanities/zmo_units_wordcloud.png`, // Placeholder - You'll need to add this image
-            linkUrl: `${base}/digital-humanities/zmo-units` // Link to the internal page
+            imageUrl: `${base}/images/digital-humanities/zmo_units_wordcloud.png`,
+            linkUrl: `${base}/digital-humanities/zmo-units`
         }
     ];
 </script>
@@ -52,53 +73,52 @@
 <div class="container">
 	<PageHeader title="Digital Humanities" />
 
+    <p class="text-xl mb-10">This section showcases my work in digital humanities, applying computational methods to historical research on Islam and Muslim societies in West Africa.</p>
+
     <div class="dh-grid">
         {#each dhProjects as project (project.id)}
-            <!-- Open internal link in same tab for Remoboko and ZMO Units -->
+            {@const isInternalLink = project.linkUrl && (project.linkUrl.startsWith(base) || project.linkUrl.startsWith('/'))}
+            {@const isOverviewLink = project.id === 'iwac-overview'}
+            {@const finalLinkUrl = isOverviewLink ? `${base}/digital-humanities/${project.id}` : (project.linkUrl || `${base}/digital-humanities/${project.id}`)}
+            {@const linkTarget = isInternalLink || isOverviewLink ? '_self' : '_blank'}
+            {@const actionText = isInternalLink || isOverviewLink ? 'Explore project →' : 'Visit Site →'}
+
             <Card
                 title={project.title}
                 imageUrl={project.imageUrl}
-                linkUrl={project.linkUrl}
-                target={(project.id === 'remoboko' || project.id === 'zmo-units') ? '_self' : '_blank'}
+                linkUrl={finalLinkUrl}
+                target={linkTarget}
             >
                 <span slot="subtitle">{project.years}</span>
-                
+
                 <!-- Default slot for description - Render HTML -->
                 {@html project.shortDescription}
 
                 <!-- Details slot for award, reviews, etc. -->
-                <div slot="details">
-                    {#if project.award || project.publication || project.reviews}
-                        <div class="dh-card-extras">
-                            {#if project.award}
-                                <p class="award"><strong>Award:</strong> {project.award}</p>
-                            {/if}
-                            {#if project.publication}
-                                 <p class="publication-link">
-                                     <a href={project.publication.url} target="_blank" rel="noopener noreferrer">{project.publication.text}</a>
-                                 </p>
-                            {/if}
-                            {#if project.reviews && project.reviews.length > 0}
-                                <div class="reviews">
-                                    <strong>Reviews:</strong>
-                                    <ul>
-                                        {#each project.reviews as review}
-                                            <li><a href={review.url} target="_blank" rel="noopener noreferrer">{review.text}</a></li>
-                                        {/each}
-                                    </ul>
-                                </div>
-                            {/if}
-                        </div>
-                    {/if}
-                </div>
-                
+                <div slot="details" class="dh-card-extras">
+                     {#if project.award}
+                         <p class="award"><strong>Award:</strong> {project.award}</p>
+                     {/if}
+                     {#if project.publication}
+                          <p class="publication-link">
+                              <a href={project.publication.url} target="_blank" rel="noopener noreferrer">{project.publication.text}</a>
+                          </p>
+                     {/if}
+                     {#if project.reviews && project.reviews.length > 0}
+                         <div class="reviews">
+                             <strong>Reviews:</strong>
+                             <ul>
+                                 {#each project.reviews as review}
+                                     <li><a href={review.url} target="_blank" rel="noopener noreferrer">{review.text}</a></li>
+                                 {/each}
+                             </ul>
+                         </div>
+                     {/if}
+                 </div>
+
                 <!-- Action slot for the main link -->
-                <a slot="action" href={project.linkUrl} target={(project.id === 'remoboko' || project.id === 'zmo-units') ? '_self' : '_blank'} rel="noopener noreferrer">
-                    {#if project.id === 'remoboko' || project.id === 'zmo-units'}
-                        View Visualizations →
-                    {:else}
-                        Visit Collection →
-                    {/if}
+                <a slot="action" href={finalLinkUrl} target={linkTarget} rel={linkTarget === '_blank' ? 'noopener noreferrer' : null}>
+                    {actionText}
                 </a>
             </Card>
         {/each}
@@ -118,58 +138,58 @@
     .container {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 0 var(--spacing-4); /* Use existing spacing variable */
+        padding: 0 1rem;
     }
-
+    
+    .text-xl {
+         font-size: 1.25rem; 
+    }
+    .mb-10 {
+        margin-bottom: 2.5rem;
+    }
+    
     .dh-grid {
         display: grid;
         grid-template-columns: repeat(1, 1fr);
-        gap: var(--spacing-8); /* Use variable */
-        margin-top: var(--spacing-8); /* Use variable */
+        gap: var(--spacing-8); 
+        margin-top: 2rem; 
+    }
+        
+    /* Responsive grid adjustments */
+    @media (min-width: 640px) {
+        .dh-grid {
+            grid-template-columns: repeat(2, 1fr); /* Or repeat(1, 1fr) if you prefer single column */
+        }
     }
 
     /* Styles for content within the details slot */
     .dh-card-extras {
-        font-size: 0.9rem;
+        font-size: 0.9rem; /* Consider var(--font-size-sm) */
         margin-top: var(--spacing-2);
+        line-height: 1.4;
     }
     .dh-card-extras p,
     .dh-card-extras div {
-        margin-bottom: var(--spacing-3);
+        margin-bottom: var(--spacing-2);
     }
+     .dh-card-extras strong {
+        color: var(--color-text-secondary); /* Or adjust as needed */
+     }
     .dh-card-extras ul {
         list-style: none;
         padding-left: 0;
         margin-top: var(--spacing-1);
+        margin-bottom: 0; /* Reset bottom margin for the list itself */
     }
      .dh-card-extras li {
         margin-bottom: var(--spacing-1);
     }
      .dh-card-extras a {
-        color: var(--color-primary-dark);
+        color: var(--color-primary-dark); /* Or var(--color-link) */
         text-decoration: none;
     }
      .dh-card-extras a:hover {
          text-decoration: underline;
      }
-
-    /* Removed old card styles (.dh-card, .dh-card-body, etc.) */
-    
-    /* Responsive adjustments */
-    @media (min-width: 768px) { /* Tablet and up */
-        .dh-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    /* General link styles (potentially remove if not needed elsewhere) */
-     a {
-        color: var(--color-primary);
-        text-decoration: none;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
 
 </style> 
