@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+	import Button from '$lib/components/atoms/Button.svelte';
 
 	// Data or specific logic for visualizations will go here
 </script>
@@ -22,6 +23,17 @@
         <h2 class="text-2xl font-semibold mb-4">Co-occurrence Matrix</h2>
         <p class="mb-4">Visualising the frequency with which terms related to Muslim umbrella organisations appear together in the corpus.</p>
 
+        <!-- Button for opening in full screen -->
+        <div class="button-container">
+            <Button 
+                href="https://fmadore.github.io/IWAC-co-occurrence-matrix/index.html" 
+                variant="primary" 
+                target="_blank"
+            >
+                Open in Full Screen
+            </Button>
+        </div>
+
         <!-- Embed Co-occurrence Matrix Visualization -->
         <div class="iframe-container">
             <iframe 
@@ -36,6 +48,18 @@
     <section class="visualization-section">
         <h2 class="text-2xl font-semibold mb-4">Topic Modeling</h2>
         <p class="mb-4">Identifying latent topics and themes within the articles discussing these organisations.</p>
+        
+        <!-- Button for opening in full screen -->
+        <div class="button-container">
+            <Button 
+                href="https://fmadore.github.io/IWAC-topic-modelling/" 
+                variant="primary" 
+                target="_blank"
+            >
+                Open in Full Screen
+            </Button>
+        </div>
+        
         <!-- Embed Topic Modeling Visualization -->
         <div class="iframe-container">
             <iframe 
@@ -105,6 +129,13 @@
         right: 0;
         width: 100%;
         height: 100%;
+    }
+
+    /* Button container styling */
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: var(--spacing-2);
     }
 
     /* Add other styles as needed */

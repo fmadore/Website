@@ -72,6 +72,14 @@
             shortDescription: "Co-occurrence matrix and topic modeling analysis of newspaper articles discussing Muslim umbrella organisations within the Islam West Africa Collection.",
             imageUrl: `${base}/images/digital-humanities/muslim-umbrella.jpg`,
             linkUrl: `${base}/digital-humanities/muslim-umbrella-organizations`
+        },
+        {
+            id: "iwac-keywords",
+            title: "IWAC Keywords Dashboard",
+            years: "2025",
+            shortDescription: "Interactive temporal analysis of keywords from West African newspapers in the Islam West Africa Collection, revealing thematic evolution and media attention patterns.",
+            imageUrl: `${base}/images/digital-humanities/iwac-keywords.jpg`,
+            linkUrl: `${base}/digital-humanities/iwac-keywords`
         }
     ];
 </script>
