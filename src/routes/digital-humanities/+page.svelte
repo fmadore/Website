@@ -41,7 +41,7 @@
             years: "2018-2023",
             shortDescription: "An open access digital database containing over 2,900 documents on Islam and Muslims in Burkina Faso.",
             imageUrl: `${base}/images/digital-humanities/islam-burkinafaso-banner.webp`,
-            linkUrl: "https://ufdc.ufl.edu/collections/ibfc",
+            linkUrl: `${base}/digital-humanities/islam-burkina-faso-collection`,
             award: "Won a 2023 Emerging Open Scholarship Award.",
             reviews: [
                 { text: "Review by Robert Launay", url: "https://doi.org/10.21428/3e88f64f.89e71c81" },
