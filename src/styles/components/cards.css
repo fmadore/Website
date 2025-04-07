@@ -6,13 +6,13 @@
   border: 1px solid var(--color-border);
   overflow: hidden;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .card:hover {
-  box-shadow: var(--shadow-md);
-}
-
-.card-hover-lift:hover {
+  box-shadow: var(--shadow-lg);
   transform: translateY(-4px);
 }
 
@@ -25,6 +25,7 @@
 
 .card-body {
   padding: var(--spacing-6);
+  flex-grow: 1;
 }
 
 .card-title {
@@ -42,6 +43,7 @@
 .card-text {
   color: var(--color-text);
   margin-bottom: var(--spacing-4);
+  position: relative;
 }
 
 .card-footer {
@@ -86,4 +88,20 @@
   .card-horizontal .card-body {
     flex: 1;
   }
+}
+
+/* Visual indicator for linked cards */
+.card-link::after {
+  content: "→";
+  position: absolute;
+  bottom: var(--spacing-4);
+  right: var(--spacing-4);
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  color: var(--color-primary);
+}
+
+.card:hover .card-link::after {
+  opacity: 1;
+  transform: translateX(4px);
 } 
