@@ -3,9 +3,21 @@
     import { 
         filteredPublications, 
         activeFilters,
-        toggleTagFilter,
+        filterOptions,
+        displayedAuthors,
+        displayedTypes,
+        displayedTags,
+        displayedLanguages,
+        tagCounts,
+        authorCounts,
+        typeCounts,
+        languageCounts,
+        toggleTypeFilter, 
+        updateYearRange,
+        resetYearRange,
+        toggleTagFilter, 
+        toggleLanguageFilter, 
         toggleAuthorFilter,
-        toggleTypeFilter,
         toggleProjectFilter,
         clearAllFilters,
         setTypes,
@@ -16,7 +28,8 @@
         setProjects,
         setYearRange
     } from '$lib/data/publications/filters';
-    import FiltersSidebar from '$lib/components/publications/FiltersSidebar.svelte';
+    import UniversalFiltersSidebar from '$lib/components/filters/UniversalFiltersSidebar.svelte';
+    import type { UniversalFilterConfig, FilterSectionConfig, CheckboxFilterOption, RangeFilterOption, ButtonsFilterOption } from '$lib/types/filters';
     import PublicationItem from '$lib/components/publications/PublicationItem.svelte';
     import EntityListPageLayout from '$lib/components/common/EntityListPageLayout.svelte';
     import FilteredListDisplay from '$lib/components/common/FilteredListDisplay.svelte';
@@ -59,8 +72,8 @@
         if (!filters) return false;
         return Object.values(filters).some(val => 
             (Array.isArray(val) && val.length > 0) || 
-            (val !== null && val !== undefined && typeof val === 'object' && Object.keys(val).length > 0) ||
-            (typeof val !== 'object' && val !== null && val !== undefined) 
+            (val !== null && val !== undefined && typeof val === 'object' && Object.keys(val).length > 0 && val.constructor === Object) || // Check for non-null, non-array objects like yearRange
+            (!Array.isArray(val) && typeof val !== 'object' && val !== null && val !== undefined) // Check for primitive values if needed
         );
     }
 
@@ -70,10 +83,77 @@
         setTags,
         setLanguages,
         setAuthors,
-        setCountries,
-        setProjects,
         setYearRange
     };
+
+    // Define labels locally or move to a central config if used elsewhere
+    const typeLabels: {[key: string]: string} = {
+        'book': 'Books',
+        'article': 'Journal Articles',
+        'chapter': 'Book Chapters',
+        'special-issue': 'Special Issues',
+        'report': 'Reports',
+        'encyclopedia': 'Encyclopedia Entries',
+        'blogpost': 'Blog Posts',
+        'dissertation': 'Ph.D. Dissertations'
+    };
+
+    // Ensure years are sorted ascending for the slider
+    $: sortedYearsAsc = ($filterOptions?.years || []).slice().sort((a, b) => a - b);
+
+    // Construct the configuration object for the UniversalFiltersSidebar
+    $: publicationFilterConfig = {
+        sections: [
+            // Sections explicitly cast to their specific type
+            {
+                type: 'checkbox',
+                title: 'Publication Types',
+                items: $displayedTypes,
+                itemLabels: typeLabels,
+                activeItems: $activeFilters.types,
+                toggleItem: toggleTypeFilter,
+                counts: $typeCounts
+            } as CheckboxFilterOption<string>,
+            {
+                type: 'range',
+                title: 'Years',
+                allYears: sortedYearsAsc,
+                activeRange: $activeFilters.yearRange,
+                updateRange: updateYearRange,
+                resetRange: resetYearRange
+            } as RangeFilterOption,
+            {
+                type: 'checkbox',
+                title: 'Co-Authors',
+                items: $displayedAuthors,
+                activeItems: $activeFilters.authors,
+                toggleItem: toggleAuthorFilter,
+                counts: $authorCounts
+            } as CheckboxFilterOption<string>,
+            {
+                type: 'checkbox',
+                title: 'Languages',
+                items: $displayedLanguages,
+                activeItems: $activeFilters.languages,
+                toggleItem: toggleLanguageFilter,
+                counts: $languageCounts
+            } as CheckboxFilterOption<string>,
+            {
+                type: 'buttons',
+                title: 'Tags',
+                items: $displayedTags,
+                activeItems: $activeFilters.tags,
+                toggleItem: toggleTagFilter,
+                counts: $tagCounts
+            } as ButtonsFilterOption<string>
+        ].filter(section => {
+            // Dynamically hide sections if they have no items/options
+            if (section.type === 'range') return section.allYears && section.allYears.length > 0;
+            return section.items && section.items.length > 0;
+        }) as FilterSectionConfig[], // Cast filtered array
+        clearAllFilters: clearAllFilters
+    } satisfies UniversalFilterConfig;
+
 </script>
 
 <SEO 
@@ -83,7 +163,7 @@
 />
 
 <div 
-    class="teaching-container" 
+    class="page-container" 
     use:urlFilterSync={{ filtersStore: activeFilters, setters: filterSetters }}
 >
     <div class="main-content">
@@ -92,7 +172,7 @@
         <EntityListPageLayout>
             <!-- Sidebar slot for filters -->
             <svelte:fragment slot="sidebar">
-                <FiltersSidebar />
+                <UniversalFiltersSidebar config={publicationFilterConfig} />
             </svelte:fragment>
             
             <!-- Default slot for main content -->
@@ -106,7 +186,7 @@
                 entityName="publications"
                 areFiltersActive={areFiltersActive($activeFilters)}
                 {clearAllFilters}
-                emptyStateNoFiltersMessage="No publications found. Try adding some publications to the system."
+                emptyStateNoFiltersMessage="No publications found matching your criteria. Try clearing some filters."
                 onItemEvent={handleFilterRequest}
             />
         </EntityListPageLayout>
@@ -114,18 +194,15 @@
 </div> 
 
 <style>
-    .teaching-container {
+    .page-container { /* Renamed from teaching-container for clarity */
         max-width: 1200px;
         margin: 0 auto;
-        padding: 0 var(--spacing-4); /* Same padding as teaching */
+        padding: 0 var(--spacing-4); 
     }
     
     .main-content {
         width: 100%;
     }
 
-    /* You might need other styles specific to the publications page here */
-    /* For example, if you had custom padding or margins before, 
-       they might need adjustment or re-integration if they weren't 
-       part of the standard 'container' styles. */
+    /* Add any specific styles needed */
 </style> 

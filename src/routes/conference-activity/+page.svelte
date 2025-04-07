@@ -4,6 +4,19 @@
         filteredCommunications, 
         activeFilters,
         clearAllFilters,
+        // Import necessary stores and functions for the config
+        filterOptions, 
+        tagCounts,
+        countryCounts,
+        authorCounts,
+        // Import toggle/update functions
+        toggleTagFilter, 
+        toggleCountryFilter, 
+        toggleTypeFilter, 
+        updateYearRange,
+        resetYearRange,
+        toggleLanguageFilter,
+        toggleAuthorFilter,
         // Import setters needed for the action
         setTypes,
         setTags,
@@ -14,22 +27,24 @@
         setYearRange
     } from '$lib/data/communications/filters';
     import { allCoordinates } from '$lib/data/communications';
-    // Import the Communication type
     import type { Communication } from '$lib/types/communication';
-    import FiltersSidebar from '$lib/components/communications/FiltersSidebar.svelte';
+    // Remove old sidebar import
+    // import FiltersSidebar from '$lib/components/communications/FiltersSidebar.svelte';
+    // Import the new universal sidebar and its config type
+    import UniversalFiltersSidebar from '$lib/components/filters/UniversalFiltersSidebar.svelte';
+    import type { UniversalFilterConfig, FilterSectionConfig, CheckboxFilterOption, RangeFilterOption, ButtonsFilterOption } from '$lib/types/filters';
     import CommunicationItem from '$lib/components/communications/CommunicationItem.svelte';
     import MapVisualization from '$lib/components/communications/MapVisualization.svelte';
     import ToggleButton from '$lib/components/common/ToggleButton.svelte';
-    // Import new components
     import EntityListPageLayout from '$lib/components/common/EntityListPageLayout.svelte';
     import FilteredListDisplay from '$lib/components/common/FilteredListDisplay.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
-    import { urlFilterSync } from '$lib/actions/urlFilterSync'; // Import the action
-    import Sorter from '$lib/components/common/Sorter.svelte'; // Import Sorter
-    import { sortItems } from '$lib/utils/sortUtils'; // Import sort utility
-    import { writable, derived } from 'svelte/store'; // Import stores
+    import { urlFilterSync } from '$lib/actions/urlFilterSync'; 
+    import Sorter from '$lib/components/common/Sorter.svelte'; 
+    import { sortItems } from '$lib/utils/sortUtils'; 
+    import { writable, derived } from 'svelte/store'; 
     
-    let showMap = false; // State for map visibility
+    let showMap = false; 
 
     // State for the current sort order
     const activeSort = writable<'date' | 'title'>('date');
@@ -50,23 +65,27 @@
             year: comm.year
         })) || [];
 
-    // Helper to check if any filters are active (handles yearRange)
+    // Helper to check if any filters are active (consistent with communications/+page.svelte)
     function areFiltersActive(filters: typeof $activeFilters): boolean {
         if (!filters) return false;
-        return Object.entries(filters).some(([key, value]) => {
-            if (key === 'yearRange') {
-                return value !== null;
-            } else if (Array.isArray(value)) {
-                return value.length > 0;
-            }
-            return false;
-        });
+        return Object.values(filters).some(val => 
+            (Array.isArray(val) && val.length > 0) || 
+            (val !== null && val !== undefined && typeof val === 'object' && Object.keys(val).length > 0 && val.constructor === Object) || 
+            (!Array.isArray(val) && typeof val !== 'object' && val !== null && val !== undefined && val !== '')
+        );
     }
 
-    // Need event handler if items dispatch events
+    // Function to handle filter requests from items (consistent with communications/+page.svelte)
     function handleFilterRequest(event: CustomEvent<{ type: string; value: string }>) {
-        console.log("Filter request received (needs handler)", event.detail);
-        // TODO: Implement toggling based on event if CommunicationItem dispatches them
+        const { type, value } = event.detail;
+        if (type === 'tag') {
+            toggleTagFilter(value);
+        } else if (type === 'country') {
+            toggleCountryFilter(value);
+        } else if (type === 'type') { 
+            toggleTypeFilter(value);
+        }
+        // Add other filter types if needed (e.g., author)
     }
 
     // Handler for the sortChange event from the Sorter component
@@ -84,6 +103,61 @@
         setProjects,
         setYearRange
     };
+
+    // Define labels locally (same as communications)
+    const typeLabels: {[key: string]: string} = {
+        'conference': 'Conferences',
+        'workshop': 'Workshops',
+        'seminar': 'Seminars',
+        'lecture': 'Lectures',
+        'panel': 'Panels',
+        'event': 'Academic Events'
+    };
+
+    // Reactive calculations needed for the config (same as communications)
+    $: types = $filterOptions?.types || [];
+    $: years = $filterOptions?.years || [];
+    $: countries = $filterOptions?.countries || [];
+    $: languages = $filterOptions?.languages || [];
+    $: tags = $filterOptions?.tags || [];
+    $: authors = $filterOptions?.authors || [];
+    $: sortedYearsAsc = years.slice().sort((a, b) => a - b);
+
+    // Construct the configuration object (same as communications)
+    $: communicationFilterConfig = {
+        sections: [
+            // Sections explicitly cast to their specific type
+            { 
+                type: 'checkbox', title: 'Event Types', items: types, itemLabels: typeLabels, 
+                activeItems: $activeFilters?.types || [], toggleItem: toggleTypeFilter, counts: undefined 
+            } as CheckboxFilterOption<string>,
+            { 
+                type: 'range', title: 'Years', allYears: sortedYearsAsc, 
+                activeRange: $activeFilters?.yearRange || null, updateRange: updateYearRange, resetRange: resetYearRange 
+            } as RangeFilterOption,
+            { 
+                type: 'checkbox', title: 'Co-authors / Participants', items: authors, 
+                activeItems: $activeFilters?.authors || [], toggleItem: toggleAuthorFilter, counts: $authorCounts 
+            } as CheckboxFilterOption<string>,
+            { 
+                type: 'checkbox', title: 'Countries', items: countries, 
+                activeItems: $activeFilters?.countries || [], toggleItem: toggleCountryFilter, counts: $countryCounts 
+            } as CheckboxFilterOption<string>,
+            { 
+                type: 'checkbox', title: 'Languages', items: languages, 
+                activeItems: $activeFilters?.languages || [], toggleItem: toggleLanguageFilter, counts: undefined 
+            } as CheckboxFilterOption<string>,
+            { 
+                type: 'buttons', title: 'Tags', items: tags, 
+                activeItems: $activeFilters?.tags || [], toggleItem: toggleTagFilter, counts: $tagCounts 
+            } as ButtonsFilterOption<string>
+        ].filter(section => {
+            if (section.type === 'range') return section.allYears && section.allYears.length > 0;
+            return section.items && section.items.length > 0;
+        }) as FilterSectionConfig[], // Cast filtered array
+        clearAllFilters: clearAllFilters
+    } satisfies UniversalFilterConfig;
+
 </script>
 
 <SEO 
@@ -93,7 +167,7 @@
 />
 
 <div 
-    class="teaching-container"
+    class="page-container" 
     use:urlFilterSync={{ filtersStore: activeFilters, setters: filterSetters }}
 > 
     <div class="main-content">
@@ -110,15 +184,13 @@
             <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
         </div>
 
-        <EntityListPageLayout 
-        >
+        <EntityListPageLayout>
             <!-- Sidebar slot for filters -->
             <svelte:fragment slot="sidebar">
-                <FiltersSidebar />
+                <UniversalFiltersSidebar config={communicationFilterConfig} />
             </svelte:fragment>
             
             <!-- Default slot for main content -->
-            <!-- Conditionally render Map Visualization -->
             {#if showMap}
                 <div class="mb-6">
                     <MapVisualization markersData={mapMarkers} />
@@ -132,7 +204,7 @@
                 entityName="conference activities"
                 areFiltersActive={areFiltersActive($activeFilters)}
                 {clearAllFilters}
-                emptyStateNoFiltersMessage="Try adding some conference activities to the 'communications' folder."
+                emptyStateNoFiltersMessage="No conference activities found matching your criteria. Try clearing some filters."
                 onItemEvent={handleFilterRequest}
             />
         </EntityListPageLayout>
@@ -140,7 +212,7 @@
 </div> 
 
 <style>
-    .teaching-container {
+    .page-container { 
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 var(--spacing-4);
@@ -150,7 +222,6 @@
         width: 100%;
     }
     
-    /* Keep existing utility classes if needed, or remove if redundant */
     .text-xl {
         font-size: var(--font-size-xl);
     }
@@ -159,12 +230,17 @@
         margin-bottom: var(--spacing-10);
     }
     
-    /* Keep other specific styles for this page */
     .flex {
         display: flex;
     }
     .justify-end {
         justify-content: flex-end;
+    }
+    .items-center {
+        align-items: center;
+    }
+    .space-x-2 > :not([hidden]) ~ :not([hidden]) {
+       margin-left: var(--spacing-2);
     }
     .mb-4 {
         margin-bottom: var(--spacing-4);
@@ -172,5 +248,4 @@
     .mb-6 {
         margin-bottom: var(--spacing-6);
     }
-
 </style> 
