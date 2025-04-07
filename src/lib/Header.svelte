@@ -56,6 +56,15 @@
 		}, 300); // 300ms delay before hiding
 	}
 	
+	// Close dropdown immediately when an item is clicked
+	function closeDropdownImmediately() {
+		if (dropdownTimer) {
+			clearTimeout(dropdownTimer);
+			dropdownTimer = null;
+		}
+		activeDropdown = null;
+	}
+	
 	// Toggle mobile menu
 	function toggleMobileMenu() {
 		mobileMenuOpen = !mobileMenuOpen;
@@ -114,7 +123,11 @@
 										<ul>
 											{#each item.dropdown as subItem}
 												<li>
-													<a href={subItem.path} class="dropdown-item">
+													<a 
+														href={subItem.path} 
+														class="dropdown-item"
+														on:click={closeDropdownImmediately}
+													>
 														{subItem.name}
 													</a>
 												</li>
@@ -144,6 +157,21 @@
 			<!-- Mobile Navigation -->
 			<div class="mobile-nav-container" class:active={mobileMenuOpen}>
 				<nav class="mobile-nav">
+					<!-- Mobile Theme Toggle MOVED HERE -->
+					<div class="mobile-nav-header">
+						<button 
+							class="theme-toggle" 
+							on:click={toggleTheme}
+							aria-label="Toggle theme"
+						>
+							{#if $theme === 'light'}
+								<Moon size={20} />
+							{:else}
+								<Sun size={20} />
+							{/if}
+						</button>
+					</div>
+
 					<ul class="mobile-nav-list">
 						{#each navItems as item}
 							<li class="mobile-nav-item">
