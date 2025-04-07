@@ -2,6 +2,8 @@
 	import { base } from '$app/paths';
 	import { theme, toggleTheme } from '$lib/stores/themeStore'; // Import theme store
 	import { Moon, Sun } from 'lucide-svelte'; // Import Lucide icons
+	import { onMount } from 'svelte'; // Need onMount for potential cleanup
+	import { goto } from '$app/navigation'; // Import goto for programmatic navigation
 	
 	// Navigation items based on the WordPress site
 	const navItems = [
@@ -36,9 +38,10 @@
 	// Track active dropdown for hover delay
 	let activeDropdown: number | null = null;
 	let dropdownTimer: ReturnType<typeof setTimeout> | null = null;
+	const HIDE_DELAY = 200; // Slightly shorter delay might feel better
 	
-	// Show dropdown with index
 	function showDropdown(index: number) {
+		// Clear any pending hide timer when showing a new dropdown or re-entering the trigger
 		if (dropdownTimer) {
 			clearTimeout(dropdownTimer);
 			dropdownTimer = null;
@@ -46,23 +49,31 @@
 		activeDropdown = index;
 	}
 	
-	// Hide dropdown with delay
-	function hideDropdown() {
+	// Starts the timer to hide the dropdown
+	function startHideTimer() {
 		if (dropdownTimer) {
-			clearTimeout(dropdownTimer);
+			clearTimeout(dropdownTimer); // Clear existing timer if any
 		}
 		dropdownTimer = setTimeout(() => {
 			activeDropdown = null;
-		}, 300); // 300ms delay before hiding
+			dropdownTimer = null; // Clear timer ref once executed
+		}, HIDE_DELAY);
 	}
 	
-	// Close dropdown immediately when an item is clicked
-	function closeDropdownImmediately() {
+	// Clears the hide timer (e.g., when mouse enters the dropdown menu itself)
+	function clearHideTimer() {
 		if (dropdownTimer) {
 			clearTimeout(dropdownTimer);
 			dropdownTimer = null;
 		}
+	}
+	
+	// Close dropdown immediately when an item is clicked
+	function closeDropdownImmediately(event: MouseEvent) {
+		console.log('Attempting to close desktop dropdown immediately'); // Keep log for now
+		clearHideTimer(); // Ensure any pending hide timer is cleared
 		activeDropdown = null;
+		(event.currentTarget as HTMLElement)?.blur();
 	}
 	
 	// Toggle mobile menu
@@ -84,6 +95,30 @@
 			mobileMenuOpen = false;
 		}
 	}
+
+	// Handle dropdown item click with direct DOM manipulation
+	function handleDropdownItemClick(event: MouseEvent) {
+		// Find all dropdown menus and forcibly remove active class
+		const dropdowns = document.querySelectorAll('.dropdown-menu.active');
+		dropdowns.forEach(dropdown => {
+			dropdown.classList.remove('active');
+		});
+		
+		// For good measure, also reset component state
+		activeDropdown = null;
+		
+		// Allow natural navigation to proceed
+		// (event.currentTarget as HTMLElement)?.blur();
+	}
+
+	// Optional: Clean up timer on component destroy
+	onMount(() => {
+		return () => {
+			if (dropdownTimer) {
+				clearTimeout(dropdownTimer);
+			}
+		};
+	});
 </script>
 
 <svelte:window on:click={handleClickOutside} />
@@ -112,21 +147,29 @@
 							<li 
 								class="nav-item dropdown-container"
 								on:mouseenter={() => item.dropdown && showDropdown(i)}
-								on:mouseleave={hideDropdown}
+								on:mouseleave={startHideTimer}
+								on:focusin={() => item.dropdown && showDropdown(i)}
+								on:focusout={startHideTimer}
 							>
 								<a href={item.path} class="nav-link dropdown-trigger">
 									{item.name} {#if item.dropdown}<span class="dropdown-icon">▾</span>{/if}
 								</a>
 								
 								{#if item.dropdown}
-									<div class="dropdown-menu" class:active={activeDropdown === i}>
+									<div 
+										class="dropdown-menu" 
+										class:active={activeDropdown === i}
+										on:mouseenter={clearHideTimer}
+										on:mouseleave={startHideTimer}
+										role="group"
+									>
 										<ul>
 											{#each item.dropdown as subItem}
 												<li>
 													<a 
 														href={subItem.path} 
 														class="dropdown-item"
-														on:click={closeDropdownImmediately}
+														on:click={handleDropdownItemClick}
 													>
 														{subItem.name}
 													</a>
