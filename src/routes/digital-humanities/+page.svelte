@@ -64,6 +64,14 @@
             shortDescription: "Interactive word cloud visualising the most frequent words in newspaper articles from the Islam West Africa Collection.",
             imageUrl: `${base}/images/digital-humanities/iwac-wordcloud.jpg`,
             linkUrl: `${base}/digital-humanities/iwac-wordcloud`
+        },
+        {
+            id: "muslim-umbrella-organizations",
+            title: "Muslim Umbrella Organisations in IWAC",
+            years: "2025",
+            shortDescription: "Co-occurrence matrix and topic modeling analysis of newspaper articles discussing Muslim umbrella organisations within the Islam West Africa Collection.",
+            imageUrl: `${base}/images/digital-humanities/muslim-umbrella.jpg`,
+            linkUrl: `${base}/digital-humanities/muslim-umbrella-organizations`
         }
     ];
 </script>

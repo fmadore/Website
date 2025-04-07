@@ -1,0 +1,111 @@
+<script lang="ts">
+	import SEO from '$lib/SEO.svelte';
+	import PageHeader from '$lib/components/common/PageHeader.svelte';
+
+	// Data or specific logic for visualizations will go here
+</script>
+
+<SEO 
+    title="Muslim Umbrella Organisations in IWAC | Digital Humanities | Frédérick Madore" 
+    description="Analysis of Muslim umbrella organisations in West African newspapers using co-occurrence matrices and topic modeling, based on the Islam West Africa Collection (IWAC)." 
+/>
+
+<div class="container">
+	<PageHeader title="Muslim Umbrella Organisations in IWAC" />
+
+    <p class="text-lg mb-8">
+        This project examines the representation of Muslim umbrella organisations in West African newspaper archives sourced from the <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer"><em>Islam West Africa Collection</em></a> (IWAC). 
+        Using computational text analysis techniques, we explore patterns and themes associated with these organisations.
+    </p>
+
+    <section class="visualization-section mb-12">
+        <h2 class="text-2xl font-semibold mb-4">Co-occurrence Matrix</h2>
+        <p class="mb-4">Visualising the frequency with which terms related to Muslim umbrella organisations appear together in the corpus.</p>
+
+        <!-- Embed Co-occurrence Matrix Visualization -->
+        <div class="iframe-container">
+            <iframe 
+                src="https://fmadore.github.io/IWAC-co-occurrence-matrix/index.html" 
+                title="Co-occurrence Matrix Visualization for Muslim Umbrella Organizations in IWAC"
+                frameborder="0" 
+                allowfullscreen
+            ></iframe>
+        </div>
+    </section>
+
+    <section class="visualization-section">
+        <h2 class="text-2xl font-semibold mb-4">Topic Modeling</h2>
+        <p class="mb-4">Identifying latent topics and themes within the articles discussing these organisations.</p>
+        <!-- Embed Topic Modeling Visualization -->
+        <div class="iframe-container">
+            <iframe 
+                src="https://fmadore.github.io/IWAC-topic-modelling/"
+                title="Topic Modeling Visualization for Muslim Umbrella Organizations in IWAC"
+                frameborder="0" 
+                allowfullscreen
+            ></iframe>
+        </div>
+    </section>
+
+</div>
+
+<style>
+    .container {
+        max-width: 960px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .text-lg {
+        font-size: 1.125rem; /* Equivalent to text-lg */
+        line-height: 1.75rem;
+    }
+
+    .mb-8 {
+        margin-bottom: 2rem;
+    }
+    .mb-4 {
+        margin-bottom: 1rem;
+    }
+     .mb-12 {
+        margin-bottom: 3rem;
+    }
+
+    .text-2xl {
+        font-size: 1.5rem; /* Equivalent to text-2xl */
+        line-height: 2rem;
+    }
+
+    .font-semibold {
+        font-weight: 600;
+    }
+
+    .visualization-section h2 {
+        border-bottom: 2px solid var(--color-primary-light);
+        padding-bottom: 0.5rem;
+    }
+    
+    /* Responsive iframe container */
+    .iframe-container {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        padding-top: 75%; /* Aspect ratio (height/width * 100). Adjust as needed. 4:3 aspect ratio */
+        border: 1px solid var(--color-border); /* Optional border */
+        border-radius: var(--radius-md); /* Optional border radius */
+        margin-top: 1rem; /* Add some space above the iframe */
+        background-color: #f0f0f0; /* Light gray background to ensure visibility in dark mode */
+    }
+
+    .iframe-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Add other styles as needed */
+</style> 
