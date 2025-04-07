@@ -2,11 +2,17 @@
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 </script>
 
 <SEO title="Islam West Africa Collection | Frédérick Madore" description="Explore the Islam West Africa Collection (IWAC), an open-access digital database of over 12,500 documents on Islam in West Africa." />
 
 <div class="container">
+    <Breadcrumb items={[
+        { label: "Digital Humanities", href: "/digital-humanities" },
+        { label: "Islam West Africa Collection", href: "/digital-humanities/islam-west-africa-collection" }
+    ]} />
+
 	<PageHeader title="Islam West Africa Collection" />
 
     <div class="project-header">

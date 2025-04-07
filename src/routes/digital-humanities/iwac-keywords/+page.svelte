@@ -2,6 +2,7 @@
     import SEO from '$lib/SEO.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
     import Button from '$lib/components/atoms/Button.svelte';
+    import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 </script>
 
 <SEO 
@@ -10,6 +11,11 @@
 />
 
 <div class="container mx-auto px-4 py-8">
+    <Breadcrumb items={[
+        { label: "Digital Humanities", href: "/digital-humanities" },
+        { label: "IWAC Keywords Dashboard", href: "/digital-humanities/iwac-keywords" }
+    ]} />
+    
     <PageHeader 
         title="IWAC Keywords Dashboard"
     />

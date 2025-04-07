@@ -1,6 +1,7 @@
 <script lang="ts">
     import SEO from '$lib/SEO.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
+    import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 </script>
 
 <SEO
@@ -9,6 +10,11 @@
 />
 
 <div class="container">
+    <Breadcrumb items={[
+        { label: "Digital Humanities", href: "/digital-humanities" },
+        { label: "IWAC Newspaper Word Cloud", href: "/digital-humanities/iwac-wordcloud" }
+    ]} />
+
     <PageHeader title="IWAC Newspaper Word Cloud" />
 
     <p class="mb-8">

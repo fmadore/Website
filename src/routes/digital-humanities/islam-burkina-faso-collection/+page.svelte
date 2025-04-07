@@ -3,6 +3,7 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import { ExternalLinkIcon } from 'lucide-svelte'; // Using an icon for external links
     import { base } from '$app/paths'; // Import base path
+    import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 </script>
 
 <SEO
@@ -11,6 +12,11 @@
 />
 
 <div class="container">
+    <Breadcrumb items={[
+        { label: "Digital Humanities", href: "/digital-humanities" },
+        { label: "Islam Burkina Faso Collection", href: "/digital-humanities/islam-burkina-faso-collection" }
+    ]} />
+
 	<PageHeader title="Islam Burkina Faso Collection (2018-2023)" />
 
     <img src="{base}/images/digital-humanities/islam-burkinafaso-banner.webp" alt="Banner for Islam Burkina Faso Collection" class="banner-image" />

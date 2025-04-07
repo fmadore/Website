@@ -2,11 +2,17 @@
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 </script>
 
 <SEO title="Visualising the IWAC | Frédérick Madore" description="Explore visualizations of the Islam West Africa Collection using AI and machine learning techniques." />
 
 <div class="container">
+    <Breadcrumb items={[
+        { label: "Digital Humanities", href: "/digital-humanities" },
+        { label: "Visualising the IWAC", href: "/digital-humanities/visualising-the-iwac" }
+    ]} />
+    
 	<PageHeader title="Visualising the Islam West Africa Collection" />
 
     <p>This page features various visualizations and computational analyses of the <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer"><em>Islam West Africa Collection</em></a>. Using artificial intelligence and machine learning techniques, I explore patterns and trends in the vast corpus of documents related to Islam in West Africa.</p>

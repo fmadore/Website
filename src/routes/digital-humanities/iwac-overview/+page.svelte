@@ -1,6 +1,7 @@
 <script lang="ts">
     import SEO from '$lib/SEO.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 	// import ItemReference from '$lib/components/common/ItemReference.svelte'; // Not needed here yet
 
 </script>
@@ -11,6 +12,11 @@
 />
 
 <div class="container mx-auto px-4 py-8">
+    <Breadcrumb items={[
+        { label: "Digital Humanities", href: "/digital-humanities" },
+        { label: "Islam West Africa Collection Overview", href: "/digital-humanities/iwac-overview" }
+    ]} />
+    
     <PageHeader 
         title="Islam West Africa Collection Overview"
     />

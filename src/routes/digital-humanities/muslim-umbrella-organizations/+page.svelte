@@ -2,6 +2,7 @@
 	import SEO from '$lib/SEO.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
+	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 
 	// Data or specific logic for visualizations will go here
 </script>
@@ -12,6 +13,11 @@
 />
 
 <div class="container">
+    <Breadcrumb items={[
+        { label: "Digital Humanities", href: "/digital-humanities" },
+        { label: "Muslim Umbrella Organisations in IWAC", href: "/digital-humanities/muslim-umbrella-organizations" }
+    ]} />
+
 	<PageHeader title="Muslim Umbrella Organisations in IWAC" />
 
     <p class="text-lg mb-8">
