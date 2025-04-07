@@ -4,16 +4,20 @@
     import RelevantCommunications from '$lib/RelevantCommunications.svelte';
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 </script>
 
 <SEO title="Mining the Islam West Africa Collection | Frédérick Madore" />
 
 <div class="content-wrapper">
     <div class="main-content">
+		<Breadcrumb items={[
+			{ label: 'Research', href: '/research' },
+			{ label: 'Mining the Islam West Africa Collection', href: '' }
+		]} />
+		
 		<PageHeader 
 			title="Mining the Islam West Africa Collection: Mapping Print Culture and Intellectual Networks in Francophone Regions" 
-			backLinkHref="research"
-			backLinkLabel="Back to Research Projects"
 		/>
         
         <div class="project-image">

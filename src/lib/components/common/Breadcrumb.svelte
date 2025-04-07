@@ -46,11 +46,11 @@
     .breadcrumb li:not(:last-child)::after {
         content: "/";
         margin: 0 var(--spacing-2);
-        color: var(--color-text-muted);
+        color: var(--color-text-light);
     }
 
     .breadcrumb a {
-        color: var(--color-text-muted);
+        color: var(--color-text-light);
         text-decoration: none;
         transition: color 0.2s;
     }

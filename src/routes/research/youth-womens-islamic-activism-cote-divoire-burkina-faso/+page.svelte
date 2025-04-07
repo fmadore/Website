@@ -4,6 +4,7 @@
     import RelevantCommunications from '$lib/RelevantCommunications.svelte';
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
     import ItemReference from '$lib/components/common/ItemReference.svelte';
 </script>
 
@@ -11,10 +12,13 @@
 
 <div class="content-wrapper">
     <div class="main-content">
+		<Breadcrumb items={[
+			{ label: 'Research', href: '/research' },
+			{ label: 'Youth and Women\'s Islamic Activism in Côte d\'Ivoire and Burkina Faso', href: '' }
+		]} />
+		
 		<PageHeader 
 			title="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso" 
-			backLinkHref="research"
-			backLinkLabel="Back to Research Projects"
 		/>
 
         <div class="project-image">
