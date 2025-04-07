@@ -4,6 +4,7 @@
     import { Download } from 'lucide-svelte';
     import { activitiesByYear } from '$lib/data/activities';
     import { base } from '$app/paths';
+    import Button from '$lib/components/atoms/Button.svelte';
 
     // Years with content - dynamically created from activities data
     const years = Object.entries(activitiesByYear).map(([year, activities]) => ({
@@ -40,10 +41,14 @@
             <p>I hold a Ph.D. with distinction in History from <a href="https://www.ulaval.ca/" target="_blank" rel="noopener noreferrer">Université Laval</a> and was previously a <a href="https://banting.fellowships-bourses.gc.ca/en/home-accueil.html" target="_blank" rel="noopener noreferrer">Banting Postdoctoral Fellow</a> at the <a href="https://www.ufl.edu/" target="_blank" rel="noopener noreferrer">University of Florida</a>. Through my ongoing <a href="{base}/research">research</a> and <a href="{base}/digital-humanities">DH projects</a>, I continue to explore new approaches to understanding the dynamics of Muslim societies in Francophone West Africa, combining traditional historical methods with innovative computational techniques.</p>
         
             <div class="action-buttons">
-                <a href="{base}/files/CV-F.Madore-2025-03-21.pdf" class="btn btn-primary btn-icon">
-                    <Download size={18} aria-hidden="true" />
+                <Button 
+                    href="{base}/files/CV-F.Madore-2025-03-21.pdf" 
+                    variant="primary"
+                    ariaLabel="Download Curriculum Vitae"
+                >
+                    <span slot="icon"><Download size={18} aria-hidden="true" /></span>
                     Download CV
-                </a>
+                </Button>
             </div>
         </div>
         
@@ -120,30 +125,6 @@
         gap: var(--spacing-4);
         margin-top: var(--spacing-8);
         margin-bottom: var(--spacing-8);
-    }
-    
-    .btn {
-        display: inline-block;
-        padding: 0.75rem 1.5rem;
-        font-weight: 600;
-        text-decoration: none;
-        border-radius: var(--border-radius-md);
-        transition: all 0.2s ease;
-    }
-    
-    .btn-primary {
-        background-color: var(--color-primary);
-        color: white;
-    }
-    
-    .btn-primary:hover {
-        background-color: var(--color-primary-dark);
-    }
-    
-    .btn-icon {
-        display: inline-flex;
-        align-items: center;
-        gap: var(--spacing-2);
     }
     
     .rounded-full {
