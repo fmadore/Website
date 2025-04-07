@@ -46,12 +46,20 @@ p {
 /* Links */
 a {
   color: var(--color-primary);
-  text-decoration: none;
+  text-decoration: underline;
   transition: color 0.2s ease;
 }
 
 a:hover {
-  color: var(--color-primary-dark);
+  color: var(--color-highlight);
+}
+
+/* We can keep special cases without underlines */
+.card a, 
+.nav-link,
+.btn,
+.header-logo a {
+  text-decoration: none;
 }
 
 /* Lists */
