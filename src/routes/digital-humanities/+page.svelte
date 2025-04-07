@@ -58,14 +58,6 @@
             linkUrl: `${base}/digital-humanities/remoboko`
         },
         {
-            id: "zmo-units",
-            title: "ZMO Research Units Word Cloud",
-            years: "2025",
-            shortDescription: 'Word cloud generated from the research projects\' titles and abstracts. See the <a href="https://www.zmo.de/en/research/overview-of-main-research-programme-2025" target="_blank" rel="noopener noreferrer">ZMO Research Programme</a>.',
-            imageUrl: `${base}/images/digital-humanities/zmo_units_wordcloud.png`,
-            linkUrl: `${base}/digital-humanities/zmo-units`
-        },
-        {
             id: "iwac-wordcloud",
             title: "IWAC Newspaper Word Cloud",
             years: "2025",
