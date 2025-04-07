@@ -12,7 +12,7 @@
     <PageHeader title="IWAC Newspaper Word Cloud" />
 
     <p class="mb-8">
-        This interactive word cloud visualises the most frequently used words in newspaper articles from the Islam West Africa Collection, excluding Islamic publications. It provides an insight into the dominant themes in Benin, Burkina Faso, Côte d'Ivoire, and Togo. Users can toggle between countries to explore national differences, with word sizes reflecting their frequency in the articles. Hover over words to see exact frequency counts.
+        This interactive word cloud visualises the most frequently used words in newspaper articles from the <a href="https://islam.zmo.de/s/westafrica/page/home" target="_blank" rel="noopener noreferrer"><em>Islam West Africa Collection</em></a> (IWAC), excluding Islamic publications. It provides an insight into the dominant themes in Benin, Burkina Faso, Côte d'Ivoire, and Togo. Users can toggle between countries to explore national differences, with word sizes reflecting their frequency in the articles. Hover over words to see exact frequency counts.
     </p>
 
     <div class="iframe-container">
