@@ -4,40 +4,6 @@ After reviewing your Svelte-based academic website, I've identified several area
 
 ## Code Architecture & Maintainability
 
-### 1. Component Refactoring
-
-- **Create atomic design structure**
-  - Refactor into atoms, molecules, organisms, templates, and pages
-  - Example: Break down `Header.svelte` into smaller components like `NavItem`, `DropdownMenu`, etc.
-
-- **Reduce component complexity**
-  - Your `FiltersSidebar.svelte` components contain duplicate logic between publications and communications
-  - Create a universal `FiltersSidebar` component that accepts filter configurations as props
-
-```svelte
-<!-- Example of a more generic FiltersSidebar -->
-<script lang="ts">
-  export let filterConfig: {
-    title: string;
-    options: FilterOptions;
-    activeFilters: ActiveFilters;
-    handlers: Record<string, (value: any) => void>;
-  };
-</script>
-
-<aside>
-  <h2>{filterConfig.title}</h2>
-  {#each Object.entries(filterConfig.options) as [filterType, values]}
-    <FilterSection 
-      title={filterType} 
-      values={values}
-      active={filterConfig.activeFilters[filterType]}
-      onToggle={(value) => filterConfig.handlers[filterType](value)}
-    />
-  {/each}
-</aside>
-```
-
 ### 2. Type System Improvements
 
 - **Create centralized type definitions**
