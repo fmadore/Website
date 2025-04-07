@@ -73,7 +73,7 @@
 <div class="container">
 	<PageHeader title="Digital Humanities" />
 
-    <p class="text-xl mb-10">This section showcases my work in digital humanities, applying computational methods to historical research on Islam and Muslim societies in West Africa.</p>
+    <p class="text-xl mb-10">This section presents some of my work in digital humanities (DH), applying computational methods to historical research on Islam and Muslim societies in West Africa. DH has taken an increasingly important place in my research in recent years, leading me to develop my skills through both specialised training and continuous self-learning. I use data visualisation techniques to translate research findings into compelling narratives, making historical findings accessible and engaging.</p>
 
     <div class="dh-grid">
         {#each dhProjects as project (project.id)}
