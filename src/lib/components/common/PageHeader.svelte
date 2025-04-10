@@ -39,7 +39,7 @@
 		{/if}
 	</div>
 
-	<h1 class="page-title text-2xl md:text-3xl font-bold mb-2">{title}</h1>
+	<h1 class="page-title text-2xl md:text-3xl font-bold mb-4">{title}</h1>
 
 	{#if authors && authors.length > 0}
 		<div class="authors text-lg mb-2">{authors.join(', ')}</div>

@@ -30,7 +30,7 @@
     </div>
     
     {#if $filteredItems && $filteredItems.length > 0}
-        <ul class="list-none p-0">
+        <ul class="list-none p-0 space-y-8">
             {#each $filteredItems as item (item.id)}
                 {#if onItemEvent}
                     <svelte:component 

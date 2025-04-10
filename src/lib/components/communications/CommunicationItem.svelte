@@ -28,7 +28,7 @@
 </script>
 
 <li class="p-0 list-none">
-    <div class="card p-4 mb-8 hover-shadow">
+    <div class="card p-4 hover-shadow">
         <div class="grid md:grid-cols-4 gap-4">
             {#if communication?.image}
                 <div class="col-span-1">
@@ -48,13 +48,13 @@
                     {/if}
                 </div>
                 
-                <h3 class="text-dark font-weight-500 mb-2">
+                <h3 class="text-dark font-medium mb-2">
                     <a href="{base}/communications/{communication.id}" class="hover:text-primary">
                         {communication?.title || 'Untitled Communication'}
                     </a>
                 </h3>
                 
-                <div class="communication-details text-light mb-2">
+                <div class="communication-details text-text-light text-sm mb-2">
                     <!-- Authors -->
                     {#if communication?.authors && communication.authors.length > 0}
                         <div>
@@ -83,7 +83,7 @@
                 </div>
                 
                 {#if communication?.abstract}
-                    <div class="text-light text-sm mb-4">
+                    <div class="text-text-light text-sm mb-4">
                         {truncateAbstract(communication.abstract)}
                     </div>
                 {/if}
@@ -131,21 +131,33 @@
         text-decoration: underline; /* Add underline on hover */
     }
 
+    /* Replace with hover:shadow-md utility */
+    /*
     .hover-shadow:hover {
         box-shadow: var(--shadow-md);
     }
+    */
     
+    /* Replace with font-medium utility */
+    /*
     .font-weight-500 {
         font-weight: 500;
     }
+    */
     
+    /* Replace with text-sm utility */
+    /*
     .text-sm {
         font-size: 0.875rem;
     }
+    */
     
+    /* Replace with ml-2 utility */
+    /*
     .ml-2 {
         margin-left: 0.5rem;
     }
+    */
     
     .communication-image {
         width: 100%;

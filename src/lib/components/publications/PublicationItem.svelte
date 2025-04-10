@@ -76,7 +76,7 @@
 </script>
 
 <li class="p-0 list-none">
-    <div class="card p-4 mb-8 hover-shadow">
+    <div class="card p-4 hover-shadow">
         <div class="grid md:grid-cols-4 gap-4">
             {#if publication.image}
                 <div class="col-span-1">
@@ -99,13 +99,13 @@
                     {/if}
                 </div>
                 
-                <h3 class="text-dark font-weight-500 mb-2">
+                <h3 class="text-dark font-medium mb-2">
                     <a href="{base}/publications/{publication.id}" class="hover:text-primary">
                         {publication.title}
                     </a>
                 </h3>
                 
-                <div class="text-light mb-2">
+                <div class="text-text-light text-sm mb-2">
                     <!-- Render prefix and the constructed author string -->
                     {listPrefix}{authorString}
                      <!-- Space, then (Year). Only if year is defined -->
@@ -163,7 +163,7 @@
                 </div>
                 
                 {#if publication.abstract}
-                    <div class="text-light text-sm mb-4">
+                    <div class="text-text-light text-sm mb-4">
                         {truncateAbstract(publication.abstract)}
                     </div>
                 {/if}
@@ -212,21 +212,33 @@
         text-decoration: underline; /* Add underline on hover */
     }
 
+    /* Replace with hover:shadow-md utility */
+    /*
     .hover-shadow:hover {
         box-shadow: var(--shadow-md);
     }
+    */
     
+    /* Replace with font-medium utility */
+    /*
     .font-weight-500 {
         font-weight: 500;
     }
+    */
     
+    /* Replace with text-sm utility */
+    /*
     .text-sm {
         font-size: 0.875rem;
     }
+    */
     
+    /* Replace with ml-2 utility */
+    /*
     .ml-2 {
         margin-left: 0.5rem;
     }
+    */
     
     .publication-cover-image {
         width: 100%;
