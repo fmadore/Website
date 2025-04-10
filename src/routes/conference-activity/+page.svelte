@@ -206,16 +206,6 @@
             </div>
         </div>
 
-        <!-- Desktop Controls: Map Toggle + Sorter -->
-        <div class="desktop-controls">
-            <ToggleButton 
-                baseText="Map"
-                bind:isToggled={showMap} 
-                on:toggle={() => showMap = !showMap}
-            />
-            <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
-        </div>
-
         <EntityListPageLayout>
             <!-- Sidebar slot for filters -->
             <svelte:fragment slot="sidebar">
@@ -227,6 +217,16 @@
             </svelte:fragment>
             
             <!-- Default slot for main content -->
+            <!-- ADD Desktop Controls Here -->
+            <div class="desktop-controls">
+                 <ToggleButton 
+                    baseText="Map"
+                    bind:isToggled={showMap} 
+                    on:toggle={() => showMap = !showMap}
+                />
+                <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
+            </div>
+
             {#if showMap}
                 <div class="mb-6">
                     <MapVisualization markersData={mapMarkers} />
@@ -306,7 +306,7 @@
             }
         }
         .desktop-controls {
-            display: none; /* Hide desktop controls on mobile */
+            display: none; /* Hide desktop controls container on mobile */
         }
     }
 </style> 
