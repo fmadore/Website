@@ -68,9 +68,12 @@ ul, ol {
   padding-left: var(--spacing-8);
 }
 
+/* Remove default li margin - handle spacing contextually with utilities */
+/*
 li {
   margin-bottom: var(--spacing-2);
 }
+*/
 
 /* Emphasis */
 strong, b {
@@ -105,6 +108,8 @@ small {
 }
 
 /* Class-based typography helpers */
+/* These are now redundant as Tailwind provides equivalents (e.g., text-sm, text-lg, etc.) */
+/*
 .text-sm {
   font-size: var(--font-size-sm);
 }
@@ -148,6 +153,7 @@ small {
 .text-white {
   color: white;
 }
+*/
 
 /* Prose typography for long-form content */
 .prose {

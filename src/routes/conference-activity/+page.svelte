@@ -309,4 +309,11 @@
             display: none; /* Hide desktop controls container on mobile */
         }
     }
+
+    /* Add margin to the bottom of each communication item */
+    /*
+    :global(.communication-item) { 
+        margin-bottom: var(--spacing-6); 
+    }
+    */
 </style> 

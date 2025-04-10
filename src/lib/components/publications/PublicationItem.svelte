@@ -75,116 +75,118 @@
 
 </script>
 
-<li class="card p-4 mb-4 hover-shadow">
-    <div class="grid md:grid-cols-4 gap-4">
-        {#if publication.image}
-            <div class="col-span-1">
-                <img 
-                    src={publication.image} 
-                    alt={publication.title} 
-                    class="publication-cover-image"
-                />
-            </div>
-        {/if}
-        
-        <div class="{publication.image ? 'col-span-3' : 'col-span-4'}">
-            <div class="mb-2">
-                <!-- Use typeLabel from formattedCitation -->
-                <span class="text-primary text-sm">{formattedCitation.typeLabel}</span>
-                {#if publication.language && publication.language.includes(',')}
-                    <span class="text-light text-sm ml-2">({publication.language})</span>
-                {:else if publication.language && publication.language !== 'English'}
-                    <span class="text-light text-sm ml-2">({publication.language})</span>
-                {/if}
-            </div>
+<li class="p-0 list-none">
+    <div class="card p-4 mb-8 hover-shadow">
+        <div class="grid md:grid-cols-4 gap-4">
+            {#if publication.image}
+                <div class="col-span-1">
+                    <img 
+                        src={publication.image} 
+                        alt={publication.title} 
+                        class="publication-cover-image"
+                    />
+                </div>
+            {/if}
             
-            <h3 class="text-dark font-weight-500 mb-2">
-                <a href="{base}/publications/{publication.id}" class="hover:text-primary">
-                    {publication.title}
-                </a>
-            </h3>
-            
-            <div class="text-light mb-2">
-                <!-- Render prefix and the constructed author string -->
-                {listPrefix}{authorString}
-                 <!-- Space, then (Year). Only if year is defined -->
-                 {#if formattedCitation.year} ({formattedCitation.year}). {/if}
+            <div class="{publication.image ? 'col-span-3' : 'col-span-4'}">
+                <div class="mb-2">
+                    <!-- Use typeLabel from formattedCitation -->
+                    <span class="text-primary text-sm">{formattedCitation.typeLabel}</span>
+                    {#if publication.language && publication.language.includes(',')}
+                        <span class="text-light text-sm ml-2">({publication.language})</span>
+                    {:else if publication.language && publication.language !== 'English'}
+                        <span class="text-light text-sm ml-2">({publication.language})</span>
+                    {/if}
+                </div>
+                
+                <h3 class="text-dark font-weight-500 mb-2">
+                    <a href="{base}/publications/{publication.id}" class="hover:text-primary">
+                        {publication.title}
+                    </a>
+                </h3>
+                
+                <div class="text-light mb-2">
+                    <!-- Render prefix and the constructed author string -->
+                    {listPrefix}{authorString}
+                     <!-- Space, then (Year). Only if year is defined -->
+                     {#if formattedCitation.year} ({formattedCitation.year}). {/if}
 
-                <!-- Add type-specific prefixes before detailsHtml -->
-                {#if publication.type === 'dissertation'}
-                    <span>"{publication.title}". </span>
-                    {@html formattedCitation.detailsHtml}
-                    <!-- Supervisor info remains separate -->
-                    {#if publication.advisors && publication.advisors.length > 0}
+                    <!-- Add type-specific prefixes before detailsHtml -->
+                    {#if publication.type === 'dissertation'}
+                        <span>"{publication.title}". </span>
+                        {@html formattedCitation.detailsHtml}
+                        <!-- Supervisor info remains separate -->
+                        {#if publication.advisors && publication.advisors.length > 0}
+                            <div class="mt-1">
+                                <span>Supervised by </span>
+                                {#each publication.advisors as advisor, i}
+                                    {#if advisor !== "Frédérick Madore"}
+                                        <button
+                                            class="author-btn"
+                                            on:click={() => dispatch('filterrequest', { type: 'author', value: advisor })}
+                                        >
+                                            {advisor}
+                                        </button>
+                                    {:else}
+                                         <span>{advisor}</span>
+                                    {/if}
+                                    {#if i < publication.advisors.length - 1}
+                                        <span> and </span>
+                                    {/if}
+                                {/each}
+                            </div>
+                        {/if}
+                    {:else if publication.type === 'encyclopedia'}
+                         <span>"{publication.title}". </span>
+                         {@html formattedCitation.detailsHtml}
+                     {:else}
+                        <!-- Render details generated by formatter (covers article, chapter, book, report, special-issue, blogpost) -->
+                        {@html formattedCitation.detailsHtml}
+                    {/if}
+                    
+                    <!-- Preface information -->
+                    {#if publication.prefacedBy}
                         <div class="mt-1">
-                            <span>Supervised by </span>
-                            {#each publication.advisors as advisor, i}
-                                {#if advisor !== "Frédérick Madore"}
-                                    <button
-                                        class="author-btn"
-                                        on:click={() => dispatch('filterrequest', { type: 'author', value: advisor })}
-                                    >
-                                        {advisor}
-                                    </button>
-                                {:else}
-                                     <span>{advisor}</span>
-                                {/if}
-                                {#if i < publication.advisors.length - 1}
-                                    <span> and </span>
-                                {/if}
-                            {/each}
+                            <span>Preface by </span>
+                             {#if publication.prefacedBy !== "Frédérick Madore"}
+                                 <button
+                                    class="author-btn"
+                                    on:click={() => dispatch('filterrequest', { type: 'author', value: publication.prefacedBy || '' })}
+                                >
+                                    {publication.prefacedBy}
+                                </button>
+                             {:else}
+                                <span>{publication.prefacedBy}</span>
+                             {/if}
                         </div>
                     {/if}
-                {:else if publication.type === 'encyclopedia'}
-                     <span>"{publication.title}". </span>
-                     {@html formattedCitation.detailsHtml}
-                 {:else}
-                    <!-- Render details generated by formatter (covers article, chapter, book, report, special-issue, blogpost) -->
-                    {@html formattedCitation.detailsHtml}
+                </div>
+                
+                {#if publication.abstract}
+                    <div class="text-light text-sm mb-4">
+                        {truncateAbstract(publication.abstract)}
+                    </div>
                 {/if}
                 
-                <!-- Preface information -->
-                {#if publication.prefacedBy}
-                    <div class="mt-1">
-                        <span>Preface by </span>
-                         {#if publication.prefacedBy !== "Frédérick Madore"}
-                             <button
-                                class="author-btn"
-                                on:click={() => dispatch('filterrequest', { type: 'author', value: publication.prefacedBy || '' })}
+                {#if publication.tags && publication.tags.length > 0}
+                    <TagList tags={publication.tags} baseUrl="/publications?tag=" sectionTitle="" sectionClass="mt-3" listClass="flex flex-wrap gap-2" />
+                {/if}
+                
+                {#if publication.additionalUrls && publication.additionalUrls.length > 0}
+                    <div class="mt-3">
+                        {#each publication.additionalUrls as url, i}
+                            <a 
+                                href={url.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                class="btn-sm btn-outline-primary mr-2"
                             >
-                                {publication.prefacedBy}
-                            </button>
-                         {:else}
-                            <span>{publication.prefacedBy}</span>
-                         {/if}
+                                {url.label || `Link ${i+1}`}
+                            </a>
+                        {/each}
                     </div>
                 {/if}
             </div>
-            
-            {#if publication.abstract}
-                <div class="text-light text-sm mb-4">
-                    {truncateAbstract(publication.abstract)}
-                </div>
-            {/if}
-            
-            {#if publication.tags && publication.tags.length > 0}
-                <TagList tags={publication.tags} baseUrl="/publications?tag=" sectionTitle="" sectionClass="mt-3" listClass="flex flex-wrap gap-2" />
-            {/if}
-            
-            {#if publication.additionalUrls && publication.additionalUrls.length > 0}
-                <div class="mt-3">
-                    {#each publication.additionalUrls as url, i}
-                        <a 
-                            href={url.url} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            class="btn-sm btn-outline-primary mr-2"
-                        >
-                            {url.label || `Link ${i+1}`}
-                        </a>
-                    {/each}
-                </div>
-            {/if}
         </div>
     </div>
 </li>

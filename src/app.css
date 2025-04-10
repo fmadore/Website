@@ -29,6 +29,6 @@
 @import './styles/pages/contact.css';
 
 /* Utilities */
-@import './styles/utilities/spacing.css';
-@import './styles/utilities/colors.css';
+/* @import './styles/utilities/spacing.css'; */ /* Removed - Use Tailwind classes */
+/* @import './styles/utilities/colors.css'; */ /* Removed - Use Tailwind classes */
 @import './styles/utilities/layout.css';

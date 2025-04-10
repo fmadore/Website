@@ -2,10 +2,12 @@
 
 .grid {
   display: grid;
-  gap: var(--spacing-4);
+  /* Default gap can be applied via Tailwind (e.g., grid gap-4) */
+  /* gap: var(--spacing-4); */
 }
 
-/* Grid template columns */
+/* Grid template columns - Use Tailwind classes like grid-cols-*, sm:grid-cols-*, etc. */
+/*
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
@@ -21,8 +23,10 @@
 .grid-cols-4 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
+*/
 
-/* Responsive grid layouts */
+/* Responsive grid layouts - Use Tailwind responsive modifiers */
+/*
 @media (min-width: 640px) {
   .sm\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -56,8 +60,10 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
+*/
 
-/* Grid gaps */
+/* Grid gaps - Use Tailwind gap-* classes */
+/*
 .gap-1 {
   gap: var(--spacing-1);
 }
@@ -77,8 +83,10 @@
 .gap-8 {
   gap: var(--spacing-8);
 }
+*/
 
-/* Column spans */
+/* Column spans - Use Tailwind col-span-* classes */
+/*
 .col-span-1 {
   grid-column: span 1 / span 1;
 }
@@ -93,4 +101,5 @@
 
 .col-span-full {
   grid-column: 1 / -1;
-} 
+}
+*/ 
