@@ -42,6 +42,9 @@
     // State for the current sort order
     const activeSort = writable<'date' | 'title'>('date'); // Use a writable store for sort order
 
+    // State for mobile filter sidebar expansion
+    let mobileFiltersExpanded = false;
+
     // Create a derived store for sorted publications
     const sortedPublications = derived(
         [filteredPublications, activeSort], // Depends on these stores
@@ -170,14 +173,27 @@
     <div class="main-content">
         <PageHeader title="Publications" />
 
+        <!-- Mobile Controls: Filter Toggle + Sorter -->
+        <div class="mobile-controls">
+            <button class="btn btn-secondary btn-sm" on:click={() => mobileFiltersExpanded = !mobileFiltersExpanded}>
+                {mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
+            </button>
+            <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
+        </div>
+
         <EntityListPageLayout>
             <!-- Sidebar slot for filters -->
             <svelte:fragment slot="sidebar">
-                <UniversalFiltersSidebar config={publicationFilterConfig} />
+                 <UniversalFiltersSidebar 
+                    config={publicationFilterConfig} 
+                    bind:isExpandedMobile={mobileFiltersExpanded} 
+                    on:collapse={() => mobileFiltersExpanded = false}
+                />
             </svelte:fragment>
             
             <!-- Default slot for main content -->
-            <div class="flex justify-end mb-4">
+            <!-- Desktop Controls: Sorter only -->
+            <div class="desktop-controls">
                 <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
             </div>
             <FilteredListDisplay
@@ -195,7 +211,7 @@
 </div> 
 
 <style>
-    .page-container { /* Renamed from teaching-container for clarity */
+    .page-container { 
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 var(--spacing-4); 
@@ -205,5 +221,29 @@
         width: 100%;
     }
 
-    /* Add any specific styles needed */
+    /* Mobile controls styling */
+    .mobile-controls {
+        display: none; /* Hidden by default */
+        margin-bottom: var(--spacing-4);
+    }
+
+    /* Desktop controls styling */
+    .desktop-controls {
+        display: flex; /* Shown by default */
+        justify-content: flex-end;
+        margin-bottom: var(--spacing-4);
+    }
+
+    /* Media query for mobile */
+    @media (max-width: 900px) {
+        .mobile-controls {
+            display: flex;
+            justify-content: space-between; /* Space out button and sorter */
+            align-items: center;
+        }
+        .desktop-controls {
+            display: none; /* Hide desktop controls on mobile */
+        }
+    }
+
 </style> 

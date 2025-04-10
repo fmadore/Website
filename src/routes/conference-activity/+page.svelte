@@ -46,6 +46,9 @@
     
     let showMap = false; 
 
+    // State for mobile filter sidebar expansion
+    let mobileFiltersExpanded = false;
+
     // State for the current sort order
     const activeSort = writable<'date' | 'title'>('date');
 
@@ -176,7 +179,23 @@
 
         <p class="text-xl mb-10">Over the last decade, I have given talks to audiences in 13 countries across Africa, Europe, and North America.</p>
 
-        <div class="flex justify-end items-center mb-4">
+        <!-- Mobile Controls: Filter Toggle + Map Toggle + Sorter -->
+        <div class="mobile-controls">
+            <button class="btn btn-secondary btn-sm" on:click={() => mobileFiltersExpanded = !mobileFiltersExpanded}>
+                {mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
+            </button>
+            <div class="flex gap-2">
+                <ToggleButton 
+                    baseText="Map"
+                    bind:isToggled={showMap} 
+                    on:toggle={() => showMap = !showMap}
+                />
+                <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
+            </div>
+        </div>
+
+        <!-- Desktop Controls: Map Toggle + Sorter -->
+        <div class="desktop-controls">
             <ToggleButton 
                 baseText="Map"
                 bind:isToggled={showMap} 
@@ -188,7 +207,11 @@
         <EntityListPageLayout>
             <!-- Sidebar slot for filters -->
             <svelte:fragment slot="sidebar">
-                <UniversalFiltersSidebar config={communicationFilterConfig} />
+                <UniversalFiltersSidebar 
+                    config={communicationFilterConfig} 
+                    bind:isExpandedMobile={mobileFiltersExpanded}
+                    on:collapse={() => mobileFiltersExpanded = false}
+                />
             </svelte:fragment>
             
             <!-- Default slot for main content -->
@@ -234,17 +257,43 @@
     .flex {
         display: flex;
     }
-    .justify-end {
-        justify-content: flex-end;
-    }
-    .items-center {
-        align-items: center;
-        gap: var(--spacing-2);
-    }
-    .mb-4 {
-        margin-bottom: var(--spacing-4);
-    }
     .mb-6 {
         margin-bottom: var(--spacing-6);
+    }
+    .gap-2 {
+        gap: var(--spacing-2);
+    }
+
+    /* Mobile controls styling */
+    .mobile-controls {
+        display: none; /* Hidden by default */
+        margin-bottom: var(--spacing-4);
+    }
+
+    /* Desktop controls styling */
+    .desktop-controls {
+        display: flex; /* Shown by default */
+        justify-content: flex-end;
+        align-items: center;
+        gap: var(--spacing-2);
+        margin-bottom: var(--spacing-4);
+    }
+
+    /* Media query for mobile */
+    @media (max-width: 900px) {
+        .mobile-controls {
+            display: flex;
+            justify-content: space-between; /* Space out button and other controls */
+            align-items: center;
+            /* Group map toggle and sorter */
+            & > .flex {
+                display: flex;
+                align-items: center;
+                gap: var(--spacing-2);
+            }
+        }
+        .desktop-controls {
+            display: none; /* Hide desktop controls on mobile */
+        }
     }
 </style> 
