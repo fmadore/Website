@@ -6,6 +6,12 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
     import ItemReference from '$lib/components/common/ItemReference.svelte';
+
+    // Pre-construct breadcrumb items with evaluated paths
+    const breadcrumbItems = [
+        { label: 'Research', href: `${base}/research` },
+        { label: 'Youth and Women\'s Islamic Activism', href: `${base}/research/youth-womens-islamic-activism-cote-divoire-burkina-faso` }
+    ];
 </script>
 
 <SEO title="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso | Frédérick Madore" />
@@ -13,10 +19,7 @@
 <div class="container mx-auto px-4 py-8">
     <div class="grid">
         <div class="main-content">
-            <Breadcrumb items={[
-                { label: 'Research', href: '/research' },
-                { label: 'Youth and Women\'s Islamic Activism in Côte d\'Ivoire and Burkina Faso', href: '' }
-            ]} />
+            <Breadcrumb items={breadcrumbItems} />
             
             <PageHeader 
                 title="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso" 

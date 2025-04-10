@@ -5,6 +5,12 @@
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+
+    // Pre-construct breadcrumb items with evaluated paths
+    const breadcrumbItems = [
+        { label: 'Research', href: `${base}/research` },
+        { label: 'Muslim Minorities in Southern Cities', href: `${base}/research/muslim-minorities-southern-cities-benin-togo` }
+    ];
 </script>
 
 <SEO title="Muslim Minorities in Southern Cities of Benin and Togo | Frédérick Madore" />
@@ -12,10 +18,7 @@
 <div class="container mx-auto px-4 py-8">
     <div class="grid">
         <div class="main-content">
-			<Breadcrumb items={[
-				{ label: 'Research', href: '/research' },
-				{ label: 'Muslim Minorities in Southern Cities of Benin and Togo', href: '' }
-			]} />
+			<Breadcrumb items={breadcrumbItems} />
 			
 			<PageHeader 
 				title="Muslim Minorities in Southern Cities of Benin and Togo"
