@@ -11,15 +11,19 @@
 
 <div class="item-card">
 	<div class="item-meta">
-		<span class="item-type">{item.type ? formatType(item.type) : 'Item'}</span>
+		{#if item.type}
+		<span class="item-type" data-type={item.type}>{formatType(item.type)}</span>
+		{/if}
 		<span class="item-date">{item.date}</span>
 	</div>
 	<a href="{base}{basePath}/{item.id}" class="item-title">
 		{item.title}
 	</a>
+	{#if item.authors && item.authors.length > 0}
 	<div class="item-authors">
 		{formatAuthors(item.authors)}
 	</div>
+	{/if}
 	{#if item.abstract}
 		<div class="item-abstract">
 			{item.abstract.length > 120 ? item.abstract.substring(0, 120) + '...' : item.abstract}
@@ -29,6 +33,30 @@
 
 <!-- Styles are similar to the original item styles -->
 <style>
+	.item-card {
+		position: relative;
+		padding: var(--spacing-2);
+		border-radius: var(--border-radius-sm);
+		transition: all 0.2s ease;
+	}
+
+	.item-card::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		width: 0;
+		background-color: var(--color-primary);
+		border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm);
+		transition: width 0.2s ease;
+		opacity: 0.7;
+	}
+
+	.item-card:hover::before {
+		width: 3px;
+	}
+
 	.item-meta {
 		display: flex;
 		justify-content: space-between;
@@ -40,7 +68,7 @@
 		text-transform: uppercase;
 		font-weight: 600;
 		color: var(--color-primary);
-		background-color: var(--color-border);
+		background-color: rgba(var(--color-primary-rgb), 0.08);
 		padding: 0.1rem 0.5rem;
 		border-radius: var(--border-radius-sm);
 	}
@@ -57,6 +85,7 @@
 		display: block;
 		line-height: 1.4;
 		margin-bottom: var(--spacing-1);
+		transition: color 0.2s ease;
 	}
 
 	.item-title:hover {

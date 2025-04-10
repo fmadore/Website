@@ -96,6 +96,7 @@
 		margin-bottom: var(--spacing-4);
 		padding-bottom: var(--spacing-4);
 		border-bottom: 1px solid var(--color-border);
+		border-radius: var(--border-radius-sm);
 	}
 
 	.item-list-item:last-child {
