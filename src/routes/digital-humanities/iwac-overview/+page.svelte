@@ -2,6 +2,14 @@
     import SEO from '$lib/SEO.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+	import { base } from '$app/paths'; // Import base
+
+    // Pre-construct breadcrumb items with evaluated paths
+    const breadcrumbItems = [
+        { label: "Digital Humanities", href: `${base}/digital-humanities` },
+        { label: "Islam West Africa Collection Overview", href: `${base}/digital-humanities/iwac-overview` }
+    ];
+
 	// import ItemReference from '$lib/components/common/ItemReference.svelte'; // Not needed here yet
 
 </script>
@@ -12,10 +20,7 @@
 />
 
 <div class="container mx-auto px-4 py-8">
-    <Breadcrumb items={[
-        { label: "Digital Humanities", href: "/digital-humanities" },
-        { label: "Islam West Africa Collection Overview", href: "/digital-humanities/iwac-overview" }
-    ]} />
+    <Breadcrumb items={breadcrumbItems} />
     
     <PageHeader 
         title="Islam West Africa Collection Overview"

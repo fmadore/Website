@@ -3,7 +3,14 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import { ExternalLinkIcon } from 'lucide-svelte'; // Using an icon for external links
     import { base } from '$app/paths'; // Import base path
-	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';</script>
+	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+
+	// Pre-construct breadcrumb items with evaluated paths
+	const breadcrumbItems = [
+		{ label: "Digital Humanities", href: `${base}/digital-humanities` },
+		{ label: "Islam Burkina Faso Collection", href: `${base}/digital-humanities/islam-burkina-faso-collection` }
+	];
+</script>
 
 <SEO
 	title="Islam Burkina Faso Collection | Frédérick Madore"
@@ -11,14 +18,11 @@
 />
 
 <div class="container">
-    <Breadcrumb items={[
-        { label: "Digital Humanities", href: `{base}/digital-humanities` },
-        { label: "Islam Burkina Faso Collection", href: `{base}/digital-humanities/islam-burkina-faso-collection` }
-    ]} />
+    <Breadcrumb items={breadcrumbItems} />
 
 	<PageHeader title="Islam Burkina Faso Collection (2018-2023)" />
 
-    <img src="{base}/images/digital-humanities/islam-burkinafaso-banner.webp" alt="Banner for Islam Burkina Faso Collection" class="banner-image" />
+    <img src={`${base}/images/digital-humanities/islam-burkinafaso-banner.webp`} alt="Banner for Islam Burkina Faso Collection" class="banner-image" />
 
 	<section class="content-section">
 		<p>

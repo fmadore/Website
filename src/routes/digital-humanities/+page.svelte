@@ -17,8 +17,8 @@
         publication?: { text: string; url: string }; // Optional publication object
     }
 
-    // Digital Humanities projects data
-    const dhProjects: ProjectType[] = [
+    // Digital Humanities projects data (initial)
+    const initialDhProjects: ProjectType[] = [
         {
             id: "iwac-overview",
             title: "Islam West Africa Collection Overview",
@@ -87,6 +87,30 @@
             linkUrl: "/digital-humanities/iwac-keywords" // New: relative to base
         }
     ];
+
+    // Extend the interface to include the calculated properties
+    interface ProcessedProjectType extends ProjectType {
+        finalLinkUrl: string | undefined;
+        linkTarget: string;
+        actionText: string;
+    }
+
+    // Pre-calculate final URLs and targets into a new array
+    const processedDhProjects: ProcessedProjectType[] = initialDhProjects.map(project => {
+        const isExternal = project.linkUrl && project.linkUrl.startsWith('http');
+        const internalPath = isExternal ? null : (project.linkUrl || `/digital-humanities/${project.id}`);
+        const finalLinkUrl = isExternal ? project.linkUrl : `${base}${internalPath}`;
+        const linkTarget = isExternal ? '_blank' : '_self';
+        const actionText = isExternal ? 'Visit Site →' : 'Explore project →';
+        
+        return {
+            ...project,
+            finalLinkUrl, // Add calculated URL to the object
+            linkTarget,   // Add calculated target
+            actionText    // Add calculated action text
+        };
+    });
+
 </script>
 
 <SEO title="Digital Humanities | Frédérick Madore" description="Discover Frédérick Madore's digital humanities projects including the Islam West Africa Collection (IWAC)." />
@@ -97,18 +121,12 @@
     <p class="text-xl mb-10">This section presents some of my work in digital humanities (DH), applying computational methods to historical research on Islam and Muslim societies in West Africa. DH has taken an increasingly important place in my research in recent years, leading me to develop my skills through both specialised training and continuous self-learning. I use data visualisation techniques to translate research findings into compelling narratives, making historical findings accessible and engaging.</p>
 
     <div class="dh-grid">
-        {#each dhProjects as project (project.id)}
-            {@const isExternal = project.linkUrl && project.linkUrl.startsWith('http')}
-            {@const internalPath = isExternal ? null : (project.linkUrl || `/digital-humanities/${project.id}`)}
-            {@const finalLinkUrl = isExternal ? project.linkUrl : `${base}${internalPath}`}
-            {@const linkTarget = isExternal ? '_blank' : '_self'}
-            {@const actionText = isExternal ? 'Visit Site →' : 'Explore project →'}
-
+        {#each processedDhProjects as project (project.id)}
             <Card
                 title={project.title}
                 imageUrl={project.imageUrl}
-                linkUrl={finalLinkUrl}
-                target={linkTarget}
+                linkUrl={project.finalLinkUrl}
+                target={project.linkTarget}
             >
                 <span slot="subtitle">{project.years}</span>
 
@@ -138,8 +156,8 @@
                  </div>
 
                 <!-- Action slot for the main link -->
-                <a slot="action" href={finalLinkUrl} target={linkTarget} rel={linkTarget === '_blank' ? 'noopener noreferrer' : null}>
-                    {actionText}
+                <a slot="action" href={project.finalLinkUrl} target={project.linkTarget} rel={project.linkTarget === '_blank' ? 'noopener noreferrer' : null}>
+                    {project.actionText}
                 </a>
             </Card>
         {/each}
