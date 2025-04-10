@@ -175,6 +175,8 @@
     <div class="main-content">
         <PageHeader title="Publications" />
 
+        <p class="text-xl mb-10">This page lists my academic publications, including books, journal articles, book chapters, reports, and more.</p>
+
         <!-- Mobile Controls: Filter Toggle + Sorter -->
         <div class="mobile-controls">
             <Button 
@@ -230,6 +232,14 @@
     
     .main-content {
         width: 100%;
+    }
+
+    .text-xl {
+        font-size: var(--font-size-xl);
+    }
+
+    .mb-10 {
+        margin-bottom: var(--spacing-10);
     }
 
     /* Mobile controls styling */
