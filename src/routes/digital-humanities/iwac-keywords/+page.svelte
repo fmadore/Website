@@ -2,7 +2,15 @@
     import SEO from '$lib/SEO.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
     import Button from '$lib/components/atoms/Button.svelte';
-	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';</script>
+	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+    import { base } from '$app/paths'; // Import base
+
+    // Pre-construct breadcrumb items with evaluated paths
+    const breadcrumbItems = [
+        { label: "Digital Humanities", href: `${base}/digital-humanities` },
+        { label: "IWAC Keywords Dashboard", href: `${base}/digital-humanities/iwac-keywords` }
+    ];
+</script>
 
 <SEO 
     title="IWAC Keywords Dashboard | Frédérick Madore" 
@@ -10,10 +18,7 @@
 />
 
 <div class="container mx-auto px-4 py-8">
-    <Breadcrumb items={[
-        { label: "Digital Humanities", href: "/digital-humanities" },
-        { label: "IWAC Keywords Dashboard", href: "/digital-humanities/iwac-keywords" }
-    ]} />
+    <Breadcrumb items={breadcrumbItems} />
     
     <PageHeader 
         title="IWAC Keywords Dashboard"

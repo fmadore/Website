@@ -3,6 +3,13 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+    import { base } from '$app/paths'; // Import base
+
+    // Pre-construct breadcrumb items with evaluated paths
+    const breadcrumbItems = [
+        { label: "Digital Humanities", href: `${base}/digital-humanities` },
+        { label: "Muslim Umbrella Organisations in IWAC", href: `${base}/digital-humanities/muslim-umbrella-organizations` }
+    ];
 
 	// Data or specific logic for visualizations will go here
 </script>
@@ -13,10 +20,7 @@
 />
 
 <div class="container">
-    <Breadcrumb items={[
-        { label: "Digital Humanities", href: "/digital-humanities" },
-        { label: "Muslim Umbrella Organisations in IWAC", href: "/digital-humanities/muslim-umbrella-organizations" }
-    ]} />
+    <Breadcrumb items={breadcrumbItems} />
 
 	<PageHeader title="Muslim Umbrella Organisations in IWAC" />
 

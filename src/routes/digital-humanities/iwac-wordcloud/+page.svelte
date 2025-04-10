@@ -1,7 +1,15 @@
 <script lang="ts">
     import SEO from '$lib/SEO.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';</script>
+	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+    import { base } from '$app/paths'; // Import base
+
+    // Pre-construct breadcrumb items with evaluated paths
+    const breadcrumbItems = [
+        { label: "Digital Humanities", href: `${base}/digital-humanities` },
+        { label: "IWAC Newspaper Word Cloud", href: `${base}/digital-humanities/iwac-wordcloud` }
+    ];
+</script>
 
 <SEO
     title="IWAC Newspaper Word Cloud | Frédérick Madore"
@@ -9,10 +17,7 @@
 />
 
 <div class="container">
-    <Breadcrumb items={[
-        { label: "Digital Humanities", href: "/digital-humanities" },
-        { label: "IWAC Newspaper Word Cloud", href: "/digital-humanities/iwac-wordcloud" }
-    ]} />
+    <Breadcrumb items={breadcrumbItems} />
 
     <PageHeader title="IWAC Newspaper Word Cloud" />
 

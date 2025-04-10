@@ -3,15 +3,18 @@
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+
+    // Pre-construct breadcrumb items with evaluated paths
+    const breadcrumbItems = [
+        { label: "Digital Humanities", href: `${base}/digital-humanities` },
+        { label: "Visualising the IWAC", href: `${base}/digital-humanities/visualising-the-iwac` }
+    ];
 </script>
 
 <SEO title="Visualising the IWAC | Frédérick Madore" description="Explore visualizations of the Islam West Africa Collection using AI and machine learning techniques." />
 
 <div class="container">
-    <Breadcrumb items={[
-        { label: "Digital Humanities", href: "/digital-humanities" },
-        { label: "Visualising the IWAC", href: "/digital-humanities/visualising-the-iwac" }
-    ]} />
+    <Breadcrumb items={breadcrumbItems} />
     
 	<PageHeader title="Visualising the Islam West Africa Collection" />
 

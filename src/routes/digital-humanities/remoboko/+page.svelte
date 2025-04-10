@@ -3,7 +3,13 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import ItemReference from '$lib/components/common/ItemReference.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+    import { base } from '$app/paths'; // Import base
 
+    // Pre-construct breadcrumb items with evaluated paths
+    const breadcrumbItems = [
+        { label: "Digital Humanities", href: `${base}/digital-humanities` },
+        { label: "REMOBOKO", href: `${base}/digital-humanities/remoboko` }
+    ];
 </script>
 
 <SEO 
@@ -12,10 +18,7 @@
 />
 
 <div class="container mx-auto px-4 py-8">
-    <Breadcrumb items={[
-        { label: "Digital Humanities", href: "/digital-humanities" },
-        { label: "REMOBOKO", href: "/digital-humanities/remoboko" }
-    ]} />
+    <Breadcrumb items={breadcrumbItems} />
     
     <PageHeader 
         title="REMOBOKO"
