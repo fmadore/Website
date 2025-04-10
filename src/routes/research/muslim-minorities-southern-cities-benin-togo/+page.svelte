@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
     import SEO from '$lib/SEO.svelte';
-    import RelevantPublications from '$lib/RelevantPublications.svelte';
-    import RelevantCommunications from '$lib/RelevantCommunications.svelte';
+    import RelevantPublications from '$lib/components/organisms/RelevantPublications.svelte';
+    import RelevantCommunications from '$lib/components/organisms/RelevantCommunications.svelte';
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
@@ -38,14 +38,7 @@
 </div>
 
 <style>
-    .content-wrapper {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 var(--spacing-4);
-        display: flex;
-        flex-direction: column;
-    }
-    
+    /* Styles for mobile first */
     .main-content {
         width: 100%;
     }
@@ -67,25 +60,22 @@
         height: auto;
         display: block;
     }
-    
-    .project-content {
-        margin-bottom: var(--spacing-10);
-    }
-    
-    /* Media queries for responsive layout */
+
+    /* Grid layout for medium screens and up */
     @media (min-width: 768px) {
-        .content-wrapper {
-            flex-direction: row;
-            gap: var(--spacing-8);
+        .grid { /* Apply to the .grid container */
+            display: grid;
+            grid-template-columns: 1fr 300px; /* Main content takes remaining space, sidebar is 300px */
+            gap: var(--spacing-8); /* Increased gap */
         }
-        
+
         .main-content {
-            width: 80%;
+            width: auto; /* Reset width */
         }
-        
+
         .sidebar {
-            width: 20%;
-            margin-top: 0;
+            width: auto; /* Reset width */
+            margin-top: 0; /* Reset margin */
         }
     }
 </style>

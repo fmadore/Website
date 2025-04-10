@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
     import SEO from '$lib/SEO.svelte';
-    import RelevantPublications from '$lib/RelevantPublications.svelte';
-    import RelevantCommunications from '$lib/RelevantCommunications.svelte';
+    import RelevantPublications from '$lib/components/organisms/RelevantPublications.svelte';
+    import RelevantCommunications from '$lib/components/organisms/RelevantCommunications.svelte';
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';

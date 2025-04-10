@@ -8,7 +8,9 @@ The component library is organized into three main levels:
 
 1. **[Atoms](./atoms/README.md)** - Basic building blocks that cannot be broken down further
 2. **[Molecules](./molecules/README.md)** - Simple functional groups of atoms
+   - `ItemCard` - Displays a single generic item (like a publication or communication) with meta, title, authors, and abstract.
 3. **[Organisms](./organisms/README.md)** - Complex UI components composed of molecules and atoms
+   - `RelevantItemsList` - Displays a titled list of items (e.g., publications, communications) relevant to a specific context (like a project), including filtering links and a "view all" link.
 
 ## Other Component Categories
 
@@ -57,6 +59,7 @@ When developing new components:
 
 - PublicationItem - Displays a publication with all its details
 - CommunicationItem - Displays a communication/conference activity
+- `ItemCard` - Moved to molecules (Generic display for list items)
 - CitedBy - Displays works that cited a publication
 - Reviews - Displays reviews of a publication
 
@@ -81,6 +84,12 @@ src/lib/components/
 │   ├── FilterSectionButtons.svelte
 │   ├── FilterSectionCheckbox.svelte
 │   └── FilterSectionRangeSlider.svelte
+├── molecules/
+│   └── ItemCard.svelte
+├── organisms/
+│   ├── RelevantItemsList.svelte
+│   ├── RelevantPublications.svelte
+│   └── RelevantCommunications.svelte
 ├── publications/
 │   ├── FiltersSidebar.svelte
 │   ├── PublicationItem.svelte
