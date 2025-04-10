@@ -3,15 +3,18 @@
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+
+    // Pre-construct breadcrumb items with evaluated paths
+    const breadcrumbItems = [
+        { label: "Digital Humanities", href: `${base}/digital-humanities` },
+        { label: "Islam West Africa Collection", href: `${base}/digital-humanities/islam-west-africa-collection` }
+    ];
 </script>
 
 <SEO title="Islam West Africa Collection | Frédérick Madore" description="Explore the Islam West Africa Collection (IWAC), an open-access digital database of over 12,500 documents on Islam in West Africa." />
 
 <div class="container">
-    <Breadcrumb items={[
-        { label: "Digital Humanities", href: "/digital-humanities" },
-        { label: "Islam West Africa Collection", href: "/digital-humanities/islam-west-africa-collection" }
-    ]} />
+    <Breadcrumb items={breadcrumbItems} />
 
 	<PageHeader title="Islam West Africa Collection" />
 
