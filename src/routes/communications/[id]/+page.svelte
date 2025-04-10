@@ -3,8 +3,16 @@
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
     import type { Communication } from '$lib/types/communication';
+    import type { ComponentType } from 'svelte';
     import MapVisualization from '$lib/components/communications/MapVisualization.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
+    import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
+    import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
+    import TagList from '$lib/components/molecules/TagList.svelte';
+    import ActionLinks from '$lib/components/molecules/ActionLinks.svelte';
+    import AbstractSection from '$lib/components/molecules/AbstractSection.svelte';
+    import RelatedItemsList from '$lib/components/organisms/RelatedItemsList.svelte';
+    import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
     
     // Get communication from the page data
     export let data;
@@ -34,6 +42,16 @@
             default: return type;
         }
     }
+
+    // Prepare details for the DetailsGrid component
+    $: communicationDetails = [
+        { label: 'Event', value: communication.conference ?? '' },
+        { label: 'Panel', value: communication.panelTitle ?? '', condition: communication.type === 'conference' && !!communication.panelTitle },
+        { label: 'Location', value: communication.location ?? '' },
+        { label: 'Country', value: communication.country ?? '' },
+        { label: 'Language', value: communication.language ?? '' },
+        { label: 'Year', value: String(communication.year ?? '') },
+    ];
 </script>
 
 <SEO 
@@ -60,75 +78,22 @@
             date={communication.date}
             typeBadgeText={getTypeBadgeText(communication.type || '')}
             authors={communication.authors}
-            tags={communication.tags}
         />
         
-        {#if communication.heroImage?.src}
-            <figure class="mb-6">
-                <img 
-                    src="{base}/{communication.heroImage.src}" 
-                    alt="{communication.heroImage.alt || communication.title}"
-                    class="w-full h-auto rounded-md"
-                >
-                {#if communication.heroImage.caption}
-                    <figcaption class="text-text-muted text-sm mt-2 italic">
-                        {communication.heroImage.caption}
-                    </figcaption>
-                {/if}
-            </figure>
-        {:else if communication.image}
-            <img 
-                src="{base}/{communication.image}" 
-                alt="{communication.title}"
-                class="mb-6 w-full max-w-md h-auto rounded-md mx-auto"
-            >
-        {/if}
+        <!-- Use the new HeroImageDisplay component -->
+        <HeroImageDisplay 
+            heroImage={communication.heroImage} 
+            fallbackImage={communication.image} 
+            defaultAlt={communication.title}
+            imageClass="w-full h-auto rounded-md" 
+            figcaptionClass="text-text-muted text-sm mt-2 italic"
+        />
         
-        {#if communication.abstract}
-            <section class="mb-6">
-                <h2 class="text-xl font-semibold mb-2">Abstract</h2>
-                <div class="text-text">{communication.abstract}</div>
-            </section>
-        {/if}
+        <!-- Use the new AbstractSection component -->
+        <AbstractSection abstract={communication.abstract} />
         
-        <section class="communication-details grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <!-- Common details for all communication types -->
-            {#if communication.conference}
-                <div>
-                    <strong>Event:</strong> {communication.conference}
-                </div>
-            {/if}
-            
-            {#if communication.type === 'conference' && communication.panelTitle}
-                <div>
-                    <strong>Panel:</strong> {communication.panelTitle}
-                </div>
-            {/if}
-            
-            {#if communication.location}
-                <div>
-                    <strong>Location:</strong> {communication.location}
-                </div>
-            {/if}
-            
-            {#if communication.country}
-                <div>
-                    <strong>Country:</strong> {communication.country}
-                </div>
-            {/if}
-            
-            {#if communication.language}
-                <div>
-                    <strong>Language:</strong> {communication.language}
-                </div>
-            {/if}
-            
-            {#if communication.year}
-                <div>
-                    <strong>Year:</strong> {communication.year}
-                </div>
-            {/if}
-        </section>
+        <!-- Use the new DetailsGrid component -->
+        <DetailsGrid details={communicationDetails} />
         
         <!-- Panel-specific information -->
         {#if communication.type === 'panel' && communication.papers && communication.papers.length > 0}
@@ -177,18 +142,8 @@
             </section>
         {/if}
         
-        {#if communication.tags && communication.tags.length > 0}
-            <section class="mb-6">
-                <h2 class="text-lg font-semibold mb-2">Tags</h2>
-                <div class="flex flex-wrap gap-2">
-                    {#each communication.tags as tag}
-                        <a href="{base}/conference-activity?tag={encodeURIComponent(tag)}" class="tag-link text-sm px-3 py-1 rounded-full">
-                            {tag}
-                        </a>
-                    {/each}
-                </div>
-            </section>
-        {/if}
+        <!-- Use the new TagList component -->
+        <TagList tags={communication.tags} baseUrl="/conference-activity?tag=" />
         
         {#if communication.coordinates}
             <section class="mb-6">
@@ -199,82 +154,28 @@
             </section>
         {/if}
         
-        <section class="communication-links">
-            {#if communication.url}
-                <div class="mb-2">
-                    <a href="{communication.url}" target="_blank" rel="noopener" class="btn btn-primary">
-                        Access Presentation
-                    </a>
-                </div>
-            {/if}
-            
-            {#if communication.additionalUrls && communication.additionalUrls.length > 0}
-                <div class="flex flex-wrap gap-2">
-                    {#each communication.additionalUrls as link}
-                        <a href="{link.url}" target="_blank" rel="noopener" class="btn btn-outline">
-                            {link.label}
-                        </a>
-                    {/each}
-                </div>
-            {/if}
-        </section>
+        <!-- Use the new ActionLinks component -->
+        <ActionLinks 
+            primaryUrl={communication.url} 
+            primaryLabel="Access Presentation" 
+            additionalUrls={communication.additionalUrls} 
+        />
     </article>
     
-    <!-- Related communications by same type -->
-    <section class="mt-8">
-        <h2 class="text-xl font-semibold mb-4">More {communication.type === 'panel' ? 'Panels' : communication.type === 'conference' ? 'Conference Papers' : 'Presentations'}</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {#each allCommunications.filter(c => c.type === communication.type && c.id !== communication.id).slice(0, 3) as relatedComm}
-                <a href="{base}/conference-activity/{relatedComm.id}" class="related-item rounded-lg p-4 transition-shadow">
-                    <div class="related-date text-sm mb-1">{relatedComm.date}</div>
-                    <h3 class="font-medium text-primary">{relatedComm.title}</h3>
-                    <div class="related-authors text-sm mt-1">{relatedComm.authors?.join(', ')}</div>
-                </a>
-            {/each}
-        </div>
-    </section>
+    <!-- Use the RelatedItemsList organism -->
+    <RelatedItemsList
+        allItems={allCommunications}
+        currentItemId={communication.id}
+        filterKey="type"
+        filterValue={communication.type}
+        title={`More ${communication.type === 'panel' ? 'Panels' : communication.type === 'conference' ? 'Conference Papers' : 'Presentations'}`}
+        itemComponent={RelatedItemCard as unknown as ComponentType}
+        baseItemUrl="/conference-activity/"
+        maxItems={3}
+    />
 </div>
 
 <style>
-    .communication-details > div {
-        padding: 0.5rem;
-        border-bottom: 1px solid var(--color-border);
-    }
-    
-    .communication-details strong {
-        color: var(--color-text-light);
-        font-weight: 600;
-        margin-right: 0.5rem;
-    }
-    
-    .btn {
-        display: inline-block;
-        padding: 0.5rem 1rem;
-        border-radius: var(--border-radius-md);
-        font-weight: 600;
-        text-decoration: none;
-        text-align: center;
-        transition: all 0.2s ease;
-    }
-    
-    .btn-primary {
-        background-color: var(--color-primary);
-        color: white;
-    }
-    
-    .btn-primary:hover {
-        background-color: var(--color-primary-dark);
-    }
-    
-    .btn-outline {
-        border: 1px solid var(--color-border);
-        color: var(--color-text);
-    }
-    
-    .btn-outline:hover {
-        background-color: var(--color-border);
-    }
-
     /* Theme styles for main article container */
     .communication-article {
         background-color: var(--color-background);
@@ -293,33 +194,5 @@
         color: var(--color-text-light);
     }
 
-    /* Theme styles for tags */
-    .tag-link {
-        background-color: var(--color-border);
-        color: var(--color-text-light);
-        transition: background-color 0.2s ease, color 0.2s ease;
-    }
-    .tag-link:hover {
-        background-color: var(--color-primary);
-        color: var(--color-background);
-    }
-
-    /* Theme styles for related items */
-    .related-item {
-        background-color: var(--color-background);
-        box-shadow: var(--shadow-sm);
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    }
-    .related-item:hover {
-        box-shadow: var(--shadow-md);
-    }
-    .related-date,
-    .related-authors {
-        color: var(--color-text-light);
-    }
-
-    /* Theme style for image caption */
-    .communication-article figcaption {
-        color: var(--color-text-light);
-    }
+    /* Related item styles are now in RelatedItemCard.svelte */
 </style> 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import TagList from '$lib/components/common/TagList.svelte'; // Uncomment and use this
+	import TagList from '$lib/components/molecules/TagList.svelte'; // Use the one from molecules
 
 	export let title: string;
 	export let backLinkHref: string | undefined = undefined;
