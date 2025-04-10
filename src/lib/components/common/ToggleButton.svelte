@@ -1,6 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte';
     import { Map } from 'lucide-svelte'; // Import the Map icon
+    import Button from '$lib/components/atoms/Button.svelte'; // Import Button component
 
     export let isToggled: boolean = false;
     export let baseText: string = 'Toggle'; // e.g., "Map", "Details"
@@ -12,28 +13,35 @@
     function handleClick() {
         dispatch('toggle'); // Dispatch simple toggle event
     }
+
+    // Determine label and aria information based on state
+    $: labelText = (isToggled ? 'Hide' : 'Show') + ' ' + baseText;
+    $: ariaTitle = isToggled ? `Hide ${baseText}` : `Show ${baseText}`;
+
 </script>
 
-<button 
-    class="toggle-button btn btn-outline p-2 flex items-center space-x-1"
+<Button
+    variant="outline-primary" 
+    size="sm"
     on:click={handleClick}
-    aria-label={isToggled ? `Hide ${baseText}` : `Show ${baseText}`}
-    title={isToggled ? `Hide ${baseText}` : `Show ${baseText}`}
+    ariaLabel={ariaTitle}
+    title={ariaTitle}
+    additionalClasses="control-button-rounded"
 >
-    <Map size={18} class="text-primary" />
-    <span class="text-sm text-primary">{isToggled ? 'Hide' : 'Show'} {baseText}</span>
-</button>
+    <svelte:fragment slot="icon">
+         <Map size={18} />
+    </svelte:fragment>
+    {labelText}
+</Button>
+
+<style>
+    :global(.control-button-rounded) {
+       border-radius: var(--border-radius-md);
+    }
+    :global(.control-button-rounded:hover) {
+       background-color: var(--color-primary);
+       color: white;
+    }
+</style>
 
 <!-- No local styles needed if btnClass uses global CSS --> 
-<style>
-    .toggle-button {
-        border-radius: var(--border-radius-md);
-        transition: all 0.2s ease;
-    }
-    .toggle-button:hover {
-        background-color: var(--color-border-hover);
-    }
-    .text-primary {
-        color: var(--color-primary);
-    }
-</style> 

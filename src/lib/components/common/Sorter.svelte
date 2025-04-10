@@ -1,6 +1,7 @@
 <script lang="ts">
     import { ArrowDownAZ, SortDesc } from 'lucide-svelte';
     import { createEventDispatcher } from 'svelte';
+    import Button from '$lib/components/atoms/Button.svelte'; // Import the Button component
 
     export let activeSort: 'date' | 'title' = 'date'; // Default sort
 
@@ -12,46 +13,43 @@
         dispatch('sortChange', { sortBy: newSort });
     }
 
-    // Determine button text and title based on the *next* sort state
-    let buttonText: string;
-    let buttonTitle: string;
+    // Determine button text and title based on the *current* sort state for display
+    let IconComponent: typeof ArrowDownAZ | typeof SortDesc;
+    let labelText: string;
+    let ariaTitle: string;
     $: {
         if (activeSort === 'date') {
-            buttonText = 'Sort A-Z';
-            buttonTitle = 'Sort by Title (A-Z)';
+            IconComponent = SortDesc;
+            labelText = 'Sorted by Date';
+            ariaTitle = 'Current sort: Date (Newest First). Click to sort by Title (A-Z).';
         } else {
-            buttonText = 'Sort by Date';
-            buttonTitle = 'Sort by Date (Newest First)';
+            IconComponent = ArrowDownAZ;
+            labelText = 'Sorted A-Z';
+            ariaTitle = 'Current sort: Title (A-Z). Click to sort by Date (Newest First).';
         }
     }
 </script>
 
-<button 
+<Button 
+    variant="outline-primary" 
+    size="sm" 
     on:click={toggleSort}
-    class="sorter-button btn btn-outline p-2 flex items-center space-x-1"
-    aria-label={buttonTitle}
-    title={buttonTitle}
+    ariaLabel={ariaTitle}
+    title={ariaTitle} 
+    additionalClasses="control-button-rounded"
 >
-    {#if activeSort === 'date'}
-        <SortDesc size={18} class="text-primary" />
-        <span class="text-sm text-primary">Sorted by Date</span>
-    {:else}
-        <ArrowDownAZ size={18} class="text-primary" />
-        <span class="text-sm text-primary">Sorted A-Z</span>
-    {/if}
-    <!-- Optional: Add text indicating the next action -->
-    <!-- <span class="text-sm text-text-muted ml-2">({buttonText})</span> -->
-</button>
+    <svelte:fragment slot="icon">
+        <svelte:component this={IconComponent} size={18} />
+    </svelte:fragment>
+    {labelText}
+</Button>
 
 <style>
-    .sorter-button {
-        border-radius: var(--border-radius-md);
-        transition: all 0.2s ease;
+    :global(.control-button-rounded) {
+       border-radius: var(--border-radius-md);
     }
-    .sorter-button:hover {
-        background-color: var(--color-border-hover);
-    }
-    .text-primary {
-        color: var(--color-primary);
+    :global(.control-button-rounded:hover) {
+       background-color: var(--color-primary);
+       color: white;
     }
 </style> 

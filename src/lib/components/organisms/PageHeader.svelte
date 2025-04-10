@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import TagList from '$lib/components/common/TagList.svelte';
+	import TagList from '$lib/components/molecules/TagList.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	
 	export let title: string;

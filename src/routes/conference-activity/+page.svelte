@@ -43,6 +43,8 @@
     import Sorter from '$lib/components/common/Sorter.svelte'; 
     import { sortItems } from '$lib/utils/sortUtils'; 
     import { writable, derived } from 'svelte/store'; 
+    import { Filter } from 'lucide-svelte'; // Import the Filter icon
+    import Button from '$lib/components/atoms/Button.svelte'; // Import Button
     
     let showMap = false; 
 
@@ -181,9 +183,19 @@
 
         <!-- Mobile Controls: Filter Toggle + Map Toggle + Sorter -->
         <div class="mobile-controls">
-            <button class="btn btn-secondary btn-sm" on:click={() => mobileFiltersExpanded = !mobileFiltersExpanded}>
+            <Button 
+                variant="outline-primary" 
+                size="sm" 
+                on:click={() => mobileFiltersExpanded = !mobileFiltersExpanded}
+                ariaLabel={mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'} 
+                additionalClasses="control-button-rounded"
+            >
+                <svelte:fragment slot="icon">
+                    <Filter size={18} /> 
+                </svelte:fragment>
                 {mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
-            </button>
+            </Button>
+            
             <div class="flex gap-2">
                 <ToggleButton 
                     baseText="Map"
@@ -268,23 +280,24 @@
     .mobile-controls {
         display: none; /* Hidden by default */
         margin-bottom: var(--spacing-4);
+        align-items: center; /* Align items vertically */
+        justify-content: space-between; /* Space out controls */
     }
 
-    /* Desktop controls styling */
-    .desktop-controls {
-        display: flex; /* Shown by default */
-        justify-content: flex-end;
-        align-items: center;
-        gap: var(--spacing-2);
-        margin-bottom: var(--spacing-4);
+    /* REMOVE previous global override */
+    /* Style the specific class */
+    .mobile-controls :global(.control-button-rounded) {
+         border-radius: var(--border-radius-md);
+    }
+    .mobile-controls :global(.control-button-rounded:hover) {
+         background-color: var(--color-primary); /* Change background */
+         color: white; /* Change text color */
     }
 
     /* Media query for mobile */
     @media (max-width: 900px) {
         .mobile-controls {
             display: flex;
-            justify-content: space-between; /* Space out button and other controls */
-            align-items: center;
             /* Group map toggle and sorter */
             & > .flex {
                 display: flex;

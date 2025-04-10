@@ -10,6 +10,7 @@
     export let block = false; // For btn-block
     export let iconOnly = false; // For icon-only buttons (adjusts padding potentially) - Not currently implemented in CSS, but adding prop
     export let ariaLabel: string | undefined = undefined; // For accessibility, esp. for iconOnly
+    export let additionalClasses: string = ''; // ADDED PROP
 
     const dispatch = createEventDispatcher();
 
@@ -21,6 +22,7 @@
         block ? 'btn-block' : '',
         $$slots.icon ? 'btn-icon' : '', // Add btn-icon if icon slot is used
         iconOnly ? 'btn-icon-only' : '', // Placeholder for potential future styling
+        additionalClasses, // INCLUDE additionalClasses
     ].filter(Boolean).join(' ');
 
     function handleClick(event: MouseEvent) {
@@ -33,7 +35,7 @@
 {#if href}
     <a 
         {href}
-        class="{buttonClasses}"
+        class={buttonClasses}
         role="button"
         aria-disabled={disabled}
         aria-label={ariaLabel || $$slots.default ? undefined : 'Link button'}
@@ -49,7 +51,7 @@
 {:else}
     <button
         {type}
-        class="{buttonClasses}"
+        class={buttonClasses}
         {disabled}
         on:click={handleClick}
         aria-label={ariaLabel || $$slots.default ? undefined : 'Button'}

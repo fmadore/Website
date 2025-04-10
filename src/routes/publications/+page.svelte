@@ -38,6 +38,8 @@
     import Sorter from '$lib/components/common/Sorter.svelte';
     import { sortItems } from '$lib/utils/sortUtils';
     import { writable, derived } from 'svelte/store';
+    import { Filter } from 'lucide-svelte';
+    import Button from '$lib/components/atoms/Button.svelte';
 
     // State for the current sort order
     const activeSort = writable<'date' | 'title'>('date'); // Use a writable store for sort order
@@ -175,9 +177,18 @@
 
         <!-- Mobile Controls: Filter Toggle + Sorter -->
         <div class="mobile-controls">
-            <button class="btn btn-secondary btn-sm" on:click={() => mobileFiltersExpanded = !mobileFiltersExpanded}>
+            <Button 
+                variant="outline-primary" 
+                size="sm" 
+                on:click={() => mobileFiltersExpanded = !mobileFiltersExpanded}
+                ariaLabel={mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'} 
+                additionalClasses="control-button-rounded"
+            >
+                <svelte:fragment slot="icon">
+                    <Filter size={18} /> 
+                </svelte:fragment>
                 {mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
-            </button>
+            </Button>
             <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
         </div>
 
@@ -225,6 +236,17 @@
     .mobile-controls {
         display: none; /* Hidden by default */
         margin-bottom: var(--spacing-4);
+        align-items: center; /* Align items vertically */
+        justify-content: space-between; /* Space out controls */
+    }
+
+    /* Style the specific class */
+    .mobile-controls :global(.control-button-rounded) {
+         border-radius: var(--border-radius-md);
+    }
+    .mobile-controls :global(.control-button-rounded:hover) {
+         background-color: var(--color-primary); /* Change background */
+         color: white; /* Change text color */
     }
 
     /* Desktop controls styling */
@@ -238,8 +260,6 @@
     @media (max-width: 900px) {
         .mobile-controls {
             display: flex;
-            justify-content: space-between; /* Space out button and sorter */
-            align-items: center;
         }
         .desktop-controls {
             display: none; /* Hide desktop controls on mobile */
