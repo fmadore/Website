@@ -1,5 +1,5 @@
 <script>
-    import LatestActivities from '$lib/LatestActivities.svelte';
+    import LatestActivities from '$lib/components/organisms/LatestActivities.svelte';
     import SEO from '$lib/SEO.svelte';
     import { Download } from 'lucide-svelte';
     import { activitiesByYear } from '$lib/data/activities';

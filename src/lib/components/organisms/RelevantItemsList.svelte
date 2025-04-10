@@ -31,7 +31,10 @@
 </script>
 
 <div class="relevant-items card">
-	<h2 class="card-title">{title}</h2>
+	<!-- Add slot for title, falling back to prop -->
+	<slot name="title">
+		<h2 class="card-title">{title}</h2>
+	</slot>
 
 	{#if items.length === 0}
 		<p class="no-items">No {itemTypePlural} found for this project.</p>
