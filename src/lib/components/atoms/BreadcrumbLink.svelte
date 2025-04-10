@@ -3,9 +3,6 @@
     
     export let href: string;
     export let active = false;
-
-    // Process the href to ensure it has the base path if it starts with /
-    $: processedHref = href.startsWith('/') ? `${base}${href}` : href;
 </script>
 
 {#if active}

@@ -25,7 +25,7 @@
             years: "2025",
             shortDescription: "Exploring the Islam West Africa Collection (IWAC) through digital methods and visualizations.",
             imageUrl: `${base}/images/digital-humanities/iwac-overview.jpg`
-            // No linkUrl, award, reviews, or publication needed here
+            // No linkUrl needed, will be generated relative to base
         },
         {
             id: "iwac",
@@ -33,7 +33,7 @@
             years: "2023-",
             shortDescription: "A collection of over 12,500 documents on Islam and Muslims in Burkina Faso, Benin, Niger, Nigeria, Togo and Côte d'Ivoire.",
             imageUrl: `${base}/images/digital-humanities/IWAC.png`,
-            linkUrl: "https://islam.zmo.de/s/westafrica/"
+            linkUrl: "https://islam.zmo.de/s/westafrica/" // External link remains unchanged
         },
         {
             id: "ibfc",
@@ -41,7 +41,8 @@
             years: "2018-2023",
             shortDescription: "An open access digital database containing over 2,900 documents on Islam and Muslims in Burkina Faso.",
             imageUrl: `${base}/images/digital-humanities/islam-burkinafaso-banner.webp`,
-            linkUrl: `${base}/digital-humanities/islam-burkina-faso-collection`,
+            // linkUrl: `${base}/digital-humanities/islam-burkina-faso-collection`, // Old
+            linkUrl: "/digital-humanities/islam-burkina-faso-collection", // New: relative to base
             award: "Won a 2023 Emerging Open Scholarship Award.",
             reviews: [
                 { text: "Review by Robert Launay", url: "https://doi.org/10.21428/3e88f64f.89e71c81" },
@@ -55,7 +56,8 @@
             years: "2024",
             shortDescription: "Research group exploring religion, morality, and student life in West African higher education. Includes interactive visualizations.",
             imageUrl: `${base}/images/digital-humanities/remoboko.png`,
-            linkUrl: `${base}/digital-humanities/remoboko`
+            // linkUrl: `${base}/digital-humanities/remoboko`, // Old
+            linkUrl: "/digital-humanities/remoboko" // New: relative to base
         },
         {
             id: "iwac-wordcloud",
@@ -63,7 +65,8 @@
             years: "2025",
             shortDescription: "Interactive word cloud visualising the most frequent words in newspaper articles from the Islam West Africa Collection.",
             imageUrl: `${base}/images/digital-humanities/iwac-wordcloud.jpg`,
-            linkUrl: `${base}/digital-humanities/iwac-wordcloud`
+            // linkUrl: `${base}/digital-humanities/iwac-wordcloud`, // Old
+            linkUrl: "/digital-humanities/iwac-wordcloud" // New: relative to base
         },
         {
             id: "muslim-umbrella-organizations",
@@ -71,7 +74,8 @@
             years: "2025",
             shortDescription: "Co-occurrence matrix and topic modeling analysis of newspaper articles discussing Muslim umbrella organisations within the Islam West Africa Collection.",
             imageUrl: `${base}/images/digital-humanities/muslim-umbrella.jpg`,
-            linkUrl: `${base}/digital-humanities/muslim-umbrella-organizations`
+            // linkUrl: `${base}/digital-humanities/muslim-umbrella-organizations`, // Old
+            linkUrl: "/digital-humanities/muslim-umbrella-organizations" // New: relative to base
         },
         {
             id: "iwac-keywords",
@@ -79,7 +83,8 @@
             years: "2025",
             shortDescription: "Interactive temporal analysis of keywords from West African newspapers in the Islam West Africa Collection, revealing thematic evolution and media attention patterns.",
             imageUrl: `${base}/images/digital-humanities/iwac-keywords.jpg`,
-            linkUrl: `${base}/digital-humanities/iwac-keywords`
+            // linkUrl: `${base}/digital-humanities/iwac-keywords`, // Old
+            linkUrl: "/digital-humanities/iwac-keywords" // New: relative to base
         }
     ];
 </script>
@@ -93,11 +98,11 @@
 
     <div class="dh-grid">
         {#each dhProjects as project (project.id)}
-            {@const isInternalLink = project.linkUrl && (project.linkUrl.startsWith(base) || project.linkUrl.startsWith('/'))}
-            {@const isOverviewLink = project.id === 'iwac-overview'}
-            {@const finalLinkUrl = isOverviewLink ? `${base}/digital-humanities/${project.id}` : (project.linkUrl || `${base}/digital-humanities/${project.id}`)}
-            {@const linkTarget = isInternalLink || isOverviewLink ? '_self' : '_blank'}
-            {@const actionText = isInternalLink || isOverviewLink ? 'Explore project →' : 'Visit Site →'}
+            {@const isExternal = project.linkUrl && project.linkUrl.startsWith('http')}
+            {@const internalPath = isExternal ? null : (project.linkUrl || `/digital-humanities/${project.id}`)}
+            {@const finalLinkUrl = isExternal ? project.linkUrl : `${base}${internalPath}`}
+            {@const linkTarget = isExternal ? '_blank' : '_self'}
+            {@const actionText = isExternal ? 'Visit Site →' : 'Explore project →'}
 
             <Card
                 title={project.title}

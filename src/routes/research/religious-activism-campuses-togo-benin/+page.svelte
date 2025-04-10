@@ -23,7 +23,7 @@
             />
             
             <div class="project-image">
-                <img src="{base}/images/research/ReligiousActivism.webp" alt="Religious Activism on Campuses in Togo and Benin" class="w-full h-auto" />
+                <img src="{base}/images/research/campus-activism.webp" alt="Religious Activism on Campuses in Togo and Benin" class="w-full h-auto" />
             </div>
 
             <div class="project-content">
