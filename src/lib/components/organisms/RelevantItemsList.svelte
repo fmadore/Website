@@ -30,7 +30,7 @@
 	$: itemTypes = [...new Set(items.map(item => item.type).filter(Boolean))].sort() as string[];
 </script>
 
-<div class="relevant-items card">
+<div class="relevant-items">
 	<!-- Add slot for title, falling back to prop -->
 	<slot name="title">
 		<h2 class="card-title">{title}</h2>
@@ -70,10 +70,6 @@
 <style>
 	.relevant-items {
 		height: auto; /* Override potential base card height */
-		background-color: var(--color-background);
-		border-radius: var(--border-radius-md);
-		box-shadow: var(--shadow-sm);
-		padding: var(--spacing-4);
 		transition: background-color 0.3s ease, box-shadow 0.3s ease;
 	}
 
