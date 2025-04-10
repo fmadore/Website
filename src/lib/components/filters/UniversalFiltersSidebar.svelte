@@ -17,27 +17,14 @@
         <!-- Wrap each section for styling and transition -->
         <div class="filter-section" in:fly={{ y: 10, duration: 200, delay: index * 50 }}>
             {#if section.type === 'checkbox'} 
-                {#if section.title.toLowerCase().includes('author') || section.title.toLowerCase().includes('countr')}
-                    <div class="scrollable-section"> 
-                        <FilterSectionCheckbox 
-                            title={section.title}
-                            items={section.items}
-                            itemLabels={section.itemLabels}
-                            activeItems={section.activeItems}
-                            toggleItem={section.toggleItem}
-                            counts={section.counts}
-                        />
-                    </div>
-                {:else}
-                    <FilterSectionCheckbox 
-                        title={section.title}
-                        items={section.items}
-                        itemLabels={section.itemLabels}
-                        activeItems={section.activeItems}
-                        toggleItem={section.toggleItem}
-                        counts={section.counts}
-                    />
-                {/if}
+                <FilterSectionCheckbox 
+                    title={section.title}
+                    items={section.items}
+                    itemLabels={section.itemLabels}
+                    activeItems={section.activeItems}
+                    toggleItem={section.toggleItem}
+                    counts={section.counts}
+                />
             {:else if section.type === 'range'}
                 <FilterSectionRangeSlider 
                     title={section.title}
@@ -130,29 +117,6 @@
          padding-bottom: 0; /* No extra padding at the very end */
     }
 
-    /* Scrollable container for specific sections */
-    .scrollable-section {
-        max-height: 200px; 
-        overflow-y: auto;
-        /* Add subtle padding to prevent scrollbar overlap */
-        padding-right: var(--spacing-2); 
-        /* Margin adjustment might be needed if FilterSectionCheckbox has margin */
-        margin-right: calc(-1 * var(--spacing-2)); /* Compensate for padding */
-         /* Use theme variables for scrollbar */
-        scrollbar-width: thin;
-        scrollbar-color: var(--color-text-light) transparent;
-    }
-     .scrollable-section::-webkit-scrollbar {
-        width: var(--scrollbar-width, 6px);
-    }
-     .scrollable-section::-webkit-scrollbar-track {
-        background: transparent;
-    }
-     .scrollable-section::-webkit-scrollbar-thumb {
-        background-color: var(--color-text-light);
-        border-radius: var(--scrollbar-thumb-radius, var(--border-radius-sm));
-    }
-    
     /* Clear button styling - mimic secondary button */
     .clear-button-wrapper {
         margin-top: var(--spacing-6); /* Space above the button */

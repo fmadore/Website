@@ -146,7 +146,8 @@
                 toggleItem: toggleTagFilter,
                 counts: $tagCounts
             } as ButtonsFilterOption<string>
-        ].filter(section => {
+        ].filter(section => section.title !== 'Tags')
+        .filter(section => {
             // Dynamically hide sections if they have no items/options
             if (section.type === 'range') return section.allYears && section.allYears.length > 0;
             return section.items && section.items.length > 0;
