@@ -12,8 +12,8 @@
 
 <div class="container">
     <Breadcrumb items={[
-        { label: "Digital Humanities", href: "/digital-humanities" },
-        { label: "Islam Burkina Faso Collection", href: "/digital-humanities/islam-burkina-faso-collection" }
+        { label: "Digital Humanities", href: `{base}/digital-humanities` },
+        { label: "Islam Burkina Faso Collection", href: `{base}/digital-humanities/islam-burkina-faso-collection` }
     ]} />
 
 	<PageHeader title="Islam Burkina Faso Collection (2018-2023)" />
