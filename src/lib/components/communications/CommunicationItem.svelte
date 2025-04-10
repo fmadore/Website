@@ -3,6 +3,7 @@
     import { createEventDispatcher } from 'svelte';
     import { base } from '$app/paths';
     import { truncateAbstract } from '$lib/utils/textUtils';
+    import TagList from '$lib/components/molecules/TagList.svelte';
     
     export let communication: Communication;
     
@@ -87,16 +88,7 @@
             {/if}
             
             {#if communication?.tags && communication.tags.length > 0}
-                <div class="mt-3 flex flex-wrap gap-2">
-                    {#each communication.tags as tag}
-                        <button 
-                            class="tag-button text-sm"
-                            on:click={() => dispatch('filterrequest', { type: 'tag', value: tag })}
-                        >
-                            {tag}
-                        </button>
-                    {/each}
-                </div>
+                <TagList tags={communication.tags} baseUrl="/conference-activity?tag=" sectionTitle="" sectionClass="mt-3" listClass="flex flex-wrap gap-2" />
             {/if}
             
             {#if communication?.additionalUrls && communication.additionalUrls.length > 0}
@@ -137,20 +129,6 @@
         text-decoration: underline; /* Add underline on hover */
     }
 
-    .tag-button {
-        background-color: color-mix(in srgb, var(--color-border) 80%, transparent); /* Use theme border color with transparency */
-        color: var(--color-text-light);
-        border: 1px solid var(--color-border); /* Use theme border color */
-        cursor: pointer; /* Add pointer cursor */
-        border-radius: var(--border-radius-full); /* Make it pill-shaped */
-        padding: var(--spacing-1) var(--spacing-2); /* Add padding */
-        transition: all 0.2s ease;
-    }
-    .tag-button:hover {
-        background-color: var(--color-border); /* Use solid theme border color on hover */
-        color: var(--color-text);
-    }
-    
     .hover-shadow:hover {
         box-shadow: var(--shadow-md);
     }

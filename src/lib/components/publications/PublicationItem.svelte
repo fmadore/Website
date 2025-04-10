@@ -5,6 +5,7 @@
     import { truncateAbstract } from '$lib/utils/textUtils';
     // Import the necessary functions from the new formatter
     import { formatCitation, getAuthorsArray } from '$lib/utils/citationFormatter';
+    import TagList from '$lib/components/molecules/TagList.svelte';
     
     export let publication: Publication;
     
@@ -167,16 +168,7 @@
             {/if}
             
             {#if publication.tags && publication.tags.length > 0}
-                <div class="mt-3 flex flex-wrap gap-2">
-                    {#each publication.tags as tag}
-                        <button 
-                            class="tag-button text-sm"
-                            on:click={() => dispatch('filterrequest', { type: 'tag', value: tag })}
-                        >
-                            {tag}
-                        </button>
-                    {/each}
-                </div>
+                <TagList tags={publication.tags} baseUrl="/publications?tag=" sectionTitle="" sectionClass="mt-3" listClass="flex flex-wrap gap-2" />
             {/if}
             
             {#if publication.additionalUrls && publication.additionalUrls.length > 0}
@@ -218,20 +210,6 @@
         text-decoration: underline; /* Add underline on hover */
     }
 
-    .tag-button {
-        background-color: color-mix(in srgb, var(--color-border) 80%, transparent); /* Use theme border color with transparency */
-        color: var(--color-text-light);
-        border: 1px solid var(--color-border); /* Use theme border color */
-        cursor: pointer; /* Add pointer cursor */
-        border-radius: var(--border-radius-full); /* Make it pill-shaped */
-        padding: var(--spacing-1) var(--spacing-2); /* Add padding */
-        transition: all 0.2s ease;
-    }
-    .tag-button:hover {
-        background-color: var(--color-border); /* Use solid theme border color on hover */
-        color: var(--color-text);
-    }
-    
     .hover-shadow:hover {
         box-shadow: var(--shadow-md);
     }
