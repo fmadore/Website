@@ -1,6 +1,43 @@
-# Component Documentation
+# Components Documentation
 
-This directory contains documentation for all reusable components in the application.
+This website follows the **Atomic Design** methodology, organizing components into a hierarchical structure that promotes reusability, consistency, and maintainability.
+
+## Atomic Design Structure
+
+The component library is organized into three main levels:
+
+1. **[Atoms](./atoms/README.md)** - Basic building blocks that cannot be broken down further
+2. **[Molecules](./molecules/README.md)** - Simple functional groups of atoms
+3. **[Organisms](./organisms/README.md)** - Complex UI components composed of molecules and atoms
+
+## Other Component Categories
+
+In addition to the atomic design components, we have:
+
+- **[Common](./common/README.md)** - Shared components used across multiple pages
+- **[Filters](./filters/README.md)** - Components related to data filtering
+- **[Publications](./publications/README.md)** - Components specific to the publications section
+- **[Communications](./communications/README.md)** - Components specific to the communications section
+
+## Component Usage Guidelines
+
+When using or creating components:
+
+1. **Component Placement**: Place new components in the appropriate category based on their complexity
+2. **Props Documentation**: Document all props with their types, defaults, and purpose
+3. **Event Handling**: Document events emitted by components and how to handle them
+4. **Accessibility**: Ensure components meet accessibility standards (WCAG)
+5. **Responsive Design**: All components should be responsive by default
+
+## Component Development Workflow
+
+When developing new components:
+
+1. Identify the appropriate level (atom, molecule, organism)
+2. Check for existing components that might fulfill the need
+3. Create the new component following the established patterns
+4. Document the component in the appropriate docs directory
+5. Update this documentation if introducing new patterns or categories
 
 ## Layout Components
 
@@ -99,4 +136,4 @@ Filter sections can be composed to create custom filtering interfaces:
   <FilterSectionRangeSlider ... />
   <FilterSectionButtons ... />
 </aside>
-``` 
+```
