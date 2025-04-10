@@ -55,8 +55,8 @@
     <article class="communication-article rounded-lg p-6 mb-8">
         <PageHeader 
             title={communication.title}
-            backLinkHref="communications"
-            backLinkLabel="← Back to Communications"
+            backLinkHref="conference-activity"
+            backLinkLabel="← Back to Conference Activity"
             date={communication.date}
             typeBadgeText={getTypeBadgeText(communication.type || '')}
             authors={communication.authors}
@@ -182,7 +182,7 @@
                 <h2 class="text-lg font-semibold mb-2">Tags</h2>
                 <div class="flex flex-wrap gap-2">
                     {#each communication.tags as tag}
-                        <a href="{base}/communications?tag={encodeURIComponent(tag)}" class="tag-link text-sm px-3 py-1 rounded-full">
+                        <a href="{base}/conference-activity?tag={encodeURIComponent(tag)}" class="tag-link text-sm px-3 py-1 rounded-full">
                             {tag}
                         </a>
                     {/each}
@@ -225,7 +225,7 @@
         <h2 class="text-xl font-semibold mb-4">More {communication.type === 'panel' ? 'Panels' : communication.type === 'conference' ? 'Conference Papers' : 'Presentations'}</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {#each allCommunications.filter(c => c.type === communication.type && c.id !== communication.id).slice(0, 3) as relatedComm}
-                <a href="{base}/communications/{relatedComm.id}" class="related-item rounded-lg p-4 transition-shadow">
+                <a href="{base}/conference-activity/{relatedComm.id}" class="related-item rounded-lg p-4 transition-shadow">
                     <div class="related-date text-sm mb-1">{relatedComm.date}</div>
                     <h3 class="font-medium text-primary">{relatedComm.title}</h3>
                     <div class="related-authors text-sm mt-1">{relatedComm.authors?.join(', ')}</div>

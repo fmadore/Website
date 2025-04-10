@@ -74,7 +74,7 @@
     {#if showYearFilters && years.length > 0}
         <div class="year-filters mt-4">
             <span class="text-sm text-gray-600">Browse by year:</span>
-            <div class="filter-container">
+            <div class="filter-container mt-2">
                 {#each years as year}
                     <a href="{base}/activities/year/{year}" class="year-tag">
                         {year}
@@ -113,7 +113,6 @@
         display: flex;
         flex-wrap: wrap;
         gap: var(--spacing-2);
-        margin-top: var(--spacing-2);
     }
     
     .year-tag {

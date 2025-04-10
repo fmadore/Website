@@ -16,7 +16,6 @@ export const GET: RequestHandler = async () => {
         "/research",
         "/publications",
         "/activities",
-        "/communications",
         "/digital-humanities",
         "/digital-humanities/islam-west-africa-collection",
         "/digital-humanities/visualising-the-iwac",
@@ -45,8 +44,8 @@ export const GET: RequestHandler = async () => {
     const publicationPaths = allPublications.map(pub => `/publications/${pub.id}`);
     
     // Dynamic communication paths 
-    // Note: Individual communications are under /communications/[id]
-    const communicationPaths = allCommunications.map(comm => `/communications/${comm.id}`);
+    // Note: Individual communications are now under /conference-activity/[id]
+    const communicationPaths = allCommunications.map(comm => `/conference-activity/${comm.id}`);
     
     // Combine all paths
     const allPaths = [
