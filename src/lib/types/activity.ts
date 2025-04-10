@@ -8,6 +8,7 @@ export type Activity = {
     description: string;  // Short description for list view
     content?: string;     // Full HTML content for detail page
     tags?: string[];      // Optional tags for categorization
+    type?: string;        // Activity type (conference, workshop, seminar, etc.)
     image?: string;       // Optional image path
     heroImage?: {         // Optional hero image configuration
         src: string;      // Path to the image

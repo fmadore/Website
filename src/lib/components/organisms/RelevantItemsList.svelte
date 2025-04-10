@@ -71,6 +71,10 @@
 	.relevant-items {
 		height: auto; /* Override potential base card height */
 		transition: background-color 0.3s ease, box-shadow 0.3s ease;
+		background-color: rgba(var(--color-primary-rgb), 0.02);
+		border-radius: var(--border-radius-md);
+		padding: var(--spacing-4);
+		border: 1px solid rgba(var(--color-primary-rgb), 0.06);
 	}
 
 	.card-title {

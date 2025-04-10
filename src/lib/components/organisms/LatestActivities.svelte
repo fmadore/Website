@@ -22,9 +22,9 @@
             title: activity.title,
             date: activity.date,
             dateISO: activity.dateISO,
-            abstract: activity.description, // Map description to abstract
-            type: 'activity', // Assign a default type or handle differently if needed
-            authors: [] // Activities don't have authors
+            abstract: activity.description,
+            type: activity.type || 'activity',
+            authors: []
         })).slice(0, limit);
     });
     
@@ -35,20 +35,29 @@
         };
     });
     
-    // Unique years for the year filter - calculated from the original activity data before mapping/slicing
+    // Unique years for the year filter
     $: years = [...new Set(get(activities).map((activity: Activity) => activity.year))].sort((a: number, b: number) => b - a);
     
-    // Dummy formatters as Activities don't have types/authors in the same way
+    // Format activity type for display
     function formatActivityType(type: string): string {
-        // Could return a capitalized version or specific text if needed
-        return 'Activity'; // Simple placeholder
+        const typeMap: Record<string, string> = {
+            'conference': 'Conference',
+            'workshop': 'Workshop',
+            'seminar': 'Seminar',
+            'publication': 'Publication',
+            'lecture': 'Lecture',
+            'event': 'Academic Event'
+        };
+        return typeMap[type] || 'Activity';
     }
+    
+    // Format authors for display (activities don't have authors in this context)
     function formatActivityAuthors(authors: string[]): string {
-        return ''; // Activities don't list authors in this context
+        return '';
     }
 </script>
 
-<div class="latest-activities card">
+<div class="latest-activities">
     <RelevantItemsList
         title="Latest Activities"
         items={relevantActivityList}
@@ -65,7 +74,7 @@
     {#if showYearFilters && years.length > 0}
         <div class="year-filters mt-4">
             <span class="text-sm text-gray-600">Browse by year:</span>
-            <div class="flex flex-wrap gap-2 mt-2">
+            <div class="filter-container">
                 {#each years as year}
                     <a href="{base}/activities/year/{year}" class="year-tag">
                         {year}
@@ -75,18 +84,16 @@
         </div>
     {/if}
     
-    <div class="mt-4 text-right">
-        <a href="{base}/activities" class="view-all">View all activities</a>
+    <div class="view-all-container mt-4">
+        <a href="{base}/activities" class="view-all">
+            View all activities
+        </a>
     </div>
 </div>
 
 <style>
     .latest-activities {
-        background-color: var(--color-background);
-        border-radius: var(--border-radius-md);
-        box-shadow: var(--shadow-sm);
-        padding: var(--spacing-4);
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: var(--spacing-4);
     }
     
     .card-title {
@@ -100,6 +107,13 @@
     
     .year-filters {
         margin-top: var(--spacing-4);
+    }
+    
+    .filter-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-2);
+        margin-top: var(--spacing-2);
     }
     
     .year-tag {
@@ -118,6 +132,11 @@
         color: var(--color-background);
     }
     
+    .view-all-container {
+        text-align: right;
+        margin-top: var(--spacing-4);
+    }
+    
     .view-all {
         color: var(--color-primary);
         font-weight: 600;
@@ -129,6 +148,7 @@
         text-decoration: underline;
     }
     
+    /* Utility classes */
     .text-sm {
         font-size: var(--font-size-sm);
     }
@@ -143,21 +163,5 @@
     
     .mt-2 {
         margin-top: var(--spacing-2);
-    }
-    
-    .gap-2 {
-        gap: var(--spacing-2);
-    }
-    
-    .flex {
-        display: flex;
-    }
-    
-    .flex-wrap {
-        flex-wrap: wrap;
-    }
-    
-    .text-right {
-        text-align: right;
     }
 </style> 

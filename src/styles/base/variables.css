@@ -3,6 +3,7 @@
 :root {
   /* Color variables */
   --color-primary: #1a365d; /* Deeper blue */
+  --color-primary-rgb: 26, 54, 93; /* RGB values of primary color for rgba() */
   --color-primary-dark: #11243e; /* Darker shade of primary */
   --color-secondary: #4b5563; /* Kept as gray */
   --color-accent: #7c3aed; /* Complementary accent */
@@ -59,6 +60,7 @@
 /* Dark theme variables */
 html.dark {
   --color-primary: #58a6ff; /* Lighter blue for dark mode */
+  --color-primary-rgb: 88, 166, 255; /* RGB values of primary color for rgba() */
   --color-primary-dark: #4d88ff; /* Slightly darker light blue */
   --color-secondary: #9ca3af; /* Lighter gray */
   --color-accent: #a582ff; /* Lighter purple */
