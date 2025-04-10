@@ -4,13 +4,13 @@
     import RelevantCommunications from '$lib/RelevantCommunications.svelte';
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
+	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
     import ItemReference from '$lib/components/common/ItemReference.svelte';
 </script>
 
 <SEO title="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso | Frédérick Madore" />
 
-<div class="content-wrapper">
+<div class="container mx-auto px-4 py-8">
     <div class="main-content">
 		<Breadcrumb items={[
 			{ label: 'Research', href: '/research' },
@@ -99,4 +99,4 @@
             margin-top: 0;
         }
     }
-</style> 
+</style>

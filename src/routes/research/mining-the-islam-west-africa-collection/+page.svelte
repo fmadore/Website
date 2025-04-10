@@ -4,12 +4,12 @@
     import RelevantCommunications from '$lib/RelevantCommunications.svelte';
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
+	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 </script>
 
 <SEO title="Mining the Islam West Africa Collection | Frédérick Madore" />
 
-<div class="content-wrapper">
+<div class="container mx-auto px-4 py-8">
     <div class="main-content">
 		<Breadcrumb items={[
 			{ label: 'Research', href: '/research' },
@@ -143,4 +143,4 @@
     .visualization-container iframe {
         overflow: hidden !important;
     }
-</style> 
+</style>

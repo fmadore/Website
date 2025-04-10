@@ -1,24 +1,31 @@
 <script lang="ts">
     import { base } from '$app/paths';
+    import BreadcrumbLink from '$lib/components/atoms/BreadcrumbLink.svelte';
 
     export let items: { 
         label: string; 
         href: string;
     }[] = [];
+
+    export let showHomeLink = true;
 </script>
 
 <nav aria-label="Breadcrumb" class="breadcrumb">
     <ol>
-        <li>
-            <a href="{base}/">Home</a>
-        </li>
+        {#if showHomeLink}
+            <li>
+                <BreadcrumbLink href={`${base}/`}>Home</BreadcrumbLink>
+            </li>
+        {/if}
+        
         {#each items as item, i}
             <li>
-                {#if i === items.length - 1}
-                    <span aria-current="page">{item.label}</span>
-                {:else}
-                    <a href="{item.href.startsWith('/') ? base + item.href : item.href}">{item.label}</a>
-                {/if}
+                <BreadcrumbLink 
+                    href={item.href} 
+                    active={i === items.length - 1}
+                >
+                    {item.label}
+                </BreadcrumbLink>
             </li>
         {/each}
     </ol>
@@ -48,20 +55,4 @@
         margin: 0 var(--spacing-2);
         color: var(--color-text-light);
     }
-
-    .breadcrumb a {
-        color: var(--color-text-light);
-        text-decoration: none;
-        transition: color 0.2s;
-    }
-
-    .breadcrumb a:hover {
-        color: var(--color-primary);
-        text-decoration: underline;
-    }
-
-    .breadcrumb [aria-current="page"] {
-        color: var(--color-text);
-        font-weight: 500;
-    }
-</style> 
+</style>

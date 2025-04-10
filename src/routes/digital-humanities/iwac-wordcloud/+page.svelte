@@ -1,8 +1,7 @@
 <script lang="ts">
     import SEO from '$lib/SEO.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
-    import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
-</script>
+	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';</script>
 
 <SEO
     title="IWAC Newspaper Word Cloud | Frédérick Madore"

@@ -2,7 +2,7 @@
 	import SEO from '$lib/SEO.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
-	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
+	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 
 	// Data or specific logic for visualizations will go here
 </script>
@@ -145,4 +145,4 @@
     }
 
     /* Add other styles as needed */
-</style> 
+</style>

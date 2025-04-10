@@ -3,8 +3,7 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import { ExternalLinkIcon } from 'lucide-svelte'; // Using an icon for external links
     import { base } from '$app/paths'; // Import base path
-    import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
-</script>
+	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';</script>
 
 <SEO
 	title="Islam Burkina Faso Collection | Frédérick Madore"

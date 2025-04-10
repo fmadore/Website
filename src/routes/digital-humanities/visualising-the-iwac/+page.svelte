@@ -2,7 +2,7 @@
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
+	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 </script>
 
 <SEO title="Visualising the IWAC | Frédérick Madore" description="Explore visualizations of the Islam West Africa Collection using AI and machine learning techniques." />
@@ -93,4 +93,4 @@
     a:hover {
         text-decoration: underline;
     }
-</style> 
+</style>

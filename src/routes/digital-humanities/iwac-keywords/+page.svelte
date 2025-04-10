@@ -2,8 +2,7 @@
     import SEO from '$lib/SEO.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
     import Button from '$lib/components/atoms/Button.svelte';
-    import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
-</script>
+	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';</script>
 
 <SEO 
     title="IWAC Keywords Dashboard | Frédérick Madore" 
