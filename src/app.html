@@ -24,6 +24,29 @@
 			})();
 		</script>
 		
+		<!-- Google Analytics -->
+		<script>
+			// Only load analytics in production and if cookies are accepted
+			if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+				const cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
+				if (cookiesAccepted || !localStorage.getItem('cookiesAccepted')) {
+					// Create and add the script dynamically
+					const gtagScript = document.createElement('script');
+					gtagScript.async = true;
+					gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=%VITE_GA_MEASUREMENT_ID%';
+					document.head.appendChild(gtagScript);
+					
+					window.dataLayer = window.dataLayer || [];
+					function gtag(){dataLayer.push(arguments);}
+					gtag('js', new Date());
+					gtag('config', '%VITE_GA_MEASUREMENT_ID%', {
+						'anonymize_ip': true,
+						'cookie_flags': 'SameSite=None;Secure'
+					});
+				}
+			}
+		</script>
+		
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">
