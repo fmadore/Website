@@ -6,11 +6,13 @@ Common components are reusable UI elements that don't fit neatly into the atomic
 
 | Component | Description | Usage |
 |-----------|-------------|-------|
-| [ToggleButton](./ToggleButton.md) | A button that toggles between two states | Filter options, view toggles |
-| [TagList](./TagList.md) | Displays a list of tags/keywords as pills | Publication tags, research topics |
-| [Sorter](./Sorter.md) | Controls for sorting a list of items | Publication lists, activity lists |
-| [PageHeader](./PageHeader.md) | Standard page header with title and optional description | Section pages |
+| [Card](./Card.md) | Versatile card component for displaying content with image, title and sections | Entity displays, previews |
+| [EntityListPageLayout](./EntityListPageLayout.md) | Layout component for list pages with sidebar and content | Publication/communication listings |
+| [FilteredListDisplay](./FilteredListDisplay.md) | Component for displaying filtered lists with empty states | Data-driven listings |
 | [ItemReference](./ItemReference.md) | Link to an entity with metadata | Related items, references |
+| [PageHeader](./PageHeader.md) | Standard page header with title and optional description | Section pages |
+| [Sorter](./Sorter.md) | Controls for sorting a list of items | Publication lists, activity lists |
+| [ToggleButton](./ToggleButton.md) | A button that toggles between two states | Filter options, view toggles |
 
 ## Component Design Philosophy
 
@@ -35,7 +37,7 @@ Common components are typically used within:
 <script>
   import PageHeader from '$lib/components/common/PageHeader.svelte';
   import Sorter from '$lib/components/common/Sorter.svelte';
-  import TagList from '$lib/components/common/TagList.svelte';
+  import TagList from '$lib/components/molecules/TagList.svelte';
   
   const tags = ['Research', 'Africa', 'Islamic Studies'];
   
@@ -62,4 +64,3 @@ Common components are typically used within:
   <TagList tags={tags} />
   <!-- Content -->
 </article>
-```
