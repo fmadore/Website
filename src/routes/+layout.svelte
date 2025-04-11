@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Footer from '$lib/Footer.svelte';
 	import Header from '$lib/components/organisms/Header.svelte';
+	import CookieConsent from '$lib/components/common/CookieConsent.svelte';
 	import '../app.css';
 </script>
 
@@ -14,6 +15,7 @@
 	</main>
 
 	<Footer />
+	<CookieConsent />
 </div>
 
 <style>

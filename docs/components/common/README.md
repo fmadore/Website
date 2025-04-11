@@ -7,6 +7,7 @@ Common components are reusable UI elements that don't fit neatly into the atomic
 | Component | Description | Usage |
 |-----------|-------------|-------|
 | [Card](./Card.md) | Versatile card component for displaying content with image, title and sections | Entity displays, previews |
+| [CookieConsent](./CookieConsent.md) | Banner for managing cookie consent for analytics | Site-wide privacy compliance |
 | [EntityListPageLayout](./EntityListPageLayout.md) | Layout component for list pages with sidebar and content | Publication/communication listings |
 | [FilteredListDisplay](./FilteredListDisplay.md) | Component for displaying filtered lists with empty states | Data-driven listings |
 | [ItemReference](./ItemReference.md) | Link to an entity with metadata | Related items, references |
