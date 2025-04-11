@@ -38,9 +38,9 @@
                 
                 <p>By combining these computational approaches with ethnographic fieldwork, I aim to provide a comprehensive understanding that neither method could achieve alone. This innovative synthesis promises new insights into the intellectual history and translocal dynamics of Muslims in Francophone West Africa, and contributes significantly to our understanding of how religiosity interacts with morality, intellectual culture and socio-political issues in this context.</p>
                 
-                <div class="visualization-container">
-                    <div class="iframe-wrapper">
-                        <iframe src="https://fmadore.github.io/IWAC-overview/" title="IWAC Visualization" frameborder="0" scrolling="no" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <div class="aspect-w-16 aspect-h-9 mt-6">
+                    <div class="iframe-container">
+                        <iframe src="https://iwac.vercel.app/" title="IWAC Visualization" frameborder="0" scrolling="no" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>

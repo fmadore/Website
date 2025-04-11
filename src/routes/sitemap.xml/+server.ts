@@ -8,7 +8,7 @@ import { base } from '$app/paths';
 export const prerender = true;
 
 export const GET: RequestHandler = async () => {
-    const website = "https://fmadore.github.io/Website";
+    const website = "https://www.frederickmadore.com";
     
     // Static pages
     const pages = [

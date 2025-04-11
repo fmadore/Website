@@ -23,14 +23,14 @@
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={type} />
-    <meta property="og:url" content={canonical || "https://fmadore.github.io/Website"} />
+    <meta property="og:url" content={canonical || "https://www.frederickmadore.com"} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonical || "https://fmadore.github.io/Website"} />
+    <meta property="twitter:url" content={canonical || "https://www.frederickmadore.com"} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={ogImage} />

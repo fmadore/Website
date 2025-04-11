@@ -1,8 +1,8 @@
-# Frédérick Madore - Academic Website
+# Personal Website
 
-This repository contains the source code for my personal academic website, built with SvelteKit and TailwindCSS.
+Personal academic website built with SvelteKit and Tailwind CSS.
 
-**Live Site:** [https://fmadore.github.io/Website/](https://fmadore.github.io/Website/)
+**Live Site:** [https://www.frederickmadore.com/](https://www.frederickmadore.com/)
 
 ## Tech Stack
 

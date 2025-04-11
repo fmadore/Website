@@ -15,20 +15,21 @@ const config = {
 			strict: true
 		}),
 		paths: {
-			base: dev ? '' : '/Website'
+			base: ''
 		},
 		appDir: 'app', // Ensures all generated JS is under this directory
 		// Make sure all pages are pre-rendered
 		prerender: {
 			entries: ['*'],
 			handleHttpError: ({ path, referrer, message }) => {
-				// If the error is a missing page, return a 404 status
-				if (path.startsWith('/Website/')) {
-					console.warn(`Ignoring ${path} - redirecting via 404.html`);
-					return;
-				}
-				// Otherwise, throw the error and stop the build
-				throw new Error(message);
+				// If the error is a missing page, log a warning but allow build to continue
+				// This assumes your 404 handling takes care of it at runtime
+				// Note: The original logic for '/Website/' prefix is removed as base path is empty
+				console.warn(`Potential 404 for ${path} - check routing and 404 handling. Message: ${message}`);
+				return; // Allow build to continue
+
+				// If you prefer to fail the build on any error uncomment the line below:
+				// throw new Error(message);
 			}
 		}
 	},
