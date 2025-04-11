@@ -3,12 +3,13 @@ import type { Communication } from '$lib/types/communication'; // Add communicat
 import type { Fieldwork } from '$lib/types/fieldwork'; // Add fieldwork type
 import type { Appointment } from '$lib/types/appointment'; // <-- Import Appointment type
 import type { Education } from '$lib/types/education'; // <-- Import Education type
+import type { Grant } from '$lib/types/grant'; // <-- Import Grant type
 
 // Define a generic type for the expected module structure
 type DataModule = Record<string, any>;
 
 // Define a union type for the data items we expect to load
-type DataItem = Publication | Communication | Fieldwork | Appointment | Education; // <-- Add Education to union
+type DataItem = Publication | Communication | Fieldwork | Appointment | Education | Grant; // <-- Add Grant to union
 
 /**
  * Loads and processes data modules based on a glob pattern.
