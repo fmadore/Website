@@ -6,6 +6,20 @@
     import { browser } from '$app/environment';
     import ReferenceLink from '$lib/components/atoms/ReferenceLink.svelte';
     import ReferencePreviewCard from '$lib/components/atoms/ReferencePreviewCard.svelte';
+    import { crossfade, fade } from 'svelte/transition';
+    import { quintOut } from 'svelte/easing';
+
+    // Set up crossfade transitions
+    const [send, receive] = crossfade({
+        duration: 300,
+        easing: quintOut,
+        fallback(node) {
+            return fade(node, { 
+                duration: 200, 
+                easing: quintOut 
+            });
+        }
+    });
 
     // Prop: ID of the item to reference
     export let id: string;
@@ -206,7 +220,11 @@
         <ReferenceLink {item} {itemType} {id} hasPopup={true} />
 
         {#if showPreview}
-            <div id="item-preview-{id}">
+            <div 
+                id="item-preview-{id}"
+                in:receive={{key: `preview-${id}`}}
+                out:send={{key: `preview-${id}`}}
+            >
                 <ReferencePreviewCard 
                     {item}
                     {itemType}
