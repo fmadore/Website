@@ -14,6 +14,7 @@ Atoms are the basic building blocks of the UI. They are the smallest functional 
 | Component | Description | Usage |
 |-----------|-------------|-------|
 | [Button](./Button.md) | Configurable button component with multiple variants | Form submissions, actions, links |
+| [BreadcrumbLink](./BreadcrumbLink.md) | Specialized link element for breadcrumb navigation | Breadcrumb navigation paths |
 | [HamburgerButton](./HamburgerButton.md) | Animated hamburger icon for toggling mobile navigation | Mobile navigation toggle |
 | [NavLink](./NavLink.md) | Navigation link with active state and dropdown support | Navigation menus |
 | [ThemeToggle](./ThemeToggle.md) | Toggle switch for light/dark theme | Theme switching |

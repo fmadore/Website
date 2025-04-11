@@ -72,6 +72,7 @@ import Button from '$lib/components/atoms/Button.svelte';
 | `block` | `boolean` | `false` | Whether the button should take up full width |
 | `iconOnly` | `boolean` | `false` | For icon-only buttons (adjusts padding) |
 | `ariaLabel` | `string \| undefined` | `undefined` | Accessibility label, required for icon-only buttons |
+| `additionalClasses` | `string` | `''` | Additional CSS classes to apply to the button |
 
 ## Slots
 
