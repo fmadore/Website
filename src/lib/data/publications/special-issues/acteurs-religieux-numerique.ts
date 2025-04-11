@@ -16,10 +16,5 @@ export const acteursReligieuxNumerique: Publication = {
     tags: ["religion", "digital media", "social media", "religious authority", "technology"],
     url: "https://doi.org/10.14428/emulations.024",
     image: "images/publications/acteurs-religieux-numerique.jpg",
-    heroImage: {
-        src: "images/publications/acteurs-religieux-numerique-hero.jpg",
-        alt: "Cover of the special issue on African religious actors in the digital age",
-        caption: "Special issue of Émulations on religious actors and digital technologies in Africa"
-    },
     isEditedWork: true
 }; 
