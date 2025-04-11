@@ -14,6 +14,7 @@ export const islamBurkinaCollection: Publication = {
     abstract: "Cet article propose une réflexion sur les possibilités inédites qu’offre le numérique pour développer de nouvelles méthodes de recherche et de diffusion de données sur l’histoire de l’islam en Afrique de l’Ouest, ainsi que quelques considérations méthodologiques, technologiques et éthiques soulevées par de telles initiatives. Au centre de ces considérations se trouve la Collection Islam Burkina Faso. Ce projet de base de données numérique en libre accès, que j’ai lancé en 2021 et qui est hébergée par les bibliothèques George A. Smathers de l’Université de Floride (UF), contient actuellement plus de 2 500 documents d’archives, articles de la presse généraliste, publications islamiques sous diverses formes et photographies, en plus de 200 références bibliographiques liées à l’islam et aux musulmans du Burkina Faso (https://islam.domains.uflib.ufl.edu/s/bf-fr). Le texte propose également un bref état des lieux des humanités numériques dans le champ des études africanistes et plus spécifiquement sur l’islam.",
     tags: ["Burkina Faso", "digital humanities", "Islam", "collection", "research methodology"],
     url: "https://doi.org/10.51185/journals/rhca.2021.e610",
+    image: "images/publications/revue-d-histoire-contemporaine-de-l-afrique.jpg",
     country: ["Burkina Faso"],
     project: "Mining the Islam West Africa Collection"
 }; 
