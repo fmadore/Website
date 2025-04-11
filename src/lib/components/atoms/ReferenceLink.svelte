@@ -15,17 +15,30 @@
         return 'N/D';
     }
 
-    // Helper to get first author's last name
-    function getFirstAuthorLastName(item: Publication | Communication): string {
+    // Helper to get author citation text
+    function getAuthorCitation(item: Publication | Communication): string {
         const authors = item.authors;
-        if (authors && authors.length > 0 && typeof authors[0] === 'string') {
-            return authors[0].split(' ').pop() || 'N/A';
+        if (!authors || authors.length === 0) return 'N/A';
+        
+        // Get last names
+        const lastNames = authors.map(author => {
+            if (typeof author === 'string') {
+                return author.split(' ').pop() || 'N/A';
+            }
+            return 'N/A';
+        });
+        
+        if (lastNames.length === 1) {
+            return lastNames[0];
+        } else if (lastNames.length === 2) {
+            return `${lastNames[0]} and ${lastNames[1]}`;
+        } else {
+            return `${lastNames[0]} et al.`;
         }
-        return 'N/A';
     }
 
     $: referenceText = item
-        ? `(${getFirstAuthorLastName(item)}, ${getYear(item)})`
+        ? `(${getAuthorCitation(item)}, ${getYear(item)})`
         : `(${id})`;
 
     $: itemUrl = item && itemType
