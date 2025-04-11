@@ -15,6 +15,7 @@ export const talkRencontreChretiensMusulmans2025: Communication = {
     language: "French", 
     abstract: "Les paysages religieux pluralistes du Togo, Bénin, Côte d'Ivoire et Burkina Faso offrent une perspective intéressante sur la coexistence religieuse, dépassant la simple dichotomie entre conflit et harmonie. La longue histoire de coexistence et de compétition entre chrétiens et musulmans a façonné des pratiques religieuses qui se reflètent mutuellement, créant des modèles alternatifs de cohabitation où intimité et rivalité s'entrelacent.", 
     tags: ["Christianity", "Islam", "Interreligious Relations", "West Africa"],
+    url: "https://doi.org/10.58079/13pmz",
     image: "images/communications/EHESS-2025.jpg",
     coordinates: {
         latitude: 48.911008116361714, 

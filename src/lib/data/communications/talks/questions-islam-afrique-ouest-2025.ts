@@ -15,6 +15,7 @@ export const talkQuestionsIslamAfriqueOuest2025: Communication = {
     language: "French", 
     abstract: "Cette conférence explore les enjeux méthodologiques de la recherche sur l'islam en Afrique de l'Ouest face à la fragmentation des archives postcoloniales. J'analyserai les défis et opportunités que représente l'exploitation d'un corpus d'articles de presse et de publications islamiques pour documenter l'histoire des communautés musulmanes depuis les indépendances, tout en montrant l'apport potentiel des sources nativement numériques.",
     tags: ["Islam", "West Africa", "Archives", "Research Methods"],
+    url: "https://doi.org/10.58079/13pmz",
     image: "images/communications/EHESS-2025.jpg",
     coordinates: {
         latitude: 48.9077666570092,

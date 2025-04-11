@@ -15,6 +15,7 @@ export const talkHistoireCommunautesMusulmanesOuestAfricaines2025: Communication
     language: "French", 
     abstract: "À travers la Collection Islam Afrique de l'Ouest, nous explorons comment les approches des humanités numériques telles que le distant reading peuvent révéler des tendances intéressantes dans la couverture médiatique de l’islam depuis 65 ans, tandis que diverses visualisations (réseaux, cartes, chronologies) mettent en lumière les interconnexions transnationales entre acteurs islamiques.", 
     tags: ["Islam", "West Africa", "History", "Digital Humanities"], 
+    url: "https://doi.org/10.58079/13pmz",
     image: "images/communications/EHESS-2025.jpg",
     coordinates: {
         latitude: 48.9077666570092,

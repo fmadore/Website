@@ -15,6 +15,7 @@ export const talkMilitantismeReligieuxCampusBeninTogo2025: Communication = {
     language: "French", 
     abstract: "Cette conférence examine l'évolution des associations religieuses étudiantes dans les universités d'Abomey-Calavi et de Lomé depuis 1970. Malgré un contexte initialement marqué par l'autoritarisme et dominé par des idéologies laïques et marxistes, ces organisations chrétiennes et musulmanes ont transformé la vie universitaire en proposant aux étudiants un 'curriculum social' alliant guidance spirituelle et soutien pratique.", 
     tags: ["Religious Activism", "University Campuses", "Benin", "Togo", "West Africa", "Islam", "Christianity"], 
+    url: "https://doi.org/10.58079/13pmz",
     image: "images/communications/EHESS-2025.jpg",
     coordinates: {
         latitude: 48.911008116361714, 
