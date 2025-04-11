@@ -40,7 +40,13 @@
                         <ul class="mobile-dropdown">
                             {#each item.dropdown as subItem}
                                 <li class="mobile-dropdown-item">
-                                    <a href={subItem.path} class="mobile-dropdown-link" on:click={onCloseMenu}>
+                                    <a 
+                                        href={subItem.path} 
+                                        class="mobile-dropdown-link" 
+                                        on:click={onCloseMenu}
+                                        target={subItem.path.startsWith('http') ? '_blank' : null}
+                                        rel={subItem.path.startsWith('http') ? 'noopener noreferrer' : null}
+                                    >
                                         {subItem.name}
                                     </a>
                                 </li>

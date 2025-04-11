@@ -22,6 +22,8 @@
                     class="dropdown-item"
                     on:click={onItemClick}
                     role="menuitem"
+                    target={item.path.startsWith('http') ? '_blank' : null}
+                    rel={item.path.startsWith('http') ? 'noopener noreferrer' : null}
                 >
                     {item.name}
                 </a>

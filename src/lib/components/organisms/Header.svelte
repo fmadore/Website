@@ -27,7 +27,7 @@
             name: 'Digital Humanities', 
             path: `${base}/digital-humanities`,
             dropdown: [
-                { name: 'Islam West Africa Collection', path: `${base}/digital-humanities/islam-west-africa-collection` },
+                { name: 'Islam West Africa Collection', path: 'https://islam.zmo.de/s/westafrica/' },
             ] 
         },
         { name: 'Conference Activity', path: `${base}/conference-activity` },
