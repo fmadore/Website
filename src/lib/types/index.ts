@@ -7,4 +7,5 @@ export * from './appointment';
 export * from './grant';
 export * from './award';
 export * from './peer-review';
-export * from './media-appearance'; 
+export * from './media-appearance';
+export * from './editorial-membership'; 

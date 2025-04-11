@@ -7,12 +7,13 @@ import type { Grant } from '$lib/types/grant'; // <-- Import Grant type
 import type { Award } from '$lib/types/award'; // <-- Import Award type
 import type { PeerReview } from '$lib/types/peer-review'; // <-- Import PeerReview type
 import type { MediaAppearance } from '$lib/types/media-appearance'; // <-- Import MediaAppearance type
+import type { EditorialMembership } from '$lib/types/editorial-membership'; // <-- Import EditorialMembership type
 
 // Define a generic type for the expected module structure
 type DataModule = Record<string, any>;
 
 // Define a union type for the data items we expect to load
-type DataItem = Publication | Communication | Fieldwork | Appointment | Education | Grant | Award | PeerReview | MediaAppearance; // <-- Add MediaAppearance to union
+type DataItem = Publication | Communication | Fieldwork | Appointment | Education | Grant | Award | PeerReview | MediaAppearance | EditorialMembership; // <-- Add EditorialMembership to union
 
 /**
  * Loads and processes data modules based on a glob pattern.
