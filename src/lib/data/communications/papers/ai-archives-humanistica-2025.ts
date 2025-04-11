@@ -13,6 +13,7 @@ export const aiArchivesHumanistica: Communication = {
     type: "conference",
     language: "French",
     tags: ["AI", "digital humanities", "Islam", "IWAC", "Humanistica"],
+    image: "images/communications/ENIUGH_Conf_Logo.png",
     coordinates: {
         latitude: 14.6937,
         longitude: -17.4665
