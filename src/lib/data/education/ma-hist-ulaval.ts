@@ -4,9 +4,11 @@ export const maHistUlaval: Education = {
 	id: 'ma-hist-ulaval',
 	degree: 'M.A. in History',
 	institution: 'Université Laval',
-	location: 'Canada',
+	location: 'Québec City, Canada',
 	year: 2013,
-	dateISO: '2013-03-31'
+	type: 'Degree',
+	details: 'With distinction.',
+	dateISO: '2013-09-01'
 };
 
 export default maHistUlaval; 
