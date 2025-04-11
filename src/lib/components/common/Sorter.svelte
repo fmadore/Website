@@ -30,21 +30,28 @@
     }
 </script>
 
-<Button 
-    variant="outline-primary" 
-    size="sm" 
-    on:click={toggleSort}
-    ariaLabel={ariaTitle}
-    title={ariaTitle} 
-    additionalClasses="control-button-rounded"
->
-    <svelte:fragment slot="icon">
-        <svelte:component this={IconComponent} size={18} />
-    </svelte:fragment>
-    {labelText}
-</Button>
+<div class="sorter">
+    <Button 
+        variant="outline-primary" 
+        size="sm" 
+        on:click={toggleSort}
+        ariaLabel={ariaTitle}
+        title={ariaTitle} 
+        additionalClasses="control-button-rounded"
+    >
+        <svelte:fragment slot="icon">
+            <svelte:component this={IconComponent} size={18} />
+        </svelte:fragment>
+        {labelText}
+    </Button>
+</div>
 
 <style>
+    /* Add scoped element for Svelte compiler */
+    .sorter {
+        display: contents; /* Won't affect layout */
+    }
+    
     :global(.control-button-rounded) {
        border-radius: var(--border-radius-md);
     }

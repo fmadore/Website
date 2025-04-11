@@ -228,6 +228,8 @@
     
     .header-logo {
         flex-shrink: 0;
+        display: flex;
+        align-items: center;
     }
     
     .site-title {
@@ -237,6 +239,7 @@
         text-decoration: none;
         transition: color 0.2s ease;
         letter-spacing: -0.02em;
+        line-height: 1.2;
     }
     
     .site-title:hover {

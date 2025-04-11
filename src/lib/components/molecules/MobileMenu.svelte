@@ -1,6 +1,8 @@
 <script lang="ts">
     import type { NavItem } from '$lib/types/navigation';
     import ThemeToggle from '$lib/components/atoms/ThemeToggle.svelte';
+    import { X } from 'lucide-svelte';
+    import { base } from '$app/paths';
     
     export let navItems: NavItem[];
     export let isActive = false;
@@ -9,9 +11,13 @@
 
 <div id="mobile-menu" class="mobile-nav-container" class:active={isActive}>
     <nav class="mobile-nav" aria-label="Mobile navigation">
-        <!-- Mobile Theme Toggle & Close Button -->
+        <!-- Mobile Menu Header -->
         <div class="mobile-nav-header">
             <ThemeToggle size={20} />
+            
+            <a href="{base}/" class="mobile-site-title" on:click={onCloseMenu}>
+                Frédérick Madore
+            </a>
             
             <button 
                 class="mobile-close" 
@@ -19,7 +25,7 @@
                 aria-label="Close navigation menu"
             >
                 <span class="sr-only">Close</span>
-                <span class="close-icon">×</span>
+                <X size={20} />
             </button>
         </div>
 
@@ -52,21 +58,19 @@
     .mobile-nav-container {
         position: fixed;
         top: 0;
-        right: 0;
+        left: 0;
         height: 100vh;
         width: 100%;
-        max-width: 300px;
         background-color: var(--color-background);
         z-index: 200;
-        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-        transform: translateX(100%);
+        transform: translateY(-100%);
         transition: transform 0.3s ease-in-out, background-color 0.3s ease;
         overflow-y: auto;
         backdrop-filter: blur(4px);
     }
     
     .mobile-nav-container.active {
-        transform: translateX(0);
+        transform: translateY(0);
     }
     
     .mobile-nav {
@@ -74,6 +78,8 @@
         min-height: 100vh; /* Ensure minimum height */
         position: relative;
         z-index: 2; /* Above the overlay */
+        display: flex;
+        flex-direction: column;
     }
     
     .mobile-nav-header {
@@ -88,12 +94,26 @@
         background-color: var(--color-background);
     }
     
+    .mobile-site-title {
+        font-size: var(--font-size-xl);
+        font-weight: 700;
+        color: var(--color-text);
+        text-decoration: none;
+        transition: color 0.2s ease;
+        letter-spacing: -0.02em;
+        text-align: center;
+        flex: 1;
+    }
+    
+    .mobile-site-title:hover {
+        color: var(--color-primary);
+    }
+    
     .mobile-close {
         background: none;
         border: none;
         cursor: pointer;
         color: var(--color-text);
-        font-size: 24px;
         padding: var(--spacing-2);
         border-radius: var(--border-radius-sm);
         display: flex;
@@ -126,6 +146,12 @@
         margin: 0;
         position: relative;
         z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        flex: 1;
     }
     
     .mobile-nav-item {
@@ -134,7 +160,7 @@
     
     .mobile-nav-link {
         display: block;
-        font-size: var(--font-size-lg);
+        font-size: var(--font-size-xl);
         font-weight: 600;
         color: var(--color-text);
         text-decoration: none;
@@ -148,8 +174,11 @@
     
     .mobile-dropdown {
         list-style: none;
-        padding-left: var(--spacing-4);
+        padding: 0;
         margin-top: var(--spacing-2);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     
     .mobile-dropdown-item {
@@ -183,30 +212,9 @@
         pointer-events: none;
     }
     
-    /* Separate element for the backdrop behind the menu */
-    .mobile-nav-container::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 0;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        pointer-events: none;
-        backdrop-filter: blur(2px);
-    }
-    
-    .mobile-nav-container.active::before {
-        opacity: 1;
-        pointer-events: auto;
-    }
-    
     @media (min-width: 640px) {
-        .mobile-nav-container {
-            max-width: 350px;
+        .mobile-nav {
+            padding: var(--spacing-4) var(--spacing-8) var(--spacing-8);
         }
     }
 </style> 
