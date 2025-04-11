@@ -1,6 +1,28 @@
 import { writable, derived } from 'svelte/store';
 import type { Fieldwork } from '$lib/types';
-import { allFieldworks, fieldworksByYear, allCountries, allCities, allProjects } from './index';
+// import { allFieldworks, fieldworksByYear, allCountries, allCities, allProjects } from './index';
+
+// Import safely handling any errors
+let allFieldworks: Fieldwork[] = [];
+let fieldworksByYear: Record<number, Fieldwork[]> = {};
+let allCountries: string[] = [];
+let allCities: string[] = [];
+let allProjects: string[] = [];
+
+try {
+    // Use a dynamic import or ensure index is fully loaded.
+    // For simplicity with eager glob, let's assume index exports are available
+    // but might be undefined initially during SSR runs.
+    const fieldworkIndex = await import('./index');
+    allFieldworks = fieldworkIndex.allFieldworks || [];
+    fieldworksByYear = fieldworkIndex.fieldworksByYear || {};
+    allCountries = fieldworkIndex.allCountries || [];
+    allCities = fieldworkIndex.allCities || [];
+    allProjects = fieldworkIndex.allProjects || [];
+} catch (error) {
+    console.error("Error importing fieldworks index:", error);
+    // Keep defaults if import fails
+}
 
 // Create a store for active filters
 export const activeFilters = writable({
@@ -10,19 +32,21 @@ export const activeFilters = writable({
     projects: [] as string[]
 });
 
-// Create a store for available filter options (automatically derived from fieldworks)
+// Create a store for available filter options (use safely imported data)
 export const filterOptions = writable({
-    countries: allCountries,
-    cities: allCities,
-    years: Object.keys(fieldworksByYear).map(Number).sort((a, b) => b - a),
-    projects: allProjects
+    countries: allCountries, // Use safe variable
+    cities: allCities,       // Use safe variable
+    years: Object.keys(fieldworksByYear || {}).map(Number).sort((a, b) => b - a), // Add safety check
+    projects: allProjects    // Use safe variable
 });
 
 // A derived store that filters fieldworks based on active filters
 export const filteredFieldworks = derived(
     [activeFilters],
     ([$activeFilters]) => {
-        return allFieldworks.filter(fieldwork => {
+        // Ensure allFieldworks is used safely
+        const safeAllFieldworks = allFieldworks || [];
+        return safeAllFieldworks.filter(fieldwork => {
             // Filter by country
             if ($activeFilters.countries.length > 0 && 
                 !$activeFilters.countries.includes(fieldwork.country)) {
