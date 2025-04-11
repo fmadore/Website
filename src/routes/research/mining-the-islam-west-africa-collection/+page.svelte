@@ -79,52 +79,6 @@
         display: block;
     }
 
-    /* Visualization styles */
-    .visualization-container {
-        margin-top: var(--spacing-8);
-        margin-bottom: var(--spacing-8);
-        border-radius: var(--border-radius-md);
-        overflow: hidden;
-        background-color: var(--color-background-light);
-        padding: var(--spacing-4);
-        box-shadow: var(--shadow-md);
-    }
-    
-    .iframe-wrapper {
-        position: relative;
-        width: 100%;
-        height: 0;
-        padding-bottom: 100%;
-        overflow: hidden;
-        border-radius: var(--border-radius-md);
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE and Edge */
-    }
-    
-    .iframe-wrapper::-webkit-scrollbar {
-        display: none;
-    }
-    
-    .iframe-wrapper iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border: 1px solid var(--color-border);
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE and Edge */
-    }
-    
-    /* Hide scrollbar for Chrome, Safari and Opera */
-    .iframe-wrapper iframe::-webkit-scrollbar {
-        display: none;
-    }
-    
-    .visualization-container iframe {
-        overflow: hidden !important;
-    }
-
     /* Grid layout for medium screens and up */
     @media (min-width: 768px) {
         .grid {
