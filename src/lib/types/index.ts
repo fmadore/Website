@@ -6,4 +6,5 @@ export * from './education';
 export * from './appointment';
 export * from './grant';
 export * from './award';
-export * from './peer-review'; 
+export * from './peer-review';
+export * from './media-appearance'; 
