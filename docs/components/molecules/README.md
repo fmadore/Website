@@ -1,22 +1,63 @@
 # Molecules
 
-Molecules are compound components made up of multiple atoms working together to provide more complex functionality. They form meaningful UI patterns that are reusable across the application.
+Molecules are relatively simple combinations of atoms that form functional groups in our design system.
+
+## Available Molecules
+
+- [ItemCard](./ItemCard.md) - Displays a single generic item (like a publication or communication) with meta, title, authors, and abstract
+- [ItemReference](./ItemReference.md) - Citation-style reference that shows a preview card on hover/focus
+- [MobileMenu](./MobileMenu.md) - Responsive mobile navigation menu 
+- [DesktopNav](./DesktopNav.md) - Main navigation for desktop viewport sizes
+- [RelatedItemCard](./RelatedItemCard.md) - Displays a card for items related to the current context
+- [AbstractSection](./AbstractSection.md) - Formatted display of an item's abstract
+- [DetailsGrid](./DetailsGrid.md) - Grid layout for displaying item metadata
+- [ActionLinks](./ActionLinks.md) - Group of action links for an item (download, share, etc.)
+- [TagList](./TagList.md) - Displays a list of tags or keywords
+- [HeroImageDisplay](./HeroImageDisplay.md) - Hero image with optional attribution
+- [Breadcrumb](./Breadcrumb.md) - Navigation breadcrumb showing the current location
+- [DropdownMenu](./DropdownMenu.md) - Dropdown menu component
+- [NavItemWithDropdown](./NavItemWithDropdown.md) - Navigation item with dropdown functionality
 
 ## Characteristics of Molecules
 
-- Composed of two or more atoms
-- Have a single, focused purpose or functionality
-- Encapsulate UI patterns that appear throughout the application
-- More specific and less reusable than atoms, but still designed for reuse
+- Composed of multiple atoms
+- Serve a specific UI function
+- Reusable in different contexts
+- Can have their own state and interaction logic
+- More complex than atoms but simpler than organisms
 
-## Available Molecule Components
+## Creating New Molecules
 
-| Component | Description | Usage |
-|-----------|-------------|-------|
-| [DesktopNav](./DesktopNav.md) | Desktop navigation menu with dropdown support | Main site navigation |
-| [MobileMenu](./MobileMenu.md) | Mobile navigation menu with collapsible sections | Mobile navigation |
-| [DropdownMenu](./DropdownMenu.md) | Dropdown menu for navigation links with submenu items | Navigation submenus |
-| [NavItemWithDropdown](./NavItemWithDropdown.md) | Navigation item that includes dropdown functionality | Navigation items with submenus |
+When creating new molecules:
+
+1. Use atoms as building blocks whenever possible
+2. Keep the molecule focused on a single responsibility
+3. Ensure it's reusable across different parts of the application
+4. Document its composition and behavior thoroughly
+
+## Usage
+
+Import molecules directly into page components or organisms:
+
+```svelte
+<script>
+  import ItemCard from '$lib/components/molecules/ItemCard.svelte';
+  import ItemReference from '$lib/components/molecules/ItemReference.svelte';
+</script>
+
+<div class="publication">
+  <h2>Research Paper</h2>
+  <p>
+    This builds on previous work <ItemReference id="pub-2021-03" /> and expands...
+  </p>
+  
+  <h3>Related Publications</h3>
+  <div class="related-items">
+    <ItemCard item={publication1} />
+    <ItemCard item={publication2} />
+  </div>
+</div>
+```
 
 ## Designing New Molecules
 

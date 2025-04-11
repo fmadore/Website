@@ -1,23 +1,50 @@
 # Atoms
 
-Atoms are the basic building blocks of the UI. They are the smallest functional UI elements that cannot be broken down further without losing their meaning or functionality.
+Atoms are the smallest, most basic components in our design system - they're the building blocks of the interface that can't be broken down any further without losing their meaning or functionality.
+
+## Available Atoms
+
+- [Button](./Button.md) - Standard button component with variants
+- [BreadcrumbLink](./BreadcrumbLink.md) - Individual link within a breadcrumb navigation
+- [HamburgerButton](./HamburgerButton.md) - Button for toggling mobile navigation menu
+- [NavLink](./NavLink.md) - Navigation link with active state handling
+- [ThemeToggle](./ThemeToggle.md) - Toggle for switching between light and dark themes
+- [ReferenceLink](./ReferenceLink.md) - Citation-style reference link for academic references
+- [ReferencePreviewCard](./ReferencePreviewCard.md) - Rich preview card for referenced items
 
 ## Characteristics of Atoms
 
-- Cannot be broken down into smaller functional components
-- Highly reusable across the application
-- Usually correspond to simple HTML elements with enhanced functionality
-- Generally handle a single responsibility
+- They are simple, small components that serve a single purpose
+- They don't depend on other components
+- They can be reused across multiple contexts
+- They can accept props to change their appearance and behavior
+- They define basic design patterns like colors, typography, and spacing
 
-## Available Atom Components
+## Creating New Atoms
 
-| Component | Description | Usage |
-|-----------|-------------|-------|
-| [Button](./Button.md) | Configurable button component with multiple variants | Form submissions, actions, links |
-| [BreadcrumbLink](./BreadcrumbLink.md) | Specialized link element for breadcrumb navigation | Breadcrumb navigation paths |
-| [HamburgerButton](./HamburgerButton.md) | Animated hamburger icon for toggling mobile navigation | Mobile navigation toggle |
-| [NavLink](./NavLink.md) | Navigation link with active state and dropdown support | Navigation menus |
-| [ThemeToggle](./ThemeToggle.md) | Toggle switch for light/dark theme | Theme switching |
+When creating new atoms:
+
+1. Keep them as simple as possible with a focused purpose
+2. Use CSS variables for theming to maintain consistency
+3. Ensure they're accessible
+4. Document all props and usage patterns
+5. Keep styling isolated
+
+## Usage
+
+Import atoms directly into other components:
+
+```svelte
+<script>
+  import Button from '$lib/components/atoms/Button.svelte';
+  import NavLink from '$lib/components/atoms/NavLink.svelte';
+</script>
+
+<div>
+  <NavLink href="/home">Home</NavLink>
+  <Button variant="primary">Click Me</Button>
+</div>
+```
 
 ## Designing New Atoms
 

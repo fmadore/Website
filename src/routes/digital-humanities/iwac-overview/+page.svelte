@@ -10,7 +10,7 @@
         { label: "Islam West Africa Collection Overview", href: `${base}/digital-humanities/iwac-overview` }
     ];
 
-	// import ItemReference from '$lib/components/common/ItemReference.svelte'; // Not needed here yet
+	// import ItemReference from '$lib/components/molecules/ItemReference.svelte'; // Not needed here yet
 
 </script>
 

@@ -5,7 +5,7 @@
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
-    import ItemReference from '$lib/components/common/ItemReference.svelte';
+    import ItemReference from '$lib/components/molecules/ItemReference.svelte';
 
     // Pre-construct breadcrumb items with evaluated paths
     const breadcrumbItems = [

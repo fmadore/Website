@@ -5,7 +5,7 @@
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
-    import ItemReference from '$lib/components/common/ItemReference.svelte';
+    import ItemReference from '$lib/components/molecules/ItemReference.svelte';
     
     // Get the activity ID from the URL
     const activityId = $page.params.id;

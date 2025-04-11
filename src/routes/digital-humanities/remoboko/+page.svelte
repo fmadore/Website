@@ -1,7 +1,7 @@
 <script lang="ts">
     import SEO from '$lib/SEO.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import ItemReference from '$lib/components/common/ItemReference.svelte';
+	import ItemReference from '$lib/components/molecules/ItemReference.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
     import { base } from '$app/paths'; // Import base
 

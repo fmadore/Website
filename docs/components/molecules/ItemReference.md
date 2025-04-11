@@ -5,7 +5,7 @@ A component that displays citation-style references to publications or communica
 ## Import
 
 ```svelte
-import ItemReference from '$lib/components/common/ItemReference.svelte';
+import ItemReference from '$lib/components/molecules/ItemReference.svelte';
 ```
 
 ## Usage
@@ -34,6 +34,18 @@ The ItemReference component provides several interactive features:
 - Escape key dismisses preview when opened via click
 - Automatically positions preview above or below based on available space
 - Fully keyboard accessible
+- **Mobile-optimized** with preview card that stays within viewport bounds
+
+## Atomic Design Structure
+
+This component follows the atomic design pattern and is composed of:
+
+1. **Atoms**:
+   - `ReferenceLink` - The citation link itself
+   - `ReferencePreviewCard` - The preview card with item details
+
+2. **Molecules**:
+   - `ItemReference` - Combines the atoms with interaction logic
 
 ## Integration with Data
 
@@ -55,7 +67,7 @@ The component automatically:
 
 ```svelte
 <script>
-  import ItemReference from '$lib/components/common/ItemReference.svelte';
+  import ItemReference from '$lib/components/molecules/ItemReference.svelte';
 </script>
 
 <article>
