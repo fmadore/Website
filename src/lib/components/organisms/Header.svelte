@@ -28,7 +28,6 @@
             path: `${base}/digital-humanities`,
             dropdown: [
                 { name: 'Islam West Africa Collection', path: `${base}/digital-humanities/islam-west-africa-collection` },
-                { name: 'Visualising the IWAC', path: `${base}/digital-humanities/visualising-the-iwac` }
             ] 
         },
         { name: 'Conference Activity', path: `${base}/conference-activity` },

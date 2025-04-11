@@ -18,7 +18,6 @@ export const GET: RequestHandler = async () => {
         "/activities",
         "/digital-humanities",
         "/digital-humanities/islam-west-africa-collection",
-        "/digital-humanities/visualising-the-iwac",
         "/digital-humanities/remoboko",
         "/digital-humanities/zmo-units",
         "/conference-activity",
