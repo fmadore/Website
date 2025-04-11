@@ -8,7 +8,7 @@ export const zmo2021: Appointment = {
 	location: 'Berlin, Germany',
 	startYear: 2021,
 	endYear: null, // Ongoing
-	dateRangeString: '2021–Present',
+	dateRangeString: '2021-Present',
 	dateISOStart: '2021-02-01',
 	dateISOEnd: null,
 };
