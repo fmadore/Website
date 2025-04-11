@@ -14,6 +14,7 @@ export const digitalHistoryExe: Communication = {
     language: "English",
     abstract: "This masterclass will explore how computational approaches - from text mining and digital mapping to AI - are reshaping historical research. Through analysis of existing projects and collaborative hands-on exercises, we will examine key digital methodologies and critically assess both the potential and limitations of these tools. The Master Class will go beyond a focus on Western contexts to include the application of digital approaches to African history, where unique challenges and opportunities exist.",
     tags: ["Digital History", "Computational Methods", "Archives", "Digital Humanities", "Historical Research"],
+    url: "https://web.archive.org/web/20250411145918/https://zzf-potsdam.de/forschung/doktorand_innen/master-class",
     image: "images/communications/zzf-logo.jpg",
     coordinates: {
         latitude: 52.39576849534208,
