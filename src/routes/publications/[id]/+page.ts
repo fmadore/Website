@@ -14,6 +14,7 @@ interface BaseJsonLd {
     image?: string;
     keywords?: string;
     url?: string; 
+    identifier?: string | { "@type": "PropertyValue", propertyID: string, value: string } | (string | { "@type": "PropertyValue", propertyID: string, value: string })[];
 }
 
 interface Person {
@@ -206,6 +207,18 @@ export const load: PageLoad = ({ params }) => {
     }
     if (publication.tags) {
         jsonLdObject.keywords = publication.tags.join(", ");
+    }
+
+    // Add DOI as identifier if it exists
+    if (publication.doi) {
+        // Simple approach: just add the DOI string
+        jsonLdObject.identifier = publication.doi;
+        // // More structured approach using PropertyValue (optional):
+        // jsonLdObject.identifier = {
+        //     "@type": "PropertyValue",
+        //     "propertyID": "doi",
+        //     "value": publication.doi
+        // };
     }
 
     // Stringify only
