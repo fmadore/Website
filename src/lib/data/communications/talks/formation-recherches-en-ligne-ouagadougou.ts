@@ -13,6 +13,7 @@ export const formationRecherchesEnLigneOuagadougou: Communication = {
     type: "lecture",
     language: "French",
     tags: ["Research Methods", "Online Research", "Training", "Burkina Faso"],
+    image: "images/communications/UJKZ-logo.png",
     coordinates: {
         latitude: 12.37676356958207,
         longitude: -1.503981368946586
