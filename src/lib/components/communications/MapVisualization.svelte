@@ -13,7 +13,7 @@
 <script lang="ts">
     import { onMount, onDestroy, afterUpdate } from 'svelte';
     import { browser } from '$app/environment';
-    import type { Map as LeafletMap, FeatureGroup as LeafletFeatureGroup, MarkerClusterGroup, TileLayerOptions } from 'leaflet'; // Import types only
+    import type { Map as LeafletMap, FeatureGroup as LeafletFeatureGroup, MarkerClusterGroup, TileLayerOptions, TileLayer } from 'leaflet'; // Import types only
     import { base } from '$app/paths'; // Import base path
     import { MapPin } from 'lucide-svelte'; // Import a Lucide icon
 
@@ -21,16 +21,149 @@
     export let markersData: MarkerData[] = [];
     export let initialView: [number, number] = [20, 0];
     export let initialZoom: number = 2;
-    export let tileLayerUrl: string = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    export let tileLayerAttribution: string = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
     export let maxZoom: number = 19;
     export let maxClusterZoom: number = 18;
+    export let preferDarkMode: boolean | null = null; // Optional override for dark mode preference
+    export let restrictBounds: boolean = true; // Whether to restrict map bounds
+
+    // Maximum bounds for the map (to prevent dragging to empty areas)
+    const MAX_BOUNDS: [number, number][] = [
+        [-85, -180], // Southwest corner
+        [85, 180]    // Northeast corner
+    ];
+
+    // Map tile options (light and dark themes)
+    const tileOptions = {
+        light: {
+            url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        },
+        dark: {
+            url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        },
+        // Fallback to standard OSM
+        default: {
+            url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }
+    };
 
     let mapContainer: HTMLElement;
     let map: LeafletMap | null = null;
     let clusterLayer: MarkerClusterGroup | null = null;
     let L: typeof import('leaflet') | null = null;
     let importError: string | null = null;
+    let currentTileLayer: TileLayer | null = null;
+    let darkMode = false; // Default to light mode
+    let mobileMenuObserver: MutationObserver | null = null;
+
+    // Function to detect dark mode from system or CSS
+    function detectDarkMode(): boolean {
+        if (preferDarkMode !== null) return preferDarkMode;
+        if (!browser) return false;
+        
+        // Check for dark mode using CSS variables if available
+        const bodyStyles = window.getComputedStyle(document.body);
+        const isDarkTheme = bodyStyles.getPropertyValue('--is-dark-theme')?.trim();
+        const colorScheme = bodyStyles.getPropertyValue('color-scheme')?.trim();
+        const backgroundColor = bodyStyles.getPropertyValue('background-color')?.trim();
+        
+        console.log('Theme detection:', { 
+            isDarkTheme, 
+            colorScheme, 
+            backgroundColor,
+            mediaQuery: window.matchMedia?.('(prefers-color-scheme: dark)')?.matches
+        });
+        
+        // If there's an explicit dark theme flag
+        if (isDarkTheme === 'true') return true;
+        if (isDarkTheme === 'false') return false;
+        
+        // Try color-scheme property
+        if (colorScheme === 'dark') return true;
+        if (colorScheme === 'light') return false;
+        
+        // Try to infer from background color (rough estimate)
+        if (backgroundColor) {
+            // Check if it's a dark color - crude check for dark backgrounds
+            try {
+                if (backgroundColor.includes('rgb')) {
+                    // Parse RGB values
+                    const rgb = backgroundColor.match(/\d+/g);
+                    if (rgb && rgb.length >= 3) {
+                        const [r, g, b] = rgb.map(Number);
+                        // Calculate perceived brightness using common formula
+                        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+                        return brightness < 128; // Dark if brightness is low
+                    }
+                }
+            } catch (e) {
+                console.error('Error parsing background color:', e);
+            }
+        }
+        
+        // Fallback to system preference
+        return window.matchMedia?.('(prefers-color-scheme: dark)')?.matches || false;
+    }
+
+    // Function to update tile layer based on theme
+    function updateTileLayer() {
+        if (!map || !L) return;
+        
+        const wasDarkMode = darkMode;
+        darkMode = detectDarkMode();
+        
+        console.log('Map theme updated:', { wasDarkMode, nowDarkMode: darkMode });
+        
+        // Force a specific theme for debugging if needed
+        // darkMode = false; // Uncomment to force light theme
+        
+        const tileSet = darkMode ? tileOptions.dark : tileOptions.light;
+        
+        // Remove current tile layer if it exists
+        if (currentTileLayer) {
+            map.removeLayer(currentTileLayer);
+        }
+        
+        // Add new tile layer
+        currentTileLayer = L.tileLayer(tileSet.url, {
+            attribution: tileSet.attribution,
+            maxZoom: maxZoom
+        }).addTo(map);
+    }
+
+    // Setup mobile menu observation to help with z-index issues
+    function setupMobileMenuObserver() {
+        if (!browser) return;
+        
+        // Find the mobile menu element
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenu) {
+            // Create a mutation observer to watch for class changes
+            mobileMenuObserver = new MutationObserver((mutations) => {
+                for (const mutation of mutations) {
+                    if (mutation.attributeName === 'class') {
+                        const isActive = mobileMenu.classList.contains('active');
+                        if (isActive) {
+                            document.body.classList.add('mobile-menu-open');
+                        } else {
+                            document.body.classList.remove('mobile-menu-open');
+                        }
+                    }
+                }
+            });
+            
+            // Start observing
+            mobileMenuObserver.observe(mobileMenu, { attributes: true });
+            
+            // Set initial state
+            if (mobileMenu.classList.contains('active')) {
+                document.body.classList.add('mobile-menu-open');
+            }
+        }
+    }
 
     onMount(async () => {
         if (!browser) return;
@@ -66,13 +199,20 @@
             }
 
             // Initialize the map with configurable options
-            map = L.map(mapContainer).setView(initialView, initialZoom);
+            map = L.map(mapContainer, {
+                center: initialView,
+                zoom: initialZoom,
+                maxZoom: maxZoom,
+                minZoom: 2, // Prevent zooming out too far
+                maxBoundsViscosity: 1.0, // Makes bounds completely solid
+                bounceAtZoomLimits: false, // Don't bounce when hitting zoom limits
+                worldCopyJump: true, // Allows seamless horizontal panning
+                // Set maximum bounds if restricted
+                ...(restrictBounds ? { maxBounds: MAX_BOUNDS } : {})
+            });
 
-            // Add tile layer with configurable options
-            L.tileLayer(tileLayerUrl, {
-                attribution: tileLayerAttribution,
-                maxZoom: maxZoom
-            }).addTo(map);
+            // Initialize with theme-aware tiles
+            updateTileLayer();
             
             // Initialize marker cluster layer group with options
             clusterLayer = L.markerClusterGroup({
@@ -131,6 +271,37 @@
 
             // Add initial markers
             addMarkers(markersData);
+            
+            // Set up theme change detection
+            if (window.matchMedia) {
+                const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                
+                // Modern browsers
+                if (darkModeMediaQuery.addEventListener) {
+                    darkModeMediaQuery.addEventListener('change', () => updateTileLayer());
+                }
+                // Safari & older browsers
+                else if (darkModeMediaQuery.addListener) {
+                    darkModeMediaQuery.addListener(() => updateTileLayer());
+                }
+            }
+            
+            // Watch for theme changes using MutationObserver
+            const bodyObserver = new MutationObserver((mutations) => {
+                for (const mutation of mutations) {
+                    if (mutation.attributeName === 'class' || mutation.attributeName === 'data-theme') {
+                        updateTileLayer();
+                        break;
+                    }
+                }
+            });
+            
+            bodyObserver.observe(document.body, { attributes: true });
+            
+            // Setup mobile menu observer after DOM is ready
+            setTimeout(() => {
+                setupMobileMenuObserver();
+            }, 500);
         } catch (error) {
             console.error('Error initializing map:', error);
             importError = error instanceof Error ? error.message : 'Unknown error loading map';
@@ -212,9 +383,20 @@
         if (L && map && markersData) {
             addMarkers(markersData);
         }
+        
+        // Check if we need to update tile layer (e.g. if preferDarkMode prop changed)
+        if (L && map && browser) {
+            updateTileLayer();
+        }
     });
 
     onDestroy(() => {
+        // Clean up observer
+        if (mobileMenuObserver) {
+            mobileMenuObserver.disconnect();
+        }
+        
+        // Clean up map
         if (map) {
             map.remove();
             map = null;
@@ -231,13 +413,61 @@
 </div>
 
 <style>
-    /* Similar styles as before, just no placeholder needed */
+    /* Map Container Base Styles */
     .map-container {
         width: 100%;
         height: 400px; /* Adjust as needed */
         position: relative;
         border-radius: var(--border-radius-md, 4px);
         overflow: hidden; 
+        /* Add z-index to ensure map stays below site navigation */
+        z-index: 1;
+        /* Add isolation to create a new stacking context */
+        isolation: isolate;
+    }
+
+    /* Force Leaflet controls to stay below header/navigation */
+    :global(.leaflet-top), 
+    :global(.leaflet-bottom), 
+    :global(.leaflet-control),
+    :global(.leaflet-control-container) {
+        z-index: 8 !important;
+    }
+    
+    :global(.leaflet-pane), 
+    :global(.leaflet-overlay-pane),
+    :global(.leaflet-marker-pane),
+    :global(.leaflet-tooltip-pane),
+    :global(.leaflet-popup-pane),
+    :global(.leaflet-map-pane svg),
+    :global(.leaflet-map-pane canvas) {
+        z-index: 2 !important;
+    }
+    
+    /* Override Leaflet's internal z-index stacking */
+    :global(.leaflet-control-zoom) {
+        z-index: 7 !important;
+    }
+    
+    :global(.leaflet-control-attribution) {
+        z-index: 7 !important;
+    }
+    
+    :global(.leaflet-popup) {
+        z-index: 6 !important;
+    }
+    
+    /* Important: Remove map from the stacking context when modal/menu is open */
+    :global(body.mobile-menu-open .map-container) {
+        z-index: 0;
+    }
+
+    /* Extreme fix: If the above doesn't work, force the popup elements to be hidden when menu open */
+    :global(body.mobile-menu-open .leaflet-control),
+    :global(body.mobile-menu-open .leaflet-control-container),
+    :global(body.mobile-menu-open .leaflet-pane),
+    :global(body.mobile-menu-open .leaflet-popup) {
+        visibility: hidden !important;
     }
 
     .map-error {
