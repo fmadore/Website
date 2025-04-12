@@ -8,6 +8,7 @@
     import ReferencePreviewCard from '$lib/components/atoms/ReferencePreviewCard.svelte';
     import { crossfade, fade } from 'svelte/transition';
     import { quintOut } from 'svelte/easing';
+    import { activeReferenceId } from '$lib/stores/activeItemReferenceStore';
 
     // Set up crossfade transitions
     const [send, receive] = crossfade({
@@ -46,6 +47,15 @@
     let referenceElement: HTMLElement; // Bind to the main span
     let positionClass = ''; // Class for positioning ('' or 'position-below')
     let closeTimeoutId: number | null = null; // Timeout ID for delayed close
+
+    // --- Store Subscription ---
+    // Close this instance if another is opened via click
+    $: {
+        if (browser && $activeReferenceId !== null && $activeReferenceId !== id && isOpenedByClick) {
+            showPreview = false;
+            isOpenedByClick = false;
+        }
+    }
 
     // --- Event Handlers ---
     function cancelCloseTimer() {
@@ -96,10 +106,10 @@
     function handleFocusOut(event: FocusEvent) {
         // Check if focus moved completely outside the component
         const relatedTarget = event.relatedTarget as Node;
+        const previewElement = document.querySelector(`#item-preview-${id}`);
         const staysWithinComponent = 
             referenceElement.contains(relatedTarget) || 
-            (document.querySelector(`#item-preview-${id}`) && 
-             document.querySelector(`#item-preview-${id}`).contains(relatedTarget));
+            (previewElement && previewElement.contains(relatedTarget));
         
         if (!staysWithinComponent && !isOpenedByClick) {
             showPreview = false;
@@ -110,8 +120,8 @@
     function handleClick(event: MouseEvent | TouchEvent | KeyboardEvent) {
         // Determine if this was within the card or on the span
         const targetElement = event.target as HTMLElement;
-        const clickedWithinCard = document.querySelector(`#item-preview-${id}`) && 
-                                 document.querySelector(`#item-preview-${id}`).contains(targetElement);
+        const previewElement = document.querySelector(`#item-preview-${id}`);
+        const clickedWithinCard = previewElement && previewElement.contains(targetElement);
                                  
         // If clicked within card and not a keyboard event, let it bubble naturally
         if (clickedWithinCard && !(event instanceof KeyboardEvent)) {
@@ -123,14 +133,17 @@
             cancelCloseTimer();
             showPreview = true;
             isOpenedByClick = true;
+            activeReferenceId.set(id);
             if (!(event instanceof KeyboardEvent)) event.preventDefault();
         } else if (showPreview && isOpenedByClick) {
             showPreview = false;
             isOpenedByClick = false;
+            activeReferenceId.update(currentId => (currentId === id ? null : currentId));
             if (!(event instanceof KeyboardEvent)) event.preventDefault();
         } else if (showPreview && !isOpenedByClick) {
             cancelCloseTimer();
             isOpenedByClick = true;
+            activeReferenceId.set(id);
             if (!(event instanceof KeyboardEvent)) event.preventDefault();
         }
     }
@@ -145,19 +158,21 @@
         if (event.key === 'Escape' && showPreview && isOpenedByClick) {
             showPreview = false;
             isOpenedByClick = false;
+            activeReferenceId.update(currentId => (currentId === id ? null : currentId));
         }
     }
 
     // Global click listener to handle clicking outside
     function handleClickOutside(event: MouseEvent) {
         const targetElement = event.target as HTMLElement;
+        const previewElement = document.querySelector(`#item-preview-${id}`);
         const clickedOutside = !referenceElement.contains(targetElement) && 
-                              !(document.querySelector(`#item-preview-${id}`) && 
-                                document.querySelector(`#item-preview-${id}`).contains(targetElement));
+                              !(previewElement && previewElement.contains(targetElement));
         
         if (clickedOutside && showPreview && isOpenedByClick) {
             showPreview = false;
             isOpenedByClick = false;
+            activeReferenceId.update(currentId => (currentId === id ? null : currentId));
         }
     }
 
@@ -195,6 +210,9 @@
         if (browser) {
             document.removeEventListener('click', handleClickOutside, true);
             cancelCloseTimer();
+            if ($activeReferenceId === id) {
+                activeReferenceId.set(null);
+            }
         }
     });
 </script>
