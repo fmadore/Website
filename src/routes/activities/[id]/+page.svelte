@@ -7,6 +7,7 @@
     import ItemReference from '$lib/components/molecules/ItemReference.svelte';
     import type { Activity } from '$lib/types';
     import type { PageData } from './$types';
+    import JsonLdScript from '$lib/components/common/JsonLdScript.svelte';
 
     // Get data from the load function
     export let data: PageData;
@@ -50,9 +51,7 @@
 
 <svelte:head>
     {#if jsonLdString}
-        <script type="application/ld+json">
-            {@html jsonLdString}
-        </script>
+        <JsonLdScript jsonString={jsonLdString} />
     {/if}
 </svelte:head>
 
