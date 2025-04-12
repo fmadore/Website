@@ -16,6 +16,7 @@ interface BaseJsonLd {
 interface Person {
     "@type": "Person";
     name: string;
+    url?: string;
     jobTitle?: string;
     affiliation?: {
         "@type": "Organization";
@@ -37,6 +38,7 @@ interface BookJsonLd extends BaseJsonLd {
 
 interface BlogPostingJsonLd extends BaseJsonLd {
     "@type": "BlogPosting";
+    headline?: string;
     datePublished: string;
     author?: Person | Person[];
 }
@@ -62,18 +64,25 @@ export const load: PageLoad = ({ params }) => {
     // Determine type - Removed tag checking, always BlogPosting for this route
     const resolvedType = "BlogPosting"; 
 
+    // Format date with time and timezone (Berlin CET = UTC+1)
+    // Note: This assumes CET. If activity dates span DST changes, logic might need adjustment.
+    const formattedDatePublished = `${activity.dateISO}T00:00:00+01:00`;
+
     // Use BlogPostingJsonLd directly, but keep Partial for optional fields
     const jsonLdObject: Partial<BlogPostingJsonLd> = {
         "@context": "https://schema.org",
         "@type": resolvedType, // Always "BlogPosting"
         "name": activity.title,
+        "headline": activity.title,
         "description": activity.description,
+        "datePublished": formattedDatePublished,
     };
 
     // Default author 
     const defaultAuthor: Person = {
         "@type": "Person",
         "name": "Frédérick Madore",
+        "url": "https://www.frederickmadore.com",
         "jobTitle": "Research Fellow",
         "affiliation": {
             "@type": "Organization",
@@ -82,7 +91,6 @@ export const load: PageLoad = ({ params }) => {
     };
 
     // Assign fields for BlogPosting
-    jsonLdObject.datePublished = activity.dateISO;
     jsonLdObject.author = defaultAuthor;
     
     // Remove the switch statement
