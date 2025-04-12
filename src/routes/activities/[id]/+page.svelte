@@ -7,12 +7,38 @@
     import ItemReference from '$lib/components/molecules/ItemReference.svelte';
     import type { Activity } from '$lib/types';
     import type { PageData } from './$types';
-    import JsonLdScript from '$lib/components/common/JsonLdScript.svelte';
+    import { onMount, onDestroy } from 'svelte';
+    import { browser } from '$app/environment';
 
     // Get data from the load function
     export let data: PageData;
     $: activity = data.activity;
     $: jsonLdString = data.jsonLdString;
+
+    const jsonLdScriptId = 'activity-json-ld';
+
+    onMount(() => {
+        if (browser && jsonLdString) {
+            // Avoid adding duplicate script if navigation occurs client-side
+            if (document.getElementById(jsonLdScriptId)) {
+                return;
+            }
+            const script = document.createElement('script');
+            script.id = jsonLdScriptId;
+            script.type = 'application/ld+json';
+            script.textContent = jsonLdString;
+            document.head.appendChild(script);
+        }
+    });
+
+    onDestroy(() => {
+        if (browser) {
+            const script = document.getElementById(jsonLdScriptId);
+            if (script) {
+                document.head.removeChild(script);
+            }
+        }
+    });
 
     // Format the tags for display
     const formattedTags = activity?.tags ? activity.tags : [];
@@ -50,9 +76,10 @@
 </script>
 
 <svelte:head>
-    {#if jsonLdString}
+    <!-- Remove the JsonLdScript component from here -->
+    <!-- {#if jsonLdString}
         <JsonLdScript jsonString={jsonLdString} />
-    {/if}
+    {/if} -->
 </svelte:head>
 
 {#if activity}
