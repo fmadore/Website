@@ -208,10 +208,11 @@ export const load: PageLoad = ({ params }) => {
         jsonLdObject.keywords = publication.tags.join(", ");
     }
 
+    // Stringify only
     const jsonLdString = JSON.stringify(jsonLdObject);
 
     return {
         publication,
-        jsonLdString
+        jsonLdString // Return the raw string
     };
 }; 

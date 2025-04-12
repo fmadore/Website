@@ -5,8 +5,8 @@
     import type { Publication } from '$lib/types';
     import type { ComponentType } from 'svelte';
     import type { PageData } from './$types'; // Import PageData
-    import { onMount, onDestroy } from 'svelte'; // Import lifecycle functions
-    import { browser } from '$app/environment'; // Import browser check
+    import { onMount, onDestroy } from 'svelte'; // Add back lifecycle functions
+    import { browser } from '$app/environment'; // Add back browser check
 
     // CitedBy, Reviews, PageHeader, etc. imports remain
     import CitedBy from '$lib/components/publications/CitedBy.svelte';
@@ -21,17 +21,18 @@
     import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
     import { allPublications } from '$lib/data/publications/index'; // Keep this for RelatedItemsList
     
-    // Get publication and jsonLdString from page data
+    // Get data from the load function
     export let data: PageData;
-    $: publication = data.publication as Publication; // Cast needed if load returns generic type
-    $: jsonLdString = data.jsonLdString;
+    $: publication = data.publication as Publication;
+    $: jsonLdString = data.jsonLdString; // Use the raw string
 
+    // Add back onMount/onDestroy logic
     const jsonLdScriptId = 'publication-json-ld';
 
     onMount(() => {
         if (browser && jsonLdString) {
             if (document.getElementById(jsonLdScriptId)) {
-                return; // Avoid duplicates
+                return; 
             }
             const script = document.createElement('script');
             script.id = jsonLdScriptId;
@@ -105,11 +106,13 @@
 
 </script>
 
-<!-- Remove svelte:head block for JSON-LD -->
+<!-- Ensure svelte:head block for JSON-LD is removed or commented out -->
 <!-- 
 <svelte:head>
-    {#if jsonLdString}
-       {* We are injecting via onMount instead *}
+    {#if jsonLdString} 
+        <script type="application/ld+json">
+            {@html jsonLdString}
+        </script>
     {/if}
 </svelte:head>
 -->
