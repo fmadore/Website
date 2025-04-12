@@ -3,26 +3,54 @@ import { base } from '$app/paths';
 import { getActivityById, type Activity } from '$lib/stores/activities';
 import type { PageLoad } from './$types';
 
-// Define the JSON-LD structure interface (can be moved to a shared types file later)
-interface JsonLd {
-    "@context": string;
+// --- JSON-LD Interfaces ---
+interface BaseJsonLd {
+    "@context": "https://schema.org";
     "@type": string;
     name: string;
-    description: string;
-    datePublished: string;
-    author: {
-        "@type": string;
-        name: string;
-        jobTitle: string;
-        affiliation: {
-            "@type": string;
-            name: string;
-        };
-    };
+    description?: string;
     image?: string;
     keywords?: string;
 }
 
+interface Person {
+    "@type": "Person";
+    name: string;
+    jobTitle?: string;
+    affiliation?: {
+        "@type": "Organization";
+        name: string;
+    };
+}
+
+interface ScholarlyArticleJsonLd extends BaseJsonLd {
+    "@type": "ScholarlyArticle";
+    datePublished: string;
+    author?: Person | Person[];
+}
+
+interface BookJsonLd extends BaseJsonLd {
+    "@type": "Book";
+    datePublished: string;
+    author?: Person | Person[];
+}
+
+interface BlogPostingJsonLd extends BaseJsonLd {
+    "@type": "BlogPosting";
+    datePublished: string;
+    author?: Person | Person[];
+}
+
+interface CreativeWorkJsonLd extends BaseJsonLd {
+    "@type": "CreativeWork";
+    datePublished?: string;
+    author?: Person | Person[];
+}
+
+// Simplified Union type - Although we only generate BlogPosting here now
+type JsonLd = /* EventJsonLd | ScholarlyArticleJsonLd | BookJsonLd | */ BlogPostingJsonLd /* | CreativeWorkJsonLd */;
+
+// --- Load Function ---
 export const load: PageLoad = ({ params }) => {
     const activityId = params.id;
     const activity = getActivityById(activityId);
@@ -31,42 +59,62 @@ export const load: PageLoad = ({ params }) => {
         throw error(404, 'Activity not found');
     }
 
-    // Construct the JSON-LD object
-    const jsonLdObject: JsonLd = {
+    // Determine type - Removed tag checking, always BlogPosting for this route
+    const resolvedType = "BlogPosting"; 
+
+    // Use BlogPostingJsonLd directly, but keep Partial for optional fields
+    const jsonLdObject: Partial<BlogPostingJsonLd> = {
         "@context": "https://schema.org",
-        "@type": activity.tags?.includes('article') ? "ScholarlyArticle" : 
-                  activity.tags?.includes('book') ? "Book" : 
-                  (activity.tags?.includes('conference') || activity.tags?.includes('Workshop')) ? "Event" : 
-                  "CreativeWork",
+        "@type": resolvedType, // Always "BlogPosting"
         "name": activity.title,
         "description": activity.description,
-        "datePublished": activity.dateISO,
-        "author": {
-            "@type": "Person",
-            "name": "Frédérick Madore",
-            "jobTitle": "Research Fellow",
-            "affiliation": {
-                "@type": "Organization",
-                "name": "Leibniz-Zentrum Moderner Orient (ZMO)"
-            }
+    };
+
+    // Default author 
+    const defaultAuthor: Person = {
+        "@type": "Person",
+        "name": "Frédérick Madore",
+        "jobTitle": "Research Fellow",
+        "affiliation": {
+            "@type": "Organization",
+            "name": "Leibniz-Zentrum Moderner Orient (ZMO)"
         }
     };
 
-    if (activity.heroImage?.src) {
-        // Use absolute URL
-        jsonLdObject.image = `${base}/${activity.heroImage.src}`; 
+    // Assign fields for BlogPosting
+    jsonLdObject.datePublished = activity.dateISO;
+    jsonLdObject.author = defaultAuthor;
+    
+    // Remove the switch statement
+    /* 
+    switch (resolvedType) {
+        case "Event":
+            // ... event logic removed ...
+            break;
+        case "ScholarlyArticle":
+            // ... article logic removed ...
+            break;
+        case "Book":
+            // ... book logic removed ...
+            break;
+        case "BlogPosting": 
+            // ... blog logic moved out ...
+            break;
     }
+    */
 
+    // Common optional fields
+    if (activity.heroImage?.src) {
+        jsonLdObject.image = `${base}/${activity.heroImage.src}`;
+    }
     if (activity.tags) {
         jsonLdObject.keywords = activity.tags.join(", ");
     }
 
-    // Stringify the object here
     const jsonLdString = JSON.stringify(jsonLdObject);
 
-    // Return activity data and the JSON-LD string
     return {
         activity,
-        jsonLdString // Pass the string instead of the object
+        jsonLdString
     };
 }; 
