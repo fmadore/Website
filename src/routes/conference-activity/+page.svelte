@@ -67,7 +67,8 @@
             id: comm.id,
             title: comm.title,
             coordinates: comm.coordinates!,
-            year: comm.year
+            year: comm.year,
+            activityType: comm.type
         })) || [];
 
     // Helper to check if any filters are active (consistent with communications/+page.svelte)

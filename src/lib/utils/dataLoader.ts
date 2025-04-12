@@ -76,6 +76,9 @@ export function loadData<T extends DataItem>(
                     return null;
                 }
 
+                // Debug: Log the extracted data item before filtering
+                // console.log(`DataLoader extracted for path ${path}:`, dataItem);
+
                 return dataItem; // Return the found data item
             } catch (error) {
                 console.error(`Error processing ${dataTypeName} module at path ${path}:`, error);

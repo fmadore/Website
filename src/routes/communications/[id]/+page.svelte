@@ -23,7 +23,8 @@
         id: communication.id,
         title: communication.title,
         coordinates: communication.coordinates,
-        year: communication.year
+        year: communication.year,
+        activityType: communication.type
     }] : [];
     
     // Format date for display

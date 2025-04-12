@@ -102,12 +102,17 @@ export const allProjects = Array.from(new Set(
 // Get all coordinates for map visualization
 export const allCoordinates = allCommunications
     .filter(comm => comm.coordinates)
-    .map(comm => ({
-        id: comm.id,
-        title: comm.title,
-        coordinates: comm.coordinates!,
-        year: comm.year
-    }));
+    .map(comm => {
+        const communicationItem = comm as Communication; // Explicitly cast to Communication type
+        // console.log(`Mapping item ID: ${communicationItem.id}, Type found: ${communicationItem.type}`); // Log type after cast
+        return {
+            id: communicationItem.id,
+            title: communicationItem.title,
+            coordinates: communicationItem.coordinates!,
+            year: communicationItem.year,
+            activityType: communicationItem.type // Access type from the casted item
+        };
+    });
 
 // Export the full list of communications
 export { allCommunications }; 

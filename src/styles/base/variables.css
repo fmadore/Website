@@ -8,6 +8,9 @@
   --color-secondary: #4b5563; /* Kept as gray */
   --color-accent: #7c3aed; /* Complementary accent */
   --color-highlight: #e07c3e; /* Warm highlight */
+  --color-highlight-rgb: 224, 124, 62; /* RGB for highlight */
+  --color-success: #2f855a; /* Green for success/workshops */
+  --color-success-rgb: 47, 133, 90; /* RGB for success */
   --color-background: #ffffff;
   --color-text: #1a202c;
   --color-text-light: #4a5568;
@@ -65,6 +68,9 @@ html.dark {
   --color-secondary: #9ca3af; /* Lighter gray */
   --color-accent: #a582ff; /* Lighter purple */
   --color-highlight: #ff9c66; /* Lighter orange/warm highlight */
+  --color-highlight-rgb: 255, 156, 102; /* RGB for highlight dark mode */
+  --color-success: #68d391; /* Lighter green for dark mode */
+  --color-success-rgb: 104, 211, 145; /* RGB for success in dark mode */
   --color-background: #111827; /* Very dark gray */
   --color-text: #e5e7eb; /* Light gray text */
   --color-text-light: #9ca3af; /* Medium gray text */
