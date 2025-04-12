@@ -181,7 +181,7 @@
     <div class="main-content">
         <PageHeader title="Conference Activity" />
 
-        <p class="text-xl mb-10">Over the last decade, I have given talks to audiences in {countries.length} countries across Africa, Europe, and North America.</p>
+        <p class="text-xl mb-10">Since 2012, I have given talks to audiences in {countries.length} countries across Africa, Europe, and North America.</p>
 
         <!-- Mobile Controls: Filter Toggle + Map Toggle + Sorter -->
         <div class="mobile-controls">
