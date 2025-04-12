@@ -1,6 +1,16 @@
 import { writable, derived } from 'svelte/store';
 import type { Publication, YearRange } from '$lib/types';
 import { allPublications, publicationsByType, publicationsByYear, allTags, allLanguages } from './index';
+import {
+	createActiveFiltersStore,
+	createToggleArrayFilter,
+	createSetArrayFilter,
+	createUpdateRangeFilter,
+	createResetRangeFilter,
+    createSetRangeFilter,
+	createClearAllFilters,
+	createDerivedCountStore
+} from '$lib/utils/filterUtils'; // Import utilities
 
 // Helper function to extract editors from a publication
 function extractEditors(publication: Publication): string[] {
@@ -41,17 +51,33 @@ export const allProjects = Array.from(new Set(
     allPublications.map(pub => pub.project).filter(Boolean) as string[]
 )).sort();
 
+// Adjust allLanguages to handle comma-separated values consistently
+const uniqueLanguages = Array.from(new Set(
+    allPublications.flatMap(pub => pub.language ? pub.language.split(',').map(l => l.trim()) : [])
+)).sort();
+
 // Create a store for active filters
-export const activeFilters = writable({
-    types: [] as string[],
-    // Replace years array with yearRange object
-    yearRange: null as YearRange | null,
-    tags: [] as string[],
-    languages: [] as string[],
-    authors: [] as string[],
-    countries: [] as string[],
-    projects: [] as string[]
-});
+interface ActivePublicationFilters {
+    types: string[];
+	yearRange: YearRange | null;
+	tags: string[];
+	languages: string[];
+	authors: string[];
+	countries: string[];
+	projects: string[];
+}
+
+const initialFilters: ActivePublicationFilters = {
+	types: [],
+	yearRange: null,
+	tags: [],
+	languages: [],
+	authors: [],
+	countries: [],
+	projects: []
+};
+
+export const activeFilters = createActiveFiltersStore(initialFilters);
 
 // Create a store for available filter options (automatically derived from publications)
 export const filterOptions = writable({
@@ -59,7 +85,7 @@ export const filterOptions = writable({
     // Years remain the same here, representing all available options
     years: Object.keys(publicationsByYear).map(Number).sort((a, b) => b - a),
     tags: allTags,
-    languages: allLanguages,
+    languages: uniqueLanguages,
     authors: allAuthors,
     countries: allCountries,
     projects: allProjects
@@ -141,108 +167,33 @@ export const filteredPublications = derived(
 );
 
 // Functions to toggle filters
-export function toggleTypeFilter(type: string) {
-    activeFilters.update(filters => {
-        if (filters.types.includes(type)) {
-            return { ...filters, types: filters.types.filter(t => t !== type) };
-        } else {
-            return { ...filters, types: [...filters.types, type] };
-        }
-    });
-}
+export const toggleTypeFilter = createToggleArrayFilter(activeFilters, 'types');
+export const toggleTagFilter = createToggleArrayFilter(activeFilters, 'tags');
+export const toggleLanguageFilter = createToggleArrayFilter(activeFilters, 'languages');
+export const toggleAuthorFilter = createToggleArrayFilter(activeFilters, 'authors');
+export const toggleCountryFilter = createToggleArrayFilter(activeFilters, 'countries');
+export const toggleProjectFilter = createToggleArrayFilter(activeFilters, 'projects');
 
 // Add function to update year range
-export function updateYearRange(min: number, max: number) {
-    // Ensure min is not greater than max before updating
-    const validatedMin = Math.min(min, max);
-    const validatedMax = Math.max(min, max);
-    activeFilters.update(filters => ({ ...filters, yearRange: { min: validatedMin, max: validatedMax } }));
-}
+export const updateYearRange = createUpdateRangeFilter(activeFilters, 'yearRange');
 
 // Add function to reset year range filter
-export function resetYearRange() {
-    activeFilters.update(filters => ({ ...filters, yearRange: null }));
-}
+export const resetYearRange = createResetRangeFilter(activeFilters, 'yearRange');
 
-export function toggleTagFilter(tag: string) {
-    activeFilters.update(filters => {
-        if (filters.tags.includes(tag)) {
-            return { ...filters, tags: filters.tags.filter(t => t !== tag) };
-        } else {
-            return { ...filters, tags: [...filters.tags, tag] };
-        }
-    });
-}
-
-export function toggleLanguageFilter(language: string) {
-    activeFilters.update(filters => {
-        if (filters.languages.includes(language)) {
-            return { ...filters, languages: filters.languages.filter(l => l !== language) };
-        } else {
-            return { ...filters, languages: [...filters.languages, language] };
-        }
-    });
-}
-
-export function toggleAuthorFilter(author: string) {
-    activeFilters.update(filters => {
-        if (filters.authors.includes(author)) {
-            return { ...filters, authors: filters.authors.filter(a => a !== author) };
-        } else {
-            return { ...filters, authors: [...filters.authors, author] };
-        }
-    });
-}
-
-export function toggleCountryFilter(country: string) {
-    activeFilters.update(filters => {
-        if (filters.countries.includes(country)) {
-            return { ...filters, countries: filters.countries.filter(c => c !== country) };
-        } else {
-            return { ...filters, countries: [...filters.countries, country] };
-        }
-    });
-}
-
-export function toggleProjectFilter(project: string) {
-    activeFilters.update(filters => {
-        if (filters.projects.includes(project)) {
-            return { ...filters, projects: filters.projects.filter(p => p !== project) };
-        } else {
-            return { ...filters, projects: [...filters.projects, project] };
-        }
-    });
-}
+// Set Functions
+export const setTypes = createSetArrayFilter(activeFilters, 'types');
+export const setTags = createSetArrayFilter(activeFilters, 'tags');
+export const setLanguages = createSetArrayFilter(activeFilters, 'languages');
+export const setAuthors = createSetArrayFilter(activeFilters, 'authors');
+export const setCountries = createSetArrayFilter(activeFilters, 'countries');
+export const setProjects = createSetArrayFilter(activeFilters, 'projects');
+export const setYearRange = createSetRangeFilter(updateYearRange, resetYearRange);
 
 // Function to clear all filters
-export function clearAllFilters() {
-    activeFilters.set({
-        types: [],
-        // Reset yearRange to null
-        yearRange: null,
-        tags: [],
-        languages: [],
-        authors: [],
-        countries: [],
-        projects: []
-    });
-}
+export const clearAllFilters = createClearAllFilters(activeFilters, initialFilters);
 
 // Get available tag counts for current filtered publications
-export const tagCounts = derived(
-    [filteredPublications],
-    ([$filteredPublications]) => {
-        const counts: Record<string, number> = {};
-        $filteredPublications.forEach(pub => {
-            if (pub.tags) {
-                pub.tags.forEach(tag => {
-                    counts[tag] = (counts[tag] || 0) + 1;
-                });
-            }
-        });
-        return counts;
-    }
-);
+export const tagCounts = createDerivedCountStore(filteredPublications, (pub) => pub.tags);
 
 // Derive displayed authors based on selected publication types, year range, tags, and languages
 export const displayedAuthors = derived(
@@ -318,135 +269,19 @@ export const displayedAuthors = derived(
 );
 
 // Get available author counts for current filtered publications
-export const authorCounts = derived(
-    [filteredPublications],
-    ([$filteredPublications]) => {
-        const counts: Record<string, number> = {};
-        
-        $filteredPublications.forEach(pub => {
-            // Count authors
-            if (pub.authors) {
-                pub.authors.forEach(author => {
-                    // Only count co-authors, not the site owner
-                    if (author !== "Frédérick Madore") {
-                        counts[author] = (counts[author] || 0) + 1;
-                    }
-                });
-            }
-            
-            // Count editors, but only if the publication type is not 'chapter' or 'encyclopedia'
-            if (pub.editors && pub.type !== 'chapter' && pub.type !== 'encyclopedia') {
-                const editorNames = extractEditors(pub);
-                editorNames.forEach(editor => {
-                    // Only count co-editors, not the site owner
-                    if (editor !== "Frédérick Madore") {
-                        counts[editor] = (counts[editor] || 0) + 1;
-                    }
-                });
-            }
-            
-            // Count preface authors
-            if (pub.prefacedBy && pub.prefacedBy !== "Frédérick Madore") {
-                counts[pub.prefacedBy] = (counts[pub.prefacedBy] || 0) + 1;
-            }
-        });
-        
-        return counts;
-    }
-);
+export const authorCounts = createDerivedCountStore(filteredPublications, (pub) => pub.authors);
 
 // Get available country counts for current filtered publications
-export const countryCounts = derived(
-    [filteredPublications],
-    ([$filteredPublications]) => {
-        const counts: Record<string, number> = {};
-        $filteredPublications.forEach(pub => {
-            if (pub.country) {
-                pub.country.forEach(country => {
-                    counts[country] = (counts[country] || 0) + 1;
-                });
-            }
-        });
-        return counts;
-    }
-);
+export const countryCounts = createDerivedCountStore(filteredPublications, (pub) => pub.country);
 
 // Get available project counts for current filtered publications
-export const projectCounts = derived(
-    [filteredPublications],
-    ([$filteredPublications]) => {
-        const counts: Record<string, number> = {};
-        $filteredPublications.forEach(pub => {
-            if (pub.project) {
-                counts[pub.project] = (counts[pub.project] || 0) + 1;
-            }
-        });
-        return counts;
-    }
-);
+export const projectCounts = createDerivedCountStore(filteredPublications, (pub) => pub.project);
 
 // Get available type counts for current filtered publications
-export const typeCounts = derived(
-    [filteredPublications],
-    ([$filteredPublications]) => {
-        const counts: Record<string, number> = {};
-        $filteredPublications.forEach(pub => {
-            counts[pub.type] = (counts[pub.type] || 0) + 1;
-        });
-        return counts;
-    }
-);
-
-// Functions to set filters directly (needed for URL sync)
-export function setTypes(types: string[]) {
-    activeFilters.update(filters => ({ ...filters, types }));
-}
-
-export function setTags(tags: string[]) {
-    activeFilters.update(filters => ({ ...filters, tags }));
-}
-
-export function setLanguages(languages: string[]) {
-    activeFilters.update(filters => ({ ...filters, languages }));
-}
-
-export function setAuthors(authors: string[]) {
-    activeFilters.update(filters => ({ ...filters, authors }));
-}
-
-export function setCountries(countries: string[]) {
-    activeFilters.update(filters => ({ ...filters, countries }));
-}
-
-export function setProjects(projects: string[]) {
-    activeFilters.update(filters => ({ ...filters, projects }));
-}
-
-// Set year range (uses existing update/reset functions)
-export function setYearRange(range: YearRange | null) {
-    if (range) {
-        updateYearRange(range.min, range.max);
-    } else {
-        resetYearRange();
-    }
-}
+export const typeCounts = createDerivedCountStore(filteredPublications, (pub) => pub.type);
 
 // Get available language counts for current filtered publications
-export const languageCounts = derived(
-    [filteredPublications],
-    ([$filteredPublications]) => {
-        const counts: Record<string, number> = {};
-        $filteredPublications.forEach(pub => {
-            if (pub.language) {
-                const langs = pub.language.split(',').map(l => l.trim());
-                langs.forEach(lang => {
-                    counts[lang] = (counts[lang] || 0) + 1;
-                });
-            }
-        });
-        return counts;
-    }
-);
+export const languageCounts = createDerivedCountStore(filteredPublications, (pub) => pub.language?.split(',').map(l => l.trim()));
 
 // Derive displayed types based on other active filters
 export const displayedTypes = derived(

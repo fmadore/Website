@@ -143,7 +143,7 @@
                 activeRange: $activeFilters?.yearRange || null, updateRange: updateYearRange, resetRange: resetYearRange 
             } as RangeFilterOption,
             { 
-                type: 'checkbox', title: 'Co-authors / Participants', items: authors, 
+                type: 'checkbox', title: 'Co-authors', items: authors,
                 activeItems: $activeFilters?.authors || [], toggleItem: toggleAuthorFilter, counts: $authorCounts 
             } as CheckboxFilterOption<string>,
             { 
