@@ -10,12 +10,14 @@ export default {
         secondary: 'var(--color-secondary)', // #4b5563 / #9ca3af
         accent: 'var(--color-accent)', // #7c3aed / #a582ff
         highlight: 'var(--color-highlight)', // #e07c3e / #ff9c66
+        success: 'var(--color-success)', // #2f855a / #68d391
         background: 'var(--color-background)', // #ffffff / #111827
         text: 'var(--color-text)', // #1a202c / #e5e7eb
         'text-light': 'var(--color-text-light)', // #4a5568 / #9ca3af
         border: 'var(--color-border)', // #e2e8f0 / #374151
         'footer-bg': 'var(--color-footer-bg)', // #1f2937 / #0f172a
         'footer-text': 'var(--color-footer-text)', // #f9fafb / #d1d5db
+        'footer-text-muted': 'var(--color-footer-text-muted)', // rgba(255, 255, 255, 0.7) / rgba(209, 213, 219, 0.7)
         'sidebar-bg': 'var(--color-sidebar-bg)', // #f9fafb / #1f2937
       },
       spacing: {
