@@ -10,60 +10,79 @@
 
 <script lang="ts">
     import { onMount, onDestroy, afterUpdate } from 'svelte';
-    import type { Map as LeafletMap, FeatureGroup as LeafletFeatureGroup, MarkerClusterGroup } from 'leaflet'; // Import types only
-    import 'leaflet/dist/leaflet.css';
+    import { browser } from '$app/environment';
+    import type { Map as LeafletMap, FeatureGroup as LeafletFeatureGroup, MarkerClusterGroup, TileLayerOptions } from 'leaflet'; // Import types only
     import { base } from '$app/paths'; // Import base path
-    // Import marker cluster styles
-    import 'leaflet.markercluster/dist/MarkerCluster.css';
-    import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
+    // Map configuration props with defaults
     export let markersData: MarkerData[] = [];
+    export let initialView: [number, number] = [20, 0];
+    export let initialZoom: number = 2;
+    export let tileLayerUrl: string = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    export let tileLayerAttribution: string = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+    export let maxZoom: number = 19;
+    export let maxClusterZoom: number = 18;
 
     let mapContainer: HTMLElement;
     let map: LeafletMap | null = null;
-    // let markersLayer: LeafletFeatureGroup | null = null; // Replace FeatureGroup
-    let clusterLayer: MarkerClusterGroup | null = null; // Use MarkerClusterGroup
+    let clusterLayer: MarkerClusterGroup | null = null;
     let L: typeof import('leaflet') | null = null;
-
-    // Icon paths remain static imports
-    import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
-    import iconUrl from 'leaflet/dist/images/marker-icon.png';
-    import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
+    let importError: string | null = null;
 
     onMount(async () => {
-        // Dynamically import Leaflet first
-        L = (await import('leaflet')).default;
-        // THEN dynamically import the marker cluster plugin
-        await import('leaflet.markercluster');
-
-        delete (L.Icon.Default.prototype as any)._getIconUrl;
-        L.Icon.Default.mergeOptions({
-            iconRetinaUrl,
-            iconUrl,
-            shadowUrl,
-        });
-
-        if (!mapContainer) {
-            console.error('Map container not found.');
-            return; // Exit if no container
-        }
-
-        // Initialize the map
-        map = L.map(mapContainer).setView([20, 0], 2);
-
-        // Add OpenStreetMap tile layer
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+        if (!browser) return;
         
-        // Initialize marker cluster layer group
-        // markersLayer = L.featureGroup().addTo(map);
-        clusterLayer = L.markerClusterGroup().addTo(map); // Initialize cluster group
+        try {
+            // Dynamically import Leaflet
+            L = (await import('leaflet')).default;
+            
+            // Then dynamically import the marker cluster plugin
+            await import('leaflet.markercluster');
+            
+            // Import CSS only on client-side
+            await import('leaflet/dist/leaflet.css');
+            await import('leaflet.markercluster/dist/MarkerCluster.css');
+            await import('leaflet.markercluster/dist/MarkerCluster.Default.css');
+            
+            // Fix icon paths (needs to be after Leaflet import)
+            delete (L.Icon.Default.prototype as any)._getIconUrl;
+            
+            // Dynamic import of icon assets
+            const iconRetinaUrl = (await import('leaflet/dist/images/marker-icon-2x.png')).default;
+            const iconUrl = (await import('leaflet/dist/images/marker-icon.png')).default;
+            const shadowUrl = (await import('leaflet/dist/images/marker-shadow.png')).default;
+            
+            L.Icon.Default.mergeOptions({
+                iconRetinaUrl,
+                iconUrl,
+                shadowUrl,
+            });
 
-        // Add initial markers
-        addMarkers(markersData);
+            if (!mapContainer) {
+                throw new Error('Map container not found');
+            }
 
-        // No return needed here, onDestroy handles cleanup
+            // Initialize the map with configurable options
+            map = L.map(mapContainer).setView(initialView, initialZoom);
+
+            // Add tile layer with configurable options
+            L.tileLayer(tileLayerUrl, {
+                attribution: tileLayerAttribution,
+                maxZoom: maxZoom
+            }).addTo(map);
+            
+            // Initialize marker cluster layer group with options
+            clusterLayer = L.markerClusterGroup({
+                maxClusterRadius: 50,
+                disableClusteringAtZoom: maxClusterZoom
+            }).addTo(map);
+
+            // Add initial markers
+            addMarkers(markersData);
+        } catch (error) {
+            console.error('Error initializing map:', error);
+            importError = error instanceof Error ? error.message : 'Unknown error loading map';
+        }
     });
 
     // Function to add/update markers
@@ -115,11 +134,15 @@
             map = null;
         }
     });
-
 </script>
 
-<!-- No API key needed for OpenStreetMap -->
-<div bind:this={mapContainer} class="map-container"></div>
+<div bind:this={mapContainer} class="map-container">
+    {#if importError}
+    <div class="map-error">
+        <p>Error loading map: {importError}</p>
+    </div>
+    {/if}
+</div>
 
 <style>
     /* Similar styles as before, just no placeholder needed */
@@ -129,6 +152,18 @@
         position: relative;
         border-radius: var(--border-radius-md, 4px);
         overflow: hidden; 
+    }
+
+    .map-error {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 0, 0, 0.1);
+        color: #d32f2f;
+        padding: var(--spacing-4, 1rem);
+        text-align: center;
     }
 
     /* Custom Popup Styles */
