@@ -1,79 +1,22 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    import { getActivityById, type Activity } from '$lib/stores/activities';
     import { error } from '@sveltejs/kit';
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
     import ItemReference from '$lib/components/molecules/ItemReference.svelte';
-    
-    // Get the activity ID from the URL
-    const activityId = $page.params.id;
-    
-    // Get the activity details
-    const activity = getActivityById(activityId);
-    
-    // If activity not found, throw 404
-    if (!activity) {
-        throw error(404, 'Activity not found');
-    }
+    import type { Activity } from '$lib/types';
+    import type { PageData } from './$types';
 
-    // Define the JSON-LD structure interface
-    interface JsonLd {
-        "@context": string;
-        "@type": string;
-        name: string;
-        description: string;
-        datePublished: string;
-        author: {
-            "@type": string;
-            name: string;
-            jobTitle: string;
-            affiliation: {
-                "@type": string;
-                name: string;
-            };
-        };
-        image?: string;
-        keywords?: string;
-    }
-
-    // Function to create JSON-LD structured data
-    function getJsonLd(activity: Activity): string {
-        const jsonLd: JsonLd = {
-            "@context": "https://schema.org",
-            "@type": activity.tags?.includes('article') ? "ScholarlyArticle" : 
-                      activity.tags?.includes('book') ? "Book" : 
-                      activity.tags?.includes('conference') ? "Event" : "CreativeWork",
-            "name": activity.title,
-            "description": activity.description,
-            "datePublished": activity.dateISO,
-            "author": {
-                "@type": "Person",
-                "name": "Frédérick Madore",
-                "jobTitle": "Research Fellow",
-                "affiliation": {
-                    "@type": "Organization",
-                    "name": "Leibniz-Zentrum Moderner Orient (ZMO)"
-                }
-            }
-        };
-
-        if (activity.heroImage) {
-            jsonLd.image = activity.heroImage.src;
-        }
-
-        if (activity.tags) {
-            jsonLd.keywords = activity.tags.join(", ");
-        }
-
-        return JSON.stringify(jsonLd);
-    }
+    // Get data from the load function
+    export let data: PageData;
+    $: activity = data.activity;
+    $: jsonLdObject = data.jsonLdObject;
 
     // Format the tags for display
     const formattedTags = activity?.tags ? activity.tags : [];
 
-    // --- New Content Parsing Logic ---
+    // --- Content Parsing Logic (Keep as is, uses activity from data) ---
     interface ContentSegment {
         type: 'html' | 'ItemReference';
         value?: string; // For html type
@@ -82,22 +25,19 @@
 
     let contentSegments: ContentSegment[] = [];
     $: if (activity?.content) {
-        const rawContent = activity.content.replace(/href="\/([^\/])/g, `href="${base}/$1`); // Apply base path processing first
+        const rawContent = activity.content.replace(/href="\/([^\/])/g, `href="${base}/$1`);
         const regex = /<ItemReference\s+id="([^"]+)"\s*\/>/g;
         const segments: ContentSegment[] = [];
         let lastIndex = 0;
         let match;
 
         while ((match = regex.exec(rawContent)) !== null) {
-            // Add preceding text segment
             if (match.index > lastIndex) {
                 segments.push({ type: 'html', value: rawContent.substring(lastIndex, match.index) });
             }
-            // Add the component placeholder
             segments.push({ type: 'ItemReference', id: match[1] });
             lastIndex = regex.lastIndex;
         }
-        // Add any remaining text after the last match
         if (lastIndex < rawContent.length) {
             segments.push({ type: 'html', value: rawContent.substring(lastIndex) });
         }
@@ -105,13 +45,13 @@
     } else {
         contentSegments = [];
     }
-    // --- End New Content Parsing Logic ---
+    // --- End Content Parsing Logic ---
 </script>
 
 <svelte:head>
-    {#if activity}
+    {#if jsonLdObject}
         <script type="application/ld+json">
-            {@html getJsonLd(activity)}
+            {JSON.stringify(jsonLdObject)}
         </script>
     {/if}
 </svelte:head>
