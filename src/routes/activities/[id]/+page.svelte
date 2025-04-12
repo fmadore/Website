@@ -11,7 +11,7 @@
     // Get data from the load function
     export let data: PageData;
     $: activity = data.activity;
-    $: jsonLdObject = data.jsonLdObject;
+    $: jsonLdString = data.jsonLdString;
 
     // Format the tags for display
     const formattedTags = activity?.tags ? activity.tags : [];
@@ -49,9 +49,9 @@
 </script>
 
 <svelte:head>
-    {#if jsonLdObject}
+    {#if jsonLdString}
         <script type="application/ld+json">
-            {JSON.stringify(jsonLdObject)}
+            {@html jsonLdString}
         </script>
     {/if}
 </svelte:head>

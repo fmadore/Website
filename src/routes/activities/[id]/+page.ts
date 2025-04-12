@@ -61,9 +61,12 @@ export const load: PageLoad = ({ params }) => {
         jsonLdObject.keywords = activity.tags.join(", ");
     }
 
-    // Return both activity data and the JSON-LD object
+    // Stringify the object here
+    const jsonLdString = JSON.stringify(jsonLdObject);
+
+    // Return activity data and the JSON-LD string
     return {
         activity,
-        jsonLdObject 
+        jsonLdString // Pass the string instead of the object
     };
 }; 
