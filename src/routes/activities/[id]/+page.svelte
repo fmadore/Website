@@ -111,7 +111,7 @@
 <svelte:head>
     {#if activity}
         <script type="application/ld+json">
-            {getJsonLd(activity)}
+            {@html getJsonLd(activity)}
         </script>
     {/if}
 </svelte:head>
