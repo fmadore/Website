@@ -111,12 +111,12 @@
 
     // Define labels locally (same as communications)
     const typeLabels: {[key: string]: string} = {
-        'conference': 'Conferences',
-        'workshop': 'Workshops',
+        'conference': 'Conference Papers',
+        'workshop': 'Workshop Presentations',
         'seminar': 'Seminars',
         'lecture': 'Lectures',
-        'panel': 'Panels',
-        'event': 'Academic Events'
+        'panel': 'Panels Organized',
+        'event': 'Academic Events Organized'
     };
 
     // Reactive calculations needed for the config (same as communications)
@@ -133,7 +133,7 @@
         sections: [
             // Sections explicitly cast to their specific type
             { 
-                type: 'checkbox', title: 'Event Types', items: types, itemLabels: typeLabels, 
+                type: 'checkbox', title: 'Type', items: types, itemLabels: typeLabels, 
                 activeItems: $activeFilters?.types || [], toggleItem: toggleTypeFilter, counts: undefined 
             } as CheckboxFilterOption<string>,
             { 

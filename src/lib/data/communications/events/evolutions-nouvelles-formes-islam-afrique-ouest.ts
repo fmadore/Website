@@ -10,7 +10,7 @@ export const evolutionsNouvellesFormesIslamAfriqueOuest: Communication = {
     conference: "Table-ronde organisée par le Centre Interdisciplinaire de Recherche sur l'Afrique et le Moyen-Orient (CIRAM)", 
     location: "Université Laval", 
     country: "Canada", 
-    type: "panel", 
+    type: "event", 
     language: "French", 
     abstract: "Les évènements de Ouagadougou du 15 janvier dernier ont attiré l’attention du grand public sur l’islam au Burkina Faso. Ces attentats, qui s’ajoutent à celui du 20 novembre 2015 à l’hôtel Radisson Blu de Bamako au Mali et à ceux orchestrés par Boko Haram au Nigeria, au Tchad et au Cameroun, ont rappelé que la pratique de l’islam en Afrique de l’Ouest, souvent oubliée au profit de l’Afrique du Nord et du Moyen-Orient, est loin de n’être que rituelle et produit des imaginaires et des répertoires d’actions politiques. Les intervenants chercheront à démontrer que l’islam dans cette sous-région n’est ni monolithique ni immuable et ne saurait être réduit aux seuls réseaux terroristes ; les musulmans en Afrique de l’Ouest étant caractérisés par une grande diversité de tendances, de stratégies et de sensibilités. Les discussions seront suivies du lancement du livre : La construction d’une sphère publique musulmane en Afrique de l’Ouest par Frédérick Madore.",
     tags: ["Islam", "West Africa", "Radicalization", "CIRAM", "Roundtable"], 

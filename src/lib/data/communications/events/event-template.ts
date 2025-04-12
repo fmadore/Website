@@ -11,7 +11,7 @@ export const eventTemplate: Communication = {
     conference: "Event Name", // Name of the conference, workshop, or other academic event
     location: "City, Venue", // City and venue where the event was held
     country: "Country", // Country where the event was held
-    type: "conference", // Options: 'conference', 'workshop', 'seminar', 'lecture', 'panel'
+    type: "event", // Options: 'conference', 'workshop', 'seminar', 'lecture', 'panel', 'event'
     language: "English", // Primary language of the event
     abstract: "A comprehensive description of the event, its objectives, and significance.",
     tags: ["tag1", "tag2", "tag3"], // Add relevant tags for categorization

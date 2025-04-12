@@ -98,7 +98,7 @@ export const filteredCommunications = derived(
                 return false;
             }
             
-            // Filter by tags (if communication has at least one of the selected tags)
+            // Filter by tags
             if ($activeFilters.tags.length > 0 && 
                 (!comm.tags || !comm.tags.some((tag: string) => $activeFilters.tags.includes(tag)))) {
                 return false;
@@ -110,7 +110,7 @@ export const filteredCommunications = derived(
                 return false;
             }
             
-            // Filter by author (check all relevant fields)
+            // Filter by author
             if ($activeFilters.authors.length > 0) {
                 const communicationAuthors = [
                     ...(comm.authors || []),

@@ -10,7 +10,7 @@ export const launchIslamWestAfricaCollection: Communication = {
     conference: "Launch of the Islam West Africa Collection", 
     location: "Berlin", 
     country: "Germany", 
-    type: "conference", 
+    type: "event", 
     language: "English", 
     abstract: "Launch event for the Islam West Africa Collection hosted by Media in Cooperation and Transition (MiCT) in Berlin.",
     tags: ["IWAC", "West Africa", "Collection", "Launch"], 
