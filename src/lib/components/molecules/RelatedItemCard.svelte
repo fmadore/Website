@@ -34,10 +34,12 @@
     .related-item {
         background-color: var(--color-background);
         box-shadow: var(--shadow-sm);
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        /* Ensure transform is included in the transition */
+        transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     }
     .related-item:hover {
         box-shadow: var(--shadow-md);
+        transform: translateY(-2px); /* Added lift effect */
     }
     .related-date,
     .related-authors {

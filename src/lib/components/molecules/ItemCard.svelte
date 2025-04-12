@@ -35,9 +35,10 @@
 <style>
 	.item-card {
 		position: relative;
-		padding: var(--spacing-2);
+		padding: var(--spacing-4);
 		border-radius: var(--border-radius-sm);
-		transition: all 0.2s ease;
+		transition: all 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+		box-shadow: var(--shadow-sm);
 	}
 
 	.item-card::before {
@@ -55,6 +56,11 @@
 
 	.item-card:hover::before {
 		width: 3px;
+	}
+
+	.item-card:hover {
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-md);
 	}
 
 	.item-meta {
