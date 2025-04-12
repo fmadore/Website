@@ -1,3 +1,12 @@
+/**
+ * dataLoader.ts
+ *
+ * This module provides utility functions for loading and processing data
+ * from various content sources (e.g., Markdown files defining publications,
+ * communications, etc.) using Vite's `import.meta.glob` feature.
+ * It focuses on robustly handling potentially malformed or missing data
+ * during the import process.
+ */
 import type { Publication } from '$lib/types/publication'; // Assuming this is the primary type for now
 import type { Communication } from '$lib/types/communication'; // Add communication type
 import type { Fieldwork } from '$lib/types/fieldwork'; // Add fieldwork type
@@ -16,13 +25,17 @@ type DataModule = Record<string, any>;
 type DataItem = Publication | Communication | Fieldwork | Appointment | Education | Grant | Award | PeerReview | MediaAppearance | EditorialMembership; // <-- Add EditorialMembership to union
 
 /**
- * Loads and processes data modules based on a glob pattern.
- * Filters out modules that are not objects and specific template IDs.
+ * Loads and processes data modules based on a glob pattern, expecting each module
+ * to export a data object (typically as `default` or the first suitable export).
+ * It filters out modules that aren't valid objects, checks for an 'id' property,
+ * and excludes specific template IDs. Handles errors gracefully by logging issues
+ * and skipping problematic modules/items rather than throwing an error.
  *
- * @param modules - The raw modules object from Vite's import.meta.glob.
- * @param templateIdFilter - A string or array of strings representing template IDs to exclude.
- * @param dataTypeName - Optional name for the data type being loaded (for logging).
- * @returns An array of loaded and filtered data items.
+ * @template T - The expected type of the data items being loaded, extending DataItem.
+ * @param {Record<string, unknown>} modules - The raw modules object obtained from Vite's `import.meta.glob`. Keys are file paths, values are the imported modules (or functions to load them).
+ * @param {string | string[]} templateIdFilter - A single ID or an array of IDs to exclude from the results. Items matching these IDs will be filtered out.
+ * @param {string} [dataTypeName='item'] - An optional descriptive name for the type of data being loaded (e.g., 'publication', 'communication'), used in log messages for clarity.
+ * @returns {T[]} An array of loaded, validated, and filtered data items of type T. Returns an empty array if no valid items are found or all are filtered out.
  */
 export function loadData<T extends DataItem>(
     modules: Record<string, unknown>, // Accept unknown initially
@@ -67,7 +80,7 @@ export function loadData<T extends DataItem>(
                 // Check if a valid data item was found
                 if (!dataItem) {
                      console.warn(`Module at path ${path} does not seem to contain a valid ${dataTypeName} (no suitable export found):`, module);
-                     return null;
+                     return null; // Skip this module gracefully
                 }
 
                 // Check for circular references explicitly (though less likely with this approach)
