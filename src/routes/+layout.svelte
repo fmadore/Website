@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
+	import { page } from '$app/stores';
 	import Footer from '$lib/Footer.svelte';
 	import Header from '$lib/components/organisms/Header.svelte';
 	import CookieConsent from '$lib/components/common/CookieConsent.svelte';
@@ -10,7 +12,11 @@
 
 	<main class="site-main">
 		<div class="container mx-auto p-8">
-			<slot />
+			{#key $page.url}
+				<div transition:fade={{ duration: 150 }}>
+					<slot />
+				</div>
+			{/key}
 		</div>
 	</main>
 
