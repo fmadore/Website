@@ -1,6 +1,6 @@
 import { writable, derived } from 'svelte/store';
 import type { Publication, YearRange } from '$lib/types';
-import { allPublications, publicationsByType, publicationsByYear, allTags, allLanguages } from './index';
+import { allPublications as baseAllPublications, publicationsByType, publicationsByYear, allTags, allLanguages } from './index';
 import {
 	createActiveFiltersStore,
 	createToggleArrayFilter,
@@ -12,8 +12,11 @@ import {
 	createDerivedCountStore
 } from '$lib/utils/filterUtils'; // Import utilities
 
+// Explicitly type the imported allPublications to include sourceDirType
+const allPublications: (Publication & { sourceDirType: string })[] = baseAllPublications;
+
 // Helper function to extract editors from a publication
-function extractEditors(publication: Publication): string[] {
+function extractEditors(publication: Publication & { sourceDirType?: string }): string[] {
     if (!publication.editors) return [];
     
     // Handle string format (e.g., "Editor1, Editor2" or "Editor1 and Editor2")
@@ -32,28 +35,28 @@ function extractEditors(publication: Publication): string[] {
 // Extract all unique co-authors from publications, excluding "Frédérick Madore"
 export const allAuthors = Array.from(new Set([
     // Get authors from publications
-    ...allPublications.flatMap(pub => pub.authors || []),
+    ...allPublications.flatMap((pub: Publication & { sourceDirType: string }) => pub.authors || []),
     // Get editors from publications, excluding chapters and encyclopedia entries
-    ...allPublications.filter(pub => pub.type !== 'chapter' && pub.type !== 'encyclopedia').flatMap(pub => extractEditors(pub)),
+    ...allPublications.filter((pub: Publication & { sourceDirType: string }) => pub.type !== 'chapter' && pub.type !== 'encyclopedia').flatMap((pub: Publication & { sourceDirType: string }) => extractEditors(pub)),
     // Get preface authors
-    ...allPublications.filter(pub => pub.prefacedBy).map(pub => pub.prefacedBy as string)
+    ...allPublications.filter((pub: Publication & { sourceDirType: string }) => pub.prefacedBy).map((pub: Publication & { sourceDirType: string }) => pub.prefacedBy as string)
 ]))
-.filter(author => author !== "Frédérick Madore")
+.filter((author: string) => author !== "Frédérick Madore")
 .sort();
 
 // Extract all unique countries from publications
 export const allCountries = Array.from(new Set(
-    allPublications.flatMap(pub => pub.country || [])
+    allPublications.flatMap((pub: Publication & { sourceDirType: string }) => pub.country || [])
 )).sort();
 
 // Extract all unique projects from publications
 export const allProjects = Array.from(new Set(
-    allPublications.map(pub => pub.project).filter(Boolean) as string[]
+    allPublications.map((pub: Publication & { sourceDirType: string }) => pub.project).filter(Boolean) as string[]
 )).sort();
 
 // Adjust allLanguages to handle comma-separated values consistently
 const uniqueLanguages = Array.from(new Set(
-    allPublications.flatMap(pub => pub.language ? pub.language.split(',').map(l => l.trim()) : [])
+    allPublications.flatMap((pub: Publication & { sourceDirType: string }) => pub.language ? pub.language.split(',').map((l: string) => l.trim()) : [])
 )).sort();
 
 // Create a store for active filters
@@ -95,7 +98,7 @@ export const filterOptions = writable({
 export const filteredPublications = derived(
     [activeFilters],
     ([$activeFilters]) => {
-        return allPublications.filter(pub => {
+        return allPublications.filter((pub: Publication & { sourceDirType: string }) => {
             // Filter by publication type
             if ($activeFilters.types.length > 0 && !$activeFilters.types.includes(pub.type)) {
                 return false;
@@ -109,15 +112,14 @@ export const filteredPublications = derived(
             
             // Filter by tags (if publication has at least one of the selected tags)
             if ($activeFilters.tags.length > 0 && 
-                (!pub.tags || !pub.tags.some(tag => $activeFilters.tags.includes(tag)))) {
+                (!pub.tags || !pub.tags.some((tag: string) => $activeFilters.tags.includes(tag)))) {
                 return false;
             }
             
             // Filter by language
             if ($activeFilters.languages.length > 0) {
-                // Split comma-separated language values
-                const pubLanguages = pub.language ? pub.language.split(',').map(lang => lang.trim()) : [];
-                if (!pubLanguages.some(lang => $activeFilters.languages.includes(lang))) {
+                const pubLanguages = pub.language ? pub.language.split(',').map((lang: string) => lang.trim()) : [];
+                if (!pubLanguages.some((lang: string) => $activeFilters.languages.includes(lang))) {
                     return false;
                 }
             }

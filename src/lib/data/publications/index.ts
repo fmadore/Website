@@ -1,7 +1,7 @@
 import type { Publication } from '$lib/types';
-import { loadData } from '$lib/utils/dataLoader'; // Import the new utility function
+import { loadData } from '$lib/utils/dataLoader'; // Keep for filtering/extraction if needed
 
-// Define a type for module imports (can be kept or potentially inferred)
+// Define a type for module imports
 type ModuleType = Record<string, any>;
 
 // Define all template IDs to filter out
@@ -17,32 +17,46 @@ const templateIds = [
     'dissertation-template-id'
 ];
 
-// Define the glob patterns for publication types
-const publicationGlobs = {
-    books: './books/*.ts',
-    articles: './articles/*.ts',
-    chapters: './chapters/*.ts',
-    specialIssues: './special-issues/*.ts',
-    reports: './reports/*.ts',
-    encyclopedia: './encyclopedia/*.ts',
-    blogposts: './blogposts/*.ts',
-    dissertations: './dissertations/*.ts'
-};
+// Use a single static glob import
+const publicationModules = import.meta.glob<ModuleType>(
+    [
+        './books/*.ts',
+        './articles/*.ts',
+        './chapters/*.ts',
+        './special-issues/*.ts',
+        './reports/*.ts',
+        './encyclopedia/*.ts',
+        './blogposts/*.ts',
+        './dissertations/*.ts'
+    ],
+    { eager: true }
+);
 
-// Load publications category by category to capture the source type
-let allPublicationsWithType: (Publication & { sourceDirType: string })[] = [];
+// Process the loaded modules to add sourceDirType
+const allPublications: (Publication & { sourceDirType: string })[] = Object.entries(publicationModules)
+    .map(([path, module]) => {
+        // Extract the publication data (assuming one export per file)
+        const publication = Object.values(module)[0] as Publication;
 
-for (const [type, globPattern] of Object.entries(publicationGlobs)) {
-    const modules = import.meta.glob<ModuleType>(globPattern, { eager: true });
-    const loadedItems = loadData<Publication>(modules, templateIds, type);
-    
-    // Add the sourceDirType to each loaded item
-    const itemsWithType = loadedItems.map(item => ({ ...item, sourceDirType: type }));
-    allPublicationsWithType = allPublicationsWithType.concat(itemsWithType);
-}
+        // Filter out templates based on ID before determining type
+        if (templateIds.includes(publication.id)) {
+            return null; 
+        }
 
-// Export the enhanced list
-export const allPublications: (Publication & { sourceDirType: string })[] = allPublicationsWithType;
+        // Determine sourceDirType from the path
+        let sourceDirType = 'unknown';
+        if (path.startsWith('./books/')) sourceDirType = 'books';
+        else if (path.startsWith('./articles/')) sourceDirType = 'articles';
+        else if (path.startsWith('./chapters/')) sourceDirType = 'chapters';
+        else if (path.startsWith('./special-issues/')) sourceDirType = 'specialIssues';
+        else if (path.startsWith('./reports/')) sourceDirType = 'reports';
+        else if (path.startsWith('./encyclopedia/')) sourceDirType = 'encyclopedia';
+        else if (path.startsWith('./blogposts/')) sourceDirType = 'blogposts';
+        else if (path.startsWith('./dissertations/')) sourceDirType = 'dissertations';
+        
+        return { ...publication, sourceDirType };
+    })
+    .filter(Boolean) as (Publication & { sourceDirType: string })[]; // Filter out the nulls (templates)
 
 // Sort by date (most recent first)
 export const publicationsByDate = [...allPublications].sort((a, b) => {
@@ -58,9 +72,9 @@ export const publicationsByYear = allPublications.reduce<Record<number, (Publica
     return acc;
 }, {});
 
-// Group publications by type (using the original 'type' field from data, not sourceDirType)
+// Group publications by type (using the original 'type' field from data)
 export const publicationsByType = allPublications.reduce<Record<string, (Publication & { sourceDirType: string })[]>>((acc, publication) => {
-    const pubType = publication.type; // Use the type defined in the publication data
+    const pubType = publication.type;
     if (!acc[pubType]) {
         acc[pubType] = [];
     }
@@ -88,4 +102,7 @@ export const allCountries = Array.from(new Set(
 // Get all unique projects
 export const allProjects = Array.from(new Set(
     allPublications.map(pub => pub.project).filter(Boolean) as string[]
-)).sort(); 
+)).sort();
+
+// Explicitly export the main list again
+export { allPublications }; 
