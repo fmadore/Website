@@ -14,6 +14,7 @@ export const asa2024Panel: Communication = {
     language: "English",
     abstract: "Book Title: Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023",
     tags: ["ASA", "student activism", "faith", "Togo", "Benin", "university", "religion"],
+    image: "images/communications/ASA-Logo.svg",
     coordinates: {
         latitude: 41.892233577101,
         longitude: -87.62496755899927
