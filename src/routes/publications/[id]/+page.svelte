@@ -1,9 +1,14 @@
 <script lang="ts">
-    import { allPublications } from '$lib/data/publications/index';
+    // Removed local data import: import { allPublications } from '$lib/data/publications/index';
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
     import type { Publication } from '$lib/types';
     import type { ComponentType } from 'svelte';
+    import type { PageData } from './$types'; // Import PageData
+    import { onMount, onDestroy } from 'svelte'; // Import lifecycle functions
+    import { browser } from '$app/environment'; // Import browser check
+
+    // CitedBy, Reviews, PageHeader, etc. imports remain
     import CitedBy from '$lib/components/publications/CitedBy.svelte';
     import Reviews from '$lib/components/publications/Reviews.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
@@ -14,11 +19,37 @@
     import AbstractSection from '$lib/components/molecules/AbstractSection.svelte';
     import RelatedItemsList from '$lib/components/organisms/RelatedItemsList.svelte';
     import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
+    import { allPublications } from '$lib/data/publications/index'; // Keep this for RelatedItemsList
     
-    // Get publication from the page data
-    export let data;
-    $: publication = data.publication as Publication;
-    
+    // Get publication and jsonLdString from page data
+    export let data: PageData;
+    $: publication = data.publication as Publication; // Cast needed if load returns generic type
+    $: jsonLdString = data.jsonLdString;
+
+    const jsonLdScriptId = 'publication-json-ld';
+
+    onMount(() => {
+        if (browser && jsonLdString) {
+            if (document.getElementById(jsonLdScriptId)) {
+                return; // Avoid duplicates
+            }
+            const script = document.createElement('script');
+            script.id = jsonLdScriptId;
+            script.type = 'application/ld+json';
+            script.textContent = jsonLdString;
+            document.head.appendChild(script);
+        }
+    });
+
+    onDestroy(() => {
+        if (browser) {
+            const script = document.getElementById(jsonLdScriptId);
+            if (script) {
+                document.head.removeChild(script);
+            }
+        }
+    });
+
     // Format date for display
     function formatDate(dateString: string): string {
         return dateString || '';
@@ -73,6 +104,15 @@
     ];
 
 </script>
+
+<!-- Remove svelte:head block for JSON-LD -->
+<!-- 
+<svelte:head>
+    {#if jsonLdString}
+       {* We are injecting via onMount instead *}
+    {/if}
+</svelte:head>
+-->
 
 <SEO 
     title="{publication.title} | Publications | Frédérick Madore"

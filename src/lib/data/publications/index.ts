@@ -17,27 +17,32 @@ const templateIds = [
     'dissertation-template-id'
 ];
 
-// Dynamically import all publication files from all relevant subdirectories at once
-const publicationModules = import.meta.glob<ModuleType>(
-    [
-        './books/*.ts',
-        './articles/*.ts',
-        './chapters/*.ts',
-        './special-issues/*.ts',
-        './reports/*.ts',
-        './encyclopedia/*.ts',
-        './blogposts/*.ts',
-        './dissertations/*.ts'
-    ], 
-    { eager: true }
-);
+// Define the glob patterns for publication types
+const publicationGlobs = {
+    books: './books/*.ts',
+    articles: './articles/*.ts',
+    chapters: './chapters/*.ts',
+    specialIssues: './special-issues/*.ts',
+    reports: './reports/*.ts',
+    encyclopedia: './encyclopedia/*.ts',
+    blogposts: './blogposts/*.ts',
+    dissertations: './dissertations/*.ts'
+};
 
-// Load and filter all publications using the utility function
-const allPublications: Publication[] = loadData<Publication>(
-    publicationModules, 
-    templateIds, 
-    'publication' // Optional type name for logging
-);
+// Load publications category by category to capture the source type
+let allPublicationsWithType: (Publication & { sourceDirType: string })[] = [];
+
+for (const [type, globPattern] of Object.entries(publicationGlobs)) {
+    const modules = import.meta.glob<ModuleType>(globPattern, { eager: true });
+    const loadedItems = loadData<Publication>(modules, templateIds, type);
+    
+    // Add the sourceDirType to each loaded item
+    const itemsWithType = loadedItems.map(item => ({ ...item, sourceDirType: type }));
+    allPublicationsWithType = allPublicationsWithType.concat(itemsWithType);
+}
+
+// Export the enhanced list
+export const allPublications: (Publication & { sourceDirType: string })[] = allPublicationsWithType;
 
 // Sort by date (most recent first)
 export const publicationsByDate = [...allPublications].sort((a, b) => {
@@ -45,7 +50,7 @@ export const publicationsByDate = [...allPublications].sort((a, b) => {
 });
 
 // Group publications by year
-export const publicationsByYear = allPublications.reduce<Record<number, Publication[]>>((acc, publication) => {
+export const publicationsByYear = allPublications.reduce<Record<number, (Publication & { sourceDirType: string })[]>>((acc, publication) => {
     if (!acc[publication.year]) {
         acc[publication.year] = [];
     }
@@ -53,12 +58,13 @@ export const publicationsByYear = allPublications.reduce<Record<number, Publicat
     return acc;
 }, {});
 
-// Group publications by type
-export const publicationsByType = allPublications.reduce<Record<string, Publication[]>>((acc, publication) => {
-    if (!acc[publication.type]) {
-        acc[publication.type] = [];
+// Group publications by type (using the original 'type' field from data, not sourceDirType)
+export const publicationsByType = allPublications.reduce<Record<string, (Publication & { sourceDirType: string })[]>>((acc, publication) => {
+    const pubType = publication.type; // Use the type defined in the publication data
+    if (!acc[pubType]) {
+        acc[pubType] = [];
     }
-    acc[publication.type].push(publication);
+    acc[pubType].push(publication);
     return acc;
 }, {});
 
@@ -82,7 +88,4 @@ export const allCountries = Array.from(new Set(
 // Get all unique projects
 export const allProjects = Array.from(new Set(
     allPublications.map(pub => pub.project).filter(Boolean) as string[]
-)).sort();
-
-// Export the full list of publications
-export { allPublications }; 
+)).sort(); 
