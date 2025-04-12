@@ -105,7 +105,11 @@
                             <h3 class="font-semibold text-lg">{paper.title}</h3>
                             {#if paper.authors && paper.authors.length > 0}
                                 <div class="text-sm text-text-secondary mt-1 panel-paper-authors">
-                                    {paper.authors.join(', ')}
+                                    {#each paper.authors as author, index}
+                                        <span>
+                                            {author.name}{#if author.affiliation}{' '}({author.affiliation}){/if}{#if index < paper.authors.length - 1},&nbsp;{/if}
+                                        </span>
+                                    {/each}
                                 </div>
                             {/if}
                             {#if paper.abstract}

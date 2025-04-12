@@ -44,7 +44,7 @@ export const allCoAuthors = Array.from(new Set(
     safeAllCommunications.flatMap(comm => [
         ...(comm.authors || []),
         ...(comm.coAuthors || []),
-        ...(comm.papers?.flatMap(p => p.authors || []) || []),
+        ...(comm.papers?.flatMap(p => p.authors?.map(a => a.name) || []) || []),
         ...(comm.participants?.map(p => p.name) || [])
     ])
 ))
@@ -115,10 +115,10 @@ export const filteredCommunications = derived(
                 const communicationAuthors = [
                     ...(comm.authors || []),
                     ...(comm.coAuthors || []),
-                    ...(comm.papers?.flatMap(p => p.authors || []) || []),
+                    ...(comm.papers?.flatMap(p => p.authors?.map(a => a.name) || []) || []),
                     ...(comm.participants?.map(p => p.name) || [])
                 ];
-                if (!communicationAuthors.some(author => $activeFilters.authors.includes(author))) {
+                if (!communicationAuthors.some(authorName => $activeFilters.authors.includes(authorName))) {
                     return false;
                 }
             }
@@ -264,13 +264,13 @@ export const authorCounts = derived(
             const communicationAuthors = new Set([
                 ...(comm.authors || []),
                 ...(comm.coAuthors || []),
-                ...(comm.papers?.flatMap(p => p.authors || []) || []),
+                ...(comm.papers?.flatMap(p => p.authors?.map(a => a.name) || []) || []),
                 ...(comm.participants?.map(p => p.name) || [])
             ]);
-            communicationAuthors.forEach(author => {
+            communicationAuthors.forEach(authorName => {
                  // Only count co-authors, not the site owner
-                 if (author !== "Frédérick Madore") {
-                    counts[author] = (counts[author] || 0) + 1;
+                 if (authorName !== "Frédérick Madore") {
+                    counts[authorName] = (counts[authorName] || 0) + 1;
                  }
             });
         });

@@ -28,7 +28,7 @@ export type Communication = {
     coAuthors?: string[];   // Additional co-authors
     papers?: Array<{        // Papers presented at the panel
         title: string;      // Paper title
-        authors: string[];  // Paper authors
+        authors: Array<{ name: string; affiliation?: string }>;  // Paper authors with optional affiliation
         abstract?: string;  // Optional paper abstract
     }>;
     participants?: Array<{  // Additional participants

@@ -33,12 +33,17 @@ export const panelTemplate: Communication = {
     papers: [ // Array of papers presented in the panel
         {
             title: "Paper Title 1",
-            authors: ["Author Name 1", "Co-Author Name"],
+            authors: [
+                { name: "Author Name 1", affiliation: "University or Institution 1" }, 
+                { name: "Co-Author Name", affiliation: "Another Institution" } // Example with different affiliation
+            ],
             abstract: "Abstract of the paper"
         },
         {
             title: "Paper Title 2",
-            authors: ["Author Name 2"],
+            authors: [
+                { name: "Author Name 2", affiliation: "University or Institution 2" }
+            ],
             abstract: "Abstract of the paper"
         }
     ],
