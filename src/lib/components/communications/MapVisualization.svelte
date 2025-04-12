@@ -11,7 +11,7 @@
 </script>
 
 <script lang="ts">
-    import { onMount, onDestroy, afterUpdate } from 'svelte';
+    import { onMount, onDestroy } from 'svelte';
     import { browser } from '$app/environment';
     import type { Map as LeafletMap, FeatureGroup as LeafletFeatureGroup, MarkerClusterGroup, TileLayerOptions, TileLayer } from 'leaflet'; // Import types only
     import { base } from '$app/paths'; // Import base path
@@ -55,7 +55,7 @@
     let L: typeof import('leaflet') | null = null;
     let importError: string | null = null;
     let currentTileLayer: TileLayer | null = null;
-    let darkMode = false; // Default to light mode
+    let currentThemeIsDark: boolean | null = null; // Track the currently applied theme state
     let mobileMenuObserver: MutationObserver | null = null;
 
     // Function to detect dark mode from system or CSS
@@ -111,26 +111,30 @@
     function updateTileLayer() {
         if (!map || !L) return;
         
-        const wasDarkMode = darkMode;
-        darkMode = detectDarkMode();
-        
-        console.log('Map theme updated:', { wasDarkMode, nowDarkMode: darkMode });
-        
-        // Force a specific theme for debugging if needed
-        // darkMode = false; // Uncomment to force light theme
-        
-        const tileSet = darkMode ? tileOptions.dark : tileOptions.light;
-        
-        // Remove current tile layer if it exists
-        if (currentTileLayer) {
-            map.removeLayer(currentTileLayer);
+        const newDarkMode = detectDarkMode();
+        // console.log('Map theme update check:', { currentThemeIsDark, newDarkMode }); // Keep for debugging if needed
+
+        // Only update if the theme has actually changed or hasn't been set yet
+        if (newDarkMode !== currentThemeIsDark) {
+            // console.log('Applying theme change:', newDarkMode ? 'dark' : 'light'); // Keep for debugging if needed
+            const tileSet = newDarkMode ? tileOptions.dark : tileOptions.light;
+            
+            // Remove current tile layer if it exists
+            if (currentTileLayer) {
+                map.removeLayer(currentTileLayer);
+            }
+            
+            // Add new tile layer
+            currentTileLayer = L.tileLayer(tileSet.url, {
+                attribution: tileSet.attribution,
+                maxZoom: maxZoom
+            }).addTo(map);
+
+            currentThemeIsDark = newDarkMode; // Update the tracked state
         }
-        
-        // Add new tile layer
-        currentTileLayer = L.tileLayer(tileSet.url, {
-            attribution: tileSet.attribution,
-            maxZoom: maxZoom
-        }).addTo(map);
+        // else {
+        //    console.log('Theme already up-to-date.'); // Keep for debugging if needed
+        // }
     }
 
     // Setup mobile menu observation to help with z-index issues
@@ -269,9 +273,6 @@
                 }
             }).addTo(map);
 
-            // Add initial markers
-            addMarkers(markersData);
-            
             // Set up theme change detection
             if (window.matchMedia) {
                 const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -377,18 +378,19 @@
         }
     }
 
-    // Use afterUpdate to handle prop changes
-    afterUpdate(() => {
-        // Ensure L is loaded and map exists before updating markers
-        if (L && map && markersData) {
-            addMarkers(markersData);
-        }
-        
-        // Check if we need to update tile layer (e.g. if preferDarkMode prop changed)
-        if (L && map && browser) {
-            updateTileLayer();
-        }
-    });
+    // Reactive statement for markers: Update only when markersData changes (and map is ready)
+    $: if (browser && L && map && clusterLayer) {
+        // console.log('Reactively updating markers due to markersData change.'); // Keep for debugging if needed
+        addMarkers(markersData);
+    }
+
+    // Reactive statement for theme preference: Re-check theme when preferDarkMode changes (and map is ready)
+    $: if (browser && L && map) {
+        // Check if preferDarkMode is accessed to ensure reactivity
+        const _pref = preferDarkMode;
+        // console.log('Reactively checking theme due to preferDarkMode change:', _pref); // Keep for debugging if needed
+        updateTileLayer();
+    }
 
     onDestroy(() => {
         // Clean up observer
