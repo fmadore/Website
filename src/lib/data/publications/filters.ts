@@ -1,5 +1,5 @@
 import { writable, derived } from 'svelte/store';
-import type { Publication } from '$lib/types';
+import type { Publication, YearRange } from '$lib/types';
 import { allPublications, publicationsByType, publicationsByYear, allTags, allLanguages } from './index';
 
 // Helper function to extract editors from a publication
@@ -40,9 +40,6 @@ export const allCountries = Array.from(new Set(
 export const allProjects = Array.from(new Set(
     allPublications.map(pub => pub.project).filter(Boolean) as string[]
 )).sort();
-
-// Define type for year range
-type YearRange = { min: number; max: number };
 
 // Create a store for active filters
 export const activeFilters = writable({

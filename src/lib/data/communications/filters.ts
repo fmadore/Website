@@ -1,5 +1,5 @@
 import { writable, derived } from 'svelte/store';
-import type { Communication } from '$lib/types/communication';
+import type { Communication, YearRange } from '$lib/types';
 
 // Import safely handling any errors
 let allCommunications: Communication[] = [];
@@ -21,9 +21,6 @@ try {
 } catch (error) {
     console.error('Error importing communications module:', error);
 }
-
-// Define type for year range
-type YearRange = { min: number; max: number };
 
 // Create a store for active filters
 export const activeFilters = writable({
