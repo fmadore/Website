@@ -277,23 +277,23 @@ export const load: PageLoad = ({ params }) => {
         jsonLdObject.keywords = publication.tags.join(", ");
     }
 
-    // Add DOI as identifier if it exists
+    // Add DOI as identifier using PropertyValue if it exists
     if (publication.doi) {
-        // Simple approach: just add the DOI string
-        jsonLdObject.identifier = publication.doi;
-        // // More structured approach using PropertyValue (optional):
-        // jsonLdObject.identifier = {
-        //     "@type": "PropertyValue",
-        //     "propertyID": "doi",
-        //     "value": publication.doi
-        // };
+        // Use the structured PropertyValue approach
+        jsonLdObject.identifier = {
+            "@type": "PropertyValue",
+            "propertyID": "DOI", // Explicitly state it's a DOI
+            "value": publication.doi
+        };
+        // // Simple approach (removed):
+        // jsonLdObject.identifier = publication.doi;
     }
 
-    // Stringify only
+    // Stringify the final object
     const jsonLdString = JSON.stringify(jsonLdObject);
 
     return {
         publication,
-        jsonLdString // Return the raw string
+        jsonLdString
     };
 }; 
