@@ -191,6 +191,18 @@
         
         <!-- Use the new DetailsGrid component -->
         <DetailsGrid details={publicationDetails} />
+
+        <!-- Table of Contents Section -->
+        {#if publication.type === 'book' && publication.tableOfContents && publication.tableOfContents.length > 0}
+            <section class="mt-8 mb-8">
+                <h2 class="text-xl font-semibold mb-4 text-text-headings">Table of Contents</h2>
+                <ul class="list-disc list-inside space-y-3 text-text-base pl-4">
+                    {#each publication.tableOfContents as item}
+                        <li>{item}</li>
+                    {/each}
+                </ul>
+            </section>
+        {/if}
         
         <!-- Use the new TagList component -->
         <TagList tags={publication.tags} baseUrl="/publications?tag=" />
@@ -231,6 +243,9 @@
         box-shadow: var(--shadow-md);
         transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
+
+    /* Add styles for the table of contents if needed, e.g., spacing, list style */
+    /* Styles are mostly handled by utility classes above */
 
     /* Related item styles are now in RelatedItemCard.svelte */
 </style> 

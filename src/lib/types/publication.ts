@@ -69,4 +69,6 @@ export type Publication = {
     project?: string;     // Project name the publication relates to
     citedBy?: CitingWork[]; // Optional: Array of works citing this publication
     reviewedBy?: ReviewWork[]; // Optional: Array of reviews of this publication
+    // New field for Table of Contents
+    tableOfContents?: string[]; // Optional: Array of chapter titles or section headings for books
 }; 

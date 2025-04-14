@@ -43,12 +43,6 @@ img {
   display: block;
 }
 
-/* Remove list styles on ul, ol elements if needed */
-ul[class],
-ol[class] {
-  list-style: none;
-}
-
 /* Inherit fonts for inputs and buttons */
 input,
 button,

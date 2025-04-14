@@ -30,6 +30,13 @@ export const bookTemplate: Publication = {
     project: "", // Options: "Mining the Islam West Africa Collection", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Other"
     citedBy: [], // Optional: List of works citing this publication
     reviewedBy: [], // Optional: List of reviews of this publication
+    tableOfContents: [ // Optional: Add chapter titles or section headings
+        "Introduction",
+        "Chapter 1: Title",
+        "Chapter 2: Title",
+        "Conclusion",
+        "Bibliography"
+    ],
     // For edited volumes only:
     // isEditedVolume: true, // Uncomment this line if this is an edited volume
     // editors: "Editor Name, Second Editor Name", // Format: "Editor 1, Editor 2"
@@ -68,4 +75,11 @@ export const editedVolumeTemplate: Publication = {
     project: "", // Options: "Mining the Islam West Africa Collection", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Other"
     citedBy: [], // Optional: List of works citing this publication
     reviewedBy: [], // Optional: List of reviews of this publication
+    tableOfContents: [ // Optional: Add chapter titles or section headings
+        "Introduction by Editors",
+        "Chapter 1: Contributor 1 Title",
+        "Chapter 2: Contributor 2 Title",
+        "Chapter 3: Contributor 3 Title",
+        "Bibliography"
+    ],
 };
