@@ -2,6 +2,13 @@
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+    import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+
+    // Define breadcrumb items
+    const breadcrumbItems = [
+        { label: 'Teaching', href: `${base}/teaching` },
+        { label: 'Guest Lectures', href: `${base}/teaching/guest-lectures` }
+    ];
 
     const guestLecturesByInstitution = {
         "Universität Bayreuth": [
@@ -24,7 +31,8 @@
 
 <SEO title="Guest Lectures | Frédérick Madore" description="List of guest lectures delivered by Frédérick Madore." />
 
-<div class="guest-lectures-container">
+<div class="container mx-auto py-8 px-4">
+    <Breadcrumb items={breadcrumbItems} />
 	<PageHeader title="Guest Lectures" />
 
     {#each Object.entries(guestLecturesByInstitution) as [institution, lectures] (institution)}
@@ -46,12 +54,6 @@
 </div>
 
 <style>
-    .guest-lectures-container {
-        max-width: 900px; /* Adjust width as needed */
-        margin: 0 auto;
-        padding: var(--spacing-4) var(--spacing-4) var(--spacing-10); /* Add bottom padding */
-    }
-
     .institution-section {
         margin-bottom: var(--spacing-8);
     }
