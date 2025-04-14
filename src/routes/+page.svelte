@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import LatestActivities from '$lib/components/organisms/LatestActivities.svelte';
     import SEO from '$lib/SEO.svelte';
     import { Download } from 'lucide-svelte';
@@ -6,6 +6,32 @@
     import { base } from '$app/paths';
     import Button from '$lib/components/atoms/Button.svelte';
     import ItemReference from '$lib/components/molecules/ItemReference.svelte';
+    import { onMount, onDestroy } from 'svelte';
+    import { browser } from '$app/environment';
+    import type { PageData } from './$types';
+
+    export let data: PageData;
+    $: jsonLdString = data.jsonLdString;
+
+    const jsonLdScriptId = 'person-json-ld';
+
+    onMount(() => {
+        if (browser && jsonLdString) {
+            if (document.getElementById(jsonLdScriptId)) return;
+            const script = document.createElement('script');
+            script.id = jsonLdScriptId;
+            script.type = 'application/ld+json';
+            script.textContent = jsonLdString;
+            document.head.appendChild(script);
+        }
+    });
+
+    onDestroy(() => {
+        if (browser) {
+            const script = document.getElementById(jsonLdScriptId);
+            if (script) document.head.removeChild(script);
+        }
+    });
 
     // Years with content - dynamically created from activities data
     const years = Object.entries(activitiesByYear).map(([year, activities]) => ({
