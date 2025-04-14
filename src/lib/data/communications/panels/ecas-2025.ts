@@ -4,8 +4,8 @@ export const ecas2025Panel: Communication = {
     id: "dh-ai-african-studies-2025",
     title: "Digital Humanities (DH) and AI in African Studies: Opportunities, Challenges, and Decolonial Perspectives",
     authors: ["Frédérick Madore", "Vincent Hiribarren"],
-    date: "25 June 2025",
-    dateISO: "2025-06-25", // Approximate date in June
+    date: "26 June 2025",
+    dateISO: "2025-06-26",
     year: 2025,
     conference: "10th European Conference of African Studies (ECAS)",
     location: "Prague",
