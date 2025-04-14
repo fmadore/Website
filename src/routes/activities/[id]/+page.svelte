@@ -4,6 +4,7 @@
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
+    import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
     import ItemReference from '$lib/components/molecules/ItemReference.svelte';
     import type { Activity } from '$lib/types';
     import type { PageData } from './$types';
@@ -14,6 +15,18 @@
     export let data: PageData;
     $: activity = data.activity;
     $: jsonLdString = data.jsonLdString;
+
+    // Helper function to truncate title at the first colon
+    function truncateTitle(title: string): string {
+        const colonIndex = title.indexOf(':');
+        return colonIndex > -1 ? title.substring(0, colonIndex) + '...' : title;
+    }
+
+    // Define breadcrumb items
+    $: breadcrumbItems = [
+        { label: 'Activities', href: `${base}/activities` },
+        { label: truncateTitle(activity.title), href: `${base}/activities/${activity.id}` } // Use truncated title
+    ];
 
     const jsonLdScriptId = 'activity-json-ld';
 
@@ -94,10 +107,9 @@
 
 <div class="container mx-auto py-6 px-4">
     {#if activity}
+        <Breadcrumb items={breadcrumbItems} />
         <PageHeader 
             title={activity.title}
-            backLinkHref="activities"
-            backLinkLabel="← Back to all activities"
             date={activity.date}
             tags={formattedTags}
         />
