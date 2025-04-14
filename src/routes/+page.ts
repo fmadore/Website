@@ -3,9 +3,21 @@ import type { PageLoad } from './$types';
 
 // --- JSON-LD Interfaces ---
 interface Organization {
-    "@type": "Organization";
+    "@type": "Organization" | "EducationalOrganization"; // Allow EducationalOrganization
     name: string;
-    url?: string; // Added URL for organization
+    url?: string; 
+}
+
+interface Place {
+    "@type": "Place";
+    name: string;
+}
+
+interface EducationalOccupationalCredential {
+    "@type": "EducationalOccupationalCredential";
+    credentialCategory?: string; // e.g., "degree"
+    educationalLevel?: string; // e.g., "Doctorate"
+    name?: string; // e.g., "Ph.D. in History"
 }
 
 interface Occupation {
@@ -25,6 +37,12 @@ interface Person {
     jobTitle?: string;
     hasOccupation?: Occupation; // Added hasOccupation
     affiliation?: Organization; // Interface already updated to include url
+    workLocation?: Place; // Added workLocation
+    nationality?: string; // Added nationality
+    alumniOf?: Organization[]; // Added alumniOf (using Organization type)
+    memberOf?: Organization[]; // Added memberOf (using Organization type)
+    hasCredential?: EducationalOccupationalCredential[]; // Corrected the type name here
+    knowsLanguage?: string[]; // Added knowsLanguage
     sameAs?: string[]; 
     knowsAbout?: string[]; // Added knowsAbout
 }
@@ -50,6 +68,40 @@ export const load: PageLoad = () => {
             "name": "Leibniz-Zentrum Moderner Orient (ZMO)",
             "url": "https://www.zmo.de/en" // Added affiliation URL
         },
+        "workLocation": { // Added work location
+            "@type": "Place",
+            "name": "Berlin"
+        },
+        "nationality": "Canada", // Added nationality
+        "alumniOf": [ // Added educational history
+            {
+                "@type": "EducationalOrganization",
+                "name": "Université Laval",
+                "url": "https://www.ulaval.ca/en"
+            }
+            // Add University of Florida if desired
+            // {
+            //     "@type": "EducationalOrganization",
+            //     "name": "University of Florida",
+            //     "url": "https://www.ufl.edu/"
+            // }
+        ],
+        "memberOf": [ // Added membership
+             {
+                "@type": "Organization", // Can also use ProgramMembership if more fitting
+                "name": "Islam in Africa Studies Group (IASG)",
+                "url": "https://iasg.hcommons.org/"
+             }
+        ],
+        "hasCredential": [ // Added credentials
+            {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "degree",
+                "educationalLevel": "Doctorate",
+                "name": "Ph.D. in History"
+            }
+        ],
+        "knowsLanguage": ["French", "English", "German"], // Added languages
         "sameAs": [
             "https://www.linkedin.com/in/frederickmadore/",
             "https://github.com/fmadore",
