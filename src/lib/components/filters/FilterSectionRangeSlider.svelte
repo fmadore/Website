@@ -2,6 +2,21 @@
     import RangeSlider from 'svelte-range-slider-pips';
     import { createEventDispatcher } from 'svelte';
 
+    // Simple debounce function
+    function debounce<T extends (...args: any[]) => any>(func: T, wait: number): (...args: Parameters<T>) => void {
+        let timeout: ReturnType<typeof setTimeout> | null = null;
+        return (...args: Parameters<T>): void => {
+            const later = () => {
+                timeout = null;
+                func(...args);
+            };
+            if (timeout !== null) {
+                clearTimeout(timeout);
+            }
+            timeout = setTimeout(later, wait);
+        };
+    }
+
     export let title: string;
     export let allYears: number[]; // All available years, sorted asc
     export let activeRange: { min: number; max: number } | null; // Current filter state
@@ -27,18 +42,8 @@
     // Flag to prevent initial update on component mount
     let isInitialized = false;
 
-    // Function to handle slider changes
-    function handleSliderChange(event: CustomEvent<{ values: [number, number] }>) {
-        if (!isInitialized) {
-            isInitialized = true; // Set flag after first potential init
-            // Prevent update if initial values match the full range (meaning no filter was set)
-            if (event.detail.values[0] === minYear && event.detail.values[1] === maxYear && activeRange === null) {
-                 return;
-            }
-        }
-        const [newMin, newMax] = event.detail.values;
-        sliderValues = [newMin, newMax];
-
+    // Debounced version of the update logic
+    const debouncedUpdate = debounce((newMin: number, newMax: number) => {
         // Only update the store if the range is not the full extent (or if it was already filtered)
         if (newMin !== minYear || newMax !== maxYear || activeRange !== null) {
             updateRange(newMin, newMax);
@@ -48,6 +53,24 @@
              resetRange();
              dispatch('change', null);
         }
+    }, 150); // Debounce by 150ms
+
+    // Function to handle slider changes
+    function handleSliderChange(event: CustomEvent<{ values: [number, number] }>) {
+        if (!isInitialized) {
+            isInitialized = true; // Set flag after first potential init
+            // Prevent initial update if values match the full range and no active filter
+            if (event.detail.values[0] === minYear && event.detail.values[1] === maxYear && activeRange === null) {
+                 // Update internal slider values but don't trigger external update yet
+                 sliderValues = event.detail.values; 
+                 return;
+            }
+        }
+        const [newMin, newMax] = event.detail.values;
+        sliderValues = [newMin, newMax]; // Update internal state immediately for responsiveness
+
+        // Call the debounced update function
+        debouncedUpdate(newMin, newMax);
     }
 
     // Format the displayed range string
