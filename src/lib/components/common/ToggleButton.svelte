@@ -26,22 +26,12 @@
     on:click={handleClick}
     ariaLabel={ariaTitle}
     title={ariaTitle}
-    additionalClasses="control-button-rounded"
+    additionalClasses="rounded-md hover:bg-primary hover:text-white"
 >
     <svelte:fragment slot="icon">
          <Map size={18} />
     </svelte:fragment>
     {labelText}
 </Button>
-
-<style>
-    :global(.control-button-rounded) {
-       border-radius: var(--border-radius-md);
-    }
-    :global(.control-button-rounded:hover) {
-       background-color: var(--color-primary);
-       color: white;
-    }
-</style>
 
 <!-- No local styles needed if btnClass uses global CSS --> 
