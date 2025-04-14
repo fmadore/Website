@@ -7,6 +7,7 @@
     import type { PageData } from './$types'; // Import PageData
     import { onMount, onDestroy } from 'svelte'; // Add back lifecycle functions
     import { browser } from '$app/environment'; // Add back browser check
+    import { page } from '$app/stores'; // Import page store
     import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte'; // Import Breadcrumb component
 
     // CitedBy, Reviews, PageHeader, etc. imports remain
@@ -39,27 +40,54 @@
         { label: truncateTitle(publication.title), href: `${base}/publications/${publication.id}` } // Use truncated title
     ];
 
-    // Add back onMount/onDestroy logic
-    const jsonLdScriptId = 'publication-json-ld';
+    // Generate Breadcrumb JSON-LD
+    $: breadcrumbJsonLdString = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": breadcrumbItems.map((item, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "name": item.label,
+            "item": `${$page.url.origin}${item.href}`
+        }))
+    });
+
+    // Manage JSON-LD script injection
+    const publicationJsonLdScriptId = 'publication-json-ld';
+    const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
 
     onMount(() => {
-        if (browser && jsonLdString) {
-            if (document.getElementById(jsonLdScriptId)) {
-                return; 
+        if (browser) {
+            // Add publication JSON-LD
+            if (jsonLdString && !document.getElementById(publicationJsonLdScriptId)) {
+                const script = document.createElement('script');
+                script.id = publicationJsonLdScriptId;
+                script.type = 'application/ld+json';
+                script.textContent = jsonLdString;
+                document.head.appendChild(script);
             }
-            const script = document.createElement('script');
-            script.id = jsonLdScriptId;
-            script.type = 'application/ld+json';
-            script.textContent = jsonLdString;
-            document.head.appendChild(script);
+            // Add breadcrumb JSON-LD
+            if (breadcrumbJsonLdString && !document.getElementById(breadcrumbJsonLdScriptId)) {
+                const script = document.createElement('script');
+                script.id = breadcrumbJsonLdScriptId;
+                script.type = 'application/ld+json';
+                script.textContent = breadcrumbJsonLdString;
+                document.head.appendChild(script);
+            }
         }
     });
 
     onDestroy(() => {
         if (browser) {
-            const script = document.getElementById(jsonLdScriptId);
-            if (script) {
-                document.head.removeChild(script);
+            // Remove publication JSON-LD
+            const pubScript = document.getElementById(publicationJsonLdScriptId);
+            if (pubScript) {
+                document.head.removeChild(pubScript);
+            }
+            // Remove breadcrumb JSON-LD
+            const breadcrumbScript = document.getElementById(breadcrumbJsonLdScriptId);
+            if (breadcrumbScript) {
+                document.head.removeChild(breadcrumbScript);
             }
         }
     });

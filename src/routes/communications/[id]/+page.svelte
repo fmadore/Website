@@ -7,6 +7,7 @@
     import MapVisualization from '$lib/components/communications/MapVisualization.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
     import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+    import { page } from '$app/stores';
     import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
     import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
     import TagList from '$lib/components/molecules/TagList.svelte';
@@ -14,6 +15,8 @@
     import AbstractSection from '$lib/components/molecules/AbstractSection.svelte';
     import RelatedItemsList from '$lib/components/organisms/RelatedItemsList.svelte';
     import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
+    import { onMount, onDestroy } from 'svelte';
+    import { browser } from '$app/environment';
     
     // Get communication from the page data
     export let data;
@@ -31,6 +34,18 @@
         { label: truncateTitle(communication.title), href: `${base}/communications/${communication.id}` }
     ];
     
+    // Generate Breadcrumb JSON-LD
+    $: breadcrumbJsonLdString = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": breadcrumbItems.map((item, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "name": item.label,
+            "item": `${$page.url.origin}${item.href}`
+        }))
+    });
+
     // Prepare marker data for the map (array with one item)
     $: singleMarkerData = communication.coordinates ? [{
         id: communication.id,
@@ -67,6 +82,27 @@
         { label: 'Language', value: communication.language ?? '' },
         { label: 'Year', value: String(communication.year ?? '') },
     ];
+
+    const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
+
+    onMount(() => {
+        if (browser && breadcrumbJsonLdString && !document.getElementById(breadcrumbJsonLdScriptId)) {
+            const script = document.createElement('script');
+            script.id = breadcrumbJsonLdScriptId;
+            script.type = 'application/ld+json';
+            script.textContent = breadcrumbJsonLdString;
+            document.head.appendChild(script);
+        }
+    });
+
+    onDestroy(() => {
+        if (browser) {
+            const script = document.getElementById(breadcrumbJsonLdScriptId);
+            if (script) {
+                document.head.removeChild(script);
+            }
+        }
+    });
 </script>
 
 <SEO 

@@ -5,12 +5,49 @@
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+    import { page } from '$app/stores'; // Import page store
+    import { onMount, onDestroy } from 'svelte'; // Import lifecycle functions
+    import { browser } from '$app/environment'; // Import browser check
 
     // Pre-construct breadcrumb items with evaluated paths
     const breadcrumbItems = [
         { label: 'Research', href: `${base}/research` },
         { label: 'Muslim Minorities in Southern Cities', href: `${base}/research/muslim-minorities-southern-cities-benin-togo` }
     ];
+
+    // Generate Breadcrumb JSON-LD
+    const breadcrumbJsonLdString = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": breadcrumbItems.map((item, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "name": item.label,
+            "item": `${$page.url.origin}${item.href}`
+        }))
+    });
+
+    // Manage JSON-LD script injection
+    const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
+
+    onMount(() => {
+        if (browser && breadcrumbJsonLdString && !document.getElementById(breadcrumbJsonLdScriptId)) {
+            const script = document.createElement('script');
+            script.id = breadcrumbJsonLdScriptId;
+            script.type = 'application/ld+json';
+            script.textContent = breadcrumbJsonLdString;
+            document.head.appendChild(script);
+        }
+    });
+
+    onDestroy(() => {
+        if (browser) {
+            const script = document.getElementById(breadcrumbJsonLdScriptId);
+            if (script) {
+                document.head.removeChild(script);
+            }
+        }
+    });
 </script>
 
 <SEO title="Muslim Minorities in Southern Cities of Benin and Togo | Frédérick Madore" />

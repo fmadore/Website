@@ -3,12 +3,27 @@
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
     import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+    import { page } from '$app/stores'; // Import page store
+    import { onMount, onDestroy } from 'svelte'; // Import lifecycle functions
+    import { browser } from '$app/environment'; // Import browser check
 
     // Define breadcrumb items
     const breadcrumbItems = [
         { label: 'Teaching', href: `${base}/teaching` },
         { label: 'Guest Lectures', href: `${base}/teaching/guest-lectures` }
     ];
+
+    // Generate Breadcrumb JSON-LD (Not reactive needed as breadcrumbItems is const)
+    const breadcrumbJsonLdString = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": breadcrumbItems.map((item, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "name": item.label,
+            "item": `${$page.url.origin}${item.href}` // Use page store here for origin
+        }))
+    });
 
     const guestLecturesByInstitution = {
         "Universität Bayreuth": [
@@ -26,6 +41,28 @@
             { title: "Outils technologiques pour la recherche doctorale", course: "Projet de thèse [Dissertation Project]", level: "graduate", date: "13 January 2017; 1 February 2016" }
         ]
     };
+
+    // Manage JSON-LD script injection
+    const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
+
+    onMount(() => {
+        if (browser && breadcrumbJsonLdString && !document.getElementById(breadcrumbJsonLdScriptId)) {
+            const script = document.createElement('script');
+            script.id = breadcrumbJsonLdScriptId;
+            script.type = 'application/ld+json';
+            script.textContent = breadcrumbJsonLdString;
+            document.head.appendChild(script);
+        }
+    });
+
+    onDestroy(() => {
+        if (browser) {
+            const script = document.getElementById(breadcrumbJsonLdScriptId);
+            if (script) {
+                document.head.removeChild(script);
+            }
+        }
+    });
 
 </script>
 

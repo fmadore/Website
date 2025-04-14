@@ -28,27 +28,53 @@
         { label: truncateTitle(activity.title), href: `${base}/activities/${activity.id}` } // Use truncated title
     ];
 
-    const jsonLdScriptId = 'activity-json-ld';
+    // Generate Breadcrumb JSON-LD
+    $: breadcrumbJsonLdString = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": breadcrumbItems.map((item, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "name": item.label,
+            "item": `${$page.url.origin}${item.href}`
+        }))
+    });
+
+    const activityJsonLdScriptId = 'activity-json-ld';
+    const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
 
     onMount(() => {
-        if (browser && jsonLdString) {
-            // Avoid adding duplicate script if navigation occurs client-side
-            if (document.getElementById(jsonLdScriptId)) {
-                return;
+        if (browser) {
+            // Add activity JSON-LD (existing logic)
+            if (jsonLdString && !document.getElementById(activityJsonLdScriptId)) {
+                const script = document.createElement('script');
+                script.id = activityJsonLdScriptId;
+                script.type = 'application/ld+json';
+                script.textContent = jsonLdString;
+                document.head.appendChild(script);
             }
-            const script = document.createElement('script');
-            script.id = jsonLdScriptId;
-            script.type = 'application/ld+json';
-            script.textContent = jsonLdString;
-            document.head.appendChild(script);
+            // Add breadcrumb JSON-LD
+            if (breadcrumbJsonLdString && !document.getElementById(breadcrumbJsonLdScriptId)) {
+                const script = document.createElement('script');
+                script.id = breadcrumbJsonLdScriptId;
+                script.type = 'application/ld+json';
+                script.textContent = breadcrumbJsonLdString;
+                document.head.appendChild(script);
+            }
         }
     });
 
     onDestroy(() => {
         if (browser) {
-            const script = document.getElementById(jsonLdScriptId);
-            if (script) {
-                document.head.removeChild(script);
+            // Remove activity JSON-LD (existing logic)
+            const activityScript = document.getElementById(activityJsonLdScriptId);
+            if (activityScript) {
+                document.head.removeChild(activityScript);
+            }
+            // Remove breadcrumb JSON-LD
+            const breadcrumbScript = document.getElementById(breadcrumbJsonLdScriptId);
+            if (breadcrumbScript) {
+                document.head.removeChild(breadcrumbScript);
             }
         }
     });
