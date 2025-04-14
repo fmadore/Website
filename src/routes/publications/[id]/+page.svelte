@@ -7,6 +7,7 @@
     import type { PageData } from './$types'; // Import PageData
     import { onMount, onDestroy } from 'svelte'; // Add back lifecycle functions
     import { browser } from '$app/environment'; // Add back browser check
+    import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte'; // Import Breadcrumb component
 
     // CitedBy, Reviews, PageHeader, etc. imports remain
     import CitedBy from '$lib/components/publications/CitedBy.svelte';
@@ -25,6 +26,18 @@
     export let data: PageData;
     $: publication = data.publication as Publication;
     $: jsonLdString = data.jsonLdString; // Use the raw string
+
+    // Helper function to truncate title at the first colon
+    function truncateTitle(title: string): string {
+        const colonIndex = title.indexOf(':');
+        return colonIndex > -1 ? title.substring(0, colonIndex) + '...' : title;
+    }
+
+    // Define breadcrumb items
+    $: breadcrumbItems = [
+        { label: 'Publications', href: `${base}/publications` },
+        { label: truncateTitle(publication.title), href: `${base}/publications/${publication.id}` } // Use truncated title
+    ];
 
     // Add back onMount/onDestroy logic
     const jsonLdScriptId = 'publication-json-ld';
@@ -126,14 +139,14 @@
 
 <div class="container mx-auto py-8 px-4">
     <article class="publication-article rounded-lg p-6 mb-8">
+        <!-- Use the Breadcrumb component -->
+        <Breadcrumb items={breadcrumbItems} />
+        
         <PageHeader 
             title={publication.title}
-            backLinkHref="publications"
-            backLinkLabel="← Back to Publications"
             date={publication.date}
             typeBadgeText={getTypeBadgeText(publication.type)}
             authors={publication.authors}
-            editors={publication.editors}
         />
         
         <!-- Use the new HeroImageDisplay component -->

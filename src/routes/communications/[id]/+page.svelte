@@ -6,6 +6,7 @@
     import type { ComponentType } from 'svelte';
     import MapVisualization from '$lib/components/communications/MapVisualization.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
+    import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
     import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
     import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
     import TagList from '$lib/components/molecules/TagList.svelte';
@@ -17,6 +18,18 @@
     // Get communication from the page data
     export let data;
     $: communication = data.communication as Communication;
+    
+    // Helper function to truncate title at the first colon
+    function truncateTitle(title: string): string {
+        const colonIndex = title.indexOf(':');
+        return colonIndex > -1 ? title.substring(0, colonIndex) + '...' : title;
+    }
+
+    // Define breadcrumb items
+    $: breadcrumbItems = [
+        { label: 'Conference Activity', href: `${base}/conference-activity` },
+        { label: truncateTitle(communication.title), href: `${base}/communications/${communication.id}` }
+    ];
     
     // Prepare marker data for the map (array with one item)
     $: singleMarkerData = communication.coordinates ? [{
@@ -73,10 +86,11 @@
 
 <div class="container mx-auto py-8 px-4">
     <article class="communication-article rounded-lg p-6 mb-8">
+        <!-- Add Breadcrumb component -->
+        <Breadcrumb items={breadcrumbItems} />
+        
         <PageHeader 
             title={communication.title}
-            backLinkHref="conference-activity"
-            backLinkLabel="← Back to Conference Activity"
             date={communication.date}
             typeBadgeText={getTypeBadgeText(communication.type || '')}
             authors={communication.authors}
