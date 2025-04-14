@@ -4,7 +4,7 @@ export const madore2025PerspectivesInMotion: Publication = {
     id: "madore-2025-perspectives-in-motion",
     type: "article",
     title: "Perspectives in Motion: Conceptual Fields from the Global South, Workshop, 2-3 December 2024, ZMO",
-    authors: ["Madore, Frédérick"],
+    authors: ["Frédérick Madore"],
     date: "April 2025",
     dateISO: "2025-04",
     year: 2025,
