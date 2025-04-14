@@ -59,7 +59,8 @@ export const load: PageLoad = () => {
             "https://scholar.google.com/citations?user=naUK0RQAAAAJ&",
             "https://www.researchgate.net/profile/Frederick-Madore",
             "https://hcommons.org/members/fmadore/", // Knowledge Commons
-            "https://zmo.academia.edu/FrederickMadore"
+            "https://zmo.academia.edu/FrederickMadore",
+            "https://www.wikidata.org/wiki/Q55725595"
         ],
         "knowsAbout": [ // Added topics
             "Islam",
