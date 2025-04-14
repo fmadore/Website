@@ -13,7 +13,7 @@
 	<main class="site-main">
 		<div class="container mx-auto p-8">
 			{#key $page.url}
-				<div transition:fade={{ duration: 150 }}>
+				<div>
 					<slot />
 				</div>
 			{/key}
