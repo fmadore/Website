@@ -36,7 +36,7 @@
                 <svelte:component 
                     this={itemComponent} 
                     item={item}
-                    itemUrl={`${base}${baseItemUrl}${item.id}`}
+                    itemUrl={`${baseItemUrl}${item.id}`}
                 />
             {/each}
         </div>

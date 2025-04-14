@@ -176,7 +176,7 @@
         filterValue={communication.type}
         title={`More ${communication.type === 'panel' ? 'Panels' : communication.type === 'conference' ? 'Conference Papers' : 'Presentations'}`}
         itemComponent={RelatedItemCard as unknown as ComponentType}
-        baseItemUrl="/conference-activity/"
+        baseItemUrl="/communications/"
         maxItems={3}
     />
 </div>
