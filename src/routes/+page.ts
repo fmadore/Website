@@ -20,12 +20,6 @@ interface EducationalOccupationalCredential {
     name?: string; // e.g., "Ph.D. in History"
 }
 
-interface Occupation {
-    "@type": "Occupation";
-    name: string; // The occupation name (e.g., "Research Fellow")
-    // additional properties like occupationalCategory could be added if known
-}
-
 interface Person {
     "@context": "https://schema.org";
     "@type": "Person";
@@ -35,8 +29,7 @@ interface Person {
     image?: string;
     email?: string; // Added email
     jobTitle?: string;
-    hasOccupation?: Occupation; // Added hasOccupation
-    affiliation?: Organization; // Interface already updated to include url
+    worksFor?: Organization; // Added worksFor
     workLocation?: Place; // Added workLocation
     nationality?: string; // Added nationality
     alumniOf?: Organization[]; // Added alumniOf (using Organization type)
@@ -59,11 +52,7 @@ export const load: PageLoad = () => {
         "image": `${base}/images/Profile-picture.jpg`, 
         "email": "frederick.madore@zmo.de", // Added email
         "jobTitle": "Research Fellow", // Keep jobTitle for compatibility
-        "hasOccupation": { // Added structured occupation
-            "@type": "Occupation",
-            "name": "Research Fellow"
-        },
-        "affiliation": {
+        "worksFor": { // Used worksFor key
             "@type": "Organization",
             "name": "Leibniz-Zentrum Moderner Orient (ZMO)",
             "url": "https://www.zmo.de/en" // Added affiliation URL
