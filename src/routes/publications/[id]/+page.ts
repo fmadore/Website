@@ -5,6 +5,11 @@ import type { Publication } from '$lib/types';
 import type { PageLoad } from './$types';
 
 // --- JSON-LD Helper Interfaces ---
+interface Place {
+    "@type": "Place";
+    name: string;
+}
+
 interface BaseJsonLd {
     "@context": "https://schema.org";
     "@type": string;
@@ -15,6 +20,9 @@ interface BaseJsonLd {
     keywords?: string;
     url?: string; 
     identifier?: string | { "@type": "PropertyValue", propertyID: string, value: string } | (string | { "@type": "PropertyValue", propertyID: string, value: string })[];
+    copyrightYear?: number;
+    inLanguage?: string;
+    spatialCoverage?: Place[];
 }
 
 interface Person {
@@ -43,6 +51,7 @@ interface PublicationContainer {
 interface BookJsonLd extends BaseJsonLd {
     "@type": "Book";
     author?: Person[];
+    editor?: Person[];
     datePublished?: string;
     isbn?: string;
     numberOfPages?: number;
@@ -92,6 +101,11 @@ function formatAuthors(authors: string[]): Person[] {
     return authors.map(formatAuthor);
 }
 
+// Helper function to format countries into Place objects
+function formatPlaces(countries: string[]): Place[] {
+    return countries.map(country => ({ "@type": "Place", name: country.trim() }));
+}
+
 // --- Load Function ---
 export const load: PageLoad = ({ params }) => {
     const publicationId = params.id;
@@ -122,7 +136,14 @@ export const load: PageLoad = ({ params }) => {
         "headline": publication.title,
         "description": publication.abstract,
         "url": `${base}/publications/${publication.id}`, 
+        "copyrightYear": publication.year,
+        "inLanguage": publication.language,
     };
+
+    // Add spatialCoverage if countries exist
+    if (publication.country && publication.country.length > 0) {
+        jsonLdObject.spatialCoverage = formatPlaces(publication.country);
+    }
 
     // Format common fields
     const authors = publication.authors ? formatAuthors(publication.authors) : undefined;
@@ -139,7 +160,11 @@ export const load: PageLoad = ({ params }) => {
     switch (resolvedType) {
         case 'Book':
             const bookData = jsonLdObject as Partial<BookJsonLd>;
-            bookData.author = finalAuthors;
+            if (publication.isEditedVolume) {
+                bookData.editor = finalAuthors;
+            } else {
+                bookData.author = finalAuthors;
+            }
             bookData.datePublished = formattedDatePublished;
             bookData.isbn = publication.isbn;
             bookData.numberOfPages = publication.pageCount;
