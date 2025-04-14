@@ -7,7 +7,7 @@ export const religiosityUniversityCampuses: Publication = {
     authors: ["Abdoulaye Sounaye", "Frédérick Madore"],
     editors: "Abdoulaye Sounaye, Frédérick Madore",
     date: "2023",
-    dateISO: "2023-09-01",
+    dateISO: "2023-08-29",
     year: 2023,
     placeOfPublication: "Berlin",
     publisher: "LIT Verlag",
