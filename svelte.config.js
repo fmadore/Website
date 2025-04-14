@@ -31,6 +31,9 @@ const config = {
 				// If you prefer to fail the build on any error uncomment the line below:
 				// throw new Error(message);
 			}
+		},
+		serviceWorker: {
+			register: true
 		}
 	},
 	extensions: ['.svelte', '.svx']
