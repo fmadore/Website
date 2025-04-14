@@ -21,7 +21,6 @@
 	export let items: RelevantItem[];
 	export let itemTypePlural: string; // e.g., "publications", "communications"
 	export let basePath: string; // e.g., "/publications", "/communications"
-	export let projectName: string;
 	export let showTypeFilters: boolean = true;
 	export let formatType: (type: string) => string;
 	export let formatAuthors: (authors: string[]) => string;
@@ -61,7 +60,7 @@
 		{/if}
 
 		<div class="mt-4 text-right">
-			<a href="{base}{basePath}?project={encodeURIComponent(projectName)}" class="view-all">View all {itemTypePlural}</a>
+			<a href="{base}{basePath}" class="view-all">View all {itemTypePlural}</a>
 		</div>
 	{/if}
 </div>

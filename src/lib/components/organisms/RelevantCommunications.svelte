@@ -48,8 +48,7 @@
     title="Relevant Communications"
     items={communicationList}
     itemTypePlural="communications"
-    basePath="/communications"
-    {projectName}
+    basePath="/conference-activity"
     {showTypeFilters}
     formatType={formatCommunicationType}
     {formatAuthors}
