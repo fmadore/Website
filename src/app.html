@@ -23,26 +23,21 @@
 			})();
 		</script>
 		
-		<!-- Google Analytics -->
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA_MEASUREMENT_ID%"></script>
 		<script>
-			// Only load analytics in production and if cookies are accepted
-			if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-				const cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
-				if (cookiesAccepted || !localStorage.getItem('cookiesAccepted')) {
-					// Create and add the script dynamically
-					const gtagScript = document.createElement('script');
-					gtagScript.async = true;
-					gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=%VITE_GA_MEASUREMENT_ID%';
-					document.head.appendChild(gtagScript);
-					
-					window.dataLayer = window.dataLayer || [];
-					function gtag(){dataLayer.push(arguments);}
-					gtag('js', new Date());
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+
+			// Check if we are in production AND cookies are accepted before configuring GA
+			const cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
+			if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' && cookiesAccepted) {
 					gtag('config', '%VITE_GA_MEASUREMENT_ID%', {
-						'anonymize_ip': true,
-						'cookie_flags': 'SameSite=None;Secure'
+						// You can re-add anonymize_ip and cookie_flags if required by privacy regulations
+						// 'anonymize_ip': true,
+						// 'cookie_flags': 'SameSite=None;Secure'
 					});
-				}
 			}
 		</script>
 		
