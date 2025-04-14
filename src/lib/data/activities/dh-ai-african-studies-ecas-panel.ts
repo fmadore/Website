@@ -21,7 +21,7 @@ export const activity: Activity = {
         </ol>
         <p>The panel aims to showcase cutting-edge transdisciplinary research that uses digital methods to explore the complexities of African realities, identities, and knowledge systems. By fostering dialogue on the potential and pitfalls of digital approaches, we aim to contribute to a more inclusive, diverse, and critically aware digital landscape in African studies.</p>
     `,
-    tags: ["Conference", "ECAS", "Digital Humanities", "AI", "Call for papers"],
+    tags: ["ECAS", "Digital Humanities", "AI", "African Studies"],
     image: "",
     heroImage: {
         src: "images/activities/ECAS-2025.jpg",
