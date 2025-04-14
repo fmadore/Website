@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import { base } from '$app/paths';
 import { allPublications } from '$lib/data/publications/index';
-import type { Publication } from '$lib/types';
+import type { Publication, ReviewWork } from '$lib/types';
 import type { PageLoad } from './$types';
 
 // --- JSON-LD Helper Interfaces ---
@@ -47,6 +47,21 @@ interface PublicationContainer {
     author?: Person[]; // Added for when container is Book (editors)
 }
 
+// Define Review interface
+interface ReviewJsonLd {
+    "@type": "Review";
+    author?: Person;
+    datePublished?: string; // Format YYYY or YYYY-MM-DD
+    reviewBody?: string; // Use excerpt
+    itemReviewed?: {
+        "@type": "Book"; // Or potentially other types if reviewing articles etc.
+        name: string;
+    };
+    publisher?: Organization; // Publisher of the review journal
+    url?: string; // URL of the review itself
+    identifier?: string | { "@type": "PropertyValue", propertyID: string, value: string }; // DOI of the review
+}
+
 // --- Main JSON-LD Interfaces ---
 interface BookJsonLd extends BaseJsonLd {
     "@type": "Book";
@@ -56,6 +71,7 @@ interface BookJsonLd extends BaseJsonLd {
     isbn?: string;
     numberOfPages?: number;
     publisher?: Organization;
+    review?: ReviewJsonLd[]; // Added review array
 }
 
 interface ArticleJsonLd extends BaseJsonLd { // Used for Articles, Chapters, Encyclopedia Entries
@@ -169,6 +185,33 @@ export const load: PageLoad = ({ params }) => {
             bookData.isbn = publication.isbn;
             bookData.numberOfPages = publication.pageCount;
             bookData.publisher = publisherOrg;
+
+            // Add reviews if they exist
+            if (publication.reviewedBy && publication.reviewedBy.length > 0) {
+                bookData.review = publication.reviewedBy.map((reviewData: ReviewWork) => {
+                    const reviewJson: ReviewJsonLd = {
+                        "@type": "Review",
+                        author: formatAuthor(reviewData.author),
+                        // Use only year for datePublished if full date isn't available
+                        datePublished: String(reviewData.year), 
+                        reviewBody: reviewData.excerpt,
+                        itemReviewed: {
+                            "@type": "Book", // Assuming reviews are always for the book itself
+                            name: publication.title // Name of the item being reviewed
+                        },
+                        publisher: { // Publisher of the review journal
+                             "@type": "Organization", 
+                             name: reviewData.journal 
+                        },
+                        url: reviewData.url, // URL of the review
+                    };
+                    // Add DOI as identifier if available
+                    if (reviewData.doi) {
+                        reviewJson.identifier = reviewData.doi;
+                    }
+                    return reviewJson;
+                });
+            }
             break;
         case 'ScholarlyArticle':
         case 'Article': // Handle Articles, Chapters, Encyclopedia Entries
