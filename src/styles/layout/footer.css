@@ -3,16 +3,33 @@
 .site-footer {
   background-color: var(--color-footer-bg);
   color: var(--color-footer-text);
-  padding: var(--spacing-8) 0 var(--spacing-4) 0;
+  padding: var(--spacing-8) 0 var(--spacing-6) 0;
+  position: relative;
+}
+
+/* Add a subtle gradient top border */
+.footer-gradient-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--color-primary), var(--color-highlight));
 }
 
 .footer-container {
-  max-width: 80rem;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--spacing-4);
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+.footer-branding {
+  display: flex;
   align-items: center;
+  gap: var(--spacing-6);
 }
 
 .footer-content {
@@ -30,19 +47,40 @@
 }
 
 .footer-link {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: var(--spacing-2);
   color: var(--color-footer-text-muted);
   text-decoration: none;
-  transition: color 0.2s;
+  transition: all 0.2s ease;
   line-height: 1;
   position: relative;
+  padding: var(--spacing-1);
+  border-radius: var(--border-radius-sm);
+}
+
+/* Make the icon visually consistent */
+.footer-link svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  transition: transform 0.2s ease;
+}
+
+.footer-link-name {
+  font-size: var(--font-size-sm);
 }
 
 .footer-link:hover {
-  color: #ff6600; /* Strong orange color instead of using var(--color-primary) */
-  /* Removing the glow effect */
+  color: #ff6600; /* Strong orange color for better contrast in light theme */
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.footer-link:hover svg {
+  transform: scale(1.1);
+  color: #ff6600; /* Ensuring SVG icons also use the orange color */
 }
 
 .footer-link :global(svg) {
@@ -79,6 +117,50 @@ html.dark .footer-tooltip {
   background: var(--color-footer-bg);
   color: var(--color-primary);
   box-shadow: 0 2px 8px 0 rgba(0,0,0,0.7);
+}
+
+.footer-copyright {
+  font-size: var(--font-size-sm);
+  color: var(--color-footer-text-muted);
+}
+
+.footer-social-links {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-8);
+}
+
+.footer-link-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.footer-group-title {
+  color: var(--color-footer-text);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: var(--spacing-1);
+  position: relative;
+}
+
+/* Decorative line under group titles */
+.footer-group-title:after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background-color: var(--color-primary);
+}
+
+.footer-links-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
 }
 
 .footer-copyright {
@@ -134,11 +216,29 @@ html.dark .footer-tooltip {
 }
 
 /* Responsive styles */
+@media (min-width: 640px) {
+  .footer-social-links {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-6);
+  }
+}
+
 @media (min-width: 768px) {
   .footer-container {
     flex-direction: row;
     justify-content: space-between;
-    align-items: center; /* Changed from flex-start to center for vertical alignment */
+    align-items: flex-start;
+  }
+
+  .footer-branding {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-social-links {
+    flex: 1;
+    justify-content: flex-end;
+    margin-left: auto;
   }
 
   .footer-content {
@@ -166,6 +266,7 @@ html.dark .footer-tooltip {
     flex-direction: column;
     align-items: center;
   }
+  
   .footer-left,
   .footer-right {
     flex: unset;
@@ -173,5 +274,27 @@ html.dark .footer-tooltip {
     justify-content: center;
     align-items: center;
     text-align: center;
+  }
+}
+
+@media (max-width: 639px) {
+  .footer-branding {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--spacing-4);
+  }
+  
+  .footer-link-group {
+    align-items: center;
+  }
+  
+  .footer-group-title:after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .footer-links-grid {
+    align-items: center;
   }
 }
