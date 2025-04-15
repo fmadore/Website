@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import { page } from '$app/stores';
-	import Footer from '$lib/Footer.svelte';
+	import Footer from '$lib/components/organisms/Footer.svelte';
 	import Header from '$lib/components/organisms/Header.svelte';
 	import CookieConsent from '$lib/components/common/CookieConsent.svelte';
 	import '../app.css';
