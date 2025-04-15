@@ -43,29 +43,5 @@
 </li>
 
 <style>
-    .nav-item {
-        position: relative;
-    }
-    
-    .dropdown-container {
-        position: relative;
-    }
-    
-    .dropdown-container::after {
-        content: '';
-        position: absolute;
-        height: 20px; /* Buffer height */
-        width: 100%;
-        bottom: -20px;
-        left: 0;
-        z-index: 5;
-    }
-    
-    :global(.dropdown-container:hover .dropdown-icon) {
-        transform: rotate(180deg);
-    }
-    
-    :global(.dropdown-container:has(.dropdown-menu.active) .dropdown-icon) {
-        transform: rotate(180deg);
-    }
-</style> 
+/* All dropdown and nav styles will be moved to menu.css for consistency */
+</style>

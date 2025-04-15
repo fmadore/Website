@@ -53,46 +53,85 @@
 
 .dropdown-container {
   position: relative;
+  padding-bottom: 2px;
 }
 
 .dropdown-container:hover .dropdown-icon {
   transform: rotate(180deg);
 }
 
+/* Minimal dropdown menu */
 .dropdown-menu {
   position: absolute;
-  top: 100%;
-  left: 0;
-  min-width: 16rem;
-  background-color: white;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  min-width: unset;
+  width: max-content;
+  max-width: 90vw;
+  background: var(--color-background);
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-md);
-  padding: var(--spacing-2) 0;
-  z-index: 50;
+  padding: var(--spacing-1) 0;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(10px);
-  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  transition: opacity 0.2s, transform 0.2s;
+  transform-origin: top center;
+  pointer-events: none;
 }
 
-.dropdown-container:hover .dropdown-menu {
+.dropdown-menu.active {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.dropdown-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .dropdown-item {
   display: block;
-  padding: var(--spacing-2) var(--spacing-4);
+  padding: var(--spacing-2) var(--spacing-5);
   color: var(--color-text);
   text-decoration: none;
-  font-size: var(--font-size-sm);
-  transition: background-color 0.2s ease;
+  font-size: var(--font-size-base);
+  border-radius: var(--border-radius-sm);
+  transition: background 0.15s, color 0.15s, transform 0.15s;
+  white-space: nowrap;
 }
 
-.dropdown-item:hover {
-  background-color: #f9fafb;
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background: var(--color-border);
+  color: var(--color-primary);
+  transform: translateX(2px);
+}
+
+/* Remove pointer arrow and big box look */
+.dropdown-menu::before {
+  display: none;
+}
+
+/* Small vertical gap between main link and dropdown */
+.dropdown-container {
+  padding-bottom: 2px;
+}
+
+/* Responsive: make sure dropdown doesn't overflow */
+@media (max-width: 600px) {
+  .dropdown-menu {
+    left: 0;
+    right: 0;
+    transform: none;
+    min-width: 70vw;
+    max-width: 95vw;
+  }
 }
 
 /* Responsive navigation */
@@ -163,4 +202,4 @@
 
 .nav-toggle.active .toggle-icon::after {
   transform: translateY(-0.5rem) rotate(-45deg);
-} 
+}

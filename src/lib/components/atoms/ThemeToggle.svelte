@@ -1,6 +1,6 @@
 <script lang="ts">
     import { theme, toggleTheme } from '$lib/stores/themeStore';
-    import { Moon, Sun } from 'lucide-svelte';
+    import Icon from '@iconify/svelte';
     
     export let size = 20;
 </script>
@@ -11,9 +11,9 @@
     aria-label={$theme === 'light' ? "Switch to dark theme" : "Switch to light theme"}
 >
     {#if $theme === 'light'}
-        <Moon {size} />
+        <Icon icon="mdi:moon-waning-crescent" width={size} height={size} />
     {:else}
-        <Sun {size} />
+        <Icon icon="mdi:white-balance-sunny" width={size} height={size} />
     {/if}
 </button>
 
@@ -36,4 +36,4 @@
     .theme-toggle:hover {
         background-color: var(--color-border);
     }
-</style> 
+</style>

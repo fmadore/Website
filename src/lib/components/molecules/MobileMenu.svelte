@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { NavItem } from '$lib/types/navigation';
     import ThemeToggle from '$lib/components/atoms/ThemeToggle.svelte';
-    import { X } from 'lucide-svelte';
+    import Icon from '@iconify/svelte';
     import { base } from '$app/paths';
     
     export let navItems: NavItem[];
@@ -25,7 +25,7 @@
                 aria-label="Close navigation menu"
             >
                 <span class="sr-only">Close</span>
-                <X size={20} />
+                <Icon icon="mdi:close" width={20} height={20} />
             </button>
         </div>
 
@@ -70,9 +70,12 @@
         background-color: var(--color-background);
         z-index: 200;
         transform: translateY(-100%);
-        transition: transform 0.3s ease-in-out, background-color 0.3s ease;
+        transition: transform 0.3s cubic-bezier(.4,0,.2,1), background-color 0.3s;
         overflow-y: auto;
         backdrop-filter: blur(4px);
+        box-shadow: var(--shadow-lg);
+        border-bottom-left-radius: var(--border-radius-xl);
+        border-bottom-right-radius: var(--border-radius-xl);
     }
     
     .mobile-nav-container.active {
@@ -80,7 +83,7 @@
     }
     
     .mobile-nav {
-        padding: var(--spacing-3) var(--spacing-4) var(--spacing-4);
+        padding: var(--spacing-4) var(--spacing-4) var(--spacing-8);
         min-height: 100vh; /* Ensure minimum height */
         position: relative;
         z-index: 2; /* Above the overlay */
@@ -98,6 +101,7 @@
         z-index: 3;
         padding: var(--spacing-3) 0;
         background-color: var(--color-background);
+        border-bottom: 1px solid var(--color-border);
     }
     
     .mobile-site-title {
@@ -105,7 +109,7 @@
         font-weight: 700;
         color: var(--color-text);
         text-decoration: none;
-        transition: color 0.2s ease;
+        transition: color 0.2s;
         letter-spacing: -0.02em;
         text-align: center;
         flex: 1;
@@ -127,7 +131,7 @@
         justify-content: center;
         width: 36px;
         height: 36px;
-        transition: background-color 0.2s ease;
+        transition: background-color 0.2s;
     }
     
     .mobile-close:hover {
@@ -161,7 +165,8 @@
     }
     
     .mobile-nav-item {
-        margin-bottom: var(--spacing-4);
+        margin-bottom: var(--spacing-2);
+        width: 100%;
     }
     
     .mobile-nav-link {
@@ -170,25 +175,37 @@
         font-weight: 600;
         color: var(--color-text);
         text-decoration: none;
-        padding: var(--spacing-2) 0;
-        transition: color 0.2s ease;
+        padding: var(--spacing-3) 0;
+        border-radius: var(--border-radius-md);
+        transition: background 0.2s, color 0.2s;
+        width: 100%;
     }
     
-    .mobile-nav-link:hover {
+    .mobile-nav-link:hover,
+    .mobile-nav-link:active {
+        background: var(--color-border);
         color: var(--color-primary);
     }
     
     .mobile-dropdown {
         list-style: none;
         padding: 0;
-        margin-top: var(--spacing-2);
+        margin-top: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
+        background: none;
+        border-radius: 0;
+        box-shadow: none;
+        border: none;
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
     }
     
     .mobile-dropdown-item {
-        margin-bottom: var(--spacing-2);
+        margin-bottom: 0;
+        width: 100%;
     }
     
     .mobile-dropdown-link {
@@ -196,12 +213,22 @@
         font-size: var(--font-size-base);
         color: var(--color-text);
         text-decoration: none;
-        padding: var(--spacing-1) 0;
-        transition: color 0.2s ease;
+        padding: var(--spacing-2) 0;
+        border-radius: var(--border-radius-sm);
+        transition: background 0.2s, color 0.2s;
+        width: 100%;
+        text-align: center;
     }
     
-    .mobile-dropdown-link:hover {
+    .mobile-dropdown-link:hover,
+    .mobile-dropdown-link:active {
+        background: var(--color-border);
         color: var(--color-primary);
+    }
+    
+    /* Divider between main links and dropdowns */
+    .mobile-nav-item + .mobile-nav-item {
+        border-top: 1px solid var(--color-border);
     }
     
     /* Overlay for mobile menu backdrop */
@@ -216,11 +243,13 @@
         background-color: var(--color-background);
         z-index: 1;
         pointer-events: none;
+        border-bottom-left-radius: var(--border-radius-xl);
+        border-bottom-right-radius: var(--border-radius-xl);
     }
     
     @media (min-width: 640px) {
         .mobile-nav {
-            padding: var(--spacing-4) var(--spacing-8) var(--spacing-8);
+            padding: var(--spacing-6) var(--spacing-12) var(--spacing-12);
         }
     }
-</style> 
+</style>
