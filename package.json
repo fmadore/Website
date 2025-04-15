@@ -41,6 +41,7 @@
 	},
 	"dependencies": {
 		"@fortawesome/free-solid-svg-icons": "^6.7.2",
+		"@iconify/svelte": "^4.2.0",
 		"@types/leaflet.markercluster": "^1.5.5",
 		"date-fns": "^4.1.0",
 		"leaflet.markercluster": "^1.5.3",

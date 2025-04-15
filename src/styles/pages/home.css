@@ -155,10 +155,71 @@
 
 .profile-header {
     display: flex;
-    align-items: center;
+    align-items: center; /* Vertically center text block and photo */
+    gap: var(--spacing-6);
     margin-bottom: var(--spacing-8);
     padding-bottom: var(--spacing-6);
     border-bottom: 1px solid var(--color-border);
+}
+
+.profile-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: var(--spacing-6);
+    /* Removed height and justify-content */
+    gap: 0;
+}
+
+.profile-photo {
+    margin: 0;
+    width: 150px;
+    height: 150px;
+    flex-shrink: 0;
+}
+
+.profile-icons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-3);
+    margin: 0;
+    margin-top: var(--spacing-4); /* Space above icons */
+}
+
+.profile-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+@media (max-width: 640px) {
+    .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: var(--spacing-4);
+    }
+    .profile-left {
+        flex-direction: column;
+        align-items: center;
+        margin-right: 0;
+        margin-bottom: var(--spacing-4);
+        height: auto;
+        justify-content: flex-start;
+        gap: var(--spacing-4);
+    }
+    .profile-photo {
+        margin-bottom: var(--spacing-4);
+    }
+    .profile-title {
+        align-items: center;
+    }
+    .profile-icons {
+        justify-content: center;
+        margin-bottom: var(--spacing-3);
+    }
 }
 
 .enhanced-header {
