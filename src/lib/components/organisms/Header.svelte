@@ -15,10 +15,10 @@
             name: 'Research', 
             path: `${base}/research`,
             dropdown: [
-                { name: 'Mining the Islam West Africa Collection (2025)', path: `${base}/research/mining-the-islam-west-africa-collection` },
-                { name: 'Religious Activism on Campuses in Togo and Benin (2021-24)', path: `${base}/research/religious-activism-campuses-togo-benin` },
-                { name: 'Muslim Minorities in Southern Cities of Benin and Togo (2018-20)', path: `${base}/research/muslim-minorities-southern-cities-benin-togo` },
-                { name: 'Youth and Women\'s Islamic Activism in Côte d\'Ivoire and Burkina Faso​ (2013-18)', path: `${base}/research/youth-womens-islamic-activism-cote-divoire-burkina-faso` }
+                { name: 'Mining the Islam West Africa Collection', path: `${base}/research/mining-the-islam-west-africa-collection` },
+                { name: 'Religious Activism on Campuses in Togo and Benin', path: `${base}/research/religious-activism-campuses-togo-benin` },
+                { name: 'Muslim Minorities in Southern Cities of Benin and Togo', path: `${base}/research/muslim-minorities-southern-cities-benin-togo` },
+                { name: 'Youth and Women\'s Islamic Activism in Côte d\'Ivoire and Burkina Faso', path: `${base}/research/youth-womens-islamic-activism-cote-divoire-burkina-faso` }
             ] 
         },
         { name: 'Publications', path: `${base}/publications` },

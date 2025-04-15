@@ -89,11 +89,16 @@
   padding: var(--spacing-2) var(--spacing-4);
   color: var(--color-secondary);
   text-decoration: none;
-  transition: background-color 0.2s ease;
+  transition: background 0.2s, color 0.2s;
+  background: none;
+  color: var(--color-text);
 }
 
-.dropdown-item:hover {
-  background-color: #f9f9f9;
+.dropdown-item:hover,
+.dropdown-item:active,
+.dropdown-item:focus {
+  background: var(--color-border);
+  color: var(--color-primary);
 }
 
 /* Responsive styles */
@@ -116,4 +121,4 @@
     flex-direction: row;
     gap: var(--spacing-6);
   }
-} 
+}
