@@ -16,14 +16,14 @@
 
 <footer class="site-footer">
 	<div class="footer-container">
-		<div class="footer-links">
+		<div class="footer-links footer-left">
 			{#each socialLinks as link}
 				<a href={link.url} class="footer-link" target="_blank" rel="noopener noreferrer" aria-label={link.name}>
 					<Icon icon={link.icon} width="26" height="26" />
 				</a>
 			{/each}
 		</div>
-		<div class="footer-copyright">
+		<div class="footer-copyright footer-right">
 			<p>Copyright © {new Date().getFullYear()} Frédérick Madore, Ph.D.</p>
 			<p>Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)</p>
 		</div>
