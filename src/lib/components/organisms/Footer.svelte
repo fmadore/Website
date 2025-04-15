@@ -1,5 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
+	import { fade } from 'svelte/transition';
+	let hoveredIndex: number | null = null;
 	// Social media links with Iconify icon names
 	const socialLinks = [
 		{ name: 'Email', icon: 'mdi:email', url: 'mailto:frederick.madore@zmo.de' },
@@ -17,9 +19,15 @@
 <footer class="site-footer">
 	<div class="footer-container">
 		<div class="footer-links footer-left">
-			{#each socialLinks as link}
-				<a href={link.url} class="footer-link" target="_blank" rel="noopener noreferrer" aria-label={link.name}>
+			{#each socialLinks as link, i}
+				<a href={link.url} class="footer-link" target="_blank" rel="noopener noreferrer" aria-label={link.name}
+					on:mouseenter={() => hoveredIndex = i}
+					on:mouseleave={() => hoveredIndex = null}
+				>
 					<Icon icon={link.icon} width="26" height="26" />
+					{#if hoveredIndex === i}
+						<span class="footer-tooltip" transition:fade>{link.name}</span>
+					{/if}
 				</a>
 			{/each}
 		</div>
