@@ -354,3 +354,12 @@ html.dark .main-content-card p,
 html.dark .sidebar-card {
     color: var(--color-text);
 }
+
+.profile-icons a {
+    color: var(--color-secondary);
+    transition: color 0.2s ease;
+}
+
+.profile-icons a:hover {
+    color: #ff6600; /* Strong orange color for better contrast in light theme */
+}

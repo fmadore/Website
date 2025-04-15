@@ -41,7 +41,8 @@
 }
 
 .footer-link:hover {
-  color: var(--color-primary);
+  color: #ff6600; /* Strong orange color instead of using var(--color-primary) */
+  /* Removing the glow effect */
 }
 
 .footer-link :global(svg) {

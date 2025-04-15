@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import { fade, fly } from 'svelte/transition';
-	let hoveredIndex: number | null = null;
 	
 	// Grouped social media links with Iconify icon names
 	const socialGroups = [
@@ -41,7 +40,6 @@
 	<div class="footer-gradient-top"></div>
 	<div class="footer-container">
 		<div class="footer-branding">
-			<div class="footer-logo">FM</div>
 			<div class="footer-copyright">
 				<p>Copyright © {currentYear} Frédérick Madore, Ph.D.</p>
 				<p>Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)</p>
@@ -60,14 +58,9 @@
 								target="_blank" 
 								rel="noopener noreferrer" 
 								aria-label={link.name}
-								on:mouseenter={() => hoveredIndex = socialLinks.indexOf(link)}
-								on:mouseleave={() => hoveredIndex = null}
 							>
 								<Icon icon={link.icon} width="22" height="22" />
 								<span class="footer-link-name">{link.name}</span>
-								{#if hoveredIndex === socialLinks.indexOf(link)}
-									<span class="footer-tooltip" transition:fade|local>{link.name}</span>
-								{/if}
 							</a>
 						{/each}
 					</div>
@@ -108,21 +101,6 @@
 		display: flex;
 		align-items: center;
 		gap: var(--spacing-6);
-	}
-	
-	.footer-logo {
-		font-family: var(--font-family-serif);
-		font-size: 1.75rem;
-		font-weight: 700;
-		color: var(--color-primary);
-		background-color: rgba(255, 255, 255, 0.1);
-		width: 50px;
-		height: 50px;
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border: 2px solid rgba(255, 255, 255, 0.15);
 	}
 	
 	.footer-copyright {
@@ -197,30 +175,13 @@
 	}
 	
 	.footer-link:hover {
-		color: var(--color-primary);
+		color: #ff6600; /* Strong orange color for better contrast in light theme */
 		background-color: rgba(255, 255, 255, 0.05);
 	}
 	
 	.footer-link:hover :global(svg) {
 		transform: scale(1.1);
-	}
-	
-	.footer-tooltip {
-		position: absolute;
-		left: 50%;
-		bottom: 120%;
-		transform: translateX(-50%);
-		background: var(--color-background);
-		color: var(--color-primary);
-		padding: 0.25em 0.75em;
-		border-radius: var(--border-radius);
-		box-shadow: var(--shadow-md);
-		font-size: var(--font-size-sm);
-		white-space: nowrap;
-		opacity: 0.97;
-		pointer-events: none;
-		z-index: 100;
-		transition: background 0.2s, color 0.2s;
+		color: #ff6600; /* Ensuring SVG icons also use the orange color */
 	}
 
 	/* Responsive styles */
@@ -273,7 +234,5 @@
 	}
 	
 	/* Dark mode adjustments */
-	:global(html.dark) .footer-logo {
-		border-color: rgba(255, 255, 255, 0.1);
-	}
+	/* Removing unused selector */
 </style>
