@@ -17,10 +17,23 @@
     $: publicationList = allPublications
         .filter(pub => pub.project === projectName)
         .sort((a, b) => new Date(b.dateISO).getTime() - new Date(a.dateISO).getTime())
-        .slice(0, limit) as RelevantItem[]; // Cast the specific type to the generic type
+        .slice(0, limit) as RelevantItem[];
 
     // Get unique publication types for the type filter
-    $: publicationTypes = [...new Set(publicationList.map(pub => pub.type))].sort();
+    $: publicationTypes = [...new Set(publicationList.map(pub => pub.type).filter(Boolean))].sort() as string[];
+
+    // Add state for selected type filter
+    let selectedType: string | null = null;
+
+    // Compute filtered list based on selected type
+    $: filteredList = selectedType
+        ? publicationList.filter(pub => pub.type === selectedType)
+        : publicationList;
+
+    // Handler for type filter button
+    function selectType(type: string) {
+        selectedType = selectedType === type ? null : type;
+    }
 
     // Format publication type for display
     function formatPublicationType(type: string): string {
@@ -46,13 +59,28 @@
     }
 </script>
 
-<RelevantItemsList
-    title="Relevant Publications"
-    items={publicationList}
-    itemTypePlural="publications"
-    basePath="/publications"
-    {projectName}
-    {showTypeFilters}
-    formatType={formatPublicationType}
-    {formatAuthors}
-/> 
+<div class="relevant-publications mb-4">
+    {#if showTypeFilters && publicationTypes.length > 1}
+        <div class="flex flex-wrap gap-2 mb-6">
+            {#each publicationTypes as type}
+                <button
+                    class="filter-button {selectedType === type ? 'active' : ''}"
+                    on:click={() => selectType(type)}
+                    type="button"
+                >
+                    {formatPublicationType(type)}
+                </button>
+            {/each}
+        </div>
+    {/if}
+    <RelevantItemsList
+        title="Relevant Publications"
+        items={filteredList}
+        itemTypePlural="publications"
+        basePath="/publications"
+        formatType={formatPublicationType}
+        {formatAuthors}
+    />
+</div>
+
+<!-- Removed component-scoped <style> block, using utility classes and .filter-button from global CSS -->

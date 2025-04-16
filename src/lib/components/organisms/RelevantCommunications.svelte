@@ -56,7 +56,7 @@
     }
 </script>
 
-<div class="relevant-communications">
+<div class="relevant-communications mb-4">
     <RelevantItemsList
         title="Relevant Communications"
         items={filteredList}
@@ -66,9 +66,3 @@
         {formatAuthors}
     />
 </div>
-
-<style>
-    .relevant-communications {
-        margin-bottom: var(--spacing-4);
-    }
-</style>
