@@ -45,7 +45,7 @@
 			{/each}
 		</ul>
 
-		<div class="mt-4 text-right">
+		<div class="view-all-container">
 			<a href="{base}{basePath}" class="view-all">View all {itemTypePlural}</a>
 		</div>
 	{/if}
@@ -95,6 +95,11 @@
 		color: var(--color-text-light);
 		text-align: center;
 		padding: var(--spacing-4) 0;
+	}
+
+	.view-all-container {
+		margin-top: var(--spacing-4);
+		text-align: right;
 	}
 
 	.view-all {
