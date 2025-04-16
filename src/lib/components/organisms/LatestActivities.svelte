@@ -73,6 +73,7 @@
         items={relevantActivityList}
         itemTypePlural="activities"
         basePath="/activities"
+        viewAllPath="/activities"
         formatType={formatActivityType}
         formatAuthors={formatActivityAuthors}
     >
@@ -103,10 +104,11 @@
     .card-title {
         font-size: var(--font-size-xl);
         font-weight: 700;
-        margin-bottom: var(--spacing-4);
+        margin-bottom: var(--spacing-2);
         color: var(--color-primary);
         border-bottom: 1px solid var(--color-border);
         padding-bottom: var(--spacing-2);
+        padding-left: var(--spacing-4);
     }
     
     .year-filters-row {
@@ -114,6 +116,7 @@
         align-items: center;
         gap: var(--spacing-4);
         margin-top: var(--spacing-4);
+        padding-left: var(--spacing-4);
     }
     
     .browse-label {
