@@ -24,7 +24,7 @@
 			links: [
 				{ name: 'LinkedIn', icon: 'simple-icons:linkedin', url: 'https://www.linkedin.com/in/frederickmadore/' },
 				{ name: 'GitHub', icon: 'simple-icons:github', url: 'https://github.com/fmadore' },
-				{ name: 'Bluesky', icon: 'simple-icons:bluesky', url: 'https://bsky.app/profile/fmadore' },
+				{ name: 'Bluesky', icon: 'simple-icons:bluesky', url: 'https://bsky.app/profile/fmadore.bsky.social' },
 				{ name: 'Mastodon', icon: 'simple-icons:mastodon', url: 'https://hcommons.social/@fmadore' }
 			]
 		}
