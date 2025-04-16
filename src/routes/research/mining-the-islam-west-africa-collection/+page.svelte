@@ -75,10 +75,8 @@
                 
                 <p>By combining these computational approaches with ethnographic fieldwork, I aim to provide a comprehensive understanding that neither method could achieve alone. This innovative synthesis promises new insights into the intellectual history and translocal dynamics of Muslims in Francophone West Africa, and contributes significantly to our understanding of how religiosity interacts with morality, intellectual culture and socio-political issues in this context.</p>
                 
-                <div class="aspect-w-16 aspect-h-9 mt-6">
-                    <div class="iframe-container">
-                        <iframe src="https://iwac.vercel.app/" title="IWAC Visualization" frameborder="0" scrolling="no" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
+                <div class="iframe-container">
+                    <iframe src="https://fmadore.github.io/IWAC-overview/index.html" title="IWAC Visualization" frameborder="0" scrolling="yes" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
         </div>
@@ -113,6 +111,24 @@
     .project-image img {
         width: 100%;
         height: auto;
+        display: block;
+    }
+
+    .iframe-container {
+        position: relative;
+        width: 100%;
+        height: 600px; /* Set a fixed height so scrollbars will appear when content exceeds it */
+        margin-bottom: var(--spacing-8);
+        border: 1px solid var(--color-border);
+        border-radius: var(--border-radius-md);
+        box-shadow: var(--shadow-md);
+        background: #f9fafb;
+    }
+    
+    .iframe-container iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
         display: block;
     }
 
