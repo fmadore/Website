@@ -21,7 +21,6 @@
 	export let items: RelevantItem[];
 	export let itemTypePlural: string; // e.g., "publications", "communications"
 	export let basePath: string; // e.g., "/publications", "/communications"
-	export let showTypeFilters: boolean = true;
 	export let formatType: (type: string) => string;
 	export let formatAuthors: (authors: string[]) => string;
 
@@ -45,19 +44,6 @@
 				</li>
 			{/each}
 		</ul>
-
-		{#if showTypeFilters && itemTypes.length > 1}
-			<div class="type-filters mt-4">
-				<span class="text-sm text-light">Browse by type:</span>
-				<div class="flex flex-wrap gap-2 mt-2">
-					{#each itemTypes as type}
-						<a href="{base}{basePath}?type={type}" class="type-tag">
-							{formatType(type)}
-						</a>
-					{/each}
-				</div>
-			</div>
-		{/if}
 
 		<div class="mt-4 text-right">
 			<a href="{base}{basePath}" class="view-all">View all {itemTypePlural}</a>
@@ -111,27 +97,6 @@
 		padding: var(--spacing-4) 0;
 	}
 
-	.type-tag {
-		display: inline-block;
-		white-space: nowrap;
-		vertical-align: middle;
-		max-width: 100%;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		padding: 0.25rem 0.75rem;
-		background-color: var(--color-border);
-		color: var(--color-text);
-		border-radius: var(--border-radius-full);
-		font-size: var(--font-size-sm);
-		font-weight: 600;
-		transition: all 0.2s ease;
-	}
-
-	.type-tag:hover {
-		background-color: var(--color-primary);
-		color: var(--color-background);
-	}
-
 	.view-all {
 		color: var(--color-primary);
 		font-weight: 600;
@@ -142,30 +107,4 @@
 	.view-all:hover {
 		text-decoration: underline;
 	}
-
-    /* Inherit styles from global or pass down necessary variables */
-    .text-sm {
-        font-size: var(--font-size-sm);
-    }
-    .text-light {
-        color: var(--color-text-light);
-    }
-    .mt-4 {
-        margin-top: var(--spacing-4);
-    }
-    .mt-2 {
-        margin-top: var(--spacing-2);
-    }
-    .gap-2 {
-        gap: var(--spacing-2);
-    }
-    .flex {
-        display: flex;
-    }
-    .flex-wrap {
-        flex-wrap: wrap;
-    }
-    .text-right {
-        text-align: right;
-    }
 </style>

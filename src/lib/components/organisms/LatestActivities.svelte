@@ -73,7 +73,6 @@
         items={relevantActivityList}
         itemTypePlural="activities"
         basePath="/activities"
-        showTypeFilters={false}
         formatType={formatActivityType}
         formatAuthors={formatActivityAuthors}
     >
