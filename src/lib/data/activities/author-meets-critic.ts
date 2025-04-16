@@ -21,5 +21,6 @@ export const authorMeetsCritic: Activity = {
         src: "images/activities/asa-panel-discussion.png",
         alt: "Author Meets Critics panel at the African Studies Association annual meeting",
         caption: "Panel discussion on religious activism at the ASA conference in Chicago"
-    }
+    },
+    panelType: "conference"
 }; 

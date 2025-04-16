@@ -17,4 +17,5 @@ export type Activity = {
     };
     pdfPath?: string;     // Optional path to an associated PDF file
     pdfTitle?: string;    // Optional title for the PDF section
-}; 
+    panelType?: string;   // Optional: type for display in panels (e.g., 'conference', 'workshop', etc.)
+};

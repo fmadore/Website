@@ -26,5 +26,6 @@ export const activityTemplate: Activity = {
         caption: "Optional caption for the hero image" 
     },
     pdfPath: "", // Optional: path to a PDF file (e.g., "pdfs/activities/my-activity.pdf")
-    pdfTitle: "" // Optional: title for the PDF section (defaults to "Associated PDF Document")
-}; 
+    pdfTitle: "", // Optional: title for the PDF section (defaults to "Associated PDF Document")
+    panelType: "conference" // NEW: e.g., 'conference', 'workshop', 'lecture', 'event', 'publication', etc.
+};

@@ -23,7 +23,7 @@
             date: formatDateDMY(activity.date),
             dateISO: activity.dateISO,
             abstract: activity.description,
-            type: activity.type || 'activity',
+            type: activity.panelType || activity.type || 'activity', // Use panelType if present
             authors: []
         })).slice(0, limit);
     });
@@ -81,9 +81,9 @@
     </RelevantItemsList>
     
     {#if showYearFilters && years.length > 0}
-        <div class="year-filters mt-4">
-            <span class="text-sm text-gray-600">Browse by year:</span>
-            <div class="filter-container mt-2">
+        <div class="year-filters-row mt-4">
+            <span class="text-sm text-gray-600 browse-label">Browse by year:</span>
+            <div class="filter-container">
                 {#each years as year}
                     <a href="{base}/activities/year/{year}" class="year-tag">
                         {year}
@@ -114,6 +114,18 @@
         margin-top: var(--spacing-4);
     }
     
+    .year-filters-row {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-4);
+        margin-top: var(--spacing-4);
+    }
+    
+    .browse-label {
+        flex-shrink: 0;
+        margin-right: var(--spacing-2);
+    }
+    
     .filter-container {
         display: flex;
         flex-wrap: wrap;
@@ -125,15 +137,20 @@
         padding: 0.25rem 0.75rem;
         background-color: var(--color-border);
         color: var(--color-text);
-        border-radius: var(--border-radius-full);
+        border-radius: 9999px; /* More pill-like */
         font-size: var(--font-size-sm);
         font-weight: 600;
         transition: all 0.2s ease;
+        box-shadow: 0 1px 4px 0 rgba(26,54,93,0.06); /* Subtle shadow for depth */
+        border: 1px solid var(--color-border);
+        cursor: pointer;
     }
     
     .year-tag:hover {
         background-color: var(--color-primary);
-        color: var(--color-background);
+        color: #fff;
+        border-color: var(--color-primary);
+        box-shadow: 0 2px 8px 0 rgba(26,54,93,0.12);
     }
     
     /* Removed unused .view-all-container, .view-all, .view-all:hover selectors */
