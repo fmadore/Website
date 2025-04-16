@@ -17,8 +17,16 @@
         localStorage.setItem('cookiesAccepted', 'true');
         showBanner = false;
         
-        // Reload page to activate analytics
-        window.location.reload();
+        // Enable Google Analytics tracking
+        if (typeof window !== 'undefined' && window.gtag) {
+            // First enable tracking for current page
+            window.gtag('config', 'G-DQ644SW7RG', {
+                'send_page_view': true,
+                'anonymize_ip': true
+            });
+            
+            // Reload not needed anymore as we've activated tracking
+        }
     }
     
     function declineCookies() {
@@ -88,4 +96,4 @@
             bottom: 0.5rem;
         }
     }
-</style> 
+</style>

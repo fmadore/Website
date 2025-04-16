@@ -26,21 +26,22 @@
 		</script>
 		
 		<!-- Google tag (gtag.js) -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA_MEASUREMENT_ID%"></script>
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-DQ644SW7RG"></script>
 		<script>
 			window.dataLayer = window.dataLayer || [];
 			function gtag(){dataLayer.push(arguments);}
 			gtag('js', new Date());
 
-			// Check if we are in production AND cookies are accepted before configuring GA
+			// Initialize GA for verification, but respect cookie preferences for tracking
 			const cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
-			if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' && cookiesAccepted) {
-					gtag('config', '%VITE_GA_MEASUREMENT_ID%', {
-						// You can re-add anonymize_ip and cookie_flags if required by privacy regulations
-						// 'anonymize_ip': true,
-						// 'cookie_flags': 'SameSite=None;Secure'
-					});
-			}
+			const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+			
+			// Always initialize for verification, but set different options based on consent
+			gtag('config', 'G-DQ644SW7RG', {
+				// Disable tracking if on localhost or cookies not accepted
+				'send_page_view': !isLocalhost && cookiesAccepted,
+				'anonymize_ip': true
+			});
 		</script>
 
 		<!-- Microsoft Clarity Tag -->
