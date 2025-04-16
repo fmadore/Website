@@ -31,7 +31,7 @@
 <div class="cookie-banner">
     <div class="cookie-content">
         <h3>Cookie Consent</h3>
-        <p>TThis website uses cookies to improve your experience and analyse site traffic.</p>
+        <p>This website uses cookies to improve your experience and analyse site traffic.</p>
         <div class="cookie-actions">
             <Button variant="primary" on:click={acceptCookies}>Accept</Button>
             <Button variant="secondary" on:click={declineCookies}>Decline</Button>
