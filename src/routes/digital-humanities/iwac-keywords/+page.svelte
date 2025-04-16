@@ -80,14 +80,16 @@
                 Open in Full Screen
             </Button>
         </div>
-        <div class="visualization-embed">
-            <iframe 
-                src="https://fmadore.shinyapps.io/iwac_keywords/" 
-                width="100%" 
-                frameborder="0" 
-                title="IWAC Keywords Dashboard"
-                allowfullscreen>
-            </iframe>
+        <div class="visualization-section">
+            <div class="iframe-container">
+                <iframe 
+                    src="https://fmadore.shinyapps.io/iwac_keywords/"
+                    title="IWAC Keywords Dashboard"
+                    scrolling="yes"
+                    frameborder="0"
+                    allowfullscreen
+                ></iframe>
+            </div>
         </div>
     </section>
 
@@ -125,29 +127,11 @@
         border-radius: var(--border-radius);
         box-shadow: var(--shadow-sm);
     }
-
-    /* Styles for embedded content */
-    .visualization-embed {
-        margin-top: var(--spacing-4);
-        margin-bottom: var(--spacing-6);
-        position: relative; 
-        overflow: hidden; 
-    }
     
     .button-container {
         display: flex;
         justify-content: flex-end;
         margin-bottom: var(--spacing-2);
-    }
-    
-    .visualization-embed iframe {
-        display: block; 
-        border: 1px solid var(--color-border);
-        box-shadow: var(--shadow-sm);
-        max-width: 100%;
-        width: 100%; 
-        height: 90vh; 
-        min-height: 600px;
     }
 
     /* Link styling within description */
@@ -158,4 +142,4 @@
     .rounded-box a:hover {
         color: var(--color-primary-dark);
     }
-</style> 
+</style>

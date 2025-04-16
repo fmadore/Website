@@ -90,9 +90,7 @@
                 allowfullscreen
             ></iframe>
         </div>
-    </section>
 
-    <section class="visualization-section">
         <h2 class="text-2xl font-semibold mb-4">Topic Modeling</h2>
         <p class="mb-4">Identifying latent topics and themes within the articles discussing these organisations.</p>
         
@@ -112,6 +110,7 @@
             <iframe 
                 src="https://fmadore.github.io/IWAC-topic-modelling/"
                 title="Topic Modeling Visualization for Muslim Umbrella Organizations in IWAC"
+                scrolling="yes"
                 frameborder="0" 
                 allowfullscreen
             ></iframe>

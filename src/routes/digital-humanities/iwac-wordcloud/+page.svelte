@@ -64,8 +64,9 @@
 
     <div class="iframe-container">
         <iframe
-            src="https://fmadore.github.io/IWAC-wordcloud/en/index.html"
-            title="IWAC Newspaper Word Cloud Embed"
+            src="https://fmadore.github.io/IWAC-wordcloud/"
+            title="IWAC Wordcloud Visualization"
+            scrolling="yes"
             frameborder="0"
             allowfullscreen
         ></iframe>
@@ -106,4 +107,4 @@
     .mb-8 {
         margin-bottom: var(--spacing-8);
     }
-</style> 
+</style>

@@ -70,10 +70,10 @@
     </div>
 
     <section class="visualization-section">
-        <div class="visualization-embed">
+        <div class="iframe-container">
             <iframe 
                 src="https://fmadore.github.io/IWAC-overview/index.html?lang=en&tab=countries" 
-                width="100%" 
+                scrolling="yes"
                 frameborder="0" 
                 title="Islam West Africa Collection Overview"
                 allowfullscreen>
@@ -116,24 +116,7 @@
         box-shadow: var(--shadow-sm);
     }
 
-    /* Styles for embedded content */
-    .visualization-embed {
-        margin-top: var(--spacing-4);
-        margin-bottom: var(--spacing-6);
-        position: relative; 
-        overflow: hidden; 
-    }
-    .visualization-embed iframe {
-        display: block; 
-        border: 1px solid var(--color-border);
-        box-shadow: var(--shadow-sm);
-        max-width: 100%;
-        width: 100%; /* Ensure width is explicitly 100% */
-        height: 90vh; /* Set height relative to viewport height */
-        min-height: 600px; /* Ensure a minimum height */
-    }
-
-     /* Link styling within description */
+    /* Link styling within description */
     .rounded-box a {
         color: var(--color-primary);
         text-decoration: underline;
@@ -141,4 +124,4 @@
     .rounded-box a:hover {
         color: var(--color-primary-dark);
     }
-</style> 
+</style>
