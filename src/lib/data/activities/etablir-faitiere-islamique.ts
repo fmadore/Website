@@ -19,6 +19,7 @@ export const etablirFaitiereIslamique: Activity = {
         <p>Many thanks to André Chappatte and the entire team of the research project "The Contemporary Expansion of Corporate Islam in Rural West Africa" (CECIRWA) for organising such a wonderful event.</p>
     `,
     tags: ["Workshop", "Benin", "Burkina Faso", "Côte d'Ivoire", "Togo"],
+    panelType: "workshop",
     heroImage: {
         src: "images/activities/puidoux.jpeg",
         alt: "Participants of the workshop",

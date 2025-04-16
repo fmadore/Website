@@ -14,6 +14,7 @@ export const activity: Activity = {
     `,
     tags: ["Workshop", "Digital Humanities", "Côte d'Ivoire"],
     image: "",
+    panelType: "workshop",
     heroImage: {
         src: "images/activities/tracing-islamic-knowledge-production.png",
         alt: "",

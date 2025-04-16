@@ -23,6 +23,7 @@ export const activity: Activity = {
     `,
     tags: ["ECAS", "Digital Humanities", "AI", "African Studies"],
     image: "",
+    panelType: "Conference",
     heroImage: {
         src: "images/activities/ECAS-2025.jpg",
         alt: "",

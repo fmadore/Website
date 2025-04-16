@@ -17,10 +17,10 @@ export const authorMeetsCritic: Activity = {
         <p>The panel will be chaired by <a href="https://religiousstudies.wisc.edu/staff/kdthompson/" target="_blank" rel="noreferrer noopener">K.D. Thompson</a> (University of Wisconsin–Madison) and will include Marius Kothor (Harvard University), <a href="https://www.cfr.org/expert/ebenezer-obadare" target="_blank" rel="noreferrer noopener">Ebenezer Obadare</a> (Council on Foreign Relations), <a href="https://history.arizona.edu/person/benjamin-n-lawrance" target="_blank" rel="noreferrer noopener">Benjamin Lawrance</a> (University of Arizona), and <a href="https://people.clas.ufl.edu/villalon/" target="_blank" rel="noreferrer noopener">Leonardo A. Villalón</a> (University of Florida).</p>
     `,
     tags: ["Conference", "ASA"],
+    panelType: "conference",
     heroImage: {
         src: "images/activities/asa-panel-discussion.png",
         alt: "Author Meets Critics panel at the African Studies Association annual meeting",
         caption: "Panel discussion on religious activism at the ASA conference in Chicago"
     },
-    panelType: "conference"
 }; 
