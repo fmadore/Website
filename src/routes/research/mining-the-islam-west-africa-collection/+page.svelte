@@ -30,6 +30,19 @@
     // Manage JSON-LD script injection
     const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
 
+    // Update handler for iframe load event with improved reliability
+    function handleIframeLoad(event: Event) {
+        // Add the iframe-loaded class to the parent container when iframe loads
+        if (event.target) {
+            const iframe = event.target as HTMLElement;
+            const container = iframe.parentNode as HTMLElement;
+            if (container) {
+                container.classList.add('iframe-loaded');
+                console.log('Iframe loaded, animation should hide'); // Debug message
+            }
+        }
+    }
+
     onMount(() => {
         if (browser && breadcrumbJsonLdString && !document.getElementById(breadcrumbJsonLdScriptId)) {
             const script = document.createElement('script');
@@ -37,6 +50,19 @@
             script.type = 'application/ld+json';
             script.textContent = breadcrumbJsonLdString;
             document.head.appendChild(script);
+        }
+
+        // Fallback for loading animation in case onload doesn't fire
+        const loadingTimeout = setTimeout(() => {
+            const containers = document.querySelectorAll('.iframe-container-loading');
+            containers.forEach(container => {
+                container.classList.add('iframe-loaded');
+                console.log('Forced loading animation hide via timeout');
+            });
+        }, 5000); // 5 second timeout
+
+        return () => {
+            clearTimeout(loadingTimeout);
         }
     });
 
@@ -75,8 +101,17 @@
                 
                 <p>By combining these computational approaches with ethnographic fieldwork, I aim to provide a comprehensive understanding that neither method could achieve alone. This innovative synthesis promises new insights into the intellectual history and translocal dynamics of Muslims in Francophone West Africa, and contributes significantly to our understanding of how religiosity interacts with morality, intellectual culture and socio-political issues in this context.</p>
                 
-                <div class="iframe-container">
-                    <iframe src="https://fmadore.github.io/IWAC-overview/index.html" title="IWAC Visualization" frameborder="0" scrolling="yes" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <div class="iframe-container iframe-container-loading iframe-with-header iframe-interactive">
+                    <div class="iframe-header">Islam West Africa Collection Overview</div>
+                    <iframe 
+                        src="https://fmadore.github.io/IWAC-overview/index.html" 
+                        title="IWAC Visualization" 
+                        frameborder="0" 
+                        scrolling="yes" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen
+                        on:load={handleIframeLoad}
+                    ></iframe>
                 </div>
             </div>
         </div>
