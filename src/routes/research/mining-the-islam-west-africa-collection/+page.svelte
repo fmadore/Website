@@ -114,24 +114,6 @@
         display: block;
     }
 
-    .iframe-container {
-        position: relative;
-        width: 100%;
-        height: 600px; /* Set a fixed height so scrollbars will appear when content exceeds it */
-        margin-bottom: var(--spacing-8);
-        border: 1px solid var(--color-border);
-        border-radius: var(--border-radius-md);
-        box-shadow: var(--shadow-md);
-        background: #f9fafb;
-    }
-    
-    .iframe-container iframe {
-        width: 100%;
-        height: 100%;
-        border: 0;
-        display: block;
-    }
-
     /* Grid layout for medium screens and up */
     @media (min-width: 768px) {
         .grid {
