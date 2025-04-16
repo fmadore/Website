@@ -56,58 +56,19 @@
     }
 </script>
 
-<RelevantItemsList
-    title="Relevant Communications"
-    items={filteredList}
-    itemTypePlural="communications"
-    basePath="/conference-activity"
-    formatType={formatCommunicationType}
-    {formatAuthors}
-/>
-
-{#if communicationTypes.length > 1}
-    <div class="type-filter-container" style="margin-top: var(--spacing-4);">
-        <span class="text-sm text-light" style="margin-right: var(--spacing-2);">Browse by type:</span>
-        {#each communicationTypes as type}
-            <button
-                class="type-filter-btn{selectedType === type ? ' active' : ''}"
-                type="button"
-                on:click={() => selectType(type)}
-                aria-pressed={selectedType === type}
-            >
-                {formatCommunicationType(type)}
-            </button>
-        {/each}
-    </div>
-{/if}
+<div class="relevant-communications">
+    <RelevantItemsList
+        title="Relevant Communications"
+        items={filteredList}
+        itemTypePlural="communications"
+        basePath="/conference-activity"
+        formatType={formatCommunicationType}
+        {formatAuthors}
+    />
+</div>
 
 <style>
-/* Style for type filter pill buttons (to match .year-tag in LatestActivities) */
-.type-filter-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-2);
-    margin-top: var(--spacing-2);
-}
-.type-filter-btn {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    background-color: var(--color-border);
-    color: var(--color-text);
-    border-radius: 9999px;
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    transition: all 0.2s ease;
-    box-shadow: 0 1px 4px 0 rgba(26,54,93,0.06);
-    border: 1px solid var(--color-border);
-    cursor: pointer;
-    text-decoration: none;
-}
-.type-filter-btn:hover,
-.type-filter-btn.active {
-    background-color: var(--color-primary);
-    color: #fff;
-    border-color: var(--color-primary);
-    box-shadow: 0 2px 8px 0 rgba(26,54,93,0.12);
-}
+    .relevant-communications {
+        margin-bottom: var(--spacing-4);
+    }
 </style>
