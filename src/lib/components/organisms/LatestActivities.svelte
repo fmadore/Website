@@ -110,10 +110,6 @@
         padding-bottom: var(--spacing-2);
     }
     
-    .year-filters {
-        margin-top: var(--spacing-4);
-    }
-    
     .year-filters-row {
         display: flex;
         align-items: center;
@@ -153,7 +149,7 @@
         box-shadow: 0 2px 8px 0 rgba(26,54,93,0.12);
     }
     
-    /* Removed unused .view-all-container, .view-all, .view-all:hover selectors */
+    /* Removed unused .year-filters and .mt-2 selectors */
     
     /* Utility classes */
     .text-sm {
@@ -166,9 +162,5 @@
     
     .mt-4 {
         margin-top: var(--spacing-4);
-    }
-    
-    .mt-2 {
-        margin-top: var(--spacing-2);
     }
 </style>
