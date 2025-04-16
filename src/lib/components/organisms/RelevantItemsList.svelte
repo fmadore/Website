@@ -20,7 +20,8 @@
 	export let title: string; // e.g., "Relevant Publications", "Relevant Communications"
 	export let items: RelevantItem[];
 	export let itemTypePlural: string; // e.g., "publications", "communications"
-	export let basePath: string; // e.g., "/publications", "/communications"
+	export let basePath: string; // Base path for individual item links e.g., "/publications", "/communications"
+	export let viewAllPath: string; // Path for the "View all" link e.g., "/publications", "/conference-activity"
 	export let formatType: (type: string) => string;
 	export let formatAuthors: (authors: string[]) => string;
 
@@ -49,7 +50,7 @@
 		</ul>
 
 		<div class="view-all-container">
-			<a href="{base}{basePath}" class="view-all">View all {itemTypePlural}</a>
+			<a href="{base}{viewAllPath}" class="view-all">View all {itemTypePlural}</a>
 		</div>
 	{/if}
 </div>

@@ -61,7 +61,8 @@
         title="Relevant Communications"
         items={filteredList}
         itemTypePlural="communications"
-        basePath="/conference-activity"
+        basePath="/communications"
+        viewAllPath="/conference-activity"
         formatType={formatCommunicationType}
         {formatAuthors}
     />
