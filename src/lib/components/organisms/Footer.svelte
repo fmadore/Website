@@ -17,8 +17,7 @@
 				{ name: 'Google Scholar', icon: 'academicons:google-scholar', url: 'https://scholar.google.com/citations?user=naUK0RQAAAAJ' },
 				{ name: 'ORCID', icon: 'simple-icons:orcid', url: 'https://orcid.org/0000-0003-0959-2092' },
 				{ name: 'ResearchGate', icon: 'simple-icons:researchgate', url: 'https://www.researchgate.net/profile/Frederick-Madore' },
-				{ name: 'Academia.edu', icon: 'simple-icons:academia', url: 'https://zmo.academia.edu/FrederickMadore' },
-				{ name: 'Postal Address', icon: 'mdi:map-marker', url: 'https://maps.app.goo.gl/AV85XrMqokwShSLZ8' }
+				{ name: 'Academia.edu', icon: 'simple-icons:academia', url: 'https://zmo.academia.edu/FrederickMadore' }
 			]
 		},
 		{
