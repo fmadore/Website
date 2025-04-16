@@ -1,0 +1,61 @@
+/* Styles for RelevantItemsList component */
+
+.relevant-items {
+	height: auto;
+	transition: background-color 0.3s ease, box-shadow 0.3s ease;
+	background-color: rgba(var(--color-primary-rgb), 0.02);
+	border-radius: var(--border-radius-md);
+	padding: var(--spacing-4);
+	border: 1px solid rgba(var(--color-primary-rgb), 0.06);
+}
+
+.card-title {
+	font-size: var(--font-size-xl);
+	font-weight: 700;
+	margin-bottom: var(--spacing-4);
+	color: var(--color-primary);
+	border-bottom: 1px solid var(--color-border);
+	padding-bottom: var(--spacing-2);
+}
+
+.item-list {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+.item-list-item {
+	margin-bottom: var(--spacing-4);
+	padding-bottom: var(--spacing-4);
+	border-bottom: 1px solid var(--color-border);
+	border-radius: var(--border-radius-sm);
+}
+
+.item-list-item:last-child {
+	border-bottom: none;
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+.no-items {
+	font-style: italic;
+	color: var(--color-text-light);
+	text-align: center;
+	padding: var(--spacing-4) 0;
+}
+
+.view-all-container {
+	margin-top: var(--spacing-4);
+	text-align: right;
+}
+
+.view-all {
+	color: var(--color-primary);
+	font-weight: 600;
+	text-decoration: none;
+	font-size: var(--font-size-sm);
+}
+
+.view-all:hover {
+	text-decoration: underline;
+}
