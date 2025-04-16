@@ -105,7 +105,7 @@
   background-color: var(--color-background);
   z-index: 5; /* Higher z-index to ensure it covers the iframe */
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.2s; /* Reduced transition time for faster appearance/disappearance */
   pointer-events: none;
   display: none;
 }
@@ -119,25 +119,19 @@
 
 .iframe-loaded::before {
   opacity: 0 !important;
-  transition: opacity 0.3s;
-  /* Add a delay before removing from the layout */
-  animation: hideLoader 0.3s forwards;
+  transition: opacity 0.2s; /* Reduced transition time */
+  /* Removed animation delay to hide the loader more quickly */
+  visibility: hidden;
+  display: none;
 }
 
-@keyframes hideLoader {
-  0% {
-    opacity: 0;
-    visibility: visible;
-  }
-  99% {
-    opacity: 0;
-    visibility: visible;
-  }
-  100% {
-    opacity: 0;
-    visibility: hidden;
-    display: none;
-  }
+/* For lightweight content that loads quickly, add this class to skip loading animation completely */
+.iframe-container-lightweight {
+  background: transparent;
+}
+
+.iframe-container-lightweight::before {
+  display: none !important;
 }
 
 /* Interactive hover effect - subtle scale on hover 
