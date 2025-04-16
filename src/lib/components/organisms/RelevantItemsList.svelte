@@ -113,6 +113,11 @@
 
 	.type-tag {
 		display: inline-block;
+		white-space: nowrap;
+		vertical-align: middle;
+		max-width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
 		padding: 0.25rem 0.75rem;
 		background-color: var(--color-border);
 		color: var(--color-text);
@@ -163,4 +168,4 @@
     .text-right {
         text-align: right;
     }
-</style> 
+</style>
