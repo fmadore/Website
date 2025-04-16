@@ -1,0 +1,90 @@
+/* Color utilities */
+
+/* Text colors */
+.text-primary { color: var(--color-primary); }
+.text-primary-dark { color: var(--color-primary-dark); }
+.text-secondary { color: var(--color-secondary); }
+.text-accent { color: var(--color-accent); }
+.text-highlight { color: var(--color-highlight); }
+.text-success { color: var(--color-success); }
+.text-default { color: var(--color-text); }
+.text-light { color: var(--color-text-light); }
+.text-white { color: white; }
+.text-black { color: black; }
+
+/* Background colors */
+.bg-primary { background-color: var(--color-primary); }
+.bg-primary-dark { background-color: var(--color-primary-dark); }
+.bg-secondary { background-color: var(--color-secondary); }
+.bg-accent { background-color: var(--color-accent); }
+.bg-highlight { background-color: var(--color-highlight); }
+.bg-success { background-color: var(--color-success); }
+.bg-default { background-color: var(--color-background); }
+.bg-white { background-color: white; }
+.bg-black { background-color: black; }
+.bg-transparent { background-color: transparent; }
+
+/* Background with opacity */
+.bg-primary-10 { background-color: rgba(var(--color-primary-rgb), 0.1); }
+.bg-primary-20 { background-color: rgba(var(--color-primary-rgb), 0.2); }
+.bg-primary-50 { background-color: rgba(var(--color-primary-rgb), 0.5); }
+.bg-highlight-10 { background-color: rgba(var(--color-highlight-rgb), 0.1); }
+.bg-highlight-20 { background-color: rgba(var(--color-highlight-rgb), 0.2); }
+.bg-success-10 { background-color: rgba(var(--color-success-rgb), 0.1); }
+.bg-success-20 { background-color: rgba(var(--color-success-rgb), 0.2); }
+
+/* Border colors */
+.border-primary { border-color: var(--color-primary); }
+.border-primary-dark { border-color: var(--color-primary-dark); }
+.border-secondary { border-color: var(--color-secondary); }
+.border-accent { border-color: var(--color-accent); }
+.border-highlight { border-color: var(--color-highlight); }
+.border-success { border-color: var(--color-success); }
+.border-default { border-color: var(--color-border); }
+.border-white { border-color: white; }
+.border-black { border-color: black; }
+.border-transparent { border-color: transparent; }
+
+/* Border styles */
+.border { border-width: 1px; border-style: solid; }
+.border-0 { border-width: 0; }
+.border-2 { border-width: 2px; }
+.border-4 { border-width: 4px; }
+.border-t { border-top-width: 1px; border-top-style: solid; }
+.border-r { border-right-width: 1px; border-right-style: solid; }
+.border-b { border-bottom-width: 1px; border-bottom-style: solid; }
+.border-l { border-left-width: 1px; border-left-style: solid; }
+
+/* Hover effects */
+@media (hover: hover) {
+  .hover\:text-primary:hover { color: var(--color-primary); }
+  .hover\:text-primary-dark:hover { color: var(--color-primary-dark); }
+  .hover\:text-secondary:hover { color: var(--color-secondary); }
+  .hover\:text-accent:hover { color: var(--color-accent); }
+  .hover\:text-highlight:hover { color: var(--color-highlight); }
+  .hover\:text-white:hover { color: white; }
+
+  .hover\:bg-primary:hover { background-color: var(--color-primary); }
+  .hover\:bg-primary-dark:hover { background-color: var(--color-primary-dark); }
+  .hover\:bg-secondary:hover { background-color: var(--color-secondary); }
+  .hover\:bg-accent:hover { background-color: var(--color-accent); }
+  .hover\:bg-highlight:hover { background-color: var(--color-highlight); }
+
+  .hover\:border-primary:hover { border-color: var(--color-primary); }
+  .hover\:border-primary-dark:hover { border-color: var(--color-primary-dark); }
+  .hover\:border-secondary:hover { border-color: var(--color-secondary); }
+  .hover\:border-accent:hover { border-color: var(--color-accent); }
+  .hover\:border-highlight:hover { border-color: var(--color-highlight); }
+}
+
+/* Focus states */
+.focus\:text-primary:focus { color: var(--color-primary); }
+.focus\:border-primary:focus { border-color: var(--color-primary); }
+.focus\:bg-primary:focus { background-color: var(--color-primary); }
+
+/* Outline styles */
+.outline-none { outline: none; }
+.outline { outline-style: solid; }
+.outline-dashed { outline-style: dashed; }
+.outline-dotted { outline-style: dotted; }
+.outline-primary { outline-color: var(--color-primary); }

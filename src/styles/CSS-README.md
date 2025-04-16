@@ -214,10 +214,47 @@ Styles for the contact page:
 
 Utility classes for common styling needs.
 
-### Layout utilities (`utilities/layout.css`)
+### Spacing (`utilities/spacing.css`)
 
-Basic layout utility classes:
-- `.sveltekit-body-container`: Special container for SvelteKit content
+Spacing utility classes:
+- Margin utilities (`.m-*`, `.mx-*`, `.my-*`, `.mt-*`, `.mb-*`, `.mr-*`, `.ml-*`)
+- Padding utilities (`.p-*`, `.px-*`, `.py-*`, `.pt-*`, `.pb-*`, `.pl-*`, `.pr-*`)
+- Gap utilities for flex/grid (`.gap-*`)
+- Space between children (`.space-x-*`, `.space-y-*`)
+- All utilities use the spacing variables
+
+### Colors (`utilities/colors.css`)
+
+Color utility classes:
+- Text colors (`.text-primary`, `.text-secondary`, `.text-accent`, `.text-highlight`, `.text-success`, `.text-default`, `.text-light`, `.text-white`, `.text-black`)
+- Background colors (`.bg-primary`, `.bg-secondary`, `.bg-accent`, `.bg-highlight`, `.bg-success`, `.bg-default`, `.bg-white`, `.bg-black`, `.bg-transparent`)
+- Border colors (`.border-primary`, `.border-secondary`, `.border-accent`, `.border-highlight`, `.border-success`, `.border-default`, `.border-white`, `.border-black`, `.border-transparent`)
+- Hover/focus variants for text, background, and border
+
+### Typography (`utilities/typography.css`)
+
+Typography utility classes:
+- Font families (`.font-sans`, `.font-serif`, `.font-mono`)
+- Font sizes (`.text-xs`, `.text-sm`, `.text-base`, `.text-lg`, `.text-xl`, `.text-2xl`, `.text-3xl`, `.text-4xl`)
+- Font weights (`.font-normal`, `.font-medium`, `.font-semibold`, `.font-bold`)
+- Text alignment (`.text-left`, `.text-center`, `.text-right`, `.text-justify`)
+- Line height, letter spacing, text transform, text decoration
+- Truncation, whitespace, and list utilities
+- Prose class for long-form content
+
+### Flex (`utilities/flex.css`)
+
+Flexbox utility classes:
+- Flex container (`.flex`, `.inline-flex`)
+- Flex direction (`.flex-row`, `.flex-col`, etc.)
+- Flex wrap, grow, shrink, and shorthand (`.flex-wrap`, `.flex-1`, etc.)
+- Justify/align content and items (`.justify-center`, `.items-center`, etc.)
+- Order and self-alignment utilities
+- Responsive variants for all major flex utilities
+
+### Layout (`utilities/layout.css`)
+
+- `.sveltekit-body-container`: Utility for SvelteKit body container
 
 ## Using This CSS Framework
 
@@ -245,6 +282,37 @@ This section outlines the recommended approach for applying styles within the pr
 
 5.  **Avoid Redundant Custom Utilities:**
     *   Do not create custom utility classes (like `.mt-4`, `.text-primary`) that directly duplicate existing Tailwind classes. Remove any existing ones from `src/styles/utilities/` and `src/styles/layout/grid.css`.
+
+## Phasing Out Tailwind CSS
+
+This project is gradually phasing out Tailwind CSS in favor of a custom utility and component-based CSS framework. The transition strategy is as follows:
+
+1. **Parallel Systems**: Both Tailwind and custom CSS utilities are available. New utility files (spacing, colors, typography, flex) mirror Tailwind's most-used classes but are powered by your design tokens.
+2. **Component Migration**: As you update or create components, replace Tailwind classes with your custom utility classes or semantic component classes. Prioritize frequently used and simple components first.
+3. **New Development**: For new components and pages, use only the custom CSS system. Avoid introducing new Tailwind classes.
+4. **Complete Removal**: Once all Tailwind usage is eliminated, remove Tailwind from dependencies, config, and app.css.
+
+### Migration Example
+
+**Before:**
+```html
+<div class="flex flex-col md:flex-row items-center p-4 gap-4 text-primary">
+  ...
+</div>
+```
+**After:**
+```html
+<div class="flex flex-col md:flex-row items-center p-4 gap-4 text-primary">
+  ...
+</div>
+```
+*Note: The class names remain, but are now provided by your custom CSS utilities, not Tailwind!*
+
+### Best Practices
+- Use semantic class names for complex components (e.g., `.profile-card`, `.main-content-card`)
+- Use utility classes for layout, spacing, color, and typography
+- Document all new utilities and component classes
+- Remove Tailwind classes as you migrate each component
 
 ### Class Naming Convention
 

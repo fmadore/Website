@@ -104,4 +104,81 @@
 .card:hover .card-link::after {
   opacity: 1;
   transform: translateX(4px);
-} 
+}
+
+/* Card spacing modifiers - to replace Tailwind spacing utilities */
+.card-spacing-sm {
+  margin-bottom: var(--spacing-4);
+}
+
+.card-spacing-md {
+  margin-bottom: var(--spacing-6);
+}
+
+.card-spacing-lg {
+  margin-bottom: var(--spacing-8);
+}
+
+/* Card grid system - for replacing Tailwind grid utilities */
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-6);
+}
+
+@media (min-width: 640px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Card alignment utilities */
+.card-centered {
+  text-align: center;
+}
+
+.card-centered .card-title,
+.card-centered .card-subtitle,
+.card-centered .card-text {
+  text-align: center;
+}
+
+/* Card background variants */
+.card-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.card-secondary {
+  background-color: var(--color-secondary);
+  color: white;
+}
+
+.card-accent {
+  background-color: var(--color-accent);
+  color: white;
+}
+
+.card-highlight {
+  background-color: var(--color-highlight);
+  color: white;
+}
+
+/* Card border variants */
+.card-border-primary {
+  border-color: var(--color-primary);
+}
+
+.card-border-accent {
+  border-color: var(--color-accent);
+}
+
+.card-border-highlight {
+  border-color: var(--color-highlight);
+}
