@@ -20,7 +20,7 @@
         relevantActivityList = value.map((activity: Activity) => ({
             id: activity.id,
             title: activity.title,
-            date: activity.date,
+            date: formatDateDMY(activity.date),
             dateISO: activity.dateISO,
             abstract: activity.description,
             type: activity.type || 'activity',
@@ -55,6 +55,16 @@
     function formatActivityAuthors(authors: string[]): string {
         return '';
     }
+
+    // Add a date formatting helper for '12 December 2024'
+    function formatDateDMY(dateString: string): string {
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return dateString;
+        const day = date.getDate();
+        const month = date.toLocaleString('en-GB', { month: 'long' });
+        const year = date.getFullYear();
+        return `${day} ${month} ${year}`;
+    }
 </script>
 
 <div class="latest-activities">
@@ -63,7 +73,6 @@
         items={relevantActivityList}
         itemTypePlural="activities"
         basePath="/activities"
-        projectName=""
         showTypeFilters={false}
         formatType={formatActivityType}
         formatAuthors={formatActivityAuthors}
@@ -83,12 +92,8 @@
             </div>
         </div>
     {/if}
-    
-    <div class="view-all-container mt-4">
-        <a href="{base}/activities" class="view-all">
-            View all activities
-        </a>
-    </div>
+
+    <!-- Removed duplicate view-all link -->
 </div>
 
 <style>
@@ -131,21 +136,7 @@
         color: var(--color-background);
     }
     
-    .view-all-container {
-        text-align: right;
-        margin-top: var(--spacing-4);
-    }
-    
-    .view-all {
-        color: var(--color-primary);
-        font-weight: 600;
-        text-decoration: none;
-        font-size: var(--font-size-sm);
-    }
-    
-    .view-all:hover {
-        text-decoration: underline;
-    }
+    /* Removed unused .view-all-container, .view-all, .view-all:hover selectors */
     
     /* Utility classes */
     .text-sm {
@@ -163,4 +154,4 @@
     .mt-2 {
         margin-top: var(--spacing-2);
     }
-</style> 
+</style>
