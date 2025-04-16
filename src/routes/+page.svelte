@@ -1,10 +1,8 @@
 <script lang="ts">
     import LatestActivities from '$lib/components/organisms/LatestActivities.svelte';
     import SEO from '$lib/SEO.svelte';
-    import { Download } from 'lucide-svelte';
     import { activitiesByYear } from '$lib/data/activities';
     import { base } from '$app/paths';
-    import Button from '$lib/components/atoms/Button.svelte';
     import ItemReference from '$lib/components/molecules/ItemReference.svelte';
     import { onMount, onDestroy } from 'svelte';
     import { browser } from '$app/environment';
