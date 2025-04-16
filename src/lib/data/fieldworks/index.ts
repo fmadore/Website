@@ -6,10 +6,12 @@ const templateIds = [
     'fieldwork-template-id'
 ];
 
-// Dynamically import all fieldwork files
+// Dynamically import all fieldwork files, excluding index.ts and filters.ts
 const fieldworkModules = import.meta.glob<Record<string, any>>(
     [
-        './*.ts'
+        './*.ts', 
+        '!./index.ts', // Exclude index.ts
+        '!./filters.ts' // Exclude filters.ts
     ],
     { eager: true }
 );

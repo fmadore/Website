@@ -117,7 +117,7 @@
         "Religious Activism on Campuses in Togo and Benin": `${base}/research/religious-activism-campuses-togo-benin`,
         "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso": `${base}/research/youth-womens-islamic-activism-cote-divoire-burkina-faso`,
         "Muslim Minorities in Southern Cities of Benin and Togo": `${base}/research/muslim-minorities-southern-cities-benin-togo`,
-        "Mining the Islam West Africa Collection": `${base}/research/mining-the-islam-west-africa-collection}`
+        "Mining the Islam West Africa Collection": `${base}/research/mining-the-islam-west-africa-collection`
     };
 
     // Prepare details for the DetailsGrid component
@@ -144,6 +144,13 @@
         { label: 'Project', value: publication.project ?? '', link: publication.project ? (projectMappings as Record<string, string>)[publication.project] : undefined },
         { label: 'Countries', value: publication.country ?? [] }
     ];
+
+    // Define static links within the component if they don't depend on `data`
+    const staticLinks = {
+        "Mining the Islam West Africa Collection": `${base}/research/mining-the-islam-west-africa-collection`,
+        "Muslim Minorities in Southern Cities (Benin & Togo)": `${base}/research/muslim-minorities-southern-cities-benin-togo`,
+        "Religious Activism on Campuses (Togo & Benin)": `${base}/research/religious-activism-campuses-togo-benin`,
+    };
 
 </script>
 

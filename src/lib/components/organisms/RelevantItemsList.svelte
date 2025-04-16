@@ -29,7 +29,7 @@
 </script>
 
 <!-- Import component styles -->
-<link rel="stylesheet" href="/src/styles/components/relevant-items-list.css">
+<!-- <link rel="stylesheet" href="/src/styles/components/relevant-items-list.css"> -->
 
 <div class="relevant-items">
 	<!-- Add slot for title, falling back to prop -->
