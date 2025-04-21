@@ -39,7 +39,7 @@
     })).sort((a, b) => b.year - a.year);
 </script>
 
-<SEO />
+<SEO description="Frédérick Madore, Research Fellow at ZMO, studies Islam in francophone West Africa through fieldwork and digital humanities." />
 
 <div class="profile-container">
     <div class="profile-header enhanced-header">
