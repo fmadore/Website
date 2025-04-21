@@ -18,7 +18,7 @@ export const religieuxInternetNTICBurkinaFaso: Publication = {
     url: "https://www.amalion.net/catalogue/rencontres-religieuses-et-dynamiques-sociales-au-burkina-faso/",
     image: "images/publications/religieux-internet-burkina-faso-2019.webp",
     heroImage: {
-        src: "images/publications/religieux-internet-burkina-faso-2019.jpg",
+        src: "images/publications/religieux-internet-burkina-faso-2019-hero.webp",
         alt: "Cover of the book Rencontres religieuses et dynamiques sociales au Burkina Faso",
     },
     country: ["Burkina Faso"],

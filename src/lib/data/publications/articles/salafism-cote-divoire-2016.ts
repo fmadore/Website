@@ -19,7 +19,7 @@ export const salafismCoteDIvoire: Publication = {
     url: "https://doi.org/10.1163/15700666-12340090",
     image: "images/publications/journal-of-religion-in-africa.webp",
     heroImage: {
-        src: "images/publications/journal-of-religion-in-africa.jpg",
+        src: "images/publications/journal-of-religion-in-africa-hero.webp",
         alt: "Cover of Journal of Religion in Africa",
     },
     country: ["Côte d'Ivoire"],

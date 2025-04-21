@@ -18,7 +18,7 @@ export const religionInternetBurkinaFaso: Publication = {
     url: "https://www.amalion.net/catalogue/religious-encounters-and-social-dynamics-in-burkina-faso/",
     image: "images/publications/religion-internet-burkina-faso-2024.webp",
     heroImage: {
-        src: "images/publications/religion-internet-burkina-faso-2024.jpg",
+        src: "images/publications/religion-internet-burkina-faso-2024-hero.webp",
         alt: "Cover of the book Religious Encounters and Social Dynamics in Burkina Faso",
     },
     country: ["Burkina Faso"],

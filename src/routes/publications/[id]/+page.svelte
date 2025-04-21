@@ -189,7 +189,7 @@
             heroImage={publication.heroImage} 
             fallbackImage={publication.image} 
             defaultAlt={publication.title}
-            imageClass="w-full max-w-xs h-auto rounded-md mx-auto"
+            imageClass="w-full max-w-md h-auto rounded-md mx-auto"
             figcaptionClass="text-text-muted text-sm mt-2 italic text-center"
         />
         

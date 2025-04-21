@@ -23,7 +23,7 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
     tags: ["Islam", "Burkina Faso", "politics", "public sphere", "Muslim associations", "state-religion relations"],
     image: "images/publications/sphere-publique-musulmane.webp",
     heroImage: {
-        src: "images/publications/sphere-publique-musulmane.jpg",
+        src: "images/publications/sphere-publique-musulmane-hero.webp",
         alt: "Cover of La construction d'une sphère publique musulmane en Afrique de l'Ouest",
     },
     country: ["Burkina Faso"],

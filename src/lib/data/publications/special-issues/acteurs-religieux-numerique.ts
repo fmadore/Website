@@ -17,7 +17,7 @@ export const acteursReligieuxNumerique: Publication = {
     url: "https://doi.org/10.14428/emulations.024",
     image: "images/publications/acteurs-religieux-numerique.webp",
     heroImage: {
-        src: "images/publications/acteurs-religieux-numerique.jpg",
+        src: "images/publications/acteurs-religieux-numerique-hero.webp",
         alt: "Cover of Émulations, issue 24",
     },    isEditedWork: true
 }; 

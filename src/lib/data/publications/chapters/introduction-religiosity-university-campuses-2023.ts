@@ -18,7 +18,7 @@ export const introductionReligiosityUniversityCampuses: Publication = {
     url: "https://doi.org/10.58144/20241107-000",
     image: "images/publications/religiosity-university-campuses.webp",
     heroImage: {
-        src: "images/publications/religiosity-university-campuses.jpg",
+        src: "images/publications/religiosity-university-campuses-hero.webp",
         alt: "Cover of Religiosity on University Campuses in Africa",
     },
 }; 

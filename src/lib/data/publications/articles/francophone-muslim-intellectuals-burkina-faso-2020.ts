@@ -19,7 +19,7 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
     url: "https://doi.org/10.1017/S0001972020000108",
     image: "images/publications/africa.webp",
     heroImage: {
-        src: "images/publications/africa.jpg",
+        src: "images/publications/africa-hero.webp",
         alt: "Cover of Africa journal, volume 90, issue 3",
     },
     country: ["Burkina Faso"],

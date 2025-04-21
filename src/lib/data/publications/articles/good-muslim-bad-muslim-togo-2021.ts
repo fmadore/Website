@@ -19,7 +19,7 @@ export const goodMuslimBadMuslimTogo: Publication = {
     url: "https://doi.org/10.1017/S0022278X21000094",
     image: "images/publications/the-journal-of-modern-african-studies.webp",
     heroImage: {
-        src: "images/publications/the-journal-of-modern-african-studies.jpg",
+        src: "images/publications/the-journal-of-modern-african-studies-hero.webp",
         alt: "Cover of The Journal of Modern African Studies",
     },
     country: ["Togo"],

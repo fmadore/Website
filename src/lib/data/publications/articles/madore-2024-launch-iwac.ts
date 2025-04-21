@@ -18,7 +18,7 @@ export const madore2024LaunchIwac: Publication = {
     url: "https://doi.org/10.58144/20240415-000",
     image: "images/publications/zmo-bulletin-44.webp",
     heroImage: {
-        src: "images/publications/zmo-bulletin-44.jpg",
+        src: "images/publications/zmo-bulletin-44-hero.webp",
         alt: "Cover of ZMO Bulletin, issue 44",
     },
     project: "Mining the Islam West Africa Collection",

@@ -16,7 +16,7 @@ export const islamBurkinaCollection: Publication = {
     url: "https://doi.org/10.51185/journals/rhca.2021.e610",
     image: "images/publications/revue-d-histoire-contemporaine-de-l-afrique.webp",
     heroImage: {
-        src: "images/publications/revue-d-histoire-contemporaine-de-l-afrique.jpg",
+        src: "images/publications/revue-d-histoire-contemporaine-de-l-afrique-hero.webp",
         alt: "Cover of Revue d'Histoire Contemporaine de l'Afrique",
     },
     country: ["Burkina Faso"],

@@ -18,7 +18,7 @@ export const muslimMinoritiesAfrica1: Publication = {
     url: "https://brill.com/view/journals/iafr/12/2/iafr.12.issue-2.xml",
     image: "images/publications/muslim-minorities-africa.webp",
     heroImage: {
-        src: "images/publications/muslim-minorities-africa.jpg",
+        src: "images/publications/muslim-minorities-africa-hero.webp",
         alt: "Cover of Islamic Africa",
     },
     isEditedWork: true,

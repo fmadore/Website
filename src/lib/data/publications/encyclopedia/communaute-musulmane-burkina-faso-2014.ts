@@ -18,7 +18,7 @@ export const communauteMusulmaneBurkinaFaso: Publication = {
     url: "https://doi.org/10.1163/1573-3912_ei3_com_27698",
     image: "images/publications/encyclopaedia-of-islam.webp",
     heroImage: {
-        src: "images/publications/encyclopaedia-of-islam.jpg",
+        src: "images/publications/encyclopaedia-of-islam-hero.webp",
         alt: "Cover of the Encyclopaedia of Islam",
     },
     tags: ["Burkina Faso", "Islam", "CMBF"],

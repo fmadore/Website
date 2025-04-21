@@ -19,7 +19,7 @@ export const muslimFeministMediaCoteDIvoire: Publication = {
     url: "https://doi.org/10.2979/africatoday.67.2_3.02",
     image: "images/publications/africa-today.webp",
     heroImage: {
-        src: "images/publications/africa-today.jpg",
+        src: "images/publications/africa-today-hero.webp",
         alt: "Cover of Africa Today, volume 67, issue 2-3",
     },
     country: ["Côte d'Ivoire"],

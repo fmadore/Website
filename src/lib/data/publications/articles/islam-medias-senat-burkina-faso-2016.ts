@@ -19,7 +19,7 @@ export const islamMediasSenatBurkinaFaso: Publication = {
     url: "https://doi.org/10.1080/00083968.2015.1101008",
     image: "images/publications/canadian-journal-of-african-studies.webp",
     heroImage: {
-        src: "images/publications/canadian-journal-of-african-studies.jpg",
+        src: "images/publications/canadian-journal-of-african-studies-hero.webp",
         alt: "Cover of Canadian Journal of African Studies, volume 50, issue 1",
     },
     country: ["Burkina Faso"],

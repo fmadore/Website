@@ -137,7 +137,7 @@
             heroImage={communication.heroImage} 
             fallbackImage={communication.image} 
             defaultAlt={communication.title}
-            imageClass="w-full h-auto rounded-md" 
+            imageClass="w-full max-w-md h-auto rounded-md mx-auto"
             figcaptionClass="text-text-muted text-sm mt-2 italic"
         />
         

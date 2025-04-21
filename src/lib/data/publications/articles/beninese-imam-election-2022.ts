@@ -19,7 +19,7 @@ export const beninImamElection: Publication = {
     url: "https://doi.org/10.1163/21540993-01202004",
     image: "images/publications/muslim-minorities-africa.webp",
     heroImage: {
-        src: "images/publications/muslim-minorities-africa.jpg",
+        src: "images/publications/muslim-minorities-africa-hero.webp",
         alt: "Cover of Islamic Africa",
     },
     country: ["Benin"],

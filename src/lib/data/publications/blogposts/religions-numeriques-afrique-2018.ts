@@ -15,7 +15,7 @@ export const religionsNumeriquesAfrique: Publication = {
     url: "https://www.liberation.fr/debats/2018/09/19/religions-numeriques-en-afrique_1816717/",
     image: "images/publications/religions-numeriques-afrique-2018.webp",
     heroImage: {
-        src: "images/publications/religions-numeriques-afrique-2018.jpg",
+        src: "images/publications/religions-numeriques-afrique-2018-hero.webp",
         alt: "Screenshot of the blogpost",
     },
     additionalUrls: [

@@ -18,7 +18,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
     url: "https://doi.org/10.4000/jda.6525",
     image: "images/publications/journal-des-anthropologues.webp",
     heroImage: {
-        src: "images/publications/journal-des-anthropologues.jpg",
+        src: "images/publications/journal-des-anthropologues-hero.webp",
         alt: "Cover of Journal des anthropologues, issue 146-147",
     },
     country: ["Côte d'Ivoire", "Burkina Faso"],

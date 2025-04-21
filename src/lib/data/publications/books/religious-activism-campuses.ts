@@ -22,7 +22,7 @@ The history of these associations reveals the campus as a microcosm reflecting w
     tags: ["religion", "education", "politics", "Togo", "Benin", "student activism", "Islam", "Christianity", "authoritarianism", "secularism"],
     image: "images/publications/religious-activism-campuses.webp",
     heroImage: {
-        src: "images/publications/religious-activism-campuses.jpg",
+        src: "images/publications/religious-activism-campuses-hero.webp",
         alt: "Cover of Religious Activism on Campuses in Togo and Benin",
     },
     country: ["Benin", "Togo"],

@@ -19,7 +19,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
     url: "https://doi.org/10.7202/1028465ar",
     image: "images/publications/Theologiques.webp",
     heroImage: {
-        src: "images/publications/Theologiques.jpg",
+        src: "images/publications/Theologiques-hero.webp",
         alt: "Cover of Théologiques, volume 21, issue 2",
     },
     country: ["Burkina Faso"],

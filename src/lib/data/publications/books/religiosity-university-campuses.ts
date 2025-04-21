@@ -21,7 +21,7 @@ export const religiosityUniversityCampuses: Publication = {
     country: ["Uganda", "Togo", "Cameroon", "Niger", "Côte d'Ivoire", "Ghana", "Nigeria"],
     image: "images/publications/religiosity-university-campuses.webp",
     heroImage: {
-        src: "images/publications/religiosity-university-campuses.jpg",
+        src: "images/publications/religiosity-university-campuses-hero.webp",
         alt: "Cover of Religiosity on University Campuses in Africa",
     },
     isEditedVolume: true,

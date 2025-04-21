@@ -16,7 +16,7 @@ export const lutteTerrorismeSalafismeBeninTogo: Publication = {
     url: "https://dandurand.uqam.ca/publication/lutte-contre-le-terrorisme-et-securitisation-du-salafisme-au-benin-et-au-togo-instrumentalisations-diverses-dune-menace-etrangere/",
     image: "images/publications/bulletin-franco-paix.webp",
     heroImage: {
-        src: "images/publications/bulletin-franco-paix.jpg",
+        src: "images/publications/bulletin-franco-paix-hero.webp",
         alt: "Cover of Bulletin FrancoPaix, volume 7, issue 8",
     },
     tags: ["Bénin", "Togo", "terrorisme", "sécuritisation", "salafisme", "Islam"],

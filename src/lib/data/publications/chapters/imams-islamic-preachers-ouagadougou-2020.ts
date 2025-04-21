@@ -18,7 +18,7 @@ export const imamsIslamicPreachersOuagadougou: Publication = {
     url: "https://cap-press.com/books/isbn/9781531007317/Perspectives-on-Religious-Landscape-in-Africa",
     image: "images/publications/imams-ouagadougou-2020.webp",
     heroImage: {
-        src: "images/publications/imams-ouagadougou-2020.png",
+        src: "images/publications/imams-ouagadougou-2020-hero.webp",
         alt: "Cover of Perspectives on the Religious Landscape in Africa",
     },
     country: ["Burkina Faso"],

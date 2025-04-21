@@ -18,7 +18,7 @@ export const hadjCoteDIvoire: Publication = {
     url: "https://doi.org/10.4000/etudesafricaines.21880",
     image: "images/publications/Cahiers-détudes-africaines-229.webp",
     heroImage: {
-        src: "images/publications/Cahiers-détudes-africaines-229.jpg",
+        src: "images/publications/Cahiers-détudes-africaines-229-hero.webp",
         alt: "Cover of Cahiers d'études africaines, issue 229",
     },
     country: ["Côte d'Ivoire"],

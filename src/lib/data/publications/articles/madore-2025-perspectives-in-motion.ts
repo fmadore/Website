@@ -18,7 +18,7 @@ export const madore2025PerspectivesInMotion: Publication = {
     url: "https://doi.org/10.58144/20250401-000",
     image: "images/publications/zmo-bulletin-46.webp",
     heroImage: {
-        src: "images/publications/zmo-bulletin-46.jpg",
+        src: "images/publications/zmo-bulletin-46-hero.webp",
         alt: "Cover of ZMO Bulletin, issue 46",
     },
     project: "",
