@@ -16,5 +16,9 @@ export const hackettInterviewDigitalMedia: Publication = {
     abstract: "On October 21st, 2017, the editors of this special issue conducted an interview with Rosalind I. J. Hackett, one of the pioneering scholars in the field of media and religion in Africa. The interview took place via Skype and consisted of five questions on the study of religion and digital media in the African context.",
     tags: ["Africa", "digital media", "religion", "interview", "research methodology"],
     url: "https://doi.org/10.14428/emulations.024.008",
-    image: "images/publications/acteurs-religieux-numerique.jpg",
+    image: "images/publications/acteurs-religieux-numerique.webp",
+    heroImage: {
+        src: "images/publications/acteurs-religieux-numerique.jpg",
+        alt: "Cover of Émulations, issue 24",
+    },
 }; 

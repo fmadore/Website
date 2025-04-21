@@ -16,5 +16,9 @@ export const introductionReligiosityUniversityCampuses: Publication = {
     language: "English",
     tags: ["Africa", "university campuses", "religiosity", "higher education", "religious movements"],
     url: "https://doi.org/10.58144/20241107-000",
-    image: "images/publications/religiosity-university-campuses.jpg",
+    image: "images/publications/religiosity-university-campuses.webp",
+    heroImage: {
+        src: "images/publications/religiosity-university-campuses.jpg",
+        alt: "Cover of Religiosity on University Campuses in Africa",
+    },
 }; 

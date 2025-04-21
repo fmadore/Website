@@ -13,7 +13,11 @@ export const religionsNumeriquesAfrique: Publication = {
     tags: ["Africa", "Afrique", "digital religion", "religion numérique", "social media", "réseaux sociaux"],
     abstract: "Questions à Pamela Millet-Mouity, doctorante en Socio-anthropologie politique et religieuse à l'EHESS-Paris, et à Frédérick Madore, chercheur postdoctoral Banting à l'University of Florida. Ils viennent de coordonner un numéro de la revue Émulations consacré aux acteurs religieux africains à l'ère du numérique.",
     url: "https://www.liberation.fr/debats/2018/09/19/religions-numeriques-en-afrique_1816717/",
-    image: "images/publications/religions-numeriques-afrique-2018.jpg",
+    image: "images/publications/religions-numeriques-afrique-2018.webp",
+    heroImage: {
+        src: "images/publications/religions-numeriques-afrique-2018.jpg",
+        alt: "Screenshot of the blogpost",
+    },
     additionalUrls: [
         { label: "Africa4 Blog", url: "https://www.liberation.fr/africa4" }
     ]

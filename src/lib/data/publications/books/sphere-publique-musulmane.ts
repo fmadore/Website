@@ -21,7 +21,11 @@ Afin de saisir les profondes mutations qu'a subies l'islam burkinabé, les relat
 
 Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomisation pour de jeunes musulmans. Pour certains, l'acquisition d'une légitimité et d'une autorité religieuse leur permet de s'émanciper en partie du poids des structures sociales et ethniques, caractérisées notamment par la gérontocratie. En outre, l'auteur présente les rapports entre les musulmans et l'État burkinabé comme un système d'interactions et d'échanges asymétriques entre partenaires dotés de ressources inégales. La déconstruction de cette relation, souvent clientéliste, lui permet d'examiner, d'une part, le jeu de l'État pour réguler, contrôler et instrumentaliser les musulmans et, d'autre part, les ressources que peuvent mobiliser ces derniers pour négocier les termes de leur subordination, ménager des espaces d'autonomie, revendiquer des changements politiques ou participer à la formation d'une sphère publique musulmane. Loin d'être exclusives à l'islam burkinabé, des dynamiques similaires s'observent ailleurs au sud du Sahara.`,
     tags: ["Islam", "Burkina Faso", "politics", "public sphere", "Muslim associations", "state-religion relations"],
-    image: "images/publications/sphere-publique-musulmane.jpg",
+    image: "images/publications/sphere-publique-musulmane.webp",
+    heroImage: {
+        src: "images/publications/sphere-publique-musulmane.jpg",
+        alt: "Cover of La construction d'une sphère publique musulmane en Afrique de l'Ouest",
+    },
     country: ["Burkina Faso"],
     project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
     reviewedBy: [

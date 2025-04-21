@@ -13,7 +13,11 @@ export const rivalitesCollaborationsIslam: Publication = {
     language: "French",
     url: "http://hdl.handle.net/20.500.11794/33246",
     tags: ["Côte d'Ivoire", "Burkina Faso", "Islam", "associations islamiques", "histoire", "sociologie"],
-    image: "images/publications/dissertation-cote-ivoire-burkina-faso-2018.jpg",
+    image: "images/publications/dissertation-cote-ivoire-burkina-faso-2018.webp",
+    heroImage: {
+        src: "images/publications/dissertation-cote-ivoire-burkina-faso-2018.jpg",
+        alt: "Cover of the dissertation",
+    },
     abstract: `À première vue, les récentes actions terroristes en Côte d'Ivoire et au Burkina Faso ont laissé croire à une radicalisation de l'islam dans ces deux pays. Cependant, la grande attention médiatique portée sur ces craintes et les nombreuses analyses qui ont été publiées sur les risques d'une montée de l'extrémisme, bien qu'elles soient importantes, éclipsent d'autres dynamiques récentes et plus anciennes caractérisant l'islam ivoirien et burkinabè. Il s'agit de présenter un portrait plus nuancé et dans la longue durée des réalités caractérisant ces communautés musulmanes, qui sont moins couvertes, mais plus prégnantes telles que la participation des musulmans issus de catégories sociales d'ordinaire marginalisées, principalement les jeunes et les femmes, dans les mutations de l'islam à travers leur engagement militant.
 
 À travers une étude comparative des cas ivoirien et burkinabè, cette thèse entend donc emprunter une avenue encore peu exploitée en proposant une recherche sur des cadets sociaux, appartenant à des modèles culturels différentiés (francophone/arabophone, islam fondamentaliste/réformiste, etc.). Nous verrons de quelles manières ces acteurs, depuis les années 1970, sont parvenus à renégocier les rapports de pouvoir et les modalités hiérarchiques, voire à les bousculer, pour revendiquer une place plus importante dans le champ religieux et la sphère publique au point de reconfigurer progressivement des associations islamiques nationales. Trois grandes hypothèses sont défendues.

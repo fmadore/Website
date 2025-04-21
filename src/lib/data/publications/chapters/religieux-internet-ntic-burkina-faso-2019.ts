@@ -16,7 +16,11 @@ export const religieuxInternetNTICBurkinaFaso: Publication = {
     language: "French",
     tags: ["Burkina Faso", "religion", "internet", "NTIC", "médias numériques", "technologies de communication"],
     url: "https://www.amalion.net/catalogue/rencontres-religieuses-et-dynamiques-sociales-au-burkina-faso/",
-    image: "images/publications/religieux-internet-burkina-faso-2019.jpg",
+    image: "images/publications/religieux-internet-burkina-faso-2019.webp",
+    heroImage: {
+        src: "images/publications/religieux-internet-burkina-faso-2019.jpg",
+        alt: "Cover of the book Rencontres religieuses et dynamiques sociales au Burkina Faso",
+    },
     country: ["Burkina Faso"],
     project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 

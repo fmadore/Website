@@ -16,7 +16,11 @@ export const religionInternetBurkinaFaso: Publication = {
     language: "English",
     tags: ["Burkina Faso", "religion", "internet", "digital media", "ICT", "communication technologies"],
     url: "https://www.amalion.net/catalogue/religious-encounters-and-social-dynamics-in-burkina-faso/",
-    image: "images/publications/religion-internet-burkina-faso-2024.jpg",
+    image: "images/publications/religion-internet-burkina-faso-2024.webp",
+    heroImage: {
+        src: "images/publications/religion-internet-burkina-faso-2024.jpg",
+        alt: "Cover of the book Religious Encounters and Social Dynamics in Burkina Faso",
+    },
     country: ["Burkina Faso"],
     project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 
