@@ -161,8 +161,9 @@
     
     .communication-image {
         width: 100%;
-        max-height: 200px; /* Limit height */
-        object-fit: cover; /* Ensure image covers the area well */
+        /* max-height: 200px; */ /* REMOVED to standardize with publications */
+        /* object-fit: cover; */ /* REMOVED to standardize */
+        height: auto; /* Ensure height adjusts automatically */
         border-radius: 4px;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
