@@ -20,7 +20,7 @@ export const specialIssueTemplate: Publication = {
     url: "", // URL to the special issue
     image: "", // Optional: path to cover image (e.g., "images/publications/special-issue-cover.jpg")
     heroImage: { // Optional: hero image configuration
-        src: "images/publications/special-issue-hero.jpg", 
+        src: "images/publications/special-issue-hero.webp", 
         alt: "Descriptive alt text for the special issue cover", 
         caption: "Optional caption for the special issue cover" 
     },
