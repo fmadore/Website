@@ -18,6 +18,10 @@ export const islamUniversityCampusesCoteDIvoire: Communication = {
         latitude: 55.9445,
         longitude: -3.1892
     },
-    image: "images/communications/islam-university-campuses-cote-divoire-2019.jpg",
+    image: "images/communications/islam-university-campuses-cote-divoire-2019.webp",
+    heroImage: {
+        src: "images/communications/islam-university-campuses-cote-divoire-2019.jpg",
+        alt: "Islam on University Campuses in Côte d'Ivoire since the 1970s: 'Muslim Intellectuals' and Francophone Salafism",
+    },
     project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 

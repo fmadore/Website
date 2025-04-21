@@ -13,7 +13,11 @@ export const pointPassageFrontieresReligieuses: Communication = {
     type: "workshop",
     language: "French",
     tags: ["Religious Boundaries", "Niger", "Interfaith Relations", "Religious Studies"],
-    image: "images/communications/point-de-passage-frontieres-religieuses.png",
+    image: "images/communications/point-de-passage-frontieres-religieuses.webp",
+    heroImage: {
+        src: "images/communications/point-de-passage-frontieres-religieuses.png",
+        alt: "Point de passage et frontières religieuses",
+    },
     coordinates: {
         latitude: 13.51766342197132,
         longitude: 2.101838007060417

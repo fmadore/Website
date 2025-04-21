@@ -26,7 +26,11 @@ La présentation s'articulera autour de trois axes principaux :
 
 Cette approche ouvre la voie à des analyses computationnelles à grande échelle permettant d'identifier des tendances et des relations qui seraient difficilement détectables manuellement. S'inscrivant dans l'axe "Intelligence artificielle (IA) : pratiques et cas d'usages en SHS" du colloque, elle propose un retour d'expérience concret sur l'utilisation de l'IA pour le traitement d'archives numériques dans un contexte africain.`,
     tags: ["AI", "digital humanities", "Islam", "IWAC", "Humanistica"],
-    image: "images/communications/humanistica-2025.jpg",
+    image: "images/communications/humanistica-2025.webp",
+    heroImage: {
+        src: "images/communications/humanistica-2025.jpg",
+        alt: "Intelligence artificielle et traitement des archives numériques : applications et enjeux dans la Collection Islam Afrique de l'Ouest",
+    },
     coordinates: {
         latitude: 14.6937,
         longitude: -17.4665

@@ -18,6 +18,10 @@ export const militantismeIslamiqueFemininBurkina: Communication = {
         latitude: 47.4739,
         longitude: -0.5515
     },
-    image: "images/communications/militantisme-islamique-feminin-burkina-2019.jpg",
+    image: "images/communications/militantisme-islamique-feminin-burkina-2019.webp",
+    heroImage: {
+        src: "images/communications/militantisme-islamique-feminin-burkina-2019.jpg",
+        alt: "Militantisme islamique féminin au Burkina Faso: des processus sinueux d'émancipation religieuse",
+    },
     project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 

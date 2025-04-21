@@ -13,7 +13,11 @@ export const defenseLaiciteMusulmansBurkina: Communication = {
     type: "workshop",
     language: "French",
     tags: ["Secularism", "Burkina Faso", "Islam", "Political Claims", "State-Religion Relations"],
-    image: "images/communications/workshop-Dakar-2019.jpg",
+    image: "images/communications/workshop-Dakar-2019.webp",
+    heroImage: {
+        src: "images/communications/workshop-Dakar-2019.jpg",
+        alt: "Debating Laïcité in the Sahel: What Future for Secularism?",
+    },
     coordinates: {
         latitude: 14.690999882866137,
         longitude: -17.471180613754807

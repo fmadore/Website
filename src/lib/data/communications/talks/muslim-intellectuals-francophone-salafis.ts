@@ -14,7 +14,11 @@ export const muslimIntellectualsFrancophoneSalafis: Communication = {
     language: "English",
     abstract: "The recent developments in West Africa echo the diversification in the types and sources of religious authority which can be observed elsewhere in the contemporary Muslim world. More individuals and groups from different segments of society now claim the right to speak in the name of Islam and on behalf of the “Muslim community.” Drawing from extensive fieldwork in Burkina Faso, Côte d’Ivoire, Benin, and Togo, this lecture will examine the emergence of a young Francophone elite claiming the status of “Muslim intellectuals” and the progressive rise of French as a legitimate language to propagate Islam in West Africa. The religious authority claimed by these Francophone Muslim leaders, educated in secular universities and often without formal training in Islamic sciences, stems less from their classical religious knowledge than from their ability to engage in the public sphere to take a stand on socio-political issues. The lecture will also discuss the growing influence of Salafism on public university campuses in the region since the late 1990s.",
     tags: ["Muslim Intellectuals", "Salafism", "West Africa", "Francophone", "Religious Elites"],
-    image: "images/communications/muslim-intellectuals-francophone-salafis.jpg",
+    image: "images/communications/muslim-intellectuals-francophone-salafis.webp",
+    heroImage: {
+        src: "images/communications/muslim-intellectuals-francophone-salafis.jpg",
+        alt: "'Muslim Intellectuals' and 'Francophone Salafis' in West Africa: New Religious Elites?",
+    },
     coordinates: {
         latitude: 39.16823943506577,
         longitude: -86.52300137629928

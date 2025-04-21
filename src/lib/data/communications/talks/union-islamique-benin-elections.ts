@@ -13,7 +13,11 @@ export const unionIslamiqueBenin: Communication = {
     type: "lecture",
     language: "French",
     tags: ["Benin", "Islamic Union", "Elections", "Religious Organizations", "Politics"],
-    image: "images/communications/union-islamique-benin-elections.jpg",
+    image: "images/communications/union-islamique-benin-elections.webp",
+    heroImage: {
+        src: "images/communications/union-islamique-benin-elections.jpg",
+        alt: "L'Union Islamique du Bénin et les élections législatives: comment comprendre la crise interne",
+    },
     coordinates: {
         latitude: 6.414542574575833,
         longitude: 2.3407357046550015

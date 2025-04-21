@@ -15,7 +15,11 @@ export const launchIslamWestAfricaCollection: Communication = {
     abstract: "Launch event for the Islam West Africa Collection hosted by Media in Cooperation and Transition (MiCT) in Berlin.",
     tags: ["IWAC", "West Africa", "Collection", "Launch"], 
     url: "https://islam.zmo.de/s/westafrica/item/244", 
-    image: "images/communications/poster-launch- IWAC.jpg", 
+    image: "images/communications/poster-launch-IWAC.webp", 
+    heroImage: {
+        src: "images/communications/poster-launch-IWAC.jpg",
+        alt: "Poster for the launch of the Islam West Africa Collection",
+    },
     coordinates: {
         latitude: 52.53113443481993,
         longitude: 13.400499597613717

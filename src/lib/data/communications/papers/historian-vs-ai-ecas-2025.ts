@@ -15,7 +15,11 @@ export const historianVsAiEcas2025: Communication = {
     language: "English",
     abstract: "This paper compares how a historian and AI approach the reading and analysis of archival content in early 2025. The experiment focuses on a selection of documents housed at the National Archives of the United Kingdom, specifically related to the war in Cameroon during the late 1950s and early 1960s. These documents were chosen because I have previously published historical research based on their content. The primary goal is to assess the accuracy of AI in two key areas: (a) summarizing the content of digitized documents and (b) answering specific historical questions derived from these records.",
     tags: ["ECAS", "AI", "archives", "digital humanities", "history", "Cameroon"],
-    image: "images/communications/ecas-2025.jpg",
+    image: "images/communications/ecas-2025.webp",
+    heroImage: {
+        src: "images/communications/ecas-2025.jpg",
+        alt: "10th European Conference of African Studies (ECAS)",
+    },
     coordinates: {
         latitude: 50.08896481219099,
         longitude: 14.416024062407818

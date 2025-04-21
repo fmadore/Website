@@ -18,6 +18,10 @@ export const salafismeSecuritisationBeninTogo: Communication = {
         latitude: 10.6124,
         longitude: 14.3244
     },
-    image: "images/communications/salafisme-securitisation-benin-togo-2022.jpg",
+    image: "images/communications/salafisme-securitisation-benin-togo-2022.webp",
+    heroImage: {
+        src: "images/communications/salafisme-securitisation-benin-togo-2022.jpg",
+        alt: "Salafisme et sécuritisation de l'islam au Bénin et au Togo: instrumentalisations diverses d'une 'menace étrangère'",
+    },
     project: "Muslim Minorities in Southern Cities of Benin and Togo"
 }; 

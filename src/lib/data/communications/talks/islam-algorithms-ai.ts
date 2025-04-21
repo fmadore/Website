@@ -13,7 +13,11 @@ export const islamAlgorithmsAi: Communication = {
     type: "lecture",
     language: "English",
     tags: ["Islam", "Algorithms", "AI", "Digital Religion", "Technology"],
-    image: "images/communications/islam-algorithms-ai.png",
+    image: "images/communications/islam-algorithms-ai.webp",
+    heroImage: {
+        src: "images/communications/islam-algorithms-ai.png",
+        alt: "Islam, Algorithms and AI",
+    },
     coordinates: {
         latitude: 52.42814222811816,
         longitude: 13.202338657893593

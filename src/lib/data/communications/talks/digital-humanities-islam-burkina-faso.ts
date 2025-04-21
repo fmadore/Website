@@ -14,7 +14,11 @@ export const digitalHumanismsIslamBurkinaFaso: Communication = {
     language: "English", 
     abstract: "Presentation on the development and implementation of the Islam Burkina Faso Collection digital humanities project.",
     tags: ["Islam", "Burkina Faso", "Digital Humanities", "Collections", "West Africa"], 
-    image: "images/communications/DH-islam-burkina-faso.jpg", 
+    image: "images/communications/DH-islam-burkina-faso.webp",
+    heroImage: {
+        src: "images/communications/DH-islam-burkina-faso.jpg", 
+        alt: "Digital Humanities in the Making: The Islam Burkina Faso Collection",
+    },
     coordinates: {
         latitude: 52.42814222811816,
         longitude: 13.202338657893593

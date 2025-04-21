@@ -18,6 +18,10 @@ export const generationsImamBenin: Communication = {
         latitude: 59.8586,  // Coordinates for Uppsala University
         longitude: 17.6389
     },
-    image: "images/communications/generations-imam-benin-2021.png",
+    image: "images/communications/generations-imam-benin-2021.webp",
+    heroImage: {
+        src: "images/communications/generations-imam-benin-2021.png",
+        alt: "Generations at Odds: The Controversial Political Candidacy of an Imam in Benin (2019)",
+    },
     project: "Muslim Minorities in Southern Cities of Benin and Togo"
 }; 

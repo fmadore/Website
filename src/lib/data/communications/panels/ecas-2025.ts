@@ -14,7 +14,11 @@ export const ecas2025Panel: Communication = {
     language: "English",
     abstract: "This panel explores the transformative potential and challenges of DH and AI in African studies. It examines their impact on knowledge production and dissemination, addressing Anglocentricity and the 'digital divide', while promoting dialogue on decolonising digital practices in the field.",
     tags: ["ECAS", "digital humanities", "AI", "african studies", "decolonial"],
-    image: "images/communications/ecas-2025.jpg",
+    image: "images/communications/ecas-2025.webp",
+    heroImage: {
+        src: "images/communications/ecas-2025.jpg",
+        alt: "Digital Humanities (DH) and AI in African Studies: Opportunities, Challenges, and Decolonial Perspectives",
+    },
     coordinates: {
         latitude: 50.08896481219099,
         longitude: 14.416024062407818

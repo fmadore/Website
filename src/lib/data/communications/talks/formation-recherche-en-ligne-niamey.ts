@@ -13,7 +13,11 @@ export const formationRechercheEnLigneNiamey: Communication = {
     type: "lecture",
     language: "French",
     tags: ["Research Methods", "Online Research", "Training", "Niger"],
-    image: "images/communications/lasdel-logo.jpg",
+    image: "images/communications/lasdel-logo.webp",
+    heroImage: {
+        src: "images/communications/lasdel-logo.jpg",
+        alt: "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL) Logo",
+    },
     coordinates: {
         latitude: 13.51766342197132,
         longitude: 2.101838007060417

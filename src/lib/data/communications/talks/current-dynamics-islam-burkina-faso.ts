@@ -15,7 +15,11 @@ export const currentDynamicsIslamBurkinaFaso: Communication = {
     abstract: "Banting Postdoctoral Fellow Frédérick Madore was the guest of our Sahel Seminar today. He presented his work on the past and current dynamics of Islam in Burkina Faso.",
     tags: ["Islam", "Burkina Faso", "Sahel", "West Africa", "Religious Dynamics"], 
     url: "https://sahelresearch.africa.ufl.edu/events-activities/sahel-seminars/",
-    image: "images/communications/current-dynamics-islam-burkina-faso.jpg", 
+    image: "images/communications/current-dynamics-islam-burkina-faso.webp", 
+    heroImage: {
+        src: "images/communications/current-dynamics-islam-burkina-faso.jpg", 
+        alt: "Current Dynamics of Islam in Burkina Faso",
+    },
     coordinates: {
         latitude: 29.649267030531483,
         longitude: -82.34204912970114

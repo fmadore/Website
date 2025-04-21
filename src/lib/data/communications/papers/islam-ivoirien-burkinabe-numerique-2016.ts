@@ -18,6 +18,10 @@ export const islamIvoirienBurkinabeNumerique: Communication = {
         latitude: 48.8290,
         longitude: 2.3820
     },
-    image: "images/communications/islam-ivoirien-burkinabe-numerique-2016.jpg",
+    image: "images/communications/islam-ivoirien-burkinabe-numerique-2016.webp",
+    heroImage: {
+        src: "images/communications/islam-ivoirien-burkinabe-numerique-2016.jpg",
+        alt: "L'islam ivoirien et burkinabé à l'ère du numérique: des communautés musulmanes 2.0?",
+    },
     project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 }; 
