@@ -50,7 +50,10 @@
     ];
 </script>
 
-<SEO title="Teaching | Frédérick Madore" />
+<SEO
+    title="Teaching | Frédérick Madore"
+    description="Frédérick Madore teaches African History, Islam in sub-Saharan West Africa, and digital humanities."
+/>
 
 <div class="teaching-container">
     <div class="main-content">
