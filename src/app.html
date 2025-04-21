@@ -25,25 +25,6 @@
 			})();
 		</script>
 		
-		<!-- Google tag (gtag.js) -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-DQ644SW7RG"></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-			function gtag(){dataLayer.push(arguments);}
-			gtag('js', new Date());
-
-			// Initialize GA for verification, but respect cookie preferences for tracking
-			const cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
-			const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-			
-			// Always initialize for verification, but set different options based on consent
-			gtag('config', 'G-DQ644SW7RG', {
-				// Disable tracking if on localhost or cookies not accepted
-				'send_page_view': !isLocalhost && cookiesAccepted,
-				'anonymize_ip': true
-			});
-		</script>
-
 		<!-- Microsoft Clarity Tag -->
 		<script type="text/javascript">
 			// Check if cookies are accepted before initializing Clarity
