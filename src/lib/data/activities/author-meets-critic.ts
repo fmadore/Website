@@ -19,7 +19,7 @@ export const authorMeetsCritic: Activity = {
     tags: ["Conference", "ASA"],
     panelType: "conference",
     heroImage: {
-        src: "images/activities/asa-panel-discussion.png",
+        src: "images/activities/asa-panel-discussion.webp",
         alt: "Author Meets Critics panel at the African Studies Association annual meeting",
         caption: "Panel discussion on religious activism at the ASA conference in Chicago"
     },

@@ -16,7 +16,7 @@ export const activity: Activity = {
     image: "",
     panelType: "workshop",
     heroImage: {
-        src: "images/activities/tracing-islamic-knowledge-production.png",
+        src: "images/activities/tracing-islamic-knowledge-production.webp",
         alt: "",
         caption: ""
     },

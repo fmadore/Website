@@ -15,7 +15,7 @@ export const activity: Activity = {
     panelType: "Publication",
     image: "", 
     heroImage: {
-        src: "images/publications/religiosity-university-campuses.jpg",
+        src: "images/publications/religiosity-university-campuses.webp",
         alt: "",
         caption: ""
     },}; 

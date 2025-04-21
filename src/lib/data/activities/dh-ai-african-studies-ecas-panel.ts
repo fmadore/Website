@@ -25,7 +25,7 @@ export const activity: Activity = {
     image: "",
     panelType: "Conference",
     heroImage: {
-        src: "images/activities/ECAS-2025.jpg",
+        src: "images/activities/ECAS-2025.webp",
         alt: "",
         caption: ""
     }}; 

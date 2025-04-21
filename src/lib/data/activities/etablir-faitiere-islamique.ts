@@ -25,6 +25,6 @@ export const etablirFaitiereIslamique: Activity = {
         alt: "Participants of the workshop",
         caption: "Participants of the workshop"
     },
-    pdfPath: "files/Programme_Atelier-Cret-Berard.pdf",
+    pdfPath: "files/Programme_Atelier-Cret-Berard.webp",
     pdfTitle: "Programme"
 }; 

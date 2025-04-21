@@ -23,7 +23,7 @@ export const religiousActivismCampuses: Activity = {
     tags: ["Publication", "Remoboko", "Togo", "Benin"],
     panelType: "Publication",
     heroImage: {
-        src: "images/De-Gruyter-ZMO.jpg",
+        src: "images/activities/De-Gruyter-ZMO.webp",
         alt: "Book cover of Religious Activism on Campuses in Togo and Benin",
         caption: "Published March 2025 by De Gruyter"
     }
