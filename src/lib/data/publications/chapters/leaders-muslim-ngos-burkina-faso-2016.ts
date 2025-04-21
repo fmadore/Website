@@ -20,7 +20,7 @@ export const leadersMuslimNGOsBurkinaFaso: Publication = {
     url: "https://doi.org/10.2307/j.ctt1gk0810.11",
     image: "images/publications/muslim-ngos-burkina-faso-2016.avif",
     heroImage: {
-        src: "images/publications/muslim-ngos-burkina-faso-2016-hero.webp",
+        src: "images/publications/muslim-ngos-burkina-faso-2016-hero.avif",
         alt: "Cover of the book Faith and Charity",
     },
     country: ["Burkina Faso"],
