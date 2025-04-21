@@ -44,7 +44,7 @@
 <div class="profile-container">
     <div class="profile-header enhanced-header">
         <div class="profile-photo">
-            <img src="{base}/images/Profile-picture.jpg" alt="Frédérick Madore" class="rounded-full">
+            <img src="{base}/images/Profile-picture.webp" alt="Frédérick Madore" class="rounded-full">
         </div>
         <div class="profile-title">
             <h1>About</h1>
