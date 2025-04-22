@@ -22,8 +22,8 @@ export const etablirFaitiereIslamique: Activity = {
     panelType: "workshop",
     heroImage: {
         src: "images/activities/puidoux.webp",
-        alt: "Participants of the workshop",
-        caption: "Participants of the workshop"
+        alt: "Crêt-Bérard Monastery",
+        caption: "Crêt-Bérard Monastery"
     },
     pdfPath: "files/Programme_Atelier-Cret-Berard.pdf",
     pdfTitle: "Programme"
