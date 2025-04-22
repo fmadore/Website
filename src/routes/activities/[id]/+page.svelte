@@ -127,7 +127,7 @@
         description={activity.description}
         keywords={formattedTags.join(', ')}
         type="article"
-        ogImage={activity.heroImage?.src ? `${base}/${activity.heroImage.src}` : `${base}/images/Profile-picture.jpg`}
+        ogImage={activity.heroImage?.src ? `${base}/${activity.heroImage.src}` : `${base}/images/Profile-picture.webp`}
     />
 {/if}
 

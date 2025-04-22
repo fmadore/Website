@@ -49,7 +49,7 @@ export const load: PageLoad = () => {
         "name": "Frédérick Madore",
         "honorificPrefix": "Dr.", // Added prefix
         "url": "https://www.frederickmadore.com", 
-        "image": `${base}/images/Profile-picture.jpg`, 
+        "image": `${base}/images/Profile-picture.webp`, 
         "email": "frederick.madore@zmo.de", // Added email
         "jobTitle": "Research Fellow", // Keep jobTitle for compatibility
         "worksFor": { // Used worksFor key

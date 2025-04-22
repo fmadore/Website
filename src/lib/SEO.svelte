@@ -6,7 +6,7 @@
     export let description = "Personal website of Frédérick Madore, Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)";
     export let keywords = "Frédérick Madore, Islam, West Africa, Digital Humanities, Research";
     export let canonical = "";
-    export let ogImage = `${base}/images/Profile-picture.jpg`;
+    export let ogImage = `${base}/images/Profile-picture.webp`;
     export let type = "website";
 </script>
 
