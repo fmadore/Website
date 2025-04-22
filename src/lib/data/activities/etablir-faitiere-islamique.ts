@@ -21,10 +21,10 @@ export const etablirFaitiereIslamique: Activity = {
     tags: ["Workshop", "Benin", "Burkina Faso", "Côte d'Ivoire", "Togo"],
     panelType: "workshop",
     heroImage: {
-        src: "images/activities/puidoux.jpeg",
+        src: "images/activities/puidoux.webp",
         alt: "Participants of the workshop",
         caption: "Participants of the workshop"
     },
-    pdfPath: "files/Programme_Atelier-Cret-Berard.webp",
+    pdfPath: "files/Programme_Atelier-Cret-Berard.pdf",
     pdfTitle: "Programme"
 }; 
