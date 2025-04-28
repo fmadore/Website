@@ -13,22 +13,15 @@ export const GET: RequestHandler = async () => {
     // Static pages
     const pages = [
         "",
-        "/cv",
         "/research",
         "/publications",
         "/activities",
         "/digital-humanities",
-        "/digital-humanities/iwac-overview",
-        "/digital-humanities/islam-burkina-faso-collection",
-        "/digital-humanities/iwac-wordcloud",
-        "/digital-humanities/muslim-umbrella-organizations",
-        "/digital-humanities/iwac-keywords",
-        "/digital-humanities/remoboko",
-        "/digital-humanities/zmo-units",
         "/conference-activity",
         "/teaching",
         "/teaching/guest-lectures",
-        "/contact"
+        "/contact",
+        "/cv"
     ];
     
     // Research project routes
@@ -37,6 +30,17 @@ export const GET: RequestHandler = async () => {
         "/research/religious-activism-campuses-togo-benin",
         "/research/muslim-minorities-southern-cities-benin-togo",
         "/research/youth-womens-islamic-activism-cote-divoire-burkina-faso"
+    ];
+
+    // Digital Humanities project routes
+    const digitalHumanitiesProjects = [
+        "/digital-humanities/iwac-overview",
+        "/digital-humanities/islam-burkina-faso-collection",
+        "/digital-humanities/iwac-wordcloud",
+        "/digital-humanities/muslim-umbrella-organizations",
+        "/digital-humanities/iwac-keywords",
+        "/digital-humanities/remoboko",
+        "/digital-humanities/zmo-units"
     ];
 
     // Dynamic activity paths
@@ -55,6 +59,7 @@ export const GET: RequestHandler = async () => {
     const allPaths = [
         ...pages, 
         ...researchProjects, 
+        ...digitalHumanitiesProjects,
         ...activityPaths, 
         ...yearPaths,
         ...publicationPaths,
