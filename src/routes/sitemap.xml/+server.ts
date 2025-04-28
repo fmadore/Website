@@ -13,6 +13,7 @@ export const GET: RequestHandler = async () => {
     // Static pages
     const pages = [
         "",
+        "/cv",
         "/research",
         "/publications",
         "/activities",
