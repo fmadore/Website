@@ -41,14 +41,14 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
         {
             authors: ["Djiby Ndiaye"],
             year: 2022,
-            title: "Flaming et pratiques d'irrévérence des \"musulmans connectés\" au Sénégal",
+            title: "Flaming et pratiques d'irrévérence des « musulmans connectés » au Sénégal",
             source: "In Islam and Muslim Life in West Africa: Practices, Trajectories and Influences, edited by Abdoulaye Sounaye and André Chappatte, 105-24. Berlin: De Gruyter, 2022",
             url: "https://doi.org/10.1515/9783110733204-006"
         },
         {
             authors: ["Bourahima Diomandé"],
             year: 2022,
-            title: "Les \"imams chocos\" ou la mutation de la figure de l'autorité religieuse musulmane en Côte d'Ivoire contemporaine",
+            title: "Les « imams chocos » ou la mutation de la figure de l'autorité religieuse musulmane en Côte d'Ivoire contemporaine",
             source: "In Islam and Muslim Life in West Africa: Practices, Trajectories and Influences, edited by Abdoulaye Sounaye and André Chappatte, 125-50. Berlin: De Gruyter, 2022",
             url: "https://doi.org/10.1515/9783110733204-007"
         },
@@ -63,35 +63,35 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
             authors: ["Aboubakar Sidiki Segda"],
             year: 2021,
             title: "L'influence du retour des scolaires burkinabè de la Côte d'Ivoire sur l'islam au Burkina Faso",
-            source: "Les Cahiers de l'ACAREF 3, no. 6 (2021): 321–41",
+            source: "Les Cahiers de l'ACAREF 3, no. 6 (2021): 321-41",
             url: "https://web.archive.org/web/20240623145336/https://revues.acaref.net/wp-content/uploads/sites/3/2021/06/18Aboubakar-Sidiki-Segda.pdf"
         },
         {
             authors: ["Lassane Ouedraogo"],
             year: 2019,
             title: "Muslim Women and Pious Fashion in Burkina Faso as Identity, Pose, and Defiance",
-            source: "The Communication Review 22, no. 4 (2019): 271–95",
+            source: "The Communication Review 22, no. 4 (2019): 271-95",
             url: "https://doi.org/10.1080/10714421.2019.1651154"
         },
         {
             authors: ["Issouf Binaté"],
             year: 2017,
             title: "Les musulmans de Facebook en Côte d'Ivoire : nouvelle voie de socialisation, de da'wa et de mobilisation communautaire",
-            source: "Émulations, no. 24 (2017): 53–70",
+            source: "Émulations, no. 24 (2017): 53-70",
             url: "https://doi.org/10.14428/emulations.024.004"
         },
         {
             authors: ["Koudbi Kaboré"],
             year: 2017,
             title: "Mouvement interreligieux et usages d'Internet au Burkina Faso : le cas de l'Union fraternelle des croyants (UFC) de Dori",
-            source: "Émulations, no. 24 (2017): 23–35",
+            source: "Émulations, no. 24 (2017): 23-35",
             url: "https://doi.org/10.14428/emulations.024.002"
         },
         {
             authors: ["Jean-François Havard", "Carsten Wilhelm", "François Malick Diouf"],
             year: 2020,
-            title: "Un imam \"connecté\" au Sénégal : auto-entrepreneuriat religieux et stratégie \"agendatique\"",
-            source: "Communication langages 205, no. 3 (2020): 35–55",
+            title: "Un imam « connecté » au Sénégal. Auto-entrepreneuriat religieux et stratégie « agendatique »",
+            source: "Communication langages 205, no. 3 (2020): 35-55",
             url: "https://doi.org/10.3917/comla1.205.0035"
         },
         {
