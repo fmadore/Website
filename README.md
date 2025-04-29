@@ -33,7 +33,7 @@ This website showcases my academic work including:
 This site is built with:
 
 - [SvelteKit](https://kit.svelte.dev/) - Frontend framework
-- [TailwindCSS](https://tailwindcss.com/) - CSS framework
+- Custom CSS Framework (see `src/styles/CSS-README.md`)
 - [TypeScript](https://www.typescriptlang.org/) - Language
 - Deployed on [GitHub Pages](https://pages.github.com/)
 

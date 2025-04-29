@@ -76,7 +76,7 @@ Provides responsive container classes for controlling layout width:
 
 Implements a flexible grid system:
 - `.grid`: Base grid container
-- `.grid-cols-*`: Grid column templates (note: being replaced by Tailwind utilities)
+- `.grid-cols-*`: Grid column templates
 - Responsive variants for different breakpoints
 - Gap utilities
 - Column span classes
@@ -256,64 +256,6 @@ Flexbox utility classes:
 
 - `.sveltekit-body-container`: Utility for SvelteKit body container
 
-## Using This CSS Framework
-
-This section outlines the recommended approach for applying styles within the project, balancing the use of this custom CSS framework with Tailwind CSS.
-
-### Refined CSS Strategy (Tailwind + Custom CSS)
-
-1.  **Tailwind First for Utilities:**
-    *   Use Tailwind utility classes directly in your Svelte/HTML components for the vast majority of styling needs: spacing, flexbox, grid layouts, typography (size, weight, alignment), colors, borders, shadows, responsive variations, etc.
-    *   Leverage Tailwind's responsive modifiers (e.g., `md:`, `lg:`) for screen-size adaptations.
-
-2.  **Custom CSS for Components & Complexity:**
-    *   Use custom CSS classes (defined in `src/styles/**/*.css`) for:
-        *   **Base component styles:** Define the fundamental structure and appearance of reusable UI components (e.g., `.card`, `.btn`, `.modal`). This keeps markup cleaner. Use semantic names. `@apply` can be used sparingly if it simplifies things, but pure CSS is preferred for base component definitions.
-        *   **Complex Selectors/Logic:** Styles involving intricate selectors, unique animations, or logic difficult/verbose to express with Tailwind alone.
-        *   **Global Styles:** Base resets (`reset.css`), core typography defaults (`typography.css`), and CSS variable definitions (`variables.css`).
-        *   **Layout Primitives:** Core layout structures (e.g., `.container`, `.section`) if they require specific, project-wide definitions differing from Tailwind defaults.
-    *   When a long string of Tailwind classes on an element becomes unreadable or hard to maintain, consider extracting it into a semantic custom class in the appropriate component or page CSS file.
-
-3.  **CSS Variables:**
-    *   **Always** use the defined CSS variables (`var(--variable-name)`) from `src/styles/base/variables.css` within your custom CSS files. Avoid hardcoding colors, spacing, fonts, etc.
-
-4.  **Tailwind Configuration:**
-    *   Extend the Tailwind theme in `tailwind.config.js` to map the values from `variables.css` (colors, spacing, fonts, etc.). This allows Tailwind utilities (like `text-primary`, `p-4`) to use the project's specific design tokens.
-
-5.  **Avoid Redundant Custom Utilities:**
-    *   Do not create custom utility classes (like `.mt-4`, `.text-primary`) that directly duplicate existing Tailwind classes. Remove any existing ones from `src/styles/utilities/` and `src/styles/layout/grid.css`.
-
-## Phasing Out Tailwind CSS
-
-This project is gradually phasing out Tailwind CSS in favor of a custom utility and component-based CSS framework. The transition strategy is as follows:
-
-1. **Parallel Systems**: Both Tailwind and custom CSS utilities are available. New utility files (spacing, colors, typography, flex) mirror Tailwind's most-used classes but are powered by your design tokens.
-2. **Component Migration**: As you update or create components, replace Tailwind classes with your custom utility classes or semantic component classes. Prioritize frequently used and simple components first.
-3. **New Development**: For new components and pages, use only the custom CSS system. Avoid introducing new Tailwind classes.
-4. **Complete Removal**: Once all Tailwind usage is eliminated, remove Tailwind from dependencies, config, and app.css.
-
-### Migration Example
-
-**Before:**
-```html
-<div class="flex flex-col md:flex-row items-center p-4 gap-4 text-primary">
-  ...
-</div>
-```
-**After:**
-```html
-<div class="flex flex-col md:flex-row items-center p-4 gap-4 text-primary">
-  ...
-</div>
-```
-*Note: The class names remain, but are now provided by your custom CSS utilities, not Tailwind!*
-
-### Best Practices
-- Use semantic class names for complex components (e.g., `.profile-card`, `.main-content-card`)
-- Use utility classes for layout, spacing, color, and typography
-- Document all new utilities and component classes
-- Remove Tailwind classes as you migrate each component
-
 ### Class Naming Convention
 
 The CSS follows a component-based naming convention:
@@ -332,15 +274,11 @@ The CSS is built with a mobile-first approach:
 
 When using this CSS framework:
 
-1. Use the existing components and utilities whenever possible
-2. Follow the established naming patterns when creating new styles
-3. Place page-specific styles in the appropriate page CSS file
-4. Use variables for colors, spacing, and other design tokens
-5. Avoid inline styles or !important declarations
-
-### Integration with Tailwind
-
-This CSS framework can coexist with Tailwind CSS:
-- Tailwind is imported in the main app.css
-- The typography plugin enhances long-form content
-- Custom classes complement Tailwind's utility-first approach
+1. Use the existing components and utilities whenever possible.
+2. Use semantic class names for complex components (e.g., `.profile-card`, `.main-content-card`).
+3. Use utility classes for layout, spacing, color, and typography where appropriate.
+4. Follow the established naming patterns when creating new styles.
+5. Place page-specific styles in the appropriate page CSS file.
+6. Use variables for colors, spacing, and other design tokens.
+7. Avoid inline styles or !important declarations.
+8. Document all new utilities and component classes.
