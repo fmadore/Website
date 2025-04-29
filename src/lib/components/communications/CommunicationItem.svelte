@@ -48,13 +48,13 @@
                     {/if}
                 </div>
                 
-                <h3 class="text-dark font-medium mb-2">
+                <h3 class="text-default font-medium mb-2">
                     <a href="{base}/communications/{communication.id}" class="hover:text-primary">
                         {communication?.title || 'Untitled Communication'}
                     </a>
                 </h3>
                 
-                <div class="communication-details text-text-light text-sm mb-2">
+                <div class="communication-details text-light text-sm mb-2">
                     <!-- Authors -->
                     {#if communication?.authors && communication.authors.length > 0}
                         <div>
@@ -83,7 +83,7 @@
                 </div>
                 
                 {#if communication?.abstract}
-                    <div class="text-text-light text-sm mb-4">
+                    <div class="text-light text-sm mb-4">
                         {truncateAbstract(communication.abstract)}
                     </div>
                 {/if}
@@ -165,6 +165,6 @@
         /* object-fit: cover; */ /* REMOVED to standardize */
         height: auto; /* Ensure height adjusts automatically */
         border-radius: 4px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        box-shadow: var(--shadow-md);
     }
 </style> 

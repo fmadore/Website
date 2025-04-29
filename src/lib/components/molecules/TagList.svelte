@@ -33,6 +33,7 @@
         background-color: var(--color-border);
         color: var(--color-text-light);
         transition: background-color 0.2s ease, color 0.2s ease;
+        text-decoration: none;
     }
     .tag-link:hover {
         background-color: var(--color-primary);
