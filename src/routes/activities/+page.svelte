@@ -44,9 +44,9 @@
                 <ul class="space-y-3">
                     {#each years as year}
                         <li>
-                            <a href="{base}/activities/year/{year}" class="year-link flex justify-between items-center hover:bg-gray-50 p-2 rounded transition-colors">
+                            <a href="{base}/activities/year/{year}" class="year-link flex justify-between items-center p-2 rounded transition-colors">
                                 <span>{year}</span>
-                                <span class="year-count-badge bg-primary-50 text-primary px-2 py-1 rounded-full text-xs font-medium">
+                                <span class="year-count-badge px-2 py-1 rounded-full text-xs font-medium">
                                     {getCountByYear(year)}
                                 </span>
                             </a>
@@ -86,11 +86,11 @@
 
     /* Adjust year link hover background and badge colors */
     .year-link:hover {
-        background-color: var(--color-border) !important; /* Override Tailwind */
+        background-color: var(--color-border);
     }
     .year-count-badge {
-        background-color: var(--color-border) !important; /* Override Tailwind */
-        color: var(--color-primary) !important; /* Override Tailwind */
+        background-color: var(--color-border);
+        color: var(--color-primary);
     }
 
     /* Styles for elements within ActivityItem might be needed here 
