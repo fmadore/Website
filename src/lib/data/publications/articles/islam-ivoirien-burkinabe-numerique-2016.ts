@@ -114,6 +114,13 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
             title: "Le Sénégal à l'heure des médias numériques confessionnels : le Hizbut-Tarqiyyah et son site Internet, un reflet de nouveaux lieux de culte virtuels",
             source: "Émulations, no. 24 (2017): 37-52",
             url: "https://doi.org/10.14428/emulations.024.003"
+        },
+        {
+            authors: ["N'Dri, Oba Christian Abel"],
+            year: 2022,
+            title: "Usages de Facebook et diffusion de la religion catholique en Côte d'Ivoire : une étude de la communauté Sacerdoce royal",
+            source: "Forum de la Communication et des Arts, no. 1 (2022): 14-33",
+            url: "https://web.archive.org/web/20240308150352/https://assets.nicepagecdn.com/c2c5a27a/2881383/files/0002NDRIOBAp14-33.pdf"
         }
     ]
 }; 
