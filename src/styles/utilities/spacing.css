@@ -829,3 +829,117 @@
   .xl\:space-x-6 > * + * { margin-left: var(--spacing-6); }
   .xl\:space-x-8 > * + * { margin-left: var(--spacing-8); }
 }
+
+/* Gap X (column gap) */
+.gap-x-0 { column-gap: 0; }
+.gap-x-1 { column-gap: var(--spacing-1); }
+.gap-x-2 { column-gap: var(--spacing-2); }
+.gap-x-3 { column-gap: var(--spacing-3); }
+.gap-x-4 { column-gap: var(--spacing-4); }
+.gap-x-6 { column-gap: var(--spacing-6); }
+.gap-x-8 { column-gap: var(--spacing-8); }
+.gap-x-12 { column-gap: var(--spacing-12); }
+.gap-x-16 { column-gap: var(--spacing-16); }
+
+/* Gap Y (row gap) */
+.gap-y-0 { row-gap: 0; }
+.gap-y-1 { row-gap: var(--spacing-1); }
+.gap-y-2 { row-gap: var(--spacing-2); }
+.gap-y-3 { row-gap: var(--spacing-3); }
+.gap-y-4 { row-gap: var(--spacing-4); }
+.gap-y-6 { row-gap: var(--spacing-6); }
+.gap-y-8 { row-gap: var(--spacing-8); }
+.gap-y-12 { row-gap: var(--spacing-12); }
+.gap-y-16 { row-gap: var(--spacing-16); }
+
+/* Responsive Gap X */
+@media (min-width: 640px) {
+  .sm\:gap-x-0 { column-gap: 0; }
+  .sm\:gap-x-1 { column-gap: var(--spacing-1); }
+  .sm\:gap-x-2 { column-gap: var(--spacing-2); }
+  .sm\:gap-x-3 { column-gap: var(--spacing-3); }
+  .sm\:gap-x-4 { column-gap: var(--spacing-4); }
+  .sm\:gap-x-6 { column-gap: var(--spacing-6); }
+  .sm\:gap-x-8 { column-gap: var(--spacing-8); }
+  .sm\:gap-x-12 { column-gap: var(--spacing-12); }
+  .sm\:gap-x-16 { column-gap: var(--spacing-16); }
+}
+@media (min-width: 768px) {
+  .md\:gap-x-0 { column-gap: 0; }
+  .md\:gap-x-1 { column-gap: var(--spacing-1); }
+  .md\:gap-x-2 { column-gap: var(--spacing-2); }
+  .md\:gap-x-3 { column-gap: var(--spacing-3); }
+  .md\:gap-x-4 { column-gap: var(--spacing-4); }
+  .md\:gap-x-6 { column-gap: var(--spacing-6); }
+  .md\:gap-x-8 { column-gap: var(--spacing-8); }
+  .md\:gap-x-12 { column-gap: var(--spacing-12); }
+  .md\:gap-x-16 { column-gap: var(--spacing-16); }
+}
+@media (min-width: 1024px) {
+  .lg\:gap-x-0 { column-gap: 0; }
+  .lg\:gap-x-1 { column-gap: var(--spacing-1); }
+  .lg\:gap-x-2 { column-gap: var(--spacing-2); }
+  .lg\:gap-x-3 { column-gap: var(--spacing-3); }
+  .lg\:gap-x-4 { column-gap: var(--spacing-4); }
+  .lg\:gap-x-6 { column-gap: var(--spacing-6); }
+  .lg\:gap-x-8 { column-gap: var(--spacing-8); }
+  .lg\:gap-x-12 { column-gap: var(--spacing-12); }
+  .lg\:gap-x-16 { column-gap: var(--spacing-16); }
+}
+@media (min-width: 1280px) {
+  .xl\:gap-x-0 { column-gap: 0; }
+  .xl\:gap-x-1 { column-gap: var(--spacing-1); }
+  .xl\:gap-x-2 { column-gap: var(--spacing-2); }
+  .xl\:gap-x-3 { column-gap: var(--spacing-3); }
+  .xl\:gap-x-4 { column-gap: var(--spacing-4); }
+  .xl\:gap-x-6 { column-gap: var(--spacing-6); }
+  .xl\:gap-x-8 { column-gap: var(--spacing-8); }
+  .xl\:gap-x-12 { column-gap: var(--spacing-12); }
+  .xl\:gap-x-16 { column-gap: var(--spacing-16); }
+}
+
+/* Responsive Gap Y */
+@media (min-width: 640px) {
+  .sm\:gap-y-0 { row-gap: 0; }
+  .sm\:gap-y-1 { row-gap: var(--spacing-1); }
+  .sm\:gap-y-2 { row-gap: var(--spacing-2); }
+  .sm\:gap-y-3 { row-gap: var(--spacing-3); }
+  .sm\:gap-y-4 { row-gap: var(--spacing-4); }
+  .sm\:gap-y-6 { row-gap: var(--spacing-6); }
+  .sm\:gap-y-8 { row-gap: var(--spacing-8); }
+  .sm\:gap-y-12 { row-gap: var(--spacing-12); }
+  .sm\:gap-y-16 { row-gap: var(--spacing-16); }
+}
+@media (min-width: 768px) {
+  .md\:gap-y-0 { row-gap: 0; }
+  .md\:gap-y-1 { row-gap: var(--spacing-1); }
+  .md\:gap-y-2 { row-gap: var(--spacing-2); }
+  .md\:gap-y-3 { row-gap: var(--spacing-3); }
+  .md\:gap-y-4 { row-gap: var(--spacing-4); }
+  .md\:gap-y-6 { row-gap: var(--spacing-6); }
+  .md\:gap-y-8 { row-gap: var(--spacing-8); }
+  .md\:gap-y-12 { row-gap: var(--spacing-12); }
+  .md\:gap-y-16 { row-gap: var(--spacing-16); }
+}
+@media (min-width: 1024px) {
+  .lg\:gap-y-0 { row-gap: 0; }
+  .lg\:gap-y-1 { row-gap: var(--spacing-1); }
+  .lg\:gap-y-2 { row-gap: var(--spacing-2); }
+  .lg\:gap-y-3 { row-gap: var(--spacing-3); }
+  .lg\:gap-y-4 { row-gap: var(--spacing-4); }
+  .lg\:gap-y-6 { row-gap: var(--spacing-6); }
+  .lg\:gap-y-8 { row-gap: var(--spacing-8); }
+  .lg\:gap-y-12 { row-gap: var(--spacing-12); }
+  .lg\:gap-y-16 { row-gap: var(--spacing-16); }
+}
+@media (min-width: 1280px) {
+  .xl\:gap-y-0 { row-gap: 0; }
+  .xl\:gap-y-1 { row-gap: var(--spacing-1); }
+  .xl\:gap-y-2 { row-gap: var(--spacing-2); }
+  .xl\:gap-y-3 { row-gap: var(--spacing-3); }
+  .xl\:gap-y-4 { row-gap: var(--spacing-4); }
+  .xl\:gap-y-6 { row-gap: var(--spacing-6); }
+  .xl\:gap-y-8 { row-gap: var(--spacing-8); }
+  .xl\:gap-y-12 { row-gap: var(--spacing-12); }
+  .xl\:gap-y-16 { row-gap: var(--spacing-16); }
+}

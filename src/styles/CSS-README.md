@@ -219,7 +219,7 @@ Utility classes for common styling needs.
 Spacing utility classes:
 - Margin utilities (`.m-*`, `.mx-*`, `.my-*`, `.mt-*`, `.mb-*`, `.mr-*`, `.ml-*`)
 - Padding utilities (`.p-*`, `.px-*`, `.py-*`, `.pt-*`, `.pb-*`, `.pl-*`, `.pr-*`)
-- Gap utilities for flex/grid (`.gap-*`)
+- Gap utilities for flex/grid (`.gap-*`, `.gap-x-*`, `.gap-y-*`)
 - Space between children (`.space-x-*`, `.space-y-*`)
 - All utilities use the spacing variables
 

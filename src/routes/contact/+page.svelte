@@ -52,13 +52,13 @@
 <div class="container py-12">
 	<PageHeader title="Contact" />
 
-	<div class="grid md:grid-cols-2 gap-12">
+	<div class="contact-layout-grid">
 		<div class="contact-section">
 			<h2 class="contact-section-title">Contact Information</h2>
 			<div class="contact-info space-y-4">
 				<p>
 					<strong>Email:</strong>
-					<a href="mailto:frederick.madore@zmo.de" class="hover:underline">
+					<a href="mailto:frederick.madore@zmo.de">
 						frederick.madore@zmo.de
 					</a>
 				</p>
