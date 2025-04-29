@@ -63,7 +63,8 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
             authors: ["Aboubakar Sidiki Segda"],
             year: 2021,
             title: "L'influence du retour des scolaires burkinabè de la Côte d'Ivoire sur l'islam au Burkina Faso",
-            source: "Les Cahiers de l'ACAREF 3, no. 6 (2021): 321–41"
+            source: "Les Cahiers de l'ACAREF 3, no. 6 (2021): 321–41",
+            url: "https://web.archive.org/web/20240623145336/https://revues.acaref.net/wp-content/uploads/sites/3/2021/06/18Aboubakar-Sidiki-Segda.pdf"
         },
         {
             authors: ["Lassane Ouedraogo"],
@@ -104,7 +105,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
             authors: ["Lassane Ouedraogo"],
             year: 2020,
             title: "Muslim Youth at a Crossroads: Media and Civic Engagement in Burkina Faso",
-            source: "Thèse de doctorat, Ohio University, 2020",
+            source: "PhD dissertation, Ohio University, 2020",
             url: "http://rave.ohiolink.edu/etdc/view?acc_num=ohiou157547720848127"
         },
         {
