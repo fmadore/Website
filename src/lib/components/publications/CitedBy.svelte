@@ -13,7 +13,7 @@
         <h2 class="text-xl font-semibold mb-4">Cited By</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             {#each sortedCitedBy as citingWork}
-                <div class="citing-work-card bg-gray-50 p-4 rounded-md shadow-sm border border-gray-100">
+                <div class="citing-work-card bg-sidebar p-4 rounded-md shadow-sm border border-default">
                     <div class="font-semibold text-lg mb-1">
                         {#if citingWork.url}
                             <a href="{citingWork.url}" target="_blank" rel="noopener" class="text-primary hover:underline">{citingWork.title}</a>
@@ -21,11 +21,11 @@
                             {citingWork.title}
                         {/if}
                     </div>
-                    <div class="text-sm text-text-secondary mb-1">
+                    <div class="text-sm text-secondary mb-1">
                         {citingWork.authors.join(', ')} ({citingWork.year})
                     </div>
                     {#if citingWork.source}
-                        <div class="text-sm italic text-text-muted">
+                        <div class="text-sm italic text-light">
                             {citingWork.source}
                         </div>
                     {/if}

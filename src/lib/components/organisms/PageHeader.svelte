@@ -61,7 +61,7 @@
 	{/if}
 
 	{#if editors}
-		<div class="editors text-text-secondary mb-2">
+		<div class="editors text-secondary mb-2">
 			Edited by {formatEditors(editors)}
 		</div>
 	{/if}

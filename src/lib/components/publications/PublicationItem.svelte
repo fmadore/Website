@@ -76,7 +76,7 @@
 </script>
 
 <li class="p-0 list-none">
-    <div class="card p-4 hover-shadow">
+    <div class="card p-4">
         <div class="grid md:grid-cols-4 gap-4">
             {#if publication.image}
                 <div class="col-span-1">
@@ -99,13 +99,13 @@
                     {/if}
                 </div>
                 
-                <h3 class="text-dark font-medium mb-2">
+                <h3 class="text-default font-medium mb-2">
                     <a href="{base}/publications/{publication.id}" class="hover:text-primary">
                         {publication.title}
                     </a>
                 </h3>
                 
-                <div class="text-text-light text-sm mb-2">
+                <div class="text-light text-sm mb-2">
                     <!-- Render prefix and the constructed author string -->
                     {listPrefix}{authorString}
                      <!-- Space, then (Year). Only if year is defined -->
@@ -163,7 +163,7 @@
                 </div>
                 
                 {#if publication.abstract}
-                    <div class="text-text-light text-sm mb-4">
+                    <div class="text-light text-sm mb-4">
                         {truncateAbstract(publication.abstract)}
                     </div>
                 {/if}
@@ -244,6 +244,6 @@
         width: 100%;
         height: auto;
         border-radius: 4px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        box-shadow: var(--shadow-md);
     }
 </style> 

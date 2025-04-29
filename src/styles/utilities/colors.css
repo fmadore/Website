@@ -24,6 +24,8 @@
 .bg-white { background-color: white; }
 .bg-black { background-color: black; }
 .bg-transparent { background-color: transparent; }
+.bg-border { background-color: var(--color-border); }
+.bg-sidebar { background-color: var(--color-sidebar-bg); }
 
 /* Background with opacity */
 .bg-primary-10 { background-color: rgba(var(--color-primary-rgb), 0.1); }
@@ -116,6 +118,8 @@
   .sm\:bg-white { background-color: white; }
   .sm\:bg-black { background-color: black; }
   .sm\:bg-transparent { background-color: transparent; }
+  .sm\:bg-border { background-color: var(--color-border); }
+  .sm\:bg-sidebar { background-color: var(--color-sidebar-bg); }
 
   .sm\:border-primary { border-color: var(--color-primary); }
   .sm\:border-primary-dark { border-color: var(--color-primary-dark); }
@@ -153,6 +157,8 @@
   .md\:bg-white { background-color: white; }
   .md\:bg-black { background-color: black; }
   .md\:bg-transparent { background-color: transparent; }
+  .md\:bg-border { background-color: var(--color-border); }
+  .md\:bg-sidebar { background-color: var(--color-sidebar-bg); }
 
   .md\:border-primary { border-color: var(--color-primary); }
   .md\:border-primary-dark { border-color: var(--color-primary-dark); }
@@ -190,6 +196,8 @@
   .lg\:bg-white { background-color: white; }
   .lg\:bg-black { background-color: black; }
   .lg\:bg-transparent { background-color: transparent; }
+  .lg\:bg-border { background-color: var(--color-border); }
+  .lg\:bg-sidebar { background-color: var(--color-sidebar-bg); }
 
   .lg\:border-primary { border-color: var(--color-primary); }
   .lg\:border-primary-dark { border-color: var(--color-primary-dark); }
@@ -227,6 +235,8 @@
   .xl\:bg-white { background-color: white; }
   .xl\:bg-black { background-color: black; }
   .xl\:bg-transparent { background-color: transparent; }
+  .xl\:bg-border { background-color: var(--color-border); }
+  .xl\:bg-sidebar { background-color: var(--color-sidebar-bg); }
 
   .xl\:border-primary { border-color: var(--color-primary); }
   .xl\:border-primary-dark { border-color: var(--color-primary-dark); }
