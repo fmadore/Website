@@ -1,0 +1,40 @@
+/* Box Shadow utilities */
+
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow { box-shadow: var(--shadow); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-none { box-shadow: none; }
+
+/* Responsive */
+@media (min-width: 640px) {
+  .sm\:shadow-sm { box-shadow: var(--shadow-sm); }
+  .sm\:shadow { box-shadow: var(--shadow); }
+  .sm\:shadow-md { box-shadow: var(--shadow-md); }
+  .sm\:shadow-lg { box-shadow: var(--shadow-lg); }
+  .sm\:shadow-none { box-shadow: none; }
+}
+
+@media (min-width: 768px) {
+  .md\:shadow-sm { box-shadow: var(--shadow-sm); }
+  .md\:shadow { box-shadow: var(--shadow); }
+  .md\:shadow-md { box-shadow: var(--shadow-md); }
+  .md\:shadow-lg { box-shadow: var(--shadow-lg); }
+  .md\:shadow-none { box-shadow: none; }
+}
+
+@media (min-width: 1024px) {
+  .lg\:shadow-sm { box-shadow: var(--shadow-sm); }
+  .lg\:shadow { box-shadow: var(--shadow); }
+  .lg\:shadow-md { box-shadow: var(--shadow-md); }
+  .lg\:shadow-lg { box-shadow: var(--shadow-lg); }
+  .lg\:shadow-none { box-shadow: none; }
+}
+
+@media (min-width: 1280px) {
+  .xl\:shadow-sm { box-shadow: var(--shadow-sm); }
+  .xl\:shadow { box-shadow: var(--shadow); }
+  .xl\:shadow-md { box-shadow: var(--shadow-md); }
+  .xl\:shadow-lg { box-shadow: var(--shadow-lg); }
+  .xl\:shadow-none { box-shadow: none; }
+} 

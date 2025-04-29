@@ -64,8 +64,8 @@
 				</p>
 
 				<!-- Business Card Download Button -->
-				<a 
-					href="{base}/files/visitenkarte.pdf" 
+				<a
+					href="{base}/files/visitenkarte.pdf"
 					class="btn btn-primary btn-icon mt-4"
 					target="_blank" rel="noopener noreferrer"
 					>
@@ -81,8 +81,8 @@
 						14129 Berlin<br />
 						Germany
 					</p>
-					<img 
-						src="{base}/images/zmo.webp" 
+					<img
+						src="{base}/images/zmo.webp"
 						alt="Leibniz-Zentrum Moderner Orient (ZMO) building exterior"
 						class="rounded-lg shadow-md w-full max-w-sm"
 					/>
@@ -117,4 +117,4 @@
 			</div>
 		</div>
 	</div>
-</div> 
+</div>

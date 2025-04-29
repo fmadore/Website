@@ -35,3 +35,6 @@
 @import './styles/utilities/typography.css';
 @import './styles/utilities/flex.css';
 @import './styles/utilities/layout.css';
+@import './styles/utilities/border-radius.css';
+@import './styles/utilities/shadows.css';
+@import './styles/utilities/sizing.css';

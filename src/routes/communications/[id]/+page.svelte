@@ -138,7 +138,7 @@
             fallbackImage={communication.image} 
             defaultAlt={communication.title}
             imageClass="w-full max-w-md h-auto rounded-md mx-auto"
-            figcaptionClass="text-text-muted text-sm mt-2 italic"
+            figcaptionClass="text-muted text-sm mt-2 italic"
         />
         
         <!-- Use the new AbstractSection component -->
@@ -156,7 +156,7 @@
                         <div class="panel-paper p-4 rounded-md">
                             <h3 class="font-semibold text-lg">{paper.title}</h3>
                             {#if paper.authors && paper.authors.length > 0}
-                                <div class="text-sm text-text-secondary mt-1 panel-paper-authors">
+                                <div class="text-sm text-secondary mt-1 panel-paper-authors">
                                     {#each paper.authors as author, index}
                                         <span>
                                             {author.name}{#if author.affiliation}{' '}({author.affiliation}){/if}{#if index < paper.authors.length - 1},&nbsp;{/if}
@@ -183,12 +183,12 @@
                         <div class="panel-participant p-3 rounded-md">
                             <div class="font-medium">{participant.name}</div>
                             {#if participant.role}
-                                <div class="text-sm text-text-secondary participant-role">
+                                <div class="text-sm text-secondary participant-role">
                                     {participant.role}
                                 </div>
                             {/if}
                             {#if participant.affiliation}
-                                <div class="text-xs text-text-muted mt-1">
+                                <div class="text-xs text-muted mt-1">
                                     {participant.affiliation}
                                 </div>
                             {/if}
@@ -250,5 +250,9 @@
         color: var(--color-text-light);
     }
 
-    /* Related item styles are now in RelatedItemCard.svelte */
+    /* Specific styles for the map container if needed */
+    .map-container-wrapper {
+        /* Example: height: 400px; */
+        height: 400px; /* Assuming a fixed height is desired */
+    }
 </style> 

@@ -54,6 +54,10 @@
 .line-through { text-decoration: line-through; }
 .no-underline { text-decoration: none; }
 
+/* Font Style */
+.italic { font-style: italic; }
+.not-italic { font-style: normal; }
+
 /* Text wrapping and overflow */
 .whitespace-normal { white-space: normal; }
 .whitespace-nowrap { white-space: nowrap; }
@@ -149,6 +153,9 @@
   .sm\:text-lg { font-size: var(--font-size-lg); }
   .sm\:text-xl { font-size: var(--font-size-xl); }
   .sm\:text-2xl { font-size: var(--font-size-2xl); }
+
+  .sm\:italic { font-style: italic; }
+  .sm\:not-italic { font-style: normal; }
 }
 
 @media (min-width: 768px) {
@@ -160,6 +167,9 @@
   .md\:text-xl { font-size: var(--font-size-xl); }
   .md\:text-2xl { font-size: var(--font-size-2xl); }
   .md\:text-3xl { font-size: var(--font-size-3xl); }
+
+  .md\:italic { font-style: italic; }
+  .md\:not-italic { font-style: normal; }
 }
 
 @media (min-width: 1024px) {
@@ -167,4 +177,12 @@
   .lg\:text-2xl { font-size: var(--font-size-2xl); }
   .lg\:text-3xl { font-size: var(--font-size-3xl); }
   .lg\:text-4xl { font-size: var(--font-size-4xl); }
+
+  .lg\:italic { font-style: italic; }
+  .lg\:not-italic { font-style: normal; }
+}
+
+@media (min-width: 1280px) {
+  .xl\:italic { font-style: italic; }
+  .xl\:not-italic { font-style: normal; }
 }
