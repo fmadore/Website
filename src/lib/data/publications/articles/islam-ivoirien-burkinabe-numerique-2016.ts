@@ -91,7 +91,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
             authors: ["Jean-François Havard", "Carsten Wilhelm", "François Malick Diouf"],
             year: 2020,
             title: "Un imam « connecté » au Sénégal. Auto-entrepreneuriat religieux et stratégie « agendatique »",
-            source: "Communication langages 205, no. 3 (2020): 35-55",
+            source: "Communication & langages 205, no. 3 (2020): 35-55",
             url: "https://doi.org/10.3917/comla1.205.0035"
         },
         {
