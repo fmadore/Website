@@ -29,6 +29,12 @@ dd {
   padding: 0;
 }
 
+/* Remove list styles */
+ul,
+ol {
+    list-style: none;
+}
+
 /* Set core body defaults */
 body {
   min-height: 100vh;
