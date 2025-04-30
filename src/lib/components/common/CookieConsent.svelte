@@ -55,7 +55,7 @@
         background-color: var(--color-background);
         border: 1px solid var(--color-border);
         border-radius: var(--border-radius-lg);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow-md);
         z-index: 1000;
         padding: 1rem;
         max-width: 24rem;
