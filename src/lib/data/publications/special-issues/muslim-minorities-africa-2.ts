@@ -22,5 +22,12 @@ export const muslimMinoritiesAfrica2: Publication = {
         alt: "Cover of Islamic Africa",
     },
     isEditedWork: true,
-    project: "Muslim Minorities in Southern Cities of Benin and Togo"
+    project: "Muslim Minorities in Southern Cities of Benin and Togo",
+    tableOfContents: [
+        "A Beninese Imam's Controversial 2019 Election Campaign: Muslim Leadership and Political Engagement in a Minority Context by Frédérick Madore",
+        "The Quest for Survival, Cohesion and Voice for the Muslim Minority in Maniema, DR Congo by Ashley E. Leinweber",
+        "Media Representations of Local Muslim Associations' Acts of Charity in Zambia's Multi-Religious but Christian-Dominated Context since the 2010s by Nelly Mwale",
+        "The Ahmadis of Cape Town and the Spectre of Heresy: Polemics, Apostates and Boycotts by Nadeem Mahomed",
+        "Between the Local and the Global: The Iranian Revolution and Sunni-Shia Relations in South Africa by Goolam Vahed"
+    ]
 }; 
