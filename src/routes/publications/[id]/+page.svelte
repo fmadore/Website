@@ -200,7 +200,7 @@
         <DetailsGrid details={publicationDetails} />
 
         <!-- Table of Contents Section -->
-        {#if publication.type === 'book' && publication.tableOfContents && publication.tableOfContents.length > 0}
+        {#if (publication.type === 'book' || publication.type === 'special-issue') && publication.tableOfContents && publication.tableOfContents.length > 0}
             <section class="mt-8 mb-8">
                 <h2 class="text-xl font-semibold mb-4 text-text-headings">Table of Contents</h2>
                 <ul class="list-disc list-inside space-y-3 text-text-base pl-4">
