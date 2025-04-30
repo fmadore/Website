@@ -5,7 +5,7 @@ export const fieldworkTemplate: Fieldwork = {
     id: "fieldwork-template-id", // Replace with URL-friendly ID (use kebab-case)
     city: "City Name",
     country: "Country Name",
-    date: "Month – Month Year", // Format: "Month Year" or "Month – Month Year"
+    date: "Month - Month Year", // Format: "Month Year" or "Month – Month Year"
     year: 2024, // Year of fieldwork
     description: "Optional description of research activities and outcomes during this fieldwork.",
     project: "", // Options: "Mining the Islam West Africa Collection", "Religious Activism on Campuses in Togo and Benin", etc.
