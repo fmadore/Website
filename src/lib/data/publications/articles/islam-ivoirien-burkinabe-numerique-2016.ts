@@ -116,7 +116,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
             url: "https://doi.org/10.14428/emulations.024.003"
         },
         {
-            authors: ["N'Dri, Oba Christian Abel"],
+            authors: ["Oba Christian Abel N'Dri"],
             year: 2022,
             title: "Usages de Facebook et diffusion de la religion catholique en Côte d'Ivoire : une étude de la communauté Sacerdoce royal",
             source: "Forum de la Communication et des Arts, no. 1 (2022): 14-33",
