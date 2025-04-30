@@ -143,6 +143,13 @@ export const muslimWomenBurkinaFaso: Publication = {
             title: "Djinns, femmes et islam à Odienné en Côte d'Ivoire",
             source: "Masters thesis, Université du Québec à Montréal, 2022",
             url: "https://archipel.uqam.ca/17137/"
+        },
+        {
+            authors: ["Nelly Mwale"],
+            year: 2022,
+            title: "Media Representations of Local Muslim Associations' Acts of Charity in Zambia's Multi-Religious but Christian-Dominated Context since the 2010s",
+            source: "Islamic Africa 13, no. 1 (2022): 47-65",
+            url: "https://doi.org/10.1163/21540993-01202003"
         }
     ]
 }; 
