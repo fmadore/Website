@@ -11,6 +11,7 @@
 	import { editorialMembershipsByDate } from '$lib/data/editorial-memberships';
 	import { MapPin, Mail, Linkedin, Github } from 'lucide-svelte';
 	import type { Publication, Communication, Fieldwork, Education, Appointment, Grant, Award, PeerReview, MediaAppearance, EditorialMembership } from '$lib/types';
+	import SEO from '$lib/SEO.svelte';
 
 	// Filter education items by type
 	const degrees = educationByDate.filter(edu => edu.type === 'Degree');
@@ -77,20 +78,20 @@
 
 </script>
 
-<svelte:head>
-	<title>Curriculum Vitae - Frédérick Madore</title>
-	<meta name="description" content="Curriculum Vitae of Frédérick Madore, detailing publications, communications, activities, and fieldwork." />
-</svelte:head>
+<SEO
+	title="Curriculum Vitae - Frédérick Madore"
+	description="Curriculum Vitae of Frédérick Madore, detailing publications, communications, activities, and fieldwork."
+/>
 
 <div class="cv-container p-8 max-w-4xl mx-auto bg-white shadow-md rounded-lg">
 	<h1 class="text-3xl font-bold mb-2 border-b pb-2">Curriculum Vitae</h1>
 	<h2 class="text-xl font-semibold mb-4">Frédérick Madore</h2>
 	
 	<!-- Contact Info Section -->
-	<section class="mb-6 text-sm text-gray-700 flex flex-wrap gap-x-6 gap-y-2 items-start">
+	<section class="mb-6 text-sm text-light flex flex-wrap gap-x-6 gap-y-2 items-start">
 		<!-- Address -->
 		<div class="flex items-start gap-2">
-			<MapPin class="w-4 h-4 mt-0.5 text-gray-500 flex-shrink-0" />
+			<MapPin class="text-light flex-shrink-0" />
 			<div>
 				Leibniz-Zentrum Moderner Orient<br />
 				Kirchweg 33<br />
@@ -101,16 +102,16 @@
 		<!-- Links -->
 		<div class="flex flex-col gap-1">
 			<div class="flex items-center gap-2">
-				<Mail class="w-4 h-4 text-gray-500 flex-shrink-0" />
-				<a href="mailto:frederick.madore@zmo.de" class="hover:text-blue-600 hover:underline">frederick.madore@zmo.de</a>
+				<Mail class="text-light flex-shrink-0" />
+				<a href="mailto:frederick.madore@zmo.de">frederick.madore@zmo.de</a>
 			</div>
 			<div class="flex items-center gap-2">
-				<Linkedin class="w-4 h-4 text-gray-500 flex-shrink-0" />
-				<a href="https://www.linkedin.com/in/frederickmadore/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 hover:underline">LinkedIn</a>
+				<Linkedin class="text-light flex-shrink-0" />
+				<a href="https://www.linkedin.com/in/frederickmadore/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
 			</div>
 			<div class="flex items-center gap-2">
-				<Github class="w-4 h-4 text-gray-500 flex-shrink-0" />
-				<a href="https://github.com/fmadore" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 hover:underline">GitHub</a>
+				<Github class="text-light flex-shrink-0" />
+				<a href="https://github.com/fmadore" target="_blank" rel="noopener noreferrer">GitHub</a>
 			</div>
 		</div>
 	</section>
@@ -173,7 +174,7 @@
 		{/if}
 
 		{#if educationByDate.length === 0}
-			<p>No educational qualifications listed.</p>
+			<p class="text-light">No educational qualifications listed.</p>
 		{/if}
 	</section>
 
@@ -185,13 +186,13 @@
 				{#each appointmentsByDate as appt (appt.id)}
 					<li class="mb-3">
 						<span class="font-medium">{appt.title}</span>, <em>{appt.institution}</em>{#if appt.location}, {appt.location}{/if}.
-						<span class="block ml-4 text-sm text-gray-600">{appt.dateRangeString}</span>
+						<span class="block ml-4 text-sm text-light">{appt.dateRangeString}</span>
 						{#if appt.details} <p class="ml-4 text-sm">{appt.details}</p>{/if}
 					</li>
 				{/each}
 			</ul>
 		{:else}
-			<p>No professional appointments listed.</p>
+			<p class="text-light">No professional appointments listed.</p>
 		{/if}
 	</section>
 
@@ -203,13 +204,13 @@
 				{#each grantsByDate as grant (grant.id)}
 					<li class="mb-3">
 						<span class="font-medium">{grant.title}</span>, <em>{grant.funder}</em>.
-						<span class="block ml-4 text-sm text-gray-600">{grant.dateRangeString}{#if grant.amount} ({grant.amount.toLocaleString('en-US')} {grant.currency}){/if}{#if grant.status && grant.status !== 'Awarded'} [{grant.status}]{/if}</span>
+						<span class="block ml-4 text-sm text-light">{grant.dateRangeString}{#if grant.amount} ({grant.amount.toLocaleString('en-US')} {grant.currency}){/if}{#if grant.status && grant.status !== 'Awarded'} [{grant.status}]{/if}</span>
 						{#if grant.details} <p class="ml-4 text-sm">{grant.details}</p>{/if}
 					</li>
 				{/each}
 			</ul>
 		{:else}
-			<p>No grants or fellowships listed.</p>
+			<p class="text-light">No grants or fellowships listed.</p>
 		{/if}
 	</section>
 
@@ -226,7 +227,7 @@
 				{/each}
 			</ul>
 		{:else}
-			<p>No awards or honors listed.</p>
+			<p class="text-light">No awards or honors listed.</p>
 		{/if}
 	</section>
 
@@ -237,7 +238,7 @@
 			{#each presentPublicationTypes as pubType (pubType)}
 				{#if publicationsByType[pubType] && publicationsByType[pubType].length > 0}
 					<h4 class="text-lg font-semibold mt-4 mb-2">{getPublicationTypeDisplayName(pubType)}</h4>
-					<ul class="list-disc pl-5">
+					<ul class="list-disc pl-6">
 						{#each publicationsByType[pubType] as pub (pub.id)}
 							<li class="mb-3">
 								{#if pub.authors}{pub.authors.join(', ')}. {/if}
@@ -258,15 +259,15 @@
 								{:else if pub.type === 'dissertation' && pub.university}
 									<em>{pub.title}</em>. Ph.D. Dissertation, {pub.university}{#if pub.department}, {pub.department}{/if}.
 								{:else if pub.type === 'blogpost'}
-									{#if pub.url}<a href="{pub.url}" target="_blank" rel="noopener noreferrer" class="hover:underline">"{pub.title}"</a>{/if}. Blog Post.
+									{#if pub.url}<a href="{pub.url}" target="_blank" rel="noopener noreferrer">"{pub.title}"</a>{/if}. Blog Post.
 								{:else}
 									<!-- Generic fallback -->
 									{#if pub.journal}In <em>{pub.journal}</em>.{/if}
 									{#if pub.book}In <em>{pub.book}</em>.{/if}
 									{#if pub.publisher}{pub.publisher}.{/if}
 								{/if}
-								{#if pub.doi}<a href="https://doi.org/{pub.doi}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline ml-1">[DOI]</a>{/if}
-								{#if pub.url && pub.type !== 'blogpost'}<a href="{pub.url}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline ml-1">[Link]</a>{/if}
+								{#if pub.doi}<a href="https://doi.org/{pub.doi}" target="_blank" rel="noopener noreferrer" class="ml-1">[DOI]</a>{/if}
+								{#if pub.url && pub.type !== 'blogpost'}<a href="{pub.url}" target="_blank" rel="noopener noreferrer" class="ml-1">[Link]</a>{/if}
 							</li>
 						{/each}
 					</ul>
@@ -276,21 +277,21 @@
 			<!-- Optional: Section for other publication types -->
 			{#if otherPublicationTypes.length > 0}
 				<h4 class="text-lg font-semibold mt-4 mb-2">Other</h4>
-				<ul class="list-disc pl-5">
+				<ul class="list-disc pl-6">
 					{#each otherPublicationTypes as pubType (pubType)}
 						{#each publicationsByType[pubType as Publication['type']] as pub (pub.id)}
 							<li class="mb-3">
 								<!-- Simplified display for other types -->
 								<span class="font-medium">{pub.title}</span> ({pub.year}). 
-								{#if pub.type}<span class="text-sm bg-gray-200 px-1 rounded">{pub.type}</span>{/if}
-								{#if pub.url}<a href="{pub.url}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline ml-1">[Link]</a>{/if}
+								{#if pub.type}<span class="text-sm bg-border px-1 rounded">{pub.type}</span>{/if}
+								{#if pub.url}<a href="{pub.url}" target="_blank" rel="noopener noreferrer" class="ml-1">[Link]</a>{/if}
 							</li>
 						{/each}
 					{/each}
 				</ul>
 			{/if}
 		{:else}
-			<p>No publications listed.</p>
+			<p class="text-light">No publications listed.</p>
 		{/if}
 	</section>
 
@@ -335,7 +336,7 @@
 	{#if organizedEvents.length > 0}
 	<section class="mb-8">
 		<h3 class="text-2xl font-semibold mb-4 border-b pb-1">Organization of Academic Events</h3>
-		<ul class="list-disc pl-5">
+		<ul class="list-disc pl-6">
 			{#each organizedEvents as comm (comm.id)}
 				<li class="mb-3">
 					{comm.title}. 
@@ -351,7 +352,7 @@
 	{#if invitedTalks.length > 0}
 	<section class="mb-8">
 		<h3 class="text-2xl font-semibold mb-4 border-b pb-1">Invited Talks</h3>
-		<ul class="list-disc pl-5">
+		<ul class="list-disc pl-6">
 			{#each invitedTalks as comm (comm.id)}
 				<li class="mb-3">
 					{#if comm.authors}{comm.authors.join(', ')}. {/if}
@@ -368,11 +369,11 @@
 	{#if otherCommunications.length > 0}
 	<section class="mb-8">
 		<h3 class="text-2xl font-semibold mb-4 border-b pb-1">Other Presentations</h3>
-		<ul class="list-disc pl-5">
+		<ul class="list-disc pl-6">
 			{#each otherCommunications as comm (comm.id)}
 				<li class="mb-3">
 					{comm.title} ({comm.year}). 
-					{#if comm.type}<span class="text-sm bg-blue-100 px-1 rounded">{comm.type}</span>{/if}
+					{#if comm.type}<span class="text-sm bg-border px-1 rounded">{comm.type}</span>{/if}
 					{#if comm.conference}<em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}.
 				</li>
 			{/each}
@@ -390,13 +391,13 @@
 						{media.type === 'interview' ? 'Interviewed by' : 'Appeared in'} 
 						<em>{media.outlet}</em>{#if media.program}, {media.program}{/if}. 
 						{new Date(media.dateISO).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}.
-						<span class="block ml-4 text-sm text-gray-600">Topic: {media.topic}</span>
-						{#if media.url}<a href="{media.url}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline ml-4 text-sm">[Link]</a>{/if}
+						<span class="block ml-4 text-sm text-light">Topic: {media.topic}</span>
+						{#if media.url}<a href="{media.url}" target="_blank" rel="noopener noreferrer" class="ml-4 text-sm">[Link]</a>{/if}
 					</li>
 				{/each}
 			</ul>
 		{:else}
-			<p>No media appearances listed.</p>
+			<p class="text-light">No media appearances listed.</p>
 		{/if}
 	</section>
 
@@ -424,7 +425,7 @@
 				{#each editorialMembershipsByDate as member (member.id)}
 					<li class="mb-3">
 						<span class="font-medium">{member.role}</span>, <em>{member.journal}</em>.
-						<span class="block ml-4 text-sm text-gray-600">{member.dateRangeString}</span>
+						<span class="block ml-4 text-sm text-light">{member.dateRangeString}</span>
 						{#if member.details} <p class="ml-4 text-sm">{member.details}</p>{/if}
 					</li>
 				{/each}
@@ -433,7 +434,7 @@
 
 		<!-- Optional: Message if no service activities -->
 		{#if peerReviewsByDate.length === 0 && editorialMembershipsByDate.length === 0}
-			<p class="pl-4 text-gray-600">No service activities listed.</p>
+			<p class="pl-4 text-light">No service activities listed.</p>
 		{/if}
 
 	</section> <!-- End Service to Profession Section -->
@@ -452,17 +453,8 @@
 				{/each}
 			</ul>
 		{:else}
-			<p>No fieldwork listed.</p>
+			<p class="text-light">No fieldwork listed.</p>
 		{/if}
 	</section>
 
 </div>
-
-<style>
-	/* Basic styling for the CV page */
-	.cv-container {
-		font-family: sans-serif;
-		line-height: 1.6;
-	}
-	/* Add more specific styles if needed */
-</style>
