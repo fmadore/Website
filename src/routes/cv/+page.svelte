@@ -83,7 +83,7 @@
 	description="Curriculum Vitae of Frédérick Madore, detailing publications, communications, activities, and fieldwork."
 />
 
-<div class="cv-container p-8 max-w-4xl mx-auto bg-white shadow-md rounded-lg">
+<div class="cv-container p-8 max-w-4xl mx-auto bg-default shadow-md rounded-lg">
 	<h1 class="text-3xl font-bold mb-2 border-b pb-2">Curriculum Vitae</h1>
 	<h2 class="text-xl font-semibold mb-4">Frédérick Madore</h2>
 	
