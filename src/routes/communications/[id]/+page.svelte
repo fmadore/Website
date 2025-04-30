@@ -106,7 +106,7 @@
 </script>
 
 <SEO 
-    title="{communication.title} | Communications | Frédérick Madore"
+    title="{communication.title} | Frédérick Madore"
     description="{communication.abstract || `Details about ${communication.title} by ${communication.authors?.join(', ')}`}"
     keywords="{[
         'communication',
