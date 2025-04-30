@@ -27,5 +27,12 @@ export const specialIssueTemplate: Publication = {
     isEditedWork: true,
     // New fields
     country: ["Country Name"], // Countries covered in the publication
-    project: "" // Options: "Mining the Islam West Africa Collection", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Other"
+    project: "", // Options: "Mining the Islam West Africa Collection", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Other"
+    tableOfContents: [ // Optional: Add article titles or section headings
+        "Introduction by Editors",
+        "Article 1: Contributor 1 Title",
+        "Article 2: Contributor 2 Title",
+        "Article 3: Contributor 3 Title",
+        "Bibliography"
+    ],
 }; 

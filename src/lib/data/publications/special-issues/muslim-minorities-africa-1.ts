@@ -22,5 +22,12 @@ export const muslimMinoritiesAfrica1: Publication = {
         alt: "Cover of Islamic Africa",
     },
     isEditedWork: true,
-    project: "Muslim Minorities in Southern Cities of Benin and Togo"
+    project: "Muslim Minorities in Southern Cities of Benin and Togo",
+    tableOfContents: [
+        "Studying Muslim Minorities in Subsaharan Africa: Preliminary Remarks by Dorothea E. Schulz",
+        "A State of (Dis)unity and Uncertain Belonging: The Central African Republic and its Muslim Minority by Laura Collins and Gino Vlavonou",
+        "A Muslim Minority and the Use of Media: Charismatic Aesthetics of the Ahmadiyya in West Africa by Katrin Langewiesche",
+        "Kenyan Muslims' Minority Status: Theological Divisions, Ethno-Racial Competition and Ambiguous Relations with the State by Hassan Juma Ndzovu",
+        "Ambiguous Positionings: The Politics and Experiences of Moral Learning at Gülen Movement Schools in Urban Tanzania by Kristina Mashimi"
+    ]
 }; 
