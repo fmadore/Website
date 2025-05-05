@@ -93,7 +93,7 @@
             </div>
             
             <div class="project-content">
-                <p>Scholarship on Islam in West Africa has long privileged manuscript traditions, leaving the vibrant Muslim periodical press of the 1980s, 90s, and early 2000s largely unexplored. My project fills this gap by tracing the rise of modern Islamic print culture and its intellectual networks in Benin, Burkina Faso, Côte d'Ivoire and Togo.</p>
+                <p>Scholarship on Islam in West Africa has long privileged manuscript traditions, leaving the vibrant Muslim periodical press of the 1980s, 90s, and early 2000s largely unexplored. My project fills this gap by tracing the emergence of modern Islamic print culture and the networks of Western-educated Francophone Muslim intellectuals who animated it in Benin, Burkina Faso, Côte d'Ivoire and Togo.</p>
                 
                 <p>Working with the <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer"><em>Islam West Africa Collection</em> (IWAC)</a>, I combine digital humanities methods with close reading to analyse around 1,500 Islamic publications published between 1980 and 2020. Topic modelling, word embeddings, and sentiment analysis chart the shifting meanings of key religious terms (<em>ummah</em>, Salafism, <em>jihad</em>) alongside political concepts such as democracy and <em>laïcité</em>), revealing the themes, semantic turns and affective registers that have shaped Muslim public debate during a period of rapid socio-political change.</p>
                 
