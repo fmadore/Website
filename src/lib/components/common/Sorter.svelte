@@ -1,20 +1,27 @@
 <script lang="ts">
-    import { ArrowDownAZ, SortDesc } from 'lucide-svelte';
+    import { ArrowDownAZ, SortDesc, TrendingUp } from 'lucide-svelte';
     import { createEventDispatcher } from 'svelte';
     import Button from '$lib/components/atoms/Button.svelte'; // Import the Button component
 
-    export let activeSort: 'date' | 'title' = 'date'; // Default sort
+    export let activeSort: 'date' | 'title' | 'citations' = 'date'; // Default sort
 
     const dispatch = createEventDispatcher();
 
     function toggleSort() {
-        // Toggle between 'date' and 'title'
-        const newSort = activeSort === 'date' ? 'title' : 'date';
+        // Toggle between 'date', 'title', and 'citations'
+        let newSort: 'date' | 'title' | 'citations';
+        if (activeSort === 'date') {
+            newSort = 'title';
+        } else if (activeSort === 'title') {
+            newSort = 'citations';
+        } else {
+            newSort = 'date';
+        }
         dispatch('sortChange', { sortBy: newSort });
     }
 
     // Determine button text and title based on the *current* sort state for display
-    let IconComponent: typeof ArrowDownAZ | typeof SortDesc;
+    let IconComponent: typeof ArrowDownAZ | typeof SortDesc | typeof TrendingUp;
     let labelText: string;
     let ariaTitle: string;
     $: {
@@ -22,10 +29,14 @@
             IconComponent = SortDesc;
             labelText = 'Sorted by Date';
             ariaTitle = 'Current sort: Date (Newest First). Click to sort by Title (A-Z).';
-        } else {
+        } else if (activeSort === 'title') {
             IconComponent = ArrowDownAZ;
             labelText = 'Sorted A-Z';
-            ariaTitle = 'Current sort: Title (A-Z). Click to sort by Date (Newest First).';
+            ariaTitle = 'Current sort: Title (A-Z). Click to sort by Citations (Most Cited).';
+        } else { // activeSort === 'citations'
+            IconComponent = TrendingUp;
+            labelText = 'Sorted by Citations';
+            ariaTitle = 'Current sort: Citations (Most Cited). Click to sort by Date (Newest First).';
         }
     }
 </script>

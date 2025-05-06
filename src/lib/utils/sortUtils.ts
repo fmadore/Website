@@ -13,7 +13,7 @@ type SortableItem = Publication | Communication;
  */
 export function sortItems<T extends SortableItem>(
     items: T[], 
-    sortBy: 'date' | 'title'
+    sortBy: 'date' | 'title' | 'citations'
 ): T[] {
     const sortedItems = [...items]; // Create a shallow copy to avoid mutating the original array
 
@@ -23,6 +23,13 @@ export function sortItems<T extends SortableItem>(
             const titleA = a.title || '';
             const titleB = b.title || '';
             return titleA.localeCompare(titleB);
+        });
+    } else if (sortBy === 'citations') {
+        sortedItems.sort((a, b) => {
+            // Safely access citedBy length, defaulting to 0 if undefined
+            const citationsA = (a as Publication).citedBy?.length || 0;
+            const citationsB = (b as Publication).citedBy?.length || 0;
+            return citationsB - citationsA; // Descending order
         });
     } else { // Default to sorting by date (descending)
         sortedItems.sort((a, b) => {

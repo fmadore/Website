@@ -42,7 +42,7 @@
     import Button from '$lib/components/atoms/Button.svelte';
 
     // State for the current sort order
-    const activeSort = writable<'date' | 'title'>('date'); // Use a writable store for sort order
+    const activeSort = writable<'date' | 'title' | 'citations'>('date'); // Use a writable store for sort order
 
     // State for mobile filter sidebar expansion
     let mobileFiltersExpanded = false;
@@ -68,7 +68,7 @@
     }
 
     // Handler for the sortChange event from the Sorter component
-    function handleSortChange(event: CustomEvent<{ sortBy: 'date' | 'title' }>) {
+    function handleSortChange(event: CustomEvent<{ sortBy: 'date' | 'title' | 'citations' }>) {
         activeSort.set(event.detail.sortBy); // Update the store value
     }
 
