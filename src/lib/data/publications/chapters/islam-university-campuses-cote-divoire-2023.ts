@@ -23,7 +23,7 @@ export const islamUniversityCampusesCoteDIvoire: Publication = {
         alt: "Cover of Religiosity on University Campuses in Africa",
     },
     country: ["Côte d'Ivoire"],
-    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
     citedBy: [
         {
             authors: ["Issouf Binaté"],
@@ -32,4 +32,5 @@ export const islamUniversityCampusesCoteDIvoire: Publication = {
             source: "In Covid-19 in Africa: Societal and Economic Implications, edited by Susan Arndt, Banhoro Yacouba, Taibat Lawanson, Enocent Msindo, and Peter Simatei, 173-96. Cham: Palgrave Macmillan, 2023",
             url: "https://doi.org/10.1007/978-3-031-40316-3_8"
         },
-}; 
+    ]
+};  
