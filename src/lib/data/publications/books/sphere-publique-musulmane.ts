@@ -61,7 +61,86 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
             pages: "270-272",
             doi: "10.3917/afco.261.0270",
             url: "https://doi.org/10.3917/afco.261.0270",
-            excerpt: "Alors que l’Afrique de l’Ouest est confrontée à la menace du radicalisme religieux, et alors que le Burkina Faso connaît depuis 2014 des bouleversements politiques considérables, cette analyse historique et contemporaine de l’islam burkinabé est plus que jamais pertinente."
+            excerpt: "Alors que l'Afrique de l'Ouest est confrontée à la menace du radicalisme religieux, et alors que le Burkina Faso connaît depuis 2014 des bouleversements politiques considérables, cette analyse historique et contemporaine de l'islam burkinabé est plus que jamais pertinente."
+        }
+    ],
+    citedBy: [
+        {
+            authors: ["Maud Saint-Lary"],
+            year: 2019,
+            title: "Réislamisations au Burkina Faso : questions de genre et enjeux sociaux",
+            source: "Paris: Karthala, 2019",
+            url: "https://www.karthala.com/religions-contemporaines/3311-reislamisations-au-burkina-faso-9782811118730.html"
+        },
+        {
+            authors: ["Luis Martinez"],
+            year: 2023,
+            title: "L'Afrique, le prochain califat? La spectaculaire expansion du djihadisme",
+            source: "Paris: Tallandier, 2023",
+            url: "https://www.tallandier.com/livre/lafrique-le-prochain-califat/"
+        },
+        {
+            authors: ["Muriel Gomez-Perez"],
+            year: 2018,
+            title: "Prêcheuses arabisantes à Dakar et à Ouagadougou : des logiques d'individualisation et d'individuation",
+            source: "Anthropologie et Sociétés 42, no. 1 (2018): 205-26",
+            url: "https://doi.org/10.7202/1045130ar"
+        },
+        {
+            authors: ["Koudbi Kaboré"],
+            year: 2017,
+            title: "Mouvement interreligieux et usages d'Internet au Burkina Faso : le cas de l'Union fraternelle des croyants (UFC) de Dori",
+            source: "Émulations, no. 24 (2017): 23-35",
+            url: "https://doi.org/10.14428/emulations.024.002"
+        },
+        {
+            authors: ["Aude Nikiema", "Alice Degorce", "Honorine Sawadogo"],
+            year: 2016,
+            title: "Les mères de jumeaux autour des mosquées à Ouagadougou : réappropriations, mobilités et mutations urbaines",
+            source: "Les Cahiers d'Outre Mer, no. 274 (2016): 183-205",
+            url: "https://doi.org/10.4000/com.7839"
+        },
+        {
+            authors: ["Koudbi Kaboré"],
+            year: 2022,
+            title: "The Modernity of Islam in Burkina Faso: Contrasting Strategies in Two Emergent Movements",
+            source: "In Islam and Muslim Life in West Africa: Practices, Trajectories and Influences, edited by Abdoulaye Sounaye and André Chappatte, 39-62. Berlin: De Gruyter, 2022",
+            url: "https://doi.org/10.1515/9783110733204-003"
+        },
+        {
+            authors: ["Louis Audet Gosselin"],
+            year: 2017,
+            title: "Médias 2.0 et Églises chrétiennes au Burkina Faso : évangélisation numérique et contrôle du message",
+            source: "Émulations, no. 24 (2017): 71-85",
+            url: "https://doi.org/10.14428/emulations.024.005"
+        },
+        {
+            authors: ["Muriel Gomez-Perez"],
+            year: 2024,
+            title: "Women and the Hajj in Senegal and Burkina Faso since 1980: Strategies, Initiatives, and Perceptions",
+            source: "In Rethinking the Anthropology of Islam: Dynamics of Change in Muslim Societies, edited by Katja Föllmer, Lisa Maria Franke, and Ramzi Ben Amara, 399-421. Berlin: De Gruyter, 2024",
+            url: "https://doi.org/10.1515/9783111341651-020"
+        },
+        {
+            authors: ["Abdoulaye Sounaye"],
+            year: 2021,
+            title: "Governing Muslim Subjects in the Sahel: Deradicalisation and a State-Led Islamic Reform in West Africa",
+            source: "In Claiming and Making Muslim Worlds: Religion and Society in the Context of the Global, edited by Jeanine Elif Dağyeli, Claudia Ghrawi, and Ulrike Freitag, 101-30. De Gruyter, 2021",
+            url: "https://doi.org/10.1515/9783110726534-005"
+        },
+        {
+            authors: ["Benjamin Soares"],
+            year: 2021,
+            title: "Islam and Muslim Societies in the Contemporary Sahel",
+            source: "In The Oxford Handbook of the African Sahel, edited by Leonardo A. Villalón, 551-67. Oxford: Oxford University Press, 2021",
+            url: "https://doi.org/10.1093/oxfordhb/9780198816959.013.32"
+        },
+        {
+            authors: ["Leonardo A. Villalón", "Mamadou Bodian"],
+            year: 2021,
+            title: "Education, Citizenship, and National Identity in the Sahel",
+            source: "In The Oxford Handbook of the African Sahel, edited by Leonardo A. Villalón, 683-700. Oxford: Oxford University Press, 2021",
+            url: "https://doi.org/10.1093/oxfordhb/9780198816959.013.39"
         }
     ]
 }; 
