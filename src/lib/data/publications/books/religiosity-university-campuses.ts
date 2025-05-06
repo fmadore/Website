@@ -44,7 +44,7 @@ export const religiosityUniversityCampuses: Publication = {
             authors: ["Miriam Tekath"],
             year: 2025,
             title: "Understanding higher education as a conflictual field. Situational dynamics of peace and conflict in Senegalese universities",
-            source: "Peacebuilding",
+            source: "Peacebuilding 13, no. 2 (2025): 188-208",
             url: "https://doi.org/10.1080/21647259.2024.2411827"
         }
     ]
