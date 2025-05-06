@@ -21,6 +21,7 @@
 @import './styles/components/dropdown.css';
 @import './styles/components/activity-list.css';
 @import './styles/components/iframes.css';
+@import './styles/components/item-panel.css';
 
 /* Page-specific styles */
 @import './styles/pages/home.css';

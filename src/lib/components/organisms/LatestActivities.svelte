@@ -67,7 +67,7 @@
     }
 </script>
 
-<div class="latest-activities">
+<div class="latest-activities-container">
     <RelevantItemsList
         title="Latest Activities"
         items={relevantActivityList}
@@ -77,15 +77,15 @@
         formatType={formatActivityType}
         formatAuthors={formatActivityAuthors}
     >
-        <h2 class="card-title" slot="title">Latest Activities</h2>
+        <h2 class="item-panel-title" slot="title">Latest Activities</h2>
     </RelevantItemsList>
     
     {#if showYearFilters && years.length > 0}
-        <div class="year-filters-row mt-4">
-            <span class="text-sm text-gray-600 browse-label">Browse by year:</span>
-            <div class="filter-container">
+        <div class="item-panel-filter-row mt-4">
+            <span class="item-panel-filter-label">Browse by year:</span>
+            <div class="item-panel-filter-container">
                 {#each years as year}
-                    <a href="{base}/activities/year/{year}" class="year-tag">
+                    <a href="{base}/activities/year/{year}" class="item-panel-tag">
                         {year}
                     </a>
                 {/each}
@@ -97,72 +97,15 @@
 </div>
 
 <style>
-    .latest-activities {
-        margin-bottom: var(--spacing-4);
-    }
+    /* .latest-activities-container ruleset removed as it was empty */
     
-    .card-title {
-        font-size: var(--font-size-xl);
-        font-weight: 700;
-        margin-bottom: var(--spacing-2);
-        color: var(--color-primary);
-        border-bottom: 1px solid var(--color-border);
-        padding-bottom: var(--spacing-2);
-        padding-left: var(--spacing-4);
-    }
-    
-    .year-filters-row {
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-4);
-        margin-top: var(--spacing-4);
-        padding-left: var(--spacing-4);
-    }
-    
-    .browse-label {
-        flex-shrink: 0;
-        margin-right: var(--spacing-2);
-    }
-    
-    .filter-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--spacing-2);
-    }
-    
-    .year-tag {
-        display: inline-block;
-        padding: 0.25rem 0.75rem;
-        background-color: var(--color-border);
-        color: var(--color-text);
-        border-radius: 9999px; /* More pill-like */
-        font-size: var(--font-size-sm);
-        font-weight: 600;
-        transition: all 0.2s ease;
-        box-shadow: 0 1px 4px 0 rgba(26,54,93,0.06); /* Subtle shadow for depth */
-        border: 1px solid var(--color-border);
-        cursor: pointer;
-    }
-    
-    .year-tag:hover {
-        background-color: var(--color-primary);
-        color: #fff;
-        border-color: var(--color-primary);
-        box-shadow: 0 2px 8px 0 rgba(26,54,93,0.12);
-    }
-    
-    /* Removed unused .year-filters and .mt-2 selectors */
-    
-    /* Utility classes */
-    .text-sm {
-        font-size: var(--font-size-sm);
-    }
-    
-    .text-gray-600 {
-        color: var(--color-text-light);
-    }
-    
-    .mt-4 {
+    /* Styles for .card-title, .year-filters-row, .browse-label, .filter-container, .year-tag are now in item-panel.css */
+    /* Utility classes .text-sm, .text-gray-600, .mt-4 are assumed to be global or defined elsewhere */
+
+    /* Minimal styles specific to LatestActivities if any, otherwise this block can be emptied or removed */
+    /* For example, if mt-4 on item-panel-filter-row is always desired for this component specifically */
+    .item-panel-filter-row.mt-4 { /* Making it more specific if mt-4 is kept */
         margin-top: var(--spacing-4);
     }
+
 </style>

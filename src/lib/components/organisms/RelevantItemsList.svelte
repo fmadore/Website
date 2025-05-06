@@ -35,7 +35,7 @@
 <div class="relevant-items">
 	<!-- Add slot for title, falling back to prop -->
 	<slot name="title">
-		<h2 class="card-title">{title}</h2>
+		<h2 class="item-panel-title">{title}</h2>
 	</slot>
 
 	{#if items.length === 0}
@@ -49,7 +49,7 @@
 			{/each}
 		</ul>
 
-		<div class="view-all-container">
+		<div class="view-all-container item-panel-content">
 			<a href="{base}{viewAllPath}" class="view-all">View all {itemTypePlural}</a>
 		</div>
 	{/if}

@@ -59,9 +59,9 @@
     }
 </script>
 
-<div class="relevant-publications mb-4">
+<div class="item-panel">
     {#if showTypeFilters && publicationTypes.length > 1}
-        <div class="flex flex-wrap gap-2 mb-6">
+        <div class="flex flex-wrap gap-2 mb-6 item-panel-content">
             {#each publicationTypes as type}
                 <button
                     class="filter-button {selectedType === type ? 'active' : ''}"
@@ -78,6 +78,7 @@
         items={filteredList}
         itemTypePlural="publications"
         basePath="/publications"
+        viewAllPath="/publications"
         formatType={formatPublicationType}
         {formatAuthors}
     />

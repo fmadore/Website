@@ -56,7 +56,7 @@
     }
 </script>
 
-<div class="relevant-communications mb-4">
+<div class="item-panel">
     <RelevantItemsList
         title="Relevant Communications"
         items={filteredList}
@@ -66,4 +66,17 @@
         formatType={formatCommunicationType}
         {formatAuthors}
     />
+    {#if communicationTypes.length > 1}
+      <div class="item-panel-content item-panel-filter-container mt-4">
+            {#each communicationTypes as type}
+                <button
+                    class="item-panel-tag {selectedType === type ? 'active' : ''}"
+                    on:click={() => selectType(type)}
+                    type="button"
+                >
+                    {formatCommunicationType(type)}
+                </button>
+            {/each}
+        </div>
+    {/if}
 </div>

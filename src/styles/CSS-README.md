@@ -127,6 +127,18 @@ Card component styles:
 - `.card-link`: Linked card with visual indicator
 - Card variations and modifiers (compact, bordered, etc.)
 
+### Item Panel (`components/item-panel.css`)
+
+Styles for reusable content panels, often used in sidebars or for distinct content blocks.
+- `.item-panel`: Base panel container with background, border, shadow, and padding.
+- `.item-panel-title`: Standardized title styling for panels.
+- `.item-panel-content`: Wrapper for content within a panel to ensure consistent padding.
+- `.item-panel-filter-row`: Flex container for filter elements.
+- `.item-panel-filter-label`: Label for filter sections.
+- `.item-panel-filter-container`: Container for a group of filter tags/buttons.
+- `.item-panel-tag`: Styling for pill-shaped tags or filter buttons within a panel.
+- Dark mode support for the panel and its elements.
+
 ### Navigation (`components/navigation.css`)
 
 Navigation components:
