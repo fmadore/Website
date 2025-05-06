@@ -141,6 +141,12 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
             title: "Education, Citizenship, and National Identity in the Sahel",
             source: "In The Oxford Handbook of the African Sahel, edited by Leonardo A. Villalón, 683-700. Oxford: Oxford University Press, 2021",
             url: "https://doi.org/10.1093/oxfordhb/9780198816959.013.39"
+        },
+        {
+            authors: ["Koudbi Kaboré", "Boubié Bazié"],
+            year: 2019,
+            title: "Des musulmans à l'église : l'invention d'une islamité de dialogue dans l'espace urbain de Dori, Burkina Faso",
+            source: "In L'Islam et le Vivre ensemble en Afrique subsaharienne, edited by Hamadou Adama and Drissa Koné. Paris: L'Harmattan, 2019"
         }
     ]
 }; 
