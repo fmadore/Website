@@ -22,5 +22,14 @@ export const imamsIslamicPreachersOuagadougou: Publication = {
         alt: "Cover of Perspectives on the Religious Landscape in Africa",
     },
     country: ["Burkina Faso"],
-    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
+    citedBy: [
+        {
+            authors: ["Allison N. Grossman", "William G. Nomikos", "Niloufer A. Siddiqui"],
+            year: 2023,
+            title: "Can Appeals for Peace Promote Tolerance and Mitigate Support for Extremism? Evidence from an Experiment with Adolescents in Burkina Faso",
+            source: "Journal of Experimental Political Science 10, no. 1 (2023): 124-36",
+            url: "https://doi.org/10.1017/XPS.2022.1"
+        }
+    ]
 }; 
