@@ -24,4 +24,12 @@ export const islamUniversityCampusesCoteDIvoire: Publication = {
     },
     country: ["Côte d'Ivoire"],
     project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
+    citedBy: [
+        {
+            authors: ["Issouf Binaté"],
+            year: 2023,
+            title: "Covid-19, Islam and Digital Media in Côte d'Ivoire: Response Measures and Reinvention of Religious Practices",
+            source: "In Covid-19 in Africa: Societal and Economic Implications, edited by Susan Arndt, Banhoro Yacouba, Taibat Lawanson, Enocent Msindo, and Peter Simatei, 173-96. Cham: Palgrave Macmillan, 2023",
+            url: "https://doi.org/10.1007/978-3-031-40316-3_8"
+        },
 }; 
