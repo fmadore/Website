@@ -23,5 +23,14 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
         alt: "Cover of Africa journal, volume 90, issue 3",
     },
     country: ["Burkina Faso"],
-    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",    
+    citedBy: [
+        {
+            authors: ["Muriel Gomez-Perez"],
+            year: 2024,
+            title: "Women and the Hajj in Senegal and Burkina Faso since 1980: Strategies, Initiatives, and Perceptions",
+            source: "In Rethinking the Anthropology of Islam: Dynamics of Change in Muslim Societies, edited by Katja Föllmer, Lisa Maria Franke, and Ramzi Ben Amara, 399-421. Berlin: De Gruyter, 2024",
+            url: "https://doi.org/10.1515/9783111341651-020"
+        },
+    ]
 }; 
