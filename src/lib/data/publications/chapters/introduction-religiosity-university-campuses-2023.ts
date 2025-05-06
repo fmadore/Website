@@ -21,4 +21,13 @@ export const introductionReligiosityUniversityCampuses: Publication = {
         src: "images/publications/religiosity-university-campuses-hero.webp",
         alt: "Cover of Religiosity on University Campuses in Africa",
     },
+    citedBy: [
+        {
+            authors: ["Jeannett Martin"],
+            year: 2024,
+            title: "Muslimas mit Hochschulbildung in Westafrika. Eine Literaturschau zu Charakteristika und beruflichem Future Making",
+            source: "PERIPHERIE 43, no. 171-172 (2024): 240-58",
+            url: "https://doi.org/10.3224/peripherie.v43i2.02"
+        },
+    ]
 }; 
