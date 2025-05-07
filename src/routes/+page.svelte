@@ -63,7 +63,7 @@
                     <Icon icon="mdi:linkedin" width="28" height="28" />
                 </a>
                 <a href="https://orcid.org/0000-0003-0959-2092" target="_blank" rel="noopener" aria-label="ORCID">
-                    <Icon icon="mdi:orcid" width="28" height="28" />
+                    <Icon icon="simple-icons:orcid" width="23" height="23" />
                 </a>
             </div>
         </div>
