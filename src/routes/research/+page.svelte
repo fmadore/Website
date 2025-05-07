@@ -44,7 +44,7 @@
     
     <p class="text-xl mb-10">My research focuses on the history of Islam and Muslim societies in francophone West Africa from the 1960s to the present. I have conducted extensive fieldwork and archival research in Benin, Togo, Côte d'Ivoire, and Burkina Faso, examining various aspects of Islamic activism, media use, and Muslim politics.</p>
     
-    <div class="research-grid">
+    <div class="content-grid">
         {#each researchProjects as project}
             <Card 
                 title={project.title} 
@@ -77,22 +77,21 @@
         margin-bottom: 2.5rem; /* Consider var(--spacing-10) */
     }
     
-    .research-grid {
-        display: grid;
-        grid-template-columns: repeat(1, 1fr);
-        gap: var(--spacing-8); /* Use variable */
-        margin-top: 2rem; /* Consider var(--spacing-8) */
-    }
+    /* .research-grid and its responsive styles are now handled by .content-grid */
+    /* Ensure any unique styles for this page that were part of .research-grid are preserved or moved if necessary. */
+    /* For example, if .research-grid had a specific margin-top not covered by .content-grid, that would need to be handled. */
+    /* However, .content-grid now includes margin-top: var(--spacing-8), which was 2rem for .research-grid. */
         
     /* Remove old card styles - Handled by Card component */
     /* .project-card, .project-card:hover, .project-card-image, ... etc. */
     
     /* Responsive grid adjustments */
-    @media (min-width: 640px) {
+    /* These are now handled by the global .content-grid class */
+    /* @media (min-width: 640px) {
         .research-grid {
             grid-template-columns: repeat(2, 1fr);
         }
-    }
+    } */
     
     /* No need for 1024px breakpoint adjustment if 2 columns is sufficient */
 

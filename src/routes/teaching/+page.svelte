@@ -62,7 +62,7 @@
         <p class="text-xl mb-10">Teaching interests: African History (pre-modern and modern periods), Islam in sub-Saharan Africa, West African history.</p>
         
         <!-- Card Grid Layout -->
-        <div class="teaching-grid">
+        <div class="content-grid">
             {#each teachingItems as item (item.id)}
                 <Card
                     title={item.title}
@@ -119,12 +119,7 @@
         margin-bottom: var(--spacing-10);
     }
     
-    .teaching-grid {
-        display: grid;
-        grid-template-columns: repeat(1, 1fr);
-        gap: var(--spacing-8);
-        margin-top: var(--spacing-8);
-    }
+    /* .teaching-grid styles are now handled by .content-grid */
     
     .teaching-card-specific-details p {
         font-size: var(--font-size-sm);
@@ -136,7 +131,7 @@
         color: var(--color-text);
     }
 
-    @media (min-width: 640px) {
+    /* @media (min-width: 640px) {
         .teaching-grid {
             grid-template-columns: repeat(2, 1fr);
         }
@@ -146,5 +141,5 @@
         .teaching-grid {
             grid-template-columns: repeat(3, 1fr);
         }
-    }
+    } */
 </style> 

@@ -126,7 +126,7 @@
 
     <p class="text-xl mb-10">This section presents some of my work in digital humanities (DH), applying computational methods to historical research on Islam and Muslim societies in West Africa. DH has taken an increasingly important place in my research in recent years, leading me to develop my skills through both specialised training and continuous self-learning. I use data visualisation techniques to translate research findings into compelling narratives, making historical findings accessible and engaging.</p>
 
-    <div class="dh-grid">
+    <div class="content-grid">
         {#each processedDhProjects as project (project.id)}
             <Card
                 title={project.title}
@@ -205,19 +205,17 @@
         margin-bottom: 2.5rem;
     }
     
-    .dh-grid {
-        display: grid;
-        grid-template-columns: repeat(1, 1fr);
-        gap: var(--spacing-8); 
-        margin-top: 2rem; 
-    }
+    /* .dh-grid styles are now handled by .content-grid */
+    /* Ensure any unique styles for this page that were part of .dh-grid are preserved or moved if necessary. */
+    /* .content-grid includes gap: var(--spacing-8) and margin-top: var(--spacing-8) (which was 2rem for .dh-grid) */
         
     /* Responsive grid adjustments */
-    @media (min-width: 640px) {
+    /* These are now handled by the global .content-grid class */
+    /* @media (min-width: 640px) {
         .dh-grid {
-            grid-template-columns: repeat(2, 1fr); /* Or repeat(1, 1fr) if you prefer single column */
+            grid-template-columns: repeat(2, 1fr); 
         }
-    }
+    } */
 
     /* Styles for content within the details slot */
     .dh-card-extras {
