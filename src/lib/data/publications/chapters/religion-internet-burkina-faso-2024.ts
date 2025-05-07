@@ -9,7 +9,7 @@ export const religionInternetBurkinaFaso: Publication = {
     dateISO: "2024",
     year: 2024,
     book: "Religious Encounters and Social Dynamics in Burkina Faso",
-    editors: "Alice Degorce, Ludovic O. Kibora and Katrin Langewiesche",
+    editors: "Alice Degorce, Ludovic O. Kibora, Katrin Langewiesche",
     placeOfPublication: "Dakar",
     publisher: "Amalion",
     pages: "263-288",

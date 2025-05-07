@@ -9,7 +9,7 @@ export const religieuxInternetNTICBurkinaFaso: Publication = {
     dateISO: "2019-06",
     year: 2019,
     book: "Rencontres religieuses et dynamiques sociales au Burkina Faso",
-    editors: "Alice Degorce, Ludovic O. Kibora and Katrin Langewiesche",
+    editors: "Alice Degorce, Ludovic O. Kibora, Katrin Langewiesche",
     placeOfPublication: "Dakar",
     publisher: "Amalion",
     pages: "269-296",
