@@ -45,6 +45,9 @@
   --font-size-3xl: 1.875rem;
   --font-size-4xl: 2.25rem;
   
+  /* Line height */
+  --line-height-default: 1.5;
+  
   /* Border radius */
   --border-radius-sm: 0.125rem;
   --border-radius: 0.25rem;

@@ -22,6 +22,7 @@
 @import './styles/components/activity-list.css';
 @import './styles/components/iframes.css';
 @import './styles/components/item-panel.css';
+@import './styles/components/skill-tags.css';
 
 /* Page-specific styles */
 @import './styles/pages/home.css';

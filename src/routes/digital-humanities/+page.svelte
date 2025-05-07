@@ -15,6 +15,7 @@
         award?: string; // Optional
         reviews?: { text: string; url: string }[]; // Optional array of review objects
         publication?: { text: string; url: string }; // Optional publication object
+        skills?: string[]; // Optional: Array of skills/technologies used
     }
 
     // Digital Humanities projects data (initial)
@@ -24,67 +25,64 @@
             title: "Islam West Africa Collection Overview",
             years: "2025",
             shortDescription: "Exploring the Islam West Africa Collection (IWAC) through digital methods and visualizations.",
-            imageUrl: `${base}/images/digital-humanities/iwac-overview.jpg`
+            imageUrl: `${base}/images/digital-humanities/iwac-overview.webp`,
+            skills: ["Svelte", "D3.js", "TypeScript", "Vite", "Data visualisation"]
             // No linkUrl needed, will be generated relative to base
         },
         {
             id: "iwac",
             title: "Islam West Africa Collection",
             years: "2023-",
-            shortDescription: "A collection of over 12,500 documents on Islam and Muslims in Burkina Faso, Benin, Niger, Nigeria, Togo and Côte d'Ivoire.",
-            imageUrl: `${base}/images/digital-humanities/IWAC.png`,
-            linkUrl: "https://islam.zmo.de/s/westafrica/" // External link remains unchanged
+            shortDescription: "A collection of over 13,000 documents on Islam and Muslims in Burkina Faso, Benin, Niger, Nigeria, Togo and Côte d'Ivoire.",
+            imageUrl: `${base}/images/digital-humanities/IWAC.webp`,
+            linkUrl: "https://islam.zmo.de/s/westafrica/", // External link remains unchanged
+            skills: ["Omeka S", "OpenRefine", "Metadata Standards", "Docker", "Linux System Administration", "Nginx", "Python", "Tesseract", "IIIF", "Apache Solr", "Linked Data", "Rclone", "spaCy", "pandas"]
         },
         {
-            id: "ibfc",
+            id: "islam-burkina-faso-collection",
             title: "Islam Burkina Faso Collection",
             years: "2018-2023",
             shortDescription: "An open access digital database containing over 2,900 documents on Islam and Muslims in Burkina Faso.",
             imageUrl: `${base}/images/digital-humanities/islam-burkinafaso-banner.webp`,
-            // linkUrl: `${base}/digital-humanities/islam-burkina-faso-collection`, // Old
-            linkUrl: "/digital-humanities/islam-burkina-faso-collection", // New: relative to base
             award: "Won a 2023 Emerging Open Scholarship Award.",
             reviews: [
                 { text: "Review by Robert Launay", url: "https://doi.org/10.21428/3e88f64f.89e71c81" },
                 { text: "Review by Vincent Hiribarren", url: "https://doi.org/10.2979/mnd.2022.a908483" }
             ],
-            publication: { text: "Learn more about the project", url: "https://doi.org/10.51185/journals/rhca.2021.e610" }
+            publication: { text: "Learn more about the project", url: "https://doi.org/10.51185/journals/rhca.2021.e610" },
+            skills: ["Omeka S", "Tesseract", "Metadata Standards", "OpenRefine", "Zotero", "Linked Data"]
         },
         {
             id: "remoboko",
             title: "Remoboko: Religion, Morality and Boko in West Africa",
             years: "2024",
             shortDescription: "Research group exploring religion, morality, and student life in West African higher education. Includes interactive visualizations.",
-            imageUrl: `${base}/images/digital-humanities/remoboko.png`,
-            // linkUrl: `${base}/digital-humanities/remoboko`, // Old
-            linkUrl: "/digital-humanities/remoboko" // New: relative to base
+            imageUrl: `${base}/images/digital-humanities/remoboko.webp`,
+            skills: ["Data Visualization", "pandas", "lotly", "Python", "Folium", "NLTK"]
         },
         {
             id: "iwac-wordcloud",
             title: "IWAC Newspaper Word Cloud",
             years: "2025",
             shortDescription: "Interactive word cloud visualising the most frequent words in newspaper articles from the Islam West Africa Collection.",
-            imageUrl: `${base}/images/digital-humanities/iwac-wordcloud.jpg`,
-            // linkUrl: `${base}/digital-humanities/iwac-wordcloud`, // Old
-            linkUrl: "/digital-humanities/iwac-wordcloud" // New: relative to base
+            imageUrl: `${base}/images/digital-humanities/iwac-wordcloud.webp`,
+            skills: ["D3.js", "Python", "NLTK", "spaCy"]
         },
         {
             id: "muslim-umbrella-organizations",
             title: "Muslim Umbrella Organisations in IWAC",
             years: "2025",
             shortDescription: "Co-occurrence matrix and topic modeling analysis of newspaper articles discussing Muslim umbrella organisations within the Islam West Africa Collection.",
-            imageUrl: `${base}/images/digital-humanities/muslim-umbrella.jpg`,
-            // linkUrl: `${base}/digital-humanities/muslim-umbrella-organizations`, // Old
-            linkUrl: "/digital-humanities/muslim-umbrella-organizations" // New: relative to base
+            imageUrl: `${base}/images/digital-humanities/muslim-umbrella.webp`,
+            skills: ["D3.js", "Python", "NLTK", "spaCy", "scikit-learn"]
         },
         {
             id: "iwac-keywords",
             title: "IWAC Keywords Dashboard",
             years: "2025",
             shortDescription: "Interactive temporal analysis of keywords from West African newspapers in the Islam West Africa Collection, revealing thematic evolution and media attention patterns.",
-            imageUrl: `${base}/images/digital-humanities/iwac-keywords.jpg`,
-            // linkUrl: `${base}/digital-humanities/iwac-keywords`, // Old
-            linkUrl: "/digital-humanities/iwac-keywords" // New: relative to base
+            imageUrl: `${base}/images/digital-humanities/iwac-keywords.webp`,
+            skills: ["Shiny for Python", "Plotly"]
         }
     ];
 
@@ -133,27 +131,39 @@
                 <!-- Default slot for description - Render HTML -->
                 {@html project.shortDescription}
 
-                <!-- Details slot for award, reviews, etc. -->
+                <!-- Details slot for award, reviews, skills, etc. -->
                 <div slot="details" class="dh-card-extras">
-                     {#if project.award}
-                         <p class="award"><strong>Award:</strong> {project.award}</p>
-                     {/if}
-                     {#if project.publication}
-                          <p class="publication-link">
-                              <a href={project.publication.url} target="_blank" rel="noopener noreferrer">{project.publication.text}</a>
-                          </p>
-                     {/if}
-                     {#if project.reviews && project.reviews.length > 0}
-                         <div class="reviews">
-                             <strong>Reviews:</strong>
-                             <ul>
-                                 {#each project.reviews as review}
-                                     <li><a href={review.url} target="_blank" rel="noopener noreferrer">{review.text}</a></li>
-                                 {/each}
-                             </ul>
-                         </div>
-                     {/if}
-                 </div>
+                    <!-- Skills section -->
+                    {#if project.skills && project.skills.length > 0}
+                        <div class="project-skills-container">
+                            <strong>Skills:</strong>
+                            <div class="skills-list">
+                                {#each project.skills as skill}
+                                    <span class="project-skill-tag">{skill}</span>
+                                {/each}
+                            </div>
+                        </div>
+                    {/if}
+
+                    {#if project.award}
+                        <p class="award"><strong>Award:</strong> {project.award}</p>
+                    {/if}
+                    {#if project.publication}
+                         <p class="publication-link">
+                             <a href={project.publication.url} target="_blank" rel="noopener noreferrer">{project.publication.text}</a>
+                         </p>
+                    {/if}
+                    {#if project.reviews && project.reviews.length > 0}
+                        <div class="reviews">
+                            <strong>Reviews:</strong>
+                            <ul>
+                                {#each project.reviews as review}
+                                    <li><a href={review.url} target="_blank" rel="noopener noreferrer">{review.text}</a></li>
+                                {/each}
+                            </ul>
+                        </div>
+                    {/if}
+                </div>
 
                 <!-- Action slot for the main link -->
                 <a slot="action" href={project.finalLinkUrl} target={project.linkTarget} rel={project.linkTarget === '_blank' ? 'noopener noreferrer' : null}>
