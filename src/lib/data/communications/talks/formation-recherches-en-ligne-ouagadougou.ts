@@ -13,10 +13,10 @@ export const formationRecherchesEnLigneOuagadougou: Communication = {
     type: "lecture",
     language: "French",
     tags: ["Research Methods", "Online Research", "Training", "Burkina Faso"],
-    image: "images/communications/UJKZ-logo.webp",
+    image: "images/communications/formation-recherche-en-ligne-ouagadougou.jpeg",
     heroImage: {
-        src: "images/communications/UJKZ-logo-hero.webp",
-        alt: "Université Joseph Ki-Zerbo Logo",
+        src: "images/communications/formation-recherche-en-ligne-ouagadougou.jpeg",
+        alt: "Screenshot of the Zoom meeting",
     },
     coordinates: {
         latitude: 12.37676356958207,
