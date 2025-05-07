@@ -16,7 +16,7 @@ export const rechercheDocumentaireZotero: Communication = {
     tags: ["Open Access", "Zotero", "Reference Management", "Research Methods", "Digital Tools"],
     image: "images/communications/recherche-documentaire-zotero.webp",
     heroImage: {
-        src: "images/communications/recherche-documentaire-zotero.jpg",
+        src: "images/communications/recherche-documentaire-zotero-hero.webp",
         alt: "La recherche documentaire en libre accès et la gestion de références bibliographiques avec Zotero",
     },
     coordinates: {

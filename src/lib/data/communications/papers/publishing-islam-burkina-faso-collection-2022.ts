@@ -20,7 +20,7 @@ export const publishingIslamBurkinaFasoCollection: Communication = {
     },
     image: "images/communications/publishing-islam-burkina-faso-collection-2022.webp",
     heroImage: {
-        src: "images/communications/publishing-islam-burkina-faso-collection-2022.jpg",
+        src: "images/communications/publishing-islam-burkina-faso-collection-2022-hero.webp",
         alt: "Publishing the Islam Burkina Faso Collection: Collaboration for Digital Scholarship",
     },
     project: "Mining the Islam West Africa Collection"

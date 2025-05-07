@@ -17,7 +17,7 @@ export const evolutionsNouvellesFormesIslamAfriqueOuest: Communication = {
     url: "https://www.ciram.hei.ulaval.ca/evolutions-et-nouvelles-formes-de-lislam-en-afrique-de-louest-vers-une-radicalisation/", 
     image: "images/communications/evolutions-nouvelles-formes-islam-afrique-ouest.webp", 
     heroImage: {
-        src: "images/communications/evolutions-nouvelles-formes-islam-afrique-ouest.jpg",
+        src: "images/communications/evolutions-nouvelles-formes-islam-afrique-ouest-hero.webp",
         alt: "Évolutions et nouvelles formes de l'islam en Afrique de l'Ouest: vers une radicalisation?",
     },
     coordinates: {

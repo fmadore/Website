@@ -17,7 +17,7 @@ export const elitesMusulmanesCoteDIvoireBurkinaFaso: Communication = {
     url: "https://www.ciram.hei.ulaval.ca/les-elites-musulmanes-en-cote-divoire-et-au-burkina-faso-depuis-1990-des-mobilisations-politiques-contrastees/", 
     image: "images/communications/elites-musulmanes-cote-divoire-burkina-faso.webp",
     heroImage: {
-        src: "images/communications/elites-musulmanes-cote-divoire-burkina-faso.jpg", 
+        src: "images/communications/elites-musulmanes-cote-divoire-burkina-faso-hero.webp", 
         alt: "Les élites musulmanes en Côte d'Ivoire et au Burkina Faso depuis 1990 : des mobilisations politiques contrastées",
     },
     coordinates: {

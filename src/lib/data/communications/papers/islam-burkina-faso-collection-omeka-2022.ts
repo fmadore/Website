@@ -20,7 +20,7 @@ export const islamBurkinaFasoCollectionOmeka: Communication = {
     },
     image: "images/communications/islam-burkina-faso-collection-omeka-2022.webp",
     heroImage: {
-        src: "images/communications/islam-burkina-faso-collection-omeka-2022.jpg",
+        src: "images/communications/islam-burkina-faso-collection-omeka-2022-hero.webp",
         alt: "Islam Burkina Faso Collection Omeka 2022",
     },
     project: "Mining the Islam West Africa Collection"

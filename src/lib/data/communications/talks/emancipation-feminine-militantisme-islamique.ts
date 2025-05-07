@@ -16,7 +16,7 @@ export const emancipationFeminineMilitantismeIslamique: Communication = {
     tags: ["Female Emancipation", "Islamic Activism", "West Africa", "Gender Studies"],
     image: "images/communications/emancipation-feminine-militantisme-islamique.webp",
     heroImage: {
-        src: "images/communications/emancipation-feminine-militantisme-islamique.jpg",
+        src: "images/communications/emancipation-feminine-militantisme-islamique-hero.webp",
         alt: "Émancipation féminine et militantisme islamique en Afrique de l'Ouest depuis 1980: quelques enseignements du Burkina Faso, de la Côte d'Ivoire, du Togo et du Bénin",
     },
     coordinates: {

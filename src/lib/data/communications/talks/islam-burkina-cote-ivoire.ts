@@ -16,7 +16,7 @@ export const islamBurkinaCoteIvoire: Communication = {
     tags: ["Islam", "Burkina Faso", "Côte d'Ivoire", "Radicalization", "Religious Awakening"],
     image: "images/communications/islam-burkina-cote-ivoire.webp",
     heroImage: {
-        src: "images/communications/islam-burkina-cote-ivoire.jpg",
+        src: "images/communications/islam-burkina-cote-ivoire-hero.webp",
         alt: "L'islam au Burkina Faso et en Côte d'Ivoire: éveil et radicalisation?",
     },
     coordinates: {

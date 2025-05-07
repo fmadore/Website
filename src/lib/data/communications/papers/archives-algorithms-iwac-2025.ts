@@ -17,7 +17,7 @@ export const archivesAlgorithmsIwac: Communication = {
     tags: ["ENIUGH", "Digital Humanities", "Algorithms", "Transregional Connections", "IWAC"],
     image: "images/communications/ENIUGH_Conf_Logo.webp",
     heroImage: {
-        src: "images/communications/ENIUGH_Conf_Logo.png",
+        src: "images/communications/ENIUGH_Conf_Logo-hero.webp",
         alt: "ENIUGH Conference Logo",
     },
     coordinates: {

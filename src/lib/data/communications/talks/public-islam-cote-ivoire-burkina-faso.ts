@@ -16,7 +16,7 @@ export const publicIslamCoteIvoireBurkinaFaso: Communication = {
     tags: ["Public Islam", "Media", "Côte d'Ivoire", "Burkina Faso", "Comparative Studies"],
     image: "images/communications/public-islam-cote-ivoire-burkina-faso.webp",
     heroImage: {
-        src: "images/communications/public-islam-cote-ivoire-burkina-faso.png",
+        src: "images/communications/public-islam-cote-ivoire-burkina-faso-hero.webp",
         alt: "Public Islam in Côte d'Ivoire and Burkina Faso: a comparative overview of the use of media by Muslims since the 1970s",
     },
     coordinates: {
