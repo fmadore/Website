@@ -21,15 +21,6 @@
     // Digital Humanities projects data (initial)
     const initialDhProjects: ProjectType[] = [
         {
-            id: "iwac-overview",
-            title: "Islam West Africa Collection Overview",
-            years: "2025",
-            shortDescription: "Exploring the Islam West Africa Collection (IWAC) through digital methods and visualizations.",
-            imageUrl: `${base}/images/digital-humanities/iwac-overview.webp`,
-            skills: ["Svelte", "D3.js", "TypeScript", "Vite", "Data visualisation"]
-            // No linkUrl needed, will be generated relative to base
-        },
-        {
             id: "iwac",
             title: "Islam West Africa Collection",
             years: "2023-",
@@ -39,26 +30,13 @@
             skills: ["Omeka S", "OpenRefine", "Metadata Standards", "Docker", "Linux System Administration", "Nginx", "Python", "Tesseract", "IIIF", "Apache Solr", "Linked Data", "Rclone", "spaCy", "pandas"]
         },
         {
-            id: "islam-burkina-faso-collection",
-            title: "Islam Burkina Faso Collection",
-            years: "2018-2023",
-            shortDescription: "An open access digital database containing over 2,900 documents on Islam and Muslims in Burkina Faso.",
-            imageUrl: `${base}/images/digital-humanities/islam-burkinafaso-banner.webp`,
-            award: "Won a 2023 Emerging Open Scholarship Award.",
-            reviews: [
-                { text: "Review by Robert Launay", url: "https://doi.org/10.21428/3e88f64f.89e71c81" },
-                { text: "Review by Vincent Hiribarren", url: "https://doi.org/10.2979/mnd.2022.a908483" }
-            ],
-            publication: { text: "Learn more about the project", url: "https://doi.org/10.51185/journals/rhca.2021.e610" },
-            skills: ["Omeka S", "Tesseract", "Metadata Standards", "OpenRefine", "Zotero", "Linked Data"]
-        },
-        {
-            id: "remoboko",
-            title: "Remoboko: Religion, Morality and Boko in West Africa",
-            years: "2024",
-            shortDescription: "Research group exploring religion, morality, and student life in West African higher education. Includes interactive visualizations.",
-            imageUrl: `${base}/images/digital-humanities/remoboko.webp`,
-            skills: ["Data Visualization", "pandas", "lotly", "Python", "Folium", "NLTK"]
+            id: "iwac-overview",
+            title: "Islam West Africa Collection Overview",
+            years: "2025",
+            shortDescription: "Exploring the Islam West Africa Collection (IWAC) through digital methods and visualizations.",
+            imageUrl: `${base}/images/digital-humanities/iwac-overview.webp`,
+            skills: ["Svelte", "D3.js", "TypeScript", "Vite", "Data visualisation"]
+            // No linkUrl needed, will be generated relative to base
         },
         {
             id: "iwac-wordcloud",
@@ -79,10 +57,40 @@
         {
             id: "iwac-keywords",
             title: "IWAC Keywords Dashboard",
-            years: "2025",
+            years: "2024",
             shortDescription: "Interactive temporal analysis of keywords from West African newspapers in the Islam West Africa Collection, revealing thematic evolution and media attention patterns.",
             imageUrl: `${base}/images/digital-humanities/iwac-keywords.webp`,
             skills: ["Shiny for Python", "Plotly"]
+        },
+        {
+            id: "remoboko",
+            title: "Remoboko: Religion, Morality and Boko in West Africa",
+            years: "2024",
+            shortDescription: "Research group exploring religion, morality, and student life in West African higher education. Includes interactive visualizations.",
+            imageUrl: `${base}/images/digital-humanities/remoboko.webp`,
+            skills: ["Data Visualization", "pandas", "lotly", "Python", "Folium", "NLTK"]
+        },
+        {
+            id: "iwac-bibliographic-data-wikidata",
+            title: "IWAC Bibliographic Data on Wikidata",
+            years: "2023",
+            shortDescription: "Inspired by the WikiCite initiative, which aims \"to develop open citations and linked bibliographic data to serve free knowledge\", the metadata of all the bibliographical references of the Islam West Africa Collection has been uploaded to Wikidata to make them to be more openly citable and accessible.",
+            imageUrl: `${base}/images/digital-humanities/iwac-bibliographic-data-wikidata.svg`,
+            skills: ["Wikidata", "OpenRefine", "Scholia", "Sparql", "Linked Data", "Metadata Management"]
+        },
+        {
+            id: "islam-burkina-faso-collection",
+            title: "Islam Burkina Faso Collection",
+            years: "2018-2023",
+            shortDescription: "An open access digital database containing over 2,900 documents on Islam and Muslims in Burkina Faso.",
+            imageUrl: `${base}/images/digital-humanities/islam-burkinafaso-banner.webp`,
+            award: "Won a 2023 Emerging Open Scholarship Award.",
+            reviews: [
+                { text: "Review by Robert Launay", url: "https://doi.org/10.21428/3e88f64f.89e71c81" },
+                { text: "Review by Vincent Hiribarren", url: "https://doi.org/10.2979/mnd.2022.a908483" }
+            ],
+            publication: { text: "Learn more about the project", url: "https://doi.org/10.51185/journals/rhca.2021.e610" },
+            skills: ["Omeka S", "Tesseract", "Metadata Standards", "OpenRefine", "Zotero", "Linked Data"]
         }
     ];
 
