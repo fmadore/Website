@@ -16,7 +16,7 @@ export const muslimIntellectualsFrancophoneSalafis: Communication = {
     tags: ["Muslim Intellectuals", "Salafism", "West Africa", "Francophone", "Religious Elites"],
     image: "images/communications/muslim-intellectuals-francophone-salafis.webp",
     heroImage: {
-        src: "images/communications/muslim-intellectuals-francophone-salafis.jpg",
+        src: "images/communications/muslim-intellectuals-francophone-salafis-hero.webp",
         alt: "'Muslim Intellectuals' and 'Francophone Salafis' in West Africa: New Religious Elites?",
     },
     coordinates: {

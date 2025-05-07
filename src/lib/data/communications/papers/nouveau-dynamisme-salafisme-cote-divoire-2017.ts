@@ -16,7 +16,7 @@ export const nouveauDynamismeSalafismeCoteDIvoire: Communication = {
     tags: ["MANSA", "Salafisme", "Radicalisation", "Côte d'Ivoire", "Islam", "Dynamiques Religieuses"],
     image: "images/communications/MANSA-logo.webp",
     heroImage: {
-        src: "images/communications/MANSA-logo.webp",
+        src: "images/communications/MANSA-logo-hero.webp",
         alt: "10th International Conference of the Mande Studies Association (MANSA)",
     },
     coordinates: {

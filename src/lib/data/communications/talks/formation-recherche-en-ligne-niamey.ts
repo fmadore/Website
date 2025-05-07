@@ -15,7 +15,7 @@ export const formationRechercheEnLigneNiamey: Communication = {
     tags: ["Research Methods", "Online Research", "Training", "Niger"],
     image: "images/communications/lasdel-logo.webp",
     heroImage: {
-        src: "images/communications/lasdel-logo.webp",
+        src: "images/communications/lasdel-logo-hero.webp",
         alt: "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL) Logo",
     },
     coordinates: {

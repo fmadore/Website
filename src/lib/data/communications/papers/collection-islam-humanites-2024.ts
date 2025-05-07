@@ -16,7 +16,7 @@ export const collectionIslamHumanites: Communication = {
     tags: ["MANSA", "Digital humanities", "Décolonisation", "Éthique", "Islam", "IWAC"],
     image: "images/communications/MANSA-logo.webp",
     heroImage: {
-        src: "images/communications/MANSA-logo.webp",
+        src: "images/communications/MANSA-logo-hero.webp",
         alt: "MANSA Logo",
     },
     coordinates: {

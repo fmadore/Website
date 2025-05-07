@@ -15,7 +15,7 @@ export const islamAlgorithmsAi: Communication = {
     tags: ["Islam", "Algorithms", "AI", "Digital Religion", "Technology"],
     image: "images/communications/islam-algorithms-ai.webp",
     heroImage: {
-        src: "images/communications/islam-algorithms-ai.png",
+        src: "images/communications/islam-algorithms-ai-hero.webp",
         alt: "Islam, Algorithms and AI",
     },
     coordinates: {

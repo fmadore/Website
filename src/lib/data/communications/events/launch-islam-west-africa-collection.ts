@@ -17,7 +17,7 @@ export const launchIslamWestAfricaCollection: Communication = {
     url: "https://islam.zmo.de/s/westafrica/item/244", 
     image: "images/communications/poster-launch-IWAC.webp", 
     heroImage: {
-        src: "images/communications/poster-launch-IWAC.jpg",
+        src: "images/communications/poster-launch-IWAC-hero.webp",
         alt: "Poster for the launch of the Islam West Africa Collection",
     },
     coordinates: {

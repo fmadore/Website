@@ -15,7 +15,7 @@ export const pointPassageFrontieresReligieuses: Communication = {
     tags: ["Religious Boundaries", "Niger", "Interfaith Relations", "Religious Studies"],
     image: "images/communications/point-de-passage-frontieres-religieuses.webp",
     heroImage: {
-        src: "images/communications/point-de-passage-frontieres-religieuses.png",
+        src: "images/communications/point-de-passage-frontieres-religieuses-hero.webp",
         alt: "Point de passage et frontières religieuses",
     },
     coordinates: {

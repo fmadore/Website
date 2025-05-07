@@ -17,7 +17,7 @@ export const digitalHistoryExe: Communication = {
     url: "https://web.archive.org/web/20250411145918/https://zzf-potsdam.de/forschung/doktorand_innen/master-class",
     image: "images/communications/zzf-logo.webp",
     heroImage: {
-        src: "images/communications/zzf-logo.jpg",
+        src: "images/communications/zzf-logo-hero.webp",
         alt: "Leibniz Centre for Contemporary History Potsdam (ZZF) Logo",
     },
     coordinates: {

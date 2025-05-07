@@ -15,7 +15,7 @@ export const formationRecherchesEnLigneOuagadougou: Communication = {
     tags: ["Research Methods", "Online Research", "Training", "Burkina Faso"],
     image: "images/communications/UJKZ-logo.webp",
     heroImage: {
-        src: "images/communications/UJKZ-logo.png",
+        src: "images/communications/UJKZ-logo-hero.webp",
         alt: "Université Joseph Ki-Zerbo Logo",
     },
     coordinates: {

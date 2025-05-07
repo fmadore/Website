@@ -28,7 +28,7 @@ Cette approche ouvre la voie à des analyses computationnelles à grande échell
     tags: ["AI", "digital humanities", "Islam", "IWAC", "Humanistica"],
     image: "images/communications/humanistica-2025.webp",
     heroImage: {
-        src: "images/communications/humanistica-2025.jpg",
+        src: "images/communications/humanistica-2025-hero.webp",
         alt: "Intelligence artificielle et traitement des archives numériques : applications et enjeux dans la Collection Islam Afrique de l'Ouest",
     },
     coordinates: {

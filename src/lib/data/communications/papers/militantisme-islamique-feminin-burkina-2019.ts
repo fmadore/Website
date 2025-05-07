@@ -20,7 +20,7 @@ export const militantismeIslamiqueFemininBurkina: Communication = {
     },
     image: "images/communications/militantisme-islamique-feminin-burkina-2019.webp",
     heroImage: {
-        src: "images/communications/militantisme-islamique-feminin-burkina-2019.jpg",
+        src: "images/communications/militantisme-islamique-feminin-burkina-2019-hero.webp",
         alt: "Militantisme islamique féminin au Burkina Faso: des processus sinueux d'émancipation religieuse",
     },
     project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"

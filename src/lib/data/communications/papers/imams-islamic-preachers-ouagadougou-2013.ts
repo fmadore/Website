@@ -17,7 +17,7 @@ export const imamsIslamicPreachersOuagadougou: Communication = {
     tags: ["Religious Leadership", "Public Space", "Burkina Faso", "Intergenerational Relations", "Islamic Authority"],
     image: "images/communications/University_of_Texas_at_Austin_seal.webp",
     heroImage: {
-        src: "images/communications/University_of_Texas_at_Austin_seal.png",
+        src: "images/communications/University_of_Texas_at_Austin_seal-hero.webp",
         alt: "University of Texas at Austin Seal",
     },
     coordinates: {

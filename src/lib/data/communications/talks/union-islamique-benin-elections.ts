@@ -15,7 +15,7 @@ export const unionIslamiqueBenin: Communication = {
     tags: ["Benin", "Islamic Union", "Elections", "Religious Organizations", "Politics"],
     image: "images/communications/union-islamique-benin-elections.webp",
     heroImage: {
-        src: "images/communications/union-islamique-benin-elections.jpg",
+        src: "images/communications/union-islamique-benin-elections-hero.webp",
         alt: "L'Union Islamique du Bénin et les élections législatives: comment comprendre la crise interne",
     },
     coordinates: {

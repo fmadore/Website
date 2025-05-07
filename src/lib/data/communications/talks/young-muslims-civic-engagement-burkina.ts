@@ -16,7 +16,7 @@ export const youngMuslimsCivicEngagementBurkina: Communication = {
     tags: ["Young Muslims", "Civic Engagement", "Burkina Faso", "Political Participation", "Religious Youth"],
     image: "images/communications/young-muslims-civic-engagement-burkina.webp",
     heroImage: {
-        src: "images/communications/young-muslims-civic-engagement-burkina.png",
+        src: "images/communications/young-muslims-civic-engagement-burkina-hero.webp",
         alt: "'Plus rien ne sera jamais comme avant'? Young Muslims' new forms of civic engagement in Burkina Faso (2014-2017)",
     },
     coordinates: {

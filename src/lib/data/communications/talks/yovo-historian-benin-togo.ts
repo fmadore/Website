@@ -15,7 +15,7 @@ export const yovoHistorianBeninTogo: Communication = {
     tags: ["Fieldwork", "Benin", "Togo", "Research Methodology", "Pandemic"],
     image: "images/communications/yovo-historian-benin-togo.webp",
     heroImage: {
-        src: "images/communications/yovo-historian-benin-togo.jpg",
+        src: "images/communications/yovo-historian-benin-togo-hero.webp",
         alt: "A 'Yovo' Historian in Benin and Togo: Conducting Fieldwork in Times of Pandemic and Fears of Jihadism Spreading",
     },
     coordinates: {

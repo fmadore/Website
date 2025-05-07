@@ -16,7 +16,7 @@ export const salafismePentecotismeCampusBeninTogo: Communication = {
     tags: ["Salafism", "Pentecostalism", "Universities", "Benin", "Togo", "Secularism"],
     image: "images/communications/salafisme-pentecotisme-campus-benin-togo.webp",
     heroImage: {
-        src: "images/communications/salafisme-pentecotisme-campus-benin-togo.png",
+        src: "images/communications/salafisme-pentecotisme-campus-benin-togo-hero.webp",
         alt: "Salafisme et pentecôtisme sur les campus au Bénin et au Togo: la laïcité à l'université face à l'activisme religieux",
     },
     coordinates: {

@@ -20,7 +20,7 @@ export const islamIvoirienBurkinabeNumerique: Communication = {
     },
     image: "images/communications/islam-ivoirien-burkinabe-numerique-2016.webp",
     heroImage: {
-        src: "images/communications/islam-ivoirien-burkinabe-numerique-2016.jpg",
+        src: "images/communications/islam-ivoirien-burkinabe-numerique-2016-hero.webp",
         alt: "L'islam ivoirien et burkinabé à l'ère du numérique: des communautés musulmanes 2.0?",
     },
     project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
