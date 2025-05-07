@@ -106,7 +106,8 @@ export const salafismCoteDIvoire: Publication = {
             authors: ["Louis Audet Gosselin"],
             year: 2021,
             title: "Le salafisme burkinabè à l'épreuve du djihadisme",
-            source: "In Allah et la polis : quel islam pour quelle identité ?, edited by Mounia Ait Kabboura and Mohamed Fadil, 103-15. Montréal: Les Presses de l'Université de Montréal, 2021"
+            source: "In Allah et la polis : quel islam pour quelle identité ?, edited by Mounia Ait Kabboura and Mohamed Fadil, 103-15. Montréal: Les Presses de l'Université de Montréal, 2021",
+            url: "https://doi.org/10.1515/9782760643253-007"
         },
         {
             authors: ["Aala Abdelgadir"],
