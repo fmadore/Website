@@ -16,7 +16,7 @@ export const rueIslamAssociatifEnjeuxCitoyens: Communication = {
     tags: ["Islam Associatif", "Espace Public", "Citoyenneté", "Afrique de l'Ouest", "Engagement Religieux"],
     image: "images/communications/Gaston_Berger_University_logo.webp",
     heroImage: {
-        src: "images/communications/GGaston_Berger_University_logo-hero.webp",
+        src: "images/communications/Gaston_Berger_University_logo-hero.webp",
         alt: "Gaston Berger University Logo",
     },
     coordinates: {
