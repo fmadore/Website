@@ -27,7 +27,7 @@
             shortDescription: "A collection of over 13,000 documents on Islam and Muslims in Burkina Faso, Benin, Niger, Nigeria, Togo and Côte d'Ivoire.",
             imageUrl: `${base}/images/digital-humanities/IWAC.webp`,
             linkUrl: "https://islam.zmo.de/s/westafrica/", // External link remains unchanged
-            skills: ["Omeka S", "OpenRefine", "Metadata Standards", "Docker", "Linux System Administration", "Nginx", "Python", "Tesseract", "IIIF", "Apache Solr", "Linked Data", "Rclone", "spaCy", "pandas"]
+            skills: ["Omeka S", "OpenRefine", "Metadata Standards", "Docker", "Linux System Administration", "Nginx", "Python", "Tesseract", "IIIF", "Apache Solr", "Linked Data", "Rclone", "spaCy", "pandas", "Web scraping"]
         },
         {
             id: "iwac-overview",
