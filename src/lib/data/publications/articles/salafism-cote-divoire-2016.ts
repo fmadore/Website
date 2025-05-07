@@ -51,7 +51,7 @@ export const salafismCoteDIvoire: Publication = {
             year: 2021,
             title: "Salafis, Sufis, and the Contest for the Future of African Islam",
             source: "Washington, DC: Hudson Institute, 25 October 2021",
-            url: "http://www.hudson.org/research/17129-salafis-sufis-and-the-contest-for-the-future-of-african-islam"
+            url: "https://www.hudson.org/node/44076"
         },
         {
             authors: ["Issouf Binaté"],
