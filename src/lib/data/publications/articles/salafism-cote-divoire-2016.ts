@@ -148,6 +148,13 @@ export const salafismCoteDIvoire: Publication = {
             title: "Innovation Synergy: Navigating Strategic Frontiers for Organizational Transformation",
             source: "International Journal of Social Ecology and Sustainable Development (IJSESD) 15, no. 1 (2024): 1-19",
             url: "https://doi.org/10.4018/IJSESD.345968"
+        },
+        {
+            authors: ["Issouf Binaté"],
+            year: 2022,
+            title: "Turkey's Religious Soft Power in Côte d'Ivoire: Practices and Constraints in Muslim Communities",
+            source: "In Islam and Muslim Life in West Africa: Practices, Trajectories and Influences, edited by Abdoulaye Sounaye and André Chappatte, 207-32. Berlin: De Gruyter, 2022",
+            url: "https://doi.org/10.1515/9783110733204-010"
         }
     ]
 }; 

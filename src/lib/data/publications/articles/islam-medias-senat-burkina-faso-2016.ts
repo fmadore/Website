@@ -23,5 +23,14 @@ export const islamMediasSenatBurkinaFaso: Publication = {
         alt: "Cover of Canadian Journal of African Studies, volume 50, issue 1",
     },
     country: ["Burkina Faso"],
-    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
+    citedBy: [
+        {
+            authors: ["Koudbi Kaboré"],
+            year: 2022,
+            title: "The Modernity of Islam in Burkina Faso: Contrasting Strategies in Two Emergent Movements",
+            source: "In Islam and Muslim Life in West Africa: Practices, Trajectories and Influences, edited by Abdoulaye Sounaye and André Chappatte, 39-62. Berlin: De Gruyter, 2022",
+            url: "https://doi.org/10.1515/9783110733204-003"
+        }
+    ]
 }; 

@@ -32,5 +32,12 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
             source: "In Rethinking the Anthropology of Islam: Dynamics of Change in Muslim Societies, edited by Katja Föllmer, Lisa Maria Franke, and Ramzi Ben Amara, 399-421. Berlin: De Gruyter, 2024",
             url: "https://doi.org/10.1515/9783111341651-020"
         },
+        {
+            authors: ["Koudbi Kaboré"],
+            year: 2022,
+            title: "The Modernity of Islam in Burkina Faso: Contrasting Strategies in Two Emergent Movements",
+            source: "In Islam and Muslim Life in West Africa: Practices, Trajectories and Influences, edited by Abdoulaye Sounaye and André Chappatte, 39-62. Berlin: De Gruyter, 2022",
+            url: "https://doi.org/10.1515/9783110733204-003"
+        }
     ]
 }; 

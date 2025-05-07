@@ -22,5 +22,14 @@ export const hadjCoteDIvoire: Publication = {
         alt: "Cover of Cahiers d'études africaines, issue 229",
     },
     country: ["Côte d'Ivoire"],
-    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
+    citedBy: [
+        {
+            authors: ["Bourahima Diomandé"],
+            year: 2022,
+            title: "Les « imams chocos » ou la mutation de la figure de l'autorité religieuse musulmane en Côte d'Ivoire contemporaine",
+            source: "In Islam and Muslim Life in West Africa: Practices, Trajectories and Influences, edited by Abdoulaye Sounaye and André Chappatte, 125-50. Berlin: De Gruyter, 2022",
+            url: "https://doi.org/10.1515/9783110733204-007"
+        }
+    ]
 }; 
