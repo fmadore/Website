@@ -29,5 +29,14 @@ Une deuxième hypothèse défend l'idée que des jeunes et des femmes jouèrent 
 Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et le savoir religieux ne sont plus suffisants pour s'affirmer dans le champ de plus en plus concurrentiel des associations musulmanes et revendiquer la légitimité de pouvoir s'exprimer au nom de la « communauté ». Si le savoir religieux demeure important, la légitimité et l'autorité des responsables d'organisations islamiques découlent de plus en plus de la capacité à véhiculer un « islam civil » et à s'engager sur le plan du développement socioéconomique. Ce phénomène, qui eut pour conséquence de favoriser entre autres la montée de jeunes scolarisés dans le système éducatif francophone, se manifesta beaucoup plus rapidement en Côte d'Ivoire qu'au Burkina Faso.`,
     advisors: ["Muriel Gomez-Perez", "Cédric Jourde"],
     country: ["Côte d'Ivoire", "Burkina Faso"],
-    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
+    citedBy: [
+        {
+            authors: ["Louis Audet Gosselin"],
+            year: 2021,
+            title: "Le salafisme burkinabè à l'épreuve du djihadisme",
+            source: "In Allah et la polis : quel islam pour quelle identité ?, edited by Mounia Ait Kabboura and Mohamed Fadil, 103-15. Montréal: Les Presses de l'Université de Montréal, 2021",
+            url: "https://doi.org/10.1515/9782760643253-007"
+        },
+    ]
 }; 
