@@ -18,7 +18,7 @@ export const talkHistoireCommunautesMusulmanesOuestAfricaines2025: Communication
     url: "https://doi.org/10.58079/13pmz",
     image: "images/communications/EHESS-2025.webp",
     heroImage: {
-        src: "images/communications/EHESS-2025.jpg",
+        src: "images/communications/EHESS-2025-hero.webp",
         alt: "École des hautes études en sciences sociales (EHESS) Logo",
     },
     coordinates: {
