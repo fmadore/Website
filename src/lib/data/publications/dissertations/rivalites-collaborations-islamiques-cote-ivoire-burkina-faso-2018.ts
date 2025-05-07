@@ -32,11 +32,17 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
     project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
     citedBy: [
         {
+            authors: ["Sekou Traoré"],
+            year: 2025,
+            title: "Da'wa dans la rue en Côte d'Ivoire post-crise : une nouvelle forme de prédication à l'ère du numérique",
+            source: "Cahiers d'études africaines, no. 6 (2025): 545-69"
+        },
+        {
             authors: ["Louis Audet Gosselin"],
             year: 2021,
             title: "Le salafisme burkinabè à l'épreuve du djihadisme",
             source: "In Allah et la polis : quel islam pour quelle identité ?, edited by Mounia Ait Kabboura and Mohamed Fadil, 103-15. Montréal: Les Presses de l'Université de Montréal, 2021",
             url: "https://doi.org/10.1515/9782760643253-007"
-        },
+        }
     ]
 }; 

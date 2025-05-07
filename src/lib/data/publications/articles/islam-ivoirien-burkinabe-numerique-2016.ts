@@ -25,6 +25,12 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
     project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
     citedBy: [
         {
+            authors: ["Sekou Traoré"],
+            year: 2025,
+            title: "Da'wa dans la rue en Côte d'Ivoire post-crise : une nouvelle forme de prédication à l'ère du numérique",
+            source: "Cahiers d'études africaines, no. 6 (2025): 545-69"
+        },
+        {
             authors: ["Issouf Binaté"],
             year: 2023,
             title: "Covid-19, Islam and Digital Media in Côte d'Ivoire: Response Measures and Reinvention of Religious Practices",
