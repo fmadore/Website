@@ -81,18 +81,14 @@
   .card {
     display: flex;
     flex-direction: column;
-    border-radius: var(--border-radius-lg); /* Use variable */
     overflow: hidden;
-    box-shadow: var(--shadow-md); /* Use variable */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     background-color: var(--color-background, white); /* Use variable */
     border: 1px solid var(--color-border);
     height: 100%; /* Make cards in a grid have the same height */
   }
 
   .card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg); /* Use variable */
+    /* transform and box-shadow are now inherited from global cards.css .card:hover */
   }
 
   .card-image {
