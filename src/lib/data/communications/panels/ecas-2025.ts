@@ -16,7 +16,7 @@ export const ecas2025Panel: Communication = {
     tags: ["ECAS", "digital humanities", "AI", "african studies", "decolonial"],
     image: "images/communications/ecas-2025.webp",
     heroImage: {
-        src: "images/communications/ecas-2025.jpg",
+        src: "images/communications/ecas-2025-hero.webp",
         alt: "Digital Humanities (DH) and AI in African Studies: Opportunities, Challenges, and Decolonial Perspectives",
     },
     coordinates: {
