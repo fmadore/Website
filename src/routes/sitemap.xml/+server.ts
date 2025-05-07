@@ -35,12 +35,12 @@ export const GET: RequestHandler = async () => {
     // Digital Humanities project routes
     const digitalHumanitiesProjects = [
         "/digital-humanities/iwac-overview",
-        "/digital-humanities/islam-burkina-faso-collection",
         "/digital-humanities/iwac-wordcloud",
         "/digital-humanities/muslim-umbrella-organizations",
         "/digital-humanities/iwac-keywords",
         "/digital-humanities/remoboko",
-        "/digital-humanities/zmo-units"
+        "/digital-humanities/iwac-bibliographic-data-wikidata",
+        "/digital-humanities/islam-burkina-faso-collection"
     ];
 
     // Dynamic activity paths
