@@ -17,7 +17,7 @@ export const historianVsAiEcas2025: Communication = {
     tags: ["ECAS", "AI", "archives", "digital humanities", "history", "Cameroon"],
     image: "images/communications/ecas-2025.webp",
     heroImage: {
-        src: "images/communications/ecas-2025.jpg",
+        src: "images/communications/ecas-2025-hero.webp",
         alt: "10th European Conference of African Studies (ECAS)",
     },
     coordinates: {

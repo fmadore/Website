@@ -17,7 +17,7 @@ export const currentDynamicsIslamBurkinaFaso: Communication = {
     url: "https://sahelresearch.africa.ufl.edu/events-activities/sahel-seminars/",
     image: "images/communications/current-dynamics-islam-burkina-faso.webp", 
     heroImage: {
-        src: "images/communications/current-dynamics-islam-burkina-faso.jpg", 
+        src: "images/communications/current-dynamics-islam-burkina-faso-hero.webp", 
         alt: "Current Dynamics of Islam in Burkina Faso",
     },
     coordinates: {

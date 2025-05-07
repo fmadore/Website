@@ -16,7 +16,7 @@ export const militantismeIslamiqueCampusLome: Communication = {
     tags: ["Islamic Activism", "Togo", "Universities", "Religious Minorities", "Secularism"],
     image: "images/communications/militantisme-islamique-campus-lome.webp",
     heroImage: {
-        src: "images/communications/militantisme-islamique-campus-lome.png",
+        src: "images/communications/militantisme-islamique-campus-lome-hero.webp",
         alt: "Militantisme islamique sur le campus de l'Université de Lomé (Togo) depuis les années 1980: être musulman en contexte minoritaire, laïc et (semi-)autoritaire",
     },
     coordinates: {

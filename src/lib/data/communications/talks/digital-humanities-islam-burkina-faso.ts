@@ -16,7 +16,7 @@ export const digitalHumanismsIslamBurkinaFaso: Communication = {
     tags: ["Islam", "Burkina Faso", "Digital Humanities", "Collections", "West Africa"], 
     image: "images/communications/DH-islam-burkina-faso.webp",
     heroImage: {
-        src: "images/communications/DH-islam-burkina-faso.jpg", 
+        src: "images/communications/DH-islam-burkina-faso-hero.webp", 
         alt: "Digital Humanities in the Making: The Islam Burkina Faso Collection",
     },
     coordinates: {

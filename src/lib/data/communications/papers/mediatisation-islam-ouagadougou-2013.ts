@@ -16,7 +16,7 @@ export const mediatisationIslamOuagadougou: Communication = {
     tags: ["CAAS", "Médiatisation", "Islam", "Burkina Faso", "Ouagadougou", "Démocratisation"],
     image: "images/communications/CAAS-logo.webp",
     heroImage: {
-        src: "images/communications/CAAS-logo.jpg",
+        src: "images/communications/CAAS-logo-hero.webp",
         alt: "Canadian Association of African Studies Conference (CAAS)",
     },
     coordinates: {

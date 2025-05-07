@@ -16,7 +16,7 @@ export const faithBasedStudentOrganizations: Communication = {
     tags: ["ECAS", "Religious Activism", "Student Organizations", "Togo", "Benin", "Youth"],
     image: "images/communications/ecas-2023.webp",
     heroImage: {
-        src: "images/communications/ecas-2023.jpg",
+        src: "images/communications/ecas-2025-hero.webp",
         alt: "9th European Conference on African Studies (ECAS)",
     },
     coordinates: {

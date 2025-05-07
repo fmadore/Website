@@ -16,7 +16,7 @@ export const associationsChretiennesIslamiquesCampus: Communication = {
     tags: ["Religious Associations", "Universities", "Benin", "Togo", "Secularism"],
     image: "images/communications/associations-chretiennes-islamiques-campus.webp",
     heroImage: {
-        src: "images/communications/associations-chretiennes-islamiques-campus.jpg",
+        src: "images/communications/associations-chretiennes-islamiques-campus-hero.webp",
         alt: "Associations Chrétiennes et Islamiques sur les Campus de l'Université d'Abomey-Calavi et de l'Université de Lomé depuis 1970: la laïcité à l'université face à l'activisme religieux",
     },
     coordinates: {
