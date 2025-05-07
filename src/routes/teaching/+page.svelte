@@ -13,7 +13,7 @@
             institution: "University of Ottawa (Canada)",
             level: "undergraduate",
             period: "fall 2020",
-            description: "An introduction to the major themes and debates in the history of Africa before the colonial era.",
+            description: "An introduction to the major themes and debates in African history, from ancient empires to colonial rule and independence.",
             imageUrl: `${base}/images/teaching/uottawa.png`,
             syllabusUrl: `${base}/files/syllabus_the_african_past__fall_2020.pdf`
         },
@@ -24,7 +24,7 @@
             institution: "University of Florida (United States)",
             level: "undergraduate",
             period: "spring 2020",
-            description: "Exploring the history, politics, and societies of French-speaking West African nations.",
+            description: "From the French conquest in the 19th century to the emergence of jihadi groups in the Sahel today, this course traces how colonial rule and its aftermath have shaped francophone West Africa, using case studies from lesser-known countries such as Burkina Faso, Benin and Togo.",
             imageUrl: `${base}/images/teaching/university-of-florida-logo.png`,
             syllabusUrl: `${base}/files/syllabus-francophone-west-africa.pdf`
         },
@@ -34,7 +34,7 @@
             title: "Dissertation historique [Historical writing]",
             institution: "Université Laval (Canada)",
             level: "undergraduate",
-            period: "8 sections; fall 2013–winter 2018",
+            period: "8 sections; fall 2013-winter 2018",
             description: "Guidance and workshops on research methodologies and the craft of historical writing.",
             imageUrl: `${base}/images/teaching/universite-Laval-logo.svg`
         },
