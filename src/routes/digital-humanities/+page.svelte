@@ -76,7 +76,7 @@
             years: "2023",
             shortDescription: "Inspired by the WikiCite initiative, which aims \"to develop open citations and linked bibliographic data to serve free knowledge\", the metadata of all the bibliographical references of the Islam West Africa Collection has been uploaded to Wikidata to make them to be more openly citable and accessible.",
             imageUrl: `${base}/images/digital-humanities/iwac-bibliographic-data-wikidata.svg`,
-            skills: ["Wikidata", "OpenRefine", "Scholia", "Sparql", "Linked Data", "Metadata Management"]
+            skills: ["Wikidata", "OpenRefine", "Scholia", "SPARQL", "Linked Data", "Metadata Management"]
         },
         {
             id: "islam-burkina-faso-collection",
