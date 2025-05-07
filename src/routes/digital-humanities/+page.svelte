@@ -68,7 +68,7 @@
             years: "2024",
             shortDescription: "Research group exploring religion, morality, and student life in West African higher education. Includes interactive visualizations.",
             imageUrl: `${base}/images/digital-humanities/remoboko.webp`,
-            skills: ["Data Visualization", "pandas", "lotly", "Python", "Folium", "NLTK"]
+            skills: ["Data Visualization", "pandas", "Plotly", "Python", "Folium", "NLTK"]
         },
         {
             id: "iwac-bibliographic-data-wikidata",
