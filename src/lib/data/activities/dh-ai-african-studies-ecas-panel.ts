@@ -26,6 +26,6 @@ export const activity: Activity = {
     panelType: "Conference",
     heroImage: {
         src: "images/activities/ECAS-2025.webp",
-        alt: "",
+        alt: "ECAS 2025 logo with the theme “African, Afropean, Afropolitan,” held in Prague, June 25-28, 2025.",
         caption: ""
     }}; 

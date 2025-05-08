@@ -17,7 +17,7 @@ export const activity: Activity = {
     panelType: "workshop",
     heroImage: {
         src: "images/activities/tracing-islamic-knowledge-production.webp",
-        alt: "",
+        alt: "Bar chart of 204 articles mentioning intégrisme by country and year (1979-2019), peaking in Côte d'Ivoire in the early 1990s.",
         caption: ""
     },
     pdfPath: "files/perspectives-in-motion-programme.pdf", 
