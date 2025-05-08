@@ -52,7 +52,7 @@
 </script>
 
 <SEO 
-    title="Muslim Umbrella Organisations in IWAC | Digital Humanities | Frédérick Madore" 
+    title="Muslim Umbrella Organisations in IWAC | Frédérick Madore" 
     description="Analysis of Muslim umbrella organisations in West African newspapers using co-occurrence matrices and topic modeling, based on the Islam West Africa Collection (IWAC)." 
 />
 

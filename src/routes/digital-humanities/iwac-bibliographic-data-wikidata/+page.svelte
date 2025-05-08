@@ -59,7 +59,7 @@
 </script>
 
 <SEO
-    title="{projectTitle} | Digital Humanities | Frédérick Madore"
+    title="{projectTitle} Frédérick Madore"
     description="Integration of Islam West Africa Collection's bibliographic metadata into Wikidata for enhanced open access and citability."
 />
 
