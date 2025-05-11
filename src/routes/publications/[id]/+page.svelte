@@ -166,7 +166,7 @@
 -->
 
 <SEO 
-    title="{publication.title} | Frédérick Madore"
+    title="{truncateTitle(publication.title)} | Frédérick Madore"
     description="{publication.abstract || `Details about ${publication.title} by ${publication.authors?.join(', ')}`}"
     keywords="{[ 'publication', publication.type, ...(publication.tags || []), ...(publication.authors || []), 'Islam', 'West Africa', 'Frédérick Madore' ].join(', ')}"
     ogImage="{base}/{publication.image}"
