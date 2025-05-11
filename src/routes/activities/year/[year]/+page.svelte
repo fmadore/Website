@@ -6,6 +6,9 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
     import SEO from '$lib/SEO.svelte';
     import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
+    import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+    import { onDestroy } from 'svelte';
+    import { browser } from '$app/environment';
     
     // Get the year parameter from the URL
     $: year = parseInt($page.params.year);
@@ -22,29 +25,62 @@
         ].sort((a: number, b: number) => b - a);
     });
     
-    // Clean up subscription on component destroy
-    onMount(() => {
-        return () => {
-            unsubscribe();
-        };
-    });
-    
     // Update filtered activities when year changes
     $: if (year) {
         activities.subscribe((value: Activity[]) => {
             filteredActivities = value.filter((a: Activity) => a.year === year);
         })();
     }
+
+    // Define breadcrumb items
+    $: breadcrumbItems = [
+        // { label: 'Home', href: base || '/' }, // Removed: Breadcrumb component handles the Home link by default
+        { label: 'Activities', href: `${base}/activities` },
+        { label: String(year), href: `${base}/activities/year/${year}` }
+    ];
+
+    // Generate Breadcrumb JSON-LD
+    $: breadcrumbJsonLdString = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": breadcrumbItems.map((item, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "name": item.label,
+            "item": `${$page.url.origin}${item.href}`
+        }))
+    });
+
+    const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld-activities-year';
+
+    onMount(() => {
+        if (browser && breadcrumbJsonLdString && !document.getElementById(breadcrumbJsonLdScriptId)) {
+            const script = document.createElement('script');
+            script.id = breadcrumbJsonLdScriptId;
+            script.type = 'application/ld+json';
+            script.textContent = breadcrumbJsonLdString;
+            document.head.appendChild(script);
+        }
+        // Clean up subscription on component destroy
+        return () => {
+            unsubscribe();
+            if (browser) {
+                const script = document.getElementById(breadcrumbJsonLdScriptId);
+                if (script) {
+                    document.head.removeChild(script);
+                }
+            }
+        };
+    });
 </script>
 
 <SEO title={`Activities (${year}) | Frédérick Madore`} />
 
 <div class="container mx-auto py-6">
     <div class="flex flex-col gap-4">
+        <Breadcrumb items={breadcrumbItems} />
 		<PageHeader 
 			title={`Activities in ${year}`} 
-			backLinkHref="activities" 
-			backLinkLabel="Back to all activities"
 		/>
         
         <div class="year-filters flex gap-2 overflow-x-auto py-2">
