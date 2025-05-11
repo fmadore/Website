@@ -79,6 +79,14 @@
             skills: ["Wikidata", "OpenRefine", "Scholia", "SPARQL", "Linked Data", "Metadata Management"]
         },
         {
+            id: "burkina-faso-digital-exhibits",
+            title: "Digital Exhibits on Islam in Burkina Faso",
+            years: "2021",
+            shortDescription: "These two digital exhibits on Burkina Faso, which bring together a selection of materials from the Islam West Africa Collection by theme, are entry points to the collection. In addition to providing contextual information for interpreting the material presented in an interactive timeline, a selective bibliography completes the exhibit.",
+            imageUrl: `${base}/images/digital-humanities/placeholder.webp`,
+            skills: ["Timeline JS"]
+        },
+        {
             id: "islam-burkina-faso-collection",
             title: "Islam Burkina Faso Collection",
             years: "2018-2023",

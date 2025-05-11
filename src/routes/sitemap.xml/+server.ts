@@ -40,6 +40,7 @@ export const GET: RequestHandler = async () => {
         "/digital-humanities/iwac-keywords",
         "/digital-humanities/remoboko",
         "/digital-humanities/iwac-bibliographic-data-wikidata",
+        "/digital-humanities/burkina-faso-digital-exhibits",
         "/digital-humanities/islam-burkina-faso-collection"
     ];
 
