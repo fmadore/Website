@@ -51,19 +51,19 @@
             <div class="subtitle">Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)</div>
             <div class="profile-icons">
                 <a href="mailto:frederick.madore@zmo.de" target="_blank" rel="noopener" aria-label="Email">
-                    <Icon icon="mdi:email" width="28" height="28" />
+                    <Icon icon="mdi:email" width="26" height="26" />
                 </a>
                 <a href="https://scholar.google.com/citations?user=naUK0RQAAAAJ" target="_blank" rel="noopener" aria-label="Google Scholar">
-                    <Icon icon="academicons:google-scholar" width="28" height="28" />
+                    <Icon icon="academicons:google-scholar" width="26" height="26" />
                 </a>
                 <a href="https://github.com/fmadore" target="_blank" rel="noopener" aria-label="GitHub">
-                    <Icon icon="mdi:github" width="28" height="28" />
+                    <Icon icon="mdi:github" width="26" height="26" />
                 </a>
                 <a href="https://www.linkedin.com/in/frederickmadore" target="_blank" rel="noopener" aria-label="LinkedIn">
-                    <Icon icon="mdi:linkedin" width="28" height="28" />
+                    <Icon icon="mdi:linkedin" width="26" height="26" />
                 </a>
                 <a href="https://orcid.org/0000-0003-0959-2092" target="_blank" rel="noopener" aria-label="ORCID">
-                    <Icon icon="simple-icons:orcid" width="23" height="23" />
+                    <Icon icon="simple-icons:orcid" width="26" height="26" />
                 </a>
             </div>
         </div>
