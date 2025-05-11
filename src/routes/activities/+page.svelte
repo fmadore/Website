@@ -33,8 +33,11 @@
 
 <SEO title="Activities | Frédérick Madore" />
 
-<div class="container mx-auto py-8">
+<div class="container mx-auto px-4 pb-4">
 	<PageHeader title="Activities" />
+    <p class="text-xl mb-10">
+        This section provides an overview of various professional activities, including workshops, talks, and other engagements. You can browse by year using the sidebar.
+    </p>
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div class="md:col-span-1">
