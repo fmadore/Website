@@ -139,7 +139,7 @@
 
 	<!-- Education Section -->
 	<section class="mb-8">
-		<h3 class="text-2xl font-semibold mb-4 border-b pb-1">Education</h3>
+		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Education</h3>
 
 		{#if degrees.length > 0}
 			<h4 class="text-lg font-semibold mt-4 mb-2">Degrees</h4>
@@ -201,7 +201,7 @@
 
 	<!-- Professional Appointments Section -->
 	<section class="mb-8">
-		<h3 class="text-2xl font-semibold mb-4 border-b pb-1">Professional Appointments</h3>
+		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Professional Appointments</h3>
 		{#if appointmentsByDate.length > 0}
 			<ul>
 				{#each appointmentsByDate as appt (appt.id)}
@@ -219,7 +219,7 @@
 
 	<!-- Grants and Fellowships Section -->
 	<section class="mb-8">
-		<h3 class="text-2xl font-semibold mb-4 border-b pb-1">Grants & Fellowships</h3>
+		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Grants & Fellowships</h3>
 		{#if grantsByDate.length > 0}
 			<ul>
 				{#each grantsByDate as grant (grant.id)}
@@ -237,7 +237,7 @@
 
 	<!-- Awards and Honors Section -->
 	<section class="mb-8">
-		<h3 class="text-2xl font-semibold mb-4 border-b pb-1">Awards & Honors</h3>
+		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Awards & Honors</h3>
 		{#if awardsByDate.length > 0}
 			<ul>
 				{#each awardsByDate as award (award.id)}
@@ -254,7 +254,7 @@
 
 	<!-- Publications Section -->
 	<section class="mb-8">
-		<h3 class="text-2xl font-semibold mb-2 border-b pb-1">Publications</h3> 
+		<h3 class="text-2xl font-semibold mb-2 border-b border-light pb-1">Publications</h3> 
 		{#if publicationsByDate.length > 0}
 			{#each presentPublicationTypes as pubType (pubType)}
 				{#if publicationsByType[pubType] && publicationsByType[pubType].length > 0}
@@ -287,8 +287,8 @@
 									{#if pub.book}In <em>{pub.book}</em>.{/if}
 									{#if pub.publisher}{pub.publisher}.{/if}
 								{/if}
-								{#if pub.doi}<a href="https://doi.org/{pub.doi}" target="_blank" rel="noopener noreferrer" class="ml-1">[DOI]</a>{/if}
-								{#if pub.url && pub.type !== 'blogpost'}<a href="{pub.url}" target="_blank" rel="noopener noreferrer" class="ml-1">[Link]</a>{/if}
+								{#if pub.doi}<a href="https://doi.org/{pub.doi}" target="_blank" rel="noopener noreferrer" class="ml-1 text-primary hover:underline text-sm">[DOI]</a>{/if}
+								{#if pub.url && pub.type !== 'blogpost'}<a href="{pub.url}" target="_blank" rel="noopener noreferrer" class="ml-1 text-primary hover:underline text-sm">[Link]</a>{/if}
 							</li>
 						{/each}
 					</ul>
@@ -305,7 +305,7 @@
 								<!-- Simplified display for other types -->
 								<span class="font-medium">{pub.title}</span> ({pub.year}). 
 								{#if pub.type}<span class="text-sm bg-border px-1 rounded">{pub.type}</span>{/if}
-								{#if pub.url}<a href="{pub.url}" target="_blank" rel="noopener noreferrer" class="ml-1">[Link]</a>{/if}
+								{#if pub.url}<a href="{pub.url}" target="_blank" rel="noopener noreferrer" class="ml-1 text-primary hover:underline text-sm">[Link]</a>{/if}
 							</li>
 						{/each}
 					{/each}
@@ -319,7 +319,7 @@
 	<!-- Conference Participation -->
 	{#if organizedPanels.length > 0 || presentedPapers.length > 0}
 	<section class="mb-8">
-		<h3 class="text-2xl font-semibold mb-4 border-b pb-1">Conference Participation</h3>
+		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Conference Participation</h3>
 		
 		<!-- Panels Organized -->
 		{#if organizedPanels.length > 0}
@@ -356,7 +356,7 @@
 	<!-- Organization of Academic Events -->
 	{#if organizedEvents.length > 0}
 	<section class="mb-8">
-		<h3 class="text-2xl font-semibold mb-4 border-b pb-1">Organization of Academic Events</h3>
+		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Organization of Academic Events</h3>
 		<ul class="list-disc pl-6">
 			{#each organizedEvents as comm (comm.id)}
 				<li class="mb-3">
@@ -372,7 +372,7 @@
 	<!-- Invited Talks -->
 	{#if invitedTalks.length > 0}
 	<section class="mb-8">
-		<h3 class="text-2xl font-semibold mb-4 border-b pb-1">Invited Talks</h3>
+		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Invited Talks</h3>
 		<ul class="list-disc pl-6">
 			{#each invitedTalks as comm (comm.id)}
 				<li class="mb-3">
@@ -389,7 +389,7 @@
 	<!-- Optional: Other Communications -->
 	{#if otherCommunications.length > 0}
 	<section class="mb-8">
-		<h3 class="text-2xl font-semibold mb-4 border-b pb-1">Other Presentations</h3>
+		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Other Presentations</h3>
 		<ul class="list-disc pl-6">
 			{#each otherCommunications as comm (comm.id)}
 				<li class="mb-3">
@@ -404,7 +404,7 @@
 
 	<!-- Media Appearances Section -->
 	<section class="mb-8">
-		<h3 class="text-2xl font-semibold mb-4 border-b pb-1">Media Appearances</h3>
+		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Media Appearances</h3>
 		{#if mediaAppearancesByDate.length > 0}
 			<ul>
 				{#each mediaAppearancesByDate as media (media.id)}
@@ -413,7 +413,7 @@
 						<em>{media.outlet}</em>{#if media.program}, {media.program}{/if}. 
 						{new Date(media.dateISO).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}.
 						<span class="block ml-4 text-sm text-light">Topic: {media.topic}</span>
-						{#if media.url}<a href="{media.url}" target="_blank" rel="noopener noreferrer" class="ml-4 text-sm">[Link]</a>{/if}
+						{#if media.url}<a href="{media.url}" target="_blank" rel="noopener noreferrer" class="ml-4 text-primary hover:underline text-sm">[Link]</a>{/if}
 					</li>
 				{/each}
 			</ul>
@@ -424,7 +424,7 @@
 
 	<!-- NEW Service to Profession Section -->
 	<section class="mb-8">
-		<h3 class="text-2xl font-semibold mb-4 border-b pb-1">Service to Profession</h3>
+		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Service to Profession</h3>
 
 		<!-- Peer Review Section (Now nested) -->
 		{#if peerReviewsByDate.length > 0}
@@ -462,7 +462,7 @@
 
 	<!-- Fieldwork Section -->
 	<section>
-		<h3 class="text-2xl font-semibold mb-4 border-b pb-1">Fieldwork</h3>
+		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Fieldwork</h3>
 		{#if displayFieldworks.length > 0}
 			<ul>
 				{#each displayFieldworks as item (item.location)}
