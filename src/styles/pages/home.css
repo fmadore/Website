@@ -223,7 +223,7 @@
 }
 
 .enhanced-header {
-    background: linear-gradient(90deg, #f9fafb 60%, #fff 100%);
+    background: radial-gradient(circle at 30% 30%, rgba(var(--color-primary-rgb), 0.06) 0%, #f9fafb 60%, #fff 100%);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-sm);
     padding: var(--spacing-8) var(--spacing-6);
@@ -336,7 +336,7 @@ html.dark .sidebar-card {
     box-shadow: 0 2px 8px 0 rgba(0,0,0,0.5);
 }
 html.dark .enhanced-header {
-    background: linear-gradient(90deg, #232b36 60%, #181e26 100%);
+    background: radial-gradient(circle at 30% 30%, rgba(var(--color-primary-rgb), 0.15) 0%, #232b36 60%, #181e26 100%);
     border-color: var(--color-border);
     box-shadow: 0 2px 8px 0 rgba(0,0,0,0.7);
 }
@@ -397,4 +397,30 @@ html.dark .sidebar-card {
 /* Dark-mode tweaks */
 html.dark .profile-photo img {
     border-color: var(--color-primary);
+}
+
+/* Focus-visible accessibility rings */
+.profile-photo:focus-visible img {
+    outline: 3px solid var(--color-highlight);
+    outline-offset: 2px;
+}
+.profile-icons a:focus-visible {
+    outline: 2px solid var(--color-highlight);
+    outline-offset: 3px;
+}
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: no-preference) {
+    .profile-photo:hover img, .profile-photo:focus-visible img {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-lg);
+    }
+    .profile-icons a:hover :global(svg),
+    .profile-icons a:focus-visible :global(svg) {
+        transform: scale(1.15);
+    }
+    .main-content-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+    }
 }
