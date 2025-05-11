@@ -77,11 +77,13 @@
 <SEO title={`Activities (${year}) | Frédérick Madore`} />
 
 <div class="container mx-auto py-6">
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col">
         <Breadcrumb items={breadcrumbItems} />
-		<PageHeader 
-			title={`Activities in ${year}`} 
-		/>
+        <div class="year-page-header-wrapper">
+            <PageHeader 
+                title={`Activities in ${year}`} 
+            />
+        </div>
         
         <div class="year-filters flex gap-2 overflow-x-auto py-2">
             {#each allYears as y}
@@ -142,5 +144,10 @@
         text-align: center;
         padding: var(--spacing-8);
         color: var(--color-text-light);
+    }
+
+    /* Reduce PageHeader bottom margin specifically for this page */
+    .year-page-header-wrapper :global(header.page-header) {
+        margin-bottom: var(--spacing-2) !important; /* Corresponds to mb-2, reduces from mb-6 (1.5rem) to 0.5rem */
     }
 </style> 
