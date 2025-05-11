@@ -76,6 +76,27 @@
 		!['panel', 'conference', 'event', 'lecture', 'seminar'].includes(comm.type || '') 
 	);
 
+	// --- Fieldwork Grouping ---
+	$: groupedFieldworks = fieldworksByDate.reduce((acc, fw) => {
+		const location = `${fw.city}, ${fw.country}`;
+		if (!acc[location]) {
+			acc[location] = new Set<number>();
+		}
+		acc[location].add(fw.year);
+		return acc;
+	}, {} as Record<string, Set<number>>);
+
+	$: displayFieldworks = Object.entries(groupedFieldworks)
+		.map(([location, yearSet]) => {
+			return {
+				location,
+				years: Array.from(yearSet).sort((a, b) => b - a) // Sort years descending for each location
+			};
+		})
+		.sort((a, b) => { // Sort locations alphabetically
+			return a.location.localeCompare(b.location);
+		});
+
 </script>
 
 <SEO
@@ -442,13 +463,11 @@
 	<!-- Fieldwork Section -->
 	<section>
 		<h3 class="text-2xl font-semibold mb-4 border-b pb-1">Fieldwork</h3>
-		{#if fieldworksByDate.length > 0}
+		{#if displayFieldworks.length > 0}
 			<ul>
-				{#each fieldworksByDate as fw (fw.id)}
+				{#each displayFieldworks as item (item.location)}
 					<li class="mb-3">
-						<span class="font-medium">Fieldwork in {fw.city}, {fw.country}</span> ({fw.year}).
-						{#if fw.project} Project: <em>{fw.project}</em>.{/if}
-						<!-- Add more fieldwork details as needed -->
+						<span class="font-medium">{item.location}</span> ({item.years.join(', ')}).
 					</li>
 				{/each}
 			</ul>
