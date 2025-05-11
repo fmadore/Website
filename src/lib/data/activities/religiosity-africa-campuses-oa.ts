@@ -12,7 +12,7 @@ export const activity: Activity = {
         <p>The edited volume <em>Religiosity on University Campuses in Africa: Trends and Experiences</em>, which I co-edited with Abdoulaye Sounaye, is now in open access. Available for free download via <a href="https://doi.org/10.58144/20241107-000" target="_blank" rel="noreferrer noopener">ZMO's institutional repository</a>.</p>
     `,
     tags: ["Publications", "Remoboko"],
-    panelType: "Publication",
+    panelType: "publication",
     image: "", 
     heroImage: {
         src: "images/publications/religiosity-university-campuses.webp",

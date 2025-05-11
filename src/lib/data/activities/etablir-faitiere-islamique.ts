@@ -8,7 +8,7 @@ export const etablirFaitiereIslamique: Activity = {
     id: "etablir-une-faitiere-islamique",
     title: "Établir une faîtière islamique à l'échelle nationale: le cas de 4 pays d'Afrique de l'Ouest francophone",
     dateISO: activityDateISO,
-    date: formatDisplayDate(activityDateISO), // This will format to "4 March 2025"
+    date: formatDisplayDate(activityDateISO),
     year: 2025,
     description: "Comparative analysis of national Islamic umbrella organizations in four West African countries.",
     content: `

@@ -43,10 +43,9 @@
         const typeMap: Record<string, string> = {
             'conference': 'Conference',
             'workshop': 'Workshop',
-            'seminar': 'Seminar',
             'publication': 'Publication',
             'lecture': 'Lecture',
-            'event': 'Academic Event'
+            'event': 'Event'
         };
         return typeMap[type] || 'Activity';
     }
