@@ -52,7 +52,7 @@
         }
     });
 
-    const projectDescription = "These two digital exhibits on Burkina Faso, which bring together a selection of materials from the database by theme, are entry points to the collection. In addition to providing contextual information for interpreting the material presented in an interactive timeline, a selective bibliography completes the exhibit.";
+    const projectDescription = "These two digital exhibits on Islam in Burkina Faso, which bring together a selection of materials from the <a href='https://islam.zmo.de/s/westafrica/page/home' target='_blank' rel='noopener noreferrer'><em>Islam West Africa Collection</em></a> by theme, are entry points to the collection. In addition to providing contextual information for interpreting the material presented in an interactive timeline, a selective bibliography completes the exhibit.";
     const exhibit1 = {
         title: "Hajj in Burkina Faso",
         url: "https://islam.zmo.de/s/afrique_ouest/page/hadj-bf"
@@ -75,24 +75,7 @@
     <PageHeader title={projectTitle} />
 
     <div class="rounded-box shadow-md p-6 mb-8">
-        <p class="mb-4">{projectDescription}</p>
-
-        <h2 class="text-2xl font-semibold mb-4">Exhibits</h2>
-        <p class="mb-4">This project encompasses the following two digital exhibits, which utilize Timeline JS to present information interactively:</p>
-        <ul class="list-disc list-inside mb-4 space-y-2">
-            <li>
-                <a href={exhibit1.url} target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">
-                    {exhibit1.title}
-                </a>
-            </li>
-            <li>
-                <a href={exhibit2.url} target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">
-                    {exhibit2.title}
-                </a>
-            </li>
-        </ul>
-        
-        <p><strong>Key Technology:</strong> Timeline JS</p>
+        <p class="mb-4">{@html projectDescription}</p>
     </div>
 
     <section class="visualization-section">
@@ -143,10 +126,6 @@
         margin-bottom: var(--spacing-4);
     }
 
-    .mb-6 { /* This might be unused now if all major sections use mb-4 or mb-8 via classes */
-        margin-bottom: var(--spacing-6);
-    }
-    
     .text-2xl {
         font-size: 1.5rem; /* var(--font-size-xl or xxl depending on your scale) */
     }
@@ -155,35 +134,7 @@
         font-weight: 600; /* var(--font-weight-semibold) */
     }
 
-    .list-disc {
-        list-style-type: disc;
-    }
-
-    .list-inside {
-        list-style-position: inside;
-    }
-    
-    .space-y-2 > :not([hidden]) ~ :not([hidden]) {
-        --tw-space-y-reverse: 0;
-        margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse))); /* Corresponds to var(--spacing-2) */
-        margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
-    }
-
-    .text-primary {
-        color: var(--color-primary);
-    }
-    .text-primary:hover {
-        color: var(--color-primary-dark);
-    }
-    .hover\:underline:hover {
-        text-decoration-line: underline;
-    }
-
-    /* mt-8 class utility, if needed elsewhere, or can be removed if specific to old structure */
-    .mt-8 {
-        margin-top: var(--spacing-8); /* 2rem if spacing unit is 0.25rem */
-    }
-     .mt-6 {
+    .mt-6 {
         margin-top: var(--spacing-6);
     }
     .mb-3 {
