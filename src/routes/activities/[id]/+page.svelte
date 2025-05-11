@@ -22,7 +22,7 @@
     $: activity = data.activity;
     $: jsonLdString = data.jsonLdString;
 
-    // Helper function to truncate title at the first colon
+    // Helper function to truncate title at the first colon (copied from publications page)
     function truncateTitle(title: string): string {
         const colonIndex = title.indexOf(':');
         return colonIndex > -1 ? title.substring(0, colonIndex) + '...' : title;
@@ -135,7 +135,7 @@
 
 {#if activity}
     <SEO 
-        title={`${activity.title} | Frédérick Madore`}
+        title={`${truncateTitle(activity.title)} | Frédérick Madore`}
         description={activity.description}
         keywords={formattedTags.join(', ')}
         type="article"
