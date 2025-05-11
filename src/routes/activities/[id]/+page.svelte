@@ -11,6 +11,12 @@
     import { onMount, onDestroy } from 'svelte';
     import { browser } from '$app/environment';
 
+    // Added imports for consistency
+    import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
+    import TagList from '$lib/components/molecules/TagList.svelte';
+    import ActionLinks from '$lib/components/molecules/ActionLinks.svelte';
+    import AbstractSection from '$lib/components/molecules/AbstractSection.svelte';
+
     // Get data from the load function
     export let data: PageData;
     $: activity = data.activity;
@@ -39,6 +45,12 @@
             "item": `${$page.url.origin}${item.href}`
         }))
     });
+
+    // Helper function to format panelType for display
+    function formatPanelType(panelType: string | undefined): string {
+        if (!panelType) return '';
+        return panelType.charAt(0).toUpperCase() + panelType.slice(1);
+    }
 
     const activityJsonLdScriptId = 'activity-json-ld';
     const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
@@ -131,96 +143,91 @@
     />
 {/if}
 
-<div class="container mx-auto py-6 px-4">
+<div class="container mx-auto py-8 px-4">
     {#if activity}
-        <Breadcrumb items={breadcrumbItems} />
-        <PageHeader 
-            title={activity.title}
-            date={activity.date}
-            tags={formattedTags}
-        />
-    {/if}
-    
-    {#if activity.heroImage}
-        <div class="activity-hero mb-6">
-            <figure> <img 
-                src="{base}/{activity.heroImage.src}" 
-                alt={activity.heroImage.alt} 
-                class="activity-image"
-            >
-            {#if activity.heroImage.caption}
-                <figcaption class="activity-image-caption">
-                    {activity.heroImage.caption}
-                </figcaption>
-            {/if} </figure>
-        </div>
-    {/if}
-    
-    <div class="activity-content">
-        <!-- Render parsed content segments -->
-        {#each contentSegments as segment}
-            {#if segment.type === 'html'}
-                {@html segment.value}
-            {:else if segment.type === 'ItemReference' && segment.id}
-                <ItemReference id={segment.id} />
+        <article class="activity-article rounded-lg p-6 mb-8">
+            <Breadcrumb items={breadcrumbItems} />
+            <PageHeader 
+                title={activity.title}
+                date={activity.date}
+                typeBadgeText={formatPanelType(activity.panelType)}
+            />
+            
+            {#if activity.heroImage && activity.heroImage.src}
+                <HeroImageDisplay 
+                    heroImage={{ src: `${base}/${activity.heroImage.src}`, alt: activity.heroImage.alt ?? activity.title, caption: activity.heroImage.caption }}
+                    imageClass="w-full max-w-md h-auto rounded-md mx-auto"
+                    figcaptionClass="text-text-muted text-sm mt-2 italic text-center"
+                />
             {/if}
-        {/each}
-    </div>
 
-    {#if activity.pdfPath}
-        <div class="pdf-section mt-8">
-            <h2 class="text-xl font-semibold mb-4">
-                {activity.pdfTitle || 'Associated PDF Document'}
-            </h2>
-            <iframe 
-                src="{base}/{activity.pdfPath}" 
-                title="{activity.title} PDF Document" 
-                width="100%" 
-                height="800px" 
-                style="border: 1px solid var(--color-border);" 
-                loading="lazy"
-            ></iframe>
-            <a href="{base}/{activity.pdfPath}" download="{activity.id}.pdf" class="pdf-download-link mt-4 inline-block">
-                Download PDF
-            </a>
-        </div>
+            <div class="activity-content">
+                <!-- Render parsed content segments -->
+                {#each contentSegments as segment}
+                    {#if segment.type === 'html'}
+                        {@html segment.value}
+                    {:else if segment.type === 'ItemReference' && segment.id}
+                        <ItemReference id={segment.id} />
+                    {/if}
+                {/each}
+            </div>
+
+            {#if activity.pdfPath}
+                <div class="pdf-section mt-8">
+                    <h2 class="text-xl font-semibold mb-4 text-text-headings">
+                        {activity.pdfTitle || 'Associated Document'}
+                    </h2>
+                    <iframe 
+                        src="{base}/{activity.pdfPath}" 
+                        title="{activity.title} PDF Document" 
+                        width="100%" 
+                        height="800px" 
+                        style="border: 1px solid var(--color-border);" 
+                        loading="lazy"
+                    ></iframe>
+                </div>
+            {/if}
+
+            {#if formattedTags && formattedTags.length > 0}
+                <TagList tags={formattedTags} baseUrl="/activities?tag=" sectionClass="mt-6 mb-6" />
+            {/if}
+            
+            {#if activity.pdfPath}
+                <ActionLinks 
+                    primaryUrl={`{base}/${activity.pdfPath}`}
+                    primaryLabel="Access Document"
+                    sectionClass="mt-6" 
+                />
+            {/if}
+        </article>
     {/if}
-    
-    <div class="activity-footer">
-        <div class="share-buttons">
-            <!-- Share buttons could go here -->
-        </div>
-        
-        <a href="{base}/activities" class="back-button">
-            View all activities
-        </a>
-    </div>
 </div>
 
 <style>
-    /* Removed styles for .activity-header, .back-link, .activity-meta */
-    
-    /* Keep .activity-date styling if needed elsewhere, or move to PageHeader/global */
-    /* Removed .activity-date */
-    
-    /* Keep .activity-tags styling if needed elsewhere, or move to PageHeader/global */
-    /* Removed .activity-tags */
-    
-    /* Keep .tag styling if needed elsewhere, or move to PageHeader/global */
-    /* Removed .tag */
+    /* Theme styles for main article container */
+    .activity-article {
+        background-color: var(--color-background);
+        box-shadow: var(--shadow-md);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
 
-    /* Removed .activity-title */
-
+    /* Removed styles for .activity-header, .back-link, .activity-meta, .activity-date, .activity-tags, .tag, .activity-title */
+    /* Removed .activity-hero figcaption (handled by HeroImageDisplay or its classes) */
+    /* Removed .pdf-download-link (handled by ActionLinks) */
+    
     .activity-content {
         margin-top: var(--spacing-6);
     }
     
-    .activity-hero figcaption {
+    /* This style for HeroImageDisplay's caption might be redundant if figcaptionClass on component works as expected */
+    /* Keeping it just in case HeroImageDisplay doesn't fully style its caption or needs this as a global override */
+    /* However, ideally this would be handled by the component's own styling or props like figcaptionClass */
+    /* .activity-hero figcaption { 
         font-size: var(--font-size-sm);
         color: var(--color-text-light);
         text-align: center;
         margin-top: var(--spacing-2);
-    }
+    } */
     
     .activity-content :global(h2) {
         font-size: var(--font-size-2xl);
@@ -245,17 +252,5 @@
         margin-bottom: var(--spacing-4);
     }
 
-    .pdf-download-link {
-        /* Add styling for the download link */
-        background-color: var(--color-primary);
-        color: white;
-        padding: var(--spacing-2) var(--spacing-4);
-        border-radius: var(--border-radius);
-        text-decoration: none;
-        transition: background-color 0.3s;
-    }
-
-    .pdf-download-link:hover {
-        background-color: var(--color-primary-dark);
-    }
+    /* Styles for pdf-download-link are removed as ActionLinks should handle button/link styling */
 </style> 

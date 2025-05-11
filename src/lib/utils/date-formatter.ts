@@ -11,7 +11,7 @@ export function formatDisplayDate(isoDate: string): string {
     const date = new Date(isoDate);
     
     // Format the date as "DD Month YYYY"
-    return date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString('en-GB', {
         day: 'numeric',
         month: 'long',
         year: 'numeric'
