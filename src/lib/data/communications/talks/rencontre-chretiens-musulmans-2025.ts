@@ -19,7 +19,7 @@ export const talkRencontreChretiensMusulmans2025: Communication = {
     image: "images/communications/EHESS-2025.webp",
     heroImage: {
         src: "images/communications/EHESS-2025-hero.webp",
-        alt: "École des hautes études en sciences sociales (EHESS)",
+        alt: "Flyer announcing Frédérick Madore's lecture series at EHESS in May 2025",
     },
     coordinates: {
         latitude: 48.911008116361714, 
