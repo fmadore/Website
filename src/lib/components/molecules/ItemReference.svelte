@@ -33,12 +33,20 @@
     });
   
     /* ───────────────────────── Derived data ──────────────────────────── */
-    const item: Publication | Communication | undefined =
-      allPublications.find(p => p.id === id) ??
-      allCommunications.find(c => c.id === id);
-  
-    const itemType: 'publication' | 'communication' | undefined =
-      item && 'journal' in item ? 'publication' : item ? 'communication' : undefined;
+    let item: Publication | Communication | undefined;
+    let itemType: 'publication' | 'communication' | undefined;
+
+    const publicationItem = allPublications.find(p => p.id === id);
+    if (publicationItem) {
+      item = publicationItem;
+      itemType = 'publication';
+    } else {
+      const communicationItem = allCommunications.find(c => c.id === id);
+      if (communicationItem) {
+        item = communicationItem;
+        itemType = 'communication';
+      }
+    }
   
     /* ──────────────────────── Local state ────────────────────────────── */
     let showPreview = false;          // Preview visibility state
