@@ -1,281 +1,174 @@
 <script lang="ts">
+    /**
+     * ReferenceLinkWithPreview.svelte  ────────────────────────────────────────────
+     * Inline reference that shows a hover/click‑activated preview card.
+     * Re‑written for improved readability, accessibility, and maintainability.
+     * ---------------------------------------------------------------------------
+     * Usage: <ReferenceLinkWithPreview id="my‑item‑id" />
+     */
+  
+    import { onMount } from 'svelte';
+    import { browser } from '$app/environment';
+    import { crossfade, fade } from 'svelte/transition';
+    import { quintOut } from 'svelte/easing';
+    import { get } from 'svelte/store';
+  
     import { allPublications } from '$lib/data/publications/index';
     import { allCommunications } from '$lib/data/communications/index';
     import type { Publication, Communication } from '$lib/types';
-    import { onMount, onDestroy } from 'svelte';
-    import { browser } from '$app/environment';
+  
     import ReferenceLink from '$lib/components/atoms/ReferenceLink.svelte';
     import ReferencePreviewCard from '$lib/components/atoms/ReferencePreviewCard.svelte';
-    import { crossfade, fade } from 'svelte/transition';
-    import { quintOut } from 'svelte/easing';
     import { activeReferenceId } from '$lib/stores/activeItemReferenceStore';
-
-    // Set up crossfade transitions
-    const [send, receive] = crossfade({
-        duration: 300,
-        easing: quintOut,
-        fallback(node) {
-            return fade(node, { 
-                duration: 200, 
-                easing: quintOut 
-            });
-        }
-    });
-
-    // Prop: ID of the item to reference
+  
+    /* ───────────────────────────── Props ─────────────────────────────── */
+    /** ID of the referenced item. */
     export let id: string;
-
-    // Find the item data and type
-    let item: Publication | Communication | undefined;
-    let itemType: 'publication' | 'communication' | undefined;
-
-    // Search logic
-    $: {
-        item = allPublications.find(p => p.id === id);
-        if (item) {
-            itemType = 'publication';
-        } else {
-            item = allCommunications.find(c => c.id === id);
-            if (item) {
-                itemType = 'communication';
-            }
-        }
+  
+    /* ────────────────────────── Cross‑fade setup ─────────────────────── */
+    const [send, receive] = crossfade({
+      duration: 300,
+      easing: quintOut,
+      fallback: (node: Element) => fade(node, { duration: 200, easing: quintOut })
+    });
+  
+    /* ───────────────────────── Derived data ──────────────────────────── */
+    const item: Publication | Communication | undefined =
+      allPublications.find(p => p.id === id) ??
+      allCommunications.find(c => c.id === id);
+  
+    const itemType: 'publication' | 'communication' | undefined =
+      item && 'journal' in item ? 'publication' : item ? 'communication' : undefined;
+  
+    /* ──────────────────────── Local state ────────────────────────────── */
+    let showPreview = false;          // Preview visibility state
+    let viaClick = false;             // True if preview opened with click/tap
+    let positionBelow = false;        // Position card above/below the link
+    let spanEl: HTMLElement;          // Reference <span> element
+    let closeTimer: number | null = null;
+  
+    /* ─────────────────────── Helper functions ────────────────────────── */
+    function clearCloseTimer() {
+      if (closeTimer !== null) {
+        clearTimeout(closeTimer);
+        closeTimer = null;
+      }
     }
-
-    let showPreview = false; // Controls visibility
-    let isOpenedByClick = false; // Track if opened via click/tap
-    let referenceElement: HTMLElement; // Bind to the main span
-    let positionClass = ''; // Class for positioning ('' or 'position-below')
-    let closeTimeoutId: number | null = null; // Timeout ID for delayed close
-
-    // --- Store Subscription ---
-    // Close this instance if another is opened via click
-    $: {
-        if (browser && $activeReferenceId !== null && $activeReferenceId !== id && isOpenedByClick) {
-            showPreview = false;
-            isOpenedByClick = false;
-        }
+  
+    function startCloseTimer(delay = 150) {
+      clearCloseTimer();
+      closeTimer = window.setTimeout(() => {
+        if (!viaClick) showPreview = false;
+      }, delay);
     }
-
-    // --- Event Handlers ---
-    function cancelCloseTimer() {
-        if (closeTimeoutId) {
-            clearTimeout(closeTimeoutId);
-            closeTimeoutId = null;
-        }
+  
+    /** Toggle preview; `force` overrides the natural toggle behaviour. */
+    function togglePreview(force?: boolean) {
+      showPreview = force ?? !showPreview;
+      viaClick = showPreview;
+      activeReferenceId.set(showPreview ? id : null);
     }
-
-    function startCloseTimer() {
-        cancelCloseTimer(); // Clear any existing timer
-        closeTimeoutId = window.setTimeout(() => {
-            if (!isOpenedByClick) { // Only close if not opened by click
-                 showPreview = false;
-            }
-            closeTimeoutId = null;
-        }, 150); // 150ms delay
+  
+    function handleOutsideClick(event: MouseEvent) {
+      if (!spanEl.contains(event.target as Node) && showPreview && viaClick) {
+        togglePreview(false);
+      }
     }
-
-    function handlePointerEnterReference() {
-        cancelCloseTimer();
-        if (!isOpenedByClick) {
-            showPreview = true;
-        }
-    }
-
-    function handlePointerLeaveReference() {
-        startCloseTimer();
-    }
-    
-    function handlePointerEnterCard() {
-        // Entering the card also cancels the close timer
-        cancelCloseTimer();
-    }
-    
-    function handlePointerLeaveCard() {
-        // Leaving the card restarts the close timer
-        startCloseTimer();
-    }
-
-    function handleFocusIn() {
-        cancelCloseTimer();
-        if (!isOpenedByClick) {
-            showPreview = true;
-        }
-    }
-
-    function handleFocusOut(event: FocusEvent) {
-        // Check if focus moved completely outside the component
-        const relatedTarget = event.relatedTarget as Node;
-        const previewElement = document.querySelector(`#item-preview-${id}`);
-        const staysWithinComponent = 
-            referenceElement.contains(relatedTarget) || 
-            (previewElement && previewElement.contains(relatedTarget));
-        
-        if (!staysWithinComponent && !isOpenedByClick) {
-            showPreview = false;
-        }
-    }
-
-    // Combined click/tap handler for the reference span
-    function handleClick(event: MouseEvent | TouchEvent | KeyboardEvent) {
-        // Determine if this was within the card or on the span
-        const targetElement = event.target as HTMLElement;
-        const previewElement = document.querySelector(`#item-preview-${id}`);
-        const clickedWithinCard = previewElement && previewElement.contains(targetElement);
-                                 
-        // If clicked within card and not a keyboard event, let it bubble naturally
-        if (clickedWithinCard && !(event instanceof KeyboardEvent)) {
-            return;
-        }
-        
-        // Handle the click based on current state
-        if (!showPreview) {
-            cancelCloseTimer();
-            showPreview = true;
-            isOpenedByClick = true;
-            activeReferenceId.set(id);
-            if (!(event instanceof KeyboardEvent)) event.preventDefault();
-        } else if (showPreview && isOpenedByClick) {
-            showPreview = false;
-            isOpenedByClick = false;
-            activeReferenceId.update(currentId => (currentId === id ? null : currentId));
-            if (!(event instanceof KeyboardEvent)) event.preventDefault();
-        } else if (showPreview && !isOpenedByClick) {
-            cancelCloseTimer();
-            isOpenedByClick = true;
-            activeReferenceId.set(id);
-            if (!(event instanceof KeyboardEvent)) event.preventDefault();
-        }
-    }
-
-    // Keyboard handler for accessibility
-    function handleKeyDown(event: KeyboardEvent) {
-        if (event.key === 'Enter' || event.key === ' ') {
-            if (event.key === ' ') event.preventDefault();
-            handleClick(event);
-        }
-        // Allow Escape key to close the card if opened by click
-        if (event.key === 'Escape' && showPreview && isOpenedByClick) {
-            showPreview = false;
-            isOpenedByClick = false;
-            activeReferenceId.update(currentId => (currentId === id ? null : currentId));
-        }
-    }
-
-    // Global click listener to handle clicking outside
-    function handleClickOutside(event: MouseEvent) {
-        const targetElement = event.target as HTMLElement;
-        const previewElement = document.querySelector(`#item-preview-${id}`);
-        const clickedOutside = !referenceElement.contains(targetElement) && 
-                              !(previewElement && previewElement.contains(targetElement));
-        
-        if (clickedOutside && showPreview && isOpenedByClick) {
-            showPreview = false;
-            isOpenedByClick = false;
-            activeReferenceId.update(currentId => (currentId === id ? null : currentId));
-        }
-    }
-
-    // --- Lifecycle ---
+  
+    /* ───────────────────────── Lifecycle ─────────────────────────────── */
     onMount(() => {
-        if (browser) {
-            document.addEventListener('click', handleClickOutside, true);
-            
-            // Calculate position class
-            const handleResize = () => {
-                if (showPreview && referenceElement) {
-                    const refRect = referenceElement.getBoundingClientRect();
-                    const previewHeight = 250; // Approximate preview card height
-                    const spaceAbove = refRect.top;
-                    const spaceBelow = window.innerHeight - refRect.bottom;
-                    
-                    // Update position class based on available space
-                    if (spaceBelow >= previewHeight || spaceAbove < previewHeight) {
-                        positionClass = 'position-below';
-                    } else {
-                        positionClass = '';
-                    }
-                }
-            };
-            
-            window.addEventListener('resize', handleResize);
-            
-            return () => {
-                window.removeEventListener('resize', handleResize);
-            };
-        }
+      if (!browser) return;
+  
+      document.addEventListener('click', handleOutsideClick, true);
+  
+      return () => {
+        document.removeEventListener('click', handleOutsideClick, true);
+        clearCloseTimer();
+      };
     });
-
-    onDestroy(() => {
-        if (browser) {
-            document.removeEventListener('click', handleClickOutside, true);
-            cancelCloseTimer();
-            if ($activeReferenceId === id) {
-                activeReferenceId.set(null);
-            }
+  
+    /* Close this preview if another one was opened via click */
+    $: if (get(activeReferenceId) !== id && viaClick) {
+      togglePreview(false);
+    }
+  
+    /* Re‑compute card position when preview toggles */
+    $: if (showPreview && spanEl) {
+      const { top, bottom } = spanEl.getBoundingClientRect();
+      const previewHeight = 250; // Approximate height; could be made reactive.
+      positionBelow = window.innerHeight - bottom < previewHeight && top > previewHeight;
+    }
+  </script>
+  
+  {#if item && itemType}
+    <span
+      bind:this={spanEl}
+      class="item-reference {showPreview ? 'preview-visible' : ''}"
+      role="button"
+      tabindex="0"
+      aria-haspopup="dialog"
+      aria-expanded={showPreview}
+      aria-controls={showPreview ? `item-preview-${id}` : undefined}
+  
+      on:pointerenter={() => !viaClick && (showPreview = true)}
+      on:pointerleave={() => startCloseTimer()}
+      on:focus={() => !viaClick && (showPreview = true)}
+      on:blur={() => !viaClick && (showPreview = false)}
+  
+      on:keydown={(e: KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          togglePreview();
         }
-    });
-</script>
-
-{#if item && itemType}
-    <span 
-        bind:this={referenceElement} 
-        class="item-reference"
-        class:preview-visible={showPreview}
-        on:pointerenter={handlePointerEnterReference} 
-        on:pointerleave={handlePointerLeaveReference}
-        on:focusin={handleFocusIn}
-        on:focusout={handleFocusOut}
-        on:click={handleClick}
-        on:touchstart={handleClick}
-        on:keydown={handleKeyDown}
-        tabindex="0"
-        role="button"
-        aria-haspopup="dialog"
-        aria-expanded={showPreview}
-        aria-controls={showPreview ? `item-preview-${id}` : undefined}
+        if (e.key === 'Escape') togglePreview(false);
+      }}
+  
+      on:click={(e: MouseEvent) => {
+        e.preventDefault();
+        togglePreview();
+      }}
     >
-        <ReferenceLink {item} {itemType} {id} hasPopup={true} />
-
-        {#if showPreview}
-            <div 
-                id="item-preview-{id}"
-                in:receive={{key: `preview-${id}`}}
-                out:send={{key: `preview-${id}`}}
-            >
-                <ReferencePreviewCard 
-                    {item}
-                    {itemType}
-                    referenceElement={referenceElement}
-                    {positionClass}
-                    on:pointerenter={handlePointerEnterCard}
-                    on:pointerleave={handlePointerLeaveCard}
-                />
-            </div>
-        {/if}
+      <ReferenceLink {item} {itemType} {id} hasPopup />
+  
+      {#if showPreview}
+        <div
+          id="item-preview-{id}"
+          in:receive={{ key: `preview-${id}` }}
+          out:send={{ key: `preview-${id}` }}
+          class:position-below={positionBelow}
+          on:pointerenter={clearCloseTimer}
+          on:pointerleave={() => startCloseTimer()}
+        >
+          <ReferencePreviewCard {item} {itemType} referenceElement={spanEl} />
+        </div>
+      {/if}
     </span>
-{:else}
-    <!-- Fallback if item ID is not found -->
+  {:else}
+    <!-- Fallback if the ID is unknown -->
     <span class="item-reference-error">[Ref: {id}?]</span>
-{/if}
-
-<style>
+  {/if}
+  
+  <style>
     .item-reference {
-        position: relative;
-        display: inline-block; 
-        cursor: pointer;
-        -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent; /* iOS */
     }
-    
-    .item-reference:hover,
-    .item-reference:focus {
-        outline: none; /* Remove default focus outline */
+  
+    .item-reference.preview-visible {
+      text-decoration: underline;
     }
-    
+  
+    .position-below {
+      bottom: 100%;
+    }
+  
     .item-reference-error {
-        color: #d9534f; 
-        font-style: italic;
-        font-size: 0.9em;
-        cursor: not-allowed;
+      color: #d9534f;
+      font-style: italic;
+      font-size: 0.9em;
+      cursor: not-allowed;
     }
-</style> 
+  </style>
+  
