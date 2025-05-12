@@ -3,7 +3,7 @@ import type { Publication } from '$lib/types';
 export const lutteTerrorismeSalafismeBeninTogo: Publication = {
     id: "lutte-terrorisme-salafisme-benin-togo-2022",
     type: "report",
-    title: "Lutte contre le terrorisme et sécuritisation du salafisme au Bénin et au Togo: instrumentalisations diverses d'une 'menace étrangère'",
+    title: "Lutte contre le terrorisme et sécuritisation du salafisme au Bénin et au Togo: instrumentalisations diverses d'une « menace étrangère »",
     authors: ["Frédérick Madore"],
     date: "2022",
     dateISO: "2022-10",
