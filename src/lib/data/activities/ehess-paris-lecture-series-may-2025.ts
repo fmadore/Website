@@ -23,7 +23,7 @@ export const ehessParisLectureSeries2025: Activity = {
     image: "images/communications/EHESS-2025.webp",
     heroImage: {
         src: "images/communications/EHESS-2025-hero.webp",
-        alt: "Flyer announcing Frédérick Madore's lecture series at EHESS in May 2025",
+        alt: "Promotional flyer for Frédérick Madore's May 2025 lecture series at EHESS, Paris, featuring talks on Islam in West Africa, digital humanities, religious coexistence, and student activism.",
     },
     pdfPath: "files/prog-professeurs-invites_2024-2025_madore.pdf",
     pdfTitle: "Flyer",
