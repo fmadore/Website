@@ -11,6 +11,7 @@ export const madore2025PerspectivesInMotion: Publication = {
     journal: "ZMO Bulletin",
     issue: "46",
     pages: "7",
+    pageCount: 1,
     language: "English",
     doi: "10.58144/20250401-000",
     abstract: "The workshop organised by the Religion and Intellectual Culture unit at ZMO explored how non-Western epistemologies hallenge and enrich dominant paradigms in decolonial knowledge production. Opening remarks by Arpan Roy, Kai Kresse, and Abdoulaye Sounaye framed discussions of processes of conceptualisation in postcolonial contexts and the transformative potential of such alternative frameworks.",

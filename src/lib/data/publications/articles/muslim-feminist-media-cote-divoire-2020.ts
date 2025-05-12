@@ -12,6 +12,7 @@ export const muslimFeministMediaCoteDIvoire: Publication = {
     volume: "67",
     issue: "2-3",
     pages: "17-38",
+    pageCount: 22,
     language: "English",
     doi: "10.2979/africatoday.67.2_3.02",
     abstract: "This article analyzes the career path of Aminata Kane Koné, a highly educated Ivorian Muslim woman, who has emerged as a female figure of success. A prominent activist of the Association des Élèves et Étudiants Musulmans de Côte d'Ivoire in the 2000s, she has become a self-made religious entrepreneur through media and social initiatives. She has overcome social constraints to establish herself as a highly mediatized Muslim public intellectual, influential not only in Islamic circles, but within the broader society. Her case illustrates ways in which relationships between gender and Islamic authority are changing in West Africa. She embodies a uniquely hybrid feminism, influenced by her secular education and her Muslim faith.",

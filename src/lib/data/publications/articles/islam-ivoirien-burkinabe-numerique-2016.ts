@@ -11,6 +11,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
     journal: "Journal des anthropologues",
     issue: "146-147",
     pages: "151-178",
+    pageCount: 28,
     language: "French",
     doi: "10.4000/jda.6525",
     abstract: "Á partir des cas ivoirien et burkinabé, cet article propose d'explorer les contenus de l'islam à l'ère du web et des réseaux sociaux, d'en présenter les conséquences sur l'identité, l'appartenance à la communauté, l'autorité spirituelle et la diffusion du message religieux ainsi que sur les nouvelles formes de religiosité qui sont apparues. Dans un contexte régional marqué par une vague d'attentats terroristes, cette recherche interroge les liens entre ce médium et la radicalisation de certains acteurs musulmans.",

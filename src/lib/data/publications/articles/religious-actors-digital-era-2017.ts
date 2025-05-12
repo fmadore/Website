@@ -11,6 +11,7 @@ export const religiousActorsDigitalEra: Publication = {
     journal: "Émulations",
     issue: "24",
     pages: "11-22",
+    pageCount: 12,
     language: "French",
     doi: "10.14428/emulations.024.001",
     abstract: "Depuis l’étude pionnière d’O’Leary (1996) et surtout à partir des années 2000, tout un champ de recherche s’est développé sur la façon dont la religion s’inscrit dans les médias numériques – sites web, forums, blogues, médias de diffusion en ligne, réseaux sociaux, etc.",

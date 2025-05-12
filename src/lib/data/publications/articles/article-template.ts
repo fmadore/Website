@@ -13,6 +13,7 @@ export const articleTemplate: Publication = {
     volume: "1",
     issue: "2",
     pages: "100-120",
+    pageCount: 0, // Total number of pages
     language: "English",
     doi: "10.0000/00000", // Add DOI when available
     abstract: "A comprehensive description of the article's content, methodology, findings, and significance. This abstract will be used in list views and as a preview of the publication.",

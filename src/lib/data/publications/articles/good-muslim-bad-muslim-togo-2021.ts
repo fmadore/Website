@@ -12,6 +12,7 @@ export const goodMuslimBadMuslimTogo: Publication = {
     volume: "59",
     issue: "2",
     pages: "197-217",
+    pageCount: 21,
     language: "English",
     doi: "10.1017/S0022278X21000094",
     abstract: "In Togo, the opposition movement behind the anti-government protests that broke out in 2017–2018 appears to reflect a greater role for Islam in politics. Tikpi Atchadam, leader of the Parti National Panafricain, was the preeminent figure in the movement, having built a solid grassroots base among his fellow Muslims. This article examines the unique role that Muslim leaders played in these protests, as well as the Faure Gnassingbé regime's strategic response. The ruling party made spurious claims against Muslim opponents, associating them with a dangerous wave of political Islam. I argue that by portraying Atchadam as the leader of a radical ethnic and religious movement with Islamist goals, Faure Gnassingbé and his supporters sought to weaken this emerging challenger and deter members of the public from backing calls for political change. The strategy also helped garner support from Western countries while simultaneously driving a wedge between Muslim community leaders.",
