@@ -13,6 +13,7 @@ export const imamsIslamicPreachersOuagadougou: Publication = {
     placeOfPublication: "Durham, NC",
     publisher: "Carolina Academic Press",
     pages: "183-213",
+    pageCount: 30,
     language: "English",
     tags: ["Burkina Faso", "Ouagadougou", "imams", "Islamic preachers", "public space", "Muslim public sphere", "intergenerational relationships"],
     url: "https://cap-press.com/books/isbn/9781531007317/Perspectives-on-Religious-Landscape-in-Africa",

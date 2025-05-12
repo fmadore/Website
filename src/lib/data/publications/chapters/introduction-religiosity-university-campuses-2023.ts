@@ -13,6 +13,7 @@ export const introductionReligiosityUniversityCampuses: Publication = {
     placeOfPublication: "Berlin",
     publisher: "LIT Verlag",
     pages: "3-21",
+    pageCount: 19,
     language: "English",
     tags: ["Africa", "university campuses", "religiosity", "higher education", "religious movements"],
     url: "https://doi.org/10.58144/20241107-000",

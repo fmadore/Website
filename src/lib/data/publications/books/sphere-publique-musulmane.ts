@@ -10,6 +10,7 @@ export const spherePubliqueMusulmane: Publication = {
     year: 2016,
     placeOfPublication: "Québec/Paris",
     publisher: "Presses de l'Université Laval/Hermann",
+    pageCount: 220,
     language: "French",
     isbn: "978-2-7637-2811-7",
     series: "Religions, cultures et sociétés",

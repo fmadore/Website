@@ -13,6 +13,7 @@ export const religionInternetBurkinaFaso: Publication = {
     placeOfPublication: "Dakar",
     publisher: "Amalion",
     pages: "263-288",
+    pageCount: 26,
     language: "English",
     tags: ["Burkina Faso", "religion", "internet", "digital media", "ICT", "communication technologies"],
     url: "https://www.amalion.net/catalogue/religious-encounters-and-social-dynamics-in-burkina-faso/",

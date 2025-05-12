@@ -11,6 +11,7 @@ export const religiousActivismCampuses: Publication = {
     year: 2025,
     placeOfPublication: "Berlin",
     publisher: "De Gruyter",
+    pageCount: 308,
     language: "English",
     isbn: "978-3-11-142790-4",
     series: "ZMO-Studien 48",

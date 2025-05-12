@@ -13,6 +13,7 @@ export const religieuxInternetNTICBurkinaFaso: Publication = {
     placeOfPublication: "Dakar",
     publisher: "Amalion",
     pages: "269-296",
+    pageCount: 28,
     language: "French",
     tags: ["Burkina Faso", "religion", "internet", "NTIC", "médias numériques", "technologies de communication"],
     url: "https://www.amalion.net/catalogue/rencontres-religieuses-et-dynamiques-sociales-au-burkina-faso/",

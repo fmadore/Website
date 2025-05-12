@@ -14,6 +14,7 @@ export const chapterTemplate: Publication = {
     placeOfPublication: "City, Country",
     publisher: "Publisher Name",
     pages: "100-120", // Page range of the chapter
+    pageCount: 0, // Total number of pages
     language: "English",
     doi: "", // Add DOI if available
     abstract: "A comprehensive description of the chapter's content, methodology, findings, and significance. This abstract will be used in list views and as a preview of the publication.",

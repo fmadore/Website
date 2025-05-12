@@ -13,6 +13,7 @@ export const leadersMuslimNGOsBurkinaFaso: Publication = {
     placeOfPublication: "London",
     publisher: "Pluto Press",
     pages: "105-123",
+    pageCount: 19,
     language: "English",
     doi: "10.2307/j.ctt1gk0810.11",
     abstract: "The chapter begins with an examination of how NGO leaders build their personal networks and put them to use. Not only have these individuals been able to attract significant financial support from certain Arab countries since the 1980s, they are also often seen as official representatives of Burkina Faso by the authorities in these donor countries, further underscoring their success as religious entrepreneurs. The second part of the chapter explores how NGO leaders have sought to fully participate in a moral economy by pursuing activities in various fields. As they have expanded their scope of action, they have actively and reactively engaged with the state. Indeed, as a form of civic engagement, these activities inevitably lead to interactions with the complex state regulations.",

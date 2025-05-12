@@ -13,6 +13,7 @@ export const islamUniversityCampusesCoteDIvoire: Publication = {
     placeOfPublication: "Berlin",
     publisher: "LIT Verlag",
     pages: "273-307",
+    pageCount: 35,
     language: "English",
     abstract: "Drawing on the case of the Association des Élèves et Étudiants Musulmans de Côte d’Ivoire (AEEMCI), the main Muslim student association in Côte d’Ivoire, we examine how Islamic activism on campus has changed since the 1970s. We pay particular attention to its modernizing agenda, leadership rivalries, ideological differences and the role played by the mosque in Muslim politics on campus. We do so by highlighting different eras or cohorts of actors who have contributed to making Islam such an important part of students’ lives and the academic sphere. The chapter first examines the AEEMCI’s contribution to the emergence of an elite claiming the status of so-called Muslim intellectuals and, above all, to the gradual rise of French as a legitimate language for propagating Islam in Côte d’Ivoire. Second, in the context of the wider spread of Salafism in the 1990s and 2000s, it analyses the appeal of this religious movement among students on campus and the resulting internal divisions. Finally, the third section argues that over the past decade, most Muslim activists on campus have become more interested in the promotion of economic entrepreneurship rather than engaging in acrimonious doctrinal debates.",
     tags: ["Côte d'Ivoire", "Islam", "university campuses", "Salafism", "Muslim intellectuals", "higher education"],
