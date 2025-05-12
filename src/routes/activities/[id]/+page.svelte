@@ -191,14 +191,6 @@
             {#if formattedTags && formattedTags.length > 0}
                 <TagList tags={formattedTags} baseUrl="/activities?tag=" sectionClass="mt-6 mb-6" />
             {/if}
-            
-            {#if activity.pdfPath}
-                <ActionLinks 
-                    primaryUrl={`{base}/${activity.pdfPath}`}
-                    primaryLabel="Access Document"
-                    sectionClass="mt-6" 
-                />
-            {/if}
         </article>
     {/if}
 </div>
