@@ -13,6 +13,7 @@ export const communauteMusulmaneBurkinaFaso: Publication = {
     editors: "Kate Fleet, Gudrun Krämer, Denis Matringe, John Nawas, Everett Rowson",
     placeOfPublication: "Leiden",
     pages: "66-67",
+    pageCount: 2,
     language: "English",
     doi: "10.1163/1573-3912_ei3_com_27698",
     url: "https://doi.org/10.1163/1573-3912_ei3_com_27698",

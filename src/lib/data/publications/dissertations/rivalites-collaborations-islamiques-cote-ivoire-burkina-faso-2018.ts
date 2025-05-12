@@ -10,6 +10,7 @@ export const rivalitesCollaborationsIslam: Publication = {
     year: 2018,
     university: "Université Laval",
     placeOfPublication: "Québec",
+    pageCount: 419,
     language: "French",
     url: "http://hdl.handle.net/20.500.11794/33246",
     tags: ["Côte d'Ivoire", "Burkina Faso", "Islam", "associations islamiques", "histoire", "sociologie"],

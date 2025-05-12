@@ -13,6 +13,7 @@ export const encyclopediaTemplate: Publication = {
     encyclopediaTitle: "Name of Encyclopedia", // e.g., "The Encyclopaedia of Islam, Three"
     editors: "Editor Name, Second Editor", // Encyclopedia editors
     pages: "100-120", // Page range
+    pageCount: 0, // Total number of pages
     language: "English",
     doi: "10.0000/00000", // Add DOI when available
     abstract: "A comprehensive description of the encyclopedia entry's content and significance.",
