@@ -80,7 +80,7 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
             year: 2024,
             title: "The Politics of Community Resilience to Armed Jihadism in West Africa",
             source: "Ph.D. dissertation, Northwestern University, 2024",
-            url: "https://www.proquest.com/openview/602f48a833fec018b14770d3c0c73f8b/1?cbl=18750&diss=y&pq"
+            url: "https://www.proquest.com/openview/602f48a833fec018b14770d3c0c73f8b"
         },
         {
             authors: ["Alexander Thurston"],
