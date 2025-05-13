@@ -50,7 +50,7 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
         {
             authors: ["Nadine Sieveking"],
             year: 2022,
-            title: "Madame Est Au Niveau 2, et Moi...? Gendered Dynamics of Qur'an Reading Courses in Dakarois Francophone Educated Middle-Class Milieus",
+            title: "“Madame est au niveau 2, et moi…?” Gendered Dynamics of Qur'an Reading Courses in Dakarois Francophone Educated Middle-Class Milieus",
             source: "Cahiers d'études africaines, no. 248 (2022): 771-96",
             url: "https://doi.org/10.4000/etudesafricaines.40262"
         },
