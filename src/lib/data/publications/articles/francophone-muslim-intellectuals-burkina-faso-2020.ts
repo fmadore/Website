@@ -95,6 +95,19 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
             title: "I jihadisti contemporanei. Chi sono, come comunicano, dove sono e le strategie per contrastarli",
             source: "Perugia: Morlacchi, 2023",
             url: "http://digital.casalini.it/9788893924382"
+        },
+        {
+            authors: ["Aboubacar Sidiki Segda", "Boukaré Gansonré"],
+            year: 2021,
+            title: "Les associations musulmanes francophones dans la sphère publique au Burkina Faso de 1985 à 2015",
+            source: "Les Cahiers de l'ACAREF 3, no. 7 (2021): 220-36"
+        },
+        {
+            authors: ["Sebastian Elischer"],
+            year: 2021,
+            title: "Salafism and Political Order in Africa",
+            source: "Cambridge: Cambridge University Press, 2021",
+            url: "https://doi.org/10.1017/9781108690577"
         }
     ]
 }; 

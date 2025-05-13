@@ -44,6 +44,19 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
             title: "Le salafisme burkinabè à l'épreuve du djihadisme",
             source: "In Allah et la polis : quel islam pour quelle identité ?, edited by Mounia Ait Kabboura and Mohamed Fadil, 103-15. Montréal: Les Presses de l'Université de Montréal, 2021",
             url: "https://doi.org/10.1515/9782760643253-007"
+        },
+        {
+            authors: ["Aboubacar Sidiki Segda", "Boukaré Gansonré"],
+            year: 2021,
+            title: "Les associations musulmanes francophones dans la sphère publique au Burkina Faso de 1985 à 2015",
+            source: "Les Cahiers de l'ACAREF 3, no. 7 (2021): 220-36"
+        },
+        {
+            authors: ["Sebastian Elischer"],
+            year: 2021,
+            title: "Salafism and Political Order in Africa",
+            source: "Cambridge: Cambridge University Press, 2021",
+            url: "https://doi.org/10.1017/9781108690577"
         }
     ]
 }; 
