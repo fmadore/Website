@@ -1,127 +1,28 @@
 <script lang="ts">
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
-    import Card from '$lib/components/common/Card.svelte'; // Import Card component
-	import PageHeader from '$lib/components/common/PageHeader.svelte';
+    import Card from '$lib/components/common/Card.svelte';
+    import PageHeader from '$lib/components/common/PageHeader.svelte';
+    import { allDhProjects } from '$lib/data/digital-humanities'; // Import the new data source
+    import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities'; // Import the type
 
-    // Define the structure for a project
-    interface ProjectType {
-        id: string;
-        title: string;
-        years: string;
-        shortDescription: string;
-        imageUrl: string;
-        linkUrl?: string; // Optional: Some projects might not have an external/internal link yet
-        award?: string; // Optional
-        reviews?: { text: string; url: string }[]; // Optional array of review objects
-        publication?: { text: string; url: string }; // Optional publication object
-        skills?: string[]; // Optional: Array of skills/technologies used
-    }
-
-    // Digital Humanities projects data (initial)
-    const initialDhProjects: ProjectType[] = [
-        {
-            id: "iwac",
-            title: "Islam West Africa Collection",
-            years: "2023-",
-            shortDescription: "A collection of over 13,000 documents on Islam and Muslims in Burkina Faso, Benin, Niger, Nigeria, Togo and Côte d'Ivoire.",
-            imageUrl: `${base}/images/digital-humanities/IWAC.webp`,
-            linkUrl: "https://islam.zmo.de/s/westafrica/", // External link remains unchanged
-            skills: ["Omeka S", "OpenRefine", "Metadata Standards", "Docker", "Linux System Administration", "Nginx", "Python", "Tesseract", "IIIF", "Apache Solr", "Linked Data", "Rclone", "spaCy", "pandas", "Web scraping"]
-        },
-        {
-            id: "iwac-overview",
-            title: "Islam West Africa Collection Overview",
-            years: "2025",
-            shortDescription: "Exploring the Islam West Africa Collection (IWAC) through digital methods and visualizations.",
-            imageUrl: `${base}/images/digital-humanities/iwac-overview.webp`,
-            skills: ["Svelte", "D3.js", "TypeScript", "Vite", "Data visualisation"]
-            // No linkUrl needed, will be generated relative to base
-        },
-        {
-            id: "iwac-wordcloud",
-            title: "IWAC Newspaper Word Cloud",
-            years: "2025",
-            shortDescription: "Interactive word cloud visualising the most frequent words in newspaper articles from the Islam West Africa Collection.",
-            imageUrl: `${base}/images/digital-humanities/iwac-wordcloud.webp`,
-            skills: ["D3.js", "Python", "NLTK", "spaCy"]
-        },
-        {
-            id: "muslim-umbrella-organizations",
-            title: "Muslim Umbrella Organisations in IWAC",
-            years: "2025",
-            shortDescription: "Co-occurrence matrix and topic modeling analysis of newspaper articles discussing Muslim umbrella organisations within the Islam West Africa Collection.",
-            imageUrl: `${base}/images/digital-humanities/muslim-umbrella.webp`,
-            skills: ["D3.js", "Python", "NLTK", "spaCy", "scikit-learn"]
-        },
-        {
-            id: "iwac-keywords",
-            title: "IWAC Keywords Dashboard",
-            years: "2024",
-            shortDescription: "Interactive temporal analysis of keywords from West African newspapers in the Islam West Africa Collection, revealing thematic evolution and media attention patterns.",
-            imageUrl: `${base}/images/digital-humanities/iwac-keywords.webp`,
-            skills: ["Shiny for Python", "Plotly"]
-        },
-        {
-            id: "remoboko",
-            title: "Remoboko: Religion, Morality and Boko in West Africa",
-            years: "2024",
-            shortDescription: "Research group exploring religion, morality, and student life in West African higher education. Includes interactive visualizations.",
-            imageUrl: `${base}/images/digital-humanities/remoboko.webp`,
-            skills: ["Data Visualization", "pandas", "Plotly", "Python", "Folium", "NLTK"]
-        },
-        {
-            id: "iwac-bibliographic-data-wikidata",
-            title: "IWAC Bibliographic Data on Wikidata",
-            years: "2023",
-            shortDescription: "Inspired by the WikiCite initiative, which aims \"to develop open citations and linked bibliographic data to serve free knowledge\", the metadata of all the bibliographical references of the Islam West Africa Collection has been uploaded to Wikidata to make them to be more openly citable and accessible.",
-            imageUrl: `${base}/images/digital-humanities/iwac-bibliographic-data-wikidata.svg`,
-            skills: ["Wikidata", "OpenRefine", "Scholia", "SPARQL", "Linked Data", "Metadata Management"]
-        },
-        {
-            id: "burkina-faso-digital-exhibits",
-            title: "Digital Exhibits on Islam in Burkina Faso",
-            years: "2021",
-            shortDescription: "These two digital exhibits on Islam in Burkina Faso, which bring together a selection of materials from the Islam West Africa Collection by theme, are entry points to the collection. In addition to providing contextual information for interpreting the material presented in an interactive timeline, a selective bibliography completes the exhibit.",
-            imageUrl: `${base}/images/digital-humanities/burkina-faso-digital-exhibits.webp`,
-            skills: ["Timeline JS"]
-        },
-        {
-            id: "islam-burkina-faso-collection",
-            title: "Islam Burkina Faso Collection",
-            years: "2018-2023",
-            shortDescription: "An open access digital database containing over 2,900 documents on Islam and Muslims in Burkina Faso.",
-            imageUrl: `${base}/images/digital-humanities/islam-burkinafaso-banner.webp`,
-            award: "Won a 2023 Emerging Open Scholarship Award.",
-            reviews: [
-                { text: "Review by Robert Launay", url: "https://doi.org/10.21428/3e88f64f.89e71c81" },
-                { text: "Review by Vincent Hiribarren", url: "https://doi.org/10.2979/mnd.2022.a908483" }
-            ],
-            publication: { text: "Learn more about the project", url: "https://doi.org/10.51185/journals/rhca.2021.e610" },
-            skills: ["Omeka S", "Tesseract", "Metadata Standards", "OpenRefine", "Zotero", "Linked Data"]
-        }
-    ];
-
-    // Extend the interface to include the calculated properties
-    interface ProcessedProjectType extends ProjectType {
-        finalLinkUrl: string | undefined;
-        linkTarget: string;
-        actionText: string;
-    }
-
-    // Pre-calculate final URLs and targets into a new array
-    const processedDhProjects: ProcessedProjectType[] = initialDhProjects.map(project => {
-        const isExternal = project.linkUrl && project.linkUrl.startsWith('http');
-        const internalPath = isExternal ? null : (project.linkUrl || `/digital-humanities/${project.id}`);
-        const finalLinkUrl = isExternal ? project.linkUrl : `${base}${internalPath}`;
+    // Prepare projects for display, calculating link properties
+    const processedDhProjects = allDhProjects.map(project => {
+        const isExternal = project.linkUrl && (project.linkUrl.startsWith('http://') || project.linkUrl.startsWith('https://'));
+        const internalPath = `/digital-humanities/${project.id}`;
+        // Ensure project.linkUrl is used directly if it's external, otherwise construct internal path with base
+        const finalLinkUrl = isExternal ? project.linkUrl! : `${base}${internalPath}`;
         const linkTarget = isExternal ? '_blank' : '_self';
         const actionText = isExternal ? 'Visit Site →' : 'Explore project →';
         
         return {
             ...project,
-            finalLinkUrl, // Add calculated URL to the object
-            linkTarget,   // Add calculated target
-            actionText    // Add calculated action text
+            // Prepend base to imageUrl for the Card component, as project.imageUrl is a root-relative path like /images/...
+            // Ensure project.imageUrl has a leading slash if it doesn't already, for consistency with base path.
+            imageUrl: `${base}${project.imageUrl.startsWith('/') ? project.imageUrl : '/' + project.imageUrl}`,
+            finalLinkUrl,
+            linkTarget,
+            actionText
         };
     });
 
@@ -144,8 +45,8 @@
             >
                 <span slot="subtitle">{project.years}</span>
 
-                <!-- Default slot for description - Render HTML -->
-                {@html project.shortDescription}
+                <!-- Default slot for description - Use shortDescription (plain text) -->
+                {project.shortDescription}
 
                 <!-- Details slot for award, reviews, skills, etc. -->
                 <div slot="details" class="dh-card-extras">
