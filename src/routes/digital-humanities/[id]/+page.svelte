@@ -101,7 +101,7 @@
 
         {#if project.skills && project.skills.length > 0}
             <section class="mb-6">
-                <TagList tags={project.skills} sectionTitle="" />
+                <TagList tags={project.skills} sectionTitle="" baseUrl="/digital-humanities?skill=" />
             </section>
         {/if}
 

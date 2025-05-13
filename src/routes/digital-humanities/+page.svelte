@@ -1,13 +1,20 @@
 <script lang="ts">
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
+    import { page } from '$app/stores'; // Added page store import
     import Card from '$lib/components/common/Card.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
     import { allDhProjects } from '$lib/data/digital-humanities'; // Import the new data source
     import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities'; // Import the type
 
-    // Prepare projects for display, calculating link properties
-    const processedDhProjects = allDhProjects.map(project => {
+    // Reactive variable for the skill from URL
+    $: selectedSkill = $page.url.searchParams.get('skill');
+
+    // Filter projects based on selectedSkill, then process them
+    $: finalProjectsToDisplay = (selectedSkill 
+        ? allDhProjects.filter(project => project.skills && project.skills.includes(selectedSkill))
+        : allDhProjects
+    ).map(project => {
         const isExternal = project.linkUrl && (project.linkUrl.startsWith('http://') || project.linkUrl.startsWith('https://'));
         const internalPath = `/digital-humanities/${project.id}`;
         // Ensure project.linkUrl is used directly if it's external, otherwise construct internal path with base
@@ -33,10 +40,17 @@
 <div class="container">
 	<PageHeader title="Digital Humanities" />
 
+    {#if selectedSkill}
+        <p class="text-lg mb-6">
+            Showing projects with skill: <span class="font-semibold text-primary">{selectedSkill}</span> 
+            <a href="{base}/digital-humanities" class="text-sm ml-2 text-secondary hover:underline">(Clear filter)</a>
+        </p>
+    {/if}
+
     <p class="text-xl mb-10">This section presents some of my work in digital humanities (DH), applying computational methods to historical research on Islam and Muslim societies in West Africa. DH has taken an increasingly important place in my research in recent years, leading me to develop my skills through both specialised training and continuous self-learning. I use data visualisation techniques to translate research findings into compelling narratives, making historical findings accessible and engaging.</p>
 
     <div class="content-grid">
-        {#each processedDhProjects as project (project.id)}
+        {#each finalProjectsToDisplay as project (project.id)}
             <Card
                 title={project.title}
                 imageUrl={project.imageUrl}
@@ -56,7 +70,7 @@
                             <strong>Skills:</strong>
                             <div class="skills-list">
                                 {#each project.skills as skill}
-                                    <span class="project-skill-tag">{skill}</span>
+                                    <a href="{base}/digital-humanities?skill={encodeURIComponent(skill)}" class="project-skill-tag">{skill}</a>
                                 {/each}
                             </div>
                         </div>
@@ -155,5 +169,23 @@
      .dh-card-extras a:hover {
          text-decoration: underline;
      }
+
+    .project-skill-tag {
+        display: inline-block;
+        background-color: var(--color-border);
+        color: var(--color-text-light);
+        padding: var(--spacing-1) var(--spacing-2);
+        margin: var(--spacing-1) var(--spacing-1) var(--spacing-1) 0;
+        border-radius: var(--border-radius-sm);
+        font-size: var(--font-size-xs);
+        text-decoration: none;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .project-skill-tag:hover {
+        background-color: var(--color-primary);
+        color: var(--color-background); /* Ensure text is readable on primary background */
+        text-decoration: none;
+    }
 
 </style> 
