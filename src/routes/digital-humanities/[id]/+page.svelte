@@ -113,7 +113,7 @@
                             <h3 class="text-xl font-semibold mb-2">{item.title}</h3>
                         {/if}
                         {#if item.description}
-                            <p class="text-muted mb-3 prose">{@html item.description}</p>
+                            <p class="text-light mb-3 prose">{@html item.description}</p>
                         {/if}
                         
                         {#if item.type === 'iframe'}

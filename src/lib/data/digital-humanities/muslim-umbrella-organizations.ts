@@ -5,7 +5,7 @@ export const muslimUmbrellaOrganizations: DigitalHumanitiesProject = {
     title: "Muslim Umbrella Organisations in IWAC",
     years: "2025",
     shortDescription: "Co-occurrence matrix and topic modeling analysis of newspaper articles discussing Muslim umbrella organisations within the Islam West Africa Collection.",
-    description: "<p>This project examines the representation of Muslim umbrella organisations in West African newspaper archives sourced from the <em>Islam West Africa Collection (IWAC)</em>. Using computational text analysis techniques, we explore patterns and themes associated with these organisations.</p>",
+    description: "<p>This project examines the representation of Muslim umbrella organisations in West African newspaper archives sourced from the <a href=\"https://islam.zmo.de/s/westafrica/page/home\" target=\"_blank\" rel=\"noopener noreferrer\"><em>Islam West Africa Collection</em></a> (IWAC). Using computational text analysis techniques, we explore patterns and themes associated with these organisations.</p>",
     imageUrl: `/images/digital-humanities/muslim-umbrella.webp`,
     skills: ["D3.js", "Python", "NLTK", "spaCy", "scikit-learn"],
     embeddableContent: [
@@ -14,7 +14,7 @@ export const muslimUmbrellaOrganizations: DigitalHumanitiesProject = {
             id: "iwac-cooccurrence-matrix-embed",
             src: "https://fmadore.github.io/IWAC-co-occurrence-matrix/index.html",
             title: "Co-occurrence Matrix",
-            description: "<p>Visualising co-occurrences of words in articles discussing these organisations.</p>",
+            description: "<p>Visualising the frequency with which terms related to Muslim umbrella organisations appear together in the corpus.</p>",
             scrolling: "yes", // Explicitly set based on common usage for dashboards
             allowfullscreen: true,
             showTitle: true,
