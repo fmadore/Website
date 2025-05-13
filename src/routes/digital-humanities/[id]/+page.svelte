@@ -86,7 +86,7 @@
 
     <PageHeader title={project.title} />
     {#if project.years}
-        <p class="text-center md:text-left text-xl font-light text-secondary -mt-6 mb-8 md:-mt-4 md:mb-6">{project.years}</p>
+        <p class="text-left md:text-left text-xl font-light text-secondary -mt-6 mb-8 md:-mt-4 md:mb-6">{project.years}</p>
     {/if}
 
     <article class="project-detail-article bg-background p-4 md:p-6 rounded-lg shadow-md mb-8">
@@ -107,7 +107,6 @@
 
         {#if project.embeddableContent && project.embeddableContent.length > 0}
             <section class="mb-6">
-                <h2 class="text-2xl font-semibold mb-4">Interactive Content</h2>
                 {#each project.embeddableContent as item (item.id)}
                     <div class="mb-8">
                         {#if item.showTitle && item.title}
