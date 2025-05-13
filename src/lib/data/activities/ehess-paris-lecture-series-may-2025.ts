@@ -13,9 +13,9 @@ export const ehessParisLectureSeries2025: Activity = {
         
         <p>The series opens on Monday 12 May with "Questions d'islam en Afrique de l'Ouest : enjeux et défis de la recherche avec les archives physiques et numériques", a methodological reflection on working with fragmented post-colonial records and born-digital sources.</p>
         
-        <p>On Tuesday 20 May, I will present 'L'histoire des communautés musulmans ouest-africaines : approches numériques', demonstrating how the Islam West Africa Collection supports distant reading and network visualisations of 65 years of media coverage.</p>
+        <p>The following week, on Tuesday 20 May, I will present 'L'histoire des communautés musulmans ouest-africaines : approches numériques', demonstrating how the Islam West Africa Collection supports distant reading and network visualisations of 65 years of media coverage.</p>
         
-        <p>The following week, on Wednesday 21 May, the lecture "Rencontre entre chrétiens et musulmans : au-delà du binaire coexistence pacifique/conflits religieux" revisits religious pluralism in Togo, Benin, Côte d'Ivoire and Burkina Faso.</p>
+        <p>On Wednesday 21 May, the lecture "Rencontre entre chrétiens et musulmans : au-delà du binaire coexistence pacifique/conflits religieux" revisits religious pluralism in Togo, Benin, Côte d'Ivoire and Burkina Faso.</p>
         
         <p>The cycle concludes on Wednesday 28 May with "Religious militancy on university campuses: the case of Benin and Togo", which traces how Christian and Muslim student associations have reshaped university life since 1970.</p>
     `,
