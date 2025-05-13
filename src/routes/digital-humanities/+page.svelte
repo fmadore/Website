@@ -2,13 +2,14 @@
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
     import { page } from '$app/stores'; // Added page store import
+    import { browser } from '$app/environment'; // Added browser import
     import Card from '$lib/components/common/Card.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
     import { allDhProjects } from '$lib/data/digital-humanities'; // Import the new data source
     import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities'; // Import the type
 
-    // Reactive variable for the skill from URL
-    $: selectedSkill = $page.url.searchParams.get('skill');
+    // Reactive variable for the skill from URL, only access searchParams if in browser
+    $: selectedSkill = browser ? $page.url.searchParams.get('skill') : null;
 
     // Filter projects based on selectedSkill, then process them
     $: finalProjectsToDisplay = (selectedSkill 
