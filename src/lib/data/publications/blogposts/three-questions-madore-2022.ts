@@ -11,7 +11,7 @@ export const threeQuestionsToMadore: Publication = {
     publisher: "Remoboko blog",
     language: "English",
     doi: "10.58079/tldm",
-    tags: ["interview", "research", "academia"],
+    tags: ["Remoboko", "Interview"],
     url: "https://doi.org/10.58079/tldm",
     image: "images/publications/three-questions-madore-2022.webp",
     heroImage: {
