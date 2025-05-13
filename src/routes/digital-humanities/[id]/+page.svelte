@@ -13,6 +13,14 @@
 
     import type { DigitalHumanitiesProject, EmbeddableContentItem, Review, ProjectPublication } from '$lib/types/digitalHumanities';
 
+    // Define the type for project details items
+    type ProjectDetailItem = {
+        label: string;
+        value: string | string[];
+        link?: string;
+        condition?: boolean;
+    };
+
     export let data;
     $: project = data.project as DigitalHumanitiesProject;
 
@@ -59,9 +67,9 @@
     });
 
     // Prepare details for DetailsGrid
-    $: projectDetails = [
-        { label: 'Years', value: project.years },
-        // Add other relevant details here, e.g., project lead, funding, etc. if available in data
+    const projectDetails: ProjectDetailItem[] = [
+        // Example of adding another detail:
+        // { label: 'Project Lead', value: project.leadName, condition: !!project.leadName },
     ];
 
 </script>
@@ -77,6 +85,9 @@
     <Breadcrumb items={breadcrumbItems} />
 
     <PageHeader title={project.title} />
+    {#if project.years}
+        <p class="text-center md:text-left text-xl font-light text-secondary -mt-6 mb-8 md:-mt-4 md:mb-6">{project.years}</p>
+    {/if}
 
     <article class="project-detail-article bg-background p-4 md:p-6 rounded-lg shadow-md mb-8">
         
@@ -84,8 +95,8 @@
             {@html project.description}
         </section>
 
-        {#if projectDetails.filter(d => d.value).length > 0}
-            <DetailsGrid details={projectDetails.filter(d => d.value)} />
+        {#if projectDetails.length > 0}
+            <DetailsGrid details={projectDetails} />
         {/if}
 
         {#if project.skills && project.skills.length > 0}
@@ -145,7 +156,7 @@
                         <li class="bg-background-alt p-4 rounded-md shadow-sm">
                             <a href={review.url} target="_blank" rel="noopener noreferrer" class="link font-medium">{@html review.text}</a>
                             {#if review.quote}
-                                <blockquote class="mt-2 p-3 border-l-4 border-border text-sm text-muted italic bg-background rounded-r-md">
+                                <blockquote class="mt-2 p-3 border-l-4 border-border text-sm text-light italic bg-background rounded-r-md">
                                     <p>{review.quote}</p>
                                 </blockquote>
                             {/if}
