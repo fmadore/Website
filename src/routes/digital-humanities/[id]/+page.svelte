@@ -101,8 +101,7 @@
 
         {#if project.skills && project.skills.length > 0}
             <section class="mb-6">
-                <h2 class="text-xl font-semibold mb-3">Skills & Technologies</h2>
-                <TagList tags={project.skills} />
+                <TagList tags={project.skills} sectionTitle="" />
             </section>
         {/if}
 
