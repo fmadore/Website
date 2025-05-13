@@ -135,7 +135,7 @@
         {#if project.award}
             <section class="mb-6 p-4 bg-background-alt rounded-md shadow-sm">
                 <h3 class="text-lg font-semibold text-accent mb-1">Award</h3>
-                <p>{project.award}</p>
+                <p>{@html project.award}</p>
             </section>
         {/if}
 
