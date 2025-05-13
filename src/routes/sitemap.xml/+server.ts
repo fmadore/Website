@@ -1,6 +1,7 @@
 import { activitiesByDate } from '$lib/data/activities';
 import { allPublications } from '$lib/data/publications/index';
 import { allCommunications } from '$lib/data/communications/index';
+import { allDhProjects } from '$lib/data/digital-humanities';
 import type { RequestHandler } from '@sveltejs/kit';
 import { base } from '$app/paths';
 
@@ -32,17 +33,8 @@ export const GET: RequestHandler = async () => {
         "/research/youth-womens-islamic-activism-cote-divoire-burkina-faso"
     ];
 
-    // Digital Humanities project routes
-    const digitalHumanitiesProjects = [
-        "/digital-humanities/iwac-overview",
-        "/digital-humanities/iwac-wordcloud",
-        "/digital-humanities/muslim-umbrella-organizations",
-        "/digital-humanities/iwac-keywords",
-        "/digital-humanities/remoboko",
-        "/digital-humanities/iwac-bibliographic-data-wikidata",
-        "/digital-humanities/burkina-faso-digital-exhibits",
-        "/digital-humanities/islam-burkina-faso-collection"
-    ];
+    // Digital Humanities project routes - dynamically generated
+    const digitalHumanitiesProjectPaths = allDhProjects.map(project => `${base}/digital-humanities/${project.id}`);
 
     // Dynamic activity paths
     const activityPaths = activitiesByDate.map(activity => `/activities/${activity.id}`);
@@ -60,7 +52,7 @@ export const GET: RequestHandler = async () => {
     const allPaths = [
         ...pages, 
         ...researchProjects, 
-        ...digitalHumanitiesProjects,
+        ...digitalHumanitiesProjectPaths,
         ...activityPaths, 
         ...yearPaths,
         ...publicationPaths,

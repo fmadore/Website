@@ -133,16 +133,23 @@
         {#if project.publication}
             <section class="mb-6">
                 <h3 class="text-lg font-semibold mb-1">Related Publication</h3>
-                <p><a href={project.publication.url} target="_blank" rel="noopener noreferrer" class="link">{project.publication.text}</a></p>
+                <p><a href={project.publication.url} target="_blank" rel="noopener noreferrer" class="link">{@html project.publication.text}</a></p>
             </section>
         {/if}
 
         {#if project.reviews && project.reviews.length > 0}
             <section class="mb-6">
                 <h3 class="text-lg font-semibold mb-2">Reviews</h3>
-                <ul class="list-disc list-inside space-y-1">
+                <ul class="space-y-4">
                     {#each project.reviews as review}
-                        <li><a href={review.url} target="_blank" rel="noopener noreferrer" class="link">{review.text}</a></li>
+                        <li class="bg-background-alt p-4 rounded-md shadow-sm">
+                            <a href={review.url} target="_blank" rel="noopener noreferrer" class="link font-medium">{@html review.text}</a>
+                            {#if review.quote}
+                                <blockquote class="mt-2 p-3 border-l-4 border-border text-sm text-muted italic bg-background rounded-r-md">
+                                    <p>{review.quote}</p>
+                                </blockquote>
+                            {/if}
+                        </li>
                     {/each}
                 </ul>
             </section>

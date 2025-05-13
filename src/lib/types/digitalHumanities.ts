@@ -29,6 +29,7 @@ export type EmbeddableContentItem = IframeEmbed | ImageEmbed;
 export interface Review {
     text: string;
     url: string;
+    quote?: string; // Optional field for an excerpt from the review
 }
 
 export interface ProjectPublication {
