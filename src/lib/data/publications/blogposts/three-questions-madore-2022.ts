@@ -12,5 +12,10 @@ export const threeQuestionsToMadore: Publication = {
     language: "English",
     doi: "10.58079/tldm",
     tags: ["interview", "research", "academia"],
-    url: "https://doi.org/10.58079/tldm"
+    url: "https://doi.org/10.58079/tldm",
+    image: "images/publications/three-questions-madore-2022.webp",
+    heroImage: {
+        src: "images/publications/three-questions-madore-2022-hero.webp",
+        alt: "Screenshot of the blogpost",
+    },
 }; 
