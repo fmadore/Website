@@ -17,7 +17,7 @@ export const ehessParisLectureSeries2025: Activity = {
         
         <p>On Wednesday 21 May, the lecture "Rencontre entre chrétiens et musulmans : au-delà du binaire coexistence pacifique/conflits religieux" revisits religious pluralism in Togo, Benin, Côte d'Ivoire and Burkina Faso.</p>
         
-        <p>The cycle concludes on Wednesday 28 May with "Religious militancy on university campuses: the case of Benin and Togo", which traces how Christian and Muslim student associations have reshaped university life since 1970.</p>
+        <p>The cycle concludes on Wednesday 28 May with "Militantisme religieux sur les campus universitaires. Le cas du Bénin et du Togo", which traces how Christian and Muslim student associations have reshaped university life since 1970.</p>
     `,
     tags: ["EHESS", "Paris", "Francophone West Africa", "Islam", "Religious Pluralism", "Digital Humanities", "History"],
     image: "images/communications/EHESS-2025.webp",
