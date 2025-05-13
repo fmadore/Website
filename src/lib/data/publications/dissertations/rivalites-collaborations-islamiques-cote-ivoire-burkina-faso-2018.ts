@@ -49,7 +49,8 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
             authors: ["Aboubacar Sidiki Segda", "Boukaré Gansonré"],
             year: 2021,
             title: "Les associations musulmanes francophones dans la sphère publique au Burkina Faso de 1985 à 2015",
-            source: "Les Cahiers de l'ACAREF 3, no. 7 (2021): 220-36"
+            source: "Les Cahiers de l'ACAREF 3, no. 7 (2021): 220-36",
+            url: "https://web.archive.org/web/20240418165459/https://revues.acaref.net/wp-content/uploads/sites/3/2021/10/Aboubakar-Sidiki-SEGDA.pdf"
         },
         {
             authors: ["Sebastian Elischer"],
