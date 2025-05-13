@@ -7,6 +7,7 @@ export const communicationReview2019: PeerReview = {
 	type: 'Journal Article',
 	year: 2019,
 	dateISO: '2019-11-29',
+	publons_record: 'https://publons.com/wos-op/review/author/lvgEFvT0/'
 };
 
 export default communicationReview2019; 

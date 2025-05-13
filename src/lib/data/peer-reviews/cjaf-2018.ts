@@ -7,6 +7,7 @@ export const cjaf2018: PeerReview = {
 	type: 'Journal Article',
 	year: 2018,
 	dateISO: '2018-10-05',
+	publons_record: 'https://publons.com/wos-op/review/author/q1iCgRDf/'
 };
 
 export default cjaf2018; 

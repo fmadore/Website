@@ -6,6 +6,7 @@ type ModuleType = Record<string, any>;
 
 const templateIds: string[] = [
 	// 'peer-review-template-id' 
+	'peer-review-template'
 ];
 
 const peerReviewModules = import.meta.glob<ModuleType>(
