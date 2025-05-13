@@ -9,8 +9,10 @@
 	import { peerReviewsByDate } from '$lib/data/peer-reviews';
 	import { mediaAppearancesByDate } from '$lib/data/media-appearances';
 	import { editorialMembershipsByDate } from '$lib/data/editorial-memberships';
+	import { affiliationsByStartDate } from '$lib/data/affiliations';
 	import { MapPin, Mail, Linkedin, Github } from 'lucide-svelte';
 	import type { Publication, Communication, Fieldwork, Education, Appointment, Grant, Award, PeerReview, MediaAppearance, EditorialMembership } from '$lib/types';
+	import type { ProfessionalAffiliation } from '$lib/data/affiliations/template';
 	import SEO from '$lib/SEO.svelte';
 
 	// Filter education items by type
@@ -96,6 +98,21 @@
 		.sort((a, b) => { // Sort locations alphabetically
 			return a.location.localeCompare(b.location);
 		});
+
+	// Helper function to format affiliation period
+	function formatAffiliationPeriod(period: ProfessionalAffiliation['period']): string {
+		if ('min' in period) { // It's a YearRange
+			if (period.min === period.max) {
+				return period.min.toString();
+			}
+			return `${period.min}–${period.max}`;
+		} else { // It's { start: number; end: 'present' | number }
+			if (typeof period.end === 'number' && period.start === period.end) {
+				return period.start.toString();
+			}
+			return `${period.start}–${period.end}`;
+		}
+	}
 
 </script>
 
@@ -459,6 +476,35 @@
 		{/if}
 
 	</section> <!-- End Service to Profession Section -->
+
+	<!-- Professional Affiliations Section -->
+	<section class="mb-8">
+		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Professional Affiliations</h3>
+		{#if affiliationsByStartDate.length > 0}
+			<ul>
+				{#each affiliationsByStartDate as aff (aff.id)}
+					<li class="mb-3">
+						<span class="font-medium">{aff.name}</span>{#if aff.abbreviation}<span>&nbsp;({aff.abbreviation})</span>{/if}{#if aff.parentOrganization}<span>,&nbsp;<em>{aff.parentOrganization}</em></span>{/if}.
+						<span class="block ml-4 text-sm text-light">{formatAffiliationPeriod(aff.period)}</span>
+						{#if aff.roles && aff.roles.length > 0}
+							<ul class="list-disc pl-8 mt-1">
+								{#each aff.roles as role (role.title + ('min' in role.period ? role.period.min : role.period.start))}
+									<li class="text-sm">
+										{role.title} ({formatAffiliationPeriod(role.period)})
+									</li>
+								{/each}
+							</ul>
+						{/if}
+						{#if aff.url}
+							<a href="{aff.url}" target="_blank" rel="noopener noreferrer" class="ml-4 text-primary hover:underline text-sm">[Website]</a>
+						{/if}
+					</li>
+				{/each}
+			</ul>
+		{:else}
+			<p class="text-light">No professional affiliations listed.</p>
+		{/if}
+	</section>
 
 	<!-- Fieldwork Section -->
 	<section>
