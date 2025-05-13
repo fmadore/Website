@@ -17,7 +17,7 @@
 {#if displayImage}
     <figure class={figureClass}>
         <img 
-            src="{base}/{displayImage.src}" 
+            src="{base}{displayImage.src}" 
             alt={altText}
             class={imageClass}
         >
