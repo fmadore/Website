@@ -451,6 +451,9 @@
 					<li class="mb-3">
 						<span class="font-medium">{review.type}</span>{#if review.journal} for <em>{review.journal}</em>{/if}{#if review.publisher} for {review.publisher}{/if} ({review.year}).
 						{#if review.details} <p class="ml-4 text-sm">{review.details}</p>{/if}
+						{#if review.publons_record}
+							<a href="{review.publons_record}" target="_blank" rel="noopener noreferrer" class="ml-2 text-primary hover:underline text-sm">[Publons Record]</a>
+						{/if}
 					</li>
 				{/each}
 			</ul>
