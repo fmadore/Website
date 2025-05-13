@@ -8,8 +8,9 @@ export const muslimUmbrellaOrganizations: DigitalHumanitiesProject = {
     description: "<p>This project examines the representation of Muslim umbrella organisations in West African newspaper archives sourced from the <em>Islam West Africa Collection (IWAC)</em>. Using computational text analysis techniques, we explore patterns and themes associated with these organisations.</p>",
     imageUrl: `/images/digital-humanities/muslim-umbrella.webp`,
     skills: ["D3.js", "Python", "NLTK", "spaCy", "scikit-learn"],
-    iframes: [
+    embeddableContent: [
         {
+            type: 'iframe',
             id: "iwac-cooccurrence-matrix-embed",
             src: "https://fmadore.github.io/IWAC-co-occurrence-matrix/index.html",
             title: "Co-occurrence Matrix",
@@ -17,9 +18,10 @@ export const muslimUmbrellaOrganizations: DigitalHumanitiesProject = {
             scrolling: "yes", // Explicitly set based on common usage for dashboards
             allowfullscreen: true,
             showTitle: true,
-            containerClass: "iframe-container-aspect iframe-container-aspect-16-9"
+            containerClass: "iframe-container-aspect iframe-container-aspect-16-9" // Reverted to aspect ratio
         },
         {
+            type: 'iframe',
             id: "iwac-topic-modelling-embed",
             src: "https://fmadore.github.io/IWAC-topic-modelling/",
             title: "Topic Modeling",
@@ -27,7 +29,7 @@ export const muslimUmbrellaOrganizations: DigitalHumanitiesProject = {
             scrolling: "yes",
             allowfullscreen: true,
             showTitle: true,
-            containerClass: "iframe-container-aspect iframe-container-aspect-16-9"
+            containerClass: "iframe-container-aspect iframe-container-aspect-16-9" // Reverted to aspect ratio
         }
     ]
 }; 

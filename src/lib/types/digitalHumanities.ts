@@ -1,4 +1,5 @@
 export interface IframeEmbed {
+    type: 'iframe'; // Discriminating property
     id: string; // Unique ID for the iframe embed, e.g., 'exhibit1-timeline'
     title?: string;
     src: string;
@@ -10,6 +11,20 @@ export interface IframeEmbed {
     allowfullscreen?: boolean;
     showTitle?: boolean; // Whether to display the iframe title above the embed
 }
+
+export interface ImageEmbed {
+    type: 'image'; // Discriminating property
+    id: string; // Unique ID for the image embed
+    title?: string;
+    src: string; // URL of the image
+    alt: string; // Alt text for the image
+    description?: string; // HTML content allowed, displayed below the image
+    containerClass?: string; // For styling the container of the image + description
+    showTitle?: boolean; // Whether to display the title above the image
+    linkUrl?: string; // Optional URL to link the image to
+}
+
+export type EmbeddableContentItem = IframeEmbed | ImageEmbed;
 
 export interface Review {
     text: string;
@@ -39,7 +54,7 @@ export interface DigitalHumanitiesProject {
     publication?: ProjectPublication;
     skills?: string[];
     
-    iframes?: IframeEmbed[]; // For embedding content like timelines, visualizations
+    embeddableContent?: EmbeddableContentItem[]; // Replaces iframes, for embedding content like timelines, visualizations, or images
 
     // SEO related, can be auto-generated or specified
     seoTitle?: string;

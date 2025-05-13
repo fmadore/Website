@@ -8,8 +8,9 @@ export const iwacOverview: DigitalHumanitiesProject = {
     description: "<p>This interactive data visualisation dashboard allows for dynamic exploration of the <em>Islam West Africa Collection (IWAC)</em>. Developed with Svelte and D3.js, it presents various visualisations (treemaps, bar charts, pie charts, and timelines) to analyse the distribution of collection items based on attributes such as country, language, item type, date, and word count. Users can interact with filters and explore the data dynamically with features like zooming and tooltips.</p>",
     imageUrl: `/images/digital-humanities/iwac-overview.webp`,
     skills: ["Svelte", "D3.js", "TypeScript", "Vite", "Data visualisation"],
-    iframes: [
+    embeddableContent: [
         {
+            type: 'iframe',
             id: "iwac-overview-main-embed",
             src: "https://fmadore.github.io/IWAC-overview/index.html?lang=en&tab=countries",
             title: "Islam West Africa Collection Overview",

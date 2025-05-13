@@ -11,7 +11,7 @@
     import { onMount, onDestroy } from 'svelte';
     import { browser } from '$app/environment';
 
-    import type { DigitalHumanitiesProject, IframeEmbed, Review, ProjectPublication } from '$lib/types/digitalHumanities';
+    import type { DigitalHumanitiesProject, EmbeddableContentItem, Review, ProjectPublication } from '$lib/types/digitalHumanities';
 
     export let data;
     $: project = data.project as DigitalHumanitiesProject;
@@ -95,18 +95,29 @@
             </section>
         {/if}
 
-        {#if project.iframes && project.iframes.length > 0}
+        {#if project.embeddableContent && project.embeddableContent.length > 0}
             <section class="mb-6">
                 <h2 class="text-2xl font-semibold mb-4">Interactive Content</h2>
-                {#each project.iframes as iframe (iframe.id)}
+                {#each project.embeddableContent as item (item.id)}
                     <div class="mb-8">
-                        {#if iframe.showTitle && iframe.title}
-                            <h3 class="text-xl font-semibold mb-2">{iframe.title}</h3>
+                        {#if item.showTitle && item.title}
+                            <h3 class="text-xl font-semibold mb-2">{item.title}</h3>
                         {/if}
-                        {#if iframe.description}
-                            <p class="text-muted mb-3 prose">{@html iframe.description}</p>
+                        {#if item.description}
+                            <p class="text-muted mb-3 prose">{@html item.description}</p>
                         {/if}
-                        <IframeRenderer {...iframe} />
+                        
+                        {#if item.type === 'iframe'}
+                            <IframeRenderer {...item} />
+                        {:else if item.type === 'image'}
+                            {#if item.linkUrl}
+                                <a href={item.linkUrl} target="_blank" rel="noopener noreferrer">
+                                    <img src={item.src} alt={item.alt} class="responsive-image shadow-md rounded-md" />
+                                </a>
+                            {:else}
+                                <img src={item.src} alt={item.alt} class="responsive-image shadow-md rounded-md" />
+                            {/if}
+                        {/if}
                     </div>
                 {/each}
             </section>
@@ -150,6 +161,11 @@
 
 <style>
     /* Add any specific styles for this page here, if needed. */
+    .responsive-image {
+        max-width: 100%;
+        height: auto;
+        display: block; /* To prevent extra space below image */
+    }
     /* 
     .project-detail-article {
         // background-color: var(--color-background-alt); 
