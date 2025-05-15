@@ -5,7 +5,7 @@ export const iwacWordcloud: DigitalHumanitiesProject = {
     title: "IWAC Newspaper Word Cloud",
     years: "2025",
     shortDescription: "Interactive word cloud visualising the most frequent words in newspaper articles from the Islam West Africa Collection.",
-    description: "<p>This interactive word cloud visualises the most frequently used words in newspaper articles from the <a href=\"https://islam.zmo.de/s/westafrica/page/home\" target=\"_blank\" rel=\"noopener noreferrer\"><em>Islam West Africa Collection</em></a> (IWAC), excluding Islamic publications. It provides an insight into the dominant themes in Benin, Burkina Faso, Côte d'Ivoire, and Togo. Users can toggle between countries to explore national differences, with word sizes reflecting their frequency in the articles. Hover over words to see exact frequency counts.</p>",
+    description: "<p>This interactive word cloud shows the most frequently used words in newspaper articles from the <a href=\"https://islam.zmo.de/s/westafrica/page/home\" target=\"_blank\" rel=\"noopener noreferrer\"><em>Islam West Africa Collection</em></a> (IWAC), with the exception of Islamic publications. It offers insights into the dominant themes in Benin, Burkina Faso, Côte d'Ivoire, Niger and Togo. Users can toggle between countries to explore national differences; the size of the words reflects their frequency in the articles. Hover over words to see their exact frequency.</p>",
     imageUrl: `/images/digital-humanities/iwac-wordcloud.webp`,
     skills: ["D3.js", "Python", "NLTK", "spaCy"],
     embeddableContent: [
