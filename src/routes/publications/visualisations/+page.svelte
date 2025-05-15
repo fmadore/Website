@@ -71,7 +71,7 @@
 
     <section class="visualization-section mb-12">
         <h2 class="text-2xl font-semibold mb-6">
-            Citations Per Year
+            Citations per year
             {#if citationsPerYearData.length > 0 && totalCitations > 0}
                 (Total: {totalCitations})
             {/if}
@@ -95,7 +95,7 @@
     </section>
 
     <section class="visualization-section">
-        <h2 class="text-2xl font-semibold mb-6">Authors Citing My Work Most Frequently</h2>
+        <h2 class="text-2xl font-semibold mb-6">Authors citing my work most frequently</h2>
         {#if citedAuthorsData.length > 0}
             <div 
                 class="chart-wrapper p-6 rounded-lg shadow-md"
