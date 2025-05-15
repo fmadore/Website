@@ -317,11 +317,17 @@
 			let currentLegendY = 0; 
 
 			keysWithData.forEach((keyString: string) => {
-				const formattedText = keyString.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+				let baseFormattedText = keyString.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 				
+				// Specific override for "Encyclopedia" to "Encyclopedia Article"
+				let finalFormattedText = baseFormattedText;
+				if (baseFormattedText.toLowerCase() === 'encyclopedia') {
+					finalFormattedText = 'Encyclopedia Article';
+				}
+
 				// Estimate necessary width for current item (rect + text)
 				// This is a simplification. For perfect fitting, measure text width.
-				const estimatedTextWidth = formattedText.length * 7; // Approx 7px per char for 0.75rem font
+				const estimatedTextWidth = finalFormattedText.length * 7; // Approx 7px per char for 0.75rem font
 				const currentItemEstimatedTotalWidth = legendRectSize + legendTextOffsetX + estimatedTextWidth;
 
 
@@ -348,7 +354,7 @@
 					.style('text-anchor', 'start')
 					.style('fill', axisTextColor)
 					.style('font-size', 'var(--font-size-xs, 0.75rem)')
-					.text(formattedText);
+					.text(finalFormattedText);
 				
 				// Advance X by the slot width, not the estimated item width, for consistent spacing
 				currentLegendX += legendSlotWidth + legendHorizontalItemSpacing;
