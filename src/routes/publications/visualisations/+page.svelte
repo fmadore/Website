@@ -4,11 +4,13 @@
     import { allPublications } from '$lib/data/publications'; // Assuming this is where your publication data is
     import { onMount } from 'svelte';
     import D3BarChart from '$lib/components/visualisations/D3BarChart.svelte';
+    import D3HorizontalBarChart from '$lib/components/visualisations/D3HorizontalBarChart.svelte';
 
     type CitationYearData = { year: number; count: number };
+    type CitedAuthorData = { author: string; count: number };
 
     let citationsPerYearData = $state<CitationYearData[]>([]);
-    let citedAuthorsData: { author: string; count: number }[] = $state([]);
+    let citedAuthorsData = $state<CitedAuthorData[]>([]);
 
     // Calculate total citations reactively
     const totalCitations = $derived(
@@ -48,6 +50,10 @@
     const getYear = (d: CitationYearData) => d.year;
     const getCitationCount = (d: CitationYearData) => d.count;
 
+    // Accessor functions for D3HorizontalBarChart
+    const getAuthorName = (d: CitedAuthorData) => d.author;
+    const getAuthorCitationCount = (d: CitedAuthorData) => d.count;
+
 </script>
 
 <SEO
@@ -77,7 +83,7 @@
                     xAccessor={getYear}
                     yAccessor={getCitationCount}
                     xAxisLabel="Year"
-                    yAxisLabel="Number of Citations"
+                    yAxisLabel="Number of citations"
                     barColor="var(--color-accent)" 
                 />
             </div>
@@ -91,13 +97,17 @@
     <section class="visualization-section">
         <h2 class="text-2xl font-semibold mb-6">Authors Citing My Work Most Frequently</h2>
         {#if citedAuthorsData.length > 0}
-            <div class="list-display p-6 rounded-lg shadow-md">
-                 <p class="text-lg font-medium mb-2">Authors Who Have Most Frequently Cited My Publications</p>
-                <ul>
-                    {#each citedAuthorsData.slice(0, 15) as item} <!-- Display top 15 for brevity -->
-                        <li>{item.author}: {item.count} citation(s) of my work(s)</li>
-                    {/each}
-                </ul>
+            <div 
+                class="chart-wrapper p-6 rounded-lg shadow-md"
+                style="height: {Math.max(350, citedAuthorsData.slice(0, 15).length * 35 + 70)}px;"
+            >
+                <D3HorizontalBarChart
+                    data={citedAuthorsData.slice(0, 15)}
+                    xAccessor={getAuthorCitationCount}
+                    yAccessor={getAuthorName}
+                    xAxisLabel="Number of citations"
+                    barColor="var(--color-highlight)"
+                />
             </div>
         {:else}
              <div class="placeholder-message p-6 rounded-lg shadow-md text-center">
@@ -116,39 +126,31 @@
     }
 
     .chart-wrapper,
-    .list-display,
     .placeholder-message {
         background-color: var(--color-sidebar-bg); /* Adapts to dark mode */
         color: var(--color-text); /* Ensures text is readable in both modes */
-        /* Other utilities like p-6, rounded-lg, shadow-md are applied via classes in the HTML */
     }
 
     .chart-wrapper {
         border: 1px solid var(--color-border); /* Uses theme border color */
-        min-height: 350px; 
+        /* min-height is handled by inline style for horizontal chart, or D3 component for vertical */
         position: relative;
     }
 
-    .list-display ul {
+    /* .list-display rules can be removed if no longer used after replacing with chart */
+    /* .list-display ul {
         list-style-type: disc;
-        padding-left: var(--spacing-5); /* Standard spacing */
+        padding-left: var(--spacing-5); 
     }
 
     .list-display li {
-        margin-bottom: var(--spacing-2); /* Standard spacing */
-    }
+        margin-bottom: var(--spacing-2); 
+    } */
 
     .placeholder-message {
         min-height: 150px;
         display: flex;
         align-items: center;
         justify-content: center;
-        /* text-center is applied as a class in the HTML */
     }
-
-    /* Removed local definitions for .text-xl, .text-2xl, .font-semibold, .mb-10, .mb-12, 
-       .mb-6, .p-6, .bg-white, .rounded-lg, .shadow-md, .text-gray-600 as these 
-       should be handled by global utility classes applied in the HTML. 
-       The text color within .placeholder-message <p> tags is now handled by .text-light class.
-    */
-</style> 
+</style>
