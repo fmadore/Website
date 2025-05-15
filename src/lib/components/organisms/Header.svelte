@@ -21,7 +21,14 @@
                 { name: 'Youth and Women\'s Islamic Activism in Côte d\'Ivoire and Burkina Faso', path: `${base}/research/youth-womens-islamic-activism-cote-divoire-burkina-faso` }
             ] 
         },
-        { name: 'Publications', path: `${base}/publications` },
+        {
+            name: 'Publications',
+            path: `${base}/publications`,
+            dropdown: [
+                { name: 'All Publications', path: `${base}/publications` },
+                { name: 'Visualisations', path: `${base}/publications/visualisations` }
+            ]
+        },
         { name: 'Activities', path: `${base}/activities` },
         { 
             name: 'Digital Humanities', 

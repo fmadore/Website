@@ -16,6 +16,7 @@ export const GET: RequestHandler = async () => {
         "",
         "/research",
         "/publications",
+        "/publications/visualisations",
         "/activities",
         "/digital-humanities",
         "/conference-activity",
