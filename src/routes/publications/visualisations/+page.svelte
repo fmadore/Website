@@ -27,13 +27,18 @@
 
     onMount(() => {
         // Process allPublications to derive data for visualizations
-        const yearlyCounts: Record<number, number> = {};
+        const citationsReceivedInYear: Record<number, number> = {};
         allPublications.forEach(pub => {
-            if (pub.citedBy && pub.citedBy.length > 0) {
-                yearlyCounts[pub.year] = (yearlyCounts[pub.year] || 0) + pub.citedBy.length;
+            if (pub.citedBy && Array.isArray(pub.citedBy)) {
+                pub.citedBy.forEach((citation: any) => { 
+                    // Assuming each 'citation' object has a 'year' property indicating the year of the citation
+                    if (citation && typeof citation.year === 'number') {
+                        citationsReceivedInYear[citation.year] = (citationsReceivedInYear[citation.year] || 0) + 1;
+                    }
+                });
             }
         });
-        citationsPerYearData = Object.entries(yearlyCounts)
+        citationsPerYearData = Object.entries(citationsReceivedInYear)
             .map(([year, count]) => ({ year: parseInt(year), count }))
             .sort((a, b) => a.year - b.year);
 
