@@ -151,8 +151,57 @@
 
 		const colorScale = d3.scaleOrdinal<string>().domain(keys).range(barColors);
 
+		// X-axis Tick Values Logic
+		const allOriginalXTickValues = xScale.domain().map(String); // Years
+		const tickLabelEstimatedWidth = 40; // px, estimated width for a year label + padding
+		const availableWidthForXAxisLabels = width - marginLeft - marginRight;
+
+		let xTicksToDisplay = allOriginalXTickValues;
+
+		if (availableWidthForXAxisLabels > 0 && allOriginalXTickValues.length > 0) {
+			const maxFitLabels = Math.max(1, Math.floor(availableWidthForXAxisLabels / tickLabelEstimatedWidth));
+
+			if (allOriginalXTickValues.length > maxFitLabels) {
+				if (maxFitLabels === 1 && allOriginalXTickValues.length > 1) {
+					xTicksToDisplay = [allOriginalXTickValues[0]];
+					if (allOriginalXTickValues[allOriginalXTickValues.length - 1] !== allOriginalXTickValues[0]) {
+						xTicksToDisplay.push(allOriginalXTickValues[allOriginalXTickValues.length - 1]);
+					}
+				} else {
+					const stride = Math.ceil(allOriginalXTickValues.length / maxFitLabels);
+					const tempSet = new Set<string>();
+					// Always include the first and last tick values
+					if (allOriginalXTickValues.length > 0) {
+						tempSet.add(allOriginalXTickValues[0]);
+						tempSet.add(allOriginalXTickValues[allOriginalXTickValues.length - 1]);
+					}
+					// Add intermediate ticks based on stride
+					for (let i = 0; i < allOriginalXTickValues.length; i++) {
+						if (i % stride === 0) {
+							tempSet.add(allOriginalXTickValues[i]);
+						}
+					}
+					xTicksToDisplay = Array.from(tempSet).sort((a, b) => Number(a) - Number(b));
+				}
+			}
+		} else if (allOriginalXTickValues.length > 0) { // Not enough width or no width data, show first & last
+			xTicksToDisplay = [allOriginalXTickValues[0]];
+			if (allOriginalXTickValues.length > 1 && allOriginalXTickValues[0] !== allOriginalXTickValues[allOriginalXTickValues.length - 1]) {
+				xTicksToDisplay.push(allOriginalXTickValues[allOriginalXTickValues.length - 1]);
+			}
+		} else {
+			xTicksToDisplay = [];
+		}
+		x#
+		const d3XAxisTickValues = xTicksToDisplay.length > 0 ? xTicksToDisplay : null;
+
 		// X-axis
-		const xAxisD3 = d3.axisBottom(xScale).tickSizeOuter(0);
+		const xAxisD3 = d3.axisBottom(xScale)
+		    .tickSizeOuter(0);
+		if (d3XAxisTickValues) {
+		    xAxisD3.tickValues(d3XAxisTickValues);
+		} // If null, D3 will use its default tick generation which is fine
+
 		const xAxisGroup = svg
 			.append('g')
 			.attr('class', 'x-axis')
