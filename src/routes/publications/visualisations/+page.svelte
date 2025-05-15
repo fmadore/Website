@@ -1,16 +1,24 @@
 <script lang="ts">
     import SEO from '$lib/SEO.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
-    import { allPublications } from '$lib/data/publications'; // Assuming this is where your publication data is
+    import { allPublications, publicationsByType } from '$lib/data/publications'; // Import publicationsByType
     import { onMount } from 'svelte';
     import D3BarChart from '$lib/components/visualisations/D3BarChart.svelte';
     import D3HorizontalBarChart from '$lib/components/visualisations/D3HorizontalBarChart.svelte';
+    import D3StackedBarChart from '$lib/components/visualisations/D3StackedBarChart.svelte';
 
     type CitationYearData = { year: number; count: number };
     type CitedAuthorData = { author: string; count: number };
+    type PublicationsPerYearStackedData = { 
+        year: number; 
+        total: number;
+        [type: string]: number; // Counts for each publication type
+    };
 
     let citationsPerYearData = $state<CitationYearData[]>([]);
     let citedAuthorsData = $state<CitedAuthorData[]>([]);
+    let publicationsPerYearStackedData = $state<PublicationsPerYearStackedData[]>([]);
+    let publicationTypesForStack = $state<string[]>([]); // Keys for the stack
 
     // Calculate total citations reactively
     const totalCitations = $derived(
@@ -43,7 +51,29 @@
         });
         citedAuthorsData = Object.entries(authorCounts)
             .map(([author, count]) => ({ author, count }))
-            .sort((a, b) => b.count - a.count); 
+            .sort((a, b) => b.count - a.count);
+
+        // Prepare data for stacked bar chart (Publications per Year by Type)
+        const types = Object.keys(publicationsByType).sort(); // Get all unique publication types
+        publicationTypesForStack = types;
+
+        const yearlyPublicationCounts: Record<number, { [type: string]: number, total: number }> = {};
+
+        allPublications.forEach(pub => {
+            if (!yearlyPublicationCounts[pub.year]) {
+                yearlyPublicationCounts[pub.year] = { total: 0 };
+                types.forEach(type => yearlyPublicationCounts[pub.year][type] = 0); // Initialize all types with 0
+            }
+            yearlyPublicationCounts[pub.year][pub.type] = (yearlyPublicationCounts[pub.year][pub.type] || 0) + 1;
+            yearlyPublicationCounts[pub.year].total++;
+        });
+
+        publicationsPerYearStackedData = Object.entries(yearlyPublicationCounts)
+            .map(([yearStr, counts]) => ({
+                year: parseInt(yearStr),
+                ...counts
+            }))
+            .sort((a, b) => a.year - b.year);
     });
 
     // Accessor functions for the D3BarChart
@@ -68,6 +98,26 @@
     <p class="text-xl mb-10">
         This page presents various visualisations of my publication data, offering insights into citation trends, authorship patterns, and more.
     </p>
+
+    <section class="visualization-section mb-12">
+        <h2 class="text-2xl font-semibold mb-6">Publications per year by type</h2>
+        {#if publicationsPerYearStackedData.length > 0 && publicationTypesForStack.length > 0}
+            <div class="chart-wrapper p-6 rounded-lg shadow-md" style="height: 450px;">
+                <D3StackedBarChart
+                    data={publicationsPerYearStackedData}
+                    keys={publicationTypesForStack}
+                    xAxisLabel="Year"
+                    yAxisLabel="Number of Publications"
+                />
+            </div>
+        {:else}
+            <div class="placeholder-message p-6 rounded-lg shadow-md text-center">
+                <p class="text-light">No publication data available to display for this visualization.</p>
+            </div>
+        {/if}
+    </section>
+
+    <h2 class="text-3xl font-bold my-8 pt-4 border-t border-gray-300 dark:border-gray-700">Citation statistics</h2>
 
     <section class="visualization-section mb-12">
         <h2 class="text-2xl font-semibold mb-6">
