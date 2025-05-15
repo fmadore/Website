@@ -58,6 +58,47 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
             title: "Salafism and Political Order in Africa",
             source: "Cambridge: Cambridge University Press, 2021",
             url: "https://doi.org/10.1017/9781108690577"
+        },
+        {
+            authors: ["Aboubakar Sidiki Segda"],
+            year: 2021,
+            title: "L'influence du retour des scolaires burkinabè de la Côte d'Ivoire sur l'islam au Burkina Faso",
+            source: "Les Cahiers de l'ACAREF 3, no. 6 (2021): 321-41",
+            url: "https://web.archive.org/web/20240623145336/https://revues.acaref.net/wp-content/uploads/sites/3/2021/06/18Aboubakar-Sidiki-Segda.pdf"
+        },
+        {
+            authors: ["Kawsar Laanani", "Sara Gianesello", "Sophie Desmidt", "Aksana Ismailbekova"],
+            year: 2023,
+            title: "Understanding Islamic Activism in Central Asia and West Africa and the Sahel",
+            source: "Discussion Paper. ecdpm, 18 September 2023",
+            url: "https://ecdpm.org/work/understanding-islamic-activism-central-asia-west-africa-sahel"
+        },
+        {
+            authors: ["Issouf Binaté"],
+            year: 2021,
+            title: "L'UTMBS à l'épreuve des célébrations du Maouloud : bureaucratisation et trajectoire d'une entreprise religieuse au nord de la Côte d'Ivoire",
+            source: "Émulations, no. 37 (2021): 57-73",
+            url: "https://doi.org/10.14428/emulations.037.04"
+        },
+        {
+            authors: ["Sékou Traoré"],
+            year: 2022,
+            title: "La crise des années 1980 et le maraboutage en Côte d'Ivoire : quand l'argent bouleverse tout",
+            source: "Afrika Focus 35, no. 1 (2022): 127-51",
+            url: "https://doi.org/10.1163/2031356X-35010007"
+        },
+        {
+            authors: ["Aala Abdelgadir"],
+            year: 2021,
+            title: "Islamic Identity and Politics in Muslim-Minority Contexts",
+            source: "Ph.D. dissertation, Stanford University, 2021",
+            url: "https://purl.stanford.edu/kx926tq7022"
+        },
+        {
+            authors: ["Marie Brossier"],
+            year: 2019,
+            title: "Trajectoires d'éducation et d'engagements politiques à travers le Sahel : le cas des arabisants au Sénégal",
+            source: "In Identités sahéliennes en temps de crise : histoires, enjeux et perspectives, edited by Baz Lecocq and Amy Niang, 267-96. Münster: LIT Verlag, 2019"
         }
     ]
 }; 
