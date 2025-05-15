@@ -192,7 +192,7 @@
 		} else {
 			xTicksToDisplay = [];
 		}
-		x#
+
 		const d3XAxisTickValues = xTicksToDisplay.length > 0 ? xTicksToDisplay : null;
 
 		// X-axis
