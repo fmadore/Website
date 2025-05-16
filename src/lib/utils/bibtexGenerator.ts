@@ -140,7 +140,11 @@ export function generateBibtex(publication: Publication): string {
             if (publication.pages) bibtexFields.push(`  pages = {${escapeBibtex(publication.pages.replace('-', '--'))}}`);
             
             if (typeof publication.editors === 'string' && publication.editors) {
-                bibtexFields.push(`  editor = {${escapeBibtex(publication.editors)}}`);
+                // Split string by comma or 'and', then format correctly
+                const editorArray = publication.editors.split(/,\s*|\s+and\s+/).map(name => name.trim()).filter(name => name);
+                if (editorArray.length > 0) {
+                    bibtexFields.push(`  editor = {${formatAuthors(editorArray)}}`);
+                }
             } else if (Array.isArray(publication.editors) && publication.editors.length > 0) {
                 bibtexFields.push(`  editor = {${formatAuthors(publication.editors)}}`);
             }
