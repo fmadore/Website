@@ -24,6 +24,11 @@
 	);
 
 	// --- Publication Grouping ---
+	// First, filter out 'phd-dissertation' and 'masters-thesis'
+	const filteredPublicationsByDate = publicationsByDate.filter(
+		pub => pub.type !== 'phd-dissertation' && pub.type !== 'masters-thesis'
+	);
+
 	const publicationTypeOrder: Publication['type'][] = [
 		'book', 
 		'special-issue', 
@@ -31,7 +36,6 @@
 		'chapter', 
 		'report', 
 		'encyclopedia',
-		'dissertation', // Added dissertation here, adjust/remove if needed
 		'blogpost'      // Added blogpost here, adjust/remove if needed
 	];
 
@@ -44,14 +48,13 @@
 			case 'chapter': return 'Book Chapters';
 			case 'report': return 'Report';
 			case 'encyclopedia': return 'Encyclopedia Entry';
-			case 'dissertation': return 'Dissertation';
 			case 'blogpost': return 'Blog Posts';
 			default: return 'Other Publications'; // Fallback
 		}
 	}
 
-	// Group publications by type
-	const publicationsByType = publicationsByDate.reduce((acc, pub) => {
+	// Group publications by type using the filtered list
+	const publicationsByType = filteredPublicationsByDate.reduce((acc, pub) => {
 		const type = pub.type || 'other'; // Default to 'other' if type is missing
 		if (!acc[type]) {
 			acc[type] = [];
@@ -272,7 +275,7 @@
 	<!-- Publications Section -->
 	<section class="mb-8">
 		<h3 class="text-2xl font-semibold mb-2 border-b border-light pb-1">Publications</h3> 
-		{#if publicationsByDate.length > 0}
+		{#if filteredPublicationsByDate.length > 0}
 			{#each presentPublicationTypes as pubType (pubType)}
 				{#if publicationsByType[pubType] && publicationsByType[pubType].length > 0}
 					<h4 class="text-lg font-semibold mt-4 mb-2">{getPublicationTypeDisplayName(pubType)}</h4>
@@ -294,8 +297,6 @@
 									<em>{pub.title}</em>{#if pub.publisher}, {pub.publisher}{/if}.
 								{:else if pub.type === 'encyclopedia' && pub.encyclopediaTitle}
 									In <em>{pub.encyclopediaTitle}</em>{#if pub.publisher}, {pub.publisher}{/if}.
-								{:else if pub.type === 'dissertation' && pub.university}
-									<em>{pub.title}</em>. Ph.D. Dissertation, {pub.university}{#if pub.department}, {pub.department}{/if}.
 								{:else if pub.type === 'blogpost'}
 									{#if pub.url}<a href="{pub.url}" target="_blank" rel="noopener noreferrer">"{pub.title}"</a>{/if}. Blog Post.
 								{:else}
