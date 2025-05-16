@@ -170,8 +170,8 @@
 
 <SEO 
     title="Conference Activity | Frédérick Madore"
-    description="Academic conference presentations, workshops, and other speaking engagements by Frédérick Madore focusing on Islam in West Africa."
-    keywords="conferences, presentations, workshops, panels, lectures, Islam, West Africa, Frédérick Madore"
+    description="Academic conference presentations, workshops, and other speaking engagements by Frédérick Madore."
+    keywords="conferences, presentations, workshops, panels, lectures, Islam, West Africa, digital humanities, Frédérick Madore"
 />
 
 <div 
