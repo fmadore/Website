@@ -12,13 +12,6 @@ function addRepeatedTag(tag: string, values: string[] | undefined | null, lines:
     }
 }
 
-function getRisMonthName(monthNum: number): string | undefined {
-    if (monthNum >= 1 && monthNum <= 12) {
-        return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][monthNum - 1];
-    }
-    return undefined;
-}
-
 function getRisType(publicationType: Publication['type']): string {
     switch (publicationType) {
         case 'article': return 'JOUR';
@@ -62,24 +55,20 @@ export function generateRis(publication: Publication): string {
         }
     }
 
-    // Date Handling (PY and DA)
-    let yearForPY: string | number | undefined = publication.year;
-    let dateForDA: string | undefined = undefined;
+    // Revised Date Handling (PY only, formatted with slashes)
+    let pyValue: string | number | undefined = publication.year;
 
     if (publication.dateISO) {
-        const parts = publication.dateISO.split('-');
-        yearForPY = parts[0]; 
-        if (parts.length >= 2) { 
-            const monthNum = parseInt(parts[1], 10);
-            dateForDA = getRisMonthName(monthNum);
-            if (parts.length === 3 && dateForDA) { 
-                 yearForPY = publication.dateISO; 
-            }
+        const isoParts = publication.dateISO.split('-');
+        if (isoParts.length === 1 && /^\d{4}$/.test(isoParts[0])) { // YYYY
+            pyValue = isoParts[0];
+        } else if (isoParts.length === 2 && /^\d{4}$/.test(isoParts[0]) && /^\d{1,2}$/.test(isoParts[1])) { // YYYY-MM
+            pyValue = `${isoParts[0]}/${isoParts[1].padStart(2, '0')}`;
+        } else if (isoParts.length === 3 && /^\d{4}$/.test(isoParts[0]) && /^\d{1,2}$/.test(isoParts[1]) && /^\d{1,2}$/.test(isoParts[2])) { // YYYY-MM-DD
+            pyValue = `${isoParts[0]}/${isoParts[1].padStart(2, '0')}/${isoParts[2].padStart(2, '0')}`;
         }
     }
-    addTag('PY', yearForPY, lines);
-    if (dateForDA) addTag('DA', dateForDA, lines);
-    
+    addTag('PY', pyValue, lines);
 
     if (publication.abstract) addTag('AB', publication.abstract, lines);
     addRepeatedTag('KW', publication.tags, lines);
@@ -95,7 +84,7 @@ export function generateRis(publication: Publication): string {
 
     const notes: string[] = [];
     if (publication.prefacedBy) {
-        notes.push(`Prefaced by ${publication.prefacedBy}`);
+        notes.push(`Prefaced by ${publication.prefacedBy}.`);
     }
 
     // Type-specific fields
@@ -115,6 +104,10 @@ export function generateRis(publication: Publication): string {
             break;
         case 'BOOK': // Includes edited volumes
             if (publication.series) addTag('T3', publication.series, lines);
+            if (publication.pageCount && publication.pageCount > 0) {
+                // Add page count to notes as well for books, as EP might go to "Extra"
+                notes.push(`Total pages: ${publication.pageCount}.`);
+            }
             break;
         case 'CHAP':
             addTag('T2', publication.book, lines); 
@@ -125,7 +118,7 @@ export function generateRis(publication: Publication): string {
             addTag('M3', publication.type === 'phd-dissertation' ? 'PhD dissertation' : 'Master\'s thesis', lines); 
             if (publication.department) addTag('AD', publication.department, lines);
             if (publication.advisors && publication.advisors.length > 0) {
-                notes.push(`Advisors: ${publication.advisors.join('; ')}`);
+                notes.push(`Advisors: ${publication.advisors.join('; ')}.`);
             }
             break;
         case 'RPRT':
@@ -140,38 +133,34 @@ export function generateRis(publication: Publication): string {
             break;
     }
 
-    // Unified Page Handling (SP, EP)
-    let startPage: string | undefined = undefined;
-    let endPage: string | undefined = undefined;
-
-    if (publication.pages && String(publication.pages).trim()) { 
+    // Page Handling (SP, EP) - EP for books is handled in notes and still below
+    if (risType === 'BOOK' && publication.pageCount && publication.pageCount > 0) {
+        addTag('EP', String(publication.pageCount), lines); // Keep EP, Zotero might use it for something even if not display
+    } else if (publication.pages && String(publication.pages).trim()) {
+        let startPage: string | undefined = undefined;
+        let endPage: string | undefined = undefined;
         const pageString = String(publication.pages).trim();
         const parts = pageString.split('-').map(p => p.trim());
+
         if (parts.length === 2 && parts[0] && parts[1] && /^\d+$/.test(parts[0]) && /^\d+$/.test(parts[1])) {
             startPage = parts[0];
             endPage = parts[1];
         } else if (parts.length === 1 && parts[0] && /^\d+$/.test(parts[0])) {
             const singlePageNum = parts[0];
             if (risType === 'THES' || risType === 'RPRT') { 
-                startPage = '1';
+                startPage = '1'; 
                 endPage = singlePageNum;
             } else { 
                 startPage = singlePageNum;
                 endPage = singlePageNum; 
             }
         }
-    }
-
-    if (risType === 'BOOK' && publication.pageCount && publication.pageCount > 0) {
-        startPage = '1'; 
-        endPage = String(publication.pageCount);
+        addTag('SP', startPage, lines);
+        addTag('EP', endPage, lines);
     }
   
-    addTag('SP', startPage, lines);
-    addTag('EP', endPage, lines);
-
     if (notes.length > 0) {
-        addTag('N1', notes.join('; '), lines); 
+        addTag('N1', notes.join(' '), lines); // Join notes with a space
     }
 
     // Final tags
