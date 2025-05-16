@@ -2,7 +2,7 @@ import type { Education } from '$lib/types';
 
 export const trainingHujiFub2023: Education = {
 	id: 'training-huji-fub-2023',
-	degree: 'HUJI-FUB Digital Humanities Winter School 2023',
+	degree: 'HUJI-FUB Digital Humanities Winter School',
 	institution: 'Hebrew University, Mount Scopus Campus',
 	location: 'Jerusalem, Israel',
 	year: 2023,
