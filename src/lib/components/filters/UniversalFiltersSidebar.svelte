@@ -63,15 +63,6 @@
                     {/if}
                 </div>
             {/each}
-
-            {#if sections.length > 0}
-                <div class="clear-button-wrapper" in:fly={{ y: 10, duration: 200, delay: sections.length * 50 }}>
-                    <!-- Use the handler function -->
-                    <button class="clear-filters btn btn-secondary btn-sm" on:click={handleClearFilters}>
-                        Clear all filters
-                    </button>
-                </div>
-            {/if}
         </div>
     {/if}
 
@@ -107,14 +98,6 @@
                 {/if}
             </div>
         {/each}
-
-        {#if sections.length > 0}
-            <div class="clear-button-wrapper">
-                 <button class="clear-filters btn btn-secondary btn-sm" on:click={config.clearAllFilters}>
-                    Clear all filters
-                </button>
-            </div>
-        {/if}
     </div>
 </aside>
 
@@ -239,11 +222,21 @@
          padding-bottom: 0; 
     }
 
-    /* Clear button styling */
+    /* Clear button styling removed */
+    /*
     .clear-button-wrapper {
         margin-top: var(--spacing-6); 
         padding-top: var(--spacing-4); 
         border-top: 1px solid var(--color-border); 
+    }
+
+    .clear-button-wrapper.top-clear-button {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+        margin-bottom: var(--spacing-4); 
+        padding-bottom: var(--spacing-4); 
+        border-bottom: 1px solid var(--color-border); 
     }
 
     .clear-filters {
@@ -258,4 +251,5 @@
          background-color: #374151; 
          border-color: #374151;
     }
+    */
 </style> 

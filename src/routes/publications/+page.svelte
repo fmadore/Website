@@ -191,7 +191,7 @@
 
         <p class="text-xl mb-10">This page lists my academic publications, including books, journal articles, book chapters, reports, and more.</p>
 
-        <!-- Mobile Controls: Filter Toggle + Sorter -->
+        <!-- Mobile Controls: Filter Toggle + Sorter + Clear Button -->
         <div class="mobile-controls">
             <Button 
                 variant="outline-primary" 
@@ -205,7 +205,19 @@
                 </svelte:fragment>
                 {mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
             </Button>
-            <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
+            <div class="sorter-clear-group">
+                <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
+                {#if areFiltersActive($activeFilters)}
+                    <Button 
+                        variant="outline-primary" 
+                        size="sm" 
+                        on:click={clearAllFilters}
+                        additionalClasses="control-button-rounded clear-filters-button-page"
+                    >
+                        Clear all filters
+                    </Button>
+                {/if}
+            </div>
         </div>
 
         <EntityListPageLayout>
@@ -219,9 +231,19 @@
             </svelte:fragment>
             
             <!-- Default slot for main content -->
-            <!-- Desktop Controls: Sorter only -->
+            <!-- Desktop Controls: Sorter + Clear Button -->
             <div class="desktop-controls">
                 <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
+                {#if areFiltersActive($activeFilters)}
+                    <Button 
+                        variant="outline-primary" 
+                        size="sm" 
+                        on:click={clearAllFilters}
+                        additionalClasses="control-button-rounded clear-filters-button-page"
+                    >
+                        Clear all filters
+                    </Button>
+                {/if}
             </div>
             <FilteredListDisplay
                 filteredItems={sortedPublications}
@@ -264,6 +286,12 @@
         justify-content: space-between; /* Space out controls */
     }
 
+    .mobile-controls .sorter-clear-group {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-2);
+    }
+
     /* Style the specific class */
     .mobile-controls :global(.control-button-rounded) {
          border-radius: var(--border-radius-md);
@@ -277,6 +305,8 @@
     .desktop-controls {
         display: flex; /* Shown by default */
         justify-content: flex-end;
+        align-items: center; /* Align items vertically */
+        gap: var(--spacing-2); /* Add gap between sorter and clear button */
         margin-bottom: var(--spacing-4);
     }
 

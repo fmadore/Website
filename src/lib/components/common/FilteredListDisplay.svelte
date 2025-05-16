@@ -55,12 +55,12 @@
             <p>{emptyStateMessage}</p>
             {#if areFiltersActive}
                 <button 
-                    class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-                    on:click={clearAllFilters}
+                    class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition btn btn-secondary btn-sm"
+                    on:click={clearAllFilters} 
                 >
                     Clear all filters
                 </button>
-            {:else}
+            {:else if !areFiltersActive}
                 <p class="mt-2 text-sm text-gray-500">
                     {emptyStateNoFiltersMessage}
                 </p>
@@ -68,3 +68,7 @@
         </div>
     {/if}
 </div>
+
+<style>
+    /* Styles for status-bar-container and clear-filters-inline removed */
+</style>
