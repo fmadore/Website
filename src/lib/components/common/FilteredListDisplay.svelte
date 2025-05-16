@@ -10,7 +10,6 @@
     export let filteredItems: Readable<any[]>; // Store of filtered items
     export let itemComponent: AnyComponentType; // Component to render each item
     export let itemComponentProps: ComponentProps<any> = {}; // Props to pass to each item component
-    export let entityName = "items"; // Customizable name of entities (e.g., "publications", "conference activities")
     export let areFiltersActive: boolean = false; // Whether filters are active
     export let clearAllFilters: () => void; // Function to clear all filters
     export let emptyStateMessage = "No items found matching your criteria."; // Message for empty state
@@ -22,15 +21,8 @@
 </script>
 
 <div>
-    <div class="text-light mb-6">
-        Showing {$filteredItems?.length || 0} {entityName}
-        {#if areFiltersActive}
-            <span class="text-accent">(Filters applied)</span>
-        {/if}
-    </div>
-    
     {#if $filteredItems && $filteredItems.length > 0}
-        <ul class="list-none p-0 space-y-8">
+        <ul class="list-none p-0 space-y-8 mt-6">
             {#each $filteredItems as item (item.id)}
                 {#if onItemEvent}
                     <svelte:component 
@@ -51,7 +43,7 @@
             {/each}
         </ul>
     {:else}
-        <div class="p-8 bg-gray-50 rounded text-center">
+        <div class="p-8 bg-gray-50 rounded text-center mt-6">
             <p>{emptyStateMessage}</p>
             {#if areFiltersActive}
                 <button 
