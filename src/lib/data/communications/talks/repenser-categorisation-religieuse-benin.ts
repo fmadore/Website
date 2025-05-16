@@ -16,7 +16,7 @@ export const repenserCategorisationReligieuse: Communication = {
     image: "images/communications/paris-cite.webp",
     heroImage: {
         src: "images/communications/paris-cite-hero.webp",
-        alt: "Université Paris Cité",
+        alt: "Université Paris Cité logo",
     },
     coordinates: {
         latitude: 48.85569290213881,

@@ -17,7 +17,7 @@ export const tracingIslamicKnowledgeProduction: Communication = {
     image: "images/communications/zmo.webp",
     heroImage: {
         src: "images/communications/zmo-hero.webp",
-        alt: "Zentrum Moderner Orient",
+        alt: "Leibniz-Zentrum Moderner Orient logo",
     },
     coordinates: {
         latitude: 52.42814222811816,
