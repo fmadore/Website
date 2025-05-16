@@ -1,0 +1,13 @@
+/* src/styles/pages/cv.css */
+
+.cv-main-title,
+.cv-subtitle {
+    text-align: center;
+}
+
+/* Corresponds to Tailwind's 'md' breakpoint */
+@media (min-width: 768px) {
+    .cv-contact-links-wrapper {
+        margin-left: auto;
+    }
+} 

@@ -125,8 +125,8 @@
 />
 
 <div class="cv-container p-8 max-w-4xl mx-auto bg-default shadow-md rounded-lg">
-	<h1 class="text-3xl font-bold mb-2 border-b pb-2">Curriculum Vitae</h1>
-	<h2 class="text-xl font-semibold mb-4">Frédérick Madore</h2>
+	<h1 class="text-3xl font-bold mb-2 border-b pb-2 cv-main-title">Curriculum Vitae</h1>
+	<h2 class="text-xl font-semibold mb-4 cv-subtitle">Frédérick Madore</h2>
 	
 	<!-- Contact Info Section -->
 	<section class="mb-6 text-sm text-light flex flex-wrap gap-x-6 gap-y-2 items-start">
@@ -141,7 +141,7 @@
 			</div>
 		</div>
 		<!-- Links -->
-		<div class="flex flex-col gap-1 md:ml-auto">
+		<div class="flex flex-col gap-1 cv-contact-links-wrapper">
 			<div class="flex items-center gap-2">
 				<Icon icon="mdi:email" class="text-light flex-shrink-0" width="20" height="20" />
 				<a href="mailto:frederick.madore@zmo.de">frederick.madore@zmo.de</a>

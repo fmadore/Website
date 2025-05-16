@@ -29,6 +29,7 @@
 @import './styles/pages/research.css';
 @import './styles/pages/publications.css';
 @import './styles/pages/contact.css';
+@import './styles/pages/cv.css';
 
 /* Utilities */
 @import './styles/utilities/spacing.css';
