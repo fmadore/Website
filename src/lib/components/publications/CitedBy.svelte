@@ -10,7 +10,7 @@
 
 {#if sortedCitedBy && sortedCitedBy.length > 0}
     <section class="mt-8 cited-by-section">
-        <h2 class="text-xl font-semibold mb-4">Cited By</h2>
+        <h2 class="text-xl font-semibold mb-4">Cited By ({sortedCitedBy.length})</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             {#each sortedCitedBy as citingWork}
                 <div class="citing-work-card bg-sidebar p-4 rounded-md shadow-sm border border-default">
