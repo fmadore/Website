@@ -118,6 +118,18 @@
 		}
 	}
 
+	// Helper function for Volume/Issue display
+	function formatVolumeIssueDisplay(volume?: string | number, issue?: string | number): string {
+		let display = '';
+		if (volume) {
+			display += ` ${volume}`;
+		}
+		if (issue) {
+			display += ` (${issue})`;
+		}
+		return display;
+	}
+
 </script>
 
 <SEO
@@ -252,17 +264,17 @@
 					<ul class="list-disc pl-6">
 						{#each publicationsByType[pubType] as pub (pub.id)}
 							<li class="mb-3">
-								{#if pub.authors}{formatAuthorList(pub.authors)} {/if}
+								{#if pub.authors}{formatAuthorList(pub.authors)}. {/if}
 								({pub.year}).
 								{#if pub.type !== 'book'}"{pub.title}".{/if}
 								{#if pub.type === 'article' && pub.journal}
-									In <em>{pub.journal}</em>{#if pub.volume}({pub.volume}{#if pub.issue}:{pub.issue}{/if}){/if}{#if pub.pages}: {pub.pages}{/if}.
+									In <em>{pub.journal}</em>{formatVolumeIssueDisplay(pub.volume, pub.issue)}{#if pub.pages}: {pub.pages}{/if}.
 								{:else if pub.type === 'chapter' && pub.book}
 									In {#if pub.editors}<em>{pub.editors} (ed.), </em>{/if}<em>{pub.book}</em>{#if pub.publisher}, {pub.publisher}{/if}{#if pub.pages}, pp. {pub.pages}{/if}.
 								{:else if pub.type === 'book'}
 									<em>{pub.title}</em>{#if pub.placeOfPublication || pub.publisher}.&nbsp;{@const city = pub.placeOfPublication || ''}{@const publisher = pub.publisher || ''}{#if city && publisher}{city}: {publisher}{:else if city}{city}{:else if publisher}{publisher}{/if}.{:else}.{/if}
 								{:else if pub.type === 'special-issue' && pub.journal}
-									Guest Editor for Special Issue: "{pub.title}", <em>{pub.journal}</em>{#if pub.volume}({pub.volume}{#if pub.issue}:{pub.issue}{/if}){/if}.
+									Guest Editor for Special Issue: "{pub.title}", <em>{pub.journal}</em>{formatVolumeIssueDisplay(pub.volume, pub.issue)}.
 								{:else if pub.type === 'report'}
 									<em>{pub.title}</em>{#if pub.publisher}, {pub.publisher}{/if}.
 								{:else if pub.type === 'encyclopedia' && pub.encyclopediaTitle}
