@@ -14,7 +14,7 @@ const templateIds = [
     'report-template-id',
     'encyclopedia-template-id',
     'blogpost-template-id',
-    'dissertation-template-id'
+    'phd-dissertation-template-id'
 ];
 
 // Use a single static glob import

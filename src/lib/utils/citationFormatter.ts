@@ -9,7 +9,8 @@ export const typeLabels: { [key: string]: string } = {
     'report': 'Report',
     'encyclopedia': 'Encyclopedia Entry',
     'blogpost': 'Blog Post',
-    'dissertation': 'Ph.D. Dissertation'
+    'phd-dissertation': 'Ph.D. Dissertation',
+    'masters-thesis': 'Master\'s Thesis'
 };
 
 // Helper function to handle authors that might be string or array
@@ -156,8 +157,8 @@ export function formatCitation(publication: Publication): FormattedCitation {
         detailsHtml = details;
         year = publication.year;
 
-    } else if (type === 'dissertation') {
-        let details = 'Ph.D. dissertation';
+    } else if (type === 'phd-dissertation' || type === 'masters-thesis') {
+        let details = typeLabel; // Use the already determined typeLabel
         if (publication.department) details += `, ${publication.department}`;
         if (publication.university) details += `, ${publication.university}`;
         if (details.trim() && !details.trim().endsWith('.')) {

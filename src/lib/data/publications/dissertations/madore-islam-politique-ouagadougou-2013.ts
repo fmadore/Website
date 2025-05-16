@@ -2,7 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const madoreIslamPolitiqueOuagadougou2013: Publication = {
     id: "madore-islam-politique-ouagadougou-2013",
-    type: "dissertation",
+    type: "masters-thesis",
     title: "Islam, politique et sphère publique à Ouagadougou (Burkina Faso) : différentes cohortes d'imams et de prêcheurs entre visibilité nouvelle et reconfiguration des rapports intergénérationnels (1960-2012)",
     authors: ["Frédérick Madore"],
     date: "2013",

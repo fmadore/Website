@@ -2,8 +2,8 @@ import type { Publication } from '$lib/types';
 
 // Dissertation Template - Copy this file and fill in the details
 export const dissertationTemplate: Publication = {
-    id: "dissertation-template-id", // Replace with URL-friendly ID (use kebab-case)
-    type: "dissertation",
+    id: "phd-dissertation-template-id", // Replace with URL-friendly ID (use kebab-case)
+    type: "phd-dissertation", // Changed from dissertation
     title: "Dissertation Title",
     authors: ["Author Name"], // Add all authors in the array
     date: "2025", // Graduation year

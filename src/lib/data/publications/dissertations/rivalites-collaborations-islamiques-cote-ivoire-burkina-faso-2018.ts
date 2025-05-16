@@ -2,7 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const rivalitesCollaborationsIslam: Publication = {
     id: "rivalites-collaborations-islamiques-cote-ivoire-burkina-faso-2018",
-    type: "dissertation",
+    type: "phd-dissertation",
     title: "Rivalités et collaborations entre ainés et cadets sociaux dans les milieux associatifs islamiques en Côte d'Ivoire et au Burkina Faso (1970-2017)",
     authors: ["Frédérick Madore"],
     date: "2018",
