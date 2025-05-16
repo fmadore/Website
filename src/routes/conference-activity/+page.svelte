@@ -313,33 +313,7 @@
         align-items: center;
     }
 
-    /* Ensure the second row's Sorter doesn't take full width if Clear button isn't there */
-    .mobile-controls-row > :global(.sorter) {
-        /* If Clear button is not present, Sorter might stretch. We can limit its growth if needed or let space-between handle it. */
-        /* For now, let space-between handle it. If only Sorter, it will be on the left. */
-    }
-     .mobile-controls-row > :global(button.control-button-rounded) {
-        /* Styles for the clear button if it needs to be specifically managed */
-    }
-
-    .actions-group {
-        /* This class might be redundant now for mobile if each row is handled separately */
-        /* display: flex; */
-        /* align-items: center; */
-        /* gap: var(--spacing-2); */
-    }
-
-    /* REMOVE previous global override */
-    /* Style the specific class */
-    .mobile-controls :global(.control-button-rounded), /* Target mobile */
-    .desktop-controls :global(.control-button-rounded) { /* And desktop */
-         border-radius: var(--border-radius-md);
-    }
-    .mobile-controls :global(.control-button-rounded:hover), /* Apply hover to mobile too */
-    .desktop-controls :global(.control-button-rounded:hover) { /* And desktop */
-         background-color: var(--color-primary);
-         color: white;
-    }
+    /* control-button-rounded styles are global (buttons.css) */
 
     /* Desktop controls styling */
     .desktop-controls {

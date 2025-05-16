@@ -310,36 +310,13 @@
         justify-content: flex-start; /* Align to left if only one item (Sorter) */
     }
 
-    /* Specific styling for the filter toggle button if it needs to be full width or aligned left */
-    .mobile-controls-row .filter-toggle-button {
-        /* If it should be on the left and not stretch: */
-        /* margin-right: auto; */ 
-        /* If it should be full width for row 1 (if no other element) */
-        /* width: 100%; */
-    }
+    /* The rule for .mobile-controls-row .filter-toggle-button was empty and has been removed. */
 
     .mobile-controls .sorter-clear-group { 
-        /* This group is now a row itself, so justify-content applies to its children (Sorter, Clear button) */
-        /* display: flex; // Already a flex row via .mobile-controls-row */
-        /* align-items: center; // Already handled by .mobile-controls-row */
-        /* gap: var(--spacing-2); // Retained from previous styling, good for space between Sorter & Clear */
-         gap: var(--spacing-2); /* Explicitly set gap for items in this row */
+        gap: var(--spacing-2); /* Explicitly set gap for items in this row */
     }
 
-    /* Style the specific class */
-    .mobile-controls :global(.control-button-rounded) {
-         border-radius: var(--border-radius-md);
-    }
-    .mobile-controls :global(.control-button-rounded:hover), /* Apply hover to mobile too */
-    .desktop-controls :global(.control-button-rounded:hover) { /* And desktop */
-         background-color: var(--color-primary);
-         color: white;
-    }
-
-    /* Add the border-radius for desktop as well for consistency */
-    .desktop-controls :global(.control-button-rounded) {
-        border-radius: var(--border-radius-md);
-   }
+    /* Styles for .control-button-rounded and its hover effect are now globally handled by Sorter.svelte */
 
     /* Desktop controls styling */
     .desktop-controls {

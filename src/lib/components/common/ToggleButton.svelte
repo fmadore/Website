@@ -26,7 +26,7 @@
     on:click={handleClick}
     ariaLabel={ariaTitle}
     title={ariaTitle}
-    additionalClasses="rounded-md hover:bg-primary hover:text-white"
+    additionalClasses="control-button-rounded"
 >
     <svelte:fragment slot="icon">
          <Map size={18} />

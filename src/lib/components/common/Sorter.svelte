@@ -60,14 +60,9 @@
 <style>
     /* Add scoped element for Svelte compiler */
     .sorter {
-        display: contents; /* Won't affect layout */
+        display: contents; /* Won\'t affect layout */
     }
     
-    :global(.control-button-rounded) {
-       border-radius: var(--border-radius-md);
-    }
-    :global(.control-button-rounded:hover) {
-       background-color: var(--color-primary);
-       color: white;
-    }
+    /* The .control-button-rounded styles are now handled globally 
+       via src/styles/components/buttons.css and imported in app.css */
 </style> 

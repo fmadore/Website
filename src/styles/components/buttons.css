@@ -108,4 +108,15 @@
 .btn.disabled {
   opacity: 0.65;
   pointer-events: none;
+}
+
+/* Custom control button with specific rounding and hover */
+.control-button-rounded {
+  border-radius: var(--border-radius-md) !important; /* Ensure this radius is applied */
+}
+
+.control-button-rounded:hover,
+.control-button-rounded:focus {
+  background-color: var(--color-primary) !important; /* Ensure this hover effect */
+  color: white !important;
 } 
