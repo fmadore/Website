@@ -107,7 +107,8 @@
             case 'report': return 'Report';
             case 'encyclopedia': return 'Encyclopedia Entry';
             case 'blogpost': return 'Blog Post';
-            case 'dissertation': return 'Dissertation';
+            case 'masters-thesis': return 'Master\'s Thesis';
+            case 'phd-dissertation': return 'PhD Dissertation';
             default: return type;
         }
     }
@@ -133,9 +134,9 @@
         { label: 'Edited by', value: Array.isArray(publication.editors) ? publication.editors.join(', ') : (publication.editors ?? ''), condition: publication.type === 'chapter' && !!publication.editors },
         { label: 'Encyclopedia', value: publication.encyclopediaTitle ?? '', condition: publication.type === 'encyclopedia' },
         { label: 'Blog', value: publication.publisher ?? '', condition: publication.type === 'blogpost' }, // Assuming publisher holds blog name
-        { label: 'University', value: publication.university ?? '', condition: publication.type === 'dissertation' },
-        { label: 'Department', value: publication.department ?? '', condition: publication.type === 'dissertation' },
-        { label: 'Advisors', value: publication.advisors ?? [], condition: publication.type === 'dissertation' && publication.advisors && publication.advisors.length > 0 },
+        { label: 'University', value: publication.university ?? '', condition: ['masters-thesis', 'phd-dissertation'].includes(publication.type) },
+        { label: 'Department', value: publication.department ?? '', condition: ['masters-thesis', 'phd-dissertation'].includes(publication.type) },
+        { label: 'Advisors', value: publication.advisors ?? [], condition: ['masters-thesis', 'phd-dissertation'].includes(publication.type) && publication.advisors && publication.advisors.length > 0 },
         
         // Common details
         { label: 'Pages', value: String(publication.pages || publication.pageCount || '') },
