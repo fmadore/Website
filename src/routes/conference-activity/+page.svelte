@@ -34,7 +34,7 @@
     import UniversalFiltersSidebar from '$lib/components/filters/UniversalFiltersSidebar.svelte';
     import type { UniversalFilterConfig, FilterSectionConfig, CheckboxFilterOption, RangeFilterOption, ButtonsFilterOption } from '$lib/types/filters';
     import CommunicationItem from '$lib/components/communications/CommunicationItem.svelte';
-    import MapVisualization from '$lib/components/communications/MapVisualization.svelte';
+    import MapVisualization from '$lib/components/visualisations/MapVisualization.svelte';
     import ToggleButton from '$lib/components/common/ToggleButton.svelte';
     import EntityListPageLayout from '$lib/components/common/EntityListPageLayout.svelte';
     import FilteredListDisplay from '$lib/components/common/FilteredListDisplay.svelte';

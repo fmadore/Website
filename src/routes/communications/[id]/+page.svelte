@@ -4,7 +4,7 @@
     import { base } from '$app/paths';
     import type { Communication } from '$lib/types/communication';
     import type { ComponentType } from 'svelte';
-    import MapVisualization from '$lib/components/communications/MapVisualization.svelte';
+    import MapVisualization from '$lib/components/visualisations/MapVisualization.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
     import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
     import { page } from '$app/stores';
