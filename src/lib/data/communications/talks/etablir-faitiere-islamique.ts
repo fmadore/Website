@@ -13,6 +13,11 @@ export const etablirFaitiereIslamique: Communication = {
     type: "workshop",
     language: "French",
     tags: ["Islam", "West Africa", "Religious Organizations", "Francophone", "Umbrella Organizations"],
+    image: "images/communications/puidoux.webp",
+    heroImage: {
+        src: "images/communications/puidoux-hero.webp",
+        alt: "Puidoux",
+    },
     coordinates: {
         latitude: 46.494026160672135,
         longitude: 6.779523450902999
