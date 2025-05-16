@@ -14,6 +14,11 @@ export const collectionIslamAfriqueOuest: Communication = {
     language: "French",
     abstract: "A presentation of the West African Islam Collection, offering new perspectives on the history of Muslim communities through press and digital humanities.",
     tags: ["West Africa", "Islam", "Digital Humanities", "Press", "Muslim Communities"],
+    image: "images/communications/distam-2024.webp",
+    heroImage: {
+        src: "images/communications/distam-2024-hero.webp",
+        alt: "DISTAM logo",
+    },
     coordinates: {
         latitude: 43.52854733305117,
         longitude: 5.418119777598703
