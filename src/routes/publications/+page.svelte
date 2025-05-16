@@ -336,6 +336,11 @@
          color: white;
     }
 
+    /* Add the border-radius for desktop as well for consistency */
+    .desktop-controls :global(.control-button-rounded) {
+        border-radius: var(--border-radius-md);
+   }
+
     /* Desktop controls styling */
     .desktop-controls {
         display: flex; /* Shown by default */
