@@ -9,6 +9,7 @@
     import { browser } from '$app/environment'; // Add back browser check
     import { page } from '$app/stores'; // Import page store
     import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte'; // Import Breadcrumb component
+    import MetaTags from '$lib/components/publications/MetaTags.svelte'; // Import MetaTags component
 
     // CitedBy, Reviews, PageHeader, etc. imports remain
     import CitedBy from '$lib/components/publications/CitedBy.svelte';
@@ -22,6 +23,8 @@
     import RelatedItemsList from '$lib/components/organisms/RelatedItemsList.svelte';
     import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
     import { allPublications } from '$lib/data/publications/index'; // Keep this for RelatedItemsList
+    import { generateBibtex } from '$lib/utils/bibtexGenerator'; // Import the generator
+    import { generateRis } from '$lib/utils/risGenerator'; // Import the RIS generator
     
     // Get data from the load function
     export let data: PageData;
@@ -153,6 +156,34 @@
         "Religious Activism on Campuses (Togo & Benin)": `${base}/research/religious-activism-campuses-togo-benin`,
     };
 
+    function downloadBibtex() {
+        if (!publication) return;
+        const bibtexString = generateBibtex(publication);
+        const blob = new Blob([bibtexString], { type: 'application/x-bibtex;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${publication.id}.bib`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    function downloadRis() {
+        if (!publication) return;
+        const risString = generateRis(publication);
+        const blob = new Blob([risString], { type: 'application/x-research-info-systems;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${publication.id}.ris`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
 </script>
 
 <!-- Ensure svelte:head block for JSON-LD is removed or commented out -->
@@ -172,6 +203,8 @@
     keywords="{[ 'publication', publication.type, ...(publication.tags || []), ...(publication.authors || []), 'Islam', 'West Africa', 'Frédérick Madore' ].join(', ')}"
     ogImage="{base}/{publication.image}"
 />
+
+<MetaTags {publication} />
 
 <div class="container mx-auto py-8 px-4">
     <article class="publication-article rounded-lg p-6 mb-8">
@@ -215,12 +248,37 @@
         <!-- Use the new TagList component -->
         <TagList tags={publication.tags} baseUrl="/publications?tag=" />
         
-        <!-- Use the new ActionLinks component -->
-        <ActionLinks 
-            primaryUrl={publication.url} 
-            primaryLabel="Access Publication" 
-            additionalUrls={publication.additionalUrls} 
-        />
+        <!-- Container for Action Links and Export Button -->
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+            <!-- ActionLinks component -->
+            <ActionLinks 
+                primaryUrl={publication.url} 
+                primaryLabel="Access Publication" 
+                additionalUrls={publication.additionalUrls}
+                sectionClass="" 
+                primaryDivClass=""
+            />
+
+            <!-- Export BibTeX Button -->
+            <div>
+                <button 
+                    on:click={downloadBibtex} 
+                    class="btn btn-primary cursor-pointer"
+                >
+                    Export BibTeX
+                </button>
+            </div>
+
+            <!-- Export RIS Button -->
+            <div>
+                <button 
+                    on:click={downloadRis} 
+                    class="btn btn-primary cursor-pointer"
+                >
+                    Export RIS
+                </button>
+            </div>
+        </div>
     </article>
 
     <!-- Use the Reviews component -->
