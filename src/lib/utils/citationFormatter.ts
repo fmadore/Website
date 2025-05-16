@@ -20,6 +20,23 @@ export function getAuthorsArray(authors: string[] | string | undefined): string[
     return authors;
 }
 
+// New function to format author list
+export function formatAuthorList(authorsInput: string[] | string | undefined): string {
+    const authorsArray = getAuthorsArray(authorsInput);
+    const numAuthors = authorsArray.length;
+    if (numAuthors === 0) return '';
+    if (numAuthors === 1) return authorsArray[0];
+
+    let formatted = '';
+    authorsArray.forEach((author, i) => {
+        formatted += author;
+        if (i < numAuthors - 1) {
+            formatted += (i === numAuthors - 2) ? ' and ' : ', ';
+        }
+    });
+    return formatted;
+}
+
 // Helper function to format editor string (e.g., "Name1, Name2 and Name3")
 function formatEditors(editors: string | undefined): string {
     if (!editors) return '';

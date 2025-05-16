@@ -11,6 +11,7 @@
 	import { editorialMembershipsByDate } from '$lib/data/editorial-memberships';
 	import { affiliationsByStartDate } from '$lib/data/affiliations';
 	import Icon from '@iconify/svelte';
+	import { formatAuthorList } from '$lib/utils/citationFormatter';
 	import type { Publication, Communication, Fieldwork, Education, Appointment, Grant, Award, PeerReview, MediaAppearance, EditorialMembership } from '$lib/types';
 	import type { ProfessionalAffiliation } from '$lib/data/affiliations/template';
 	import SEO from '$lib/SEO.svelte';
@@ -241,41 +242,6 @@
 		{/if}
 	</section>
 
-	<!-- Grants and Fellowships Section -->
-	<section class="mb-8">
-		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Grants & Fellowships</h3>
-		{#if grantsByDate.length > 0}
-			<ul>
-				{#each grantsByDate as grant (grant.id)}
-					<li class="mb-3">
-						<span class="font-medium">{grant.title}</span>, <em>{grant.funder}</em>.
-						<span class="block ml-4 text-sm text-light">{grant.dateRangeString}{#if grant.amount} ({grant.amount.toLocaleString('en-US')} {grant.currency}){/if}{#if grant.status && grant.status !== 'Awarded'} [{grant.status}]{/if}</span>
-						{#if grant.details} <p class="ml-4 text-sm">{grant.details}</p>{/if}
-					</li>
-				{/each}
-			</ul>
-		{:else}
-			<p class="text-light">No grants or fellowships listed.</p>
-		{/if}
-	</section>
-
-	<!-- Awards and Honors Section -->
-	<section class="mb-8">
-		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Awards & Honors</h3>
-		{#if awardsByDate.length > 0}
-			<ul>
-				{#each awardsByDate as award (award.id)}
-					<li class="mb-3">
-						<span class="font-medium">{award.title}</span>, <em>{award.institution}</em> ({award.year}).
-						{#if award.details} <p class="ml-4 text-sm">{award.details}</p>{/if}
-					</li>
-				{/each}
-			</ul>
-		{:else}
-			<p class="text-light">No awards or honors listed.</p>
-		{/if}
-	</section>
-
 	<!-- Publications Section -->
 	<section class="mb-8">
 		<h3 class="text-2xl font-semibold mb-2 border-b border-light pb-1">Publications</h3> 
@@ -286,7 +252,7 @@
 					<ul class="list-disc pl-6">
 						{#each publicationsByType[pubType] as pub (pub.id)}
 							<li class="mb-3">
-								{#if pub.authors}{pub.authors.join(', ')}. {/if}
+								{#if pub.authors}{formatAuthorList(pub.authors)}. {/if}
 								({pub.year}).
 								{#if pub.type !== 'book'}"{pub.title}".{/if}
 								{#if pub.type === 'article' && pub.journal}
@@ -310,7 +276,7 @@
 									{#if pub.publisher}{pub.publisher}.{/if}
 								{/if}
 								{#if pub.doi}<a href="https://doi.org/{pub.doi}" target="_blank" rel="noopener noreferrer" class="ml-1 text-primary hover:underline text-sm">[DOI]</a>{/if}
-								{#if pub.url && pub.type !== 'blogpost'}<a href="{pub.url}" target="_blank" rel="noopener noreferrer" class="ml-1 text-primary hover:underline text-sm">[Link]</a>{/if}
+								{#if pub.url && pub.type !== 'blogpost' && !pub.doi}<a href="{pub.url}" target="_blank" rel="noopener noreferrer" class="ml-1 text-primary hover:underline text-sm">[Link]</a>{/if}
 							</li>
 						{/each}
 					</ul>
@@ -335,6 +301,51 @@
 			{/if}
 		{:else}
 			<p class="text-light">No publications listed.</p>
+		{/if}
+	</section>
+
+	<!-- Grants and Fellowships Section -->
+	<section class="mb-8">
+		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Grants & Fellowships</h3>
+		{#if grantsByDate.length > 0}
+			<ul>
+				{#each grantsByDate as grant (grant.id)}
+					<li class="mb-3">
+						<span class="font-medium">{grant.title}</span>, <em>{grant.funder}</em>.
+						<span class="block ml-4 text-sm text-light">
+							{grant.dateRangeString}
+							{#if grant.amount}
+								{' '}
+								({grant.amount.toLocaleString('en-US')} {grant.currency})
+							{/if}
+							{#if grant.status && grant.status !== 'Awarded'}
+								{' '}
+								[{grant.status}]
+							{/if}
+						</span>
+						{#if grant.details} <p class="ml-4 text-sm">{grant.details}</p>{/if}
+					</li>
+				{/each}
+			</ul>
+		{:else}
+			<p class="text-light">No grants or fellowships listed.</p>
+		{/if}
+	</section>
+
+	<!-- Awards and Honors Section -->
+	<section class="mb-8">
+		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Awards & Honors</h3>
+		{#if awardsByDate.length > 0}
+			<ul>
+				{#each awardsByDate as award (award.id)}
+					<li class="mb-3">
+						<span class="font-medium">{award.title}</span>, <em>{award.institution}</em> ({award.year}).
+						{#if award.details} <p class="ml-4 text-sm">{award.details}</p>{/if}
+					</li>
+				{/each}
+			</ul>
+		{:else}
+			<p class="text-light">No awards or honors listed.</p>
 		{/if}
 	</section>
 
