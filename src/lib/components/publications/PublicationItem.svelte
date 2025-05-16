@@ -33,7 +33,7 @@
         let items: DisplayListItem[] = [];
         listPrefix = ''; // Reset prefix
 
-        if (type === 'book' || type === 'article' || type === 'chapter' || type === 'encyclopedia' || type === 'report' || type === 'blogpost' || type === 'dissertation') {
+        if (type === 'book' || type === 'article' || type === 'chapter' || type === 'encyclopedia' || type === 'report' || type === 'blogpost' || type === 'phd-dissertation' || type === 'masters-thesis') {
             if (authors) {
                 const authorsArray = getAuthorsArray(authors);
                 items = authorsArray.map(author => ({
@@ -112,7 +112,7 @@
                      {#if formattedCitation.year} ({formattedCitation.year}). {/if}
 
                     <!-- Add type-specific prefixes before detailsHtml -->
-                    {#if publication.type === 'dissertation'}
+                    {#if publication.type === 'phd-dissertation' || publication.type === 'masters-thesis'}
                         <span>"{publication.title}". </span>
                         {@html formattedCitation.detailsHtml}
                         <!-- Supervisor info remains separate -->

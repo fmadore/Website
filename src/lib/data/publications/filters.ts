@@ -153,7 +153,7 @@ export const filteredPublications = derived(
             
             // Filter by country
             if ($activeFilters.countries.length > 0 && 
-                (!pub.country || !pub.country.some(country => $activeFilters.countries.includes(country)))) {
+                (!pub.country || !pub.country.some((country: string) => $activeFilters.countries.includes(country)))) {
                 return false;
             }
             
@@ -205,9 +205,10 @@ export const displayedAuthors = derived(
         const noYearFilter = !$activeFilters.yearRange;
         const noTagFilter = $activeFilters.tags.length === 0;
         const noLanguageFilter = $activeFilters.languages.length === 0;
+        const noCountryFilter = $activeFilters.countries.length === 0;
 
         // If no types, years, tags, or languages are filtered, show all available authors
-        if (noTypeFilter && noYearFilter && noTagFilter && noLanguageFilter) {
+        if (noTypeFilter && noYearFilter && noTagFilter && noLanguageFilter && noCountryFilter) {
             return allAuthors; // Use the static allAuthors list
         }
 
@@ -233,6 +234,11 @@ export const displayedAuthors = derived(
                 if (!pubLanguages.some(lang => $activeFilters.languages.includes(lang))) {
                     return false;
                 }
+            }
+            // Country filter
+            if (!noCountryFilter && 
+                (!pub.country || !pub.country.some(country => $activeFilters.countries.includes(country)))) {
+                return false;
             }
             return true;
         });
@@ -307,7 +313,10 @@ export const displayedTypes = derived(
                 const hasMatchingPrefaceAuthor = pub.prefacedBy && $activeFilters.authors.includes(pub.prefacedBy);
                 if (!hasMatchingAuthor && !hasMatchingEditor && !hasMatchingPrefaceAuthor) return false;
             }
-            // TODO: Add Country & Project filters if needed for consistency
+            // Country filter
+            if ($activeFilters.countries.length > 0 && (!pub.country || !pub.country.some(country => $activeFilters.countries.includes(country)))) return false;
+            // Project filter
+            if ($activeFilters.projects.length > 0 && (!pub.project || !$activeFilters.projects.includes(pub.project))) return false;
             return true;
         });
         const types = new Set(relevantPublications.map(pub => pub.type));
@@ -337,7 +346,10 @@ export const displayedTags = derived(
                 const hasMatchingPrefaceAuthor = pub.prefacedBy && $activeFilters.authors.includes(pub.prefacedBy);
                 if (!hasMatchingAuthor && !hasMatchingEditor && !hasMatchingPrefaceAuthor) return false;
             }
-            // TODO: Add Country & Project filters if needed for consistency
+            // Country filter
+            if ($activeFilters.countries.length > 0 && (!pub.country || !pub.country.some(country => $activeFilters.countries.includes(country)))) return false;
+            // Project filter
+            if ($activeFilters.projects.length > 0 && (!pub.project || !$activeFilters.projects.includes(pub.project))) return false;
             return true;
         });
         const tags = new Set(relevantPublications.flatMap(pub => pub.tags || []));
@@ -364,7 +376,10 @@ export const displayedLanguages = derived(
                 const hasMatchingPrefaceAuthor = pub.prefacedBy && $activeFilters.authors.includes(pub.prefacedBy);
                 if (!hasMatchingAuthor && !hasMatchingEditor && !hasMatchingPrefaceAuthor) return false;
             }
-            // TODO: Add Country & Project filters if needed for consistency
+            // Country filter
+            if ($activeFilters.countries.length > 0 && (!pub.country || !pub.country.some(country => $activeFilters.countries.includes(country)))) return false;
+            // Project filter
+            if ($activeFilters.projects.length > 0 && (!pub.project || !$activeFilters.projects.includes(pub.project))) return false;
             return true;
         });
         const languages = new Set(relevantPublications.flatMap(pub => pub.language ? pub.language.split(',').map(l => l.trim()) : []));

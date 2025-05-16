@@ -12,12 +12,14 @@
         authorCounts,
         typeCounts,
         languageCounts,
+        countryCounts,
         toggleTypeFilter, 
         updateYearRange,
         resetYearRange,
         toggleTagFilter, 
         toggleLanguageFilter, 
         toggleAuthorFilter,
+        toggleCountryFilter,
         toggleProjectFilter,
         clearAllFilters,
         setTypes,
@@ -64,6 +66,8 @@
             toggleTypeFilter(value);
         } else if (type === 'project') {
             toggleProjectFilter(value);
+        } else if (type === 'country') {
+            toggleCountryFilter(value);
         }
     }
 
@@ -88,6 +92,7 @@
         setTags,
         setLanguages,
         setAuthors,
+        setCountries,
         setYearRange
     };
 
@@ -143,6 +148,14 @@
                 activeItems: $activeFilters.languages,
                 toggleItem: toggleLanguageFilter,
                 counts: $languageCounts
+            } as CheckboxFilterOption<string>,
+            {
+                type: 'checkbox',
+                title: 'Countries', 
+                items: $filterOptions.countries, 
+                activeItems: $activeFilters.countries,
+                toggleItem: toggleCountryFilter,
+                counts: $countryCounts
             } as CheckboxFilterOption<string>,
             {
                 type: 'buttons',
