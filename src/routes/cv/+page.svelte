@@ -10,7 +10,7 @@
 	import { mediaAppearancesByDate } from '$lib/data/media-appearances';
 	import { editorialMembershipsByDate } from '$lib/data/editorial-memberships';
 	import { affiliationsByStartDate } from '$lib/data/affiliations';
-	import { MapPin, Mail, Linkedin, Github } from 'lucide-svelte';
+	import Icon from '@iconify/svelte';
 	import type { Publication, Communication, Fieldwork, Education, Appointment, Grant, Award, PeerReview, MediaAppearance, EditorialMembership } from '$lib/types';
 	import type { ProfessionalAffiliation } from '$lib/data/affiliations/template';
 	import SEO from '$lib/SEO.svelte';
@@ -132,7 +132,7 @@
 	<section class="mb-6 text-sm text-light flex flex-wrap gap-x-6 gap-y-2 items-start">
 		<!-- Address -->
 		<div class="flex items-start gap-2">
-			<MapPin class="text-light flex-shrink-0" />
+			<Icon icon="mdi:map-marker" class="text-light flex-shrink-0" width="20" height="20" />
 			<div>
 				Leibniz-Zentrum Moderner Orient<br />
 				Kirchweg 33<br />
@@ -141,18 +141,22 @@
 			</div>
 		</div>
 		<!-- Links -->
-		<div class="flex flex-col gap-1">
+		<div class="flex flex-col gap-1 md:ml-auto">
 			<div class="flex items-center gap-2">
-				<Mail class="text-light flex-shrink-0" />
+				<Icon icon="mdi:email" class="text-light flex-shrink-0" width="20" height="20" />
 				<a href="mailto:frederick.madore@zmo.de">frederick.madore@zmo.de</a>
 			</div>
 			<div class="flex items-center gap-2">
-				<Linkedin class="text-light flex-shrink-0" />
+				<Icon icon="mdi:linkedin" class="text-light flex-shrink-0" width="20" height="20" />
 				<a href="https://www.linkedin.com/in/frederickmadore/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
 			</div>
 			<div class="flex items-center gap-2">
-				<Github class="text-light flex-shrink-0" />
+				<Icon icon="mdi:github" class="text-light flex-shrink-0" width="20" height="20" />
 				<a href="https://github.com/fmadore" target="_blank" rel="noopener noreferrer">GitHub</a>
+			</div>
+			<div class="flex items-center gap-2">
+				<Icon icon="simple-icons:orcid" class="text-light flex-shrink-0" width="20" height="20" />
+				<a href="https://orcid.org/0000-0003-0959-2092" target="_blank" rel="noopener noreferrer">ORCID</a>
 			</div>
 		</div>
 	</section>
