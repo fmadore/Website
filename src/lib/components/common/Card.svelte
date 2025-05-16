@@ -87,10 +87,6 @@
     height: 100%; /* Make cards in a grid have the same height */
   }
 
-  .card:hover {
-    /* transform and box-shadow are now inherited from global cards.css .card:hover */
-  }
-
   .card-image {
     overflow: hidden;
     max-height: 250px; /* Keep adjustable height */
