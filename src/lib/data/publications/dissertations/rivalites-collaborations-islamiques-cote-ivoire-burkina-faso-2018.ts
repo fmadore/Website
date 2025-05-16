@@ -99,6 +99,13 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
             year: 2019,
             title: "Trajectoires d'éducation et d'engagements politiques à travers le Sahel : le cas des arabisants au Sénégal",
             source: "In Identités sahéliennes en temps de crise : histoires, enjeux et perspectives, edited by Baz Lecocq and Amy Niang, 267-96. Münster: LIT Verlag, 2019"
+        },
+        {
+            authors: ["Sebastian Elischer"],
+            year: 2019,
+            title: "Burkina Faso: State and Religious Authority in Turbulent Times",
+            source: "In Faith in the Balance: Regulating Religious Affairs in Africa, edited by Haim Malka, 111-36. Lanham, MD: Rowman & Littlefield Publishers / Center for Strategic & International Studies, 2019",
+            url: "https://www.csis.org/analysis/burkina-faso-state-and-religious-authority-turbulent-times"
         }
     ]
 }; 
