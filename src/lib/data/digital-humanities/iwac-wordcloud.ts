@@ -8,6 +8,7 @@ export const iwacWordcloud: DigitalHumanitiesProject = {
     description: "<p>This interactive word cloud shows the most frequently used words in newspaper articles from the <a href=\"https://islam.zmo.de/s/westafrica/page/home\" target=\"_blank\" rel=\"noopener noreferrer\"><em>Islam West Africa Collection</em></a> (IWAC), with the exception of Islamic publications. It offers insights into the dominant themes in Benin, Burkina Faso, Côte d'Ivoire, Niger and Togo. Users can toggle between countries to explore national differences; the size of the words reflects their frequency in the articles. Hover over words to see their exact frequency.</p>",
     imageUrl: `/images/digital-humanities/iwac-wordcloud.webp`,
     skills: ["D3.js", "Python", "NLTK", "spaCy"],
+    order: 5,
     embeddableContent: [
         {
             type: 'iframe',

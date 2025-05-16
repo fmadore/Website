@@ -7,6 +7,7 @@ export const muslimUmbrellaOrganizations: DigitalHumanitiesProject = {
     shortDescription: "Co-occurrence matrix and topic modeling analysis of newspaper articles discussing Muslim umbrella organisations within the Islam West Africa Collection.",
     description: "<p>This project examines the representation of Muslim umbrella organisations in West African newspaper archives sourced from the <a href=\"https://islam.zmo.de/s/westafrica/page/home\" target=\"_blank\" rel=\"noopener noreferrer\"><em>Islam West Africa Collection</em></a> (IWAC). Using computational text analysis techniques, we explore patterns and themes associated with these organisations.</p>",
     imageUrl: `/images/digital-humanities/muslim-umbrella.webp`,
+    order: 4,
     skills: ["D3.js", "Python", "NLTK", "spaCy", "scikit-learn"],
     embeddableContent: [
         {

@@ -7,6 +7,7 @@ export const remoboko: DigitalHumanitiesProject = {
     shortDescription: "Research group exploring religion, morality, and student life in West African higher education. Includes interactive visualizations.",
     description: "<p><em>Remoboko</em> is a research group focused on exploring the intersections of religion, morality, and student life (particularly the concept of \"boko\" - Western education) in the context of West African higher education. This page presents interactive visualizations I generated based on the research group\'s work, aiming to make its findings more accessible and engaging for a wider audience.</p>",
     imageUrl: `/images/digital-humanities/remoboko.webp`,
+    order: 7,
     skills: ["Data Visualization", "pandas", "Plotly", "Python", "Folium", "NLTK"],
     embeddableContent: [
         {

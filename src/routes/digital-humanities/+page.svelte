@@ -76,25 +76,6 @@
                             </div>
                         </div>
                     {/if}
-
-                    {#if project.award}
-                        <p class="award"><strong>Award:</strong> {project.award}</p>
-                    {/if}
-                    {#if project.publication}
-                         <p class="publication-link">
-                             <a href={project.publication.url} target="_blank" rel="noopener noreferrer">{project.publication.text}</a>
-                         </p>
-                    {/if}
-                    {#if project.reviews && project.reviews.length > 0}
-                        <div class="reviews">
-                            <strong>Reviews:</strong>
-                            <ul>
-                                {#each project.reviews as review}
-                                    <li><a href={review.url} target="_blank" rel="noopener noreferrer">{review.text}</a></li>
-                                {/each}
-                            </ul>
-                        </div>
-                    {/if}
                 </div>
 
                 <!-- Action slot for the main link -->
@@ -147,23 +128,13 @@
         margin-top: var(--spacing-2);
         line-height: 1.4;
     }
-    .dh-card-extras p,
     .dh-card-extras div {
         margin-bottom: var(--spacing-2);
     }
      .dh-card-extras strong {
         color: var(--color-text-secondary); /* Or adjust as needed */
      }
-    .dh-card-extras ul {
-        list-style: none;
-        padding-left: 0;
-        margin-top: var(--spacing-1);
-        margin-bottom: 0; /* Reset bottom margin for the list itself */
-    }
-     .dh-card-extras li {
-        margin-bottom: var(--spacing-1);
-    }
-     .dh-card-extras a {
+    .dh-card-extras a {
         color: var(--color-primary-dark); /* Or var(--color-link) */
         text-decoration: none;
     }

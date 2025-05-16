@@ -54,6 +54,7 @@ export interface DigitalHumanitiesProject {
     reviews?: Review[];
     publication?: ProjectPublication;
     skills?: string[];
+    order?: number; // For sorting projects in a defined order
     
     embeddableContent?: EmbeddableContentItem[]; // Replaces iframes, for embedding content like timelines, visualizations, or images
 
