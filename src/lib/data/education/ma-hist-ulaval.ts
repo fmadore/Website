@@ -7,7 +7,7 @@ export const maHistUlaval: Education = {
 	location: 'Québec City, Canada',
 	year: 2013,
 	type: 'Degree',
-	details: 'With distinction.',
+	details: '',
 	dateISO: '2013-09-01'
 };
 

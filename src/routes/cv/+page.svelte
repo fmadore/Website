@@ -168,7 +168,7 @@
 					<li class="mb-3 ml-4">
 						<span class="font-medium">{edu.degree}</span> ({edu.year}).
 						<em>{edu.institution}</em>{#if edu.location}, {edu.location}{/if}.
-						{#if edu.thesisTitle} <p class="ml-4 text-sm italic">Thesis: {edu.thesisTitle}</p>{/if}
+						{#if edu.thesisTitle} <p class="ml-4 text-sm">Thesis: "{edu.thesisTitle}"</p>{/if}
 						{#if edu.details} <p class="ml-4 text-sm">{edu.details}</p>{/if}
 					</li>
 				{/each}
