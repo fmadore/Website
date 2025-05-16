@@ -191,21 +191,28 @@
 
         <p class="text-xl mb-10">This page lists my academic publications, including books, journal articles, book chapters, reports, and more.</p>
 
-        <!-- Mobile Controls: Filter Toggle + Sorter + Clear Button -->
+        <!-- Mobile Controls: Two Rows -->
         <div class="mobile-controls">
-            <Button 
-                variant="outline-primary" 
-                size="sm" 
-                on:click={() => mobileFiltersExpanded = !mobileFiltersExpanded}
-                ariaLabel={mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'} 
-                additionalClasses="control-button-rounded"
+            <div class="mobile-controls-row">
+                <Button 
+                    variant="outline-primary" 
+                    size="sm" 
+                    on:click={() => mobileFiltersExpanded = !mobileFiltersExpanded}
+                    ariaLabel={mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'} 
+                    additionalClasses="control-button-rounded filter-toggle-button"
+                >
+                    <svelte:fragment slot="icon">
+                        <Filter size={18} /> 
+                    </svelte:fragment>
+                    {mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
+                </Button>
+                <!-- Intentionally empty for the first row, right side -->
+            </div>
+            
+            <div 
+                class="mobile-controls-row sorter-clear-group"
+                class:single-item-row={!areFiltersActive($activeFilters)}
             >
-                <svelte:fragment slot="icon">
-                    <Filter size={18} /> 
-                </svelte:fragment>
-                {mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
-            </Button>
-            <div class="sorter-clear-group">
                 <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
                 {#if areFiltersActive($activeFilters)}
                     <Button 
@@ -287,16 +294,36 @@
 
     /* Mobile controls styling */
     .mobile-controls {
-        display: none; /* Hidden by default */
+        display: none; /* Hidden by default, shown in media query */
+        flex-direction: column; /* Stack rows vertically */
+        gap: var(--spacing-3); /* Space between rows */
         margin-bottom: var(--spacing-4);
-        align-items: center; /* Align items vertically */
-        justify-content: space-between; /* Space out controls */
     }
 
-    .mobile-controls .sorter-clear-group {
+    .mobile-controls-row {
         display: flex;
+        justify-content: space-between; /* Default for when both items are present */
         align-items: center;
-        gap: var(--spacing-2);
+    }
+
+    .mobile-controls-row.single-item-row {
+        justify-content: flex-start; /* Align to left if only one item (Sorter) */
+    }
+
+    /* Specific styling for the filter toggle button if it needs to be full width or aligned left */
+    .mobile-controls-row .filter-toggle-button {
+        /* If it should be on the left and not stretch: */
+        /* margin-right: auto; */ 
+        /* If it should be full width for row 1 (if no other element) */
+        /* width: 100%; */
+    }
+
+    .mobile-controls .sorter-clear-group { 
+        /* This group is now a row itself, so justify-content applies to its children (Sorter, Clear button) */
+        /* display: flex; // Already a flex row via .mobile-controls-row */
+        /* align-items: center; // Already handled by .mobile-controls-row */
+        /* gap: var(--spacing-2); // Retained from previous styling, good for space between Sorter & Clear */
+         gap: var(--spacing-2); /* Explicitly set gap for items in this row */
     }
 
     /* Style the specific class */
@@ -331,8 +358,11 @@
     /* Media query for mobile */
     @media (max-width: 900px) {
         .mobile-controls {
-            display: flex;
+            display: flex; /* Enable flex for column layout */
         }
+        /* .mobile-controls > .sorter-clear-group { // Removed as sorter-clear-group is now a row itself
+        /*    margin-left: auto; 
+        /* } */
         .desktop-controls {
             display: none; /* Hide desktop controls on mobile */
         }

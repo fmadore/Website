@@ -183,27 +183,28 @@
 
         <p class="text-xl mb-10">Since 2012, I have given talks to audiences in {countries.length} countries across Africa, Europe, and North America.</p>
 
-        <!-- Mobile Controls: Filter Toggle + Map Toggle + Sorter + Clear Button -->
+        <!-- Mobile Controls: Two Rows -->
         <div class="mobile-controls">
-            <Button 
-                variant="outline-primary" 
-                size="sm" 
-                on:click={() => mobileFiltersExpanded = !mobileFiltersExpanded}
-                ariaLabel={mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'} 
-                additionalClasses="control-button-rounded"
-            >
-                <svelte:fragment slot="icon">
-                    <Filter size={18} /> 
-                </svelte:fragment>
-                {mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
-            </Button>
-            
-            <div class="actions-group">
+            <div class="mobile-controls-row">
+                <Button 
+                    variant="outline-primary" 
+                    size="sm" 
+                    on:click={() => mobileFiltersExpanded = !mobileFiltersExpanded}
+                    ariaLabel={mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'} 
+                    additionalClasses="control-button-rounded"
+                >
+                    <svelte:fragment slot="icon">
+                        <Filter size={18} /> 
+                    </svelte:fragment>
+                    {mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
+                </Button>
                 <ToggleButton 
                     baseText="Map"
                     bind:isToggled={showMap} 
                     on:toggle={() => showMap = !showMap}
                 />
+            </div>
+            <div class="mobile-controls-row">
                 <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
                 {#if areFiltersActive($activeFilters)}
                     <Button 
@@ -300,16 +301,32 @@
 
     /* Mobile controls styling */
     .mobile-controls {
-        display: none; /* Hidden by default */
+        display: none; /* Hidden by default, shown in media query */
+        flex-direction: column; /* Stack rows vertically */
+        gap: var(--spacing-3); /* Space between rows */
         margin-bottom: var(--spacing-4);
-        align-items: center; /* Align items vertically */
-        justify-content: space-between; /* Space out controls */
+    }
+
+    .mobile-controls-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Ensure the second row's Sorter doesn't take full width if Clear button isn't there */
+    .mobile-controls-row > :global(.sorter) {
+        /* If Clear button is not present, Sorter might stretch. We can limit its growth if needed or let space-between handle it. */
+        /* For now, let space-between handle it. If only Sorter, it will be on the left. */
+    }
+     .mobile-controls-row > :global(button.control-button-rounded) {
+        /* Styles for the clear button if it needs to be specifically managed */
     }
 
     .actions-group {
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-2);
+        /* This class might be redundant now for mobile if each row is handled separately */
+        /* display: flex; */
+        /* align-items: center; */
+        /* gap: var(--spacing-2); */
     }
 
     /* REMOVE previous global override */
@@ -335,14 +352,11 @@
     /* Media query for mobile */
     @media (max-width: 900px) {
         .mobile-controls {
-            display: flex;
-            /* Group map toggle and sorter */
-            /* & > .flex { // This nested selector might be problematic, replaced by actions-group */
-            /*    display: flex;
-            /*    align-items: center;
-            /*    gap: var(--spacing-2);
-            /* } */
+            display: flex; /* Enable flex for column layout */
         }
+        /* .mobile-controls > .actions-group { // Removed as actions-group logic is changed 
+        /*    margin-left: auto; 
+        /* } */
         .desktop-controls {
             display: none; /* Hide desktop controls container on mobile */
         }
