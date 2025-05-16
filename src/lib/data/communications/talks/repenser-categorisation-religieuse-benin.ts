@@ -13,6 +13,11 @@ export const repenserCategorisationReligieuse: Communication = {
     type: "workshop",
     language: "French",
     tags: ["Benin", "Religious Categorization", "Vodun", "West Africa"],
+    image: "images/communications/paris-cite.webp",
+    heroImage: {
+        src: "images/communications/paris-cite-hero.webp",
+        alt: "Université Paris Cité",
+    },
     coordinates: {
         latitude: 48.85569290213881,
         longitude: 2.331850397015674
