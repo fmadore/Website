@@ -25,5 +25,14 @@ export const leadersMuslimNGOsBurkinaFaso: Publication = {
         alt: "Cover of the book Faith and Charity",
     },
     country: ["Burkina Faso"],
-    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
+    project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
+    citedBy: [
+        {
+            authors: ["Cheikh E. Abdoulaye Niang"],
+            year: 2021,
+            title: "Globalization and Missionary Ambition in West African Islam. The Fayda after Sheikh Ibrahim Niasse",
+            source: "Religions 12, no. 7 (2021): 515.",
+            url: "https://doi.org/10.3390/rel12070515"
+        }
+    ]
 }; 
