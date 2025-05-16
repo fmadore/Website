@@ -24,7 +24,6 @@
     import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
     import { allPublications } from '$lib/data/publications/index'; // Keep this for RelatedItemsList
     import { generateBibtex } from '$lib/utils/bibtexGenerator'; // Import the generator
-    import { generateRis } from '$lib/utils/risGenerator'; // Import the RIS generator
     
     // Get data from the load function
     export let data: PageData;
@@ -170,20 +169,6 @@
         URL.revokeObjectURL(url);
     }
 
-    function downloadRis() {
-        if (!publication) return;
-        const risString = generateRis(publication);
-        const blob = new Blob([risString], { type: 'application/x-research-info-systems;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${publication.id}.ris`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    }
-
 </script>
 
 <!-- Ensure svelte:head block for JSON-LD is removed or commented out -->
@@ -269,7 +254,8 @@
                 </button>
             </div>
 
-            <!-- Export RIS Button -->
+            <!-- Export RIS Button - REMOVED -->
+            <!--
             <div>
                 <button 
                     on:click={downloadRis} 
@@ -278,6 +264,7 @@
                     Export RIS
                 </button>
             </div>
+            -->
         </div>
     </article>
 
