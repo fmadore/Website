@@ -183,7 +183,7 @@
 
         <p class="text-xl mb-10">Since 2012, I have given talks to audiences in {countries.length} countries across Africa, Europe, and North America.</p>
 
-        <!-- Mobile Controls: Filter Toggle + Map Toggle + Sorter -->
+        <!-- Mobile Controls: Filter Toggle + Map Toggle + Sorter + Clear Button -->
         <div class="mobile-controls">
             <Button 
                 variant="outline-primary" 
@@ -198,13 +198,23 @@
                 {mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
             </Button>
             
-            <div class="flex gap-2">
+            <div class="actions-group">
                 <ToggleButton 
                     baseText="Map"
                     bind:isToggled={showMap} 
                     on:toggle={() => showMap = !showMap}
                 />
                 <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
+                {#if areFiltersActive($activeFilters)}
+                    <Button 
+                        variant="outline-primary" 
+                        size="sm" 
+                        on:click={clearAllFilters}
+                        additionalClasses="control-button-rounded"
+                    >
+                        Clear all filters
+                    </Button>
+                {/if}
             </div>
         </div>
 
@@ -219,14 +229,31 @@
             </svelte:fragment>
             
             <!-- Default slot for main content -->
-            <!-- ADD Desktop Controls Here -->
             <div class="desktop-controls">
-                 <ToggleButton 
-                    baseText="Map"
-                    bind:isToggled={showMap} 
-                    on:toggle={() => showMap = !showMap}
-                />
-                <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
+                <div class="list-status text-light">
+                    Showing {$filteredCommunications.length || 0} conference activities
+                    {#if areFiltersActive($activeFilters)}
+                        <span class="text-accent"> (Filters applied)</span>
+                    {/if}
+                </div>
+                <div class="actions-group">
+                    <ToggleButton 
+                        baseText="Map"
+                        bind:isToggled={showMap} 
+                        on:toggle={() => showMap = !showMap}
+                    />
+                    <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
+                    {#if areFiltersActive($activeFilters)}
+                        <Button 
+                            variant="outline-primary" 
+                            size="sm" 
+                            on:click={clearAllFilters}
+                            additionalClasses="control-button-rounded"
+                        >
+                            Clear all filters
+                        </Button>
+                    {/if}
+                </div>
             </div>
 
             {#if showMap}
@@ -239,7 +266,6 @@
                 filteredItems={sortedCommunications}
                 itemComponent={CommunicationItem}
                 itemPropName="communication"
-                entityName="conference activities"
                 areFiltersActive={areFiltersActive($activeFilters)}
                 {clearAllFilters}
                 emptyStateNoFiltersMessage="No conference activities found matching your criteria. Try clearing some filters."
@@ -268,14 +294,8 @@
         margin-bottom: var(--spacing-10);
     }
     
-    .flex {
-        display: flex;
-    }
     .mb-6 {
         margin-bottom: var(--spacing-6);
-    }
-    .gap-2 {
-        gap: var(--spacing-2);
     }
 
     /* Mobile controls styling */
@@ -286,14 +306,30 @@
         justify-content: space-between; /* Space out controls */
     }
 
+    .actions-group {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-2);
+    }
+
     /* REMOVE previous global override */
     /* Style the specific class */
-    .mobile-controls :global(.control-button-rounded) {
+    .mobile-controls :global(.control-button-rounded), /* Target mobile */
+    .desktop-controls :global(.control-button-rounded) { /* And desktop */
          border-radius: var(--border-radius-md);
     }
-    .mobile-controls :global(.control-button-rounded:hover) {
-         background-color: var(--color-primary); /* Change background */
-         color: white; /* Change text color */
+    .mobile-controls :global(.control-button-rounded:hover), /* Apply hover to mobile too */
+    .desktop-controls :global(.control-button-rounded:hover) { /* And desktop */
+         background-color: var(--color-primary);
+         color: white;
+    }
+
+    /* Desktop controls styling */
+    .desktop-controls {
+        display: flex;
+        justify-content: space-between; /* Pushes status to left, buttons to right */
+        align-items: center; /* Align items vertically */
+        margin-bottom: var(--spacing-4);
     }
 
     /* Media query for mobile */
@@ -301,11 +337,11 @@
         .mobile-controls {
             display: flex;
             /* Group map toggle and sorter */
-            & > .flex {
-                display: flex;
-                align-items: center;
-                gap: var(--spacing-2);
-            }
+            /* & > .flex { // This nested selector might be problematic, replaced by actions-group */
+            /*    display: flex;
+            /*    align-items: center;
+            /*    gap: var(--spacing-2);
+            /* } */
         }
         .desktop-controls {
             display: none; /* Hide desktop controls container on mobile */
