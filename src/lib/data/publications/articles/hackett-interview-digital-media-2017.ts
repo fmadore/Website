@@ -22,4 +22,26 @@ export const hackettInterviewDigitalMedia: Publication = {
         src: "images/publications/acteurs-religieux-numerique-hero.webp",
         alt: "Cover of Émulations, issue 24",
     },
+    citedBy: [
+        {
+            authors: ["Nsaale Kitayimbwa", "Lydia Nabunya"],
+            year: 2022,
+            title: "Communicating the Gospel in a Digital Age: A Case Study of the Dioceses of Kampala and Namirembe in the Anglican Church of Uganda",
+            source: "Ph.D. dissertation, Stellenbosch University",
+            url: "https://scholar.sun.ac.za/handle/10019.1/126133"
+        },
+        {
+            authors: ["Chijioke A. Azuawusiefe"],
+            year: 2020,
+            title: "Nollywood And Popular Religion: Productions Of Prosperity, Gender, And The Supernatural In Nigerian Cinema",
+            source: "Ph.D. dissertation, University of Pennsylvania",
+            url: "https://repository.upenn.edu/edissertations/4030"
+        },
+        {
+            authors: ["Kandung Sapto Nugroho", "Muhammad Adnan", "Hardi Warsono", "Riswanti Putranti"],
+            year: 2020,
+            title: "Indonesian-Religious and Digital Pluralism: Covid-19 Impact",
+            source: "International Journal of Psychosocial Rehabilitation 24, no. 1: 2710-28"
+        }
+    ]
 }; 
