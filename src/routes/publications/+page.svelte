@@ -93,15 +93,15 @@
 
     // Define labels locally or move to a central config if used elsewhere
     const typeLabels: {[key: string]: string} = {
-        'book': 'Books',
-        'article': 'Journal articles',
-        'chapter': 'Book chapters',
-        'special-issue': 'Special issues',
-        'report': 'Reports',
+        'blogpost': 'Blog post',
+        'book': 'Book',
+        'chapter': 'Book chapter',
         'encyclopedia': 'Encyclopedia entry',
-        'blogpost': 'Blog posts',
+        'article': 'Journal article',
+        'masters-thesis': 'Master\'s thesis',
         'phd-dissertation': 'Ph.D. dissertation',
-        'masters-thesis': 'Master\'s thesis'
+        'report': 'Report',
+        'special-issue': 'Special issue'
     };
 
     // Ensure years are sorted ascending for the slider
