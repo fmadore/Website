@@ -9,7 +9,7 @@ export const rivalitesCollaborationsIslam: Publication = {
     dateISO: "2018",
     year: 2018,
     university: "Université Laval",
-    placeOfPublication: "Québec",
+    placeOfPublication: "Quebec City",
     pageCount: 419,
     language: "French",
     url: "http://hdl.handle.net/20.500.11794/33246",
