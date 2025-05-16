@@ -71,4 +71,10 @@ export type Publication = {
     reviewedBy?: ReviewWork[]; // Optional: Array of reviews of this publication
     // New field for Table of Contents
     tableOfContents?: string[]; // Optional: Array of chapter titles or section headings for books
+
+    // Fields for Highwire Press meta tags
+    pdfUrl?: string;       // Optional: URL to the PDF version
+    issn?: string;         // Optional: ISSN for journals
+    institution?: string;  // Optional: Institution for reports or dissertations (university is already there for dissertations)
+    reportNumber?: string; // Optional: Report number for reports
 }; 
