@@ -178,7 +178,7 @@
 
 <SEO 
     title="Publications | Frédérick Madore"
-    description="Academic publications by Frédérick Madore, including books, journal articles, edited volumes, book chapters, and special issues focusing on Islam in West Africa."
+    description="Academic publications by Frédérick Madore, including books, journal articles, edited volumes, book chapters, and special issues."
     keywords="publications, books, journal articles, research, Islam, West Africa, Frédérick Madore"
 />
 
