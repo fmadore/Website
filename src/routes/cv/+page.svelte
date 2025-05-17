@@ -264,7 +264,7 @@
 					<ul class="list-disc pl-6">
 						{#each publicationsByType[pubType] as pub (pub.id)}
 							<li class="mb-3">
-								{#if pub.authors}{formatAuthorList(pub.authors)}. {/if}
+								{#if pub.authors}{formatAuthorList(pub.authors)} {/if}
 								({pub.year}).
 								{#if pub.type !== 'book'}"{pub.title}".{/if}
 								{#if pub.type === 'article' && pub.journal}
