@@ -39,7 +39,7 @@
         },
         { name: 'Conference Activity', path: `${base}/conference-activity` },
         { name: 'Teaching', path: `${base}/teaching` },
-        { name: 'Contact', path: `${base}/contact` }
+        { name: 'CV', path: `${base}/cv` }
     ];
 
     // State management

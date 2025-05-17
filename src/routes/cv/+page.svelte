@@ -268,7 +268,7 @@
 								({pub.year}).
 								{#if pub.type !== 'book'}"{pub.title}".{/if}
 								{#if pub.type === 'article' && pub.journal}
-									In <em>{pub.journal}</em>{formatVolumeIssueDisplay(pub.volume, pub.issue)}{#if pub.pages}: {pub.pages}{/if}.
+									<em>{pub.journal}</em>{formatVolumeIssueDisplay(pub.volume, pub.issue)}{#if pub.pages}: {pub.pages}{/if}.
 								{:else if pub.type === 'chapter' && pub.book}
 									In {#if pub.editors}<em>{pub.editors} (ed.), </em>{/if}<em>{pub.book}</em>{#if pub.publisher}, {pub.publisher}{/if}{#if pub.pages}, pp. {pub.pages}{/if}.
 								{:else if pub.type === 'book'}
@@ -366,9 +366,9 @@
 	<section class="mb-8">
 		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Conference Participation</h3>
 		
-		<!-- Panels Organized -->
+		<!-- Panels Organised -->
 		{#if organizedPanels.length > 0}
-			<h4 class="text-lg font-semibold mt-3 mb-1 pl-4">Panels Organized</h4>
+			<h4 class="text-lg font-semibold mt-3 mb-1 pl-4">Panels organised</h4>
 			<ul class="list-disc pl-8">
 				{#each organizedPanels as comm (comm.id)}
 					<li class="mb-3">
@@ -382,7 +382,7 @@
 
 		<!-- Papers Presented -->
 		{#if presentedPapers.length > 0}
-			<h4 class="text-lg font-semibold mt-3 mb-1 pl-4">Papers Presented</h4>
+			<h4 class="text-lg font-semibold mt-3 mb-1 pl-4">Papers presented</h4>
 			<ul class="list-disc pl-8">
 				{#each presentedPapers as comm (comm.id)}
 					<li class="mb-3">

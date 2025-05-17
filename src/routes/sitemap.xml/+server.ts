@@ -22,7 +22,6 @@ export const GET: RequestHandler = async () => {
         "/conference-activity",
         "/teaching",
         "/teaching/guest-lectures",
-        "/contact",
         "/cv"
     ];
     
