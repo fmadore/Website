@@ -5,7 +5,7 @@ export const iwacSentimentAnalysis: DigitalHumanitiesProject = {
     title: "IWAC Sentiment Analysis",
     years: "2025",
     shortDescription: "This interactive visualisation presents a sentiment analysis concerning the representation of Islam and Muslims in articles from the Islam West Africa Collection.",
-    description: "<p>This visualization presents an analysis of sentiments regarding the representation of Islam and Muslims in Francophone West African media articles. You can explore the live project <a href=\"https://fmadore.github.io/IWAC-sentiment-analysis/\" target=\"_blank\" rel=\"noopener noreferrer\">here</a>. This project is based on the data from the IWAC database and provides insights into how sentiments are expressed in relation to Islam and Muslims within these articles.</p>",
+    description: "<p>This interactive dashboard allows you to explore how Francophone West African newspapers portray Islam and Muslims. Each article is scored on three axes: polarity (ranging from 'very negative' to 'very positive'), subjectivity (from 1 = very objective to 5 = highly subjective) and centrality (how central Islam/Muslims are to the story). Filters and hover-over details enable you to quickly compare sentiment profiles and trace patterns of bias, tone and topical focus across outlets, periods or countries.</p>",
     imageUrl: "/images/digital-humanities/iwac-sentiment-analysis.webp",
     order: 4,
     skills: ["Svelte", "Data Visualisation", "ECharts", "Vite", "Tailwind CSS", "TypeScript"],
