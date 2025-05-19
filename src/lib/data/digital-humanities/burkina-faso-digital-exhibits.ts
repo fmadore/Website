@@ -7,7 +7,7 @@ export const burkinaFasoDigitalExhibits: DigitalHumanitiesProject = {
     shortDescription: "These two digital exhibits on Islam in Burkina Faso, which bring together a selection of materials from the Islam West Africa Collection by theme, are entry points to the collection. In addition to providing contextual information for interpreting the material presented in an interactive timeline, a selective bibliography completes the exhibit.",
     description: "<p>These two digital exhibits on Islam in Burkina Faso bring together a selection of materials from the <a href='https://islam.zmo.de/s/westafrica/page/home' target='_blank' rel='noopener noreferrer'><em>Islam West Africa Collection</em></a> by theme, serving as entry points to the broader collection. In addition to providing contextual information for interpreting the material presented in an interactive timeline, a selective bibliography completes each exhibit.</p>",
     imageUrl: `/images/digital-humanities/burkina-faso-digital-exhibits.webp`,
-    order: 9,
+    order: 10,
     skills: ["Timeline JS"],
     embeddableContent: [
         {
