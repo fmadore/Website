@@ -4,17 +4,16 @@
     import { activitiesByYear } from '$lib/data/activities';
     import { base } from '$app/paths';
     import ItemReference from '$lib/components/molecules/ItemReference.svelte';
-    import { onMount, onDestroy } from 'svelte';
     import { browser } from '$app/environment';
     import type { PageData } from './$types';
     import Icon from '@iconify/svelte';
 
-    export let data: PageData;
-    $: jsonLdString = data.jsonLdString;
+    let { data } = $props<{ data: PageData }>();
+    const jsonLdString = $derived(data.jsonLdString);
 
     const jsonLdScriptId = 'person-json-ld';
 
-    onMount(() => {
+    $effect(() => {
         if (browser && jsonLdString) {
             if (document.getElementById(jsonLdScriptId)) return;
             const script = document.createElement('script');
@@ -22,21 +21,19 @@
             script.type = 'application/ld+json';
             script.textContent = jsonLdString;
             document.head.appendChild(script);
-        }
-    });
 
-    onDestroy(() => {
-        if (browser) {
-            const script = document.getElementById(jsonLdScriptId);
-            if (script) document.head.removeChild(script);
+            return () => {
+                const scriptElement = document.getElementById(jsonLdScriptId);
+                if (scriptElement) document.head.removeChild(scriptElement);
+            };
         }
     });
 
     // Years with content - dynamically created from activities data
-    const years = Object.entries(activitiesByYear).map(([year, activities]) => ({
+    const years = $derived(Object.entries(activitiesByYear).map(([year, activities]) => ({
         year: parseInt(year),
         count: activities.length
-    })).sort((a, b) => b.year - a.year);
+    })).sort((a, b) => b.year - a.year));
 </script>
 
 <SEO description="Frédérick Madore, Research Fellow at ZMO, studies Islam in francophone West Africa through fieldwork and digital humanities." />
