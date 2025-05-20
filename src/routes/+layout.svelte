@@ -1,19 +1,24 @@
 <script lang="ts">
 	/// <reference types="../lib/types/gtag" />
-	import { fade } from 'svelte/transition';
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import Footer from '$lib/components/organisms/Footer.svelte';
 	import Header from '$lib/components/organisms/Header.svelte';
 	import CookieConsent from '$lib/components/common/CookieConsent.svelte';
 	import '../app.css';
+	import type { LayoutProps } from './$types'; // Added import for LayoutProps
 
-	let gtmLoaded = false;
+	// Destructure data and children from $props using LayoutProps
+	// This makes `children` available to TypeScript for the {@render children()} tag
+	let { data, children }: LayoutProps = $props();
+
+	let gtmLoaded = $state(false);
 	const GTM_ID = 'G-DQ644SW7RG'; // Your Measurement ID
 
 	function loadGtm() {
 		if (gtmLoaded || !browser) return;
+		// Directly set gtmLoaded to true. 
+		// In Svelte 5, direct assignment to a $state variable triggers reactivity.
 		gtmLoaded = true;
 
 		// Inject the GTM script tag
@@ -50,7 +55,7 @@
 	const loadGtmListener = () => loadGtm();
 	let loadGtmTimer: ReturnType<typeof setTimeout> | null = null; // Timer handle
 
-	onMount(() => {
+	$effect(() => {
 		if (browser && !gtmLoaded) {
 			// Listen for first interaction
 			const listenerOptions = { passive: true, once: true };
@@ -81,7 +86,7 @@
 		<div class="container mx-auto p-8">
 			{#key $page.url}
 				<div>
-					<slot />
+					{@render children()}
 				</div>
 			{/key}
 		</div>
