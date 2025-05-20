@@ -1,15 +1,14 @@
 <script lang="ts">
-    export let href: string;
-    export let active = false;
+    let { href, active = false, children }: { href: string, active?: boolean, children: any } = $props();
 </script>
 
 {#if active}
     <span aria-current="page" class="breadcrumb-text">
-        <slot></slot>
+        {@render children()}
     </span>
 {:else}
     <a {href} class="breadcrumb-link">
-        <slot></slot>
+        {@render children()}
     </a>
 {/if}
 
