@@ -20,8 +20,6 @@
     import ReferenceLink from '$lib/components/atoms/ReferenceLink.svelte';
     import ReferencePreviewCard from '$lib/components/atoms/ReferencePreviewCard.svelte';
     import { activeReferenceId } from '$lib/stores/activeItemReferenceStore';
-    import { goto } from '$app/navigation';
-    import { base } from '$app/paths';
   
     /* ───────────────────────────── Props ─────────────────────────────── */
     /** ID of the referenced item. */
@@ -56,7 +54,6 @@
     let positionBelow = false;        // Position card above/below the link
     let spanEl: HTMLElement;          // Reference <span> element
     let closeTimer: number | null = null;
-    let isMobile = false;             // Mobile device detection
   
     /* ─────────────────────── Helper functions ────────────────────────── */
     function clearCloseTimer() {
@@ -85,33 +82,15 @@
         togglePreview(false);
       }
     }
-
-    function navigateToFullDetails() {
-      if (!item || !itemType) return;
-      
-      const url = `${base}/${itemType === 'publication' ? 'publications' : 'communications'}/${item.id}`;
-      goto(url);
-    }
-
-    function checkIsMobile() {
-      if (!browser) return;
-      // Using a simple check for mobile viewports
-      isMobile = window.innerWidth <= 768;
-    }
   
     /* ───────────────────────── Lifecycle ─────────────────────────────── */
     onMount(() => {
       if (!browser) return;
   
       document.addEventListener('click', handleOutsideClick, true);
-      window.addEventListener('resize', checkIsMobile);
-      
-      // Initial check for mobile
-      checkIsMobile();
   
       return () => {
         document.removeEventListener('click', handleOutsideClick, true);
-        window.removeEventListener('resize', checkIsMobile);
         clearCloseTimer();
       };
     });
@@ -132,17 +111,17 @@
   {#if item && itemType}
     <span
       bind:this={spanEl}
-      class="item-reference {showPreview ? 'preview-visible' : ''} {isMobile ? 'is-mobile' : ''}"
+      class="item-reference {showPreview ? 'preview-visible' : ''}"
       role="button"
       tabindex="0"
       aria-haspopup="dialog"
       aria-expanded={showPreview}
       aria-controls={showPreview ? `item-preview-${id}` : undefined}
   
-      on:pointerenter={() => !viaClick && !isMobile && (showPreview = true)}
-      on:pointerleave={() => !isMobile && startCloseTimer()}
-      on:focus={() => !viaClick && !isMobile && (showPreview = true)}
-      on:blur={() => !viaClick && !isMobile && (showPreview = false)}
+      on:pointerenter={() => !viaClick && (showPreview = true)}
+      on:pointerleave={() => startCloseTimer()}
+      on:focus={() => !viaClick && (showPreview = true)}
+      on:blur={() => !viaClick && (showPreview = false)}
   
       on:keydown={(e: KeyboardEvent) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -165,18 +144,10 @@
           in:receive={{ key: `preview-${id}` }}
           out:send={{ key: `preview-${id}` }}
           class:position-below={positionBelow}
-          class:is-mobile={isMobile}
           on:pointerenter={clearCloseTimer}
-          on:pointerleave={() => !isMobile && startCloseTimer()}
+          on:pointerleave={() => startCloseTimer()}
         >
           <ReferencePreviewCard {item} {itemType} referenceElement={spanEl} />
-          
-          {#if isMobile}
-            <div class="mobile-controls">
-              <button class="mobile-close-btn" on:click={() => togglePreview(false)}>Close</button>
-              <button class="mobile-view-btn" on:click={navigateToFullDetails}>View full details</button>
-            </div>
-          {/if}
         </div>
       {/if}
     </span>
@@ -207,61 +178,5 @@
       font-size: 0.9em;
       cursor: not-allowed;
     }
-
-    /* Mobile styles */
-    .is-mobile {
-      display: block;
-      width: 100%;
-      max-width: 90vw;
-      margin: 0 auto;
-    }
-
-    .mobile-controls {
-      display: flex;
-      justify-content: space-between;
-      padding: var(--spacing-3, 0.75rem);
-      border-top: 1px solid var(--color-border, #e2e8f0);
-      background: var(--color-background-alt, #f8fafc);
-    }
-
-    .mobile-close-btn,
-    .mobile-view-btn {
-      padding: 0.5rem 1rem;
-      border-radius: var(--border-radius-sm, 0.25rem);
-      font-size: var(--font-size-sm, 0.875rem);
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .mobile-close-btn {
-      background-color: transparent;
-      color: var(--color-text, #1a202c);
-      border: 1px solid var(--color-border, #e2e8f0);
-    }
-
-    .mobile-view-btn {
-      background-color: var(--color-primary, #4a90e2);
-      color: white;
-      border: none;
-    }
-
-    /* Make the mobile preview fill more of the screen */
-    div.is-mobile {
-      position: fixed !important;
-      top: 50% !important;
-      left: 50% !important;
-      transform: translate(-50%, -50%) !important;
-      width: 90vw !important;
-      max-width: 450px !important;
-      max-height: 80vh !important;
-      overflow-y: auto !important;
-      z-index: 1500 !important;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
-    }
-
-    /* Hide the positioning arrow on mobile */
-    div.is-mobile :global(.card-arrow) {
-      display: none !important;
-    }
   </style>
+  

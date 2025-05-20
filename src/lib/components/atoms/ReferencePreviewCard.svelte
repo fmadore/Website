@@ -17,7 +17,6 @@
     let cardElement: HTMLElement;
     let isPositioned = false;
     let isClicked = false;
-    let isMobile = false;
     
     // Helper function to get year consistently
     function getYear(item: Publication | Communication): string {
@@ -35,35 +34,15 @@
     $: imageSrc = item && (('heroImage' in item && item.heroImage?.src) || ('image' in item && item.image))
         ? `${base}/${('heroImage' in item && item.heroImage?.src) || ('image' in item && item.image)}`
         : null;
-          onMount(() => {
-        if (!browser) return;
         
-        // Check if we're on mobile
-        isMobile = window.innerWidth <= 768;
-        
-        // Let the animation start first when component mounts
-        tick().then(() => {
-            // Position the card after a short delay to allow initial animations
-            setTimeout(() => {
-                if (!isMobile) {
-                    positionCard();
-                }
-                isPositioned = true;
-            }, 50);
-        });
-        
-        // Add resize listener for mobile detection
-        const handleResize = () => {
-            isMobile = window.innerWidth <= 768;
-            if (!isMobile) {
-                positionCard();
-            }
-        };
-        
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
+    onMount(async () => {
+        // Let the animation start first
+        await tick();
+        // Position the card after a short delay to allow initial animations
+        setTimeout(() => {
+            positionCard();
+            isPositioned = true;
+        }, 50);
     });
     
     function positionCard() {
@@ -115,10 +94,6 @@
     async function handleCardClick(event: MouseEvent) {
         event.preventDefault();
         
-        // If we're on mobile, we have dedicated buttons for navigation
-        // so don't navigate on card click
-        if (isMobile) return;
-        
         if (isClicked) return;
         isClicked = true;
         
@@ -139,7 +114,6 @@
     class="preview-card {positionClass}"
     class:positioned={isPositioned}
     class:card-clicked={isClicked}
-    class:is-mobile={isMobile}
     role="dialog" 
     aria-label="Item Preview"
     aria-modal="false"
@@ -192,7 +166,7 @@
                     {/if}
                 {/if}
                 
-                <div class="view-more-hint" class:visible-mobile={isMobile}>
+                <div class="view-more-hint">
                     <span class="hint-text">View full details</span>
                     <span class="hint-arrow">→</span>
                 </div>
@@ -247,19 +221,6 @@
         top: calc(100% + 10px);
     }
     
-    /* Mobile specific styling */
-    .preview-card.is-mobile {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        max-width: 90vw;
-        width: 350px;
-        max-height: 80vh;
-        z-index: 1500;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    }
-    
     .card-content-wrapper {
         position: relative;
         overflow: hidden;
@@ -292,14 +253,6 @@
         transition: opacity 0.3s ease-out, transform 0.3s ease-out;
     }
     
-    /* Always show the hint on mobile */
-    .view-more-hint.visible-mobile {
-        opacity: 1;
-        transform: translateX(0);
-        font-weight: 500;
-        font-size: var(--font-size-sm);
-    }
-    
     .hint-arrow {
         margin-left: var(--spacing-1);
         font-size: 1.1em;
@@ -321,7 +274,8 @@
     .card-link:focus .card-image {
         transform: scale(1.05);
     }
-      .card-arrow {
+    
+    .card-arrow {
         position: absolute;
         bottom: -14px;
         left: 50%;
@@ -330,14 +284,14 @@
         height: 0;
         border-width: 7px;
         border-style: solid;
-        border-color: var(--color-background) transparent transparent;
+        border-color: var(--color-background) transparent transparent transparent;
         filter: drop-shadow(0 1px 0px rgba(0,0,0,0.08));
     }
     
     .position-below .card-arrow {
         bottom: auto;
         top: -14px;
-        border-color: transparent transparent var(--color-background);
+        border-color: transparent transparent var(--color-background) transparent;
         filter: drop-shadow(0 -1px 0px rgba(0,0,0,0.08));
     }
     
@@ -358,23 +312,4 @@
     .card-meta em {
         font-style: italic;
     }
-    
-    /* Additional mobile styling */
-    @media (max-width: 768px) {
-        .card-image {
-            max-height: 150px;
-        }
-        
-        .card-content {
-            padding: var(--spacing-4, 1rem);
-        }
-        
-        .card-title {
-            font-size: var(--font-size-lg, 1.125rem);
-        }
-        
-        .card-authors, .card-date, .card-meta {
-            font-size: var(--font-size-sm, 0.875rem);
-        }
-    }
-</style>
+</style> 
