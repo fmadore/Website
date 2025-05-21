@@ -25,10 +25,15 @@
     import { allPublications } from '$lib/data/publications/index'; // Keep this for RelatedItemsList
     import { generateBibtex } from '$lib/utils/bibtexGenerator'; // Import the generator
     
-    // Get data from the load function
-    export let data: PageData;
-    $: publication = data.publication as Publication;
-    $: jsonLdString = data.jsonLdString; // Use the raw string
+    
+    interface Props {
+        // Get data from the load function
+        data: PageData;
+    }
+
+    let { data }: Props = $props();
+    let publication = $derived(data.publication as Publication);
+    let jsonLdString = $derived(data.jsonLdString); // Use the raw string
 
     // Helper function to truncate title at the first colon
     function truncateTitle(title: string): string {
@@ -37,13 +42,13 @@
     }
 
     // Define breadcrumb items
-    $: breadcrumbItems = [
+    let breadcrumbItems = $derived([
         { label: 'Publications', href: `${base}/publications` },
         { label: truncateTitle(publication.title), href: `${base}/publications/${publication.id}` } // Use truncated title
-    ];
+    ]);
 
     // Generate Breadcrumb JSON-LD
-    $: breadcrumbJsonLdString = JSON.stringify({
+    let breadcrumbJsonLdString = $derived(JSON.stringify({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": breadcrumbItems.map((item, index) => ({
@@ -52,7 +57,7 @@
             "name": item.label,
             "item": `${$page.url.origin}${item.href}`
         }))
-    });
+    }));
 
     // Manage JSON-LD script injection
     const publicationJsonLdScriptId = 'publication-json-ld';
@@ -116,15 +121,15 @@
     }
 
     // Project URL mappings
-    $: projectMappings = {
+    let projectMappings = $derived({
         "Religious Activism on Campuses in Togo and Benin": `${base}/research/religious-activism-campuses-togo-benin`,
         "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso": `${base}/research/youth-womens-islamic-activism-cote-divoire-burkina-faso`,
         "Muslim Minorities in Southern Cities of Benin and Togo": `${base}/research/muslim-minorities-southern-cities-benin-togo`,
         "Mining the Islam West Africa Collection": `${base}/research/mining-the-islam-west-africa-collection`
-    };
+    });
 
     // Prepare details for the DetailsGrid component
-    $: publicationDetails = [
+    let publicationDetails = $derived([
         // Type-specific details
         { label: 'Journal', value: publication.journal ?? '', condition: publication.type === 'article' || publication.type === 'special-issue' },
         { label: 'Volume', value: publication.volume ?? '', condition: publication.type === 'article' || publication.type === 'special-issue' },
@@ -146,7 +151,7 @@
         { label: 'DOI', value: publication.doi ?? '', link: publication.doi ? `https://doi.org/${publication.doi}` : undefined },
         { label: 'Project', value: publication.project ?? '', link: publication.project ? (projectMappings as Record<string, string>)[publication.project] : undefined },
         { label: 'Countries', value: publication.country ?? [] }
-    ];
+    ]);
 
     // Define static links within the component if they don't depend on `data`
     const staticLinks = {
@@ -183,10 +188,10 @@
 -->
 
 <SEO 
-    title="{truncateTitle(publication.title)} | Frédérick Madore"
-    description="{publication.abstract || `Details about ${publication.title} by ${publication.authors?.join(', ')}`}"
-    keywords="{[ 'publication', publication.type, ...(publication.tags || []), ...(publication.authors || []), 'Islam', 'West Africa', 'Frédérick Madore' ].join(', ')}"
-    ogImage="{base}/{publication.image}"
+    title={truncateTitle(publication.title) + " | Frédérick Madore"}
+    description={publication.abstract || `Details about ${publication.title} by ${publication.authors?.join(', ')}`}
+    keywords={[ 'publication', publication.type, ...(publication.tags || []), ...(publication.authors || []), 'Islam', 'West Africa', 'Frédérick Madore' ].join(', ')}
+    ogImage={`${base}/${publication.image}`}
 />
 
 <MetaTags {publication} />
@@ -247,7 +252,7 @@
             <!-- Export BibTeX Button -->
             <div>
                 <button 
-                    on:click={downloadBibtex} 
+                    onclick={downloadBibtex} 
                     class="btn btn-primary cursor-pointer"
                 >
                     Export BibTeX
@@ -301,4 +306,4 @@
     /* Styles are mostly handled by utility classes above */
 
     /* Related item styles are now in RelatedItemCard.svelte */
-</style> 
+</style>
