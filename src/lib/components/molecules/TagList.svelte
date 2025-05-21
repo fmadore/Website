@@ -1,15 +1,25 @@
 <script lang="ts">
     import { base } from '$app/paths';
 
-    export let tags: string[] | undefined | null = [];
-    export let baseUrl: string = '/search?tag='; // Default base URL, can be overridden
-    export let sectionTitle: string = 'Tags';
-    export let titleClass: string = 'text-lg font-semibold mb-2';
-    export let listClass: string = 'flex flex-wrap gap-2';
-    export let tagLinkClass: string = 'tag-link text-sm px-3 py-1 rounded-full'; // Re-uses existing style
-    export let sectionClass: string = 'mb-6';
+    let {
+        tags = [],
+        baseUrl = '/search?tag=', // Default base URL, can be overridden
+        sectionTitle = 'Tags',
+        titleClass = 'text-lg font-semibold mb-2',
+        listClass = 'flex flex-wrap gap-2',
+        tagLinkClass = 'tag-link text-sm px-3 py-1 rounded-full', // Re-uses existing style
+        sectionClass = 'mb-6'
+    }: {
+        tags?: string[] | undefined | null;
+        baseUrl?: string;
+        sectionTitle?: string;
+        titleClass?: string;
+        listClass?: string;
+        tagLinkClass?: string;
+        sectionClass?: string;
+    } = $props();
 
-    $: visibleTags = tags?.filter(tag => !!tag) ?? [];
+    let visibleTags = $derived(tags?.filter(tag => !!tag) ?? []);
 </script>
 
 {#if visibleTags.length > 0}
@@ -39,4 +49,4 @@
         background-color: var(--color-primary);
         color: var(--color-background);
     }
-</style> 
+</style>

@@ -2,12 +2,14 @@
     import { base } from '$app/paths';
     import BreadcrumbLink from '$lib/components/atoms/BreadcrumbLink.svelte';
 
-    export let items: { 
-        label: string; 
-        href: string;
-    }[] = [];
+    let { 
+        items = [], 
+        showHomeLink = true 
+    }: {
+        items: { label: string; href: string; }[];
+        showHomeLink?: boolean;
+    } = $props();
 
-    export let showHomeLink = true;
 </script>
 
 <nav aria-label="Breadcrumb" class="breadcrumb">

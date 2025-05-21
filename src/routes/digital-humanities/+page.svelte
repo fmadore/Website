@@ -9,10 +9,10 @@
     import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities'; // Import the type
 
     // Reactive variable for the skill from URL, only access searchParams if in browser
-    $: selectedSkill = browser ? $page.url.searchParams.get('skill') : null;
+    let selectedSkill = $derived(browser ? $page.url.searchParams.get('skill') : null);
 
     // Filter projects based on selectedSkill, then process them
-    $: finalProjectsToDisplay = (selectedSkill 
+    let finalProjectsToDisplay = $derived((selectedSkill 
         ? allDhProjects.filter(project => project.skills && project.skills.includes(selectedSkill))
         : allDhProjects
     ).map(project => {
@@ -32,7 +32,7 @@
             linkTarget,
             actionText
         };
-    });
+    }));
 
 </script>
 
@@ -58,30 +58,35 @@
                 linkUrl={project.finalLinkUrl}
                 target={project.linkTarget}
             >
-                <span slot="subtitle">{project.years}</span>
+                {#snippet subtitle()}
+                    <span>{project.years}</span>
+                {/snippet}
 
-                <!-- Default slot for description - Use shortDescription (plain text) -->
-                {project.shortDescription}
+                {#snippet children()}
+                    {project.shortDescription}
+                {/snippet}
 
-                <!-- Details slot for award, reviews, skills, etc. -->
-                <div slot="details" class="dh-card-extras">
-                    <!-- Skills section -->
-                    {#if project.skills && project.skills.length > 0}
-                        <div class="project-skills-container">
-                            <strong>Skills:</strong>
-                            <div class="skills-list">
-                                {#each project.skills as skill}
-                                    <a href="{base}/digital-humanities?skill={encodeURIComponent(skill)}" class="project-skill-tag">{skill}</a>
-                                {/each}
+                {#snippet details()}
+                    <div class="dh-card-extras">
+                        <!-- Skills section -->
+                        {#if project.skills && project.skills.length > 0}
+                            <div class="project-skills-container">
+                                <strong>Skills:</strong>
+                                <div class="skills-list">
+                                    {#each project.skills as skill}
+                                        <a href="{base}/digital-humanities?skill={encodeURIComponent(skill)}" class="project-skill-tag">{skill}</a>
+                                    {/each}
+                                </div>
                             </div>
-                        </div>
-                    {/if}
-                </div>
+                        {/if}
+                    </div>
+                {/snippet}
 
-                <!-- Action slot for the main link -->
-                <a slot="action" href={project.finalLinkUrl} target={project.linkTarget} rel={project.linkTarget === '_blank' ? 'noopener noreferrer' : null}>
-                    {project.actionText}
-                </a>
+                {#snippet action()}
+                    <a href={project.finalLinkUrl} target={project.linkTarget} rel={project.linkTarget === '_blank' ? 'noopener noreferrer' : null}>
+                        {project.actionText}
+                    </a>
+                {/snippet}
             </Card>
         {/each}
     </div>
@@ -160,4 +165,4 @@
         text-decoration: none;
     }
 
-</style> 
+</style>

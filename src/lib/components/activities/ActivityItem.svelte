@@ -3,16 +3,12 @@
   import Card from '$lib/components/common/Card.svelte';
   import { base } from '$app/paths';
 
-  /**
-   * The activity data to display.
-   * @type {Activity}
-   */
-  export let activity: Activity;
+  let { activity }: { activity: Activity } = $props();
 
   // Construct image URL safely
-  $: imageUrl = activity.heroImage?.src ? `${base}/${activity.heroImage.src}` : undefined;
-  $: imageAlt = activity.heroImage?.alt || activity.title; // Use title as fallback alt text
-  $: activityLink = `${base}/activities/${activity.id}`;
+  let imageUrl = $derived(activity.heroImage?.src ? `${base}/${activity.heroImage.src}` : undefined);
+  let imageAlt = $derived(activity.heroImage?.alt || activity.title); // Use title as fallback alt text
+  let activityLink = $derived(`${base}/activities/${activity.id}`);
 
 </script>
 
@@ -23,19 +19,19 @@
   linkUrl={activityLink}
   target="_self" 
 >
-  <svelte:fragment slot="subtitle">
+  {#snippet subtitle()}
     <div class="activity-meta text-sm text-gray-500 mb-2">
       <span>{activity.date}</span>
     </div>
-  </svelte:fragment>
+  {/snippet}
 
   <!-- Default slot for description -->
-  <p class="activity-description text-sm">
+  {#snippet children()}<p class="activity-description text-sm">
     {activity.description}
-  </p>
+  </p>{/snippet}
 
   <!-- Details slot for tags -->
-  <svelte:fragment slot="details">
+  {#snippet details()}
     {#if activity.tags && activity.tags.length > 0}
       <div class="activity-tags flex flex-wrap gap-1 mt-2">
         {#each activity.tags as tag}
@@ -45,14 +41,14 @@
         {/each}
       </div>
     {/if}
-  </svelte:fragment>
+  {/snippet}
 
   <!-- Action slot for the link -->
-  <svelte:fragment slot="action">
+  {#snippet action()}
     <a href={activityLink} class="text-sm font-medium">
       Read more →
     </a>
-  </svelte:fragment>
+  {/snippet}
 </Card>
 
 <style>
@@ -71,4 +67,4 @@
   /* Removed empty a rule */
 
   /* Removed empty a:hover rule */
-</style> 
+</style>
