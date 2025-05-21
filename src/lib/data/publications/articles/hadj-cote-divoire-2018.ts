@@ -50,7 +50,8 @@ export const hadjCoteDIvoire: Publication = {
             authors: ["Bourahima Diomandé"],
             year: 2021,
             title: "Les luttes de positionnement autour des mosquées en Côte d'Ivoire : guerres idéologiques, conflits de leadership et de contrôle des fonds",
-            source: "Afrique et Développement 46, no. 4 (2021): 97-119"
+            source: "Afrique et Développement 46, no. 4 (2021): 97-119",
+            url: "https://www.jstor.org/stable/48640604"
         },
         {
             authors: ["Issouf Binaté", "Yaya Dao"],
