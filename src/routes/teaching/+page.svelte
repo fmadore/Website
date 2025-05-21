@@ -5,7 +5,7 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 
     // Unified teaching items data for cards
-    const teachingItems = [
+    let teachingItems = $state([
         {
             id: "african-past",
             type: 'course',
@@ -47,7 +47,7 @@
             imageUrl: `${base}/images/teaching/guest-lecture.jpg`,
             linkUrl: `${base}/teaching/guest-lectures` // <-- Link to new page
         }
-    ];
+    ]);
 </script>
 
 <SEO
@@ -70,30 +70,36 @@
                     linkUrl={item.linkUrl}
                     target={item.type === 'guest_lecture' ? '_self' : '_blank'}
                 >
-                    <span slot="subtitle">{item.institution}</span>
+                    {#snippet subtitle()}
+                                        <span >{item.institution}</span>
+                                    {/snippet}
 
-                    <div slot="details" class="teaching-card-specific-details">
-                        {#if item.type === 'course'}
-                            <p><span class="label">Level:</span> {item.level}</p>
-                            <p><span class="label">Period:</span> {item.period}</p>
-                        {:else if item.type === 'guest_lecture'}
-                            <!-- Specific details not shown on card, link provided -->
-                        {/if}
-                    </div>
+                    {#snippet details()}
+                                        <div  class="teaching-card-specific-details">
+                            {#if item.type === 'course'}
+                                <p><span class="label">Level:</span> {item.level}</p>
+                                <p><span class="label">Period:</span> {item.period}</p>
+                            {:else if item.type === 'guest_lecture'}
+                                <!-- Specific details not shown on card, link provided -->
+                            {/if}
+                        </div>
+                                    {/snippet}
+                    
+                    {#snippet children()}{item.description}{/snippet}
 
-                    {item.description}
-
-                    <div slot="action">
-                        {#if item.syllabusUrl}
-                            <a href={item.syllabusUrl} target="_blank" rel="noopener noreferrer">
-                                View Syllabus →
-                            </a>
-                        {:else if item.linkUrl && item.type === 'guest_lecture'}
-                            <a href={item.linkUrl}>
-                                View List →
-                            </a>
-                        {/if}
-                    </div>
+                    {#snippet action()}
+                                        <div >
+                            {#if item.syllabusUrl}
+                                <a href={item.syllabusUrl} target="_blank" rel="noopener noreferrer">
+                                    View Syllabus →
+                                </a>
+                            {:else if item.linkUrl && item.type === 'guest_lecture'}
+                                <a href={item.linkUrl}>
+                                    View List →
+                                </a>
+                            {/if}
+                        </div>
+                                    {/snippet}
                 </Card>
             {/each}
         </div>
@@ -142,4 +148,4 @@
             grid-template-columns: repeat(3, 1fr);
         }
     } */
-</style> 
+</style>

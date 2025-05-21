@@ -1,32 +1,19 @@
 <script>
-  /**
-   * @type {string | undefined | null} Optional URL for the card's image.
-   */
-  export let imageUrl = undefined;
+  let {
+    imageUrl = undefined,
+    imageAlt: _imageAltProp = '', // Renamed to avoid conflict with the derived value
+    linkUrl = undefined,
+    target = '_blank', // Default to opening external links in new tab
+    title = '',
+    // Snippet props
+    subtitle = undefined,
+    details = undefined,
+    action = undefined,
+    children = undefined // For the default slot content
+  } = $props();
 
-  /**
-   * @type {string} Alt text for the image. Defaults to the title.
-   */
-  export let imageAlt = '';
-
-  /**
-   * @type {string | undefined | null} Optional URL to link the title and/or image.
-   */
-  export let linkUrl = undefined;
-
-  /**
-   * @type {string} Target attribute for links (_blank, _self, etc.).
-   */
-  export let target = '_blank'; // Default to opening external links in new tab
-
-  /**
-   * @type {string} The main title for the card.
-   */
-  export let title = '';
-
-  // Set default imageAlt if not provided
-  $: imageAlt = imageAlt || title;
-
+  // Set default imageAlt if not provided, using $derived for Svelte 5
+  let imageAlt = $derived(_imageAltProp || title);
 </script>
 
 <div class="card">
@@ -53,25 +40,25 @@
       {/if}
     </h2>
 
-    {#if $$slots.subtitle}
+    {#if subtitle}
       <div class="card-subtitle">
-        <slot name="subtitle"></slot>
+        {@render subtitle()}
       </div>
     {/if}
 
     <div class="card-description">
-      <slot></slot> <!-- Default slot for main description -->
+      {@render children?.()} <!-- Default slot for main description -->
     </div>
 
-    {#if $$slots.details}
+    {#if details}
       <div class="card-details">
-        <slot name="details"></slot>
+        {@render details()}
       </div>
     {/if}
 
-    {#if $$slots.action}
+    {#if action}
       <div class="card-action">
-        <slot name="action"></slot>
+        {@render action()}
       </div>
     {/if}
   </div>
@@ -170,4 +157,4 @@
     text-decoration: underline;
   }
 
-</style> 
+</style>
