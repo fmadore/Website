@@ -2,10 +2,10 @@
     import type { ReviewWork } from '$lib/types/publication';
 
     // Prop to receive the array of reviews
-    export let reviewedBy: ReviewWork[] = [];
+    let { reviewedBy = [] }: { reviewedBy?: ReviewWork[] } = $props();
 
     // Sort the array by year descending
-    $: sortedReviews = (reviewedBy || []).sort((a, b) => b.year - a.year);
+    const sortedReviews = $derived((reviewedBy || []).sort((a, b) => b.year - a.year));
 </script>
 
 {#if sortedReviews && sortedReviews.length > 0}
@@ -44,4 +44,4 @@
             {/each}
         </div>
     </section>
-{/if} 
+{/if}
