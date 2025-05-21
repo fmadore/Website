@@ -2,7 +2,7 @@
     import { onMount } from 'svelte';
     import Button from '$lib/components/atoms/Button.svelte';
     
-    let showBanner = false;
+    let showBanner = $state(false);
     
     onMount(() => {
         // Check if user has already made a choice

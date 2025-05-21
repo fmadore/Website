@@ -1,29 +1,50 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte';
 
-    // Props
-    export let variant: 'primary' | 'secondary' | 'outline-primary' | 'outline-secondary' = 'primary';
-    export let size: 'sm' | 'base' | 'lg' = 'base';
-    export let href: string | undefined = undefined; // If provided, render as <a>
-    export let type: 'button' | 'submit' | 'reset' = 'button'; // Only used for <button>
-    export let disabled = false;
-    export let block = false; // For btn-block
-    export let iconOnly = false; // For icon-only buttons (adjusts padding potentially) - Not currently implemented in CSS, but adding prop
-    export let ariaLabel: string | undefined = undefined; // For accessibility, esp. for iconOnly
-    export let additionalClasses: string = ''; // ADDED PROP
+    
+    interface Props {
+        // Props
+        variant?: 'primary' | 'secondary' | 'outline-primary' | 'outline-secondary';
+        size?: 'sm' | 'base' | 'lg';
+        href?: string | undefined; // If provided, render as <a>
+        type?: 'button' | 'submit' | 'reset'; // Only used for <button>
+        disabled?: boolean;
+        block?: boolean; // For btn-block
+        iconOnly?: boolean; // For icon-only buttons (adjusts padding potentially) - Not currently implemented in CSS, but adding prop
+        ariaLabel?: string | undefined; // For accessibility, esp. for iconOnly
+        additionalClasses?: string; // ADDED PROP
+        icon?: import('svelte').Snippet;
+        children?: import('svelte').Snippet;
+        [key: string]: any
+    }
+
+    let {
+        variant = 'primary',
+        size = 'base',
+        href = undefined,
+        type = 'button',
+        disabled = false,
+        block = false,
+        iconOnly = false,
+        ariaLabel = undefined,
+        additionalClasses = '',
+        icon,
+        children,
+        ...rest
+    }: Props = $props();
 
     const dispatch = createEventDispatcher();
 
     // Compute classes based on props
-    $: buttonClasses = [
+    let buttonClasses = $derived([
         'btn',
         `btn-${variant}`,
         size !== 'base' ? `btn-${size}` : '',
         block ? 'btn-block' : '',
-        $$slots.icon ? 'btn-icon' : '', // Add btn-icon if icon slot is used
+        icon ? 'btn-icon' : '', // Add btn-icon if icon slot is used
         iconOnly ? 'btn-icon-only' : '', // Placeholder for potential future styling
         additionalClasses, // INCLUDE additionalClasses
-    ].filter(Boolean).join(' ');
+    ].filter(Boolean).join(' '));
 
     function handleClick(event: MouseEvent) {
         if (!disabled) {
@@ -38,14 +59,14 @@
         class={buttonClasses}
         role="button"
         aria-disabled={disabled}
-        aria-label={ariaLabel || $$slots.default ? undefined : 'Link button'}
-        {...$$restProps}
+        aria-label={ariaLabel || children ? undefined : 'Link button'}
+        {...rest}
     >
-        {#if $$slots.icon}
-            <span class="btn-icon-slot"><slot name="icon"></slot></span>
+        {#if icon}
+            <span class="btn-icon-slot">{@render icon?.()}</span>
         {/if}
-        {#if !iconOnly && $$slots.default}
-            <span class="btn-text-slot"><slot></slot></span>
+        {#if !iconOnly && children}
+            <span class="btn-text-slot">{@render children?.()}</span>
         {/if}
     </a>
 {:else}
@@ -53,15 +74,15 @@
         {type}
         class={buttonClasses}
         {disabled}
-        on:click={handleClick}
-        aria-label={ariaLabel || $$slots.default ? undefined : 'Button'}
-        {...$$restProps}
+        onclick={handleClick}
+        aria-label={ariaLabel || children ? undefined : 'Button'}
+        {...rest}
     >
-        {#if $$slots.icon}
-             <span class="btn-icon-slot"><slot name="icon"></slot></span>
+        {#if icon}
+             <span class="btn-icon-slot">{@render icon?.()}</span>
         {/if}
-        {#if !iconOnly && $$slots.default}
-            <span class="btn-text-slot"><slot></slot></span>
+        {#if !iconOnly && children}
+            <span class="btn-text-slot">{@render children?.()}</span>
         {/if}
     </button>
 {/if}

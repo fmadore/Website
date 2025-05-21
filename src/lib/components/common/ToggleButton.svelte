@@ -3,8 +3,12 @@
     import { Map } from 'lucide-svelte'; // Import the Map icon
     import Button from '$lib/components/atoms/Button.svelte'; // Import Button component
 
-    export let isToggled: boolean = false;
-    export let baseText: string = 'Toggle'; // e.g., "Map", "Details"
+    interface Props {
+        isToggled?: boolean;
+        baseText?: string; // e.g., "Map", "Details"
+    }
+
+    let { isToggled = false, baseText = 'Toggle' }: Props = $props();
     // Allows passing specific button classes, defaults to secondary outline
     // export let btnClass: string = 'btn btn-sm btn-outline-secondary'; 
 
@@ -15,8 +19,8 @@
     }
 
     // Determine label and aria information based on state
-    $: labelText = (isToggled ? 'Hide' : 'Show') + ' ' + baseText;
-    $: ariaTitle = isToggled ? `Hide ${baseText}` : `Show ${baseText}`;
+    let labelText = $derived((isToggled ? 'Hide' : 'Show') + ' ' + baseText);
+    let ariaTitle = $derived(isToggled ? `Hide ${baseText}` : `Show ${baseText}`);
 
 </script>
 
@@ -28,9 +32,11 @@
     title={ariaTitle}
     additionalClasses="control-button-rounded"
 >
-    <svelte:fragment slot="icon">
-         <Map size={18} />
-    </svelte:fragment>
+    {#snippet icon()}
+    
+             <Map size={18} />
+        
+    {/snippet}
     {labelText}
 </Button>
 

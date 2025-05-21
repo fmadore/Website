@@ -3,7 +3,11 @@
     import { createEventDispatcher } from 'svelte';
     import Button from '$lib/components/atoms/Button.svelte'; // Import the Button component
 
-    export let activeSort: 'date' | 'title' | 'citations' = 'date'; // Default sort
+    interface Props {
+        activeSort?: 'date' | 'title' | 'citations'; // Default sort
+    }
+
+    let { activeSort = 'date' }: Props = $props();
 
     const dispatch = createEventDispatcher();
 
@@ -21,24 +25,27 @@
     }
 
     // Determine button text and title based on the *current* sort state for display
-    let IconComponent: typeof ArrowDownAZ | typeof SortDesc | typeof TrendingUp;
-    let labelText: string;
-    let ariaTitle: string;
-    $: {
-        if (activeSort === 'date') {
-            IconComponent = SortDesc;
-            labelText = 'Sorted by Date';
-            ariaTitle = 'Current sort: Date (Newest First). Click to sort by Title (A-Z).';
-        } else if (activeSort === 'title') {
-            IconComponent = ArrowDownAZ;
-            labelText = 'Sorted A-Z';
-            ariaTitle = 'Current sort: Title (A-Z). Click to sort by Citations (Most Cited).';
-        } else { // activeSort === 'citations'
-            IconComponent = TrendingUp;
-            labelText = 'Sorted by Citations';
-            ariaTitle = 'Current sort: Citations (Most Cited). Click to sort by Date (Newest First).';
-        }
-    }
+    let IconComponent = $derived(
+        activeSort === 'date'
+            ? SortDesc
+            : activeSort === 'title'
+              ? ArrowDownAZ
+              : TrendingUp
+    );
+    let labelText = $derived(
+        activeSort === 'date'
+            ? 'Sorted by Date'
+            : activeSort === 'title'
+              ? 'Sorted A-Z'
+              : 'Sorted by Citations'
+    );
+    let ariaTitle = $derived(
+        activeSort === 'date'
+            ? 'Current sort: Date (Newest First). Click to sort by Title (A-Z).'
+            : activeSort === 'title'
+              ? 'Current sort: Title (A-Z). Click to sort by Citations (Most Cited).'
+              : 'Current sort: Citations (Most Cited). Click to sort by Date (Newest First).'
+    );
 </script>
 
 <div class="sorter">
@@ -50,9 +57,11 @@
         title={ariaTitle} 
         additionalClasses="control-button-rounded"
     >
-        <svelte:fragment slot="icon">
-            <svelte:component this={IconComponent} size={18} />
-        </svelte:fragment>
+        {#snippet icon()}
+            
+                <IconComponent size={18} />
+            
+            {/snippet}
         {labelText}
     </Button>
 </div>
@@ -65,4 +74,4 @@
     
     /* The .control-button-rounded styles are now handled globally 
        via src/styles/components/buttons.css and imported in app.css */
-</style> 
+</style>
