@@ -2,14 +2,25 @@
 	import { base } from '$app/paths';
 	import TagList from '$lib/components/molecules/TagList.svelte'; // Use the one from molecules
 
-	export let title: string;
-	export let backLinkHref: string | undefined = undefined;
-	export let backLinkLabel: string = '← Back';
-	export let date: string | undefined = undefined;
-	export let tags: string[] | undefined = undefined;
-	export let typeBadgeText: string | undefined = undefined; // e.g., "Journal Article", "Conference Paper"
-	export let authors: string[] | undefined = undefined;
-	export let editors: string | string[] | undefined = undefined; // For publications
+	let {
+		title,
+		backLinkHref = undefined,
+		backLinkLabel = '← Back',
+		date = undefined,
+		tags = undefined,
+		typeBadgeText = undefined, // e.g., "Journal Article", "Conference Paper"
+		authors = undefined,
+		editors = undefined // For publications
+	}: {
+		title: string;
+		backLinkHref?: string | undefined;
+		backLinkLabel?: string;
+		date?: string | undefined;
+		tags?: string[] | undefined;
+		typeBadgeText?: string | undefined;
+		authors?: string[] | undefined;
+		editors?: string | string[] | undefined;
+	} = $props();
 
 	// Helper function to format editors (copied from publications/[id])
 	function formatEditors(eds: string | string[] | undefined): string {
