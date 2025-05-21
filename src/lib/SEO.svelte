@@ -1,13 +1,25 @@
 <script lang="ts">
     import { base } from '$app/paths';
     
-    // SEO props
-    export let title = "Frédérick Madore | Historian | Digital Humanist";
-    export let description = "Personal website of Frédérick Madore, Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)";
-    export let keywords = "Frédérick Madore, Islam, West Africa, Digital Humanities, Research";
-    export let canonical = "";
-    export let ogImage = `${base}/images/Profile-picture.webp`;
-    export let type = "website";
+    
+    interface Props {
+        // SEO props
+        title?: string;
+        description?: string;
+        keywords?: string;
+        canonical?: string;
+        ogImage?: any;
+        type?: string;
+    }
+
+    let {
+        title = "Frédérick Madore | Historian | Digital Humanist",
+        description = "Personal website of Frédérick Madore, Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)",
+        keywords = "Frédérick Madore, Islam, West Africa, Digital Humanities, Research",
+        canonical = "",
+        ogImage = `${base}/images/Profile-picture.webp`,
+        type = "website"
+    }: Props = $props();
 </script>
 
 <svelte:head>
