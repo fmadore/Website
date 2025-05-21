@@ -1,16 +1,20 @@
 <script lang="ts">
+    // Svelte 5: use $props() for props
+    let { size = 20 } = $props();
     import { theme, toggleTheme } from '$lib/stores/themeStore';
     import Icon from '@iconify/svelte';
-    
-    export let size = 20;
+    import { onDestroy } from 'svelte';
+    let currentTheme = $state('light');
+    const unsubscribe = theme.subscribe(value => currentTheme = value);
+    onDestroy(unsubscribe);
 </script>
 
 <button 
     class="theme-toggle" 
-    on:click={toggleTheme}
-    aria-label={$theme === 'light' ? "Switch to dark theme" : "Switch to light theme"}
+    onclick={toggleTheme}
+    aria-label={currentTheme === 'light' ? "Switch to dark theme" : "Switch to light theme"}
 >
-    {#if $theme === 'light'}
+    {#if currentTheme === 'light'}
         <Icon icon="mdi:moon-waning-crescent" width={size} height={size} />
     {:else}
         <Icon icon="mdi:white-balance-sunny" width={size} height={size} />
