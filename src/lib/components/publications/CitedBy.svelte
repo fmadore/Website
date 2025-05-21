@@ -2,10 +2,10 @@
     import type { CitingWork } from '$lib/types/publication';
 
     // Prop to receive the array of citing works
-    export let citedBy: CitingWork[] = [];
+    let { citedBy = [] }: { citedBy?: CitingWork[] } = $props();
 
     // Sort the array by year descending
-    $: sortedCitedBy = (citedBy || []).sort((a, b) => b.year - a.year);
+    const sortedCitedBy = $derived((citedBy || []).sort((a, b) => b.year - a.year));
 </script>
 
 {#if sortedCitedBy && sortedCitedBy.length > 0}
@@ -33,4 +33,4 @@
             {/each}
         </div>
     </section>
-{/if} 
+{/if}
