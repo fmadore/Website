@@ -52,14 +52,14 @@
 
 <SEO
     title="Teaching | Frédérick Madore"
-    description="Frédérick Madore teaches African History, Islam in sub-Saharan West Africa, and digital humanities."
+    description="Frédérick Madore teaches African History, Islam in sub-Saharan Africa, and digital humanities."
 />
 
 <div class="teaching-container">
     <div class="main-content">
 		<PageHeader title="Teaching" />
         
-        <p class="text-xl mb-10">Teaching interests: African History (pre-modern and modern periods), Islam in sub-Saharan Africa, West African history.</p>
+        <p class="text-xl mb-10">Teaching interests: African History (pre-modern and modern periods), Islam in sub-Saharan Africa, Digital Humanities, West African history.</p>
         
         <!-- Card Grid Layout -->
         <div class="content-grid">
