@@ -52,10 +52,15 @@
                 linkUrl={`${base}/research/${project.id}`} 
                 target="_self"
             >
-                <span slot="subtitle">{project.years}</span>
-                <!-- Default slot for description -->
-                {project.shortDescription}
-                <a slot="action" href={`${base}/research/${project.id}`}>Read more →</a>
+                {#snippet subtitle()}
+                    <span>{project.years}</span>
+                {/snippet}
+                {#snippet children()}
+                    {project.shortDescription}
+                {/snippet}
+                {#snippet action()}
+                    <a href={`${base}/research/${project.id}`}>Read more →</a>
+                {/snippet}
             </Card>
         {/each}
     </div>
@@ -95,4 +100,4 @@
     
     /* No need for 1024px breakpoint adjustment if 2 columns is sufficient */
 
-</style> 
+</style>
