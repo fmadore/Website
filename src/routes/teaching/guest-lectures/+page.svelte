@@ -13,8 +13,8 @@
         { label: 'Guest Lectures', href: `${base}/teaching/guest-lectures` }
     ];
 
-    // Generate Breadcrumb JSON-LD (Not reactive needed as breadcrumbItems is const)
-    const breadcrumbJsonLdString = JSON.stringify({
+    // Generate Breadcrumb JSON-LD using $derived for Svelte 5 style
+    let breadcrumbJsonLdString = $derived(JSON.stringify({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": breadcrumbItems.map((item, index) => ({
@@ -23,7 +23,7 @@
             "name": item.label,
             "item": `${$page.url.origin}${item.href}` // Use page store here for origin
         }))
-    });
+    }));
 
     const guestLecturesByInstitution = {
         "Universität Bayreuth": [
@@ -50,7 +50,7 @@
             const script = document.createElement('script');
             script.id = breadcrumbJsonLdScriptId;
             script.type = 'application/ld+json';
-            script.textContent = breadcrumbJsonLdString;
+            script.textContent = breadcrumbJsonLdString; // Access derived value directly
             document.head.appendChild(script);
         }
     });
@@ -110,11 +110,12 @@
 
     .lecture-item {
         margin-bottom: var(--spacing-6);
-        padding-left: var(--spacing-4); /* Indent content slightly */
-        border-left: 3px solid var(--color-primary-light);
-        background-color: var(--color-background-secondary, #f9f9f9); /* Subtle background */
         padding: var(--spacing-4);
+        background-color: var(--color-background); /* Use main background color for cards */
+        border: 1px solid var(--color-border); /* Add a standard card border */
+        border-left: 3px solid var(--color-primary); /* Use primary color for left accent */
         border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md); /* Add standard card shadow */
     }
 
     .lecture-title {
@@ -134,4 +135,4 @@
         font-style: italic;
     }
 
-</style> 
+</style>
