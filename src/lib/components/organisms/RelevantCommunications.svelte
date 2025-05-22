@@ -1,33 +1,32 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
+    // import { onMount } from 'svelte'; // Removed as unused
     import { allCommunications } from '../../data/communications/index';
-    import type { Communication } from '$lib/types/communication';
+    // import type { Communication } from '$lib/types/communication'; // Removed as unused
     import RelevantItemsList from '$lib/components/organisms/RelevantItemsList.svelte';
     import type { RelevantItem } from '$lib/components/organisms/RelevantItemsList.svelte';
 
     // Props - project name and limit
-    export let projectName: string;
-    export let limit = 5;
-
-    // Local communications array - cast to RelevantItem[]
-    let communicationList: RelevantItem[] = [];
-
-    // Filter communications by project name
-    $: communicationList = allCommunications
-        .filter(comm => comm.project === projectName)
-        .sort((a, b) => new Date(b.dateISO).getTime() - new Date(a.dateISO).getTime())
-        .slice(0, limit) as RelevantItem[]; // Cast to the generic type
-
-    // Get unique communication types for the type filter
-    $: communicationTypes = [...new Set(communicationList.map(comm => comm.type).filter(Boolean))].sort() as string[];
+    let { projectName, limit = 5 }: {
+        projectName: string;
+        limit?: number;
+    } = $props();
 
     // Add state for selected type filter
-    let selectedType: string | null = null;
+    let selectedType = $state<string | null>(null);
+
+    // Filter communications by project name
+    let communicationList = $derived<RelevantItem[]>(allCommunications
+        .filter(comm => comm.project === projectName)
+        .sort((a, b) => new Date(b.dateISO).getTime() - new Date(a.dateISO).getTime())
+        .slice(0, limit) as RelevantItem[]); // Cast to the generic type
+
+    // Get unique communication types for the type filter
+    let communicationTypes = $derived<string[]>([...new Set(communicationList.map(comm => comm.type).filter(Boolean))].sort() as string[]);
 
     // Compute filtered list based on selected type
-    $: filteredList = selectedType
+    let filteredList = $derived<RelevantItem[]>(selectedType
         ? communicationList.filter(comm => comm.type === selectedType)
-        : communicationList;
+        : communicationList);
 
     // Handler for type filter button
     function selectType(type: string) {

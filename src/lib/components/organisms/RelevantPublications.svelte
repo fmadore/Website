@@ -1,34 +1,33 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
+    // import { onMount } from 'svelte'; // Removed as unused
     import { allPublications } from '../../data/publications/index';
-    import type { Publication } from '$lib/types';
+    // import type { Publication } from '$lib/types'; // Removed as unused
     import RelevantItemsList from '$lib/components/organisms/RelevantItemsList.svelte';
     import type { RelevantItem } from '$lib/components/organisms/RelevantItemsList.svelte';
 
     // Props - project name and limit
-    export let projectName: string;
-    export let limit = 5;
-    export let showTypeFilters = true;
-
-    // Local publications array - cast to RelevantItem[] for the organism
-    let publicationList: RelevantItem[] = [];
-
-    // Filter publications by project name
-    $: publicationList = allPublications
-        .filter(pub => pub.project === projectName)
-        .sort((a, b) => new Date(b.dateISO).getTime() - new Date(a.dateISO).getTime())
-        .slice(0, limit) as RelevantItem[];
-
-    // Get unique publication types for the type filter
-    $: publicationTypes = [...new Set(publicationList.map(pub => pub.type).filter(Boolean))].sort() as string[];
+    let { projectName, limit = 5, showTypeFilters = true }: {
+        projectName: string;
+        limit?: number;
+        showTypeFilters?: boolean;
+    } = $props();
 
     // Add state for selected type filter
-    let selectedType: string | null = null;
+    let selectedType = $state<string | null>(null);
+
+    // Filter publications by project name
+    let publicationList = $derived<RelevantItem[]>(allPublications
+        .filter(pub => pub.project === projectName)
+        .sort((a, b) => new Date(b.dateISO).getTime() - new Date(a.dateISO).getTime())
+        .slice(0, limit) as RelevantItem[]);
+
+    // Get unique publication types for the type filter
+    let publicationTypes = $derived<string[]>([...new Set(publicationList.map(pub => pub.type).filter(Boolean))].sort() as string[]);
 
     // Compute filtered list based on selected type
-    $: filteredList = selectedType
+    let filteredList = $derived<RelevantItem[]>(selectedType
         ? publicationList.filter(pub => pub.type === selectedType)
-        : publicationList;
+        : publicationList);
 
     // Handler for type filter button
     function selectType(type: string) {
@@ -65,7 +64,7 @@
             {#each publicationTypes as type}
                 <button
                     class="filter-button {selectedType === type ? 'active' : ''}"
-                    on:click={() => selectType(type)}
+                    onclick={() => selectType(type)}
                     type="button"
                 >
                     {formatPublicationType(type)}
