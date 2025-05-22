@@ -7,7 +7,7 @@
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
     import ItemReference from '$lib/components/molecules/ItemReference.svelte';
     import { page } from '$app/stores'; // Import page store
-    import { onMount, onDestroy } from 'svelte'; // Import lifecycle functions
+    // MODIFIED: Removed onMount, onDestroy. $derived and $effect are assumed to be globally available in Svelte 5.
     import { browser } from '$app/environment'; // Import browser check
 
     // Pre-construct breadcrumb items with evaluated paths
@@ -16,37 +16,57 @@
         { label: "Youth and Women's Islamic Activism", href: `${base}/research/youth-womens-islamic-activism-cote-divoire-burkina-faso` }
     ];
 
-    // Generate Breadcrumb JSON-LD
-    const breadcrumbJsonLdString = JSON.stringify({
+    // MODIFIED: Generate Breadcrumb JSON-LD reactively using $derived
+    let breadcrumbJsonLdString = $derived(JSON.stringify({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": breadcrumbItems.map((item, index) => ({
             "@type": "ListItem",
             "position": index + 1,
             "name": item.label,
-            "item": `${$page.url.origin}${item.href}`
+            "item": `${$page.url.origin}${item.href}` // $page store subscription
         }))
-    });
+    }));
 
     // Manage JSON-LD script injection
     const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
 
-    onMount(() => {
-        if (browser && breadcrumbJsonLdString && !document.getElementById(breadcrumbJsonLdScriptId)) {
-            const script = document.createElement('script');
-            script.id = breadcrumbJsonLdScriptId;
-            script.type = 'application/ld+json';
-            script.textContent = breadcrumbJsonLdString;
-            document.head.appendChild(script);
-        }
-    });
-
-    onDestroy(() => {
+    // MODIFIED: Replaced onMount and onDestroy with $effect
+    $effect(() => {
         if (browser) {
-            const script = document.getElementById(breadcrumbJsonLdScriptId);
-            if (script) {
-                document.head.removeChild(script);
+            const scriptId = breadcrumbJsonLdScriptId;
+            let scriptElement = document.getElementById(scriptId) as HTMLScriptElement | null;
+
+            // breadcrumbJsonLdString is reactive via $derived
+            // JSON.stringify should always produce a string, so we check its truthiness (non-empty)
+            if (breadcrumbJsonLdString) {
+                if (scriptElement) {
+                    scriptElement.textContent = breadcrumbJsonLdString;
+                } else {
+                    scriptElement = document.createElement('script');
+                    scriptElement.id = scriptId;
+                    scriptElement.type = 'application/ld+json';
+                    scriptElement.textContent = breadcrumbJsonLdString;
+                    document.head.appendChild(scriptElement);
+                }
+            } else {
+                // If breadcrumbJsonLdString becomes falsy (e.g. empty string, though unlikely from JSON.stringify)
+                // and the script exists, remove it.
+                if (scriptElement) {
+                    document.head.removeChild(scriptElement);
+                    // scriptElement = null; // Not strictly necessary as it's a local var
+                }
             }
+
+            return () => {
+                // Cleanup: remove the script if it exists and was added by this effect
+                if (browser) { // Re-check browser context for safety during cleanup
+                    const scriptToRemove = document.getElementById(scriptId);
+                    if (scriptToRemove && scriptToRemove.parentElement === document.head) {
+                        document.head.removeChild(scriptToRemove);
+                    }
+                }
+            };
         }
     });
 </script>
