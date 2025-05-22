@@ -7,33 +7,39 @@
     import { scale } from 'svelte/transition';
     import { quintOut } from 'svelte/easing';
 
-    export let item: Publication | Communication;
-    export let itemType: 'publication' | 'communication';
-    export let referenceElement: HTMLElement | null = null;
-    export let positionClass: string = '';
+    let { 
+        item, 
+        itemType, 
+        referenceElement = null, 
+        positionClass = '' 
+    }: {
+        item: Publication | Communication;
+        itemType: 'publication' | 'communication';
+        referenceElement?: HTMLElement | null;
+        positionClass?: string;
+    } = $props();
     
     const dispatch = createEventDispatcher();
     
-    let cardElement: HTMLElement;
-    let isPositioned = false;
-    let isClicked = false;
+    let cardElement = $state<HTMLElement>();
+    let isPositioned = $state(false);
+    let isClicked = $state(false);
     
     // Helper function to get year consistently
     function getYear(item: Publication | Communication): string {
         if ('dateISO' in item && item.dateISO) return item.dateISO.substring(0, 4);
         if ('date' in item && item.date) return item.date.substring(0, 4);
         if ('year' in item && item.year) return item.year.toString();
-        return 'N/D';
-    }
+        return 'N/D';    }
     
-    $: itemUrl = item && itemType
+    const itemUrl = $derived(item && itemType
         ? `${base}/${itemType === 'publication' ? 'publications' : 'communications'}/${item.id}`
-        : '#';
+        : '#');
         
     // Consolidate image source logic
-    $: imageSrc = item && (('heroImage' in item && item.heroImage?.src) || ('image' in item && item.image))
+    const imageSrc = $derived(item && (('heroImage' in item && item.heroImage?.src) || ('image' in item && item.image))
         ? `${base}/${('heroImage' in item && item.heroImage?.src) || ('image' in item && item.image)}`
-        : null;
+        : null);
         
     onMount(async () => {
         // Let the animation start first
@@ -50,6 +56,7 @@
         
         // Use requestAnimationFrame to measure after browser layout/paint
         requestAnimationFrame(() => {
+            if (!cardElement || !referenceElement) return; // Check again inside callback
             const refRect = referenceElement.getBoundingClientRect();
             const cardWidth = cardElement.offsetWidth;
             const viewportWidth = window.innerWidth;
@@ -98,7 +105,7 @@
         isClicked = true;
         
         // Apply click effect
-        if (cardElement) {
+        if (cardElement) { // Check cardElement before use
             cardElement.classList.add('card-clicked');
             
             // Delay navigation to allow animation to complete
@@ -117,14 +124,14 @@
     role="dialog" 
     aria-label="Item Preview"
     aria-modal="false"
-    on:pointerenter={handlePointerEnter}
-    on:pointerleave={handlePointerLeave}
+    onpointerenter={handlePointerEnter}
+    onpointerleave={handlePointerLeave}
 >
     <a 
         href={itemUrl} 
         class="card-link" 
         tabindex="-1"
-        on:click={handleCardClick}
+        onclick={handleCardClick}
     >
         <div class="card-content-wrapper">
             {#if imageSrc}
@@ -312,4 +319,4 @@
     .card-meta em {
         font-style: italic;
     }
-</style> 
+</style>

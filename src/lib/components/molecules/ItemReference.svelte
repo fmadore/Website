@@ -3,6 +3,7 @@
      * ReferenceLinkWithPreview.svelte  ────────────────────────────────────────────
      * Inline reference that shows a hover/click‑activated preview card.
      * Re‑written for improved readability, accessibility, and maintainability.
+     * Migrated to Svelte 5 with improved mobile support.
      * ---------------------------------------------------------------------------
      * Usage: <ReferenceLinkWithPreview id="my‑item‑id" />
      */
@@ -11,7 +12,6 @@
     import { browser } from '$app/environment';
     import { crossfade, fade } from 'svelte/transition';
     import { quintOut } from 'svelte/easing';
-    import { get } from 'svelte/store';
   
     import { allPublications } from '$lib/data/publications/index';
     import { allCommunications } from '$lib/data/communications/index';
@@ -23,37 +23,41 @@
   
     /* ───────────────────────────── Props ─────────────────────────────── */
     /** ID of the referenced item. */
-    export let id: string;
+    let { id }: { id: string } = $props();
   
     /* ────────────────────────── Cross‑fade setup ─────────────────────── */
     const [send, receive] = crossfade({
       duration: 300,
       easing: quintOut,
       fallback: (node: Element) => fade(node, { duration: 200, easing: quintOut })
+    });    /* ───────────────────────── Derived data ──────────────────────────── */
+    const item = $derived.by(() => {
+      const publicationItem = allPublications.find(p => p.id === id);
+      if (publicationItem) return publicationItem;
+      
+      const communicationItem = allCommunications.find(c => c.id === id);
+      if (communicationItem) return communicationItem;
+      
+      return undefined;
+    });
+    
+    const itemType = $derived.by(() => {
+      const publicationItem = allPublications.find(p => p.id === id);
+      if (publicationItem) return 'publication' as const;
+      
+      const communicationItem = allCommunications.find(c => c.id === id);
+      if (communicationItem) return 'communication' as const;
+      
+      return undefined;
     });
   
-    /* ───────────────────────── Derived data ──────────────────────────── */
-    let item: Publication | Communication | undefined;
-    let itemType: 'publication' | 'communication' | undefined;
-
-    const publicationItem = allPublications.find(p => p.id === id);
-    if (publicationItem) {
-      item = publicationItem;
-      itemType = 'publication';
-    } else {
-      const communicationItem = allCommunications.find(c => c.id === id);
-      if (communicationItem) {
-        item = communicationItem;
-        itemType = 'communication';
-      }
-    }
-  
     /* ──────────────────────── Local state ────────────────────────────── */
-    let showPreview = false;          // Preview visibility state
-    let viaClick = false;             // True if preview opened with click/tap
-    let positionBelow = false;        // Position card above/below the link
-    let spanEl: HTMLElement;          // Reference <span> element
-    let closeTimer: number | null = null;
+    let showPreview = $state(false);          // Preview visibility state
+    let viaClick = $state(false);             // True if preview opened with click/tap
+    let positionBelow = $state(false);        // Position card above/below the link
+    let spanEl = $state<HTMLElement>();       // Reference <span> element
+    let closeTimer = $state<number | null>(null);
+    let isTouchDevice = $state(false);        // Detect if device supports touch
   
     /* ─────────────────────── Helper functions ────────────────────────── */
     function clearCloseTimer() {
@@ -69,7 +73,6 @@
         if (!viaClick) showPreview = false;
       }, delay);
     }
-  
     /** Toggle preview; `force` overrides the natural toggle behaviour. */
     function togglePreview(force?: boolean) {
       showPreview = force ?? !showPreview;
@@ -78,14 +81,59 @@
     }
   
     function handleOutsideClick(event: MouseEvent) {
-      if (!spanEl.contains(event.target as Node) && showPreview && viaClick) {
+      if (spanEl && !spanEl.contains(event.target as Node) && showPreview && viaClick) {
         togglePreview(false);
       }
     }
-  
+
+    function handleLinkClick(event: MouseEvent) {
+      // On touch devices, first click opens preview, second click follows link
+      if (isTouchDevice) {
+        if (!showPreview) {
+          event.preventDefault();
+          togglePreview(true);
+        }
+        // If preview is already open, let the link work normally
+      } else {
+        // On non-touch devices, prevent default and just toggle preview
+        event.preventDefault();
+        togglePreview();
+      }
+    }
+
+    function handlePointerEnter() {
+      // Only auto-show on hover for non-touch devices
+      if (!isTouchDevice && !viaClick) {
+        showPreview = true;
+      }
+    }
+
+    function handlePointerLeave() {
+      // Only auto-hide on non-touch devices
+      if (!isTouchDevice) {
+        startCloseTimer();
+      }
+    }
+
+    function handleFocus() {
+      // Only auto-show on focus for non-touch devices
+      if (!isTouchDevice && !viaClick) {
+        showPreview = true;
+      }
+    }
+
+    function handleBlur() {
+      // Only auto-hide on blur for non-touch devices
+      if (!isTouchDevice && !viaClick) {
+        showPreview = false;
+      }
+    }
     /* ───────────────────────── Lifecycle ─────────────────────────────── */
     onMount(() => {
       if (!browser) return;
+
+      // Detect touch capability
+      isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   
       document.addEventListener('click', handleOutsideClick, true);
   
@@ -96,19 +144,22 @@
     });
   
     /* Close this preview if another one was opened via click */
-    $: if (get(activeReferenceId) !== id && viaClick) {
-      togglePreview(false);
-    }
+    $effect(() => {
+      if ($activeReferenceId !== id && viaClick) {
+        togglePreview(false);
+      }
+    });
   
     /* Re‑compute card position when preview toggles */
-    $: if (showPreview && spanEl) {
-      const { top, bottom } = spanEl.getBoundingClientRect();
-      const previewHeight = 250; // Approximate height; could be made reactive.
-      positionBelow = window.innerHeight - bottom < previewHeight && top > previewHeight;
-    }
+    $effect(() => {
+      if (showPreview && spanEl) {
+        const { top, bottom } = spanEl.getBoundingClientRect();
+        const previewHeight = 250; // Approximate height; could be made reactive.
+        positionBelow = window.innerHeight - bottom < previewHeight && top > previewHeight;
+      }
+    });
   </script>
-  
-  {#if item && itemType}
+    {#if item && itemType}
     <span
       bind:this={spanEl}
       class="item-reference {showPreview ? 'preview-visible' : ''}"
@@ -118,12 +169,12 @@
       aria-expanded={showPreview}
       aria-controls={showPreview ? `item-preview-${id}` : undefined}
   
-      on:pointerenter={() => !viaClick && (showPreview = true)}
-      on:pointerleave={() => startCloseTimer()}
-      on:focus={() => !viaClick && (showPreview = true)}
-      on:blur={() => !viaClick && (showPreview = false)}
+      onpointerenter={handlePointerEnter}
+      onpointerleave={handlePointerLeave}
+      onfocus={handleFocus}
+      onblur={handleBlur}
   
-      on:keydown={(e: KeyboardEvent) => {
+      onkeydown={(e: KeyboardEvent) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           togglePreview();
@@ -131,21 +182,16 @@
         if (e.key === 'Escape') togglePreview(false);
       }}
   
-      on:click={(e: MouseEvent) => {
-        e.preventDefault();
-        togglePreview();
-      }}
+      onclick={handleLinkClick}
     >
-      <ReferenceLink {item} {itemType} {id} hasPopup />
-  
-      {#if showPreview}
+      <ReferenceLink {item} {itemType} {id} hasPopup />      {#if showPreview}
         <div
           id="item-preview-{id}"
           in:receive={{ key: `preview-${id}` }}
           out:send={{ key: `preview-${id}` }}
           class:position-below={positionBelow}
-          on:pointerenter={clearCloseTimer}
-          on:pointerleave={() => startCloseTimer()}
+          onpointerenter={clearCloseTimer}
+          onpointerleave={handlePointerLeave}
         >
           <ReferencePreviewCard {item} {itemType} referenceElement={spanEl} />
         </div>

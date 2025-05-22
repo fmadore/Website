@@ -2,10 +2,17 @@
     import { base } from '$app/paths';
     import type { Publication, Communication } from '$lib/types';
     
-    export let item: Publication | Communication | undefined = undefined;
-    export let itemType: 'publication' | 'communication' | undefined = undefined;
-    export let id: string;
-    export let hasPopup: boolean = false;
+    let { 
+        item = undefined, 
+        itemType = undefined, 
+        id, 
+        hasPopup = false 
+    }: {
+        item?: Publication | Communication | undefined;
+        itemType?: 'publication' | 'communication' | undefined;
+        id: string;
+        hasPopup?: boolean;
+    } = $props();
     
     // Helper to get year consistently
     function getYear(item: Publication | Communication): string {
@@ -34,20 +41,19 @@
             return `${lastNames[0]} and ${lastNames[1]}`;
         } else {
             return `${lastNames[0]} et al.`;
-        }
-    }
+        }    }
 
-    $: referenceText = item
+    const referenceText = $derived(item
         ? `(${getAuthorCitation(item)}, ${getYear(item)})`
-        : `(${id})`;
+        : `(${id})`);
 
-    $: itemUrl = item && itemType
+    const itemUrl = $derived(item && itemType
         ? `${base}/${itemType === 'publication' ? 'publications' : 'communications'}/${item.id}`
-        : '#';
+        : '#');
 
-    $: ariaLabel = item
+    const ariaLabel = $derived(item
         ? `View ${itemType || 'item'}: ${item.title}`
-        : `Reference ${id}`;
+        : `Reference ${id}`);
 </script>
 
 <a 
