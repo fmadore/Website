@@ -1,41 +1,46 @@
 <script lang="ts">
     import type { IframeEmbed } from '$lib/types/digitalHumanities';
 
-    export let id: IframeEmbed['id'];
-    export let src: IframeEmbed['src'];
-    export let title: IframeEmbed['title'] = undefined;
-    // export let description: IframeEmbed['description'] = undefined; // Description is handled by parent page
-    export let height: IframeEmbed['height'] = undefined;
-    export let aspectRatio: IframeEmbed['aspectRatio'] = undefined;
-    export let containerClass: IframeEmbed['containerClass'] = undefined;
-    export let scrolling: IframeEmbed['scrolling'] = 'auto';
-    export let allowfullscreen: IframeEmbed['allowfullscreen'] = true;
-    // export let showTitle: IframeEmbed['showTitle'] = false; // Title display is handled by parent page
+    let {
+        id,
+        src,
+        title = undefined,
+        height = undefined,
+        aspectRatio = undefined,
+        containerClass = undefined,
+        scrolling = 'auto',
+        allowfullscreen = true
+    }: IframeEmbed = $props();
 
-    let finalContainerClass = 'iframe-container'; // Default base class
-
-    if (containerClass) {
-        finalContainerClass = containerClass; // Use provided class if available
-    } else if (aspectRatio) {
-        finalContainerClass = `iframe-container-aspect iframe-container-aspect-${aspectRatio}`;
-    } else if (height && !height.endsWith('px') && !height.endsWith('%') && !height.endsWith('vh') && !height.endsWith('em') && !height.endsWith('rem')) {
-        // If height is a class name like iframe-container-sm
-        finalContainerClass = height;
-    }
-
-    let style = '';
-    if (height && (height.endsWith('px') || height.endsWith('%') || height.endsWith('vh') || height.endsWith('em') || height.endsWith('rem'))) {
-        // If height is a direct CSS value and not a class reference for the container
-        if (containerClass && containerClass.includes('iframe-container-aspect')) {
-            // If it's an aspect ratio container, height on iframe itself is usually 100%
-            style = 'height: 100%;';
-        } else {
-            style = `height: ${height};`;
+    let finalContainerClass = $derived((() => {
+        let baseClass = 'iframe-container'; // Default base class
+        if (containerClass) {
+            return containerClass; // Use provided class if available
+        } else if (aspectRatio) {
+            return `iframe-container-aspect iframe-container-aspect-${aspectRatio}`;
+        } else if (height && !height.endsWith('px') && !height.endsWith('%') && !height.endsWith('vh') && !height.endsWith('em') && !height.endsWith('rem')) {
+            // If height is a class name like iframe-container-sm
+            return height;
         }
-    } else if (!height && !aspectRatio && !containerClass) {
-        // Default height if nothing else is specified, ensures iframe is visible
-        style = 'height: 600px;'; // Default from iframes.css for .iframe-container
-    }
+        return baseClass;
+    })());
+
+    let style = $derived((() => {
+        let s = '';
+        if (height && (height.endsWith('px') || height.endsWith('%') || height.endsWith('vh') || height.endsWith('em') || height.endsWith('rem'))) {
+            // If height is a direct CSS value and not a class reference for the container
+            if (containerClass && containerClass.includes('iframe-container-aspect')) {
+                // If it's an aspect ratio container, height on iframe itself is usually 100%
+                s = 'height: 100%;';
+            } else {
+                s = `height: ${height};`;
+            }
+        } else if (!height && !aspectRatio && !containerClass) {
+            // Default height if nothing else is specified, ensures iframe is visible
+            s = 'height: 600px;'; // Default from iframes.css for .iframe-container
+        }
+        return s;
+    })());
 
 </script>
 
@@ -65,4 +70,4 @@
     - iframe-interactive
     - iframe-container-bordered, -accent, -highlight
     - iframe-with-header (complex, might need its own component or more props)
---> 
+-->
