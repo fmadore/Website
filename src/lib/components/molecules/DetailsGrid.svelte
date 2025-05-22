@@ -1,11 +1,11 @@
 <script lang="ts">
-    export let details: Array<{ label: string; value: string | string[]; link?: string; condition?: boolean }> = [];
+    let { details = [] }: { details: Array<{ label: string; value: string | string[]; link?: string; condition?: boolean }> } = $props();
 
     // Filter details based on the condition (if provided) and if the value exists
-    $: visibleDetails = details.filter(detail => 
+    let visibleDetails = $derived(details.filter(detail => 
         (detail.condition === undefined || detail.condition === true) && 
         (detail.value !== null && detail.value !== undefined && detail.value !== '' && (!Array.isArray(detail.value) || detail.value.length > 0))
-    );
+    ));
 </script>
 
 {#if visibleDetails.length > 0}
@@ -34,4 +34,4 @@
     .detail-value {
          word-break: break-word; /* Prevent long values like DOIs from breaking layout */
     }
-</style> 
+</style>

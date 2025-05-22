@@ -4,7 +4,7 @@
     import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
     import TagList from '$lib/components/molecules/TagList.svelte';
     import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
-    import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte'; // We'll create this component later
+    import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
 
     import { base } from '$app/paths';
     import { page } from '$app/stores';
