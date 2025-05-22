@@ -8,7 +8,7 @@
 
     import { base } from '$app/paths';
     import { page } from '$app/stores';
-    import { onMount, onDestroy } from 'svelte';
+    // import { onMount, onDestroy } from 'svelte'; // No longer needed for this specific logic
     import { browser } from '$app/environment';
 
     import type { DigitalHumanitiesProject, EmbeddableContentItem, Review, ProjectPublication } from '$lib/types/digitalHumanities';
@@ -21,19 +21,20 @@
         condition?: boolean;
     };
 
-    export let data;
-    $: project = data.project as DigitalHumanitiesProject;
+    let { data } = $props<{ data: { project: DigitalHumanitiesProject } }>();
+    let project = $derived(data.project);
 
     // Breadcrumbs
-    $: breadcrumbItems = [
+    let breadcrumbItems = $derived([
         { label: "Digital Humanities", href: `${base}/digital-humanities` },
         { label: project.title, href: `${base}/digital-humanities/${project.id}` }
-    ];
+    ]);
 
     // JSON-LD for Breadcrumbs
-    let breadcrumbJsonLdString: string | null = null;
-    $: if ($page.url && project) { 
-        breadcrumbJsonLdString = JSON.stringify({
+    const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld-dh-project';
+    let breadcrumbJsonLdString = $derived(
+        ($page.url && project)
+        ? JSON.stringify({
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             "itemListElement": breadcrumbItems.map((item, index) => ({
@@ -42,27 +43,33 @@
                 "name": item.label,
                 "item": `${$page.url.origin}${item.href}`
             }))
-        });
-    }
+        })
+        : null
+    );
     
-    const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld-dh-project';
-
-    onMount(() => {
-        if (browser && breadcrumbJsonLdString && !document.getElementById(breadcrumbJsonLdScriptId)) {
-            const script = document.createElement('script');
-            script.id = breadcrumbJsonLdScriptId;
-            script.type = 'application/ld+json';
-            script.textContent = breadcrumbJsonLdString;
-            document.head.appendChild(script);
-        }
-    });
-
-    onDestroy(() => {
+    $effect(() => {
         if (browser) {
-            const script = document.getElementById(breadcrumbJsonLdScriptId);
-            if (script) {
-                document.head.removeChild(script);
+            const existingScript = document.getElementById(breadcrumbJsonLdScriptId);
+            if (existingScript) {
+                document.head.removeChild(existingScript);
             }
+
+            if (breadcrumbJsonLdString) {
+                const script = document.createElement('script');
+                script.id = breadcrumbJsonLdScriptId;
+                script.type = 'application/ld+json';
+                script.textContent = breadcrumbJsonLdString;
+                document.head.appendChild(script);
+            }
+            
+            return () => {
+                if (browser) {
+                    const script = document.getElementById(breadcrumbJsonLdScriptId);
+                    if (script) {
+                        document.head.removeChild(script);
+                    }
+                }
+            };
         }
     });
 
@@ -193,4 +200,4 @@
         text-decoration: underline;
     }
     */
-</style> 
+</style>
