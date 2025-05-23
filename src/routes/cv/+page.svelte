@@ -83,16 +83,16 @@
 	);
 
 	// --- Fieldwork Grouping ---
-	$: groupedFieldworks = fieldworksByDate.reduce((acc, fw) => {
+	const groupedFieldworks = $derived(fieldworksByDate.reduce((acc, fw) => {
 		const location = `${fw.city}, ${fw.country}`;
 		if (!acc[location]) {
 			acc[location] = new Set<number>();
 		}
 		acc[location].add(fw.year);
 		return acc;
-	}, {} as Record<string, Set<number>>);
+	}, {} as Record<string, Set<number>>));
 
-	$: displayFieldworks = Object.entries(groupedFieldworks)
+	const displayFieldworks = $derived(Object.entries(groupedFieldworks)
 		.map(([location, yearSet]) => {
 			return {
 				location,
@@ -101,7 +101,7 @@
 		})
 		.sort((a, b) => { // Sort locations alphabetically
 			return a.location.localeCompare(b.location);
-		});
+		}));
 
 	// Helper function to format affiliation period
 	function formatAffiliationPeriod(period: ProfessionalAffiliation['period']): string {
