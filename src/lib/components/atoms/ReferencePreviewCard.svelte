@@ -132,15 +132,17 @@
         class="card-link" 
         tabindex="-1"
         onclick={handleCardClick}
-    >
-        <div class="card-content-wrapper">
+    >        <div class="card-content-wrapper">
             {#if imageSrc}
-                <img 
-                    src={imageSrc} 
-                    alt={item.title} 
-                    class="card-image"
-                    loading="lazy"
-                />
+                <div class="card-image-container">
+                    <img 
+                        src={imageSrc} 
+                        alt={item.title} 
+                        class="card-image"
+                        loading="lazy"
+                    />
+                    <div class="image-overlay"></div>
+                </div>
             {/if}
             <div class="card-content">
                 <h4 class="card-title">{item.title}</h4>
@@ -186,137 +188,274 @@
 <style>
     .preview-card {
         position: absolute;
-        bottom: calc(100% + 10px);
+        bottom: calc(100% + 12px);
         left: 50%;
         transform: translateX(-50%);
-        background-color: var(--color-background);
-        border: 1px solid var(--color-border);
-        border-radius: var(--border-radius-md);
-        box-shadow: var(--shadow-lg);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: var(--border-radius-xl);
+        box-shadow: 
+            0 25px 50px -12px rgba(0, 0, 0, 0.15),
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
         padding: 0; 
-        width: 320px;
+        width: 350px;
         max-width: 90vw;
         z-index: 1000;
         pointer-events: auto; 
         text-align: left; 
         font-size: var(--font-size-sm);
-        line-height: 1.4; 
+        line-height: 1.5; 
         color: var(--color-text); 
         overflow: hidden;
-        /* Initial opacity for animation */
-        opacity: 0.9;
-        transform: translateX(-50%) scale(0.98);
-        transition: opacity 0.15s ease-out, transform 0.15s ease-out, 
-                    box-shadow 0.3s ease-out, border-color 0.3s ease-out;
+        /* Initial state for animation */
+        opacity: 0;
+        transform: translateX(-50%) translateY(10px) scale(0.95);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
     .preview-card.positioned {
         opacity: 1;
-        transform: translateX(-50%) scale(1);
+        transform: translateX(-50%) translateY(0) scale(1);
     }
 
     .preview-card.card-clicked {
-        box-shadow: var(--shadow-xl, 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04));
-        transform: translateX(-50%) scale(1.03);
-        border-color: var(--color-primary, #4a90e2);
-        opacity: 0.9;
+        transform: translateX(-50%) translateY(-5px) scale(1.02);
+        box-shadow: 
+            0 32px 64px -12px rgba(0, 0, 0, 0.25),
+            0 0 0 1px rgba(var(--color-primary-rgb), 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        border-color: rgba(var(--color-primary-rgb), 0.3);
+    }
+      /* Dark mode styles */
+    :global(html.dark) .preview-card {
+        background: rgba(var(--color-background-dark-rgb), 0.6);
+        border-color: rgba(var(--color-primary-dark-rgb), 0.2);
+        box-shadow: var(--shadow-xl-dark);
+    }
+    
+    :global(html.dark) .preview-card.card-clicked {
+        transform: scale(0.97);
+        box-shadow: var(--shadow-lg-dark);
+    }
+    
+    :global(html.dark) .card-arrow {
+        background-color: rgba(var(--color-primary-dark-rgb), 0.1); /* Consolidated from original :global rule */
+        border-color: rgba(55, 65, 81, 0.3); /* Consolidated from non-:global rule at line 385 */
     }
     
     /* Position below variant */
     .preview-card.position-below {
         bottom: auto;
-        top: calc(100% + 10px);
+        top: calc(100% + 12px);
+        transform: translateX(-50%) translateY(-10px) scale(0.95);
+    }
+    
+    .preview-card.position-below.positioned {
+        transform: translateX(-50%) translateY(0) scale(1);
     }
     
     .card-content-wrapper {
         position: relative;
         overflow: hidden;
+        border-radius: var(--border-radius-xl);
+    }
+    
+    .card-image-container {
+        position: relative;
+        overflow: hidden;
+        height: 120px;
+        background: linear-gradient(135deg, rgba(var(--color-primary-rgb), 0.1), rgba(var(--color-accent), 0.1));
     }
     
     .card-image {
         width: 100%;
-        height: auto;
-        max-height: 100px;
+        height: 100%;
         object-fit: cover; 
         display: block;
-        border-bottom: 1px solid var(--color-border);
-        transition: transform 0.3s ease-out;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .image-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            135deg,
+            rgba(var(--color-primary-rgb), 0.05) 0%,
+            transparent 50%,
+            rgba(var(--color-accent), 0.05) 100%
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
     }
     
     .card-content {
-        padding: var(--spacing-3);
+        padding: var(--spacing-4);
         position: relative;
+        background: linear-gradient(
+            180deg,
+            transparent 0%,
+            rgba(var(--color-background), 0.02) 100%
+        );
     }
     
     .view-more-hint {
-        margin-top: var(--spacing-2);
+        margin-top: var(--spacing-3);
         display: flex;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: space-between;
+        padding: var(--spacing-2) var(--spacing-3);
+        background: rgba(var(--color-primary-rgb), 0.08);
+        border-radius: var(--border-radius-md);
         color: var(--color-primary);
         font-size: var(--font-size-xs);
+        font-weight: 500;
         opacity: 0;
-        transform: translateX(-10px);
-        transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        transform: translateY(10px);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .hint-text {
+        letter-spacing: 0.025em;
     }
     
     .hint-arrow {
-        margin-left: var(--spacing-1);
-        font-size: 1.1em;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        background: var(--color-primary);
+        color: white;
+        border-radius: 50%;
+        font-size: 10px;
+        transform: translateX(-3px);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
     .card-link {
         text-decoration: none;
         color: inherit;
         display: block;
+        border-radius: var(--border-radius-xl);
+        transition: all 0.3s ease;
     }
     
     .card-link:hover .view-more-hint,
     .card-link:focus .view-more-hint {
         opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .card-link:hover .hint-arrow,
+    .card-link:focus .hint-arrow {
         transform: translateX(0);
     }
     
     .card-link:hover .card-image,
     .card-link:focus .card-image {
-        transform: scale(1.05);
+        transform: scale(1.1);
     }
     
+    .card-link:hover .image-overlay,
+    .card-link:focus .image-overlay {
+        opacity: 1;
+    }
+    
+    /* ARROW STYLES */
     .card-arrow {
         position: absolute;
-        bottom: -14px;
+        bottom: -10px; /* Adjusted to ensure visibility */
         left: 50%;
-        transform: translateX(-50%);
-        width: 0;
-        height: 0;
-        border-width: 7px;
-        border-style: solid;
-        border-color: var(--color-background) transparent transparent transparent;
-        filter: drop-shadow(0 1px 0px rgba(0,0,0,0.08));
+        width: 20px;
+        height: 20px;
+        background: inherit; /* Inherits from .preview-card */
+        border: 1px solid transparent; /* Base border, color set in normal/dark mode */
+        border-radius: 3px;
+        transform: translateX(-50%) rotate(45deg);
+        z-index: 1; /* Ensure arrow is above backdrop but below content */
     }
     
     .position-below .card-arrow {
         bottom: auto;
-        top: -14px;
-        border-color: transparent transparent var(--color-background) transparent;
-        filter: drop-shadow(0 -1px 0px rgba(0,0,0,0.08));
+        top: -10px;
     }
     
     .card-title {
         font-weight: 600;
-        margin-bottom: var(--spacing-1);
-        color: var(--color-primary);
-        line-height: 1.3;
+        margin-bottom: var(--spacing-2);
+        color: var(--color-text);
+        line-height: 1.4;
         font-size: var(--font-size-base);
+        background: linear-gradient(135deg, var(--color-text), var(--color-primary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+      .card-authors {
+        margin-bottom: var(--spacing-1);
+        color: var(--color-text-light);
+        font-size: var(--font-size-xs);
+        font-weight: 500;
     }
     
-    .card-authors, .card-date, .card-meta {
-        margin-bottom: var(--spacing-1);
-        color: var(--color-text-secondary);
+    .card-date {
+        margin-bottom: var(--spacing-2);
+        color: var(--color-primary);
         font-size: var(--font-size-xs);
+        font-weight: 600;
+        display: inline-block;
+        padding: 2px 8px;
+        background: rgba(var(--color-primary-rgb), 0.1);
+        border-radius: var(--border-radius);
+    }
+    
+    .card-meta {
+        margin-bottom: var(--spacing-1);
+        color: var(--color-text-light);
+        font-size: var(--font-size-xs);
+        line-height: 1.4;
     }
     
     .card-meta em {
         font-style: italic;
+        color: var(--color-primary);
+        font-weight: 500;
+    }
+    
+    /* Focus states */
+    .card-link:focus {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+    }
+    
+    /* Animation for entrance */
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-50%) translateY(15px) scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0) scale(1);
+        }
+    }
+    
+    /* Responsive design */
+    @media (max-width: 480px) {
+        .preview-card {
+            width: 300px;
+            margin: 0 var(--spacing-2);
+        }
+        
+        .card-content {
+            padding: var(--spacing-3);
+        }
+        
+        .card-image-container {
+            height: 100px;
+        }
     }
 </style>

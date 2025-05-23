@@ -201,17 +201,43 @@
     <!-- Fallback if the ID is unknown -->
     <span class="item-reference-error">[Ref: {id}?]</span>
   {/if}
-  
-  <style>
+    <style>
     .item-reference {
       position: relative;
       display: inline-block;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent; /* iOS */
+      border-radius: var(--border-radius);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .item-reference::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: var(--border-radius-md);
+      background: linear-gradient(135deg, 
+        rgba(var(--color-primary-rgb), 0.1), 
+        rgba(var(--color-accent), 0.1)
+      );
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 0.3s ease;
+    }
+    
+    .item-reference:hover::before,
+    .item-reference:focus::before {
+      opacity: 1;
     }
   
     .item-reference.preview-visible {
-      text-decoration: underline;
+      background: rgba(var(--color-primary-rgb), 0.05);
+      border-radius: var(--border-radius);
+      box-shadow: 0 0 0 1px rgba(var(--color-primary-rgb), 0.2);
+    }
+    
+    .item-reference.preview-visible::before {
+      opacity: 1;
     }
   
     .position-below {
@@ -219,10 +245,43 @@
     }
   
     .item-reference-error {
-      color: #d9534f;
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.2);
       font-style: italic;
       font-size: 0.9em;
+      padding: 2px 6px;
+      border-radius: var(--border-radius);
       cursor: not-allowed;
     }
+    
+    /* Focus states */
+    .item-reference:focus {
+      outline: 2px solid rgba(var(--color-primary-rgb), 0.5);
+      outline-offset: 2px;
+    }
+    
+    /* Dark mode adjustments */
+    :global(html.dark) .item-reference {
+      background-color: var(--color-background-secondary-dark);
+      border-color: var(--color-border-dark);
+      box-shadow: var(--shadow-md-dark);
+    }
+
+    :global(html.dark) .item-reference:hover,
+    :global(html.dark) .item-reference:focus-within {
+      border-color: var(--color-primary-dark);
+      box-shadow: var(--shadow-lg-dark);
+    }
+
+    :global(html.dark) .item-reference.preview-visible {
+      border-color: var(--color-primary-dark);
+      box-shadow: var(--shadow-xl-dark);
+    }
+
+    :global(html.dark) .item-reference-error {
+      background-color: var(--color-error-background-dark);
+      border-color: var(--color-error-dark);
+      color: var(--color-error-text-dark);
+    }
   </style>
-  
