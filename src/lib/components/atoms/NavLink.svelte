@@ -24,9 +24,13 @@
         color: var(--color-text);
         text-decoration: none;
         font-weight: 500;
+        font-size: var(--font-size-base);
         padding: var(--spacing-2) 0;
         transition: all 0.2s ease;
         position: relative;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-1);
     }
     
     .nav-link::after {
@@ -50,9 +54,14 @@
     
     .dropdown-icon {
         display: inline-block;
-        margin-left: 4px;
-        font-size: 10px;
+        font-size: 12px;
         transition: transform 0.3s ease;
+        line-height: 1;
+    }
+    
+    .nav-link:focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
     }
     
     @media (hover: none) {
@@ -65,4 +74,4 @@
             width: 100%;
         }
     }
-</style> 
+</style>

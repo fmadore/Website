@@ -24,8 +24,7 @@
         on:mouseleave={onMouseLeave}
         on:focusin={() => onFocusIn(index)}
         on:focusout={onFocusOut}
-    >
-        <NavLink 
+    >        <NavLink 
             href={item.path}
             hasDropdown={!!item.dropdown}
             aria-expanded={isActive ? "true" : "false"}
@@ -68,8 +67,8 @@
         display: inline-block;
     }
     
-    /* Override any global styles that might conflict with dropdown positioning */
-    :global(.dropdown-container .dropdown-menu) {
-        z-index: 1000;
+    /* Dropdown icon rotation when active */
+    .dropdown-hover-wrapper :global(.nav-link[aria-expanded="true"] .dropdown-icon) {
+        transform: rotate(180deg);
     }
 </style>

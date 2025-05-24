@@ -203,19 +203,7 @@
 </header>
 
 <style>
-    .site-header {
-        background-color: var(--color-background);
-        box-shadow: var(--shadow);
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .site-header:hover {
-        box-shadow: var(--shadow-md);
-    }
-    
+    /* Header-specific styles - main navigation styles are in unified CSS */
     .container {
         max-width: 1280px;
         width: 100%;
@@ -230,32 +218,13 @@
         align-items: center;
         padding: var(--spacing-4) 0;
         position: relative;
+        height: 64px;
     }
     
     .header-logo {
         flex-shrink: 0;
         display: flex;
         align-items: center;
-    }
-    
-    .site-title {
-        font-size: var(--font-size-xl);
-        font-weight: 700;
-        color: var(--color-text);
-        text-decoration: none;
-        transition: color 0.2s ease;
-        letter-spacing: -0.02em;
-        line-height: 1.2;
-    }
-    
-    .site-title:hover {
-        color: var(--color-primary);
-    }
-    
-    .desktop-controls {
-        display: none;
-        align-items: center;
-        gap: var(--spacing-6);
     }
     
     @media (min-width: 640px) {
@@ -265,8 +234,8 @@
     }
     
     @media (min-width: 1024px) {
-        .desktop-controls {
-            display: flex;
+        .header-inner {
+            height: 72px;
         }
     }
-</style> 
+</style>

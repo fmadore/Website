@@ -9,7 +9,6 @@
 @import './styles/base/variables.css';
 
 /* Layout components */
-@import './styles/layout/header.css';
 @import './styles/layout/footer.css';
 @import './styles/layout/container.css';
 @import './styles/layout/grid.css';
@@ -17,8 +16,7 @@
 /* UI Components */
 @import './styles/components/buttons.css';
 @import './styles/components/cards.css';
-@import './styles/components/navigation.css';
-@import './styles/components/dropdown.css';
+@import './styles/components/navigation-unified.css';
 @import './styles/components/activity-list.css';
 @import './styles/components/iframes.css';
 @import './styles/components/item-panel.css';
