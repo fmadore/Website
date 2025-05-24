@@ -86,7 +86,7 @@
 /* .filter-button requires custom styles - keep as is */
 .filter-button {
   padding: var(--spacing-1) var(--spacing-3);
-  background-color: #f1f5f9;
+  background-color: var(--color-surface-alt);
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
   font-size: var(--font-size-sm);
@@ -95,7 +95,7 @@
 }
 
 .filter-button:hover {
-  background-color: #e2e8f0;
+  background-color: var(--color-surface-border);
 }
 
 .filter-button.active {
@@ -142,9 +142,9 @@
 .citation-box {
   margin-top: var(--spacing-2);
   padding: var(--spacing-3);
-  background-color: #f1f5f9;
+  background-color: var(--color-surface-alt);
   border-radius: var(--border-radius);
   font-family: var(--font-family-mono);
   font-size: var(--font-size-sm);
   white-space: pre-wrap;
-} 
+}

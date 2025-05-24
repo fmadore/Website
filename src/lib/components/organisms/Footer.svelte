@@ -562,22 +562,21 @@
 			margin-left: 0;
 		}
 	}
-	
-	/* Dark mode enhancements */
+		/* Dark mode enhancements */
 	:global(html.dark) .footer-logo-placeholder {
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+		box-shadow: var(--shadow-lg);
 	}
 	
 	:global(html.dark) .footer-link:hover {
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+		box-shadow: var(--shadow-lg);
 	}
 	
 	:global(html.dark) .scroll-to-top {
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+		box-shadow: var(--shadow-lg);
 	}
 	
 	:global(html.dark) .scroll-to-top:hover {
-		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+		box-shadow: var(--shadow-xl);
 	}
 	
 	/* Accessibility improvements */

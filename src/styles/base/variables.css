@@ -10,8 +10,7 @@
   --color-highlight: #e07c3e; /* Warm highlight */
   --color-highlight-rgb: 224, 124, 62; /* RGB for highlight */
   --color-success: #2f855a; /* Green for success/workshops */
-  --color-success-rgb: 47, 133, 90; /* RGB for success */
-  --color-background: #ffffff;
+  --color-success-rgb: 47, 133, 90; /* RGB for success */  --color-background: #ffffff;
   --color-text: #1a202c;
   --color-text-light: #4a5568;
   --color-border: #e2e8f0;
@@ -19,16 +18,27 @@
   --color-footer-text: #f9fafb;
   --color-footer-text-muted: rgba(255, 255, 255, 0.7);
   --color-sidebar-bg: #f9fafb; /* Added: Very light gray for light theme sidebar */
-
+  
+  /* Additional semantic colors for better cohesion */
+  --color-surface: #f9fafb; /* Light surface background */
+  --color-surface-alt: #f1f5f9; /* Alternative surface background */
+  --color-surface-border: #e2e8f0; /* Surface borders */
+  --color-code-bg: #f1f1f1; /* Code background */
+  --color-dark-surface: #374151; /* Dark theme surface */
+  --color-dark-surface-alt: #232b36; /* Dark theme alternative surface */
+  --color-dark-surface-deep: #181e26; /* Dark theme deep surface */
   /* Spacing variables */
   --spacing-1: 0.25rem;
   --spacing-2: 0.5rem;
   --spacing-3: 0.75rem;
   --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
   --spacing-6: 1.5rem;
   --spacing-8: 2rem;
+  --spacing-10: 2.5rem;
   --spacing-12: 3rem;
   --spacing-16: 4rem;
+  --spacing-20: 5rem;
 
   /* Typography variables */
   --font-family-sans: 'Source Sans 3', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -74,15 +84,23 @@ html.dark {
   --color-highlight: #ff9c66; /* Lighter orange/warm highlight */
   --color-highlight-rgb: 255, 156, 102; /* RGB for highlight dark mode */
   --color-success: #68d391; /* Lighter green for dark mode */
-  --color-success-rgb: 104, 211, 145; /* RGB for success in dark mode */
-  --color-background: #111827; /* Very dark gray */
+  --color-success-rgb: 104, 211, 145; /* RGB for success in dark mode */  --color-background: #111827; /* Very dark gray */
   --color-text: #e5e7eb; /* Light gray text */
   --color-text-light: #9ca3af; /* Medium gray text */
   --color-border: #374151; /* Darker border */
   --color-footer-bg: #0f172a; /* Even darker footer */
-  --color-footer-text: #d1d5db; /* Slightly dimmer footer text */
-  --color-footer-text-muted: rgba(209, 213, 219, 0.7); /* Dimmer muted footer text */
-  --color-sidebar-bg: #1f2937; /* Added: Slightly lighter dark gray for dark theme sidebar */
+  --color-footer-text: #f9fafb; /* Keep consistent footer text */
+  --color-footer-text-muted: rgba(255, 255, 255, 0.7); /* Keep consistent muted */
+  --color-sidebar-bg: #1f2937; /* Dark theme sidebar */
+  
+  /* Dark theme semantic colors */
+  --color-surface: #1f2937; /* Dark surface background */
+  --color-surface-alt: #374151; /* Dark alternative surface background */
+  --color-surface-border: #4b5563; /* Dark surface borders */
+  --color-code-bg: #374151; /* Dark code background */
+  --color-dark-surface: #1f2937; /* Keep consistent with surface */
+  --color-dark-surface-alt: #232b36; /* Dark theme alternative surface */
+  --color-dark-surface-deep: #181e26; /* Dark theme deep surface */
   /* Adjusted shadows for dark mode if needed */
   --shadow-sm: 0 1px 2px 0 rgba(255, 255, 255, 0.05);
   --shadow: 0 1px 3px 0 rgba(255, 255, 255, 0.1), 0 1px 2px 0 rgba(255, 255, 255, 0.06);
