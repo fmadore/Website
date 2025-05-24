@@ -1,6 +1,5 @@
-<script lang="ts">
-    import NavLink from '$lib/components/atoms/NavLink.svelte';
-    import DropdownMenu from '$lib/components/molecules/DropdownMenu.svelte';
+<script lang="ts">    import NavLink from '$lib/components/menu/NavLink.svelte';
+    import DropdownMenu from '$lib/components/menu/DropdownMenu.svelte';
     import type { NavItem } from '$lib/types/navigation';
     
     export let item: NavItem;

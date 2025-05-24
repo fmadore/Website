@@ -2,11 +2,10 @@
     import { base } from '$app/paths';
     import { onMount } from 'svelte';
     import type { NavItem } from '$lib/types/navigation';
-    
-    // Import Components
-    import DesktopNav from '$lib/components/molecules/DesktopNav.svelte';
-    import MobileMenu from '$lib/components/molecules/MobileMenu.svelte';
-    import HamburgerButton from '$lib/components/atoms/HamburgerButton.svelte';
+      // Import Components
+    import DesktopNav from '$lib/components/menu/DesktopNav.svelte';
+    import MobileMenu from '$lib/components/menu/MobileMenu.svelte';
+    import HamburgerButton from '$lib/components/menu/HamburgerButton.svelte';
     import ThemeToggle from '$lib/components/atoms/ThemeToggle.svelte';
     
     // Navigation items
