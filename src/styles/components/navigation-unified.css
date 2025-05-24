@@ -52,6 +52,24 @@
     }
 }
 
+/* Theme toggle integration with desktop navigation */
+.desktop-controls .theme-toggle {
+    margin-left: var(--spacing-4);
+    border: 1px solid var(--color-border);
+    transition: all 0.2s ease;
+}
+
+.desktop-controls .theme-toggle:hover {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary);
+    color: var(--color-background);
+}
+
+.desktop-controls .theme-toggle:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
 /* ==========================================================================
    DESKTOP NAVIGATION
    ========================================================================== */
@@ -288,11 +306,17 @@
 
 .mobile-nav-header {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: 36px 1fr 36px; /* Fixed widths for balance */
     align-items: center;
+    justify-items: center; /* Center all items */
     margin-bottom: var(--spacing-8);
     padding-bottom: var(--spacing-4);
     border-bottom: 1px solid var(--color-border);
+    gap: var(--spacing-4);
+}
+
+.mobile-nav-header .theme-toggle {
+    justify-self: start; /* Align theme toggle to left */
 }
 
 .mobile-site-title {
@@ -301,8 +325,7 @@
     color: var(--color-text);
     text-decoration: none;
     transition: color 0.2s ease;
-    text-align: center;
-    justify-self: center;
+    justify-self: center; /* Ensure title stays centered */
 }
 
 .mobile-site-title:hover {
@@ -312,6 +335,7 @@
 .mobile-header-spacer {
     width: 36px; /* Same width as ThemeToggle button */
     height: 36px;
+    justify-self: end; /* Align spacer to right for balance */
 }
 
 .sr-only {

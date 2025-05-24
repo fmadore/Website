@@ -6,7 +6,7 @@
     import DesktopNav from '$lib/components/menu/DesktopNav.svelte';
     import MobileMenu from '$lib/components/menu/MobileMenu.svelte';
     import HamburgerButton from '$lib/components/menu/HamburgerButton.svelte';
-    import ThemeToggle from '$lib/components/atoms/ThemeToggle.svelte';
+    import ThemeToggle from '$lib/components/menu/ThemeToggle.svelte';
     
     // Navigation items
     const navItems: NavItem[] = [
