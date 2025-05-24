@@ -1,12 +1,12 @@
 <script lang="ts">
     import LatestActivities from '$lib/components/organisms/LatestActivities.svelte';
+    import ProfileBanner from '$lib/components/common/ProfileBanner.svelte';
     import SEO from '$lib/SEO.svelte';
     import { activitiesByYear } from '$lib/data/activities';
     import { base } from '$app/paths';
     import ItemReference from '$lib/components/molecules/ItemReference.svelte';
     import { browser } from '$app/environment';
     import type { PageData } from './$types';
-    import Icon from '@iconify/svelte';
 
     let { data } = $props<{ data: PageData }>();
     const jsonLdString = $derived(data.jsonLdString);
@@ -39,32 +39,7 @@
 <SEO description="Frédérick Madore, Research Fellow at ZMO, studies Islam in francophone West Africa through fieldwork and digital humanities." />
 
 <div class="profile-container">
-    <div class="profile-header enhanced-header">
-        <div class="profile-photo">
-            <img src="{base}/images/Profile-picture.webp" alt="Frédérick Madore" class="rounded-full" width="180" height="180">
-        </div>
-        <div class="profile-title">
-            <h1>About</h1>
-            <div class="subtitle">Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)</div>
-            <div class="profile-icons">
-                <a href="mailto:frederick.madore@zmo.de" target="_blank" rel="noopener" aria-label="Email">
-                    <Icon icon="mdi:email" width="26" height="26" />
-                </a>
-                <a href="https://scholar.google.com/citations?user=naUK0RQAAAAJ" target="_blank" rel="noopener" aria-label="Google Scholar">
-                    <Icon icon="academicons:google-scholar" width="26" height="26" />
-                </a>
-                <a href="https://github.com/fmadore" target="_blank" rel="noopener" aria-label="GitHub">
-                    <Icon icon="mdi:github" width="26" height="26" />
-                </a>
-                <a href="https://www.linkedin.com/in/frederickmadore" target="_blank" rel="noopener" aria-label="LinkedIn">
-                    <Icon icon="mdi:linkedin" width="26" height="26" />
-                </a>
-                <a href="https://orcid.org/0000-0003-0959-2092" target="_blank" rel="noopener" aria-label="ORCID">
-                    <Icon icon="simple-icons:orcid" width="26" height="26" />
-                </a>
-            </div>
-        </div>
-    </div>
+    <ProfileBanner />
 
     <div class="profile-content">
         <div class="main-content main-content-card">
@@ -81,8 +56,141 @@
             <p>I hold a Ph.D. with distinction in History from <a href="https://www.ulaval.ca/" target="_blank" rel="noopener noreferrer">Université Laval</a> and was previously a <a href="https://banting.fellowships-bourses.gc.ca/en/home-accueil.html" target="_blank" rel="noopener noreferrer">Banting Postdoctoral Fellow</a> at the <a href="https://www.ufl.edu/" target="_blank" rel="noopener noreferrer">University of Florida</a>. Through my ongoing <a href="{base}/research">research</a> and <a href="{base}/digital-humanities">DH projects</a>, I explore new approaches to understanding the dynamics of Muslim societies in Francophone West Africa, combining traditional historical methods with innovative computational techniques.</p>
         </div>
         
-        <aside class="sidebar item-panel">
-            <LatestActivities limit={3} />
+        <aside class="sidebar">
+            <LatestActivities limit={4} />
         </aside>
     </div>
 </div>
+
+<style>
+    /* Profile container and layout */
+    .profile-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 var(--spacing-6);
+    }
+
+    .profile-content {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--spacing-8);
+        margin-top: var(--spacing-8);
+    }
+
+    .main-content {
+        order: 1;
+    }
+
+    .main-content-card {
+        background: var(--color-surface);
+        border-radius: var(--border-radius-lg);
+        padding: var(--spacing-8);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--color-surface-border);
+    }
+
+    .sidebar {
+        order: 2;
+    }
+
+    /* Enhanced text styling for main content */
+    .main-content p {
+        margin-bottom: var(--spacing-6);
+        line-height: var(--line-height-relaxed);
+        font-size: var(--font-size-base);
+        color: var(--color-text);
+    }
+
+    .main-content p:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Enhanced link styling within content */
+    .main-content a {
+        color: var(--color-primary);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+
+    .main-content a:hover {
+        color: var(--color-primary-dark);
+        text-decoration: underline;
+    }
+
+    /* External link styling */
+    .main-content a[target="_blank"] {
+        position: relative;
+    }
+
+    .main-content a[target="_blank"]:after {
+        content: "↗";
+        font-size: 0.8em;
+        margin-left: 0.2em;
+        opacity: 0.7;
+    }
+
+    /* Emphasis styling */
+    .main-content em {
+        font-style: italic;
+        color: var(--color-text);
+        font-weight: 500;
+    }    /* Better text hierarchy */
+    .main-content p:first-child {
+        font-size: var(--font-size-lg);
+        font-weight: 400;
+        color: var(--color-text);
+    }
+
+    /* Responsive design */
+    @media (min-width: 768px) {
+        .profile-content {
+            grid-template-columns: 2fr 1fr;
+            gap: var(--spacing-12);
+        }
+        
+        .main-content {
+            order: 1;
+        }
+        
+        .sidebar {
+            order: 2;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .profile-container {
+            padding: 0 var(--spacing-4);
+        }
+        
+        .main-content-card {
+            padding: var(--spacing-6);
+        }
+        
+        /* Adjust text size on mobile */
+        .main-content p:first-child {
+            font-size: var(--font-size-base);
+        }
+    }    /* Dark mode overrides using :global() for proper scoping */
+    :global(html.dark) .main-content-card {
+        background: var(--color-surface);
+        border-color: var(--color-surface-border);
+        box-shadow: var(--shadow-sm);
+    }
+
+    :global(html.dark) .main-content-card p {
+        color: var(--color-text);
+    }
+
+    :global(html.dark) .main-content a {
+        color: var(--color-primary);
+    }
+
+    :global(html.dark) .main-content a:hover {
+        color: var(--color-primary-dark);
+    }
+
+    :global(html.dark) .main-content em {
+        color: var(--color-text);
+    }
+</style>

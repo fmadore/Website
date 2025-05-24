@@ -22,7 +22,6 @@
 @import './styles/components/skill-tags.css';
 
 /* Page-specific styles */
-@import './styles/pages/home.css';
 @import './styles/pages/research.css';
 @import './styles/pages/publications.css';
 @import './styles/pages/cv.css';

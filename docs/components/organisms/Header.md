@@ -143,7 +143,7 @@ The Header uses a clean, minimal design with:
 <!-- Layout.svelte -->
 <script>
   import Header from '$lib/components/organisms/Header.svelte';
-  import Footer from '$lib/components/organisms/Footer.svelte';
+  import Footer from '$lib/components/common/Footer.svelte';
 </script>
 
 <div class="site-layout">
