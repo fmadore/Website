@@ -9,7 +9,6 @@
 @import './styles/base/variables.css';
 
 /* Layout components */
-@import './styles/layout/footer.css';
 @import './styles/layout/container.css';
 @import './styles/layout/grid.css';
 
