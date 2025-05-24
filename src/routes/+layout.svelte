@@ -2,7 +2,7 @@
 	/// <reference types="../lib/types/gtag" />
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
-	import Footer from '$lib/components/organisms/Footer.svelte';
+	import Footer from '$lib/components/common/Footer.svelte';
 	import Header from '$lib/components/menu/Header.svelte';
 	import CookieConsent from '$lib/components/common/CookieConsent.svelte';
 	import '../app.css';
