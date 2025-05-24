@@ -71,12 +71,11 @@
                                 </span>
                             {/if}
                             <span class="activity-date">{formatDateDMY(activity.date)}</span>
-                        </div>
-                        <a href="{base}/activities/{activity.id}" class="activity-title">
+                        </div>                        <a href="{base}/activities/{activity.id}" class="activity-title leading-relaxed">
                             {activity.title}
                         </a>
                         {#if activity.description}
-                            <div class="activity-abstract">
+                            <div class="activity-abstract leading-relaxed">
                                 {activity.description.length > 100 ? activity.description.substring(0, 100) + '...' : activity.description}
                             </div>
                         {/if}
@@ -205,15 +204,12 @@
         text-align: right;
         line-height: 1.4;
         min-width: 0;
-    }
-
-    .activity-title {
+    }    .activity-title {
         display: block;
         font-size: var(--font-size-base);
         font-weight: 600;
         color: var(--color-text);
         text-decoration: none;
-        line-height: var(--line-height-relaxed);
         margin-bottom: var(--spacing-2);
         transition: color 0.2s ease;
     }
@@ -223,7 +219,6 @@
     }    .activity-abstract {
         font-size: var(--font-size-sm);
         color: var(--color-text-light);
-        line-height: var(--line-height-relaxed);
         margin-top: var(--spacing-1);
     }
 
