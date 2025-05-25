@@ -3,9 +3,9 @@
     import PageHeader from '$lib/components/common/PageHeader.svelte';
     import { allPublications, publicationsByType } from '$lib/data/publications'; // Import publicationsByType
     import { onMount } from 'svelte';
-    import D3BarChart from '$lib/components/visualisations/D3BarChart.svelte';
-    import D3HorizontalBarChart from '$lib/components/visualisations/D3HorizontalBarChart.svelte';
-    import D3StackedBarChart from '$lib/components/visualisations/D3StackedBarChart.svelte';
+    import EChartsBarChart from '$lib/components/visualisations/EChartsBarChart.svelte';
+    import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
+    import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
 
     type CitationYearData = { year: number; count: number };
     type CitedAuthorData = { author: string; count: number };
@@ -108,7 +108,7 @@
         <h2 class="text-2xl font-semibold mb-6">Publications per year by type</h2>
         {#if publicationsPerYearStackedData.length > 0 && publicationTypesForStack.length > 0}
             <div class="chart-wrapper p-6 rounded-lg shadow-md" style="height: 450px;">
-                <D3StackedBarChart
+                <EChartsStackedBarChart
                     data={publicationsPerYearStackedData}
                     keys={publicationTypesForStack}
                     xAxisLabel="Year"
@@ -133,7 +133,7 @@
         </h2>
         {#if citationsPerYearData.length > 0}
             <div class="chart-wrapper p-6 rounded-lg shadow-md">
-                 <D3BarChart
+                 <EChartsBarChart
                     data={citationsPerYearData}
                     xAccessor={getYear}
                     yAccessor={getCitationCount}
@@ -156,7 +156,7 @@
                 class="chart-wrapper p-6 rounded-lg shadow-md"
                 style="height: {Math.max(350, citedAuthorsData.slice(0, 15).length * 35 + 70)}px;"
             >
-                <D3HorizontalBarChart
+                <EChartsHorizontalBarChart
                     data={citedAuthorsData.slice(0, 15)}
                     xAccessor={getAuthorCitationCount}
                     yAccessor={getAuthorName}
