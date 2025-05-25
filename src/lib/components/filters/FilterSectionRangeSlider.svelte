@@ -1,5 +1,5 @@
 <script lang="ts">
-    import RangeSlider from 'svelte-range-slider-pips';
+    import RangeSlider from '../ui/RangeSlider.svelte';
     import { createEventDispatcher } from 'svelte';
 
     // Simple debounce function
@@ -91,8 +91,7 @@
         <h3 class="text-dark font-weight-600">{title}</h3>
         <span class="text-sm text-light">{displayRange}</span>
     </div>
-    {#if allYears.length > 0}
-        <div class="slider-container pt-3 pb-1 px-2">
+    {#if allYears.length > 0}        <div class="slider-container pt-3 pb-1 px-2">
             <RangeSlider 
                 bind:values={sliderValues} 
                 min={minYear} 
@@ -103,7 +102,7 @@
                 first="label"
                 last="label"
                 float
-                on:change={handleSliderChange} 
+                onchange={handleSliderChange} 
             />
         </div>
     {:else}
@@ -153,56 +152,4 @@
     .items-center {
         align-items: center;
     }
-
-    /* Style overrides for the slider using theme variables */
-    .slider-container :global(.rangeSlider) {
-        height: 4px;
-        background-color: var(--color-border); /* Use theme border color */
-        border-radius: 2px;
-    }
-
-    .slider-container :global(.rangeHandle) {
-        width: 16px;
-        height: 16px;
-        background-color: var(--color-primary); /* Use theme primary color */
-        border-radius: 50%;
-        box-shadow: none;
-        border: none;
-        top: -6px; /* Adjust vertical position */
-    }
-    
-    .slider-container :global(.rangeHandle.active) {
-         /* Use theme primary color with alpha for focus ring */
-        box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 30%, transparent);
-    }
-
-    .slider-container :global(.rangeFloat) {
-        background-color: var(--color-primary); /* Use theme primary color */
-        color: white; /* Keep text white */
-        padding: 2px 6px;
-        font-size: var(--font-size-xs, 0.75rem);
-        border-radius: 4px;
-    }
-    
-    .slider-container :global(.rangePips) {
-        margin-top: 10px;
-    }
-
-    .slider-container :global(.pip) {
-        width: 1px;
-        height: 5px;
-        background-color: var(--color-text-light); /* Use theme light text color for pips */
-        border: none;
-        margin-left: -0.5px;
-    }
-
-    .slider-container :global(.pip.pip-large) {
-        height: 8px;
-    }
-
-    .slider-container :global(.rangeLabel) {
-        font-size: var(--font-size-xs, 0.75rem);
-        color: var(--color-text-light); /* Use theme light text color for labels */
-        margin-top: 4px;
-    }
-</style> 
+</style>
