@@ -21,8 +21,7 @@
     <span class="hamburger-line"></span>
 </button>
 
-<style>
-    .hamburger {
+<style>    .hamburger {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -32,7 +31,7 @@
         border: none;
         cursor: pointer;
         padding: 0;
-        z-index: 210;
+        z-index: 150;
         position: relative;
         gap: 4px;
     }

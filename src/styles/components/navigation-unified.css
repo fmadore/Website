@@ -241,7 +241,7 @@
         border: none;
         cursor: pointer;
         padding: 0;
-        z-index: 250;
+        z-index: 150; /* Lower than mobile menu z-index of 200 */
         position: relative;
         gap: 4px;
     }
@@ -315,6 +315,44 @@
     gap: var(--spacing-4);
 }
 
+.mobile-close-button {
+    width: 28px;
+    height: 28px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    justify-self: end; /* Align close button to right */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    position: relative;
+}
+
+.mobile-close-line {
+    width: 20px;
+    height: 2px;
+    background-color: var(--color-text);
+    position: absolute;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-close-line:first-child {
+    transform: rotate(45deg);
+}
+
+.mobile-close-line:last-child {
+    transform: rotate(-45deg);
+}
+
+.mobile-close-button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--border-radius-sm);
+}
+
 .mobile-nav-header .theme-toggle {
     justify-self: start; /* Align theme toggle to left */
 }
@@ -330,12 +368,6 @@
 
 .mobile-site-title:hover {
     color: var(--color-primary);
-}
-
-.mobile-header-spacer {
-    width: 36px; /* Same width as ThemeToggle button */
-    height: 36px;
-    justify-self: end; /* Align spacer to right for balance */
 }
 
 .sr-only {

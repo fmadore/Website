@@ -19,12 +19,20 @@
     <nav class="mobile-nav" aria-label="Mobile navigation">        <!-- Mobile Menu Header -->
         <div class="mobile-nav-header">
             <ThemeToggle size={20} />
-              <a href="{base}/" class="mobile-site-title" onclick={onCloseMenu}>
+            
+            <a href="{base}/" class="mobile-site-title" onclick={onCloseMenu}>
                 Frédérick Madore
             </a>
             
-            <!-- Empty placeholder for grid balance -->
-            <div class="mobile-header-spacer"></div>
+            <!-- Close button -->
+            <button 
+                class="mobile-close-button" 
+                onclick={onCloseMenu}
+                aria-label="Close navigation menu"
+            >
+                <span class="mobile-close-line"></span>
+                <span class="mobile-close-line"></span>
+            </button>
         </div>
 
         <ul class="mobile-nav-list">
