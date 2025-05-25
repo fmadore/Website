@@ -65,9 +65,7 @@
         if (onchange) {
             onchange(new CustomEvent('change', { detail: { values: newValues } }));
         }
-    }
-
-    function handleMouseDown(event: MouseEvent, type: 'min' | 'max') {
+    }    function handleMouseDown(event: MouseEvent, type: 'min' | 'max') {
         event.preventDefault();
         isDragging = type;
         showFloats[type] = float;
@@ -90,7 +88,31 @@
         document.addEventListener('mouseup', handleMouseUp);
     }
 
-    function handleTrackClick(event: MouseEvent) {
+    function handleTouchStart(event: TouchEvent, type: 'min' | 'max') {
+        event.preventDefault();
+        isDragging = type;
+        showFloats[type] = float;
+
+        function handleTouchMove(event: TouchEvent) {
+            if (!isDragging) return;
+            const touch = event.touches[0];
+            if (touch) {
+                const newValue = getValueFromPosition(touch.clientX);
+                updateValue(isDragging, newValue);
+            }
+        }
+
+        function handleTouchEnd() {
+            isDragging = null;
+            showFloats.min = false;
+            showFloats.max = false;
+            document.removeEventListener('touchmove', handleTouchMove);
+            document.removeEventListener('touchend', handleTouchEnd);
+        }
+
+        document.addEventListener('touchmove', handleTouchMove, { passive: false });
+        document.addEventListener('touchend', handleTouchEnd);
+    }    function handleTrackClick(event: MouseEvent) {
         if (isDragging) return;
         
         const newValue = getValueFromPosition(event.clientX);
@@ -102,6 +124,24 @@
             updateValue('min', newValue);
         } else {
             updateValue('max', newValue);
+        }
+    }
+
+    function handleTrackTouch(event: TouchEvent) {
+        if (isDragging) return;
+        
+        const touch = event.touches[0];
+        if (touch) {
+            const newValue = getValueFromPosition(touch.clientX);
+            const distanceToMin = Math.abs(newValue - values[0]);
+            const distanceToMax = Math.abs(newValue - values[1]);
+            
+            // Update the closest handle
+            if (distanceToMin <= distanceToMax) {
+                updateValue('min', newValue);
+            } else {
+                updateValue('max', newValue);
+            }
         }
     }
 
@@ -135,11 +175,11 @@
     }
 </script>
 
-<div class="range-slider" bind:this={sliderRef}>
-    <!-- Track -->
+<div class="range-slider" bind:this={sliderRef}>    <!-- Track -->
     <div 
         class="range-track" 
         onclick={handleTrackClick}
+        ontouchstart={handleTrackTouch}
         role="presentation"
     >
         <!-- Active range highlight -->
@@ -147,9 +187,7 @@
             class="range-highlight"
             style="left: {minPosition}%; width: {maxPosition - minPosition}%"
         ></div>
-    </div>
-
-    <!-- Min handle -->
+    </div>    <!-- Min handle -->
     <div 
         class="range-handle"
         class:active={isDragging === 'min'}
@@ -161,6 +199,7 @@
         aria-valuenow={values[0]}
         aria-label="Minimum value"
         onmousedown={(e) => handleMouseDown(e, 'min')}
+        ontouchstart={(e) => handleTouchStart(e, 'min')}
         onkeydown={(e) => handleKeyDown(e, 'min')}
         onfocus={() => showFloats.min = float}
         onblur={() => showFloats.min = false}
@@ -168,9 +207,7 @@
         {#if showFloats.min}
         <div class="range-float">{values[0]}</div>
         {/if}
-    </div>
-
-    <!-- Max handle -->
+    </div>    <!-- Max handle -->
     <div 
         class="range-handle"
         class:active={isDragging === 'max'}
@@ -182,6 +219,7 @@
         aria-valuenow={values[1]}
         aria-label="Maximum value"
         onmousedown={(e) => handleMouseDown(e, 'max')}
+        ontouchstart={(e) => handleTouchStart(e, 'max')}
         onkeydown={(e) => handleKeyDown(e, 'max')}
         onfocus={() => showFloats.max = float}
         onblur={() => showFloats.max = false}
@@ -241,9 +279,7 @@
         background-color: var(--color-primary, #3b82f6);
         border-radius: 2px;
         pointer-events: none;
-    }
-
-    .range-handle {
+    }    .range-handle {
         position: absolute;
         top: 50%;
         width: 16px;
@@ -255,6 +291,25 @@
         cursor: grab;
         transition: all 0.15s ease;
         z-index: 2;
+        touch-action: none; /* Prevent default touch behaviors */
+    }
+
+    /* Larger touch target for mobile devices */
+    @media (pointer: coarse) {
+        .range-handle {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .range-handle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 44px; /* Minimum recommended touch target size */
+            height: 44px;
+            transform: translate(-50%, -50%);
+        }
     }
 
     .range-handle:hover,
