@@ -1,10 +1,19 @@
 <script lang="ts">
-    export let title: string;
-    export let items: string[]; // e.g., ['book', 'article'] or ['Author One', 'Author Two']
-    export let itemLabels: { [key: string]: string } | undefined = undefined; // Made optional
-    export let activeItems: string[]; // The reactive list of active filters (e.g., $activeFilters.types)
-    export let toggleItem: (item: string) => void; // Function to toggle an item
-    export let counts: { [key: string]: number | undefined } | undefined; // e.g., { 'book': 10, 'article': 5 }
+    let {
+        title,
+        items, // e.g., ['book', 'article'] or ['Author One', 'Author Two']
+        itemLabels = undefined, // Made optional
+        activeItems, // The reactive list of active filters (e.g., $activeFilters.types)
+        toggleItem, // Function to toggle an item
+        counts // e.g., { 'book': 10, 'article': 5 }
+    }: {
+        title: string;
+        items: string[];
+        itemLabels: { [key: string]: string } | undefined;
+        activeItems: string[];
+        toggleItem: (item: string) => void;
+        counts: { [key: string]: number | undefined } | undefined;
+    } = $props();
 
     // Helper to safely get count, defaulting to 0
     function getCount(item: string): number {
@@ -17,11 +26,10 @@
     <div class="flex-column gap-2">
         {#each items as item}
             <div class="mb-2">
-                <label class="flex items-center gap-2 cursor-pointer">
-                    <input 
+                <label class="flex items-center gap-2 cursor-pointer">                    <input 
                         type="checkbox" 
                         checked={activeItems.includes(item)} 
-                        on:change={() => toggleItem(item)}
+                        onchange={() => toggleItem(item)}
                     />
                     <span>{itemLabels?.[item] ?? item}</span>
                     {#if counts !== undefined}

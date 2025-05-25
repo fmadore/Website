@@ -1,9 +1,17 @@
 <script lang="ts">
-    export let title: string;
-    export let items: string[]; // List of tags
-    export let activeItems: string[]; // List of active tags
-    export let toggleItem: (item: string) => void; // Function to toggle a tag
-    export let counts: { [key: string]: number | undefined } | undefined; // Tag counts
+    let {
+        title,
+        items, // List of tags
+        activeItems, // List of active tags
+        toggleItem, // Function to toggle a tag
+        counts // Tag counts
+    }: {
+        title: string;
+        items: string[];
+        activeItems: string[];
+        toggleItem: (item: string) => void;
+        counts: { [key: string]: number | undefined } | undefined;
+    } = $props();
 
     // Helper to safely get count
     function getCount(item: string): number {
@@ -14,11 +22,10 @@
 <div class="filter-section">
     <h3 class="text-dark font-weight-600 mb-3 pb-2 border-gray-200">{title}</h3>
     <div class="flex flex-wrap gap-2">
-        {#each items as item}
-            <button 
+        {#each items as item}            <button 
                 class="tag-button"
                 class:active={activeItems.includes(item)}
-                on:click={() => toggleItem(item)}
+                onclick={() => toggleItem(item)}
             >
                 {item}
                 {#if counts !== undefined}

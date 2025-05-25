@@ -17,30 +17,38 @@
         };
     }
 
-    export let title: string;
-    export let allYears: number[]; // All available years, sorted asc
-    export let activeRange: { min: number; max: number } | null; // Current filter state
-    export let updateRange: (min: number, max: number) => void; // Function to update the store
-    export let resetRange: () => void; // Function to clear the range filter
+    let {
+        title,
+        allYears, // All available years, sorted asc
+        activeRange, // Current filter state
+        updateRange, // Function to update the store
+        resetRange // Function to clear the range filter
+    }: {
+        title: string;
+        allYears: number[];
+        activeRange: { min: number; max: number } | null;
+        updateRange: (min: number, max: number) => void;
+        resetRange: () => void;
+    } = $props();
 
     const dispatch = createEventDispatcher();
 
     // Determine min and max from all available years
-    $: minYear = allYears.length > 0 ? allYears[0] : new Date().getFullYear() - 10; // Fallback min
-    $: maxYear = allYears.length > 0 ? allYears[allYears.length - 1] : new Date().getFullYear(); // Fallback max
+    const minYear = $derived(allYears.length > 0 ? allYears[0] : new Date().getFullYear() - 10); // Fallback min
+    const maxYear = $derived(allYears.length > 0 ? allYears[allYears.length - 1] : new Date().getFullYear()); // Fallback max
 
     // Internal state for the slider values, initialized from activeRange or full range
-    let sliderValues: [number, number];
-    $: {
+    let sliderValues = $state<[number, number]>([0, 0]);
+    
+    // Update sliderValues when activeRange or year bounds change
+    $effect(() => {
         if (activeRange) {
             sliderValues = [activeRange.min, activeRange.max];
         } else {
             sliderValues = [minYear, maxYear]; // Default to full range if no active filter
         }
-    }
-
-    // Flag to prevent initial update on component mount
-    let isInitialized = false;
+    });    // Flag to prevent initial update on component mount
+    let isInitialized = $state(false);
 
     // Debounced version of the update logic
     const debouncedUpdate = debounce((newMin: number, newMax: number) => {
@@ -74,7 +82,7 @@
     }
 
     // Format the displayed range string
-    $: displayRange = activeRange ? `${activeRange.min} - ${activeRange.max}` : 'All Years';
+    const displayRange = $derived(activeRange ? `${activeRange.min} - ${activeRange.max}` : 'All Years');
 
 </script>
 
