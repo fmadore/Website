@@ -2,7 +2,7 @@
     import SEO from '$lib/SEO.svelte';
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
-    import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+  	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
     import { page } from '$app/stores'; // Import page store
     import { onMount, onDestroy } from 'svelte'; // Import lifecycle functions
     import { browser } from '$app/environment'; // Import browser check

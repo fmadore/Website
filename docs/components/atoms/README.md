@@ -5,7 +5,7 @@ Atoms are the smallest, most basic components in our design system - they're the
 ## Available Atoms
 
 - [Button](./Button.md) - Standard button component with variants
-- [BreadcrumbLink](./BreadcrumbLink.md) - Individual link within a breadcrumb navigation
+- ~~[BreadcrumbLink](./BreadcrumbLink.md)~~ - **Moved to common components** - Individual link within a breadcrumb navigation
 - [HamburgerButton](./HamburgerButton.md) - Button for toggling mobile navigation menu
 - [NavLink](./NavLink.md) - Navigation link with active state handling
 - [ThemeToggle](./ThemeToggle.md) - Toggle for switching between light and dark themes

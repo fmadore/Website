@@ -1,6 +1,6 @@
 <script lang="ts">
     import { base } from '$app/paths';
-    import BreadcrumbLink from '$lib/components/atoms/BreadcrumbLink.svelte';
+    import BreadcrumbLink from '$lib/components/common/BreadcrumbLink.svelte';
 
     let { 
         items = [], 
@@ -9,7 +9,6 @@
         items: { label: string; href: string; }[];
         showHomeLink?: boolean;
     } = $props();
-
 </script>
 
 <nav aria-label="Breadcrumb" class="breadcrumb">
@@ -32,29 +31,3 @@
         {/each}
     </ol>
 </nav>
-
-<style>
-    .breadcrumb {
-        font-size: var(--font-size-sm);
-        margin-bottom: var(--spacing-4);
-    }
-
-    .breadcrumb ol {
-        display: flex;
-        flex-wrap: wrap;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .breadcrumb li {
-        display: inline-flex;
-        align-items: center;
-    }
-
-    .breadcrumb li:not(:last-child)::after {
-        content: "/";
-        margin: 0 var(--spacing-2);
-        color: var(--color-text-light);
-    }
-</style>

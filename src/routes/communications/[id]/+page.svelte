@@ -6,7 +6,7 @@
     import type { ComponentType } from 'svelte';
     import MapVisualization from '$lib/components/visualisations/MapVisualization.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
-    import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+  	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
     import { page } from '$app/stores';
     import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
     import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';

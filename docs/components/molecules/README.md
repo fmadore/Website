@@ -14,7 +14,7 @@ Molecules are relatively simple combinations of atoms that form functional group
 - [ActionLinks](./ActionLinks.md) - Group of action links for an item (download, share, etc.)
 - [TagList](./TagList.md) - Displays a list of tags or keywords
 - [HeroImageDisplay](./HeroImageDisplay.md) - Hero image with optional attribution
-- [Breadcrumb](./Breadcrumb.md) - Navigation breadcrumb showing the current location
+- ~~[Breadcrumb](./Breadcrumb.md)~~ - **Moved to common components** - Navigation breadcrumb showing the current location
 - [DropdownMenu](./DropdownMenu.md) - Dropdown menu component
 - [NavItemWithDropdown](./NavItemWithDropdown.md) - Navigation item with dropdown functionality
 

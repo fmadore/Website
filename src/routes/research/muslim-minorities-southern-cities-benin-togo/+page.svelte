@@ -4,7 +4,7 @@
     import RelevantCommunications from '$lib/components/panels/RelevantCommunications.svelte';
     import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
     import ItemReference from '$lib/components/molecules/ItemReference.svelte';
     import { page } from '$app/stores'; // Import page store
     import { onMount, onDestroy } from 'svelte'; // Import lifecycle functions

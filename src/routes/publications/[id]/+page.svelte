@@ -8,7 +8,7 @@
     import { onMount, onDestroy } from 'svelte'; // Add back lifecycle functions
     import { browser } from '$app/environment'; // Add back browser check
     import { page } from '$app/stores'; // Import page store
-    import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte'; // Import Breadcrumb component
+  	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';// Import Breadcrumb component
     import MetaTags from '$lib/components/publications/MetaTags.svelte'; // Import MetaTags component
 
     // CitedBy, Reviews, PageHeader, etc. imports remain

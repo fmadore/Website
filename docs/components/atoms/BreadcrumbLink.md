@@ -1,11 +1,13 @@
 # BreadcrumbLink Component
 
+**Note: This component has been moved to `$lib/components/common/BreadcrumbLink.svelte` as it's a general-purpose navigation component.**
+
 The `BreadcrumbLink` component is a specialized link element designed specifically for use in breadcrumb navigation. It handles both active (current page) and inactive (navigation link) states.
 
 ## Import
 
 ```svelte
-import BreadcrumbLink from '$lib/components/atoms/BreadcrumbLink.svelte';
+import BreadcrumbLink from '$lib/components/common/BreadcrumbLink.svelte';
 ```
 
 ## Usage

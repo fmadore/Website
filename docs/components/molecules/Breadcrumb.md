@@ -1,11 +1,13 @@
 # Breadcrumb Component
 
+**Note: This component has been moved to `$lib/components/common/Breadcrumb.svelte` as it's a general-purpose navigation component.**
+
 The `Breadcrumb` molecule component provides a navigation aid that helps users understand their current location within the website's hierarchy and easily navigate to parent sections.
 
 ## Import
 
 ```svelte
-import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 ```
 
 ## Usage
