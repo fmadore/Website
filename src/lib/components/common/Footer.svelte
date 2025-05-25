@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import { fade, fly } from 'svelte/transition';
-	import { onMount } from 'svelte';
 	
 	// Grouped social media links with Iconify icon names
 	const socialGroups = [
@@ -39,9 +38,11 @@
 	
 	// Enhanced intersection observer for subtle animations
 	let footerElement: HTMLElement;
-	let isVisible = false;
-	
-	onMount(() => {
+	let isVisible = $state(false);
+		$effect(() => {
+		// Only run when footerElement is available
+		if (!footerElement) return;
+		
 		// Debounce intersection updates for better performance
 		let timeoutId: number;
 		
@@ -57,9 +58,7 @@
 			{ threshold: 0.1, rootMargin: '50px' }
 		);
 		
-		if (footerElement) {
-			observer.observe(footerElement);
-		}
+		observer.observe(footerElement);
 		
 		return () => {
 			clearTimeout(timeoutId);
@@ -138,16 +137,15 @@
 						{/each}
 					</ul>
 				</section>
-			{/each}
-		</nav>
+			{/each}		</nav>
 	</div>
 	
 	<!-- Enhanced scroll indicator -->
 	<button 
 		class="scroll-to-top" 
 		class:visible={isVisible} 
-		on:click={scrollToTop}
-		on:keydown={handleScrollKeydown}
+		onclick={scrollToTop}
+		onkeydown={handleScrollKeydown}
 		aria-label="Scroll to top of page"
 		type="button"
 	>
