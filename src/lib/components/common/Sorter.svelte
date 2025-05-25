@@ -1,15 +1,13 @@
 <script lang="ts">
     import { ArrowDownAZ, SortDesc, TrendingUp } from 'lucide-svelte';
-    import { createEventDispatcher } from 'svelte';
     import Button from '$lib/components/atoms/Button.svelte'; // Import the Button component
 
     interface Props {
         activeSort?: 'date' | 'title' | 'citations'; // Default sort
+        onsortchange?: (data: { sortBy: 'date' | 'title' | 'citations' }) => void; // Svelte 5: callback prop
     }
 
-    let { activeSort = 'date' }: Props = $props();
-
-    const dispatch = createEventDispatcher();
+    let { activeSort = 'date', onsortchange }: Props = $props();
 
     function toggleSort() {
         // Toggle between 'date', 'title', and 'citations'
@@ -21,7 +19,7 @@
         } else {
             newSort = 'date';
         }
-        dispatch('sortChange', { sortBy: newSort });
+        onsortchange?.({ sortBy: newSort });
     }
 
     // Determine button text and title based on the *current* sort state for display
@@ -52,16 +50,14 @@
     <Button 
         variant="outline-primary" 
         size="sm" 
-        on:click={toggleSort}
+        onclick={toggleSort}
         ariaLabel={ariaTitle}
         title={ariaTitle} 
         additionalClasses="control-button-rounded"
     >
         {#snippet icon()}
-            
-                <IconComponent size={18} />
-            
-            {/snippet}
+            <IconComponent size={18} />
+        {/snippet}
         {labelText}
     </Button>
 </div>

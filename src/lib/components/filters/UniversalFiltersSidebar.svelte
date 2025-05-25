@@ -1,28 +1,26 @@
-<script lang="ts">
-    import type { UniversalFilterConfig, FilterSectionConfig } from '$lib/types/filters';
+<script lang="ts">    import type { UniversalFilterConfig, FilterSectionConfig } from '$lib/types/filters';
     import FilterSectionCheckbox from '$lib/components/filters/FilterSectionCheckbox.svelte';
     import FilterSectionRangeSlider from '$lib/components/filters/FilterSectionRangeSlider.svelte';
     import FilterSectionButtons from '$lib/components/filters/FilterSectionButtons.svelte';
     import { fly, slide } from 'svelte/transition';
-    import { createEventDispatcher } from 'svelte'; // Import event dispatcher
+
+    interface Props {
+        config: UniversalFilterConfig;
+        isExpandedMobile?: boolean;
+        oncollapse?: () => void;
+    }
 
     // Prop for the configuration object
-    export let config: UniversalFilterConfig;
-    
-    // Prop to control mobile expansion (controlled by parent)
-    export let isExpandedMobile = false; 
+    let { config, isExpandedMobile = false, oncollapse }: Props = $props();
 
     // Reactive statement to get the sections array
-    $: sections = config?.sections || [];
-
-    // Setup event dispatcher
-    const dispatch = createEventDispatcher();
+    let sections = $derived(config?.sections || []);
 
     // Function to handle clearing filters and notifying parent to collapse
     function handleClearFilters() {
         if (config?.clearAllFilters) {
             config.clearAllFilters();
-            dispatch('collapse'); // Dispatch event instead of setting state directly
+            oncollapse?.(); // Call callback instead of dispatching event
         }
     }
 </script>

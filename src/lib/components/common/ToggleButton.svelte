@@ -1,21 +1,17 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
     import { Map } from 'lucide-svelte'; // Import the Map icon
     import Button from '$lib/components/atoms/Button.svelte'; // Import Button component
 
     interface Props {
         isToggled?: boolean;
         baseText?: string; // e.g., "Map", "Details"
+        onclick?: () => void; // Svelte 5: callback prop instead of event dispatcher
     }
 
-    let { isToggled = false, baseText = 'Toggle' }: Props = $props();
-    // Allows passing specific button classes, defaults to secondary outline
-    // export let btnClass: string = 'btn btn-sm btn-outline-secondary'; 
-
-    const dispatch = createEventDispatcher();
+    let { isToggled = false, baseText = 'Toggle', onclick }: Props = $props();
 
     function handleClick() {
-        dispatch('toggle'); // Dispatch simple toggle event
+        onclick?.(); // Call the onclick callback if provided
     }
 
     // Determine label and aria information based on state
@@ -27,15 +23,13 @@
 <Button
     variant="outline-primary" 
     size="sm"
-    on:click={handleClick}
+    onclick={handleClick}
     ariaLabel={ariaTitle}
     title={ariaTitle}
     additionalClasses="control-button-rounded"
 >
     {#snippet icon()}
-    
-             <Map size={18} />
-        
+        <Map size={18} />
     {/snippet}
     {labelText}
 </Button>

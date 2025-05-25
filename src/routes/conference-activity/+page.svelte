@@ -39,38 +39,43 @@
     import EntityListPageLayout from '$lib/components/common/EntityListPageLayout.svelte';
     import FilteredListDisplay from '$lib/components/common/FilteredListDisplay.svelte';
     import PageHeader from '$lib/components/common/PageHeader.svelte';
-    import { urlFilterSync } from '$lib/actions/urlFilterSync'; 
-    import Sorter from '$lib/components/common/Sorter.svelte'; 
+    import { urlFilterSync } from '$lib/actions/urlFilterSync';    import Sorter from '$lib/components/common/Sorter.svelte'; 
     import { sortItems } from '$lib/utils/sortUtils'; 
-    import { writable, derived } from 'svelte/store'; 
     import { Filter } from 'lucide-svelte'; // Import the Filter icon
     import Button from '$lib/components/atoms/Button.svelte'; // Import Button
+    import { derived, writable } from 'svelte/store';
     
-    let showMap = false; 
+    let showMap = $state(false); 
 
     // State for mobile filter sidebar expansion
-    let mobileFiltersExpanded = false;
+    let mobileFiltersExpanded = $state(false);    // State for the current sort order
+    let activeSort = $state<'date' | 'title'>('date');
 
-    // State for the current sort order
-    const activeSort = writable<'date' | 'title'>('date');
-
-    // Create a derived store for sorted communications
+    // Create a derived store for sorted communications that the component can use
     const sortedCommunications = derived(
-        [filteredCommunications, activeSort],
-        ([$filteredCommunications, $activeSort]) => sortItems($filteredCommunications, $activeSort)
+        [filteredCommunications],
+        ([$filteredCommunications]) => sortItems($filteredCommunications, activeSort)
     );
 
-    // Reactive statement to update markers based on filtered communications
-    $: mapMarkers = $filteredCommunications
-        ?.filter((comm: Communication) => comm.coordinates)
-        .map((comm: Communication) => ({
-            id: comm.id,
-            title: comm.title,
-            coordinates: comm.coordinates!,
-            year: comm.year,
-            activityType: comm.type,
-            image: comm.image
-        })) || [];
+    // Effect to trigger re-derivation when activeSort changes
+    $effect(() => {
+        // This effect will run when activeSort changes, causing sortedCommunications to update
+        activeSort;
+    });    // Derived value to update markers based on filtered communications
+    const mapMarkers = derived(
+        filteredCommunications,
+        ($filteredCommunications) => 
+            $filteredCommunications
+                ?.filter((comm: Communication) => comm.coordinates)
+                .map((comm: Communication) => ({
+                    id: comm.id,
+                    title: comm.title,
+                    coordinates: comm.coordinates!,
+                    year: comm.year,
+                    activityType: comm.type,
+                    image: comm.image
+                })) || []
+    );
 
     // Helper to check if any filters are active (consistent with communications/+page.svelte)
     function areFiltersActive(filters: typeof $activeFilters): boolean {
@@ -93,11 +98,12 @@
             toggleTypeFilter(value);
         }
         // Add other filter types if needed (e.g., author)
-    }
-
-    // Handler for the sortChange event from the Sorter component
-    function handleSortChange(event: CustomEvent<{ sortBy: 'date' | 'title' }>) {
-        activeSort.set(event.detail.sortBy);
+    }    // Handler for the sortChange event from the Sorter component
+    function handleSortChange(data: { sortBy: 'date' | 'title' | 'citations' }) {
+        // Only handle date and title sorts, ignore citations
+        if (data.sortBy === 'date' || data.sortBy === 'title') {
+            activeSort = data.sortBy;
+        }
     }
 
     // Prepare setters object for the action
@@ -119,52 +125,52 @@
         'lecture': 'Lectures',
         'panel': 'Panels Organized',
         'event': 'Academic Events Organized'
-    };
-
-    // Reactive calculations needed for the config (same as communications)
-    $: types = $filterOptions?.types || [];
-    $: years = $filterOptions?.years || [];
-    $: countries = $filterOptions?.countries || [];
-    $: languages = $filterOptions?.languages || [];
-    $: tags = $filterOptions?.tags || [];
-    $: authors = $filterOptions?.authors || [];
-    $: sortedYearsAsc = years.slice().sort((a, b) => a - b);
-
-    // Construct the configuration object (same as communications)
-    $: communicationFilterConfig = {
-        sections: [
-            // Sections explicitly cast to their specific type
-            { 
-                type: 'checkbox', title: 'Type', items: types, itemLabels: typeLabels, 
-                activeItems: $activeFilters?.types || [], toggleItem: toggleTypeFilter, counts: undefined 
-            } as CheckboxFilterOption<string>,
-            { 
-                type: 'range', title: 'Years', allYears: sortedYearsAsc, 
-                activeRange: $activeFilters?.yearRange || null, updateRange: updateYearRange, resetRange: resetYearRange 
-            } as RangeFilterOption,
-            { 
-                type: 'checkbox', title: 'Co-authors', items: authors,
-                activeItems: $activeFilters?.authors || [], toggleItem: toggleAuthorFilter, counts: $authorCounts 
-            } as CheckboxFilterOption<string>,
-            { 
-                type: 'checkbox', title: 'Countries', items: countries, 
-                activeItems: $activeFilters?.countries || [], toggleItem: toggleCountryFilter, counts: $countryCounts 
-            } as CheckboxFilterOption<string>,
-            { 
-                type: 'checkbox', title: 'Languages', items: languages, 
-                activeItems: $activeFilters?.languages || [], toggleItem: toggleLanguageFilter, counts: undefined 
-            } as CheckboxFilterOption<string>,
-            { 
-                type: 'buttons', title: 'Tags', items: tags, 
-                activeItems: $activeFilters?.tags || [], toggleItem: toggleTagFilter, counts: $tagCounts 
-            } as ButtonsFilterOption<string>
-        ].filter(section => section.title !== 'Tags')
-        .filter(section => {
-            if (section.type === 'range') return section.allYears && section.allYears.length > 0;
-            return section.items && section.items.length > 0;
-        }) as FilterSectionConfig[], // Cast filtered array
-        clearAllFilters: clearAllFilters
-    } satisfies UniversalFilterConfig;
+    };    // Reactive values for filter configuration - create derived stores from filter options
+    const filterOptionsValue = derived(filterOptions, ($filterOptions) => $filterOptions);
+    const typesValue = derived(filterOptionsValue, ($filterOptionsValue) => $filterOptionsValue?.types || []);
+    const yearsValue = derived(filterOptionsValue, ($filterOptionsValue) => $filterOptionsValue?.years || []);
+    const countriesValue = derived(filterOptionsValue, ($filterOptionsValue) => $filterOptionsValue?.countries || []);
+    const languagesValue = derived(filterOptionsValue, ($filterOptionsValue) => $filterOptionsValue?.languages || []);
+    const tagsValue = derived(filterOptionsValue, ($filterOptionsValue) => $filterOptionsValue?.tags || []);
+    const authorsValue = derived(filterOptionsValue, ($filterOptionsValue) => $filterOptionsValue?.authors || []);
+    const sortedYearsAscValue = derived(yearsValue, ($yearsValue) => $yearsValue.slice().sort((a: number, b: number) => a - b));    // Construct the configuration object as a derived store
+    const communicationFilterConfig = derived(
+        [typesValue, sortedYearsAscValue, authorsValue, countriesValue, languagesValue, tagsValue, activeFilters, authorCounts, countryCounts, tagCounts],
+        ([$typesValue, $sortedYearsAscValue, $authorsValue, $countriesValue, $languagesValue, $tagsValue, $activeFilters, $authorCounts, $countryCounts, $tagCounts]) => ({
+            sections: [
+                // Sections explicitly cast to their specific type
+                { 
+                    type: 'checkbox', title: 'Type', items: $typesValue, itemLabels: typeLabels, 
+                    activeItems: $activeFilters?.types || [], toggleItem: toggleTypeFilter, counts: undefined 
+                } as CheckboxFilterOption<string>,
+                { 
+                    type: 'range', title: 'Years', allYears: $sortedYearsAscValue, 
+                    activeRange: $activeFilters?.yearRange || null, updateRange: updateYearRange, resetRange: resetYearRange 
+                } as RangeFilterOption,
+                { 
+                    type: 'checkbox', title: 'Co-authors', items: $authorsValue,
+                    activeItems: $activeFilters?.authors || [], toggleItem: toggleAuthorFilter, counts: $authorCounts 
+                } as CheckboxFilterOption<string>,
+                { 
+                    type: 'checkbox', title: 'Countries', items: $countriesValue, 
+                    activeItems: $activeFilters?.countries || [], toggleItem: toggleCountryFilter, counts: $countryCounts 
+                } as CheckboxFilterOption<string>,
+                { 
+                    type: 'checkbox', title: 'Languages', items: $languagesValue, 
+                    activeItems: $activeFilters?.languages || [], toggleItem: toggleLanguageFilter, counts: undefined 
+                } as CheckboxFilterOption<string>,
+                { 
+                    type: 'buttons', title: 'Tags', items: $tagsValue, 
+                    activeItems: $activeFilters?.tags || [], toggleItem: toggleTagFilter, counts: $tagCounts 
+                } as ButtonsFilterOption<string>
+            ].filter(section => section.title !== 'Tags')
+            .filter(section => {
+                if (section.type === 'range') return section.allYears && section.allYears.length > 0;
+                return section.items && section.items.length > 0;
+            }) as FilterSectionConfig[], // Cast filtered array
+            clearAllFilters: clearAllFilters
+        } satisfies UniversalFilterConfig)
+    );
 
 </script>
 
@@ -181,36 +187,33 @@
     <div class="main-content">
         <PageHeader title="Conference Activity" />
 
-        <p class="text-xl mb-10">Since 2012, I have given talks to audiences in {countries.length} countries across Africa, Europe, and North America.</p>
+        <p class="text-xl mb-10">Since 2012, I have given talks to audiences in {$countriesValue.length} countries across Africa, Europe, and North America.</p>
 
         <!-- Mobile Controls: Two Rows -->
         <div class="mobile-controls">
-            <div class="mobile-controls-row">
-                <Button 
+            <div class="mobile-controls-row">                <Button 
                     variant="outline-primary" 
                     size="sm" 
-                    on:click={() => mobileFiltersExpanded = !mobileFiltersExpanded}
+                    onclick={() => mobileFiltersExpanded = !mobileFiltersExpanded}
                     ariaLabel={mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'} 
                     additionalClasses="control-button-rounded"
                 >
-                    <svelte:fragment slot="icon">
+                    {#snippet icon()}
                         <Filter size={18} /> 
-                    </svelte:fragment>
+                    {/snippet}
                     {mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
-                </Button>
-                <ToggleButton 
+                </Button><ToggleButton 
                     baseText="Map"
-                    bind:isToggled={showMap} 
-                    on:toggle={() => showMap = !showMap}
+                    isToggled={showMap} 
+                    onclick={() => showMap = !showMap}
                 />
-            </div>
-            <div class="mobile-controls-row">
-                <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
+            </div>            <div class="mobile-controls-row">
+                <Sorter activeSort={activeSort} onsortchange={handleSortChange} />
                 {#if areFiltersActive($activeFilters)}
                     <Button 
                         variant="outline-primary" 
                         size="sm" 
-                        on:click={clearAllFilters}
+                        onclick={clearAllFilters}
                         additionalClasses="control-button-rounded"
                     >
                         Clear all filters
@@ -221,11 +224,10 @@
 
         <EntityListPageLayout>
             <!-- Sidebar slot for filters -->
-            <svelte:fragment slot="sidebar">
-                <UniversalFiltersSidebar 
-                    config={communicationFilterConfig} 
-                    bind:isExpandedMobile={mobileFiltersExpanded}
-                    on:collapse={() => mobileFiltersExpanded = false}
+            <svelte:fragment slot="sidebar">                <UniversalFiltersSidebar 
+                    config={$communicationFilterConfig} 
+                    isExpandedMobile={mobileFiltersExpanded}
+                    oncollapse={() => mobileFiltersExpanded = false}
                 />
             </svelte:fragment>
             
@@ -236,19 +238,18 @@
                     {#if areFiltersActive($activeFilters)}
                         <span class="text-accent"> (Filters applied)</span>
                     {/if}
-                </div>
-                <div class="actions-group">
+                </div>                <div class="actions-group">
                     <ToggleButton 
                         baseText="Map"
-                        bind:isToggled={showMap} 
-                        on:toggle={() => showMap = !showMap}
+                        isToggled={showMap} 
+                        onclick={() => showMap = !showMap}
                     />
-                    <Sorter activeSort={$activeSort} on:sortChange={handleSortChange} />
+                    <Sorter activeSort={activeSort} onsortchange={handleSortChange} />
                     {#if areFiltersActive($activeFilters)}
                         <Button 
                             variant="outline-primary" 
                             size="sm" 
-                            on:click={clearAllFilters}
+                            onclick={clearAllFilters}
                             additionalClasses="control-button-rounded"
                         >
                             Clear all filters
@@ -257,20 +258,18 @@
                 </div>
             </div>
 
-            {#if showMap}
-                <div class="mb-6">
-                    <MapVisualization markersData={mapMarkers} />
+            {#if showMap}                <div class="mb-6">
+                    <MapVisualization markersData={$mapMarkers} />
                 </div>
             {/if}
-            
-            <FilteredListDisplay
+              <FilteredListDisplay
                 filteredItems={sortedCommunications}
                 itemComponent={CommunicationItem}
                 itemPropName="communication"
                 areFiltersActive={areFiltersActive($activeFilters)}
                 {clearAllFilters}
                 emptyStateNoFiltersMessage="No conference activities found matching your criteria. Try clearing some filters."
-                onItemEvent={handleFilterRequest}
+                onitemrequest={handleFilterRequest}
             />
         </EntityListPageLayout>
     </div>
