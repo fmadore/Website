@@ -1,32 +1,20 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
-    import { get } from 'svelte/store';
     import { activities } from '../../stores/activities';
     import type { Activity } from '$lib/types';
     import { base } from '$app/paths';
     import PanelBase from './PanelBase.svelte';
     
     // Props - limit the number of activities to show
-    export let limit = 4;
-    export let showYearFilters = true;
+    let { limit = 4, showYearFilters = true }: {
+        limit?: number;
+        showYearFilters?: boolean;
+    } = $props();
     
-    // Local activities array
-    let activityList: Activity[] = [];
-    
-    // Subscribe to the activities store
-    const unsubscribe = activities.subscribe(value => {
-        activityList = value.slice(0, limit);
-    });
-    
-    // Clean up subscription on component destroy
-    onMount(() => {
-        return () => {
-            unsubscribe();
-        };
-    });
+    // Local activities array - derived from store and limited
+    let activityList = $derived($activities.slice(0, limit));
     
     // Unique years for the year filter
-    $: years = [...new Set(get(activities).map((activity: Activity) => activity.year))].sort((a: number, b: number) => b - a);
+    let years = $derived([...new Set($activities.map((activity: Activity) => activity.year))].sort((a: number, b: number) => b - a));
     
     // Format activity type for display
     function formatActivityType(type: string): string {
@@ -51,52 +39,53 @@
     }
 </script>
 
-<PanelBase title="Latest Activities" variant="activities" showFooter={true}>
-    <svelte:fragment slot="content">
-        {#if activityList.length === 0}
-            <p class="no-activities">No recent activities found.</p>
-        {:else}
-            <ul class="activities-list">
-                {#each activityList as activity (activity.id)}
-                    <li class="activity-item">
-                        <div class="activity-meta">
-                            {#if activity.type}
-                                <span class="activity-type" data-type={activity.type}>
-                                    {formatActivityType(activity.type)}
-                                </span>
-                            {/if}
-                            <span class="activity-date">{formatDateDMY(activity.date)}</span>
-                        </div>
-                        <a href="{base}/activities/{activity.id}" class="activity-title leading-relaxed">
-                            {activity.title}
-                        </a>
-                        {#if activity.description}
-                            <div class="activity-abstract leading-relaxed">
-                                {activity.description.length > 100 ? activity.description.substring(0, 100) + '...' : activity.description}
-                            </div>
+{#snippet panelContent()}
+    {#if activityList.length === 0}
+        <p class="no-activities">No recent activities found.</p>
+    {:else}
+        <ul class="activities-list">
+            {#each activityList as activity (activity.id)}
+                <li class="activity-item">
+                    <div class="activity-meta">
+                        {#if activity.type}
+                            <span class="activity-type" data-type={activity.type}>
+                                {formatActivityType(activity.type)}
+                            </span>
                         {/if}
-                    </li>
-                {/each}
-            </ul>
-
-            <div class="view-all-container">
-                <a href="{base}/activities" class="view-all-link">View all activities</a>
-            </div>
-        {/if}    </svelte:fragment>
-    
-    <svelte:fragment slot="footer">
-        {#if showYearFilters && years.length > 0}
-            <span class="filter-label">Browse by year:</span>
-            <div class="year-filters">
-                {#each years as year}
-                    <a href="{base}/activities/year/{year}" class="year-tag">
-                        {year}
+                        <span class="activity-date">{formatDateDMY(activity.date)}</span>
+                    </div>
+                    <a href="{base}/activities/{activity.id}" class="activity-title leading-relaxed">
+                        {activity.title}
                     </a>
-                {/each}
-            </div>
-        {/if}
-    </svelte:fragment>
-</PanelBase>
+                    {#if activity.description}
+                        <div class="activity-abstract leading-relaxed">
+                            {activity.description.length > 100 ? activity.description.substring(0, 100) + '...' : activity.description}
+                        </div>
+                    {/if}
+                </li>
+            {/each}
+        </ul>
+
+        <div class="view-all-container">
+            <a href="{base}/activities" class="view-all-link">View all activities</a>
+        </div>
+    {/if}
+{/snippet}
+
+{#snippet panelFooter()}
+    {#if showYearFilters && years.length > 0}
+        <span class="filter-label">Browse by year:</span>
+        <div class="year-filters">
+            {#each years as year}
+                <a href="{base}/activities/year/{year}" class="year-tag">
+                    {year}
+                </a>
+            {/each}
+        </div>
+    {/if}
+{/snippet}
+
+<PanelBase title="Latest Activities" variant="activities" showFooter={true} content={panelContent} footer={panelFooter} />
 
 <style>
     /* Activity-specific styles */

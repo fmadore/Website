@@ -1,28 +1,43 @@
 <script lang="ts">
 	import '../../../styles/components/panels.css';
+	import { type Snippet } from 'svelte';
 
 	// Props
-	export let title: string = '';
-	export let variant: 'default' | 'activities' | 'items' = 'default';
-	export let showFooter: boolean = false;
+	let { 
+		title = '', 
+		variant = 'default', 
+		showFooter = false,
+		header,
+		content,
+		footer
+	}: {
+		title?: string;
+		variant?: 'default' | 'activities' | 'items';
+		showFooter?: boolean;
+		header?: Snippet;
+		content?: Snippet;
+		footer?: Snippet;
+	} = $props();
 </script>
 
 <div class="panel panel-{variant}">
 	<div class="panel-header">
-		<slot name="header">
-			{#if title}
-				<h2 class="panel-title">{title}</h2>
-			{/if}
-		</slot>
+		{#if header}
+			{@render header()}
+		{:else if title}
+			<h2 class="panel-title">{title}</h2>
+		{/if}
 	</div>
 
 	<div class="panel-content">
-		<slot name="content" />
+		{#if content}
+			{@render content()}
+		{/if}
 	</div>
 
-	{#if showFooter}
+	{#if showFooter && footer}
 		<div class="panel-footer">
-			<slot name="footer" />
+			{@render footer()}
 		</div>
 	{/if}
 </div>
