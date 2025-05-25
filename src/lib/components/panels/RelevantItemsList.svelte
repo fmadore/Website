@@ -14,7 +14,8 @@
 
 <script lang="ts">
 	import { base } from '$app/paths';
-	import ItemCard from '$lib/components/molecules/ItemCard.svelte'; // Import the new molecule
+	import RelevantItemCard from '$lib/components/panels/RelevantItemCard.svelte'; // Import the Card-based molecule
+	import PanelBase from './PanelBase.svelte';
 
 	// Props
 	export let title: string; // e.g., "Relevant Publications", "Relevant Communications"
@@ -29,28 +30,27 @@
 	$: itemTypes = [...new Set(items.map(item => item.type).filter(Boolean))].sort() as string[];
 </script>
 
-<!-- Import component styles -->
-<!-- <link rel="stylesheet" href="/src/styles/components/relevant-items-list.css"> -->
+<PanelBase {title} variant="items">
+	<svelte:fragment slot="content">
+		{#if items.length === 0}
+			<p class="no-items">No {itemTypePlural} found for this project.</p>
+		{:else}
+			<ul class="item-list">
+				{#each items as item (item.id)}
+					<li class="item-list-item">
+						<RelevantItemCard {item} {basePath} {formatType} {formatAuthors} />
+					</li>
+				{/each}
+			</ul>
 
-<div class="relevant-items">
-	<!-- Add slot for title, falling back to prop -->
-	<slot name="title">
-		<h2 class="item-panel-title">{title}</h2>
-	</slot>
+			<div class="view-all-container">
+				<a href="{base}{viewAllPath}" class="view-all-link">View all {itemTypePlural}</a>
+			</div>
+		{/if}
+	</svelte:fragment>
+</PanelBase>
 
-	{#if items.length === 0}
-		<p class="no-items">No {itemTypePlural} found for this project.</p>
-	{:else}
-		<ul class="item-list">
-			{#each items as item (item.id)}
-				<li class="item-list-item">
-					<ItemCard {item} {basePath} {formatType} {formatAuthors} />
-				</li>
-			{/each}
-		</ul>
-
-		<div class="view-all-container item-panel-content">
-			<a href="{base}{viewAllPath}" class="view-all">View all {itemTypePlural}</a>
-		</div>
-	{/if}
-</div>
+<style>
+	/* Item-specific styles that aren't covered by PanelBase */
+	/* .item-list-item styles can be added here when needed */
+</style>

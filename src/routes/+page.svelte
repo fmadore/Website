@@ -1,5 +1,5 @@
 <script lang="ts">
-    import LatestActivities from '$lib/components/organisms/LatestActivities.svelte';
+    import LatestActivities from '$lib/components/panels/LatestActivities.svelte';
     import ProfileBanner from '$lib/components/common/ProfileBanner.svelte';
     import SEO from '$lib/SEO.svelte';
     import { activitiesByYear } from '$lib/data/activities';

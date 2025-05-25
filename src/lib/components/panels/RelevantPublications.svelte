@@ -2,8 +2,8 @@
     // import { onMount } from 'svelte'; // Removed as unused
     import { allPublications } from '../../data/publications/index';
     // import type { Publication } from '$lib/types'; // Removed as unused
-    import RelevantItemsList from '$lib/components/organisms/RelevantItemsList.svelte';
-    import type { RelevantItem } from '$lib/components/organisms/RelevantItemsList.svelte';
+  	import RelevantItemsList from '$lib/components/panels/RelevantItemsList.svelte';
+    import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
 
     // Props - project name and limit
     let { projectName, limit = 5, showTypeFilters = true }: {
@@ -58,20 +58,23 @@
     }
 </script>
 
-<div class="item-panel">
+<div>
     {#if showTypeFilters && publicationTypes.length > 1}
-        <div class="flex flex-wrap gap-2 mb-6 item-panel-content">
-            {#each publicationTypes as type}
-                <button
-                    class="filter-button {selectedType === type ? 'active' : ''}"
-                    onclick={() => selectType(type)}
-                    type="button"
-                >
-                    {formatPublicationType(type)}
-                </button>
-            {/each}
+        <div class="type-filters-section">
+            <div class="flex flex-wrap gap-2 mb-6">
+                {#each publicationTypes as type}
+                    <button
+                        class="filter-button {selectedType === type ? 'active' : ''}"
+                        onclick={() => selectType(type)}
+                        type="button"
+                    >
+                        {formatPublicationType(type)}
+                    </button>
+                {/each}
+            </div>
         </div>
     {/if}
+    
     <RelevantItemsList
         title="Relevant Publications"
         items={filteredList}
@@ -83,4 +86,8 @@
     />
 </div>
 
-<!-- Removed component-scoped <style> block, using utility classes and .filter-button from global CSS -->
+<style>
+    .type-filters-section {
+        margin-bottom: var(--spacing-4);
+    }
+</style>

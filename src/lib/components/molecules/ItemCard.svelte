@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import type { RelevantItem } from '$lib/components/organisms/RelevantItemsList.svelte'; // Use the type from the organism
+	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte'; // Use the type from the panel component
 
 	// Props
 	export let item: RelevantItem;
