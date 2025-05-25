@@ -1,11 +1,17 @@
 <script lang="ts">
-    export let abstract: string | undefined | null = undefined;
-
-    // Props for customization with sensible defaults
-    export let sectionClass: string = 'mb-6';
-    export let titleClass: string = 'text-xl font-semibold mb-2';
-    export let titleText: string = 'Abstract';
-    export let contentClass: string = 'text-text'; // Uses prose potentially if applied globally
+    let {
+        abstract = undefined,
+        sectionClass = 'mb-6',
+        titleClass = 'text-xl font-semibold mb-2',
+        titleText = 'Abstract',
+        contentClass = 'text-text'
+    }: {
+        abstract?: string | undefined | null;
+        sectionClass?: string;
+        titleClass?: string;
+        titleText?: string;
+        contentClass?: string;
+    } = $props();
 </script>
 
 {#if abstract}
