@@ -5,7 +5,7 @@
     import { truncateAbstract } from '$lib/utils/textUtils';
     import TagList from '$lib/components/molecules/TagList.svelte';
     
-    export let communication: Communication;
+    let { communication }: { communication: Communication } = $props();
     
     const dispatch = createEventDispatcher();
     
@@ -71,7 +71,7 @@
                         {#if communication?.country}
                             <button 
                                 class="country-btn" 
-                                on:click={() => dispatch('filterrequest', { type: 'country', value: communication.country })}
+                                onclick={() => dispatch('filterrequest', { type: 'country', value: communication.country })}
                             >
                                 <span>, {communication.country}</span>
                             </button>

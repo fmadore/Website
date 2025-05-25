@@ -222,47 +222,46 @@
                     </Button>
                 {/if}
             </div>
-        </div>
-
-        <EntityListPageLayout>
-            <!-- Sidebar slot for filters -->
-            <svelte:fragment slot="sidebar">                 <UniversalFiltersSidebar 
+        </div>        <EntityListPageLayout>
+            {#snippet sidebar()}
+                <UniversalFiltersSidebar 
                     config={$publicationFilterConfig} 
                     isExpandedMobile={mobileFiltersExpanded} 
                     oncollapse={() => mobileFiltersExpanded = false}
                 />
-            </svelte:fragment>
+            {/snippet}
             
-            <!-- Default slot for main content -->
-            <!-- Desktop Controls: Sorter + Clear Button -->
-            <div class="desktop-controls">
-                <div class="list-status text-light">
-                    Showing {$filteredPublications.length || 0} publications
-                    {#if areFiltersActive($activeFilters)}
-                        <span class="text-accent"> (Filters applied)</span>
-                    {/if}
-                </div>                <div class="buttons-group">
-                    <Sorter activeSort={activeSort} onsortchange={handleSortChange} />
-                    {#if areFiltersActive($activeFilters)}
-                        <Button 
-                            variant="outline-primary" 
-                            size="sm" 
-                            onclick={clearAllFilters}
-                            additionalClasses="control-button-rounded clear-filters-button-page"
-                        >
-                            Clear all filters
-                        </Button>
-                    {/if}
-                </div>
-            </div>            <FilteredListDisplay
-                filteredItems={sortedPublications}
-                itemComponent={PublicationItem}
-                itemPropName="publication"
-                areFiltersActive={areFiltersActive($activeFilters)}
-                {clearAllFilters}
-                emptyStateNoFiltersMessage="No publications found matching your criteria. Try clearing some filters."
-                onitemrequest={handleFilterRequest}
-            />
+            {#snippet children()}
+                <!-- Desktop Controls: Sorter + Clear Button -->
+                <div class="desktop-controls">
+                    <div class="list-status text-light">
+                        Showing {$filteredPublications.length || 0} publications
+                        {#if areFiltersActive($activeFilters)}
+                            <span class="text-accent"> (Filters applied)</span>
+                        {/if}
+                    </div>                    <div class="buttons-group">
+                        <Sorter activeSort={activeSort} onsortchange={handleSortChange} />
+                        {#if areFiltersActive($activeFilters)}
+                            <Button 
+                                variant="outline-primary" 
+                                size="sm" 
+                                onclick={clearAllFilters}
+                                additionalClasses="control-button-rounded clear-filters-button-page"
+                            >
+                                Clear all filters
+                            </Button>
+                        {/if}
+                    </div>
+                </div>                <FilteredListDisplay
+                    filteredItems={sortedPublications}
+                    itemComponent={PublicationItem}
+                    itemPropName="publication"
+                    areFiltersActive={areFiltersActive($activeFilters)}
+                    {clearAllFilters}
+                    emptyStateNoFiltersMessage="No publications found matching your criteria. Try clearing some filters."
+                    onitemrequest={handleFilterRequest}
+                />
+            {/snippet}
         </EntityListPageLayout>
     </div>
 </div> 

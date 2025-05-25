@@ -220,57 +220,56 @@
                     </Button>
                 {/if}
             </div>
-        </div>
-
-        <EntityListPageLayout>
-            <!-- Sidebar slot for filters -->
-            <svelte:fragment slot="sidebar">                <UniversalFiltersSidebar 
+        </div>        <EntityListPageLayout>
+            {#snippet sidebar()}
+                <UniversalFiltersSidebar 
                     config={$communicationFilterConfig} 
                     isExpandedMobile={mobileFiltersExpanded}
                     oncollapse={() => mobileFiltersExpanded = false}
                 />
-            </svelte:fragment>
+            {/snippet}
             
-            <!-- Default slot for main content -->
-            <div class="desktop-controls">
-                <div class="list-status text-light">
-                    Showing {$filteredCommunications.length || 0} conference activities
-                    {#if areFiltersActive($activeFilters)}
-                        <span class="text-accent"> (Filters applied)</span>
-                    {/if}
-                </div>                <div class="actions-group">
-                    <ToggleButton 
-                        baseText="Map"
-                        isToggled={showMap} 
-                        onclick={() => showMap = !showMap}
-                    />
-                    <Sorter activeSort={activeSort} onsortchange={handleSortChange} />
-                    {#if areFiltersActive($activeFilters)}
-                        <Button 
-                            variant="outline-primary" 
-                            size="sm" 
-                            onclick={clearAllFilters}
-                            additionalClasses="control-button-rounded"
-                        >
-                            Clear all filters
-                        </Button>
-                    {/if}
+            {#snippet children()}
+                <div class="desktop-controls">
+                    <div class="list-status text-light">
+                        Showing {$filteredCommunications.length || 0} conference activities
+                        {#if areFiltersActive($activeFilters)}
+                            <span class="text-accent"> (Filters applied)</span>
+                        {/if}
+                    </div>                    <div class="actions-group">
+                        <ToggleButton 
+                            baseText="Map"
+                            isToggled={showMap} 
+                            onclick={() => showMap = !showMap}
+                        />
+                        <Sorter activeSort={activeSort} onsortchange={handleSortChange} />
+                        {#if areFiltersActive($activeFilters)}
+                            <Button 
+                                variant="outline-primary" 
+                                size="sm" 
+                                onclick={clearAllFilters}
+                                additionalClasses="control-button-rounded"
+                            >
+                                Clear all filters
+                            </Button>
+                        {/if}
+                    </div>
                 </div>
-            </div>
 
-            {#if showMap}                <div class="mb-6">
-                    <MapVisualization markersData={$mapMarkers} />
-                </div>
-            {/if}
-              <FilteredListDisplay
-                filteredItems={sortedCommunications}
-                itemComponent={CommunicationItem}
-                itemPropName="communication"
-                areFiltersActive={areFiltersActive($activeFilters)}
-                {clearAllFilters}
-                emptyStateNoFiltersMessage="No conference activities found matching your criteria. Try clearing some filters."
-                onitemrequest={handleFilterRequest}
-            />
+                {#if showMap}                    <div class="mb-6">
+                        <MapVisualization markersData={$mapMarkers} />
+                    </div>
+                {/if}
+                  <FilteredListDisplay
+                    filteredItems={sortedCommunications}
+                    itemComponent={CommunicationItem}
+                    itemPropName="communication"
+                    areFiltersActive={areFiltersActive($activeFilters)}
+                    {clearAllFilters}
+                    emptyStateNoFiltersMessage="No conference activities found matching your criteria. Try clearing some filters."
+                    onitemrequest={handleFilterRequest}
+                />
+            {/snippet}
         </EntityListPageLayout>
     </div>
 </div> 
