@@ -151,9 +151,7 @@
         background: var(--color-surface);
         border: 1px solid var(--color-border);
         transition: all 0.2s ease;
-    }
-
-    .activity-item::before {
+    }    .activity-item::before {
         content: '';
         position: absolute;
         left: 0;
@@ -163,15 +161,15 @@
         background-color: var(--color-primary);
         border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
         transition: width 0.2s ease;
-        opacity: 0.8;
+        opacity: var(--opacity-high);
     }
 
     .activity-item:hover::before {
-        width: 4px;
+        width: var(--border-width-thick);
     }
 
     .activity-item:hover {
-        transform: translateY(-1px);
+        transform: var(--transform-lift-sm);
         box-shadow: var(--shadow-md);
         border-color: var(--color-primary);
     }
@@ -183,21 +181,19 @@
         justify-content: space-between;
         gap: var(--spacing-2);
         margin-bottom: var(--spacing-2);
-    }
-
-    .activity-type {
+    }    .activity-type {
         font-size: var(--font-size-xs);
         text-transform: uppercase;
         font-weight: 600;
         color: var(--color-primary);
-        background-color: rgba(var(--color-primary-rgb), 0.1);
+        background-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
         padding: var(--spacing-1) var(--spacing-3);
         border-radius: var(--border-radius-full);
         flex-shrink: 0;
         white-space: nowrap;
         line-height: 1.5;
-        border: 1px solid rgba(var(--color-primary-rgb), 0.2);
-    }    .activity-date {
+        border: 1px solid rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+    }.activity-date {
         font-size: var(--font-size-sm);
         font-weight: 500;
         color: var(--color-text-light);
@@ -242,13 +238,11 @@
         transition: all 0.2s ease;
         border: 1px solid var(--color-border);
         background: var(--color-surface);
-    }
-
-    .view-all-link:hover {
+    }    .view-all-link:hover {
         background: var(--color-primary);
         color: white;
         border-color: var(--color-primary);
-        transform: translateY(-1px);
+        transform: var(--transform-lift-sm);
         box-shadow: var(--shadow-sm);
     }
 
@@ -292,13 +286,11 @@
         transition: all 0.2s ease;
         border: 1px solid var(--color-border);
         box-shadow: var(--shadow-sm);
-    }
-
-    .year-tag:hover {
+    }    .year-tag:hover {
         background-color: var(--color-primary);
         color: white;
         border-color: var(--color-primary);
-        transform: translateY(-1px);
+        transform: var(--transform-lift-sm);
         box-shadow: var(--shadow-md);
     }
 

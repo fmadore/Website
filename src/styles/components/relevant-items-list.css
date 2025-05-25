@@ -3,13 +3,13 @@
 .relevant-items {
 	height: auto;
 	transition: background-color 0.3s ease, box-shadow 0.3s ease;
-	background-color: rgba(var(--color-primary-rgb), 0.02);
+	background-color: rgba(var(--color-primary-rgb), var(--opacity-very-low));
 	border-radius: var(--border-radius-md);
 	padding-top: var(--spacing-4);
 	padding-right: var(--spacing-4);
 	padding-bottom: var(--spacing-4);
 	padding-left: 0;
-	border: 1px solid rgba(var(--color-primary-rgb), 0.06);
+	border: 1px solid rgba(var(--color-primary-rgb), var(--opacity-low));
 }
 
 .card-title {
