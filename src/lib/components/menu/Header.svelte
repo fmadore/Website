@@ -39,13 +39,11 @@
         { name: 'Conference Activity', path: `${base}/conference-activity` },
         { name: 'Teaching', path: `${base}/teaching` },
         { name: 'CV', path: `${base}/cv` }
-    ];
-
-    // State management
-    let mobileMenuOpen = false;
-    let activeDropdown: number | null = null;
-    let dropdownTimer: ReturnType<typeof setTimeout> | null = null;
-    let bodyOverflowHidden = false;
+    ];    // State management
+    let mobileMenuOpen = $state(false);
+    let activeDropdown = $state<number | null>(null);
+    let dropdownTimer = $state<ReturnType<typeof setTimeout> | null>(null);
+    let bodyOverflowHidden = $state(false);
     
     const HIDE_DELAY = 200;
     

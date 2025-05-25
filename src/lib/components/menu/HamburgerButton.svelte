@@ -1,12 +1,17 @@
 <script lang="ts">
-    export let isActive = false;
-    export let onClick: () => void;
+    let {
+        isActive = false,
+        onClick
+    }: {
+        isActive?: boolean;
+        onClick: () => void;
+    } = $props();
 </script>
 
 <button 
     class="hamburger" 
     class:active={isActive}
-    on:click={onClick} 
+    onclick={onClick} 
     aria-label="Toggle navigation menu"
     aria-expanded={isActive ? "true" : "false"}
     aria-controls="mobile-menu"

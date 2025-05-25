@@ -4,17 +4,22 @@
     import Icon from '@iconify/svelte';
     import { base } from '$app/paths';
     
-    export let navItems: NavItem[];
-    export let isActive = false;
-    export let onCloseMenu: () => void;
+    let {
+        navItems,
+        isActive = false,
+        onCloseMenu
+    }: {
+        navItems: NavItem[];
+        isActive?: boolean;
+        onCloseMenu: () => void;
+    } = $props();
 </script>
 
 <div id="mobile-menu" class="mobile-nav-container" class:active={isActive}>
     <nav class="mobile-nav" aria-label="Mobile navigation">        <!-- Mobile Menu Header -->
         <div class="mobile-nav-header">
             <ThemeToggle size={20} />
-            
-            <a href="{base}/" class="mobile-site-title" on:click={onCloseMenu}>
+              <a href="{base}/" class="mobile-site-title" onclick={onCloseMenu}>
                 Frédérick Madore
             </a>
             
@@ -24,19 +29,17 @@
 
         <ul class="mobile-nav-list">
             {#each navItems as item}
-                <li class="mobile-nav-item">
-                    <a href={item.path} class="mobile-nav-link" on:click={onCloseMenu}>
+                <li class="mobile-nav-item">                    <a href={item.path} class="mobile-nav-link" onclick={onCloseMenu}>
                         {item.name}
                     </a>
                     
                     {#if item.dropdown}
                         <ul class="mobile-dropdown">
                             {#each item.dropdown as subItem}
-                                <li class="mobile-dropdown-item">
-                                    <a 
+                                <li class="mobile-dropdown-item">                                    <a 
                                         href={subItem.path} 
                                         class="mobile-dropdown-link" 
-                                        on:click={onCloseMenu}
+                                        onclick={onCloseMenu}
                                         target={subItem.path.startsWith('http') ? '_blank' : null}
                                         rel={subItem.path.startsWith('http') ? 'noopener noreferrer' : null}
                                     >

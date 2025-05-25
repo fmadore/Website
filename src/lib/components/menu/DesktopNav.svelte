@@ -1,16 +1,26 @@
-<script lang="ts">    import type { NavItem } from '$lib/types/navigation';
+<script lang="ts">
+    import type { NavItem } from '$lib/types/navigation';
     import NavItemWithDropdown from '$lib/components/menu/NavItemWithDropdown.svelte';
     
-    export let navItems: NavItem[];
-    export let activeDropdown: number | null = null;
-    
-    // Event handlers
-    export let onMouseEnter: (index: number) => void;
-    export let onMouseLeave: () => void;
-    export let onFocusIn: (index: number) => void;
-    export let onFocusOut: () => void;
-    export let onKeyDown: (event: KeyboardEvent, index: number) => void;
-    export let onDropdownItemClick: () => void;
+    let {
+        navItems,
+        activeDropdown = null,
+        onMouseEnter,
+        onMouseLeave,
+        onFocusIn,
+        onFocusOut,
+        onKeyDown,
+        onDropdownItemClick
+    }: {
+        navItems: NavItem[];
+        activeDropdown?: number | null;
+        onMouseEnter: (index: number) => void;
+        onMouseLeave: () => void;
+        onFocusIn: (index: number) => void;
+        onFocusOut: () => void;
+        onKeyDown: (event: KeyboardEvent, index: number) => void;
+        onDropdownItemClick: () => void;
+    } = $props();
 </script>
 
 <nav class="desktop-nav" aria-label="Main navigation">

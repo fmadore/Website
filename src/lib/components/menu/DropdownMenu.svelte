@@ -1,10 +1,17 @@
 <script lang="ts">
     import type { NavItem } from '$lib/types/navigation';
     
-    export let items: NavItem[];
-    export let isActive = false;
-    export let parentName = '';
-    export let onItemClick = () => {};
+    let {
+        items,
+        isActive = false,
+        parentName = '',
+        onItemClick = () => {}
+    }: {
+        items: NavItem[];
+        isActive?: boolean;
+        parentName?: string;
+        onItemClick?: () => void;
+    } = $props();
 </script>
 
 <div 
@@ -16,11 +23,10 @@
 >
     <ul>
         {#each items as item}
-            <li role="none">
-                <a 
+            <li role="none">                <a 
                     href={item.path} 
                     class="dropdown-item"
-                    on:click={onItemClick}
+                    onclick={onItemClick}
                     role="menuitem"
                     target={item.path.startsWith('http') ? '_blank' : null}
                     rel={item.path.startsWith('http') ? 'noopener noreferrer' : null}

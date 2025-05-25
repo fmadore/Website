@@ -1,33 +1,43 @@
-<script lang="ts">    import NavLink from '$lib/components/menu/NavLink.svelte';
+<script lang="ts">
+    import NavLink from '$lib/components/menu/NavLink.svelte';
     import DropdownMenu from '$lib/components/menu/DropdownMenu.svelte';
     import type { NavItem } from '$lib/types/navigation';
     
-    export let item: NavItem;
-    export let isActive = false;
-    export let index: number;
-    
-    // Events
-    export let onMouseEnter: (index: number) => void;
-    export let onMouseLeave: () => void;
-    export let onFocusIn: (index: number) => void;
-    export let onFocusOut: () => void;
-    export let onKeyDown: (event: KeyboardEvent, index: number) => void;
-    export let onDropdownItemClick: () => void;
+    let {
+        item,
+        isActive = false,
+        index,
+        onMouseEnter,
+        onMouseLeave,
+        onFocusIn,
+        onFocusOut,
+        onKeyDown,
+        onDropdownItemClick
+    }: {
+        item: NavItem;
+        isActive?: boolean;
+        index: number;
+        onMouseEnter: (index: number) => void;
+        onMouseLeave: () => void;
+        onFocusIn: (index: number) => void;
+        onFocusOut: () => void;
+        onKeyDown: (event: KeyboardEvent, index: number) => void;
+        onDropdownItemClick: () => void;
+    } = $props();
 </script>
 
-<li class="nav-item dropdown-container">
-    <div 
+<li class="nav-item dropdown-container">    <div 
         class="dropdown-hover-wrapper"
         role="presentation"
-        on:mouseenter={() => onMouseEnter(index)}
-        on:mouseleave={onMouseLeave}
-        on:focusin={() => onFocusIn(index)}
-        on:focusout={onFocusOut}
+        onmouseenter={() => onMouseEnter(index)}
+        onmouseleave={onMouseLeave}
+        onfocusin={() => onFocusIn(index)}
+        onfocusout={onFocusOut}
     >        <NavLink 
             href={item.path}
             hasDropdown={!!item.dropdown}
             aria-expanded={isActive ? "true" : "false"}
-            on:keydown={(e) => onKeyDown(e, index)}
+            onkeydown={(e) => onKeyDown(e, index)}
         >
             {item.name}
         </NavLink>
