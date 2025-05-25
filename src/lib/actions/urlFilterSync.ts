@@ -135,4 +135,4 @@ export function urlFilterSync(node: HTMLElement, params: UrlFilterSyncParams) {
             unsubscribePage();
         }
     };
-} 
+}
