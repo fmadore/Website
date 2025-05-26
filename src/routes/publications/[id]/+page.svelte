@@ -216,7 +216,7 @@
 		{
 			label: 'Project',
 			value: publication.project ?? '',
-			link: publication.project
+			link: publication.project && (projectMappings as Record<string, string>)[publication.project]
 				? (projectMappings as Record<string, string>)[publication.project]
 				: undefined
 		},

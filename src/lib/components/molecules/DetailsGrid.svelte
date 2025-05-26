@@ -23,7 +23,7 @@
 		{#each visibleDetails as detail}
 			<div class="detail-item py-2 border-b border-border">
 				<strong class="detail-label font-semibold mr-2">{detail.label}:</strong>
-				{#if detail.link}
+				{#if detail.link && detail.link !== 'undefined'}
 					<a
 						href={detail.link}
 						target="_blank"
