@@ -3,10 +3,17 @@
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte'; // Use the type from the panel component
 
 	// Props
-	export let item: RelevantItem;
-	export let basePath: string; // Base path for the item detail link
-	export let formatType: (type: string) => string;
-	export let formatAuthors: (authors: string[]) => string;
+	let {
+		item,
+		basePath,
+		formatType,
+		formatAuthors
+	}: {
+		item: RelevantItem;
+		basePath: string; // Base path for the item detail link
+		formatType: (type: string) => string;
+		formatAuthors: (authors: string[]) => string;
+	} = $props();
 </script>
 
 <div class="item-card">

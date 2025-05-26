@@ -1,19 +1,27 @@
 <script lang="ts">
 	// Expects the item object and the pre-calculated URL from RelatedItemsList
-	export let item: {
-		id: string | number;
-		date?: string;
-		title?: string;
-		authors?: string[];
-		// Add other potential fields if needed, though unused in this display
-	};
-	export let itemUrl: string;
-
-	// Styling props
-	export let cardClass: string = 'related-item rounded-lg p-4 transition-shadow'; // Reuse existing styles
-	export let dateClass: string = 'related-date text-sm mb-1';
-	export let titleClass: string = 'related-title font-medium text-primary'; // Keeping title styling consistent
-	export let authorsClass: string = 'related-authors text-sm mt-1';
+	let {
+		item,
+		itemUrl,
+		cardClass = 'related-item rounded-lg p-4 transition-shadow',
+		dateClass = 'related-date text-sm mb-1',
+		titleClass = 'related-title font-medium text-primary',
+		authorsClass = 'related-authors text-sm mt-1'
+	}: {
+		item: {
+			id: string | number;
+			date?: string;
+			title?: string;
+			authors?: string[];
+			// Add other potential fields if needed, though unused in this display
+		};
+		itemUrl: string;
+		// Styling props
+		cardClass?: string; // Reuse existing styles
+		dateClass?: string;
+		titleClass?: string; // Keeping title styling consistent
+		authorsClass?: string;
+	} = $props();
 </script>
 
 <a href={itemUrl} class={cardClass}>

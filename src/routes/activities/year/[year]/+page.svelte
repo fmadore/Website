@@ -11,11 +11,11 @@
 	import { browser } from '$app/environment';
 
 	// Get the year parameter from the URL
-	$: year = parseInt($page.params.year);
+	let year = $derived(parseInt($page.params.year));
 
 	// Filter activities by year
-	let filteredActivities: Activity[] = [];
-	let allYears: number[] = [];
+	let filteredActivities: Activity[] = $state([]);
+	let allYears: number[] = $state([]);
 
 	// Subscribe to the store and update data
 	const unsubscribe = activities.subscribe((value: Activity[]) => {
@@ -26,21 +26,23 @@
 	});
 
 	// Update filtered activities when year changes
-	$: if (year) {
-		activities.subscribe((value: Activity[]) => {
-			filteredActivities = value.filter((a: Activity) => a.year === year);
-		})();
-	}
+	$effect(() => {
+		if (year) {
+			activities.subscribe((value: Activity[]) => {
+				filteredActivities = value.filter((a: Activity) => a.year === year);
+			})();
+		}
+	});
 
 	// Define breadcrumb items
-	$: breadcrumbItems = [
+	let breadcrumbItems = $derived([
 		// { label: 'Home', href: base || '/' }, // Removed: Breadcrumb component handles the Home link by default
 		{ label: 'Activities', href: `${base}/activities` },
 		{ label: String(year), href: `${base}/activities/year/${year}` }
-	];
+	]);
 
 	// Generate Breadcrumb JSON-LD
-	$: breadcrumbJsonLdString = JSON.stringify({
+	let breadcrumbJsonLdString = $derived(JSON.stringify({
 		'@context': 'https://schema.org',
 		'@type': 'BreadcrumbList',
 		itemListElement: breadcrumbItems.map((item, index) => ({
@@ -49,7 +51,7 @@
 			name: item.label,
 			item: `${$page.url.origin}${item.href}`
 		}))
-	});
+	}));
 
 	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld-activities-year';
 
