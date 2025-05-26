@@ -3,10 +3,13 @@
 	let { size = 20 } = $props();
 	import { theme, toggleTheme } from '$lib/stores/themeStore';
 	import Icon from '@iconify/svelte';
-	import { onDestroy } from 'svelte';
+	
 	let currentTheme = $state('light');
-	const unsubscribe = theme.subscribe((value) => (currentTheme = value));
-	onDestroy(unsubscribe);
+	
+	$effect(() => {
+		const unsubscribe = theme.subscribe((value) => (currentTheme = value));
+		return unsubscribe;
+	});
 </script>
 
 <button

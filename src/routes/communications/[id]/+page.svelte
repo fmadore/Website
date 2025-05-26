@@ -15,7 +15,6 @@
 	import AbstractSection from '$lib/components/molecules/AbstractSection.svelte';
 	import RelatedItemsList from '$lib/components/organisms/RelatedItemsList.svelte';
 	import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
-	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	// Get communication from the page data
 	let { data } = $props();
@@ -98,22 +97,39 @@
 
 	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
 
-	onMount(() => {
-		if (browser && breadcrumbJsonLdString && !document.getElementById(breadcrumbJsonLdScriptId)) {
-			const script = document.createElement('script');
-			script.id = breadcrumbJsonLdScriptId;
-			script.type = 'application/ld+json';
-			script.textContent = breadcrumbJsonLdString;
-			document.head.appendChild(script);
-		}
-	});
-
-	onDestroy(() => {
+	// Replace onMount and onDestroy with $effect
+	$effect(() => {
 		if (browser) {
-			const script = document.getElementById(breadcrumbJsonLdScriptId);
-			if (script) {
-				document.head.removeChild(script);
+			const scriptId = breadcrumbJsonLdScriptId;
+			let scriptElement = document.getElementById(scriptId) as HTMLScriptElement | null;
+
+			// breadcrumbJsonLdString is reactive via $derived
+			if (breadcrumbJsonLdString) {
+				if (scriptElement) {
+					scriptElement.textContent = breadcrumbJsonLdString;
+				} else {
+					scriptElement = document.createElement('script');
+					scriptElement.id = scriptId;
+					scriptElement.type = 'application/ld+json';
+					scriptElement.textContent = breadcrumbJsonLdString;
+					document.head.appendChild(scriptElement);
+				}
+			} else {
+				// If breadcrumbJsonLdString becomes falsy and the script exists, remove it
+				if (scriptElement) {
+					document.head.removeChild(scriptElement);
+				}
 			}
+
+			return () => {
+				// Cleanup: remove the script if it exists
+				if (browser) {
+					const scriptToRemove = document.getElementById(scriptId);
+					if (scriptToRemove && scriptToRemove.parentElement === document.head) {
+						document.head.removeChild(scriptToRemove);
+					}
+				}
+			};
 		}
 	});
 </script>

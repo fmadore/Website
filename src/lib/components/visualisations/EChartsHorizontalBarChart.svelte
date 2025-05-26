@@ -2,7 +2,6 @@
 ECharts Horizontal Bar Chart component
 -->
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import * as echarts from 'echarts'; // Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;
 	let {
@@ -172,40 +171,44 @@ ECharts Horizontal Bar Chart component
 		backgroundColor: 'transparent'
 	});
 
-	onMount(() => {
+	$effect(() => {
 		// Initialize theme detection
 		updateTheme();
 
-		// Initialize chart
-		chart = echarts.init(chartContainer);
+		// Initialize chart if container is available
+		if (!chart && chartContainer) {
+			chart = echarts.init(chartContainer);
+		}
 
-		// Set initial options
-		chart.setOption(option);
+		// Set/update chart options
+		if (chart) {
+			chart.setOption(option, true); // true = notMerge for clean update
+		}
 
-		// Handle resize
-		const resizeObserver = new ResizeObserver(() => {
-			chart?.resize();
-		});
-		resizeObserver.observe(chartContainer);
+		// Setup observers only once
+		let resizeObserver: ResizeObserver | undefined;
+		let themeObserver: MutationObserver | undefined;
 
-		// Theme change observer
-		const themeObserver = new MutationObserver(() => {
-			updateTheme();
-		});
-		themeObserver.observe(document.documentElement, { attributes: true });
+		if (chartContainer && !resizeObserver) {
+			// Handle resize
+			resizeObserver = new ResizeObserver(() => {
+				chart?.resize();
+			});
+			resizeObserver.observe(chartContainer);
 
+			// Theme change observer
+			themeObserver = new MutationObserver(() => {
+				updateTheme();
+			});
+			themeObserver.observe(document.documentElement, { attributes: true });
+		}
+
+		// Cleanup function
 		return () => {
-			resizeObserver.disconnect();
-			themeObserver.disconnect();
+			resizeObserver?.disconnect();
+			themeObserver?.disconnect();
 			chart?.dispose();
 		};
-	});
-
-	// Update chart when data or theme changes
-	$effect(() => {
-		if (chart) {
-			chart.setOption(option, true);
-		}
 	});
 </script>
 

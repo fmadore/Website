@@ -1,10 +1,9 @@
-<script>
+<script lang="ts">
 	import SEO from '$lib/SEO.svelte';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 	import { page } from '$app/stores'; // Import page store
-	import { onMount, onDestroy } from 'svelte'; // Import lifecycle functions
 	import { browser } from '$app/environment'; // Import browser check
 
 	// Define breadcrumb items
@@ -88,22 +87,39 @@
 	// Manage JSON-LD script injection
 	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
 
-	onMount(() => {
-		if (browser && breadcrumbJsonLdString && !document.getElementById(breadcrumbJsonLdScriptId)) {
-			const script = document.createElement('script');
-			script.id = breadcrumbJsonLdScriptId;
-			script.type = 'application/ld+json';
-			script.textContent = breadcrumbJsonLdString; // Access derived value directly
-			document.head.appendChild(script);
-		}
-	});
-
-	onDestroy(() => {
+	// Replace onMount and onDestroy with $effect
+	$effect(() => {
 		if (browser) {
-			const script = document.getElementById(breadcrumbJsonLdScriptId);
-			if (script) {
-				document.head.removeChild(script);
+			const scriptId = breadcrumbJsonLdScriptId;
+			let scriptElement = document.getElementById(scriptId) as HTMLScriptElement | null;
+
+			// breadcrumbJsonLdString is reactive via $derived
+			if (breadcrumbJsonLdString) {
+				if (scriptElement) {
+					scriptElement.textContent = breadcrumbJsonLdString;
+				} else {
+					scriptElement = document.createElement('script');
+					scriptElement.id = scriptId;
+					scriptElement.type = 'application/ld+json';
+					scriptElement.textContent = breadcrumbJsonLdString;
+					document.head.appendChild(scriptElement);
+				}
+			} else {
+				// If breadcrumbJsonLdString becomes falsy and the script exists, remove it
+				if (scriptElement) {
+					document.head.removeChild(scriptElement);
+				}
 			}
+
+			return () => {
+				// Cleanup: remove the script if it exists
+				if (browser) {
+					const scriptToRemove = document.getElementById(scriptId);
+					if (scriptToRemove && scriptToRemove.parentElement === document.head) {
+						document.head.removeChild(scriptToRemove);
+					}
+				}
+			};
 		}
 	});
 </script>

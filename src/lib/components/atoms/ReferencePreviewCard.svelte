@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, createEventDispatcher, tick } from 'svelte';
+	import { createEventDispatcher, tick } from 'svelte';
 	import { browser } from '$app/environment';
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
@@ -46,14 +46,16 @@
 			: null
 	);
 
-	onMount(async () => {
-		// Let the animation start first
-		await tick();
-		// Position the card after a short delay to allow initial animations
-		setTimeout(() => {
-			positionCard();
-			isPositioned = true;
-		}, 50);
+	$effect(() => {
+		// Let the animation start first using async IIFE
+		(async () => {
+			await tick();
+			// Position the card after a short delay to allow initial animations
+			setTimeout(() => {
+				positionCard();
+				isPositioned = true;
+			}, 50);
+		})();
 	});
 
 	function positionCard() {

@@ -11,7 +11,6 @@
 </script>
 
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import type {
 		Map as LeafletMap,
@@ -189,12 +188,15 @@
 		}
 	}
 
-	onMount(async () => {
+	// Main effect for initialization and cleanup  
+	$effect(() => {
 		if (!browser) return;
 
-		try {
-			// Dynamically import Leaflet
-			L = (await import('leaflet')).default;
+		// Initialize map asynchronously
+		(async () => {
+			try {
+				// Dynamically import Leaflet
+				L = (await import('leaflet')).default;
 
 			// Then dynamically import the marker cluster plugin
 			await import('leaflet.markercluster');
@@ -327,6 +329,21 @@
 			console.error('Error initializing map:', error);
 			importError = error instanceof Error ? error.message : 'Unknown error loading map';
 		}
+		})();
+
+		// Cleanup function
+		return () => {
+			// Clean up observer
+			if (mobileMenuObserver) {
+				mobileMenuObserver.disconnect();
+			}
+
+			// Clean up map
+			if (map) {
+				map.remove();
+				map = null;
+			}
+		};
 	});
 
 	// Function to add/update markers
@@ -413,19 +430,6 @@
 			const _pref = preferDarkMode;
 			// console.log('Reactively checking theme due to preferDarkMode change:', _pref); // Keep for debugging if needed
 			updateTileLayer();
-		}
-	});
-
-	onDestroy(() => {
-		// Clean up observer
-		if (mobileMenuObserver) {
-			mobileMenuObserver.disconnect();
-		}
-
-		// Clean up map
-		if (map) {
-			map.remove();
-			map = null;
 		}
 	});
 </script>

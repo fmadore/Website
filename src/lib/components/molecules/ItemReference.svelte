@@ -8,7 +8,6 @@
 	 * Usage: <ReferenceLinkWithPreview id="my‑item‑id" />
 	 */
 
-	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import { crossfade, fade } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
@@ -129,7 +128,7 @@
 		}
 	}
 	/* ───────────────────────── Lifecycle ─────────────────────────────── */
-	onMount(() => {
+	$effect(() => {
 		if (!browser) return;
 
 		// Detect touch capability

@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
 
 	let showBanner = $state(false);
 
-	onMount(() => {
+	$effect(() => {
 		// Check if user has already made a choice
 		const cookiesAccepted = localStorage.getItem('cookiesAccepted');
 		if (cookiesAccepted === null) {

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import { onMount } from 'svelte';
 	import type { NavItem } from '$lib/types/navigation';
 	// Import Components
 	import DesktopNav from '$lib/components/menu/DesktopNav.svelte';
@@ -153,7 +152,7 @@
 	}
 
 	// Lifecycle
-	onMount(() => {
+	$effect(() => {
 		window.addEventListener('resize', handleResize);
 
 		return () => {

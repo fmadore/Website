@@ -2,7 +2,6 @@
 	import SEO from '$lib/SEO.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import { allPublications, publicationsByType } from '$lib/data/publications'; // Import publicationsByType
-	import { onMount } from 'svelte';
 	import EChartsBarChart from '$lib/components/visualisations/EChartsBarChart.svelte';
 	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
@@ -15,15 +14,8 @@
 		[type: string]: number; // Counts for each publication type
 	};
 
-	let citationsPerYearData = $state<CitationYearData[]>([]);
-	let citedAuthorsData = $state<CitedAuthorData[]>([]);
-	let publicationsPerYearStackedData = $state<PublicationsPerYearStackedData[]>([]);
-	let publicationTypesForStack = $state<string[]>([]); // Keys for the stack
-
-	// Calculate total citations reactively
-	const totalCitations = $derived(citationsPerYearData.reduce((sum, item) => sum + item.count, 0));
-
-	onMount(() => {
+	// Calculate data reactively using $derived
+	const citationsPerYearData = $derived((() => {
 		// Process allPublications to derive data for visualizations
 		const citationsReceivedInYear: Record<number, number> = {};
 		allPublications.forEach((pub) => {
@@ -37,10 +29,12 @@
 				});
 			}
 		});
-		citationsPerYearData = Object.entries(citationsReceivedInYear)
+		return Object.entries(citationsReceivedInYear)
 			.map(([year, count]) => ({ year: parseInt(year), count }))
 			.sort((a, b) => a.year - b.year);
+	})());
 
+	const citedAuthorsData = $derived((() => {
 		const authorCounts: Record<string, number> = {};
 		allPublications.forEach((pub) => {
 			if (pub.citedBy) {
@@ -53,33 +47,38 @@
 				});
 			}
 		});
-		citedAuthorsData = Object.entries(authorCounts)
+		return Object.entries(authorCounts)
 			.map(([author, count]) => ({ author, count }))
 			.sort((a, b) => b.count - a.count);
+	})());
 
+	const publicationTypesForStack = $derived(Object.keys(publicationsByType).sort());
+
+	const publicationsPerYearStackedData = $derived((() => {
 		// Prepare data for stacked bar chart (Publications per Year by Type)
-		const types = Object.keys(publicationsByType).sort(); // Get all unique publication types
-		publicationTypesForStack = types;
-
+		const types = publicationTypesForStack;
 		const yearlyPublicationCounts: Record<number, { [type: string]: number; total: number }> = {};
 
 		allPublications.forEach((pub) => {
 			if (!yearlyPublicationCounts[pub.year]) {
 				yearlyPublicationCounts[pub.year] = { total: 0 };
-				types.forEach((type) => (yearlyPublicationCounts[pub.year][type] = 0)); // Initialize all types with 0
+				types.forEach((type: string) => (yearlyPublicationCounts[pub.year][type] = 0)); // Initialize all types with 0
 			}
 			yearlyPublicationCounts[pub.year][pub.type] =
 				(yearlyPublicationCounts[pub.year][pub.type] || 0) + 1;
 			yearlyPublicationCounts[pub.year].total++;
 		});
 
-		publicationsPerYearStackedData = Object.entries(yearlyPublicationCounts)
+		return Object.entries(yearlyPublicationCounts)
 			.map(([yearStr, counts]) => ({
 				year: parseInt(yearStr),
 				...counts
 			}))
 			.sort((a, b) => a.year - b.year);
-	});
+	})());
+
+	// Calculate total citations reactively
+	const totalCitations = $derived(citationsPerYearData.reduce((sum: number, item: CitationYearData) => sum + item.count, 0));
 
 	// Accessor functions for the D3BarChart
 	const getYear = (d: CitationYearData) => d.year;

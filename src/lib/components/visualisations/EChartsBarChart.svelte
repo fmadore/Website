@@ -2,7 +2,6 @@
 ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 -->
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import * as echarts from 'echarts'; // Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;
 	let {
@@ -171,40 +170,44 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		backgroundColor: 'transparent' // Let the container handle background
 	});
 
-	onMount(() => {
+	$effect(() => {
 		// Initialize theme detection
 		updateTheme();
 
-		// Initialize chart
-		chart = echarts.init(chartContainer);
+		// Initialize chart if container is available
+		if (!chart && chartContainer) {
+			chart = echarts.init(chartContainer);
+		}
 
-		// Set initial options
-		chart.setOption(option);
-
-		// Handle resize
-		const resizeObserver = new ResizeObserver(() => {
-			chart?.resize();
-		});
-		resizeObserver.observe(chartContainer);
-
-		// Theme change observer
-		const themeObserver = new MutationObserver(() => {
-			updateTheme();
-		});
-		themeObserver.observe(document.documentElement, { attributes: true });
-
-		return () => {
-			resizeObserver.disconnect();
-			themeObserver.disconnect();
-			chart?.dispose();
-		};
-	});
-
-	// Update chart when data or theme changes
-	$effect(() => {
+		// Set/update chart options
 		if (chart) {
 			chart.setOption(option, true); // true = notMerge for clean update
 		}
+
+		// Setup observers only once
+		let resizeObserver: ResizeObserver | undefined;
+		let themeObserver: MutationObserver | undefined;
+
+		if (chartContainer && !resizeObserver) {
+			// Handle resize
+			resizeObserver = new ResizeObserver(() => {
+				chart?.resize();
+			});
+			resizeObserver.observe(chartContainer);
+
+			// Theme change observer
+			themeObserver = new MutationObserver(() => {
+				updateTheme();
+			});
+			themeObserver.observe(document.documentElement, { attributes: true });
+		}
+
+		// Cleanup function
+		return () => {
+			resizeObserver?.disconnect();
+			themeObserver?.disconnect();
+			chart?.dispose();
+		};
 	});
 </script>
 

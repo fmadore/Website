@@ -6,7 +6,6 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 	import { page } from '$app/stores'; // Import page store
-	import { onMount, onDestroy } from 'svelte'; // Import lifecycle functions
 	import { browser } from '$app/environment'; // Import browser check
 
 	// Pre-construct breadcrumb items with evaluated paths
@@ -18,17 +17,19 @@
 		}
 	];
 
-	// Generate Breadcrumb JSON-LD
-	const breadcrumbJsonLdString = JSON.stringify({
-		'@context': 'https://schema.org',
-		'@type': 'BreadcrumbList',
-		itemListElement: breadcrumbItems.map((item, index) => ({
-			'@type': 'ListItem',
-			position: index + 1,
-			name: item.label,
-			item: `${$page.url.origin}${item.href}`
-		}))
-	});
+	// Generate Breadcrumb JSON-LD reactively using $derived
+	let breadcrumbJsonLdString = $derived(
+		JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'BreadcrumbList',
+			itemListElement: breadcrumbItems.map((item, index) => ({
+				'@type': 'ListItem',
+				position: index + 1,
+				name: item.label,
+				item: `${$page.url.origin}${item.href}`
+			}))
+		})
+	);
 
 	// Manage JSON-LD script injection
 	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
@@ -46,35 +47,49 @@
 		}
 	}
 
-	onMount(() => {
-		if (browser && breadcrumbJsonLdString && !document.getElementById(breadcrumbJsonLdScriptId)) {
-			const script = document.createElement('script');
-			script.id = breadcrumbJsonLdScriptId;
-			script.type = 'application/ld+json';
-			script.textContent = breadcrumbJsonLdString;
-			document.head.appendChild(script);
-		}
-
-		// Fallback for loading animation in case onload doesn't fire
-		const loadingTimeout = setTimeout(() => {
-			const containers = document.querySelectorAll('.iframe-container-loading');
-			containers.forEach((container) => {
-				container.classList.add('iframe-loaded');
-				console.log('Forced loading animation hide via timeout');
-			});
-		}, 5000); // 5 second timeout
-
-		return () => {
-			clearTimeout(loadingTimeout);
-		};
-	});
-
-	onDestroy(() => {
+	// Replace onMount and onDestroy with $effect
+	$effect(() => {
 		if (browser) {
-			const script = document.getElementById(breadcrumbJsonLdScriptId);
-			if (script) {
-				document.head.removeChild(script);
+			const scriptId = breadcrumbJsonLdScriptId;
+			let scriptElement = document.getElementById(scriptId) as HTMLScriptElement | null;
+
+			// breadcrumbJsonLdString is reactive via $derived
+			if (breadcrumbJsonLdString) {
+				if (scriptElement) {
+					scriptElement.textContent = breadcrumbJsonLdString;
+				} else {
+					scriptElement = document.createElement('script');
+					scriptElement.id = scriptId;
+					scriptElement.type = 'application/ld+json';
+					scriptElement.textContent = breadcrumbJsonLdString;
+					document.head.appendChild(scriptElement);
+				}
+			} else {
+				// If breadcrumbJsonLdString becomes falsy and the script exists, remove it
+				if (scriptElement) {
+					document.head.removeChild(scriptElement);
+				}
 			}
+
+			// Fallback for loading animation in case onload doesn't fire
+			const loadingTimeout = setTimeout(() => {
+				const containers = document.querySelectorAll('.iframe-container-loading');
+				containers.forEach((container) => {
+					container.classList.add('iframe-loaded');
+					console.log('Forced loading animation hide via timeout');
+				});
+			}, 5000); // 5 second timeout
+
+			return () => {
+				// Cleanup: remove the script if it exists and clear timeout
+				if (browser) {
+					const scriptToRemove = document.getElementById(scriptId);
+					if (scriptToRemove && scriptToRemove.parentElement === document.head) {
+						document.head.removeChild(scriptToRemove);
+					}
+				}
+				clearTimeout(loadingTimeout);
+			};
 		}
 	});
 </script>

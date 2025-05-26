@@ -8,7 +8,6 @@
 	import ItemReference from '$lib/components/molecules/ItemReference.svelte';
 	import type { Activity } from '$lib/types';
 	import type { PageData } from './$types';
-	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 
 	// Added imports for consistency
@@ -53,39 +52,62 @@
 	const activityJsonLdScriptId = 'activity-json-ld';
 	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
 
-	onMount(() => {
+	// Replace onMount and onDestroy with $effect
+	$effect(() => {
 		if (browser) {
-			// Add activity JSON-LD (existing logic)
-			if (jsonLdString && !document.getElementById(activityJsonLdScriptId)) {
-				const script = document.createElement('script');
-				script.id = activityJsonLdScriptId;
-				script.type = 'application/ld+json';
-				script.textContent = jsonLdString;
-				document.head.appendChild(script);
-			}
-			// Add breadcrumb JSON-LD
-			if (breadcrumbJsonLdString && !document.getElementById(breadcrumbJsonLdScriptId)) {
-				const script = document.createElement('script');
-				script.id = breadcrumbJsonLdScriptId;
-				script.type = 'application/ld+json';
-				script.textContent = breadcrumbJsonLdString;
-				document.head.appendChild(script);
-			}
-		}
-	});
+			// Handle activity JSON-LD
+			const activityScriptId = activityJsonLdScriptId;
+			let activityScriptElement = document.getElementById(activityScriptId) as HTMLScriptElement | null;
 
-	onDestroy(() => {
-		if (browser) {
-			// Remove activity JSON-LD (existing logic)
-			const activityScript = document.getElementById(activityJsonLdScriptId);
-			if (activityScript) {
-				document.head.removeChild(activityScript);
+			if (jsonLdString) {
+				if (activityScriptElement) {
+					activityScriptElement.textContent = jsonLdString;
+				} else {
+					activityScriptElement = document.createElement('script');
+					activityScriptElement.id = activityScriptId;
+					activityScriptElement.type = 'application/ld+json';
+					activityScriptElement.textContent = jsonLdString;
+					document.head.appendChild(activityScriptElement);
+				}
+			} else {
+				if (activityScriptElement) {
+					document.head.removeChild(activityScriptElement);
+				}
 			}
-			// Remove breadcrumb JSON-LD
-			const breadcrumbScript = document.getElementById(breadcrumbJsonLdScriptId);
-			if (breadcrumbScript) {
-				document.head.removeChild(breadcrumbScript);
+
+			// Handle breadcrumb JSON-LD
+			const breadcrumbScriptId = breadcrumbJsonLdScriptId;
+			let breadcrumbScriptElement = document.getElementById(breadcrumbScriptId) as HTMLScriptElement | null;
+
+			if (breadcrumbJsonLdString) {
+				if (breadcrumbScriptElement) {
+					breadcrumbScriptElement.textContent = breadcrumbJsonLdString;
+				} else {
+					breadcrumbScriptElement = document.createElement('script');
+					breadcrumbScriptElement.id = breadcrumbScriptId;
+					breadcrumbScriptElement.type = 'application/ld+json';
+					breadcrumbScriptElement.textContent = breadcrumbJsonLdString;
+					document.head.appendChild(breadcrumbScriptElement);
+				}
+			} else {
+				if (breadcrumbScriptElement) {
+					document.head.removeChild(breadcrumbScriptElement);
+				}
 			}
+
+			return () => {
+				// Cleanup: remove scripts if they exist
+				if (browser) {
+					const activityScriptToRemove = document.getElementById(activityScriptId);
+					if (activityScriptToRemove && activityScriptToRemove.parentElement === document.head) {
+						document.head.removeChild(activityScriptToRemove);
+					}
+					const breadcrumbScriptToRemove = document.getElementById(breadcrumbScriptId);
+					if (breadcrumbScriptToRemove && breadcrumbScriptToRemove.parentElement === document.head) {
+						document.head.removeChild(breadcrumbScriptToRemove);
+					}
+				}
+			};
 		}
 	});
 
