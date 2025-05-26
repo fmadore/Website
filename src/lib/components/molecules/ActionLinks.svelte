@@ -1,15 +1,25 @@
 <script lang="ts">
-    export let primaryUrl: string | undefined | null = undefined;
-    export let primaryLabel: string = 'Access Item';
-    export let additionalUrls: Array<{ url: string; label: string }> | undefined | null = [];
+    let {
+        primaryUrl = undefined,
+        primaryLabel = 'Access Item',
+        additionalUrls = [],
+        sectionClass = 'action-links',
+        primaryButtonClass = 'btn btn-primary',
+        secondaryButtonClass = 'btn btn-outline',
+        primaryDivClass = 'mb-2',
+        secondaryDivClass = 'flex flex-wrap gap-2'
+    }: {
+        primaryUrl?: string | undefined | null;
+        primaryLabel?: string;
+        additionalUrls?: Array<{ url: string; label: string }> | undefined | null;
+        sectionClass?: string;
+        primaryButtonClass?: string;
+        secondaryButtonClass?: string;
+        primaryDivClass?: string;
+        secondaryDivClass?: string;
+    } = $props();
 
-    export let sectionClass: string = 'action-links';
-    export let primaryButtonClass: string = 'btn btn-primary';
-    export let secondaryButtonClass: string = 'btn btn-outline';
-    export let primaryDivClass: string = 'mb-2';
-    export let secondaryDivClass: string = 'flex flex-wrap gap-2';
-
-    $: visibleAdditionalUrls = additionalUrls?.filter(link => link.url && link.label) ?? [];
+    let visibleAdditionalUrls = $derived(additionalUrls?.filter(link => link.url && link.label) ?? []);
 
 </script>
 
