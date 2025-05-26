@@ -1,29 +1,19 @@
 <script lang="ts">
 	import { activities, type Activity } from '$lib/stores/activities';
-	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import SEO from '$lib/SEO.svelte';
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
 
-	// Local activities array
-	let activityList: Activity[] = [];
-	let years: number[] = [];
-
-	// Subscribe to the activities store
-	const unsubscribe = activities.subscribe((value: Activity[]) => {
-		activityList = value;
-		years = [...new Set(value.map((activity: Activity) => activity.year))].sort(
+	// Local activities array - using $derived to reactively get the store value
+	let activityList = $derived($activities);
+	
+	// Years array - derived from activities and sorted
+	let years = $derived(
+		[...new Set($activities.map((activity: Activity) => activity.year))].sort(
 			(a: number, b: number) => b - a
-		);
-	});
-
-	// Clean up subscription on component destroy
-	onMount(() => {
-		return () => {
-			unsubscribe();
-		};
-	});
+		)
+	);
 
 	// Get activities count by year for display
 	function getCountByYear(year: number): number {

@@ -1,38 +1,27 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { activities, type Activity } from '$lib/stores/activities';
-	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import SEO from '$lib/SEO.svelte';
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
-	import { onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 
 	// Get the year parameter from the URL
 	let year = $derived(parseInt($page.params.year));
 
-	// Filter activities by year
-	let filteredActivities: Activity[] = $state([]);
-	let allYears: number[] = $state([]);
-
-	// Subscribe to the store and update data
-	const unsubscribe = activities.subscribe((value: Activity[]) => {
-		filteredActivities = value.filter((a: Activity) => a.year === year);
-		allYears = [...new Set(value.map((a: Activity) => a.year))].sort(
+	// Filter activities by year - using $derived for reactive filtering
+	let filteredActivities = $derived(
+		$activities.filter((a: Activity) => a.year === year)
+	);
+	
+	// All years for display - using $derived
+	let allYears = $derived(
+		[...new Set($activities.map((a: Activity) => a.year))].sort(
 			(a: number, b: number) => b - a
-		);
-	});
-
-	// Update filtered activities when year changes
-	$effect(() => {
-		if (year) {
-			activities.subscribe((value: Activity[]) => {
-				filteredActivities = value.filter((a: Activity) => a.year === year);
-			})();
-		}
-	});
+		)
+	);
 
 	// Define breadcrumb items
 	let breadcrumbItems = $derived([
@@ -55,7 +44,8 @@
 
 	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld-activities-year';
 
-	onMount(() => {
+	// Handle JSON-LD script injection with $effect
+	$effect(() => {
 		if (browser && breadcrumbJsonLdString && !document.getElementById(breadcrumbJsonLdScriptId)) {
 			const script = document.createElement('script');
 			script.id = breadcrumbJsonLdScriptId;
@@ -63,9 +53,9 @@
 			script.textContent = breadcrumbJsonLdString;
 			document.head.appendChild(script);
 		}
-		// Clean up subscription on component destroy
+
+		// Cleanup when component is destroyed
 		return () => {
-			unsubscribe();
 			if (browser) {
 				const script = document.getElementById(breadcrumbJsonLdScriptId);
 				if (script) {

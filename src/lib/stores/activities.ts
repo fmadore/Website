@@ -19,9 +19,11 @@ export function addActivity(activity: Activity) {
 export function getActivitiesByYear(year: number) {
 	let filteredActivities: Activity[] = [];
 
-	activities.subscribe((value) => {
+	// Use unsubscribe pattern for one-time read
+	const unsubscribe = activities.subscribe((value) => {
 		filteredActivities = value.filter((activity) => activity.year === year);
-	})();
+	});
+	unsubscribe();
 
 	return filteredActivities;
 }
@@ -30,9 +32,11 @@ export function getActivitiesByYear(year: number) {
 export function getActivityById(id: string): Activity | undefined {
 	let activity: Activity | undefined;
 
-	activities.subscribe((value) => {
+	// Use unsubscribe pattern for one-time read
+	const unsubscribe = activities.subscribe((value) => {
 		activity = value.find((a) => a.id === id);
-	})();
+	});
+	unsubscribe();
 
 	return activity;
 }
