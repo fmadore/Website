@@ -85,11 +85,9 @@
             (val !== null && val !== undefined && typeof val === 'object' && Object.keys(val).length > 0 && val.constructor === Object) || 
             (!Array.isArray(val) && typeof val !== 'object' && val !== null && val !== undefined && val !== '')
         );
-    }
-
-    // Function to handle filter requests from items (consistent with communications/+page.svelte)
-    function handleFilterRequest(event: CustomEvent<{ type: string; value: string }>) {
-        const { type, value } = event.detail;
+    }    // Function to handle filter requests from items (consistent with communications/+page.svelte)
+    function handleFilterRequest(event: { type: string; value: string }) {
+        const { type, value } = event;
         if (type === 'tag') {
             toggleTagFilter(value);
         } else if (type === 'country') {
@@ -98,7 +96,7 @@
             toggleTypeFilter(value);
         }
         // Add other filter types if needed (e.g., author)
-    }    // Handler for the sortChange event from the Sorter component
+    }// Handler for the sortChange event from the Sorter component
     function handleSortChange(data: { sortBy: 'date' | 'title' | 'citations' }) {
         // Only handle date and title sorts, ignore citations
         if (data.sortBy === 'date' || data.sortBy === 'title') {

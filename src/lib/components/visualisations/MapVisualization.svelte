@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
     // Define the structure for marker data (reused from previous version)
     export type MarkerData = {
         id: string;
@@ -17,14 +17,24 @@
     import { base } from '$app/paths'; // Import base path
     import { MapPin } from 'lucide-svelte'; // Import a Lucide icon
 
-    // Map configuration props with defaults
-    export let markersData: MarkerData[] = [];
-    export let initialView: [number, number] = [20, 0];
-    export let initialZoom: number = 2;
-    export let maxZoom: number = 19;
-    export let maxClusterZoom: number = 18;
-    export let preferDarkMode: boolean | null = null; // Optional override for dark mode preference
-    export let restrictBounds: boolean = true; // Whether to restrict map bounds
+    // Map configuration props with defaults using Svelte 5 $props() rune
+    const {
+        markersData = [],
+        initialView = [20, 0] as [number, number],
+        initialZoom = 2,
+        maxZoom = 19,
+        maxClusterZoom = 18,
+        preferDarkMode = null as boolean | null, // Optional override for dark mode preference
+        restrictBounds = true // Whether to restrict map bounds
+    } = $props<{
+        markersData?: MarkerData[];
+        initialView?: [number, number];
+        initialZoom?: number;
+        maxZoom?: number;
+        maxClusterZoom?: number;
+        preferDarkMode?: boolean | null;
+        restrictBounds?: boolean;
+    }>();
 
     // Maximum bounds for the map (to prevent dragging to empty areas)
     const MAX_BOUNDS: [number, number][] = [
@@ -47,16 +57,16 @@
             url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }
-    };
-
-    let mapContainer: HTMLElement;
-    let map: LeafletMap | null = null;
-    let clusterLayer: MarkerClusterGroup | null = null;
-    let L: typeof import('leaflet') | null = null;
-    let importError: string | null = null;
-    let currentTileLayer: TileLayer | null = null;
-    let currentThemeIsDark: boolean | null = null; // Track the currently applied theme state
-    let mobileMenuObserver: MutationObserver | null = null;
+    };    let mapContainer: HTMLElement;
+    
+    // State variables using Svelte 5 $state() rune
+    let map = $state<LeafletMap | null>(null);
+    let clusterLayer = $state<MarkerClusterGroup | null>(null);
+    let L = $state<typeof import('leaflet') | null>(null);
+    let importError = $state<string | null>(null);
+    let currentTileLayer = $state<TileLayer | null>(null);
+    let currentThemeIsDark = $state<boolean | null>(null); // Track the currently applied theme state
+    let mobileMenuObserver = $state<MutationObserver | null>(null);
 
     // Function to detect dark mode from system or CSS
     function detectDarkMode(): boolean {
@@ -376,21 +386,23 @@
                 map.fitBounds(bounds, { padding: [50, 50], maxZoom: 10 });
             }
         }
-    }
-
-    // Reactive statement for markers: Update only when markersData changes (and map is ready)
-    $: if (browser && L && map && clusterLayer) {
-        // console.log('Reactively updating markers due to markersData change.'); // Keep for debugging if needed
-        addMarkers(markersData);
-    }
+    }    // Reactive statement for markers: Update only when markersData changes (and map is ready)
+    $effect(() => {
+        if (browser && L && map && clusterLayer) {
+            // console.log('Reactively updating markers due to markersData change.'); // Keep for debugging if needed
+            addMarkers(markersData);
+        }
+    });
 
     // Reactive statement for theme preference: Re-check theme when preferDarkMode changes (and map is ready)
-    $: if (browser && L && map) {
-        // Check if preferDarkMode is accessed to ensure reactivity
-        const _pref = preferDarkMode;
-        // console.log('Reactively checking theme due to preferDarkMode change:', _pref); // Keep for debugging if needed
-        updateTileLayer();
-    }
+    $effect(() => {
+        if (browser && L && map) {
+            // Access preferDarkMode to ensure reactivity
+            const _pref = preferDarkMode;
+            // console.log('Reactively checking theme due to preferDarkMode change:', _pref); // Keep for debugging if needed
+            updateTileLayer();
+        }
+    });
 
     onDestroy(() => {
         // Clean up observer
