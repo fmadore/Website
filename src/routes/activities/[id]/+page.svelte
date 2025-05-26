@@ -15,27 +15,23 @@
     import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
     import TagList from '$lib/components/molecules/TagList.svelte';
     import ActionLinks from '$lib/components/molecules/ActionLinks.svelte';
-    import AbstractSection from '$lib/components/molecules/AbstractSection.svelte';
-
-    // Get data from the load function
-    export let data: PageData;
-    $: activity = data.activity;
-    $: jsonLdString = data.jsonLdString;
+    import AbstractSection from '$lib/components/molecules/AbstractSection.svelte';    // Get data from the load function
+    let { data }: { data: PageData } = $props();
+    const activity = $derived(data.activity);
+    const jsonLdString = $derived(data.jsonLdString);
 
     // Helper function to truncate title at the first colon (copied from publications page)
     function truncateTitle(title: string): string {
         const colonIndex = title.indexOf(':');
         return colonIndex > -1 ? title.substring(0, colonIndex) + '...' : title;
-    }
-
-    // Define breadcrumb items
-    $: breadcrumbItems = [
+    }    // Define breadcrumb items
+    const breadcrumbItems = $derived([
         { label: 'Activities', href: `${base}/activities` },
         { label: truncateTitle(activity.title), href: `${base}/activities/${activity.id}` } // Use truncated title
-    ];
+    ]);
 
     // Generate Breadcrumb JSON-LD
-    $: breadcrumbJsonLdString = JSON.stringify({
+    const breadcrumbJsonLdString = $derived(JSON.stringify({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": breadcrumbItems.map((item, index) => ({
@@ -44,7 +40,7 @@
             "name": item.label,
             "item": `${$page.url.origin}${item.href}`
         }))
-    });
+    }));
 
     // Helper function to format panelType for display
     function formatPanelType(panelType: string | undefined): string {
@@ -92,37 +88,34 @@
     });
 
     // Format the tags for display
-    const formattedTags = activity?.tags ? activity.tags : [];
+    const formattedTags = $derived(activity?.tags ? activity.tags : []);
 
     // --- Content Parsing Logic (Keep as is, uses activity from data) ---
     interface ContentSegment {
         type: 'html' | 'ItemReference';
         value?: string; // For html type
         id?: string;    // For ItemReference type
-    }
+    }    const contentSegments = $derived(
+        activity?.content ? (() => {
+            const rawContent = activity.content.replace(/href="\/([^\/])/g, `href="${base}/$1`);
+            const regex = /<ItemReference\s+id="([^"]+)"\s*\/>/g;
+            const segments: ContentSegment[] = [];
+            let lastIndex = 0;
+            let match;
 
-    let contentSegments: ContentSegment[] = [];
-    $: if (activity?.content) {
-        const rawContent = activity.content.replace(/href="\/([^\/])/g, `href="${base}/$1`);
-        const regex = /<ItemReference\s+id="([^"]+)"\s*\/>/g;
-        const segments: ContentSegment[] = [];
-        let lastIndex = 0;
-        let match;
-
-        while ((match = regex.exec(rawContent)) !== null) {
-            if (match.index > lastIndex) {
-                segments.push({ type: 'html', value: rawContent.substring(lastIndex, match.index) });
+            while ((match = regex.exec(rawContent)) !== null) {
+                if (match.index > lastIndex) {
+                    segments.push({ type: 'html', value: rawContent.substring(lastIndex, match.index) });
+                }
+                segments.push({ type: 'ItemReference', id: match[1] });
+                lastIndex = regex.lastIndex;
             }
-            segments.push({ type: 'ItemReference', id: match[1] });
-            lastIndex = regex.lastIndex;
-        }
-        if (lastIndex < rawContent.length) {
-            segments.push({ type: 'html', value: rawContent.substring(lastIndex) });
-        }
-        contentSegments = segments;
-    } else {
-        contentSegments = [];
-    }
+            if (lastIndex < rawContent.length) {
+                segments.push({ type: 'html', value: rawContent.substring(lastIndex) });
+            }
+            return segments;
+        })() : []
+    );
     // --- End Content Parsing Logic ---
 </script>
 

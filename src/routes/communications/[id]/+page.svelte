@@ -17,25 +17,21 @@
     import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
     import { onMount, onDestroy } from 'svelte';
     import { browser } from '$app/environment';
-    
-    // Get communication from the page data
-    export let data;
-    $: communication = data.communication as Communication;
+      // Get communication from the page data
+    let { data } = $props();
+    const communication = $derived(data.communication as Communication);
     
     // Helper function to truncate title at the first colon
     function truncateTitle(title: string): string {
         const colonIndex = title.indexOf(':');
         return colonIndex > -1 ? title.substring(0, colonIndex) + '...' : title;
-    }
-
-    // Define breadcrumb items
-    $: breadcrumbItems = [
+    }    // Define breadcrumb items
+    const breadcrumbItems = $derived([
         { label: 'Conference Activity', href: `${base}/conference-activity` },
         { label: truncateTitle(communication.title), href: `${base}/communications/${communication.id}` }
-    ];
-    
-    // Generate Breadcrumb JSON-LD
-    $: breadcrumbJsonLdString = JSON.stringify({
+    ]);
+      // Generate Breadcrumb JSON-LD
+    const breadcrumbJsonLdString = $derived(JSON.stringify({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": breadcrumbItems.map((item, index) => ({
@@ -44,17 +40,15 @@
             "name": item.label,
             "item": `${$page.url.origin}${item.href}`
         }))
-    });
-
-    // Prepare marker data for the map (array with one item)
-    $: singleMarkerData = communication.coordinates ? [{
+    }));    // Prepare marker data for the map (array with one item)
+    const singleMarkerData = $derived(communication.coordinates ? [{
         id: communication.id,
         title: communication.title,
         coordinates: communication.coordinates,
         year: communication.year,
         activityType: communication.type,
         image: communication.image
-    }] : [];
+    }] : []);
     
     // Format date for display
     function formatDate(dateString: string): string {
@@ -71,17 +65,15 @@
             case 'panel': return 'Panel';
             default: return type;
         }
-    }
-
-    // Prepare details for the DetailsGrid component
-    $: communicationDetails = [
+    }    // Prepare details for the DetailsGrid component
+    const communicationDetails = $derived([
         { label: 'Event', value: communication.conference ?? '' },
         { label: 'Panel', value: communication.panelTitle ?? '', condition: communication.type === 'conference' && !!communication.panelTitle },
         { label: 'Location', value: communication.location ?? '' },
         { label: 'Country', value: communication.country ?? '' },
         { label: 'Language', value: communication.language ?? '' },
         { label: 'Year', value: String(communication.year ?? '') },
-    ];
+    ]);
 
     const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
 
@@ -107,8 +99,8 @@
 
 <SEO 
     title="{truncateTitle(communication.title)} | Frédérick Madore"
-    description="{communication.abstract || `Details about ${communication.title} by ${communication.authors?.join(', ')}`}"
-    keywords="{[
+    description={communication.abstract || `Details about ${communication.title} by ${communication.authors?.join(', ')}`}
+    keywords={[
         'communication',
         communication.type,
         ...(communication.tags || []),
@@ -116,7 +108,7 @@
         'Islam',
         'West Africa',
         'Frédérick Madore'
-    ].join(', ')}"
+    ].join(', ')}
     ogImage="{base}/{communication.image}"
 />
 
