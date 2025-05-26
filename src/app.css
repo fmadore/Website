@@ -1,8 +1,5 @@
 /* Main CSS entry point */
 
-/* Tailwind plugins */
-/* Using @tailwindcss/typography plugin */
-
 /* Base styles */
 @import './styles/base/reset.css';
 @import './styles/base/typography.css';
