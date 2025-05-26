@@ -1,14 +1,13 @@
 <script lang="ts">
   import type { Publication } from '$lib/types';
   import { base } from '$app/paths';
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
 
-  export let publication: Publication;
-
+  let { publication }: { publication: Publication } = $props();
   const getFullUrl = (path: string | undefined) => {
     if (!path) return undefined;
     if (path.startsWith('http://') || path.startsWith('https://')) return path;
-    return `${$page.url.origin}${base}${path.startsWith('/') ? '' : '/'}${path}`;
+    return `${page.url.origin}${base}${path.startsWith('/') ? '' : '/'}${path}`;
   };
 
   // Helper to map your publication types to Dublin Core types Zotero might recognize
@@ -27,17 +26,10 @@
         return 'Text'; // Or potentially a more specific type if available
       case 'phd-dissertation':
       case 'masters-thesis':
-        return 'Text'; // Theses are textual works
-      default:
+        return 'Text'; // Theses are textual works      default:
         return 'Text'; // Fallback
     }
   }
-
-  // Reactive console logs for debugging (can be removed in production)
-  $: console.log("Publication object in MetaTags:", publication);
-  $: console.log("Generated public URL:", getFullUrl(publication.url));
-  $: console.log("Generated PDF URL:", getFullUrl((publication as any).pdfUrl));
-  $: console.log("Generated abstract URL:", `${$page.url.origin}${$page.url.pathname}`);
 
   // Define a type for our meta tag objects for better type safety
   type MetaTag = {
@@ -46,7 +38,15 @@
     condition?: boolean; // Make condition optional
   };
 
-  const metaTags: MetaTag[] = [
+  // Reactive console logs for debugging (can be removed in production)
+  $effect(() => {
+    console.log("Publication object in MetaTags:", publication);
+    console.log("Generated public URL:", getFullUrl(publication.url));
+    console.log("Generated PDF URL:", getFullUrl((publication as any).pdfUrl));
+    console.log("Generated abstract URL:", `${page.url.origin}${page.url.pathname}`);
+  });
+
+  const metaTags = $derived([
     // --- Highwire Press Tags ---
     { name: 'citation_title', content: publication.title },
     ...(publication.authors?.map(author => ({ name: 'citation_author', content: author, condition: undefined })) || []),
@@ -76,7 +76,7 @@
 
     // URLs
     { name: 'citation_public_url', content: getFullUrl(publication.url) }, // Link to the item itself
-    { name: 'citation_abstract_html_url', content: `${$page.url.origin}${$page.url.pathname}` }, // Link to this page showing abstract
+    { name: 'citation_abstract_html_url', content: `${page.url.origin}${page.url.pathname}` }, // Link to this page showing abstract
     { name: 'citation_pdf_url', content: getFullUrl((publication as any).pdfUrl) },
 
     // --- Type-specific Highwire Press Tags ---
@@ -130,7 +130,7 @@
     if (!tag.content) return false; 
     if (typeof tag.condition === 'boolean') return tag.condition; 
     return true; 
-  });
+  }));
 
 </script>
 
