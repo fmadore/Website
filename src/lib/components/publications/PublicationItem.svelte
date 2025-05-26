@@ -1,37 +1,34 @@
 <script lang="ts">
     import type { Publication } from '$lib/types/publication';
-    import { createEventDispatcher } from 'svelte';
     import { base } from '$app/paths';
     import { truncateAbstract } from '$lib/utils/textUtils';
     // Import the necessary functions from the new formatter
     import { formatCitation, getAuthorsArray } from '$lib/utils/citationFormatter';
     import TagList from '$lib/components/molecules/TagList.svelte';
     
-    export let publication: Publication;
+    interface Props {
+        publication: Publication;
+        onfilterrequest?: (event: { type: string; value: string }) => void;
+    }
     
-    const dispatch = createEventDispatcher();
+    let { publication, onfilterrequest }: Props = $props();
     
     // Reactive computation using the citation formatter
-    $: formattedCitation = formatCitation(publication);
-
-    // Define structure for display list items
+    const formattedCitation = $derived(formatCitation(publication));    // Define structure for display list items
     interface DisplayListItem {
         name: string;
         isClickable: boolean;
     }
 
     // Reactive computation for Author/Editor list (not HTML string)
-    let displayList: DisplayListItem[] = [];
-    let listPrefix = ''; // e.g., "Edited by "
-    let authorString = ''; // Holds the fully formatted author/editor string
-    $: {
+    const displayData = $derived.by(() => {
         const type = publication.type;
         const authors = publication.authors;
         const editors = publication.editors;
         const selfName = "Frédérick Madore"; // Define self name
 
         let items: DisplayListItem[] = [];
-        listPrefix = ''; // Reset prefix
+        let listPrefix = ''; // Reset prefix
 
         if (type === 'book' || type === 'article' || type === 'chapter' || type === 'encyclopedia' || type === 'report' || type === 'blogpost' || type === 'phd-dissertation' || type === 'masters-thesis') {
             if (authors) {
@@ -57,12 +54,10 @@
         // Handle advisors separately in the template as before
         // Handle prefacedBy separately in the template as before
 
-        displayList = items;
-
         // Build the authorString
         let builtString = '';
-        const listLength = displayList.length;
-        displayList.forEach((item, i) => {
+        const listLength = items.length;
+        items.forEach((item, i) => {
             builtString += item.name; // Add name
             if (i < listLength - 1) { // If not the last item
                 // Use ', ' for all but the last join, which is ' and '.
@@ -70,8 +65,13 @@
                 builtString += separator;
             }
         });
-        authorString = builtString;
-    }
+
+        return {
+            displayList: items,
+            listPrefix,
+            authorString: builtString
+        };
+    });
 
 </script>
 
@@ -104,10 +104,9 @@
                         {publication.title}
                     </a>
                 </h3>
-                
-                <div class="text-light text-sm mb-2">
+                  <div class="text-light text-sm mb-2">
                     <!-- Render prefix and the constructed author string -->
-                    {listPrefix}{authorString}
+                    {displayData.listPrefix}{displayData.authorString}
                      <!-- Space, then (Year). Only if year is defined -->
                      {#if formattedCitation.year} ({formattedCitation.year}). {/if}
 
@@ -119,11 +118,10 @@
                         {#if publication.advisors && publication.advisors.length > 0}
                             <div class="mt-1">
                                 <span>Supervised by </span>
-                                {#each publication.advisors as advisor, i}
-                                    {#if advisor !== "Frédérick Madore"}
+                                {#each publication.advisors as advisor, i}                                    {#if advisor !== "Frédérick Madore"}
                                         <button
                                             class="author-btn"
-                                            on:click={() => dispatch('filterrequest', { type: 'author', value: advisor })}
+                                            onclick={() => onfilterrequest?.({ type: 'author', value: advisor })}
                                         >
                                             {advisor}
                                         </button>
@@ -147,11 +145,10 @@
                     <!-- Preface information -->
                     {#if publication.prefacedBy}
                         <div class="mt-1">
-                            <span>Preface by </span>
-                             {#if publication.prefacedBy !== "Frédérick Madore"}
+                            <span>Preface by </span>                            {#if publication.prefacedBy !== "Frédérick Madore"}
                                  <button
                                     class="author-btn"
-                                    on:click={() => dispatch('filterrequest', { type: 'author', value: publication.prefacedBy || '' })}
+                                    onclick={() => onfilterrequest?.({ type: 'author', value: publication.prefacedBy || '' })}
                                 >
                                     {publication.prefacedBy}
                                 </button>

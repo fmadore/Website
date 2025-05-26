@@ -55,10 +55,8 @@
     $effect(() => {
         // This effect will re-run when activeSort changes
         // The derived store will automatically update because we access activeSort inside the derivation
-    });
-
-    function handleFilterRequest(event: CustomEvent<{ type: string; value: string }>) {
-        const { type, value } = event.detail;
+    });    function handleFilterRequest(event: { type: string; value: string }) {
+        const { type, value } = event;
         console.log('Filter request received:', type, value);
         if (type === 'tag') {
             toggleTagFilter(value);

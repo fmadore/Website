@@ -16,7 +16,7 @@
         emptyStateMessage?: string; // Message for empty state
         emptyStateNoFiltersMessage?: string; // Message when no filters but still empty
         itemPropName?: string; // The prop name used by the item component (e.g., "communication", "publication")
-        onitemrequest?: ((event: CustomEvent) => void) | null; // Optional event handler for item events (e.g., filter requests)
+        onitemrequest?: ((event: { type: string; value: string }) => void) | null; // Optional event handler for item events (e.g., filter requests)
     }
       
     let { 
