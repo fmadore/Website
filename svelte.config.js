@@ -6,6 +6,9 @@ const dev = process.argv.includes('dev');
 
 const config = {
 	preprocess: [vitePreprocess(), mdsvex()],
+	compilerOptions: {
+		runes: true
+	},
 	kit: {
 		adapter: adapter({
 			// default options are shown

@@ -48,7 +48,7 @@
 	import { urlFilterSync } from '$lib/actions/urlFilterSync';
 	import Sorter from '$lib/components/common/Sorter.svelte';
 	import { sortItems } from '$lib/utils/sortUtils';
-	import { Filter } from 'lucide-svelte'; // Import the Filter icon
+	import Icon from '@iconify/svelte'; // Import Iconify
 	import Button from '$lib/components/atoms/Button.svelte'; // Import Button
 	import { derived, writable } from 'svelte/store';
 
@@ -284,7 +284,7 @@
 					additionalClasses="control-button-rounded"
 				>
 					{#snippet icon()}
-						<Filter size={18} />
+						<Icon icon="lucide:filter" width="18" height="18" />
 					{/snippet}
 					{mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
 				</Button><ToggleButton

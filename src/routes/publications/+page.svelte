@@ -45,7 +45,7 @@
 	import { urlFilterSync } from '$lib/actions/urlFilterSync';
 	import Sorter from '$lib/components/common/Sorter.svelte';
 	import { sortItems } from '$lib/utils/sortUtils';
-	import { Filter } from 'lucide-svelte';
+	import Icon from '@iconify/svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
 	import { derived } from 'svelte/store'; // State for the current sort order
 	let activeSort = $state<'date' | 'title' | 'citations'>('date');
@@ -244,7 +244,7 @@
 					additionalClasses="control-button-rounded filter-toggle-button"
 				>
 					{#snippet icon()}
-						<Filter size={18} />
+						<Icon icon="lucide:filter" width="18" height="18" />
 					{/snippet}
 					{mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
 				</Button>

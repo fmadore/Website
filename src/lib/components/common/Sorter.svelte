@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ArrowDownAZ, SortDesc, TrendingUp } from 'lucide-svelte';
+	import Icon from '@iconify/svelte';
 	import Button from '$lib/components/atoms/Button.svelte'; // Import the Button component
 
 	interface Props {
@@ -23,8 +23,8 @@
 	}
 
 	// Determine button text and title based on the *current* sort state for display
-	let IconComponent = $derived(
-		activeSort === 'date' ? SortDesc : activeSort === 'title' ? ArrowDownAZ : TrendingUp
+	let iconName = $derived(
+		activeSort === 'date' ? 'lucide:arrow-down-wide-narrow' : activeSort === 'title' ? 'lucide:arrow-down-a-z' : 'lucide:trending-up'
 	);
 	let labelText = $derived(
 		activeSort === 'date'
@@ -52,7 +52,7 @@
 		additionalClasses="control-button-rounded"
 	>
 		{#snippet icon()}
-			<IconComponent size={18} />
+			<Icon icon={iconName} width="18" height="18" />
 		{/snippet}
 		{labelText}
 	</Button>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Map } from 'lucide-svelte'; // Import the Map icon
+	import Icon from '@iconify/svelte'; // Import Iconify
 	import Button from '$lib/components/atoms/Button.svelte'; // Import Button component
 
 	interface Props {
@@ -28,7 +28,7 @@
 	additionalClasses="control-button-rounded"
 >
 	{#snippet icon()}
-		<Map size={18} />
+		<Icon icon="lucide:map" width="18" height="18" />
 	{/snippet}
 	{labelText}
 </Button>
