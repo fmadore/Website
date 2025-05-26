@@ -18,9 +18,6 @@ const communicationModules = import.meta.glob<ModuleType>(
 	{ eager: true }
 );
 
-// Debug: Log the keys we're importing (optional, can be removed)
-console.log('Communication files being loaded (using glob): ', Object.keys(communicationModules));
-
 // Filter out index.ts and template.ts files explicitly
 const filteredModules = Object.fromEntries(
 	Object.entries(communicationModules).filter(
