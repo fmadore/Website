@@ -21,10 +21,11 @@
 		// In Svelte 5, direct assignment to a $state variable triggers reactivity.
 		gtmLoaded = true;
 
-		// Inject the GTM script tag
+		// Inject the GTM script tag with proper error handling
 		const script = document.createElement('script');
 		script.async = true;
 		script.src = `https://www.googletagmanager.com/gtag/js?id=${GTM_ID}`;
+		script.onerror = () => console.warn('Failed to load Google Analytics');
 		document.head.appendChild(script);
 
 		// Initialize dataLayer and gtag function
@@ -45,7 +46,11 @@
 		window.gtag('config', GTM_ID, {
 			// Set initial page view sending based on consent/localhost
 			send_page_view: !isLocalhost && cookiesAccepted,
-			anonymize_ip: true
+			anonymize_ip: true,
+			// Prevent any potential document.write usage
+			custom_map: {},
+			page_title: document.title,
+			page_location: window.location.href
 		});
 
 		// Clean up interaction listeners

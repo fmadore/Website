@@ -29,6 +29,26 @@
 		}
 	});
 
+	// Preload profile picture since it's above-the-fold on home page
+	$effect(() => {
+		if (browser) {
+			const profilePreloadId = 'profile-picture-preload';
+			if (document.getElementById(profilePreloadId)) return;
+			
+			const preloadLink = document.createElement('link');
+			preloadLink.id = profilePreloadId;
+			preloadLink.rel = 'preload';
+			preloadLink.as = 'image';
+			preloadLink.href = `${base}/images/Profile-picture.webp`;
+			document.head.appendChild(preloadLink);
+
+			return () => {
+				const linkElement = document.getElementById(profilePreloadId);
+				if (linkElement) document.head.removeChild(linkElement);
+			};
+		}
+	});
+
 	// Years with content - dynamically created from activities data
 	const years = $derived(
 		Object.entries(activitiesByYear)

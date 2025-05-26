@@ -9,9 +9,13 @@
 	interface Props {
 		publication: Publication;
 		onfilterrequest?: (event: { type: string; value: string }) => void;
+		index?: number; // Index for loading optimization
 	}
 
-	let { publication, onfilterrequest }: Props = $props();
+	let { publication, onfilterrequest, index }: Props = $props();
+
+	// Optimize loading for above-the-fold images (first 3 items)
+	const imageLoading = $derived((index ?? 0) < 3 ? 'eager' : 'lazy');
 
 	// Reactive computation using the citation formatter
 	const formattedCitation = $derived(formatCitation(publication)); // Define structure for display list items
@@ -99,7 +103,7 @@
 						class="publication-cover-image"
 						width="200"
 						height="280"
-						loading="lazy"
+						loading={imageLoading}
 						decoding="async"
 					/>
 				</div>

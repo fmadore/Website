@@ -5,7 +5,10 @@
 	import { truncateAbstract } from '$lib/utils/textUtils';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 
-	let { communication }: { communication: Communication } = $props();
+	let { communication, index }: { communication: Communication; index?: number } = $props();
+
+	// Optimize loading for above-the-fold images (first 3 items)
+	const imageLoading = $derived((index ?? 0) < 3 ? 'eager' : 'lazy');
 
 	const dispatch = createEventDispatcher();
 
@@ -38,7 +41,7 @@
 						class="communication-image"
 						width="200"
 						height="280"
-						loading="lazy"
+						loading={imageLoading}
 						decoding="async"
 					/>
 				</div>

@@ -35,19 +35,20 @@
 <div>
 	{#if $filteredItems && $filteredItems.length > 0}
 		<ul class="list-none p-0 space-y-8 mt-6">
-			{#each $filteredItems as item (item.id)}
+			{#each $filteredItems as item, index (item.id)}
 				{#if onitemrequest}
 					{@const Component = itemComponent}
 					<Component
 						{...itemComponentProps}
 						{...{ [itemPropName]: item }}
+						{index}
 						onfilterrequest={onitemrequest}
 						onclick={onitemrequest}
 						oncustomaction={onitemrequest}
 					/>
 				{:else}
 					{@const Component = itemComponent}
-					<Component {...itemComponentProps} {...{ [itemPropName]: item }} />
+					<Component {...itemComponentProps} {...{ [itemPropName]: item }} {index} />
 				{/if}
 			{/each}
 		</ul>
