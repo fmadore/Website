@@ -28,11 +28,24 @@ jobs:
           node-version: 20
           cache: npm
       
+      - name: Cache SvelteKit artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            .svelte-kit
+            node_modules/.cache
+          key: ${{ runner.os }}-sveltekit-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-sveltekit-
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
         
       - name: Install dependencies
         run: npm ci
+
+      - name: Run linters
+        run: npm run lint
       
       - name: Build with SvelteKit
         run: npm run build
@@ -58,4 +71,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 
+        uses: actions/deploy-pages@v4
