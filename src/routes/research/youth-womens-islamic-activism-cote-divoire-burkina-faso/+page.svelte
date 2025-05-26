@@ -93,6 +93,10 @@
 					src="{base}/images/research/youth-women-activism.webp"
 					alt="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 					class="w-full h-auto"
+					width="800"
+					height="600"
+					loading="lazy"
+					decoding="async"
 				/>
 			</div>
 

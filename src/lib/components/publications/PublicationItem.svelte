@@ -93,7 +93,15 @@
 		<div class="grid md:grid-cols-4 gap-4">
 			{#if publication.image}
 				<div class="col-span-1">
-					<img src={publication.image} alt={publication.title} class="publication-cover-image" />
+					<img 
+						src={publication.image} 
+						alt={publication.title} 
+						class="publication-cover-image"
+						width="200"
+						height="280"
+						loading="lazy"
+						decoding="async"
+					/>
 				</div>
 			{/if}
 
@@ -260,6 +268,8 @@
 	.publication-cover-image {
 		width: 100%;
 		height: auto;
+		aspect-ratio: 5/7; /* Typical book cover ratio */
+		object-fit: cover;
 		border-radius: 4px;
 		box-shadow: var(--shadow-md);
 	}

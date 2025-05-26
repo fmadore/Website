@@ -11,6 +11,8 @@
 			class="rounded-full"
 			width="180"
 			height="180"
+			loading="eager"
+			decoding="async"
 		/>
 	</div>
 	<div class="profile-title">

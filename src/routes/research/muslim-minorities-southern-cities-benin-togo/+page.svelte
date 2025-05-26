@@ -86,6 +86,10 @@
 					src="{base}/images/research/muslim-minorities.webp"
 					alt="Muslim Minorities in Southern Cities of Benin and Togo"
 					class="w-full h-auto"
+					width="800"
+					height="600"
+					loading="lazy"
+					decoding="async"
 				/>
 			</div>
 

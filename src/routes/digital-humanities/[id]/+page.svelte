@@ -138,10 +138,22 @@
 										src={item.src}
 										alt={item.alt}
 										class="responsive-image shadow-md rounded-md"
+										width="800"
+										height="600"
+										loading="lazy"
+										decoding="async"
 									/>
 								</a>
 							{:else}
-								<img src={item.src} alt={item.alt} class="responsive-image shadow-md rounded-md" />
+								<img 
+									src={item.src} 
+									alt={item.alt} 
+									class="responsive-image shadow-md rounded-md"
+									width="800"
+									height="600"
+									loading="lazy"
+									decoding="async"
+								/>
 							{/if}
 						{/if}
 					</div>

@@ -32,7 +32,15 @@
 		<div class="grid md:grid-cols-4 gap-4">
 			{#if communication?.image}
 				<div class="col-span-1">
-					<img src={communication.image} alt={communication.title} class="communication-image" />
+					<img 
+						src={communication.image} 
+						alt={communication.title} 
+						class="communication-image"
+						width="200"
+						height="280"
+						loading="lazy"
+						decoding="async"
+					/>
 				</div>
 			{/if}
 
@@ -168,9 +176,9 @@
 
 	.communication-image {
 		width: 100%;
-		/* max-height: 200px; */ /* REMOVED to standardize with publications */
-		/* object-fit: cover; */ /* REMOVED to standardize */
-		height: auto; /* Ensure height adjusts automatically */
+		height: auto;
+		aspect-ratio: 5/7; /* Consistent with publication covers */
+		object-fit: cover;
 		border-radius: 4px;
 		box-shadow: var(--shadow-md);
 	}

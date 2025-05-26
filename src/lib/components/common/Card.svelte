@@ -21,10 +21,24 @@
 		<div class="card-image">
 			{#if linkUrl}
 				<a href={linkUrl} {target} rel="noopener noreferrer">
-					<img src={imageUrl} alt={imageAlt} />
+					<img 
+						src={imageUrl} 
+						alt={imageAlt}
+						width="300"
+						height="200"
+						loading="lazy"
+						decoding="async"
+					/>
 				</a>
 			{:else}
-				<img src={imageUrl} alt={imageAlt} />
+				<img 
+					src={imageUrl} 
+					alt={imageAlt}
+					width="300"
+					height="200"
+					loading="lazy"
+					decoding="async"
+				/>
 			{/if}
 		</div>
 	{/if}
@@ -77,7 +91,7 @@
 
 	.card-image {
 		overflow: hidden;
-		max-height: 250px; /* Keep adjustable height */
+		aspect-ratio: 3/2; /* Consistent aspect ratio for card images */
 		background-color: var(--color-gray-100, #f3f4f6); /* Use gray variable */
 		flex-shrink: 0;
 	}

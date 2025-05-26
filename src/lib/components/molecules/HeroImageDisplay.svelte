@@ -39,7 +39,15 @@
 
 {#if displayImage && absoluteSrc}
 	<figure class={figureClass}>
-		<img src={absoluteSrc} alt={altText} class={imageClass} />
+		<img 
+			src={absoluteSrc} 
+			alt={altText} 
+			class={imageClass}
+			width="600"
+			height="400"
+			loading="lazy"
+			decoding="async"
+		/>
 		{#if captionText}
 			<figcaption class={figcaptionClass}>
 				{captionText}

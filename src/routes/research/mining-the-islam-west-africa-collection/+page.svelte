@@ -111,6 +111,10 @@
 					src="{base}/images/research/IWAC.webp"
 					alt="Mining the Islam West Africa Collection"
 					class="w-full h-auto"
+					width="800"
+					height="600"
+					loading="lazy"
+					decoding="async"
 				/>
 			</div>
 

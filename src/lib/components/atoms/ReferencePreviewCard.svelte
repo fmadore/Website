@@ -139,7 +139,15 @@
 		<div class="card-content-wrapper">
 			{#if imageSrc}
 				<div class="card-image-container">
-					<img src={imageSrc} alt={item.title} class="card-image" loading="lazy" />
+					<img 
+						src={imageSrc} 
+						alt={item.title} 
+						class="card-image" 
+						loading="lazy"
+						decoding="async"
+						width="120"
+						height="160"
+					/>
 					<div class="image-overlay"></div>
 				</div>
 			{/if}
