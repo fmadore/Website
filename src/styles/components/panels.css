@@ -85,7 +85,7 @@
 }
 
 .view-all-link::after {
-	content: "→";
+	content: '→';
 	margin-left: var(--spacing-1);
 	transition: transform 0.2s ease;
 }
@@ -103,7 +103,7 @@
 }
 
 .panel-activities .view-all-link::after {
-	content: "→";
+	content: '→';
 	font-size: var(--font-size-sm);
 }
 

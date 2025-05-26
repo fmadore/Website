@@ -6,7 +6,7 @@ export const politiqueAfricaine2022: PeerReview = {
 	journal: 'Politique africaine',
 	type: 'Journal Article',
 	year: 2022,
-	dateISO: '2022-04-14',
+	dateISO: '2022-04-14'
 };
 
-export default politiqueAfricaine2022; 
+export default politiqueAfricaine2022;

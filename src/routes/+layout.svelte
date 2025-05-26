@@ -17,7 +17,7 @@
 
 	function loadGtm() {
 		if (gtmLoaded || !browser) return;
-		// Directly set gtmLoaded to true. 
+		// Directly set gtmLoaded to true.
 		// In Svelte 5, direct assignment to a $state variable triggers reactivity.
 		gtmLoaded = true;
 
@@ -29,18 +29,23 @@
 
 		// Initialize dataLayer and gtag function
 		window.dataLayer = window.dataLayer || [];
-		window.gtag = window.gtag || function() { window.dataLayer.push(arguments); };
+		window.gtag =
+			window.gtag ||
+			function () {
+				window.dataLayer.push(arguments);
+			};
 
 		window.gtag('js', new Date());
 
 		// Replicate initial config logic from app.html
 		const cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
-		const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+		const isLocalhost =
+			window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
 		window.gtag('config', GTM_ID, {
 			// Set initial page view sending based on consent/localhost
-			'send_page_view': !isLocalhost && cookiesAccepted,
-			'anonymize_ip': true
+			send_page_view: !isLocalhost && cookiesAccepted,
+			anonymize_ip: true
 		});
 
 		// Clean up interaction listeners
@@ -102,13 +107,13 @@
 		flex-direction: column;
 		min-height: 100vh;
 	}
-	
+
 	.container {
 		max-width: 1280px;
 		margin-left: auto;
 		margin-right: auto;
 	}
-	
+
 	.main-content-area {
 		flex-grow: 1;
 	}

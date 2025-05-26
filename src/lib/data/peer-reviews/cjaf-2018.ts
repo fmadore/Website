@@ -10,4 +10,4 @@ export const cjaf2018: PeerReview = {
 	publons_record: 'https://publons.com/wos-op/review/author/q1iCgRDf/'
 };
 
-export default cjaf2018; 
+export default cjaf2018;

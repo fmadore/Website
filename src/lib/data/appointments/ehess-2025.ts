@@ -9,7 +9,7 @@ export const ehess2025: Appointment = {
 	endYear: 2025,
 	dateRangeString: '2025',
 	dateISOStart: '2025-05-04',
-	dateISOEnd: '2025-05-31',
+	dateISOEnd: '2025-05-31'
 };
 
-export default ehess2025; 
+export default ehess2025;

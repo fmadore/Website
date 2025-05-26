@@ -64,7 +64,7 @@
 
 	{#if tags && tags.length > 0}
 		<div class="mt-3">
-			<TagList tags={tags} />
+			<TagList {tags} />
 		</div>
 	{/if}
 </header>

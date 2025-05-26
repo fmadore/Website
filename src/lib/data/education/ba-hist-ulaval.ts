@@ -10,4 +10,4 @@ export const baHistUlaval: Education = {
 	dateISO: '2010-09-01'
 };
 
-export default baHistUlaval; 
+export default baHistUlaval;

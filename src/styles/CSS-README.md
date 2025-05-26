@@ -27,6 +27,7 @@ Base styles define the foundation of the site's design.
 ### Variables (`base/variables.css`)
 
 Contains CSS custom properties (variables) for:
+
 - Colors
 - Spacing
 - Typography
@@ -34,16 +35,18 @@ Contains CSS custom properties (variables) for:
 - Box shadows
 
 Example usage:
+
 ```css
 .example {
-  color: var(--color-primary);
-  margin-bottom: var(--spacing-4);
+	color: var(--color-primary);
+	margin-bottom: var(--spacing-4);
 }
 ```
 
 ### Typography (`base/typography.css`)
 
 Defines styles for:
+
 - Base font settings
 - Headings (h1-h6)
 - Paragraphs
@@ -55,6 +58,7 @@ Defines styles for:
 ### Reset (`base/reset.css`)
 
 Provides consistent styling across browsers by:
+
 - Setting box-sizing to border-box
 - Removing default margins and paddings
 - Setting core body defaults
@@ -68,6 +72,7 @@ Layout styles define the structural elements of the site.
 ### Container (`layout/container.css`)
 
 Provides responsive container classes for controlling layout width:
+
 - `.container`: Responsive container with max-widths at different breakpoints
 - `.container-fluid`: Full-width container
 - `.section`: Content section with vertical padding
@@ -75,6 +80,7 @@ Provides responsive container classes for controlling layout width:
 ### Grid (`layout/grid.css`)
 
 Implements a flexible grid system:
+
 - `.grid`: Base grid container
 - `.grid-cols-*`: Grid column templates
 - Responsive variants for different breakpoints
@@ -84,6 +90,7 @@ Implements a flexible grid system:
 ### Header (`layout/header.css`)
 
 Styles for the site header:
+
 - Header container
 - Logo
 - Navigation
@@ -93,6 +100,7 @@ Styles for the site header:
 ### Footer (`layout/footer.css`)
 
 Styles for the site footer:
+
 - Footer container
 - Social links
 - Footer text
@@ -106,6 +114,7 @@ Reusable components that can be used across the site.
 ### Buttons (`components/buttons.css`)
 
 Button styles and variations:
+
 - `.btn`: Base button style
 - `.btn-primary`, `.btn-secondary`: Button color variations
 - `.btn-outline-primary`, `.btn-outline-secondary`: Outline button variations
@@ -117,6 +126,7 @@ Button styles and variations:
 ### Cards (`components/cards.css`)
 
 Card component styles:
+
 - `.card`: Base card container
 - `.card-image`: Card image
 - `.card-body`: Card content container
@@ -130,6 +140,7 @@ Card component styles:
 ### Item Panel (`components/item-panel.css`)
 
 Styles for reusable content panels, often used in sidebars or for distinct content blocks.
+
 - `.item-panel`: Base panel container with background, border, shadow, and padding.
 - `.item-panel-title`: Standardized title styling for panels.
 - `.item-panel-content`: Wrapper for content within a panel to ensure consistent padding.
@@ -142,6 +153,7 @@ Styles for reusable content panels, often used in sidebars or for distinct conte
 ### Navigation (`components/navigation.css`)
 
 Navigation components:
+
 - `.main-nav`: Main navigation container
 - `.nav-list`, `.nav-item`, `.nav-link`: Navigation elements
 - `.nav-link.active`: Active navigation state
@@ -153,6 +165,7 @@ Navigation components:
 ### Dropdown (`components/dropdown.css`)
 
 Dropdown menus:
+
 - `.dropdown`: Dropdown container
 - `.dropdown-toggle`, `.dropdown-toggle-icon`: Dropdown trigger
 - `.dropdown-menu`: Dropdown content
@@ -166,11 +179,12 @@ Dropdown menus:
 ### Activity List (`components/activity-list.css`)
 
 Activity and timeline components:
+
 - `.activity-list`: List container
 - `.activity-item`: Individual activity items
 - `.activity-title`, `.activity-date`: Activity metadata
 - `.activity-link`, `.activity-summary`: Content elements
-- `.activity-filters`, `.filter-tag`: Filtering controls 
+- `.activity-filters`, `.filter-tag`: Filtering controls
 - `.year-tag`, `.year-count`: Year-based filtering
 - `.see-more`: "View more" link styling
 
@@ -181,6 +195,7 @@ Styles that are specific to individual pages.
 ### Home (`pages/home.css`)
 
 Styles specific to the homepage:
+
 - `.home-intro`: Introduction section
 - `.activity-section`: Recent activities
 - `.activity-section-title`: Section headers
@@ -195,6 +210,7 @@ Styles specific to the homepage:
 ### Research (`pages/research.css`)
 
 Styles for research pages:
+
 - `.research-project`: Research project container
 - `.project-header`, `.project-title`: Project headers
 - `.project-image`, `.project-content`: Project visuals and content
@@ -206,6 +222,7 @@ Styles for research pages:
 ### Publications (`pages/publications.css`)
 
 Styles for publication listings:
+
 - `.publication-list`: Publication list container
 - `.publication-title a`: Publication title links
 - `.filter-button`, `.filter-button.active`: Publication filter controls
@@ -214,6 +231,7 @@ Styles for publication listings:
 ### Contact (`pages/contact.css`)
 
 Styles for the contact page:
+
 - `.contact-section`: Contact section container
 - `.contact-info`: Contact information
 - `.contact-address`: Contact address formatting
@@ -229,6 +247,7 @@ Utility classes for common styling needs.
 ### Spacing (`utilities/spacing.css`)
 
 Spacing utility classes:
+
 - Margin utilities (`.m-*`, `.mx-*`, `.my-*`, `.mt-*`, `.mb-*`, `.mr-*`, `.ml-*`)
 - Padding utilities (`.p-*`, `.px-*`, `.py-*`, `.pt-*`, `.pb-*`, `.pl-*`, `.pr-*`)
 - Gap utilities for flex/grid (`.gap-*`, `.gap-x-*`, `.gap-y-*`)
@@ -238,6 +257,7 @@ Spacing utility classes:
 ### Colors (`utilities/colors.css`)
 
 Color utility classes:
+
 - Text colors (`.text-primary`, `.text-secondary`, `.text-accent`, `.text-highlight`, `.text-success`, `.text-default`, `.text-light`, `.text-white`, `.text-black`)
 - Background colors (`.bg-primary`, `.bg-secondary`, `.bg-accent`, `.bg-highlight`, `.bg-success`, `.bg-default`, `.bg-white`, `.bg-black`, `.bg-transparent`)
 - Border colors (`.border-primary`, `.border-secondary`, `.border-accent`, `.border-highlight`, `.border-success`, `.border-default`, `.border-white`, `.border-black`, `.border-transparent`)
@@ -246,6 +266,7 @@ Color utility classes:
 ### Typography (`utilities/typography.css`)
 
 Typography utility classes:
+
 - Font families (`.font-sans`, `.font-serif`, `.font-mono`)
 - Font sizes (`.text-xs`, `.text-sm`, `.text-base`, `.text-lg`, `.text-xl`, `.text-2xl`, `.text-3xl`, `.text-4xl`)
 - Font weights (`.font-normal`, `.font-medium`, `.font-semibold`, `.font-bold`)
@@ -257,6 +278,7 @@ Typography utility classes:
 ### Flex (`utilities/flex.css`)
 
 Flexbox utility classes:
+
 - Flex container (`.flex`, `.inline-flex`)
 - Flex direction (`.flex-row`, `.flex-col`, etc.)
 - Flex wrap, grow, shrink, and shorthand (`.flex-wrap`, `.flex-1`, etc.)
@@ -271,6 +293,7 @@ Flexbox utility classes:
 ### Class Naming Convention
 
 The CSS follows a component-based naming convention:
+
 - Component: `.component-name`
 - Element: `.component-name-element`
 - Modifier: `.component-name--modifier` or `.component-name-element--modifier`
@@ -278,6 +301,7 @@ The CSS follows a component-based naming convention:
 ### Responsive Approach
 
 The CSS is built with a mobile-first approach:
+
 - Base styles are for mobile devices
 - Media queries are used to adapt for larger screens
 - Breakpoints: 640px, 768px, 1024px, 1280px

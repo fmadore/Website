@@ -12,4 +12,4 @@ export const trainingPoitiers2023: Education = {
 	dateISO: '2023-01-27' // Use end date for sorting
 };
 
-export default trainingPoitiers2023; 
+export default trainingPoitiers2023;

@@ -21,6 +21,7 @@ This component doesn't accept any props as it's designed to be used as a standal
 The Header organism combines:
 
 - **Molecules:**
+
   - `DesktopNav` - For navigation on desktop devices
   - `MobileMenu` - For navigation on mobile devices
 
@@ -33,10 +34,12 @@ The Header organism combines:
 The Header manages several types of state:
 
 1. **Mobile Menu State:**
+
    - Controls the visibility of the mobile menu
    - Manages body overflow to prevent scrolling when mobile menu is open
 
 2. **Dropdown State:**
+
    - Tracks which dropdown menu is currently active
    - Implements delay timers for better UX when hovering dropdowns
    - Handles keyboard navigation for dropdowns
@@ -56,6 +59,7 @@ The Header manages several types of state:
 ## Lifecycle Management
 
 The Header component:
+
 - Sets up event listeners on mount
 - Cleans up event listeners and timers on unmount
 - Manages body scroll state correctly when the component is destroyed
@@ -65,66 +69,72 @@ The Header component:
 The component implements several sophisticated event handling patterns:
 
 1. **Dropdown Management:**
+
    ```typescript
    function showDropdown(index: number) {
-     // Clear any pending hide timers
-     if (dropdownTimer) {
-       clearTimeout(dropdownTimer);
-       dropdownTimer = null;
-     }
-     activeDropdown = index;
+   	// Clear any pending hide timers
+   	if (dropdownTimer) {
+   		clearTimeout(dropdownTimer);
+   		dropdownTimer = null;
+   	}
+   	activeDropdown = index;
    }
-   
+
    function startHideTimer() {
-     if (dropdownTimer) {
-       clearTimeout(dropdownTimer);
-     }
-     dropdownTimer = setTimeout(() => {
-       activeDropdown = null;
-       dropdownTimer = null;
-     }, HIDE_DELAY);
+   	if (dropdownTimer) {
+   		clearTimeout(dropdownTimer);
+   	}
+   	dropdownTimer = setTimeout(() => {
+   		activeDropdown = null;
+   		dropdownTimer = null;
+   	}, HIDE_DELAY);
    }
    ```
 
 2. **Mobile Menu Toggle:**
+
    ```typescript
    function toggleMobileMenu() {
-     mobileMenuOpen = !mobileMenuOpen;
-     
-     // Toggle body scroll blocking
-     if (mobileMenuOpen) {
-       document.body.style.overflow = 'hidden';
-       bodyOverflowHidden = true;
-     } else {
-       document.body.style.overflow = '';
-       bodyOverflowHidden = false;
-     }
+   	mobileMenuOpen = !mobileMenuOpen;
+
+   	// Toggle body scroll blocking
+   	if (mobileMenuOpen) {
+   		document.body.style.overflow = 'hidden';
+   		bodyOverflowHidden = true;
+   	} else {
+   		document.body.style.overflow = '';
+   		bodyOverflowHidden = false;
+   	}
    }
    ```
 
 3. **Click Outside Detection:**
+
    ```typescript
    function handleClickOutside(event: MouseEvent) {
-     const target = event.target as HTMLElement;
-     
-     // Close mobile menu if clicked outside
-     if (mobileMenuOpen && target && 
-         !target.closest('.mobile-nav-container') && 
-         !target.closest('.hamburger')) {
-       closeMobileMenu();
-     }
-     
-     // Close dropdown if clicked outside
-     if (activeDropdown !== null && target &&
-         !target.closest('.dropdown-container')) {
-       activeDropdown = null;
-     }
+   	const target = event.target as HTMLElement;
+
+   	// Close mobile menu if clicked outside
+   	if (
+   		mobileMenuOpen &&
+   		target &&
+   		!target.closest('.mobile-nav-container') &&
+   		!target.closest('.hamburger')
+   	) {
+   		closeMobileMenu();
+   	}
+
+   	// Close dropdown if clicked outside
+   	if (activeDropdown !== null && target && !target.closest('.dropdown-container')) {
+   		activeDropdown = null;
+   	}
    }
    ```
 
 ## Styling
 
 The Header uses a clean, minimal design with:
+
 - Subtle hover and focus effects
 - Box shadow for depth
 - Smooth transitions for state changes
@@ -142,24 +152,25 @@ The Header uses a clean, minimal design with:
 ```svelte
 <!-- Layout.svelte -->
 <script>
-  import Header from '$lib/components/organisms/Header.svelte';
-  import Footer from '$lib/components/common/Footer.svelte';
+	import Header from '$lib/components/organisms/Header.svelte';
+	import Footer from '$lib/components/common/Footer.svelte';
 </script>
 
 <div class="site-layout">
-  <Header />
-  
-  <main>
-    <slot />
-  </main>
-  
-  <Footer />
+	<Header />
+
+	<main>
+		<slot />
+	</main>
+
+	<Footer />
 </div>
 ```
 
 ## CSS Variables
 
 The component uses these CSS variables for styling:
+
 - `--color-background` - Background color of the header
 - `--color-text` - Text color for navigation items
 - `--shadow` - Box shadow for the header

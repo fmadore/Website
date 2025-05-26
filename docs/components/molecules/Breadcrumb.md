@@ -13,26 +13,27 @@ import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 ## Usage
 
 ```svelte
-<Breadcrumb 
-  items={[
-    { label: 'Research', href: '/research' },
-    { label: 'Projects', href: '/research/projects' },
-    { label: 'Current Project', href: '' }
-  ]} 
-  showHomeLink={true}
+<Breadcrumb
+	items={[
+		{ label: 'Research', href: '/research' },
+		{ label: 'Projects', href: '/research/projects' },
+		{ label: 'Current Project', href: '' }
+	]}
+	showHomeLink={true}
 />
 ```
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `items` | `Array<{ label: string; href: string; }>` | `[]` | Array of breadcrumb items to display |
-| `showHomeLink` | `boolean` | `true` | Whether to show the "Home" link at the beginning |
+| Prop           | Type                                      | Default | Description                                      |
+| -------------- | ----------------------------------------- | ------- | ------------------------------------------------ |
+| `items`        | `Array<{ label: string; href: string; }>` | `[]`    | Array of breadcrumb items to display             |
+| `showHomeLink` | `boolean`                                 | `true`  | Whether to show the "Home" link at the beginning |
 
 ## Component Composition
 
 This component is built using:
+
 - `BreadcrumbLink` atom - For each individual link in the breadcrumb path
 
 ## Accessibility
@@ -53,17 +54,17 @@ This component is built using:
 
 ```svelte
 <script>
-  import { page } from '$app/stores';
-  import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
-  
-  // Generate breadcrumb items from current path
-  $: path = $page.url.pathname;
-  $: segments = path.split('/').filter(segment => segment);
-  $: breadcrumbItems = segments.map((segment, index) => {
-    const href = '/' + segments.slice(0, index + 1).join('/');
-    const label = segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ');
-    return { label, href };
-  });
+	import { page } from '$app/stores';
+	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+
+	// Generate breadcrumb items from current path
+	$: path = $page.url.pathname;
+	$: segments = path.split('/').filter((segment) => segment);
+	$: breadcrumbItems = segments.map((segment, index) => {
+		const href = '/' + segments.slice(0, index + 1).join('/');
+		const label = segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ');
+		return { label, href };
+	});
 </script>
 
 <Breadcrumb items={breadcrumbItems} />

@@ -10,4 +10,4 @@ export const certArabicUlaval2017: Education = {
 	dateISO: '2017-09-01'
 };
 
-export default certArabicUlaval2017; 
+export default certArabicUlaval2017;

@@ -1,126 +1,133 @@
 /* CSS Variables */
 
 :root {
-  /* Color variables */
-  --color-primary: #1a365d; /* Deeper blue */
-  --color-primary-rgb: 26, 54, 93; /* RGB values of primary color for rgba() */
-  --color-primary-dark: #11243e; /* Darker shade of primary */
-  --color-secondary: #4b5563; /* Kept as gray */
-  --color-accent: #7c3aed; /* Complementary accent */
-  --color-highlight: #e07c3e; /* Warm highlight */
-  --color-highlight-rgb: 224, 124, 62; /* RGB for highlight */
-  --color-success: #2f855a; /* Green for success/workshops */
-  --color-success-rgb: 47, 133, 90; /* RGB for success */  --color-background: #ffffff;
-  --color-text: #1a202c;
-  --color-text-light: #4a5568;
-  --color-border: #e2e8f0;
-  --color-footer-bg: #1f2937;
-  --color-footer-text: #f9fafb;
-  --color-footer-text-muted: rgba(255, 255, 255, 0.7);
-  --color-sidebar-bg: #f9fafb; /* Added: Very light gray for light theme sidebar */
-  
-  /* Additional semantic colors for better cohesion */
-  --color-surface: #f9fafb; /* Light surface background */
-  --color-surface-alt: #f1f5f9; /* Alternative surface background */
-  --color-surface-border: #e2e8f0; /* Surface borders */
-  --color-code-bg: #f1f1f1; /* Code background */
-  --color-dark-surface: #374151; /* Dark theme surface */
-  --color-dark-surface-alt: #232b36; /* Dark theme alternative surface */
-  --color-dark-surface-deep: #181e26; /* Dark theme deep surface */
-  /* Spacing variables */
-  --spacing-1: 0.25rem;
-  --spacing-2: 0.5rem;
-  --spacing-3: 0.75rem;
-  --spacing-4: 1rem;
-  --spacing-5: 1.25rem;
-  --spacing-6: 1.5rem;
-  --spacing-8: 2rem;
-  --spacing-10: 2.5rem;
-  --spacing-12: 3rem;
-  --spacing-16: 4rem;
-  --spacing-20: 5rem;
+	/* Color variables */
+	--color-primary: #1a365d; /* Deeper blue */
+	--color-primary-rgb: 26, 54, 93; /* RGB values of primary color for rgba() */
+	--color-primary-dark: #11243e; /* Darker shade of primary */
+	--color-secondary: #4b5563; /* Kept as gray */
+	--color-accent: #7c3aed; /* Complementary accent */
+	--color-highlight: #e07c3e; /* Warm highlight */
+	--color-highlight-rgb: 224, 124, 62; /* RGB for highlight */
+	--color-success: #2f855a; /* Green for success/workshops */
+	--color-success-rgb: 47, 133, 90; /* RGB for success */
+	--color-background: #ffffff;
+	--color-text: #1a202c;
+	--color-text-light: #4a5568;
+	--color-border: #e2e8f0;
+	--color-footer-bg: #1f2937;
+	--color-footer-text: #f9fafb;
+	--color-footer-text-muted: rgba(255, 255, 255, 0.7);
+	--color-sidebar-bg: #f9fafb; /* Added: Very light gray for light theme sidebar */
 
-  /* Typography variables */
-  --font-family-sans: 'Source Sans 3', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-family-serif: 'Newsreader', Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-family-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  
-  /* Font size variables */
-  --font-size-xs: 0.75rem;
-  --font-size-sm: 0.875rem;
-  --font-size-base: 1rem;
-  --font-size-lg: 1.125rem;
-  --font-size-xl: 1.25rem;
-  --font-size-2xl: 1.5rem;
-  --font-size-3xl: 1.875rem;
-  --font-size-4xl: 2.25rem;
-  
-  /* Line height */
-  --line-height-default: 1.5;
-    /* Border radius */
-  --border-radius-sm: 0.125rem;
-  --border-radius: 0.25rem;
-  --border-radius-md: 0.375rem;
-  --border-radius-lg: 0.5rem;
-  --border-radius-xl: 0.75rem;
-  --border-radius-2xl: 1rem;
-  --border-radius-full: 9999px;
-  /* Box shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+	/* Additional semantic colors for better cohesion */
+	--color-surface: #f9fafb; /* Light surface background */
+	--color-surface-alt: #f1f5f9; /* Alternative surface background */
+	--color-surface-border: #e2e8f0; /* Surface borders */
+	--color-code-bg: #f1f1f1; /* Code background */
+	--color-dark-surface: #374151; /* Dark theme surface */
+	--color-dark-surface-alt: #232b36; /* Dark theme alternative surface */
+	--color-dark-surface-deep: #181e26; /* Dark theme deep surface */
+	/* Spacing variables */
+	--spacing-1: 0.25rem;
+	--spacing-2: 0.5rem;
+	--spacing-3: 0.75rem;
+	--spacing-4: 1rem;
+	--spacing-5: 1.25rem;
+	--spacing-6: 1.5rem;
+	--spacing-8: 2rem;
+	--spacing-10: 2.5rem;
+	--spacing-12: 3rem;
+	--spacing-16: 4rem;
+	--spacing-20: 5rem;
 
-  /* Border widths */
-  --border-width-thin: 1px;
-  --border-width-medium: 2px;
-  --border-width-thick: 4px;
-  /* Opacity values */
-  --opacity-very-low: 0.02;
-  --opacity-low: 0.06;
-  --opacity-medium: 0.1;
-  --opacity-medium-high: 0.2;
-  --opacity-high: 0.8;
+	/* Typography variables */
+	--font-family-sans:
+		'Source Sans 3', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+		'Helvetica Neue', Arial, sans-serif;
+	--font-family-serif: 'Newsreader', Georgia, Cambria, 'Times New Roman', Times, serif;
+	--font-family-mono:
+		'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+		'Courier New', monospace;
 
-  /* Transform values */
-  --transform-lift-sm: translateY(-1px);
-  --transform-lift-md: translateY(-2px);
+	/* Font size variables */
+	--font-size-xs: 0.75rem;
+	--font-size-sm: 0.875rem;
+	--font-size-base: 1rem;
+	--font-size-lg: 1.125rem;
+	--font-size-xl: 1.25rem;
+	--font-size-2xl: 1.5rem;
+	--font-size-3xl: 1.875rem;
+	--font-size-4xl: 2.25rem;
+
+	/* Line height */
+	--line-height-default: 1.5;
+	/* Border radius */
+	--border-radius-sm: 0.125rem;
+	--border-radius: 0.25rem;
+	--border-radius-md: 0.375rem;
+	--border-radius-lg: 0.5rem;
+	--border-radius-xl: 0.75rem;
+	--border-radius-2xl: 1rem;
+	--border-radius-full: 9999px;
+	/* Box shadows */
+	--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	--shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+	--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+	--shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+	--shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+	/* Border widths */
+	--border-width-thin: 1px;
+	--border-width-medium: 2px;
+	--border-width-thick: 4px;
+	/* Opacity values */
+	--opacity-very-low: 0.02;
+	--opacity-low: 0.06;
+	--opacity-medium: 0.1;
+	--opacity-medium-high: 0.2;
+	--opacity-high: 0.8;
+
+	/* Transform values */
+	--transform-lift-sm: translateY(-1px);
+	--transform-lift-md: translateY(-2px);
 }
 
 /* Dark theme variables */
 html.dark {
-  --color-primary: #58a6ff; /* Lighter blue for dark mode */
-  --color-primary-rgb: 88, 166, 255; /* RGB values of primary color for rgba() */
-  --color-primary-dark: #4d88ff; /* Slightly darker light blue */
-  --color-secondary: #9ca3af; /* Lighter gray */
-  --color-accent: #a582ff; /* Lighter purple */
-  --color-highlight: #ff9c66; /* Lighter orange/warm highlight */
-  --color-highlight-rgb: 255, 156, 102; /* RGB for highlight dark mode */
-  --color-success: #68d391; /* Lighter green for dark mode */
-  --color-success-rgb: 104, 211, 145; /* RGB for success in dark mode */  --color-background: #111827; /* Very dark gray */
-  --color-text: #e5e7eb; /* Light gray text */
-  --color-text-light: #9ca3af; /* Medium gray text */
-  --color-border: #374151; /* Darker border */
-  --color-footer-bg: #0f172a; /* Even darker footer */
-  --color-footer-text: #f9fafb; /* Keep consistent footer text */
-  --color-footer-text-muted: rgba(255, 255, 255, 0.7); /* Keep consistent muted */
-  --color-sidebar-bg: #1f2937; /* Dark theme sidebar */
-  
-  /* Dark theme semantic colors */
-  --color-surface: #1f2937; /* Dark surface background */
-  --color-surface-alt: #374151; /* Dark alternative surface background */
-  --color-surface-border: #4b5563; /* Dark surface borders */
-  --color-code-bg: #374151; /* Dark code background */
-  --color-dark-surface: #1f2937; /* Keep consistent with surface */
-  --color-dark-surface-alt: #232b36; /* Dark theme alternative surface */
-  --color-dark-surface-deep: #181e26; /* Dark theme deep surface */
-  /* Adjusted shadows for dark mode if needed */
-  --shadow-sm: 0 1px 2px 0 rgba(255, 255, 255, 0.05);
-  --shadow: 0 1px 3px 0 rgba(255, 255, 255, 0.1), 0 1px 2px 0 rgba(255, 255, 255, 0.06);
-  --shadow-md: 0 4px 6px -1px rgba(255, 255, 255, 0.1), 0 2px 4px -1px rgba(255, 255, 255, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(255, 255, 255, 0.1), 0 4px 6px -2px rgba(255, 255, 255, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(255, 255, 255, 0.1), 0 10px 10px -5px rgba(255, 255, 255, 0.04);
-  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
-} 
+	--color-primary: #58a6ff; /* Lighter blue for dark mode */
+	--color-primary-rgb: 88, 166, 255; /* RGB values of primary color for rgba() */
+	--color-primary-dark: #4d88ff; /* Slightly darker light blue */
+	--color-secondary: #9ca3af; /* Lighter gray */
+	--color-accent: #a582ff; /* Lighter purple */
+	--color-highlight: #ff9c66; /* Lighter orange/warm highlight */
+	--color-highlight-rgb: 255, 156, 102; /* RGB for highlight dark mode */
+	--color-success: #68d391; /* Lighter green for dark mode */
+	--color-success-rgb: 104, 211, 145; /* RGB for success in dark mode */
+	--color-background: #111827; /* Very dark gray */
+	--color-text: #e5e7eb; /* Light gray text */
+	--color-text-light: #9ca3af; /* Medium gray text */
+	--color-border: #374151; /* Darker border */
+	--color-footer-bg: #0f172a; /* Even darker footer */
+	--color-footer-text: #f9fafb; /* Keep consistent footer text */
+	--color-footer-text-muted: rgba(255, 255, 255, 0.7); /* Keep consistent muted */
+	--color-sidebar-bg: #1f2937; /* Dark theme sidebar */
+
+	/* Dark theme semantic colors */
+	--color-surface: #1f2937; /* Dark surface background */
+	--color-surface-alt: #374151; /* Dark alternative surface background */
+	--color-surface-border: #4b5563; /* Dark surface borders */
+	--color-code-bg: #374151; /* Dark code background */
+	--color-dark-surface: #1f2937; /* Keep consistent with surface */
+	--color-dark-surface-alt: #232b36; /* Dark theme alternative surface */
+	--color-dark-surface-deep: #181e26; /* Dark theme deep surface */
+	/* Adjusted shadows for dark mode if needed */
+	--shadow-sm: 0 1px 2px 0 rgba(255, 255, 255, 0.05);
+	--shadow: 0 1px 3px 0 rgba(255, 255, 255, 0.1), 0 1px 2px 0 rgba(255, 255, 255, 0.06);
+	--shadow-md: 0 4px 6px -1px rgba(255, 255, 255, 0.1), 0 2px 4px -1px rgba(255, 255, 255, 0.06);
+	--shadow-lg: 0 10px 15px -3px rgba(255, 255, 255, 0.1), 0 4px 6px -2px rgba(255, 255, 255, 0.05);
+	--shadow-xl:
+		0 20px 25px -5px rgba(255, 255, 255, 0.1), 0 10px 10px -5px rgba(255, 255, 255, 0.04);
+	--shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+}

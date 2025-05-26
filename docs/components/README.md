@@ -109,15 +109,15 @@ Most components follow these usage patterns:
 
 ```svelte
 <EntityListPageLayout title="Publications">
-  <svelte:fragment slot="top-area">
-    <ToggleButton ... />
-  </svelte:fragment>
-  
-  <svelte:fragment slot="sidebar">
-    <FiltersSidebar ... />
-  </svelte:fragment>
-  
-  <FilteredListDisplay ... />
+	<svelte:fragment slot="top-area">
+		<ToggleButton ... />
+	</svelte:fragment>
+
+	<svelte:fragment slot="sidebar">
+		<FiltersSidebar ... />
+	</svelte:fragment>
+
+	<FilteredListDisplay ... />
 </EntityListPageLayout>
 ```
 
@@ -126,12 +126,12 @@ Most components follow these usage patterns:
 Item components can be used directly within `FilteredListDisplay`:
 
 ```svelte
-<FilteredListDisplay 
-  filteredItems={filteredPublications}
-  itemComponent={PublicationItem}
-  itemPropName="publication"
-  onItemEvent={handleItemEvent}
-  ...
+<FilteredListDisplay
+	filteredItems={filteredPublications}
+	itemComponent={PublicationItem}
+	itemPropName="publication"
+	onItemEvent={handleItemEvent}
+	...
 />
 ```
 
@@ -141,8 +141,8 @@ Filter sections can be composed to create custom filtering interfaces:
 
 ```svelte
 <aside class="filter-sidebar">
-  <FilterSectionCheckbox ... />
-  <FilterSectionRangeSlider ... />
-  <FilterSectionButtons ... />
+	<FilterSectionCheckbox ... />
+	<FilterSectionRangeSlider ... />
+	<FilterSectionButtons ... />
 </aside>
 ```

@@ -5,96 +5,97 @@ import type { PageLoad } from './$types';
 
 // --- JSON-LD Interfaces ---
 interface BaseJsonLd {
-    "@context": "https://schema.org";
-    "@type": string;
-    name: string;
-    description?: string;
-    image?: string;
-    keywords?: string;
+	'@context': 'https://schema.org';
+	'@type': string;
+	name: string;
+	description?: string;
+	image?: string;
+	keywords?: string;
 }
 
 interface Person {
-    "@type": "Person";
-    name: string;
-    url?: string;
-    jobTitle?: string;
-    affiliation?: {
-        "@type": "Organization";
-        name: string;
-    };
+	'@type': 'Person';
+	name: string;
+	url?: string;
+	jobTitle?: string;
+	affiliation?: {
+		'@type': 'Organization';
+		name: string;
+	};
 }
 
 interface ScholarlyArticleJsonLd extends BaseJsonLd {
-    "@type": "ScholarlyArticle";
-    datePublished: string;
-    author?: Person | Person[];
+	'@type': 'ScholarlyArticle';
+	datePublished: string;
+	author?: Person | Person[];
 }
 
 interface BookJsonLd extends BaseJsonLd {
-    "@type": "Book";
-    datePublished: string;
-    author?: Person | Person[];
+	'@type': 'Book';
+	datePublished: string;
+	author?: Person | Person[];
 }
 
 interface BlogPostingJsonLd extends BaseJsonLd {
-    "@type": "BlogPosting";
-    headline?: string;
-    datePublished: string;
-    author?: Person | Person[];
+	'@type': 'BlogPosting';
+	headline?: string;
+	datePublished: string;
+	author?: Person | Person[];
 }
 
 interface CreativeWorkJsonLd extends BaseJsonLd {
-    "@type": "CreativeWork";
-    datePublished?: string;
-    author?: Person | Person[];
+	'@type': 'CreativeWork';
+	datePublished?: string;
+	author?: Person | Person[];
 }
 
 // Simplified Union type - Although we only generate BlogPosting here now
-type JsonLd = /* EventJsonLd | ScholarlyArticleJsonLd | BookJsonLd | */ BlogPostingJsonLd /* | CreativeWorkJsonLd */;
+type JsonLd =
+	/* EventJsonLd | ScholarlyArticleJsonLd | BookJsonLd | */ BlogPostingJsonLd /* | CreativeWorkJsonLd */;
 
 // --- Load Function ---
 export const load: PageLoad = ({ params }) => {
-    const activityId = params.id;
-    const activity = getActivityById(activityId);
+	const activityId = params.id;
+	const activity = getActivityById(activityId);
 
-    if (!activity) {
-        throw error(404, 'Activity not found');
-    }
+	if (!activity) {
+		throw error(404, 'Activity not found');
+	}
 
-    // Determine type - Removed tag checking, always BlogPosting for this route
-    const resolvedType = "BlogPosting"; 
+	// Determine type - Removed tag checking, always BlogPosting for this route
+	const resolvedType = 'BlogPosting';
 
-    // Format date with time and timezone (Berlin CET = UTC+1)
-    // Note: This assumes CET. If activity dates span DST changes, logic might need adjustment.
-    const formattedDatePublished = `${activity.dateISO}T00:00:00+01:00`;
+	// Format date with time and timezone (Berlin CET = UTC+1)
+	// Note: This assumes CET. If activity dates span DST changes, logic might need adjustment.
+	const formattedDatePublished = `${activity.dateISO}T00:00:00+01:00`;
 
-    // Use BlogPostingJsonLd directly, but keep Partial for optional fields
-    const jsonLdObject: Partial<BlogPostingJsonLd> = {
-        "@context": "https://schema.org",
-        "@type": resolvedType, // Always "BlogPosting"
-        "name": activity.title,
-        "headline": activity.title,
-        "description": activity.description,
-        "datePublished": formattedDatePublished,
-    };
+	// Use BlogPostingJsonLd directly, but keep Partial for optional fields
+	const jsonLdObject: Partial<BlogPostingJsonLd> = {
+		'@context': 'https://schema.org',
+		'@type': resolvedType, // Always "BlogPosting"
+		name: activity.title,
+		headline: activity.title,
+		description: activity.description,
+		datePublished: formattedDatePublished
+	};
 
-    // Default author 
-    const defaultAuthor: Person = {
-        "@type": "Person",
-        "name": "Frédérick Madore",
-        "url": "https://www.frederickmadore.com",
-        "jobTitle": "Research Fellow",
-        "affiliation": {
-            "@type": "Organization",
-            "name": "Leibniz-Zentrum Moderner Orient (ZMO)"
-        }
-    };
+	// Default author
+	const defaultAuthor: Person = {
+		'@type': 'Person',
+		name: 'Frédérick Madore',
+		url: 'https://www.frederickmadore.com',
+		jobTitle: 'Research Fellow',
+		affiliation: {
+			'@type': 'Organization',
+			name: 'Leibniz-Zentrum Moderner Orient (ZMO)'
+		}
+	};
 
-    // Assign fields for BlogPosting
-    jsonLdObject.author = defaultAuthor;
-    
-    // Remove the switch statement
-    /* 
+	// Assign fields for BlogPosting
+	jsonLdObject.author = defaultAuthor;
+
+	// Remove the switch statement
+	/* 
     switch (resolvedType) {
         case "Event":
             // ... event logic removed ...
@@ -111,18 +112,18 @@ export const load: PageLoad = ({ params }) => {
     }
     */
 
-    // Common optional fields
-    if (activity.heroImage?.src) {
-        jsonLdObject.image = `${base}/${activity.heroImage.src}`;
-    }
-    if (activity.tags) {
-        jsonLdObject.keywords = activity.tags.join(", ");
-    }
+	// Common optional fields
+	if (activity.heroImage?.src) {
+		jsonLdObject.image = `${base}/${activity.heroImage.src}`;
+	}
+	if (activity.tags) {
+		jsonLdObject.keywords = activity.tags.join(', ');
+	}
 
-    const jsonLdString = JSON.stringify(jsonLdObject);
+	const jsonLdString = JSON.stringify(jsonLdObject);
 
-    return {
-        activity,
-        jsonLdString
-    };
-}; 
+	return {
+		activity,
+		jsonLdString
+	};
+};

@@ -1,122 +1,122 @@
 /* Button styles */
 
 .btn {
-  display: inline-block;
-  font-weight: 500;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  -webkit-user-select: none;
-  user-select: none;
-  border: 1px solid transparent;
-  padding: var(--spacing-2) var(--spacing-4);
-  font-size: var(--font-size-base);
-  line-height: 1.5;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow-sm);
-  transition: all 0.2s ease-in-out;
-  cursor: pointer;
+	display: inline-block;
+	font-weight: 500;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	user-select: none;
+	border: 1px solid transparent;
+	padding: var(--spacing-2) var(--spacing-4);
+	font-size: var(--font-size-base);
+	line-height: 1.5;
+	border-radius: var(--border-radius);
+	box-shadow: var(--shadow-sm);
+	transition: all 0.2s ease-in-out;
+	cursor: pointer;
 }
 
 .btn:active {
-  transform: translateY(1px);
-  box-shadow: none;
+	transform: translateY(1px);
+	box-shadow: none;
 }
 
 /* Primary button */
 .btn-primary {
-  color: white;
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
+	color: white;
+	background-color: var(--color-primary);
+	border-color: var(--color-primary);
 }
 
-.btn-primary:hover, 
+.btn-primary:hover,
 .btn-primary:focus {
-  background-color: var(--color-primary-dark);
-  border-color: var(--color-primary-dark);
-  color: white;
+	background-color: var(--color-primary-dark);
+	border-color: var(--color-primary-dark);
+	color: white;
 }
 
 /* Secondary button */
 .btn-secondary {
-  color: white;
-  background-color: var(--color-secondary);
-  border-color: var(--color-secondary);
+	color: white;
+	background-color: var(--color-secondary);
+	border-color: var(--color-secondary);
 }
 
 .btn-secondary:hover,
 .btn-secondary:focus {
-  background-color: #374151;
-  border-color: #374151;
+	background-color: #374151;
+	border-color: #374151;
 }
 
 /* Outline buttons */
 .btn-outline-primary {
-  color: var(--color-primary);
-  background-color: transparent;
-  border-color: var(--color-primary);
+	color: var(--color-primary);
+	background-color: transparent;
+	border-color: var(--color-primary);
 }
 
 .btn-outline-primary:hover,
 .btn-outline-primary:focus {
-  color: white;
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
+	color: white;
+	background-color: var(--color-primary);
+	border-color: var(--color-primary);
 }
 
 .btn-outline-secondary {
-  color: var(--color-secondary);
-  background-color: transparent;
-  border-color: var(--color-secondary);
+	color: var(--color-secondary);
+	background-color: transparent;
+	border-color: var(--color-secondary);
 }
 
 .btn-outline-secondary:hover,
 .btn-outline-secondary:focus {
-  color: white;
-  background-color: var(--color-secondary);
-  border-color: var(--color-secondary);
+	color: white;
+	background-color: var(--color-secondary);
+	border-color: var(--color-secondary);
 }
 
 /* Button sizes */
 .btn-sm {
-  padding: var(--spacing-1) var(--spacing-2);
-  font-size: var(--font-size-sm);
-  border-radius: var(--border-radius-sm);
+	padding: var(--spacing-1) var(--spacing-2);
+	font-size: var(--font-size-sm);
+	border-radius: var(--border-radius-sm);
 }
 
 .btn-lg {
-  padding: var(--spacing-3) var(--spacing-6);
-  font-size: var(--font-size-lg);
-  border-radius: var(--border-radius-md);
+	padding: var(--spacing-3) var(--spacing-6);
+	font-size: var(--font-size-lg);
+	border-radius: var(--border-radius-md);
 }
 
 /* Full width button */
 .btn-block {
-  display: block;
-  width: 100%;
+	display: block;
+	width: 100%;
 }
 
 /* Icon button with text */
 .btn-icon {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-2);
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-2);
 }
 
 /* Disabled button */
 .btn:disabled,
 .btn.disabled {
-  opacity: 0.65;
-  pointer-events: none;
+	opacity: 0.65;
+	pointer-events: none;
 }
 
 /* Custom control button with specific rounding and hover */
 .control-button-rounded {
-  border-radius: var(--border-radius-md) !important; /* Ensure this radius is applied */
+	border-radius: var(--border-radius-md) !important; /* Ensure this radius is applied */
 }
 
 .control-button-rounded:hover,
 .control-button-rounded:focus {
-  background-color: var(--color-primary) !important; /* Ensure this hover effect */
-  color: white !important;
-} 
+	background-color: var(--color-primary) !important; /* Ensure this hover effect */
+	color: white !important;
+}

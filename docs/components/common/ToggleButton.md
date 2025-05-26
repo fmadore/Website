@@ -12,39 +12,36 @@ import ToggleButton from '$lib/components/common/ToggleButton.svelte';
 
 ```svelte
 <script>
-  import ToggleButton from '$lib/components/common/ToggleButton.svelte';
-  
-  let showMap = false;
-  
-  function handleToggle() {
-    showMap = !showMap;
-    // Additional logic to show/hide map
-  }
+	import ToggleButton from '$lib/components/common/ToggleButton.svelte';
+
+	let showMap = false;
+
+	function handleToggle() {
+		showMap = !showMap;
+		// Additional logic to show/hide map
+	}
 </script>
 
-<ToggleButton 
-  isToggled={showMap}
-  baseText="Map"
-  on:toggle={handleToggle}
-/>
+<ToggleButton isToggled={showMap} baseText="Map" on:toggle={handleToggle} />
 ```
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `isToggled` | `boolean` | `false` | Current toggle state |
-| `baseText` | `string` | `'Toggle'` | Base text for the action (e.g., "Map", "Details") |
+| Prop        | Type      | Default    | Description                                       |
+| ----------- | --------- | ---------- | ------------------------------------------------- |
+| `isToggled` | `boolean` | `false`    | Current toggle state                              |
+| `baseText`  | `string`  | `'Toggle'` | Base text for the action (e.g., "Map", "Details") |
 
 ## Events
 
-| Event | Detail | Description |
-|-------|--------|-------------|
-| `toggle` | `{}` | Fired when the button is clicked |
+| Event    | Detail | Description                      |
+| -------- | ------ | -------------------------------- |
+| `toggle` | `{}`   | Fired when the button is clicked |
 
 ## State-Based Text
 
 The component automatically adjusts its text based on the toggle state:
+
 - When `isToggled` is `false`: Shows "Show [baseText]" (e.g., "Show Map")
 - When `isToggled` is `true`: Shows "Hide [baseText]" (e.g., "Hide Map")
 
@@ -76,17 +73,13 @@ This component uses the common Button atom component with an "outline-primary" v
 
 ```svelte
 <script>
-  import ToggleButton from '$lib/components/common/ToggleButton.svelte';
-  import { mapVisible } from '$lib/stores/uiState.js';
-  
-  function toggleMap() {
-    mapVisible.update(value => !value);
-  }
+	import ToggleButton from '$lib/components/common/ToggleButton.svelte';
+	import { mapVisible } from '$lib/stores/uiState.js';
+
+	function toggleMap() {
+		mapVisible.update((value) => !value);
+	}
 </script>
 
-<ToggleButton 
-  isToggled={$mapVisible}
-  baseText="Map View"
-  on:toggle={toggleMap}
-/>
-``` 
+<ToggleButton isToggled={$mapVisible} baseText="Map View" on:toggle={toggleMap} />
+```

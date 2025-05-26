@@ -30,28 +30,29 @@ import NavLink from '$lib/components/atoms/NavLink.svelte';
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `href` | `string` | *required* | The URL the link points to |
-| `active` | `boolean` | `false` | Whether this link represents the current page |
-| `hasDropdown` | `boolean` | `false` | Whether this link has an associated dropdown menu |
+| Prop          | Type      | Default    | Description                                       |
+| ------------- | --------- | ---------- | ------------------------------------------------- |
+| `href`        | `string`  | _required_ | The URL the link points to                        |
+| `active`      | `boolean` | `false`    | Whether this link represents the current page     |
+| `hasDropdown` | `boolean` | `false`    | Whether this link has an associated dropdown menu |
 
 ## Slots
 
-| Slot | Description |
-|------|-------------|
+| Slot    | Description                                     |
+| ------- | ----------------------------------------------- |
 | default | Content of the navigation link (typically text) |
 
 ## Events
 
-| Event | Description |
-|-------|-------------|
-| `click` | Forwarded from the underlying `<a>` element |
+| Event     | Description                                 |
+| --------- | ------------------------------------------- |
+| `click`   | Forwarded from the underlying `<a>` element |
 | `keydown` | Forwarded from the underlying `<a>` element |
 
 ## Styling
 
 The component includes several CSS features:
+
 - Animated underline effect on hover
 - Dropdown caret icon when `hasDropdown` is true
 - Color changes on hover/active states
@@ -60,38 +61,30 @@ The component includes several CSS features:
 ## Accessibility
 
 - Uses `aria-haspopup="true"` when `hasDropdown` is true
-- Can receive additional ARIA attributes through `$$restProps` 
+- Can receive additional ARIA attributes through `$$restProps`
 
 ## Example
 
 ```svelte
 <nav>
-  <ul>
-    <li>
-      <NavLink 
-        href="/home" 
-        active={$page.url.pathname === '/home'}
-      >
-        Home
-      </NavLink>
-    </li>
-    <li>
-      <NavLink 
-        href="/products" 
-        hasDropdown={true}
-        on:keydown={(e) => handleKeyDown(e, 'products')}
-      >
-        Products
-      </NavLink>
-      <!-- Dropdown implementation -->
-    </li>
-  </ul>
+	<ul>
+		<li>
+			<NavLink href="/home" active={$page.url.pathname === '/home'}>Home</NavLink>
+		</li>
+		<li>
+			<NavLink href="/products" hasDropdown={true} on:keydown={(e) => handleKeyDown(e, 'products')}>
+				Products
+			</NavLink>
+			<!-- Dropdown implementation -->
+		</li>
+	</ul>
 </nav>
 ```
 
 ## CSS Variables
 
 The component uses these CSS variables for styling:
+
 - `--color-text` - Default text color
 - `--color-primary` - Color for hover/active states
 - `--spacing-2` - Padding for the link

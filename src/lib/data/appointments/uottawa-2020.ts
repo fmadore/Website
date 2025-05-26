@@ -10,7 +10,7 @@ export const uottawa2020: Appointment = {
 	endYear: 2020,
 	dateRangeString: '2020',
 	dateISOStart: '2020-09-01',
-	dateISOEnd: '2020-12-31',
+	dateISOEnd: '2020-12-31'
 };
 
-export default uottawa2020; 
+export default uottawa2020;

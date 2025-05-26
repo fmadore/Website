@@ -10,4 +10,4 @@ export const communicationReview2019: PeerReview = {
 	publons_record: 'https://publons.com/wos-op/review/author/lvgEFvT0/'
 };
 
-export default communicationReview2019; 
+export default communicationReview2019;

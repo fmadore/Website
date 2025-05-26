@@ -5,21 +5,22 @@
  * Usage: <div class="iframe-container"><iframe src="..."></iframe></div>
  */
 .iframe-container {
-  position: relative;
-  width: 100%;
-  height: 600px; /* Default height */  margin-bottom: var(--spacing-8);
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-md);
-  background: var(--color-surface);
-  overflow: hidden; /* Ensure contents don't overflow */
+	position: relative;
+	width: 100%;
+	height: 600px; /* Default height */
+	margin-bottom: var(--spacing-8);
+	border: 1px solid var(--color-border);
+	border-radius: var(--border-radius-md);
+	box-shadow: var(--shadow-md);
+	background: var(--color-surface);
+	overflow: hidden; /* Ensure contents don't overflow */
 }
 
 .iframe-container iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
+	width: 100%;
+	height: 100%;
+	border: 0;
+	display: block;
 }
 
 /* 
@@ -27,134 +28,139 @@
  * Usage: <div class="iframe-container-aspect"><iframe src="..."></iframe></div>
  */
 .iframe-container-aspect {
-  position: relative;
-  width: 100%;
-  padding-top: 56.25%; /* 16:9 Aspect Ratio */
-  margin-bottom: var(--spacing-8);
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-md);  box-shadow: var(--shadow-md);
-  background: var(--color-surface);
-  overflow: hidden;
+	position: relative;
+	width: 100%;
+	padding-top: 56.25%; /* 16:9 Aspect Ratio */
+	margin-bottom: var(--spacing-8);
+	border: 1px solid var(--color-border);
+	border-radius: var(--border-radius-md);
+	box-shadow: var(--shadow-md);
+	background: var(--color-surface);
+	overflow: hidden;
 }
 
 .iframe-container-aspect iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
+	display: block;
 }
 
 /* Additional aspect ratio variations */
 .iframe-container-aspect-4-3 {
-  padding-top: 75%; /* 4:3 Aspect Ratio */
+	padding-top: 75%; /* 4:3 Aspect Ratio */
 }
 
 .iframe-container-aspect-1-1 {
-  padding-top: 100%; /* 1:1 Square Aspect Ratio */
+	padding-top: 100%; /* 1:1 Square Aspect Ratio */
 }
 
 .iframe-container-aspect-21-9 {
-  padding-top: 42.86%; /* 21:9 Ultra-wide Aspect Ratio */
+	padding-top: 42.86%; /* 21:9 Ultra-wide Aspect Ratio */
 }
 
 /* Size variations */
 .iframe-container-xs {
-  height: 300px;
+	height: 300px;
 }
 
 .iframe-container-sm {
-  height: 400px; 
+	height: 400px;
 }
 
 .iframe-container-md {
-  height: 600px; /* Same as default for clarity */
+	height: 600px; /* Same as default for clarity */
 }
 
 .iframe-container-lg {
-  height: 800px;
+	height: 800px;
 }
 
 .iframe-container-xl {
-  height: 1000px;
+	height: 1000px;
 }
 
 .iframe-container-fullheight {
-  height: calc(100vh - 200px); /* Full viewport height minus space for header/footer */
+	height: calc(100vh - 200px); /* Full viewport height minus space for header/footer */
 }
 
 /* Remove margin bottom when needed */
 .iframe-container-no-margin,
 .iframe-container-aspect-no-margin {
-  margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 /* Improved loading animation with better z-index and opacity handling */
-.iframe-container::before, 
+.iframe-container::before,
 .iframe-container-aspect::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: var(--color-background);
-  z-index: 5; /* Higher z-index to ensure it covers the iframe */
-  opacity: 0;
-  transition: opacity 0.2s; /* Reduced transition time for faster appearance/disappearance */
-  pointer-events: none;
-  display: none;
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: var(--color-background);
+	z-index: 5; /* Higher z-index to ensure it covers the iframe */
+	opacity: 0;
+	transition: opacity 0.2s; /* Reduced transition time for faster appearance/disappearance */
+	pointer-events: none;
+	display: none;
 }
 
-.iframe-container-loading::before, 
+.iframe-container-loading::before,
 .iframe-container-aspect.iframe-container-loading::before {
-  display: block;
-  opacity: 1;
-  background: #f9fafb url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="80" height="80"><circle cx="50" cy="50" r="30" fill="none" stroke="%231a365d" stroke-width="8" stroke-dasharray="188" stroke-dashoffset="0"><animate attributeName="stroke-dashoffset" values="0;188" dur="1.5s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="rotate" values="0 50 50;360 50 50" dur="1.5s" repeatCount="indefinite"/></circle></svg>') center center no-repeat;
+	display: block;
+	opacity: 1;
+	background: #f9fafb
+		url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="80" height="80"><circle cx="50" cy="50" r="30" fill="none" stroke="%231a365d" stroke-width="8" stroke-dasharray="188" stroke-dashoffset="0"><animate attributeName="stroke-dashoffset" values="0;188" dur="1.5s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="rotate" values="0 50 50;360 50 50" dur="1.5s" repeatCount="indefinite"/></circle></svg>')
+		center center no-repeat;
 }
 
 .iframe-loaded::before {
-  opacity: 0 !important;
-  transition: opacity 0.2s; /* Reduced transition time */
-  /* Removed animation delay to hide the loader more quickly */
-  visibility: hidden;
-  display: none;
+	opacity: 0 !important;
+	transition: opacity 0.2s; /* Reduced transition time */
+	/* Removed animation delay to hide the loader more quickly */
+	visibility: hidden;
+	display: none;
 }
 
 /* For lightweight content that loads quickly, add this class to skip loading animation completely */
 .iframe-container-lightweight {
-  background: transparent;
+	background: transparent;
 }
 
 .iframe-container-lightweight::before {
-  display: none !important;
+	display: none !important;
 }
 
 /* Interactive hover effect - subtle scale on hover 
    Usage: <div class="iframe-container iframe-interactive"><iframe src="..."></iframe></div> */
 .iframe-interactive {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+	transition:
+		transform 0.2s ease,
+		box-shadow 0.2s ease;
 }
 
 .iframe-interactive:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
+	transform: translateY(-5px);
+	box-shadow: var(--shadow-lg);
 }
 
 /* Theme variations */
 .iframe-container-bordered {
-  border-width: 2px;
-  border-color: var(--color-primary);
+	border-width: 2px;
+	border-color: var(--color-primary);
 }
 
 .iframe-container-accent {
-  border-color: var(--color-accent);
+	border-color: var(--color-accent);
 }
 
 .iframe-container-highlight {
-  border-color: var(--color-highlight);
+	border-color: var(--color-highlight);
 }
 
 /* Iframe with title bar
@@ -164,99 +170,99 @@
      <iframe src="..."></iframe>
    </div> */
 .iframe-with-header {
-  padding-top: 40px; /* Space for header */
+	padding-top: 40px; /* Space for header */
 }
 
 .iframe-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 40px;
-  background-color: var(--color-primary);
-  color: white;
-  display: flex;
-  align-items: center;
-  padding: 0 var(--spacing-4);
-  font-weight: 500;
-  border-top-left-radius: var(--border-radius-md);
-  border-top-right-radius: var(--border-radius-md);
-  border-bottom: 1px solid var(--color-border);
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 40px;
+	background-color: var(--color-primary);
+	color: white;
+	display: flex;
+	align-items: center;
+	padding: 0 var(--spacing-4);
+	font-weight: 500;
+	border-top-left-radius: var(--border-radius-md);
+	border-top-right-radius: var(--border-radius-md);
+	border-bottom: 1px solid var(--color-border);
 }
 
 .iframe-with-header iframe {
-  height: calc(100% - 40px);
-  margin-top: 40px;
+	height: calc(100% - 40px);
+	margin-top: 40px;
 }
 
 /* Responsive adjustments */
 @media (max-width: 640px) {
-  .iframe-container,
-  .iframe-container-md {
-    height: 500px; /* Slightly shorter on small screens */
-  }
-  
-  .iframe-container-lg {
-    height: 600px; /* Reduce large containers on small screens */
-  }
-  
-  .iframe-container-xl {
-    height: 700px; /* Reduce extra large containers on small screens */
-  }
-  
-  .iframe-container-sm {
-    height: 350px; /* Slightly adjust small containers */
-  }
-  
-  .iframe-container-fullheight {
-    height: calc(100vh - 150px); /* Adjust spacing for mobile */
-  }
+	.iframe-container,
+	.iframe-container-md {
+		height: 500px; /* Slightly shorter on small screens */
+	}
+
+	.iframe-container-lg {
+		height: 600px; /* Reduce large containers on small screens */
+	}
+
+	.iframe-container-xl {
+		height: 700px; /* Reduce extra large containers on small screens */
+	}
+
+	.iframe-container-sm {
+		height: 350px; /* Slightly adjust small containers */
+	}
+
+	.iframe-container-fullheight {
+		height: calc(100vh - 150px); /* Adjust spacing for mobile */
+	}
 }
 
 @media (max-width: 480px) {
-  .iframe-container,
-  .iframe-container-md {
-    height: 400px; /* Even shorter on very small screens */
-  }
-  
-  .iframe-container-lg {
-    height: 500px;
-  }
-  
-  .iframe-container-xl {
-    height: 600px;
-  }
-  
-  .iframe-container-sm {
-    height: 300px;
-  }
-  
-  .iframe-container-xs {
-    height: 250px;
-  }
-  
-  .iframe-header {
-    font-size: var(--font-size-sm);
-  }
+	.iframe-container,
+	.iframe-container-md {
+		height: 400px; /* Even shorter on very small screens */
+	}
+
+	.iframe-container-lg {
+		height: 500px;
+	}
+
+	.iframe-container-xl {
+		height: 600px;
+	}
+
+	.iframe-container-sm {
+		height: 300px;
+	}
+
+	.iframe-container-xs {
+		height: 250px;
+	}
+
+	.iframe-header {
+		font-size: var(--font-size-sm);
+	}
 }
 
 /* Print styles - ensure iframes look good when printed */
 @media print {
-  .iframe-container,
-  .iframe-container-aspect {
-    box-shadow: none;
-    border: 1px solid #000;
-  }
-  
-  .iframe-container-aspect {
-    break-inside: avoid;
-    page-break-inside: avoid;
-    height: 400px;
-    padding-top: 0;
-  }
-  
-  .iframe-container-aspect iframe {
-    position: relative;
-    height: 100%;
-  }
+	.iframe-container,
+	.iframe-container-aspect {
+		box-shadow: none;
+		border: 1px solid #000;
+	}
+
+	.iframe-container-aspect {
+		break-inside: avoid;
+		page-break-inside: avoid;
+		height: 400px;
+		padding-top: 0;
+	}
+
+	.iframe-container-aspect iframe {
+		position: relative;
+		height: 100%;
+	}
 }

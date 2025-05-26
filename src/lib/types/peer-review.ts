@@ -8,4 +8,4 @@ export interface PeerReview {
 	dateISO: string; // Full date for sorting, e.g., '2022-01-01'
 	details?: string; // Optional extra details
 	publons_record?: string; // Optional Publons record URL
-} 
+}

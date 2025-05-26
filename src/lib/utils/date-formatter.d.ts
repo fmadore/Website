@@ -10,4 +10,4 @@ export function formatDisplayDate(isoDate: string): string;
  * @param isoDate Date string in ISO format (YYYY-MM-DD)
  * @returns Year as number
  */
-export function getYearFromISODate(isoDate: string): number; 
+export function getYearFromISODate(isoDate: string): number;

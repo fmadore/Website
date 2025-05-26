@@ -12,40 +12,38 @@ import Sorter from '$lib/components/common/Sorter.svelte';
 
 ```svelte
 <script>
-  import Sorter from '$lib/components/common/Sorter.svelte';
-  
-  let currentSort = 'date';
-  
-  function handleSortChange(event) {
-    const { sortBy } = event.detail;
-    currentSort = sortBy;
-    
-    // Apply sorting logic to your data
-    // ...
-  }
+	import Sorter from '$lib/components/common/Sorter.svelte';
+
+	let currentSort = 'date';
+
+	function handleSortChange(event) {
+		const { sortBy } = event.detail;
+		currentSort = sortBy;
+
+		// Apply sorting logic to your data
+		// ...
+	}
 </script>
 
-<Sorter 
-  activeSort={currentSort}
-  on:sortChange={handleSortChange} 
-/>
+<Sorter activeSort={currentSort} on:sortChange={handleSortChange} />
 ```
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
+| Prop         | Type                | Default  | Description                  |
+| ------------ | ------------------- | -------- | ---------------------------- |
 | `activeSort` | `'date' \| 'title'` | `'date'` | Currently active sort method |
 
 ## Events
 
-| Event | Detail | Description |
-|-------|--------|-------------|
+| Event        | Detail                          | Description                                                |
+| ------------ | ------------------------------- | ---------------------------------------------------------- |
 | `sortChange` | `{ sortBy: 'date' \| 'title' }` | Fired when the user clicks the button to change sort order |
 
 ## Visual Indicators
 
 The component provides clear visual feedback about the current sort method:
+
 - When sorting by date: Shows a calendar/chronological icon and "Sorted by Date" text
 - When sorting by title: Shows an alphabetical icon and "Sorted A-Z" text
 
@@ -66,19 +64,12 @@ This component uses the common Button atom component with an "outline-primary" v
 
 ```svelte
 <div class="controls-bar">
-  <div class="controls-left">
-    <ToggleButton 
-      isToggled={showMap} 
-      baseText="Map View"
-      on:toggle={() => showMap = !showMap}
-    />
-  </div>
-  
-  <div class="controls-right">
-    <Sorter 
-      activeSort={currentSort}
-      on:sortChange={handleSortChange} 
-    />
-  </div>
+	<div class="controls-left">
+		<ToggleButton isToggled={showMap} baseText="Map View" on:toggle={() => (showMap = !showMap)} />
+	</div>
+
+	<div class="controls-right">
+		<Sorter activeSort={currentSort} on:sortChange={handleSortChange} />
+	</div>
 </div>
-``` 
+```

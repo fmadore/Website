@@ -10,7 +10,7 @@ export const uf2018: Appointment = {
 	endYear: 2020,
 	dateRangeString: '2018-2020',
 	dateISOStart: '2018-10-01',
-	dateISOEnd: '2020-09-30',
+	dateISOEnd: '2020-09-30'
 };
 
-export default uf2018; 
+export default uf2018;

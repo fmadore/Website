@@ -1,37 +1,36 @@
 <script lang="ts">
-    import { Map } from 'lucide-svelte'; // Import the Map icon
-    import Button from '$lib/components/atoms/Button.svelte'; // Import Button component
+	import { Map } from 'lucide-svelte'; // Import the Map icon
+	import Button from '$lib/components/atoms/Button.svelte'; // Import Button component
 
-    interface Props {
-        isToggled?: boolean;
-        baseText?: string; // e.g., "Map", "Details"
-        onclick?: () => void; // Svelte 5: callback prop instead of event dispatcher
-    }
+	interface Props {
+		isToggled?: boolean;
+		baseText?: string; // e.g., "Map", "Details"
+		onclick?: () => void; // Svelte 5: callback prop instead of event dispatcher
+	}
 
-    let { isToggled = false, baseText = 'Toggle', onclick }: Props = $props();
+	let { isToggled = false, baseText = 'Toggle', onclick }: Props = $props();
 
-    function handleClick() {
-        onclick?.(); // Call the onclick callback if provided
-    }
+	function handleClick() {
+		onclick?.(); // Call the onclick callback if provided
+	}
 
-    // Determine label and aria information based on state
-    let labelText = $derived((isToggled ? 'Hide' : 'Show') + ' ' + baseText);
-    let ariaTitle = $derived(isToggled ? `Hide ${baseText}` : `Show ${baseText}`);
-
+	// Determine label and aria information based on state
+	let labelText = $derived((isToggled ? 'Hide' : 'Show') + ' ' + baseText);
+	let ariaTitle = $derived(isToggled ? `Hide ${baseText}` : `Show ${baseText}`);
 </script>
 
 <Button
-    variant="outline-primary" 
-    size="sm"
-    onclick={handleClick}
-    ariaLabel={ariaTitle}
-    title={ariaTitle}
-    additionalClasses="control-button-rounded"
+	variant="outline-primary"
+	size="sm"
+	onclick={handleClick}
+	ariaLabel={ariaTitle}
+	title={ariaTitle}
+	additionalClasses="control-button-rounded"
 >
-    {#snippet icon()}
-        <Map size={18} />
-    {/snippet}
-    {labelText}
+	{#snippet icon()}
+		<Map size={18} />
+	{/snippet}
+	{labelText}
 </Button>
 
-<!-- No local styles needed if btnClass uses global CSS --> 
+<!-- No local styles needed if btnClass uses global CSS -->

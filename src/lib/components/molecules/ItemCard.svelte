@@ -12,7 +12,7 @@
 <div class="item-card">
 	<div class="item-meta improved-meta">
 		{#if item.type}
-		<span class="item-type improved-type-tag" data-type={item.type}>{formatType(item.type)}</span>
+			<span class="item-type improved-type-tag" data-type={item.type}>{formatType(item.type)}</span>
 		{/if}
 		<span class="item-date improved-date">{item.date}</span>
 	</div>
@@ -20,9 +20,9 @@
 		{item.title}
 	</a>
 	{#if item.authors && item.authors.length > 0}
-	<div class="item-authors">
-		{formatAuthors(item.authors)}
-	</div>
+		<div class="item-authors">
+			{formatAuthors(item.authors)}
+		</div>
 	{/if}
 	{#if item.abstract}
 		<div class="item-abstract">
@@ -37,7 +37,10 @@
 		position: relative;
 		padding: var(--spacing-4);
 		border-radius: var(--border-radius-sm);
-		transition: all 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+		transition:
+			all 0.2s ease,
+			transform 0.2s ease,
+			box-shadow 0.2s ease;
 		box-shadow: var(--shadow-sm);
 	}
 
@@ -88,7 +91,7 @@
 		max-width: 100%;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		box-shadow: 0 1px 4px 0 rgba(26,54,93,0.06);
+		box-shadow: 0 1px 4px 0 rgba(26, 54, 93, 0.06);
 		border: 1px solid var(--color-border);
 	}
 

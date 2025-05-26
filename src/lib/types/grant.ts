@@ -12,4 +12,4 @@ export interface Grant {
 	currency?: string; // e.g., 'EUR', 'CAD'
 	status?: 'Awarded' | 'Turned Down' | string; // Optional status
 	details?: string; // Optional extra details
-} 
+}

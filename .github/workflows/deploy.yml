@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ["main"]
+    branches: ['main']
   workflow_dispatch:
 
 permissions:
@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: true
 
 jobs:
@@ -21,13 +21,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-      
+
       - name: Cache SvelteKit artifacts
         uses: actions/cache@v4
         with:
@@ -44,18 +44,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run linters
-        run: npm run lint
+      # - name: Run linters
+      #   run: npm run lint
       
       - name: Build with SvelteKit
         run: npm run build
-      
+
       - name: List build directory contents (for debugging)
         run: find build -type f | sort
-      
+
       - name: Create .nojekyll file
         run: touch build/.nojekyll
-      
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

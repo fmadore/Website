@@ -9,4 +9,4 @@ export const jdm20190126: MediaAppearance = {
 	type: 'interview'
 };
 
-export default jdm20190126; 
+export default jdm20190126;

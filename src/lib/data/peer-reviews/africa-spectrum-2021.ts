@@ -9,4 +9,4 @@ export const africaSpectrum2021: PeerReview = {
 	publons_record: 'https://publons.com/wos-op/review/author/ZO6tFFN3/'
 };
 
-export default africaSpectrum2021; 
+export default africaSpectrum2021;

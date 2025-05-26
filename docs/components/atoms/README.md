@@ -36,13 +36,13 @@ Import atoms directly into other components:
 
 ```svelte
 <script>
-  import Button from '$lib/components/atoms/Button.svelte';
-  import NavLink from '$lib/components/atoms/NavLink.svelte';
+	import Button from '$lib/components/atoms/Button.svelte';
+	import NavLink from '$lib/components/atoms/NavLink.svelte';
 </script>
 
 <div>
-  <NavLink href="/home">Home</NavLink>
-  <Button variant="primary">Click Me</Button>
+	<NavLink href="/home">Home</NavLink>
+	<Button variant="primary">Click Me</Button>
 </div>
 ```
 
@@ -78,7 +78,7 @@ import { createEventDispatcher } from 'svelte';
 const dispatch = createEventDispatcher();
 
 function handleClick(event) {
-  dispatch('click', { event, value: someValue });
+	dispatch('click', { event, value: someValue });
 }
 ```
 

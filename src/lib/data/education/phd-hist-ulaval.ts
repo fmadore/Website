@@ -8,9 +8,10 @@ export const phdHistUlaval: Education = {
 	location: 'Québec City, Canada',
 	year: 2018,
 	type: 'Degree',
-	thesisTitle: 'Rivalités et collaborations entre ainés et cadets sociaux dans les milieux associatifs islamiques en Côte d’Ivoire et au Burkina Faso (1970-2017)',
+	thesisTitle:
+		'Rivalités et collaborations entre ainés et cadets sociaux dans les milieux associatifs islamiques en Côte d’Ivoire et au Burkina Faso (1970-2017)',
 	details: 'Co-advisors: Muriel Gomez-Perez and Cédric Jourde (University of Ottawa)',
 	dateISO: '2018-09-30'
 };
 
-export default phdHistUlaval; 
+export default phdHistUlaval;

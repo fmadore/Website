@@ -5,13 +5,10 @@ import { loadData } from '$lib/utils/dataLoader';
 type ModuleType = Record<string, any>;
 
 const templateIds: string[] = [
-	// 'media-appearance-template-id' 
+	// 'media-appearance-template-id'
 ];
 
-const mediaModules = import.meta.glob<ModuleType>(
-	['./*.ts'],
-	{ eager: true }
-);
+const mediaModules = import.meta.glob<ModuleType>(['./*.ts'], { eager: true });
 
 const allMediaAppearances: MediaAppearance[] = loadData<MediaAppearance>(
 	mediaModules,
@@ -24,4 +21,4 @@ export const mediaAppearancesByDate = [...allMediaAppearances].sort((a, b) => {
 	return new Date(b.dateISO).getTime() - new Date(a.dateISO).getTime();
 });
 
-export { allMediaAppearances }; 
+export { allMediaAppearances };

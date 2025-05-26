@@ -11,4 +11,4 @@ export const trainingHujiFub2023: Education = {
 	dateISO: '2023-03-01' // Use end date for sorting
 };
 
-export default trainingHujiFub2023; 
+export default trainingHujiFub2023;

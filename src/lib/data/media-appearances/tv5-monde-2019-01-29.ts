@@ -10,4 +10,4 @@ export const tv5Monde20190129: MediaAppearance = {
 	type: 'interview'
 };
 
-export default tv5Monde20190129; 
+export default tv5Monde20190129;

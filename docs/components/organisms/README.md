@@ -12,13 +12,13 @@ Organisms are complex UI components that combine multiple molecules and atoms to
 
 ## Available Organism Components
 
-| Component | Description | Usage |
-|-----------|-------------|-------|
-| [Header](./Header.md) | Site header with responsive navigation | Top of every page |
-| Footer | Site footer with links and copyright | Bottom of every page |
-| LatestActivities | Display of the most recent activities | Home page |
-| RelevantPublications | Display of selected publications | Home page |
-| RelevantCommunications | Display of selected communications | Home page |
+| Component              | Description                            | Usage                |
+| ---------------------- | -------------------------------------- | -------------------- |
+| [Header](./Header.md)  | Site header with responsive navigation | Top of every page    |
+| Footer                 | Site footer with links and copyright   | Bottom of every page |
+| LatestActivities       | Display of the most recent activities  | Home page            |
+| RelevantPublications   | Display of selected publications       | Home page            |
+| RelevantCommunications | Display of selected communications     | Home page            |
 
 ## Designing New Organisms
 
@@ -38,22 +38,22 @@ Organisms typically compose molecules and atoms:
 
 ```svelte
 <script>
-  import MoleculeA from '$lib/components/molecules/MoleculeA.svelte';
-  import MoleculeB from '$lib/components/molecules/MoleculeB.svelte';
-  import AtomA from '$lib/components/atoms/AtomA.svelte';
-  
-  // Organism-specific props, state and handlers
+	import MoleculeA from '$lib/components/molecules/MoleculeA.svelte';
+	import MoleculeB from '$lib/components/molecules/MoleculeB.svelte';
+	import AtomA from '$lib/components/atoms/AtomA.svelte';
+
+	// Organism-specific props, state and handlers
 </script>
 
 <div class="organism-wrapper">
-  <div class="section-one">
-    <MoleculeA />
-  </div>
-  
-  <div class="section-two">
-    <MoleculeB />
-    <AtomA />
-  </div>
+	<div class="section-one">
+		<MoleculeA />
+	</div>
+
+	<div class="section-two">
+		<MoleculeB />
+		<AtomA />
+	</div>
 </div>
 ```
 
@@ -68,12 +68,12 @@ let isExpanded = false;
 
 // State distribution to children
 function handleItemActivation(index: number) {
-  activeItem = index;
-  isExpanded = true;
+	activeItem = index;
+	isExpanded = true;
 }
 
 function handleCollapse() {
-  isExpanded = false;
+	isExpanded = false;
 }
 ```
 
@@ -84,10 +84,10 @@ Organisms coordinate events between multiple child components:
 ```typescript
 // In the organism component
 function handleMoleculeAEvent(data) {
-  // Update some state based on MoleculeA
-  
-  // Potentially trigger an action in MoleculeB
-  moleculeBAction();
+	// Update some state based on MoleculeA
+
+	// Potentially trigger an action in MoleculeB
+	moleculeBAction();
 }
 ```
 
@@ -97,15 +97,15 @@ Organisms typically implement different layouts and behaviors across screen size
 
 ```svelte
 <style>
-  .organism-wrapper {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  @media (min-width: 768px) {
-    .organism-wrapper {
-      flex-direction: row;
-    }
-  }
+	.organism-wrapper {
+		display: flex;
+		flex-direction: column;
+	}
+
+	@media (min-width: 768px) {
+		.organism-wrapper {
+			flex-direction: row;
+		}
+	}
 </style>
 ```

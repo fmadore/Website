@@ -15,4 +15,4 @@ export const bombardierMasters2010: Grant = {
 	status: 'Awarded'
 };
 
-export default bombardierMasters2010; 
+export default bombardierMasters2010;

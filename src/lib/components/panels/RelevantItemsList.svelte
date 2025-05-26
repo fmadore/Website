@@ -18,14 +18,14 @@
 	import PanelBase from './PanelBase.svelte';
 
 	// Props
-	let { 
-		title, 
-		items, 
-		itemTypePlural, 
-		basePath, 
-		viewAllPath, 
-		formatType, 
-		formatAuthors 
+	let {
+		title,
+		items,
+		itemTypePlural,
+		basePath,
+		viewAllPath,
+		formatType,
+		formatAuthors
 	}: {
 		title: string; // e.g., "Relevant Publications", "Relevant Communications"
 		items: RelevantItem[];
@@ -37,7 +37,9 @@
 	} = $props();
 
 	// Get unique item types for the type filter
-	let itemTypes = $derived([...new Set(items.map(item => item.type).filter(Boolean))].sort() as string[]);
+	let itemTypes = $derived(
+		[...new Set(items.map((item) => item.type).filter(Boolean))].sort() as string[]
+	);
 </script>
 
 {#snippet panelContent()}

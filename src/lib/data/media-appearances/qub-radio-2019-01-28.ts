@@ -9,4 +9,4 @@ export const qubRadio20190128: MediaAppearance = {
 	type: 'interview'
 };
 
-export default qubRadio20190128; 
+export default qubRadio20190128;

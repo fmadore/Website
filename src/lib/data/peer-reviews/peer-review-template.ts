@@ -12,4 +12,4 @@ export const peerReviewTemplate: PeerReview = {
 	publons_record: 'https://publons.com/review/xxxxxxx/' // Optional: URL to the Publons record, remove if not applicable
 };
 
-export default peerReviewTemplate; 
+export default peerReviewTemplate;

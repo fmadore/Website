@@ -5,7 +5,7 @@ export const ulavalHistExcellence2010: Award = {
 	title: 'Department of History Award of Excellence',
 	institution: 'Université Laval',
 	year: 2010,
-	dateISO: '2010-01-01', // Adjust date if known
+	dateISO: '2010-01-01' // Adjust date if known
 };
 
-export default ulavalHistExcellence2010; 
+export default ulavalHistExcellence2010;

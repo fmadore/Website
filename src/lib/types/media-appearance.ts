@@ -9,4 +9,4 @@ export interface MediaAppearance {
 	url?: string; // Optional URL to the appearance/article
 	details?: string; // Optional extra details
 	type: 'interview' | 'article' | string; // Type of appearance
-} 
+}

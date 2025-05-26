@@ -15,4 +15,4 @@ export const banting2018: Grant = {
 	status: 'Awarded'
 };
 
-export default banting2018; 
+export default banting2018;

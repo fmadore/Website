@@ -10,4 +10,4 @@ export interface Appointment {
 	dateISOStart: string; // Start date for sorting, e.g., '2025-01-01'
 	dateISOEnd?: string | null; // Optional end date for sorting
 	details?: string; // Optional extra details
-} 
+}

@@ -4,16 +4,16 @@ Common components are reusable UI elements that don't fit neatly into the atomic
 
 ## Available Common Components
 
-| Component | Description | Usage |
-|-----------|-------------|-------|
-| [Card](./Card.md) | Versatile card component for displaying content with image, title and sections | Entity displays, previews |
-| [CookieConsent](./CookieConsent.md) | Banner for managing cookie consent for analytics | Site-wide privacy compliance |
-| [EntityListPageLayout](./EntityListPageLayout.md) | Layout component for list pages with sidebar and content | Publication/communication listings |
-| [FilteredListDisplay](./FilteredListDisplay.md) | Component for displaying filtered lists with empty states | Data-driven listings |
-| [ItemReference](./ItemReference.md) | Link to an entity with metadata | Related items, references |
-| [PageHeader](./PageHeader.md) | Standard page header with title and optional description | Section pages |
-| [Sorter](./Sorter.md) | Controls for sorting a list of items | Publication lists, activity lists |
-| [ToggleButton](./ToggleButton.md) | A button that toggles between two states | Filter options, view toggles |
+| Component                                         | Description                                                                    | Usage                              |
+| ------------------------------------------------- | ------------------------------------------------------------------------------ | ---------------------------------- |
+| [Card](./Card.md)                                 | Versatile card component for displaying content with image, title and sections | Entity displays, previews          |
+| [CookieConsent](./CookieConsent.md)               | Banner for managing cookie consent for analytics                               | Site-wide privacy compliance       |
+| [EntityListPageLayout](./EntityListPageLayout.md) | Layout component for list pages with sidebar and content                       | Publication/communication listings |
+| [FilteredListDisplay](./FilteredListDisplay.md)   | Component for displaying filtered lists with empty states                      | Data-driven listings               |
+| [ItemReference](./ItemReference.md)               | Link to an entity with metadata                                                | Related items, references          |
+| [PageHeader](./PageHeader.md)                     | Standard page header with title and optional description                       | Section pages                      |
+| [Sorter](./Sorter.md)                             | Controls for sorting a list of items                                           | Publication lists, activity lists  |
+| [ToggleButton](./ToggleButton.md)                 | A button that toggles between two states                                       | Filter options, view toggles       |
 
 ## Component Design Philosophy
 
@@ -27,6 +27,7 @@ Common components follow these design principles:
 ## Usage Patterns
 
 Common components are typically used within:
+
 - Page layouts
 - List displays
 - Detail views
@@ -36,32 +37,29 @@ Common components are typically used within:
 
 ```svelte
 <script>
-  import PageHeader from '$lib/components/common/PageHeader.svelte';
-  import Sorter from '$lib/components/common/Sorter.svelte';
-  import TagList from '$lib/components/molecules/TagList.svelte';
-  
-  const tags = ['Research', 'Africa', 'Islamic Studies'];
-  
-  function handleSortChange(event) {
-    // Sort logic
-  }
+	import PageHeader from '$lib/components/common/PageHeader.svelte';
+	import Sorter from '$lib/components/common/Sorter.svelte';
+	import TagList from '$lib/components/molecules/TagList.svelte';
+
+	const tags = ['Research', 'Africa', 'Islamic Studies'];
+
+	function handleSortChange(event) {
+		// Sort logic
+	}
 </script>
 
 <PageHeader
-  title="Publications"
-  description="Academic publications on Islamic movements in West Africa"
+	title="Publications"
+	description="Academic publications on Islamic movements in West Africa"
 />
 
 <div class="controls">
-  <Sorter 
-    options={['Date', 'Title', 'Relevance']}
-    selected="Date"
-    onChange={handleSortChange}
-  />
+	<Sorter options={['Date', 'Title', 'Relevance']} selected="Date" onChange={handleSortChange} />
 </div>
 
 <article>
-  <h2>Publication Title</h2>
-  <TagList tags={tags} />
-  <!-- Content -->
+	<h2>Publication Title</h2>
+	<TagList {tags} />
+	<!-- Content -->
 </article>
+```

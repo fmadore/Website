@@ -15,4 +15,4 @@ export const frqscDoctoral2013: Grant = {
 	status: 'Turned Down'
 };
 
-export default frqscDoctoral2013; 
+export default frqscDoctoral2013;

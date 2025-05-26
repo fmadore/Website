@@ -3,9 +3,9 @@
 	import { type Snippet } from 'svelte';
 
 	// Props
-	let { 
-		title = '', 
-		variant = 'default', 
+	let {
+		title = '',
+		variant = 'default',
 		showFooter = false,
 		header,
 		content,

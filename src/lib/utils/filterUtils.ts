@@ -8,7 +8,9 @@ import type { YearRange } from '$lib/types'; // Assuming YearRange is in types r
  * Creates a writable store for active filters with a defined initial state.
  * @param initialFilterState - The initial state object for the filters.
  */
-export function createActiveFiltersStore<T extends Record<string, any>>(initialFilterState: T): Writable<T> {
+export function createActiveFiltersStore<T extends Record<string, any>>(
+	initialFilterState: T
+): Writable<T> {
 	return writable<T>(initialFilterState);
 }
 
@@ -63,7 +65,7 @@ export function createUpdateRangeFilter<T, K extends keyof T>(
 		const validatedMax = Math.max(min, max);
 		activeFilters.update((filters) => ({
 			...filters,
-			[key]: { min: validatedMin, max: validatedMax } as T[K], // Cast needed
+			[key]: { min: validatedMin, max: validatedMax } as T[K] // Cast needed
 		}));
 	};
 }
@@ -91,18 +93,17 @@ export function createResetRangeFilter<T, K extends keyof T>(
  * @param resetFn - The generated reset function (createResetRangeFilter).
  */
 export function createSetRangeFilter<T, K extends keyof T>(
-    updateFn: (min: number, max: number) => void,
-    resetFn: () => void
+	updateFn: (min: number, max: number) => void,
+	resetFn: () => void
 ): (range: YearRange | null) => void {
-    return (range: YearRange | null) => {
-        if (range) {
-            updateFn(range.min, range.max);
-        } else {
-            resetFn();
-        }
-    };
+	return (range: YearRange | null) => {
+		if (range) {
+			updateFn(range.min, range.max);
+		} else {
+			resetFn();
+		}
+	};
 }
-
 
 /**
  * Generates a function to clear all filters back to their initial state.
@@ -138,7 +139,8 @@ export function createDerivedCountStore<TItem>(
 				if (keys) {
 					if (Array.isArray(keys)) {
 						keys.forEach((key) => {
-							if (key) { // Ensure key is not empty string or null/undefined if array contains them
+							if (key) {
+								// Ensure key is not empty string or null/undefined if array contains them
 								counts[key] = (counts[key] || 0) + 1;
 							}
 						});
@@ -150,4 +152,4 @@ export function createDerivedCountStore<TItem>(
 		}
 		return counts;
 	});
-} 
+}

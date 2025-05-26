@@ -7,7 +7,8 @@ export interface ProfessionalAffiliation {
 	parentOrganization?: string; // Optional parent organization (e.g., ASA)
 	period: YearRange | { start: number; end: 'present' | number }; // Membership period
 	url?: string; // Optional URL for the affiliation
-	roles?: { // Optional roles held within the affiliation
+	roles?: {
+		// Optional roles held within the affiliation
 		title: string; // e.g., Secretary
 		period: YearRange | { start: number; end: 'present' | number }; // Role period
 	}[];
@@ -29,4 +30,4 @@ export const affiliationTemplate: ProfessionalAffiliation = {
         }
     ]
 };
-*/ 
+*/

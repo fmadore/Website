@@ -21,16 +21,24 @@ let fieldworkDataPromise: Promise<{
 // Function to load fieldwork data asynchronously
 async function loadFieldworkData() {
 	if (!fieldworkDataPromise) {
-		fieldworkDataPromise = import('./index').then(module => ({
-			allFieldworks: module.allFieldworks || [],
-			fieldworksByYear: module.fieldworksByYear || {},
-			allCountries: module.allCountries || [],
-			allCities: module.allCities || [],
-			allProjects: module.allProjects || []
-		})).catch(error => {
-			console.error("Error importing fieldworks index:", error);
-			return { allFieldworks: [], fieldworksByYear: {}, allCountries: [], allCities: [], allProjects: [] };
-		});
+		fieldworkDataPromise = import('./index')
+			.then((module) => ({
+				allFieldworks: module.allFieldworks || [],
+				fieldworksByYear: module.fieldworksByYear || {},
+				allCountries: module.allCountries || [],
+				allCities: module.allCities || [],
+				allProjects: module.allProjects || []
+			}))
+			.catch((error) => {
+				console.error('Error importing fieldworks index:', error);
+				return {
+					allFieldworks: [],
+					fieldworksByYear: {},
+					allCountries: [],
+					allCities: [],
+					allProjects: []
+				};
+			});
 	}
 	return fieldworkDataPromise;
 }
@@ -64,11 +72,13 @@ export const filterOptions = writable({
 });
 
 // Load options when the module is used
-loadFieldworkData().then(data => {
+loadFieldworkData().then((data) => {
 	filterOptions.set({
 		countries: data.allCountries,
 		cities: data.allCities,
-		years: Object.keys(data.fieldworksByYear || {}).map(Number).sort((a, b) => b - a),
+		years: Object.keys(data.fieldworksByYear || {})
+			.map(Number)
+			.sort((a, b) => b - a),
 		projects: data.allProjects
 	});
 });
@@ -77,7 +87,7 @@ loadFieldworkData().then(data => {
 
 // Create a writable store to hold the loaded fieldworks data
 const allFieldworksStore = writable<Fieldwork[]>([]);
-loadFieldworkData().then(data => allFieldworksStore.set(data.allFieldworks || []));
+loadFieldworkData().then((data) => allFieldworksStore.set(data.allFieldworks || []));
 
 // Derive filtered fieldworks based on active filters and the loaded data
 export const filteredFieldworks = derived(
@@ -86,25 +96,27 @@ export const filteredFieldworks = derived(
 		if (!$allFieldworks || $allFieldworks.length === 0) {
 			return []; // Return empty if data not loaded yet
 		}
-		return $allFieldworks.filter(fieldwork => {
+		return $allFieldworks.filter((fieldwork) => {
 			// Country
-			if ($activeFilters.countries.length > 0 &&
-				!$activeFilters.countries.includes(fieldwork.country)) {
+			if (
+				$activeFilters.countries.length > 0 &&
+				!$activeFilters.countries.includes(fieldwork.country)
+			) {
 				return false;
 			}
 			// City
-			if ($activeFilters.cities.length > 0 &&
-				!$activeFilters.cities.includes(fieldwork.city)) {
+			if ($activeFilters.cities.length > 0 && !$activeFilters.cities.includes(fieldwork.city)) {
 				return false;
 			}
 			// Year (array check)
-			if ($activeFilters.years.length > 0 &&
-				!$activeFilters.years.includes(fieldwork.year)) {
+			if ($activeFilters.years.length > 0 && !$activeFilters.years.includes(fieldwork.year)) {
 				return false;
 			}
 			// Project
-			if ($activeFilters.projects.length > 0 &&
-				(!fieldwork.project || !$activeFilters.projects.includes(fieldwork.project))) {
+			if (
+				$activeFilters.projects.length > 0 &&
+				(!fieldwork.project || !$activeFilters.projects.includes(fieldwork.project))
+			) {
 				return false;
 			}
 			return true;
@@ -112,7 +124,6 @@ export const filteredFieldworks = derived(
 	},
 	[] as Fieldwork[] // Initial value
 );
-
 
 // --- Filter Control Functions ---
 
@@ -131,7 +142,6 @@ export const toggleProjectFilter = createToggleArrayFilter(activeFilters, 'proje
 // Clear All Function
 export const clearAllFilters = createClearAllFilters(activeFilters, initialFilters);
 
-
 // --- Derived Count Stores ---
 // These now correctly depend on the derived filteredFieldworks store
 
@@ -140,4 +150,4 @@ export const cityCounts = createDerivedCountStore(filteredFieldworks, (fw) => fw
 export const projectCounts = createDerivedCountStore(filteredFieldworks, (fw) => fw.project);
 
 // Year counts might be less useful here as years are filters themselves, but could be added:
-// export const yearCounts = createDerivedCountStore(filteredFieldworks, (fw) => String(fw.year)); 
+// export const yearCounts = createDerivedCountStore(filteredFieldworks, (fw) => String(fw.year));

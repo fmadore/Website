@@ -15,4 +15,4 @@ export const thyssen2023: Grant = {
 	status: 'Awarded'
 };
 
-export default thyssen2023; 
+export default thyssen2023;

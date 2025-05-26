@@ -11,30 +11,30 @@ import DropdownMenu from '$lib/components/molecules/DropdownMenu.svelte';
 ## Usage
 
 ```svelte
-<DropdownMenu 
-  items={dropdownItems} 
-  isActive={showDropdown}
-  parentName="Research"
-  onItemClick={handleItemClick}
+<DropdownMenu
+	items={dropdownItems}
+	isActive={showDropdown}
+	parentName="Research"
+	onItemClick={handleItemClick}
 />
 ```
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `items` | `NavItem[]` | *required* | Array of navigation items to display in the dropdown |
-| `isActive` | `boolean` | `false` | Controls whether the dropdown is visible |
-| `parentName` | `string` | `''` | Name of the parent menu item for accessibility |
-| `onItemClick` | `() => void` | `() => {}` | Function called when a dropdown item is clicked |
+| Prop          | Type         | Default    | Description                                          |
+| ------------- | ------------ | ---------- | ---------------------------------------------------- |
+| `items`       | `NavItem[]`  | _required_ | Array of navigation items to display in the dropdown |
+| `isActive`    | `boolean`    | `false`    | Controls whether the dropdown is visible             |
+| `parentName`  | `string`     | `''`       | Name of the parent menu item for accessibility       |
+| `onItemClick` | `() => void` | `() => {}` | Function called when a dropdown item is clicked      |
 
 ## Type Definitions
 
 ```typescript
 interface NavItem {
-  name: string;
-  path: string;
-  dropdown?: NavItem[]; // Not used in this component, but part of the NavItem type
+	name: string;
+	path: string;
+	dropdown?: NavItem[]; // Not used in this component, but part of the NavItem type
 }
 ```
 
@@ -55,45 +55,46 @@ interface NavItem {
 
 ```svelte
 <script>
-  import { base } from '$app/paths';
-  import DropdownMenu from '$lib/components/molecules/DropdownMenu.svelte';
-  
-  // Navigation dropdown items
-  const researchItems = [
-    { name: 'Current Research', path: `${base}/research/current` },
-    { name: 'Past Projects', path: `${base}/research/past` },
-    { name: 'Collaborations', path: `${base}/research/collaborations` }
-  ];
-  
-  let showDropdown = false;
-  
-  function toggleDropdown() {
-    showDropdown = !showDropdown;
-  }
-  
-  function handleItemClick() {
-    showDropdown = false;
-  }
+	import { base } from '$app/paths';
+	import DropdownMenu from '$lib/components/molecules/DropdownMenu.svelte';
+
+	// Navigation dropdown items
+	const researchItems = [
+		{ name: 'Current Research', path: `${base}/research/current` },
+		{ name: 'Past Projects', path: `${base}/research/past` },
+		{ name: 'Collaborations', path: `${base}/research/collaborations` }
+	];
+
+	let showDropdown = false;
+
+	function toggleDropdown() {
+		showDropdown = !showDropdown;
+	}
+
+	function handleItemClick() {
+		showDropdown = false;
+	}
 </script>
 
 <div class="nav-item">
-  <button on:click={toggleDropdown}>
-    Research
-    <span class="caret">▾</span>
-  </button>
-  
-  <DropdownMenu 
-    items={researchItems}
-    isActive={showDropdown}
-    parentName="Research"
-    onItemClick={handleItemClick}
-  />
+	<button on:click={toggleDropdown}>
+		Research
+		<span class="caret">▾</span>
+	</button>
+
+	<DropdownMenu
+		items={researchItems}
+		isActive={showDropdown}
+		parentName="Research"
+		onItemClick={handleItemClick}
+	/>
 </div>
 ```
 
 ## CSS Variables
 
 The component uses these CSS variables for styling:
+
 - `--color-background` - Background color of the dropdown
 - `--color-text` - Text color of dropdown items
 - `--color-primary` - Color for hover state

@@ -9,4 +9,4 @@ export interface Education {
 	thesisTitle?: string; // Optional thesis title (likely for degrees)
 	details?: string; // Any additional details
 	dateISO: string; // Full date for sorting, e.g., '2018-09-01'
-} 
+}

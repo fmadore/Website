@@ -2,13 +2,15 @@ import type { Activity } from '$lib/types';
 import { formatDisplayDate } from '$lib/utils/date-formatter';
 
 export const activity: Activity = {
-    id: "dh-ai-african-studies-ecas-panel",
-    title: "Digital Humanities (DH) and AI in African Studies: Opportunities, Challenges, and Decolonial Perspectives",
-    dateISO: "2024-10-14",
-    date: formatDisplayDate("2024-10-14"),
-    year: 2024,
-    description: "Announcing the acceptance of the panel proposal 'Digital Humanities (DH) and AI in African Studies: Opportunities, Challenges, and Decolonial Perspectives' for ECAS 2025 in Prague.",
-    content: `
+	id: 'dh-ai-african-studies-ecas-panel',
+	title:
+		'Digital Humanities (DH) and AI in African Studies: Opportunities, Challenges, and Decolonial Perspectives',
+	dateISO: '2024-10-14',
+	date: formatDisplayDate('2024-10-14'),
+	year: 2024,
+	description:
+		"Announcing the acceptance of the panel proposal 'Digital Humanities (DH) and AI in African Studies: Opportunities, Challenges, and Decolonial Perspectives' for ECAS 2025 in Prague.",
+	content: `
         <p>I am pleased to announce that the panel proposal "Digital Humanities (DH) and AI in African Studies: Opportunities, Challenges, and Decolonial Perspectives" submitted by Vincent Hiribarren and myself has been accepted for the 10th European Conference on African Studies (ECAS). The conference will be held in Prague in June 2025.</p>
         <p>Further details on the call for papers and the submission process will be announced soon. In the meantime, please contact us if you are interested in submitting a proposal for this panel.</p>
         <h3>Abstract</h3>
@@ -21,11 +23,12 @@ export const activity: Activity = {
         </ol>
         <p>The panel aims to showcase cutting-edge transdisciplinary research that uses digital methods to explore the complexities of African realities, identities, and knowledge systems. By fostering dialogue on the potential and pitfalls of digital approaches, we aim to contribute to a more inclusive, diverse, and critically aware digital landscape in African studies.</p>
     `,
-    tags: ["ECAS", "Digital Humanities", "AI", "African Studies"],
-    image: "",
-    panelType: "conference",
-    heroImage: {
-        src: "images/activities/ECAS-2025.webp",
-        alt: "ECAS 2025 logo with the theme “African, Afropean, Afropolitan,” held in Prague, June 25-28, 2025.",
-        caption: ""
-    }}; 
+	tags: ['ECAS', 'Digital Humanities', 'AI', 'African Studies'],
+	image: '',
+	panelType: 'conference',
+	heroImage: {
+		src: 'images/activities/ECAS-2025.webp',
+		alt: 'ECAS 2025 logo with the theme “African, Afropean, Afropolitan,” held in Prague, June 25-28, 2025.',
+		caption: ''
+	}
+};

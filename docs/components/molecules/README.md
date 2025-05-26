@@ -6,7 +6,7 @@ Molecules are relatively simple combinations of atoms that form functional group
 
 - [ItemCard](./ItemCard.md) - Displays a single generic item (like a publication or communication) with meta, title, authors, and abstract
 - [ItemReference](./ItemReference.md) - Citation-style reference that shows a preview card on hover/focus
-- [MobileMenu](./MobileMenu.md) - Responsive mobile navigation menu 
+- [MobileMenu](./MobileMenu.md) - Responsive mobile navigation menu
 - [DesktopNav](./DesktopNav.md) - Main navigation for desktop viewport sizes
 - [RelatedItemCard](./RelatedItemCard.md) - Displays a card for items related to the current context
 - [AbstractSection](./AbstractSection.md) - Formatted display of an item's abstract
@@ -41,21 +41,21 @@ Import molecules directly into page components or organisms:
 
 ```svelte
 <script>
-  import ItemCard from '$lib/components/molecules/ItemCard.svelte';
-  import ItemReference from '$lib/components/molecules/ItemReference.svelte';
+	import ItemCard from '$lib/components/molecules/ItemCard.svelte';
+	import ItemReference from '$lib/components/molecules/ItemReference.svelte';
 </script>
 
 <div class="publication">
-  <h2>Research Paper</h2>
-  <p>
-    This builds on previous work <ItemReference id="pub-2021-03" /> and expands...
-  </p>
-  
-  <h3>Related Publications</h3>
-  <div class="related-items">
-    <ItemCard item={publication1} />
-    <ItemCard item={publication2} />
-  </div>
+	<h2>Research Paper</h2>
+	<p>
+		This builds on previous work <ItemReference id="pub-2021-03" /> and expands...
+	</p>
+
+	<h3>Related Publications</h3>
+	<div class="related-items">
+		<ItemCard item={publication1} />
+		<ItemCard item={publication2} />
+	</div>
 </div>
 ```
 
@@ -77,18 +77,16 @@ Molecules typically compose atoms through direct imports:
 
 ```svelte
 <script>
-  import NavLink from '$lib/components/atoms/NavLink.svelte';
-  import DropdownMenu from '$lib/components/molecules/DropdownMenu.svelte';
-  
-  // Props, state, and event handlers
+	import NavLink from '$lib/components/atoms/NavLink.svelte';
+	import DropdownMenu from '$lib/components/molecules/DropdownMenu.svelte';
+
+	// Props, state, and event handlers
 </script>
 
 <div class="molecule-wrapper">
-  <NavLink {...navLinkProps}>
-    Link Text
-  </NavLink>
-  
-  <DropdownMenu {...dropdownProps} />
+	<NavLink {...navLinkProps}>Link Text</NavLink>
+
+	<DropdownMenu {...dropdownProps} />
 </div>
 ```
 
@@ -101,11 +99,11 @@ Molecules often serve as mediators, delegating events from child atoms to parent
 export let onSomeAction: (data: SomeData) => void;
 
 function handleAtomEvent(event) {
-  // Process the event from the atom
-  const processedData = someProcessing(event.detail);
-  
-  // Delegate to parent through props
-  onSomeAction(processedData);
+	// Process the event from the atom
+	const processedData = someProcessing(event.detail);
+
+	// Delegate to parent through props
+	onSomeAction(processedData);
 }
 ```
 

@@ -47,4 +47,4 @@ export function toggleTheme() {
 // Initialize the theme class on first load (client-side)
 if (browser) {
 	applyTheme(initialTheme);
-} 
+}

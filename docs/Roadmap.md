@@ -7,6 +7,7 @@ After reviewing your Svelte-based academic website, I've identified several area
 ### 2. Type System Improvements
 
 - **Create centralized type definitions**
+
   - Move all interface definitions to dedicated files in `src/lib/types/`
   - Use more specific types instead of `any`, especially in component props
 
@@ -15,16 +16,17 @@ After reviewing your Svelte-based academic website, I've identified several area
   - Example for loading states:
 
 ```typescript
-type DataState<T> = 
-  | { status: 'idle' }
-  | { status: 'loading' }
-  | { status: 'success', data: T }
-  | { status: 'error', error: Error };
+type DataState<T> =
+	| { status: 'idle' }
+	| { status: 'loading' }
+	| { status: 'success'; data: T }
+	| { status: 'error'; error: Error };
 ```
 
 ### 3. State Management Optimization
 
 - **Implement more derived stores**
+
   - Replace direct store subscriptions with derived stores
   - For example, in `publications/+page.svelte`, use derived stores for all filtered and sorted data
 
@@ -40,18 +42,18 @@ type DataState<T> =
 
 ```svelte
 <script>
-  import { onMount } from 'svelte';
-  let MapComponent;
-  
-  onMount(async () => {
-    MapComponent = (await import('$lib/components/communications/MapVisualization.svelte')).default;
-  });
+	import { onMount } from 'svelte';
+	let MapComponent;
+
+	onMount(async () => {
+		MapComponent = (await import('$lib/components/communications/MapVisualization.svelte')).default;
+	});
 </script>
 
 {#if MapComponent}
-  <svelte:component this={MapComponent} markers={markers} />
+	<svelte:component this={MapComponent} {markers} />
 {:else}
-  <div class="loading-placeholder">Loading map...</div>
+	<div class="loading-placeholder">Loading map...</div>
 {/if}
 ```
 
@@ -62,6 +64,7 @@ type DataState<T> =
 ### 5. Testing Infrastructure
 
 - **Set up component testing**
+
   - Add Vitest + Testing Library for component tests
   - Create test files alongside components
 
@@ -86,21 +89,23 @@ type DataState<T> =
 
 ```svelte
 <section class="hero">
-  <div class="hero-content">
-    <div class="hero-text">
-      <h1>Frédérick Madore</h1>
-      <p class="subtitle">Historian & Digital Humanist</p>
-      <p class="intro">Exploring the intersection of history, religion, and society in West Africa</p>
-      <div class="hero-actions">
-        <a href="/research" class="btn btn-primary">View Research</a>
-        <a href="/contact" class="btn btn-outline">Contact Me</a>
-      </div>
-    </div>
-    <div class="hero-image">
-      <img src="/images/profile.jpg" alt="Frédérick Madore" />
-    </div>
-  </div>
-  <div class="hero-background"></div>
+	<div class="hero-content">
+		<div class="hero-text">
+			<h1>Frédérick Madore</h1>
+			<p class="subtitle">Historian & Digital Humanist</p>
+			<p class="intro">
+				Exploring the intersection of history, religion, and society in West Africa
+			</p>
+			<div class="hero-actions">
+				<a href="/research" class="btn btn-primary">View Research</a>
+				<a href="/contact" class="btn btn-outline">Contact Me</a>
+			</div>
+		</div>
+		<div class="hero-image">
+			<img src="/images/profile.jpg" alt="Frédérick Madore" />
+		</div>
+	</div>
+	<div class="hero-background"></div>
 </section>
 ```
 
@@ -116,32 +121,32 @@ type DataState<T> =
 
 ```svelte
 <script>
-  import { fly } from 'svelte/transition';
-  import { onMount } from 'svelte';
-  
-  let visible = false;
-  
-  onMount(() => {
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        visible = true;
-        observer.disconnect();
-      }
-    });
-    
-    observer.observe(document.getElementById('animate-section'));
-    
-    return () => observer.disconnect();
-  });
+	import { fly } from 'svelte/transition';
+	import { onMount } from 'svelte';
+
+	let visible = false;
+
+	onMount(() => {
+		const observer = new IntersectionObserver((entries) => {
+			if (entries[0].isIntersecting) {
+				visible = true;
+				observer.disconnect();
+			}
+		});
+
+		observer.observe(document.getElementById('animate-section'));
+
+		return () => observer.disconnect();
+	});
 </script>
 
 <section id="animate-section">
-  {#if visible}
-    <div in:fly={{ y: 20, duration: 500, delay: 200 }}>
-      <h2>Research Interests</h2>
-      <!-- Content -->
-    </div>
-  {/if}
+	{#if visible}
+		<div in:fly={{ y: 20, duration: 500, delay: 200 }}>
+			<h2>Research Interests</h2>
+			<!-- Content -->
+		</div>
+	{/if}
 </section>
 ```
 
@@ -153,6 +158,7 @@ type DataState<T> =
 ### 5. Accessibility Improvements
 
 - **Enhance keyboard navigation**
+
   - Ensure all interactive elements have clear focus states
   - Implement skip links for navigation
   - Add ARIA labels to enhance screen reader experience
@@ -205,24 +211,28 @@ type DataState<T> =
 ## Implementation Strategy
 
 ### Phase 1: Foundation Improvements (2-4 weeks)
+
 - Refactor component architecture
-- Implement type system improvements 
+- Implement type system improvements
 - Set up testing infrastructure
 - Refine CSS organization
 
 ### Phase 2: Visual Enhancements (2-3 weeks)
+
 - Update color system and typography
 - Redesign core components (cards, buttons, navigation)
 - Improve layouts and responsive design
 - Implement basic animations and transitions
 
 ### Phase 3: Interactive Features (3-4 weeks)
+
 - Develop technical showcase features
 - Implement enhanced visualizations
 - Add micro-animations and page transitions
 - Create interactive portfolio elements
 
 ### Phase 4: Content & Accessibility (2 weeks)
+
 - Audit and improve accessibility
 - Implement content strategy improvements
 - Optimize performance and load times

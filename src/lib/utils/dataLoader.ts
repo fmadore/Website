@@ -22,7 +22,17 @@ import type { EditorialMembership } from '$lib/types/editorial-membership'; // <
 type DataModule = Record<string, any>;
 
 // Define a union type for the data items we expect to load
-type DataItem = Publication | Communication | Fieldwork | Appointment | Education | Grant | Award | PeerReview | MediaAppearance | EditorialMembership; // <-- Add EditorialMembership to union
+type DataItem =
+	| Publication
+	| Communication
+	| Fieldwork
+	| Appointment
+	| Education
+	| Grant
+	| Award
+	| PeerReview
+	| MediaAppearance
+	| EditorialMembership; // <-- Add EditorialMembership to union
 
 /**
  * Loads and processes data modules based on a glob pattern, expecting each module
@@ -38,82 +48,96 @@ type DataItem = Publication | Communication | Fieldwork | Appointment | Educatio
  * @returns {T[]} An array of loaded, validated, and filtered data items of type T. Returns an empty array if no valid items are found or all are filtered out.
  */
 export function loadData<T extends DataItem>(
-    modules: Record<string, unknown>, // Accept unknown initially
-    templateIdFilter: string | string[],
-    dataTypeName: string = 'item'
+	modules: Record<string, unknown>, // Accept unknown initially
+	templateIdFilter: string | string[],
+	dataTypeName: string = 'item'
 ): T[] {
-    const filterIds = Array.isArray(templateIdFilter) ? templateIdFilter : [templateIdFilter];
+	const filterIds = Array.isArray(templateIdFilter) ? templateIdFilter : [templateIdFilter];
 
-    // First, filter the entries to ensure the module part is a valid DataModule (Record<string, any>)
-    const validModuleEntries = Object.entries(modules)
-        .filter((entry): entry is [string, DataModule] => {
-            const [, module] = entry; // Destructure here
-            if (!module || typeof module !== 'object') {
-                console.warn(`Skipping module that is not a valid object while loading ${dataTypeName}s:`, module);
-                return false;
-            }
-            // Add any other basic checks for module structure if necessary
-            return true;
-        });
+	// First, filter the entries to ensure the module part is a valid DataModule (Record<string, any>)
+	const validModuleEntries = Object.entries(modules).filter(
+		(entry): entry is [string, DataModule] => {
+			const [, module] = entry; // Destructure here
+			if (!module || typeof module !== 'object') {
+				console.warn(
+					`Skipping module that is not a valid object while loading ${dataTypeName}s:`,
+					module
+				);
+				return false;
+			}
+			// Add any other basic checks for module structure if necessary
+			return true;
+		}
+	);
 
-    // Now map and filter the valid modules
-    return validModuleEntries
-        .map(([path, module]) => { // module is now guaranteed to be DataModule
-            try {
-                let dataItem: T | null = null;
+	// Now map and filter the valid modules
+	return validModuleEntries
+		.map(([path, module]) => {
+			// module is now guaranteed to be DataModule
+			try {
+				let dataItem: T | null = null;
 
-                if ('default' in module && typeof module.default === 'object' && module.default !== null && 'id' in module.default) {
-                    dataItem = module.default as T;
-                } else {
-                    // Find the first exported value that looks like a valid data item (object with an id)
-                    for (const key in module) {
-                        if (Object.prototype.hasOwnProperty.call(module, key)) {
-                            const potentialItem = module[key];
-                            if (potentialItem && typeof potentialItem === 'object' && 'id' in potentialItem) {
-                                dataItem = potentialItem as T;
-                                break; // Found the first valid item
-                            }
-                        }
-                    }
-                }
+				if (
+					'default' in module &&
+					typeof module.default === 'object' &&
+					module.default !== null &&
+					'id' in module.default
+				) {
+					dataItem = module.default as T;
+				} else {
+					// Find the first exported value that looks like a valid data item (object with an id)
+					for (const key in module) {
+						if (Object.prototype.hasOwnProperty.call(module, key)) {
+							const potentialItem = module[key];
+							if (potentialItem && typeof potentialItem === 'object' && 'id' in potentialItem) {
+								dataItem = potentialItem as T;
+								break; // Found the first valid item
+							}
+						}
+					}
+				}
 
-                // Check if a valid data item was found
-                if (!dataItem) {
-                     console.warn(`Module at path ${path} does not seem to contain a valid ${dataTypeName} (no suitable export found):`, module);
-                     return null; // Skip this module gracefully
-                }
+				// Check if a valid data item was found
+				if (!dataItem) {
+					console.warn(
+						`Module at path ${path} does not seem to contain a valid ${dataTypeName} (no suitable export found):`,
+						module
+					);
+					return null; // Skip this module gracefully
+				}
 
-                // Check for circular references explicitly (though less likely with this approach)
-                 if (dataItem === module) {
-                    console.warn(`Circular reference detected in module at path ${path}`);
-                    return null;
-                }
+				// Check for circular references explicitly (though less likely with this approach)
+				if (dataItem === module) {
+					console.warn(`Circular reference detected in module at path ${path}`);
+					return null;
+				}
 
-                // Debug: Log the extracted data item before filtering
-                // console.log(`DataLoader extracted for path ${path}:`, dataItem);
+				// Debug: Log the extracted data item before filtering
+				// console.log(`DataLoader extracted for path ${path}:`, dataItem);
 
-                return dataItem; // Return the found data item
-            } catch (error) {
-                console.error(`Error processing ${dataTypeName} module at path ${path}:`, error);
-                return null;
-            }
-        })
-        .filter((item): item is T => { // Type guard to filter out nulls and ensure type T
-            if (!item) {
-                return false; // Already logged errors or invalid items
-            }
-            // Ensure item has an 'id' property before accessing it
-            if (!item.id) {
-                 // This check might be redundant if the check inside map is sufficient, but kept for safety.
-                console.warn(`Loaded ${dataTypeName} missing id:`, item);
-                return false;
-            }
-            // Filter out specified template IDs
-            if (filterIds.includes(item.id)) {
-                return false;
-            }
-            return true;
-        });
+				return dataItem; // Return the found data item
+			} catch (error) {
+				console.error(`Error processing ${dataTypeName} module at path ${path}:`, error);
+				return null;
+			}
+		})
+		.filter((item): item is T => {
+			// Type guard to filter out nulls and ensure type T
+			if (!item) {
+				return false; // Already logged errors or invalid items
+			}
+			// Ensure item has an 'id' property before accessing it
+			if (!item.id) {
+				// This check might be redundant if the check inside map is sufficient, but kept for safety.
+				console.warn(`Loaded ${dataTypeName} missing id:`, item);
+				return false;
+			}
+			// Filter out specified template IDs
+			if (filterIds.includes(item.id)) {
+				return false;
+			}
+			return true;
+		});
 }
 
 /**

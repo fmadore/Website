@@ -5,7 +5,7 @@ export const fondsGerardDion2015: Award = {
 	title: 'Assistance to Publishing Award',
 	institution: 'Fonds Gérard-Dion, Université Laval',
 	year: 2015,
-	dateISO: '2015-01-01',
+	dateISO: '2015-01-01'
 };
 
-export default fondsGerardDion2015; 
+export default fondsGerardDion2015;

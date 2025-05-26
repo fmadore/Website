@@ -14,4 +14,4 @@ export const frqscMasters2011: Grant = {
 	status: 'Awarded'
 };
 
-export default frqscMasters2011; 
+export default frqscMasters2011;

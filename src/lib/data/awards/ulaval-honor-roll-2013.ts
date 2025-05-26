@@ -5,7 +5,7 @@ export const ulavalHonorRoll2013: Award = {
 	title: 'Honor Roll of the Faculty of Graduate and Postdoctoral Studies',
 	institution: 'Université Laval',
 	year: 2013,
-	dateISO: '2013-01-01', // Adjust date if known
+	dateISO: '2013-01-01' // Adjust date if known
 };
 
-export default ulavalHonorRoll2013; 
+export default ulavalHonorRoll2013;

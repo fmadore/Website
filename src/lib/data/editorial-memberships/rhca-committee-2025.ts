@@ -7,8 +7,8 @@ export const rhcaCommittee2025: EditorialMembership = {
 	startYear: 2025,
 	// endYear: null, // Assuming ongoing, uncomment and set if it has an end date
 	dateRangeString: '2025-Present',
-	dateISOStart: '2025-02-21',
+	dateISOStart: '2025-02-21'
 	// dateISOEnd: null,
 };
 
-export default rhcaCommittee2025; 
+export default rhcaCommittee2025;

@@ -12,7 +12,7 @@ The CookieConsent component is automatically included in the main layout and req
 
 ```svelte
 <script>
-  import CookieConsent from '$lib/components/common/CookieConsent.svelte';
+	import CookieConsent from '$lib/components/common/CookieConsent.svelte';
 </script>
 
 <CookieConsent />
@@ -46,4 +46,4 @@ The component uses semantic HTML elements and follows accessibility best practic
 
 ## Related Components
 
-- Button - Used for the accept/decline actions 
+- Button - Used for the accept/decline actions

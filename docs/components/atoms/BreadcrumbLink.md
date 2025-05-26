@@ -26,10 +26,10 @@ import BreadcrumbLink from '$lib/components/common/BreadcrumbLink.svelte';
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `href` | `string` | *required* | The URL the link points to |
-| `active` | `boolean` | `false` | Whether this link represents the current page |
+| Prop     | Type      | Default    | Description                                   |
+| -------- | --------- | ---------- | --------------------------------------------- |
+| `href`   | `string`  | _required_ | The URL the link points to                    |
+| `active` | `boolean` | `false`    | Whether this link represents the current page |
 
 ## Accessibility
 
@@ -47,17 +47,17 @@ import BreadcrumbLink from '$lib/components/common/BreadcrumbLink.svelte';
 
 ```svelte
 <nav aria-label="Breadcrumb">
-  <ol>
-    <li>
-      <BreadcrumbLink href="/">Home</BreadcrumbLink>
-    </li>
-    <li>
-      <BreadcrumbLink href="/section">Section</BreadcrumbLink>
-    </li>
-    <li>
-      <BreadcrumbLink href="/section/page" active={true}>Current Page</BreadcrumbLink>
-    </li>
-  </ol>
+	<ol>
+		<li>
+			<BreadcrumbLink href="/">Home</BreadcrumbLink>
+		</li>
+		<li>
+			<BreadcrumbLink href="/section">Section</BreadcrumbLink>
+		</li>
+		<li>
+			<BreadcrumbLink href="/section/page" active={true}>Current Page</BreadcrumbLink>
+		</li>
+	</ol>
 </nav>
 ```
 

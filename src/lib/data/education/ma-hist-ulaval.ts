@@ -11,4 +11,4 @@ export const maHistUlaval: Education = {
 	dateISO: '2013-09-01'
 };
 
-export default maHistUlaval; 
+export default maHistUlaval;

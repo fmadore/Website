@@ -6,7 +6,7 @@ export const cski2023: Award = {
 	title: 'Emerging Open Scholarship Award',
 	institution: 'Canadian Social Knowledge Institute (C-SKI)',
 	year: 2023,
-	dateISO: '2023-01-17',
+	dateISO: '2023-01-17'
 };
 
-export default cski2023; 
+export default cski2023;

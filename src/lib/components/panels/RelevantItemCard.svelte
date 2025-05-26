@@ -3,11 +3,11 @@
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
 
 	// Props - same interface as the old ItemCard for compatibility
-	let { 
-		item, 
-		basePath, 
-		formatType, 
-		formatAuthors 
+	let {
+		item,
+		basePath,
+		formatType,
+		formatAuthors
 	}: {
 		item: RelevantItem;
 		basePath: string; // Base path for the item detail link
@@ -26,27 +26,25 @@
 		{/if}
 		<span class="relevant-item-date">{item.date}</span>
 	</div>
-	
+
 	<h3 class="relevant-item-title">
 		<a href={itemLink}>{item.title}</a>
 	</h3>
-	
+
 	{#if item.authors && item.authors.length > 0}
 		<div class="relevant-item-authors">
 			{formatAuthors(item.authors)}
 		</div>
 	{/if}
-	
+
 	{#if item.abstract}
 		<div class="relevant-item-abstract">
 			{item.abstract.length > 120 ? item.abstract.substring(0, 120) + '...' : item.abstract}
 		</div>
 	{/if}
-	
+
 	<div class="relevant-item-action">
-		<a href={itemLink} class="relevant-item-link">
-			View details →
-		</a>
+		<a href={itemLink} class="relevant-item-link"> View details → </a>
 	</div>
 </div>
 

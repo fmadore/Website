@@ -11,18 +11,15 @@ import HamburgerButton from '$lib/components/atoms/HamburgerButton.svelte';
 ## Usage
 
 ```svelte
-<HamburgerButton 
-  isActive={mobileMenuOpen} 
-  onClick={toggleMobileMenu} 
-/>
+<HamburgerButton isActive={mobileMenuOpen} onClick={toggleMobileMenu} />
 ```
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `isActive` | `boolean` | `false` | Controls the state of the button (normal/active) |
-| `onClick` | `() => void` | *required* | Function called when the button is clicked |
+| Prop       | Type         | Default    | Description                                      |
+| ---------- | ------------ | ---------- | ------------------------------------------------ |
+| `isActive` | `boolean`    | `false`    | Controls the state of the button (normal/active) |
+| `onClick`  | `() => void` | _required_ | Function called when the button is clicked       |
 
 ## Events
 
@@ -47,31 +44,29 @@ The component includes subtle animations for the hamburger lines when transition
 
 ```svelte
 <script>
-  let mobileMenuOpen = false;
-  
-  function toggleMobileMenu() {
-    mobileMenuOpen = !mobileMenuOpen;
-  }
+	let mobileMenuOpen = false;
+
+	function toggleMobileMenu() {
+		mobileMenuOpen = !mobileMenuOpen;
+	}
 </script>
 
 <header>
-  <div class="logo">Site Logo</div>
-  
-  <HamburgerButton 
-    isActive={mobileMenuOpen}
-    onClick={toggleMobileMenu}
-  />
-  
-  <!-- Mobile menu implementation -->
-  {#if mobileMenuOpen}
-    <div id="mobile-menu">
-      <!-- Menu content -->
-    </div>
-  {/if}
+	<div class="logo">Site Logo</div>
+
+	<HamburgerButton isActive={mobileMenuOpen} onClick={toggleMobileMenu} />
+
+	<!-- Mobile menu implementation -->
+	{#if mobileMenuOpen}
+		<div id="mobile-menu">
+			<!-- Menu content -->
+		</div>
+	{/if}
 </header>
 ```
 
 ## CSS Variables
 
 The component uses these CSS variables for styling:
+
 - `--color-text` - Color of the hamburger lines
