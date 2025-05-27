@@ -239,6 +239,8 @@ ECharts Stacked Bar Chart component
 		height: 100%;
 		display: block;
 		position: relative;
+		/* Remove background, border, and styling - let parent handle it */
+		font-family: var(--font-family-sans);
 	}
 
 	.chart {

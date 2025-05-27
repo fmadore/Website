@@ -218,26 +218,15 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 <style>
 	.echarts-container {
 		width: 100%;
-		height: 350px; /* Match your D3 component default */
+		height: 350px;
 		display: block;
 		position: relative;
-		background-color: var(--color-surface);
-		border: 1px solid var(--color-border);
-		border-radius: var(--border-radius-lg);
-		padding: var(--spacing-4);
-		box-shadow: var(--shadow-sm);
+		/* Remove background, border, and styling - let parent handle it */
 		font-family: var(--font-family-sans);
 	}
 
 	.chart {
 		width: 100%;
 		height: 100%;
-	}
-
-	/* Ensure proper dark mode handling */
-	:global(html.dark) .echarts-container {
-		background-color: var(--color-surface);
-		border-color: var(--color-surface-border);
-		box-shadow: var(--shadow-sm);
 	}
 </style>

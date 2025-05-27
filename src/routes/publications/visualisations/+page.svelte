@@ -5,9 +5,11 @@
 	import EChartsBarChart from '$lib/components/visualisations/EChartsBarChart.svelte';
 	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
+	import EChartsDoughnutChart from '$lib/components/visualisations/EChartsDoughnutChart.svelte';
 
 	type CitationYearData = { year: number; count: number };
 	type CitedAuthorData = { author: string; count: number };
+	type LanguageData = { language: string; count: number };
 	type PublicationsPerYearStackedData = {
 		year: number;
 		total: number;
@@ -52,6 +54,24 @@
 			.sort((a, b) => b.count - a.count);
 	})());
 
+	const languageData = $derived((() => {
+		const languageCounts: Record<string, number> = {};
+		allPublications.forEach((pub) => {
+			if (pub.language) {
+				// Split comma-separated languages and count each one
+				const languages = pub.language.split(',').map((lang: string) => lang.trim());
+				languages.forEach((language: string) => {
+					if (language) { // Only count non-empty languages
+						languageCounts[language] = (languageCounts[language] || 0) + 1;
+					}
+				});
+			}
+		});
+		return Object.entries(languageCounts)
+			.map(([language, count]) => ({ language, count }))
+			.sort((a, b) => b.count - a.count);
+	})());
+
 	const publicationTypesForStack = $derived(Object.keys(publicationsByType).sort());
 
 	const publicationsPerYearStackedData = $derived((() => {
@@ -87,6 +107,10 @@
 	// Accessor functions for D3HorizontalBarChart
 	const getAuthorName = (d: CitedAuthorData) => d.author;
 	const getAuthorCitationCount = (d: CitedAuthorData) => d.count;
+
+	// Accessor functions for language doughnut chart
+	const getLanguageName = (d: LanguageData) => d.language;
+	const getLanguageCount = (d: LanguageData) => d.count;
 </script>
 
 <SEO
@@ -106,7 +130,7 @@
 	<section class="visualization-section mb-12">
 		<h2 class="text-2xl font-semibold mb-6">Publications per year by type</h2>
 		{#if publicationsPerYearStackedData.length > 0 && publicationTypesForStack.length > 0}
-			<div class="chart-wrapper p-6 rounded-lg shadow-md" style="height: 450px;">
+			<div class="chart-wrapper" style="height: 450px;">
 				<EChartsStackedBarChart
 					data={publicationsPerYearStackedData}
 					keys={publicationTypesForStack}
@@ -115,13 +139,31 @@
 				/>
 			</div>
 		{:else}
-			<div class="placeholder-message p-6 rounded-lg shadow-md text-center">
+			<div class="placeholder-message">
 				<p class="text-light">No publication data available to display for this visualization.</p>
 			</div>
 		{/if}
 	</section>
 
-	<h2 class="text-3xl font-bold my-8 pt-4 border-t border-gray-300 dark:border-gray-700">
+	<section class="visualization-section mb-12">
+		<h2 class="text-2xl font-semibold mb-6">Publication Languages</h2>
+		{#if languageData.length > 0}
+			<div class="chart-wrapper">
+				<EChartsDoughnutChart
+					data={languageData}
+					nameAccessor={getLanguageName}
+					valueAccessor={getLanguageCount}
+					title="Distribution of Publications by Language"
+				/>
+			</div>
+		{:else}
+			<div class="placeholder-message">
+				<p class="text-light">No language data available to display for this visualization.</p>
+			</div>
+		{/if}
+	</section>
+
+	<h2 class="text-3xl font-bold my-8 pt-4 border-t border-default">
 		Citation statistics
 	</h2>
 
@@ -133,7 +175,7 @@
 			{/if}
 		</h2>
 		{#if citationsPerYearData.length > 0}
-			<div class="chart-wrapper p-6 rounded-lg shadow-md">
+			<div class="chart-wrapper">
 				<EChartsBarChart
 					data={citationsPerYearData}
 					xAccessor={getYear}
@@ -144,7 +186,7 @@
 				/>
 			</div>
 		{:else}
-			<div class="placeholder-message p-6 rounded-lg shadow-md text-center">
+			<div class="placeholder-message">
 				<p class="text-light">
 					No citation data available to display for this visualization, or data is still loading.
 				</p>
@@ -156,7 +198,7 @@
 		<h2 class="text-2xl font-semibold mb-6">Authors citing my work most frequently</h2>
 		{#if citedAuthorsData.length > 0}
 			<div
-				class="chart-wrapper p-6 rounded-lg shadow-md"
+				class="chart-wrapper"
 				style="height: {Math.max(350, citedAuthorsData.slice(0, 15).length * 35 + 70)}px;"
 			>
 				<EChartsHorizontalBarChart
@@ -168,7 +210,7 @@
 				/>
 			</div>
 		{:else}
-			<div class="placeholder-message p-6 rounded-lg shadow-md text-center">
+			<div class="placeholder-message">
 				<p class="text-light">No cited author data available to display for this visualization.</p>
 			</div>
 		{/if}
@@ -184,30 +226,24 @@
 
 	.chart-wrapper,
 	.placeholder-message {
-		background-color: var(--color-sidebar-bg); /* Adapts to dark mode */
-		color: var(--color-text); /* Ensures text is readable in both modes */
+		background-color: var(--color-surface);
+		color: var(--color-text);
+		border: 1px solid var(--color-border);
+		border-radius: var(--border-radius-lg);
+		box-shadow: var(--shadow-sm);
 	}
 
 	.chart-wrapper {
-		border: 1px solid var(--color-border); /* Uses theme border color */
-		/* min-height is handled by inline style for horizontal chart, or D3 component for vertical */
+		padding: var(--spacing-6);
 		position: relative;
 	}
 
-	/* .list-display rules can be removed if no longer used after replacing with chart */
-	/* .list-display ul {
-        list-style-type: disc;
-        padding-left: var(--spacing-5); 
-    }
-
-    .list-display li {
-        margin-bottom: var(--spacing-2); 
-    } */
-
 	.placeholder-message {
+		padding: var(--spacing-6);
 		min-height: 150px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		text-align: center;
 	}
 </style>
