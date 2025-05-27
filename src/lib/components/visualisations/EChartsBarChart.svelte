@@ -100,7 +100,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 				fontFamily: 'Inter, -apple-system, sans-serif'
 			},
 			axisLabel: {
-				color: resolvedColors.textLight,
+				color: resolvedColors.text,
 				fontSize: 12,
 				fontFamily: 'Inter, -apple-system, sans-serif'
 			},
@@ -126,7 +126,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 				fontFamily: 'Inter, -apple-system, sans-serif'
 			},
 			axisLabel: {
-				color: resolvedColors.textLight,
+				color: resolvedColors.text,
 				fontSize: 12,
 				fontFamily: 'Inter, -apple-system, sans-serif'
 			},

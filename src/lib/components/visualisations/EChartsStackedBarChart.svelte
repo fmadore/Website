@@ -135,7 +135,7 @@ ECharts Stacked Bar Chart component
 				fontFamily: 'Inter, -apple-system, sans-serif'
 			},
 			axisLabel: {
-				color: resolvedColors.textLight,
+				color: resolvedColors.text,
 				fontSize: 12,
 				fontFamily: 'Inter, -apple-system, sans-serif'
 			},
@@ -161,7 +161,7 @@ ECharts Stacked Bar Chart component
 				fontFamily: 'Inter, -apple-system, sans-serif'
 			},
 			axisLabel: {
-				color: resolvedColors.textLight,
+				color: resolvedColors.text,
 				fontSize: 12,
 				fontFamily: 'Inter, -apple-system, sans-serif'
 			},

@@ -98,19 +98,10 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 			isDark = document.documentElement.classList.contains('dark');
 		}
 	}
-
 	// Chart options
 	const option = $derived({
 		title: {
-			text: title,
-			left: 'center',
-			top: '10px',
-			textStyle: {
-				color: resolvedColors.text,
-				fontSize: 16,
-				fontFamily: 'Inter, -apple-system, sans-serif',
-				fontWeight: 600
-			}
+			show: false // Hide internal title to avoid duplication with external container title
 		},
 		tooltip: {
 			trigger: 'item',
