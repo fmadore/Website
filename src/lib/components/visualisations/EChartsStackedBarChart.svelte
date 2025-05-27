@@ -2,7 +2,10 @@
 ECharts Stacked Bar Chart component
 -->
 <script lang="ts">
-	import * as echarts from 'echarts'; // Props - keeping the same interface as your D3 component for easy replacement
+	import * as echarts from 'echarts';
+	import { getTheme } from '$lib/stores/themeStore.svelte';
+	
+	// Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;
 	let {
 		data = [] as DataItem[],
@@ -50,22 +53,19 @@ ECharts Stacked Bar Chart component
 		return color; // Return as-is if not a CSS variable
 	}
 
-	// Resolve colors from CSS variables
+	// Resolve colors from CSS variables - now reactive to theme changes
 	const resolvedColors = $derived({
 		primary: getCSSVariableValue('--color-primary'),
 		text: getCSSVariableValue('--color-text'),
 		textLight: getCSSVariableValue('--color-text-light'),
-		border: getCSSVariableValue('--color-border'),
+				border: getCSSVariableValue('--color-border'),
 		surface: getCSSVariableValue('--color-surface'),
-		resolvedSeriesColors: colors.map((color) => resolveColor(color))
+		resolvedSeriesColors: colors.map((color) => resolveColor(color)),
+		// Include theme to make this reactive to theme changes
+		currentTheme: getTheme()
 	});
 
-	// Theme detection
-	let isDark = $state(false);
-
-	function updateTheme() {
-		isDark = document.documentElement.classList.contains('dark');
-	} // Convert data to ECharts format
+	// Convert data to ECharts format
 	const chartCategories = $derived(
 		data.map((d) => String((d as any).year || (d as any).name || (d as any).x))
 	);
@@ -188,42 +188,34 @@ ECharts Stacked Bar Chart component
 		animationEasing: 'elasticOut' as any
 	});
 
+	// Initialize chart and handle updates
 	$effect(() => {
-		// Initialize theme detection
-		updateTheme();
-
-		// Initialize chart if container is available
+		// Initialize chart if container is available and chart doesn't exist
 		if (!chart && chartContainer) {
 			chart = echarts.init(chartContainer);
 		}
 
-		// Set/update chart options
+		// Update chart options whenever they change (including theme changes)
 		if (chart) {
 			chart.setOption(option, true); // true = notMerge for clean update
 		}
+	});
 
-		// Setup observers only once
+	// Setup resize observer and cleanup
+	$effect(() => {
 		let resizeObserver: ResizeObserver | undefined;
-		let themeObserver: MutationObserver | undefined;
 
-		if (chartContainer && !resizeObserver) {
+		if (chartContainer && chart) {
 			// Handle resize
 			resizeObserver = new ResizeObserver(() => {
 				chart?.resize();
 			});
 			resizeObserver.observe(chartContainer);
-
-			// Theme change observer
-			themeObserver = new MutationObserver(() => {
-				updateTheme();
-			});
-			themeObserver.observe(document.documentElement, { attributes: true });
 		}
 
 		// Cleanup function
 		return () => {
 			resizeObserver?.disconnect();
-			themeObserver?.disconnect();
 			chart?.dispose();
 		};
 	});

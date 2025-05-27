@@ -1,4 +1,3 @@
-import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
 
 type Theme = 'light' | 'dark';
@@ -18,10 +17,6 @@ function getInitialTheme(): Theme {
 	return prefersDark ? 'dark' : 'light';
 }
 
-// Create the writable store
-const initialTheme = getInitialTheme();
-export const theme = writable<Theme>(initialTheme);
-
 // Function to apply the theme class to the HTML element
 function applyTheme(newTheme: Theme) {
 	if (browser) {
@@ -31,17 +26,20 @@ function applyTheme(newTheme: Theme) {
 	}
 }
 
-// Subscribe to theme changes to apply them
-theme.subscribe((newTheme) => {
-	applyTheme(newTheme);
-});
+// Svelte 5: Create reactive theme state using runes
+const initialTheme = getInitialTheme();
+let currentTheme = $state(initialTheme);
+
+// Export getter function for the theme
+export function getTheme() {
+	return currentTheme;
+}
 
 // Function to toggle the theme
 export function toggleTheme() {
-	theme.update((currentTheme) => {
-		const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-		return newTheme;
-	});
+	const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+	currentTheme = newTheme;
+	applyTheme(newTheme);
 }
 
 // Initialize the theme class on first load (client-side)

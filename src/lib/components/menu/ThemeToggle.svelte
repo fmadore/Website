@@ -1,15 +1,10 @@
-<script lang="ts">
-	// Svelte 5: use $props() for props
+<script lang="ts">	// Svelte 5: use $props() for props
 	let { size = 20 } = $props();
-	import { theme, toggleTheme } from '$lib/stores/themeStore';
+	import { getTheme, toggleTheme } from '$lib/stores/themeStore.svelte';
 	import Icon from '@iconify/svelte';
 	
-	let currentTheme = $state('light');
-	
-	$effect(() => {
-		const unsubscribe = theme.subscribe((value) => (currentTheme = value));
-		return unsubscribe;
-	});
+	// Get reactive theme value
+	const currentTheme = $derived(getTheme());
 </script>
 
 <button

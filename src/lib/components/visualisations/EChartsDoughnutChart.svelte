@@ -1,8 +1,9 @@
 <!--
 ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 -->
-<script lang="ts">
-	import * as echarts from 'echarts';
+<script lang="ts">	import * as echarts from 'echarts';
+	import { getTheme } from '$lib/stores/themeStore.svelte';
+	
 	// Props - keeping interface simple for doughnut chart
 	type DataItem = $$Generic;
 	let {
@@ -68,8 +69,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		}
 		return color; // Return as-is if not a CSS variable
 	}
-
-	// Resolve colors from CSS variables
+	// Resolve colors from CSS variables - now reactive to theme changes
 	const resolvedColors = $derived({
 		primary: getCSSVariableValue('--color-primary'),
 		text: getCSSVariableValue('--color-text'),
@@ -77,11 +77,12 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		border: getCSSVariableValue('--color-border'),
 		surface: getCSSVariableValue('--color-surface'),
 		accent: getCSSVariableValue('--color-accent'),
-		highlight: getCSSVariableValue('--color-highlight'),
+				highlight: getCSSVariableValue('--color-highlight'),
 		// Resolve chart colors
-		chartColors: colors.map(color => resolveColor(color))
+		chartColors: colors.map(color => resolveColor(color)),
+		// Include theme to make this reactive to theme changes
+		currentTheme: getTheme()
 	});
-
 	// Convert data to ECharts format
 	const chartData = $derived(
 		data.map((d) => ({
@@ -90,14 +91,6 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		}))
 	);
 
-	// Theme detection
-	let isDark = $state(false);
-
-	function updateTheme() {
-		if (typeof window !== 'undefined') {
-			isDark = document.documentElement.classList.contains('dark');
-		}
-	}
 	// Chart options
 	const option = $derived({
 		title: {
@@ -173,44 +166,34 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		],
 		color: resolvedColors.chartColors,
 		backgroundColor: 'transparent' // Let the container handle background
-	});
-
+	});	// Initialize chart and handle updates
 	$effect(() => {
-		// Initialize theme detection
-		updateTheme();
-
-		// Initialize chart if container is available
+		// Initialize chart if container is available and chart doesn't exist
 		if (!chart && chartContainer) {
 			chart = echarts.init(chartContainer);
 		}
 
-		// Set/update chart options
+		// Update chart options whenever they change (including theme changes)
 		if (chart) {
 			chart.setOption(option, true); // true = notMerge for clean update
 		}
+	});
 
-		// Setup observers only once
+	// Setup resize observer and cleanup
+	$effect(() => {
 		let resizeObserver: ResizeObserver | undefined;
-		let themeObserver: MutationObserver | undefined;
 
-		if (chartContainer && !resizeObserver) {
+		if (chartContainer && chart) {
 			// Handle resize
 			resizeObserver = new ResizeObserver(() => {
 				chart?.resize();
 			});
 			resizeObserver.observe(chartContainer);
-
-			// Theme change observer
-			themeObserver = new MutationObserver(() => {
-				updateTheme();
-			});
-			themeObserver.observe(document.documentElement, { attributes: true });
 		}
 
 		// Cleanup function
 		return () => {
 			resizeObserver?.disconnect();
-			themeObserver?.disconnect();
 			chart?.dispose();
 		};
 	});

@@ -2,7 +2,10 @@
 ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 -->
 <script lang="ts">
-	import * as echarts from 'echarts'; // Props - keeping the same interface as your D3 component for easy replacement
+	import * as echarts from 'echarts';
+	import { getTheme } from '$lib/stores/themeStore.svelte';
+	
+	// Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;
 	let {
 		data = [] as DataItem[],
@@ -20,7 +23,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		barColor?: string;
 	} = $props();
 	let chartContainer: HTMLDivElement;
-	let chart: echarts.ECharts; // Function to resolve CSS variables to actual color values
+	let chart: echarts.ECharts;
 	function getCSSVariableValue(variableName: string): string {
 		if (typeof window === 'undefined') return '#6366f1'; // Default fallback for SSR
 
@@ -39,15 +42,17 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		return color; // Return as-is if not a CSS variable
 	}
 
-	// Resolve colors from CSS variables
+	// Resolve colors from CSS variables - now reactive to theme changes
 	const resolvedColors = $derived({
 		primary: getCSSVariableValue('--color-primary'),
 		text: getCSSVariableValue('--color-text'),
 		textLight: getCSSVariableValue('--color-text-light'),
 		border: getCSSVariableValue('--color-border'),
-		surface: getCSSVariableValue('--color-surface'),
+				surface: getCSSVariableValue('--color-surface'),
 		primaryDark: getCSSVariableValue('--color-primary-dark') || '#4f46e5',
-		barColor: resolveColor(barColor)
+		barColor: resolveColor(barColor),
+		// Include theme to make this reactive to theme changes
+		currentTheme: getTheme()
 	});
 
 	// Convert data to ECharts format
@@ -57,13 +62,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 			value: yAccessor(d)
 		}))
 	);
-
-	// Theme detection
-	let isDark = $state(false);
-
-	function updateTheme() {
-		isDark = document.documentElement.classList.contains('dark');
-	} // Chart options
+	// Chart options
 	const option = $derived({
 		title: {
 			show: false // We'll handle titles externally if needed
@@ -171,41 +170,37 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 	});
 
 	$effect(() => {
-		// Initialize theme detection
-		updateTheme();
-
 		// Initialize chart if container is available
 		if (!chart && chartContainer) {
 			chart = echarts.init(chartContainer);
 		}
 
-		// Set/update chart options
+		// Set/update chart options whenever they change
 		if (chart) {
 			chart.setOption(option, true); // true = notMerge for clean update
 		}
+	});
 
-		// Setup observers only once
+	// Handle resize
+	$effect(() => {
 		let resizeObserver: ResizeObserver | undefined;
-		let themeObserver: MutationObserver | undefined;
 
-		if (chartContainer && !resizeObserver) {
-			// Handle resize
+		if (chartContainer && chart) {
 			resizeObserver = new ResizeObserver(() => {
 				chart?.resize();
 			});
 			resizeObserver.observe(chartContainer);
-
-			// Theme change observer
-			themeObserver = new MutationObserver(() => {
-				updateTheme();
-			});
-			themeObserver.observe(document.documentElement, { attributes: true });
 		}
 
 		// Cleanup function
 		return () => {
 			resizeObserver?.disconnect();
-			themeObserver?.disconnect();
+		};
+	});
+
+	// Cleanup chart on component destroy
+	$effect(() => {
+		return () => {
 			chart?.dispose();
 		};
 	});
