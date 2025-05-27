@@ -56,15 +56,4 @@
 	padding-bottom: var(--spacing-16);
 }
 
-/* Max width containers for content */
-.max-w-none {
-	max-width: none;
-}
-
-.max-w-prose {
-	max-width: 65ch;
-}
-
-.max-w-7xl {
-	max-width: 80rem;
-}
+/* Max width containers for content - specific to layout context */

@@ -15,15 +15,8 @@
 .inline {
 	display: inline;
 }
-.flex {
-	display: flex;
-} /* Note: Also defined in flex.css, consolidate if necessary */
-.inline-flex {
-	display: inline-flex;
-} /* Note: Also defined in flex.css, consolidate if necessary */
-.grid {
-	display: grid;
-} /* Note: Also defined in grid.css, consolidate if necessary */
+/* Note: .flex, .inline-flex moved to flex.css for better organization */
+/* Note: .grid moved to grid.css for better organization */
 .inline-grid {
 	display: inline-grid;
 }
@@ -108,7 +101,7 @@
 		overflow-y: scroll;
 	}
 
-	/* Responsive Display */
+	/* Responsive Display - Note: flex/grid utilities handled by their respective files */
 	.sm\:block {
 		display: block;
 	}
@@ -117,15 +110,6 @@
 	}
 	.sm\:inline {
 		display: inline;
-	}
-	.sm\:flex {
-		display: flex;
-	}
-	.sm\:inline-flex {
-		display: inline-flex;
-	}
-	.sm\:grid {
-		display: grid;
 	}
 	.sm\:inline-grid {
 		display: inline-grid;
@@ -173,7 +157,7 @@
 		overflow-y: scroll;
 	}
 
-	/* Responsive Display */
+	/* Responsive Display - Note: flex/grid utilities handled by their respective files */
 	.md\:block {
 		display: block;
 	}
@@ -182,15 +166,6 @@
 	}
 	.md\:inline {
 		display: inline;
-	}
-	.md\:flex {
-		display: flex;
-	}
-	.md\:inline-flex {
-		display: inline-flex;
-	}
-	.md\:grid {
-		display: grid;
 	}
 	.md\:inline-grid {
 		display: inline-grid;

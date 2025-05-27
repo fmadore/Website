@@ -1,7 +1,7 @@
 /* src/styles/components/skill-tags.css */
 
 .project-skills-container {
-	font-size: 0.9rem; /* Consider var(--font-size-sm) */
+	font-size: var(--font-size-sm);
 	margin-top: var(--spacing-3);
 	margin-bottom: var(--spacing-2);
 }
@@ -19,17 +19,16 @@
 }
 
 .project-skill-tag {
-	background-color: var(--color-border); /* Changed from --color-primary-light */
-	color: var(--color-text-light); /* Changed from --color-primary-darker */
+	background-color: var(--color-border);
+	color: var(--color-text-light);
 	padding: var(--spacing-1) var(--spacing-2);
 	border-radius: var(--border-radius-full);
-	font-size: 0.8rem; /* var(--font-size-xs) or var(--font-size-sm) could be options */
-	font-weight: 500; /* Slightly bolder */
+	font-size: var(--font-size-xs);
+	font-weight: 500;
 	line-height: 1.2;
-	/* border: 1px solid var(--color-primary, #4f46e5); Removed border for consistency */
 	transition:
 		background-color 0.2s ease,
-		color 0.2s ease; /* Matched transition timing function */
+		color 0.2s ease;
 }
 
 .project-skill-tag:hover {

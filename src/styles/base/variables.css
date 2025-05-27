@@ -36,6 +36,10 @@
 	--color-dark-surface: #374151; /* Dark theme surface */
 	--color-dark-surface-alt: #232b36; /* Dark theme alternative surface */
 	--color-dark-surface-deep: #181e26; /* Dark theme deep surface */
+	
+	/* Background variations for components */
+	--color-background-alt: #f9fafb; /* Alternative background */
+	--color-background-muted: #f1f5f9; /* Muted background for placeholders */
 	/* Spacing variables */
 	--spacing-1: 0.25rem;
 	--spacing-2: 0.5rem;
