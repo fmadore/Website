@@ -1,7 +1,7 @@
 /* CSS Variables */
 
 :root {
-	/* Color variables */
+	/* Color variables - Enhanced for academic content */
 	--color-primary: #1a365d; /* Deeper blue */
 	--color-primary-rgb: 26, 54, 93; /* RGB values of primary color for rgba() */
 	--color-primary-dark: #11243e; /* Darker shade of primary */
@@ -14,11 +14,19 @@
 	--color-background: #ffffff;
 	--color-text: #1a202c;
 	--color-text-light: #4a5568;
+	--color-text-muted: #718096; /* Additional muted text option */
+	--color-text-emphasis: #2d3748; /* For emphasized text */
 	--color-border: #e2e8f0;
 	--color-footer-bg: #1f2937;
 	--color-footer-text: #f9fafb;
 	--color-footer-text-muted: rgba(255, 255, 255, 0.7);
 	--color-sidebar-bg: #f9fafb; /* Added: Very light gray for light theme sidebar */
+	
+	/* Academic-specific colors */
+	--color-citation: #6b46c1; /* Purple for citations */
+	--color-citation-rgb: 107, 70, 193;
+	--color-quote: #374151; /* Darker gray for blockquotes */
+	--color-note: #1f2937; /* For footnotes and annotations */
 
 	/* Additional semantic colors for better cohesion */
 	--color-surface: #f9fafb; /* Light surface background */
@@ -50,7 +58,7 @@
 		'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
 		'Courier New', monospace;
 
-	/* Font size variables */
+	/* Font size variables - Expanded scale for better hierarchy */
 	--font-size-xs: 0.75rem;
 	--font-size-sm: 0.875rem;
 	--font-size-base: 1rem;
@@ -59,9 +67,38 @@
 	--font-size-2xl: 1.5rem;
 	--font-size-3xl: 1.875rem;
 	--font-size-4xl: 2.25rem;
+	--font-size-5xl: 3rem;
+	--font-size-6xl: 3.75rem;
 
-	/* Line height */
-	--line-height-default: 1.5;
+	/* Line height variables - Multiple options for different content types */
+	--line-height-tight: 1.25;
+	--line-height-snug: 1.375;
+	--line-height-normal: 1.5;
+	--line-height-relaxed: 1.625;
+	--line-height-loose: 2;
+
+	/* Letter spacing for improved readability */
+	--letter-spacing-tighter: -0.05em;
+	--letter-spacing-tight: -0.025em;
+	--letter-spacing-normal: 0em;
+	--letter-spacing-wide: 0.025em;
+	--letter-spacing-wider: 0.05em;
+	--letter-spacing-widest: 0.1em;
+
+	/* Typography scale modifiers for better responsive design */
+	--font-weight-light: 300;
+	--font-weight-normal: 400;
+	--font-weight-medium: 500;
+	--font-weight-semibold: 600;
+	--font-weight-bold: 700;
+	--font-weight-extrabold: 800;
+	--font-weight-black: 900;
+
+	/* Academic text styling */
+	--text-indent-paragraph: 1.5rem;
+	--text-max-width-reading: 65ch;
+	--text-max-width-wide: 80ch;
+
 	/* Border radius */
 	--border-radius-sm: 0.125rem;
 	--border-radius: 0.25rem;
@@ -108,11 +145,19 @@ html.dark {
 	--color-background: #111827; /* Very dark gray */
 	--color-text: #e5e7eb; /* Light gray text */
 	--color-text-light: #9ca3af; /* Medium gray text */
+	--color-text-muted: #6b7280; /* Additional muted text option for dark mode */
+	--color-text-emphasis: #f9fafb; /* For emphasized text in dark mode */
 	--color-border: #374151; /* Darker border */
 	--color-footer-bg: #0f172a; /* Even darker footer */
 	--color-footer-text: #f9fafb; /* Keep consistent footer text */
 	--color-footer-text-muted: rgba(255, 255, 255, 0.7); /* Keep consistent muted */
 	--color-sidebar-bg: #1f2937; /* Dark theme sidebar */
+	
+	/* Academic-specific colors for dark mode */
+	--color-citation: #a78bfa; /* Lighter purple for citations in dark mode */
+	--color-citation-rgb: 167, 139, 250;
+	--color-quote: #d1d5db; /* Lighter gray for blockquotes in dark mode */
+	--color-note: #f3f4f6; /* For footnotes and annotations in dark mode */
 
 	/* Dark theme semantic colors */
 	--color-surface: #1f2937; /* Dark surface background */
