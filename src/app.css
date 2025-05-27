@@ -26,7 +26,6 @@
 /* Utilities */
 @import './styles/utilities/spacing.css';
 @import './styles/utilities/colors.css';
-@import './styles/utilities/typography.css';
 @import './styles/utilities/flex.css';
 @import './styles/utilities/layout.css';
 @import './styles/utilities/border-radius.css';
