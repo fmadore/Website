@@ -47,22 +47,28 @@
 	import { sortItems } from '$lib/utils/sortUtils';
 	import Icon from '@iconify/svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
-	import { derived } from 'svelte/store'; // State for the current sort order
+	import { derived } from 'svelte/store';
+	
+	// State for the current sort order
 	let activeSort = $state<'date' | 'title' | 'citations'>('date');
 
 	// State for mobile filter sidebar expansion
 	let mobileFiltersExpanded = $state(false);
 
 	// Create a derived store for sorted publications that updates when activeSort changes
-	const sortedPublications = derived(filteredPublications, ($filteredPublications) =>
-		sortItems($filteredPublications, activeSort)
-	);
-
-	// Update the derived store when activeSort changes
+	// We need to create a writable/readable store for activeSort to make it reactive
+	import { writable } from 'svelte/store';
+	const activeSortStore = writable<'date' | 'title' | 'citations'>('date');
+	
+	// Update the store when activeSort changes
 	$effect(() => {
-		// This effect will re-run when activeSort changes
-		// The derived store will automatically update because we access activeSort inside the derivation
+		activeSortStore.set(activeSort);
 	});
+
+	// Create a derived store for sorted publications
+	const sortedPublications = derived([filteredPublications, activeSortStore], ([$filteredPublications, $activeSort]) =>
+		sortItems($filteredPublications, $activeSort)
+	);
 	function handleFilterRequest(event: { type: string; value: string }) {
 		const { type, value } = event;
 		console.log('Filter request received:', type, value);

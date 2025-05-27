@@ -55,32 +55,36 @@
 	let showMap = $state(false);
 
 	// State for mobile filter sidebar expansion
-	let mobileFiltersExpanded = $state(false); // State for the current sort order
+	let mobileFiltersExpanded = $state(false); 
+	
+	// State for the current sort order
 	let activeSort = $state<'date' | 'title'>('date');
 
-	// Create a derived store for sorted communications that the component can use
-	const sortedCommunications = derived([filteredCommunications], ([$filteredCommunications]) =>
-		sortItems($filteredCommunications, activeSort)
+	// Create a writable store for activeSort to make it reactive with derived stores
+	const activeSortStore = writable<'date' | 'title'>('date');
+	
+	// Update the store when activeSort changes
+	$effect(() => {
+		activeSortStore.set(activeSort);
+	});
+
+	// Create derived stores for sorted communications and map markers
+	const sortedCommunications = derived([filteredCommunications, activeSortStore], ([$filteredCommunications, $activeSort]) =>
+		sortItems($filteredCommunications, $activeSort)
 	);
 
-	// Effect to trigger re-derivation when activeSort changes
-	$effect(() => {
-		// This effect will run when activeSort changes, causing sortedCommunications to update
-		activeSort;
-	}); // Derived value to update markers based on filtered communications
-	const mapMarkers = derived(
-		filteredCommunications,
-		($filteredCommunications) =>
-			$filteredCommunications
-				?.filter((comm: Communication) => comm.coordinates)
-				.map((comm: Communication) => ({
-					id: comm.id,
-					title: comm.title,
-					coordinates: comm.coordinates!,
-					year: comm.year,
-					activityType: comm.type,
-					image: comm.image
-				})) || []
+	// Create a derived store for map markers based on filtered communications
+	const mapMarkers = derived(filteredCommunications, ($filteredCommunications) =>
+		$filteredCommunications
+			?.filter((comm: Communication) => comm.coordinates)
+			.map((comm: Communication) => ({
+				id: comm.id,
+				title: comm.title,
+				coordinates: comm.coordinates!,
+				year: comm.year,
+				activityType: comm.type,
+				image: comm.image
+			})) || []
 	);
 
 	// Helper to check if any filters are active (consistent with communications/+page.svelte)
