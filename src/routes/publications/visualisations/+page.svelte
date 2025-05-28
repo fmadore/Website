@@ -1,6 +1,10 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
+	import { base } from '$app/paths';
+	import { page } from '$app/stores';
+	import { browser } from '$app/environment';
 	import { allPublications, publicationsByType } from '$lib/data/publications'; // Import publicationsByType
 	import EChartsBarChart from '$lib/components/visualisations/EChartsBarChart.svelte';
 	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
@@ -111,6 +115,63 @@
 	// Accessor functions for language doughnut chart
 	const getLanguageName = (d: LanguageData) => d.language;
 	const getLanguageCount = (d: LanguageData) => d.count;
+
+	// Define breadcrumb items
+	const breadcrumbItems = [
+		{ label: 'Publications', href: `${base}/publications` },
+		{ label: 'Visualisations', href: `${base}/publications/visualisations` }
+	];
+
+	// Generate Breadcrumb JSON-LD
+	const breadcrumbJsonLdString = $derived(
+		JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'BreadcrumbList',
+			itemListElement: breadcrumbItems.map((item, index) => ({
+				'@type': 'ListItem',
+				position: index + 1,
+				name: item.label,
+				item: `${$page.url.origin}${item.href}`
+			}))
+		})
+	);
+
+	// Manage JSON-LD script injection
+	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
+
+	// Handle JSON-LD script injection with $effect
+	$effect(() => {
+		if (browser) {
+			const scriptId = breadcrumbJsonLdScriptId;
+			let scriptElement = document.getElementById(scriptId) as HTMLScriptElement | null;
+
+			if (breadcrumbJsonLdString) {
+				if (scriptElement) {
+					scriptElement.textContent = breadcrumbJsonLdString;
+				} else {
+					scriptElement = document.createElement('script');
+					scriptElement.id = scriptId;
+					scriptElement.type = 'application/ld+json';
+					scriptElement.textContent = breadcrumbJsonLdString;
+					document.head.appendChild(scriptElement);
+				}
+			} else {
+				if (scriptElement) {
+					document.head.removeChild(scriptElement);
+				}
+			}
+
+			return () => {
+				// Cleanup: remove script if it exists
+				if (browser) {
+					const scriptToRemove = document.getElementById(scriptId);
+					if (scriptToRemove && scriptToRemove.parentElement === document.head) {
+						document.head.removeChild(scriptToRemove);
+					}
+				}
+			};
+		}
+	});
 </script>
 
 <SEO
@@ -119,7 +180,8 @@
 	keywords="publications, visualisations, citations, research analytics, Frédérick Madore"
 />
 
-<div class="page-container max-w-7xl">
+<div class="page-container">
+	<Breadcrumb items={breadcrumbItems} />
 	<PageHeader title="Publication Visualisations" />
 
 	<p class="text-xl mb-10">
@@ -219,9 +281,9 @@
 
 <style>
 	.page-container {
-		/* max-width is handled by the .max-w-7xl utility class */
+		max-width: 1200px;
 		margin: 0 auto;
-		padding: var(--spacing-8) var(--spacing-4);
+		padding: 0 var(--spacing-4);
 	}
 
 	.chart-wrapper,
