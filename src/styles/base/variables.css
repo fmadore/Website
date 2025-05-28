@@ -30,10 +30,12 @@
 
 	/* Additional semantic colors for better cohesion */
 	--color-surface: #f9fafb; /* Light surface background */
+	--color-surface-rgb: 249, 250, 251; /* RGB values for surface color */
 	--color-surface-alt: #f1f5f9; /* Alternative surface background */
 	--color-surface-border: #e2e8f0; /* Surface borders */
 	--color-code-bg: #f1f1f1; /* Code background */
 	--color-dark-surface: #374151; /* Dark theme surface */
+	--color-dark-surface-rgb: 55, 65, 81; /* RGB values for dark surface color */
 	--color-dark-surface-alt: #232b36; /* Dark theme alternative surface */
 	--color-dark-surface-deep: #181e26; /* Dark theme deep surface */
 	
@@ -168,10 +170,12 @@ html.dark {
 
 	/* Dark theme semantic colors */
 	--color-surface: #1f2937; /* Dark surface background */
+	--color-surface-rgb: 31, 41, 55; /* RGB values for dark theme surface color */
 	--color-surface-alt: #374151; /* Dark alternative surface background */
 	--color-surface-border: #4b5563; /* Dark surface borders */
 	--color-code-bg: #374151; /* Dark code background */
 	--color-dark-surface: #1f2937; /* Keep consistent with surface */
+	--color-dark-surface-rgb: 31, 41, 55; /* RGB values for dark surface color */
 	--color-dark-surface-alt: #232b36; /* Dark theme alternative surface */
 	--color-dark-surface-deep: #181e26; /* Dark theme deep surface */
 	/* Adjusted shadows for dark mode if needed */
