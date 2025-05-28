@@ -91,7 +91,7 @@
 		box-shadow: var(--shadow-md);
 		padding: var(--spacing-8) var(--spacing-6);
 		border: 1px solid rgba(var(--color-primary-rgb), 0.06);
-		margin-bottom: var(--spacing-8);
+		margin-bottom: var(--spacing-6);
 	}
 
 	.header-content {
@@ -216,6 +216,7 @@
 	@media (max-width: 640px) {
 		.enhanced-page-header {
 			padding: var(--spacing-6) var(--spacing-4);
+			margin-bottom: var(--spacing-4);
 		}
 
 		.page-title {

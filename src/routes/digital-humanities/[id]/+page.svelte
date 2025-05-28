@@ -98,7 +98,7 @@
 
 	<PageHeader title={project.title} />
 	{#if project.years}
-		<p class="text-left md:text-left text-xl font-light text-secondary -mt-6 mb-8 md:-mt-4 md:mb-6">
+		<p class="text-left md:text-left text-xl font-light text-secondary mb-6">
 			{project.years}
 		</p>
 	{/if}

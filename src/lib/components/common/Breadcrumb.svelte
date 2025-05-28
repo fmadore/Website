@@ -37,12 +37,29 @@
 <style>
 	.breadcrumb {
 		font-size: var(--font-size-sm);
-		margin-bottom: var(--spacing-6);
+		margin-bottom: var(--spacing-4);
 		padding: var(--spacing-3) var(--spacing-4);
 		background-color: var(--color-surface);
 		border-radius: var(--border-radius-md);
 		border: 1px solid var(--color-border);
 		box-shadow: var(--shadow-sm);
+		position: relative;
+	}
+
+	/* Add a subtle connection line to the page header */
+	.breadcrumb::after {
+		content: '';
+		position: absolute;
+		bottom: calc(-1 * var(--spacing-2));
+		left: var(--spacing-4);
+		width: 2rem;
+		height: 2px;
+		background: linear-gradient(90deg, 
+			rgba(var(--color-primary-rgb), 0.3) 0%, 
+			transparent 100%
+		);
+		border-radius: 1px;
+		opacity: 0.6;
 	}
 
 	.breadcrumb ol {
@@ -105,7 +122,7 @@
 	@media (max-width: 640px) {
 		.breadcrumb {
 			padding: var(--spacing-2) var(--spacing-3);
-			margin-bottom: var(--spacing-4);
+			margin-bottom: var(--spacing-3);
 		}
 
 		.breadcrumb li:not(:last-child)::after {
@@ -123,6 +140,13 @@
 	:global(html.dark) .breadcrumb {
 		background-color: var(--color-surface);
 		border-color: var(--color-border);
+	}
+
+	:global(html.dark) .breadcrumb::after {
+		background: linear-gradient(90deg, 
+			rgba(var(--color-primary-rgb), 0.4) 0%, 
+			transparent 100%
+		);
 	}
 
 	:global(html.dark) .breadcrumb-link:hover {
@@ -171,6 +195,10 @@
 
 		.breadcrumb-link::before {
 			transition: none;
+		}
+
+		.breadcrumb::after {
+			display: none;
 		}
 	}
 </style>
