@@ -148,30 +148,30 @@
 	.activity-type {
 		font-size: var(--font-size-xs);
 		text-transform: uppercase;
-		font-weight: 600;
+		font-weight: var(--font-weight-semibold);
 		color: var(--color-primary);
 		background-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
 		padding: var(--spacing-1) var(--spacing-3);
 		border-radius: var(--border-radius-full);
 		flex-shrink: 0;
 		white-space: nowrap;
-		line-height: 1.5;
-		border: 1px solid rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		line-height: var(--line-height-normal);
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium-high));
 	}
 
 	.activity-date {
 		font-size: var(--font-size-sm);
-		font-weight: 500;
+		font-weight: var(--font-weight-medium);
 		color: var(--color-text-light);
 		text-align: right;
-		line-height: 1.4;
+		line-height: var(--line-height-snug);
 		min-width: 0;
 	}
 
 	.activity-title {
 		display: block;
 		font-size: var(--font-size-base);
-		font-weight: 600;
+		font-weight: var(--font-weight-semibold);
 		color: var(--color-text);
 		text-decoration: none;
 		margin-bottom: var(--spacing-2);

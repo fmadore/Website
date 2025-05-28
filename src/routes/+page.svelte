@@ -169,7 +169,7 @@
 	/* Content text styling - keeping only what's not available in utilities */
 	.grid > div p {
 		margin-bottom: var(--spacing-6);
-		line-height: 1.625; /* leading-relaxed value */
+		line-height: var(--line-height-relaxed);
 	}
 
 	.grid > div p:last-child {
@@ -180,7 +180,7 @@
 	.grid > div a {
 		color: var(--color-primary);
 		text-decoration: none;
-		font-weight: 500;
+		font-weight: var(--font-weight-medium);
 		transition: color 0.2s ease;
 	}
 
@@ -192,21 +192,21 @@
 	/* External link indicator */
 	.grid > div a[target='_blank']:after {
 		content: '↗';
-		font-size: 0.8em;
-		margin-left: 0.2em;
-		opacity: 0.7;
+		font-size: var(--font-size-sm);
+		margin-left: var(--spacing-1);
+		opacity: var(--opacity-high);
 	}
 
 	/* Emphasis styling */
 	.grid > div em {
 		font-style: italic;
-		font-weight: 500;
+		font-weight: var(--font-weight-medium);
 	}
 
 	/* Lead paragraph styling */
 	.grid > div p:first-child {
 		font-size: var(--font-size-lg);
-		font-weight: 400;
+		font-weight: var(--font-weight-normal);
 	}
 
 	/* Mobile adjustments */
