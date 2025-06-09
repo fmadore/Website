@@ -38,9 +38,24 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		radius?: [string, string];
 		colors?: string[];
 	} = $props();
-
 	let chartContainer: HTMLDivElement;
 	let chart: echarts.ECharts;
+	
+	// Detect mobile screen size
+	let isMobile = $state(false);
+	
+	$effect(() => {
+		if (typeof window !== 'undefined') {
+			const checkMobile = () => {
+				isMobile = window.innerWidth < 768; // Mobile breakpoint
+			};
+			
+			checkMobile();
+			window.addEventListener('resize', checkMobile);
+			
+			return () => window.removeEventListener('resize', checkMobile);
+		}
+	});
 
 	// Function to resolve CSS variables to actual color values
 	function getCSSVariableValue(variableName: string): string {
@@ -115,12 +130,12 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 			bottom: '10px',
 			textStyle: {
 				color: resolvedColors.text,
-				fontSize: 12,
+				fontSize: isMobile ? 10 : 12,
 				fontFamily: 'Inter, -apple-system, sans-serif'
 			},
-			itemGap: 12,
-			itemWidth: 12,
-			itemHeight: 12
+			itemGap: isMobile ? 8 : 12,
+			itemWidth: isMobile ? 10 : 12,
+			itemHeight: isMobile ? 10 : 12
 		},
 		series: [
 			{
@@ -135,9 +150,8 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 						shadowOffsetX: 0,
 						shadowColor: 'rgba(0, 0, 0, 0.5)'
 					}
-				},
-				label: {
-					show: showLabels,
+				},				label: {
+					show: showLabels && !isMobile, // Hide labels on mobile to prevent overlap
 					position: 'outside',
 					color: resolvedColors.text,
 					fontSize: 11,
@@ -145,7 +159,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 					formatter: '{b}: {d}%'
 				},
 				labelLine: {
-					show: showLabels,
+					show: showLabels && !isMobile, // Hide label lines on mobile
 					length: 15,
 					length2: 10,
 					lineStyle: {
@@ -216,11 +230,16 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		width: 100%;
 		height: 100%;
 	}
-
 	/* Responsive adjustments */
 	@media (max-width: 640px) {
 		.echarts-container {
-			height: 350px;
+			height: 300px; /* Reduce height on mobile since labels are hidden */
+		}
+	}
+	
+	@media (max-width: 480px) {
+		.echarts-container {
+			height: 280px; /* Even smaller on very small screens */
 		}
 	}
 </style>

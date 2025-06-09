@@ -192,7 +192,7 @@
 	<section class="visualization-section mb-12">
 		<h2 class="text-2xl font-semibold mb-6">Publications per year by type</h2>
 		{#if publicationsPerYearStackedData.length > 0 && publicationTypesForStack.length > 0}
-			<div class="chart-wrapper" style="height: 450px;">
+			<div class="chart-wrapper stacked-chart">
 				<EChartsStackedBarChart
 					data={publicationsPerYearStackedData}
 					keys={publicationTypesForStack}
@@ -299,6 +299,10 @@
 		padding: var(--spacing-6);
 		position: relative;
 	}
+	
+	.stacked-chart {
+		height: 450px;
+	}
 
 	.placeholder-message {
 		padding: var(--spacing-6);
@@ -307,5 +311,47 @@
 		align-items: center;
 		justify-content: center;
 		text-align: center;
+	}
+	
+	/* Mobile responsiveness */
+	@media (max-width: 768px) {
+		.page-container {
+			padding: 0 var(--spacing-3);
+		}
+		
+		.chart-wrapper {
+			padding: var(--spacing-4);
+		}
+		
+		.stacked-chart {
+			height: 380px; /* Reduce height on mobile */
+		}
+		
+		.visualization-section h2 {
+			font-size: 1.25rem; /* Smaller headings on mobile */
+			margin-bottom: var(--spacing-4);
+		}
+		
+		.text-xl {
+			font-size: 1.125rem; /* Smaller intro text on mobile */
+		}
+	}
+	
+	@media (max-width: 480px) {
+		.chart-wrapper {
+			padding: var(--spacing-3);
+		}
+		
+		.stacked-chart {
+			height: 350px; /* Even smaller on very small screens */
+		}
+		
+		.visualization-section h2 {
+			font-size: 1.125rem;
+		}
+		
+		.text-xl {
+			font-size: 1rem;
+		}
 	}
 </style>

@@ -24,6 +24,23 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 	} = $props();
 	let chartContainer: HTMLDivElement;
 	let chart: echarts.ECharts;
+	
+	// Detect mobile screen size
+	let isMobile = $state(false);
+	
+	$effect(() => {
+		if (typeof window !== 'undefined') {
+			const checkMobile = () => {
+				isMobile = window.innerWidth < 768; // Mobile breakpoint
+			};
+			
+			checkMobile();
+			window.addEventListener('resize', checkMobile);
+			
+			return () => window.removeEventListener('resize', checkMobile);
+		}
+	});
+	
 	function getCSSVariableValue(variableName: string): string {
 		if (typeof window === 'undefined') return '#6366f1'; // Default fallback for SSR
 
@@ -81,7 +98,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 			extraCssText: 'box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);'
 		},
 		grid: {
-			left: 64,
+			left: isMobile ? 32 : 64,
 			right: 24,
 			top: 24,
 			bottom: xAxisLabel ? 80 : 48,
@@ -100,8 +117,9 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 			},
 			axisLabel: {
 				color: resolvedColors.text,
-				fontSize: 12,
-				fontFamily: 'Inter, -apple-system, sans-serif'
+				fontSize: isMobile ? 10 : 12,
+				fontFamily: 'Inter, -apple-system, sans-serif',
+				interval: isMobile ? 'auto' : 0 // Auto interval on mobile to prevent overlapping
 			},
 			axisLine: {
 				lineStyle: {

@@ -53,6 +53,22 @@ ECharts Stacked Bar Chart component
 		return color; // Return as-is if not a CSS variable
 	}
 
+	// Detect mobile screen size
+	let isMobile = $state(false);
+	
+	$effect(() => {
+		if (typeof window !== 'undefined') {
+			const checkMobile = () => {
+				isMobile = window.innerWidth < 768; // Mobile breakpoint
+			};
+			
+			checkMobile();
+			window.addEventListener('resize', checkMobile);
+			
+			return () => window.removeEventListener('resize', checkMobile);
+		}
+	});
+
 	// Resolve colors from CSS variables - now reactive to theme changes
 	const resolvedColors = $derived({
 		primary: getCSSVariableValue('--color-primary'),
@@ -104,6 +120,29 @@ ECharts Stacked Bar Chart component
 			extraCssText: 'box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);',
 			axisPointer: {
 				type: 'shadow'
+			},
+			formatter: function (params: any) {
+				// Filter out series with value 0
+				const nonZeroParams = params.filter((param: any) => param.value > 0);
+				
+				if (nonZeroParams.length === 0) {
+					return `${params[0].axisValueLabel}<br/>No publications`;
+				}
+				
+				let result = `${nonZeroParams[0].axisValueLabel}<br/>`;
+				
+				// Calculate total for the year
+				const total = nonZeroParams.reduce((sum: number, param: any) => sum + param.value, 0);
+				
+				// Add each non-zero publication type
+				nonZeroParams.forEach((param: any) => {
+					result += `${param.marker}${param.seriesName}: ${param.value}<br/>`;
+				});
+				
+				// Add total
+				result += `<strong>Total: ${total}</strong>`;
+				
+				return result;
 			}
 		},
 		legend: {
@@ -112,14 +151,17 @@ ECharts Stacked Bar Chart component
 			top: 'top',
 			textStyle: {
 				color: resolvedColors.text,
-				fontSize: 12,
+				fontSize: isMobile ? 10 : 12,
 				fontFamily: 'Inter, -apple-system, sans-serif'
-			}
+			},
+			itemGap: isMobile ? 8 : 12,
+			itemWidth: isMobile ? 10 : 14,
+			itemHeight: isMobile ? 10 : 14
 		},
 		grid: {
-			left: 64,
+			left: isMobile ? 32 : 64,
 			right: 24,
-			top: 64,
+			top: isMobile ? 80 : 64, // More space on mobile for legend
 			bottom: xAxisLabel ? 80 : 48,
 			containLabel: false
 		},
@@ -136,8 +178,10 @@ ECharts Stacked Bar Chart component
 			},
 			axisLabel: {
 				color: resolvedColors.text,
-				fontSize: 12,
-				fontFamily: 'Inter, -apple-system, sans-serif'
+				fontSize: isMobile ? 10 : 12,
+				fontFamily: 'Inter, -apple-system, sans-serif',
+				interval: isMobile ? 'auto' : 0, // Auto interval on mobile to prevent overlapping
+				rotate: isMobile ? 45 : 0 // Rotate labels on mobile if needed
 			},
 			axisLine: {
 				lineStyle: {

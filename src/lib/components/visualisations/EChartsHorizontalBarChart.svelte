@@ -25,6 +25,22 @@ ECharts Horizontal Bar Chart component
 	let chartContainer: HTMLDivElement;
 	let chart: echarts.ECharts;
 
+	// Detect mobile screen size
+	let isMobile = $state(false);
+	
+	$effect(() => {
+		if (typeof window !== 'undefined') {
+			const checkMobile = () => {
+				isMobile = window.innerWidth < 768; // Mobile breakpoint
+			};
+			
+			checkMobile();
+			window.addEventListener('resize', checkMobile);
+			
+			return () => window.removeEventListener('resize', checkMobile);
+		}
+	});
+
 	// Function to resolve CSS variables to actual color values
 	function getCSSVariableValue(variableName: string): string {
 		if (typeof window === 'undefined') return '#6366f1'; // Default fallback for SSR
@@ -80,7 +96,7 @@ ECharts Horizontal Bar Chart component
 			extraCssText: 'box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);'
 		},
 		grid: {
-			left: '150px', // More space for author names
+			left: isMobile ? '120px' : '150px', // Less space for author names on mobile
 			right: 24,
 			top: 24,
 			bottom: xAxisLabel ? 80 : 48,
@@ -131,9 +147,9 @@ ECharts Horizontal Bar Chart component
 			},
 			axisLabel: {
 				color: resolvedColors.text,
-				fontSize: 12,
+				fontSize: isMobile ? 10 : 12,
 				fontFamily: 'Inter, -apple-system, sans-serif',
-				width: 130,
+				width: isMobile ? 100 : 130,
 				overflow: 'truncate'
 			},
 			axisLine: {
