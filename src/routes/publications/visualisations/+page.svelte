@@ -58,6 +58,11 @@
 			.sort((a, b) => b.count - a.count);
 	})());
 
+	// Calculate maximum citation count for consistent x-axis scale across pagination
+	const maxCitationCount = $derived(
+		citedAuthorsData.length > 0 ? Math.max(...citedAuthorsData.map(d => d.count)) : 0
+	);
+
 	const languageData = $derived((() => {
 		const languageCounts: Record<string, number> = {};
 		allPublications.forEach((pub) => {
@@ -115,6 +120,9 @@
 	// Accessor functions for language doughnut chart
 	const getLanguageName = (d: LanguageData) => d.language;
 	const getLanguageCount = (d: LanguageData) => d.count;
+
+	// Pagination state
+	let currentPage = $state(0);
 
 	// Define breadcrumb items
 	const breadcrumbItems = [
@@ -257,20 +265,109 @@
 	</section>
 
 	<section class="visualization-section">
-		<h2 class="text-2xl font-semibold mb-6">Authors citing my work most frequently</h2>
+		<h2 class="text-2xl font-semibold mb-6">
+			Authors citing my work most frequently
+			{#if citedAuthorsData.length > 0}
+				(Total: {citedAuthorsData.length} authors)
+			{/if}
+		</h2>
 		{#if citedAuthorsData.length > 0}
-			<div
-				class="chart-wrapper"
-				style="height: {Math.max(350, citedAuthorsData.slice(0, 15).length * 35 + 70)}px;"
-			>
-				<EChartsHorizontalBarChart
-					data={citedAuthorsData.slice(0, 15)}
-					xAccessor={getAuthorCitationCount}
-					yAccessor={getAuthorName}
-					xAxisLabel="Number of citations"
-					barColor="var(--color-highlight)"
-				/>
-			</div>
+			{#snippet authorChart(authorsToShow: CitedAuthorData[], pageIndex: number)}
+				<div
+					class="chart-wrapper"
+					style="height: {Math.max(350, authorsToShow.length * 35 + 70)}px;"
+				>
+					<EChartsHorizontalBarChart
+						data={authorsToShow}
+						xAccessor={getAuthorCitationCount}
+						yAccessor={getAuthorName}
+						xAxisLabel="Number of citations"
+						barColor="var(--color-highlight)"
+						maxValue={maxCitationCount}
+					/>
+				</div>
+			{/snippet}
+
+			{@const itemsPerPage = 15}
+			{@const totalPages = Math.ceil(citedAuthorsData.length / itemsPerPage)}
+			{@const startIndex = currentPage * itemsPerPage}
+			{@const endIndex = Math.min(startIndex + itemsPerPage, citedAuthorsData.length)}
+			{@const currentAuthors = citedAuthorsData.slice(startIndex, endIndex)}
+
+			{@render authorChart(currentAuthors, currentPage)}
+
+			{#if totalPages > 1}
+				<div class="pagination-controls mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+					<div class="pagination-info text-sm text-light">
+						Showing {startIndex + 1}-{endIndex} of {citedAuthorsData.length} authors
+					</div>
+					<div class="pagination-buttons flex gap-2">
+						<button
+							class="pagination-btn"
+							onclick={() => currentPage = Math.max(0, currentPage - 1)}
+							disabled={currentPage === 0}
+						>
+							← Previous
+						</button>
+						
+						{#if totalPages <= 7}
+							{#each Array(totalPages) as _, i}
+								<button
+									class="pagination-btn {currentPage === i ? 'active' : ''}"
+									onclick={() => currentPage = i}
+								>
+									{i + 1}
+								</button>
+							{/each}
+						{:else}
+							<!-- Show first page -->
+							<button
+								class="pagination-btn {currentPage === 0 ? 'active' : ''}"
+								onclick={() => currentPage = 0}
+							>
+								1
+							</button>
+							
+							{#if currentPage > 2}
+								<span class="pagination-ellipsis">…</span>
+							{/if}
+							
+							<!-- Show pages around current page -->
+							{#each Array(Math.min(3, totalPages - 2)) as _, i}
+								{@const pageIndex = Math.max(1, Math.min(totalPages - 2, currentPage - 1 + i))}
+								{#if pageIndex > 0 && pageIndex < totalPages - 1}
+									<button
+										class="pagination-btn {currentPage === pageIndex ? 'active' : ''}"
+										onclick={() => currentPage = pageIndex}
+									>
+										{pageIndex + 1}
+									</button>
+								{/if}
+							{/each}
+							
+							{#if currentPage < totalPages - 3}
+								<span class="pagination-ellipsis">…</span>
+							{/if}
+							
+							<!-- Show last page -->
+							<button
+								class="pagination-btn {currentPage === totalPages - 1 ? 'active' : ''}"
+								onclick={() => currentPage = totalPages - 1}
+							>
+								{totalPages}
+							</button>
+						{/if}
+						
+						<button
+							class="pagination-btn"
+							onclick={() => currentPage = Math.min(totalPages - 1, currentPage + 1)}
+							disabled={currentPage === totalPages - 1}
+						>
+							Next →
+						</button>
+					</div>
+				</div>
+			{/if}
 		{:else}
 			<div class="placeholder-message">
 				<p class="text-light">No cited author data available to display for this visualization.</p>
@@ -352,6 +449,68 @@
 		
 		.text-xl {
 			font-size: 1rem;
+		}
+	}
+	
+	.pagination-controls {
+		border-top: 1px solid var(--color-border);
+		padding-top: var(--spacing-4);
+	}
+	
+	.pagination-btn {
+		padding: var(--spacing-2) var(--spacing-3);
+		border: 1px solid var(--color-border);
+		background-color: var(--color-surface);
+		color: var(--color-text);
+		border-radius: var(--border-radius);
+		font-size: var(--font-size-sm);
+		cursor: pointer;
+		transition: all 0.2s ease;
+		min-width: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	
+	.pagination-btn:hover:not(:disabled) {
+		background-color: var(--color-surface-border);
+		border-color: var(--color-primary);
+	}
+	
+	.pagination-btn.active {
+		background-color: var(--color-primary);
+		color: white;
+		border-color: var(--color-primary);
+	}
+	
+	.pagination-btn:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+	
+	.pagination-ellipsis {
+		padding: var(--spacing-2) var(--spacing-1);
+		color: var(--color-text-light);
+		font-size: var(--font-size-sm);
+		display: flex;
+		align-items: center;
+	}
+	
+	.pagination-info {
+		font-size: var(--font-size-sm);
+		color: var(--color-text-light);
+	}
+	
+	@media (max-width: 640px) {
+		.pagination-buttons {
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+		
+		.pagination-btn {
+			font-size: var(--font-size-xs);
+			padding: var(--spacing-1) var(--spacing-2);
+			min-width: 32px;
 		}
 	}
 </style>

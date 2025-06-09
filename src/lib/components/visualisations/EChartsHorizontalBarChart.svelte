@@ -13,7 +13,8 @@ ECharts Horizontal Bar Chart component
 		yAccessor,
 		xAxisLabel = '',
 		yAxisLabel = '',
-		barColor = 'var(--color-primary)'
+		barColor = 'var(--color-primary)',
+		maxValue
 	}: {
 		data?: DataItem[];
 		xAccessor: (d: DataItem) => number;
@@ -21,6 +22,7 @@ ECharts Horizontal Bar Chart component
 		xAxisLabel?: string;
 		yAxisLabel?: string;
 		barColor?: string;
+		maxValue?: number;
 	} = $props();
 	let chartContainer: HTMLDivElement;
 	let chart: echarts.ECharts;
@@ -73,12 +75,12 @@ ECharts Horizontal Bar Chart component
 		currentTheme: getTheme()
 	});
 
-	// Convert data to ECharts format
+	// Convert data to ECharts format - reverse order so highest values appear at top
 	const chartData = $derived(
 		data.map((d) => ({
 			name: String(yAccessor(d)),
 			value: xAccessor(d)
-		}))
+		})).reverse() // Reverse the order so highest values appear at top
 	);
 	// Chart options
 	const option = $derived({
@@ -115,8 +117,17 @@ ECharts Horizontal Bar Chart component
 			axisLabel: {
 				color: resolvedColors.text,
 				fontSize: 12,
-				fontFamily: 'Inter, -apple-system, sans-serif'
+				fontFamily: 'Inter, -apple-system, sans-serif',
+				// Ensure only whole numbers are shown for citation counts
+				formatter: function (value: number) {
+					return Number.isInteger(value) ? value.toString() : '';
+				}
 			},
+			// Force integer intervals for citation counts
+			interval: 1,
+			minInterval: 1,
+			// Set consistent max value if provided for pagination consistency
+			max: maxValue,
 			axisLine: {
 				lineStyle: {
 					color: resolvedColors.border
