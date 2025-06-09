@@ -320,10 +320,19 @@
 								</button>
 							{/each}
 						{:else}
-							{@const startPage = Math.max(1, Math.min(currentPage - 1, totalPages - 5))}
-							{@const endPage = Math.min(totalPages - 2, startPage + 2)}
-							{@const showStartEllipsis = startPage > 1}
-							{@const showEndEllipsis = endPage < totalPages - 2}
+							{@const maxMiddlePages = 3}
+							{@const halfRange = Math.floor(maxMiddlePages / 2)}
+							
+							<!-- Calculate the range of middle pages to show -->
+							{@const idealStart = Math.max(1, currentPage - halfRange)}
+							{@const idealEnd = Math.min(totalPages - 2, currentPage + halfRange)}
+							
+							<!-- Adjust if we're too close to the beginning or end -->
+							{@const actualStart = Math.max(1, Math.min(idealStart, totalPages - maxMiddlePages - 1))}
+							{@const actualEnd = Math.min(totalPages - 2, Math.max(idealEnd, maxMiddlePages))}
+							
+							{@const showStartEllipsis = actualStart > 1}
+							{@const showEndEllipsis = actualEnd < totalPages - 2}
 							
 							<!-- Show first page -->
 							<button
@@ -338,8 +347,8 @@
 							{/if}
 							
 							<!-- Show pages around current page -->
-							{#each Array(endPage - startPage + 1) as _, i}
-								{@const pageIndex = startPage + i}
+							{#each Array(actualEnd - actualStart + 1) as _, i}
+								{@const pageIndex = actualStart + i}
 								<button
 									class="pagination-btn {currentPage === pageIndex ? 'active' : ''}"
 									onclick={() => currentPage = pageIndex}
