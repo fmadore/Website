@@ -110,8 +110,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 	const option = $derived({
 		title: {
 			show: false // Hide internal title to avoid duplication with external container title
-		},
-		tooltip: {
+		},		tooltip: {
 			trigger: 'item',
 			backgroundColor: resolvedColors.surface,
 			textStyle: {
@@ -123,8 +122,42 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 			borderColor: resolvedColors.border,
 			borderWidth: 1,
 			extraCssText: 'box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);',
-			formatter: '{a} <br/>{b}: {c} ({d}%)'
-		},		legend: {
+			formatter: '{a} <br/>{b}: {c} ({d}%)',
+			// Constrain tooltip position on mobile to prevent out-of-bounds
+			confine: isMobile,
+			position: isMobile ? function (point: [number, number], params: any, dom: HTMLElement, rect: any, size: any) {
+				// Calculate tooltip position to keep it within viewport
+				const tooltipWidth = size.contentSize[0];
+				const tooltipHeight = size.contentSize[1];
+				const viewportWidth = size.viewSize[0];
+				const viewportHeight = size.viewSize[1];
+				
+				let x = point[0];
+				let y = point[1];
+				
+				// Ensure tooltip doesn't go off the right edge
+				if (x + tooltipWidth > viewportWidth) {
+					x = viewportWidth - tooltipWidth - 10;
+				}
+				
+				// Ensure tooltip doesn't go off the left edge
+				if (x < 10) {
+					x = 10;
+				}
+				
+				// Ensure tooltip doesn't go off the bottom edge
+				if (y + tooltipHeight > viewportHeight) {
+					y = viewportHeight - tooltipHeight - 10;
+				}
+				
+				// Ensure tooltip doesn't go off the top edge
+				if (y < 10) {
+					y = 10;
+				}
+				
+				return [x, y];
+			} : undefined
+		},legend: {
 			orient: 'horizontal',
 			left: 'center',
 			bottom: '10px',
