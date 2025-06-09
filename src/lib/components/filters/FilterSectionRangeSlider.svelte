@@ -186,10 +186,11 @@
 		background: var(--color-surface-alt);
 		border: 1px solid var(--color-border);
 		border-radius: var(--border-radius-md);
-		padding: var(--spacing-4) var(--spacing-3) var(--spacing-3);
+		padding: var(--spacing-4) var(--spacing-3) var(--spacing-8);
 		margin-top: var(--spacing-2);
 		position: relative;
-		overflow: hidden;
+		overflow: visible;
+		min-height: 100px;
 	}
 
 	.slider-container::before {
@@ -253,6 +254,7 @@
 		--range-float-inactive: var(--color-surface-alt);
 		--range-float: var(--color-primary);
 		--range-float-text: var(--color-background);
+		margin-bottom: var(--spacing-6) !important;
 	}
 
 	:global(.rangeSlider .rangeHandle) {
@@ -270,5 +272,22 @@
 		font-weight: 600;
 		font-size: var(--font-size-xs);
 		box-shadow: var(--shadow-sm);
+	}
+
+	/* Ensure pip labels (years) have adequate space */
+	:global(.rangeSlider .rangePips) {
+		margin-bottom: var(--spacing-4) !important;
+	}
+
+	:global(.rangeSlider .pip) {
+		font-size: var(--font-size-xs);
+		color: var(--color-text-light);
+		font-weight: 500;
+	}
+
+	:global(.rangeSlider .pip.first),
+	:global(.rangeSlider .pip.last) {
+		font-weight: 600;
+		color: var(--color-text);
 	}
 </style>
