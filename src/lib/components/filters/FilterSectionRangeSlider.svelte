@@ -96,13 +96,15 @@
 	);
 </script>
 
-<div class="filter-section">
-	<div class="flex justify-between items-center mb-2">
-		<h3 class="text-dark font-weight-600">{title}</h3>
-		<span class="text-sm text-light">{displayRange}</span>
+<div class="filter-section-content">
+	<div class="filter-section-header">
+		<h3 class="filter-section-title">{title}</h3>
+		<div class="range-display">
+			<span class="range-text">{displayRange}</span>
+		</div>
 	</div>
 	{#if allYears.length > 0}
-		<div class="slider-container pt-3 pb-1 px-2">
+		<div class="slider-container">
 			<RangeSlider
 				bind:values={sliderValues}
 				min={minYear}
@@ -117,50 +119,156 @@
 			/>
 		</div>
 	{:else}
-		<p class="text-sm text-light">No year data available.</p>
+		<div class="no-data-message">
+			<span>No year data available</span>
+		</div>
 	{/if}
 </div>
 
 <style>
-	/* Scoped styles using CSS variables from global scope */
-	.filter-section {
-		margin-bottom: var(--spacing-6, 1.5rem);
-	}
-
-	.font-weight-600 {
-		font-weight: var(--font-weight-semibold, 600);
-	}
-
-	.text-sm {
-		font-size: var(--font-size-sm, 0.875rem);
-	}
-
-	.mb-2 {
-		margin-bottom: var(--spacing-2, 0.5rem);
-	}
-
-	.pt-3 {
-		padding-top: var(--spacing-3, 0.75rem);
-	}
-
-	.pb-1 {
-		padding-bottom: var(--spacing-1, 0.25rem);
-	}
-
-	.px-2 {
-		padding-left: var(--spacing-2, 0.5rem);
-		padding-right: var(--spacing-2, 0.5rem);
-	}
-
-	.flex {
+	.filter-section-header {
 		display: flex;
-	}
-
-	.justify-between {
 		justify-content: space-between;
+		align-items: flex-start;
+		margin-bottom: var(--spacing-4);
+		gap: var(--spacing-3);
 	}
 
-	.items-center {
+	.filter-section-title {
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-lg);
+		font-weight: 700;
+		color: var(--color-text-emphasis);
+		margin: 0;
+		padding-bottom: var(--spacing-2);
+		border-bottom: 2px solid transparent;
+		background: linear-gradient(90deg, var(--color-primary), var(--color-accent)) no-repeat;
+		background-size: 40px 2px;
+		background-position: 0 100%;
+		transition: background-size 0.3s ease;
+		flex-shrink: 0;
+	}
+
+	.filter-section-title:hover {
+		background-size: 60px 2px;
+	}
+
+	.range-display {
+		display: flex;
 		align-items: center;
+		background: linear-gradient(
+			135deg,
+			var(--color-surface-alt) 0%,
+			color-mix(in srgb, var(--color-surface-alt) 85%, var(--color-primary) 15%) 100%
+		);
+		border: 1px solid color-mix(in srgb, var(--color-border) 80%, var(--color-primary) 20%);
+		border-radius: var(--border-radius-full);
+		padding: var(--spacing-2) var(--spacing-3);
+		box-shadow: var(--shadow-sm);
+		transition: all 0.2s ease;
+	}
+
+	.range-display:hover {
+		transform: translateY(-1px);
+		box-shadow: var(--shadow-md);
+		border-color: var(--color-primary);
+	}
+
+	.range-text {
+		font-size: var(--font-size-sm);
+		font-weight: 600;
+		color: var(--color-text);
+		line-height: 1;
+		white-space: nowrap;
+	}
+
+	.slider-container {
+		background: var(--color-surface-alt);
+		border: 1px solid var(--color-border);
+		border-radius: var(--border-radius-md);
+		padding: var(--spacing-4) var(--spacing-3) var(--spacing-3);
+		margin-top: var(--spacing-2);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.slider-container::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 2px;
+		background: linear-gradient(
+			90deg,
+			var(--color-primary) 0%,
+			var(--color-accent) 50%,
+			var(--color-highlight) 100%
+		);
+		opacity: 0.3;
+	}
+
+	.no-data-message {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: var(--spacing-4);
+		background: var(--color-surface-alt);
+		border: 1px dashed var(--color-border);
+		border-radius: var(--border-radius-md);
+		color: var(--color-text-light);
+		font-style: italic;
+		font-size: var(--font-size-sm);
+	}
+
+	/* Dark mode enhancements */
+	:global(html.dark) .range-display {
+		background: linear-gradient(
+			135deg,
+			var(--color-surface) 0%,
+			color-mix(in srgb, var(--color-surface) 85%, var(--color-primary) 15%) 100%
+		);
+		border-color: var(--color-border);
+	}
+
+	:global(html.dark) .slider-container {
+		background: var(--color-surface);
+		border-color: var(--color-border);
+	}
+
+	:global(html.dark) .no-data-message {
+		background: var(--color-surface);
+		border-color: var(--color-border);
+	}
+
+	/* Global range slider styling enhancements */
+	:global(.rangeSlider) {
+		--range-slider: var(--color-border);
+		--range-handle-inactive: var(--color-surface);
+		--range-handle: var(--color-primary);
+		--range-handle-focus: var(--color-primary);
+		--range-handle-border: var(--color-primary);
+		--range-range-inactive: var(--color-border);
+		--range-range: var(--color-primary);
+		--range-float-inactive: var(--color-surface-alt);
+		--range-float: var(--color-primary);
+		--range-float-text: var(--color-background);
+	}
+
+	:global(.rangeSlider .rangeHandle) {
+		box-shadow: var(--shadow-md);
+		transition: all 0.2s ease;
+	}
+
+	:global(.rangeSlider .rangeHandle:hover) {
+		transform: scale(1.1);
+		box-shadow: var(--shadow-lg);
+	}
+
+	:global(.rangeSlider .rangeFloat) {
+		border-radius: var(--border-radius);
+		font-weight: 600;
+		font-size: var(--font-size-xs);
+		box-shadow: var(--shadow-sm);
 	}
 </style>

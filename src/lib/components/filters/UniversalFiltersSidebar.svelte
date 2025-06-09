@@ -101,17 +101,43 @@
 </aside>
 
 <style>
-	/* Main sidebar container - using variables */
+	/* Main sidebar container - Enhanced modern design */
 	.filter-sidebar {
-		background-color: var(--color-sidebar-bg); /* Use the new variable */
-		border: 1px solid var(--color-border);
-		border-radius: var(--border-radius-md); /* Slightly larger radius */
-		padding: var(--spacing-4); /* Adjusted padding */
-		box-shadow: var(--shadow-sm); /* Subtle shadow */
+		background: linear-gradient(
+			135deg,
+			var(--color-surface) 0%,
+			color-mix(in srgb, var(--color-surface) 95%, var(--color-primary) 5%) 100%
+		);
+		border: 1px solid color-mix(in srgb, var(--color-border) 60%, var(--color-primary) 40%);
+		border-radius: var(--border-radius-lg);
+		padding: var(--spacing-6);
+		box-shadow: 
+			var(--shadow-md),
+			0 0 0 1px rgba(var(--color-primary-rgb), 0.05);
 		transition:
-			background-color 0.3s ease,
+			background 0.3s ease,
 			border-color 0.3s ease,
-			box-shadow 0.3s ease;
+			box-shadow 0.3s ease,
+			transform 0.2s ease;
+		position: relative;
+		overflow: hidden;
+	}
+
+	/* Subtle accent line at top */
+	.filter-sidebar::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 3px;
+		background: linear-gradient(
+			90deg,
+			var(--color-primary) 0%,
+			var(--color-accent) 50%,
+			var(--color-highlight) 100%
+		);
+		border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
 	}
 
 	/* Mobile Toggle Button Styling Removed */
@@ -121,6 +147,7 @@
 	.filter-sections-wrapper {
 		display: none; /* Hidden by default on mobile, shown via JS */
 		overflow: hidden; /* Needed for slide transition */
+		border-radius: var(--border-radius-md);
 	}
 
 	/* Desktop filter sections wrapper */
@@ -143,18 +170,47 @@
 			border: none; /* Remove border on mobile */
 			box-shadow: none; /* Remove shadow on mobile */
 			padding: 0; /* Remove padding on mobile as sections are conditionally rendered */
-			background-color: transparent; /* Make background transparent */
+			background: transparent; /* Make background transparent */
 		}
+
+		.filter-sidebar::before {
+			display: none; /* Hide accent line on mobile */
+		}
+
 		/* Mobile toggle button styles removed */
 		.filter-sections-wrapper {
 			display: block; /* Allow Svelte's #if to control visibility */
-			/* Add back some visual separation if needed */
-			background-color: var(--color-sidebar-bg);
-			border: 1px solid var(--color-border);
-			border-radius: var(--border-radius-md);
-			padding: var(--spacing-4);
-			box-shadow: var(--shadow-sm);
+			/* Enhanced mobile wrapper styling */
+			background: linear-gradient(
+				135deg,
+				var(--color-surface) 0%,
+				color-mix(in srgb, var(--color-surface) 95%, var(--color-primary) 5%) 100%
+			);
+			border: 1px solid color-mix(in srgb, var(--color-border) 60%, var(--color-primary) 40%);
+			border-radius: var(--border-radius-lg);
+			padding: var(--spacing-5);
+			box-shadow: 
+				var(--shadow-md),
+				0 0 0 1px rgba(var(--color-primary-rgb), 0.05);
 			margin-top: var(--spacing-4); /* Add space below the new toggle button */
+			position: relative;
+			overflow: hidden;
+		}
+
+		.filter-sections-wrapper::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 3px;
+			background: linear-gradient(
+				90deg,
+				var(--color-primary) 0%,
+				var(--color-accent) 50%,
+				var(--color-highlight) 100%
+			);
+			border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
 		}
 		.filter-sections-wrapper-desktop {
 			display: none; /* Hide the desktop wrapper on mobile */
@@ -179,12 +235,22 @@
 		}
 		.filter-sidebar {
 			/* Restore desktop styles potentially overridden by mobile */
-			background-color: var(--color-sidebar-bg);
-			border: 1px solid var(--color-border);
-			border-radius: var(--border-radius-md);
-			padding: var(--spacing-4);
-			box-shadow: var(--shadow-sm);
+			background: linear-gradient(
+				135deg,
+				var(--color-surface) 0%,
+				color-mix(in srgb, var(--color-surface) 95%, var(--color-primary) 5%) 100%
+			);
+			border: 1px solid color-mix(in srgb, var(--color-border) 60%, var(--color-primary) 40%);
+			border-radius: var(--border-radius-lg);
+			padding: var(--spacing-6);
+			box-shadow: 
+				var(--shadow-md),
+				0 0 0 1px rgba(var(--color-primary-rgb), 0.05);
 			margin-bottom: 0; /* Reset margin from static */
+		}
+
+		.filter-sidebar::before {
+			display: block; /* Show accent line on desktop */
 		}
 		.sticky-top {
 			position: sticky;
@@ -214,16 +280,51 @@
 		}
 	}
 
-	/* Individual filter section styling */
+	/* Individual filter section styling - Enhanced card-like design */
 	.filter-section {
-		padding-bottom: var(--spacing-4);
+		background: var(--color-background);
+		border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent 30%);
+		border-radius: var(--border-radius-md);
+		padding: var(--spacing-5);
 		margin-bottom: var(--spacing-4);
-		border-bottom: 1px solid var(--color-border);
+		box-shadow: 
+			var(--shadow-sm),
+			0 0 0 1px rgba(var(--color-primary-rgb), 0.02);
+		transition: all 0.3s ease;
+		position: relative;
+		overflow: hidden;
 	}
+
+	.filter-section::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 4px;
+		height: 100%;
+		background: linear-gradient(
+			180deg,
+			var(--color-primary) 0%,
+			var(--color-accent) 100%
+		);
+		opacity: 0.6;
+		transition: opacity 0.3s ease;
+	}
+
+	.filter-section:hover {
+		border-color: color-mix(in srgb, var(--color-primary) 20%, var(--color-border) 80%);
+		box-shadow: 
+			var(--shadow-md),
+			0 0 0 1px rgba(var(--color-primary-rgb), 0.08);
+		transform: translateY(-1px);
+	}
+
+	.filter-section:hover::before {
+		opacity: 1;
+	}
+
 	.filter-section:last-of-type {
-		border-bottom: none;
 		margin-bottom: 0;
-		padding-bottom: 0;
 	}
 
 	/* Clear button styling removed */
