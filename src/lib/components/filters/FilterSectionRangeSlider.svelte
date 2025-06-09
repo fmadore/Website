@@ -1,6 +1,7 @@
 <script lang="ts">
 	import RangeSlider from '../ui/RangeSlider.svelte';
 	import { createEventDispatcher } from 'svelte';
+	import { withScrollPreservation } from '$lib/utils/scrollPreservation';
 
 	// Simple debounce function
 	function debounce<T extends (...args: any[]) => any>(
@@ -57,15 +58,17 @@
 
 	// Debounced version of the update logic
 	const debouncedUpdate = debounce((newMin: number, newMax: number) => {
-		// Only update the store if the range is not the full extent (or if it was already filtered)
-		if (newMin !== minYear || newMax !== maxYear || activeRange !== null) {
-			updateRange(newMin, newMax);
-			dispatch('change', { min: newMin, max: newMax });
-		} else if (activeRange !== null) {
-			// If user slides back to full range, effectively reset the filter
-			resetRange();
-			dispatch('change', null);
-		}
+		withScrollPreservation(() => {
+			// Only update the store if the range is not the full extent (or if it was already filtered)
+			if (newMin !== minYear || newMax !== maxYear || activeRange !== null) {
+				updateRange(newMin, newMax);
+				dispatch('change', { min: newMin, max: newMax });
+			} else if (activeRange !== null) {
+				// If user slides back to full range, effectively reset the filter
+				resetRange();
+				dispatch('change', null);
+			}
+		});
 	}, 150); // Debounce by 150ms
 
 	// Function to handle slider changes

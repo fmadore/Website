@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withScrollPreservation } from '$lib/utils/scrollPreservation';
+	
 	let {
 		title,
 		items, // e.g., ['book', 'article'] or ['Author One', 'Author Two']
@@ -19,6 +21,11 @@
 	function getCount(item: string): number {
 		return counts?.[item] ?? 0;
 	}
+
+	// Wrap toggleItem with scroll preservation
+	function handleToggleItem(item: string) {
+		withScrollPreservation(() => toggleItem(item));
+	}
 </script>
 
 <div class="filter-section-content">
@@ -31,7 +38,7 @@
 						type="checkbox"
 						class="filter-checkbox"
 						checked={activeItems.includes(item)}
-						onchange={() => toggleItem(item)}
+						onchange={() => handleToggleItem(item)}
 					/>
 					<span class="filter-checkbox-custom"></span>
 					<span class="filter-text">{itemLabels?.[item] ?? item}</span>

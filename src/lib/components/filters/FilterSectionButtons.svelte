@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withScrollPreservation } from '$lib/utils/scrollPreservation';
+	
 	let {
 		title,
 		items, // List of tags
@@ -17,6 +19,11 @@
 	function getCount(item: string): number {
 		return counts?.[item] ?? 0;
 	}
+
+	// Wrap toggleItem with scroll preservation
+	function handleToggleItem(item: string) {
+		withScrollPreservation(() => toggleItem(item));
+	}
 </script>
 
 <div class="filter-section-content">
@@ -26,7 +33,7 @@
 			<button
 				class="filter-tag-button"
 				class:active={activeItems.includes(item)}
-				onclick={() => toggleItem(item)}
+				onclick={() => handleToggleItem(item)}
 			>
 				<span class="tag-text">{item}</span>
 				{#if counts !== undefined}
