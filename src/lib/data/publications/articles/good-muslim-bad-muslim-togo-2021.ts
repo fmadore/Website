@@ -47,8 +47,8 @@ export const goodMuslimBadMuslimTogo: Publication = {
 			year: 2023,
 			title:
 				"L'impossible alternance politique au Togo de 1990 à 2020 : institutions, idées et intérêts dans la reproduction du pouvoir",
-			source: 'Thèse de doctorat, Université de Montréal, 2023',
-			url: 'https://doi.org/10.1866/31946'
+			source: 'Ph.D. dissertation, Université de Montréal, 2023',
+			url: 'http://hdl.handle.net/1866/31946'
 		},
 		{
 			authors: ['Dorothea E. Schulz'],
