@@ -24,8 +24,7 @@
 		MediaAppearance,
 		EditorialMembership
 	} from '$lib/types';
-	import type { ProfessionalAffiliation } from '$lib/data/affiliations/template';
-	import SEO from '$lib/SEO.svelte';
+	import type { ProfessionalAffiliation } from '$lib/data/affiliations/template';	import SEO from '$lib/SEO.svelte';
 
 	// Filter education items by type
 	const degrees = educationByDate.filter((edu) => edu.type === 'Degree');
@@ -166,9 +165,22 @@
 		if (issue) {
 			display += ` (${issue})`;
 		}
-		return display;
-	}
+		return display;	}
 </script>
+
+<style>
+	.cv-main-title,
+	.cv-subtitle {
+		text-align: center;
+	}
+
+	/* Corresponds to Tailwind's 'md' breakpoint */
+	@media (min-width: 768px) {
+		.cv-contact-links-wrapper {
+			margin-left: auto;
+		}
+	}
+</style>
 
 <SEO
 	title="Curriculum Vitae - Frédérick Madore"
