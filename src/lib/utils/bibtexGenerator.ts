@@ -10,6 +10,7 @@ function formatAuthors(authors: string[] | undefined): string {
 function escapeBibtex(text: string | undefined): string {
 	if (!text) return '';
 	return text
+		.replace(/\\/g, '\\\\') // Must escape backslashes first
 		.replace(/\{/g, '\\{')
 		.replace(/\}/g, '\\}')
 		.replace(/%/g, '\\%')
