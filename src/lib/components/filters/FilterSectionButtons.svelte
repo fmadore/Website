@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { withScrollPreservation } from '$lib/utils/scrollPreservation';
+
 	
 	let {
 		title,
@@ -20,24 +20,24 @@
 		return counts?.[item] ?? 0;
 	}
 
-	// Wrap toggleItem with scroll preservation
+	// Direct toggle function (scroll preservation handled at sidebar level)
 	function handleToggleItem(item: string) {
-		withScrollPreservation(() => toggleItem(item));
+		toggleItem(item);
 	}
 </script>
 
 <div class="filter-section-content">
 	<h3 class="filter-section-title">{title}</h3>
-	<div class="filter-buttons-grid">
+	<div class="filter-chips-container">
 		{#each items as item}
 			<button
-				class="filter-tag-button"
+				class="filter-chip"
 				class:active={activeItems.includes(item)}
 				onclick={() => handleToggleItem(item)}
 			>
-				<span class="tag-text">{item}</span>
+				<span class="chip-text">{item}</span>
 				{#if counts !== undefined}
-					<span class="tag-count">({getCount(item)})</span>
+					<span class="chip-count">({getCount(item)})</span>
 				{/if}
 			</button>
 		{/each}
@@ -50,101 +50,50 @@
 		font-size: var(--font-size-lg);
 		font-weight: 700;
 		color: var(--color-text-emphasis);
-		margin: 0 0 var(--spacing-4) 0;
+		margin: 0 0 var(--spacing-3) 0;
 		padding-bottom: var(--spacing-2);
-		border-bottom: 2px solid transparent;
-		background: linear-gradient(90deg, var(--color-primary), var(--color-accent)) no-repeat;
-		background-size: 40px 2px;
-		background-position: 0 100%;
-		transition: background-size 0.3s ease;
+		border-bottom: 1px solid var(--color-border);
 	}
 
-	.filter-section-title:hover {
-		background-size: 60px 2px;
-	}
-
-	.filter-buttons-grid {
+	.filter-chips-container {
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--spacing-2);
+		margin-bottom: var(--spacing-3);
 	}
 
-	.filter-tag-button {
-		background: linear-gradient(
-			135deg,
-			var(--color-surface-alt) 0%,
-			color-mix(in srgb, var(--color-surface-alt) 90%, var(--color-primary) 10%) 100%
-		);
+	.filter-chip {
+		background: var(--color-surface-alt);
 		color: var(--color-text);
-		border: 1px solid color-mix(in srgb, var(--color-border) 80%, var(--color-primary) 20%);
-		padding: var(--spacing-2) var(--spacing-3);
-		border-radius: var(--border-radius-full);
+		border: 1px solid var(--color-border);
+		padding: var(--spacing-1) var(--spacing-3);
+		border-radius: var(--border-radius);
 		font-size: var(--font-size-sm);
 		font-weight: 500;
 		cursor: pointer;
-		transition: all 0.3s ease;
-		position: relative;
-		overflow: hidden;
+		transition: all 0.2s ease;
 		display: inline-flex;
 		align-items: center;
 		gap: var(--spacing-1);
-		box-shadow: var(--shadow-sm);
+		white-space: nowrap;
 	}
 
-	.filter-tag-button::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: -100%;
-		width: 100%;
-		height: 100%;
-		background: linear-gradient(
-			90deg,
-			transparent,
-			rgba(var(--color-primary-rgb), 0.1),
-			transparent
-		);
-		transition: left 0.5s ease;
-	}
-
-	.filter-tag-button:hover {
-		transform: translateY(-2px);
-		box-shadow: var(--shadow-md);
+	.filter-chip:hover {
 		border-color: var(--color-primary);
-		background: linear-gradient(
-			135deg,
-			var(--color-surface) 0%,
-			color-mix(in srgb, var(--color-surface) 85%, var(--color-primary) 15%) 100%
-		);
+		background: var(--color-surface);
 	}
 
-	.filter-tag-button:hover::before {
-		left: 100%;
-	}
-
-	.filter-tag-button.active {
-		background: linear-gradient(
-			135deg,
-			var(--color-primary) 0%,
-			var(--color-accent) 100%
-		);
+	.filter-chip.active {
+		background: var(--color-primary);
 		color: var(--color-background);
 		border-color: var(--color-primary);
-		box-shadow: 
-			var(--shadow-md),
-			0 0 0 3px rgba(var(--color-primary-rgb), 0.2);
-		transform: translateY(-1px);
 	}
 
-	.filter-tag-button.active::before {
-		display: none;
-	}
-
-	.tag-text {
+	.chip-text {
 		line-height: 1.2;
 	}
 
-	.tag-count {
+	.chip-count {
 		opacity: 0.8;
 		font-size: var(--font-size-xs);
 		font-weight: 600;
@@ -154,31 +103,23 @@
 		line-height: 1;
 	}
 
-	.filter-tag-button.active .tag-count {
+	.filter-chip.active .chip-count {
 		background: rgba(255, 255, 255, 0.3);
 	}
 
 	/* Focus states */
-	.filter-tag-button:focus-visible {
+	.filter-chip:focus-visible {
 		outline: 2px solid var(--color-primary);
 		outline-offset: 2px;
 	}
 
 	/* Dark mode enhancements */
-	:global(html.dark) .filter-tag-button {
-		background: linear-gradient(
-			135deg,
-			var(--color-surface) 0%,
-			color-mix(in srgb, var(--color-surface) 90%, var(--color-primary) 10%) 100%
-		);
+	:global(html.dark) .filter-chip {
+		background: var(--color-surface);
 		border-color: var(--color-border);
 	}
 
-	:global(html.dark) .filter-tag-button:hover {
-		background: linear-gradient(
-			135deg,
-			var(--color-surface-alt) 0%,
-			color-mix(in srgb, var(--color-surface-alt) 85%, var(--color-primary) 15%) 100%
-		);
+	:global(html.dark) .filter-chip:hover {
+		background: var(--color-surface-alt);
 	}
 </style>

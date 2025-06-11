@@ -1,7 +1,7 @@
 <script lang="ts">
 	import RangeSlider from '../ui/RangeSlider.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import { withScrollPreservation } from '$lib/utils/scrollPreservation';
+
 
 	// Simple debounce function
 	function debounce<T extends (...args: any[]) => any>(
@@ -56,19 +56,17 @@
 	}); // Flag to prevent initial update on component mount
 	let isInitialized = $state(false);
 
-	// Debounced version of the update logic
+	// Debounced version of the update logic (scroll preservation handled at sidebar level)
 	const debouncedUpdate = debounce((newMin: number, newMax: number) => {
-		withScrollPreservation(() => {
-			// Only update the store if the range is not the full extent (or if it was already filtered)
-			if (newMin !== minYear || newMax !== maxYear || activeRange !== null) {
-				updateRange(newMin, newMax);
-				dispatch('change', { min: newMin, max: newMax });
-			} else if (activeRange !== null) {
-				// If user slides back to full range, effectively reset the filter
-				resetRange();
-				dispatch('change', null);
-			}
-		});
+		// Only update the store if the range is not the full extent (or if it was already filtered)
+		if (newMin !== minYear || newMax !== maxYear || activeRange !== null) {
+			updateRange(newMin, newMax);
+			dispatch('change', { min: newMin, max: newMax });
+		} else if (activeRange !== null) {
+			// If user slides back to full range, effectively reset the filter
+			resetRange();
+			dispatch('change', null);
+		}
 	}, 150); // Debounce by 150ms
 
 	// Function to handle slider changes
@@ -133,7 +131,7 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-start;
-		margin-bottom: var(--spacing-4);
+		margin-bottom: var(--spacing-3);
 		gap: var(--spacing-3);
 	}
 
@@ -144,36 +142,21 @@
 		color: var(--color-text-emphasis);
 		margin: 0;
 		padding-bottom: var(--spacing-2);
-		border-bottom: 2px solid transparent;
-		background: linear-gradient(90deg, var(--color-primary), var(--color-accent)) no-repeat;
-		background-size: 40px 2px;
-		background-position: 0 100%;
-		transition: background-size 0.3s ease;
+		border-bottom: 1px solid var(--color-border);
 		flex-shrink: 0;
-	}
-
-	.filter-section-title:hover {
-		background-size: 60px 2px;
 	}
 
 	.range-display {
 		display: flex;
 		align-items: center;
-		background: linear-gradient(
-			135deg,
-			var(--color-surface-alt) 0%,
-			color-mix(in srgb, var(--color-surface-alt) 85%, var(--color-primary) 15%) 100%
-		);
-		border: 1px solid color-mix(in srgb, var(--color-border) 80%, var(--color-primary) 20%);
-		border-radius: var(--border-radius-full);
+		background: var(--color-surface-alt);
+		border: 1px solid var(--color-border);
+		border-radius: var(--border-radius);
 		padding: var(--spacing-2) var(--spacing-3);
-		box-shadow: var(--shadow-sm);
 		transition: all 0.2s ease;
 	}
 
 	.range-display:hover {
-		transform: translateY(-1px);
-		box-shadow: var(--shadow-md);
 		border-color: var(--color-primary);
 	}
 
@@ -186,30 +169,14 @@
 	}
 
 	.slider-container {
-		background: var(--color-surface-alt);
-		border: 1px solid var(--color-border);
-		border-radius: var(--border-radius-md);
-		padding: var(--spacing-4) var(--spacing-3) var(--spacing-8);
+		background: transparent;
+		border: none;
+		border-radius: 0;
+		padding: var(--spacing-4) 0 var(--spacing-8);
 		margin-top: var(--spacing-2);
 		position: relative;
 		overflow: visible;
 		min-height: 100px;
-	}
-
-	.slider-container::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: 2px;
-		background: linear-gradient(
-			90deg,
-			var(--color-primary) 0%,
-			var(--color-accent) 50%,
-			var(--color-highlight) 100%
-		);
-		opacity: 0.3;
 	}
 
 	.no-data-message {
@@ -217,9 +184,9 @@
 		align-items: center;
 		justify-content: center;
 		padding: var(--spacing-4);
-		background: var(--color-surface-alt);
+		background: transparent;
 		border: 1px dashed var(--color-border);
-		border-radius: var(--border-radius-md);
+		border-radius: var(--border-radius);
 		color: var(--color-text-light);
 		font-style: italic;
 		font-size: var(--font-size-sm);

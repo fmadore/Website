@@ -37,7 +37,8 @@
 		FilterSectionConfig,
 		CheckboxFilterOption,
 		RangeFilterOption,
-		ButtonsFilterOption
+		ButtonsFilterOption,
+		ChipsFilterOption
 	} from '$lib/types/filters';
 	import CommunicationItem from '$lib/components/communications/CommunicationItem.svelte';
 	import MapVisualization from '$lib/components/visualisations/MapVisualization.svelte';
@@ -217,21 +218,27 @@
 						resetRange: resetYearRange
 					} as RangeFilterOption,
 					{
-						type: 'checkbox',
+						type: 'chips',
 						title: 'Co-authors',
 						items: $authorsValue,
 						activeItems: $activeFilters?.authors || [],
 						toggleItem: toggleAuthorFilter,
-						counts: $authorCounts
-					} as CheckboxFilterOption<string>,
+						counts: $authorCounts,
+						searchThreshold: 5,
+						initialDisplayCount: 6,
+						showSearch: false
+					} as ChipsFilterOption<string>,
 					{
-						type: 'checkbox',
+						type: 'chips',
 						title: 'Countries',
 						items: $countriesValue,
 						activeItems: $activeFilters?.countries || [],
 						toggleItem: toggleCountryFilter,
-						counts: $countryCounts
-					} as CheckboxFilterOption<string>,
+						counts: $countryCounts,
+						searchThreshold: 6,
+						initialDisplayCount: 8,
+						showSearch: false
+					} as ChipsFilterOption<string>,
 					{
 						type: 'checkbox',
 						title: 'Languages',
@@ -241,13 +248,16 @@
 						counts: undefined
 					} as CheckboxFilterOption<string>,
 					{
-						type: 'buttons',
+						type: 'chips',
 						title: 'Tags',
 						items: $tagsValue,
 						activeItems: $activeFilters?.tags || [],
 						toggleItem: toggleTagFilter,
-						counts: $tagCounts
-					} as ButtonsFilterOption<string>
+						counts: $tagCounts,
+						searchThreshold: 8,
+						initialDisplayCount: 10,
+						showSearch: false
+					} as ChipsFilterOption<string>
 				]
 					.filter((section) => section.title !== 'Tags')
 					.filter((section) => {

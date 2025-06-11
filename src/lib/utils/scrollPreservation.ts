@@ -131,3 +131,50 @@ export function withAdvancedScrollPreservation(
 		}, delay);
 	});
 }
+
+/**
+ * Preserves only the scroll position of specific elements without affecting window scroll
+ * This is ideal for sidebar filters where we want to keep the sidebar position stable
+ * but allow the main content area to update naturally
+ * @param callback - The function to execute
+ * @param preserveElements - Array of element selectors to preserve scroll position for
+ * @param delay - Delay in ms before restoring scroll position
+ */
+export function withElementScrollPreservation(
+	callback: () => void,
+	preserveElements: string[] = [],
+	delay: number = 50
+): void {
+	// Check if we're in a browser environment
+	if (typeof window === 'undefined') {
+		callback();
+		return;
+	}
+	
+	// Capture scroll positions of specific elements only
+	const elementScrollPositions: Array<{ element: Element; scrollTop: number; scrollLeft: number }> = [];
+	
+	preserveElements.forEach(selector => {
+		const elements = document.querySelectorAll(selector);
+		elements.forEach(element => {
+			elementScrollPositions.push({
+				element,
+				scrollTop: element.scrollTop,
+				scrollLeft: element.scrollLeft
+			});
+		});
+	});
+	
+	// Execute the callback
+	callback();
+	
+	// Restore only element scroll positions (not window scroll)
+	requestAnimationFrame(() => {
+		setTimeout(() => {
+			elementScrollPositions.forEach(({ element, scrollTop, scrollLeft }) => {
+				element.scrollTop = scrollTop;
+				element.scrollLeft = scrollLeft;
+			});
+		}, delay);
+	});
+}

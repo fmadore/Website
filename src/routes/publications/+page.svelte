@@ -4,10 +4,6 @@
 		filteredPublications,
 		activeFilters,
 		filterOptions,
-		displayedAuthors,
-		displayedTypes,
-		displayedTags,
-		displayedLanguages,
 		tagCounts,
 		authorCounts,
 		typeCounts,
@@ -36,7 +32,8 @@
 		FilterSectionConfig,
 		CheckboxFilterOption,
 		RangeFilterOption,
-		ButtonsFilterOption
+		ButtonsFilterOption,
+		ChipsFilterOption
 	} from '$lib/types/filters';
 	import PublicationItem from '$lib/components/publications/PublicationItem.svelte';
 	import EntityListPageLayout from '$lib/components/common/EntityListPageLayout.svelte';
@@ -127,15 +124,11 @@
 	}; // Ensure years are sorted ascending for the slider
 	const sortedYearsAsc = derived(filterOptions, ($filterOptions) =>
 		($filterOptions?.years || []).slice().sort((a, b) => a - b)
-	); // Construct the configuration object for the UniversalFiltersSidebar
+	); 	// Construct the configuration object for the UniversalFiltersSidebar
 	const publicationFilterConfig = derived(
 		[
-			displayedTypes,
 			sortedYearsAsc,
-			displayedAuthors,
-			displayedLanguages,
 			filterOptions,
-			displayedTags,
 			activeFilters,
 			typeCounts,
 			authorCounts,
@@ -144,12 +137,8 @@
 			tagCounts
 		],
 		([
-			$displayedTypes,
 			$sortedYearsAsc,
-			$displayedAuthors,
-			$displayedLanguages,
 			$filterOptions,
-			$displayedTags,
 			$activeFilters,
 			$typeCounts,
 			$authorCounts,
@@ -163,7 +152,7 @@
 					{
 						type: 'checkbox',
 						title: 'Publication Types',
-						items: $displayedTypes,
+						items: $filterOptions.types,
 						itemLabels: typeLabels,
 						activeItems: $activeFilters.types,
 						toggleItem: toggleTypeFilter,
@@ -178,37 +167,46 @@
 						resetRange: resetYearRange
 					} as RangeFilterOption,
 					{
-						type: 'checkbox',
+						type: 'chips',
 						title: 'Co-Authors',
-						items: $displayedAuthors,
+						items: $filterOptions.authors,
 						activeItems: $activeFilters.authors,
 						toggleItem: toggleAuthorFilter,
-						counts: $authorCounts
-					} as CheckboxFilterOption<string>,
+						counts: $authorCounts,
+						searchThreshold: 6,
+						initialDisplayCount: 8,
+						showSearch: false
+					} as ChipsFilterOption<string>,
 					{
 						type: 'checkbox',
 						title: 'Languages',
-						items: $displayedLanguages,
+						items: $filterOptions.languages,
 						activeItems: $activeFilters.languages,
 						toggleItem: toggleLanguageFilter,
 						counts: $languageCounts
 					} as CheckboxFilterOption<string>,
 					{
-						type: 'checkbox',
+						type: 'chips',
 						title: 'Countries',
 						items: $filterOptions.countries,
 						activeItems: $activeFilters.countries,
 						toggleItem: toggleCountryFilter,
-						counts: $countryCounts
-					} as CheckboxFilterOption<string>,
+						counts: $countryCounts,
+						searchThreshold: 6,
+						initialDisplayCount: 8,
+						showSearch: false
+					} as ChipsFilterOption<string>,
 					{
-						type: 'buttons',
+						type: 'chips',
 						title: 'Tags',
-						items: $displayedTags,
+						items: $filterOptions.tags,
 						activeItems: $activeFilters.tags,
 						toggleItem: toggleTagFilter,
-						counts: $tagCounts
-					} as ButtonsFilterOption<string>
+						counts: $tagCounts,
+						searchThreshold: 8,
+						initialDisplayCount: 10,
+						showSearch: false
+					} as ChipsFilterOption<string>
 				]
 					.filter((section) => section.title !== 'Tags')
 					.filter((section) => {

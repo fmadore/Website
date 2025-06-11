@@ -2,9 +2,9 @@
 
 // Define the structure for individual filter options
 export interface BaseFilterOption<T> {
-	type: 'checkbox' | 'range' | 'buttons';
+	type: 'checkbox' | 'range' | 'buttons' | 'chips';
 	title: string; // e.g., "Publication Types", "Years"
-	items?: T[]; // For checkbox/buttons, e.g., ['book', 'article'] or ['tag1', 'tag2']
+	items?: T[]; // For checkbox/buttons/chips, e.g., ['book', 'article'] or ['tag1', 'tag2']
 	allYears?: number[]; // Specifically for range slider
 	itemLabels?: { [key: string]: string }; // Optional labels, e.g., {'book': 'Books'}
 	counts?: { [key: string]: number }; // Optional counts for items
@@ -33,12 +33,23 @@ export interface ButtonsFilterOption<T> extends BaseFilterOption<T> {
 	toggleItem: (item: T) => void;
 }
 
+export interface ChipsFilterOption<T> extends BaseFilterOption<T> {
+	type: 'chips';
+	items: T[];
+	activeItems: T[];
+	toggleItem: (item: T) => void;
+	searchThreshold?: number;
+	initialDisplayCount?: number;
+	showSearch?: boolean;
+}
+
 // Union type for any filter section configuration
 // Refined to use specific string types for Checkbox/Buttons, matching child component expectations
 export type FilterSectionConfig =
 	| CheckboxFilterOption<string>
 	| RangeFilterOption
-	| ButtonsFilterOption<string>;
+	| ButtonsFilterOption<string>
+	| ChipsFilterOption<string>;
 
 // Define the structure for the main configuration object passed to the universal sidebar
 export interface UniversalFilterConfig {

@@ -3,6 +3,7 @@
 	import FilterSectionCheckbox from '$lib/components/filters/FilterSectionCheckbox.svelte';
 	import FilterSectionRangeSlider from '$lib/components/filters/FilterSectionRangeSlider.svelte';
 	import FilterSectionButtons from '$lib/components/filters/FilterSectionButtons.svelte';
+	import FilterSectionChips from '$lib/components/filters/FilterSectionChips.svelte';
 	import { fly, slide } from 'svelte/transition';
 
 	interface Props {
@@ -14,25 +15,109 @@
 	// Prop for the configuration object
 	let { config, isExpandedMobile = false, oncollapse }: Props = $props();
 
+	// Reference to the sidebar element
+	let sidebarElement: HTMLElement;
+
 	// Reactive statement to get the sections array
 	let sections = $derived(config?.sections || []);
 
-	// Function to handle clearing filters and notifying parent to collapse
+	// Simplified approach: Just prevent any scroll changes during filter updates
+	function preserveSidebarScroll(callback: () => void) {
+		// Check if we're in a browser environment and have the sidebar element
+		if (typeof window === 'undefined' || !sidebarElement) {
+			callback();
+			return;
+		}
+
+		// Capture current scroll position
+		const scrollTop = sidebarElement.scrollTop;
+		
+		console.log('BEFORE - scrollTop:', scrollTop);
+		
+		// Execute the callback
+		callback();
+		
+		console.log('AFTER callback - scrollTop is now:', sidebarElement.scrollTop);
+		
+		// Force restore scroll position with multiple attempts
+		const forceRestore = () => {
+			if (sidebarElement) {
+				sidebarElement.scrollTop = scrollTop;
+				console.log('Forced restore to:', scrollTop, 'actual:', sidebarElement.scrollTop);
+			}
+		};
+		
+		// Immediate restore
+		forceRestore();
+		
+		// Multiple restore attempts
+		requestAnimationFrame(forceRestore);
+		setTimeout(forceRestore, 0);
+		setTimeout(forceRestore, 10);
+		setTimeout(forceRestore, 50);
+		setTimeout(forceRestore, 100);
+		setTimeout(forceRestore, 200);
+		
+		// Final check
+		setTimeout(() => {
+			if (sidebarElement) {
+				console.log('FINAL CHECK - scrollTop:', sidebarElement.scrollTop, 'expected:', scrollTop);
+				if (Math.abs(sidebarElement.scrollTop - scrollTop) > 1) {
+					console.log('🚨 SCROLL POSITION STILL WRONG - forcing one more time');
+					sidebarElement.scrollTop = scrollTop;
+				}
+			}
+		}, 300);
+	}
+
+	// Enhanced function to handle clearing filters with scroll preservation
 	function handleClearFilters() {
 		if (config?.clearAllFilters) {
-			config.clearAllFilters();
-			oncollapse?.(); // Call callback instead of dispatching event
+			preserveSidebarScroll(() => {
+				config.clearAllFilters();
+				oncollapse?.(); // Call callback instead of dispatching event
+			});
 		}
 	}
+
+	// Wrapper function to enhance any filter toggle with sidebar scroll preservation
+	function createScrollPreservingToggle(originalToggle: (item: any) => void) {
+		return (item: any) => {
+			preserveSidebarScroll(() => originalToggle(item));
+		};
+	}
+
+	// Enhanced sections with scroll-preserving toggles
+	let enhancedSections = $derived(
+		sections.map(section => {
+			if (section.type === 'checkbox' || section.type === 'buttons' || section.type === 'chips') {
+				return {
+					...section,
+					toggleItem: createScrollPreservingToggle(section.toggleItem)
+				};
+			} else if (section.type === 'range') {
+				return {
+					...section,
+					updateRange: (min: number, max: number) => {
+						preserveSidebarScroll(() => section.updateRange(min, max));
+					},
+					resetRange: () => {
+						preserveSidebarScroll(() => section.resetRange());
+					}
+				};
+			}
+			return section;
+		})
+	);
 </script>
 
-<aside class="filter-sidebar sticky-top">
+<aside class="filter-sidebar sticky-top" bind:this={sidebarElement}>
 	<!-- Mobile Toggle Button Removed -->
 
 	<!-- Collapsible Filter Sections Wrapper (Mobile) -->
 	{#if isExpandedMobile}
 		<div class="filter-sections-wrapper" transition:slide={{ duration: 200 }}>
-			{#each sections as section, index (section.title)}
+			{#each enhancedSections as section, index (section.title)}
 				<div class="filter-section" in:fly={{ y: 10, duration: 200, delay: index * 50 }}>
 					{#if section.type === 'checkbox'}
 						<FilterSectionCheckbox
@@ -59,6 +144,17 @@
 							toggleItem={section.toggleItem}
 							counts={section.counts}
 						/>
+					{:else if section.type === 'chips'}
+						<FilterSectionChips
+							title={section.title}
+							items={section.items}
+							activeItems={section.activeItems}
+							toggleItem={section.toggleItem}
+							counts={section.counts}
+							searchThreshold={section.searchThreshold}
+							initialDisplayCount={section.initialDisplayCount}
+							showSearch={section.showSearch}
+						/>
 					{/if}
 				</div>
 			{/each}
@@ -67,7 +163,7 @@
 
 	<!-- Always visible on desktop -->
 	<div class="filter-sections-wrapper-desktop">
-		{#each sections as section, index (section.title)}
+		{#each enhancedSections as section, index (section.title)}
 			<div class="filter-section">
 				{#if section.type === 'checkbox'}
 					<FilterSectionCheckbox
@@ -94,6 +190,17 @@
 						toggleItem={section.toggleItem}
 						counts={section.counts}
 					/>
+				{:else if section.type === 'chips'}
+					<FilterSectionChips
+						title={section.title}
+						items={section.items}
+						activeItems={section.activeItems}
+						toggleItem={section.toggleItem}
+						counts={section.counts}
+						searchThreshold={section.searchThreshold}
+						initialDisplayCount={section.initialDisplayCount}
+						showSearch={section.showSearch}
+					/>
 				{/if}
 			</div>
 		{/each}
@@ -101,43 +208,16 @@
 </aside>
 
 <style>
-	/* Main sidebar container - Enhanced modern design */
+	/* Main sidebar container - Card design for the whole sidebar */
 	.filter-sidebar {
-		background: linear-gradient(
-			135deg,
-			var(--color-surface) 0%,
-			color-mix(in srgb, var(--color-surface) 95%, var(--color-primary) 5%) 100%
-		);
-		border: 1px solid color-mix(in srgb, var(--color-border) 60%, var(--color-primary) 40%);
-		border-radius: var(--border-radius-lg);
-		padding: var(--spacing-6);
-		box-shadow: 
-			var(--shadow-md),
-			0 0 0 1px rgba(var(--color-primary-rgb), 0.05);
-		transition:
-			background 0.3s ease,
-			border-color 0.3s ease,
-			box-shadow 0.3s ease,
-			transform 0.2s ease;
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: var(--border-radius-md);
+		padding: var(--spacing-4);
 		position: relative;
-		overflow: hidden;
-	}
-
-	/* Subtle accent line at top */
-	.filter-sidebar::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: 3px;
-		background: linear-gradient(
-			90deg,
-			var(--color-primary) 0%,
-			var(--color-accent) 50%,
-			var(--color-highlight) 100%
-		);
-		border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+		box-shadow: var(--shadow-sm);
+		/* Prevent layout shifts during content changes */
+		contain: layout style;
 	}
 
 	/* Mobile Toggle Button Styling Removed */
@@ -166,11 +246,10 @@
 	@media (max-width: 900px) {
 		/* Mobile breakpoint */
 		.filter-sidebar {
-			padding: var(--spacing-4);
+			background: transparent; /* Make background transparent on mobile */
 			border: none; /* Remove border on mobile */
 			box-shadow: none; /* Remove shadow on mobile */
 			padding: 0; /* Remove padding on mobile as sections are conditionally rendered */
-			background: transparent; /* Make background transparent */
 		}
 
 		.filter-sidebar::before {
@@ -180,37 +259,12 @@
 		/* Mobile toggle button styles removed */
 		.filter-sections-wrapper {
 			display: block; /* Allow Svelte's #if to control visibility */
-			/* Enhanced mobile wrapper styling */
-			background: linear-gradient(
-				135deg,
-				var(--color-surface) 0%,
-				color-mix(in srgb, var(--color-surface) 95%, var(--color-primary) 5%) 100%
-			);
-			border: 1px solid color-mix(in srgb, var(--color-border) 60%, var(--color-primary) 40%);
-			border-radius: var(--border-radius-lg);
-			padding: var(--spacing-5);
-			box-shadow: 
-				var(--shadow-md),
-				0 0 0 1px rgba(var(--color-primary-rgb), 0.05);
-			margin-top: var(--spacing-4); /* Add space below the new toggle button */
-			position: relative;
-			overflow: hidden;
-		}
-
-		.filter-sections-wrapper::before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			height: 3px;
-			background: linear-gradient(
-				90deg,
-				var(--color-primary) 0%,
-				var(--color-accent) 50%,
-				var(--color-highlight) 100%
-			);
-			border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+			background: var(--color-surface);
+			border: 1px solid var(--color-border);
+			border-radius: var(--border-radius-md);
+			padding: var(--spacing-4);
+			margin-top: var(--spacing-4);
+			box-shadow: var(--shadow-sm);
 		}
 		.filter-sections-wrapper-desktop {
 			display: none; /* Hide the desktop wrapper on mobile */
@@ -234,23 +288,13 @@
 			display: block; /* Show desktop wrapper */
 		}
 		.filter-sidebar {
-			/* Restore desktop styles potentially overridden by mobile */
-			background: linear-gradient(
-				135deg,
-				var(--color-surface) 0%,
-				color-mix(in srgb, var(--color-surface) 95%, var(--color-primary) 5%) 100%
-			);
-			border: 1px solid color-mix(in srgb, var(--color-border) 60%, var(--color-primary) 40%);
-			border-radius: var(--border-radius-lg);
-			padding: var(--spacing-6);
-			box-shadow: 
-				var(--shadow-md),
-				0 0 0 1px rgba(var(--color-primary-rgb), 0.05);
-			margin-bottom: 0; /* Reset margin from static */
-		}
-
-		.filter-sidebar::before {
-			display: block; /* Show accent line on desktop */
+			/* Restore card design on desktop */
+			background: var(--color-surface);
+			border: 1px solid var(--color-border);
+			border-radius: var(--border-radius-md);
+			padding: var(--spacing-4);
+			box-shadow: var(--shadow-sm);
+			margin-bottom: 0;
 		}
 		.sticky-top {
 			position: sticky;
@@ -259,6 +303,10 @@
 			overflow-y: auto;
 			scrollbar-width: thin;
 			scrollbar-color: var(--color-text-light) transparent;
+			/* Ensure stable positioning during content changes */
+			will-change: scroll-position;
+			/* Prevent the sidebar from jumping during filter changes */
+			transform: translateZ(0);
 		}
 
 		.sticky-top::-webkit-scrollbar {
@@ -280,47 +328,13 @@
 		}
 	}
 
-	/* Individual filter section styling - Enhanced card-like design */
+	/* Individual filter section styling - Clean minimal design */
 	.filter-section {
-		background: var(--color-background);
-		border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent 30%);
-		border-radius: var(--border-radius-md);
-		padding: var(--spacing-5);
-		margin-bottom: var(--spacing-4);
-		box-shadow: 
-			var(--shadow-sm),
-			0 0 0 1px rgba(var(--color-primary-rgb), 0.02);
-		transition: all 0.3s ease;
+		background: transparent;
+		border: none;
+		padding: 0;
+		margin-bottom: var(--spacing-6);
 		position: relative;
-		overflow: hidden;
-	}
-
-	.filter-section::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 4px;
-		height: 100%;
-		background: linear-gradient(
-			180deg,
-			var(--color-primary) 0%,
-			var(--color-accent) 100%
-		);
-		opacity: 0.6;
-		transition: opacity 0.3s ease;
-	}
-
-	.filter-section:hover {
-		border-color: color-mix(in srgb, var(--color-primary) 20%, var(--color-border) 80%);
-		box-shadow: 
-			var(--shadow-md),
-			0 0 0 1px rgba(var(--color-primary-rgb), 0.08);
-		transform: translateY(-1px);
-	}
-
-	.filter-section:hover::before {
-		opacity: 1;
 	}
 
 	.filter-section:last-of-type {

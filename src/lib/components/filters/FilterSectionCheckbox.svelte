@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { withScrollPreservation } from '$lib/utils/scrollPreservation';
+
 	
 	let {
 		title,
@@ -22,31 +22,26 @@
 		return counts?.[item] ?? 0;
 	}
 
-	// Wrap toggleItem with scroll preservation
+	// Direct toggle function (scroll preservation handled at sidebar level)
 	function handleToggleItem(item: string) {
-		withScrollPreservation(() => toggleItem(item));
+		toggleItem(item);
 	}
 </script>
 
 <div class="filter-section-content">
 	<h3 class="filter-section-title">{title}</h3>
-	<div class="filter-items">
+	<div class="filter-chips-container">
 		{#each items as item}
-			<div class="filter-item">
-				<label class="filter-label">
-					<input
-						type="checkbox"
-						class="filter-checkbox"
-						checked={activeItems.includes(item)}
-						onchange={() => handleToggleItem(item)}
-					/>
-					<span class="filter-checkbox-custom"></span>
-					<span class="filter-text">{itemLabels?.[item] ?? item}</span>
-					{#if counts !== undefined}
-						<span class="filter-count">({getCount(item)})</span>
-					{/if}
-				</label>
-			</div>
+			<button
+				class="filter-chip"
+				class:active={activeItems.includes(item)}
+				onclick={() => handleToggleItem(item)}
+			>
+				<span class="chip-text">{itemLabels?.[item] ?? item}</span>
+				{#if counts !== undefined}
+					<span class="chip-count">({getCount(item)})</span>
+				{/if}
+			</button>
 		{/each}
 	</div>
 </div>
@@ -57,122 +52,76 @@
 		font-size: var(--font-size-lg);
 		font-weight: 700;
 		color: var(--color-text-emphasis);
-		margin: 0 0 var(--spacing-4) 0;
+		margin: 0 0 var(--spacing-3) 0;
 		padding-bottom: var(--spacing-2);
-		border-bottom: 2px solid transparent;
-		background: linear-gradient(90deg, var(--color-primary), var(--color-accent)) no-repeat;
-		background-size: 40px 2px;
-		background-position: 0 100%;
-		transition: background-size 0.3s ease;
+		border-bottom: 1px solid var(--color-border);
 	}
 
-	.filter-section-title:hover {
-		background-size: 60px 2px;
-	}
-
-	.filter-items {
+	.filter-chips-container {
 		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-3);
+		flex-wrap: wrap;
+		gap: var(--spacing-2);
+		margin-bottom: var(--spacing-3);
 	}
 
-	.filter-item {
-		transition: transform 0.2s ease;
-	}
-
-	.filter-item:hover {
-		transform: translateX(2px);
-	}
-
-	.filter-label {
-		display: flex;
-		align-items: center;
-		gap: var(--spacing-3);
-		cursor: pointer;
-		padding: var(--spacing-2);
-		border-radius: var(--border-radius);
-		transition: all 0.2s ease;
-		position: relative;
-	}
-
-	.filter-label:hover {
-		background-color: color-mix(in srgb, var(--color-primary) 8%, transparent);
-	}
-
-	.filter-checkbox {
-		position: absolute;
-		opacity: 0;
-		width: 0;
-		height: 0;
-	}
-
-	.filter-checkbox-custom {
-		width: 18px;
-		height: 18px;
-		border: 2px solid var(--color-border);
-		border-radius: var(--border-radius-sm);
-		background: var(--color-background);
-		position: relative;
-		transition: all 0.2s ease;
-		flex-shrink: 0;
-	}
-
-	.filter-checkbox-custom::after {
-		content: '';
-		position: absolute;
-		left: 5px;
-		top: 2px;
-		width: 4px;
-		height: 8px;
-		border: solid white;
-		border-width: 0 2px 2px 0;
-		transform: rotate(45deg) scale(0);
-		transition: transform 0.2s ease;
-	}
-
-	.filter-checkbox:checked + .filter-checkbox-custom {
-		background: var(--color-primary);
-		border-color: var(--color-primary);
-		box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
-	}
-
-	.filter-checkbox:checked + .filter-checkbox-custom::after {
-		transform: rotate(45deg) scale(1);
-	}
-
-	.filter-text {
+	.filter-chip {
+		background: var(--color-surface-alt);
 		color: var(--color-text);
-		font-weight: 500;
-		line-height: 1.4;
-		flex-grow: 1;
-	}
-
-	.filter-count {
-		color: var(--color-text-light);
+		border: 1px solid var(--color-border);
+		padding: var(--spacing-1) var(--spacing-3);
+		border-radius: var(--border-radius);
 		font-size: var(--font-size-sm);
 		font-weight: 500;
-		background: var(--color-surface-alt);
-		padding: var(--spacing-1) var(--spacing-2);
-		border-radius: var(--border-radius-full);
-		border: 1px solid var(--color-border);
-		min-width: 24px;
-		text-align: center;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		display: inline-flex;
+		align-items: center;
+		gap: var(--spacing-1);
+		white-space: nowrap;
+	}
+
+	.filter-chip:hover {
+		border-color: var(--color-primary);
+		background: var(--color-surface);
+	}
+
+	.filter-chip.active {
+		background: var(--color-primary);
+		color: var(--color-background);
+		border-color: var(--color-primary);
+	}
+
+	.chip-text {
+		line-height: 1.2;
+	}
+
+	.chip-count {
+		opacity: 0.8;
+		font-size: var(--font-size-xs);
+		font-weight: 600;
+		background: rgba(255, 255, 255, 0.2);
+		padding: 1px var(--spacing-1);
+		border-radius: var(--border-radius-sm);
+		line-height: 1;
+	}
+
+	.filter-chip.active .chip-count {
+		background: rgba(255, 255, 255, 0.3);
 	}
 
 	/* Focus states */
-	.filter-checkbox:focus + .filter-checkbox-custom {
+	.filter-chip:focus-visible {
 		outline: 2px solid var(--color-primary);
 		outline-offset: 2px;
 	}
 
 	/* Dark mode enhancements */
-	:global(html.dark) .filter-checkbox-custom {
+	:global(html.dark) .filter-chip {
 		background: var(--color-surface);
 		border-color: var(--color-border);
 	}
 
-	:global(html.dark) .filter-count {
-		background: var(--color-surface);
-		border-color: var(--color-border);
+	:global(html.dark) .filter-chip:hover {
+		background: var(--color-surface-alt);
 	}
 </style>
