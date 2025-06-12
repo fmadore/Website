@@ -134,6 +134,19 @@ Flexible card component system with glassmorphism effects:
 - **Glass effects**: Automatic glassmorphism with backdrop blur and transparency
 - **Dark mode support**: Seamless dark theme adaptations
 
+### ContentBody Component
+
+The `ContentBody` component (`src/lib/components/common/ContentBody.svelte`) is a reusable container for main content areas that provides:
+
+- **Glassmorphism effects**: Consistent glass effects using the glassmorphism utilities
+- **Typography styling**: Comprehensive text styling with CSS variables
+- **Responsive design**: Mobile-first approach with proper scaling
+- **Dark mode support**: Automatic theme adaptation
+- **Multiple variants**: Default, compact, and wide options
+- **Flexible glass effects**: Support for all glassmorphism utility classes
+
+The component centralizes content styling that was previously scattered across individual pages, ensuring consistency and maintainability.
+
 ### Navigation Components
 
 Navigation is now implemented using component-scoped styles in individual Svelte components:

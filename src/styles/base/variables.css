@@ -7,6 +7,7 @@
 	--color-primary-dark: #11243e; /* Darker shade of primary */
 	--color-secondary: #4b5563; /* Kept as gray */
 	--color-accent: #7c3aed; /* Complementary accent */
+	--color-accent-rgb: 124, 58, 237; /* RGB values for accent color */
 	--color-highlight: #e07c3e; /* Warm highlight */
 	--color-highlight-rgb: 224, 124, 62; /* RGB for highlight */
 	--color-success: #2f855a; /* Green for success/workshops */
@@ -149,6 +150,7 @@ html.dark {
 	--color-primary-dark: #4d88ff; /* Slightly darker light blue */
 	--color-secondary: #9ca3af; /* Lighter gray */
 	--color-accent: #a582ff; /* Lighter purple */
+	--color-accent-rgb: 165, 130, 255; /* RGB values for accent color in dark mode */
 	--color-highlight: #ff9c66; /* Lighter orange/warm highlight */
 	--color-highlight-rgb: 255, 156, 102; /* RGB for highlight dark mode */
 	--color-success: #68d391; /* Lighter green for dark mode */
