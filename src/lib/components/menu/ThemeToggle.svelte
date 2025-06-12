@@ -84,7 +84,7 @@
 
 	/* Dark mode glassmorphism */
 	:global(html.dark) .theme-toggle {
-		background: rgba(0, 0, 0, 0.2);
+		background: rgba(var(--color-dark-surface-rgb), 0.2);
 		border: 1px solid rgba(255, 255, 255, 0.1);
 		box-shadow: 
 			0 4px 16px 0 rgba(0, 0, 0, 0.4),
@@ -92,7 +92,7 @@
 	}
 
 	:global(html.dark) .theme-toggle:hover {
-		background: rgba(0, 0, 0, 0.3);
+		background: rgba(var(--color-dark-surface-rgb), 0.3);
 		border-color: rgba(255, 255, 255, 0.15);
 		box-shadow: 
 			0 8px 24px 0 rgba(0, 0, 0, 0.5),

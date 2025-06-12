@@ -225,13 +225,13 @@
 
 	/* Dark mode */
 	:global(html.dark .site-header) {
-		background: rgba(0, 0, 0, 0.8);
+		background: rgba(var(--color-dark-surface-rgb), 0.8);
 		border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 		box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.4);
 	}
 
 	:global(html.dark .site-header:hover) {
-		background: rgba(0, 0, 0, 0.85);
+		background: rgba(var(--color-dark-surface-rgb), 0.85);
 		border-bottom-color: rgba(255, 255, 255, 0.2);
 		box-shadow: 0 6px 32px 0 rgba(0, 0, 0, 0.5);
 	}

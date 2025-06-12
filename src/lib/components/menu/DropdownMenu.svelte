@@ -127,7 +127,7 @@
 
 	/* Dark mode */
 	:global(html.dark) .dropdown-menu {
-		background: rgba(0, 0, 0, 0.9);
+		background: rgba(var(--color-dark-surface-rgb), 0.9);
 		border: 1px solid rgba(255, 255, 255, 0.2);
 		box-shadow: 
 			0 20px 60px 0 rgba(0, 0, 0, 0.4),

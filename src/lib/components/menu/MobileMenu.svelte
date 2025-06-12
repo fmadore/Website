@@ -327,14 +327,14 @@
 
 	/* Dark mode */
 	:global(html.dark) .mobile-nav-container {
-		background: rgba(0, 0, 0, 0.95);
+		background: rgba(var(--color-dark-surface-rgb), 0.95);
 		box-shadow: 
 			0 0 60px rgba(0, 0, 0, 0.5),
 			inset 0 1px 0 rgba(255, 255, 255, 0.1);
 	}
 
 	:global(html.dark) .mobile-nav-header {
-		background: rgba(0, 0, 0, 0.2);
+		background: rgba(var(--color-dark-surface-alt-rgb), 0.2);
 		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 		box-shadow: 
 			0 8px 32px 0 rgba(0, 0, 0, 0.3),
@@ -342,7 +342,7 @@
 	}
 
 	:global(html.dark .mobile-nav-link) {
-		background: rgba(0, 0, 0, 0.1);
+		background: rgba(var(--color-dark-surface-rgb), 0.1);
 		border: 1px solid rgba(255, 255, 255, 0.05);
 	}
 
@@ -351,7 +351,7 @@
 	}
 
 	:global(html.dark .mobile-dropdown) {
-		background: rgba(0, 0, 0, 0.15);
+		background: rgba(var(--color-dark-surface-rgb), 0.15);
 		border: 1px solid rgba(255, 255, 255, 0.08);
 		box-shadow: 
 			0 8px 32px 0 rgba(0, 0, 0, 0.3),
@@ -359,7 +359,7 @@
 	}
 
 	:global(html.dark .mobile-dropdown-link) {
-		background: rgba(0, 0, 0, 0.05);
+		background: rgba(var(--color-dark-surface-rgb), 0.05);
 		border: 1px solid rgba(255, 255, 255, 0.03);
 	}
 

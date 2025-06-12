@@ -37,7 +37,9 @@
 	--color-dark-surface: #374151; /* Dark theme surface */
 	--color-dark-surface-rgb: 55, 65, 81; /* RGB values for dark surface color */
 	--color-dark-surface-alt: #232b36; /* Dark theme alternative surface */
+	--color-dark-surface-alt-rgb: 35, 43, 54; /* RGB values for dark surface alt color */
 	--color-dark-surface-deep: #181e26; /* Dark theme deep surface */
+	--color-dark-surface-deep-rgb: 24, 30, 38; /* RGB values for dark surface deep color */
 	
 	/* Background variations for components */
 	--color-background-alt: #f9fafb; /* Alternative background */
@@ -177,7 +179,9 @@ html.dark {
 	--color-dark-surface: #1f2937; /* Keep consistent with surface */
 	--color-dark-surface-rgb: 31, 41, 55; /* RGB values for dark surface color */
 	--color-dark-surface-alt: #232b36; /* Dark theme alternative surface */
+	--color-dark-surface-alt-rgb: 35, 43, 54; /* RGB values for dark surface alt color */
 	--color-dark-surface-deep: #181e26; /* Dark theme deep surface */
+	--color-dark-surface-deep-rgb: 24, 30, 38; /* RGB values for dark surface deep color */
 	/* Adjusted shadows for dark mode if needed */
 	--shadow-sm: 0 1px 2px 0 rgba(255, 255, 255, 0.05);
 	--shadow: 0 1px 3px 0 rgba(255, 255, 255, 0.1), 0 1px 2px 0 rgba(255, 255, 255, 0.06);
