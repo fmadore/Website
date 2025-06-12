@@ -2,11 +2,16 @@
 /* Shared styling for all panel components */
 
 .panel {
-	background: var(--color-surface);
+	background: rgba(255, 255, 255, 0.08);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
 	border-radius: var(--border-radius-lg);
-	box-shadow: var(--shadow-sm);
-	border: 1px solid var(--color-surface-border);
+	box-shadow: 
+		0 16px 48px 0 rgba(31, 38, 135, 0.3),
+		inset 0 1px 0 rgba(255, 255, 255, 0.2);
+	border: 1px solid rgba(255, 255, 255, 0.15);
 	overflow: hidden;
+	transition: all 0.3s ease;
 }
 
 .panel-header {
@@ -191,9 +196,11 @@
 
 /* Dark mode overrides */
 :global(html.dark) .panel {
-	background: var(--color-surface);
-	border-color: var(--color-surface-border);
-	box-shadow: var(--shadow-sm);
+	background: rgba(0, 0, 0, 0.15);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	box-shadow: 
+		0 16px 48px 0 rgba(0, 0, 0, 0.4),
+		inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 :global(html.dark) .panel-header {

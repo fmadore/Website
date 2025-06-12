@@ -71,4 +71,18 @@
 		outline-offset: 2px;
 		border-radius: var(--border-radius-sm);
 	}
+
+	/* High contrast mode support */
+	@media (prefers-contrast: high) {
+		.hamburger-line {
+			height: 3px;
+		}
+	}
+
+	/* Reduced motion support */
+	@media (prefers-reduced-motion: reduce) {
+		.hamburger-line {
+			transition: none;
+		}
+	}
 </style>

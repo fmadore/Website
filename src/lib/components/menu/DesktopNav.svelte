@@ -63,4 +63,38 @@
 			gap: var(--spacing-6); /* Wider spacing on larger screens */
 		}
 	}
+
+	/* Navigation item styles */
+	:global(.nav-item) {
+		position: relative;
+		display: inline-block;
+	}
+
+	/* Focus and accessibility */
+	:global(.nav-link:focus-visible),
+	:global(.dropdown-item:focus-visible) {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 2px;
+		border-radius: var(--border-radius-sm);
+	}
+
+	/* Touch device optimizations */
+	@media (hover: none) {
+		:global(.nav-link:hover::after) {
+			width: 0;
+		}
+
+		:global(.nav-link:active::after) {
+			width: 100%;
+		}
+	}
+
+	/* Reduced motion support */
+	@media (prefers-reduced-motion: reduce) {
+		:global(.nav-link),
+		:global(.dropdown-icon),
+		:global(.dropdown-menu) {
+			transition: none;
+		}
+	}
 </style>

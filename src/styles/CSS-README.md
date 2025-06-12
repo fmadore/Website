@@ -28,11 +28,15 @@ Base styles define the foundation of the site's design.
 
 Contains CSS custom properties (variables) for:
 
-- Colors
-- Spacing
-- Typography
-- Border radius
-- Box shadows
+- **Colors**: Primary, secondary, accent, highlight, success colors with RGB variants
+- **Academic-specific colors**: Citation, quote, note colors
+- **Surface colors**: Background variations, surface colors for light/dark themes
+- **Spacing**: Comprehensive spacing scale from 1-32 units
+- **Typography**: Font families (sans, serif, mono), font sizes, line heights, letter spacing, font weights
+- **Border radius**: From small to full radius options
+- **Box shadows**: Multiple shadow levels for depth
+- **Opacity and transform values**: For consistent animations
+- **Dark theme overrides**: Complete dark mode color palette
 
 Example usage:
 
@@ -40,30 +44,37 @@ Example usage:
 .example {
 	color: var(--color-primary);
 	margin-bottom: var(--spacing-4);
+	background-color: rgba(var(--color-primary-rgb), 0.1);
 }
 ```
 
 ### Typography (`base/typography.css`)
 
-Defines styles for:
+Comprehensive typography system including:
 
-- Base font settings
-- Headings (h1-h6)
-- Paragraphs
-- Links
-- Lists
-- Inline text elements (strong, em, code)
-- Typography utility classes
+- **Base font settings**: Modern font features, antialiasing
+- **Headings (h1-h6)**: Serif font family with proper hierarchy
+- **Paragraphs and links**: Default styling with hover states
+- **Lists**: Styled ordered and unordered lists
+- **Inline elements**: Strong, em, code, small text
+- **Blockquotes**: Enhanced styling with background and borders
+- **Academic elements**: Citations, footnotes, abstracts, keywords
+- **Code blocks**: Enhanced pre and code styling
+- **Tables**: Responsive table styling
+- **Print optimizations**: Print-friendly styles
+- **Responsive typography utilities**: Font sizes, weights, alignment, line height, letter spacing
+- **Prose class**: Long-form content styling
 
 ### Reset (`base/reset.css`)
 
 Provides consistent styling across browsers by:
 
-- Setting box-sizing to border-box
+- Setting box-sizing to border-box for all elements
 - Removing default margins and paddings
-- Setting core body defaults
+- Setting core body defaults with smooth scrolling
 - Normalizing image display
 - Improving form element styling
+- Respecting reduced motion preferences
 
 ## Layout Components
 
@@ -71,41 +82,24 @@ Layout styles define the structural elements of the site.
 
 ### Container (`layout/container.css`)
 
-Provides responsive container classes for controlling layout width:
+Provides responsive container classes:
 
-- `.container`: Responsive container with max-widths at different breakpoints
+- `.container`: Responsive container with max-widths at breakpoints (640px, 768px, 1024px, 1280px)
 - `.container-fluid`: Full-width container
 - `.section`: Content section with vertical padding
+- `.section-sm`, `.section-lg`: Size variations
 
 ### Grid (`layout/grid.css`)
 
-Implements a flexible grid system:
+Comprehensive grid system:
 
 - `.grid`: Base grid container
-- `.grid-cols-*`: Grid column templates
-- Responsive variants for different breakpoints
-- Gap utilities
-- Column span classes
-
-### Header (`layout/header.css`)
-
-Styles for the site header:
-
-- Header container
-- Logo
-- Navigation
-- Dropdown menus
-- Responsive adaptations
-
-### Footer (`layout/footer.css`)
-
-Styles for the site footer:
-
-- Footer container
-- Social links
-- Footer text
-- Footer navigation
-- Footer gradients and decorative elements
+- `.grid-cols-*`: Grid column templates (1-12 columns)
+- **Responsive variants**: `sm:`, `md:`, `lg:`, `xl:` prefixes
+- **Column spans**: `.col-span-*` classes
+- **Grid rows**: Row template classes
+- **Auto flow**: Row and column flow control
+- **Content grid**: Specialized grid for content cards
 
 ## UI Components
 
@@ -113,208 +107,266 @@ Reusable components that can be used across the site.
 
 ### Buttons (`components/buttons.css`)
 
-Button styles and variations:
+Comprehensive button system:
 
-- `.btn`: Base button style
-- `.btn-primary`, `.btn-secondary`: Button color variations
-- `.btn-outline-primary`, `.btn-outline-secondary`: Outline button variations
-- `.btn-sm`, `.btn-lg`: Size variations
-- `.btn-block`: Full-width button
-- `.btn-icon`: Button with icon
-- Disabled button states
+- `.btn`: Base button with modern styling and transitions
+- **Color variants**: `.btn-primary`, `.btn-secondary`
+- **Outline variants**: `.btn-outline-primary`, `.btn-outline-secondary`
+- **Glass variants**: `.btn-glass`, `.btn-glass-primary` with glassmorphism effects
+- **Size variants**: `.btn-sm`, `.btn-lg`
+- **Layout variants**: `.btn-block`, `.btn-icon`
+- **States**: Hover, focus, active, disabled
+- **Custom controls**: `.control-button-rounded` with specific styling
+- **Dark mode support**: Automatic adaptations for all button variants
 
 ### Cards (`components/cards.css`)
 
-Card component styles:
+Flexible card component system with glassmorphism effects:
 
-- `.card`: Base card container
-- `.card-image`: Card image
-- `.card-body`: Card content container
-- `.card-title`, `.card-subtitle`: Card headings
-- `.card-text`: Card content
-- `.card-footer`: Card footer
-- `.card-horizontal`: Horizontal card layout
-- `.card-link`: Linked card with visual indicator
-- Card variations and modifiers (compact, bordered, etc.)
+- `.card`: Base card with glassmorphism styling, backdrop blur, and hover effects
+- **Card elements**: `.card-image`, `.card-body`, `.card-title`, `.card-subtitle`, `.card-text`, `.card-footer`
+- **Variations**: `.card-compact`, `.card-bordered`, `.card-shadow`, `.card-shadow-lg`
+- **Layouts**: `.card-horizontal` with responsive behavior
+- **Visual indicators**: `.card-link` with animated arrows
+- **Grid system**: `.card-grid` with responsive columns
+- **Background variants**: Color-themed cards
+- **Border variants**: Colored borders
+- **Glass effects**: Automatic glassmorphism with backdrop blur and transparency
+- **Dark mode support**: Seamless dark theme adaptations
 
-### Item Panel (`components/item-panel.css`)
+### Navigation Components
 
-Styles for reusable content panels, often used in sidebars or for distinct content blocks.
+Navigation is now implemented using component-scoped styles in individual Svelte components:
 
-- `.item-panel`: Base panel container with background, border, shadow, and padding.
-- `.item-panel-title`: Standardized title styling for panels.
-- `.item-panel-content`: Wrapper for content within a panel to ensure consistent padding.
-- `.item-panel-filter-row`: Flex container for filter elements.
-- `.item-panel-filter-label`: Label for filter sections.
-- `.item-panel-filter-container`: Container for a group of filter tags/buttons.
-- `.item-panel-tag`: Styling for pill-shaped tags or filter buttons within a panel.
-- Dark mode support for the panel and its elements.
+- **Header.svelte**: Site header with glassmorphism effects, logo, and desktop controls
+- **DesktopNav.svelte**: Desktop navigation with responsive behavior
+- **NavLink.svelte**: Individual navigation links with hover effects and accessibility
+- **NavItemWithDropdown.svelte**: Navigation items with dropdown functionality
+- **DropdownMenu.svelte**: Dropdown menus with glassmorphism and animations
+- **HamburgerButton.svelte**: Mobile menu toggle with smooth animations
+- **MobileMenu.svelte**: Full-screen mobile navigation with staggered animations
+- **ThemeToggle.svelte**: Theme switching component
 
-### Navigation (`components/navigation.css`)
+### Navigation Utilities (`components/navigation-utilities.css`)
 
-Navigation components:
+Shared utilities used across navigation components:
 
-- `.main-nav`: Main navigation container
-- `.nav-list`, `.nav-item`, `.nav-link`: Navigation elements
-- `.nav-link.active`: Active navigation state
-- `.dropdown-trigger`, `.dropdown-icon`: Dropdown navigation
-- `.dropdown-menu`, `.dropdown-item`: Dropdown contents
-- Responsive navigation
-- Mobile navigation toggle
+- **Accessibility**: `.sr-only` for screen readers, focus-visible styles
+- **Reduced motion**: Respects user motion preferences
+- **High contrast**: Enhanced visibility for accessibility
 
-### Dropdown (`components/dropdown.css`)
+### Panels (`components/panels.css`)
 
-Dropdown menus:
+Reusable panel components for content organization:
 
-- `.dropdown`: Dropdown container
-- `.dropdown-toggle`, `.dropdown-toggle-icon`: Dropdown trigger
-- `.dropdown-menu`: Dropdown content
-- `.dropdown-item`: Dropdown links
-- `.dropdown-divider`: Divider between items
-- `.dropdown-menu-right`, `.dropdown-menu-center`: Dropdown positions
-- `.dropdown-menu-sm`, `.dropdown-menu-lg`: Size variations
-- `.dropdown-menu-animate`: Animations and transitions
-- `.dropdown-item-with-icon`: Icon support for menu items
+- `.panel`: Base panel with surface styling
+- **Panel structure**: `.panel-header`, `.panel-content`, `.panel-footer`
+- **Content elements**: `.no-items`, `.item-list`, `.view-all-link`
+- **Filter systems**: `.year-filters`, `.filter-button`, `.type-filters-section`
+- **Variants**: Activities panel, items panel
+- **Dark mode support**: Complete dark theme overrides
 
 ### Activity List (`components/activity-list.css`)
 
-Activity and timeline components:
+Specialized component for activity timelines:
 
-- `.activity-list`: List container
-- `.activity-item`: Individual activity items
-- `.activity-title`, `.activity-date`: Activity metadata
-- `.activity-link`, `.activity-summary`: Content elements
-- `.activity-filters`, `.filter-tag`: Filtering controls
-- `.year-tag`, `.year-count`: Year-based filtering
-- `.see-more`: "View more" link styling
+- `.activity-list`: Timeline-style list
+- `.activity-item`: Individual activity with border accent
+- **Activity elements**: `.activity-title`, `.activity-date`, `.activity-summary`
+- **Filters**: `.activity-filters`, `.filter-tag`, `.year-tag`
+- **Interactive elements**: Hover effects, active states
+
+### Skill Tags (`components/skill-tags.css`)
+
+Component for displaying skill/technology tags:
+
+- `.project-skills-container`: Container for skill lists
+- `.skills-list`: Flexible skill tag layout
+- `.project-skill-tag`: Individual skill tags with hover effects
 
 ## Page-Specific Styles
 
 Styles that are specific to individual pages.
 
-### Home (`pages/home.css`)
-
-Styles specific to the homepage:
-
-- `.home-intro`: Introduction section
-- `.activity-section`: Recent activities
-- `.activity-section-title`: Section headers
-- `.year-filters`: Year filter buttons
-- `.profile-section`: Profile display
-- `.profile-header`, `.profile-photo`: Profile components
-- `.profile-content`, `.main-content-card`: Content containers
-- `.sidebar-card`: Sidebar styles
-- `.enhanced-header`: Enhanced header style with gradients
-- Dark mode overrides for homepage components
-
 ### Research (`pages/research.css`)
 
-Styles for research pages:
+Styles for research project pages:
 
-- `.research-project`: Research project container
-- `.project-header`, `.project-title`: Project headers
-- `.project-image`, `.project-content`: Project visuals and content
-- `.project-method-cards`: Research methods display
-- `.method-card`, `.method-title`: Method card components
-- `.research-grid`: Grid of research projects
-- `.project-card`, `.project-card-image`: Project card components
+- `.research-project`: Project container
+- **Project elements**: `.project-header`, `.project-title`, `.project-meta`, `.project-image`
+- **Content sections**: `.project-content`, `.project-section`, `.project-section-title`
+- **Method cards**: `.project-method-cards`, `.method-card`, `.method-title`
+- **Project grid**: `.research-grid`, `.project-card` with responsive layout
 
 ### Publications (`pages/publications.css`)
 
 Styles for publication listings:
 
-- `.publication-list`: Publication list container
-- `.publication-title a`: Publication title links
-- `.filter-button`, `.filter-button.active`: Publication filter controls
-- `.citation-button`, `.citation-box`: Citation display controls
-
-### Contact (`pages/contact.css`)
-
-Styles for the contact page:
-
-- `.contact-section`: Contact section container
-- `.contact-info`: Contact information
-- `.contact-address`: Contact address formatting
-- `.social-links-grid`: Social media links grid
-- `.social-link-card`: Social link cards
-- `.contact-form`, `.form-group`: Contact form elements
-- Form input and textarea styles
+- `.publication-list`: Publication container
+- **Publication elements**: `.publication-title`, `.publication-meta`
+- **Filters**: `.publication-filters`, `.filter-button` with active states
+- **Citations**: `.citation-button`, `.citation-box` with monospace font
 
 ## Utilities
 
-Utility classes for common styling needs.
+Comprehensive utility class system for rapid development.
 
 ### Spacing (`utilities/spacing.css`)
 
-Spacing utility classes:
+Extensive spacing utility system:
 
-- Margin utilities (`.m-*`, `.mx-*`, `.my-*`, `.mt-*`, `.mb-*`, `.mr-*`, `.ml-*`)
-- Padding utilities (`.p-*`, `.px-*`, `.py-*`, `.pt-*`, `.pb-*`, `.pl-*`, `.pr-*`)
-- Gap utilities for flex/grid (`.gap-*`, `.gap-x-*`, `.gap-y-*`)
-- Space between children (`.space-x-*`, `.space-y-*`)
-- All utilities use the spacing variables
+- **Margin utilities**: `.m-*`, `.mx-*`, `.my-*`, `.mt-*`, `.mb-*`, `.mr-*`, `.ml-*`
+- **Padding utilities**: `.p-*`, `.px-*`, `.py-*`, `.pt-*`, `.pb-*`, `.pl-*`, `.pr-*`
+- **Gap utilities**: `.gap-*`, `.gap-x-*`, `.gap-y-*`
+- **Space between**: `.space-x-*`, `.space-y-*`
+- **Responsive variants**: All utilities available with `sm:`, `md:`, `lg:`, `xl:` prefixes
+- **Scale**: 0, 1, 2, 3, 4, 6, 8, 10, 12, 16 spacing units
 
 ### Colors (`utilities/colors.css`)
 
-Color utility classes:
+Comprehensive color utility system:
 
-- Text colors (`.text-primary`, `.text-secondary`, `.text-accent`, `.text-highlight`, `.text-success`, `.text-default`, `.text-light`, `.text-white`, `.text-black`)
-- Background colors (`.bg-primary`, `.bg-secondary`, `.bg-accent`, `.bg-highlight`, `.bg-success`, `.bg-default`, `.bg-white`, `.bg-black`, `.bg-transparent`)
-- Border colors (`.border-primary`, `.border-secondary`, `.border-accent`, `.border-highlight`, `.border-success`, `.border-default`, `.border-white`, `.border-black`, `.border-transparent`)
-- Hover/focus variants for text, background, and border
+- **Text colors**: `.text-primary`, `.text-secondary`, `.text-accent`, `.text-highlight`, `.text-success`, `.text-default`, `.text-light`, `.text-white`, `.text-black`, `.text-muted`
+- **Background colors**: `.bg-*` variants including opacity variants (`.bg-primary-10`, `.bg-primary-20`, etc.)
+- **Border colors**: `.border-*` variants
+- **Border styles**: `.border`, `.border-0`, `.border-2`, `.border-4`, directional borders
+- **Interactive states**: Hover and focus variants
+- **Responsive variants**: All color utilities available at all breakpoints
 
-### Typography (`utilities/typography.css`)
+### Flexbox (`utilities/flex.css`)
 
-Typography utility classes:
+Complete flexbox utility system:
 
-- Font families (`.font-sans`, `.font-serif`, `.font-mono`)
-- Font sizes (`.text-xs`, `.text-sm`, `.text-base`, `.text-lg`, `.text-xl`, `.text-2xl`, `.text-3xl`, `.text-4xl`)
-- Font weights (`.font-normal`, `.font-medium`, `.font-semibold`, `.font-bold`)
-- Text alignment (`.text-left`, `.text-center`, `.text-right`, `.text-justify`)
-- Line height, letter spacing, text transform, text decoration
-- Truncation, whitespace, and list utilities
-- Prose class for long-form content
-
-### Flex (`utilities/flex.css`)
-
-Flexbox utility classes:
-
-- Flex container (`.flex`, `.inline-flex`)
-- Flex direction (`.flex-row`, `.flex-col`, etc.)
-- Flex wrap, grow, shrink, and shorthand (`.flex-wrap`, `.flex-1`, etc.)
-- Justify/align content and items (`.justify-center`, `.items-center`, etc.)
-- Order and self-alignment utilities
-- Responsive variants for all major flex utilities
+- **Flex containers**: `.flex`, `.inline-flex`
+- **Direction**: `.flex-row`, `.flex-col`, `.flex-row-reverse`, `.flex-col-reverse`
+- **Wrap**: `.flex-wrap`, `.flex-nowrap`, `.flex-wrap-reverse`
+- **Grow/Shrink**: `.flex-grow`, `.flex-shrink`, `.flex-1`, `.flex-auto`, `.flex-initial`, `.flex-none`
+- **Justify content**: `.justify-start`, `.justify-end`, `.justify-center`, `.justify-between`, `.justify-around`, `.justify-evenly`
+- **Align items**: `.items-start`, `.items-end`, `.items-center`, `.items-baseline`, `.items-stretch`
+- **Align content**: `.content-*` variants
+- **Align self**: `.self-*` variants
+- **Order**: `.order-*` utilities
+- **Responsive variants**: Available at all breakpoints
 
 ### Layout (`utilities/layout.css`)
 
-- `.sveltekit-body-container`: Utility for SvelteKit body container
+Display and overflow utilities:
 
-### Class Naming Convention
+- **Display**: `.block`, `.inline-block`, `.inline`, `.inline-grid`, `.hidden`
+- **Overflow**: `.overflow-auto`, `.overflow-hidden`, `.overflow-visible`, `.overflow-scroll`
+- **Directional overflow**: `.overflow-x-*`, `.overflow-y-*`
+- **SvelteKit integration**: `.sveltekit-body-container`
+- **Responsive variants**: All utilities available at all breakpoints
+
+### Sizing (`utilities/sizing.css`)
+
+Width, height, and max-width utilities:
+
+- **Width**: `.w-auto`, `.w-full`, `.w-screen`
+- **Height**: `.h-auto`, `.h-full`, `.h-screen`
+- **Max width**: `.max-w-none`, `.max-w-xs` through `.max-w-7xl`, `.max-w-full`, `.max-w-prose`
+- **Responsive variants**: All sizing utilities available at all breakpoints
+
+### Border Radius (`utilities/border-radius.css`)
+
+Comprehensive border radius utilities:
+
+- **All sides**: `.rounded-none`, `.rounded-sm`, `.rounded`, `.rounded-md`, `.rounded-lg`, `.rounded-xl`, `.rounded-2xl`, `.rounded-full`
+- **Directional**: `.rounded-t-*`, `.rounded-r-*`, `.rounded-b-*`, `.rounded-l-*`
+- **Responsive variants**: Available at all breakpoints
+
+### Shadows (`utilities/shadows.css`)
+
+Box shadow utilities:
+
+- **Shadow levels**: `.shadow-sm`, `.shadow`, `.shadow-md`, `.shadow-lg`, `.shadow-none`
+- **Interactive states**: `.hover:shadow-*` variants
+- **Responsive variants**: Available at all breakpoints
+
+### Transforms (`utilities/transforms.css`)
+
+Transform utilities for animations and effects:
+
+- **Scale**: `.scale-*` from 0 to 150
+- **Translate**: `.translate-x-*`, `.translate-y-*` with positive and negative values
+- **Rotate**: `.rotate-*` with positive and negative values
+- **Skew**: `.skew-x-*`, `.skew-y-*` with positive and negative values
+- **Transform origin**: `.origin-*` for transform origins
+- **Interactive states**: `.hover:*` and `.focus:*` variants
+- **Responsive variants**: Available at all breakpoints
+
+### Transitions (`utilities/transitions.css`)
+
+Transition and animation utilities:
+
+- **Transition types**: `.transition`, `.transition-colors`, `.transition-opacity`, `.transition-shadow`, `.transition-transform`
+- **Duration**: `.duration-75` through `.duration-500`
+- **Easing**: `.ease-linear`, `.ease-in`, `.ease-out`, `.ease-in-out`
+- **Responsive variants**: Available at all breakpoints
+
+### Images (`utilities/images.css`)
+
+Image handling utilities:
+
+- **Responsive images**: `.responsive-image`
+- **Aspect ratios**: `.aspect-square`, `.aspect-video`, `.aspect-photo`, `.aspect-card`, `.aspect-book`
+- **Object fit**: `.object-cover`, `.object-contain`, `.object-fill`
+- **Image containers**: `.image-container` with hover effects
+- **Loading states**: `.image-loading` with skeleton animation
+- **Specific components**: `.publication-cover`, `.hero-image`, `.card-image-content`
+
+### Glassmorphism (`utilities/glassmorphism.css`)
+
+Modern glass effect utilities for creating frosted glass UI elements:
+
+- **Base glass effects**: `.glass`, `.glass-light`, `.glass-medium`, `.glass-heavy`
+- **Colored glass**: `.glass-primary`, `.glass-accent`, `.glass-highlight`, `.glass-success`
+- **Blur levels**: `.glass-blur-sm`, `.glass-blur-md`, `.glass-blur-lg`, `.glass-blur-xl`, `.glass-blur-2xl`
+- **Component-specific**: `.glass-card`, `.glass-panel`, `.glass-nav`, `.glass-button`
+- **Special effects**: `.glass-frosted` with enhanced saturation
+- **Animations**: `.glass-animate`, `.glass-animate-fast`, `.glass-animate-slow`
+- **Dark mode support**: Automatic dark theme adaptations
+- **Browser fallbacks**: Graceful degradation for unsupported browsers
+- **Responsive variants**: Available at all breakpoints
+
+## Class Naming Convention
 
 The CSS follows a component-based naming convention:
 
-- Component: `.component-name`
-- Element: `.component-name-element`
-- Modifier: `.component-name--modifier` or `.component-name-element--modifier`
+- **Component**: `.component-name`
+- **Element**: `.component-name-element`
+- **Modifier**: `.component-name--modifier` or `.component-name-element--modifier`
+- **Utility**: `.utility-value` (e.g., `.text-center`, `.p-4`)
+- **Responsive**: `.breakpoint:utility-value` (e.g., `.md:text-lg`, `.lg:p-8`)
 
-### Responsive Approach
+## Responsive Approach
 
 The CSS is built with a mobile-first approach:
 
-- Base styles are for mobile devices
-- Media queries are used to adapt for larger screens
-- Breakpoints: 640px, 768px, 1024px, 1280px
+- **Base styles**: Designed for mobile devices
+- **Breakpoints**: 640px (sm), 768px (md), 1024px (lg), 1280px (xl)
+- **Progressive enhancement**: Media queries adapt for larger screens
+- **Utility responsiveness**: Most utilities available at all breakpoints
 
-### Best Practices
+## Best Practices
 
 When using this CSS framework:
 
-1. Use the existing components and utilities whenever possible.
-2. Use semantic class names for complex components (e.g., `.profile-card`, `.main-content-card`).
-3. Use utility classes for layout, spacing, color, and typography where appropriate.
-4. Follow the established naming patterns when creating new styles.
-5. Place page-specific styles in the appropriate page CSS file.
-6. Use variables for colors, spacing, and other design tokens.
-7. Avoid inline styles or !important declarations.
-8. Document all new utilities and component classes.
+1. **Use existing components and utilities** whenever possible
+2. **Follow the established naming patterns** when creating new styles
+3. **Use semantic class names** for complex components
+4. **Leverage utility classes** for layout, spacing, color, and typography
+5. **Place page-specific styles** in the appropriate page CSS file
+6. **Use CSS variables** for colors, spacing, and other design tokens
+7. **Avoid inline styles** or `!important` declarations
+8. **Test responsive behavior** across all breakpoints
+9. **Consider dark mode** when adding new styles
+10. **Document new utilities** and component classes
+
+## Performance Considerations
+
+- **Modular imports**: CSS is split into logical modules for better caching
+- **Utility-first approach**: Reduces CSS bloat through reusable classes
+- **CSS variables**: Enable efficient theming and customization
+- **Modern features**: Uses modern CSS features for better performance
+- **Print optimization**: Includes print-specific styles where needed

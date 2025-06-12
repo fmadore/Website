@@ -1,0 +1,39 @@
+/* Shared Navigation Utilities */
+/* This file contains only shared utilities used across navigation components */
+
+/* Screen reader only utility */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* Focus visible utility for all interactive elements */
+*:focus-visible {
+	outline: 2px solid var(--color-primary);
+	outline-offset: 2px;
+	border-radius: var(--border-radius-sm);
+}
+
+/* Reduced motion support for all navigation elements */
+@media (prefers-reduced-motion: reduce) {
+	* {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+	/* Enhanced borders and outlines for better visibility */
+	*:focus-visible {
+		outline-width: 3px;
+	}
+} 

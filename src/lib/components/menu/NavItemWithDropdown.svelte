@@ -82,4 +82,9 @@
 	.dropdown-hover-wrapper :global(.nav-link[aria-expanded='true'] .dropdown-icon) {
 		transform: rotate(180deg);
 	}
+
+	/* First dropdown menu positioning adjustment */
+	.nav-item:first-child :global(.dropdown-menu) {
+		left: 0;
+	}
 </style>

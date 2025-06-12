@@ -88,4 +88,11 @@
 			width: 100%;
 		}
 	}
+
+	/* High contrast mode support */
+	@media (prefers-contrast: high) {
+		.nav-link::after {
+			height: 3px;
+		}
+	}
 </style>

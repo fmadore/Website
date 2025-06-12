@@ -120,3 +120,69 @@
 	background-color: var(--color-primary) !important; /* Ensure this hover effect */
 	color: white !important;
 }
+
+/* Glass button variants */
+.btn-glass {
+	background: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	color: var(--color-text);
+	box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.25);
+	transition: all 0.2s ease;
+}
+
+.btn-glass:hover {
+	background: rgba(255, 255, 255, 0.15);
+	border-color: rgba(255, 255, 255, 0.3);
+	color: var(--color-text);
+	box-shadow: 0 6px 20px 0 rgba(31, 38, 135, 0.35);
+}
+
+.btn-glass:active {
+	transform: translateY(1px);
+	box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.3);
+}
+
+.btn-glass-primary {
+	background: rgba(var(--color-primary-rgb), 0.1);
+	border: 1px solid rgba(var(--color-primary-rgb), 0.2);
+	color: var(--color-primary);
+	box-shadow: 0 4px 16px 0 rgba(var(--color-primary-rgb), 0.25);
+}
+
+.btn-glass-primary:hover {
+	background: rgba(var(--color-primary-rgb), 0.15);
+	border-color: rgba(var(--color-primary-rgb), 0.3);
+	color: var(--color-primary);
+	box-shadow: 0 6px 20px 0 rgba(var(--color-primary-rgb), 0.35);
+}
+
+/* Dark mode glass buttons */
+:global(html.dark) .btn-glass {
+	background: rgba(0, 0, 0, 0.2);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	color: var(--color-text);
+	box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.4);
+}
+
+:global(html.dark) .btn-glass:hover {
+	background: rgba(0, 0, 0, 0.3);
+	border-color: rgba(255, 255, 255, 0.15);
+	color: var(--color-text);
+	box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.5);
+}
+
+:global(html.dark) .btn-glass-primary {
+	background: rgba(var(--color-primary-rgb), 0.15);
+	border: 1px solid rgba(var(--color-primary-rgb), 0.2);
+	color: var(--color-primary);
+	box-shadow: 0 4px 16px 0 rgba(var(--color-primary-rgb), 0.3);
+}
+
+:global(html.dark) .btn-glass-primary:hover {
+	background: rgba(var(--color-primary-rgb), 0.2);
+	border-color: rgba(var(--color-primary-rgb), 0.3);
+	color: var(--color-primary);
+	box-shadow: 0 6px 20px 0 rgba(var(--color-primary-rgb), 0.4);
+}

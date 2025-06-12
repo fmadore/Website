@@ -204,7 +204,38 @@
 </header>
 
 <style>
-	/* Header-specific styles - main navigation styles are in unified CSS */
+	/* Site Header Styles */
+	:global(.site-header) {
+		background: rgba(255, 255, 255, 0.85);
+		backdrop-filter: blur(20px);
+		-webkit-backdrop-filter: blur(20px);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+		box-shadow: 0 4px 24px 0 rgba(31, 38, 135, 0.15);
+		position: sticky;
+		top: 0;
+		z-index: 100;
+		transition: all 0.3s ease;
+	}
+
+	:global(.site-header:hover) {
+		background: rgba(255, 255, 255, 0.9);
+		border-bottom-color: rgba(255, 255, 255, 0.4);
+		box-shadow: 0 6px 32px 0 rgba(31, 38, 135, 0.2);
+	}
+
+	/* Dark mode */
+	:global(html.dark .site-header) {
+		background: rgba(0, 0, 0, 0.8);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+		box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.4);
+	}
+
+	:global(html.dark .site-header:hover) {
+		background: rgba(0, 0, 0, 0.85);
+		border-bottom-color: rgba(255, 255, 255, 0.2);
+		box-shadow: 0 6px 32px 0 rgba(0, 0, 0, 0.5);
+	}
+
 	.container {
 		max-width: 1280px;
 		width: 100%;
@@ -228,6 +259,24 @@
 		align-items: center;
 	}
 
+	.header-logo :global(.site-title) {
+		font-size: var(--font-size-xl);
+		font-weight: 700;
+		color: var(--color-text);
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	.header-logo :global(.site-title:hover) {
+		color: var(--color-primary);
+	}
+
+	.desktop-controls {
+		display: none;
+		align-items: center;
+		gap: var(--spacing-6);
+	}
+
 	@media (min-width: 640px) {
 		.container {
 			padding: 0 var(--spacing-6);
@@ -238,5 +287,14 @@
 		.header-inner {
 			height: 72px;
 		}
+
+		.desktop-controls {
+			display: flex;
+		}
+	}
+
+	/* Theme toggle spacing */
+	.desktop-controls :global(.theme-toggle) {
+		margin-left: var(--spacing-4);
 	}
 </style>
