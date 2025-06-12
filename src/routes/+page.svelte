@@ -158,11 +158,9 @@
 				</p>
 			{/snippet}
 		</ContentBody>
-		<ContentBody variant="compact" glassEffect="glass-panel" additionalClasses="md:col-span-1">
-			{#snippet children()}
-				<LatestActivities limit={3} />
-			{/snippet}
-		</ContentBody>
+		<aside class="md:col-span-1">
+			<LatestActivities limit={3} />
+		</aside>
 	</div>
 </div>
 
