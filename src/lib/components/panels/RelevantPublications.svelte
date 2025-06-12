@@ -69,7 +69,7 @@
 <div>
 	{#if showTypeFilters && publicationTypes.length > 1}
 		<div class="type-filters-section">
-			<div class="flex flex-wrap gap-2 mb-6">
+			<div class="type-filters-container">
 				{#each publicationTypes as type}
 					<button
 						class="filter-button {selectedType === type ? 'active' : ''}"
@@ -95,7 +95,9 @@
 </div>
 
 <style>
-	.type-filters-section {
-		margin-bottom: var(--spacing-4);
+	.type-filters-container {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--spacing-2);
 	}
 </style>

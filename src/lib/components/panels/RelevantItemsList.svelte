@@ -60,7 +60,7 @@
 	{/if}
 {/snippet}
 
-<PanelBase {title} variant="items" content={panelContent} />
+<PanelBase {title} variant="items" glassEffect="glass-panel" content={panelContent} />
 
 <style>
 	/* Item-specific styles that aren't covered by PanelBase */

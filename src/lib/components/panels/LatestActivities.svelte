@@ -97,20 +97,28 @@
 <PanelBase
 	title="Latest Activities"
 	variant="activities"
+	glassEffect="glass-panel"
 	showFooter={true}
 	content={panelContent}
 	footer={panelFooter}
 />
 
 <style>
-	/* Activity-specific styles */
+	/* Activity-specific styles - harmonized with ProfileBanner and ContentBody */
 	.activity-item {
 		position: relative;
 		padding: var(--spacing-4);
 		border-radius: var(--border-radius-md);
-		background: var(--color-surface);
-		border: 1px solid var(--color-border);
-		transition: all 0.2s ease;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		overflow: hidden;
+		/* Use glass-card utility for consistent glassmorphism */
+		background: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		box-shadow: 
+			0 8px 32px 0 rgba(31, 38, 135, 0.37),
+			inset 0 1px 0 rgba(255, 255, 255, 0.3);
 	}
 
 	.activity-item::before {
@@ -120,9 +128,12 @@
 		top: 0;
 		bottom: 0;
 		width: 0;
-		background-color: var(--color-primary);
+		background: linear-gradient(180deg, 
+			var(--color-success) 0%, 
+			var(--color-highlight) 100%
+		);
 		border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
-		transition: width 0.2s ease;
+		transition: width 0.3s ease;
 		opacity: var(--opacity-high);
 	}
 
@@ -132,8 +143,11 @@
 
 	.activity-item:hover {
 		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-md);
-		border-color: var(--color-primary);
+		background: rgba(255, 255, 255, 0.15);
+		border-color: rgba(255, 255, 255, 0.3);
+		box-shadow: 
+			0 12px 40px 0 rgba(31, 38, 135, 0.4),
+			inset 0 1px 0 rgba(255, 255, 255, 0.4);
 	}
 
 	.activity-meta {
@@ -142,21 +156,22 @@
 		align-items: center;
 		justify-content: space-between;
 		gap: var(--spacing-2);
-		margin-bottom: var(--spacing-2);
+		margin-bottom: var(--spacing-3);
 	}
 
 	.activity-type {
 		font-size: var(--font-size-xs);
 		text-transform: uppercase;
 		font-weight: var(--font-weight-semibold);
-		color: var(--color-primary);
-		background-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
+		color: var(--color-success);
+		background-color: rgba(var(--color-success-rgb), var(--opacity-medium));
 		padding: var(--spacing-1) var(--spacing-3);
 		border-radius: var(--border-radius-full);
 		flex-shrink: 0;
 		white-space: nowrap;
 		line-height: var(--line-height-normal);
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		border: var(--border-width-thin) solid rgba(var(--color-success-rgb), var(--opacity-medium-high));
+		transition: all 0.2s ease;
 	}
 
 	.activity-date {
@@ -170,28 +185,46 @@
 
 	.activity-title {
 		display: block;
-		font-size: var(--font-size-base);
+		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text);
 		text-decoration: none;
 		margin-bottom: var(--spacing-2);
-		transition: color 0.2s ease;
+		transition: color 0.3s ease;
+		line-height: var(--line-height-relaxed);
 	}
 
 	.activity-title:hover {
-		color: var(--color-primary);
+		color: var(--color-success);
 	}
 
 	.activity-abstract {
 		font-size: var(--font-size-sm);
 		color: var(--color-text-light);
-		margin-top: var(--spacing-1);
+		margin-top: var(--spacing-2);
+		line-height: var(--line-height-relaxed);
 	}
 
 	/* Dark mode overrides for activity-specific elements */
 	:global(html.dark) .activity-item {
-		background: var(--color-surface);
-		border-color: var(--color-border);
+		background: rgba(0, 0, 0, 0.2);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		box-shadow: 
+			0 8px 32px 0 rgba(0, 0, 0, 0.5),
+			inset 0 1px 0 rgba(255, 255, 255, 0.1);
+	}
+
+	:global(html.dark) .activity-item:hover {
+		background: rgba(0, 0, 0, 0.3);
+		border-color: rgba(255, 255, 255, 0.15);
+		box-shadow: 
+			0 12px 40px 0 rgba(0, 0, 0, 0.6),
+			inset 0 1px 0 rgba(255, 255, 255, 0.15);
+	}
+
+	:global(html.dark) .activity-type {
+		background-color: rgba(var(--color-success-rgb), var(--opacity-medium));
+		border-color: rgba(var(--color-success-rgb), var(--opacity-medium-high));
 	}
 
 	/* Responsive design */
@@ -199,12 +232,30 @@
 		.activity-meta {
 			flex-direction: column;
 			align-items: flex-start;
-			gap: var(--spacing-1);
+			gap: var(--spacing-2);
 		}
 
 		.activity-date {
 			text-align: left;
 			align-self: flex-end;
+		}
+
+		.activity-title {
+			font-size: var(--font-size-base);
+		}
+	}
+
+	/* Respect user motion preferences */
+	@media (prefers-reduced-motion: reduce) {
+		.activity-item,
+		.activity-item::before,
+		.activity-title,
+		.activity-type {
+			transition: none;
+		}
+
+		.activity-item:hover {
+			transform: none;
 		}
 	}
 </style>
