@@ -122,9 +122,6 @@
 			aria-labelledby="footer-brand-heading"
 		>
 			<div class="footer-logo-section">
-				<div class="footer-logo-placeholder glass-primary" aria-hidden="true">
-					<Icon icon="mdi:account-school" width="32" height="32" />
-				</div>
 				<div class="footer-copyright">
 					<p class="copyright-main" id="footer-brand-heading">
 						© {currentYear} Frédérick Madore, Ph.D.
@@ -310,7 +307,7 @@
 		padding: 0 var(--spacing-6);
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-12);
+		gap: var(--spacing-6);
 		position: relative;
 		z-index: 2;
 	}
@@ -319,12 +316,14 @@
 	.footer-branding {
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-6);
+		justify-content: center;
+		text-align: center;
 		opacity: 0;
 		transform: translateY(30px);
 		transition: all 0.6s ease;
 		padding: var(--spacing-6);
 		border-radius: var(--border-radius-xl);
+		width: 100%;
 	}
 
 	.footer-branding.animate {
@@ -334,20 +333,12 @@
 
 	.footer-logo-section {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
-		gap: var(--spacing-4);
+		gap: var(--spacing-2);
 	}
 
-	.footer-logo-placeholder {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 48px;
-		height: 48px;
-		border-radius: var(--border-radius-lg);
-		color: white;
-		box-shadow: var(--shadow-lg);
-	}
+
 
 	.footer-copyright {
 		display: flex;
@@ -371,8 +362,8 @@
 	/* Enhanced social links section with glassmorphism */
 	.footer-social-links {
 		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--spacing-12);
+		grid-template-columns: repeat(3, 1fr);
+		gap: var(--spacing-6);
 		opacity: 0;
 		transform: translateY(30px);
 		transition: all 0.6s ease 0.2s;
@@ -390,8 +381,9 @@
 		opacity: 0;
 		transform: translateY(20px);
 		transition: all 0.4s ease;
-		padding: var(--spacing-6);
+		padding: var(--spacing-5);
 		border-radius: var(--border-radius-lg);
+		min-height: 200px;
 	}
 
 	.footer-link-group.animate {
@@ -541,40 +533,24 @@
 
 	/* Responsive design improvements */
 	@media (min-width: 640px) {
-		.footer-social-links {
-			grid-template-columns: repeat(3, 1fr);
-			gap: var(--spacing-10);
-		}
-
 		.footer-container {
 			padding: 0 var(--spacing-8);
+			gap: var(--spacing-6);
+		}
+
+		.footer-social-links {
+			grid-template-columns: repeat(3, 1fr);
+			gap: var(--spacing-6);
 		}
 	}
 
 	@media (min-width: 768px) {
 		.footer-container {
-			flex-direction: row;
-			justify-content: space-between;
-			align-items: flex-start;
-			gap: var(--spacing-16);
-		}
-
-		.footer-branding {
-			flex: 1;
-			min-width: 300px;
+			gap: var(--spacing-6);
 		}
 
 		.footer-social-links {
-			flex: 2;
-		}
-
-		.footer-links-grid {
-			flex-direction: column;
-			gap: var(--spacing-2);
-		}
-
-		.footer-link-item {
-			flex: 0 0 auto;
+			grid-template-columns: repeat(3, 1fr);
 		}
 	}
 
@@ -593,19 +569,23 @@
 	}
 
 	@media (max-width: 639px) {
-		.footer-branding {
-			flex-direction: column;
-			align-items: center;
-			text-align: center;
+		.footer-container {
+			gap: var(--spacing-6);
 		}
 
-		.footer-logo-section {
-			flex-direction: column;
-			text-align: center;
+		.footer-social-links {
+			grid-template-columns: 1fr;
+			gap: var(--spacing-4);
+		}
+
+		.footer-link-group {
+			min-height: auto;
+			padding: var(--spacing-4);
 		}
 
 		.footer-group-title {
 			justify-content: center;
+			text-align: center;
 		}
 
 		.title-accent {
@@ -614,10 +594,6 @@
 
 		.footer-links-grid {
 			align-items: center;
-		}
-
-		.footer-social-links {
-			gap: var(--spacing-16);
 		}
 
 		.footer-link {
