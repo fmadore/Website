@@ -3,6 +3,7 @@
 	import type { Activity } from '$lib/types';
 	import { base } from '$app/paths';
 	import PanelBase from './PanelBase.svelte';
+	import Button from '../atoms/Button.svelte';
 
 	// Props - limit the number of activities to show
 	let {
@@ -76,7 +77,16 @@
 		</ul>
 
 		<div class="view-all-container">
-			<a href="{base}/activities" class="view-all-link">View all activities</a>
+			<Button 
+				href="{base}/activities" 
+				variant="outline-primary" 
+				size="base"
+				additionalClasses="glass-button"
+			>
+				{#snippet children()}
+					View all activities →
+				{/snippet}
+			</Button>
 		</div>
 	{/if}
 {/snippet}
@@ -86,9 +96,16 @@
 		<span class="filter-label">Browse by year:</span>
 		<div class="year-filters">
 			{#each years as year}
-				<a href="{base}/activities/year/{year}" class="year-tag">
-					{year}
-				</a>
+				<Button 
+					href="{base}/activities/year/{year}" 
+					variant="outline-secondary" 
+					size="sm"
+					additionalClasses="glass-button year-filter-button"
+				>
+					{#snippet children()}
+						{year}
+					{/snippet}
+				</Button>
 			{/each}
 		</div>
 	{/if}

@@ -4,6 +4,7 @@
 	// import type { Publication } from '$lib/types'; // Removed as unused
 	import RelevantItemsList from '$lib/components/panels/RelevantItemsList.svelte';
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
+	import Button from '../atoms/Button.svelte';
 
 	// Props - project name and limit
 	let {
@@ -71,13 +72,17 @@
 		<div class="type-filters-section">
 			<div class="type-filters-container">
 				{#each publicationTypes as type}
-					<button
-						class="filter-button {selectedType === type ? 'active' : ''}"
+					<Button
+						variant={selectedType === type ? 'primary' : 'outline-secondary'}
+						size="sm"
+						additionalClasses="glass-button filter-button {selectedType === type ? 'active' : ''}"
 						onclick={() => selectType(type)}
 						type="button"
 					>
-						{formatPublicationType(type)}
-					</button>
+						{#snippet children()}
+							{formatPublicationType(type)}
+						{/snippet}
+					</Button>
 				{/each}
 			</div>
 		</div>

@@ -16,6 +16,7 @@
 	import { base } from '$app/paths';
 	import RelevantItemCard from '$lib/components/panels/RelevantItemCard.svelte'; // Import the Card-based molecule
 	import PanelBase from './PanelBase.svelte';
+	import Button from '../atoms/Button.svelte';
 
 	// Props
 	let {
@@ -55,7 +56,16 @@
 		</ul>
 
 		<div class="view-all-container">
-			<a href="{base}{viewAllPath}" class="view-all-link">View all {itemTypePlural}</a>
+			<Button 
+				href="{base}{viewAllPath}" 
+				variant="outline-primary" 
+				size="base"
+				additionalClasses="glass-button"
+			>
+				{#snippet children()}
+					View all {itemTypePlural} →
+				{/snippet}
+			</Button>
 		</div>
 	{/if}
 {/snippet}
