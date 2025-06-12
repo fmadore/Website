@@ -175,13 +175,7 @@
 }
 
 /* Additional styling for Button components in panels */
-.year-filter-button {
-	/* Additional styling for year filter buttons if needed */
-}
-
-.filter-button {
-	/* Additional styling for type filter buttons if needed */
-}
+/* .year-filter-button and .filter-button styles can be added here when needed */
 
 /* Dark mode overrides - harmonized with glassmorphism utilities */
 :global(html.dark) .panel {
