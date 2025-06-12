@@ -79,11 +79,12 @@ export const goodMuslimBadMuslimTogo: Publication = {
 			url: 'https://www.proquest.com/openview/10eaa1c3593da0ae30f6d83521838696/'
 		},
 		{
-			authors: ['Aïssa Kadri'],
+			authors: ['Djamilou Ouro-Agoro'],
 			year: 2025,
-			title: 'Les politiques scolaires coloniales en Algérie',
+			title:
+				"Acteurs et influences de l'instruction arabo-islamique dans une ville du sud-ouest du Togo (Kpalimé) : (1971 à 1992)",
 			source:
-				"In L'interculturel dans l'espace francophone postcolonial : l'éducation et la formation à l'épreuve des crises, edited by Rania Hanafi, Jean-François Bruneaud, and Mamadou Bouna Timera. Paris: L'Harmattan, 2025"
+				"In L'interculturel dans l'espace francophone postcolonial : l'éducation et la formation à l'épreuve des crises, edited by Rania Hanafi, Jean-François Bruneaud, and Mamadou Bouna Timera, 103-121. Paris: L'Harmattan, 2025"
 		},
 		{
 			authors: ['Marius Kothor', 'Benjamin N. Lawrance'],
