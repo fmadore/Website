@@ -2,6 +2,7 @@
 	import SEO from '$lib/SEO.svelte';
 	import RelevantPublications from '$lib/components/panels/RelevantPublications.svelte';
 	import RelevantCommunications from '$lib/components/panels/RelevantCommunications.svelte';
+	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
@@ -34,19 +35,6 @@
 	// Manage JSON-LD script injection
 	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
 
-	// Update handler for iframe load event with improved reliability
-	function handleIframeLoad(event: Event) {
-		// Add the iframe-loaded class to the parent container when iframe loads
-		if (event.target) {
-			const iframe = event.target as HTMLElement;
-			const container = iframe.parentNode as HTMLElement;
-			if (container) {
-				container.classList.add('iframe-loaded');
-				console.log('Iframe loaded, animation should hide'); // Debug message
-			}
-		}
-	}
-
 	// Replace onMount and onDestroy with $effect
 	$effect(() => {
 		if (browser) {
@@ -71,24 +59,14 @@
 				}
 			}
 
-			// Fallback for loading animation in case onload doesn't fire
-			const loadingTimeout = setTimeout(() => {
-				const containers = document.querySelectorAll('.iframe-container-loading');
-				containers.forEach((container) => {
-					container.classList.add('iframe-loaded');
-					console.log('Forced loading animation hide via timeout');
-				});
-			}, 5000); // 5 second timeout
-
 			return () => {
-				// Cleanup: remove the script if it exists and clear timeout
+				// Cleanup: remove the script if it exists
 				if (browser) {
 					const scriptToRemove = document.getElementById(scriptId);
 					if (scriptToRemove && scriptToRemove.parentElement === document.head) {
 						document.head.removeChild(scriptToRemove);
 					}
 				}
-				clearTimeout(loadingTimeout);
 			};
 		}
 	});
@@ -157,18 +135,18 @@
 					civic life.
 				</p>
 
-				<div
-					class="iframe-container iframe-with-header iframe-interactive iframe-container-lightweight"
-				>
-					<div class="iframe-header">Islam West Africa Collection Overview</div>
-					<iframe
+				<!-- Enhanced iframe with glassmorphism and responsive design -->
+				<div class="iframe-section">
+					<IframeRenderer
+						id="iwac-overview-visualization"
 						src="https://fmadore.github.io/IWAC-overview/index.html"
-						title="IWAC Visualization"
-						frameborder="0"
+						title="Islam West Africa Collection Overview"
+						containerClass="iframe-container iframe-with-header iframe-interactive iframe-container-lg"
 						scrolling="yes"
-						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-						allowfullscreen
-					></iframe>
+						allowfullscreen={true}
+						glassEffect={true}
+						glassVariant="glass-medium"
+					/>
 				</div>
 			</div>
 		</div>
@@ -206,6 +184,26 @@
 		display: block;
 	}
 
+	.iframe-section {
+		margin-top: var(--spacing-12);
+		margin-bottom: var(--spacing-8);
+		/* Add a subtle background to make glassmorphism more visible */
+		background: linear-gradient(135deg, 
+			rgba(var(--color-primary-rgb), 0.05) 0%, 
+			rgba(var(--color-accent-rgb), 0.03) 50%, 
+			rgba(var(--color-highlight-rgb), 0.05) 100%);
+		padding: var(--spacing-6);
+		border-radius: var(--border-radius-lg);
+	}
+
+	.iframe-section-title {
+		font-size: var(--font-size-xl);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text-emphasis);
+		margin-bottom: var(--spacing-6);
+		font-family: var(--font-family-serif);
+	}
+
 	/* Grid layout for medium screens and up */
 	@media (min-width: 768px) {
 		.grid {
@@ -222,5 +220,23 @@
 			width: auto; /* Reset width */
 			margin-top: 0; /* Reset margin */
 		}
+	}
+
+	/* Enhanced responsive adjustments for iframe section */
+	@media (max-width: 640px) {
+		.iframe-section-title {
+			font-size: var(--font-size-lg);
+			margin-bottom: var(--spacing-4);
+		}
+	}
+
+	/* Debug glassmorphism - temporary styles to verify glass effects are working */
+	:global(.iframe-container.glass-medium) {
+		/* Ensure glassmorphism is visible */
+		background: rgba(255, 255, 255, 0.15) !important;
+		-webkit-backdrop-filter: blur(12px) !important;
+		backdrop-filter: blur(12px) !important;
+		border: 1px solid rgba(255, 255, 255, 0.25) !important;
+		box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.4) !important;
 	}
 </style>

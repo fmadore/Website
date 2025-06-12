@@ -1,6 +1,12 @@
 <script lang="ts">
 	import type { IframeEmbed } from '$lib/types/digitalHumanities';
 
+	// Create a more flexible type for direct component usage
+	type IframeRendererProps = Omit<IframeEmbed, 'type'> & {
+		glassEffect?: boolean;
+		glassVariant?: 'glass' | 'glass-light' | 'glass-medium' | 'glass-heavy' | 'glass-primary' | 'glass-accent' | 'glass-highlight' | 'glass-frosted';
+	};
+
 	let {
 		id,
 		src,
@@ -9,16 +15,30 @@
 		aspectRatio = undefined,
 		containerClass = undefined,
 		scrolling = 'auto',
-		allowfullscreen = true
-	}: IframeEmbed = $props();
+		allowfullscreen = true,
+		glassEffect = false,
+		glassVariant = 'glass'
+	}: IframeRendererProps = $props();
 
 	let finalContainerClass = $derived(
 		(() => {
-			let baseClass = 'iframe-container'; // Default base class
+			let classes = [];
+			
 			if (containerClass) {
-				return containerClass; // Use provided class if available
+				// Use provided containerClass as base
+				classes.push(containerClass);
+				
+				// If height is a class name (not a CSS value), add it
+				if (height && 
+					!height.endsWith('px') &&
+					!height.endsWith('%') &&
+					!height.endsWith('vh') &&
+					!height.endsWith('em') &&
+					!height.endsWith('rem')) {
+					classes.push(height);
+				}
 			} else if (aspectRatio) {
-				return `iframe-container-aspect iframe-container-aspect-${aspectRatio}`;
+				classes.push(`iframe-container-aspect iframe-container-aspect-${aspectRatio}`);
 			} else if (
 				height &&
 				!height.endsWith('px') &&
@@ -28,9 +48,19 @@
 				!height.endsWith('rem')
 			) {
 				// If height is a class name like iframe-container-sm
-				return height;
+				classes.push(height);
+			} else {
+				// Default base class
+				classes.push('iframe-container');
 			}
-			return baseClass;
+			
+			// Add glass effect if enabled
+			if (glassEffect) {
+				classes.push(glassVariant);
+				classes.push('glass-animate');
+			}
+			
+			return classes.join(' ');
 		})()
 	);
 
@@ -62,6 +92,9 @@
 </script>
 
 <div class={finalContainerClass}>
+	{#if finalContainerClass.includes('iframe-with-header')}
+		<div class="iframe-header">{title || 'Embedded content'}</div>
+	{/if}
 	<iframe
 		{id}
 		{src}
@@ -97,6 +130,43 @@
 		display: block;
 	}
 
+	/* Glass effect integration for iframe containers */
+	:global(.iframe-container.glass),
+	:global(.iframe-container.glass-light),
+	:global(.iframe-container.glass-medium),
+	:global(.iframe-container.glass-heavy),
+	:global(.iframe-container.glass-primary),
+	:global(.iframe-container.glass-accent),
+	:global(.iframe-container.glass-highlight),
+	:global(.iframe-container.glass-frosted) {
+		/* Let the global glassmorphism utilities handle the background and effects */
+		/* Only override the border to match our iframe styling */
+		border: 1px solid rgba(255, 255, 255, 0.2);
+	}
+
+	/* Glass effect hover enhancements for interactive iframes */
+	:global(.iframe-container.glass.iframe-interactive:hover),
+	:global(.iframe-container.glass-light.iframe-interactive:hover),
+	:global(.iframe-container.glass-medium.iframe-interactive:hover),
+	:global(.iframe-container.glass-heavy.iframe-interactive:hover) {
+		transform: translateY(-2px);
+		box-shadow: 
+			0 12px 40px 0 rgba(31, 38, 135, 0.4),
+			var(--shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
+	}
+
+	/* Dark mode glass effect adjustments */
+	:global(html.dark .iframe-container.glass),
+	:global(html.dark .iframe-container.glass-light),
+	:global(html.dark .iframe-container.glass-medium),
+	:global(html.dark .iframe-container.glass-heavy),
+	:global(html.dark .iframe-container.glass-primary),
+	:global(html.dark .iframe-container.glass-accent),
+	:global(html.dark .iframe-container.glass-highlight),
+	:global(html.dark .iframe-container.glass-frosted) {
+		border: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
 	/* Aspect ratio iframe container - maintains 16:9 ratio */
 	:global(.iframe-container-aspect) {
 		position: relative;
@@ -118,6 +188,30 @@
 		height: 100%;
 		border: 0;
 		display: block;
+	}
+
+	/* Glass effect integration for aspect ratio containers */
+	:global(.iframe-container-aspect.glass),
+	:global(.iframe-container-aspect.glass-light),
+	:global(.iframe-container-aspect.glass-medium),
+	:global(.iframe-container-aspect.glass-heavy),
+	:global(.iframe-container-aspect.glass-primary),
+	:global(.iframe-container-aspect.glass-accent),
+	:global(.iframe-container-aspect.glass-highlight),
+	:global(.iframe-container-aspect.glass-frosted) {
+		/* Let the global glassmorphism utilities handle the background and effects */
+		border: 1px solid rgba(255, 255, 255, 0.2);
+	}
+
+	:global(html.dark .iframe-container-aspect.glass),
+	:global(html.dark .iframe-container-aspect.glass-light),
+	:global(html.dark .iframe-container-aspect.glass-medium),
+	:global(html.dark .iframe-container-aspect.glass-heavy),
+	:global(html.dark .iframe-container-aspect.glass-primary),
+	:global(html.dark .iframe-container-aspect.glass-accent),
+	:global(html.dark .iframe-container-aspect.glass-highlight),
+	:global(html.dark .iframe-container-aspect.glass-frosted) {
+		border: 1px solid rgba(255, 255, 255, 0.1);
 	}
 
 	/* Additional aspect ratio variations */
@@ -185,7 +279,7 @@
 	:global(.iframe-container-aspect.iframe-container-loading::before) {
 		display: block;
 		opacity: 1;
-		background: #f9fafb
+		background: var(--color-background, #f9fafb)
 			url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="80" height="80"><circle cx="50" cy="50" r="30" fill="none" stroke="%231a365d" stroke-width="8" stroke-dasharray="188" stroke-dashoffset="0"><animate attributeName="stroke-dashoffset" values="0;188" dur="1.5s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="rotate" values="0 50 50;360 50 50" dur="1.5s" repeatCount="indefinite"/></circle></svg>')
 			center center no-repeat;
 	}
@@ -248,15 +342,35 @@
 		display: flex;
 		align-items: center;
 		padding: 0 var(--spacing-4, 1rem);
-		font-weight: 500;
+		font-weight: var(--font-weight-medium, 500);
 		border-top-left-radius: var(--border-radius-md, 0.375rem);
 		border-top-right-radius: var(--border-radius-md, 0.375rem);
 		border-bottom: 1px solid var(--color-border, #e5e7eb);
+		font-size: var(--font-size-sm, 0.875rem);
 	}
 
 	:global(.iframe-with-header iframe) {
 		height: calc(100% - 40px);
-		margin-top: 40px;
+		/* Remove margin-top since padding-top on container already creates space for header */
+	}
+
+	/* Glass effect for iframe headers */
+	:global(.iframe-with-header.glass .iframe-header),
+	:global(.iframe-with-header.glass-light .iframe-header),
+	:global(.iframe-with-header.glass-medium .iframe-header),
+	:global(.iframe-with-header.glass-heavy .iframe-header) {
+		background: rgba(var(--color-primary-rgb), 0.9);
+		-webkit-backdrop-filter: blur(8px);
+		backdrop-filter: blur(8px);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+	}
+
+	:global(html.dark .iframe-with-header.glass .iframe-header),
+	:global(html.dark .iframe-with-header.glass-light .iframe-header),
+	:global(html.dark .iframe-with-header.glass-medium .iframe-header),
+	:global(html.dark .iframe-with-header.glass-heavy .iframe-header) {
+		background: rgba(var(--color-primary-rgb), 0.8);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 	}
 
 	/* Responsive adjustments */
@@ -280,6 +394,11 @@
 
 		:global(.iframe-container-fullheight) {
 			height: calc(100vh - 150px); /* Adjust spacing for mobile */
+		}
+
+		:global(.iframe-header) {
+			font-size: var(--font-size-xs, 0.75rem);
+			padding: 0 var(--spacing-3, 0.75rem);
 		}
 	}
 
@@ -306,7 +425,18 @@
 		}
 
 		:global(.iframe-header) {
-			font-size: var(--font-size-sm, 0.875rem);
+			font-size: var(--font-size-xs, 0.75rem);
+			height: 36px;
+			padding: 0 var(--spacing-2, 0.5rem);
+		}
+
+		:global(.iframe-with-header) {
+			padding-top: 36px;
+		}
+
+		:global(.iframe-with-header iframe) {
+			height: calc(100% - 36px);
+			/* Remove margin-top since padding-top on container already creates space for header */
 		}
 	}
 
@@ -316,6 +446,7 @@
 		:global(.iframe-container-aspect) {
 			box-shadow: none;
 			border: 1px solid #000;
+			background: white !important;
 		}
 
 		:global(.iframe-container-aspect) {
@@ -328,6 +459,20 @@
 		:global(.iframe-container-aspect iframe) {
 			position: relative;
 			height: 100%;
+		}
+
+		/* Remove glass effects in print */
+		:global(.iframe-container.glass),
+		:global(.iframe-container.glass-light),
+		:global(.iframe-container.glass-medium),
+		:global(.iframe-container.glass-heavy),
+		:global(.iframe-container-aspect.glass),
+		:global(.iframe-container-aspect.glass-light),
+		:global(.iframe-container-aspect.glass-medium),
+		:global(.iframe-container-aspect.glass-heavy) {
+			background: white !important;
+			-webkit-backdrop-filter: none !important;
+			backdrop-filter: none !important;
 		}
 	}
 </style>
