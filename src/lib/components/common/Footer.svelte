@@ -105,7 +105,7 @@
 </script>
 
 <!-- Remove redundant role="contentinfo" - footer element already provides this semantic meaning -->
-<footer class="site-footer" bind:this={footerElement}>
+<footer class="site-footer glass-frosted" bind:this={footerElement}>
 	<div class="footer-gradient-top" aria-hidden="true"></div>
 
 	<!-- Background decorative elements -->
@@ -117,12 +117,12 @@
 
 	<div class="footer-container">
 		<section
-			class="footer-branding"
+			class="footer-branding glass-light"
 			class:animate={isVisible}
 			aria-labelledby="footer-brand-heading"
 		>
 			<div class="footer-logo-section">
-				<div class="footer-logo-placeholder" aria-hidden="true">
+				<div class="footer-logo-placeholder glass-primary" aria-hidden="true">
 					<Icon icon="mdi:account-school" width="32" height="32" />
 				</div>
 				<div class="footer-copyright">
@@ -141,7 +141,7 @@
 		>
 			{#each socialGroups as group, groupIndex}
 				<section
-					class="footer-link-group"
+					class="footer-link-group glass-light"
 					style="animation-delay: {groupIndex * 0.1}s"
 					class:animate={isVisible}
 					aria-labelledby="group-{groupIndex}-title"
@@ -160,7 +160,7 @@
 							>
 								<a
 									href={link.url}
-									class="footer-link"
+									class="footer-link glass-button"
 									target="_blank"
 									rel="noopener noreferrer"
 									aria-label="{link.name} - Opens in new tab"
@@ -181,7 +181,7 @@
 
 	<!-- Enhanced scroll indicator -->
 	<button
-		class="scroll-to-top"
+		class="scroll-to-top glass-primary"
 		class:visible={isVisible}
 		onclick={scrollToTop}
 		onkeydown={handleScrollKeydown}
@@ -193,7 +193,7 @@
 </footer>
 
 <style>
-	/* Enhanced footer styles with modern visual improvements */
+	/* Enhanced footer styles with glassmorphism */
 	.site-footer {
 		background: linear-gradient(
 			135deg,
@@ -242,7 +242,7 @@
 		right: 0;
 		bottom: 0;
 		pointer-events: none;
-		opacity: 0.05;
+		opacity: var(--opacity-low);
 	}
 
 	.decoration-circle {
@@ -297,10 +297,10 @@
 	@keyframes pulse-line {
 		0%,
 		100% {
-			opacity: 0.05;
+			opacity: var(--opacity-low);
 		}
 		50% {
-			opacity: 0.15;
+			opacity: var(--opacity-medium);
 		}
 	}
 
@@ -315,7 +315,7 @@
 		z-index: 2;
 	}
 
-	/* Enhanced branding section */
+	/* Enhanced branding section with glassmorphism */
 	.footer-branding {
 		display: flex;
 		align-items: center;
@@ -323,6 +323,8 @@
 		opacity: 0;
 		transform: translateY(30px);
 		transition: all 0.6s ease;
+		padding: var(--spacing-6);
+		border-radius: var(--border-radius-xl);
 	}
 
 	.footer-branding.animate {
@@ -342,7 +344,6 @@
 		justify-content: center;
 		width: 48px;
 		height: 48px;
-		background: linear-gradient(45deg, var(--color-primary), var(--color-highlight));
 		border-radius: var(--border-radius-lg);
 		color: white;
 		box-shadow: var(--shadow-lg);
@@ -356,7 +357,7 @@
 
 	.copyright-main {
 		font-size: var(--font-size-lg);
-		font-weight: 600;
+		font-weight: var(--font-weight-semibold);
 		color: var(--color-footer-text);
 		margin: 0;
 	}
@@ -366,7 +367,8 @@
 		color: var(--color-footer-text-muted);
 		margin: 0;
 	}
-	/* Enhanced social links section */
+
+	/* Enhanced social links section with glassmorphism */
 	.footer-social-links {
 		display: grid;
 		grid-template-columns: 1fr;
@@ -388,19 +390,22 @@
 		opacity: 0;
 		transform: translateY(20px);
 		transition: all 0.4s ease;
+		padding: var(--spacing-6);
+		border-radius: var(--border-radius-lg);
 	}
 
 	.footer-link-group.animate {
 		opacity: 1;
 		transform: translateY(0);
 	}
+
 	/* Enhanced group titles */
 	.footer-group-title {
 		color: var(--color-footer-text);
 		font-size: var(--font-size-sm);
-		font-weight: 700;
+		font-weight: var(--font-weight-bold);
 		text-transform: uppercase;
-		letter-spacing: 2px;
+		letter-spacing: var(--letter-spacing-wider);
 		margin: 0 0 var(--spacing-4) 0;
 		position: relative;
 		display: flex;
@@ -411,9 +416,11 @@
 	.title-accent {
 		flex: 1;
 		height: 2px;
-		background: linear-gradient(90deg, var(--color-primary), transparent);
+		background: linear-gradient(90deg, var(--color-highlight), var(--color-accent), transparent);
 		border-radius: 1px;
+		opacity: 0.8;
 	}
+
 	/* Proper list styling */
 	.footer-links-grid {
 		list-style: none;
@@ -434,39 +441,41 @@
 		opacity: 1;
 		transform: translateX(0);
 	}
-	/* Enhanced footer links */
+
+	/* Enhanced footer links with glassmorphism */
 	.footer-link {
 		display: flex;
 		align-items: center;
 		gap: var(--spacing-3);
 		color: var(--color-footer-text-muted);
 		text-decoration: none;
-		padding: var(--spacing-2) 0;
+		padding: var(--spacing-2) var(--spacing-3);
 		border-radius: var(--border-radius-md);
 		position: relative;
 		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		overflow: hidden;
 		width: 100%;
-		margin-left: calc(-1 * var(--spacing-2));
+		/* Remove custom background - glass-button utility handles this */
+		border: none;
 	}
+
 	.footer-link-icon {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		width: 28px;
 		height: 28px;
-		background: rgba(var(--color-primary-rgb), 0.1);
+		background: rgba(var(--color-primary-rgb), var(--opacity-medium));
 		border-radius: var(--border-radius);
 		transition: all 0.3s ease;
 		flex-shrink: 0;
-		margin-left: var(--spacing-2);
 	}
 
 	.footer-link-name {
 		font-size: var(--font-size-sm);
-		font-weight: 500;
+		font-weight: var(--font-weight-medium);
 		white-space: pre-line;
-		line-height: 1.4;
+		line-height: var(--line-height-relaxed);
 	}
 
 	.link-hover-effect {
@@ -478,22 +487,19 @@
 		background: linear-gradient(
 			90deg,
 			transparent,
-			rgba(var(--color-primary-rgb), 0.1),
+			rgba(var(--color-primary-rgb), var(--opacity-medium)),
 			transparent
 		);
 		transition: left 0.5s ease;
 	}
+
 	.footer-link:hover {
 		color: var(--color-footer-text);
-		background: rgba(var(--color-primary-rgb), 0.05);
-		transform: translateX(2px);
-		box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.15);
-		padding-left: var(--spacing-2);
-		padding-right: var(--spacing-2);
+		transform: var(--transform-lift-sm);
 	}
 
 	.footer-link:hover .footer-link-icon {
-		background: rgba(var(--color-primary-rgb), 0.2);
+		background: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
 		transform: scale(1.1);
 		box-shadow: 0 2px 8px rgba(var(--color-primary-rgb), 0.3);
 	}
@@ -502,14 +508,13 @@
 		left: 100%;
 	}
 
-	/* Enhanced scroll to top button */
+	/* Enhanced scroll to top button with glassmorphism */
 	.scroll-to-top {
 		position: fixed;
 		bottom: var(--spacing-6);
 		right: var(--spacing-6);
 		width: 48px;
 		height: 48px;
-		background: linear-gradient(45deg, var(--color-primary), var(--color-highlight));
 		border: none;
 		border-radius: 50%;
 		display: flex;
@@ -530,9 +535,10 @@
 	}
 
 	.scroll-to-top:hover {
-		transform: translateY(-2px) scale(1.05);
+		transform: var(--transform-lift-md) scale(1.05);
 		box-shadow: var(--shadow-xl);
 	}
+
 	/* Responsive design improvements */
 	@media (min-width: 640px) {
 		.footer-social-links {
@@ -544,6 +550,7 @@
 			padding: 0 var(--spacing-8);
 		}
 	}
+
 	@media (min-width: 768px) {
 		.footer-container {
 			flex-direction: row;
@@ -584,6 +591,7 @@
 			gap: var(--spacing-3);
 		}
 	}
+
 	@media (max-width: 639px) {
 		.footer-branding {
 			flex-direction: column;
@@ -613,29 +621,8 @@
 		}
 
 		.footer-link {
-			margin-left: 0;
 			justify-content: center;
 		}
-
-		.footer-link-icon {
-			margin-left: 0;
-		}
-	}
-	/* Dark mode enhancements */
-	:global(html.dark) .footer-logo-placeholder {
-		box-shadow: var(--shadow-lg);
-	}
-
-	:global(html.dark) .footer-link:hover {
-		box-shadow: var(--shadow-lg);
-	}
-
-	:global(html.dark) .scroll-to-top {
-		box-shadow: var(--shadow-lg);
-	}
-
-	:global(html.dark) .scroll-to-top:hover {
-		box-shadow: var(--shadow-xl);
 	}
 
 	/* Accessibility improvements */
@@ -660,13 +647,11 @@
 			transform: none;
 		}
 	}
+
 	/* Focus states */
 	.footer-link:focus-visible {
 		outline: 2px solid var(--color-primary);
 		outline-offset: 2px;
-		background: rgba(var(--color-primary-rgb), 0.05);
-		padding-left: var(--spacing-2);
-		padding-right: var(--spacing-2);
 	}
 
 	.scroll-to-top:focus-visible {

@@ -3,7 +3,7 @@
 	import Icon from '@iconify/svelte';
 </script>
 
-<div class="profile-header enhanced-header">
+<div class="profile-header glass-panel">
 	<div class="profile-photo-container">
 		<div class="profile-photo">
 			<img
@@ -24,7 +24,7 @@
 		</div>
 		<div class="subtitle">Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)</div>
 		<div class="profile-icons">
-			<a href="mailto:frederick.madore@zmo.de" target="_blank" rel="noopener" aria-label="Email" class="icon-link">
+			<a href="mailto:frederick.madore@zmo.de" target="_blank" rel="noopener" aria-label="Email" class="icon-link glass-button">
 				<Icon icon="mdi:email" width="24" height="24" />
 			</a>
 			<a
@@ -32,11 +32,11 @@
 				target="_blank"
 				rel="noopener"
 				aria-label="Google Scholar"
-				class="icon-link"
+				class="icon-link glass-button"
 			>
 				<Icon icon="academicons:google-scholar" width="24" height="24" />
 			</a>
-			<a href="https://github.com/fmadore" target="_blank" rel="noopener" aria-label="GitHub" class="icon-link">
+			<a href="https://github.com/fmadore" target="_blank" rel="noopener" aria-label="GitHub" class="icon-link glass-button">
 				<Icon icon="mdi:github" width="24" height="24" />
 			</a>
 			<a
@@ -44,7 +44,7 @@
 				target="_blank"
 				rel="noopener"
 				aria-label="LinkedIn"
-				class="icon-link"
+				class="icon-link glass-button"
 			>
 				<Icon icon="mdi:linkedin" width="24" height="24" />
 			</a>
@@ -53,7 +53,7 @@
 				target="_blank"
 				rel="noopener"
 				aria-label="ORCID"
-				class="icon-link"
+				class="icon-link glass-button"
 			>
 				<Icon icon="simple-icons:orcid" width="24" height="24" />
 			</a>
@@ -67,23 +67,15 @@
 		align-items: center;
 		gap: var(--spacing-8);
 		margin-bottom: var(--spacing-8);
-		padding-bottom: var(--spacing-6);
-		border-bottom: 1px solid var(--color-border);
-		position: relative;
-	}
-
-	.enhanced-header {
-		background: radial-gradient(
-			circle at 25% 25%,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-accent-rgb), 0.03) 40%,
-			var(--color-surface) 70%,
-			var(--color-background) 100%
-		);
-		border-radius: var(--border-radius-xl);
-		box-shadow: var(--shadow-md);
 		padding: var(--spacing-10) var(--spacing-8);
-		border: 1px solid rgba(var(--color-primary-rgb), 0.08);
+		position: relative;
+		/* Enhanced glassmorphism with subtle gradient overlay */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.05) 0%,
+			rgba(var(--color-highlight-rgb), 0.03) 50%,
+			rgba(var(--color-accent-rgb), 0.02) 100%
+		);
 	}
 
 	.profile-photo-container {
@@ -143,11 +135,11 @@
 
 	.profile-title h1 {
 		font-size: var(--font-size-4xl);
-		font-weight: 800;
+		font-weight: var(--font-weight-extrabold);
 		margin: 0;
 		color: var(--color-primary);
-		line-height: 1.1;
-		letter-spacing: -0.02em;
+		line-height: var(--line-height-tight);
+		letter-spacing: var(--letter-spacing-tight);
 	}
 
 	.title-accent {
@@ -163,10 +155,10 @@
 
 	.subtitle {
 		font-size: var(--font-size-xl);
-		color: var(--color-secondary);
+		color: var(--color-text-light);
 		margin-bottom: var(--spacing-6);
-		font-weight: 500;
-		line-height: 1.4;
+		font-weight: var(--font-weight-medium);
+		line-height: var(--line-height-relaxed);
 	}
 
 	.profile-icons {
@@ -183,11 +175,11 @@
 		justify-content: center;
 		width: 44px;
 		height: 44px;
-		color: var(--color-secondary);
-		background: rgba(var(--color-surface-rgb), 0.6);
-		border: 1px solid rgba(var(--color-border-rgb), 0.5);
+		color: var(--color-text-light);
+		/* Remove custom background - glass-button utility handles this */
+		border: none;
 		border-radius: var(--border-radius-lg);
-		transition: all 0.2s ease;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		position: relative;
 		overflow: hidden;
 	}
@@ -209,10 +201,7 @@
 
 	.icon-link:hover {
 		color: var(--color-highlight);
-		background: rgba(var(--color-highlight-rgb), 0.1);
-		border-color: rgba(var(--color-highlight-rgb), 0.3);
-		box-shadow: var(--shadow-sm);
-		transform: translateY(-1px);
+		transform: var(--transform-lift-sm);
 	}
 
 	.icon-link:hover::before {
@@ -250,9 +239,6 @@
 			align-items: center;
 			text-align: center;
 			gap: var(--spacing-6);
-		}
-
-		.enhanced-header {
 			padding: var(--spacing-8) var(--spacing-6);
 		}
 
@@ -278,34 +264,6 @@
 			margin-left: auto;
 			margin-right: auto;
 		}
-	}
-
-	/* Dark mode overrides */
-	:global(html.dark) .enhanced-header {
-		background: radial-gradient(
-			circle at 25% 25%,
-			rgba(var(--color-primary-rgb), 0.15) 0%,
-			rgba(var(--color-accent-rgb), 0.08) 40%,
-			var(--color-dark-surface-alt) 70%,
-			var(--color-dark-surface-deep) 100%
-		);
-		border-color: rgba(var(--color-primary-rgb), 0.2);
-		box-shadow: var(--shadow-lg);
-	}
-
-	:global(html.dark) .profile-photo img {
-		box-shadow: var(--shadow-xl);
-		border-color: var(--color-primary);
-	}
-
-	:global(html.dark) .icon-link {
-		background: rgba(var(--color-dark-surface-rgb), 0.8);
-		border-color: rgba(var(--color-border-rgb), 0.3);
-	}
-
-	:global(html.dark) .icon-link:hover {
-		background: rgba(var(--color-highlight-rgb), 0.15);
-		border-color: rgba(var(--color-highlight-rgb), 0.4);
 	}
 
 	/* Respect user motion preferences */
