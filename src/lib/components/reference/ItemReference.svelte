@@ -213,7 +213,7 @@
 	.item-reference::before {
 		content: '';
 		position: absolute;
-		inset: -2px;
+		inset: calc(-1 * var(--spacing-1));
 		border-radius: var(--border-radius-md);
 		opacity: 0;
 		z-index: -1;
@@ -222,21 +222,19 @@
 		backdrop-filter: blur(2px);
 		-webkit-backdrop-filter: blur(2px);
 		
-		/* Very subtle background that doesn't interfere with reading */
+		/* Very subtle background using global opacity values */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.02) 0%,
-			rgba(var(--color-primary-rgb), 0.01) 50%,
-			rgba(var(--color-accent-rgb), 0.005) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
 		
-		/* Minimal border */
-		border: 1px solid rgba(var(--color-primary-rgb), 0.1);
+		/* Minimal border using global values */
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium));
 		
 		/* Very subtle shadow */
-		box-shadow: 
-			0 2px 8px 0 rgba(31, 38, 135, 0.05),
-			inset 0 1px 0 rgba(255, 255, 255, 0.05);
+		box-shadow: var(--shadow-sm);
 		
 		transition: opacity 0.3s ease;
 	}
@@ -247,27 +245,25 @@
 	}
 
 	.item-reference.preview-visible {
-		transform: var(--transform-lift-sm, translateY(-1px));
+		transform: var(--transform-lift-sm);
 	}
 
 	.item-reference.preview-visible::before {
 		opacity: 1;
 		
-		/* Enhanced gradient for active state */
+		/* Enhanced gradient for active state using global values */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.05) 0%,
-			rgba(var(--color-primary-rgb), 0.03) 50%,
-			rgba(var(--color-accent-rgb), 0.02) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
 		
-		/* Enhanced border */
-		border-color: rgba(var(--color-primary-rgb), 0.2);
+		/* Enhanced border using global values */
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
 		
-		/* Enhanced shadow */
-		box-shadow: 
-			0 8px 24px 0 rgba(31, 38, 135, 0.15),
-			inset 0 1px 0 rgba(255, 255, 255, 0.2);
+		/* Enhanced shadow using global values */
+		box-shadow: var(--shadow-md);
 	}
 
 	.position-below {
@@ -277,23 +273,21 @@
 	.item-reference-error {
 		color: #ef4444;
 		font-style: italic;
-		font-size: 0.9em;
-		padding: 2px 6px;
+		font-size: var(--font-size-sm);
+		padding: var(--spacing-1) var(--spacing-2);
 		border-radius: var(--border-radius);
 		cursor: not-allowed;
 		
-		/* Glassmorphism for error state */
+		/* Glassmorphism for error state using global values */
 		backdrop-filter: blur(4px);
 		-webkit-backdrop-filter: blur(4px);
 		background: linear-gradient(
 			135deg,
-			rgba(239, 68, 68, 0.1) 0%,
-			rgba(239, 68, 68, 0.05) 100%
+			rgba(239, 68, 68, var(--opacity-medium)) 0%,
+			rgba(239, 68, 68, var(--opacity-low)) 100%
 		);
-		border: 1px solid rgba(239, 68, 68, 0.2);
-		box-shadow: 
-			0 4px 16px 0 rgba(239, 68, 68, 0.1),
-			inset 0 1px 0 rgba(255, 255, 255, 0.1);
+		border: var(--border-width-thin) solid rgba(239, 68, 68, var(--opacity-medium-high));
+		box-shadow: var(--shadow-sm);
 	}
 
 	/* Focus states */
@@ -302,20 +296,17 @@
 		outline-offset: 2px;
 	}
 
-	/* Dark mode glassmorphism adjustments */
+	/* Dark mode using global values */
 	:global(html.dark) .item-reference::before {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.06) 0%,
-			rgba(var(--color-primary-rgb), 0.04) 50%,
-			rgba(var(--color-accent-rgb), 0.02) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
 		
-		border: 1px solid rgba(255, 255, 255, 0.1);
-		
-		box-shadow: 
-			0 4px 16px 0 rgba(0, 0, 0, 0.2),
-			inset 0 1px 0 rgba(255, 255, 255, 0.05);
+		border: var(--border-width-thin) solid rgba(255, 255, 255, var(--opacity-medium));
+		box-shadow: var(--shadow-sm);
 	}
 
 	:global(html.dark) .item-reference.preview-visible::before {
