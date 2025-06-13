@@ -206,34 +206,62 @@
 <style>
 	/* Site Header Styles */
 	:global(.site-header) {
-		background: rgba(255, 255, 255, 0.85);
+		background: linear-gradient(
+			135deg,
+			rgba(255, 255, 255, 0.8) 0%,
+			rgba(var(--color-primary-rgb), 0.02) 50%,
+			rgba(var(--color-highlight-rgb), 0.01) 100%
+		);
 		backdrop-filter: blur(20px);
 		-webkit-backdrop-filter: blur(20px);
 		border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-		box-shadow: 0 4px 24px 0 rgba(31, 38, 135, 0.15);
+		box-shadow: 
+			0 4px 24px 0 rgba(31, 38, 135, 0.15),
+			inset 0 1px 0 rgba(255, 255, 255, 0.4);
 		position: sticky;
 		top: 0;
 		z-index: 100;
-		transition: all 0.3s ease;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	:global(.site-header:hover) {
-		background: rgba(255, 255, 255, 0.9);
+		background: linear-gradient(
+			135deg,
+			rgba(255, 255, 255, 0.9) 0%,
+			rgba(var(--color-primary-rgb), 0.03) 50%,
+			rgba(var(--color-highlight-rgb), 0.02) 100%
+		);
 		border-bottom-color: rgba(255, 255, 255, 0.4);
-		box-shadow: 0 6px 32px 0 rgba(31, 38, 135, 0.2);
+		box-shadow: 
+			0 6px 32px 0 rgba(31, 38, 135, 0.2),
+			inset 0 1px 0 rgba(255, 255, 255, 0.5);
 	}
 
 	/* Dark mode */
 	:global(html.dark .site-header) {
-		background: rgba(var(--color-dark-surface-rgb), 0.8);
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-dark-surface-rgb), 0.8) 0%,
+			rgba(var(--color-primary-rgb), 0.04) 50%,
+			rgba(var(--color-highlight-rgb), 0.02) 100%
+		);
 		border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-		box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.4);
+		box-shadow: 
+			0 4px 24px 0 rgba(0, 0, 0, 0.4),
+			inset 0 1px 0 rgba(255, 255, 255, 0.1);
 	}
 
 	:global(html.dark .site-header:hover) {
-		background: rgba(var(--color-dark-surface-rgb), 0.85);
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-dark-surface-rgb), 0.85) 0%,
+			rgba(var(--color-primary-rgb), 0.06) 50%,
+			rgba(var(--color-highlight-rgb), 0.03) 100%
+		);
 		border-bottom-color: rgba(255, 255, 255, 0.2);
-		box-shadow: 0 6px 32px 0 rgba(0, 0, 0, 0.5);
+		box-shadow: 
+			0 6px 32px 0 rgba(0, 0, 0, 0.5),
+			inset 0 1px 0 rgba(255, 255, 255, 0.15);
 	}
 
 	.container {

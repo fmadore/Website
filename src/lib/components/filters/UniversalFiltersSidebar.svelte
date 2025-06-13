@@ -218,6 +218,35 @@
 		box-shadow: var(--shadow-sm);
 		/* Prevent layout shifts during content changes */
 		contain: layout style;
+		/* Enhanced glassmorphism to match other components */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.03) 0%,
+			rgba(var(--color-highlight-rgb), 0.02) 50%,
+			rgba(var(--color-accent-rgb), 0.01) 100%
+		);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		box-shadow: 
+			0 8px 32px 0 rgba(31, 38, 135, 0.15),
+			inset 0 1px 0 rgba(255, 255, 255, 0.2);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	/* Hover effects for glassmorphism */
+	.filter-sidebar:hover {
+		transform: var(--transform-lift-sm);
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.05) 0%,
+			rgba(var(--color-highlight-rgb), 0.03) 50%,
+			rgba(var(--color-accent-rgb), 0.02) 100%
+		);
+		border-color: rgba(255, 255, 255, 0.3);
+		box-shadow: 
+			0 12px 40px 0 rgba(31, 38, 135, 0.2),
+			inset 0 1px 0 rgba(255, 255, 255, 0.3);
 	}
 
 	/* Mobile Toggle Button Styling Removed */
@@ -288,12 +317,21 @@
 			display: block; /* Show desktop wrapper */
 		}
 		.filter-sidebar {
-			/* Restore card design on desktop */
-			background: var(--color-surface);
-			border: 1px solid var(--color-border);
+			/* Restore card design on desktop with glassmorphism */
+			background: linear-gradient(
+				135deg,
+				rgba(var(--color-primary-rgb), 0.03) 0%,
+				rgba(var(--color-highlight-rgb), 0.02) 50%,
+				rgba(var(--color-accent-rgb), 0.01) 100%
+			);
+			backdrop-filter: blur(10px);
+			-webkit-backdrop-filter: blur(10px);
+			border: 1px solid rgba(255, 255, 255, 0.2);
 			border-radius: var(--border-radius-md);
 			padding: var(--spacing-4);
-			box-shadow: var(--shadow-sm);
+			box-shadow: 
+				0 8px 32px 0 rgba(31, 38, 135, 0.15),
+				inset 0 1px 0 rgba(255, 255, 255, 0.2);
 			margin-bottom: 0;
 		}
 		.sticky-top {
@@ -339,6 +377,47 @@
 
 	.filter-section:last-of-type {
 		margin-bottom: 0;
+	}
+
+	/* Dark mode enhancements for glassmorphism */
+	:global(html.dark) .filter-sidebar {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.06) 0%,
+			rgba(var(--color-highlight-rgb), 0.04) 50%,
+			rgba(var(--color-accent-rgb), 0.02) 100%
+		);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		box-shadow: 
+			0 8px 32px 0 rgba(0, 0, 0, 0.3),
+			inset 0 1px 0 rgba(255, 255, 255, 0.1);
+	}
+
+	:global(html.dark) .filter-sidebar:hover {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.08) 0%,
+			rgba(var(--color-highlight-rgb), 0.06) 50%,
+			rgba(var(--color-accent-rgb), 0.04) 100%
+		);
+		border-color: rgba(255, 255, 255, 0.15);
+		box-shadow: 
+			0 12px 40px 0 rgba(0, 0, 0, 0.4),
+			inset 0 1px 0 rgba(255, 255, 255, 0.15);
+	}
+
+	/* Dark mode mobile wrapper */
+	:global(html.dark) .filter-sections-wrapper {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.06) 0%,
+			rgba(var(--color-highlight-rgb), 0.04) 50%,
+			rgba(var(--color-accent-rgb), 0.02) 100%
+		);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		box-shadow: 
+			0 8px 32px 0 rgba(0, 0, 0, 0.3),
+			inset 0 1px 0 rgba(255, 255, 255, 0.1);
 	}
 
 	/* Clear button styling removed */
