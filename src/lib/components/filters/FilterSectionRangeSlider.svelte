@@ -1,5 +1,5 @@
 <script lang="ts">
-	import RangeSlider from '../ui/RangeSlider.svelte';
+	import RangeSlider from '../panels/RangeSlider.svelte';
 	import { createEventDispatcher } from 'svelte';
 
 
@@ -203,8 +203,8 @@
 	}
 
 	:global(html.dark) .slider-container {
-		background: var(--color-surface);
-		border-color: var(--color-border);
+		background: transparent;
+		border: none;
 	}
 
 	:global(html.dark) .no-data-message {

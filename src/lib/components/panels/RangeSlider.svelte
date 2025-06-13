@@ -1,4 +1,4 @@
-<!-- Custom Range Slider Component for Svelte 5 -->
+<!-- Custom Range Slider Component for Svelte 5 - Panel Style -->
 <script lang="ts">
 	let {
 		min = 0,
@@ -30,7 +30,9 @@
 
 	// Calculate positions as percentages
 	const minPosition = $derived(((values[0] - min) / (max - min)) * 100);
-	const maxPosition = $derived(((values[1] - min) / (max - min)) * 100); // Generate pip values for display
+	const maxPosition = $derived(((values[1] - min) / (max - min)) * 100);
+
+	// Generate pip values for display
 	const pipValues = $derived.by(() => {
 		if (!pips) return [];
 		const pipsArray: number[] = [];
@@ -66,6 +68,7 @@
 			onchange(new CustomEvent('change', { detail: { values: newValues } }));
 		}
 	}
+
 	function handleMouseDown(event: MouseEvent, type: 'min' | 'max') {
 		event.preventDefault();
 		isDragging = type;
@@ -114,6 +117,7 @@
 		document.addEventListener('touchmove', handleTouchMove, { passive: false });
 		document.addEventListener('touchend', handleTouchEnd);
 	}
+
 	function handleTrackClick(event: MouseEvent) {
 		if (isDragging) return;
 
@@ -191,6 +195,7 @@
 			style="left: {minPosition}%; width: {maxPosition - minPosition}%"
 		></div>
 	</div>
+
 	<!-- Min handle -->
 	<div
 		class="range-handle"
@@ -212,6 +217,7 @@
 			<div class="range-float">{values[0]}</div>
 		{/if}
 	</div>
+
 	<!-- Max handle -->
 	<div
 		class="range-handle"
@@ -259,49 +265,80 @@
 		position: relative;
 		height: 40px;
 		width: 100%;
-		margin: 10px 0;
+		margin: var(--spacing-3) 0;
+		padding: var(--spacing-3);
+		border-radius: var(--border-radius-md);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		
+		/* Glassmorphism styling matching filter sidebar - using global values */
+		background: rgba(var(--color-surface-rgb), var(--opacity-medium));
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border: var(--border-width-thin) solid rgba(var(--color-surface-rgb), var(--opacity-medium-high));
+		box-shadow: var(--shadow-md);
+	}
+
+	.range-slider:hover {
+		background: rgba(var(--color-surface-rgb), var(--opacity-medium-high));
+		border-color: rgba(var(--color-surface-rgb), 0.3);
+		box-shadow: var(--shadow-lg);
 	}
 
 	.range-track {
 		position: absolute;
 		top: 50%;
-		left: 0;
-		right: 0;
-		height: 4px;
-		background-color: var(--color-border, #e2e8f0);
-		border-radius: 2px;
+		left: var(--spacing-3);
+		right: var(--spacing-3);
+		height: var(--border-width-thick);
+		background-color: var(--color-border);
+		border-radius: var(--border-radius-sm);
 		transform: translateY(-50%);
 		cursor: pointer;
+		transition: background-color 0.2s ease;
+	}
+
+	.range-track:hover {
+		background-color: var(--color-text-muted);
 	}
 
 	.range-highlight {
 		position: absolute;
 		top: 0;
 		height: 100%;
-		background-color: var(--color-primary, #3b82f6);
-		border-radius: 2px;
+		background: linear-gradient(90deg, 
+			var(--color-accent) 0%, 
+			var(--color-highlight) 100%
+		);
+		border-radius: var(--border-radius-sm);
 		pointer-events: none;
+		opacity: var(--opacity-high);
+		transition: opacity 0.2s ease;
 	}
+
 	.range-handle {
 		position: absolute;
 		top: 50%;
-		width: 16px;
-		height: 16px;
-		background-color: var(--color-primary, #3b82f6);
-		border: 2px solid white;
+		width: 18px;
+		height: 18px;
+		background: linear-gradient(135deg, 
+			var(--color-accent) 0%, 
+			var(--color-highlight) 100%
+		);
+		border: var(--border-width-medium) solid var(--color-background);
 		border-radius: 50%;
 		transform: translate(-50%, -50%);
 		cursor: grab;
-		transition: all 0.15s ease;
+		transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 		z-index: 2;
-		touch-action: none; /* Prevent default touch behaviors */
+		touch-action: none;
+		box-shadow: var(--shadow-md);
 	}
 
 	/* Larger touch target for mobile devices */
 	@media (pointer: coarse) {
 		.range-handle {
-			width: 20px;
-			height: 20px;
+			width: 22px;
+			height: 22px;
 		}
 
 		.range-handle::before {
@@ -317,28 +354,40 @@
 
 	.range-handle:hover,
 	.range-handle:focus {
-		box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary, #3b82f6) 30%, transparent);
+		box-shadow: 
+			0 0 0 var(--border-width-thick) rgba(var(--color-accent-rgb), var(--opacity-medium)),
+			var(--shadow-lg);
 		outline: none;
+		transform: translate(-50%, -50%) scale(1.1);
 	}
 
 	.range-handle.active {
 		cursor: grabbing;
-		box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary, #3b82f6) 40%, transparent);
-		scale: 1.1;
+		box-shadow: 
+			0 0 0 var(--border-width-thick) rgba(var(--color-accent-rgb), var(--opacity-medium-high)),
+			var(--shadow-xl);
+		transform: translate(-50%, -50%) scale(1.15);
 	}
 
 	.range-float {
 		position: absolute;
-		bottom: 120%;
+		bottom: 140%;
 		left: 50%;
 		transform: translateX(-50%);
-		background-color: var(--color-primary, #3b82f6);
-		color: white;
-		padding: 4px 8px;
-		border-radius: 4px;
-		font-size: var(--font-size-xs, 0.75rem);
+		background: linear-gradient(135deg, 
+			var(--color-accent) 0%, 
+			var(--color-highlight) 100%
+		);
+		color: var(--color-background);
+		padding: var(--spacing-1) var(--spacing-2);
+		border-radius: var(--border-radius-sm);
+		font-size: var(--font-size-xs);
+		font-weight: var(--font-weight-medium);
 		white-space: nowrap;
 		pointer-events: none;
+		box-shadow: var(--shadow-md);
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
 	}
 
 	.range-float::after {
@@ -347,38 +396,91 @@
 		top: 100%;
 		left: 50%;
 		transform: translateX(-50%);
-		border: 4px solid transparent;
-		border-top-color: var(--color-primary, #3b82f6);
+		border: var(--border-width-thick) solid transparent;
+		border-top-color: var(--color-accent);
 	}
 
 	.range-pips {
 		position: absolute;
 		top: 100%;
-		left: 0;
-		right: 0;
+		left: var(--spacing-3);
+		right: var(--spacing-3);
 		height: 20px;
-		margin-top: 5px;
+		margin-top: var(--spacing-2);
 	}
 
 	.pip {
 		position: absolute;
 		width: 1px;
-		height: 5px;
-		background-color: var(--color-text-light, #6b7280);
+		height: var(--spacing-2);
+		background-color: var(--color-text-muted);
 		transform: translateX(-50%);
+		transition: background-color 0.2s ease;
 	}
 
 	.pip.pip-large {
-		height: 8px;
-		background-color: var(--color-text, #374151);
+		height: var(--spacing-3);
+		background-color: var(--color-text-light);
+		width: 2px;
 	}
 
 	.range-label {
 		position: absolute;
-		top: 10px;
+		top: var(--spacing-3);
 		transform: translateX(-50%);
-		font-size: var(--font-size-xs, 0.75rem);
-		color: var(--color-text-light, #6b7280);
+		font-size: var(--font-size-xs);
+		font-weight: var(--font-weight-medium);
+		color: var(--color-text-light);
 		white-space: nowrap;
 	}
-</style>
+
+	/* Dark mode overrides - using global CSS variables for consistency */
+	:global(html.dark) .range-slider {
+		/* Use dark surface colors from global variables */
+		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium));
+		border: var(--border-width-thin) solid rgba(var(--color-dark-surface-rgb), var(--opacity-medium-high));
+		box-shadow: var(--shadow-md);
+	}
+
+	:global(html.dark) .range-slider:hover {
+		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium-high));
+		border-color: rgba(var(--color-dark-surface-rgb), 0.3);
+		box-shadow: var(--shadow-lg);
+	}
+
+	/* Responsive design */
+	@media (max-width: 640px) {
+		.range-slider {
+			margin: var(--spacing-2) 0;
+			padding: var(--spacing-2);
+		}
+
+		.range-track {
+			left: var(--spacing-2);
+			right: var(--spacing-2);
+		}
+
+		.range-pips {
+			left: var(--spacing-2);
+			right: var(--spacing-2);
+		}
+	}
+
+	/* Respect user motion preferences */
+	@media (prefers-reduced-motion: reduce) {
+		.range-slider,
+		.range-track,
+		.range-highlight,
+		.range-handle,
+		.range-float,
+		.pip {
+			transition: none;
+		}
+
+		.range-handle:hover,
+		.range-handle:focus,
+		.range-handle.active {
+			transform: translate(-50%, -50%);
+		}
+	}
+</style> 
