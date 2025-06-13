@@ -5,7 +5,7 @@
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
-	import ItemReference from '$lib/components/molecules/ItemReference.svelte';
+	import ItemReference from '$lib/components/reference/ItemReference.svelte';
 	import { page } from '$app/stores'; // Import page store
 	// MODIFIED: Removed onMount, onDestroy. $derived and $effect are assumed to be globally available in Svelte 5.
 	import { browser } from '$app/environment'; // Import browser check

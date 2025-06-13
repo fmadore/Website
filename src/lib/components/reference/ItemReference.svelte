@@ -1,11 +1,11 @@
 <script lang="ts">
 	/**
-	 * ReferenceLinkWithPreview.svelte  ────────────────────────────────────────────
+	 * ItemReference.svelte  ─────────────────────────────────────────────
 	 * Inline reference that shows a hover/click‑activated preview card.
 	 * Re‑written for improved readability, accessibility, and maintainability.
-	 * Migrated to Svelte 5 with improved mobile support.
-	 * ---------------------------------------------------------------------------
-	 * Usage: <ReferenceLinkWithPreview id="my‑item‑id" />
+	 * Migrated to Svelte 5 with improved mobile support and glassmorphism design.
+	 * ────────────────────────────────────────────────────────────────────
+	 * Usage: <ItemReference id="my‑item‑id" />
 	 */
 
 	import { browser } from '$app/environment';
@@ -16,8 +16,8 @@
 	import { allCommunications } from '$lib/data/communications/index';
 	import type { Publication, Communication } from '$lib/types';
 
-	import ReferenceLink from '$lib/components/atoms/ReferenceLink.svelte';
-	import ReferencePreviewCard from '$lib/components/atoms/ReferencePreviewCard.svelte';
+	import ReferenceLink from './ReferenceLink.svelte';
+	import ReferencePreviewCard from './ReferencePreviewCard.svelte';
 	import { activeReferenceId } from '$lib/stores/activeItemReferenceStore';
 
 	/* ───────────────────────────── Props ─────────────────────────────── */
@@ -207,7 +207,7 @@
 		cursor: pointer;
 		-webkit-tap-highlight-color: transparent; /* iOS */
 		border-radius: var(--border-radius);
-		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	.item-reference::before {
@@ -215,13 +215,29 @@
 		position: absolute;
 		inset: -2px;
 		border-radius: var(--border-radius-md);
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.1),
-			rgba(var(--color-accent), 0.1)
-		);
 		opacity: 0;
 		z-index: -1;
+		
+		/* Minimal glassmorphism for subtle hover effect */
+		backdrop-filter: blur(2px);
+		-webkit-backdrop-filter: blur(2px);
+		
+		/* Very subtle background that doesn't interfere with reading */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.02) 0%,
+			rgba(var(--color-primary-rgb), 0.01) 50%,
+			rgba(var(--color-accent-rgb), 0.005) 100%
+		);
+		
+		/* Minimal border */
+		border: 1px solid rgba(var(--color-primary-rgb), 0.1);
+		
+		/* Very subtle shadow */
+		box-shadow: 
+			0 2px 8px 0 rgba(31, 38, 135, 0.05),
+			inset 0 1px 0 rgba(255, 255, 255, 0.05);
+		
 		transition: opacity 0.3s ease;
 	}
 
@@ -231,13 +247,27 @@
 	}
 
 	.item-reference.preview-visible {
-		background: rgba(var(--color-primary-rgb), 0.05);
-		border-radius: var(--border-radius);
-		box-shadow: 0 0 0 1px rgba(var(--color-primary-rgb), 0.2);
+		transform: var(--transform-lift-sm, translateY(-1px));
 	}
 
 	.item-reference.preview-visible::before {
 		opacity: 1;
+		
+		/* Enhanced gradient for active state */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.05) 0%,
+			rgba(var(--color-primary-rgb), 0.03) 50%,
+			rgba(var(--color-accent-rgb), 0.02) 100%
+		);
+		
+		/* Enhanced border */
+		border-color: rgba(var(--color-primary-rgb), 0.2);
+		
+		/* Enhanced shadow */
+		box-shadow: 
+			0 8px 24px 0 rgba(31, 38, 135, 0.15),
+			inset 0 1px 0 rgba(255, 255, 255, 0.2);
 	}
 
 	.position-below {
@@ -246,13 +276,24 @@
 
 	.item-reference-error {
 		color: #ef4444;
-		background: rgba(239, 68, 68, 0.1);
-		border: 1px solid rgba(239, 68, 68, 0.2);
 		font-style: italic;
 		font-size: 0.9em;
 		padding: 2px 6px;
 		border-radius: var(--border-radius);
 		cursor: not-allowed;
+		
+		/* Glassmorphism for error state */
+		backdrop-filter: blur(4px);
+		-webkit-backdrop-filter: blur(4px);
+		background: linear-gradient(
+			135deg,
+			rgba(239, 68, 68, 0.1) 0%,
+			rgba(239, 68, 68, 0.05) 100%
+		);
+		border: 1px solid rgba(239, 68, 68, 0.2);
+		box-shadow: 
+			0 4px 16px 0 rgba(239, 68, 68, 0.1),
+			inset 0 1px 0 rgba(255, 255, 255, 0.1);
 	}
 
 	/* Focus states */
@@ -261,27 +302,94 @@
 		outline-offset: 2px;
 	}
 
-	/* Dark mode adjustments */
-	:global(html.dark) .item-reference {
-		background-color: var(--color-background-secondary-dark);
-		border-color: var(--color-border-dark);
-		box-shadow: var(--shadow-md-dark);
+	/* Dark mode glassmorphism adjustments */
+	:global(html.dark) .item-reference::before {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.06) 0%,
+			rgba(var(--color-primary-rgb), 0.04) 50%,
+			rgba(var(--color-accent-rgb), 0.02) 100%
+		);
+		
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		
+		box-shadow: 
+			0 4px 16px 0 rgba(0, 0, 0, 0.2),
+			inset 0 1px 0 rgba(255, 255, 255, 0.05);
 	}
 
-	:global(html.dark) .item-reference:hover,
-	:global(html.dark) .item-reference:focus-within {
-		border-color: var(--color-primary-dark);
-		box-shadow: var(--shadow-lg-dark);
-	}
-
-	:global(html.dark) .item-reference.preview-visible {
-		border-color: var(--color-primary-dark);
-		box-shadow: var(--shadow-xl-dark);
+	:global(html.dark) .item-reference.preview-visible::before {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.08) 0%,
+			rgba(var(--color-primary-rgb), 0.06) 50%,
+			rgba(var(--color-accent-rgb), 0.04) 100%
+		);
+		
+		border-color: rgba(var(--color-primary-rgb), 0.3);
+		
+		box-shadow: 
+			0 8px 24px 0 rgba(0, 0, 0, 0.3),
+			inset 0 1px 0 rgba(255, 255, 255, 0.1);
 	}
 
 	:global(html.dark) .item-reference-error {
-		background-color: var(--color-error-background-dark);
-		border-color: var(--color-error-dark);
-		color: var(--color-error-text-dark);
+		background: linear-gradient(
+			135deg,
+			rgba(239, 68, 68, 0.15) 0%,
+			rgba(239, 68, 68, 0.10) 100%
+		);
+		
+		border-color: rgba(239, 68, 68, 0.3);
+		color: #fca5a5;
+		
+		box-shadow: 
+			0 4px 16px 0 rgba(239, 68, 68, 0.2),
+			inset 0 1px 0 rgba(255, 255, 255, 0.05);
 	}
-</style>
+
+	/* Reduced motion support */
+	@media (prefers-reduced-motion: reduce) {
+		.item-reference {
+			transition: none;
+		}
+		
+		.item-reference::before {
+			transition: none;
+		}
+		
+		.item-reference.preview-visible {
+			transform: none;
+		}
+	}
+
+	/* High contrast support */
+	@media (prefers-contrast: high) {
+		.item-reference::before {
+			border-width: 2px;
+		}
+		
+		.item-reference-error {
+			border-width: 2px;
+		}
+	}
+
+	/* Backdrop filter fallback */
+	@supports not (backdrop-filter: blur(4px)) {
+		.item-reference::before {
+			background: rgba(255, 255, 255, 0.8);
+		}
+		
+		:global(html.dark) .item-reference::before {
+			background: rgba(0, 0, 0, 0.7);
+		}
+		
+		.item-reference-error {
+			background: rgba(239, 68, 68, 0.1);
+		}
+		
+		:global(html.dark) .item-reference-error {
+			background: rgba(239, 68, 68, 0.15);
+		}
+	}
+</style> 

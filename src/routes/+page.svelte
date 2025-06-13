@@ -5,7 +5,7 @@
 	import SEO from '$lib/SEO.svelte';
 	import { activitiesByYear } from '$lib/data/activities';
 	import { base } from '$app/paths';
-	import ItemReference from '$lib/components/molecules/ItemReference.svelte';
+	import ItemReference from '$lib/components/reference/ItemReference.svelte';
 	import { browser } from '$app/environment';
 	import type { PageData } from './$types';
 

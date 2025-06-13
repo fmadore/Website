@@ -198,15 +198,6 @@
 		bottom: calc(100% + 12px);
 		left: 50%;
 		transform: translateX(-50%);
-		background: rgba(255, 255, 255, 0.95);
-		backdrop-filter: blur(20px);
-		-webkit-backdrop-filter: blur(20px);
-		border: 1px solid rgba(255, 255, 255, 0.2);
-		border-radius: var(--border-radius-xl);
-		box-shadow:
-			0 25px 50px -12px rgba(0, 0, 0, 0.15),
-			0 0 0 1px rgba(255, 255, 255, 0.1),
-			inset 0 1px 0 rgba(255, 255, 255, 0.3);
 		padding: 0;
 		width: 350px;
 		max-width: 90vw;
@@ -217,10 +208,33 @@
 		line-height: 1.5;
 		color: var(--color-text);
 		overflow: hidden;
+		
+		/* Improved glassmorphism for better readability */
+		backdrop-filter: blur(8px) saturate(120%);
+		-webkit-backdrop-filter: blur(8px) saturate(120%);
+		
+		/* Higher opacity background for better text readability */
+		background: linear-gradient(
+			135deg,
+			rgba(255, 255, 255, 0.95) 0%,
+			rgba(var(--color-primary-rgb), 0.05) 50%,
+			rgba(var(--color-accent-rgb), 0.03) 100%
+		);
+		
+		/* Subtle border */
+		border: 1px solid rgba(var(--color-primary-rgb), 0.2);
+		border-radius: var(--border-radius-xl);
+		
+		/* Optimized shadow for better contrast */
+		box-shadow: 
+			0 20px 40px -8px rgba(31, 38, 135, 0.2),
+			0 0 0 1px rgba(255, 255, 255, 0.3),
+			inset 0 1px 0 rgba(255, 255, 255, 0.4);
+		
 		/* Initial state for animation */
 		opacity: 0;
 		transform: translateX(-50%) translateY(10px) scale(0.95);
-		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	.preview-card.positioned {
@@ -230,30 +244,40 @@
 
 	.preview-card.card-clicked {
 		transform: translateX(-50%) translateY(-5px) scale(1.02);
+		
+		/* Enhanced click shadow */
 		box-shadow:
-			0 32px 64px -12px rgba(0, 0, 0, 0.25),
+			0 32px 64px -12px rgba(31, 38, 135, 0.25),
 			0 0 0 1px rgba(var(--color-primary-rgb), 0.3),
 			inset 0 1px 0 rgba(255, 255, 255, 0.4);
+		
 		border-color: rgba(var(--color-primary-rgb), 0.3);
 	}
-	/* Dark mode styles */
+
+	/* Dark mode styles with better readability */
 	:global(html.dark) .preview-card {
-		background: rgba(var(--color-background-dark-rgb), 0.6);
-		border-color: rgba(var(--color-primary-dark-rgb), 0.2);
-		box-shadow: var(--shadow-xl-dark);
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-background-dark-rgb, 17, 24, 39), 0.95) 0%,
+			rgba(var(--color-primary-rgb), 0.08) 50%,
+			rgba(var(--color-accent-rgb), 0.05) 100%
+		);
+		
+		border: 1px solid rgba(var(--color-primary-rgb), 0.3);
+		
+		box-shadow: 
+			0 20px 40px -8px rgba(0, 0, 0, 0.4),
+			0 0 0 1px rgba(255, 255, 255, 0.1),
+			inset 0 1px 0 rgba(255, 255, 255, 0.15);
 	}
 
 	:global(html.dark) .preview-card.card-clicked {
-		transform: scale(0.97);
-		box-shadow: var(--shadow-lg-dark);
-	}
-
-	:global(html.dark) .card-arrow {
-		background-color: rgba(
-			var(--color-primary-dark-rgb),
-			0.1
-		); /* Consolidated from original :global rule */
-		border-color: rgba(55, 65, 81, 0.3); /* Consolidated from non-:global rule at line 385 */
+		box-shadow: 
+			0 32px 64px -12px rgba(0, 0, 0, 0.4),
+			0 0 0 1px rgba(var(--color-primary-rgb), 0.3),
+			inset 0 1px 0 rgba(255, 255, 255, 0.15);
+		
+		border-color: rgba(var(--color-primary-rgb), 0.3);
 	}
 
 	/* Position below variant */
@@ -280,7 +304,7 @@
 		background: linear-gradient(
 			135deg,
 			rgba(var(--color-primary-rgb), 0.1),
-			rgba(var(--color-accent), 0.1)
+			rgba(var(--color-accent-rgb), 0.1)
 		);
 	}
 
@@ -289,7 +313,7 @@
 		height: 100%;
 		object-fit: cover;
 		display: block;
-		transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+		transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	.image-overlay {
@@ -299,7 +323,7 @@
 			135deg,
 			rgba(var(--color-primary-rgb), 0.05) 0%,
 			transparent 50%,
-			rgba(var(--color-accent), 0.05) 100%
+			rgba(var(--color-accent-rgb), 0.05) 100%
 		);
 		opacity: 0;
 		transition: opacity 0.3s ease;
@@ -308,7 +332,22 @@
 	.card-content {
 		padding: var(--spacing-4);
 		position: relative;
-		background: linear-gradient(180deg, transparent 0%, rgba(var(--color-background), 0.02) 100%);
+		
+		/* Improved content area background for readability */
+		background: linear-gradient(
+			180deg, 
+			rgba(255, 255, 255, 0.7) 0%, 
+			rgba(255, 255, 255, 0.9) 100%
+		);
+	}
+	
+	/* Dark mode content area */
+	:global(html.dark) .card-content {
+		background: linear-gradient(
+			180deg, 
+			rgba(17, 24, 39, 0.8) 0%, 
+			rgba(17, 24, 39, 0.95) 100%
+		);
 	}
 
 	.view-more-hint {
@@ -317,14 +356,24 @@
 		align-items: center;
 		justify-content: space-between;
 		padding: var(--spacing-2) var(--spacing-3);
-		background: rgba(var(--color-primary-rgb), 0.08);
 		border-radius: var(--border-radius-md);
 		color: var(--color-primary);
 		font-size: var(--font-size-xs);
 		font-weight: 500;
 		opacity: 0;
 		transform: translateY(10px);
-		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+		
+		/* Glassmorphism for hint */
+		backdrop-filter: blur(4px);
+		-webkit-backdrop-filter: blur(4px);
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.08) 0%,
+			rgba(var(--color-primary-rgb), 0.05) 100%
+		);
+		border: 1px solid rgba(var(--color-primary-rgb), 0.2);
+		
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	.hint-text {
@@ -342,7 +391,7 @@
 		border-radius: 50%;
 		font-size: 10px;
 		transform: translateX(-3px);
-		transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+		transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	.card-link {
@@ -377,20 +426,25 @@
 	/* ARROW STYLES */
 	.card-arrow {
 		position: absolute;
-		bottom: -10px; /* Adjusted to ensure visibility */
+		bottom: -10px;
 		left: 50%;
 		width: 20px;
 		height: 20px;
-		background: inherit; /* Inherits from .preview-card */
-		border: 1px solid transparent; /* Base border, color set in normal/dark mode */
+		background: inherit;
+		border: 1px solid rgba(255, 255, 255, 0.2);
 		border-radius: 3px;
 		transform: translateX(-50%) rotate(45deg);
-		z-index: 1; /* Ensure arrow is above backdrop but below content */
+		z-index: 1;
 	}
 
 	.position-below .card-arrow {
 		bottom: auto;
 		top: -10px;
+	}
+
+	/* Dark mode arrow */
+	:global(html.dark) .card-arrow {
+		border-color: rgba(255, 255, 255, 0.1);
 	}
 
 	.card-title {
@@ -404,6 +458,7 @@
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
 	}
+
 	.card-authors {
 		margin-bottom: var(--spacing-1);
 		color: var(--color-text-light);
@@ -418,8 +473,17 @@
 		font-weight: 600;
 		display: inline-block;
 		padding: 2px 8px;
-		background: rgba(var(--color-primary-rgb), 0.1);
 		border-radius: var(--border-radius);
+		
+		/* Glassmorphism for date badge */
+		backdrop-filter: blur(4px);
+		-webkit-backdrop-filter: blur(4px);
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.1) 0%,
+			rgba(var(--color-primary-rgb), 0.05) 100%
+		);
+		border: 1px solid rgba(var(--color-primary-rgb), 0.2);
 	}
 
 	.card-meta {
@@ -441,15 +505,44 @@
 		outline-offset: 2px;
 	}
 
-	/* Animation for entrance */
-	@keyframes slideIn {
-		from {
-			opacity: 0;
-			transform: translateX(-50%) translateY(15px) scale(0.9);
+	/* Reduced motion support */
+	@media (prefers-reduced-motion: reduce) {
+		.preview-card {
+			transition: none;
 		}
-		to {
-			opacity: 1;
-			transform: translateX(-50%) translateY(0) scale(1);
+		
+		.card-link:hover .card-image {
+			transform: none;
+		}
+		
+		.view-more-hint {
+			transition: none;
+		}
+	}
+
+	/* High contrast support */
+	@media (prefers-contrast: high) {
+		.preview-card {
+			border-width: 2px;
+		}
+	}
+
+	/* Backdrop filter fallback */
+	@supports not (backdrop-filter: blur(8px)) {
+		.preview-card {
+			background: rgba(255, 255, 255, 0.98);
+		}
+		
+		:global(html.dark) .preview-card {
+			background: rgba(17, 24, 39, 0.98);
+		}
+		
+		.view-more-hint {
+			background: rgba(var(--color-primary-rgb), 0.1);
+		}
+		
+		.card-date {
+			background: rgba(var(--color-primary-rgb), 0.1);
 		}
 	}
 
