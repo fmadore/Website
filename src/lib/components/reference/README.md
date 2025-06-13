@@ -22,24 +22,29 @@ Preview card that appears on hover/click with item details.
 - **Features**: Smart positioning, optimized shadows, solid content backgrounds
 - **Usage**: Used internally by ItemReference
 
-## Glassmorphism Design Compliance
+## Global CSS System Integration
 
-All components follow the established glassmorphism design system:
+All components are fully integrated with the global CSS design system using CSS variables for consistency:
+
+### CSS Variables Used
+- **Spacing**: `--spacing-1`, `--spacing-2`, `--spacing-3` for consistent padding/margins
+- **Typography**: `--font-size-*`, `--font-weight-*`, `--line-height-*` for text styling
+- **Colors**: `--color-primary-rgb`, `--color-accent-rgb` with global opacity variables
+- **Opacity**: `--opacity-very-low`, `--opacity-low`, `--opacity-medium`, `--opacity-medium-high`, `--opacity-high`
+- **Borders**: `--border-width-thin`, `--border-radius-*` for consistent borders
+- **Shadows**: `--shadow-sm`, `--shadow`, `--shadow-md`, `--shadow-lg`, `--shadow-xl`, `--shadow-2xl`
+- **Transforms**: `--transform-lift-sm`, `--transform-lift-md`
 
 ### Blur Values (Optimized for Readability)
-- **ItemReference**: 2px blur (minimal hover effects)
-- **ReferenceLink**: 4px blur (readable interactive elements)  
-- **ReferencePreviewCard**: 8px blur (content areas with high opacity backgrounds)
+- **ItemReference**: 2px blur (minimal hover effects using global opacity values)
+- **ReferenceLink**: 4px blur (readable interactive elements with global variables)  
+- **ReferencePreviewCard**: 8px blur (content areas with global shadow and opacity system)
 
-### Gradient Patterns
-All use 135-degree gradients with consistent opacity levels:
-- Light mode: Primary/accent colors with 0.01-0.08 opacity
-- Dark mode: Enhanced opacity (0.02-0.12) for better visibility
-
-### Box Shadows
-- Standard glassmorphism shadows with inset highlights
-- Enhanced shadows on hover/active states
-- Dark mode specific shadow adaptations
+### Design System Benefits
+- **Consistency**: All components use the same global design tokens
+- **Maintainability**: Changes to global values automatically update all components
+- **Scalability**: Easy to extend with new variants using existing system
+- **Theme compatibility**: Seamless light/dark mode transitions
 
 ### Accessibility
 - Full keyboard navigation support
