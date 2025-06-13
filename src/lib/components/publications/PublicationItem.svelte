@@ -92,11 +92,11 @@
 	});
 </script>
 
-<li class="p-0 list-none">
-	<div class="card p-4">
-		<div class="grid md:grid-cols-4 gap-4">
+<li class="publication-item">
+	<div class="publication-card glass-card">
+		<div class="publication-grid">
 			{#if publication.image}
-				<div class="col-span-1">
+				<div class="publication-image-container">
 					<img 
 						src={publication.image} 
 						alt={publication.title} 
@@ -109,23 +109,24 @@
 				</div>
 			{/if}
 
-			<div class={publication.image ? 'col-span-3' : 'col-span-4'}>
-				<div class="mb-2">
+			<div class="publication-content">
+				<div class="publication-meta">
 					<!-- Use typeLabel from formattedCitation -->
-					<span class="text-primary text-sm">{formattedCitation.typeLabel}</span>
+					<span class="publication-type">{formattedCitation.typeLabel}</span>
 					{#if publication.language && publication.language.includes(',')}
-						<span class="text-light text-sm ml-2">({publication.language})</span>
+						<span class="publication-language">({publication.language})</span>
 					{:else if publication.language && publication.language !== 'English'}
-						<span class="text-light text-sm ml-2">({publication.language})</span>
+						<span class="publication-language">({publication.language})</span>
 					{/if}
 				</div>
 
-				<h3 class="text-default font-medium mb-2">
-					<a href="{base}/publications/{publication.id}" class="hover:text-primary">
+				<h3 class="publication-title">
+					<a href="{base}/publications/{publication.id}" class="publication-title-link">
 						{publication.title}
 					</a>
 				</h3>
-				<div class="text-light text-sm mb-2">
+				
+				<div class="publication-details">
 					<!-- Render prefix and the constructed author string -->
 					{displayData.listPrefix}{displayData.authorString}
 					<!-- Space, then (Year). Only if year is defined -->
@@ -139,7 +140,7 @@
 						{@html formattedCitation.detailsHtml}
 						<!-- Supervisor info remains separate -->
 						{#if publication.advisors && publication.advisors.length > 0}
-							<div class="mt-1">
+							<div class="advisor-info">
 								<span>Supervised by </span>
 								{#each publication.advisors as advisor, i}
 									{#if advisor !== 'Frédérick Madore'}
@@ -168,7 +169,7 @@
 
 					<!-- Preface information -->
 					{#if publication.prefacedBy}
-						<div class="mt-1">
+						<div class="preface-info">
 							<span>Preface by </span>
 							{#if publication.prefacedBy !== 'Frédérick Madore'}
 								<button
@@ -186,29 +187,31 @@
 				</div>
 
 				{#if publication.abstract}
-					<div class="text-light text-sm mb-4">
+					<div class="publication-abstract">
 						{truncateAbstract(publication.abstract)}
 					</div>
 				{/if}
 
 				{#if publication.tags && publication.tags.length > 0}
-					<TagList
-						tags={publication.tags}
-						baseUrl="/publications?tag="
-						sectionTitle=""
-						sectionClass="mt-3"
-						listClass="flex flex-wrap gap-2"
-					/>
+					<div class="publication-tags">
+						<TagList
+							tags={publication.tags}
+							baseUrl="/publications?tag="
+							sectionTitle=""
+							sectionClass=""
+							listClass="tag-list"
+						/>
+					</div>
 				{/if}
 
 				{#if publication.additionalUrls && publication.additionalUrls.length > 0}
-					<div class="mt-3">
+					<div class="publication-links">
 						{#each publication.additionalUrls as url, i}
 							<a
 								href={url.url}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="btn-sm btn-outline-primary mr-2"
+								class="publication-link-btn glass-button btn-outline-primary"
 							>
 								{url.label || `Link ${i + 1}`}
 							</a>
@@ -221,60 +224,222 @@
 </li>
 
 <style>
-	/* Only keep minimal styles not covered by our CSS architecture */
-	.author-btn {
-		background: none;
-		border: none;
-		padding: 0 var(--spacing-1); /* Add small padding */
-		font-size: inherit;
-		font-family: inherit;
-		color: var(--color-primary); /* Use theme primary color */
-		text-decoration: none; /* Remove default underline */
-		cursor: pointer;
-		display: inline;
-		border-radius: var(--border-radius-sm); /* Add slight rounding */
+	.publication-item {
+		padding: 0;
+		list-style: none;
+		margin-bottom: var(--spacing-6);
 	}
 
-	.author-btn:hover {
-		/* Use primary color with low opacity for background */
-		background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
-		text-decoration: underline; /* Add underline on hover */
+	.publication-card {
+		padding: var(--spacing-4);
+		border-radius: var(--border-radius-lg);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		position: relative;
+		/* Enhanced glassmorphism with subtle gradient overlay to match ContentBody */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.03) 0%,
+			rgba(var(--color-highlight-rgb), 0.02) 50%,
+			rgba(var(--color-accent-rgb), 0.01) 100%
+		);
 	}
 
-	/* Replace with hover:shadow-md utility */
-	/*
-    .hover-shadow:hover {
-        box-shadow: var(--shadow-md);
-    }
-    */
+	.publication-card:hover {
+		transform: var(--transform-lift-sm);
+		/* Enhanced hover effect with stronger gradient */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.05) 0%,
+			rgba(var(--color-highlight-rgb), 0.03) 50%,
+			rgba(var(--color-accent-rgb), 0.02) 100%
+		);
+	}
 
-	/* Replace with font-medium utility */
-	/*
-    .font-weight-500 {
-        font-weight: 500;
-    }
-    */
+	.publication-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--spacing-4);
+	}
 
-	/* Replace with text-sm utility */
-	/*
-    .text-sm {
-        font-size: 0.875rem;
-    }
-    */
+	@media (min-width: 768px) {
+		.publication-grid {
+			grid-template-columns: auto 1fr;
+		}
+	}
 
-	/* Replace with ml-2 utility */
-	/*
-    .ml-2 {
-        margin-left: 0.5rem;
-    }
-    */
+	.publication-image-container {
+		display: flex;
+		justify-content: center;
+	}
+
+	@media (min-width: 768px) {
+		.publication-image-container {
+			justify-content: flex-start;
+		}
+	}
 
 	.publication-cover-image {
 		width: 100%;
+		max-width: 200px;
 		height: auto;
 		aspect-ratio: 5/7; /* Typical book cover ratio */
 		object-fit: cover;
-		border-radius: 4px;
+		border-radius: var(--border-radius);
 		box-shadow: var(--shadow-md);
+		transition: box-shadow 0.3s ease;
+	}
+
+	.publication-card:hover .publication-cover-image {
+		box-shadow: var(--shadow-lg);
+	}
+
+	.publication-content {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-2);
+	}
+
+	.publication-meta {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-2);
+		margin-bottom: var(--spacing-1);
+	}
+
+	.publication-type {
+		color: var(--color-primary);
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-medium);
+	}
+
+	.publication-language {
+		color: var(--color-text-muted);
+		font-size: var(--font-size-sm);
+	}
+
+	.publication-title {
+		font-size: var(--font-size-xl);
+		font-weight: var(--font-weight-medium);
+		margin-bottom: var(--spacing-2);
+		color: var(--color-text-emphasis);
+		line-height: var(--line-height-snug);
+	}
+
+	.publication-title-link {
+		color: inherit;
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	.publication-title-link:hover {
+		color: var(--color-primary);
+	}
+
+	.publication-details {
+		color: var(--color-text-light);
+		font-size: var(--font-size-sm);
+		margin-bottom: var(--spacing-2);
+		line-height: var(--line-height-relaxed);
+	}
+
+	.advisor-info,
+	.preface-info {
+		margin-top: var(--spacing-1);
+	}
+
+	.author-btn {
+		background: none;
+		border: none;
+		padding: var(--spacing-1);
+		font-size: inherit;
+		font-family: inherit;
+		color: var(--color-primary);
+		text-decoration: none;
+		cursor: pointer;
+		display: inline;
+		border-radius: var(--border-radius-sm);
+		font-weight: var(--font-weight-medium);
+		transition: all 0.2s ease;
+	}
+
+	.author-btn:hover {
+		background-color: rgba(var(--color-primary-rgb), 0.1);
+		text-decoration: underline;
+	}
+
+	.author-btn:focus-visible {
+		outline: 2px solid var(--color-highlight);
+		outline-offset: 2px;
+		box-shadow: 0 0 0 4px rgba(var(--color-highlight-rgb), 0.2);
+	}
+
+	.publication-abstract {
+		color: var(--color-text-light);
+		font-size: var(--font-size-sm);
+		margin-bottom: var(--spacing-4);
+		line-height: var(--line-height-relaxed);
+	}
+
+	.publication-tags {
+		margin-top: var(--spacing-3);
+	}
+
+	.publication-tags :global(.tag-list) {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--spacing-2);
+	}
+
+	.publication-links {
+		margin-top: var(--spacing-3);
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--spacing-2);
+	}
+
+	.publication-link-btn {
+		font-size: var(--font-size-sm);
+		padding: var(--spacing-2) var(--spacing-3);
+		border-radius: var(--border-radius);
+		text-decoration: none;
+		font-weight: var(--font-weight-medium);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	/* External link indicator for publication links */
+	.publication-link-btn:after {
+		content: '↗';
+		font-size: var(--font-size-xs);
+		margin-left: var(--spacing-1);
+		opacity: var(--opacity-high);
+	}
+
+	/* Responsive adjustments */
+	@media (max-width: 640px) {
+		.publication-card {
+			padding: var(--spacing-3);
+		}
+
+		.publication-title {
+			font-size: var(--font-size-lg);
+		}
+
+		.publication-cover-image {
+			max-width: 150px;
+		}
+	}
+
+	/* Respect user motion preferences */
+	@media (prefers-reduced-motion: reduce) {
+		.publication-card,
+		.publication-cover-image,
+		.author-btn,
+		.publication-link-btn {
+			transition: none;
+		}
+
+		.publication-card:hover {
+			transform: none;
+		}
 	}
 </style>
