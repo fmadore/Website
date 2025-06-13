@@ -8,7 +8,7 @@
 		toggleItem, // Function to toggle an item
 		counts, // Item counts
 		searchThreshold = 6, // Show search when items > this number
-		initialDisplayCount = 8, // Initial number of items to show
+		initialDisplayCount = 9, // Initial number of items to show
 		showSearch = true // Whether to show search functionality
 	}: {
 		title: string;

@@ -107,9 +107,27 @@ const initialFilters: ActivePublicationFilters = {
 
 export const activeFilters = createActiveFiltersStore(initialFilters);
 
+// Define type labels for sorting (matching the ones used in the UI)
+const typeLabels: { [key: string]: string } = {
+	blogpost: 'Blog post',
+	book: 'Book',
+	chapter: 'Book chapter',
+	encyclopedia: 'Encyclopedia entry',
+	article: 'Journal article',
+	'masters-thesis': "Master's thesis",
+	'phd-dissertation': 'Ph.D. dissertation',
+	report: 'Report',
+	'special-issue': 'Special issue'
+};
+
 // Create a store for available filter options (automatically derived from publications)
 export const filterOptions = writable({
-	types: Object.keys(publicationsByType).sort(),
+	types: Object.keys(publicationsByType).sort((a, b) => {
+		// Sort by display labels instead of raw values
+		const labelA = typeLabels[a] || a;
+		const labelB = typeLabels[b] || b;
+		return labelA.localeCompare(labelB);
+	}),
 	// Years remain the same here, representing all available options
 	years: Object.keys(publicationsByYear)
 		.map(Number)
@@ -384,7 +402,12 @@ export const displayedTypes = derived(activeFilters, ($activeFilters) => {
 		return true;
 	});
 	const types = new Set(relevantPublications.map((pub) => pub.type));
-	return Array.from(types).sort();
+	return Array.from(types).sort((a, b) => {
+		// Sort by display labels instead of raw values
+		const labelA = typeLabels[a] || a;
+		const labelB = typeLabels[b] || b;
+		return labelA.localeCompare(labelB);
+	});
 });
 
 // Derive displayed tags based on other active filters
