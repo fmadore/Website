@@ -1,5 +1,5 @@
 <script lang="ts">
-	import RangeSlider from '../panels/RangeSlider.svelte';
+	import RangeSlider from './RangeSlider.svelte';
 	import { createEventDispatcher } from 'svelte';
 
 
@@ -97,7 +97,7 @@
 	);
 </script>
 
-<div class="filter-section-content">
+<div class="filter-section-content glass-panel-light">
 	<div class="filter-section-header">
 		<h3 class="filter-section-title">{title}</h3>
 		<div class="range-display">
@@ -127,6 +127,13 @@
 </div>
 
 <style>
+	.filter-section-content {
+		padding: var(--spacing-4);
+		border-radius: var(--border-radius-md);
+		margin-bottom: var(--spacing-4);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
 	.filter-section-header {
 		display: flex;
 		justify-content: space-between;
@@ -138,31 +145,37 @@
 	.filter-section-title {
 		font-family: var(--font-family-serif);
 		font-size: var(--font-size-lg);
-		font-weight: 700;
+		font-weight: var(--font-weight-bold);
 		color: var(--color-text-emphasis);
 		margin: 0;
 		padding-bottom: var(--spacing-2);
-		border-bottom: 1px solid var(--color-border);
+		border-bottom: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-medium));
 		flex-shrink: 0;
 	}
 
 	.range-display {
 		display: flex;
 		align-items: center;
-		background: var(--color-surface-alt);
-		border: 1px solid var(--color-border);
-		border-radius: var(--border-radius);
+		background: rgba(var(--color-surface-rgb), var(--opacity-medium));
+		border: var(--border-width-thin) solid rgba(var(--color-surface-rgb), var(--opacity-medium-high));
+		border-radius: var(--border-radius-md);
 		padding: var(--spacing-2) var(--spacing-3);
-		transition: all 0.2s ease;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+		box-shadow: var(--shadow-sm);
 	}
 
 	.range-display:hover {
-		border-color: var(--color-primary);
+		border-color: rgba(var(--color-accent-rgb), var(--opacity-medium-high));
+		background: rgba(var(--color-accent-rgb), var(--opacity-medium));
+		transform: var(--transform-lift-sm);
+		box-shadow: var(--shadow-md);
 	}
 
 	.range-text {
 		font-size: var(--font-size-sm);
-		font-weight: 600;
+		font-weight: var(--font-weight-semibold);
 		color: var(--color-text);
 		line-height: 1;
 		white-space: nowrap;
@@ -192,14 +205,23 @@
 		font-size: var(--font-size-sm);
 	}
 
-	/* Dark mode enhancements */
+	/* Dark mode overrides */
+	:global(html.dark) .filter-section-content {
+		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium));
+		border: var(--border-width-thin) solid rgba(255, 255, 255, 0.1);
+		box-shadow: 
+			0 8px 32px 0 rgba(0, 0, 0, 0.5),
+			inset 0 1px 0 rgba(255, 255, 255, 0.1);
+	}
+
 	:global(html.dark) .range-display {
-		background: linear-gradient(
-			135deg,
-			var(--color-surface) 0%,
-			color-mix(in srgb, var(--color-surface) 85%, var(--color-primary) 15%) 100%
-		);
-		border-color: var(--color-border);
+		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium));
+		border-color: rgba(255, 255, 255, 0.1);
+	}
+
+	:global(html.dark) .range-display:hover {
+		background: rgba(var(--color-accent-rgb), var(--opacity-medium));
+		border-color: rgba(var(--color-accent-rgb), var(--opacity-medium-high));
 	}
 
 	:global(html.dark) .slider-container {
@@ -208,8 +230,8 @@
 	}
 
 	:global(html.dark) .no-data-message {
-		background: var(--color-surface);
-		border-color: var(--color-border);
+		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium));
+		border-color: rgba(255, 255, 255, 0.1);
 	}
 
 	/* Global range slider styling enhancements */
@@ -259,5 +281,38 @@
 	:global(.rangeSlider .pip.last) {
 		font-weight: 600;
 		color: var(--color-text);
+	}
+
+	/* Responsive design */
+	@media (max-width: 640px) {
+		.filter-section-content {
+			padding: var(--spacing-3);
+		}
+
+		.filter-section-header {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: var(--spacing-2);
+		}
+
+		.range-display {
+			padding: var(--spacing-1) var(--spacing-2);
+		}
+
+		.range-text {
+			font-size: var(--font-size-xs);
+		}
+	}
+
+	/* Respect user motion preferences */
+	@media (prefers-reduced-motion: reduce) {
+		.filter-section-content,
+		.range-display {
+			transition: none;
+		}
+
+		.range-display:hover {
+			transform: none;
+		}
 	}
 </style>
