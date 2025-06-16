@@ -82,30 +82,4 @@
 		margin: 0 auto;
 		padding: 0 1rem;
 	}
-
-	/* Remove the old text-xl and mb-10 styles since they're now handled by PageIntro */
-	/* .text-xl {
-		font-size: 1.25rem;
-	}
-	.mb-10 {
-		margin-bottom: 2.5rem;
-	} */
-
-	/* .research-grid and its responsive styles are now handled by .content-grid */
-	/* Ensure any unique styles for this page that were part of .research-grid are preserved or moved if necessary. */
-	/* For example, if .research-grid had a specific margin-top not covered by .content-grid, that would need to be handled. */
-	/* However, .content-grid now includes margin-top: var(--spacing-8), which was 2rem for .research-grid. */
-
-	/* Remove old card styles - Handled by Card component */
-	/* .project-card, .project-card:hover, .project-card-image, ... etc. */
-
-	/* Responsive grid adjustments */
-	/* These are now handled by the global .content-grid class */
-	/* @media (min-width: 640px) {
-        .research-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    } */
-
-	/* No need for 1024px breakpoint adjustment if 2 columns is sufficient */
 </style>

@@ -2,6 +2,8 @@
 	import SEO from '$lib/SEO.svelte';
 	import RelevantPublications from '$lib/components/panels/RelevantPublications.svelte';
 	import RelevantCommunications from '$lib/components/panels/RelevantCommunications.svelte';
+	import ContentBody from '$lib/components/common/ContentBody.svelte';
+	import ProjectImageBanner from '$lib/components/common/ProjectImageBanner.svelte';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
@@ -82,57 +84,53 @@
 
 			<PageHeader title="Religious Activism on Campuses in Togo and Benin" />
 
-			<div class="project-image">
-				<img
-					src="{base}/images/research/campus-activism.webp"
-					alt="Religious Activism on Campuses in Togo and Benin"
-					class="w-full h-auto"
-					width="800"
-					height="600"
-					loading="lazy"
-					decoding="async"
-				/>
-			</div>
+			<ProjectImageBanner
+				src="{base}/images/research/campus-activism.webp"
+				alt="Religious Activism on Campuses in Togo and Benin"
+				glassEffect="glass-medium"
+			/>
 
-			<div class="project-content">
-				<p>
-					This project uncovers the neglected history of Christian and Muslim student associations
-					at the Université de Lomé (Togo) and the Université d'Abomey-Calavi (Benin), and examines
-					their resilience and adaptability over five decades. While much of the literature has
-					focused on the role of student protests in triggering national conferences in Benin and
-					Togo in the early 1990s, this study broadens the lens to include the significant but often
-					overlooked religious dimension of campus life.
-				</p>
+			<ContentBody variant="default" glassEffect="glass-card">
+				{#snippet children()}
+					<p>
+						This project uncovers the neglected history of Christian and Muslim student associations
+						at the Université de Lomé (Togo) and the Université d'Abomey-Calavi (Benin), and examines
+						their resilience and adaptability over five decades. While much of the literature has
+						focused on the role of student protests in triggering national conferences in Benin and
+						Togo in the early 1990s, this study broadens the lens to include the significant but often
+						overlooked religious dimension of campus life.
+					</p>
 
-				<p>
-					Drawing on interviews with several generations of activists and press coverage from both
-					countries, the research analyses the emergence and evolution of these religious
-					associations under challenging political circumstances: a one-party dictatorship in Togo
-					and a Marxist-Leninist regime in Benin. It explores how these groups navigated
-					authoritarian rule, political liberalisation and the principles of laïcité, while shaping
-					campus dynamics in institutions originally known as strongholds of leftist,
-					anti-imperialist and secular ideologies.
-				</p>
+					<p>
+						Drawing on interviews with several generations of activists and press coverage from both
+						countries, the research analyses the emergence and evolution of these religious
+						associations under challenging political circumstances: a one-party dictatorship in Togo
+						and a Marxist-Leninist regime in Benin. It explores how these groups navigated
+						authoritarian rule, political liberalisation and the principles of laïcité, while shaping
+						campus dynamics in institutions originally known as strongholds of leftist,
+						anti-imperialist and secular ideologies.
+					</p>
 
-				<p>
-					The study reveals the university campus as a microcosm reflecting broader national
-					socio-political trends, while also highlighting the importance of translocal factors in
-					shaping the internal dynamics of these groups. Amidst the massification of university
-					enrolments and rising graduate unemployment in recent decades, faith-based associations
-					have expanded their role beyond religious guidance. Increasingly, they offer a "social
-					curriculum", providing a space for socialisation and a set of skills, norms and moral
-					values that complement the secular academic curriculum.
-				</p>
+					<p>
+						The study reveals the university campus as a microcosm reflecting broader national
+						socio-political trends, while also highlighting the importance of translocal factors in
+						shaping the internal dynamics of these groups. Amidst the massification of university
+						enrolments and rising graduate unemployment in recent decades, faith-based associations
+						have expanded their role beyond religious guidance. Increasingly, they offer a "social
+						curriculum", providing a space for socialisation and a set of skills, norms and moral
+						values that complement the secular academic curriculum.
+					</p>
 
-				<p>
-					By analysing the interplay between religion, politics and education, this book provides
-					new insights into the evolving role of faith in public universities and broader societal
-					transformations in West Africa. It explores the implications of growing religiosity for
-					these public universities as secular institutions, and contributes to our understanding of
-					how religious organisations have coexisted with, and sometimes challenged, traditional
-					student associations since the 1970s.
-				</p>
-			</div>
+					<p>
+						By analysing the interplay between religion, politics and education, this book provides
+						new insights into the evolving role of faith in public universities and broader societal
+						transformations in West Africa. It explores the implications of growing religiosity for
+						these public universities as secular institutions, and contributes to our understanding of
+						how religious organisations have coexisted with, and sometimes challenged, traditional
+						student associations since the 1970s.
+					</p>
+				{/snippet}
+			</ContentBody>
 		</div>
 
 		<div class="sidebar">
@@ -160,19 +158,6 @@
 	.sidebar {
 		width: 100%;
 		margin-top: var(--spacing-8);
-	}
-
-	.project-image {
-		margin-bottom: var(--spacing-8);
-		border-radius: var(--border-radius-md);
-		overflow: hidden;
-		box-shadow: var(--shadow-md);
-	}
-
-	.project-image img {
-		width: 100%;
-		height: auto;
-		display: block;
 	}
 
 	/* Grid layout for medium screens and up */

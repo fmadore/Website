@@ -3,6 +3,8 @@
 	import RelevantPublications from '$lib/components/panels/RelevantPublications.svelte';
 	import RelevantCommunications from '$lib/components/panels/RelevantCommunications.svelte';
 	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
+	import ContentBody from '$lib/components/common/ContentBody.svelte';
+	import ProjectImageBanner from '$lib/components/common/ProjectImageBanner.svelte';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
@@ -84,71 +86,67 @@
 				title="Mining the Islam West Africa Collection: Mapping Print Culture and Intellectual Networks in Francophone Regions"
 			/>
 
-			<div class="project-image">
-				<img
-					src="{base}/images/research/IWAC.webp"
-					alt="Mining the Islam West Africa Collection"
-					class="w-full h-auto"
-					width="800"
-					height="600"
-					loading="lazy"
-					decoding="async"
-				/>
-			</div>
+			<ProjectImageBanner
+				src="{base}/images/research/IWAC.webp"
+				alt="Mining the Islam West Africa Collection"
+				glassEffect="glass-medium"
+			/>
 
-			<div class="project-content">
-				<p>
-					Scholarship on Islam in West Africa has long privileged manuscript traditions, leaving the
-					vibrant Muslim periodical press of the 1980s, 90s, and early 2000s largely unexplored. My
-					project fills this gap by tracing the emergence of modern Islamic print culture and the
-					networks of Western-educated Francophone Muslim intellectuals who animated it in Benin,
-					Burkina Faso, Côte d'Ivoire and Togo.
-				</p>
+			<ContentBody variant="default" glassEffect="glass-card">
+				{#snippet children()}
+					<p>
+						Scholarship on Islam in West Africa has long privileged manuscript traditions, leaving the
+						vibrant Muslim periodical press of the 1980s, 90s, and early 2000s largely unexplored. My
+						project fills this gap by tracing the emergence of modern Islamic print culture and the
+						networks of Western-educated Francophone Muslim intellectuals who animated it in Benin,
+						Burkina Faso, Côte d'Ivoire and Togo.
+					</p>
 
-				<p>
-					Working with the <a
-						href="https://islam.zmo.de/s/westafrica/"
-						target="_blank"
-						rel="noopener noreferrer"><em>Islam West Africa Collection</em> (IWAC)</a
-					>, I combine digital humanities methods with close reading to analyse around 1,500 Islamic
-					publications published between 1980 and 2020. Topic modelling, word embeddings, and
-					sentiment analysis chart the shifting meanings of key religious terms (<em>ummah</em>,
-					Salafism, <em>jihad</em>) alongside political concepts such as democracy and
-					<em>laïcité</em>), revealing the themes, semantic turns and affective registers that have
-					shaped Muslim public debate during a period of rapid socio-political change.
-				</p>
+					<p>
+						Working with the <a
+							href="https://islam.zmo.de/s/westafrica/"
+							target="_blank"
+							rel="noopener noreferrer"><em>Islam West Africa Collection</em> (IWAC)</a
+						>, I combine digital humanities methods with close reading to analyse around 1,500 Islamic
+						publications published between 1980 and 2020. Topic modelling, word embeddings, and
+						sentiment analysis chart the shifting meanings of key religious terms (<em>ummah</em>,
+						Salafism, <em>jihad</em>) alongside political concepts such as democracy and
+						<em>laïcité</em>), revealing the themes, semantic turns and affective registers that have
+						shaped Muslim public debate during a period of rapid socio-political change.
+					</p>
 
-				<p>
-					Network analysis maps the contours of an "Islamic Francophonie", visualising the links
-					between authors, publishers, NGOs and state institutions. These visualisations show how
-					French became a strategic language for Islamic debate among urban elites, and how
-					regionally rooted networks engaged with - rather than merely echoed - broader Arab-Islamic
-					currents.
-				</p>
+					<p>
+						Network analysis maps the contours of an "Islamic Francophonie", visualising the links
+						between authors, publishers, NGOs and state institutions. These visualisations show how
+						French became a strategic language for Islamic debate among urban elites, and how
+						regionally rooted networks engaged with - rather than merely echoed - broader Arab-Islamic
+						currents.
+					</p>
 
-				<p>
-					By integrating these computational insights with ethnographic fieldwork and close textual
-					study, the project offers a composite portrait of Islamic thought in Francophone West
-					Africa - one that situates religious ideas within their material, linguistic and political
-					ecologies. In doing so, it advances the intellectual history of the region and proposes a
-					new approach to the study of print publics at the intersection of religion, morality, and
-					civic life.
-				</p>
+					<p>
+						By integrating these computational insights with ethnographic fieldwork and close textual
+						study, the project offers a composite portrait of Islamic thought in Francophone West
+						Africa - one that situates religious ideas within their material, linguistic and political
+						ecologies. In doing so, it advances the intellectual history of the region and proposes a
+						new approach to the study of print publics at the intersection of religion, morality, and
+						civic life.
+					</p>
 
-				<!-- Enhanced iframe with glassmorphism and responsive design -->
-				<div class="iframe-section">
-					<IframeRenderer
-						id="iwac-overview-visualization"
-						src="https://fmadore.github.io/IWAC-overview/index.html"
-						title="Islam West Africa Collection Overview"
-						containerClass="iframe-container iframe-with-header iframe-interactive iframe-container-lg"
-						scrolling="yes"
-						allowfullscreen={true}
-						glassEffect={true}
-						glassVariant="glass-medium"
-					/>
-				</div>
-			</div>
+					<!-- Enhanced iframe with glassmorphism and responsive design -->
+					<div class="iframe-section">
+						<IframeRenderer
+							id="iwac-overview-visualization"
+							src="https://fmadore.github.io/IWAC-overview/index.html"
+							title="Islam West Africa Collection Overview"
+							containerClass="iframe-container iframe-with-header iframe-interactive iframe-container-lg"
+							scrolling="yes"
+							allowfullscreen={true}
+							glassEffect={true}
+							glassVariant="glass-medium"
+						/>
+					</div>
+				{/snippet}
+			</ContentBody>
 		</div>
 
 		<div class="sidebar">
@@ -171,19 +169,6 @@
 		margin-top: var(--spacing-8);
 	}
 
-	.project-image {
-		margin-bottom: var(--spacing-8);
-		border-radius: var(--border-radius-md);
-		overflow: hidden;
-		box-shadow: var(--shadow-md);
-	}
-
-	.project-image img {
-		width: 100%;
-		height: auto;
-		display: block;
-	}
-
 	.iframe-section {
 		margin-top: var(--spacing-12);
 		margin-bottom: var(--spacing-8);
@@ -194,14 +179,6 @@
 			rgba(var(--color-highlight-rgb), 0.05) 100%);
 		padding: var(--spacing-6);
 		border-radius: var(--border-radius-lg);
-	}
-
-	.iframe-section-title {
-		font-size: var(--font-size-xl);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-emphasis);
-		margin-bottom: var(--spacing-6);
-		font-family: var(--font-family-serif);
 	}
 
 	/* Grid layout for medium screens and up */
@@ -220,23 +197,5 @@
 			width: auto; /* Reset width */
 			margin-top: 0; /* Reset margin */
 		}
-	}
-
-	/* Enhanced responsive adjustments for iframe section */
-	@media (max-width: 640px) {
-		.iframe-section-title {
-			font-size: var(--font-size-lg);
-			margin-bottom: var(--spacing-4);
-		}
-	}
-
-	/* Debug glassmorphism - temporary styles to verify glass effects are working */
-	:global(.iframe-container.glass-medium) {
-		/* Ensure glassmorphism is visible */
-		background: rgba(255, 255, 255, 0.15) !important;
-		-webkit-backdrop-filter: blur(12px) !important;
-		backdrop-filter: blur(12px) !important;
-		border: 1px solid rgba(255, 255, 255, 0.25) !important;
-		box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.4) !important;
 	}
 </style>

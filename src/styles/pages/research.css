@@ -1,5 +1,6 @@
 /* Research projects styles */
 
+/* Utility classes for research-specific content that may still be needed */
 .research-project {
 	margin-bottom: var(--spacing-12);
 }
@@ -19,28 +20,6 @@
 	margin-bottom: var(--spacing-8);
 }
 
-.project-image {
-	position: relative;
-	height: 15rem;
-	background-color: var(--color-surface-alt);
-	border-radius: var(--border-radius);
-	margin-bottom: var(--spacing-8);
-	overflow: hidden;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.project-image img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-
-.project-content {
-	margin-bottom: var(--spacing-12);
-}
-
 .project-section {
 	margin-bottom: var(--spacing-8);
 }
@@ -51,6 +30,7 @@
 	margin-bottom: var(--spacing-4);
 }
 
+/* Method cards for research methodology sections */
 .project-method-cards {
 	display: grid;
 	grid-template-columns: 1fr;
@@ -84,63 +64,4 @@
 
 .method-list li {
 	margin-bottom: var(--spacing-2);
-}
-
-.research-grid {
-	display: grid;
-	grid-template-columns: 1fr;
-	gap: var(--spacing-8);
-}
-
-@media (min-width: 640px) {
-	.research-grid {
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
-
-.project-card {
-	border-radius: var(--border-radius);
-	border: 1px solid var(--color-border);
-	overflow: hidden;
-	transition:
-		box-shadow 0.3s ease,
-		transform 0.3s ease;
-}
-
-.project-card:hover {
-	box-shadow: var(--shadow-md);
-}
-
-.project-card-image {
-	height: 12rem;
-	background-color: var(--color-surface-alt);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.project-card-body {
-	padding: var(--spacing-6);
-}
-
-.project-card-title {
-	font-size: var(--font-size-xl);
-	font-weight: 600;
-	margin-bottom: var(--spacing-2);
-}
-
-.project-card-years {
-	font-size: var(--font-size-sm);
-	color: var(--color-text-light);
-	margin-bottom: var(--spacing-3);
-}
-
-.project-card-description {
-	margin-bottom: var(--spacing-4);
-}
-
-.project-card-link {
-	display: inline-block;
-	color: var(--color-primary);
-	font-weight: 500;
 }
