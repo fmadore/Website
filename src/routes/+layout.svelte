@@ -15,6 +15,7 @@
 	let { data, children }: LayoutProps = $props();
 
 	let gtmLoaded = $state(false);
+	let isTransitioning = $state(false);
 	const GTM_ID = 'G-DQ644SW7RG'; // Your Measurement ID
 
 	function loadGtm() {
@@ -91,11 +92,21 @@
 	});
 
 	afterNavigate(() => {
-		animationsEnabled.set(true);
+		// Set transitioning state
+		isTransitioning = true;
+		
+		// Temporarily disable animations during navigation to prevent flash
+		animationsEnabled.set(false);
+		
+		// Re-enable animations and remove transition state after page settles
+		setTimeout(() => {
+			animationsEnabled.set(true);
+			isTransitioning = false;
+		}, 100);
 	});
 </script>
 
-<div class="layout-container">
+<div class="layout-container" class:page-transitioning={isTransitioning}>
 	<Header />
 
 	<main class="main-content-area">

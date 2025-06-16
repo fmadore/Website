@@ -1,5 +1,22 @@
 /* Scroll Animation Classes */
 
+/* Prevent flash of unstyled content for animated elements */
+[data-animate]:not(.animate-in) {
+	opacity: 0;
+	transform: translateY(20px);
+}
+
+/* Ensure smooth page transitions */
+.main-content-area {
+	opacity: 1;
+	transition: opacity 0.2s ease-in-out;
+}
+
+/* Page transition states */
+.page-transitioning .main-content-area {
+	opacity: 0;
+}
+
 /* Base animation states */
 .animate-in {
 	opacity: 1 !important;

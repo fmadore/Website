@@ -102,6 +102,7 @@ export function scrollAnimate(
 		element.style.opacity = '1';
 		element.style.transform = 'none';
 		element.style.transition = 'none';
+		element.removeAttribute('data-animate');
 
 		// Clean up the inline style after the current frame to avoid interfering
 		// with other potential style changes.
@@ -125,11 +126,12 @@ export function scrollAnimate(
 
 	const finalOptions = { ...defaultOptions, ...options };
 	
-	// Set initial state
-	element.style.opacity = '0';
-	element.style.transform = 'translateY(30px)';
+	// Add data attribute for CSS control
+	element.setAttribute('data-animate', 'true');
+	
+	// Set transition immediately
 	element.style.transition = `all ${finalOptions.duration || 600}ms ${finalOptions.easing || 'cubic-bezier(0.4, 0, 0.2, 1)'}`;
-
+	
 	const observer = new IntersectionObserver(
 		(entries) => {
 			entries.forEach((entry) => {
@@ -137,6 +139,7 @@ export function scrollAnimate(
 					setTimeout(() => {
 						element.style.opacity = '1';
 						element.style.transform = 'translateY(0)';
+						element.classList.add('animate-in');
 						
 						if (options.animationClass) {
 							element.classList.add(options.animationClass);
@@ -149,6 +152,7 @@ export function scrollAnimate(
 				} else if (!finalOptions.once) {
 					element.style.opacity = '0';
 					element.style.transform = 'translateY(30px)';
+					element.classList.remove('animate-in');
 					
 					if (options.animationClass) {
 						element.classList.remove(options.animationClass);
@@ -162,11 +166,13 @@ export function scrollAnimate(
 		}
 	);
 
+	// Start observing
 	observer.observe(element);
 
 	return {
 		destroy() {
 			observer.disconnect();
+			element.removeAttribute('data-animate');
 		}
 	};
 }
@@ -271,6 +277,7 @@ export function staggeredAnimation(
 			element.style.opacity = '1';
 			element.style.transform = 'translateY(0)';
 			element.style.transition = 'none';
+			element.removeAttribute('data-animate');
 
 			requestAnimationFrame(() => {
 				element.style.transition = '';
@@ -285,10 +292,9 @@ export function staggeredAnimation(
 
 	const { delay = 0, stagger = 100, animationClass = 'animate-in', threshold = 0.1 } = options;
 
-	// Set initial state for all elements
+	// Set initial state for all elements with data attribute
 	elements.forEach((element, index) => {
-		element.style.opacity = '0';
-		element.style.transform = 'translateY(20px)';
+		element.setAttribute('data-animate', 'true');
 		element.style.transition = `all 0.6s cubic-bezier(0.4, 0, 0.2, 1)`;
 		element.style.transitionDelay = `${delay + index * stagger}ms`;
 	});
@@ -313,6 +319,9 @@ export function staggeredAnimation(
 	return {
 		destroy() {
 			observer.disconnect();
+			elements.forEach(element => {
+				element.removeAttribute('data-animate');
+			});
 		}
 	};
 }
