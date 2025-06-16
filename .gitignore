@@ -21,3 +21,5 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+.cursor/rules/custom-rules.mdc
+test-results/.last-run.json
