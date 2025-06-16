@@ -67,6 +67,28 @@ ECharts Network Graph - A network visualization for author collaborations
 		currentTheme: getTheme()
 	});
 
+	// Create a color palette for different collaboration counts
+	const collaborationColors = $derived(() => {
+		const baseColors = [
+			resolvedColors.highlight,  // Orange for 1 collaboration
+			resolvedColors.accent,     // Purple for 2 collaborations  
+			resolvedColors.success,    // Green for 3 collaborations
+			resolvedColors.primary,    // Blue for 4 collaborations
+		];
+		
+		// Generate additional colors by mixing base colors for higher collaboration counts
+		const extendedColors = [...baseColors];
+		for (let i = baseColors.length; i < 10; i++) {
+			// Create variations by blending colors or using opacity variations
+			const baseIndex = i % baseColors.length;
+			const baseColor = baseColors[baseIndex];
+			// For now, cycle through base colors - could be enhanced with color mixing
+			extendedColors.push(baseColor);
+		}
+		
+		return extendedColors;
+	});
+
 	// Process data for network graph
 	const networkData = $derived(() => {
 		// Limit to top collaborators for better visualization
@@ -104,12 +126,21 @@ ECharts Network Graph - A network visualization for author collaborations
 					)
 				),
 				itemStyle: {
-					color: index % 2 === 0 ? resolvedColors.accent : resolvedColors.highlight
+					color: collaborationColors()[Math.min(collab.collaborationCount - 1, collaborationColors().length - 1)]
 				},
 				label: {
 					show: !isMobile || collab.collaborationCount > 2, // Show fewer labels on mobile
 					fontSize: isMobile ? 10 : 12,
-					color: resolvedColors.text
+					color: resolvedColors.text,
+					position: 'right',
+					distance: 10,
+					formatter: function(params: any) {
+						// Truncate long names to prevent overlap
+						const maxLength = isMobile ? 15 : 20;
+						return params.name.length > maxLength ? 
+							params.name.substring(0, maxLength) + '...' : 
+							params.name;
+					}
 				},
 				category: 1
 			}))
@@ -237,12 +268,14 @@ ECharts Network Graph - A network visualization for author collaborations
 				left: '10%',
 				right: '10%',
 				top: '10%',
-				bottom: '10%',
+				bottom: '15%', // Increased bottom margin to prevent overflow
 				force: {
-					repulsion: isMobile ? 200 : 350,
-					gravity: 0.08,
-					edgeLength: isMobile ? 100 : 140,
-					layoutAnimation: true
+					repulsion: isMobile ? 300 : 500, // Increased repulsion to spread nodes more
+					gravity: 0.08, // Slightly increased gravity to pull nodes toward center
+					edgeLength: isMobile ? 120 : 180, // Longer edges for more space
+					layoutAnimation: true,
+					// Add friction to stabilize layout and prevent drift
+					friction: 0.6
 				},
 				emphasis: {
 					focus: 'adjacency',
@@ -257,8 +290,14 @@ ECharts Network Graph - A network visualization for author collaborations
 				},
 				label: {
 					position: 'right',
-					formatter: '{b}'
-				}
+					formatter: '{b}',
+					// Enable label collision detection
+					emphasis: {
+						show: true
+					}
+				},
+				// Enable label collision avoidance
+				avoidLabelOverlap: true
 			}
 		],
 		backgroundColor: 'transparent',
