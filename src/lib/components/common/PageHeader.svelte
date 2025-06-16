@@ -83,15 +83,15 @@
 	.enhanced-page-header {
 		background: radial-gradient(
 			circle at 20% 20%,
-			rgba(var(--color-primary-rgb), 0.06) 0%,
-			rgba(var(--color-accent-rgb), 0.02) 35%,
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 35%,
 			var(--color-surface) 65%,
 			var(--color-background) 100%
 		);
 		border-radius: var(--border-radius-xl);
 		box-shadow: var(--shadow-md);
 		padding: var(--spacing-8) var(--spacing-6);
-		border: 1px solid rgba(var(--color-primary-rgb), 0.06);
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
 		margin-bottom: var(--spacing-6);
 	}
 
@@ -102,20 +102,20 @@
 	.back-link {
 		color: var(--color-primary);
 		text-decoration: none;
-		font-weight: 600;
+		font-weight: var(--font-weight-semibold);
 		transition: all 0.2s ease;
 		display: inline-flex;
 		align-items: center;
 		gap: var(--spacing-1);
 		padding: var(--spacing-2) var(--spacing-3);
 		border-radius: var(--border-radius-md);
-		background: rgba(var(--color-primary-rgb), 0.05);
-		border: 1px solid rgba(var(--color-primary-rgb), 0.1);
+		background: rgba(var(--color-primary-rgb), var(--opacity-low));
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium));
 	}
 
 	.back-link:hover {
-		background: rgba(var(--color-primary-rgb), 0.1);
-		border-color: rgba(var(--color-primary-rgb), 0.2);
+		background: rgba(var(--color-primary-rgb), var(--opacity-medium));
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
 		transform: translateX(-2px);
 	}
 
@@ -128,24 +128,24 @@
 		);
 		color: var(--color-background);
 		font-size: var(--font-size-xs);
-		font-weight: 700;
+		font-weight: var(--font-weight-bold);
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		letter-spacing: var(--letter-spacing-wide);
 		padding: var(--spacing-2) var(--spacing-4);
 		border-radius: var(--border-radius-full);
 		box-shadow: var(--shadow-sm);
-		border: 1px solid rgba(var(--color-primary-rgb), 0.2);
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium-high));
 	}
 
 	.header-date {
 		font-size: var(--font-size-sm);
 		color: var(--color-secondary);
-		font-weight: 500;
+		font-weight: var(--font-weight-medium);
 		white-space: nowrap;
 		padding: var(--spacing-2) var(--spacing-3);
-		background: rgba(var(--color-surface-rgb), 0.8);
+		background: rgba(var(--color-surface-rgb), var(--opacity-high));
 		border-radius: var(--border-radius-md);
-		border: 1px solid rgba(var(--color-border-rgb), 0.5);
+		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), 0.5);
 	}
 
 	.title-section {
@@ -155,15 +155,15 @@
 
 	.page-title {
 		color: var(--color-primary);
-		line-height: 1.2;
-		font-weight: 800;
-		letter-spacing: -0.02em;
+		line-height: var(--line-height-tight);
+		font-weight: var(--font-weight-extrabold);
+		letter-spacing: var(--letter-spacing-tight);
 		margin: 0;
 	}
 
 	.title-accent {
 		width: 80px;
-		height: 4px;
+		height: var(--border-width-thick);
 		background: linear-gradient(90deg, 
 			var(--color-highlight) 0%, 
 			var(--color-accent) 100%
@@ -175,14 +175,14 @@
 
 	.authors {
 		color: var(--color-text);
-		font-weight: 500;
-		line-height: 1.4;
+		font-weight: var(--font-weight-medium);
+		line-height: var(--line-height-relaxed);
 	}
 
 	.editors {
 		font-size: var(--font-size-lg);
-		font-weight: 500;
-		line-height: 1.4;
+		font-weight: var(--font-weight-medium);
+		line-height: var(--line-height-relaxed);
 	}
 
 	/* Dark mode enhancements */
@@ -190,7 +190,7 @@
 		background: radial-gradient(
 			circle at 20% 20%,
 			rgba(var(--color-primary-rgb), 0.12) 0%,
-			rgba(var(--color-accent-rgb), 0.06) 35%,
+			rgba(var(--color-accent-rgb), var(--opacity-low)) 35%,
 			var(--color-dark-surface-alt) 65%,
 			var(--color-dark-surface-deep) 100%
 		);
@@ -199,8 +199,8 @@
 	}
 
 	:global(html.dark) .back-link {
-		background: rgba(var(--color-primary-rgb), 0.1);
-		border-color: rgba(var(--color-primary-rgb), 0.2);
+		background: rgba(var(--color-primary-rgb), var(--opacity-medium));
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
 	}
 
 	:global(html.dark) .back-link:hover {
@@ -209,7 +209,7 @@
 	}
 
 	:global(html.dark) .header-date {
-		background: rgba(var(--color-dark-surface-rgb), 0.8);
+		background: rgba(var(--color-dark-surface-rgb), var(--opacity-high));
 		border-color: rgba(var(--color-border-rgb), 0.3);
 	}
 

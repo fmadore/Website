@@ -73,9 +73,9 @@
 		/* Enhanced glassmorphism with subtle gradient overlay */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.05) 0%,
-			rgba(var(--color-highlight-rgb), 0.03) 50%,
-			rgba(var(--color-accent-rgb), 0.02) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
 	}
 
@@ -91,11 +91,11 @@
 		right: -8px;
 		bottom: -8px;
 		background: linear-gradient(135deg, 
-			rgba(var(--color-primary-rgb), 0.2) 0%,
-			rgba(var(--color-highlight-rgb), 0.2) 50%,
-			rgba(var(--color-accent-rgb), 0.2) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-medium-high)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-medium-high)) 100%
 		);
-		border-radius: 50%;
+		border-radius: var(--border-radius-full);
 		z-index: -1;
 		opacity: 0;
 		transition: opacity 0.3s ease;
@@ -114,7 +114,7 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		border-radius: 50%;
+		border-radius: var(--border-radius-full);
 		box-shadow: var(--shadow-lg);
 		border: 3px solid var(--color-primary);
 		position: relative;
@@ -145,7 +145,7 @@
 
 	.title-accent {
 		width: 60px;
-		height: 4px;
+		height: var(--border-width-thick);
 		background: linear-gradient(90deg, 
 			var(--color-highlight) 0%, 
 			var(--color-accent) 100%
@@ -194,7 +194,7 @@
 		height: 100%;
 		background: linear-gradient(90deg, 
 			transparent 0%, 
-			rgba(var(--color-highlight-rgb), 0.1) 50%, 
+			rgba(var(--color-highlight-rgb), var(--opacity-medium)) 50%, 
 			transparent 100%
 		);
 		transition: left 0.3s ease;
@@ -210,7 +210,7 @@
 	}
 
 	.rounded-full {
-		border-radius: 9999px;
+		border-radius: var(--border-radius-full);
 	}
 
 	/* Header icons – unified sizing */
@@ -224,13 +224,13 @@
 	/* Focus-visible accessibility rings */
 	.profile-photo:focus-visible img {
 		outline: 3px solid var(--color-highlight);
-		outline-offset: 2px;
+		outline-offset: var(--spacing-1);
 	}
 
 	.icon-link:focus-visible {
-		outline: 2px solid var(--color-highlight);
-		outline-offset: 2px;
-		box-shadow: 0 0 0 4px rgba(var(--color-highlight-rgb), 0.2);
+		outline: var(--border-width-medium) solid var(--color-highlight);
+		outline-offset: var(--spacing-1);
+		box-shadow: 0 0 0 var(--border-width-thick) rgba(var(--color-highlight-rgb), var(--opacity-medium-high));
 	}
 
 	/* Mobile responsive design */

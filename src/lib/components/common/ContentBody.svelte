@@ -36,9 +36,9 @@
 		/* Enhanced glassmorphism with subtle gradient overlay to match ProfileBanner */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.03) 0%,
-			rgba(var(--color-highlight-rgb), 0.02) 50%,
-			rgba(var(--color-accent-rgb), 0.01) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
 	}
 
@@ -48,9 +48,9 @@
 		/* Enhanced hover effect with stronger gradient */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.05) 0%,
-			rgba(var(--color-highlight-rgb), 0.03) 50%,
-			rgba(var(--color-accent-rgb), 0.02) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
 	}
 
@@ -169,12 +169,12 @@
 
 	/* Blockquotes */
 	.content-body :global(blockquote) {
-		border-left: 4px solid var(--color-primary);
+		border-left: var(--border-width-thick) solid var(--color-primary);
 		padding-left: var(--spacing-4);
 		margin: var(--spacing-6) 0;
 		font-style: italic;
 		color: var(--color-text-light);
-		background: rgba(var(--color-primary-rgb), 0.05);
+		background: rgba(var(--color-primary-rgb), var(--opacity-low));
 		padding: var(--spacing-4);
 		border-radius: var(--border-radius);
 	}
@@ -211,9 +211,9 @@
 
 	/* Enhanced focus states for accessibility */
 	.content-body :global(a:focus-visible) {
-		outline: 2px solid var(--color-highlight);
-		outline-offset: 2px;
-		box-shadow: 0 0 0 4px rgba(var(--color-highlight-rgb), 0.2);
+		outline: var(--border-width-medium) solid var(--color-highlight);
+		outline-offset: var(--spacing-1);
+		box-shadow: 0 0 0 var(--border-width-thick) rgba(var(--color-highlight-rgb), var(--opacity-medium-high));
 		border-radius: var(--border-radius-sm);
 	}
 
@@ -235,8 +235,8 @@
 
 		.content-body :global(p:first-child) {
 			font-size: var(--font-size-base);
-			padding-left: var(--spacing-4); /* Reduce padding on mobile */
-			border-left: 2px solid transparent; /* Thinner border on mobile */
+			padding-left: var(--spacing-4);
+			border-left: var(--border-width-medium) solid transparent;
 		}
 	}
 

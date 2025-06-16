@@ -51,30 +51,26 @@
 		/* Built-in glassmorphism for all variants */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.03) 0%,
-			rgba(var(--color-highlight-rgb), 0.02) 50%,
-			rgba(var(--color-accent-rgb), 0.01) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
-		border: 1px solid rgba(255, 255, 255, 0.2);
-		box-shadow: 
-			0 8px 32px 0 rgba(31, 38, 135, 0.15),
-			inset 0 1px 0 rgba(255, 255, 255, 0.2);
+		border: var(--border-width-thin) solid rgba(255, 255, 255, var(--opacity-medium-high));
+		box-shadow: var(--shadow-lg);
 	}
 
 	.page-intro:hover {
 		transform: var(--transform-lift-sm);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.05) 0%,
-			rgba(var(--color-highlight-rgb), 0.03) 50%,
-			rgba(var(--color-accent-rgb), 0.02) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
 		border-color: rgba(255, 255, 255, 0.3);
-		box-shadow: 
-			0 12px 40px 0 rgba(31, 38, 135, 0.2),
-			inset 0 1px 0 rgba(255, 255, 255, 0.3);
+		box-shadow: var(--shadow-xl);
 	}
 
 	/* Variant styles */
@@ -87,27 +83,23 @@
 		/* Lighter glassmorphism for compact variant */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.02) 0%,
-			rgba(var(--color-highlight-rgb), 0.015) 50%,
-			rgba(var(--color-accent-rgb), 0.008) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
 		backdrop-filter: blur(8px);
 		-webkit-backdrop-filter: blur(8px);
-		box-shadow: 
-			0 4px 16px 0 rgba(31, 38, 135, 0.1),
-			inset 0 1px 0 rgba(255, 255, 255, 0.15);
+		box-shadow: var(--shadow-sm);
 	}
 
 	.page-intro--compact:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.03) 0%,
-			rgba(var(--color-highlight-rgb), 0.02) 50%,
-			rgba(var(--color-accent-rgb), 0.01) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		box-shadow: 
-			0 8px 24px 0 rgba(31, 38, 135, 0.15),
-			inset 0 1px 0 rgba(255, 255, 255, 0.2);
+		box-shadow: var(--shadow-md);
 	}
 
 	.page-intro--emphasized {
@@ -120,19 +112,17 @@
 		/* Enhanced glassmorphism for emphasized variant */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.05) 0%,
-			rgba(var(--color-highlight-rgb), 0.03) 50%,
-			rgba(var(--color-accent-rgb), 0.02) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
 		backdrop-filter: blur(12px);
 		-webkit-backdrop-filter: blur(12px);
-		border: 1px solid rgba(var(--color-primary-rgb), 0.15);
-		box-shadow: 
-			0 12px 40px 0 rgba(31, 38, 135, 0.2),
-			inset 0 1px 0 rgba(255, 255, 255, 0.25);
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), 0.15);
+		box-shadow: var(--shadow-xl);
 		
 		/* Add subtle accent border for emphasis */
-		border-left: 4px solid transparent;
+		border-left: var(--border-width-thick) solid transparent;
 		border-image: linear-gradient(180deg, 
 			var(--color-primary) 0%, 
 			var(--color-highlight) 100%
@@ -143,14 +133,12 @@
 	.page-intro--emphasized:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-highlight-rgb), 0.05) 50%,
-			rgba(var(--color-accent-rgb), 0.03) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), 0.2);
-		box-shadow: 
-			0 16px 48px 0 rgba(31, 38, 135, 0.25),
-			inset 0 1px 0 rgba(255, 255, 255, 0.3);
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		box-shadow: var(--shadow-2xl);
 	}
 
 	.page-intro--featured {
@@ -162,16 +150,14 @@
 		/* Premium glassmorphism for featured variant */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-highlight-rgb), 0.05) 50%,
-			rgba(var(--color-accent-rgb), 0.03) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
 		backdrop-filter: blur(16px);
 		-webkit-backdrop-filter: blur(16px);
-		border: 1px solid rgba(var(--color-primary-rgb), 0.2);
-		box-shadow: 
-			0 16px 48px 0 rgba(31, 38, 135, 0.25),
-			inset 0 1px 0 rgba(255, 255, 255, 0.3);
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		box-shadow: var(--shadow-2xl);
 		position: relative;
 		overflow: hidden;
 	}
@@ -195,13 +181,11 @@
 		background: linear-gradient(
 			135deg,
 			rgba(var(--color-primary-rgb), 0.12) 0%,
-			rgba(var(--color-highlight-rgb), 0.08) 50%,
-			rgba(var(--color-accent-rgb), 0.05) 100%
+			rgba(var(--color-highlight-rgb), var(--opacity-medium)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-low)) 100%
 		);
 		border-color: rgba(var(--color-primary-rgb), 0.25);
-		box-shadow: 
-			0 20px 60px 0 rgba(31, 38, 135, 0.3),
-			inset 0 1px 0 rgba(255, 255, 255, 0.4);
+		box-shadow: 0 20px 60px 0 rgba(0, 0, 0, 0.3);
 	}
 
 	/* Typography enhancements */
@@ -242,9 +226,9 @@
 	}
 
 	.page-intro :global(a:focus-visible) {
-		outline: 2px solid var(--color-highlight);
-		outline-offset: 2px;
-		box-shadow: 0 0 0 4px rgba(var(--color-highlight-rgb), 0.2);
+		outline: var(--border-width-medium) solid var(--color-highlight);
+		outline-offset: var(--spacing-1);
+		box-shadow: 0 0 0 var(--border-width-thick) rgba(var(--color-highlight-rgb), var(--opacity-medium-high));
 		border-radius: var(--border-radius-sm);
 	}
 
@@ -259,70 +243,58 @@
 		color: var(--color-text-emphasis);
 	}
 
-	/* Additional glassmorphism utilities can still be applied for further customization */
-
 	/* Dark mode enhancements */
 	:global(html.dark) .page-intro {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-highlight-rgb), 0.05) 50%,
-			rgba(var(--color-accent-rgb), 0.03) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		border: 1px solid rgba(255, 255, 255, 0.1);
-		box-shadow: 
-			0 8px 32px 0 rgba(0, 0, 0, 0.3),
-			inset 0 1px 0 rgba(255, 255, 255, 0.1);
+		border: var(--border-width-thin) solid rgba(255, 255, 255, var(--opacity-medium));
+		box-shadow: var(--shadow-lg);
 	}
 
 	:global(html.dark) .page-intro:hover {
 		background: linear-gradient(
 			135deg,
 			rgba(var(--color-primary-rgb), 0.12) 0%,
-			rgba(var(--color-highlight-rgb), 0.08) 50%,
-			rgba(var(--color-accent-rgb), 0.05) 100%
+			rgba(var(--color-highlight-rgb), var(--opacity-medium)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-low)) 100%
 		);
 		border-color: rgba(255, 255, 255, 0.15);
-		box-shadow: 
-			0 12px 40px 0 rgba(0, 0, 0, 0.4),
-			inset 0 1px 0 rgba(255, 255, 255, 0.15);
+		box-shadow: var(--shadow-xl);
 	}
 
 	:global(html.dark) .page-intro--compact {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.06) 0%,
-			rgba(var(--color-highlight-rgb), 0.04) 50%,
-			rgba(var(--color-accent-rgb), 0.02) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		box-shadow: 
-			0 4px 16px 0 rgba(0, 0, 0, 0.2),
-			inset 0 1px 0 rgba(255, 255, 255, 0.08);
+		box-shadow: var(--shadow-sm);
 	}
 
 	:global(html.dark) .page-intro--compact:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-highlight-rgb), 0.06) 50%,
-			rgba(var(--color-accent-rgb), 0.03) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		box-shadow: 
-			0 8px 24px 0 rgba(0, 0, 0, 0.3),
-			inset 0 1px 0 rgba(255, 255, 255, 0.12);
+		box-shadow: var(--shadow-md);
 	}
 
 	:global(html.dark) .page-intro--emphasized {
 		background: linear-gradient(
 			135deg,
 			rgba(var(--color-primary-rgb), 0.12) 0%,
-			rgba(var(--color-highlight-rgb), 0.08) 50%,
-			rgba(var(--color-accent-rgb), 0.05) 100%
+			rgba(var(--color-highlight-rgb), var(--opacity-medium)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-low)) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), 0.2);
-		box-shadow: 
-			0 12px 40px 0 rgba(0, 0, 0, 0.4),
-			inset 0 1px 0 rgba(255, 255, 255, 0.15);
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		box-shadow: var(--shadow-xl);
 	}
 
 	:global(html.dark) .page-intro--emphasized:hover {
@@ -330,38 +302,32 @@
 			135deg,
 			rgba(var(--color-primary-rgb), 0.16) 0%,
 			rgba(var(--color-highlight-rgb), 0.12) 50%,
-			rgba(var(--color-accent-rgb), 0.08) 100%
+			rgba(var(--color-accent-rgb), var(--opacity-medium)) 100%
 		);
 		border-color: rgba(var(--color-primary-rgb), 0.25);
-		box-shadow: 
-			0 16px 48px 0 rgba(0, 0, 0, 0.5),
-			inset 0 1px 0 rgba(255, 255, 255, 0.2);
+		box-shadow: var(--shadow-2xl);
 	}
 
 	:global(html.dark) .page-intro--featured {
 		background: linear-gradient(
 			135deg,
 			rgba(var(--color-primary-rgb), 0.15) 0%,
-			rgba(var(--color-highlight-rgb), 0.1) 50%,
-			rgba(var(--color-accent-rgb), 0.06) 100%
+			rgba(var(--color-highlight-rgb), var(--opacity-medium)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-low)) 100%
 		);
 		border-color: rgba(var(--color-primary-rgb), 0.25);
-		box-shadow: 
-			0 16px 48px 0 rgba(0, 0, 0, 0.5),
-			inset 0 1px 0 rgba(255, 255, 255, 0.2);
+		box-shadow: var(--shadow-2xl);
 	}
 
 	:global(html.dark) .page-intro--featured:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.2) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%,
 			rgba(var(--color-highlight-rgb), 0.15) 50%,
-			rgba(var(--color-accent-rgb), 0.1) 100%
+			rgba(var(--color-accent-rgb), var(--opacity-medium)) 100%
 		);
 		border-color: rgba(var(--color-primary-rgb), 0.3);
-		box-shadow: 
-			0 20px 60px 0 rgba(0, 0, 0, 0.6),
-			inset 0 1px 0 rgba(255, 255, 255, 0.25);
+		box-shadow: 0 20px 60px 0 rgba(0, 0, 0, 0.6);
 	}
 
 	:global(html.dark) .page-intro--featured::before {
