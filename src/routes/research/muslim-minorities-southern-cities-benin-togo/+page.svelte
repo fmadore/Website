@@ -87,6 +87,7 @@
 				src="{base}/images/research/muslim-minorities.webp"
 				alt="Muslim Minorities in Southern Cities of Benin and Togo"
 				glassEffect="glass-medium"
+				overlayIntensity="medium"
 			/>
 
 			<ContentBody variant="default" glassEffect="glass-card">

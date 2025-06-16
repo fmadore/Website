@@ -88,6 +88,7 @@
 				src="{base}/images/research/campus-activism.webp"
 				alt="Religious Activism on Campuses in Togo and Benin"
 				glassEffect="glass-medium"
+				overlayIntensity="medium"
 			/>
 
 			<ContentBody variant="default" glassEffect="glass-card">

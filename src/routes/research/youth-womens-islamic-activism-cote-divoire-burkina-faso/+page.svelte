@@ -94,6 +94,7 @@
 				src="{base}/images/research/youth-women-activism.webp"
 				alt="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 				glassEffect="glass-medium"
+				overlayIntensity="medium"
 			/>
 
 			<ContentBody variant="default" glassEffect="glass-card">
