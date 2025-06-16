@@ -385,6 +385,58 @@ The CSS is built with a mobile-first approach:
 - **Progressive enhancement**: Media queries adapt for larger screens
 - **Utility responsiveness**: Most utilities available at all breakpoints
 
+## JavaScript Utilities Integration
+
+The CSS framework integrates with several JavaScript utilities for enhanced functionality:
+
+### Scroll Animations (`src/lib/utils/scrollAnimations.ts`)
+
+Provides programmatic control over scroll-triggered animations:
+
+- **`scrollAnimate`**: Svelte action for adding scroll animations to any element
+- **`staggeredAnimation`**: Creates sequential animations for lists of elements
+- **`smoothScrollTo`**: Smooth scrolling navigation with customizable easing
+- **`parallaxScroll`**: Parallax effects for background elements
+- **`createReadingProgress`**: Reading progress indicators for long content
+
+Example usage:
+```svelte
+<!-- Basic scroll animation -->
+<div use:scrollAnimate={{ animationClass: 'fade-in-up', delay: 200 }}>
+  Content that animates on scroll
+</div>
+
+<!-- Smooth scroll navigation -->
+<button onclick={() => smoothScrollTo('#section', { offset: 80 })}>
+  Scroll to Section
+</button>
+```
+
+### Cookie Consent Management (`src/lib/utils/cookieConsent.ts`)
+
+Robust cookie consent system with persistence and categorization:
+
+- **Automatic expiration**: Consent expires after configurable period (default: 365 days)
+- **Category management**: Separate consent for analytics, marketing, preferences
+- **Version tracking**: Can require new consent when privacy policy changes
+- **Browser compatibility**: Handles localStorage errors and private browsing
+- **Legacy migration**: Automatically upgrades from older consent formats
+
+The system provides both a class-based API and utility functions:
+```typescript
+import { cookieConsent, needsCookieConsent, isAnalyticsAllowed } from '$lib/utils/cookieConsent';
+
+// Check if consent is needed
+if (needsCookieConsent()) {
+  // Show consent banner
+}
+
+// Check specific categories
+if (isAnalyticsAllowed()) {
+  // Enable analytics tracking
+}
+```
+
 ## Best Practices
 
 When using this CSS framework:
@@ -399,6 +451,8 @@ When using this CSS framework:
 8. **Test responsive behavior** across all breakpoints
 9. **Consider dark mode** when adding new styles
 10. **Document new utilities** and component classes
+11. **Use scroll animations judiciously** - respect user preferences and performance
+12. **Implement proper cookie consent** using the provided utilities for GDPR compliance
 
 ## Performance Considerations
 
@@ -407,3 +461,7 @@ When using this CSS framework:
 - **CSS variables**: Enable efficient theming and customization
 - **Modern features**: Uses modern CSS features for better performance
 - **Print optimization**: Includes print-specific styles where needed
+- **Animation performance**: Scroll animations use `transform` and `opacity` for optimal performance
+- **Intersection Observer**: Efficient scroll detection without performance impact
+- **Reduced motion support**: Respects user accessibility preferences
+- **Cookie consent optimization**: Minimal localStorage usage with error handling
