@@ -5,6 +5,7 @@
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 	import { page } from '$app/stores'; // Import page store
 	import { browser } from '$app/environment'; // Import browser check
+	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 
 	// Define breadcrumb items
 	const breadcrumbItems = [
@@ -133,12 +134,12 @@
 	<Breadcrumb items={breadcrumbItems} />
 	<PageHeader title="Guest Lectures" />
 
-	{#each Object.entries(guestLecturesByInstitution) as [institution, lectures] (institution)}
-		<section class="institution-section">
+	{#each Object.entries(guestLecturesByInstitution) as [institution, lectures], sectionIndex (institution)}
+		<section class="institution-section" use:scrollAnimate={{ delay: 100 + (sectionIndex * 150), animationClass: 'fade-in-up' }}>
 			<h2>{institution}</h2>
 			<ul class="lectures-list">
-				{#each lectures as lecture (lecture.title + lecture.date)}
-					<li class="lecture-item">
+				{#each lectures as lecture, lectureIndex (lecture.title + lecture.date)}
+					<li class="lecture-item" use:scrollAnimate={{ delay: 200 + (sectionIndex * 150) + (lectureIndex * 50), animationClass: 'fade-in-up' }}>
 						<p class="lecture-title"><strong>{lecture.title}</strong></p>
 						<p class="lecture-details">
 							In course: <em>{lecture.course}</em> ({lecture.level})<br />

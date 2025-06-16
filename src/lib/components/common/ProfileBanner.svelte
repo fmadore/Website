@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import Icon from '@iconify/svelte';
+	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 </script>
 
-<div class="profile-header glass-panel">
-	<div class="profile-photo-container">
+<div class="profile-header glass-panel" use:scrollAnimate={{ delay: 50, animationClass: 'fade-in-up' }}>
+	<div class="profile-photo-container" use:scrollAnimate={{ delay: 150, animationClass: 'scale-in' }}>
 		<div class="profile-photo">
 			<img
 				src="{base}/images/Profile-picture.webp"
@@ -18,12 +19,12 @@
 		</div>
 	</div>
 	<div class="profile-content">
-		<div class="profile-title">
+		<div class="profile-title" use:scrollAnimate={{ delay: 200, animationClass: 'fade-in-up' }}>
 			<h1>About</h1>
 			<div class="title-accent"></div>
 		</div>
-		<div class="subtitle">Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)</div>
-		<div class="profile-icons">
+		<div class="subtitle" use:scrollAnimate={{ delay: 250, animationClass: 'fade-in-up' }}>Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)</div>
+		<div class="profile-icons" use:scrollAnimate={{ delay: 300, animationClass: 'fade-in-up' }}>
 			<a href="mailto:frederick.madore@zmo.de" target="_blank" rel="noopener" aria-label="Email" class="icon-link glass-button">
 				<Icon icon="mdi:email" width="24" height="24" />
 			</a>

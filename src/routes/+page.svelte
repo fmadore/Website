@@ -68,98 +68,100 @@
 
 <div class="container max-w-7xl">
 	<ProfileBanner />
-	<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-		<ContentBody variant="default" glassEffect="glass-card" additionalClasses="md:col-span-2">
-			{#snippet children()}
-				<p use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up' }}>
-					I am a Research Fellow at <a
-						href="https://www.zmo.de/en"
-						target="_blank"
-						rel="noopener noreferrer">Leibniz-Zentrum Moderner Orient (ZMO)</a
-					>
-					in the "<a
-						href="https://www.zmo.de/en/research/religion-and-intellectual-culture"
-						target="_blank"
-						rel="noopener noreferrer">Religion and Intellectual Culture</a
-					>" unit, where I examine how Islamic movements and Muslim intellectuals have navigated
-					secular governance and shaped public discourse in Francophone West Africa since the 1960s.
-					Through extensive fieldwork and archival research in Benin, Burkina Faso, Côte d'Ivoire, and
-					Togo, I am investigating the intersection of Islamic activism, secularism and Muslim
-					politics. I am paying particular attention to how educational institutions have served as
-					key sites of religious mobilisation.
-				</p>
+	<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8" use:scrollAnimate={{ delay: 350, animationClass: 'fade-in-up' }}>
+		<div class="md:col-span-2" use:scrollAnimate={{ delay: 400, animationClass: 'fade-in-up' }}>
+			<ContentBody variant="default" glassEffect="glass-card">
+				{#snippet children()}
+					<p use:scrollAnimate={{ delay: 450, animationClass: 'fade-in-up' }}>
+						I am a Research Fellow at <a
+							href="https://www.zmo.de/en"
+							target="_blank"
+							rel="noopener noreferrer">Leibniz-Zentrum Moderner Orient (ZMO)</a
+						>
+						in the "<a
+							href="https://www.zmo.de/en/research/religion-and-intellectual-culture"
+							target="_blank"
+							rel="noopener noreferrer">Religion and Intellectual Culture</a
+						>" unit, where I examine how Islamic movements and Muslim intellectuals have navigated
+						secular governance and shaped public discourse in Francophone West Africa since the 1960s.
+						Through extensive fieldwork and archival research in Benin, Burkina Faso, Côte d'Ivoire, and
+						Togo, I am investigating the intersection of Islamic activism, secularism and Muslim
+						politics. I am paying particular attention to how educational institutions have served as
+						key sites of religious mobilisation.
+					</p>
 
-				<p use:scrollAnimate={{ delay: 200, animationClass: 'fade-in-up' }}>
-					My recent book, <em>Religious Activism on Campuses in Togo and Benin</em>
-					<ItemReference id="religious-activism-campuses" />, explores how Christian and Muslim
-					student associations emerged in the 1970s and profoundly reshaped university life in Lomé
-					and Abomey-Calavi, challenging prevailing secular ideologies.
-				</p>
+					<p use:scrollAnimate={{ delay: 500, animationClass: 'fade-in-up' }}>
+						My recent book, <em>Religious Activism on Campuses in Togo and Benin</em>
+						<ItemReference id="religious-activism-campuses" />, explores how Christian and Muslim
+						student associations emerged in the 1970s and profoundly reshaped university life in Lomé
+						and Abomey-Calavi, challenging prevailing secular ideologies.
+					</p>
 
-				<p>
-					A significant dimension of my work involves <a
-						href="{base}/digital-humanities"
-						data-sveltekit-preload-data>digital humanities</a
-					>
-					(DH) approaches. I am developing the
-					<a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer"
-						><em>Islam West Africa Collection</em> (IWAC)</a
-					>, an open-access database featuring over 13,500 items documenting Islam across the region.
-					Using computational methods and artificial intelligence workflows, I analyse this vast
-					corpus to uncover large-scale patterns in religious mobilisation, the evolution of Islamic
-					discourse, the media's representation of Islam and the shifting relationships between Muslim
-					communities and state authorities. Data visualisation techniques enable me to translate
-					these computational findings into accessible narratives that reveal new aspects of Muslim
-					public engagement.
-				</p>
+					<p use:scrollAnimate={{ delay: 550, animationClass: 'fade-in-up' }}>
+						A significant dimension of my work involves <a
+							href="{base}/digital-humanities"
+							data-sveltekit-preload-data>digital humanities</a
+						>
+						(DH) approaches. I am developing the
+						<a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer"
+							><em>Islam West Africa Collection</em> (IWAC)</a
+						>, an open-access database featuring over 13,500 items documenting Islam across the region.
+						Using computational methods and artificial intelligence workflows, I analyse this vast
+						corpus to uncover large-scale patterns in religious mobilisation, the evolution of Islamic
+						discourse, the media's representation of Islam and the shifting relationships between Muslim
+						communities and state authorities. Data visualisation techniques enable me to translate
+						these computational findings into accessible narratives that reveal new aspects of Muslim
+						public engagement.
+					</p>
 
-				<p>
-					I am also the author of <em
-						>La construction d'une sphère publique musulmane en Afrique de l'Ouest</em
-					>
-					<ItemReference id="sphere-publique-musulmane" /> and co-editor of
-					<em>Religiosity on University Campuses in Africa</em>
-					<ItemReference id="religiosity-university-campuses" />. I have also co-edited two special
-					journal issues: "Muslim Minorities in Africa, Part 1" <ItemReference
-						id="muslim-minorities-africa-1"
-					/> & "Part 2" <ItemReference id="muslim-minorities-africa-2" /> and "Les acteurs religieux africains
-					à l'ère du numérique" <ItemReference id="acteurs-religieux-numerique" />. My
-					<a href="{base}/publications" data-sveltekit-preload-data>research</a> has been published in
-					eleven peer-reviewed journals and six edited volumes.
-				</p>
+					<p use:scrollAnimate={{ delay: 600, animationClass: 'fade-in-up' }}>
+						I am also the author of <em
+							>La construction d'une sphère publique musulmane en Afrique de l'Ouest</em
+						>
+						<ItemReference id="sphere-publique-musulmane" /> and co-editor of
+						<em>Religiosity on University Campuses in Africa</em>
+						<ItemReference id="religiosity-university-campuses" />. I have also co-edited two special
+						journal issues: "Muslim Minorities in Africa, Part 1" <ItemReference
+							id="muslim-minorities-africa-1"
+						/> & "Part 2" <ItemReference id="muslim-minorities-africa-2" /> and "Les acteurs religieux africains
+						à l'ère du numérique" <ItemReference id="acteurs-religieux-numerique" />. My
+						<a href="{base}/publications" data-sveltekit-preload-data>research</a> has been published in
+						eleven peer-reviewed journals and six edited volumes.
+					</p>
 
-				<p>
-					Beyond academia, I apply this regional expertise as a consultant for <a
-						href="https://communitology.co/"
-						target="_blank"
-						rel="noopener noreferrer">Communitology</a
-					>, developing specialized Country of Origin Information (COI) reports for asylum and
-					immigration cases involving Benin, Côte d'Ivoire, and Togo.
-				</p>
+					<p use:scrollAnimate={{ delay: 650, animationClass: 'fade-in-up' }}>
+						Beyond academia, I apply this regional expertise as a consultant for <a
+							href="https://communitology.co/"
+							target="_blank"
+							rel="noopener noreferrer">Communitology</a
+						>, developing specialized Country of Origin Information (COI) reports for asylum and
+						immigration cases involving Benin, Côte d'Ivoire, and Togo.
+					</p>
 
-				<p>
-					I hold a Ph.D. with distinction in History from <a
-						href="https://www.ulaval.ca/"
-						target="_blank"
-						rel="noopener noreferrer">Université Laval</a
-					>
-					and was previously a
-					<a
-						href="https://banting.fellowships-bourses.gc.ca/en/home-accueil.html"
-						target="_blank"
-						rel="noopener noreferrer">Banting Postdoctoral Fellow</a
-					>
-					at the
-					<a href="https://www.ufl.edu/" target="_blank" rel="noopener noreferrer"
-						>University of Florida</a
-					>. Through my ongoing <a href="{base}/research">research</a> and
-					<a href="{base}/digital-humanities">DH projects</a>, I explore new approaches to
-					understanding the dynamics of Muslim societies in Francophone West Africa, combining
-					traditional historical methods with innovative computational techniques.
-				</p>
-			{/snippet}
-		</ContentBody>
-		<aside class="md:col-span-1" use:scrollAnimate={{ delay: 300, animationClass: 'fade-in-left' }}>
+					<p use:scrollAnimate={{ delay: 700, animationClass: 'fade-in-up' }}>
+						I hold a Ph.D. with distinction in History from <a
+							href="https://www.ulaval.ca/"
+							target="_blank"
+							rel="noopener noreferrer">Université Laval</a
+						>
+						and was previously a
+						<a
+							href="https://banting.fellowships-bourses.gc.ca/en/home-accueil.html"
+							target="_blank"
+							rel="noopener noreferrer">Banting Postdoctoral Fellow</a
+						>
+						at the
+						<a href="https://www.ufl.edu/" target="_blank" rel="noopener noreferrer"
+							>University of Florida</a
+						>. Through my ongoing <a href="{base}/research">research</a> and
+						<a href="{base}/digital-humanities">DH projects</a>, I explore new approaches to
+						understanding the dynamics of Muslim societies in Francophone West Africa, combining
+						traditional historical methods with innovative computational techniques.
+					</p>
+				{/snippet}
+			</ContentBody>
+		</div>
+		<aside class="md:col-span-1" use:scrollAnimate={{ delay: 750, animationClass: 'fade-in-left' }}>
 			<LatestActivities limit={3} />
 		</aside>
 	</div>

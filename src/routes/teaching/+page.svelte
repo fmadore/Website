@@ -4,6 +4,7 @@
 	import Card from '$lib/components/common/Card.svelte'; // Import Card component
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
+	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 
 	// Unified teaching items data for cards
 	let teachingItems = $state([
@@ -64,20 +65,23 @@
 	<div class="main-content">
 		<PageHeader title="Teaching" />
 
-		<PageIntro>
-			Teaching interests: African History (pre-modern and modern periods), Islam in sub-Saharan
-			Africa, Digital Humanities, West African history.
-		</PageIntro>
+		<div use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up' }}>
+			<PageIntro>
+				Teaching interests: African History (pre-modern and modern periods), Islam in sub-Saharan
+				Africa, Digital Humanities, West African history.
+			</PageIntro>
+		</div>
 
 		<!-- Card Grid Layout -->
 		<div class="content-grid">
-			{#each teachingItems as item (item.id)}
-				<Card
-					title={item.title}
-					imageUrl={item.imageUrl}
-					linkUrl={item.linkUrl}
-					target={item.type === 'guest_lecture' ? '_self' : '_blank'}
-				>
+			{#each teachingItems as item, index (item.id)}
+				<div use:scrollAnimate={{ delay: 200 + (index * 100), animationClass: 'fade-in-up' }}>
+					<Card
+						title={item.title}
+						imageUrl={item.imageUrl}
+						linkUrl={item.linkUrl}
+						target={item.type === 'guest_lecture' ? '_self' : '_blank'}
+					>
 					{#snippet subtitle()}
 						<span>{item.institution}</span>
 					{/snippet}
@@ -106,7 +110,8 @@
 							{/if}
 						</div>
 					{/snippet}
-				</Card>
+					</Card>
+				</div>
 			{/each}
 		</div>
 	</div>

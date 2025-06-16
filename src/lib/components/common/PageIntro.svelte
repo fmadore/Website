@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { scrollAnimate } from '$lib/utils/scrollAnimations';
+
 	let {
 		children,
 		variant = 'default',
@@ -21,9 +23,17 @@
 	};
 	
 	const combinedClasses = `${baseClasses} ${variantClasses[variant]} ${glassEffect} ${additionalClasses}`.trim();
+
+	// Different animation settings based on variant
+	const animationSettings = {
+		default: { delay: 100, animationClass: 'fade-in-up' },
+		compact: { delay: 50, animationClass: 'fade-in-up' },
+		emphasized: { delay: 150, animationClass: 'scale-in-center' },
+		featured: { delay: 200, animationClass: 'scale-in-center' }
+	};
 </script>
 
-<div class={combinedClasses}>
+<div class={combinedClasses} use:scrollAnimate={animationSettings[variant]}>
 	{@render children()}
 </div>
 
