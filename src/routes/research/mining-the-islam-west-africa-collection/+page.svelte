@@ -90,6 +90,7 @@
 				src="{base}/images/research/IWAC.webp"
 				alt="Mining the Islam West Africa Collection"
 				glassEffect="glass-medium"
+				overlayIntensity="medium"
 			/>
 
 			<ContentBody variant="default" glassEffect="glass-card">
