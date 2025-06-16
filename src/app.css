@@ -18,7 +18,6 @@
 @import './styles/components/skill-tags.css';
 
 /* Page-specific styles */
-@import './styles/pages/research.css';
 @import './styles/pages/publications.css';
 
 /* Utilities */
