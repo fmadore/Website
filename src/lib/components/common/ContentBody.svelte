@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { scrollAnimate } from '$lib/utils/scrollAnimations';
+
 	let {
 		variant = 'default',
 		glassEffect = 'glass-card',
@@ -22,7 +24,7 @@
 	const combinedClasses = `${baseClasses} ${variantClasses[variant]} ${glassEffect} ${additionalClasses}`.trim();
 </script>
 
-<div class={combinedClasses}>
+<div class={combinedClasses} use:scrollAnimate={{ delay: 450, animationClass: 'fade-in-up' }}>
 	{@render children()}
 </div>
 

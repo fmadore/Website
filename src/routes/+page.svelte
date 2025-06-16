@@ -69,10 +69,10 @@
 <div class="container max-w-7xl">
 	<ProfileBanner />
 	<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8" use:scrollAnimate={{ delay: 350, animationClass: 'fade-in-up' }}>
-		<div class="md:col-span-2" use:scrollAnimate={{ delay: 400, animationClass: 'fade-in-up' }}>
+		<div class="md:col-span-2">
 			<ContentBody variant="default" glassEffect="glass-card">
 				{#snippet children()}
-					<p use:scrollAnimate={{ delay: 450, animationClass: 'fade-in-up' }}>
+					<p>
 						I am a Research Fellow at <a
 							href="https://www.zmo.de/en"
 							target="_blank"
@@ -90,14 +90,14 @@
 						key sites of religious mobilisation.
 					</p>
 
-					<p use:scrollAnimate={{ delay: 500, animationClass: 'fade-in-up' }}>
+					<p>
 						My recent book, <em>Religious Activism on Campuses in Togo and Benin</em>
 						<ItemReference id="religious-activism-campuses" />, explores how Christian and Muslim
 						student associations emerged in the 1970s and profoundly reshaped university life in Lomé
 						and Abomey-Calavi, challenging prevailing secular ideologies.
 					</p>
 
-					<p use:scrollAnimate={{ delay: 550, animationClass: 'fade-in-up' }}>
+					<p>
 						A significant dimension of my work involves <a
 							href="{base}/digital-humanities"
 							data-sveltekit-preload-data>digital humanities</a
@@ -114,7 +114,7 @@
 						public engagement.
 					</p>
 
-					<p use:scrollAnimate={{ delay: 600, animationClass: 'fade-in-up' }}>
+					<p>
 						I am also the author of <em
 							>La construction d'une sphère publique musulmane en Afrique de l'Ouest</em
 						>
@@ -129,7 +129,7 @@
 						eleven peer-reviewed journals and six edited volumes.
 					</p>
 
-					<p use:scrollAnimate={{ delay: 650, animationClass: 'fade-in-up' }}>
+					<p>
 						Beyond academia, I apply this regional expertise as a consultant for <a
 							href="https://communitology.co/"
 							target="_blank"
@@ -138,7 +138,7 @@
 						immigration cases involving Benin, Côte d'Ivoire, and Togo.
 					</p>
 
-					<p use:scrollAnimate={{ delay: 700, animationClass: 'fade-in-up' }}>
+					<p>
 						I hold a Ph.D. with distinction in History from <a
 							href="https://www.ulaval.ca/"
 							target="_blank"
