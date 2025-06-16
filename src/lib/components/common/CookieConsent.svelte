@@ -1,19 +1,26 @@
 <script lang="ts">
 	import Button from '$lib/components/atoms/Button.svelte';
+	import { browser } from '$app/environment';
+	import { cookieConsent } from '$lib/utils/cookieConsent';
 
 	let showBanner = $state(false);
+	let hasCheckedStorage = $state(false);
 
 	$effect(() => {
-		// Check if user has already made a choice
-		const cookiesAccepted = localStorage.getItem('cookiesAccepted');
-		if (cookiesAccepted === null) {
-			// Only show banner if no choice has been made
-			showBanner = true;
-		}
+		// Only run in browser environment
+		if (!browser) return;
+		
+		// Prevent multiple checks
+		if (hasCheckedStorage) return;
+		
+		// Use the new cookie consent utility
+		showBanner = cookieConsent.needsConsent();
+		hasCheckedStorage = true;
 	});
 
 	function acceptCookies() {
-		localStorage.setItem('cookiesAccepted', 'true');
+		// Use the new cookie consent utility
+		cookieConsent.setConsent(true);
 		showBanner = false;
 
 		// Enable Google Analytics tracking
@@ -27,7 +34,8 @@
 	}
 
 	function declineCookies() {
-		localStorage.setItem('cookiesAccepted', 'false');
+		// Use the new cookie consent utility
+		cookieConsent.setConsent(false);
 		showBanner = false;
 	}
 </script>
