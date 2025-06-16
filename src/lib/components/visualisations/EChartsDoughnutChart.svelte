@@ -264,10 +264,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
-	.echarts-container.scale-in-center {
-		opacity: 1;
-		transform: scale(1) translateY(0);
-	}
+
 
 	.chart {
 		width: 100%;

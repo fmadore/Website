@@ -243,10 +243,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
-	.echarts-container.scale-in {
-		opacity: 1;
-		transform: scale(1);
-	}
+
 
 	.chart {
 		width: 100%;

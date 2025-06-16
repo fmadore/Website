@@ -253,10 +253,7 @@ ECharts Horizontal Bar Chart component
 		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
-	.echarts-container.slide-in-left {
-		opacity: 1;
-		transform: translateX(0);
-	}
+
 
 	.chart {
 		width: 100%;

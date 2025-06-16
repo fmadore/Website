@@ -284,10 +284,7 @@ ECharts Stacked Bar Chart component
 		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
-	.echarts-container.fade-in-up {
-		opacity: 1;
-		transform: translateY(0);
-	}
+
 
 	.chart {
 		width: 100%;

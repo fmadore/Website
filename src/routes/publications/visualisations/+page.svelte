@@ -506,12 +506,7 @@
 		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
-	/* Animation classes */
-	.visualization-section.fade-in-up,
-	.page-container > div.fade-in-up {
-		opacity: 1;
-		transform: translateY(0);
-	}
+
 
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
