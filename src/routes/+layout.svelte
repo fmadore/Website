@@ -7,6 +7,8 @@
 	import CookieConsent from '$lib/components/common/CookieConsent.svelte';
 	import '../app.css';
 	import type { LayoutProps } from './$types'; // Added import for LayoutProps
+	import { afterNavigate } from '$app/navigation';
+	import { animationsEnabled } from '$lib/stores/animationControl';
 
 	// Destructure data and children from $props using LayoutProps
 	// This makes `children` available to TypeScript for the {@render children()} tag
@@ -86,6 +88,10 @@
 		}
 		// Return an empty cleanup function if not in browser or already loaded
 		return () => {};
+	});
+
+	afterNavigate(() => {
+		animationsEnabled.set(true);
 	});
 </script>
 

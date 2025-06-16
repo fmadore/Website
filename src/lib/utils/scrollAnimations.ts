@@ -1,3 +1,6 @@
+import { animationsEnabled } from '$lib/stores/animationControl';
+import { get } from 'svelte/store';
+
 /**
  * Scroll Animation Utilities
  * Provides reusable functions for implementing smooth scroll animations
@@ -24,6 +27,17 @@ export interface ScrollAnimationConfig {
  * Creates an intersection observer for scroll-triggered animations
  */
 export function createScrollObserver(configs: ScrollAnimationConfig[]): IntersectionObserver {
+	if (!get(animationsEnabled)) {
+		configs.forEach(({ element, animationClass, onEnter }) => {
+			if (animationClass) {
+				element.classList.add(animationClass);
+			}
+			onEnter?.(element);
+		});
+		// Return a dummy observer that does nothing
+		return new IntersectionObserver(() => {});
+	}
+
 	const defaultOptions: ScrollAnimationOptions = {
 		threshold: 0.1,
 		rootMargin: '50px',
@@ -84,6 +98,24 @@ export function scrollAnimate(
 	element: HTMLElement,
 	options: ScrollAnimationOptions & { animationClass?: string } = {}
 ) {
+	if (!get(animationsEnabled)) {
+		element.style.opacity = '1';
+		element.style.transform = 'none';
+		element.style.transition = 'none';
+
+		// Clean up the inline style after the current frame to avoid interfering
+		// with other potential style changes.
+		requestAnimationFrame(() => {
+			element.style.transition = '';
+		});
+
+		return {
+			destroy() {
+				/* No-op */
+			}
+		};
+	}
+
 	const defaultOptions: ScrollAnimationOptions = {
 		threshold: 0.1,
 		rootMargin: '50px',
@@ -234,6 +266,23 @@ export function staggeredAnimation(
 		threshold?: number;
 	} = {}
 ) {
+	if (!get(animationsEnabled)) {
+		elements.forEach((element) => {
+			element.style.opacity = '1';
+			element.style.transform = 'translateY(0)';
+			element.style.transition = 'none';
+
+			requestAnimationFrame(() => {
+				element.style.transition = '';
+			});
+		});
+		return {
+			destroy() {
+				/* No-op */
+			}
+		};
+	}
+
 	const { delay = 0, stagger = 100, animationClass = 'animate-in', threshold = 0.1 } = options;
 
 	// Set initial state for all elements

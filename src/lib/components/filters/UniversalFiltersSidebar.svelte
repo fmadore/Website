@@ -5,6 +5,7 @@
 	import FilterSectionButtons from '$lib/components/filters/FilterSectionButtons.svelte';
 	import FilterSectionChips from '$lib/components/filters/FilterSectionChips.svelte';
 	import { fly, slide } from 'svelte/transition';
+	import { animationsEnabled } from '$lib/stores/animationControl';
 
 	interface Props {
 		config: UniversalFilterConfig;
@@ -83,6 +84,7 @@
 	// Wrapper function to enhance any filter toggle with sidebar scroll preservation
 	function createScrollPreservingToggle(originalToggle: (item: any) => void) {
 		return (item: any) => {
+			animationsEnabled.set(false); // Disable animations before updating filters
 			preserveSidebarScroll(() => originalToggle(item));
 		};
 	}
@@ -99,9 +101,11 @@
 				return {
 					...section,
 					updateRange: (min: number, max: number) => {
+						animationsEnabled.set(false); // Disable animations
 						preserveSidebarScroll(() => section.updateRange(min, max));
 					},
 					resetRange: () => {
+						animationsEnabled.set(false); // Disable animations
 						preserveSidebarScroll(() => section.resetRange());
 					}
 				};
