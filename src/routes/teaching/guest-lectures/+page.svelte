@@ -140,9 +140,9 @@
 			<ul class="lectures-list">
 				{#each lectures as lecture, lectureIndex (lecture.title + lecture.date)}
 					<li class="lecture-item" use:scrollAnimate={{ delay: 200 + (sectionIndex * 150) + (lectureIndex * 50), animationClass: 'fade-in-up' }}>
-						<p class="lecture-title"><strong>{lecture.title}</strong></p>
-						<p class="lecture-details">
-							In course: <em>{lecture.course}</em> ({lecture.level})<br />
+						<h3 class="lecture-title">{lecture.title}</h3>
+						<p class="lecture-details" data-level={lecture.level}>
+							In course: <em>{lecture.course}</em><br />
 							Date: {lecture.date}
 						</p>
 					</li>
@@ -154,46 +154,198 @@
 
 <style>
 	.institution-section {
-		margin-bottom: var(--spacing-8);
+		margin-bottom: var(--spacing-12);
 	}
 
 	h2 {
 		font-size: var(--font-size-2xl);
-		color: var(--color-primary-dark);
-		margin-bottom: var(--spacing-4);
-		border-bottom: 1px solid var(--color-gray-300);
-		padding-bottom: var(--spacing-1);
+		font-family: var(--font-family-serif);
+		font-weight: 700;
+		color: var(--color-text-emphasis);
+		margin-bottom: var(--spacing-6);
+		padding-bottom: var(--spacing-3);
+		border-bottom: 2px solid var(--color-primary);
+		position: relative;
+	}
+
+	h2::after {
+		content: '';
+		position: absolute;
+		bottom: -2px;
+		left: 0;
+		width: 60px;
+		height: 2px;
+		background: linear-gradient(
+			135deg,
+			var(--color-highlight) 0%,
+			var(--color-accent) 100%
+		);
+		border-radius: var(--border-radius-full);
 	}
 
 	.lectures-list {
 		list-style: none;
-		padding-left: 0; /* Remove default padding */
+		padding-left: 0;
+		display: grid;
+		gap: var(--spacing-4);
 	}
 
 	.lecture-item {
-		margin-bottom: var(--spacing-6);
-		padding: var(--spacing-4);
-		background-color: var(--color-background); /* Use main background color for cards */
-		border: 1px solid var(--color-border); /* Add a standard card border */
-		border-left: 3px solid var(--color-primary); /* Use primary color for left accent */
-		border-radius: var(--border-radius);
-		box-shadow: var(--shadow-md); /* Add standard card shadow */
+		/* Glassmorphism card styling */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.03) 0%,
+			rgba(var(--color-highlight-rgb), 0.02) 50%,
+			rgba(var(--color-accent-rgb), 0.01) 100%
+		);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		
+		/* Enhanced borders and shadows */
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		border-left: 4px solid var(--color-primary);
+		border-radius: var(--border-radius-lg);
+		
+		/* Glassmorphism shadow system */
+		box-shadow: 
+			0 8px 32px 0 rgba(31, 38, 135, 0.15),
+			inset 0 1px 0 rgba(255, 255, 255, 0.2);
+		
+		/* Balanced spacing - less top padding, more bottom padding */
+		padding: var(--spacing-4) var(--spacing-6) var(--spacing-6) var(--spacing-6);
+		margin-bottom: var(--spacing-4);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		
+		/* Subtle transform for depth */
+		position: relative;
+	}
+
+	.lecture-item:hover {
+		/* Enhanced hover state with glassmorphism */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.05) 0%,
+			rgba(var(--color-highlight-rgb), 0.03) 50%,
+			rgba(var(--color-accent-rgb), 0.02) 100%
+		);
+		
+		/* Enhanced hover effects */
+		border-color: rgba(255, 255, 255, 0.3);
+		border-left-color: var(--color-highlight);
+		
+		/* Enhanced shadow on hover */
+		box-shadow: 
+			0 12px 40px 0 rgba(31, 38, 135, 0.2),
+			inset 0 1px 0 rgba(255, 255, 255, 0.3);
+		
+		/* Subtle lift effect */
+		transform: var(--transform-lift-sm);
 	}
 
 	.lecture-title {
 		font-size: var(--font-size-lg);
-		margin-bottom: var(--spacing-1);
-		color: var(--color-text);
+		font-family: var(--font-family-serif);
+		font-weight: 600;
+		color: var(--color-text-emphasis);
+		margin-top: 0;
+		margin-bottom: var(--spacing-4);
+		line-height: var(--line-height-tight);
 	}
 
 	.lecture-details {
 		font-size: var(--font-size-base);
-		color: var(--color-text-secondary);
-		line-height: 1.6;
+		color: var(--color-text-light);
+		line-height: var(--line-height-relaxed);
 		margin: 0;
 	}
 
 	.lecture-details em {
 		font-style: italic;
+		color: var(--color-primary);
+		font-weight: 500;
+	}
+
+	/* Level badge styling */
+	.lecture-details::after {
+		content: attr(data-level);
+		display: inline-block;
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-accent-rgb), 0.1) 0%,
+			rgba(var(--color-highlight-rgb), 0.05) 100%
+		);
+		color: var(--color-accent);
+		font-size: var(--font-size-xs);
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: var(--letter-spacing-wide);
+		padding: var(--spacing-1) var(--spacing-2);
+		border-radius: var(--border-radius-full);
+		margin-left: var(--spacing-2);
+		border: 1px solid rgba(var(--color-accent-rgb), 0.2);
+	}
+
+	/* Dark mode adaptations */
+	:global(html.dark) .lecture-item {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.06) 0%,
+			rgba(var(--color-highlight-rgb), 0.04) 50%,
+			rgba(var(--color-accent-rgb), 0.02) 100%
+		);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		box-shadow: 
+			0 8px 32px 0 rgba(0, 0, 0, 0.3),
+			inset 0 1px 0 rgba(255, 255, 255, 0.1);
+	}
+
+	:global(html.dark) .lecture-item:hover {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.08) 0%,
+			rgba(var(--color-highlight-rgb), 0.06) 50%,
+			rgba(var(--color-accent-rgb), 0.04) 100%
+		);
+		border-color: rgba(255, 255, 255, 0.15);
+		box-shadow: 
+			0 12px 40px 0 rgba(0, 0, 0, 0.4),
+			inset 0 1px 0 rgba(255, 255, 255, 0.15);
+	}
+
+	/* Responsive design */
+	@media (min-width: 768px) {
+		.lectures-list {
+			gap: var(--spacing-6);
+		}
+		
+		.lecture-item {
+			/* Maintain balanced padding on larger screens */
+			padding: var(--spacing-6) var(--spacing-8) var(--spacing-8) var(--spacing-8);
+		}
+		
+		.lecture-title {
+			font-size: var(--font-size-xl);
+		}
+	}
+
+	/* Accessibility improvements */
+	@media (prefers-reduced-motion: reduce) {
+		.lecture-item {
+			transition: none;
+		}
+		
+		.lecture-item:hover {
+			transform: none;
+		}
+	}
+
+	@media (prefers-contrast: high) {
+		.lecture-item {
+			border-width: 2px;
+		}
+		
+		h2 {
+			border-bottom-width: 3px;
+		}
 	}
 </style>
