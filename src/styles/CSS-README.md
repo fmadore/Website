@@ -197,6 +197,30 @@ Component for displaying skill/technology tags:
 - `.skills-list`: Flexible skill tag layout
 - `.project-skill-tag`: Individual skill tags with hover effects
 
+### Animations (`components/animations.css`)
+
+Comprehensive scroll animation system for creating smooth, engaging user experiences:
+
+- **Base animation states**: `.animate-in`, `.animate-out` for controlling animation visibility
+- **Fade animations**: `.fade-in`, `.fade-in-up`, `.fade-in-down`, `.fade-in-left`, `.fade-in-right`
+- **Scale animations**: `.scale-in`, `.scale-in-center` for zoom effects
+- **Slide animations**: `.slide-in-up`, `.slide-in-down`, `.slide-in-left`, `.slide-in-right`
+- **Bounce animations**: `.bounce-in` for playful entrance effects
+- **Stagger delays**: `.stagger-1` through `.stagger-6` for sequential list animations
+- **Reading progress**: `.reading-progress` for scroll progress indicators
+- **Parallax support**: `.parallax-container`, `.parallax-element` for depth effects
+- **Performance optimizations**: Uses `will-change` and `transform` for smooth animations
+- **Accessibility**: Respects `prefers-reduced-motion` for users who prefer minimal animation
+- **Responsive**: All animations work across all device sizes
+
+The animation system integrates with JavaScript utilities (`src/lib/utils/scrollAnimations.ts`) to provide:
+- Intersection Observer-based scroll triggers
+- Svelte actions for easy component integration
+- Staggered animations for lists
+- Smooth scrolling navigation
+- Parallax effects
+- Reading progress indicators
+
 ## Page-Specific Styles
 
 Styles that are specific to individual pages.

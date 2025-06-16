@@ -16,6 +16,7 @@
 @import './styles/components/activity-list.css';
 @import './styles/components/panels.css';
 @import './styles/components/skill-tags.css';
+@import './styles/components/animations.css';
 
 /* Page-specific styles */
 @import './styles/pages/publications.css';

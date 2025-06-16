@@ -7,6 +7,7 @@
 	import { base } from '$app/paths';
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
 	import { browser } from '$app/environment';
+	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 	import type { PageData } from './$types';
 
 	let { data } = $props<{ data: PageData }>();
@@ -70,7 +71,7 @@
 	<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
 		<ContentBody variant="default" glassEffect="glass-card" additionalClasses="md:col-span-2">
 			{#snippet children()}
-				<p>
+				<p use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up' }}>
 					I am a Research Fellow at <a
 						href="https://www.zmo.de/en"
 						target="_blank"
@@ -88,7 +89,7 @@
 					key sites of religious mobilisation.
 				</p>
 
-				<p>
+				<p use:scrollAnimate={{ delay: 200, animationClass: 'fade-in-up' }}>
 					My recent book, <em>Religious Activism on Campuses in Togo and Benin</em>
 					<ItemReference id="religious-activism-campuses" />, explores how Christian and Muslim
 					student associations emerged in the 1970s and profoundly reshaped university life in Lomé
@@ -158,7 +159,7 @@
 				</p>
 			{/snippet}
 		</ContentBody>
-		<aside class="md:col-span-1">
+		<aside class="md:col-span-1" use:scrollAnimate={{ delay: 300, animationClass: 'fade-in-left' }}>
 			<LatestActivities limit={3} />
 		</aside>
 	</div>
