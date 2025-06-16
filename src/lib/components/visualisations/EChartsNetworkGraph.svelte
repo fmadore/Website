@@ -142,13 +142,56 @@ ECharts Network Graph - A network visualization for author collaborations
 			backgroundColor: resolvedColors.surface,
 			textStyle: {
 				color: resolvedColors.text,
-				fontSize: 12,
+				fontSize: isMobile ? 11 : 12,
 				fontFamily: 'Inter, -apple-system, sans-serif'
 			},
 			borderRadius: 6,
 			borderColor: resolvedColors.border,
 			borderWidth: 1,
-			extraCssText: 'box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);',
+			extraCssText: 'box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); max-width: 280px; word-wrap: break-word; white-space: normal; line-height: 1.4;',
+			confine: true, // Keep tooltip within chart container
+			position: function(point: [number, number], params: any, dom: HTMLElement, rect: any, size: any) {
+				// Get tooltip dimensions
+				const tooltipWidth = size.contentSize[0];
+				const tooltipHeight = size.contentSize[1];
+				const chartWidth = size.viewSize[0];
+				const chartHeight = size.viewSize[1];
+				
+				// Default position
+				let x = point[0] + 10;
+				let y = point[1] - tooltipHeight / 2;
+				
+				// Adjust horizontal position if tooltip would go out of bounds
+				if (x + tooltipWidth > chartWidth) {
+					x = point[0] - tooltipWidth - 10;
+				}
+				
+				// Adjust vertical position if tooltip would go out of bounds
+				if (y < 0) {
+					y = 10;
+				} else if (y + tooltipHeight > chartHeight) {
+					y = chartHeight - tooltipHeight - 10;
+				}
+				
+				// On mobile, prefer positioning above or below the point
+				if (isMobile) {
+					x = Math.max(10, Math.min(chartWidth - tooltipWidth - 10, point[0] - tooltipWidth / 2));
+					
+					// Try positioning above first
+					if (point[1] - tooltipHeight - 15 >= 0) {
+						y = point[1] - tooltipHeight - 15;
+					} else {
+						// Position below if not enough space above
+						y = point[1] + 15;
+						// Ensure it doesn't go below chart
+						if (y + tooltipHeight > chartHeight) {
+							y = chartHeight - tooltipHeight - 10;
+						}
+					}
+				}
+				
+				return [x, y];
+			},
 			formatter: function(params: any) {
 				if (params.dataType === 'node') {
 					if (params.data.id === centerAuthor) {
@@ -156,7 +199,11 @@ ECharts Network Graph - A network visualization for author collaborations
 					} else {
 						const collab = data.find(c => c.author === params.data.name);
 						if (collab) {
-							const publicationList = collab.publications.join('<br/>');
+							// Format all publications with bullet points and proper line breaks
+							const publicationList = collab.publications
+								.map(pub => `• ${pub}`)
+								.join('<br/>');
+							
 							return `<strong>${params.data.name}</strong><br/>
 								Collaborations: ${collab.collaborationCount}<br/>
 								<em>Publications:</em><br/>
