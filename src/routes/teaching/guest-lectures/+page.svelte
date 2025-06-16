@@ -160,21 +160,20 @@
 	h2 {
 		font-size: var(--font-size-2xl);
 		font-family: var(--font-family-serif);
-		font-weight: 700;
+		font-weight: var(--font-weight-bold);
 		color: var(--color-text-emphasis);
 		margin-bottom: var(--spacing-6);
 		padding-bottom: var(--spacing-3);
-		border-bottom: 2px solid var(--color-primary);
 		position: relative;
 	}
 
 	h2::after {
 		content: '';
 		position: absolute;
-		bottom: -2px;
+		bottom: 0;
 		left: 0;
 		width: 60px;
-		height: 2px;
+		height: var(--border-width-medium);
 		background: linear-gradient(
 			135deg,
 			var(--color-highlight) 0%,
@@ -202,14 +201,14 @@
 		-webkit-backdrop-filter: blur(10px);
 		
 		/* Enhanced borders and shadows */
-		border: 1px solid rgba(255, 255, 255, 0.2);
-		border-left: 4px solid var(--color-primary);
+		border: var(--border-width-thin) solid rgba(255, 255, 255, var(--opacity-medium-high));
+		border-left: var(--border-width-thick) solid var(--color-primary);
 		border-radius: var(--border-radius-lg);
 		
 		/* Glassmorphism shadow system */
 		box-shadow: 
 			0 8px 32px 0 rgba(31, 38, 135, 0.15),
-			inset 0 1px 0 rgba(255, 255, 255, 0.2);
+			inset 0 1px 0 rgba(255, 255, 255, var(--opacity-medium-high));
 		
 		/* Balanced spacing - less top padding, more bottom padding */
 		padding: var(--spacing-4) var(--spacing-6) var(--spacing-6) var(--spacing-6);
@@ -235,7 +234,7 @@
 		
 		/* Enhanced shadow on hover */
 		box-shadow: 
-			0 12px 40px 0 rgba(31, 38, 135, 0.2),
+			0 12px 40px 0 rgba(31, 38, 135, var(--opacity-medium-high)),
 			inset 0 1px 0 rgba(255, 255, 255, 0.3);
 		
 		/* Subtle lift effect */
@@ -245,7 +244,7 @@
 	.lecture-title {
 		font-size: var(--font-size-lg);
 		font-family: var(--font-family-serif);
-		font-weight: 600;
+		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
 		margin-top: 0;
 		margin-bottom: var(--spacing-4);
@@ -262,7 +261,7 @@
 	.lecture-details em {
 		font-style: italic;
 		color: var(--color-primary);
-		font-weight: 500;
+		font-weight: var(--font-weight-medium);
 	}
 
 	/* Level badge styling */
@@ -276,13 +275,13 @@
 		);
 		color: var(--color-accent);
 		font-size: var(--font-size-xs);
-		font-weight: 600;
+		font-weight: var(--font-weight-semibold);
 		text-transform: uppercase;
 		letter-spacing: var(--letter-spacing-wide);
 		padding: var(--spacing-1) var(--spacing-2);
 		border-radius: var(--border-radius-full);
 		margin-left: var(--spacing-2);
-		border: 1px solid rgba(var(--color-accent-rgb), 0.2);
+		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-medium-high));
 	}
 
 	/* Dark mode adaptations */
@@ -293,7 +292,7 @@
 			rgba(var(--color-highlight-rgb), 0.04) 50%,
 			rgba(var(--color-accent-rgb), 0.02) 100%
 		);
-		border: 1px solid rgba(255, 255, 255, 0.1);
+		border: var(--border-width-thin) solid rgba(255, 255, 255, var(--opacity-medium));
 		box-shadow: 
 			0 8px 32px 0 rgba(0, 0, 0, 0.3),
 			inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -341,11 +340,11 @@
 
 	@media (prefers-contrast: high) {
 		.lecture-item {
-			border-width: 2px;
+			border-width: var(--border-width-medium);
 		}
 		
-		h2 {
-			border-bottom-width: 3px;
+		h2::after {
+			height: var(--border-width-thick);
 		}
 	}
 </style>
