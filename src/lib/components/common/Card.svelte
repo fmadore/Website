@@ -84,9 +84,39 @@
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;
-		background-color: var(--color-background, white); /* Use variable */
-		border: 1px solid var(--color-border);
 		height: 100%; /* Make cards in a grid have the same height */
+		border-radius: var(--border-radius-lg);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		position: relative;
+		
+		/* Glassmorphism styling consistent with the rest of the website */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.03) 0%,
+			rgba(var(--color-highlight-rgb), 0.02) 50%,
+			rgba(var(--color-accent-rgb), 0.01) 100%
+		);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		box-shadow: 
+			0 8px 32px 0 rgba(31, 38, 135, 0.37),
+			inset 0 1px 0 rgba(255, 255, 255, 0.3);
+	}
+
+	.card:hover {
+		transform: var(--transform-lift-sm);
+		/* Enhanced hover effect with stronger gradient */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.05) 0%,
+			rgba(var(--color-highlight-rgb), 0.03) 50%,
+			rgba(var(--color-accent-rgb), 0.02) 100%
+		);
+		border-color: rgba(255, 255, 255, 0.3);
+		box-shadow: 
+			0 12px 40px 0 rgba(31, 38, 135, 0.4),
+			inset 0 1px 0 rgba(255, 255, 255, 0.4);
 	}
 
 	.card-image {
@@ -170,5 +200,59 @@
 	.card-action :global(a:hover) {
 		color: var(--color-primary-dark);
 		text-decoration: underline;
+	}
+
+	/* Dark mode glassmorphism overrides */
+	:global(html.dark) .card {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.06) 0%,
+			rgba(var(--color-highlight-rgb), 0.04) 50%,
+			rgba(var(--color-accent-rgb), 0.02) 100%
+		);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		box-shadow: 
+			0 8px 32px 0 rgba(0, 0, 0, 0.5),
+			inset 0 1px 0 rgba(255, 255, 255, 0.1);
+	}
+
+	:global(html.dark) .card:hover {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.08) 0%,
+			rgba(var(--color-highlight-rgb), 0.06) 50%,
+			rgba(var(--color-accent-rgb), 0.04) 100%
+		);
+		border-color: rgba(255, 255, 255, 0.15);
+		box-shadow: 
+			0 12px 40px 0 rgba(0, 0, 0, 0.6),
+			inset 0 1px 0 rgba(255, 255, 255, 0.15);
+	}
+
+	/* Fallback for browsers that don't support backdrop-filter */
+	@supports not (backdrop-filter: blur(10px)) {
+		.card {
+			background: rgba(255, 255, 255, 0.9);
+		}
+		
+		:global(html.dark) .card {
+			background: rgba(0, 0, 0, 0.8);
+		}
+	}
+
+	/* Respect user motion preferences */
+	@media (prefers-reduced-motion: reduce) {
+		.card,
+		.card-image img {
+			transition: none;
+		}
+
+		.card:hover {
+			transform: none;
+		}
+
+		.card:hover .card-image img {
+			transform: none;
+		}
 	}
 </style>
