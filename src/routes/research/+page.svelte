@@ -2,6 +2,7 @@
 	import { base } from '$app/paths';
 	import Card from '$lib/components/common/Card.svelte'; // Import the Card component
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import SEO from '$lib/SEO.svelte';
 
 	// Research projects data
@@ -46,12 +47,12 @@
 <div class="container">
 	<PageHeader title="Research" />
 
-	<p class="text-xl mb-10">
+	<PageIntro>
 		My research focuses on the history of Islam and Muslim societies in francophone West Africa from
 		the 1960s to the present. I have conducted extensive fieldwork and archival research in Benin,
 		Togo, Côte d'Ivoire, and Burkina Faso, examining various aspects of Islamic activism, media use,
 		and Muslim politics.
-	</p>
+	</PageIntro>
 
 	<div class="content-grid">
 		{#each researchProjects as project}
@@ -82,14 +83,13 @@
 		padding: 0 1rem;
 	}
 
-	.text-xl {
-		/* Already defined in typography.css - maybe remove if not needed */
-		font-size: 1.25rem; /* Consider var(--font-size-xl) */
+	/* Remove the old text-xl and mb-10 styles since they're now handled by PageIntro */
+	/* .text-xl {
+		font-size: 1.25rem;
 	}
 	.mb-10 {
-		/* Already defined in spacing.css - maybe remove if not needed */
-		margin-bottom: 2.5rem; /* Consider var(--spacing-10) */
-	}
+		margin-bottom: 2.5rem;
+	} */
 
 	/* .research-grid and its responsive styles are now handled by .content-grid */
 	/* Ensure any unique styles for this page that were part of .research-grid are preserved or moved if necessary. */

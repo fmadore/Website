@@ -39,6 +39,7 @@
 	import EntityListPageLayout from '$lib/components/common/EntityListPageLayout.svelte';
 	import FilteredListDisplay from '$lib/components/common/FilteredListDisplay.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import { urlFilterSync } from '$lib/actions/urlFilterSync';
 	import Sorter from '$lib/components/common/Sorter.svelte';
 	import { sortItems } from '$lib/utils/sortUtils';
@@ -232,10 +233,10 @@
 	<div class="main-content">
 		<PageHeader title="Publications" />
 
-		<p class="text-xl mb-10">
+		<PageIntro>
 			This page lists my academic publications, including books, journal articles, book chapters,
 			reports, and more.
-		</p>
+		</PageIntro>
 
 		<!-- Mobile Controls: Two Rows -->
 		<div class="mobile-controls">
@@ -328,13 +329,7 @@
 		width: 100%;
 	}
 
-	.text-xl {
-		font-size: var(--font-size-xl);
-	}
 
-	.mb-10 {
-		margin-bottom: var(--spacing-10);
-	}
 
 	/* Mobile controls styling */
 	.mobile-controls {

@@ -5,6 +5,7 @@
 	import { browser } from '$app/environment'; // Added browser import
 	import Card from '$lib/components/common/Card.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import { allDhProjects } from '$lib/data/digital-humanities'; // Import the new data source
 	import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities'; // Import the type
 
@@ -56,14 +57,14 @@
 		</p>
 	{/if}
 
-	<p class="text-xl mb-10">
+	<PageIntro>
 		This section presents some of my work in digital humanities (DH), applying computational methods
 		to historical research on Islam and Muslim societies in West Africa. DH has taken an
 		increasingly important place in my research in recent years, leading me to develop my skills
 		through both specialised training and continuous self-learning. I use data visualisation
 		techniques to translate research findings into compelling narratives, making historical findings
 		accessible and engaging.
-	</p>
+	</PageIntro>
 
 	<div class="content-grid">
 		{#each finalProjectsToDisplay as project (project.id)}
@@ -129,12 +130,7 @@
 		padding: 0 1rem;
 	}
 
-	.text-xl {
-		font-size: 1.25rem;
-	}
-	.mb-10 {
-		margin-bottom: 2.5rem;
-	}
+
 
 	/* .dh-grid styles are now handled by .content-grid */
 	/* Ensure any unique styles for this page that were part of .dh-grid are preserved or moved if necessary. */

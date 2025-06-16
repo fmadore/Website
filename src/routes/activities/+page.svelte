@@ -2,6 +2,7 @@
 	import { activities, type Activity } from '$lib/stores/activities';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import SEO from '$lib/SEO.svelte';
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
 
@@ -25,10 +26,10 @@
 
 <div class="container mx-auto px-4 pb-4">
 	<PageHeader title="Activities" />
-	<p class="text-xl mb-10">
+	<PageIntro>
 		This section provides an overview of various professional activities, including workshops,
 		talks, and other engagements. You can browse by year using the sidebar.
-	</p>
+	</PageIntro>
 
 	<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 		<div class="md:col-span-1">
@@ -92,20 +93,5 @@
 		color: var(--color-primary);
 	}
 
-	/* Styles for elements within ActivityItem might be needed here 
-       if overriding Tailwind or base styles specifically for this page */
-	/* Example: Keep these if they are necessary overrides */
-	/* 
-    :global(.activity-meta) {
-        color: var(--color-text-light) !important;
-    }
-    :global(.tag) {
-        background-color: var(--color-border) !important; 
-        color: var(--color-text) !important; 
-    }
-    :global(.activity-description) {
-       color: var(--color-text-light) !important; 
-    }
-    */
-	/* Let's remove them for now and see if they are needed */
+
 </style>

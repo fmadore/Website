@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
@@ -192,10 +193,10 @@
 	<Breadcrumb items={breadcrumbItems} />
 	<PageHeader title="Publication Visualisations" />
 
-	<p class="text-xl mb-10">
+	<PageIntro>
 		This page presents various visualisations of my publication data, offering insights into
 		citation trends, authorship patterns, and more.
-	</p>
+	</PageIntro>
 
 	<section class="visualization-section mb-12">
 		<h2 class="text-2xl font-semibold mb-6">Publications per year by type</h2>
@@ -440,10 +441,6 @@
 			font-size: 1.25rem; /* Smaller headings on mobile */
 			margin-bottom: var(--spacing-4);
 		}
-		
-		.text-xl {
-			font-size: 1.125rem; /* Smaller intro text on mobile */
-		}
 	}
 	
 	@media (max-width: 480px) {
@@ -457,10 +454,6 @@
 		
 		.visualization-section h2 {
 			font-size: 1.125rem;
-		}
-		
-		.text-xl {
-			font-size: 1rem;
 		}
 	}
 	

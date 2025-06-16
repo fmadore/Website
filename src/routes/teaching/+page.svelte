@@ -3,6 +3,7 @@
 	import { base } from '$app/paths'; // Import base path for images
 	import Card from '$lib/components/common/Card.svelte'; // Import Card component
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+	import PageIntro from '$lib/components/common/PageIntro.svelte';
 
 	// Unified teaching items data for cards
 	let teachingItems = $state([
@@ -63,10 +64,10 @@
 	<div class="main-content">
 		<PageHeader title="Teaching" />
 
-		<p class="text-xl mb-10">
+		<PageIntro>
 			Teaching interests: African History (pre-modern and modern periods), Islam in sub-Saharan
 			Africa, Digital Humanities, West African history.
-		</p>
+		</PageIntro>
 
 		<!-- Card Grid Layout -->
 		<div class="content-grid">
@@ -122,13 +123,7 @@
 		width: 100%;
 	}
 
-	.text-xl {
-		font-size: var(--font-size-xl);
-	}
 
-	.mb-10 {
-		margin-bottom: var(--spacing-10);
-	}
 
 	/* .teaching-grid styles are now handled by .content-grid */
 
