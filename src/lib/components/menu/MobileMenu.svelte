@@ -72,11 +72,12 @@
 		-webkit-backdrop-filter: blur(32px) saturate(180%);
 		z-index: 200;
 		transform: translateY(-100%);
-		transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 		overflow-y: auto;
 		box-shadow: 
 			0 0 60px rgba(31, 38, 135, 0.1),
 			inset 0 1px 0 rgba(255, 255, 255, 0.8);
+		will-change: transform;
 	}
 
 	.mobile-nav-container.active {
@@ -84,7 +85,7 @@
 	}
 
 	.mobile-nav {
-		padding: var(--spacing-6) var(--spacing-4);
+		padding: var(--spacing-4);
 		height: 100%;
 		display: flex;
 		flex-direction: column;
@@ -94,18 +95,13 @@
 		display: grid;
 		grid-template-columns: 1fr auto 1fr;
 		align-items: center;
-		margin-bottom: var(--spacing-8);
-		padding-bottom: var(--spacing-6);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-		background: rgba(255, 255, 255, 0.1);
-		backdrop-filter: blur(8px);
-		-webkit-backdrop-filter: blur(8px);
-		border-radius: var(--border-radius-lg);
-		padding: var(--spacing-4);
-		margin: var(--spacing-4);
-		box-shadow: 
-			0 8px 32px 0 rgba(31, 38, 135, 0.1),
-			inset 0 1px 0 rgba(255, 255, 255, 0.4);
+		margin-bottom: var(--spacing-6);
+		padding: var(--spacing-4) var(--spacing-2);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+		background: transparent;
+		position: sticky;
+		top: 0;
+		z-index: 10;
 	}
 
 
@@ -180,7 +176,8 @@
 	:global(.mobile-nav-item) {
 		opacity: 0;
 		transform: translateX(-20px);
-		transition: all 0.3s ease;
+		transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		will-change: opacity, transform;
 	}
 
 	.mobile-nav-container.active :global(.mobile-nav-item) {
@@ -188,27 +185,27 @@
 		transform: translateX(0);
 	}
 
-	/* Staggered animation for mobile nav items */
+	/* Staggered animation for mobile nav items - faster and smoother */
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(1)) {
-		transition-delay: 0.1s;
+		transition-delay: 0.05s;
 	}
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(2)) {
-		transition-delay: 0.15s;
+		transition-delay: 0.08s;
 	}
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(3)) {
-		transition-delay: 0.2s;
+		transition-delay: 0.11s;
 	}
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(4)) {
-		transition-delay: 0.25s;
+		transition-delay: 0.14s;
 	}
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(5)) {
-		transition-delay: 0.3s;
+		transition-delay: 0.17s;
 	}
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(6)) {
-		transition-delay: 0.35s;
+		transition-delay: 0.2s;
 	}
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(7)) {
-		transition-delay: 0.4s;
+		transition-delay: 0.23s;
 	}
 
 	:global(.mobile-nav-item:last-child) {
@@ -229,9 +226,10 @@
 		-webkit-backdrop-filter: blur(8px);
 		border: 1px solid rgba(255, 255, 255, 0.1);
 		margin: var(--spacing-2) var(--spacing-4);
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 		position: relative;
 		overflow: hidden;
+		will-change: transform, background-color, border-color;
 	}
 
 	:global(.mobile-nav-link::before) {
@@ -281,12 +279,13 @@
 		text-decoration: none;
 		font-size: var(--font-size-base);
 		font-weight: 500;
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 		border-radius: var(--border-radius-sm);
 		margin-bottom: var(--spacing-1);
 		position: relative;
 		background: rgba(255, 255, 255, 0.03);
 		border: 1px solid rgba(255, 255, 255, 0.05);
+		will-change: transform, background-color, border-color;
 	}
 
 	:global(.mobile-dropdown-link::before) {
@@ -329,11 +328,8 @@
 	}
 
 	:global(html.dark) .mobile-nav-header {
-		background: rgba(var(--color-dark-surface-alt-rgb), 0.2);
+		background: transparent;
 		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-		box-shadow: 
-			0 8px 32px 0 rgba(0, 0, 0, 0.3),
-			inset 0 1px 0 rgba(255, 255, 255, 0.1);
 	}
 
 	:global(html.dark .mobile-nav-link) {
@@ -371,7 +367,7 @@
 		}
 	}
 
-	/* Animation keyframes */
+	/* Animation keyframes - optimized for performance */
 	@keyframes mobileNavSlideIn {
 		from {
 			transform: translateY(-100%);
@@ -379,10 +375,6 @@
 		to {
 			transform: translateY(0);
 		}
-	}
-
-	.mobile-nav-container.active {
-		animation: mobileNavSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 	}
 
 	@keyframes mobileNavItemFadeIn {
@@ -396,7 +388,12 @@
 		}
 	}
 
+	/* Use transform-based animations for better performance */
+	.mobile-nav-container.active {
+		animation: mobileNavSlideIn 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+	}
+
 	.mobile-nav-container.active :global(.mobile-nav-item) {
-		animation: mobileNavItemFadeIn 0.3s ease forwards;
+		animation: mobileNavItemFadeIn 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 	}
 </style>
