@@ -10,6 +10,7 @@
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
 	import { page } from '$app/stores'; // Import page store
 	import { browser } from '$app/environment'; // Import browser check
+	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 
 	// Pre-construct breadcrumb items with evaluated paths
 	const breadcrumbItems = [
@@ -76,8 +77,8 @@
 
 <SEO title="Muslim Minorities in Southern Cities of Benin and Togo | Frédérick Madore" />
 
-<div class="container mx-auto px-4 py-8">
-	<div class="grid">
+<div class="container mx-auto px-4 py-8" use:scrollAnimate={{ delay: 0, animationClass: 'fade-in-up' }}>
+	<div class="grid" use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up' }}>
 		<div class="main-content">
 			<Breadcrumb items={breadcrumbItems} />
 
@@ -143,11 +144,13 @@
 			<RelevantPublications
 				projectName="Muslim Minorities in Southern Cities of Benin and Togo"
 				limit={5}
+				animationDelay={600}
 			/>
 			<div class="mt-6">
 				<RelevantCommunications
 					projectName="Muslim Minorities in Southern Cities of Benin and Togo"
 					limit={5}
+					animationDelay={750}
 				/>
 			</div>
 		</div>

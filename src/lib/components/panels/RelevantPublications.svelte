@@ -5,16 +5,19 @@
 	import RelevantItemsList from '$lib/components/panels/RelevantItemsList.svelte';
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
 	import Button from '../atoms/Button.svelte';
+	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 
 	// Props - project name and limit
 	let {
 		projectName,
 		limit = 5,
-		showTypeFilters = true
+		showTypeFilters = true,
+		animationDelay = 600
 	}: {
 		projectName: string;
 		limit?: number;
 		showTypeFilters?: boolean;
+		animationDelay?: number;
 	} = $props();
 
 	// Add state for selected type filter
@@ -67,7 +70,7 @@
 	}
 </script>
 
-<div>
+<div use:scrollAnimate={{ delay: animationDelay, animationClass: 'fade-in-up' }}>
 	{#if showTypeFilters && publicationTypes.length > 1}
 		<div class="type-filters-section">
 			<div class="type-filters-container">

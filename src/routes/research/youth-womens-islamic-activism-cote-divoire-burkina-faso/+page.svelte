@@ -11,6 +11,7 @@
 	import { page } from '$app/stores'; // Import page store
 	// MODIFIED: Removed onMount, onDestroy. $derived and $effect are assumed to be globally available in Svelte 5.
 	import { browser } from '$app/environment'; // Import browser check
+	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 
 	// Pre-construct breadcrumb items with evaluated paths
 	const breadcrumbItems = [
@@ -83,8 +84,8 @@
 	title="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso | Frédérick Madore"
 />
 
-<div class="container mx-auto px-4 py-8">
-	<div class="grid">
+<div class="container mx-auto px-4 py-8" use:scrollAnimate={{ delay: 0, animationClass: 'fade-in-up' }}>
+	<div class="grid" use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up' }}>
 		<div class="main-content">
 			<Breadcrumb items={breadcrumbItems} />
 
@@ -165,11 +166,13 @@
 			<RelevantPublications
 				projectName="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 				limit={5}
+				animationDelay={600}
 			/>
 			<div class="mt-6">
 				<RelevantCommunications
 					projectName="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 					limit={5}
+					animationDelay={750}
 				/>
 			</div>
 		</div>

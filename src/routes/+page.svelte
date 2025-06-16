@@ -161,8 +161,8 @@
 				{/snippet}
 			</ContentBody>
 		</div>
-		<aside class="md:col-span-1" use:scrollAnimate={{ delay: 750, animationClass: 'fade-in-left' }}>
-			<LatestActivities limit={3} />
+		<aside class="md:col-span-1">
+			<LatestActivities limit={3} animationDelay={750} />
 		</aside>
 	</div>
 </div>
