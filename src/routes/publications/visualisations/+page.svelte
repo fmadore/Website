@@ -11,6 +11,7 @@
 	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
 	import EChartsDoughnutChart from '$lib/components/visualisations/EChartsDoughnutChart.svelte';
+	import EChartsNetworkGraph from '$lib/components/visualisations/EChartsNetworkGraph.svelte';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 
 	type CitationYearData = { year: number; count: number };
@@ -110,6 +111,45 @@
 
 	// Calculate total citations reactively
 	const totalCitations = $derived(citationsPerYearData.reduce((sum: number, item: CitationYearData) => sum + item.count, 0));
+
+	// Calculate collaboration data for network graph
+	const collaborationData = $derived((() => {
+		const collaborations: Record<string, { publications: Set<string> }> = {};
+		
+		allPublications.forEach((pub) => {
+			// Get all authors except Frédérick Madore
+			const coAuthors = (pub.authors || []).filter(author => author !== 'Frédérick Madore');
+			
+			// Add editors for non-chapter/encyclopedia publications
+			if (pub.editors && pub.type !== 'chapter' && pub.type !== 'encyclopedia') {
+				const editors = typeof pub.editors === 'string' 
+					? pub.editors.split(/\s*(?:,|and)\s*/).map(name => name.trim())
+					: pub.editors;
+				coAuthors.push(...editors.filter(editor => editor !== 'Frédérick Madore'));
+			}
+			
+			// Add preface author if exists
+			if (pub.prefacedBy && pub.prefacedBy !== 'Frédérick Madore') {
+				coAuthors.push(pub.prefacedBy);
+			}
+			
+			// Count collaborations
+			coAuthors.forEach(author => {
+				if (!collaborations[author]) {
+					collaborations[author] = { publications: new Set<string>() };
+				}
+				// Use Set to automatically deduplicate publication titles
+				collaborations[author].publications.add(pub.title);
+			});
+		});
+		
+		// Convert to array format expected by the network graph
+		return Object.entries(collaborations).map(([author, data]) => ({
+			author,
+			collaborationCount: data.publications.size, // Count unique publications
+			publications: Array.from(data.publications) // Convert Set back to Array
+		}));
+	})());
 
 	// Accessor functions for the D3BarChart
 	const getYear = (d: CitationYearData) => d.year;
@@ -239,13 +279,36 @@
 		{/if}
 	</section>
 
-	<div use:scrollAnimate={{ delay: 800, animationClass: 'fade-in-up', rootMargin: '100px', threshold: 0.05 }}>
+	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 750, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
+		<h2 class="text-2xl font-semibold mb-6">
+			Author Collaboration Network
+			{#if collaborationData.length > 0}
+				({collaborationData.length} collaborators)
+			{/if}
+		</h2>
+		{#if collaborationData.length > 0}
+			<div class="chart-wrapper network-chart">
+				<EChartsNetworkGraph
+					data={collaborationData}
+					centerAuthor="Frédérick Madore"
+					title="Author Collaboration Network"
+					maxConnections={25}
+				/>
+			</div>
+		{:else}
+			<div class="placeholder-message">
+				<p class="text-light">No collaboration data available to display for this visualization.</p>
+			</div>
+		{/if}
+	</section>
+
+	<div use:scrollAnimate={{ delay: 850, animationClass: 'fade-in-up', rootMargin: '100px', threshold: 0.05 }}>
 		<h2 class="text-3xl font-bold my-8 pt-4 border-t border-default">
 			Citation statistics
 		</h2>
 	</div>
 
-	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 950, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
+	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 1000, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
 		<h2 class="text-2xl font-semibold mb-6">
 			Citations per year
 			{#if citationsPerYearData.length > 0 && totalCitations > 0}
@@ -272,7 +335,7 @@
 		{/if}
 	</section>
 
-	<section class="visualization-section" use:scrollAnimate={{ delay: 1100, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
+	<section class="visualization-section" use:scrollAnimate={{ delay: 1150, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
 		<h2 class="text-2xl font-semibold mb-6">
 			Authors citing my work most frequently
 			{#if citedAuthorsData.length > 0}
@@ -422,6 +485,10 @@
 		height: 450px;
 	}
 
+	.network-chart {
+		height: 500px;
+	}
+
 	.placeholder-message {
 		padding: var(--spacing-6);
 		min-height: 150px;
@@ -470,6 +537,10 @@
 		.stacked-chart {
 			height: 380px; /* Reduce height on mobile */
 		}
+
+		.network-chart {
+			height: 400px; /* Reduce height on mobile */
+		}
 		
 		.visualization-section h2 {
 			font-size: 1.25rem; /* Smaller headings on mobile */
@@ -483,6 +554,10 @@
 		}
 		
 		.stacked-chart {
+			height: 350px; /* Even smaller on very small screens */
+		}
+
+		.network-chart {
 			height: 350px; /* Even smaller on very small screens */
 		}
 		
