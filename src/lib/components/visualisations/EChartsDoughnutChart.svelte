@@ -3,6 +3,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 -->
 <script lang="ts">	import * as echarts from 'echarts';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
+	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 	
 	// Props - keeping interface simple for doughnut chart
 	type DataItem = $$Generic;
@@ -246,7 +247,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 	});
 </script>
 
-<div class="echarts-container">
+<div class="echarts-container" use:scrollAnimate={{ delay: 350, animationClass: 'scale-in-center', rootMargin: '100px', threshold: 0.1 }}>
 	<div bind:this={chartContainer} class="chart"></div>
 </div>
 
@@ -257,12 +258,30 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		position: relative;
 		/* Remove background, border, and styling - let parent handle it */
 		font-family: var(--font-family-sans);
+		/* Initial state for scroll animation */
+		opacity: 0;
+		transform: scale(0.8) translateY(20px);
+		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.echarts-container.scale-in-center {
+		opacity: 1;
+		transform: scale(1) translateY(0);
 	}
 
 	.chart {
 		width: 100%;
 		height: 100%;
 	}
+	/* Reduced motion support */
+	@media (prefers-reduced-motion: reduce) {
+		.echarts-container {
+			opacity: 1 !important;
+			transform: none !important;
+			transition: none !important;
+		}
+	}
+
 	/* Responsive adjustments */
 	@media (max-width: 640px) {
 		.echarts-container {

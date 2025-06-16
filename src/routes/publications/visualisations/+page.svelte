@@ -11,6 +11,7 @@
 	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
 	import EChartsDoughnutChart from '$lib/components/visualisations/EChartsDoughnutChart.svelte';
+	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 
 	type CitationYearData = { year: number; count: number };
 	type CitedAuthorData = { author: string; count: number };
@@ -191,14 +192,18 @@
 
 <div class="page-container">
 	<Breadcrumb items={breadcrumbItems} />
-	<PageHeader title="Publication Visualisations" />
+	<div use:scrollAnimate={{ delay: 200, animationClass: 'fade-in-up', rootMargin: '100px', threshold: 0.05 }}>
+		<PageHeader title="Publication Visualisations" />
+	</div>
 
-	<PageIntro>
-		This page presents various visualisations of my publication data, offering insights into
-		citation trends, authorship patterns, and more.
-	</PageIntro>
+	<div use:scrollAnimate={{ delay: 350, animationClass: 'fade-in-up', rootMargin: '100px', threshold: 0.05 }}>
+		<PageIntro>
+			This page presents various visualisations of my publication data, offering insights into
+			citation trends, authorship patterns, and more.
+		</PageIntro>
+	</div>
 
-	<section class="visualization-section mb-12">
+	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 500, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
 		<h2 class="text-2xl font-semibold mb-6">Publications per year by type</h2>
 		{#if publicationsPerYearStackedData.length > 0 && publicationTypesForStack.length > 0}
 			<div class="chart-wrapper stacked-chart">
@@ -216,7 +221,7 @@
 		{/if}
 	</section>
 
-	<section class="visualization-section mb-12">
+	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 650, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
 		<h2 class="text-2xl font-semibold mb-6">Publication Languages</h2>
 		{#if languageData.length > 0}
 			<div class="chart-wrapper">
@@ -234,11 +239,13 @@
 		{/if}
 	</section>
 
-	<h2 class="text-3xl font-bold my-8 pt-4 border-t border-default">
-		Citation statistics
-	</h2>
+	<div use:scrollAnimate={{ delay: 800, animationClass: 'fade-in-up', rootMargin: '100px', threshold: 0.05 }}>
+		<h2 class="text-3xl font-bold my-8 pt-4 border-t border-default">
+			Citation statistics
+		</h2>
+	</div>
 
-	<section class="visualization-section mb-12">
+	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 950, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
 		<h2 class="text-2xl font-semibold mb-6">
 			Citations per year
 			{#if citationsPerYearData.length > 0 && totalCitations > 0}
@@ -265,7 +272,7 @@
 		{/if}
 	</section>
 
-	<section class="visualization-section">
+	<section class="visualization-section" use:scrollAnimate={{ delay: 1100, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
 		<h2 class="text-2xl font-semibold mb-6">
 			Authors citing my work most frequently
 			{#if citedAuthorsData.length > 0}
@@ -403,6 +410,7 @@
 		border: 1px solid var(--color-border);
 		border-radius: var(--border-radius-lg);
 		box-shadow: var(--shadow-sm);
+		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	.chart-wrapper {
@@ -421,6 +429,32 @@
 		align-items: center;
 		justify-content: center;
 		text-align: center;
+	}
+
+	/* Initial state for scroll animations */
+	.visualization-section,
+	.page-container > div {
+		opacity: 0;
+		transform: translateY(30px);
+		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	/* Animation classes */
+	.visualization-section.fade-in-up,
+	.page-container > div.fade-in-up {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	/* Reduced motion support */
+	@media (prefers-reduced-motion: reduce) {
+		.visualization-section,
+		.page-container > div,
+		.chart-wrapper {
+			opacity: 1 !important;
+			transform: none !important;
+			transition: none !important;
+		}
 	}
 	
 	/* Mobile responsiveness */
