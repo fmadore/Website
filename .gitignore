@@ -26,3 +26,4 @@ test-results/.last-run.json
 .cursor/mcp.json
 playwright.config.js
 tests/example.spec.js
+~/.cursor/mcp.json
