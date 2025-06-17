@@ -12,6 +12,7 @@
 	// MODIFIED: Removed onMount, onDestroy. $derived and $effect are assumed to be globally available in Svelte 5.
 	import { browser } from '$app/environment'; // Import browser check
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
+	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	// Pre-construct breadcrumb items with evaluated paths
 	const breadcrumbItems = [
@@ -84,8 +85,8 @@
 	title="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso | Frédérick Madore"
 />
 
-<div class="container mx-auto px-4 py-8" use:scrollAnimate={{ delay: 0, animationClass: 'fade-in-up', threshold: 0, rootMargin: '200px 0px' }}>
-	<div class="grid" use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up', threshold: 0, rootMargin: '150px 0px' }}>
+<div class="container mx-auto px-4 py-8" use:scrollAnimate={{ delay: DELAY_STEP * 0, animationClass: 'fade-in-up', threshold: 0, rootMargin: '200px 0px' }}>
+	<div class="grid" use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up', threshold: 0, rootMargin: '150px 0px' }}>
 		<div class="main-content">
 			<Breadcrumb items={breadcrumbItems} />
 
@@ -166,13 +167,13 @@
 			<RelevantPublications
 				projectName="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 				limit={5}
-				animationDelay={600}
+				animationDelay={DELAY_STEP * 12}
 			/>
 			<div class="mt-6">
 				<RelevantCommunications
 					projectName="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 					limit={5}
-					animationDelay={750}
+					animationDelay={DELAY_STEP * 15}
 				/>
 			</div>
 		</div>

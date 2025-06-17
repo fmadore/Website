@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
+	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	let {
 		items = [],
 		showHomeLink = true,
-		animationDelay = 50
+		animationDelay = DELAY_STEP
 	}: {
 		items: { label: string; href: string }[];
 		showHomeLink?: boolean;

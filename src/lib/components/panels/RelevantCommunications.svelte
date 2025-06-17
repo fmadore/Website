@@ -5,12 +5,13 @@
 	import RelevantItemsList from '$lib/components/panels/RelevantItemsList.svelte';
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
+	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	// Props - project name and limit
 	let {
 		projectName,
 		limit = 5,
-		animationDelay = 750
+		animationDelay = DELAY_STEP * 15
 	}: {
 		projectName: string;
 		limit?: number;

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
+	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	let {
 		children,
@@ -26,10 +27,10 @@
 
 	// Different animation settings based on variant
 	const animationSettings = {
-		default: { delay: 100, animationClass: 'fade-in-up' },
-		compact: { delay: 50, animationClass: 'fade-in-up' },
-		emphasized: { delay: 150, animationClass: 'scale-in-center' },
-		featured: { delay: 200, animationClass: 'scale-in-center' }
+		default: { delay: DELAY_STEP * 2, animationClass: 'fade-in-up' },
+		compact: { delay: DELAY_STEP * 1, animationClass: 'fade-in-up' },
+		emphasized: { delay: DELAY_STEP * 3, animationClass: 'scale-in-center' },
+		featured: { delay: DELAY_STEP * 4, animationClass: 'scale-in-center' }
 	};
 </script>
 

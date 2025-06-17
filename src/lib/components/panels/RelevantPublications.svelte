@@ -6,13 +6,14 @@
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
 	import Button from '../atoms/Button.svelte';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
+	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	// Props - project name and limit
 	let {
 		projectName,
 		limit = 5,
 		showTypeFilters = true,
-		animationDelay = 600
+		animationDelay = DELAY_STEP * 12
 	}: {
 		projectName: string;
 		limit?: number;
