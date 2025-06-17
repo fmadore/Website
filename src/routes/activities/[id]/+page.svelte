@@ -6,15 +6,22 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
+	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import type { Activity } from '$lib/types';
 	import type { PageData } from './$types';
 	import { browser } from '$app/environment';
+
+	// Animation imports following home page pattern
+	import { scrollAnimate } from '$lib/utils/scrollAnimations';
+	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	// Added imports for consistency
 	import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import ActionLinks from '$lib/components/molecules/ActionLinks.svelte';
-	import AbstractSection from '$lib/components/molecules/AbstractSection.svelte'; // Get data from the load function
+	import AbstractSection from '$lib/components/molecules/AbstractSection.svelte';
+
+	// Get data from the load function
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
 	const jsonLdString = $derived(data.jsonLdString);
@@ -23,7 +30,9 @@
 	function truncateTitle(title: string): string {
 		const colonIndex = title.indexOf(':');
 		return colonIndex > -1 ? title.substring(0, colonIndex) + '...' : title;
-	} // Define breadcrumb items
+	}
+
+	// Define breadcrumb items
 	const breadcrumbItems = $derived([
 		{ label: 'Activities', href: `${base}/activities` },
 		{ label: truncateTitle(activity.title), href: `${base}/activities/${activity.id}` } // Use truncated title
@@ -165,42 +174,65 @@
 	/>
 {/if}
 
-<div class="container mx-auto py-8 px-4">
+<div class="container max-w-7xl" use:scrollAnimate={{ delay: DELAY_STEP, animationClass: 'fade-in-up' }}>
 	{#if activity}
-		<article class="activity-article rounded-lg p-6 mb-8">
-			<Breadcrumb items={breadcrumbItems} />
-			<PageHeader
-				title={activity.title}
-				date={activity.date}
-				typeBadgeText={formatPanelType(activity.panelType)}
-			/>
-
-			{#if activity.heroImage && activity.heroImage.src}
-				<HeroImageDisplay
-					heroImage={{
-						src: `${base}/${activity.heroImage.src}`,
-						alt: activity.heroImage.alt ?? activity.title,
-						caption: activity.heroImage.caption
-					}}
-					imageClass="w-full max-w-md h-auto rounded-md mx-auto"
-					figcaptionClass="text-text-muted text-sm mt-2 italic text-center"
+		<article class="activity-article glass-card" use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
+			<div use:scrollAnimate={{ delay: DELAY_STEP * 3, animationClass: 'fade-in-up' }}>
+				<Breadcrumb items={breadcrumbItems} />
+			</div>
+			
+			<div use:scrollAnimate={{ delay: DELAY_STEP * 4, animationClass: 'fade-in-up' }}>
+				<PageHeader
+					title={activity.title}
+					date={activity.date}
+					typeBadgeText={formatPanelType(activity.panelType)}
 				/>
-			{/if}
-
-			<div class="activity-content">
-				<!-- Render parsed content segments -->
-				{#each contentSegments as segment}
-					{#if segment.type === 'html'}
-						{@html segment.value}
-					{:else if segment.type === 'ItemReference' && segment.id}
-						<ItemReference id={segment.id} />
-					{/if}
-				{/each}
 			</div>
 
+			{#if activity.heroImage && activity.heroImage.src}
+				<div use:scrollAnimate={{ delay: DELAY_STEP * 5, animationClass: 'fade-in-up' }}>
+					<HeroImageDisplay
+						heroImage={{
+							src: `${base}/${activity.heroImage.src}`,
+							alt: activity.heroImage.alt ?? activity.title,
+							caption: activity.heroImage.caption
+						}}
+						imageClass="w-full max-w-md h-auto rounded-md mx-auto"
+						figcaptionClass="text-text-muted text-sm mt-2 italic text-center"
+					/>
+				</div>
+			{/if}
+
+			<div use:scrollAnimate={{ delay: DELAY_STEP * 6, animationClass: 'fade-in-up' }}>
+				<ContentBody variant="default" glassEffect="glass-light" additionalClasses="mt-8">
+					{#snippet children()}
+						<!-- Render parsed content segments -->
+						{#each contentSegments as segment}
+							{#if segment.type === 'html'}
+								{@html segment.value}
+							{:else if segment.type === 'ItemReference' && segment.id}
+								<ItemReference id={segment.id} />
+							{/if}
+						{/each}
+					{/snippet}
+				</ContentBody>
+			</div>
+
+			{#if activity.url}
+				<div use:scrollAnimate={{ delay: DELAY_STEP * 7, animationClass: 'fade-in-up' }}>
+					<ActionLinks
+						primaryUrl={activity.url}
+						primaryLabel="Visit Activity"
+						sectionClass="action-links mt-6"
+						primaryButtonClass="btn btn-primary glass-button"
+						primaryDivClass="mb-4"
+					/>
+				</div>
+			{/if}
+
 			{#if activity.pdfPath}
-				<div class="pdf-section mt-8">
-					<h2 class="text-xl font-semibold mb-4 text-text-headings">
+				<div class="pdf-section glass-light" use:scrollAnimate={{ delay: DELAY_STEP * 8, animationClass: 'fade-in-up' }}>
+					<h2 class="text-xl font-semibold mb-4 text-text-emphasis">
 						{activity.pdfTitle || 'Associated Document'}
 					</h2>
 					<iframe
@@ -208,69 +240,104 @@
 						title="{activity.title} PDF Document"
 						width="100%"
 						height="800px"
-						style="border: 1px solid var(--color-border);"
+						style="border: 1px solid var(--color-border); border-radius: var(--border-radius-lg);"
 						loading="lazy"
 					></iframe>
 				</div>
 			{/if}
 
 			{#if formattedTags && formattedTags.length > 0}
-				<TagList tags={formattedTags} baseUrl="/activities?tag=" sectionClass="mt-6 mb-6" />
+				<div use:scrollAnimate={{ delay: DELAY_STEP * 9, animationClass: 'fade-in-up' }}>
+					<TagList tags={formattedTags} baseUrl="/activities?tag=" sectionClass="mt-6 mb-6" />
+				</div>
 			{/if}
 		</article>
 	{/if}
 </div>
 
 <style>
-	/* Theme styles for main article container */
+	/* Enhanced glassmorphism styles for activity article */
 	.activity-article {
-		background-color: var(--color-background);
-		box-shadow: var(--shadow-md);
-		transition:
-			background-color 0.3s ease,
-			box-shadow 0.3s ease;
+		padding: var(--spacing-8);
+		border-radius: var(--border-radius-xl);
+		margin-bottom: var(--spacing-8);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		position: relative;
+		/* Enhanced glassmorphism with subtle gradient overlay */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+		);
 	}
 
-	/* Removed styles for .activity-header, .back-link, .activity-meta, .activity-date, .activity-tags, .tag, .activity-title */
-	/* Removed .activity-hero figcaption (handled by HeroImageDisplay or its classes) */
-	/* Removed .pdf-download-link (handled by ActionLinks) */
-
-	.activity-content {
-		margin-top: var(--spacing-6);
+	/* Enhanced hover effects */
+	.activity-article:hover {
+		transform: var(--transform-lift-sm);
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+		);
 	}
 
-	/* This style for HeroImageDisplay's caption might be redundant if figcaptionClass on component works as expected */
-	/* Keeping it just in case HeroImageDisplay doesn't fully style its caption or needs this as a global override */
-	/* However, ideally this would be handled by the component's own styling or props like figcaptionClass */
-	/* .activity-hero figcaption { 
-        font-size: var(--font-size-sm);
-        color: var(--color-text-light);
-        text-align: center;
-        margin-top: var(--spacing-2);
-    } */
-
-	.activity-content :global(h2) {
-		font-size: var(--font-size-2xl);
+	/* PDF section styling with glassmorphism */
+	.pdf-section {
 		margin-top: var(--spacing-8);
-		margin-bottom: var(--spacing-4);
-		font-weight: 600;
-		color: var(--color-text);
+		padding: var(--spacing-6);
+		border-radius: var(--border-radius-lg);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
-	.activity-content :global(p) {
-		margin-bottom: var(--spacing-4);
-		line-height: 1.7;
-	}
-
-	/* Allow inline display for ItemReference within paragraphs */
-	.activity-content :global(.item-reference) {
-		display: inline;
-		margin: 0 0.1em; /* Add slight spacing around the reference */
+	.pdf-section:hover {
+		transform: var(--transform-lift-sm);
 	}
 
 	.pdf-section iframe {
 		margin-bottom: var(--spacing-4);
+		box-shadow: var(--shadow-lg);
+		transition: box-shadow 0.3s ease;
 	}
 
-	/* Styles for pdf-download-link are removed as ActionLinks should handle button/link styling */
+	.pdf-section iframe:hover {
+		box-shadow: var(--shadow-xl);
+	}
+
+	/* Typography improvements using CSS variables */
+	.pdf-section h2 {
+		font-family: var(--font-family-serif);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text-emphasis);
+		margin-bottom: var(--spacing-4);
+	}
+
+	/* Responsive adjustments */
+	@media (max-width: 640px) {
+		.activity-article {
+			padding: var(--spacing-6);
+			margin-bottom: var(--spacing-6);
+		}
+
+		.pdf-section {
+			padding: var(--spacing-4);
+		}
+	}
+
+	/* Respect user motion preferences */
+	@media (prefers-reduced-motion: reduce) {
+		.activity-article,
+		.pdf-section,
+		.pdf-section iframe {
+			transition: none;
+		}
+
+		.activity-article:hover,
+		.pdf-section:hover {
+			transform: none;
+		}
+	}
+
+	/* Dark mode adjustments are handled automatically through CSS variables */
 </style>
