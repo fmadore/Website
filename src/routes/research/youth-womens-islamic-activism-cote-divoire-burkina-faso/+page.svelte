@@ -84,8 +84,8 @@
 	title="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso | Frédérick Madore"
 />
 
-<div class="container mx-auto px-4 py-8" use:scrollAnimate={{ delay: 0, animationClass: 'fade-in-up' }}>
-	<div class="grid" use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up' }}>
+<div class="container mx-auto px-4 py-8" use:scrollAnimate={{ delay: 0, animationClass: 'fade-in-up', threshold: 0, rootMargin: '200px 0px' }}>
+	<div class="grid" use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up', threshold: 0, rootMargin: '150px 0px' }}>
 		<div class="main-content">
 			<Breadcrumb items={breadcrumbItems} />
 

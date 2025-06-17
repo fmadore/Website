@@ -6,6 +6,19 @@
 	transform: translateY(20px);
 }
 
+/* Ensure main content is more visible on mobile */
+@media (max-width: 767px) {
+	/* Reduce initial transform distance on mobile for better visibility */
+	[data-animate]:not(.animate-in) {
+		transform: translateY(10px);
+	}
+	
+	/* Faster animation trigger for mobile */
+	[data-animate] {
+		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+	}
+}
+
 /* Ensure smooth page transitions */
 .main-content-area {
 	opacity: 1;
