@@ -141,6 +141,10 @@
 	/* Transform values */
 	--transform-lift-sm: translateY(-1px);
 	--transform-lift-md: translateY(-2px);
+
+	/* Animation base values */
+	--anim-duration-base: 0.6s;
+	--anim-ease-base: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Dark theme variables */
@@ -192,4 +196,8 @@ html.dark {
 	--shadow-xl:
 		0 20px 25px -5px rgba(255, 255, 255, 0.1), 0 10px 10px -5px rgba(255, 255, 255, 0.04);
 	--shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+
+	/* Animation base values (same as light theme for now, can be customised) */
+	--anim-duration-base: 0.6s;
+	--anim-ease-base: cubic-bezier(0.4, 0, 0.2, 1);
 }

@@ -23,6 +23,26 @@ export interface ScrollAnimationConfig {
 	onExit?: (element: HTMLElement) => void;
 }
 
+// Global animation defaults pulled from CSS variables
+function readCssVar(name: string, fallback: string): string {
+	if (typeof window !== 'undefined') {
+		const val = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+		if (val) return val;
+	}
+	return fallback;
+}
+
+const DEFAULT_EASING = readCssVar('--anim-ease-base', 'cubic-bezier(0.4, 0, 0.2, 1)');
+
+function cssDurationToMs(value: string): number {
+	const v = value.trim();
+	if (v.endsWith('ms')) return parseFloat(v);
+	if (v.endsWith('s')) return parseFloat(v) * 1000;
+	return parseFloat(v) || 600;
+}
+
+const DEFAULT_DURATION_MS = cssDurationToMs(readCssVar('--anim-duration-base', '0.6s'));
+
 /**
  * Creates an intersection observer for scroll-triggered animations
  */
@@ -43,8 +63,8 @@ export function createScrollObserver(configs: ScrollAnimationConfig[]): Intersec
 		rootMargin: '50px',
 		once: true,
 		delay: 0,
-		duration: 600,
-		easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+		duration: DEFAULT_DURATION_MS,
+		easing: DEFAULT_EASING
 	};
 
 	const observer = new IntersectionObserver(
@@ -121,7 +141,9 @@ export function scrollAnimate(
 		threshold: 0.1,
 		rootMargin: '50px',
 		once: true,
-		delay: 0
+		delay: 0,
+		duration: DEFAULT_DURATION_MS,
+		easing: DEFAULT_EASING
 	};
 
 	const finalOptions = { ...defaultOptions, ...options };
@@ -130,7 +152,7 @@ export function scrollAnimate(
 	element.setAttribute('data-animate', 'true');
 	
 	// Set transition immediately
-	element.style.transition = `all ${finalOptions.duration || 600}ms ${finalOptions.easing || 'cubic-bezier(0.4, 0, 0.2, 1)'}`;
+	element.style.transition = `all ${(finalOptions.duration ?? DEFAULT_DURATION_MS)}ms ${(finalOptions.easing || DEFAULT_EASING)}`;
 	
 	const observer = new IntersectionObserver(
 		(entries) => {
@@ -295,7 +317,7 @@ export function staggeredAnimation(
 	// Set initial state for all elements with data attribute
 	elements.forEach((element, index) => {
 		element.setAttribute('data-animate', 'true');
-		element.style.transition = `all 0.6s cubic-bezier(0.4, 0, 0.2, 1)`;
+		element.style.transition = `all ${DEFAULT_DURATION_MS}ms ${DEFAULT_EASING}`;
 		element.style.transitionDelay = `${delay + index * stagger}ms`;
 	});
 

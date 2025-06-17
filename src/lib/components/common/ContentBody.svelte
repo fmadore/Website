@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
+	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	let {
 		variant = 'default',
@@ -24,7 +25,7 @@
 	const combinedClasses = `${baseClasses} ${variantClasses[variant]} ${glassEffect} ${additionalClasses}`.trim();
 </script>
 
-<div class={combinedClasses} use:scrollAnimate={{ delay: 450, animationClass: 'fade-in-up' }}>
+<div class={combinedClasses} use:scrollAnimate={{ delay: DELAY_STEP * 9, animationClass: 'fade-in-up' }}>
 	{@render children()}
 </div>
 
