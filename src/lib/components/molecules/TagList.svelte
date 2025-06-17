@@ -1,22 +1,25 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import Button from '../atoms/Button.svelte';
 
 	let {
 		tags = [],
 		baseUrl = '/search?tag=', // Default base URL, can be overridden
 		sectionTitle = 'Tags',
-		titleClass = 'text-lg font-semibold mb-2',
+		titleClass = 'text-lg font-semibold mb-2 text-text-emphasis',
 		listClass = 'flex flex-wrap gap-2',
-		tagLinkClass = 'tag-link text-sm px-3 py-1 rounded-full', // Re-uses existing style
-		sectionClass = 'mb-6'
+		sectionClass = 'mb-6',
+		buttonVariant = 'outline-secondary',
+		buttonSize = 'sm'
 	}: {
 		tags?: string[] | undefined | null;
 		baseUrl?: string;
 		sectionTitle?: string;
 		titleClass?: string;
 		listClass?: string;
-		tagLinkClass?: string;
 		sectionClass?: string;
+		buttonVariant?: 'primary' | 'secondary' | 'outline-primary' | 'outline-secondary';
+		buttonSize?: 'sm' | 'base' | 'lg';
 	} = $props();
 
 	let visibleTags = $derived(tags?.filter((tag) => !!tag) ?? []);
@@ -27,28 +30,55 @@
 		<h2 class={titleClass}>{sectionTitle}</h2>
 		<div class={listClass}>
 			{#each visibleTags as tag}
-				<a href="{base}{baseUrl}{encodeURIComponent(tag)}" class={tagLinkClass}>
-					{tag}
-				</a>
+				<Button 
+					href="{base}{baseUrl}{encodeURIComponent(tag)}"
+					variant={buttonVariant}
+					size={buttonSize}
+					additionalClasses="glass-button tag-button"
+				>
+					{#snippet children()}
+						{tag}
+					{/snippet}
+				</Button>
 			{/each}
 		</div>
 	</section>
 {/if}
 
 <style>
-	/* Style for tag-link can be kept in the global stylesheet 
-       or defined here if needed for component-specific overrides. 
-       Using the one from the page for now. */
-	.tag-link {
-		background-color: var(--color-border);
-		color: var(--color-text-light);
-		transition:
-			background-color 0.2s ease,
-			color 0.2s ease;
-		text-decoration: none;
+	/* Enhanced styling for tag buttons with glassmorphism */
+	:global(.tag-button) {
+		font-weight: var(--font-weight-medium);
+		letter-spacing: var(--letter-spacing-wide);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		border-radius: var(--border-radius-full) !important;
 	}
-	.tag-link:hover {
-		background-color: var(--color-primary);
-		color: var(--color-background);
+
+	:global(.tag-button:hover) {
+		transform: var(--transform-lift-sm);
+		box-shadow: 0 8px 25px 0 rgba(var(--color-primary-rgb), 0.25) !important;
+	}
+
+	/* Section title styling using CSS variables */
+	h2 {
+		font-family: var(--font-family-serif);
+		color: var(--color-text-emphasis);
+	}
+
+	/* Responsive adjustments */
+	@media (max-width: 640px) {
+		:global(.tag-button) {
+			font-size: var(--font-size-xs);
+			padding: var(--spacing-1) var(--spacing-2);
+		}
+	}
+
+	/* Respect user motion preferences */
+	@media (prefers-reduced-motion: reduce) {
+		:global(.tag-button),
+		:global(.tag-button:hover) {
+			transition: none;
+			transform: none;
+		}
 	}
 </style>
