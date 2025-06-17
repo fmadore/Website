@@ -176,91 +176,90 @@
 
 <div class="container max-w-7xl" use:scrollAnimate={{ delay: DELAY_STEP, animationClass: 'fade-in-up' }}>
 	{#if activity}
-		<article class="activity-article glass-card" use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
-			<div use:scrollAnimate={{ delay: DELAY_STEP * 3, animationClass: 'fade-in-up' }}>
-				<Breadcrumb items={breadcrumbItems} />
-			</div>
-			
+		<!-- Separate page header section -->
+		<div use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
+			<Breadcrumb items={breadcrumbItems} />
+		</div>
+		
+		<div use:scrollAnimate={{ delay: DELAY_STEP * 3, animationClass: 'fade-in-up' }}>
+			<PageHeader
+				title={activity.title}
+				date={activity.date}
+				typeBadgeText={formatPanelType(activity.panelType)}
+			/>
+		</div>
+
+		{#if activity.heroImage && activity.heroImage.src}
 			<div use:scrollAnimate={{ delay: DELAY_STEP * 4, animationClass: 'fade-in-up' }}>
-				<PageHeader
-					title={activity.title}
-					date={activity.date}
-					typeBadgeText={formatPanelType(activity.panelType)}
+				<HeroImageDisplay
+					heroImage={{
+						src: `${base}/${activity.heroImage.src}`,
+						alt: activity.heroImage.alt ?? activity.title,
+						caption: activity.heroImage.caption
+					}}
+					imageClass="w-full max-w-md h-auto rounded-md mx-auto"
+					figcaptionClass="text-text-muted text-sm mt-2 italic text-center"
 				/>
 			</div>
+		{/if}
 
-			{#if activity.heroImage && activity.heroImage.src}
-				<div use:scrollAnimate={{ delay: DELAY_STEP * 5, animationClass: 'fade-in-up' }}>
-					<HeroImageDisplay
-						heroImage={{
-							src: `${base}/${activity.heroImage.src}`,
-							alt: activity.heroImage.alt ?? activity.title,
-							caption: activity.heroImage.caption
-						}}
-						imageClass="w-full max-w-md h-auto rounded-md mx-auto"
-						figcaptionClass="text-text-muted text-sm mt-2 italic text-center"
-					/>
-				</div>
-			{/if}
+		<!-- Main content card -->
+		<div use:scrollAnimate={{ delay: DELAY_STEP * 5, animationClass: 'fade-in-up' }}>
+			<ContentBody variant="default" glassEffect="glass-card" additionalClasses="mt-8">
+				{#snippet children()}
+					<!-- Render parsed content segments -->
+					{#each contentSegments as segment}
+						{#if segment.type === 'html'}
+							{@html segment.value}
+						{:else if segment.type === 'ItemReference' && segment.id}
+							<ItemReference id={segment.id} />
+						{/if}
+					{/each}
+				{/snippet}
+			</ContentBody>
+		</div>
 
+		{#if activity.url}
 			<div use:scrollAnimate={{ delay: DELAY_STEP * 6, animationClass: 'fade-in-up' }}>
-				<ContentBody variant="default" glassEffect="glass-light" additionalClasses="mt-8">
-					{#snippet children()}
-						<!-- Render parsed content segments -->
-						{#each contentSegments as segment}
-							{#if segment.type === 'html'}
-								{@html segment.value}
-							{:else if segment.type === 'ItemReference' && segment.id}
-								<ItemReference id={segment.id} />
-							{/if}
-						{/each}
-					{/snippet}
-				</ContentBody>
+				<ActionLinks
+					primaryUrl={activity.url}
+					primaryLabel="Visit Activity"
+					sectionClass="action-links mt-6"
+					primaryButtonClass="btn btn-primary glass-button"
+					primaryDivClass="mb-4"
+				/>
 			</div>
+		{/if}
 
-			{#if activity.url}
-				<div use:scrollAnimate={{ delay: DELAY_STEP * 7, animationClass: 'fade-in-up' }}>
-					<ActionLinks
-						primaryUrl={activity.url}
-						primaryLabel="Visit Activity"
-						sectionClass="action-links mt-6"
-						primaryButtonClass="btn btn-primary glass-button"
-						primaryDivClass="mb-4"
-					/>
-				</div>
-			{/if}
+		{#if activity.pdfPath}
+			<div class="pdf-section glass-card mt-8" use:scrollAnimate={{ delay: DELAY_STEP * 7, animationClass: 'fade-in-up' }}>
+				<h2 class="text-xl font-semibold mb-4 text-text-emphasis">
+					{activity.pdfTitle || 'Associated Document'}
+				</h2>
+				<iframe
+					src="{base}/{activity.pdfPath}"
+					title="{activity.title} PDF Document"
+					width="100%"
+					height="800px"
+					style="border: 1px solid var(--color-border); border-radius: var(--border-radius-lg);"
+					loading="lazy"
+				></iframe>
+			</div>
+		{/if}
 
-			{#if activity.pdfPath}
-				<div class="pdf-section glass-light" use:scrollAnimate={{ delay: DELAY_STEP * 8, animationClass: 'fade-in-up' }}>
-					<h2 class="text-xl font-semibold mb-4 text-text-emphasis">
-						{activity.pdfTitle || 'Associated Document'}
-					</h2>
-					<iframe
-						src="{base}/{activity.pdfPath}"
-						title="{activity.title} PDF Document"
-						width="100%"
-						height="800px"
-						style="border: 1px solid var(--color-border); border-radius: var(--border-radius-lg);"
-						loading="lazy"
-					></iframe>
-				</div>
-			{/if}
-
-			{#if formattedTags && formattedTags.length > 0}
-				<div use:scrollAnimate={{ delay: DELAY_STEP * 9, animationClass: 'fade-in-up' }}>
-					<TagList tags={formattedTags} baseUrl="/activities?tag=" sectionClass="mt-6 mb-6" />
-				</div>
-			{/if}
-		</article>
+		{#if formattedTags && formattedTags.length > 0}
+			<div use:scrollAnimate={{ delay: DELAY_STEP * 8, animationClass: 'fade-in-up' }}>
+				<TagList tags={formattedTags} baseUrl="/activities?tag=" sectionClass="mt-6 mb-6" />
+			</div>
+		{/if}
 	{/if}
 </div>
 
 <style>
-	/* Enhanced glassmorphism styles for activity article */
-	.activity-article {
+	/* PDF section styling with glassmorphism */
+	.pdf-section {
 		padding: var(--spacing-8);
 		border-radius: var(--border-radius-xl);
-		margin-bottom: var(--spacing-8);
 		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		position: relative;
 		/* Enhanced glassmorphism with subtle gradient overlay */
@@ -272,8 +271,7 @@
 		);
 	}
 
-	/* Enhanced hover effects */
-	.activity-article:hover {
+	.pdf-section:hover {
 		transform: var(--transform-lift-sm);
 		background: linear-gradient(
 			135deg,
@@ -281,18 +279,6 @@
 			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
 			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-	}
-
-	/* PDF section styling with glassmorphism */
-	.pdf-section {
-		margin-top: var(--spacing-8);
-		padding: var(--spacing-6);
-		border-radius: var(--border-radius-lg);
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-	}
-
-	.pdf-section:hover {
-		transform: var(--transform-lift-sm);
 	}
 
 	.pdf-section iframe {
@@ -315,25 +301,18 @@
 
 	/* Responsive adjustments */
 	@media (max-width: 640px) {
-		.activity-article {
-			padding: var(--spacing-6);
-			margin-bottom: var(--spacing-6);
-		}
-
 		.pdf-section {
-			padding: var(--spacing-4);
+			padding: var(--spacing-6);
 		}
 	}
 
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
-		.activity-article,
 		.pdf-section,
 		.pdf-section iframe {
 			transition: none;
 		}
 
-		.activity-article:hover,
 		.pdf-section:hover {
 			transform: none;
 		}
