@@ -239,8 +239,9 @@
 			flex-direction: column;
 			align-items: center;
 			text-align: center;
-			gap: var(--spacing-6);
-			padding: var(--spacing-8) var(--spacing-6);
+			gap: var(--spacing-4);
+			padding: var(--spacing-6) var(--spacing-4);
+			margin-bottom: var(--spacing-4);
 		}
 
 		.profile-content {
@@ -248,13 +249,26 @@
 			min-height: auto;
 		}
 
+		.profile-photo {
+			width: 120px;
+			height: 120px;
+		}
+
+		.profile-photo-container::before {
+			top: -6px;
+			left: -6px;
+			right: -6px;
+			bottom: -6px;
+		}
+
 		.profile-title h1 {
-			font-size: var(--font-size-3xl);
+			font-size: var(--font-size-2xl);
 		}
 
 		.subtitle {
-			font-size: var(--font-size-lg);
-			margin-bottom: var(--spacing-5);
+			font-size: var(--font-size-base);
+			margin-bottom: var(--spacing-4);
+			line-height: var(--line-height-snug);
 		}
 
 		.profile-icons {
@@ -264,6 +278,7 @@
 		.title-accent {
 			margin-left: auto;
 			margin-right: auto;
+			width: 40px;
 		}
 	}
 

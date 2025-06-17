@@ -227,6 +227,10 @@
 			padding: var(--spacing-6);
 		}
 
+		.content-body--default {
+			margin-bottom: var(--spacing-6);
+		}
+
 		.content-body--compact {
 			padding: var(--spacing-4);
 		}

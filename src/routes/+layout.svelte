@@ -110,7 +110,7 @@
 	<Header />
 
 	<main class="main-content-area">
-		<div class="container mx-auto p-8">
+		<div class="container mx-auto p-4 md:p-8">
 			{#key $page.url}
 				<div>
 					{@render children()}
