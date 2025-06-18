@@ -48,7 +48,7 @@
 	box-shadow: var(--shadow-lg) !important;
 }
 
-/* Secondary button */
+/* Secondary button with distinct blue-teal color scheme */
 .btn-secondary {
 	background: rgba(var(--color-surface-rgb), var(--opacity-medium)) !important;
 	color: var(--color-text) !important;
@@ -61,14 +61,16 @@
 
 .btn-secondary:hover,
 .btn-secondary:focus {
-	background: rgba(var(--color-accent-rgb), var(--opacity-medium)) !important;
-	border-color: rgba(var(--color-accent-rgb), var(--opacity-medium-high)) !important;
-	color: var(--color-text-emphasis) !important;
+	background: linear-gradient(135deg, 
+		var(--color-secondary-scheme) 0%, 
+		var(--color-secondary-scheme-alt) 100%) !important;
+	border-color: var(--color-secondary-scheme) !important;
+	color: white !important;
 	transform: var(--transform-lift-sm) !important;
 	box-shadow: var(--shadow-md) !important;
 }
 
-/* Outline buttons */
+/* Enhanced outline buttons with distinct accent colors */
 .btn-outline-primary {
 	background: rgba(var(--color-primary-rgb), var(--opacity-low)) !important;
 	color: var(--color-primary) !important;
@@ -81,9 +83,11 @@
 
 .btn-outline-primary:hover,
 .btn-outline-primary:focus {
-	background: rgba(var(--color-primary-rgb), var(--opacity-medium)) !important;
+	background: linear-gradient(135deg, 
+		var(--color-primary) 0%, 
+		var(--color-accent) 100%) !important;
 	border-color: var(--color-primary) !important;
-	color: var(--color-primary) !important;
+	color: white !important;
 	transform: var(--transform-lift-sm) !important;
 	box-shadow: var(--shadow-md) !important;
 }
@@ -100,9 +104,11 @@
 
 .btn-outline-secondary:hover,
 .btn-outline-secondary:focus {
-	background: rgba(var(--color-accent-rgb), var(--opacity-medium)) !important;
-	border-color: rgba(var(--color-accent-rgb), var(--opacity-medium-high)) !important;
-	color: var(--color-text-emphasis) !important;
+	background: linear-gradient(135deg, 
+		var(--color-tertiary-scheme) 0%, 
+		var(--color-tertiary-scheme-alt) 100%) !important;
+	border-color: var(--color-tertiary-scheme) !important;
+	color: white !important;
 	transform: var(--transform-lift-sm) !important;
 	box-shadow: var(--shadow-md) !important;
 }
@@ -193,9 +199,11 @@
 }
 
 .btn-glass:hover {
-	background: rgba(var(--color-accent-rgb), var(--opacity-medium)) !important;
-	border-color: rgba(var(--color-accent-rgb), var(--opacity-medium-high)) !important;
-	color: var(--color-text-emphasis) !important;
+	background: linear-gradient(135deg, 
+		rgba(var(--color-glass-scheme-rgb), 0.8) 0%, 
+		rgba(var(--color-glass-scheme-alt-rgb), 0.8) 100%) !important;
+	border-color: rgba(var(--color-glass-scheme-rgb), 0.6) !important;
+	color: white !important;
 	transform: var(--transform-lift-sm) !important;
 	box-shadow: var(--shadow-md) !important;
 }
@@ -216,9 +224,11 @@
 }
 
 .btn-glass-primary:hover {
-	background: rgba(var(--color-primary-rgb), var(--opacity-medium-high)) !important;
+	background: linear-gradient(135deg, 
+		var(--color-primary) 0%, 
+		var(--color-accent) 100%) !important;
 	border-color: var(--color-primary) !important;
-	color: var(--color-primary) !important;
+	color: white !important;
 	transform: var(--transform-lift-sm) !important;
 	box-shadow: var(--shadow-md) !important;
 }
@@ -231,8 +241,11 @@
 }
 
 :global(html.dark) .btn-glass:hover {
-	background: rgba(var(--color-accent-rgb), var(--opacity-medium)) !important;
-	border-color: rgba(var(--color-accent-rgb), var(--opacity-medium-high)) !important;
+	background: linear-gradient(135deg, 
+		rgba(var(--color-glass-scheme-rgb), 0.8) 0%, 
+		rgba(var(--color-glass-scheme-alt-rgb), 0.8) 100%) !important;
+	border-color: rgba(var(--color-glass-scheme-rgb), 0.6) !important;
+	color: white !important;
 }
 
 :global(html.dark) .btn-glass-primary {
@@ -242,8 +255,11 @@
 }
 
 :global(html.dark) .btn-glass-primary:hover {
-	background: rgba(var(--color-primary-rgb), var(--opacity-medium-high)) !important;
+	background: linear-gradient(135deg, 
+		var(--color-primary) 0%, 
+		var(--color-accent) 100%) !important;
 	border-color: var(--color-primary) !important;
+	color: white !important;
 }
 
 :global(html.dark) .btn-primary {
@@ -269,8 +285,11 @@
 
 :global(html.dark) .btn-secondary:hover,
 :global(html.dark) .btn-secondary:focus {
-	background: rgba(var(--color-accent-rgb), var(--opacity-medium)) !important;
-	border-color: rgba(var(--color-accent-rgb), var(--opacity-medium-high)) !important;
+	background: linear-gradient(135deg, 
+		var(--color-secondary-scheme) 0%, 
+		var(--color-secondary-scheme-alt) 100%) !important;
+	border-color: var(--color-secondary-scheme) !important;
+	color: white !important;
 }
 
 :global(html.dark) .btn-outline-primary {
@@ -280,8 +299,11 @@
 
 :global(html.dark) .btn-outline-primary:hover,
 :global(html.dark) .btn-outline-primary:focus {
-	background: rgba(var(--color-primary-rgb), var(--opacity-medium)) !important;
+	background: linear-gradient(135deg, 
+		var(--color-primary) 0%, 
+		var(--color-accent) 100%) !important;
 	border-color: var(--color-primary) !important;
+	color: white !important;
 }
 
 :global(html.dark) .btn-outline-secondary {
@@ -291,8 +313,11 @@
 
 :global(html.dark) .btn-outline-secondary:hover,
 :global(html.dark) .btn-outline-secondary:focus {
-	background: rgba(var(--color-accent-rgb), var(--opacity-medium)) !important;
-	border-color: rgba(var(--color-accent-rgb), var(--opacity-medium-high)) !important;
+	background: linear-gradient(135deg, 
+		var(--color-tertiary-scheme) 0%, 
+		var(--color-tertiary-scheme-alt) 100%) !important;
+	border-color: var(--color-tertiary-scheme) !important;
+	color: white !important;
 }
 
 /* Fallback for browsers that don't support backdrop-filter */

@@ -42,6 +42,22 @@
 	--color-dark-surface-deep: #181e26; /* Dark theme deep surface */
 	--color-dark-surface-deep-rgb: 24, 30, 38; /* RGB values for dark surface deep color */
 	
+	/* Button color schemes */
+	--color-secondary-scheme: #3b82f6; /* Blue for secondary buttons */
+	--color-secondary-scheme-rgb: 59, 130, 246;
+	--color-secondary-scheme-alt: #06b6d4; /* Cyan complement */
+	--color-secondary-scheme-alt-rgb: 6, 182, 212;
+	
+	--color-tertiary-scheme: #10b981; /* Emerald for tertiary/outline-secondary */
+	--color-tertiary-scheme-rgb: 16, 185, 129;
+	--color-tertiary-scheme-alt: #059669; /* Darker emerald */
+	--color-tertiary-scheme-alt-rgb: 5, 150, 105;
+	
+	--color-glass-scheme: #6366f1; /* Indigo for glass buttons */
+	--color-glass-scheme-rgb: 99, 102, 241;
+	--color-glass-scheme-alt: #8b5cf6; /* Violet complement */
+	--color-glass-scheme-alt-rgb: 139, 92, 246;
+	
 	/* Background variations for components */
 	--color-background-alt: #f9fafb; /* Alternative background */
 	--color-background-muted: #f1f5f9; /* Muted background for placeholders */
@@ -188,6 +204,23 @@ html.dark {
 	--color-dark-surface-alt-rgb: 35, 43, 54; /* RGB values for dark surface alt color */
 	--color-dark-surface-deep: #181e26; /* Dark theme deep surface */
 	--color-dark-surface-deep-rgb: 24, 30, 38; /* RGB values for dark surface deep color */
+	
+	/* Dark theme button color schemes */
+	--color-secondary-scheme: #60a5fa; /* Lighter blue for dark mode */
+	--color-secondary-scheme-rgb: 96, 165, 250;
+	--color-secondary-scheme-alt: #22d3ee; /* Lighter cyan */
+	--color-secondary-scheme-alt-rgb: 34, 211, 238;
+	
+	--color-tertiary-scheme: #34d399; /* Lighter emerald for dark mode */
+	--color-tertiary-scheme-rgb: 52, 211, 153;
+	--color-tertiary-scheme-alt: #10b981; /* Original emerald for contrast */
+	--color-tertiary-scheme-alt-rgb: 16, 185, 129;
+	
+	--color-glass-scheme: #818cf8; /* Lighter indigo for dark mode */
+	--color-glass-scheme-rgb: 129, 140, 248;
+	--color-glass-scheme-alt: #a78bfa; /* Lighter violet */
+	--color-glass-scheme-alt-rgb: 167, 139, 250;
+
 	/* Adjusted shadows for dark mode if needed */
 	--shadow-sm: 0 1px 2px 0 rgba(255, 255, 255, 0.05);
 	--shadow: 0 1px 3px 0 rgba(255, 255, 255, 0.1), 0 1px 2px 0 rgba(255, 255, 255, 0.06);
