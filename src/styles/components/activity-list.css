@@ -28,10 +28,10 @@
 }
 
 .activity-title {
-	font-weight: 500;
+	font-weight: var(--font-weight-medium);
 	margin-bottom: var(--spacing-1);
 	color: var(--color-text);
-	transition: color 0.2s ease;
+	transition: color var(--anim-duration-base) var(--anim-ease-base);
 }
 
 .activity-link:hover .activity-title {
@@ -60,9 +60,9 @@
 	border-radius: var(--border-radius);
 	font-size: var(--font-size-sm);
 	color: var(--color-text);
-	transition: all 0.2s ease;
+	transition: all var(--anim-duration-base) var(--anim-ease-base);
 	cursor: pointer;
-	border: 1px solid var(--color-border);
+	border: var(--border-width-thin) solid var(--color-border);
 }
 
 .filter-tag:hover {
@@ -71,7 +71,7 @@
 
 .filter-tag.active {
 	background-color: var(--color-primary);
-	color: white;
+	color: var(--color-background);
 	border-color: var(--color-primary);
 }
 
@@ -86,7 +86,7 @@
 	font-size: var(--font-size-sm);
 	color: var(--color-text);
 	text-decoration: none;
-	transition: background-color 0.2s ease;
+	transition: background-color var(--anim-duration-base) var(--anim-ease-base);
 }
 
 .year-tag:hover {
@@ -105,7 +105,7 @@
 	margin-top: var(--spacing-2);
 	color: var(--color-text-light);
 	font-size: var(--font-size-sm);
-	line-height: 1.5;
+	line-height: var(--line-height-normal);
 }
 
 /* See more link */
@@ -113,7 +113,7 @@
 	display: inline-block;
 	margin-top: var(--spacing-4);
 	font-size: var(--font-size-sm);
-	font-weight: 500;
+	font-weight: var(--font-weight-medium);
 	color: var(--color-primary);
 	text-decoration: none;
 }
