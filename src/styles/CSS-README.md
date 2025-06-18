@@ -172,22 +172,25 @@ Shared utilities used across navigation components:
 
 Reusable panel components for content organization:
 
-- `.panel`: Base panel with surface styling
+- `.panel`: Base panel with glassmorphism effects and subtle gradient overlays
 - **Panel structure**: `.panel-header`, `.panel-content`, `.panel-footer`
-- **Content elements**: `.no-items`, `.item-list`, `.view-all-link`
+- **Panel titles**: `.panel-title` with animated accent lines
+- **Content elements**: `.no-items`, `.item-list`, `.view-all-container`
 - **Filter systems**: `.year-filters`, `.filter-button`, `.type-filters-section`
-- **Variants**: Activities panel, items panel
+- **Variants**: `.panel-activities`, `.panel-items` with different gradient schemes
 - **Dark mode support**: Complete dark theme overrides
+- **Responsive design**: Mobile-optimized spacing and typography
 
 ### Activity List (`components/activity-list.css`)
 
 Specialized component for activity timelines:
 
 - `.activity-list`: Timeline-style list
-- `.activity-item`: Individual activity with border accent
+- `.activity-item`: Individual activity with border accent and hover effects
 - **Activity elements**: `.activity-title`, `.activity-date`, `.activity-summary`
 - **Filters**: `.activity-filters`, `.filter-tag`, `.year-tag`
 - **Interactive elements**: Hover effects, active states
+- **Year navigation**: `.year-count` for activity counts
 
 ### Skill Tags (Component-based)
 
@@ -207,6 +210,7 @@ Comprehensive scroll animation system for creating smooth, engaging user experie
 - **Parallax support**: `.parallax-container`, `.parallax-element` for depth effects
 - **Performance optimizations**: Uses `will-change` and `transform` for smooth animations
 - **Accessibility**: Respects `prefers-reduced-motion` for users who prefer minimal animation
+- **Mobile optimizations**: Reduced transform distances and faster animations on mobile
 - **Responsive**: All animations work across all device sizes
 
 The animation system integrates with JavaScript utilities (`src/lib/utils/scrollAnimations.ts`) to provide:
@@ -221,24 +225,15 @@ The animation system integrates with JavaScript utilities (`src/lib/utils/scroll
 
 Styles that are specific to individual pages.
 
-### Research (`pages/research.css`)
-
-Styles for research project pages:
-
-- `.research-project`: Project container
-- **Project elements**: `.project-header`, `.project-title`, `.project-meta`, `.project-image`
-- **Content sections**: `.project-content`, `.project-section`, `.project-section-title`
-- **Method cards**: `.project-method-cards`, `.method-card`, `.method-title`
-- **Project grid**: `.research-grid`, `.project-card` with responsive layout
-
 ### Publications (`pages/publications.css`)
 
-Styles for publication listings:
+Styles for publication listings and details:
 
-- `.publication-list`: Publication container
-- **Publication elements**: `.publication-title`, `.publication-meta`
-- **Filters**: `.publication-filters`, `.filter-button` with active states
-- **Citations**: `.citation-button`, `.citation-box` with monospace font
+- `.publication-list`: Publication container with proper spacing
+- **Publication elements**: `.publication-title`, `.publication-meta` with academic formatting
+- **Filters**: `.filter-button` with active states and hover effects
+- **Citations**: `.citation-button`, `.citation-box` with monospace font and proper styling
+- **Interactive elements**: Hover states and transitions for better UX
 
 ## Utilities
 
@@ -246,14 +241,14 @@ Comprehensive utility class system for rapid development.
 
 ### Spacing (`utilities/spacing.css`)
 
-Extensive spacing utility system:
+Essential spacing utility system (optimized for actual usage):
 
 - **Margin utilities**: `.m-*`, `.mx-*`, `.my-*`, `.mt-*`, `.mb-*`, `.mr-*`, `.ml-*`
-- **Padding utilities**: `.p-*`, `.px-*`, `.py-*`, `.pt-*`, `.pb-*`, `.pl-*`, `.pr-*`
+- **Padding utilities**: `.p-*`, `.px-*`, `.py-*`, `.pt-*`, `.pb-*`
 - **Gap utilities**: `.gap-*`, `.gap-x-*`, `.gap-y-*`
-- **Space between**: `.space-x-*`, `.space-y-*`
-- **Responsive variants**: All utilities available with `sm:`, `md:`, `lg:`, `xl:` prefixes
-- **Scale**: 0, 1, 2, 3, 4, 6, 8, 10, 12, 16 spacing units
+- **Space between**: `.space-y-*` for consistent vertical spacing
+- **Responsive variants**: Essential utilities available with `sm:`, `md:`, `lg:` prefixes
+- **Scale**: Most commonly used spacing values (0, 1, 2, 3, 4, 6, 8, 12)
 
 ### Colors (`utilities/colors.css`)
 
@@ -261,9 +256,9 @@ Comprehensive color utility system:
 
 - **Text colors**: `.text-primary`, `.text-secondary`, `.text-accent`, `.text-highlight`, `.text-success`, `.text-default`, `.text-light`, `.text-white`, `.text-black`, `.text-muted`
 - **Background colors**: `.bg-*` variants including opacity variants (`.bg-primary-10`, `.bg-primary-20`, etc.)
-- **Border colors**: `.border-*` variants
+- **Border colors**: `.border-*` variants with comprehensive color options
 - **Border styles**: `.border`, `.border-0`, `.border-2`, `.border-4`, directional borders
-- **Interactive states**: Hover and focus variants
+- **Interactive states**: Hover and focus variants for all color utilities
 - **Responsive variants**: All color utilities available at all breakpoints
 
 ### Flexbox (`utilities/flex.css`)
@@ -332,21 +327,21 @@ Transform utilities for animations and effects:
 
 Transition and animation utilities:
 
-- **Transition types**: `.transition`, `.transition-colors`, `.transition-opacity`, `.transition-shadow`, `.transition-transform`
+- **Transition types**: `.transition`, `.transition-colors`, `.transition-opacity`, `.transition-shadow`, `.transition-transform`, `.transition-none`
 - **Duration**: `.duration-75` through `.duration-500`
 - **Easing**: `.ease-linear`, `.ease-in`, `.ease-out`, `.ease-in-out`
 - **Responsive variants**: Available at all breakpoints
 
 ### Images (`utilities/images.css`)
 
-Image handling utilities:
+Image handling utilities for better performance and responsiveness:
 
 - **Responsive images**: `.responsive-image`
 - **Aspect ratios**: `.aspect-square`, `.aspect-video`, `.aspect-photo`, `.aspect-card`, `.aspect-book`
 - **Object fit**: `.object-cover`, `.object-contain`, `.object-fill`
 - **Image containers**: `.image-container` with hover effects
 - **Loading states**: `.image-loading` with skeleton animation
-- **Specific components**: `.publication-cover`, `.hero-image`, `.card-image-content`
+- **Specific components**: `.publication-cover`, `.communication-image`, `.hero-image`, `.card-image-content`, `.preview-card-image`
 
 ### Glassmorphism (`utilities/glassmorphism.css`)
 
@@ -355,7 +350,8 @@ Modern glass effect utilities for creating frosted glass UI elements:
 - **Base glass effects**: `.glass`, `.glass-light`, `.glass-medium`, `.glass-heavy`
 - **Colored glass**: `.glass-primary`, `.glass-accent`, `.glass-highlight`, `.glass-success`
 - **Blur levels**: `.glass-blur-sm`, `.glass-blur-md`, `.glass-blur-lg`, `.glass-blur-xl`, `.glass-blur-2xl`
-- **Component-specific**: `.glass-card`, `.glass-panel`, `.glass-nav`, `.glass-button`
+- **Component-specific**: `.glass-card`, `.glass-panel`, `.glass-panel-light`, `.glass-nav`, `.glass-button`
+- **Button variants**: Enhanced glass button styling with improved contrast
 - **Special effects**: `.glass-frosted` with enhanced saturation
 - **Animations**: `.glass-animate`, `.glass-animate-fast`, `.glass-animate-slow`
 - **Dark mode support**: Automatic dark theme adaptations
