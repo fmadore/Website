@@ -189,13 +189,9 @@ Specialized component for activity timelines:
 - **Filters**: `.activity-filters`, `.filter-tag`, `.year-tag`
 - **Interactive elements**: Hover effects, active states
 
-### Skill Tags (`components/skill-tags.css`)
+### Skill Tags (Component-based)
 
-Component for displaying skill/technology tags:
-
-- `.project-skills-container`: Container for skill lists
-- `.skills-list`: Flexible skill tag layout
-- `.project-skill-tag`: Individual skill tags with hover effects
+Skill/technology tags are now handled through the `TagList` component which uses the `Button` component with glassmorphism effects. No dedicated CSS file is needed as styling is handled through the button system and component props.
 
 ### Animations (`components/animations.css`)
 

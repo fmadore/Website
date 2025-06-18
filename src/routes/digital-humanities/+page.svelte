@@ -6,6 +6,7 @@
 	import Card from '$lib/components/common/Card.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
+	import TagList from '$lib/components/molecules/TagList.svelte';
 	import { allDhProjects } from '$lib/data/digital-humanities'; // Import the new data source
 	import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities'; // Import the type
 
@@ -86,17 +87,15 @@
 					<div class="dh-card-extras">
 						<!-- Skills section -->
 						{#if project.skills && project.skills.length > 0}
-							<div class="project-skills-container">
-								<strong>Skills:</strong>
-								<div class="skills-list">
-									{#each project.skills as skill}
-										<a
-											href="{base}/digital-humanities?skill={encodeURIComponent(skill)}"
-											class="project-skill-tag">{skill}</a
-										>
-									{/each}
-								</div>
-							</div>
+							<TagList 
+								tags={project.skills} 
+								baseUrl="/digital-humanities?skill=" 
+								sectionTitle="Skills"
+								titleClass="text-sm font-medium mb-2 text-text-secondary"
+								sectionClass="mb-2"
+								buttonVariant="outline-primary"
+								buttonSize="sm"
+							/>
 						{/if}
 					</div>
 				{/snippet}
@@ -146,41 +145,8 @@
 
 	/* Styles for content within the details slot */
 	.dh-card-extras {
-		font-size: 0.9rem; /* Consider var(--font-size-sm) */
+		font-size: var(--font-size-sm);
 		margin-top: var(--spacing-2);
-		line-height: 1.4;
-	}
-	.dh-card-extras div {
-		margin-bottom: var(--spacing-2);
-	}
-	.dh-card-extras strong {
-		color: var(--color-text-secondary); /* Or adjust as needed */
-	}
-	.dh-card-extras a {
-		color: var(--color-primary-dark); /* Or var(--color-link) */
-		text-decoration: none;
-	}
-	.dh-card-extras a:hover {
-		text-decoration: underline;
-	}
-
-	.project-skill-tag {
-		display: inline-block;
-		background-color: var(--color-border);
-		color: var(--color-text-light);
-		padding: var(--spacing-1) var(--spacing-2);
-		margin: var(--spacing-1) var(--spacing-1) var(--spacing-1) 0;
-		border-radius: var(--border-radius-sm);
-		font-size: var(--font-size-xs);
-		text-decoration: none;
-		transition:
-			background-color 0.2s ease,
-			color 0.2s ease;
-	}
-
-	.project-skill-tag:hover {
-		background-color: var(--color-primary);
-		color: var(--color-background); /* Ensure text is readable on primary background */
-		text-decoration: none;
+		line-height: var(--line-height-snug);
 	}
 </style>

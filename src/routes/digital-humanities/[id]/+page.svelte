@@ -114,7 +114,13 @@
 
 		{#if project.skills && project.skills.length > 0}
 			<section class="mb-6">
-				<TagList tags={project.skills} sectionTitle="" baseUrl="/digital-humanities?skill=" />
+				<TagList 
+					tags={project.skills} 
+					sectionTitle="Skills" 
+					baseUrl="/digital-humanities?skill=" 
+					buttonVariant="outline-primary"
+					buttonSize="sm"
+				/>
 			</section>
 		{/if}
 
