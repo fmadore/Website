@@ -16,17 +16,17 @@
 
 /* Focus visible utility for all interactive elements */
 *:focus-visible {
-	outline: 2px solid var(--color-primary);
-	outline-offset: 2px;
+	outline: var(--border-width-medium) solid var(--color-primary);
+	outline-offset: var(--spacing-1);
 	border-radius: var(--border-radius-sm);
 }
 
 /* Reduced motion support for all navigation elements */
 @media (prefers-reduced-motion: reduce) {
 	* {
-		animation-duration: 0.01ms !important;
+		animation-duration: var(--anim-duration-progress) !important;
 		animation-iteration-count: 1 !important;
-		transition-duration: 0.01ms !important;
+		transition-duration: var(--anim-duration-progress) !important;
 	}
 }
 
@@ -34,6 +34,6 @@
 @media (prefers-contrast: high) {
 	/* Enhanced borders and outlines for better visibility */
 	*:focus-visible {
-		outline-width: 3px;
+		outline-width: var(--border-width-thick);
 	}
 } 
