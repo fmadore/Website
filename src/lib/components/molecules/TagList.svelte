@@ -50,13 +50,13 @@
 	:global(.tag-button) {
 		font-weight: var(--font-weight-medium);
 		letter-spacing: var(--letter-spacing-wide);
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all var(--anim-duration-base) var(--anim-ease-base);
 		border-radius: var(--border-radius-full) !important;
 	}
 
 	:global(.tag-button:hover) {
 		transform: var(--transform-lift-sm);
-		box-shadow: 0 8px 25px 0 rgba(var(--color-primary-rgb), 0.25) !important;
+		box-shadow: 0 8px 25px 0 rgba(var(--color-primary-rgb), var(--opacity-medium)) !important;
 	}
 
 	/* Section title styling using CSS variables */
