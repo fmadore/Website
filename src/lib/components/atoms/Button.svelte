@@ -10,6 +10,7 @@
 		disabled?: boolean;
 		block?: boolean; // For btn-block
 		iconOnly?: boolean; // For icon-only buttons (adjusts padding potentially) - Not currently implemented in CSS, but adding prop
+		glass?: boolean; // Enable glassmorphism effect
 		ariaLabel?: string | undefined; // For accessibility, esp. for iconOnly
 		additionalClasses?: string; // ADDED PROP
 		icon?: import('svelte').Snippet;
@@ -25,6 +26,7 @@
 		disabled = false,
 		block = false,
 		iconOnly = false,
+		glass = false,
 		ariaLabel = undefined,
 		additionalClasses = '',
 		icon,
@@ -43,6 +45,7 @@
 			block ? 'btn-block' : '',
 			icon ? 'btn-icon' : '', // Add btn-icon if icon slot is used
 			iconOnly ? 'btn-icon-only' : '', // Placeholder for potential future styling
+			glass ? 'glass-button' : '', // Add glassmorphism effect if requested
 			additionalClasses // INCLUDE additionalClasses
 		]
 			.filter(Boolean)
