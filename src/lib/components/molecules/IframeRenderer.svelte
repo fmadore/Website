@@ -84,7 +84,7 @@
 				}
 			} else if (!height && !aspectRatio && !containerClass) {
 				// Default height if nothing else is specified, ensures iframe is visible
-				s = 'height: 600px;'; // Default height for iframe container
+				s = 'height: var(--iframe-height-default);'; // Default height for iframe container using CSS variable
 			}
 			return s;
 		})()
@@ -114,12 +114,12 @@
 	:global(.iframe-container) {
 		position: relative;
 		width: 100%;
-		height: 600px; /* Default height */
-		margin-bottom: var(--spacing-8, 2rem);
-		border: 1px solid var(--color-border, #e5e7eb);
-		border-radius: var(--border-radius-md, 0.375rem);
-		box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
-		background: var(--color-surface, #ffffff);
+		height: var(--iframe-height-default); /* Using iframe-specific variable for default height */
+		margin-bottom: var(--spacing-8);
+		border: var(--border-width-thin) solid var(--color-border);
+		border-radius: var(--border-radius-md);
+		box-shadow: var(--shadow-md);
+		background: var(--color-surface);
 		overflow: hidden; /* Ensure contents don't overflow */
 	}
 
@@ -141,7 +141,7 @@
 	:global(.iframe-container.glass-frosted) {
 		/* Let the global glassmorphism utilities handle the background and effects */
 		/* Only override the border to match our iframe styling */
-		border: 1px solid rgba(255, 255, 255, 0.2);
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
 	}
 
 	/* Glass effect hover enhancements for interactive iframes */
@@ -149,10 +149,10 @@
 	:global(.iframe-container.glass-light.iframe-interactive:hover),
 	:global(.iframe-container.glass-medium.iframe-interactive:hover),
 	:global(.iframe-container.glass-heavy.iframe-interactive:hover) {
-		transform: translateY(-2px);
+		transform: var(--transform-lift-md);
 		box-shadow: 
-			0 12px 40px 0 rgba(31, 38, 135, 0.4),
-			var(--shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
+			0 12px 40px 0 rgba(var(--color-primary-rgb), var(--opacity-medium-high)),
+			var(--shadow-lg);
 	}
 
 	/* Dark mode glass effect adjustments */
@@ -164,7 +164,7 @@
 	:global(html.dark .iframe-container.glass-accent),
 	:global(html.dark .iframe-container.glass-highlight),
 	:global(html.dark .iframe-container.glass-frosted) {
-		border: 1px solid rgba(255, 255, 255, 0.1);
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
 	}
 
 	/* Aspect ratio iframe container - maintains 16:9 ratio */
@@ -172,11 +172,11 @@
 		position: relative;
 		width: 100%;
 		padding-top: 56.25%; /* 16:9 Aspect Ratio */
-		margin-bottom: var(--spacing-8, 2rem);
-		border: 1px solid var(--color-border, #e5e7eb);
-		border-radius: var(--border-radius-md, 0.375rem);
-		box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
-		background: var(--color-surface, #ffffff);
+		margin-bottom: var(--spacing-8);
+		border: var(--border-width-thin) solid var(--color-border);
+		border-radius: var(--border-radius-md);
+		box-shadow: var(--shadow-md);
+		background: var(--color-surface);
 		overflow: hidden;
 	}
 
@@ -200,7 +200,7 @@
 	:global(.iframe-container-aspect.glass-highlight),
 	:global(.iframe-container-aspect.glass-frosted) {
 		/* Let the global glassmorphism utilities handle the background and effects */
-		border: 1px solid rgba(255, 255, 255, 0.2);
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
 	}
 
 	:global(html.dark .iframe-container-aspect.glass),
@@ -211,7 +211,7 @@
 	:global(html.dark .iframe-container-aspect.glass-accent),
 	:global(html.dark .iframe-container-aspect.glass-highlight),
 	:global(html.dark .iframe-container-aspect.glass-frosted) {
-		border: 1px solid rgba(255, 255, 255, 0.1);
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
 	}
 
 	/* Additional aspect ratio variations */
@@ -229,27 +229,27 @@
 
 	/* Size variations */
 	:global(.iframe-container-xs) {
-		height: 300px;
+		height: var(--iframe-height-xs);
 	}
 
 	:global(.iframe-container-sm) {
-		height: 400px;
+		height: var(--iframe-height-sm);
 	}
 
 	:global(.iframe-container-md) {
-		height: 600px; /* Same as default for clarity */
+		height: var(--iframe-height-md); /* Same as default for clarity */
 	}
 
 	:global(.iframe-container-lg) {
-		height: 800px;
+		height: var(--iframe-height-lg);
 	}
 
 	:global(.iframe-container-xl) {
-		height: 1000px;
+		height: var(--iframe-height-xl);
 	}
 
 	:global(.iframe-container-fullheight) {
-		height: calc(100vh - 200px); /* Full viewport height minus space for header/footer */
+		height: calc(100vh - var(--spacing-32)); /* Full viewport height minus space for header/footer */
 	}
 
 	/* Remove margin bottom when needed */
@@ -267,10 +267,10 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background-color: var(--color-background, #f9fafb);
+		background-color: var(--color-background);
 		z-index: 5; /* Higher z-index to ensure it covers the iframe */
 		opacity: 0;
-		transition: opacity 0.2s; /* Reduced transition time for faster appearance/disappearance */
+		transition: opacity var(--transition-duration-200); /* Using global transition duration */
 		pointer-events: none;
 		display: none;
 	}
@@ -279,14 +279,34 @@
 	:global(.iframe-container-aspect.iframe-container-loading::before) {
 		display: block;
 		opacity: 1;
-		background: var(--color-background, #f9fafb)
-			url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="80" height="80"><circle cx="50" cy="50" r="30" fill="none" stroke="%231a365d" stroke-width="8" stroke-dasharray="188" stroke-dashoffset="0"><animate attributeName="stroke-dashoffset" values="0;188" dur="1.5s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="rotate" values="0 50 50;360 50 50" dur="1.5s" repeatCount="indefinite"/></circle></svg>')
-			center center no-repeat;
+		background: var(--color-background);
+		/* Loading spinner using CSS animation instead of SVG */
+	}
+
+	:global(.iframe-container-loading::after),
+	:global(.iframe-container-aspect.iframe-container-loading::after) {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 40px;
+		height: 40px;
+		margin: -20px 0 0 -20px;
+		border: 4px solid var(--color-border);
+		border-top: 4px solid var(--color-primary);
+		border-radius: var(--border-radius-full);
+		animation: iframe-loading-spin var(--anim-duration-slow) linear infinite;
+		z-index: 6;
+	}
+
+	@keyframes iframe-loading-spin {
+		0% { transform: rotate(0deg); }
+		100% { transform: rotate(360deg); }
 	}
 
 	:global(.iframe-loaded::before) {
 		opacity: 0 !important;
-		transition: opacity 0.2s; /* Reduced transition time */
+		transition: opacity var(--transition-duration-200); /* Using global transition duration */
 		visibility: hidden;
 		display: none;
 	}
@@ -303,32 +323,32 @@
 	/* Interactive hover effect - subtle scale on hover */
 	:global(.iframe-interactive) {
 		transition:
-			transform 0.2s ease,
-			box-shadow 0.2s ease;
+			transform var(--transition-duration-200) var(--transition-ease-out),
+			box-shadow var(--transition-duration-200) var(--transition-ease-out);
 	}
 
 	:global(.iframe-interactive:hover) {
 		transform: translateY(-5px);
-		box-shadow: var(--shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
+		box-shadow: var(--shadow-lg);
 	}
 
 	/* Theme variations */
 	:global(.iframe-container-bordered) {
-		border-width: 2px;
-		border-color: var(--color-primary, #3b82f6);
+		border-width: var(--border-width-medium);
+		border-color: var(--color-primary);
 	}
 
 	:global(.iframe-container-accent) {
-		border-color: var(--color-accent, #10b981);
+		border-color: var(--color-accent);
 	}
 
 	:global(.iframe-container-highlight) {
-		border-color: var(--color-highlight, #f59e0b);
+		border-color: var(--color-highlight);
 	}
 
 	/* Iframe with title bar */
 	:global(.iframe-with-header) {
-		padding-top: 40px; /* Space for header */
+		padding-top: var(--iframe-header-height); /* Space for header */
 	}
 
 	:global(.iframe-header) {
@@ -336,21 +356,21 @@
 		top: 0;
 		left: 0;
 		right: 0;
-		height: 40px;
-		background-color: var(--color-primary, #3b82f6);
-		color: white;
+		height: var(--iframe-header-height);
+		background-color: var(--color-primary);
+		color: var(--color-white);
 		display: flex;
 		align-items: center;
-		padding: 0 var(--spacing-4, 1rem);
-		font-weight: var(--font-weight-medium, 500);
-		border-top-left-radius: var(--border-radius-md, 0.375rem);
-		border-top-right-radius: var(--border-radius-md, 0.375rem);
-		border-bottom: 1px solid var(--color-border, #e5e7eb);
-		font-size: var(--font-size-sm, 0.875rem);
+		padding: 0 var(--spacing-4);
+		font-weight: var(--font-weight-medium);
+		border-top-left-radius: var(--border-radius-md);
+		border-top-right-radius: var(--border-radius-md);
+		border-bottom: var(--border-width-thin) solid var(--color-border);
+		font-size: var(--font-size-sm);
 	}
 
 	:global(.iframe-with-header iframe) {
-		height: calc(100% - 40px);
+		height: calc(100% - var(--iframe-header-height));
 		/* Remove margin-top since padding-top on container already creates space for header */
 	}
 
@@ -359,83 +379,83 @@
 	:global(.iframe-with-header.glass-light .iframe-header),
 	:global(.iframe-with-header.glass-medium .iframe-header),
 	:global(.iframe-with-header.glass-heavy .iframe-header) {
-		background: rgba(var(--color-primary-rgb), 0.9);
-		-webkit-backdrop-filter: blur(8px);
-		backdrop-filter: blur(8px);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+		background: rgba(var(--color-primary-rgb), var(--opacity-high));
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+		backdrop-filter: blur(var(--glass-blur-amount));
+		border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
 	}
 
 	:global(html.dark .iframe-with-header.glass .iframe-header),
 	:global(html.dark .iframe-with-header.glass-light .iframe-header),
 	:global(html.dark .iframe-with-header.glass-medium .iframe-header),
 	:global(html.dark .iframe-with-header.glass-heavy .iframe-header) {
-		background: rgba(var(--color-primary-rgb), 0.8);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+		background: rgba(var(--color-primary-rgb), var(--glass-opacity-fallback-dark));
+		border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
 	}
 
 	/* Responsive adjustments */
 	@media (max-width: 640px) {
 		:global(.iframe-container),
 		:global(.iframe-container-md) {
-			height: 500px; /* Slightly shorter on small screens */
+			height: calc(var(--iframe-height-default) * 0.83); /* Slightly shorter on small screens */
 		}
 
 		:global(.iframe-container-lg) {
-			height: 600px; /* Reduce large containers on small screens */
+			height: var(--iframe-height-default); /* Reduce large containers on small screens */
 		}
 
 		:global(.iframe-container-xl) {
-			height: 700px; /* Reduce extra large containers on small screens */
+			height: calc(var(--iframe-height-default) * 1.17); /* Reduce extra large containers on small screens */
 		}
 
 		:global(.iframe-container-sm) {
-			height: 350px; /* Slightly adjust small containers */
+			height: calc(var(--iframe-height-sm) * 0.875); /* Slightly adjust small containers */
 		}
 
 		:global(.iframe-container-fullheight) {
-			height: calc(100vh - 150px); /* Adjust spacing for mobile */
+			height: calc(100vh - var(--spacing-24)); /* Adjust spacing for mobile */
 		}
 
 		:global(.iframe-header) {
-			font-size: var(--font-size-xs, 0.75rem);
-			padding: 0 var(--spacing-3, 0.75rem);
+			font-size: var(--font-size-xs);
+			padding: 0 var(--spacing-3);
 		}
 	}
 
 	@media (max-width: 480px) {
 		:global(.iframe-container),
 		:global(.iframe-container-md) {
-			height: 400px; /* Even shorter on very small screens */
+			height: calc(var(--iframe-height-default) * 0.67); /* Even shorter on very small screens */
 		}
 
 		:global(.iframe-container-lg) {
-			height: 500px;
+			height: calc(var(--iframe-height-default) * 0.83);
 		}
 
 		:global(.iframe-container-xl) {
-			height: 600px;
+			height: var(--iframe-height-default);
 		}
 
 		:global(.iframe-container-sm) {
-			height: 300px;
+			height: calc(var(--iframe-height-sm) * 0.75);
 		}
 
 		:global(.iframe-container-xs) {
-			height: 250px;
+			height: calc(var(--iframe-height-xs) * 0.83);
 		}
 
 		:global(.iframe-header) {
-			font-size: var(--font-size-xs, 0.75rem);
-			height: 36px;
-			padding: 0 var(--spacing-2, 0.5rem);
+			font-size: var(--font-size-xs);
+			height: var(--iframe-header-height-mobile);
+			padding: 0 var(--spacing-2);
 		}
 
 		:global(.iframe-with-header) {
-			padding-top: 36px;
+			padding-top: var(--iframe-header-height-mobile);
 		}
 
 		:global(.iframe-with-header iframe) {
-			height: calc(100% - 36px);
+			height: calc(100% - var(--iframe-header-height-mobile));
 			/* Remove margin-top since padding-top on container already creates space for header */
 		}
 	}
@@ -445,14 +465,14 @@
 		:global(.iframe-container),
 		:global(.iframe-container-aspect) {
 			box-shadow: none;
-			border: 1px solid #000;
-			background: white !important;
+			border: var(--border-width-thin) solid var(--color-black);
+			background: var(--color-white) !important;
 		}
 
 		:global(.iframe-container-aspect) {
 			break-inside: avoid;
 			page-break-inside: avoid;
-			height: 400px;
+			height: var(--iframe-height-sm);
 			padding-top: 0;
 		}
 
@@ -470,7 +490,7 @@
 		:global(.iframe-container-aspect.glass-light),
 		:global(.iframe-container-aspect.glass-medium),
 		:global(.iframe-container-aspect.glass-heavy) {
-			background: white !important;
+			background: var(--color-white) !important;
 			-webkit-backdrop-filter: none !important;
 			backdrop-filter: none !important;
 		}

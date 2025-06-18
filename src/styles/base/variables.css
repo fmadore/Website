@@ -287,6 +287,16 @@
 	--card-shadow-opacity-hover: 0.35;
 	--card-transform-hover: translateY(-2px);
 	--card-link-transform: translateX(3px);
+	
+	/* Iframe-specific variables */
+	--iframe-height-xs: 18.75rem; /* 300px */
+	--iframe-height-sm: 25rem; /* 400px */
+	--iframe-height-default: 37.5rem; /* 600px */
+	--iframe-height-md: 37.5rem; /* 600px - same as default */
+	--iframe-height-lg: 50rem; /* 800px */
+	--iframe-height-xl: 62.5rem; /* 1000px */
+	--iframe-header-height: 2.5rem; /* 40px */
+	--iframe-header-height-mobile: 2.25rem; /* 36px */
 }
 
 /* Dark theme variables */
