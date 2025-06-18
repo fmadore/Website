@@ -205,7 +205,7 @@
 
 		<!-- Main content card -->
 		<div use:scrollAnimate={{ delay: DELAY_STEP * 5, animationClass: 'fade-in-up' }}>
-			<ContentBody variant="default" glassEffect="glass-card" additionalClasses="mt-8">
+			<ContentBody variant="default" glassEffect="glass-card" additionalClasses="mt-6">
 				{#snippet children()}
 					<!-- Render parsed content segments -->
 					{#each contentSegments as segment}
@@ -224,7 +224,7 @@
 				<ActionLinks
 					primaryUrl={activity.url}
 					primaryLabel="Visit Activity"
-					sectionClass="action-links mt-6"
+					sectionClass="action-links mt-4"
 					primaryButtonClass="btn btn-primary glass-button"
 					primaryDivClass="mb-4"
 				/>
@@ -232,7 +232,7 @@
 		{/if}
 
 		{#if activity.pdfPath}
-			<div class="pdf-section glass-card mt-8" use:scrollAnimate={{ delay: DELAY_STEP * 7, animationClass: 'fade-in-up' }}>
+			<div class="pdf-section glass-card mt-6" use:scrollAnimate={{ delay: DELAY_STEP * 7, animationClass: 'fade-in-up' }}>
 				<h2 class="text-xl font-semibold mb-4 text-text-emphasis">
 					{activity.pdfTitle || 'Associated Document'}
 				</h2>
@@ -249,7 +249,7 @@
 
 		{#if formattedTags && formattedTags.length > 0}
 			<div use:scrollAnimate={{ delay: DELAY_STEP * 8, animationClass: 'fade-in-up' }}>
-				<TagList tags={formattedTags} baseUrl="/activities?tag=" sectionClass="mt-6 mb-6" />
+				<TagList tags={formattedTags} baseUrl="/activities?tag=" sectionClass="mt-4 mb-6" />
 			</div>
 		{/if}
 	{/if}
