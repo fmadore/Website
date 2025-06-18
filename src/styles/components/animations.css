@@ -3,26 +3,26 @@
 /* Prevent flash of unstyled content for animated elements */
 [data-animate]:not(.animate-in) {
 	opacity: 0;
-	transform: translateY(20px);
+	transform: translateY(var(--transform-distance-md));
 }
 
 /* Ensure main content is more visible on mobile */
 @media (max-width: 767px) {
 	/* Reduce initial transform distance on mobile for better visibility */
 	[data-animate]:not(.animate-in) {
-		transform: translateY(10px);
+		transform: translateY(var(--transform-distance-sm));
 	}
 	
 	/* Faster animation trigger for mobile */
 	[data-animate] {
-		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+		transition: all var(--anim-duration-slow) var(--anim-ease-mobile) !important;
 	}
 }
 
 /* Ensure smooth page transitions */
 .main-content-area {
 	opacity: 1;
-	transition: opacity 0.2s ease-in-out;
+	transition: opacity var(--anim-duration-fast) var(--anim-ease-in-out);
 }
 
 /* Page transition states */
@@ -38,7 +38,7 @@
 
 .animate-out {
 	opacity: 0 !important;
-	transform: translateY(30px) !important;
+	transform: translateY(var(--transform-distance-lg)) !important;
 }
 
 /* Fade animations */
@@ -90,16 +90,16 @@
 
 /* Bounce animations */
 .bounce-in {
-	animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+	animation: bounceIn var(--anim-duration-bounce) var(--anim-ease-bounce) forwards;
 }
 
 /* Stagger delays for lists */
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.2s; }
-.stagger-3 { animation-delay: 0.3s; }
-.stagger-4 { animation-delay: 0.4s; }
-.stagger-5 { animation-delay: 0.5s; }
-.stagger-6 { animation-delay: 0.6s; }
+.stagger-1 { animation-delay: var(--anim-delay-1); }
+.stagger-2 { animation-delay: var(--anim-delay-2); }
+.stagger-3 { animation-delay: var(--anim-delay-3); }
+.stagger-4 { animation-delay: var(--anim-delay-4); }
+.stagger-5 { animation-delay: var(--anim-delay-5); }
+.stagger-6 { animation-delay: var(--anim-delay-6); }
 
 /* Reading progress bar */
 .reading-progress {
@@ -107,7 +107,7 @@
 	top: 0;
 	left: 0;
 	width: 0%;
-	height: 3px;
+	height: var(--spacing-1);
 	background: linear-gradient(
 		90deg,
 		var(--color-primary),
@@ -115,7 +115,7 @@
 		var(--color-accent)
 	);
 	z-index: 1000;
-	transition: width 0.1s ease-out;
+	transition: width var(--anim-duration-progress) var(--anim-ease-out);
 }
 
 /* Parallax container */
@@ -141,7 +141,7 @@
 @keyframes fadeInUp {
 	from {
 		opacity: 0;
-		transform: translateY(30px);
+		transform: translateY(var(--transform-distance-lg));
 	}
 	to {
 		opacity: 1;
@@ -152,7 +152,7 @@
 @keyframes fadeInDown {
 	from {
 		opacity: 0;
-		transform: translateY(-30px);
+		transform: translateY(calc(-1 * var(--transform-distance-lg)));
 	}
 	to {
 		opacity: 1;
@@ -163,7 +163,7 @@
 @keyframes fadeInLeft {
 	from {
 		opacity: 0;
-		transform: translateX(-30px);
+		transform: translateX(calc(-1 * var(--transform-distance-lg)));
 	}
 	to {
 		opacity: 1;
@@ -174,7 +174,7 @@
 @keyframes fadeInRight {
 	from {
 		opacity: 0;
-		transform: translateX(30px);
+		transform: translateX(var(--transform-distance-lg));
 	}
 	to {
 		opacity: 1;
@@ -196,7 +196,7 @@
 @keyframes scaleInCenter {
 	from {
 		opacity: 0;
-		transform: scale(0.8) translateY(20px);
+		transform: scale(var(--transform-scale-sm)) translateY(var(--transform-distance-md));
 	}
 	to {
 		opacity: 1;
@@ -207,7 +207,7 @@
 @keyframes slideInUp {
 	from {
 		opacity: 0;
-		transform: translateY(100%);
+		transform: translateY(var(--transform-distance-full));
 	}
 	to {
 		opacity: 1;
@@ -218,7 +218,7 @@
 @keyframes slideInDown {
 	from {
 		opacity: 0;
-		transform: translateY(-100%);
+		transform: translateY(calc(-1 * var(--transform-distance-full)));
 	}
 	to {
 		opacity: 1;
@@ -229,7 +229,7 @@
 @keyframes slideInLeft {
 	from {
 		opacity: 0;
-		transform: translateX(-100%);
+		transform: translateX(calc(-1 * var(--transform-distance-full)));
 	}
 	to {
 		opacity: 1;
@@ -240,7 +240,7 @@
 @keyframes slideInRight {
 	from {
 		opacity: 0;
-		transform: translateX(100%);
+		transform: translateX(var(--transform-distance-full));
 	}
 	to {
 		opacity: 1;
@@ -251,14 +251,14 @@
 @keyframes bounceIn {
 	0% {
 		opacity: 0;
-		transform: scale(0.3) translateY(30px);
+		transform: scale(var(--transform-scale-xs)) translateY(var(--transform-distance-lg));
 	}
 	50% {
 		opacity: 1;
-		transform: scale(1.05) translateY(-10px);
+		transform: scale(var(--transform-scale-lg)) translateY(calc(-1 * var(--transform-distance-sm)));
 	}
 	70% {
-		transform: scale(0.95) translateY(5px);
+		transform: scale(var(--transform-scale-md)) translateY(calc(var(--transform-distance-sm) / 2));
 	}
 	100% {
 		opacity: 1;
