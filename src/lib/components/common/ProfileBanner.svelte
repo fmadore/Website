@@ -87,10 +87,10 @@
 	.profile-photo-container::before {
 		content: '';
 		position: absolute;
-		top: -8px;
-		left: -8px;
-		right: -8px;
-		bottom: -8px;
+		top: calc(-1 * var(--spacing-2));
+		left: calc(-1 * var(--spacing-2));
+		right: calc(-1 * var(--spacing-2));
+		bottom: calc(-1 * var(--spacing-2));
 		background: linear-gradient(135deg, 
 			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%,
 			rgba(var(--color-highlight-rgb), var(--opacity-medium-high)) 50%,
@@ -99,7 +99,7 @@
 		border-radius: var(--border-radius-full);
 		z-index: -1;
 		opacity: 0;
-		transition: opacity 0.3s ease;
+		transition: opacity var(--transition-duration-300) var(--transition-ease-out);
 	}
 
 	.profile-photo {
@@ -117,7 +117,7 @@
 		object-fit: cover;
 		border-radius: var(--border-radius-full);
 		box-shadow: var(--shadow-lg);
-		border: 3px solid var(--color-primary);
+		border: var(--border-width-thick) solid var(--color-primary);
 		position: relative;
 		z-index: 2;
 	}
@@ -145,7 +145,7 @@
 	}
 
 	.title-accent {
-		width: 60px;
+		width: var(--spacing-16);
 		height: var(--border-width-thick);
 		background: linear-gradient(90deg, 
 			var(--color-highlight) 0%, 
@@ -175,13 +175,13 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 44px;
-		height: 44px;
+		width: calc(var(--spacing-10) + var(--spacing-1));
+		height: calc(var(--spacing-10) + var(--spacing-1));
 		color: var(--color-text-light);
 		/* Remove custom background - glass-button utility handles this */
 		border: none;
 		border-radius: var(--border-radius-lg);
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all var(--transition-duration-300) var(--transition-ease-in-out);
 		position: relative;
 		overflow: hidden;
 	}
@@ -198,7 +198,7 @@
 			rgba(var(--color-highlight-rgb), var(--opacity-medium)) 50%, 
 			transparent 100%
 		);
-		transition: left 0.3s ease;
+		transition: left var(--transition-duration-300) var(--transition-ease-out);
 	}
 
 	.icon-link:hover {
@@ -256,10 +256,10 @@
 		}
 
 		.profile-photo-container::before {
-			top: -6px;
-			left: -6px;
-			right: -6px;
-			bottom: -6px;
+			top: calc(-1 * var(--spacing-1) - var(--spacing-1));
+			left: calc(-1 * var(--spacing-1) - var(--spacing-1));
+			right: calc(-1 * var(--spacing-1) - var(--spacing-1));
+			bottom: calc(-1 * var(--spacing-1) - var(--spacing-1));
 		}
 
 		.profile-title h1 {
@@ -279,7 +279,7 @@
 		.title-accent {
 			margin-left: auto;
 			margin-right: auto;
-			width: 40px;
+			width: var(--spacing-10);
 		}
 	}
 
@@ -287,8 +287,8 @@
 	@media (prefers-reduced-motion: no-preference) {
 		.profile-photo img {
 			transition:
-				transform 0.3s ease,
-				box-shadow 0.3s ease;
+				transform var(--transition-duration-300) var(--transition-ease-out),
+				box-shadow var(--transition-duration-300) var(--transition-ease-out);
 		}
 
 		.profile-photo-container:hover::before {
@@ -303,7 +303,7 @@
 		}
 
 		.profile-icons :global(svg) {
-			transition: transform 0.2s ease;
+			transition: transform var(--transition-duration-200) var(--transition-ease-out);
 		}
 
 		.icon-link:hover :global(svg),
@@ -313,11 +313,11 @@
 		}
 
 		.title-accent {
-			transition: width 0.3s ease;
+			transition: width var(--transition-duration-300) var(--transition-ease-out);
 		}
 
 		.profile-title:hover .title-accent {
-			width: 80px;
+			width: var(--spacing-20);
 		}
 	}
 </style>
