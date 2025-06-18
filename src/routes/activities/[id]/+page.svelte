@@ -193,12 +193,12 @@
 			<div use:scrollAnimate={{ delay: DELAY_STEP * 4, animationClass: 'fade-in-up' }}>
 				<HeroImageDisplay
 					heroImage={{
-						src: `${base}/${activity.heroImage.src}`,
+						src: activity.heroImage.src,
 						alt: activity.heroImage.alt ?? activity.title,
 						caption: activity.heroImage.caption
 					}}
-					imageClass="w-full max-w-md h-auto rounded-md mx-auto"
-					figcaptionClass="text-text-muted text-sm mt-2 italic text-center"
+					variant="featured"
+					glassEffect={true}
 				/>
 			</div>
 		{/if}
