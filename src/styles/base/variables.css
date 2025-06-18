@@ -189,6 +189,16 @@
 	--anim-delay-4: 0.4s;
 	--anim-delay-5: 0.5s;
 	--anim-delay-6: 0.6s;
+	
+	/* Button-specific variables */
+	--btn-shine-duration: 0.5s;
+	--btn-active-transform: translateY(1px);
+	--glass-opacity-high: 0.8;
+	--glass-opacity-medium: 0.6;
+	--glass-opacity-fallback-light: 0.9;
+	--glass-opacity-fallback-dark: 0.8;
+	--glass-blur-amount: 8px;
+	--glass-blur-fallback: 10px;
 }
 
 /* Dark theme variables */
@@ -289,4 +299,14 @@ html.dark {
 	--anim-delay-4: 0.4s;
 	--anim-delay-5: 0.5s;
 	--anim-delay-6: 0.6s;
+	
+	/* Button-specific variables */
+	--btn-shine-duration: 0.5s;
+	--btn-active-transform: translateY(1px);
+	--glass-opacity-high: 0.8;
+	--glass-opacity-medium: 0.6;
+	--glass-opacity-fallback-light: 0.9;
+	--glass-opacity-fallback-dark: 0.8;
+	--glass-blur-amount: 8px;
+	--glass-blur-fallback: 10px;
 }
