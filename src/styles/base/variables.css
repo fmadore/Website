@@ -23,6 +23,13 @@
 	--color-footer-text-muted: rgba(248, 250, 252, 0.6);
 	--color-sidebar-bg: #f8fafc; /* Added: Very light gray for light theme sidebar */
 	
+	/* Standard colors with RGB values */
+	--color-white: #ffffff;
+	--color-white-rgb: 255, 255, 255;
+	--color-black: #000000;
+	--color-black-rgb: 0, 0, 0;
+	--color-transparent: transparent;
+	
 	/* Academic-specific colors */
 	--color-citation: #4f46e5; /* Refined indigo for citations */
 	--color-citation-rgb: 79, 70, 229;

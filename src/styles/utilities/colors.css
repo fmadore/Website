@@ -26,10 +26,10 @@
 	color: var(--color-text-light);
 }
 .text-white {
-	color: white;
+	color: var(--color-white);
 }
 .text-black {
-	color: black;
+	color: var(--color-black);
 }
 .text-muted {
 	color: var(--color-footer-text-muted);
@@ -58,13 +58,13 @@
 	background-color: var(--color-background);
 }
 .bg-white {
-	background-color: white;
+	background-color: var(--color-white);
 }
 .bg-black {
-	background-color: black;
+	background-color: var(--color-black);
 }
 .bg-transparent {
-	background-color: transparent;
+	background-color: var(--color-transparent);
 }
 .bg-border {
 	background-color: var(--color-border);
@@ -119,13 +119,13 @@
 	border-color: var(--color-border);
 }
 .border-white {
-	border-color: white;
+	border-color: var(--color-white);
 }
 .border-black {
-	border-color: black;
+	border-color: var(--color-black);
 }
 .border-transparent {
-	border-color: transparent;
+	border-color: var(--color-transparent);
 }
 
 /* Border styles */
@@ -186,7 +186,7 @@
 		color: var(--color-highlight);
 	}
 	.hover\:text-white:hover {
-		color: white;
+		color: var(--color-white);
 	}
 
 	.hover\:bg-primary:hover {
@@ -279,10 +279,10 @@
 		color: var(--color-text-light);
 	}
 	.sm\:text-white {
-		color: white;
+		color: var(--color-white);
 	}
 	.sm\:text-black {
-		color: black;
+		color: var(--color-black);
 	}
 	.sm\:text-muted {
 		color: var(--color-footer-text-muted);
@@ -310,13 +310,13 @@
 		background-color: var(--color-background);
 	}
 	.sm\:bg-white {
-		background-color: white;
+		background-color: var(--color-white);
 	}
 	.sm\:bg-black {
-		background-color: black;
+		background-color: var(--color-black);
 	}
 	.sm\:bg-transparent {
-		background-color: transparent;
+		background-color: var(--color-transparent);
 	}
 	.sm\:bg-border {
 		background-color: var(--color-border);
@@ -347,13 +347,13 @@
 		border-color: var(--color-border);
 	}
 	.sm\:border-white {
-		border-color: white;
+		border-color: var(--color-white);
 	}
 	.sm\:border-black {
-		border-color: black;
+		border-color: var(--color-black);
 	}
 	.sm\:border-transparent {
-		border-color: transparent;
+		border-color: var(--color-transparent);
 	}
 }
 
@@ -384,10 +384,10 @@
 		color: var(--color-text-light);
 	}
 	.md\:text-white {
-		color: white;
+		color: var(--color-white);
 	}
 	.md\:text-black {
-		color: black;
+		color: var(--color-black);
 	}
 	.md\:text-muted {
 		color: var(--color-footer-text-muted);
@@ -415,13 +415,13 @@
 		background-color: var(--color-background);
 	}
 	.md\:bg-white {
-		background-color: white;
+		background-color: var(--color-white);
 	}
 	.md\:bg-black {
-		background-color: black;
+		background-color: var(--color-black);
 	}
 	.md\:bg-transparent {
-		background-color: transparent;
+		background-color: var(--color-transparent);
 	}
 	.md\:bg-border {
 		background-color: var(--color-border);
@@ -452,13 +452,13 @@
 		border-color: var(--color-border);
 	}
 	.md\:border-white {
-		border-color: white;
+		border-color: var(--color-white);
 	}
 	.md\:border-black {
-		border-color: black;
+		border-color: var(--color-black);
 	}
 	.md\:border-transparent {
-		border-color: transparent;
+		border-color: var(--color-transparent);
 	}
 }
 
@@ -489,10 +489,10 @@
 		color: var(--color-text-light);
 	}
 	.lg\:text-white {
-		color: white;
+		color: var(--color-white);
 	}
 	.lg\:text-black {
-		color: black;
+		color: var(--color-black);
 	}
 	.lg\:text-muted {
 		color: var(--color-footer-text-muted);
@@ -520,13 +520,13 @@
 		background-color: var(--color-background);
 	}
 	.lg\:bg-white {
-		background-color: white;
+		background-color: var(--color-white);
 	}
 	.lg\:bg-black {
-		background-color: black;
+		background-color: var(--color-black);
 	}
 	.lg\:bg-transparent {
-		background-color: transparent;
+		background-color: var(--color-transparent);
 	}
 	.lg\:bg-border {
 		background-color: var(--color-border);
@@ -557,13 +557,13 @@
 		border-color: var(--color-border);
 	}
 	.lg\:border-white {
-		border-color: white;
+		border-color: var(--color-white);
 	}
 	.lg\:border-black {
-		border-color: black;
+		border-color: var(--color-black);
 	}
 	.lg\:border-transparent {
-		border-color: transparent;
+		border-color: var(--color-transparent);
 	}
 }
 
@@ -594,10 +594,10 @@
 		color: var(--color-text-light);
 	}
 	.xl\:text-white {
-		color: white;
+		color: var(--color-white);
 	}
 	.xl\:text-black {
-		color: black;
+		color: var(--color-black);
 	}
 	.xl\:text-muted {
 		color: var(--color-footer-text-muted);
@@ -625,13 +625,13 @@
 		background-color: var(--color-background);
 	}
 	.xl\:bg-white {
-		background-color: white;
+		background-color: var(--color-white);
 	}
 	.xl\:bg-black {
-		background-color: black;
+		background-color: var(--color-black);
 	}
 	.xl\:bg-transparent {
-		background-color: transparent;
+		background-color: var(--color-transparent);
 	}
 	.xl\:bg-border {
 		background-color: var(--color-border);
@@ -662,12 +662,12 @@
 		border-color: var(--color-border);
 	}
 	.xl\:border-white {
-		border-color: white;
+		border-color: var(--color-white);
 	}
 	.xl\:border-black {
-		border-color: black;
+		border-color: var(--color-black);
 	}
 	.xl\:border-transparent {
-		border-color: transparent;
+		border-color: var(--color-transparent);
 	}
 }
