@@ -161,16 +161,18 @@
 	>
 		<Button
 			variant="outline-secondary"
-			size="base"
-			additionalClasses="close-button glass-button"
+			size="sm"
+			glass={true}
+			iconOnly={true}
+			additionalClasses="close-button"
 			ariaLabel="Close fullscreen view"
 			onclick={(e: MouseEvent) => {
 				e.stopPropagation();
 				toggleZoom();
 			}}
 		>
-			{#snippet children()}
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			{#snippet icon()}
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 					<line x1="18" y1="6" x2="6" y2="18"></line>
 					<line x1="6" y1="6" x2="18" y2="18"></line>
 				</svg>
@@ -502,25 +504,40 @@
 		font-weight: var(--font-weight-medium);
 	}
 
-	/* Close button positioning - let Button component handle styling */
+	/* Close button positioning and styling - perfect round glassmorphism button */
 	:global(.close-button) {
 		position: absolute !important;
 		top: var(--spacing-4) !important;
-		right: var(--spacing-6) !important;
-		width: 3rem !important;
-		height: 3rem !important;
-		min-width: 3rem !important;
+		right: var(--spacing-4) !important;
+		z-index: 10 !important;
+		width: calc(var(--spacing-8) + var(--spacing-2)) !important;
+		height: calc(var(--spacing-8) + var(--spacing-2)) !important;
 		border-radius: var(--border-radius-full) !important;
 		padding: 0 !important;
 		display: flex !important;
 		align-items: center !important;
 		justify-content: center !important;
+		min-width: unset !important;
+		
+		/* Enhanced glassmorphism specifically for close button */
+		background: rgba(var(--color-surface-rgb), var(--opacity-medium-high)) !important;
+		backdrop-filter: blur(12px) !important;
+		-webkit-backdrop-filter: blur(12px) !important;
+		border: var(--border-width-thin) solid rgba(var(--color-surface-rgb), var(--opacity-medium-high)) !important;
+		box-shadow: var(--shadow-lg) !important;
+		transition: all var(--anim-duration-base) var(--anim-ease-base) !important;
 	}
 
-	/* Ensure the SVG icon is properly centered */
+	:global(.close-button:hover) {
+		background: rgba(var(--color-surface-rgb), var(--opacity-high)) !important;
+		border-color: rgba(var(--color-surface-rgb), var(--opacity-high)) !important;
+		transform: var(--transform-lift-sm) scale(1.05) !important;
+		box-shadow: var(--shadow-xl) !important;
+	}
+
 	:global(.close-button svg) {
-		display: block;
-		margin: 0 auto;
+		color: var(--color-text-emphasis) !important;
+		filter: drop-shadow(0 var(--border-width-thin) var(--border-width-medium) rgba(var(--color-text-rgb), var(--opacity-medium))) !important;
 	}
 
 	/* Dark theme overrides for fullscreen modal */
@@ -540,10 +557,25 @@
 		border-color: rgba(255, 255, 255, 0.1);
 	}
 
-
-
 	:global(html.dark) .fullscreen-image {
 		border-color: rgba(255, 255, 255, 0.05);
+	}
+
+	/* Dark theme close button */
+	:global(html.dark .close-button) {
+		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium-high)) !important;
+		border-color: rgba(var(--color-dark-surface-rgb), var(--opacity-high)) !important;
+		box-shadow: var(--shadow-lg) !important;
+	}
+
+	:global(html.dark .close-button:hover) {
+		background: rgba(var(--color-dark-surface-rgb), var(--opacity-high)) !important;
+		border-color: rgba(var(--color-dark-surface-rgb), var(--opacity-high)) !important;
+		box-shadow: var(--shadow-xl) !important;
+	}
+
+	:global(html.dark .close-button svg) {
+		color: var(--color-text-light) !important;
 	}
 
 	/* Animation keyframes */
@@ -606,14 +638,8 @@
 		:global(.close-button) {
 			top: var(--spacing-2) !important;
 			right: var(--spacing-2) !important;
-			width: 2.5rem !important;
-			height: 2.5rem !important;
-			min-width: 2.5rem !important;
-		}
-
-		:global(.close-button svg) {
-			width: 16px;
-			height: 16px;
+			width: var(--spacing-8) !important;
+			height: var(--spacing-8) !important;
 		}
 
 		.overlay-caption {
