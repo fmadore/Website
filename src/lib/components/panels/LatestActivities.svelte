@@ -131,16 +131,16 @@
 		position: relative;
 		padding: var(--spacing-4);
 		border-radius: var(--border-radius-md);
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all var(--anim-duration-base) var(--anim-ease-base);
 		overflow: hidden;
 		/* Use glass-card utility for consistent glassmorphism */
-		background: rgba(255, 255, 255, 0.1);
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
-		border: 1px solid rgba(255, 255, 255, 0.2);
+		background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light));
+		backdrop-filter: blur(var(--glass-blur-amount));
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--card-glass-border-light));
 		box-shadow: 
-			0 8px 32px 0 rgba(31, 38, 135, 0.37),
-			inset 0 1px 0 rgba(255, 255, 255, 0.3);
+			0 8px 32px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity)),
+			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-light));
 	}
 
 	.activity-item::before {
@@ -155,7 +155,7 @@
 			var(--color-highlight) 100%
 		);
 		border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
-		transition: width 0.3s ease;
+		transition: width var(--anim-duration-base) var(--anim-ease-out);
 		opacity: var(--opacity-high);
 	}
 
@@ -165,11 +165,11 @@
 
 	.activity-item:hover {
 		transform: var(--transform-lift-sm);
-		background: rgba(255, 255, 255, 0.15);
-		border-color: rgba(255, 255, 255, 0.3);
+		background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light-hover));
+		border-color: rgba(var(--color-white-rgb), var(--card-glass-border-light-hover));
 		box-shadow: 
-			0 12px 40px 0 rgba(31, 38, 135, 0.4),
-			inset 0 1px 0 rgba(255, 255, 255, 0.4);
+			0 12px 40px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity-hover)),
+			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-light-hover));
 	}
 
 	.activity-meta {
@@ -193,7 +193,7 @@
 		white-space: nowrap;
 		line-height: var(--line-height-normal);
 		border: var(--border-width-thin) solid rgba(var(--color-success-rgb), var(--opacity-medium-high));
-		transition: all 0.2s ease;
+		transition: all var(--anim-duration-fast) var(--anim-ease-out);
 	}
 
 	.activity-date {
@@ -212,7 +212,7 @@
 		color: var(--color-text);
 		text-decoration: none;
 		margin-bottom: var(--spacing-2);
-		transition: color 0.3s ease;
+		transition: color var(--anim-duration-base) var(--anim-ease-out);
 		line-height: var(--line-height-relaxed);
 	}
 
@@ -229,19 +229,19 @@
 
 	/* Dark mode overrides for activity-specific elements */
 	:global(html.dark) .activity-item {
-		background: rgba(0, 0, 0, 0.2);
-		border: 1px solid rgba(255, 255, 255, 0.1);
+		background: rgba(var(--color-black-rgb), var(--card-glass-opacity-dark));
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--card-glass-border-dark));
 		box-shadow: 
-			0 8px 32px 0 rgba(0, 0, 0, 0.5),
-			inset 0 1px 0 rgba(255, 255, 255, 0.1);
+			0 8px 32px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity)),
+			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-dark));
 	}
 
 	:global(html.dark) .activity-item:hover {
-		background: rgba(0, 0, 0, 0.3);
-		border-color: rgba(255, 255, 255, 0.15);
+		background: rgba(var(--color-black-rgb), var(--card-glass-opacity-dark-hover));
+		border-color: rgba(var(--color-white-rgb), var(--card-glass-border-dark-hover));
 		box-shadow: 
-			0 12px 40px 0 rgba(0, 0, 0, 0.6),
-			inset 0 1px 0 rgba(255, 255, 255, 0.15);
+			0 12px 40px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity-hover)),
+			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-dark-hover));
 	}
 
 	:global(html.dark) .activity-type {
@@ -250,7 +250,7 @@
 	}
 
 	/* Responsive design */
-	@media (max-width: 640px) {
+	@media (max-width: var(--breakpoint-sm)) {
 		.activity-meta {
 			flex-direction: column;
 			align-items: flex-start;
