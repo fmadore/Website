@@ -223,15 +223,6 @@
 	.lg\:inline {
 		display: inline;
 	}
-	.lg\:flex {
-		display: flex;
-	}
-	.lg\:inline-flex {
-		display: inline-flex;
-	}
-	.lg\:grid {
-		display: grid;
-	}
 	.lg\:inline-grid {
 		display: inline-grid;
 	}
@@ -287,15 +278,6 @@
 	}
 	.xl\:inline {
 		display: inline;
-	}
-	.xl\:flex {
-		display: flex;
-	}
-	.xl\:inline-flex {
-		display: inline-flex;
-	}
-	.xl\:grid {
-		display: grid;
 	}
 	.xl\:inline-grid {
 		display: inline-grid;
