@@ -39,8 +39,6 @@ ol {
 body {
 	min-height: 100vh;
 	scroll-behavior: smooth;
-	text-rendering: optimizeSpeed;
-	line-height: var(--line-height-default);
 }
 
 /* Make images easier to work with */
