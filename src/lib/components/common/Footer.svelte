@@ -139,7 +139,7 @@
 			{#each socialGroups as group, groupIndex}
 				<section
 					class="footer-link-group glass-light"
-					style="animation-delay: {groupIndex * 0.1}s"
+					style="animation-delay: {groupIndex * 100}ms"
 					class:animate={isVisible}
 					aria-labelledby="group-{groupIndex}-title"
 				>
@@ -152,7 +152,7 @@
 						{#each group.links as link, linkIndex}
 							<li
 								class="footer-link-item"
-								style="animation-delay: {(groupIndex * group.links.length + linkIndex) * 0.05}s"
+								style="animation-delay: {(groupIndex * group.links.length + linkIndex) * 50}ms"
 								class:animate={isVisible}
 							>
 								<a
@@ -209,7 +209,7 @@
 		top: 0;
 		left: 0;
 		right: 0;
-		height: 4px;
+		height: var(--spacing-1);
 		background: linear-gradient(
 			90deg,
 			var(--color-primary),
@@ -218,7 +218,7 @@
 			var(--color-primary)
 		);
 		background-size: 200% 100%;
-		animation: shimmer 4s ease-in-out infinite;
+		animation: shimmer var(--anim-duration-ambient) ease-in-out infinite;
 	}
 
 	@keyframes shimmer {
@@ -249,19 +249,19 @@
 	}
 
 	.decoration-circle-1 {
-		width: 300px;
-		height: 300px;
-		top: -150px;
-		right: -100px;
-		animation: float 6s ease-in-out infinite;
+		width: calc(var(--spacing-32) * 2.375); /* ~300px equivalent */
+		height: calc(var(--spacing-32) * 2.375);
+		top: calc(var(--spacing-32) * -1.1875); /* ~-150px equivalent */
+		right: calc(var(--spacing-32) * -0.625); /* ~-100px equivalent */
+		animation: float var(--anim-duration-gentle) ease-in-out infinite;
 	}
 
 	.decoration-circle-2 {
-		width: 200px;
-		height: 200px;
-		bottom: -100px;
-		left: -50px;
-		animation: float 8s ease-in-out infinite reverse;
+		width: var(--spacing-32); /* 200px equivalent */
+		height: var(--spacing-32);
+		bottom: calc(var(--spacing-32) * -0.625); /* ~-100px equivalent */
+		left: calc(var(--spacing-32) * -0.3125); /* ~-50px equivalent */
+		animation: float var(--anim-duration-gentle) ease-in-out infinite reverse;
 	}
 
 	.decoration-line {
@@ -269,7 +269,7 @@
 		top: 50%;
 		left: 0;
 		right: 0;
-		height: 1px;
+		height: var(--border-width-thin);
 		background: linear-gradient(
 			90deg,
 			transparent,
@@ -278,16 +278,16 @@
 			transparent
 		);
 		transform: translateY(-50%);
-		animation: pulse-line 3s ease-in-out infinite;
+		animation: pulse-line var(--anim-duration-decorative) ease-in-out infinite;
 	}
 
 	@keyframes float {
 		0%,
 		100% {
-			transform: translateY(0px) rotate(0deg);
+			transform: translateY(0) rotate(var(--rotate-0));
 		}
 		50% {
-			transform: translateY(-20px) rotate(180deg);
+			transform: translateY(calc(var(--transform-distance-sm) * -1)) rotate(var(--rotate-180));
 		}
 	}
 
@@ -302,7 +302,7 @@
 	}
 
 	.footer-container {
-		max-width: 1200px;
+		max-width: var(--container-lg);
 		margin: 0 auto;
 		padding: 0 var(--spacing-6);
 		display: flex;
@@ -319,8 +319,8 @@
 		justify-content: center;
 		text-align: center;
 		opacity: 0;
-		transform: translateY(30px);
-		transition: all 0.6s ease;
+		transform: translateY(var(--transform-distance-lg));
+		transition: all var(--anim-duration-bounce) ease;
 		padding: var(--spacing-6);
 		border-radius: var(--border-radius-xl);
 		width: 100%;
@@ -365,8 +365,8 @@
 		grid-template-columns: repeat(3, 1fr);
 		gap: var(--spacing-6);
 		opacity: 0;
-		transform: translateY(30px);
-		transition: all 0.6s ease 0.2s;
+		transform: translateY(var(--transform-distance-lg));
+		transition: all var(--anim-duration-bounce) ease var(--anim-delay-4);
 	}
 
 	.footer-social-links.animate {
@@ -379,11 +379,11 @@
 		flex-direction: column;
 		gap: var(--spacing-4);
 		opacity: 0;
-		transform: translateY(20px);
-		transition: all 0.4s ease;
+		transform: translateY(var(--transform-distance-md));
+		transition: all var(--anim-duration-slow) ease;
 		padding: var(--spacing-5);
 		border-radius: var(--border-radius-lg);
-		min-height: 200px;
+		min-height: var(--spacing-32);
 	}
 
 	.footer-link-group.animate {
@@ -407,10 +407,10 @@
 
 	.title-accent {
 		flex: 1;
-		height: 2px;
+		height: var(--border-width-medium);
 		background: linear-gradient(90deg, var(--color-highlight), var(--color-accent), transparent);
-		border-radius: 1px;
-		opacity: 0.8;
+		border-radius: var(--border-radius-sm);
+		opacity: var(--opacity-high);
 	}
 
 	/* Proper list styling */
@@ -425,8 +425,8 @@
 
 	.footer-link-item {
 		opacity: 0;
-		transform: translateX(-20px);
-		transition: all 0.4s ease;
+		transform: translateX(calc(var(--transform-distance-md) * -1));
+		transition: all var(--anim-duration-slow) ease;
 	}
 
 	.footer-link-item.animate {
@@ -444,7 +444,7 @@
 		padding: var(--spacing-2) var(--spacing-3);
 		border-radius: var(--border-radius-md);
 		position: relative;
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all var(--anim-duration-base) var(--anim-ease-base);
 		overflow: hidden;
 		width: 100%;
 		/* Remove custom background - glass-button utility handles this */
@@ -455,11 +455,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 28px;
-		height: 28px;
+		width: calc(var(--spacing-6) + var(--spacing-2));
+		height: calc(var(--spacing-6) + var(--spacing-2));
 		background: rgba(var(--color-primary-rgb), var(--opacity-medium));
 		border-radius: var(--border-radius);
-		transition: all 0.3s ease;
+		transition: all var(--anim-duration-base) ease;
 		flex-shrink: 0;
 	}
 
@@ -482,7 +482,7 @@
 			rgba(var(--color-primary-rgb), var(--opacity-medium)),
 			transparent
 		);
-		transition: left 0.5s ease;
+		transition: left var(--anim-duration-slow) ease;
 	}
 
 	.footer-link:hover {
@@ -492,8 +492,8 @@
 
 	.footer-link:hover .footer-link-icon {
 		background: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
-		transform: scale(1.1);
-		box-shadow: 0 2px 8px rgba(var(--color-primary-rgb), 0.3);
+		transform: scale(var(--scale-110));
+		box-shadow: 0 var(--spacing-1) var(--spacing-2) rgba(var(--color-primary-rgb), var(--opacity-medium-high));
 	}
 
 	.footer-link:hover .link-hover-effect {
@@ -505,19 +505,19 @@
 		position: fixed;
 		bottom: var(--spacing-6);
 		right: var(--spacing-6);
-		width: 48px;
-		height: 48px;
+		width: calc(var(--spacing-12) * 2);
+		height: calc(var(--spacing-12) * 2);
 		border: none;
-		border-radius: 50%;
+		border-radius: var(--border-radius-full);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: white;
+		color: var(--color-white);
 		cursor: pointer;
 		box-shadow: var(--shadow-lg);
-		transform: translateY(100px);
+		transform: translateY(calc(var(--spacing-24) + var(--spacing-2)));
 		opacity: 0;
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all var(--anim-duration-base) var(--anim-ease-base);
 		z-index: 1000;
 	}
 
@@ -527,12 +527,12 @@
 	}
 
 	.scroll-to-top:hover {
-		transform: var(--transform-lift-md) scale(1.05);
+		transform: var(--transform-lift-md) scale(var(--scale-105));
 		box-shadow: var(--shadow-xl);
 	}
 
 	/* Responsive design improvements */
-	@media (min-width: 640px) {
+	@media (min-width: var(--breakpoint-sm)) {
 		.footer-container {
 			padding: 0 var(--spacing-8);
 			gap: var(--spacing-6);
@@ -544,7 +544,7 @@
 		}
 	}
 
-	@media (min-width: 768px) {
+	@media (min-width: var(--breakpoint-md)) {
 		.footer-container {
 			gap: var(--spacing-6);
 		}
@@ -554,7 +554,7 @@
 		}
 	}
 
-	@media (min-width: 1024px) {
+	@media (min-width: var(--breakpoint-lg)) {
 		.site-footer {
 			padding: var(--spacing-16) 0 var(--spacing-12) 0;
 		}
@@ -568,7 +568,7 @@
 		}
 	}
 
-	@media (max-width: 639px) {
+	@media (max-width: calc(var(--breakpoint-sm) - 1px)) {
 		.footer-container {
 			gap: var(--spacing-6);
 		}
@@ -626,12 +626,12 @@
 
 	/* Focus states */
 	.footer-link:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
+		outline: var(--border-width-medium) solid var(--color-primary);
+		outline-offset: var(--border-width-medium);
 	}
 
 	.scroll-to-top:focus-visible {
-		outline: 2px solid white;
-		outline-offset: 2px;
+		outline: var(--border-width-medium) solid var(--color-white);
+		outline-offset: var(--border-width-medium);
 	}
 </style>

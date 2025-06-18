@@ -297,6 +297,11 @@
 	--iframe-height-xl: 62.5rem; /* 1000px */
 	--iframe-header-height: 2.5rem; /* 40px */
 	--iframe-header-height-mobile: 2.25rem; /* 36px */
+	
+	/* Footer decorative animation durations */
+	--anim-duration-decorative: 4s; /* For subtle decorative animations */
+	--anim-duration-ambient: 8s; /* For very slow ambient animations */
+	--anim-duration-gentle: 12s; /* For ultra-slow gentle animations */
 }
 
 /* Dark theme variables */
@@ -472,4 +477,9 @@ html.dark {
 	--card-shadow-opacity-hover: 0.6;
 	--card-transform-hover: translateY(-2px);
 	--card-link-transform: translateX(3px);
+	
+	/* Footer decorative animation durations */
+	--anim-duration-decorative: 4s; /* For subtle decorative animations */
+	--anim-duration-ambient: 8s; /* For very slow ambient animations */
+	--anim-duration-gentle: 12s; /* For ultra-slow gentle animations */
 }
