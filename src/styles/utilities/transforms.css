@@ -2,39 +2,39 @@
 
 /* Transform base - necessary for any transform to work */
 .transform {
-	transform: translateX(0) translateY(0) rotate(0) skewX(0) skewY(0) scaleX(1) scaleY(1);
+	transform: translateX(0) translateY(0) rotate(var(--rotate-0)) skewX(var(--skew-0)) skewY(var(--skew-0)) scaleX(var(--scale-100)) scaleY(var(--scale-100));
 }
 
 /* Scale utilities */
 .scale-0 {
-	transform: scale(0);
+	transform: scale(var(--scale-0));
 }
 .scale-50 {
-	transform: scale(0.5);
+	transform: scale(var(--scale-50));
 }
 .scale-75 {
-	transform: scale(0.75);
+	transform: scale(var(--scale-75));
 }
 .scale-90 {
-	transform: scale(0.9);
+	transform: scale(var(--scale-90));
 }
 .scale-95 {
-	transform: scale(0.95);
+	transform: scale(var(--scale-95));
 }
 .scale-100 {
-	transform: scale(1);
+	transform: scale(var(--scale-100));
 }
 .scale-105 {
-	transform: scale(1.05);
+	transform: scale(var(--scale-105));
 }
 .scale-110 {
-	transform: scale(1.1);
+	transform: scale(var(--scale-110));
 }
 .scale-125 {
-	transform: scale(1.25);
+	transform: scale(var(--scale-125));
 }
 .scale-150 {
-	transform: scale(1.5);
+	transform: scale(var(--scale-150));
 }
 
 /* Translate utilities */
@@ -122,127 +122,127 @@
 
 /* Rotate utilities */
 .rotate-0 {
-	transform: rotate(0deg);
+	transform: rotate(var(--rotate-0));
 }
 .rotate-1 {
-	transform: rotate(1deg);
+	transform: rotate(var(--rotate-1));
 }
 .rotate-2 {
-	transform: rotate(2deg);
+	transform: rotate(var(--rotate-2));
 }
 .rotate-3 {
-	transform: rotate(3deg);
+	transform: rotate(var(--rotate-3));
 }
 .rotate-6 {
-	transform: rotate(6deg);
+	transform: rotate(var(--rotate-6));
 }
 .rotate-12 {
-	transform: rotate(12deg);
+	transform: rotate(var(--rotate-12));
 }
 .rotate-45 {
-	transform: rotate(45deg);
+	transform: rotate(var(--rotate-45));
 }
 .rotate-90 {
-	transform: rotate(90deg);
+	transform: rotate(var(--rotate-90));
 }
 .rotate-180 {
-	transform: rotate(180deg);
+	transform: rotate(var(--rotate-180));
 }
 
 .-rotate-1 {
-	transform: rotate(-1deg);
+	transform: rotate(calc(-1 * var(--rotate-1)));
 }
 .-rotate-2 {
-	transform: rotate(-2deg);
+	transform: rotate(calc(-1 * var(--rotate-2)));
 }
 .-rotate-3 {
-	transform: rotate(-3deg);
+	transform: rotate(calc(-1 * var(--rotate-3)));
 }
 .-rotate-6 {
-	transform: rotate(-6deg);
+	transform: rotate(calc(-1 * var(--rotate-6)));
 }
 .-rotate-12 {
-	transform: rotate(-12deg);
+	transform: rotate(calc(-1 * var(--rotate-12)));
 }
 .-rotate-45 {
-	transform: rotate(-45deg);
+	transform: rotate(calc(-1 * var(--rotate-45)));
 }
 .-rotate-90 {
-	transform: rotate(-90deg);
+	transform: rotate(calc(-1 * var(--rotate-90)));
 }
 .-rotate-180 {
-	transform: rotate(-180deg);
+	transform: rotate(calc(-1 * var(--rotate-180)));
 }
 
 /* Skew utilities */
 .skew-x-0 {
-	transform: skewX(0deg);
+	transform: skewX(var(--skew-0));
 }
 .skew-x-1 {
-	transform: skewX(1deg);
+	transform: skewX(var(--skew-1));
 }
 .skew-x-2 {
-	transform: skewX(2deg);
+	transform: skewX(var(--skew-2));
 }
 .skew-x-3 {
-	transform: skewX(3deg);
+	transform: skewX(var(--skew-3));
 }
 .skew-x-6 {
-	transform: skewX(6deg);
+	transform: skewX(var(--skew-6));
 }
 .skew-x-12 {
-	transform: skewX(12deg);
+	transform: skewX(var(--skew-12));
 }
 
 .-skew-x-1 {
-	transform: skewX(-1deg);
+	transform: skewX(calc(-1 * var(--skew-1)));
 }
 .-skew-x-2 {
-	transform: skewX(-2deg);
+	transform: skewX(calc(-1 * var(--skew-2)));
 }
 .-skew-x-3 {
-	transform: skewX(-3deg);
+	transform: skewX(calc(-1 * var(--skew-3)));
 }
 .-skew-x-6 {
-	transform: skewX(-6deg);
+	transform: skewX(calc(-1 * var(--skew-6)));
 }
 .-skew-x-12 {
-	transform: skewX(-12deg);
+	transform: skewX(calc(-1 * var(--skew-12)));
 }
 
 .skew-y-0 {
-	transform: skewY(0deg);
+	transform: skewY(var(--skew-0));
 }
 .skew-y-1 {
-	transform: skewY(1deg);
+	transform: skewY(var(--skew-1));
 }
 .skew-y-2 {
-	transform: skewY(2deg);
+	transform: skewY(var(--skew-2));
 }
 .skew-y-3 {
-	transform: skewY(3deg);
+	transform: skewY(var(--skew-3));
 }
 .skew-y-6 {
-	transform: skewY(6deg);
+	transform: skewY(var(--skew-6));
 }
 .skew-y-12 {
-	transform: skewY(12deg);
+	transform: skewY(var(--skew-12));
 }
 
 .-skew-y-1 {
-	transform: skewY(-1deg);
+	transform: skewY(calc(-1 * var(--skew-1)));
 }
 .-skew-y-2 {
-	transform: skewY(-2deg);
+	transform: skewY(calc(-1 * var(--skew-2)));
 }
 .-skew-y-3 {
-	transform: skewY(-3deg);
+	transform: skewY(calc(-1 * var(--skew-3)));
 }
 .-skew-y-6 {
-	transform: skewY(-6deg);
+	transform: skewY(calc(-1 * var(--skew-6)));
 }
 .-skew-y-12 {
-	transform: skewY(-12deg);
+	transform: skewY(calc(-1 * var(--skew-12)));
 }
 
 /* Transform origin utilities */
@@ -278,19 +278,19 @@
 @media (hover: hover) {
 	/* Hover scale */
 	.hover\:scale-95:hover {
-		transform: scale(0.95);
+		transform: scale(var(--scale-95));
 	}
 	.hover\:scale-100:hover {
-		transform: scale(1);
+		transform: scale(var(--scale-100));
 	}
 	.hover\:scale-105:hover {
-		transform: scale(1.05);
+		transform: scale(var(--scale-105));
 	}
 	.hover\:scale-110:hover {
-		transform: scale(1.1);
+		transform: scale(var(--scale-110));
 	}
 	.hover\:scale-125:hover {
-		transform: scale(1.25);
+		transform: scale(var(--scale-125));
 	}
 
 	/* Hover translate */
@@ -328,43 +328,43 @@
 
 	/* Hover rotate */
 	.hover\:rotate-1:hover {
-		transform: rotate(1deg);
+		transform: rotate(var(--rotate-1));
 	}
 	.hover\:rotate-2:hover {
-		transform: rotate(2deg);
+		transform: rotate(var(--rotate-2));
 	}
 	.hover\:rotate-3:hover {
-		transform: rotate(3deg);
+		transform: rotate(var(--rotate-3));
 	}
 	.hover\:rotate-6:hover {
-		transform: rotate(6deg);
+		transform: rotate(var(--rotate-6));
 	}
 	.hover\:rotate-12:hover {
-		transform: rotate(12deg);
+		transform: rotate(var(--rotate-12));
 	}
 	.hover\:-rotate-1:hover {
-		transform: rotate(-1deg);
+		transform: rotate(calc(-1 * var(--rotate-1)));
 	}
 	.hover\:-rotate-2:hover {
-		transform: rotate(-2deg);
+		transform: rotate(calc(-1 * var(--rotate-2)));
 	}
 	.hover\:-rotate-3:hover {
-		transform: rotate(-3deg);
+		transform: rotate(calc(-1 * var(--rotate-3)));
 	}
 	.hover\:-rotate-6:hover {
-		transform: rotate(-6deg);
+		transform: rotate(calc(-1 * var(--rotate-6)));
 	}
 	.hover\:-rotate-12:hover {
-		transform: rotate(-12deg);
+		transform: rotate(calc(-1 * var(--rotate-12)));
 	}
 }
 
 /* Focus transform utilities */
 .focus\:scale-95:focus {
-	transform: scale(0.95);
+	transform: scale(var(--scale-95));
 }
 .focus\:scale-105:focus {
-	transform: scale(1.05);
+	transform: scale(var(--scale-105));
 }
 .focus\:-translate-y-1:focus {
 	transform: translateY(calc(-1 * var(--spacing-1)));
@@ -376,16 +376,16 @@
 /* Responsive transform utilities */
 @media (min-width: 640px) {
 	.sm\:scale-95 {
-		transform: scale(0.95);
+		transform: scale(var(--scale-95));
 	}
 	.sm\:scale-100 {
-		transform: scale(1);
+		transform: scale(var(--scale-100));
 	}
 	.sm\:scale-105 {
-		transform: scale(1.05);
+		transform: scale(var(--scale-105));
 	}
 	.sm\:scale-110 {
-		transform: scale(1.1);
+		transform: scale(var(--scale-110));
 	}
 
 	.sm\:translate-x-0 {
@@ -402,28 +402,28 @@
 	}
 
 	.sm\:rotate-0 {
-		transform: rotate(0deg);
+		transform: rotate(var(--rotate-0));
 	}
 	.sm\:rotate-3 {
-		transform: rotate(3deg);
+		transform: rotate(var(--rotate-3));
 	}
 	.sm\:-rotate-3 {
-		transform: rotate(-3deg);
+		transform: rotate(calc(-1 * var(--rotate-3)));
 	}
 }
 
 @media (min-width: 768px) {
 	.md\:scale-95 {
-		transform: scale(0.95);
+		transform: scale(var(--scale-95));
 	}
 	.md\:scale-100 {
-		transform: scale(1);
+		transform: scale(var(--scale-100));
 	}
 	.md\:scale-105 {
-		transform: scale(1.05);
+		transform: scale(var(--scale-105));
 	}
 	.md\:scale-110 {
-		transform: scale(1.1);
+		transform: scale(var(--scale-110));
 	}
 
 	.md\:translate-x-0 {
@@ -440,28 +440,28 @@
 	}
 
 	.md\:rotate-0 {
-		transform: rotate(0deg);
+		transform: rotate(var(--rotate-0));
 	}
 	.md\:rotate-3 {
-		transform: rotate(3deg);
+		transform: rotate(var(--rotate-3));
 	}
 	.md\:-rotate-3 {
-		transform: rotate(-3deg);
+		transform: rotate(calc(-1 * var(--rotate-3)));
 	}
 }
 
 @media (min-width: 1024px) {
 	.lg\:scale-95 {
-		transform: scale(0.95);
+		transform: scale(var(--scale-95));
 	}
 	.lg\:scale-100 {
-		transform: scale(1);
+		transform: scale(var(--scale-100));
 	}
 	.lg\:scale-105 {
-		transform: scale(1.05);
+		transform: scale(var(--scale-105));
 	}
 	.lg\:scale-110 {
-		transform: scale(1.1);
+		transform: scale(var(--scale-110));
 	}
 
 	.lg\:translate-x-0 {
@@ -478,28 +478,28 @@
 	}
 
 	.lg\:rotate-0 {
-		transform: rotate(0deg);
+		transform: rotate(var(--rotate-0));
 	}
 	.lg\:rotate-3 {
-		transform: rotate(3deg);
+		transform: rotate(var(--rotate-3));
 	}
 	.lg\:-rotate-3 {
-		transform: rotate(-3deg);
+		transform: rotate(calc(-1 * var(--rotate-3)));
 	}
 }
 
 @media (min-width: 1280px) {
 	.xl\:scale-95 {
-		transform: scale(0.95);
+		transform: scale(var(--scale-95));
 	}
 	.xl\:scale-100 {
-		transform: scale(1);
+		transform: scale(var(--scale-100));
 	}
 	.xl\:scale-105 {
-		transform: scale(1.05);
+		transform: scale(var(--scale-105));
 	}
 	.xl\:scale-110 {
-		transform: scale(1.1);
+		transform: scale(var(--scale-110));
 	}
 
 	.xl\:translate-x-0 {
@@ -516,12 +516,12 @@
 	}
 
 	.xl\:rotate-0 {
-		transform: rotate(0deg);
+		transform: rotate(var(--rotate-0));
 	}
 	.xl\:rotate-3 {
-		transform: rotate(3deg);
+		transform: rotate(var(--rotate-3));
 	}
 	.xl\:-rotate-3 {
-		transform: rotate(-3deg);
+		transform: rotate(calc(-1 * var(--rotate-3)));
 	}
 }

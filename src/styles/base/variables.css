@@ -193,6 +193,51 @@
 	--anim-ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 	--anim-ease-mobile: cubic-bezier(0.4, 0, 0.2, 1);
 	
+	/* Transition duration variables for utilities */
+	--transition-duration-75: 75ms;
+	--transition-duration-100: 100ms;
+	--transition-duration-150: 150ms;
+	--transition-duration-200: 200ms;
+	--transition-duration-300: 300ms;
+	--transition-duration-500: 500ms;
+	
+	/* Timing function variables for utilities */
+	--transition-ease-linear: linear;
+	--transition-ease-in: cubic-bezier(0.4, 0, 1, 1);
+	--transition-ease-out: cubic-bezier(0, 0, 0.2, 1);
+	--transition-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+	
+	/* Scale transform variables */
+	--scale-0: 0;
+	--scale-50: 0.5;
+	--scale-75: 0.75;
+	--scale-90: 0.9;
+	--scale-95: 0.95;
+	--scale-100: 1;
+	--scale-105: 1.05;
+	--scale-110: 1.1;
+	--scale-125: 1.25;
+	--scale-150: 1.5;
+	
+	/* Rotation variables */
+	--rotate-0: 0deg;
+	--rotate-1: 1deg;
+	--rotate-2: 2deg;
+	--rotate-3: 3deg;
+	--rotate-6: 6deg;
+	--rotate-12: 12deg;
+	--rotate-45: 45deg;
+	--rotate-90: 90deg;
+	--rotate-180: 180deg;
+	
+	/* Skew variables */
+	--skew-0: 0deg;
+	--skew-1: 1deg;
+	--skew-2: 2deg;
+	--skew-3: 3deg;
+	--skew-6: 6deg;
+	--skew-12: 12deg;
+	
 	/* Transform values for animations */
 	--transform-distance-sm: 10px;
 	--transform-distance-md: 20px;
@@ -322,6 +367,51 @@ html.dark {
 	--anim-ease-out: ease-out;
 	--anim-ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 	--anim-ease-mobile: cubic-bezier(0.4, 0, 0.2, 1);
+	
+	/* Transition duration variables for utilities */
+	--transition-duration-75: 75ms;
+	--transition-duration-100: 100ms;
+	--transition-duration-150: 150ms;
+	--transition-duration-200: 200ms;
+	--transition-duration-300: 300ms;
+	--transition-duration-500: 500ms;
+	
+	/* Timing function variables for utilities */
+	--transition-ease-linear: linear;
+	--transition-ease-in: cubic-bezier(0.4, 0, 1, 1);
+	--transition-ease-out: cubic-bezier(0, 0, 0.2, 1);
+	--transition-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+	
+	/* Scale transform variables */
+	--scale-0: 0;
+	--scale-50: 0.5;
+	--scale-75: 0.75;
+	--scale-90: 0.9;
+	--scale-95: 0.95;
+	--scale-100: 1;
+	--scale-105: 1.05;
+	--scale-110: 1.1;
+	--scale-125: 1.25;
+	--scale-150: 1.5;
+	
+	/* Rotation variables */
+	--rotate-0: 0deg;
+	--rotate-1: 1deg;
+	--rotate-2: 2deg;
+	--rotate-3: 3deg;
+	--rotate-6: 6deg;
+	--rotate-12: 12deg;
+	--rotate-45: 45deg;
+	--rotate-90: 90deg;
+	--rotate-180: 180deg;
+	
+	/* Skew variables */
+	--skew-0: 0deg;
+	--skew-1: 1deg;
+	--skew-2: 2deg;
+	--skew-3: 3deg;
+	--skew-6: 6deg;
+	--skew-12: 12deg;
 	
 	/* Transform values for animations */
 	--transform-distance-sm: 10px;
