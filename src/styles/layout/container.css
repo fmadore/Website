@@ -9,27 +9,27 @@
 }
 
 /* Responsive container sizes */
-@media (min-width: 640px) {
+@media (min-width: var(--breakpoint-sm)) {
 	.container {
-		max-width: 640px;
+		max-width: var(--container-sm);
 	}
 }
 
-@media (min-width: 768px) {
+@media (min-width: var(--breakpoint-md)) {
 	.container {
-		max-width: 768px;
+		max-width: var(--container-md);
 	}
 }
 
-@media (min-width: 1024px) {
+@media (min-width: var(--breakpoint-lg)) {
 	.container {
-		max-width: 1024px;
+		max-width: var(--container-lg);
 	}
 }
 
-@media (min-width: 1280px) {
+@media (min-width: var(--breakpoint-xl)) {
 	.container {
-		max-width: 1280px;
+		max-width: var(--container-xl);
 	}
 }
 
