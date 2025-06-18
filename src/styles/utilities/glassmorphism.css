@@ -206,18 +206,21 @@
 	box-shadow: 0 6px 20px 0 rgba(var(--color-primary-rgb), 0.4) !important;
 }
 
-/* Glass button with secondary variant - better contrast */
+/* Glass button with secondary variant - improved contrast with glassmorphism */
 .btn-outline-secondary.glass-button {
-	color: var(--color-text-light) !important;
-	background: rgba(255, 255, 255, 0.08) !important;
-	border: 1px solid rgba(255, 255, 255, 0.2) !important;
+	color: var(--color-text-emphasis) !important;
+	background: rgba(var(--color-primary-rgb), 0.1) !important;
+	-webkit-backdrop-filter: blur(12px) !important;
+	backdrop-filter: blur(12px) !important;
+	border: 1px solid rgba(var(--color-primary-rgb), 0.3) !important;
+	box-shadow: 0 4px 16px 0 rgba(var(--color-primary-rgb), 0.2) !important;
 }
 
 .btn-outline-secondary.glass-button:hover {
-	color: var(--color-primary) !important;
-	background: rgba(var(--color-primary-rgb), 0.15) !important;
-	border-color: rgba(var(--color-primary-rgb), 0.3) !important;
-	box-shadow: 0 6px 20px 0 rgba(var(--color-primary-rgb), 0.3) !important;
+	color: white !important;
+	background: var(--color-primary) !important;
+	border-color: var(--color-primary) !important;
+	box-shadow: 0 6px 20px 0 rgba(var(--color-primary-rgb), 0.4) !important;
 }
 
 /* Glass button with primary solid variant */
@@ -300,16 +303,19 @@
 }
 
 :global(html.dark) .btn-outline-secondary.glass-button {
-	color: var(--color-text-light) !important;
-	background: rgba(0, 0, 0, 0.15) !important;
-	border: 1px solid rgba(255, 255, 255, 0.1) !important;
+	color: var(--color-text-emphasis) !important;
+	background: rgba(var(--color-dark-surface-rgb), 0.3) !important;
+	-webkit-backdrop-filter: blur(12px) !important;
+	backdrop-filter: blur(12px) !important;
+	border: 1px solid rgba(var(--color-primary-rgb), 0.4) !important;
+	box-shadow: 0 4px 16px 0 rgba(var(--color-primary-rgb), 0.3) !important;
 }
 
 :global(html.dark) .btn-outline-secondary.glass-button:hover {
-	color: var(--color-primary) !important;
-	background: rgba(var(--color-primary-rgb), 0.2) !important;
-	border-color: rgba(var(--color-primary-rgb), 0.4) !important;
-	box-shadow: 0 6px 20px 0 rgba(var(--color-primary-rgb), 0.4) !important;
+	color: white !important;
+	background: var(--color-primary) !important;
+	border-color: var(--color-primary) !important;
+	box-shadow: 0 6px 20px 0 rgba(var(--color-primary-rgb), 0.5) !important;
 }
 
 :global(html.dark) .btn-primary.glass-button {

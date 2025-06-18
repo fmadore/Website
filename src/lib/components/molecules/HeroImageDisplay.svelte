@@ -2,6 +2,7 @@
 	import { base } from '$app/paths';
 	import { browser } from '$app/environment';
 	import { portal } from '$lib/actions/portal';
+	import Button from '$lib/components/atoms/Button.svelte';
 
 	let {
 		heroImage = undefined,
@@ -56,6 +57,19 @@
 				document.body.style.overflow = '';
 			}
 		};
+	});
+
+	// Focus the modal when it opens for keyboard navigation
+	$effect(() => {
+		if (zoomed && browser) {
+			// Small delay to ensure the modal is rendered
+			setTimeout(() => {
+				const modal = document.querySelector('.fullscreen-modal') as HTMLElement;
+				if (modal) {
+					modal.focus();
+				}
+			}, 100);
+		}
 	});
 
 	const displayImage = $derived(
@@ -134,7 +148,7 @@
 	<div
 		use:portal
 		class="fullscreen-modal"
-		onclick={(e) => {
+		onclick={(e: MouseEvent) => {
 			if (e.target === e.currentTarget) {
 				toggleZoom();
 			}
@@ -145,17 +159,23 @@
 		aria-label="Fullscreen image view"
 		tabindex="0"
 	>
-		<button
-			class="close-button"
-			onclick={(e) => {
+		<Button
+			variant="outline-secondary"
+			size="base"
+			additionalClasses="close-button glass-button"
+			ariaLabel="Close fullscreen view"
+			onclick={(e: MouseEvent) => {
 				e.stopPropagation();
 				toggleZoom();
 			}}
-			type="button"
-			aria-label="Close fullscreen view"
 		>
-			&times;
-		</button>
+			{#snippet children()}
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<line x1="18" y1="6" x2="6" y2="18"></line>
+					<line x1="6" y1="6" x2="18" y2="18"></line>
+				</svg>
+			{/snippet}
+		</Button>
 		<div class="modal-content">
 			<img src={absoluteSrc} alt={altText} class="fullscreen-image" />
 			{#if captionText}
@@ -409,7 +429,7 @@
 		color: var(--color-text-light);
 	}
 
-	/* Fullscreen Modal Styling - Improved positioning and behavior */
+	/* Fullscreen Modal Styling - Enhanced glassmorphism design */
 	.fullscreen-modal {
 		position: fixed;
 		top: 0;
@@ -417,9 +437,16 @@
 		width: 100vw;
 		height: 100vh;
 		z-index: 9999; /* Very high z-index to ensure it's above everything */
-		background: rgba(0, 0, 0, 0.9);
-		-webkit-backdrop-filter: blur(10px);
-		backdrop-filter: blur(10px);
+		/* Enhanced glassmorphism background using our design system */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-dark-surface-deep-rgb), 0.85) 0%,
+			rgba(var(--color-dark-surface-alt-rgb), 0.9) 50%,
+			rgba(var(--color-dark-surface-rgb), 0.85) 100%
+		);
+		-webkit-backdrop-filter: blur(20px) saturate(120%);
+		backdrop-filter: blur(20px) saturate(120%);
+		border: 1px solid rgba(255, 255, 255, 0.05);
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -448,49 +475,75 @@
 		width: auto;
 		height: auto;
 		object-fit: contain;
-		box-shadow: 0 1rem 3rem rgba(0,0,0,0.7);
-		border-radius: var(--border-radius-md);
+		box-shadow: var(--shadow-2xl);
+		border-radius: var(--border-radius-lg);
+		border: 1px solid rgba(255, 255, 255, 0.1);
 		display: block;
+		transition: all 0.3s var(--anim-ease-base);
 	}
 
 	.fullscreen-caption {
-		color: white;
+		color: var(--color-text-emphasis);
 		margin-top: var(--spacing-4);
 		font-size: var(--font-size-lg);
 		font-style: italic;
 		text-align: center;
 		max-width: 80vw;
 		line-height: var(--line-height-relaxed);
-		padding: var(--spacing-2) var(--spacing-4);
-		background: rgba(0, 0, 0, 0.5);
-		border-radius: var(--border-radius-md);
+		padding: var(--spacing-4) var(--spacing-6);
+		/* Use glassmorphism for caption background */
+		background: rgba(var(--color-surface-rgb), 0.15);
+		-webkit-backdrop-filter: blur(12px);
+		backdrop-filter: blur(12px);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		border-radius: var(--border-radius-lg);
+		box-shadow: var(--shadow-lg);
+		font-family: var(--font-family-serif);
+		font-weight: var(--font-weight-medium);
 	}
 
-	.close-button {
-		position: absolute;
-		top: var(--spacing-4);
-		right: var(--spacing-6);
-		background: rgba(0, 0, 0, 0.5);
-		border: 2px solid rgba(255, 255, 255, 0.3);
-		color: white;
-		font-size: 2rem;
-		cursor: pointer;
-		transition: all 0.2s ease;
-		border-radius: 50%;
-		width: 3rem;
-		height: 3rem;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		line-height: 1;
+	/* Close button positioning - let Button component handle styling */
+	:global(.close-button) {
+		position: absolute !important;
+		top: var(--spacing-4) !important;
+		right: var(--spacing-6) !important;
+		width: 3rem !important;
+		height: 3rem !important;
+		min-width: 3rem !important;
+		border-radius: var(--border-radius-full) !important;
+		padding: 0 !important;
+		display: flex !important;
+		align-items: center !important;
+		justify-content: center !important;
 	}
-	
-	.close-button:hover,
-	.close-button:focus {
-		transform: scale(1.1);
-		background: rgba(0, 0, 0, 0.7);
-		border-color: rgba(255, 255, 255, 0.5);
-		outline: none;
+
+	/* Ensure the SVG icon is properly centered */
+	:global(.close-button svg) {
+		display: block;
+		margin: 0 auto;
+	}
+
+	/* Dark theme overrides for fullscreen modal */
+	:global(html.dark) .fullscreen-modal {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-dark-surface-deep-rgb), 0.9) 0%,
+			rgba(var(--color-dark-surface-alt-rgb), 0.95) 50%,
+			rgba(var(--color-dark-surface-rgb), 0.9) 100%
+		);
+		border-color: rgba(255, 255, 255, 0.02);
+	}
+
+	:global(html.dark) .fullscreen-caption {
+		color: var(--color-text-light);
+		background: rgba(var(--color-dark-surface-rgb), 0.2);
+		border-color: rgba(255, 255, 255, 0.1);
+	}
+
+
+
+	:global(html.dark) .fullscreen-image {
+		border-color: rgba(255, 255, 255, 0.05);
 	}
 
 	/* Animation keyframes */
@@ -547,14 +600,20 @@
 		.fullscreen-caption {
 			font-size: var(--font-size-md);
 			max-width: 90vw;
+			padding: var(--spacing-3) var(--spacing-4);
 		}
 
-		.close-button {
-			top: var(--spacing-2);
-			right: var(--spacing-2);
-			width: 2.5rem;
-			height: 2.5rem;
-			font-size: 1.5rem;
+		:global(.close-button) {
+			top: var(--spacing-2) !important;
+			right: var(--spacing-2) !important;
+			width: 2.5rem !important;
+			height: 2.5rem !important;
+			min-width: 2.5rem !important;
+		}
+
+		:global(.close-button svg) {
+			width: 16px;
+			height: 16px;
 		}
 
 		.overlay-caption {
