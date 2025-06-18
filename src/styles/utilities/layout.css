@@ -63,7 +63,7 @@
 }
 
 /* Responsive */
-@media (min-width: 640px) {
+@media (min-width: var(--breakpoint-sm)) {
 	.sm\:overflow-auto {
 		overflow: auto;
 	}
@@ -119,7 +119,7 @@
 	}
 }
 
-@media (min-width: 768px) {
+@media (min-width: var(--breakpoint-md)) {
 	.md\:overflow-auto {
 		overflow: auto;
 	}
@@ -175,7 +175,7 @@
 	}
 }
 
-@media (min-width: 1024px) {
+@media (min-width: var(--breakpoint-lg)) {
 	.lg\:overflow-auto {
 		overflow: auto;
 	}
@@ -231,7 +231,7 @@
 	}
 }
 
-@media (min-width: 1280px) {
+@media (min-width: var(--breakpoint-xl)) {
 	.xl\:overflow-auto {
 		overflow: auto;
 	}

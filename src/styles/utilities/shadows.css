@@ -34,7 +34,7 @@
 }
 
 /* Responsive */
-@media (min-width: 640px) {
+@media (min-width: var(--breakpoint-sm)) {
 	.sm\:shadow-sm {
 		box-shadow: var(--shadow-sm);
 	}
@@ -52,7 +52,7 @@
 	}
 }
 
-@media (min-width: 768px) {
+@media (min-width: var(--breakpoint-md)) {
 	.md\:shadow-sm {
 		box-shadow: var(--shadow-sm);
 	}
@@ -70,7 +70,7 @@
 	}
 }
 
-@media (min-width: 1024px) {
+@media (min-width: var(--breakpoint-lg)) {
 	.lg\:shadow-sm {
 		box-shadow: var(--shadow-sm);
 	}
@@ -88,7 +88,7 @@
 	}
 }
 
-@media (min-width: 1280px) {
+@media (min-width: var(--breakpoint-xl)) {
 	.xl\:shadow-sm {
 		box-shadow: var(--shadow-sm);
 	}
