@@ -103,7 +103,7 @@
 		color: var(--color-primary);
 		text-decoration: none;
 		font-weight: var(--font-weight-semibold);
-		transition: all 0.2s ease;
+		transition: all var(--transition-duration-200) var(--transition-ease-out);
 		display: inline-flex;
 		align-items: center;
 		gap: var(--spacing-1);
@@ -145,7 +145,7 @@
 		padding: var(--spacing-2) var(--spacing-3);
 		background: rgba(var(--color-surface-rgb), var(--opacity-high));
 		border-radius: var(--border-radius-md);
-		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), 0.5);
+		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-high));
 	}
 
 	.title-section {
@@ -170,7 +170,7 @@
 		);
 		border-radius: var(--border-radius-sm);
 		margin-top: var(--spacing-3);
-		transition: width 0.3s ease;
+		transition: width var(--transition-duration-300) var(--transition-ease-out);
 	}
 
 	.authors {
@@ -189,12 +189,12 @@
 	:global(html.dark) .enhanced-page-header {
 		background: radial-gradient(
 			circle at 20% 20%,
-			rgba(var(--color-primary-rgb), 0.12) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
 			rgba(var(--color-accent-rgb), var(--opacity-low)) 35%,
 			var(--color-dark-surface-alt) 65%,
 			var(--color-dark-surface-deep) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), 0.15);
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
 		box-shadow: var(--shadow-lg);
 	}
 
@@ -204,17 +204,17 @@
 	}
 
 	:global(html.dark) .back-link:hover {
-		background: rgba(var(--color-primary-rgb), 0.15);
-		border-color: rgba(var(--color-primary-rgb), 0.3);
+		background: rgba(var(--color-primary-rgb), var(--opacity-medium));
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
 	}
 
 	:global(html.dark) .header-date {
 		background: rgba(var(--color-dark-surface-rgb), var(--opacity-high));
-		border-color: rgba(var(--color-border-rgb), 0.3);
+		border-color: rgba(var(--color-border-rgb), var(--opacity-medium-high));
 	}
 
 	/* Mobile responsive design */
-	@media (max-width: 640px) {
+	@media (max-width: var(--breakpoint-sm)) {
 		.enhanced-page-header {
 			padding: var(--spacing-6) var(--spacing-4);
 			margin-bottom: var(--spacing-4);
