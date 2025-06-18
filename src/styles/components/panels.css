@@ -4,14 +4,14 @@
 .panel {
 	padding: var(--spacing-8);
 	border-radius: var(--border-radius-lg);
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all var(--anim-duration-base) var(--anim-ease-base);
 	position: relative;
 	overflow: hidden;
 	margin-bottom: var(--spacing-8);
 	/* Enhanced glassmorphism with subtle gradient overlay to match ProfileBanner and ContentBody */
 	background: linear-gradient(
 		135deg,
-		rgba(var(--color-primary-rgb), 0.04) 0%,
+		rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
 		rgba(var(--color-highlight-rgb), 0.025) 50%,
 		rgba(var(--color-accent-rgb), 0.015) 100%
 	);
@@ -24,14 +24,14 @@
 	background: linear-gradient(
 		135deg,
 		rgba(var(--color-primary-rgb), 0.06) 0%,
-		rgba(var(--color-highlight-rgb), 0.04) 50%,
+		rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
 		rgba(var(--color-accent-rgb), 0.025) 100%
 	);
 }
 
 .panel-header {
 	padding: 0 0 var(--spacing-6) 0;
-	border-bottom: 1px solid rgba(var(--color-primary-rgb), 0.1);
+	border-bottom: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
 	background: transparent;
 	position: relative;
 }
@@ -51,16 +51,16 @@
 .panel-title::after {
 	content: '';
 	position: absolute;
-	bottom: -var(--spacing-2);
+	bottom: calc(-1 * var(--spacing-2));
 	left: 0;
 	width: 40px;
-	height: 3px;
+	height: var(--border-width-thick);
 	background: linear-gradient(90deg, 
 		var(--color-highlight) 0%, 
 		var(--color-accent) 100%
 	);
 	border-radius: var(--border-radius-sm);
-	transition: width 0.3s ease;
+	transition: width var(--anim-duration-base) var(--anim-ease-out);
 }
 
 .panel:hover .panel-title::after {
@@ -74,7 +74,7 @@
 
 .panel-footer {
 	padding: var(--spacing-6) 0 0 0;
-	border-top: 1px solid rgba(var(--color-primary-rgb), 0.1);
+	border-top: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
 	background: transparent;
 	margin-top: var(--spacing-6);
 }
@@ -102,7 +102,7 @@
 
 .view-all-container {
 	padding: var(--spacing-6) 0 0 0;
-	border-top: 1px solid rgba(var(--color-primary-rgb), 0.1);
+	border-top: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
 	margin-top: var(--spacing-6);
 	text-align: center;
 }
@@ -124,7 +124,7 @@
 	background: linear-gradient(
 		135deg,
 		rgba(var(--color-success-rgb), 0.05) 0%,
-		rgba(var(--color-highlight-rgb), 0.04) 50%,
+		rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
 		rgba(var(--color-primary-rgb), 0.025) 100%
 	);
 }
@@ -144,7 +144,7 @@
 	background: linear-gradient(
 		135deg,
 		rgba(var(--color-accent-rgb), 0.05) 0%,
-		rgba(var(--color-highlight-rgb), 0.04) 50%,
+		rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
 		rgba(var(--color-primary-rgb), 0.025) 100%
 	);
 }
@@ -181,7 +181,7 @@
 :global(html.dark) .panel {
 	background: linear-gradient(
 		135deg,
-		rgba(var(--color-primary-rgb), 0.08) 0%,
+		rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
 		rgba(var(--color-highlight-rgb), 0.05) 50%,
 		rgba(var(--color-accent-rgb), 0.03) 100%
 	);
@@ -190,8 +190,8 @@
 :global(html.dark) .panel:hover {
 	background: linear-gradient(
 		135deg,
-		rgba(var(--color-primary-rgb), 0.12) 0%,
-		rgba(var(--color-highlight-rgb), 0.08) 50%,
+		rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
+		rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
 		rgba(var(--color-accent-rgb), 0.05) 100%
 	);
 }
@@ -208,8 +208,8 @@
 :global(html.dark) .panel-activities:hover {
 	background: linear-gradient(
 		135deg,
-		rgba(var(--color-success-rgb), 0.1) 0%,
-		rgba(var(--color-highlight-rgb), 0.08) 50%,
+		rgba(var(--color-success-rgb), var(--opacity-low)) 0%,
+		rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
 		rgba(var(--color-primary-rgb), 0.05) 100%
 	);
 }
@@ -226,8 +226,8 @@
 :global(html.dark) .panel-items:hover {
 	background: linear-gradient(
 		135deg,
-		rgba(var(--color-accent-rgb), 0.1) 0%,
-		rgba(var(--color-highlight-rgb), 0.08) 50%,
+		rgba(var(--color-accent-rgb), var(--opacity-low)) 0%,
+		rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
 		rgba(var(--color-primary-rgb), 0.05) 100%
 	);
 }
@@ -245,7 +245,7 @@
 
 	.panel-title::after {
 		width: 30px;
-		height: 2px;
+		height: var(--border-width-medium);
 	}
 
 	.panel:hover .panel-title::after {
