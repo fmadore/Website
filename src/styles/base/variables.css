@@ -199,6 +199,26 @@
 	--glass-opacity-fallback-dark: 0.8;
 	--glass-blur-amount: 8px;
 	--glass-blur-fallback: 10px;
+	
+	/* Card-specific variables */
+	--card-height-image: 12rem;
+	--card-glass-opacity-light: 0.1;
+	--card-glass-opacity-light-hover: 0.15;
+	--card-glass-border-light: 0.2;
+	--card-glass-border-light-hover: 0.3;
+	--card-glass-inset-light: 0.3;
+	--card-glass-inset-light-hover: 0.4;
+	--card-glass-opacity-dark: 0.2;
+	--card-glass-opacity-dark-hover: 0.3;
+	--card-glass-border-dark: 0.1;
+	--card-glass-border-dark-hover: 0.15;
+	--card-glass-inset-dark: 0.1;
+	--card-glass-inset-dark-hover: 0.15;
+	--card-shadow-color: 31, 38, 135;
+	--card-shadow-opacity: 0.37;
+	--card-shadow-opacity-hover: 0.4;
+	--card-transform-hover: translateY(-4px);
+	--card-link-transform: translateX(4px);
 }
 
 /* Dark theme variables */
@@ -309,4 +329,24 @@ html.dark {
 	--glass-opacity-fallback-dark: 0.8;
 	--glass-blur-amount: 8px;
 	--glass-blur-fallback: 10px;
+	
+	/* Card-specific variables */
+	--card-height-image: 12rem;
+	--card-glass-opacity-light: 0.1;
+	--card-glass-opacity-light-hover: 0.15;
+	--card-glass-border-light: 0.2;
+	--card-glass-border-light-hover: 0.3;
+	--card-glass-inset-light: 0.3;
+	--card-glass-inset-light-hover: 0.4;
+	--card-glass-opacity-dark: 0.2;
+	--card-glass-opacity-dark-hover: 0.3;
+	--card-glass-border-dark: 0.1;
+	--card-glass-border-dark-hover: 0.15;
+	--card-glass-inset-dark: 0.1;
+	--card-glass-inset-dark-hover: 0.15;
+	--card-shadow-color: 31, 38, 135;
+	--card-shadow-opacity: 0.37;
+	--card-shadow-opacity-hover: 0.4;
+	--card-transform-hover: translateY(-4px);
+	--card-link-transform: translateX(4px);
 }
