@@ -1,6 +1,6 @@
 <script lang="ts">
+	import Button from '$lib/components/atoms/Button.svelte';
 
-	
 	let {
 		title,
 		items, // e.g., ['book', 'article'] or ['Author One', 'Author Two']
@@ -32,16 +32,18 @@
 	<h3 class="filter-section-title">{title}</h3>
 	<div class="filter-chips-container">
 		{#each items as item}
-			<button
-				class="filter-chip glass-button"
-				class:active={activeItems.includes(item)}
+			<Button
+				variant="outline-secondary"
+				size="sm"
+				glass={true}
+				additionalClasses="filter-chip {activeItems.includes(item) ? 'active' : ''}"
 				onclick={() => handleToggleItem(item)}
 			>
 				<span class="chip-text">{itemLabels?.[item] ?? item}</span>
 				{#if counts !== undefined}
 					<span class="chip-count">({getCount(item)})</span>
 				{/if}
-			</button>
+			</Button>
 		{/each}
 	</div>
 </div>
@@ -71,34 +73,8 @@
 		margin-bottom: var(--spacing-3);
 	}
 
-	.filter-chip {
-		background: rgba(var(--color-surface-rgb), var(--opacity-medium)) !important;
-		color: var(--color-text) !important;
-		border: var(--border-width-thin) solid rgba(var(--color-surface-rgb), var(--opacity-medium-high)) !important;
-		padding: var(--spacing-2) var(--spacing-3);
-		border-radius: var(--border-radius-md) !important;
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-medium);
-		cursor: pointer;
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-		display: inline-flex;
-		align-items: center;
-		gap: var(--spacing-1);
-		white-space: nowrap;
-		backdrop-filter: blur(8px) !important;
-		-webkit-backdrop-filter: blur(8px) !important;
-		box-shadow: var(--shadow-sm) !important;
-	}
-
-	.filter-chip:hover {
-		background: rgba(var(--color-accent-rgb), var(--opacity-medium)) !important;
-		border-color: rgba(var(--color-accent-rgb), var(--opacity-medium-high)) !important;
-		color: var(--color-text-emphasis) !important;
-		transform: var(--transform-lift-sm) !important;
-		box-shadow: var(--shadow-md) !important;
-	}
-
-	.filter-chip.active {
+	/* Enhanced styles for active state using our Button component */
+	:global(.filter-chip.active) {
 		background: linear-gradient(135deg, 
 			var(--color-accent) 0%, 
 			var(--color-highlight) 100%) !important;
@@ -107,7 +83,7 @@
 		box-shadow: var(--shadow-md) !important;
 	}
 
-	.filter-chip.active:hover {
+	:global(.filter-chip.active:hover) {
 		background: linear-gradient(135deg, 
 			var(--color-highlight) 0%, 
 			var(--color-accent) 100%) !important;
@@ -127,16 +103,11 @@
 		padding: 1px var(--spacing-1);
 		border-radius: var(--border-radius-sm);
 		line-height: 1;
+		margin-left: var(--spacing-1);
 	}
 
-	.filter-chip.active .chip-count {
+	:global(.filter-chip.active .chip-count) {
 		background: rgba(255, 255, 255, 0.3);
-	}
-
-	/* Focus states */
-	.filter-chip:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--border-width-medium);
 	}
 
 	/* Dark mode overrides */
@@ -148,39 +119,21 @@
 			inset 0 1px 0 rgba(255, 255, 255, 0.1);
 	}
 
-	:global(html.dark) .filter-chip {
-		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium)) !important;
-		border-color: rgba(255, 255, 255, 0.1) !important;
-		color: var(--color-text) !important;
-	}
-
-	:global(html.dark) .filter-chip:hover {
-		background: rgba(var(--color-accent-rgb), var(--opacity-medium)) !important;
-		border-color: rgba(var(--color-accent-rgb), var(--opacity-medium-high)) !important;
-	}
-
 	/* Responsive design */
 	@media (max-width: 640px) {
 		.filter-section-content {
 			padding: var(--spacing-3);
 		}
-
-		.filter-chip {
-			padding: var(--spacing-1) var(--spacing-2);
-			font-size: var(--font-size-xs);
-		}
 	}
 
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
-		.filter-section-content,
-		.filter-chip {
+		.filter-section-content {
 			transition: none;
 		}
 
-		.filter-chip:hover,
-		.filter-chip.active:hover {
-			transform: none;
+		:global(.filter-chip.active:hover) {
+			transform: none !important;
 		}
 	}
 </style>
