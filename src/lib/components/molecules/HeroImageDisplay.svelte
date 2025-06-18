@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import { browser } from '$app/environment';
+	import { portal } from '$lib/actions/portal';
 
 	let {
 		heroImage = undefined,
@@ -22,6 +24,39 @@
 		variant?: 'default' | 'compact' | 'featured';
 		maxHeight?: string;
 	} = $props();
+
+	let zoomed = $state(false);
+
+	function toggleZoom() {
+		zoomed = !zoomed;
+		// Prevent body scroll when modal is open
+		if (browser) {
+			document.body.style.overflow = zoomed ? 'hidden' : '';
+		}
+	}
+
+	function handleKeydown(event: KeyboardEvent) {
+		if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault();
+			toggleZoom();
+		}
+	}
+
+	function handleModalKeydown(event: KeyboardEvent) {
+		if (event.key === 'Escape') {
+			event.preventDefault();
+			toggleZoom();
+		}
+	}
+
+	// Clean up body overflow when component is destroyed
+	$effect(() => {
+		return () => {
+			if (browser) {
+				document.body.style.overflow = '';
+			}
+		};
+	});
 
 	const displayImage = $derived(
 		heroImage?.src ? heroImage : fallbackImage ? { src: fallbackImage, alt: defaultAlt } : null
@@ -62,14 +97,30 @@
 
 {#if displayImage && absoluteSrc}
 	<figure class={combinedFigureClass}>
-		<img 
-			src={absoluteSrc} 
-			alt={altText} 
-			class={combinedImageClass}
-			loading="lazy"
-			decoding="async"
-			style={`max-height: ${maxHeight};`}
-		/>
+		<button 
+			class="image-container" 
+			onclick={toggleZoom} 
+			onkeydown={handleKeydown}
+			type="button"
+			aria-label="Zoom image to fullscreen"
+		>
+			<img
+				src={absoluteSrc}
+				alt={altText}
+				class={combinedImageClass}
+				loading="lazy"
+				decoding="async"
+				style={`max-height: ${maxHeight};`}
+			/>
+			<div class="overlay">
+				{#if captionText}
+					<div class="overlay-caption">{captionText}</div>
+				{/if}
+				<div class="zoom-icon" aria-hidden="true">
+					<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+				</div>
+			</div>
+		</button>
 		{#if captionText}
 			<figcaption class={figcaptionClass}>
 				{captionText}
@@ -78,12 +129,49 @@
 	</figure>
 {/if}
 
+<!-- Modal is now portaled to the body to escape stacking contexts -->
+{#if zoomed && absoluteSrc}
+	<div
+		use:portal
+		class="fullscreen-modal"
+		onclick={(e) => {
+			if (e.target === e.currentTarget) {
+				toggleZoom();
+			}
+		}}
+		onkeydown={handleModalKeydown}
+		role="dialog"
+		aria-modal="true"
+		aria-label="Fullscreen image view"
+		tabindex="0"
+	>
+		<button
+			class="close-button"
+			onclick={(e) => {
+				e.stopPropagation();
+				toggleZoom();
+			}}
+			type="button"
+			aria-label="Close fullscreen view"
+		>
+			&times;
+		</button>
+		<div class="modal-content">
+			<img src={absoluteSrc} alt={altText} class="fullscreen-image" />
+			{#if captionText}
+				<div class="fullscreen-caption">{captionText}</div>
+			{/if}
+		</div>
+	</div>
+{/if}
+
 <style>
 	/* Hero figure base styling - consistent with page layout */
 	.hero-figure {
 		margin-bottom: var(--spacing-6); /* Match PageHeader margin for consistency */
 		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		position: relative;
+		overflow: hidden; /* Contain hover effects */
 
 		/* Shrink to intrinsic content width and center horizontally */
 		display: block;
@@ -95,6 +183,72 @@
 
 	.hero-figure:hover {
 		transform: var(--transform-lift-sm);
+	}
+
+	.image-container {
+		position: relative;
+		cursor: pointer;
+		overflow: hidden;
+		border-radius: var(--border-radius-lg);
+		border: none;
+		background: none;
+		padding: 0;
+		display: block;
+		width: 100%;
+	}
+
+	.image-container .hero-image {
+		transition: transform 0.3s var(--anim-ease-base);
+	}
+
+	.image-container:hover .hero-image {
+		transform: scale(1.05);
+	}
+
+	.image-container:focus {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 2px;
+	}
+
+	.overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.5);
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		color: white;
+		opacity: 0;
+		transition: opacity 0.3s var(--anim-ease-base);
+		pointer-events: none; /* Let clicks pass through to the container */
+		border-radius: inherit;
+	}
+
+	.image-container:hover .overlay,
+	.image-container:focus .overlay {
+		opacity: 1;
+		pointer-events: auto; /* Enable pointer events on hover/focus */
+	}
+	
+	.overlay-caption {
+		font-size: var(--font-size-md);
+		padding: var(--spacing-4);
+		text-align: center;
+		font-weight: var(--font-weight-semibold);
+		line-height: var(--line-height-relaxed);
+	}
+
+	.zoom-icon {
+		font-size: 2rem;
+		margin-top: var(--spacing-2);
+	}
+	
+	.zoom-icon svg {
+		filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
 	}
 
 	/* Hero image with integrated glassmorphism effects */
@@ -162,6 +316,11 @@
 			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
 		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
+	}
+
+	/* Adjust container inside glass figure */
+	.hero-figure--glass .image-container {
+		border-radius: var(--border-radius-lg); /* Match inner image radius */
 	}
 
 	/* Eliminate the inner border/shadow to prevent a visible double frame */
@@ -250,6 +409,100 @@
 		color: var(--color-text-light);
 	}
 
+	/* Fullscreen Modal Styling - Improved positioning and behavior */
+	.fullscreen-modal {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		z-index: 9999; /* Very high z-index to ensure it's above everything */
+		background: rgba(0, 0, 0, 0.9);
+		-webkit-backdrop-filter: blur(10px);
+		backdrop-filter: blur(10px);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: zoom-out;
+		animation: fadeIn 0.3s var(--anim-ease-base);
+		padding: var(--spacing-4);
+		box-sizing: border-box;
+	}
+
+	.fullscreen-modal:focus {
+		outline: none;
+	}
+
+	.modal-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		max-width: 100%;
+		max-height: 100%;
+		cursor: default;
+	}
+
+	.fullscreen-image {
+		max-width: 90vw;
+		max-height: 85vh;
+		width: auto;
+		height: auto;
+		object-fit: contain;
+		box-shadow: 0 1rem 3rem rgba(0,0,0,0.7);
+		border-radius: var(--border-radius-md);
+		display: block;
+	}
+
+	.fullscreen-caption {
+		color: white;
+		margin-top: var(--spacing-4);
+		font-size: var(--font-size-lg);
+		font-style: italic;
+		text-align: center;
+		max-width: 80vw;
+		line-height: var(--line-height-relaxed);
+		padding: var(--spacing-2) var(--spacing-4);
+		background: rgba(0, 0, 0, 0.5);
+		border-radius: var(--border-radius-md);
+	}
+
+	.close-button {
+		position: absolute;
+		top: var(--spacing-4);
+		right: var(--spacing-6);
+		background: rgba(0, 0, 0, 0.5);
+		border: 2px solid rgba(255, 255, 255, 0.3);
+		color: white;
+		font-size: 2rem;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		border-radius: 50%;
+		width: 3rem;
+		height: 3rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		line-height: 1;
+	}
+	
+	.close-button:hover,
+	.close-button:focus {
+		transform: scale(1.1);
+		background: rgba(0, 0, 0, 0.7);
+		border-color: rgba(255, 255, 255, 0.5);
+		outline: none;
+	}
+
+	/* Animation keyframes */
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
 	/* Responsive adjustments - improved mobile experience */
 	@media (max-width: 768px) {
 		.hero-figure {
@@ -281,6 +534,33 @@
 		.hero-figure--default {
 			max-width: 100%;
 		}
+
+		.fullscreen-modal {
+			padding: var(--spacing-2);
+		}
+
+		.fullscreen-image {
+			max-width: 95vw;
+			max-height: 80vh;
+		}
+
+		.fullscreen-caption {
+			font-size: var(--font-size-md);
+			max-width: 90vw;
+		}
+
+		.close-button {
+			top: var(--spacing-2);
+			right: var(--spacing-2);
+			width: 2.5rem;
+			height: 2.5rem;
+			font-size: 1.5rem;
+		}
+
+		.overlay-caption {
+			font-size: var(--font-size-sm);
+			padding: var(--spacing-2);
+		}
 	}
 
 	@media (max-width: 640px) {
@@ -292,11 +572,15 @@
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
 		.hero-figure,
-		.hero-image {
+		.hero-image,
+		.image-container .hero-image,
+		.fullscreen-modal {
 			transition: none;
+			animation: none;
 		}
 
-		.hero-figure:hover {
+		.hero-figure:hover,
+		.image-container:hover .hero-image {
 			transform: none;
 		}
 	}

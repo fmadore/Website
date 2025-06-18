@@ -190,13 +190,15 @@
 		</div>
 
 		{#if activity.heroImage && activity.heroImage.src}
-			<div use:scrollAnimate={{ delay: DELAY_STEP * 4, animationClass: 'fade-in-up' }}>
+			<div class="hero-image-wrapper" use:scrollAnimate={{ delay: DELAY_STEP * 4, animationClass: 'fade-in-up' }}>
 				<HeroImageDisplay
 					heroImage={{
 						src: activity.heroImage.src,
 						alt: activity.heroImage.alt ?? activity.title,
 						caption: activity.heroImage.caption
 					}}
+					fallbackImage={activity.image}
+					defaultAlt={activity.title}
 					variant="featured"
 					glassEffect={true}
 				/>
@@ -256,6 +258,13 @@
 </div>
 
 <style>
+	/* Hero image wrapper - ensure it doesn't interfere with modal stacking */
+	.hero-image-wrapper {
+		position: relative;
+		z-index: auto; /* Ensure no stacking context issues */
+		isolation: auto; /* Prevent isolation that could interfere with modal */
+	}
+
 	/* PDF section styling with glassmorphism */
 	.pdf-section {
 		padding: var(--spacing-8);
