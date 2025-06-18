@@ -505,8 +505,8 @@
 		position: fixed;
 		bottom: var(--spacing-6);
 		right: var(--spacing-6);
-		width: calc(var(--spacing-12) * 2);
-		height: calc(var(--spacing-12) * 2);
+		width: var(--spacing-12);
+		height: var(--spacing-12);
 		border: none;
 		border-radius: var(--border-radius-full);
 		display: flex;
