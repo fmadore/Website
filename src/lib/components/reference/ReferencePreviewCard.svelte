@@ -6,6 +6,7 @@
 	import type { Publication, Communication } from '$lib/types';
 	import { scale } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
+	import Button from '$lib/components/atoms/Button.svelte';
 
 	let {
 		item,
@@ -156,7 +157,20 @@
 				{#if item.authors && item.authors.length > 0}
 					<p class="card-authors">{item.authors.join(', ')}</p>
 				{/if}
-				<p class="card-date">{item.date || getYear(item)}</p>
+				
+				<!-- Using Button component for date badge -->
+				<div class="card-date-container">
+					<Button
+						variant="outline-primary"
+						size="sm"
+						glass={true}
+						additionalClasses="card-date-badge"
+						disabled={true}
+					>
+						{item.date || getYear(item)}
+					</Button>
+				</div>
+
 				{#if itemType === 'publication'}
 					{#if item.type === 'article' && 'journal' in item && item.journal}
 						<p class="card-meta"><em>{item.journal}</em></p>
@@ -182,9 +196,20 @@
 					{/if}
 				{/if}
 
-				<div class="view-more-hint">
-					<span class="hint-text">View full details</span>
-					<span class="hint-arrow">→</span>
+				<!-- Using Button component for view-more-hint -->
+				<div class="view-more-container">
+					<Button
+						variant="outline-primary"
+						size="sm"
+						glass={true}
+						additionalClasses="view-more-hint"
+						disabled={true}
+					>
+						{#snippet children()}
+							<span class="hint-text">View full details</span>
+							<span class="hint-arrow">→</span>
+						{/snippet}
+					</Button>
 				</div>
 			</div>
 		</div>
@@ -339,30 +364,61 @@
 		);
 	}
 
-	.view-more-hint {
-		margin-top: var(--spacing-3);
+	/* Container for date badge */
+	.card-date-container {
+		margin-bottom: var(--spacing-2);
 		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: var(--spacing-2) var(--spacing-3);
-		border-radius: var(--border-radius-md);
-		color: var(--color-primary);
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-medium);
-		opacity: 0;
-		transform: translateY(var(--spacing-2));
+		justify-content: flex-start;
+	}
+
+	/* Custom styling for date badge button */
+	:global(.card-date-badge) {
+		font-size: var(--font-size-xs) !important;
+		font-weight: var(--font-weight-semibold) !important;
+		padding: var(--spacing-1) var(--spacing-2) !important;
+		border-radius: var(--border-radius) !important;
+		cursor: default !important;
+		pointer-events: none !important;
 		
-		/* Glassmorphism for hint using global values */
-		backdrop-filter: blur(4px);
-		-webkit-backdrop-filter: blur(4px);
+		/* Enhanced glassmorphism for date badge */
 		background: linear-gradient(
 			135deg,
 			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
 			rgba(var(--color-primary-rgb), var(--opacity-low)) 100%
-		);
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium));
-		
+		) !important;
+		color: var(--color-primary) !important;
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium)) !important;
+	}
+
+	/* Container for view-more hint */
+	.view-more-container {
+		margin-top: var(--spacing-3);
+		opacity: 0;
+		transform: translateY(var(--spacing-2));
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
+	}
+
+	/* Custom styling for view-more hint button */
+	:global(.view-more-hint) {
+		width: 100% !important;
+		display: flex !important;
+		align-items: center !important;
+		justify-content: space-between !important;
+		font-size: var(--font-size-xs) !important;
+		font-weight: var(--font-weight-medium) !important;
+		padding: var(--spacing-2) var(--spacing-3) !important;
+		border-radius: var(--border-radius-md) !important;
+		cursor: default !important;
+		pointer-events: none !important;
+		
+		/* Enhanced glassmorphism for hint */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 100%
+		) !important;
+		color: var(--color-primary) !important;
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium)) !important;
 	}
 
 	.hint-text {
@@ -391,8 +447,8 @@
 		transition: all var(--anim-duration-base) var(--anim-ease-out);
 	}
 
-	.card-link:hover .view-more-hint,
-	.card-link:focus .view-more-hint {
+	.card-link:hover .view-more-container,
+	.card-link:focus .view-more-container {
 		opacity: 1;
 		transform: translateY(0);
 	}
@@ -455,25 +511,7 @@
 		font-weight: var(--font-weight-medium);
 	}
 
-	.card-date {
-		margin-bottom: var(--spacing-2);
-		color: var(--color-primary);
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-semibold);
-		display: inline-block;
-		padding: var(--spacing-1) var(--spacing-2);
-		border-radius: var(--border-radius);
-		
-		/* Glassmorphism for date badge using global values */
-		backdrop-filter: blur(4px);
-		-webkit-backdrop-filter: blur(4px);
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 100%
-		);
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium));
-	}
+
 
 	.card-meta {
 		margin-bottom: var(--spacing-1);
