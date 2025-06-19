@@ -210,60 +210,9 @@
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
 	}
 
-	.item-reference::before {
-		content: '';
-		position: absolute;
-		inset: calc(-1 * var(--spacing-1));
-		border-radius: var(--border-radius-md);
-		opacity: 0;
-		z-index: -1;
-		
-		/* Minimal glassmorphism for subtle hover effect */
-		backdrop-filter: blur(2px);
-		-webkit-backdrop-filter: blur(2px);
-		
-		/* Very subtle background using global opacity values */
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
-		);
-		
-		/* Minimal border using global values */
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium));
-		
-		/* Very subtle shadow */
-		box-shadow: var(--shadow-sm);
-		
-		transition: opacity var(--anim-duration-base) var(--anim-ease-out);
-	}
-
-	.item-reference:hover::before,
-	.item-reference:focus::before {
-		opacity: 1;
-	}
-
 	.item-reference.preview-visible {
+		/* Only apply a subtle lift when preview is visible, no background effects */
 		transform: var(--transform-lift-sm);
-	}
-
-	.item-reference.preview-visible::before {
-		opacity: 1;
-		
-		/* Enhanced gradient for active state using global values */
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
-		);
-		
-		/* Enhanced border using global values */
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
-		
-		/* Enhanced shadow using global values */
-		box-shadow: var(--shadow-md);
 	}
 
 	.position-below {
@@ -296,34 +245,7 @@
 		outline-offset: var(--border-width-medium);
 	}
 
-	/* Dark mode using global values */
-	:global(html.dark) .item-reference::before {
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
-		);
-		
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
-		box-shadow: var(--shadow-sm);
-	}
-
-	:global(html.dark) .item-reference.preview-visible::before {
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-medium)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
-		);
-		
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
-		
-		box-shadow: 
-			var(--shadow-md),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-low));
-	}
-
+	/* Dark mode for error state only */
 	:global(html.dark) .item-reference-error {
 		background: linear-gradient(
 			135deg,
@@ -345,10 +267,6 @@
 			transition: none;
 		}
 		
-		.item-reference::before {
-			transition: none;
-		}
-		
 		.item-reference.preview-visible {
 			transform: none;
 		}
@@ -356,10 +274,6 @@
 
 	/* High contrast support */
 	@media (prefers-contrast: high) {
-		.item-reference::before {
-			border-width: var(--border-width-medium);
-		}
-		
 		.item-reference-error {
 			border-width: var(--border-width-medium);
 		}
@@ -367,14 +281,6 @@
 
 	/* Backdrop filter fallback */
 	@supports not (backdrop-filter: blur(4px)) {
-		.item-reference::before {
-			background: rgba(var(--color-white-rgb), var(--glass-opacity-fallback-light));
-		}
-		
-		:global(html.dark) .item-reference::before {
-			background: rgba(var(--color-black-rgb), 0.7);
-		}
-		
 		.item-reference-error {
 			background: rgba(239, 68, 68, var(--opacity-low));
 		}
