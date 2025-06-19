@@ -197,9 +197,9 @@
 						<TagList
 							tags={publication.tags}
 							baseUrl="/publications?tag="
-							sectionTitle=""
-							sectionClass=""
-							listClass="tag-list"
+							showTitle={false}
+							buttonVariant="outline-secondary"
+							buttonSize="sm"
 						/>
 					</div>
 				{/if}

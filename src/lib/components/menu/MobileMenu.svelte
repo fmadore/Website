@@ -107,8 +107,6 @@
 		box-shadow: 0 2px 8px rgba(31, 38, 135, 0.1);
 	}
 
-
-
 	.mobile-close-line {
 		width: 20px;
 		height: 2px;
@@ -163,8 +161,6 @@
 		position: relative;
 		justify-self: end;
 	}
-
-
 
 	:global(.mobile-nav-list) {
 		list-style: none;
@@ -278,7 +274,7 @@
 	:global(.mobile-dropdown-link) {
 		display: block;
 		padding: var(--spacing-3) var(--spacing-4);
-		color: var(--color-text-secondary);
+		color: var(--color-text-light);
 		text-decoration: none;
 		font-size: var(--font-size-base);
 		font-weight: 500;
@@ -361,7 +357,7 @@
 	/* Touch device optimizations */
 	@media (hover: none) {
 		:global(.mobile-dropdown-link:hover) {
-			color: var(--color-text-secondary);
+			color: var(--color-text-light);
 			transform: none;
 		}
 

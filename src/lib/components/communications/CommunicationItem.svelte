@@ -101,13 +101,15 @@
 				{/if}
 
 				{#if communication?.tags && communication.tags.length > 0}
-					<TagList
-						tags={communication.tags}
-						baseUrl="/conference-activity?tag="
-						sectionTitle=""
-						sectionClass="mt-3"
-						listClass="flex flex-wrap gap-2"
-					/>
+					<div class="communication-tags">
+						<TagList
+							tags={communication.tags}
+							baseUrl="/conference-activity?tag="
+							showTitle={false}
+							buttonVariant="outline-secondary"
+							buttonSize="sm"
+						/>
+					</div>
 				{/if}
 
 				{#if communication?.additionalUrls && communication.additionalUrls.length > 0}
@@ -184,5 +186,9 @@
 		object-fit: cover;
 		border-radius: 4px;
 		box-shadow: var(--shadow-md);
+	}
+
+	.communication-tags {
+		margin-top: var(--spacing-3);
 	}
 </style>

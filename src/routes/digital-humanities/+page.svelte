@@ -52,7 +52,7 @@
 	{#if selectedSkill}
 		<p class="text-lg mb-6">
 			Showing projects with skill: <span class="font-semibold text-primary">{selectedSkill}</span>
-			<a href="{base}/digital-humanities" class="text-sm ml-2 text-secondary hover:underline"
+			<a href="{base}/digital-humanities" class="text-sm ml-2 text-light hover:text-primary hover:underline"
 				>(Clear filter)</a
 			>
 		</p>
@@ -87,15 +87,16 @@
 					<div class="dh-card-extras">
 						<!-- Skills section -->
 						{#if project.skills && project.skills.length > 0}
-							<TagList 
-								tags={project.skills} 
-								baseUrl="/digital-humanities?skill=" 
-								sectionTitle="Skills"
-								titleClass="text-sm font-medium mb-2 text-text-secondary"
-								sectionClass="mb-2"
-								buttonVariant="outline-primary"
-								buttonSize="sm"
-							/>
+							<div class="skills-section">
+								<TagList 
+									tags={project.skills} 
+									baseUrl="/digital-humanities?skill=" 
+									sectionTitle="Skills"
+									showTitle={true}
+									buttonVariant="outline-secondary"
+									buttonSize="sm"
+								/>
+							</div>
 						{/if}
 					</div>
 				{/snippet}
@@ -148,5 +149,17 @@
 		font-size: var(--font-size-sm);
 		margin-top: var(--spacing-2);
 		line-height: var(--line-height-snug);
+	}
+
+	.skills-section {
+		margin-bottom: var(--spacing-2);
+	}
+
+	/* Customize the skills tag list title */
+	.skills-section :global(.tag-list-title) {
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-medium);
+		color: var(--color-secondary);
+		margin-bottom: var(--spacing-2);
 	}
 </style>

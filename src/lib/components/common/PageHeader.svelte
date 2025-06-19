@@ -62,7 +62,7 @@
 		{/if}
 
 		{#if editors}
-			<div class="editors text-text-secondary mb-3" use:scrollAnimate={{ delay: 300, animationClass: 'fade-in-up' }}>
+			<div class="editors text-secondary mb-3" use:scrollAnimate={{ delay: 300, animationClass: 'fade-in-up' }}>
 				Edited by {formatEditors(editors)}
 			</div>
 		{/if}

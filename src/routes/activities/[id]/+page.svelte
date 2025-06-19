@@ -250,8 +250,8 @@
 		{/if}
 
 		{#if formattedTags && formattedTags.length > 0}
-			<div use:scrollAnimate={{ delay: DELAY_STEP * 8, animationClass: 'fade-in-up' }}>
-				<TagList tags={formattedTags} baseUrl="/activities?tag=" sectionClass="mt-4 mb-6" />
+			<div class="activity-tags-section" use:scrollAnimate={{ delay: DELAY_STEP * 8, animationClass: 'fade-in-up' }}>
+				<TagList tags={formattedTags} baseUrl="/activities?tag=" />
 			</div>
 		{/if}
 	{/if}
@@ -328,4 +328,9 @@
 	}
 
 	/* Dark mode adjustments are handled automatically through CSS variables */
+
+	.activity-tags-section {
+		margin-top: var(--spacing-4);
+		margin-bottom: var(--spacing-6);
+	}
 </style>

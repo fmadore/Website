@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { Activity } from '$lib/stores/activities';
 	import Card from '$lib/components/common/Card.svelte';
+	import Button from '$lib/components/atoms/Button.svelte';
+	import TagList from '$lib/components/molecules/TagList.svelte';
 	import { base } from '$app/paths';
 
 	let { activity }: { activity: Activity } = $props();
@@ -15,49 +17,51 @@
 
 <Card title={activity.title} {imageUrl} {imageAlt} linkUrl={activityLink} target="_self">
 	{#snippet subtitle()}
-		<div class="activity-meta text-sm text-gray-500 mb-2">
+		<div class="activity-meta">
 			<span>{activity.date}</span>
 		</div>
 	{/snippet}
 
 	<!-- Default slot for description -->
-	{#snippet children()}<p class="activity-description text-sm">
+	{#snippet children()}<p class="activity-description">
 			{activity.description}
 		</p>{/snippet}
 
 	<!-- Details slot for tags -->
 	{#snippet details()}
-		{#if activity.tags && activity.tags.length > 0}
-			<div class="activity-tags flex flex-wrap gap-1 mt-2">
-				{#each activity.tags as tag}
-					<span class="tag bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full text-xs">
-						{tag}
-					</span>
-				{/each}
-			</div>
-		{/if}
+		<TagList 
+			tags={activity.tags} 
+			showTitle={false}
+			buttonVariant="ghost"
+			buttonSize="sm"
+			baseUrl="/activities?tag="
+		/>
 	{/snippet}
 
 	<!-- Action slot for the link -->
 	{#snippet action()}
-		<a href={activityLink} class="text-sm font-medium"> Read more → </a>
+		<Button
+			href={activityLink}
+			variant="outline-primary"
+			size="sm"
+			glass={true}
+			ariaLabel="Read more about {activity.title}"
+		>
+			Read more →
+		</Button>
 	{/snippet}
 </Card>
 
 <style>
-	/* Use theme variables for tags if needed, 
-     but Card component styles should handle most things */
-	.tag {
-		background-color: var(--color-border);
-		color: var(--color-text);
-		font-weight: 500;
-	}
 	.activity-meta {
 		color: var(--color-text-light);
+		font-size: var(--font-size-sm);
+		margin-bottom: var(--spacing-2);
 	}
-	/* Removed empty .activity-description rule */
 
-	/* Removed empty a rule */
-
-	/* Removed empty a:hover rule */
+	.activity-description {
+		font-size: var(--font-size-sm);
+		line-height: var(--line-height-normal);
+		color: var(--color-text);
+	}
 </style>

@@ -134,7 +134,7 @@
 
 	.teaching-card-specific-details p {
 		font-size: var(--font-size-sm);
-		color: var(--color-text-secondary);
+		color: var(--color-text-light);
 		margin-bottom: var(--spacing-1);
 	}
 	.teaching-card-specific-details .label {

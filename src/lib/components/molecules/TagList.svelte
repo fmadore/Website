@@ -6,19 +6,15 @@
 		tags = [],
 		baseUrl = '/search?tag=', // Default base URL, can be overridden
 		sectionTitle = 'Tags',
-		titleClass = 'text-lg font-semibold mb-2 text-text-emphasis',
-		listClass = 'flex flex-wrap gap-2',
-		sectionClass = 'mb-6',
+		showTitle = true,
 		buttonVariant = 'outline-secondary',
 		buttonSize = 'sm'
 	}: {
 		tags?: string[] | undefined | null;
 		baseUrl?: string;
 		sectionTitle?: string;
-		titleClass?: string;
-		listClass?: string;
-		sectionClass?: string;
-		buttonVariant?: 'primary' | 'secondary' | 'outline-primary' | 'outline-secondary';
+		showTitle?: boolean;
+		buttonVariant?: 'primary' | 'secondary' | 'outline-primary' | 'outline-secondary' | 'ghost' | 'danger';
 		buttonSize?: 'sm' | 'base' | 'lg';
 	} = $props();
 
@@ -26,19 +22,20 @@
 </script>
 
 {#if visibleTags.length > 0}
-	<section class={sectionClass}>
-		<h2 class={titleClass}>{sectionTitle}</h2>
-		<div class={listClass}>
+	<section class="tag-list-section">
+		{#if showTitle}
+			<h2 class="tag-list-title">{sectionTitle}</h2>
+		{/if}
+		<div class="tag-list">
 			{#each visibleTags as tag}
 				<Button 
 					href="{base}{baseUrl}{encodeURIComponent(tag)}"
 					variant={buttonVariant}
 					size={buttonSize}
-					additionalClasses="glass-button tag-button"
+					glass={true}
+					additionalClasses="tag-button"
 				>
-					{#snippet children()}
-						{tag}
-					{/snippet}
+					{tag}
 				</Button>
 			{/each}
 		</div>
@@ -46,23 +43,35 @@
 {/if}
 
 <style>
+	.tag-list-section {
+		margin-bottom: var(--spacing-6);
+	}
+
+	.tag-list-title {
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-lg);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text-emphasis);
+		margin-bottom: var(--spacing-2);
+		line-height: var(--line-height-tight);
+	}
+
+	.tag-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--spacing-2);
+	}
+
 	/* Enhanced styling for tag buttons with glassmorphism */
 	:global(.tag-button) {
 		font-weight: var(--font-weight-medium);
 		letter-spacing: var(--letter-spacing-wide);
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
 		border-radius: var(--border-radius-full) !important;
 	}
 
 	:global(.tag-button:hover) {
 		transform: var(--transform-lift-sm);
-		box-shadow: 0 8px 25px 0 rgba(var(--color-primary-rgb), var(--opacity-medium)) !important;
-	}
-
-	/* Section title styling using CSS variables */
-	h2 {
-		font-family: var(--font-family-serif);
-		color: var(--color-text-emphasis);
+		box-shadow: 0 var(--spacing-2) var(--spacing-6) 0 rgba(var(--color-primary-rgb), var(--opacity-medium)) !important;
 	}
 
 	/* Responsive adjustments */
