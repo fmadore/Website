@@ -107,17 +107,34 @@ Reusable components that can be used across the site.
 
 ### Buttons (`components/buttons.css`)
 
-Comprehensive button system:
+Modern, comprehensive button system with enhanced accessibility and user experience:
 
-- `.btn`: Base button with modern styling and transitions
-- **Color variants**: `.btn-primary`, `.btn-secondary`
-- **Outline variants**: `.btn-outline-primary`, `.btn-outline-secondary`
-- **Glass variants**: `.btn-glass`, `.btn-glass-primary` with glassmorphism effects
-- **Size variants**: `.btn-sm`, `.btn-lg`
-- **Layout variants**: `.btn-block`, `.btn-icon`
-- **States**: Hover, focus, active, disabled
-- **Custom controls**: `.control-button-rounded` with specific styling
+- **Base button**: `.btn` with modern styling, flexbox layout, and smooth transitions
+- **Color variants**: 
+  - `.btn-primary`: Academic blue with gradient
+  - `.btn-secondary`: Neutral with subtle background
+  - `.btn-ghost`: Minimal style for tertiary actions
+  - `.btn-danger`: Red variant for destructive actions
+- **Outline variants**: `.btn-outline-primary`, `.btn-outline-secondary` with transparent backgrounds
+- **Glass variants**: `.btn-glass` with glassmorphism effects, can be combined with other variants
+- **Size variants**: `.btn-sm`, `.btn-lg` with proportional spacing
+- **Layout variants**: 
+  - `.btn-block`: Full width
+  - `.btn-icon-only`: Square buttons for icons with proper sizing
+  - `.btn-with-icon`: Automatically applied when icons are present
+- **States**: 
+  - Hover effects with subtle lift animations
+  - Focus-visible with custom outline
+  - Active state with scale effect
+  - Loading state with spinner (`.btn-loading`)
+  - Disabled state with reduced opacity
+- **Accessibility features**:
+  - Proper ARIA attributes support
+  - High contrast mode adjustments
+  - Reduced motion support
+  - Touch-friendly sizing
 - **Dark mode support**: Automatic adaptations for all button variants
+- **Legacy compatibility**: Maintains support for existing `.control-button-rounded` class
 
 ### Cards (`components/cards.css`)
 

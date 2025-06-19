@@ -12,6 +12,9 @@
 	--color-highlight-rgb: 214, 158, 46; /* RGB for highlight */
 	--color-success: #48bb78; /* Balanced green */
 	--color-success-rgb: 72, 187, 120; /* RGB for success */
+	--color-danger: #dc2626; /* Red for destructive actions */
+	--color-danger-rgb: 220, 38, 38; /* RGB for danger */
+	--color-danger-dark: #b91c1c; /* Darker red for hover states */
 	--color-background: #ffffff;
 	--color-text: #2d3748;
 	--color-text-light: #4a5568;
@@ -316,6 +319,9 @@ html.dark {
 	--color-highlight-rgb: 251, 191, 36; /* RGB for highlight dark mode */
 	--color-success: #68d391; /* Soft green for dark mode */
 	--color-success-rgb: 104, 211, 145; /* RGB for success in dark mode */
+	--color-danger: #f87171; /* Softer red for dark mode */
+	--color-danger-rgb: 248, 113, 113; /* RGB for danger in dark mode */
+	--color-danger-dark: #ef4444; /* Darker red for hover states in dark mode */
 	--color-background: #1a202c; /* Rich dark background */
 	--color-text: #e2e8f0; /* Light gray text */
 	--color-text-light: #cbd5e0; /* Softer light text */
