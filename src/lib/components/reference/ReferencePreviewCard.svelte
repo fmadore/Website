@@ -165,7 +165,6 @@
 						size="sm"
 						glass={true}
 						additionalClasses="card-date-badge"
-						disabled={true}
 					>
 						{item.date || getYear(item)}
 					</Button>
@@ -203,12 +202,9 @@
 						size="sm"
 						glass={true}
 						additionalClasses="view-more-hint"
-						disabled={true}
 					>
-						{#snippet children()}
-							<span class="hint-text">View full details</span>
-							<span class="hint-arrow">→</span>
-						{/snippet}
+						<span class="hint-text">View full details</span>
+						<span class="hint-arrow">→</span>
 					</Button>
 				</div>
 			</div>
