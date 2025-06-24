@@ -19,6 +19,9 @@
 	let labelText = $derived((isToggled ? 'Hide' : 'Show') + ' ' + baseText);
 	let ariaTitle = $derived(isToggled ? `Hide ${baseText}` : `Show ${baseText}`);
 
+	// Dynamically choose variant based on toggle state
+	let buttonVariant = $derived<'primary' | 'outline-primary'>(isToggled ? 'primary' : 'outline-primary');
+
 	// Compute additional classes based on glass prop and toggle state
 	let additionalClasses = $derived(
 		glass 
@@ -28,7 +31,7 @@
 </script>
 
 <Button
-	variant="outline-primary"
+	variant={buttonVariant}
 	size="sm"
 	onclick={handleClick}
 	ariaLabel={ariaTitle}
@@ -69,19 +72,15 @@
 		transition-duration: var(--transition-duration-75);
 	}
 
-	/* Active state styling */
+	/* Active state styling - now works with primary variant */
 	:global(.toggle-button-active) {
-		background-color: var(--color-primary) !important;
-		color: var(--color-white) !important;
-		border-color: var(--color-primary) !important;
+		/* Additional styling for active state if needed */
 		box-shadow: 
 			var(--shadow-md),
 			0 0 0 var(--border-width-thin) rgba(var(--color-primary-rgb), var(--opacity-medium));
 	}
 
 	:global(.toggle-button-active:hover) {
-		background-color: var(--color-primary-dark) !important;
-		border-color: var(--color-primary-dark) !important;
 		box-shadow: 
 			var(--shadow-lg),
 			0 0 0 var(--border-width-medium) rgba(var(--color-primary-rgb), var(--opacity-medium-high));
@@ -110,7 +109,7 @@
 		);
 	}
 
-	/* Glassmorphism active state */
+	/* Glassmorphism active state - enhanced for primary variant */
 	:global(.toggle-button-active.glass-button) {
 		background-image: linear-gradient(
 			135deg,
@@ -144,17 +143,6 @@
 			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
 			rgba(var(--color-highlight-rgb), var(--opacity-low)) 100%
 		);
-	}
-
-	:global(html.dark .toggle-button-active) {
-		background-color: var(--color-primary) !important;
-		border-color: var(--color-primary) !important;
-		color: var(--color-background) !important;
-	}
-
-	:global(html.dark .toggle-button-active:hover) {
-		background-color: var(--color-primary-dark) !important;
-		border-color: var(--color-primary-dark) !important;
 	}
 
 	/* Respect user motion preferences */

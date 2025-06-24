@@ -1,6 +1,6 @@
 # ToggleButton Component
 
-A reusable toggle button component that shows/hides content with visual state feedback and accessibility features. The component now features enhanced glassmorphism styling and better integration with the design system.
+A reusable toggle button component that shows/hides content with visual state feedback and accessibility features. The component features enhanced glassmorphism styling, dynamic button variants, and seamless integration with the design system.
 
 ## Import
 
@@ -29,8 +29,9 @@ import ToggleButton from '$lib/components/common/ToggleButton.svelte';
 
 | Prop        | Type      | Default    | Description                                       |
 | ----------- | --------- | ---------- | ------------------------------------------------- |
-| `isToggled` | `boolean` | `false`    | Current toggle state                              |
-| `baseText`  | `string`  | `'Toggle'` | Base text for the action (e.g., "Map", "Details") |
+| `isToggled` | `boolean` | `false`    | Whether the button is in the toggled (active) state |
+| `baseText`  | `string`  | `'Toggle'` | The base text for the toggle action (e.g., "Map", "Details") |
+| `onclick`   | `() => void` | `undefined` | Callback function called when button is clicked |
 | `glass`     | `boolean` | `true`     | Enable glassmorphism effect for enhanced visual appeal |
 
 ## Events
@@ -87,14 +88,12 @@ This component uses the common Button atom component with an "outline-primary" v
 
 ## Features
 
-- **Visual State Feedback**: Clear indication of toggled/untoggled states
-- **Dynamic Labels**: Automatically generates "Show/Hide" labels based on state
-- **Accessibility**: Proper ARIA labels and titles that describe current action
-- **Enhanced Glassmorphism**: Modern glass effect with backdrop blur and subtle gradients
-- **CSS Variables Integration**: Uses global design tokens for consistent styling
-- **Active State Styling**: Distinct visual appearance when toggled
-- **Dark Mode Support**: Automatic adaptation to dark theme
-- **Reduced Motion Support**: Respects user preferences for reduced motion
+- **Dynamic Button Variants**: Automatically switches between `outline-primary` (inactive) and `primary` (active) variants
+- **Visual State Feedback**: Clear indication of toggled/untoggled state with proper color contrast
+- **State-Based Text**: Automatically shows "Show [baseText]" or "Hide [baseText]" based on toggle state
+- **Enhanced Glassmorphism**: Integrates seamlessly with the design system's glass effects
+- **Accessibility**: Proper ARIA labels, keyboard navigation, and screen reader support
+- **Consistent Styling**: Uses CSS variables and follows the established design patterns
 
 ## Styling
 
