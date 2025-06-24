@@ -1,6 +1,6 @@
 # Sorter Component
 
-A button component that allows users to toggle between different sorting options for lists of items.
+A reusable sorting button component that cycles through different sort options with visual feedback and accessibility features. The component now features enhanced glassmorphism styling and better integration with the design system.
 
 ## Import
 
@@ -60,6 +60,18 @@ import Sorter from '$lib/components/common/Sorter.svelte';
 | `activeSort`     | `'date' \| 'title' \| 'citations'`               | `'date'`                           | Currently active sort method                   |
 | `onsortchange`   | `(data: { sortBy: string }) => void`             | `undefined`                        | Callback fired when sort option changes        |
 | `availableSorts` | `('date' \| 'title' \| 'citations')[]`           | `['date', 'title', 'citations']`   | Array of available sort options to cycle through |
+| `glass`          | `boolean`                                         | `true`                             | Enable glassmorphism effect for enhanced visual appeal |
+
+## Features
+
+- **Configurable Sort Options**: Specify which sort options are available using the `availableSorts` prop
+- **Cycling Logic**: Automatically cycles through only the available sort options
+- **Visual Feedback**: Shows appropriate icons and labels for each sort state
+- **Accessibility**: Proper ARIA labels and titles that describe current state and next action
+- **Enhanced Glassmorphism**: Modern glass effect with backdrop blur and subtle gradients
+- **CSS Variables Integration**: Uses global design tokens for consistent styling
+- **Dark Mode Support**: Automatic adaptation to dark theme
+- **Reduced Motion Support**: Respects user preferences for reduced motion
 
 ## Events
 
@@ -125,3 +137,65 @@ You can define any sequence of available sorts:
 	</div>
 </div>
 ```
+
+## Sort States
+
+The component displays different icons and labels based on the current sort:
+
+- **Date**: `lucide:arrow-down-wide-narrow` icon with "Sorted by Date" label
+- **Title**: `lucide:arrow-down-a-z` icon with "Sorted A-Z" label  
+- **Citations**: `lucide:trending-up` icon with "Sorted by Citations" label
+
+## Styling
+
+The component uses several CSS classes for enhanced styling:
+
+### Primary Classes
+- `.sorter-button` - Base styling with CSS variables integration
+- `.glass-button` - Glassmorphism effect (when `glass={true}`)
+
+### Features
+- **CSS Variables**: Uses design tokens like `--border-radius-lg`, `--shadow-sm`, `--transition-duration-200`
+- **Glassmorphism**: Backdrop blur with `--glass-blur-amount` and subtle gradients
+- **Hover Effects**: Transform lift with `--transform-lift-sm` and enhanced shadows
+- **Active States**: Scale transform with `--scale-95` for press feedback
+- **Dark Mode**: Automatic color scheme adaptation
+- **Accessibility**: Respects `prefers-reduced-motion` setting
+
+## Integration with Pages
+
+### Publications Page
+Uses all three sort options since publications have citation data:
+```svelte
+<Sorter 
+	activeSort={activeSort}
+	onsortchange={handleSortChange}
+	availableSorts={['date', 'title', 'citations']}
+/>
+```
+
+### Conference Activity Page  
+Uses only date and title since communications don't have citation data:
+```svelte
+<Sorter 
+	activeSort={activeSort}
+	onsortchange={handleSortChange}
+	availableSorts={['date', 'title']}
+/>
+```
+
+## Accessibility Features
+
+- **ARIA Labels**: Dynamic labels that describe current state and next action
+- **Keyboard Navigation**: Full keyboard support through Button component
+- **Screen Reader Support**: Clear descriptions of sorting state changes
+- **Focus Management**: Visible focus indicators with proper contrast
+- **Reduced Motion**: Animations disabled when user prefers reduced motion
+
+## Technical Notes
+
+- Built on top of the `Button` component for consistent styling and behavior
+- Uses Svelte 5 syntax with `$props()` and `$derived()` 
+- Integrates with the global CSS design system
+- Supports both light and dark themes
+- Optimized for performance with efficient reactivity

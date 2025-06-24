@@ -1,6 +1,6 @@
 # ToggleButton Component
 
-A button component that toggles between two states (e.g., show/hide) with appropriate text and icon.
+A reusable toggle button component that shows/hides content with visual state feedback and accessibility features. The component now features enhanced glassmorphism styling and better integration with the design system.
 
 ## Import
 
@@ -31,6 +31,7 @@ import ToggleButton from '$lib/components/common/ToggleButton.svelte';
 | ----------- | --------- | ---------- | ------------------------------------------------- |
 | `isToggled` | `boolean` | `false`    | Current toggle state                              |
 | `baseText`  | `string`  | `'Toggle'` | Base text for the action (e.g., "Map", "Details") |
+| `glass`     | `boolean` | `true`     | Enable glassmorphism effect for enhanced visual appeal |
 
 ## Events
 
@@ -83,3 +84,123 @@ This component uses the common Button atom component with an "outline-primary" v
 
 <ToggleButton isToggled={$mapVisible} baseText="Map View" on:toggle={toggleMap} />
 ```
+
+## Features
+
+- **Visual State Feedback**: Clear indication of toggled/untoggled states
+- **Dynamic Labels**: Automatically generates "Show/Hide" labels based on state
+- **Accessibility**: Proper ARIA labels and titles that describe current action
+- **Enhanced Glassmorphism**: Modern glass effect with backdrop blur and subtle gradients
+- **CSS Variables Integration**: Uses global design tokens for consistent styling
+- **Active State Styling**: Distinct visual appearance when toggled
+- **Dark Mode Support**: Automatic adaptation to dark theme
+- **Reduced Motion Support**: Respects user preferences for reduced motion
+
+## Styling
+
+The component uses several CSS classes for enhanced styling:
+
+### Primary Classes
+- `.toggle-button` - Base styling with CSS variables integration
+- `.toggle-button-active` - Active state styling when toggled
+- `.glass-button` - Glassmorphism effect (when `glass={true}`)
+
+### Features
+- **CSS Variables**: Uses design tokens like `--border-radius-lg`, `--shadow-sm`, `--transition-duration-200`
+- **Glassmorphism**: Backdrop blur with `--glass-blur-amount` and subtle gradients
+- **Hover Effects**: Transform lift with `--transform-lift-sm` and enhanced shadows
+- **Active States**: Scale transform with `--scale-95` for press feedback
+- **State Transitions**: Smooth transitions between toggled/untoggled states
+- **Dark Mode**: Automatic color scheme adaptation
+- **Accessibility**: Respects `prefers-reduced-motion` setting
+
+## Visual Design
+
+### Untoggled State
+- Outline primary button style
+- Glassmorphism background with subtle gradient
+- Icon: `lucide:map` (configurable in future versions)
+- Text: "Show {baseText}"
+
+### Toggled State
+- Filled primary button style
+- Solid background with gradient overlay
+- Enhanced shadow and glow effect
+- Text: "Hide {baseText}"
+
+### Hover Effects
+- Subtle lift transform
+- Enhanced shadow depth
+- Gradient intensity increase
+- Smooth transitions
+
+## Accessibility Features
+
+- **ARIA Labels**: Dynamic labels that describe the current action
+- **Keyboard Navigation**: Full keyboard support through Button component
+- **Screen Reader Support**: Clear descriptions of toggle state changes
+- **Focus Management**: Visible focus indicators with proper contrast
+- **Semantic HTML**: Uses proper button semantics
+- **Reduced Motion**: Animations disabled when user prefers reduced motion
+
+## Integration Examples
+
+### Map Toggle
+```svelte
+<script>
+	let showMap = false;
+</script>
+
+<ToggleButton 
+	isToggled={showMap}
+	baseText="Map"
+	onclick={() => showMap = !showMap}
+/>
+```
+
+### Filter Panel Toggle
+```svelte
+<script>
+	let showFilters = false;
+</script>
+
+<ToggleButton 
+	isToggled={showFilters}
+	baseText="Filters"
+	onclick={() => showFilters = !showFilters}
+/>
+```
+
+### Details Section Toggle
+```svelte
+<script>
+	let showDetails = false;
+</script>
+
+<ToggleButton 
+	isToggled={showDetails}
+	baseText="Details"
+	onclick={() => showDetails = !showDetails}
+/>
+```
+
+## Technical Notes
+
+- Built on top of the `Button` component for consistent styling and behavior
+- Uses Svelte 5 syntax with `$props()` and `$derived()`
+- Integrates with the global CSS design system
+- Supports both light and dark themes
+- Optimized for performance with efficient reactivity
+- Future enhancement: Configurable icons
+
+## Comparison with Sorter
+
+While both components use the Button component, they serve different purposes:
+
+| Feature | ToggleButton | Sorter |
+|---------|--------------|--------|
+| Purpose | Show/hide content | Change sort order |
+| States | 2 (show/hide) | 3+ (different sorts) |
+| Behavior | Toggle on/off | Cycle through options |
+| Visual | Active/inactive | Current sort indicator |
+| Use Case | Content visibility | List ordering |
