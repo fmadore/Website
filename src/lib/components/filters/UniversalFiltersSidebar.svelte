@@ -231,11 +231,11 @@
 		);
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
-		border: 1px solid rgba(255, 255, 255, 0.2);
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
 		box-shadow: 
-			0 8px 32px 0 rgba(31, 38, 135, 0.15),
-			inset 0 1px 0 rgba(255, 255, 255, 0.2);
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+			0 8px 32px 0 rgba(31, 38, 135, var(--opacity-medium)),
+			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-medium));
+		transition: all var(--anim-duration-base) var(--anim-ease-base);
 	}
 
 	/* Hover effects for glassmorphism */
@@ -247,10 +247,10 @@
 			rgba(var(--color-highlight-rgb), 0.03) 50%,
 			rgba(var(--color-accent-rgb), 0.02) 100%
 		);
-		border-color: rgba(255, 255, 255, 0.3);
+		border-color: rgba(var(--color-white-rgb), var(--opacity-medium-high));
 		box-shadow: 
-			0 12px 40px 0 rgba(31, 38, 135, 0.2),
-			inset 0 1px 0 rgba(255, 255, 255, 0.3);
+			0 12px 40px 0 rgba(31, 38, 135, var(--opacity-medium)),
+			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-medium-high));
 	}
 
 	/* Mobile Toggle Button Styling Removed */
@@ -293,7 +293,7 @@
 		.filter-sections-wrapper {
 			display: block; /* Allow Svelte's #if to control visibility */
 			background: var(--color-surface);
-			border: 1px solid var(--color-border);
+			border: var(--border-width-thin) solid var(--color-border);
 			border-radius: var(--border-radius-md);
 			padding: var(--spacing-4);
 			margin-top: var(--spacing-4);
@@ -330,12 +330,12 @@
 			);
 			backdrop-filter: blur(10px);
 			-webkit-backdrop-filter: blur(10px);
-			border: 1px solid rgba(255, 255, 255, 0.2);
+			border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
 			border-radius: var(--border-radius-md);
 			padding: var(--spacing-4);
 			box-shadow: 
-				0 8px 32px 0 rgba(31, 38, 135, 0.15),
-				inset 0 1px 0 rgba(255, 255, 255, 0.2);
+				0 8px 32px 0 rgba(31, 38, 135, var(--opacity-medium)),
+				inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-medium));
 			margin-bottom: 0;
 		}
 		.sticky-top {
@@ -391,10 +391,10 @@
 			rgba(var(--color-highlight-rgb), 0.04) 50%,
 			rgba(var(--color-accent-rgb), 0.02) 100%
 		);
-		border: 1px solid rgba(255, 255, 255, 0.1);
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
 		box-shadow: 
-			0 8px 32px 0 rgba(0, 0, 0, 0.3),
-			inset 0 1px 0 rgba(255, 255, 255, 0.1);
+			0 8px 32px 0 rgba(var(--color-black-rgb), var(--opacity-medium-high)),
+			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-low));
 	}
 
 	:global(html.dark) .filter-sidebar:hover {
@@ -404,10 +404,10 @@
 			rgba(var(--color-highlight-rgb), 0.06) 50%,
 			rgba(var(--color-accent-rgb), 0.04) 100%
 		);
-		border-color: rgba(255, 255, 255, 0.15);
+		border-color: rgba(var(--color-white-rgb), var(--opacity-medium));
 		box-shadow: 
-			0 12px 40px 0 rgba(0, 0, 0, 0.4),
-			inset 0 1px 0 rgba(255, 255, 255, 0.15);
+			0 12px 40px 0 rgba(var(--color-black-rgb), var(--opacity-high)),
+			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-medium));
 	}
 
 	/* Dark mode mobile wrapper */
@@ -418,10 +418,10 @@
 			rgba(var(--color-highlight-rgb), 0.04) 50%,
 			rgba(var(--color-accent-rgb), 0.02) 100%
 		);
-		border: 1px solid rgba(255, 255, 255, 0.1);
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
 		box-shadow: 
-			0 8px 32px 0 rgba(0, 0, 0, 0.3),
-			inset 0 1px 0 rgba(255, 255, 255, 0.1);
+			0 8px 32px 0 rgba(var(--color-black-rgb), var(--opacity-medium-high)),
+			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-low));
 	}
 
 	/* Clear button styling removed */

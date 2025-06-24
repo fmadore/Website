@@ -268,7 +268,7 @@
 		margin: var(--spacing-3) 0;
 		padding: var(--spacing-3);
 		border-radius: var(--border-radius-md);
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all var(--anim-duration-base) var(--anim-ease-base);
 		
 		/* Glassmorphism styling matching filter sidebar - using global values */
 		background: rgba(var(--color-surface-rgb), var(--opacity-medium));
@@ -294,7 +294,7 @@
 		border-radius: var(--border-radius-sm);
 		transform: translateY(-50%);
 		cursor: pointer;
-		transition: background-color 0.2s ease;
+		transition: background-color var(--anim-duration-fast) var(--anim-ease-out);
 	}
 
 	.range-track:hover {
@@ -312,7 +312,7 @@
 		border-radius: var(--border-radius-sm);
 		pointer-events: none;
 		opacity: var(--opacity-high);
-		transition: opacity 0.2s ease;
+		transition: opacity var(--anim-duration-fast) var(--anim-ease-out);
 	}
 
 	.range-handle {
@@ -324,11 +324,11 @@
 			var(--color-accent) 0%, 
 			var(--color-highlight) 100%
 		);
-		border: var(--border-width-medium) solid var(--color-background);
+		border: var(--border-width-medium) solid var(--color-white);
 		border-radius: 50%;
 		transform: translate(-50%, -50%);
 		cursor: grab;
-		transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all var(--anim-duration-fast) var(--anim-ease-base);
 		z-index: 2;
 		touch-action: none;
 		box-shadow: var(--shadow-md);
@@ -358,7 +358,7 @@
 			0 0 0 var(--border-width-thick) rgba(var(--color-accent-rgb), var(--opacity-medium)),
 			var(--shadow-lg);
 		outline: none;
-		transform: translate(-50%, -50%) scale(1.1);
+		transform: translate(-50%, -50%) scale(var(--scale-110));
 	}
 
 	.range-handle.active {
@@ -366,7 +366,7 @@
 		box-shadow: 
 			0 0 0 var(--border-width-thick) rgba(var(--color-accent-rgb), var(--opacity-medium-high)),
 			var(--shadow-xl);
-		transform: translate(-50%, -50%) scale(1.15);
+		transform: translate(-50%, -50%) scale(var(--scale-125));
 	}
 
 	.range-float {
@@ -378,7 +378,7 @@
 			var(--color-accent) 0%, 
 			var(--color-highlight) 100%
 		);
-		color: var(--color-background);
+		color: var(--color-white);
 		padding: var(--spacing-1) var(--spacing-2);
 		border-radius: var(--border-radius-sm);
 		font-size: var(--font-size-xs);
@@ -386,8 +386,8 @@
 		white-space: nowrap;
 		pointer-events: none;
 		box-shadow: var(--shadow-md);
-		backdrop-filter: blur(8px);
-		-webkit-backdrop-filter: blur(8px);
+		backdrop-filter: blur(var(--glass-blur-amount));
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 	}
 
 	.range-float::after {
@@ -415,7 +415,7 @@
 		height: var(--spacing-2);
 		background-color: var(--color-text-muted);
 		transform: translateX(-50%);
-		transition: background-color 0.2s ease;
+		transition: background-color var(--anim-duration-fast) var(--anim-ease-out);
 	}
 
 	.pip.pip-large {
