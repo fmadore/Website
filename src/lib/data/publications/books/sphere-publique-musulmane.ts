@@ -175,6 +175,13 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 				"Des musulmans à l'église : l'invention d'une islamité de dialogue dans l'espace urbain de Dori, Burkina Faso",
 			source:
 				"In L'Islam et le Vivre ensemble en Afrique subsaharienne, edited by Hamadou Adama and Drissa Koné. Paris: L'Harmattan, 2019"
+		},
+		{
+			authors: ['Fatimata Sow'],
+			year: 2024,
+			title: 'Traitement de la question sécuritaire par la presse au Sahel : le cas sénégalais',
+			source: 'Master thesis, Université Laval',
+			url: 'https://hdl.handle.net/20.500.11794/144445'
 		}
 	]
 };

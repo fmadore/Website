@@ -106,6 +106,13 @@ export const madoreIslamPolitiqueOuagadougou2013: Publication = {
 				"L'influence du retour des scolaires burkinabè de la Côte d'Ivoire sur l'islam au Burkina Faso",
 			source: "Les Cahiers de l'ACAREF 3, no. 6 (2021): 321-41",
 			url: 'https://web.archive.org/web/20240623145336/https://revues.acaref.net/wp-content/uploads/sites/3/2021/06/18Aboubakar-Sidiki-Segda.pdf'
+		},
+		{
+			authors: ['Fatimata Sow'],
+			year: 2024,
+			title: 'Traitement de la question sécuritaire par la presse au Sahel : le cas sénégalais',
+			source: 'Master thesis, Université Laval',
+			url: 'https://hdl.handle.net/20.500.11794/144445'
 		}
 	]
 };

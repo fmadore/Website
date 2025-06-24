@@ -90,6 +90,13 @@ export const islamMediasSenatBurkinaFaso: Publication = {
 			title: 'Muslim Youth at a Crossroads: Media and Civic Engagement in Burkina Faso',
 			source: 'PhD dissertation, Ohio University, 2020',
 			url: 'http://rave.ohiolink.edu/etdc/view?acc_num=ohiou157547720848127'
+		},
+		{
+			authors: ['Fatimata Sow'],
+			year: 2024,
+			title: 'Traitement de la question sécuritaire par la presse au Sahel : le cas sénégalais',
+			source: 'Master thesis, Université Laval',
+			url: 'https://hdl.handle.net/20.500.11794/144445'
 		}
 	]
 };

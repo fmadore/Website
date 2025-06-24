@@ -173,6 +173,13 @@ export const salafismCoteDIvoire: Publication = {
 			source:
 				'In Islam and Muslim Life in West Africa: Practices, Trajectories and Influences, edited by Abdoulaye Sounaye and André Chappatte, 207-32. Berlin: De Gruyter, 2022',
 			url: 'https://doi.org/10.1515/9783110733204-010'
+		},
+		{
+			authors: ['Fatimata Sow'],
+			year: 2024,
+			title: 'Traitement de la question sécuritaire par la presse au Sahel : le cas sénégalais',
+			source: 'Master thesis, Université Laval',
+			url: 'https://hdl.handle.net/20.500.11794/144445'
 		}
 	]
 };

@@ -150,6 +150,13 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 				"Usages de Facebook et diffusion de la religion catholique en Côte d'Ivoire : une étude de la communauté Sacerdoce royal",
 			source: 'Forum de la Communication et des Arts, no. 1 (2022): 14-33',
 			url: 'https://web.archive.org/web/20240308150352/https://assets.nicepagecdn.com/c2c5a27a/2881383/files/0002NDRIOBAp14-33.pdf'
+		},
+		{
+			authors: ['Fatimata Sow'],
+			year: 2024,
+			title: 'Traitement de la question sécuritaire par la presse au Sahel : le cas sénégalais',
+			source: 'Master thesis, Université Laval',
+			url: 'https://hdl.handle.net/20.500.11794/144445'
 		}
 	]
 };

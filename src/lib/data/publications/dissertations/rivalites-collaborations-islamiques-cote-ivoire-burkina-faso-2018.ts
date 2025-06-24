@@ -123,6 +123,13 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
 			source:
 				'In Faith in the Balance: Regulating Religious Affairs in Africa, edited by Haim Malka, 111-36. Lanham, MD: Rowman & Littlefield Publishers / Center for Strategic & International Studies, 2019',
 			url: 'https://www.csis.org/analysis/burkina-faso-state-and-religious-authority-turbulent-times'
+		},
+		{
+			authors: ['Fatimata Sow'],
+			year: 2024,
+			title: 'Traitement de la question sécuritaire par la presse au Sahel : le cas sénégalais',
+			source: 'Master thesis, Université Laval',
+			url: 'https://hdl.handle.net/20.500.11794/144445'
 		}
 	]
 };
