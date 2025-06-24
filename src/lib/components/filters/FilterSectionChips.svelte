@@ -199,7 +199,7 @@
 		background: rgba(var(--color-black-rgb), var(--opacity-medium));
 	}
 
-	:global(html.dark) .filter-chip.active .chip-count {
+	:global(html.dark .filter-chip.active .chip-count) {
 		background: rgba(var(--color-black-rgb), var(--opacity-medium-high));
 	}
 
