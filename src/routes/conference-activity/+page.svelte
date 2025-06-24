@@ -117,9 +117,9 @@
 			toggleTypeFilter(value);
 		}
 		// Add other filter types if needed (e.g., author)
-	} // Handler for the sortChange event from the Sorter component
+	} 	// Handler for the sortChange event from the Sorter component
 	function handleSortChange(data: { sortBy: 'date' | 'title' | 'citations' }) {
-		// Only handle date and title sorts, ignore citations
+		// Only handle date and title sorts for communications
 		if (data.sortBy === 'date' || data.sortBy === 'title') {
 			activeSort = data.sortBy;
 		}
@@ -309,7 +309,7 @@
 				/>
 			</div>
 			<div class="mobile-controls-row">
-				<Sorter {activeSort} onsortchange={handleSortChange} />
+				<Sorter {activeSort} onsortchange={handleSortChange} availableSorts={['date', 'title']} />
 				{#if areFiltersActive($activeFilters)}
 					<Button
 						variant="outline-primary"
@@ -341,7 +341,7 @@
 					</div>
 					<div class="actions-group">
 						<ToggleButton baseText="Map" isToggled={showMap} onclick={() => (showMap = !showMap)} />
-						<Sorter {activeSort} onsortchange={handleSortChange} />
+						<Sorter {activeSort} onsortchange={handleSortChange} availableSorts={['date', 'title']} />
 						{#if areFiltersActive($activeFilters)}
 							<Button
 								variant="outline-primary"

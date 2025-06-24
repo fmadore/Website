@@ -5,20 +5,18 @@
 	interface Props {
 		activeSort?: 'date' | 'title' | 'citations'; // Default sort
 		onsortchange?: (data: { sortBy: 'date' | 'title' | 'citations' }) => void; // Svelte 5: callback prop
+		availableSorts?: ('date' | 'title' | 'citations')[]; // Which sort options are available
 	}
 
-	let { activeSort = 'date', onsortchange }: Props = $props();
+	let { activeSort = 'date', onsortchange, availableSorts = ['date', 'title', 'citations'] }: Props = $props();
 
 	function toggleSort() {
-		// Toggle between 'date', 'title', and 'citations'
-		let newSort: 'date' | 'title' | 'citations';
-		if (activeSort === 'date') {
-			newSort = 'title';
-		} else if (activeSort === 'title') {
-			newSort = 'citations';
-		} else {
-			newSort = 'date';
-		}
+		// Find the current index in the available sorts array
+		const currentIndex = availableSorts.indexOf(activeSort);
+		// Get the next index, wrapping around to 0 if we're at the end
+		const nextIndex = (currentIndex + 1) % availableSorts.length;
+		const newSort = availableSorts[nextIndex];
+		
 		onsortchange?.({ sortBy: newSort });
 	}
 
@@ -33,13 +31,24 @@
 				? 'Sorted A-Z'
 				: 'Sorted by Citations'
 	);
-	let ariaTitle = $derived(
-		activeSort === 'date'
-			? 'Current sort: Date (Newest First). Click to sort by Title (A-Z).'
-			: activeSort === 'title'
-				? 'Current sort: Title (A-Z). Click to sort by Citations (Most Cited).'
-				: 'Current sort: Citations (Most Cited). Click to sort by Date (Newest First).'
-	);
+	
+	// Dynamic aria title based on available sorts
+	let ariaTitle = $derived((() => {
+		const currentIndex = availableSorts.indexOf(activeSort);
+		const nextIndex = (currentIndex + 1) % availableSorts.length;
+		const nextSort = availableSorts[nextIndex];
+		
+		const sortLabels = {
+			date: 'Date (Newest First)',
+			title: 'Title (A-Z)',
+			citations: 'Citations (Most Cited)'
+		};
+		
+		const currentLabel = sortLabels[activeSort];
+		const nextLabel = sortLabels[nextSort];
+		
+		return `Current sort: ${currentLabel}. Click to sort by ${nextLabel}.`;
+	})());
 </script>
 
 <div class="sorter">
@@ -61,7 +70,7 @@
 <style>
 	/* Add scoped element for Svelte compiler */
 	.sorter {
-		display: contents; /* Won\'t affect layout */
+		display: contents; /* Won't affect layout */
 	}
 
 	/* The .control-button-rounded styles are now handled globally 
