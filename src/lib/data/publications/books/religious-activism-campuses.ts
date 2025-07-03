@@ -39,5 +39,14 @@ The history of these associations reveals the campus as a microcosm reflecting w
 		alt: 'Cover of Religious Activism on Campuses in Togo and Benin'
 	},
 	country: ['Benin', 'Togo'],
-	project: 'Religious Activism on Campuses in Togo and Benin'
+	project: 'Religious Activism on Campuses in Togo and Benin',
+	citedBy: [
+		{
+			authors: ['Leonardo A. Villalón', 'Mamadou Bodian', 'Abdourahmane Idrissa'],
+			year: 2025,
+			title: 'École, religion et république au Sahel : éducation arabo-islamique et réforme de l\'enseignement public',
+			source: 'Dakar: Harmattan Sénégal, 2025',
+			url: 'https://www.editions-harmattan.fr/catalogue/livre/ecole-religion-et-republique-au-sahel/79472'
+		}
+	]
 };
