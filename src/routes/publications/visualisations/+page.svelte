@@ -23,21 +23,26 @@
 		[type: string]: number; // Counts for each publication type
 	};
 
-	// Calculate data reactively using $derived
+	// Calculate data reactively using $derived - optimized for performance
 	const citationsPerYearData = $derived((() => {
 		// Process allPublications to derive data for visualizations
 		const citationsReceivedInYear: Record<number, number> = {};
-		allPublications.forEach((pub) => {
+		
+		// Use for loop for better performance than forEach
+		for (let i = 0; i < allPublications.length; i++) {
+			const pub = allPublications[i];
 			if (pub.citedBy && Array.isArray(pub.citedBy)) {
-				pub.citedBy.forEach((citation: any) => {
+				for (let j = 0; j < pub.citedBy.length; j++) {
+					const citation = pub.citedBy[j];
 					// Assuming each 'citation' object has a 'year' property indicating the year of the citation
 					if (citation && typeof citation.year === 'number') {
 						citationsReceivedInYear[citation.year] =
 							(citationsReceivedInYear[citation.year] || 0) + 1;
 					}
-				});
+				}
 			}
-		});
+		}
+		
 		return Object.entries(citationsReceivedInYear)
 			.map(([year, count]) => ({ year: parseInt(year), count }))
 			.sort((a, b) => a.year - b.year);
@@ -189,35 +194,27 @@
 	// Manage JSON-LD script injection
 	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
 
-	// Handle JSON-LD script injection with $effect
+	// Handle JSON-LD script injection with $effect - optimized to run only when needed
 	$effect(() => {
-		if (browser) {
+		if (browser && breadcrumbJsonLdString) {
 			const scriptId = breadcrumbJsonLdScriptId;
 			let scriptElement = document.getElementById(scriptId) as HTMLScriptElement | null;
 
-			if (breadcrumbJsonLdString) {
-				if (scriptElement) {
-					scriptElement.textContent = breadcrumbJsonLdString;
-				} else {
-					scriptElement = document.createElement('script');
-					scriptElement.id = scriptId;
-					scriptElement.type = 'application/ld+json';
-					scriptElement.textContent = breadcrumbJsonLdString;
-					document.head.appendChild(scriptElement);
-				}
+			if (scriptElement) {
+				scriptElement.textContent = breadcrumbJsonLdString;
 			} else {
-				if (scriptElement) {
-					document.head.removeChild(scriptElement);
-				}
+				scriptElement = document.createElement('script');
+				scriptElement.id = scriptId;
+				scriptElement.type = 'application/ld+json';
+				scriptElement.textContent = breadcrumbJsonLdString;
+				document.head.appendChild(scriptElement);
 			}
 
 			return () => {
 				// Cleanup: remove script if it exists
-				if (browser) {
-					const scriptToRemove = document.getElementById(scriptId);
-					if (scriptToRemove && scriptToRemove.parentElement === document.head) {
-						document.head.removeChild(scriptToRemove);
-					}
+				const scriptToRemove = document.getElementById(scriptId);
+				if (scriptToRemove && scriptToRemove.parentElement === document.head) {
+					document.head.removeChild(scriptToRemove);
 				}
 			};
 		}
@@ -232,21 +229,21 @@
 
 <div class="page-container">
 	<Breadcrumb items={breadcrumbItems} />
-	<div use:scrollAnimate={{ delay: 200, animationClass: 'fade-in-up', rootMargin: '100px', threshold: 0.05 }}>
+	<div use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up', rootMargin: '100px', threshold: 0.05 }}>
 		<PageHeader title="Publication Visualisations" />
 	</div>
 
-	<div use:scrollAnimate={{ delay: 350, animationClass: 'fade-in-up', rootMargin: '100px', threshold: 0.05 }}>
+	<div use:scrollAnimate={{ delay: 150, animationClass: 'fade-in-up', rootMargin: '100px', threshold: 0.05 }}>
 		<PageIntro>
 			This page presents various visualisations of my publication data, offering insights into
 			citation trends, authorship patterns, and more.
 		</PageIntro>
 	</div>
 
-	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 500, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
+	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 200, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
 		<h2 class="text-2xl font-semibold mb-6">Publications per year by type</h2>
 		{#if publicationsPerYearStackedData.length > 0 && publicationTypesForStack.length > 0}
-			<div class="chart-wrapper stacked-chart">
+			<div class="chart-wrapper stacked-chart" style="height: 450px;">
 				<EChartsStackedBarChart
 					data={publicationsPerYearStackedData}
 					keys={publicationTypesForStack}
@@ -255,16 +252,16 @@
 				/>
 			</div>
 		{:else}
-			<div class="placeholder-message">
+			<div class="placeholder-message" style="height: 450px;">
 				<p class="text-light">No publication data available to display for this visualization.</p>
 			</div>
 		{/if}
 	</section>
 
-	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 650, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
+	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 250, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
 		<h2 class="text-2xl font-semibold mb-6">Publication Languages</h2>
 		{#if languageData.length > 0}
-			<div class="chart-wrapper">
+			<div class="chart-wrapper" style="height: 400px;">
 				<EChartsDoughnutChart
 					data={languageData}
 					nameAccessor={getLanguageName}
@@ -273,13 +270,13 @@
 				/>
 			</div>
 		{:else}
-			<div class="placeholder-message">
+			<div class="placeholder-message" style="height: 400px;">
 				<p class="text-light">No language data available to display for this visualization.</p>
 			</div>
 		{/if}
 	</section>
 
-	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 750, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
+	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 300, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
 		<h2 class="text-2xl font-semibold mb-6">
 			Author Collaboration Network
 			{#if collaborationData.length > 0}
@@ -287,7 +284,7 @@
 			{/if}
 		</h2>
 		{#if collaborationData.length > 0}
-			<div class="chart-wrapper network-chart">
+			<div class="chart-wrapper network-chart" style="height: 500px;">
 				<EChartsNetworkGraph
 					data={collaborationData}
 					centerAuthor="Frédérick Madore"
@@ -296,19 +293,19 @@
 				/>
 			</div>
 		{:else}
-			<div class="placeholder-message">
+			<div class="placeholder-message" style="height: 500px;">
 				<p class="text-light">No collaboration data available to display for this visualization.</p>
 			</div>
 		{/if}
 	</section>
 
-	<div use:scrollAnimate={{ delay: 850, animationClass: 'fade-in-up', rootMargin: '100px', threshold: 0.05 }}>
+	<div use:scrollAnimate={{ delay: 350, animationClass: 'fade-in-up', rootMargin: '100px', threshold: 0.05 }}>
 		<h2 class="text-3xl font-bold my-8 pt-4 border-t border-default">
 			Citation statistics
 		</h2>
 	</div>
 
-	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 1000, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
+	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 400, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
 		<h2 class="text-2xl font-semibold mb-6">
 			Citations per year
 			{#if citationsPerYearData.length > 0 && totalCitations > 0}
@@ -316,7 +313,7 @@
 			{/if}
 		</h2>
 		{#if citationsPerYearData.length > 0}
-			<div class="chart-wrapper">
+			<div class="chart-wrapper" style="height: 400px;">
 				<EChartsBarChart
 					data={citationsPerYearData}
 					xAccessor={getYear}
@@ -327,7 +324,7 @@
 				/>
 			</div>
 		{:else}
-			<div class="placeholder-message">
+			<div class="placeholder-message" style="height: 400px;">
 				<p class="text-light">
 					No citation data available to display for this visualization, or data is still loading.
 				</p>
@@ -335,7 +332,7 @@
 		{/if}
 	</section>
 
-	<section class="visualization-section" use:scrollAnimate={{ delay: 1150, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
+	<section class="visualization-section" use:scrollAnimate={{ delay: 450, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
 		<h2 class="text-2xl font-semibold mb-6">
 			Authors citing my work most frequently
 			{#if citedAuthorsData.length > 0}
@@ -479,31 +476,45 @@
 	.chart-wrapper {
 		padding: var(--spacing-6);
 		position: relative;
+		/* Optimize rendering performance */
+		contain: layout style paint;
+		will-change: transform;
+		/* Ensure proper height reservation */
+		min-height: 300px;
 	}
 	
 	.stacked-chart {
 		height: 450px;
+		/* Explicit height prevents layout shifts */
+		contain: strict;
 	}
 
 	.network-chart {
 		height: 500px;
+		/* Explicit height prevents layout shifts */
+		contain: strict;
 	}
 
 	.placeholder-message {
 		padding: var(--spacing-6);
-		min-height: 150px;
+		min-height: 300px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		text-align: center;
+		/* Prevent layout shifts */
+		contain: layout style;
 	}
 
-	/* Initial state for scroll animations */
+	/* Initial state for scroll animations - prevent layout shifts */
 	.visualization-section,
 	.page-container > div {
 		opacity: 0;
 		transform: translateY(30px);
 		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+		/* Reserve space to prevent layout shifts */
+		min-height: 1px;
+		contain: layout style;
 	}
 
 
