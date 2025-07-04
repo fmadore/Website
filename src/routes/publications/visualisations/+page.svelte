@@ -261,7 +261,7 @@
 	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 250, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
 		<h2 class="text-2xl font-semibold mb-6">Publication Languages</h2>
 		{#if languageData.length > 0}
-			<div class="chart-wrapper" style="height: 400px;">
+			<div class="chart-wrapper" style="height: 480px;">
 				<EChartsDoughnutChart
 					data={languageData}
 					nameAccessor={getLanguageName}
@@ -270,7 +270,7 @@
 				/>
 			</div>
 		{:else}
-			<div class="placeholder-message" style="height: 400px;">
+			<div class="placeholder-message" style="height: 480px;">
 				<p class="text-light">No language data available to display for this visualization.</p>
 			</div>
 		{/if}
@@ -458,7 +458,7 @@
 
 <style>
 	.page-container {
-		max-width: 1200px;
+		max-width: var(--container-xl);
 		margin: 0 auto;
 		padding: 0 var(--spacing-4);
 	}
@@ -467,10 +467,10 @@
 	.placeholder-message {
 		background-color: var(--color-surface);
 		color: var(--color-text);
-		border: 1px solid var(--color-border);
+		border: var(--border-width-thin) solid var(--color-border);
 		border-radius: var(--border-radius-lg);
 		box-shadow: var(--shadow-sm);
-		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all var(--anim-duration-slow) var(--anim-ease-base);
 	}
 
 	.chart-wrapper {
@@ -480,24 +480,24 @@
 		contain: layout style paint;
 		will-change: transform;
 		/* Ensure proper height reservation */
-		min-height: 300px;
+		min-height: var(--iframe-height-xs);
 	}
 	
 	.stacked-chart {
-		height: 450px;
+		height: var(--iframe-height-sm);
 		/* Explicit height prevents layout shifts */
 		contain: strict;
 	}
 
 	.network-chart {
-		height: 500px;
+		height: var(--iframe-height-md);
 		/* Explicit height prevents layout shifts */
 		contain: strict;
 	}
 
 	.placeholder-message {
 		padding: var(--spacing-6);
-		min-height: 300px;
+		min-height: var(--iframe-height-xs);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -510,14 +510,12 @@
 	.visualization-section,
 	.page-container > div {
 		opacity: 0;
-		transform: translateY(30px);
-		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+		transform: translateY(var(--transform-distance-md));
+		transition: all var(--anim-duration-slow) var(--anim-ease-base);
 		/* Reserve space to prevent layout shifts */
 		min-height: 1px;
 		contain: layout style;
 	}
-
-
 
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
@@ -530,8 +528,8 @@
 		}
 	}
 	
-	/* Mobile responsiveness */
-	@media (max-width: 768px) {
+	/* Mobile responsiveness using breakpoint variables */
+	@media (max-width: var(--breakpoint-md)) {
 		.page-container {
 			padding: 0 var(--spacing-3);
 		}
@@ -541,52 +539,52 @@
 		}
 		
 		.stacked-chart {
-			height: 380px; /* Reduce height on mobile */
+			height: calc(var(--iframe-height-sm) - var(--spacing-16));
 		}
 
 		.network-chart {
-			height: 400px; /* Reduce height on mobile */
+			height: var(--iframe-height-sm);
 		}
 		
 		.visualization-section h2 {
-			font-size: 1.25rem; /* Smaller headings on mobile */
+			font-size: var(--font-size-xl);
 			margin-bottom: var(--spacing-4);
 		}
 	}
 	
-	@media (max-width: 480px) {
+	@media (max-width: var(--breakpoint-sm)) {
 		.chart-wrapper {
 			padding: var(--spacing-3);
 		}
 		
 		.stacked-chart {
-			height: 350px; /* Even smaller on very small screens */
+			height: calc(var(--iframe-height-xs) + var(--spacing-12));
 		}
 
 		.network-chart {
-			height: 350px; /* Even smaller on very small screens */
+			height: calc(var(--iframe-height-xs) + var(--spacing-12));
 		}
 		
 		.visualization-section h2 {
-			font-size: 1.125rem;
+			font-size: var(--font-size-lg);
 		}
 	}
 	
 	.pagination-controls {
-		border-top: 1px solid var(--color-border);
+		border-top: var(--border-width-thin) solid var(--color-border);
 		padding-top: var(--spacing-4);
 	}
 	
 	.pagination-btn {
 		padding: var(--spacing-2) var(--spacing-3);
-		border: 1px solid var(--color-border);
+		border: var(--border-width-thin) solid var(--color-border);
 		background-color: var(--color-surface);
 		color: var(--color-text);
 		border-radius: var(--border-radius);
 		font-size: var(--font-size-sm);
 		cursor: pointer;
-		transition: all 0.2s ease;
-		min-width: 40px;
+		transition: all var(--anim-duration-fast) var(--anim-ease-out);
+		min-width: calc(var(--spacing-8) + var(--spacing-2));
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -595,16 +593,18 @@
 	.pagination-btn:hover:not(:disabled) {
 		background-color: var(--color-surface-border);
 		border-color: var(--color-primary);
+		transform: var(--transform-lift-sm);
 	}
 	
 	.pagination-btn.active {
 		background-color: var(--color-primary);
-		color: white;
+		color: var(--color-white);
 		border-color: var(--color-primary);
+		box-shadow: var(--shadow);
 	}
 	
 	.pagination-btn:disabled {
-		opacity: 0.5;
+		opacity: var(--opacity-medium-high);
 		cursor: not-allowed;
 	}
 	
@@ -621,7 +621,7 @@
 		color: var(--color-text-light);
 	}
 	
-	@media (max-width: 640px) {
+	@media (max-width: var(--breakpoint-sm)) {
 		.pagination-buttons {
 			flex-wrap: wrap;
 			justify-content: center;
@@ -630,7 +630,7 @@
 		.pagination-btn {
 			font-size: var(--font-size-xs);
 			padding: var(--spacing-1) var(--spacing-2);
-			min-width: 32px;
+			min-width: var(--spacing-8);
 		}
 	}
 </style>

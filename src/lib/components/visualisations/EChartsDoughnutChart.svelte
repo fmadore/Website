@@ -158,25 +158,28 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 				
 				return [x, y];
 			} : undefined
-		},legend: {
+		},		legend: {
 			orient: 'horizontal',
 			left: 'center',
-			bottom: '10px',
+			bottom: isMobile ? '10px' : '20px',
 			textStyle: {
 				color: resolvedColors.text,
-				fontSize: isMobile ? 10 : 12,
-				fontFamily: 'Inter, -apple-system, sans-serif'
+				fontSize: isMobile ? 11 : 13,
+				fontFamily: 'Inter, -apple-system, sans-serif',
+				fontWeight: '500'
 			},
-			itemGap: isMobile ? 8 : 12,
-			itemWidth: isMobile ? 10 : 12,
-			itemHeight: isMobile ? 10 : 12
+			itemGap: isMobile ? 12 : 20,
+			itemWidth: isMobile ? 12 : 14,
+			itemHeight: isMobile ? 12 : 14,
+			padding: [5, 10],
+			backgroundColor: 'transparent'
 		},
 		series: [
 			{
 				name: title || 'Data',
 				type: 'pie',
 				radius: radius,
-				center: ['50%', '45%'], // Center the chart more appropriately with bottom legend
+				center: ['50%', isMobile ? '40%' : '38%'], // Adjust center to provide more space for legend
 				data: chartData,
 				emphasis: {
 					itemStyle: {
@@ -185,19 +188,33 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 						shadowColor: 'rgba(0, 0, 0, 0.5)'
 					}
 				},				label: {
-					show: showLabels && !isMobile, // Hide labels on mobile to prevent overlap
-					position: 'outside',
-					color: resolvedColors.text,
-					fontSize: 11,
+					show: showLabels, // Always show labels when showLabels is true
+					position: isMobile ? 'inside' : 'outside', // Use inside position on mobile
+					color: isMobile ? '#ffffff' : resolvedColors.text, // White text on mobile for better contrast
+					fontSize: isMobile ? 11 : 12,
 					fontFamily: 'Inter, -apple-system, sans-serif',
-					formatter: '{b}: {d}%'
+					fontWeight: 'bold',
+					formatter: isMobile ? '{d}%' : '{b}: {d}%', // Shorter format on mobile
+					textBorderColor: isMobile ? 'rgba(0, 0, 0, 0.9)' : 'transparent',
+					textBorderWidth: isMobile ? 2 : 0,
+					textShadowColor: isMobile ? 'rgba(0, 0, 0, 0.9)' : 'transparent',
+					textShadowBlur: isMobile ? 3 : 0,
+					textShadowOffsetX: isMobile ? 1 : 0,
+					textShadowOffsetY: isMobile ? 1 : 0,
+					// Prevent label overlap on mobile
+					minMargin: isMobile ? 8 : 5,
+					// Ensure labels don't overlap by adjusting their positioning
+					alignTo: isMobile ? 'none' : 'edge',
+					// Add padding to prevent text from being too close to edges
+					padding: isMobile ? [2, 4] : [0, 0]
 				},
 				labelLine: {
-					show: showLabels && !isMobile, // Hide label lines on mobile
+					show: showLabels && !isMobile, // Only show label lines on desktop
 					length: 15,
 					length2: 10,
 					lineStyle: {
-						color: resolvedColors.textLight
+						color: resolvedColors.textLight,
+						width: 1
 					}
 				},
 				itemStyle: {
@@ -205,6 +222,11 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 					borderColor: resolvedColors.surface,
 					borderWidth: 2
 				},
+				// Prevent label overlap on mobile by adjusting label layout
+				labelLayout: isMobile ? {
+					hideOverlap: true,
+					moveOverlap: 'shiftY'
+				} : undefined,
 				animationType: 'scale',
 				animationEasing: 'elasticOut' as any,
 				animationDelay: function (idx: number) {
@@ -253,7 +275,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 
 <style>	.echarts-container {
 		width: 100%;
-		height: 400px;
+		height: 480px; /* Increased height to accommodate legend */
 		display: block;
 		position: relative;
 		/* Remove background, border, and styling - let parent handle it */
@@ -282,13 +304,13 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 	/* Responsive adjustments */
 	@media (max-width: 640px) {
 		.echarts-container {
-			height: 300px; /* Reduce height on mobile since labels are hidden */
+			height: 420px; /* Increased height for mobile with legend space */
 		}
 	}
 	
 	@media (max-width: 480px) {
 		.echarts-container {
-			height: 280px; /* Even smaller on very small screens */
+			height: 400px; /* Adequate height for very small screens with legend */
 		}
 	}
 </style>
