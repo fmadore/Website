@@ -48,6 +48,14 @@ export const religiosityUniversityCampuses: Publication = {
 				'Understanding higher education as a conflictual field. Situational dynamics of peace and conflict in Senegalese universities',
 			source: 'Peacebuilding 13, no. 2 (2025): 188-208',
 			url: 'https://doi.org/10.1080/21647259.2024.2411827'
+		},
+		{
+			authors: ['Bantu Edward', 'Bashaija Athanansio', 'Omare Justine Momanyi'],
+			year: 2025,
+			title:
+				'Adoption of Positive Spirituality and Religiosity to Strengthen the Well-Being of Students in Universities in Uganda',
+			source: 'In Using Positive Psychology Interventions to Promote Well-Being Among Students in Higher-Education Institutions: Understanding Their Cognitive And Social Impact, edited by Peter J. O. Aloka, 117-34. Cham: Springer Nature Switzerland, 2025',
+			url: 'https://doi.org/10.1007/978-3-031-88793-2_7'
 		}
 	]
 };
