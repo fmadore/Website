@@ -45,7 +45,8 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
 			year: 2025,
 			title:
 				"Da'wa dans la rue en Côte d'Ivoire post-crise : une nouvelle forme de prédication à l'ère du numérique",
-			source: "Cahiers d'études africaines, no. 6 (2025): 545-69"
+			source: "Cahiers d'études africaines, no. 6 (2025): 545-69",
+			url: 'https://doi.org/10.4000/145ym'
 		},
 		{
 			authors: ['Louis Audet Gosselin'],
