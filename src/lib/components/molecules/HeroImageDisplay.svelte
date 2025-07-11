@@ -13,7 +13,9 @@
 		figcaptionClass = 'hero-caption',
 		glassEffect = true,
 		variant = 'default',
-		maxHeight = '60vh'
+		maxHeight = '60vh',
+		fetchpriority = 'auto',
+		loading = 'lazy'
 	}: {
 		heroImage?: { src: string; alt?: string; caption?: string } | undefined | null;
 		fallbackImage?: string | undefined | null;
@@ -24,6 +26,8 @@
 		glassEffect?: boolean;
 		variant?: 'default' | 'compact' | 'featured';
 		maxHeight?: string;
+		fetchpriority?: 'high' | 'low' | 'auto';
+		loading?: 'eager' | 'lazy';
 	} = $props();
 
 	let zoomed = $state(false);
@@ -122,9 +126,13 @@
 				src={absoluteSrc}
 				alt={altText}
 				class={combinedImageClass}
-				loading="lazy"
+				loading={loading}
+				fetchpriority={fetchpriority}
 				decoding="async"
-				style={`max-height: ${maxHeight};`}
+				width="330"
+				height="438"
+				sizes="(max-width: 640px) 100vw, (max-width: 768px) 330px, (max-width: 1024px) 600px, 800px"
+				style={`max-height: ${maxHeight}; contain: layout style paint;`}
 			/>
 			<div class="overlay">
 				{#if captionText}

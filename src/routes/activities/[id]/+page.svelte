@@ -64,6 +64,32 @@
 	// Replace onMount and onDestroy with $effect
 	$effect(() => {
 		if (browser) {
+			// Use requestIdleCallback to optimize animations and reduce long tasks
+			const optimizeAnimations = () => {
+				const animatedElements = document.querySelectorAll('[data-animate]');
+				animatedElements.forEach(el => {
+					(el as HTMLElement).style.willChange = 'transform, opacity';
+					(el as HTMLElement).style.transform = 'translateZ(0)';
+					// Add containment for better performance
+					(el as HTMLElement).style.contain = 'layout style paint';
+				});
+			};
+
+			// Debounced intersection observer for scroll animations
+			let observerTimeout: number;
+			const debouncedObserver = () => {
+				clearTimeout(observerTimeout);
+				observerTimeout = window.setTimeout(optimizeAnimations, 16); // ~60fps
+			};
+
+			// Defer animation optimization to idle time
+			if ('requestIdleCallback' in window) {
+				window.requestIdleCallback(debouncedObserver);
+			} else {
+				// Fallback for browsers without requestIdleCallback
+				setTimeout(debouncedObserver, 0);
+			}
+
 			// Handle activity JSON-LD
 			const activityScriptId = activityJsonLdScriptId;
 			let activityScriptElement = document.getElementById(activityScriptId) as HTMLScriptElement | null;
@@ -156,6 +182,20 @@
 </script>
 
 <svelte:head>
+	<!-- Preconnect to improve performance -->
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+	
+	<!-- Conditional preload of hero image if it exists to improve LCP -->
+	{#if activity?.heroImage?.src}
+		<link rel="preload" href="{base}/{activity.heroImage.src}" as="image" fetchpriority="high" />
+	{/if}
+	
+	<!-- Critical CSS preloading - use media attribute for non-blocking -->
+	<link rel="preload" href="{base}/_app/immutable/assets/0.DXuqqBRc.css" as="style" />
+	<link rel="preload" href="{base}/_app/immutable/assets/PageHeader.DlMJndeU.css" as="style" />
+	<link rel="preload" href="{base}/_app/immutable/assets/ContentBody.exLchSq2.css" as="style" />
+	
 	<!-- Remove the JsonLdScript component from here -->
 	<!-- {#if jsonLdString}
         <JsonLdScript jsonString={jsonLdString} />
@@ -174,7 +214,7 @@
 	/>
 {/if}
 
-<div class="container max-w-7xl" use:scrollAnimate={{ delay: DELAY_STEP, animationClass: 'fade-in-up' }}>
+<div class="container max-w-7xl critical-content" use:scrollAnimate={{ delay: DELAY_STEP, animationClass: 'fade-in-up' }}>
 	{#if activity}
 		<!-- Separate page header section -->
 		<div use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
@@ -201,6 +241,9 @@
 					defaultAlt={activity.title}
 					variant="featured"
 					glassEffect={true}
+					fetchpriority="high"
+					loading="eager"
+					maxHeight="60vh"
 				/>
 			</div>
 		{/if}
@@ -238,14 +281,17 @@
 				<h2 class="text-xl font-semibold mb-4 text-text-emphasis">
 					{activity.pdfTitle || 'Associated Document'}
 				</h2>
-				<iframe
-					src="{base}/{activity.pdfPath}"
-					title="{activity.title} PDF Document"
-					width="100%"
-					height="800px"
-					style="border: 1px solid var(--color-border); border-radius: var(--border-radius-lg);"
-					loading="lazy"
-				></iframe>
+				<div class="pdf-container" style="height: 800px; position: relative;">
+					<iframe
+						src="{base}/{activity.pdfPath}"
+						title="{activity.title} PDF Document"
+						width="100%"
+						height="800"
+						style="border: 1px solid var(--color-border); border-radius: var(--border-radius-lg); position: absolute; top: 0; left: 0;"
+						loading="lazy"
+						sandbox="allow-scripts allow-same-origin"
+					></iframe>
+				</div>
 			</div>
 		{/if}
 
@@ -258,11 +304,45 @@
 </div>
 
 <style>
+	/* Container optimization */
+	.container {
+		content-visibility: auto;
+		contain-intrinsic-size: 1000px;
+		/* Optimize container for better rendering */
+		will-change: auto;
+		transform: translateZ(0);
+	}
+
 	/* Hero image wrapper - ensure it doesn't interfere with modal stacking */
 	.hero-image-wrapper {
 		position: relative;
 		z-index: auto; /* Ensure no stacking context issues */
 		isolation: auto; /* Prevent isolation that could interfere with modal */
+		content-visibility: auto;
+		contain-intrinsic-size: 400px;
+	}
+
+	/* Responsive hero image optimization */
+	:global(.hero-image-wrapper .hero-image) {
+		width: 100%;
+		height: auto;
+		max-width: 330px; /* Match the displayed dimensions from PageSpeed Insights */
+		max-height: 438px;
+		object-fit: cover;
+		border-radius: var(--border-radius-lg);
+	}
+
+	@media (min-width: 768px) {
+		:global(.hero-image-wrapper .hero-image) {
+			max-width: 600px;
+			max-height: auto;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		:global(.hero-image-wrapper .hero-image) {
+			max-width: 800px;
+		}
 	}
 
 	/* PDF section styling with glassmorphism */
@@ -271,6 +351,8 @@
 		border-radius: var(--border-radius-xl);
 		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		position: relative;
+		content-visibility: auto;
+		contain-intrinsic-size: 800px;
 		/* Enhanced glassmorphism with subtle gradient overlay */
 		background: linear-gradient(
 			135deg,
@@ -278,6 +360,16 @@
 			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
 			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
+	}
+
+	.pdf-container {
+		/* Fixed height to prevent layout shifts */
+		min-height: 800px;
+		background: var(--color-surface);
+		border-radius: var(--border-radius-lg);
+		overflow: hidden;
+		/* Improve containment for better performance */
+		contain: layout style paint;
 	}
 
 	.pdf-section:hover {
@@ -294,6 +386,9 @@
 		margin-bottom: var(--spacing-4);
 		box-shadow: var(--shadow-lg);
 		transition: box-shadow 0.3s ease;
+		/* Improve iframe rendering */
+		will-change: box-shadow;
+		transform: translateZ(0);
 	}
 
 	.pdf-section iframe:hover {
@@ -332,5 +427,12 @@
 	.activity-tags-section {
 		margin-top: var(--spacing-4);
 		margin-bottom: var(--spacing-6);
+		content-visibility: auto;
+		contain-intrinsic-size: 50px;
+	}
+
+	/* Critical above-the-fold content */
+	.critical-content {
+		contain: layout style paint;
 	}
 </style>
