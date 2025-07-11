@@ -27,3 +27,9 @@ test-results/.last-run.json
 playwright.config.js
 tests/example.spec.js
 ~/.cursor/mcp.json
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
