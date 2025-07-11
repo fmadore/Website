@@ -568,7 +568,7 @@
 		}
 	}
 
-	@media (max-width: calc(var(--breakpoint-sm) - 1px)) {
+	@media (max-width: 639px) {
 		.footer-container {
 			gap: var(--spacing-6);
 		}
@@ -598,6 +598,23 @@
 
 		.footer-link {
 			justify-content: center;
+		}
+	}
+
+	/* Additional mobile-specific fixes for very small screens */
+	@media (max-width: 480px) {
+		.footer-social-links {
+			grid-template-columns: 1fr;
+			gap: var(--spacing-3);
+		}
+
+		.footer-link-group {
+			padding: var(--spacing-3);
+			margin-bottom: var(--spacing-2);
+		}
+
+		.footer-links-grid {
+			gap: var(--spacing-2);
 		}
 	}
 
