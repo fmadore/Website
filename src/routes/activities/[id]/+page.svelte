@@ -191,11 +191,6 @@
 		<link rel="preload" href="{base}/{activity.heroImage.src}" as="image" fetchpriority="high" />
 	{/if}
 	
-	<!-- Critical CSS preloading - use media attribute for non-blocking -->
-	<link rel="preload" href="{base}/_app/immutable/assets/0.DXuqqBRc.css" as="style" />
-	<link rel="preload" href="{base}/_app/immutable/assets/PageHeader.DlMJndeU.css" as="style" />
-	<link rel="preload" href="{base}/_app/immutable/assets/ContentBody.exLchSq2.css" as="style" />
-	
 	<!-- Remove the JsonLdScript component from here -->
 	<!-- {#if jsonLdString}
         <JsonLdScript jsonString={jsonLdString} />
@@ -289,7 +284,8 @@
 						height="800"
 						style="border: 1px solid var(--color-border); border-radius: var(--border-radius-lg); position: absolute; top: 0; left: 0;"
 						loading="lazy"
-						sandbox="allow-scripts allow-same-origin"
+						allow="fullscreen"
+						referrerpolicy="no-referrer-when-downgrade"
 					></iframe>
 				</div>
 			</div>
