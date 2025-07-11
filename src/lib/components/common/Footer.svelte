@@ -68,7 +68,7 @@
 		if (!footerElement) return;
 
 		// Debounce intersection updates for better performance
-		let timeoutId: number;
+		let timeoutId: ReturnType<typeof setTimeout>;
 
 		const observer = new IntersectionObserver(
 			(entries) => {
