@@ -180,6 +180,14 @@ export const salafismCoteDIvoire: Publication = {
 			title: 'Traitement de la question sécuritaire par la presse au Sahel : le cas sénégalais',
 			source: 'Master thesis, Université Laval',
 			url: 'https://hdl.handle.net/20.500.11794/144445'
+		},
+		{
+			authors: ['Fiifi Edu-Afful', 'Fafali Alai'],
+			year: 2025,
+			title: "Cote d'Ivoire and Terrorism in a Delicate Neighbourhood",
+			source:
+				'In Palgrave Handbook of Terrorism in Africa, edited by Rohan Gunaratna and C. Nna-Emeka Okereke, 601-19. Cham: Springer Nature Switzerland, 2025',
+			url: 'https://doi.org/10.1007/978-3-031-89940-9_23'
 		}
 	]
 };
