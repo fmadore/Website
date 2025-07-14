@@ -186,7 +186,7 @@ export const salafismCoteDIvoire: Publication = {
 			year: 2025,
 			title: "Cote d'Ivoire and Terrorism in a Delicate Neighbourhood",
 			source:
-				'In Palgrave Handbook of Terrorism in Africa, edited by Rohan Gunaratna and C. Nna-Emeka Okereke, 601-19. Cham: Springer Nature Switzerland, 2025',
+				'In Palgrave Handbook of Terrorism in Africa, edited by Rohan Gunaratna and C. Nna-Emeka Okereke, 601-19. Cham: Palgrave Macmillan, 2025',
 			url: 'https://doi.org/10.1007/978-3-031-89940-9_23'
 		}
 	]
