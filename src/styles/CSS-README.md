@@ -2,6 +2,8 @@
 
 This document outlines the CSS architecture used in this project. The CSS is organized using a modular approach with a focus on maintainability, scalability, and reusability.
 
+> **🎨 Design Philosophy**: For the design principles and visual philosophy behind this CSS architecture, see the [Design Philosophy & Visual Style](../../docs/DESIGN-PHILOSOPHY.md) documentation.
+
 ## Directory Structure
 
 The CSS is organized into the following directory structure:
