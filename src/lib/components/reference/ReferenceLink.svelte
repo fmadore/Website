@@ -71,7 +71,15 @@
 	{referenceText}
 </Button>
 
+<!-- This empty span ensures there's a scopable element for Svelte -->
+<span class="reference-link-styles" style="display: none;"></span>
+
 <style>
+	/* Scoped element to prevent warning */
+	.reference-link-styles {
+		display: none !important;
+	}
+
 	/* Minimal custom styling for reference-specific behavior */
 	:global(.reference-link) {
 		/* Let parent span handle interactions when hasPopup is true */

@@ -45,7 +45,15 @@
 	{labelText}
 </Button>
 
+<!-- This empty span ensures there's a scopable element for Svelte -->
+<span class="toggle-button-styles" style="display: none;"></span>
+
 <style>
+	/* Scoped element to prevent warning */
+	.toggle-button-styles {
+		display: none !important;
+	}
+
 	/* Enhanced toggle button styling that integrates with glassmorphism */
 	:global(.toggle-button) {
 		/* Use CSS variables for consistent spacing and typography */

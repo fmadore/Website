@@ -124,9 +124,10 @@
 		background: rgba(var(--color-black-rgb), var(--opacity-medium));
 	}
 
-	:global(html.dark) .filter-chip.active .chip-count {
+	/* Remove unused selector - the chip-count is not a direct child of .filter-chip.active */
+	/* :global(html.dark) .filter-chip.active .chip-count {
 		background: rgba(var(--color-black-rgb), var(--opacity-medium-high));
-	}
+	} */
 
 	/* Responsive design */
 	@media (max-width: 640px) {
