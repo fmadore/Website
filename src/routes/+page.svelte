@@ -74,49 +74,36 @@
 			<ContentBody variant="default" glassEffect="glass-card">
 				{#snippet children()}
 					<p>
-						I am a Research Fellow at <a
-							href="https://www.zmo.de/en"
-							target="_blank"
-							rel="noopener noreferrer">Leibniz-Zentrum Moderner Orient (ZMO)</a
-						>
-						in the "<a
+						I am a Research Fellow in the "<a
 							href="https://www.zmo.de/en/research/religion-and-intellectual-culture"
 							target="_blank"
 							rel="noopener noreferrer">Religion and Intellectual Culture</a
-						>" unit, where I examine how Islamic movements and Muslim intellectuals have navigated
-						secular governance and shaped public discourse in Francophone West Africa since the 1960s.
-						Through extensive fieldwork and archival research in Benin, Burkina Faso, Côte d'Ivoire, and
-						Togo, I am investigating the intersection of Islamic activism, secularism and Muslim
-						politics. I am paying particular attention to how educational institutions have served as
-						key sites of religious mobilisation.
+						>" Unit at <a
+							href="https://www.zmo.de/en"
+							target="_blank"
+							rel="noopener noreferrer">Leibniz-Zentrum Moderner Orient (ZMO)</a
+						>. My research explores how Islamic movements and Muslim intellectuals have navigated
+						secular governance and influenced public discourse in Francophone West Africa since the 1960s.
+						I analyse these dynamics by combining extensive fieldwork and archival research with <a
+							href="{base}/digital-humanities"
+							data-sveltekit-preload-data>digital humanities</a> (DH) and artificial intelligence (AI), examining them from local case studies to region-wide patterns. My work focuses on Benin, Burkina Faso, Côte d'Ivoire and Togo, paying particular attention to universities and other educational institutions as key sites of religious mobilisation.
 					</p>
 
+					<h2>DH, AI, and the Islam West Africa Collection (IWAC)</h2>
+					<p>
+						I am developing the <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer"
+							><em>Islam West Africa Collection</em> (IWAC)</a
+						>, an open-access database comprising over 13,500 items relating to Islam across the region.
+						I use computational methods and <a
+							href="https://github.com/fmadore/iwac-ai-pipelines"
+							target="_blank"
+							rel="noopener noreferrer">AI-assisted workflows</a> to map patterns in religious mobilisation, track shifts in Islamic discourse, analyse media representations of Islam and trace the changing relationships between Muslim communities and state authorities. Data visualisation transforms these analyses into accessible narratives for scholarly and public audiences.
+					</p>					<h2>Books & Publications</h2>
 					<p>
 						My recent book, <em>Religious Activism on Campuses in Togo and Benin</em>
 						<ItemReference id="religious-activism-campuses" />, explores how Christian and Muslim
 						student associations emerged in the 1970s and profoundly reshaped university life in Lomé
-						and Abomey-Calavi, challenging prevailing secular ideologies.
-					</p>
-
-					<p>
-						A significant dimension of my work involves <a
-							href="{base}/digital-humanities"
-							data-sveltekit-preload-data>digital humanities</a
-						>
-						(DH) approaches. I am developing the
-						<a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer"
-							><em>Islam West Africa Collection</em> (IWAC)</a
-						>, an open-access database featuring over 13,500 items documenting Islam across the region.
-						Using computational methods and artificial intelligence workflows, I analyse this vast
-						corpus to uncover large-scale patterns in religious mobilisation, the evolution of Islamic
-						discourse, the media's representation of Islam and the shifting relationships between Muslim
-						communities and state authorities. Data visualisation techniques enable me to translate
-						these computational findings into accessible narratives that reveal new aspects of Muslim
-						public engagement.
-					</p>
-
-					<p>
-						I am also the author of <em
+						and Abomey-Calavi, challenging prevailing secular ideologies. I am also the author of <em
 							>La construction d'une sphère publique musulmane en Afrique de l'Ouest</em
 						>
 						<ItemReference id="sphere-publique-musulmane" /> and co-editor of
@@ -130,6 +117,7 @@
 						eleven peer-reviewed journals and six edited volumes.
 					</p>
 
+					<h2>Consulting</h2>
 					<p>
 						Beyond academia, I apply this regional expertise as a consultant for <a
 							href="https://communitology.co/"
@@ -139,6 +127,7 @@
 						immigration cases involving Benin, Côte d'Ivoire, and Togo.
 					</p>
 
+					<h2>Training & Affiliations</h2>
 					<p>
 						I hold a Ph.D. with distinction in History from <a
 							href="https://www.ulaval.ca/"
@@ -150,7 +139,7 @@
 							href="https://banting.fellowships-bourses.gc.ca/en/home-accueil.html"
 							target="_blank"
 							rel="noopener noreferrer">Banting Postdoctoral Fellow</a
-						>
+		>
 						at the
 						<a href="https://www.ufl.edu/" target="_blank" rel="noopener noreferrer"
 							>University of Florida</a
