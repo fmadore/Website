@@ -74,11 +74,11 @@
 			<ContentBody variant="default" glassEffect="glass-card">
 				{#snippet children()}
 					<p>
-						I am a Research Fellow in the "<a
+						I am a Research Fellow in the <a
 							href="https://www.zmo.de/en/research/religion-and-intellectual-culture"
 							target="_blank"
 							rel="noopener noreferrer">Religion and Intellectual Culture</a
-						>" Unit at <a
+						> unit at <a
 							href="https://www.zmo.de/en"
 							target="_blank"
 							rel="noopener noreferrer">Leibniz-Zentrum Moderner Orient (ZMO)</a
@@ -91,7 +91,7 @@
 
 					<h2>DH, AI, and the Islam West Africa Collection (IWAC)</h2>
 					<p>
-						I am developing the <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer"
+						Since 2023, I am developing the <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer"
 							><em>Islam West Africa Collection</em> (IWAC)</a
 						>, an open-access database comprising over 13,500 items relating to Islam across the region.
 						I use computational methods and <a
@@ -101,52 +101,49 @@
 					</p>					<h2>Books & Publications</h2>
 					<p>
 						My recent book, <em>Religious Activism on Campuses in Togo and Benin</em>
-						<ItemReference id="religious-activism-campuses" />, explores how Christian and Muslim
-						student associations emerged in the 1970s and profoundly reshaped university life in Lomé
-						and Abomey-Calavi, challenging prevailing secular ideologies. I am also the author of <em
+						<ItemReference id="religious-activism-campuses" />, examines the emergence of Christian and Muslim
+						student associations in the 1970s and their subsequent reshaping of university life in Lomé
+						and Abomey-Calavi, challenging the prevailing secular ideologies. I am also the author of <em
 							>La construction d'une sphère publique musulmane en Afrique de l'Ouest</em
 						>
-						<ItemReference id="sphere-publique-musulmane" /> and co-editor of
+						<ItemReference id="sphere-publique-musulmane" /> and the co-editor of
 						<em>Religiosity on University Campuses in Africa</em>
-						<ItemReference id="religiosity-university-campuses" />. I have also co-edited two special
+						<ItemReference id="religiosity-university-campuses" />. In addition, I have co-edited two special
 						journal issues: "Muslim Minorities in Africa, Part 1" <ItemReference
 							id="muslim-minorities-africa-1"
-						/> & "Part 2" <ItemReference id="muslim-minorities-africa-2" /> and "Les acteurs religieux africains
-						à l'ère du numérique" <ItemReference id="acteurs-religieux-numerique" />. My
+						/> & "Part 2" <ItemReference id="muslim-minorities-africa-2" /> and "Les acteurs religieux africains à l'ère du numérique" <ItemReference id="acteurs-religieux-numerique" />. My
 						<a href="{base}/publications" data-sveltekit-preload-data>research</a> has been published in
 						eleven peer-reviewed journals and six edited volumes.
 					</p>
 
 					<h2>Consulting</h2>
 					<p>
-						Beyond academia, I apply this regional expertise as a consultant for <a
+						Beyond academia, I work with <a
 							href="https://communitology.co/"
 							target="_blank"
 							rel="noopener noreferrer">Communitology</a
-						>, developing specialized Country of Origin Information (COI) reports for asylum and
+						>, to produce specialised Country of Origin Information (COI) reports for asylum and
 						immigration cases involving Benin, Côte d'Ivoire, and Togo.
 					</p>
 
 					<h2>Training & Affiliations</h2>
 					<p>
-						I hold a Ph.D. with distinction in History from <a
+						I hold a Ph.D. in History from <a
 							href="https://www.ulaval.ca/"
 							target="_blank"
 							rel="noopener noreferrer">Université Laval</a
 						>
-						and was previously a
+						and previously held a
 						<a
 							href="https://banting.fellowships-bourses.gc.ca/en/home-accueil.html"
 							target="_blank"
-							rel="noopener noreferrer">Banting Postdoctoral Fellow</a
-		>
+							rel="noopener noreferrer">Banting Postdoctoral Fellowship</a
+						>
 						at the
 						<a href="https://www.ufl.edu/" target="_blank" rel="noopener noreferrer"
 							>University of Florida</a
 						>. Through my ongoing <a href="{base}/research">research</a> and
-						<a href="{base}/digital-humanities">DH projects</a>, I explore new approaches to
-						understanding the dynamics of Muslim societies in Francophone West Africa, combining
-						traditional historical methods with innovative computational techniques.
+						<a href="{base}/digital-humanities">DH projects</a>, I combine historical methods with computational techniques to advance understanding of Muslim societies in Francophone West Africa.
 					</p>
 				{/snippet}
 			</ContentBody>
