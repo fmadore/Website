@@ -12,9 +12,9 @@
 		itemComponent,
 		baseItemUrl,
 		maxItems = 3,
-		sectionClass = 'mt-8',
-		titleClass = 'text-xl font-semibold mb-4',
-		gridClass = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'
+		sectionClass = 'related-items-section mt-10',
+		titleClass = 'related-items-title',
+		gridClass = 'related-items-grid'
 	}: {
 		allItems?: any[]; // Array of all potential items (e.g., allPublications)
 		currentItemId: string | number;
@@ -56,6 +56,21 @@
 {/if}
 
 <style>
-	/* Styles specific to the list layout itself, if needed. 
-       Item styles should be handled by the passed itemComponent. */
+	.related-items-section { margin-top: var(--spacing-10); }
+
+	.related-items-title {
+		font-size: var(--font-size-xl);
+		font-weight: var(--font-weight-semibold);
+		margin-bottom: var(--spacing-4);
+		color: var(--color-text-emphasis);
+		font-family: var(--font-family-serif);
+	}
+
+	.related-items-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--spacing-4);
+	}
+	@media (min-width: 768px) { .related-items-grid { grid-template-columns: repeat(2, 1fr); } }
+	@media (min-width: 1024px) { .related-items-grid { grid-template-columns: repeat(3, 1fr); } }
 </style>
