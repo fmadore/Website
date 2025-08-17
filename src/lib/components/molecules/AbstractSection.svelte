@@ -92,7 +92,6 @@
 		font-size: var(--font-size-base);
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text);
-		max-width: var(--text-max-width-reading, 65ch);
 		text-align: justify;
 		hyphens: auto;
 	}

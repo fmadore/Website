@@ -177,6 +177,27 @@
 /* Additional styling for Button components in panels */
 /* .year-filter-button and .filter-button styles can be added here when needed */
 
+/* Filter button styles for type filters */
+.filter-button {
+	padding: var(--spacing-1) var(--spacing-3);
+	background-color: var(--color-surface-alt);
+	border: var(--border-width-thin) solid var(--color-border);
+	border-radius: var(--border-radius);
+	font-size: var(--font-size-sm);
+	cursor: pointer;
+	transition: background-color var(--anim-duration-fast) var(--anim-ease-out);
+}
+
+.filter-button:hover {
+	background-color: var(--color-surface-border);
+}
+
+.filter-button.active {
+	background-color: var(--color-primary);
+	color: var(--color-background);
+	border-color: var(--color-primary);
+}
+
 /* Dark mode overrides - harmonized with glassmorphism utilities */
 :global(html.dark) .panel {
 	background: linear-gradient(

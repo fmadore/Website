@@ -17,9 +17,6 @@
 @import './styles/components/panels.css';
 @import './styles/components/animations.css';
 
-/* Page-specific styles */
-@import './styles/pages/publications.css';
-
 /* Utilities */
 @import './styles/utilities/spacing.css';
 @import './styles/utilities/colors.css';

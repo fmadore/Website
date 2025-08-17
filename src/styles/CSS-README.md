@@ -242,17 +242,7 @@ The animation system integrates with JavaScript utilities (`src/lib/utils/scroll
 
 ## Page-Specific Styles
 
-Styles that are specific to individual pages.
-
-### Publications (`pages/publications.css`)
-
-Styles for publication listings and details:
-
-- `.publication-list`: Publication container with proper spacing
-- **Publication elements**: `.publication-title`, `.publication-meta` with academic formatting
-- **Filters**: `.filter-button` with active states and hover effects
-- **Citations**: `.citation-button`, `.citation-box` with monospace font and proper styling
-- **Interactive elements**: Hover states and transitions for better UX
+**Note**: Page-specific styles have been migrated to their respective components to improve maintainability and reduce CSS bundle size. Publication-related styles are now embedded directly in the relevant Svelte components.
 
 ## Utilities
 
