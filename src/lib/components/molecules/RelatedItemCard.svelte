@@ -38,30 +38,55 @@
 </a>
 
 <style>
-	/* Enhanced related publication card styling aligned with CitedBy glass cards */
+	/* Enhanced related publication card styling aligned with sophisticated glassmorphism design */
 	.related-item {
 		position: relative;
 		display: block;
 		text-decoration: none;
+		padding: var(--spacing-5);
 		border-radius: var(--border-radius-lg);
-		/* Subtle gradient overlay similar to citing-work-card */
+		
+		/* Enhanced glassmorphism for individual cards matching CitedBy cards */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.03) 0%,
-			rgba(var(--color-highlight-rgb), 0.02) 50%,
-			rgba(var(--color-accent-rgb), 0.015) 100%
+			rgba(var(--color-accent-rgb), 0.03) 0%,
+			rgba(var(--color-primary-rgb), 0.02) 50%,
+			rgba(var(--color-highlight-rgb), 0.015) 100%
 		);
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
+		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
+		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low, 0.08));
+		box-shadow: var(--shadow-sm);
+		transition: all var(--anim-duration-base, 0.3s) var(--anim-ease-out, ease-out);
 	}
 
 	.related-item:hover {
-		transform: var(--transform-lift-sm);
+		transform: var(--transform-lift-sm, translateY(-2px));
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.05) 0%,
-			rgba(var(--color-highlight-rgb), 0.035) 50%,
-			rgba(var(--color-accent-rgb), 0.025) 100%
+			rgba(var(--color-accent-rgb), 0.05) 0%,
+			rgba(var(--color-primary-rgb), 0.03) 50%,
+			rgba(var(--color-highlight-rgb), 0.025) 100%
 		);
+		box-shadow: var(--shadow-md);
+	}
+
+	/* Subtle inner highlight for depth */
+	.related-item::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		border-radius: inherit;
+		background: linear-gradient(
+			180deg,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 0%,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0) 40%,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0) 60%,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 100%
+		);
+		mix-blend-mode: overlay;
+		opacity: 0.3;
 	}
 
 	.related-date {
@@ -69,6 +94,7 @@
 		letter-spacing: 0.5px;
 		color: var(--color-text-muted);
 		text-transform: uppercase;
+		margin-bottom: var(--spacing-2);
 	}
 
 	.related-title {
@@ -78,6 +104,8 @@
 		font-family: var(--font-family-serif);
 		color: var(--color-text-emphasis);
 		margin: 0;
+		margin-bottom: var(--spacing-2);
+		transition: color var(--anim-duration-fast, 0.2s) var(--anim-ease-out, ease);
 	}
 
 	.related-item:hover .related-title {
@@ -86,25 +114,57 @@
 
 	.related-authors {
 		color: var(--color-text-light);
-		font-weight: var(--font-weight-normal);
+		font-weight: var(--font-weight-medium);
+		font-size: var(--font-size-sm);
 	}
 
-	/* Focus accessibility */
+	/* Enhanced focus accessibility */
 	.related-item:focus-visible {
 		outline: 2px solid var(--color-highlight);
 		outline-offset: 3px;
-		box-shadow: 0 0 0 4px rgba(var(--color-highlight-rgb), 0.2);
+		box-shadow: 
+			var(--shadow-md),
+			0 0 0 4px rgba(var(--color-highlight-rgb), 0.2);
+	}
+
+	/* Dark mode refinements */
+	:global(html.dark) .related-item {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.4) 0%,
+			rgba(var(--color-accent-rgb), 0.08) 50%,
+			rgba(var(--color-primary-rgb), 0.06) 100%
+		);
+		border-color: rgba(var(--color-white-rgb, 255, 255, 255), 0.06);
+	}
+
+	:global(html.dark) .related-item:hover {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.5) 0%,
+			rgba(var(--color-accent-rgb), 0.12) 50%,
+			rgba(var(--color-primary-rgb), 0.08) 100%
+		);
 	}
 
 	/* Responsive tweaks */
 	@media (max-width: 640px) {
-		.related-title { font-size: var(--font-size-base); }
-		.related-item { padding: var(--spacing-3); }
+		.related-title { 
+			font-size: var(--font-size-base); 
+		}
+		.related-item { 
+			padding: var(--spacing-3); 
+		}
 	}
 
 	/* Reduced motion preference */
 	@media (prefers-reduced-motion: reduce) {
-		.related-item { transition: none; }
-		.related-item:hover { transform: none; }
+		.related-item,
+		.related-title { 
+			transition: none; 
+		}
+		.related-item:hover { 
+			transform: none; 
+		}
 	}
 </style>
