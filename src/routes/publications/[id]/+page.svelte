@@ -23,6 +23,7 @@
 	import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
 	import { allPublications } from '$lib/data/publications/index'; // Keep this for RelatedItemsList
 	import { generateBibtex } from '$lib/utils/bibtexGenerator'; // Import the generator
+	import { scrollAnimate } from '$lib/utils/scrollAnimations'; // Add scroll animations
 
 	interface Props {
 		// Get data from the load function
@@ -297,7 +298,7 @@
 <MetaTags {publication} />
 
 <div class="container mx-auto py-8 px-4">
-	<article class="publication-article rounded-lg p-6 mb-8">
+	<article class="publication-article rounded-lg p-6 mb-8" use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up' }}>
 		<!-- Use the Breadcrumb component -->
 		<Breadcrumb items={breadcrumbItems} />
 
@@ -309,37 +310,50 @@
 		/>
 
 		<!-- Use the new HeroImageDisplay component -->
-		<HeroImageDisplay
-			heroImage={publication.heroImage}
-			fallbackImage={publication.image}
-			defaultAlt={publication.title}
-			imageClass="w-full max-w-md h-auto rounded-md mx-auto"
-			figcaptionClass="text-text-muted text-sm mt-2 italic text-center"
-		/>
+		<div use:scrollAnimate={{ delay: 200, animationClass: 'fade-in-up' }}>
+			<HeroImageDisplay
+				heroImage={publication.heroImage}
+				fallbackImage={publication.image}
+				defaultAlt={publication.title}
+				imageClass="w-full max-w-md h-auto rounded-md mx-auto"
+				figcaptionClass="text-text-muted text-sm mt-2 italic text-center"
+			/>
+		</div>
 
 		<!-- Use the new AbstractSection component -->
-		<AbstractSection abstract={publication.abstract} />
+		<div use:scrollAnimate={{ delay: 300, animationClass: 'fade-in-up' }}>
+			<AbstractSection abstract={publication.abstract} />
+		</div>
 
 		<!-- Use the new DetailsGrid component -->
-		<DetailsGrid details={publicationDetails} />
+		<div use:scrollAnimate={{ delay: 400, animationClass: 'fade-in-up' }}>
+			<DetailsGrid details={publicationDetails} />
+		</div>
 
 		<!-- Table of Contents Section -->
 		{#if (publication.type === 'book' || publication.type === 'special-issue') && publication.tableOfContents && publication.tableOfContents.length > 0}
-			<section class="mt-8 mb-8">
-				<h2 class="text-xl font-semibold mb-4 text-text-headings">Table of Contents</h2>
-				<ul class="list-disc list-inside space-y-3 text-text-base pl-4">
-					{#each publication.tableOfContents as item}
-						<li>{item}</li>
-					{/each}
-				</ul>
-			</section>
+			<div use:scrollAnimate={{ delay: 500, animationClass: 'fade-in-up' }}>
+				<section class="table-of-contents-section">
+					<h2 class="toc-title">Table of Contents</h2>
+					<ol class="toc-list">
+						{#each publication.tableOfContents as item, index}
+							<li class="toc-item">
+								<span class="toc-number">{index + 1}.</span>
+								<span class="toc-content">{item}</span>
+							</li>
+						{/each}
+					</ol>
+				</section>
+			</div>
 		{/if}
 
 		<!-- Use the new TagList component -->
-		<TagList tags={publication.tags} baseUrl="/publications?tag=" />
+		<div use:scrollAnimate={{ delay: 600, animationClass: 'fade-in-up' }}>
+			<TagList tags={publication.tags} baseUrl="/publications?tag=" />
+		</div>
 
 		<!-- Container for Action Links and Export Button -->
-		<div class="mt-8 flex flex-wrap items-center gap-4">
+		<div class="publication-actions flex flex-wrap items-center gap-4" use:scrollAnimate={{ delay: 700, animationClass: 'fade-in-up' }}>
 			<!-- ActionLinks component -->
 			<ActionLinks
 				primaryUrl={publication.url}
@@ -371,38 +385,247 @@
 	</article>
 
 	<!-- Use the Reviews component -->
-	<Reviews reviewedBy={publication.reviewedBy} />
+	<div use:scrollAnimate={{ delay: 800, animationClass: 'fade-in-up' }}>
+		<Reviews reviewedBy={publication.reviewedBy} />
+	</div>
 
 	<!-- Use the CitedBy component -->
-	<CitedBy citedBy={publication.citedBy} />
+	<div use:scrollAnimate={{ delay: 900, animationClass: 'fade-in-up' }}>
+		<CitedBy citedBy={publication.citedBy} />
+	</div>
 
 	<!-- Use the RelatedItemsList organism -->
 	{#if publication.project}
-		<RelatedItemsList
-			allItems={allPublications}
-			currentItemId={publication.id}
-			filterKey="project"
-			filterValue={publication.project}
-			title="More Publications in this Project"
-			itemComponent={RelatedItemCard as unknown as ComponentType}
-			baseItemUrl="/publications/"
-			maxItems={3}
-		/>
+		<div use:scrollAnimate={{ delay: 1000, animationClass: 'fade-in-up' }}>
+			<RelatedItemsList
+				allItems={allPublications}
+				currentItemId={publication.id}
+				filterKey="project"
+				filterValue={publication.project}
+				title="More Publications in this Project"
+				itemComponent={RelatedItemCard as unknown as ComponentType}
+				baseItemUrl="/publications/"
+				maxItems={3}
+			/>
+		</div>
 	{/if}
 </div>
 
 <style>
-	/* Theme styles for main article container */
+	/* Enhanced styles for main article container with glassmorphism integration */
 	.publication-article {
-		background-color: var(--color-background);
-		box-shadow: var(--shadow-md);
-		transition:
-			background-color 0.3s ease,
-			box-shadow 0.3s ease;
+		/* Sophisticated glassmorphism effect matching other components */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.04) 0%,
+			rgba(var(--color-highlight-rgb), 0.025) 35%,
+			rgba(var(--color-accent-rgb), 0.02) 65%,
+			var(--color-surface) 100%
+		);
+		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 10px));
+		backdrop-filter: blur(var(--glass-blur-fallback, 10px));
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low, 0.1));
+		box-shadow: var(--shadow-lg);
+		transition: all var(--anim-duration-base, 0.3s) var(--anim-ease-out, ease-out);
+		position: relative;
+		overflow: hidden;
 	}
 
-	/* Add styles for the table of contents if needed, e.g., spacing, list style */
-	/* Styles are mostly handled by utility classes above */
+	/* Enhanced hover effect */
+	.publication-article:hover {
+		transform: var(--transform-lift-sm, translateY(-2px));
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.06) 0%,
+			rgba(var(--color-highlight-rgb), 0.04) 35%,
+			rgba(var(--color-accent-rgb), 0.03) 65%,
+			var(--color-surface) 100%
+		);
+		box-shadow: var(--shadow-xl, 0 25px 50px -12px rgba(0, 0, 0, 0.25));
+	}
 
-	/* Related item styles are now in RelatedItemCard.svelte */
+	/* Subtle inner highlight for depth */
+	.publication-article::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		border-radius: inherit;
+		background: linear-gradient(
+			180deg,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 0%,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0) 40%,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0) 60%,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 100%
+		);
+		mix-blend-mode: overlay;
+		opacity: 0.3;
+	}
+
+	/* Table of Contents Section - Enhanced styling */
+	.table-of-contents-section {
+		margin: var(--spacing-8) 0;
+		padding: var(--spacing-6);
+		border-radius: var(--border-radius-lg);
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-accent-rgb), 0.03) 0%,
+			rgba(var(--color-primary-rgb), 0.02) 50%,
+			rgba(var(--color-highlight-rgb), 0.015) 100%
+		);
+		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
+		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
+		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low, 0.08));
+		box-shadow: var(--shadow-sm);
+		transition: all var(--anim-duration-base, 0.3s) var(--anim-ease-out, ease-out);
+	}
+
+	.table-of-contents-section:hover {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-accent-rgb), 0.05) 0%,
+			rgba(var(--color-primary-rgb), 0.03) 50%,
+			rgba(var(--color-highlight-rgb), 0.025) 100%
+		);
+		box-shadow: var(--shadow-md);
+	}
+
+	.toc-title {
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-xl);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text-emphasis);
+		margin-bottom: var(--spacing-4);
+		line-height: var(--line-height-tight);
+		position: relative;
+	}
+
+	.toc-title::after {
+		content: '';
+		position: absolute;
+		bottom: calc(-1 * var(--spacing-2));
+		left: 0;
+		width: var(--spacing-12);
+		height: var(--border-width-medium, 2px);
+		background: linear-gradient(
+			90deg,
+			var(--color-accent) 0%,
+			rgba(var(--color-accent-rgb), 0.3) 100%
+		);
+		border-radius: var(--border-radius-full);
+	}
+
+	.toc-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		counter-reset: toc-counter;
+	}
+
+	.toc-item {
+		display: flex;
+		align-items: flex-start;
+		gap: var(--spacing-3);
+		padding: var(--spacing-3) 0;
+		border-bottom: var(--border-width-thin) solid rgba(var(--color-accent-rgb), 0.1);
+		transition: all var(--anim-duration-fast, 0.2s) var(--anim-ease-out, ease-out);
+	}
+
+	.toc-item:last-child {
+		border-bottom: none;
+	}
+
+	.toc-item:hover {
+		background: rgba(var(--color-accent-rgb), 0.02);
+		padding-left: var(--spacing-2);
+		border-radius: var(--border-radius-sm);
+	}
+
+	.toc-number {
+		counter-increment: toc-counter;
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-accent);
+		font-size: var(--font-size-sm);
+		line-height: var(--line-height-snug);
+		min-width: var(--spacing-6);
+	}
+
+	.toc-content {
+		font-size: var(--font-size-sm);
+		line-height: var(--line-height-snug);
+		color: var(--color-text);
+		flex: 1;
+	}
+
+	/* Dark mode refinements */
+	:global(html.dark) .publication-article {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.7) 0%,
+			rgba(var(--color-primary-rgb), 0.15) 35%,
+			rgba(var(--color-accent-rgb), 0.1) 65%,
+			var(--color-dark-surface, #334155) 100%
+		);
+	}
+
+	:global(html.dark) .publication-article:hover {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.8) 0%,
+			rgba(var(--color-primary-rgb), 0.2) 35%,
+			rgba(var(--color-accent-rgb), 0.15) 65%,
+			var(--color-dark-surface, #334155) 100%
+		);
+	}
+
+	:global(html.dark) .table-of-contents-section {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.5) 0%,
+			rgba(var(--color-accent-rgb), 0.1) 50%,
+			rgba(var(--color-primary-rgb), 0.08) 100%
+		);
+		border-color: rgba(var(--color-white-rgb, 255, 255, 255), 0.08);
+	}
+
+	:global(html.dark) .toc-item {
+		border-bottom-color: rgba(var(--color-white-rgb, 255, 255, 255), 0.05);
+	}
+
+	:global(html.dark) .toc-item:hover {
+		background: rgba(var(--color-accent-rgb), 0.05);
+	}
+
+	/* Responsive adjustments */
+	@media (max-width: 640px) {
+		.table-of-contents-section {
+			padding: var(--spacing-4);
+		}
+		
+		.toc-title {
+			font-size: var(--font-size-lg);
+		}
+		
+		.toc-item {
+			padding: var(--spacing-2) 0;
+		}
+		
+		.toc-number,
+		.toc-content {
+			font-size: var(--font-size-xs);
+		}
+	}
+
+	/* Respect user motion preferences */
+	@media (prefers-reduced-motion: reduce) {
+		.publication-article,
+		.publication-article:hover,
+		.table-of-contents-section,
+		.table-of-contents-section:hover,
+		.toc-item,
+		.toc-item:hover {
+			transition: none;
+			transform: none;
+		}
+	}
 </style>

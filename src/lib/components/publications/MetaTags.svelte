@@ -205,7 +205,13 @@
 			tags.push(...publication.tags.map(tag => ({ name: 'DC.subject', content: tag })));
 		}
 		
-		return tags.filter(tag => tag.content && tag.content.trim() !== '');
+		// Remove duplicates before returning (defensive programming)
+		const uniqueTags = tags.filter((tag, index) => {
+			const key = `${tag.name}:${tag.content}`;
+			return tags.findIndex(t => `${t.name}:${t.content}` === key) === index;
+		});
+		
+		return uniqueTags.filter(tag => tag.content && tag.content.trim() !== '');
 	});
 
 	// Development logging (can be removed in production)
@@ -218,7 +224,7 @@
 </script>
 
 <svelte:head>
-	{#each metaTags as tag (tag.name + tag.content)}
+	{#each metaTags as tag, index (tag.name + tag.content + index)}
 		<meta name={tag.name} content={tag.content} />
 	{/each}
 </svelte:head>
