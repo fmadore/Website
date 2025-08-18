@@ -2,7 +2,7 @@ import type { Fieldwork } from '$lib/types';
 
 export const cotonouPortoNovo2022: Fieldwork = {
 	id: 'cotonou-porto-novo-benin-2022',
-	city: 'Cotonou et Porto-Novo',
+	city: 'Cotonou and Porto-Novo',
 	country: 'Bénin',
 	date: 'February - March 2022',
 	year: 2022,
