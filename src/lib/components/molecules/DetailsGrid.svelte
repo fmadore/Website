@@ -137,7 +137,7 @@
 		color: var(--color-primary);
 		text-decoration: none;
 		position: relative;
-		transition: color .2s ease;
+		transition: color var(--anim-duration-fast) var(--anim-ease-out);
 	}
 	.detail-link:hover { color: var(--color-primary-dark); text-decoration: underline; }
 	.detail-link:focus-visible {

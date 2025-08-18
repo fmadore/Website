@@ -233,7 +233,7 @@
 	.publication-card {
 		padding: var(--spacing-4);
 		border-radius: var(--border-radius-lg);
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all var(--anim-duration-base) var(--anim-ease-base);
 		position: relative;
 		/* Enhanced glassmorphism with subtle gradient overlay to match ContentBody */
 		background: linear-gradient(
@@ -286,7 +286,7 @@
 		object-fit: cover;
 		border-radius: var(--border-radius);
 		box-shadow: var(--shadow-md);
-		transition: box-shadow 0.3s ease;
+		transition: box-shadow var(--anim-duration-base) var(--anim-ease-out);
 	}
 
 	.publication-card:hover .publication-cover-image {
@@ -328,7 +328,7 @@
 	.publication-title-link {
 		color: inherit;
 		text-decoration: none;
-		transition: color 0.2s ease;
+		transition: color var(--anim-duration-fast) var(--anim-ease-out);
 	}
 
 	.publication-title-link:hover {
@@ -359,11 +359,11 @@
 		display: inline;
 		border-radius: var(--border-radius-sm);
 		font-weight: var(--font-weight-medium);
-		transition: all 0.2s ease;
+		transition: all var(--anim-duration-fast) var(--anim-ease-out);
 	}
 
 	.author-btn:hover {
-		background-color: rgba(var(--color-primary-rgb), 0.1);
+		background-color: rgba(var(--color-primary-rgb), var(--opacity-low));
 		text-decoration: underline;
 	}
 
@@ -403,7 +403,7 @@
 		border-radius: var(--border-radius);
 		text-decoration: none;
 		font-weight: var(--font-weight-medium);
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all var(--anim-duration-base) var(--anim-ease-base);
 	}
 
 	/* External link indicator for publication links */
