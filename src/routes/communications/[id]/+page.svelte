@@ -179,14 +179,14 @@
 
 		<!-- Panel-specific information -->
 		{#if communication.type === 'panel' && communication.papers && communication.papers.length > 0}
-			<section class="mb-6">
-				<h2 class="text-xl font-semibold mb-3">Papers in this Panel</h2>
-				<div class="space-y-4">
+			<section class="panel-papers-section">
+				<h2 class="panel-section-title">Papers in this Panel</h2>
+				<div class="panel-papers-grid">
 					{#each communication.papers as paper, index}
-						<div class="panel-paper p-4 rounded-md">
-							<h3 class="font-semibold text-lg">{paper.title}</h3>
+						<div class="panel-paper-card">
+							<h3 class="panel-paper-title">{paper.title}</h3>
 							{#if paper.authors && paper.authors.length > 0}
-								<div class="text-sm text-secondary mt-1 panel-paper-authors">
+								<div class="panel-paper-authors">
 									{#each paper.authors as author, index}
 										<span>
 											{author.name}{#if author.affiliation}{' '}({author.affiliation}){/if}{#if index < paper.authors.length - 1},&nbsp;{/if}
@@ -195,7 +195,7 @@
 								</div>
 							{/if}
 							{#if paper.abstract}
-								<div class="mt-2 text-sm">
+								<div class="panel-paper-abstract">
 									{paper.abstract}
 								</div>
 							{/if}
@@ -206,19 +206,19 @@
 		{/if}
 
 		{#if communication.participants && communication.participants.length > 0}
-			<section class="mb-6">
-				<h2 class="text-xl font-semibold mb-3">Participants</h2>
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+			<section class="participants-section">
+				<h2 class="panel-section-title">Participants</h2>
+				<div class="participants-grid">
 					{#each communication.participants as participant}
-						<div class="panel-participant p-3 rounded-md">
-							<div class="font-medium">{participant.name}</div>
+						<div class="participant-card">
+							<div class="participant-name">{participant.name}</div>
 							{#if participant.role}
-								<div class="text-sm text-secondary participant-role">
+								<div class="participant-role">
 									{participant.role}
 								</div>
 							{/if}
 							{#if participant.affiliation}
-								<div class="text-xs text-muted mt-1">
+								<div class="participant-affiliation">
 									{participant.affiliation}
 								</div>
 							{/if}
@@ -262,29 +262,451 @@
 </div>
 
 <style>
-	/* Theme styles for main article container */
+	/* Enhanced styles for main article container with glassmorphism integration */
 	.communication-article {
-		background-color: var(--color-background);
+		/* Sophisticated glassmorphism effect matching publication components */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.04) 0%,
+			rgba(var(--color-highlight-rgb), 0.025) 35%,
+			rgba(var(--color-accent-rgb), 0.02) 65%,
+			var(--color-surface) 100%
+		);
+		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 10px));
+		backdrop-filter: blur(var(--glass-blur-fallback, 10px));
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low, 0.1));
+		box-shadow: var(--shadow-lg);
+		transition: all var(--anim-duration-base) var(--anim-ease-out);
+		position: relative;
+		overflow: hidden;
+	}
+
+	/* Enhanced hover effect */
+	.communication-article:hover {
+		transform: var(--transform-lift-sm, translateY(-2px));
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.06) 0%,
+			rgba(var(--color-highlight-rgb), 0.04) 35%,
+			rgba(var(--color-accent-rgb), 0.03) 65%,
+			var(--color-surface) 100%
+		);
+		box-shadow: var(--shadow-xl, 0 25px 50px -12px rgba(0, 0, 0, 0.25));
+	}
+
+	/* Subtle inner highlight for depth */
+	.communication-article::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		border-radius: inherit;
+		background: linear-gradient(
+			180deg,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 0%,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0) 40%,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0) 60%,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 100%
+		);
+		mix-blend-mode: overlay;
+		opacity: 0.3;
+	}
+
+	/* Panel Papers Section */
+	.panel-papers-section {
+		margin: var(--spacing-8) 0;
+		padding: var(--spacing-6);
+		border-radius: var(--border-radius-xl);
+		position: relative;
+		
+		/* Sophisticated glassmorphism effect matching other components */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.035) 0%,
+			rgba(var(--color-accent-rgb), 0.025) 50%,
+			rgba(var(--color-highlight-rgb), 0.02) 100%
+		);
+		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 8px));
+		backdrop-filter: blur(var(--glass-blur-fallback, 8px));
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low, 0.08));
+		box-shadow: 
+			var(--shadow-md),
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-low, 0.1));
+		transition: all var(--anim-duration-base) var(--anim-ease-out);
+	}
+
+	.panel-papers-section:hover {
+		transform: var(--transform-lift-sm, translateY(-1px));
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.05) 0%,
+			rgba(var(--color-accent-rgb), 0.035) 50%,
+			rgba(var(--color-highlight-rgb), 0.03) 100%
+		);
+		box-shadow: 
+			var(--shadow-lg),
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-medium, 0.15));
+	}
+
+	/* Participants Section */
+	.participants-section {
+		margin: var(--spacing-8) 0;
+		padding: var(--spacing-6);
+		border-radius: var(--border-radius-xl);
+		position: relative;
+		
+		/* Sophisticated glassmorphism effect matching other components */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.035) 0%,
+			rgba(var(--color-accent-rgb), 0.025) 50%,
+			rgba(var(--color-highlight-rgb), 0.02) 100%
+		);
+		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 8px));
+		backdrop-filter: blur(var(--glass-blur-fallback, 8px));
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low, 0.08));
+		box-shadow: 
+			var(--shadow-md),
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-low, 0.1));
+		transition: all var(--anim-duration-base) var(--anim-ease-out);
+	}
+
+	.participants-section:hover {
+		transform: var(--transform-lift-sm, translateY(-1px));
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.05) 0%,
+			rgba(var(--color-accent-rgb), 0.035) 50%,
+			rgba(var(--color-highlight-rgb), 0.03) 100%
+		);
+		box-shadow: 
+			var(--shadow-lg),
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-medium, 0.15));
+	}
+
+	/* Section Titles */
+	.panel-section-title {
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-xl);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text-emphasis);
+		margin-bottom: var(--spacing-6);
+		line-height: var(--line-height-tight);
+		position: relative;
+	}
+
+	/* Elegant accent line under title matching other components */
+	.panel-section-title::after {
+		content: '';
+		position: absolute;
+		bottom: calc(-1 * var(--spacing-2));
+		left: 0;
+		width: var(--spacing-16);
+		height: var(--border-width-medium, 2px);
+		background: linear-gradient(
+			90deg,
+			var(--color-highlight) 0%,
+			rgba(var(--color-highlight-rgb), 0.3) 100%
+		);
+		border-radius: var(--border-radius-full);
+		transition: width var(--anim-duration-base) var(--anim-ease-out);
+	}
+
+	.panel-papers-section:hover .panel-section-title::after,
+	.participants-section:hover .panel-section-title::after {
+		width: var(--spacing-20);
+	}
+
+	/* Panel Papers Grid */
+	.panel-papers-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--spacing-4);
+	}
+
+	/* Panel Paper Cards */
+	.panel-paper-card {
+		padding: var(--spacing-5);
+		border-radius: var(--border-radius-lg);
+		position: relative;
+		
+		/* Enhanced glassmorphism for individual cards */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-accent-rgb), 0.03) 0%,
+			rgba(var(--color-primary-rgb), 0.02) 50%,
+			rgba(var(--color-highlight-rgb), 0.015) 100%
+		);
+		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
+		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
+		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low, 0.08));
+		box-shadow: var(--shadow-sm);
+		transition: all var(--anim-duration-base) var(--anim-ease-out);
+	}
+
+	.panel-paper-card:hover {
+		transform: var(--transform-lift-sm, translateY(-2px));
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-accent-rgb), 0.05) 0%,
+			rgba(var(--color-primary-rgb), 0.03) 50%,
+			rgba(var(--color-highlight-rgb), 0.025) 100%
+		);
 		box-shadow: var(--shadow-md);
-		transition:
-			background-color 0.3s ease,
-			box-shadow 0.3s ease;
 	}
 
-	/* Theme styles for panel paper/participant divs */
-	.panel-paper,
-	.panel-participant {
-		background-color: var(--color-border);
-		transition: background-color 0.3s ease;
+	/* Subtle inner highlight for paper cards */
+	.panel-paper-card::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		border-radius: inherit;
+		background: linear-gradient(
+			180deg,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 0%,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0) 40%,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0) 60%,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 100%
+		);
+		mix-blend-mode: overlay;
+		opacity: 0.3;
 	}
-	.panel-paper-authors,
-	.participant-role {
+
+	.panel-paper-title {
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-lg);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text-emphasis);
+		margin-bottom: var(--spacing-3);
+		line-height: var(--line-height-snug);
+	}
+
+	.panel-paper-authors {
+		font-size: var(--font-size-sm);
 		color: var(--color-text-light);
+		margin-bottom: var(--spacing-3);
+		font-weight: var(--font-weight-medium);
 	}
 
-	/* Specific styles for the map container if needed */
+	.panel-paper-abstract {
+		font-size: var(--font-size-sm);
+		color: var(--color-text);
+		line-height: var(--line-height-relaxed);
+		margin-top: var(--spacing-2);
+	}
+
+	/* Participants Grid */
+	.participants-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--spacing-4);
+	}
+
+	@media (min-width: 768px) {
+		.participants-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	/* Participant Cards */
+	.participant-card {
+		padding: var(--spacing-4);
+		border-radius: var(--border-radius-lg);
+		position: relative;
+		
+		/* Enhanced glassmorphism for individual cards */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-accent-rgb), 0.03) 0%,
+			rgba(var(--color-primary-rgb), 0.02) 50%,
+			rgba(var(--color-highlight-rgb), 0.015) 100%
+		);
+		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
+		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
+		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low, 0.08));
+		box-shadow: var(--shadow-sm);
+		transition: all var(--anim-duration-base) var(--anim-ease-out);
+	}
+
+	.participant-card:hover {
+		transform: var(--transform-lift-sm, translateY(-2px));
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-accent-rgb), 0.05) 0%,
+			rgba(var(--color-primary-rgb), 0.03) 50%,
+			rgba(var(--color-highlight-rgb), 0.025) 100%
+		);
+		box-shadow: var(--shadow-md);
+	}
+
+	/* Subtle inner highlight for participant cards */
+	.participant-card::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		border-radius: inherit;
+		background: linear-gradient(
+			180deg,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 0%,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0) 40%,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0) 60%,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 100%
+		);
+		mix-blend-mode: overlay;
+		opacity: 0.3;
+	}
+
+	.participant-name {
+		font-weight: var(--font-weight-semibold);
+		font-size: var(--font-size-base);
+		color: var(--color-text-emphasis);
+		margin-bottom: var(--spacing-1);
+	}
+
+	.participant-role {
+		font-size: var(--font-size-sm);
+		color: var(--color-text-light);
+		font-weight: var(--font-weight-medium);
+		margin-bottom: var(--spacing-1);
+	}
+
+	.participant-affiliation {
+		font-size: var(--font-size-xs);
+		color: var(--color-text-muted);
+		line-height: var(--line-height-relaxed);
+	}
+
+	/* Specific styles for the map container */
 	.map-container-wrapper {
-		/* Example: height: 400px; */
-		height: 400px; /* Assuming a fixed height is desired */
+		height: 400px;
+		border-radius: var(--border-radius-lg);
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-accent-rgb), 0.03) 0%,
+			rgba(var(--color-primary-rgb), 0.02) 50%,
+			rgba(var(--color-highlight-rgb), 0.015) 100%
+		);
+		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
+		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
+		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low, 0.08));
+		box-shadow: var(--shadow-sm);
+	}
+
+	/* Dark mode refinements */
+	:global(html.dark) .communication-article {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.7) 0%,
+			rgba(var(--color-primary-rgb), 0.15) 35%,
+			rgba(var(--color-accent-rgb), 0.1) 65%,
+			var(--color-dark-surface, #334155) 100%
+		);
+	}
+
+	:global(html.dark) .communication-article:hover {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.8) 0%,
+			rgba(var(--color-primary-rgb), 0.2) 35%,
+			rgba(var(--color-accent-rgb), 0.15) 65%,
+			var(--color-dark-surface, #334155) 100%
+		);
+	}
+
+	:global(html.dark) .panel-papers-section,
+	:global(html.dark) .participants-section {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.6) 0%,
+			rgba(var(--color-primary-rgb), 0.12) 50%,
+			rgba(var(--color-accent-rgb), 0.08) 100%
+		);
+		border-color: rgba(var(--color-white-rgb, 255, 255, 255), 0.08);
+	}
+
+	:global(html.dark) .panel-papers-section:hover,
+	:global(html.dark) .participants-section:hover {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.7) 0%,
+			rgba(var(--color-primary-rgb), 0.15) 50%,
+			rgba(var(--color-accent-rgb), 0.1) 100%
+		);
+	}
+
+	:global(html.dark) .panel-paper-card,
+	:global(html.dark) .participant-card {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.4) 0%,
+			rgba(var(--color-accent-rgb), 0.08) 50%,
+			rgba(var(--color-primary-rgb), 0.06) 100%
+		);
+		border-color: rgba(var(--color-white-rgb, 255, 255, 255), 0.06);
+	}
+
+	:global(html.dark) .panel-paper-card:hover,
+	:global(html.dark) .participant-card:hover {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.5) 0%,
+			rgba(var(--color-accent-rgb), 0.12) 50%,
+			rgba(var(--color-primary-rgb), 0.08) 100%
+		);
+	}
+
+	:global(html.dark) .map-container-wrapper {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.4) 0%,
+			rgba(var(--color-accent-rgb), 0.08) 50%,
+			rgba(var(--color-primary-rgb), 0.06) 100%
+		);
+		border-color: rgba(var(--color-white-rgb, 255, 255, 255), 0.06);
+	}
+
+	/* Responsive adjustments */
+	@media (max-width: 640px) {
+		.panel-papers-section,
+		.participants-section {
+			padding: var(--spacing-4);
+		}
+		
+		.panel-section-title {
+			font-size: var(--font-size-lg);
+		}
+		
+		.panel-paper-card,
+		.participant-card {
+			padding: var(--spacing-3);
+		}
+
+		.panel-paper-title {
+			font-size: var(--font-size-base);
+		}
+
+		.map-container-wrapper {
+			height: 300px;
+		}
+	}
+
+	/* Respect user motion preferences */
+	@media (prefers-reduced-motion: reduce) {
+		.communication-article,
+		.communication-article:hover,
+		.panel-papers-section,
+		.panel-papers-section:hover,
+		.participants-section,
+		.participants-section:hover,
+		.panel-paper-card,
+		.panel-paper-card:hover,
+		.participant-card,
+		.participant-card:hover,
+		.panel-section-title::after {
+			transition: none;
+			transform: none;
+		}
 	}
 </style>
