@@ -25,5 +25,5 @@ export const ecoleNationaleDesChartesVisit2025: Activity = {
 		src: 'images/activities/ecole-nationale-des-chartes.webp',
 		alt: 'École nationale des chartes'
 	},
-	panelType: 'event'
+	type: 'lecture'
 };

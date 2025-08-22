@@ -28,5 +28,6 @@ export const etablirFaitiereIslamique: Activity = {
 		caption: 'Crêt-Bérard Monastery'
 	},
 	pdfPath: 'files/Programme_Atelier-Cret-Berard.pdf',
-	pdfTitle: 'Programme'
+	pdfTitle: 'Programme',
+	type: 'workshop'
 };

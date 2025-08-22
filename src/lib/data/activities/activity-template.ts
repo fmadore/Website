@@ -18,6 +18,7 @@ export const activityTemplate: Activity = {
         <p>Third paragraph, perhaps discussing outcomes, feedback, or future plans related to this activity.</p>
     `,
 	tags: ['tag1', 'tag2', 'tag3'], // Add relevant tags for categorization
+	type: 'conference', // Optional: activity type (conference, workshop, seminar, lecture, grant, etc.)
 	url: '', // Optional: external URL if applicable
 	additionalUrls: [
 		{ label: 'Video Recording', url: 'https://example.com/video' },

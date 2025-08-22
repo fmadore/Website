@@ -34,7 +34,8 @@
 			workshop: 'Workshop',
 			publication: 'Publication',
 			lecture: 'Lecture',
-			event: 'Event'
+			event: 'Event',
+			grant: 'Grant'
 		};
 		return typeMap[type] || 'Activity';
 	}

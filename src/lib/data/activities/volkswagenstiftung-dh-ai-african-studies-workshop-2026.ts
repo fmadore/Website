@@ -34,7 +34,8 @@ export const activity: Activity = {
 		src: 'images/activities/VolkswagenStiftung-logo.webp',
 		alt: 'VolkswagenStiftung logo',
 		caption: ''
-	}
+	},
+  type: 'grant'
 };
 
 export default activity;

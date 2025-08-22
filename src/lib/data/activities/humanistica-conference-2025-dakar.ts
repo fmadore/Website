@@ -24,5 +24,5 @@ export const humanisticaConference2025Dakar: Activity = {
 		alt: 'Humanistica 2025 conference in Dakar',
 		caption: ''
 	},
-	panelType: 'conference'
+	type: 'conference'
 };

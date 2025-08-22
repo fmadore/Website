@@ -36,5 +36,5 @@ export const ehessParisLectureSeries2025: Activity = {
 	},
 	pdfPath: 'files/prog-professeurs-invites_2024-2025_madore.pdf',
 	pdfTitle: 'Flyer',
-	panelType: 'lecture'
+	type: 'lecture'
 };

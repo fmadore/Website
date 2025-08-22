@@ -23,5 +23,6 @@ export const activity: Activity = {
 		caption: ''
 	},
 	pdfPath: 'files/perspectives-in-motion-programme.pdf',
-	pdfTitle: 'Workshop programme'
+	pdfTitle: 'Workshop programme',
+	type: 'workshop'
 };

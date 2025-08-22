@@ -21,5 +21,5 @@ export const activity: Activity = {
         <p>This work contributes to broader discussions on religious measurement and categorisation in Africa, while highlighting the limitations of current quantitative approaches in capturing complex religious realities.</p>
     `,
 	tags: ['Workshop', 'Benin'],
-	panelType: 'workshop'
+	type: 'workshop'
 };
