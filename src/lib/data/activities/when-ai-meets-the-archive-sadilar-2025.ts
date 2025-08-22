@@ -14,7 +14,7 @@ export const whenAIMeetsTheArchiveSadilar2025: Activity = {
         
         <p>The presentation showcased three practical applications of large language models. These included enhancing the accuracy of optical character recognition (OCR) and entity recognition for African materials, conducting experimental sentiment analysis across over 10,000 newspaper articles examining the representation of Islam, and developing a conversational AI chatbot that transcends traditional keyword-based search methodologies.</p>
         
-        <p>Drawing on my experience of working on the IWAC project, I presented practical solutions for managing digital abundance, emphasising the importance of maintaining a critical awareness of the inherent limitations of AI technologies. The talk emphasised the transformative potential of AI technologies when applied to historical materials, as well as the necessary cautions.</p>
+        <p>Drawing on my experience of working on the IWAC, I presented practical solutions for managing digital abundance, emphasising the importance of maintaining a critical awareness of the inherent limitations of AI technologies. The talk emphasised the transformative potential of AI technologies when applied to historical materials, as well as the necessary cautions.</p>
             `,
 	tags: ['Digital Humanities', 'AI', 'IWAC', 'Large Language Models'],
 	url: 'https://sadilar.org/en/dh-colloquium/',
