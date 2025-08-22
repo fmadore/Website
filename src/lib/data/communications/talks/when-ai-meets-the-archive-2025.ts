@@ -16,6 +16,9 @@ export const talkWhenAIMeetsTheArchive2025: Communication = {
 	abstract: "The Islam West Africa Collection (IWAC) comprises over 14,000 documents spanning six countries and containing 25 million words. This talk explores how large language models (LLMs) can transform vast collections into more navigable resources through three practical applications: enhancing OCR accuracy and entity recognition for African materials; conducting experimental sentiment analysis across over 10,000 newspaper articles on the representation of Islam; and developing a conversational AI chatbot that transcends traditional keyword searching. Drawing on my experience, I will present practical solutions for managing digital abundance while maintaining a critical awareness of AI's inherent limitations.",
 	tags: ['AI', 'Digital Humanities', 'IWAC', 'Large Language Models'],
 	url: 'https://sadilar.org/en/dh-colloquium/',
+		additionalUrls: [
+			{ label: 'Video Recording', url: 'https://youtu.be/OhbPYA4_URo' }
+		],
 	image: 'images/communications/SADILAR.webp',
 	heroImage: {
 	src: 'images/communications/SADILAR-hero.webp',
