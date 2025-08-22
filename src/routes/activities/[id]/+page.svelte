@@ -8,6 +8,7 @@
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import type { Activity } from '$lib/types';
+	import type { Communication } from '$lib/types/communication';
 	import type { PageData } from './$types';
 	import { browser } from '$app/environment';
 
@@ -259,13 +260,15 @@
 			</ContentBody>
 		</div>
 
-		{#if activity.url}
+		{#if activity.url || (activity.additionalUrls && activity.additionalUrls.length > 0)}
 			<div use:scrollAnimate={{ delay: DELAY_STEP * 6, animationClass: 'fade-in-up' }}>
 				<ActionLinks
 					primaryUrl={activity.url}
 					primaryLabel="Visit Activity"
+					additionalUrls={activity.additionalUrls}
 					sectionClass="action-links mt-4"
 					primaryButtonClass="btn btn-primary glass-button"
+					secondaryButtonClass="btn btn-outline-primary glass-button"
 					primaryDivClass="mb-4"
 				/>
 			</div>

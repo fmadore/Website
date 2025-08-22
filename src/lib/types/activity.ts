@@ -4,6 +4,7 @@ export type Activity = {
 	date: string; // Display date (e.g., "21 March 2025")
 	dateISO: string; // ISO date format (YYYY-MM-DD) for sorting and internal use
 	url?: string; // External URL if applicable
+	additionalUrls?: Array<{ label: string; url: string }>; // Additional URLs with labels
 	year: number; // Year for filtering
 	description: string; // Short description for list view
 	content?: string; // Full HTML content for detail page

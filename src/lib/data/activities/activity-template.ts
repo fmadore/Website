@@ -19,6 +19,11 @@ export const activityTemplate: Activity = {
     `,
 	tags: ['tag1', 'tag2', 'tag3'], // Add relevant tags for categorization
 	url: '', // Optional: external URL if applicable
+	additionalUrls: [
+		{ label: 'Video Recording', url: 'https://example.com/video' },
+		{ label: 'Presentation Slides', url: 'https://example.com/slides' },
+		{ label: 'Event Website', url: 'https://example.com/event' }
+	],
 	image: '', // Optional: path to a small image (e.g., "images/activities/small-image.jpg")
 	heroImage: {
 		// Optional: hero image configuration
