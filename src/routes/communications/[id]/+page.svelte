@@ -245,6 +245,10 @@
 			primaryUrl={communication.url}
 			primaryLabel="Access Presentation"
 			additionalUrls={communication.additionalUrls}
+			sectionClass="action-links mt-4"
+			primaryButtonClass="btn btn-primary glass-button"
+			secondaryButtonClass="btn btn-outline-primary glass-button"
+			primaryDivClass="mb-4"
 		/>
 	</article>
 
