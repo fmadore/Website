@@ -115,7 +115,7 @@
 								href={url.url}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="btn btn-outline-primary btn-sm"
+								class="entity-link-btn btn btn-outline-primary btn-sm"
 							>
 								{url.label || `Link ${i + 1}`}
 							</a>
