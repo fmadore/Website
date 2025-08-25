@@ -153,6 +153,35 @@ Flexible card component system with glassmorphism effects:
 - **Glass effects**: Automatic glassmorphism with backdrop blur and transparency
 - **Dark mode support**: Seamless dark theme adaptations
 
+### Entity Cards (`components/entity-cards.css`)
+
+Unified card styles for list-based entities (e.g., Publications, Communications) that align with the design philosophy and global CSS tokens.
+
+- Purpose: Provide a consistent look-and-feel for content cards across pages without duplicating styles in components.
+- Uses only global design tokens: colors, spacing, typography, border radius, shadows, and transitions.
+- Glassmorphism: Works in tandem with `.glass-card` from glass utilities for subtle depth and dark-mode support.
+- Responsive: Single-column on mobile; image + content grid from `md` breakpoint.
+- Core classes:
+  - `.entity-list-item` – list item wrapper with consistent spacing
+  - `.entity-card` – glass gradient background, radius, hover lift, shadows
+  - `.entity-grid` – layout for image and content columns
+  - `.entity-image-container`, `.entity-cover-image` – image placement and styling (5/7 aspect)
+  - `.entity-content` – vertical stack container
+  - `.entity-meta`, `.entity-type`, `.entity-language` – compact metadata line
+  - `.entity-title`, `.entity-title-link` – title style and hover color
+  - `.entity-details`, `.entity-abstract` – body text styles
+  - `.entity-tags`, `.entity-links`, `.entity-link-btn` – tag row and external links with arrow indicator
+
+Usage notes:
+
+- Combine `.entity-card` with `.glass-card` to inherit the global glass effects and dark mode.
+- For external links in cards, prefer `entity-link-btn` alongside button utilities (e.g., `btn btn-outline-primary btn-sm`).
+- Keep component-specific micro-styles local (e.g., an author or country filter button), but rely on entity classes for layout and visual system.
+
+Adoption:
+
+- `PublicationItem.svelte` and `CommunicationItem.svelte` are refactored to use these classes for full visual parity across pages.
+
 ### ContentBody Component
 
 The `ContentBody` component (`src/lib/components/common/ContentBody.svelte`) is a reusable container for main content areas that provides:
@@ -242,7 +271,7 @@ The animation system integrates with JavaScript utilities (`src/lib/utils/scroll
 
 ## Page-Specific Styles
 
-**Note**: Page-specific styles have been migrated to their respective components to improve maintainability and reduce CSS bundle size. Publication-related styles are now embedded directly in the relevant Svelte components.
+**Note**: Page-specific styles have been migrated to their respective components to improve maintainability and reduce CSS bundle size. For repeatable content cards (e.g., publications and communications), shared presentation is centralized in `components/entity-cards.css`, with components keeping only minimal, truly unique tweaks (e.g., advisor/preface or filter buttons).
 
 ## Utilities
 
@@ -454,6 +483,7 @@ When using this CSS framework:
 10. **Document new utilities** and component classes
 11. **Use scroll animations judiciously** - respect user preferences and performance
 12. **Implement proper cookie consent** using the provided utilities for GDPR compliance
+13. **For list-based content cards**, use the `entity-cards.css` module instead of creating bespoke card CSS inside components, and augment only when component-specific behavior truly requires it.
 
 ## Performance Considerations
 
