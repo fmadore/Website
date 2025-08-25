@@ -12,6 +12,7 @@
 /* UI Components */
 @import './styles/components/buttons.css';
 @import './styles/components/cards.css';
+@import './styles/components/entity-cards.css';
 @import './styles/components/navigation-utilities.css';
 @import './styles/components/activity-list.css';
 @import './styles/components/panels.css';

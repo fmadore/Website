@@ -92,15 +92,15 @@
 	});
 </script>
 
-<li class="publication-item">
-	<div class="publication-card glass-card">
-		<div class="publication-grid">
+<li class="entity-list-item">
+	<div class="entity-card glass-card">
+		<div class="entity-grid">
 			{#if publication.image}
-				<div class="publication-image-container">
+				<div class="entity-image-container">
 					<img 
 						src={publication.image} 
 						alt={publication.title} 
-						class="publication-cover-image"
+						class="entity-cover-image"
 						width="200"
 						height="280"
 						loading={imageLoading}
@@ -109,24 +109,24 @@
 				</div>
 			{/if}
 
-			<div class="publication-content">
-				<div class="publication-meta">
+			<div class="entity-content">
+				<div class="entity-meta">
 					<!-- Use typeLabel from formattedCitation -->
-					<span class="publication-type">{formattedCitation.typeLabel}</span>
+					<span class="entity-type">{formattedCitation.typeLabel}</span>
 					{#if publication.language && publication.language.includes(',')}
-						<span class="publication-language">({publication.language})</span>
+						<span class="entity-language">({publication.language})</span>
 					{:else if publication.language && publication.language !== 'English'}
-						<span class="publication-language">({publication.language})</span>
+						<span class="entity-language">({publication.language})</span>
 					{/if}
 				</div>
 
-				<h3 class="publication-title">
-					<a href="{base}/publications/{publication.id}" class="publication-title-link">
+				<h3 class="entity-title">
+					<a href="{base}/publications/{publication.id}" class="entity-title-link">
 						{publication.title}
 					</a>
 				</h3>
 				
-				<div class="publication-details">
+				<div class="entity-details">
 					<!-- Render prefix and the constructed author string -->
 					{displayData.listPrefix}{displayData.authorString}
 					<!-- Space, then (Year). Only if year is defined -->
@@ -187,13 +187,13 @@
 				</div>
 
 				{#if publication.abstract}
-					<div class="publication-abstract">
+					<div class="entity-abstract">
 						{truncateAbstract(publication.abstract)}
 					</div>
 				{/if}
 
 				{#if publication.tags && publication.tags.length > 0}
-					<div class="publication-tags">
+					<div class="entity-tags">
 						<TagList
 							tags={publication.tags}
 							baseUrl="/publications?tag="
@@ -205,13 +205,13 @@
 				{/if}
 
 				{#if publication.additionalUrls && publication.additionalUrls.length > 0}
-					<div class="publication-links">
+					<div class="entity-links">
 						{#each publication.additionalUrls as url, i}
 							<a
 								href={url.url}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="publication-link-btn glass-button btn-outline-primary"
+								class="entity-link-btn btn btn-outline-primary btn-sm"
 							>
 								{url.label || `Link ${i + 1}`}
 							</a>
@@ -224,124 +224,6 @@
 </li>
 
 <style>
-	.publication-item {
-		padding: 0;
-		list-style: none;
-		margin-bottom: var(--spacing-6);
-	}
-
-	.publication-card {
-		padding: var(--spacing-4);
-		border-radius: var(--border-radius-lg);
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
-		position: relative;
-		/* Enhanced glassmorphism with subtle gradient overlay to match ContentBody */
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.03) 0%,
-			rgba(var(--color-highlight-rgb), 0.02) 50%,
-			rgba(var(--color-accent-rgb), 0.01) 100%
-		);
-	}
-
-	.publication-card:hover {
-		transform: var(--transform-lift-sm);
-		/* Enhanced hover effect with stronger gradient */
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.05) 0%,
-			rgba(var(--color-highlight-rgb), 0.03) 50%,
-			rgba(var(--color-accent-rgb), 0.02) 100%
-		);
-	}
-
-	.publication-grid {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--spacing-4);
-	}
-
-	@media (min-width: 768px) {
-		.publication-grid {
-			grid-template-columns: auto 1fr;
-		}
-	}
-
-	.publication-image-container {
-		display: flex;
-		justify-content: center;
-	}
-
-	@media (min-width: 768px) {
-		.publication-image-container {
-			justify-content: flex-start;
-		}
-	}
-
-	.publication-cover-image {
-		width: 100%;
-		max-width: 200px;
-		height: auto;
-		aspect-ratio: 5/7; /* Typical book cover ratio */
-		object-fit: cover;
-		border-radius: var(--border-radius);
-		box-shadow: var(--shadow-md);
-		transition: box-shadow var(--anim-duration-base) var(--anim-ease-out);
-	}
-
-	.publication-card:hover .publication-cover-image {
-		box-shadow: var(--shadow-lg);
-	}
-
-	.publication-content {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-2);
-	}
-
-	.publication-meta {
-		display: flex;
-		align-items: center;
-		gap: var(--spacing-2);
-		margin-bottom: var(--spacing-1);
-	}
-
-	.publication-type {
-		color: var(--color-primary);
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-medium);
-	}
-
-	.publication-language {
-		color: var(--color-text-muted);
-		font-size: var(--font-size-sm);
-	}
-
-	.publication-title {
-		font-size: var(--font-size-xl);
-		font-weight: var(--font-weight-medium);
-		margin-bottom: var(--spacing-2);
-		color: var(--color-text-emphasis);
-		line-height: var(--line-height-snug);
-	}
-
-	.publication-title-link {
-		color: inherit;
-		text-decoration: none;
-		transition: color var(--anim-duration-fast) var(--anim-ease-out);
-	}
-
-	.publication-title-link:hover {
-		color: var(--color-primary);
-	}
-
-	.publication-details {
-		color: var(--color-text-light);
-		font-size: var(--font-size-sm);
-		margin-bottom: var(--spacing-2);
-		line-height: var(--line-height-relaxed);
-	}
-
 	.advisor-info,
 	.preface-info {
 		margin-top: var(--spacing-1);
@@ -371,75 +253,5 @@
 		outline: 2px solid var(--color-highlight);
 		outline-offset: 2px;
 		box-shadow: 0 0 0 4px rgba(var(--color-highlight-rgb), 0.2);
-	}
-
-	.publication-abstract {
-		color: var(--color-text-light);
-		font-size: var(--font-size-sm);
-		margin-bottom: var(--spacing-4);
-		line-height: var(--line-height-relaxed);
-	}
-
-	.publication-tags {
-		margin-top: var(--spacing-3);
-	}
-
-	.publication-tags :global(.tag-list) {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--spacing-2);
-	}
-
-	.publication-links {
-		margin-top: var(--spacing-3);
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--spacing-2);
-	}
-
-	.publication-link-btn {
-		font-size: var(--font-size-sm);
-		padding: var(--spacing-2) var(--spacing-3);
-		border-radius: var(--border-radius);
-		text-decoration: none;
-		font-weight: var(--font-weight-medium);
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
-	}
-
-	/* External link indicator for publication links */
-	.publication-link-btn:after {
-		content: '↗';
-		font-size: var(--font-size-xs);
-		margin-left: var(--spacing-1);
-		opacity: var(--opacity-high);
-	}
-
-	/* Responsive adjustments */
-	@media (max-width: 640px) {
-		.publication-card {
-			padding: var(--spacing-3);
-		}
-
-		.publication-title {
-			font-size: var(--font-size-lg);
-		}
-
-		.publication-cover-image {
-			max-width: 150px;
-		}
-	}
-
-	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
-		.publication-card,
-		.publication-cover-image,
-		.author-btn,
-		.publication-link-btn {
-			transition: none;
-		}
-
-		.publication-card:hover {
-			transform: none;
-		}
 	}
 </style>
