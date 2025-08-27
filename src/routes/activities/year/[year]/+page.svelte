@@ -9,7 +9,7 @@
 	import { browser } from '$app/environment';
 
 	// Get the year parameter from the URL
-	let year = $derived(parseInt($page.params.year));
+	let year = $derived(parseInt($page.params.year || ''));
 
 	// Filter activities by year - using $derived for reactive filtering
 	let filteredActivities = $derived(
