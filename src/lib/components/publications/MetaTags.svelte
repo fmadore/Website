@@ -12,6 +12,22 @@
 		return `${page.url.origin}${base}${path.startsWith('/') ? '' : '/'}${path}`;
 	};
 
+	// Helper to get citation genre for OpenURL/COinS compatibility
+	const getCitationGenre = (type: Publication['type']): string => {
+		const genreMap: Record<Publication['type'], string> = {
+			'article': 'article',
+			'chapter': 'bookitem',
+			'encyclopedia': 'bookitem',
+			'blogpost': 'article',
+			'book': 'book',
+			'special-issue': 'journal',
+			'report': 'report',
+			'phd-dissertation': 'dissertation',
+			'masters-thesis': 'dissertation'
+		};
+		return genreMap[type] || 'unknown';
+	};
+
 	// Helper to map publication types to Dublin Core types
 	const getDcType = (type: Publication['type']): string => {
 		const typeMap: Record<Publication['type'], string> = {
@@ -119,12 +135,70 @@
 		return [{ name, content }];
 	};
 
+	// Helper to create COinS metadata
+	const createCoinsData = (): string => {
+		const params = new URLSearchParams();
+		
+		// Basic COinS parameters
+		params.set('url_ver', 'Z39.88-2004');
+		params.set('ctx_ver', 'Z39.88-2004');
+		params.set('rfr_id', 'info:sid/personal-website');
+		
+		// Publication type specific format
+		if (publication.type === 'article' || publication.type === 'special-issue') {
+			params.set('rft_val_fmt', 'info:ofi/fmt:kev:mtx:journal');
+			params.set('rft.genre', 'article');
+			if (publication.journal) params.set('rft.jtitle', publication.journal);
+			if (publication.volume) params.set('rft.volume', publication.volume);
+			if (publication.issue) params.set('rft.issue', publication.issue);
+		} else if (publication.type === 'book') {
+			params.set('rft_val_fmt', 'info:ofi/fmt:kev:mtx:book');
+			params.set('rft.genre', 'book');
+			if (publication.publisher) params.set('rft.pub', publication.publisher);
+			if (publication.placeOfPublication) params.set('rft.place', publication.placeOfPublication);
+		} else if (publication.type === 'chapter') {
+			params.set('rft_val_fmt', 'info:ofi/fmt:kev:mtx:book');
+			params.set('rft.genre', 'bookitem');
+			if (publication.book) params.set('rft.btitle', publication.book);
+			if (publication.publisher) params.set('rft.pub', publication.publisher);
+		}
+		
+		// Common fields
+		if (publication.title) params.set('rft.title', publication.title);
+		if (publication.authors) {
+			publication.authors.forEach((author, index) => {
+				if (index === 0) {
+					const [last, first] = author.split(',').map(s => s.trim());
+					if (first) params.set('rft.aufirst', first);
+					if (last) params.set('rft.aulast', last);
+				}
+				params.set('rft.au', author);
+			});
+		}
+		if (publication.dateISO) params.set('rft.date', publication.dateISO);
+		else if (publication.year) params.set('rft.date', publication.year.toString());
+		if (publication.pages) {
+			params.set('rft.pages', publication.pages);
+			const [start, end] = publication.pages.split('-').map(s => s.trim());
+			if (start) params.set('rft.spage', start);
+			if (end) params.set('rft.epage', end);
+		}
+		if (publication.doi) params.set('rft_id', `info:doi/${publication.doi}`);
+		if (publication.isbn) params.set('rft.isbn', publication.isbn);
+		if ((publication as any).issn) params.set('rft.issn', (publication as any).issn);
+		
+		return params.toString();
+	};
+
 	// Main meta tags computation
 	const metaTags = $derived.by((): MetaTag[] => {
 		const tags: MetaTag[] = [];
 		
 		// Basic Highwire Press tags
 		tags.push({ name: 'citation_title', content: publication.title });
+		
+		// Add citation genre for better type detection
+		tags.push({ name: 'citation_genre', content: getCitationGenre(publication.type) });
 		
 		// Authors
 		if (publication.authors) {
@@ -145,6 +219,7 @@
 			...createConditionalTag('citation_doi', publication.doi),
 			...createConditionalTag('citation_isbn', publication.isbn),
 			...createConditionalTag('citation_issn', (publication as any).issn),
+			...createConditionalTag('citation_eIssn', (publication as any).eIssn),
 			...createConditionalTag('citation_language', publication.language),
 			...createConditionalTag('citation_keywords', publication.tags?.join('; '))
 		);
@@ -153,6 +228,7 @@
 		tags.push(
 			...createConditionalTag('citation_public_url', getFullUrl(publication.url)),
 			...createConditionalTag('citation_abstract_html_url', `${page.url.origin}${page.url.pathname}`),
+			...createConditionalTag('citation_fulltext_html_url', getFullUrl(publication.url)),
 			...createConditionalTag('citation_pdf_url', getFullUrl((publication as any).pdfUrl))
 		);
 		
@@ -228,6 +304,9 @@
 		<meta name={tag.name} content={tag.content} />
 	{/each}
 </svelte:head>
+
+<!-- COinS metadata for Zotero compatibility -->
+<span class="Z3988" title={createCoinsData()} style="display: none;"></span>
 
 <!-- 
 	MetaTags Component
