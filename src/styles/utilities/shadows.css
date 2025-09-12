@@ -12,6 +12,9 @@
 .shadow-lg {
 	box-shadow: var(--shadow-lg);
 }
+.shadow-xl {
+	box-shadow: var(--shadow-xl);
+}
 .shadow-none {
 	box-shadow: none;
 }
@@ -28,6 +31,9 @@
 }
 .hover\:shadow-lg:hover {
 	box-shadow: var(--shadow-lg);
+}
+.hover\:shadow-xl:hover {
+	box-shadow: var(--shadow-xl);
 }
 .hover\:shadow-none:hover {
 	box-shadow: none;
@@ -47,6 +53,9 @@
 	.sm\:shadow-lg {
 		box-shadow: var(--shadow-lg);
 	}
+	.sm\:shadow-xl {
+		box-shadow: var(--shadow-xl);
+	}
 	.sm\:shadow-none {
 		box-shadow: none;
 	}
@@ -64,6 +73,9 @@
 	}
 	.md\:shadow-lg {
 		box-shadow: var(--shadow-lg);
+	}
+	.md\:shadow-xl {
+		box-shadow: var(--shadow-xl);
 	}
 	.md\:shadow-none {
 		box-shadow: none;
@@ -83,6 +95,9 @@
 	.lg\:shadow-lg {
 		box-shadow: var(--shadow-lg);
 	}
+	.lg\:shadow-xl {
+		box-shadow: var(--shadow-xl);
+	}
 	.lg\:shadow-none {
 		box-shadow: none;
 	}
@@ -100,6 +115,9 @@
 	}
 	.xl\:shadow-lg {
 		box-shadow: var(--shadow-lg);
+	}
+	.xl\:shadow-xl {
+		box-shadow: var(--shadow-xl);
 	}
 	.xl\:shadow-none {
 		box-shadow: none;
