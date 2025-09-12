@@ -2,16 +2,15 @@
 	/// <reference types="../lib/types/gtag" />
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
+	import { afterNavigate } from '$app/navigation';
 	import Footer from '$lib/components/common/Footer.svelte';
 	import Header from '$lib/components/menu/Header.svelte';
 	import CookieConsent from '$lib/components/common/CookieConsent.svelte';
 	import '../app.css';
-	import type { LayoutProps } from './$types'; // Added import for LayoutProps
-	import { afterNavigate } from '$app/navigation';
+	import type { LayoutProps } from './$types';
 	import { getGlobalState } from '$lib/stores/globalState.svelte';
 
 	// Destructure data and children from $props using LayoutProps
-	// This makes `children` available to TypeScript for the {@render children()} tag
 	let { data, children }: LayoutProps = $props();
 
 	// Get access to global state
@@ -20,11 +19,10 @@
 	let gtmLoaded = $state(false);
 	let isTransitioning = $state(false);
 	const GTM_ID = 'G-DQ644SW7RG'; // Your Measurement ID
+	const isDebugMode = false; // Set to true for development debugging
 
 	function loadGtm() {
 		if (gtmLoaded || !browser) return;
-		// Directly set gtmLoaded to true.
-		// In Svelte 5, direct assignment to a $state variable triggers reactivity.
 		gtmLoaded = true;
 
 		// Inject the GTM script tag with proper error handling
@@ -44,26 +42,43 @@
 
 		window.gtag('js', new Date());
 
-		// Replicate initial config logic from app.html
+		// Check consent and localhost status
 		const cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
 		const isLocalhost =
 			window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
 		window.gtag('config', GTM_ID, {
-			// Set initial page view sending based on consent/localhost
-			send_page_view: !isLocalhost && cookiesAccepted,
+			// Disable automatic page view tracking to prevent conflicts with SvelteKit
+			send_page_view: false,
+			// Enable enhanced measurement for SPAs
+			allow_enhanced_conversions: true,
+			// Anonymize IP addresses for privacy compliance
 			anonymize_ip: true,
-			// Prevent any potential document.write usage
-			custom_map: {},
-			page_title: document.title,
-			page_location: window.location.href
+			// Additional SPA-specific configurations
+			transport_type: 'beacon',
+			// Enable debug mode if needed (for development)
+			debug_mode: isDebugMode,
+			custom_map: {}
 		});
+
+		// Send initial page view manually if consent is given and not localhost
+		if (!isLocalhost && cookiesAccepted) {
+			try {
+				window.gtag('event', 'page_view', {
+					page_title: document.title,
+					page_location: window.location.href,
+					page_path: window.location.pathname
+				});
+			} catch (error) {
+				console.warn('Failed to send initial page view to Google Analytics:', error);
+			}
+		}
 
 		// Clean up interaction listeners
 		window.removeEventListener('scroll', loadGtmListener);
 		window.removeEventListener('mousemove', loadGtmListener);
 		window.removeEventListener('touchstart', loadGtmListener);
-		if (loadGtmTimer) clearTimeout(loadGtmTimer); // Clear timeout if interaction happened first
+		if (loadGtmTimer) clearTimeout(loadGtmTimer);
 		console.log('GTM loaded.');
 	}
 
@@ -105,6 +120,26 @@
 		setTimeout(() => {
 			isTransitioning = false;
 		}, 100);
+
+		// Track page views with Google Analytics (SvelteKit-compatible)
+		if (browser && gtmLoaded && typeof window.gtag === 'function') {
+			const cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
+			const isLocalhost =
+				window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+			if (!isLocalhost && cookiesAccepted) {
+				// Send manual page view event as recommended for SPAs
+				try {
+					window.gtag('event', 'page_view', {
+						page_title: document.title,
+						page_location: window.location.href,
+						page_path: window.location.pathname
+					});
+				} catch (error) {
+					console.warn('Failed to send page view to Google Analytics:', error);
+				}
+			}
+		}
 	});
 </script>
 

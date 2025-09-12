@@ -375,7 +375,7 @@
 			<!--
             <div>
                 <button 
-                    on:click={downloadRis} 
+                    onclick={downloadRis} 
                     class="btn btn-primary cursor-pointer"
                 >
                     Export RIS

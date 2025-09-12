@@ -23,13 +23,18 @@
 		cookieConsent.setConsent(true);
 		showBanner = false;
 
-		// Enable Google Analytics tracking
+		// Enable Google Analytics tracking with manual page view
 		if (typeof window !== 'undefined' && 'gtag' in window) {
-			// First enable tracking for current page
-			window.gtag('config', 'G-DQ644SW7RG', {
-				send_page_view: true,
-				anonymize_ip: true
-			});
+			// Send a page view event for the current page after consent (SPA best practice)
+			try {
+				window.gtag('event', 'page_view', {
+					page_title: document.title,
+					page_location: window.location.href,
+					page_path: window.location.pathname
+				});
+			} catch (error) {
+				console.warn('Failed to send page view after cookie consent:', error);
+			}
 		}
 	}
 
@@ -46,8 +51,8 @@
 			<h3>Cookie Consent</h3>
 			<p>This website uses cookies to improve your experience and analyse site traffic.</p>
 			<div class="cookie-actions">
-				<Button variant="primary" on:click={acceptCookies}>Accept</Button>
-				<Button variant="secondary" on:click={declineCookies}>Decline</Button>
+				<Button variant="primary" onclick={acceptCookies}>Accept</Button>
+				<Button variant="secondary" onclick={declineCookies}>Decline</Button>
 			</div>
 		</div>
 	</div>
