@@ -32,7 +32,10 @@
 	color: var(--color-black);
 }
 .text-muted {
-	color: var(--color-footer-text-muted);
+	color: var(--color-text-muted);
+}
+.text-emphasis {
+	color: var(--color-text-emphasis);
 }
 
 /* Background colors */
