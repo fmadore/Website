@@ -4,6 +4,7 @@
 	import RelevantCommunications from '$lib/components/panels/RelevantCommunications.svelte';
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import ProjectImageBanner from '$lib/components/common/ProjectImageBanner.svelte';
+	import MediaPlayer from '$lib/components/media/MediaPlayer.svelte';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
@@ -137,6 +138,15 @@
 					</p>
 				{/snippet}
 			</ContentBody>
+
+			<MediaPlayer
+				src="{base}/notebooklm/religious_activism_campus.mp3"
+				type="audio"
+				title="Google NotebookLM Podcast Discussion"
+				glassEffect="glass-card"
+				animationDelay={DELAY_STEP * 10}
+				showControls={true}
+			/>
 		</div>
 
 		<div class="sidebar">
