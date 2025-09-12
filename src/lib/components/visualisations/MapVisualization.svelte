@@ -21,6 +21,7 @@
 	} from 'leaflet'; // Import types only
 	import { base } from '$app/paths'; // Import base path
 	import Icon from '@iconify/svelte'; // Import Iconify
+	import { getTheme } from '$lib/stores/themeStore.svelte'; // Import theme store
 
 	// Map configuration props with defaults using Svelte 5 $props() rune
 	let {
@@ -77,43 +78,14 @@
 	let currentThemeIsDark = $state<boolean | null>(null); // Track the currently applied theme state
 	let mobileMenuObserver = $state<MutationObserver | null>(null);
 
-	// Derived value for dark mode detection
+	// Derived value for dark mode detection - reactive to theme store changes
 	let darkModeDetected = $derived.by(() => {
+		// Respect the explicit preference override first
 		if (preferDarkMode !== null) return preferDarkMode;
-		if (!browser) return false;
-
-		// Check for dark mode using CSS variables if available
-		const bodyStyles = window.getComputedStyle(document.body);
-		const isDarkTheme = bodyStyles.getPropertyValue('--is-dark-theme')?.trim();
-		const colorScheme = bodyStyles.getPropertyValue('color-scheme')?.trim();
-		const backgroundColor = bodyStyles.getPropertyValue('background-color')?.trim();
-
-		// If there's an explicit dark theme flag
-		if (isDarkTheme === 'true') return true;
-		if (isDarkTheme === 'false') return false;
-
-		// Try color-scheme property
-		if (colorScheme === 'dark') return true;
-		if (colorScheme === 'light') return false;
-
-		// Try to infer from background color (rough estimate)
-		if (backgroundColor) {
-			try {
-				if (backgroundColor.includes('rgb')) {
-					const rgb = backgroundColor.match(/\d+/g);
-					if (rgb && rgb.length >= 3) {
-						const [r, g, b] = rgb.map(Number);
-						const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-						return brightness < 128;
-					}
-				}
-			} catch (e) {
-				console.error('Error parsing background color:', e);
-			}
-		}
-
-		// Fallback to system preference
-		return window.matchMedia?.('(prefers-color-scheme: dark)')?.matches || false;
+		
+		// Use the theme store value (reactive)
+		const currentTheme = getTheme();
+		return currentTheme === 'dark';
 	});
 
 	// Function to update tile layer based on theme
