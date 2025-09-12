@@ -887,6 +887,9 @@
 		min-width: 44px !important;
 		min-height: 44px !important;
 		
+		/* Proper cursor */
+		cursor: pointer !important;
+		
 		/* Modern glassmorphism design */
 		background: rgba(var(--color-surface-rgb), var(--opacity-90)) !important;
 		backdrop-filter: blur(12px) !important;
@@ -969,32 +972,46 @@
 
 	.volume-slider {
 		width: var(--spacing-20);
-		height: 4px;
-		background: rgba(var(--color-text-rgb), var(--opacity-10));
+		height: 6px;
+		background: rgba(var(--color-surface-rgb), var(--opacity-70));
+		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-20));
 		border-radius: var(--border-radius-full);
 		outline: none;
 		appearance: none;
 		cursor: pointer;
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
 		
+		/* Enhanced track styling with glassmorphism */
+		backdrop-filter: blur(4px);
+		box-shadow: 
+			inset 0 1px 3px rgba(var(--color-black-rgb), var(--opacity-10)),
+			0 1px 2px rgba(var(--color-white-rgb), var(--opacity-10));
+		
 		/* Enhanced track styling */
 		background-image: linear-gradient(
 			to right,
 			var(--color-primary) 0%,
 			var(--color-primary) calc(var(--volume-percentage, 100%) * 1%),
-			rgba(var(--color-text-rgb), var(--opacity-10)) calc(var(--volume-percentage, 100%) * 1%),
-			rgba(var(--color-text-rgb), var(--opacity-10)) 100%
+			rgba(var(--color-text-rgb), var(--opacity-15)) calc(var(--volume-percentage, 100%) * 1%),
+			rgba(var(--color-text-rgb), var(--opacity-15)) 100%
 		);
+	}
+
+	.volume-slider:hover {
+		background: rgba(var(--color-surface-rgb), var(--opacity-85));
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-30));
+		box-shadow: 
+			inset 0 1px 3px rgba(var(--color-black-rgb), var(--opacity-15)),
+			0 2px 4px rgba(var(--color-primary-rgb), var(--opacity-10)),
+			0 1px 2px rgba(var(--color-white-rgb), var(--opacity-15));
 		
-		&:hover {
-			background-image: linear-gradient(
-				to right,
-				var(--color-accent) 0%,
-				var(--color-accent) calc(var(--volume-percentage, 100%) * 1%),
-				rgba(var(--color-text-rgb), var(--opacity-15)) calc(var(--volume-percentage, 100%) * 1%),
-				rgba(var(--color-text-rgb), var(--opacity-15)) 100%
-			);
-		}
+		background-image: linear-gradient(
+			to right,
+			var(--color-accent) 0%,
+			var(--color-accent) calc(var(--volume-percentage, 100%) * 1%),
+			rgba(var(--color-text-rgb), var(--opacity-15)) calc(var(--volume-percentage, 100%) * 1%),
+			rgba(var(--color-text-rgb), var(--opacity-15)) 100%
+		);
 	}
 
 	.volume-slider::-webkit-slider-thumb {
