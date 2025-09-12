@@ -6,6 +6,14 @@ function formatAuthors(authors: string[] | undefined): string {
 	return authors.map(escapeBibtex).join(' and ');
 }
 
+// Helper function to format page ranges for BibTeX
+function formatPageRange(pages: string): string {
+	// Replace various dash types with BibTeX double dash
+	return pages
+		.replace(/[-–—]/g, '--') // Replace hyphen, en-dash, em-dash with double hyphen
+		.replace(/\s*--\s*/g, '--'); // Remove spaces around double dashes
+}
+
 // Helper function to escape special BibTeX characters
 function escapeBibtex(text: string | undefined): string {
 	if (!text) return '';
@@ -37,6 +45,73 @@ function getBibtexMonth(dateISO: string | undefined): string | undefined {
 	return undefined;
 }
 
+// Helper function to validate required fields for each BibTeX entry type
+function validateRequiredFields(publication: Publication, bibtexType: string): string[] {
+	const warnings: string[] = [];
+	
+	switch (bibtexType) {
+		case 'article':
+			if (!publication.authors || publication.authors.length === 0) warnings.push('author');
+			if (!publication.title) warnings.push('title');
+			if (!publication.journal) warnings.push('journal');
+			if (!publication.dateISO && !publication.year) warnings.push('year');
+			break;
+		case 'book':
+			if (!publication.authors || publication.authors.length === 0) {
+				// For edited books, editors are in the authors field, so we need either authors or editors
+				if (!publication.editors || (Array.isArray(publication.editors) && publication.editors.length === 0) || (typeof publication.editors === 'string' && !publication.editors.trim())) {
+					warnings.push('author/editor');
+				}
+			}
+			if (!publication.title) warnings.push('title');
+			if (!publication.publisher) warnings.push('publisher');
+			if (!publication.dateISO && !publication.year) warnings.push('year');
+			break;
+		case 'incollection':
+			if (!publication.authors || publication.authors.length === 0) warnings.push('author');
+			if (!publication.title) warnings.push('title');
+			if (!publication.book) warnings.push('booktitle');
+			if (!publication.publisher) warnings.push('publisher');
+			if (!publication.dateISO && !publication.year) warnings.push('year');
+			break;
+		case 'inproceedings':
+			if (!publication.authors || publication.authors.length === 0) warnings.push('author');
+			if (!publication.title) warnings.push('title');
+			if (!publication.book) warnings.push('booktitle');
+			if (!publication.dateISO && !publication.year) warnings.push('year');
+			break;
+		case 'phdthesis':
+		case 'mastersthesis':
+			if (!publication.authors || publication.authors.length === 0) warnings.push('author');
+			if (!publication.title) warnings.push('title');
+			if (!publication.university) warnings.push('school');
+			if (!publication.dateISO && !publication.year) warnings.push('year');
+			break;
+		case 'techreport':
+			if (!publication.authors || publication.authors.length === 0) warnings.push('author');
+			if (!publication.title) warnings.push('title');
+			if (!publication.publisher && !(publication as any).institution) warnings.push('institution');
+			if (!publication.dateISO && !publication.year) warnings.push('year');
+			break;
+		case 'unpublished':
+			if (!publication.authors || publication.authors.length === 0) warnings.push('author');
+			if (!publication.title) warnings.push('title');
+			// Note field is required but we auto-generate it, so no check needed
+			break;
+		// For misc, booklet, manual, proceedings - fewer required fields
+		case 'booklet':
+		case 'manual':
+			if (!publication.title) warnings.push('title');
+			break;
+		case 'proceedings':
+			if (!publication.title) warnings.push('title');
+			if (!publication.dateISO && !publication.year) warnings.push('year');
+			break;
+	}
+	
+	return warnings;
+}
+
 export function generateBibtex(publication: Publication): string {
 	const bibtexFields: string[] = [];
 	const id = publication.id;
@@ -44,7 +119,7 @@ export function generateBibtex(publication: Publication): string {
 
 	// Determine BibTeX entry type based on publication type
 	if (publication.type === 'book' && publication.isEditedVolume) {
-		bibtexType = 'collection';
+		bibtexType = 'book'; // Edited volumes are still books in BibTeX
 	} else {
 		switch (publication.type) {
 			case 'article':
@@ -65,8 +140,8 @@ export function generateBibtex(publication: Publication): string {
 			case 'report':
 				bibtexType = 'techreport';
 				break;
-			case 'special-issue': // if it's an edited work, might be 'proceedings' or 'collection'
-				bibtexType = publication.isEditedWork ? 'collection' : 'article'; // Assuming articles within a special issue
+			case 'special-issue': // if it's an edited work, might be 'proceedings' or 'book'
+				bibtexType = publication.isEditedWork ? 'book' : 'article'; // Use 'book' for edited special issues
 				break;
 			case 'encyclopedia': // No direct BibTeX, treat as 'incollection' or 'misc'
 			case 'blogpost':
@@ -77,13 +152,21 @@ export function generateBibtex(publication: Publication): string {
 		}
 	}
 
+	// Validate required fields and add warnings as comments
+	const missingFields = validateRequiredFields(publication, bibtexType);
+	let warningComment = '';
+	if (missingFields.length > 0) {
+		warningComment = `% WARNING: Missing required fields for ${bibtexType}: ${missingFields.join(', ')}\n`;
+	}
+
 	// Common fields
 	if (publication.title) bibtexFields.push(`  title = {${escapeBibtex(publication.title)}}`);
 
 	// Authors / Editors based on type
-	if (bibtexType === 'collection') {
+	if (bibtexType === 'book' && (publication.isEditedVolume || publication.isEditedWork)) {
+		// For edited volumes/works, the main authors are actually editors
 		if (publication.authors && publication.authors.length > 0) {
-			// These are editors for a collection
+			// These are editors for an edited work
 			bibtexFields.push(`  editor = {${formatAuthors(publication.authors)}}`);
 		} else if (typeof publication.editors === 'string' && publication.editors) {
 			bibtexFields.push(`  editor = {${escapeBibtex(publication.editors)}}`);
@@ -98,8 +181,9 @@ export function generateBibtex(publication: Publication): string {
 	if (publication.dateISO) {
 		const yearPart = publication.dateISO.split('-')[0];
 		if (yearPart) bibtexFields.push(`  year = {${escapeBibtex(yearPart)}}`);
+		
 		const monthName = getBibtexMonth(publication.dateISO);
-		if (monthName) bibtexFields.push(`  month = {${monthName}}`);
+		if (monthName) bibtexFields.push(`  month = ${monthName}`); // Unquoted month abbreviation
 	} else if (publication.year) {
 		bibtexFields.push(`  year = {${publication.year}}`);
 	}
@@ -125,21 +209,11 @@ export function generateBibtex(publication: Publication): string {
 			if (publication.volume) bibtexFields.push(`  volume = {${escapeBibtex(publication.volume)}}`);
 			if (publication.issue) bibtexFields.push(`  number = {${escapeBibtex(publication.issue)}}`);
 			if (publication.pages)
-				bibtexFields.push(`  pages = {${escapeBibtex(publication.pages.replace('-', '--'))}}`);
+				bibtexFields.push(`  pages = {${escapeBibtex(formatPageRange(publication.pages))}}`);
 			if ((publication as any).issn)
 				bibtexFields.push(`  issn = {${escapeBibtex((publication as any).issn)}}`);
 			break;
-		case 'book': // For non-edited books
-			if (publication.publisher)
-				bibtexFields.push(`  publisher = {${escapeBibtex(publication.publisher)}}`);
-			if (publication.placeOfPublication)
-				bibtexFields.push(`  address = {${escapeBibtex(publication.placeOfPublication)}}`);
-			if (publication.isbn) bibtexFields.push(`  isbn = {${escapeBibtex(publication.isbn)}}`);
-			if (publication.series) bibtexFields.push(`  series = {${escapeBibtex(publication.series)}}`);
-			if (publication.pageCount && publication.pageCount > 0)
-				bibtexFields.push(`  pages = {${publication.pageCount}}`);
-			break;
-		case 'collection': // For edited volumes (previously type 'book' with isEditedVolume=true)
+		case 'book': // For both regular books and edited volumes
 			if (publication.publisher)
 				bibtexFields.push(`  publisher = {${escapeBibtex(publication.publisher)}}`);
 			if (publication.placeOfPublication)
@@ -156,7 +230,7 @@ export function generateBibtex(publication: Publication): string {
 			if (publication.placeOfPublication)
 				bibtexFields.push(`  address = {${escapeBibtex(publication.placeOfPublication)}}`);
 			if (publication.pages)
-				bibtexFields.push(`  pages = {${escapeBibtex(publication.pages.replace('-', '--'))}}`);
+				bibtexFields.push(`  pages = {${escapeBibtex(formatPageRange(publication.pages))}}`);
 
 			if (typeof publication.editors === 'string' && publication.editors) {
 				// Split string by comma or 'and', then format correctly
@@ -206,5 +280,5 @@ export function generateBibtex(publication: Publication): string {
 
 	const fieldsString = bibtexFields.join(',\n  ');
 
-	return `@${bibtexType}{${id},\n  ${fieldsString}\n}`;
+	return `${warningComment}@${bibtexType}{${id},\n  ${fieldsString}\n}`;
 }
