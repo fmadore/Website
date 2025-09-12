@@ -11,7 +11,7 @@ export const archivesAlgorithmsIwac2025: Activity = {
 	content: `
         <p>Findability ≠ significance. Co-mention ≠ connection.</p>
         
-        <p>These cautions framed our panel, 'Global and Transregional Histories: Digitally Connected?' at the Eighth European Congress on World and Global History in Växjö, Sweden. Last Thursday, I presented 'From Archives to Algorithms: Uncovering Transregional Islamic Connections through the Islam West Africa Collection (IWAC)". I am grateful to my panellists, Mila Oiva and Gerben Zaagsma, and to the organisers, Antje Dietze and Kathleen Schlütter, for facilitating such a stimulating conversation about the silences and biases inherent in digitised collections, and about the most effective ways to represent connections and their variations.</p>
+        <p>These cautions framed our panel, "Global and Transregional Histories: Digitally Connected?" at the Eighth European Congress on World and Global History in Växjö, Sweden. I presented "From Archives to Algorithms: Uncovering Transregional Islamic Connections through the <em>Islam West Africa Collection</em> (IWAC)". I am grateful to my panellists, Mila Oiva and Gerben Zaagsma, and to the organisers, Antje Dietze and Kathleen Schlütter, for facilitating such a stimulating conversation about the silences and biases inherent in digitised collections, and about the most effective ways to represent connections and their variations.</p>
         
         <p><strong>Key takeaways:</strong></p>
         <ul>
