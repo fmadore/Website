@@ -5,14 +5,23 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	build: {
 		cssCodeSplit: true,
+		chunkSizeWarningLimit: 1000, // Increase warning limit to 1MB
 		rollupOptions: {
 			output: {
-				// Optimize CSS chunking
-				manualChunks: {
-					// Group critical CSS together
-					'critical-styles': ['src/styles/base/variables.css', 'src/styles/base/reset.css'],
-					// Separate component styles
-					'component-styles': ['src/styles/components/animations.css', 'src/styles/components/buttons.css']
+				// Optimize chunking for better performance
+				manualChunks: (id) => {
+					// Put node_modules in vendor chunk
+					if (id.includes('node_modules')) {
+						return 'vendor';
+					}
+					// Put chart components together
+					if (id.includes('/visualisations/') && id.includes('ECharts')) {
+						return 'chart-components';
+					}
+					// Put data files together
+					if (id.includes('/data/publications/') || id.includes('/data/communications/')) {
+						return 'data';
+					}
 				}
 			}
 		}
