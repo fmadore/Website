@@ -23,7 +23,7 @@
 	import Icon from '@iconify/svelte'; // Import Iconify
 
 	// Map configuration props with defaults using Svelte 5 $props() rune
-	const {
+	let {
 		markersData = [],
 		initialView = [20, 0] as [number, number],
 		initialZoom = 2,
@@ -31,7 +31,7 @@
 		maxClusterZoom = 18,
 		preferDarkMode = null as boolean | null, // Optional override for dark mode preference
 		restrictBounds = true // Whether to restrict map bounds
-	} = $props<{
+	}: {
 		markersData?: MarkerData[];
 		initialView?: [number, number];
 		initialZoom?: number;
@@ -39,7 +39,7 @@
 		maxClusterZoom?: number;
 		preferDarkMode?: boolean | null;
 		restrictBounds?: boolean;
-	}>();
+	} = $props();
 
 	// Maximum bounds for the map (to prevent dragging to empty areas)
 	const MAX_BOUNDS: [number, number][] = [
@@ -77,8 +77,8 @@
 	let currentThemeIsDark = $state<boolean | null>(null); // Track the currently applied theme state
 	let mobileMenuObserver = $state<MutationObserver | null>(null);
 
-	// Function to detect dark mode from system or CSS
-	function detectDarkMode(): boolean {
+	// Derived value for dark mode detection
+	let darkModeDetected = $derived.by(() => {
 		if (preferDarkMode !== null) return preferDarkMode;
 		if (!browser) return false;
 
@@ -87,13 +87,6 @@
 		const isDarkTheme = bodyStyles.getPropertyValue('--is-dark-theme')?.trim();
 		const colorScheme = bodyStyles.getPropertyValue('color-scheme')?.trim();
 		const backgroundColor = bodyStyles.getPropertyValue('background-color')?.trim();
-
-		console.log('Theme detection:', {
-			isDarkTheme,
-			colorScheme,
-			backgroundColor,
-			mediaQuery: window.matchMedia?.('(prefers-color-scheme: dark)')?.matches
-		});
 
 		// If there's an explicit dark theme flag
 		if (isDarkTheme === 'true') return true;
@@ -105,16 +98,13 @@
 
 		// Try to infer from background color (rough estimate)
 		if (backgroundColor) {
-			// Check if it's a dark color - crude check for dark backgrounds
 			try {
 				if (backgroundColor.includes('rgb')) {
-					// Parse RGB values
 					const rgb = backgroundColor.match(/\d+/g);
 					if (rgb && rgb.length >= 3) {
 						const [r, g, b] = rgb.map(Number);
-						// Calculate perceived brightness using common formula
 						const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-						return brightness < 128; // Dark if brightness is low
+						return brightness < 128;
 					}
 				}
 			} catch (e) {
@@ -124,13 +114,13 @@
 
 		// Fallback to system preference
 		return window.matchMedia?.('(prefers-color-scheme: dark)')?.matches || false;
-	}
+	});
 
 	// Function to update tile layer based on theme
 	function updateTileLayer() {
 		if (!map || !L) return;
 
-		const newDarkMode = detectDarkMode();
+		const newDarkMode = darkModeDetected;
 		// console.log('Map theme update check:', { currentThemeIsDark, newDarkMode }); // Keep for debugging if needed
 
 		// Only update if the theme has actually changed or hasn't been set yet
@@ -295,31 +285,8 @@
 				}
 			}).addTo(map);
 
-			// Set up theme change detection
-			if (window.matchMedia) {
-				const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-				// Modern browsers
-				if (darkModeMediaQuery.addEventListener) {
-					darkModeMediaQuery.addEventListener('change', () => updateTileLayer());
-				}
-				// Safari & older browsers
-				else if (darkModeMediaQuery.addListener) {
-					darkModeMediaQuery.addListener(() => updateTileLayer());
-				}
-			}
-
-			// Watch for theme changes using MutationObserver
-			const bodyObserver = new MutationObserver((mutations) => {
-				for (const mutation of mutations) {
-					if (mutation.attributeName === 'class' || mutation.attributeName === 'data-theme') {
-						updateTileLayer();
-						break;
-					}
-				}
-			});
-
-			bodyObserver.observe(document.body, { attributes: true });
+			// Initialize with theme-aware tiles
+			updateTileLayer();
 
 			// Setup mobile menu observer after DOM is ready
 			setTimeout(() => {
@@ -336,13 +303,19 @@
 			// Clean up observer
 			if (mobileMenuObserver) {
 				mobileMenuObserver.disconnect();
+				mobileMenuObserver = null;
 			}
 
 			// Clean up map
 			if (map) {
 				map.remove();
-				map = null;
 			}
+			
+			// Reset state variables
+			map = null;
+			clusterLayer = null;
+			currentTileLayer = null;
+			L = null;
 		};
 	});
 
@@ -415,7 +388,9 @@
 				map.fitBounds(bounds, { padding: [50, 50], maxZoom: 10 });
 			}
 		}
-	} // Reactive statement for markers: Update only when markersData changes (and map is ready)
+	}
+
+	// Reactive effect for markers: Update only when markersData changes (and map is ready)
 	$effect(() => {
 		if (browser && L && map && clusterLayer) {
 			// console.log('Reactively updating markers due to markersData change.'); // Keep for debugging if needed
@@ -423,12 +398,9 @@
 		}
 	});
 
-	// Reactive statement for theme preference: Re-check theme when preferDarkMode changes (and map is ready)
+	// Reactive effect for theme preference: Re-check theme when darkModeDetected changes (and map is ready)
 	$effect(() => {
-		if (browser && L && map) {
-			// Access preferDarkMode to ensure reactivity
-			const _pref = preferDarkMode;
-			// console.log('Reactively checking theme due to preferDarkMode change:', _pref); // Keep for debugging if needed
+		if (browser && L && map && darkModeDetected !== currentThemeIsDark) {
 			updateTileLayer();
 		}
 	});
