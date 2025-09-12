@@ -383,7 +383,7 @@
 							class="control-btn"
 						>
 							{#snippet icon()}
-								<div class="control-icon control-icon--fixed">
+								<div class="control-icon control-icon--fixed {isMuted ? 'control-icon--muted' : ''}">
 									{#if isMuted || volume === 0}
 										<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
 											<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
@@ -410,6 +410,7 @@
 								value={isMuted ? 0 : volume}
 								oninput={(e) => setVolume(parseFloat(e.currentTarget.value))}
 								class="volume-slider"
+								data-muted={isMuted}
 								style="--volume-percentage: {(isMuted ? 0 : volume) * 100}"
 								aria-label="Volume"
 							/>
@@ -934,8 +935,17 @@
 		height: 20px;
 	}
 
+	/* Muted state styling */
+	.control-icon--muted {
+		color: #dc2626;
+	}
+
 	:global(.control-btn:hover) .control-icon {
 		color: var(--color-primary);
+	}
+
+	:global(.control-btn:hover) .control-icon--muted {
+		color: #ef4444;
 	}
 
 	.volume-controls {
@@ -954,14 +964,14 @@
 		box-shadow: inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-10));
 		
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
-		
-		&:hover {
-			background: rgba(var(--color-surface-rgb), var(--opacity-70));
-			border-color: rgba(var(--color-accent-rgb), var(--opacity-30));
-			box-shadow: 
-				inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-15)),
-				0 2px 8px rgba(var(--color-accent-rgb), var(--opacity-10));
-		}
+	}
+
+	.volume-controls:hover {
+		background: rgba(var(--color-surface-rgb), var(--opacity-70));
+		border-color: rgba(var(--color-accent-rgb), var(--opacity-30));
+		box-shadow: 
+			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-15)),
+			0 2px 8px rgba(var(--color-accent-rgb), var(--opacity-10));
 	}
 
 	.volume-slider-container {
@@ -986,12 +996,25 @@
 		box-shadow: 
 			inset 0 1px 3px rgba(var(--color-black-rgb), var(--opacity-10)),
 			0 1px 2px rgba(var(--color-white-rgb), var(--opacity-10));
-		
-		/* Enhanced track styling */
+	}
+
+	/* Default state - volume slider with blue color for sound */
+	.volume-slider {
 		background-image: linear-gradient(
 			to right,
 			var(--color-primary) 0%,
 			var(--color-primary) calc(var(--volume-percentage, 100%) * 1%),
+			rgba(var(--color-text-rgb), var(--opacity-15)) calc(var(--volume-percentage, 100%) * 1%),
+			rgba(var(--color-text-rgb), var(--opacity-15)) 100%
+		);
+	}
+
+	/* Muted state - red color to indicate no sound */
+	.volume-slider[data-muted="true"] {
+		background-image: linear-gradient(
+			to right,
+			#dc2626 0%,
+			#dc2626 calc(var(--volume-percentage, 100%) * 1%),
 			rgba(var(--color-text-rgb), var(--opacity-15)) calc(var(--volume-percentage, 100%) * 1%),
 			rgba(var(--color-text-rgb), var(--opacity-15)) 100%
 		);
@@ -1004,11 +1027,26 @@
 			inset 0 1px 3px rgba(var(--color-black-rgb), var(--opacity-15)),
 			0 2px 4px rgba(var(--color-primary-rgb), var(--opacity-10)),
 			0 1px 2px rgba(var(--color-white-rgb), var(--opacity-15));
-		
+		transform: scaleY(1.2);
+	}
+
+	/* Hover state for unmuted slider */
+	.volume-slider:hover:not([data-muted="true"]) {
 		background-image: linear-gradient(
 			to right,
 			var(--color-accent) 0%,
 			var(--color-accent) calc(var(--volume-percentage, 100%) * 1%),
+			rgba(var(--color-text-rgb), var(--opacity-15)) calc(var(--volume-percentage, 100%) * 1%),
+			rgba(var(--color-text-rgb), var(--opacity-15)) 100%
+		);
+	}
+
+	/* Hover state for muted slider */
+	.volume-slider:hover[data-muted="true"] {
+		background-image: linear-gradient(
+			to right,
+			#ef4444 0%,
+			#ef4444 calc(var(--volume-percentage, 100%) * 1%),
 			rgba(var(--color-text-rgb), var(--opacity-15)) calc(var(--volume-percentage, 100%) * 1%),
 			rgba(var(--color-text-rgb), var(--opacity-15)) 100%
 		);
