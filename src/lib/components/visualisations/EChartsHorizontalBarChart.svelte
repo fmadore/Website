@@ -25,16 +25,33 @@ ECharts Horizontal Bar Chart component
 		barColor?: string;
 		maxValue?: number;
 	} = $props();
-	let chartContainer: HTMLDivElement;
-	let chart: echarts.ECharts;
 
-	// Detect mobile screen size
+	// State management
+	let chartContainer: HTMLDivElement;
+	let chart: echarts.ECharts | null = null;
 	let isMobile = $state(false);
-	
+
+	// Utility functions for CSS variable resolution
+	function getCSSVariableValue(variableName: string): string {
+		if (typeof window === 'undefined') return '#6366f1';
+		const computedStyle = getComputedStyle(document.documentElement);
+		const value = computedStyle.getPropertyValue(variableName).trim();
+		return value || '#6366f1';
+	}
+
+	function resolveColor(color: string): string {
+		if (color.startsWith('var(')) {
+			const varName = color.slice(4, -1).trim();
+			return getCSSVariableValue(varName);
+		}
+		return color;
+	}
+
+	// Reactive mobile detection
 	$effect(() => {
 		if (typeof window !== 'undefined') {
 			const checkMobile = () => {
-				isMobile = window.innerWidth < 768; // Mobile breakpoint
+				isMobile = window.innerWidth < 768;
 			};
 			
 			checkMobile();
@@ -44,47 +61,27 @@ ECharts Horizontal Bar Chart component
 		}
 	});
 
-	// Function to resolve CSS variables to actual color values
-	function getCSSVariableValue(variableName: string): string {
-		if (typeof window === 'undefined') return '#6366f1'; // Default fallback for SSR
-
-		const computedStyle = getComputedStyle(document.documentElement);
-		const value = computedStyle.getPropertyValue(variableName).trim();
-		return value || '#6366f1'; // Fallback to a default blue if variable not found
-	}
-
-	// Function to resolve any color value (CSS variable or direct color)
-	function resolveColor(color: string): string {
-		if (color.startsWith('var(')) {
-			// Extract variable name from var(--variable-name)
-			const varName = color.slice(4, -1).trim();
-			return getCSSVariableValue(varName);
-		}
-		return color; // Return as-is if not a CSS variable
-	}
-
-	// Resolve colors from CSS variables - now reactive to theme changes
+	// Reactive color resolution
 	const resolvedColors = $derived({
 		primary: getCSSVariableValue('--color-primary'),
 		text: getCSSVariableValue('--color-text'),
 		textLight: getCSSVariableValue('--color-text-light'),
 		border: getCSSVariableValue('--color-border'),
-				surface: getCSSVariableValue('--color-surface'),
+		surface: getCSSVariableValue('--color-surface'),
 		primaryDark: getCSSVariableValue('--color-primary-dark') || '#4f46e5',
 		barColor: resolveColor(barColor),
-		// Include theme to make this reactive to theme changes
 		currentTheme: getTheme()
 	});
 
-	// Convert data to ECharts format - reverse order so highest values appear at top
+	// Chart data transformation - reverse order so highest values appear at top
 	const chartData = $derived(
 		data.map((d) => ({
 			name: String(yAccessor(d)),
 			value: xAccessor(d)
-		})).reverse() // Reverse the order so highest values appear at top
+		})).reverse()
 	);
-	// Chart options
-	const option = $derived({
+	// Chart options - reactive to all dependencies
+	const chartOption = $derived({
 		tooltip: {
 			trigger: 'axis',
 			backgroundColor: resolvedColors.surface,
@@ -99,7 +96,7 @@ ECharts Horizontal Bar Chart component
 			extraCssText: 'box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);'
 		},
 		grid: {
-			left: isMobile ? '120px' : '150px', // Less space for author names on mobile
+			left: isMobile ? '120px' : '150px',
 			right: 24,
 			top: 24,
 			bottom: xAxisLabel ? 80 : 48,
@@ -119,15 +116,12 @@ ECharts Horizontal Bar Chart component
 				color: resolvedColors.text,
 				fontSize: 12,
 				fontFamily: 'Inter, -apple-system, sans-serif',
-				// Ensure only whole numbers are shown for citation counts
 				formatter: function (value: number) {
 					return Number.isInteger(value) ? value.toString() : '';
 				}
 			},
-			// Force integer intervals for citation counts
 			interval: 1,
 			minInterval: 1,
-			// Set consistent max value if provided for pagination consistency
 			max: maxValue,
 			axisLine: {
 				lineStyle: {
@@ -198,39 +192,57 @@ ECharts Horizontal Bar Chart component
 		backgroundColor: 'transparent'
 	});
 
+	// Chart lifecycle management
 	$effect(() => {
-		// Initialize chart if container is available
-		if (!chart && chartContainer) {
-			chart = echarts.init(chartContainer);
+		// Initialize chart only when container is available and chart doesn't exist
+		if (chartContainer && !chart) {
+			try {
+				chart = echarts.init(chartContainer);
+			} catch (error) {
+				console.error('Failed to initialize ECharts:', error);
+				return;
+			}
 		}
 
-		// Set/update chart options whenever they change
-		if (chart) {
-			chart.setOption(option, true); // true = notMerge for clean update
+		// Update chart options whenever they change
+		if (chart && chartData.length > 0) {
+			try {
+				chart.setOption(chartOption, true); // true = notMerge for clean update
+			} catch (error) {
+				console.error('Failed to set chart options:', error);
+			}
 		}
 	});
 
-	// Handle resize
+	// Resize handling
 	$effect(() => {
+		if (!chartContainer || !chart) return;
+
 		let resizeObserver: ResizeObserver | undefined;
 
-		if (chartContainer && chart) {
+		try {
 			resizeObserver = new ResizeObserver(() => {
-				chart?.resize();
+				if (chart && !chart.isDisposed()) {
+					chart.resize();
+				}
 			});
 			resizeObserver.observe(chartContainer);
+		} catch (error) {
+			console.error('Failed to setup resize observer:', error);
 		}
 
-		// Cleanup function
 		return () => {
 			resizeObserver?.disconnect();
 		};
 	});
 
-	// Cleanup chart on component destroy
+	// Cleanup on component destroy
 	$effect(() => {
 		return () => {
-			chart?.dispose();
+			if (chart && !chart.isDisposed()) {
+				chart.dispose();
+				chart = null;
+			}
 		};
 	});
 </script>

@@ -1,7 +1,8 @@
 <!--
 ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 -->
-<script lang="ts">	import * as echarts from 'echarts';
+<script lang="ts">
+	import * as echarts from 'echarts';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 	
@@ -39,16 +40,42 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		radius?: [string, string];
 		colors?: string[];
 	} = $props();
+
+	// State management
 	let chartContainer: HTMLDivElement;
-	let chart: echarts.ECharts;
-	
-	// Detect mobile screen size
+	let chart: echarts.ECharts | null = null;
 	let isMobile = $state(false);
-	
+
+	// Utility functions for CSS variable resolution
+	function getCSSVariableValue(variableName: string): string {
+		if (typeof window === 'undefined') return '#6366f1';
+		const computedStyle = getComputedStyle(document.documentElement);
+		const value = computedStyle.getPropertyValue(variableName).trim();
+		return value || '#6366f1';
+	}
+
+	function resolveColor(color: string): string {
+		if (color.startsWith('var(')) {
+			const varName = color.slice(4, -1).trim();
+			return getCSSVariableValue(varName);
+		}
+		if (color.startsWith('rgba(var(')) {
+			const rgbaMatch = color.match(/rgba\(var\(([^)]+)\),\s*([^)]+)\)/);
+			if (rgbaMatch) {
+				const rgbVarName = rgbaMatch[1];
+				const opacity = rgbaMatch[2];
+				const rgbValue = getCSSVariableValue(rgbVarName);
+				return `rgba(${rgbValue}, ${opacity})`;
+			}
+		}
+		return color;
+	}
+
+	// Reactive mobile detection
 	$effect(() => {
 		if (typeof window !== 'undefined') {
 			const checkMobile = () => {
-				isMobile = window.innerWidth < 768; // Mobile breakpoint
+				isMobile = window.innerWidth < 768;
 			};
 			
 			checkMobile();
@@ -58,34 +85,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		}
 	});
 
-	// Function to resolve CSS variables to actual color values
-	function getCSSVariableValue(variableName: string): string {
-		if (typeof window === 'undefined') return '#6366f1'; // Default fallback for SSR
-
-		const computedStyle = getComputedStyle(document.documentElement);
-		const value = computedStyle.getPropertyValue(variableName).trim();
-		return value || '#6366f1'; // Fallback to a default blue if variable not found
-	}
-	// Function to resolve any color value (CSS variable or direct color)
-	function resolveColor(color: string): string {
-		if (color.startsWith('var(')) {
-			// Extract variable name from var(--variable-name)
-			const varName = color.slice(4, -1).trim();
-			return getCSSVariableValue(varName);
-		}
-		if (color.startsWith('rgba(var(')) {
-			// Handle rgba(var(--variable-rgb), opacity) format
-			const rgbaMatch = color.match(/rgba\(var\(([^)]+)\),\s*([^)]+)\)/);
-			if (rgbaMatch) {
-				const rgbVarName = rgbaMatch[1];
-				const opacity = rgbaMatch[2];
-				const rgbValue = getCSSVariableValue(rgbVarName);
-				return `rgba(${rgbValue}, ${opacity})`;
-			}
-		}
-		return color; // Return as-is if not a CSS variable
-	}
-	// Resolve colors from CSS variables - now reactive to theme changes
+	// Reactive color resolution
 	const resolvedColors = $derived({
 		primary: getCSSVariableValue('--color-primary'),
 		text: getCSSVariableValue('--color-text'),
@@ -93,13 +93,11 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		border: getCSSVariableValue('--color-border'),
 		surface: getCSSVariableValue('--color-surface'),
 		accent: getCSSVariableValue('--color-accent'),
-				highlight: getCSSVariableValue('--color-highlight'),
-		// Resolve chart colors
+		highlight: getCSSVariableValue('--color-highlight'),
 		chartColors: colors.map(color => resolveColor(color)),
-		// Include theme to make this reactive to theme changes
 		currentTheme: getTheme()
 	});
-	// Convert data to ECharts format
+	// Chart data transformation
 	const chartData = $derived(
 		data.map((d) => ({
 			name: nameAccessor(d),
@@ -107,11 +105,12 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		}))
 	);
 
-	// Chart options
-	const option = $derived({
+	// Chart options - reactive to all dependencies
+	const chartOption = $derived({
 		title: {
 			show: false // Hide internal title to avoid duplication with external container title
-		},		tooltip: {
+		},
+		tooltip: {
 			trigger: 'item',
 			backgroundColor: resolvedColors.surface,
 			textStyle: {
@@ -124,41 +123,24 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 			borderWidth: 1,
 			extraCssText: 'box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);',
 			formatter: '{a} <br/>{b}: {c} ({d}%)',
-			// Constrain tooltip position on mobile to prevent out-of-bounds
 			confine: isMobile,
 			position: isMobile ? function (point: [number, number], params: any, dom: HTMLElement, rect: any, size: any) {
-				// Calculate tooltip position to keep it within viewport
 				const tooltipWidth = size.contentSize[0];
 				const tooltipHeight = size.contentSize[1];
 				const viewportWidth = size.viewSize[0];
 				const viewportHeight = size.viewSize[1];
 				
-				let x = point[0];
-				let y = point[1];
+				let x = Math.max(10, Math.min(viewportWidth - tooltipWidth - 10, point[0] - tooltipWidth / 2));
+				let y = point[1] - tooltipHeight - 10;
 				
-				// Ensure tooltip doesn't go off the right edge
-				if (x + tooltipWidth > viewportWidth) {
-					x = viewportWidth - tooltipWidth - 10;
-				}
-				
-				// Ensure tooltip doesn't go off the left edge
-				if (x < 10) {
-					x = 10;
-				}
-				
-				// Ensure tooltip doesn't go off the bottom edge
-				if (y + tooltipHeight > viewportHeight) {
-					y = viewportHeight - tooltipHeight - 10;
-				}
-				
-				// Ensure tooltip doesn't go off the top edge
 				if (y < 10) {
-					y = 10;
+					y = point[1] + 20;
 				}
 				
 				return [x, y];
 			} : undefined
-		},		legend: {
+		},
+		legend: {
 			orient: 'horizontal',
 			left: 'center',
 			bottom: isMobile ? '10px' : '20px',
@@ -179,7 +161,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 				name: title || 'Data',
 				type: 'pie',
 				radius: radius,
-				center: ['50%', isMobile ? '40%' : '38%'], // Adjust center to provide more space for legend
+				center: ['50%', isMobile ? '40%' : '38%'],
 				data: chartData,
 				emphasis: {
 					itemStyle: {
@@ -187,29 +169,24 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 						shadowOffsetX: 0,
 						shadowColor: 'rgba(0, 0, 0, 0.5)'
 					}
-				},				label: {
-					show: showLabels, // Always show labels when showLabels is true
-					position: isMobile ? 'inside' : 'outside', // Use inside position on mobile
-					color: isMobile ? '#ffffff' : resolvedColors.text, // White text on mobile for better contrast
+				},
+				label: {
+					show: showLabels,
+					position: isMobile ? 'inside' : 'outside',
+					color: isMobile ? '#ffffff' : resolvedColors.text,
 					fontSize: isMobile ? 11 : 12,
 					fontFamily: 'Inter, -apple-system, sans-serif',
 					fontWeight: 'bold',
-					formatter: isMobile ? '{d}%' : '{b}: {d}%', // Shorter format on mobile
+					formatter: isMobile ? '{d}%' : '{b}: {d}%',
 					textBorderColor: isMobile ? 'rgba(0, 0, 0, 0.9)' : 'transparent',
 					textBorderWidth: isMobile ? 2 : 0,
 					textShadowColor: isMobile ? 'rgba(0, 0, 0, 0.9)' : 'transparent',
 					textShadowBlur: isMobile ? 3 : 0,
-					textShadowOffsetX: isMobile ? 1 : 0,
-					textShadowOffsetY: isMobile ? 1 : 0,
-					// Prevent label overlap on mobile
 					minMargin: isMobile ? 8 : 5,
-					// Ensure labels don't overlap by adjusting their positioning
-					alignTo: isMobile ? 'none' : 'edge',
-					// Add padding to prevent text from being too close to edges
 					padding: isMobile ? [2, 4] : [0, 0]
 				},
 				labelLine: {
-					show: showLabels && !isMobile, // Only show label lines on desktop
+					show: showLabels && !isMobile,
 					length: 15,
 					length2: 10,
 					lineStyle: {
@@ -222,7 +199,6 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 					borderColor: resolvedColors.surface,
 					borderWidth: 2
 				},
-				// Prevent label overlap on mobile by adjusting label layout
 				labelLayout: isMobile ? {
 					hideOverlap: true,
 					moveOverlap: 'shiftY'
@@ -235,36 +211,60 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 			}
 		],
 		color: resolvedColors.chartColors,
-		backgroundColor: 'transparent' // Let the container handle background
-	});	// Initialize chart and handle updates
+		backgroundColor: 'transparent'
+	});
+
+	// Chart lifecycle management
 	$effect(() => {
-		// Initialize chart if container is available and chart doesn't exist
-		if (!chart && chartContainer) {
-			chart = echarts.init(chartContainer);
+		// Initialize chart only when container is available and chart doesn't exist
+		if (chartContainer && !chart) {
+			try {
+				chart = echarts.init(chartContainer);
+			} catch (error) {
+				console.error('Failed to initialize ECharts:', error);
+				return;
+			}
 		}
 
-		// Update chart options whenever they change (including theme changes)
-		if (chart) {
-			chart.setOption(option, true); // true = notMerge for clean update
+		// Update chart options whenever they change
+		if (chart && chartData.length > 0) {
+			try {
+				chart.setOption(chartOption, true); // true = notMerge for clean update
+			} catch (error) {
+				console.error('Failed to set chart options:', error);
+			}
 		}
 	});
 
-	// Setup resize observer and cleanup
+	// Resize handling
 	$effect(() => {
+		if (!chartContainer || !chart) return;
+
 		let resizeObserver: ResizeObserver | undefined;
 
-		if (chartContainer && chart) {
-			// Handle resize
+		try {
 			resizeObserver = new ResizeObserver(() => {
-				chart?.resize();
+				if (chart && !chart.isDisposed()) {
+					chart.resize();
+				}
 			});
 			resizeObserver.observe(chartContainer);
+		} catch (error) {
+			console.error('Failed to setup resize observer:', error);
 		}
 
-		// Cleanup function
 		return () => {
 			resizeObserver?.disconnect();
-			chart?.dispose();
+		};
+	});
+
+	// Cleanup on component destroy
+	$effect(() => {
+		return () => {
+			if (chart && !chart.isDisposed()) {
+				chart.dispose();
+				chart = null;
+			}
 		};
 	});
 </script>

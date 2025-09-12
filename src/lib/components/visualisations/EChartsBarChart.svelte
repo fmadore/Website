@@ -23,12 +23,32 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		yAxisLabel?: string;
 		barColor?: string;
 	} = $props();
+
+	// State management
 	let chartContainer: HTMLDivElement;
-	let chart: echarts.ECharts;
+	let chart: echarts.ECharts | null = null;
 	
 	// Detect mobile screen size
 	let isMobile = $state(false);
 	
+	// Utility functions for CSS variable resolution
+	function getCSSVariableValue(variableName: string): string {
+		if (typeof window === 'undefined') return '#6366f1'; // Default fallback for SSR
+		const computedStyle = getComputedStyle(document.documentElement);
+		const value = computedStyle.getPropertyValue(variableName).trim();
+		return value || '#6366f1'; // Fallback to a default blue if variable not found
+	}
+
+	function resolveColor(color: string): string {
+		if (color.startsWith('var(')) {
+			// Extract variable name from var(--variable-name)
+			const varName = color.slice(4, -1).trim();
+			return getCSSVariableValue(varName);
+		}
+		return color; // Return as-is if not a CSS variable
+	}
+
+	// Reactive mobile detection
 	$effect(() => {
 		if (typeof window !== 'undefined') {
 			const checkMobile = () => {
@@ -41,47 +61,29 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 			return () => window.removeEventListener('resize', checkMobile);
 		}
 	});
-	
-	function getCSSVariableValue(variableName: string): string {
-		if (typeof window === 'undefined') return '#6366f1'; // Default fallback for SSR
 
-		const computedStyle = getComputedStyle(document.documentElement);
-		const value = computedStyle.getPropertyValue(variableName).trim();
-		return value || '#6366f1'; // Fallback to a default blue if variable not found
-	}
-
-	// Function to resolve any color value (CSS variable or direct color)
-	function resolveColor(color: string): string {
-		if (color.startsWith('var(')) {
-			// Extract variable name from var(--variable-name)
-			const varName = color.slice(4, -1).trim();
-			return getCSSVariableValue(varName);
-		}
-		return color; // Return as-is if not a CSS variable
-	}
-
-	// Resolve colors from CSS variables - now reactive to theme changes
+	// Reactive color resolution - updates when theme changes
 	const resolvedColors = $derived({
 		primary: getCSSVariableValue('--color-primary'),
 		text: getCSSVariableValue('--color-text'),
 		textLight: getCSSVariableValue('--color-text-light'),
 		border: getCSSVariableValue('--color-border'),
-				surface: getCSSVariableValue('--color-surface'),
+		surface: getCSSVariableValue('--color-surface'),
 		primaryDark: getCSSVariableValue('--color-primary-dark') || '#4f46e5',
 		barColor: resolveColor(barColor),
 		// Include theme to make this reactive to theme changes
 		currentTheme: getTheme()
 	});
 
-	// Convert data to ECharts format
+	// Chart data transformation
 	const chartData = $derived(
 		data.map((d) => ({
 			name: String(xAccessor(d)),
 			value: yAccessor(d)
 		}))
 	);
-	// Chart options
-	const option = $derived({
+	// Chart options - reactive to all dependencies
+	const chartOption = $derived({
 		title: {
 			show: false // We'll handle titles externally if needed
 		},
@@ -188,39 +190,57 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		backgroundColor: 'transparent' // Let the container handle background
 	});
 
+	// Chart lifecycle management
 	$effect(() => {
-		// Initialize chart if container is available
-		if (!chart && chartContainer) {
-			chart = echarts.init(chartContainer);
+		// Initialize chart only when container is available and chart doesn't exist
+		if (chartContainer && !chart) {
+			try {
+				chart = echarts.init(chartContainer);
+			} catch (error) {
+				console.error('Failed to initialize ECharts:', error);
+				return;
+			}
 		}
 
-		// Set/update chart options whenever they change
-		if (chart) {
-			chart.setOption(option, true); // true = notMerge for clean update
+		// Update chart options whenever they change
+		if (chart && chartData.length > 0) {
+			try {
+				chart.setOption(chartOption, true); // true = notMerge for clean update
+			} catch (error) {
+				console.error('Failed to set chart options:', error);
+			}
 		}
 	});
 
-	// Handle resize
+	// Resize handling
 	$effect(() => {
+		if (!chartContainer || !chart) return;
+
 		let resizeObserver: ResizeObserver | undefined;
 
-		if (chartContainer && chart) {
+		try {
 			resizeObserver = new ResizeObserver(() => {
-				chart?.resize();
+				if (chart && !chart.isDisposed()) {
+					chart.resize();
+				}
 			});
 			resizeObserver.observe(chartContainer);
+		} catch (error) {
+			console.error('Failed to setup resize observer:', error);
 		}
 
-		// Cleanup function
 		return () => {
 			resizeObserver?.disconnect();
 		};
 	});
 
-	// Cleanup chart on component destroy
+	// Cleanup on component destroy
 	$effect(() => {
 		return () => {
-			chart?.dispose();
+			if (chart && !chart.isDisposed()) {
+				chart.dispose();
+				chart = null;
+			}
 		};
 	});
 </script>

@@ -25,12 +25,20 @@ ECharts Network Graph - A network visualization for author collaborations
 		maxConnections?: number;
 	} = $props();
 	
+	// State management
 	let chartContainer: HTMLDivElement;
-	let chart: echarts.ECharts;
-	
-	// Detect mobile screen size
+	let chart: echarts.ECharts | null = null;
 	let isMobile = $state(false);
-	
+
+	// Utility functions for CSS variable resolution
+	function getCSSVariableValue(variableName: string): string {
+		if (typeof window === 'undefined') return '#6366f1';
+		const computedStyle = getComputedStyle(document.documentElement);
+		const value = computedStyle.getPropertyValue(variableName).trim();
+		return value || '#6366f1';
+	}
+
+	// Reactive mobile detection
 	$effect(() => {
 		if (typeof window !== 'undefined') {
 			const checkMobile = () => {
@@ -44,16 +52,7 @@ ECharts Network Graph - A network visualization for author collaborations
 		}
 	});
 
-	// Function to resolve CSS variables to actual color values
-	function getCSSVariableValue(variableName: string): string {
-		if (typeof window === 'undefined') return '#6366f1';
-
-		const computedStyle = getComputedStyle(document.documentElement);
-		const value = computedStyle.getPropertyValue(variableName).trim();
-		return value || '#6366f1';
-	}
-
-	// Resolve colors from CSS variables - reactive to theme changes
+	// Reactive color resolution
 	const resolvedColors = $derived({
 		primary: getCSSVariableValue('--color-primary'),
 		text: getCSSVariableValue('--color-text'),
@@ -63,7 +62,6 @@ ECharts Network Graph - A network visualization for author collaborations
 		accent: getCSSVariableValue('--color-accent'),
 		highlight: getCSSVariableValue('--color-highlight'),
 		success: getCSSVariableValue('--color-success'),
-		// Include theme to make this reactive to theme changes
 		currentTheme: getTheme()
 	});
 
@@ -76,14 +74,10 @@ ECharts Network Graph - A network visualization for author collaborations
 			resolvedColors.primary,    // Blue for 4 collaborations
 		];
 		
-		// Generate additional colors by mixing base colors for higher collaboration counts
 		const extendedColors = [...baseColors];
 		for (let i = baseColors.length; i < 10; i++) {
-			// Create variations by blending colors or using opacity variations
 			const baseIndex = i % baseColors.length;
-			const baseColor = baseColors[baseIndex];
-			// For now, cycle through base colors - could be enhanced with color mixing
-			extendedColors.push(baseColor);
+			extendedColors.push(baseColors[baseIndex]);
 		}
 		
 		return extendedColors;
@@ -98,7 +92,7 @@ ECharts Network Graph - A network visualization for author collaborations
 
 		// Create nodes
 		const nodes = [
-			// Center node (Frédérick Madore)
+			// Center node (main author)
 			{
 				id: centerAuthor,
 				name: centerAuthor,
@@ -129,13 +123,12 @@ ECharts Network Graph - A network visualization for author collaborations
 					color: collaborationColors()[Math.min(collab.collaborationCount - 1, collaborationColors().length - 1)]
 				},
 				label: {
-					show: !isMobile || collab.collaborationCount > 2, // Show fewer labels on mobile
+					show: !isMobile || collab.collaborationCount > 2,
 					fontSize: isMobile ? 10 : 12,
 					color: resolvedColors.text,
 					position: 'right',
 					distance: 10,
 					formatter: function(params: any) {
-						// Truncate long names to prevent overlap
 						const maxLength = isMobile ? 15 : 20;
 						return params.name.length > maxLength ? 
 							params.name.substring(0, maxLength) + '...' : 
@@ -163,10 +156,10 @@ ECharts Network Graph - A network visualization for author collaborations
 		return { nodes, links };
 	});
 
-	// Chart options
-	const option = $derived({
+	// Chart options - reactive to all dependencies
+	const chartOption = $derived({
 		title: {
-			show: false // Hide internal title
+			show: false
 		},
 		tooltip: {
 			trigger: 'item',
@@ -180,41 +173,32 @@ ECharts Network Graph - A network visualization for author collaborations
 			borderColor: resolvedColors.border,
 			borderWidth: 1,
 			extraCssText: 'box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); max-width: 280px; word-wrap: break-word; white-space: normal; line-height: 1.4;',
-			confine: true, // Keep tooltip within chart container
+			confine: true,
 			position: function(point: [number, number], params: any, dom: HTMLElement, rect: any, size: any) {
-				// Get tooltip dimensions
 				const tooltipWidth = size.contentSize[0];
 				const tooltipHeight = size.contentSize[1];
 				const chartWidth = size.viewSize[0];
 				const chartHeight = size.viewSize[1];
 				
-				// Default position
 				let x = point[0] + 10;
 				let y = point[1] - tooltipHeight / 2;
 				
-				// Adjust horizontal position if tooltip would go out of bounds
 				if (x + tooltipWidth > chartWidth) {
 					x = point[0] - tooltipWidth - 10;
 				}
 				
-				// Adjust vertical position if tooltip would go out of bounds
 				if (y < 0) {
 					y = 10;
 				} else if (y + tooltipHeight > chartHeight) {
 					y = chartHeight - tooltipHeight - 10;
 				}
 				
-				// On mobile, prefer positioning above or below the point
 				if (isMobile) {
 					x = Math.max(10, Math.min(chartWidth - tooltipWidth - 10, point[0] - tooltipWidth / 2));
-					
-					// Try positioning above first
 					if (point[1] - tooltipHeight - 15 >= 0) {
 						y = point[1] - tooltipHeight - 15;
 					} else {
-						// Position below if not enough space above
 						y = point[1] + 15;
-						// Ensure it doesn't go below chart
 						if (y + tooltipHeight > chartHeight) {
 							y = chartHeight - tooltipHeight - 10;
 						}
@@ -230,7 +214,6 @@ ECharts Network Graph - A network visualization for author collaborations
 					} else {
 						const collab = data.find(c => c.author === params.data.name);
 						if (collab) {
-							// Format all publications with bullet points and proper line breaks
 							const publicationList = collab.publications
 								.map(pub => `• ${pub}`)
 								.join('<br/>');
@@ -262,19 +245,18 @@ ECharts Network Graph - A network visualization for author collaborations
 					{ name: 'Center Author' },
 					{ name: 'Collaborators' }
 				],
-				roam: true, // Allow zoom and pan
+				roam: true,
 				focusNodeAdjacency: true,
 				draggable: true,
 				left: '10%',
 				right: '10%',
 				top: '10%',
-				bottom: '15%', // Increased bottom margin to prevent overflow
+				bottom: '15%',
 				force: {
-					repulsion: isMobile ? 300 : 500, // Increased repulsion to spread nodes more
-					gravity: 0.08, // Slightly increased gravity to pull nodes toward center
-					edgeLength: isMobile ? 120 : 180, // Longer edges for more space
+					repulsion: isMobile ? 300 : 500,
+					gravity: 0.08,
+					edgeLength: isMobile ? 120 : 180,
 					layoutAnimation: true,
-					// Add friction to stabilize layout and prevent drift
 					friction: 0.6
 				},
 				emphasis: {
@@ -291,12 +273,10 @@ ECharts Network Graph - A network visualization for author collaborations
 				label: {
 					position: 'right',
 					formatter: '{b}',
-					// Enable label collision detection
 					emphasis: {
 						show: true
 					}
 				},
-				// Enable label collision avoidance
 				avoidLabelOverlap: true
 			}
 		],
@@ -305,31 +285,57 @@ ECharts Network Graph - A network visualization for author collaborations
 		animationEasing: 'cubicOut' as any
 	});
 
-	// Initialize chart and handle updates
+	// Chart lifecycle management
 	$effect(() => {
-		if (!chart && chartContainer) {
-			chart = echarts.init(chartContainer);
+		// Initialize chart only when container is available and chart doesn't exist
+		if (chartContainer && !chart) {
+			try {
+				chart = echarts.init(chartContainer);
+			} catch (error) {
+				console.error('Failed to initialize ECharts:', error);
+				return;
+			}
 		}
 
-		if (chart) {
-			chart.setOption(option, true);
+		// Update chart options whenever they change
+		if (chart && data.length > 0) {
+			try {
+				chart.setOption(chartOption, true);
+			} catch (error) {
+				console.error('Failed to set chart options:', error);
+			}
 		}
 	});
 
-	// Setup resize observer and cleanup
+	// Resize handling
 	$effect(() => {
+		if (!chartContainer || !chart) return;
+
 		let resizeObserver: ResizeObserver | undefined;
 
-		if (chartContainer && chart) {
+		try {
 			resizeObserver = new ResizeObserver(() => {
-				chart?.resize();
+				if (chart && !chart.isDisposed()) {
+					chart.resize();
+				}
 			});
 			resizeObserver.observe(chartContainer);
+		} catch (error) {
+			console.error('Failed to setup resize observer:', error);
 		}
 
 		return () => {
 			resizeObserver?.disconnect();
-			chart?.dispose();
+		};
+	});
+
+	// Cleanup on component destroy
+	$effect(() => {
+		return () => {
+			if (chart && !chart.isDisposed()) {
+				chart.dispose();
+				chart = null;
+			}
 		};
 	});
 </script>
