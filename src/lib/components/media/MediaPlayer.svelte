@@ -411,7 +411,11 @@
 								oninput={(e) => setVolume(parseFloat(e.currentTarget.value))}
 								class="volume-slider"
 								data-muted={isMuted}
-								style="--volume-percentage: {(isMuted ? 0 : volume) * 100}"
+								style="
+									--volume-percentage: {(isMuted ? 0 : volume) * 100}%;
+									--slider-color: {isMuted ? '#dc2626' : '#3b82f6'};
+									background: linear-gradient(to right, var(--slider-color) 0%, var(--slider-color) var(--volume-percentage), rgba(156, 163, 175, 0.3) var(--volume-percentage), rgba(156, 163, 175, 0.3) 100%);
+								"
 								aria-label="Volume"
 							/>
 						</div>
@@ -983,7 +987,6 @@
 	.volume-slider {
 		width: var(--spacing-20);
 		height: 6px;
-		background: rgba(var(--color-surface-rgb), var(--opacity-70));
 		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-20));
 		border-radius: var(--border-radius-full);
 		outline: none;
@@ -991,65 +994,20 @@
 		cursor: pointer;
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
 		
-		/* Enhanced track styling with glassmorphism */
+		/* Enhanced styling with glassmorphism */
 		backdrop-filter: blur(4px);
 		box-shadow: 
 			inset 0 1px 3px rgba(var(--color-black-rgb), var(--opacity-10)),
 			0 1px 2px rgba(var(--color-white-rgb), var(--opacity-10));
 	}
 
-	/* Default state - volume slider with blue color for sound */
-	.volume-slider {
-		background-image: linear-gradient(
-			to right,
-			var(--color-primary) 0%,
-			var(--color-primary) calc(var(--volume-percentage, 100%) * 1%),
-			rgba(var(--color-text-rgb), var(--opacity-15)) calc(var(--volume-percentage, 100%) * 1%),
-			rgba(var(--color-text-rgb), var(--opacity-15)) 100%
-		);
-	}
-
-	/* Muted state - red color to indicate no sound */
-	.volume-slider[data-muted="true"] {
-		background-image: linear-gradient(
-			to right,
-			#dc2626 0%,
-			#dc2626 calc(var(--volume-percentage, 100%) * 1%),
-			rgba(var(--color-text-rgb), var(--opacity-15)) calc(var(--volume-percentage, 100%) * 1%),
-			rgba(var(--color-text-rgb), var(--opacity-15)) 100%
-		);
-	}
-
 	.volume-slider:hover {
-		background: rgba(var(--color-surface-rgb), var(--opacity-85));
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-30));
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-40));
 		box-shadow: 
 			inset 0 1px 3px rgba(var(--color-black-rgb), var(--opacity-15)),
 			0 2px 4px rgba(var(--color-primary-rgb), var(--opacity-10)),
 			0 1px 2px rgba(var(--color-white-rgb), var(--opacity-15));
 		transform: scaleY(1.2);
-	}
-
-	/* Hover state for unmuted slider */
-	.volume-slider:hover:not([data-muted="true"]) {
-		background-image: linear-gradient(
-			to right,
-			var(--color-accent) 0%,
-			var(--color-accent) calc(var(--volume-percentage, 100%) * 1%),
-			rgba(var(--color-text-rgb), var(--opacity-15)) calc(var(--volume-percentage, 100%) * 1%),
-			rgba(var(--color-text-rgb), var(--opacity-15)) 100%
-		);
-	}
-
-	/* Hover state for muted slider */
-	.volume-slider:hover[data-muted="true"] {
-		background-image: linear-gradient(
-			to right,
-			#ef4444 0%,
-			#ef4444 calc(var(--volume-percentage, 100%) * 1%),
-			rgba(var(--color-text-rgb), var(--opacity-15)) calc(var(--volume-percentage, 100%) * 1%),
-			rgba(var(--color-text-rgb), var(--opacity-15)) 100%
-		);
 	}
 
 	.volume-slider::-webkit-slider-thumb {
