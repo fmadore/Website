@@ -271,10 +271,10 @@
 
 		{#if activity.pdfPath}
 			<div
-				class="pdf-section glass-card mt-6"
+				class="pdf-section glass-card mt-4 p-8 rounded-xl transition-transform duration-300 shadow-lg hover:shadow-xl"
 				use:scrollAnimate={{ delay: DELAY_STEP * 7, animationClass: 'fade-in-up' }}
 			>
-				<h2 class="text-xl font-semibold mb-4 text-text-emphasis">
+				<h2 class="text-xl font-serif font-semibold mb-4 text-emphasis">
 					{activity.pdfTitle || 'Associated Document'}
 				</h2>
 				<IframeRenderer
@@ -291,7 +291,7 @@
 
 		{#if formattedTags && formattedTags.length > 0}
 			<div
-				class="activity-tags-section"
+				class="mt-4 mb-6"
 				use:scrollAnimate={{ delay: DELAY_STEP * 8, animationClass: 'fade-in-up' }}
 			>
 				<TagList tags={formattedTags} baseUrl="/activities?tag=" />
@@ -344,9 +344,6 @@
 
 	/* PDF section styling with glassmorphism */
 	.pdf-section {
-		padding: var(--spacing-8);
-		border-radius: var(--border-radius-xl);
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		position: relative;
 		content-visibility: auto;
 		contain-intrinsic-size: 800px;
@@ -369,18 +366,10 @@
 		);
 	}
 
-	/* Typography improvements using CSS variables */
-	.pdf-section h2 {
-		font-family: var(--font-family-serif);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-emphasis);
-		margin-bottom: var(--spacing-4);
-	}
-
 	/* Responsive adjustments */
 	@media (max-width: 640px) {
 		.pdf-section {
-			padding: var(--spacing-6);
+			padding: var(--spacing-6) !important;
 		}
 	}
 
@@ -396,13 +385,6 @@
 	}
 
 	/* Dark mode adjustments are handled automatically through CSS variables */
-
-	.activity-tags-section {
-		margin-top: var(--spacing-4);
-		margin-bottom: var(--spacing-6);
-		content-visibility: auto;
-		contain-intrinsic-size: 50px;
-	}
 
 	/* Critical above-the-fold content */
 	.critical-content {
