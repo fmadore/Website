@@ -47,7 +47,6 @@
 	<meta property="twitter:image" content={ogImage} />
 
 	<!-- Scholar / Academic -->
-	<meta name="citation_author" content="Frédérick Madore" />
 	<meta name="author" content="Frédérick Madore" />
 	<meta name="robots" content="index, follow" />
 </svelte:head>
