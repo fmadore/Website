@@ -289,7 +289,11 @@
 					{#if title}
 						<div class="audio-content">
 							<h4 class="audio-title">{title}</h4>
-							<p class="audio-description">Listen to this AI-generated podcast discussion</p>
+							<p class="audio-description">
+								<a href="https://notebooklm.google/audio" target="_blank" rel="noopener noreferrer">Google NotebookLM</a> 
+								is an AI-powered research assistant that can generate podcast-style discussions from uploaded documents. 
+								All the publications from this research project were fed into NotebookLM to create this AI-generated conversation.
+							</p>
 						</div>
 					{/if}
 					
@@ -660,11 +664,46 @@
 	}
 
 	.audio-description {
-		color: var(--color-text-light);
+		color: var(--color-white);
 		font-size: var(--font-size-sm);
 		margin: 0;
-		font-style: italic;
-		opacity: 0.8;
+		line-height: var(--line-height-normal);
+		max-width: 400px;
+		margin-left: auto;
+		margin-right: auto;
+		text-shadow: 0 1px 3px rgba(var(--color-black-rgb), 0.5);
+		font-weight: var(--font-weight-medium);
+	}
+
+	.audio-description a {
+		color: var(--color-white);
+		text-decoration: underline;
+		font-weight: var(--font-weight-semibold);
+		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		text-shadow: 0 1px 3px rgba(var(--color-black-rgb), 0.7);
+	}
+
+	.audio-description a:hover {
+		color: var(--color-accent);
+		text-decoration: underline;
+		text-shadow: 0 1px 3px rgba(var(--color-black-rgb), 0.8);
+		transform: translateY(-1px);
+	}
+
+	/* Dark mode specific adjustments for audio description */
+	:global(html.dark) .audio-description {
+		color: var(--color-white);
+		text-shadow: 0 1px 3px rgba(var(--color-black-rgb), 0.7);
+	}
+
+	:global(html.dark) .audio-description a {
+		color: var(--color-white);
+		text-shadow: 0 1px 3px rgba(var(--color-black-rgb), 0.8);
+	}
+
+	:global(html.dark) .audio-description a:hover {
+		color: var(--color-accent);
+		text-shadow: 0 1px 4px rgba(var(--color-black-rgb), 0.9);
 	}
 
 	/* Floating particles */
