@@ -41,8 +41,8 @@
 	let isLoading = $state(false);
 	let error = $state<string>('');
 
-	// DOM element references
-	let mediaElement: HTMLVideoElement | HTMLAudioElement | undefined = $state();
+	// DOM element references (use null to make TS narrowing simpler)
+	let mediaElement: HTMLVideoElement | HTMLAudioElement | null = $state(null);
 	let progressBar: HTMLDivElement | undefined = $state();
 
 	// Format time for display (derived computation)
@@ -54,98 +54,82 @@
 
 	// Media event handlers
 	const handleLoadedMetadata = () => {
-		if (mediaElement) {
-			duration = mediaElement.duration || 0;
-			isLoading = false;
-		}
-	};
-
-	const handleTimeUpdate = () => {
-		if (mediaElement) {
-			currentTime = mediaElement.currentTime || 0;
-		}
-	};
-
-	const handlePlay = () => {
-		isPlaying = true;
-	};
-
-	const handlePause = () => {
-		isPlaying = false;
-	};
-
-	const handleEnded = () => {
-		isPlaying = false;
-		if (!loop) {
-			currentTime = 0;
-		}
-	};
-
-	const handleError = () => {
-		error = 'Failed to load media file';
+		const el = mediaElement;
+		if (!el) return;
+		duration = Number.isFinite(el.duration) ? el.duration : 0;
 		isLoading = false;
 	};
 
-	const handleFullscreenChange = () => {
-		isFullscreen = !!document.fullscreenElement;
+	const handleTimeUpdate = () => {
+		const el = mediaElement;
+		if (!el) return;
+		currentTime = el.currentTime || 0;
 	};
+
+	const handlePlay = () => { isPlaying = true; };
+
+	const handlePause = () => { isPlaying = false; };
+
+	const handleEnded = () => {
+		isPlaying = false;
+		if (!loop) currentTime = 0;
+	};
+
+	const handleError = () => { error = 'Failed to load media file'; isLoading = false; };
+
+	const handleFullscreenChange = () => { isFullscreen = !!document.fullscreenElement; };
 
 	// Use $effect to properly handle media element events
 	$effect(() => {
-		if (!mediaElement) return;
+		const el = mediaElement;
+		if (!el) return; // will rerun once bound
 
-		// Set up event listeners
-		mediaElement.addEventListener('loadedmetadata', handleLoadedMetadata);
-		mediaElement.addEventListener('timeupdate', handleTimeUpdate);
-		mediaElement.addEventListener('play', handlePlay);
-		mediaElement.addEventListener('pause', handlePause);
-		mediaElement.addEventListener('ended', handleEnded);
-		mediaElement.addEventListener('error', handleError);
+		el.addEventListener('loadedmetadata', handleLoadedMetadata);
+		el.addEventListener('timeupdate', handleTimeUpdate);
+		el.addEventListener('play', handlePlay);
+		el.addEventListener('pause', handlePause);
+		el.addEventListener('ended', handleEnded);
+		el.addEventListener('error', handleError);
 
-		// Set initial loading state
 		isLoading = true;
+		if (el.readyState >= 1) handleLoadedMetadata();
 
-		// Cleanup function for when effect re-runs or component is destroyed
 		return () => {
-			if (mediaElement) {
-				mediaElement.removeEventListener('loadedmetadata', handleLoadedMetadata);
-				mediaElement.removeEventListener('timeupdate', handleTimeUpdate);
-				mediaElement.removeEventListener('play', handlePlay);
-				mediaElement.removeEventListener('pause', handlePause);
-				mediaElement.removeEventListener('ended', handleEnded);
-				mediaElement.removeEventListener('error', handleError);
-			}
+			el.removeEventListener('loadedmetadata', handleLoadedMetadata);
+			el.removeEventListener('timeupdate', handleTimeUpdate);
+			el.removeEventListener('play', handlePlay);
+			el.removeEventListener('pause', handlePause);
+			el.removeEventListener('ended', handleEnded);
+			el.removeEventListener('error', handleError);
 		};
 	});
 
 	// Toggle play/pause
 	const togglePlayPause = () => {
-		if (!mediaElement) return;
-		
-		if (isPlaying) {
-			mediaElement.pause();
-		} else {
-			mediaElement.play();
-		}
+		const el = mediaElement;
+		if (!el) return;
+		isPlaying ? el.pause() : el.play();
 	};
 
 	// Seek to specific time
 	const seekTo = (time: number) => {
-		if (mediaElement) {
-			mediaElement.currentTime = time;
-		}
+		const el = mediaElement;
+		// Need metadata (duration > 0) and element
+		if (!el || !duration || duration === Infinity) return;
+		const clamped = Math.max(0, Math.min(duration, time));
+		// Setting currentTime after metadata (readyState >= 1) is allowed
+		el.currentTime = clamped;
+		currentTime = clamped;
 	};
 
 	// Handle progress bar click
 	const handleProgressClick = (event: MouseEvent) => {
-		if (!progressBar || !mediaElement || duration === 0) return;
-		
+		if (!progressBar || !mediaElement || !duration) return;
 		const rect = progressBar.getBoundingClientRect();
+		if (rect.width <= 0) return;
 		const clickX = event.clientX - rect.left;
-		const percentage = clickX / rect.width;
-		const newTime = percentage * duration;
-		
-		seekTo(newTime);
+		const pct = Math.max(0, Math.min(1, clickX / rect.width));
+		seekTo(pct * duration);
 	};
 
 	// Handle progress bar keyboard navigation
@@ -174,33 +158,21 @@
 
 	// Toggle mute
 	const toggleMute = () => {
-		if (mediaElement) {
-			isMuted = !isMuted;
-			mediaElement.muted = isMuted;
-		}
+		const el = mediaElement; if (!el) return;
+		isMuted = !isMuted; el.muted = isMuted;
 	};
 
 	// Set volume
 	const setVolume = (newVolume: number) => {
 		volume = Math.max(0, Math.min(1, newVolume));
-		if (mediaElement) {
-			mediaElement.volume = volume;
-		}
+		mediaElement && (mediaElement.volume = volume);
 	};
 
 	// Toggle fullscreen (for video)
 	const toggleFullscreen = async () => {
-		if (type !== 'video' || !mediaElement) return;
-
-		try {
-			if (!isFullscreen) {
-				await mediaElement.requestFullscreen();
-			} else {
-				await document.exitFullscreen();
-			}
-		} catch (err) {
-			console.error('Fullscreen error:', err);
-		}
+		const el = mediaElement; if (type !== 'video' || !el) return;
+		try { !isFullscreen ? await el.requestFullscreen() : await document.exitFullscreen(); }
+		catch (err) { console.error('Fullscreen error:', err); }
 	};
 
 	// Keyboard controls
