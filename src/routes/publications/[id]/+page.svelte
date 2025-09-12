@@ -293,6 +293,7 @@
 		'Frédérick Madore'
 	].join(', ')}
 	ogImage={`${base}/${publication.image}`}
+	includeCitationAuthor={false}
 />
 
 <MetaTags {publication} />

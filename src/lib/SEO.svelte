@@ -9,6 +9,9 @@
 		canonical?: string;
 		ogImage?: any;
 		type?: string;
+		// Control whether to include citation_author (default: true)
+		// Set to false for publication pages that use MetaTags.svelte
+		includeCitationAuthor?: boolean;
 	}
 
 	let {
@@ -17,7 +20,8 @@
 		keywords = 'Frédérick Madore, Islam, West Africa, Digital Humanities, Research',
 		canonical = '',
 		ogImage = `${base}/images/Profile-picture.webp`,
-		type = 'website'
+		type = 'website',
+		includeCitationAuthor = true
 	}: Props = $props();
 </script>
 
@@ -47,6 +51,9 @@
 	<meta property="twitter:image" content={ogImage} />
 
 	<!-- Scholar / Academic -->
+	{#if includeCitationAuthor}
+		<meta name="citation_author" content="Frédérick Madore" />
+	{/if}
 	<meta name="author" content="Frédérick Madore" />
 	<meta name="robots" content="index, follow" />
 </svelte:head>
