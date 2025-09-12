@@ -1,7 +1,5 @@
 <script lang="ts">
 	import RangeSlider from './RangeSlider.svelte';
-	import { createEventDispatcher } from 'svelte';
-
 
 	// Simple debounce function
 	function debounce<T extends (...args: any[]) => any>(
@@ -26,16 +24,16 @@
 		allYears, // All available years, sorted asc
 		activeRange, // Current filter state
 		updateRange, // Function to update the store
-		resetRange // Function to clear the range filter
+		resetRange, // Function to clear the range filter
+		onchange = undefined // Optional callback prop for range changes
 	}: {
 		title: string;
 		allYears: number[];
 		activeRange: { min: number; max: number } | null;
 		updateRange: (min: number, max: number) => void;
 		resetRange: () => void;
+		onchange?: ((event: { min: number; max: number } | null) => void) | undefined;
 	} = $props();
-
-	const dispatch = createEventDispatcher();
 
 	// Determine min and max from all available years
 	const minYear = $derived(allYears.length > 0 ? allYears[0] : new Date().getFullYear() - 10); // Fallback min
@@ -61,11 +59,11 @@
 		// Only update the store if the range is not the full extent (or if it was already filtered)
 		if (newMin !== minYear || newMax !== maxYear || activeRange !== null) {
 			updateRange(newMin, newMax);
-			dispatch('change', { min: newMin, max: newMax });
+			onchange?.({ min: newMin, max: newMax });
 		} else if (activeRange !== null) {
 			// If user slides back to full range, effectively reset the filter
 			resetRange();
-			dispatch('change', null);
+			onchange?.(null);
 		}
 	}, 150); // Debounce by 150ms
 

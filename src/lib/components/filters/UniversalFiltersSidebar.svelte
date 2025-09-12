@@ -33,42 +33,22 @@
 		// Capture current scroll position
 		const scrollTop = sidebarElement.scrollTop;
 		
-		console.log('BEFORE - scrollTop:', scrollTop);
-		
 		// Execute the callback
 		callback();
 		
-		console.log('AFTER callback - scrollTop is now:', sidebarElement.scrollTop);
-		
-		// Force restore scroll position with multiple attempts
-		const forceRestore = () => {
-			if (sidebarElement) {
+		// Restore scroll position using modern approach
+		const restoreScroll = () => {
+			if (sidebarElement && Math.abs(sidebarElement.scrollTop - scrollTop) > 1) {
 				sidebarElement.scrollTop = scrollTop;
-				console.log('Forced restore to:', scrollTop, 'actual:', sidebarElement.scrollTop);
 			}
 		};
 		
-		// Immediate restore
-		forceRestore();
-		
-		// Multiple restore attempts
-		requestAnimationFrame(forceRestore);
-		setTimeout(forceRestore, 0);
-		setTimeout(forceRestore, 10);
-		setTimeout(forceRestore, 50);
-		setTimeout(forceRestore, 100);
-		setTimeout(forceRestore, 200);
-		
-		// Final check
-		setTimeout(() => {
-			if (sidebarElement) {
-				console.log('FINAL CHECK - scrollTop:', sidebarElement.scrollTop, 'expected:', scrollTop);
-				if (Math.abs(sidebarElement.scrollTop - scrollTop) > 1) {
-					console.log('🚨 SCROLL POSITION STILL WRONG - forcing one more time');
-					sidebarElement.scrollTop = scrollTop;
-				}
-			}
-		}, 300);
+		// Use a single requestAnimationFrame for smooth restoration
+		requestAnimationFrame(() => {
+			restoreScroll();
+			// Fallback check after animations complete
+			setTimeout(restoreScroll, 100);
+		});
 	}
 
 	// Enhanced function to handle clearing filters with scroll preservation
