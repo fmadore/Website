@@ -45,15 +45,78 @@
 	let mediaElement: HTMLVideoElement | HTMLAudioElement | undefined = $state();
 	let progressBar: HTMLDivElement | undefined = $state();
 
-	// Timer
-	let updateInterval: number;
-
 	// Format time for display (derived computation)
 	const formatTime = (seconds: number): string => {
 		const minutes = Math.floor(seconds / 60);
 		const remainingSeconds = Math.floor(seconds % 60);
 		return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
 	};
+
+	// Media event handlers
+	const handleLoadedMetadata = () => {
+		if (mediaElement) {
+			duration = mediaElement.duration || 0;
+			isLoading = false;
+		}
+	};
+
+	const handleTimeUpdate = () => {
+		if (mediaElement) {
+			currentTime = mediaElement.currentTime || 0;
+		}
+	};
+
+	const handlePlay = () => {
+		isPlaying = true;
+	};
+
+	const handlePause = () => {
+		isPlaying = false;
+	};
+
+	const handleEnded = () => {
+		isPlaying = false;
+		if (!loop) {
+			currentTime = 0;
+		}
+	};
+
+	const handleError = () => {
+		error = 'Failed to load media file';
+		isLoading = false;
+	};
+
+	const handleFullscreenChange = () => {
+		isFullscreen = !!document.fullscreenElement;
+	};
+
+	// Use $effect to properly handle media element events
+	$effect(() => {
+		if (!mediaElement) return;
+
+		// Set up event listeners
+		mediaElement.addEventListener('loadedmetadata', handleLoadedMetadata);
+		mediaElement.addEventListener('timeupdate', handleTimeUpdate);
+		mediaElement.addEventListener('play', handlePlay);
+		mediaElement.addEventListener('pause', handlePause);
+		mediaElement.addEventListener('ended', handleEnded);
+		mediaElement.addEventListener('error', handleError);
+
+		// Set initial loading state
+		isLoading = true;
+
+		// Cleanup function for when effect re-runs or component is destroyed
+		return () => {
+			if (mediaElement) {
+				mediaElement.removeEventListener('loadedmetadata', handleLoadedMetadata);
+				mediaElement.removeEventListener('timeupdate', handleTimeUpdate);
+				mediaElement.removeEventListener('play', handlePlay);
+				mediaElement.removeEventListener('pause', handlePause);
+				mediaElement.removeEventListener('ended', handleEnded);
+				mediaElement.removeEventListener('error', handleError);
+			}
+		};
+	});
 
 	// Toggle play/pause
 	const togglePlayPause = () => {
@@ -140,40 +203,6 @@
 		}
 	};
 
-	// Media event handlers
-	const handleLoadedMetadata = () => {
-		duration = mediaElement?.duration || 0;
-		isLoading = false;
-	};
-
-	const handleTimeUpdate = () => {
-		currentTime = mediaElement?.currentTime || 0;
-	};
-
-	const handlePlay = () => {
-		isPlaying = true;
-	};
-
-	const handlePause = () => {
-		isPlaying = false;
-	};
-
-	const handleEnded = () => {
-		isPlaying = false;
-		if (!loop) {
-			currentTime = 0;
-		}
-	};
-
-	const handleError = () => {
-		error = 'Failed to load media file';
-		isLoading = false;
-	};
-
-	const handleFullscreenChange = () => {
-		isFullscreen = !!document.fullscreenElement;
-	};
-
 	// Keyboard controls
 	const handleKeydown = (event: KeyboardEvent) => {
 		if (!showControls) return;
@@ -234,12 +263,6 @@
 					{width}
 					{height}
 					class="media-element"
-					onloadedmetadata={handleLoadedMetadata}
-					ontimeupdate={handleTimeUpdate}
-					onplay={handlePlay}
-					onpause={handlePause}
-					onended={handleEnded}
-					onerror={handleError}
 					onkeydown={handleKeydown}
 					tabindex="0"
 					playsinline
@@ -252,12 +275,6 @@
 					{loop}
 					{muted}
 					class="media-element"
-					onloadedmetadata={handleLoadedMetadata}
-					ontimeupdate={handleTimeUpdate}
-					onplay={handlePlay}
-					onpause={handlePause}
-					onended={handleEnded}
-					onerror={handleError}
 					onkeydown={handleKeydown}
 					tabindex="0"
 				></audio>
