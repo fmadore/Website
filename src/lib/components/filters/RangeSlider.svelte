@@ -28,6 +28,16 @@
 	let isDragging = $state<'min' | 'max' | null>(null);
 	let showFloats = $state({ min: false, max: false });
 
+	// Cleanup effect to ensure no hanging event listeners
+	$effect(() => {
+		return () => {
+			// Reset dragging state on component cleanup
+			isDragging = null;
+			showFloats.min = false;
+			showFloats.max = false;
+		};
+	});
+
 	// Calculate positions as percentages
 	const minPosition = $derived(((values[0] - min) / (max - min)) * 100);
 	const maxPosition = $derived(((values[1] - min) / (max - min)) * 100);
@@ -46,6 +56,10 @@
 	});
 
 	function getValueFromPosition(clientX: number): number {
+		if (!sliderRef) {
+			console.warn('Slider ref is null, returning current min value');
+			return min;
+		}
 		const rect = sliderRef.getBoundingClientRect();
 		const percentage = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
 		const rawValue = min + percentage * (max - min);
@@ -75,7 +89,7 @@
 		showFloats[type] = float;
 
 		function handleMouseMove(event: MouseEvent) {
-			if (!isDragging) return;
+			if (!isDragging || !sliderRef) return;
 			const newValue = getValueFromPosition(event.clientX);
 			updateValue(isDragging, newValue);
 		}
@@ -98,7 +112,7 @@
 		showFloats[type] = float;
 
 		function handleTouchMove(event: TouchEvent) {
-			if (!isDragging) return;
+			if (!isDragging || !sliderRef) return;
 			const touch = event.touches[0];
 			if (touch) {
 				const newValue = getValueFromPosition(touch.clientX);
