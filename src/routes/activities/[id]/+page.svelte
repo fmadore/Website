@@ -21,6 +21,7 @@
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import ActionLinks from '$lib/components/molecules/ActionLinks.svelte';
 	import AbstractSection from '$lib/components/molecules/AbstractSection.svelte';
+	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
 
 	// Get data from the load function
 	let { data }: { data: PageData } = $props();
@@ -276,18 +277,15 @@
 				<h2 class="text-xl font-semibold mb-4 text-text-emphasis">
 					{activity.pdfTitle || 'Associated Document'}
 				</h2>
-				<div class="pdf-container" style="height: 800px; position: relative;">
-					<iframe
-						src="{base}/{activity.pdfPath}"
-						title="{activity.title} PDF Document"
-						width="100%"
-						height="800"
-						style="border: 1px solid var(--color-border); border-radius: var(--border-radius-lg); position: absolute; top: 0; left: 0;"
-						loading="lazy"
-						allow="fullscreen"
-						referrerpolicy="no-referrer-when-downgrade"
-					></iframe>
-				</div>
+				<IframeRenderer
+					id="activity-pdf-{activity.id}"
+					src="{base}/{activity.pdfPath}"
+					title="{activity.title} PDF Document"
+					height="800px"
+					containerClass="iframe-container iframe-container-fullwidth"
+					glassEffect={true}
+					glassVariant="glass-light"
+				/>
 			</div>
 		{/if}
 
@@ -361,16 +359,6 @@
 		);
 	}
 
-	.pdf-container {
-		/* Fixed height to prevent layout shifts */
-		min-height: 800px;
-		background: var(--color-surface);
-		border-radius: var(--border-radius-lg);
-		overflow: hidden;
-		/* Improve containment for better performance */
-		contain: layout style paint;
-	}
-
 	.pdf-section:hover {
 		transform: var(--transform-lift-sm);
 		background: linear-gradient(
@@ -379,19 +367,6 @@
 			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
 			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-	}
-
-	.pdf-section iframe {
-		margin-bottom: var(--spacing-4);
-		box-shadow: var(--shadow-lg);
-		transition: box-shadow 0.3s ease;
-		/* Improve iframe rendering */
-		will-change: box-shadow;
-		transform: translateZ(0);
-	}
-
-	.pdf-section iframe:hover {
-		box-shadow: var(--shadow-xl);
 	}
 
 	/* Typography improvements using CSS variables */
@@ -411,8 +386,7 @@
 
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
-		.pdf-section,
-		.pdf-section iframe {
+		.pdf-section {
 			transition: none;
 		}
 
