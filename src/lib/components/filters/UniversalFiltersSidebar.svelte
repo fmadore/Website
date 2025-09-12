@@ -5,7 +5,7 @@
 	import FilterSectionButtons from '$lib/components/filters/FilterSectionButtons.svelte';
 	import FilterSectionChips from '$lib/components/filters/FilterSectionChips.svelte';
 	import { fly, slide } from 'svelte/transition';
-	import { animationsEnabled } from '$lib/stores/animationControl';
+	import { animationsEnabledStore as animationsEnabled } from '$lib/stores/globalState.svelte';
 
 	interface Props {
 		config: UniversalFilterConfig;

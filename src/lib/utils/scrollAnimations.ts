@@ -1,10 +1,12 @@
-import { animationsEnabled } from '$lib/stores/animationControl';
-import { get } from 'svelte/store';
+import { animationsEnabledStore } from '$lib/stores/globalState.svelte';
 
 /**
  * Scroll Animation Utilities
  * Provides reusable functions for implementing smooth scroll animations
  */
+
+// Get animation state helper
+const isAnimationsEnabled = () => animationsEnabledStore.get();
 
 export interface ScrollAnimationOptions {
 	threshold?: number;
@@ -47,7 +49,7 @@ const DEFAULT_DURATION_MS = cssDurationToMs(readCssVar('--anim-duration-base', '
  * Creates an intersection observer for scroll-triggered animations
  */
 export function createScrollObserver(configs: ScrollAnimationConfig[]): IntersectionObserver {
-	if (!get(animationsEnabled)) {
+	if (!isAnimationsEnabled()) {
 		configs.forEach(({ element, animationClass, onEnter }) => {
 			if (animationClass) {
 				element.classList.add(animationClass);
@@ -118,7 +120,7 @@ export function scrollAnimate(
 	element: HTMLElement,
 	options: ScrollAnimationOptions & { animationClass?: string } = {}
 ) {
-	if (!get(animationsEnabled)) {
+	if (!isAnimationsEnabled()) {
 		element.style.opacity = '1';
 		element.style.transform = 'none';
 		element.style.transition = 'none';
@@ -294,7 +296,7 @@ export function staggeredAnimation(
 		threshold?: number;
 	} = {}
 ) {
-	if (!get(animationsEnabled)) {
+	if (!isAnimationsEnabled()) {
 		elements.forEach((element) => {
 			element.style.opacity = '1';
 			element.style.transform = 'translateY(0)';

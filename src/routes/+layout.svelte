@@ -8,11 +8,14 @@
 	import '../app.css';
 	import type { LayoutProps } from './$types'; // Added import for LayoutProps
 	import { afterNavigate } from '$app/navigation';
-	import { animationsEnabled } from '$lib/stores/animationControl';
+	import { getGlobalState } from '$lib/stores/globalState.svelte';
 
 	// Destructure data and children from $props using LayoutProps
 	// This makes `children` available to TypeScript for the {@render children()} tag
 	let { data, children }: LayoutProps = $props();
+
+	// Get access to global state
+	const globalState = getGlobalState();
 
 	let gtmLoaded = $state(false);
 	let isTransitioning = $state(false);
@@ -95,12 +98,11 @@
 		// Set transitioning state
 		isTransitioning = true;
 		
-		// Temporarily disable animations during navigation to prevent flash
-		animationsEnabled.set(false);
+		// Use the new global state method to temporarily disable animations
+		globalState.temporarilyDisableAnimations(100);
 		
-		// Re-enable animations and remove transition state after page settles
+		// Remove transition state after page settles
 		setTimeout(() => {
-			animationsEnabled.set(true);
 			isTransitioning = false;
 		}, 100);
 	});
