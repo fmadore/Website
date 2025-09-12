@@ -8,25 +8,28 @@
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 	import { browser } from '$app/environment';
 
-	// Get the year parameter from the URL
+	// Get the year parameter from the URL - reactive to route changes
 	let year = $derived(parseInt($page.params.year || ''));
 
 	// Filter activities by year - using $derived for reactive filtering
-	let filteredActivities = $derived($activities.filter((a: Activity) => a.year === year));
-
-	// All years for display - using $derived
-	let allYears = $derived(
-		[...new Set($activities.map((a: Activity) => a.year))].sort((a: number, b: number) => b - a)
+	let filteredActivities = $derived(
+		$activities.filter((activity: Activity) => activity.year === year)
 	);
 
-	// Define breadcrumb items
+	// All years for display - using $derived for consistent sorting
+	let allYears = $derived(
+		[...new Set($activities.map((activity: Activity) => activity.year))].sort(
+			(a: number, b: number) => b - a
+		)
+	);
+
+	// Define breadcrumb items - reactive to year changes
 	let breadcrumbItems = $derived([
-		// { label: 'Home', href: base || '/' }, // Removed: Breadcrumb component handles the Home link by default
 		{ label: 'Activities', href: `${base}/activities` },
 		{ label: String(year), href: `${base}/activities/year/${year}` }
 	]);
 
-	// Generate Breadcrumb JSON-LD
+	// Generate Breadcrumb JSON-LD - reactive to breadcrumb changes
 	let breadcrumbJsonLdString = $derived(
 		JSON.stringify({
 			'@context': 'https://schema.org',
@@ -44,19 +47,27 @@
 
 	// Handle JSON-LD script injection with $effect
 	$effect(() => {
-		if (browser && breadcrumbJsonLdString && !document.getElementById(breadcrumbJsonLdScriptId)) {
-			const script = document.createElement('script');
-			script.id = breadcrumbJsonLdScriptId;
-			script.type = 'application/ld+json';
-			script.textContent = breadcrumbJsonLdString;
-			document.head.appendChild(script);
+		if (browser && breadcrumbJsonLdString) {
+			let script = document.getElementById(breadcrumbJsonLdScriptId) as HTMLScriptElement | null;
+			
+			if (script) {
+				// Update existing script
+				script.textContent = breadcrumbJsonLdString;
+			} else {
+				// Create new script
+				script = document.createElement('script');
+				script.id = breadcrumbJsonLdScriptId;
+				script.type = 'application/ld+json';
+				script.textContent = breadcrumbJsonLdString;
+				document.head.appendChild(script);
+			}
 		}
 
 		// Cleanup when component is destroyed
 		return () => {
 			if (browser) {
 				const script = document.getElementById(breadcrumbJsonLdScriptId);
-				if (script) {
+				if (script && script.parentElement === document.head) {
 					document.head.removeChild(script);
 				}
 			}

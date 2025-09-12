@@ -6,6 +6,8 @@ import type { Activity } from '$lib/types';
 export type { Activity };
 
 // Create a writable store with the activities from our data files
+// We keep the traditional store pattern for now as it's working well
+// and provides good compatibility with the existing codebase
 export const activities = writable<Activity[]>(activitiesByDate);
 
 // Helper function to add a new activity
@@ -15,7 +17,7 @@ export function addActivity(activity: Activity) {
 	});
 }
 
-// Helper function to get activities by year
+// Helper function to get activities by year using store subscription
 export function getActivitiesByYear(year: number) {
 	let filteredActivities: Activity[] = [];
 
@@ -28,7 +30,7 @@ export function getActivitiesByYear(year: number) {
 	return filteredActivities;
 }
 
-// Helper function to get an activity by ID
+// Helper function to get an activity by ID using store subscription
 export function getActivityById(id: string): Activity | undefined {
 	let activity: Activity | undefined;
 

@@ -6,17 +6,17 @@
 	import SEO from '$lib/SEO.svelte';
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
 
-	// Local activities array - using $derived to reactively get the store value
+	// Reactive activities array - using $derived to reactively get the store value
 	let activityList = $derived($activities);
 
-	// Years array - derived from activities and sorted
+	// Years array - derived from activities and sorted in descending order
 	let years = $derived(
 		[...new Set($activities.map((activity: Activity) => activity.year))].sort(
 			(a: number, b: number) => b - a
 		)
 	);
 
-	// Get activities count by year for display
+	// Get activities count by year for display - pure function approach
 	function getCountByYear(year: number): number {
 		return activityList.filter((activity: Activity) => activity.year === year).length;
 	}

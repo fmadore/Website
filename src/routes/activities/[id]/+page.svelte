@@ -33,13 +33,13 @@
 		return colonIndex > -1 ? title.substring(0, colonIndex) + '...' : title;
 	}
 
-	// Define breadcrumb items
+	// Define breadcrumb items - reactive to activity changes
 	const breadcrumbItems = $derived([
 		{ label: 'Activities', href: `${base}/activities` },
-		{ label: truncateTitle(activity.title), href: `${base}/activities/${activity.id}` } // Use truncated title
+		{ label: truncateTitle(activity.title), href: `${base}/activities/${activity.id}` }
 	]);
 
-	// Generate Breadcrumb JSON-LD
+	// Generate Breadcrumb JSON-LD - reactive to breadcrumb changes
 	const breadcrumbJsonLdString = $derived(
 		JSON.stringify({
 			'@context': 'https://schema.org',
@@ -62,91 +62,72 @@
 	const activityJsonLdScriptId = 'activity-json-ld';
 	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
 
-	// Replace onMount and onDestroy with $effect
+	// Replace onMount and onDestroy with $effect for JSON-LD management and optimizations
 	$effect(() => {
 		if (browser) {
-			// Use requestIdleCallback to optimize animations and reduce long tasks
+			// Optimize animations for better performance
 			const optimizeAnimations = () => {
 				const animatedElements = document.querySelectorAll('[data-animate]');
 				animatedElements.forEach((el) => {
-					(el as HTMLElement).style.willChange = 'transform, opacity';
-					(el as HTMLElement).style.transform = 'translateZ(0)';
-					// Add containment for better performance
-					(el as HTMLElement).style.contain = 'layout style paint';
+					const element = el as HTMLElement;
+					element.style.willChange = 'transform, opacity';
+					element.style.transform = 'translateZ(0)';
+					element.style.contain = 'layout style paint';
 				});
 			};
 
-			// Debounced intersection observer for scroll animations
-			let observerTimeout: number;
-			const debouncedObserver = () => {
-				clearTimeout(observerTimeout);
-				observerTimeout = window.setTimeout(optimizeAnimations, 16); // ~60fps
-			};
-
-			// Defer animation optimization to idle time
+			// Use requestIdleCallback for better performance
 			if ('requestIdleCallback' in window) {
-				window.requestIdleCallback(debouncedObserver);
+				window.requestIdleCallback(optimizeAnimations);
 			} else {
-				// Fallback for browsers without requestIdleCallback
-				setTimeout(debouncedObserver, 0);
+				setTimeout(optimizeAnimations, 0);
 			}
 
-			// Handle activity JSON-LD
+			// Handle activity JSON-LD script
 			const activityScriptId = activityJsonLdScriptId;
-			let activityScriptElement = document.getElementById(
-				activityScriptId
-			) as HTMLScriptElement | null;
+			let activityScript = document.getElementById(activityScriptId) as HTMLScriptElement | null;
 
 			if (jsonLdString) {
-				if (activityScriptElement) {
-					activityScriptElement.textContent = jsonLdString;
+				if (activityScript) {
+					activityScript.textContent = jsonLdString;
 				} else {
-					activityScriptElement = document.createElement('script');
-					activityScriptElement.id = activityScriptId;
-					activityScriptElement.type = 'application/ld+json';
-					activityScriptElement.textContent = jsonLdString;
-					document.head.appendChild(activityScriptElement);
+					activityScript = document.createElement('script');
+					activityScript.id = activityScriptId;
+					activityScript.type = 'application/ld+json';
+					activityScript.textContent = jsonLdString;
+					document.head.appendChild(activityScript);
 				}
-			} else {
-				if (activityScriptElement) {
-					document.head.removeChild(activityScriptElement);
-				}
+			} else if (activityScript && activityScript.parentElement === document.head) {
+				document.head.removeChild(activityScript);
 			}
 
-			// Handle breadcrumb JSON-LD
+			// Handle breadcrumb JSON-LD script
 			const breadcrumbScriptId = breadcrumbJsonLdScriptId;
-			let breadcrumbScriptElement = document.getElementById(
-				breadcrumbScriptId
-			) as HTMLScriptElement | null;
+			let breadcrumbScript = document.getElementById(breadcrumbScriptId) as HTMLScriptElement | null;
 
 			if (breadcrumbJsonLdString) {
-				if (breadcrumbScriptElement) {
-					breadcrumbScriptElement.textContent = breadcrumbJsonLdString;
+				if (breadcrumbScript) {
+					breadcrumbScript.textContent = breadcrumbJsonLdString;
 				} else {
-					breadcrumbScriptElement = document.createElement('script');
-					breadcrumbScriptElement.id = breadcrumbScriptId;
-					breadcrumbScriptElement.type = 'application/ld+json';
-					breadcrumbScriptElement.textContent = breadcrumbJsonLdString;
-					document.head.appendChild(breadcrumbScriptElement);
+					breadcrumbScript = document.createElement('script');
+					breadcrumbScript.id = breadcrumbScriptId;
+					breadcrumbScript.type = 'application/ld+json';
+					breadcrumbScript.textContent = breadcrumbJsonLdString;
+					document.head.appendChild(breadcrumbScript);
 				}
-			} else {
-				if (breadcrumbScriptElement) {
-					document.head.removeChild(breadcrumbScriptElement);
-				}
+			} else if (breadcrumbScript && breadcrumbScript.parentElement === document.head) {
+				document.head.removeChild(breadcrumbScript);
 			}
 
+			// Cleanup function
 			return () => {
-				// Cleanup: remove scripts if they exist
 				if (browser) {
 					const activityScriptToRemove = document.getElementById(activityScriptId);
 					if (activityScriptToRemove && activityScriptToRemove.parentElement === document.head) {
 						document.head.removeChild(activityScriptToRemove);
 					}
 					const breadcrumbScriptToRemove = document.getElementById(breadcrumbScriptId);
-					if (
-						breadcrumbScriptToRemove &&
-						breadcrumbScriptToRemove.parentElement === document.head
-					) {
+					if (breadcrumbScriptToRemove && breadcrumbScriptToRemove.parentElement === document.head) {
 						document.head.removeChild(breadcrumbScriptToRemove);
 					}
 				}
@@ -154,8 +135,8 @@
 		}
 	});
 
-	// Format the tags for display
-	const formattedTags = $derived(activity?.tags ? activity.tags : []);
+	// Format the tags for display - using optional chaining for cleaner syntax
+	const formattedTags = $derived(activity?.tags ?? []);
 
 	// --- Content Parsing Logic (Keep as is, uses activity from data) ---
 	interface ContentSegment {
