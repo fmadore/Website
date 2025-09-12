@@ -28,77 +28,71 @@
 		glassVariant = 'glass'
 	}: IframeRendererProps = $props();
 
+	// Helper to determine if height is a CSS value (not a class name)
+	let isCssValue = $derived(
+		height &&
+		(height.endsWith('px') ||
+			height.endsWith('%') ||
+			height.endsWith('vh') ||
+			height.endsWith('em') ||
+			height.endsWith('rem'))
+	);
+
+	// Determine the base container classes
+	let baseClasses = $derived.by(() => {
+		if (containerClass) {
+			return [containerClass];
+		} else if (aspectRatio) {
+			return [`iframe-container-aspect`, `iframe-container-aspect-${aspectRatio}`];
+		} else if (height && !isCssValue) {
+			// Height is a class name like iframe-container-sm
+			return [height];
+		} else {
+			// Default base class
+			return ['iframe-container'];
+		}
+	});
+
+	// Determine additional classes (height class if needed)
+	let additionalClasses = $derived.by(() => {
+		const classes = [];
+		
+		// Add height class if containerClass is provided and height is a class name
+		if (containerClass && height && !isCssValue) {
+			classes.push(height);
+		}
+
+		// Add glass effect classes if enabled
+		if (glassEffect) {
+			classes.push(glassVariant, 'glass-animate');
+		}
+
+		return classes;
+	});
+
+	// Combine all classes
 	let finalContainerClass = $derived(
-		(() => {
-			let classes = [];
-
-			if (containerClass) {
-				// Use provided containerClass as base
-				classes.push(containerClass);
-
-				// If height is a class name (not a CSS value), add it
-				if (
-					height &&
-					!height.endsWith('px') &&
-					!height.endsWith('%') &&
-					!height.endsWith('vh') &&
-					!height.endsWith('em') &&
-					!height.endsWith('rem')
-				) {
-					classes.push(height);
-				}
-			} else if (aspectRatio) {
-				classes.push(`iframe-container-aspect iframe-container-aspect-${aspectRatio}`);
-			} else if (
-				height &&
-				!height.endsWith('px') &&
-				!height.endsWith('%') &&
-				!height.endsWith('vh') &&
-				!height.endsWith('em') &&
-				!height.endsWith('rem')
-			) {
-				// If height is a class name like iframe-container-sm
-				classes.push(height);
-			} else {
-				// Default base class
-				classes.push('iframe-container');
-			}
-
-			// Add glass effect if enabled
-			if (glassEffect) {
-				classes.push(glassVariant);
-				classes.push('glass-animate');
-			}
-
-			return classes.join(' ');
-		})()
+		[...baseClasses, ...additionalClasses].join(' ')
 	);
 
-	let style = $derived(
-		(() => {
-			let s = '';
-			if (
-				height &&
-				(height.endsWith('px') ||
-					height.endsWith('%') ||
-					height.endsWith('vh') ||
-					height.endsWith('em') ||
-					height.endsWith('rem'))
-			) {
-				// If height is a direct CSS value and not a class reference for the container
-				if (containerClass && containerClass.includes('iframe-container-aspect')) {
-					// If it's an aspect ratio container, height on iframe itself is usually 100%
-					s = 'height: 100%;';
-				} else {
-					s = `height: ${height};`;
-				}
-			} else if (!height && !aspectRatio && !containerClass) {
-				// Default height if nothing else is specified, ensures iframe is visible
-				s = 'height: var(--iframe-height-default);'; // Default height for iframe container using CSS variable
+	// Determine the inline style for the iframe
+	let style = $derived.by(() => {
+		if (!isCssValue) {
+			// No CSS value height, check for default fallback
+			if (!height && !aspectRatio && !containerClass) {
+				return 'height: var(--iframe-height-default);';
 			}
-			return s;
-		})()
-	);
+			return '';
+		}
+
+		// Height is a CSS value
+		if (containerClass && containerClass.includes('iframe-container-aspect')) {
+			// Aspect ratio containers should have 100% height on iframe
+			return 'height: 100%;';
+		} else {
+			return `height: ${height};`;
+		}
+	});
 </script>
 
 <div class={finalContainerClass}>
