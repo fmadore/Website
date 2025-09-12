@@ -21,7 +21,6 @@ This component doesn't accept any props as it's designed to be used as a standal
 The Header organism combines:
 
 - **Molecules:**
-
   - `DesktopNav` - For navigation on desktop devices
   - `MobileMenu` - For navigation on mobile devices
 
@@ -34,12 +33,10 @@ The Header organism combines:
 The Header manages several types of state:
 
 1. **Mobile Menu State:**
-
    - Controls the visibility of the mobile menu
    - Manages body overflow to prevent scrolling when mobile menu is open
 
 2. **Dropdown State:**
-
    - Tracks which dropdown menu is currently active
    - Implements delay timers for better UX when hovering dropdowns
    - Handles keyboard navigation for dropdowns

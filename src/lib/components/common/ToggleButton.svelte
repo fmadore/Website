@@ -20,12 +20,14 @@
 	let ariaTitle = $derived(isToggled ? `Hide ${baseText}` : `Show ${baseText}`);
 
 	// Dynamically choose variant based on toggle state
-	let buttonVariant = $derived<'primary' | 'outline-primary'>(isToggled ? 'primary' : 'outline-primary');
+	let buttonVariant = $derived<'primary' | 'outline-primary'>(
+		isToggled ? 'primary' : 'outline-primary'
+	);
 
 	// Compute additional classes based on glass prop and toggle state
 	let additionalClasses = $derived(
-		glass 
-			? `glass-button toggle-button ${isToggled ? 'toggle-button-active' : ''}` 
+		glass
+			? `glass-button toggle-button ${isToggled ? 'toggle-button-active' : ''}`
 			: `toggle-button ${isToggled ? 'toggle-button-active' : ''}`
 	);
 </script>
@@ -37,7 +39,7 @@
 	ariaLabel={ariaTitle}
 	title={ariaTitle}
 	{additionalClasses}
-	glass={glass}
+	{glass}
 >
 	{#snippet icon()}
 		<Icon icon="lucide:map" width="18" height="18" />
@@ -60,10 +62,10 @@
 		font-weight: var(--font-weight-medium);
 		letter-spacing: var(--letter-spacing-wide);
 		transition: all var(--transition-duration-200) var(--transition-ease-out);
-		
+
 		/* Enhanced border radius for better visual appeal */
 		border-radius: var(--border-radius-lg) !important;
-		
+
 		/* Subtle shadow for depth */
 		box-shadow: var(--shadow-sm);
 	}
@@ -83,13 +85,13 @@
 	/* Active state styling - now works with primary variant */
 	:global(.toggle-button-active) {
 		/* Additional styling for active state if needed */
-		box-shadow: 
+		box-shadow:
 			var(--shadow-md),
 			0 0 0 var(--border-width-thin) rgba(var(--color-primary-rgb), var(--opacity-medium));
 	}
 
 	:global(.toggle-button-active:hover) {
-		box-shadow: 
+		box-shadow:
 			var(--shadow-lg),
 			0 0 0 var(--border-width-medium) rgba(var(--color-primary-rgb), var(--opacity-medium-high));
 	}
@@ -99,7 +101,7 @@
 		/* Additional glassmorphism enhancements for the toggle button */
 		backdrop-filter: blur(var(--glass-blur-amount)) saturate(150%);
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount)) saturate(150%);
-		
+
 		/* Subtle gradient overlay for better visual hierarchy */
 		background-image: linear-gradient(
 			135deg,
@@ -158,11 +160,11 @@
 		:global(.toggle-button) {
 			transition: none;
 		}
-		
+
 		:global(.toggle-button:hover) {
 			transform: none;
 		}
-		
+
 		:global(.toggle-button:active) {
 			transform: none;
 		}

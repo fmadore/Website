@@ -82,7 +82,7 @@
 	let darkModeDetected = $derived.by(() => {
 		// Respect the explicit preference override first
 		if (preferDarkMode !== null) return preferDarkMode;
-		
+
 		// Use the theme store value (reactive)
 		const currentTheme = getTheme();
 		return currentTheme === 'dark';
@@ -150,7 +150,7 @@
 		}
 	}
 
-	// Main effect for initialization and cleanup  
+	// Main effect for initialization and cleanup
 	$effect(() => {
 		if (!browser) return;
 
@@ -160,114 +160,114 @@
 				// Dynamically import Leaflet
 				L = (await import('leaflet')).default;
 
-			// Then dynamically import the marker cluster plugin
-			await import('leaflet.markercluster');
+				// Then dynamically import the marker cluster plugin
+				await import('leaflet.markercluster');
 
-			// Import CSS only on client-side
-			await import('leaflet/dist/leaflet.css');
-			await import('leaflet.markercluster/dist/MarkerCluster.css');
-			await import('leaflet.markercluster/dist/MarkerCluster.Default.css');
+				// Import CSS only on client-side
+				await import('leaflet/dist/leaflet.css');
+				await import('leaflet.markercluster/dist/MarkerCluster.css');
+				await import('leaflet.markercluster/dist/MarkerCluster.Default.css');
 
-			// Fix icon paths (needs to be after Leaflet import)
-			delete (L.Icon.Default.prototype as any)._getIconUrl;
+				// Fix icon paths (needs to be after Leaflet import)
+				delete (L.Icon.Default.prototype as any)._getIconUrl;
 
-			// Dynamic import of icon assets
-			const iconRetinaUrl = (await import('leaflet/dist/images/marker-icon-2x.png')).default;
-			const iconUrl = (await import('leaflet/dist/images/marker-icon.png')).default;
-			const shadowUrl = (await import('leaflet/dist/images/marker-shadow.png')).default;
+				// Dynamic import of icon assets
+				const iconRetinaUrl = (await import('leaflet/dist/images/marker-icon-2x.png')).default;
+				const iconUrl = (await import('leaflet/dist/images/marker-icon.png')).default;
+				const shadowUrl = (await import('leaflet/dist/images/marker-shadow.png')).default;
 
-			L.Icon.Default.mergeOptions({
-				iconRetinaUrl,
-				iconUrl,
-				shadowUrl
-			});
+				L.Icon.Default.mergeOptions({
+					iconRetinaUrl,
+					iconUrl,
+					shadowUrl
+				});
 
-			if (!mapContainer) {
-				throw new Error('Map container not found');
-			}
-
-			// Initialize the map with configurable options
-			map = L.map(mapContainer, {
-				center: initialView,
-				zoom: initialZoom,
-				maxZoom: maxZoom,
-				minZoom: 2, // Prevent zooming out too far
-				maxBoundsViscosity: 1.0, // Makes bounds completely solid
-				bounceAtZoomLimits: false, // Don't bounce when hitting zoom limits
-				worldCopyJump: true, // Allows seamless horizontal panning
-				// Set maximum bounds if restricted
-				...(restrictBounds ? { maxBounds: MAX_BOUNDS } : {})
-			});
-
-			// Initialize with theme-aware tiles
-			updateTileLayer();
-
-			// Initialize marker cluster layer group with options
-			clusterLayer = L.markerClusterGroup({
-				maxClusterRadius: 50,
-				disableClusteringAtZoom: maxClusterZoom,
-				iconCreateFunction: function (cluster) {
-					const markers = cluster.getAllChildMarkers();
-					const count = cluster.getChildCount();
-					let clusterType = 'default'; // Default type
-
-					// Check for different marker types using simple names
-					const hasLecture = markers.some((marker) =>
-						marker.options.icon?.options.className?.includes('marker-type-lecture')
-					);
-					const hasEvent = markers.some((marker) =>
-						marker.options.icon?.options.className?.includes('marker-type-event')
-					);
-					// Add checks for other types if needed, e.g., workshop
-					const hasWorkshop = markers.some(
-						(marker) => marker.options.icon?.options.className?.includes('marker-type-workshop') // Example if you add workshop type back
-					);
-
-					// Set clusterType based on priority (adjust as needed)
-					if (hasLecture) {
-						clusterType = 'lecture'; // Priority 1: Lecture (Accent)
-					}
-					if (hasEvent) {
-						clusterType = 'event'; // Priority 2: Event (Highlight)
-					}
-					// Example: Add workshop back if needed
-					// if (hasWorkshop) {
-					//    clusterType = 'workshop'; // Priority 3: Workshop (Success)
-					// }
-
-					// Default is primary color
-
-					// Adjust cluster size/class based on count for better visual hierarchy
-					let clusterSizeClass = 'marker-cluster-small';
-					if (count < 10) {
-						clusterSizeClass = 'marker-cluster-small';
-					} else if (count < 100) {
-						clusterSizeClass = 'marker-cluster-medium';
-					} else {
-						clusterSizeClass = 'marker-cluster-large';
-					}
-
-					const c = `marker-cluster ${clusterSizeClass} marker-cluster-${clusterType}`;
-					const size = L!.point(40, 40); // Keep base size, CSS will adjust inner div
-
-					// You can customize the HTML further, perhaps adding a small icon inside
-					const html = `<div><span>${count}</span></div>`;
-
-					return L!.divIcon({ html: html, className: c, iconSize: size });
+				if (!mapContainer) {
+					throw new Error('Map container not found');
 				}
-			}).addTo(map);
 
-			// Initialize with theme-aware tiles
-			updateTileLayer();
+				// Initialize the map with configurable options
+				map = L.map(mapContainer, {
+					center: initialView,
+					zoom: initialZoom,
+					maxZoom: maxZoom,
+					minZoom: 2, // Prevent zooming out too far
+					maxBoundsViscosity: 1.0, // Makes bounds completely solid
+					bounceAtZoomLimits: false, // Don't bounce when hitting zoom limits
+					worldCopyJump: true, // Allows seamless horizontal panning
+					// Set maximum bounds if restricted
+					...(restrictBounds ? { maxBounds: MAX_BOUNDS } : {})
+				});
 
-			// Setup mobile menu observer after DOM is ready
-			setTimeout(() => {
-				setupMobileMenuObserver();
-			}, 500);
-		} catch (error) {
-			console.error('Error initializing map:', error);
-			importError = error instanceof Error ? error.message : 'Unknown error loading map';
-		}
+				// Initialize with theme-aware tiles
+				updateTileLayer();
+
+				// Initialize marker cluster layer group with options
+				clusterLayer = L.markerClusterGroup({
+					maxClusterRadius: 50,
+					disableClusteringAtZoom: maxClusterZoom,
+					iconCreateFunction: function (cluster) {
+						const markers = cluster.getAllChildMarkers();
+						const count = cluster.getChildCount();
+						let clusterType = 'default'; // Default type
+
+						// Check for different marker types using simple names
+						const hasLecture = markers.some((marker) =>
+							marker.options.icon?.options.className?.includes('marker-type-lecture')
+						);
+						const hasEvent = markers.some((marker) =>
+							marker.options.icon?.options.className?.includes('marker-type-event')
+						);
+						// Add checks for other types if needed, e.g., workshop
+						const hasWorkshop = markers.some(
+							(marker) => marker.options.icon?.options.className?.includes('marker-type-workshop') // Example if you add workshop type back
+						);
+
+						// Set clusterType based on priority (adjust as needed)
+						if (hasLecture) {
+							clusterType = 'lecture'; // Priority 1: Lecture (Accent)
+						}
+						if (hasEvent) {
+							clusterType = 'event'; // Priority 2: Event (Highlight)
+						}
+						// Example: Add workshop back if needed
+						// if (hasWorkshop) {
+						//    clusterType = 'workshop'; // Priority 3: Workshop (Success)
+						// }
+
+						// Default is primary color
+
+						// Adjust cluster size/class based on count for better visual hierarchy
+						let clusterSizeClass = 'marker-cluster-small';
+						if (count < 10) {
+							clusterSizeClass = 'marker-cluster-small';
+						} else if (count < 100) {
+							clusterSizeClass = 'marker-cluster-medium';
+						} else {
+							clusterSizeClass = 'marker-cluster-large';
+						}
+
+						const c = `marker-cluster ${clusterSizeClass} marker-cluster-${clusterType}`;
+						const size = L!.point(40, 40); // Keep base size, CSS will adjust inner div
+
+						// You can customize the HTML further, perhaps adding a small icon inside
+						const html = `<div><span>${count}</span></div>`;
+
+						return L!.divIcon({ html: html, className: c, iconSize: size });
+					}
+				}).addTo(map);
+
+				// Initialize with theme-aware tiles
+				updateTileLayer();
+
+				// Setup mobile menu observer after DOM is ready
+				setTimeout(() => {
+					setupMobileMenuObserver();
+				}, 500);
+			} catch (error) {
+				console.error('Error initializing map:', error);
+				importError = error instanceof Error ? error.message : 'Unknown error loading map';
+			}
 		})();
 
 		// Cleanup function
@@ -282,7 +282,7 @@
 			if (map) {
 				map.remove();
 			}
-			
+
 			// Reset state variables
 			map = null;
 			clusterLayer = null;

@@ -1,1 +1,1 @@
-export const DELAY_STEP = 50; 
+export const DELAY_STEP = 50;

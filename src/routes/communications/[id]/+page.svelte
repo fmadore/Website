@@ -322,7 +322,7 @@
 		padding: var(--spacing-6);
 		border-radius: var(--border-radius-xl);
 		position: relative;
-		
+
 		/* Sophisticated glassmorphism effect matching other components */
 		background: linear-gradient(
 			135deg,
@@ -333,9 +333,10 @@
 		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 8px));
 		backdrop-filter: blur(var(--glass-blur-fallback, 8px));
 		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low, 0.08));
-		box-shadow: 
+		box-shadow:
 			var(--shadow-md),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-low, 0.1));
+			inset 0 var(--border-width-thin) 0
+				rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-low, 0.1));
 		transition: all var(--anim-duration-base) var(--anim-ease-out);
 	}
 
@@ -347,9 +348,10 @@
 			rgba(var(--color-accent-rgb), 0.035) 50%,
 			rgba(var(--color-highlight-rgb), 0.03) 100%
 		);
-		box-shadow: 
+		box-shadow:
 			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-medium, 0.15));
+			inset 0 var(--border-width-thin) 0
+				rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-medium, 0.15));
 	}
 
 	/* Participants Section */
@@ -358,7 +360,7 @@
 		padding: var(--spacing-6);
 		border-radius: var(--border-radius-xl);
 		position: relative;
-		
+
 		/* Sophisticated glassmorphism effect matching other components */
 		background: linear-gradient(
 			135deg,
@@ -369,9 +371,10 @@
 		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 8px));
 		backdrop-filter: blur(var(--glass-blur-fallback, 8px));
 		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low, 0.08));
-		box-shadow: 
+		box-shadow:
 			var(--shadow-md),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-low, 0.1));
+			inset 0 var(--border-width-thin) 0
+				rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-low, 0.1));
 		transition: all var(--anim-duration-base) var(--anim-ease-out);
 	}
 
@@ -383,9 +386,10 @@
 			rgba(var(--color-accent-rgb), 0.035) 50%,
 			rgba(var(--color-highlight-rgb), 0.03) 100%
 		);
-		box-shadow: 
+		box-shadow:
 			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-medium, 0.15));
+			inset 0 var(--border-width-thin) 0
+				rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-medium, 0.15));
 	}
 
 	/* Section Titles */
@@ -433,7 +437,7 @@
 		padding: var(--spacing-5);
 		border-radius: var(--border-radius-lg);
 		position: relative;
-		
+
 		/* Enhanced glassmorphism for individual cards */
 		background: linear-gradient(
 			135deg,
@@ -518,7 +522,7 @@
 		padding: var(--spacing-4);
 		border-radius: var(--border-radius-lg);
 		position: relative;
-		
+
 		/* Enhanced glassmorphism for individual cards */
 		background: linear-gradient(
 			135deg,
@@ -677,11 +681,11 @@
 		.participants-section {
 			padding: var(--spacing-4);
 		}
-		
+
 		.panel-section-title {
 			font-size: var(--font-size-lg);
 		}
-		
+
 		.panel-paper-card,
 		.participant-card {
 			padding: var(--spacing-3);

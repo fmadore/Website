@@ -14,7 +14,11 @@
 	} = $props();
 </script>
 
-<nav aria-label="Breadcrumb" class="breadcrumb" use:scrollAnimate={{ delay: animationDelay, animationClass: 'fade-in-up' }}>
+<nav
+	aria-label="Breadcrumb"
+	class="breadcrumb"
+	use:scrollAnimate={{ delay: animationDelay, animationClass: 'fade-in-up' }}
+>
 	<ol>
 		{#if showHomeLink}
 			<li>
@@ -65,14 +69,16 @@
 		left: var(--spacing-5);
 		width: var(--spacing-12);
 		height: var(--spacing-1);
-		background: linear-gradient(90deg, 
+		background: linear-gradient(
+			90deg,
 			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%,
 			rgba(var(--color-accent-rgb), var(--opacity-medium)) 50%,
 			transparent 100%
 		);
 		border-radius: var(--border-radius-sm);
 		opacity: var(--opacity-high);
-		box-shadow: 0 var(--border-width-thin) var(--spacing-1) rgba(var(--color-primary-rgb), var(--opacity-medium));
+		box-shadow: 0 var(--border-width-thin) var(--spacing-1)
+			rgba(var(--color-primary-rgb), var(--opacity-medium));
 	}
 
 	.breadcrumb ol {
@@ -96,7 +102,8 @@
 		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-semibold);
 		opacity: var(--opacity-high);
-		text-shadow: 0 var(--border-width-thin) var(--spacing-1) rgba(var(--color-primary-rgb), var(--opacity-medium));
+		text-shadow: 0 var(--border-width-thin) var(--spacing-1)
+			rgba(var(--color-primary-rgb), var(--opacity-medium));
 	}
 
 	/* Breadcrumb Link Styles */
@@ -114,8 +121,9 @@
 
 	.breadcrumb-link:hover {
 		color: var(--color-primary);
-		background: linear-gradient(135deg, 
-			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%, 
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
 			rgba(var(--color-accent-rgb), var(--opacity-low)) 100%
 		);
 		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
@@ -133,13 +141,15 @@
 		color: var(--color-primary);
 		font-weight: var(--font-weight-bold);
 		padding: var(--spacing-2) var(--spacing-3);
-		background: linear-gradient(135deg, 
-			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%, 
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%,
 			rgba(var(--color-accent-rgb), var(--opacity-medium)) 100%
 		);
 		border-radius: var(--border-radius-md);
 		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium));
-		box-shadow: inset 0 var(--border-width-thin) var(--spacing-1) rgba(var(--color-primary-rgb), var(--opacity-medium));
+		box-shadow: inset 0 var(--border-width-thin) var(--spacing-1)
+			rgba(var(--color-primary-rgb), var(--opacity-medium));
 	}
 
 	/* Responsive Design */
@@ -179,12 +189,14 @@
 	}
 
 	:global(html.dark) .breadcrumb::after {
-		background: linear-gradient(90deg, 
+		background: linear-gradient(
+			90deg,
 			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%,
 			rgba(var(--color-accent-rgb), var(--opacity-medium)) 50%,
 			transparent 100%
 		);
-		box-shadow: 0 var(--border-width-thin) var(--spacing-1) rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		box-shadow: 0 var(--border-width-thin) var(--spacing-1)
+			rgba(var(--color-primary-rgb), var(--opacity-medium-high));
 	}
 
 	:global(html.dark) .breadcrumb-link {
@@ -193,20 +205,23 @@
 	}
 
 	:global(html.dark) .breadcrumb-link:hover {
-		background: linear-gradient(135deg, 
-			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%, 
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%,
 			rgba(var(--color-accent-rgb), var(--opacity-medium)) 100%
 		);
 		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
 	}
 
 	:global(html.dark) .breadcrumb-text {
-		background: linear-gradient(135deg, 
-			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%, 
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
 			rgba(var(--color-accent-rgb), var(--opacity-medium-high)) 100%
 		);
 		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
-		box-shadow: inset 0 var(--border-width-thin) var(--spacing-1) rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		box-shadow: inset 0 var(--border-width-thin) var(--spacing-1)
+			rgba(var(--color-primary-rgb), var(--opacity-medium-high));
 	}
 
 	/* Enhanced Visual Effects */

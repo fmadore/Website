@@ -8,7 +8,7 @@
 
 	// Local activities array - using $derived to reactively get the store value
 	let activityList = $derived($activities);
-	
+
 	// Years array - derived from activities and sorted
 	let years = $derived(
 		[...new Set($activities.map((activity: Activity) => activity.year))].sort(
@@ -92,6 +92,4 @@
 		background-color: var(--color-border);
 		color: var(--color-primary);
 	}
-
-
 </style>

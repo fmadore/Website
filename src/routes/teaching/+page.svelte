@@ -75,41 +75,41 @@
 		<!-- Card Grid Layout -->
 		<div class="content-grid">
 			{#each teachingItems as item, index (item.id)}
-				<div use:scrollAnimate={{ delay: 200 + (index * 100), animationClass: 'fade-in-up' }}>
+				<div use:scrollAnimate={{ delay: 200 + index * 100, animationClass: 'fade-in-up' }}>
 					<Card
 						title={item.title}
 						imageUrl={item.imageUrl}
 						linkUrl={item.linkUrl}
 						target={item.type === 'guest_lecture' ? '_self' : '_blank'}
 					>
-					{#snippet subtitle()}
-						<span>{item.institution}</span>
-					{/snippet}
+						{#snippet subtitle()}
+							<span>{item.institution}</span>
+						{/snippet}
 
-					{#snippet details()}
-						<div class="teaching-card-specific-details">
-							{#if item.type === 'course'}
-								<p><span class="label">Level:</span> {item.level}</p>
-								<p><span class="label">Period:</span> {item.period}</p>
-							{:else if item.type === 'guest_lecture'}
-								<!-- Specific details not shown on card, link provided -->
-							{/if}
-						</div>
-					{/snippet}
+						{#snippet details()}
+							<div class="teaching-card-specific-details">
+								{#if item.type === 'course'}
+									<p><span class="label">Level:</span> {item.level}</p>
+									<p><span class="label">Period:</span> {item.period}</p>
+								{:else if item.type === 'guest_lecture'}
+									<!-- Specific details not shown on card, link provided -->
+								{/if}
+							</div>
+						{/snippet}
 
-					{#snippet children()}{item.description}{/snippet}
+						{#snippet children()}{item.description}{/snippet}
 
-					{#snippet action()}
-						<div>
-							{#if item.syllabusUrl}
-								<a href={item.syllabusUrl} target="_blank" rel="noopener noreferrer">
-									View Syllabus →
-								</a>
-							{:else if item.linkUrl && item.type === 'guest_lecture'}
-								<a href={item.linkUrl}> View List → </a>
-							{/if}
-						</div>
-					{/snippet}
+						{#snippet action()}
+							<div>
+								{#if item.syllabusUrl}
+									<a href={item.syllabusUrl} target="_blank" rel="noopener noreferrer">
+										View Syllabus →
+									</a>
+								{:else if item.linkUrl && item.type === 'guest_lecture'}
+									<a href={item.linkUrl}> View List → </a>
+								{/if}
+							</div>
+						{/snippet}
 					</Card>
 				</div>
 			{/each}
@@ -127,8 +127,6 @@
 	.main-content {
 		width: 100%;
 	}
-
-
 
 	/* .teaching-grid styles are now handled by .content-grid */
 

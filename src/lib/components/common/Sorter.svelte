@@ -9,7 +9,12 @@
 		glass?: boolean; // Enable glassmorphism effect
 	}
 
-	let { activeSort = 'date', onsortchange, availableSorts = ['date', 'title', 'citations'], glass = true }: Props = $props();
+	let {
+		activeSort = 'date',
+		onsortchange,
+		availableSorts = ['date', 'title', 'citations'],
+		glass = true
+	}: Props = $props();
 
 	function toggleSort() {
 		// Find the current index in the available sorts array
@@ -17,13 +22,17 @@
 		// Get the next index, wrapping around to 0 if we're at the end
 		const nextIndex = (currentIndex + 1) % availableSorts.length;
 		const newSort = availableSorts[nextIndex];
-		
+
 		onsortchange?.({ sortBy: newSort });
 	}
 
 	// Determine button text and title based on the *current* sort state for display
 	let iconName = $derived(
-		activeSort === 'date' ? 'lucide:arrow-down-wide-narrow' : activeSort === 'title' ? 'lucide:arrow-down-a-z' : 'lucide:trending-up'
+		activeSort === 'date'
+			? 'lucide:arrow-down-wide-narrow'
+			: activeSort === 'title'
+				? 'lucide:arrow-down-a-z'
+				: 'lucide:trending-up'
 	);
 	let labelText = $derived(
 		activeSort === 'date'
@@ -32,24 +41,26 @@
 				? 'Sorted A-Z'
 				: 'Sorted by Citations'
 	);
-	
+
 	// Dynamic aria title based on available sorts
-	let ariaTitle = $derived((() => {
-		const currentIndex = availableSorts.indexOf(activeSort);
-		const nextIndex = (currentIndex + 1) % availableSorts.length;
-		const nextSort = availableSorts[nextIndex];
-		
-		const sortLabels = {
-			date: 'Date (Newest First)',
-			title: 'Title (A-Z)',
-			citations: 'Citations (Most Cited)'
-		};
-		
-		const currentLabel = sortLabels[activeSort];
-		const nextLabel = sortLabels[nextSort];
-		
-		return `Current sort: ${currentLabel}. Click to sort by ${nextLabel}.`;
-	})());
+	let ariaTitle = $derived(
+		(() => {
+			const currentIndex = availableSorts.indexOf(activeSort);
+			const nextIndex = (currentIndex + 1) % availableSorts.length;
+			const nextSort = availableSorts[nextIndex];
+
+			const sortLabels = {
+				date: 'Date (Newest First)',
+				title: 'Title (A-Z)',
+				citations: 'Citations (Most Cited)'
+			};
+
+			const currentLabel = sortLabels[activeSort];
+			const nextLabel = sortLabels[nextSort];
+
+			return `Current sort: ${currentLabel}. Click to sort by ${nextLabel}.`;
+		})()
+	);
 
 	// Compute additional classes based on glass prop
 	let additionalClasses = $derived(glass ? 'glass-button sorter-button' : 'sorter-button');
@@ -63,7 +74,7 @@
 		ariaLabel={ariaTitle}
 		title={ariaTitle}
 		{additionalClasses}
-		glass={glass}
+		{glass}
 	>
 		{#snippet icon()}
 			<Icon icon={iconName} width="18" height="18" />
@@ -84,10 +95,10 @@
 		font-weight: var(--font-weight-medium);
 		letter-spacing: var(--letter-spacing-wide);
 		transition: all var(--transition-duration-200) var(--transition-ease-out);
-		
+
 		/* Enhanced border radius for better visual appeal */
 		border-radius: var(--border-radius-lg) !important;
-		
+
 		/* Subtle shadow for depth */
 		box-shadow: var(--shadow-sm);
 	}
@@ -109,7 +120,7 @@
 		/* Additional glassmorphism enhancements for the sorter */
 		backdrop-filter: blur(var(--glass-blur-amount)) saturate(150%);
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount)) saturate(150%);
-		
+
 		/* Subtle gradient overlay for better visual hierarchy */
 		background-image: linear-gradient(
 			135deg,
@@ -149,11 +160,11 @@
 		:global(.sorter-button) {
 			transition: none;
 		}
-		
+
 		:global(.sorter-button:hover) {
 			transform: none;
 		}
-		
+
 		:global(.sorter-button:active) {
 			transform: none;
 		}

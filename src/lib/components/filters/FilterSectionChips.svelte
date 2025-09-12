@@ -30,9 +30,7 @@
 	}
 
 	// Items to display (limited or all based on showAll, no search filtering)
-	let displayedItems = $derived(
-		showAll ? items : items.slice(0, initialDisplayCount)
-	);
+	let displayedItems = $derived(showAll ? items : items.slice(0, initialDisplayCount));
 
 	// Check if we have more items to show
 	let hasMoreItems = $derived(items.length > initialDisplayCount);
@@ -48,7 +46,7 @@
 
 	function clearSelection() {
 		// Clear all active items for this section
-		activeItems.forEach(item => handleToggleItem(item));
+		activeItems.forEach((item) => handleToggleItem(item));
 	}
 </script>
 
@@ -78,20 +76,22 @@
 
 	<!-- Show more/less button -->
 	{#if hasMoreItems}
-		<Button 
+		<Button
 			variant="outline-secondary"
 			size="sm"
 			glass={true}
 			additionalClasses="show-more-button"
 			onclick={toggleShowAll}
 		>
-			{showAll ? `Show less (${initialDisplayCount})` : `Show more (+${items.length - initialDisplayCount})`}
+			{showAll
+				? `Show less (${initialDisplayCount})`
+				: `Show more (+${items.length - initialDisplayCount})`}
 		</Button>
 	{/if}
 
 	<!-- Clear selection button -->
 	{#if activeItems.length > 0}
-		<Button 
+		<Button
 			variant="secondary"
 			size="sm"
 			glass={true}
@@ -125,7 +125,8 @@
 		color: var(--color-text-emphasis);
 		margin: 0;
 		padding-bottom: var(--spacing-2);
-		border-bottom: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-medium));
+		border-bottom: var(--border-width-thin) solid
+			rgba(var(--color-accent-rgb), var(--opacity-medium));
 	}
 
 	.items-count {
@@ -143,18 +144,22 @@
 
 	/* Enhanced styles for active state using design system variables */
 	:global(.filter-chip.active) {
-		background: linear-gradient(135deg, 
-			var(--color-accent) 0%, 
-			var(--color-highlight) 100%) !important;
+		background: linear-gradient(
+			135deg,
+			var(--color-accent) 0%,
+			var(--color-highlight) 100%
+		) !important;
 		color: var(--color-white) !important;
 		border-color: var(--color-accent) !important;
 		box-shadow: var(--shadow-md) !important;
 	}
 
 	:global(.filter-chip.active:hover) {
-		background: linear-gradient(135deg, 
-			var(--color-highlight) 0%, 
-			var(--color-accent) 100%) !important;
+		background: linear-gradient(
+			135deg,
+			var(--color-highlight) 0%,
+			var(--color-accent) 100%
+		) !important;
 		transform: var(--transform-lift-sm) !important;
 		box-shadow: var(--shadow-lg) !important;
 	}
@@ -190,7 +195,7 @@
 	:global(html.dark) .filter-section-content {
 		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium));
 		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
-		box-shadow: 
+		box-shadow:
 			0 8px 32px 0 rgba(var(--color-black-rgb), var(--opacity-medium)),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-low));
 	}
@@ -221,4 +226,4 @@
 			transform: none !important;
 		}
 	}
-</style> 
+</style>

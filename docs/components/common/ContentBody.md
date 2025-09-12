@@ -49,11 +49,7 @@ import ContentBody from '$lib/components/common/ContentBody.svelte';
 ### With Additional Classes
 
 ```svelte
-<ContentBody 
-	variant="default" 
-	glassEffect="glass-card" 
-	additionalClasses="md:col-span-2 mb-12"
->
+<ContentBody variant="default" glassEffect="glass-card" additionalClasses="md:col-span-2 mb-12">
 	{#snippet children()}
 		<p>Content with additional CSS classes for layout.</p>
 	{/snippet}
@@ -62,26 +58,29 @@ import ContentBody from '$lib/components/common/ContentBody.svelte';
 
 ## Props
 
-| Prop               | Type                                                          | Default      | Description                                    |
-| ------------------ | ------------------------------------------------------------- | ------------ | ---------------------------------------------- |
-| `variant`          | `'default' \| 'compact' \| 'wide'`                           | `'default'`  | Controls padding and spacing                   |
-| `glassEffect`      | `'glass-card' \| 'glass-panel' \| 'glass-medium' \| 'glass-light'` | `'glass-card'` | Glassmorphism effect to apply                  |
-| `additionalClasses` | `string`                                                      | `''`         | Additional CSS classes to apply                |
-| `children`         | `snippet`                                                     | _required_   | Content to render inside the component         |
+| Prop                | Type                                                               | Default        | Description                            |
+| ------------------- | ------------------------------------------------------------------ | -------------- | -------------------------------------- |
+| `variant`           | `'default' \| 'compact' \| 'wide'`                                 | `'default'`    | Controls padding and spacing           |
+| `glassEffect`       | `'glass-card' \| 'glass-panel' \| 'glass-medium' \| 'glass-light'` | `'glass-card'` | Glassmorphism effect to apply          |
+| `additionalClasses` | `string`                                                           | `''`           | Additional CSS classes to apply        |
+| `children`          | `snippet`                                                          | _required_     | Content to render inside the component |
 
 ## Variants
 
 ### Default
+
 - Standard padding (`var(--spacing-8)`)
 - Standard margin bottom (`var(--spacing-8)`)
 - Best for main content areas
 
 ### Compact
+
 - Reduced padding (`var(--spacing-6)`)
 - Reduced margin bottom (`var(--spacing-6)`)
 - Best for sidebar content or smaller sections
 
 ### Wide
+
 - Increased padding (`var(--spacing-10)`)
 - Increased margin bottom (`var(--spacing-10)`)
 - Best for hero sections or emphasized content
@@ -98,6 +97,7 @@ The component supports all glassmorphism utilities from your CSS framework:
 ## Features
 
 ### Typography Styling
+
 - **Paragraphs**: Consistent spacing, line height, and color using CSS variables
 - **Links**: Primary color with hover effects and external link indicators
 - **Emphasis**: Proper styling for `<em>` and `<strong>` elements
@@ -105,21 +105,25 @@ The component supports all glassmorphism utilities from your CSS framework:
 - **Headings**: Serif font family with proper hierarchy (h2, h3)
 
 ### Content Elements
+
 - **Lists**: Proper spacing and indentation for `<ul>` and `<ol>`
 - **Blockquotes**: Styled with primary color accent and background
 - **Code**: Inline and block code styling with monospace font
 - **Images**: Responsive images with rounded corners
 
 ### Responsive Design
+
 - Mobile-first approach with responsive padding
 - Font size adjustments for smaller screens
 - Maintains readability across all device sizes
 
 ### Dark Mode Support
+
 - Automatic dark mode adaptation through CSS variables
 - No additional configuration needed
 
 ### Accessibility
+
 - Proper color contrast ratios
 - Semantic HTML structure
 - Respects user motion preferences
@@ -129,27 +133,32 @@ The component supports all glassmorphism utilities from your CSS framework:
 The component leverages your comprehensive CSS variable system:
 
 ### Spacing
+
 - `--spacing-1` through `--spacing-10` for consistent spacing
 - `--border-radius-lg`, `--border-radius`, `--border-radius-sm` for rounded corners
 
 ### Typography
+
 - `--font-family-serif`, `--font-family-mono` for font families
 - `--font-size-sm` through `--font-size-2xl` for font sizes
 - `--font-weight-medium`, `--font-weight-semibold`, `--font-weight-bold` for weights
 - `--line-height-relaxed` for optimal reading experience
 
 ### Colors
+
 - `--color-text`, `--color-text-light`, `--color-text-emphasis` for text colors
 - `--color-primary`, `--color-primary-dark`, `--color-primary-rgb` for links and accents
 - `--color-code-bg` for code backgrounds
 
 ### Effects
+
 - `--transform-lift-sm` for hover effects
 - `--opacity-high` for external link indicators
 
 ## Examples
 
 ### Homepage Main Content
+
 ```svelte
 <ContentBody variant="default" glassEffect="glass-card" additionalClasses="md:col-span-2">
 	{#snippet children()}
@@ -160,6 +169,7 @@ The component leverages your comprehensive CSS variable system:
 ```
 
 ### Research Project Content
+
 ```svelte
 <ContentBody variant="wide" glassEffect="glass-panel">
 	{#snippet children()}
@@ -172,6 +182,7 @@ The component leverages your comprehensive CSS variable system:
 ```
 
 ### Sidebar Content
+
 ```svelte
 <ContentBody variant="compact" glassEffect="glass-light">
 	{#snippet children()}
@@ -206,4 +217,4 @@ The component leverages your comprehensive CSS variable system:
    - `glass-panel` for important highlighted content
 5. Use `additionalClasses` for layout-specific styling (grid columns, margins, etc.)
 6. Keep content semantic with proper heading hierarchy
-7. Test with both light and dark themes 
+7. Test with both light and dark themes

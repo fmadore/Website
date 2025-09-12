@@ -54,7 +54,8 @@ export const religiosityUniversityCampuses: Publication = {
 			year: 2025,
 			title:
 				'Adoption of Positive Spirituality and Religiosity to Strengthen the Well-Being of Students in Universities in Uganda',
-			source: 'In Using Positive Psychology Interventions to Promote Well-Being Among Students in Higher-Education Institutions: Understanding Their Cognitive And Social Impact, edited by Peter J. O. Aloka, 117-34. Cham: Springer Nature Switzerland, 2025',
+			source:
+				'In Using Positive Psychology Interventions to Promote Well-Being Among Students in Higher-Education Institutions: Understanding Their Cognitive And Social Impact, edited by Peter J. O. Aloka, 117-34. Cham: Springer Nature Switzerland, 2025',
 			url: 'https://doi.org/10.1007/978-3-031-88793-2_7'
 		}
 	]

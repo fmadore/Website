@@ -65,7 +65,7 @@
 	variant="outline-primary"
 	size="sm"
 	glass={true}
-	ariaLabel={ariaLabel}
+	{ariaLabel}
 	additionalClasses="reference-link {hasPopup ? 'has-popup' : ''}"
 >
 	{referenceText}
@@ -84,7 +84,7 @@
 	:global(.reference-link) {
 		/* Let parent span handle interactions when hasPopup is true */
 		pointer-events: none;
-		
+
 		/* Reference-specific sizing */
 		font-size: var(--font-size-sm);
 		padding: var(--spacing-1) var(--spacing-2);
@@ -99,4 +99,4 @@
 	:global(.reference-link.has-popup:hover) {
 		transform: var(--transform-lift-md);
 	}
-</style> 
+</style>

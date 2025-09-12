@@ -97,27 +97,21 @@
 
 	// Use global glassmorphism utility (glass-card) to ensure visual consistency
 	const combinedFigureClass = $derived(
-		[
-			'hero-figure',
-			`hero-figure--${variant}`,
-			glassEffect ? 'glass-card hero-figure--glass' : ''
-		].filter(Boolean).join(' ')
+		['hero-figure', `hero-figure--${variant}`, glassEffect ? 'glass-card hero-figure--glass' : '']
+			.filter(Boolean)
+			.join(' ')
 	);
 
 	const combinedImageClass = $derived(
-		[
-			'hero-image',
-			`hero-image--${variant}`,
-			imageClass
-		].filter(Boolean).join(' ')
+		['hero-image', `hero-image--${variant}`, imageClass].filter(Boolean).join(' ')
 	);
 </script>
 
 {#if displayImage && absoluteSrc}
 	<figure class={combinedFigureClass}>
-		<button 
-			class="image-container" 
-			onclick={toggleZoom} 
+		<button
+			class="image-container"
+			onclick={toggleZoom}
 			onkeydown={handleKeydown}
 			type="button"
 			aria-label="Zoom image to fullscreen"
@@ -126,8 +120,8 @@
 				src={absoluteSrc}
 				alt={altText}
 				class={combinedImageClass}
-				loading={loading}
-				fetchpriority={fetchpriority}
+				{loading}
+				{fetchpriority}
 				decoding="async"
 				width="330"
 				height="438"
@@ -139,7 +133,20 @@
 					<div class="overlay-caption">{captionText}</div>
 				{/if}
 				<div class="zoom-icon" aria-hidden="true">
-					<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="32"
+						height="32"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"
+						></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"
+						></line></svg
+					>
 				</div>
 			</div>
 		</button>
@@ -180,7 +187,17 @@
 			}}
 		>
 			{#snippet icon()}
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
 					<line x1="18" y1="6" x2="6" y2="18"></line>
 					<line x1="6" y1="6" x2="18" y2="18"></line>
 				</svg>
@@ -263,7 +280,7 @@
 		opacity: 1;
 		pointer-events: auto; /* Enable pointer events on hover/focus */
 	}
-	
+
 	.overlay-caption {
 		font-size: var(--font-size-md);
 		padding: var(--spacing-4);
@@ -276,9 +293,9 @@
 		font-size: 2rem;
 		margin-top: var(--spacing-2);
 	}
-	
+
 	.zoom-icon svg {
-		filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+		filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
 	}
 
 	/* Hero image with integrated glassmorphism effects */
@@ -327,10 +344,10 @@
 		padding: var(--spacing-4); /* Add padding for glass effect */
 		border-radius: var(--border-radius-xl); /* Match PageHeader border radius */
 		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
-		
+
 		/* Enhanced shadow to match other components */
 		box-shadow: var(--shadow-md);
-		
+
 		/* Subtle animated lift */
 		transition: all 0.3s var(--anim-ease-base);
 	}
@@ -526,12 +543,13 @@
 		align-items: center !important;
 		justify-content: center !important;
 		min-width: unset !important;
-		
+
 		/* Enhanced glassmorphism specifically for close button */
 		background: rgba(var(--color-surface-rgb), var(--opacity-medium-high)) !important;
 		backdrop-filter: blur(12px) !important;
 		-webkit-backdrop-filter: blur(12px) !important;
-		border: var(--border-width-thin) solid rgba(var(--color-surface-rgb), var(--opacity-medium-high)) !important;
+		border: var(--border-width-thin) solid
+			rgba(var(--color-surface-rgb), var(--opacity-medium-high)) !important;
 		box-shadow: var(--shadow-lg) !important;
 		transition: all var(--anim-duration-base) var(--anim-ease-base) !important;
 	}
@@ -545,7 +563,10 @@
 
 	:global(.close-button svg) {
 		color: var(--color-text-emphasis) !important;
-		filter: drop-shadow(0 var(--border-width-thin) var(--border-width-medium) rgba(var(--color-text-rgb), var(--opacity-medium))) !important;
+		filter: drop-shadow(
+			0 var(--border-width-thin) var(--border-width-medium)
+				rgba(var(--color-text-rgb), var(--opacity-medium))
+		) !important;
 	}
 
 	/* Dark theme overrides for fullscreen modal */

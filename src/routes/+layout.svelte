@@ -112,10 +112,10 @@
 	afterNavigate(() => {
 		// Set transitioning state
 		isTransitioning = true;
-		
+
 		// Use the new global state method to temporarily disable animations
 		globalState.temporarilyDisableAnimations(100);
-		
+
 		// Remove transition state after page settles
 		setTimeout(() => {
 			isTransitioning = false;

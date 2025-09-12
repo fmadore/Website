@@ -139,8 +139,8 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 		{
 			authors: ['Drissa Koné'],
 			year: 2020,
-			title: 'Le COSIM : une institution musulmane en Côte d\'Ivoire (1988-2019)',
-			source: 'Revue Gabonaise d\'Histoire et Archéologie, no. 5 (2020): 209-30',
+			title: "Le COSIM : une institution musulmane en Côte d'Ivoire (1988-2019)",
+			source: "Revue Gabonaise d'Histoire et Archéologie, no. 5 (2020): 209-30",
 			url: 'https://web.archive.org/web/20250825074334/https://histarc.net/histarc_numero_5/HISTARC_N%C2%B05_2020_KONE%20D..pdf'
 		},
 		{

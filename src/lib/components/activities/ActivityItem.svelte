@@ -29,8 +29,8 @@
 
 	<!-- Details slot for tags -->
 	{#snippet details()}
-		<TagList 
-			tags={activity.tags} 
+		<TagList
+			tags={activity.tags}
 			showTitle={false}
 			buttonVariant="ghost"
 			buttonSize="sm"

@@ -5,20 +5,23 @@ This document outlines the image performance improvements made to address Google
 ## Changes Made
 
 ### 1. Added Explicit Dimensions
+
 - Added `width` and `height` attributes to all `<img>` elements to prevent Cumulative Layout Shift (CLS)
 - Used appropriate dimensions for different image types:
   - Publication/Communication covers: 200x280 (5:7 aspect ratio)
-  - Card images: 300x200 (3:2 aspect ratio)  
+  - Card images: 300x200 (3:2 aspect ratio)
   - Hero images: 600x400 (3:2 aspect ratio)
   - Preview card images: 120x160 (5:7 aspect ratio)
   - Research page images: 800x600 (4:3 aspect ratio)
 
 ### 2. Loading Optimizations
+
 - Added `loading="lazy"` for images below the fold (most list images, research images, etc.)
 - Added `loading="eager"` for above-the-fold images (profile picture)
 - Added `decoding="async"` for better browser performance
 
 ### 3. CSS Improvements
+
 - Added `aspect-ratio` CSS properties for consistent layouts
 - Enhanced `object-fit: cover` usage for better image fitting
 - Created utility classes in `styles/utilities/images.css` for reusable image styling
@@ -26,18 +29,22 @@ This document outlines the image performance improvements made to address Google
 ### 4. Components Updated
 
 #### Publications Page
+
 - **PublicationItem.svelte**: Added dimensions and lazy loading to publication cover images
 - **Card.svelte**: Enhanced generic card component with proper image attributes
 
-#### Communications Page  
+#### Communications Page
+
 - **CommunicationItem.svelte**: Added dimensions and lazy loading to communication images
 
 #### Common Components
+
 - **HeroImageDisplay.svelte**: Added dimensions to hero images
 - **ReferencePreviewCard.svelte**: Added dimensions to preview card images
 - **ProfileBanner.svelte**: Added eager loading for above-the-fold profile image
 
 #### Page Components
+
 - **Research pages**: Added dimensions to all research project images
 - **Digital humanities pages**: Added dimensions to gallery images
 
@@ -51,6 +58,7 @@ This document outlines the image performance improvements made to address Google
 ## CSS Utilities Added
 
 Created `styles/utilities/images.css` with:
+
 - Aspect ratio utilities (`.aspect-square`, `.aspect-video`, `.aspect-photo`, etc.)
 - Object-fit utilities (`.object-cover`, `.object-contain`, etc.)
 - Loading state animations
@@ -59,7 +67,7 @@ Created `styles/utilities/images.css` with:
 ## Browser Support
 
 - `loading="lazy"`: Supported in all modern browsers
-- `decoding="async"`: Supported in all modern browsers  
+- `decoding="async"`: Supported in all modern browsers
 - `aspect-ratio`: Supported in all modern browsers (CSS feature)
 
 ## Testing

@@ -68,7 +68,7 @@
 			// Use requestIdleCallback to optimize animations and reduce long tasks
 			const optimizeAnimations = () => {
 				const animatedElements = document.querySelectorAll('[data-animate]');
-				animatedElements.forEach(el => {
+				animatedElements.forEach((el) => {
 					(el as HTMLElement).style.willChange = 'transform, opacity';
 					(el as HTMLElement).style.transform = 'translateZ(0)';
 					// Add containment for better performance
@@ -93,7 +93,9 @@
 
 			// Handle activity JSON-LD
 			const activityScriptId = activityJsonLdScriptId;
-			let activityScriptElement = document.getElementById(activityScriptId) as HTMLScriptElement | null;
+			let activityScriptElement = document.getElementById(
+				activityScriptId
+			) as HTMLScriptElement | null;
 
 			if (jsonLdString) {
 				if (activityScriptElement) {
@@ -113,7 +115,9 @@
 
 			// Handle breadcrumb JSON-LD
 			const breadcrumbScriptId = breadcrumbJsonLdScriptId;
-			let breadcrumbScriptElement = document.getElementById(breadcrumbScriptId) as HTMLScriptElement | null;
+			let breadcrumbScriptElement = document.getElementById(
+				breadcrumbScriptId
+			) as HTMLScriptElement | null;
 
 			if (breadcrumbJsonLdString) {
 				if (breadcrumbScriptElement) {
@@ -139,7 +143,10 @@
 						document.head.removeChild(activityScriptToRemove);
 					}
 					const breadcrumbScriptToRemove = document.getElementById(breadcrumbScriptId);
-					if (breadcrumbScriptToRemove && breadcrumbScriptToRemove.parentElement === document.head) {
+					if (
+						breadcrumbScriptToRemove &&
+						breadcrumbScriptToRemove.parentElement === document.head
+					) {
 						document.head.removeChild(breadcrumbScriptToRemove);
 					}
 				}
@@ -186,12 +193,12 @@
 	<!-- Preconnect to improve performance -->
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-	
+
 	<!-- Conditional preload of hero image if it exists to improve LCP -->
 	{#if activity?.heroImage?.src}
 		<link rel="preload" href="{base}/{activity.heroImage.src}" as="image" fetchpriority="high" />
 	{/if}
-	
+
 	<!-- Remove the JsonLdScript component from here -->
 	<!-- {#if jsonLdString}
         <JsonLdScript jsonString={jsonLdString} />
@@ -210,13 +217,16 @@
 	/>
 {/if}
 
-<div class="container max-w-7xl critical-content" use:scrollAnimate={{ delay: DELAY_STEP, animationClass: 'fade-in-up' }}>
+<div
+	class="container max-w-7xl critical-content"
+	use:scrollAnimate={{ delay: DELAY_STEP, animationClass: 'fade-in-up' }}
+>
 	{#if activity}
 		<!-- Separate page header section -->
 		<div use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
 			<Breadcrumb items={breadcrumbItems} />
 		</div>
-		
+
 		<div use:scrollAnimate={{ delay: DELAY_STEP * 3, animationClass: 'fade-in-up' }}>
 			<PageHeader
 				title={activity.title}
@@ -226,7 +236,10 @@
 		</div>
 
 		{#if activity.heroImage && activity.heroImage.src}
-			<div class="hero-image-wrapper" use:scrollAnimate={{ delay: DELAY_STEP * 4, animationClass: 'fade-in-up' }}>
+			<div
+				class="hero-image-wrapper"
+				use:scrollAnimate={{ delay: DELAY_STEP * 4, animationClass: 'fade-in-up' }}
+			>
 				<HeroImageDisplay
 					heroImage={{
 						src: activity.heroImage.src,
@@ -275,7 +288,10 @@
 		{/if}
 
 		{#if activity.pdfPath}
-			<div class="pdf-section glass-card mt-6" use:scrollAnimate={{ delay: DELAY_STEP * 7, animationClass: 'fade-in-up' }}>
+			<div
+				class="pdf-section glass-card mt-6"
+				use:scrollAnimate={{ delay: DELAY_STEP * 7, animationClass: 'fade-in-up' }}
+			>
 				<h2 class="text-xl font-semibold mb-4 text-text-emphasis">
 					{activity.pdfTitle || 'Associated Document'}
 				</h2>
@@ -295,7 +311,10 @@
 		{/if}
 
 		{#if formattedTags && formattedTags.length > 0}
-			<div class="activity-tags-section" use:scrollAnimate={{ delay: DELAY_STEP * 8, animationClass: 'fade-in-up' }}>
+			<div
+				class="activity-tags-section"
+				use:scrollAnimate={{ delay: DELAY_STEP * 8, animationClass: 'fade-in-up' }}
+			>
 				<TagList tags={formattedTags} baseUrl="/activities?tag=" />
 			</div>
 		{/if}

@@ -19,18 +19,21 @@
 	let imageAlt = $derived(_imageAltProp || title);
 </script>
 
-<div class="card" use:scrollAnimate={{ 
-	delay: animationDelay, 
-	animationClass: 'fade-in-up',
-	threshold: 0.2,
-	rootMargin: '100px'
-}}>
+<div
+	class="card"
+	use:scrollAnimate={{
+		delay: animationDelay,
+		animationClass: 'fade-in-up',
+		threshold: 0.2,
+		rootMargin: '100px'
+	}}
+>
 	{#if imageUrl}
 		<div class="card-image">
 			{#if linkUrl}
 				<a href={linkUrl} {target} rel="noopener noreferrer">
-					<img 
-						src={imageUrl} 
+					<img
+						src={imageUrl}
 						alt={imageAlt}
 						width="300"
 						height="200"
@@ -39,8 +42,8 @@
 					/>
 				</a>
 			{:else}
-				<img 
-					src={imageUrl} 
+				<img
+					src={imageUrl}
 					alt={imageAlt}
 					width="300"
 					height="200"
@@ -96,7 +99,7 @@
 		border-radius: var(--border-radius-lg);
 		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		position: relative;
-		
+
 		/* Glassmorphism styling consistent with the rest of the website */
 		background: linear-gradient(
 			135deg,
@@ -107,7 +110,7 @@
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
 		border: 1px solid rgba(255, 255, 255, 0.2);
-		box-shadow: 
+		box-shadow:
 			0 8px 32px 0 rgba(31, 38, 135, 0.37),
 			inset 0 1px 0 rgba(255, 255, 255, 0.3);
 	}
@@ -122,7 +125,7 @@
 			rgba(var(--color-accent-rgb), 0.02) 100%
 		);
 		border-color: rgba(255, 255, 255, 0.3);
-		box-shadow: 
+		box-shadow:
 			0 12px 40px 0 rgba(31, 38, 135, 0.4),
 			inset 0 1px 0 rgba(255, 255, 255, 0.4);
 	}
@@ -219,7 +222,7 @@
 			rgba(var(--color-accent-rgb), 0.02) 100%
 		);
 		border: 1px solid rgba(255, 255, 255, 0.1);
-		box-shadow: 
+		box-shadow:
 			0 8px 32px 0 rgba(0, 0, 0, 0.5),
 			inset 0 1px 0 rgba(255, 255, 255, 0.1);
 	}
@@ -232,7 +235,7 @@
 			rgba(var(--color-accent-rgb), 0.04) 100%
 		);
 		border-color: rgba(255, 255, 255, 0.15);
-		box-shadow: 
+		box-shadow:
 			0 12px 40px 0 rgba(0, 0, 0, 0.6),
 			inset 0 1px 0 rgba(255, 255, 255, 0.15);
 	}
@@ -242,7 +245,7 @@
 		.card {
 			background: rgba(255, 255, 255, 0.9);
 		}
-		
+
 		:global(html.dark) .card {
 			background: rgba(0, 0, 0, 0.8);
 		}

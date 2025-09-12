@@ -78,7 +78,10 @@
 
 <SEO title="Mining the Islam West Africa Collection | Frédérick Madore" />
 
-<div class="container mx-auto px-4 py-8" use:scrollAnimate={{ delay: DELAY_STEP * 0, animationClass: 'fade-in-up' }}>
+<div
+	class="container mx-auto px-4 py-8"
+	use:scrollAnimate={{ delay: DELAY_STEP * 0, animationClass: 'fade-in-up' }}
+>
 	<!-- Apply grid layout to this container on medium screens and up -->
 	<div class="grid" use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
 		<div class="main-content">
@@ -98,11 +101,11 @@
 			<ContentBody variant="default" glassEffect="glass-card">
 				{#snippet children()}
 					<p>
-						Scholarship on Islam in West Africa has long privileged manuscript traditions, leaving the
-						vibrant Muslim periodical press of the 1980s, 90s, and early 2000s largely unexplored. My
-						project fills this gap by tracing the emergence of modern Islamic print culture and the
-						networks of Western-educated Francophone Muslim intellectuals who animated it in Benin,
-						Burkina Faso, Côte d'Ivoire and Togo.
+						Scholarship on Islam in West Africa has long privileged manuscript traditions, leaving
+						the vibrant Muslim periodical press of the 1980s, 90s, and early 2000s largely
+						unexplored. My project fills this gap by tracing the emergence of modern Islamic print
+						culture and the networks of Western-educated Francophone Muslim intellectuals who
+						animated it in Benin, Burkina Faso, Côte d'Ivoire and Togo.
 					</p>
 
 					<p>
@@ -110,29 +113,29 @@
 							href="https://islam.zmo.de/s/westafrica/"
 							target="_blank"
 							rel="noopener noreferrer"><em>Islam West Africa Collection</em> (IWAC)</a
-						>, I combine digital humanities methods with close reading to analyse around 1,500 Islamic
-						publications published between 1980 and 2020. Topic modelling, word embeddings, and
-						sentiment analysis chart the shifting meanings of key religious terms (<em>ummah</em>,
-						Salafism, <em>jihad</em>) alongside political concepts such as democracy and
-						<em>laïcité</em>), revealing the themes, semantic turns and affective registers that have
-						shaped Muslim public debate during a period of rapid socio-political change.
+						>, I combine digital humanities methods with close reading to analyse around 1,500
+						Islamic publications published between 1980 and 2020. Topic modelling, word embeddings,
+						and sentiment analysis chart the shifting meanings of key religious terms (<em>ummah</em
+						>, Salafism, <em>jihad</em>) alongside political concepts such as democracy and
+						<em>laïcité</em>), revealing the themes, semantic turns and affective registers that
+						have shaped Muslim public debate during a period of rapid socio-political change.
 					</p>
 
 					<p>
 						Network analysis maps the contours of an "Islamic Francophonie", visualising the links
 						between authors, publishers, NGOs and state institutions. These visualisations show how
 						French became a strategic language for Islamic debate among urban elites, and how
-						regionally rooted networks engaged with - rather than merely echoed - broader Arab-Islamic
-						currents.
+						regionally rooted networks engaged with - rather than merely echoed - broader
+						Arab-Islamic currents.
 					</p>
 
 					<p>
-						By integrating these computational insights with ethnographic fieldwork and close textual
-						study, the project offers a composite portrait of Islamic thought in Francophone West
-						Africa - one that situates religious ideas within their material, linguistic and political
-						ecologies. In doing so, it advances the intellectual history of the region and proposes a
-						new approach to the study of print publics at the intersection of religion, morality, and
-						civic life.
+						By integrating these computational insights with ethnographic fieldwork and close
+						textual study, the project offers a composite portrait of Islamic thought in Francophone
+						West Africa - one that situates religious ideas within their material, linguistic and
+						political ecologies. In doing so, it advances the intellectual history of the region and
+						proposes a new approach to the study of print publics at the intersection of religion,
+						morality, and civic life.
 					</p>
 
 					<!-- Enhanced iframe with glassmorphism and responsive design -->
@@ -153,9 +156,17 @@
 		</div>
 
 		<div class="sidebar">
-			<RelevantPublications projectName="Mining the Islam West Africa Collection" limit={5} animationDelay={DELAY_STEP * 12} />
+			<RelevantPublications
+				projectName="Mining the Islam West Africa Collection"
+				limit={5}
+				animationDelay={DELAY_STEP * 12}
+			/>
 			<div class="mt-6">
-				<RelevantCommunications projectName="Mining the Islam West Africa Collection" limit={5} animationDelay={DELAY_STEP * 15} />
+				<RelevantCommunications
+					projectName="Mining the Islam West Africa Collection"
+					limit={5}
+					animationDelay={DELAY_STEP * 15}
+				/>
 			</div>
 		</div>
 	</div>
@@ -176,10 +187,12 @@
 		margin-top: var(--spacing-12);
 		margin-bottom: var(--spacing-8);
 		/* Add a subtle background to make glassmorphism more visible */
-		background: linear-gradient(135deg, 
-			rgba(var(--color-primary-rgb), 0.05) 0%, 
-			rgba(var(--color-accent-rgb), 0.03) 50%, 
-			rgba(var(--color-highlight-rgb), 0.05) 100%);
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.05) 0%,
+			rgba(var(--color-accent-rgb), 0.03) 50%,
+			rgba(var(--color-highlight-rgb), 0.05) 100%
+		);
 		padding: var(--spacing-6);
 		border-radius: var(--border-radius-lg);
 	}

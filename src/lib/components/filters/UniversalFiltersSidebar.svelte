@@ -32,17 +32,17 @@
 
 		// Capture current scroll position
 		const scrollTop = sidebarElement.scrollTop;
-		
+
 		// Execute the callback
 		callback();
-		
+
 		// Restore scroll position using modern approach
 		const restoreScroll = () => {
 			if (sidebarElement && Math.abs(sidebarElement.scrollTop - scrollTop) > 1) {
 				sidebarElement.scrollTop = scrollTop;
 			}
 		};
-		
+
 		// Use a single requestAnimationFrame for smooth restoration
 		requestAnimationFrame(() => {
 			restoreScroll();
@@ -71,7 +71,7 @@
 
 	// Enhanced sections with scroll-preserving toggles
 	let enhancedSections = $derived(
-		sections.map(section => {
+		sections.map((section) => {
 			if (section.type === 'checkbox' || section.type === 'buttons' || section.type === 'chips') {
 				return {
 					...section,
@@ -212,7 +212,7 @@
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
 		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
-		box-shadow: 
+		box-shadow:
 			0 8px 32px 0 rgba(31, 38, 135, var(--opacity-medium)),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-medium));
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
@@ -228,7 +228,7 @@
 			rgba(var(--color-accent-rgb), 0.02) 100%
 		);
 		border-color: rgba(var(--color-white-rgb), var(--opacity-medium-high));
-		box-shadow: 
+		box-shadow:
 			0 12px 40px 0 rgba(31, 38, 135, var(--opacity-medium)),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-medium-high));
 	}
@@ -313,7 +313,7 @@
 			border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
 			border-radius: var(--border-radius-md);
 			padding: var(--spacing-4);
-			box-shadow: 
+			box-shadow:
 				0 8px 32px 0 rgba(31, 38, 135, var(--opacity-medium)),
 				inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-medium));
 			margin-bottom: 0;
@@ -372,7 +372,7 @@
 			rgba(var(--color-accent-rgb), 0.02) 100%
 		);
 		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
-		box-shadow: 
+		box-shadow:
 			0 8px 32px 0 rgba(var(--color-black-rgb), var(--opacity-medium-high)),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-low));
 	}
@@ -385,7 +385,7 @@
 			rgba(var(--color-accent-rgb), 0.04) 100%
 		);
 		border-color: rgba(var(--color-white-rgb), var(--opacity-medium));
-		box-shadow: 
+		box-shadow:
 			0 12px 40px 0 rgba(var(--color-black-rgb), var(--opacity-high)),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-medium));
 	}
@@ -399,7 +399,7 @@
 			rgba(var(--color-accent-rgb), 0.02) 100%
 		);
 		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
-		box-shadow: 
+		box-shadow:
 			0 8px 32px 0 rgba(var(--color-black-rgb), var(--opacity-medium-high)),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-low));
 	}

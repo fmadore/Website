@@ -57,36 +57,39 @@
 	let showMap = $state(false);
 
 	// State for mobile filter sidebar expansion
-	let mobileFiltersExpanded = $state(false); 
-	
+	let mobileFiltersExpanded = $state(false);
+
 	// State for the current sort order
 	let activeSort = $state<'date' | 'title'>('date');
 
 	// Create a writable store for activeSort to make it reactive with derived stores
 	const activeSortStore = writable<'date' | 'title'>('date');
-	
+
 	// Update the store when activeSort changes
 	$effect(() => {
 		activeSortStore.set(activeSort);
 	});
 
 	// Create derived stores for sorted communications and map markers
-	const sortedCommunications = derived([filteredCommunications, activeSortStore], ([$filteredCommunications, $activeSort]) =>
-		sortItems($filteredCommunications, $activeSort)
+	const sortedCommunications = derived(
+		[filteredCommunications, activeSortStore],
+		([$filteredCommunications, $activeSort]) => sortItems($filteredCommunications, $activeSort)
 	);
 
 	// Create a derived store for map markers based on filtered communications
-	const mapMarkers = derived(filteredCommunications, ($filteredCommunications) =>
-		$filteredCommunications
-			?.filter((comm: Communication) => comm.coordinates)
-			.map((comm: Communication) => ({
-				id: comm.id,
-				title: comm.title,
-				coordinates: comm.coordinates!,
-				year: comm.year,
-				activityType: comm.type,
-				image: comm.image
-			})) || []
+	const mapMarkers = derived(
+		filteredCommunications,
+		($filteredCommunications) =>
+			$filteredCommunications
+				?.filter((comm: Communication) => comm.coordinates)
+				.map((comm: Communication) => ({
+					id: comm.id,
+					title: comm.title,
+					coordinates: comm.coordinates!,
+					year: comm.year,
+					activityType: comm.type,
+					image: comm.image
+				})) || []
 	);
 
 	// Helper to check if any filters are active (consistent with communications/+page.svelte)
@@ -117,7 +120,7 @@
 			toggleTypeFilter(value);
 		}
 		// Add other filter types if needed (e.g., author)
-	} 	// Handler for the sortChange event from the Sorter component
+	} // Handler for the sortChange event from the Sorter component
 	function handleSortChange(data: { sortBy: 'date' | 'title' | 'citations' }) {
 		// Only handle date and title sorts for communications
 		if (data.sortBy === 'date' || data.sortBy === 'title') {
@@ -341,7 +344,11 @@
 					</div>
 					<div class="actions-group">
 						<ToggleButton baseText="Map" isToggled={showMap} onclick={() => (showMap = !showMap)} />
-						<Sorter {activeSort} onsortchange={handleSortChange} availableSorts={['date', 'title']} />
+						<Sorter
+							{activeSort}
+							onsortchange={handleSortChange}
+							availableSorts={['date', 'title']}
+						/>
 						{#if areFiltersActive($activeFilters)}
 							<Button
 								variant="outline-primary"
@@ -384,8 +391,6 @@
 	.main-content {
 		width: 100%;
 	}
-
-
 
 	.mb-6 {
 		margin-bottom: var(--spacing-6);

@@ -46,7 +46,7 @@
 	import Icon from '@iconify/svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
 	import { derived } from 'svelte/store';
-	
+
 	// State for the current sort order
 	let activeSort = $state<'date' | 'title' | 'citations'>('date');
 
@@ -57,15 +57,16 @@
 	// We need to create a writable/readable store for activeSort to make it reactive
 	import { writable } from 'svelte/store';
 	const activeSortStore = writable<'date' | 'title' | 'citations'>('date');
-	
+
 	// Update the store when activeSort changes
 	$effect(() => {
 		activeSortStore.set(activeSort);
 	});
 
 	// Create a derived store for sorted publications
-	const sortedPublications = derived([filteredPublications, activeSortStore], ([$filteredPublications, $activeSort]) =>
-		sortItems($filteredPublications, $activeSort)
+	const sortedPublications = derived(
+		[filteredPublications, activeSortStore],
+		([$filteredPublications, $activeSort]) => sortItems($filteredPublications, $activeSort)
 	);
 	function handleFilterRequest(event: { type: string; value: string }) {
 		const { type, value } = event;
@@ -125,7 +126,7 @@
 	}; // Ensure years are sorted ascending for the slider
 	const sortedYearsAsc = derived(filterOptions, ($filterOptions) =>
 		($filterOptions?.years || []).slice().sort((a, b) => a - b)
-	); 	// Construct the configuration object for the UniversalFiltersSidebar
+	); // Construct the configuration object for the UniversalFiltersSidebar
 	const publicationFilterConfig = derived(
 		[
 			sortedYearsAsc,
@@ -328,8 +329,6 @@
 	.main-content {
 		width: 100%;
 	}
-
-
 
 	/* Mobile controls styling */
 	.mobile-controls {

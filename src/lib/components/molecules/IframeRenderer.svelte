@@ -4,7 +4,15 @@
 	// Create a more flexible type for direct component usage
 	type IframeRendererProps = Omit<IframeEmbed, 'type'> & {
 		glassEffect?: boolean;
-		glassVariant?: 'glass' | 'glass-light' | 'glass-medium' | 'glass-heavy' | 'glass-primary' | 'glass-accent' | 'glass-highlight' | 'glass-frosted';
+		glassVariant?:
+			| 'glass'
+			| 'glass-light'
+			| 'glass-medium'
+			| 'glass-heavy'
+			| 'glass-primary'
+			| 'glass-accent'
+			| 'glass-highlight'
+			| 'glass-frosted';
 	};
 
 	let {
@@ -23,18 +31,20 @@
 	let finalContainerClass = $derived(
 		(() => {
 			let classes = [];
-			
+
 			if (containerClass) {
 				// Use provided containerClass as base
 				classes.push(containerClass);
-				
+
 				// If height is a class name (not a CSS value), add it
-				if (height && 
+				if (
+					height &&
 					!height.endsWith('px') &&
 					!height.endsWith('%') &&
 					!height.endsWith('vh') &&
 					!height.endsWith('em') &&
-					!height.endsWith('rem')) {
+					!height.endsWith('rem')
+				) {
 					classes.push(height);
 				}
 			} else if (aspectRatio) {
@@ -53,13 +63,13 @@
 				// Default base class
 				classes.push('iframe-container');
 			}
-			
+
 			// Add glass effect if enabled
 			if (glassEffect) {
 				classes.push(glassVariant);
 				classes.push('glass-animate');
 			}
-			
+
 			return classes.join(' ');
 		})()
 	);
@@ -150,7 +160,7 @@
 	:global(.iframe-container.glass-medium.iframe-interactive:hover),
 	:global(.iframe-container.glass-heavy.iframe-interactive:hover) {
 		transform: var(--transform-lift-md);
-		box-shadow: 
+		box-shadow:
 			0 12px 40px 0 rgba(var(--color-primary-rgb), var(--opacity-medium-high)),
 			var(--shadow-lg);
 	}
@@ -249,7 +259,9 @@
 	}
 
 	:global(.iframe-container-fullheight) {
-		height: calc(100vh - var(--spacing-32)); /* Full viewport height minus space for header/footer */
+		height: calc(
+			100vh - var(--spacing-32)
+		); /* Full viewport height minus space for header/footer */
 	}
 
 	/* Remove margin bottom when needed */
@@ -300,8 +312,12 @@
 	}
 
 	@keyframes iframe-loading-spin {
-		0% { transform: rotate(0deg); }
-		100% { transform: rotate(360deg); }
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
 	}
 
 	:global(.iframe-loaded::before) {
@@ -382,7 +398,8 @@
 		background: rgba(var(--color-primary-rgb), var(--opacity-high));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		backdrop-filter: blur(var(--glass-blur-amount));
-		border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
+		border-bottom: var(--border-width-thin) solid
+			rgba(var(--color-white-rgb), var(--opacity-medium));
 	}
 
 	:global(html.dark .iframe-with-header.glass .iframe-header),
@@ -405,7 +422,9 @@
 		}
 
 		:global(.iframe-container-xl) {
-			height: calc(var(--iframe-height-default) * 1.17); /* Reduce extra large containers on small screens */
+			height: calc(
+				var(--iframe-height-default) * 1.17
+			); /* Reduce extra large containers on small screens */
 		}
 
 		:global(.iframe-container-sm) {

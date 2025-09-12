@@ -7,7 +7,8 @@ export const activity: Activity = {
 	dateISO: '2025-06-26',
 	date: formatDisplayDate('2025-06-26'),
 	year: 2025,
-	description: 'Summary report of the ECAS 2025 panel on Digital Humanities and AI in African Studies.',
+	description:
+		'Summary report of the ECAS 2025 panel on Digital Humanities and AI in African Studies.',
 	content: `
 <p>This double panel, organised in collaboration with Vincent Hiribarren (King's College London) at the 10th European Conference of African Studies (ECAS) in Prague, brought together eight innovative projects demonstrating how digital humanities (DH) and artificial intelligence (AI) are reshaping African studies. The presentations illuminated both the transformative potential and significant challenges of using digital tools to decolonise knowledge production about Africa.</p>
 

@@ -15,7 +15,12 @@
 		title?: string;
 		variant?: 'default' | 'activities' | 'items';
 		showFooter?: boolean;
-		glassEffect?: 'glass-card' | 'glass-panel' | 'glass-panel-light' | 'glass-medium' | 'glass-light';
+		glassEffect?:
+			| 'glass-card'
+			| 'glass-panel'
+			| 'glass-panel-light'
+			| 'glass-medium'
+			| 'glass-light';
 		header?: Snippet;
 		content?: Snippet;
 		footer?: Snippet;
@@ -28,7 +33,7 @@
 		activities: 'panel-activities',
 		items: 'panel-items'
 	};
-	
+
 	const combinedClasses = `${baseClasses} ${variantClasses[variant]} ${glassEffect}`.trim();
 </script>
 

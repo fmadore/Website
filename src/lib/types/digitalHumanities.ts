@@ -11,7 +11,15 @@ export interface IframeEmbed {
 	allowfullscreen?: boolean;
 	showTitle?: boolean; // Whether to display the iframe title above the embed
 	glassEffect?: boolean; // Enable glassmorphism effects
-	glassVariant?: 'glass' | 'glass-light' | 'glass-medium' | 'glass-heavy' | 'glass-primary' | 'glass-accent' | 'glass-highlight' | 'glass-frosted'; // Glass effect variant
+	glassVariant?:
+		| 'glass'
+		| 'glass-light'
+		| 'glass-medium'
+		| 'glass-heavy'
+		| 'glass-primary'
+		| 'glass-accent'
+		| 'glass-highlight'
+		| 'glass-frosted'; // Glass effect variant
 }
 
 export interface ImageEmbed {

@@ -56,9 +56,9 @@
 		</ul>
 
 		<div class="view-all-container">
-			<Button 
-				href="{base}{viewAllPath}" 
-				variant="outline-primary" 
+			<Button
+				href="{base}{viewAllPath}"
+				variant="outline-primary"
 				size="base"
 				additionalClasses="glass-button"
 			>

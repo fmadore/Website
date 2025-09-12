@@ -16,21 +16,21 @@ export function preserveScrollPosition<T extends (...args: any[]) => any>(
 		if (typeof window === 'undefined') {
 			return fn(...args);
 		}
-		
+
 		// Capture current scroll position
 		const scrollY = window.scrollY;
 		const scrollX = window.scrollX;
-		
+
 		// Execute the function (this will change the content)
 		const result = fn(...args);
-		
+
 		// Restore scroll position after a short delay to allow DOM updates
 		requestAnimationFrame(() => {
 			setTimeout(() => {
 				window.scrollTo(scrollX, scrollY);
 			}, delay);
 		});
-		
+
 		return result;
 	}) as T;
 }
@@ -46,34 +46,34 @@ export function withScrollPreservation(callback: () => void, delay: number = 150
 		callback();
 		return;
 	}
-	
+
 	const scrollY = window.scrollY;
 	const scrollX = window.scrollX;
-	
+
 	// Store original scroll behavior
 	const originalScrollBehavior = document.documentElement.style.scrollBehavior;
-	
+
 	// Execute the callback
 	callback();
-	
+
 	// Function to restore scroll position
 	const restorePosition = () => {
 		// Temporarily disable smooth scrolling
 		document.documentElement.style.scrollBehavior = 'auto';
-		
+
 		// Restore position
 		window.scrollTo(scrollX, scrollY);
-		
+
 		// Restore original scroll behavior after a brief delay
 		setTimeout(() => {
 			document.documentElement.style.scrollBehavior = originalScrollBehavior;
 		}, 100);
 	};
-	
+
 	// Multiple restore attempts with different timing
 	requestAnimationFrame(() => {
 		restorePosition();
-		
+
 		// Additional attempt after delay
 		setTimeout(restorePosition, delay);
 	});
@@ -95,17 +95,18 @@ export function withAdvancedScrollPreservation(
 		callback();
 		return;
 	}
-	
+
 	// Capture window scroll position
 	const windowScrollY = window.scrollY;
 	const windowScrollX = window.scrollX;
-	
+
 	// Capture scroll positions of specific elements
-	const elementScrollPositions: Array<{ element: Element; scrollTop: number; scrollLeft: number }> = [];
-	
-	preserveElements.forEach(selector => {
+	const elementScrollPositions: Array<{ element: Element; scrollTop: number; scrollLeft: number }> =
+		[];
+
+	preserveElements.forEach((selector) => {
 		const elements = document.querySelectorAll(selector);
-		elements.forEach(element => {
+		elements.forEach((element) => {
 			elementScrollPositions.push({
 				element,
 				scrollTop: element.scrollTop,
@@ -113,16 +114,16 @@ export function withAdvancedScrollPreservation(
 			});
 		});
 	});
-	
+
 	// Execute the callback
 	callback();
-	
+
 	// Restore scroll positions
 	requestAnimationFrame(() => {
 		setTimeout(() => {
 			// Restore window scroll position
 			window.scrollTo(windowScrollX, windowScrollY);
-			
+
 			// Restore element scroll positions
 			elementScrollPositions.forEach(({ element, scrollTop, scrollLeft }) => {
 				element.scrollTop = scrollTop;
@@ -150,13 +151,14 @@ export function withElementScrollPreservation(
 		callback();
 		return;
 	}
-	
+
 	// Capture scroll positions of specific elements only
-	const elementScrollPositions: Array<{ element: Element; scrollTop: number; scrollLeft: number }> = [];
-	
-	preserveElements.forEach(selector => {
+	const elementScrollPositions: Array<{ element: Element; scrollTop: number; scrollLeft: number }> =
+		[];
+
+	preserveElements.forEach((selector) => {
 		const elements = document.querySelectorAll(selector);
-		elements.forEach(element => {
+		elements.forEach((element) => {
 			elementScrollPositions.push({
 				element,
 				scrollTop: element.scrollTop,
@@ -164,10 +166,10 @@ export function withElementScrollPreservation(
 			});
 		});
 	});
-	
+
 	// Execute the callback
 	callback();
-	
+
 	// Restore only element scroll positions (not window scroll)
 	requestAnimationFrame(() => {
 		setTimeout(() => {

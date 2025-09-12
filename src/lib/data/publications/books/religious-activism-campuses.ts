@@ -44,7 +44,8 @@ The history of these associations reveals the campus as a microcosm reflecting w
 		{
 			authors: ['Leonardo A. Villalón', 'Mamadou Bodian', 'Abdourahmane Idrissa'],
 			year: 2025,
-			title: 'École, religion et république au Sahel : éducation arabo-islamique et réforme de l\'enseignement public',
+			title:
+				"École, religion et république au Sahel : éducation arabo-islamique et réforme de l'enseignement public",
 			source: 'Dakar: Harmattan Sénégal, 2025',
 			url: 'https://www.editions-harmattan.fr/catalogue/livre/ecole-religion-et-republique-au-sahel/79472'
 		}

@@ -1,8 +1,9 @@
-<script lang="ts">	// Svelte 5: use $props() for props
+<script lang="ts">
+	// Svelte 5: use $props() for props
 	let { size = 20 } = $props();
 	import { getTheme, toggleTheme } from '$lib/stores/themeStore.svelte';
 	import Icon from '@iconify/svelte';
-	
+
 	// Get reactive theme value
 	const currentTheme = $derived(getTheme());
 </script>
@@ -36,7 +37,7 @@
 		width: calc(var(--spacing-8) + var(--spacing-2));
 		height: calc(var(--spacing-8) + var(--spacing-2));
 		position: relative;
-		box-shadow: 
+		box-shadow:
 			var(--shadow-md),
 			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium-high));
 	}
@@ -45,14 +46,14 @@
 		background: rgba(var(--color-white-rgb), var(--opacity-medium));
 		border-color: rgba(var(--color-white-rgb), var(--opacity-medium-high));
 		transform: var(--transform-lift-md) scale(var(--scale-105));
-		box-shadow: 
+		box-shadow:
 			var(--shadow-lg),
 			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.4);
 	}
 
 	.theme-toggle:active {
 		transform: translateY(0) scale(var(--scale-95));
-		box-shadow: 
+		box-shadow:
 			var(--shadow-sm),
 			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium));
 		animation: themeChangePulse var(--transition-duration-300) var(--transition-ease-out);
@@ -61,7 +62,7 @@
 	.theme-toggle:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-primary);
 		outline-offset: var(--spacing-1);
-		box-shadow: 
+		box-shadow:
 			var(--shadow-lg),
 			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.4),
 			0 0 0 var(--border-width-medium) var(--color-primary);
@@ -70,7 +71,9 @@
 	/* Icon animations */
 	.theme-toggle :global(svg) {
 		transition: all var(--anim-duration-slow) var(--anim-ease-in-out);
-		filter: drop-shadow(0 var(--spacing-1) var(--spacing-2) rgba(var(--color-black-rgb), var(--opacity-low)));
+		filter: drop-shadow(
+			0 var(--spacing-1) var(--spacing-2) rgba(var(--color-black-rgb), var(--opacity-low))
+		);
 	}
 
 	.theme-toggle:hover :global(svg) {
@@ -87,7 +90,7 @@
 	:global(html.dark) .theme-toggle {
 		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium));
 		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
-		box-shadow: 
+		box-shadow:
 			var(--shadow-md),
 			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-low));
 	}
@@ -95,19 +98,21 @@
 	:global(html.dark) .theme-toggle:hover {
 		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium-high));
 		border-color: rgba(var(--color-white-rgb), 0.15);
-		box-shadow: 
+		box-shadow:
 			var(--shadow-lg),
 			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.15);
 	}
 
 	:global(html.dark) .theme-toggle:active {
-		box-shadow: 
+		box-shadow:
 			var(--shadow-sm),
 			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.08);
 	}
 
 	:global(html.dark) .theme-toggle :global(svg) {
-		filter: drop-shadow(0 var(--spacing-1) var(--spacing-2) rgba(var(--color-black-rgb), var(--opacity-medium-high)));
+		filter: drop-shadow(
+			0 var(--spacing-1) var(--spacing-2) rgba(var(--color-black-rgb), var(--opacity-medium-high))
+		);
 	}
 
 	:global(html.dark) .theme-toggle:hover :global(svg) {
@@ -115,20 +120,20 @@
 	}
 
 	/* Enhanced glow effect for theme icons */
-	.theme-toggle :global(svg[data-icon*="moon"]) {
+	.theme-toggle :global(svg[data-icon*='moon']) {
 		color: var(--color-secondary);
 	}
 
-	.theme-toggle :global(svg[data-icon*="sun"]) {
+	.theme-toggle :global(svg[data-icon*='sun']) {
 		color: var(--color-highlight);
 	}
 
-	.theme-toggle:hover :global(svg[data-icon*="moon"]) {
+	.theme-toggle:hover :global(svg[data-icon*='moon']) {
 		color: var(--color-text-light);
 		text-shadow: 0 0 var(--spacing-3) rgba(var(--color-secondary-rgb), 0.5);
 	}
 
-	.theme-toggle:hover :global(svg[data-icon*="sun"]) {
+	.theme-toggle:hover :global(svg[data-icon*='sun']) {
 		color: var(--color-highlight);
 		text-shadow: 0 0 var(--spacing-4) rgba(var(--color-highlight-rgb), 0.6);
 	}
@@ -137,19 +142,19 @@
 	@keyframes themeChangePulse {
 		0% {
 			transform: scale(var(--scale-100));
-			box-shadow: 
+			box-shadow:
 				var(--shadow-md),
 				inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium-high));
 		}
 		50% {
 			transform: scale(var(--scale-110));
-			box-shadow: 
+			box-shadow:
 				var(--shadow-xl),
 				inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.5);
 		}
 		100% {
 			transform: scale(var(--scale-100));
-			box-shadow: 
+			box-shadow:
 				var(--shadow-md),
 				inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium-high));
 		}
@@ -161,7 +166,7 @@
 		.theme-toggle :global(svg) {
 			transition: none;
 		}
-		
+
 		.theme-toggle:active {
 			animation: none;
 		}
@@ -172,7 +177,7 @@
 		.theme-toggle {
 			border-width: var(--border-width-medium);
 		}
-		
+
 		.theme-toggle:focus-visible {
 			outline-width: var(--border-width-thick);
 		}

@@ -97,9 +97,9 @@
 		<div class="entity-grid">
 			{#if publication.image}
 				<div class="entity-image-container">
-					<img 
-						src={publication.image} 
-						alt={publication.title} 
+					<img
+						src={publication.image}
+						alt={publication.title}
 						class="entity-cover-image"
 						width="200"
 						height="280"
@@ -125,7 +125,7 @@
 						{publication.title}
 					</a>
 				</h3>
-				
+
 				<div class="entity-details">
 					<!-- Render prefix and the constructed author string -->
 					{displayData.listPrefix}{displayData.authorString}

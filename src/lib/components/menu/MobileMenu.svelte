@@ -74,7 +74,7 @@
 		transform: translateY(-100%);
 		transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 		overflow-y: auto;
-		box-shadow: 
+		box-shadow:
 			0 0 60px rgba(31, 38, 135, 0.1),
 			inset 0 1px 0 rgba(255, 255, 255, 0.8);
 		will-change: transform;
@@ -248,7 +248,7 @@
 		background: rgba(var(--color-primary-rgb), 0.1);
 		border-color: rgba(var(--color-primary-rgb), 0.3);
 		transform: translateX(8px) scale(1.02);
-		box-shadow: 
+		box-shadow:
 			0 8px 32px 0 rgba(var(--color-primary-rgb), 0.2),
 			inset 0 1px 0 rgba(255, 255, 255, 0.4);
 	}
@@ -266,7 +266,7 @@
 		-webkit-backdrop-filter: blur(12px);
 		border: 1px solid rgba(255, 255, 255, 0.15);
 		border-radius: var(--border-radius-md);
-		box-shadow: 
+		box-shadow:
 			0 8px 32px 0 rgba(31, 38, 135, 0.1),
 			inset 0 1px 0 rgba(255, 255, 255, 0.3);
 	}
@@ -301,7 +301,7 @@
 		background: rgba(var(--color-primary-rgb), 0.08);
 		border-color: rgba(var(--color-primary-rgb), 0.2);
 		transform: translateX(var(--spacing-3)) scale(1.02);
-		box-shadow: 
+		box-shadow:
 			0 4px 16px 0 rgba(var(--color-primary-rgb), 0.15),
 			inset 0 1px 0 rgba(255, 255, 255, 0.2);
 	}
@@ -321,7 +321,7 @@
 	/* Dark mode */
 	:global(html.dark) .mobile-nav-container {
 		background: rgba(var(--color-dark-surface-rgb), 0.95);
-		box-shadow: 
+		box-shadow:
 			0 0 60px rgba(0, 0, 0, 0.5),
 			inset 0 1px 0 rgba(255, 255, 255, 0.1);
 	}
@@ -344,7 +344,7 @@
 	:global(html.dark .mobile-dropdown) {
 		background: rgba(var(--color-dark-surface-rgb), 0.15);
 		border: 1px solid rgba(255, 255, 255, 0.08);
-		box-shadow: 
+		box-shadow:
 			0 8px 32px 0 rgba(0, 0, 0, 0.3),
 			inset 0 1px 0 rgba(255, 255, 255, 0.1);
 	}

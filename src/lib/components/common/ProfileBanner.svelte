@@ -5,8 +5,14 @@
 	import { DELAY_STEP } from '$lib/utils/animationConstants';
 </script>
 
-<div class="profile-header glass-panel" use:scrollAnimate={{ delay: DELAY_STEP * 1, animationClass: 'fade-in-up' }}>
-	<div class="profile-photo-container" use:scrollAnimate={{ delay: DELAY_STEP * 3, animationClass: 'scale-in' }}>
+<div
+	class="profile-header glass-panel"
+	use:scrollAnimate={{ delay: DELAY_STEP * 1, animationClass: 'fade-in-up' }}
+>
+	<div
+		class="profile-photo-container"
+		use:scrollAnimate={{ delay: DELAY_STEP * 3, animationClass: 'scale-in' }}
+	>
 		<div class="profile-photo">
 			<img
 				src="{base}/images/Profile-picture.webp"
@@ -20,13 +26,30 @@
 		</div>
 	</div>
 	<div class="profile-content">
-		<div class="profile-title" use:scrollAnimate={{ delay: DELAY_STEP * 4, animationClass: 'fade-in-up' }}>
+		<div
+			class="profile-title"
+			use:scrollAnimate={{ delay: DELAY_STEP * 4, animationClass: 'fade-in-up' }}
+		>
 			<h1>About</h1>
 			<div class="title-accent"></div>
 		</div>
-		<div class="subtitle" use:scrollAnimate={{ delay: DELAY_STEP * 5, animationClass: 'fade-in-up' }}>Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)</div>
-		<div class="profile-icons" use:scrollAnimate={{ delay: DELAY_STEP * 6, animationClass: 'fade-in-up' }}>
-			<a href="mailto:frederick.madore@zmo.de" target="_blank" rel="noopener" aria-label="Email" class="icon-link glass-button">
+		<div
+			class="subtitle"
+			use:scrollAnimate={{ delay: DELAY_STEP * 5, animationClass: 'fade-in-up' }}
+		>
+			Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)
+		</div>
+		<div
+			class="profile-icons"
+			use:scrollAnimate={{ delay: DELAY_STEP * 6, animationClass: 'fade-in-up' }}
+		>
+			<a
+				href="mailto:frederick.madore@zmo.de"
+				target="_blank"
+				rel="noopener"
+				aria-label="Email"
+				class="icon-link glass-button"
+			>
 				<Icon icon="mdi:email" width="24" height="24" />
 			</a>
 			<a
@@ -38,7 +61,13 @@
 			>
 				<Icon icon="academicons:google-scholar" width="24" height="24" />
 			</a>
-			<a href="https://github.com/fmadore" target="_blank" rel="noopener" aria-label="GitHub" class="icon-link glass-button">
+			<a
+				href="https://github.com/fmadore"
+				target="_blank"
+				rel="noopener"
+				aria-label="GitHub"
+				class="icon-link glass-button"
+			>
 				<Icon icon="mdi:github" width="24" height="24" />
 			</a>
 			<a
@@ -91,7 +120,8 @@
 		left: calc(-1 * var(--spacing-2));
 		right: calc(-1 * var(--spacing-2));
 		bottom: calc(-1 * var(--spacing-2));
-		background: linear-gradient(135deg, 
+		background: linear-gradient(
+			135deg,
 			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%,
 			rgba(var(--color-highlight-rgb), var(--opacity-medium-high)) 50%,
 			rgba(var(--color-accent-rgb), var(--opacity-medium-high)) 100%
@@ -147,10 +177,7 @@
 	.title-accent {
 		width: var(--spacing-16);
 		height: var(--border-width-thick);
-		background: linear-gradient(90deg, 
-			var(--color-highlight) 0%, 
-			var(--color-accent) 100%
-		);
+		background: linear-gradient(90deg, var(--color-highlight) 0%, var(--color-accent) 100%);
 		border-radius: var(--border-radius-sm);
 		margin-top: var(--spacing-2);
 	}
@@ -193,9 +220,10 @@
 		left: -100%;
 		width: 100%;
 		height: 100%;
-		background: linear-gradient(90deg, 
-			transparent 0%, 
-			rgba(var(--color-highlight-rgb), var(--opacity-medium)) 50%, 
+		background: linear-gradient(
+			90deg,
+			transparent 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-medium)) 50%,
 			transparent 100%
 		);
 		transition: left var(--transition-duration-300) var(--transition-ease-out);
@@ -231,7 +259,8 @@
 	.icon-link:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-highlight);
 		outline-offset: var(--spacing-1);
-		box-shadow: 0 0 0 var(--border-width-thick) rgba(var(--color-highlight-rgb), var(--opacity-medium-high));
+		box-shadow: 0 0 0 var(--border-width-thick)
+			rgba(var(--color-highlight-rgb), var(--opacity-medium-high));
 	}
 
 	/* Mobile responsive design */

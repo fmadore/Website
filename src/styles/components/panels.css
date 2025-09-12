@@ -55,10 +55,7 @@
 	left: 0;
 	width: 40px;
 	height: var(--border-width-thick);
-	background: linear-gradient(90deg, 
-		var(--color-highlight) 0%, 
-		var(--color-accent) 100%
-	);
+	background: linear-gradient(90deg, var(--color-highlight) 0%, var(--color-accent) 100%);
 	border-radius: var(--border-radius-sm);
 	transition: width var(--anim-duration-base) var(--anim-ease-out);
 }

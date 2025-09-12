@@ -9,10 +9,10 @@
 	$effect(() => {
 		// Only run in browser environment
 		if (!browser) return;
-		
+
 		// Prevent multiple checks
 		if (hasCheckedStorage) return;
-		
+
 		// Use the new cookie consent utility
 		showBanner = cookieConsent.needsConsent();
 		hasCheckedStorage = true;
@@ -68,7 +68,7 @@
 		padding: var(--spacing-6);
 		max-width: 24rem;
 		margin: 0 auto;
-		
+
 		/* Enhanced glassmorphism following design system */
 		background: linear-gradient(
 			135deg,
@@ -80,10 +80,10 @@
 		-webkit-backdrop-filter: blur(10px);
 		border: 1px solid rgba(255, 255, 255, 0.2);
 		border-radius: var(--border-radius-xl);
-		box-shadow: 
+		box-shadow:
 			0 8px 32px 0 rgba(31, 38, 135, 0.15),
 			inset 0 1px 0 rgba(255, 255, 255, 0.2);
-		
+
 		/* Smooth transitions */
 		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -98,7 +98,7 @@
 			rgba(var(--color-accent-rgb), 0.02) 100%
 		);
 		border-color: rgba(255, 255, 255, 0.3);
-		box-shadow: 
+		box-shadow:
 			0 12px 40px 0 rgba(31, 38, 135, 0.2),
 			inset 0 1px 0 rgba(255, 255, 255, 0.3);
 	}
@@ -140,7 +140,7 @@
 			rgba(var(--color-accent-rgb), 0.02) 100%
 		);
 		border: 1px solid rgba(255, 255, 255, 0.1);
-		box-shadow: 
+		box-shadow:
 			0 8px 32px 0 rgba(0, 0, 0, 0.3),
 			inset 0 1px 0 rgba(255, 255, 255, 0.1);
 	}
@@ -153,7 +153,7 @@
 			rgba(var(--color-accent-rgb), 0.04) 100%
 		);
 		border-color: rgba(255, 255, 255, 0.15);
-		box-shadow: 
+		box-shadow:
 			0 12px 40px 0 rgba(0, 0, 0, 0.4),
 			inset 0 1px 0 rgba(255, 255, 255, 0.15);
 	}
@@ -199,7 +199,7 @@
 			animation: none;
 			transition: none;
 		}
-		
+
 		.cookie-banner:hover {
 			transform: none;
 		}
@@ -217,7 +217,7 @@
 		.cookie-banner {
 			background: rgba(255, 255, 255, 0.95);
 		}
-		
+
 		:global(html.dark) .cookie-banner {
 			background: rgba(0, 0, 0, 0.9);
 		}

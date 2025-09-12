@@ -140,10 +140,10 @@
 		<div class="card-content-wrapper">
 			{#if imageSrc}
 				<div class="card-image-container">
-					<img 
-						src={imageSrc} 
-						alt={item.title} 
-						class="card-image" 
+					<img
+						src={imageSrc}
+						alt={item.title}
+						class="card-image"
 						loading="lazy"
 						decoding="async"
 						width="120"
@@ -157,7 +157,7 @@
 				{#if item.authors && item.authors.length > 0}
 					<p class="card-authors">{item.authors.join(', ')}</p>
 				{/if}
-				
+
 				<!-- Using Button component for date badge -->
 				<div class="card-date-container">
 					<Button
@@ -229,11 +229,11 @@
 		line-height: var(--line-height-normal);
 		color: var(--color-text);
 		overflow: hidden;
-		
+
 		/* Improved glassmorphism for better readability */
 		backdrop-filter: blur(8px) saturate(120%);
 		-webkit-backdrop-filter: blur(8px) saturate(120%);
-		
+
 		/* Higher opacity background using global values */
 		background: linear-gradient(
 			135deg,
@@ -241,14 +241,14 @@
 			rgba(var(--color-primary-rgb), var(--opacity-low)) 50%,
 			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		
+
 		/* Using global border system */
 		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium));
 		border-radius: var(--border-radius-xl);
-		
+
 		/* Using global shadow system */
 		box-shadow: var(--shadow-xl);
-		
+
 		/* Initial state for animation using global variables */
 		opacity: 0;
 		transform: translateX(-50%) translateY(var(--spacing-2)) scale(var(--scale-95));
@@ -274,19 +274,20 @@
 			rgba(var(--color-primary-rgb), var(--opacity-low)) 50%,
 			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium-high));
-		
-		box-shadow: 
+
+		border: var(--border-width-thin) solid
+			rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+
+		box-shadow:
 			var(--shadow-xl),
 			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium));
 	}
 
 	:global(html.dark) .preview-card.card-clicked {
-		box-shadow: 
+		box-shadow:
 			var(--shadow-2xl),
 			inset 0 var(--border-width-thin) 0 rgba(var(--color-primary-rgb), var(--opacity-medium-high));
-		
+
 		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
 	}
 
@@ -342,20 +343,20 @@
 	.card-content {
 		padding: var(--spacing-4);
 		position: relative;
-		
+
 		/* Improved content area background for readability */
 		background: linear-gradient(
-			180deg, 
-			rgba(var(--color-white-rgb), 0.7) 0%, 
+			180deg,
+			rgba(var(--color-white-rgb), 0.7) 0%,
 			rgba(var(--color-white-rgb), 0.9) 100%
 		);
 	}
-	
+
 	/* Dark mode content area */
 	:global(html.dark) .card-content {
 		background: linear-gradient(
-			180deg, 
-			rgba(var(--color-dark-surface-alt-rgb), 0.8) 0%, 
+			180deg,
+			rgba(var(--color-dark-surface-alt-rgb), 0.8) 0%,
 			rgba(var(--color-dark-surface-alt-rgb), 0.95) 100%
 		);
 	}
@@ -375,7 +376,7 @@
 		border-radius: var(--border-radius) !important;
 		cursor: default !important;
 		pointer-events: none !important;
-		
+
 		/* Enhanced glassmorphism for date badge */
 		background: linear-gradient(
 			135deg,
@@ -406,7 +407,7 @@
 		border-radius: var(--border-radius-md) !important;
 		cursor: default !important;
 		pointer-events: none !important;
-		
+
 		/* Enhanced glassmorphism for hint */
 		background: linear-gradient(
 			135deg,
@@ -507,8 +508,6 @@
 		font-weight: var(--font-weight-medium);
 	}
 
-
-
 	.card-meta {
 		margin-bottom: var(--spacing-1);
 		color: var(--color-text-light);
@@ -533,11 +532,11 @@
 		.preview-card {
 			transition: none;
 		}
-		
+
 		.card-link:hover .card-image {
 			transform: none;
 		}
-		
+
 		.view-more-hint {
 			transition: none;
 		}
@@ -555,15 +554,15 @@
 		.preview-card {
 			background: rgba(var(--color-white-rgb), var(--glass-opacity-fallback-light));
 		}
-		
+
 		:global(html.dark) .preview-card {
 			background: rgba(var(--color-dark-surface-alt-rgb), var(--glass-opacity-fallback-dark));
 		}
-		
+
 		.view-more-hint {
 			background: rgba(var(--color-primary-rgb), var(--opacity-low));
 		}
-		
+
 		.card-date {
 			background: rgba(var(--color-primary-rgb), var(--opacity-low));
 		}

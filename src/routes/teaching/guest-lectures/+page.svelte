@@ -135,11 +135,20 @@
 	<PageHeader title="Guest Lectures" />
 
 	{#each Object.entries(guestLecturesByInstitution) as [institution, lectures], sectionIndex (institution)}
-		<section class="institution-section" use:scrollAnimate={{ delay: 100 + (sectionIndex * 150), animationClass: 'fade-in-up' }}>
+		<section
+			class="institution-section"
+			use:scrollAnimate={{ delay: 100 + sectionIndex * 150, animationClass: 'fade-in-up' }}
+		>
 			<h2>{institution}</h2>
 			<ul class="lectures-list">
 				{#each lectures as lecture, lectureIndex (lecture.title + lecture.date)}
-					<li class="lecture-item" use:scrollAnimate={{ delay: 200 + (sectionIndex * 150) + (lectureIndex * 50), animationClass: 'fade-in-up' }}>
+					<li
+						class="lecture-item"
+						use:scrollAnimate={{
+							delay: 200 + sectionIndex * 150 + lectureIndex * 50,
+							animationClass: 'fade-in-up'
+						}}
+					>
 						<h3 class="lecture-title">{lecture.title}</h3>
 						<p class="lecture-details" data-level={lecture.level}>
 							In course: <em>{lecture.course}</em><br />
@@ -174,11 +183,7 @@
 		left: 0;
 		width: 60px;
 		height: var(--border-width-medium);
-		background: linear-gradient(
-			135deg,
-			var(--color-highlight) 0%,
-			var(--color-accent) 100%
-		);
+		background: linear-gradient(135deg, var(--color-highlight) 0%, var(--color-accent) 100%);
 		border-radius: var(--border-radius-full);
 	}
 
@@ -199,22 +204,22 @@
 		);
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
-		
+
 		/* Enhanced borders and shadows */
 		border: var(--border-width-thin) solid rgba(255, 255, 255, var(--opacity-medium-high));
 		border-left: var(--border-width-thick) solid var(--color-primary);
 		border-radius: var(--border-radius-lg);
-		
+
 		/* Glassmorphism shadow system */
-		box-shadow: 
+		box-shadow:
 			0 8px 32px 0 rgba(31, 38, 135, 0.15),
 			inset 0 1px 0 rgba(255, 255, 255, var(--opacity-medium-high));
-		
+
 		/* Balanced spacing - less top padding, more bottom padding */
 		padding: var(--spacing-4) var(--spacing-6) var(--spacing-6) var(--spacing-6);
 		margin-bottom: var(--spacing-4);
 		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-		
+
 		/* Subtle transform for depth */
 		position: relative;
 	}
@@ -227,16 +232,16 @@
 			rgba(var(--color-highlight-rgb), 0.03) 50%,
 			rgba(var(--color-accent-rgb), 0.02) 100%
 		);
-		
+
 		/* Enhanced hover effects */
 		border-color: rgba(255, 255, 255, 0.3);
 		border-left-color: var(--color-highlight);
-		
+
 		/* Enhanced shadow on hover */
-		box-shadow: 
+		box-shadow:
 			0 12px 40px 0 rgba(31, 38, 135, var(--opacity-medium-high)),
 			inset 0 1px 0 rgba(255, 255, 255, 0.3);
-		
+
 		/* Subtle lift effect */
 		transform: var(--transform-lift-sm);
 	}
@@ -293,7 +298,7 @@
 			rgba(var(--color-accent-rgb), 0.02) 100%
 		);
 		border: var(--border-width-thin) solid rgba(255, 255, 255, var(--opacity-medium));
-		box-shadow: 
+		box-shadow:
 			0 8px 32px 0 rgba(0, 0, 0, 0.3),
 			inset 0 1px 0 rgba(255, 255, 255, 0.1);
 	}
@@ -306,7 +311,7 @@
 			rgba(var(--color-accent-rgb), 0.04) 100%
 		);
 		border-color: rgba(255, 255, 255, 0.15);
-		box-shadow: 
+		box-shadow:
 			0 12px 40px 0 rgba(0, 0, 0, 0.4),
 			inset 0 1px 0 rgba(255, 255, 255, 0.15);
 	}
@@ -316,12 +321,12 @@
 		.lectures-list {
 			gap: var(--spacing-6);
 		}
-		
+
 		.lecture-item {
 			/* Maintain balanced padding on larger screens */
 			padding: var(--spacing-6) var(--spacing-8) var(--spacing-8) var(--spacing-8);
 		}
-		
+
 		.lecture-title {
 			font-size: var(--font-size-xl);
 		}
@@ -332,7 +337,7 @@
 		.lecture-item {
 			transition: none;
 		}
-		
+
 		.lecture-item:hover {
 			transform: none;
 		}
@@ -342,7 +347,7 @@
 		.lecture-item {
 			border-width: var(--border-width-medium);
 		}
-		
+
 		h2::after {
 			height: var(--border-width-thick);
 		}

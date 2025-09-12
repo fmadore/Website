@@ -5,7 +5,7 @@ ECharts Stacked Bar Chart component
 	import * as echarts from 'echarts';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
-	
+
 	// Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;
 	let {
@@ -60,10 +60,10 @@ ECharts Stacked Bar Chart component
 			const checkMobile = () => {
 				isMobile = window.innerWidth < 768;
 			};
-			
+
 			checkMobile();
 			window.addEventListener('resize', checkMobile);
-			
+
 			return () => window.removeEventListener('resize', checkMobile);
 		}
 	});
@@ -91,7 +91,8 @@ ECharts Stacked Bar Chart component
 			stack: 'total',
 			data: data.map((d) => (d as any)[key] || 0),
 			itemStyle: {
-				color: resolvedColors.resolvedSeriesColors[index % resolvedColors.resolvedSeriesColors.length],
+				color:
+					resolvedColors.resolvedSeriesColors[index % resolvedColors.resolvedSeriesColors.length],
 				borderRadius: [4, 4, 0, 0]
 			},
 			emphasis: {
@@ -102,7 +103,7 @@ ECharts Stacked Bar Chart component
 				}
 			}
 		}))
-	); 	// Chart options - reactive to all dependencies
+	); // Chart options - reactive to all dependencies
 	const chartOption = $derived({
 		tooltip: {
 			trigger: 'axis',
@@ -122,24 +123,24 @@ ECharts Stacked Bar Chart component
 			formatter: function (params: any) {
 				// Filter out series with value 0
 				const nonZeroParams = params.filter((param: any) => param.value > 0);
-				
+
 				if (nonZeroParams.length === 0) {
 					return `${params[0].axisValueLabel}<br/>No publications`;
 				}
-				
+
 				let result = `${nonZeroParams[0].axisValueLabel}<br/>`;
-				
+
 				// Calculate total for the year
 				const total = nonZeroParams.reduce((sum: number, param: any) => sum + param.value, 0);
-				
+
 				// Add each non-zero publication type
 				nonZeroParams.forEach((param: any) => {
 					result += `${param.marker}${param.seriesName}: ${param.value}<br/>`;
 				});
-				
+
 				// Add total
 				result += `<strong>Total: ${total}</strong>`;
-				
+
 				return result;
 			}
 		},
@@ -285,7 +286,15 @@ ECharts Stacked Bar Chart component
 	});
 </script>
 
-<div class="echarts-container" use:scrollAnimate={{ delay: 250, animationClass: 'fade-in-up', rootMargin: '100px', threshold: 0.1 }}>
+<div
+	class="echarts-container"
+	use:scrollAnimate={{
+		delay: 250,
+		animationClass: 'fade-in-up',
+		rootMargin: '100px',
+		threshold: 0.1
+	}}
+>
 	<div bind:this={chartContainer} class="chart"></div>
 </div>
 
@@ -302,8 +311,6 @@ ECharts Stacked Bar Chart component
 		transform: translateY(30px);
 		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 	}
-
-
 
 	.chart {
 		width: 100%;

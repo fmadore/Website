@@ -2,7 +2,8 @@
 
 /* Transform base - necessary for any transform to work */
 .transform {
-	transform: translateX(0) translateY(0) rotate(var(--rotate-0)) skewX(var(--skew-0)) skewY(var(--skew-0)) scaleX(var(--scale-100)) scaleY(var(--scale-100));
+	transform: translateX(0) translateY(0) rotate(var(--rotate-0)) skewX(var(--skew-0))
+		skewY(var(--skew-0)) scaleX(var(--scale-100)) scaleY(var(--scale-100));
 }
 
 /* Scale utilities */

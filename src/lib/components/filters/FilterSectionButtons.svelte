@@ -61,7 +61,8 @@
 		color: var(--color-text-emphasis);
 		margin: 0 0 var(--spacing-3) 0;
 		padding-bottom: var(--spacing-2);
-		border-bottom: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-medium));
+		border-bottom: var(--border-width-thin) solid
+			rgba(var(--color-accent-rgb), var(--opacity-medium));
 	}
 
 	.filter-chips-container {
@@ -73,18 +74,22 @@
 
 	/* Enhanced styles for active state using design system variables */
 	:global(.filter-chip.active) {
-		background: linear-gradient(135deg, 
-			var(--color-accent) 0%, 
-			var(--color-highlight) 100%) !important;
+		background: linear-gradient(
+			135deg,
+			var(--color-accent) 0%,
+			var(--color-highlight) 100%
+		) !important;
 		color: var(--color-white) !important;
 		border-color: var(--color-accent) !important;
 		box-shadow: var(--shadow-md) !important;
 	}
 
 	:global(.filter-chip.active:hover) {
-		background: linear-gradient(135deg, 
-			var(--color-highlight) 0%, 
-			var(--color-accent) 100%) !important;
+		background: linear-gradient(
+			135deg,
+			var(--color-highlight) 0%,
+			var(--color-accent) 100%
+		) !important;
 		transform: var(--transform-lift-sm) !important;
 		box-shadow: var(--shadow-lg) !important;
 	}
@@ -113,7 +118,7 @@
 	:global(html.dark) .filter-section-content {
 		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium));
 		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
-		box-shadow: 
+		box-shadow:
 			0 8px 32px 0 rgba(var(--color-black-rgb), var(--opacity-medium)),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-low));
 	}

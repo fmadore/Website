@@ -52,8 +52,9 @@
 	{#if selectedSkill}
 		<p class="text-lg mb-6">
 			Showing projects with skill: <span class="font-semibold text-primary">{selectedSkill}</span>
-			<a href="{base}/digital-humanities" class="text-sm ml-2 text-light hover:text-primary hover:underline"
-				>(Clear filter)</a
+			<a
+				href="{base}/digital-humanities"
+				class="text-sm ml-2 text-light hover:text-primary hover:underline">(Clear filter)</a
 			>
 		</p>
 	{/if}
@@ -88,9 +89,9 @@
 						<!-- Skills section -->
 						{#if project.skills && project.skills.length > 0}
 							<div class="skills-section">
-								<TagList 
-									tags={project.skills} 
-									baseUrl="/digital-humanities?skill=" 
+								<TagList
+									tags={project.skills}
+									baseUrl="/digital-humanities?skill="
 									sectionTitle="Skills"
 									showTitle={true}
 									buttonVariant="outline-secondary"
@@ -129,8 +130,6 @@
 		margin: 0 auto;
 		padding: 0 1rem;
 	}
-
-
 
 	/* .dh-grid styles are now handled by .content-grid */
 	/* Ensure any unique styles for this page that were part of .dh-grid are preserved or moved if necessary. */

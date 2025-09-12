@@ -283,12 +283,13 @@
 		padding: var(--spacing-3);
 		border-radius: var(--border-radius-md);
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
-		
+
 		/* Glassmorphism styling matching filter sidebar - using global values */
 		background: rgba(var(--color-surface-rgb), var(--opacity-medium));
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
-		border: var(--border-width-thin) solid rgba(var(--color-surface-rgb), var(--opacity-medium-high));
+		border: var(--border-width-thin) solid
+			rgba(var(--color-surface-rgb), var(--opacity-medium-high));
 		box-shadow: var(--shadow-md);
 	}
 
@@ -319,10 +320,7 @@
 		position: absolute;
 		top: 0;
 		height: 100%;
-		background: linear-gradient(90deg, 
-			var(--color-accent) 0%, 
-			var(--color-highlight) 100%
-		);
+		background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-highlight) 100%);
 		border-radius: var(--border-radius-sm);
 		pointer-events: none;
 		opacity: var(--opacity-high);
@@ -334,10 +332,7 @@
 		top: 50%;
 		width: 18px;
 		height: 18px;
-		background: linear-gradient(135deg, 
-			var(--color-accent) 0%, 
-			var(--color-highlight) 100%
-		);
+		background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-highlight) 100%);
 		border: var(--border-width-medium) solid var(--color-white);
 		border-radius: 50%;
 		transform: translate(-50%, -50%);
@@ -368,7 +363,7 @@
 
 	.range-handle:hover,
 	.range-handle:focus {
-		box-shadow: 
+		box-shadow:
 			0 0 0 var(--border-width-thick) rgba(var(--color-accent-rgb), var(--opacity-medium)),
 			var(--shadow-lg);
 		outline: none;
@@ -377,7 +372,7 @@
 
 	.range-handle.active {
 		cursor: grabbing;
-		box-shadow: 
+		box-shadow:
 			0 0 0 var(--border-width-thick) rgba(var(--color-accent-rgb), var(--opacity-medium-high)),
 			var(--shadow-xl);
 		transform: translate(-50%, -50%) scale(var(--scale-125));
@@ -388,10 +383,7 @@
 		bottom: 140%;
 		left: 50%;
 		transform: translateX(-50%);
-		background: linear-gradient(135deg, 
-			var(--color-accent) 0%, 
-			var(--color-highlight) 100%
-		);
+		background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-highlight) 100%);
 		color: var(--color-white);
 		padding: var(--spacing-1) var(--spacing-2);
 		border-radius: var(--border-radius-sm);
@@ -452,7 +444,8 @@
 	:global(html.dark) .range-slider {
 		/* Use dark surface colors from global variables */
 		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium));
-		border: var(--border-width-thin) solid rgba(var(--color-dark-surface-rgb), var(--opacity-medium-high));
+		border: var(--border-width-thin) solid
+			rgba(var(--color-dark-surface-rgb), var(--opacity-medium-high));
 		box-shadow: var(--shadow-md);
 	}
 
@@ -497,4 +490,4 @@
 			transform: translate(-50%, -50%);
 		}
 	}
-</style> 
+</style>

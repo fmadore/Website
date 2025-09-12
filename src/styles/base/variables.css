@@ -3,34 +3,34 @@
 :root {
 	/* ===== REFINED COLOR SYSTEM ===== */
 	/* Using a more sophisticated palette with better harmony */
-	
+
 	/* Primary - Deep Academic Blue (more sophisticated than charcoal) */
 	--color-primary: #1e3a5f; /* Rich navy blue */
 	--color-primary-rgb: 30, 58, 95;
 	--color-primary-dark: #0f1f33;
 	--color-primary-light: #2d4d7a;
-	
+
 	/* Secondary - Warm Gray (better contrast) */
 	--color-secondary: #64748b; /* Slate gray */
 	--color-secondary-rgb: 100, 116, 139;
-	
+
 	/* Accent - Academic Teal (more distinctive) */
 	--color-accent: #0891b2; /* Professional teal */
 	--color-accent-rgb: 8, 145, 178;
-	
+
 	/* Highlight - Sophisticated Gold */
 	--color-highlight: #ca8a04; /* Deeper, richer gold */
 	--color-highlight-rgb: 202, 138, 4;
-	
+
 	/* Success - Balanced Emerald */
 	--color-success: #059669; /* Professional green */
 	--color-success-rgb: 5, 150, 105;
-	
+
 	/* Danger - Refined Red */
 	--color-danger: #dc2626;
 	--color-danger-rgb: 220, 38, 38;
 	--color-danger-dark: #991b1b;
-	
+
 	/* Background & Text - Enhanced Contrast */
 	--color-background: #ffffff;
 	--color-background-subtle: #fafbfc; /* Very subtle off-white */
@@ -38,38 +38,38 @@
 	--color-text-light: #475569;
 	--color-text-muted: #94a3b8;
 	--color-text-emphasis: #0f172a; /* Maximum contrast */
-	
+
 	/* Borders - More Subtle */
 	--color-border: #e2e8f0;
 	--color-border-light: #f1f5f9;
 	--color-border-dark: #cbd5e1;
-	
+
 	/* Academic-specific colors - More Cohesive */
 	--color-citation: #0891b2; /* Matches accent */
 	--color-citation-rgb: 8, 145, 178;
 	--color-quote: #334155; /* Refined quote color */
 	--color-note: #64748b; /* Subtle notes */
-	
+
 	/* Surface colors - Better Layering */
 	--color-surface: #f8fafc;
 	--color-surface-rgb: 248, 250, 252;
 	--color-surface-alt: #f1f5f9;
 	--color-surface-elevated: #ffffff;
 	--color-code-bg: #f1f5f9;
-	
+
 	/* Standard colors with RGB values */
 	--color-white: #ffffff;
 	--color-white-rgb: 255, 255, 255;
 	--color-black: #000000;
 	--color-black-rgb: 0, 0, 0;
 	--color-transparent: transparent;
-	
+
 	/* Legacy footer colors for compatibility */
 	--color-footer-bg: #1e3a5f; /* Uses new primary color */
 	--color-footer-text: #f7fafc;
 	--color-footer-text-muted: rgba(247, 250, 252, 0.7);
 	--color-sidebar-bg: #f8fafc; /* Uses new surface color */
-	
+
 	/* Legacy semantic colors maintained for compatibility */
 	--color-surface-border: #e2e8f0; /* Surface borders */
 	--color-dark-surface: #334155; /* Dark theme surface */
@@ -78,53 +78,55 @@
 	--color-dark-surface-alt-rgb: 30, 41, 59; /* RGB values for dark surface alt color */
 	--color-dark-surface-deep: #0f172a; /* Dark theme deep surface */
 	--color-dark-surface-deep-rgb: 15, 23, 42; /* RGB values for dark surface deep color */
-	
+
 	/* Button color schemes - Updated for new palette */
 	--color-secondary-scheme: #0891b2; /* Uses accent color for consistency */
 	--color-secondary-scheme-rgb: 8, 145, 178;
 	--color-secondary-scheme-alt: #0e7490; /* Darker teal */
 	--color-secondary-scheme-alt-rgb: 14, 116, 144;
-	
+
 	--color-tertiary-scheme: #059669; /* Uses success color */
 	--color-tertiary-scheme-rgb: 5, 150, 105;
 	--color-tertiary-scheme-alt: #047857; /* Darker emerald */
 	--color-tertiary-scheme-alt-rgb: 4, 120, 87;
-	
+
 	--color-glass-scheme: #1e3a5f; /* Uses primary color */
 	--color-glass-scheme-rgb: 30, 58, 95;
 	--color-glass-scheme-alt: #2d4d7a; /* Lighter primary */
 	--color-glass-scheme-alt-rgb: 45, 77, 122;
-	
+
 	/* Background variations for components */
 	--color-background-alt: #f8fafc; /* Uses surface color */
 	--color-background-muted: #f1f5f9; /* Uses surface-alt color */
-	
+
 	/* ===== TYPOGRAPHY SCALE ===== */
 	/* Using a 1.25 modular scale for better harmony */
-	
+
 	/* Font families - Enhanced stack */
-	--font-family-sans: 'Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
+	--font-family-sans:
+		'Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial',
+		sans-serif;
 	--font-family-serif: 'Crimson Pro', 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
 	--font-family-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Consolas', 'Monaco', monospace;
-	
+
 	/* Font sizes - Perfect Fourth scale (1.333) for better hierarchy */
-	--font-size-xs: 0.75rem;    /* 12px */
-	--font-size-sm: 0.875rem;   /* 14px */
-	--font-size-base: 1rem;     /* 16px */
-	--font-size-lg: 1.125rem;   /* 18px */
-	--font-size-xl: 1.333rem;   /* 21px */
-	--font-size-2xl: 1.777rem;  /* 28px */
-	--font-size-3xl: 2.369rem;  /* 38px */
-	--font-size-4xl: 3.157rem;  /* 50px */
-	--font-size-5xl: 4.209rem;  /* 67px */
-	
+	--font-size-xs: 0.75rem; /* 12px */
+	--font-size-sm: 0.875rem; /* 14px */
+	--font-size-base: 1rem; /* 16px */
+	--font-size-lg: 1.125rem; /* 18px */
+	--font-size-xl: 1.333rem; /* 21px */
+	--font-size-2xl: 1.777rem; /* 28px */
+	--font-size-3xl: 2.369rem; /* 38px */
+	--font-size-4xl: 3.157rem; /* 50px */
+	--font-size-5xl: 4.209rem; /* 67px */
+
 	/* Line heights - Optimized for readability */
 	--line-height-tight: 1.1;
 	--line-height-snug: 1.35;
 	--line-height-normal: 1.6;
 	--line-height-relaxed: 1.75;
 	--line-height-loose: 2;
-	
+
 	/* Letter spacing - Refined */
 	--letter-spacing-tighter: -0.03em;
 	--letter-spacing-tight: -0.01em;
@@ -132,7 +134,7 @@
 	--letter-spacing-wide: 0.025em;
 	--letter-spacing-wider: 0.05em;
 	--letter-spacing-widest: 0.1em;
-	
+
 	/* Font weights - Complete scale */
 	--font-weight-thin: 100;
 	--font-weight-light: 300;
@@ -147,47 +149,47 @@
 	--text-indent-paragraph: 1.5em;
 	--text-max-width-reading: 65ch;
 	--text-max-width-wide: 80ch;
-	
+
 	/* ===== SPACING SYSTEM ===== */
 	/* Using a consistent 8px grid system with golden ratio influences */
-	
+
 	--spacing-0: 0;
 	--spacing-px: 1px;
-	--spacing-0\.5: 0.125rem;  /* 2px */
-	--spacing-1: 0.25rem;       /* 4px */
-	--spacing-2: 0.5rem;        /* 8px */
-	--spacing-3: 0.75rem;       /* 12px */
-	--spacing-4: 1rem;          /* 16px */
-	--spacing-5: 1.25rem;       /* 20px */
-	--spacing-6: 1.5rem;        /* 24px */
-	--spacing-8: 2rem;          /* 32px */
-	--spacing-10: 2.5rem;       /* 40px */
-	--spacing-12: 3rem;         /* 48px */
-	--spacing-14: 3.5rem;       /* 56px */
-	--spacing-16: 4rem;         /* 64px */
-	--spacing-20: 5rem;         /* 80px */
-	--spacing-24: 6rem;         /* 96px */
-	--spacing-28: 7rem;         /* 112px */
-	--spacing-32: 8rem;         /* 128px */
-	--spacing-40: 10rem;        /* 160px */
-	--spacing-48: 12rem;        /* 192px */
+	--spacing-0\.5: 0.125rem; /* 2px */
+	--spacing-1: 0.25rem; /* 4px */
+	--spacing-2: 0.5rem; /* 8px */
+	--spacing-3: 0.75rem; /* 12px */
+	--spacing-4: 1rem; /* 16px */
+	--spacing-5: 1.25rem; /* 20px */
+	--spacing-6: 1.5rem; /* 24px */
+	--spacing-8: 2rem; /* 32px */
+	--spacing-10: 2.5rem; /* 40px */
+	--spacing-12: 3rem; /* 48px */
+	--spacing-14: 3.5rem; /* 56px */
+	--spacing-16: 4rem; /* 64px */
+	--spacing-20: 5rem; /* 80px */
+	--spacing-24: 6rem; /* 96px */
+	--spacing-28: 7rem; /* 112px */
+	--spacing-32: 8rem; /* 128px */
+	--spacing-40: 10rem; /* 160px */
+	--spacing-48: 12rem; /* 192px */
 
 	/* ===== ENHANCED BORDER RADIUS ===== */
 	/* More modern, subtle radii */
-	
+
 	--border-radius-none: 0;
-	--border-radius-sm: 0.125rem;  /* 2px */
-	--border-radius: 0.375rem;     /* 6px */
-	--border-radius-md: 0.5rem;    /* 8px */
-	--border-radius-lg: 0.75rem;   /* 12px */
-	--border-radius-xl: 1rem;      /* 16px */
-	--border-radius-2xl: 1.5rem;   /* 24px */
-	--border-radius-3xl: 2rem;     /* 32px */
+	--border-radius-sm: 0.125rem; /* 2px */
+	--border-radius: 0.375rem; /* 6px */
+	--border-radius-md: 0.5rem; /* 8px */
+	--border-radius-lg: 0.75rem; /* 12px */
+	--border-radius-xl: 1rem; /* 16px */
+	--border-radius-2xl: 1.5rem; /* 24px */
+	--border-radius-3xl: 2rem; /* 32px */
 	--border-radius-full: 9999px;
-	
+
 	/* ===== REFINED SHADOWS ===== */
 	/* More subtle, layered shadows for depth */
-	
+
 	--shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
 	--shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
 	--shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.04), 0 1px 3px -1px rgba(0, 0, 0, 0.03);
@@ -196,7 +198,7 @@
 	--shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
 	--shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
 	--shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.03);
-	
+
 	/* Colored shadows for special elements */
 	--shadow-primary: 0 4px 14px 0 rgba(30, 58, 95, 0.15);
 	--shadow-accent: 0 4px 14px 0 rgba(8, 145, 178, 0.15);
@@ -206,16 +208,16 @@
 	--border-width-thin: 1px;
 	--border-width-medium: 2px;
 	--border-width-thick: 4px;
-	
+
 	/* ===== ANIMATION TIMING ===== */
 	/* Refined animation values */
-	
+
 	--anim-duration-instant: 100ms;
 	--anim-duration-fast: 200ms;
 	--anim-duration-base: 300ms;
 	--anim-duration-slow: 500ms;
 	--anim-duration-slower: 700ms;
-	
+
 	/* Easing functions */
 	--anim-ease-base: cubic-bezier(0.4, 0, 0.2, 1);
 	--anim-ease-in: cubic-bezier(0.4, 0, 1, 1);
@@ -223,24 +225,24 @@
 	--anim-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 	--anim-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 	--anim-ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
-	
+
 	/* Legacy animation variables for compatibility */
 	--anim-duration-bounce: 0.6s;
 	--anim-duration-progress: 0.1s;
 	--anim-ease-mobile: cubic-bezier(0.25, 0.1, 0.25, 1);
-	
+
 	/* ===== LAYOUT CONSTANTS ===== */
-	
+
 	/* Container widths */
 	--container-sm: 640px;
 	--container-md: 768px;
 	--container-lg: 1024px;
 	--container-xl: 1280px;
 	--container-2xl: 1536px;
-	
+
 	/* Content widths */
 	--content-max-width: 1200px;
-	
+
 	/* ===== Z-INDEX SCALE ===== */
 	--z-dropdown: 1000;
 	--z-sticky: 1020;
@@ -249,7 +251,7 @@
 	--z-modal: 1050;
 	--z-popover: 1060;
 	--z-tooltip: 1070;
-	
+
 	/* ===== OPACITY SCALE ===== */
 	--opacity-0: 0;
 	--opacity-5: 0.05;
@@ -264,7 +266,7 @@
 	--opacity-90: 0.9;
 	--opacity-95: 0.95;
 	--opacity-100: 1;
-	
+
 	/* Legacy opacity mappings for compatibility */
 	--opacity-very-low: 0.05;
 	--opacity-low: 0.1;
@@ -272,11 +274,10 @@
 	--opacity-medium-high: 0.3;
 	--opacity-high: 0.9;
 
-	
 	/* Legacy transform and transition variables for compatibility */
 	--transform-lift-sm: translateY(-1px);
 	--transform-lift-md: translateY(-2px);
-	
+
 	/* Transition duration variables for utilities */
 	--transition-duration-75: 75ms;
 	--transition-duration-100: 100ms;
@@ -284,13 +285,13 @@
 	--transition-duration-200: 200ms;
 	--transition-duration-300: 300ms;
 	--transition-duration-500: 500ms;
-	
+
 	/* Timing function variables for utilities */
 	--transition-ease-linear: linear;
 	--transition-ease-in: cubic-bezier(0.4, 0, 1, 1);
 	--transition-ease-out: cubic-bezier(0, 0, 0.2, 1);
 	--transition-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-	
+
 	/* Scale transform variables */
 	--scale-0: 0;
 	--scale-50: 0.5;
@@ -302,7 +303,7 @@
 	--scale-110: 1.1;
 	--scale-125: 1.25;
 	--scale-150: 1.5;
-	
+
 	/* Rotation variables */
 	--rotate-0: 0deg;
 	--rotate-1: 1deg;
@@ -313,7 +314,7 @@
 	--rotate-45: 45deg;
 	--rotate-90: 90deg;
 	--rotate-180: 180deg;
-	
+
 	/* Skew variables */
 	--skew-0: 0deg;
 	--skew-1: 1deg;
@@ -321,7 +322,7 @@
 	--skew-3: 3deg;
 	--skew-6: 6deg;
 	--skew-12: 12deg;
-	
+
 	/* Transform values for animations */
 	--transform-distance-sm: 8px;
 	--transform-distance-md: 16px;
@@ -331,7 +332,7 @@
 	--transform-scale-xs: 0.5;
 	--transform-scale-lg: 1.025;
 	--transform-scale-md: 0.975;
-	
+
 	/* Animation delays for staggered effects */
 	--anim-delay-1: 0.05s;
 	--anim-delay-2: 0.1s;
@@ -339,7 +340,7 @@
 	--anim-delay-4: 0.2s;
 	--anim-delay-5: 0.25s;
 	--anim-delay-6: 0.3s;
-	
+
 	/* Button-specific variables */
 	--btn-shine-duration: 0.4s;
 	--btn-active-transform: translateY(1px);
@@ -349,7 +350,7 @@
 	--glass-opacity-fallback-dark: 0.85;
 	--glass-blur-amount: 10px;
 	--glass-blur-fallback: 12px;
-	
+
 	/* Card-specific variables */
 	--card-height-image: 14rem;
 	--card-glass-opacity-light: 0.08;
@@ -369,7 +370,7 @@
 	--card-shadow-opacity-hover: 0.35;
 	--card-transform-hover: translateY(-2px);
 	--card-link-transform: translateX(3px);
-	
+
 	/* Iframe-specific variables */
 	--iframe-height-xs: 18.75rem; /* 300px */
 	--iframe-height-sm: 25rem; /* 400px */
@@ -379,12 +380,12 @@
 	--iframe-height-xl: 62.5rem; /* 1000px */
 	--iframe-header-height: 2.5rem; /* 40px */
 	--iframe-header-height-mobile: 2.25rem; /* 36px */
-	
+
 	/* Footer decorative animation durations */
 	--anim-duration-decorative: 4s; /* For subtle decorative animations */
 	--anim-duration-ambient: 8s; /* For very slow ambient animations */
 	--anim-duration-gentle: 12s; /* For ultra-slow gentle animations */
-	
+
 	/* Legacy breakpoint variables for compatibility */
 	--breakpoint-sm: 640px;
 	--breakpoint-md: 768px;
@@ -400,23 +401,23 @@ html.dark {
 	--color-primary-rgb: 96, 165, 250;
 	--color-primary-dark: #3b82f6;
 	--color-primary-light: #93c5fd;
-	
+
 	/* Secondary - Lighter gray */
 	--color-secondary: #e2e8f0;
 	--color-secondary-rgb: 226, 232, 240;
-	
+
 	/* Accent - Vibrant teal */
 	--color-accent: #2dd4bf;
 	--color-accent-rgb: 45, 212, 191;
-	
+
 	/* Highlight - Warm amber */
 	--color-highlight: #fbbf24;
 	--color-highlight-rgb: 251, 191, 36;
-	
+
 	/* Success - Bright emerald */
 	--color-success: #34d399;
 	--color-success-rgb: 52, 211, 153;
-	
+
 	/* Background & Text - True dark with good contrast */
 	--color-background: #0f172a; /* Rich dark blue */
 	--color-background-subtle: #1e293b;
@@ -424,31 +425,31 @@ html.dark {
 	--color-text-light: #cbd5e1;
 	--color-text-muted: #94a3b8;
 	--color-text-emphasis: #ffffff;
-	
+
 	/* Borders - Subtle in dark mode */
 	--color-border: #334155;
 	--color-border-light: #1e293b;
 	--color-border-dark: #475569;
-	
+
 	/* Academic-specific colors - Updated for dark mode */
 	--color-citation: #2dd4bf; /* Matches accent */
 	--color-citation-rgb: 45, 212, 191;
 	--color-quote: #cbd5e1; /* Light gray for blockquotes in dark mode */
 	--color-note: #e2e8f0; /* For footnotes and annotations in dark mode */
-	
+
 	/* Surface colors - Layered depth */
 	--color-surface: #1e293b;
 	--color-surface-rgb: 30, 41, 59;
 	--color-surface-alt: #334155;
 	--color-surface-elevated: #475569;
 	--color-code-bg: #1e293b;
-	
+
 	/* Legacy footer colors updated for dark theme */
 	--color-footer-bg: #0f172a; /* Deep dark footer */
 	--color-footer-text: #f7fafc; /* Keep consistent footer text */
 	--color-footer-text-muted: rgba(247, 250, 252, 0.7); /* Keep consistent muted */
 	--color-sidebar-bg: #1e293b; /* Dark theme sidebar */
-	
+
 	/* Legacy semantic colors maintained for compatibility */
 	--color-surface-border: #334155; /* Surface borders */
 	--color-dark-surface: #1e293b; /* Dark theme surface */
@@ -457,27 +458,27 @@ html.dark {
 	--color-dark-surface-alt-rgb: 15, 23, 42; /* RGB values for dark surface alt color */
 	--color-dark-surface-deep: #020617; /* Dark theme deep surface */
 	--color-dark-surface-deep-rgb: 2, 6, 23; /* RGB values for dark surface deep color */
-	
+
 	/* Button color schemes - Updated for dark mode */
 	--color-secondary-scheme: #60a5fa; /* Bright sky blue for dark mode */
 	--color-secondary-scheme-rgb: 96, 165, 250;
 	--color-secondary-scheme-alt: #3b82f6; /* Medium blue */
 	--color-secondary-scheme-alt-rgb: 59, 130, 246;
-	
+
 	--color-tertiary-scheme: #34d399; /* Bright emerald for dark mode */
 	--color-tertiary-scheme-rgb: 52, 211, 153;
 	--color-tertiary-scheme-alt: #10b981; /* Medium emerald */
 	--color-tertiary-scheme-alt-rgb: 16, 185, 129;
-	
+
 	--color-glass-scheme: #60a5fa; /* Bright sky blue for dark mode */
 	--color-glass-scheme-rgb: 96, 165, 250;
 	--color-glass-scheme-alt: #93c5fd; /* Light sky blue */
 	--color-glass-scheme-alt-rgb: 147, 197, 253;
-	
+
 	/* Background variations for components */
 	--color-background-alt: #1e293b; /* Uses surface color */
 	--color-background-muted: #334155; /* Uses surface-alt color */
-	
+
 	/* Shadows - Deeper for dark mode */
 	--shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.3);
 	--shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3), 0 1px 3px -1px rgba(0, 0, 0, 0.3);
@@ -485,7 +486,7 @@ html.dark {
 	--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
 	--shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
 	--shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-	
+
 	/* Card shadow color updated for dark mode */
 	--card-shadow-color: 15, 23, 42;
 	--card-shadow-opacity: 0.5;

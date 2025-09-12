@@ -24,137 +24,151 @@
 	};
 
 	// Calculate data reactively using $derived - optimized for performance
-	const citationsPerYearData = $derived((() => {
-		// Process allPublications to derive data for visualizations
-		const citationsReceivedInYear: Record<number, number> = {};
-		
-		// Use for loop for better performance than forEach
-		for (let i = 0; i < allPublications.length; i++) {
-			const pub = allPublications[i];
-			if (pub.citedBy && Array.isArray(pub.citedBy)) {
-				for (let j = 0; j < pub.citedBy.length; j++) {
-					const citation = pub.citedBy[j];
-					// Assuming each 'citation' object has a 'year' property indicating the year of the citation
-					if (citation && typeof citation.year === 'number') {
-						citationsReceivedInYear[citation.year] =
-							(citationsReceivedInYear[citation.year] || 0) + 1;
+	const citationsPerYearData = $derived(
+		(() => {
+			// Process allPublications to derive data for visualizations
+			const citationsReceivedInYear: Record<number, number> = {};
+
+			// Use for loop for better performance than forEach
+			for (let i = 0; i < allPublications.length; i++) {
+				const pub = allPublications[i];
+				if (pub.citedBy && Array.isArray(pub.citedBy)) {
+					for (let j = 0; j < pub.citedBy.length; j++) {
+						const citation = pub.citedBy[j];
+						// Assuming each 'citation' object has a 'year' property indicating the year of the citation
+						if (citation && typeof citation.year === 'number') {
+							citationsReceivedInYear[citation.year] =
+								(citationsReceivedInYear[citation.year] || 0) + 1;
+						}
 					}
 				}
 			}
-		}
-		
-		return Object.entries(citationsReceivedInYear)
-			.map(([year, count]) => ({ year: parseInt(year), count }))
-			.sort((a, b) => a.year - b.year);
-	})());
 
-	const citedAuthorsData = $derived((() => {
-		const authorCounts: Record<string, number> = {};
-		allPublications.forEach((pub) => {
-			if (pub.citedBy) {
-				pub.citedBy.forEach((citation: any) => {
-					if (citation.authors && Array.isArray(citation.authors)) {
-						citation.authors.forEach((author: string) => {
-							authorCounts[author] = (authorCounts[author] || 0) + 1;
-						});
-					}
-				});
-			}
-		});
-		return Object.entries(authorCounts)
-			.map(([author, count]) => ({ author, count }))
-			.sort((a, b) => b.count - a.count);
-	})());
+			return Object.entries(citationsReceivedInYear)
+				.map(([year, count]) => ({ year: parseInt(year), count }))
+				.sort((a, b) => a.year - b.year);
+		})()
+	);
+
+	const citedAuthorsData = $derived(
+		(() => {
+			const authorCounts: Record<string, number> = {};
+			allPublications.forEach((pub) => {
+				if (pub.citedBy) {
+					pub.citedBy.forEach((citation: any) => {
+						if (citation.authors && Array.isArray(citation.authors)) {
+							citation.authors.forEach((author: string) => {
+								authorCounts[author] = (authorCounts[author] || 0) + 1;
+							});
+						}
+					});
+				}
+			});
+			return Object.entries(authorCounts)
+				.map(([author, count]) => ({ author, count }))
+				.sort((a, b) => b.count - a.count);
+		})()
+	);
 
 	// Calculate maximum citation count for consistent x-axis scale across pagination
 	const maxCitationCount = $derived(
-		citedAuthorsData.length > 0 ? Math.max(...citedAuthorsData.map(d => d.count)) : 0
+		citedAuthorsData.length > 0 ? Math.max(...citedAuthorsData.map((d) => d.count)) : 0
 	);
 
-	const languageData = $derived((() => {
-		const languageCounts: Record<string, number> = {};
-		allPublications.forEach((pub) => {
-			if (pub.language) {
-				// Split comma-separated languages and count each one
-				const languages = pub.language.split(',').map((lang: string) => lang.trim());
-				languages.forEach((language: string) => {
-					if (language) { // Only count non-empty languages
-						languageCounts[language] = (languageCounts[language] || 0) + 1;
-					}
-				});
-			}
-		});
-		return Object.entries(languageCounts)
-			.map(([language, count]) => ({ language, count }))
-			.sort((a, b) => b.count - a.count);
-	})());
+	const languageData = $derived(
+		(() => {
+			const languageCounts: Record<string, number> = {};
+			allPublications.forEach((pub) => {
+				if (pub.language) {
+					// Split comma-separated languages and count each one
+					const languages = pub.language.split(',').map((lang: string) => lang.trim());
+					languages.forEach((language: string) => {
+						if (language) {
+							// Only count non-empty languages
+							languageCounts[language] = (languageCounts[language] || 0) + 1;
+						}
+					});
+				}
+			});
+			return Object.entries(languageCounts)
+				.map(([language, count]) => ({ language, count }))
+				.sort((a, b) => b.count - a.count);
+		})()
+	);
 
 	const publicationTypesForStack = $derived(Object.keys(publicationsByType).sort());
 
-	const publicationsPerYearStackedData = $derived((() => {
-		// Prepare data for stacked bar chart (Publications per Year by Type)
-		const types = publicationTypesForStack;
-		const yearlyPublicationCounts: Record<number, { [type: string]: number; total: number }> = {};
+	const publicationsPerYearStackedData = $derived(
+		(() => {
+			// Prepare data for stacked bar chart (Publications per Year by Type)
+			const types = publicationTypesForStack;
+			const yearlyPublicationCounts: Record<number, { [type: string]: number; total: number }> = {};
 
-		allPublications.forEach((pub) => {
-			if (!yearlyPublicationCounts[pub.year]) {
-				yearlyPublicationCounts[pub.year] = { total: 0 };
-				types.forEach((type: string) => (yearlyPublicationCounts[pub.year][type] = 0)); // Initialize all types with 0
-			}
-			yearlyPublicationCounts[pub.year][pub.type] =
-				(yearlyPublicationCounts[pub.year][pub.type] || 0) + 1;
-			yearlyPublicationCounts[pub.year].total++;
-		});
+			allPublications.forEach((pub) => {
+				if (!yearlyPublicationCounts[pub.year]) {
+					yearlyPublicationCounts[pub.year] = { total: 0 };
+					types.forEach((type: string) => (yearlyPublicationCounts[pub.year][type] = 0)); // Initialize all types with 0
+				}
+				yearlyPublicationCounts[pub.year][pub.type] =
+					(yearlyPublicationCounts[pub.year][pub.type] || 0) + 1;
+				yearlyPublicationCounts[pub.year].total++;
+			});
 
-		return Object.entries(yearlyPublicationCounts)
-			.map(([yearStr, counts]) => ({
-				year: parseInt(yearStr),
-				...counts
-			}))
-			.sort((a, b) => a.year - b.year);
-	})());
+			return Object.entries(yearlyPublicationCounts)
+				.map(([yearStr, counts]) => ({
+					year: parseInt(yearStr),
+					...counts
+				}))
+				.sort((a, b) => a.year - b.year);
+		})()
+	);
 
 	// Calculate total citations reactively
-	const totalCitations = $derived(citationsPerYearData.reduce((sum: number, item: CitationYearData) => sum + item.count, 0));
+	const totalCitations = $derived(
+		citationsPerYearData.reduce((sum: number, item: CitationYearData) => sum + item.count, 0)
+	);
 
 	// Calculate collaboration data for network graph
-	const collaborationData = $derived((() => {
-		const collaborations: Record<string, { publications: Set<string> }> = {};
-		
-		allPublications.forEach((pub) => {
-			// Get all authors except Frédérick Madore
-			const coAuthors = (pub.authors || []).filter(author => author !== 'Frédérick Madore');
-			
-			// Add editors for non-chapter/encyclopedia publications
-			if (pub.editors && pub.type !== 'chapter' && pub.type !== 'encyclopedia') {
-				const editors = typeof pub.editors === 'string' 
-					? pub.editors.split(/\s*(?:,|and)\s*/).map(name => name.trim())
-					: pub.editors;
-				coAuthors.push(...editors.filter(editor => editor !== 'Frédérick Madore'));
-			}
-			
-			// Add preface author if exists
-			if (pub.prefacedBy && pub.prefacedBy !== 'Frédérick Madore') {
-				coAuthors.push(pub.prefacedBy);
-			}
-			
-			// Count collaborations
-			coAuthors.forEach(author => {
-				if (!collaborations[author]) {
-					collaborations[author] = { publications: new Set<string>() };
+	const collaborationData = $derived(
+		(() => {
+			const collaborations: Record<string, { publications: Set<string> }> = {};
+
+			allPublications.forEach((pub) => {
+				// Get all authors except Frédérick Madore
+				const coAuthors = (pub.authors || []).filter((author) => author !== 'Frédérick Madore');
+
+				// Add editors for non-chapter/encyclopedia publications
+				if (pub.editors && pub.type !== 'chapter' && pub.type !== 'encyclopedia') {
+					const editors =
+						typeof pub.editors === 'string'
+							? pub.editors.split(/\s*(?:,|and)\s*/).map((name) => name.trim())
+							: pub.editors;
+					coAuthors.push(...editors.filter((editor) => editor !== 'Frédérick Madore'));
 				}
-				// Use Set to automatically deduplicate publication titles
-				collaborations[author].publications.add(pub.title);
+
+				// Add preface author if exists
+				if (pub.prefacedBy && pub.prefacedBy !== 'Frédérick Madore') {
+					coAuthors.push(pub.prefacedBy);
+				}
+
+				// Count collaborations
+				coAuthors.forEach((author) => {
+					if (!collaborations[author]) {
+						collaborations[author] = { publications: new Set<string>() };
+					}
+					// Use Set to automatically deduplicate publication titles
+					collaborations[author].publications.add(pub.title);
+				});
 			});
-		});
-		
-		// Convert to array format expected by the network graph
-		return Object.entries(collaborations).map(([author, data]) => ({
-			author,
-			collaborationCount: data.publications.size, // Count unique publications
-			publications: Array.from(data.publications) // Convert Set back to Array
-		}));
-	})());
+
+			// Convert to array format expected by the network graph
+			return Object.entries(collaborations).map(([author, data]) => ({
+				author,
+				collaborationCount: data.publications.size, // Count unique publications
+				publications: Array.from(data.publications) // Convert Set back to Array
+			}));
+		})()
+	);
 
 	// Accessor functions for the D3BarChart
 	const getYear = (d: CitationYearData) => d.year;
@@ -229,18 +243,40 @@
 
 <div class="page-container">
 	<Breadcrumb items={breadcrumbItems} />
-	<div use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up', rootMargin: '100px', threshold: 0.05 }}>
+	<div
+		use:scrollAnimate={{
+			delay: 100,
+			animationClass: 'fade-in-up',
+			rootMargin: '100px',
+			threshold: 0.05
+		}}
+	>
 		<PageHeader title="Publication Visualisations" />
 	</div>
 
-	<div use:scrollAnimate={{ delay: 150, animationClass: 'fade-in-up', rootMargin: '100px', threshold: 0.05 }}>
+	<div
+		use:scrollAnimate={{
+			delay: 150,
+			animationClass: 'fade-in-up',
+			rootMargin: '100px',
+			threshold: 0.05
+		}}
+	>
 		<PageIntro>
 			This page presents various visualisations of my publication data, offering insights into
 			citation trends, authorship patterns, and more.
 		</PageIntro>
 	</div>
 
-	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 200, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
+	<section
+		class="visualization-section mb-12"
+		use:scrollAnimate={{
+			delay: 200,
+			animationClass: 'fade-in-up',
+			rootMargin: '150px',
+			threshold: 0.05
+		}}
+	>
 		<h2 class="text-2xl font-semibold mb-6">Publications per year by type</h2>
 		{#if publicationsPerYearStackedData.length > 0 && publicationTypesForStack.length > 0}
 			<div class="chart-wrapper stacked-chart" style="height: 450px;">
@@ -258,7 +294,15 @@
 		{/if}
 	</section>
 
-	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 250, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
+	<section
+		class="visualization-section mb-12"
+		use:scrollAnimate={{
+			delay: 250,
+			animationClass: 'fade-in-up',
+			rootMargin: '150px',
+			threshold: 0.05
+		}}
+	>
 		<h2 class="text-2xl font-semibold mb-6">Publication Languages</h2>
 		{#if languageData.length > 0}
 			<div class="chart-wrapper" style="height: 480px;">
@@ -276,7 +320,15 @@
 		{/if}
 	</section>
 
-	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 300, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
+	<section
+		class="visualization-section mb-12"
+		use:scrollAnimate={{
+			delay: 300,
+			animationClass: 'fade-in-up',
+			rootMargin: '150px',
+			threshold: 0.05
+		}}
+	>
 		<h2 class="text-2xl font-semibold mb-6">
 			Author Collaboration Network
 			{#if collaborationData.length > 0}
@@ -299,13 +351,26 @@
 		{/if}
 	</section>
 
-	<div use:scrollAnimate={{ delay: 350, animationClass: 'fade-in-up', rootMargin: '100px', threshold: 0.05 }}>
-		<h2 class="text-3xl font-bold my-8 pt-4 border-t border-default">
-			Citation statistics
-		</h2>
+	<div
+		use:scrollAnimate={{
+			delay: 350,
+			animationClass: 'fade-in-up',
+			rootMargin: '100px',
+			threshold: 0.05
+		}}
+	>
+		<h2 class="text-3xl font-bold my-8 pt-4 border-t border-default">Citation statistics</h2>
 	</div>
 
-	<section class="visualization-section mb-12" use:scrollAnimate={{ delay: 400, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
+	<section
+		class="visualization-section mb-12"
+		use:scrollAnimate={{
+			delay: 400,
+			animationClass: 'fade-in-up',
+			rootMargin: '150px',
+			threshold: 0.05
+		}}
+	>
 		<h2 class="text-2xl font-semibold mb-6">
 			Citations per year
 			{#if citationsPerYearData.length > 0 && totalCitations > 0}
@@ -332,7 +397,15 @@
 		{/if}
 	</section>
 
-	<section class="visualization-section" use:scrollAnimate={{ delay: 450, animationClass: 'fade-in-up', rootMargin: '150px', threshold: 0.05 }}>
+	<section
+		class="visualization-section"
+		use:scrollAnimate={{
+			delay: 450,
+			animationClass: 'fade-in-up',
+			rootMargin: '150px',
+			threshold: 0.05
+		}}
+	>
 		<h2 class="text-2xl font-semibold mb-6">
 			Authors citing my work most frequently
 			{#if citedAuthorsData.length > 0}
@@ -365,24 +438,26 @@
 			{@render authorChart(currentAuthors, currentPage)}
 
 			{#if totalPages > 1}
-				<div class="pagination-controls mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+				<div
+					class="pagination-controls mt-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+				>
 					<div class="pagination-info text-sm text-light">
 						Showing {startIndex + 1}-{endIndex} of {citedAuthorsData.length} authors
 					</div>
 					<div class="pagination-buttons flex gap-2">
 						<button
 							class="pagination-btn"
-							onclick={() => currentPage = Math.max(0, currentPage - 1)}
+							onclick={() => (currentPage = Math.max(0, currentPage - 1))}
 							disabled={currentPage === 0}
 						>
 							← Previous
 						</button>
-						
+
 						{#if totalPages <= 7}
 							{#each Array(totalPages) as _, i}
 								<button
 									class="pagination-btn {currentPage === i ? 'active' : ''}"
-									onclick={() => currentPage = i}
+									onclick={() => (currentPage = i)}
 								>
 									{i + 1}
 								</button>
@@ -390,57 +465,60 @@
 						{:else}
 							{@const maxMiddlePages = 3}
 							{@const halfRange = Math.floor(maxMiddlePages / 2)}
-							
+
 							<!-- Calculate the range of middle pages to show -->
 							{@const idealStart = Math.max(1, currentPage - halfRange)}
 							{@const idealEnd = Math.min(totalPages - 2, currentPage + halfRange)}
-							
+
 							<!-- Adjust if we're too close to the beginning or end -->
-							{@const actualStart = Math.max(1, Math.min(idealStart, totalPages - maxMiddlePages - 1))}
+							{@const actualStart = Math.max(
+								1,
+								Math.min(idealStart, totalPages - maxMiddlePages - 1)
+							)}
 							{@const actualEnd = Math.min(totalPages - 2, Math.max(idealEnd, maxMiddlePages))}
-							
+
 							{@const showStartEllipsis = actualStart > 1}
 							{@const showEndEllipsis = actualEnd < totalPages - 2}
-							
+
 							<!-- Show first page -->
 							<button
 								class="pagination-btn {currentPage === 0 ? 'active' : ''}"
-								onclick={() => currentPage = 0}
+								onclick={() => (currentPage = 0)}
 							>
 								1
 							</button>
-							
+
 							{#if showStartEllipsis}
 								<span class="pagination-ellipsis">…</span>
 							{/if}
-							
+
 							<!-- Show pages around current page -->
 							{#each Array(actualEnd - actualStart + 1) as _, i}
 								{@const pageIndex = actualStart + i}
 								<button
 									class="pagination-btn {currentPage === pageIndex ? 'active' : ''}"
-									onclick={() => currentPage = pageIndex}
+									onclick={() => (currentPage = pageIndex)}
 								>
 									{pageIndex + 1}
 								</button>
 							{/each}
-							
+
 							{#if showEndEllipsis}
 								<span class="pagination-ellipsis">…</span>
 							{/if}
-							
+
 							<!-- Show last page -->
 							<button
 								class="pagination-btn {currentPage === totalPages - 1 ? 'active' : ''}"
-								onclick={() => currentPage = totalPages - 1}
+								onclick={() => (currentPage = totalPages - 1)}
 							>
 								{totalPages}
 							</button>
 						{/if}
-						
+
 						<button
 							class="pagination-btn"
-							onclick={() => currentPage = Math.min(totalPages - 1, currentPage + 1)}
+							onclick={() => (currentPage = Math.min(totalPages - 1, currentPage + 1))}
 							disabled={currentPage === totalPages - 1}
 						>
 							Next →
@@ -482,7 +560,7 @@
 		/* Ensure proper height reservation */
 		min-height: var(--iframe-height-xs);
 	}
-	
+
 	.stacked-chart {
 		height: var(--iframe-height-sm);
 		/* Explicit height prevents layout shifts */
@@ -527,17 +605,17 @@
 			transition: none !important;
 		}
 	}
-	
+
 	/* Mobile responsiveness using breakpoint variables */
 	@media (max-width: var(--breakpoint-md)) {
 		.page-container {
 			padding: 0 var(--spacing-3);
 		}
-		
+
 		.chart-wrapper {
 			padding: var(--spacing-4);
 		}
-		
+
 		.stacked-chart {
 			height: calc(var(--iframe-height-sm) - var(--spacing-16));
 		}
@@ -545,18 +623,18 @@
 		.network-chart {
 			height: var(--iframe-height-sm);
 		}
-		
+
 		.visualization-section h2 {
 			font-size: var(--font-size-xl);
 			margin-bottom: var(--spacing-4);
 		}
 	}
-	
+
 	@media (max-width: var(--breakpoint-sm)) {
 		.chart-wrapper {
 			padding: var(--spacing-3);
 		}
-		
+
 		.stacked-chart {
 			height: calc(var(--iframe-height-xs) + var(--spacing-12));
 		}
@@ -564,17 +642,17 @@
 		.network-chart {
 			height: calc(var(--iframe-height-xs) + var(--spacing-12));
 		}
-		
+
 		.visualization-section h2 {
 			font-size: var(--font-size-lg);
 		}
 	}
-	
+
 	.pagination-controls {
 		border-top: var(--border-width-thin) solid var(--color-border);
 		padding-top: var(--spacing-4);
 	}
-	
+
 	.pagination-btn {
 		padding: var(--spacing-2) var(--spacing-3);
 		border: var(--border-width-thin) solid var(--color-border);
@@ -589,25 +667,25 @@
 		align-items: center;
 		justify-content: center;
 	}
-	
+
 	.pagination-btn:hover:not(:disabled) {
 		background-color: var(--color-surface-border);
 		border-color: var(--color-primary);
 		transform: var(--transform-lift-sm);
 	}
-	
+
 	.pagination-btn.active {
 		background-color: var(--color-primary);
 		color: var(--color-white);
 		border-color: var(--color-primary);
 		box-shadow: var(--shadow);
 	}
-	
+
 	.pagination-btn:disabled {
 		opacity: var(--opacity-medium-high);
 		cursor: not-allowed;
 	}
-	
+
 	.pagination-ellipsis {
 		padding: var(--spacing-2) var(--spacing-1);
 		color: var(--color-text-light);
@@ -615,18 +693,18 @@
 		display: flex;
 		align-items: center;
 	}
-	
+
 	.pagination-info {
 		font-size: var(--font-size-sm);
 		color: var(--color-text-light);
 	}
-	
+
 	@media (max-width: var(--breakpoint-sm)) {
 		.pagination-buttons {
 			flex-wrap: wrap;
 			justify-content: center;
 		}
-		
+
 		.pagination-btn {
 			font-size: var(--font-size-xs);
 			padding: var(--spacing-1) var(--spacing-2);

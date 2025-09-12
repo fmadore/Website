@@ -25,15 +25,7 @@
 
 <div class={combinedClasses}>
 	<div class="image-container">
-		<img
-			{src}
-			{alt}
-			{width}
-			{height}
-			loading="lazy"
-			decoding="async"
-			class="project-image"
-		/>
+		<img {src} {alt} {width} {height} loading="lazy" decoding="async" class="project-image" />
 		{#if showOverlay}
 			<div class="image-overlay {overlayClass}"></div>
 		{/if}
@@ -59,7 +51,7 @@
 		);
 		padding: var(--spacing-5);
 		/* Enhanced glassmorphism shadow with multiple layers */
-		box-shadow: 
+		box-shadow:
 			0 8px 32px 0 rgba(31, 38, 135, 0.12),
 			0 2px 16px 0 rgba(31, 38, 135, 0.08),
 			inset 0 1px 0 rgba(255, 255, 255, 0.25),
@@ -101,7 +93,7 @@
 			rgba(var(--color-primary-rgb), 0.02) 75%,
 			rgba(var(--color-highlight-rgb), 0.01) 100%
 		);
-		box-shadow: 
+		box-shadow:
 			0 16px 48px 0 rgba(31, 38, 135, 0.18),
 			0 4px 24px 0 rgba(31, 38, 135, 0.12),
 			0 0 0 1px rgba(var(--color-primary-rgb), 0.1),
@@ -164,7 +156,7 @@
 			135deg,
 			rgba(var(--color-primary-rgb), 0.12) 0%,
 			rgba(var(--color-highlight-rgb), 0.08) 50%,
-			rgba(var(--color-accent-rgb), 0.10) 100%
+			rgba(var(--color-accent-rgb), 0.1) 100%
 		);
 		opacity: 0.4;
 	}
@@ -216,7 +208,7 @@
 			rgba(var(--color-primary-rgb), 0.02) 75%,
 			transparent 100%
 		);
-		box-shadow: 
+		box-shadow:
 			0 8px 32px 0 rgba(0, 0, 0, 0.4),
 			0 2px 16px 0 rgba(0, 0, 0, 0.3),
 			inset 0 1px 0 rgba(255, 255, 255, 0.15),
@@ -243,7 +235,7 @@
 			rgba(var(--color-primary-rgb), 0.04) 75%,
 			rgba(var(--color-highlight-rgb), 0.02) 100%
 		);
-		box-shadow: 
+		box-shadow:
 			0 16px 48px 0 rgba(0, 0, 0, 0.5),
 			0 4px 24px 0 rgba(0, 0, 0, 0.4),
 			0 0 0 1px rgba(var(--color-primary-rgb), 0.2),
@@ -265,7 +257,7 @@
 			135deg,
 			rgba(var(--color-primary-rgb), 0.12) 0%,
 			rgba(var(--color-highlight-rgb), 0.08) 50%,
-			rgba(var(--color-accent-rgb), 0.10) 100%
+			rgba(var(--color-accent-rgb), 0.1) 100%
 		);
 	}
 
@@ -347,4 +339,4 @@
 			opacity: 0.3;
 		}
 	}
-</style> 
+</style>

@@ -59,8 +59,9 @@
 		background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light));
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--card-glass-border-light));
-		box-shadow: 
+		border: var(--border-width-thin) solid
+			rgba(var(--color-white-rgb), var(--card-glass-border-light));
+		box-shadow:
 			0 8px 32px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity)),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-light));
 	}
@@ -72,10 +73,7 @@
 		top: 0;
 		bottom: 0;
 		width: 0;
-		background: linear-gradient(180deg, 
-			var(--color-accent) 0%, 
-			var(--color-highlight) 100%
-		);
+		background: linear-gradient(180deg, var(--color-accent) 0%, var(--color-highlight) 100%);
 		border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
 		transition: width var(--anim-duration-base) var(--anim-ease-out);
 		opacity: var(--opacity-high);
@@ -89,7 +87,7 @@
 		transform: var(--transform-lift-sm);
 		background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light-hover));
 		border-color: rgba(var(--color-white-rgb), var(--card-glass-border-light-hover));
-		box-shadow: 
+		box-shadow:
 			0 12px 40px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity-hover)),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-light-hover));
 	}
@@ -195,8 +193,9 @@
 	/* Dark mode overrides */
 	:global(html.dark) .relevant-item {
 		background: rgba(var(--color-black-rgb), var(--card-glass-opacity-dark));
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--card-glass-border-dark));
-		box-shadow: 
+		border: var(--border-width-thin) solid
+			rgba(var(--color-white-rgb), var(--card-glass-border-dark));
+		box-shadow:
 			0 8px 32px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity)),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-dark));
 	}
@@ -204,7 +203,7 @@
 	:global(html.dark) .relevant-item:hover {
 		background: rgba(var(--color-black-rgb), var(--card-glass-opacity-dark-hover));
 		border-color: rgba(var(--color-white-rgb), var(--card-glass-border-dark-hover));
-		box-shadow: 
+		box-shadow:
 			0 12px 40px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity-hover)),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-dark-hover));
 	}

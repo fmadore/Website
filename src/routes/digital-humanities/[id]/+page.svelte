@@ -114,10 +114,10 @@
 
 		{#if project.skills && project.skills.length > 0}
 			<section class="mb-6">
-				<TagList 
-					tags={project.skills} 
-					sectionTitle="Skills" 
-					baseUrl="/digital-humanities?skill=" 
+				<TagList
+					tags={project.skills}
+					sectionTitle="Skills"
+					baseUrl="/digital-humanities?skill="
 					buttonVariant="outline-primary"
 					buttonSize="sm"
 				/>
@@ -151,9 +151,9 @@
 									/>
 								</a>
 							{:else}
-								<img 
-									src={item.src} 
-									alt={item.alt} 
+								<img
+									src={item.src}
+									alt={item.alt}
 									class="responsive-image shadow-md rounded-md"
 									width="800"
 									height="600"

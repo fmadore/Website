@@ -1,6 +1,6 @@
 /**
  * Global State Management using Svelte 5 State Runes
- * 
+ *
  * This replaces traditional Svelte stores with Svelte 5's state runes
  * for better performance and consistency with the new reactive system.
  */
@@ -20,7 +20,9 @@ let isGlobalLoading = $state(false);
  */
 export const animationsEnabledStore = {
 	get: () => animationsEnabled,
-	set: (value: boolean) => { animationsEnabled = value; }
+	set: (value: boolean) => {
+		animationsEnabled = value;
+	}
 };
 
 /**
@@ -30,38 +32,38 @@ export const animationsEnabledStore = {
 export function getGlobalState() {
 	return {
 		// Animation controls
-		get animationsEnabled() { 
-			return animationsEnabled; 
+		get animationsEnabled() {
+			return animationsEnabled;
 		},
-		set animationsEnabled(value: boolean) { 
-			animationsEnabled = value; 
+		set animationsEnabled(value: boolean) {
+			animationsEnabled = value;
 		},
-		
+
 		// Theme controls
-		get currentTheme() { 
-			return currentTheme; 
+		get currentTheme() {
+			return currentTheme;
 		},
-		set currentTheme(value: 'light' | 'dark') { 
-			currentTheme = value; 
+		set currentTheme(value: 'light' | 'dark') {
+			currentTheme = value;
 		},
-		
+
 		// Loading state controls
-		get isGlobalLoading() { 
-			return isGlobalLoading; 
+		get isGlobalLoading() {
+			return isGlobalLoading;
 		},
-		set isGlobalLoading(value: boolean) { 
-			isGlobalLoading = value; 
+		set isGlobalLoading(value: boolean) {
+			isGlobalLoading = value;
 		},
-		
+
 		// Helper methods
 		toggleAnimations() {
 			animationsEnabled = !animationsEnabled;
 		},
-		
+
 		toggleTheme() {
 			currentTheme = currentTheme === 'light' ? 'dark' : 'light';
 		},
-		
+
 		// Temporary disable animations (useful for navigation)
 		temporarilyDisableAnimations(duration: number = 100) {
 			animationsEnabled = false;

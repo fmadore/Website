@@ -338,8 +338,6 @@
 		gap: var(--spacing-2);
 	}
 
-
-
 	.footer-copyright {
 		display: flex;
 		flex-direction: column;
@@ -493,7 +491,8 @@
 	.footer-link:hover .footer-link-icon {
 		background: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
 		transform: scale(var(--scale-110));
-		box-shadow: 0 var(--spacing-1) var(--spacing-2) rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		box-shadow: 0 var(--spacing-1) var(--spacing-2)
+			rgba(var(--color-primary-rgb), var(--opacity-medium-high));
 	}
 
 	.footer-link:hover .link-hover-effect {

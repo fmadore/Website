@@ -53,7 +53,7 @@
 		-webkit-backdrop-filter: blur(20px) saturate(180%);
 		border: 1px solid rgba(255, 255, 255, 0.4);
 		border-radius: var(--border-radius-lg);
-		box-shadow: 
+		box-shadow:
 			0 20px 60px 0 rgba(31, 38, 135, 0.15),
 			0 8px 32px 0 rgba(31, 38, 135, 0.1),
 			inset 0 1px 0 rgba(255, 255, 255, 0.6),
@@ -112,7 +112,7 @@
 		background: rgba(var(--color-primary-rgb), 0.1);
 		color: var(--color-primary);
 		transform: translateX(6px) scale(1.02);
-		box-shadow: 
+		box-shadow:
 			0 4px 16px 0 rgba(var(--color-primary-rgb), 0.2),
 			inset 0 1px 0 rgba(255, 255, 255, 0.3);
 	}
@@ -129,7 +129,7 @@
 	:global(html.dark) .dropdown-menu {
 		background: rgba(var(--color-dark-surface-rgb), 0.9);
 		border: 1px solid rgba(255, 255, 255, 0.2);
-		box-shadow: 
+		box-shadow:
 			0 20px 60px 0 rgba(0, 0, 0, 0.4),
 			0 8px 32px 0 rgba(0, 0, 0, 0.3),
 			inset 0 1px 0 rgba(255, 255, 255, 0.2),

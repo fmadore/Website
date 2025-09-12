@@ -89,7 +89,9 @@
 
 			// Handle breadcrumb JSON-LD
 			const breadcrumbScriptId = breadcrumbJsonLdScriptId;
-			let breadcrumbScriptElement = document.getElementById(breadcrumbScriptId) as HTMLScriptElement | null;
+			let breadcrumbScriptElement = document.getElementById(
+				breadcrumbScriptId
+			) as HTMLScriptElement | null;
 
 			if (breadcrumbJsonLdString) {
 				if (breadcrumbScriptElement) {
@@ -115,7 +117,10 @@
 						document.head.removeChild(pubScriptToRemove);
 					}
 					const breadcrumbScriptToRemove = document.getElementById(breadcrumbScriptId);
-					if (breadcrumbScriptToRemove && breadcrumbScriptToRemove.parentElement === document.head) {
+					if (
+						breadcrumbScriptToRemove &&
+						breadcrumbScriptToRemove.parentElement === document.head
+					) {
 						document.head.removeChild(breadcrumbScriptToRemove);
 					}
 				}
@@ -239,9 +244,10 @@
 		{
 			label: 'Project',
 			value: publication.project ?? '',
-			link: publication.project && (projectMappings as Record<string, string>)[publication.project]
-				? (projectMappings as Record<string, string>)[publication.project]
-				: undefined
+			link:
+				publication.project && (projectMappings as Record<string, string>)[publication.project]
+					? (projectMappings as Record<string, string>)[publication.project]
+					: undefined
 		},
 		{ label: 'Countries', value: publication.country ?? [] }
 	]);
@@ -299,7 +305,10 @@
 <MetaTags {publication} />
 
 <div class="container mx-auto py-8 px-4">
-	<article class="publication-article rounded-lg p-6 mb-8" use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up' }}>
+	<article
+		class="publication-article rounded-lg p-6 mb-8"
+		use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up' }}
+	>
 		<!-- Use the Breadcrumb component -->
 		<Breadcrumb items={breadcrumbItems} />
 
@@ -354,7 +363,10 @@
 		</div>
 
 		<!-- Container for Action Links and Export Button -->
-		<div class="publication-actions flex flex-wrap items-center gap-4" use:scrollAnimate={{ delay: 700, animationClass: 'fade-in-up' }}>
+		<div
+			class="publication-actions flex flex-wrap items-center gap-4"
+			use:scrollAnimate={{ delay: 700, animationClass: 'fade-in-up' }}
+		>
 			<!-- ActionLinks component -->
 			<ActionLinks
 				primaryUrl={publication.url}
@@ -602,15 +614,15 @@
 		.table-of-contents-section {
 			padding: var(--spacing-4);
 		}
-		
+
 		.toc-title {
 			font-size: var(--font-size-lg);
 		}
-		
+
 		.toc-item {
 			padding: var(--spacing-2) 0;
 		}
-		
+
 		.toc-number,
 		.toc-content {
 			font-size: var(--font-size-xs);
@@ -643,7 +655,8 @@
 		);
 		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
 		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		border: var(--border-width-thin) solid rgba(var(--color-highlight-rgb), var(--opacity-low, 0.08));
+		border: var(--border-width-thin) solid
+			rgba(var(--color-highlight-rgb), var(--opacity-low, 0.08));
 		box-shadow: var(--shadow-sm);
 		transition: all var(--anim-duration-base) var(--anim-ease-out);
 	}

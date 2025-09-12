@@ -33,15 +33,25 @@
 	}
 </script>
 
-<header class="page-header enhanced-page-header mb-8" use:scrollAnimate={{ delay: 50, animationClass: 'fade-in-up' }}>
+<header
+	class="page-header enhanced-page-header mb-8"
+	use:scrollAnimate={{ delay: 50, animationClass: 'fade-in-up' }}
+>
 	{#if backLinkHref}
-		<a href="{base}/{backLinkHref}" class="back-link mb-4 inline-block" use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-left' }}>
+		<a
+			href="{base}/{backLinkHref}"
+			class="back-link mb-4 inline-block"
+			use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-left' }}
+		>
 			{backLinkLabel}
 		</a>
 	{/if}
 
 	<div class="header-content">
-		<div class="header-meta flex justify-between items-start mb-3 flex-wrap gap-2" use:scrollAnimate={{ delay: 150, animationClass: 'fade-in-up' }}>
+		<div
+			class="header-meta flex justify-between items-start mb-3 flex-wrap gap-2"
+			use:scrollAnimate={{ delay: 150, animationClass: 'fade-in-up' }}
+		>
 			{#if typeBadgeText}
 				<div class="type-badge">
 					{typeBadgeText}
@@ -58,11 +68,19 @@
 		</div>
 
 		{#if authors && authors.length > 0}
-			<div class="authors text-xl mb-3" use:scrollAnimate={{ delay: 250, animationClass: 'fade-in-up' }}>{authors.join(', ')}</div>
+			<div
+				class="authors text-xl mb-3"
+				use:scrollAnimate={{ delay: 250, animationClass: 'fade-in-up' }}
+			>
+				{authors.join(', ')}
+			</div>
 		{/if}
 
 		{#if editors}
-			<div class="editors text-secondary mb-3" use:scrollAnimate={{ delay: 300, animationClass: 'fade-in-up' }}>
+			<div
+				class="editors text-secondary mb-3"
+				use:scrollAnimate={{ delay: 300, animationClass: 'fade-in-up' }}
+			>
 				Edited by {formatEditors(editors)}
 			</div>
 		{/if}
@@ -122,10 +140,7 @@
 	.type-badge {
 		display: inline-flex;
 		align-items: center;
-		background: linear-gradient(135deg, 
-			var(--color-primary) 0%, 
-			var(--color-highlight) 100%
-		);
+		background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-highlight) 100%);
 		color: var(--color-background);
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-bold);
@@ -134,7 +149,8 @@
 		padding: var(--spacing-2) var(--spacing-4);
 		border-radius: var(--border-radius-full);
 		box-shadow: var(--shadow-sm);
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		border: var(--border-width-thin) solid
+			rgba(var(--color-primary-rgb), var(--opacity-medium-high));
 	}
 
 	.header-date {
@@ -164,10 +180,7 @@
 	.title-accent {
 		width: 80px;
 		height: var(--border-width-thick);
-		background: linear-gradient(90deg, 
-			var(--color-highlight) 0%, 
-			var(--color-accent) 100%
-		);
+		background: linear-gradient(90deg, var(--color-highlight) 0%, var(--color-accent) 100%);
 		border-radius: var(--border-radius-sm);
 		margin-top: var(--spacing-3);
 		transition: width var(--transition-duration-300) var(--transition-ease-out);

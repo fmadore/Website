@@ -42,4 +42,4 @@ export function portal(node: HTMLElement, target: string | HTMLElement = 'body')
 		update,
 		destroy
 	};
-} 
+}

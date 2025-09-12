@@ -27,12 +27,12 @@ import ToggleButton from '$lib/components/common/ToggleButton.svelte';
 
 ## Props
 
-| Prop        | Type      | Default    | Description                                       |
-| ----------- | --------- | ---------- | ------------------------------------------------- |
-| `isToggled` | `boolean` | `false`    | Whether the button is in the toggled (active) state |
-| `baseText`  | `string`  | `'Toggle'` | The base text for the toggle action (e.g., "Map", "Details") |
-| `onclick`   | `() => void` | `undefined` | Callback function called when button is clicked |
-| `glass`     | `boolean` | `true`     | Enable glassmorphism effect for enhanced visual appeal |
+| Prop        | Type         | Default     | Description                                                  |
+| ----------- | ------------ | ----------- | ------------------------------------------------------------ |
+| `isToggled` | `boolean`    | `false`     | Whether the button is in the toggled (active) state          |
+| `baseText`  | `string`     | `'Toggle'`  | The base text for the toggle action (e.g., "Map", "Details") |
+| `onclick`   | `() => void` | `undefined` | Callback function called when button is clicked              |
+| `glass`     | `boolean`    | `true`      | Enable glassmorphism effect for enhanced visual appeal       |
 
 ## Events
 
@@ -100,11 +100,13 @@ This component uses the common Button atom component with an "outline-primary" v
 The component uses several CSS classes for enhanced styling:
 
 ### Primary Classes
+
 - `.toggle-button` - Base styling with CSS variables integration
 - `.toggle-button-active` - Active state styling when toggled
 - `.glass-button` - Glassmorphism effect (when `glass={true}`)
 
 ### Features
+
 - **CSS Variables**: Uses design tokens like `--border-radius-lg`, `--shadow-sm`, `--transition-duration-200`
 - **Glassmorphism**: Backdrop blur with `--glass-blur-amount` and subtle gradients
 - **Hover Effects**: Transform lift with `--transform-lift-sm` and enhanced shadows
@@ -116,18 +118,21 @@ The component uses several CSS classes for enhanced styling:
 ## Visual Design
 
 ### Untoggled State
+
 - Outline primary button style
 - Glassmorphism background with subtle gradient
 - Icon: `lucide:map` (configurable in future versions)
 - Text: "Show {baseText}"
 
 ### Toggled State
+
 - Filled primary button style
 - Solid background with gradient overlay
 - Enhanced shadow and glow effect
 - Text: "Hide {baseText}"
 
 ### Hover Effects
+
 - Subtle lift transform
 - Enhanced shadow depth
 - Gradient intensity increase
@@ -145,41 +150,40 @@ The component uses several CSS classes for enhanced styling:
 ## Integration Examples
 
 ### Map Toggle
+
 ```svelte
 <script>
 	let showMap = false;
 </script>
 
-<ToggleButton 
-	isToggled={showMap}
-	baseText="Map"
-	onclick={() => showMap = !showMap}
-/>
+<ToggleButton isToggled={showMap} baseText="Map" onclick={() => (showMap = !showMap)} />
 ```
 
 ### Filter Panel Toggle
+
 ```svelte
 <script>
 	let showFilters = false;
 </script>
 
-<ToggleButton 
+<ToggleButton
 	isToggled={showFilters}
 	baseText="Filters"
-	onclick={() => showFilters = !showFilters}
+	onclick={() => (showFilters = !showFilters)}
 />
 ```
 
 ### Details Section Toggle
+
 ```svelte
 <script>
 	let showDetails = false;
 </script>
 
-<ToggleButton 
+<ToggleButton
 	isToggled={showDetails}
 	baseText="Details"
-	onclick={() => showDetails = !showDetails}
+	onclick={() => (showDetails = !showDetails)}
 />
 ```
 
@@ -196,10 +200,10 @@ The component uses several CSS classes for enhanced styling:
 
 While both components use the Button component, they serve different purposes:
 
-| Feature | ToggleButton | Sorter |
-|---------|--------------|--------|
-| Purpose | Show/hide content | Change sort order |
-| States | 2 (show/hide) | 3+ (different sorts) |
-| Behavior | Toggle on/off | Cycle through options |
-| Visual | Active/inactive | Current sort indicator |
-| Use Case | Content visibility | List ordering |
+| Feature  | ToggleButton       | Sorter                 |
+| -------- | ------------------ | ---------------------- |
+| Purpose  | Show/hide content  | Change sort order      |
+| States   | 2 (show/hide)      | 3+ (different sorts)   |
+| Behavior | Toggle on/off      | Cycle through options  |
+| Visual   | Active/inactive    | Current sort indicator |
+| Use Case | Content visibility | List ordering          |

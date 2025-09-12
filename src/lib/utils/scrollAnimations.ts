@@ -72,7 +72,7 @@ export function createScrollObserver(configs: ScrollAnimationConfig[]): Intersec
 	const observer = new IntersectionObserver(
 		(entries) => {
 			entries.forEach((entry) => {
-				const config = configs.find(c => c.element === entry.target);
+				const config = configs.find((c) => c.element === entry.target);
 				if (!config) return;
 
 				const options = { ...defaultOptions, ...config.options };
@@ -106,7 +106,7 @@ export function createScrollObserver(configs: ScrollAnimationConfig[]): Intersec
 	);
 
 	// Start observing all elements
-	configs.forEach(config => {
+	configs.forEach((config) => {
 		observer.observe(config.element);
 	});
 
@@ -149,13 +149,13 @@ export function scrollAnimate(
 	};
 
 	const finalOptions = { ...defaultOptions, ...options };
-	
+
 	// Add data attribute for CSS control
 	element.setAttribute('data-animate', 'true');
-	
+
 	// Set transition immediately
-	element.style.transition = `all ${(finalOptions.duration ?? DEFAULT_DURATION_MS)}ms ${(finalOptions.easing || DEFAULT_EASING)}`;
-	
+	element.style.transition = `all ${finalOptions.duration ?? DEFAULT_DURATION_MS}ms ${finalOptions.easing || DEFAULT_EASING}`;
+
 	const observer = new IntersectionObserver(
 		(entries) => {
 			entries.forEach((entry) => {
@@ -164,7 +164,7 @@ export function scrollAnimate(
 						element.style.opacity = '1';
 						element.style.transform = 'translateY(0)';
 						element.classList.add('animate-in');
-						
+
 						if (options.animationClass) {
 							element.classList.add(options.animationClass);
 						}
@@ -177,7 +177,7 @@ export function scrollAnimate(
 					element.style.opacity = '0';
 					element.style.transform = 'translateY(30px)';
 					element.classList.remove('animate-in');
-					
+
 					if (options.animationClass) {
 						element.classList.remove(options.animationClass);
 					}
@@ -217,10 +217,11 @@ export function smoothScrollTo(
 	if (!element) return;
 
 	const startPosition = window.pageYOffset;
-	const targetPosition = element.getBoundingClientRect().top + startPosition - (options.offset || 0);
+	const targetPosition =
+		element.getBoundingClientRect().top + startPosition - (options.offset || 0);
 	const distance = targetPosition - startPosition;
 	const duration = options.duration || 800;
-	const easing = options.easing || ((t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
+	const easing = options.easing || ((t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t));
 
 	let startTime: number | null = null;
 
@@ -253,7 +254,7 @@ export function parallaxScroll(
 	function updateParallax() {
 		const scrolled = window.pageYOffset;
 		const rate = scrolled * -speed;
-		
+
 		if (direction === 'vertical') {
 			element.style.transform = `translateY(${rate}px)`;
 		} else {
@@ -338,12 +339,12 @@ export function staggeredAnimation(
 		{ threshold }
 	);
 
-	elements.forEach(element => observer.observe(element));
+	elements.forEach((element) => observer.observe(element));
 
 	return {
 		destroy() {
 			observer.disconnect();
-			elements.forEach(element => {
+			elements.forEach((element) => {
 				element.removeAttribute('data-animate');
 			});
 		}
@@ -369,18 +370,18 @@ export function createReadingProgress(
 		const containerRect = container.getBoundingClientRect();
 		const containerHeight = container.offsetHeight;
 		const viewportHeight = window.innerHeight;
-		
+
 		// Calculate how much of the container has been scrolled through
 		const scrolled = Math.max(0, -containerRect.top + offset);
 		const maxScroll = containerHeight - viewportHeight + offset;
-		
+
 		targetProgress = Math.min(100, Math.max(0, (scrolled / maxScroll) * 100));
-		
+
 		// Smooth the progress with easing
 		currentProgress += (targetProgress - currentProgress) * smoothing;
-		
+
 		progressBar.style.width = `${currentProgress}%`;
-		
+
 		if (Math.abs(targetProgress - currentProgress) > 0.1) {
 			requestAnimationFrame(updateProgress);
 		}
@@ -401,4 +402,4 @@ export function createReadingProgress(
 			window.removeEventListener('scroll', handleScroll);
 		}
 	};
-} 
+}

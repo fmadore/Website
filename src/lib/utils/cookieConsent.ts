@@ -46,7 +46,7 @@ export class CookieConsentManager {
 	 */
 	private isStorageAvailable(): boolean {
 		if (!this.isClient) return false;
-		
+
 		try {
 			const test = '__storage_test__';
 			localStorage.setItem(test, test);
@@ -68,7 +68,7 @@ export class CookieConsentManager {
 			if (!stored) return null;
 
 			const data: CookieConsentData = JSON.parse(stored);
-			
+
 			// Check if consent has expired
 			if (this.isExpired(data)) {
 				this.clearConsent();
@@ -135,7 +135,7 @@ export class CookieConsentManager {
 	 * Check if consent has expired
 	 */
 	private isExpired(data: CookieConsentData): boolean {
-		const expirationTime = data.timestamp + (this.options.expirationDays * 24 * 60 * 60 * 1000);
+		const expirationTime = data.timestamp + this.options.expirationDays * 24 * 60 * 60 * 1000;
 		return Date.now() > expirationTime;
 	}
 
@@ -152,7 +152,7 @@ export class CookieConsentManager {
 	isCategoryAccepted(category: keyof NonNullable<CookieConsentData['categories']>): boolean {
 		const consent = this.getConsent();
 		if (!consent || !consent.accepted) return false;
-		
+
 		return consent.categories?.[category] ?? false;
 	}
 
@@ -185,7 +185,7 @@ export class CookieConsentManager {
 				};
 
 				localStorage.setItem(this.options.storageKey, JSON.stringify(consentData));
-				
+
 				// Clean up legacy keys
 				localStorage.removeItem('cookiesAccepted');
 				localStorage.removeItem('cookieConsentTimestamp');
@@ -206,7 +206,7 @@ export class CookieConsentManager {
 		version: string | null;
 	} {
 		const consent = this.getConsent();
-		
+
 		if (!consent) {
 			return {
 				hasConsent: false,
@@ -218,8 +218,8 @@ export class CookieConsentManager {
 		}
 
 		const daysRemaining = Math.ceil(
-			(consent.timestamp + (this.options.expirationDays * 24 * 60 * 60 * 1000) - Date.now()) 
-			/ (24 * 60 * 60 * 1000)
+			(consent.timestamp + this.options.expirationDays * 24 * 60 * 60 * 1000 - Date.now()) /
+				(24 * 60 * 60 * 1000)
 		);
 
 		return {
@@ -260,4 +260,4 @@ export function isMarketingAllowed(): boolean {
 // Auto-migrate legacy consent on import
 if (typeof window !== 'undefined') {
 	cookieConsent.migrateLegacyConsent();
-} 
+}

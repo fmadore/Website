@@ -12,7 +12,7 @@
 	[data-animate]:not(.animate-in) {
 		transform: translateY(var(--transform-distance-sm));
 	}
-	
+
 	/* Faster animation trigger for mobile */
 	[data-animate] {
 		transition: all var(--anim-duration-slow) var(--anim-ease-mobile) !important;
@@ -94,12 +94,24 @@
 }
 
 /* Stagger delays for lists */
-.stagger-1 { animation-delay: var(--anim-delay-1); }
-.stagger-2 { animation-delay: var(--anim-delay-2); }
-.stagger-3 { animation-delay: var(--anim-delay-3); }
-.stagger-4 { animation-delay: var(--anim-delay-4); }
-.stagger-5 { animation-delay: var(--anim-delay-5); }
-.stagger-6 { animation-delay: var(--anim-delay-6); }
+.stagger-1 {
+	animation-delay: var(--anim-delay-1);
+}
+.stagger-2 {
+	animation-delay: var(--anim-delay-2);
+}
+.stagger-3 {
+	animation-delay: var(--anim-delay-3);
+}
+.stagger-4 {
+	animation-delay: var(--anim-delay-4);
+}
+.stagger-5 {
+	animation-delay: var(--anim-delay-5);
+}
+.stagger-6 {
+	animation-delay: var(--anim-delay-6);
+}
 
 /* Reading progress bar */
 .reading-progress {
@@ -284,11 +296,11 @@
 		opacity: 1 !important;
 		transform: none !important;
 	}
-	
+
 	.reading-progress {
 		transition: none;
 	}
-	
+
 	.parallax-element {
 		transform: none !important;
 	}
@@ -297,9 +309,9 @@
 /* Performance optimizations */
 .animate-in,
 .animate-out,
-[class*="fade-in"],
-[class*="scale-in"],
-[class*="slide-in"],
+[class*='fade-in'],
+[class*='scale-in'],
+[class*='slide-in'],
 .bounce-in {
 	will-change: opacity, transform;
 }
@@ -307,4 +319,4 @@
 /* Remove will-change after animation completes */
 .animation-complete {
 	will-change: auto;
-} 
+}

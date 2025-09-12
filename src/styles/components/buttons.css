@@ -7,7 +7,7 @@
 	align-items: center;
 	justify-content: center;
 	position: relative;
-	
+
 	/* Typography */
 	font-family: inherit;
 	font-weight: var(--font-weight-medium);
@@ -17,11 +17,11 @@
 	text-align: center;
 	text-decoration: none;
 	white-space: nowrap;
-	
+
 	/* Spacing */
 	padding: var(--spacing-3) var(--spacing-6);
 	gap: var(--spacing-2);
-	
+
 	/* Appearance */
 	border: var(--border-width-thin) solid transparent;
 	border-radius: var(--border-radius-lg);
@@ -30,13 +30,13 @@
 	cursor: pointer;
 	overflow: hidden;
 	isolation: isolate;
-	
+
 	/* Behavior */
 	-webkit-user-select: none;
 	user-select: none;
 	-webkit-tap-highlight-color: transparent;
 	touch-action: manipulation;
-	
+
 	/* Animation */
 	transition: all var(--transition-duration-200) var(--anim-ease-base);
 	transform: translateZ(0);
@@ -58,8 +58,9 @@
 	position: absolute;
 	inset: 0;
 	border-radius: inherit;
-	background: linear-gradient(to bottom, 
-		rgba(var(--color-white-rgb), var(--opacity-low)) 0%, 
+	background: linear-gradient(
+		to bottom,
+		rgba(var(--color-white-rgb), var(--opacity-low)) 0%,
 		rgba(var(--color-white-rgb), 0) 50%,
 		rgba(var(--color-black-rgb), var(--opacity-very-low)) 100%
 	);
@@ -77,23 +78,25 @@
 
 /* Primary Button - Academic blue with subtle gradient */
 .btn-primary {
-	background: linear-gradient(135deg, 
-		var(--color-primary) 0%, 
+	background: linear-gradient(
+		135deg,
+		var(--color-primary) 0%,
 		color-mix(in srgb, var(--color-primary) 85%, var(--color-accent)) 100%
 	);
 	color: var(--color-white);
 	border-color: transparent;
-	box-shadow: 
+	box-shadow:
 		var(--shadow),
 		inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-low));
 }
 
 .btn-primary:hover:not(:disabled) {
-	background: linear-gradient(135deg, 
+	background: linear-gradient(
+		135deg,
 		color-mix(in srgb, var(--color-primary) 90%, var(--color-black)),
 		color-mix(in srgb, var(--color-accent) 90%, var(--color-black))
 	);
-	box-shadow: 
+	box-shadow:
 		var(--shadow-md),
 		inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-low));
 	transform: var(--transform-lift-sm);
@@ -168,14 +171,14 @@
 	background: var(--color-danger);
 	color: var(--color-white);
 	border-color: transparent;
-	box-shadow: 
+	box-shadow:
 		0 var(--border-width-thin) var(--spacing-1) rgba(var(--color-danger-rgb), var(--opacity-medium)),
 		0 var(--border-width-thin) var(--spacing-2) rgba(var(--color-danger-rgb), var(--opacity-low));
 }
 
 .btn-danger:hover:not(:disabled) {
 	background: var(--color-danger-dark);
-	box-shadow: 
+	box-shadow:
 		0 var(--spacing-1) var(--spacing-2) rgba(var(--color-danger-rgb), var(--opacity-medium-high)),
 		0 var(--spacing-2) var(--spacing-1) rgba(var(--color-danger-rgb), var(--opacity-medium));
 	transform: var(--transform-lift-sm);
@@ -250,7 +253,7 @@
 	-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 	backdrop-filter: blur(var(--glass-blur-amount));
 	border-color: rgba(var(--color-white-rgb), var(--opacity-medium));
-	box-shadow: 
+	box-shadow:
 		var(--shadow-md),
 		inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium));
 }
@@ -275,8 +278,9 @@
 /* ===== DARK MODE ADJUSTMENTS ===== */
 
 :global(html.dark) .btn::before {
-	background: linear-gradient(to bottom, 
-		rgba(var(--color-white-rgb), var(--opacity-very-low)) 0%, 
+	background: linear-gradient(
+		to bottom,
+		rgba(var(--color-white-rgb), var(--opacity-very-low)) 0%,
 		rgba(var(--color-white-rgb), 0) 50%,
 		rgba(var(--color-black-rgb), var(--opacity-low)) 100%
 	);
@@ -362,7 +366,7 @@
 	.btn {
 		border-width: var(--border-width-medium);
 	}
-	
+
 	.btn:focus-visible {
 		outline-width: var(--border-width-thick);
 	}
@@ -373,16 +377,16 @@
 	.btn {
 		transition: none;
 	}
-	
+
 	.btn::before,
 	.btn::after {
 		animation: none;
 	}
-	
+
 	.btn:hover:not(:disabled) {
 		transform: none;
 	}
-	
+
 	.btn:active:not(:disabled) {
 		transform: scale(var(--scale-95));
 	}

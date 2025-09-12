@@ -45,7 +45,7 @@
 		text-decoration: none;
 		padding: var(--spacing-5);
 		border-radius: var(--border-radius-lg);
-		
+
 		/* Enhanced glassmorphism for individual cards matching CitedBy cards */
 		background: linear-gradient(
 			135deg,
@@ -122,7 +122,7 @@
 	.related-item:focus-visible {
 		outline: 2px solid var(--color-highlight);
 		outline-offset: 3px;
-		box-shadow: 
+		box-shadow:
 			var(--shadow-md),
 			0 0 0 4px rgba(var(--color-highlight-rgb), 0.2);
 	}
@@ -149,22 +149,22 @@
 
 	/* Responsive tweaks */
 	@media (max-width: 640px) {
-		.related-title { 
-			font-size: var(--font-size-base); 
+		.related-title {
+			font-size: var(--font-size-base);
 		}
-		.related-item { 
-			padding: var(--spacing-3); 
+		.related-item {
+			padding: var(--spacing-3);
 		}
 	}
 
 	/* Reduced motion preference */
 	@media (prefers-reduced-motion: reduce) {
 		.related-item,
-		.related-title { 
-			transition: none; 
+		.related-title {
+			transition: none;
 		}
-		.related-item:hover { 
-			transform: none; 
+		.related-item:hover {
+			transform: none;
 		}
 	}
 </style>

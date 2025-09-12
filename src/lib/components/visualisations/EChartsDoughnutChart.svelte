@@ -5,7 +5,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 	import * as echarts from 'echarts';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
-	
+
 	// Props - keeping interface simple for doughnut chart
 	type DataItem = $$Generic;
 	let {
@@ -16,10 +16,10 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		showLabels = true,
 		radius = ['40%', '70%'], // Inner and outer radius for doughnut
 		colors = [
-			'var(--color-primary)', 
-			'var(--color-accent)', 
-			'var(--color-highlight)', 
-			'var(--color-success)', 
+			'var(--color-primary)',
+			'var(--color-accent)',
+			'var(--color-highlight)',
+			'var(--color-success)',
 			'var(--color-secondary)',
 			'rgba(var(--color-primary-rgb), 0.8)',
 			'rgba(var(--color-highlight-rgb), 0.8)',
@@ -77,10 +77,10 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 			const checkMobile = () => {
 				isMobile = window.innerWidth < 768;
 			};
-			
+
 			checkMobile();
 			window.addEventListener('resize', checkMobile);
-			
+
 			return () => window.removeEventListener('resize', checkMobile);
 		}
 	});
@@ -94,7 +94,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		surface: getCSSVariableValue('--color-surface'),
 		accent: getCSSVariableValue('--color-accent'),
 		highlight: getCSSVariableValue('--color-highlight'),
-		chartColors: colors.map(color => resolveColor(color)),
+		chartColors: colors.map((color) => resolveColor(color)),
 		currentTheme: getTheme()
 	});
 	// Chart data transformation
@@ -124,21 +124,26 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 			extraCssText: 'box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);',
 			formatter: '{a} <br/>{b}: {c} ({d}%)',
 			confine: isMobile,
-			position: isMobile ? function (point: [number, number], params: any, dom: HTMLElement, rect: any, size: any) {
-				const tooltipWidth = size.contentSize[0];
-				const tooltipHeight = size.contentSize[1];
-				const viewportWidth = size.viewSize[0];
-				const viewportHeight = size.viewSize[1];
-				
-				let x = Math.max(10, Math.min(viewportWidth - tooltipWidth - 10, point[0] - tooltipWidth / 2));
-				let y = point[1] - tooltipHeight - 10;
-				
-				if (y < 10) {
-					y = point[1] + 20;
-				}
-				
-				return [x, y];
-			} : undefined
+			position: isMobile
+				? function (point: [number, number], params: any, dom: HTMLElement, rect: any, size: any) {
+						const tooltipWidth = size.contentSize[0];
+						const tooltipHeight = size.contentSize[1];
+						const viewportWidth = size.viewSize[0];
+						const viewportHeight = size.viewSize[1];
+
+						let x = Math.max(
+							10,
+							Math.min(viewportWidth - tooltipWidth - 10, point[0] - tooltipWidth / 2)
+						);
+						let y = point[1] - tooltipHeight - 10;
+
+						if (y < 10) {
+							y = point[1] + 20;
+						}
+
+						return [x, y];
+					}
+				: undefined
 		},
 		legend: {
 			orient: 'horizontal',
@@ -199,10 +204,12 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 					borderColor: resolvedColors.surface,
 					borderWidth: 2
 				},
-				labelLayout: isMobile ? {
-					hideOverlap: true,
-					moveOverlap: 'shiftY'
-				} : undefined,
+				labelLayout: isMobile
+					? {
+							hideOverlap: true,
+							moveOverlap: 'shiftY'
+						}
+					: undefined,
 				animationType: 'scale',
 				animationEasing: 'elasticOut' as any,
 				animationDelay: function (idx: number) {
@@ -269,11 +276,20 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 	});
 </script>
 
-<div class="echarts-container" use:scrollAnimate={{ delay: 350, animationClass: 'scale-in-center', rootMargin: '100px', threshold: 0.1 }}>
+<div
+	class="echarts-container"
+	use:scrollAnimate={{
+		delay: 350,
+		animationClass: 'scale-in-center',
+		rootMargin: '100px',
+		threshold: 0.1
+	}}
+>
 	<div bind:this={chartContainer} class="chart"></div>
 </div>
 
-<style>	.echarts-container {
+<style>
+	.echarts-container {
 		width: 100%;
 		height: 480px; /* Increased height to accommodate legend */
 		display: block;
@@ -285,8 +301,6 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		transform: scale(0.8) translateY(20px);
 		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 	}
-
-
 
 	.chart {
 		width: 100%;
@@ -307,7 +321,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 			height: 420px; /* Increased height for mobile with legend space */
 		}
 	}
-	
+
 	@media (max-width: 480px) {
 		.echarts-container {
 			height: 400px; /* Adequate height for very small screens with legend */

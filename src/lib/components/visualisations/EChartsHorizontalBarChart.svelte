@@ -5,7 +5,7 @@ ECharts Horizontal Bar Chart component
 	import * as echarts from 'echarts';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
-	
+
 	// Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;
 	let {
@@ -53,10 +53,10 @@ ECharts Horizontal Bar Chart component
 			const checkMobile = () => {
 				isMobile = window.innerWidth < 768;
 			};
-			
+
 			checkMobile();
 			window.addEventListener('resize', checkMobile);
-			
+
 			return () => window.removeEventListener('resize', checkMobile);
 		}
 	});
@@ -75,10 +75,12 @@ ECharts Horizontal Bar Chart component
 
 	// Chart data transformation - reverse order so highest values appear at top
 	const chartData = $derived(
-		data.map((d) => ({
-			name: String(yAccessor(d)),
-			value: xAccessor(d)
-		})).reverse()
+		data
+			.map((d) => ({
+				name: String(yAccessor(d)),
+				value: xAccessor(d)
+			}))
+			.reverse()
 	);
 	// Chart options - reactive to all dependencies
 	const chartOption = $derived({
@@ -247,7 +249,15 @@ ECharts Horizontal Bar Chart component
 	});
 </script>
 
-<div class="echarts-container" use:scrollAnimate={{ delay: 300, animationClass: 'slide-in-left', rootMargin: '100px', threshold: 0.1 }}>
+<div
+	class="echarts-container"
+	use:scrollAnimate={{
+		delay: 300,
+		animationClass: 'slide-in-left',
+		rootMargin: '100px',
+		threshold: 0.1
+	}}
+>
 	<div bind:this={chartContainer} class="chart"></div>
 </div>
 
@@ -264,8 +274,6 @@ ECharts Horizontal Bar Chart component
 		transform: translateX(-30px);
 		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 	}
-
-
 
 	.chart {
 		width: 100%;

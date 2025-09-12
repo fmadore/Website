@@ -11,7 +11,10 @@ body {
 		background-color var(--anim-duration-base) var(--anim-ease-base),
 		color var(--anim-duration-base) var(--anim-ease-base);
 	/* Enable modern font features */
-	font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+	font-feature-settings:
+		'kern' 1,
+		'liga' 1,
+		'calt' 1;
 	font-variant-ligatures: common-ligatures;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
@@ -450,16 +453,21 @@ th {
 		color: black;
 		background: white;
 	}
-	
-	h1, h2, h3, h4, h5, h6 {
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
 		page-break-after: avoid;
 		color: black;
 	}
-	
+
 	blockquote {
 		page-break-inside: avoid;
 	}
-	
+
 	.prose {
 		max-width: none;
 	}

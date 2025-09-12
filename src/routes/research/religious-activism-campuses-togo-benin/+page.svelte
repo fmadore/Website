@@ -77,7 +77,10 @@
 
 <SEO title="Religious Activism on Campuses in Togo and Benin | Frédérick Madore" />
 
-<div class="container mx-auto px-4 py-8" use:scrollAnimate={{ delay: DELAY_STEP * 0, animationClass: 'fade-in-up' }}>
+<div
+	class="container mx-auto px-4 py-8"
+	use:scrollAnimate={{ delay: DELAY_STEP * 0, animationClass: 'fade-in-up' }}
+>
 	<!-- Apply grid layout to this container on medium screens and up -->
 	<div class="grid" use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
 		<!-- Added grid wrapper -->
@@ -97,11 +100,11 @@
 				{#snippet children()}
 					<p>
 						This project uncovers the neglected history of Christian and Muslim student associations
-						at the Université de Lomé (Togo) and the Université d'Abomey-Calavi (Benin), and examines
-						their resilience and adaptability over five decades. While much of the literature has
-						focused on the role of student protests in triggering national conferences in Benin and
-						Togo in the early 1990s, this study broadens the lens to include the significant but often
-						overlooked religious dimension of campus life.
+						at the Université de Lomé (Togo) and the Université d'Abomey-Calavi (Benin), and
+						examines their resilience and adaptability over five decades. While much of the
+						literature has focused on the role of student protests in triggering national
+						conferences in Benin and Togo in the early 1990s, this study broadens the lens to
+						include the significant but often overlooked religious dimension of campus life.
 					</p>
 
 					<p>
@@ -109,8 +112,8 @@
 						countries, the research analyses the emergence and evolution of these religious
 						associations under challenging political circumstances: a one-party dictatorship in Togo
 						and a Marxist-Leninist regime in Benin. It explores how these groups navigated
-						authoritarian rule, political liberalisation and the principles of laïcité, while shaping
-						campus dynamics in institutions originally known as strongholds of leftist,
+						authoritarian rule, political liberalisation and the principles of laïcité, while
+						shaping campus dynamics in institutions originally known as strongholds of leftist,
 						anti-imperialist and secular ideologies.
 					</p>
 
@@ -128,9 +131,9 @@
 						By analysing the interplay between religion, politics and education, this book provides
 						new insights into the evolving role of faith in public universities and broader societal
 						transformations in West Africa. It explores the implications of growing religiosity for
-						these public universities as secular institutions, and contributes to our understanding of
-						how religious organisations have coexisted with, and sometimes challenged, traditional
-						student associations since the 1970s.
+						these public universities as secular institutions, and contributes to our understanding
+						of how religious organisations have coexisted with, and sometimes challenged,
+						traditional student associations since the 1970s.
 					</p>
 				{/snippet}
 			</ContentBody>

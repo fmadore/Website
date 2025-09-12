@@ -5,7 +5,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 	import * as echarts from 'echarts';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
-	
+
 	// Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;
 	let {
@@ -27,10 +27,10 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 	// State management
 	let chartContainer: HTMLDivElement;
 	let chart: echarts.ECharts | null = null;
-	
+
 	// Detect mobile screen size
 	let isMobile = $state(false);
-	
+
 	// Utility functions for CSS variable resolution
 	function getCSSVariableValue(variableName: string): string {
 		if (typeof window === 'undefined') return '#6366f1'; // Default fallback for SSR
@@ -54,10 +54,10 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 			const checkMobile = () => {
 				isMobile = window.innerWidth < 768; // Mobile breakpoint
 			};
-			
+
 			checkMobile();
 			window.addEventListener('resize', checkMobile);
-			
+
 			return () => window.removeEventListener('resize', checkMobile);
 		}
 	});
@@ -245,7 +245,15 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 	});
 </script>
 
-<div class="echarts-container" use:scrollAnimate={{ delay: 200, animationClass: 'scale-in', rootMargin: '100px', threshold: 0.1 }}>
+<div
+	class="echarts-container"
+	use:scrollAnimate={{
+		delay: 200,
+		animationClass: 'scale-in',
+		rootMargin: '100px',
+		threshold: 0.1
+	}}
+>
 	<div bind:this={chartContainer} class="chart"></div>
 </div>
 
@@ -262,8 +270,6 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		transform: scale(0.9);
 		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 	}
-
-
 
 	.chart {
 		width: 100%;

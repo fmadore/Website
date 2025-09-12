@@ -14,7 +14,13 @@
 		baseUrl?: string;
 		sectionTitle?: string;
 		showTitle?: boolean;
-		buttonVariant?: 'primary' | 'secondary' | 'outline-primary' | 'outline-secondary' | 'ghost' | 'danger';
+		buttonVariant?:
+			| 'primary'
+			| 'secondary'
+			| 'outline-primary'
+			| 'outline-secondary'
+			| 'ghost'
+			| 'danger';
 		buttonSize?: 'sm' | 'base' | 'lg';
 	} = $props();
 
@@ -28,7 +34,7 @@
 		{/if}
 		<div class="tag-list">
 			{#each visibleTags as tag}
-				<Button 
+				<Button
 					href="{base}{baseUrl}{encodeURIComponent(tag)}"
 					variant={buttonVariant}
 					size={buttonSize}
@@ -71,7 +77,8 @@
 
 	:global(.tag-button:hover) {
 		transform: var(--transform-lift-sm);
-		box-shadow: 0 var(--spacing-2) var(--spacing-6) 0 rgba(var(--color-primary-rgb), var(--opacity-medium)) !important;
+		box-shadow: 0 var(--spacing-2) var(--spacing-6) 0
+			rgba(var(--color-primary-rgb), var(--opacity-medium)) !important;
 	}
 
 	/* Responsive adjustments */

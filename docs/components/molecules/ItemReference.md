@@ -41,7 +41,6 @@ The ItemReference component provides several interactive features:
 This component follows the atomic design pattern and is composed of:
 
 1. **Atoms**:
-
    - `ReferenceLink` - The citation link itself
    - `ReferencePreviewCard` - The preview card with item details
 

@@ -3,7 +3,13 @@
 
 	interface Props {
 		// Props
-		variant?: 'primary' | 'secondary' | 'outline-primary' | 'outline-secondary' | 'ghost' | 'danger';
+		variant?:
+			| 'primary'
+			| 'secondary'
+			| 'outline-primary'
+			| 'outline-secondary'
+			| 'ghost'
+			| 'danger';
 		size?: 'sm' | 'base' | 'lg';
 		href?: string | undefined; // If provided, render as <a>
 		type?: 'button' | 'submit' | 'reset'; // Only used for <button>
@@ -75,8 +81,22 @@
 			{#if loading}
 				<span class="btn-loader">
 					<svg class="btn-spinner" viewBox="0 0 24 24" fill="none">
-						<circle class="btn-spinner-track" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-						<circle class="btn-spinner-fill" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+						<circle
+							class="btn-spinner-track"
+							cx="12"
+							cy="12"
+							r="10"
+							stroke="currentColor"
+							stroke-width="2"
+						/>
+						<circle
+							class="btn-spinner-fill"
+							cx="12"
+							cy="12"
+							r="10"
+							stroke="currentColor"
+							stroke-width="2"
+						/>
 					</svg>
 				</span>
 			{:else if icon}
@@ -101,8 +121,22 @@
 			{#if loading}
 				<span class="btn-loader">
 					<svg class="btn-spinner" viewBox="0 0 24 24" fill="none">
-						<circle class="btn-spinner-track" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-						<circle class="btn-spinner-fill" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+						<circle
+							class="btn-spinner-track"
+							cx="12"
+							cy="12"
+							r="10"
+							stroke="currentColor"
+							stroke-width="2"
+						/>
+						<circle
+							class="btn-spinner-fill"
+							cx="12"
+							cy="12"
+							r="10"
+							stroke="currentColor"
+							stroke-width="2"
+						/>
 					</svg>
 				</span>
 			{:else if icon}

@@ -81,9 +81,9 @@
 		</ul>
 
 		<div class="view-all-container">
-			<Button 
-				href="{base}/activities" 
-				variant="outline-primary" 
+			<Button
+				href="{base}/activities"
+				variant="outline-primary"
 				size="base"
 				additionalClasses="glass-button"
 			>
@@ -100,9 +100,9 @@
 		<span class="filter-label">Browse by year:</span>
 		<div class="year-filters">
 			{#each years as year}
-				<Button 
-					href="{base}/activities/year/{year}" 
-					variant="outline-secondary" 
+				<Button
+					href="{base}/activities/year/{year}"
+					variant="outline-secondary"
 					size="sm"
 					additionalClasses="glass-button year-filter-button"
 				>
@@ -138,8 +138,9 @@
 		background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light));
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--card-glass-border-light));
-		box-shadow: 
+		border: var(--border-width-thin) solid
+			rgba(var(--color-white-rgb), var(--card-glass-border-light));
+		box-shadow:
 			0 8px 32px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity)),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-light));
 	}
@@ -151,10 +152,7 @@
 		top: 0;
 		bottom: 0;
 		width: 0;
-		background: linear-gradient(180deg, 
-			var(--color-success) 0%, 
-			var(--color-highlight) 100%
-		);
+		background: linear-gradient(180deg, var(--color-success) 0%, var(--color-highlight) 100%);
 		border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
 		transition: width var(--anim-duration-base) var(--anim-ease-out);
 		opacity: var(--opacity-high);
@@ -168,7 +166,7 @@
 		transform: var(--transform-lift-sm);
 		background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light-hover));
 		border-color: rgba(var(--color-white-rgb), var(--card-glass-border-light-hover));
-		box-shadow: 
+		box-shadow:
 			0 12px 40px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity-hover)),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-light-hover));
 	}
@@ -193,7 +191,8 @@
 		flex-shrink: 0;
 		white-space: nowrap;
 		line-height: var(--line-height-normal);
-		border: var(--border-width-thin) solid rgba(var(--color-success-rgb), var(--opacity-medium-high));
+		border: var(--border-width-thin) solid
+			rgba(var(--color-success-rgb), var(--opacity-medium-high));
 		transition: all var(--anim-duration-fast) var(--anim-ease-out);
 	}
 
@@ -231,8 +230,9 @@
 	/* Dark mode overrides for activity-specific elements */
 	:global(html.dark) .activity-item {
 		background: rgba(var(--color-black-rgb), var(--card-glass-opacity-dark));
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--card-glass-border-dark));
-		box-shadow: 
+		border: var(--border-width-thin) solid
+			rgba(var(--color-white-rgb), var(--card-glass-border-dark));
+		box-shadow:
 			0 8px 32px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity)),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-dark));
 	}
@@ -240,7 +240,7 @@
 	:global(html.dark) .activity-item:hover {
 		background: rgba(var(--color-black-rgb), var(--card-glass-opacity-dark-hover));
 		border-color: rgba(var(--color-white-rgb), var(--card-glass-border-dark-hover));
-		box-shadow: 
+		box-shadow:
 			0 12px 40px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity-hover)),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-dark-hover));
 	}

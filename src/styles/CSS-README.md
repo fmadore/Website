@@ -112,7 +112,7 @@ Reusable components that can be used across the site.
 Modern, comprehensive button system with enhanced accessibility and user experience:
 
 - **Base button**: `.btn` with modern styling, flexbox layout, and smooth transitions
-- **Color variants**: 
+- **Color variants**:
   - `.btn-primary`: Academic blue with gradient
   - `.btn-secondary`: Neutral with subtle background
   - `.btn-ghost`: Minimal style for tertiary actions
@@ -120,11 +120,11 @@ Modern, comprehensive button system with enhanced accessibility and user experie
 - **Outline variants**: `.btn-outline-primary`, `.btn-outline-secondary` with transparent backgrounds
 - **Glass variants**: `.btn-glass` with glassmorphism effects, can be combined with other variants
 - **Size variants**: `.btn-sm`, `.btn-lg` with proportional spacing
-- **Layout variants**: 
+- **Layout variants**:
   - `.btn-block`: Full width
   - `.btn-icon-only`: Square buttons for icons with proper sizing
   - `.btn-with-icon`: Automatically applied when icons are present
-- **States**: 
+- **States**:
   - Hover effects with subtle lift animations
   - Focus-visible with custom outline
   - Active state with scale effect
@@ -262,6 +262,7 @@ Comprehensive scroll animation system for creating smooth, engaging user experie
 - **Responsive**: All animations work across all device sizes
 
 The animation system integrates with JavaScript utilities (`src/lib/utils/scrollAnimations.ts`) to provide:
+
 - Intersection Observer-based scroll triggers
 - Svelte actions for easy component integration
 - Staggered animations for lists
@@ -430,16 +431,15 @@ Provides programmatic control over scroll-triggered animations:
 - **`createReadingProgress`**: Reading progress indicators for long content
 
 Example usage:
+
 ```svelte
 <!-- Basic scroll animation -->
 <div use:scrollAnimate={{ animationClass: 'fade-in-up', delay: 200 }}>
-  Content that animates on scroll
+	Content that animates on scroll
 </div>
 
 <!-- Smooth scroll navigation -->
-<button onclick={() => smoothScrollTo('#section', { offset: 80 })}>
-  Scroll to Section
-</button>
+<button onclick={() => smoothScrollTo('#section', { offset: 80 })}> Scroll to Section </button>
 ```
 
 ### Cookie Consent Management (`src/lib/utils/cookieConsent.ts`)
@@ -453,17 +453,18 @@ Robust cookie consent system with persistence and categorization:
 - **Legacy migration**: Automatically upgrades from older consent formats
 
 The system provides both a class-based API and utility functions:
+
 ```typescript
 import { cookieConsent, needsCookieConsent, isAnalyticsAllowed } from '$lib/utils/cookieConsent';
 
 // Check if consent is needed
 if (needsCookieConsent()) {
-  // Show consent banner
+	// Show consent banner
 }
 
 // Check specific categories
 if (isAnalyticsAllowed()) {
-  // Enable analytics tracking
+	// Enable analytics tracking
 }
 ```
 

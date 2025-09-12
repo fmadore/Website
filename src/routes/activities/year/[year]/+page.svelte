@@ -12,15 +12,11 @@
 	let year = $derived(parseInt($page.params.year || ''));
 
 	// Filter activities by year - using $derived for reactive filtering
-	let filteredActivities = $derived(
-		$activities.filter((a: Activity) => a.year === year)
-	);
-	
+	let filteredActivities = $derived($activities.filter((a: Activity) => a.year === year));
+
 	// All years for display - using $derived
 	let allYears = $derived(
-		[...new Set($activities.map((a: Activity) => a.year))].sort(
-			(a: number, b: number) => b - a
-		)
+		[...new Set($activities.map((a: Activity) => a.year))].sort((a: number, b: number) => b - a)
 	);
 
 	// Define breadcrumb items
@@ -31,16 +27,18 @@
 	]);
 
 	// Generate Breadcrumb JSON-LD
-	let breadcrumbJsonLdString = $derived(JSON.stringify({
-		'@context': 'https://schema.org',
-		'@type': 'BreadcrumbList',
-		itemListElement: breadcrumbItems.map((item, index) => ({
-			'@type': 'ListItem',
-			position: index + 1,
-			name: item.label,
-			item: `${$page.url.origin}${item.href}`
-		}))
-	}));
+	let breadcrumbJsonLdString = $derived(
+		JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'BreadcrumbList',
+			itemListElement: breadcrumbItems.map((item, index) => ({
+				'@type': 'ListItem',
+				position: index + 1,
+				name: item.label,
+				item: `${$page.url.origin}${item.href}`
+			}))
+		})
+	);
 
 	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld-activities-year';
 

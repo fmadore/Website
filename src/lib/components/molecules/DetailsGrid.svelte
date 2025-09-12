@@ -7,7 +7,7 @@
 			value: string | string[];
 			link?: string;
 			condition?: boolean;
-	}>;
+		}>;
 	} = $props();
 
 	// Filter details based on the condition (if provided) and if the value exists
@@ -32,12 +32,7 @@
 					<dt class="detail-label">{detail.label}</dt>
 					<dd class="detail-value">
 						{#if detail.link && detail.link !== 'undefined'}
-							<a
-								href={detail.link}
-								target="_blank"
-								rel="noopener"
-								class="detail-link"
-							>
+							<a href={detail.link} target="_blank" rel="noopener" class="detail-link">
 								{Array.isArray(detail.value) ? detail.value.join(', ') : detail.value}
 							</a>
 						{:else}
@@ -65,7 +60,6 @@
 		border: 0;
 	}
 
-
 	.details-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -91,13 +85,13 @@
 		border-radius: inherit;
 		background: linear-gradient(
 			180deg,
-			rgba(var(--color-white-rgb, 255,255,255), 0.12) 0%,
-			rgba(var(--color-white-rgb, 255,255,255), 0) 40%,
-			rgba(var(--color-white-rgb, 255,255,255), 0) 60%,
-			rgba(var(--color-white-rgb, 255,255,255), 0.12) 100%
+			rgba(var(--color-white-rgb, 255, 255, 255), 0.12) 0%,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0) 40%,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0) 60%,
+			rgba(var(--color-white-rgb, 255, 255, 255), 0.12) 100%
 		);
 		mix-blend-mode: overlay;
-		opacity: .4;
+		opacity: 0.4;
 	}
 
 	.detail-item {
@@ -109,18 +103,24 @@
 		border-bottom: 1px solid var(--color-border-light);
 		position: relative;
 	}
-	.detail-item:last-child { border-bottom: none; }
+	.detail-item:last-child {
+		border-bottom: none;
+	}
 
 	/* In narrow view collapse to vertical stack */
 	@media (max-width: 520px) {
-		.detail-item { grid-template-columns: 1fr; }
-		.detail-label { margin-bottom: var(--spacing-1); }
+		.detail-item {
+			grid-template-columns: 1fr;
+		}
+		.detail-label {
+			margin-bottom: var(--spacing-1);
+		}
 	}
 
 	.detail-label {
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-semibold);
-		letter-spacing: .5px;
+		letter-spacing: 0.5px;
 		text-transform: uppercase;
 		color: var(--color-text-light);
 		line-height: var(--line-height-tight);
@@ -139,7 +139,10 @@
 		position: relative;
 		transition: color var(--anim-duration-fast) var(--anim-ease-out);
 	}
-	.detail-link:hover { color: var(--color-primary-dark); text-decoration: underline; }
+	.detail-link:hover {
+		color: var(--color-primary-dark);
+		text-decoration: underline;
+	}
 	.detail-link:focus-visible {
 		outline: 2px solid var(--color-highlight);
 		outline-offset: 2px;
@@ -150,17 +153,25 @@
 	:global(html.dark) .details-grid {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb, 17,24,39), 0.6) 0%,
+			rgba(var(--color-dark-surface-rgb, 17, 24, 39), 0.6) 0%,
 			rgba(var(--color-primary-rgb), 0.12) 55%,
 			rgba(var(--color-accent-rgb), 0.08) 100%
 		);
 	}
-	:global(html.dark) .detail-item { border-bottom: 1px solid rgba(var(--color-white-rgb,255,255,255),0.08); }
-	:global(html.dark) .detail-label { color: var(--color-text-light); }
-	:global(html.dark) .detail-value { color: var(--color-text); }
+	:global(html.dark) .detail-item {
+		border-bottom: 1px solid rgba(var(--color-white-rgb, 255, 255, 255), 0.08);
+	}
+	:global(html.dark) .detail-label {
+		color: var(--color-text-light);
+	}
+	:global(html.dark) .detail-value {
+		color: var(--color-text);
+	}
 
 	/* Reduced motion preference */
 	@media (prefers-reduced-motion: reduce) {
-		.details-grid { transition: none; }
+		.details-grid {
+			transition: none;
+		}
 	}
 </style>

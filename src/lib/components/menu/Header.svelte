@@ -215,7 +215,7 @@
 		backdrop-filter: blur(20px);
 		-webkit-backdrop-filter: blur(20px);
 		border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-		box-shadow: 
+		box-shadow:
 			0 4px 24px 0 rgba(31, 38, 135, 0.15),
 			inset 0 1px 0 rgba(255, 255, 255, 0.4);
 		position: sticky;
@@ -232,7 +232,7 @@
 			rgba(var(--color-highlight-rgb), 0.02) 100%
 		);
 		border-bottom-color: rgba(255, 255, 255, 0.4);
-		box-shadow: 
+		box-shadow:
 			0 6px 32px 0 rgba(31, 38, 135, 0.2),
 			inset 0 1px 0 rgba(255, 255, 255, 0.5);
 	}
@@ -246,7 +246,7 @@
 			rgba(var(--color-highlight-rgb), 0.02) 100%
 		);
 		border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-		box-shadow: 
+		box-shadow:
 			0 4px 24px 0 rgba(0, 0, 0, 0.4),
 			inset 0 1px 0 rgba(255, 255, 255, 0.1);
 	}
@@ -259,7 +259,7 @@
 			rgba(var(--color-highlight-rgb), 0.03) 100%
 		);
 		border-bottom-color: rgba(255, 255, 255, 0.2);
-		box-shadow: 
+		box-shadow:
 			0 6px 32px 0 rgba(0, 0, 0, 0.5),
 			inset 0 1px 0 rgba(255, 255, 255, 0.15);
 	}

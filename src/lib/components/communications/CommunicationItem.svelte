@@ -50,7 +50,9 @@
 			<div class="entity-content">
 				<div class="entity-meta">
 					<span class="entity-type"
-						>{typeLabels[communication?.type || 'conference'] || communication?.type || 'Conference'}</span
+						>{typeLabels[communication?.type || 'conference'] ||
+							communication?.type ||
+							'Conference'}</span
 					>
 					{#if communication?.language && communication.language !== 'English'}
 						<span class="entity-language">({communication.language})</span>

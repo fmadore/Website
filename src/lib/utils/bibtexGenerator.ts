@@ -48,7 +48,7 @@ function getBibtexMonth(dateISO: string | undefined): string | undefined {
 // Helper function to validate required fields for each BibTeX entry type
 function validateRequiredFields(publication: Publication, bibtexType: string): string[] {
 	const warnings: string[] = [];
-	
+
 	switch (bibtexType) {
 		case 'article':
 			if (!publication.authors || publication.authors.length === 0) warnings.push('author');
@@ -59,7 +59,11 @@ function validateRequiredFields(publication: Publication, bibtexType: string): s
 		case 'book':
 			if (!publication.authors || publication.authors.length === 0) {
 				// For edited books, editors are in the authors field, so we need either authors or editors
-				if (!publication.editors || (Array.isArray(publication.editors) && publication.editors.length === 0) || (typeof publication.editors === 'string' && !publication.editors.trim())) {
+				if (
+					!publication.editors ||
+					(Array.isArray(publication.editors) && publication.editors.length === 0) ||
+					(typeof publication.editors === 'string' && !publication.editors.trim())
+				) {
 					warnings.push('author/editor');
 				}
 			}
@@ -108,7 +112,7 @@ function validateRequiredFields(publication: Publication, bibtexType: string): s
 			if (!publication.dateISO && !publication.year) warnings.push('year');
 			break;
 	}
-	
+
 	return warnings;
 }
 
@@ -181,7 +185,7 @@ export function generateBibtex(publication: Publication): string {
 	if (publication.dateISO) {
 		const yearPart = publication.dateISO.split('-')[0];
 		if (yearPart) bibtexFields.push(`  year = {${escapeBibtex(yearPart)}}`);
-		
+
 		const monthName = getBibtexMonth(publication.dateISO);
 		if (monthName) bibtexFields.push(`  month = ${monthName}`); // Unquoted month abbreviation
 	} else if (publication.year) {

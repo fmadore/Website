@@ -56,7 +56,10 @@
 		and Muslim politics.
 	</PageIntro>
 
-	<div class="content-grid" use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
+	<div
+		class="content-grid"
+		use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}
+	>
 		{#each researchProjects as project, index}
 			<Card
 				title={project.title}

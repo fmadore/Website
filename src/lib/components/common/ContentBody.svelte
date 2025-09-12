@@ -18,14 +18,18 @@
 	const baseClasses = 'content-body';
 	const variantClasses = {
 		default: 'content-body--default',
-		compact: 'content-body--compact', 
+		compact: 'content-body--compact',
 		wide: 'content-body--wide'
 	};
-	
-	const combinedClasses = `${baseClasses} ${variantClasses[variant]} ${glassEffect} ${additionalClasses}`.trim();
+
+	const combinedClasses =
+		`${baseClasses} ${variantClasses[variant]} ${glassEffect} ${additionalClasses}`.trim();
 </script>
 
-<div class={combinedClasses} use:scrollAnimate={{ delay: DELAY_STEP * 9, animationClass: 'fade-in-up' }}>
+<div
+	class={combinedClasses}
+	use:scrollAnimate={{ delay: DELAY_STEP * 9, animationClass: 'fade-in-up' }}
+>
 	{@render children()}
 </div>
 
@@ -124,10 +128,7 @@
 		position: relative;
 		padding-left: var(--spacing-6);
 		border-left: 3px solid transparent;
-		border-image: linear-gradient(180deg, 
-			var(--color-highlight) 0%, 
-			var(--color-accent) 100%
-		) 1;
+		border-image: linear-gradient(180deg, var(--color-highlight) 0%, var(--color-accent) 100%) 1;
 		border-image-slice: 1;
 	}
 
@@ -216,7 +217,8 @@
 	.content-body :global(a:focus-visible) {
 		outline: var(--border-width-medium) solid var(--color-highlight);
 		outline-offset: var(--spacing-1);
-		box-shadow: 0 0 0 var(--border-width-thick) rgba(var(--color-highlight-rgb), var(--opacity-medium-high));
+		box-shadow: 0 0 0 var(--border-width-thick)
+			rgba(var(--color-highlight-rgb), var(--opacity-medium-high));
 		border-radius: var(--border-radius-sm);
 	}
 
@@ -259,4 +261,4 @@
 	}
 
 	/* Dark mode adjustments are handled automatically through CSS variables */
-</style> 
+</style>
