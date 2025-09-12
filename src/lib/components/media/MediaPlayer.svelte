@@ -269,7 +269,7 @@
 						{#each Array(24) as _, i}
 							<div 
 								class="wave-bar" 
-								style="animation-delay: {i * 50}ms; height: {20 + Math.sin(i * 0.5) * 15}px;"
+								style="animation-delay: {i * 50}ms; height: {10 + Math.sin(i * 0.5) * 8}px;"
 							></div>
 						{/each}
 					</div>
@@ -278,7 +278,7 @@
 					<div class="audio-icon-container">
 						<div class="audio-icon-backdrop"></div>
 						<div class="audio-icon">
-							<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 								<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
 								<path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
 								<path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
@@ -520,11 +520,11 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		padding: var(--spacing-12);
+		padding: var(--spacing-4);
 		background: linear-gradient(135deg, 
 			rgba(var(--color-primary-rgb), var(--opacity-5)) 0%, 
 			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%);
-		min-height: 280px;
+		min-height: 120px;
 		border-radius: var(--border-radius-lg);
 		position: relative;
 		overflow: hidden;
@@ -558,8 +558,8 @@
 		display: flex;
 		align-items: end;
 		gap: 3px;
-		margin-bottom: var(--spacing-8);
-		height: 60px;
+		margin-bottom: var(--spacing-3);
+		height: 30px;
 	}
 
 	.wave-bar {
@@ -592,7 +592,7 @@
 	/* Central audio icon */
 	.audio-icon-container {
 		position: relative;
-		margin-bottom: var(--spacing-6);
+		margin-bottom: var(--spacing-2);
 		z-index: 2;
 	}
 
@@ -601,8 +601,8 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		width: 80px;
-		height: 80px;
+		width: 50px;
+		height: 50px;
 		background: radial-gradient(circle, 
 			rgba(var(--color-primary-rgb), var(--opacity-10)) 0%,
 			rgba(var(--color-accent-rgb), var(--opacity-5)) 70%,
@@ -616,7 +616,7 @@
 		color: var(--color-primary);
 		background: rgba(var(--color-white-rgb), var(--opacity-90));
 		border-radius: var(--border-radius-full);
-		padding: var(--spacing-4);
+		padding: var(--spacing-2);
 		backdrop-filter: blur(10px);
 		border: 1px solid rgba(var(--color-primary-rgb), var(--opacity-20));
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
@@ -743,8 +743,8 @@
 		backdrop-filter: blur(20px);
 		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-20));
 		border-radius: var(--border-radius-lg);
-		padding: var(--spacing-5);
-		margin: var(--spacing-2) 0 0 0;
+		padding: var(--spacing-3);
+		margin: var(--spacing-1) 0 0 0;
 		
 		/* Elegant shadow system */
 		box-shadow: 
