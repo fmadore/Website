@@ -295,7 +295,7 @@
 		<div class="mobile-controls">
 			<div class="mobile-controls-row">
 				<Button
-					variant="outline-primary"
+					variant="outline-secondary"
 					size="sm"
 					onclick={() => (mobileFiltersExpanded = !mobileFiltersExpanded)}
 					ariaLabel={mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
@@ -315,7 +315,7 @@
 				<Sorter {activeSort} onsortchange={handleSortChange} availableSorts={['date', 'title']} />
 				{#if areFiltersActive($activeFilters)}
 					<Button
-						variant="outline-primary"
+						variant="primary"
 						size="sm"
 						onclick={clearAllFilters}
 						additionalClasses="control-button-rounded"
@@ -351,7 +351,7 @@
 						/>
 						{#if areFiltersActive($activeFilters)}
 							<Button
-								variant="outline-primary"
+								variant="primary"
 								size="sm"
 								onclick={clearAllFilters}
 								additionalClasses="control-button-rounded"

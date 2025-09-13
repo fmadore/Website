@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { type ComponentProps, type ComponentType } from 'svelte';
+	import Button from '$lib/components/atoms/Button.svelte'; // Import Button component
 
 	// Generic type to represent any store with a subscribe method
 	type Readable<T> = { subscribe: (run: (value: T) => void) => () => void };
@@ -56,12 +57,14 @@
 		<div class="p-8 bg-gray-50 rounded text-center mt-6">
 			<p>{emptyStateMessage}</p>
 			{#if areFiltersActive}
-				<button
-					class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition btn btn-secondary btn-sm"
+				<Button
+					variant="primary"
+					size="sm"
 					onclick={clearAllFilters}
+					additionalClasses="mt-4"
 				>
 					Clear all filters
-				</button>
+				</Button>
 			{:else if !areFiltersActive}
 				<p class="mt-2 text-sm text-gray-500">
 					{emptyStateNoFiltersMessage}
