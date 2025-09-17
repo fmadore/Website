@@ -1,5 +1,6 @@
 import type { Communication } from '$lib/types/communication';
 import type { Publication } from '$lib/types';
+import type { Activity } from '$lib/types/activity';
 
 /**
  * Creates an optimized SEO description for communication pages
@@ -314,4 +315,200 @@ export function createPublicationSEOKeywords(publication: Publication): string {
 	if (publication.project) keywords.add(publication.project);
 	
 	return Array.from(keywords).join(', ');
+}
+
+/**
+ * Creates an optimized SEO description for activity pages treated as blog posts
+ * 
+ * Blog post SEO best practices applied:
+ * - 150-160 characters optimal length for better click-through rates
+ * - Front-loads value proposition and key takeaways
+ * - Uses action-oriented language and engagement hooks
+ * - Includes relevant context (dates, topics, outcomes)
+ * - Smart truncation that preserves readability
+ * - Focus on reader benefits rather than just event details
+ */
+export function createActivitySEODescription(activity: Activity): string {
+	const { title, description, type, year, tags } = activity;
+	
+	// Helper to get blog-friendly type labels with engaging language
+	const getBlogTypeLabel = (type?: string): string => {
+		const typeLabels: Record<string, string> = {
+			conference: 'Conference insights',
+			workshop: 'Workshop highlights',
+			seminar: 'Seminar takeaways', 
+			lecture: 'Lecture summary',
+			panel: 'Panel discussion',
+			grant: 'Research funding',
+			publication: 'Publication update',
+			event: 'Academic event',
+			visit: 'Academic visit',
+			news: 'Latest news'
+		};
+		return typeLabels[type || ''] || 'Academic update';
+	};
+
+	// Helper to truncate text while preserving word boundaries
+	const smartTruncate = (text: string, maxLength: number): string => {
+		if (text.length <= maxLength) return text;
+		
+		// Find the last complete sentence within the limit
+		const truncated = text.substring(0, maxLength);
+		const lastSentenceEnd = Math.max(
+			truncated.lastIndexOf('. '),
+			truncated.lastIndexOf('? '),
+			truncated.lastIndexOf('! ')
+		);
+		
+		if (lastSentenceEnd > maxLength * 0.6) {
+			// If we have a good sentence break, use it
+			return text.substring(0, lastSentenceEnd + 1).trim();
+		}
+		
+		// Otherwise, truncate at word boundary and add ellipsis
+		const lastSpace = truncated.lastIndexOf(' ');
+		return lastSpace > maxLength * 0.6 
+			? text.substring(0, lastSpace) + '...'
+			: text.substring(0, maxLength - 3) + '...';
+	};
+
+	// Start with the activity description (primary content)
+	let seoDescription = description || '';
+	
+	// If description is too short or missing, build one from available data
+	if (!seoDescription || seoDescription.length < 50) {
+		const typeLabel = getBlogTypeLabel(type);
+		const yearText = year ? ` (${year})` : '';
+		
+		// Create engaging blog-style description
+		if (type === 'publication') {
+			seoDescription = `Latest publication update${yearText}: ${title}`;
+		} else if (type === 'grant') {
+			seoDescription = `Research funding news${yearText}: ${title}`;
+		} else if (['conference', 'workshop', 'panel'].includes(type || '')) {
+			seoDescription = `${typeLabel} from ${title}${yearText}`;
+		} else {
+			seoDescription = `${typeLabel}${yearText}: ${title}`;
+		}
+	}
+	
+	// Add contextual keywords if we have space and they add value
+	const remainingSpace = 160 - seoDescription.length;
+	if (remainingSpace > 20 && tags && tags.length > 0) {
+		// Add relevant tags that provide additional context
+		const contextTags = tags.filter(tag => 
+			['Digital Humanities', 'Islam', 'West Africa', 'Research', 'Academic'].some(keyword =>
+				tag.toLowerCase().includes(keyword.toLowerCase())
+			)
+		).slice(0, 2); // Limit to 2 most relevant tags
+		
+		if (contextTags.length > 0) {
+			const tagText = ` Topics: ${contextTags.join(', ')}.`;
+			if (tagText.length <= remainingSpace) {
+				seoDescription += tagText;
+			}
+		}
+	}
+	
+	// Add engaging call-to-action if space allows
+	if (seoDescription.length < 140) {
+		const ctaOptions = [
+			'Learn more →',
+			'Read insights →',
+			'Discover details →',
+			'Explore findings →'
+		];
+		
+		// Choose CTA based on activity type
+		let cta = 'Learn more →';
+		if (type === 'publication') cta = 'Read details →';
+		else if (type === 'conference' || type === 'workshop') cta = 'Read insights →';
+		else if (type === 'grant') cta = 'Discover details →';
+		
+		if (seoDescription.length + cta.length + 1 <= 160) {
+			seoDescription += ` ${cta}`;
+		}
+	}
+	
+	// Ensure optimal length (150-160 characters)
+	if (seoDescription.length > 160) {
+		seoDescription = smartTruncate(seoDescription, 160);
+	}
+	
+	// Final fallback if somehow we don't have content
+	if (!seoDescription.trim()) {
+		const typeLabel = getBlogTypeLabel(type);
+		const yearText = year ? ` ${year}` : '';
+		seoDescription = `${typeLabel}${yearText} by Frédérick Madore`;
+	}
+	
+	return seoDescription;
+}
+
+/**
+ * Creates optimized keywords for activity pages treated as blog posts
+ * Focuses on blog-relevant keywords, topics, and searchable terms
+ */
+export function createActivitySEOKeywords(activity: Activity): string {
+	const keywords = new Set<string>();
+	
+	// Add activity-specific keywords
+	if (activity.type) {
+		// Map activity types to blog-friendly keywords
+		const typeKeywords: Record<string, string[]> = {
+			conference: ['conference', 'academic conference', 'research presentation'],
+			workshop: ['workshop', 'academic workshop', 'professional development'],
+			seminar: ['seminar', 'academic seminar', 'research seminar'],
+			lecture: ['lecture', 'academic lecture', 'keynote'],
+			panel: ['panel discussion', 'academic panel', 'expert panel'],
+			grant: ['research grant', 'funding', 'academic funding'],
+			publication: ['publication', 'academic publication', 'research'],
+			event: ['academic event', 'scholarly event'],
+			visit: ['academic visit', 'research visit', 'collaboration'],
+			news: ['academic news', 'research news', 'updates']
+		};
+		
+		const relatedKeywords = typeKeywords[activity.type] || ['academic activity'];
+		relatedKeywords.forEach(keyword => keywords.add(keyword));
+	}
+	
+	// Add tag-based keywords (these are often topical)
+	if (activity.tags) {
+		activity.tags.forEach(tag => keywords.add(tag));
+	}
+	
+	// Add blog-relevant keywords
+	keywords.add('blog post');
+	keywords.add('academic blog');
+	keywords.add('research update');
+	
+	// Add author/personal branding keywords
+	keywords.add('Frédérick Madore');
+	keywords.add('digital humanities');
+	keywords.add('Islam studies');
+	keywords.add('West Africa research');
+	keywords.add('academic researcher');
+	
+	// Add year if available (helps with temporal searches)
+	if (activity.year) {
+		keywords.add(activity.year.toString());
+	}
+	
+	// Add content-type specific keywords
+	if (activity.content) {
+		// Add generic content keywords for blog posts
+		keywords.add('analysis');
+		keywords.add('insights');
+		keywords.add('findings');
+	}
+	
+	// Add geographic keywords if commonly relevant
+	keywords.add('Africa');
+	keywords.add('Francophone Africa');
+	
+	// Add methodological keywords common to digital humanities
+	keywords.add('research methods');
+	keywords.add('academic research');
+	
+	return Array.from(keywords).slice(0, 15).join(', '); // Limit to 15 most relevant keywords
 }
