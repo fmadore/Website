@@ -48,11 +48,11 @@
 		params.set('ctx_ver', 'Z39.88-2004');
 		params.set('rfr_id', 'info:sid/frederickmadore.com');
 
-		// Blog post format
-		params.set('rft_val_fmt', 'info:ofi/fmt:kev:mtx:dc');
-		params.set('rft.type', 'blogPost');
+		// Blog post format - use journal format with blog as journal
+		params.set('rft_val_fmt', 'info:ofi/fmt:kev:mtx:journal');
+		params.set('rft.genre', 'article');
 		
-		// Use website name as "blog title"
+		// Use website name as "journal" title for blog
 		params.set('rft.jtitle', 'Frédérick Madore');
 
 		// Basic fields
@@ -86,10 +86,10 @@
 			{ name: 'DC.creator', content: 'Frédérick Madore' }
 		);
 
-		// Publication info for blog posts
+		// Publication info for blog posts - try multiple approaches
 		tags.push(
-			{ name: 'citation_blog_title', content: 'Frédérick Madore' },
-			{ name: 'citation_website_title', content: 'Frédérick Madore' },
+			{ name: 'citation_journal_title', content: 'Frédérick Madore' }, // Blog name as "journal"
+			{ name: 'citation_publication_title', content: 'Frédérick Madore' }, // Alternative blog title
 			{ name: 'citation_publisher', content: 'Frédérick Madore' },
 			...createConditionalTag('citation_date', activity.dateISO),
 			...createConditionalTag('citation_publication_date', activity.dateISO),
@@ -149,7 +149,7 @@
 
 		// Website/blog identification
 		tags.push(
-			{ name: 'og:site_name', content: 'Frédérick Madore' },
+			{ name: 'og:site_name', content: 'Frédérick Madore' }, // This might be what Zotero uses for blog title
 			{ name: 'og:type', content: 'article' },
 			{ name: 'og:title', content: activity.title },
 			...createConditionalTag('og:description', activity.description),
