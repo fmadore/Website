@@ -23,6 +23,7 @@
 	import AbstractSection from '$lib/components/molecules/AbstractSection.svelte';
 	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
 	import { createActivitySEODescription, createActivitySEOKeywords } from '$lib/utils/seoUtils';
+	import MetaTags from '$lib/components/activities/MetaTags.svelte';
 
 	// Get data from the load function
 	let { data }: { data: PageData } = $props();
@@ -196,6 +197,9 @@
 	type="article"
 	ogImage={activity.heroImage?.src ? `${$page.url.origin}${base}/${activity.heroImage.src}` : undefined}
 />
+
+<!-- MetaTags Component for Zotero blog post detection -->
+<MetaTags {activity} />
 
 {#if activity}
 	<div
