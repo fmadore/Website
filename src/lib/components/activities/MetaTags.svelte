@@ -53,7 +53,7 @@
 		params.set('rft.type', 'blogPost');
 		
 		// Use website name as "blog title"
-		params.set('rft.jtitle', 'Frédérick Madore - Academic Activities');
+		params.set('rft.jtitle', 'Frédérick Madore');
 
 		// Basic fields
 		if (activity.title) params.set('rft.title', activity.title);
@@ -88,14 +88,14 @@
 
 		// Publication info for blog posts
 		tags.push(
-			{ name: 'citation_blog_title', content: 'Frédérick Madore - Academic Activities' },
-			{ name: 'citation_website_title', content: 'Frédérick Madore - Academic Activities' },
+			{ name: 'citation_blog_title', content: 'Frédérick Madore' },
+			{ name: 'citation_website_title', content: 'Frédérick Madore' },
 			{ name: 'citation_publisher', content: 'Frédérick Madore' },
 			...createConditionalTag('citation_date', activity.dateISO),
 			...createConditionalTag('citation_publication_date', activity.dateISO),
 			...createConditionalTag('citation_online_date', activity.dateISO),
 			...createConditionalTag('citation_year', activity.year?.toString()),
-			...createConditionalTag('citation_language', 'en'), // Assuming English
+			{ name: 'citation_language', content: 'en' }, // Always English
 			...createConditionalTag('citation_keywords', activity.tags?.join('; '))
 		);
 
