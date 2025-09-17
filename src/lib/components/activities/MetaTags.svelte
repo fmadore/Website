@@ -14,8 +14,8 @@
 
 	// Helper to get citation genre for blog posts
 	const getCitationGenre = (): string => {
-		// For activities treated as blog posts, use 'article' as the genre
-		return 'article';
+		// For activities treated as blog posts, use 'blogPost' as the genre
+		return 'blogPost';
 	};
 
 	// Helper to map activity types to Dublin Core types
@@ -48,11 +48,11 @@
 		params.set('ctx_ver', 'Z39.88-2004');
 		params.set('rfr_id', 'info:sid/frederickmadore.com');
 
-		// Blog post format (treated as journal article in COinS)
-		params.set('rft_val_fmt', 'info:ofi/fmt:kev:mtx:journal');
-		params.set('rft.genre', 'article');
+		// Blog post format
+		params.set('rft_val_fmt', 'info:ofi/fmt:kev:mtx:dc');
+		params.set('rft.type', 'blogPost');
 		
-		// Use website name as "journal"
+		// Use website name as "blog title"
 		params.set('rft.jtitle', 'Frédérick Madore - Academic Activities');
 
 		// Basic fields
@@ -88,7 +88,8 @@
 
 		// Publication info for blog posts
 		tags.push(
-			{ name: 'citation_journal_title', content: 'Frédérick Madore - Academic Activities' },
+			{ name: 'citation_blog_title', content: 'Frédérick Madore - Academic Activities' },
+			{ name: 'citation_website_title', content: 'Frédérick Madore - Academic Activities' },
 			{ name: 'citation_publisher', content: 'Frédérick Madore' },
 			...createConditionalTag('citation_date', activity.dateISO),
 			...createConditionalTag('citation_publication_date', activity.dateISO),
