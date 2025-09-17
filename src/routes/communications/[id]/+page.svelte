@@ -21,6 +21,7 @@
 		createCommunicationSEOKeywords, 
 		truncateTitle 
 	} from '$lib/utils/seoUtils';
+	import MetaTags from '$lib/components/communications/MetaTags.svelte';
 	
 	// Get communication from the page data
 	let { data } = $props();
@@ -144,6 +145,8 @@
 	keywords={seoKeywords}
 	ogImage="{base}/{communication.image}"
 />
+
+<MetaTags {communication} />
 
 <div class="container mx-auto py-8 px-4">
 	<article class="communication-article rounded-lg p-6 mb-8">
