@@ -16,15 +16,19 @@
 	import RelatedItemsList from '$lib/components/organisms/RelatedItemsList.svelte';
 	import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
 	import { browser } from '$app/environment';
+	import { 
+		createCommunicationSEODescription, 
+		createCommunicationSEOKeywords, 
+		truncateTitle 
+	} from '$lib/utils/seoUtils';
+	
 	// Get communication from the page data
 	let { data } = $props();
 	const communication = $derived(data.communication as Communication);
 
-	// Helper function to truncate title at the first colon
-	function truncateTitle(title: string): string {
-		const colonIndex = title.indexOf(':');
-		return colonIndex > -1 ? title.substring(0, colonIndex) + '...' : title;
-	} // Define breadcrumb items
+	// Generate optimized SEO content
+	const seoDescription = $derived(createCommunicationSEODescription(communication));
+	const seoKeywords = $derived(createCommunicationSEOKeywords(communication)); // Define breadcrumb items
 	const breadcrumbItems = $derived([
 		{ label: 'Conference Activity', href: `${base}/conference-activity` },
 		{
@@ -136,17 +140,8 @@
 
 <SEO
 	title="{truncateTitle(communication.title)} | Frédérick Madore"
-	description={communication.abstract ||
-		`Details about ${communication.title} by ${communication.authors?.join(', ')}`}
-	keywords={[
-		'communication',
-		communication.type,
-		...(communication.tags || []),
-		...(communication.authors || []),
-		'Islam',
-		'West Africa',
-		'Frédérick Madore'
-	].join(', ')}
+	description={seoDescription}
+	keywords={seoKeywords}
 	ogImage="{base}/{communication.image}"
 />
 
