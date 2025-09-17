@@ -22,11 +22,16 @@
 	import ActionLinks from '$lib/components/molecules/ActionLinks.svelte';
 	import AbstractSection from '$lib/components/molecules/AbstractSection.svelte';
 	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
+	import { createActivitySEODescription, createActivitySEOKeywords } from '$lib/utils/seoUtils';
 
 	// Get data from the load function
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
 	const jsonLdString = $derived(data.jsonLdString);
+
+	// Generate optimized SEO data for blog-style activity pages
+	const seoDescription = $derived(createActivitySEODescription(activity));
+	const seoKeywords = $derived(createActivitySEOKeywords(activity));
 
 	// Helper function to truncate title at the first colon (copied from publications page)
 	function truncateTitle(title: string): string {
@@ -175,34 +180,28 @@
 	<!-- Preconnect to improve performance -->
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-
+	
 	<!-- Conditional preload of hero image if it exists to improve LCP -->
 	{#if activity?.heroImage?.src}
 		<link rel="preload" href="{base}/{activity.heroImage.src}" as="image" fetchpriority="high" />
 	{/if}
-
-	<!-- Remove the JsonLdScript component from here -->
-	<!-- {#if jsonLdString}
-        <JsonLdScript jsonString={jsonLdString} />
-    {/if} -->
 </svelte:head>
 
-{#if activity}
-	<SEO
-		title={`${truncateTitle(activity.title)} | Frédérick Madore`}
-		description={activity.description}
-		keywords={formattedTags.join(', ')}
-		type="article"
-		ogImage={activity.heroImage?.src
-			? `${base}/${activity.heroImage.src}`
-			: `${base}/images/Profile-picture.webp`}
-	/>
-{/if}
+<!-- SEO Component with blog post optimizations -->
+<SEO
+	title={activity.title}
+	description={seoDescription}
+	keywords={seoKeywords}
+	canonical="{$page.url.origin}{base}/activities/{activity.id}"
+	type="article"
+	ogImage={activity.heroImage?.src ? `${$page.url.origin}${base}/${activity.heroImage.src}` : undefined}
+/>
 
-<div
-	class="container max-w-7xl critical-content"
-	use:scrollAnimate={{ delay: DELAY_STEP, animationClass: 'fade-in-up' }}
->
+{#if activity}
+	<div
+		class="container max-w-7xl critical-content"
+		use:scrollAnimate={{ delay: DELAY_STEP, animationClass: 'fade-in-up' }}
+	>
 	{#if activity}
 		<!-- Separate page header section -->
 		<div use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
@@ -391,3 +390,4 @@
 		contain: layout style paint;
 	}
 </style>
+{/if}
