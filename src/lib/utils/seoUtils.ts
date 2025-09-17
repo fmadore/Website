@@ -250,6 +250,9 @@ export function createPublicationSEODescription(publication: Publication): strin
 				description += shortVenueText;
 			}
 		}
+	} else if (year && description.length < 140) {
+		// If no venue info but we have a year, add it
+		description += ` (${year})`;
 	}
 	
 	// If we have space and an abstract, add a summary

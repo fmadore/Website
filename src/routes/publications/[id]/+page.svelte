@@ -24,6 +24,11 @@
 	import { allPublications } from '$lib/data/publications/index'; // Keep this for RelatedItemsList
 	import { generateBibtex } from '$lib/utils/bibtexGenerator'; // Import the generator
 	import { scrollAnimate } from '$lib/utils/scrollAnimations'; // Add scroll animations
+	import { 
+		createPublicationSEODescription, 
+		createPublicationSEOKeywords, 
+		truncateTitle 
+	} from '$lib/utils/seoUtils';
 
 	interface Props {
 		// Get data from the load function
@@ -34,11 +39,9 @@
 	let publication = $derived(data.publication as Publication);
 	let jsonLdString = $derived(data.jsonLdString); // Use the raw string
 
-	// Helper function to truncate title at the first colon
-	function truncateTitle(title: string): string {
-		const colonIndex = title.indexOf(':');
-		return colonIndex > -1 ? title.substring(0, colonIndex) + '...' : title;
-	}
+	// Generate optimized SEO content
+	const seoDescription = $derived(createPublicationSEODescription(publication));
+	const seoKeywords = $derived(createPublicationSEOKeywords(publication));
 
 	// Define breadcrumb items
 	let breadcrumbItems = $derived([
@@ -287,17 +290,8 @@
 
 <SEO
 	title={truncateTitle(publication.title) + ' | Frédérick Madore'}
-	description={publication.abstract ||
-		`Details about ${publication.title} by ${publication.authors?.join(', ')}`}
-	keywords={[
-		'publication',
-		publication.type,
-		...(publication.tags || []),
-		...(publication.authors || []),
-		'Islam',
-		'West Africa',
-		'Frédérick Madore'
-	].join(', ')}
+	description={seoDescription}
+	keywords={seoKeywords}
 	ogImage={`${base}/${publication.image}`}
 	includeCitationAuthor={false}
 />
