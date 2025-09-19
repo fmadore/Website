@@ -45,6 +45,13 @@ export const hackettInterviewDigitalMedia: Publication = {
 			year: 2020,
 			title: 'Indonesian-Religious and Digital Pluralism: Covid-19 Impact',
 			source: 'International Journal of Psychosocial Rehabilitation 24, no. 1: 2710-28'
+		},
+		{
+			authors: ['Gowhar Andrabi Syed'],
+			year: 2025,
+			title: 'Promoting Religious Tolerance through the Design of a Pictogram Communication System for Digital Peacemakers on Social Networking Sites',
+			source: 'PhD dissertation, University of Hertfordshire, 2025',
+			url: 'https://uhra.herts.ac.uk/id/eprint/25898/'
 		}
 	]
 };
