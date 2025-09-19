@@ -99,6 +99,15 @@ export const hadjCoteDIvoire: Publication = {
 				'Capi locali e colonialismo in Eritrea : biografie di un potere subordinato (1937-1941)',
 			source: 'Rome: Viella, 2021',
 			url: 'http://digital.casalini.it/9788833136806'
+		},
+		{
+			authors: ['Cédric Jourde', 'Muriel Gomez-Perez', 'Marie Brossier'],
+			year: 2025,
+			title:
+				"'The holy opacity of the organization of the pilgrimage': comparing the state's management of the hajj in contemporary Senegal and Cameroon",
+			source:
+				'Politics, Religion & Ideology',
+			url: 'https://doi.org/10.1080/21567689.2025.2548398'
 		}
 	]
 };
