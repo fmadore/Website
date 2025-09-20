@@ -9,6 +9,7 @@ export const aiArchivesHumanistica: Communication = {
 	dateISO: '2025-04-24',
 	year: 2025,
 	conference: 'Colloque annuel Humanistica 2025',
+	panelTitle: 'Archives et patrimoines',
 	location: 'Cheikh Anta Diop University',
 	country: 'Senegal',
 	type: 'conference',
