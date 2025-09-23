@@ -6,7 +6,7 @@ export const frqscMasters2011: Grant = {
 	funder: 'FRQSC',
 	startYear: 2011,
 	endYear: 2012,
-	dateRangeString: '2011–2012',
+	dateRangeString: '2011-2012',
 	dateISOStart: '2011-09-01',
 	dateISOEnd: '2012-08-31',
 	amount: 15000,
