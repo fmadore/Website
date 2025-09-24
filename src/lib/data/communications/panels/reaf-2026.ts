@@ -12,7 +12,30 @@ export const reaf2026Panel: Communication = {
 	country: 'France',
 	type: 'panel',
 	language: 'French',
-	abstract: '',
+	abstract: `Alors que le « tournant numérique » dans les études africaines prend de l'ampleur, ce panel explore le potentiel de transformation et les défis critiques des humanités numériques (DH) et de l'intelligence artificielle (IA) dans ce domaine. Nous examinons leur impact sur la production, la diffusion et l'interprétation des connaissances sur l'Afrique, en abordant tout particulièrement l'anglocentrisme persistant et la « fracture numérique ».
+
+Nous invitons les auteurs à présenter des applications innovantes des méthodes numériques dans les études africaines. 
+
+Les sujets peuvent inclure :
+
+1.	Innovations méthodologiques :
+
+- Approches numériques pour explorer les appartenances africaines, afropolitaines et afropéennes à travers l'analyse textuelle et visuelle.
+- Analyse par l'IA de contenus africains numérisés (par exemple, traitement du langage naturel, reconnaissance des entités nommées).
+- Enseignement de l'histoire africaine à l'aide d'outils numériques
+
+2.	Perspectives critiques :
+
+- Aborder l'« impérialisme numérique » (Breckenridge 2014) et le "complexe du sauveur numérique" (Shringarpure 2020) en relation avec la positionalité et la construction des connaissances.
+- Considérations éthiques dans l'application des méthodes de DH à des contextes culturellement sensibles
+
+3.	Production et diffusion des connaissances :
+
+- Plates-formes numériques pour la production de connaissances alternatives et publiques axée sur les perspectives africaines
+- Stratégies pour surmonter la numérisation sélective et les hiérarchies coloniales dans l'archivage numérique
+- Projets numériques collaboratifs transnationaux et transcontinentaux qui remettent en question les paradigmes établis dans le Nord
+
+Ce panel organisé par Frédérick Madore et Vincent Hiribarren fait suite à la réflexion entamée a l'ECAS2025. Il vise à présenter des recherches transdisciplinaires de pointe dans le monde francophone qui utilisent des méthodes numériques pour explorer les complexités des réalités, des identités et des systèmes de connaissance africains. En encourageant le dialogue sur le potentiel et les pièges des approches numériques, nous souhaitons contribuer à un paysage numérique plus inclusif, plus diversifié et plus critique dans les études africaines.`,
 	tags: ['digital humanities', 'artificial intelligence', 'African studies', 'REAF', 'methodology'],
 	url: 'https://reaf2026.sciencesconf.org/',
 	image: 'images/communications/reaf-2026.webp',
