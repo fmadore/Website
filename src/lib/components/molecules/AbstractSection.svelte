@@ -12,12 +12,32 @@
 		titleText?: string;
 		contentClass?: string;
 	} = $props();
+
+	// Function to split abstract into paragraphs
+	function formatAbstractParagraphs(text: string): string[] {
+		if (!text) return [];
+		
+		// Split by double line breaks or single line breaks, then filter out empty strings
+		return text
+			.split(/\n\s*\n|\n/)
+			.map(p => p.trim())
+			.filter(p => p.length > 0);
+	}
+
+	// Get formatted paragraphs
+	const paragraphs = $derived(abstract ? formatAbstractParagraphs(abstract) : []);
 </script>
 
-{#if abstract}
+{#if abstract && paragraphs.length > 0}
 	<section class={sectionClass}>
 		<h2 class={titleClass}>{titleText}</h2>
-		<div class={contentClass}>{abstract}</div>
+		<div class={contentClass}>
+			{#each paragraphs as paragraph, index}
+				<p class="abstract-paragraph" class:mb-4={index < paragraphs.length - 1}>
+					{paragraph}
+				</p>
+			{/each}
+		</div>
 	</section>
 {/if}
 
@@ -96,6 +116,14 @@
 		color: var(--color-text);
 		text-align: justify;
 		hyphens: auto;
+	}
+
+	.abstract-paragraph {
+		margin-bottom: 0;
+	}
+
+	.abstract-paragraph.mb-4 {
+		margin-bottom: var(--spacing-4);
 	}
 
 	/* Dark mode refinements */
