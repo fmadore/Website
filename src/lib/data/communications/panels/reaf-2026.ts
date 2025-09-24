@@ -26,7 +26,7 @@ Les sujets peuvent inclure :
 
 2.	Perspectives critiques :
 
-- Aborder l'« impérialisme numérique » (Breckenridge 2014) et le "complexe du sauveur numérique" (Shringarpure 2020) en relation avec la positionalité et la construction des connaissances.
+- Aborder l'« impérialisme numérique » (Breckenridge 2014) et le « complexe du sauveur numérique » (Shringarpure 2020) en relation avec la positionalité et la construction des connaissances.
 - Considérations éthiques dans l'application des méthodes de DH à des contextes culturellement sensibles
 
 3.	Production et diffusion des connaissances :
