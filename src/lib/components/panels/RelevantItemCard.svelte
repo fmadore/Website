@@ -51,19 +51,19 @@
 <style>
 	.relevant-item {
 		position: relative;
-		padding: var(--spacing-4);
+		padding: var(--space-4);
 		border-radius: var(--border-radius-md);
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
 		overflow: hidden;
 		/* Use glass-card utility for consistent glassmorphism */
-		background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light));
+		background: rgba(var(--color-white-rgb), var(--glass-surface-opacity));
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		border: var(--border-width-thin) solid
-			rgba(var(--color-white-rgb), var(--card-glass-border-light));
+			rgba(var(--color-white-rgb), var(--glass-border-opacity));
 		box-shadow:
-			0 8px 32px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-light));
+			0 8px 32px 0 rgba(var(--glass-shadow-color), var(--glass-shadow-strength)),
+			inset 0 1px 0 rgba(var(--color-white-rgb), var(--glass-inset-opacity));
 	}
 
 	.relevant-item::before {
@@ -85,11 +85,11 @@
 
 	.relevant-item:hover {
 		transform: var(--transform-lift-sm);
-		background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light-hover));
-		border-color: rgba(var(--color-white-rgb), var(--card-glass-border-light-hover));
+		background: rgba(var(--color-white-rgb), var(--glass-surface-opacity-hover));
+		border-color: rgba(var(--color-white-rgb), var(--glass-border-opacity-hover));
 		box-shadow:
-			0 12px 40px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity-hover)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-light-hover));
+			0 12px 40px 0 rgba(var(--glass-shadow-color), var(--glass-shadow-strength-hover)),
+			inset 0 1px 0 rgba(var(--color-white-rgb), var(--glass-inset-opacity-hover));
 	}
 
 	.relevant-item-meta {
@@ -97,8 +97,8 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
-		gap: var(--spacing-2);
-		margin-bottom: var(--spacing-3);
+		gap: var(--space-2);
+		margin-bottom: var(--space-3);
 	}
 
 	.relevant-item-type {
@@ -107,14 +107,14 @@
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-accent);
 		background-color: rgba(var(--color-accent-rgb), var(--opacity-medium));
-		padding: var(--spacing-1) var(--spacing-3);
+		padding: var(--space-1) var(--space-3);
 		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-medium-high));
 		border-radius: var(--border-radius-full);
 		transition: all var(--anim-duration-fast) var(--anim-ease-out);
 	}
 
 	.relevant-item-date {
-		color: var(--color-text-light);
+		color: var(--color-text-subtle);
 		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-medium);
 		min-width: 0;
@@ -124,7 +124,7 @@
 	.relevant-item-title {
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-semibold);
-		margin: 0 0 var(--spacing-2) 0;
+		margin: 0 0 var(--space-2) 0;
 		line-height: var(--line-height-relaxed);
 	}
 
@@ -140,17 +140,17 @@
 
 	.relevant-item-authors {
 		font-size: var(--font-size-sm);
-		color: var(--color-text-light);
+		color: var(--color-text-subtle);
 		font-style: italic;
-		margin-bottom: var(--spacing-2);
+		margin-bottom: var(--space-2);
 		line-height: var(--line-height-relaxed);
 	}
 
 	.relevant-item-abstract {
 		font-size: var(--font-size-sm);
-		color: var(--color-text-light);
+		color: var(--color-text-subtle);
 		line-height: var(--line-height-relaxed);
-		margin-bottom: var(--spacing-3);
+		margin-bottom: var(--space-3);
 	}
 
 	.relevant-item-action {
@@ -165,7 +165,7 @@
 		transition: all var(--anim-duration-base) var(--anim-ease-out);
 		display: inline-flex;
 		align-items: center;
-		gap: var(--spacing-1);
+		gap: var(--space-1);
 		position: relative;
 		overflow: hidden;
 	}
@@ -192,20 +192,20 @@
 
 	/* Dark mode overrides */
 	:global(html.dark) .relevant-item {
-		background: rgba(var(--color-black-rgb), var(--card-glass-opacity-dark));
+		background: rgba(var(--color-black-rgb), var(--glass-surface-opacity-inverse));
 		border: var(--border-width-thin) solid
-			rgba(var(--color-white-rgb), var(--card-glass-border-dark));
+			rgba(var(--color-white-rgb), var(--glass-border-opacity-inverse));
 		box-shadow:
-			0 8px 32px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-dark));
+			0 8px 32px 0 rgba(var(--glass-shadow-color), var(--glass-shadow-strength)),
+			inset 0 1px 0 rgba(var(--color-white-rgb), var(--glass-inset-opacity-inverse));
 	}
 
 	:global(html.dark) .relevant-item:hover {
-		background: rgba(var(--color-black-rgb), var(--card-glass-opacity-dark-hover));
-		border-color: rgba(var(--color-white-rgb), var(--card-glass-border-dark-hover));
+		background: rgba(var(--color-black-rgb), var(--glass-surface-opacity-inverse-hover));
+		border-color: rgba(var(--color-white-rgb), var(--glass-border-opacity-inverse-hover));
 		box-shadow:
-			0 12px 40px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity-hover)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-dark-hover));
+			0 12px 40px 0 rgba(var(--glass-shadow-color), var(--glass-shadow-strength-hover)),
+			inset 0 1px 0 rgba(var(--color-white-rgb), var(--glass-inset-opacity-inverse-hover));
 	}
 
 	:global(html.dark) .relevant-item-type {
@@ -218,7 +218,7 @@
 		.relevant-item-meta {
 			flex-direction: column;
 			align-items: flex-start;
-			gap: var(--spacing-2);
+			gap: var(--space-2);
 		}
 
 		.relevant-item-date {

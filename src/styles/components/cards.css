@@ -1,17 +1,17 @@
-npm/* Card styles */
+/* Card styles */
 
 .card {
-	background: rgba(var(--color-background-rgb, 255, 255, 255), var(--card-glass-opacity-light));
+	background: rgba(var(--color-background-rgb, 255, 255, 255), var(--glass-surface-opacity));
 	-webkit-backdrop-filter: blur(var(--glass-blur-fallback));
 	backdrop-filter: blur(var(--glass-blur-fallback));
 	border-radius: var(--border-radius-lg);
 	border: var(--border-width-thin) solid
-		rgba(var(--color-background-rgb, 255, 255, 255), var(--card-glass-border-light));
+		rgba(var(--color-background-rgb, 255, 255, 255), var(--glass-border-opacity));
 	overflow: hidden;
 	box-shadow:
-		0 var(--spacing-2) var(--spacing-8) 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity)),
+		0 var(--space-2) var(--space-8) 0 rgba(var(--glass-shadow-color), var(--glass-shadow-strength)),
 		inset 0 var(--border-width-thin) 0
-			rgba(var(--color-background-rgb, 255, 255, 255), var(--card-glass-inset-light));
+			rgba(var(--color-background-rgb, 255, 255, 255), var(--glass-inset-opacity));
 	transition:
 		transform var(--anim-duration-base) var(--anim-ease-out),
 		box-shadow var(--anim-duration-base) var(--anim-ease-out),
@@ -25,18 +25,18 @@ npm/* Card styles */
 .card:hover {
 	background: rgba(
 		var(--color-background-rgb, 255, 255, 255),
-		var(--card-glass-opacity-light-hover)
+		var(--glass-surface-opacity-hover)
 	);
 	border-color: rgba(
 		var(--color-background-rgb, 255, 255, 255),
-		var(--card-glass-border-light-hover)
+		var(--glass-border-opacity-hover)
 	);
-	transform: var(--card-transform-hover);
+	transform: var(--glass-translate-hover);
 	box-shadow:
-		0 var(--spacing-3) var(--spacing-10) 0
-			rgba(var(--card-shadow-color), var(--card-shadow-opacity-hover)),
+		0 var(--space-3) var(--space-10) 0
+			rgba(var(--glass-shadow-color), var(--glass-shadow-strength-hover)),
 		inset 0 var(--border-width-thin) 0
-			rgba(var(--color-background-rgb, 255, 255, 255), var(--card-glass-inset-light-hover));
+			rgba(var(--color-background-rgb, 255, 255, 255), var(--glass-inset-opacity-hover));
 }
 
 .card-image {
@@ -47,37 +47,37 @@ npm/* Card styles */
 }
 
 .card-body {
-	padding: var(--spacing-6);
+	padding: var(--space-6);
 	flex-grow: 1;
 }
 
 .card-title {
 	font-size: var(--font-size-xl);
 	font-weight: var(--font-weight-semibold);
-	margin-bottom: var(--spacing-2);
+	margin-bottom: var(--space-2);
 }
 
 .card-subtitle {
-	font-size: var(--font-size-sm);
-	color: var(--color-text-light);
-	margin-bottom: var(--spacing-3);
+        font-size: var(--font-size-sm);
+        color: var(--color-text-subtle);
+        margin-bottom: var(--space-3);
 }
 
 .card-text {
 	color: var(--color-text);
-	margin-bottom: var(--spacing-4);
+	margin-bottom: var(--space-4);
 	position: relative;
 }
 
 .card-footer {
-	padding: var(--spacing-4) var(--spacing-6);
-	border-top: var(--border-width-thin) solid var(--color-border);
-	background-color: var(--color-background-alt);
+        padding: var(--space-4) var(--space-6);
+        border-top: var(--border-width-thin) solid var(--color-border-default);
+        background-color: var(--color-surface-subtle);
 }
 
 /* Card variations */
 .card-compact .card-body {
-	padding: var(--spacing-4);
+	padding: var(--space-4);
 }
 
 .card-bordered {
@@ -117,38 +117,38 @@ npm/* Card styles */
 .card-link::after {
 	content: '→';
 	position: absolute;
-	bottom: var(--spacing-4);
-	right: var(--spacing-4);
+	bottom: var(--space-4);
+	right: var(--space-4);
 	opacity: 0;
-	transition:
-		opacity var(--anim-duration-fast) var(--anim-ease-out),
-		transform var(--anim-duration-fast) var(--anim-ease-out);
-	color: var(--color-primary);
+        transition:
+                opacity var(--anim-duration-fast) var(--anim-ease-out),
+                transform var(--anim-duration-fast) var(--anim-ease-out);
+        color: var(--color-interactive);
 }
 
 .card:hover .card-link::after {
 	opacity: 1;
-	transform: var(--card-link-transform);
+	transform: var(--glass-link-translate);
 }
 
 /* Card spacing modifiers - to replace Tailwind spacing utilities */
 .card-spacing-sm {
-	margin-bottom: var(--spacing-4);
+	margin-bottom: var(--space-4);
 }
 
 .card-spacing-md {
-	margin-bottom: var(--spacing-6);
+	margin-bottom: var(--space-6);
 }
 
 .card-spacing-lg {
-	margin-bottom: var(--spacing-8);
+	margin-bottom: var(--space-8);
 }
 
 /* Card grid system - for replacing Tailwind grid utilities */
 .card-grid {
 	display: grid;
 	grid-template-columns: 1fr;
-	gap: var(--spacing-6);
+	gap: var(--space-6);
 }
 
 @media (min-width: 640px) {
@@ -176,28 +176,28 @@ npm/* Card styles */
 
 /* Card background variants */
 .card-primary {
-	background-color: var(--color-primary);
-	color: var(--color-background);
+        background-color: var(--color-interactive);
+        color: var(--color-interactive-on);
 }
 
 .card-secondary {
-	background-color: var(--color-secondary);
-	color: var(--color-background);
+        background-color: var(--color-surface-muted);
+        color: var(--color-text);
 }
 
 .card-accent {
-	background-color: var(--color-accent);
-	color: var(--color-background);
+        background-color: var(--color-accent);
+        color: var(--color-text-inverse);
 }
 
 .card-highlight {
-	background-color: var(--color-highlight);
-	color: var(--color-background);
+        background-color: var(--color-highlight);
+        color: var(--color-text-inverse);
 }
 
 /* Card border variants */
 .card-border-primary {
-	border-color: var(--color-primary);
+        border-color: var(--color-interactive);
 }
 
 .card-border-accent {
@@ -210,24 +210,24 @@ npm/* Card styles */
 
 /* Dark mode glassmorphism overrides */
 :global(html.dark) .card {
-	background: rgba(var(--color-text-rgb, 0, 0, 0), var(--card-glass-opacity-dark));
+	background: rgba(var(--color-text-rgb, 0, 0, 0), var(--glass-surface-opacity-inverse));
 	border: var(--border-width-thin) solid
-		rgba(var(--color-background-rgb, 255, 255, 255), var(--card-glass-border-dark));
+		rgba(var(--color-background-rgb, 255, 255, 255), var(--glass-border-opacity-inverse));
 	box-shadow:
-		0 var(--spacing-2) var(--spacing-8) 0
+		0 var(--space-2) var(--space-8) 0
 			rgba(var(--color-text-rgb, 0, 0, 0), var(--opacity-medium-high)),
 		inset 0 var(--border-width-thin) 0
-			rgba(var(--color-background-rgb, 255, 255, 255), var(--card-glass-inset-dark));
+			rgba(var(--color-background-rgb, 255, 255, 255), var(--glass-inset-opacity-inverse));
 }
 
 :global(html.dark) .card:hover {
-	background: rgba(var(--color-text-rgb, 0, 0, 0), var(--card-glass-opacity-dark-hover));
+	background: rgba(var(--color-text-rgb, 0, 0, 0), var(--glass-surface-opacity-inverse-hover));
 	border-color: rgba(
 		var(--color-background-rgb, 255, 255, 255),
-		var(--card-glass-border-dark-hover)
+		var(--glass-border-opacity-inverse-hover)
 	);
 	box-shadow:
-		0 var(--spacing-3) var(--spacing-10) 0 rgba(var(--color-text-rgb, 0, 0, 0), var(--opacity-high)),
+		0 var(--space-3) var(--space-10) 0 rgba(var(--color-text-rgb, 0, 0, 0), var(--opacity-high)),
 		inset 0 var(--border-width-thin) 0
-			rgba(var(--color-background-rgb, 255, 255, 255), var(--card-glass-inset-dark-hover));
+			rgba(var(--color-background-rgb, 255, 255, 255), var(--glass-inset-opacity-inverse-hover));
 }
