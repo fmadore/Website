@@ -18,22 +18,22 @@ Nous invitons les auteurs à présenter des applications innovantes des méthode
 
 Les sujets peuvent inclure :
 
-1.	Innovations méthodologiques :
+1.	Innovations méthodologiques
 
-- Approches numériques pour explorer les appartenances africaines, afropolitaines et afropéennes à travers l'analyse textuelle et visuelle.
-- Analyse par l'IA de contenus africains numérisés (par exemple, traitement du langage naturel, reconnaissance des entités nommées).
-- Enseignement de l'histoire africaine à l'aide d'outils numériques
+- Approches numériques pour explorer les appartenances africaines, afropolitaines et afropéennes à travers l'analyse textuelle et visuelle;
+- Analyse par l'IA de contenus africains numérisés (par exemple, traitement du langage naturel, reconnaissance des entités nommées);
+- Enseignement de l'histoire africaine à l'aide d'outils numériques.
 
-2.	Perspectives critiques :
+2.	Perspectives critiques
 
-- Aborder l'« impérialisme numérique » (Breckenridge 2014) et le « complexe du sauveur numérique » (Shringarpure 2020) en relation avec la positionalité et la construction des connaissances.
-- Considérations éthiques dans l'application des méthodes de DH à des contextes culturellement sensibles
+- Aborder l'« impérialisme numérique » (Breckenridge 2014) et le « complexe du sauveur numérique » (Shringarpure 2020) en relation avec la positionalité et la construction des connaissances;
+- Considérations éthiques dans l'application des méthodes de DH à des contextes culturellement sensibles.
 
-3.	Production et diffusion des connaissances :
+3.	Production et diffusion des connaissances
 
-- Plates-formes numériques pour la production de connaissances alternatives et publiques axée sur les perspectives africaines
-- Stratégies pour surmonter la numérisation sélective et les hiérarchies coloniales dans l'archivage numérique
-- Projets numériques collaboratifs transnationaux et transcontinentaux qui remettent en question les paradigmes établis dans le Nord
+- Plates-formes numériques pour la production de connaissances alternatives et publiques axée sur les perspectives africaines;
+- Stratégies pour surmonter la numérisation sélective et les hiérarchies coloniales dans l'archivage numérique;
+- Projets numériques collaboratifs transnationaux et transcontinentaux qui remettent en question les paradigmes établis dans le Nord.
 
 Ce panel organisé par Frédérick Madore et Vincent Hiribarren fait suite à la réflexion entamée a l'ECAS2025. Il vise à présenter des recherches transdisciplinaires de pointe dans le monde francophone qui utilisent des méthodes numériques pour explorer les complexités des réalités, des identités et des systèmes de connaissance africains. En encourageant le dialogue sur le potentiel et les pièges des approches numériques, nous souhaitons contribuer à un paysage numérique plus inclusif, plus diversifié et plus critique dans les études africaines.`,
 	tags: ['digital humanities', 'artificial intelligence', 'African studies', 'REAF', 'methodology'],
