@@ -1,132 +1,205 @@
-/* Transition Utilities */
+/* Transition utilities built on semantic motion tokens */
 
 .transition-none {
-	transition-property: none;
+        transition-property: none;
+        transition-duration: 0s;
 }
 
 .transition {
-	transition-property:
-		color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow,
-		transform, filter, backdrop-filter;
-	transition-timing-function: var(--transition-ease-in-out);
-	transition-duration: var(--transition-duration-150);
+        transition-property:
+                color,
+                background-color,
+                border-color,
+                text-decoration-color,
+                fill,
+                stroke,
+                opacity,
+                box-shadow,
+                transform,
+                filter,
+                backdrop-filter;
+        transition-duration: var(--motion-snappy-duration);
+        transition-timing-function: var(--motion-snappy-easing);
+}
+
+.transition-snappy {
+        transition-duration: var(--motion-snappy-duration);
+        transition-timing-function: var(--motion-snappy-easing);
+}
+
+.transition-deliberate {
+        transition-duration: var(--motion-deliberate-duration);
+        transition-timing-function: var(--motion-deliberate-easing);
+}
+
+.transition-ambient {
+        transition-duration: var(--motion-ambient-duration);
+        transition-timing-function: var(--motion-ambient-easing);
 }
 
 .transition-colors {
-	transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-	transition-timing-function: var(--transition-ease-in-out);
-	transition-duration: var(--transition-duration-150);
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-duration: var(--motion-snappy-duration);
+        transition-timing-function: var(--motion-snappy-easing);
 }
 
 .transition-opacity {
-	transition-property: opacity;
-	transition-timing-function: var(--transition-ease-in-out);
-	transition-duration: var(--transition-duration-150);
+        transition-property: opacity;
+        transition-duration: var(--motion-snappy-duration);
+        transition-timing-function: var(--motion-snappy-easing);
 }
 
 .transition-shadow {
-	transition-property: box-shadow;
-	transition-timing-function: var(--transition-ease-in-out);
-	transition-duration: var(--transition-duration-150);
+        transition-property: box-shadow;
+        transition-duration: var(--motion-snappy-duration);
+        transition-timing-function: var(--motion-snappy-easing);
 }
 
 .transition-transform {
-	transition-property: transform;
-	transition-timing-function: var(--transition-ease-in-out);
-	transition-duration: var(--transition-duration-150);
+        transition-property: transform;
+        transition-duration: var(--motion-snappy-duration);
+        transition-timing-function: var(--motion-snappy-easing);
 }
 
-/* Durations */
+/* Duration helpers */
 .duration-75 {
-	transition-duration: var(--transition-duration-75);
+        transition-duration: var(--transition-duration-75);
 }
+
 .duration-100 {
-	transition-duration: var(--transition-duration-100);
+        transition-duration: var(--transition-duration-100);
 }
+
 .duration-150 {
-	transition-duration: var(--transition-duration-150);
+        transition-duration: var(--transition-duration-150);
 }
+
 .duration-200 {
-	transition-duration: var(--transition-duration-200);
+        transition-duration: var(--transition-duration-200);
 }
+
 .duration-300 {
-	transition-duration: var(--transition-duration-300);
+        transition-duration: var(--transition-duration-300);
 }
+
 .duration-500 {
-	transition-duration: var(--transition-duration-500);
+        transition-duration: var(--transition-duration-500);
 }
 
-/* Timing Functions */
+/* Timing helpers */
 .ease-linear {
-	transition-timing-function: var(--transition-ease-linear);
-}
-.ease-in {
-	transition-timing-function: var(--transition-ease-in);
-}
-.ease-out {
-	transition-timing-function: var(--transition-ease-out);
-}
-.ease-in-out {
-	transition-timing-function: var(--transition-ease-in-out);
+        transition-timing-function: var(--transition-ease-linear);
 }
 
-/* Responsive (Applying transition itself doesn't usually change, but added for completeness if needed) */
+.ease-in {
+        transition-timing-function: var(--transition-ease-in);
+}
+
+.ease-out {
+        transition-timing-function: var(--transition-ease-out);
+}
+
+.ease-in-out {
+        transition-timing-function: var(--transition-ease-in-out);
+}
+
+/* Responsive variants */
 @media (min-width: 640px) {
-	.sm\:transition {
-		transition-property:
-			color, background-color, border-color, text-decoration-color, fill, stroke, opacity,
-			box-shadow, transform, filter, backdrop-filter;
-		transition-timing-function: var(--transition-ease-in-out);
-		transition-duration: var(--transition-duration-150);
-	}
-	.sm\:transition-colors {
-		transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-		transition-timing-function: var(--transition-ease-in-out);
-		transition-duration: var(--transition-duration-150);
-	}
+        .sm\:transition {
+                transition-property:
+                        color,
+                        background-color,
+                        border-color,
+                        text-decoration-color,
+                        fill,
+                        stroke,
+                        opacity,
+                        box-shadow,
+                        transform,
+                        filter,
+                        backdrop-filter;
+                transition-duration: var(--motion-snappy-duration);
+                transition-timing-function: var(--motion-snappy-easing);
+        }
+
+        .sm\:transition-colors {
+                transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+                transition-duration: var(--motion-snappy-duration);
+                transition-timing-function: var(--motion-snappy-easing);
+        }
 }
 
 @media (min-width: 768px) {
-	.md\:transition {
-		transition-property:
-			color, background-color, border-color, text-decoration-color, fill, stroke, opacity,
-			box-shadow, transform, filter, backdrop-filter;
-		transition-timing-function: var(--transition-ease-in-out);
-		transition-duration: var(--transition-duration-150);
-	}
-	.md\:transition-colors {
-		transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-		transition-timing-function: var(--transition-ease-in-out);
-		transition-duration: var(--transition-duration-150);
-	}
+        .md\:transition {
+                transition-property:
+                        color,
+                        background-color,
+                        border-color,
+                        text-decoration-color,
+                        fill,
+                        stroke,
+                        opacity,
+                        box-shadow,
+                        transform,
+                        filter,
+                        backdrop-filter;
+                transition-duration: var(--motion-snappy-duration);
+                transition-timing-function: var(--motion-snappy-easing);
+        }
+
+        .md\:transition-colors {
+                transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+                transition-duration: var(--motion-snappy-duration);
+                transition-timing-function: var(--motion-snappy-easing);
+        }
 }
 
 @media (min-width: 1024px) {
-	.lg\:transition {
-		transition-property:
-			color, background-color, border-color, text-decoration-color, fill, stroke, opacity,
-			box-shadow, transform, filter, backdrop-filter;
-		transition-timing-function: var(--transition-ease-in-out);
-		transition-duration: var(--transition-duration-150);
-	}
-	.lg\:transition-colors {
-		transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-		transition-timing-function: var(--transition-ease-in-out);
-		transition-duration: var(--transition-duration-150);
-	}
+        .lg\:transition {
+                transition-property:
+                        color,
+                        background-color,
+                        border-color,
+                        text-decoration-color,
+                        fill,
+                        stroke,
+                        opacity,
+                        box-shadow,
+                        transform,
+                        filter,
+                        backdrop-filter;
+                transition-duration: var(--motion-snappy-duration);
+                transition-timing-function: var(--motion-snappy-easing);
+        }
+
+        .lg\:transition-colors {
+                transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+                transition-duration: var(--motion-snappy-duration);
+                transition-timing-function: var(--motion-snappy-easing);
+        }
 }
 
 @media (min-width: 1280px) {
-	.xl\:transition {
-		transition-property:
-			color, background-color, border-color, text-decoration-color, fill, stroke, opacity,
-			box-shadow, transform, filter, backdrop-filter;
-		transition-timing-function: var(--transition-ease-in-out);
-		transition-duration: var(--transition-duration-150);
-	}
-	.xl\:transition-colors {
-		transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-		transition-timing-function: var(--transition-ease-in-out);
-		transition-duration: var(--transition-duration-150);
-	}
+        .xl\:transition {
+                transition-property:
+                        color,
+                        background-color,
+                        border-color,
+                        text-decoration-color,
+                        fill,
+                        stroke,
+                        opacity,
+                        box-shadow,
+                        transform,
+                        filter,
+                        backdrop-filter;
+                transition-duration: var(--motion-snappy-duration);
+                transition-timing-function: var(--motion-snappy-easing);
+        }
+
+        .xl\:transition-colors {
+                transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+                transition-duration: var(--motion-snappy-duration);
+                transition-timing-function: var(--motion-snappy-easing);
+        }
 }
