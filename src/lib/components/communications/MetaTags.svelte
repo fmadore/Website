@@ -63,17 +63,17 @@
 		// Presentation format
 		params.set('rft_val_fmt', 'info:ofi/fmt:kev:mtx:dc');
 		params.set('rft.type', 'presentation');
-		
+
 		// Basic fields
 		if (communication.title) params.set('rft.title', communication.title);
-		
+
 		// Presenter (always Frédérick Madore for communications)
 		params.set('rft.creator', 'Frédérick Madore');
-		
+
 		// Meeting/Conference info
 		if (communication.conference) params.set('rft.source', communication.conference);
 		if (communication.location) params.set('rft.coverage', communication.location);
-		
+
 		// Date
 		if (communication.dateISO) params.set('rft.date', communication.dateISO);
 		else if (communication.year) params.set('rft.date', communication.year.toString());
@@ -90,7 +90,7 @@
 
 		// Presentation specific tags
 		tags.push({ name: 'citation_genre', content: getCitationGenre() });
-		
+
 		// Author/Presenter - always Frédérick Madore for communications
 		tags.push(
 			{ name: 'citation_author', content: 'Frédérick Madore' },
@@ -102,7 +102,10 @@
 		tags.push(
 			{ name: 'citation_conference_title', content: communication.conference },
 			{ name: 'citation_meeting_name', content: communication.conference },
-			...createConditionalTag('citation_place', `${communication.location}, ${communication.country}`),
+			...createConditionalTag(
+				'citation_place',
+				`${communication.location}, ${communication.country}`
+			),
 			...createConditionalTag('citation_presentation_type', getPresentationType()),
 			...createConditionalTag('citation_date', communication.dateISO),
 			...createConditionalTag('citation_publication_date', communication.dateISO),
@@ -113,15 +116,11 @@
 
 		// Panel-specific information
 		if (communication.panelTitle) {
-			tags.push(
-				...createConditionalTag('citation_panel_title', communication.panelTitle)
-			);
+			tags.push(...createConditionalTag('citation_panel_title', communication.panelTitle));
 		}
 
 		// Abstract/Description
-		tags.push(
-			...createConditionalTag('citation_abstract', communication.abstract)
-		);
+		tags.push(...createConditionalTag('citation_abstract', communication.abstract));
 
 		// URLs
 		const currentUrl = `${$page.url.origin}${$page.url.pathname}`;

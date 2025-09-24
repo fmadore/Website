@@ -16,13 +16,13 @@
 	import RelatedItemsList from '$lib/components/organisms/RelatedItemsList.svelte';
 	import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
 	import { browser } from '$app/environment';
-	import { 
-		createCommunicationSEODescription, 
-		createCommunicationSEOKeywords, 
-		truncateTitle 
+	import {
+		createCommunicationSEODescription,
+		createCommunicationSEOKeywords,
+		truncateTitle
 	} from '$lib/utils/seoUtils';
 	import MetaTags from '$lib/components/communications/MetaTags.svelte';
-	
+
 	// Get communication from the page data
 	let { data } = $props();
 	const communication = $derived(data.communication as Communication);

@@ -51,18 +51,18 @@
 		// Blog post format - use journal format with blog as journal
 		params.set('rft_val_fmt', 'info:ofi/fmt:kev:mtx:journal');
 		params.set('rft.genre', 'article');
-		
+
 		// Use website name as "journal" title for blog
 		params.set('rft.jtitle', 'Frédérick Madore');
 
 		// Basic fields
 		if (activity.title) params.set('rft.title', activity.title);
-		
+
 		// Author (always Frédérick Madore for activities)
 		params.set('rft.au', 'Frédérick Madore');
 		params.set('rft.aufirst', 'Frédérick');
 		params.set('rft.aulast', 'Madore');
-		
+
 		// Date
 		if (activity.dateISO) params.set('rft.date', activity.dateISO);
 		else if (activity.year) params.set('rft.date', activity.year.toString());
@@ -79,7 +79,7 @@
 
 		// Blog post specific tags
 		tags.push({ name: 'citation_genre', content: getCitationGenre() });
-		
+
 		// Author - always Frédérick Madore for activities
 		tags.push(
 			{ name: 'citation_author', content: 'Frédérick Madore' },
@@ -100,9 +100,7 @@
 		);
 
 		// Abstract/Description
-		tags.push(
-			...createConditionalTag('citation_abstract', activity.description)
-		);
+		tags.push(...createConditionalTag('citation_abstract', activity.description));
 
 		// URLs
 		const currentUrl = `${$page.url.origin}${$page.url.pathname}`;

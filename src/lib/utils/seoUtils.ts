@@ -4,7 +4,7 @@ import type { Activity } from '$lib/types/activity';
 
 /**
  * Creates an optimized SEO description for communication pages
- * 
+ *
  * Best practices applied:
  * - 150-160 characters optimal length for Google SERPs
  * - Front-loads important keywords (type, topic, location)
@@ -14,7 +14,7 @@ import type { Activity } from '$lib/types/activity';
  */
 export function createCommunicationSEODescription(communication: Communication): string {
 	const { type, title, conference, location, country, year, abstract, authors } = communication;
-	
+
 	// Helper to get readable type labels
 	const getTypeLabel = (type: string): string => {
 		const typeLabels: Record<string, string> = {
@@ -31,7 +31,7 @@ export function createCommunicationSEODescription(communication: Communication):
 	// Helper to truncate text while preserving sentence boundaries
 	const smartTruncate = (text: string, maxLength: number): string => {
 		if (text.length <= maxLength) return text;
-		
+
 		// Find the last complete sentence within the limit
 		const truncated = text.substring(0, maxLength);
 		const lastSentenceEnd = Math.max(
@@ -39,22 +39,22 @@ export function createCommunicationSEODescription(communication: Communication):
 			truncated.lastIndexOf('? '),
 			truncated.lastIndexOf('! ')
 		);
-		
+
 		if (lastSentenceEnd > maxLength * 0.6) {
 			// If we have a good sentence break, use it
 			return text.substring(0, lastSentenceEnd + 1).trim();
 		}
-		
+
 		// Otherwise, truncate at word boundary and add ellipsis
 		const lastSpace = truncated.lastIndexOf(' ');
-		return lastSpace > maxLength * 0.6 
+		return lastSpace > maxLength * 0.6
 			? text.substring(0, lastSpace) + '...'
 			: text.substring(0, maxLength - 3) + '...';
 	};
 
 	// Start building the description with the most important information first
 	let description = '';
-	
+
 	// Begin with type and title (most important for academic content)
 	if (type && title) {
 		const typeLabel = getTypeLabel(type);
@@ -62,14 +62,14 @@ export function createCommunicationSEODescription(communication: Communication):
 	} else if (title) {
 		description = title;
 	}
-	
+
 	// Add location and year context (highly valuable for academic presentations)
 	const locationInfo = [];
 	if (conference) locationInfo.push(conference);
 	if (location && location !== conference) locationInfo.push(location);
 	if (country && !location?.includes(country)) locationInfo.push(country);
 	if (year) locationInfo.push(year.toString());
-	
+
 	if (locationInfo.length > 0) {
 		const locationText = ` Presented at ${locationInfo.join(', ')}.`;
 		if ((description + locationText).length <= 160) {
@@ -82,21 +82,22 @@ export function createCommunicationSEODescription(communication: Communication):
 			}
 		}
 	}
-	
+
 	// If we have space and an abstract, add a summary
 	if (abstract && description.length < 120) {
 		const remainingSpace = 160 - description.length - 1; // -1 for space
 		const abstractPreview = smartTruncate(abstract, remainingSpace);
-		if (abstractPreview.length > 20) { // Only add if meaningful content
+		if (abstractPreview.length > 20) {
+			// Only add if meaningful content
 			description += ` ${abstractPreview}`;
 		}
 	}
-	
+
 	// Ensure we don't exceed 160 characters
 	if (description.length > 160) {
 		description = smartTruncate(description, 160);
 	}
-	
+
 	// Fallback if somehow we still don't have a good description
 	if (!description.trim()) {
 		const authorText = authors?.length ? ` by ${authors[0]}` : '';
@@ -104,7 +105,7 @@ export function createCommunicationSEODescription(communication: Communication):
 		const yearText = year ? ` (${year})` : '';
 		description = `Academic presentation${eventText}${authorText}${yearText}`;
 	}
-	
+
 	return description;
 }
 
@@ -114,25 +115,25 @@ export function createCommunicationSEODescription(communication: Communication):
  */
 export function createCommunicationSEOKeywords(communication: Communication): string {
 	const keywords = new Set<string>();
-	
+
 	// Add communication-specific keywords
 	if (communication.type) keywords.add(communication.type);
-	if (communication.tags) communication.tags.forEach(tag => keywords.add(tag));
-	if (communication.authors) communication.authors.forEach(author => keywords.add(author));
+	if (communication.tags) communication.tags.forEach((tag) => keywords.add(tag));
+	if (communication.authors) communication.authors.forEach((author) => keywords.add(author));
 	if (communication.country) keywords.add(communication.country);
 	if (communication.language) keywords.add(communication.language);
-	
+
 	// Add context-appropriate academic keywords
 	keywords.add('academic presentation');
 	if (communication.type === 'conference') keywords.add('conference paper');
 	if (communication.type === 'workshop') keywords.add('workshop presentation');
-	
+
 	// Add subject-matter keywords based on typical content
 	keywords.add('Islam');
 	keywords.add('West Africa');
 	keywords.add('digital humanities');
 	keywords.add('Frédérick Madore');
-	
+
 	return Array.from(keywords).join(', ');
 }
 
@@ -142,24 +143,24 @@ export function createCommunicationSEOKeywords(communication: Communication): st
  */
 export function truncateTitle(title: string, maxLength: number = 50): string {
 	if (title.length <= maxLength) return title;
-	
+
 	// Check for natural break points like colons
 	const colonIndex = title.indexOf(':');
 	if (colonIndex > 0 && colonIndex < maxLength) {
 		return title.substring(0, colonIndex) + '...';
 	}
-	
+
 	// Otherwise truncate at word boundary
 	const truncated = title.substring(0, maxLength);
 	const lastSpace = truncated.lastIndexOf(' ');
-	return lastSpace > maxLength * 0.6 
+	return lastSpace > maxLength * 0.6
 		? title.substring(0, lastSpace) + '...'
 		: title.substring(0, maxLength - 3) + '...';
 }
 
 /**
  * Creates an optimized SEO description for publication pages
- * 
+ *
  * Best practices applied:
  * - 150-160 characters optimal length for Google SERPs
  * - Front-loads important keywords (type, journal/publisher, year)
@@ -168,8 +169,9 @@ export function truncateTitle(title: string, maxLength: number = 50): string {
  * - Fallback logic for missing fields
  */
 export function createPublicationSEODescription(publication: Publication): string {
-	const { type, title, journal, publisher, book, year, abstract, authors, placeOfPublication } = publication;
-	
+	const { type, title, journal, publisher, book, year, abstract, authors, placeOfPublication } =
+		publication;
+
 	// Helper to get readable type labels
 	const getTypeLabel = (type: string): string => {
 		const typeLabels: Record<string, string> = {
@@ -189,7 +191,7 @@ export function createPublicationSEODescription(publication: Publication): strin
 	// Helper to truncate text while preserving sentence boundaries (reuse existing function)
 	const smartTruncate = (text: string, maxLength: number): string => {
 		if (text.length <= maxLength) return text;
-		
+
 		// Find the last complete sentence within the limit
 		const truncated = text.substring(0, maxLength);
 		const lastSentenceEnd = Math.max(
@@ -197,22 +199,22 @@ export function createPublicationSEODescription(publication: Publication): strin
 			truncated.lastIndexOf('? '),
 			truncated.lastIndexOf('! ')
 		);
-		
+
 		if (lastSentenceEnd > maxLength * 0.6) {
 			// If we have a good sentence break, use it
 			return text.substring(0, lastSentenceEnd + 1).trim();
 		}
-		
+
 		// Otherwise, truncate at word boundary and add ellipsis
 		const lastSpace = truncated.lastIndexOf(' ');
-		return lastSpace > maxLength * 0.6 
+		return lastSpace > maxLength * 0.6
 			? text.substring(0, lastSpace) + '...'
 			: text.substring(0, maxLength - 3) + '...';
 	};
 
 	// Start building the description with the most important information first
 	let description = '';
-	
+
 	// Begin with type and title (most important for academic content)
 	if (type && title) {
 		const typeLabel = getTypeLabel(type);
@@ -220,10 +222,10 @@ export function createPublicationSEODescription(publication: Publication): strin
 	} else if (title) {
 		description = title;
 	}
-	
+
 	// Add publication venue context (highly valuable for academic publications)
 	const venueInfo = [];
-	
+
 	// Different venue information based on publication type
 	if (type === 'article' || type === 'special-issue') {
 		if (journal) venueInfo.push(journal);
@@ -233,13 +235,14 @@ export function createPublicationSEODescription(publication: Publication): strin
 		if (publisher) venueInfo.push(publisher);
 		if (placeOfPublication) venueInfo.push(placeOfPublication);
 	} else if (type === 'encyclopedia') {
-		if ((publication as any).encyclopediaTitle) venueInfo.push((publication as any).encyclopediaTitle);
+		if ((publication as any).encyclopediaTitle)
+			venueInfo.push((publication as any).encyclopediaTitle);
 	} else if (type === 'masters-thesis' || type === 'phd-dissertation') {
 		if ((publication as any).university) venueInfo.push((publication as any).university);
 	}
-	
+
 	if (year) venueInfo.push(year.toString());
-	
+
 	if (venueInfo.length > 0) {
 		const venueText = ` Published in ${venueInfo.join(', ')}.`;
 		if ((description + venueText).length <= 160) {
@@ -255,21 +258,22 @@ export function createPublicationSEODescription(publication: Publication): strin
 		// If no venue info but we have a year, add it
 		description += ` (${year})`;
 	}
-	
+
 	// If we have space and an abstract, add a summary
 	if (abstract && description.length < 120) {
 		const remainingSpace = 160 - description.length - 1; // -1 for space
 		const abstractPreview = smartTruncate(abstract, remainingSpace);
-		if (abstractPreview.length > 20) { // Only add if meaningful content
+		if (abstractPreview.length > 20) {
+			// Only add if meaningful content
 			description += ` ${abstractPreview}`;
 		}
 	}
-	
+
 	// Ensure we don't exceed 160 characters
 	if (description.length > 160) {
 		description = smartTruncate(description, 160);
 	}
-	
+
 	// Fallback if somehow we still don't have a good description
 	if (!description.trim()) {
 		const authorText = authors?.length ? ` by ${authors[0]}` : '';
@@ -277,7 +281,7 @@ export function createPublicationSEODescription(publication: Publication): strin
 		const typeLabel = getTypeLabel(type);
 		description = `${typeLabel}${authorText}${yearText}`;
 	}
-	
+
 	return description;
 }
 
@@ -287,39 +291,39 @@ export function createPublicationSEODescription(publication: Publication): strin
  */
 export function createPublicationSEOKeywords(publication: Publication): string {
 	const keywords = new Set<string>();
-	
+
 	// Add publication-specific keywords
 	if (publication.type) keywords.add(publication.type);
-	if (publication.tags) publication.tags.forEach(tag => keywords.add(tag));
-	if (publication.authors) publication.authors.forEach(author => keywords.add(author));
+	if (publication.tags) publication.tags.forEach((tag) => keywords.add(tag));
+	if (publication.authors) publication.authors.forEach((author) => keywords.add(author));
 	if (publication.language) keywords.add(publication.language);
-	
+
 	// Add venue-specific keywords
 	if (publication.journal) keywords.add(publication.journal);
 	if (publication.publisher) keywords.add(publication.publisher);
 	if (publication.book) keywords.add(publication.book);
-	
+
 	// Add context-appropriate academic keywords
 	keywords.add('academic publication');
 	if (publication.type === 'article') keywords.add('journal article');
 	if (publication.type === 'book') keywords.add('academic book');
 	if (publication.type === 'chapter') keywords.add('book chapter');
-	
+
 	// Add subject-matter keywords based on typical content
 	keywords.add('Islam');
 	keywords.add('West Africa');
 	keywords.add('digital humanities');
 	keywords.add('Frédérick Madore');
-	
+
 	// Add research-specific terms
 	if (publication.project) keywords.add(publication.project);
-	
+
 	return Array.from(keywords).join(', ');
 }
 
 /**
  * Creates an optimized SEO description for activity pages treated as blog posts
- * 
+ *
  * Blog post SEO best practices applied:
  * - 150-160 characters optimal length for better click-through rates
  * - Front-loads value proposition and key takeaways
@@ -330,13 +334,13 @@ export function createPublicationSEOKeywords(publication: Publication): string {
  */
 export function createActivitySEODescription(activity: Activity): string {
 	const { title, description, type, year, tags } = activity;
-	
+
 	// Helper to get blog-friendly type labels with engaging language
 	const getBlogTypeLabel = (type?: string): string => {
 		const typeLabels: Record<string, string> = {
 			conference: 'Conference insights',
 			workshop: 'Workshop highlights',
-			seminar: 'Seminar takeaways', 
+			seminar: 'Seminar takeaways',
 			lecture: 'Lecture summary',
 			panel: 'Panel discussion',
 			grant: 'Research funding',
@@ -351,7 +355,7 @@ export function createActivitySEODescription(activity: Activity): string {
 	// Helper to truncate text while preserving word boundaries
 	const smartTruncate = (text: string, maxLength: number): string => {
 		if (text.length <= maxLength) return text;
-		
+
 		// Find the last complete sentence within the limit
 		const truncated = text.substring(0, maxLength);
 		const lastSentenceEnd = Math.max(
@@ -359,27 +363,27 @@ export function createActivitySEODescription(activity: Activity): string {
 			truncated.lastIndexOf('? '),
 			truncated.lastIndexOf('! ')
 		);
-		
+
 		if (lastSentenceEnd > maxLength * 0.6) {
 			// If we have a good sentence break, use it
 			return text.substring(0, lastSentenceEnd + 1).trim();
 		}
-		
+
 		// Otherwise, truncate at word boundary and add ellipsis
 		const lastSpace = truncated.lastIndexOf(' ');
-		return lastSpace > maxLength * 0.6 
+		return lastSpace > maxLength * 0.6
 			? text.substring(0, lastSpace) + '...'
 			: text.substring(0, maxLength - 3) + '...';
 	};
 
 	// Start with the activity description (primary content)
 	let seoDescription = description || '';
-	
+
 	// If description is too short or missing, build one from available data
 	if (!seoDescription || seoDescription.length < 50) {
 		const typeLabel = getBlogTypeLabel(type);
 		const yearText = year ? ` (${year})` : '';
-		
+
 		// Create engaging blog-style description
 		if (type === 'publication') {
 			seoDescription = `Latest publication update${yearText}: ${title}`;
@@ -391,17 +395,19 @@ export function createActivitySEODescription(activity: Activity): string {
 			seoDescription = `${typeLabel}${yearText}: ${title}`;
 		}
 	}
-	
+
 	// Add contextual keywords if we have space and they add value
 	const remainingSpace = 160 - seoDescription.length;
 	if (remainingSpace > 20 && tags && tags.length > 0) {
 		// Add relevant tags that provide additional context
-		const contextTags = tags.filter(tag => 
-			['Digital Humanities', 'Islam', 'West Africa', 'Research', 'Academic'].some(keyword =>
-				tag.toLowerCase().includes(keyword.toLowerCase())
+		const contextTags = tags
+			.filter((tag) =>
+				['Digital Humanities', 'Islam', 'West Africa', 'Research', 'Academic'].some((keyword) =>
+					tag.toLowerCase().includes(keyword.toLowerCase())
+				)
 			)
-		).slice(0, 2); // Limit to 2 most relevant tags
-		
+			.slice(0, 2); // Limit to 2 most relevant tags
+
 		if (contextTags.length > 0) {
 			const tagText = ` Topics: ${contextTags.join(', ')}.`;
 			if (tagText.length <= remainingSpace) {
@@ -409,7 +415,7 @@ export function createActivitySEODescription(activity: Activity): string {
 			}
 		}
 	}
-	
+
 	// Add engaging call-to-action if space allows
 	if (seoDescription.length < 140) {
 		const ctaOptions = [
@@ -418,30 +424,30 @@ export function createActivitySEODescription(activity: Activity): string {
 			'Discover details →',
 			'Explore findings →'
 		];
-		
+
 		// Choose CTA based on activity type
 		let cta = 'Learn more →';
 		if (type === 'publication') cta = 'Read details →';
 		else if (type === 'conference' || type === 'workshop') cta = 'Read insights →';
 		else if (type === 'grant') cta = 'Discover details →';
-		
+
 		if (seoDescription.length + cta.length + 1 <= 160) {
 			seoDescription += ` ${cta}`;
 		}
 	}
-	
+
 	// Ensure optimal length (150-160 characters)
 	if (seoDescription.length > 160) {
 		seoDescription = smartTruncate(seoDescription, 160);
 	}
-	
+
 	// Final fallback if somehow we don't have content
 	if (!seoDescription.trim()) {
 		const typeLabel = getBlogTypeLabel(type);
 		const yearText = year ? ` ${year}` : '';
 		seoDescription = `${typeLabel}${yearText} by Frédérick Madore`;
 	}
-	
+
 	return seoDescription;
 }
 
@@ -451,7 +457,7 @@ export function createActivitySEODescription(activity: Activity): string {
  */
 export function createActivitySEOKeywords(activity: Activity): string {
 	const keywords = new Set<string>();
-	
+
 	// Add activity-specific keywords
 	if (activity.type) {
 		// Map activity types to blog-friendly keywords
@@ -467,33 +473,33 @@ export function createActivitySEOKeywords(activity: Activity): string {
 			visit: ['academic visit', 'research visit', 'collaboration'],
 			news: ['academic news', 'research news', 'updates']
 		};
-		
+
 		const relatedKeywords = typeKeywords[activity.type] || ['academic activity'];
-		relatedKeywords.forEach(keyword => keywords.add(keyword));
+		relatedKeywords.forEach((keyword) => keywords.add(keyword));
 	}
-	
+
 	// Add tag-based keywords (these are often topical)
 	if (activity.tags) {
-		activity.tags.forEach(tag => keywords.add(tag));
+		activity.tags.forEach((tag) => keywords.add(tag));
 	}
-	
+
 	// Add blog-relevant keywords
 	keywords.add('blog post');
 	keywords.add('academic blog');
 	keywords.add('research update');
-	
+
 	// Add author/personal branding keywords
 	keywords.add('Frédérick Madore');
 	keywords.add('digital humanities');
 	keywords.add('Islam studies');
 	keywords.add('West Africa research');
 	keywords.add('academic researcher');
-	
+
 	// Add year if available (helps with temporal searches)
 	if (activity.year) {
 		keywords.add(activity.year.toString());
 	}
-	
+
 	// Add content-type specific keywords
 	if (activity.content) {
 		// Add generic content keywords for blog posts
@@ -501,14 +507,14 @@ export function createActivitySEOKeywords(activity: Activity): string {
 		keywords.add('insights');
 		keywords.add('findings');
 	}
-	
+
 	// Add geographic keywords if commonly relevant
 	keywords.add('Africa');
 	keywords.add('Francophone Africa');
-	
+
 	// Add methodological keywords common to digital humanities
 	keywords.add('research methods');
 	keywords.add('academic research');
-	
+
 	return Array.from(keywords).slice(0, 15).join(', '); // Limit to 15 most relevant keywords
 }

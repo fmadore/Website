@@ -3,7 +3,8 @@ import { formatDisplayDate } from '$lib/utils/date-formatter';
 
 export const archivesAlgorithmsIwac2025: Activity = {
 	id: 'archives-algorithms-iwac-2025',
-	title: 'From Archives to Algorithms: Uncovering Transregional Islamic Connections through the Islam West Africa Collection (IWAC)',
+	title:
+		'From Archives to Algorithms: Uncovering Transregional Islamic Connections through the Islam West Africa Collection (IWAC)',
 	dateISO: '2025-09-11',
 	date: formatDisplayDate('2025-09-11'),
 	year: 2025,
@@ -24,11 +25,18 @@ export const archivesAlgorithmsIwac2025: Activity = {
             <li><strong>Mix scales</strong>: use distant reading to map coverage and temporal patterns, and close reading to expose gaps and turn absence into evidence.</li>
         </ul>
     `,
-	tags: ['Digital Humanities', 'Global History', 'Archives', 'Algorithms', 'Transregional History', 'ENIUGH'],
+	tags: [
+		'Digital Humanities',
+		'Global History',
+		'Archives',
+		'Algorithms',
+		'Transregional History',
+		'ENIUGH'
+	],
 	type: 'conference',
 	heroImage: {
 		src: 'images/activities/ENIUGH-hero.webp',
-		alt: 'Photo of Frédérick Madore, Mila Oiva, Gerben Zaagsma, and Kathleen Schlütter at the European Congress on World and Global History',
+		alt: 'Photo of Frédérick Madore, Mila Oiva, Gerben Zaagsma, and Kathleen Schlütter at the European Congress on World and Global History'
 	},
 	panelType: 'conference'
 };

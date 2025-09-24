@@ -35,10 +35,18 @@ export const muslimFeministMediaCoteDIvoire: Publication = {
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	citedBy: [
 		{
-			authors: ['Taskia Uswatun Khasanah', 'Ainur Rhain', 'Kharis Nugroho', 'Ahmad Nurrohim', 'Muhammad Abuzar'],
+			authors: [
+				'Taskia Uswatun Khasanah',
+				'Ainur Rhain',
+				'Kharis Nugroho',
+				'Ahmad Nurrohim',
+				'Muhammad Abuzar'
+			],
 			year: 2025,
-			title: "Career Women in Tafsir Al Misbah: An Analytical Study of Fazlur Rahman's Double Movement Theory",
-			source: 'Solo International Collaboration and Publication of Social Sciences and Humanities 4, no. 1 (2025): 105-20',
+			title:
+				"Career Women in Tafsir Al Misbah: An Analytical Study of Fazlur Rahman's Double Movement Theory",
+			source:
+				'Solo International Collaboration and Publication of Social Sciences and Humanities 4, no. 1 (2025): 105-20',
 			url: 'https://doi.org/10.61455/sicopus.v4i01.388'
 		},
 		{

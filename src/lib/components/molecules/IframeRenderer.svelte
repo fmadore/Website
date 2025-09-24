@@ -31,11 +31,11 @@
 	// Helper to determine if height is a CSS value (not a class name)
 	let isCssValue = $derived(
 		height &&
-		(height.endsWith('px') ||
-			height.endsWith('%') ||
-			height.endsWith('vh') ||
-			height.endsWith('em') ||
-			height.endsWith('rem'))
+			(height.endsWith('px') ||
+				height.endsWith('%') ||
+				height.endsWith('vh') ||
+				height.endsWith('em') ||
+				height.endsWith('rem'))
 	);
 
 	// Determine the base container classes
@@ -56,7 +56,7 @@
 	// Determine additional classes (height class if needed)
 	let additionalClasses = $derived.by(() => {
 		const classes = [];
-		
+
 		// Add height class if containerClass is provided and height is a class name
 		if (containerClass && height && !isCssValue) {
 			classes.push(height);
@@ -71,9 +71,7 @@
 	});
 
 	// Combine all classes
-	let finalContainerClass = $derived(
-		[...baseClasses, ...additionalClasses].join(' ')
-	);
+	let finalContainerClass = $derived([...baseClasses, ...additionalClasses].join(' '));
 
 	// Determine the inline style for the iframe
 	let style = $derived.by(() => {

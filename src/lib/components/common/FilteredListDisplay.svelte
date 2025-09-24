@@ -57,12 +57,7 @@
 		<div class="p-8 bg-gray-50 rounded text-center mt-6">
 			<p>{emptyStateMessage}</p>
 			{#if areFiltersActive}
-				<Button
-					variant="primary"
-					size="sm"
-					onclick={clearAllFilters}
-					additionalClasses="mt-4"
-				>
+				<Button variant="primary" size="sm" onclick={clearAllFilters} additionalClasses="mt-4">
 					Clear all filters
 				</Button>
 			{:else if !areFiltersActive}

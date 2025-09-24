@@ -110,7 +110,9 @@
 
 			// Handle breadcrumb JSON-LD script
 			const breadcrumbScriptId = breadcrumbJsonLdScriptId;
-			let breadcrumbScript = document.getElementById(breadcrumbScriptId) as HTMLScriptElement | null;
+			let breadcrumbScript = document.getElementById(
+				breadcrumbScriptId
+			) as HTMLScriptElement | null;
 
 			if (breadcrumbJsonLdString) {
 				if (breadcrumbScript) {
@@ -134,7 +136,10 @@
 						document.head.removeChild(activityScriptToRemove);
 					}
 					const breadcrumbScriptToRemove = document.getElementById(breadcrumbScriptId);
-					if (breadcrumbScriptToRemove && breadcrumbScriptToRemove.parentElement === document.head) {
+					if (
+						breadcrumbScriptToRemove &&
+						breadcrumbScriptToRemove.parentElement === document.head
+					) {
 						document.head.removeChild(breadcrumbScriptToRemove);
 					}
 				}
@@ -181,7 +186,7 @@
 	<!-- Preconnect to improve performance -->
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-	
+
 	<!-- Conditional preload of hero image if it exists to improve LCP -->
 	{#if activity?.heroImage?.src}
 		<link rel="preload" href="{base}/{activity.heroImage.src}" as="image" fetchpriority="high" />
@@ -195,7 +200,9 @@
 	keywords={seoKeywords}
 	canonical="{$page.url.origin}{base}/activities/{activity.id}"
 	type="article"
-	ogImage={activity.heroImage?.src ? `${$page.url.origin}${base}/${activity.heroImage.src}` : undefined}
+	ogImage={activity.heroImage?.src
+		? `${$page.url.origin}${base}/${activity.heroImage.src}`
+		: undefined}
 />
 
 <!-- MetaTags Component for Zotero blog post detection -->
@@ -206,192 +213,192 @@
 		class="container max-w-7xl critical-content"
 		use:scrollAnimate={{ delay: DELAY_STEP, animationClass: 'fade-in-up' }}
 	>
-	{#if activity}
-		<!-- Separate page header section -->
-		<div use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
-			<Breadcrumb items={breadcrumbItems} />
-		</div>
+		{#if activity}
+			<!-- Separate page header section -->
+			<div use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
+				<Breadcrumb items={breadcrumbItems} />
+			</div>
 
-		<div use:scrollAnimate={{ delay: DELAY_STEP * 3, animationClass: 'fade-in-up' }}>
-			<PageHeader
-				title={activity.title}
-				date={activity.date}
-				typeBadgeText={formatPanelType(activity.panelType)}
-			/>
-		</div>
-
-		{#if activity.heroImage && activity.heroImage.src}
-			<div
-				class="hero-image-wrapper"
-				use:scrollAnimate={{ delay: DELAY_STEP * 4, animationClass: 'fade-in-up' }}
-			>
-				<HeroImageDisplay
-					heroImage={{
-						src: activity.heroImage.src,
-						alt: activity.heroImage.alt ?? activity.title,
-						caption: activity.heroImage.caption
-					}}
-					fallbackImage={activity.image}
-					defaultAlt={activity.title}
-					variant="featured"
-					glassEffect={true}
-					fetchpriority="high"
-					loading="eager"
-					maxHeight="60vh"
+			<div use:scrollAnimate={{ delay: DELAY_STEP * 3, animationClass: 'fade-in-up' }}>
+				<PageHeader
+					title={activity.title}
+					date={activity.date}
+					typeBadgeText={formatPanelType(activity.panelType)}
 				/>
 			</div>
-		{/if}
 
-		<!-- Main content card -->
-		<div use:scrollAnimate={{ delay: DELAY_STEP * 5, animationClass: 'fade-in-up' }}>
-			<ContentBody variant="default" glassEffect="glass-card" additionalClasses="mt-6">
-				{#snippet children()}
-					<!-- Render parsed content segments -->
-					{#each contentSegments as segment}
-						{#if segment.type === 'html'}
-							{@html segment.value}
-						{:else if segment.type === 'ItemReference' && segment.id}
-							<ItemReference id={segment.id} />
-						{/if}
-					{/each}
-				{/snippet}
-			</ContentBody>
-		</div>
+			{#if activity.heroImage && activity.heroImage.src}
+				<div
+					class="hero-image-wrapper"
+					use:scrollAnimate={{ delay: DELAY_STEP * 4, animationClass: 'fade-in-up' }}
+				>
+					<HeroImageDisplay
+						heroImage={{
+							src: activity.heroImage.src,
+							alt: activity.heroImage.alt ?? activity.title,
+							caption: activity.heroImage.caption
+						}}
+						fallbackImage={activity.image}
+						defaultAlt={activity.title}
+						variant="featured"
+						glassEffect={true}
+						fetchpriority="high"
+						loading="eager"
+						maxHeight="60vh"
+					/>
+				</div>
+			{/if}
 
-		{#if activity.url || (activity.additionalUrls && activity.additionalUrls.length > 0)}
-			<div use:scrollAnimate={{ delay: DELAY_STEP * 6, animationClass: 'fade-in-up' }}>
-				<ActionLinks
-					primaryUrl={activity.url}
-					primaryLabel="Visit Activity"
-					additionalUrls={activity.additionalUrls}
-					sectionClass="action-links mt-4"
-					primaryButtonClass="btn btn-primary glass-button"
-					secondaryButtonClass="btn btn-outline-primary glass-button"
-					primaryDivClass="mb-4"
-				/>
+			<!-- Main content card -->
+			<div use:scrollAnimate={{ delay: DELAY_STEP * 5, animationClass: 'fade-in-up' }}>
+				<ContentBody variant="default" glassEffect="glass-card" additionalClasses="mt-6">
+					{#snippet children()}
+						<!-- Render parsed content segments -->
+						{#each contentSegments as segment}
+							{#if segment.type === 'html'}
+								{@html segment.value}
+							{:else if segment.type === 'ItemReference' && segment.id}
+								<ItemReference id={segment.id} />
+							{/if}
+						{/each}
+					{/snippet}
+				</ContentBody>
 			</div>
+
+			{#if activity.url || (activity.additionalUrls && activity.additionalUrls.length > 0)}
+				<div use:scrollAnimate={{ delay: DELAY_STEP * 6, animationClass: 'fade-in-up' }}>
+					<ActionLinks
+						primaryUrl={activity.url}
+						primaryLabel="Visit Activity"
+						additionalUrls={activity.additionalUrls}
+						sectionClass="action-links mt-4"
+						primaryButtonClass="btn btn-primary glass-button"
+						secondaryButtonClass="btn btn-outline-primary glass-button"
+						primaryDivClass="mb-4"
+					/>
+				</div>
+			{/if}
+
+			{#if activity.pdfPath}
+				<div
+					class="pdf-section glass-card mt-4 p-8 rounded-xl transition-transform duration-300 shadow-lg hover:shadow-xl"
+					use:scrollAnimate={{ delay: DELAY_STEP * 7, animationClass: 'fade-in-up' }}
+				>
+					<h2 class="text-xl font-serif font-semibold mb-4 text-emphasis">
+						{activity.pdfTitle || 'Associated Document'}
+					</h2>
+					<IframeRenderer
+						id="activity-pdf-{activity.id}"
+						src="{base}/{activity.pdfPath}"
+						title="{activity.title} PDF Document"
+						height="800px"
+						containerClass="iframe-container iframe-container-fullwidth"
+						glassEffect={true}
+						glassVariant="glass-light"
+					/>
+				</div>
+			{/if}
+
+			{#if formattedTags && formattedTags.length > 0}
+				<div
+					class="mt-4 mb-6"
+					use:scrollAnimate={{ delay: DELAY_STEP * 8, animationClass: 'fade-in-up' }}
+				>
+					<TagList tags={formattedTags} baseUrl="/activities?tag=" />
+				</div>
+			{/if}
 		{/if}
+	</div>
 
-		{#if activity.pdfPath}
-			<div
-				class="pdf-section glass-card mt-4 p-8 rounded-xl transition-transform duration-300 shadow-lg hover:shadow-xl"
-				use:scrollAnimate={{ delay: DELAY_STEP * 7, animationClass: 'fade-in-up' }}
-			>
-				<h2 class="text-xl font-serif font-semibold mb-4 text-emphasis">
-					{activity.pdfTitle || 'Associated Document'}
-				</h2>
-				<IframeRenderer
-					id="activity-pdf-{activity.id}"
-					src="{base}/{activity.pdfPath}"
-					title="{activity.title} PDF Document"
-					height="800px"
-					containerClass="iframe-container iframe-container-fullwidth"
-					glassEffect={true}
-					glassVariant="glass-light"
-				/>
-			</div>
-		{/if}
+	<style>
+		/* Container optimization */
+		.container {
+			content-visibility: auto;
+			contain-intrinsic-size: 1000px;
+			/* Optimize container for better rendering */
+			will-change: auto;
+			transform: translateZ(0);
+		}
 
-		{#if formattedTags && formattedTags.length > 0}
-			<div
-				class="mt-4 mb-6"
-				use:scrollAnimate={{ delay: DELAY_STEP * 8, animationClass: 'fade-in-up' }}
-			>
-				<TagList tags={formattedTags} baseUrl="/activities?tag=" />
-			</div>
-		{/if}
-	{/if}
-</div>
+		/* Hero image wrapper - ensure it doesn't interfere with modal stacking */
+		.hero-image-wrapper {
+			position: relative;
+			z-index: auto; /* Ensure no stacking context issues */
+			isolation: auto; /* Prevent isolation that could interfere with modal */
+			content-visibility: auto;
+			contain-intrinsic-size: 400px;
+		}
 
-<style>
-	/* Container optimization */
-	.container {
-		content-visibility: auto;
-		contain-intrinsic-size: 1000px;
-		/* Optimize container for better rendering */
-		will-change: auto;
-		transform: translateZ(0);
-	}
-
-	/* Hero image wrapper - ensure it doesn't interfere with modal stacking */
-	.hero-image-wrapper {
-		position: relative;
-		z-index: auto; /* Ensure no stacking context issues */
-		isolation: auto; /* Prevent isolation that could interfere with modal */
-		content-visibility: auto;
-		contain-intrinsic-size: 400px;
-	}
-
-	/* Responsive hero image optimization */
-	:global(.hero-image-wrapper .hero-image) {
-		width: 100%;
-		height: auto;
-		max-width: 330px; /* Match the displayed dimensions from PageSpeed Insights */
-		max-height: 438px;
-		object-fit: cover;
-		border-radius: var(--border-radius-lg);
-	}
-
-	@media (min-width: 768px) {
+		/* Responsive hero image optimization */
 		:global(.hero-image-wrapper .hero-image) {
-			max-width: 600px;
-			max-height: auto;
+			width: 100%;
+			height: auto;
+			max-width: 330px; /* Match the displayed dimensions from PageSpeed Insights */
+			max-height: 438px;
+			object-fit: cover;
+			border-radius: var(--border-radius-lg);
 		}
-	}
 
-	@media (min-width: 1024px) {
-		:global(.hero-image-wrapper .hero-image) {
-			max-width: 800px;
+		@media (min-width: 768px) {
+			:global(.hero-image-wrapper .hero-image) {
+				max-width: 600px;
+				max-height: auto;
+			}
 		}
-	}
 
-	/* PDF section styling with glassmorphism */
-	.pdf-section {
-		position: relative;
-		content-visibility: auto;
-		contain-intrinsic-size: 800px;
-		/* Enhanced glassmorphism with subtle gradient overlay */
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
-		);
-	}
+		@media (min-width: 1024px) {
+			:global(.hero-image-wrapper .hero-image) {
+				max-width: 800px;
+			}
+		}
 
-	.pdf-section:hover {
-		transform: var(--transform-lift-sm);
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
-		);
-	}
-
-	/* Responsive adjustments */
-	@media (max-width: 640px) {
+		/* PDF section styling with glassmorphism */
 		.pdf-section {
-			padding: var(--spacing-6) !important;
-		}
-	}
-
-	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
-		.pdf-section {
-			transition: none;
+			position: relative;
+			content-visibility: auto;
+			contain-intrinsic-size: 800px;
+			/* Enhanced glassmorphism with subtle gradient overlay */
+			background: linear-gradient(
+				135deg,
+				rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+				rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+				rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			);
 		}
 
 		.pdf-section:hover {
-			transform: none;
+			transform: var(--transform-lift-sm);
+			background: linear-gradient(
+				135deg,
+				rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+				rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+				rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			);
 		}
-	}
 
-	/* Dark mode adjustments are handled automatically through CSS variables */
+		/* Responsive adjustments */
+		@media (max-width: 640px) {
+			.pdf-section {
+				padding: var(--spacing-6) !important;
+			}
+		}
 
-	/* Critical above-the-fold content */
-	.critical-content {
-		contain: layout style paint;
-	}
-</style>
+		/* Respect user motion preferences */
+		@media (prefers-reduced-motion: reduce) {
+			.pdf-section {
+				transition: none;
+			}
+
+			.pdf-section:hover {
+				transform: none;
+			}
+		}
+
+		/* Dark mode adjustments are handled automatically through CSS variables */
+
+		/* Critical above-the-fold content */
+		.critical-content {
+			contain: layout style paint;
+		}
+	</style>
 {/if}

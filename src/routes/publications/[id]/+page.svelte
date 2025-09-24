@@ -24,10 +24,10 @@
 	import { allPublications } from '$lib/data/publications/index'; // Keep this for RelatedItemsList
 	import { generateBibtex } from '$lib/utils/bibtexGenerator'; // Import the generator
 	import { scrollAnimate } from '$lib/utils/scrollAnimations'; // Add scroll animations
-	import { 
-		createPublicationSEODescription, 
-		createPublicationSEOKeywords, 
-		truncateTitle 
+	import {
+		createPublicationSEODescription,
+		createPublicationSEOKeywords,
+		truncateTitle
 	} from '$lib/utils/seoUtils';
 
 	interface Props {

@@ -49,7 +49,7 @@
 	$effect(() => {
 		if (browser && breadcrumbJsonLdString) {
 			let script = document.getElementById(breadcrumbJsonLdScriptId) as HTMLScriptElement | null;
-			
+
 			if (script) {
 				// Update existing script
 				script.textContent = breadcrumbJsonLdString;

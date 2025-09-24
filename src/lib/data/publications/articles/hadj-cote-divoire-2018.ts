@@ -105,8 +105,7 @@ export const hadjCoteDIvoire: Publication = {
 			year: 2025,
 			title:
 				"'The holy opacity of the organization of the pilgrimage': comparing the state's management of the hajj in contemporary Senegal and Cameroon",
-			source:
-				'Politics, Religion & Ideology',
+			source: 'Politics, Religion & Ideology',
 			url: 'https://doi.org/10.1080/21567689.2025.2548398'
 		}
 	]

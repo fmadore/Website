@@ -49,7 +49,8 @@ export const hackettInterviewDigitalMedia: Publication = {
 		{
 			authors: ['Gowhar Andrabi Syed'],
 			year: 2025,
-			title: 'Promoting Religious Tolerance through the Design of a Pictogram Communication System for Digital Peacemakers on Social Networking Sites',
+			title:
+				'Promoting Religious Tolerance through the Design of a Pictogram Communication System for Digital Peacemakers on Social Networking Sites',
 			source: 'PhD dissertation, University of Hertfordshire, 2025',
 			url: 'https://uhra.herts.ac.uk/id/eprint/25898/'
 		}
