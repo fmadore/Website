@@ -41,13 +41,13 @@
 
 <style>
 	.page-intro {
-		font-size: var(--font-size-xl);
+		font-size: var(--font-size-heading-5);
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text);
-		margin-bottom: var(--spacing-10);
+		margin-bottom: var(--space-lg);
 		position: relative;
 		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-		padding: var(--spacing-6) var(--spacing-8);
+		padding: var(--space-md) var(--space-xl);
 		border-radius: var(--border-radius-lg);
 
 		/* Built-in glassmorphism for all variants */
@@ -79,9 +79,9 @@
 	/* Default variant uses the base glassmorphism styling applied above */
 
 	.page-intro--compact {
-		font-size: var(--font-size-lg);
-		margin-bottom: var(--spacing-6);
-		padding: var(--spacing-4) var(--spacing-6);
+		font-size: var(--font-size-heading-6);
+		margin-bottom: var(--space-md);
+		padding: var(--space-sm) var(--space-lg);
 		/* Lighter glassmorphism for compact variant */
 		background: linear-gradient(
 			135deg,
@@ -105,11 +105,11 @@
 	}
 
 	.page-intro--emphasized {
-		font-size: var(--font-size-2xl);
+		font-size: var(--font-size-heading-3);
 		font-weight: var(--font-weight-medium);
-		margin-bottom: var(--spacing-12);
+		margin-bottom: var(--space-xl);
 		color: var(--color-text-emphasis);
-		padding: var(--spacing-8) var(--spacing-10);
+		padding: var(--space-xl) var(--space-2xl);
 
 		/* Enhanced glassmorphism for emphasized variant */
 		background: linear-gradient(
@@ -141,10 +141,10 @@
 	}
 
 	.page-intro--featured {
-		font-size: var(--font-size-2xl);
+		font-size: var(--font-size-heading-3);
 		font-weight: var(--font-weight-medium);
-		margin-bottom: var(--spacing-12);
-		padding: var(--spacing-10);
+		margin-bottom: var(--space-xl);
+		padding: var(--space-2xl);
 
 		/* Premium glassmorphism for featured variant */
 		background: linear-gradient(
@@ -196,7 +196,7 @@
 	}
 
 	.page-intro :global(p + p) {
-		margin-top: var(--spacing-4);
+		margin-top: var(--space-md);
 	}
 
 	.page-intro :global(a) {
@@ -228,7 +228,7 @@
 
 	.page-intro :global(a:focus-visible) {
 		outline: var(--border-width-medium) solid var(--color-highlight);
-		outline-offset: var(--spacing-1);
+		outline-offset: var(--space-2xs);
 		box-shadow: 0 0 0 var(--border-width-thick)
 			rgba(var(--color-highlight-rgb), var(--opacity-medium-high));
 		border-radius: var(--border-radius-sm);
@@ -347,28 +347,28 @@
 	/* Responsive design */
 	@media (max-width: 640px) {
 		.page-intro {
-			font-size: var(--font-size-lg);
-			margin-bottom: var(--spacing-6);
-			padding: var(--spacing-4) var(--spacing-6);
+			font-size: var(--font-size-heading-6);
+			margin-bottom: var(--space-md);
+			padding: var(--space-sm) var(--space-lg);
 		}
 
 		.page-intro--compact {
-			font-size: var(--font-size-base);
-			margin-bottom: var(--spacing-4);
-			padding: var(--spacing-3) var(--spacing-4);
+			font-size: var(--font-size-body);
+			margin-bottom: var(--space-sm);
+			padding: var(--space-2xs) var(--space-md);
 		}
 
 		.page-intro--emphasized {
-			font-size: var(--font-size-xl);
-			margin-bottom: var(--spacing-8);
-			padding: var(--spacing-6) var(--spacing-8);
+			font-size: var(--font-size-heading-4);
+			margin-bottom: var(--space-lg);
+			padding: var(--space-md) var(--space-xl);
 			border-left: 3px solid transparent;
 		}
 
 		.page-intro--featured {
-			font-size: var(--font-size-xl);
-			margin-bottom: var(--spacing-8);
-			padding: var(--spacing-6) var(--spacing-8);
+			font-size: var(--font-size-heading-4);
+			margin-bottom: var(--space-lg);
+			padding: var(--space-md) var(--space-xl);
 		}
 	}
 
@@ -388,3 +388,4 @@
 		}
 	}
 </style>
+
