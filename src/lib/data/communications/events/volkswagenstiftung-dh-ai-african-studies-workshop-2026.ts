@@ -41,8 +41,92 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			name: 'Vincent Hiribarren',
 			role: 'Co-organizer',
 			affiliation: "King's College London"
-		}
-		// Add other participants as they are confirmed
+		},
+		{
+			name: 'Augustine Farinola',
+			role: 'Participant',
+			affiliation: 'University of Alberta'
+		},
+		{
+			name: 'Britta Frede',
+			role: 'Participant',
+			affiliation: 'University of Bayreuth'
+		},
+		{
+			name: 'Susan Elizabeth Gagliardi',
+			role: 'Participant',
+			affiliation: 'Emory University'
+		},
+		{
+			name: 'Ashleigh Harris',
+			role: 'Participant',
+			affiliation: 'Uppsala University'
+		},
+		{
+			name: 'Albrecht Hofheinz',
+			role: 'Participant',
+			affiliation: 'University of Oslo'
+		},
+		{
+			name: 'Karen Ijumba',
+			role: 'Participant',
+			affiliation: 'Open Restitution Africa'
+		},
+		{
+			name: 'Leah Junck',
+			role: 'Participant',
+			affiliation: 'Global Center on AI Governance'
+		},
+		{
+			name: 'Fu’ad Lawal',
+			role: 'Participant',
+			affiliation: 'Archivi.ng'
+		},
+		{
+			name: 'Cassandra Mark-Thiesen',
+			role: 'Participant',
+			affiliation: 'University of Bayreuth'
+		},
+		{
+			name: 'Fabrice Melka',
+			role: 'Participant',
+			affiliation: 'Institut des mondes africains'
+		},
+		{
+			name: 'Duncan Money',
+			role: 'Participant',
+			affiliation: 'Independant researcher'
+		},
+		{
+			name: 'Irene Muchomba Mwendwa',
+			role: 'Participant',
+			affiliation: 'Pollicy'
+		},
+		{
+			name: 'Fallou Ngom',
+			role: 'Participant',
+			affiliation: 'Boston University'
+		},
+		{
+			name: 'Emmanuel Ngue Um',
+			role: 'Participant',
+			affiliation: 'University of Yaounde I'
+		},
+		{
+			name: 'Kọ́lá Túbọ̀sún',
+			role: 'Participant',
+			affiliation: 'Independant researcher'
+		},
+		{
+			name: 'Menno van Zaanen',
+			role: 'Participant',
+			affiliation: 'South African Centre for Digital Language Resources'
+		},
+		{
+			name: 'James Yékú',
+			role: 'Participant',
+			affiliation: 'University of Kansas'
+		},
 	],
 	project: 'Mining the Islam West Africa Collection'
 };
