@@ -1,4 +1,4 @@
-/* Spacing utilities - Simplified version based on actual usage */
+/* Spacing utilities - normalized around semantic space tokens */
 
 /* Base margins */
 .m-0 {
@@ -14,67 +14,67 @@
 	margin-right: auto;
 }
 .mx-4 {
-	margin-left: var(--spacing-4);
-	margin-right: var(--spacing-4);
+	margin-left: var(--space-md);
+	margin-right: var(--space-md);
 }
 
 /* Margin Y (top & bottom) */
 .my-8 {
-	margin-top: var(--spacing-8);
-	margin-bottom: var(--spacing-8);
+	margin-top: var(--space-xl);
+	margin-bottom: var(--space-xl);
 }
 
 /* Margin Top - Essential values */
 .mt-2 {
-	margin-top: var(--spacing-2);
+	margin-top: var(--space-xs);
 }
 .mt-4 {
-	margin-top: var(--spacing-4);
+	margin-top: var(--space-md);
 }
 .mt-6 {
-	margin-top: var(--spacing-6);
+	margin-top: var(--space-lg);
 }
 .mt-8 {
-	margin-top: var(--spacing-8);
+	margin-top: var(--space-xl);
 }
 
 /* Margin Bottom - Most used values */
 .mb-1 {
-	margin-bottom: var(--spacing-1);
+	margin-bottom: var(--space-2xs);
 }
 .mb-2 {
-	margin-bottom: var(--spacing-2);
+	margin-bottom: var(--space-xs);
 }
 .mb-3 {
-	margin-bottom: var(--spacing-3);
+	margin-bottom: var(--space-sm);
 }
 .mb-4 {
-	margin-bottom: var(--spacing-4);
+	margin-bottom: var(--space-md);
 }
 .mb-6 {
-	margin-bottom: var(--spacing-6);
+	margin-bottom: var(--space-lg);
 }
 .mb-8 {
-	margin-bottom: var(--spacing-8);
+	margin-bottom: var(--space-xl);
 }
 .mb-12 {
-	margin-bottom: var(--spacing-12);
+	margin-bottom: var(--space-2xl);
 }
 
 /* Margin Left - Essential values */
 .ml-1 {
-	margin-left: var(--spacing-1);
+	margin-left: var(--space-2xs);
 }
 .ml-2 {
-	margin-left: var(--spacing-2);
+	margin-left: var(--space-xs);
 }
 .ml-4 {
-	margin-left: var(--spacing-4);
+	margin-left: var(--space-md);
 }
 
 /* Margin Right */
 .mr-2 {
-	margin-right: var(--spacing-2);
+	margin-right: var(--space-xs);
 }
 
 /* Base padding */
@@ -82,77 +82,77 @@
 	padding: 0;
 }
 .p-3 {
-	padding: var(--spacing-3);
+	padding: var(--space-sm);
 }
 .p-4 {
-	padding: var(--spacing-4);
+	padding: var(--space-md);
 }
 .p-6 {
-	padding: var(--spacing-6);
+	padding: var(--space-lg);
 }
 .p-8 {
-	padding: var(--spacing-8);
+	padding: var(--space-xl);
 }
 
 /* Padding X (left & right) */
 .px-1 {
-	padding-left: var(--spacing-1);
-	padding-right: var(--spacing-1);
+	padding-left: var(--space-2xs);
+	padding-right: var(--space-2xs);
 }
 .px-4 {
-	padding-left: var(--spacing-4);
-	padding-right: var(--spacing-4);
+	padding-left: var(--space-md);
+	padding-right: var(--space-md);
 }
 
 /* Padding Y (top & bottom) */
 .py-8 {
-	padding-top: var(--spacing-8);
-	padding-bottom: var(--spacing-8);
+	padding-top: var(--space-xl);
+	padding-bottom: var(--space-xl);
 }
 
 /* Padding Top */
 .pt-4 {
-	padding-top: var(--spacing-4);
+	padding-top: var(--space-md);
 }
 
 /* Padding Bottom */
 .pb-1 {
-	padding-bottom: var(--spacing-1);
+	padding-bottom: var(--space-2xs);
 }
 .pb-2 {
-	padding-bottom: var(--spacing-2);
+	padding-bottom: var(--space-xs);
 }
 
 /* Gap for flex and grid - Essential values */
 .gap-2 {
-	gap: var(--spacing-2);
+	gap: var(--space-xs);
 }
 .gap-4 {
-	gap: var(--spacing-4);
+	gap: var(--space-md);
 }
 .gap-6 {
-	gap: var(--spacing-6);
+	gap: var(--space-lg);
 }
 .gap-8 {
-	gap: var(--spacing-8);
+	gap: var(--space-xl);
 }
 
 /* Gap X (column gap) */
 .gap-x-6 {
-	column-gap: var(--spacing-6);
+	column-gap: var(--space-lg);
 }
 
 /* Gap Y (row gap) */
 .gap-y-2 {
-	row-gap: var(--spacing-2);
+	row-gap: var(--space-xs);
 }
 
 /* Space between elements */
 .space-y-3 > * + * {
-	margin-top: var(--spacing-3);
+	margin-top: var(--space-sm);
 }
 .space-y-4 > * + * {
-	margin-top: var(--spacing-4);
+	margin-top: var(--space-md);
 }
 
 /* Essential responsive variants based on actual usage */
@@ -161,41 +161,41 @@
 		flex-direction: row;
 	}
 	.sm\:gap-4 {
-		gap: var(--spacing-4);
+		gap: var(--space-md);
 	}
 	.sm\:mx-auto {
 		margin-left: auto;
 		margin-right: auto;
 	}
 	.sm\:px-4 {
-		padding-left: var(--spacing-4);
-		padding-right: var(--spacing-4);
+		padding-left: var(--space-md);
+		padding-right: var(--space-md);
 	}
 }
 
 @media (min-width: 768px) {
 	.md\:p-6 {
-		padding: var(--spacing-6);
+		padding: var(--space-lg);
 	}
 	.md\:px-6 {
-		padding-left: var(--spacing-6);
-		padding-right: var(--spacing-6);
+		padding-left: var(--space-lg);
+		padding-right: var(--space-lg);
 	}
 	.md\:text-left {
 		text-align: left;
 	}
 	.md\:gap-8 {
-		gap: var(--spacing-8);
+		gap: var(--space-xl);
 	}
 	.md\:mt-8 {
-		margin-top: var(--spacing-8);
+		margin-top: var(--space-xl);
 	}
 }
 
 @media (min-width: 1024px) {
 	.lg\:px-8 {
-		padding-left: var(--spacing-8);
-		padding-right: var(--spacing-8);
+		padding-left: var(--space-xl);
+		padding-right: var(--space-xl);
 	}
 }
 
@@ -204,3 +204,4 @@ Note: Add more classes as needed based on actual usage.
 This simplified version reduces the CSS from 2727 lines to ~80 lines
 while maintaining all essential spacing utilities actually used in the project.
 */
+

@@ -1,141 +1,193 @@
 /* Enhanced CSS Variables for Academic Website */
 
 :root {
-	/* ===== REFINED COLOR SYSTEM ===== */
-	/* Using a more sophisticated palette with better harmony */
+	/* ===== COLOR FOUNDATION & SEMANTICS ===== */
+	/* Foundations: brand-neutral palette */
+	--sys-color-neutral-0: #ffffff;
+	--sys-color-neutral-50: #f8fafc;
+	--sys-color-neutral-100: #f1f5f9;
+	--sys-color-neutral-200: #e2e8f0;
+	--sys-color-neutral-300: #cbd5e1;
+	--sys-color-neutral-500: #94a3b8;
+	--sys-color-neutral-600: #64748b;
+	--sys-color-neutral-700: #475569;
+	--sys-color-neutral-800: #1e293b;
+	--sys-color-neutral-900: #0f172a;
 
-	/* Primary - Deep Academic Blue (more sophisticated than charcoal) */
-	--color-primary: #1e3a5f; /* Rich navy blue */
+	--sys-color-blue-900: #0f1f33;
+	--sys-color-blue-800: #18324c;
+	--sys-color-blue-700: #1e3a5f;
+	--sys-color-blue-500: #2d4d7a;
+	--sys-color-blue-300: #4f6c97;
+
+	--sys-color-teal-500: #0891b2;
+	--sys-color-teal-600: #0e7490;
+
+	--sys-color-gold-500: #ca8a04;
+	--sys-color-green-500: #059669;
+	--sys-color-red-500: #dc2626;
+	--sys-color-red-700: #991b1b;
+
+	--sys-color-white: #ffffff;
+	--sys-color-black: #000000;
+	--sys-color-transparent: transparent;
+
+	/* Semantic color tokens */
+	--color-primary: var(--sys-color-blue-700);
 	--color-primary-rgb: 30, 58, 95;
-	--color-primary-dark: #0f1f33;
-	--color-primary-light: #2d4d7a;
+	--color-primary-dark: var(--sys-color-blue-900);
+	--color-primary-light: var(--sys-color-blue-500);
 
-	/* Secondary - Warm Gray (better contrast) */
-	--color-secondary: #64748b; /* Slate gray */
+	--color-secondary: var(--sys-color-neutral-600);
 	--color-secondary-rgb: 100, 116, 139;
 
-	/* Accent - Academic Teal (more distinctive) */
-	--color-accent: #0891b2; /* Professional teal */
+	--color-accent: var(--sys-color-teal-500);
 	--color-accent-rgb: 8, 145, 178;
 
-	/* Highlight - Sophisticated Gold */
-	--color-highlight: #ca8a04; /* Deeper, richer gold */
+	--color-highlight: var(--sys-color-gold-500);
 	--color-highlight-rgb: 202, 138, 4;
 
-	/* Success - Balanced Emerald */
-	--color-success: #059669; /* Professional green */
+	--color-success: var(--sys-color-green-500);
 	--color-success-rgb: 5, 150, 105;
 
-	/* Danger - Refined Red */
-	--color-danger: #dc2626;
+	--color-danger: var(--sys-color-red-500);
 	--color-danger-rgb: 220, 38, 38;
-	--color-danger-dark: #991b1b;
+	--color-danger-dark: var(--sys-color-red-700);
 
-	/* Background & Text - Enhanced Contrast */
-	--color-background: #ffffff;
-	--color-background-subtle: #fafbfc; /* Very subtle off-white */
-	--color-text: #1e293b; /* Darker for better readability */
-	--color-text-light: #475569;
-	--color-text-muted: #94a3b8;
-	--color-text-emphasis: #0f172a; /* Maximum contrast */
+	--color-background: var(--sys-color-neutral-0);
+	--color-background-subtle: var(--sys-color-neutral-50);
+	--color-text: var(--sys-color-neutral-800);
+	--color-text-light: var(--sys-color-neutral-600);
+	--color-text-muted: var(--sys-color-neutral-500);
+	--color-text-emphasis: var(--sys-color-neutral-900);
+	--color-text-soft: var(--sys-color-neutral-700);
 
-	/* Borders - More Subtle */
-	--color-border: #e2e8f0;
-	--color-border-light: #f1f5f9;
-	--color-border-dark: #cbd5e1;
-
-	/* Academic-specific colors - More Cohesive */
-	--color-citation: #0891b2; /* Matches accent */
-	--color-citation-rgb: 8, 145, 178;
-	--color-quote: #334155; /* Refined quote color */
-	--color-note: #64748b; /* Subtle notes */
-
-	/* Surface colors - Better Layering */
-	--color-surface: #f8fafc;
+	--color-surface: var(--sys-color-neutral-50);
 	--color-surface-rgb: 248, 250, 252;
-	--color-surface-alt: #f1f5f9;
-	--color-surface-elevated: #ffffff;
-	--color-code-bg: #f1f5f9;
+	--color-surface-alt: var(--sys-color-neutral-100);
+	--color-surface-elevated: var(--sys-color-neutral-0);
+	--color-surface-border: var(--sys-color-neutral-200);
+	--color-code-bg: var(--color-surface-alt);
 
-	/* Standard colors with RGB values */
-	--color-white: #ffffff;
+	--color-border: var(--sys-color-neutral-200);
+	--color-border-light: var(--sys-color-neutral-100);
+	--color-border-dark: var(--sys-color-neutral-300);
+
+	--color-citation: var(--color-accent);
+	--color-citation-rgb: 8, 145, 178;
+	--color-quote: var(--sys-color-neutral-700);
+	--color-note: var(--sys-color-neutral-600);
+
+	--color-white: var(--sys-color-white);
 	--color-white-rgb: 255, 255, 255;
-	--color-black: #000000;
+	--color-black: var(--sys-color-black);
 	--color-black-rgb: 0, 0, 0;
-	--color-transparent: transparent;
+	--color-transparent: var(--sys-color-transparent);
 
-	/* Legacy footer colors for compatibility */
-	--color-footer-bg: #1e3a5f; /* Uses new primary color */
+	/* Component color layers */
+	--color-background-alt: var(--color-surface);
+	--color-background-muted: var(--color-surface-alt);
+	--color-footer-bg: var(--color-primary);
 	--color-footer-text: #f7fafc;
 	--color-footer-text-muted: rgba(247, 250, 252, 0.7);
-	--color-sidebar-bg: #f8fafc; /* Uses new surface color */
+	--color-sidebar-bg: var(--color-surface);
 
-	/* Legacy semantic colors maintained for compatibility */
-	--color-surface-border: #e2e8f0; /* Surface borders */
-	--color-dark-surface: #334155; /* Dark theme surface */
-	--color-dark-surface-rgb: 51, 65, 85; /* RGB values for dark surface color */
-	--color-dark-surface-alt: #1e293b; /* Dark theme alternative surface */
-	--color-dark-surface-alt-rgb: 30, 41, 59; /* RGB values for dark surface alt color */
-	--color-dark-surface-deep: #0f172a; /* Dark theme deep surface */
-	--color-dark-surface-deep-rgb: 15, 23, 42; /* RGB values for dark surface deep color */
-
-	/* Button color schemes - Updated for new palette */
-	--color-secondary-scheme: #0891b2; /* Uses accent color for consistency */
+	/* Button color schemes */
+	--color-secondary-scheme: var(--color-accent);
 	--color-secondary-scheme-rgb: 8, 145, 178;
-	--color-secondary-scheme-alt: #0e7490; /* Darker teal */
+	--color-secondary-scheme-alt: var(--sys-color-teal-600);
 	--color-secondary-scheme-alt-rgb: 14, 116, 144;
 
-	--color-tertiary-scheme: #059669; /* Uses success color */
+	--color-tertiary-scheme: var(--color-success);
 	--color-tertiary-scheme-rgb: 5, 150, 105;
 	--color-tertiary-scheme-alt: #047857; /* Darker emerald */
 	--color-tertiary-scheme-alt-rgb: 4, 120, 87;
 
-	--color-glass-scheme: #1e3a5f; /* Uses primary color */
+	--color-glass-scheme: var(--color-primary);
 	--color-glass-scheme-rgb: 30, 58, 95;
-	--color-glass-scheme-alt: #2d4d7a; /* Lighter primary */
+	--color-glass-scheme-alt: var(--color-primary-light);
 	--color-glass-scheme-alt-rgb: 45, 77, 122;
 
-	/* Background variations for components */
-	--color-background-alt: #f8fafc; /* Uses surface color */
-	--color-background-muted: #f1f5f9; /* Uses surface-alt color */
+	/* Legacy compatibility */
+	--color-dark-surface: var(--sys-color-neutral-700);
+	--color-dark-surface-rgb: 51, 65, 85;
+	--color-dark-surface-alt: var(--sys-color-neutral-800);
+	--color-dark-surface-alt-rgb: 30, 41, 59;
+	--color-dark-surface-deep: var(--sys-color-neutral-900);
+	--color-dark-surface-deep-rgb: 15, 23, 42;
+/* ===== TYPOGRAPHY SCALE ===== */
+	/* Fluid scale anchored between 16px–18px viewport sizing */
 
-	/* ===== TYPOGRAPHY SCALE ===== */
-	/* Using a 1.25 modular scale for better harmony */
-
-	/* Font families - Enhanced stack */
-	--font-family-sans:
+	/* Foundations */
+	--sys-font-family-sans:
 		'Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial',
 		sans-serif;
-	--font-family-serif: 'Crimson Pro', 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
-	--font-family-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Consolas', 'Monaco', monospace;
+	--sys-font-family-serif: 'Crimson Pro', 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
+	--sys-font-family-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Consolas', 'Monaco', monospace;
 
-	/* Font sizes - Perfect Fourth scale (1.333) for better hierarchy */
-	--font-size-xs: 0.75rem; /* 12px */
-	--font-size-sm: 0.875rem; /* 14px */
-	--font-size-base: 1rem; /* 16px */
-	--font-size-lg: 1.125rem; /* 18px */
-	--font-size-xl: 1.333rem; /* 21px */
-	--font-size-2xl: 1.777rem; /* 28px */
-	--font-size-3xl: 2.369rem; /* 38px */
-	--font-size-4xl: 3.157rem; /* 50px */
-	--font-size-5xl: 4.209rem; /* 67px */
+	--sys-type-step--2: clamp(0.75rem, 0.73rem + 0.1vw, 0.8125rem);
+	--sys-type-step--1: clamp(0.875rem, 0.84rem + 0.15vw, 0.975rem);
+	--sys-type-step-0: clamp(1rem, 0.95rem + 0.25vw, 1.1rem);
+	--sys-type-step-1: clamp(1.2rem, 1.11rem + 0.32vw, 1.35rem);
+	--sys-type-step-2: clamp(1.44rem, 1.32rem + 0.38vw, 1.65rem);
+	--sys-type-step-3: clamp(1.728rem, 1.6rem + 0.48vw, 1.95rem);
+	--sys-type-step-4: clamp(2.074rem, 1.85rem + 0.6vw, 2.35rem);
+	--sys-type-step-5: clamp(2.488rem, 2.05rem + 0.75vw, 2.75rem);
+	--sys-type-step-6: clamp(2.986rem, 2.3rem + 0.85vw, 3.2rem);
 
-	/* Line heights - Optimized for readability */
+	/* Semantic font families */
+	--font-family-sans: var(--sys-font-family-sans);
+	--font-family-serif: var(--sys-font-family-serif);
+	--font-family-mono: var(--sys-font-family-mono);
+
+	/* Semantic font sizes */
+	--font-size-xs: var(--sys-type-step--2);
+	--font-size-sm: var(--sys-type-step--1);
+	--font-size-base: var(--sys-type-step-0);
+	--font-size-lg: var(--sys-type-step-1);
+	--font-size-xl: var(--sys-type-step-2);
+	--font-size-2xl: var(--sys-type-step-3);
+	--font-size-3xl: var(--sys-type-step-4);
+	--font-size-4xl: var(--sys-type-step-5);
+	--font-size-5xl: var(--sys-type-step-6);
+
+	--font-size-body: var(--font-size-base);
+	--font-size-body-sm: var(--font-size-sm);
+	--font-size-body-lg: var(--font-size-lg);
+	--font-size-lead: clamp(1.125rem, 1.05rem + 0.35vw, 1.375rem);
+	--font-size-eyebrow: var(--font-size-xs);
+	--font-size-caption: var(--font-size-xs);
+	--font-size-display: var(--font-size-5xl);
+	--font-size-heading-1: var(--font-size-4xl);
+	--font-size-heading-2: var(--font-size-3xl);
+	--font-size-heading-3: var(--font-size-2xl);
+	--font-size-heading-4: var(--font-size-xl);
+	--font-size-heading-5: var(--font-size-lg);
+	--font-size-heading-6: var(--font-size-base);
+
+	/* Line heights */
 	--line-height-tight: 1.1;
 	--line-height-snug: 1.35;
 	--line-height-normal: 1.6;
 	--line-height-relaxed: 1.75;
 	--line-height-loose: 2;
+	--line-height-heading: 1.2;
+	--line-height-subheading: 1.35;
+	--line-height-body: 1.65;
+	--line-height-caption: 1.45;
 
-	/* Letter spacing - Refined */
+	/* Letter spacing */
 	--letter-spacing-tighter: -0.03em;
 	--letter-spacing-tight: -0.01em;
 	--letter-spacing-normal: 0;
 	--letter-spacing-wide: 0.025em;
 	--letter-spacing-wider: 0.05em;
 	--letter-spacing-widest: 0.1em;
+	--tracking-heading: var(--letter-spacing-tight);
+	--tracking-body: var(--letter-spacing-normal);
+	--tracking-eyebrow: var(--letter-spacing-wide);
 
-	/* Font weights - Complete scale */
+	/* Font weights */
 	--font-weight-thin: 100;
 	--font-weight-light: 300;
 	--font-weight-normal: 400;
@@ -144,37 +196,81 @@
 	--font-weight-bold: 700;
 	--font-weight-extrabold: 800;
 	--font-weight-black: 900;
+	--font-weight-body: var(--font-weight-normal);
+	--font-weight-heading: var(--font-weight-semibold);
+	--font-weight-display: var(--font-weight-bold);
 
 	/* Academic text styling */
 	--text-indent-paragraph: 1.5em;
 	--text-max-width-reading: 65ch;
 	--text-max-width-wide: 80ch;
+/* ===== SPACING SYSTEM ===== */
+	/* Normalized spacing scale built on a quarter-rem baseline */
 
-	/* ===== SPACING SYSTEM ===== */
-	/* Using a consistent 8px grid system with golden ratio influences */
+	/* Foundations */
+	--space-0: 0;
+	--space-hairline: 1px;
+	--sys-space-1: 0.125rem; /* 2px */
+	--sys-space-2: 0.25rem; /* 4px */
+	--sys-space-3: 0.5rem; /* 8px */
+	--sys-space-4: 0.75rem; /* 12px */
+	--sys-space-5: 1rem; /* 16px */
+	--sys-space-6: 1.25rem; /* 20px */
+	--sys-space-7: 1.5rem; /* 24px */
+	--sys-space-8: 2rem; /* 32px */
+	--sys-space-9: 2.5rem; /* 40px */
+	--sys-space-10: 3rem; /* 48px */
+	--sys-space-11: 3.5rem; /* 56px */
+	--sys-space-12: 4rem; /* 64px */
+	--sys-space-13: 5rem; /* 80px */
+	--sys-space-14: 6rem; /* 96px */
+	--sys-space-15: 7rem; /* 112px */
+	--sys-space-16: 8rem; /* 128px */
+	--sys-space-17: 10rem; /* 160px */
+	--sys-space-18: 12rem; /* 192px */
 
-	--spacing-0: 0;
-	--spacing-px: 1px;
-	--spacing-0\.5: 0.125rem; /* 2px */
-	--spacing-1: 0.25rem; /* 4px */
-	--spacing-2: 0.5rem; /* 8px */
-	--spacing-3: 0.75rem; /* 12px */
-	--spacing-4: 1rem; /* 16px */
-	--spacing-5: 1.25rem; /* 20px */
-	--spacing-6: 1.5rem; /* 24px */
-	--spacing-8: 2rem; /* 32px */
-	--spacing-10: 2.5rem; /* 40px */
-	--spacing-12: 3rem; /* 48px */
-	--spacing-14: 3.5rem; /* 56px */
-	--spacing-16: 4rem; /* 64px */
-	--spacing-20: 5rem; /* 80px */
-	--spacing-24: 6rem; /* 96px */
-	--spacing-28: 7rem; /* 112px */
-	--spacing-32: 8rem; /* 128px */
-	--spacing-40: 10rem; /* 160px */
-	--spacing-48: 12rem; /* 192px */
+	/* Semantic spacing tokens */
+	--space-3xs: var(--sys-space-1);
+	--space-2xs: var(--sys-space-2);
+	--space-xs: var(--sys-space-3);
+	--space-sm: var(--sys-space-4);
+	--space-md: var(--sys-space-5);
+	--space-md-tight: var(--sys-space-6);
+	--space-lg: var(--sys-space-7);
+	--space-xl: var(--sys-space-8);
+	--space-xl-tight: var(--sys-space-9);
+	--space-2xl: var(--sys-space-10);
+	--space-2xl-tight: var(--sys-space-11);
+	--space-3xl: var(--sys-space-12);
+	--space-4xl: var(--sys-space-13);
+	--space-5xl: var(--sys-space-14);
+	--space-6xl: var(--sys-space-15);
+	--space-7xl: var(--sys-space-16);
+	--space-8xl: var(--sys-space-17);
+	--space-9xl: var(--sys-space-18);
 
-	/* ===== ENHANCED BORDER RADIUS ===== */
+	/* Legacy aliases for utility compatibility */
+	--spacing-0: var(--space-0);
+	--spacing-px: var(--space-hairline);
+	--spacing-0\.5: var(--space-3xs);
+	--spacing-1: var(--space-2xs);
+	--spacing-2: var(--space-xs);
+	--spacing-3: var(--space-sm);
+	--spacing-4: var(--space-md);
+	--spacing-5: var(--space-md-tight);
+	--spacing-6: var(--space-lg);
+	--spacing-8: var(--space-xl);
+	--spacing-10: var(--space-xl-tight);
+	--spacing-12: var(--space-2xl);
+	--spacing-14: var(--space-2xl-tight);
+	--spacing-16: var(--space-3xl);
+	--spacing-20: var(--space-4xl);
+	--spacing-24: var(--space-5xl);
+	--spacing-28: var(--space-6xl);
+	--spacing-32: var(--space-7xl);
+	--spacing-40: var(--space-8xl);
+	--spacing-48: var(--space-9xl);
+/* ===== ENHANCED BORDER RADIUS ===== */
 	/* More modern, subtle radii */
 
 	--border-radius-none: 0;
@@ -492,3 +588,6 @@ html.dark {
 	--card-shadow-opacity: 0.5;
 	--card-shadow-opacity-hover: 0.6;
 }
+
+
+
