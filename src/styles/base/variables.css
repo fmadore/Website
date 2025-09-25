@@ -373,6 +373,7 @@
 	/* Legacy transform and transition variables for compatibility */
 	--transform-lift-sm: translateY(-1px);
 	--transform-lift-md: translateY(-2px);
+	--transform-lift-lg: translateY(-0.3125rem); /* 5px */
 
 	/* Transition duration variables for utilities */
 	--transition-duration-75: 75ms;

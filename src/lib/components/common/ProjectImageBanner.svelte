@@ -39,7 +39,11 @@
 		border-radius: var(--border-radius-xl);
 		overflow: hidden;
 		position: relative;
-		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+		transition:
+			transform var(--anim-duration-slow) var(--anim-ease-base),
+			box-shadow var(--anim-duration-slow) var(--anim-ease-base),
+			background var(--anim-duration-slow) var(--anim-ease-base),
+			border-color var(--anim-duration-slow) var(--anim-ease-base);
 		/* Enhanced glassmorphism with sophisticated gradient overlay */
 		background: linear-gradient(
 			135deg,
@@ -56,10 +60,10 @@
 			0 2px 16px 0 rgba(31, 38, 135, 0.08),
 			inset 0 1px 0 rgba(255, 255, 255, 0.25),
 			inset 0 -1px 0 rgba(255, 255, 255, 0.1);
-		border: 1px solid rgba(255, 255, 255, 0.25);
+		border: var(--border-width-thin) solid rgba(255, 255, 255, 0.25);
 		/* Add subtle backdrop blur */
-		backdrop-filter: blur(8px);
-		-webkit-backdrop-filter: blur(8px);
+		backdrop-filter: blur(var(--glass-blur-amount));
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 	}
 
 	.project-image-banner::before {
@@ -79,7 +83,7 @@
 		border-radius: inherit;
 		pointer-events: none;
 		opacity: 0;
-		transition: opacity 0.4s ease;
+		transition: opacity var(--anim-duration-slow) var(--anim-ease-base);
 	}
 
 	.project-image-banner:hover {
@@ -121,7 +125,9 @@
 		width: 100%;
 		height: auto;
 		display: block;
-		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+		transition:
+			transform var(--anim-duration-slow) var(--anim-ease-base),
+			filter var(--anim-duration-slow) var(--anim-ease-base);
 		filter: contrast(1.05) saturate(1.1);
 	}
 
@@ -137,7 +143,7 @@
 		right: 0;
 		bottom: 0;
 		pointer-events: none;
-		transition: all 0.4s ease;
+		transition: opacity var(--anim-duration-slow) var(--anim-ease-base);
 		border-radius: inherit;
 	}
 
@@ -177,21 +183,21 @@
 
 	.banner-glow {
 		position: absolute;
-		top: -2px;
-		left: -2px;
-		right: -2px;
-		bottom: -2px;
+		top: calc(-1 * var(--space-3xs));
+		left: calc(-1 * var(--space-3xs));
+		right: calc(-1 * var(--space-3xs));
+		bottom: calc(-1 * var(--space-3xs));
 		background: linear-gradient(
 			135deg,
 			rgba(var(--color-primary-rgb), 0.1) 0%,
 			rgba(var(--color-highlight-rgb), 0.08) 50%,
 			rgba(var(--color-accent-rgb), 0.1) 100%
 		);
-		border-radius: calc(var(--border-radius-xl) + 2px);
+		border-radius: calc(var(--border-radius-xl) + var(--space-3xs));
 		opacity: 0;
-		transition: opacity 0.4s ease;
+		transition: opacity var(--anim-duration-slow) var(--anim-ease-base);
 		z-index: -1;
-		filter: blur(8px);
+		filter: blur(var(--glass-blur-amount));
 	}
 
 	.project-image-banner:hover .banner-glow {
@@ -213,7 +219,7 @@
 			0 2px 16px 0 rgba(0, 0, 0, 0.3),
 			inset 0 1px 0 rgba(255, 255, 255, 0.15),
 			inset 0 -1px 0 rgba(255, 255, 255, 0.08);
-		border: 1px solid rgba(255, 255, 255, 0.15);
+		border: var(--border-width-thin) solid rgba(255, 255, 255, 0.15);
 	}
 
 	:global(html.dark) .project-image-banner::before {
@@ -289,7 +295,7 @@
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 640px) {
+	@media (max-width: var(--breakpoint-sm)) {
 		.project-image-banner {
 			padding: var(--spacing-4);
 			margin-bottom: var(--spacing-6);
@@ -301,7 +307,7 @@
 		}
 
 		.banner-glow {
-			filter: blur(6px);
+			filter: blur(calc(var(--glass-blur-amount) * 0.6));
 		}
 	}
 

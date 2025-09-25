@@ -189,16 +189,16 @@
 		/* Add a subtle background to make glassmorphism more visible */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.05) 0%,
-			rgba(var(--color-accent-rgb), 0.03) 50%,
-			rgba(var(--color-highlight-rgb), 0.05) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-5)) 0%,
+			rgba(var(--color-accent-rgb), calc(var(--opacity-low) * 0.3)) 50%,
+			rgba(var(--color-highlight-rgb), var(--opacity-5)) 100%
 		);
 		padding: var(--spacing-6);
 		border-radius: var(--border-radius-lg);
 	}
 
 	/* Grid layout for medium screens and up */
-	@media (min-width: 768px) {
+	@media (min-width: var(--breakpoint-md)) {
 		.grid {
 			display: grid;
 			grid-template-columns: 1fr 300px; /* Main content takes remaining space, sidebar is 300px */

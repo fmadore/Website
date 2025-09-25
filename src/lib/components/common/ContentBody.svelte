@@ -38,7 +38,7 @@
 	.content-body {
 		padding: var(--space-xl);
 		border-radius: var(--border-radius-lg);
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all var(--anim-duration-base) var(--anim-ease-base);
 		position: relative;
 		/* Enhanced glassmorphism with subtle gradient overlay to match ProfileBanner */
 		background: linear-gradient(
@@ -225,7 +225,7 @@
 	/* Remove the problematic shimmer effect that's causing the wide overflow */
 
 	/* Responsive adjustments */
-	@media (max-width: 640px) {
+	@media (max-width: var(--breakpoint-sm)) {
 		.content-body {
 			padding: var(--space-lg);
 		}

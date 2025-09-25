@@ -134,7 +134,7 @@
 	.back-link:hover {
 		background: rgba(var(--color-primary-rgb), var(--opacity-medium));
 		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
-		transform: translateX(-2px);
+		transform: translateX(calc(-1 * var(--space-3xs)));
 	}
 
 	.type-badge {
@@ -178,7 +178,7 @@
 	}
 
 	.title-accent {
-		width: 80px;
+		width: var(--space-4xl);
 		height: var(--border-width-thick);
 		background: linear-gradient(90deg, var(--color-highlight) 0%, var(--color-accent) 100%);
 		border-radius: var(--border-radius-sm);
@@ -255,7 +255,7 @@
 	/* Animation for title accent on hover */
 	@media (prefers-reduced-motion: no-preference) {
 		.title-section:hover .title-accent {
-			width: 100px;
+			width: calc(var(--space-4xl) + var(--space-md-tight));
 		}
 	}
 </style>

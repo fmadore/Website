@@ -336,7 +336,7 @@
 	}
 
 	:global(.iframe-interactive:hover) {
-		transform: translateY(-5px);
+		transform: var(--transform-lift-lg);
 		box-shadow: var(--shadow-lg);
 	}
 
