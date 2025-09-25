@@ -119,9 +119,9 @@
 
 <style>
 	.teaching-container {
-		max-width: 1200px;
+		max-width: var(--content-max-width);
 		margin: 0 auto;
-		padding: 0 var(--spacing-4);
+		padding: 0 var(--space-md);
 	}
 
 	.main-content {
@@ -133,10 +133,10 @@
 	.teaching-card-specific-details p {
 		font-size: var(--font-size-sm);
 		color: var(--color-text-light);
-		margin-bottom: var(--spacing-1);
+		margin-bottom: var(--space-2xs);
 	}
 	.teaching-card-specific-details .label {
-		font-weight: 500;
+		font-weight: var(--font-weight-medium);
 		color: var(--color-text);
 	}
 
