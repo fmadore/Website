@@ -220,10 +220,10 @@
 	}
 
 	.item-reference-error {
-		color: #ef4444;
+		color: var(--color-danger);
 		font-style: italic;
 		font-size: var(--font-size-sm);
-		padding: var(--spacing-1) var(--spacing-2);
+		padding: var(--space-2xs) var(--space-xs);
 		border-radius: var(--border-radius);
 		cursor: not-allowed;
 
@@ -232,10 +232,10 @@
 		-webkit-backdrop-filter: blur(4px);
 		background: linear-gradient(
 			135deg,
-			rgba(239, 68, 68, var(--opacity-medium)) 0%,
-			rgba(239, 68, 68, var(--opacity-low)) 100%
+			rgba(var(--color-danger-rgb), var(--opacity-medium)) 0%,
+			rgba(var(--color-danger-rgb), var(--opacity-low)) 100%
 		);
-		border: var(--border-width-thin) solid rgba(239, 68, 68, var(--opacity-medium-high));
+		border: var(--border-width-thin) solid rgba(var(--color-danger-rgb), var(--opacity-medium-high));
 		box-shadow: var(--shadow-sm);
 	}
 
@@ -250,12 +250,12 @@
 	:global(html.dark) .item-reference-error {
 		background: linear-gradient(
 			135deg,
-			rgba(239, 68, 68, var(--opacity-medium)) 0%,
-			rgba(239, 68, 68, var(--opacity-low)) 100%
+			rgba(var(--color-danger-rgb), var(--opacity-medium)) 0%,
+			rgba(var(--color-danger-rgb), var(--opacity-low)) 100%
 		);
 
-		border-color: rgba(239, 68, 68, var(--opacity-medium-high));
-		color: #fca5a5;
+		border-color: rgba(var(--color-danger-rgb), var(--opacity-medium-high));
+		color: rgba(var(--color-danger-rgb), var(--opacity-80));
 
 		box-shadow:
 			var(--shadow-sm),
@@ -283,11 +283,11 @@
 	/* Backdrop filter fallback */
 	@supports not (backdrop-filter: blur(4px)) {
 		.item-reference-error {
-			background: rgba(239, 68, 68, var(--opacity-low));
+			background: rgba(var(--color-danger-rgb), var(--opacity-low));
 		}
 
 		:global(html.dark) .item-reference-error {
-			background: rgba(239, 68, 68, var(--opacity-medium));
+			background: rgba(var(--color-danger-rgb), var(--opacity-medium));
 		}
 	}
 </style>

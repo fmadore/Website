@@ -96,9 +96,9 @@
 	.profile-header {
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-8);
-		margin-bottom: var(--spacing-8);
-		padding: var(--spacing-10) var(--spacing-8);
+		gap: var(--space-xl);
+		margin-bottom: var(--space-xl);
+		padding: var(--space-xl-tight) var(--space-xl);
 		position: relative;
 		/* Enhanced glassmorphism with subtle gradient overlay */
 		background: linear-gradient(
@@ -116,10 +116,10 @@
 	.profile-photo-container::before {
 		content: '';
 		position: absolute;
-		top: calc(-1 * var(--spacing-2));
-		left: calc(-1 * var(--spacing-2));
-		right: calc(-1 * var(--spacing-2));
-		bottom: calc(-1 * var(--spacing-2));
+		top: calc(-1 * var(--space-xs));
+		left: calc(-1 * var(--space-xs));
+		right: calc(-1 * var(--space-xs));
+		bottom: calc(-1 * var(--space-xs));
 		background: linear-gradient(
 			135deg,
 			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%,
@@ -162,7 +162,7 @@
 
 	.profile-title {
 		position: relative;
-		margin-bottom: var(--spacing-3);
+		margin-bottom: var(--space-sm);
 	}
 
 	.profile-title h1 {
@@ -171,21 +171,21 @@
 		margin: 0;
 		color: var(--color-primary);
 		line-height: var(--line-height-tight);
-		letter-spacing: var(--letter-spacing-tight);
+		letter-spacing: var(--tracking-heading);
 	}
 
 	.title-accent {
-		width: var(--spacing-16);
+		width: var(--space-3xl);
 		height: var(--border-width-thick);
 		background: linear-gradient(90deg, var(--color-highlight) 0%, var(--color-accent) 100%);
 		border-radius: var(--border-radius-sm);
-		margin-top: var(--spacing-2);
+		margin-top: var(--space-xs);
 	}
 
 	.subtitle {
 		font-size: var(--font-size-xl);
 		color: var(--color-text-light);
-		margin-bottom: var(--spacing-6);
+		margin-bottom: var(--space-lg);
 		font-weight: var(--font-weight-medium);
 		line-height: var(--line-height-relaxed);
 	}
@@ -194,7 +194,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: var(--spacing-2);
+		gap: var(--space-xs);
 		margin: 0;
 	}
 
@@ -202,8 +202,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: calc(var(--spacing-10) + var(--spacing-1));
-		height: calc(var(--spacing-10) + var(--spacing-1));
+		width: calc(var(--space-xl-tight) + var(--space-2xs));
+		height: calc(var(--space-xl-tight) + var(--space-2xs));
 		color: var(--color-text-light);
 		/* Remove custom background - glass-button utility handles this */
 		border: none;
@@ -253,12 +253,12 @@
 	/* Focus-visible accessibility rings */
 	.profile-photo:focus-visible img {
 		outline: 3px solid var(--color-highlight);
-		outline-offset: var(--spacing-1);
+		outline-offset: var(--space-2xs);
 	}
 
 	.icon-link:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-highlight);
-		outline-offset: var(--spacing-1);
+		outline-offset: var(--space-2xs);
 		box-shadow: 0 0 0 var(--border-width-thick)
 			rgba(var(--color-highlight-rgb), var(--opacity-medium-high));
 	}
@@ -269,9 +269,9 @@
 			flex-direction: column;
 			align-items: center;
 			text-align: center;
-			gap: var(--spacing-4);
-			padding: var(--spacing-6) var(--spacing-4);
-			margin-bottom: var(--spacing-4);
+			gap: var(--space-md);
+			padding: var(--space-lg) var(--space-md);
+			margin-bottom: var(--space-md);
 		}
 
 		.profile-content {
@@ -285,10 +285,10 @@
 		}
 
 		.profile-photo-container::before {
-			top: calc(-1 * var(--spacing-1) - var(--spacing-1));
-			left: calc(-1 * var(--spacing-1) - var(--spacing-1));
-			right: calc(-1 * var(--spacing-1) - var(--spacing-1));
-			bottom: calc(-1 * var(--spacing-1) - var(--spacing-1));
+			top: calc(-2 * var(--space-2xs));
+			left: calc(-2 * var(--space-2xs));
+			right: calc(-2 * var(--space-2xs));
+			bottom: calc(-2 * var(--space-2xs));
 		}
 
 		.profile-title h1 {
@@ -297,7 +297,7 @@
 
 		.subtitle {
 			font-size: var(--font-size-base);
-			margin-bottom: var(--spacing-4);
+			margin-bottom: var(--space-md);
 			line-height: var(--line-height-snug);
 		}
 
@@ -308,7 +308,7 @@
 		.title-accent {
 			margin-left: auto;
 			margin-right: auto;
-			width: var(--spacing-10);
+			width: var(--space-xl-tight);
 		}
 	}
 
@@ -346,7 +346,7 @@
 		}
 
 		.profile-title:hover .title-accent {
-			width: var(--spacing-20);
+			width: var(--space-4xl);
 		}
 	}
 </style>

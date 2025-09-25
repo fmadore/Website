@@ -130,7 +130,7 @@
 	/* Activity-specific styles - harmonized with ProfileBanner and ContentBody */
 	.activity-item {
 		position: relative;
-		padding: var(--spacing-4);
+		padding: var(--space-md);
 		border-radius: var(--border-radius-md);
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
 		overflow: hidden;
@@ -176,8 +176,8 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
-		gap: var(--spacing-2);
-		margin-bottom: var(--spacing-3);
+		gap: var(--space-xs);
+		margin-bottom: var(--space-sm);
 	}
 
 	.activity-type {
@@ -186,7 +186,7 @@
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-success);
 		background-color: rgba(var(--color-success-rgb), var(--opacity-medium));
-		padding: var(--spacing-1) var(--spacing-3);
+		padding: var(--space-2xs) var(--space-sm);
 		border-radius: var(--border-radius-full);
 		flex-shrink: 0;
 		white-space: nowrap;
@@ -211,7 +211,7 @@
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text);
 		text-decoration: none;
-		margin-bottom: var(--spacing-2);
+		margin-bottom: var(--space-xs);
 		transition: color var(--anim-duration-base) var(--anim-ease-out);
 		line-height: var(--line-height-relaxed);
 	}
@@ -223,7 +223,7 @@
 	.activity-abstract {
 		font-size: var(--font-size-sm);
 		color: var(--color-text-light);
-		margin-top: var(--spacing-2);
+		margin-top: var(--space-xs);
 		line-height: var(--line-height-relaxed);
 	}
 
@@ -255,7 +255,7 @@
 		.activity-meta {
 			flex-direction: column;
 			align-items: flex-start;
-			gap: var(--spacing-2);
+			gap: var(--space-xs);
 		}
 
 		.activity-date {
