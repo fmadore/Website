@@ -28,11 +28,6 @@
 					name: 'ResearchGate',
 					icon: 'simple-icons:researchgate',
 					url: 'https://www.researchgate.net/profile/Frederick-Madore'
-				},
-				{
-					name: 'Academia.edu',
-					icon: 'simple-icons:academia',
-					url: 'https://zmo.academia.edu/FrederickMadore'
 				}
 			]
 		},
