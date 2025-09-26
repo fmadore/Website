@@ -43,6 +43,11 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			affiliation: "King's College London"
 		},
 		{
+			name: 'Shola Adenekan',
+			role: 'Participant',
+			affiliation: 'Ghent University'
+		},
+		{
 			name: 'Augustine Farinola',
 			role: 'Participant',
 			affiliation: 'University of Alberta'
