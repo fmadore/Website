@@ -15,9 +15,7 @@ export const activity: Activity = {
         <h3>Call for papers</h3>
         <p>Alors que le « tournant numérique » dans les études africaines prend de l'ampleur, ce panel explore le potentiel de transformation et les défis critiques des humanités numériques (DH) et de l'intelligence artificielle (IA) dans ce domaine. Nous examinons leur impact sur la production, la diffusion et l'interprétation des connaissances sur l'Afrique, en abordant tout particulièrement l'anglocentrisme persistant et la « fracture numérique ».</p>
         
-        <p>Nous invitons les auteurs à présenter des applications innovantes des méthodes numériques dans les études africaines.</p>
-        
-        <p>Les sujets peuvent inclure :</p>
+        <p>Nous invitons les auteurs à présenter des applications innovantes des méthodes numériques dans les études africaines. Les sujets peuvent inclure :</p>
         
         <h4>1. Innovations méthodologiques</h4>
         <ul>
@@ -28,7 +26,7 @@ export const activity: Activity = {
         
         <h4>2. Perspectives critiques</h4>
         <ul>
-            <li>Aborder l'« impérialisme numérique » (Breckenridge 2014) et le "complexe du sauveur numérique" (Shringarpure 2020) en relation avec la positionalité et la construction des connaissances;</li>
+            <li>Aborder l'« impérialisme numérique » (Breckenridge 2014) et le « complexe du sauveur numérique » (Shringarpure 2020) en relation avec la positionalité et la construction des connaissances;</li>
             <li>Considérations éthiques dans l'application des méthodes de DH à des contextes culturellement sensibles.</li>
         </ul>
         
@@ -45,7 +43,7 @@ export const activity: Activity = {
         <p>Veuillez envoyer le titre et le résumé de votre communication (en français ou en anglais, 2500 signes maximum) avant le <strong>15 décembre 2025</strong> à :</p>
         <ul>
             <li>Frédérick Madore, Leibniz-Zentrum Moderner Orient, Berlin, frederick.madore@zmo.de</li>
-            <li>Vincent Hiribarren, King's College London, Londres, Vincent.hiribarren@kcl.ac.uk</li>
+            <li>Vincent Hiribarren, King's College London, Londres, vincent.hiribarren@kcl.ac.uk</li>
         </ul>
     `,
 	tags: ['REAF', 'Digital Humanities', 'AI', 'Methodology', 'Panel'],
