@@ -7,7 +7,6 @@
 	import Header from '$lib/components/menu/Header.svelte';
 	import CookieConsent from '$lib/components/common/CookieConsent.svelte';
 	import PWAUpdatePrompt from '$lib/components/common/PWAUpdatePrompt.svelte';
-	import PWAInstallPrompt from '$lib/components/common/PWAInstallPrompt.svelte';
 	import NetworkStatusIndicator from '$lib/components/common/NetworkStatusIndicator.svelte';
 	import '../app.css';
 	import type { LayoutProps } from './$types';
@@ -37,12 +36,20 @@
 				console.log('[PWA] Connection lost - offline mode active');
 			};
 
+			// Prevent install prompts completely - no UI shown to user
+			const preventInstallPrompt = (e: Event) => {
+				e.preventDefault();
+				// Just prevent it, don't store or show anything to user
+			};
+
 			window.addEventListener('online', handleOnline);
 			window.addEventListener('offline', handleOffline);
+			window.addEventListener('beforeinstallprompt', preventInstallPrompt);
 
 			return () => {
 				window.removeEventListener('online', handleOnline);
 				window.removeEventListener('offline', handleOffline);
+				window.removeEventListener('beforeinstallprompt', preventInstallPrompt);
 			};
 		}
 	});
@@ -203,7 +210,6 @@
 	<Footer />
 	<CookieConsent />
 	<PWAUpdatePrompt />
-	<PWAInstallPrompt />
 	<NetworkStatusIndicator />
 </div>
 

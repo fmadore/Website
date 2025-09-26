@@ -17,10 +17,6 @@ let isGlobalLoading = $state(false);
 // Network status state
 let isOnline = $state(true);
 
-// App installation state
-let isInstallable = $state(false);
-let deferredPrompt: any = null;
-
 /**
  * Direct access to animationsEnabled for components that need simple access
  * This provides a store-like interface for backward compatibility
@@ -79,38 +75,12 @@ export function getGlobalState() {
 			isOnline = value;
 		},
 
-		// Installation controls
-		get isInstallable() {
-			return isInstallable;
-		},
-		set isInstallable(value: boolean) {
-			isInstallable = value;
-		},
-
-		get deferredPrompt() {
-			return deferredPrompt;
-		},
-		set deferredPrompt(value: any) {
-			deferredPrompt = value;
-		},
-
 		// Temporary disable animations (useful for navigation)
 		temporarilyDisableAnimations(duration: number = 100) {
 			animationsEnabled = false;
 			setTimeout(() => {
 				animationsEnabled = true;
 			}, duration);
-		},
-
-		// PWA installation helper
-		async installApp() {
-			if (deferredPrompt) {
-				deferredPrompt.prompt();
-				const { outcome } = await deferredPrompt.userChoice;
-				console.log(`User ${outcome} the install prompt`);
-				deferredPrompt = null;
-				isInstallable = false;
-			}
 		}
 	};
 }
