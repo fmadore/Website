@@ -6,15 +6,59 @@
 	import Footer from '$lib/components/common/Footer.svelte';
 	import Header from '$lib/components/menu/Header.svelte';
 	import CookieConsent from '$lib/components/common/CookieConsent.svelte';
+	import PWAUpdatePrompt from '$lib/components/common/PWAUpdatePrompt.svelte';
+	import PWAInstallPrompt from '$lib/components/common/PWAInstallPrompt.svelte';
+	import NetworkStatusIndicator from '$lib/components/common/NetworkStatusIndicator.svelte';
 	import '../app.css';
 	import type { LayoutProps } from './$types';
 	import { getGlobalState } from '$lib/stores/globalState.svelte';
+	import { initPerformanceMonitoring, assessConnectionQuality } from '$lib/utils/performanceMonitor';
 
 	// Destructure data and children from $props using LayoutProps
 	let { data, children }: LayoutProps = $props();
 
 	// Get access to global state
 	const globalState = getGlobalState();
+
+	// Monitor network status
+	$effect(() => {
+		if (browser) {
+			// Set initial online status
+			globalState.isOnline = navigator.onLine;
+
+			// Listen for online/offline events
+			const handleOnline = () => {
+				globalState.isOnline = true;
+				console.log('[PWA] Connection restored');
+			};
+
+			const handleOffline = () => {
+				globalState.isOnline = false;
+				console.log('[PWA] Connection lost - offline mode active');
+			};
+
+			window.addEventListener('online', handleOnline);
+			window.addEventListener('offline', handleOffline);
+
+			return () => {
+				window.removeEventListener('online', handleOnline);
+				window.removeEventListener('offline', handleOffline);
+			};
+		}
+	});
+
+	// Initialize performance monitoring
+	$effect(() => {
+		if (browser) {
+			initPerformanceMonitoring();
+			
+			// Assess connection quality on load
+			setTimeout(() => {
+				const connectionQuality = assessConnectionQuality();
+				console.log(`[PWA] Connection quality: ${connectionQuality}`);
+			}, 1000);
+		}
+	});
 
 	let gtmLoaded = $state(false);
 	let isTransitioning = $state(false);
@@ -158,6 +202,9 @@
 
 	<Footer />
 	<CookieConsent />
+	<PWAUpdatePrompt />
+	<PWAInstallPrompt />
+	<NetworkStatusIndicator />
 </div>
 
 <style>

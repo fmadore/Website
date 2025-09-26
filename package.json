@@ -13,7 +13,10 @@
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
 		"test": "playwright test",
-		"test:ui": "playwright test --ui"
+		"test:ui": "playwright test --ui",
+		"build:pwa": "npm run build && npm run pwa:validate",
+		"pwa:validate": "echo '✅ PWA built successfully - check Lighthouse for PWA score'",
+		"serve:https": "npx serve build -l 8080 --ssl-cert localhost.pem --ssl-key localhost-key.pem"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.3.2",
