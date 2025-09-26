@@ -49,10 +49,10 @@ export const activity: Activity = {
 	tags: ['REAF', 'Digital Humanities', 'AI', 'Methodology', 'Panel'],
 	type: 'conference',
 	url: '',
-	image: '',
-	heroImage: {
-		src: '',
-		alt: '',
+    image: 'images/communications/reaf-2026.webp',
+    heroImage: {
+        src: 'images/communications/reaf-2026-hero.webp',
+        alt: '9ème édition Rencontres des Études Africaines en France'
 	},
 	panelType: 'conference'
 };
