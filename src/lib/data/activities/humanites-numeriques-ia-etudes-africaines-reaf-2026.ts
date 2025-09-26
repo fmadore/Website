@@ -10,7 +10,7 @@ export const activity: Activity = {
 	description:
 		'Call for papers for the panel "Humanités numériques (DH) et IA dans les études africaines" at the 9th Rencontre des Etudes Africaines en France (REAF) 2026.',
 	content: `
-        <p>I am pleased to announce that the panel proposal "Humanités numériques (DH) et IA dans les études africaines" submitted by Vincent Hiribarren and myself has been accepted for the 9th Rencontre des Etudes Africaines en France (REAF). The conference will be held in Paris in June-July 2026.</p>
+        <p>I am pleased to announce that the panel proposal "Humanités numériques (DH) et IA dans les études africaines" submitted by Vincent Hiribarren and myself has been accepted for the 9th Rencontre des Études Africaines en France (REAF). The conference will be held in Paris in June-July 2026.</p>
         
         <h3>Call for papers</h3>
         <p>Alors que le « tournant numérique » dans les études africaines prend de l'ampleur, ce panel explore le potentiel de transformation et les défis critiques des humanités numériques (DH) et de l'intelligence artificielle (IA) dans ce domaine. Nous examinons leur impact sur la production, la diffusion et l'interprétation des connaissances sur l'Afrique, en abordant tout particulièrement l'anglocentrisme persistant et la « fracture numérique ».</p>
