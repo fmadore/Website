@@ -8,7 +8,7 @@ export const activity: Activity = {
 	date: formatDisplayDate('2025-09-29'),
 	year: 2025,
 	description:
-		'Call for papers for the panel "Humanités numériques (DH) et IA dans les études africaines" at the 9th Rencontre des Etudes Africaines en France (REAF) 2026.',
+		'Call for papers for the panel "Humanités numériques (DH) et IA dans les études africaines" at the 9th Rencontre des Études Africaines en France (REAF) 2026.',
 	content: `
         <p>I am pleased to announce that the panel proposal "Humanités numériques (DH) et IA dans les études africaines" submitted by Vincent Hiribarren and myself has been accepted for the 9th Rencontre des Études Africaines en France (REAF). The conference will be held in Paris in June-July 2026.</p>
         
