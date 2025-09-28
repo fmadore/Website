@@ -109,7 +109,7 @@ sw.addEventListener('fetch', (event) => {
     } else if (shouldUseStaleWhileRevalidate(url.pathname)) {
         event.respondWith(handleStaleWhileRevalidate(request));
     } else {
-        event.respondWith(handleNetworkFirst(request));
+        event.respondWith(handleNetworkFirst(request, event));
     }
 });
 
@@ -152,10 +152,10 @@ async function handleStaleWhileRevalidate(request) {
 }
 
 // Network-first strategy for navigation and dynamic content
-async function handleNetworkFirst(request) {
+async function handleNetworkFirst(request, event) {
     try {
         // Use navigation preload response if available
-        const preloadResponse = await event.preloadResponse;
+        const preloadResponse = event ? await event.preloadResponse : null;
         if (preloadResponse) {
             return preloadResponse;
         }
