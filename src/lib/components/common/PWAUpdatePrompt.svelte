@@ -15,6 +15,12 @@
 
 	async function registerServiceWorker() {
 		if ('serviceWorker' in navigator) {
+			// Skip service worker registration in development mode
+			if (import.meta.env.DEV) {
+				console.log('[PWA] Service Worker skipped in development mode');
+				return;
+			}
+			
 			try {
 				registration = await navigator.serviceWorker.register('/service-worker.js');
 				
