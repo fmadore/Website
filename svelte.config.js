@@ -38,7 +38,7 @@ const config = {
 			}
 		},
 		serviceWorker: {
-			register: true
+			register: !dev
 		}
 	},
 	extensions: ['.svelte', '.svx']
