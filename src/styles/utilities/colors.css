@@ -172,7 +172,7 @@
 }
 
 /* Hover effects */
-@media (hover: hover) {
+@media (--interaction-hover) {
 	.hover\:text-primary:hover {
 		color: var(--color-primary);
 	}
@@ -256,7 +256,7 @@
 /* Responsive Color Utilities */
 
 /* Small (sm) - 640px */
-@media (min-width: 640px) {
+@media (--mq-sm) {
 	.sm\:text-primary {
 		color: var(--color-primary);
 	}
@@ -361,7 +361,7 @@
 }
 
 /* Medium (md) - 768px */
-@media (min-width: 768px) {
+@media (--mq-md) {
 	.md\:text-primary {
 		color: var(--color-primary);
 	}
@@ -466,7 +466,7 @@
 }
 
 /* Large (lg) - 1024px */
-@media (min-width: 1024px) {
+@media (--mq-lg) {
 	.lg\:text-primary {
 		color: var(--color-primary);
 	}
@@ -571,7 +571,7 @@
 }
 
 /* Extra Large (xl) - 1280px */
-@media (min-width: 1280px) {
+@media (--mq-xl) {
 	.xl\:text-primary {
 		color: var(--color-primary);
 	}

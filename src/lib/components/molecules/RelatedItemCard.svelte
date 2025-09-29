@@ -148,7 +148,7 @@
 	}
 
 	/* Responsive tweaks */
-	@media (max-width: 640px) {
+	@media (--mq-sm-down) {
 		.related-title {
 			font-size: var(--font-size-base);
 		}
@@ -158,7 +158,7 @@
 	}
 
 	/* Reduced motion preference */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.related-item,
 		.related-title {
 			transition: none;

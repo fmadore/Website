@@ -526,7 +526,7 @@
 	}
 
 	/* Responsive design improvements */
-	@media (min-width: var(--breakpoint-sm)) {
+	@media (--mq-sm) {
 		.footer-container {
 			padding: 0 var(--spacing-8);
 			gap: var(--spacing-6);
@@ -538,7 +538,7 @@
 		}
 	}
 
-	@media (min-width: var(--breakpoint-md)) {
+	@media (--mq-md) {
 		.footer-container {
 			gap: var(--spacing-6);
 		}
@@ -548,7 +548,7 @@
 		}
 	}
 
-	@media (min-width: var(--breakpoint-lg)) {
+	@media (--mq-lg) {
 		.site-footer {
 			padding: var(--spacing-16) 0 var(--spacing-12) 0;
 		}
@@ -562,7 +562,7 @@
 		}
 	}
 
-	@media (max-width: 639px) {
+	@media (--mq-sm-down) {
 		.footer-container {
 			gap: var(--spacing-6);
 		}
@@ -596,7 +596,7 @@
 	}
 
 	/* Additional mobile-specific fixes for very small screens */
-	@media (max-width: 480px) {
+	@media (--mq-xs-down) {
 		.footer-social-links {
 			grid-template-columns: 1fr;
 			gap: var(--spacing-3);
@@ -613,7 +613,7 @@
 	}
 
 	/* Accessibility improvements */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.footer-gradient-top,
 		.decoration-circle,
 		.decoration-line,

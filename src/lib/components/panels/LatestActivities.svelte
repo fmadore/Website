@@ -251,7 +251,7 @@
 	}
 
 	/* Responsive design */
-	@media (max-width: var(--breakpoint-sm)) {
+	@media (--mq-sm-down) {
 		.activity-meta {
 			flex-direction: column;
 			align-items: flex-start;
@@ -269,7 +269,7 @@
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.activity-item,
 		.activity-item::before,
 		.activity-title,

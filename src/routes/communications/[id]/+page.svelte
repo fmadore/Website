@@ -674,7 +674,7 @@
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 640px) {
+	@media (--mq-sm-down) {
 		.panel-papers-section,
 		.participants-section {
 			padding: var(--spacing-4);
@@ -699,7 +699,7 @@
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.communication-article,
 		.communication-article:hover,
 		.panel-papers-section,

@@ -345,7 +345,7 @@
 	}
 
 	/* Responsive design */
-	@media (max-width: 640px) {
+	@media (--mq-sm-down) {
 		.page-intro {
 			font-size: var(--font-size-heading-6);
 			margin-bottom: var(--space-md);
@@ -373,7 +373,7 @@
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.page-intro,
 		.page-intro :global(a),
 		.page-intro :global(a::after) {

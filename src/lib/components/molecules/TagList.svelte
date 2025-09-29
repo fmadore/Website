@@ -82,7 +82,7 @@
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 640px) {
+	@media (--mq-sm-down) {
 		:global(.tag-button) {
 			font-size: var(--font-size-xs);
 			padding: var(--spacing-1) var(--spacing-2);
@@ -90,7 +90,7 @@
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		:global(.tag-button),
 		:global(.tag-button:hover) {
 			transition: none;

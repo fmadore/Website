@@ -205,49 +205,27 @@
 	--text-max-width-reading: 65ch;
 	--text-max-width-wide: 80ch;
 /* ===== SPACING SYSTEM ===== */
-	/* Normalized spacing scale built on a quarter-rem baseline */
+	/* Semantic spacing tokens mapped to design token scale */
 
-	/* Foundations */
-	--space-0: 0;
-	--space-hairline: 1px;
-	--sys-space-1: 0.125rem; /* 2px */
-	--sys-space-2: 0.25rem; /* 4px */
-	--sys-space-3: 0.5rem; /* 8px */
-	--sys-space-4: 0.75rem; /* 12px */
-	--sys-space-5: 1rem; /* 16px */
-	--sys-space-6: 1.25rem; /* 20px */
-	--sys-space-7: 1.5rem; /* 24px */
-	--sys-space-8: 2rem; /* 32px */
-	--sys-space-9: 2.5rem; /* 40px */
-	--sys-space-10: 3rem; /* 48px */
-	--sys-space-11: 3.5rem; /* 56px */
-	--sys-space-12: 4rem; /* 64px */
-	--sys-space-13: 5rem; /* 80px */
-	--sys-space-14: 6rem; /* 96px */
-	--sys-space-15: 7rem; /* 112px */
-	--sys-space-16: 8rem; /* 128px */
-	--sys-space-17: 10rem; /* 160px */
-	--sys-space-18: 12rem; /* 192px */
-
-	/* Semantic spacing tokens */
-	--space-3xs: var(--sys-space-1);
-	--space-2xs: var(--sys-space-2);
-	--space-xs: var(--sys-space-3);
-	--space-sm: var(--sys-space-4);
-	--space-md: var(--sys-space-5);
-	--space-md-tight: var(--sys-space-6);
-	--space-lg: var(--sys-space-7);
-	--space-xl: var(--sys-space-8);
-	--space-xl-tight: var(--sys-space-9);
-	--space-2xl: var(--sys-space-10);
-	--space-2xl-tight: var(--sys-space-11);
-	--space-3xl: var(--sys-space-12);
-	--space-4xl: var(--sys-space-13);
-	--space-5xl: var(--sys-space-14);
-	--space-6xl: var(--sys-space-15);
-	--space-7xl: var(--sys-space-16);
-	--space-8xl: var(--sys-space-17);
-	--space-9xl: var(--sys-space-18);
+	--space-hairline: var(--space-px);
+	--space-3xs: calc(var(--space-1) / 2); /* 2px */
+	--space-2xs: var(--space-1); /* 4px */
+	--space-xs: var(--space-2); /* 8px */
+	--space-sm: var(--space-3); /* 12px */
+	--space-md: var(--space-4); /* 16px */
+	--space-md-tight: var(--space-5); /* 20px */
+	--space-lg: var(--space-6); /* 24px */
+	--space-xl: var(--space-7); /* 32px */
+	--space-xl-tight: var(--space-8); /* 40px */
+	--space-2xl: var(--space-9); /* 48px */
+	--space-2xl-tight: var(--space-10); /* 56px */
+	--space-3xl: var(--space-11); /* 64px */
+	--space-4xl: var(--space-12); /* 80px */
+	--space-5xl: var(--space-13); /* 96px */
+	--space-6xl: var(--space-14); /* 112px */
+	--space-7xl: var(--space-15); /* 128px */
+	--space-8xl: calc(var(--space-15) * 1.25); /* 160px */
+	--space-9xl: calc(var(--space-15) * 1.5); /* 192px */
 
 	/* Legacy aliases for utility compatibility */
 	--spacing-0: var(--space-0);
@@ -483,12 +461,6 @@
 	--anim-duration-ambient: 8s; /* For very slow ambient animations */
 	--anim-duration-gentle: 12s; /* For ultra-slow gentle animations */
 
-	/* Legacy breakpoint variables for compatibility */
-	--breakpoint-sm: 640px;
-	--breakpoint-md: 768px;
-	--breakpoint-lg: 1024px;
-	--breakpoint-xl: 1280px;
-	--breakpoint-2xl: 1536px;
 }
 
 /* ===== ENHANCED DARK THEME ===== */

@@ -317,7 +317,7 @@
 	}
 
 	/* Responsive design */
-	@media (min-width: 768px) {
+	@media (--mq-md) {
 		.lectures-list {
 			gap: var(--space-lg);
 		}
@@ -333,7 +333,7 @@
 	}
 
 	/* Accessibility improvements */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.lecture-item {
 			transition: none;
 		}
@@ -343,7 +343,7 @@
 		}
 	}
 
-	@media (prefers-contrast: high) {
+	@media (--prefers-high-contrast) {
 		.lecture-item {
 			border-width: var(--border-width-medium);
 		}

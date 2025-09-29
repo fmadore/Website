@@ -169,7 +169,7 @@
 	}
 
 	/* Reduced motion preference */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.details-grid {
 			transition: none;
 		}

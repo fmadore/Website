@@ -60,7 +60,7 @@
 	}
 
 	/* Hide hamburger on desktop */
-	@media (min-width: 1024px) {
+	@media (--mq-lg) {
 		.hamburger {
 			display: none;
 		}
@@ -73,14 +73,14 @@
 	}
 
 	/* High contrast mode support */
-	@media (prefers-contrast: high) {
+	@media (--prefers-high-contrast) {
 		.hamburger-line {
 			height: 3px;
 		}
 	}
 
 	/* Reduced motion support */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.hamburger-line {
 			transition: none;
 		}

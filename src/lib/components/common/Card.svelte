@@ -252,7 +252,7 @@
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.card,
 		.card-image img {
 			transition: none;

@@ -342,7 +342,7 @@
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 640px) {
+	@media (--mq-sm-down) {
 		.reviews-section {
 			padding: var(--spacing-4);
 		}
@@ -374,7 +374,7 @@
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.reviews-section,
 		.reviews-section:hover,
 		.review-card,

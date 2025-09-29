@@ -158,7 +158,7 @@
 	}
 
 	/* Responsive Design */
-	@media (max-width: var(--breakpoint-sm)) {
+	@media (--mq-sm-down) {
 		.breadcrumb {
 			padding: var(--spacing-3) var(--spacing-4);
 			margin-bottom: var(--spacing-3);
@@ -254,7 +254,7 @@
 	}
 
 	/* Accessibility - Reduced Motion */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.breadcrumb-link {
 			transition: color var(--anim-duration-fast) var(--anim-ease-base);
 			transform: none;

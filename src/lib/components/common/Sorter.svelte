@@ -156,7 +156,7 @@
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		:global(.sorter-button) {
 			transition: none;
 		}

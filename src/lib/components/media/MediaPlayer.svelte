@@ -1214,7 +1214,7 @@
 	}
 
 	/* Extra large screens get even more refinement */
-	@media (min-width: 1024px) {
+	@media (--mq-lg) {
 		.volume-slider {
 			width: var(--spacing-28);
 		}
@@ -1230,7 +1230,7 @@
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.media-player,
 		.progress-bar,
 		.progress-fill,
@@ -1253,7 +1253,7 @@
 	}
 
 	/* High contrast mode support */
-	@media (prefers-contrast: high) {
+	@media (--prefers-high-contrast) {
 		.progress-bar {
 			background: rgba(var(--color-text-rgb), var(--opacity-50));
 		}

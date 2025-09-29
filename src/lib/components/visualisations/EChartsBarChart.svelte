@@ -277,7 +277,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 	}
 
 	/* Reduced motion support */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.echarts-container {
 			opacity: 1 !important;
 			transform: none !important;

@@ -377,14 +377,14 @@
 		}
 
 		/* Responsive adjustments */
-		@media (max-width: 640px) {
+		@media (--mq-sm-down) {
 			.pdf-section {
 				padding: var(--spacing-6) !important;
 			}
 		}
 
 		/* Respect user motion preferences */
-		@media (prefers-reduced-motion: reduce) {
+		@media (--prefers-reduced-motion) {
 			.pdf-section {
 				transition: none;
 			}

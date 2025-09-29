@@ -22,7 +22,7 @@
 }
 
 /* Reduced motion support for all navigation elements */
-@media (prefers-reduced-motion: reduce) {
+@media (--prefers-reduced-motion) {
 	* {
 		animation-duration: var(--anim-duration-progress) !important;
 		animation-iteration-count: 1 !important;
@@ -31,7 +31,7 @@
 }
 
 /* High contrast mode support */
-@media (prefers-contrast: high) {
+@media (--prefers-high-contrast) {
 	/* Enhanced borders and outlines for better visibility */
 	*:focus-visible {
 		outline-width: var(--border-width-thick);

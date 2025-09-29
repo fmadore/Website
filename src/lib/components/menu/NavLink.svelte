@@ -90,7 +90,7 @@
 	}
 
 	/* High contrast mode support */
-	@media (prefers-contrast: high) {
+	@media (--prefers-high-contrast) {
 		.nav-link::after {
 			height: 3px;
 		}

@@ -151,7 +151,7 @@
 	}
 
 	/* Mobile responsive */
-	@media (max-width: 640px) {
+	@media (--mq-sm-down) {
 		.network-status-indicator {
 			left: 0.5rem;
 			right: 0.5rem;
@@ -174,7 +174,7 @@
 	}
 
 	/* Reduce animations for users who prefer reduced motion */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.network-status-indicator {
 			animation: none;
 		}

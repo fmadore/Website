@@ -195,7 +195,7 @@
 	}
 
 	/* Dark mode support */
-	@media (prefers-color-scheme: dark) {
+	@media (--prefers-dark) {
 		.optimized-image-container {
 			background-color: #374151;
 		}
@@ -213,7 +213,7 @@
 	}
 
 	/* Reduce animations for users who prefer reduced motion */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.responsive-image,
 		.optimized-image-container {
 			transition: none;
@@ -224,7 +224,7 @@
 			background: #f0f0f0;
 		}
 
-		@media (prefers-color-scheme: dark) {
+		@media (--prefers-dark) {
 			.loading-placeholder {
 				background: #374151;
 			}

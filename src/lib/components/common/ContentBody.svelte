@@ -225,7 +225,7 @@
 	/* Remove the problematic shimmer effect that's causing the wide overflow */
 
 	/* Responsive adjustments */
-	@media (max-width: var(--breakpoint-sm)) {
+	@media (--mq-sm-down) {
 		.content-body {
 			padding: var(--space-lg);
 		}
@@ -250,7 +250,7 @@
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.content-body {
 			transition: none;
 		}

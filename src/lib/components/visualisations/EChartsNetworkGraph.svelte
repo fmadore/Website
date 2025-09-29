@@ -380,7 +380,7 @@ ECharts Network Graph - A network visualization for author collaborations
 	}
 
 	/* Reduced motion support */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.echarts-container {
 			opacity: 1 !important;
 			transform: none !important;
@@ -389,13 +389,13 @@ ECharts Network Graph - A network visualization for author collaborations
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 768px) {
+	@media (--mq-md-down) {
 		.echarts-container {
 			height: 400px;
 		}
 	}
 
-	@media (max-width: 480px) {
+	@media (--mq-xs-down) {
 		.echarts-container {
 			height: 350px;
 		}

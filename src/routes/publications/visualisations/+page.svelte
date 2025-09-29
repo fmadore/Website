@@ -596,7 +596,7 @@
 	}
 
 	/* Reduced motion support */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.visualization-section,
 		.page-container > div,
 		.chart-wrapper {
@@ -607,7 +607,7 @@
 	}
 
 	/* Mobile responsiveness using breakpoint variables */
-	@media (max-width: var(--breakpoint-md)) {
+	@media (--mq-md-down) {
 		.page-container {
 			padding: 0 var(--spacing-3);
 		}
@@ -630,7 +630,7 @@
 		}
 	}
 
-	@media (max-width: var(--breakpoint-sm)) {
+	@media (--mq-sm-down) {
 		.chart-wrapper {
 			padding: var(--spacing-3);
 		}
@@ -699,7 +699,7 @@
 		color: var(--color-text-light);
 	}
 
-	@media (max-width: var(--breakpoint-sm)) {
+	@media (--mq-sm-down) {
 		.pagination-buttons {
 			flex-wrap: wrap;
 			justify-content: center;

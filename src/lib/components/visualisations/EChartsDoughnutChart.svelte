@@ -307,7 +307,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		height: 100%;
 	}
 	/* Reduced motion support */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.echarts-container {
 			opacity: 1 !important;
 			transform: none !important;
@@ -316,13 +316,13 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 640px) {
+	@media (--mq-sm-down) {
 		.echarts-container {
 			height: 420px; /* Increased height for mobile with legend space */
 		}
 	}
 
-	@media (max-width: 480px) {
+	@media (--mq-xs-down) {
 		.echarts-container {
 			height: 400px; /* Adequate height for very small screens with legend */
 		}

@@ -256,7 +256,7 @@
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 640px) {
+	@media (--mq-sm-down) {
 		.cited-by-section {
 			padding: var(--spacing-4);
 		}
@@ -275,7 +275,7 @@
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.cited-by-section,
 		.cited-by-section:hover,
 		.citing-work-card,

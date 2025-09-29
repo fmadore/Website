@@ -295,7 +295,7 @@
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: var(--breakpoint-sm)) {
+	@media (--mq-sm-down) {
 		.project-image-banner {
 			padding: var(--spacing-4);
 			margin-bottom: var(--spacing-6);
@@ -312,7 +312,7 @@
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.project-image-banner,
 		.project-image,
 		.image-overlay,
@@ -332,7 +332,7 @@
 	}
 
 	/* High contrast mode support */
-	@media (prefers-contrast: high) {
+	@media (--prefers-high-contrast) {
 		.project-image-banner {
 			border-width: 2px;
 		}

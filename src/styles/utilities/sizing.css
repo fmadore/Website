@@ -69,7 +69,7 @@
 }
 
 /* Responsive Sizing */
-@media (min-width: var(--breakpoint-sm)) {
+@media (--mq-sm) {
 	.sm\:w-auto {
 		width: auto;
 	}
@@ -134,7 +134,7 @@
 	}
 }
 
-@media (min-width: var(--breakpoint-md)) {
+@media (--mq-md) {
 	.md\:w-auto {
 		width: auto;
 	}
@@ -199,7 +199,7 @@
 	}
 }
 
-@media (min-width: var(--breakpoint-lg)) {
+@media (--mq-lg) {
 	.lg\:w-auto {
 		width: auto;
 	}
@@ -264,7 +264,7 @@
 	}
 }
 
-@media (min-width: var(--breakpoint-xl)) {
+@media (--mq-xl) {
 	.xl\:w-auto {
 		width: auto;
 	}

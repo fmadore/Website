@@ -456,7 +456,7 @@
 	}
 
 	/* Responsive design */
-	@media (max-width: 640px) {
+	@media (--mq-sm-down) {
 		.range-slider {
 			margin: var(--spacing-2) 0;
 			padding: var(--spacing-2);
@@ -474,7 +474,7 @@
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.range-slider,
 		.range-track,
 		.range-highlight,

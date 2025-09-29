@@ -161,7 +161,7 @@
 	}
 
 	/* Reduced motion support */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.theme-toggle,
 		.theme-toggle :global(svg) {
 			transition: none;
@@ -173,7 +173,7 @@
 	}
 
 	/* High contrast mode */
-	@media (prefers-contrast: high) {
+	@media (--prefers-high-contrast) {
 		.theme-toggle {
 			border-width: var(--border-width-medium);
 		}

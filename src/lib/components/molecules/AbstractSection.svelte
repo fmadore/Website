@@ -147,7 +147,7 @@
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 640px) {
+	@media (--mq-sm-down) {
 		.abstract-section {
 			padding: var(--spacing-4);
 		}
@@ -162,7 +162,7 @@
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.abstract-section,
 		.abstract-section:hover,
 		.abstract-title::after {

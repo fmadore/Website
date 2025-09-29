@@ -162,7 +162,7 @@
 }
 
 /* Responsive flexbox */
-@media (min-width: 640px) {
+@media (--mq-sm) {
 	.sm\:flex {
 		display: flex;
 	}
@@ -204,7 +204,7 @@
 	}
 }
 
-@media (min-width: 768px) {
+@media (--mq-md) {
 	.md\:flex {
 		display: flex;
 	}
@@ -246,7 +246,7 @@
 	}
 }
 
-@media (min-width: 1024px) {
+@media (--mq-lg) {
 	.lg\:flex {
 		display: flex;
 	}

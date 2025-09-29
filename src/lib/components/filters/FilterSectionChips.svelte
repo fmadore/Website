@@ -209,14 +209,14 @@
 	}
 
 	/* Responsive design */
-	@media (max-width: 640px) {
+	@media (--mq-sm-down) {
 		.filter-section-content {
 			padding: var(--spacing-3);
 		}
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.filter-section-content,
 		.chip-count {
 			transition: none;

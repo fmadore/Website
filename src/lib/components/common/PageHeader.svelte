@@ -227,7 +227,7 @@
 	}
 
 	/* Mobile responsive design */
-	@media (max-width: var(--breakpoint-sm)) {
+	@media (--mq-sm-down) {
 		.enhanced-page-header {
 			padding: var(--spacing-6) var(--spacing-4);
 			margin-bottom: var(--spacing-4);
@@ -253,7 +253,7 @@
 	}
 
 	/* Animation for title accent on hover */
-	@media (prefers-reduced-motion: no-preference) {
+	@media (--prefers-motion) {
 		.title-section:hover .title-accent {
 			width: calc(var(--space-4xl) + var(--space-md-tight));
 		}

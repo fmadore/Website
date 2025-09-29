@@ -98,7 +98,7 @@ npm/* Card styles */
 	flex-direction: column;
 }
 
-@media (min-width: 768px) {
+@media (--mq-md) {
 	.card-horizontal {
 		flex-direction: row;
 	}
@@ -151,13 +151,13 @@ npm/* Card styles */
 	gap: var(--spacing-6);
 }
 
-@media (min-width: 640px) {
+@media (--mq-sm) {
 	.card-grid {
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
 
-@media (min-width: 1024px) {
+@media (--mq-lg) {
 	.card-grid {
 		grid-template-columns: repeat(3, 1fr);
 	}

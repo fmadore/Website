@@ -528,7 +528,7 @@
 	}
 
 	/* Reduced motion support */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.preview-card {
 			transition: none;
 		}
@@ -543,7 +543,7 @@
 	}
 
 	/* High contrast support */
-	@media (prefers-contrast: high) {
+	@media (--prefers-high-contrast) {
 		.preview-card {
 			border-width: var(--border-width-medium);
 		}

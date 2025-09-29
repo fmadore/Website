@@ -1,32 +1,36 @@
 /* Main CSS entry point */
 
+@layer reset, tokens, base, layout, components, utilities, overrides;
+
 /* Base styles */
-@import './styles/base/reset.css';
-@import './styles/base/typography.css';
-@import './styles/base/variables.css';
+@import url('./styles/base/reset.css') layer(reset);
+@import url('./styles/base/media-queries.css') layer(tokens);
+@import url('./styles/base/_tokens.css') layer(tokens);
+@import url('./styles/base/variables.css') layer(base);
+@import url('./styles/base/typography.css') layer(base);
 
 /* Layout components */
-@import './styles/layout/container.css';
-@import './styles/layout/grid.css';
+@import url('./styles/layout/container.css') layer(layout);
+@import url('./styles/layout/grid.css') layer(layout);
 
 /* UI Components */
-@import './styles/components/buttons.css';
-@import './styles/components/cards.css';
-@import './styles/components/entity-cards.css';
-@import './styles/components/navigation-utilities.css';
-@import './styles/components/activity-list.css';
-@import './styles/components/panels.css';
-@import './styles/components/animations.css';
+@import url('./styles/components/buttons.css') layer(components);
+@import url('./styles/components/cards.css') layer(components);
+@import url('./styles/components/entity-cards.css') layer(components);
+@import url('./styles/components/navigation-utilities.css') layer(components);
+@import url('./styles/components/activity-list.css') layer(components);
+@import url('./styles/components/panels.css') layer(components);
+@import url('./styles/components/animations.css') layer(components);
 
 /* Utilities */
-@import './styles/utilities/spacing.css';
-@import './styles/utilities/colors.css';
-@import './styles/utilities/flex.css';
-@import './styles/utilities/layout.css';
-@import './styles/utilities/border-radius.css';
-@import './styles/utilities/shadows.css';
-@import './styles/utilities/sizing.css';
-@import './styles/utilities/transitions.css';
-@import './styles/utilities/transforms.css';
-@import './styles/utilities/images.css';
-@import './styles/utilities/glassmorphism.css';
+@import url('./styles/utilities/spacing.css') layer(utilities);
+@import url('./styles/utilities/colors.css') layer(utilities);
+@import url('./styles/utilities/flex.css') layer(utilities);
+@import url('./styles/utilities/layout.css') layer(utilities);
+@import url('./styles/utilities/border-radius.css') layer(utilities);
+@import url('./styles/utilities/shadows.css') layer(utilities);
+@import url('./styles/utilities/sizing.css') layer(utilities);
+@import url('./styles/utilities/transitions.css') layer(utilities);
+@import url('./styles/utilities/transforms.css') layer(utilities);
+@import url('./styles/utilities/images.css') layer(utilities);
+@import url('./styles/utilities/glassmorphism.css') layer(utilities);

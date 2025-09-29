@@ -276,7 +276,7 @@
 }
 
 /* Hover transform utilities */
-@media (hover: hover) {
+@media (--interaction-hover) {
 	/* Hover scale */
 	.hover\:scale-95:hover {
 		transform: scale(var(--scale-95));
@@ -375,7 +375,7 @@
 }
 
 /* Responsive transform utilities */
-@media (min-width: 640px) {
+@media (--mq-sm) {
 	.sm\:scale-95 {
 		transform: scale(var(--scale-95));
 	}
@@ -413,7 +413,7 @@
 	}
 }
 
-@media (min-width: 768px) {
+@media (--mq-md) {
 	.md\:scale-95 {
 		transform: scale(var(--scale-95));
 	}
@@ -451,7 +451,7 @@
 	}
 }
 
-@media (min-width: 1024px) {
+@media (--mq-lg) {
 	.lg\:scale-95 {
 		transform: scale(var(--scale-95));
 	}
@@ -489,7 +489,7 @@
 	}
 }
 
-@media (min-width: 1280px) {
+@media (--mq-xl) {
 	.xl\:scale-95 {
 		transform: scale(var(--scale-95));
 	}

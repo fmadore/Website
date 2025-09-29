@@ -173,7 +173,7 @@
 	}
 
 	/* Grid layout for medium screens and up */
-	@media (min-width: var(--breakpoint-md)) {
+	@media (--mq-md) {
 		.grid {
 			/* Apply to the .grid container */
 			display: grid;

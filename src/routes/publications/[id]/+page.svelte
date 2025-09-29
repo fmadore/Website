@@ -604,7 +604,7 @@
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 640px) {
+	@media (--mq-sm-down) {
 		.table-of-contents-section {
 			padding: var(--spacing-4);
 		}
@@ -624,7 +624,7 @@
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.publication-article,
 		.publication-article:hover,
 		.table-of-contents-section,
@@ -713,7 +713,7 @@
 	}
 
 	/* Responsive adjustments for actions */
-	@media (max-width: 640px) {
+	@media (--mq-sm-down) {
 		.publication-actions {
 			padding: var(--spacing-3) var(--spacing-4);
 			margin-top: var(--spacing-6);
@@ -721,7 +721,7 @@
 	}
 
 	/* Motion preferences for actions */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.publication-actions,
 		.publication-actions:hover,
 		.publication-actions .btn::before {

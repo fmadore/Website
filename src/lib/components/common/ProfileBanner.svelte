@@ -251,11 +251,6 @@
 	}
 
 	/* Focus-visible accessibility rings */
-	.profile-photo:focus-visible img {
-		outline: 3px solid var(--color-highlight);
-		outline-offset: var(--space-2xs);
-	}
-
 	.icon-link:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-highlight);
 		outline-offset: var(--space-2xs);
@@ -264,7 +259,7 @@
 	}
 
 	/* Mobile responsive design */
-	@media (max-width: 640px) {
+	@media (--mq-sm-down) {
 		.profile-header {
 			flex-direction: column;
 			align-items: center;
@@ -313,7 +308,7 @@
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: no-preference) {
+	@media (--prefers-motion) {
 		.profile-photo img {
 			transition:
 				transform var(--transition-duration-300) var(--transition-ease-out),
@@ -324,9 +319,7 @@
 			opacity: 1;
 		}
 
-		.profile-photo:hover img,
-		.profile-photo:focus-within img,
-		.profile-photo:focus-visible img {
+		.profile-photo:hover img {
 			transform: scale(1.02);
 			box-shadow: var(--shadow-xl);
 		}

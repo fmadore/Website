@@ -677,14 +677,14 @@
 		}
 	}
 
-	@media (max-width: 640px) {
+	@media (--mq-sm-down) {
 		.hero-figure--glass {
 			padding: var(--spacing-2);
 		}
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.hero-figure,
 		.hero-image,
 		.image-container .hero-image,

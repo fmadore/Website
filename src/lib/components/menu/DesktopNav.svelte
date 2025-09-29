@@ -90,7 +90,7 @@
 	}
 
 	/* Reduced motion support */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		:global(.nav-link),
 		:global(.dropdown-icon),
 		:global(.dropdown-menu) {

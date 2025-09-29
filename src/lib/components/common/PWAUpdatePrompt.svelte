@@ -216,7 +216,7 @@
 	}
 
 	/* Dark mode support */
-	@media (prefers-color-scheme: dark) {
+	@media (--prefers-dark) {
 		.pwa-update-prompt {
 			background: #1f2937;
 			border-color: #374151;
@@ -242,7 +242,7 @@
 	}
 
 	/* Mobile responsive */
-	@media (max-width: 640px) {
+	@media (--mq-sm-down) {
 		.pwa-update-prompt {
 			left: 0.5rem;
 			right: 0.5rem;

@@ -7,7 +7,7 @@
 }
 
 /* Ensure main content is more visible on mobile */
-@media (max-width: 767px) {
+@media (--mq-md-down) {
 	/* Reduce initial transform distance on mobile for better visibility */
 	[data-animate]:not(.animate-in) {
 		transform: translateY(var(--transform-distance-sm));
@@ -279,7 +279,7 @@
 }
 
 /* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
+@media (--prefers-reduced-motion) {
 	.fade-in,
 	.fade-in-up,
 	.fade-in-down,

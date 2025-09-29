@@ -263,7 +263,7 @@
 	}
 
 	/* Reduced motion support */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.item-reference {
 			transition: none;
 		}
@@ -274,7 +274,7 @@
 	}
 
 	/* High contrast support */
-	@media (prefers-contrast: high) {
+	@media (--prefers-high-contrast) {
 		.item-reference-error {
 			border-width: var(--border-width-medium);
 		}

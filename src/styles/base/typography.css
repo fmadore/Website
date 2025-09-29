@@ -474,7 +474,7 @@ th {
 }
 
 /* Responsive typography utilities */
-@media (min-width: 640px) {
+@media (--mq-sm) {
 	.sm\:text-left {
 		text-align: left;
 	}
@@ -506,7 +506,7 @@ th {
 	}
 }
 
-@media (min-width: 768px) {
+@media (--mq-md) {
 	.md\:text-left {
 		text-align: left;
 	}
@@ -538,7 +538,7 @@ th {
 	}
 }
 
-@media (min-width: 1024px) {
+@media (--mq-lg) {
 	.lg\:text-xl {
 		font-size: var(--font-size-xl);
 	}
@@ -560,7 +560,7 @@ th {
 	}
 }
 
-@media (min-width: 1280px) {
+@media (--mq-xl) {
 	.xl\:italic {
 		font-style: italic;
 	}

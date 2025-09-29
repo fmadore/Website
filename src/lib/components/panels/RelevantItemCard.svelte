@@ -214,7 +214,7 @@
 	}
 
 	/* Responsive design */
-	@media (max-width: var(--breakpoint-sm)) {
+	@media (--mq-sm-down) {
 		.relevant-item-meta {
 			flex-direction: column;
 			align-items: flex-start;
@@ -231,7 +231,7 @@
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.relevant-item,
 		.relevant-item::before,
 		.relevant-item-title a,

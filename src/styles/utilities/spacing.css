@@ -10,71 +10,68 @@
 
 /* Margin X (left & right) - Most commonly used */
 .mx-auto {
-	margin-left: auto;
-	margin-right: auto;
+	margin-inline: auto;
 }
 .mx-4 {
-	margin-left: var(--space-md);
-	margin-right: var(--space-md);
+	margin-inline: var(--space-md);
 }
 
 /* Margin Y (top & bottom) */
 .my-8 {
-	margin-top: var(--space-xl);
-	margin-bottom: var(--space-xl);
+	margin-block: var(--space-xl);
 }
 
 /* Margin Top - Essential values */
 .mt-2 {
-	margin-top: var(--space-xs);
+	margin-block-start: var(--space-xs);
 }
 .mt-4 {
-	margin-top: var(--space-md);
+	margin-block-start: var(--space-md);
 }
 .mt-6 {
-	margin-top: var(--space-lg);
+	margin-block-start: var(--space-lg);
 }
 .mt-8 {
-	margin-top: var(--space-xl);
+	margin-block-start: var(--space-xl);
 }
 
 /* Margin Bottom - Most used values */
 .mb-1 {
-	margin-bottom: var(--space-2xs);
+	margin-block-end: var(--space-2xs);
 }
 .mb-2 {
-	margin-bottom: var(--space-xs);
+	margin-block-end: var(--space-xs);
 }
 .mb-3 {
-	margin-bottom: var(--space-sm);
+	margin-block-end: var(--space-sm);
 }
 .mb-4 {
-	margin-bottom: var(--space-md);
+	margin-block-end: var(--space-md);
 }
 .mb-6 {
-	margin-bottom: var(--space-lg);
+	margin-block-end: var(--space-lg);
 }
 .mb-8 {
-	margin-bottom: var(--space-xl);
+	margin-block-end: var(--space-xl);
 }
 .mb-12 {
-	margin-bottom: var(--space-2xl);
+	margin-block-end: var(--space-2xl);
 }
 
 /* Margin Left - Essential values */
 .ml-1 {
-	margin-left: var(--space-2xs);
+	margin-inline-start: var(--space-2xs);
 }
 .ml-2 {
-	margin-left: var(--space-xs);
+	margin-inline-start: var(--space-xs);
 }
 .ml-4 {
-	margin-left: var(--space-md);
+	margin-inline-start: var(--space-md);
 }
 
 /* Margin Right */
 .mr-2 {
-	margin-right: var(--space-xs);
+	margin-inline-end: var(--space-xs);
 }
 
 /* Base padding */
@@ -96,31 +93,28 @@
 
 /* Padding X (left & right) */
 .px-1 {
-	padding-left: var(--space-2xs);
-	padding-right: var(--space-2xs);
+	padding-inline: var(--space-2xs);
 }
 .px-4 {
-	padding-left: var(--space-md);
-	padding-right: var(--space-md);
+	padding-inline: var(--space-md);
 }
 
 /* Padding Y (top & bottom) */
 .py-8 {
-	padding-top: var(--space-xl);
-	padding-bottom: var(--space-xl);
+	padding-block: var(--space-xl);
 }
 
 /* Padding Top */
 .pt-4 {
-	padding-top: var(--space-md);
+	padding-block-start: var(--space-md);
 }
 
 /* Padding Bottom */
 .pb-1 {
-	padding-bottom: var(--space-2xs);
+	padding-block-end: var(--space-2xs);
 }
 .pb-2 {
-	padding-bottom: var(--space-xs);
+	padding-block-end: var(--space-xs);
 }
 
 /* Gap for flex and grid - Essential values */
@@ -149,14 +143,14 @@
 
 /* Space between elements */
 .space-y-3 > * + * {
-	margin-top: var(--space-sm);
+	margin-block-start: var(--space-sm);
 }
 .space-y-4 > * + * {
-	margin-top: var(--space-md);
+	margin-block-start: var(--space-md);
 }
 
 /* Essential responsive variants based on actual usage */
-@media (min-width: 640px) {
+@media (--mq-sm) {
 	.sm\:flex-row {
 		flex-direction: row;
 	}
@@ -164,22 +158,19 @@
 		gap: var(--space-md);
 	}
 	.sm\:mx-auto {
-		margin-left: auto;
-		margin-right: auto;
+		margin-inline: auto;
 	}
 	.sm\:px-4 {
-		padding-left: var(--space-md);
-		padding-right: var(--space-md);
+		padding-inline: var(--space-md);
 	}
 }
 
-@media (min-width: 768px) {
+@media (--mq-md) {
 	.md\:p-6 {
 		padding: var(--space-lg);
 	}
 	.md\:px-6 {
-		padding-left: var(--space-lg);
-		padding-right: var(--space-lg);
+		padding-inline: var(--space-lg);
 	}
 	.md\:text-left {
 		text-align: left;
@@ -188,14 +179,13 @@
 		gap: var(--space-xl);
 	}
 	.md\:mt-8 {
-		margin-top: var(--space-xl);
+		margin-block-start: var(--space-xl);
 	}
 }
 
-@media (min-width: 1024px) {
+@media (--mq-lg) {
 	.lg\:px-8 {
-		padding-left: var(--space-xl);
-		padding-right: var(--space-xl);
+		padding-inline: var(--space-xl);
 	}
 }
 

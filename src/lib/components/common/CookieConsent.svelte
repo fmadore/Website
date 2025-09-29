@@ -171,7 +171,7 @@
 	}
 
 	/* Responsive design */
-	@media (max-width: 640px) {
+	@media (--mq-sm-down) {
 		.cookie-banner {
 			left: var(--spacing-3);
 			right: var(--spacing-3);
@@ -194,7 +194,7 @@
 	}
 
 	/* Accessibility improvements */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--prefers-reduced-motion) {
 		.cookie-banner {
 			animation: none;
 			transition: none;
@@ -206,7 +206,7 @@
 	}
 
 	/* High contrast mode support */
-	@media (prefers-contrast: high) {
+	@media (--prefers-high-contrast) {
 		.cookie-banner {
 			border-width: 2px;
 		}
