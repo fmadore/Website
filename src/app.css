@@ -16,7 +16,6 @@
 /* UI Components */
 @import url('./styles/components/buttons.css') layer(components);
 @import url('./styles/components/cards.css') layer(components);
-@import url('./styles/components/entity-cards.css') layer(components);
 @import url('./styles/components/navigation-utilities.css') layer(components);
 @import url('./styles/components/activity-list.css') layer(components);
 @import url('./styles/components/panels.css') layer(components);

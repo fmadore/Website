@@ -6,17 +6,19 @@
 		variant?:
 			| 'primary'
 			| 'secondary'
+			| 'tertiary'
+			| 'outline'
 			| 'outline-primary'
 			| 'outline-secondary'
 			| 'ghost'
-			| 'danger';
-		size?: 'sm' | 'base' | 'lg';
+			| 'danger'
+			| 'glass';
+		size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 		href?: string | undefined; // If provided, render as <a>
 		type?: 'button' | 'submit' | 'reset'; // Only used for <button>
 		disabled?: boolean;
-		block?: boolean; // For btn-block
+		block?: boolean; // For full-width button
 		iconOnly?: boolean; // For icon-only buttons
-		glass?: boolean; // Enable glassmorphism effect
 		loading?: boolean; // Loading state
 		ariaLabel?: string | undefined; // For accessibility, esp. for iconOnly
 		additionalClasses?: string;
@@ -27,13 +29,12 @@
 
 	let {
 		variant = 'primary',
-		size = 'base',
+		size = 'md',
 		href = undefined,
 		type = 'button',
 		disabled = false,
 		block = false,
 		iconOnly = false,
-		glass = false,
 		loading = false,
 		ariaLabel = undefined,
 		additionalClasses = '',
@@ -44,16 +45,15 @@
 
 	const dispatch = createEventDispatcher();
 
-	// Compute classes based on props
-	let buttonClasses = $derived(
+	// Legacy class support (for backward compatibility during migration)
+	let legacyClasses = $derived(
 		[
 			'btn',
 			`btn-${variant}`,
-			size !== 'base' ? `btn-${size}` : '',
+			size !== 'md' ? `btn-${size}` : '',
 			block ? 'btn-block' : '',
 			icon || loading ? 'btn-with-icon' : '',
 			iconOnly ? 'btn-icon-only' : '',
-			glass ? 'btn-glass' : '',
 			loading ? 'btn-loading' : '',
 			additionalClasses
 		]
@@ -66,12 +66,19 @@
 			dispatch('click', event);
 		}
 	}
+
 </script>
 
 {#if href}
 	<a
 		{href}
-		class={buttonClasses}
+		class={legacyClasses}
+		data-button
+		data-variant={variant}
+		data-size={size}
+		data-block={block ? 'true' : undefined}
+		data-icon-only={iconOnly ? 'true' : undefined}
+		data-loading={loading ? 'true' : undefined}
 		role="button"
 		aria-disabled={disabled || loading}
 		aria-label={ariaLabel || children ? undefined : 'Link button'}
@@ -110,7 +117,13 @@
 {:else}
 	<button
 		{type}
-		class={buttonClasses}
+		class={legacyClasses}
+		data-button
+		data-variant={variant}
+		data-size={size}
+		data-block={block ? 'true' : undefined}
+		data-icon-only={iconOnly ? 'true' : undefined}
+		data-loading={loading ? 'true' : undefined}
 		disabled={disabled || loading}
 		onclick={handleClick}
 		aria-label={ariaLabel || children ? undefined : 'Button'}

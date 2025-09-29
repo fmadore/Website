@@ -237,14 +237,8 @@
 }
 
 /* Outline styles */
-.outline-none {
-	outline: none;
-}
 .outline {
 	outline-style: solid;
-}
-.outline-dashed {
-	outline-style: dashed;
 }
 .outline-dotted {
 	outline-style: dotted;

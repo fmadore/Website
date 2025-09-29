@@ -73,6 +73,86 @@
 		--border-strong: var(--color-neutral-300);
 		--border-highlight: var(--accent-primary);
 
+		/* ----- Extended accent palette for theming ----- */
+		--accent-primary-bright: #60a5fa;
+		--accent-primary-vivid: #3b82f6;
+		--accent-primary-lighter: #93c5fd;
+		--accent-secondary-bright: #2dd4bf;
+		--accent-highlight-bright: #fbbf24;
+		--state-success-deep: #047857;
+		--state-success-bright: #34d399;
+		--state-success-lively: #10b981;
+		--surface-deep: #0f172a;
+		--surface-deeper: #020617;
+
+		/* ----- RGB helper tokens ----- */
+		--rgb-white: 255, 255, 255;
+		--rgb-black: 0, 0, 0;
+		--rgb-blue-900: 15, 31, 51;
+		--rgb-blue-800: 24, 50, 76;
+		--rgb-blue-700: 30, 58, 95;
+		--rgb-blue-600: 36, 72, 117;
+		--rgb-blue-500: 45, 77, 122;
+		--rgb-blue-400: 60, 95, 140;
+		--rgb-blue-300: 79, 108, 151;
+		--rgb-blue-200: 116, 137, 180;
+		--rgb-blue-100: 168, 182, 211;
+		--rgb-neutral-0: 255, 255, 255;
+		--rgb-neutral-50: 248, 250, 252;
+		--rgb-neutral-100: 241, 245, 249;
+		--rgb-neutral-200: 226, 232, 240;
+		--rgb-neutral-300: 203, 213, 225;
+		--rgb-neutral-400: 148, 163, 184;
+		--rgb-neutral-500: 100, 116, 139;
+		--rgb-neutral-600: 71, 85, 105;
+		--rgb-neutral-700: 51, 65, 85;
+		--rgb-neutral-800: 30, 41, 59;
+		--rgb-neutral-900: 15, 23, 42;
+		--rgb-teal-500: 8, 145, 178;
+		--rgb-teal-600: 14, 116, 144;
+		--rgb-gold-500: 202, 138, 4;
+		--rgb-green-500: 5, 150, 105;
+		--rgb-green-600: 4, 120, 87;
+		--rgb-red-500: 220, 38, 38;
+		--rgb-red-700: 153, 27, 27;
+		--rgb-primary-bright: 96, 165, 250;
+		--rgb-primary-vivid: 59, 130, 246;
+		--rgb-primary-lighter: 147, 197, 253;
+		--rgb-secondary-bright: 45, 212, 191;
+		--rgb-highlight-bright: 251, 191, 36;
+		--rgb-success: 5, 150, 105;
+		--rgb-success-deep: 4, 120, 87;
+		--rgb-success-bright: 52, 211, 153;
+		--rgb-success-lively: 16, 185, 129;
+		--rgb-surface-deep: 15, 23, 42;
+		--rgb-surface-deeper: 2, 6, 23;
+
+		/* ----- Legacy system aliases ----- */
+		--sys-color-neutral-0: var(--color-neutral-0);
+		--sys-color-neutral-50: var(--color-neutral-50);
+		--sys-color-neutral-100: var(--color-neutral-100);
+		--sys-color-neutral-200: var(--color-neutral-200);
+		--sys-color-neutral-300: var(--color-neutral-300);
+		--sys-color-neutral-500: var(--color-neutral-400);
+		--sys-color-neutral-600: var(--color-neutral-500);
+		--sys-color-neutral-700: var(--color-neutral-600);
+		--sys-color-neutral-800: var(--color-neutral-800);
+		--sys-color-neutral-900: var(--color-neutral-900);
+		--sys-color-blue-900: var(--color-blue-900);
+		--sys-color-blue-800: var(--color-blue-800);
+		--sys-color-blue-700: var(--color-blue-700);
+		--sys-color-blue-500: var(--color-blue-500);
+		--sys-color-blue-300: var(--color-blue-300);
+		--sys-color-teal-500: var(--color-teal-500);
+		--sys-color-teal-600: var(--color-teal-600);
+		--sys-color-gold-500: var(--color-gold-500);
+		--sys-color-green-500: var(--color-green-500);
+		--sys-color-red-500: var(--color-red-500);
+		--sys-color-red-700: var(--color-red-700);
+		--sys-color-white: var(--color-white);
+		--sys-color-black: var(--color-black);
+		--sys-color-transparent: var(--color-transparent);
+
 		/* ----- Spacing scale (quarter rem baseline) ----- */
 		--space-0: 0;
 		--space-px: 1px;
