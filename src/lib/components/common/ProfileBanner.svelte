@@ -129,7 +129,7 @@
 		border-radius: var(--border-radius-full);
 		z-index: -1;
 		opacity: 0;
-		transition: opacity var(--transition-duration-300) var(--transition-ease-out);
+		transition: opacity var(--anim-duration-base) var(--anim-ease-out);
 	}
 
 	.profile-photo {
@@ -208,7 +208,7 @@
 		/* Remove custom background - glass-button utility handles this */
 		border: none;
 		border-radius: var(--border-radius-lg);
-		transition: all var(--transition-duration-300) var(--transition-ease-in-out);
+		transition: all var(--anim-duration-base) var(--anim-ease-in-out);
 		position: relative;
 		overflow: hidden;
 	}
@@ -226,7 +226,7 @@
 			rgba(var(--color-highlight-rgb), var(--opacity-medium)) 50%,
 			transparent 100%
 		);
-		transition: left var(--transition-duration-300) var(--transition-ease-out);
+		transition: left var(--anim-duration-base) var(--anim-ease-out);
 	}
 
 	.icon-link:hover {
@@ -311,8 +311,8 @@
 	@media (--prefers-motion) {
 		.profile-photo img {
 			transition:
-				transform var(--transition-duration-300) var(--transition-ease-out),
-				box-shadow var(--transition-duration-300) var(--transition-ease-out);
+				transform var(--anim-duration-base) var(--anim-ease-out),
+				box-shadow var(--anim-duration-base) var(--anim-ease-out);
 		}
 
 		.profile-photo-container:hover::before {
@@ -325,7 +325,7 @@
 		}
 
 		.profile-icons :global(svg) {
-			transition: transform var(--transition-duration-200) var(--transition-ease-out);
+			transition: transform var(--anim-duration-fast) var(--anim-ease-out);
 		}
 
 		.icon-link:hover :global(svg),
@@ -335,7 +335,7 @@
 		}
 
 		.title-accent {
-			transition: width var(--transition-duration-300) var(--transition-ease-out);
+			transition: width var(--anim-duration-base) var(--anim-ease-out);
 		}
 
 		.profile-title:hover .title-accent {

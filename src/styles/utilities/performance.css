@@ -1,0 +1,425 @@
+/**
+ * Performance Optimization Utilities
+ * Part of CSS Refactor Phase 4.1
+ * 
+ * Provides utilities for:
+ * - CSS Containment (layout, style, paint, size)
+ * - GPU Acceleration hints
+ * - Content visibility optimization
+ * - Will-change optimization
+ * - Paint area reduction
+ */
+
+@layer utilities {
+	/* ==========================================================================
+	   CSS CONTAINMENT UTILITIES
+	   Isolates elements to improve rendering performance
+	   ========================================================================== */
+
+	/**
+	 * Layout Containment
+	 * Isolates layout calculations from the rest of the document
+	 * Best for: Card grids, list items, independent components
+	 */
+	.contain-layout {
+		contain: layout;
+	}
+
+	/**
+	 * Style Containment
+	 * Prevents style changes from affecting descendants
+	 * Best for: Components with internal styling
+	 */
+	.contain-style {
+		contain: style;
+	}
+
+	/**
+	 * Paint Containment
+	 * Isolates painting operations
+	 * Best for: Components that don't overflow their bounds
+	 */
+	.contain-paint {
+		contain: paint;
+	}
+
+	/**
+	 * Size Containment
+	 * Treats element as if it has no children for size calculation
+	 * Use with caution - requires explicit sizing
+	 */
+	.contain-size {
+		contain: size;
+	}
+
+	/**
+	 * Strict Containment
+	 * Combines layout, style, and paint containment
+	 * Recommended for most card/panel components
+	 */
+	.contain-strict {
+		contain: strict;
+	}
+
+	/**
+	 * Content Containment
+	 * Combines layout, style, and paint (excludes size)
+	 * Most commonly used containment level
+	 */
+	.contain-content {
+		contain: content;
+	}
+
+	/* ==========================================================================
+	   CONTENT VISIBILITY UTILITIES
+	   Modern property for virtualization and lazy rendering
+	   ========================================================================== */
+
+	/**
+	 * Content Visibility Auto
+	 * Skips rendering off-screen content
+	 * Best for: Long lists, lazy-loaded sections
+	 * Note: Adds contain-intrinsic-size for better layout stability
+	 */
+	.content-visible-auto {
+		content-visibility: auto;
+		contain-intrinsic-size: auto 500px;
+	}
+
+	/* Size variants for different content types */
+	.content-visible-auto-sm {
+		content-visibility: auto;
+		contain-intrinsic-size: auto 200px;
+	}
+
+	.content-visible-auto-md {
+		content-visibility: auto;
+		contain-intrinsic-size: auto 400px;
+	}
+
+	.content-visible-auto-lg {
+		content-visibility: auto;
+		contain-intrinsic-size: auto 600px;
+	}
+
+	.content-visible-auto-xl {
+		content-visibility: auto;
+		contain-intrinsic-size: auto 800px;
+	}
+
+	/**
+	 * Content Visibility Hidden
+	 * Similar to display: none but preserves layout
+	 * Best for: Temporarily hidden content that needs to maintain space
+	 */
+	.content-visible-hidden {
+		content-visibility: hidden;
+	}
+
+	/* ==========================================================================
+	   GPU ACCELERATION UTILITIES
+	   Force GPU acceleration for smoother animations
+	   ========================================================================== */
+
+	/**
+	 * GPU Accelerate
+	 * Forces GPU acceleration using 3D transform
+	 * Best for: Animated elements, smooth scrolling containers
+	 */
+	.gpu-accelerate {
+		transform: translateZ(0);
+		backface-visibility: hidden;
+		perspective: 1000px;
+	}
+
+	/**
+	 * GPU Layer
+	 * Creates a new compositing layer
+	 * Use sparingly - too many layers can hurt performance
+	 */
+	.gpu-layer {
+		will-change: transform;
+		transform: translateZ(0);
+	}
+
+	/* ==========================================================================
+	   WILL-CHANGE UTILITIES
+	   Hints to browser about upcoming changes
+	   WARNING: Use sparingly! Overuse hurts performance
+	   ========================================================================== */
+
+	/**
+	 * Will Change Transform
+	 * Best for: Elements that will be animated with transforms
+	 * Remember to remove after animation completes
+	 */
+	.will-change-transform {
+		will-change: transform;
+	}
+
+	/**
+	 * Will Change Opacity
+	 * Best for: Fade in/out animations
+	 */
+	.will-change-opacity {
+		will-change: opacity;
+	}
+
+	/**
+	 * Will Change Transform and Opacity
+	 * For combined transform + fade animations
+	 */
+	.will-change-transform-opacity {
+		will-change: transform, opacity;
+	}
+
+	/**
+	 * Will Change Scroll Position
+	 * For smooth scrolling containers
+	 */
+	.will-change-scroll {
+		will-change: scroll-position;
+	}
+
+	/**
+	 * Will Change Contents
+	 * For elements with dynamic content
+	 */
+	.will-change-contents {
+		will-change: contents;
+	}
+
+	/**
+	 * Reset Will Change
+	 * Remove will-change hint after animation
+	 * Use with JS: element.classList.add('will-change-auto') after animation
+	 */
+	.will-change-auto {
+		will-change: auto;
+	}
+
+	/* ==========================================================================
+	   PAINT OPTIMIZATION UTILITIES
+	   Reduce paint areas and improve rendering
+	   ========================================================================== */
+
+	/**
+	 * Isolate
+	 * Creates new stacking context and reduces paint area
+	 */
+	.isolate {
+		isolation: isolate;
+	}
+
+	/**
+	 * Backface Hidden
+	 * Hides element backface during 3D transforms
+	 * Reduces visual artifacts
+	 */
+	.backface-hidden {
+		backface-visibility: hidden;
+	}
+
+	/**
+	 * Subpixel Antialiased
+	 * Better text rendering on some displays
+	 */
+	.subpixel-antialiased {
+		-webkit-font-smoothing: subpixel-antialiased;
+		-moz-osx-font-smoothing: auto;
+	}
+
+	/**
+	 * Antialiased
+	 * Smoother text rendering (may appear thinner)
+	 */
+	.antialiased {
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+
+	/* ==========================================================================
+	   COMPOSITE PERFORMANCE PATTERNS
+	   Common combinations for specific use cases
+	   ========================================================================== */
+
+	/**
+	 * Optimized Card
+	 * Recommended for card components in grids
+	 */
+	.optimized-card {
+		contain: content;
+		transform: translateZ(0);
+	}
+
+	/**
+	 * Optimized List Item
+	 * Recommended for list items in long lists
+	 */
+	.optimized-list-item {
+		contain: layout style;
+		content-visibility: auto;
+		contain-intrinsic-size: auto 100px;
+	}
+
+	/**
+	 * Optimized Panel
+	 * Recommended for panel/section components
+	 */
+	.optimized-panel {
+		contain: layout style paint;
+		isolation: isolate;
+	}
+
+	/**
+	 * Optimized Modal
+	 * Recommended for modal/dialog components
+	 */
+	.optimized-modal {
+		contain: layout style paint;
+		will-change: transform, opacity;
+		backface-visibility: hidden;
+	}
+
+	/**
+	 * Optimized Scroll Container
+	 * Recommended for scrollable areas
+	 */
+	.optimized-scroll {
+		contain: layout style;
+		will-change: scroll-position;
+		overflow: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	/* ==========================================================================
+	   ACCESSIBILITY CONSIDERATIONS
+	   Performance optimizations with accessibility support
+	   ========================================================================== */
+
+	/**
+	 * Safe Content Visibility
+	 * Only applies content-visibility when motion is allowed
+	 * Respects user's motion preferences
+	 */
+	@media (--prefers-motion) {
+		.safe-content-visible-auto {
+			content-visibility: auto;
+			contain-intrinsic-size: auto 500px;
+		}
+	}
+
+	/**
+	 * Safe GPU Acceleration
+	 * Only applies GPU acceleration when motion is allowed
+	 */
+	@media (--prefers-motion) {
+		.safe-gpu-accelerate {
+			transform: translateZ(0);
+			backface-visibility: hidden;
+		}
+	}
+
+	/* ==========================================================================
+	   RESPONSIVE PERFORMANCE UTILITIES
+	   Apply performance optimizations based on viewport size
+	   ========================================================================== */
+
+	/**
+	 * Desktop-only performance optimizations
+	 * More aggressive optimizations on larger screens
+	 */
+	@media (--mq-lg) {
+		.lg\:contain-content {
+			contain: content;
+		}
+
+		.lg\:content-visible-auto {
+			content-visibility: auto;
+			contain-intrinsic-size: auto 500px;
+		}
+
+		.lg\:gpu-accelerate {
+			transform: translateZ(0);
+			backface-visibility: hidden;
+		}
+	}
+
+	/**
+	 * Mobile-only performance optimizations
+	 * More conservative on mobile to save resources
+	 */
+	@media (--mq-md-down) {
+		.mobile\:contain-layout {
+			contain: layout;
+		}
+
+		.mobile\:content-visible-auto-sm {
+			content-visibility: auto;
+			contain-intrinsic-size: auto 300px;
+		}
+	}
+
+	/* ==========================================================================
+	   DEBUG UTILITIES
+	   Help identify performance issues during development
+	   ========================================================================== */
+
+	/**
+	 * Paint Flashing
+	 * Highlights repaint areas (use browser DevTools instead in production)
+	 * Add this class temporarily to debug paint issues
+	 */
+	.debug-paint {
+		outline: 2px solid red;
+		outline-offset: -2px;
+	}
+
+	/**
+	 * Layout Boundary
+	 * Visual indicator of containment boundaries
+	 */
+	.debug-contain {
+		outline: 2px dashed blue;
+		outline-offset: -2px;
+	}
+}
+
+/* ==========================================================================
+   USAGE NOTES & BEST PRACTICES
+   ========================================================================== 
+
+   CSS Containment Best Practices:
+   - Use 'contain: content' for most card/panel components
+   - Use 'contain: layout style' for list items
+   - Avoid 'contain: size' unless you have explicit dimensions
+   - Test thoroughly - containment can affect layout
+
+   Content Visibility Best Practices:
+   - Perfect for long lists and grids
+   - Set appropriate contain-intrinsic-size to avoid layout shift
+   - Test with screen readers - may affect accessibility
+   - Not needed for above-the-fold content
+
+   Will-Change Best Practices:
+   - ONLY use right before animation starts
+   - ALWAYS remove after animation completes
+   - Don't apply to more than 3-4 elements at once
+   - Don't use on static elements
+   - Consider using in JS: element.style.willChange = 'transform'
+
+   GPU Acceleration Best Practices:
+   - Good for smooth animations
+   - Don't overuse - creates memory overhead
+   - Combine with will-change for best results
+   - Test on mobile devices
+
+   General Performance Tips:
+   - Prefer transform and opacity for animations
+   - Avoid animating layout properties (width, height, margin, padding)
+   - Use transform: translate() instead of left/top
+   - Batch DOM reads/writes
+   - Use requestAnimationFrame for JS animations
+   - Monitor paint and composite layers in DevTools
+
+   ========================================================================== */

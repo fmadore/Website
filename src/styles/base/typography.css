@@ -95,8 +95,12 @@ a:hover {
 /* We can keep special cases without underlines */
 .card a,
 .nav-link,
+[data-nav-link],
+.dropdown-item,
+.mobile-nav-link,
 .btn,
-.header-logo a {
+.header-logo a,
+.site-title {
 	text-decoration: none;
 }
 

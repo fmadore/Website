@@ -1,0 +1,208 @@
+/**
+ * Navigation Links Component Styles
+ * Shared styles for navigation link components
+ * Part of CSS Refactor Phase 3.3
+ */
+
+@layer components {
+	/* ==========================================================================
+	   Base Navigation Link Styles
+	   ========================================================================== */
+
+	[data-nav-link]:not(.dropdown-item),
+	.nav-link:not(.dropdown-item) {
+		/* Base styles */
+		color: var(--color-text);
+		text-decoration: none;
+		font-weight: 500;
+		font-size: var(--font-size-base);
+		padding-block: var(--spacing-2);
+		padding-inline: 0;
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-1);
+
+		/* Typography optimization */
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+
+		/* Minimal transition - only color */
+		transition: color var(--motion-duration-fast) var(--motion-ease-out);
+	}
+
+	/* ==========================================================================
+	   Minimal Bottom Border for Active State
+	   ========================================================================== */
+
+	/* Very subtle bottom border - only visible on active */
+	[data-nav-link]:not(.dropdown-item)::after,
+	.nav-link:not(.dropdown-item)::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 2px;
+		background-color: var(--color-primary);
+		opacity: 0;
+		transition: opacity var(--motion-duration-fast) var(--motion-ease-out);
+	}
+
+	/* ==========================================================================
+	   Hover & Active States
+	   ========================================================================== */
+
+	/* Hover state - minimal color change only */
+	[data-nav-link]:not(.dropdown-item):hover,
+	.nav-link:not(.dropdown-item):hover {
+		color: var(--color-primary);
+	}
+
+	/* Active state - current page indicator */
+	[data-nav-link]:not(.dropdown-item)[data-active='true'],
+	.nav-link:not(.dropdown-item).active {
+		color: var(--color-primary);
+		font-weight: 600;
+	}
+
+	[data-nav-link]:not(.dropdown-item)[data-active='true']::after,
+	.nav-link:not(.dropdown-item).active::after {
+		opacity: 1;
+	}
+
+	/* ==========================================================================
+	   Focus States
+	   ========================================================================== */
+
+	[data-nav-link]:not(.dropdown-item):focus-visible,
+	.nav-link:not(.dropdown-item):focus-visible {
+		outline: var(--border-width-medium) solid var(--color-primary);
+		outline-offset: var(--spacing-2);
+		border-radius: var(--border-radius-sm);
+	}
+
+	/* ==========================================================================
+	   Dropdown Indicator
+	   ========================================================================== */
+
+	/* Dropdown icon styling */
+	[data-dropdown-icon],
+	.dropdown-icon {
+		display: inline-block;
+		font-size: 12px;
+		line-height: 1;
+		transition: transform var(--motion-duration-normal) var(--motion-ease-out);
+	}
+
+	/* Rotate dropdown icon when expanded */
+	[data-nav-link][aria-expanded='true'] [data-dropdown-icon],
+	.nav-link[aria-expanded='true'] .dropdown-icon {
+		transform: rotate(180deg);
+	}
+
+	/* ==========================================================================
+	   Size Variants
+	   ========================================================================== */
+
+	/* Small size */
+	[data-nav-link][data-size='sm'],
+	.nav-link.nav-link-sm {
+		font-size: var(--font-size-sm);
+		padding-block: var(--spacing-1-5);
+		gap: var(--spacing-0-5);
+	}
+
+	/* Large size */
+	[data-nav-link][data-size='lg'],
+	.nav-link.nav-link-lg {
+		font-size: var(--font-size-lg);
+		padding-block: var(--spacing-3);
+		gap: var(--spacing-2);
+	}
+
+	/* ==========================================================================
+	   Touch Device Optimizations
+	   ========================================================================== */
+
+	@media (hover: none) {
+		/* Prevent hover state issues on touch devices */
+		[data-nav-link]:not(.dropdown-item):hover::after,
+		.nav-link:not(.dropdown-item):hover::after {
+			opacity: 0;
+		}
+
+		/* Active state instead of hover for touch */
+		[data-nav-link]:not(.dropdown-item):active,
+		.nav-link:not(.dropdown-item):active {
+			color: var(--color-primary);
+		}
+
+		[data-nav-link]:not(.dropdown-item):active::after,
+		.nav-link:not(.dropdown-item):active::after {
+			opacity: 1;
+		}
+
+		/* Larger tap targets on touch devices */
+		[data-nav-link]:not(.dropdown-item),
+		.nav-link:not(.dropdown-item) {
+			min-height: 44px; /* iOS accessibility guideline */
+			padding-block: var(--spacing-3);
+		}
+	}
+
+	/* ==========================================================================
+	   Reduced Motion
+	   ========================================================================== */
+
+	@media (--prefers-reduced-motion) {
+		[data-nav-link]:not(.dropdown-item),
+		[data-nav-link]:not(.dropdown-item)::after,
+		[data-dropdown-icon],
+		.nav-link:not(.dropdown-item),
+		.nav-link:not(.dropdown-item)::after,
+		.dropdown-icon {
+			animation-duration: 0.01ms !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
+
+	/* ==========================================================================
+	   High Contrast Mode
+	   ========================================================================== */
+
+	@media (--prefers-high-contrast) {
+		/* Enhanced bottom border in high contrast mode */
+		[data-nav-link]:not(.dropdown-item)::after,
+		.nav-link:not(.dropdown-item)::after {
+			height: 3px;
+		}
+
+		/* Underline for active state */
+		[data-nav-link]:not(.dropdown-item)[data-active='true']::after,
+		.nav-link:not(.dropdown-item).active::after {
+			background-color: currentColor;
+		}
+
+		/* Text decoration fallback for hover */
+		[data-nav-link]:not(.dropdown-item):hover,
+		.nav-link:not(.dropdown-item):hover {
+			text-decoration: underline;
+			text-decoration-thickness: var(--border-width-medium);
+		}
+	}
+
+	/* ==========================================================================
+	   Dark Mode Adjustments
+	   ========================================================================== */
+
+	:global(html.dark) [data-nav-link]:not(.dropdown-item):hover,
+	:global(html.dark) .nav-link:not(.dropdown-item):hover {
+		color: var(--color-primary-light);
+	}
+
+	:global(html.dark) [data-nav-link]:not(.dropdown-item)::after,
+	:global(html.dark) .nav-link:not(.dropdown-item)::after {
+		background-color: var(--color-primary-light);
+	}
+}

@@ -44,17 +44,20 @@
 <style>
 	.desktop-nav {
 		display: none;
+		height: 100%;
 	}
 
 	.nav-list {
 		display: flex;
+		align-items: center;
 		list-style: none;
 		padding: 0;
 		margin: 0;
 		gap: var(--spacing-4);
+		height: 100%;
 	}
 
-	@media (min-width: 1024px) {
+	@media (--mq-lg) {
 		.desktop-nav {
 			display: block;
 		}
@@ -80,13 +83,7 @@
 
 	/* Touch device optimizations */
 	@media (hover: none) {
-		:global(.nav-link:hover::after) {
-			width: 0;
-		}
-
-		:global(.nav-link:active::after) {
-			width: 100%;
-		}
+		/* Styles handled in navigation-links.css */
 	}
 
 	/* Reduced motion support */

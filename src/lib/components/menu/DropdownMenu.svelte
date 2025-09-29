@@ -84,7 +84,7 @@
 
 	:global(.dropdown-item) {
 		display: block;
-		padding: var(--spacing-3) var(--spacing-4);
+		padding: var(--spacing-3) !important;
 		color: var(--color-text);
 		text-decoration: none;
 		font-size: var(--font-size-sm);

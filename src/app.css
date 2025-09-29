@@ -16,7 +16,9 @@
 /* UI Components */
 @import url('./styles/components/buttons.css') layer(components);
 @import url('./styles/components/cards.css') layer(components);
+@import url('./styles/components/header.css') layer(components);
 @import url('./styles/components/navigation-utilities.css') layer(components);
+@import url('./styles/components/navigation-links.css') layer(components);
 @import url('./styles/components/activity-list.css') layer(components);
 @import url('./styles/components/panels.css') layer(components);
 @import url('./styles/components/animations.css') layer(components);
@@ -33,3 +35,5 @@
 @import url('./styles/utilities/transforms.css') layer(utilities);
 @import url('./styles/utilities/images.css') layer(utilities);
 @import url('./styles/utilities/glassmorphism.css') layer(utilities);
+@import url('./styles/utilities/performance.css') layer(utilities);
+@import url('./styles/utilities/accessibility.css') layer(utilities);

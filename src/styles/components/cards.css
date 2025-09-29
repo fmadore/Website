@@ -100,12 +100,19 @@
 	.card-image,
 	[data-card] [data-card-image] {
 		width: 100%;
-		height: var(--card-height-image);
-		object-fit: cover;
 		background-color: var(--color-background-muted);
 		flex-shrink: 0;
 		overflow: hidden;
 		aspect-ratio: 3/2;
+		position: relative;
+	}
+
+	.card-image img,
+	[data-card] [data-card-image] img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
 		transition: transform var(--motion-duration-normal, var(--anim-duration-base)) var(--motion-ease-out, var(--anim-ease-out));
 	}
 

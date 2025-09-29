@@ -46,7 +46,7 @@
 		color: var(--color-text);
 		margin-bottom: var(--space-lg);
 		position: relative;
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all var(--anim-duration-base) var(--anim-ease-standard);
 		padding: var(--space-md) var(--space-xl);
 		border-radius: var(--border-radius-lg);
 
@@ -203,7 +203,7 @@
 		color: var(--color-primary);
 		text-decoration: none;
 		font-weight: var(--font-weight-medium);
-		transition: all 0.2s ease;
+		transition: all var(--anim-duration-fast) var(--anim-ease-base);
 		position: relative;
 	}
 
@@ -215,7 +215,7 @@
 		width: 0;
 		height: 1px;
 		background: var(--color-primary);
-		transition: width 0.3s ease;
+		transition: width var(--anim-duration-base) var(--anim-ease-base);
 	}
 
 	.page-intro :global(a:hover) {
