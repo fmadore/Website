@@ -131,7 +131,7 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			name: 'James Yékú',
 			role: 'Participant',
 			affiliation: 'University of Kansas'
-		},
+		}
 	],
 	project: 'Mining the Islam West Africa Collection'
 };

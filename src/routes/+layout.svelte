@@ -11,7 +11,10 @@
 	import '../app.css';
 	import type { LayoutProps } from './$types';
 	import { getGlobalState } from '$lib/stores/globalState.svelte';
-	import { initPerformanceMonitoring, assessConnectionQuality } from '$lib/utils/performanceMonitor';
+	import {
+		initPerformanceMonitoring,
+		assessConnectionQuality
+	} from '$lib/utils/performanceMonitor';
 
 	// Destructure data and children from $props using LayoutProps
 	let { data, children }: LayoutProps = $props();
@@ -58,7 +61,7 @@
 	$effect(() => {
 		if (browser) {
 			initPerformanceMonitoring();
-			
+
 			// Assess connection quality on load
 			setTimeout(() => {
 				const connectionQuality = assessConnectionQuality();

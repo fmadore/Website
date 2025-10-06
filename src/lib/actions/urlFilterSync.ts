@@ -48,11 +48,11 @@ type ArrayFilterKey =
  * ```svelte
  * <script>
  *   let filters = $state({ types: [], tags: [] });
- *   
+ *
  *   function setTypes(value: string[]) { filters.types = value; }
  *   function setTags(value: string[]) { filters.tags = value; }
  * </script>
- * 
+ *
  * <div use:urlFilterSync={{ filters, setters: { setTypes, setTags } }}>
  * ```
  */
@@ -64,12 +64,12 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 	// --- Sync filters to URL ---
 	$effect(() => {
 		const currentFiltersString = JSON.stringify(filters);
-		
+
 		// Skip initial run until URL has been applied
 		if (!initialUrlApplied || currentFiltersString === lastFiltersString) {
 			return;
 		}
-		
+
 		lastFiltersString = currentFiltersString;
 
 		const urlParams = new URLSearchParams();
@@ -147,4 +147,4 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 		}
 		initialUrlApplied = true;
 	});
-}
+};

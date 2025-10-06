@@ -34,7 +34,7 @@
 </script>
 
 {#if showOfflineMessage}
-	<div 
+	<div
 		class="network-status-indicator {globalState.isOnline ? 'online' : 'offline'}"
 		role="status"
 		aria-live="polite"
@@ -54,8 +54,8 @@
 					<span>You're offline. Cached content available.</span>
 				{/if}
 			</div>
-			<button 
-				class="dismiss-btn" 
+			<button
+				class="dismiss-btn"
 				onclick={dismissMessage}
 				aria-label="Dismiss network status message"
 			>
@@ -116,7 +116,8 @@
 	}
 
 	@keyframes pulse {
-		0%, 100% {
+		0%,
+		100% {
 			opacity: 1;
 		}
 		50% {

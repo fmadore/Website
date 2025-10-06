@@ -31,12 +31,11 @@
 		itemPropName = 'item',
 		onitemrequest = null
 	}: Props = $props();
-	
+
 	// Handle both store and plain array
 	const items = $derived(
 		Array.isArray(filteredItems) ? filteredItems : (filteredItems as any)?.value || []
 	);
-
 </script>
 
 <div>

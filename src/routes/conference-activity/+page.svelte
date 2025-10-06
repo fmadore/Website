@@ -62,9 +62,7 @@
 	let activeSort = $state<'date' | 'title'>('date');
 
 	// Create reactive values for sorted communications and map markers
-	const sortedCommunications = $derived(
-		sortItems($filteredCommunications, activeSort)
-	);
+	const sortedCommunications = $derived(sortItems($filteredCommunications, activeSort));
 
 	// Create a reactive value for map markers based on filtered communications
 	const mapMarkers = $derived(
@@ -135,80 +133,78 @@
 		lecture: 'Lectures',
 		panel: 'Panels Organized',
 		event: 'Academic Events Organized'
-	}; 
-	
+	};
+
 	// Reactive values using $derived
-	const communicationFilterConfig = $derived<UniversalFilterConfig>(
-		{
-			sections: [
-				// Sections explicitly cast to their specific type
-				{
-					type: 'checkbox',
-					title: 'Type',
-					items: $filterOptions?.types || [],
-					itemLabels: typeLabels,
-					activeItems: $activeFilters?.types || [],
-					toggleItem: toggleTypeFilter,
-					counts: undefined
-				} as CheckboxFilterOption<string>,
-				{
-					type: 'range',
-					title: 'Years',
-					allYears: ($filterOptions?.years || []).slice().sort((a: number, b: number) => a - b),
-					activeRange: $activeFilters?.yearRange || null,
-					updateRange: updateYearRange,
-					resetRange: resetYearRange
-				} as RangeFilterOption,
-				{
-					type: 'chips',
-					title: 'Co-authors',
-					items: $filterOptions?.authors || [],
-					activeItems: $activeFilters?.authors || [],
-					toggleItem: toggleAuthorFilter,
-					counts: $authorCounts,
-					searchThreshold: 5,
-					initialDisplayCount: 6,
-					showSearch: false
-				} as ChipsFilterOption<string>,
-				{
-					type: 'chips',
-					title: 'Countries',
-					items: $filterOptions?.countries || [],
-					activeItems: $activeFilters?.countries || [],
-					toggleItem: toggleCountryFilter,
-					counts: $countryCounts,
-					searchThreshold: 6,
-					initialDisplayCount: 8,
-					showSearch: false
-				} as ChipsFilterOption<string>,
-				{
-					type: 'checkbox',
-					title: 'Languages',
-					items: $filterOptions?.languages || [],
-					activeItems: $activeFilters?.languages || [],
-					toggleItem: toggleLanguageFilter,
-					counts: undefined
-				} as CheckboxFilterOption<string>,
-				{
-					type: 'chips',
-					title: 'Tags',
-					items: $filterOptions?.tags || [],
-					activeItems: $activeFilters?.tags || [],
-					toggleItem: toggleTagFilter,
-					counts: $tagCounts,
-					searchThreshold: 8,
-					initialDisplayCount: 10,
-					showSearch: false
-				} as ChipsFilterOption<string>
-			]
-				.filter((section) => section.title !== 'Tags')
-				.filter((section) => {
-					if (section.type === 'range') return section.allYears && section.allYears.length > 0;
-					return section.items && section.items.length > 0;
-				}) as FilterSectionConfig[], // Cast filtered array
-			clearAllFilters: clearAllFilters
-		} satisfies UniversalFilterConfig
-	);
+	const communicationFilterConfig = $derived<UniversalFilterConfig>({
+		sections: [
+			// Sections explicitly cast to their specific type
+			{
+				type: 'checkbox',
+				title: 'Type',
+				items: $filterOptions?.types || [],
+				itemLabels: typeLabels,
+				activeItems: $activeFilters?.types || [],
+				toggleItem: toggleTypeFilter,
+				counts: undefined
+			} as CheckboxFilterOption<string>,
+			{
+				type: 'range',
+				title: 'Years',
+				allYears: ($filterOptions?.years || []).slice().sort((a: number, b: number) => a - b),
+				activeRange: $activeFilters?.yearRange || null,
+				updateRange: updateYearRange,
+				resetRange: resetYearRange
+			} as RangeFilterOption,
+			{
+				type: 'chips',
+				title: 'Co-authors',
+				items: $filterOptions?.authors || [],
+				activeItems: $activeFilters?.authors || [],
+				toggleItem: toggleAuthorFilter,
+				counts: $authorCounts,
+				searchThreshold: 5,
+				initialDisplayCount: 6,
+				showSearch: false
+			} as ChipsFilterOption<string>,
+			{
+				type: 'chips',
+				title: 'Countries',
+				items: $filterOptions?.countries || [],
+				activeItems: $activeFilters?.countries || [],
+				toggleItem: toggleCountryFilter,
+				counts: $countryCounts,
+				searchThreshold: 6,
+				initialDisplayCount: 8,
+				showSearch: false
+			} as ChipsFilterOption<string>,
+			{
+				type: 'checkbox',
+				title: 'Languages',
+				items: $filterOptions?.languages || [],
+				activeItems: $activeFilters?.languages || [],
+				toggleItem: toggleLanguageFilter,
+				counts: undefined
+			} as CheckboxFilterOption<string>,
+			{
+				type: 'chips',
+				title: 'Tags',
+				items: $filterOptions?.tags || [],
+				activeItems: $activeFilters?.tags || [],
+				toggleItem: toggleTagFilter,
+				counts: $tagCounts,
+				searchThreshold: 8,
+				initialDisplayCount: 10,
+				showSearch: false
+			} as ChipsFilterOption<string>
+		]
+			.filter((section) => section.title !== 'Tags')
+			.filter((section) => {
+				if (section.type === 'range') return section.allYears && section.allYears.length > 0;
+				return section.items && section.items.length > 0;
+			}) as FilterSectionConfig[], // Cast filtered array
+		clearAllFilters: clearAllFilters
+	} satisfies UniversalFilterConfig);
 </script>
 
 <SEO
@@ -217,16 +213,13 @@
 	keywords="conferences, presentations, workshops, panels, lectures, Islam, West Africa, digital humanities, Frédérick Madore"
 />
 
-<div
-	class="page-container"
-	use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}
->
+<div class="page-container" use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}>
 	<div class="main-content">
 		<PageHeader title="Conference Activity" />
 
 		<PageIntro>
-			Since 2012, I have given talks to audiences in {$filterOptions?.countries?.length || 0} countries across Africa,
-			Europe, and North America.
+			Since 2012, I have given talks to audiences in {$filterOptions?.countries?.length || 0} countries
+			across Africa, Europe, and North America.
 		</PageIntro>
 
 		<!-- Mobile Controls: Two Rows -->
@@ -273,46 +266,42 @@
 			{/snippet}
 
 			<div class="desktop-controls">
-					<div class="list-status text-light">
-						Showing {$filteredCommunications.length || 0} conference activities
-						{#if areFiltersActive($activeFilters)}
-							<span class="text-accent"> (Filters applied)</span>
-						{/if}
-					</div>
-					<div class="actions-group">
-						<ToggleButton baseText="Map" isToggled={showMap} onclick={() => (showMap = !showMap)} />
-						<Sorter
-							{activeSort}
-							onsortchange={handleSortChange}
-							availableSorts={['date', 'title']}
-						/>
-						{#if areFiltersActive($activeFilters)}
-							<Button
-								variant="primary"
-								size="sm"
-								onclick={clearAllFilters}
-								additionalClasses="control-button-rounded"
-							>
-								Clear all filters
-							</Button>
-						{/if}
-					</div>
+				<div class="list-status text-light">
+					Showing {$filteredCommunications.length || 0} conference activities
+					{#if areFiltersActive($activeFilters)}
+						<span class="text-accent"> (Filters applied)</span>
+					{/if}
 				</div>
+				<div class="actions-group">
+					<ToggleButton baseText="Map" isToggled={showMap} onclick={() => (showMap = !showMap)} />
+					<Sorter {activeSort} onsortchange={handleSortChange} availableSorts={['date', 'title']} />
+					{#if areFiltersActive($activeFilters)}
+						<Button
+							variant="primary"
+							size="sm"
+							onclick={clearAllFilters}
+							additionalClasses="control-button-rounded"
+						>
+							Clear all filters
+						</Button>
+					{/if}
+				</div>
+			</div>
 
-				{#if showMap}
-					<div class="mb-6">
-						<MapVisualization markersData={mapMarkers} />
-					</div>
-				{/if}
-				<FilteredListDisplay
-					filteredItems={sortedCommunications}
-					itemComponent={CommunicationItem}
-					itemPropName="communication"
-					areFiltersActive={areFiltersActive($activeFilters)}
-					{clearAllFilters}
-					emptyStateNoFiltersMessage="No conference activities found matching your criteria. Try clearing some filters."
-					onitemrequest={handleFilterRequest}
-				/>
+			{#if showMap}
+				<div class="mb-6">
+					<MapVisualization markersData={mapMarkers} />
+				</div>
+			{/if}
+			<FilteredListDisplay
+				filteredItems={sortedCommunications}
+				itemComponent={CommunicationItem}
+				itemPropName="communication"
+				areFiltersActive={areFiltersActive($activeFilters)}
+				{clearAllFilters}
+				emptyStateNoFiltersMessage="No conference activities found matching your criteria. Try clearing some filters."
+				onitemrequest={handleFilterRequest}
+			/>
 		</EntityListPageLayout>
 	</div>
 </div>

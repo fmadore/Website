@@ -58,4 +58,4 @@ export const portal: Action<HTMLElement, string | HTMLElement | undefined> = (
 			moveElement(currentTarget);
 		}
 	};
-}
+};

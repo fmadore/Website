@@ -16,12 +16,12 @@
 	// Function to split abstract into paragraphs
 	function formatAbstractParagraphs(text: string): string[] {
 		if (!text) return [];
-		
+
 		// Split by double line breaks or single line breaks, then filter out empty strings
 		return text
 			.split(/\n\s*\n|\n/)
-			.map(p => p.trim())
-			.filter(p => p.length > 0);
+			.map((p) => p.trim())
+			.filter((p) => p.length > 0);
 	}
 
 	// Get formatted paragraphs

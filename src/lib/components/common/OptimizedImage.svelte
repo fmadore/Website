@@ -90,9 +90,10 @@
 	}
 
 	// Generate responsive sizes for common breakpoints
-	const responsiveSizes = width && height 
-		? `(max-width: 640px) ${Math.min(width, 640)}px, (max-width: 1024px) ${Math.min(width, 1024)}px, ${width}px`
-		: sizes;
+	const responsiveSizes =
+		width && height
+			? `(max-width: 640px) ${Math.min(width, 640)}px, (max-width: 1024px) ${Math.min(width, 1024)}px, ${width}px`
+			: sizes;
 </script>
 
 <div class="optimized-image-container {className}" class:loaded={isLoaded} class:error={hasError}>
@@ -103,12 +104,8 @@
 	{:else}
 		<picture>
 			<!-- WebP format for modern browsers -->
-			<source 
-				srcset={getOptimizedSrc(src, 'webp')} 
-				type="image/webp"
-				{sizes}
-			/>
-			
+			<source srcset={getOptimizedSrc(src, 'webp')} type="image/webp" {sizes} />
+
 			<!-- Fallback for older browsers -->
 			<img
 				bind:this={imgElement}
@@ -126,7 +123,7 @@
 				onerror={handleError}
 			/>
 		</picture>
-		
+
 		{#if !isLoaded}
 			<div class="loading-placeholder" aria-hidden="true">
 				<div class="loading-shimmer"></div>

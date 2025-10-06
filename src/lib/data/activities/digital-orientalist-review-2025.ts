@@ -8,7 +8,7 @@ export const activity: Activity = {
 	date: formatDisplayDate('2025-09-23'),
 	year: 2025,
 	description:
-		'Anaïs Wion\'s review of the Islam West Africa Collection published in The Digital Orientalist.',
+		"Anaïs Wion's review of the Islam West Africa Collection published in The Digital Orientalist.",
 	content: `
         <p>Honoured to see Anaïs Wion's review of the Islam West Africa Collection published in <a href="https://digitalorientalist.com/2025/09/23/islam-west-africa-collection-dataset-distant-reading-and-uses-of-ai-for-discourse-analysis/" target="_blank" rel="noreferrer noopener">The Digital Orientalist</a>.</p>
         

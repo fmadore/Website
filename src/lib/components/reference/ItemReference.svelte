@@ -18,7 +18,10 @@
 
 	import ReferenceLink from './ReferenceLink.svelte';
 	import ReferencePreviewCard from './ReferencePreviewCard.svelte';
-	import { getActiveReferenceId, setActiveReferenceId } from '$lib/stores/activeItemReferenceStore.svelte';
+	import {
+		getActiveReferenceId,
+		setActiveReferenceId
+	} from '$lib/stores/activeItemReferenceStore.svelte';
 
 	/* ───────────────────────────── Props ─────────────────────────────── */
 	/** ID of the referenced item. */
@@ -189,9 +192,9 @@
 				out:send={{ key: `preview-${id}` }}
 				class:position-below={positionBelow}
 			>
-				<ReferencePreviewCard 
-					{item} 
-					{itemType} 
+				<ReferencePreviewCard
+					{item}
+					{itemType}
 					referenceElement={spanEl}
 					onpointerenter={clearCloseTimer}
 					onpointerleave={handlePointerLeave}

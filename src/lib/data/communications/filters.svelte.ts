@@ -108,79 +108,79 @@ export const filterOptions = readable({
 
 // --- Filtered Communications ---
 
-export const filteredCommunications = derived(
-	activeFilters,
-	($activeFilters): Communication[] => {
-		return safeAllCommunications.filter((comm: Communication) => {
-			if (!comm) return false;
+export const filteredCommunications = derived(activeFilters, ($activeFilters): Communication[] => {
+	return safeAllCommunications.filter((comm: Communication) => {
+		if (!comm) return false;
 
-			// Type
-			if ($activeFilters.types.length > 0 && (!comm.type || !$activeFilters.types.includes(comm.type))) {
+		// Type
+		if (
+			$activeFilters.types.length > 0 &&
+			(!comm.type || !$activeFilters.types.includes(comm.type))
+		) {
+			return false;
+		}
+
+		// Year Range
+		if (
+			$activeFilters.yearRange &&
+			(!comm.year ||
+				comm.year < $activeFilters.yearRange.min ||
+				comm.year > $activeFilters.yearRange.max)
+		) {
+			return false;
+		}
+
+		// Tags
+		if (
+			$activeFilters.tags.length > 0 &&
+			(!comm.tags || !comm.tags.some((tag: string) => $activeFilters.tags.includes(tag)))
+		) {
+			return false;
+		}
+
+		// Language
+		if ($activeFilters.languages.length > 0) {
+			const commLanguages = comm.language
+				? comm.language.split(',').map((lang) => lang.trim())
+				: [];
+			if (!commLanguages.some((lang) => $activeFilters.languages.includes(lang))) {
 				return false;
 			}
+		}
 
-			// Year Range
+		// Co-author Filter (using 'authors' key in activeFilters)
+		if ($activeFilters.authors.length > 0) {
+			const authorsList = comm.authors || [];
+			// Check if any of the communication's *authors* (excluding self) are in the active filter list
 			if (
-				$activeFilters.yearRange &&
-				(!comm.year ||
-					comm.year < $activeFilters.yearRange.min ||
-					comm.year > $activeFilters.yearRange.max)
+				!authorsList.some(
+					(authorName) =>
+						authorName !== 'Frédérick Madore' && $activeFilters.authors.includes(authorName)
+				)
 			) {
 				return false;
 			}
+		}
 
-			// Tags
-			if (
-				$activeFilters.tags.length > 0 &&
-				(!comm.tags || !comm.tags.some((tag: string) => $activeFilters.tags.includes(tag)))
-			) {
-				return false;
-			}
+		// Country
+		if (
+			$activeFilters.countries.length > 0 &&
+			(!comm.country || !$activeFilters.countries.includes(comm.country))
+		) {
+			return false;
+		}
 
-			// Language
-			if ($activeFilters.languages.length > 0) {
-				const commLanguages = comm.language
-					? comm.language.split(',').map((lang) => lang.trim())
-					: [];
-				if (!commLanguages.some((lang) => $activeFilters.languages.includes(lang))) {
-					return false;
-				}
-			}
+		// Project
+		if (
+			$activeFilters.projects.length > 0 &&
+			(!comm.project || !$activeFilters.projects.includes(comm.project))
+		) {
+			return false;
+		}
 
-			// Co-author Filter (using 'authors' key in activeFilters)
-			if ($activeFilters.authors.length > 0) {
-				const authorsList = comm.authors || [];
-				// Check if any of the communication's *authors* (excluding self) are in the active filter list
-				if (
-					!authorsList.some(
-						(authorName) =>
-							authorName !== 'Frédérick Madore' && $activeFilters.authors.includes(authorName)
-					)
-				) {
-					return false;
-				}
-			}
-
-			// Country
-			if (
-				$activeFilters.countries.length > 0 &&
-				(!comm.country || !$activeFilters.countries.includes(comm.country))
-			) {
-				return false;
-			}
-
-			// Project
-			if (
-				$activeFilters.projects.length > 0 &&
-				(!comm.project || !$activeFilters.projects.includes(comm.project))
-			) {
-				return false;
-			}
-
-			return true;
-		});
-	}
-);
+		return true;
+	});
+});
 
 // --- Filter Control Functions ---
 

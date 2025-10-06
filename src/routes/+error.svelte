@@ -12,8 +12,7 @@
 		<h2 class="text-2xl font-semibold mb-3">Page Not Found</h2>
 		<p class="mb-2">Sorry, we couldn't find the page you were looking for.</p>
 		<p class="mb-6">
-			The path <code class="error-path">{$page.url.pathname}</code
-			> does not exist.
+			The path <code class="error-path">{$page.url.pathname}</code> does not exist.
 		</p>
 	{:else}
 		<h2 class="text-2xl font-semibold mb-3">Error {$page.status}</h2>

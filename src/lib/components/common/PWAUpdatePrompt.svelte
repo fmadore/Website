@@ -32,7 +32,7 @@
 		if ('serviceWorker' in navigator) {
 			try {
 				registration = await navigator.serviceWorker.register('/service-worker.js');
-				
+
 				// Check for updates
 				registration.addEventListener('updatefound', () => {
 					const newWorker = registration?.installing;
@@ -93,7 +93,12 @@
 </script>
 
 {#if showUpdatePrompt && updateAvailable}
-	<div class="pwa-update-prompt" role="dialog" aria-labelledby="update-title" aria-describedby="update-description">
+	<div
+		class="pwa-update-prompt"
+		role="dialog"
+		aria-labelledby="update-title"
+		aria-describedby="update-description"
+	>
 		<div class="update-content">
 			<div class="update-icon">🔄</div>
 			<div class="update-text">
@@ -103,15 +108,11 @@
 				</p>
 			</div>
 			<div class="update-actions">
-				<button 
-					class="update-btn primary" 
-					onclick={updateApp}
-					aria-label="Update to new version"
-				>
+				<button class="update-btn primary" onclick={updateApp} aria-label="Update to new version">
 					Update
 				</button>
-				<button 
-					class="update-btn secondary" 
+				<button
+					class="update-btn secondary"
 					onclick={dismissUpdate}
 					aria-label="Dismiss update notification"
 				>
@@ -132,7 +133,7 @@
 		margin: 0 auto;
 		background: white;
 		border-radius: 12px;
-		box-shadow: 
+		box-shadow:
 			0 10px 25px rgba(0, 0, 0, 0.1),
 			0 4px 6px rgba(0, 0, 0, 0.05);
 		border: 1px solid rgba(0, 0, 0, 0.1);

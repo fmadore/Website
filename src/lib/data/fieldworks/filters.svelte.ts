@@ -14,13 +14,7 @@ import {
 } from '$lib/utils/filterUtils';
 import { derived, readable } from 'svelte/store';
 // Use static import instead of dynamic to avoid build warnings
-import {
-	allFieldworks,
-	fieldworksByYear,
-	allCountries,
-	allCities,
-	allProjects
-} from './index';
+import { allFieldworks, fieldworksByYear, allCountries, allCities, allProjects } from './index';
 
 // --- Active Filters Store ---
 
@@ -53,33 +47,33 @@ export const filterOptions = readable({
 
 // --- Filtered Fieldworks ---
 
-export const filteredFieldworks = derived(
-	activeFilters,
-	($activeFilters): Fieldwork[] => {
-		return allFieldworks.filter((fieldwork: Fieldwork) => {
-			// Country
-			if ($activeFilters.countries.length > 0 && !$activeFilters.countries.includes(fieldwork.country)) {
-				return false;
-			}
-			// City
-			if ($activeFilters.cities.length > 0 && !$activeFilters.cities.includes(fieldwork.city)) {
-				return false;
-			}
-			// Year (array check)
-			if ($activeFilters.years.length > 0 && !$activeFilters.years.includes(fieldwork.year)) {
-				return false;
-			}
-			// Project
-			if (
-				$activeFilters.projects.length > 0 &&
-				(!fieldwork.project || !$activeFilters.projects.includes(fieldwork.project))
-			) {
-				return false;
-			}
-			return true;
-		});
-	}
-);
+export const filteredFieldworks = derived(activeFilters, ($activeFilters): Fieldwork[] => {
+	return allFieldworks.filter((fieldwork: Fieldwork) => {
+		// Country
+		if (
+			$activeFilters.countries.length > 0 &&
+			!$activeFilters.countries.includes(fieldwork.country)
+		) {
+			return false;
+		}
+		// City
+		if ($activeFilters.cities.length > 0 && !$activeFilters.cities.includes(fieldwork.city)) {
+			return false;
+		}
+		// Year (array check)
+		if ($activeFilters.years.length > 0 && !$activeFilters.years.includes(fieldwork.year)) {
+			return false;
+		}
+		// Project
+		if (
+			$activeFilters.projects.length > 0 &&
+			(!fieldwork.project || !$activeFilters.projects.includes(fieldwork.project))
+		) {
+			return false;
+		}
+		return true;
+	});
+});
 
 // --- Filter Control Functions ---
 
@@ -99,10 +93,7 @@ export const countryCounts = createDerivedCountStore(
 	(fw: Fieldwork) => fw.country
 );
 
-export const cityCounts = createDerivedCountStore(
-	filteredFieldworks,
-	(fw: Fieldwork) => fw.city
-);
+export const cityCounts = createDerivedCountStore(filteredFieldworks, (fw: Fieldwork) => fw.city);
 
 export const projectCounts = createDerivedCountStore(
 	filteredFieldworks,

@@ -102,7 +102,7 @@ class PerformanceMonitor {
 	}
 
 	public disconnect() {
-		this.observers.forEach(observer => observer.disconnect());
+		this.observers.forEach((observer) => observer.disconnect());
 		this.observers = [];
 	}
 }
@@ -126,13 +126,13 @@ export function measureResourceLoading(resourceUrl: string) {
 	if (!browser) return;
 
 	const startTime = performance.now();
-	
+
 	return {
 		end: () => {
 			const endTime = performance.now();
 			const loadTime = endTime - startTime;
 			console.log(`[Resource] ${resourceUrl}: ${Math.round(loadTime)}ms`);
-			
+
 			// Report to analytics
 			if (typeof window !== 'undefined' && window.gtag) {
 				window.gtag('event', 'resource_timing', {
@@ -149,8 +149,11 @@ export function assessConnectionQuality(): string {
 	if (!browser) return 'unknown';
 
 	// Check for Network Information API
-	const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
-	
+	const connection =
+		(navigator as any).connection ||
+		(navigator as any).mozConnection ||
+		(navigator as any).webkitConnection;
+
 	if (connection) {
 		const effectiveType = connection.effectiveType;
 		const rtt = connection.rtt;
@@ -164,7 +167,7 @@ export function assessConnectionQuality(): string {
 	if ('navigation' in performance) {
 		const navEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
 		const loadTime = navEntry.loadEventEnd - navEntry.fetchStart;
-		
+
 		if (loadTime < 1000) return 'fast';
 		if (loadTime < 3000) return 'moderate';
 		return 'slow';
@@ -184,10 +187,10 @@ export function monitorMemoryUsage() {
 			total: Math.round(memory.totalJSHeapSize / 1048576), // MB
 			limit: Math.round(memory.jsHeapSizeLimit / 1048576) // MB
 		};
-		
+
 		console.log(`[Memory] Used: ${usage.used}MB, Total: ${usage.total}MB, Limit: ${usage.limit}MB`);
 		return usage;
 	}
-	
+
 	return null;
 }

@@ -115,7 +115,7 @@
 	--color-dark-surface-alt-rgb: 30, 41, 59;
 	--color-dark-surface-deep: var(--sys-color-neutral-900);
 	--color-dark-surface-deep-rgb: 15, 23, 42;
-/* ===== TYPOGRAPHY SCALE ===== */
+	/* ===== TYPOGRAPHY SCALE ===== */
 	/* Fluid scale anchored between 16px–18px viewport sizing */
 
 	/* Foundations */
@@ -204,7 +204,7 @@
 	--text-indent-paragraph: 1.5em;
 	--text-max-width-reading: 65ch;
 	--text-max-width-wide: 80ch;
-/* ===== SPACING SYSTEM ===== */
+	/* ===== SPACING SYSTEM ===== */
 	/* Normalized spacing scale built on a quarter-rem baseline */
 
 	/* Foundations */
@@ -270,7 +270,7 @@
 	--spacing-32: var(--space-7xl);
 	--spacing-40: var(--space-8xl);
 	--spacing-48: var(--space-9xl);
-/* ===== ENHANCED BORDER RADIUS ===== */
+	/* ===== ENHANCED BORDER RADIUS ===== */
 	/* More modern, subtle radii */
 
 	--border-radius-none: 0;
@@ -457,7 +457,7 @@
 
 	/* ===== COMPONENT-SPECIFIC VARIABLES ===== */
 	/* Note: Consider moving these to respective component files for better encapsulation */
-	
+
 	/* Iframe variables */
 	--iframe-height-xs: 18.75rem; /* 300px */
 	--iframe-height-sm: 25rem; /* 400px */
@@ -574,6 +574,3 @@ html.dark {
 	--shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
 	--shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
 }
-
-
-

@@ -268,15 +268,16 @@
 
 				<!-- Audio visualization -->
 				<div class="audio-visualization">
-				<!-- Animated waveform bars -->
-				<div class="waveform">
-					{#each Array(24) as _, i (i)}
-						<div
-							class="wave-bar"
-							style="animation-delay: {i * 50}ms; height: {10 + Math.sin(i * 0.5) * 8}px;"
-						></div>
-					{/each}
-				</div>					<!-- Central audio icon -->
+					<!-- Animated waveform bars -->
+					<div class="waveform">
+						{#each Array(24) as _, i (i)}
+							<div
+								class="wave-bar"
+								style="animation-delay: {i * 50}ms; height: {10 + Math.sin(i * 0.5) * 8}px;"
+							></div>
+						{/each}
+					</div>
+					<!-- Central audio icon -->
 					<div class="audio-icon-container">
 						<div class="audio-icon-backdrop"></div>
 						<div class="audio-icon">

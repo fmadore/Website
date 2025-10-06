@@ -17,7 +17,7 @@
 			"type": "image/png"
 		},
 		{
-			"src": "/images/screenshot-narrow.png", 
+			"src": "/images/screenshot-narrow.png",
 			"sizes": "750x1334",
 			"type": "image/png"
 		}

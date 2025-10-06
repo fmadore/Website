@@ -118,78 +118,76 @@
 	);
 
 	// Construct the configuration object for the UniversalFiltersSidebar - using $derived for Svelte 5
-	const publicationFilterConfig = $derived(
-		({
-			sections: [
-				// Sections explicitly cast to their specific type
-				{
-					type: 'checkbox',
-					title: 'Publication Types',
-					items: $filterOptions.types,
-					itemLabels: typeLabels,
-					activeItems: $activeFilters.types,
-					toggleItem: toggleTypeFilter,
-					counts: $typeCounts
-				} as CheckboxFilterOption<string>,
-				{
-					type: 'range',
-					title: 'Years',
-					allYears: sortedYearsAsc,
-					activeRange: $activeFilters.yearRange,
-					updateRange: updateYearRange,
-					resetRange: resetYearRange
-				} as RangeFilterOption,
-				{
-					type: 'chips',
-					title: 'Co-Authors',
-					items: $filterOptions.authors,
-					activeItems: $activeFilters.authors,
-					toggleItem: toggleAuthorFilter,
-					counts: $authorCounts,
-					searchThreshold: 6,
-					initialDisplayCount: 8,
-					showSearch: false
-				} as ChipsFilterOption<string>,
-				{
-					type: 'checkbox',
-					title: 'Languages',
-					items: $filterOptions.languages,
-					activeItems: $activeFilters.languages,
-					toggleItem: toggleLanguageFilter,
-					counts: $languageCounts
-				} as CheckboxFilterOption<string>,
-				{
-					type: 'chips',
-					title: 'Countries',
-					items: $filterOptions.countries,
-					activeItems: $activeFilters.countries,
-					toggleItem: toggleCountryFilter,
-					counts: $countryCounts,
-					searchThreshold: 6,
-					initialDisplayCount: 8,
-					showSearch: false
-				} as ChipsFilterOption<string>,
-				{
-					type: 'chips',
-					title: 'Tags',
-					items: $filterOptions.tags,
-					activeItems: $activeFilters.tags,
-					toggleItem: toggleTagFilter,
-					counts: $tagCounts,
-					searchThreshold: 8,
-					initialDisplayCount: 10,
-					showSearch: false
-				} as ChipsFilterOption<string>
-			]
-				.filter((section) => section.title !== 'Tags')
-				.filter((section) => {
-					// Dynamically hide sections if they have no items/options
-					if (section.type === 'range') return section.allYears && section.allYears.length > 0;
-					return section.items && section.items.length > 0;
-				}) as FilterSectionConfig[], // Cast filtered array
-			clearAllFilters: clearAllFilters
-		}) satisfies UniversalFilterConfig
-	);
+	const publicationFilterConfig = $derived({
+		sections: [
+			// Sections explicitly cast to their specific type
+			{
+				type: 'checkbox',
+				title: 'Publication Types',
+				items: $filterOptions.types,
+				itemLabels: typeLabels,
+				activeItems: $activeFilters.types,
+				toggleItem: toggleTypeFilter,
+				counts: $typeCounts
+			} as CheckboxFilterOption<string>,
+			{
+				type: 'range',
+				title: 'Years',
+				allYears: sortedYearsAsc,
+				activeRange: $activeFilters.yearRange,
+				updateRange: updateYearRange,
+				resetRange: resetYearRange
+			} as RangeFilterOption,
+			{
+				type: 'chips',
+				title: 'Co-Authors',
+				items: $filterOptions.authors,
+				activeItems: $activeFilters.authors,
+				toggleItem: toggleAuthorFilter,
+				counts: $authorCounts,
+				searchThreshold: 6,
+				initialDisplayCount: 8,
+				showSearch: false
+			} as ChipsFilterOption<string>,
+			{
+				type: 'checkbox',
+				title: 'Languages',
+				items: $filterOptions.languages,
+				activeItems: $activeFilters.languages,
+				toggleItem: toggleLanguageFilter,
+				counts: $languageCounts
+			} as CheckboxFilterOption<string>,
+			{
+				type: 'chips',
+				title: 'Countries',
+				items: $filterOptions.countries,
+				activeItems: $activeFilters.countries,
+				toggleItem: toggleCountryFilter,
+				counts: $countryCounts,
+				searchThreshold: 6,
+				initialDisplayCount: 8,
+				showSearch: false
+			} as ChipsFilterOption<string>,
+			{
+				type: 'chips',
+				title: 'Tags',
+				items: $filterOptions.tags,
+				activeItems: $activeFilters.tags,
+				toggleItem: toggleTagFilter,
+				counts: $tagCounts,
+				searchThreshold: 8,
+				initialDisplayCount: 10,
+				showSearch: false
+			} as ChipsFilterOption<string>
+		]
+			.filter((section) => section.title !== 'Tags')
+			.filter((section) => {
+				// Dynamically hide sections if they have no items/options
+				if (section.type === 'range') return section.allYears && section.allYears.length > 0;
+				return section.items && section.items.length > 0;
+			}) as FilterSectionConfig[], // Cast filtered array
+		clearAllFilters: clearAllFilters
+	} satisfies UniversalFilterConfig);
 </script>
 
 <SEO
@@ -198,10 +196,7 @@
 	keywords="publications, books, journal articles, research, Islam, West Africa, Frédérick Madore"
 />
 
-<div
-	class="page-container"
-	use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}
->
+<div class="page-container" use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}>
 	<div class="main-content">
 		<PageHeader title="Publications" />
 

@@ -26,9 +26,7 @@ import { writable, readable, derived } from 'svelte/store';
  * @param initialFilterState - The initial state object for the filters.
  * @returns A writable Svelte store
  */
-export function createActiveFiltersStore<T extends Record<string, any>>(
-	initialFilterState: T
-) {
+export function createActiveFiltersStore<T extends Record<string, any>>(initialFilterState: T) {
 	return writable<T>(initialFilterState);
 }
 
@@ -145,7 +143,7 @@ export function createDerivedCountStore<TItem>(
 ) {
 	return derived(itemsStore, ($items) => {
 		const counts: Record<string, number> = {};
-		
+
 		if (Array.isArray($items)) {
 			$items.forEach((item) => {
 				const keys = keyExtractor(item);
