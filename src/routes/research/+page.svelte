@@ -71,9 +71,7 @@
 				{#snippet subtitle()}
 					<span>{project.years}</span>
 				{/snippet}
-				{#snippet children()}
-					{project.shortDescription}
-				{/snippet}
+				{project.shortDescription}
 				{#snippet action()}
 					<a href={`${base}/research/${project.id}`}>Read more →</a>
 				{/snippet}

@@ -340,7 +340,6 @@
 				<EChartsNetworkGraph
 					data={collaborationData}
 					centerAuthor="Frédérick Madore"
-					title="Author Collaboration Network"
 					maxConnections={25}
 				/>
 			</div>

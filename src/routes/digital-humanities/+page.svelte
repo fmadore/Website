@@ -79,9 +79,7 @@
 					<span>{project.years}</span>
 				{/snippet}
 
-				{#snippet children()}
-					{project.shortDescription}
-				{/snippet}
+				{project.shortDescription}
 
 				{#snippet details()}
 					<div class="dh-card-extras">

@@ -115,24 +115,19 @@
 							toggleItem={section.toggleItem}
 							counts={section.counts}
 						/>
-					{:else if section.type === 'chips'}
-						<FilterSectionChips
-							title={section.title}
-							items={section.items}
-							activeItems={section.activeItems}
-							toggleItem={section.toggleItem}
-							counts={section.counts}
-							searchThreshold={section.searchThreshold}
-							initialDisplayCount={section.initialDisplayCount}
-							showSearch={section.showSearch}
-						/>
-					{/if}
-				</div>
-			{/each}
-		</div>
-	{/if}
-
-	<!-- Always visible on desktop -->
+				{:else if section.type === 'chips'}
+					<FilterSectionChips
+						title={section.title}
+						items={section.items}
+						activeItems={section.activeItems}
+						toggleItem={section.toggleItem}
+						counts={section.counts}
+					/>
+				{/if}
+			</div>
+		{/each}
+	</div>
+{/if}	<!-- Always visible on desktop -->
 	<div class="filter-sections-wrapper-desktop">
 		{#each enhancedSections as section, index (section.title)}
 			<div class="filter-section">
@@ -161,24 +156,19 @@
 						toggleItem={section.toggleItem}
 						counts={section.counts}
 					/>
-				{:else if section.type === 'chips'}
-					<FilterSectionChips
-						title={section.title}
-						items={section.items}
-						activeItems={section.activeItems}
-						toggleItem={section.toggleItem}
-						counts={section.counts}
-						searchThreshold={section.searchThreshold}
-						initialDisplayCount={section.initialDisplayCount}
-						showSearch={section.showSearch}
-					/>
-				{/if}
-			</div>
-		{/each}
-	</div>
-</aside>
-
-<style>
+			{:else if section.type === 'chips'}
+				<FilterSectionChips
+					title={section.title}
+					items={section.items}
+					activeItems={section.activeItems}
+					toggleItem={section.toggleItem}
+					counts={section.counts}
+				/>
+			{/if}
+		</div>
+	{/each}
+</div>
+</aside><style>
 	/* Main sidebar container - Card design for the whole sidebar */
 	.filter-sidebar {
 		background: var(--color-surface);
