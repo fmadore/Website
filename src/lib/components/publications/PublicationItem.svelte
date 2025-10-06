@@ -142,7 +142,7 @@
 						{#if publication.advisors && publication.advisors.length > 0}
 							<div class="advisor-info">
 								<span>Supervised by </span>
-								{#each publication.advisors as advisor, i}
+								{#each publication.advisors as advisor, i (advisor)}
 									{#if advisor !== 'Frédérick Madore'}
 										<button
 											class="author-btn"
@@ -206,7 +206,7 @@
 
 				{#if publication.additionalUrls && publication.additionalUrls.length > 0}
 					<div class="entity-links">
-						{#each publication.additionalUrls as url, i}
+						{#each publication.additionalUrls as url, i (url.url + i)}
 							<a
 								href={url.url}
 								target="_blank"

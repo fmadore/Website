@@ -12,7 +12,7 @@
 	<section class="cited-by-section">
 		<h2 class="section-title">Cited By ({sortedCitedBy.length})</h2>
 		<div class="citations-grid">
-			{#each sortedCitedBy as citingWork}
+			{#each sortedCitedBy as citingWork (citingWork.title + citingWork.year)}
 				<div class="citing-work-card">
 					<div class="citation-title">
 						{#if citingWork.url}

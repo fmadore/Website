@@ -87,9 +87,7 @@
 				size="base"
 				additionalClasses="glass-button"
 			>
-				{#snippet children()}
-					View all activities →
-				{/snippet}
+				View all activities →
 			</Button>
 		</div>
 	{/if}
@@ -99,16 +97,14 @@
 	{#if showYearFilters && years.length > 0}
 		<span class="filter-label">Browse by year:</span>
 		<div class="year-filters">
-			{#each years as year}
+			{#each years as year (year)}
 				<Button
 					href="{base}/activities/year/{year}"
 					variant="outline-secondary"
 					size="sm"
 					additionalClasses="glass-button year-filter-button"
 				>
-					{#snippet children()}
-						{year}
-					{/snippet}
+					{year}
 				</Button>
 			{/each}
 		</div>

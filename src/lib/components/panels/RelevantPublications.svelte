@@ -75,7 +75,7 @@
 	{#if showTypeFilters && publicationTypes.length > 1}
 		<div class="type-filters-section">
 			<div class="type-filters-container">
-				{#each publicationTypes as type}
+				{#each publicationTypes as type (type)}
 					<Button
 						variant={selectedType === type ? 'primary' : 'outline-secondary'}
 						size="sm"
@@ -83,9 +83,7 @@
 						onclick={() => selectType(type)}
 						type="button"
 					>
-						{#snippet children()}
-							{formatPublicationType(type)}
-						{/snippet}
+						{formatPublicationType(type)}
 					</Button>
 				{/each}
 			</div>

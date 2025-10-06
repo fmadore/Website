@@ -12,7 +12,7 @@
 	<section class="reviews-section">
 		<h2 class="section-title">Reviews</h2>
 		<div class="reviews-grid">
-			{#each sortedReviews as review}
+			{#each sortedReviews as review (review.title + review.year + review.author)}
 				<div class="review-card">
 					<div class="review-title">
 						{#if review.url}

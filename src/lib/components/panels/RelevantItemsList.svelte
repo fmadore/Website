@@ -62,9 +62,7 @@
 				size="base"
 				additionalClasses="glass-button"
 			>
-				{#snippet children()}
-					View all {itemTypePlural} →
-				{/snippet}
+				View all {itemTypePlural} →
 			</Button>
 		</div>
 	{/if}
