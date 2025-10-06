@@ -1,17 +1,18 @@
-<script lang="ts">
-	import { type ComponentProps } from 'svelte';
+<script lang="ts" generics="Item extends Record<string, unknown> = Record<string, unknown>">
+	import type { Component } from 'svelte';
 	import Button from '$lib/components/atoms/Button.svelte'; // Import Button component
 
 	// Generic type to represent any store with a subscribe method
 	type Readable<T> = { subscribe: (run: (value: T) => void) => () => void };
 
-	// Use a more generic type definition that doesn't rely on SvelteComponent
-	type AnyComponentType = any;
+	// Use a more generic type definition that works with dynamic components
+	type AnyComponentType = Component<Record<string, unknown>>;
+	type MaybeValue<T> = { value?: T };
 
 	interface Props {
-		filteredItems: Readable<any[]> | any[]; // Store of filtered items OR plain array
+		filteredItems: Readable<Item[]> | Item[]; // Store of filtered items OR plain array
 		itemComponent: AnyComponentType; // Component to render each item
-		itemComponentProps?: ComponentProps<any>; // Props to pass to each item component
+		itemComponentProps?: Record<string, unknown>; // Props to pass to each item component
 		areFiltersActive?: boolean; // Whether filters are active
 		clearAllFilters: () => void; // Function to clear all filters
 		emptyStateMessage?: string; // Message for empty state
@@ -34,14 +35,26 @@
 
 	// Handle both store and plain array
 	const items = $derived(
-		Array.isArray(filteredItems) ? filteredItems : (filteredItems as any)?.value || []
+		Array.isArray(filteredItems)
+			? filteredItems
+			: ((filteredItems as MaybeValue<Item[]>)?.value ?? [])
 	);
+
+	const getItemKey = (item: Item, index: number): string | number => {
+		if (item && typeof item === 'object' && 'id' in item) {
+			const value = (item as { id?: string | number }).id;
+			if (typeof value === 'string' || typeof value === 'number') {
+				return value;
+			}
+		}
+		return index;
+	};
 </script>
 
 <div>
 	{#if items && items.length > 0}
 		<ul class="list-none p-0 space-y-8 mt-6">
-			{#each items as item, index (item.id)}
+			{#each items as item, index (getItemKey(item, index))}
 				{#if onitemrequest}
 					{@const Component = itemComponent}
 					<Component

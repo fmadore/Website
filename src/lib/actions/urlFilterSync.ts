@@ -89,11 +89,11 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 		}
 
 		const queryString = urlParams.toString();
-		const currentPath = page.url.pathname;
-		const targetUrl = queryString ? `${currentPath}?${queryString}` : currentPath;
+		const url = new URL(page.url.href);
+		url.search = queryString;
 
 		// Use replaceState to avoid cluttering browser history
-		goto(targetUrl, { replaceState: true, keepFocus: true, noScroll: true });
+		goto(url, { replaceState: true, keepFocus: true, noScroll: true });
 	});
 
 	// --- Sync URL to filters ---

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	let {
 		href,
 		active = false,
@@ -13,8 +14,8 @@
 		hasDropdown?: boolean;
 		onclick?: (event: MouseEvent) => void;
 		onkeydown?: (event: KeyboardEvent) => void;
-		children?: any;
-		[key: string]: any;
+		children?: Snippet;
+		[key: string]: unknown;
 	} = $props();
 </script>
 

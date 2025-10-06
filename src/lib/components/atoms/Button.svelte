@@ -21,7 +21,7 @@
 		onclick?: (event: MouseEvent) => void; // Callback for click events
 		icon?: import('svelte').Snippet;
 		children?: import('svelte').Snippet;
-		[key: string]: any;
+		[key: string]: unknown;
 	}
 
 	let {

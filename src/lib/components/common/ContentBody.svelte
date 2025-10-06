@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
@@ -11,7 +12,7 @@
 		variant?: 'default' | 'compact' | 'wide';
 		glassEffect?: 'glass-card' | 'glass-panel' | 'glass-medium' | 'glass-light';
 		additionalClasses?: string;
-		children: any;
+		children: Snippet;
 	} = $props();
 
 	// Combine classes based on variant and additional classes

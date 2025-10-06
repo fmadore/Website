@@ -7,7 +7,7 @@
 		description?: string;
 		keywords?: string;
 		canonical?: string;
-		ogImage?: any;
+		ogImage?: string;
 		type?: string;
 		// Control whether to include citation_author (default: true)
 		// Set to false for publication pages that use MetaTags.svelte

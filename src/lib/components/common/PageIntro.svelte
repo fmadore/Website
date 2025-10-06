@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
@@ -8,7 +9,7 @@
 		glassEffect = '',
 		additionalClasses = ''
 	}: {
-		children: any;
+		children: Snippet;
 		variant?: 'default' | 'compact' | 'emphasized' | 'featured';
 		glassEffect?: '' | 'glass-light' | 'glass-medium' | 'glass-panel-light';
 		additionalClasses?: string;
