@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { fade, fly } from 'svelte/transition';
 
 	// Grouped social media links with Iconify icon names
 	const socialGroups = [
@@ -49,9 +48,6 @@
 			]
 		}
 	];
-
-	// Flatten links for backward compatibility if needed elsewhere in code
-	const socialLinks = socialGroups.flatMap((group) => group.links);
 
 	const currentYear = new Date().getFullYear();
 

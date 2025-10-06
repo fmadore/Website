@@ -7,7 +7,7 @@ const activityModules = import.meta.glob<{ [key: string]: Activity }>('./*.ts', 
 // Convert the modules to an array of activities, excluding the index file and template
 const allActivities: Activity[] = Object.entries(activityModules)
 	.filter(([path]) => !path.includes('index.ts') && !path.includes('activity-template.ts'))
-	.map(([_, module]) => {
+	.map(([, module]) => {
 		const activity = Object.values(module)[0] as Activity;
 		return activity;
 	});

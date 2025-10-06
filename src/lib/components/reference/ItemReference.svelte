@@ -14,7 +14,6 @@
 
 	import { allPublications } from '$lib/data/publications/index';
 	import { allCommunications } from '$lib/data/communications/index';
-	import type { Publication, Communication } from '$lib/types';
 
 	import ReferenceLink from './ReferenceLink.svelte';
 	import ReferencePreviewCard from './ReferencePreviewCard.svelte';

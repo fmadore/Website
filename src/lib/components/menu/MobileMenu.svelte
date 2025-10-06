@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { NavItem } from '$lib/types/navigation';
 	import ThemeToggle from '$lib/components/menu/ThemeToggle.svelte';
-	import Icon from '@iconify/svelte';
 	import { base } from '$app/paths';
 
 	let {

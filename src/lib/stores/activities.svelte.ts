@@ -4,7 +4,7 @@
  * Manages the list of academic activities with reactive state.
  */
 
-import { allActivities, activitiesByDate } from '../data/activities';
+import { activitiesByDate } from '../data/activities';
 import type { Activity } from '$lib/types';
 
 // Re-export the Activity type for backward compatibility

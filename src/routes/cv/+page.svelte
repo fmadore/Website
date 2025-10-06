@@ -12,18 +12,7 @@
 	import { affiliationsByStartDate } from '$lib/data/affiliations';
 	import Icon from '@iconify/svelte';
 	import { formatAuthorList } from '$lib/utils/citationFormatter';
-	import type {
-		Publication,
-		Communication,
-		Fieldwork,
-		Education,
-		Appointment,
-		Grant,
-		Award,
-		PeerReview,
-		MediaAppearance,
-		EditorialMembership
-	} from '$lib/types';
+	import type { Publication } from '$lib/types';
 	import type { ProfessionalAffiliation } from '$lib/data/affiliations/template';
 	import SEO from '$lib/SEO.svelte';
 

@@ -77,13 +77,6 @@
 		}, HIDE_DELAY);
 	}
 
-	function clearHideTimer() {
-		if (dropdownTimer) {
-			clearTimeout(dropdownTimer);
-			dropdownTimer = null;
-		}
-	}
-
 	function handleDropdownItemClick() {
 		activeDropdown = null;
 	}

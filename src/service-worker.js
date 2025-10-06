@@ -213,7 +213,7 @@ async function handleCDNRequest(request) {
 			cache.put(request, response.clone());
 		}
 		return response;
-	} catch (error) {
+	} catch {
 		return cached || new Response('CDN resource unavailable', { status: 503 });
 	}
 }

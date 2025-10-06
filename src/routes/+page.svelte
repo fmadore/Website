@@ -51,20 +51,6 @@
 			};
 		}
 	});
-
-	// Years with content - optimized derivation using $derived.by for better performance
-	const years = $derived.by(() => {
-		const yearEntries = [];
-		for (const [yearStr, activities] of Object.entries(activitiesByYear)) {
-			if (activities.length > 0) {
-				yearEntries.push({
-					year: parseInt(yearStr),
-					count: activities.length
-				});
-			}
-		}
-		return yearEntries.sort((a, b) => b.year - a.year);
-	});
 </script>
 
 <SEO

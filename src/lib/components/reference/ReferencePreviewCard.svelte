@@ -4,8 +4,6 @@
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import type { Publication, Communication } from '$lib/types';
-	import { scale } from 'svelte/transition';
-	import { quintOut } from 'svelte/easing';
 	import Button from '$lib/components/atoms/Button.svelte';
 
 	let {

@@ -16,12 +16,10 @@ ECharts Network Graph - A network visualization for author collaborations
 	let {
 		data = [] as CollaborationData[],
 		centerAuthor = 'Frédérick Madore',
-		title = 'Author Collaboration Network',
 		maxConnections = 20 // Limit to top collaborators for readability
 	}: {
 		data?: CollaborationData[];
 		centerAuthor?: string;
-		title?: string;
 		maxConnections?: number;
 	} = $props();
 
@@ -109,7 +107,7 @@ ECharts Network Graph - A network visualization for author collaborations
 				category: 0
 			},
 			// Collaborator nodes
-			...topCollaborators.map((collab, index) => ({
+			...topCollaborators.map((collab) => ({
 				id: collab.author,
 				name: collab.author,
 				symbolSize: Math.max(

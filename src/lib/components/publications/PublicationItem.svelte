@@ -29,7 +29,6 @@
 		const type = publication.type;
 		const authors = publication.authors;
 		const editors = publication.editors;
-		const selfName = 'Frédérick Madore'; // Define self name
 
 		let items: DisplayListItem[] = [];
 		let listPrefix = ''; // Reset prefix

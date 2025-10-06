@@ -1,14 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { error } from '@sveltejs/kit';
 	import SEO from '$lib/SEO.svelte';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
-	import type { Activity } from '$lib/types';
-	import type { Communication } from '$lib/types/communication';
 	import type { PageData } from './$types';
 	import { browser } from '$app/environment';
 
@@ -20,7 +17,6 @@
 	import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import ActionLinks from '$lib/components/molecules/ActionLinks.svelte';
-	import AbstractSection from '$lib/components/molecules/AbstractSection.svelte';
 	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
 	import { createActivitySEODescription, createActivitySEOKeywords } from '$lib/utils/seoUtils';
 	import MetaTags from '$lib/components/activities/MetaTags.svelte';

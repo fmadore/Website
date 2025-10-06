@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { browser, dev } from '$app/environment';
-	import { onMount } from 'svelte';
 
 	let showUpdatePrompt = $state(false);
 	let updateAvailable = $state(false);

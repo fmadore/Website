@@ -11,12 +11,7 @@
 	// import { onMount, onDestroy } from 'svelte'; // No longer needed for this specific logic
 	import { browser } from '$app/environment';
 
-	import type {
-		DigitalHumanitiesProject,
-		EmbeddableContentItem,
-		Review,
-		ProjectPublication
-	} from '$lib/types/digitalHumanities';
+	import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
 
 	// Define the type for project details items
 	type ProjectDetailItem = {

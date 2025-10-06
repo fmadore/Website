@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type ComponentProps, type ComponentType } from 'svelte';
+	import { type ComponentProps } from 'svelte';
 	import Button from '$lib/components/atoms/Button.svelte'; // Import Button component
 
 	// Generic type to represent any store with a subscribe method

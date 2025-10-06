@@ -2,8 +2,6 @@ import { mdsvex } from 'mdsvex';
 import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
-const dev = process.argv.includes('dev');
-
 const config = {
 	preprocess: [vitePreprocess(), mdsvex()],
 	compilerOptions: {
@@ -24,7 +22,7 @@ const config = {
 		// Make sure all pages are pre-rendered
 		prerender: {
 			entries: ['*'],
-			handleHttpError: ({ path, referrer, message }) => {
+			handleHttpError: ({ path, message }) => {
 				// If the error is a missing page, log a warning but allow build to continue
 				// This assumes your 404 handling takes care of it at runtime
 				// Note: The original logic for '/Website/' prefix is removed as base path is empty

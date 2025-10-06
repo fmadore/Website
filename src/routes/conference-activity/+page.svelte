@@ -26,7 +26,6 @@
 		setProjects,
 		setYearRange
 	} from '$lib/data/communications/filters.svelte';
-	import { allCoordinates } from '$lib/data/communications';
 	import type { Communication } from '$lib/types/communication';
 	// Remove old sidebar import
 	// import FiltersSidebar from '$lib/components/communications/FiltersSidebar.svelte';
@@ -37,7 +36,6 @@
 		FilterSectionConfig,
 		CheckboxFilterOption,
 		RangeFilterOption,
-		ButtonsFilterOption,
 		ChipsFilterOption
 	} from '$lib/types/filters';
 	import CommunicationItem from '$lib/components/communications/CommunicationItem.svelte';

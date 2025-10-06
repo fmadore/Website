@@ -1,5 +1,4 @@
 import type { Publication } from '$lib/types';
-import { loadData } from '$lib/utils/dataLoader'; // Keep for filtering/extraction if needed
 
 // Define a type for module imports
 type ModuleType = Record<string, any>;

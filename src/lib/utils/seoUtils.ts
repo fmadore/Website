@@ -418,13 +418,6 @@ export function createActivitySEODescription(activity: Activity): string {
 
 	// Add engaging call-to-action if space allows
 	if (seoDescription.length < 140) {
-		const ctaOptions = [
-			'Learn more →',
-			'Read insights →',
-			'Discover details →',
-			'Explore findings →'
-		];
-
 		// Choose CTA based on activity type
 		let cta = 'Learn more →';
 		if (type === 'publication') cta = 'Read details →';

@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import { base } from '$app/paths';
-import { getActivityById, type Activity } from '$lib/stores/activities.svelte';
+import { getActivityById } from '$lib/stores/activities.svelte';
 import type { PageLoad } from './$types';
 
 // --- JSON-LD Interfaces ---

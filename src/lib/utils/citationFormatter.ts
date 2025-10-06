@@ -58,9 +58,6 @@ function formatEditors(editors: string | undefined): string {
 	return formatted;
 }
 
-// Define type for metadata items (kept for internal use within formatter)
-type MetadataItem = { label: string; value: string | number | undefined | null };
-
 // Define the structure for the formatted citation output
 export interface FormattedCitation {
 	typeLabel: string;

@@ -9,7 +9,6 @@
 		fallbackImage = undefined,
 		defaultAlt = 'Hero image',
 		imageClass = 'hero-image', // Default class using our styling
-		figureClass = '',
 		figcaptionClass = 'hero-caption',
 		glassEffect = true,
 		variant = 'default',
@@ -21,7 +20,6 @@
 		fallbackImage?: string | undefined | null;
 		defaultAlt?: string;
 		imageClass?: string;
-		figureClass?: string;
 		figcaptionClass?: string;
 		glassEffect?: boolean;
 		variant?: 'default' | 'compact' | 'featured';

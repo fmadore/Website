@@ -14,9 +14,7 @@
 	import { browser } from '$app/environment';
 	import type {
 		Map as LeafletMap,
-		FeatureGroup as LeafletFeatureGroup,
 		MarkerClusterGroup,
-		TileLayerOptions,
 		TileLayer
 	} from 'leaflet'; // Import types only
 	import { base } from '$app/paths'; // Import base path
@@ -217,10 +215,6 @@
 						);
 						const hasEvent = markers.some((marker) =>
 							marker.options.icon?.options.className?.includes('marker-type-event')
-						);
-						// Add checks for other types if needed, e.g., workshop
-						const hasWorkshop = markers.some(
-							(marker) => marker.options.icon?.options.className?.includes('marker-type-workshop') // Example if you add workshop type back
 						);
 
 						// Set clusterType based on priority (adjust as needed)

@@ -32,7 +32,6 @@
 		FilterSectionConfig,
 		CheckboxFilterOption,
 		RangeFilterOption,
-		ButtonsFilterOption,
 		ChipsFilterOption
 	} from '$lib/types/filters';
 	import PublicationItem from '$lib/components/publications/PublicationItem.svelte';

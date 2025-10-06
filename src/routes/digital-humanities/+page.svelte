@@ -8,7 +8,6 @@
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import { allDhProjects } from '$lib/data/digital-humanities'; // Import the new data source
-	import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities'; // Import the type
 
 	// Reactive variable for the skill from URL, only access searchParams if in browser
 	let selectedSkill = $derived(browser ? $page.url.searchParams.get('skill') : null);

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { ComponentType } from 'svelte';
-	import { base } from '$app/paths';
 
 	// Props
 	let {

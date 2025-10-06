@@ -7,18 +7,14 @@
 		activeItems, // List of active items
 		toggleItem, // Function to toggle an item
 		counts, // Item counts
-		searchThreshold = 6, // Show search when items > this number
-		initialDisplayCount = 9, // Initial number of items to show
-		showSearch = true // Whether to show search functionality
+		initialDisplayCount = 9 // Initial number of items to show
 	}: {
 		title: string;
 		items: string[];
 		activeItems: string[];
 		toggleItem: (item: string) => void;
 		counts: { [key: string]: number | undefined } | undefined;
-		searchThreshold?: number;
 		initialDisplayCount?: number;
-		showSearch?: boolean;
 	} = $props();
 
 	// Local state (no search functionality)

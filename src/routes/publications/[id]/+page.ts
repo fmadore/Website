@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import { base } from '$app/paths';
 import { allPublications } from '$lib/data/publications/index';
-import type { Publication, ReviewWork } from '$lib/types';
+import type { ReviewWork } from '$lib/types';
 import type { PageLoad } from './$types';
 
 // --- JSON-LD Helper Interfaces ---

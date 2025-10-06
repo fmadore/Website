@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { UniversalFilterConfig, FilterSectionConfig } from '$lib/types/filters';
+	import type { UniversalFilterConfig } from '$lib/types/filters';
 	import FilterSectionCheckbox from '$lib/components/filters/FilterSectionCheckbox.svelte';
 	import FilterSectionRangeSlider from '$lib/components/filters/FilterSectionRangeSlider.svelte';
 	import FilterSectionButtons from '$lib/components/filters/FilterSectionButtons.svelte';
@@ -51,16 +51,6 @@
 		});
 	}
 
-	// Enhanced function to handle clearing filters with scroll preservation
-	function handleClearFilters() {
-		if (config?.clearAllFilters) {
-			preserveSidebarScroll(() => {
-				config.clearAllFilters();
-				oncollapse?.(); // Call callback instead of dispatching event
-			});
-		}
-	}
-
 	// Wrapper function to enhance any filter toggle with sidebar scroll preservation
 	function createScrollPreservingToggle(originalToggle: (item: any) => void) {
 		return (item: any) => {
@@ -100,10 +90,7 @@
 
 	<!-- Collapsible Filter Sections Wrapper (Mobile) -->
 	{#if isExpandedMobile}
-		<div class="filter-sections-wrapper" transition:slide={{ duration: 200 }}>
-			{#each enhancedSections as section, index (section.title)}
-				<div class="filter-section" in:fly={{ y: 10, duration: 200, delay: index * 50 }}>
-					{#if section.type === 'checkbox'}
+		\t\t<div class="filter-sections-wrapper" transition:slide={{ duration: 200 }}>\n\t\t\t{#each enhancedSections as section (section.title)}\n\t\t\t\t<div class="filter-section">\n\t\t\t\t\t{#if section.type === 'checkbox'}
 						<FilterSectionCheckbox
 							title={section.title}
 							items={section.items}

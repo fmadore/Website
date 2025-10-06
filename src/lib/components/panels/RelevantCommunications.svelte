@@ -29,22 +29,12 @@
 			.slice(0, limit) as RelevantItem[]
 	); // Cast to the generic type
 
-	// Get unique communication types for the type filter
-	let communicationTypes = $derived<string[]>(
-		[...new Set(communicationList.map((comm) => comm.type).filter(Boolean))].sort() as string[]
-	);
-
 	// Compute filtered list based on selected type
 	let filteredList = $derived<RelevantItem[]>(
 		selectedType
 			? communicationList.filter((comm) => comm.type === selectedType)
 			: communicationList
 	);
-
-	// Handler for type filter button
-	function selectType(type: string) {
-		selectedType = selectedType === type ? null : type;
-	}
 
 	// Format communication type for display
 	function formatCommunicationType(type: string): string {

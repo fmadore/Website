@@ -36,11 +36,6 @@
 		formatType: (type: string) => string;
 		formatAuthors: (authors: string[]) => string;
 	} = $props();
-
-	// Get unique item types for the type filter
-	let itemTypes = $derived(
-		[...new Set(items.map((item) => item.type).filter(Boolean))].sort() as string[]
-	);
 </script>
 
 {#snippet panelContent()}

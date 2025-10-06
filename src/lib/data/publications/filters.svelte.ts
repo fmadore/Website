@@ -10,8 +10,7 @@ import {
 	allPublications as baseAllPublications,
 	publicationsByType,
 	publicationsByYear,
-	allTags,
-	allLanguages
+	allTags
 } from './index';
 import {
 	createActiveFiltersStore,

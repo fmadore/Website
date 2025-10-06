@@ -1,5 +1,4 @@
 import type { ProfessionalAffiliation } from './template';
-import { iasg } from './iasg';
 
 // Define a type for module imports, similar to publications
 type AffiliationModuleType = Record<

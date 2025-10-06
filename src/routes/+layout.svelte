@@ -16,8 +16,8 @@
 		assessConnectionQuality
 	} from '$lib/utils/performanceMonitor';
 
-	// Destructure data and children from $props using LayoutProps
-	let { data, children }: LayoutProps = $props();
+	// Destructure children from $props using LayoutProps
+	let { children }: LayoutProps = $props();
 
 	// Get access to global state
 	const globalState = getGlobalState();

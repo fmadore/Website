@@ -129,7 +129,6 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 						const tooltipWidth = size.contentSize[0];
 						const tooltipHeight = size.contentSize[1];
 						const viewportWidth = size.viewSize[0];
-						const viewportHeight = size.viewSize[1];
 
 						let x = Math.max(
 							10,

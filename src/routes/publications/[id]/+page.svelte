@@ -131,11 +131,6 @@
 		}
 	});
 
-	// Format date for display
-	function formatDate(dateString: string): string {
-		return dateString || '';
-	}
-
 	// Helper to get badge text
 	function getTypeBadgeText(type: string): string {
 		switch (type) {
