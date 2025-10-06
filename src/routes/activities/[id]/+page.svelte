@@ -156,7 +156,7 @@
 		activity?.content
 			? (() => {
 					const rawContent = activity.content.replace(/href="\/([^\/])/g, `href="${base}/$1`);
-					const regex = /<ItemReference\s+id="([^"]+)"\s*\/>/g;
+					const regex = /<ItemReference\s+id="([^"]+)"\s*>/g;
 					const segments: ContentSegment[] = [];
 					let lastIndex = 0;
 					let match;

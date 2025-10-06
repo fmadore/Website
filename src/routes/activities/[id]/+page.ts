@@ -31,9 +31,6 @@ interface BlogPostingJsonLd extends BaseJsonLd {
 	author?: Person | Person[];
 }
 
-// Simplified Union type - Although we only generate BlogPosting here now
-type JsonLd = BlogPostingJsonLd;
-
 // --- Load Function ---
 export const load: PageLoad = ({ params }) => {
 	const activityId = params.id;
