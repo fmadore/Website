@@ -26,7 +26,7 @@
 			</li>
 		{/if}
 
-		{#each items as item, i}
+		{#each items as item, i (item.href)}
 			<li>
 				{#if i === items.length - 1}
 					<span aria-current="page" class="breadcrumb-text">

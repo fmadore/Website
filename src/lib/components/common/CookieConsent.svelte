@@ -3,20 +3,8 @@
 	import { browser } from '$app/environment';
 	import { cookieConsent } from '$lib/utils/cookieConsent';
 
-	let showBanner = $state(false);
-	let hasCheckedStorage = $state(false);
-
-	$effect(() => {
-		// Only run in browser environment
-		if (!browser) return;
-
-		// Prevent multiple checks
-		if (hasCheckedStorage) return;
-
-		// Use the new cookie consent utility
-		showBanner = cookieConsent.needsConsent();
-		hasCheckedStorage = true;
-	});
+	// Use $derived to determine if banner should show
+	let showBanner = $state(browser ? cookieConsent.needsConsent() : false);
 
 	function acceptCookies() {
 		// Use the new cookie consent utility

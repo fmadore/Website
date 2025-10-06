@@ -23,9 +23,11 @@
 	{/snippet}
 
 	<!-- Default slot for description -->
-	{#snippet children()}<p class="activity-description">
+	{#snippet children()}
+		<p class="activity-description">
 			{activity.description}
-		</p>{/snippet}
+		</p>
+	{/snippet}
 
 	<!-- Details slot for tags -->
 	{#snippet details()}
