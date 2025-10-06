@@ -1,5 +1,6 @@
 import { page } from '$app/state';
 import { goto } from '$app/navigation';
+import { resolve } from '$app/paths';
 import type { Action } from 'svelte/action';
 
 interface ActiveFilters {
@@ -89,11 +90,11 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 		}
 
 		const queryString = urlParams.toString();
-		const url = new URL(page.url.href);
-		url.search = queryString;
+		const basePath = resolve(page.url.pathname as any);
+		const targetUrl = `${basePath}${queryString ? `?${queryString}` : ''}${page.url.hash || ''}`;
 
 		// Use replaceState to avoid cluttering browser history
-		goto(url, { replaceState: true, keepFocus: true, noScroll: true });
+		goto(targetUrl, { replaceState: true, keepFocus: true, noScroll: true });
 	});
 
 	// --- Sync URL to filters ---

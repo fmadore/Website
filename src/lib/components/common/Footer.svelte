@@ -150,7 +150,7 @@
 									href={link.url}
 									class="footer-link glass-button"
 									target="_blank"
-									rel="noopener noreferrer"
+									rel="external noopener noreferrer"
 									aria-label="{link.name} - Opens in new tab"
 								>
 									<div class="footer-link-icon" aria-hidden="true">
