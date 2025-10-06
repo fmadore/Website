@@ -15,7 +15,7 @@ import {
 	createSetRangeFilter,
 	createClearAllFilters,
 	createDerivedCountStore
-} from '$lib/utils/filterUtils.svelte';
+} from '$lib/utils/filterUtils';
 import { derived, readable } from 'svelte/store';
 
 // Import safely handling any errors

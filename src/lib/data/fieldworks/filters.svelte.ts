@@ -11,7 +11,7 @@ import {
 	createToggleArrayFilter,
 	createClearAllFilters,
 	createDerivedCountStore
-} from '$lib/utils/filterUtils.svelte';
+} from '$lib/utils/filterUtils';
 import { derived, readable, writable, get } from 'svelte/store';
 
 // Store the promise for fieldwork data

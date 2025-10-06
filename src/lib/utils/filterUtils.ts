@@ -1,7 +1,12 @@
-/**
- * filterUtils.svelte.ts
+/** * Svelte 5 store-based filter utilities for shared reactive state management.
  *
- * Svelte 5 runes-based filter utilities for shared reactive state management.
+ * Uses Svelte stores (writable, readable, derived) which remain valid in Svelte 5
+ * for cases requiring manual control over updates and complex reactive logic.
+ * - Exports Svelte stores that can be used with $ prefix in components
+ * - Compatible with Svelte 5's reactivity system
+ * - Ideal for shared state management across componentsterUtils.ts
+ *
+ * Svelte 5 store-based filter utilities for shared reactive state management.
  * This replaces the legacy store-based filterUtils.ts.
  *
  * Key differences from Svelte 4 stores:
