@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-
 	interface Props {
 		// Props
 		variant?:
@@ -20,6 +18,7 @@
 		loading?: boolean; // Loading state
 		ariaLabel?: string | undefined; // For accessibility, esp. for iconOnly
 		additionalClasses?: string;
+		onclick?: (event: MouseEvent) => void; // Callback for click events
 		icon?: import('svelte').Snippet;
 		children?: import('svelte').Snippet;
 		[key: string]: any;
@@ -37,12 +36,11 @@
 		loading = false,
 		ariaLabel = undefined,
 		additionalClasses = '',
+		onclick,
 		icon,
 		children,
 		...rest
 	}: Props = $props();
-
-	const dispatch = createEventDispatcher();
 
 	// Compute classes based on props
 	let buttonClasses = $derived(
@@ -62,8 +60,8 @@
 	);
 
 	function handleClick(event: MouseEvent) {
-		if (!disabled && !loading) {
-			dispatch('click', event);
+		if (!disabled && !loading && onclick) {
+			onclick(event);
 		}
 	}
 </script>
