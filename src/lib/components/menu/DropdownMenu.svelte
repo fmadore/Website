@@ -22,7 +22,7 @@
 	aria-label={`${parentName} submenu`}
 >
 	<ul>
-		{#each items as item}
+		{#each items as item (item.path)}
 			<li role="none">
 				<a
 					href={item.path}

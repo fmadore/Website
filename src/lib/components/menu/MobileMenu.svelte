@@ -31,7 +31,7 @@
 		</div>
 
 		<ul class="mobile-nav-list">
-			{#each navItems as item}
+			{#each navItems as item (item.path)}
 				<li class="mobile-nav-item">
 					<a href={item.path} class="mobile-nav-link" onclick={onCloseMenu}>
 						{item.name}
@@ -39,7 +39,7 @@
 
 					{#if item.dropdown}
 						<ul class="mobile-dropdown">
-							{#each item.dropdown as subItem}
+							{#each item.dropdown as subItem (subItem.path)}
 								<li class="mobile-dropdown-item">
 									<a
 										href={subItem.path}

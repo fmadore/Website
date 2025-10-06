@@ -169,7 +169,7 @@
 	});
 </script>
 
-<svelte:window on:click={handleClickOutside} />
+<svelte:window onclick={handleClickOutside} />
 
 <header class="site-header">
 	<div class="container">

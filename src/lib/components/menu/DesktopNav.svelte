@@ -25,7 +25,7 @@
 
 <nav class="desktop-nav" aria-label="Main navigation">
 	<ul class="nav-list">
-		{#each navItems as item, i}
+		{#each navItems as item, i (item.path)}
 			<NavItemWithDropdown
 				{item}
 				isActive={activeDropdown === i}
