@@ -395,12 +395,10 @@
 						<span class="block ml-4 text-sm text-light">
 							{grant.dateRangeString}
 							{#if grant.amount}
-								{' '}
 								({grant.amount.toLocaleString('en-US')}
 								{grant.currency})
 							{/if}
 							{#if grant.status && grant.status !== 'Awarded'}
-								{' '}
 								[{grant.status}]
 							{/if}
 						</span>

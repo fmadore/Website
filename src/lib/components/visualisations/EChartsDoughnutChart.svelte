@@ -211,7 +211,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 					: undefined,
 				animationType: 'scale',
 				animationEasing: 'elasticOut' as any,
-				animationDelay: function (_: number) {
+				animationDelay: function () {
 					return Math.random() * 200;
 				}
 			}

@@ -24,18 +24,6 @@ interface Person {
 	};
 }
 
-interface ScholarlyArticleJsonLd extends BaseJsonLd {
-	'@type': 'ScholarlyArticle';
-	datePublished: string;
-	author?: Person | Person[];
-}
-
-interface BookJsonLd extends BaseJsonLd {
-	'@type': 'Book';
-	datePublished: string;
-	author?: Person | Person[];
-}
-
 interface BlogPostingJsonLd extends BaseJsonLd {
 	'@type': 'BlogPosting';
 	headline?: string;
@@ -43,15 +31,8 @@ interface BlogPostingJsonLd extends BaseJsonLd {
 	author?: Person | Person[];
 }
 
-interface CreativeWorkJsonLd extends BaseJsonLd {
-	'@type': 'CreativeWork';
-	datePublished?: string;
-	author?: Person | Person[];
-}
-
 // Simplified Union type - Although we only generate BlogPosting here now
-type JsonLd =
-	/* EventJsonLd | ScholarlyArticleJsonLd | BookJsonLd | */ BlogPostingJsonLd /* | CreativeWorkJsonLd */;
+type JsonLd = BlogPostingJsonLd;
 
 // --- Load Function ---
 export const load: PageLoad = ({ params }) => {

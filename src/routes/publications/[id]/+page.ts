@@ -203,7 +203,7 @@ export const load: PageLoad = ({ params }) => {
 
 	// Add type-specific fields using type guards or assertions
 	switch (resolvedType) {
-		case 'Book':
+		case 'Book': {
 			const bookData = jsonLdObject as Partial<BookJsonLd>;
 			if (publication.isEditedVolume) {
 				bookData.editor = finalAuthors;
@@ -243,8 +243,10 @@ export const load: PageLoad = ({ params }) => {
 				});
 			}
 			break;
+		}
 		case 'ScholarlyArticle':
-		case 'Article': // Handle Articles, Chapters, Encyclopedia Entries
+		case 'Article': {
+			// Handle Articles, Chapters, Encyclopedia Entries
 			const articleData = jsonLdObject as Partial<ArticleJsonLd>;
 			articleData.author = finalAuthors;
 			articleData.datePublished = formattedDatePublished;
@@ -286,19 +288,22 @@ export const load: PageLoad = ({ params }) => {
 				articleData.publisher = publisherOrg;
 			}
 			break;
-		case 'Report':
+		}
+		case 'Report': {
 			const reportData = jsonLdObject as Partial<ReportJsonLd>;
 			reportData.author = finalAuthors;
 			reportData.datePublished = formattedDatePublished;
 			reportData.publisher = publisherOrg;
 			break;
-		case 'BlogPosting':
+		}
+		case 'BlogPosting': {
 			const blogData = jsonLdObject as Partial<BlogPostingJsonLd>;
 			blogData.author = finalAuthors;
 			blogData.datePublished = formattedDatePublished;
 			blogData.publisher = publisherOrg;
 			break;
-		case 'Thesis':
+		}
+		case 'Thesis': {
 			const thesisData = jsonLdObject as Partial<ThesisJsonLd>;
 			thesisData.author = finalAuthors;
 			thesisData.datePublished = formattedDatePublished;
@@ -306,6 +311,7 @@ export const load: PageLoad = ({ params }) => {
 				? { '@type': 'Organization', name: publication.university }
 				: undefined;
 			break;
+		}
 	}
 
 	// Common optional fields
