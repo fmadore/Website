@@ -118,6 +118,16 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			affiliation: 'University of Yaounde I'
 		},
 		{
+			name: 'Janeth David Nzenga',
+			role: 'Participant',
+			affiliation: 'University of Dar es Salaam'
+		},
+		{
+			name: 'Oumou Sidibé',
+			role: 'Participant',
+			affiliation: 'Projet Archives des Femmes du Mali'
+		},
+		{
 			name: 'Kọ́lá Túbọ̀sún',
 			role: 'Participant',
 			affiliation: 'Independant researcher'
