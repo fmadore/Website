@@ -31,7 +31,7 @@
 <div class="filter-section-content glass-panel-light">
 	<h3 class="filter-section-title">{title}</h3>
 	<div class="filter-chips-container">
-		{#each items as item}
+		{#each items as item (item)}
 			<Button
 				variant="outline-secondary"
 				size="sm"

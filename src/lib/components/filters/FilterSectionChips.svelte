@@ -58,7 +58,7 @@
 
 	<!-- Filter chips -->
 	<div class="filter-chips-container">
-		{#each displayedItems as item}
+		{#each displayedItems as item (item)}
 			<Button
 				variant="outline-secondary"
 				size="sm"

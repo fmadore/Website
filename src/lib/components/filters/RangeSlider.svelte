@@ -257,7 +257,7 @@
 	<!-- Pips -->
 	{#if pips}
 		<div class="range-pips">
-			{#each pipValues as pipValue}
+			{#each pipValues as pipValue (pipValue)}
 				{@const pipPosition = ((pipValue - min) / (max - min)) * 100}
 				<div
 					class="pip"
