@@ -27,7 +27,7 @@
 	<section class="details-section mb-8" aria-labelledby="publication-details-heading">
 		<h2 id="publication-details-heading" class="visually-hidden">Publication Details</h2>
 		<dl class="details-grid glass-card">
-			{#each visibleDetails as detail}
+			{#each visibleDetails as detail (detail.label)}
 				<div class="detail-item">
 					<dt class="detail-label">{detail.label}</dt>
 					<dd class="detail-value">

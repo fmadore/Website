@@ -32,7 +32,7 @@
 	<section class={sectionClass}>
 		<h2 class={titleClass}>{titleText}</h2>
 		<div class={contentClass}>
-			{#each paragraphs as paragraph, index}
+			{#each paragraphs as paragraph, index (index)}
 				<p class="abstract-paragraph" class:mb-4={index < paragraphs.length - 1}>
 					{paragraph}
 				</p>

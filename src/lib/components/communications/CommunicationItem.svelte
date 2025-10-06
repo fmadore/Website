@@ -112,7 +112,7 @@
 
 				{#if communication?.additionalUrls && communication.additionalUrls.length > 0}
 					<div class="entity-links">
-						{#each communication.additionalUrls as url, i}
+						{#each communication.additionalUrls as url, i (url.url)}
 							<a
 								href={url.url}
 								target="_blank"

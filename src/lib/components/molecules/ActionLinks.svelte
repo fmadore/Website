@@ -36,7 +36,7 @@
 
 		{#if visibleAdditionalUrls.length > 0}
 			<div class={secondaryDivClass}>
-				{#each visibleAdditionalUrls as link}
+				{#each visibleAdditionalUrls as link (link.url)}
 					<a href={link.url} target="_blank" rel="noopener noreferrer" class={secondaryButtonClass}>
 						{link.label}
 					</a>
