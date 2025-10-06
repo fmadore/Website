@@ -60,7 +60,7 @@
 		class="content-grid"
 		use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}
 	>
-		{#each researchProjects as project, index}
+		{#each researchProjects as project, index (project.id)}
 			<Card
 				title={project.title}
 				imageUrl={project.imageUrl}
