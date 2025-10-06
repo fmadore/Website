@@ -256,6 +256,7 @@
 						<!-- Render parsed content segments -->
 						{#each contentSegments as segment}
 							{#if segment.type === 'html'}
+								<!-- Safe: content is from trusted activity data files in src/lib/data/activities/ -->
 								{@html segment.value}
 							{:else if segment.type === 'ItemReference' && segment.id}
 								<ItemReference id={segment.id} />

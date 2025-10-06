@@ -105,6 +105,7 @@
 
 	<article class="project-detail-article bg-background p-4 md:p-6 rounded-lg shadow-md mb-8">
 		<section class="prose prose-lg max-w-none mb-6">
+			<!-- Safe: project.description is from trusted project data in src/lib/data/digital-humanities/ -->
 			{@html project.description}
 		</section>
 
@@ -132,6 +133,7 @@
 							<h3 class="text-xl font-semibold mb-2">{item.title}</h3>
 						{/if}
 						{#if item.description}
+							<!-- Safe: item.description is from trusted project data -->
 							<p class="text-light mb-3 prose">{@html item.description}</p>
 						{/if}
 
@@ -170,6 +172,7 @@
 		{#if project.award}
 			<section class="mb-6 p-4 bg-background-alt rounded-md shadow-sm">
 				<h3 class="text-lg font-semibold text-accent mb-1">Award</h3>
+				<!-- Safe: project.award is from trusted project data -->
 				<p>{@html project.award}</p>
 			</section>
 		{/if}
@@ -178,6 +181,7 @@
 			<section class="mb-6">
 				<h3 class="text-lg font-semibold mb-1">Related Publication</h3>
 				<p>
+					<!-- Safe: project.publication.text is from trusted project data -->
 					<a href={project.publication.url} target="_blank" rel="noopener noreferrer" class="link"
 						>{@html project.publication.text}</a
 					>
@@ -191,6 +195,7 @@
 				<ul class="space-y-4">
 					{#each project.reviews as review (review.url)}
 						<li class="bg-background-alt p-4 rounded-md shadow-sm">
+							<!-- Safe: review.text is from trusted project data -->
 							<a
 								href={review.url}
 								target="_blank"

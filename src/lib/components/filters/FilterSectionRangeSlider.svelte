@@ -56,12 +56,15 @@
 
 	// Debounced version of the update logic (scroll preservation handled at sidebar level)
 	const debouncedUpdate = debounce((newMin: number, newMax: number) => {
-		// Only update the store if the range is not the full extent (or if it was already filtered)
-		if (newMin !== minYear || newMax !== maxYear || activeRange !== null) {
+		// Check if the new range differs from the full extent
+		const isRangeChanged = newMin !== minYear || newMax !== maxYear;
+
+		if (isRangeChanged) {
+			// Update the filter with the new range
 			updateRange(newMin, newMax);
 			onchange?.({ min: newMin, max: newMax });
 		} else if (activeRange !== null) {
-			// If user slides back to full range, effectively reset the filter
+			// User slid back to full range - clear the filter
 			resetRange();
 			onchange?.(null);
 		}
