@@ -188,10 +188,14 @@
 				in:receive={{ key: `preview-${id}` }}
 				out:send={{ key: `preview-${id}` }}
 				class:position-below={positionBelow}
-				onpointerenter={clearCloseTimer}
-				onpointerleave={handlePointerLeave}
 			>
-				<ReferencePreviewCard {item} {itemType} referenceElement={spanEl} />
+				<ReferencePreviewCard 
+					{item} 
+					{itemType} 
+					referenceElement={spanEl}
+					onpointerenter={clearCloseTimer}
+					onpointerleave={handlePointerLeave}
+				/>
 			</div>
 		{/if}
 	</span>

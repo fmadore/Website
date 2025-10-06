@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createEventDispatcher, tick } from 'svelte';
+	import { tick } from 'svelte';
 	import { browser } from '$app/environment';
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
@@ -12,15 +12,17 @@
 		item,
 		itemType,
 		referenceElement = null,
-		positionClass = ''
+		positionClass = '',
+		onpointerenter,
+		onpointerleave
 	}: {
 		item: Publication | Communication;
 		itemType: 'publication' | 'communication';
 		referenceElement?: HTMLElement | null;
 		positionClass?: string;
+		onpointerenter?: () => void;
+		onpointerleave?: () => void;
 	} = $props();
-
-	const dispatch = createEventDispatcher();
 
 	let cardElement = $state<HTMLElement>();
 	let isPositioned = $state(false);
@@ -98,11 +100,11 @@
 	}
 
 	function handlePointerEnter() {
-		dispatch('pointerenter');
+		onpointerenter?.();
 	}
 
 	function handlePointerLeave() {
-		dispatch('pointerleave');
+		onpointerleave?.();
 	}
 
 	// Handle card click with animation
