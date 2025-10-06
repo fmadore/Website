@@ -136,23 +136,23 @@
 	.optimized-image-container {
 		position: relative;
 		overflow: hidden;
-		background-color: #f7f7f7;
-		transition: opacity 0.3s ease;
+		background-color: var(--color-surface);
+		transition: opacity var(--anim-duration-base) var(--anim-ease-base);
 	}
 
 	.responsive-image {
 		width: 100%;
 		height: auto;
 		object-fit: cover;
-		transition: opacity 0.3s ease;
+		transition: opacity var(--anim-duration-base) var(--anim-ease-base);
 	}
 
 	.optimized-image-container:not(.loaded) .responsive-image {
-		opacity: 0;
+		opacity: var(--opacity-0);
 	}
 
 	.optimized-image-container.loaded .responsive-image {
-		opacity: 1;
+		opacity: var(--opacity-100);
 	}
 
 	.loading-placeholder {
@@ -161,7 +161,12 @@
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+		background: linear-gradient(
+			90deg,
+			var(--color-surface-alt) 25%,
+			var(--color-border) 50%,
+			var(--color-surface-alt) 75%
+		);
 		background-size: 200% 100%;
 		animation: shimmer 1.5s infinite;
 	}
@@ -184,28 +189,33 @@
 		align-items: center;
 		justify-content: center;
 		min-height: 200px;
-		background-color: #f3f4f6;
-		color: #6b7280;
-		font-size: 0.9rem;
-		border: 1px dashed #d1d5db;
-		border-radius: 8px;
+		background-color: var(--color-surface);
+		color: var(--color-text-muted);
+		font-size: var(--font-size-sm);
+		border: var(--border-width-thin) dashed var(--color-border);
+		border-radius: var(--border-radius-lg);
 	}
 
 	/* Dark mode support */
 	@media (prefers-color-scheme: dark) {
 		.optimized-image-container {
-			background-color: #374151;
+			background-color: var(--color-dark-surface);
 		}
 
 		.loading-placeholder {
-			background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+			background: linear-gradient(
+				90deg,
+				var(--color-dark-surface) 25%,
+				var(--color-dark-surface-alt) 50%,
+				var(--color-dark-surface) 75%
+			);
 			background-size: 200% 100%;
 		}
 
 		.error-placeholder {
-			background-color: #374151;
-			color: #d1d5db;
-			border-color: #4b5563;
+			background-color: var(--color-dark-surface);
+			color: var(--color-dark-text-muted);
+			border-color: var(--color-dark-border);
 		}
 	}
 
@@ -223,7 +233,7 @@
 
 		@media (prefers-color-scheme: dark) {
 			.loading-placeholder {
-				background: #374151;
+				background: var(--color-dark-surface);
 			}
 		}
 	}
