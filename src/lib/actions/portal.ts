@@ -1,45 +1,61 @@
+import type { Action } from 'svelte/action';
+
 /**
  * A Svelte action to portal an element to a different part of the DOM.
+ * Modernized for Svelte 5 using $effect() for cleanup.
  * @param {HTMLElement} node The element to portal.
  * @param {string | HTMLElement} target The target to portal to. Defaults to 'body'.
  */
-export function portal(node: HTMLElement, target: string | HTMLElement = 'body') {
-	let targetEl: HTMLElement | null;
+export const portal: Action<HTMLElement, string | HTMLElement | undefined> = (
+	node,
+	target = 'body'
+) => {
+	let currentTarget = target;
 
-	function update(newTarget: string | HTMLElement) {
-		target = newTarget;
-		if (typeof target === 'string') {
-			targetEl = document.querySelector(target);
+	function moveElement(destination: string | HTMLElement) {
+		let targetEl: HTMLElement | null;
+
+		if (typeof destination === 'string') {
+			targetEl = document.querySelector(destination);
 			if (!targetEl) {
-				throw new Error(`No element found matching CSS selector: "${target}"`);
+				throw new Error(`No element found matching CSS selector: "${destination}"`);
 			}
-		} else if (target instanceof HTMLElement) {
-			targetEl = target;
+		} else if (destination instanceof HTMLElement) {
+			targetEl = destination;
 		} else {
 			throw new TypeError(
 				`Unknown portal target type: ${
-					target === null ? 'null' : typeof target
+					destination === null ? 'null' : typeof destination
 				}. Allowed types: string (CSS selector) or HTMLElement.`
 			);
 		}
+
 		targetEl.appendChild(node);
 		node.hidden = false;
 	}
 
-	function destroy() {
-		// Use requestAnimationFrame to ensure the element is not removed before a potential
-		// new element is added in the same tick, which can cause focus issues.
-		requestAnimationFrame(() => {
-			if (node.parentNode) {
-				node.parentNode.removeChild(node);
-			}
-		});
-	}
+	// Initial mount
+	moveElement(currentTarget);
 
-	update(target);
+	// Use $effect for cleanup (Svelte 5 pattern)
+	$effect(() => {
+		// Setup: element is already moved by the initial call above or update below
+
+		return () => {
+			// Cleanup: remove element from DOM when action is destroyed
+			// Use requestAnimationFrame to prevent focus issues
+			requestAnimationFrame(() => {
+				if (node.parentNode) {
+					node.parentNode.removeChild(node);
+				}
+			});
+		};
+	});
 
 	return {
-		update,
-		destroy
+		update(newTarget: string | HTMLElement = 'body') {
+			currentTarget = newTarget;
+			moveElement(currentTarget);
+		}
 	};
 }

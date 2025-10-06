@@ -200,7 +200,7 @@
 
 <div
 	class="page-container"
-	use:urlFilterSync={{ filtersStore: activeFilters, setters: filterSetters }}
+	use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}
 >
 	<div class="main-content">
 		<PageHeader title="Publications" />

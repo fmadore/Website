@@ -12,41 +12,15 @@ import {
 	createClearAllFilters,
 	createDerivedCountStore
 } from '$lib/utils/filterUtils';
-import { derived, readable, writable, get } from 'svelte/store';
-
-// Store the promise for fieldwork data
-let fieldworkDataPromise: Promise<{
-	allFieldworks: Fieldwork[];
-	fieldworksByYear: Record<number, Fieldwork[]>;
-	allCountries: string[];
-	allCities: string[];
-	allProjects: string[];
-}> | null = null;
-
-// Function to load fieldwork data asynchronously
-async function loadFieldworkData() {
-	if (!fieldworkDataPromise) {
-		fieldworkDataPromise = import('./index')
-			.then((module) => ({
-				allFieldworks: module.allFieldworks || [],
-				fieldworksByYear: module.fieldworksByYear || {},
-				allCountries: module.allCountries || [],
-				allCities: module.allCities || [],
-				allProjects: module.allProjects || []
-			}))
-			.catch((error) => {
-				console.error('Error importing fieldworks index:', error);
-				return {
-					allFieldworks: [],
-					fieldworksByYear: {},
-					allCountries: [],
-					allCities: [],
-					allProjects: []
-				};
-			});
-	}
-	return fieldworkDataPromise;
-}
+import { derived, readable } from 'svelte/store';
+// Use static import instead of dynamic to avoid build warnings
+import {
+	allFieldworks,
+	fieldworksByYear,
+	allCountries,
+	allCities,
+	allProjects
+} from './index';
 
 // --- Active Filters Store ---
 
@@ -66,53 +40,23 @@ const initialFilters: ActiveFieldworkFilters = {
 
 export const activeFilters = createActiveFiltersStore(initialFilters);
 
-// --- Available Filter Options (Async Loading) ---
+// --- Available Filter Options ---
 
-let filterOptionsState = $state({
-	countries: [] as string[],
-	cities: [] as string[],
-	years: [] as number[],
-	projects: [] as string[]
+export const filterOptions = readable({
+	countries: allCountries,
+	cities: allCities,
+	years: Object.keys(fieldworksByYear)
+		.map(Number)
+		.sort((a, b) => b - a),
+	projects: allProjects
 });
 
-export const filterOptions = {
-	get value() {
-		return filterOptionsState;
-	},
-	set value(newValue: typeof filterOptionsState) {
-		filterOptionsState = newValue;
-	}
-};
+// --- Filtered Fieldworks ---
 
-// Load options when the module is used
-loadFieldworkData().then((data) => {
-	filterOptionsState = {
-		countries: data.allCountries,
-		cities: data.allCities,
-		years: Object.keys(data.fieldworksByYear || {})
-			.map(Number)
-			.sort((a, b) => b - a),
-		projects: data.allProjects
-	};
-});
-
-// --- Filtered Fieldworks (Async Handling) ---
-
-// Create a writable store to hold the loaded fieldworks data
-const allFieldworksStore = writable<Fieldwork[]>([]);
-loadFieldworkData().then((data) => {
-	allFieldworksStore.set(data.allFieldworks || []);
-});
-
-// Derive filtered fieldworks based on active filters and the loaded data
 export const filteredFieldworks = derived(
-	[activeFilters, allFieldworksStore],
-	([$activeFilters, $allFieldworks]): Fieldwork[] => {
-		if (!$allFieldworks || $allFieldworks.length === 0) {
-			return []; // Return empty if data not loaded yet
-		}
-		
-		return $allFieldworks.filter((fieldwork) => {
+	activeFilters,
+	($activeFilters): Fieldwork[] => {
+		return allFieldworks.filter((fieldwork: Fieldwork) => {
 			// Country
 			if ($activeFilters.countries.length > 0 && !$activeFilters.countries.includes(fieldwork.country)) {
 				return false;

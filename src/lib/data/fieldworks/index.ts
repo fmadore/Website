@@ -4,12 +4,12 @@ import { loadData } from '$lib/utils/dataLoader';
 // Define all template IDs to filter out
 const templateIds = ['fieldwork-template-id'];
 
-// Dynamically import all fieldwork files, excluding index.ts and filters.ts
+// Dynamically import all fieldwork files, excluding index.ts and filters.svelte.ts
 const fieldworkModules = import.meta.glob<Record<string, any>>(
 	[
 		'./*.ts',
 		'!./index.ts', // Exclude index.ts
-		'!./filters.ts' // Exclude filters.ts
+		'!./filters.svelte.ts' // Exclude filters.svelte.ts
 	],
 	{ eager: true }
 );
