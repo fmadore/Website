@@ -209,6 +209,33 @@ box-shadow:
 - Utilities: `src/styles/utilities/`
 - Use `$lib` alias for imports
 
+## CSS Architecture Reference
+
+> **📘 Full Documentation**: See [CSS-README.md](../src/styles/CSS-README.md) for comprehensive CSS architecture details.
+
+### Key Principles:
+
+1. **Import Order**: Base → Layout → Components → Utilities (defined in `src/app.css`)
+2. **Styling Priority**: Component-scoped styles → Utility classes → Glassmorphism utilities → CSS variables
+3. **Page-Specific Styles**: Keep in Svelte component `<style>` blocks, not separate CSS files
+4. **Shared Patterns**: Use `entity-cards.css` for list-based content (publications, communications, etc.)
+
+### Essential Utility Modules:
+
+- **Spacing**: `.m-*`, `.p-*`, `.gap-*` (spacing scale: 0-12)
+- **Layout**: `.flex`, `.grid`, `.container`, display/overflow utilities
+- **Colors**: `.text-*`, `.bg-*`, `.border-*` (all use CSS variables)
+- **Typography**: Font sizes, weights, alignment (in `base/typography.css`)
+- **Glassmorphism**: `.glass`, `.glass-card`, `.glass-panel`, `.glass-button`
+
+### Component CSS Modules:
+
+- `buttons.css` - Complete button system (`.btn`, `.btn-primary`, `.btn-outline-*`, size variants)
+- `cards.css` - Card components (`.card`, `.card-body`, layout variants)
+- `entity-cards.css` - Unified styles for publication/communication lists
+- `panels.css` - Panel containers with filters (`.panel`, `.panel-activities`)
+- `animations.css` - Scroll animations (`.fade-in-up`, `.stagger-*`, reduced motion support)
+
 ## Remember
 
 - Always use Svelte MCP tools when writing Svelte code
@@ -216,3 +243,4 @@ box-shadow:
 - Maintain glassmorphism design aesthetic
 - Ensure accessibility and performance standards
 - Use Svelte 5 runes syntax exclusively (no legacy Svelte 4 patterns)
+- Refer to CSS-README.md for detailed styling guidance
