@@ -72,14 +72,14 @@
 			{/each}
 		</ul>
 	{:else}
-		<div class="p-8 bg-gray-50 rounded text-center mt-6">
-			<p>{emptyStateMessage}</p>
+		<div class="empty-state">
+			<p class="empty-state-message">{emptyStateMessage}</p>
 			{#if areFiltersActive}
 				<Button variant="primary" size="sm" onclick={clearAllFilters} additionalClasses="mt-4">
 					Clear all filters
 				</Button>
 			{:else if !areFiltersActive}
-				<p class="mt-2 text-sm text-gray-500">
+				<p class="empty-state-hint">
 					{emptyStateNoFiltersMessage}
 				</p>
 			{/if}
@@ -88,5 +88,29 @@
 </div>
 
 <style>
-	/* Styles for status-bar-container and clear-filters-inline removed */
+	.empty-state {
+		padding: var(--spacing-8);
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-surface-rgb), var(--opacity-high)) 100%
+		);
+		border-radius: var(--border-radius-lg);
+		text-align: center;
+		margin-top: var(--spacing-6);
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+	}
+
+	.empty-state-message {
+		color: var(--color-text);
+		font-size: var(--font-size-base);
+		margin: 0;
+	}
+
+	.empty-state-hint {
+		margin-top: var(--spacing-2);
+		font-size: var(--font-size-sm);
+		color: var(--color-text-muted);
+		margin-bottom: 0;
+	}
 </style>

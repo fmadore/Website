@@ -60,35 +60,35 @@
 		/* Enhanced glassmorphism following design system */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.03) 0%,
-			rgba(var(--color-highlight-rgb), 0.02) 50%,
-			rgba(var(--color-accent-rgb), 0.01) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
-		border: 1px solid rgba(255, 255, 255, 0.2);
+		backdrop-filter: blur(var(--glass-blur-amount));
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
 		border-radius: var(--border-radius-xl);
 		box-shadow:
-			0 8px 32px 0 rgba(31, 38, 135, 0.15),
-			inset 0 1px 0 rgba(255, 255, 255, 0.2);
+			0 var(--spacing-2) var(--spacing-8) 0 rgba(var(--color-primary-rgb), var(--opacity-20)),
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium));
 
 		/* Smooth transitions */
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-		animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all var(--transition-duration-200) var(--anim-ease-base);
+		animation: slideUp var(--transition-duration-300) var(--anim-ease-base);
 	}
 
 	.cookie-banner:hover {
 		transform: var(--transform-lift-sm);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.05) 0%,
-			rgba(var(--color-highlight-rgb), 0.03) 50%,
-			rgba(var(--color-accent-rgb), 0.02) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		border-color: rgba(255, 255, 255, 0.3);
+		border-color: rgba(var(--color-white-rgb), var(--opacity-medium-high));
 		box-shadow:
-			0 12px 40px 0 rgba(31, 38, 135, 0.2),
-			inset 0 1px 0 rgba(255, 255, 255, 0.3);
+			0 var(--spacing-3) var(--spacing-10) 0 rgba(var(--color-primary-rgb), var(--opacity-medium)),
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium-high));
 	}
 
 	.cookie-content {
@@ -123,27 +123,27 @@
 	:global(html.dark) .cookie-banner {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.06) 0%,
-			rgba(var(--color-highlight-rgb), 0.04) 50%,
-			rgba(var(--color-accent-rgb), 0.02) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		border: 1px solid rgba(255, 255, 255, 0.1);
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-10));
 		box-shadow:
-			0 8px 32px 0 rgba(0, 0, 0, 0.3),
-			inset 0 1px 0 rgba(255, 255, 255, 0.1);
+			0 var(--spacing-2) var(--spacing-8) 0 rgba(var(--color-black-rgb), var(--opacity-medium-high)),
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-10));
 	}
 
 	:global(html.dark) .cookie-banner:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-highlight-rgb), 0.06) 50%,
-			rgba(var(--color-accent-rgb), 0.04) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		border-color: rgba(255, 255, 255, 0.15);
+		border-color: rgba(var(--color-white-rgb), var(--opacity-20));
 		box-shadow:
-			0 12px 40px 0 rgba(0, 0, 0, 0.4),
-			inset 0 1px 0 rgba(255, 255, 255, 0.15);
+			0 var(--spacing-3) var(--spacing-10) 0 rgba(var(--color-black-rgb), var(--opacity-high)),
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-20));
 	}
 
 	/* Slide up animation */
@@ -201,13 +201,13 @@
 	}
 
 	/* Fallback for browsers without backdrop-filter support */
-	@supports not (backdrop-filter: blur(10px)) {
+	@supports not (backdrop-filter: blur(var(--glass-blur-amount))) {
 		.cookie-banner {
-			background: rgba(255, 255, 255, 0.95);
+			background: rgba(var(--color-white-rgb), var(--opacity-95));
 		}
 
 		:global(html.dark) .cookie-banner {
-			background: rgba(0, 0, 0, 0.9);
+			background: rgba(var(--color-black-rgb), var(--opacity-90));
 		}
 	}
 </style>

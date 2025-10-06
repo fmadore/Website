@@ -106,22 +106,22 @@
 		overflow: hidden;
 		height: 100%; /* Make cards in a grid have the same height */
 		border-radius: var(--border-radius-lg);
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all var(--transition-duration-200) var(--anim-ease-base);
 		position: relative;
 
 		/* Glassmorphism styling consistent with the rest of the website */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.03) 0%,
-			rgba(var(--color-highlight-rgb), 0.02) 50%,
-			rgba(var(--color-accent-rgb), 0.01) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
-		border: 1px solid rgba(255, 255, 255, 0.2);
+		backdrop-filter: blur(var(--glass-blur-amount));
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
 		box-shadow:
-			0 8px 32px 0 rgba(31, 38, 135, 0.37),
-			inset 0 1px 0 rgba(255, 255, 255, 0.3);
+			0 var(--spacing-2) var(--spacing-8) 0 rgba(var(--color-primary-rgb), var(--opacity-medium)),
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium-high));
 	}
 
 	.card:hover {
@@ -129,14 +129,14 @@
 		/* Enhanced hover effect with stronger gradient */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.05) 0%,
-			rgba(var(--color-highlight-rgb), 0.03) 50%,
-			rgba(var(--color-accent-rgb), 0.02) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		border-color: rgba(255, 255, 255, 0.3);
+		border-color: rgba(var(--color-white-rgb), var(--opacity-medium-high));
 		box-shadow:
-			0 12px 40px 0 rgba(31, 38, 135, 0.4),
-			inset 0 1px 0 rgba(255, 255, 255, 0.4);
+			0 var(--spacing-3) var(--spacing-10) 0 rgba(var(--color-primary-rgb), var(--opacity-medium-high)),
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-high));
 	}
 
 	.card-image {
@@ -150,7 +150,7 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		transition: transform 0.3s ease;
+		transition: transform var(--transition-duration-200) var(--anim-ease-base);
 	}
 
 	.card:hover .card-image img {
@@ -165,11 +165,11 @@
 	}
 
 	.card-title {
-		font-size: var(--font-size-xl); /* Use variable */
+		font-size: var(--font-size-xl);
 		margin-top: 0;
-		margin-bottom: var(--spacing-1); /* Adjust spacing */
-		line-height: 1.3;
-		font-weight: 600;
+		margin-bottom: var(--spacing-1);
+		line-height: var(--line-height-tight);
+		font-weight: var(--font-weight-semibold);
 		color: var(--color-primary);
 	}
 
@@ -183,22 +183,22 @@
 	}
 
 	.card-subtitle {
-		font-size: var(--font-size-sm); /* Use variable */
-		color: var(--color-text-light, #666);
-		margin-bottom: var(--spacing-3); /* Use variable */
-		line-height: 1.5;
+		font-size: var(--font-size-sm);
+		color: var(--color-text-light);
+		margin-bottom: var(--spacing-3);
+		line-height: var(--line-height-normal);
 	}
 
 	.card-description {
-		margin-bottom: var(--spacing-4); /* Use variable */
-		flex-grow: 1; /* Pushes action/details to bottom */
-		line-height: 1.6;
+		margin-bottom: var(--spacing-4);
+		flex-grow: 1;
+		line-height: var(--line-height-relaxed);
 	}
 
 	.card-details {
-		font-size: 0.9rem; /* Consider variable */
-		margin-bottom: var(--spacing-3); /* Use variable */
-		line-height: 1.5;
+		font-size: var(--font-size-sm);
+		margin-bottom: var(--spacing-3);
+		line-height: var(--line-height-normal);
 	}
 	/* Styling for elements within card-details slot can be added here or passed via classes */
 
@@ -213,8 +213,8 @@
 		display: inline-block;
 		color: var(--color-primary);
 		text-decoration: none;
-		font-weight: 500;
-		transition: color 0.2s ease;
+		font-weight: var(--font-weight-medium);
+		transition: color var(--transition-duration-200) var(--anim-ease-base);
 	}
 
 	.card-action :global(a:hover) {
@@ -226,37 +226,37 @@
 	:global(html.dark) .card {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.06) 0%,
-			rgba(var(--color-highlight-rgb), 0.04) 50%,
-			rgba(var(--color-accent-rgb), 0.02) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		border: 1px solid rgba(255, 255, 255, 0.1);
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-10));
 		box-shadow:
-			0 8px 32px 0 rgba(0, 0, 0, 0.5),
-			inset 0 1px 0 rgba(255, 255, 255, 0.1);
+			0 var(--spacing-2) var(--spacing-8) 0 rgba(var(--color-black-rgb), var(--opacity-50)),
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-10));
 	}
 
 	:global(html.dark) .card:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-highlight-rgb), 0.06) 50%,
-			rgba(var(--color-accent-rgb), 0.04) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		border-color: rgba(255, 255, 255, 0.15);
+		border-color: rgba(var(--color-white-rgb), var(--opacity-20));
 		box-shadow:
-			0 12px 40px 0 rgba(0, 0, 0, 0.6),
-			inset 0 1px 0 rgba(255, 255, 255, 0.15);
+			0 var(--spacing-3) var(--spacing-10) 0 rgba(var(--color-black-rgb), var(--opacity-60)),
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-20));
 	}
 
 	/* Fallback for browsers that don't support backdrop-filter */
-	@supports not (backdrop-filter: blur(10px)) {
+	@supports not (backdrop-filter: blur(var(--glass-blur-amount))) {
 		.card {
-			background: rgba(255, 255, 255, 0.9);
+			background: rgba(var(--color-white-rgb), var(--opacity-90));
 		}
 
 		:global(html.dark) .card {
-			background: rgba(0, 0, 0, 0.8);
+			background: rgba(var(--color-black-rgb), var(--opacity-80));
 		}
 	}
 
