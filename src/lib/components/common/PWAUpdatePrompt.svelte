@@ -125,19 +125,17 @@
 <style>
 	.pwa-update-prompt {
 		position: fixed;
-		bottom: 1rem;
-		left: 1rem;
-		right: 1rem;
+		bottom: var(--space-md);
+		left: var(--space-md);
+		right: var(--space-md);
 		max-width: 400px;
 		margin: 0 auto;
-		background: white;
-		border-radius: 12px;
-		box-shadow:
-			0 10px 25px rgba(0, 0, 0, 0.1),
-			0 4px 6px rgba(0, 0, 0, 0.05);
-		border: 1px solid rgba(0, 0, 0, 0.1);
-		z-index: 1000;
-		animation: slideUp 0.3s ease-out;
+		background: var(--color-white);
+		border-radius: var(--border-radius-xl);
+		box-shadow: var(--shadow-xl);
+		border: var(--border-width-thin) solid rgba(var(--color-black-rgb), var(--opacity-10));
+		z-index: var(--z-modal);
+		animation: slideUp var(--anim-duration-base) var(--anim-ease-out);
 	}
 
 	@keyframes slideUp {
@@ -152,14 +150,14 @@
 	}
 
 	.update-content {
-		padding: 1.5rem;
+		padding: var(--space-lg);
 		display: flex;
 		align-items: center;
-		gap: 1rem;
+		gap: var(--space-md);
 	}
 
 	.update-icon {
-		font-size: 2rem;
+		font-size: var(--font-size-3xl);
 		animation: rotate 2s linear infinite;
 	}
 
@@ -173,110 +171,110 @@
 	}
 
 	.update-text h3 {
-		margin: 0 0 0.5rem 0;
-		font-size: 1.1rem;
-		font-weight: 600;
-		color: #1f2937;
+		margin: 0 0 var(--space-xs) 0;
+		font-size: var(--font-size-lg);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text-emphasis);
 	}
 
 	.update-text p {
 		margin: 0;
-		font-size: 0.9rem;
-		color: #6b7280;
-		line-height: 1.4;
+		font-size: var(--font-size-sm);
+		color: var(--color-text-muted);
+		line-height: var(--line-height-relaxed);
 	}
 
 	.update-actions {
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
+		gap: var(--space-xs);
 		margin-left: auto;
 	}
 
 	.update-btn {
-		padding: 0.5rem 1rem;
-		border-radius: 8px;
-		font-size: 0.9rem;
-		font-weight: 500;
+		padding: var(--space-xs) var(--space-md);
+		border-radius: var(--border-radius-md);
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-medium);
 		cursor: pointer;
-		transition: all 0.2s ease;
+		transition: all var(--anim-duration-fast) var(--anim-ease-base);
 		border: none;
 		min-width: 80px;
 	}
 
 	.update-btn.primary {
-		background: #3b82f6;
-		color: white;
+		background: var(--color-primary);
+		color: var(--color-white);
 	}
 
 	.update-btn.primary:hover {
-		background: #2563eb;
-		transform: translateY(-1px);
+		background: var(--color-primary-dark);
+		transform: var(--transform-lift-sm);
 	}
 
 	.update-btn.secondary {
-		background: #f3f4f6;
-		color: #6b7280;
+		background: var(--color-surface);
+		color: var(--color-text-muted);
 	}
 
 	.update-btn.secondary:hover {
-		background: #e5e7eb;
-		color: #4b5563;
+		background: var(--color-surface-alt);
+		color: var(--color-text-light);
 	}
 
 	/* Dark mode support */
 	@media (prefers-color-scheme: dark) {
 		.pwa-update-prompt {
-			background: #1f2937;
-			border-color: #374151;
+			background: var(--color-dark-surface);
+			border-color: var(--color-dark-border);
 		}
 
 		.update-text h3 {
-			color: #f9fafb;
+			color: var(--color-dark-text-emphasis);
 		}
 
 		.update-text p {
-			color: #d1d5db;
+			color: var(--color-dark-text-muted);
 		}
 
 		.update-btn.secondary {
-			background: #374151;
-			color: #d1d5db;
+			background: var(--color-dark-surface-alt);
+			color: var(--color-dark-text-muted);
 		}
 
 		.update-btn.secondary:hover {
-			background: #4b5563;
-			color: #f3f4f6;
+			background: var(--color-dark-surface-elevated);
+			color: var(--color-dark-text);
 		}
 	}
 
 	/* Mobile responsive */
-	@media (max-width: 640px) {
+	@media (max-width: var(--breakpoint-sm)) {
 		.pwa-update-prompt {
-			left: 0.5rem;
-			right: 0.5rem;
+			left: var(--space-xs);
+			right: var(--space-xs);
 		}
 
 		.update-content {
-			padding: 1rem;
-			gap: 0.75rem;
+			padding: var(--space-md);
+			gap: var(--space-sm);
 		}
 
 		.update-icon {
-			font-size: 1.5rem;
+			font-size: var(--font-size-2xl);
 		}
 
 		.update-text h3 {
-			font-size: 1rem;
+			font-size: var(--font-size-base);
 		}
 
 		.update-text p {
-			font-size: 0.85rem;
+			font-size: var(--font-size-xs);
 		}
 
 		.update-btn {
-			font-size: 0.85rem;
-			padding: 0.4rem 0.8rem;
+			font-size: var(--font-size-xs);
+			padding: var(--space-2xs) var(--space-sm);
 		}
 	}
 </style>

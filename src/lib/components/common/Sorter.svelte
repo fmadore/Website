@@ -125,7 +125,7 @@
 		background-image: linear-gradient(
 			135deg,
 			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-highlight-rgb), 0.02) 100%
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
 		);
 	}
 
