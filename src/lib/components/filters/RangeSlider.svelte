@@ -286,8 +286,8 @@
 
 		/* Glassmorphism styling matching filter sidebar - using global values */
 		background: rgba(var(--color-surface-rgb), var(--opacity-medium));
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
+		backdrop-filter: blur(var(--glass-blur-amount));
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		border: var(--border-width-thin) solid
 			rgba(var(--color-surface-rgb), var(--opacity-medium-high));
 		box-shadow: var(--shadow-md);
@@ -320,7 +320,7 @@
 		position: absolute;
 		top: 0;
 		height: 100%;
-		background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-highlight) 100%);
+		background: var(--gradient-accent-highlight);
 		border-radius: var(--border-radius-sm);
 		pointer-events: none;
 		opacity: var(--opacity-high);
@@ -332,7 +332,7 @@
 		top: 50%;
 		width: 18px;
 		height: 18px;
-		background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-highlight) 100%);
+		background: var(--gradient-accent-highlight);
 		border: var(--border-width-medium) solid var(--color-white);
 		border-radius: 50%;
 		transform: translate(-50%, -50%);

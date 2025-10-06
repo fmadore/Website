@@ -89,11 +89,10 @@
 
 	<!-- Collapsible Filter Sections Wrapper (Mobile) -->
 	{#if isExpandedMobile}
-		\t\t
 		<div class="filter-sections-wrapper" transition:slide={{ duration: 200 }}>
-			\n\t\t\t{#each enhancedSections as section (section.title)}\n\t\t\t\t
+			{#each enhancedSections as section (section.title)}
 				<div class="filter-section">
-					\n\t\t\t\t\t{#if section.type === 'checkbox'}
+					{#if section.type === 'checkbox'}
 						<FilterSectionCheckbox
 							title={section.title}
 							items={section.items}

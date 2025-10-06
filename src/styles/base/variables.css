@@ -455,6 +455,10 @@
 	--glass-blur-amount: 10px;
 	--glass-blur-fallback: 12px;
 
+	/* Gradient definitions for reusable patterns */
+	--gradient-accent-highlight: linear-gradient(135deg, var(--color-accent) 0%, var(--color-highlight) 100%);
+	--gradient-highlight-accent: linear-gradient(135deg, var(--color-highlight) 0%, var(--color-accent) 100%);
+
 	/* ===== COMPONENT-SPECIFIC VARIABLES ===== */
 	/* Note: Consider moving these to respective component files for better encapsulation */
 

@@ -140,22 +140,14 @@
 
 	/* Enhanced styles for active state using design system variables */
 	:global(.filter-chip.active) {
-		background: linear-gradient(
-			135deg,
-			var(--color-accent) 0%,
-			var(--color-highlight) 100%
-		) !important;
+		background: var(--gradient-accent-highlight) !important;
 		color: var(--color-white) !important;
 		border-color: var(--color-accent) !important;
 		box-shadow: var(--shadow-md) !important;
 	}
 
 	:global(.filter-chip.active:hover) {
-		background: linear-gradient(
-			135deg,
-			var(--color-highlight) 0%,
-			var(--color-accent) 100%
-		) !important;
+		background: var(--gradient-highlight-accent) !important;
 		transform: var(--transform-lift-sm) !important;
 		box-shadow: var(--shadow-lg) !important;
 	}
