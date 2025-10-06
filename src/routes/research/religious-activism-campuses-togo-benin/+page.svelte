@@ -98,8 +98,7 @@
 			/>
 
 			<ContentBody variant="default" glassEffect="glass-card">
-				{#snippet children()}
-					<p>
+				<p>
 						This project uncovers the neglected history of Christian and Muslim student associations
 						at the Université de Lomé (Togo) and the Université d'Abomey-Calavi (Benin), and
 						examines their resilience and adaptability over five decades. While much of the
@@ -128,18 +127,15 @@
 						values that complement the secular academic curriculum.
 					</p>
 
-					<p>
-						By analysing the interplay between religion, politics and education, this book provides
-						new insights into the evolving role of faith in public universities and broader societal
-						transformations in West Africa. It explores the implications of growing religiosity for
-						these public universities as secular institutions, and contributes to our understanding
-						of how religious organisations have coexisted with, and sometimes challenged,
-						traditional student associations since the 1970s.
-					</p>
-				{/snippet}
-			</ContentBody>
-
-			<MediaPlayer
+				<p>
+					By analysing the interplay between religion, politics and education, this book provides
+					new insights into the evolving role of faith in public universities and broader societal
+					transformations in West Africa. It explores the implications of growing religiosity for
+					these public universities as secular institutions, and contributes to our understanding
+					of how religious organisations have coexisted with, and sometimes challenged,
+					traditional student associations since the 1970s.
+				</p>
+			</ContentBody>			<MediaPlayer
 				src="{base}/notebooklm/religious_activism_campus.mp3"
 				type="audio"
 				title="Google NotebookLM Podcast Discussion"

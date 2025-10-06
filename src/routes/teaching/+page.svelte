@@ -97,8 +97,6 @@
 							</div>
 						{/snippet}
 
-						{#snippet children()}{item.description}{/snippet}
-
 						{#snippet action()}
 							<div>
 								{#if item.syllabusUrl}

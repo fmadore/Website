@@ -250,13 +250,6 @@
 		{ label: 'Countries', value: publication.country ?? [] }
 	]);
 
-	// Define static links within the component if they don't depend on `data`
-	const staticLinks = {
-		'Mining the Islam West Africa Collection': `${base}/research/mining-the-islam-west-africa-collection`,
-		'Muslim Minorities in Southern Cities (Benin & Togo)': `${base}/research/muslim-minorities-southern-cities-benin-togo`,
-		'Religious Activism on Campuses (Togo & Benin)': `${base}/research/religious-activism-campuses-togo-benin`
-	};
-
 	function downloadBibtex() {
 		if (!publication) return;
 		const bibtexString = generateBibtex(publication);
@@ -335,7 +328,7 @@
 				<section class="table-of-contents-section">
 					<h2 class="toc-title">Table of Contents</h2>
 					<ol class="toc-list">
-						{#each publication.tableOfContents as item, index}
+						{#each publication.tableOfContents as item, index (index)}
 							<li class="toc-item">
 								<span class="toc-number">{index + 1}.</span>
 								<span class="toc-content">{item}</span>

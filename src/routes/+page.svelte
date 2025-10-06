@@ -3,7 +3,6 @@
 	import ProfileBanner from '$lib/components/common/ProfileBanner.svelte';
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import SEO from '$lib/SEO.svelte';
-	import { activitiesByYear } from '$lib/data/activities';
 	import { base } from '$app/paths';
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
 	import { browser } from '$app/environment';

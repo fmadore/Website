@@ -116,8 +116,7 @@
 			/>
 
 			<ContentBody variant="default" glassEffect="glass-card">
-				{#snippet children()}
-					<p>
+				<p>
 						This research project is situated in the context of the increasing visibility of Islam
 						in the Ivorian and Burkinabe public sphere, particularly since the 1990s, and the
 						growing engagement of youth and women within this religious dynamic. The project
@@ -174,8 +173,7 @@
 						strategies of youth and women. It highlights the complexity of religious dynamics, the
 						diversity of actors and discourses, and the socio-political stakes involved in the
 						assertion of Islam in the Ivorian and Burkinabe contexts.
-					</p>
-				{/snippet}
+				</p>
 			</ContentBody>
 		</div>
 

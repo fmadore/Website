@@ -17,11 +17,6 @@
 	type CitationYearData = { year: number; count: number };
 	type CitedAuthorData = { author: string; count: number };
 	type LanguageData = { language: string; count: number };
-	type PublicationsPerYearStackedData = {
-		year: number;
-		total: number;
-		[type: string]: number; // Counts for each publication type
-	};
 
 	// Calculate data reactively using $derived - optimized for performance
 	const citationsPerYearData = $derived(
@@ -412,7 +407,7 @@
 			{/if}
 		</h2>
 		{#if citedAuthorsData.length > 0}
-			{#snippet authorChart(authorsToShow: CitedAuthorData[], pageIndex: number)}
+			{#snippet authorChart(authorsToShow: CitedAuthorData[])}
 				<div
 					class="chart-wrapper"
 					style="height: {Math.max(350, authorsToShow.length * 35 + 70)}px;"
@@ -434,7 +429,7 @@
 			{@const endIndex = Math.min(startIndex + itemsPerPage, citedAuthorsData.length)}
 			{@const currentAuthors = citedAuthorsData.slice(startIndex, endIndex)}
 
-			{@render authorChart(currentAuthors, currentPage)}
+			{@render authorChart(currentAuthors)}
 
 			{#if totalPages > 1}
 				<div
