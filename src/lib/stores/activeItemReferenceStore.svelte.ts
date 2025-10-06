@@ -9,41 +9,22 @@
 let activeId = $state<string | null>(null);
 
 /**
- * Store-like interface for the active reference ID
- * Provides backward compatibility with the writable store API
- */
-export const activeReferenceId = {
-	// Subscribe function for reactive access (Svelte 4 compatibility)
-	subscribe(fn: (value: string | null) => void) {
-		// Use $effect to watch for changes and call the subscriber
-		$effect(() => {
-			fn(activeId);
-		});
-		// Return unsubscribe function
-		return () => {};
-	},
-
-	// Set the active reference ID
-	set(value: string | null) {
-		activeId = value;
-	},
-
-	// Update function for compatibility
-	update(fn: (value: string | null) => string | null) {
-		activeId = fn(activeId);
-	}
-};
-
-/**
- * Direct getter function for components using Svelte 5 patterns
+ * Get the active reference ID (reactive in component context)
  */
 export function getActiveReferenceId() {
 	return activeId;
 }
 
 /**
- * Direct setter function for components using Svelte 5 patterns
+ * Set the active reference ID
  */
 export function setActiveReferenceId(value: string | null) {
 	activeId = value;
+}
+
+/**
+ * Update the active reference ID using a function
+ */
+export function updateActiveReferenceId(fn: (value: string | null) => string | null) {
+	activeId = fn(activeId);
 }

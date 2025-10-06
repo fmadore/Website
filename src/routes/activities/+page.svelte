@@ -1,17 +1,21 @@
 <script lang="ts">
-	import { activities, type Activity } from '$lib/stores/activities.svelte';
+	import { getActivities } from '$lib/stores/activities.svelte';
+	import type { Activity } from '$lib/types';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import SEO from '$lib/SEO.svelte';
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
 
+	// Get activities reactively
+	let activities = $derived(getActivities());
+
 	// Reactive activities array - using $derived to reactively get the store value
-	let activityList = $derived($activities);
+	let activityList = $derived(activities);
 
 	// Years array - derived from activities and sorted in descending order
 	let years = $derived(
-		[...new Set($activities.map((activity: Activity) => activity.year))].sort(
+		[...new Set(activities.map((activity: Activity) => activity.year))].sort(
 			(a: number, b: number) => b - a
 		)
 	);

@@ -18,7 +18,7 @@
 
 	import ReferenceLink from './ReferenceLink.svelte';
 	import ReferencePreviewCard from './ReferencePreviewCard.svelte';
-	import { activeReferenceId } from '$lib/stores/activeItemReferenceStore.svelte';
+	import { getActiveReferenceId, setActiveReferenceId } from '$lib/stores/activeItemReferenceStore.svelte';
 
 	/* ───────────────────────────── Props ─────────────────────────────── */
 	/** ID of the referenced item. */
@@ -76,7 +76,7 @@
 	function togglePreview(force?: boolean) {
 		showPreview = force ?? !showPreview;
 		viaClick = showPreview;
-		activeReferenceId.set(showPreview ? id : null);
+		setActiveReferenceId(showPreview ? id : null);
 	}
 
 	function handleOutsideClick(event: MouseEvent) {
@@ -144,7 +144,7 @@
 
 	/* Close this preview if another one was opened via click */
 	$effect(() => {
-		if ($activeReferenceId !== id && viaClick) {
+		if (getActiveReferenceId() !== id && viaClick) {
 			togglePreview(false);
 		}
 	});

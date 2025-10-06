@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { activities } from '../../stores/activities.svelte';
+	import { getActivities } from '../../stores/activities.svelte';
 	import type { Activity } from '$lib/types';
 	import { base } from '$app/paths';
 	import PanelBase from './PanelBase.svelte';
@@ -17,12 +17,15 @@
 		animationDelay?: number;
 	} = $props();
 
+	// Get activities reactively
+	let activities = $derived(getActivities());
+
 	// Local activities array - derived from store and limited
-	let activityList = $derived($activities.slice(0, limit));
+	let activityList = $derived(activities.slice(0, limit));
 
 	// Unique years for the year filter
 	let years = $derived(
-		[...new Set($activities.map((activity: Activity) => activity.year))].sort(
+		[...new Set(activities.map((activity: Activity) => activity.year))].sort(
 			(a: number, b: number) => b - a
 		)
 	);

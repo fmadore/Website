@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { activities, type Activity } from '$lib/stores/activities.svelte';
+	import { getActivities } from '$lib/stores/activities.svelte';
+	import type { Activity } from '$lib/types';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import SEO from '$lib/SEO.svelte';
@@ -11,14 +12,17 @@
 	// Get the year parameter from the URL - reactive to route changes
 	let year = $derived(parseInt($page.params.year || ''));
 
+	// Get activities reactively
+	let activities = $derived(getActivities());
+
 	// Filter activities by year - using $derived for reactive filtering
 	let filteredActivities = $derived(
-		$activities.filter((activity: Activity) => activity.year === year)
+		activities.filter((activity: Activity) => activity.year === year)
 	);
 
 	// All years for display - using $derived for consistent sorting
 	let allYears = $derived(
-		[...new Set($activities.map((activity: Activity) => activity.year))].sort(
+		[...new Set(activities.map((activity: Activity) => activity.year))].sort(
 			(a: number, b: number) => b - a
 		)
 	);
