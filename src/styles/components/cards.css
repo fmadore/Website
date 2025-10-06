@@ -1,4 +1,30 @@
-npm/* Card styles */
+/* Card styles */
+
+/* Card-specific CSS variables - scoped to this component */
+.card,
+:root {
+	/* Glass effect opacity values */
+	--card-glass-opacity-light: 0.08;
+	--card-glass-opacity-light-hover: 0.12;
+	--card-glass-border-light: 0.15;
+	--card-glass-border-light-hover: 0.25;
+	--card-glass-inset-light: 0.25;
+	--card-glass-inset-light-hover: 0.35;
+	--card-glass-opacity-dark: 0.15;
+	--card-glass-opacity-dark-hover: 0.25;
+	--card-glass-border-dark: 0.08;
+	--card-glass-border-dark-hover: 0.12;
+	--card-glass-inset-dark: 0.08;
+	--card-glass-inset-dark-hover: 0.12;
+	
+	/* Shadow and transform values */
+	--card-shadow-color: 30, 58, 95;
+	--card-shadow-opacity: 0.3;
+	--card-shadow-opacity-hover: 0.35;
+	--card-transform-hover: translateY(-2px);
+	--card-link-transform: translateX(3px);
+	--card-height-image: 14rem;
+}
 
 .card {
 	background: rgba(var(--color-background-rgb, 255, 255, 255), var(--card-glass-opacity-light));
@@ -209,6 +235,13 @@ npm/* Card styles */
 }
 
 /* Dark mode glassmorphism overrides */
+:global(html.dark) .card,
+:global(html.dark) :root {
+	--card-shadow-color: 15, 23, 42;
+	--card-shadow-opacity: 0.5;
+	--card-shadow-opacity-hover: 0.6;
+}
+
 :global(html.dark) .card {
 	background: rgba(var(--color-text-rgb, 0, 0, 0), var(--card-glass-opacity-dark));
 	border: var(--border-width-thin) solid

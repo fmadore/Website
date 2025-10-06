@@ -8,16 +8,19 @@
 	--sys-color-neutral-100: #f1f5f9;
 	--sys-color-neutral-200: #e2e8f0;
 	--sys-color-neutral-300: #cbd5e1;
-	--sys-color-neutral-500: #94a3b8;
-	--sys-color-neutral-600: #64748b;
-	--sys-color-neutral-700: #475569;
+	--sys-color-neutral-400: #94a3b8;
+	--sys-color-neutral-500: #475569;
+	--sys-color-neutral-600: #475569;
+	--sys-color-neutral-700: #334155;
 	--sys-color-neutral-800: #1e293b;
 	--sys-color-neutral-900: #0f172a;
 
 	--sys-color-blue-900: #0f1f33;
 	--sys-color-blue-800: #18324c;
 	--sys-color-blue-700: #1e3a5f;
+	--sys-color-blue-600: #2556a0;
 	--sys-color-blue-500: #2d4d7a;
+	--sys-color-blue-400: #3d5f8c;
 	--sys-color-blue-300: #4f6c97;
 
 	--sys-color-teal-500: #0891b2;
@@ -28,18 +31,15 @@
 	--sys-color-red-500: #dc2626;
 	--sys-color-red-700: #991b1b;
 
-	--sys-color-white: #ffffff;
-	--sys-color-black: #000000;
-	--sys-color-transparent: transparent;
-
 	/* Semantic color tokens */
+	/* Note: Using direct hex values for white/black to reduce indirection */
 	--color-primary: var(--sys-color-blue-700);
 	--color-primary-rgb: 30, 58, 95;
 	--color-primary-dark: var(--sys-color-blue-900);
 	--color-primary-light: var(--sys-color-blue-500);
 
 	--color-secondary: var(--sys-color-neutral-600);
-	--color-secondary-rgb: 100, 116, 139;
+	--color-secondary-rgb: 71, 85, 105;
 
 	--color-accent: var(--sys-color-teal-500);
 	--color-accent-rgb: 8, 145, 178;
@@ -60,7 +60,7 @@
 	--color-text-light: var(--sys-color-neutral-600);
 	--color-text-muted: var(--sys-color-neutral-500);
 	--color-text-emphasis: var(--sys-color-neutral-900);
-	--color-text-soft: var(--sys-color-neutral-700);
+	--color-text-soft: var(--sys-color-neutral-600);
 
 	--color-surface: var(--sys-color-neutral-50);
 	--color-surface-rgb: 248, 250, 252;
@@ -78,11 +78,11 @@
 	--color-quote: var(--sys-color-neutral-700);
 	--color-note: var(--sys-color-neutral-600);
 
-	--color-white: var(--sys-color-white);
+	--color-white: #ffffff;
 	--color-white-rgb: 255, 255, 255;
-	--color-black: var(--sys-color-black);
+	--color-black: #000000;
 	--color-black-rgb: 0, 0, 0;
-	--color-transparent: var(--sys-color-transparent);
+	--color-transparent: transparent;
 
 	/* Component color layers */
 	--color-background-alt: var(--color-surface);
@@ -306,8 +306,7 @@
 	--border-width-thick: 4px;
 
 	/* ===== ANIMATION TIMING ===== */
-	/* Refined animation values */
-
+	/* Primary animation durations - use these for consistency */
 	--anim-duration-instant: 100ms;
 	--anim-duration-fast: 200ms;
 	--anim-duration-base: 300ms;
@@ -375,13 +374,14 @@
 	--transform-lift-md: translateY(-2px);
 	--transform-lift-lg: translateY(-0.3125rem); /* 5px */
 
-	/* Transition duration variables for utilities */
+	/* Transition duration aliases for utility classes */
+	/* Note: Prefer using --anim-duration-* for component styles */
 	--transition-duration-75: 75ms;
-	--transition-duration-100: 100ms;
+	--transition-duration-100: var(--anim-duration-instant);
 	--transition-duration-150: 150ms;
-	--transition-duration-200: 200ms;
-	--transition-duration-300: 300ms;
-	--transition-duration-500: 500ms;
+	--transition-duration-200: var(--anim-duration-fast);
+	--transition-duration-300: var(--anim-duration-base);
+	--transition-duration-500: var(--anim-duration-slow);
 
 	/* Timing function variables for utilities */
 	--transition-ease-linear: linear;
@@ -448,27 +448,10 @@
 	--glass-blur-amount: 10px;
 	--glass-blur-fallback: 12px;
 
-	/* Card-specific variables */
-	--card-height-image: 14rem;
-	--card-glass-opacity-light: 0.08;
-	--card-glass-opacity-light-hover: 0.12;
-	--card-glass-border-light: 0.15;
-	--card-glass-border-light-hover: 0.25;
-	--card-glass-inset-light: 0.25;
-	--card-glass-inset-light-hover: 0.35;
-	--card-glass-opacity-dark: 0.15;
-	--card-glass-opacity-dark-hover: 0.25;
-	--card-glass-border-dark: 0.08;
-	--card-glass-border-dark-hover: 0.12;
-	--card-glass-inset-dark: 0.08;
-	--card-glass-inset-dark-hover: 0.12;
-	--card-shadow-color: 30, 58, 95;
-	--card-shadow-opacity: 0.3;
-	--card-shadow-opacity-hover: 0.35;
-	--card-transform-hover: translateY(-2px);
-	--card-link-transform: translateX(3px);
-
-	/* Iframe-specific variables */
+	/* ===== COMPONENT-SPECIFIC VARIABLES ===== */
+	/* Note: Consider moving these to respective component files for better encapsulation */
+	
+	/* Iframe variables */
 	--iframe-height-xs: 18.75rem; /* 300px */
 	--iframe-height-sm: 25rem; /* 400px */
 	--iframe-height-default: 37.5rem; /* 600px */
@@ -584,11 +567,7 @@ html.dark {
 	--shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
 	--shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
 
-	/* Card shadow color updated for dark mode */
-	--card-shadow-color: 15, 23, 42;
-	--card-shadow-opacity: 0.5;
-	--card-shadow-opacity-hover: 0.6;
-}
+	/* Legacy opacity mappings for compatibility */
 
 
 
