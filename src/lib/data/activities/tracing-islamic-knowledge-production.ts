@@ -1,5 +1,5 @@
-import type { Activity } from '\$lib/types';
-import { formatDisplayDate } from '\$lib/utils/date-formatter';
+import type { Activity } from '$lib/types';
+import { formatDisplayDate } from '$lib/utils/date-formatter';
 import { base } from '$app/paths'; // Import base path
 
 export const activity: Activity = {

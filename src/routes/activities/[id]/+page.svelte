@@ -252,17 +252,15 @@
 			<!-- Main content card -->
 			<div use:scrollAnimate={{ delay: DELAY_STEP * 5, animationClass: 'fade-in-up' }}>
 				<ContentBody variant="default" glassEffect="glass-card" additionalClasses="mt-6">
-					{#snippet children()}
-						<!-- Render parsed content segments -->
-						{#each contentSegments as segment}
-							{#if segment.type === 'html'}
-								<!-- Safe: content is from trusted activity data files in src/lib/data/activities/ -->
-								{@html segment.value}
-							{:else if segment.type === 'ItemReference' && segment.id}
-								<ItemReference id={segment.id} />
-							{/if}
-						{/each}
-					{/snippet}
+					<!-- Render parsed content segments -->
+					{#each contentSegments as segment, segmentIndex (segmentIndex)}
+						{#if segment.type === 'html'}
+							<!-- Safe: content is from trusted activity data files in src/lib/data/activities/ -->
+							{@html segment.value}
+						{:else if segment.type === 'ItemReference' && segment.id}
+							<ItemReference id={segment.id} />
+						{/if}
+					{/each}
 				</ContentBody>
 			</div>
 

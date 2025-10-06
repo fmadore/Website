@@ -22,12 +22,10 @@
 		</div>
 	{/snippet}
 
-	<!-- Default slot for description -->
-	{#snippet children()}
-		<p class="activity-description">
-			{activity.description}
-		</p>
-	{/snippet}
+	<!-- Default content for description -->
+	<p class="activity-description">
+		{activity.description}
+	</p>
 
 	<!-- Details slot for tags -->
 	{#snippet details()}

@@ -312,7 +312,7 @@
 
 					<!-- Subtle floating particles -->
 					<div class="particles">
-						{#each Array(6) as _, i}
+						{#each Array(6) as _, i (i)}
 							<div
 								class="particle"
 								style="

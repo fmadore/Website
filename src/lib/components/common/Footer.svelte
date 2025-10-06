@@ -131,7 +131,7 @@
 			class:animate={isVisible}
 			aria-label="Social and academic links"
 		>
-			{#each socialGroups as group, groupIndex}
+			{#each socialGroups as group, groupIndex (group.title)}
 				<section
 					class="footer-link-group glass-light"
 					style="animation-delay: {groupIndex * 100}ms"
@@ -144,7 +144,7 @@
 					</h3>
 					<!-- Use proper semantic list structure -->
 					<ul class="footer-links-grid">
-						{#each group.links as link, linkIndex}
+						{#each group.links as link, linkIndex (link.url)}
 							<li
 								class="footer-link-item"
 								style="animation-delay: {(groupIndex * group.links.length + linkIndex) * 50}ms"

@@ -1,5 +1,5 @@
-import type { Activity } from '\$lib/types';
-import { formatDisplayDate } from '\$lib/utils/date-formatter';
+import type { Activity } from '$lib/types';
+import { formatDisplayDate } from '$lib/utils/date-formatter';
 
 export const activity: Activity = {
 	id: 'repenser-categorisation-religieuse-benin',
