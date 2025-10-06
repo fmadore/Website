@@ -1,17 +1,32 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
+	import { browser, dev } from '$app/environment';
 	import { onMount } from 'svelte';
 
 	let showUpdatePrompt = $state(false);
 	let updateAvailable = $state(false);
 	let registration: ServiceWorkerRegistration | null = null;
 
-	// Register service worker and handle updates
+	// Register service worker and handle updates (only in production)
 	$effect(() => {
 		if (browser) {
-			registerServiceWorker();
+			if (!dev) {
+				registerServiceWorker();
+			} else {
+				// In dev mode, unregister any existing service workers
+				unregisterServiceWorkers();
+			}
 		}
 	});
+
+	async function unregisterServiceWorkers() {
+		if ('serviceWorker' in navigator) {
+			const registrations = await navigator.serviceWorker.getRegistrations();
+			for (const registration of registrations) {
+				await registration.unregister();
+				console.log('[PWA] Service Worker unregistered (dev mode)');
+			}
+		}
+	}
 
 	async function registerServiceWorker() {
 		if ('serviceWorker' in navigator) {
@@ -65,9 +80,9 @@
 		showUpdatePrompt = false;
 	}
 
-	// Listen for skip waiting message from service worker
+	// Listen for skip waiting message from service worker (only in production)
 	$effect(() => {
-		if (browser && 'serviceWorker' in navigator) {
+		if (browser && !dev && 'serviceWorker' in navigator) {
 			navigator.serviceWorker.addEventListener('message', (event) => {
 				if (event.data?.type === 'SKIP_WAITING') {
 					updateApp();

@@ -38,45 +38,49 @@ const STALE_WHILE_REVALIDATE_ROUTES = [
     '.json'
 ];
 
-// Install event: Cache essential assets and enable navigation preload
+// Install event: Cache essential assets
 sw.addEventListener('install', (event) => {
     console.log('[SW] Installing service worker v' + version);
     
     event.waitUntil(
-        Promise.all([
-            // Cache essential assets
-            caches.open(CACHE_NAME)
-                .then((cache) => {
-                    console.log('[SW] Pre-caching offline assets');
-                    return cache.addAll(ASSETS_TO_CACHE);
-                }),
-            // Enable navigation preload if supported
-            sw.registration.navigationPreload?.enable()
-        ]).then(() => {
-            console.log('[SW] Installation complete');
-            sw.skipWaiting(); // Activate immediately
-        })
+        // Cache essential assets
+        caches.open(CACHE_NAME)
+            .then((cache) => {
+                console.log('[SW] Pre-caching offline assets');
+                return cache.addAll(ASSETS_TO_CACHE);
+            })
+            .then(() => {
+                console.log('[SW] Installation complete');
+                sw.skipWaiting(); // Activate immediately
+            })
     );
 });
 
-// Activate event: Clean up old caches and claim clients
+// Activate event: Clean up old caches, enable navigation preload, and claim clients
 sw.addEventListener('activate', (event) => {
     console.log('[SW] Activating service worker v' + version);
     
     event.waitUntil(
-        caches.keys()
-            .then((cacheNames) => {
-                return Promise.all(
-                    cacheNames.map((cacheName) => {
-                        if (cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE) {
-                            console.log('[SW] Removing old cache:', cacheName);
-                            return caches.delete(cacheName);
-                        }
-                    })
-                );
+        Promise.all([
+            // Clean up old caches
+            caches.keys()
+                .then((cacheNames) => {
+                    return Promise.all(
+                        cacheNames.map((cacheName) => {
+                            if (cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE) {
+                                console.log('[SW] Removing old cache:', cacheName);
+                                return caches.delete(cacheName);
+                            }
+                        })
+                    );
+                }),
+            // Enable navigation preload if supported (must be done during activate)
+            sw.registration.navigationPreload?.enable().catch((error) => {
+                console.log('[SW] Navigation preload not available:', error.message);
             })
+        ])
             .then(() => {
-                console.log('[SW] Cache cleanup complete');
+                console.log('[SW] Activation complete');
                 return sw.clients.claim(); // Take control immediately
             })
     );
