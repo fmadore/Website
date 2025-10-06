@@ -89,7 +89,7 @@
 		</div>
 
 		<div class="year-filters flex gap-2 overflow-x-auto py-2">
-			{#each allYears as y}
+			{#each allYears as y (y)}
 				<a href="{base}/activities/year/{y}" class="year-tag {y === year ? 'active' : ''}">
 					{y}
 				</a>

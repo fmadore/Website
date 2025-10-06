@@ -41,7 +41,7 @@
 				<h2 class="text-xl font-semibold mb-4">Browse by Year</h2>
 
 				<ul class="space-y-3">
-					{#each years as year}
+					{#each years as year (year)}
 						<li>
 							<a
 								href="{base}/activities/year/{year}"
