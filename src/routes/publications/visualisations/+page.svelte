@@ -448,7 +448,7 @@
 						</button>
 
 						{#if totalPages <= 7}
-							{#each Array(totalPages) as _, i (i)}
+							{#each Array(totalPages) as _unused, i (i)}
 								<button
 									class="pagination-btn {currentPage === i ? 'active' : ''}"
 									onclick={() => (currentPage = i)}
@@ -487,7 +487,7 @@
 							{/if}
 
 							<!-- Show pages around current page -->
-							{#each Array(actualEnd - actualStart + 1) as _, i (actualStart + i)}
+							{#each Array(actualEnd - actualStart + 1) as _unused, i (actualStart + i)}
 								{@const pageIndex = actualStart + i}
 								<button
 									class="pagination-btn {currentPage === pageIndex ? 'active' : ''}"
@@ -496,7 +496,6 @@
 									{pageIndex + 1}
 								</button>
 							{/each}
-
 							{#if showEndEllipsis}
 								<span class="pagination-ellipsis">…</span>
 							{/if}
