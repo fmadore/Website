@@ -33,7 +33,7 @@
 			<h2 class="tag-list-title">{sectionTitle}</h2>
 		{/if}
 		<div class="tag-list">
-			{#each visibleTags as tag}
+			{#each visibleTags as tag (tag)}
 				<Button
 					href="{base}{baseUrl}{encodeURIComponent(tag)}"
 					variant={buttonVariant}
