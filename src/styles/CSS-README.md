@@ -10,17 +10,34 @@ The CSS is organized into the following directory structure:
 
 ```
 src/
+├── app.css            # Main entry point that stitches the modules together
 └── styles/
-    ├── base/           # Base styles, resets, and variables
-    ├── layout/         # Layout components and structures
-    ├── components/     # Reusable UI components
-    ├── pages/          # Page-specific styles
-    └── utilities/      # Utility classes
+    ├── base/          # Base styles, resets, and variables
+    ├── layout/        # Layout components and structures
+    ├── components/    # Reusable UI components
+    └── utilities/     # Utility classes
 ```
 
 ## Main CSS Entry Point
 
-The `src/app.css` file serves as the main entry point that imports all other CSS files. This approach allows for better organization while still maintaining a single point of entry.
+The `src/app.css` file serves as the main entry point that imports all other CSS files. Imports are grouped so that design tokens load first, followed by layout scaffolding, component collections, and finally the utility layer. This guarantees that variables and mixins are available before anything depends on them and keeps bundle composition predictable when the project is prerendered.
+
+- **Import order**: Base → Layout → Components → Utilities (mirrors the block comments inside `app.css`).
+- **Adding new modules**: Place new files under the appropriate directory, then add a matching `@import` in the same section to preserve the layering above.
+- **Component overrides**: Prefer Svelte component-scoped styles for one-off tweaks; reach for global imports only when multiple pages need the change.
+
+## Extending the CSS System
+
+When you need to introduce new styling primitives, follow this workflow to stay aligned with the design system:
+
+1. **Check existing layers first**: Reuse utilities or component classes whenever possible. Most spacing, color, typography, and interaction patterns already exist.
+2. **Scope deliberately**:
+    - Component-specific visuals belong in the Svelte file's `<style>` block.
+    - Shared UI patterns live under `styles/components/` with descriptive, atomic names.
+    - System-wide helpers go into the utility folder alongside peers (e.g., `utilities/flex.css`).
+3. **Lean on design tokens**: Reference values from `base/variables.css` instead of hard-coded numbers or hex values. This keeps light/dark themes and glassmorphism effects consistent.
+4. **Respect motion and accessibility**: Mirror the patterns in `reset.css` and `animations.css` by honoring `prefers-reduced-motion`, `prefers-contrast`, and focus-visible treatments.
+5. **Document the change**: Update this README (or the component docs in `docs/components/`) so future contributors know the intent behind the new styles.
 
 ## Base Styles
 
@@ -272,7 +289,7 @@ The animation system integrates with JavaScript utilities (`src/lib/utils/scroll
 
 ## Page-Specific Styles
 
-**Note**: Page-specific styles have been migrated to their respective components to improve maintainability and reduce CSS bundle size. For repeatable content cards (e.g., publications and communications), shared presentation is centralized in `components/entity-cards.css`, with components keeping only minimal, truly unique tweaks (e.g., advisor/preface or filter buttons).
+**Note**: There is intentionally no `styles/pages/` directory anymore. Page-level design lives alongside its Svelte component so the styles ship only where they are used. Shared presentation (e.g., publications and communications) is centralized in `components/entity-cards.css`, while components keep only minimal, truly unique tweaks such as advisor badges or filter button placement.
 
 ## Utilities
 
