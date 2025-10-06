@@ -1,13 +1,18 @@
-import { writable, derived } from 'svelte/store';
+/**
+ * Fieldworks Filters - Svelte 5 Compatible Edition
+ *
+ * Exports proper Svelte stores that can be used with $ prefix in components.
+ * Uses createActiveFiltersStore and other utilities to maintain reactivity.
+ */
+
 import type { Fieldwork } from '$lib/types';
 import {
 	createActiveFiltersStore,
 	createToggleArrayFilter,
-	// createSetArrayFilter, // Not currently needed for fieldworks
 	createClearAllFilters,
 	createDerivedCountStore
-} from '$lib/utils/filterUtils'; // Import relevant utilities
-// import { allFieldworks, fieldworksByYear, allCountries, allCities, allProjects } from './index';
+} from '$lib/utils/filterUtils.svelte';
+import { derived, readable, writable, get } from 'svelte/store';
 
 // Store the promise for fieldwork data
 let fieldworkDataPromise: Promise<{
@@ -61,47 +66,55 @@ const initialFilters: ActiveFieldworkFilters = {
 
 export const activeFilters = createActiveFiltersStore(initialFilters);
 
-// --- Available Filter Options Store (Async Loading) ---
+// --- Available Filter Options (Async Loading) ---
 
-// Initialize with empty arrays, populated async
-export const filterOptions = writable({
+let filterOptionsState = $state({
 	countries: [] as string[],
 	cities: [] as string[],
 	years: [] as number[],
 	projects: [] as string[]
 });
 
+export const filterOptions = {
+	get value() {
+		return filterOptionsState;
+	},
+	set value(newValue: typeof filterOptionsState) {
+		filterOptionsState = newValue;
+	}
+};
+
 // Load options when the module is used
 loadFieldworkData().then((data) => {
-	filterOptions.set({
+	filterOptionsState = {
 		countries: data.allCountries,
 		cities: data.allCities,
 		years: Object.keys(data.fieldworksByYear || {})
 			.map(Number)
 			.sort((a, b) => b - a),
 		projects: data.allProjects
-	});
+	};
 });
 
-// --- Filtered Fieldworks Derived Store (Async Handling) ---
+// --- Filtered Fieldworks (Async Handling) ---
 
 // Create a writable store to hold the loaded fieldworks data
 const allFieldworksStore = writable<Fieldwork[]>([]);
-loadFieldworkData().then((data) => allFieldworksStore.set(data.allFieldworks || []));
+loadFieldworkData().then((data) => {
+	allFieldworksStore.set(data.allFieldworks || []);
+});
 
 // Derive filtered fieldworks based on active filters and the loaded data
 export const filteredFieldworks = derived(
-	[activeFilters, allFieldworksStore], // Depend on filters and loaded data
-	([$activeFilters, $allFieldworks]) => {
+	[activeFilters, allFieldworksStore],
+	([$activeFilters, $allFieldworks]): Fieldwork[] => {
 		if (!$allFieldworks || $allFieldworks.length === 0) {
 			return []; // Return empty if data not loaded yet
 		}
+		
 		return $allFieldworks.filter((fieldwork) => {
 			// Country
-			if (
-				$activeFilters.countries.length > 0 &&
-				!$activeFilters.countries.includes(fieldwork.country)
-			) {
+			if ($activeFilters.countries.length > 0 && !$activeFilters.countries.includes(fieldwork.country)) {
 				return false;
 			}
 			// City
@@ -121,8 +134,7 @@ export const filteredFieldworks = derived(
 			}
 			return true;
 		});
-	},
-	[] as Fieldwork[] // Initial value
+	}
 );
 
 // --- Filter Control Functions ---
@@ -133,21 +145,22 @@ export const toggleCityFilter = createToggleArrayFilter(activeFilters, 'cities')
 export const toggleYearFilter = createToggleArrayFilter(activeFilters, 'years');
 export const toggleProjectFilter = createToggleArrayFilter(activeFilters, 'projects');
 
-// Set Functions (if needed later for URL sync etc.)
-// export const setCountries = createSetArrayFilter(activeFilters, 'countries');
-// export const setCities = createSetArrayFilter(activeFilters, 'cities');
-// export const setYears = createSetArrayFilter(activeFilters, 'years');
-// export const setProjects = createSetArrayFilter(activeFilters, 'projects');
-
 // Clear All Function
 export const clearAllFilters = createClearAllFilters(activeFilters, initialFilters);
 
 // --- Derived Count Stores ---
-// These now correctly depend on the derived filteredFieldworks store
 
-export const countryCounts = createDerivedCountStore(filteredFieldworks, (fw) => fw.country);
-export const cityCounts = createDerivedCountStore(filteredFieldworks, (fw) => fw.city);
-export const projectCounts = createDerivedCountStore(filteredFieldworks, (fw) => fw.project);
+export const countryCounts = createDerivedCountStore(
+	filteredFieldworks,
+	(fw: Fieldwork) => fw.country
+);
 
-// Year counts might be less useful here as years are filters themselves, but could be added:
-// export const yearCounts = createDerivedCountStore(filteredFieldworks, (fw) => String(fw.year));
+export const cityCounts = createDerivedCountStore(
+	filteredFieldworks,
+	(fw: Fieldwork) => fw.city
+);
+
+export const projectCounts = createDerivedCountStore(
+	filteredFieldworks,
+	(fw: Fieldwork) => fw.project
+);

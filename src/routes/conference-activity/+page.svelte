@@ -25,7 +25,7 @@
 		setCountries,
 		setProjects,
 		setYearRange
-	} from '$lib/data/communications/filters';
+	} from '$lib/data/communications/filters.svelte';
 	import { allCoordinates } from '$lib/data/communications';
 	import type { Communication } from '$lib/types/communication';
 	// Remove old sidebar import
@@ -52,7 +52,6 @@
 	import { sortItems } from '$lib/utils/sortUtils';
 	import Icon from '@iconify/svelte'; // Import Iconify
 	import Button from '$lib/components/atoms/Button.svelte'; // Import Button
-	import { derived, writable } from 'svelte/store';
 
 	let showMap = $state(false);
 
@@ -62,34 +61,23 @@
 	// State for the current sort order
 	let activeSort = $state<'date' | 'title'>('date');
 
-	// Create a writable store for activeSort to make it reactive with derived stores
-	const activeSortStore = writable<'date' | 'title'>('date');
-
-	// Update the store when activeSort changes
-	$effect(() => {
-		activeSortStore.set(activeSort);
-	});
-
-	// Create derived stores for sorted communications and map markers
-	const sortedCommunications = derived(
-		[filteredCommunications, activeSortStore],
-		([$filteredCommunications, $activeSort]) => sortItems($filteredCommunications, $activeSort)
+	// Create reactive values for sorted communications and map markers
+	const sortedCommunications = $derived(
+		sortItems($filteredCommunications, activeSort)
 	);
 
-	// Create a derived store for map markers based on filtered communications
-	const mapMarkers = derived(
-		filteredCommunications,
-		($filteredCommunications) =>
-			$filteredCommunications
-				?.filter((comm: Communication) => comm.coordinates)
-				.map((comm: Communication) => ({
-					id: comm.id,
-					title: comm.title,
-					coordinates: comm.coordinates!,
-					year: comm.year,
-					activityType: comm.type,
-					image: comm.image
-				})) || []
+	// Create a reactive value for map markers based on filtered communications
+	const mapMarkers = $derived(
+		$filteredCommunications
+			?.filter((comm: Communication) => comm.coordinates)
+			.map((comm: Communication) => ({
+				id: comm.id,
+				title: comm.title,
+				coordinates: comm.coordinates!,
+				year: comm.year,
+				activityType: comm.type,
+				image: comm.image
+			})) || []
 	);
 
 	// Helper to check if any filters are active (consistent with communications/+page.svelte)
@@ -147,129 +135,79 @@
 		lecture: 'Lectures',
 		panel: 'Panels Organized',
 		event: 'Academic Events Organized'
-	}; // Reactive values for filter configuration - create derived stores from filter options
-	const filterOptionsValue = derived(filterOptions, ($filterOptions) => $filterOptions);
-	const typesValue = derived(
-		filterOptionsValue,
-		($filterOptionsValue) => $filterOptionsValue?.types || []
-	);
-	const yearsValue = derived(
-		filterOptionsValue,
-		($filterOptionsValue) => $filterOptionsValue?.years || []
-	);
-	const countriesValue = derived(
-		filterOptionsValue,
-		($filterOptionsValue) => $filterOptionsValue?.countries || []
-	);
-	const languagesValue = derived(
-		filterOptionsValue,
-		($filterOptionsValue) => $filterOptionsValue?.languages || []
-	);
-	const tagsValue = derived(
-		filterOptionsValue,
-		($filterOptionsValue) => $filterOptionsValue?.tags || []
-	);
-	const authorsValue = derived(
-		filterOptionsValue,
-		($filterOptionsValue) => $filterOptionsValue?.authors || []
-	);
-	const sortedYearsAscValue = derived(yearsValue, ($yearsValue) =>
-		$yearsValue.slice().sort((a: number, b: number) => a - b)
-	); // Construct the configuration object as a derived store
-	const communicationFilterConfig = derived(
-		[
-			typesValue,
-			sortedYearsAscValue,
-			authorsValue,
-			countriesValue,
-			languagesValue,
-			tagsValue,
-			activeFilters,
-			authorCounts,
-			countryCounts,
-			tagCounts
-		],
-		([
-			$typesValue,
-			$sortedYearsAscValue,
-			$authorsValue,
-			$countriesValue,
-			$languagesValue,
-			$tagsValue,
-			$activeFilters,
-			$authorCounts,
-			$countryCounts,
-			$tagCounts
-		]) =>
-			({
-				sections: [
-					// Sections explicitly cast to their specific type
-					{
-						type: 'checkbox',
-						title: 'Type',
-						items: $typesValue,
-						itemLabels: typeLabels,
-						activeItems: $activeFilters?.types || [],
-						toggleItem: toggleTypeFilter,
-						counts: undefined
-					} as CheckboxFilterOption<string>,
-					{
-						type: 'range',
-						title: 'Years',
-						allYears: $sortedYearsAscValue,
-						activeRange: $activeFilters?.yearRange || null,
-						updateRange: updateYearRange,
-						resetRange: resetYearRange
-					} as RangeFilterOption,
-					{
-						type: 'chips',
-						title: 'Co-authors',
-						items: $authorsValue,
-						activeItems: $activeFilters?.authors || [],
-						toggleItem: toggleAuthorFilter,
-						counts: $authorCounts,
-						searchThreshold: 5,
-						initialDisplayCount: 6,
-						showSearch: false
-					} as ChipsFilterOption<string>,
-					{
-						type: 'chips',
-						title: 'Countries',
-						items: $countriesValue,
-						activeItems: $activeFilters?.countries || [],
-						toggleItem: toggleCountryFilter,
-						counts: $countryCounts,
-						searchThreshold: 6,
-						initialDisplayCount: 8,
-						showSearch: false
-					} as ChipsFilterOption<string>,
-					{
-						type: 'checkbox',
-						title: 'Languages',
-						items: $languagesValue,
-						activeItems: $activeFilters?.languages || [],
-						toggleItem: toggleLanguageFilter,
-						counts: undefined
-					} as CheckboxFilterOption<string>,
-					{
-						type: 'chips',
-						title: 'Tags',
-						items: $tagsValue,
-						activeItems: $activeFilters?.tags || [],
-						toggleItem: toggleTagFilter,
-						counts: $tagCounts,
-						searchThreshold: 8,
-						initialDisplayCount: 10,
-						showSearch: false
-					} as ChipsFilterOption<string>
-				]
-					.filter((section) => section.title !== 'Tags')
-					.filter((section) => {
-						if (section.type === 'range') return section.allYears && section.allYears.length > 0;
-						return section.items && section.items.length > 0;
-					}) as FilterSectionConfig[], // Cast filtered array
-				clearAllFilters: clearAllFilters
-			}) satisfies UniversalFilterConfig
+	}; 
+	
+	// Reactive values using $derived
+	const communicationFilterConfig = $derived<UniversalFilterConfig>(
+		{
+			sections: [
+				// Sections explicitly cast to their specific type
+				{
+					type: 'checkbox',
+					title: 'Type',
+					items: $filterOptions?.types || [],
+					itemLabels: typeLabels,
+					activeItems: $activeFilters?.types || [],
+					toggleItem: toggleTypeFilter,
+					counts: undefined
+				} as CheckboxFilterOption<string>,
+				{
+					type: 'range',
+					title: 'Years',
+					allYears: ($filterOptions?.years || []).slice().sort((a: number, b: number) => a - b),
+					activeRange: $activeFilters?.yearRange || null,
+					updateRange: updateYearRange,
+					resetRange: resetYearRange
+				} as RangeFilterOption,
+				{
+					type: 'chips',
+					title: 'Co-authors',
+					items: $filterOptions?.authors || [],
+					activeItems: $activeFilters?.authors || [],
+					toggleItem: toggleAuthorFilter,
+					counts: $authorCounts,
+					searchThreshold: 5,
+					initialDisplayCount: 6,
+					showSearch: false
+				} as ChipsFilterOption<string>,
+				{
+					type: 'chips',
+					title: 'Countries',
+					items: $filterOptions?.countries || [],
+					activeItems: $activeFilters?.countries || [],
+					toggleItem: toggleCountryFilter,
+					counts: $countryCounts,
+					searchThreshold: 6,
+					initialDisplayCount: 8,
+					showSearch: false
+				} as ChipsFilterOption<string>,
+				{
+					type: 'checkbox',
+					title: 'Languages',
+					items: $filterOptions?.languages || [],
+					activeItems: $activeFilters?.languages || [],
+					toggleItem: toggleLanguageFilter,
+					counts: undefined
+				} as CheckboxFilterOption<string>,
+				{
+					type: 'chips',
+					title: 'Tags',
+					items: $filterOptions?.tags || [],
+					activeItems: $activeFilters?.tags || [],
+					toggleItem: toggleTagFilter,
+					counts: $tagCounts,
+					searchThreshold: 8,
+					initialDisplayCount: 10,
+					showSearch: false
+				} as ChipsFilterOption<string>
+			]
+				.filter((section) => section.title !== 'Tags')
+				.filter((section) => {
+					if (section.type === 'range') return section.allYears && section.allYears.length > 0;
+					return section.items && section.items.length > 0;
+				}) as FilterSectionConfig[], // Cast filtered array
+			clearAllFilters: clearAllFilters
+		} satisfies UniversalFilterConfig
 	);
 </script>
 
@@ -287,7 +225,7 @@
 		<PageHeader title="Conference Activity" />
 
 		<PageIntro>
-			Since 2012, I have given talks to audiences in {$countriesValue.length} countries across Africa,
+			Since 2012, I have given talks to audiences in {$filterOptions?.countries?.length || 0} countries across Africa,
 			Europe, and North America.
 		</PageIntro>
 
@@ -328,7 +266,7 @@
 		<EntityListPageLayout>
 			{#snippet sidebar()}
 				<UniversalFiltersSidebar
-					config={$communicationFilterConfig}
+					config={communicationFilterConfig}
 					isExpandedMobile={mobileFiltersExpanded}
 					oncollapse={() => (mobileFiltersExpanded = false)}
 				/>
@@ -364,7 +302,7 @@
 
 				{#if showMap}
 					<div class="mb-6">
-						<MapVisualization markersData={$mapMarkers} />
+						<MapVisualization markersData={mapMarkers} />
 					</div>
 				{/if}
 				<FilteredListDisplay

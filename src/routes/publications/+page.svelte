@@ -25,7 +25,7 @@
 		setCountries,
 		setProjects,
 		setYearRange
-	} from '$lib/data/publications/filters';
+	} from '$lib/data/publications/filters.svelte';
 	import UniversalFiltersSidebar from '$lib/components/filters/UniversalFiltersSidebar.svelte';
 	import type {
 		UniversalFilterConfig,
@@ -45,7 +45,6 @@
 	import { sortItems } from '$lib/utils/sortUtils';
 	import Icon from '@iconify/svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
-	import { derived } from 'svelte/store';
 
 	// State for the current sort order
 	let activeSort = $state<'date' | 'title' | 'citations'>('date');
@@ -53,21 +52,9 @@
 	// State for mobile filter sidebar expansion
 	let mobileFiltersExpanded = $state(false);
 
-	// Create a derived store for sorted publications that updates when activeSort changes
-	// We need to create a writable/readable store for activeSort to make it reactive
-	import { writable } from 'svelte/store';
-	const activeSortStore = writable<'date' | 'title' | 'citations'>('date');
+	// Use $derived to create sorted publications - this is the proper Svelte 5 pattern
+	const sortedPublications = $derived(sortItems($filteredPublications, activeSort));
 
-	// Update the store when activeSort changes
-	$effect(() => {
-		activeSortStore.set(activeSort);
-	});
-
-	// Create a derived store for sorted publications
-	const sortedPublications = derived(
-		[filteredPublications, activeSortStore],
-		([$filteredPublications, $activeSort]) => sortItems($filteredPublications, $activeSort)
-	);
 	function handleFilterRequest(event: { type: string; value: string }) {
 		const { type, value } = event;
 		console.log('Filter request received:', type, value);
@@ -123,101 +110,85 @@
 		'phd-dissertation': 'Ph.D. dissertation',
 		report: 'Report',
 		'special-issue': 'Special issue'
-	}; // Ensure years are sorted ascending for the slider
-	const sortedYearsAsc = derived(filterOptions, ($filterOptions) =>
-		($filterOptions?.years || []).slice().sort((a, b) => a - b)
-	); // Construct the configuration object for the UniversalFiltersSidebar
-	const publicationFilterConfig = derived(
-		[
-			sortedYearsAsc,
-			filterOptions,
-			activeFilters,
-			typeCounts,
-			authorCounts,
-			languageCounts,
-			countryCounts,
-			tagCounts
-		],
-		([
-			$sortedYearsAsc,
-			$filterOptions,
-			$activeFilters,
-			$typeCounts,
-			$authorCounts,
-			$languageCounts,
-			$countryCounts,
-			$tagCounts
-		]) =>
-			({
-				sections: [
-					// Sections explicitly cast to their specific type
-					{
-						type: 'checkbox',
-						title: 'Publication Types',
-						items: $filterOptions.types,
-						itemLabels: typeLabels,
-						activeItems: $activeFilters.types,
-						toggleItem: toggleTypeFilter,
-						counts: $typeCounts
-					} as CheckboxFilterOption<string>,
-					{
-						type: 'range',
-						title: 'Years',
-						allYears: $sortedYearsAsc,
-						activeRange: $activeFilters.yearRange,
-						updateRange: updateYearRange,
-						resetRange: resetYearRange
-					} as RangeFilterOption,
-					{
-						type: 'chips',
-						title: 'Co-Authors',
-						items: $filterOptions.authors,
-						activeItems: $activeFilters.authors,
-						toggleItem: toggleAuthorFilter,
-						counts: $authorCounts,
-						searchThreshold: 6,
-						initialDisplayCount: 8,
-						showSearch: false
-					} as ChipsFilterOption<string>,
-					{
-						type: 'checkbox',
-						title: 'Languages',
-						items: $filterOptions.languages,
-						activeItems: $activeFilters.languages,
-						toggleItem: toggleLanguageFilter,
-						counts: $languageCounts
-					} as CheckboxFilterOption<string>,
-					{
-						type: 'chips',
-						title: 'Countries',
-						items: $filterOptions.countries,
-						activeItems: $activeFilters.countries,
-						toggleItem: toggleCountryFilter,
-						counts: $countryCounts,
-						searchThreshold: 6,
-						initialDisplayCount: 8,
-						showSearch: false
-					} as ChipsFilterOption<string>,
-					{
-						type: 'chips',
-						title: 'Tags',
-						items: $filterOptions.tags,
-						activeItems: $activeFilters.tags,
-						toggleItem: toggleTagFilter,
-						counts: $tagCounts,
-						searchThreshold: 8,
-						initialDisplayCount: 10,
-						showSearch: false
-					} as ChipsFilterOption<string>
-				]
-					.filter((section) => section.title !== 'Tags')
-					.filter((section) => {
-						// Dynamically hide sections if they have no items/options
-						if (section.type === 'range') return section.allYears && section.allYears.length > 0;
-						return section.items && section.items.length > 0;
-					}) as FilterSectionConfig[], // Cast filtered array
-				clearAllFilters: clearAllFilters
-			}) satisfies UniversalFilterConfig
+	};
+
+	// Ensure years are sorted ascending for the slider - using $derived for Svelte 5
+	const sortedYearsAsc = $derived(
+		($filterOptions?.years || []).slice().sort((a: number, b: number) => a - b)
+	);
+
+	// Construct the configuration object for the UniversalFiltersSidebar - using $derived for Svelte 5
+	const publicationFilterConfig = $derived(
+		({
+			sections: [
+				// Sections explicitly cast to their specific type
+				{
+					type: 'checkbox',
+					title: 'Publication Types',
+					items: $filterOptions.types,
+					itemLabels: typeLabels,
+					activeItems: $activeFilters.types,
+					toggleItem: toggleTypeFilter,
+					counts: $typeCounts
+				} as CheckboxFilterOption<string>,
+				{
+					type: 'range',
+					title: 'Years',
+					allYears: sortedYearsAsc,
+					activeRange: $activeFilters.yearRange,
+					updateRange: updateYearRange,
+					resetRange: resetYearRange
+				} as RangeFilterOption,
+				{
+					type: 'chips',
+					title: 'Co-Authors',
+					items: $filterOptions.authors,
+					activeItems: $activeFilters.authors,
+					toggleItem: toggleAuthorFilter,
+					counts: $authorCounts,
+					searchThreshold: 6,
+					initialDisplayCount: 8,
+					showSearch: false
+				} as ChipsFilterOption<string>,
+				{
+					type: 'checkbox',
+					title: 'Languages',
+					items: $filterOptions.languages,
+					activeItems: $activeFilters.languages,
+					toggleItem: toggleLanguageFilter,
+					counts: $languageCounts
+				} as CheckboxFilterOption<string>,
+				{
+					type: 'chips',
+					title: 'Countries',
+					items: $filterOptions.countries,
+					activeItems: $activeFilters.countries,
+					toggleItem: toggleCountryFilter,
+					counts: $countryCounts,
+					searchThreshold: 6,
+					initialDisplayCount: 8,
+					showSearch: false
+				} as ChipsFilterOption<string>,
+				{
+					type: 'chips',
+					title: 'Tags',
+					items: $filterOptions.tags,
+					activeItems: $activeFilters.tags,
+					toggleItem: toggleTagFilter,
+					counts: $tagCounts,
+					searchThreshold: 8,
+					initialDisplayCount: 10,
+					showSearch: false
+				} as ChipsFilterOption<string>
+			]
+				.filter((section) => section.title !== 'Tags')
+				.filter((section) => {
+					// Dynamically hide sections if they have no items/options
+					if (section.type === 'range') return section.allYears && section.allYears.length > 0;
+					return section.items && section.items.length > 0;
+				}) as FilterSectionConfig[], // Cast filtered array
+			clearAllFilters: clearAllFilters
+		}) satisfies UniversalFilterConfig
 	);
 </script>
 
@@ -276,7 +247,7 @@
 		<EntityListPageLayout>
 			{#snippet sidebar()}
 				<UniversalFiltersSidebar
-					config={$publicationFilterConfig}
+					config={publicationFilterConfig}
 					isExpandedMobile={mobileFiltersExpanded}
 					oncollapse={() => (mobileFiltersExpanded = false)}
 				/>

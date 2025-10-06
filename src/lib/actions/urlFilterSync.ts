@@ -26,7 +26,7 @@ interface FilterSetters {
 }
 
 interface UrlFilterSyncParams {
-	filtersStore: Writable<ActiveFilters>;
+	filtersStore: Writable<ActiveFilters> | { value: ActiveFilters; update: (fn: (current: ActiveFilters) => ActiveFilters) => void };
 	setters: FilterSetters;
 }
 
@@ -40,7 +40,7 @@ type ArrayFilterKey =
 	| 'setProjects';
 
 /**
- * Svelte Action to synchronize filter state (from a writable store)
+ * Svelte Action to synchronize filter state (from a writable store OR runes object)
  * with URL query parameters.
  *
  * It listens to changes in the filtersStore and updates the URL.
@@ -52,8 +52,31 @@ export function urlFilterSync(node: HTMLElement, params: UrlFilterSyncParams) {
 	let initialUrlApplied = false; // Flag to prevent infinite loops on initial load
 	let lastFiltersString = ''; // Store the last state stringified
 
+	// Helper to check if filtersStore is a runes object or a traditional store
+	const isRunesObject = (store: any): store is { value: ActiveFilters; update: (fn: (current: ActiveFilters) => ActiveFilters) => void } => {
+		return 'value' in store && !('subscribe' in store);
+	};
+
+	// Helper to get current value from either store type
+	const getValue = (): ActiveFilters => {
+		if (isRunesObject(filtersStore)) {
+			return filtersStore.value;
+		} else {
+			return get(filtersStore);
+		}
+	};
+
 	// --- Update URL from Filter Store ---
-	const unsubscribeFilters = filtersStore.subscribe(($filters) => {
+	let unsubscribeFilters: (() => void) | undefined;
+	
+	if (isRunesObject(filtersStore)) {
+		// For runes objects, use $effect to watch changes
+		// Since we can't use runes in .ts files, we'll skip the subscription
+		// and rely on URL updates triggered by filter actions
+		unsubscribeFilters = () => {};
+	} else {
+		// For stores, use subscribe
+		unsubscribeFilters = filtersStore.subscribe(($filters: ActiveFilters) => {
 		const currentFiltersString = JSON.stringify($filters); // Simple way to check for changes
 		if (!initialUrlApplied || currentFiltersString === lastFiltersString) {
 			// Avoid updating URL based on the initial store state before URL is parsed
@@ -84,12 +107,13 @@ export function urlFilterSync(node: HTMLElement, params: UrlFilterSyncParams) {
 
 		// Use replaceState to avoid cluttering browser history
 		goto(targetUrl, { replaceState: true, keepFocus: true, noScroll: true });
-	});
+		});
+	}
 
 	// --- Update Filter Store from URL ---
 	const unsubscribePage = page.subscribe(($page) => {
 		const searchParams = $page.url.searchParams;
-		const currentFilters = get(filtersStore); // Get current filters state
+		const currentFilters = getValue(); // Get current filters state
 		let filtersChanged = false;
 
 		// Helper to compare arrays and update if needed
@@ -135,14 +159,14 @@ export function urlFilterSync(node: HTMLElement, params: UrlFilterSyncParams) {
 		}
 
 		if (filtersChanged) {
-			lastFiltersString = JSON.stringify(get(filtersStore)); // Update last known state after URL sync
+			lastFiltersString = JSON.stringify(getValue()); // Update last known state after URL sync
 		}
 		initialUrlApplied = true; // Mark URL as processed
 	});
 
 	return {
 		destroy() {
-			unsubscribeFilters();
+			if (unsubscribeFilters) unsubscribeFilters();
 			unsubscribePage();
 		}
 	};

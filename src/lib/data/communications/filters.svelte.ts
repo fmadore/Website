@@ -1,4 +1,10 @@
-import { derived, writable } from 'svelte/store';
+/**
+ * Communications Filters - Svelte 5 Compatible Edition
+ *
+ * Exports proper Svelte stores that can be used with $ prefix in components.
+ * Uses createActiveFiltersStore and other utilities to maintain reactivity.
+ */
+
 import type { Communication, YearRange } from '$lib/types';
 import {
 	createActiveFiltersStore,
@@ -9,7 +15,8 @@ import {
 	createSetRangeFilter,
 	createClearAllFilters,
 	createDerivedCountStore
-} from '$lib/utils/filterUtils'; // Import utilities
+} from '$lib/utils/filterUtils.svelte';
+import { derived, readable } from 'svelte/store';
 
 // Import safely handling any errors
 let allCommunications: Communication[] = [];
@@ -85,9 +92,9 @@ const initialFilters: ActiveCommunicationFilters = {
 
 export const activeFilters = createActiveFiltersStore(initialFilters);
 
-// --- Available Filter Options Store ---
+// --- Available Filter Options ---
 
-export const filterOptions = writable({
+export const filterOptions = readable({
 	types: Object.keys(communicationsByType || {}).sort(),
 	years: Object.keys(communicationsByYear || {})
 		.map(Number)
@@ -99,81 +106,81 @@ export const filterOptions = writable({
 	projects: allProjects
 });
 
-// --- Filtered Communications Derived Store ---
+// --- Filtered Communications ---
 
-export const filteredCommunications = derived([activeFilters], ([$activeFilters]) => {
-	return safeAllCommunications.filter((comm: Communication) => {
-		if (!comm) return false;
+export const filteredCommunications = derived(
+	activeFilters,
+	($activeFilters): Communication[] => {
+		return safeAllCommunications.filter((comm: Communication) => {
+			if (!comm) return false;
 
-		// Type
-		if (
-			$activeFilters.types.length > 0 &&
-			(!comm.type || !$activeFilters.types.includes(comm.type))
-		) {
-			return false;
-		}
-
-		// Year Range
-		if (
-			$activeFilters.yearRange &&
-			(!comm.year ||
-				comm.year < $activeFilters.yearRange.min ||
-				comm.year > $activeFilters.yearRange.max)
-		) {
-			return false;
-		}
-
-		// Tags
-		if (
-			$activeFilters.tags.length > 0 &&
-			(!comm.tags || !comm.tags.some((tag: string) => $activeFilters.tags.includes(tag)))
-		) {
-			return false;
-		}
-
-		// Language
-		if ($activeFilters.languages.length > 0) {
-			const commLanguages = comm.language
-				? comm.language.split(',').map((lang) => lang.trim())
-				: [];
-			if (!commLanguages.some((lang) => $activeFilters.languages.includes(lang))) {
+			// Type
+			if ($activeFilters.types.length > 0 && (!comm.type || !$activeFilters.types.includes(comm.type))) {
 				return false;
 			}
-		}
 
-		// Co-author Filter (using 'authors' key in activeFilters)
-		if ($activeFilters.authors.length > 0) {
-			const authorsList = comm.authors || [];
-			// Check if any of the communication's *authors* (excluding self) are in the active filter list
+			// Year Range
 			if (
-				!authorsList.some(
-					(authorName) =>
-						authorName !== 'Frédérick Madore' && $activeFilters.authors.includes(authorName)
-				)
+				$activeFilters.yearRange &&
+				(!comm.year ||
+					comm.year < $activeFilters.yearRange.min ||
+					comm.year > $activeFilters.yearRange.max)
 			) {
 				return false;
 			}
-		}
 
-		// Country
-		if (
-			$activeFilters.countries.length > 0 &&
-			(!comm.country || !$activeFilters.countries.includes(comm.country))
-		) {
-			return false;
-		}
+			// Tags
+			if (
+				$activeFilters.tags.length > 0 &&
+				(!comm.tags || !comm.tags.some((tag: string) => $activeFilters.tags.includes(tag)))
+			) {
+				return false;
+			}
 
-		// Project
-		if (
-			$activeFilters.projects.length > 0 &&
-			(!comm.project || !$activeFilters.projects.includes(comm.project))
-		) {
-			return false;
-		}
+			// Language
+			if ($activeFilters.languages.length > 0) {
+				const commLanguages = comm.language
+					? comm.language.split(',').map((lang) => lang.trim())
+					: [];
+				if (!commLanguages.some((lang) => $activeFilters.languages.includes(lang))) {
+					return false;
+				}
+			}
 
-		return true;
-	});
-});
+			// Co-author Filter (using 'authors' key in activeFilters)
+			if ($activeFilters.authors.length > 0) {
+				const authorsList = comm.authors || [];
+				// Check if any of the communication's *authors* (excluding self) are in the active filter list
+				if (
+					!authorsList.some(
+						(authorName) =>
+							authorName !== 'Frédérick Madore' && $activeFilters.authors.includes(authorName)
+					)
+				) {
+					return false;
+				}
+			}
+
+			// Country
+			if (
+				$activeFilters.countries.length > 0 &&
+				(!comm.country || !$activeFilters.countries.includes(comm.country))
+			) {
+				return false;
+			}
+
+			// Project
+			if (
+				$activeFilters.projects.length > 0 &&
+				(!comm.project || !$activeFilters.projects.includes(comm.project))
+			) {
+				return false;
+			}
+
+			return true;
+		});
+	}
+);
 
 // --- Filter Control Functions ---
 
@@ -203,34 +210,41 @@ export const clearAllFilters = createClearAllFilters(activeFilters, initialFilte
 
 // --- Derived Count Stores ---
 
-export const tagCounts = createDerivedCountStore(filteredCommunications, (comm) => comm.tags);
+export const tagCounts = createDerivedCountStore(
+	filteredCommunications,
+	(comm: Communication) => comm.tags
+);
+
 export const countryCounts = createDerivedCountStore(
 	filteredCommunications,
-	(comm) => comm.country
+	(comm: Communication) => comm.country
 );
+
 export const projectCounts = createDerivedCountStore(
 	filteredCommunications,
-	(comm) => comm.project
+	(comm: Communication) => comm.project
 );
-export const languageCounts = createDerivedCountStore(filteredCommunications, (comm) =>
-	comm.language?.split(',').map((l) => l.trim())
+
+export const languageCounts = createDerivedCountStore(
+	filteredCommunications,
+	(comm: Communication) => comm.language?.split(',').map((l: string) => l.trim())
 );
 
 // Count store for co-authors (based on authors field, excluding self)
-export const authorCounts = derived([filteredCommunications], ([$filteredCommunications]) => {
-	const counts: Record<string, number> = {};
-	($filteredCommunications || []).forEach((comm: Communication) => {
-		if (comm.authors) {
-			comm.authors.forEach((authorName) => {
-				// Only count actual co-authors, not the site owner
-				if (authorName !== 'Frédérick Madore') {
-					counts[authorName] = (counts[authorName] || 0) + 1;
-				}
-			});
-		}
-	});
-	return counts;
-});
-
-// Note: Type counts might not be needed here if types are static, but could be added if necessary.
-// export const typeCounts = createDerivedCountStore(filteredCommunications, (comm) => comm.type);
+export const authorCounts = derived(
+	filteredCommunications,
+	($filteredCommunications): Record<string, number> => {
+		const counts: Record<string, number> = {};
+		($filteredCommunications || []).forEach((comm: Communication) => {
+			if (comm.authors) {
+				comm.authors.forEach((authorName) => {
+					// Only count actual co-authors, not the site owner
+					if (authorName !== 'Frédérick Madore') {
+						counts[authorName] = (counts[authorName] || 0) + 1;
+					}
+				});
+			}
+		});
+		return counts;
+	}
+);

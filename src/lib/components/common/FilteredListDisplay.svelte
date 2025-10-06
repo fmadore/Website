@@ -9,7 +9,7 @@
 	type AnyComponentType = any;
 
 	interface Props {
-		filteredItems: Readable<any[]>; // Store of filtered items
+		filteredItems: Readable<any[]> | any[]; // Store of filtered items OR plain array
 		itemComponent: AnyComponentType; // Component to render each item
 		itemComponentProps?: ComponentProps<any>; // Props to pass to each item component
 		areFiltersActive?: boolean; // Whether filters are active
@@ -31,12 +31,18 @@
 		itemPropName = 'item',
 		onitemrequest = null
 	}: Props = $props();
+	
+	// Handle both store and plain array
+	const items = $derived(
+		Array.isArray(filteredItems) ? filteredItems : (filteredItems as any)?.value || []
+	);
+
 </script>
 
 <div>
-	{#if $filteredItems && $filteredItems.length > 0}
+	{#if items && items.length > 0}
 		<ul class="list-none p-0 space-y-8 mt-6">
-			{#each $filteredItems as item, index (item.id)}
+			{#each items as item, index (item.id)}
 				{#if onitemrequest}
 					{@const Component = itemComponent}
 					<Component
