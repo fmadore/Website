@@ -39,7 +39,7 @@
 >
 	{#if backLinkHref}
 		<a
-			href="{base}/{backLinkHref}"
+			href={`${base}/${backLinkHref}`}
 			class="back-link mb-4 inline-block"
 			use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-left' }}
 		>

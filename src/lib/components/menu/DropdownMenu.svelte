@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import type { NavItem } from '$lib/types/navigation';
 
 	let {
@@ -25,7 +26,7 @@
 		{#each items as item (item.path)}
 			<li role="none">
 				<a
-					href={item.path}
+					href={item.path.startsWith('http') ? item.path : `${base}${item.path}`}
 					class="dropdown-item"
 					onclick={onItemClick}
 					role="menuitem"

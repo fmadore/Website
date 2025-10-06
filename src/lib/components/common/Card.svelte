@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 
 	let {
@@ -31,7 +32,11 @@
 	{#if imageUrl}
 		<div class="card-image">
 			{#if linkUrl}
-				<a href={linkUrl} {target} rel="noopener noreferrer">
+				<a
+					href={linkUrl.startsWith('/') ? `${base}${linkUrl}` : linkUrl}
+					{target}
+					rel="noopener noreferrer"
+				>
 					<img
 						src={imageUrl}
 						alt={imageAlt}
@@ -57,7 +62,11 @@
 	<div class="card-body">
 		<h2 class="card-title">
 			{#if linkUrl}
-				<a href={linkUrl} {target} rel="noopener noreferrer">
+				<a
+					href={linkUrl.startsWith('/') ? `${base}${linkUrl}` : linkUrl}
+					{target}
+					rel="noopener noreferrer"
+				>
 					{title}
 				</a>
 			{:else}

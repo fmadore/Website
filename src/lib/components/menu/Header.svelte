@@ -175,7 +175,7 @@
 	<div class="container">
 		<div class="header-inner">
 			<div class="header-logo">
-				<a href="{base}/" class="site-title"> Frédérick Madore </a>
+				<a href={`${base}/`} class="site-title"> Frédérick Madore </a>
 			</div>
 
 			<!-- Desktop Navigation & Theme Toggle -->

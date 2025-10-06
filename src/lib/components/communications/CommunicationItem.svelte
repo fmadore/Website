@@ -60,11 +60,10 @@
 				</div>
 
 				<h3 class="entity-title">
-					<a href="{base}/communications/{communication.id}" class="entity-title-link">
+					<a href={`${base}/communications/${communication.id}`} class="entity-title-link">
 						{communication?.title || 'Untitled Communication'}
 					</a>
 				</h3>
-
 				<div class="entity-details">
 					{#if communication?.authors && communication.authors.length > 0}
 						<div>

@@ -23,7 +23,7 @@
 		{/if}
 		<span class="item-date improved-date">{item.date}</span>
 	</div>
-	<a href="{base}{basePath}/{item.id}" class="item-title">
+	<a href={`${base}${basePath}/${item.id}`} class="item-title">
 		{item.title}
 	</a>
 	{#if item.authors && item.authors.length > 0}
