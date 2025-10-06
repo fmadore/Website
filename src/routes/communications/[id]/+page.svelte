@@ -180,12 +180,12 @@
 			<section class="panel-papers-section">
 				<h2 class="panel-section-title">Papers in this Panel</h2>
 				<div class="panel-papers-grid">
-					{#each communication.papers as paper, index}
+					{#each communication.papers as paper, index (paper.title + index)}
 						<div class="panel-paper-card">
 							<h3 class="panel-paper-title">{paper.title}</h3>
 							{#if paper.authors && paper.authors.length > 0}
 								<div class="panel-paper-authors">
-									{#each paper.authors as author, index}
+									{#each paper.authors as author, index (author.name + index)}
 										<span>
 											{author.name}{#if author.affiliation}{' '}({author.affiliation}){/if}{#if index < paper.authors.length - 1},&nbsp;{/if}
 										</span>
@@ -207,7 +207,7 @@
 			<section class="participants-section">
 				<h2 class="panel-section-title">Participants</h2>
 				<div class="participants-grid">
-					{#each communication.participants as participant}
+					{#each communication.participants as participant, index (participant.name + index)}
 						<div class="participant-card">
 							<div class="participant-name">{participant.name}</div>
 							{#if participant.role}

@@ -272,8 +272,7 @@
 				/>
 			{/snippet}
 
-			{#snippet children()}
-				<div class="desktop-controls">
+			<div class="desktop-controls">
 					<div class="list-status text-light">
 						Showing {$filteredCommunications.length || 0} conference activities
 						{#if areFiltersActive($activeFilters)}
@@ -314,7 +313,6 @@
 					emptyStateNoFiltersMessage="No conference activities found matching your criteria. Try clearing some filters."
 					onitemrequest={handleFilterRequest}
 				/>
-			{/snippet}
 		</EntityListPageLayout>
 	</div>
 </div>

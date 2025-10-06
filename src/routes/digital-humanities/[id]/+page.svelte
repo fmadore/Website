@@ -189,7 +189,7 @@
 			<section class="mb-6">
 				<h3 class="text-lg font-semibold mb-2">Reviews</h3>
 				<ul class="space-y-4">
-					{#each project.reviews as review}
+					{#each project.reviews as review (review.url)}
 						<li class="bg-background-alt p-4 rounded-md shadow-sm">
 							<a
 								href={review.url}
