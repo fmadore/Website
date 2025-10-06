@@ -337,6 +337,13 @@
 
 	/* Content widths */
 	--content-max-width: 1200px;
+	--content-width-xs: 20rem; /* 320px */
+	--content-width-sm: 24rem; /* 384px */
+	--content-width-3xl: 48rem; /* 768px */
+	--content-width-4xl: 56rem; /* 896px */
+	--content-width-5xl: 64rem; /* 1024px */
+	--content-width-6xl: 72rem; /* 1152px */
+	--content-width-7xl: 80rem; /* 1280px */
 
 	/* ===== Z-INDEX SCALE ===== */
 	--z-dropdown: 1000;

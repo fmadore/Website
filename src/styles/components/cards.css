@@ -21,9 +21,9 @@
 	--card-shadow-color: 30, 58, 95;
 	--card-shadow-opacity: 0.3;
 	--card-shadow-opacity-hover: 0.35;
-	--card-transform-hover: translateY(-2px);
-	--card-link-transform: translateX(3px);
-	--card-height-image: 14rem;
+	--card-transform-hover: var(--transform-lift-md);
+	--card-link-transform: translateX(var(--spacing-3));
+	--card-height-image: var(--spacing-56, 14rem); /* Fallback for large image height */
 }
 
 .card {

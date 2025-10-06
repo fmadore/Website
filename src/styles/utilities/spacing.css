@@ -156,7 +156,7 @@
 }
 
 /* Essential responsive variants based on actual usage */
-@media (min-width: 640px) {
+@media (min-width: var(--breakpoint-sm)) {
 	.sm\:flex-row {
 		flex-direction: row;
 	}
@@ -173,7 +173,7 @@
 	}
 }
 
-@media (min-width: 768px) {
+@media (min-width: var(--breakpoint-md)) {
 	.md\:p-6 {
 		padding: var(--space-lg);
 	}
@@ -192,7 +192,7 @@
 	}
 }
 
-@media (min-width: 1024px) {
+@media (min-width: var(--breakpoint-lg)) {
 	.lg\:px-8 {
 		padding-left: var(--space-xl);
 		padding-right: var(--space-xl);
