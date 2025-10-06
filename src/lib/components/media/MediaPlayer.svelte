@@ -38,8 +38,8 @@
 	let volume = $state(1);
 	let isMuted = $state(muted);
 	let isFullscreen = $state(false);
-	let isLoading = $state(false);
 	let error = $state<string>('');
+	let isLoading = $state(true);
 
 	// DOM element references (use null to make TS narrowing simpler)
 	let mediaElement: HTMLVideoElement | HTMLAudioElement | null = $state(null);
@@ -93,6 +93,7 @@
 		const el = mediaElement;
 		if (!el) return; // will rerun once bound
 
+		isLoading = true;
 		el.addEventListener('loadedmetadata', handleLoadedMetadata);
 		el.addEventListener('timeupdate', handleTimeUpdate);
 		el.addEventListener('play', handlePlay);
@@ -100,7 +101,6 @@
 		el.addEventListener('ended', handleEnded);
 		el.addEventListener('error', handleError);
 
-		isLoading = true;
 		if (el.readyState >= 1) handleLoadedMetadata();
 
 		return () => {
@@ -268,17 +268,15 @@
 
 				<!-- Audio visualization -->
 				<div class="audio-visualization">
-					<!-- Animated waveform bars -->
-					<div class="waveform">
-						{#each Array(24) as _, i}
-							<div
-								class="wave-bar"
-								style="animation-delay: {i * 50}ms; height: {10 + Math.sin(i * 0.5) * 8}px;"
-							></div>
-						{/each}
-					</div>
-
-					<!-- Central audio icon -->
+				<!-- Animated waveform bars -->
+				<div class="waveform">
+					{#each Array(24) as _, i (i)}
+						<div
+							class="wave-bar"
+							style="animation-delay: {i * 50}ms; height: {10 + Math.sin(i * 0.5) * 8}px;"
+						></div>
+					{/each}
+				</div>					<!-- Central audio icon -->
 					<div class="audio-icon-container">
 						<div class="audio-icon-backdrop"></div>
 						<div class="audio-icon">
