@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { activities } from '../../stores/activities';
+	import { activities } from '../../stores/activities.svelte';
 	import type { Activity } from '$lib/types';
 	import { base } from '$app/paths';
 	import PanelBase from './PanelBase.svelte';

@@ -18,7 +18,7 @@
 
 	import ReferenceLink from './ReferenceLink.svelte';
 	import ReferencePreviewCard from './ReferencePreviewCard.svelte';
-	import { activeReferenceId } from '$lib/stores/activeItemReferenceStore';
+	import { activeReferenceId } from '$lib/stores/activeItemReferenceStore.svelte';
 
 	/* ───────────────────────────── Props ─────────────────────────────── */
 	/** ID of the referenced item. */

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { activities, type Activity } from '$lib/stores/activities';
+	import { activities, type Activity } from '$lib/stores/activities.svelte';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';

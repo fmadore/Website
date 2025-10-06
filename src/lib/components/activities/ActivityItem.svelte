@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Activity } from '$lib/stores/activities';
+	import type { Activity } from '$lib/stores/activities.svelte';
 	import Card from '$lib/components/common/Card.svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
 	import TagList from '$lib/components/molecules/TagList.svelte';

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { activities, type Activity } from '$lib/stores/activities';
+	import { activities, type Activity } from '$lib/stores/activities.svelte';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import SEO from '$lib/SEO.svelte';
