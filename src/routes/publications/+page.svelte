@@ -243,7 +243,6 @@
 				<UniversalFiltersSidebar
 					config={publicationFilterConfig}
 					isExpandedMobile={mobileFiltersExpanded}
-					oncollapse={() => (mobileFiltersExpanded = false)}
 				/>
 			{/snippet}
 

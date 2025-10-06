@@ -12,11 +12,7 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import type {
-		Map as LeafletMap,
-		MarkerClusterGroup,
-		TileLayer
-	} from 'leaflet'; // Import types only
+	import type { Map as LeafletMap, MarkerClusterGroup, TileLayer } from 'leaflet'; // Import types only
 	import { base } from '$app/paths'; // Import base path
 	import Icon from '@iconify/svelte'; // Import Iconify
 	import { getTheme } from '$lib/stores/themeStore.svelte'; // Import theme store

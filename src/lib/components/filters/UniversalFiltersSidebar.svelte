@@ -4,17 +4,16 @@
 	import FilterSectionRangeSlider from '$lib/components/filters/FilterSectionRangeSlider.svelte';
 	import FilterSectionButtons from '$lib/components/filters/FilterSectionButtons.svelte';
 	import FilterSectionChips from '$lib/components/filters/FilterSectionChips.svelte';
-	import { fly, slide } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 	import { animationsEnabledStore as animationsEnabled } from '$lib/stores/globalState.svelte';
 
 	interface Props {
 		config: UniversalFilterConfig;
 		isExpandedMobile?: boolean;
-		oncollapse?: () => void;
 	}
 
 	// Prop for the configuration object
-	let { config, isExpandedMobile = false, oncollapse }: Props = $props();
+	let { config, isExpandedMobile = false }: Props = $props();
 
 	// Reference to the sidebar element
 	let sidebarElement: HTMLElement;
@@ -52,8 +51,8 @@
 	}
 
 	// Wrapper function to enhance any filter toggle with sidebar scroll preservation
-	function createScrollPreservingToggle(originalToggle: (item: any) => void) {
-		return (item: any) => {
+	function createScrollPreservingToggle(originalToggle: (item: string) => void) {
+		return (item: string) => {
 			animationsEnabled.set(false); // Disable animations before updating filters
 			preserveSidebarScroll(() => originalToggle(item));
 		};
@@ -90,7 +89,11 @@
 
 	<!-- Collapsible Filter Sections Wrapper (Mobile) -->
 	{#if isExpandedMobile}
-		\t\t<div class="filter-sections-wrapper" transition:slide={{ duration: 200 }}>\n\t\t\t{#each enhancedSections as section (section.title)}\n\t\t\t\t<div class="filter-section">\n\t\t\t\t\t{#if section.type === 'checkbox'}
+		\t\t
+		<div class="filter-sections-wrapper" transition:slide={{ duration: 200 }}>
+			\n\t\t\t{#each enhancedSections as section (section.title)}\n\t\t\t\t
+				<div class="filter-section">
+					\n\t\t\t\t\t{#if section.type === 'checkbox'}
 						<FilterSectionCheckbox
 							title={section.title}
 							items={section.items}
@@ -115,21 +118,22 @@
 							toggleItem={section.toggleItem}
 							counts={section.counts}
 						/>
-				{:else if section.type === 'chips'}
-					<FilterSectionChips
-						title={section.title}
-						items={section.items}
-						activeItems={section.activeItems}
-						toggleItem={section.toggleItem}
-						counts={section.counts}
-					/>
-				{/if}
-			</div>
-		{/each}
-	</div>
-{/if}	<!-- Always visible on desktop -->
+					{:else if section.type === 'chips'}
+						<FilterSectionChips
+							title={section.title}
+							items={section.items}
+							activeItems={section.activeItems}
+							toggleItem={section.toggleItem}
+							counts={section.counts}
+						/>
+					{/if}
+				</div>
+			{/each}
+		</div>
+	{/if}
+	<!-- Always visible on desktop -->
 	<div class="filter-sections-wrapper-desktop">
-		{#each enhancedSections as section, index (section.title)}
+		{#each enhancedSections as section (section.title)}
 			<div class="filter-section">
 				{#if section.type === 'checkbox'}
 					<FilterSectionCheckbox
@@ -156,19 +160,21 @@
 						toggleItem={section.toggleItem}
 						counts={section.counts}
 					/>
-			{:else if section.type === 'chips'}
-				<FilterSectionChips
-					title={section.title}
-					items={section.items}
-					activeItems={section.activeItems}
-					toggleItem={section.toggleItem}
-					counts={section.counts}
-				/>
-			{/if}
-		</div>
-	{/each}
-</div>
-</aside><style>
+				{:else if section.type === 'chips'}
+					<FilterSectionChips
+						title={section.title}
+						items={section.items}
+						activeItems={section.activeItems}
+						toggleItem={section.toggleItem}
+						counts={section.counts}
+					/>
+				{/if}
+			</div>
+		{/each}
+	</div>
+</aside>
+
+<style>
 	/* Main sidebar container - Card design for the whole sidebar */
 	.filter-sidebar {
 		background: var(--color-surface);
