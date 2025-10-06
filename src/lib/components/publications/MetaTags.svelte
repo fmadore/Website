@@ -2,6 +2,7 @@
 	import type { Publication } from '$lib/types';
 	import { base } from '$app/paths';
 	import { page } from '$app/state';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	let { publication }: { publication: Publication } = $props();
 
@@ -134,7 +135,7 @@
 
 	// Helper to create COinS metadata
 	const createCoinsData = (): string => {
-		const params = new URLSearchParams();
+		const params = new SvelteURLSearchParams();
 
 		// Basic COinS parameters
 		params.set('url_ver', 'Z39.88-2004');

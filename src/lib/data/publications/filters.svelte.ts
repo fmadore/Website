@@ -23,6 +23,7 @@ import {
 	createDerivedCountStore
 } from '$lib/utils/filterUtils';
 import { derived, readable } from 'svelte/store';
+import { SvelteSet } from 'svelte/reactivity';
 
 // Explicitly type the imported allPublications to include sourceDirType
 const allPublications: (Publication & { sourceDirType: string })[] = baseAllPublications;
@@ -46,7 +47,7 @@ function extractEditors(publication: Publication & { sourceDirType?: string }): 
 
 // Extract all unique co-authors from publications, excluding "Frédérick Madore"
 export const allAuthors = Array.from(
-	new Set([
+	new SvelteSet([
 		// Get authors from publications
 		...allPublications.flatMap((pub: Publication & { sourceDirType: string }) => pub.authors || []),
 		// Get editors from publications, excluding chapters and encyclopedia entries
@@ -67,14 +68,14 @@ export const allAuthors = Array.from(
 
 // Extract all unique countries from publications
 export const allCountries = Array.from(
-	new Set(
+	new SvelteSet(
 		allPublications.flatMap((pub: Publication & { sourceDirType: string }) => pub.country || [])
 	)
 ).sort();
 
 // Extract all unique projects from publications
 export const allProjects = Array.from(
-	new Set(
+	new SvelteSet(
 		allPublications
 			.map((pub: Publication & { sourceDirType: string }) => pub.project)
 			.filter(Boolean) as string[]
@@ -310,7 +311,7 @@ export const displayedAuthors = derived(activeFilters, ($activeFilters): string[
 	});
 
 	// Extract authors and applicable editors from these relevant publications
-	const authorsFromRelevantPubs = new Set<string>();
+	const authorsFromRelevantPubs = new SvelteSet<string>();
 	relevantPublications.forEach((pub) => {
 		// Add authors
 		if (pub.authors) {
@@ -419,7 +420,7 @@ export const displayedTypes = derived(activeFilters, ($activeFilters): string[] 
 			return false;
 		return true;
 	});
-	const types = new Set(relevantPublications.map((pub) => pub.type));
+	const types = new SvelteSet(relevantPublications.map((pub) => pub.type));
 	return Array.from(types).sort((a, b) => {
 		// Sort by display labels instead of raw values
 		const labelA = typeLabels[a] || a;
@@ -471,7 +472,7 @@ export const displayedTags = derived(activeFilters, ($activeFilters): string[] =
 			return false;
 		return true;
 	});
-	const tags = new Set(relevantPublications.flatMap((pub) => pub.tags || []));
+	const tags = new SvelteSet(relevantPublications.flatMap((pub) => pub.tags || []));
 	return Array.from(tags).sort();
 });
 
@@ -519,7 +520,7 @@ export const displayedLanguages = derived(activeFilters, ($activeFilters): strin
 			return false;
 		return true;
 	});
-	const languages = new Set(
+	const languages = new SvelteSet(
 		relevantPublications.flatMap((pub) =>
 			pub.language ? pub.language.split(',').map((l) => l.trim()) : []
 		)

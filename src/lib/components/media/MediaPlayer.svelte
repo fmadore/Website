@@ -117,7 +117,7 @@
 	const togglePlayPause = () => {
 		const el = mediaElement;
 		if (!el) return;
-		isPlaying ? el.pause() : el.play();
+		void (isPlaying ? el.pause() : el.play());
 	};
 
 	// Seek to specific time
@@ -176,7 +176,7 @@
 	// Set volume
 	const setVolume = (newVolume: number) => {
 		volume = Math.max(0, Math.min(1, newVolume));
-		mediaElement && (mediaElement.volume = volume);
+		void (mediaElement && (mediaElement.volume = volume));
 	};
 
 	// Toggle fullscreen (for video)
@@ -184,7 +184,7 @@
 		const el = mediaElement;
 		if (type !== 'video' || !el) return;
 		try {
-			!isFullscreen ? await el.requestFullscreen() : await document.exitFullscreen();
+			void (!isFullscreen ? await el.requestFullscreen() : await document.exitFullscreen());
 		} catch (err) {
 			console.error('Fullscreen error:', err);
 		}
@@ -270,7 +270,7 @@
 				<div class="audio-visualization">
 					<!-- Animated waveform bars -->
 					<div class="waveform">
-						{#each Array(24) as _, i (i)}
+						{#each Array(24), i (i)}
 							<div
 								class="wave-bar"
 								style="animation-delay: {i * 50}ms; height: {10 + Math.sin(i * 0.5) * 8}px;"
@@ -312,7 +312,7 @@
 
 					<!-- Subtle floating particles -->
 					<div class="particles">
-						{#each Array(6) as _, i (i)}
+						{#each Array(6), i (i)}
 							<div
 								class="particle"
 								style="

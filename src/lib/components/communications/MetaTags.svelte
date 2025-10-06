@@ -2,6 +2,7 @@
 	import type { Communication } from '$lib/types/communication';
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	let { communication }: { communication: Communication } = $props();
 
@@ -53,7 +54,7 @@
 
 	// Helper to create COinS metadata for presentations
 	const createCoinsData = (): string => {
-		const params = new URLSearchParams();
+		const params = new SvelteURLSearchParams();
 
 		// Basic COinS parameters
 		params.set('url_ver', 'Z39.88-2004');
