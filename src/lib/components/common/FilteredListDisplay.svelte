@@ -5,8 +5,9 @@
 	// Generic type to represent any store with a subscribe method
 	type Readable<T> = { subscribe: (run: (value: T) => void) => () => void };
 
-	// Use a more generic type definition that works with dynamic components
-	type AnyComponentType = Component<Record<string, unknown>>;
+	// Use a more flexible type definition that works with dynamic components
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	type AnyComponentType = Component<any>;
 	type MaybeValue<T> = { value?: T };
 
 	interface Props {

@@ -10,10 +10,11 @@
 	interface Props {
 		config: UniversalFilterConfig;
 		isExpandedMobile?: boolean;
+		oncollapse?: () => void;
 	}
 
 	// Prop for the configuration object
-	let { config, isExpandedMobile = false }: Props = $props();
+	let { config, isExpandedMobile = false, oncollapse }: Props = $props();
 
 	// Reference to the sidebar element
 	let sidebarElement: HTMLElement;
