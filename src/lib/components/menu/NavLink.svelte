@@ -35,65 +35,65 @@
 </a>
 
 <style>
-	.nav-link {
-		color: var(--color-text);
-		text-decoration: none;
-		font-weight: 500;
-		font-size: var(--font-size-base);
-		padding: var(--spacing-2) 0;
-		transition: all 0.2s ease;
-		position: relative;
-		display: flex;
-		align-items: center;
-		gap: var(--spacing-1);
-	}
+        .nav-link {
+                color: var(--color-text);
+                text-decoration: none;
+                font-weight: var(--font-weight-medium);
+                font-size: var(--font-size-base);
+                padding: var(--spacing-2) 0;
+                transition: all var(--anim-duration-fast) var(--anim-ease-base);
+                position: relative;
+                display: flex;
+                align-items: center;
+                gap: var(--spacing-1);
+        }
 
-	.nav-link::after {
-		content: '';
-		position: absolute;
-		bottom: -2px;
-		left: 0;
-		width: 0;
-		height: 2px;
-		background-color: var(--color-primary);
-		transition: width 0.3s ease;
-	}
+        .nav-link::after {
+                content: '';
+                position: absolute;
+                bottom: calc(-1 * var(--spacing-0\.5));
+                left: 0;
+                width: 0;
+                height: var(--border-width-medium);
+                background-color: var(--color-primary);
+                transition: width var(--anim-duration-base) var(--anim-ease-base);
+        }
 
 	.nav-link:hover {
 		color: var(--color-primary);
 	}
 
-	.nav-link:hover::after {
-		width: 100%;
-	}
+        .nav-link:hover::after {
+                width: 100%;
+        }
 
-	.dropdown-icon {
-		display: inline-block;
-		font-size: 12px;
-		transition: transform 0.3s ease;
-		line-height: 1;
-	}
+        .dropdown-icon {
+                display: inline-block;
+                font-size: var(--font-size-xs);
+                transition: transform var(--anim-duration-base) var(--anim-ease-base);
+                line-height: 1;
+        }
 
-	.nav-link:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
+        .nav-link:focus-visible {
+                outline: var(--border-width-medium) solid var(--color-primary);
+                outline-offset: var(--spacing-1);
+        }
 
 	@media (hover: none) {
 		/* Prevent hover state issues on touch devices */
-		.nav-link:hover::after {
-			width: 0;
-		}
+                .nav-link:hover::after {
+                        width: 0;
+                }
 
-		.nav-link:active::after {
-			width: 100%;
-		}
-	}
+                .nav-link:active::after {
+                        width: 100%;
+                }
+        }
 
-	/* High contrast mode support */
-	@media (prefers-contrast: high) {
-		.nav-link::after {
-			height: 3px;
-		}
-	}
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+                .nav-link::after {
+                        height: calc(var(--border-width-medium) + var(--border-width-thin));
+                }
+        }
 </style>

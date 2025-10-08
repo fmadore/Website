@@ -56,7 +56,7 @@
 	let dropdownTimer = $state<ReturnType<typeof setTimeout> | null>(null);
 	let bodyOverflowHidden = $state(false);
 
-	const HIDE_DELAY = 200;
+        const HIDE_DELAY = 200;
 
 	// Dropdown handlers
 	function showDropdown(index: number) {
@@ -137,12 +137,12 @@
 	}
 
 	// Window resize handler
-	function handleResize() {
-		const mobileBreakpoint = 768;
-		if (window.innerWidth >= mobileBreakpoint && mobileMenuOpen) {
-			closeMobileMenu();
-		}
-	}
+        function handleResize() {
+                const mobileBreakpoint = 896; // Match 56rem desktop breakpoint
+                if (window.innerWidth >= mobileBreakpoint && mobileMenuOpen) {
+                        closeMobileMenu();
+                }
+        }
 
 	// Lifecycle
 	$effect(() => {
@@ -197,125 +197,125 @@
 </header>
 
 <style>
-	/* Site Header Styles */
-	:global(.site-header) {
-		background: linear-gradient(
-			135deg,
-			rgba(255, 255, 255, 0.8) 0%,
-			rgba(var(--color-primary-rgb), 0.02) 50%,
-			rgba(var(--color-highlight-rgb), 0.01) 100%
-		);
-		backdrop-filter: blur(20px);
-		-webkit-backdrop-filter: blur(20px);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-		box-shadow:
-			0 4px 24px 0 rgba(31, 38, 135, 0.15),
-			inset 0 1px 0 rgba(255, 255, 255, 0.4);
-		position: sticky;
-		top: 0;
-		z-index: 100;
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-	}
+        /* Site Header Styles */
+        :global(.site-header) {
+                background: linear-gradient(
+                        135deg,
+                        rgba(var(--color-white-rgb), 0.8) 0%,
+                        rgba(var(--color-primary-rgb), 0.02) 50%,
+                        rgba(var(--color-highlight-rgb), 0.01) 100%
+                );
+                backdrop-filter: blur(var(--glass-blur-amount, 20px));
+                -webkit-backdrop-filter: blur(var(--glass-blur-amount, 20px));
+                border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb), 0.3);
+                box-shadow:
+                        var(--shadow-lg),
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.4);
+                position: sticky;
+                top: 0;
+                z-index: var(--z-sticky);
+                transition: all var(--anim-duration-base) var(--anim-ease-base);
+        }
 
-	:global(.site-header:hover) {
-		background: linear-gradient(
-			135deg,
-			rgba(255, 255, 255, 0.9) 0%,
-			rgba(var(--color-primary-rgb), 0.03) 50%,
-			rgba(var(--color-highlight-rgb), 0.02) 100%
-		);
-		border-bottom-color: rgba(255, 255, 255, 0.4);
-		box-shadow:
-			0 6px 32px 0 rgba(31, 38, 135, 0.2),
-			inset 0 1px 0 rgba(255, 255, 255, 0.5);
-	}
+        :global(.site-header:hover) {
+                background: linear-gradient(
+                        135deg,
+                        rgba(var(--color-white-rgb), 0.9) 0%,
+                        rgba(var(--color-primary-rgb), 0.03) 50%,
+                        rgba(var(--color-highlight-rgb), 0.02) 100%
+                );
+                border-bottom-color: rgba(var(--color-white-rgb), 0.4);
+                box-shadow:
+                        var(--shadow-xl),
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.5);
+        }
 
-	/* Dark mode */
-	:global(html.dark .site-header) {
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-dark-surface-rgb), 0.8) 0%,
-			rgba(var(--color-primary-rgb), 0.04) 50%,
-			rgba(var(--color-highlight-rgb), 0.02) 100%
-		);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-		box-shadow:
-			0 4px 24px 0 rgba(0, 0, 0, 0.4),
-			inset 0 1px 0 rgba(255, 255, 255, 0.1);
-	}
+        /* Dark mode */
+        :global(html.dark .site-header) {
+                background: linear-gradient(
+                        135deg,
+                        rgba(var(--color-dark-surface-rgb), 0.8) 0%,
+                        rgba(var(--color-primary-rgb), 0.04) 50%,
+                        rgba(var(--color-highlight-rgb), 0.02) 100%
+                );
+                border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb), 0.15);
+                box-shadow:
+                        var(--shadow-lg),
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.1);
+        }
 
-	:global(html.dark .site-header:hover) {
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-dark-surface-rgb), 0.85) 0%,
-			rgba(var(--color-primary-rgb), 0.06) 50%,
-			rgba(var(--color-highlight-rgb), 0.03) 100%
-		);
-		border-bottom-color: rgba(255, 255, 255, 0.2);
-		box-shadow:
-			0 6px 32px 0 rgba(0, 0, 0, 0.5),
-			inset 0 1px 0 rgba(255, 255, 255, 0.15);
-	}
+        :global(html.dark .site-header:hover) {
+                background: linear-gradient(
+                        135deg,
+                        rgba(var(--color-dark-surface-rgb), 0.85) 0%,
+                        rgba(var(--color-primary-rgb), 0.06) 50%,
+                        rgba(var(--color-highlight-rgb), 0.03) 100%
+                );
+                border-bottom-color: rgba(var(--color-white-rgb), 0.2);
+                box-shadow:
+                        var(--shadow-xl),
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.15);
+        }
 
-	.container {
-		max-width: 1280px;
-		width: 100%;
-		margin-left: auto;
-		margin-right: auto;
-		padding: 0 var(--spacing-4);
-	}
+        .container {
+                max-width: var(--container-xl);
+                width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 0 var(--spacing-4);
+        }
 
-	.header-inner {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: var(--spacing-4) 0;
-		position: relative;
-		height: 64px;
-	}
+        .header-inner {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: var(--spacing-4) 0;
+                position: relative;
+                min-height: var(--spacing-16);
+        }
 
-	.header-logo {
-		flex-shrink: 0;
-		display: flex;
-		align-items: center;
-	}
+        .header-logo {
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+        }
 
-	.header-logo :global(.site-title) {
-		font-size: var(--font-size-xl);
-		font-weight: 700;
-		color: var(--color-text);
-		text-decoration: none;
-		transition: color 0.2s ease;
-	}
+        .header-logo :global(.site-title) {
+                font-size: var(--font-size-xl);
+                font-weight: var(--font-weight-bold);
+                color: var(--color-text);
+                text-decoration: none;
+                transition: color var(--anim-duration-fast) var(--anim-ease-base);
+        }
 
-	.header-logo :global(.site-title:hover) {
-		color: var(--color-primary);
-	}
+        .header-logo :global(.site-title:hover) {
+                color: var(--color-primary);
+        }
 
-	.desktop-controls {
-		display: none;
-		align-items: center;
-		gap: var(--spacing-6);
-	}
+        .desktop-controls {
+                display: none;
+                align-items: center;
+                gap: var(--spacing-6);
+        }
 
-	@media (min-width: 640px) {
-		.container {
-			padding: 0 var(--spacing-6);
-		}
-	}
+        @media (min-width: 40rem) {
+                .container {
+                        padding: 0 var(--spacing-6);
+                }
+        }
 
-	@media (min-width: 1024px) {
-		.header-inner {
-			height: 72px;
-		}
+        @media (min-width: 56rem) {
+                .header-inner {
+                        min-height: calc(var(--spacing-16) + var(--spacing-2));
+                }
 
-		.desktop-controls {
-			display: flex;
-		}
-	}
+                .desktop-controls {
+                        display: flex;
+                }
+        }
 
-	/* Theme toggle spacing */
-	.desktop-controls :global(.theme-toggle) {
-		margin-left: var(--spacing-4);
-	}
+        /* Theme toggle spacing */
+        .desktop-controls :global(.theme-toggle) {
+                margin-left: var(--spacing-4);
+        }
 </style>
