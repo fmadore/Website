@@ -59,8 +59,14 @@
                 transform: translateY(calc(-1 * (var(--spacing-2) - var(--spacing-0\.5)))) rotate(-45deg);
         }
 
+        /* Hide hamburger completely when menu is active */
+        .hamburger.active {
+                opacity: 0;
+                pointer-events: none;
+        }
+
         /* Hide hamburger on desktop */
-        @media (min-width: 56rem) {
+        @media (min-width: 80rem) {
                 .hamburger {
                         display: none;
                 }

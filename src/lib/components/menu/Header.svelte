@@ -138,7 +138,7 @@
 
 	// Window resize handler
         function handleResize() {
-                const mobileBreakpoint = 896; // Match 56rem desktop breakpoint
+                const mobileBreakpoint = 1280; // Match 80rem desktop breakpoint
                 if (window.innerWidth >= mobileBreakpoint && mobileMenuOpen) {
                         closeMobileMenu();
                 }
@@ -304,7 +304,7 @@
                 }
         }
 
-        @media (min-width: 56rem) {
+        @media (min-width: 80rem) {
                 .header-inner {
                         min-height: calc(var(--spacing-16) + var(--spacing-2));
                 }
