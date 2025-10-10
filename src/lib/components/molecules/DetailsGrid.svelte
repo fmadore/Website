@@ -31,7 +31,7 @@
 				<div class="detail-item">
 					<dt class="detail-label">{detail.label}</dt>
 					<dd class="detail-value">
-						{#if detail.link && detail.link !== 'undefined'}
+						{#if detail.link && detail.link !== 'undefined' && typeof detail.link === 'string'}
 							<a href={detail.link} target="_blank" rel="noopener" class="detail-link">
 								{Array.isArray(detail.value) ? detail.value.join(', ') : detail.value}
 							</a>

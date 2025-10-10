@@ -20,13 +20,13 @@
 	} = $props();
 
 	let visibleAdditionalUrls = $derived(
-		additionalUrls?.filter((link) => link.url && link.label) ?? []
+		additionalUrls?.filter((link) => link.url && link.label && typeof link.url === 'string') ?? []
 	);
 </script>
 
 {#if primaryUrl || visibleAdditionalUrls.length > 0}
 	<section class={sectionClass}>
-		{#if primaryUrl}
+		{#if primaryUrl && typeof primaryUrl === 'string' && primaryUrl !== 'undefined'}
 			<div class={primaryDivClass}>
 				<a href={primaryUrl} target="_blank" rel="noopener noreferrer" class={primaryButtonClass}>
 					{primaryLabel}
