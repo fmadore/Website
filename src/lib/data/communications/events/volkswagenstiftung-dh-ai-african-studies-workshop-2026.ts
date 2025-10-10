@@ -48,6 +48,11 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			affiliation: 'Ghent University'
 		},
 		{
+			name: 'Nuraddin Aman',
+			role: 'Participant',
+			affiliation: 'Addis Ababa University'
+		},
+		{
 			name: 'Augustine Farinola',
 			role: 'Participant',
 			affiliation: 'University of Alberta'
@@ -121,6 +126,11 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			name: 'Janeth David Nzenga',
 			role: 'Participant',
 			affiliation: 'University of Dar es Salaam'
+		},
+		{
+			name: 'Johannes Sibeko',
+			role: 'Participant',
+			affiliation: 'Nelson Mandela University'
 		},
 		{
 			name: 'Oumou Sidibé',
