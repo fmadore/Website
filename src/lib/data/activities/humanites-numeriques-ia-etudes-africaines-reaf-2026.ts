@@ -40,7 +40,7 @@ export const activity: Activity = {
         <p>Ce panel organisé par Frédérick Madore et Vincent Hiribarren fait suite à la réflexion entamée à l'ECAS2025. Il vise à présenter des recherches transdisciplinaires de pointe dans le monde francophone qui utilisent des méthodes numériques pour explorer les complexités des réalités, des identités et des systèmes de connaissance africains. En encourageant le dialogue sur le potentiel et les pièges des approches numériques, nous souhaitons contribuer à un paysage numérique plus inclusif, plus diversifié et plus critique dans les études africaines.</p>
         
         <h3>Soumission</h3>
-        <p>Veuillez envoyer le titre et le résumé de votre communication (en français ou en anglais, 2500 signes maximum) avant le <strong>15 décembre 2025</strong> à :</p>
+        <p>Veuillez envoyer le titre et le résumé de votre communication (en français ou en anglais, 2500 signes maximum) avant le <strong>15 novembre 2025</strong> à :</p>
         <ul>
             <li>Frédérick Madore, Leibniz-Zentrum Moderner Orient, Berlin, frederick.madore@zmo.de</li>
             <li>Vincent Hiribarren, King's College London, Londres, vincent.hiribarren@kcl.ac.uk</li>
@@ -48,11 +48,12 @@ export const activity: Activity = {
     `,
 	tags: ['REAF', 'Digital Humanities', 'AI', 'Methodology', 'Panel'],
 	type: 'conference',
-	url: '',
 	image: 'images/communications/reaf-2026.webp',
 	heroImage: {
 		src: 'images/communications/reaf-2026-hero.webp',
 		alt: '9ème édition Rencontres des Études Africaines en France'
 	},
+    pdfPath: 'files/humanites-numeriques-ia-etudes-africaines-reaf-2026.pdf',
+    pdfTitle: 'Appel à propositions - Humanités numériques (DH) et IA et dans les études africaines (REAF 2026)',
 	panelType: 'conference'
 };
