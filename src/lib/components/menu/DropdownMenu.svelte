@@ -18,11 +18,11 @@
 <div
 	class="dropdown-menu"
 	class:active={isActive}
-	role="menu"
-	tabindex="-1"
-	aria-label={`${parentName} submenu`}
 >
-	<ul>
+	<ul
+		role="menu"
+		aria-label={`${parentName} submenu`}
+	>
 		{#each items as item (item.path)}
 			<li role="none">
 				<a
