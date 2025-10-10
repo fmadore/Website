@@ -33,7 +33,7 @@
 						{item.label}
 					</span>
 				{:else}
-					<a href={`${base}${item.href}`} class="breadcrumb-link">
+					<a href={item.href} class="breadcrumb-link">
 						{item.label}
 					</a>
 				{/if}

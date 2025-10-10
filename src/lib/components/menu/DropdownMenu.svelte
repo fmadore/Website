@@ -26,7 +26,7 @@
 		{#each items as item (item.path)}
 			<li role="none">
 				<a
-					href={item.path.startsWith('http') ? item.path : `${base}${item.path}`}
+					href={item.path}
 					class="dropdown-item"
 					onclick={onItemClick}
 					role="menuitem"
