@@ -151,6 +151,16 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			name: 'James Yékú',
 			role: 'Participant',
 			affiliation: 'University of Kansas'
+		},
+		{
+			name: 'Calum Houston',
+			role: 'Student assistant',
+			affiliation: 'Leibniz-Zentrum Moderner Orient'
+		},
+		{
+			name: 'Eline Marie Langbo Holm',
+			role: 'Student assistant',
+			affiliation: 'Leibniz-Zentrum Moderner Orient'
 		}
 	],
 	project: 'Mining the Islam West Africa Collection'
