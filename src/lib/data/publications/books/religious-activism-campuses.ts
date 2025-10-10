@@ -49,5 +49,24 @@ The history of these associations reveals the campus as a microcosm reflecting w
 			source: 'Dakar: Harmattan Sénégal, 2025',
 			url: 'https://www.editions-harmattan.fr/catalogue/livre/ecole-religion-et-republique-au-sahel/79472'
 		}
+	],
+	tableOfContents: [
+	'Frontmatter',
+	'Contents',
+	'Acknowledgements',
+	'Timeline and Map',
+	'List of the Main Abbreviations and Acronyms',
+	'List of Figures',
+	'Preface',
+	'1 Introduction',
+	'2 The Advent of Military Regimes and the Creation of the First Public University in Togo and Benin (1970–80)',
+	'3 Surviving in an Authoritarian Context: The First Faith-Based Student Associations on Campuses (1970s–80s)',
+	'4 Faith-Based Activism in an Era of Democratisation and Campuses in Turmoil (1990s)',
+	'5 Developing Leaders with Moral Values: Providing Entrepreneurial Skills Beyond the Academic Curriculum (2000–10s)',
+	'6 The Becoming of Former Activists Beyond Campus: A New Religious Elite?',
+	'7 ‘Too Young’, ‘Immature’, and not Committed Enough: The Decline of Faith-Based Student Organisations?',
+	'Conclusion: A History of Resilience, Adaptation, and Community',
+	'Sources and Bibliography',
+	'Index'
 	]
 };
