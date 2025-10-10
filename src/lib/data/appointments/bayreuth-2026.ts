@@ -1,0 +1,16 @@
+// src/lib/data/appointments/bayreuth-2026.ts
+import type { Appointment } from '$lib/types';
+
+export const bayreuth2026: Appointment = {
+	id: 'data-curator-bayreuth-2026',
+	title: 'Data Curator',
+	institution: 'Africa Multiple Cluster of Excellence, University of Bayreuth',
+	location: 'Bayreuth, Germany',
+	startYear: 2026,
+	endYear: null, // Ongoing
+	dateRangeString: '2026-Present',
+	dateISOStart: '2026-01-01',
+	dateISOEnd: null
+};
+
+export default bayreuth2026;

@@ -10,7 +10,7 @@ export const zmo2021: Appointment = {
 	endYear: null, // Ongoing
 	dateRangeString: '2021-Present',
 	dateISOStart: '2021-02-01',
-	dateISOEnd: null
+	dateISOEnd: '2025-12-31'
 };
 
 export default zmo2021;
