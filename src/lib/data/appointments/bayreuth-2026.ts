@@ -8,7 +8,7 @@ export const bayreuth2026: Appointment = {
 	location: 'Bayreuth, Germany',
 	startYear: 2026,
 	endYear: null, // Ongoing
-	dateRangeString: '2026-Present',
+	dateRangeString: '2026-',
 	dateISOStart: '2026-01-01',
 	dateISOEnd: null
 };
