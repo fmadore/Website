@@ -6,20 +6,45 @@ export default defineConfig({
 	build: {
 		// Note: cssCodeSplit is controlled by SvelteKit internally
 		// Use kit.inlineStyleThreshold in svelte.config.js instead
-		chunkSizeWarningLimit: 1000, // Increase warning limit to 1MB
+		chunkSizeWarningLimit: 600, // Warn at 600KB instead of 1MB for better awareness
 		rollupOptions: {
 			output: {
-				// Optimize chunking for better performance
+				// Optimize chunking for better performance and code splitting
 				manualChunks: (id) => {
-					// Put node_modules in vendor chunk
+					// Heavy charting libraries - dynamically imported, separate chunks
+					if (id.includes('echarts')) {
+						return 'echarts';
+					}
+					
+					// PDF generation libraries - dynamically imported
+					if (id.includes('jspdf')) {
+						return 'jspdf';
+					}
+					if (id.includes('html2canvas')) {
+						return 'html2canvas';
+					}
+					
+					// Map libraries - dynamically imported
+					if (id.includes('leaflet')) {
+						return 'leaflet';
+					}
+					
+					// Icon libraries
+					if (id.includes('@iconify') || id.includes('svelte-fa') || id.includes('@fortawesome')) {
+						return 'icons';
+					}
+					
+					// Date utilities
+					if (id.includes('date-fns')) {
+						return 'date-fns';
+					}
+					
+					// Other vendor dependencies
 					if (id.includes('node_modules')) {
 						return 'vendor';
 					}
-					// Put chart components together
-					if (id.includes('/visualisations/') && id.includes('ECharts')) {
-						return 'chart-components';
-					}
-					// Put data files together
+					
+					// Data files - keep separate for caching
 					if (id.includes('/data/publications/') || id.includes('/data/communications/')) {
 						return 'data';
 					}

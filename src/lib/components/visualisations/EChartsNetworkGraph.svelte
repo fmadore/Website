@@ -2,7 +2,7 @@
 ECharts Network Graph - A network visualization for author collaborations
 -->
 <script lang="ts">
-	import * as echarts from 'echarts';
+	import type * as echarts from 'echarts';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 
@@ -26,6 +26,7 @@ ECharts Network Graph - A network visualization for author collaborations
 	// State management
 	let chartContainer: HTMLDivElement;
 	let chart: echarts.ECharts | null = null;
+	let echartsLib: typeof echarts | null = null;
 	let isMobile = $state(false);
 
 	// Utility functions for CSS variable resolution
@@ -292,26 +293,47 @@ ECharts Network Graph - A network visualization for author collaborations
 		animationEasing: 'cubicOut' as any
 	});
 
-	// Chart lifecycle management
+	// Dynamic import and initialization
 	$effect(() => {
-		// Initialize chart only when container is available and chart doesn't exist
-		if (chartContainer && !chart) {
-			try {
-				chart = echarts.init(chartContainer);
-			} catch (error) {
-				console.error('Failed to initialize ECharts:', error);
-				return;
-			}
-		}
+		let mounted = true;
 
-		// Update chart options whenever they change
-		if (chart && data.length > 0) {
-			try {
-				chart.setOption(chartOption, true);
-			} catch (error) {
-				console.error('Failed to set chart options:', error);
+		// Load echarts library dynamically
+		(async () => {
+			if (!echartsLib) {
+				try {
+					const echartsModule = await import('echarts');
+					if (mounted) {
+						echartsLib = echartsModule;
+					}
+				} catch (error) {
+					console.error('Failed to load ECharts:', error);
+					return;
+				}
 			}
-		}
+
+			// Initialize chart only when container is available and chart doesn't exist
+			if (chartContainer && !chart && echartsLib) {
+				try {
+					chart = echartsLib.init(chartContainer);
+				} catch (error) {
+					console.error('Failed to initialize ECharts:', error);
+					return;
+				}
+			}
+
+			// Update chart options whenever they change
+			if (chart && data.length > 0) {
+				try {
+					chart.setOption(chartOption, true);
+				} catch (error) {
+					console.error('Failed to set chart options:', error);
+				}
+			}
+		})();
+
+		return () => {
+			mounted = false;
+		};
 	});
 
 	// Resize handling
