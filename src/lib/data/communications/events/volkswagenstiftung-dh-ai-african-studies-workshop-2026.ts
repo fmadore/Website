@@ -68,6 +68,11 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			affiliation: 'Emory University'
 		},
 		{
+			name: 'Thompson Kwarkye Gyedu',
+			role: 'Participant',
+			affiliation: 'University of Galway'
+		},
+		{
 			name: 'Ashleigh Harris',
 			role: 'Participant',
 			affiliation: 'Uppsala University'
