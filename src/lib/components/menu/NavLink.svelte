@@ -6,6 +6,7 @@
 		hasDropdown = false,
 		onclick,
 		onkeydown,
+		preloadStrategy = 'eager',
 		children,
 		...restProps
 	}: {
@@ -14,9 +15,11 @@
 		hasDropdown?: boolean;
 		onclick?: (event: MouseEvent) => void;
 		onkeydown?: (event: KeyboardEvent) => void;
+		preloadStrategy?: 'eager' | 'hover' | 'tap' | 'off';
 		children?: Snippet;
 		[key: string]: unknown;
 	} = $props();
+
 </script>
 
 <a
@@ -24,6 +27,7 @@
 	class="nav-link"
 	class:active
 	aria-haspopup={hasDropdown ? 'true' : 'false'}
+	data-sveltekit-preload-code={preloadStrategy}
 	{onclick}
 	{onkeydown}
 	{...restProps}

@@ -60,7 +60,11 @@
 				</div>
 
 				<h3 class="entity-title">
-					<a href={`${base}/communications/${communication.id}`} class="entity-title-link">
+					<a
+						href={`${base}/communications/${communication.id}`}
+						class="entity-title-link"
+						data-sveltekit-preload-code="tap"
+					>
 						{communication?.title || 'Untitled Communication'}
 					</a>
 				</h3>

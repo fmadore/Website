@@ -123,7 +123,7 @@
 				</div>
 
 				<h3 class="entity-title">
-					<a href={publicationHref} class="entity-title-link">
+					<a href={publicationHref} class="entity-title-link" data-sveltekit-preload-code="tap">
 						{publication.title}
 					</a>
 				</h3>
