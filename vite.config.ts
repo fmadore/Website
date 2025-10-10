@@ -4,7 +4,8 @@ import { defineConfig } from 'vite';
 export default defineConfig({
 	plugins: [sveltekit()],
 	build: {
-		cssCodeSplit: true,
+		// Note: cssCodeSplit is controlled by SvelteKit internally
+		// Use kit.inlineStyleThreshold in svelte.config.js instead
 		chunkSizeWarningLimit: 1000, // Increase warning limit to 1MB
 		rollupOptions: {
 			output: {
