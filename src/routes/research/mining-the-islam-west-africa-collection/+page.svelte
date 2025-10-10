@@ -142,7 +142,7 @@
 					<div class="iframe-section">
 						<IframeRenderer
 							id="iwac-overview-visualization"
-							src="https://fmadore.github.io/IWAC-overview/index.html"
+							src="https://fmadore.github.io/iwac-dashboard/?lang=en&theme=light"
 							title="Islam West Africa Collection Overview"
 							containerClass="iframe-container iframe-with-header iframe-interactive iframe-container-lg"
 							scrolling="yes"

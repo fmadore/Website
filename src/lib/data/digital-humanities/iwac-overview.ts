@@ -15,7 +15,7 @@ export const iwacOverview: DigitalHumanitiesProject = {
 		{
 			type: 'iframe',
 			id: 'iwac-overview-main-embed',
-			src: 'https://fmadore.github.io/IWAC-overview/index.html?lang=en&tab=countries',
+			src: 'https://fmadore.github.io/iwac-dashboard/?lang=en&theme=light',
 			scrolling: 'yes',
 			allowfullscreen: true,
 			showTitle: true,
