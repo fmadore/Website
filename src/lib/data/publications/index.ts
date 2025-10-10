@@ -13,7 +13,8 @@ const templateIds = [
 	'report-template-id',
 	'encyclopedia-template-id',
 	'blogpost-template-id',
-	'phd-dissertation-template-id'
+	'phd-dissertation-template-id',
+	'conference-proceedings-template-id'
 ];
 
 // Use a single static glob import
@@ -26,7 +27,8 @@ const publicationModules = import.meta.glob<ModuleType>(
 		'./reports/*.ts',
 		'./encyclopedia/*.ts',
 		'./blogposts/*.ts',
-		'./dissertations/*.ts'
+		'./dissertations/*.ts',
+		'./proceedings/*.ts'
 	],
 	{ eager: true }
 );
@@ -54,6 +56,7 @@ const allPublications: (Publication & { sourceDirType: string })[] = Object.entr
 		else if (path.startsWith('./encyclopedia/')) sourceDirType = 'encyclopedia';
 		else if (path.startsWith('./blogposts/')) sourceDirType = 'blogposts';
 		else if (path.startsWith('./dissertations/')) sourceDirType = 'dissertations';
+		else if (path.startsWith('./proceedings/')) sourceDirType = 'proceedings';
 
 		return { ...publication, sourceDirType };
 	})

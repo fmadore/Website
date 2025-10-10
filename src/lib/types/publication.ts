@@ -32,7 +32,8 @@ export type Publication = {
 		| 'encyclopedia'
 		| 'blogpost'
 		| 'phd-dissertation'
-		| 'masters-thesis'; // Publication type for faceting
+		| 'masters-thesis'
+		| 'conference-proceedings'; // Publication type for faceting
 	title: string; // Publication title
 	authors: string[]; // Array of authors
 	date: string; // Display date (e.g., "2025")
@@ -60,6 +61,10 @@ export type Publication = {
 	volume?: string; // Volume number for articles
 	issue?: string; // Issue number for articles
 	pages?: string; // Page range for articles and chapters
+	// Additional fields for conference proceedings
+	proceedingsTitle?: string; // Title of the conference proceedings
+	conferenceName?: string; // Name of the conference
+	conferenceLocation?: string; // Location of the conference
 	// Additional fields for book chapters
 	book?: string; // Book title for chapters
 	editors?: string; // Book editors for chapters

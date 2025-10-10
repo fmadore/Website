@@ -10,7 +10,8 @@ export const typeLabels: { [key: string]: string } = {
 	encyclopedia: 'Encyclopedia Entry',
 	blogpost: 'Blog Post',
 	'phd-dissertation': 'Ph.D. Dissertation',
-	'masters-thesis': "Master's Thesis"
+	'masters-thesis': "Master's Thesis",
+	'conference-proceedings': 'Conference Proceedings'
 };
 
 // Helper function to handle authors that might be string or array
@@ -217,6 +218,41 @@ export function formatCitation(publication: Publication): FormattedCitation {
 		if (publication.journal) details += `<em>${publication.journal}</em>`;
 		if (publication.volume) details += ` ${publication.volume}`; // Space before volume
 		if (publication.issue) details += ` (${publication.issue})`; // Issue in parentheses
+
+		// Ensure final period
+		if (details.trim() && !details.trim().endsWith('.')) {
+			details += '.';
+		}
+		detailsHtml = details;
+		year = publication.year;
+	} else if (type === 'conference-proceedings') {
+		// Format: In *Proceedings Title*
+		let details = '';
+		if (publication.proceedingsTitle) {
+			details += `In <em>${publication.proceedingsTitle}</em>`;
+		}
+		if (publication.editors) {
+			// Use the helper function
+			const editorsFormatted = formatEditors(publication.editors);
+			if (editorsFormatted) {
+				details += `, ed. ${editorsFormatted}`;
+			}
+		}
+		if (publication.pages) {
+			details += `, ${publication.pages}`;
+		}
+		details += '. '; // Separator after proceedings info
+
+		// Build and append publication info
+		let pubInfo = '';
+		if (publication.placeOfPublication) {
+			pubInfo += publication.placeOfPublication;
+			if (publication.publisher) pubInfo += ':';
+		}
+		if (publication.placeOfPublication && publication.publisher) pubInfo += ' ';
+		if (publication.publisher) pubInfo += publication.publisher;
+
+		details += pubInfo; // Append the publication info
 
 		// Ensure final period
 		if (details.trim() && !details.trim().endsWith('.')) {

@@ -45,7 +45,7 @@
 	import FilteredListDisplay from '$lib/components/common/FilteredListDisplay.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
-	import { urlFilterSync } from '$lib/actions/urlFilterSync';
+	import { urlFilterSync } from '$lib/actions/urlFilterSync.svelte';
 	import Sorter from '$lib/components/common/Sorter.svelte';
 	import { sortItems } from '$lib/utils/sortUtils';
 	import Icon from '@iconify/svelte'; // Import Iconify

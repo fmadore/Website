@@ -119,6 +119,7 @@ const typeLabels: { [key: string]: string } = {
 	blogpost: 'Blog post',
 	book: 'Book',
 	chapter: 'Book chapter',
+	'conference-proceedings': 'Conference proceedings',
 	encyclopedia: 'Encyclopedia entry',
 	article: 'Journal article',
 	'masters-thesis': "Master's thesis",
