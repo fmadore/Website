@@ -53,6 +53,11 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			affiliation: 'Addis Ababa University'
 		},
 		{
+			name: 'Érika Melek Delgado',
+			role: 'Participant',
+			affiliation: "King's College London"
+		},
+		{
 			name: 'Augustine Farinola',
 			role: 'Participant',
 			affiliation: 'University of Alberta'
