@@ -98,7 +98,7 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			affiliation: 'Global Center on AI Governance'
 		},
 		{
-			name: 'Fu’ad Lawal',
+			name: "Fu'ad Lawal",
 			role: 'Participant',
 			affiliation: 'Archivi.ng'
 		},
