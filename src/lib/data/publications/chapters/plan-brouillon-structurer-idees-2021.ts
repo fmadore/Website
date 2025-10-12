@@ -28,6 +28,5 @@ export const planBrouillonStructurerIdees: Publication = {
 	heroImage: {
 		src: 'images/publications/plan-brouillon-2021-hero.webp',
 		alt: 'Cover of the book Guide décolonisé et pluriversel de formation à la recherche en sciences sociales et humaines'
-	},
-	project: 'Other'
+	}
 };
