@@ -32,7 +32,8 @@
 		FilterSectionConfig,
 		CheckboxFilterOption,
 		RangeFilterOption,
-		ChipsFilterOption
+		ChipsFilterOption,
+		DropdownFilterOption
 	} from '$lib/types/filters';
 	import PublicationItem from '$lib/components/publications/PublicationItem.svelte';
 	import EntityListPageLayout from '$lib/components/common/EntityListPageLayout.svelte';
@@ -150,16 +151,16 @@
 				showSearch: false
 			} as ChipsFilterOption<string>,
 			{
-				type: 'chips',
+				type: 'dropdown',
 				title: 'Co-Authors',
 				items: $filterOptions.authors,
 				activeItems: $activeFilters.authors,
 				toggleItem: toggleAuthorFilter,
 				counts: $authorCounts,
+				placeholder: 'Select co-authors...',
 				searchThreshold: 6,
-				initialDisplayCount: 8,
-				showSearch: false
-			} as ChipsFilterOption<string>,
+				maxHeight: '400px'
+			} as DropdownFilterOption<string>,
 			{
 				type: 'checkbox',
 				title: 'Languages',

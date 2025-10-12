@@ -4,6 +4,7 @@
 	import FilterSectionRangeSlider from '$lib/components/filters/FilterSectionRangeSlider.svelte';
 	import FilterSectionButtons from '$lib/components/filters/FilterSectionButtons.svelte';
 	import FilterSectionChips from '$lib/components/filters/FilterSectionChips.svelte';
+	import FilterSectionDropdown from '$lib/components/filters/FilterSectionDropdown.svelte';
 	import { slide } from 'svelte/transition';
 	import { animationsEnabledStore as animationsEnabled } from '$lib/stores/globalState.svelte';
 
@@ -126,6 +127,18 @@
 							toggleItem={section.toggleItem}
 							counts={section.counts}
 						/>
+					{:else if section.type === 'dropdown'}
+						<FilterSectionDropdown
+							title={section.title}
+							items={section.items}
+							itemLabels={section.itemLabels}
+							activeItems={section.activeItems}
+							toggleItem={section.toggleItem}
+							counts={section.counts}
+							placeholder={section.placeholder}
+							searchThreshold={section.searchThreshold}
+							maxHeight={section.maxHeight}
+						/>
 					{/if}
 				</div>
 			{/each}
@@ -167,6 +180,18 @@
 						activeItems={section.activeItems}
 						toggleItem={section.toggleItem}
 						counts={section.counts}
+					/>
+				{:else if section.type === 'dropdown'}
+					<FilterSectionDropdown
+						title={section.title}
+						items={section.items}
+						itemLabels={section.itemLabels}
+						activeItems={section.activeItems}
+						toggleItem={section.toggleItem}
+						counts={section.counts}
+						placeholder={section.placeholder}
+						searchThreshold={section.searchThreshold}
+						maxHeight={section.maxHeight}
 					/>
 				{/if}
 			</div>

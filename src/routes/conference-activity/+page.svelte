@@ -38,7 +38,8 @@
 		FilterSectionConfig,
 		CheckboxFilterOption,
 		RangeFilterOption,
-		ChipsFilterOption
+		ChipsFilterOption,
+		DropdownFilterOption
 	} from '$lib/types/filters';
 	import CommunicationItem from '$lib/components/communications/CommunicationItem.svelte';
 	import MapVisualization from '$lib/components/visualisations/MapVisualization.svelte';
@@ -171,27 +172,27 @@
 				showSearch: false
 			} as ChipsFilterOption<string>,
 			{
-				type: 'chips',
+				type: 'dropdown',
 				title: 'Co-authors',
 				items: $filterOptions?.authors || [],
 				activeItems: $activeFilters?.authors || [],
 				toggleItem: toggleAuthorFilter,
 				counts: $authorCounts,
-				searchThreshold: 5,
-				initialDisplayCount: 6,
-				showSearch: false
-			} as ChipsFilterOption<string>,
+				placeholder: 'Select co-authors...',
+				searchThreshold: 6,
+				maxHeight: '400px'
+			} as DropdownFilterOption<string>,
 			{
-				type: 'chips',
+				type: 'dropdown',
 				title: 'Countries',
 				items: $filterOptions?.countries || [],
 				activeItems: $activeFilters?.countries || [],
 				toggleItem: toggleCountryFilter,
 				counts: $countryCounts,
+				placeholder: 'Select countries...',
 				searchThreshold: 6,
-				initialDisplayCount: 8,
-				showSearch: false
-			} as ChipsFilterOption<string>,
+				maxHeight: '400px'
+			} as DropdownFilterOption<string>,
 			{
 				type: 'checkbox',
 				title: 'Languages',
