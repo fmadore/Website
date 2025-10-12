@@ -329,32 +329,12 @@
 		.sticky-top {
 			position: sticky;
 			top: var(--spacing-8);
-			max-height: calc(100vh - var(--spacing-8) - 2rem);
-			overflow-y: auto;
-			scrollbar-width: thin;
-			scrollbar-color: var(--color-text-light) transparent;
+			max-height: none;
+			overflow-y: visible;
 			/* Ensure stable positioning during content changes */
 			will-change: scroll-position;
 			/* Prevent the sidebar from jumping during filter changes */
 			transform: translateZ(0);
-		}
-
-		.sticky-top::-webkit-scrollbar {
-			width: var(--scrollbar-width, 6px);
-		}
-
-		.sticky-top::-webkit-scrollbar-track {
-			background: transparent;
-		}
-
-		.sticky-top::-webkit-scrollbar-thumb {
-			background-color: var(--color-text-light);
-			border-radius: var(--scrollbar-thumb-radius, var(--border-radius-sm));
-			transition: background-color 0.2s ease-in-out;
-		}
-
-		.sticky-top:hover::-webkit-scrollbar-thumb {
-			background-color: var(--color-text);
 		}
 	}
 
