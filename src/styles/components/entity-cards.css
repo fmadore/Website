@@ -43,25 +43,26 @@
 }
 
 .entity-image-container {
-	display: flex;
-	justify-content: center;
-}
-
-@media (min-width: 768px) {
-	.entity-image-container {
-		justify-content: flex-start;
-	}
+	display: block;
+	width: fit-content;
+	max-width: 200px;
 }
 
 .entity-cover-image {
+	display: block;
 	width: 100%;
 	max-width: 200px;
 	height: auto;
-	aspect-ratio: 5/7;
-	object-fit: cover;
+	object-fit: contain;
 	border-radius: var(--border-radius);
 	box-shadow: var(--shadow-md);
 	transition: box-shadow var(--anim-duration-base, 200ms) var(--anim-ease-out, ease-out);
+}
+
+/* Override inline width/height attributes to prevent distortion */
+.entity-cover-image[width][height] {
+	width: 100% !important;
+	height: auto !important;
 }
 
 .entity-card:hover .entity-cover-image {
