@@ -214,12 +214,7 @@
 		border-radius: var(--border-radius-md);
 		margin-bottom: var(--spacing-4);
 		position: relative;
-		z-index: 1;
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
-	}
-
-	.filter-section-content:has(.dropdown-menu) {
-		z-index: 1001;
 	}
 
 	.filter-section-header {
@@ -257,12 +252,6 @@
 		text-align: left;
 	}
 
-	:global(.dropdown-trigger.open) {
-		border-bottom-left-radius: 0;
-		border-bottom-right-radius: 0;
-		border-bottom-color: transparent;
-	}
-
 	.dropdown-text {
 		flex: 1;
 		overflow: hidden;
@@ -278,41 +267,23 @@
 
 	/* Dropdown menu */
 	.dropdown-menu {
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: calc(100% - var(--spacing-4));
-		z-index: 1000;
-		background: rgba(var(--color-surface-rgb), 0.98);
-		border: 2px solid rgba(var(--color-accent-rgb), var(--opacity-medium));
-		border-top: none;
-		border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
-		box-shadow: 
-			var(--shadow-xl),
-			0 0 0 1px rgba(var(--color-surface-rgb), var(--opacity-medium));
+		margin-top: var(--spacing-2);
+		background: rgba(var(--color-surface-rgb), 0.95);
+		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-medium));
+		border-radius: var(--border-radius-md);
+		box-shadow: var(--shadow-md);
 		overflow: hidden;
-		backdrop-filter: blur(16px);
-		-webkit-backdrop-filter: blur(16px);
-		animation: slideDown var(--anim-duration-base) var(--anim-ease-out);
-	}
-
-	@keyframes slideDown {
-		from {
-			opacity: 0;
-			transform: translateY(-8px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
 	}
 
 	/* Search container */
 	.search-container {
 		position: relative;
-		padding: var(--spacing-3);
+		padding: var(--spacing-2) var(--spacing-3);
 		border-bottom: var(--border-width-thin) solid
 			rgba(var(--color-border-rgb), var(--opacity-medium));
+		background: rgba(var(--color-surface-rgb), var(--opacity-low));
 	}
 
 	:global(.search-icon) {
@@ -329,7 +300,7 @@
 		padding: var(--spacing-2) var(--spacing-8) var(--spacing-2) var(--spacing-8);
 		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-medium));
 		border-radius: var(--border-radius-sm);
-		background: rgba(var(--color-surface-rgb), var(--opacity-medium));
+		background: rgba(var(--color-surface-rgb), var(--opacity-high));
 		color: var(--color-text);
 		font-size: var(--font-size-sm);
 		font-family: var(--font-family-sans);
@@ -368,7 +339,7 @@
 	/* Dropdown items */
 	.dropdown-items {
 		overflow-y: auto;
-		max-height: calc(400px - 80px); /* Adjust based on maxHeight prop */
+		max-height: 300px;
 	}
 
 	.dropdown-item {
@@ -442,10 +413,10 @@
 
 	/* Dropdown footer */
 	.dropdown-footer {
-		padding: var(--spacing-3);
+		padding: var(--spacing-2) var(--spacing-3);
 		border-top: var(--border-width-thin) solid
 			rgba(var(--color-border-rgb), var(--opacity-medium));
-		background: rgba(var(--color-surface-rgb), var(--opacity-medium));
+		background: rgba(var(--color-surface-rgb), var(--opacity-low));
 	}
 
 	:global(.clear-button) {
@@ -462,15 +433,17 @@
 	}
 
 	:global(html.dark) .dropdown-menu {
-		background: rgba(var(--color-dark-surface-rgb), 0.98);
-		border-color: rgba(var(--color-accent-rgb), var(--opacity-medium));
-		box-shadow: 
-			0 8px 32px 0 rgba(var(--color-black-rgb), var(--opacity-high)),
-			0 0 0 1px rgba(var(--color-white-rgb), var(--opacity-low));
+		background: rgba(var(--color-dark-surface-rgb), 0.95);
+		border-color: rgba(var(--color-border-rgb), var(--opacity-medium));
+		box-shadow: var(--shadow-md);
+	}
+
+	:global(html.dark) .search-container {
+		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium));
 	}
 
 	:global(html.dark) .search-input {
-		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium));
+		background: rgba(var(--color-dark-surface-rgb), var(--opacity-high));
 		border-color: rgba(var(--color-white-rgb), var(--opacity-low));
 		color: var(--color-text);
 	}
@@ -480,7 +453,7 @@
 	}
 
 	:global(html.dark) .dropdown-footer {
-		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium-high));
+		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium));
 		border-color: rgba(var(--color-white-rgb), var(--opacity-low));
 	}
 
@@ -526,10 +499,6 @@
 		.dropdown-item,
 		:global(.dropdown-icon) {
 			transition: none;
-		}
-
-		.dropdown-menu {
-			animation: none;
 		}
 	}
 </style>
