@@ -145,7 +145,7 @@
 				items: $filterOptions.projects,
 				activeItems: $activeFilters.projects,
 				toggleItem: toggleProjectFilter,
-				counts: $projectCounts,
+				counts: undefined,
 				searchThreshold: 5,
 				initialDisplayCount: 6,
 				showSearch: false
@@ -175,7 +175,7 @@
 				items: $filterOptions.countries,
 				activeItems: $activeFilters.countries,
 				toggleItem: toggleCountryFilter,
-				counts: $countryCounts,
+				counts: undefined,
 				placeholder: 'Select countries...',
 				searchThreshold: 6,
 				maxHeight: '400px'

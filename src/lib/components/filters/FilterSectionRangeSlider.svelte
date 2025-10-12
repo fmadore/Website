@@ -188,11 +188,11 @@
 		background: transparent;
 		border: none;
 		border-radius: 0;
-		padding: var(--spacing-4) 0 var(--spacing-8);
+		padding: var(--spacing-2) 0 var(--spacing-4);
 		margin-top: var(--spacing-2);
 		position: relative;
 		overflow: visible;
-		min-height: 100px;
+		min-height: 60px;
 	}
 
 	.no-data-message {
@@ -249,7 +249,7 @@
 		--range-float-inactive: var(--color-surface-alt);
 		--range-float: var(--color-primary);
 		--range-float-text: var(--color-white);
-		margin-bottom: var(--spacing-6) !important;
+		margin-bottom: var(--spacing-2) !important;
 	}
 
 	:global(.rangeSlider .rangeHandle) {
@@ -271,7 +271,7 @@
 
 	/* Ensure pip labels (years) have adequate space */
 	:global(.rangeSlider .rangePips) {
-		margin-bottom: var(--spacing-4) !important;
+		margin-bottom: var(--spacing-2) !important;
 	}
 
 	:global(.rangeSlider .pip) {

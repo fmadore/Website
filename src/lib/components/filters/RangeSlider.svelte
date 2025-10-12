@@ -279,8 +279,8 @@
 		position: relative;
 		height: 40px;
 		width: 100%;
-		margin: var(--spacing-3) 0;
-		padding: var(--spacing-3);
+		margin: var(--spacing-1) 0;
+		padding: var(--spacing-2);
 		border-radius: var(--border-radius-md);
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
 
@@ -302,8 +302,8 @@
 	.range-track {
 		position: absolute;
 		top: 50%;
-		left: var(--spacing-3);
-		right: var(--spacing-3);
+		left: var(--spacing-2);
+		right: var(--spacing-2);
 		height: var(--border-width-thick);
 		background-color: var(--color-border);
 		border-radius: var(--border-radius-sm);
@@ -409,10 +409,10 @@
 	.range-pips {
 		position: absolute;
 		top: 100%;
-		left: var(--spacing-3);
-		right: var(--spacing-3);
+		left: var(--spacing-2);
+		right: var(--spacing-2);
 		height: 20px;
-		margin-top: var(--spacing-2);
+		margin-top: var(--spacing-1);
 	}
 
 	.pip {
@@ -432,7 +432,7 @@
 
 	.range-label {
 		position: absolute;
-		top: var(--spacing-3);
+		top: var(--spacing-2);
 		transform: translateX(-50%);
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-medium);
