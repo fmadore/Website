@@ -17,6 +17,7 @@
 	text-align: center;
 	text-decoration: none;
 	white-space: nowrap;
+	word-wrap: normal;
 
 	/* Spacing */
 	padding: var(--spacing-3) var(--spacing-6);
@@ -390,4 +391,49 @@
 	.btn:active:not(:disabled) {
 		transform: scale(var(--scale-95));
 	}
+}
+
+/* Filter chip buttons - allow text wrapping for better display */
+.filter-chip {
+	white-space: normal;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	text-align: left;
+	line-height: var(--line-height-normal);
+	padding: var(--spacing-2) var(--spacing-3);
+	min-height: 2.5rem;
+	height: auto;
+	align-items: center;
+}
+
+.filter-chip .btn-content {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--spacing-2);
+	width: 100%;
+}
+
+.filter-chip .chip-text {
+	display: inline;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	white-space: normal;
+	line-height: var(--line-height-normal);
+}
+
+.filter-chip .chip-count {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	margin-left: var(--spacing-1);
+	min-width: 1.5rem;
+	padding: var(--spacing-05) var(--spacing-2);
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-semibold);
+	line-height: 1;
+	border-radius: var(--border-radius-sm);
+	white-space: nowrap;
+	vertical-align: middle;
 }
