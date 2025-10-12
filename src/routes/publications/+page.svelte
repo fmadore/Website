@@ -209,16 +209,15 @@
 />
 
 <div class="page-container" use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}>
-	<div class="main-content">
-		<PageHeader title="Publications" />
+	<PageHeader title="Publications" />
 
-		<PageIntro>
-			This page lists my academic publications, including books, journal articles, book chapters,
-			reports, and more.
-		</PageIntro>
+	<PageIntro>
+		This page lists my academic publications, including books, journal articles, book chapters,
+		reports, and more.
+	</PageIntro>
 
-		<!-- Mobile Controls: Two Rows -->
-		<div class="mobile-controls">
+	<!-- Mobile Controls: Two Rows -->
+	<div class="mobile-controls">
 			<div class="mobile-controls-row">
 				<Button
 					variant="outline-secondary"
@@ -251,7 +250,7 @@
 				{/if}
 			</div>
 		</div>
-		<EntityListPageLayout>
+		<EntityListPageLayout containerClass="" gridClass="grid grid-cols-1 md:grid-cols-4 gap-6">
 			{#snippet sidebar()}
 				<UniversalFiltersSidebar
 					config={publicationFilterConfig}
@@ -293,7 +292,6 @@
 				/>
 			{/snippet}
 		</EntityListPageLayout>
-	</div>
 </div>
 
 <style>
@@ -301,10 +299,6 @@
 		max-width: 1200px;
 		margin: 0 auto;
 		padding: 0 var(--spacing-4);
-	}
-
-	.main-content {
-		width: 100%;
 	}
 
 	/* Mobile controls styling */

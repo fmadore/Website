@@ -15,6 +15,7 @@
 	import type { Publication } from '$lib/types';
 	import type { ProfessionalAffiliation } from '$lib/data/affiliations/template';
 	import SEO from '$lib/SEO.svelte';
+	import PdfGenerator from '$lib/components/cv/PdfGenerator.svelte';
 
 	// Filter education items by type
 	const degrees = educationByDate.filter((edu) => edu.type === 'Degree');
@@ -164,7 +165,12 @@
 	description="Curriculum Vitae of Frédérick Madore, detailing publications, communications, activities, and fieldwork."
 />
 
-<div class="cv-container p-8 max-w-4xl mx-auto bg-default shadow-md rounded-lg">
+<!-- PDF Generator Button -->
+<div class="flex justify-end mb-4 max-w-4xl mx-auto">
+	<PdfGenerator />
+</div>
+
+<div id="cv-content" class="cv-container p-8 max-w-4xl mx-auto bg-default shadow-md rounded-lg">
 	<h1 class="text-3xl font-bold mb-2 border-b pb-2 cv-main-title">Curriculum Vitae</h1>
 	<h2 class="text-xl font-semibold mb-4 cv-subtitle">Frédérick Madore</h2>
 
@@ -685,6 +691,61 @@
 	@media (min-width: 768px) {
 		.cv-contact-links-wrapper {
 			margin-left: auto;
+		}
+	}
+
+	/* Print styles */
+	@media print {
+		/* Hide the PDF button when printing */
+		:global(.pdf-generator-wrapper),
+		:global(button[onclick*="print"]) {
+			display: none !important;
+		}
+
+		/* Optimize for print */
+		.cv-container {
+			max-width: 100% !important;
+			padding: 0.5in !important;
+			margin: 0 !important;
+			box-shadow: none !important;
+			border-radius: 0 !important;
+			background: white !important;
+		}
+
+		/* Remove glassmorphism effects */
+		:global(.glass),
+		:global(.glass-card),
+		:global(.glass-panel) {
+			background: white !important;
+			backdrop-filter: none !important;
+			border: none !important;
+			box-shadow: none !important;
+		}
+
+		/* Ensure good contrast */
+		:global(body) {
+			background: white !important;
+			color: black !important;
+		}
+
+		/* Page breaks */
+		section {
+			page-break-inside: avoid;
+		}
+
+		h3 {
+			page-break-after: avoid;
+		}
+
+		/* Links */
+		a {
+			color: #0000EE !important;
+			text-decoration: underline !important;
+		}
+
+		/* Remove unnecessary spacing */
+		.mb-4 {
+			margin-bottom: 0.5rem !important;
 		}
 	}
 </style>

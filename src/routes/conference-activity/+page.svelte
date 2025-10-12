@@ -229,16 +229,15 @@
 />
 
 <div class="page-container" use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}>
-	<div class="main-content">
-		<PageHeader title="Conference Activity" />
+	<PageHeader title="Conference Activity" />
 
-		<PageIntro>
-			Since 2012, I have given talks to audiences in {$filterOptions?.countries?.length || 0} countries
-			across Africa, Europe, and North America.
-		</PageIntro>
+	<PageIntro>
+		Since 2012, I have given talks to audiences in {$filterOptions?.countries?.length || 0} countries
+		across Africa, Europe, and North America.
+	</PageIntro>
 
-		<!-- Mobile Controls: Two Rows -->
-		<div class="mobile-controls">
+	<!-- Mobile Controls: Two Rows -->
+	<div class="mobile-controls">
 			<div class="mobile-controls-row">
 				<Button
 					variant="outline-secondary"
@@ -271,7 +270,7 @@
 				{/if}
 			</div>
 		</div>
-		<EntityListPageLayout>
+		<EntityListPageLayout containerClass="" gridClass="grid grid-cols-1 md:grid-cols-4 gap-6">
 			{#snippet sidebar()}
 				<UniversalFiltersSidebar
 					config={communicationFilterConfig}
@@ -318,7 +317,6 @@
 				onitemrequest={handleFilterRequest}
 			/>
 		</EntityListPageLayout>
-	</div>
 </div>
 
 <style>
@@ -326,10 +324,6 @@
 		max-width: 1200px;
 		margin: 0 auto;
 		padding: 0 var(--spacing-4);
-	}
-
-	.main-content {
-		width: 100%;
 	}
 
 	.mb-6 {

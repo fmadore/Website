@@ -280,12 +280,10 @@
 		/* Mobile toggle button styles removed */
 		.filter-sections-wrapper {
 			display: block; /* Allow Svelte's #if to control visibility */
-			background: var(--color-surface);
-			border: var(--border-width-thin) solid var(--color-border);
-			border-radius: var(--border-radius-md);
-			padding: var(--spacing-4);
+			background: transparent;
+			border: none;
+			padding: 0;
 			margin-top: var(--spacing-4);
-			box-shadow: var(--shadow-sm);
 		}
 		.filter-sections-wrapper-desktop {
 			display: none; /* Hide the desktop wrapper on mobile */
@@ -378,18 +376,11 @@
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-medium));
 	}
 
-	/* Dark mode mobile wrapper */
+	/* Dark mode mobile wrapper - removed, using transparent background */
 	:global(html.dark) .filter-sections-wrapper {
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.06) 0%,
-			rgba(var(--color-highlight-rgb), 0.04) 50%,
-			rgba(var(--color-accent-rgb), 0.02) 100%
-		);
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
-		box-shadow:
-			0 8px 32px 0 rgba(var(--color-black-rgb), var(--opacity-medium-high)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-low));
+		background: transparent;
+		border: none;
+		box-shadow: none;
 	}
 
 	/* Clear button styling removed */

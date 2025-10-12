@@ -36,7 +36,7 @@ export const evolutionsNouvellesFormesIslamAfriqueOuest: Communication = {
 		{ name: 'Frédérick Madore', role: 'Panelist', affiliation: 'Université Laval' },
 		{ name: 'Olivier Pelletier', role: 'Panelist', affiliation: 'Université Laval' }
 	],
-	project: "Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
+	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 };
 
 export default evolutionsNouvellesFormesIslamAfriqueOuest;
