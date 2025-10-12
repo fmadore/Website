@@ -99,15 +99,17 @@
 		<div class="entity-grid">
 			{#if publication.image}
 				<div class="entity-image-container">
-					<img
-						src={publication.image}
-						alt={publication.title}
-						class="entity-cover-image"
-						width="200"
-						height="280"
-						loading={imageLoading}
-						decoding="async"
-					/>
+					<a href={publicationHref} data-sveltekit-preload-code="tap">
+						<img
+							src={publication.image}
+							alt={publication.title}
+							class="entity-cover-image"
+							width="200"
+							height="280"
+							loading={imageLoading}
+							decoding="async"
+						/>
+					</a>
 				</div>
 			{/if}
 

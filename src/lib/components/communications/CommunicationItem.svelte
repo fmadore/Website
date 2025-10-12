@@ -35,15 +35,17 @@
 		<div class="entity-grid">
 			{#if communication?.image}
 				<div class="entity-image-container">
-					<img
-						src={communication.image}
-						alt={communication.title}
-						class="entity-cover-image"
-						width="200"
-						height="280"
-						loading={imageLoading}
-						decoding="async"
-					/>
+					<a href={`${base}/communications/${communication.id}`} data-sveltekit-preload-code="tap">
+						<img
+							src={communication.image}
+							alt={communication.title}
+							class="entity-cover-image"
+							width="200"
+							height="280"
+							loading={imageLoading}
+							decoding="async"
+						/>
+					</a>
 				</div>
 			{/if}
 
