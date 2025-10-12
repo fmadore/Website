@@ -9,6 +9,7 @@
 		typeCounts,
 		languageCounts,
 		countryCounts,
+		projectCounts,
 		toggleTypeFilter,
 		updateYearRange,
 		resetYearRange,
@@ -137,6 +138,17 @@
 				updateRange: updateYearRange,
 				resetRange: resetYearRange
 			} as RangeFilterOption,
+			{
+				type: 'chips',
+				title: 'Projects',
+				items: $filterOptions.projects,
+				activeItems: $activeFilters.projects,
+				toggleItem: toggleProjectFilter,
+				counts: $projectCounts,
+				searchThreshold: 5,
+				initialDisplayCount: 6,
+				showSearch: false
+			} as ChipsFilterOption<string>,
 			{
 				type: 'chips',
 				title: 'Co-Authors',

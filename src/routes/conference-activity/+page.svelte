@@ -9,10 +9,12 @@
 		tagCounts,
 		countryCounts,
 		authorCounts,
+		projectCounts,
 		// Import toggle/update functions
 		toggleTagFilter,
 		toggleCountryFilter,
 		toggleTypeFilter,
+		toggleProjectFilter,
 		updateYearRange,
 		resetYearRange,
 		toggleLanguageFilter,
@@ -102,8 +104,11 @@
 			toggleCountryFilter(value);
 		} else if (type === 'type') {
 			toggleTypeFilter(value);
+		} else if (type === 'project') {
+			toggleProjectFilter(value);
+		} else if (type === 'author') {
+			toggleAuthorFilter(value);
 		}
-		// Add other filter types if needed (e.g., author)
 	} // Handler for the sortChange event from the Sorter component
 	function handleSortChange(data: { sortBy: 'date' | 'title' | 'citations' }) {
 		// Only handle date and title sorts for communications
@@ -154,6 +159,17 @@
 				updateRange: updateYearRange,
 				resetRange: resetYearRange
 			} as RangeFilterOption,
+			{
+				type: 'chips',
+				title: 'Projects',
+				items: $filterOptions?.projects || [],
+				activeItems: $activeFilters?.projects || [],
+				toggleItem: toggleProjectFilter,
+				counts: $projectCounts,
+				searchThreshold: 5,
+				initialDisplayCount: 6,
+				showSearch: false
+			} as ChipsFilterOption<string>,
 			{
 				type: 'chips',
 				title: 'Co-authors',
