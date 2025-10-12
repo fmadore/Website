@@ -170,16 +170,16 @@
 				counts: $languageCounts
 			} as CheckboxFilterOption<string>,
 			{
-				type: 'chips',
+				type: 'dropdown',
 				title: 'Countries',
 				items: $filterOptions.countries,
 				activeItems: $activeFilters.countries,
 				toggleItem: toggleCountryFilter,
 				counts: $countryCounts,
+				placeholder: 'Select countries...',
 				searchThreshold: 6,
-				initialDisplayCount: 8,
-				showSearch: false
-			} as ChipsFilterOption<string>,
+				maxHeight: '400px'
+			} as DropdownFilterOption<string>,
 			{
 				type: 'chips',
 				title: 'Tags',

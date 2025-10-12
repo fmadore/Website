@@ -373,9 +373,9 @@
 
 	.dropdown-item {
 		display: flex;
-		align-items: flex-start;
+		align-items: center;
 		width: 100%;
-		padding: var(--spacing-3) var(--spacing-3);
+		padding: var(--spacing-2) var(--spacing-3);
 		border: none;
 		background: transparent;
 		color: var(--color-text);
@@ -407,9 +407,8 @@
 
 	.item-checkbox {
 		display: flex;
-		align-items: flex-start;
+		align-items: center;
 		margin-right: var(--spacing-2);
-		margin-top: var(--spacing-1);
 		color: var(--color-accent);
 		flex-shrink: 0;
 	}
@@ -423,7 +422,6 @@
 
 	.item-count {
 		margin-left: var(--spacing-2);
-		margin-top: var(--spacing-1);
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-muted);
@@ -431,7 +429,7 @@
 		padding: var(--spacing-1) var(--spacing-2);
 		border-radius: var(--border-radius-sm);
 		flex-shrink: 0;
-		align-self: flex-start;
+		align-self: center;
 	}
 
 	.no-results {
