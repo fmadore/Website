@@ -118,9 +118,9 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			affiliation: 'Independant researcher'
 		},
 		{
-			name: 'Irene Muchomba Mwendwa',
+			name: 'Irene Mwendwa',
 			role: 'Participant',
-			affiliation: 'Pollicy'
+			affiliation: 'Tech Policy Expert'
 		},
 		{
 			name: 'Fallou Ngom',
