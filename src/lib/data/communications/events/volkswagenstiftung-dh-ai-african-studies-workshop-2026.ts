@@ -123,6 +123,11 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			affiliation: 'Tech Policy Expert'
 		},
 		{
+			name: 'Augustin Ndione',
+			role: 'Participant',
+			affiliation: 'Université Cheikh Anta Diop de Dakar'
+		},
+		{
 			name: 'Fallou Ngom',
 			role: 'Participant',
 			affiliation: 'Boston University'
