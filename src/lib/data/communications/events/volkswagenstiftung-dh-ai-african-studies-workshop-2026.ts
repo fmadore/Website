@@ -53,6 +53,11 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			affiliation: 'Addis Ababa University'
 		},
 		{
+			name: 'Agata Błoch',
+			role: 'Participant',
+			affiliation: "Tadeusz Manteuffel Institute of History of the Polish Academy of Sciences"
+		},
+		{
 			name: 'Érika Melek Delgado',
 			role: 'Participant',
 			affiliation: "King's College London"
