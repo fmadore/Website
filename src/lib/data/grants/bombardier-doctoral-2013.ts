@@ -10,7 +10,7 @@ export const bombardierDoctoral2013: Grant = {
 	dateRangeString: '2013-2015',
 	dateISOStart: '2013-09-01',
 	dateISOEnd: '2015-08-31',
-	amount: 100005,
+	amount: 105000,
 	currency: 'CAD',
 	status: 'Awarded'
 };
