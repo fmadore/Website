@@ -23,6 +23,7 @@ export const presentationDiscussionReligiousActivismCampusCiram2025: Communicati
 		'book presentation',
 		'CIRAM'
 	],
+	url: 'https://www.ciram.hei.ulaval.ca/activite/discussion-autour-du-livre-religious-activism-on-campuses-in-togo-and-benin/',
 	image: 'images/communications/ciram-2025.webp',
 	heroImage: {
 		src: 'images/communications/ciram-2025-hero.webp',
