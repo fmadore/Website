@@ -85,6 +85,13 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.37680/adabiya.v19i2.5650'
 		},
 		{
+			authors: ['Rusdiansyah'],
+			year: 2024,
+			title: 'Strategy to Increase Public Participation in Monitoring General Elections in Papua',
+			source: 'Moccasin Journal De Public Perspective 1, no. 4 (2024): 188-204',
+			url: 'https://doi.org/10.37899/mjdpp.v1i4.121'
+		},
+		{
 			authors: ['Augustin Loada'],
 			year: 2021,
 			title: 'Civil Society and Political Order in the Sahel',
