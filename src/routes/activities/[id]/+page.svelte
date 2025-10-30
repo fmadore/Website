@@ -276,7 +276,7 @@
 
 			{#if activity.pdfPath}
 				<div
-					class="pdf-section glass-card mt-4 p-8 rounded-xl transition-transform duration-300 shadow-lg hover:shadow-xl"
+					class="pdf-section glass-card mt-4 p-6 md:p-8"
 					use:scrollAnimate={{ delay: DELAY_STEP * 7, animationClass: 'fade-in-up' }}
 				>
 					<h2 class="text-xl font-serif font-semibold mb-4 text-emphasis">
@@ -352,6 +352,9 @@
 			position: relative;
 			content-visibility: auto;
 			contain-intrinsic-size: 800px;
+			border-radius: var(--border-radius-xl);
+			transition: transform var(--transition-duration-300) var(--transition-timing-ease);
+			box-shadow: var(--shadow-md);
 			/* Enhanced glassmorphism with subtle gradient overlay */
 			background: linear-gradient(
 				135deg,
@@ -361,8 +364,14 @@
 			);
 		}
 
+		/* Override h2 margin-top inside pdf-section */
+		.pdf-section h2 {
+			margin-top: 0;
+		}
+
 		.pdf-section:hover {
 			transform: var(--transform-lift-sm);
+			box-shadow: var(--shadow-lg);
 			background: linear-gradient(
 				135deg,
 				rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
