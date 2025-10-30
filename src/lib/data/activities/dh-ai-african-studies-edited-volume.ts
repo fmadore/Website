@@ -16,9 +16,9 @@ export const activity: Activity = {
         
         <h3>Suggested themes</h3>
         <ol>
-            <li>Transforming Research Methods through AI and Digital Tools in African Studies</li>
-            <li>Building Sustainable Research Infrastructures from African Perspectives</li>
-            <li>Centring African Knowledge Systems in Digital Research Design</li>
+            <li>1. Transforming Research Methods through AI and Digital Tools in African Studies</li>
+            <li>2. Building Sustainable Research Infrastructures from African Perspectives</li>
+            <li>3. Centring African Knowledge Systems in Digital Research Design</li>
         </ol>
         
         <h3>Submission details</h3>
