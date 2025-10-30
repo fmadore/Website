@@ -41,6 +41,7 @@
 		border-radius: var(--border-radius-lg);
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
 		position: relative;
+		box-shadow: var(--shadow-md);
 		/* Enhanced glassmorphism with subtle gradient overlay to match ProfileBanner */
 		background: linear-gradient(
 			135deg,
@@ -53,6 +54,7 @@
 	/* Hover effects for glassmorphism */
 	.content-body:hover {
 		transform: var(--transform-lift-sm);
+		box-shadow: var(--shadow-lg);
 		/* Enhanced hover effect with stronger gradient */
 		background: linear-gradient(
 			135deg,
