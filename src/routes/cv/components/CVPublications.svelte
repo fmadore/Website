@@ -53,6 +53,8 @@
 								{#if pub.url}<a href={pub.url} target="_blank" rel="noopener noreferrer"
 										>"{pub.title}"</a
 									>{/if}. Blog Post.
+							{:else if pub.type === 'conference-proceedings'}
+								In <em>{pub.proceedingsTitle}</em>.
 							{:else}
 								<!-- Generic fallback -->
 								{#if pub.journal}In <em>{pub.journal}</em>.{/if}

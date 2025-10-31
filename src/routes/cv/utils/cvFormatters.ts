@@ -20,6 +20,8 @@ export function getPublicationTypeDisplayName(type: Publication['type']): string
 			return 'Encyclopedia Entry';
 		case 'blogpost':
 			return 'Blog Posts';
+		case 'conference-proceedings':
+			return 'Conference Proceedings';
 		default:
 			return 'Other Publications';
 	}
@@ -78,7 +80,8 @@ export function groupPublicationsByType(publications: Publication[]) {
 		'chapter',
 		'report',
 		'encyclopedia',
-		'blogpost'
+		'blogpost',
+		'conference-proceedings'
 	];
 
 	// Group publications by type
