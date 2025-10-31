@@ -5,7 +5,8 @@
 		groupPublicationsByType,
 		getPublicationTypeDisplayName,
 		formatVolumeIssueDisplay,
-		formatCVAuthorList
+		formatCVAuthorList,
+		formatEditorList
 	} from '../utils/cvFormatters';
 
 	// Group publications using the utility function
@@ -36,7 +37,7 @@
 										pub.issue
 									)}{#if pub.pages}: {pub.pages}{/if}.
 								{:else if pub.type === 'chapter' && pub.book}
-									In {#if pub.editors}{pub.editors} (ed.),&nbsp;{/if}<em>{pub.book}</em>{#if pub.publisher}, {pub.publisher}{/if}{#if pub.pages}, pp. {pub.pages}{/if}.
+									In {#if pub.editors}{formatEditorList(pub.editors)} (eds.),&nbsp;{/if}<em>{pub.book}</em>{#if pub.publisher}, {pub.publisher}{/if}{#if pub.pages}, pp. {pub.pages}{/if}.
 								{:else if pub.type === 'book'}
 									<em>{pub.title}</em
 									>{#if pub.placeOfPublication || pub.publisher}.&nbsp;{@const city =

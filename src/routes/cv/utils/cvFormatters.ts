@@ -39,6 +39,26 @@ export function formatCVAuthorList(authorsInput: string[] | string | undefined):
 }
 
 /**
+ * Formats editor list with proper formatting for CV display
+ * Adds "and" before the last editor
+ */
+export function formatEditorList(editorsInput: string | undefined): string {
+	if (!editorsInput) return '';
+	
+	// Split by common separators
+	const editors = editorsInput.split(/,\s*|\s+and\s+/);
+	
+	if (editors.length === 0) return '';
+	if (editors.length === 1) return editors[0];
+	if (editors.length === 2) return `${editors[0]} and ${editors[1]}`;
+	
+	// Three or more editors
+	const lastEditor = editors[editors.length - 1];
+	const otherEditors = editors.slice(0, -1).join(', ');
+	return `${otherEditors}, and ${lastEditor}`;
+}
+
+/**
  * Formats a publication type into a human-readable display name
  */
 export function getPublicationTypeDisplayName(type: Publication['type']): string {
