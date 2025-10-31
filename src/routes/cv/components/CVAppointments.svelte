@@ -29,7 +29,7 @@
 					</div>
 					<div class="flex-1">
 						<span class="font-medium">{appt.title}</span>,
-						<em>{appt.institution}</em>{#if appt.location}, {appt.location}{/if}.
+						{appt.institution}{#if appt.location}, {appt.location}{/if}.
 						{#if appt.details}
 							<p class="text-sm mt-1">{appt.details}</p>
 						{/if}
