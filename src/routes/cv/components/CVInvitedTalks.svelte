@@ -18,12 +18,13 @@
 					<div class="font-semibold text-nowrap">{commDate.getFullYear()}</div>
 					<div class="flex-1">
 						{#if formattedAuthors}{@html formattedAuthors}. {/if}
-						"{comm.title}".
-						{#if comm.conference}<em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}.
-						{commDate.toLocaleDateString('en-GB', {
-							day: 'numeric',
-							month: 'long'
-						})}.
+						"{comm.title}"{#if comm.conference}, <em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}, {commDate.toLocaleDateString(
+							'en-GB',
+							{
+								day: 'numeric',
+								month: 'long'
+							}
+						)}.
 					</div>
 				</div>
 			{/each}
