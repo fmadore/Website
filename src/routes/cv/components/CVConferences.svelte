@@ -19,15 +19,18 @@
 			<div class="space-y-3">
 				{#each organizedPanels as comm (comm.id)}
 					{@const commDate = new Date(comm.dateISO)}
+					{@const formattedAuthors = formatCVAuthorList(comm.authors)}
 					<div class="flex gap-4">
 						<div class="font-semibold text-nowrap">{commDate.getFullYear()}</div>
 						<div class="flex-1">
-							"{comm.panelTitle || comm.title}".
-							{#if comm.conference}<em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}.
-							{commDate.toLocaleDateString('en-GB', {
-								day: 'numeric',
-								month: 'long'
-							})}.
+							{#if formattedAuthors}{@html formattedAuthors}. {/if}
+							"{comm.panelTitle || comm.title}"{#if comm.conference}, <em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}, {commDate.toLocaleDateString(
+								'en-GB',
+								{
+									day: 'numeric',
+									month: 'long'
+								}
+							)}.
 						</div>
 					</div>
 				{/each}
@@ -45,13 +48,13 @@
 						<div class="font-semibold text-nowrap">{commDate.getFullYear()}</div>
 						<div class="flex-1">
 							{#if formattedAuthors}{@html formattedAuthors}. {/if}
-							"{comm.title}".
-							{#if comm.panelTitle}Panel: <em>{comm.panelTitle}</em>. {/if}
-							{#if comm.conference}<em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}.
-							{commDate.toLocaleDateString('en-GB', {
-								day: 'numeric',
-								month: 'long'
-							})}.
+							"{comm.title}"{#if comm.panelTitle}, Panel: <em>{comm.panelTitle}</em>{/if}{#if comm.conference}, <em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}, {commDate.toLocaleDateString(
+								'en-GB',
+								{
+									day: 'numeric',
+									month: 'long'
+								}
+							)}.
 						</div>
 					</div>
 				{/each}
