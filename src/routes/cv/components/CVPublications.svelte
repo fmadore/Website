@@ -28,7 +28,7 @@
 						<div class="flex gap-4">
 							<div class="font-semibold text-nowrap">{pub.year}</div>
 							<div class="flex-1">
-								{#if formattedAuthors}{@html formattedAuthors}. {/if}
+								{#if formattedAuthors}{@html formattedAuthors}{#if pub.type === 'book' && pub.isEditedVolume}&nbsp;(eds.){/if}. {/if}
 								{#if pub.type !== 'book'}"{pub.title}".{/if}
 								{#if pub.type === 'article' && pub.journal}
 									<em>{pub.journal}</em>{formatVolumeIssueDisplay(
