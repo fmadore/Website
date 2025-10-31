@@ -60,6 +60,8 @@
 				pdf.setTextColor(0, 0, 0);
 			};
 
+			const yearColumnWidth = 35; // Consistent width for year column
+
 			const addSection = (title: string) => {
 				yPosition += 5;
 				pdf.setFontSize(14);
@@ -103,25 +105,126 @@
 					addSection(heading.textContent || '');
 				}
 
-				const items = section.querySelectorAll('li');
-				items.forEach((item) => {
-					const text = item.textContent?.trim() || '';
-					if (text) {
-						pdf.setFontSize(10);
-						pdf.setFont('helvetica', 'normal');
-						const lines = pdf.splitTextToSize('• ' + text, contentWidth - 5);
-						lines.forEach((line: string) => {
-							if (yPosition > pageHeight - margin - 10) {
-								addPageNumber();
-								pdf.addPage();
-								yPosition = margin;
+				// Handle subsection headings (h4)
+				const subsections = section.querySelectorAll('h4');
+				if (subsections.length > 0) {
+					subsections.forEach((h4) => {
+						yPosition += 3;
+						pdf.setFontSize(12);
+						pdf.setFont('helvetica', 'bold');
+						pdf.text(h4.textContent || '', margin + 5, yPosition);
+						yPosition += 6;
+
+						// Get the next sibling div with space-y-3 class (flex layout entries)
+						let nextElement = h4.nextElementSibling;
+						while (nextElement) {
+							if (nextElement.tagName === 'DIV' && nextElement.classList.contains('space-y-3')) {
+								// Handle flex layout entries
+								const entries = nextElement.querySelectorAll('.flex.gap-4');
+								entries.forEach((entry) => {
+									const yearDiv = entry.querySelector('div:first-child');
+									const contentDiv = entry.querySelector('div.flex-1');
+									
+									if (yearDiv && contentDiv) {
+										const year = yearDiv.textContent?.trim() || '';
+										const content = contentDiv.textContent?.trim() || '';
+										if (content) {
+											if (yPosition > pageHeight - margin - 10) {
+												addPageNumber();
+												pdf.addPage();
+												yPosition = margin;
+											}
+											
+											pdf.setFontSize(10);
+											pdf.setFont('helvetica', 'bold');
+											pdf.text(year, margin + 3, yPosition);
+											
+											pdf.setFont('helvetica', 'normal');
+											const contentLines = pdf.splitTextToSize(content, contentWidth - yearColumnWidth);
+											contentLines.forEach((line: string, index: number) => {
+												if (index > 0 && yPosition > pageHeight - margin - 10) {
+													addPageNumber();
+													pdf.addPage();
+													yPosition = margin;
+												}
+												pdf.text(line, margin + yearColumnWidth, yPosition);
+												if (index < contentLines.length - 1) {
+													yPosition += 5;
+												}
+											});
+											yPosition += 7;
+										}
+									}
+								});
+								break;
 							}
-							pdf.text(line, margin + 3, yPosition);
-							yPosition += 5;
+							if (nextElement.tagName === 'H4') break; // Stop at next subsection
+							nextElement = nextElement.nextElementSibling;
+						}
+					});
+				} else {
+					// No subsections - handle items directly
+					// First check for flex layout entries
+					const flexEntries = section.querySelectorAll('.flex.gap-4');
+					if (flexEntries.length > 0) {
+						flexEntries.forEach((entry) => {
+							const yearDiv = entry.querySelector('div:first-child');
+							const contentDiv = entry.querySelector('div.flex-1');
+							
+							if (yearDiv && contentDiv) {
+								const year = yearDiv.textContent?.trim() || '';
+								const content = contentDiv.textContent?.trim() || '';
+								if (content) {
+									if (yPosition > pageHeight - margin - 10) {
+										addPageNumber();
+										pdf.addPage();
+										yPosition = margin;
+									}
+									
+									pdf.setFontSize(10);
+									pdf.setFont('helvetica', 'bold');
+									pdf.text(year, margin + 3, yPosition);
+									
+									pdf.setFont('helvetica', 'normal');
+									const contentLines = pdf.splitTextToSize(content, contentWidth - yearColumnWidth);
+									contentLines.forEach((line: string, index: number) => {
+										if (index > 0 && yPosition > pageHeight - margin - 10) {
+											addPageNumber();
+											pdf.addPage();
+											yPosition = margin;
+										}
+										pdf.text(line, margin + yearColumnWidth, yPosition);
+										if (index < contentLines.length - 1) {
+											yPosition += 5;
+										}
+									});
+									yPosition += 7;
+								}
+							}
 						});
-						yPosition += 2;
+					} else {
+						// Fallback to list items for sections that still use them
+						const items = section.querySelectorAll('li');
+						items.forEach((item) => {
+							const text = item.textContent?.trim() || '';
+							if (text) {
+								pdf.setFontSize(10);
+								pdf.setFont('helvetica', 'normal');
+								const lines = pdf.splitTextToSize('• ' + text, contentWidth - 5);
+								lines.forEach((line: string) => {
+									if (yPosition > pageHeight - margin - 10) {
+										addPageNumber();
+										pdf.addPage();
+										yPosition = margin;
+									}
+									pdf.text(line, margin + 3, yPosition);
+									yPosition += 5;
+								});
+								yPosition += 2;
+							}
+						});
 					}
-				});
+				}
 			});
 
 			// Add page number to the last page
