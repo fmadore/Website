@@ -7,6 +7,7 @@
 	import CVPublications from './components/CVPublications.svelte';
 	import CVGrants from './components/CVGrants.svelte';
 	import CVAwards from './components/CVAwards.svelte';
+	import CVDigitalHumanities from './components/CVDigitalHumanities.svelte';
 	import CVConferences from './components/CVConferences.svelte';
 	import CVEvents from './components/CVEvents.svelte';
 	import CVInvitedTalks from './components/CVInvitedTalks.svelte';
@@ -34,9 +35,10 @@
 	<CVPublications />
 	<CVGrants />
 	<CVAwards />
+	<CVDigitalHumanities />
+	<CVInvitedTalks />
 	<CVConferences />
 	<CVEvents />
-	<CVInvitedTalks />
 	<CVMedia />
 	<CVLanguages />
 	<CVService />
