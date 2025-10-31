@@ -13,9 +13,9 @@
 					<div class="flex-1">
 						{media.type === 'interview' ? 'Interviewed by' : 'Appeared in'}
 						<em>{media.outlet}</em>{#if media.program}, {media.program}{/if}.
-						{mediaDate.toLocaleDateString('en-US', {
-							month: 'long',
-							day: 'numeric'
+						{mediaDate.toLocaleDateString('en-GB', {
+							day: 'numeric',
+							month: 'long'
 						})}.
 						<span class="block mt-1 text-sm text-light">Topic: {media.topic}</span>
 						{#if media.url}<a

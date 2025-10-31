@@ -17,10 +17,9 @@
 					<div class="flex-1">
 						{comm.title}.
 						{#if comm.conference}<em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}.
-						{commDate.toLocaleDateString('en-US', {
-							year: 'numeric',
-							month: 'long',
-							day: 'numeric'
+						{commDate.toLocaleDateString('en-GB', {
+							day: 'numeric',
+							month: 'long'
 						})}.
 					</div>
 				</div>
