@@ -1,29 +1,46 @@
 <script lang="ts">
 	import { grantsByDate } from '$lib/data/grants';
+
+	// Format year range for display (e.g., "2013-15" or "2023")
+	function formatYearRange(startYear: number, endYear?: number | null): string {
+		if (!endYear || endYear === startYear) {
+			return startYear.toString();
+		}
+		// Compact format: use last 2 digits of end year if in same century
+		const startCentury = Math.floor(startYear / 100);
+		const endCentury = Math.floor(endYear / 100);
+		if (startCentury === endCentury) {
+			return `${startYear}-${endYear.toString().slice(-2)}`;
+		}
+		return `${startYear}-${endYear}`;
+	}
 </script>
 
 <section class="mb-8">
-	<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Grants & Fellowships</h3>
+	<h3 class="text-2xl font-semibold mb-2 border-b border-light pb-1">Grants & Fellowships</h3>
 	{#if grantsByDate.length > 0}
-		<ul>
+		<div class="space-y-3">
 			{#each grantsByDate as grant (grant.id)}
-				<li class="mb-3">
-					<span class="font-medium">{grant.title}</span>, <em>{grant.funder}</em>.
-					<span class="block ml-4 text-sm text-light">
-						{grant.dateRangeString}
+				<div class="flex gap-4">
+					<div class="font-semibold" style="min-width: 5rem;">{formatYearRange(grant.startYear, grant.endYear)}</div>
+					<div class="flex-1">
+						<span class="font-medium">{grant.title}</span>, <em>{grant.funder}</em>.
 						{#if grant.amount}
-							({grant.amount.toLocaleString('en-US')}
-							{grant.currency})
+							<div class="text-sm text-light">
+								{grant.amount.toLocaleString('en-US')} {grant.currency}{#if grant.status && grant.status !== 'Awarded'}. [{grant.status}]{/if}
+							</div>
+						{:else if grant.status && grant.status !== 'Awarded'}
+							<div class="text-sm text-light">
+								[{grant.status}]
+							</div>
 						{/if}
-						{#if grant.status && grant.status !== 'Awarded'}
-							[{grant.status}]
+						{#if grant.details}
+							<p class="text-sm">{grant.details}</p>
 						{/if}
-					</span>
-					{#if grant.details}
-						<p class="ml-4 text-sm">{grant.details}</p>{/if}
-				</li>
+					</div>
+				</div>
 			{/each}
-		</ul>
+		</div>
 	{:else}
 		<p class="text-light">No grants or fellowships listed.</p>
 	{/if}
