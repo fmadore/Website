@@ -35,8 +35,7 @@
 									pub.issue
 								)}{#if pub.pages}: {pub.pages}{/if}.
 							{:else if pub.type === 'chapter' && pub.book}
-								In {#if pub.editors}<em>{pub.editors} (ed.), </em>{/if}<em>{pub.book}</em
-								>{#if pub.publisher}, {pub.publisher}{/if}{#if pub.pages}, pp. {pub.pages}{/if}.
+								In {#if pub.editors}{pub.editors} (ed.),&nbsp;{/if}<em>{pub.book}</em>{#if pub.publisher}, {pub.publisher}{/if}{#if pub.pages}, pp. {pub.pages}{/if}.
 							{:else if pub.type === 'book'}
 								<em>{pub.title}</em
 								>{#if pub.placeOfPublication || pub.publisher}.&nbsp;{@const city =
