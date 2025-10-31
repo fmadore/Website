@@ -12,9 +12,7 @@
 		<ul class="list-disc pl-8">
 			{#each peerReviewsByDate as review (review.id)}
 				<li class="mb-3">
-					<span class="font-medium">{review.type}</span>{#if review.journal}
-						for <em>{review.journal}</em>{/if}{#if review.publisher}
-						for {review.publisher}{/if} ({review.year}).
+					<span class="font-medium">{review.type}</span>{#if review.journal}&nbsp;for <em>{review.journal}</em>{/if}{#if review.publisher}&nbsp;for {review.publisher}{/if} ({review.year}).
 					{#if review.details}
 						<p class="ml-4 text-sm">{review.details}</p>{/if}
 					{#if review.publons_record}
