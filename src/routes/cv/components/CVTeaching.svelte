@@ -60,7 +60,7 @@
 		<div class="space-y-3">
 			{#each sortedGuestLectures as lecture}
 				<div class="flex gap-4">
-					<div class="font-semibold" style="min-width: 5rem;">{lecture.year}</div>
+					<div class="font-semibold text-nowrap">{lecture.year}</div>
 					<div class="flex-1">
 						<strong>{lecture.title}</strong>, <em>{lecture.course}</em>, {lecture.institution}, {lecture.level ===
 						'undergraduate'
