@@ -30,7 +30,7 @@
 							<div class="font-semibold text-nowrap">{pub.year}</div>
 							<div class="flex-1">
 								{#if formattedAuthors}{@html formattedAuthors}{#if (pub.type === 'book' && pub.isEditedVolume) || pub.type === 'special-issue'}&nbsp;(eds.),{:else}.{/if} {/if}
-								{#if pub.type !== 'book'}"{pub.title}".{/if}
+								{#if pub.type !== 'book' && pub.type !== 'blogpost'}"{pub.title}".{/if}
 								{#if pub.type === 'article' && pub.journal}
 									<em>{pub.journal}</em>{formatVolumeIssueDisplay(
 										pub.volume,
@@ -54,7 +54,7 @@
 								{:else if pub.type === 'blogpost'}
 									{#if pub.url}<a href={pub.url} target="_blank" rel="noopener noreferrer"
 											>"{pub.title}"</a
-										>{/if}. Blog Post.
+										>{:else}"{pub.title}"{/if}{#if pub.publisher}. <em>{pub.publisher}</em>{/if}.
 								{:else if pub.type === 'conference-proceedings'}
 									In <em>{pub.proceedingsTitle}</em>.
 								{:else}
