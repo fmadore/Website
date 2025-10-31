@@ -8,7 +8,7 @@ export const launchIslamWestAfricaCollection: Communication = {
 	dateISO: '2023-11-09',
 	year: 2023,
 	conference: 'Launch of the Islam West Africa Collection',
-	location: 'Berlin',
+	location: 'Media in Cooperation and Transition (MiCT)',
 	country: 'Germany',
 	type: 'event',
 	language: 'English',
