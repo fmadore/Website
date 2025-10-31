@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { communicationsByDate } from '$lib/data/communications';
+	import { formatCVAuthorList } from '../utils/cvFormatters';
 
 	// Filter communications by type
 	const organizedPanels = communicationsByDate.filter((comm) => comm.type === 'panel');
@@ -36,7 +37,7 @@
 			<ul class="list-disc pl-8">
 				{#each presentedPapers as comm (comm.id)}
 					<li class="mb-3">
-						{#if comm.authors}{comm.authors.join(', ')}.
+						{#if comm.authors}{@html formatCVAuthorList(comm.authors)}.
 						{/if}
 						"{comm.title}".
 						{#if comm.panelTitle}Panel: <em>{comm.panelTitle}</em>.

@@ -2,6 +2,42 @@ import type { Publication } from '$lib/types';
 import type { ProfessionalAffiliation } from '$lib/data/affiliations/template';
 
 /**
+ * Formats author list with Frédérick Madore in bold for CV display
+ * Only bolds the name when there are multiple authors
+ */
+export function formatCVAuthorList(authorsInput: string[] | string | undefined): string {
+	if (!authorsInput) return '';
+	
+	const authorsArray = Array.isArray(authorsInput) 
+		? authorsInput 
+		: typeof authorsInput === 'string' 
+			? authorsInput.split(' and ') 
+			: [];
+	
+	const numAuthors = authorsArray.length;
+	if (numAuthors === 0) return '';
+	
+	// If only one author, return without bolding
+	if (numAuthors === 1) {
+		return authorsArray[0];
+	}
+
+	// Multiple authors - bold Frédérick Madore's name
+	let formatted = '';
+	authorsArray.forEach((author, i) => {
+		const authorName = author === 'Frédérick Madore' 
+			? '<strong>Frédérick Madore</strong>' 
+			: author;
+		
+		formatted += authorName;
+		if (i < numAuthors - 1) {
+			formatted += i === numAuthors - 2 ? ' and ' : ', ';
+		}
+	});
+	return formatted;
+}
+
+/**
  * Formats a publication type into a human-readable display name
  */
 export function getPublicationTypeDisplayName(type: Publication['type']): string {

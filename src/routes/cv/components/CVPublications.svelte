@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { publicationsByDate } from '$lib/data/publications';
-	import { formatAuthorList } from '$lib/utils/citationFormatter';
 	import type { Publication } from '$lib/types';
 	import {
 		groupPublicationsByType,
 		getPublicationTypeDisplayName,
-		formatVolumeIssueDisplay
+		formatVolumeIssueDisplay,
+		formatCVAuthorList
 	} from '../utils/cvFormatters';
 
 	// Group publications using the utility function
@@ -25,8 +25,7 @@
 				<ul class="list-disc pl-6">
 					{#each publicationsByType[pubType] as pub (pub.id)}
 						<li class="mb-3">
-							{#if pub.authors}{formatAuthorList(pub.authors)}
-							{/if}
+							{#if pub.authors}{@html formatCVAuthorList(pub.authors)}{/if}
 							({pub.year}).
 							{#if pub.type !== 'book'}"{pub.title}".{/if}
 							{#if pub.type === 'article' && pub.journal}
