@@ -31,16 +31,16 @@
 	);
 </script>
 
-<section>
-	<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Fieldwork</h3>
+<section class="mb-8">
+	<h3 class="text-2xl font-semibold mb-2 border-b border-light pb-1">Fieldwork</h3>
 	{#if displayFieldworks.length > 0}
-		<ul>
+		<div class="space-y-3 mt-3">
 			{#each displayFieldworks as item (item.location)}
-				<li class="mb-3">
+				<div>
 					<span class="font-medium">{item.location}</span> ({item.years.join(', ')}).
-				</li>
+				</div>
 			{/each}
-		</ul>
+		</div>
 	{:else}
 		<p class="text-light">No fieldwork listed.</p>
 	{/if}
