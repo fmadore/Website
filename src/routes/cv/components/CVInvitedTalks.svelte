@@ -3,7 +3,7 @@
 	import { formatCVAuthorList } from '../utils/cvFormatters';
 
 	const invitedTalks = communicationsByDate.filter(
-		(comm) => comm.type === 'lecture' || comm.type === 'seminar'
+		(comm) => comm.type === 'lecture' || comm.type === 'seminar' || comm.type === 'workshop'
 	);
 </script>
 
