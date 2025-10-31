@@ -7,8 +7,8 @@ export const zmo2021: Appointment = {
 	institution: 'Leibniz-Zentrum Moderner Orient (ZMO)',
 	location: 'Berlin, Germany',
 	startYear: 2021,
-	endYear: null, // Ongoing
-	dateRangeString: '2021-Present',
+	endYear: 2025,
+	dateRangeString: '2021-2025',
 	dateISOStart: '2021-02-01',
 	dateISOEnd: '2025-12-31'
 };

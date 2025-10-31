@@ -16,21 +16,23 @@ const allAppointments: Appointment[] = loadData<Appointment>(
 	'appointment'
 );
 
-// Sort by start date (most recent first)
+// Sort by start year descending (most recent first), then handle overlaps
 export const appointmentsByDate = [...allAppointments].sort((a, b) => {
-	// Primarily sort by start date descending
-	const dateComparison = new Date(b.dateISOStart).getTime() - new Date(a.dateISOStart).getTime();
-	if (dateComparison !== 0) {
-		return dateComparison;
+	// Handle ongoing positions (null endYear) - put them first
+	if (a.endYear === null && b.endYear !== null) return -1;
+	if (a.endYear !== null && b.endYear === null) return 1;
+	if (a.endYear === null && b.endYear === null) {
+		// Both ongoing, sort by start year descending
+		return b.startYear - a.startYear;
 	}
-	// If start dates are the same, sort ongoing before finished
-	if (a.endYear === null && b.endYear !== null) return -1; // a is ongoing, b is not -> a first
-	if (a.endYear !== null && b.endYear === null) return 1; // b is ongoing, a is not -> b first
-	// If both ongoing or both finished with same start, sort by end date descending (if available)
-	if (a.dateISOEnd && b.dateISOEnd) {
-		return new Date(b.dateISOEnd).getTime() - new Date(a.dateISOEnd).getTime();
+	
+	// For finished positions, sort by end year descending
+	if (a.endYear !== b.endYear) {
+		return (b.endYear || 0) - (a.endYear || 0);
 	}
-	return 0; // Keep original order if start/end dates are identical
+	
+	// Same end year, sort by start year descending (more recent start first)
+	return b.startYear - a.startYear;
 });
 
 export { allAppointments };
