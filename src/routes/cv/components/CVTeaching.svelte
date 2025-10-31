@@ -1,5 +1,6 @@
 <script lang="ts">
 	import teaching from '$lib/data/teaching';
+	import guestLectures from '$lib/data/teaching/guest-lectures';
 	import { base } from '$app/paths';
 
 	// Format year range for display (e.g., "2013-18" or "2020")
@@ -7,7 +8,7 @@
 		if (!yearString.includes('-')) {
 			return yearString;
 		}
-		const [startYear, endYear] = yearString.split('-').map(y => parseInt(y));
+		const [startYear, endYear] = yearString.split('-').map((y) => parseInt(y));
 		// Compact format: use last 2 digits of end year if in same century
 		const startCentury = Math.floor(startYear / 100);
 		const endCentury = Math.floor(endYear / 100);
@@ -21,6 +22,13 @@
 	const sortedTeaching = teaching.sort((a, b) => {
 		const yearA = parseInt(a.year.split('-')[0]);
 		const yearB = parseInt(b.year.split('-')[0]);
+		return yearB - yearA;
+	});
+
+	// Sort guest lectures by year (most recent first)
+	const sortedGuestLectures = guestLectures.sort((a, b) => {
+		const yearA = parseInt(a.year);
+		const yearB = parseInt(b.year);
 		return yearB - yearA;
 	});
 </script>
@@ -43,6 +51,21 @@
 						{#if course.period}
 							({course.period})
 						{/if}.
+					</div>
+				</div>
+			{/each}
+		</div>
+
+		<h4 class="text-lg font-semibold mt-4 mb-2">Guest Lecturer</h4>
+		<div class="space-y-3">
+			{#each sortedGuestLectures as lecture}
+				<div class="flex gap-4">
+					<div class="font-semibold" style="min-width: 5rem;">{lecture.year}</div>
+					<div class="flex-1">
+						<strong>{lecture.title}</strong>, <em>{lecture.course}</em>, {lecture.institution}, {lecture.level ===
+						'undergraduate'
+							? 'Undergraduate'
+							: 'Graduate'}.
 					</div>
 				</div>
 			{/each}
