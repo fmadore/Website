@@ -3,18 +3,21 @@
 </script>
 
 <section class="mb-8">
-	<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Awards & Honors</h3>
+	<h3 class="text-2xl font-semibold mb-2 border-b border-light pb-1">Awards & Honors</h3>
 	{#if awardsByDate.length > 0}
-		<ul>
+		<div class="space-y-3">
 			{#each awardsByDate as award (award.id)}
-				<li class="mb-3">
-					<span class="font-medium">{award.title}</span>, <em>{award.institution}</em>
-					({award.year}).
-					{#if award.details}
-						<p class="ml-4 text-sm">{award.details}</p>{/if}
-				</li>
+				<div class="flex gap-4">
+					<div class="font-semibold text-nowrap">{award.year}</div>
+					<div class="flex-1">
+						<span class="font-medium">{award.title}</span>, <em>{award.institution}</em>.
+						{#if award.details}
+							<p class="mt-1 text-sm">{award.details}</p>
+						{/if}
+					</div>
+				</div>
 			{/each}
-		</ul>
+		</div>
 	{:else}
 		<p class="text-light">No awards or honors listed.</p>
 	{/if}

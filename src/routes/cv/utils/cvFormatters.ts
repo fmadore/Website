@@ -3,6 +3,7 @@ import type { ProfessionalAffiliation } from '$lib/data/affiliations/template';
 
 /**
  * Formats author list with Frédérick Madore in bold for CV display
+ * Returns empty string if Frédérick Madore is the only author
  * Only bolds the name when there are multiple authors
  */
 export function formatCVAuthorList(authorsInput: string[] | string | undefined): string {
@@ -17,9 +18,9 @@ export function formatCVAuthorList(authorsInput: string[] | string | undefined):
 	const numAuthors = authorsArray.length;
 	if (numAuthors === 0) return '';
 	
-	// If only one author, return without bolding
+	// If only one author and it's Frédérick Madore, return empty string
 	if (numAuthors === 1) {
-		return authorsArray[0];
+		return authorsArray[0] === 'Frédérick Madore' ? '' : authorsArray[0];
 	}
 
 	// Multiple authors - bold Frédérick Madore's name

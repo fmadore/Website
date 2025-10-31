@@ -6,21 +6,25 @@
 
 {#if organizedEvents.length > 0}
 	<section class="mb-8">
-		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">
+		<h3 class="text-2xl font-semibold mb-2 border-b border-light pb-1">
 			Organization of Academic Events
 		</h3>
-		<ul class="list-disc pl-6">
+		<div class="space-y-3">
 			{#each organizedEvents as comm (comm.id)}
-				<li class="mb-3">
-					{comm.title}.
-					{#if comm.conference}<em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}.
-					{new Date(comm.dateISO).toLocaleDateString('en-US', {
-						year: 'numeric',
-						month: 'long',
-						day: 'numeric'
-					})}.
-				</li>
+				{@const commDate = new Date(comm.dateISO)}
+				<div class="flex gap-4">
+					<div class="font-semibold text-nowrap">{commDate.getFullYear()}</div>
+					<div class="flex-1">
+						{comm.title}.
+						{#if comm.conference}<em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}.
+						{commDate.toLocaleDateString('en-US', {
+							year: 'numeric',
+							month: 'long',
+							day: 'numeric'
+						})}.
+					</div>
+				</div>
 			{/each}
-		</ul>
+		</div>
 	</section>
 {/if}

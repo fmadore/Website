@@ -15,42 +15,49 @@
 
 		<!-- Panels Organised -->
 		{#if organizedPanels.length > 0}
-			<h4 class="text-lg font-semibold mt-3 mb-1 pl-4">Panels organised</h4>
-			<ul class="list-disc pl-8">
+			<h4 class="text-lg font-semibold mt-4 mb-2">Panels organised</h4>
+			<div class="space-y-3">
 				{#each organizedPanels as comm (comm.id)}
-					<li class="mb-3">
-						"{comm.panelTitle || comm.title}".
-						{#if comm.conference}<em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}.
-						{new Date(comm.dateISO).toLocaleDateString('en-US', {
-							year: 'numeric',
-							month: 'long',
-							day: 'numeric'
-						})}.
-					</li>
+					{@const commDate = new Date(comm.dateISO)}
+					<div class="flex gap-4">
+						<div class="font-semibold text-nowrap">{commDate.getFullYear()}</div>
+						<div class="flex-1">
+							"{comm.panelTitle || comm.title}".
+							{#if comm.conference}<em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}.
+							{commDate.toLocaleDateString('en-US', {
+								year: 'numeric',
+								month: 'long',
+								day: 'numeric'
+							})}.
+						</div>
+					</div>
 				{/each}
-			</ul>
+			</div>
 		{/if}
 
 		<!-- Papers Presented -->
 		{#if presentedPapers.length > 0}
-			<h4 class="text-lg font-semibold mt-3 mb-1 pl-4">Papers presented</h4>
-			<ul class="list-disc pl-8">
+			<h4 class="text-lg font-semibold mt-4 mb-2">Papers presented</h4>
+			<div class="space-y-3">
 				{#each presentedPapers as comm (comm.id)}
-					<li class="mb-3">
-						{#if comm.authors}{@html formatCVAuthorList(comm.authors)}.
-						{/if}
-						"{comm.title}".
-						{#if comm.panelTitle}Panel: <em>{comm.panelTitle}</em>.
-						{/if}
-						{#if comm.conference}<em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}.
-						{new Date(comm.dateISO).toLocaleDateString('en-US', {
-							year: 'numeric',
-							month: 'long',
-							day: 'numeric'
-						})}.
-					</li>
+					{@const commDate = new Date(comm.dateISO)}
+					{@const formattedAuthors = formatCVAuthorList(comm.authors)}
+					<div class="flex gap-4">
+						<div class="font-semibold text-nowrap">{commDate.getFullYear()}</div>
+						<div class="flex-1">
+							{#if formattedAuthors}{@html formattedAuthors}. {/if}
+							"{comm.title}".
+							{#if comm.panelTitle}Panel: <em>{comm.panelTitle}</em>. {/if}
+							{#if comm.conference}<em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}.
+							{commDate.toLocaleDateString('en-US', {
+								year: 'numeric',
+								month: 'long',
+								day: 'numeric'
+							})}.
+						</div>
+					</div>
 				{/each}
-			</ul>
+			</div>
 		{/if}
 	</section>
 {/if}

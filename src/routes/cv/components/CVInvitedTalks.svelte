@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { communicationsByDate } from '$lib/data/communications';
+	import { formatCVAuthorList } from '../utils/cvFormatters';
 
 	const invitedTalks = communicationsByDate.filter(
 		(comm) => comm.type === 'lecture' || comm.type === 'seminar'
@@ -8,21 +9,25 @@
 
 {#if invitedTalks.length > 0}
 	<section class="mb-8">
-		<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Invited Talks</h3>
-		<ul class="list-disc pl-6">
+		<h3 class="text-2xl font-semibold mb-2 border-b border-light pb-1">Invited Talks</h3>
+		<div class="space-y-3">
 			{#each invitedTalks as comm (comm.id)}
-				<li class="mb-3">
-					{#if comm.authors}{comm.authors.join(', ')}.
-					{/if}
-					"{comm.title}".
-					{#if comm.conference}<em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}.
-					{new Date(comm.dateISO).toLocaleDateString('en-US', {
-						year: 'numeric',
-						month: 'long',
-						day: 'numeric'
-					})}.
-				</li>
+				{@const commDate = new Date(comm.dateISO)}
+				{@const formattedAuthors = formatCVAuthorList(comm.authors)}
+				<div class="flex gap-4">
+					<div class="font-semibold text-nowrap">{commDate.getFullYear()}</div>
+					<div class="flex-1">
+						{#if formattedAuthors}{@html formattedAuthors}. {/if}
+						"{comm.title}".
+						{#if comm.conference}<em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}.
+						{commDate.toLocaleDateString('en-US', {
+							year: 'numeric',
+							month: 'long',
+							day: 'numeric'
+						})}.
+					</div>
+				</div>
 			{/each}
-		</ul>
+		</div>
 	</section>
 {/if}
