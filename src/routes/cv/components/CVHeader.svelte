@@ -32,6 +32,12 @@
 			<Icon icon="mdi:email" class="text-light shrink-0" width="20" height="20" />
 		</div>
 		<div class="flex items-center gap-2">
+			<a href="https://www.frederickmadore.com" target="_blank" rel="noopener noreferrer"
+				>www.frederickmadore.com</a
+			>
+			<Icon icon="mdi:web" class="text-light shrink-0" width="20" height="20" />
+		</div>
+		<div class="flex items-center gap-2">
 			<a
 				href="https://www.linkedin.com/in/frederickmadore/"
 				target="_blank"
