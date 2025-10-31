@@ -23,7 +23,7 @@
 						{edu.degree}.
 						{edu.institution}{#if edu.location}, {edu.location}{/if}.
 						{#if edu.thesisTitle}
-							<p class="text-sm mt-1">Thesis: "{edu.thesisTitle}"</p>{/if}
+							<p class="text-sm mt-1">Dissertation: "{edu.thesisTitle}"</p>{/if}
 						{#if edu.details}
 							<p class="text-sm mt-1">{edu.details}</p>{/if}
 					</div>
@@ -39,7 +39,7 @@
 				<div class="flex gap-4">
 					<div class="font-semibold text-nowrap">{edu.year}</div>
 					<div class="flex-1">
-						{edu.degree}.
+						"{edu.degree}".
 						{edu.institution}{#if edu.location}, {edu.location}{/if}{#if edu.details}, {edu.details}{/if}.
 					</div>
 				</div>
