@@ -74,8 +74,8 @@
 			const SPACING = {
 				SECTION_TOP: 6,      // ~var(--spacing-6) = 1.5rem = 24px
 				SECTION_BOTTOM: 5,   // ~var(--spacing-4) = 1rem = 16px
-				SUBSECTION_TOP: 4,   // ~var(--spacing-3) = 0.75rem = 12px
-				SUBSECTION_BOTTOM: 3,// ~var(--spacing-2) = 0.5rem = 8px
+				SUBSECTION_TOP: 4,   // ~var(--spacing-3) = 0.75rem = 12px - space before subheader
+				SUBSECTION_BOTTOM: 5,// ~var(--spacing-4) = 1rem = 16px - increased: space after subheader
 				ENTRY_GAP: 3.5,      // ~var(--spacing-3) for space-y-3
 				LINE_HEIGHT_BODY: 5, // Standard line height for body text
 				LINE_HEIGHT_TIGHT: 4,// Tighter line height for multi-line entries
