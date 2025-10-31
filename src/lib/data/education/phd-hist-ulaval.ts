@@ -5,7 +5,7 @@ export const phdHistUlaval: Education = {
 	id: 'phd-hist-ulaval',
 	degree: 'Ph.D. in History',
 	institution: 'Université Laval',
-	location: 'Québec City, Canada',
+	location: 'Quebec City, Canada',
 	year: 2018,
 	type: 'Degree',
 	thesisTitle:

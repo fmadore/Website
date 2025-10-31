@@ -15,18 +15,21 @@
 
 	{#if degrees.length > 0}
 		<h4 class="text-lg font-semibold mt-4 mb-2">Degrees</h4>
-		<ul>
+		<div class="space-y-3">
 			{#each degrees as edu (edu.id)}
-				<li class="mb-3 ml-4">
-					<span class="font-medium">{edu.degree}</span> ({edu.year}).
-					<em>{edu.institution}</em>{#if edu.location}, {edu.location}{/if}.
-					{#if edu.thesisTitle}
-						<p class="ml-4 text-sm">Thesis: "{edu.thesisTitle}"</p>{/if}
-					{#if edu.details}
-						<p class="ml-4 text-sm">{edu.details}</p>{/if}
-				</li>
+				<div class="flex gap-4">
+					<div class="font-semibold text-nowrap">{edu.year}</div>
+					<div class="flex-1">
+						{edu.degree}.
+						{edu.institution}{#if edu.location}, {edu.location}{/if}.
+						{#if edu.thesisTitle}
+							<p class="text-sm mt-1">Thesis: "{edu.thesisTitle}"</p>{/if}
+						{#if edu.details}
+							<p class="text-sm mt-1">{edu.details}</p>{/if}
+					</div>
+				</div>
 			{/each}
-		</ul>
+		</div>
 	{/if}
 
 	{#if trainings.length > 0}
@@ -61,16 +64,19 @@
 
 	{#if otherEducation.length > 0}
 		<h4 class="text-lg font-semibold mt-4 mb-2">Other Education</h4>
-		<ul>
+		<div class="space-y-3">
 			{#each otherEducation as edu (edu.id)}
-				<li class="mb-3 ml-4">
-					<span class="font-medium">{edu.degree}</span> ({edu.year}).
-					<em>{edu.institution}</em>{#if edu.location}, {edu.location}{/if}.
-					{#if edu.details}
-						<p class="ml-4 text-sm">{edu.details}</p>{/if}
-				</li>
+				<div class="flex gap-4">
+					<div class="font-semibold text-nowrap">{edu.year}</div>
+					<div class="flex-1">
+						{edu.degree}.
+						{edu.institution}{#if edu.location}, {edu.location}{/if}.
+						{#if edu.details}
+							<p class="text-sm mt-1">{edu.details}</p>{/if}
+					</div>
+				</div>
 			{/each}
-		</ul>
+		</div>
 	{/if}
 
 	{#if educationByDate.length === 0}
