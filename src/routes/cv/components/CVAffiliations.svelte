@@ -25,14 +25,6 @@
 							{/each}
 						</ul>
 					{/if}
-					{#if aff.url}
-						<a
-							href={aff.url}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="ml-4 text-primary hover:underline text-sm">[Website]</a
-						>
-					{/if}
 				</div>
 			{/each}
 		</div>
