@@ -24,7 +24,7 @@
 	<div class="space-y-3">
 		{#each computerSkills as skill}
 			<div class="flex gap-4">
-				<div class="font-semibold" style="min-width: 12rem;">{skill.category}:</div>
+				<div class="font-semibold" style="min-width: 15rem;">{skill.category}:</div>
 				<div class="flex-1">
 					{skill.skills}
 				</div>
