@@ -10,7 +10,7 @@
 				<div class="flex gap-4">
 					<div class="font-semibold text-nowrap">{award.year}</div>
 					<div class="flex-1">
-						<span class="font-medium">{award.title}</span>, <em>{award.institution}</em>.
+						<span class="font-medium">{award.title}</span>, {award.institution}.
 						{#if award.details}
 							<p class="mt-1 text-sm">{award.details}</p>
 						{/if}
