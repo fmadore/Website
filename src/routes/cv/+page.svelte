@@ -11,6 +11,7 @@
 	import CVConferences from './components/CVConferences.svelte';
 	import CVEvents from './components/CVEvents.svelte';
 	import CVTeaching from './components/CVTeaching.svelte';
+	import CVConsulting from './components/CVConsulting.svelte';
 	import CVInvitedTalks from './components/CVInvitedTalks.svelte';
 	import CVMedia from './components/CVMedia.svelte';
 	import CVLanguages from './components/CVLanguages.svelte';
@@ -42,6 +43,7 @@
 	<CVEvents />
 	<CVTeaching />
 	<CVService />
+	<CVConsulting />
 	<CVMedia />
 	<CVLanguages />
 	<CVAffiliations />
