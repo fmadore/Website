@@ -89,6 +89,22 @@
 										rel="noopener noreferrer"
 										class="ml-1 text-primary hover:underline text-sm">[Link]</a
 									>{/if}
+								{#if pub.reviewedBy && pub.reviewedBy.length > 0}
+									<div class="mt-2 ml-4 text-sm">
+										Reviewed in
+										{#each pub.reviewedBy as review, i (review.title + review.year)}
+											<a
+												href={review.url}
+												target="_blank"
+												rel="noopener noreferrer"
+												class="text-primary hover:underline"
+												><em>{review.journal}</em></a
+											>{#if i < pub.reviewedBy.length - 2}, {' '}
+											{:else if i === pub.reviewedBy.length - 2}, and {' '}
+											{:else}.{/if}
+										{/each}
+									</div>
+								{/if}
 							</div>
 						</div>
 					{/each}
