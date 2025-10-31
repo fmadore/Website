@@ -48,7 +48,7 @@
 								{:else if pub.type === 'special-issue' && pub.journal}
 									<em>{pub.journal}</em>{formatVolumeIssueDisplay(pub.volume, pub.issue)}.
 								{:else if pub.type === 'report'}
-									<em>{pub.title}</em>{#if pub.publisher}, {pub.publisher}{/if}.
+									{#if pub.journal}<em>{pub.journal}</em>{formatVolumeIssueDisplay(pub.volume, pub.issue)}{:else if pub.publisher}<em>{pub.publisher}</em>{formatVolumeIssueDisplay(pub.volume, pub.issue)}{/if}{#if pub.pages}, {pub.pages}{/if}.
 								{:else if pub.type === 'encyclopedia' && pub.encyclopediaTitle}
 									In <em>{pub.encyclopediaTitle}</em>{#if pub.publisher}, {pub.publisher}{/if}.
 								{:else if pub.type === 'blogpost'}
