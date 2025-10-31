@@ -10,6 +10,7 @@
 	import CVDigitalHumanities from './components/CVDigitalHumanities.svelte';
 	import CVConferences from './components/CVConferences.svelte';
 	import CVEvents from './components/CVEvents.svelte';
+	import CVTeaching from './components/CVTeaching.svelte';
 	import CVInvitedTalks from './components/CVInvitedTalks.svelte';
 	import CVMedia from './components/CVMedia.svelte';
 	import CVLanguages from './components/CVLanguages.svelte';
@@ -39,6 +40,7 @@
 	<CVInvitedTalks />
 	<CVConferences />
 	<CVEvents />
+	<CVTeaching />
 	<CVMedia />
 	<CVLanguages />
 	<CVService />
