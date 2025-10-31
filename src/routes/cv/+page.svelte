@@ -43,13 +43,13 @@
 	<CVConferences />
 	<CVEvents />
 	<CVTeaching />
+	<CVFieldwork />
 	<CVService />
 	<CVConsulting />
 	<CVMedia />
 	<CVLanguages />
 	<CVAffiliations />
 	<CVComputerSkills />
-	<CVFieldwork />
 </div>
 
 <style>
