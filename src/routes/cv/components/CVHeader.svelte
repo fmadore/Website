@@ -1,9 +1,17 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
+
+	// Get current date formatted as "Day Month Year"
+	const today = new Date().toLocaleDateString('en-GB', {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric'
+	});
 </script>
 
 <h1 class="text-3xl font-bold mb-2 border-b pb-2 cv-main-title">Curriculum Vitae</h1>
-<h2 class="text-xl font-semibold mb-4 cv-subtitle">Frédérick Madore</h2>
+<h2 class="text-xl font-semibold mb-1 cv-subtitle">Frédérick Madore</h2>
+<p class="text-sm text-light mb-4 cv-date">{today}</p>
 
 <!-- Contact Info Section -->
 <section class="mb-6 text-sm text-light flex flex-wrap gap-x-6 gap-y-2 items-start justify-between">
@@ -46,7 +54,8 @@
 
 <style>
 	.cv-main-title,
-	.cv-subtitle {
+	.cv-subtitle,
+	.cv-date {
 		text-align: center;
 	}
 </style>
