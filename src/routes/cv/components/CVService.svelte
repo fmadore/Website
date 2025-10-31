@@ -22,7 +22,7 @@
 				<div class="flex gap-4">
 					<div class="font-semibold text-nowrap">{review.year}</div>
 					<div class="flex-1">
-						<span class="font-medium">{review.type}</span>{#if review.journal}, <em>{review.journal}</em>{:else if review.publisher}, {review.publisher}{/if}.
+						{review.type}{#if review.journal}&nbsp;–&nbsp;<em>{review.journal}</em>{:else if review.publisher}&nbsp;–&nbsp;{review.publisher}{/if}.
 						{#if review.details}
 							<div class="text-sm">{review.details}</div>
 						{/if}
@@ -48,7 +48,7 @@
 				<div class="flex gap-4">
 					<div class="font-semibold" style="min-width: 5rem;">{member.dateRangeString}</div>
 					<div class="flex-1">
-						<span class="font-medium">{member.role}</span>, <em>{member.journal}</em>.
+						{member.role}, <em>{member.journal}</em>.
 						{#if member.details}
 							<div class="text-sm">{member.details}</div>
 						{/if}
