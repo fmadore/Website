@@ -5,7 +5,7 @@ export const zmo2021: Appointment = {
 	id: 'research-zmo-2021',
 	title: 'Research Fellow',
 	institution: 'Leibniz-Zentrum Moderner Orient (ZMO)',
-	location: 'Berlin, Germany',
+	location: 'Germany',
 	startYear: 2021,
 	endYear: 2025,
 	dateRangeString: '2021-2025',

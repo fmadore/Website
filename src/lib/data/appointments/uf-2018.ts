@@ -5,7 +5,7 @@ export const uf2018: Appointment = {
 	id: 'banting-uf-2018',
 	title: 'Banting Postdoctoral Fellow',
 	institution: 'Center for African Studies, University of Florida',
-	location: 'Gainesville, FL, United States',
+	location: 'United States',
 	startYear: 2018,
 	endYear: 2020,
 	dateRangeString: '2018-2020',

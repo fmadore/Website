@@ -5,7 +5,7 @@ export const bayreuth2026: Appointment = {
 	id: 'data-curator-bayreuth-2026',
 	title: 'Data Curator',
 	institution: 'Africa Multiple Cluster of Excellence, University of Bayreuth',
-	location: 'Bayreuth, Germany',
+	location: 'Germany',
 	startYear: 2026,
 	endYear: null, // Ongoing
 	dateRangeString: '2026-',

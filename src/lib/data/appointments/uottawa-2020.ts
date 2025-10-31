@@ -5,7 +5,7 @@ export const uottawa2020: Appointment = {
 	id: 'part-time-uottawa-2020',
 	title: 'Part-Time Professor',
 	institution: 'Department of History, University of Ottawa',
-	location: 'Ottawa, Canada',
+	location: 'Canada',
 	startYear: 2020,
 	endYear: 2020,
 	dateRangeString: '2020',

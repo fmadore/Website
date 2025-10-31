@@ -4,7 +4,7 @@ export const ehess2025: Appointment = {
 	id: 'visiting-ehess-2025',
 	title: 'Visiting Scholar',
 	institution: 'École des hautes études en sciences sociales (EHESS)',
-	location: 'Paris, France',
+	location: 'France',
 	startYear: 2025,
 	endYear: 2025,
 	dateRangeString: '2025',
