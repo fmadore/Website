@@ -65,7 +65,23 @@
 									href="https://doi.org/{pub.doi}"
 									target="_blank"
 									rel="noopener noreferrer"
-									class="ml-1 text-primary hover:underline text-sm">[DOI]</a
+									class="ml-2 inline-flex items-center align-middle"
+									><img
+										src="https://zenodo.org/badge/DOI/{pub.doi}.svg"
+										alt="DOI: {pub.doi}"
+										class="h-5"
+										onerror={(e) => {
+											const img = e.currentTarget as HTMLImageElement;
+											img.style.display = 'none';
+											const fallback = img.nextElementSibling as HTMLElement;
+											if (fallback) {
+												fallback.style.display = 'inline-flex';
+											}
+										}}
+									/><span
+										class="px-2 py-0.5 text-xs font-medium text-white bg-primary rounded items-center"
+										style="display:none;">DOI: {pub.doi}</span
+									></a
 								>{/if}
 							{#if pub.url && pub.type !== 'blogpost' && !pub.doi}<a
 									href={pub.url}
