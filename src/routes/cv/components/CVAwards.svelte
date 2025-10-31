@@ -3,7 +3,7 @@
 </script>
 
 <section class="mb-8">
-	<h3 class="text-2xl font-semibold mb-2 border-b border-light pb-1">Awards & Honors</h3>
+	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Awards & Honors</h3>
 	{#if awardsByDate.length > 0}
 		<div class="space-y-3">
 			{#each awardsByDate as award (award.id)}
@@ -12,7 +12,7 @@
 					<div class="flex-1">
 						<span class="font-medium">{award.title}</span>, {award.institution}.
 						{#if award.details}
-							<p class="mt-1 text-sm">{award.details}</p>
+							<p class="text-sm mt-1">{award.details}</p>
 						{/if}
 					</div>
 				</div>

@@ -4,13 +4,13 @@
 </script>
 
 <section class="mb-8">
-	<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">
+	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">
 		Professional Affiliations
 	</h3>
 	{#if affiliationsByStartDate.length > 0}
-		<ul>
+		<div class="space-y-3">
 			{#each affiliationsByStartDate as aff (aff.id)}
-				<li class="mb-3">
+				<div>
 					<span class="font-medium">{aff.name}</span>{#if aff.abbreviation}<span
 							>&nbsp;({aff.abbreviation})</span
 						>{/if}{#if aff.parentOrganization}<span>,&nbsp;<em>{aff.parentOrganization}</em></span
@@ -33,9 +33,9 @@
 							class="ml-4 text-primary hover:underline text-sm">[Website]</a
 						>
 					{/if}
-				</li>
+				</div>
 			{/each}
-		</ul>
+		</div>
 	{:else}
 		<p class="text-light">No professional affiliations listed.</p>
 	{/if}

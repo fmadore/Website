@@ -34,13 +34,13 @@
 </script>
 
 <section class="mb-8">
-	<h3 class="text-2xl font-semibold mb-2 border-b border-light pb-1">Teaching Experience</h3>
+	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Teaching Experience</h3>
 	{#if sortedTeaching.length > 0}
 		<h4 class="text-lg font-semibold mt-4 mb-2">Instructor</h4>
 		<div class="space-y-3">
 			{#each sortedTeaching as course}
 				<div class="flex gap-4">
-					<div class="font-semibold" style="min-width: 5rem;">{formatYearRange(course.year)}</div>
+					<div class="font-semibold text-nowrap w-20">{formatYearRange(course.year)}</div>
 					<div class="flex-1">
 						<strong>{course.title}</strong>, {course.institution}, {course.level === 'undergraduate'
 							? 'Undergraduate'

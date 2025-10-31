@@ -32,7 +32,7 @@
 </script>
 
 <section class="mb-8">
-	<h3 class="text-2xl font-semibold mb-2 border-b border-light pb-1">Fieldwork</h3>
+	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Fieldwork</h3>
 	{#if displayFieldworks.length > 0}
 		<div class="space-y-3 mt-3">
 			{#each displayFieldworks as item (item.location)}

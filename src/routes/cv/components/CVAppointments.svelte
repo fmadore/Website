@@ -17,14 +17,14 @@
 </script>
 
 <section class="mb-8">
-	<h3 class="text-2xl font-semibold mb-2 border-b border-light pb-1">
+	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">
 		Professional Appointments
 	</h3>
 	{#if appointmentsByDate.length > 0}
 		<div class="space-y-3">
 			{#each appointmentsByDate as appt (appt.id)}
 				<div class="flex gap-4">
-					<div class="font-semibold" style="min-width: 5rem;">
+					<div class="font-semibold text-nowrap w-20">
 						{formatYearRange(appt.startYear, appt.endYear)}
 					</div>
 					<div class="flex-1">

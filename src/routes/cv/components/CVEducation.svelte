@@ -11,7 +11,7 @@
 </script>
 
 <section class="mb-8">
-	<h3 class="text-2xl font-semibold mb-4 border-b border-light pb-1">Education</h3>
+	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Education</h3>
 
 	{#if degrees.length > 0}
 		<h4 class="text-lg font-semibold mt-4 mb-2">Degrees</h4>

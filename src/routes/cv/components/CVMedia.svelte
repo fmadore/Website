@@ -3,7 +3,7 @@
 </script>
 
 <section class="mb-8">
-	<h3 class="text-2xl font-semibold mb-2 border-b border-light pb-1">Media Appearances</h3>
+	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Media Appearances</h3>
 	{#if mediaAppearancesByDate.length > 0}
 		<div class="space-y-3">
 			{#each mediaAppearancesByDate as media (media.id)}
@@ -12,12 +12,12 @@
 					<div class="font-semibold text-nowrap">{mediaDate.getFullYear()}</div>
 					<div class="flex-1">
 						{media.type === 'interview' ? 'Interviewed by' : 'Appeared in'}
-						<em>{media.outlet}</em>{#if media.program}, {media.program}{/if}.
-						{mediaDate.toLocaleDateString('en-GB', {
-							day: 'numeric',
-							month: 'long'
-						})}.
-						<span class="block mt-1 text-sm text-light">Topic: {media.topic}</span>
+					<em>{media.outlet}</em>{#if media.program}, {media.program}{/if}.
+					{mediaDate.toLocaleDateString('en-GB', {
+						day: 'numeric',
+						month: 'long'
+					})}.
+					<span class="block text-sm text-light mt-1">Topic: {media.topic}</span>
 						{#if media.url}<a
 								href={media.url}
 								target="_blank"

@@ -17,12 +17,12 @@
 </script>
 
 <section class="mb-8">
-	<h3 class="text-2xl font-semibold mb-2 border-b border-light pb-1">Grants & Fellowships</h3>
+	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Grants & Fellowships</h3>
 	{#if grantsByDate.length > 0}
 		<div class="space-y-3">
 			{#each grantsByDate as grant (grant.id)}
 				<div class="flex gap-4">
-					<div class="font-semibold" style="min-width: 5rem;">{formatYearRange(grant.startYear, grant.endYear)}</div>
+					<div class="font-semibold text-nowrap w-20">{formatYearRange(grant.startYear, grant.endYear)}</div>
 					<div class="flex-1">
 						<span class="font-medium">{grant.title}</span>, <em>{grant.funder}</em>.
 						{#if grant.amount}

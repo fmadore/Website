@@ -20,11 +20,11 @@
 </script>
 
 <section class="mb-8">
-	<h3 class="text-2xl font-semibold mb-2 border-b border-light pb-1">Computer Skills</h3>
+	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Computer Skills</h3>
 	<div class="space-y-3">
 		{#each computerSkills as skill}
 			<div class="flex gap-4">
-				<div class="font-semibold" style="min-width: 15rem;">{skill.category}:</div>
+				<div class="font-semibold w-60">{skill.category}:</div>
 				<div class="flex-1">
 					{skill.skills}
 				</div>

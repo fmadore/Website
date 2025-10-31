@@ -3,7 +3,7 @@
 </script>
 
 <section class="mb-8">
-	<h3 class="text-2xl font-semibold mb-2 border-b border-light pb-1">Digital Humanities Projects</h3>
+	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Digital Humanities Projects</h3>
 	{#if allDhProjects.length > 0}
 		<div class="space-y-3">
 			{#each allDhProjects as project (project.id)}
