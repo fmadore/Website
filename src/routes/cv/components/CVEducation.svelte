@@ -31,30 +31,32 @@
 
 	{#if trainings.length > 0}
 		<h4 class="text-lg font-semibold mt-4 mb-2">Digital Humanities Trainings</h4>
-		<ul>
+		<div class="space-y-3">
 			{#each trainings as edu (edu.id)}
-				<li class="mb-3 ml-4">
-					<span class="font-medium">{edu.degree}</span> ({edu.year}).
-					<em>{edu.institution}</em>{#if edu.location}, {edu.location}{/if}.
-					{#if edu.details}
-						<p class="ml-4 text-sm">{edu.details}</p>{/if}
-				</li>
+				<div class="flex gap-4">
+					<div class="font-semibold text-nowrap">{edu.year}</div>
+					<div class="flex-1">
+						{edu.degree}.
+						{edu.institution}{#if edu.location}, {edu.location}{/if}{#if edu.details}, {edu.details}{/if}.
+					</div>
+				</div>
 			{/each}
-		</ul>
+		</div>
 	{/if}
 
 	{#if certificates.length > 0}
 		<h4 class="text-lg font-semibold mt-4 mb-2">Certificates</h4>
-		<ul>
+		<div class="space-y-3">
 			{#each certificates as edu (edu.id)}
-				<li class="mb-3 ml-4">
-					<span class="font-medium">{edu.degree}</span> ({edu.year}).
-					<em>{edu.institution}</em>{#if edu.location}, {edu.location}{/if}.
-					{#if edu.details}
-						<p class="ml-4 text-sm">{edu.details}</p>{/if}
-				</li>
+				<div class="flex gap-4">
+					<div class="font-semibold text-nowrap">{edu.year}</div>
+					<div class="flex-1">
+						{edu.degree}.
+						{edu.institution}{#if edu.location}, {edu.location}{/if}{#if edu.details}, {edu.details}{/if}.
+					</div>
+				</div>
 			{/each}
-		</ul>
+		</div>
 	{/if}
 
 	{#if otherEducation.length > 0}

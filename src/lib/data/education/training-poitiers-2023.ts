@@ -8,7 +8,7 @@ export const trainingPoitiers2023: Education = {
 	location: 'Poitiers, France',
 	year: 2023,
 	type: 'Training',
-	details: 'Dates: 23-27 January.',
+	details: '23-27 January',
 	dateISO: '2023-01-27' // Use end date for sorting
 };
 
