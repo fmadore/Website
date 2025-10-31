@@ -11,6 +11,7 @@
 	import CVEvents from './components/CVEvents.svelte';
 	import CVInvitedTalks from './components/CVInvitedTalks.svelte';
 	import CVMedia from './components/CVMedia.svelte';
+	import CVLanguages from './components/CVLanguages.svelte';
 	import CVService from './components/CVService.svelte';
 	import CVAffiliations from './components/CVAffiliations.svelte';
 	import CVFieldwork from './components/CVFieldwork.svelte';
@@ -37,6 +38,7 @@
 	<CVEvents />
 	<CVInvitedTalks />
 	<CVMedia />
+	<CVLanguages />
 	<CVService />
 	<CVAffiliations />
 	<CVFieldwork />

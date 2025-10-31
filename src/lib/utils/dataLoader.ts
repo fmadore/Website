@@ -17,6 +17,7 @@ import type { Award } from '$lib/types/award'; // <-- Import Award type
 import type { PeerReview } from '$lib/types/peer-review'; // <-- Import PeerReview type
 import type { MediaAppearance } from '$lib/types/media-appearance'; // <-- Import MediaAppearance type
 import type { EditorialMembership } from '$lib/types/editorial-membership'; // <-- Import EditorialMembership type
+import type { Language } from '$lib/types/language'; // <-- Import Language type
 
 // Define a generic type for the expected module structure
 type DataModule = Record<string, any>;
@@ -32,7 +33,8 @@ type DataItem =
 	| Award
 	| PeerReview
 	| MediaAppearance
-	| EditorialMembership; // <-- Add EditorialMembership to union
+	| EditorialMembership
+	| Language; // <-- Add Language to union
 
 /**
  * Loads and processes data modules based on a glob pattern, expecting each module

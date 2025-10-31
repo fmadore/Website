@@ -7,6 +7,7 @@ export * from './education';
 export * from './editorial-membership';
 export * from './fieldwork';
 export * from './grant';
+export * from './language';
 export * from './media-appearance';
 export * from './peer-review';
 export * from './utils';
