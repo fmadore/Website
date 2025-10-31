@@ -49,12 +49,4 @@
 	.cv-subtitle {
 		text-align: center;
 	}
-
-	/* Responsive layout for contact links */
-	@media (min-width: var(--breakpoint-md)) {
-		.cv-contact-links-wrapper {
-			margin-left: auto;
-			text-align: right;
-		}
-	}
 </style>
