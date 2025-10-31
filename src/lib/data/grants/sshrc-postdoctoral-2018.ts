@@ -4,7 +4,7 @@ import type { Grant } from '$lib/types';
 export const sshrcPostdoctoral2018: Grant = {
 	id: 'sshrc-postdoctoral-2018',
 	title: 'Canada Postdoctoral Research Award',
-	funder: 'Social Sciences and Humanities Research Council of Canada (SSHRC)',
+	funder: 'SSHRC',
 	startYear: 2018,
 	endYear: 2020,
 	dateRangeString: '2018-2020',
