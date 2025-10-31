@@ -41,9 +41,9 @@
 	<CVConferences />
 	<CVEvents />
 	<CVTeaching />
+	<CVService />
 	<CVMedia />
 	<CVLanguages />
-	<CVService />
 	<CVAffiliations />
 	<CVFieldwork />
 </div>
