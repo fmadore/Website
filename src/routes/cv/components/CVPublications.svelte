@@ -28,7 +28,7 @@
 						<div class="flex gap-4">
 							<div class="font-semibold text-nowrap">{pub.year}</div>
 							<div class="flex-1">
-								{#if formattedAuthors}{@html formattedAuthors}{#if pub.type === 'book' && pub.isEditedVolume}&nbsp;(eds.){/if}. {/if}
+								{#if formattedAuthors}{@html formattedAuthors}{#if (pub.type === 'book' && pub.isEditedVolume) || pub.type === 'special-issue'}&nbsp;(eds.){/if}. {/if}
 								{#if pub.type !== 'book'}"{pub.title}".{/if}
 								{#if pub.type === 'article' && pub.journal}
 									<em>{pub.journal}</em>{formatVolumeIssueDisplay(
@@ -43,7 +43,6 @@
 											pub.placeOfPublication || ''}{@const publisher =
 											pub.publisher || ''}{#if city && publisher}{city}: {publisher}{:else if city}{city}{:else if publisher}{publisher}{/if}.{:else}.{/if}
 								{:else if pub.type === 'special-issue' && pub.journal}
-									Guest Editor for Special Issue: "{pub.title}",
 									<em>{pub.journal}</em>{formatVolumeIssueDisplay(pub.volume, pub.issue)}.
 								{:else if pub.type === 'report'}
 									<em>{pub.title}</em>{#if pub.publisher}, {pub.publisher}{/if}.
