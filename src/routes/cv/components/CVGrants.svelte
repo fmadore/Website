@@ -24,10 +24,10 @@
 				<div class="flex gap-4">
 					<div class="font-semibold text-nowrap w-20">{formatYearRange(grant.startYear, grant.endYear)}</div>
 					<div class="flex-1">
-						<span class="font-medium">{grant.title}</span>, <em>{grant.funder}</em>.
+						<span class="font-medium">{grant.title}</span>, {grant.funder}.
 						{#if grant.amount}
 							<div class="text-sm text-light">
-								{grant.amount.toLocaleString('en-US')} {grant.currency}{#if grant.status && grant.status !== 'Awarded'}. [{grant.status}]{/if}
+								{grant.amount.toLocaleString('en-US')} {grant.currency}{#if grant.status && grant.status !== 'Awarded'}&nbsp;[{grant.status}]{/if}
 							</div>
 						{:else if grant.status && grant.status !== 'Awarded'}
 							<div class="text-sm text-light">
