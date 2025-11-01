@@ -104,6 +104,35 @@ export function formatVolumeIssueDisplay(
 }
 
 /**
+ * Formats a full date from ISO format (YYYY-MM-DD or YYYY-MM) for CV display
+ * Returns format like "15 April" or "April" if no day is available
+ */
+export function formatBlogDate(dateISO?: string): string {
+	if (!dateISO) return '';
+	
+	const months = [
+		'January', 'February', 'March', 'April', 'May', 'June',
+		'July', 'August', 'September', 'October', 'November', 'December'
+	];
+	
+	const parts = dateISO.split('-');
+	if (parts.length >= 2) {
+		const monthIndex = parseInt(parts[1], 10) - 1;
+		const month = months[monthIndex] || '';
+		
+		if (parts.length >= 3) {
+			// Has day
+			const day = parseInt(parts[2], 10);
+			return `${day} ${month}`;
+		}
+		// Month only
+		return month;
+	}
+	
+	return '';
+}
+
+/**
  * Formats an affiliation period (either YearRange or StartEnd format)
  */
 export function formatAffiliationPeriod(period: ProfessionalAffiliation['period']): string {

@@ -6,7 +6,8 @@
 		getPublicationTypeDisplayName,
 		formatVolumeIssueDisplay,
 		formatCVAuthorList,
-		formatEditorList
+		formatEditorList,
+		formatBlogDate
 	} from '../utils/cvFormatters';
 
 	// Group publications using the utility function
@@ -52,7 +53,7 @@
 								{:else if pub.type === 'encyclopedia' && pub.encyclopediaTitle}
 									In <em>{pub.encyclopediaTitle}</em>{#if pub.publisher}, {pub.publisher}{/if}.
 								{:else if pub.type === 'blogpost'}
-									"{pub.title}"{#if pub.publisher}. <em>{pub.publisher}</em>{/if}.
+									"{pub.title}"{#if pub.publisher}. <em>{pub.publisher}</em>{/if}{#if pub.dateISO}, {formatBlogDate(pub.dateISO)}{/if}.
 								{:else if pub.type === 'conference-proceedings'}
 									In <em>{pub.proceedingsTitle}</em>.
 								{:else}
