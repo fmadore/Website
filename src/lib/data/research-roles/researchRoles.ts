@@ -21,7 +21,7 @@ export const ciramCoordinator: ResearchRole = {
 	details: [
 		'Coordinated activities of the Centre Interdisciplinaire de Recherche sur l\'Afrique et le Moyen-Orient [Interdisciplinary Center for Research on Africa and the Middle East].',
 		'Drafted the application for the "Centre en émergence" [Emerging center] status for the CIRAM. The recognition was granted by the Vice-rectorat à la recherche [Vice-Rector for Research] in 2017.',
-		'Developed the digital presence of the research center (website, Facebook, Twitter, YouTube).'
+		'Developed the digital presence of the research centre (website, Facebook, Twitter, YouTube).'
 	]
 };
 
