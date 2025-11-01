@@ -9,6 +9,7 @@ export const faithBasedStudentOrganizations: Communication = {
 	dateISO: '2023-06-02',
 	year: 2023,
 	conference: '9th European Conference on African Studies (ECAS)',
+	panelTitle: "Training for good life or a good society? Religious students' individual and collective aspirations in public universities in sub-Saharan Africa",
 	location: 'University of Cologne',
 	country: 'Germany',
 	type: 'conference',
@@ -18,7 +19,7 @@ export const faithBasedStudentOrganizations: Communication = {
 	tags: ['ECAS', 'Religious Activism', 'Student Organizations', 'Togo', 'Benin', 'Youth'],
 	image: 'images/communications/ecas-2023.webp',
 	heroImage: {
-		src: 'images/communications/ecas-2025-hero.webp',
+		src: 'images/communications/ecas-2023-hero.webp',
 		alt: '9th European Conference on African Studies (ECAS)'
 	},
 	coordinates: {
