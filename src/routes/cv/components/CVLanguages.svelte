@@ -8,8 +8,8 @@
 		<div class="space-y-3">
 			{#each languagesByProficiency as language (language.id)}
 				<div class="flex gap-4">
-					<div class="w-80">{language.name}</div>
-					<div class="font-semibold">{language.proficiency}</div>
+					<div class="font-medium flex-1">{language.name}</div>
+					<div class="text-light">{language.proficiency}</div>
 				</div>
 			{/each}
 		</div>
