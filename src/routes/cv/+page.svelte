@@ -1,24 +1,59 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import SEO from '$lib/SEO.svelte';
 	import PdfGenerator from '$lib/components/cv/PdfGenerator.svelte';
 	import CVHeader from './components/CVHeader.svelte';
 	import CVEducation from './components/CVEducation.svelte';
 	import CVAppointments from './components/CVAppointments.svelte';
 	import CVPublications from './components/CVPublications.svelte';
-	import CVGrants from './components/CVGrants.svelte';
-	import CVAwards from './components/CVAwards.svelte';
-	import CVDigitalHumanities from './components/CVDigitalHumanities.svelte';
-	import CVConferences from './components/CVConferences.svelte';
-	import CVEvents from './components/CVEvents.svelte';
-	import CVTeaching from './components/CVTeaching.svelte';
-	import CVConsulting from './components/CVConsulting.svelte';
-	import CVInvitedTalks from './components/CVInvitedTalks.svelte';
-	import CVMedia from './components/CVMedia.svelte';
-	import CVLanguages from './components/CVLanguages.svelte';
-	import CVService from './components/CVService.svelte';
-	import CVAffiliations from './components/CVAffiliations.svelte';
-	import CVComputerSkills from './components/CVComputerSkills.svelte';
-	import CVResearchExperience from './components/CVResearchExperience.svelte';
+
+	// Lazy load components below the fold using $state
+	let CVGrants = $state<any>();
+	let CVAwards = $state<any>();
+	let CVDigitalHumanities = $state<any>();
+	let CVConferences = $state<any>();
+	let CVEvents = $state<any>();
+	let CVTeaching = $state<any>();
+	let CVConsulting = $state<any>();
+	let CVInvitedTalks = $state<any>();
+	let CVMedia = $state<any>();
+	let CVLanguages = $state<any>();
+	let CVService = $state<any>();
+	let CVAffiliations = $state<any>();
+	let CVComputerSkills = $state<any>();
+	let CVResearchExperience = $state<any>();
+
+	onMount(() => {
+		// Use requestIdleCallback if available, otherwise setTimeout
+		const loadComponents = () => {
+			Promise.all([
+				import('./components/CVGrants.svelte').then((m) => (CVGrants = m.default)),
+				import('./components/CVAwards.svelte').then((m) => (CVAwards = m.default)),
+				import('./components/CVDigitalHumanities.svelte').then(
+					(m) => (CVDigitalHumanities = m.default)
+				),
+				import('./components/CVConferences.svelte').then((m) => (CVConferences = m.default)),
+				import('./components/CVEvents.svelte').then((m) => (CVEvents = m.default)),
+				import('./components/CVTeaching.svelte').then((m) => (CVTeaching = m.default)),
+				import('./components/CVConsulting.svelte').then((m) => (CVConsulting = m.default)),
+				import('./components/CVInvitedTalks.svelte').then((m) => (CVInvitedTalks = m.default)),
+				import('./components/CVMedia.svelte').then((m) => (CVMedia = m.default)),
+				import('./components/CVLanguages.svelte').then((m) => (CVLanguages = m.default)),
+				import('./components/CVService.svelte').then((m) => (CVService = m.default)),
+				import('./components/CVAffiliations.svelte').then((m) => (CVAffiliations = m.default)),
+				import('./components/CVComputerSkills.svelte').then((m) => (CVComputerSkills = m.default)),
+				import('./components/CVResearchExperience.svelte').then(
+					(m) => (CVResearchExperience = m.default)
+				)
+			]);
+		};
+
+		if ('requestIdleCallback' in window) {
+			(window as any).requestIdleCallback(loadComponents, { timeout: 2000 });
+		} else {
+			setTimeout(loadComponents, 1);
+		}
+	});
 </script>
 
 <SEO
@@ -42,48 +77,76 @@
 	<div class="cv-section-wrapper">
 		<CVPublications />
 	</div>
-	<div class="cv-section-wrapper">
-		<CVGrants />
-	</div>
-	<div class="cv-section-wrapper">
-		<CVAwards />
-	</div>
-	<div class="cv-section-wrapper">
-		<CVDigitalHumanities />
-	</div>
-	<div class="cv-section-wrapper">
-		<CVInvitedTalks />
-	</div>
-	<div class="cv-section-wrapper">
-		<CVConferences />
-	</div>
-	<div class="cv-section-wrapper">
-		<CVEvents />
-	</div>
-	<div class="cv-section-wrapper">
-		<CVTeaching />
-	</div>
-	<div class="cv-section-wrapper">
-		<CVResearchExperience />
-	</div>
-	<div class="cv-section-wrapper">
-		<CVService />
-	</div>
-	<div class="cv-section-wrapper">
-		<CVConsulting />
-	</div>
-	<div class="cv-section-wrapper">
-		<CVMedia />
-	</div>
-	<div class="cv-section-wrapper">
-		<CVLanguages />
-	</div>
-	<div class="cv-section-wrapper">
-		<CVAffiliations />
-	</div>
-	<div class="cv-section-wrapper">
-		<CVComputerSkills />
-	</div>
+	{#if CVGrants}
+		<div class="cv-section-wrapper">
+			<CVGrants />
+		</div>
+	{/if}
+	{#if CVAwards}
+		<div class="cv-section-wrapper">
+			<CVAwards />
+		</div>
+	{/if}
+	{#if CVDigitalHumanities}
+		<div class="cv-section-wrapper">
+			<CVDigitalHumanities />
+		</div>
+	{/if}
+	{#if CVInvitedTalks}
+		<div class="cv-section-wrapper">
+			<CVInvitedTalks />
+		</div>
+	{/if}
+	{#if CVConferences}
+		<div class="cv-section-wrapper">
+			<CVConferences />
+		</div>
+	{/if}
+	{#if CVEvents}
+		<div class="cv-section-wrapper">
+			<CVEvents />
+		</div>
+	{/if}
+	{#if CVTeaching}
+		<div class="cv-section-wrapper">
+			<CVTeaching />
+		</div>
+	{/if}
+	{#if CVResearchExperience}
+		<div class="cv-section-wrapper">
+			<CVResearchExperience />
+		</div>
+	{/if}
+	{#if CVService}
+		<div class="cv-section-wrapper">
+			<CVService />
+		</div>
+	{/if}
+	{#if CVConsulting}
+		<div class="cv-section-wrapper">
+			<CVConsulting />
+		</div>
+	{/if}
+	{#if CVMedia}
+		<div class="cv-section-wrapper">
+			<CVMedia />
+		</div>
+	{/if}
+	{#if CVLanguages}
+		<div class="cv-section-wrapper">
+			<CVLanguages />
+		</div>
+	{/if}
+	{#if CVAffiliations}
+		<div class="cv-section-wrapper">
+			<CVAffiliations />
+		</div>
+	{/if}
+	{#if CVComputerSkills}
+		<div class="cv-section-wrapper">
+			<CVComputerSkills />
+		</div>
+	{/if}
 </div>
 
 <style>
