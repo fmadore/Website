@@ -18,7 +18,7 @@
 	);
 </script>
 
-<section class="mb-8">
+<section>
 	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Publications</h3>
 	{#if filteredPublicationsByDate.length > 0}
 		{#each presentPublicationTypes as pubType (pubType)}

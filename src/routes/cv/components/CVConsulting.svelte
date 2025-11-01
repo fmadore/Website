@@ -10,7 +10,7 @@
 	];
 </script>
 
-<section class="mb-8">
+<section>
 	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Consulting and Legal Expertise</h3>
 	<div class="space-y-3">
 		{#each consulting as item}

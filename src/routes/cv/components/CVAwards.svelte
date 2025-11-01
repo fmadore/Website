@@ -2,7 +2,7 @@
 	import { awardsByDate } from '$lib/data/awards';
 </script>
 
-<section class="mb-8">
+<section>
 	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Awards & Honors</h3>
 	{#if awardsByDate.length > 0}
 		<div class="space-y-3">

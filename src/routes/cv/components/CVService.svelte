@@ -11,7 +11,7 @@
 	);
 </script>
 
-<section class="mb-8">
+<section>
 	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Service to Profession</h3>
 
 	<!-- Editorial Board Memberships Section -->

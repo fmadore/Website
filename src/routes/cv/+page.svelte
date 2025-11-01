@@ -101,10 +101,15 @@
 			rgba(var(--color-highlight-rgb), 0.01) 100%
 		);
 		border-radius: var(--border-radius-lg);
-		padding: var(--spacing-6);
-		margin-bottom: var(--spacing-6);
+		padding: var(--spacing-4);
+		margin-bottom: var(--spacing-4);
 		border: 1px solid rgba(255, 255, 255, 0.1);
 		transition: all var(--transition-duration-200) ease;
+	}
+
+	/* Remove bottom margin from sections inside wrappers */
+	:global(.cv-section-wrapper > section) {
+		margin-bottom: 0;
 	}
 
 	:global(.cv-section-wrapper:hover) {
@@ -121,8 +126,8 @@
 	:global(#cv-content h3) {
 		color: var(--color-primary);
 		border-color: rgba(var(--color-primary-rgb), 0.3);
-		padding-bottom: var(--spacing-3);
-		margin-bottom: var(--spacing-4);
+		padding-bottom: var(--spacing-2);
+		margin-bottom: var(--spacing-3);
 		position: relative;
 	}
 
@@ -140,13 +145,13 @@
 	/* Subsection headings */
 	:global(#cv-content h4) {
 		color: var(--color-text-emphasis);
-		margin-top: var(--spacing-6);
-		margin-bottom: var(--spacing-3);
+		margin-top: var(--spacing-4);
+		margin-bottom: var(--spacing-2);
 	}
 
 	/* Entry items with hover effect */
 	:global(#cv-content .space-y-3 > div) {
-		padding: var(--spacing-3);
+		padding: var(--spacing-2);
 		border-radius: var(--border-radius-md);
 		transition: all var(--transition-duration-150) ease;
 	}
@@ -160,6 +165,11 @@
 	:global(#cv-content .font-semibold.text-nowrap) {
 		color: var(--color-primary);
 		font-weight: var(--font-weight-semibold);
+	}
+
+	/* Reduce spacing between items in lists - override space-y-3 utility */
+	:global(.space-y-3 > * + *) {
+		margin-top: var(--spacing-2) !important;
 	}
 
 	/* Links styling */

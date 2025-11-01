@@ -33,7 +33,7 @@
 	});
 </script>
 
-<section class="mb-8">
+<section>
 	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Teaching Experience</h3>
 	{#if sortedTeaching.length > 0}
 		<h4 class="text-lg font-semibold mt-4 mb-2">Instructor</h4>
