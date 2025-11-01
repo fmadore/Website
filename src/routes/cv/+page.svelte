@@ -23,37 +23,77 @@
 	let CVComputerSkills = $state<any>();
 	let CVResearchExperience = $state<any>();
 
+	let lazyLoadTrigger: HTMLDivElement;
+	let componentsStartedLoading = $state(false);
+
 	onMount(() => {
-		// Use requestIdleCallback if available, otherwise setTimeout
-		const loadComponents = () => {
+		// Use Intersection Observer to trigger loading when user scrolls near the lazy content
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (entries[0].isIntersecting && !componentsStartedLoading) {
+					componentsStartedLoading = true;
+					loadComponents();
+				}
+			},
+			{
+				// Start loading when the trigger is 400px from entering the viewport
+				rootMargin: '400px'
+			}
+		);
+
+		if (lazyLoadTrigger) {
+			observer.observe(lazyLoadTrigger);
+		}
+
+		return () => {
+			observer.disconnect();
+		};
+	});
+
+	function loadComponents() {
+		// Load components in batches to avoid overwhelming the browser
+		// Batch 1: Most important sections
+		setTimeout(() => {
 			Promise.all([
 				import('./components/CVGrants.svelte').then((m) => (CVGrants = m.default)),
 				import('./components/CVAwards.svelte').then((m) => (CVAwards = m.default)),
 				import('./components/CVDigitalHumanities.svelte').then(
 					(m) => (CVDigitalHumanities = m.default)
-				),
-				import('./components/CVConferences.svelte').then((m) => (CVConferences = m.default)),
-				import('./components/CVEvents.svelte').then((m) => (CVEvents = m.default)),
-				import('./components/CVTeaching.svelte').then((m) => (CVTeaching = m.default)),
-				import('./components/CVConsulting.svelte').then((m) => (CVConsulting = m.default)),
-				import('./components/CVInvitedTalks.svelte').then((m) => (CVInvitedTalks = m.default)),
-				import('./components/CVMedia.svelte').then((m) => (CVMedia = m.default)),
-				import('./components/CVLanguages.svelte').then((m) => (CVLanguages = m.default)),
-				import('./components/CVService.svelte').then((m) => (CVService = m.default)),
-				import('./components/CVAffiliations.svelte').then((m) => (CVAffiliations = m.default)),
-				import('./components/CVComputerSkills.svelte').then((m) => (CVComputerSkills = m.default)),
-				import('./components/CVResearchExperience.svelte').then(
-					(m) => (CVResearchExperience = m.default)
 				)
 			]);
-		};
+		}, 100);
 
-		if ('requestIdleCallback' in window) {
-			(window as any).requestIdleCallback(loadComponents, { timeout: 2000 });
-		} else {
-			setTimeout(loadComponents, 1);
-		}
-	});
+		// Batch 2: Conference and talks
+		setTimeout(() => {
+			Promise.all([
+				import('./components/CVInvitedTalks.svelte').then((m) => (CVInvitedTalks = m.default)),
+				import('./components/CVConferences.svelte').then((m) => (CVConferences = m.default)),
+				import('./components/CVEvents.svelte').then((m) => (CVEvents = m.default))
+			]);
+		}, 200);
+
+		// Batch 3: Experience sections
+		setTimeout(() => {
+			Promise.all([
+				import('./components/CVTeaching.svelte').then((m) => (CVTeaching = m.default)),
+				import('./components/CVResearchExperience.svelte').then(
+					(m) => (CVResearchExperience = m.default)
+				),
+				import('./components/CVService.svelte').then((m) => (CVService = m.default))
+			]);
+		}, 300);
+
+		// Batch 4: Final sections
+		setTimeout(() => {
+			Promise.all([
+				import('./components/CVConsulting.svelte').then((m) => (CVConsulting = m.default)),
+				import('./components/CVMedia.svelte').then((m) => (CVMedia = m.default)),
+				import('./components/CVLanguages.svelte').then((m) => (CVLanguages = m.default)),
+				import('./components/CVAffiliations.svelte').then((m) => (CVAffiliations = m.default)),
+				import('./components/CVComputerSkills.svelte').then((m) => (CVComputerSkills = m.default))
+			]);
+		}, 400);
+	}
 </script>
 
 <SEO
@@ -77,6 +117,15 @@
 	<div class="cv-section-wrapper">
 		<CVPublications />
 	</div>
+	
+	<!-- Intersection Observer trigger - starts loading when user scrolls near here -->
+	<div bind:this={lazyLoadTrigger} style="height: 1px;"></div>
+	
+	<!-- Show minimal placeholders while loading to prevent layout shift -->
+	{#if !componentsStartedLoading}
+		<div class="cv-section-placeholder"></div>
+	{/if}
+	
 	{#if CVGrants}
 		<div class="cv-section-wrapper">
 			<CVGrants />
@@ -244,6 +293,12 @@
 	:global(#cv-content a:hover) {
 		color: var(--color-accent);
 		text-decoration: underline;
+	}
+
+	/* Placeholder for lazy loading */
+	.cv-section-placeholder {
+		min-height: 100px;
+		opacity: 0;
 	}
 
 	/* Print styles */

@@ -43,11 +43,6 @@ export default defineConfig({
 					if (id.includes('node_modules')) {
 						return 'vendor';
 					}
-					
-					// Data files - keep separate for caching
-					if (id.includes('/data/publications/') || id.includes('/data/communications/')) {
-						return 'data';
-					}
 				}
 			}
 		}
