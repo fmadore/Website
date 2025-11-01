@@ -141,7 +141,12 @@ export const load: PageLoad = ({ params }) => {
 			resolvedType = 'Book';
 			break;
 		case 'articles':
-			resolvedType = 'ScholarlyArticle';
+			// Check if it's a bulletin-article type
+			if (publication.type === 'bulletin-article') {
+				resolvedType = 'Article';
+			} else {
+				resolvedType = 'ScholarlyArticle';
+			}
 			break;
 		case 'chapters':
 			resolvedType = 'Article';

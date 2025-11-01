@@ -33,7 +33,8 @@ export type Publication = {
 		| 'blogpost'
 		| 'phd-dissertation'
 		| 'masters-thesis'
-		| 'conference-proceedings'; // Publication type for faceting
+		| 'conference-proceedings'
+		| 'bulletin-article'; // Publication type for faceting
 	title: string; // Publication title
 	authors: string[]; // Array of authors
 	date: string; // Display date (e.g., "2025")

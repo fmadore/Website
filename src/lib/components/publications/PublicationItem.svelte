@@ -38,6 +38,7 @@
 		if (
 			type === 'book' ||
 			type === 'article' ||
+			type === 'bulletin-article' ||
 			type === 'chapter' ||
 			type === 'encyclopedia' ||
 			type === 'report' ||

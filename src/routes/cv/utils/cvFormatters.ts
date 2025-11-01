@@ -75,6 +75,8 @@ export function getPublicationTypeDisplayName(type: Publication['type']): string
 			return 'Report';
 		case 'encyclopedia':
 			return 'Encyclopedia Entry';
+		case 'bulletin-article':
+			return 'Bulletin Articles';
 		case 'blogpost':
 			return 'Blog Posts';
 		case 'conference-proceedings':
@@ -137,6 +139,7 @@ export function groupPublicationsByType(publications: Publication[]) {
 		'chapter',
 		'report',
 		'encyclopedia',
+		'bulletin-article',
 		'blogpost',
 		'conference-proceedings'
 	];

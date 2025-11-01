@@ -4,6 +4,7 @@ import type { Publication } from '$lib/types/publication'; // Assuming this path
 export const typeLabels: { [key: string]: string } = {
 	book: 'Book',
 	article: 'Journal Article',
+	'bulletin-article': 'Bulletin Article',
 	chapter: 'Book Chapter',
 	'special-issue': 'Special Issue',
 	report: 'Report',
@@ -129,7 +130,7 @@ export function formatCitation(publication: Publication): FormattedCitation {
 		}
 		detailsHtml = details;
 		year = publication.year;
-	} else if (type === 'article') {
+	} else if (type === 'article' || type === 'bulletin-article') {
 		let details = '';
 		if (publication.journal) details += `<em>${publication.journal}</em>`;
 		if (publication.volume) details += ` ${publication.volume}`; // Space before volume

@@ -8,6 +8,7 @@ const templateIds = [
 	'book-template-id',
 	'edited-volume-template-id',
 	'article-template-id',
+	'bulletin-article-template-id',
 	'chapter-template-id',
 	'special-issue-template-id',
 	'report-template-id',

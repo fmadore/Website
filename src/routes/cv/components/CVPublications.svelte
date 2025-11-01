@@ -31,7 +31,7 @@
 							<div class="flex-1">
 								{#if formattedAuthors}{@html formattedAuthors}{#if (pub.type === 'book' && pub.isEditedVolume) || pub.type === 'special-issue'}&nbsp;(eds.),{:else}.{/if} {/if}
 								{#if pub.type !== 'book' && pub.type !== 'blogpost'}"{pub.title}".{/if}
-								{#if pub.type === 'article' && pub.journal}
+								{#if (pub.type === 'article' || pub.type === 'bulletin-article') && pub.journal}
 									<em>{pub.journal}</em>{formatVolumeIssueDisplay(
 										pub.volume,
 										pub.issue
