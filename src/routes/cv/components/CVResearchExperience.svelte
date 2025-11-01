@@ -74,7 +74,13 @@
 					</div>
 					<div class="flex-1">
 						<span class="font-medium">{role.title}</span>, {role.institution}.
-						<p class="text-sm mt-1">{role.details}</p>
+						{#if Array.isArray(role.details)}
+							{#each role.details as detail}
+								<p class="text-sm mt-1">{detail}</p>
+							{/each}
+						{:else}
+							<p class="text-sm mt-1">{role.details}</p>
+						{/if}
 					</div>
 				</div>
 			{/each}

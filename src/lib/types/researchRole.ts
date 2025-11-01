@@ -4,5 +4,5 @@ export interface ResearchRole {
 	institution: string;
 	startYear: number;
 	endYear?: number | null;
-	details: string;
+	details: string | string[];
 }
