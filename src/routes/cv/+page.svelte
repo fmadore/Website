@@ -18,7 +18,7 @@
 	import CVService from './components/CVService.svelte';
 	import CVAffiliations from './components/CVAffiliations.svelte';
 	import CVComputerSkills from './components/CVComputerSkills.svelte';
-	import CVFieldwork from './components/CVFieldwork.svelte';
+	import CVResearchExperience from './components/CVResearchExperience.svelte';
 </script>
 
 <SEO
@@ -43,7 +43,7 @@
 	<CVConferences />
 	<CVEvents />
 	<CVTeaching />
-	<CVFieldwork />
+	<CVResearchExperience />
 	<CVService />
 	<CVConsulting />
 	<CVMedia />
