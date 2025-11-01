@@ -19,6 +19,20 @@
 								class="ml-1 text-primary hover:underline text-sm">[Link]</a
 							>
 						{/if}
+						{#if project.reviews && project.reviews.length > 0}
+							<div class="mt-2 ml-4 text-sm">
+								{project.reviews.length === 1 ? 'Review:' : 'Reviews:'}
+								{#each project.reviews as review, i}
+									<a
+										href={review.url}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="text-primary hover:underline"
+										>{@html review.text}</a
+									>{#if i < project.reviews.length - 1}; {' '}{/if}
+								{/each}
+							</div>
+						{/if}
 					</div>
 				</div>
 			{/each}
