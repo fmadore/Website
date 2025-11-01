@@ -13,7 +13,7 @@
 				<div>
 					<span class="font-medium">{aff.name}</span>{#if aff.abbreviation}<span
 							>&nbsp;({aff.abbreviation})</span
-						>{/if}{#if aff.parentOrganization}<span>,&nbsp;<em>{aff.parentOrganization}</em></span
+						>{/if}{#if aff.parentOrganization}<span>,&nbsp;{aff.parentOrganization}</span
 						>{/if}.
 					<span class="block ml-4 text-sm text-light">{formatAffiliationPeriod(aff.period)}</span>
 					{#if aff.roles && aff.roles.length > 0}
