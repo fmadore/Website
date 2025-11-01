@@ -3,67 +3,66 @@
 
 	let showUpdatePrompt = $state(false);
 	let updateAvailable = $state(false);
-	let registration: ServiceWorkerRegistration | null = null;
+	let registration = $state<ServiceWorkerRegistration | null>(null);
 
 	// Register service worker and handle updates (only in production)
 	$effect(() => {
-		if (browser) {
-			if (!dev) {
-				registerServiceWorker();
-			} else {
-				// In dev mode, unregister any existing service workers
-				unregisterServiceWorkers();
-			}
+		if (!browser) return;
+
+		if (!dev) {
+			registerServiceWorker();
+		} else {
+			// In dev mode, unregister any existing service workers
+			unregisterServiceWorkers();
 		}
 	});
 
 	async function unregisterServiceWorkers() {
 		if ('serviceWorker' in navigator) {
 			const registrations = await navigator.serviceWorker.getRegistrations();
-			for (const registration of registrations) {
-				await registration.unregister();
+			for (const reg of registrations) {
+				await reg.unregister();
 				console.log('[PWA] Service Worker unregistered (dev mode)');
 			}
 		}
 	}
 
 	async function registerServiceWorker() {
-		if ('serviceWorker' in navigator) {
-			try {
-				registration = await navigator.serviceWorker.register('/service-worker.js');
+		if (!('serviceWorker' in navigator)) return;
 
-				// Check for updates
-				registration.addEventListener('updatefound', () => {
-					const newWorker = registration?.installing;
-					if (newWorker) {
-						newWorker.addEventListener('statechange', () => {
-							if (newWorker.state === 'installed') {
-								if (navigator.serviceWorker.controller) {
-									// New version available
-									updateAvailable = true;
-									showUpdatePrompt = true;
-								}
-							}
-						});
+		try {
+			const reg = await navigator.serviceWorker.register('/service-worker.js');
+			registration = reg;
+
+			// Check for updates
+			reg.addEventListener('updatefound', () => {
+				const newWorker = reg.installing;
+				if (!newWorker) return;
+
+				newWorker.addEventListener('statechange', () => {
+					if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+						// New version available
+						updateAvailable = true;
+						showUpdatePrompt = true;
 					}
 				});
+			});
 
-				// Handle controller change (new SW took control)
-				navigator.serviceWorker.addEventListener('controllerchange', () => {
-					// Reload to get the new version
-					window.location.reload();
-				});
+			// Handle controller change (new SW took control)
+			navigator.serviceWorker.addEventListener('controllerchange', () => {
+				// Reload to get the new version
+				window.location.reload();
+			});
 
-				// Check for waiting service worker
-				if (registration.waiting) {
-					updateAvailable = true;
-					showUpdatePrompt = true;
-				}
-
-				console.log('[PWA] Service Worker registered');
-			} catch (error) {
-				console.warn('[PWA] Service Worker registration failed:', error);
+			// Check for waiting service worker
+			if (reg.waiting) {
+				updateAvailable = true;
+				showUpdatePrompt = true;
 			}
+
+			console.log('[PWA] Service Worker registered');
+		} catch (error) {
+			console.warn('[PWA] Service Worker registration failed:', error);
 		}
 	}
 
@@ -81,13 +80,19 @@
 
 	// Listen for skip waiting message from service worker (only in production)
 	$effect(() => {
-		if (browser && !dev && 'serviceWorker' in navigator) {
-			navigator.serviceWorker.addEventListener('message', (event) => {
-				if (event.data?.type === 'SKIP_WAITING') {
-					updateApp();
-				}
-			});
-		}
+		if (!browser || dev || !('serviceWorker' in navigator)) return;
+
+		const handleMessage = (event: MessageEvent) => {
+			if (event.data?.type === 'SKIP_WAITING') {
+				updateApp();
+			}
+		};
+
+		navigator.serviceWorker.addEventListener('message', handleMessage);
+
+		return () => {
+			navigator.serviceWorker.removeEventListener('message', handleMessage);
+		};
 	});
 </script>
 
@@ -125,15 +130,15 @@
 <style>
 	.pwa-update-prompt {
 		position: fixed;
-		bottom: var(--space-md);
-		left: var(--space-md);
-		right: var(--space-md);
+		bottom: var(--space-lg);
+		left: var(--space-lg);
+		right: var(--space-lg);
 		max-width: 400px;
 		margin: 0 auto;
-		background: var(--color-white);
+		background: var(--color-surface-elevated);
 		border-radius: var(--border-radius-xl);
 		box-shadow: var(--shadow-xl);
-		border: var(--border-width-thin) solid rgba(var(--color-black-rgb), var(--opacity-10));
+		border: 1px solid var(--color-border);
 		z-index: var(--z-modal);
 		animation: slideUp var(--anim-duration-base) var(--anim-ease-out);
 	}
@@ -222,37 +227,27 @@
 		color: var(--color-text-light);
 	}
 
-	/* Dark mode support */
-	@media (prefers-color-scheme: dark) {
+	/* Reduced motion support */
+	@media (prefers-reduced-motion: reduce) {
 		.pwa-update-prompt {
-			background: var(--color-dark-surface);
-			border-color: var(--color-dark-border);
+			animation: none;
 		}
 
-		.update-text h3 {
-			color: var(--color-dark-text-emphasis);
+		.update-icon {
+			animation: none;
 		}
 
-		.update-text p {
-			color: var(--color-dark-text-muted);
-		}
-
-		.update-btn.secondary {
-			background: var(--color-dark-surface-alt);
-			color: var(--color-dark-text-muted);
-		}
-
-		.update-btn.secondary:hover {
-			background: var(--color-dark-surface-elevated);
-			color: var(--color-dark-text);
+		.update-btn:hover {
+			transform: none;
 		}
 	}
 
 	/* Mobile responsive */
-	@media (max-width: var(--breakpoint-sm)) {
+	@media (max-width: 640px) {
 		.pwa-update-prompt {
-			left: var(--space-xs);
-			right: var(--space-xs);
+			bottom: var(--space-md);
+			left: var(--space-md);
+			right: var(--space-md);
 		}
 
 		.update-content {
