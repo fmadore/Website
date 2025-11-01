@@ -1,5 +1,28 @@
 <script lang="ts">
 	import { allDhProjects } from '$lib/data/digital-humanities';
+
+	// Format year range for display (e.g., "2018-23" or "2023-")
+	function formatYearRange(years: string): string {
+		// Handle ranges like "2018-2023" or ongoing ranges like "2023-"
+		if (years.includes('-')) {
+			const [start, end] = years.split('-');
+			if (!end || end === '') {
+				// Ongoing project
+				return `${start}-`;
+			}
+			// Parse years
+			const startYear = parseInt(start);
+			const endYear = parseInt(end);
+			// Compact format: use last 2 digits of end year if in same century
+			const startCentury = Math.floor(startYear / 100);
+			const endCentury = Math.floor(endYear / 100);
+			if (startCentury === endCentury) {
+				return `${startYear}-${endYear.toString().slice(-2)}`;
+			}
+			return `${startYear}-${endYear}`;
+		}
+		return years;
+	}
 </script>
 
 <section class="mb-8">
@@ -8,7 +31,7 @@
 		<div class="space-y-3">
 			{#each allDhProjects as project (project.id)}
 				<div class="flex gap-4">
-					<div class="font-semibold text-nowrap">{project.years}</div>
+					<div class="font-semibold text-nowrap">{formatYearRange(project.years)}</div>
 					<div class="flex-1">
 						<span class="font-medium">{project.title}</span>. {project.shortDescription}
 						{#if project.linkUrl}
