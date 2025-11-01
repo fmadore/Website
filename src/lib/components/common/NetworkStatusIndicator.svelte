@@ -83,13 +83,13 @@
 	.network-status-indicator.offline {
 		background: rgba(var(--color-danger-rgb), var(--opacity-95));
 		color: var(--color-white);
-		border: var(--border-width-thin) solid rgba(var(--color-danger-rgb), var(--opacity-30));
+		border: 1px solid rgba(var(--color-danger-rgb), var(--opacity-30));
 	}
 
 	.network-status-indicator.online {
 		background: rgba(var(--color-success-rgb), var(--opacity-95));
 		color: var(--color-white);
-		border: var(--border-width-thin) solid rgba(var(--color-success-rgb), var(--opacity-30));
+		border: 1px solid rgba(var(--color-success-rgb), var(--opacity-30));
 	}
 
 	@keyframes slideIn {
@@ -152,7 +152,7 @@
 	}
 
 	/* Mobile responsive */
-	@media (max-width: var(--breakpoint-sm)) {
+	@media (max-width: 640px) {
 		.network-status-indicator {
 			left: var(--space-xs);
 			right: var(--space-xs);
