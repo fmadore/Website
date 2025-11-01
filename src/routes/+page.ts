@@ -100,7 +100,6 @@ export const load: PageLoad = () => {
 			'https://github.com/fmadore',
 			'https://orcid.org/0000-0003-0959-2092',
 			'https://bsky.app/profile/fmadore.bsky.social',
-			'https://hcommons.social/@fmadore', // Mastodon
 			'https://scholar.google.com/citations?user=naUK0RQAAAAJ&',
 			'https://www.researchgate.net/profile/Frederick-Madore',
 			'https://hcommons.org/members/fmadore/', // Knowledge Commons

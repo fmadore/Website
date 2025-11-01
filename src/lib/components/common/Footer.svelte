@@ -43,8 +43,7 @@
 					name: 'Bluesky',
 					icon: 'simple-icons:bluesky',
 					url: 'https://bsky.app/profile/fmadore.bsky.social'
-				},
-				{ name: 'Mastodon', icon: 'simple-icons:mastodon', url: 'https://hcommons.social/@fmadore' }
+				}
 			]
 		}
 	];
