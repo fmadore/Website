@@ -9,6 +9,7 @@ export const collectionIslamHumanites: Communication = {
 	dateISO: '2024-06-28',
 	year: 2024,
 	conference: '12th International Conference on Mande Studies',
+	panelTitle: "Décoloniser l'organisation et les systèmes de connaissance",
 	location: 'Institut des Sciences Humaines',
 	country: 'Mali',
 	type: 'conference',
