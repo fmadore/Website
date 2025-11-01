@@ -9,12 +9,12 @@
 	});
 </script>
 
-<h1 class="text-3xl font-bold mb-2 border-b pb-2 cv-main-title">Curriculum Vitae</h1>
-<h2 class="text-xl font-semibold mb-1 cv-subtitle">Frédérick Madore</h2>
-<p class="text-sm text-light mb-4 cv-date">{today}</p>
+<h1 class="text-3xl font-bold mb-2 border-b-2 pb-2 cv-main-title border-primary">Curriculum Vitae</h1>
+<h2 class="text-xl font-semibold mb-1 cv-subtitle text-primary">Frédérick Madore</h2>
+<p class="text-sm text-muted mb-4 cv-date">{today}</p>
 
 <!-- Contact Info Section -->
-<section class="mb-6 text-sm text-light cv-contact-section">
+<section class="mb-8 text-sm text-light cv-contact-section">
 	<!-- Address -->
 	<div class="cv-contact-group">
 		<Icon icon="mdi:map-marker" class="text-light shrink-0" width="20" height="20" />

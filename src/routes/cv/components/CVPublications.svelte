@@ -66,11 +66,11 @@
 										href="https://doi.org/{pub.doi}"
 										target="_blank"
 										rel="noopener noreferrer"
-										class="ml-2 inline-flex items-center align-middle"
+										class="doi-link"
 										><img
 											src="https://zenodo.org/badge/DOI/{pub.doi}.svg"
 											alt="DOI: {pub.doi}"
-											class="h-5"
+											class="doi-badge-img"
 											onerror={(e) => {
 												const img = e.currentTarget as HTMLImageElement;
 												img.style.display = 'none';
@@ -79,10 +79,7 @@
 													fallback.style.display = 'inline-flex';
 												}
 											}}
-										/><span
-											class="px-2 py-0.5 text-xs font-medium text-white bg-primary rounded items-center"
-											style="display:none;">DOI: {pub.doi}</span
-										></a
+										/><span class="doi-badge-fallback">DOI: {pub.doi}</span></a
 									>{/if}
 								{#if pub.url && !pub.doi}<a
 										href={pub.url}
@@ -124,7 +121,7 @@
 							<div class="flex-1">
 								<!-- Simplified display for other types -->
 								<span class="font-medium">{pub.title}</span>.
-								{#if pub.type}<span class="text-sm bg-border px-1 rounded">{pub.type}</span>{/if}
+								{#if pub.type}<span class="pub-type-badge">{pub.type}</span>{/if}
 								{#if pub.url}<a
 										href={pub.url}
 										target="_blank"
@@ -141,3 +138,33 @@
 		<p class="text-light">No publications listed.</p>
 	{/if}
 </section>
+
+<style>
+	.doi-link {
+		display: inline-flex;
+		align-items: center;
+		margin-left: var(--spacing-2);
+	}
+
+	.doi-badge-img {
+		height: 1.25rem; /* 20px - equivalent to h-5 */
+	}
+
+	.doi-badge-fallback {
+		display: none;
+		padding: var(--spacing-1) var(--spacing-2);
+		font-size: var(--font-size-xs);
+		font-weight: var(--font-weight-medium);
+		color: var(--color-white);
+		background-color: var(--color-primary);
+		border-radius: var(--border-radius);
+		align-items: center;
+	}
+
+	.pub-type-badge {
+		font-size: var(--font-size-sm);
+		background-color: var(--color-border);
+		padding: 0 var(--spacing-1);
+		border-radius: var(--border-radius);
+	}
+</style>

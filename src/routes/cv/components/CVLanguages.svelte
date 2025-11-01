@@ -7,9 +7,11 @@
 	{#if languagesByProficiency.length > 0}
 		<div class="space-y-3">
 			{#each languagesByProficiency as language (language.id)}
-				<div class="flex gap-4">
-					<div class="font-medium flex-1">{language.name}</div>
-					<div class="text-light">{language.proficiency}</div>
+				<div class="flex gap-4 items-center">
+					<div class="font-medium flex-1 text-emphasis">{language.name}</div>
+					<div class="language-badge">
+						{language.proficiency}
+					</div>
 				</div>
 			{/each}
 		</div>
@@ -17,3 +19,15 @@
 		<p class="text-light">No languages listed.</p>
 	{/if}
 </section>
+
+<style>
+	.language-badge {
+		font-size: var(--font-size-sm);
+		padding: var(--spacing-1) var(--spacing-3);
+		border-radius: var(--border-radius-full);
+		background: rgba(var(--color-primary-rgb), 0.1);
+		border: 1px solid rgba(var(--color-primary-rgb), 0.2);
+		color: var(--color-text);
+		white-space: nowrap;
+	}
+</style>

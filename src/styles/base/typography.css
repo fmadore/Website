@@ -218,6 +218,14 @@ small {
 	text-align: justify;
 }
 
+/* Text wrapping */
+.text-wrap {
+	white-space: normal;
+}
+.text-nowrap {
+	white-space: nowrap;
+}
+
 /* Line height */
 .leading-none {
 	line-height: 1;

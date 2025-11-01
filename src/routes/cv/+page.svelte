@@ -31,28 +31,148 @@
 	<PdfGenerator />
 </div>
 
-<div id="cv-content" class="cv-container p-8 max-w-4xl mx-auto bg-default shadow-md rounded-lg">
+<div id="cv-content" class="cv-container glass-card p-8 max-w-4xl mx-auto rounded-lg">
 	<CVHeader />
-	<CVEducation />
-	<CVAppointments />
-	<CVPublications />
-	<CVGrants />
-	<CVAwards />
-	<CVDigitalHumanities />
-	<CVInvitedTalks />
-	<CVConferences />
-	<CVEvents />
-	<CVTeaching />
-	<CVResearchExperience />
-	<CVService />
-	<CVConsulting />
-	<CVMedia />
-	<CVLanguages />
-	<CVAffiliations />
-	<CVComputerSkills />
+	<div class="cv-section-wrapper">
+		<CVEducation />
+	</div>
+	<div class="cv-section-wrapper">
+		<CVAppointments />
+	</div>
+	<div class="cv-section-wrapper">
+		<CVPublications />
+	</div>
+	<div class="cv-section-wrapper">
+		<CVGrants />
+	</div>
+	<div class="cv-section-wrapper">
+		<CVAwards />
+	</div>
+	<div class="cv-section-wrapper">
+		<CVDigitalHumanities />
+	</div>
+	<div class="cv-section-wrapper">
+		<CVInvitedTalks />
+	</div>
+	<div class="cv-section-wrapper">
+		<CVConferences />
+	</div>
+	<div class="cv-section-wrapper">
+		<CVEvents />
+	</div>
+	<div class="cv-section-wrapper">
+		<CVTeaching />
+	</div>
+	<div class="cv-section-wrapper">
+		<CVResearchExperience />
+	</div>
+	<div class="cv-section-wrapper">
+		<CVService />
+	</div>
+	<div class="cv-section-wrapper">
+		<CVConsulting />
+	</div>
+	<div class="cv-section-wrapper">
+		<CVMedia />
+	</div>
+	<div class="cv-section-wrapper">
+		<CVLanguages />
+	</div>
+	<div class="cv-section-wrapper">
+		<CVAffiliations />
+	</div>
+	<div class="cv-section-wrapper">
+		<CVComputerSkills />
+	</div>
 </div>
 
 <style>
+	/* Main CV container */
+	.cv-container {
+		box-shadow: var(--shadow-lg);
+		transition: box-shadow var(--transition-duration-200) ease;
+	}
+
+	/* CV section wrappers with subtle glass effect */
+	:global(.cv-section-wrapper) {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.02) 0%,
+			rgba(var(--color-highlight-rgb), 0.01) 100%
+		);
+		border-radius: var(--border-radius-lg);
+		padding: var(--spacing-6);
+		margin-bottom: var(--spacing-6);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		transition: all var(--transition-duration-200) ease;
+	}
+
+	:global(.cv-section-wrapper:hover) {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.04) 0%,
+			rgba(var(--color-highlight-rgb), 0.02) 100%
+		);
+		border-color: rgba(var(--color-primary-rgb), 0.2);
+		box-shadow: var(--shadow-sm);
+	}
+
+	/* Enhanced section headings */
+	:global(#cv-content h3) {
+		color: var(--color-primary);
+		border-color: rgba(var(--color-primary-rgb), 0.3);
+		padding-bottom: var(--spacing-3);
+		margin-bottom: var(--spacing-4);
+		position: relative;
+	}
+
+	:global(#cv-content h3::after) {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 3rem;
+		height: 2px;
+		background: var(--color-accent);
+		border-radius: var(--border-radius-full);
+	}
+
+	/* Subsection headings */
+	:global(#cv-content h4) {
+		color: var(--color-text-emphasis);
+		margin-top: var(--spacing-6);
+		margin-bottom: var(--spacing-3);
+	}
+
+	/* Entry items with hover effect */
+	:global(#cv-content .space-y-3 > div) {
+		padding: var(--spacing-3);
+		border-radius: var(--border-radius-md);
+		transition: all var(--transition-duration-150) ease;
+	}
+
+	:global(#cv-content .space-y-3 > div:hover) {
+		background: rgba(var(--color-primary-rgb), 0.03);
+		transform: translateX(4px);
+	}
+
+	/* Year labels with accent styling */
+	:global(#cv-content .font-semibold.text-nowrap) {
+		color: var(--color-primary);
+		font-weight: var(--font-weight-semibold);
+	}
+
+	/* Links styling */
+	:global(#cv-content a) {
+		color: var(--color-primary);
+		transition: all var(--transition-duration-150) ease;
+	}
+
+	:global(#cv-content a:hover) {
+		color: var(--color-accent);
+		text-decoration: underline;
+	}
+
 	/* Print styles */
 	@media print {
 		/* Hide the PDF button when printing */
@@ -74,10 +194,19 @@
 		/* Remove glassmorphism effects */
 		:global(.glass),
 		:global(.glass-card),
-		:global(.glass-panel) {
+		:global(.glass-panel),
+		:global(.cv-section-wrapper) {
 			background: var(--color-white) !important;
 			backdrop-filter: none !important;
 			border: none !important;
+			box-shadow: none !important;
+		}
+
+		/* Remove hover effects and transitions */
+		:global(#cv-content .space-y-3 > div:hover),
+		:global(.cv-section-wrapper:hover) {
+			background: var(--color-white) !important;
+			transform: none !important;
 			box-shadow: none !important;
 		}
 

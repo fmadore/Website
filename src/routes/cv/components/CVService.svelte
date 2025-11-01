@@ -49,7 +49,7 @@
 								href={review.publons_record}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-1"
+								class="verification-badge"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -77,3 +77,26 @@
 		<p class="text-light">No service activities listed.</p>
 	{/if}
 </section>
+
+<style>
+	.verification-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--spacing-1);
+		font-size: var(--font-size-xs);
+		color: var(--color-primary);
+		margin-top: var(--spacing-1);
+		padding: var(--spacing-1) var(--spacing-2);
+		border-radius: var(--border-radius-md);
+		background: rgba(var(--color-primary-rgb), 0.05);
+		border: 1px solid rgba(var(--color-primary-rgb), 0.2);
+		transition: all var(--transition-duration-150) ease;
+		text-decoration: none;
+	}
+
+	.verification-badge:hover {
+		color: var(--color-accent);
+		background: rgba(var(--color-accent-rgb), 0.08);
+		border-color: rgba(var(--color-accent-rgb), 0.3);
+	}
+</style>

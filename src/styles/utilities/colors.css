@@ -165,6 +165,11 @@
 	border-bottom-style: solid;
 	border-bottom-color: var(--color-border);
 }
+.border-b-2 {
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: var(--color-border);
+}
 .border-l {
 	border-left-width: 1px;
 	border-left-style: solid;
