@@ -52,9 +52,7 @@
 								{:else if pub.type === 'encyclopedia' && pub.encyclopediaTitle}
 									In <em>{pub.encyclopediaTitle}</em>{#if pub.publisher}, {pub.publisher}{/if}.
 								{:else if pub.type === 'blogpost'}
-									{#if pub.url}<a href={pub.url} target="_blank" rel="noopener noreferrer"
-											>"{pub.title}"</a
-										>{:else}"{pub.title}"{/if}{#if pub.publisher}. <em>{pub.publisher}</em>{/if}.
+									"{pub.title}"{#if pub.publisher}. <em>{pub.publisher}</em>{/if}.
 								{:else if pub.type === 'conference-proceedings'}
 									In <em>{pub.proceedingsTitle}</em>.
 								{:else}
@@ -85,7 +83,7 @@
 											style="display:none;">DOI: {pub.doi}</span
 										></a
 									>{/if}
-								{#if pub.url && pub.type !== 'blogpost' && !pub.doi}<a
+								{#if pub.url && !pub.doi}<a
 										href={pub.url}
 										target="_blank"
 										rel="noopener noreferrer"
