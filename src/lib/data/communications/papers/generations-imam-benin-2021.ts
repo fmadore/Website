@@ -8,6 +8,7 @@ export const generationsImamBenin: Communication = {
 	dateISO: '2021-06-18',
 	year: 2021,
 	conference: '11th International Conference of the Mande Studies Association (MANSA)',
+	panelTitle: "Re-Inventing Islam: Muslims as Agents of Change in 20th & 21st Century West Africa",
 	location: 'Uppsala',
 	country: 'Sweden',
 	type: 'conference',

@@ -8,6 +8,7 @@ export const islamBurkinaFasoCollectionOmeka: Communication = {
 	dateISO: '2022-07-08',
 	year: 2022,
 	conference: '3rd Annual conference of the Africa Multiple Cluster of Excellence "Medialities"',
+	panelTitle: "The Digital - a challenging solution or solvable challenge?",
 	location: 'University of Bayreuth',
 	country: 'Germany',
 	type: 'conference',

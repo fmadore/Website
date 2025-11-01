@@ -9,6 +9,7 @@ export const hajjOrganizationStateCoteDIvoire: Communication = {
 	dateISO: '2016-12-03',
 	year: 2016,
 	conference: '59th Annual Meeting of the African Studies Association (ASA)',
+	panelTitle: "New Voices in the Study of Islam in Africa I: The Production and Contestation of Muslim Institutions in Contemporary Africa",
 	location: 'Washington D.C.',
 	country: 'United States',
 	type: 'conference',

@@ -9,6 +9,7 @@ export const goodMuslimBadMuslimTogo: Communication = {
 	dateISO: '2019-11-21',
 	year: 2019,
 	conference: '62nd Meeting of the African Studies Association (ASA)',
+	panelTitle: "Muslim Minorities in Africa",
 	location: 'Boston',
 	country: 'United States',
 	type: 'conference',

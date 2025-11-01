@@ -8,6 +8,7 @@ export const islamIvoirienBurkinabeNumerique: Communication = {
 	dateISO: '2016-01-14',
 	year: 2016,
 	conference: '3ème rencontre des Jeunes Chercheur.e.s en Études Africaines',
+	panelTitle: "Le religieux et ses réseaux",
 	location: 'Paris Diderot University',
 	country: 'France',
 	type: 'conference',
