@@ -20,7 +20,7 @@
 		<div class="space-y-3">
 			{#each realEditorialMemberships as member (member.id)}
 				<div class="flex gap-4">
-					<div class="font-semibold text-nowrap w-20">{member.dateRangeString}</div>
+					<div class="font-semibold text-nowrap">{member.dateRangeString}</div>
 					<div class="flex-1">
 						{member.role}, <em>{member.journal}</em>.
 						{#if member.details}
