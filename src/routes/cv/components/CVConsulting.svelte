@@ -18,10 +18,12 @@
 				<div class="font-semibold text-nowrap">{item.year}</div>
 				<div class="flex-1">
 					{item.role}, {item.organization}.
-					<div class="text-sm mt-1">
-						Provide research-driven analysis and expert testimony in asylum and immigration proceedings.<br />
+					<p class="text-sm mt-1">
+						Provide research-driven analysis and expert testimony in asylum and immigration proceedings.
+					</p>
+					<p class="text-sm mt-1">
 						Prepare Country of Origin Information (COI) reports for cases on Benin, Togo, and Côte d'Ivoire.
-					</div>
+					</p>
 				</div>
 			</div>
 		{/each}
