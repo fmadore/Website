@@ -83,16 +83,17 @@
 
 <style>
 	.tag-cloud-container {
-		margin-top: var(--spacing-6);
-		padding-top: var(--spacing-6);
-		border-top: var(--border-width-thin) solid var(--color-border);
+		margin-top: var(--spacing-8);
 	}
 
 	.tag-cloud-title {
 		font-size: var(--font-size-base);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text);
+		margin-top: 0;
 		margin-bottom: var(--spacing-4);
+		padding-bottom: var(--spacing-2);
+		border-bottom: var(--border-width-thin) solid var(--color-border);
 	}
 
 	.tag-cloud {
