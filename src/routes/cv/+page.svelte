@@ -23,31 +23,16 @@
 	let CVComputerSkills = $state<any>();
 	let CVResearchExperience = $state<any>();
 
-	let lazyLoadTrigger: HTMLDivElement;
-	let componentsStartedLoading = $state(false);
-
-	onMount(() => {
-		// Use Intersection Observer to trigger loading when user scrolls near the lazy content
-		const observer = new IntersectionObserver(
-			(entries) => {
-				if (entries[0].isIntersecting && !componentsStartedLoading) {
-					componentsStartedLoading = true;
-					loadComponents();
-				}
-			},
-			{
-				// Start loading when the trigger is 400px from entering the viewport
-				rootMargin: '400px'
-			}
-		);
-
-		if (lazyLoadTrigger) {
-			observer.observe(lazyLoadTrigger);
+	let componentsStartedLoading = $state(false);	onMount(() => {
+		// Start loading components immediately after mount
+		// This still provides performance benefits by:
+		// 1. Not blocking initial page render
+		// 2. Loading in batches to avoid overwhelming the browser
+		// 3. Keeping the initial bundle smaller
+		if (!componentsStartedLoading) {
+			componentsStartedLoading = true;
+			loadComponents();
 		}
-
-		return () => {
-			observer.disconnect();
-		};
 	});
 
 	function loadComponents() {
@@ -118,14 +103,7 @@
 		<CVPublications />
 	</div>
 	
-	<!-- Intersection Observer trigger - starts loading when user scrolls near here -->
-	<div bind:this={lazyLoadTrigger} style="height: 1px;"></div>
-	
-	<!-- Show minimal placeholders while loading to prevent layout shift -->
-	{#if !componentsStartedLoading}
-		<div class="cv-section-placeholder"></div>
-	{/if}
-	
+	<!-- Components load automatically after page mount in batches -->
 	{#if CVGrants}
 		<div class="cv-section-wrapper">
 			<CVGrants />
@@ -293,12 +271,6 @@
 	:global(#cv-content a:hover) {
 		color: var(--color-accent);
 		text-decoration: underline;
-	}
-
-	/* Placeholder for lazy loading */
-	.cv-section-placeholder {
-		min-height: 100px;
-		opacity: 0;
 	}
 
 	/* Print styles */
