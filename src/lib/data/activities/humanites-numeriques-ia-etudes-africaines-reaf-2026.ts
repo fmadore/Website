@@ -46,7 +46,7 @@ export const activity: Activity = {
             <li>Vincent Hiribarren, King's College London, Londres, vincent.hiribarren@kcl.ac.uk</li>
         </ul>
     `,
-	tags: ['REAF', 'Digital Humanities', 'AI', 'Methodology', 'Panel'],
+	tags: ['REAF', 'Digital Humanities', 'AI', 'Methodology', 'Panel', 'Call for Papers'],
 	type: 'conference',
 	image: 'images/communications/reaf-2026.webp',
 	heroImage: {

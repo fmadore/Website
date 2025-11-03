@@ -22,12 +22,11 @@ export const ehessParisLectureSeries2025: Activity = {
     `,
 	tags: [
 		'EHESS',
-		'Paris',
 		'Francophone West Africa',
 		'Islam',
 		'Religious Pluralism',
 		'Digital Humanities',
-		'History'
+		'Talk'
 	],
 	image: 'images/communications/EHESS-2025.webp',
 	heroImage: {

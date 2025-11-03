@@ -31,7 +31,9 @@ export const archivesAlgorithmsIwac2025: Activity = {
 		'Archives',
 		'Algorithms',
 		'Transregional History',
-		'ENIUGH'
+		'ENIUGH',
+		'Conference',
+		'IWAC'
 	],
 	type: 'conference',
 	heroImage: {

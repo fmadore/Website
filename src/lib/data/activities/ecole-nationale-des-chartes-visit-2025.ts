@@ -16,10 +16,11 @@ export const ecoleNationaleDesChartesVisit2025: Activity = {
     `,
 	tags: [
 		'École nationale des chartes',
-		'Paris',
+		'Talk',
 		'Digital Humanities',
 		'AI',
-		'Computational Methods'
+		'Computational Methods',
+		'IWAC'
 	],
 	heroImage: {
 		src: 'images/activities/ecole-nationale-des-chartes.webp',
