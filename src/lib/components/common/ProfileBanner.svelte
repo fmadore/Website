@@ -1,18 +1,10 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import Icon from '@iconify/svelte';
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
-	import { DELAY_STEP } from '$lib/utils/animationConstants';
 </script>
 
-<div
-	class="profile-header glass-panel"
-	use:scrollAnimate={{ delay: DELAY_STEP * 1, animationClass: 'fade-in-up' }}
->
-	<div
-		class="profile-photo-container"
-		use:scrollAnimate={{ delay: DELAY_STEP * 3, animationClass: 'scale-in' }}
-	>
+<div class="profile-header glass-panel">
+	<div class="profile-photo-container">
 		<div class="profile-photo">
 			<img
 				src="{base}/images/Profile-picture.webp"
@@ -26,23 +18,14 @@
 		</div>
 	</div>
 	<div class="profile-content">
-		<div
-			class="profile-title"
-			use:scrollAnimate={{ delay: DELAY_STEP * 4, animationClass: 'fade-in-up' }}
-		>
+		<div class="profile-title">
 			<h1>About</h1>
 			<div class="title-accent"></div>
 		</div>
-		<div
-			class="subtitle"
-			use:scrollAnimate={{ delay: DELAY_STEP * 5, animationClass: 'fade-in-up' }}
-		>
+		<div class="subtitle">
 			Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)
 		</div>
-		<div
-			class="profile-icons"
-			use:scrollAnimate={{ delay: DELAY_STEP * 6, animationClass: 'fade-in-up' }}
-		>
+		<div class="profile-icons">
 			<a
 				href="mailto:frederick.madore@zmo.de"
 				target="_blank"

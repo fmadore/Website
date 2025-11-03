@@ -4,17 +4,14 @@
 	import { base } from '$app/paths';
 	import PanelBase from './PanelBase.svelte';
 	import Button from '../atoms/Button.svelte';
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 
 	// Props - limit the number of activities to show
 	let {
 		limit = 4,
-		showYearFilters = true,
-		animationDelay = 750
+		showYearFilters = true
 	}: {
 		limit?: number;
 		showYearFilters?: boolean;
-		animationDelay?: number;
 	} = $props();
 
 	// Get activities reactively
@@ -114,16 +111,14 @@
 	{/if}
 {/snippet}
 
-<div use:scrollAnimate={{ delay: animationDelay, animationClass: 'fade-in-left' }}>
-	<PanelBase
-		title="Latest Activities"
-		variant="activities"
-		glassEffect="glass-panel"
-		showFooter={true}
-		content={panelContent}
-		footer={panelFooter}
-	/>
-</div>
+<PanelBase
+	title="Latest Activities"
+	variant="activities"
+	glassEffect="glass-panel"
+	showFooter={true}
+	content={panelContent}
+	footer={panelFooter}
+/>
 
 <style>
 	/* Activity-specific styles - harmonized with ProfileBanner and ContentBody */

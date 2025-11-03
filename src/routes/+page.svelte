@@ -6,8 +6,6 @@
 	import { base } from '$app/paths';
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
 	import { browser } from '$app/environment';
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
-	import { DELAY_STEP } from '$lib/utils/animationConstants';
 	import type { PageData } from './$types';
 
 	let { data } = $props<{ data: PageData }>();
@@ -58,10 +56,7 @@
 
 <div class="container max-w-7xl">
 	<ProfileBanner />
-	<div
-		class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-4 md:mt-8"
-		use:scrollAnimate={{ delay: DELAY_STEP * 7, animationClass: 'fade-in-up' }}
-	>
+	<div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-4 md:mt-8">
 		<div class="md:col-span-2">
 			<ContentBody variant="default" glassEffect="glass-card">
 				<p>
@@ -153,7 +148,7 @@
 			</ContentBody>
 		</div>
 		<aside class="md:col-span-1">
-			<LatestActivities limit={3} animationDelay={DELAY_STEP * 15} />
+			<LatestActivities limit={3} />
 		</aside>
 	</div>
 </div>
