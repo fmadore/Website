@@ -113,15 +113,15 @@
 <style>
 	.year-tag {
 		display: inline-block;
-		padding: 0.35rem 1rem;
+		padding: var(--spacing-2) var(--spacing-4);
 		background-color: var(--color-border);
 		color: var(--color-text);
 		border-radius: var(--border-radius-full);
 		font-size: var(--font-size-base);
-		font-weight: 600;
+		font-weight: var(--font-weight-semibold);
 		margin-right: var(--spacing-2);
 		margin-bottom: var(--spacing-2);
-		transition: all 0.2s ease;
+		transition: all var(--anim-duration-fast) var(--anim-ease-base);
 	}
 
 	.year-tag:hover {
@@ -136,7 +136,7 @@
 
 	.activity-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(var(--content-width-xs), 1fr));
 		gap: var(--spacing-6);
 	}
 
