@@ -2,20 +2,34 @@
 	import { getActivities } from '$lib/stores/activities.svelte';
 	import type { Activity } from '$lib/types';
 	import { base } from '$app/paths';
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
+	import { browser } from '$app/environment';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import SEO from '$lib/SEO.svelte';
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
+	import TagCloud from '$lib/components/activities/TagCloud.svelte';
+	import Button from '$lib/components/atoms/Button.svelte';
 
 	// Get activities reactively
 	let activities = $derived(getActivities());
 
-	// Reactive activities array - using $derived to reactively get the store value
-	let activityList = $derived(activities);
+	// Get selected tag from URL using $derived
+	let selectedTag = $derived(browser ? $page.url.searchParams.get('tag') : null);
 
-	// Years array - derived from activities and sorted in descending order
+	// Filter activities by selected tag using $derived
+	let activityList = $derived(
+		selectedTag
+			? activities.filter((activity: Activity) =>
+					activity.tags?.some((tag) => tag.toLowerCase() === selectedTag.toLowerCase())
+				)
+			: activities
+	);
+
+	// Years array - derived from filtered activities and sorted in descending order
 	let years = $derived(
-		[...new Set(activities.map((activity: Activity) => activity.year))].sort(
+		[...new Set(activityList.map((activity: Activity) => activity.year))].sort(
 			(a: number, b: number) => b - a
 		)
 	);
@@ -23,6 +37,11 @@
 	// Get activities count by year for display - pure function approach
 	function getCountByYear(year: number): number {
 		return activityList.filter((activity: Activity) => activity.year === year).length;
+	}
+
+	// Function to clear tag filter
+	function clearTagFilter() {
+		goto(`${base}/activities`);
 	}
 </script>
 
@@ -57,18 +76,49 @@
 						{/each}
 					</ul>
 				</div>
+
+				<!-- Tag Cloud Component -->
+				<TagCloud activities={activityList} maxTags={15} />
 			</aside>
 		</div>
 
 		<div class="md:col-span-3">
 			<div class="activity-list-container">
-				<h2 class="activities-title">All Activities</h2>
-
-				<div class="space-y-8">
-					{#each activityList as activity (activity.id)}
-						<ActivityItem {activity} />
-					{/each}
+				<div class="activities-header">
+					<h2 class="activities-title">
+						{#if selectedTag}
+							Activities tagged with "{selectedTag}"
+						{:else}
+							All Activities
+						{/if}
+					</h2>
+					{#if selectedTag}
+						<Button variant="primary" size="sm" onclick={clearTagFilter}>
+							Clear filter
+						</Button>
+					{/if}
 				</div>
+
+				<p class="activities-count">
+					Showing {activityList.length} {activityList.length === 1 ? 'activity' : 'activities'}
+				</p>
+
+				{#if activityList.length > 0}
+					<div class="space-y-8">
+						{#each activityList as activity (activity.id)}
+							<ActivityItem {activity} />
+						{/each}
+					</div>
+				{:else}
+					<div class="empty-state">
+						<p>No activities found{selectedTag ? ` with the tag "${selectedTag}"` : ''}.</p>
+						{#if selectedTag}
+							<Button variant="primary" size="sm" onclick={clearTagFilter} additionalClasses="mt-4">
+								View all activities
+							</Button>
+						{/if}
+					</div>
+				{/if}
 			</div>
 		</div>
 	</div>
@@ -136,7 +186,7 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: var(--spacing-2) var(--spacing-3);
-		border-radius: var(--border-radius-sm);
+		border-radius: var(--border-radius-md);
 		color: var(--color-text);
 		text-decoration: none;
 		transition: all var(--anim-duration-fast) var(--anim-ease-base);
@@ -187,14 +237,44 @@
 		padding: 0;
 	}
 
+	/* Activities header - flex container for title and button */
+	.activities-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: var(--spacing-4);
+		margin-bottom: var(--spacing-4);
+		flex-wrap: wrap;
+	}
+
 	/* Activities title */
 	.activities-title {
 		font-size: var(--font-size-xl);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text);
-		margin-bottom: var(--spacing-6);
+		margin: 0;
 		padding-bottom: var(--spacing-3);
 		border-bottom: var(--border-width-medium) solid var(--color-border);
+		flex: 1 1 auto;
+	}
+
+	/* Activities count */
+	.activities-count {
+		font-size: var(--font-size-sm);
+		color: var(--color-text-light);
+		margin-bottom: var(--spacing-6);
+	}
+
+	/* Empty state */
+	.empty-state {
+		text-align: center;
+		padding: var(--spacing-12) var(--spacing-4);
+		color: var(--color-text-muted);
+	}
+
+	.empty-state p {
+		font-size: var(--font-size-lg);
+		margin-bottom: var(--spacing-4);
 	}
 
 	/* Dark mode support */
