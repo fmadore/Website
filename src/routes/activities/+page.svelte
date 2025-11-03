@@ -77,8 +77,8 @@
 					</ul>
 				</div>
 
-				<!-- Tag Cloud Component -->
-				<TagCloud activities={activityList} maxTags={15} />
+				<!-- Tag Cloud Component - show tags from filtered activities -->
+				<TagCloud activities={activityList} maxTags={25} />
 			</aside>
 		</div>
 
