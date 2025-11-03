@@ -35,32 +35,34 @@
 		talks, and other engagements. You can browse by year using the sidebar.
 	</PageIntro>
 
-	<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+	<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 		<div class="md:col-span-1">
-			<div class="year-sidebar rounded-lg p-6">
-				<h2 class="text-xl font-semibold mb-4">Browse by Year</h2>
+			<aside class="year-sidebar">
+				<div class="filter-section">
+					<h2 class="filter-section-title">Browse by Year</h2>
 
-				<ul class="space-y-3">
-					{#each years as year (year)}
-						<li>
-							<a
-								href="{base}/activities/year/{year}"
-								class="year-link flex justify-between items-center p-2 rounded transition-colors"
-							>
-								<span>{year}</span>
-								<span class="year-count-badge px-2 py-1 rounded-full text-xs font-medium">
-									{getCountByYear(year)}
-								</span>
-							</a>
-						</li>
-					{/each}
-				</ul>
-			</div>
+					<ul class="year-list">
+						{#each years as year (year)}
+							<li class="year-list-item">
+								<a
+									href="{base}/activities/year/{year}"
+									class="year-link"
+								>
+									<span class="year-label">{year}</span>
+									<span class="year-count">
+										{getCountByYear(year)}
+									</span>
+								</a>
+							</li>
+						{/each}
+					</ul>
+				</div>
+			</aside>
 		</div>
 
-		<div class="md:col-span-2">
-			<div class="activity-list-container rounded-lg p-6">
-				<h2 class="text-xl font-semibold mb-6 border-b pb-2">All Activities</h2>
+		<div class="md:col-span-3">
+			<div class="activity-list-container">
+				<h2 class="activities-title">All Activities</h2>
 
 				<div class="space-y-8">
 					{#each activityList as activity (activity.id)}
@@ -73,27 +75,169 @@
 </div>
 
 <style>
-	/* Apply theme variables to the main containers */
-	.year-sidebar,
-	.activity-list-container {
-		background-color: var(--color-background);
-		box-shadow: var(--shadow-md);
-		transition:
-			background-color 0.3s ease,
-			box-shadow 0.3s ease;
+	/* Year sidebar - matching filter sidebar design */
+	.year-sidebar {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.03) 0%,
+			rgba(var(--color-highlight-rgb), 0.02) 50%,
+			rgba(var(--color-accent-rgb), 0.01) 100%
+		);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		border-radius: var(--border-radius-md);
+		padding: var(--spacing-4);
+		box-shadow:
+			0 8px 32px 0 rgba(31, 38, 135, 0.15),
+			inset 0 1px 0 rgba(255, 255, 255, 0.2);
+		transition: all 0.3s ease;
 	}
 
-	/* Adjust title border color */
-	.activity-list-container h2 {
-		border-color: var(--color-border);
+	.year-sidebar:hover {
+		transform: translateY(-2px);
+		box-shadow:
+			0 12px 40px 0 rgba(31, 38, 135, 0.15),
+			inset 0 1px 0 rgba(255, 255, 255, 0.3);
 	}
 
-	/* Adjust year link hover background and badge colors */
+	/* Filter section styling */
+	.filter-section {
+		background: transparent;
+		border: none;
+		padding: 0;
+		margin-bottom: 0;
+	}
+
+	/* Section title styling - matching filter section titles */
+	.filter-section-title {
+		font-size: var(--font-size-base);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text);
+		margin-top: 0; /* Override global h2 margin */
+		margin-bottom: var(--spacing-4);
+		padding-bottom: var(--spacing-2);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	/* Year list styling */
+	.year-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-1);
+	}
+
+	.year-list-item {
+		margin: 0;
+	}
+
+	/* Year link styling - matching filter buttons */
+	.year-link {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: var(--spacing-2) var(--spacing-3);
+		border-radius: var(--border-radius-sm);
+		color: var(--color-text);
+		text-decoration: none;
+		transition: all 0.2s ease;
+		background: transparent;
+		border: 1px solid transparent;
+	}
+
 	.year-link:hover {
-		background-color: var(--color-border);
-	}
-	.year-count-badge {
-		background-color: var(--color-border);
+		background: rgba(var(--color-primary-rgb), 0.08);
+		border-color: rgba(var(--color-primary-rgb), 0.2);
 		color: var(--color-primary);
+	}
+
+	.year-link:focus-visible {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 2px;
+	}
+
+	.year-label {
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-medium);
+	}
+
+	/* Year count badge */
+	.year-count {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 1.5rem;
+		height: 1.5rem;
+		padding: 0 var(--spacing-2);
+		font-size: var(--font-size-xs);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text-muted);
+		background: rgba(var(--color-primary-rgb), 0.1);
+		border-radius: var(--border-radius-full);
+		transition: all 0.2s ease;
+	}
+
+	.year-link:hover .year-count {
+		background: rgba(var(--color-primary-rgb), 0.2);
+		color: var(--color-primary);
+	}
+
+	/* Activity list container */
+	.activity-list-container {
+		background: transparent;
+		padding: 0;
+	}
+
+	/* Activities title */
+	.activities-title {
+		font-size: var(--font-size-xl);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text);
+		margin-bottom: var(--spacing-6);
+		padding-bottom: var(--spacing-3);
+		border-bottom: 2px solid var(--color-border);
+	}
+
+	/* Dark mode support */
+	:global(html.dark) .year-sidebar {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.06) 0%,
+			rgba(var(--color-highlight-rgb), 0.04) 50%,
+			rgba(var(--color-accent-rgb), 0.02) 100%
+		);
+		border-color: rgba(255, 255, 255, 0.1);
+		box-shadow:
+			0 8px 32px 0 rgba(0, 0, 0, 0.3),
+			inset 0 1px 0 rgba(255, 255, 255, 0.1);
+	}
+
+	:global(html.dark) .year-sidebar:hover {
+		box-shadow:
+			0 12px 40px 0 rgba(0, 0, 0, 0.4),
+			inset 0 1px 0 rgba(255, 255, 255, 0.2);
+	}
+
+	:global(html.dark) .year-link:hover {
+		background: rgba(var(--color-primary-rgb), 0.12);
+		border-color: rgba(var(--color-primary-rgb), 0.3);
+	}
+
+	/* Responsive adjustments */
+	@media (max-width: 768px) {
+		.year-sidebar {
+			margin-bottom: var(--spacing-6);
+		}
+	}
+
+	/* Sticky positioning on desktop */
+	@media (min-width: 769px) {
+		.year-sidebar {
+			position: sticky;
+			top: var(--spacing-4);
+		}
 	}
 </style>
