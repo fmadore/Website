@@ -31,6 +31,9 @@
 		if (!('serviceWorker' in navigator)) return;
 
 		try {
+			// Clear any old caches that might contain Workbox or old versions
+			await clearOldCaches();
+			
 			const reg = await navigator.serviceWorker.register('/service-worker.js');
 			registration = reg;
 
@@ -63,6 +66,35 @@
 			console.log('[PWA] Service Worker registered');
 		} catch (error) {
 			console.warn('[PWA] Service Worker registration failed:', error);
+		}
+	}
+
+	async function clearOldCaches() {
+		if (!('caches' in window)) return;
+
+		try {
+			const cacheNames = await caches.keys();
+			const currentCachePrefix = 'cache-v';
+			const runtimeCachePrefix = 'runtime-v';
+			
+			// Delete caches that don't match our naming convention or contain 'workbox'
+			await Promise.all(
+				cacheNames.map(cacheName => {
+					// Delete Workbox caches
+					if (cacheName.includes('workbox')) {
+						console.log('[PWA] Removing old Workbox cache:', cacheName);
+						return caches.delete(cacheName);
+					}
+					
+					// Delete any cache that doesn't start with our expected prefixes
+					if (!cacheName.startsWith(currentCachePrefix) && !cacheName.startsWith(runtimeCachePrefix)) {
+						console.log('[PWA] Removing unrecognized cache:', cacheName);
+						return caches.delete(cacheName);
+					}
+				})
+			);
+		} catch (error) {
+			console.warn('[PWA] Failed to clear old caches:', error);
 		}
 	}
 
