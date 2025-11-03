@@ -83,22 +83,18 @@
 			rgba(var(--color-highlight-rgb), 0.02) 50%,
 			rgba(var(--color-accent-rgb), 0.01) 100%
 		);
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
-		border: 1px solid rgba(255, 255, 255, 0.2);
+		backdrop-filter: blur(var(--space-xl));
+		-webkit-backdrop-filter: blur(var(--space-xl));
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-20));
 		border-radius: var(--border-radius-md);
 		padding: var(--spacing-4);
-		box-shadow:
-			0 8px 32px 0 rgba(31, 38, 135, 0.15),
-			inset 0 1px 0 rgba(255, 255, 255, 0.2);
-		transition: all 0.3s ease;
+		box-shadow: var(--shadow-primary), var(--shadow-inner);
+		transition: all var(--anim-duration-base) var(--anim-ease-base);
 	}
 
 	.year-sidebar:hover {
-		transform: translateY(-2px);
-		box-shadow:
-			0 12px 40px 0 rgba(31, 38, 135, 0.15),
-			inset 0 1px 0 rgba(255, 255, 255, 0.3);
+		transform: var(--transform-lift-md);
+		box-shadow: var(--shadow-lg), var(--shadow-inner);
 	}
 
 	/* Filter section styling */
@@ -117,7 +113,7 @@
 		margin-top: 0; /* Override global h2 margin */
 		margin-bottom: var(--spacing-4);
 		padding-bottom: var(--spacing-2);
-		border-bottom: 1px solid var(--color-border);
+		border-bottom: var(--border-width-thin) solid var(--color-border);
 	}
 
 	/* Year list styling */
@@ -143,20 +139,20 @@
 		border-radius: var(--border-radius-sm);
 		color: var(--color-text);
 		text-decoration: none;
-		transition: all 0.2s ease;
+		transition: all var(--anim-duration-fast) var(--anim-ease-base);
 		background: transparent;
-		border: 1px solid transparent;
+		border: var(--border-width-thin) solid transparent;
 	}
 
 	.year-link:hover {
 		background: rgba(var(--color-primary-rgb), 0.08);
-		border-color: rgba(var(--color-primary-rgb), 0.2);
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-20));
 		color: var(--color-primary);
 	}
 
 	.year-link:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
+		outline: var(--border-width-medium) solid var(--color-primary);
+		outline-offset: var(--spacing-1);
 	}
 
 	.year-label {
@@ -169,19 +165,19 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		min-width: 1.5rem;
-		height: 1.5rem;
+		min-width: var(--spacing-6);
+		height: var(--spacing-6);
 		padding: 0 var(--spacing-2);
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-muted);
-		background: rgba(var(--color-primary-rgb), 0.1);
+		background: rgba(var(--color-primary-rgb), var(--opacity-10));
 		border-radius: var(--border-radius-full);
-		transition: all 0.2s ease;
+		transition: all var(--anim-duration-fast) var(--anim-ease-base);
 	}
 
 	.year-link:hover .year-count {
-		background: rgba(var(--color-primary-rgb), 0.2);
+		background: rgba(var(--color-primary-rgb), var(--opacity-20));
 		color: var(--color-primary);
 	}
 
@@ -198,7 +194,7 @@
 		color: var(--color-text);
 		margin-bottom: var(--spacing-6);
 		padding-bottom: var(--spacing-3);
-		border-bottom: 2px solid var(--color-border);
+		border-bottom: var(--border-width-medium) solid var(--color-border);
 	}
 
 	/* Dark mode support */
@@ -209,21 +205,21 @@
 			rgba(var(--color-highlight-rgb), 0.04) 50%,
 			rgba(var(--color-accent-rgb), 0.02) 100%
 		);
-		border-color: rgba(255, 255, 255, 0.1);
+		border-color: rgba(var(--color-white-rgb), var(--opacity-10));
 		box-shadow:
-			0 8px 32px 0 rgba(0, 0, 0, 0.3),
-			inset 0 1px 0 rgba(255, 255, 255, 0.1);
+			0 8px 32px 0 rgba(var(--color-black-rgb), var(--opacity-30)),
+			var(--shadow-inner);
 	}
 
 	:global(html.dark) .year-sidebar:hover {
 		box-shadow:
-			0 12px 40px 0 rgba(0, 0, 0, 0.4),
-			inset 0 1px 0 rgba(255, 255, 255, 0.2);
+			0 12px 40px 0 rgba(var(--color-black-rgb), var(--opacity-40)),
+			var(--shadow-inner);
 	}
 
 	:global(html.dark) .year-link:hover {
 		background: rgba(var(--color-primary-rgb), 0.12);
-		border-color: rgba(var(--color-primary-rgb), 0.3);
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-30));
 	}
 
 	/* Responsive adjustments */
