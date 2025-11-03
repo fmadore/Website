@@ -154,6 +154,9 @@
 .space-y-4 > * + * {
 	margin-top: var(--space-md);
 }
+.space-y-8 > * + * {
+	margin-top: var(--space-xl);
+}
 
 /* Essential responsive variants based on actual usage */
 @media (min-width: var(--breakpoint-sm)) {
