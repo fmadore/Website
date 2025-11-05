@@ -178,6 +178,7 @@
 	const collaborationData = $derived(
 		(() => {
 			const collaborations: Record<string, { publications: Set<string> }> = {};
+			const coAuthorConnections: Array<{ source: string; target: string; publications: Set<string> }> = [];
 
 			allPublications.forEach((pub) => {
 				// Get all authors except Frédérick Madore
@@ -197,7 +198,7 @@
 					coAuthors.push(pub.prefacedBy);
 				}
 
-				// Count collaborations
+				// Count collaborations with Frédérick Madore
 				coAuthors.forEach((author) => {
 					if (!collaborations[author]) {
 						collaborations[author] = { publications: new Set<string>() };
@@ -205,14 +206,55 @@
 					// Use Set to automatically deduplicate publication titles
 					collaborations[author].publications.add(pub.title);
 				});
+
+				// Track connections between co-authors (for publications with 3+ authors including Frédérick)
+				if (coAuthors.length >= 2) {
+					for (let i = 0; i < coAuthors.length; i++) {
+						for (let j = i + 1; j < coAuthors.length; j++) {
+							const author1 = coAuthors[i];
+							const author2 = coAuthors[j];
+							
+							// Find or create connection (order-independent)
+							let connection = coAuthorConnections.find(
+								(c) => 
+									(c.source === author1 && c.target === author2) ||
+									(c.source === author2 && c.target === author1)
+							);
+							
+							if (!connection) {
+								connection = {
+									source: author1,
+									target: author2,
+									publications: new Set<string>()
+								};
+								coAuthorConnections.push(connection);
+							}
+							
+							connection.publications.add(pub.title);
+						}
+					}
+				}
 			});
 
 			// Convert to array format expected by the network graph
-			return Object.entries(collaborations).map(([author, data]) => ({
+			const collaborators = Object.entries(collaborations).map(([author, data]) => ({
 				author,
 				collaborationCount: data.publications.size, // Count unique publications
 				publications: Array.from(data.publications) // Convert Set back to Array
 			}));
+
+			// Convert co-author connections to array format
+			const connections = coAuthorConnections.map((conn) => ({
+				source: conn.source,
+				target: conn.target,
+				publicationCount: conn.publications.size,
+				publications: Array.from(conn.publications)
+			}));
+
+			return {
+				collaborators,
+				coAuthorConnections: connections
+			};
 		})()
 	);
 
@@ -409,14 +451,15 @@
 	>
 		<h2 class="text-2xl font-semibold mb-6">
 			Author Collaboration Network
-			{#if collaborationData.length > 0}
-				({collaborationData.length} collaborators)
+			{#if collaborationData.collaborators.length > 0}
+				({collaborationData.collaborators.length} collaborators)
 			{/if}
 		</h2>
-		{#if collaborationData.length > 0}
+		{#if collaborationData.collaborators.length > 0}
 			<div class="chart-wrapper network-chart" style="height: 500px;">
 				<EChartsNetworkGraph
-					data={collaborationData}
+					data={collaborationData.collaborators}
+					coAuthorConnections={collaborationData.coAuthorConnections}
 					centerAuthor="Frédérick Madore"
 					maxConnections={25}
 				/>

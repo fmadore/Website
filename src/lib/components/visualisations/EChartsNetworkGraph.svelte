@@ -6,6 +6,7 @@ ECharts Network Graph - A network visualization for author collaborations
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 	import { innerWidth } from 'svelte/reactivity/window';
+	import Icon from '@iconify/svelte';
 
 	// Props
 	type CollaborationData = {
@@ -14,12 +15,21 @@ ECharts Network Graph - A network visualization for author collaborations
 		publications: string[];
 	};
 
+	type CoAuthorConnection = {
+		source: string;
+		target: string;
+		publicationCount: number;
+		publications: string[];
+	};
+
 	let {
 		data = [] as CollaborationData[],
+		coAuthorConnections = [] as CoAuthorConnection[],
 		centerAuthor = 'Frédérick Madore',
 		maxConnections = 20 // Limit to top collaborators for readability
 	}: {
 		data?: CollaborationData[];
+		coAuthorConnections?: CoAuthorConnection[];
 		centerAuthor?: string;
 		maxConnections?: number;
 	} = $props();
@@ -31,6 +41,37 @@ ECharts Network Graph - A network visualization for author collaborations
 	
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
+
+	// Zoom functions
+	function zoomIn() {
+		if (chart && !chart.isDisposed()) {
+			chart.dispatchAction({
+				type: 'dataZoom',
+				// Zoom in by reducing the range
+				start: 10,
+				end: 90
+			});
+		}
+	}
+
+	function zoomOut() {
+		if (chart && !chart.isDisposed()) {
+			chart.dispatchAction({
+				type: 'dataZoom',
+				// Zoom out by expanding the range
+				start: 0,
+				end: 100
+			});
+		}
+	}
+
+	function resetZoom() {
+		if (chart && !chart.isDisposed()) {
+			chart.dispatchAction({
+				type: 'restore'
+			});
+		}
+	}
 
 	// Utility functions for CSS variable resolution
 	function getCSSVariableValue(variableName: string): string {
@@ -78,35 +119,41 @@ ECharts Network Graph - A network visualization for author collaborations
 			.sort((a, b) => b.collaborationCount - a.collaborationCount)
 			.slice(0, maxConnections);
 
+		// Get list of top collaborator names for filtering connections
+		const topCollaboratorNames = new Set(topCollaborators.map(c => c.author));
+
 		// Create nodes
 		const nodes = [
 			// Center node (main author)
 			{
 				id: centerAuthor,
 				name: centerAuthor,
-				symbolSize: isMobile ? 40 : 60,
+				symbolSize: isMobile ? 50 : 70,
 				itemStyle: {
-					color: resolvedColors.primary
+					color: resolvedColors.primary,
+					borderColor: resolvedColors.primary,
+					borderWidth: 3
 				},
 				label: {
 					show: true,
-					fontSize: isMobile ? 12 : 14,
+					fontSize: isMobile ? 13 : 15,
 					fontWeight: 'bold',
 					color: resolvedColors.text
 				},
-				category: 0
+				category: 0,
+				fixed: false
 			},
 			// Collaborator nodes
 			...topCollaborators.map((collab) => ({
 				id: collab.author,
 				name: collab.author,
 				symbolSize: Math.max(
-					isMobile ? 15 : 20,
+					isMobile ? 20 : 25,
 					Math.min(
-						isMobile ? 35 : 45,
+						isMobile ? 40 : 50,
 						(collab.collaborationCount /
 							Math.max(...topCollaborators.map((c) => c.collaborationCount))) *
-							(isMobile ? 35 : 45)
+							(isMobile ? 40 : 50)
 					)
 				),
 				itemStyle: {
@@ -128,23 +175,61 @@ ECharts Network Graph - A network visualization for author collaborations
 							: params.name;
 					}
 				},
-				category: 1
+				category: 1,
+				fixed: false
 			}))
 		];
 
-		// Create links
-		const links = topCollaborators.map((collab) => ({
+		// Create links - connections to center author
+		const centerLinks = topCollaborators.map((collab) => ({
 			source: centerAuthor,
 			target: collab.author,
 			lineStyle: {
-				width: Math.max(1, Math.min(8, collab.collaborationCount * 2)),
-				color: resolvedColors.border,
-				opacity: 0.6
+				width: Math.max(1.5, Math.min(6, collab.collaborationCount * 1.5)),
+				color: resolvedColors.primary,
+				opacity: 0.5,
+				type: 'solid' as const
 			},
 			label: {
 				show: false
+			},
+			emphasis: {
+				lineStyle: {
+					width: Math.max(2, Math.min(8, collab.collaborationCount * 2)),
+					opacity: 0.8
+				}
 			}
 		}));
+
+		// Create links between co-authors (only for those in top collaborators)
+		const coAuthorLinks = coAuthorConnections
+			.filter(conn => 
+				topCollaboratorNames.has(conn.source) && 
+				topCollaboratorNames.has(conn.target)
+			)
+			.map((conn) => ({
+				source: conn.source,
+				target: conn.target,
+				lineStyle: {
+					width: Math.max(1, Math.min(4, conn.publicationCount * 1.2)),
+					color: resolvedColors.accent,
+					opacity: 0.3,
+					type: 'dashed' as const
+				},
+				label: {
+					show: false
+				},
+				emphasis: {
+					lineStyle: {
+						width: Math.max(1.5, Math.min(5, conn.publicationCount * 1.5)),
+						opacity: 0.6
+					}
+				},
+				// Store connection data for tooltip
+				connectionData: conn
+			}));
+
+		const links = [...centerLinks, ...coAuthorLinks];
 
 		return { nodes, links };
 	});
@@ -217,22 +302,68 @@ ECharts Network Graph - A network visualization for author collaborations
 							const publicationList = collab.publications.map((pub) => `• ${pub}`).join('<br/>');
 
 							return `<strong>${params.data.name}</strong><br/>
-								Collaborations: ${collab.collaborationCount}<br/>
+								Collaborations with ${centerAuthor}: ${collab.collaborationCount}<br/>
 								<em>Publications:</em><br/>
 								${publicationList}`;
 						}
 					}
 				} else if (params.dataType === 'edge') {
-					const collab = data.find((c) => c.author === params.data.target);
-					return collab
-						? `${collab.collaborationCount} collaboration${collab.collaborationCount > 1 ? 's' : ''}`
-						: '';
+					// Check if this is a co-author connection
+					if (params.data.connectionData) {
+						const conn = params.data.connectionData;
+						const publicationList = conn.publications.map((pub: string) => `• ${pub}`).join('<br/>');
+						return `<strong>Co-author connection</strong><br/>
+							${conn.source} ↔ ${conn.target}<br/>
+							Shared publications: ${conn.publicationCount}<br/>
+							<em>Publications:</em><br/>
+							${publicationList}`;
+					} else {
+						// Connection to center author
+						const collab = data.find((c) => c.author === params.data.target);
+						return collab
+							? `${collab.collaborationCount} collaboration${collab.collaborationCount > 1 ? 's' : ''} with ${centerAuthor}`
+							: '';
+					}
 				}
 				return params.data.name;
 			}
 		},
 		legend: {
-			show: false
+			show: !isMobile,
+			orient: 'vertical',
+			right: 10,
+			top: 60,
+			data: [
+				{
+					name: centerAuthor,
+					icon: 'circle',
+					textStyle: { color: resolvedColors.text, fontSize: 12 }
+				},
+				{
+					name: 'Collaborators',
+					icon: 'circle',
+					textStyle: { color: resolvedColors.text, fontSize: 12 }
+				},
+				{
+					name: 'Direct collaboration',
+					icon: 'rect',
+					itemStyle: {
+						color: resolvedColors.primary,
+						borderWidth: 0
+					},
+					textStyle: { color: resolvedColors.text, fontSize: 11 }
+				},
+				{
+					name: 'Co-author connection',
+					icon: 'rect',
+					itemStyle: {
+						color: resolvedColors.accent,
+						borderWidth: 0,
+						borderType: 'dashed'
+					},
+					textStyle: { color: resolvedColors.text, fontSize: 11 }
+				}
+			]
 		},
 		series: [
 			{
@@ -241,14 +372,22 @@ ECharts Network Graph - A network visualization for author collaborations
 				layout: 'force',
 				data: networkData().nodes,
 				links: networkData().links,
-				categories: [{ name: 'Center Author' }, { name: 'Collaborators' }],
-				roam: true,
+				categories: [
+					{ name: centerAuthor },
+					{ name: 'Collaborators' }
+				],
+				roam: 'scale', // Enable zoom and pan
+				scaleLimit: {
+					min: 0.5,
+					max: 3
+				},
+				zoom: 1,
 				focusNodeAdjacency: true,
 				draggable: true,
-				left: '10%',
-				right: '10%',
+				left: isMobile ? '5%' : '10%',
+				right: isMobile ? '5%' : '20%',
 				top: '10%',
-				bottom: '15%',
+				bottom: '10%',
 				force: {
 					repulsion: isMobile ? 300 : 500,
 					gravity: 0.08,
@@ -349,6 +488,32 @@ ECharts Network Graph - A network visualization for author collaborations
 		threshold: 0.1
 	}}
 >
+	<div class="zoom-controls">
+		<button 
+			class="zoom-btn" 
+			onclick={zoomIn} 
+			title="Zoom In"
+			aria-label="Zoom in on network graph"
+		>
+			<Icon icon="lucide:zoom-in" width="20" height="20" />
+		</button>
+		<button 
+			class="zoom-btn" 
+			onclick={resetZoom} 
+			title="Reset Zoom"
+			aria-label="Reset network graph zoom"
+		>
+			<Icon icon="lucide:maximize-2" width="20" height="20" />
+		</button>
+		<button 
+			class="zoom-btn" 
+			onclick={zoomOut} 
+			title="Zoom Out"
+			aria-label="Zoom out on network graph"
+		>
+			<Icon icon="lucide:zoom-out" width="20" height="20" />
+		</button>
+	</div>
 	<div bind:this={chartContainer} class="chart"></div>
 </div>
 
@@ -370,12 +535,58 @@ ECharts Network Graph - A network visualization for author collaborations
 		height: 100%;
 	}
 
+	.zoom-controls {
+		position: absolute;
+		top: var(--spacing-4);
+		left: var(--spacing-4);
+		z-index: 10;
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-2);
+	}
+
+	.zoom-btn {
+		width: 40px;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: var(--border-radius);
+		color: var(--color-text);
+		cursor: pointer;
+		transition: all var(--transition-duration-150) ease;
+		box-shadow: var(--shadow-sm);
+	}
+
+	.zoom-btn:hover {
+		background-color: var(--color-primary);
+		color: var(--color-white);
+		border-color: var(--color-primary);
+		transform: translateY(-1px);
+		box-shadow: var(--shadow-md);
+	}
+
+	.zoom-btn:active {
+		transform: translateY(0);
+		box-shadow: var(--shadow-sm);
+	}
+
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
 		.echarts-container {
 			opacity: 1 !important;
 			transform: none !important;
 			transition: none !important;
+		}
+
+		.zoom-btn {
+			transition: none !important;
+		}
+
+		.zoom-btn:hover {
+			transform: none !important;
 		}
 	}
 
@@ -384,11 +595,27 @@ ECharts Network Graph - A network visualization for author collaborations
 		.echarts-container {
 			height: 400px;
 		}
+
+		.zoom-controls {
+			top: var(--spacing-2);
+			left: var(--spacing-2);
+			gap: var(--spacing-1);
+		}
+
+		.zoom-btn {
+			width: 36px;
+			height: 36px;
+		}
 	}
 
 	@media (max-width: 480px) {
 		.echarts-container {
 			height: 350px;
+		}
+
+		.zoom-btn {
+			width: 32px;
+			height: 32px;
 		}
 	}
 </style>
