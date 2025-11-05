@@ -5,6 +5,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 	import type * as echarts from 'echarts';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
+	import { innerWidth } from 'svelte/reactivity/window';
 
 	// Props - keeping interface simple for doughnut chart
 	type DataItem = $$Generic;
@@ -45,7 +46,9 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 	let chartContainer: HTMLDivElement;
 	let chart: echarts.ECharts | null = null;
 	let echartsLib: typeof echarts | null = null;
-	let isMobile = $state(false);
+	
+	// Use Svelte's reactive window width
+	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
 
 	// Utility functions for CSS variable resolution
 	function getCSSVariableValue(variableName: string): string {
@@ -71,20 +74,6 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		}
 		return color;
 	}
-
-	// Reactive mobile detection
-	$effect(() => {
-		if (typeof window !== 'undefined') {
-			const checkMobile = () => {
-				isMobile = window.innerWidth < 768;
-			};
-
-			checkMobile();
-			window.addEventListener('resize', checkMobile);
-
-			return () => window.removeEventListener('resize', checkMobile);
-		}
-	});
 
 	// Reactive color resolution
 	const resolvedColors = $derived({
@@ -148,7 +137,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		legend: {
 			orient: 'horizontal',
 			left: 'center',
-			bottom: isMobile ? '10px' : '20px',
+			bottom: isMobile ? '5%' : '8%',
 			textStyle: {
 				color: resolvedColors.text,
 				fontSize: isMobile ? 11 : 13,
@@ -166,7 +155,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 				name: title || 'Data',
 				type: 'pie',
 				radius: radius,
-				center: ['50%', isMobile ? '40%' : '38%'],
+				center: ['50%', isMobile ? '42%' : '44%'],
 				data: chartData,
 				emphasis: {
 					itemStyle: {
@@ -221,9 +210,10 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		backgroundColor: 'transparent'
 	});
 
-	// Dynamic import and initialization
+	// Main effect for initialization, updates, and resize handling
 	$effect(() => {
 		let mounted = true;
+		let resizeObserver: ResizeObserver | undefined;
 
 		// Load echarts library dynamically
 		(async () => {
@@ -243,6 +233,14 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 			if (chartContainer && !chart && echartsLib) {
 				try {
 					chart = echartsLib.init(chartContainer);
+					
+					// Setup resize observer after chart is created
+					resizeObserver = new ResizeObserver(() => {
+						if (chart && !chart.isDisposed()) {
+							chart.resize();
+						}
+					});
+					resizeObserver.observe(chartContainer);
 				} catch (error) {
 					console.error('Failed to initialize ECharts:', error);
 					return;
@@ -261,34 +259,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 
 		return () => {
 			mounted = false;
-		};
-	});
-
-	// Resize handling
-	$effect(() => {
-		if (!chartContainer || !chart) return;
-
-		let resizeObserver: ResizeObserver | undefined;
-
-		try {
-			resizeObserver = new ResizeObserver(() => {
-				if (chart && !chart.isDisposed()) {
-					chart.resize();
-				}
-			});
-			resizeObserver.observe(chartContainer);
-		} catch (error) {
-			console.error('Failed to setup resize observer:', error);
-		}
-
-		return () => {
 			resizeObserver?.disconnect();
-		};
-	});
-
-	// Cleanup on component destroy
-	$effect(() => {
-		return () => {
 			if (chart && !chart.isDisposed()) {
 				chart.dispose();
 				chart = null;

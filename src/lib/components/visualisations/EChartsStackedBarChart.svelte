@@ -5,6 +5,7 @@ ECharts Stacked Bar Chart component
 	import type * as echarts from 'echarts';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
+	import { innerWidth } from 'svelte/reactivity/window';
 
 	// Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;
@@ -37,7 +38,9 @@ ECharts Stacked Bar Chart component
 	let chartContainer: HTMLDivElement;
 	let chart: echarts.ECharts | null = null;
 	let echartsLib: typeof echarts | null = null;
-	let isMobile = $state(false);
+	
+	// Use Svelte's reactive window width instead of manual event listener
+	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
 
 	// Utility functions for CSS variable resolution
 	function getCSSVariableValue(variableName: string): string {
@@ -54,20 +57,6 @@ ECharts Stacked Bar Chart component
 		}
 		return color;
 	}
-
-	// Reactive mobile detection
-	$effect(() => {
-		if (typeof window !== 'undefined') {
-			const checkMobile = () => {
-				isMobile = window.innerWidth < 768;
-			};
-
-			checkMobile();
-			window.addEventListener('resize', checkMobile);
-
-			return () => window.removeEventListener('resize', checkMobile);
-		}
-	});
 
 	// Reactive color resolution
 	const resolvedColors = $derived({
@@ -232,9 +221,10 @@ ECharts Stacked Bar Chart component
 		animationEasing: 'elasticOut' as any
 	});
 
-	// Dynamic import and initialization
+	// Main effect for initialization, updates, and resize handling
 	$effect(() => {
 		let mounted = true;
+		let resizeObserver: ResizeObserver | undefined;
 
 		// Load echarts library dynamically
 		(async () => {
@@ -254,6 +244,14 @@ ECharts Stacked Bar Chart component
 			if (chartContainer && !chart && echartsLib) {
 				try {
 					chart = echartsLib.init(chartContainer);
+					
+					// Setup resize observer after chart is created
+					resizeObserver = new ResizeObserver(() => {
+						if (chart && !chart.isDisposed()) {
+							chart.resize();
+						}
+					});
+					resizeObserver.observe(chartContainer);
 				} catch (error) {
 					console.error('Failed to initialize ECharts:', error);
 					return;
@@ -272,34 +270,7 @@ ECharts Stacked Bar Chart component
 
 		return () => {
 			mounted = false;
-		};
-	});
-
-	// Resize handling
-	$effect(() => {
-		if (!chartContainer || !chart) return;
-
-		let resizeObserver: ResizeObserver | undefined;
-
-		try {
-			resizeObserver = new ResizeObserver(() => {
-				if (chart && !chart.isDisposed()) {
-					chart.resize();
-				}
-			});
-			resizeObserver.observe(chartContainer);
-		} catch (error) {
-			console.error('Failed to setup resize observer:', error);
-		}
-
-		return () => {
 			resizeObserver?.disconnect();
-		};
-	});
-
-	// Cleanup on component destroy
-	$effect(() => {
-		return () => {
 			if (chart && !chart.isDisposed()) {
 				chart.dispose();
 				chart = null;

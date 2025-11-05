@@ -5,6 +5,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 	import type * as echarts from 'echarts';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
+	import { innerWidth } from 'svelte/reactivity/window';
 
 	// Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;
@@ -29,8 +30,8 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 	let chart: echarts.ECharts | null = null;
 	let echartsLib: typeof echarts | null = null;
 
-	// Detect mobile screen size
-	let isMobile = $state(false);
+	// Use Svelte's reactive window width
+	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
 
 	// Utility functions for CSS variable resolution
 	function getCSSVariableValue(variableName: string): string {
@@ -48,20 +49,6 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		}
 		return color; // Return as-is if not a CSS variable
 	}
-
-	// Reactive mobile detection
-	$effect(() => {
-		if (typeof window !== 'undefined') {
-			const checkMobile = () => {
-				isMobile = window.innerWidth < 768; // Mobile breakpoint
-			};
-
-			checkMobile();
-			window.addEventListener('resize', checkMobile);
-
-			return () => window.removeEventListener('resize', checkMobile);
-		}
-	});
 
 	// Reactive color resolution - updates when theme changes
 	const resolvedColors = $derived({
@@ -191,9 +178,10 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		backgroundColor: 'transparent' // Let the container handle background
 	});
 
-	// Dynamic import and initialization
+	// Main effect for initialization, updates, and resize handling
 	$effect(() => {
 		let mounted = true;
+		let resizeObserver: ResizeObserver | undefined;
 
 		// Load echarts library dynamically
 		(async () => {
@@ -213,6 +201,14 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 			if (chartContainer && !chart && echartsLib) {
 				try {
 					chart = echartsLib.init(chartContainer);
+					
+					// Setup resize observer after chart is created
+					resizeObserver = new ResizeObserver(() => {
+						if (chart && !chart.isDisposed()) {
+							chart.resize();
+						}
+					});
+					resizeObserver.observe(chartContainer);
 				} catch (error) {
 					console.error('Failed to initialize ECharts:', error);
 					return;
@@ -231,34 +227,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 
 		return () => {
 			mounted = false;
-		};
-	});
-
-	// Resize handling
-	$effect(() => {
-		if (!chartContainer || !chart) return;
-
-		let resizeObserver: ResizeObserver | undefined;
-
-		try {
-			resizeObserver = new ResizeObserver(() => {
-				if (chart && !chart.isDisposed()) {
-					chart.resize();
-				}
-			});
-			resizeObserver.observe(chartContainer);
-		} catch (error) {
-			console.error('Failed to setup resize observer:', error);
-		}
-
-		return () => {
 			resizeObserver?.disconnect();
-		};
-	});
-
-	// Cleanup on component destroy
-	$effect(() => {
-		return () => {
 			if (chart && !chart.isDisposed()) {
 				chart.dispose();
 				chart = null;

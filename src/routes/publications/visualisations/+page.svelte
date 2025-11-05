@@ -91,7 +91,30 @@
 		})()
 	);
 
+	// Helper function to format type labels for display
+	const formatTypeLabel = (type: string): string => {
+		const typeLabels: Record<string, string> = {
+			article: 'Journal article',
+			'bulletin-article': 'Bulletin article',
+			book: 'Book',
+			chapter: 'Book chapter',
+			'conference-proceedings': 'Conference proceedings',
+			'special-issue': 'Special issue',
+			report: 'Research report',
+			encyclopedia: 'Encyclopedia entry',
+			blogpost: 'Blog post',
+			'masters-thesis': "Master's thesis",
+			'phd-dissertation': 'PhD dissertation'
+		};
+		return typeLabels[type] || type.charAt(0).toUpperCase() + type.slice(1);
+	};
+
 	const publicationTypesForStack = $derived(Object.keys(publicationsByType).sort());
+	
+	// Formatted labels for display in the chart
+	const formattedPublicationTypes = $derived(
+		publicationTypesForStack.map(type => formatTypeLabel(type))
+	);
 
 	const publicationsPerYearStackedData = $derived(
 		(() => {
@@ -109,11 +132,19 @@
 				yearlyPublicationCounts[pub.year].total++;
 			});
 
+			// Transform the data to use formatted labels as keys
 			return Object.entries(yearlyPublicationCounts)
-				.map(([yearStr, counts]) => ({
-					year: parseInt(yearStr),
-					...counts
-				}))
+				.map(([yearStr, counts]) => {
+					const yearData: any = { year: parseInt(yearStr) };
+					
+					// Map original type keys to formatted labels
+					types.forEach((originalType, index) => {
+						const formattedType = formattedPublicationTypes[index];
+						yearData[formattedType] = counts[originalType] || 0;
+					});
+					
+					return yearData;
+				})
 				.sort((a, b) => a.year - b.year);
 		})()
 	);
@@ -277,7 +308,7 @@
 			<div class="chart-wrapper stacked-chart" style="height: 450px;">
 				<EChartsStackedBarChart
 					data={publicationsPerYearStackedData}
-					keys={publicationTypesForStack}
+					keys={formattedPublicationTypes}
 					xAxisLabel="Year"
 					yAxisLabel="Number of Publications"
 				/>
