@@ -24,7 +24,9 @@
 			'special-issue': 'journal',
 			report: 'report',
 			'phd-dissertation': 'dissertation',
-			'masters-thesis': 'dissertation'
+			'masters-thesis': 'dissertation',
+			'conference-proceedings': 'proceeding',
+			'bulletin-article': 'article'
 		};
 		return genreMap[type] || 'unknown';
 	};
@@ -40,7 +42,9 @@
 			'special-issue': 'Collection',
 			report: 'Text',
 			'phd-dissertation': 'Text',
-			'masters-thesis': 'Text'
+			'masters-thesis': 'Text',
+			'conference-proceedings': 'Text',
+			'bulletin-article': 'Text'
 		};
 		return typeMap[type] || 'Text';
 	};
