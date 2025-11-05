@@ -277,6 +277,13 @@
 					<FeaturedPublications publications={featuredPublications} onfilterrequest={handleFilterRequest} />
 				{/if}
 
+				<!-- All Publications Section Header (only when featured are shown) -->
+				{#if shouldShowFeatured}
+					<div class="all-publications-header">
+						<h2 class="section-title">All Publications</h2>
+					</div>
+				{/if}
+
 				<!-- Desktop Controls: Sorter + Clear Button -->
 				<div class="desktop-controls">
 					<div class="list-status text-light">
@@ -344,6 +351,20 @@
 	}
 
 	/* Styles for .control-button-rounded and its hover effect are now globally handled by Sorter.svelte */
+
+	/* All Publications header */
+	.all-publications-header {
+		margin-top: var(--spacing-4);
+		margin-bottom: var(--spacing-6);
+	}
+
+	.section-title {
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text-light);
+		text-transform: uppercase;
+		letter-spacing: var(--letter-spacing-wider);
+	}
 
 	/* Desktop controls styling */
 	.desktop-controls {
