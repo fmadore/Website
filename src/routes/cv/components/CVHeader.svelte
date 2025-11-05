@@ -14,7 +14,7 @@
 <p class="text-sm text-muted mb-4 cv-date">{today}</p>
 
 <!-- Contact Info Section -->
-<section class="text-sm text-light cv-contact-section">
+<section class="text-sm text-light cv-contact-section mb-8">
 	<!-- Address -->
 	<div class="cv-contact-group">
 		<Icon icon="mdi:map-marker" class="text-light shrink-0" width="20" height="20" />
