@@ -51,7 +51,7 @@
 </script>
 
 <SEO
-	description="Frédérick Madore, Research Fellow at ZMO, studies Islam in francophone West Africa through fieldwork and digital humanities."
+	description="Frédérick Madore, Research Fellow at ZMO, studies Islam in francophone West Africa combining fieldwork, digital humanities, and AI-enhanced pipelines for computational analysis."
 />
 
 <div class="container max-w-7xl">
