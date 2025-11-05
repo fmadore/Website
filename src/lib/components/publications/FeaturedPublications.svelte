@@ -42,7 +42,7 @@
 		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-semibold);
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		letter-spacing: var(--letter-spacing-wider);
 		margin-bottom: var(--spacing-4);
 		padding-left: var(--spacing-1);
 	}
