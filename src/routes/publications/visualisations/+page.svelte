@@ -149,6 +149,26 @@
 		})()
 	);
 
+	// Calculate pages per year data
+	type PagesPerYearData = { year: number; pages: number };
+	
+	const pagesPerYearData = $derived(
+		(() => {
+			const yearlyPageCounts: Record<number, number> = {};
+
+			allPublications.forEach((pub) => {
+				// Only include publications that have a pageCount value
+				if (pub.pageCount && pub.pageCount > 0) {
+					yearlyPageCounts[pub.year] = (yearlyPageCounts[pub.year] || 0) + pub.pageCount;
+				}
+			});
+
+			return Object.entries(yearlyPageCounts)
+				.map(([year, pages]) => ({ year: parseInt(year), pages }))
+				.sort((a, b) => a.year - b.year);
+		})()
+	);
+
 	// Calculate total citations reactively
 	const totalCitations = $derived(
 		citationsPerYearData.reduce((sum: number, item: CitationYearData) => sum + item.count, 0)
@@ -199,6 +219,10 @@
 	// Accessor functions for the D3BarChart
 	const getYear = (d: CitationYearData) => d.year;
 	const getCitationCount = (d: CitationYearData) => d.count;
+
+	// Accessor functions for pages per year
+	const getPagesYear = (d: PagesPerYearData) => d.year;
+	const getPagesCount = (d: PagesPerYearData) => d.pages;
 
 	// Accessor functions for D3HorizontalBarChart
 	const getAuthorName = (d: CitedAuthorData) => d.author;
@@ -316,6 +340,34 @@
 		{:else}
 			<div class="placeholder-message" style="height: 450px;">
 				<p class="text-light">No publication data available to display for this visualization.</p>
+			</div>
+		{/if}
+	</section>
+
+	<section
+		class="visualization-section mb-12"
+		use:scrollAnimate={{
+			delay: 225,
+			animationClass: 'fade-in-up',
+			rootMargin: '150px',
+			threshold: 0.05
+		}}
+	>
+		<h2 class="text-2xl font-semibold mb-6">Number of pages per year</h2>
+		{#if pagesPerYearData.length > 0}
+			<div class="chart-wrapper" style="height: 400px;">
+				<EChartsBarChart
+					data={pagesPerYearData}
+					xAccessor={getPagesYear}
+					yAccessor={getPagesCount}
+					xAxisLabel="Year"
+					yAxisLabel="Total pages published"
+					barColor="var(--color-primary)"
+				/>
+			</div>
+		{:else}
+			<div class="placeholder-message" style="height: 400px;">
+				<p class="text-light">No page count data available to display for this visualization.</p>
 			</div>
 		{/if}
 	</section>
@@ -460,7 +512,9 @@
 			{@const endIndex = Math.min(startIndex + itemsPerPage, citedAuthorsData.length)}
 			{@const currentAuthors = citedAuthorsData.slice(startIndex, endIndex)}
 
-			{@render authorChart(currentAuthors)}
+			{#key currentPage}
+				{@render authorChart(currentAuthors)}
+			{/key}
 
 			{#if totalPages > 1}
 				<div
