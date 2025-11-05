@@ -27,6 +27,7 @@ export const religiosityUniversityCampuses: Publication = {
 	},
 	isEditedVolume: true,
 	project: 'Religious Activism on Campuses in Togo and Benin',
+	featured: true,
 	tableOfContents: [
 		'Introduction: Religiosity on University Campuses in Africa (Abdoulaye Sounaye and Frédérick Madore)',
 		'Straddling the “Epistemic Divide”? Medical and Faith-based Healing among Christian Students in Mbarara, South-Western Uganda (Dorothea Schulz and Britta Bayer)',

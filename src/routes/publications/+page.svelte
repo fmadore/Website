@@ -36,6 +36,7 @@
 		DropdownFilterOption
 	} from '$lib/types/filters';
 	import PublicationItem from '$lib/components/publications/PublicationItem.svelte';
+	import FeaturedPublications from '$lib/components/publications/FeaturedPublications.svelte';
 	import EntityListPageLayout from '$lib/components/common/EntityListPageLayout.svelte';
 	import FilteredListDisplay from '$lib/components/common/FilteredListDisplay.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
@@ -54,6 +55,17 @@
 
 	// Use $derived to create sorted publications - this is the proper Svelte 5 pattern
 	const sortedPublications = $derived(sortItems($filteredPublications, activeSort));
+
+	// Get featured publications (only show when no filters are active)
+	// Featured publications are also sorted by the active sort order
+	const featuredPublications = $derived(
+		sortItems($filteredPublications.filter((pub) => pub.featured), activeSort).slice(0, 3)
+	);
+
+	// Check if we should show featured publications
+	const shouldShowFeatured = $derived(
+		!areFiltersActive($activeFilters) && featuredPublications.length > 0
+	);
 
 	function handleFilterRequest(event: { type: string; value: string }) {
 		const { type, value } = event;
@@ -260,6 +272,11 @@
 			{/snippet}
 
 			{#snippet children()}
+				<!-- Featured Publications Section (only shown when no filters active) -->
+				{#if shouldShowFeatured}
+					<FeaturedPublications publications={featuredPublications} onfilterrequest={handleFilterRequest} />
+				{/if}
+
 				<!-- Desktop Controls: Sorter + Clear Button -->
 				<div class="desktop-controls">
 					<div class="list-status text-light">

@@ -40,6 +40,7 @@ The history of these associations reveals the campus as a microcosm reflecting w
 	},
 	country: ['Benin', 'Togo'],
 	project: 'Religious Activism on Campuses in Togo and Benin',
+	featured: true,
 	citedBy: [
 		{
 			authors: ['Leonardo A. Villalón', 'Mamadou Bodian', 'Abdourahmane Idrissa'],

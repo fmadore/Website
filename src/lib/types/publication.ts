@@ -93,4 +93,7 @@ export type Publication = {
 	issn?: string; // Optional: ISSN for journals
 	institution?: string; // Optional: Institution for reports or dissertations (university is already there for dissertations)
 	reportNumber?: string; // Optional: Report number for reports
+
+	// Featured flag
+	featured?: boolean; // Optional: Flag to mark publications as featured
 };
