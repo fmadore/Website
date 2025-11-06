@@ -10,7 +10,7 @@
 </script>
 
 <h1 class="text-3xl font-bold mb-2 border-b-2 pb-2 cv-main-title border-primary">Curriculum Vitae</h1>
-<h2 class="text-xl font-semibold mb-1 cv-subtitle text-primary">Frédérick Madore</h2>
+<h2 class="text-xl font-semibold mb-1 cv-subtitle text-primary">Frédérick Madore, PhD</h2>
 <p class="text-sm text-muted mb-4 cv-date">{today}</p>
 
 <!-- Contact Info Section -->
