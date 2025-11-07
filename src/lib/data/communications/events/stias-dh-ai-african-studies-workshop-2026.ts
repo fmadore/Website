@@ -11,7 +11,7 @@ export const stiasDHAIAfricanStudiesWorkshop2026: Communication = {
 		'Emmanuel Ngue Um',
 		'Menno van Zaanen'
 	],
-	date: '21–24 September 2026',
+	date: '21-24 September 2026',
 	dateISO: '2026-09-21',
 	year: 2026,
 	conference:
