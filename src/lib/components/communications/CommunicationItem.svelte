@@ -122,29 +122,3 @@
 		</div>
 	</div>
 </li>
-
-<style>
-	.country-btn {
-		background: none;
-		border: none;
-		padding: 0 var(--space-2xs);
-		font-size: inherit;
-		font-family: inherit;
-		color: var(--color-primary);
-		text-decoration: none;
-		cursor: pointer;
-		display: inline;
-		border-radius: var(--border-radius-sm);
-		transition: all var(--anim-duration-fast) var(--anim-ease-base);
-	}
-
-	.country-btn:hover {
-		background-color: rgba(var(--color-primary-rgb), var(--opacity-10));
-		text-decoration: underline;
-	}
-
-	.country-btn:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-primary);
-		outline-offset: var(--space-3xs);
-	}
-</style>
