@@ -1,17 +1,20 @@
 <script lang="ts">
 	import type { Communication } from '$lib/types/communication';
-	import { createEventDispatcher } from 'svelte';
 	import { base } from '$app/paths';
 	import { truncateAbstract } from '$lib/utils/textUtils';
 	import { formatAuthorList, formatCommunicationCitation } from '$lib/utils/citationFormatter';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 
-	let { communication, index }: { communication: Communication; index?: number } = $props();
+	interface Props {
+		communication: Communication;
+		index?: number;
+		onfilterrequest?: (event: { type: string; value: string }) => void;
+	}
+
+	let { communication, index, onfilterrequest }: Props = $props();
 
 	// Optimize loading for above-the-fold images (first 3 items)
 	const imageLoading = $derived((index ?? 0) < 3 ? 'eager' : 'lazy');
-
-	const dispatch = createEventDispatcher();
 
 	// Human-readable labels for communication types
 	const typeLabels: { [key: string]: string } = {
