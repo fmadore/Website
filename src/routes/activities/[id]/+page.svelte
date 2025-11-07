@@ -194,11 +194,10 @@
 	title={activity.title}
 	description={seoDescription}
 	keywords={seoKeywords}
-	canonical="{$page.url.origin}{base}/activities/{activity.id}"
 	type="article"
 	ogImage={activity.heroImage?.src
-		? `${$page.url.origin}${base}/${activity.heroImage.src}`
-		: undefined}
+		? `${base}/${activity.heroImage.src}`
+		: `${base}/images/Profile-picture.webp`}
 />
 
 <!-- MetaTags Component for Zotero blog post detection -->
