@@ -23,10 +23,8 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 		'Workshop',
 		'VolkswagenStiftung'
 	],
+	image: 'images/communications/VWST-logo.webp',
 	url: '', // Add URL when available
-	additionalUrls: [
-		// Add relevant URLs when available
-	],
 	coordinates: {
 		latitude: 52.395,
 		longitude: 9.7036
