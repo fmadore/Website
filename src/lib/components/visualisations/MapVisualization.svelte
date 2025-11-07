@@ -145,7 +145,7 @@
 
 	// Main effect for initialization and cleanup
 	$effect(() => {
-		if (!browser) return;
+		if (!browser || !mapContainer) return;
 
 		// Initialize map asynchronously
 		(async () => {
@@ -174,10 +174,6 @@
 					iconUrl,
 					shadowUrl
 				});
-
-				if (!mapContainer) {
-					throw new Error('Map container not found');
-				}
 
 				// Initialize the map with configurable options
 				map = L.map(mapContainer, {
