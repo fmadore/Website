@@ -54,7 +54,13 @@ const allLanguages = Array.from(
 	new Set(
 		safeAllCommunications
 			.filter((comm: Communication) => comm && comm.language)
-			.flatMap((comm: Communication) => comm.language?.split(',').map((l) => l.trim()) || []) // Handle multiple languages
+			.flatMap((comm: Communication) => {
+				// Handle both string and array formats
+				if (Array.isArray(comm.language)) {
+					return comm.language;
+				}
+				return comm.language?.split(',').map((l) => l.trim()) || [];
+			})
 	)
 ).sort();
 
@@ -140,10 +146,13 @@ export const filteredCommunications = derived(activeFilters, ($activeFilters): C
 
 		// Language
 		if ($activeFilters.languages.length > 0) {
+			// Handle both string and array formats
 			const commLanguages = comm.language
-				? comm.language.split(',').map((lang) => lang.trim())
+				? Array.isArray(comm.language)
+					? comm.language
+					: comm.language.split(',').map((lang: string) => lang.trim())
 				: [];
-			if (!commLanguages.some((lang) => $activeFilters.languages.includes(lang))) {
+			if (!commLanguages.some((lang: string) => $activeFilters.languages.includes(lang))) {
 				return false;
 			}
 		}
@@ -227,7 +236,13 @@ export const projectCounts = createDerivedCountStore(
 
 export const languageCounts = createDerivedCountStore(
 	filteredCommunications,
-	(comm: Communication) => comm.language?.split(',').map((l: string) => l.trim())
+	(comm: Communication) => {
+		if (!comm.language) return undefined;
+		// Handle both string and array formats
+		return Array.isArray(comm.language)
+			? comm.language
+			: comm.language.split(',').map((l: string) => l.trim());
+	}
 );
 
 // Count store for co-authors (based on authors field, excluding self)

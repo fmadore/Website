@@ -12,7 +12,7 @@ export const talkTemplate: Communication = {
 	location: 'City, Venue', // City and venue where the talk was presented
 	country: 'Country', // Country where the talk was held
 	type: 'lecture', // Options: 'conference', 'workshop', 'seminar', 'lecture', 'panel'
-	language: 'English', // Language of the talk
+	language: 'English', // Language of the talk - can be a single string or array: ['English', 'French']
 	abstract: 'A comprehensive description of the talk content and significance.',
 	tags: ['tag1', 'tag2', 'tag3'], // Add relevant tags for categorization
 	url: 'https://example.com/presentation', // URL to slides, video, or related resources

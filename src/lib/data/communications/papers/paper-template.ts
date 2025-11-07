@@ -13,7 +13,7 @@ export const paperTemplate: Communication = {
 	location: 'City, Venue', // City and venue where the paper was presented
 	country: 'Country', // Country where the conference was held
 	type: 'conference', // Options: 'conference', 'workshop', 'seminar', 'lecture', 'panel'
-	language: 'English', // Language of the paper
+	language: 'English', // Language of the paper - can be a single string or array: ['English', 'French']
 	abstract: 'A comprehensive description of the paper content and significance.',
 	tags: ['tag1', 'tag2', 'tag3'], // Add relevant tags for categorization
 	url: 'https://example.com/presentation', // URL to slides, video, or related resources

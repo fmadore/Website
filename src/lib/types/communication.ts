@@ -26,7 +26,7 @@ export type Communication = {
 		longitude: number; // Longitude
 	};
 	type?: 'conference' | 'workshop' | 'seminar' | 'lecture' | 'panel' | 'event'; // Type of communication
-	language?: string; // Language of the communication
+	language?: string | string[]; // Language(s) of the communication - can be a single language or multiple languages
 	coAuthors?: string[]; // Additional co-authors
 	papers?: Array<{
 		// Papers presented at the panel

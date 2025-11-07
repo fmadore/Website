@@ -290,3 +290,36 @@ function formatFullDate(isoDate: string | undefined): string {
 		return isoDate; // Return original on error
 	}
 }
+
+// Communication citation formatter
+export function formatCommunicationCitation(communication: {
+	title: string;
+	conference?: string;
+	location?: string;
+	country?: string;
+	date?: string;
+}): string {
+	const parts: string[] = [];
+	
+	// Only include conference name if it's different from the title
+	if (communication.conference && communication.conference !== communication.title) {
+		parts.push(communication.conference);
+	}
+	
+	// Add location if present
+	if (communication.location) {
+		parts.push(communication.location);
+	}
+	
+	// Add country if present
+	if (communication.country) {
+		parts.push(communication.country);
+	}
+	
+	// Add date if present
+	if (communication.date) {
+		parts.push(communication.date);
+	}
+	
+	return parts.join(', ');
+}

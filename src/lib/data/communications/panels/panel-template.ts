@@ -12,7 +12,7 @@ export const panelTemplate: Communication = {
 	location: 'City, Venue', // City and venue where the panel was presented
 	country: 'Country', // Country where the conference was held
 	type: 'panel', // Type is set to 'panel'
-	language: 'English', // Language of the panel
+	language: 'English', // Language of the panel - can be a single string or array: ['English', 'French']
 	abstract: 'A comprehensive description of the panel content and significance.',
 	tags: ['tag1', 'tag2', 'tag3'], // Add relevant tags for categorization
 	url: 'https://example.com/panel', // URL to slides, video, or related resources

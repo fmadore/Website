@@ -12,7 +12,7 @@ export const eventTemplate: Communication = {
 	location: 'City, Venue', // City and venue where the event was held
 	country: 'Country', // Country where the event was held
 	type: 'event', // Options: 'conference', 'workshop', 'seminar', 'lecture', 'panel', 'event'
-	language: 'English', // Primary language of the event
+	language: 'English', // Primary language of the event - can be a single string or array: ['English', 'French']
 	abstract: 'A comprehensive description of the event, its objectives, and significance.',
 	tags: ['tag1', 'tag2', 'tag3'], // Add relevant tags for categorization
 	url: 'https://example.com/event', // URL to event website or related resources

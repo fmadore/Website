@@ -3,7 +3,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { base } from '$app/paths';
 	import { truncateAbstract } from '$lib/utils/textUtils';
-	import { formatAuthorList } from '$lib/utils/citationFormatter';
+	import { formatAuthorList, formatCommunicationCitation } from '$lib/utils/citationFormatter';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 
 	let { communication, index }: { communication: Communication; index?: number } = $props();
@@ -23,12 +23,27 @@
 		event: 'Academic Event'
 	};
 
-	// Helper function to truncate abstract
-	// function truncateAbstract(abstract: string | undefined, maxLength: number = 200): string {
-	//     if (!abstract) return '';
-	//     if (abstract.length <= maxLength) return abstract;
-	//     return abstract.substring(0, maxLength) + '...';
-	// }
+	// Helper to format language display
+	const languageDisplay = $derived.by(() => {
+		if (!communication?.language) return null;
+		const langs = Array.isArray(communication.language) 
+			? communication.language 
+			: [communication.language];
+		
+		// If it's only English, don't show anything
+		if (langs.length === 1 && langs[0] === 'English') return null;
+		
+		// If multiple languages (bilingual/multilingual), show all
+		if (langs.length > 1) {
+			return langs.join(', ');
+		}
+		
+		// Single non-English language
+		return langs[0];
+	});
+
+	// Format the citation details
+	const citationDetails = $derived(formatCommunicationCitation(communication));
 </script>
 
 <li class="entity-list-item">
@@ -57,8 +72,8 @@
 							communication?.type ||
 							'Conference'}</span
 					>
-					{#if communication?.language && communication.language !== 'English'}
-						<span class="entity-language">({communication.language})</span>
+					{#if languageDisplay}
+						<span class="entity-language">({languageDisplay})</span>
 					{/if}
 				</div>
 
@@ -78,12 +93,9 @@
 						</div>
 					{/if}
 
-					<div>
-						<span>{communication?.conference || 'Unknown Conference'}</span
-						>{#if communication?.location}, <span>{communication.location}</span
-						>{/if}{#if communication?.country}, <span>{communication.country}</span
-						>{/if}{#if communication?.date}, <span>{communication.date}</span>{/if}
-					</div>
+					{#if citationDetails}
+						<div>{citationDetails}</div>
+					{/if}
 				</div>
 
 				{#if communication?.abstract}
