@@ -68,14 +68,14 @@
 	// Replace onMount and onDestroy with $effect for JSON-LD management and optimizations
 	$effect(() => {
 		if (browser) {
-			// Optimize animations for better performance
+			// Optimize animations for better performance - WITHOUT contain property that breaks z-index
 			const optimizeAnimations = () => {
 				const animatedElements = document.querySelectorAll('[data-animate]');
 				animatedElements.forEach((el) => {
 					const element = el as HTMLElement;
 					element.style.willChange = 'transform, opacity';
 					element.style.transform = 'translateZ(0)';
-					element.style.contain = 'layout style paint';
+					// DO NOT add contain property - it creates stacking context issues with mobile menu
 				});
 			};
 
@@ -205,17 +205,14 @@
 <MetaTags {activity} />
 
 {#if activity}
-	<div
-		class="container max-w-7xl critical-content"
-		use:scrollAnimate={{ delay: DELAY_STEP, animationClass: 'fade-in-up' }}
-	>
+	<div class="activity-content critical-content">
 		{#if activity}
-			<!-- Separate page header section -->
-			<div use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
+			<!-- Separate page header section - no animation to prevent flash -->
+			<div>
 				<Breadcrumb items={breadcrumbItems} />
 			</div>
 
-			<div use:scrollAnimate={{ delay: DELAY_STEP * 3, animationClass: 'fade-in-up' }}>
+			<div>
 				<PageHeader
 					title={activity.title}
 					date={activity.date}
@@ -224,10 +221,7 @@
 			</div>
 
 			{#if activity.heroImage && activity.heroImage.src}
-				<div
-					class="hero-image-wrapper"
-					use:scrollAnimate={{ delay: DELAY_STEP * 4, animationClass: 'fade-in-up' }}
-				>
+				<div class="hero-image-wrapper">
 					<HeroImageDisplay
 						heroImage={{
 							src: activity.heroImage.src,
@@ -246,7 +240,7 @@
 			{/if}
 
 			<!-- Main content card -->
-			<div use:scrollAnimate={{ delay: DELAY_STEP * 5, animationClass: 'fade-in-up' }}>
+			<div data-animate use:scrollAnimate={{ delay: DELAY_STEP, animationClass: 'fade-in-up' }}>
 				<ContentBody variant="default" glassEffect="glass-card" additionalClasses="mt-6">
 					<!-- Render parsed content segments -->
 					{#each contentSegments as segment, segmentIndex (segmentIndex)}
@@ -261,7 +255,10 @@
 			</div>
 
 			{#if activity.url || (activity.additionalUrls && activity.additionalUrls.length > 0)}
-				<div use:scrollAnimate={{ delay: DELAY_STEP * 6, animationClass: 'fade-in-up' }}>
+				<div
+					data-animate
+					use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}
+				>
 					<ActionLinks
 						primaryUrl={activity.url}
 						primaryLabel="Visit Activity"
@@ -277,7 +274,8 @@
 			{#if activity.pdfPath}
 				<div
 					class="pdf-section glass-card mt-4 p-6 md:p-8"
-					use:scrollAnimate={{ delay: DELAY_STEP * 7, animationClass: 'fade-in-up' }}
+					data-animate
+					use:scrollAnimate={{ delay: DELAY_STEP * 3, animationClass: 'fade-in-up' }}
 				>
 					<h2 class="text-xl font-serif font-semibold mb-4 text-emphasis">
 						{activity.pdfTitle || 'Associated Document'}
@@ -297,7 +295,8 @@
 			{#if formattedTags && formattedTags.length > 0}
 				<div
 					class="mt-4 mb-6"
-					use:scrollAnimate={{ delay: DELAY_STEP * 8, animationClass: 'fade-in-up' }}
+					data-animate
+					use:scrollAnimate={{ delay: DELAY_STEP * 4, animationClass: 'fade-in-up' }}
 				>
 					<TagList tags={formattedTags} baseUrl="/activities?tag=" />
 				</div>
@@ -306,13 +305,22 @@
 	</div>
 
 	<style>
-		/* Container optimization */
-		.container {
+		/* Activity content wrapper - no z-index to avoid stacking context issues */
+		.activity-content {
 			content-visibility: auto;
 			contain-intrinsic-size: 1000px;
 			/* Optimize container for better rendering */
 			will-change: auto;
 			transform: translateZ(0);
+			/* NO position or z-index - the layout already has a container */
+		}
+
+		/* Prevent flash on above-the-fold content */
+		.activity-content > div:nth-child(1),
+		.activity-content > div:nth-child(2),
+		.hero-image-wrapper {
+			opacity: 1 !important;
+			transform: none !important;
 		}
 
 		/* Hero image wrapper - ensure it doesn't interfere with modal stacking */
@@ -400,9 +408,9 @@
 
 		/* Dark mode adjustments are handled automatically through CSS variables */
 
-		/* Critical above-the-fold content */
+		/* Critical above-the-fold content - remove contain to prevent stacking context issues */
 		.critical-content {
-			contain: layout style paint;
+			/* contain: layout style paint; - Removed to fix mobile menu z-index issues */
 		}
 	</style>
 {/if}
