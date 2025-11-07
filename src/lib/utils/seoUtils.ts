@@ -121,7 +121,13 @@ export function createCommunicationSEOKeywords(communication: Communication): st
 	if (communication.tags) communication.tags.forEach((tag) => keywords.add(tag));
 	if (communication.authors) communication.authors.forEach((author) => keywords.add(author));
 	if (communication.country) keywords.add(communication.country);
-	if (communication.language) keywords.add(communication.language);
+	if (communication.language) {
+		if (Array.isArray(communication.language)) {
+			communication.language.forEach((lang) => keywords.add(lang));
+		} else {
+			keywords.add(communication.language);
+		}
+	}
 
 	// Add context-appropriate academic keywords
 	keywords.add('academic presentation');
