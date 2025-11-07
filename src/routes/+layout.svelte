@@ -75,6 +75,10 @@
 	const GTM_ID = 'G-DQ644SW7RG'; // Your Measurement ID
 	const isDebugMode = false; // Set to true for development debugging
 
+	// Note: Google Analytics may show a history.pushState warning in console.
+	// This is expected and unavoidable - it comes from GA's internal code, not ours.
+	// We've properly disabled automatic page tracking and use afterNavigate() instead.
+
 	function loadGtm() {
 		if (gtmLoaded || !browser) return;
 		gtmLoaded = true;
