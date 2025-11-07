@@ -166,13 +166,21 @@
 			}
 		}
 
-		// Remove duplicates and empty content
+		// Remove duplicates before returning (defensive programming)
 		const uniqueTags = tags.filter((tag, index) => {
 			const key = `${tag.name}:${tag.content}`;
 			return tags.findIndex((t) => `${t.name}:${t.content}` === key) === index;
 		});
 
-		return uniqueTags.filter((tag) => tag.content && tag.content.trim() !== '');
+		return uniqueTags.filter((tag) => {
+			if (!tag.content) return false;
+			// Handle both string and array content
+			if (typeof tag.content === 'string') {
+				return tag.content.trim() !== '';
+			}
+			// For arrays or other types, check if they have a meaningful value
+			return String(tag.content).trim() !== '';
+		});
 	});
 
 	// Development logging (can be removed in production)
