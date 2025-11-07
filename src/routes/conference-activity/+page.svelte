@@ -42,6 +42,7 @@
 		DropdownFilterOption
 	} from '$lib/types/filters';
 	import CommunicationItem from '$lib/components/communications/CommunicationItem.svelte';
+	import UpcomingCommunications from '$lib/components/communications/UpcomingCommunications.svelte';
 	import MapVisualization from '$lib/components/visualisations/MapVisualization.svelte';
 	import ToggleButton from '$lib/components/common/ToggleButton.svelte';
 	import EntityListPageLayout from '$lib/components/common/EntityListPageLayout.svelte';
@@ -62,8 +63,32 @@
 	// State for the current sort order
 	let activeSort = $state<'date' | 'title'>('date');
 
-	// Create reactive values for sorted communications and map markers
-	const sortedCommunications = $derived(sortItems($filteredCommunications, activeSort));
+	// Define today's date in ISO format for comparison
+	const today = new Date().toISOString().split('T')[0]; // Gets YYYY-MM-DD format
+
+	// Get upcoming communications (only show when no filters are active)
+	const upcomingCommunications = $derived(
+		sortItems(
+			$filteredCommunications.filter((comm) => comm.dateISO && comm.dateISO >= today),
+			activeSort
+		)
+	);
+
+	// Check if we should show upcoming communications
+	const shouldShowUpcoming = $derived(
+		!areFiltersActive($activeFilters) && upcomingCommunications.length > 0
+	);
+
+	// Create reactive values for sorted communications
+	// When showing upcoming section, exclude upcoming items from the main list
+	const sortedCommunications = $derived(
+		sortItems(
+			shouldShowUpcoming
+				? $filteredCommunications.filter((comm) => !comm.dateISO || comm.dateISO < today)
+				: $filteredCommunications,
+			activeSort
+		)
+	);
 
 	// Create a reactive value for map markers based on filtered communications
 	const mapMarkers = $derived(
@@ -279,7 +304,20 @@
 				/>
 			{/snippet}
 
-			<div class="desktop-controls">
+			{#snippet children()}
+				<!-- Upcoming Talks and Events Section (only shown when no filters active) -->
+				{#if shouldShowUpcoming}
+					<UpcomingCommunications communications={upcomingCommunications} />
+				{/if}
+
+				<!-- All Communications Section Header (only when upcoming are shown) -->
+				{#if shouldShowUpcoming}
+					<div class="all-communications-header">
+						<h2 class="section-title">All Conference Activities</h2>
+					</div>
+				{/if}
+
+				<div class="desktop-controls">
 				<div class="list-status text-light">
 					Showing {$filteredCommunications.length || 0} conference activities
 					{#if areFiltersActive($activeFilters)}
@@ -302,20 +340,21 @@
 				</div>
 			</div>
 
-			{#if showMap}
-				<div class="mb-6">
-					<MapVisualization markersData={mapMarkers} />
-				</div>
-			{/if}
-			<FilteredListDisplay
-				filteredItems={sortedCommunications}
-				itemComponent={CommunicationItem}
-				itemPropName="communication"
-				areFiltersActive={areFiltersActive($activeFilters)}
-				{clearAllFilters}
-				emptyStateNoFiltersMessage="No conference activities found matching your criteria. Try clearing some filters."
-				onitemrequest={handleFilterRequest}
-			/>
+				{#if showMap}
+					<div class="mb-6">
+						<MapVisualization markersData={mapMarkers} />
+					</div>
+				{/if}
+				<FilteredListDisplay
+					filteredItems={sortedCommunications}
+					itemComponent={CommunicationItem}
+					itemPropName="communication"
+					areFiltersActive={areFiltersActive($activeFilters)}
+					{clearAllFilters}
+					emptyStateNoFiltersMessage="No conference activities found matching your criteria. Try clearing some filters."
+					onitemrequest={handleFilterRequest}
+				/>
+			{/snippet}
 		</EntityListPageLayout>
 </div>
 
@@ -328,6 +367,20 @@
 
 	.mb-6 {
 		margin-bottom: var(--spacing-6);
+	}
+
+	/* All Communications header */
+	.all-communications-header {
+		margin-top: var(--spacing-4);
+		margin-bottom: var(--spacing-6);
+	}
+
+	.section-title {
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text-light);
+		text-transform: uppercase;
+		letter-spacing: var(--letter-spacing-wider);
 	}
 
 	/* Mobile controls styling */
