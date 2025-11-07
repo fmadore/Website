@@ -3,6 +3,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { base } from '$app/paths';
 	import { truncateAbstract } from '$lib/utils/textUtils';
+	import { formatAuthorList } from '$lib/utils/citationFormatter';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 
 	let { communication, index }: { communication: Communication; index?: number } = $props();
@@ -73,7 +74,7 @@
 				<div class="entity-details">
 					{#if communication?.authors && communication.authors.length > 0}
 						<div>
-							{communication.authors.join(' and ')}
+							{formatAuthorList(communication.authors)}
 						</div>
 					{/if}
 
