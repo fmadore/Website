@@ -79,22 +79,10 @@
 					{/if}
 
 					<div>
-						<span>{communication?.conference || 'Unknown Conference'}</span>
-						{#if communication?.location}
-							<span>, {communication.location}</span>
-						{/if}
-						{#if communication?.country}
-							<button
-								class="country-btn"
-								onclick={() =>
-									dispatch('filterrequest', { type: 'country', value: communication.country })}
-							>
-								<span>, {communication.country}</span>
-							</button>
-						{/if}
-						{#if communication?.date}
-							<span>, {communication.date}</span>
-						{/if}
+						<span>{communication?.conference || 'Unknown Conference'}</span
+						>{#if communication?.location}, <span>{communication.location}</span
+						>{/if}{#if communication?.country}, <span>{communication.country}</span
+						>{/if}{#if communication?.date}, <span>{communication.date}</span>{/if}
 					</div>
 				</div>
 
