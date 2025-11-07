@@ -39,8 +39,8 @@
 			<h3>Cookie Consent</h3>
 			<p>This website uses cookies to improve your experience and analyse site traffic.</p>
 			<div class="cookie-actions">
-				<Button variant="primary" onclick={acceptCookies}>Accept</Button>
-				<Button variant="secondary" onclick={declineCookies}>Decline</Button>
+				<Button variant="primary" onclick={acceptCookies} label="Accept" />
+				<Button variant="secondary" onclick={declineCookies} label="Decline" />
 			</div>
 		</div>
 	</div>

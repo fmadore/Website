@@ -21,6 +21,7 @@
 		onclick?: (event: MouseEvent) => void; // Callback for click events
 		icon?: import('svelte').Snippet;
 		children?: import('svelte').Snippet;
+		label?: string; // Alternative to children for plain text
 		[key: string]: unknown;
 	}
 
@@ -39,6 +40,7 @@
 		onclick,
 		icon,
 		children,
+		label = undefined,
 		...rest
 	}: Props = $props();
 
@@ -59,6 +61,9 @@
 			.join(' ')
 	);
 
+	// Determine if we have content for aria-label fallback
+	const hasContent = $derived(!!label || !!ariaLabel);
+
 	function handleClick(event: MouseEvent) {
 		if (!disabled && !loading && onclick) {
 			onclick(event);
@@ -72,7 +77,7 @@
 		class={buttonClasses}
 		role="button"
 		aria-disabled={disabled || loading}
-		aria-label={ariaLabel || children ? undefined : 'Link button'}
+		aria-label={ariaLabel || (hasContent ? undefined : 'Link button')}
 		{...rest}
 	>
 		<span class="btn-content">
@@ -100,8 +105,12 @@
 			{:else if icon}
 				<span class="btn-icon">{@render icon?.()}</span>
 			{/if}
-			{#if !iconOnly && children}
-				<span class="btn-text">{@render children?.()}</span>
+			{#if !iconOnly}
+				{#if children}
+					<span class="btn-text">{@render children?.()}</span>
+				{:else if label}
+					<span class="btn-text">{label}</span>
+				{/if}
 			{/if}
 		</span>
 	</a>
@@ -111,7 +120,7 @@
 		class={buttonClasses}
 		disabled={disabled || loading}
 		onclick={handleClick}
-		aria-label={ariaLabel || children ? undefined : 'Button'}
+		aria-label={ariaLabel || (hasContent ? undefined : 'Button')}
 		aria-busy={loading}
 		{...rest}
 	>
@@ -140,8 +149,12 @@
 			{:else if icon}
 				<span class="btn-icon">{@render icon?.()}</span>
 			{/if}
-			{#if !iconOnly && children}
-				<span class="btn-text">{@render children?.()}</span>
+			{#if !iconOnly}
+				{#if children}
+					<span class="btn-text">{@render children?.()}</span>
+				{:else if label}
+					<span class="btn-text">{label}</span>
+				{/if}
 			{/if}
 		</span>
 	</button>

@@ -21,9 +21,7 @@
 
 		<ul class="entity-list">
 			{#each publications as publication, index (publication.id)}
-				<li class="entity-list-item">
-					<PublicationItem {publication} {onfilterrequest} {index} />
-				</li>
+				<PublicationItem {publication} {onfilterrequest} {index} />
 			{/each}
 		</ul>
 	</div>
@@ -51,10 +49,6 @@
 		list-style: none;
 		padding: 0;
 		margin: 0;
-	}
-
-	.entity-list-item {
-		margin-bottom: var(--spacing-6);
 	}
 
 	/* Add a subtle visual separator after featured section */

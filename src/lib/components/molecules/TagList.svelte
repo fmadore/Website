@@ -40,9 +40,8 @@
 					size={buttonSize}
 					glass={true}
 					additionalClasses="tag-button"
-				>
-					{tag}
-				</Button>
+					label={tag}
+				/>
 			{/each}
 		</div>
 	</section>

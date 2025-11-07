@@ -19,9 +19,7 @@
 
 		<ul class="entity-list">
 			{#each communications as communication, index (communication.id)}
-				<li class="entity-list-item">
-					<CommunicationItem {communication} {index} />
-				</li>
+				<CommunicationItem {communication} {index} />
 			{/each}
 		</ul>
 	</div>
@@ -49,10 +47,6 @@
 		list-style: none;
 		padding: 0;
 		margin: 0;
-	}
-
-	.entity-list-item {
-		margin-bottom: var(--spacing-6);
 	}
 
 	/* Add a subtle visual separator after upcoming section */

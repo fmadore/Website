@@ -76,9 +76,7 @@
 		<div class="empty-state">
 			<p class="empty-state-message">{emptyStateMessage}</p>
 			{#if areFiltersActive}
-				<Button variant="primary" size="sm" onclick={clearAllFilters} additionalClasses="mt-4">
-					Clear all filters
-				</Button>
+				<Button variant="primary" size="sm" onclick={clearAllFilters} additionalClasses="mt-4" label="Clear all filters" />
 			{:else if !areFiltersActive}
 				<p class="empty-state-hint">
 					{emptyStateNoFiltersMessage}

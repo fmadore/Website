@@ -93,9 +93,7 @@
 						{/if}
 					</h2>
 					{#if selectedTag}
-						<Button variant="primary" size="sm" onclick={clearTagFilter}>
-							Clear filter
-						</Button>
+						<Button variant="primary" size="sm" onclick={clearTagFilter} label="Clear filter" />
 					{/if}
 				</div>
 
@@ -113,9 +111,7 @@
 					<div class="empty-state">
 						<p>No activities found{selectedTag ? ` with the tag "${selectedTag}"` : ''}.</p>
 						{#if selectedTag}
-							<Button variant="primary" size="sm" onclick={clearTagFilter} additionalClasses="mt-4">
-								View all activities
-							</Button>
+							<Button variant="primary" size="sm" onclick={clearTagFilter} additionalClasses="mt-4" label="View all activities" />
 						{/if}
 					</div>
 				{/if}
