@@ -34,9 +34,14 @@ export function sortItems<T extends SortableItem>(
 	} else {
 		// Default to sorting by date (descending)
 		sortedItems.sort((a, b) => {
+			// Use dateISO for proper sorting (handles date ranges by using the first date)
+			// Fall back to date field if dateISO is not available (for backward compatibility)
+			const dateStrA = (a as Communication).dateISO || a.date;
+			const dateStrB = (b as Communication).dateISO || b.date;
+
 			// Handle potential missing dates, placing items without dates at the end
-			const dateA = a.date ? new Date(a.date).getTime() : 0;
-			const dateB = b.date ? new Date(b.date).getTime() : 0;
+			const dateA = dateStrA ? new Date(dateStrA).getTime() : 0;
+			const dateB = dateStrB ? new Date(dateStrB).getTime() : 0;
 
 			if (dateA === 0 && dateB === 0) return 0; // Both dates missing, keep original order
 			if (dateA === 0) return 1; // Put items without date A after B
