@@ -57,6 +57,13 @@ export const lutteTerrorismeSalafismeBeninTogo: Publication = {
 			title: 'Covid-19 and Pastoralism in Northern Benin',
 			source: 'Nomadic Peoples',
 			url: 'https://doi.org/10.3828/whpnp.63837646691073'
+		},
+		{
+			authors: ['Théoxane Marchand'],
+			year: 2025,
+			title: 'De père en fils : la continuité des régimes togolais et gabonais',
+			source: 'Masters Thesis, Université de Montréal',
+			url: 'https://hdl.handle.net/1866/42365'
 		}
 	]
 };
