@@ -68,7 +68,7 @@
 		}
 	}
 
-	function startCloseTimer(delay = 150) {
+	function startCloseTimer(delay = 300) {
 		clearCloseTimer();
 		closeTimer = window.setTimeout(() => {
 			if (!viaClick) showPreview = false;
@@ -105,7 +105,11 @@
 	function handlePointerEnter() {
 		// Only auto-show on hover for non-touch devices
 		if (!isTouchDevice && !viaClick) {
-			showPreview = true;
+			// Add a small delay before showing to avoid accidental triggers
+			clearCloseTimer();
+			closeTimer = window.setTimeout(() => {
+				showPreview = true;
+			}, 200);
 		}
 	}
 
@@ -155,8 +159,18 @@
 	$effect(() => {
 		if (showPreview && spanEl) {
 			const { top, bottom } = spanEl.getBoundingClientRect();
-			const previewHeight = 250; // Approximate height; could be made reactive.
-			positionBelow = window.innerHeight - bottom < previewHeight && top > previewHeight;
+			const viewportHeight = window.innerHeight;
+			const previewHeight = 400; // Approximate max height of preview card
+			const margin = 16;
+			
+			// Determine if we should position below based on available space
+			const spaceAbove = top;
+			const spaceBelow = viewportHeight - bottom;
+			
+			// Position below if:
+			// 1. Not enough space above for the card
+			// 2. AND there's more space below than above
+			positionBelow = spaceAbove < previewHeight + margin && spaceBelow > spaceAbove;
 		}
 	});
 </script>
@@ -170,6 +184,11 @@
 		aria-haspopup="dialog"
 		aria-expanded={showPreview}
 		aria-controls={showPreview ? `item-preview-${id}` : undefined}
+		aria-label={isTouchDevice
+			? showPreview
+				? 'Close preview and view full details'
+				: 'Click to preview this reference'
+			: 'Hover to preview, click to view full details'}
 		onpointerenter={handlePointerEnter}
 		onpointerleave={handlePointerLeave}
 		onfocus={handleFocus}
@@ -183,18 +202,18 @@
 		}}
 		onclick={handleLinkClick}
 	>
-		<ReferenceLink {item} {itemType} {id} hasPopup />
+		<ReferenceLink {item} {itemType} {id} hasPopup isActive={showPreview} />
 		{#if showPreview}
 			<div
 				id="item-preview-{id}"
 				in:receive={{ key: `preview-${id}` }}
 				out:send={{ key: `preview-${id}` }}
-				class:position-below={positionBelow}
 			>
 				<ReferencePreviewCard
 					{item}
 					{itemType}
 					referenceElement={spanEl}
+					positionClass={positionBelow ? 'position-below' : ''}
 					onpointerenter={clearCloseTimer}
 					onpointerleave={handlePointerLeave}
 				/>
@@ -216,13 +235,35 @@
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
 	}
 
+	/* Touch device hint - subtle visual cue */
+	.item-reference::after {
+		content: '';
+		position: absolute;
+		top: -2px;
+		right: -2px;
+		width: 6px;
+		height: 6px;
+		background: var(--color-accent);
+		border-radius: var(--border-radius-full);
+		opacity: 0;
+		transition: opacity var(--anim-duration-fast) var(--anim-ease-base);
+		pointer-events: none;
+	}
+
+	/* Show indicator on touch devices when not active */
+	@media (hover: none) and (pointer: coarse) {
+		.item-reference:not(.preview-visible)::after {
+			opacity: var(--opacity-60);
+		}
+	}
+
 	.item-reference.preview-visible {
 		/* Only apply a subtle lift when preview is visible, no background effects */
 		transform: var(--transform-lift-sm);
 	}
 
-	.position-below {
-		bottom: 100%;
+	.item-reference.preview-visible::after {
+		opacity: 0;
 	}
 
 	.item-reference-error {

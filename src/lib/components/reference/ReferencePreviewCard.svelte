@@ -26,6 +26,13 @@
 	let isPositioned = $state(false);
 	let isClicked = $state(false);
 
+	// Reactive positioning state using Svelte 5 $state
+	let shouldPositionBelow = $state(false);
+	let cardLeft = $state('50%');
+	let arrowLeft = $state('50%');
+	let cardMaxHeight = $state<string | null>(null);
+	let hasOverflow = $state(false);
+
 	// Helper function to get year consistently
 	function getYear(item: Publication | Communication): string {
 		if ('dateISO' in item && item.dateISO) return item.dateISO.substring(0, 4);
@@ -47,16 +54,18 @@
 			: null
 	);
 
+	// Use $effect to reactively position the card when dependencies change
 	$effect(() => {
-		// Let the animation start first using async IIFE
-		(async () => {
-			await tick();
+		if (!browser || !referenceElement || !cardElement) return;
+
+		// Let the animation start first
+		tick().then(() => {
 			// Position the card after a short delay to allow initial animations
 			setTimeout(() => {
 				positionCard();
 				isPositioned = true;
 			}, 50);
-		})();
+		});
 	});
 
 	function positionCard() {
@@ -64,11 +73,16 @@
 
 		// Use requestAnimationFrame to measure after browser layout/paint
 		requestAnimationFrame(() => {
-			if (!cardElement || !referenceElement) return; // Check again inside callback
+			if (!cardElement || !referenceElement) return;
+			
 			const refRect = referenceElement.getBoundingClientRect();
 			const cardWidth = cardElement.offsetWidth;
+			const cardHeight = cardElement.offsetHeight;
 			const viewportWidth = window.innerWidth;
+			const viewportHeight = window.innerHeight;
+			const margin = 16; // Minimum margin from viewport edges
 
+			// ===== HORIZONTAL POSITIONING =====
 			// Calculate how much the card would overflow on each side if centered on refCenter
 			const refCenter = refRect.left + refRect.width / 2;
 			const halfCardWidth = cardWidth / 2;
@@ -80,19 +94,43 @@
 
 			if (leftOverflow > 0) {
 				// Would overflow left edge, shift right
-				horizontalOffset = leftOverflow;
+				horizontalOffset = leftOverflow + margin;
 			} else if (rightOverflow > 0) {
 				// Would overflow right edge, shift left
-				horizontalOffset = -rightOverflow;
+				horizontalOffset = -rightOverflow - margin;
 			}
 
-			// Apply horizontal offset
-			cardElement.style.left = `calc(50% + ${horizontalOffset}px)`;
+			// Update reactive state instead of direct DOM manipulation
+			cardLeft = `calc(50% + ${horizontalOffset}px)`;
+			arrowLeft = `calc(50% - ${horizontalOffset}px)`;
 
-			// Position arrow to point at reference element
-			const arrowElement = cardElement.querySelector('.card-arrow') as HTMLElement;
-			if (arrowElement) {
-				arrowElement.style.left = `calc(50% - ${horizontalOffset}px)`;
+			// ===== VERTICAL POSITIONING =====
+			// Check if card would overflow viewport vertically
+			const spaceAbove = refRect.top;
+			const spaceBelow = viewportHeight - refRect.bottom;
+
+			// Determine if we should position above or below
+			shouldPositionBelow = spaceAbove < cardHeight + margin && spaceBelow > spaceAbove;
+			
+			if (shouldPositionBelow) {
+				// Check if it fits below, otherwise constrain height
+				if (spaceBelow < cardHeight + margin) {
+					cardMaxHeight = `${spaceBelow - margin}px`;
+					hasOverflow = true;
+				} else {
+					cardMaxHeight = null;
+					hasOverflow = false;
+				}
+			} else {
+				// Position above the reference (default)
+				// Check if it fits above, otherwise constrain height
+				if (spaceAbove < cardHeight + margin) {
+					cardMaxHeight = `${spaceAbove - margin}px`;
+					hasOverflow = true;
+				} else {
+					cardMaxHeight = null;
+					hasOverflow = false;
+				}
 			}
 		});
 	}
@@ -112,16 +150,10 @@
 		if (isClicked) return;
 		isClicked = true;
 
-		// Apply click effect
-		if (cardElement) {
-			// Check cardElement before use
-			cardElement.classList.add('card-clicked');
-
-			// Delay navigation to allow animation to complete
-			setTimeout(() => {
-				goto(itemUrl);
-			}, 300);
-		}
+		// Delay navigation to allow animation to complete
+		setTimeout(() => {
+			goto(itemUrl);
+		}, 300);
 	}
 </script>
 
@@ -129,7 +161,12 @@
 	bind:this={cardElement}
 	class="preview-card {positionClass}"
 	class:positioned={isPositioned}
+	class:position-below={shouldPositionBelow}
 	class:card-clicked={isClicked}
+	class:has-overflow={hasOverflow}
+	style:left={cardLeft}
+	style:max-height={cardMaxHeight}
+	style:overflow-y={hasOverflow ? 'auto' : null}
 	role="dialog"
 	aria-label="Item Preview"
 	aria-modal="false"
@@ -210,7 +247,7 @@
 			</div>
 		</div>
 	</a>
-	<span class="card-arrow"></span>
+	<span class="card-arrow" style:left={arrowLeft}></span>
 </div>
 
 <style>
@@ -314,6 +351,81 @@
 		position: relative;
 		overflow: hidden;
 		border-radius: var(--border-radius-2xl);
+	}
+	
+	/* Smooth scrolling for overflow cases */
+	.preview-card {
+		scroll-behavior: smooth;
+		-webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
+	}
+	
+	/* Custom scrollbar styling for overflow */
+	.preview-card::-webkit-scrollbar {
+		width: 8px;
+	}
+	
+	.preview-card::-webkit-scrollbar-track {
+		background: rgba(var(--color-primary-rgb), 0.05);
+		border-radius: var(--border-radius-lg);
+	}
+	
+	.preview-card::-webkit-scrollbar-thumb {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.3) 0%,
+			rgba(var(--color-accent-rgb), 0.2) 100%
+		);
+		border-radius: var(--border-radius-lg);
+		border: 2px solid transparent;
+		background-clip: padding-box;
+	}
+	
+	.preview-card::-webkit-scrollbar-thumb:hover {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.5) 0%,
+			rgba(var(--color-accent-rgb), 0.4) 100%
+		);
+	}
+	
+	/* Firefox scrollbar */
+	.preview-card {
+		scrollbar-width: thin;
+		scrollbar-color: rgba(var(--color-primary-rgb), 0.3) rgba(var(--color-primary-rgb), 0.05);
+	}
+	
+	/* Fade indicator for scrollable content */
+	.preview-card::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 40px;
+		background: linear-gradient(
+			to bottom,
+			transparent 0%,
+			rgba(var(--color-white-rgb), 0.8) 70%,
+			rgba(var(--color-white-rgb), 0.95) 100%
+		);
+		pointer-events: none;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		border-radius: 0 0 var(--border-radius-2xl) var(--border-radius-2xl);
+	}
+	
+	/* Show fade when scrollable using reactive class */
+	.preview-card.has-overflow::after {
+		opacity: 1;
+	}
+	
+	:global(html.dark) .preview-card::after {
+		background: linear-gradient(
+			to bottom,
+			transparent 0%,
+			rgba(var(--color-dark-surface-alt-rgb), 0.8) 70%,
+			rgba(var(--color-dark-surface-alt-rgb), 0.95) 100%
+		);
 	}
 
 	.card-image-container {
