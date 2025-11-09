@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import type { Publication, Communication } from '$lib/types';
-	import Button from '$lib/components/atoms/Button.svelte';
 
 	let {
 		item = undefined,
@@ -60,43 +59,105 @@
 	);
 </script>
 
-<Button
+<a
 	href={itemUrl}
-	variant="outline-primary"
-	size="sm"
-	glass={true}
-	{ariaLabel}
-	additionalClasses="reference-link {hasPopup ? 'has-popup' : ''}"
+	class="reference-link {hasPopup ? 'has-popup' : ''}"
+	aria-label={ariaLabel}
+	tabindex={hasPopup ? -1 : 0}
 >
 	{referenceText}
-</Button>
-
-<!-- This empty span ensures there's a scopable element for Svelte -->
-<span class="reference-link-styles" style="display: none;"></span>
+</a>
 
 <style>
-	/* Scoped element to prevent warning */
-	.reference-link-styles {
-		display: none !important;
-	}
-
-	/* Minimal custom styling for reference-specific behavior */
-	:global(.reference-link) {
-		/* Let parent span handle interactions when hasPopup is true */
-		pointer-events: none;
-
-		/* Reference-specific sizing */
+	.reference-link {
+		/* Blend with text flow - subtle academic citation style */
+		display: inline;
+		position: relative;
+		color: var(--color-primary);
+		text-decoration: none;
 		font-size: var(--font-size-sm);
-		padding: var(--spacing-1) var(--spacing-2);
+		font-weight: var(--font-weight-medium);
+		white-space: nowrap;
+		padding: 0 var(--spacing-1);
+		border-radius: var(--border-radius-sm);
+		transition: all var(--anim-duration-fast) var(--anim-ease-base);
+
+		/* Very subtle background - almost invisible by default */
+		background: rgba(var(--color-primary-rgb), var(--opacity-5));
+
+		/* Thin bottom border for academic feel */
+		border-bottom: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-15));
 	}
 
-	:global(.reference-link.has-popup) {
+	.reference-link.has-popup {
 		cursor: pointer;
 		pointer-events: auto;
 	}
 
-	/* Enhanced hover effect for references with popup */
-	:global(.reference-link.has-popup:hover) {
-		transform: var(--transform-lift-md);
+	/* Hover state reveals glassmorphism */
+	.reference-link:hover,
+	.reference-link:focus-visible {
+		color: var(--color-primary-dark);
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), var(--opacity-10)) 0%,
+			rgba(var(--color-accent-rgb), var(--opacity-5)) 100%
+		);
+		border-bottom-color: rgba(var(--color-primary-rgb), var(--opacity-30));
+		transform: var(--transform-lift-sm);
+		box-shadow: var(--shadow-sm);
+	}
+
+	/* Active/clicked state */
+	.reference-link:active {
+		transform: translateY(0);
+		background: rgba(var(--color-primary-rgb), var(--opacity-15));
+	}
+
+	/* Focus state for accessibility */
+	.reference-link:focus-visible {
+		outline: var(--border-width-medium) solid rgba(var(--color-primary-rgb), var(--opacity-30));
+		outline-offset: var(--spacing-1);
+	}
+
+	/* Dark mode - subtle adjustments */
+	:global(html.dark) .reference-link {
+		color: var(--color-accent);
+		background: rgba(var(--color-primary-rgb), var(--opacity-5));
+		border-bottom-color: rgba(var(--color-accent-rgb), var(--opacity-15));
+	}
+
+	:global(html.dark) .reference-link:hover,
+	:global(html.dark) .reference-link:focus-visible {
+		color: var(--color-accent);
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-accent-rgb), var(--opacity-10)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-5)) 100%
+		);
+		border-bottom-color: rgba(var(--color-accent-rgb), var(--opacity-30));
+	}
+
+	/* Reduced motion support */
+	@media (prefers-reduced-motion: reduce) {
+		.reference-link {
+			transition: none;
+		}
+
+		.reference-link:hover {
+			transform: none;
+		}
+	}
+
+	/* High contrast mode */
+	@media (prefers-contrast: high) {
+		.reference-link {
+			border-bottom-width: var(--border-width-medium);
+			font-weight: var(--font-weight-semibold);
+		}
+
+		.reference-link:hover {
+			text-decoration: underline;
+		}
 	}
 </style>
