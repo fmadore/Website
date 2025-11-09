@@ -1,9 +1,11 @@
 /* Main CSS entry point */
 
+/* Design tokens */
+@import './styles/base/variables.css';
+
 /* Base styles */
 @import './styles/base/reset.css';
 @import './styles/base/typography.css';
-@import './styles/base/variables.css';
 
 /* Layout components */
 @import './styles/layout/container.css';

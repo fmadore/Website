@@ -39,6 +39,14 @@ ol {
 body {
 	min-height: 100vh;
 	scroll-behavior: smooth;
+	background-color: var(--color-background);
+	color: var(--color-text);
+	font-family: var(--font-family-sans);
+	line-height: var(--line-height-body);
+}
+
+html {
+	color-scheme: light dark;
 }
 
 /* Make images easier to work with */
