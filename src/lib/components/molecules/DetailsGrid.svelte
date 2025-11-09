@@ -69,9 +69,9 @@
 		/* Subtle layered gradient echoing other glass components */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.03) 0%,
-			rgba(var(--color-accent-rgb), 0.025) 55%,
-			rgba(var(--color-highlight-rgb), 0.02) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 55%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
 		);
 		position: relative;
 	}
@@ -85,22 +85,22 @@
 		border-radius: inherit;
 		background: linear-gradient(
 			180deg,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0.12) 0%,
+			rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-low)) 0%,
 			rgba(var(--color-white-rgb, 255, 255, 255), 0) 40%,
 			rgba(var(--color-white-rgb, 255, 255, 255), 0) 60%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0.12) 100%
+			rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-low)) 100%
 		);
 		mix-blend-mode: overlay;
-		opacity: 0.4;
+		opacity: var(--opacity-medium);
 	}
 
 	.detail-item {
 		display: grid;
 		grid-template-columns: 110px 1fr; /* label column */
-		align-items: start;
-		gap: var(--spacing-2);
-		padding: var(--spacing-2) var(--spacing-2) var(--spacing-1);
-		border-bottom: 1px solid var(--color-border-light);
+		align-items: baseline;
+		gap: var(--spacing-3);
+		padding: var(--spacing-3) var(--spacing-2) var(--spacing-2);
+		border-bottom: var(--border-width-thin) solid var(--color-border-light);
 		position: relative;
 	}
 	.detail-item:last-child {
@@ -120,7 +120,7 @@
 	.detail-label {
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-semibold);
-		letter-spacing: 0.5px;
+		letter-spacing: var(--letter-spacing-wide);
 		text-transform: uppercase;
 		color: var(--color-text-light);
 		line-height: var(--line-height-tight);
@@ -144,8 +144,8 @@
 		text-decoration: underline;
 	}
 	.detail-link:focus-visible {
-		outline: 2px solid var(--color-highlight);
-		outline-offset: 2px;
+		outline: var(--border-width-medium) solid var(--color-highlight);
+		outline-offset: var(--spacing-1);
 		border-radius: var(--border-radius-sm);
 	}
 
@@ -153,13 +153,13 @@
 	:global(html.dark) .details-grid {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb, 17, 24, 39), 0.6) 0%,
-			rgba(var(--color-primary-rgb), 0.12) 55%,
-			rgba(var(--color-accent-rgb), 0.08) 100%
+			rgba(var(--color-dark-surface-rgb, 17, 24, 39), var(--opacity-high)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 55%,
+			rgba(var(--color-accent-rgb), var(--opacity-low)) 100%
 		);
 	}
 	:global(html.dark) .detail-item {
-		border-bottom: 1px solid rgba(var(--color-white-rgb, 255, 255, 255), 0.08);
+		border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-low));
 	}
 	:global(html.dark) .detail-label {
 		color: var(--color-text-light);
