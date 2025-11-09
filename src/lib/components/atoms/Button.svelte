@@ -53,7 +53,7 @@
 			block ? 'btn-block' : '',
 			icon || loading ? 'btn-with-icon' : '',
 			iconOnly ? 'btn-icon-only' : '',
-			glass ? 'btn-glass' : '',
+			glass ? 'btn-glass glass-button' : '',
 			loading ? 'btn-loading' : '',
 			additionalClasses
 		]
