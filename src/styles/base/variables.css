@@ -58,6 +58,7 @@
 	--color-background-rgb: 255, 255, 255;
 	--color-background-subtle: var(--sys-color-neutral-50);
 	--color-text: var(--sys-color-neutral-800);
+	--color-text-rgb: 30, 41, 59;
 	--color-text-light: var(--sys-color-neutral-600);
 	--color-text-muted: var(--sys-color-neutral-500);
 	--color-text-emphasis: var(--sys-color-neutral-900);
@@ -463,6 +464,26 @@
 	/* ===== COMPONENT-SPECIFIC VARIABLES ===== */
 	/* Note: Consider moving these to respective component files for better encapsulation */
 
+	/* Card & glass tokens */
+	--card-glass-opacity-light: 0.08;
+	--card-glass-opacity-light-hover: 0.12;
+	--card-glass-border-light: 0.15;
+	--card-glass-border-light-hover: 0.25;
+	--card-glass-inset-light: 0.25;
+	--card-glass-inset-light-hover: 0.35;
+	--card-glass-opacity-dark: 0.15;
+	--card-glass-opacity-dark-hover: 0.25;
+	--card-glass-border-dark: 0.08;
+	--card-glass-border-dark-hover: 0.12;
+	--card-glass-inset-dark: 0.08;
+	--card-glass-inset-dark-hover: 0.12;
+	--card-shadow-color: 30, 58, 95;
+	--card-shadow-opacity: 0.3;
+	--card-shadow-opacity-hover: 0.35;
+	--card-transform-hover: var(--transform-lift-md);
+	--card-link-transform: translateX(var(--spacing-3));
+	--card-height-image: 14rem;
+
 	/* Iframe variables */
 	--iframe-height-xs: 18.75rem; /* 300px */
 	--iframe-height-sm: 25rem; /* 400px */
@@ -515,6 +536,7 @@ html.dark {
 	--color-background-rgb: 15, 23, 42;
 	--color-background-subtle: #1e293b;
 	--color-text: #f1f5f9;
+	--color-text-rgb: 241, 245, 249;
 	--color-text-light: #cbd5e1;
 	--color-text-muted: #94a3b8;
 	--color-text-emphasis: #ffffff;
@@ -579,4 +601,7 @@ html.dark {
 	--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
 	--shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
 	--shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+	--card-shadow-color: 15, 23, 42;
+	--card-shadow-opacity: 0.5;
+	--card-shadow-opacity-hover: 0.6;
 }

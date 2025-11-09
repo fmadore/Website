@@ -1,43 +1,16 @@
 /* Card styles */
 
-/* Card-specific CSS variables - scoped to this component */
-.card,
-:root {
-	/* Glass effect opacity values */
-	--card-glass-opacity-light: 0.08;
-	--card-glass-opacity-light-hover: 0.12;
-	--card-glass-border-light: 0.15;
-	--card-glass-border-light-hover: 0.25;
-	--card-glass-inset-light: 0.25;
-	--card-glass-inset-light-hover: 0.35;
-	--card-glass-opacity-dark: 0.15;
-	--card-glass-opacity-dark-hover: 0.25;
-	--card-glass-border-dark: 0.08;
-	--card-glass-border-dark-hover: 0.12;
-	--card-glass-inset-dark: 0.08;
-	--card-glass-inset-dark-hover: 0.12;
-
-	/* Shadow and transform values */
-	--card-shadow-color: 30, 58, 95;
-	--card-shadow-opacity: 0.3;
-	--card-shadow-opacity-hover: 0.35;
-	--card-transform-hover: var(--transform-lift-md);
-	--card-link-transform: translateX(var(--spacing-3));
-	--card-height-image: var(--spacing-56, 14rem); /* Fallback for large image height */
-}
-
 .card {
-	background: rgba(var(--color-background-rgb, 255, 255, 255), var(--card-glass-opacity-light));
+	background: rgba(var(--color-background-rgb), var(--card-glass-opacity-light));
 	-webkit-backdrop-filter: blur(var(--glass-blur-fallback));
 	backdrop-filter: blur(var(--glass-blur-fallback));
 	border-radius: var(--border-radius-lg);
 	border: var(--border-width-thin) solid
-		rgba(var(--color-background-rgb, 255, 255, 255), var(--card-glass-border-light));
+		rgba(var(--color-background-rgb), var(--card-glass-border-light));
 	overflow: hidden;
 	box-shadow:
 		0 var(--spacing-2) var(--spacing-8) 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity)),
-		inset 0 var(--border-width-thin) 0
-			rgba(var(--color-background-rgb, 255, 255, 255), var(--card-glass-inset-light));
+		inset 0 var(--border-width-thin) 0 rgba(var(--color-background-rgb), var(--card-glass-inset-light));
 	transition:
 		transform var(--anim-duration-base) var(--anim-ease-out),
 		box-shadow var(--anim-duration-base) var(--anim-ease-out),
@@ -49,20 +22,14 @@
 }
 
 .card:hover {
-	background: rgba(
-		var(--color-background-rgb, 255, 255, 255),
-		var(--card-glass-opacity-light-hover)
-	);
-	border-color: rgba(
-		var(--color-background-rgb, 255, 255, 255),
-		var(--card-glass-border-light-hover)
-	);
+	background: rgba(var(--color-background-rgb), var(--card-glass-opacity-light-hover));
+	border-color: rgba(var(--color-background-rgb), var(--card-glass-border-light-hover));
 	transform: var(--card-transform-hover);
 	box-shadow:
 		0 var(--spacing-3) var(--spacing-10) 0
 			rgba(var(--card-shadow-color), var(--card-shadow-opacity-hover)),
 		inset 0 var(--border-width-thin) 0
-			rgba(var(--color-background-rgb, 255, 255, 255), var(--card-glass-inset-light-hover));
+			rgba(var(--color-background-rgb), var(--card-glass-inset-light-hover));
 }
 
 .card-image {
@@ -234,33 +201,22 @@
 	border-color: var(--color-highlight);
 }
 
-/* Dark mode glassmorphism overrides */
-:global(html.dark) .card,
-:global(html.dark) :root {
-	--card-shadow-color: 15, 23, 42;
-	--card-shadow-opacity: 0.5;
-	--card-shadow-opacity-hover: 0.6;
-}
-
 :global(html.dark) .card {
-	background: rgba(var(--color-text-rgb, 0, 0, 0), var(--card-glass-opacity-dark));
+	background: rgba(var(--color-text-rgb), var(--card-glass-opacity-dark));
 	border: var(--border-width-thin) solid
-		rgba(var(--color-background-rgb, 255, 255, 255), var(--card-glass-border-dark));
+		rgba(var(--color-background-rgb), var(--card-glass-border-dark));
 	box-shadow:
 		0 var(--spacing-2) var(--spacing-8) 0
-			rgba(var(--color-text-rgb, 0, 0, 0), var(--opacity-medium-high)),
+			rgba(var(--color-text-rgb), var(--opacity-medium-high)),
 		inset 0 var(--border-width-thin) 0
-			rgba(var(--color-background-rgb, 255, 255, 255), var(--card-glass-inset-dark));
+			rgba(var(--color-background-rgb), var(--card-glass-inset-dark));
 }
 
 :global(html.dark) .card:hover {
-	background: rgba(var(--color-text-rgb, 0, 0, 0), var(--card-glass-opacity-dark-hover));
-	border-color: rgba(
-		var(--color-background-rgb, 255, 255, 255),
-		var(--card-glass-border-dark-hover)
-	);
+	background: rgba(var(--color-text-rgb), var(--card-glass-opacity-dark-hover));
+	border-color: rgba(var(--color-background-rgb), var(--card-glass-border-dark-hover));
 	box-shadow:
-		0 var(--spacing-3) var(--spacing-10) 0 rgba(var(--color-text-rgb, 0, 0, 0), var(--opacity-high)),
+		0 var(--spacing-3) var(--spacing-10) 0 rgba(var(--color-text-rgb), var(--opacity-high)),
 		inset 0 var(--border-width-thin) 0
-			rgba(var(--color-background-rgb, 255, 255, 255), var(--card-glass-inset-dark-hover));
+			rgba(var(--color-background-rgb), var(--card-glass-inset-dark-hover));
 }
