@@ -229,26 +229,26 @@
 		color: var(--color-danger);
 		font-style: italic;
 		font-size: var(--font-size-sm);
-		padding: var(--space-2xs) var(--space-xs);
+		padding: var(--spacing-1) var(--spacing-2);
 		border-radius: var(--border-radius);
 		cursor: not-allowed;
 
 		/* Glassmorphism for error state using global values */
-		backdrop-filter: blur(4px);
-		-webkit-backdrop-filter: blur(4px);
+		backdrop-filter: blur(var(--glass-blur-amount));
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-danger-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-danger-rgb), var(--opacity-low)) 100%
+			rgba(var(--color-danger-rgb), var(--opacity-15)) 0%,
+			rgba(var(--color-danger-rgb), var(--opacity-10)) 100%
 		);
-		border: var(--border-width-thin) solid rgba(var(--color-danger-rgb), var(--opacity-medium-high));
+		border: var(--border-width-thin) solid rgba(var(--color-danger-rgb), var(--opacity-30));
 		box-shadow: var(--shadow-sm);
 	}
 
 	/* Focus states */
 	.item-reference:focus {
 		outline: var(--border-width-medium) solid
-			rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+			rgba(var(--color-primary-rgb), var(--opacity-30));
 		outline-offset: var(--border-width-medium);
 	}
 
@@ -256,16 +256,16 @@
 	:global(html.dark) .item-reference-error {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-danger-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-danger-rgb), var(--opacity-low)) 100%
+			rgba(var(--color-danger-rgb), var(--opacity-15)) 0%,
+			rgba(var(--color-danger-rgb), var(--opacity-10)) 100%
 		);
 
-		border-color: rgba(var(--color-danger-rgb), var(--opacity-medium-high));
+		border-color: rgba(var(--color-danger-rgb), var(--opacity-30));
 		color: rgba(var(--color-danger-rgb), var(--opacity-80));
 
 		box-shadow:
 			var(--shadow-sm),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-very-low));
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-5));
 	}
 
 	/* Reduced motion support */
@@ -287,13 +287,13 @@
 	}
 
 	/* Backdrop filter fallback */
-	@supports not (backdrop-filter: blur(4px)) {
+	@supports not (backdrop-filter: blur(var(--glass-blur-amount))) {
 		.item-reference-error {
-			background: rgba(var(--color-danger-rgb), var(--opacity-low));
+			background: rgba(var(--color-danger-rgb), var(--opacity-10));
 		}
 
 		:global(html.dark) .item-reference-error {
-			background: rgba(var(--color-danger-rgb), var(--opacity-medium));
+			background: rgba(var(--color-danger-rgb), var(--opacity-15));
 		}
 	}
 </style>

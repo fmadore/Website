@@ -231,19 +231,19 @@
 		overflow: hidden;
 
 		/* Improved glassmorphism for better readability */
-		backdrop-filter: blur(8px) saturate(120%);
-		-webkit-backdrop-filter: blur(8px) saturate(120%);
+		backdrop-filter: blur(var(--glass-blur-amount)) saturate(120%);
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount)) saturate(120%);
 
 		/* Higher opacity background using global values */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-white-rgb), var(--opacity-high)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			rgba(var(--color-white-rgb), var(--opacity-90)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-10)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-5)) 100%
 		);
 
 		/* Using global border system */
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium));
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-15));
 		border-radius: var(--border-radius-xl);
 
 		/* Using global shadow system */
@@ -263,32 +263,32 @@
 	.preview-card.card-clicked {
 		transform: translateX(-50%) translateY(calc(-1 * var(--spacing-1))) scale(var(--scale-105));
 		box-shadow: var(--shadow-2xl);
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-30));
 	}
 
 	/* Dark mode styles with better readability */
 	:global(html.dark) .preview-card {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-alt-rgb), var(--opacity-high)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			rgba(var(--color-dark-surface-alt-rgb), var(--opacity-90)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-10)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-5)) 100%
 		);
 
 		border: var(--border-width-thin) solid
-			rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+			rgba(var(--color-primary-rgb), var(--opacity-30));
 
 		box-shadow:
 			var(--shadow-xl),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium));
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-15));
 	}
 
 	:global(html.dark) .preview-card.card-clicked {
 		box-shadow:
 			var(--shadow-2xl),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-primary-rgb), var(--opacity-30));
 
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-30));
 	}
 
 	/* Position below variant */
@@ -314,8 +314,8 @@
 		height: 120px;
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium)),
-			rgba(var(--color-accent-rgb), var(--opacity-medium))
+			rgba(var(--color-primary-rgb), var(--opacity-15)),
+			rgba(var(--color-accent-rgb), var(--opacity-15))
 		);
 	}
 
@@ -332,9 +332,9 @@
 		inset: 0;
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-10)) 0%,
 			transparent 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-low)) 100%
+			rgba(var(--color-accent-rgb), var(--opacity-10)) 100%
 		);
 		opacity: 0;
 		transition: opacity var(--anim-duration-base) var(--anim-ease-out);
@@ -380,11 +380,11 @@
 		/* Enhanced glassmorphism for date badge */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-15)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-10)) 100%
 		) !important;
 		color: var(--color-primary) !important;
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium)) !important;
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-15)) !important;
 	}
 
 	/* Container for view-more hint */
@@ -411,11 +411,11 @@
 		/* Enhanced glassmorphism for hint */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-15)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-10)) 100%
 		) !important;
 		color: var(--color-primary) !important;
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium)) !important;
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-15)) !important;
 	}
 
 	.hint-text {
@@ -426,13 +426,13 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: 20px;
-		height: 20px;
+		width: var(--spacing-5);
+		height: var(--spacing-5);
 		background: var(--color-primary);
 		color: var(--color-white);
 		border-radius: var(--border-radius-full);
-		font-size: 10px;
-		transform: translateX(-3px);
+		font-size: var(--font-size-xs);
+		transform: translateX(calc(-1 * var(--spacing-1)));
 		transition: transform var(--anim-duration-base) var(--anim-ease-base);
 	}
 
@@ -468,12 +468,12 @@
 	/* ARROW STYLES */
 	.card-arrow {
 		position: absolute;
-		bottom: -10px;
+		bottom: calc(-1 * var(--spacing-3));
 		left: 50%;
-		width: 20px;
-		height: 20px;
+		width: var(--spacing-5);
+		height: var(--spacing-5);
 		background: inherit;
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-15));
 		border-radius: var(--border-radius-sm);
 		transform: translateX(-50%) rotate(var(--rotate-45));
 		z-index: 1;
@@ -481,12 +481,12 @@
 
 	.position-below .card-arrow {
 		bottom: auto;
-		top: -10px;
+		top: calc(-1 * var(--spacing-3));
 	}
 
 	/* Dark mode arrow */
 	:global(html.dark) .card-arrow {
-		border-color: rgba(var(--color-white-rgb), var(--opacity-low));
+		border-color: rgba(var(--color-white-rgb), var(--opacity-10));
 	}
 
 	.card-title {
@@ -550,21 +550,21 @@
 	}
 
 	/* Backdrop filter fallback */
-	@supports not (backdrop-filter: blur(8px)) {
+	@supports not (backdrop-filter: blur(var(--glass-blur-amount))) {
 		.preview-card {
-			background: rgba(var(--color-white-rgb), var(--glass-opacity-fallback-light));
+			background: rgba(var(--color-white-rgb), var(--glass-opacity-fallback-light, 0.85));
 		}
 
 		:global(html.dark) .preview-card {
-			background: rgba(var(--color-dark-surface-alt-rgb), var(--glass-opacity-fallback-dark));
+			background: rgba(var(--color-dark-surface-alt-rgb), var(--glass-opacity-fallback-dark, 0.85));
 		}
 
 		.view-more-hint {
-			background: rgba(var(--color-primary-rgb), var(--opacity-low));
+			background: rgba(var(--color-primary-rgb), var(--opacity-10));
 		}
 
 		.card-date {
-			background: rgba(var(--color-primary-rgb), var(--opacity-low));
+			background: rgba(var(--color-primary-rgb), var(--opacity-10));
 		}
 	}
 
