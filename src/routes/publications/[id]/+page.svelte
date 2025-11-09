@@ -400,6 +400,7 @@
 				title="More Publications in this Project"
 				itemComponent={RelatedItemCard as unknown as ComponentType}
 				baseItemUrl="/publications/"
+				viewAllUrl="{base}/publications"
 				maxItems={3}
 			/>
 		</div>

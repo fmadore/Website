@@ -246,16 +246,19 @@
 	</article>
 
 	<!-- Use the RelatedItemsList organism -->
-	<RelatedItemsList
-		allItems={allCommunications}
-		currentItemId={communication.id}
-		filterKey="type"
-		filterValue={communication.type}
-		title={`More ${communication.type === 'panel' ? 'Panels' : communication.type === 'conference' ? 'Conference Papers' : 'Presentations'}`}
-		itemComponent={RelatedItemCard as unknown as ComponentType}
-		baseItemUrl="/communications/"
-		maxItems={3}
-	/>
+	{#if communication.project}
+		<RelatedItemsList
+			allItems={allCommunications}
+			currentItemId={communication.id}
+			filterKey="project"
+			filterValue={communication.project}
+			title="More Conference Activities in this Project"
+			itemComponent={RelatedItemCard as unknown as ComponentType}
+			baseItemUrl="/communications/"
+			viewAllUrl="{base}/conference-activity"
+			maxItems={3}
+		/>
+	{/if}
 </div>
 
 <style>

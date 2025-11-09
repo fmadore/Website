@@ -1,5 +1,7 @@
 <script lang="ts">
 	import type { ComponentType } from 'svelte';
+	import { base } from '$app/paths';
+	import Button from '$lib/components/atoms/Button.svelte';
 
 	// Props
 	let {
@@ -10,6 +12,7 @@
 		title,
 		itemComponent,
 		baseItemUrl,
+		viewAllUrl,
 		maxItems = 3,
 		sectionClass = 'related-items-section mt-10',
 		titleClass = 'related-items-title',
@@ -23,6 +26,7 @@
 		itemComponent: ComponentType; // Component to render each item (e.g., ItemCard)
 		// Removed itemPropName as it complicates <svelte:component>
 		baseItemUrl: string; // Base URL for item links (e.g., "/publications/")
+		viewAllUrl?: string; // URL for "View All" button (e.g., "/publications" or "/conference-activity")
 		maxItems?: number; // Max items to display
 		// Optional styling props
 		sectionClass?: string;
@@ -40,6 +44,13 @@
 			)
 			.slice(0, maxItems) // Limit number of items
 	);
+
+	// Construct the view all URL with filter if viewAllUrl is provided
+	const viewAllLink = $derived(
+		viewAllUrl && filterValue
+			? `${viewAllUrl}?${filterKey}=${encodeURIComponent(filterValue)}`
+			: viewAllUrl
+	);
 </script>
 
 {#if relatedItems.length > 0}
@@ -51,6 +62,19 @@
 				<ItemComponent {item} itemUrl={`${baseItemUrl}${item.id}`} />
 			{/each}
 		</div>
+		
+		{#if viewAllLink}
+			<div class="view-all-container">
+				<Button
+					href={viewAllLink}
+					variant="outline-primary"
+					size="base"
+					additionalClasses="glass-button"
+				>
+					View all →
+				</Button>
+			</div>
+		{/if}
 	</section>
 {/if}
 
@@ -127,6 +151,11 @@
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: var(--spacing-4);
+	}
+
+	.view-all-container {
+		margin-top: var(--spacing-6);
+		text-align: center;
 	}
 
 	/* Dark mode refinements */
