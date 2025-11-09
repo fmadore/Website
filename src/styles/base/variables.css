@@ -55,6 +55,7 @@
 	--color-danger-dark: var(--sys-color-red-700);
 
 	--color-background: var(--sys-color-neutral-0);
+	--color-background-rgb: 255, 255, 255;
 	--color-background-subtle: var(--sys-color-neutral-50);
 	--color-text: var(--sys-color-neutral-800);
 	--color-text-light: var(--sys-color-neutral-600);
@@ -511,6 +512,7 @@ html.dark {
 
 	/* Background & Text - True dark with good contrast */
 	--color-background: #0f172a; /* Rich dark blue */
+	--color-background-rgb: 15, 23, 42;
 	--color-background-subtle: #1e293b;
 	--color-text: #f1f5f9;
 	--color-text-light: #cbd5e1;
