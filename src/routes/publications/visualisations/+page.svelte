@@ -750,7 +750,7 @@
 	}
 
 	.bubble-chart {
-		height: 550px;
+		height: 850px;
 		/* Explicit height for bubble chart */
 		contain: strict;
 		overflow: visible;
@@ -808,7 +808,7 @@
 		}
 
 		.bubble-chart {
-			height: 450px;
+			height: 550px;
 		}
 
 		.visualization-section h2 {
@@ -831,7 +831,7 @@
 		}
 
 		.bubble-chart {
-			height: 350px;
+			height: 450px;
 		}
 
 		.visualization-section h2 {

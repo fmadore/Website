@@ -1,6 +1,6 @@
 <!--
 D3 Bubble Chart - A bubble chart for visualizing keyword frequency
-Uses D3.js force simulation for organic, physics-based bubble layout
+Uses D3.js circle packing for a balanced, overlap-free layout
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
@@ -26,8 +26,8 @@ Uses D3.js force simulation for organic, physics-based bubble layout
 			'rgba(var(--color-success-rgb), 0.7)',
 			'rgba(var(--color-primary-rgb), 0.6)'
 		],
-		minBubbleSize = 20,
-		maxBubbleSize = 80
+		minBubbleSize = 15,
+		maxBubbleSize = 60
 	}: {
 		data?: DataItem[];
 		nameAccessor: (d: DataItem) => string;
@@ -40,7 +40,6 @@ Uses D3.js force simulation for organic, physics-based bubble layout
 	// State management
 	let chartContainer: HTMLDivElement;
 	let svg: d3.Selection<SVGSVGElement, unknown, null, undefined> | null = null;
-	let simulation: d3.Simulation<SimulationNode, undefined> | null = null;
 
 	// Reactive values
 	const isMobile = $derived((windowInnerWidth.current ?? 1024) < 768);
@@ -80,40 +79,37 @@ Uses D3.js force simulation for organic, physics-based bubble layout
 	});
 
 	// Type for simulation nodes
-	type SimulationNode = {
+	type PackedHierarchyNode = {
 		name: string;
 		value: number;
 		radius: number;
-		x: number;
-		y: number;
-		vx?: number;
-		vy?: number;
+		packingValue: number;
+		children?: PackedHierarchyNode[];
 	};
 
 	// Chart data transformation
-	const chartData: SimulationNode[] = $derived.by(() => {
+	const chartData: PackedHierarchyNode[] = $derived.by(() => {
 		if (data.length === 0) return [];
 
 		const maxValue = d3.max(data, (d) => valueAccessor(d)) || 1;
 		const sizeScale = d3
 			.scaleSqrt()
 			.domain([0, maxValue])
-			.range([minBubbleSize, isMobile ? maxBubbleSize * 0.7 : maxBubbleSize]);
+			.range([minBubbleSize, isMobile ? maxBubbleSize * 0.6 : maxBubbleSize]);
 
 		return data.map((d) => ({
 			name: nameAccessor(d),
 			value: valueAccessor(d),
 			radius: sizeScale(valueAccessor(d)),
-			x: 0,
-			y: 0
+			packingValue: Math.pow(sizeScale(valueAccessor(d)), 2)
 		}));
 	});
 
 	// Responsive sizing
 	const dimensions = $derived({
-		width: isMobile ? Math.min(350, (windowInnerWidth.current ?? 350) - 32) : 800,
-		height: isMobile ? 400 : 500,
-		padding: 4
+		width: isMobile ? Math.min(350, (windowInnerWidth.current ?? 350) - 32) : 1000,
+		height: isMobile ? 500 : 800,
+		padding: 12
 	});
 
 	// Create/update chart
@@ -132,6 +128,8 @@ Uses D3.js force simulation for organic, physics-based bubble layout
 			.attr('width', width)
 			.attr('height', height)
 			.attr('viewBox', `0 0 ${width} ${height}`)
+			.style('width', '100%')
+			.style('height', '100%')
 			.attr('role', 'img')
 			.attr('aria-label', 'Keyword frequency bubble chart visualization');
 
@@ -160,27 +158,54 @@ Uses D3.js force simulation for organic, physics-based bubble layout
 			.style('z-index', '1000')
 			.style('white-space', 'nowrap');
 
-		// Create bubble groups
+		// Compute packed layout to guarantee no overlaps and clean alignment
+		const rootNode: PackedHierarchyNode = {
+			name: 'root',
+			value: 0,
+			radius: 0,
+			packingValue: 0,
+			children: chartData
+		};
+
+		const packedNodes = d3
+			.pack<PackedHierarchyNode>()
+			.size([width - padding * 2, height - padding * 2])
+			.padding(padding)
+			(
+				d3
+					.hierarchy(rootNode)
+					.sum((d) => d.packingValue)
+					.sort((a, b) => (b.data.value || 0) - (a.data.value || 0))
+			 )
+			.leaves();
+
 		const bubbleGroups = svg
-			.selectAll<SVGGElement, SimulationNode>('.bubble')
-			.data(chartData)
+			.selectAll<SVGGElement, d3.HierarchyCircularNode<PackedHierarchyNode>>('.bubble')
+			.data(packedNodes)
 			.enter()
 			.append('g')
 			.attr('class', 'bubble')
+			.attr('transform', (d) => `translate(${d.x + padding},${d.y + padding})`)
 			.style('cursor', 'pointer');
 
-		// Add circles
 		bubbleGroups
 			.append('circle')
-			.attr('r', (d) => d.radius)
-			.attr('fill', (d) => colorScale(d.name))
-			.attr('stroke', resolvedColors.border)
-			.attr('stroke-width', 1.5)
-			.style('opacity', 0.85)
+			.attr('r', (d) => d.r)
+			.attr('fill', (d) => colorScale(d.data.name))
+			.attr('stroke', `rgba(var(--color-surface-rgb), 0.35)`)
+			.attr('stroke-width', 1.25)
+			.style('opacity', 0.9)
+			.style('filter', 'drop-shadow(0 12px 18px rgba(17, 24, 39, 0.12))')
 			.on('mouseenter', function (event, d) {
-				d3.select(this).transition().duration(200).style('opacity', 1).attr('stroke-width', 2.5);
+				d3.select(this)
+					.transition()
+					.duration(200)
+					.style('opacity', 1)
+					.attr('stroke-width', 2);
 
-				tooltip.style('visibility', 'visible').html(`<strong>${d.name}</strong><br/>Count: ${d.value}`);
+				tooltip
+					.style('visibility', 'visible')
+					.html(`<strong>${d.data.name}</strong><br/>Count: ${d.data.value}`);
 			})
 			.on('mousemove', function (event) {
 				const containerRect = chartContainer.getBoundingClientRect();
@@ -189,82 +214,51 @@ Uses D3.js force simulation for organic, physics-based bubble layout
 					.style('left', `${event.clientX - containerRect.left - 50}px`);
 			})
 			.on('mouseleave', function () {
-				d3.select(this).transition().duration(200).style('opacity', 0.85).attr('stroke-width', 1.5);
+				d3.select(this)
+					.transition()
+					.duration(200)
+					.style('opacity', 0.9)
+					.attr('stroke-width', 1.25);
 
 				tooltip.style('visibility', 'hidden');
 			});
 
-		// Add text labels (only for larger bubbles)
 		bubbleGroups
 			.append('text')
 			.attr('text-anchor', 'middle')
 			.attr('dominant-baseline', 'middle')
 			.style('fill', resolvedColors.text)
-			.style('font-size', (d) => `${Math.max(10, Math.min(14, d.radius / 3))}px`)
+			.style('font-size', (d) => `${Math.max(10, Math.min(16, d.r / 3.2))}px`)
 			.style('font-weight', '600')
 			.style('font-family', 'Inter, -apple-system, sans-serif')
 			.style('pointer-events', 'none')
 			.style('user-select', 'none')
 			.each(function (d) {
-				// Only show label if bubble is large enough
-				if (d.radius < 25) return;
+				if (d.r < 24) return;
 
-				const text = d.name.length > 12 ? d.name.substring(0, 10) + '...' : d.name;
-				d3.select(this).text(text);
-			});
-
-		// Create force simulation
-		simulation = d3
-			.forceSimulation(chartData)
-			.force(
-				'charge',
-				d3.forceManyBody<SimulationNode>().strength((d) => -Math.pow(d.radius, 2) * 0.02)
-			)
-			.force('center', d3.forceCenter<SimulationNode>(width / 2, height / 2))
-			.force(
-				'collision',
-				d3
-					.forceCollide<SimulationNode>()
-					.radius((d) => d.radius + padding)
-					.strength(0.9)
-			)
-			.force('x', d3.forceX<SimulationNode>(width / 2).strength(0.03))
-			.force('y', d3.forceY<SimulationNode>(height / 2).strength(0.03))
-			.on('tick', () => {
-				bubbleGroups.attr('transform', (d) => {
-					// Keep bubbles within bounds
-					d.x = Math.max(d.radius, Math.min(width - d.radius, d.x));
-					d.y = Math.max(d.radius, Math.min(height - d.radius, d.y));
-					return `translate(${d.x},${d.y})`;
-				});
+				const label = d.data.name.length > 14 ? `${d.data.name.slice(0, 12)}…` : d.data.name;
+				d3.select(this).text(label);
 			});
 	}
 
 	// Lifecycle management
 	onMount(() => {
 		createChart();
-
-		return () => {
-			if (simulation) {
-				simulation.stop();
-			}
-		};
 	});
 
 	// Reactive updates when data or dimensions change
 	$effect(() => {
 		// Track dependencies
-		const _ = [chartData, dimensions, resolvedColors];
+		const _ = [chartData, dimensions, resolvedColors, windowInnerWidth.current];
 
-		if (chartContainer && chartData.length > 0) {
-			createChart();
-		}
-
-		return () => {
-			if (simulation) {
-				simulation.stop();
+		if (chartContainer) {
+			if (chartData.length > 0) {
+				createChart();
+			} else {
+				d3.select(chartContainer).selectAll('*').remove();
+				svg = null;
 			}
-		};
+		}
 	});
 </script>
 
@@ -291,11 +285,25 @@ Uses D3.js force simulation for organic, physics-based bubble layout
 		height: 100%;
 		position: relative;
 		overflow: visible;
+		padding: var(--spacing-6);
+		border-radius: var(--border-radius-2xl);
+		border: 1px solid rgba(var(--color-surface-rgb), 0.25);
+		background:
+			linear-gradient(
+				135deg,
+				rgba(var(--color-primary-rgb), 0.06),
+				rgba(var(--color-highlight-rgb), 0.04)
+			);
+		backdrop-filter: blur(22px);
+		-webkit-backdrop-filter: blur(22px);
+		box-shadow: 0 24px 60px rgba(17, 25, 40, 0.18);
 	}
 
 	.bubble-chart :global(svg) {
 		display: block;
 		margin: 0 auto;
+		border-radius: var(--border-radius-xl);
+		isolation: isolate;
 	}
 
 	.no-data-message {
@@ -319,6 +327,20 @@ Uses D3.js force simulation for organic, physics-based bubble layout
 	@media (max-width: 768px) {
 		.bubble-chart-container {
 			min-height: 400px;
+		}
+
+		.bubble-chart {
+			padding: var(--spacing-4);
+		}
+	}
+
+	@media (max-width: 640px) {
+		.bubble-chart-container {
+			min-height: 320px;
+		}
+
+		.bubble-chart {
+			padding: var(--spacing-3);
 		}
 	}
 </style>
