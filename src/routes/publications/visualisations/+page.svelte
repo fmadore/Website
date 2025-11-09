@@ -12,11 +12,13 @@
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
 	import EChartsDoughnutChart from '$lib/components/visualisations/EChartsDoughnutChart.svelte';
 	import EChartsNetworkGraph from '$lib/components/visualisations/EChartsNetworkGraph.svelte';
+	import D3BubbleChart from '$lib/components/visualisations/D3BubbleChart.svelte';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 
 	type CitationYearData = { year: number; count: number };
 	type CitedAuthorData = { author: string; count: number };
 	type LanguageData = { language: string; count: number };
+	type KeywordData = { keyword: string; count: number };
 
 	// Calculate data reactively using $derived - optimized for performance
 	const citationsPerYearData = $derived(
@@ -87,6 +89,25 @@
 			});
 			return Object.entries(languageCounts)
 				.map(([language, count]) => ({ language, count }))
+				.sort((a, b) => b.count - a.count);
+		})()
+	);
+
+	// Calculate keyword frequency data
+	const keywordData = $derived(
+		(() => {
+			const keywordCounts: Record<string, number> = {};
+			allPublications.forEach((pub) => {
+				if (pub.tags && Array.isArray(pub.tags)) {
+					pub.tags.forEach((tag: string) => {
+						if (tag && tag.trim()) {
+							keywordCounts[tag] = (keywordCounts[tag] || 0) + 1;
+						}
+					});
+				}
+			});
+			return Object.entries(keywordCounts)
+				.map(([keyword, count]) => ({ keyword, count }))
 				.sort((a, b) => b.count - a.count);
 		})()
 	);
@@ -274,6 +295,10 @@
 	const getLanguageName = (d: LanguageData) => d.language;
 	const getLanguageCount = (d: LanguageData) => d.count;
 
+	// Accessor functions for keyword bubble chart
+	const getKeywordName = (d: KeywordData) => d.keyword;
+	const getKeywordCount = (d: KeywordData) => d.count;
+
 	// Pagination state
 	let currentPage = $state(0);
 
@@ -436,6 +461,36 @@
 		{:else}
 			<div class="placeholder-message" style="height: 480px;">
 				<p class="text-light">No language data available to display for this visualization.</p>
+			</div>
+		{/if}
+	</section>
+
+	<section
+		class="visualization-section mb-12"
+		use:scrollAnimate={{
+			delay: 275,
+			animationClass: 'fade-in-up',
+			rootMargin: '150px',
+			threshold: 0.05
+		}}
+	>
+		<h2 class="text-2xl font-semibold mb-6">
+			Keyword Frequency
+			{#if keywordData.length > 0}
+				({keywordData.length} unique keywords)
+			{/if}
+		</h2>
+		{#if keywordData.length > 0}
+			<div class="chart-wrapper bubble-chart" style="height: 550px;">
+				<D3BubbleChart
+					data={keywordData}
+					nameAccessor={getKeywordName}
+					valueAccessor={getKeywordCount}
+				/>
+			</div>
+		{:else}
+			<div class="placeholder-message" style="height: 550px;">
+				<p class="text-light">No keyword data available to display for this visualization.</p>
 			</div>
 		{/if}
 	</section>
@@ -694,6 +749,13 @@
 		contain: strict;
 	}
 
+	.bubble-chart {
+		height: 550px;
+		/* Explicit height for bubble chart */
+		contain: strict;
+		overflow: visible;
+	}
+
 	.placeholder-message {
 		padding: var(--spacing-6);
 		min-height: var(--iframe-height-xs);
@@ -745,6 +807,10 @@
 			height: var(--iframe-height-sm);
 		}
 
+		.bubble-chart {
+			height: 450px;
+		}
+
 		.visualization-section h2 {
 			font-size: var(--font-size-xl);
 			margin-bottom: var(--spacing-4);
@@ -762,6 +828,10 @@
 
 		.network-chart {
 			height: calc(var(--iframe-height-xs) + var(--spacing-12));
+		}
+
+		.bubble-chart {
+			height: 350px;
 		}
 
 		.visualization-section h2 {
