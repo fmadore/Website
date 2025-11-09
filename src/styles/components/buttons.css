@@ -276,6 +276,30 @@
 	border-color: rgba(var(--color-primary-rgb), var(--glass-opacity-medium));
 }
 
+.btn-glass.btn-outline-primary {
+	background: rgba(var(--color-primary-rgb), var(--opacity-very-low));
+	color: var(--color-primary);
+	border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+}
+
+.btn-glass.btn-outline-primary:hover:not(:disabled) {
+	background: var(--color-primary);
+	color: var(--color-white);
+	border-color: var(--color-primary);
+}
+
+.btn-glass.btn-outline-secondary {
+	background: rgba(var(--color-surface-rgb), var(--opacity-low));
+	color: var(--color-text);
+	border-color: rgba(var(--color-text-rgb), var(--opacity-medium));
+}
+
+.btn-glass.btn-outline-secondary:hover:not(:disabled) {
+	background: rgba(var(--color-surface-rgb), var(--opacity-medium-high));
+	color: var(--color-text);
+	border-color: rgba(var(--color-text-rgb), var(--opacity-medium-high));
+}
+
 /* ===== DARK MODE ADJUSTMENTS ===== */
 
 :global(html.dark) .btn::before {
@@ -318,6 +342,30 @@
 :global(html.dark) .btn-glass:hover:not(:disabled) {
 	background: rgba(var(--color-white-rgb), var(--opacity-low));
 	border-color: rgba(var(--color-white-rgb), var(--opacity-medium));
+}
+
+:global(html.dark) .btn-glass.btn-outline-primary {
+	background: rgba(var(--color-primary-rgb), var(--opacity-very-low));
+	color: var(--color-primary);
+	border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
+}
+
+:global(html.dark) .btn-glass.btn-outline-primary:hover:not(:disabled) {
+	background: var(--color-primary);
+	color: var(--color-white);
+	border-color: var(--color-primary);
+}
+
+:global(html.dark) .btn-glass.btn-outline-secondary {
+	background: rgba(var(--color-white-rgb), var(--opacity-very-low));
+	color: var(--color-text);
+	border-color: rgba(var(--color-white-rgb), var(--opacity-medium));
+}
+
+:global(html.dark) .btn-glass.btn-outline-secondary:hover:not(:disabled) {
+	background: rgba(var(--color-white-rgb), var(--opacity-low));
+	color: var(--color-text);
+	border-color: rgba(var(--color-white-rgb), var(--opacity-medium-high));
 }
 
 /* ===== ANIMATION UTILITIES ===== */
