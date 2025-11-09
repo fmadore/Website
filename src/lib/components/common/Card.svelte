@@ -230,10 +230,10 @@
 			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
 			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-10));
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
 		box-shadow:
-			0 var(--spacing-2) var(--spacing-8) 0 rgba(var(--color-black-rgb), var(--opacity-50)),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-10));
+			0 var(--spacing-2) var(--spacing-8) 0 rgba(var(--color-black-rgb), var(--opacity-medium-high)),
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-low));
 	}
 
 	:global(html.dark) .card:hover {
@@ -243,10 +243,10 @@
 			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
 			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		border-color: rgba(var(--color-white-rgb), var(--opacity-20));
+		border-color: rgba(var(--color-white-rgb), var(--opacity-medium));
 		box-shadow:
-			0 var(--spacing-3) var(--spacing-10) 0 rgba(var(--color-black-rgb), var(--opacity-60)),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-20));
+			0 var(--spacing-3) var(--spacing-10) 0 rgba(var(--color-black-rgb), var(--opacity-high)),
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium));
 	}
 
 	/* Fallback for browsers that don't support backdrop-filter */

@@ -219,3 +219,30 @@
 		transform: none;
 	}
 }
+
+/* Dark mode support - consistent glassmorphism */
+:global(html.dark) .entity-card {
+	background: linear-gradient(
+		135deg,
+		rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+		rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+		rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+	);
+	border-color: rgba(var(--color-white-rgb), var(--opacity-low));
+	box-shadow:
+		0 var(--spacing-2) var(--spacing-8) 0 rgba(var(--color-black-rgb), var(--opacity-medium-high)),
+		inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-low));
+}
+
+:global(html.dark) .entity-card:hover {
+	background: linear-gradient(
+		135deg,
+		rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
+		rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
+		rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+	);
+	border-color: rgba(var(--color-white-rgb), var(--opacity-medium));
+	box-shadow:
+		0 var(--spacing-3) var(--spacing-10) 0 rgba(var(--color-black-rgb), var(--opacity-high)),
+		inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium));
+}
