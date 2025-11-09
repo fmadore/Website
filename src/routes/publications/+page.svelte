@@ -24,6 +24,7 @@
 		setLanguages,
 		setAuthors,
 		setCountries,
+		setProjects,
 		setYearRange
 	} from '$lib/data/publications/filters.svelte';
 	import UniversalFiltersSidebar from '$lib/components/filters/UniversalFiltersSidebar.svelte';
@@ -108,6 +109,7 @@
 		setLanguages,
 		setAuthors,
 		setCountries,
+		setProjects,
 		setYearRange
 	};
 

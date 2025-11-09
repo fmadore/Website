@@ -65,6 +65,7 @@
 		itemTypePlural="communications"
 		basePath="/communications"
 		viewAllPath="/conference-activity"
+		{projectName}
 		formatType={formatCommunicationType}
 		{formatAuthors}
 	/>

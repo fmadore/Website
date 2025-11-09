@@ -96,6 +96,7 @@
 		itemTypePlural="publications"
 		basePath="/publications"
 		viewAllPath="/publications"
+		{projectName}
 		formatType={formatPublicationType}
 		{formatAuthors}
 	/>

@@ -25,6 +25,7 @@
 		itemTypePlural,
 		basePath,
 		viewAllPath,
+		projectName,
 		formatType,
 		formatAuthors
 	}: {
@@ -33,9 +34,17 @@
 		itemTypePlural: string; // e.g., "publications", "communications"
 		basePath: string; // Base path for individual item links e.g., "/publications", "/communications"
 		viewAllPath: string; // Path for the "View all" link e.g., "/publications", "/conference-activity"
+		projectName?: string; // Project name to use as a filter parameter
 		formatType: (type: string) => string;
 		formatAuthors: (authors: string[]) => string;
 	} = $props();
+
+	// Construct the view all URL with project filter if projectName is provided
+	const viewAllUrl = $derived(
+		projectName
+			? `${base}${viewAllPath}?project=${encodeURIComponent(projectName)}`
+			: `${base}${viewAllPath}`
+	);
 </script>
 
 {#snippet panelContent()}
@@ -52,7 +61,7 @@
 
 		<div class="view-all-container">
 			<Button
-				href="{base}{viewAllPath}"
+				href={viewAllUrl}
 				variant="outline-primary"
 				size="base"
 				additionalClasses="glass-button"
