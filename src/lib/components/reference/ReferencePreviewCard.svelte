@@ -216,11 +216,11 @@
 <style>
 	.preview-card {
 		position: absolute;
-		bottom: calc(100% + var(--spacing-3));
+		bottom: calc(100% + var(--spacing-4));
 		left: 50%;
 		transform: translateX(-50%);
 		padding: 0;
-		width: 350px;
+		width: 380px;
 		max-width: 90vw;
 		z-index: 1000;
 		pointer-events: auto;
@@ -230,93 +230,104 @@
 		color: var(--color-text);
 		overflow: hidden;
 
-		/* Improved glassmorphism for better readability */
-		backdrop-filter: blur(var(--glass-blur-amount)) saturate(120%);
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount)) saturate(120%);
+		/* Enhanced glassmorphism with deeper blur and saturation */
+		backdrop-filter: blur(20px) saturate(150%);
+		-webkit-backdrop-filter: blur(20px) saturate(150%);
 
-		/* Higher opacity background using global values */
+		/* Premium glass background with subtle gradients */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-white-rgb), var(--opacity-90)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-10)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-5)) 100%
+			rgba(var(--color-white-rgb), 0.95) 0%,
+			rgba(var(--color-white-rgb), 0.92) 50%,
+			rgba(var(--color-primary-rgb), 0.05) 100%
 		);
 
-		/* Using global border system */
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-15));
-		border-radius: var(--border-radius-xl);
+		/* Refined border with subtle shimmer effect */
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), 0.2);
+		border-radius: var(--border-radius-2xl);
 
-		/* Using global shadow system */
-		box-shadow: var(--shadow-xl);
+		/* Enhanced shadow system with multiple layers for depth */
+		box-shadow:
+			0 20px 60px -15px rgba(var(--color-primary-rgb), 0.15),
+			0 10px 30px -10px rgba(var(--color-primary-rgb), 0.1),
+			inset 0 1px 0 rgba(var(--color-white-rgb), 0.4),
+			inset 0 -1px 0 rgba(var(--color-primary-rgb), 0.05);
 
 		/* Initial state for animation using global variables */
 		opacity: 0;
-		transform: translateX(-50%) translateY(var(--spacing-2)) scale(var(--scale-95));
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transform: translateX(-50%) translateY(var(--spacing-3)) scale(0.92);
+		transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 	}
 
 	.preview-card.positioned {
 		opacity: 1;
-		transform: translateX(-50%) translateY(0) scale(var(--scale-100));
+		transform: translateX(-50%) translateY(0) scale(1);
 	}
 
 	.preview-card.card-clicked {
-		transform: translateX(-50%) translateY(calc(-1 * var(--spacing-1))) scale(var(--scale-105));
-		box-shadow: var(--shadow-2xl);
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-30));
+		transform: translateX(-50%) translateY(calc(-1 * var(--spacing-2))) scale(1.02);
+		box-shadow:
+			0 25px 80px -20px rgba(var(--color-primary-rgb), 0.25),
+			0 15px 40px -15px rgba(var(--color-primary-rgb), 0.15),
+			inset 0 1px 0 rgba(var(--color-white-rgb), 0.5);
+		border-color: rgba(var(--color-primary-rgb), 0.35);
 	}
 
-	/* Dark mode styles with better readability */
+	/* Enhanced dark mode styles with sophisticated depth */
 	:global(html.dark) .preview-card {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-alt-rgb), var(--opacity-90)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-10)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-5)) 100%
+			rgba(var(--color-dark-surface-alt-rgb), 0.96) 0%,
+			rgba(var(--color-dark-surface-alt-rgb), 0.94) 50%,
+			rgba(var(--color-primary-rgb), 0.08) 100%
 		);
 
-		border: var(--border-width-thin) solid
-			rgba(var(--color-primary-rgb), var(--opacity-30));
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), 0.25);
 
 		box-shadow:
-			var(--shadow-xl),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-15));
+			0 20px 60px -15px rgba(0, 0, 0, 0.4),
+			0 10px 30px -10px rgba(var(--color-primary-rgb), 0.2),
+			inset 0 1px 0 rgba(var(--color-white-rgb), 0.1),
+			inset 0 -1px 0 rgba(var(--color-primary-rgb), 0.1);
 	}
 
 	:global(html.dark) .preview-card.card-clicked {
 		box-shadow:
-			var(--shadow-2xl),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-primary-rgb), var(--opacity-30));
-
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-30));
+			0 25px 80px -20px rgba(0, 0, 0, 0.5),
+			0 15px 40px -15px rgba(var(--color-primary-rgb), 0.3),
+			inset 0 1px 0 rgba(var(--color-primary-rgb), 0.2);
+		border-color: rgba(var(--color-primary-rgb), 0.4);
 	}
 
 	/* Position below variant */
 	.preview-card.position-below {
 		bottom: auto;
-		top: calc(100% + var(--spacing-3));
-		transform: translateX(-50%) translateY(calc(-1 * var(--spacing-2))) scale(var(--scale-95));
+		top: calc(100% + var(--spacing-4));
+		transform: translateX(-50%) translateY(calc(-1 * var(--spacing-3))) scale(0.92);
 	}
 
 	.preview-card.position-below.positioned {
-		transform: translateX(-50%) translateY(0) scale(var(--scale-100));
+		transform: translateX(-50%) translateY(0) scale(1);
 	}
 
 	.card-content-wrapper {
 		position: relative;
 		overflow: hidden;
-		border-radius: var(--border-radius-xl);
+		border-radius: var(--border-radius-2xl);
 	}
 
 	.card-image-container {
 		position: relative;
 		overflow: hidden;
-		height: 120px;
+		height: 140px;
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-15)),
-			rgba(var(--color-accent-rgb), var(--opacity-15))
+			rgba(var(--color-primary-rgb), 0.08),
+			rgba(var(--color-accent-rgb), 0.08)
 		);
+		
+		/* Add subtle border at bottom of image */
+		border-bottom: var(--border-width-thin) solid rgba(var(--color-primary-rgb), 0.1);
 	}
 
 	.card-image {
@@ -324,7 +335,10 @@
 		height: 100%;
 		object-fit: cover;
 		display: block;
-		transition: transform var(--anim-duration-slow) var(--anim-ease-base);
+		transition: 
+			transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+			filter 0.3s ease;
+		filter: brightness(1) contrast(1.05);
 	}
 
 	.image-overlay {
@@ -332,33 +346,52 @@
 		inset: 0;
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-10)) 0%,
-			transparent 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-10)) 100%
+			rgba(var(--color-primary-rgb), 0.15) 0%,
+			transparent 40%,
+			rgba(var(--color-accent-rgb), 0.15) 100%
 		);
 		opacity: 0;
 		transition: opacity var(--anim-duration-base) var(--anim-ease-out);
+		
+		/* Add subtle shine effect */
+		background-image: 
+			linear-gradient(
+				135deg,
+				rgba(var(--color-primary-rgb), 0.15) 0%,
+				transparent 40%,
+				rgba(var(--color-accent-rgb), 0.15) 100%
+			),
+			linear-gradient(
+				to right,
+				transparent 0%,
+				rgba(var(--color-white-rgb), 0.1) 50%,
+				transparent 100%
+			);
 	}
 
 	.card-content {
-		padding: var(--spacing-4);
+		padding: var(--spacing-5);
 		position: relative;
 
-		/* Improved content area background for readability */
+		/* Enhanced content area with sophisticated gradient */
 		background: linear-gradient(
 			180deg,
-			rgba(var(--color-white-rgb), 0.7) 0%,
-			rgba(var(--color-white-rgb), 0.9) 100%
+			rgba(var(--color-white-rgb), 0.85) 0%,
+			rgba(var(--color-white-rgb), 0.95) 100%
 		);
+		
+		/* Subtle top border for separation */
+		box-shadow: inset 0 1px 0 rgba(var(--color-white-rgb), 0.5);
 	}
 
-	/* Dark mode content area */
+	/* Enhanced dark mode content area */
 	:global(html.dark) .card-content {
 		background: linear-gradient(
 			180deg,
-			rgba(var(--color-dark-surface-alt-rgb), 0.8) 0%,
+			rgba(var(--color-dark-surface-alt-rgb), 0.85) 0%,
 			rgba(var(--color-dark-surface-alt-rgb), 0.95) 100%
 		);
+		box-shadow: inset 0 1px 0 rgba(var(--color-white-rgb), 0.05);
 	}
 
 	/* Container for date badge */
@@ -371,20 +404,36 @@
 	/* Custom styling for date badge button */
 	:global(.card-date-badge) {
 		font-size: var(--font-size-xs) !important;
-		font-weight: var(--font-weight-semibold) !important;
-		padding: var(--spacing-1) var(--spacing-2) !important;
-		border-radius: var(--border-radius) !important;
+		font-weight: var(--font-weight-bold) !important;
+		letter-spacing: 0.05em !important;
+		padding: var(--spacing-1) var(--spacing-3) !important;
+		border-radius: var(--border-radius-md) !important;
 		cursor: default !important;
 		pointer-events: none !important;
 
-		/* Enhanced glassmorphism for date badge */
+		/* Premium glassmorphism for date badge */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-15)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-10)) 100%
+			rgba(var(--color-primary-rgb), 0.12) 0%,
+			rgba(var(--color-primary-rgb), 0.08) 100%
 		) !important;
 		color: var(--color-primary) !important;
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-15)) !important;
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), 0.25) !important;
+		box-shadow: 
+			0 2px 8px rgba(var(--color-primary-rgb), 0.1),
+			inset 0 1px 0 rgba(var(--color-white-rgb), 0.3) !important;
+	}
+	
+	:global(html.dark .card-date-badge) {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.2) 0%,
+			rgba(var(--color-primary-rgb), 0.15) 100%
+		) !important;
+		border-color: rgba(var(--color-primary-rgb), 0.3) !important;
+		box-shadow: 
+			0 2px 8px rgba(var(--color-primary-rgb), 0.15),
+			inset 0 1px 0 rgba(var(--color-primary-rgb), 0.2) !important;
 	}
 
 	/* Container for view-more hint */
@@ -402,20 +451,36 @@
 		align-items: center !important;
 		justify-content: space-between !important;
 		font-size: var(--font-size-xs) !important;
-		font-weight: var(--font-weight-medium) !important;
-		padding: var(--spacing-2) var(--spacing-3) !important;
-		border-radius: var(--border-radius-md) !important;
+		font-weight: var(--font-weight-semibold) !important;
+		letter-spacing: 0.03em !important;
+		padding: var(--spacing-2) var(--spacing-4) !important;
+		border-radius: var(--border-radius-lg) !important;
 		cursor: default !important;
 		pointer-events: none !important;
 
-		/* Enhanced glassmorphism for hint */
+		/* Premium gradient background */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-15)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-10)) 100%
+			rgba(var(--color-primary-rgb), 0.12) 0%,
+			rgba(var(--color-accent-rgb), 0.08) 100%
 		) !important;
 		color: var(--color-primary) !important;
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-15)) !important;
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), 0.2) !important;
+		box-shadow: 
+			0 4px 12px rgba(var(--color-primary-rgb), 0.08),
+			inset 0 1px 0 rgba(var(--color-white-rgb), 0.3) !important;
+	}
+	
+	:global(html.dark .view-more-hint) {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.18) 0%,
+			rgba(var(--color-accent-rgb), 0.12) 100%
+		) !important;
+		border-color: rgba(var(--color-primary-rgb), 0.3) !important;
+		box-shadow: 
+			0 4px 12px rgba(var(--color-primary-rgb), 0.15),
+			inset 0 1px 0 rgba(var(--color-primary-rgb), 0.2) !important;
 	}
 
 	.hint-text {
@@ -426,21 +491,31 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: var(--spacing-5);
-		height: var(--spacing-5);
-		background: var(--color-primary);
+		width: var(--spacing-6);
+		height: var(--spacing-6);
+		background: linear-gradient(
+			135deg,
+			var(--color-primary) 0%,
+			var(--color-primary-dark) 100%
+		);
 		color: var(--color-white);
 		border-radius: var(--border-radius-full);
-		font-size: var(--font-size-xs);
-		transform: translateX(calc(-1 * var(--spacing-1)));
-		transition: transform var(--anim-duration-base) var(--anim-ease-base);
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-bold);
+		transform: translateX(calc(-1 * var(--spacing-2)));
+		transition: 
+			transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+			box-shadow 0.3s ease;
+		box-shadow: 
+			0 2px 8px rgba(var(--color-primary-rgb), 0.3),
+			inset 0 1px 0 rgba(var(--color-white-rgb), 0.2);
 	}
 
 	.card-link {
 		text-decoration: none;
 		color: inherit;
 		display: block;
-		border-radius: var(--border-radius-xl);
+		border-radius: var(--border-radius-2xl);
 		transition: all var(--anim-duration-base) var(--anim-ease-out);
 	}
 
@@ -453,11 +528,15 @@
 	.card-link:hover .hint-arrow,
 	.card-link:focus .hint-arrow {
 		transform: translateX(0);
+		box-shadow: 
+			0 4px 12px rgba(var(--color-primary-rgb), 0.4),
+			inset 0 1px 0 rgba(var(--color-white-rgb), 0.3);
 	}
 
 	.card-link:hover .card-image,
 	.card-link:focus .card-image {
-		transform: scale(var(--scale-110));
+		transform: scale(1.08);
+		filter: brightness(1.05) contrast(1.1);
 	}
 
 	.card-link:hover .image-overlay,
@@ -465,66 +544,112 @@
 		opacity: 1;
 	}
 
-	/* ARROW STYLES */
+	/* ENHANCED ARROW STYLES */
 	.card-arrow {
 		position: absolute;
-		bottom: calc(-1 * var(--spacing-3));
+		bottom: calc(-1 * var(--spacing-4));
 		left: 50%;
-		width: var(--spacing-5);
-		height: var(--spacing-5);
-		background: inherit;
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-15));
+		width: var(--spacing-6);
+		height: var(--spacing-6);
+		
+		/* Sophisticated glass effect for arrow */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-white-rgb), 0.95) 0%,
+			rgba(var(--color-primary-rgb), 0.05) 100%
+		);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), 0.2);
 		border-radius: var(--border-radius-sm);
-		transform: translateX(-50%) rotate(var(--rotate-45));
-		z-index: 1;
+		transform: translateX(-50%) rotate(45deg);
+		z-index: 999;
+		
+		/* Enhanced shadow for depth */
+		box-shadow: 
+			0 4px 12px rgba(var(--color-primary-rgb), 0.15),
+			inset 0 1px 0 rgba(var(--color-white-rgb), 0.4);
 	}
 
 	.position-below .card-arrow {
 		bottom: auto;
-		top: calc(-1 * var(--spacing-3));
+		top: calc(-1 * var(--spacing-4));
 	}
 
-	/* Dark mode arrow */
+	/* Dark mode arrow with sophisticated glass */
 	:global(html.dark) .card-arrow {
-		border-color: rgba(var(--color-white-rgb), var(--opacity-10));
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-dark-surface-alt-rgb), 0.95) 0%,
+			rgba(var(--color-primary-rgb), 0.08) 100%
+		);
+		border-color: rgba(var(--color-primary-rgb), 0.25);
+		box-shadow: 
+			0 4px 12px rgba(0, 0, 0, 0.3),
+			inset 0 1px 0 rgba(var(--color-white-rgb), 0.1);
 	}
 
 	.card-title {
-		font-weight: var(--font-weight-semibold);
-		margin-bottom: var(--spacing-2);
+		font-weight: var(--font-weight-bold);
+		margin-bottom: var(--spacing-3);
 		color: var(--color-text);
 		line-height: var(--line-height-snug);
 		font-size: var(--font-size-base);
-		background: linear-gradient(135deg, var(--color-text), var(--color-primary));
+		
+		/* Enhanced gradient text effect */
+		background: linear-gradient(
+			135deg, 
+			var(--color-text) 0%, 
+			var(--color-primary) 60%,
+			var(--color-accent) 100%
+		);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		
+		/* Subtle text shadow for depth */
+		filter: drop-shadow(0 1px 2px rgba(var(--color-primary-rgb), 0.1));
+	}
+	
+	:global(html.dark) .card-title {
+		background: linear-gradient(
+			135deg, 
+			var(--color-text) 0%, 
+			var(--color-primary-light) 60%,
+			var(--color-accent) 100%
+		);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
 	}
 
 	.card-authors {
-		margin-bottom: var(--spacing-1);
+		margin-bottom: var(--spacing-2);
 		color: var(--color-text-light);
 		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-medium);
+		font-weight: var(--font-weight-semibold);
+		letter-spacing: 0.02em;
 	}
 
 	.card-meta {
-		margin-bottom: var(--spacing-1);
+		margin-bottom: var(--spacing-2);
 		color: var(--color-text-light);
 		font-size: var(--font-size-xs);
-		line-height: var(--line-height-snug);
+		line-height: var(--line-height-relaxed);
 	}
 
 	.card-meta em {
 		font-style: italic;
 		color: var(--color-primary);
-		font-weight: var(--font-weight-medium);
+		font-weight: var(--font-weight-semibold);
 	}
 
-	/* Focus states */
+	/* Enhanced focus states */
 	.card-link:focus {
 		outline: var(--border-width-medium) solid var(--color-primary);
-		outline-offset: var(--border-width-medium);
+		outline-offset: var(--spacing-1);
+		border-radius: var(--border-radius-2xl);
 	}
 
 	/* Reduced motion support */
@@ -550,37 +675,41 @@
 	}
 
 	/* Backdrop filter fallback */
-	@supports not (backdrop-filter: blur(var(--glass-blur-amount))) {
+	@supports not (backdrop-filter: blur(20px)) {
 		.preview-card {
-			background: rgba(var(--color-white-rgb), var(--glass-opacity-fallback-light, 0.85));
+			background: rgba(var(--color-white-rgb), 0.92);
 		}
 
 		:global(html.dark) .preview-card {
-			background: rgba(var(--color-dark-surface-alt-rgb), var(--glass-opacity-fallback-dark, 0.85));
+			background: rgba(var(--color-dark-surface-alt-rgb), 0.92);
 		}
 
-		.view-more-hint {
-			background: rgba(var(--color-primary-rgb), var(--opacity-10));
+		.card-arrow {
+			background: rgba(var(--color-white-rgb), 0.95);
 		}
-
-		.card-date {
-			background: rgba(var(--color-primary-rgb), var(--opacity-10));
+		
+		:global(html.dark) .card-arrow {
+			background: rgba(var(--color-dark-surface-alt-rgb), 0.95);
 		}
 	}
 
 	/* Responsive design */
 	@media (max-width: 480px) {
 		.preview-card {
-			width: 300px;
+			width: 320px;
 			margin: 0 var(--spacing-2);
 		}
 
 		.card-content {
-			padding: var(--spacing-3);
+			padding: var(--spacing-4);
 		}
 
 		.card-image-container {
-			height: 100px;
+			height: 120px;
+		}
+		
+		.card-title {
+			font-size: var(--font-size-sm);
 		}
 	}
 </style>
