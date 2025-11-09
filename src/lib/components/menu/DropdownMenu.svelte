@@ -183,7 +183,7 @@
         /* Staggered item animation */
         :global(.dropdown-item) {
                 opacity: 0;
-                transform: translateX(calc(-1 * (var(--spacing-2) + var(--spacing-0\.5))));
+                transform: translateX(calc(-1 * (var(--spacing-2) + var(--spacing-05))));
                 animation: dropdownItemFadeIn var(--anim-duration-base) var(--anim-ease-base) forwards;
         }
 
@@ -206,7 +206,7 @@
         @keyframes dropdownItemFadeIn {
                 from {
                         opacity: 0;
-                        transform: translateX(calc(-1 * (var(--spacing-2) + var(--spacing-0\.5))));
+                        transform: translateX(calc(-1 * (var(--spacing-2) + var(--spacing-05))));
                 }
                 to {
                         opacity: 1;

@@ -47,7 +47,7 @@
 
 	/* Hamburger to X animation */
         .hamburger.active .hamburger-line:first-child {
-                transform: translateY(calc(var(--spacing-2) - var(--spacing-0\.5))) rotate(45deg);
+                transform: translateY(calc(var(--spacing-2) - var(--spacing-05))) rotate(45deg);
         }
 
         .hamburger.active .hamburger-line:nth-child(2) {
@@ -56,7 +56,7 @@
         }
 
         .hamburger.active .hamburger-line:last-child {
-                transform: translateY(calc(-1 * (var(--spacing-2) - var(--spacing-0\.5)))) rotate(-45deg);
+                transform: translateY(calc(-1 * (var(--spacing-2) - var(--spacing-05)))) rotate(-45deg);
         }
 
         /* Hide hamburger completely when menu is active */

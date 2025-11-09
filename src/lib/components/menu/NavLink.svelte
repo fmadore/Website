@@ -55,7 +55,7 @@
         .nav-link::after {
                 content: '';
                 position: absolute;
-                bottom: calc(-1 * var(--spacing-0\.5));
+                bottom: calc(-1 * var(--spacing-05));
                 left: 0;
                 width: 0;
                 height: var(--border-width-medium);
