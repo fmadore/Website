@@ -35,33 +35,13 @@
 </div>
 
 <style>
-	/* Base content body styling */
+	/* Base content body styling - uses glassmorphism utilities */
 	.content-body {
 		padding: var(--space-xl);
 		border-radius: var(--border-radius-lg);
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
 		position: relative;
-		box-shadow: var(--shadow-md);
-		/* Enhanced glassmorphism with subtle gradient overlay to match ProfileBanner */
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
-		);
-	}
-
-	/* Hover effects for glassmorphism */
-	.content-body:hover {
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-lg);
-		/* Enhanced hover effect with stronger gradient */
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
-		);
+		/* Glassmorphism applied via utility classes in template */
 	}
 
 	/* Variant styles */
@@ -225,8 +205,6 @@
 		border-radius: var(--border-radius-sm);
 	}
 
-	/* Remove the problematic shimmer effect that's causing the wide overflow */
-
 	/* Responsive adjustments */
 	@media (max-width: var(--breakpoint-sm)) {
 		.content-body {
@@ -257,11 +235,7 @@
 		.content-body {
 			transition: none;
 		}
-
-		.content-body:hover {
-			transform: none;
-		}
 	}
 
-	/* Dark mode adjustments are handled automatically through CSS variables */
+	/* Dark mode adjustments are handled automatically through CSS variables and glassmorphism utilities */
 </style>

@@ -288,7 +288,7 @@
 
 <div class="container mx-auto py-8 px-4">
 	<article
-		class="publication-article rounded-lg p-6 mb-8"
+		class="publication-article glass-card rounded-lg p-6 mb-8"
 		use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up' }}
 	>
 		<!-- Use the Breadcrumb component -->
@@ -408,54 +408,10 @@
 </div>
 
 <style>
-	/* Enhanced styles for main article container with glassmorphism integration */
+	/* Article container - glassmorphism applied via utility class */
 	.publication-article {
-		/* Sophisticated glassmorphism effect matching other components */
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.04) 0%,
-			rgba(var(--color-highlight-rgb), 0.025) 35%,
-			rgba(var(--color-accent-rgb), 0.02) 65%,
-			var(--color-surface) 100%
-		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 10px));
-		backdrop-filter: blur(var(--glass-blur-fallback, 10px));
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low, 0.1));
-		box-shadow: var(--shadow-lg);
-		transition: all var(--anim-duration-base, 0.3s) var(--anim-ease-out, ease-out);
 		position: relative;
-		overflow: hidden;
-	}
-
-	/* Enhanced hover effect */
-	.publication-article:hover {
-		transform: var(--transform-lift-sm, translateY(-2px));
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.06) 0%,
-			rgba(var(--color-highlight-rgb), 0.04) 35%,
-			rgba(var(--color-accent-rgb), 0.03) 65%,
-			var(--color-surface) 100%
-		);
-		box-shadow: var(--shadow-xl, 0 25px 50px -12px rgba(0, 0, 0, 0.25));
-	}
-
-	/* Subtle inner highlight for depth */
-	.publication-article::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		pointer-events: none;
-		border-radius: inherit;
-		background: linear-gradient(
-			180deg,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 0%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0) 40%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0) 60%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 100%
-		);
-		mix-blend-mode: overlay;
-		opacity: 0.3;
+		/* All glassmorphism effects handled by .glass-card utility */
 	}
 
 	/* Table of Contents Section - Enhanced styling */
@@ -465,23 +421,23 @@
 		border-radius: var(--border-radius-lg);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-accent-rgb), 0.03) 0%,
-			rgba(var(--color-primary-rgb), 0.02) 50%,
-			rgba(var(--color-highlight-rgb), 0.015) 100%
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
 		);
 		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
 		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low, 0.08));
+		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low));
 		box-shadow: var(--shadow-sm);
-		transition: all var(--anim-duration-base, 0.3s) var(--anim-ease-out, ease-out);
+		transition: all var(--anim-duration-base) var(--anim-ease-out);
 	}
 
 	.table-of-contents-section:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-accent-rgb), 0.05) 0%,
-			rgba(var(--color-primary-rgb), 0.03) 50%,
-			rgba(var(--color-highlight-rgb), 0.025) 100%
+			rgba(var(--color-accent-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
 		);
 		box-shadow: var(--shadow-md);
 	}
@@ -502,11 +458,11 @@
 		bottom: calc(-1 * var(--spacing-2));
 		left: 0;
 		width: var(--spacing-12);
-		height: var(--border-width-medium, 2px);
+		height: var(--border-width-medium);
 		background: linear-gradient(
 			90deg,
 			var(--color-accent) 0%,
-			rgba(var(--color-accent-rgb), 0.3) 100%
+			rgba(var(--color-accent-rgb), var(--opacity-medium)) 100%
 		);
 		border-radius: var(--border-radius-full);
 	}
@@ -523,8 +479,8 @@
 		align-items: flex-start;
 		gap: var(--spacing-3);
 		padding: var(--spacing-3) 0;
-		border-bottom: var(--border-width-thin) solid rgba(var(--color-accent-rgb), 0.1);
-		transition: all var(--anim-duration-fast, 0.2s) var(--anim-ease-out, ease-out);
+		border-bottom: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-very-low));
+		transition: all var(--anim-duration-fast) var(--anim-ease-out);
 	}
 
 	.toc-item:last-child {
@@ -532,7 +488,7 @@
 	}
 
 	.toc-item:hover {
-		background: rgba(var(--color-accent-rgb), 0.02);
+		background: rgba(var(--color-accent-rgb), var(--opacity-very-low));
 		padding-left: var(--spacing-2);
 		border-radius: var(--border-radius-sm);
 	}
@@ -553,43 +509,24 @@
 		flex: 1;
 	}
 
-	/* Dark mode refinements */
-	:global(html.dark) .publication-article {
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.7) 0%,
-			rgba(var(--color-primary-rgb), 0.15) 35%,
-			rgba(var(--color-accent-rgb), 0.1) 65%,
-			var(--color-dark-surface, #334155) 100%
-		);
-	}
-
-	:global(html.dark) .publication-article:hover {
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.8) 0%,
-			rgba(var(--color-primary-rgb), 0.2) 35%,
-			rgba(var(--color-accent-rgb), 0.15) 65%,
-			var(--color-dark-surface, #334155) 100%
-		);
-	}
+	/* Dark mode refinements - glassmorphism utilities handle article container */
 
 	:global(html.dark) .table-of-contents-section {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.5) 0%,
-			rgba(var(--color-accent-rgb), 0.1) 50%,
-			rgba(var(--color-primary-rgb), 0.08) 100%
+			rgba(var(--color-dark-surface-rgb), var(--opacity-medium)) 0%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 100%
 		);
-		border-color: rgba(var(--color-white-rgb, 255, 255, 255), 0.08);
+		border-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
 	}
 
 	:global(html.dark) .toc-item {
-		border-bottom-color: rgba(var(--color-white-rgb, 255, 255, 255), 0.05);
+		border-bottom-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
 	}
 
 	:global(html.dark) .toc-item:hover {
-		background: rgba(var(--color-accent-rgb), 0.05);
+		background: rgba(var(--color-accent-rgb), var(--opacity-low));
 	}
 
 	/* Responsive adjustments */
@@ -632,14 +569,14 @@
 		border-radius: var(--border-radius-lg);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-highlight-rgb), 0.025) 0%,
-			rgba(var(--color-primary-rgb), 0.02) 50%,
-			rgba(var(--color-accent-rgb), 0.015) 100%
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
 		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
 		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
 		border: var(--border-width-thin) solid
-			rgba(var(--color-highlight-rgb), var(--opacity-low, 0.08));
+			rgba(var(--color-highlight-rgb), var(--opacity-low));
 		box-shadow: var(--shadow-sm);
 		transition: all var(--anim-duration-base) var(--anim-ease-out);
 	}
@@ -647,9 +584,9 @@
 	.publication-actions:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-highlight-rgb), 0.04) 0%,
-			rgba(var(--color-primary-rgb), 0.03) 50%,
-			rgba(var(--color-accent-rgb), 0.025) 100%
+			rgba(var(--color-highlight-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
 		box-shadow: var(--shadow-md);
 	}
@@ -658,7 +595,7 @@
 	.publication-actions .btn {
 		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 4px));
 		backdrop-filter: blur(var(--glass-blur-fallback, 4px));
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low, 0.1));
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
 		position: relative;
 		overflow: hidden;
 	}
@@ -669,9 +606,9 @@
 		inset: 0;
 		background: linear-gradient(
 			45deg,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0.05) 0%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0) 50%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0.05) 100%
+			rgba(var(--color-white-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-white-rgb), 0) 50%,
+			rgba(var(--color-white-rgb), var(--opacity-low)) 100%
 		);
 		opacity: 0;
 		transition: opacity var(--anim-duration-fast) var(--anim-ease-out);
@@ -685,19 +622,19 @@
 	:global(html.dark) .publication-actions {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.5) 0%,
-			rgba(var(--color-highlight-rgb), 0.08) 50%,
-			rgba(var(--color-primary-rgb), 0.06) 100%
+			rgba(var(--color-dark-surface-rgb), var(--opacity-medium)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 100%
 		);
-		border-color: rgba(var(--color-white-rgb, 255, 255, 255), 0.08);
+		border-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
 	}
 
 	:global(html.dark) .publication-actions:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.6) 0%,
-			rgba(var(--color-highlight-rgb), 0.12) 50%,
-			rgba(var(--color-primary-rgb), 0.08) 100%
+			rgba(var(--color-dark-surface-rgb), var(--opacity-medium-high)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 100%
 		);
 	}
 

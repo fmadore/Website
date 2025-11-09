@@ -144,7 +144,7 @@
 <MetaTags {communication} />
 
 <div class="container mx-auto py-8 px-4">
-	<article class="communication-article rounded-lg p-6 mb-8">
+	<article class="communication-article glass-card rounded-lg p-6 mb-8">
 		<!-- Add Breadcrumb component -->
 		<Breadcrumb items={breadcrumbItems} />
 
@@ -262,54 +262,10 @@
 </div>
 
 <style>
-	/* Enhanced styles for main article container with glassmorphism integration */
+	/* Article container - glassmorphism applied via utility class */
 	.communication-article {
-		/* Sophisticated glassmorphism effect matching publication components */
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.04) 0%,
-			rgba(var(--color-highlight-rgb), 0.025) 35%,
-			rgba(var(--color-accent-rgb), 0.02) 65%,
-			var(--color-surface) 100%
-		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 10px));
-		backdrop-filter: blur(var(--glass-blur-fallback, 10px));
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low, 0.1));
-		box-shadow: var(--shadow-lg);
-		transition: all var(--anim-duration-base) var(--anim-ease-out);
 		position: relative;
-		overflow: hidden;
-	}
-
-	/* Enhanced hover effect */
-	.communication-article:hover {
-		transform: var(--transform-lift-sm, translateY(-2px));
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.06) 0%,
-			rgba(var(--color-highlight-rgb), 0.04) 35%,
-			rgba(var(--color-accent-rgb), 0.03) 65%,
-			var(--color-surface) 100%
-		);
-		box-shadow: var(--shadow-xl, 0 25px 50px -12px rgba(0, 0, 0, 0.25));
-	}
-
-	/* Subtle inner highlight for depth */
-	.communication-article::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		pointer-events: none;
-		border-radius: inherit;
-		background: linear-gradient(
-			180deg,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 0%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0) 40%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0) 60%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 100%
-		);
-		mix-blend-mode: overlay;
-		opacity: 0.3;
+		/* All glassmorphism effects handled by .glass-card utility */
 	}
 
 	/* Panel Papers Section */
@@ -319,35 +275,35 @@
 		border-radius: var(--border-radius-xl);
 		position: relative;
 
-		/* Sophisticated glassmorphism effect matching other components */
+		/* Glassmorphism effect using CSS variables */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.035) 0%,
-			rgba(var(--color-accent-rgb), 0.025) 50%,
-			rgba(var(--color-highlight-rgb), 0.02) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
 		);
 		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 8px));
 		backdrop-filter: blur(var(--glass-blur-fallback, 8px));
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low, 0.08));
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
 		box-shadow:
 			var(--shadow-md),
 			inset 0 var(--border-width-thin) 0
-				rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-low, 0.1));
+				rgba(var(--color-white-rgb), var(--opacity-low));
 		transition: all var(--anim-duration-base) var(--anim-ease-out);
 	}
 
 	.panel-papers-section:hover {
-		transform: var(--transform-lift-sm, translateY(-1px));
+		transform: var(--transform-lift-sm);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.05) 0%,
-			rgba(var(--color-accent-rgb), 0.035) 50%,
-			rgba(var(--color-highlight-rgb), 0.03) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
 		);
 		box-shadow:
 			var(--shadow-lg),
 			inset 0 var(--border-width-thin) 0
-				rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-medium, 0.15));
+				rgba(var(--color-white-rgb), var(--opacity-medium));
 	}
 
 	/* Participants Section */
@@ -357,35 +313,35 @@
 		border-radius: var(--border-radius-xl);
 		position: relative;
 
-		/* Sophisticated glassmorphism effect matching other components */
+		/* Glassmorphism effect using CSS variables */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.035) 0%,
-			rgba(var(--color-accent-rgb), 0.025) 50%,
-			rgba(var(--color-highlight-rgb), 0.02) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
 		);
 		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 8px));
 		backdrop-filter: blur(var(--glass-blur-fallback, 8px));
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low, 0.08));
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
 		box-shadow:
 			var(--shadow-md),
 			inset 0 var(--border-width-thin) 0
-				rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-low, 0.1));
+				rgba(var(--color-white-rgb), var(--opacity-low));
 		transition: all var(--anim-duration-base) var(--anim-ease-out);
 	}
 
 	.participants-section:hover {
-		transform: var(--transform-lift-sm, translateY(-1px));
+		transform: var(--transform-lift-sm);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.05) 0%,
-			rgba(var(--color-accent-rgb), 0.035) 50%,
-			rgba(var(--color-highlight-rgb), 0.03) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
 		);
 		box-shadow:
 			var(--shadow-lg),
 			inset 0 var(--border-width-thin) 0
-				rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-medium, 0.15));
+				rgba(var(--color-white-rgb), var(--opacity-medium));
 	}
 
 	/* Section Titles */
@@ -406,11 +362,11 @@
 		bottom: calc(-1 * var(--spacing-2));
 		left: 0;
 		width: var(--spacing-16);
-		height: var(--border-width-medium, 2px);
+		height: var(--border-width-medium);
 		background: linear-gradient(
 			90deg,
 			var(--color-highlight) 0%,
-			rgba(var(--color-highlight-rgb), 0.3) 100%
+			rgba(var(--color-highlight-rgb), var(--opacity-medium)) 100%
 		);
 		border-radius: var(--border-radius-full);
 		transition: width var(--anim-duration-base) var(--anim-ease-out);
@@ -434,27 +390,27 @@
 		border-radius: var(--border-radius-lg);
 		position: relative;
 
-		/* Enhanced glassmorphism for individual cards */
+		/* Glassmorphism for individual cards using CSS variables */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-accent-rgb), 0.03) 0%,
-			rgba(var(--color-primary-rgb), 0.02) 50%,
-			rgba(var(--color-highlight-rgb), 0.015) 100%
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
 		);
 		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
 		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low, 0.08));
+		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low));
 		box-shadow: var(--shadow-sm);
 		transition: all var(--anim-duration-base) var(--anim-ease-out);
 	}
 
 	.panel-paper-card:hover {
-		transform: var(--transform-lift-sm, translateY(-2px));
+		transform: var(--transform-lift-sm);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-accent-rgb), 0.05) 0%,
-			rgba(var(--color-primary-rgb), 0.03) 50%,
-			rgba(var(--color-highlight-rgb), 0.025) 100%
+			rgba(var(--color-accent-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
 		);
 		box-shadow: var(--shadow-md);
 	}
@@ -468,13 +424,13 @@
 		border-radius: inherit;
 		background: linear-gradient(
 			180deg,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 0%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0) 40%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0) 60%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 100%
+			rgba(var(--color-white-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-white-rgb), 0) 40%,
+			rgba(var(--color-white-rgb), 0) 60%,
+			rgba(var(--color-white-rgb), var(--opacity-very-low)) 100%
 		);
 		mix-blend-mode: overlay;
-		opacity: 0.3;
+		opacity: var(--opacity-medium);
 	}
 
 	.panel-paper-title {
@@ -519,27 +475,27 @@
 		border-radius: var(--border-radius-lg);
 		position: relative;
 
-		/* Enhanced glassmorphism for individual cards */
+		/* Glassmorphism for individual cards using CSS variables */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-accent-rgb), 0.03) 0%,
-			rgba(var(--color-primary-rgb), 0.02) 50%,
-			rgba(var(--color-highlight-rgb), 0.015) 100%
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
 		);
 		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
 		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low, 0.08));
+		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low));
 		box-shadow: var(--shadow-sm);
 		transition: all var(--anim-duration-base) var(--anim-ease-out);
 	}
 
 	.participant-card:hover {
-		transform: var(--transform-lift-sm, translateY(-2px));
+		transform: var(--transform-lift-sm);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-accent-rgb), 0.05) 0%,
-			rgba(var(--color-primary-rgb), 0.03) 50%,
-			rgba(var(--color-highlight-rgb), 0.025) 100%
+			rgba(var(--color-accent-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
 		);
 		box-shadow: var(--shadow-md);
 	}
@@ -553,13 +509,13 @@
 		border-radius: inherit;
 		background: linear-gradient(
 			180deg,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 0%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0) 40%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0) 60%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 100%
+			rgba(var(--color-white-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-white-rgb), 0) 40%,
+			rgba(var(--color-white-rgb), 0) 60%,
+			rgba(var(--color-white-rgb), var(--opacity-very-low)) 100%
 		);
 		mix-blend-mode: overlay;
-		opacity: 0.3;
+		opacity: var(--opacity-medium);
 	}
 
 	.participant-name {
@@ -588,14 +544,26 @@
 		border-radius: var(--border-radius-lg);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-accent-rgb), 0.03) 0%,
-			rgba(var(--color-primary-rgb), 0.02) 50%,
-			rgba(var(--color-highlight-rgb), 0.015) 100%
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
 		);
 		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
 		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low, 0.08));
+		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low));
 		box-shadow: var(--shadow-sm);
+	}
+
+	/* Dark mode refinements - glassmorphism utilities handle article container */
+	:global(html.dark) .panel-papers-section,
+	:global(html.dark) .participants-section {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-dark-surface-rgb), var(--opacity-medium)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+		);
+		border-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
 	}
 
 	/* Dark mode refinements */
@@ -634,9 +602,9 @@
 	:global(html.dark) .participants-section:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.7) 0%,
-			rgba(var(--color-primary-rgb), 0.15) 50%,
-			rgba(var(--color-accent-rgb), 0.1) 100%
+			rgba(var(--color-dark-surface-rgb), var(--opacity-medium-high)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
 	}
 
@@ -644,31 +612,31 @@
 	:global(html.dark) .participant-card {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.4) 0%,
-			rgba(var(--color-accent-rgb), 0.08) 50%,
-			rgba(var(--color-primary-rgb), 0.06) 100%
+			rgba(var(--color-dark-surface-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 100%
 		);
-		border-color: rgba(var(--color-white-rgb, 255, 255, 255), 0.06);
+		border-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
 	}
 
 	:global(html.dark) .panel-paper-card:hover,
 	:global(html.dark) .participant-card:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.5) 0%,
-			rgba(var(--color-accent-rgb), 0.12) 50%,
-			rgba(var(--color-primary-rgb), 0.08) 100%
+			rgba(var(--color-dark-surface-rgb), var(--opacity-medium)) 0%,
+			rgba(var(--color-accent-rgb), var(--opacity-low)) 50%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 100%
 		);
 	}
 
 	:global(html.dark) .map-container-wrapper {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.4) 0%,
-			rgba(var(--color-accent-rgb), 0.08) 50%,
-			rgba(var(--color-primary-rgb), 0.06) 100%
+			rgba(var(--color-dark-surface-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 100%
 		);
-		border-color: rgba(var(--color-white-rgb, 255, 255, 255), 0.06);
+		border-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
 	}
 
 	/* Responsive adjustments */
