@@ -95,12 +95,7 @@
 	>
 		<Breadcrumb items={breadcrumbItems} />
 
-		<PageHeader title={project.title} />
-	{#if project.years}
-		<p class="text-left md:text-left text-xl font-light text-secondary mb-6">
-			{project.years}
-		</p>
-	{/if}
+		<PageHeader title={project.title} authors={project.years ? [project.years] : undefined} />
 
 		<div use:scrollAnimate={{ delay: 200, animationClass: 'fade-in-up' }}>
 			<section class="prose prose-lg max-w-none mb-6">
