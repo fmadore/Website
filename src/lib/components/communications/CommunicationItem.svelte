@@ -50,7 +50,7 @@
 </script>
 
 <li class="entity-list-item">
-	<div class="entity-card glass-card">
+	<div class="entity-card">
 		<div class="entity-grid">
 			{#if communication?.image}
 				<div class="entity-image-container">

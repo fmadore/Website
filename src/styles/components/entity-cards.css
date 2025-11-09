@@ -11,23 +11,33 @@
 	border-radius: var(--border-radius-lg);
 	transition: all var(--anim-duration-base, 200ms) var(--anim-ease-base, ease);
 	position: relative;
-	/* Glass-like gradient background consistent with Publication cards */
+	/* Full glassmorphism effect matching Card.svelte and other components */
 	background: linear-gradient(
 		135deg,
-		rgba(var(--color-primary-rgb), 0.03) 0%,
-		rgba(var(--color-highlight-rgb), 0.02) 50%,
-		rgba(var(--color-accent-rgb), 0.01) 100%
+		rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+		rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+		rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 	);
+	-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+	backdrop-filter: blur(var(--glass-blur-amount));
+	border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
+	box-shadow:
+		0 var(--spacing-2) var(--spacing-8) 0 rgba(var(--color-primary-rgb), var(--opacity-medium)),
+		inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium-high));
 }
 
 .entity-card:hover {
 	transform: var(--transform-lift-sm, translateY(-2px));
 	background: linear-gradient(
 		135deg,
-		rgba(var(--color-primary-rgb), 0.05) 0%,
-		rgba(var(--color-highlight-rgb), 0.03) 50%,
-		rgba(var(--color-accent-rgb), 0.02) 100%
+		rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+		rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+		rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 	);
+	border-color: rgba(var(--color-white-rgb), var(--opacity-medium-high));
+	box-shadow:
+		0 var(--spacing-3) var(--spacing-10) 0 rgba(var(--color-primary-rgb), var(--opacity-medium-high)),
+		inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-high));
 }
 
 .entity-grid {
@@ -67,9 +77,9 @@
 }
 
 .entity-image-container a:focus-visible {
-	outline: 2px solid var(--color-accent);
-	outline-offset: 2px;
-	box-shadow: 0 0 0 4px rgba(var(--color-accent-rgb), 0.2);
+	outline: var(--border-width-medium) solid var(--color-accent);
+	outline-offset: var(--spacing-1);
+	box-shadow: 0 0 0 var(--spacing-1) rgba(var(--color-accent-rgb), var(--opacity-medium));
 }
 
 .entity-cover-image {
