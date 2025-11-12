@@ -25,7 +25,6 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 	],
 	url: 'https://fmadore.github.io/dh-ai-african-studies-2026/',
 	image: 'images/communications/VWST-logo.webp',
-	url: '', // Add URL when available
 	coordinates: {
 		latitude: 52.395,
 		longitude: 9.7036
