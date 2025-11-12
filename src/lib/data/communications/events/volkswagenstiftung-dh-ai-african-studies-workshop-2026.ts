@@ -23,6 +23,7 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 		'Workshop',
 		'VolkswagenStiftung'
 	],
+	url: 'https://fmadore.github.io/dh-ai-african-studies-2026/',
 	image: 'images/communications/VWST-logo.webp',
 	url: '', // Add URL when available
 	coordinates: {
