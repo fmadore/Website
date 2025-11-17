@@ -9,12 +9,13 @@ const templateIds = [
 	'paper-template-id',
 	'panel-template-id',
 	'talk-template-id',
-	'event-template-id'
+	'event-template-id',
+	'podcast-template-id'
 ];
 
 // Dynamically import all communication files from relevant subfolders
 const communicationModules = import.meta.glob<ModuleType>(
-	['./papers/*.ts', './panels/*.ts', './talks/*.ts', './events/*.ts'],
+	['./papers/*.ts', './panels/*.ts', './talks/*.ts', './events/*.ts', './podcasts/*.ts'],
 	{ eager: true }
 );
 
