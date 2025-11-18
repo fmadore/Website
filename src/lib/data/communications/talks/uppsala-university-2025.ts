@@ -2,7 +2,7 @@ import type { Communication } from '$lib/types/communication';
 
 export const uppsalaUniversity2025: Communication = {
 	id: 'uppsala-university-2025',
-	title: 'TBA',
+	title: 'Building AI Pipelines for African Digital Collections: Lessons from the Islam West Africa Collection',
 	authors: ['Frédérick Madore'],
 	date: '5 December 2025',
 	dateISO: '2025-12-05',
