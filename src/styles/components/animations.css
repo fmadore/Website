@@ -33,7 +33,7 @@
 /* Base animation states */
 .animate-in {
 	opacity: 1 !important;
-	transform: translateY(0) !important;
+	transform: none !important;
 }
 
 .animate-out {

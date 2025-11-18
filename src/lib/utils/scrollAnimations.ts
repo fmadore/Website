@@ -150,6 +150,24 @@ export function scrollAnimate(
 
 	const finalOptions = { ...defaultOptions, ...options };
 
+	let transformCleanupTimer: ReturnType<typeof setTimeout> | null = null;
+
+	const scheduleTransformCleanup = () => {
+		// Drop lingering transforms once the entrance animation finishes so popovers can rise above siblings
+		if (transformCleanupTimer) {
+			clearTimeout(transformCleanupTimer);
+		}
+		const duration =
+			typeof finalOptions.duration === 'number' ? finalOptions.duration : DEFAULT_DURATION_MS;
+		const delay = typeof finalOptions.delay === 'number' ? finalOptions.delay : 0;
+		transformCleanupTimer = setTimeout(() => {
+			if (element.style.transform === 'translateY(0)') {
+				element.style.removeProperty('transform');
+			}
+			transformCleanupTimer = null;
+		}, duration + delay + 50);
+	};
+
 	// Add data attribute for CSS control
 	element.setAttribute('data-animate', 'true');
 
@@ -168,12 +186,18 @@ export function scrollAnimate(
 						if (options.animationClass) {
 							element.classList.add(options.animationClass);
 						}
+
+						scheduleTransformCleanup();
 					}, finalOptions.delay);
 
 					if (finalOptions.once) {
 						observer.unobserve(element);
 					}
 				} else if (!finalOptions.once) {
+					if (transformCleanupTimer) {
+						clearTimeout(transformCleanupTimer);
+						transformCleanupTimer = null;
+					}
 					element.style.opacity = '0';
 					element.style.transform = 'translateY(30px)';
 					element.classList.remove('animate-in');
@@ -197,6 +221,9 @@ export function scrollAnimate(
 		destroy() {
 			observer.disconnect();
 			element.removeAttribute('data-animate');
+			if (transformCleanupTimer) {
+				clearTimeout(transformCleanupTimer);
+			}
 		}
 	};
 }

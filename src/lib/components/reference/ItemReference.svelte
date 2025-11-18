@@ -260,6 +260,7 @@
 	.item-reference.preview-visible {
 		/* Only apply a subtle lift when preview is visible, no background effects */
 		transform: var(--transform-lift-sm);
+		z-index: var(--z-popover, 1060);
 	}
 
 	.item-reference.preview-visible::after {
