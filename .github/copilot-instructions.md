@@ -137,12 +137,12 @@ background: linear-gradient(
 	rgba(var(--color-highlight-rgb), 0.02) 50%,
 	rgba(var(--color-accent-rgb), 0.01) 100%
 );
-backdrop-filter: blur(10px);
--webkit-backdrop-filter: blur(10px);
-border: 1px solid rgba(255, 255, 255, 0.2);
+backdrop-filter: blur(var(--glass-blur-amount));
+-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+border: var(--border-width-thin) solid rgba(var(--color-white-rgb), 0.2);
 box-shadow:
-	0 8px 32px 0 rgba(31, 38, 135, 0.15),
-	inset 0 1px 0 rgba(255, 255, 255, 0.2);
+	var(--shadow-lg),
+	inset 0 1px 0 rgba(var(--color-white-rgb), 0.2);
 ```
 
 ## Styling Guidelines
@@ -227,6 +227,8 @@ box-shadow:
 - **Colors**: `.text-*`, `.bg-*`, `.border-*` (all use CSS variables)
 - **Typography**: Font sizes, weights, alignment (in `base/typography.css`)
 - **Glassmorphism**: `.glass`, `.glass-card`, `.glass-panel`, `.glass-button`
+- **Images**: `.responsive-image`, `.aspect-*`, `.object-*` (in `utilities/images.css`)
+- **Sizing**: `.w-*`, `.h-*`, `.max-w-*` (in `utilities/sizing.css`)
 
 ### Component CSS Modules:
 
@@ -234,6 +236,8 @@ box-shadow:
 - `cards.css` - Card components (`.card`, `.card-body`, layout variants)
 - `entity-cards.css` - Unified styles for publication/communication lists
 - `panels.css` - Panel containers with filters (`.panel`, `.panel-activities`)
+- `activity-list.css` - Timeline-style lists for activities
+- `navigation-utilities.css` - Shared utilities for navigation components
 - `animations.css` - Scroll animations (`.fade-in-up`, `.stagger-*`, reduced motion support)
 
 ## Remember
