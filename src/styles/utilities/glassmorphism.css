@@ -147,8 +147,8 @@
 /* Glass morphism for specific components */
 .glass-card {
 	background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light));
-	-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-	backdrop-filter: blur(var(--glass-blur-amount));
+	-webkit-backdrop-filter: blur(var(--glass-blur-amount)) saturate(120%);
+	backdrop-filter: blur(var(--glass-blur-amount)) saturate(120%);
 	border: var(--border-width-thin) solid
 		rgba(var(--color-white-rgb), var(--card-glass-border-light));
 	border-radius: var(--border-radius-lg);
@@ -162,6 +162,8 @@
 	background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light-hover));
 	border-color: rgba(var(--color-white-rgb), var(--card-glass-border-light-hover));
 	transform: var(--card-transform-hover);
+	-webkit-backdrop-filter: blur(var(--glass-blur-amount)) saturate(130%);
+	backdrop-filter: blur(var(--glass-blur-amount)) saturate(130%);
 	box-shadow:
 		0 12px 40px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity-hover)),
 		inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-light-hover));

@@ -595,6 +595,11 @@ html.dark {
 	--color-background-alt: #1e293b; /* Uses surface color */
 	--color-background-muted: #334155; /* Uses surface-alt color */
 
+	/* Card tokens - Dark mode overrides */
+	--card-shadow-color: 0, 0, 0; /* Pure black shadows for proper depth in dark mode */
+	--card-glass-opacity-light: 0.05; /* Slightly more transparent in dark mode */
+	--card-glass-opacity-light-hover: 0.1;
+
 	/* Shadows - Deeper for dark mode */
 	--shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.3);
 	--shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3), 0 1px 3px -1px rgba(0, 0, 0, 0.3);
