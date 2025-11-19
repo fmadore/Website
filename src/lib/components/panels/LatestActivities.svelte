@@ -178,16 +178,39 @@
 		font-size: var(--font-size-xs);
 		text-transform: uppercase;
 		font-weight: var(--font-weight-semibold);
-		color: var(--color-success);
-		background-color: rgba(var(--color-success-rgb), var(--opacity-medium));
+		color: var(--color-text-light);
+		background-color: var(--color-surface-alt);
 		padding: var(--space-2xs) var(--space-sm);
 		border-radius: var(--border-radius-full);
 		flex-shrink: 0;
 		white-space: nowrap;
 		line-height: var(--line-height-normal);
-		border: var(--border-width-thin) solid
-			rgba(var(--color-success-rgb), var(--opacity-medium-high));
+		border: var(--border-width-thin) solid var(--color-border);
 		transition: all var(--anim-duration-fast) var(--anim-ease-out);
+	}
+
+	.activity-type[data-type='publication'] {
+		color: var(--color-primary);
+		background-color: rgba(var(--color-primary-rgb), 0.1);
+		border-color: rgba(var(--color-primary-rgb), 0.2);
+	}
+
+	.activity-type[data-type='conference'] {
+		color: var(--color-accent);
+		background-color: rgba(var(--color-accent-rgb), 0.1);
+		border-color: rgba(var(--color-accent-rgb), 0.2);
+	}
+
+	.activity-type[data-type='workshop'] {
+		color: var(--color-highlight);
+		background-color: rgba(var(--color-highlight-rgb), 0.1);
+		border-color: rgba(var(--color-highlight-rgb), 0.2);
+	}
+
+	.activity-type[data-type='grant'] {
+		color: var(--color-success);
+		background-color: rgba(var(--color-success-rgb), 0.1);
+		border-color: rgba(var(--color-success-rgb), 0.2);
 	}
 
 	.activity-date {

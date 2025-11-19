@@ -39,10 +39,8 @@
 }
 
 .activity-date {
-	display: block;
 	font-size: var(--font-size-sm);
 	color: var(--color-text-light);
-	margin-top: var(--spacing-1);
 }
 
 /* Activity filter */
@@ -120,4 +118,46 @@
 
 .see-more:hover {
 	text-decoration: underline;
+}
+
+/* Activity metadata and types */
+.activity-meta {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: var(--spacing-2);
+	margin-bottom: var(--spacing-1);
+}
+
+.activity-type {
+	display: inline-flex;
+	align-items: center;
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-medium);
+	text-transform: uppercase;
+	letter-spacing: var(--letter-spacing-wide);
+	padding: var(--spacing-05) var(--spacing-2);
+	border-radius: var(--border-radius-sm);
+	background-color: var(--color-surface-alt);
+	color: var(--color-text-light);
+}
+
+.activity-type[data-type='publication'] {
+	color: var(--color-primary);
+	background-color: rgba(var(--color-primary-rgb), 0.1);
+}
+
+.activity-type[data-type='conference'] {
+	color: var(--color-accent);
+	background-color: rgba(var(--color-accent-rgb), 0.1);
+}
+
+.activity-type[data-type='workshop'] {
+	color: var(--color-highlight);
+	background-color: rgba(var(--color-highlight-rgb), 0.1);
+}
+
+.activity-type[data-type='grant'] {
+	color: var(--color-success);
+	background-color: rgba(var(--color-success-rgb), 0.1);
 }

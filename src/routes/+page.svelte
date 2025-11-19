@@ -56,7 +56,7 @@
 
 <div class="container max-w-7xl">
 	<ProfileBanner />
-	<div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-4 md:mt-8">
+	<div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-8">
 		<div class="md:col-span-2">
 			<ContentBody variant="default" glassEffect="glass-card">
 				<p>
