@@ -2,8 +2,6 @@
 
 This document outlines the CSS architecture used in this project. The CSS is organized using a modular approach with a focus on maintainability, scalability, and reusability.
 
-> **🎨 Design Philosophy**: For the design principles and visual philosophy behind this CSS architecture, see the [Design Philosophy & Visual Style](../../docs/DESIGN-PHILOSOPHY.md) documentation.
-
 ## Directory Structure
 
 The CSS is organized into the following directory structure:
@@ -13,8 +11,8 @@ src/
 ├── app.css            # Main entry point that stitches the modules together
 └── styles/
     ├── base/          # Base styles, resets, and variables
-    ├── layout/        # Layout components and structures
     ├── components/    # Reusable UI components
+    ├── layout/        # Layout components and structures
     └── utilities/     # Utility classes
 ```
 
@@ -211,6 +209,16 @@ The `ContentBody` component (`src/lib/components/common/ContentBody.svelte`) is 
 - **Flexible glass effects**: Support for all glassmorphism utility classes
 
 The component centralizes content styling that was previously scattered across individual pages, ensuring consistency and maintainability.
+
+### PageHeader Component
+
+The `PageHeader` component (`src/lib/components/common/PageHeader.svelte`) provides a consistent, animated header for pages with:
+
+- **Dynamic metadata**: Supports title, date, type badges, authors, editors, and tags
+- **Navigation**: Optional back link with animation
+- **Visual styling**: Glassmorphism effects, title accents, and responsive typography
+- **Animations**: Staggered entrance animations for all elements
+- **Flexibility**: Adapts to different content types (articles, events, standard pages)
 
 ### Navigation Components
 
