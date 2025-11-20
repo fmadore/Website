@@ -36,36 +36,40 @@ ECharts Stacked Bar Chart component
 
 	// State management
 	let chartContainer: HTMLDivElement;
-	let chart: echarts.ECharts | null = null;
+	let chart: echarts.ECharts | null = $state(null);
 	let echartsLib: typeof echarts | null = null;
+	let isChartReady = $state(false);
 	
 	// Use Svelte's reactive window width instead of manual event listener
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
 
 	// Utility functions for CSS variable resolution
 	function getCSSVariableValue(variableName: string): string {
-		if (typeof window === 'undefined') return '#6366f1';
+		if (typeof window === 'undefined') return '';
 		const computedStyle = getComputedStyle(document.documentElement);
 		const value = computedStyle.getPropertyValue(variableName).trim();
-		return value || '#6366f1';
+		return value;
 	}
 
 	function resolveColor(color: string): string {
 		if (color.startsWith('var(')) {
 			const varName = color.slice(4, -1).trim();
-			return getCSSVariableValue(varName);
+			const val = getCSSVariableValue(varName);
+			return val || color;
 		}
 		return color;
 	}
 
 	// Reactive color resolution
 	const resolvedColors = $derived({
-		primary: getCSSVariableValue('--color-primary'),
-		text: getCSSVariableValue('--color-text'),
-		textLight: getCSSVariableValue('--color-text-light'),
-		border: getCSSVariableValue('--color-border'),
-		surface: getCSSVariableValue('--color-surface'),
+		primary: getCSSVariableValue('--color-primary') || '#3b82f6',
+		text: getCSSVariableValue('--color-text') || '#334155',
+		textLight: getCSSVariableValue('--color-text-light') || '#64748b',
+		border: getCSSVariableValue('--color-border') || '#e2e8f0',
+		surface: getCSSVariableValue('--color-surface') || '#f8fafc',
+		surfaceRgb: getCSSVariableValue('--color-surface-rgb') || '248, 250, 252',
 		resolvedSeriesColors: colors.map((color) => resolveColor(color)),
+		fontFamily: getCSSVariableValue('--font-family-sans') || 'sans-serif',
 		currentTheme: getTheme()
 	});
 
@@ -97,16 +101,17 @@ ECharts Stacked Bar Chart component
 	const chartOption = $derived({
 		tooltip: {
 			trigger: 'axis',
-			backgroundColor: resolvedColors.surface,
+			backgroundColor: `rgba(${resolvedColors.surfaceRgb}, 0.9)`,
 			textStyle: {
 				color: resolvedColors.text,
 				fontSize: 12,
-				fontFamily: 'Inter, -apple-system, sans-serif'
+				fontFamily: resolvedColors.fontFamily
 			},
-			borderRadius: 6,
+			borderRadius: 8,
 			borderColor: resolvedColors.border,
 			borderWidth: 1,
-			extraCssText: 'box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);',
+			padding: [10, 14],
+			extraCssText: 'backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: var(--shadow-lg);',
 			axisPointer: {
 				type: 'shadow'
 			},
@@ -141,7 +146,7 @@ ECharts Stacked Bar Chart component
 			textStyle: {
 				color: resolvedColors.text,
 				fontSize: isMobile ? 10 : 12,
-				fontFamily: 'Inter, -apple-system, sans-serif'
+				fontFamily: resolvedColors.fontFamily
 			},
 			itemGap: isMobile ? 8 : 12,
 			itemWidth: isMobile ? 10 : 14,
@@ -163,12 +168,12 @@ ECharts Stacked Bar Chart component
 			nameTextStyle: {
 				color: resolvedColors.text,
 				fontSize: 14,
-				fontFamily: 'Inter, -apple-system, sans-serif'
+				fontFamily: resolvedColors.fontFamily
 			},
 			axisLabel: {
 				color: resolvedColors.text,
 				fontSize: isMobile ? 10 : 12,
-				fontFamily: 'Inter, -apple-system, sans-serif',
+				fontFamily: resolvedColors.fontFamily,
 				interval: isMobile ? 'auto' : 0, // Auto interval on mobile to prevent overlapping
 				rotate: isMobile ? 45 : 0 // Rotate labels on mobile if needed
 			},
@@ -191,12 +196,12 @@ ECharts Stacked Bar Chart component
 			nameTextStyle: {
 				color: resolvedColors.text,
 				fontSize: 14,
-				fontFamily: 'Inter, -apple-system, sans-serif'
+				fontFamily: resolvedColors.fontFamily
 			},
 			axisLabel: {
 				color: resolvedColors.text,
 				fontSize: 12,
-				fontFamily: 'Inter, -apple-system, sans-serif'
+				fontFamily: resolvedColors.fontFamily
 			},
 			axisLine: {
 				lineStyle: {
@@ -211,7 +216,8 @@ ECharts Stacked Bar Chart component
 			splitLine: {
 				lineStyle: {
 					color: resolvedColors.border,
-					opacity: 0.5
+					opacity: 0.3,
+					type: 'dashed'
 				}
 			}
 		},
@@ -221,12 +227,12 @@ ECharts Stacked Bar Chart component
 		animationEasing: 'elasticOut' as any
 	});
 
-	// Main effect for initialization, updates, and resize handling
+	// Effect for initialization and cleanup
 	$effect(() => {
 		let mounted = true;
 		let resizeObserver: ResizeObserver | undefined;
 
-		// Load echarts library dynamically
+		// Load echarts library and initialize chart
 		(async () => {
 			if (!echartsLib) {
 				try {
@@ -252,30 +258,34 @@ ECharts Stacked Bar Chart component
 						}
 					});
 					resizeObserver.observe(chartContainer);
+					isChartReady = true;
 				} catch (error) {
 					console.error('Failed to initialize ECharts:', error);
 					return;
-				}
-			}
-
-			// Update chart options whenever they change
-			if (chart && data.length > 0) {
-				try {
-					chart.setOption(chartOption, true); // true = notMerge for clean update
-				} catch (error) {
-					console.error('Failed to set chart options:', error);
 				}
 			}
 		})();
 
 		return () => {
 			mounted = false;
+			isChartReady = false;
 			resizeObserver?.disconnect();
 			if (chart && !chart.isDisposed()) {
 				chart.dispose();
 				chart = null;
 			}
 		};
+	});
+
+	// Separate effect for updating chart when options change
+	$effect(() => {
+		if (isChartReady && chart && !chart.isDisposed() && data.length > 0) {
+			try {
+				chart.setOption(chartOption, true);
+			} catch (error) {
+				console.error('Failed to update chart options:', error);
+			}
+		}
 	});
 </script>
 

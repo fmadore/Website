@@ -36,8 +36,9 @@ ECharts Network Graph - A network visualization for author collaborations
 
 	// State management
 	let chartContainer: HTMLDivElement;
-	let chart: echarts.ECharts | null = null;
+	let chart: echarts.ECharts | null = $state(null);
 	let echartsLib: typeof echarts | null = null;
+	let isChartReady = $state(false);
 	
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
@@ -75,22 +76,24 @@ ECharts Network Graph - A network visualization for author collaborations
 
 	// Utility functions for CSS variable resolution
 	function getCSSVariableValue(variableName: string): string {
-		if (typeof window === 'undefined') return '#6366f1';
+		if (typeof window === 'undefined') return '';
 		const computedStyle = getComputedStyle(document.documentElement);
 		const value = computedStyle.getPropertyValue(variableName).trim();
-		return value || '#6366f1';
+		return value;
 	}
 
 	// Reactive color resolution
 	const resolvedColors = $derived({
-		primary: getCSSVariableValue('--color-primary'),
-		text: getCSSVariableValue('--color-text'),
-		textLight: getCSSVariableValue('--color-text-light'),
-		border: getCSSVariableValue('--color-border'),
-		surface: getCSSVariableValue('--color-surface'),
-		accent: getCSSVariableValue('--color-accent'),
-		highlight: getCSSVariableValue('--color-highlight'),
-		success: getCSSVariableValue('--color-success'),
+		primary: getCSSVariableValue('--color-primary') || '#3b82f6',
+		text: getCSSVariableValue('--color-text') || '#334155',
+		textLight: getCSSVariableValue('--color-text-light') || '#64748b',
+		border: getCSSVariableValue('--color-border') || '#e2e8f0',
+		surface: getCSSVariableValue('--color-surface') || '#f8fafc',
+		surfaceRgb: getCSSVariableValue('--color-surface-rgb') || '248, 250, 252',
+		accent: getCSSVariableValue('--color-accent') || '#0ea5e9',
+		highlight: getCSSVariableValue('--color-highlight') || '#f59e0b',
+		success: getCSSVariableValue('--color-success') || '#10b981',
+		fontFamily: getCSSVariableValue('--font-family-sans') || 'sans-serif',
 		currentTheme: getTheme()
 	});
 
@@ -138,7 +141,8 @@ ECharts Network Graph - A network visualization for author collaborations
 					show: true,
 					fontSize: isMobile ? 13 : 15,
 					fontWeight: 'bold',
-					color: resolvedColors.text
+					color: resolvedColors.text,
+					fontFamily: resolvedColors.fontFamily
 				},
 				category: 0,
 				fixed: false
@@ -166,6 +170,7 @@ ECharts Network Graph - A network visualization for author collaborations
 					show: !isMobile || collab.collaborationCount > 2,
 					fontSize: isMobile ? 10 : 12,
 					color: resolvedColors.text,
+					fontFamily: resolvedColors.fontFamily,
 					position: 'right',
 					distance: 10,
 					formatter: function (params: any) {
@@ -241,18 +246,19 @@ ECharts Network Graph - A network visualization for author collaborations
 		},
 		tooltip: {
 			trigger: 'item',
-			backgroundColor: resolvedColors.surface,
+			backgroundColor: `rgba(${resolvedColors.surfaceRgb}, 0.9)`,
 			textStyle: {
 				color: resolvedColors.text,
 				fontSize: isMobile ? 11 : 12,
-				fontFamily: 'Inter, -apple-system, sans-serif'
+				fontFamily: resolvedColors.fontFamily
 			},
-			borderRadius: 6,
+			borderRadius: 8,
 			borderColor: resolvedColors.border,
 			borderWidth: 1,
 			extraCssText:
-				'box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); max-width: 280px; word-wrap: break-word; white-space: normal; line-height: 1.4;',
+				'backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: var(--shadow-lg); max-width: 280px; word-wrap: break-word; white-space: normal; line-height: 1.4;',
 			confine: true,
+			padding: [10, 14],
 			position: function (
 				point: [number, number],
 				params: any,
@@ -337,12 +343,12 @@ ECharts Network Graph - A network visualization for author collaborations
 				{
 					name: centerAuthor,
 					icon: 'circle',
-					textStyle: { color: resolvedColors.text, fontSize: 12 }
+					textStyle: { color: resolvedColors.text, fontSize: 12, fontFamily: resolvedColors.fontFamily }
 				},
 				{
 					name: 'Collaborators',
 					icon: 'circle',
-					textStyle: { color: resolvedColors.text, fontSize: 12 }
+					textStyle: { color: resolvedColors.text, fontSize: 12, fontFamily: resolvedColors.fontFamily }
 				},
 				{
 					name: 'Direct collaboration',
@@ -351,7 +357,7 @@ ECharts Network Graph - A network visualization for author collaborations
 						color: resolvedColors.primary,
 						borderWidth: 0
 					},
-					textStyle: { color: resolvedColors.text, fontSize: 11 }
+					textStyle: { color: resolvedColors.text, fontSize: 11, fontFamily: resolvedColors.fontFamily }
 				},
 				{
 					name: 'Co-author connection',
@@ -361,7 +367,7 @@ ECharts Network Graph - A network visualization for author collaborations
 						borderWidth: 0,
 						borderType: 'dashed'
 					},
-					textStyle: { color: resolvedColors.text, fontSize: 11 }
+					textStyle: { color: resolvedColors.text, fontSize: 11, fontFamily: resolvedColors.fontFamily }
 				}
 			]
 		},
@@ -421,12 +427,12 @@ ECharts Network Graph - A network visualization for author collaborations
 		animationEasing: 'cubicOut' as any
 	});
 
-	// Main effect for initialization, updates, and resize handling
+	// Effect for initialization and cleanup
 	$effect(() => {
 		let mounted = true;
 		let resizeObserver: ResizeObserver | undefined;
 
-		// Load echarts library dynamically
+		// Load echarts library and initialize chart
 		(async () => {
 			if (!echartsLib) {
 				try {
@@ -452,30 +458,34 @@ ECharts Network Graph - A network visualization for author collaborations
 						}
 					});
 					resizeObserver.observe(chartContainer);
+					isChartReady = true;
 				} catch (error) {
 					console.error('Failed to initialize ECharts:', error);
 					return;
-				}
-			}
-
-			// Update chart options whenever they change
-			if (chart && data.length > 0) {
-				try {
-					chart.setOption(chartOption, true);
-				} catch (error) {
-					console.error('Failed to set chart options:', error);
 				}
 			}
 		})();
 
 		return () => {
 			mounted = false;
+			isChartReady = false;
 			resizeObserver?.disconnect();
 			if (chart && !chart.isDisposed()) {
 				chart.dispose();
 				chart = null;
 			}
 		};
+	});
+
+	// Separate effect for updating chart when options change
+	$effect(() => {
+		if (isChartReady && chart && !chart.isDisposed() && data.length > 0) {
+			try {
+				chart.setOption(chartOption, true);
+			} catch (error) {
+				console.error('Failed to update chart options:', error);
+			}
+		}
 	});
 </script>
 
@@ -551,7 +561,9 @@ ECharts Network Graph - A network visualization for author collaborations
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-color: var(--color-surface);
+		background-color: rgba(var(--color-surface-rgb), 0.8);
+		backdrop-filter: blur(4px);
+		-webkit-backdrop-filter: blur(4px);
 		border: 1px solid var(--color-border);
 		border-radius: var(--border-radius);
 		color: var(--color-text);
