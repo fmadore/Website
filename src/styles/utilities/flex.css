@@ -163,7 +163,7 @@
 
 /* Responsive flexbox */
 /* Responsive utilities */
-@media (min-width: var(--breakpoint-sm)) {
+@media (--sm) {
 	.sm\:flex {
 		display: flex;
 	}
@@ -205,7 +205,7 @@
 	}
 }
 
-@media (min-width: var(--breakpoint-md)) {
+@media (--md) {
 	.md\:flex {
 		display: flex;
 	}
@@ -247,7 +247,7 @@
 	}
 }
 
-@media (min-width: var(--breakpoint-lg)) {
+@media (--lg) {
 	.lg\:flex {
 		display: flex;
 	}

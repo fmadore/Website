@@ -206,7 +206,7 @@
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: var(--breakpoint-sm)) {
+	@media (max-width: 640px) {
 		.content-body {
 			padding: var(--space-lg);
 		}

@@ -111,7 +111,7 @@
 }
 
 /* Responsive */
-@media (min-width: 640px) {
+@media (--sm) {
 	.sm\:rounded-none {
 		border-radius: 0;
 	}
@@ -132,7 +132,7 @@
 	}
 }
 
-@media (min-width: 768px) {
+@media (--md) {
 	.md\:rounded-none {
 		border-radius: 0;
 	}
@@ -153,7 +153,7 @@
 	}
 }
 
-@media (min-width: 1024px) {
+@media (--lg) {
 	.lg\:rounded-none {
 		border-radius: 0;
 	}
@@ -174,7 +174,7 @@
 	}
 }
 
-@media (min-width: 1280px) {
+@media (--xl) {
 	.xl\:rounded-none {
 		border-radius: 0;
 	}

@@ -79,7 +79,7 @@
 }
 
 /* Responsive Sizing */
-@media (min-width: var(--breakpoint-sm)) {
+@media (--sm) {
 	.sm\:w-auto {
 		width: auto;
 	}
@@ -144,7 +144,7 @@
 	}
 }
 
-@media (min-width: var(--breakpoint-md)) {
+@media (--md) {
 	.md\:w-auto {
 		width: auto;
 	}
@@ -209,7 +209,7 @@
 	}
 }
 
-@media (min-width: var(--breakpoint-lg)) {
+@media (--lg) {
 	.lg\:w-auto {
 		width: auto;
 	}
@@ -274,7 +274,7 @@
 	}
 }
 
-@media (min-width: var(--breakpoint-xl)) {
+@media (--xl) {
 	.xl\:w-auto {
 		width: auto;
 	}

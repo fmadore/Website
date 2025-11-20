@@ -790,7 +790,7 @@
 	}
 
 	/* Mobile responsiveness using breakpoint variables */
-	@media (max-width: var(--breakpoint-md)) {
+	@media (max-width: 768px) {
 		.page-container {
 			padding: 0 var(--spacing-3);
 		}
@@ -817,7 +817,7 @@
 		}
 	}
 
-	@media (max-width: var(--breakpoint-sm)) {
+	@media (max-width: 640px) {
 		.chart-wrapper {
 			padding: var(--spacing-3);
 		}
@@ -890,7 +890,7 @@
 		color: var(--color-text-light);
 	}
 
-	@media (max-width: var(--breakpoint-sm)) {
+	@media (max-width: 640px) {
 		.pagination-buttons {
 			flex-wrap: wrap;
 			justify-content: center;

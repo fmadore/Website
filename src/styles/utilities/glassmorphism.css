@@ -385,7 +385,7 @@
 }
 
 /* Responsive glass effects */
-@media (min-width: var(--breakpoint-sm)) {
+@media (--sm) {
 	.sm\:glass {
 		background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
@@ -402,7 +402,7 @@
 	}
 }
 
-@media (min-width: var(--breakpoint-md)) {
+@media (--md) {
 	.md\:glass {
 		background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
@@ -419,7 +419,7 @@
 	}
 }
 
-@media (min-width: var(--breakpoint-lg)) {
+@media (--lg) {
 	.lg\:glass {
 		background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));

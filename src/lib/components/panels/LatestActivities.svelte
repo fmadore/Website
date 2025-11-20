@@ -268,7 +268,7 @@
 	}
 
 	/* Responsive design */
-	@media (max-width: var(--breakpoint-sm)) {
+	@media (max-width: 640px) {
 		.activity-meta {
 			flex-direction: column;
 			align-items: flex-start;

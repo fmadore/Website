@@ -9,25 +9,25 @@
 }
 
 /* Responsive container sizes */
-@media (min-width: var(--breakpoint-sm)) {
+@media (--sm) {
 	.container {
 		max-width: var(--container-sm);
 	}
 }
 
-@media (min-width: var(--breakpoint-md)) {
+@media (--md) {
 	.container {
 		max-width: var(--container-md);
 	}
 }
 
-@media (min-width: var(--breakpoint-lg)) {
+@media (--lg) {
 	.container {
 		max-width: var(--container-lg);
 	}
 }
 
-@media (min-width: var(--breakpoint-xl)) {
+@media (--xl) {
 	.container {
 		max-width: var(--container-xl);
 	}

@@ -521,7 +521,7 @@
 	}
 
 	/* Responsive design improvements */
-	@media (min-width: var(--breakpoint-sm)) {
+	@media (--sm) {
 		.footer-container {
 			padding: 0 var(--spacing-8);
 			gap: var(--spacing-6);
@@ -533,7 +533,7 @@
 		}
 	}
 
-	@media (min-width: var(--breakpoint-md)) {
+	@media (--md) {
 		.footer-container {
 			gap: var(--spacing-6);
 		}
@@ -543,7 +543,7 @@
 		}
 	}
 
-	@media (min-width: var(--breakpoint-lg)) {
+	@media (--lg) {
 		.site-footer {
 			padding: var(--spacing-16) 0 var(--spacing-12) 0;
 		}

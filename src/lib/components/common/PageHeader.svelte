@@ -227,7 +227,7 @@
 	}
 
 	/* Mobile responsive design */
-	@media (max-width: var(--breakpoint-sm)) {
+	@media (max-width: 640px) {
 		.enhanced-page-header {
 			padding: var(--spacing-6) var(--spacing-4);
 			margin-bottom: var(--spacing-4);

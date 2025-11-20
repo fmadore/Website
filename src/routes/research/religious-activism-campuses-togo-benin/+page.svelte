@@ -176,7 +176,7 @@
 	}
 
 	/* Grid layout for medium screens and up */
-	@media (min-width: 768px) {
+	@media (--md) {
 		.grid {
 			/* Apply to the .grid container */
 			display: grid;

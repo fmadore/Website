@@ -434,12 +434,37 @@ The CSS follows a component-based naming convention:
 
 ## Responsive Approach
 
-The CSS is built with a mobile-first approach:
+The CSS is built with a mobile-first approach using PostCSS Custom Media queries.
 
-- **Base styles**: Designed for mobile devices
-- **Breakpoints**: 640px (sm), 768px (md), 1024px (lg), 1280px (xl)
-- **Progressive enhancement**: Media queries adapt for larger screens
-- **Utility responsiveness**: Most utilities available at all breakpoints
+### Breakpoints
+
+We use standard breakpoints defined in `src/styles/base/media.css`:
+
+- **Small (`--sm`)**: 640px
+- **Medium (`--md`)**: 768px
+- **Large (`--lg`)**: 1024px
+- **Extra Large (`--xl`)**: 1280px
+- **2X Large (`--2xl`)**: 1536px
+
+### Writing Media Queries
+
+**IMPORTANT**: Do NOT use CSS variables (e.g., `var(--breakpoint-md)`) inside media queries as this is not supported by browsers. Instead, use the PostCSS Custom Media syntax:
+
+```css
+/* Correct usage */
+@media (--md) {
+  .my-component {
+    padding: var(--spacing-8);
+  }
+}
+
+/* Legacy/Invalid usage - DO NOT USE */
+@media (min-width: var(--breakpoint-md)) { ... }
+```
+
+- **Base styles**: Designed for mobile devices first (no media query).
+- **Progressive enhancement**: Use `@media (--breakpoint)` to apply styles for larger screens.
+- **Utility responsiveness**: Most utilities are available with breakpoint prefixes (e.g., `.md:text-lg`).
 
 ## JavaScript Utilities Integration
 

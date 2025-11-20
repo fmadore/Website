@@ -375,7 +375,7 @@
 }
 
 /* Responsive transform utilities */
-@media (min-width: var(--breakpoint-sm)) {
+@media (--sm) {
 	.sm\:scale-95 {
 		transform: scale(var(--scale-95));
 	}
@@ -413,7 +413,7 @@
 	}
 }
 
-@media (min-width: var(--breakpoint-md)) {
+@media (--md) {
 	.md\:scale-95 {
 		transform: scale(var(--scale-95));
 	}
@@ -451,7 +451,7 @@
 	}
 }
 
-@media (min-width: var(--breakpoint-lg)) {
+@media (--lg) {
 	.lg\:scale-95 {
 		transform: scale(var(--scale-95));
 	}
@@ -489,7 +489,7 @@
 	}
 }
 
-@media (min-width: var(--breakpoint-xl)) {
+@media (--xl) {
 	.xl\:scale-95 {
 		transform: scale(var(--scale-95));
 	}

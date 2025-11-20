@@ -105,8 +105,9 @@ The project uses a comprehensive design token system. **ALWAYS use CSS variables
 
 **Breakpoints:**
 
-- `var(--breakpoint-sm)`: 640px, `var(--breakpoint-md)`: 768px
-- `var(--breakpoint-lg)`: 1024px, `var(--breakpoint-xl)`: 1280px
+- **Use PostCSS Custom Media**: `@media (--sm)`, `@media (--md)`, `@media (--lg)`, `@media (--xl)`
+- **NEVER use `var()` in media queries**: e.g., `@media (min-width: var(--breakpoint-md))` is INVALID.
+- Breakpoint values: `sm` (640px), `md` (768px), `lg` (1024px), `xl` (1280px)
 
 ### Glassmorphism Classes (Required for UI)
 

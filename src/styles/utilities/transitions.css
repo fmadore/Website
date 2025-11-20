@@ -71,7 +71,7 @@
 }
 
 /* Responsive (Applying transition itself doesn't usually change, but added for completeness if needed) */
-@media (min-width: var(--breakpoint-sm)) {
+@media (--sm) {
 	.sm\:transition {
 		transition-property:
 			color, background-color, border-color, text-decoration-color, fill, stroke, opacity,
@@ -86,7 +86,7 @@
 	}
 }
 
-@media (min-width: var(--breakpoint-md)) {
+@media (--md) {
 	.md\:transition {
 		transition-property:
 			color, background-color, border-color, text-decoration-color, fill, stroke, opacity,
@@ -101,7 +101,7 @@
 	}
 }
 
-@media (min-width: var(--breakpoint-lg)) {
+@media (--lg) {
 	.lg\:transition {
 		transition-property:
 			color, background-color, border-color, text-decoration-color, fill, stroke, opacity,
@@ -116,7 +116,7 @@
 	}
 }
 
-@media (min-width: var(--breakpoint-xl)) {
+@media (--xl) {
 	.xl\:transition {
 		transition-property:
 			color, background-color, border-color, text-decoration-color, fill, stroke, opacity,

@@ -261,7 +261,7 @@
 /* Responsive Color Utilities */
 
 /* Small (sm) - 640px */
-@media (min-width: var(--breakpoint-sm)) {
+@media (--sm) {
 	.sm\:text-primary {
 		color: var(--color-primary);
 	}
@@ -366,7 +366,7 @@
 }
 
 /* Medium (md) - 768px */
-@media (min-width: var(--breakpoint-md)) {
+@media (--md) {
 	.md\:text-primary {
 		color: var(--color-primary);
 	}
@@ -471,7 +471,7 @@
 }
 
 /* Large (lg) - 1024px */
-@media (min-width: var(--breakpoint-lg)) {
+@media (--lg) {
 	.lg\:text-primary {
 		color: var(--color-primary);
 	}
@@ -576,7 +576,7 @@
 }
 
 /* Extra Large (xl) - 1280px */
-@media (min-width: var(--breakpoint-xl)) {
+@media (--xl) {
 	.xl\:text-primary {
 		color: var(--color-primary);
 	}

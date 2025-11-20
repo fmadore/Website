@@ -214,7 +214,7 @@
 	}
 
 	/* Responsive design */
-	@media (max-width: var(--breakpoint-sm)) {
+	@media (max-width: 640px) {
 		.relevant-item-meta {
 			flex-direction: column;
 			align-items: flex-start;
