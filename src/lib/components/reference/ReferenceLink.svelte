@@ -73,7 +73,7 @@
 <style>
 	.reference-link {
 		/* Blend with text flow - enhanced academic citation style */
-		display: inline;
+		display: inline-block;
 		position: relative;
 		color: var(--color-primary);
 		text-decoration: none;
@@ -81,18 +81,12 @@
 		font-weight: var(--font-weight-semibold);
 		white-space: nowrap;
 		padding: 0 var(--spacing-1);
-		border-radius: var(--border-radius-sm);
-		transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+		border-radius: var(--border-radius);
+		transition: all var(--anim-duration-base) var(--anim-ease-out);
 
-		/* Subtle background with sophisticated gradient */
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.06) 0%,
-			rgba(var(--color-accent-rgb), 0.03) 100%
-		);
-
-		/* Refined bottom border for academic feel */
-		border-bottom: var(--border-width-thin) solid rgba(var(--color-primary-rgb), 0.25);
+		/* Subtle background instead of underline */
+		background-color: rgba(var(--color-primary-rgb), 0.08);
+		border: var(--border-width-thin) solid transparent;
 	}
 
 	.reference-link.has-popup {
@@ -100,90 +94,56 @@
 		pointer-events: auto;
 	}
 
-	/* Enhanced hover state with sophisticated glassmorphism */
+	/* Enhanced hover state */
 	.reference-link:hover,
 	.reference-link:focus-visible {
 		color: var(--color-primary-dark);
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.12) 0%,
-			rgba(var(--color-accent-rgb), 0.08) 100%
-		);
-		border-bottom-color: rgba(var(--color-primary-rgb), 0.45);
+		background-color: rgba(var(--color-primary-rgb), 0.15);
+		border-color: rgba(var(--color-primary-rgb), 0.2);
 		transform: translateY(-1px);
-		box-shadow: 
-			0 2px 8px rgba(var(--color-primary-rgb), 0.12),
-			inset 0 1px 0 rgba(var(--color-white-rgb), 0.3);
+		box-shadow: var(--shadow-sm);
 	}
 
 	/* Active/clicked state */
 	.reference-link:active {
 		transform: translateY(0);
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.15) 0%,
-			rgba(var(--color-accent-rgb), 0.1) 100%
-		);
+		background-color: rgba(var(--color-primary-rgb), 0.2);
 	}
 
 	/* Focus state for accessibility */
 	.reference-link:focus-visible {
 		outline: var(--border-width-medium) solid rgba(var(--color-primary-rgb), 0.4);
 		outline-offset: var(--spacing-1);
-		border-radius: var(--border-radius-sm);
 	}
 
 	/* Dark mode - enhanced adjustments */
 	:global(html.dark) .reference-link {
 		color: var(--color-accent);
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-accent-rgb), 0.04) 100%
-		);
-		border-bottom-color: rgba(var(--color-accent-rgb), 0.25);
+		background-color: rgba(var(--color-accent-rgb), 0.1);
 	}
 
 	:global(html.dark) .reference-link:hover,
 	:global(html.dark) .reference-link:focus-visible {
 		color: var(--color-accent);
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-accent-rgb), 0.15) 0%,
-			rgba(var(--color-primary-rgb), 0.08) 100%
-		);
-		border-bottom-color: rgba(var(--color-accent-rgb), 0.45);
-		box-shadow: 
-			0 2px 8px rgba(var(--color-accent-rgb), 0.15),
-			inset 0 1px 0 rgba(var(--color-accent-rgb), 0.1);
+		background-color: rgba(var(--color-accent-rgb), 0.2);
+		border-color: rgba(var(--color-accent-rgb), 0.3);
+		box-shadow: var(--shadow-sm);
 	}
 
 	/* Active state when preview is visible */
 	.reference-link.is-active {
 		color: var(--color-primary-dark);
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.18) 0%,
-			rgba(var(--color-accent-rgb), 0.12) 100%
-		);
-		border-bottom-color: rgba(var(--color-primary-rgb), 0.4);
-		box-shadow: 
-			0 2px 8px rgba(var(--color-primary-rgb), 0.15),
-			inset 0 1px 0 rgba(var(--color-white-rgb), 0.3);
+		background-color: rgba(var(--color-primary-rgb), 0.2);
+		border-color: rgba(var(--color-primary-rgb), 0.3);
+		box-shadow: var(--shadow-sm);
 	}
 
 	/* Dark mode active state */
 	:global(html.dark) .reference-link.is-active {
 		color: var(--color-accent);
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-accent-rgb), 0.2) 0%,
-			rgba(var(--color-primary-rgb), 0.12) 100%
-		);
-		border-bottom-color: rgba(var(--color-accent-rgb), 0.4);
-		box-shadow: 
-			0 2px 8px rgba(var(--color-accent-rgb), 0.2),
-			inset 0 1px 0 rgba(var(--color-accent-rgb), 0.15);
+		background-color: rgba(var(--color-accent-rgb), 0.25);
+		border-color: rgba(var(--color-accent-rgb), 0.4);
+		box-shadow: var(--shadow-sm);
 	}
 
 	/* Reduced motion support */
