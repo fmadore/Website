@@ -50,19 +50,19 @@
                 min-width: min(90vw, var(--content-width-xs));
                 width: max-content;
                 max-width: min(100vw, var(--content-width-sm));
-                background: rgba(var(--color-white-rgb), 0.95);
-                backdrop-filter: blur(var(--glass-blur-amount, 20px)) saturate(180%);
-                -webkit-backdrop-filter: blur(var(--glass-blur-amount, 20px)) saturate(180%);
-                border: var(--border-width-thin) solid rgba(var(--color-white-rgb), 0.4);
+                background: rgba(var(--color-white-rgb), var(--glass-opacity-fallback-light));
+                backdrop-filter: blur(var(--glass-blur-amount, var(--glass-blur-fallback))) saturate(180%);
+                -webkit-backdrop-filter: blur(var(--glass-blur-amount, var(--glass-blur-fallback))) saturate(180%);
+                border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-40));
                 border-radius: var(--border-radius-lg);
                 box-shadow:
                         var(--shadow-xl),
-                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.6),
-                        inset 0 calc(-1 * var(--border-width-thin)) 0 rgba(var(--color-white-rgb), 0.2);
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-60)),
+                        inset 0 calc(-1 * var(--border-width-thin)) 0 rgba(var(--color-white-rgb), var(--opacity-20));
                 padding: var(--spacing-3);
                 opacity: 0;
                 visibility: hidden;
-                transform: translateY(calc(-1 * var(--spacing-3))) scale(0.95);
+                transform: translateY(calc(-1 * var(--spacing-3))) scale(var(--scale-95));
                 transition:
                         opacity var(--anim-duration-base) var(--anim-ease-base),
                         visibility var(--anim-duration-base) var(--anim-ease-base),
@@ -73,7 +73,7 @@
 	.dropdown-menu.active {
 		opacity: 1;
 		visibility: visible;
-		transform: translateY(0) scale(1);
+		transform: translateY(0) scale(var(--scale-100));
 		pointer-events: auto;
 	}
 
@@ -115,9 +115,9 @@
 
         :global(.dropdown-item:hover),
         :global(.dropdown-item:focus) {
-                background: rgba(var(--color-primary-rgb), 0.1);
+                background: rgba(var(--color-primary-rgb), var(--opacity-10));
                 color: var(--color-primary);
-                transform: translateX(var(--spacing-2)) scale(1.02);
+                transform: translateX(var(--spacing-2)) scale(var(--transform-scale-lg));
                 box-shadow:
                         var(--shadow-lg),
                         inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.3);
@@ -188,19 +188,19 @@
         }
 
 	.dropdown-menu.active :global(.dropdown-item:nth-child(1)) {
-		animation-delay: 0.05s;
+		animation-delay: var(--anim-delay-1);
 	}
 
 	.dropdown-menu.active :global(.dropdown-item:nth-child(2)) {
-		animation-delay: 0.1s;
+		animation-delay: var(--anim-delay-2);
 	}
 
 	.dropdown-menu.active :global(.dropdown-item:nth-child(3)) {
-		animation-delay: 0.15s;
+		animation-delay: var(--anim-delay-3);
 	}
 
 	.dropdown-menu.active :global(.dropdown-item:nth-child(4)) {
-		animation-delay: 0.2s;
+		animation-delay: var(--anim-delay-4);
 	}
 
         @keyframes dropdownItemFadeIn {

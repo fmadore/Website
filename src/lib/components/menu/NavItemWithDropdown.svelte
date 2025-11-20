@@ -80,7 +80,7 @@
 
 	/* Dropdown icon rotation when active */
 	.dropdown-hover-wrapper :global(.nav-link[aria-expanded='true'] .dropdown-icon) {
-		transform: rotate(180deg);
+		transform: rotate(var(--rotate-180));
 	}
 
 	/* First dropdown menu positioning adjustment */

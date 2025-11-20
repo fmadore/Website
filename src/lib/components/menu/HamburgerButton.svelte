@@ -47,21 +47,21 @@
 
 	/* Hamburger to X animation */
         .hamburger.active .hamburger-line:first-child {
-                transform: translateY(calc(var(--spacing-2) - var(--spacing-05))) rotate(45deg);
+                transform: translateY(calc(var(--spacing-2) - var(--spacing-05))) rotate(var(--rotate-45));
         }
 
         .hamburger.active .hamburger-line:nth-child(2) {
-                opacity: 0;
-                transform: scaleX(0);
+                opacity: var(--opacity-0);
+                transform: scaleX(var(--scale-0));
         }
 
         .hamburger.active .hamburger-line:last-child {
-                transform: translateY(calc(-1 * (var(--spacing-2) - var(--spacing-05)))) rotate(-45deg);
+                transform: translateY(calc(-1 * (var(--spacing-2) - var(--spacing-05)))) rotate(calc(-1 * var(--rotate-45)));
         }
 
         /* Hide hamburger completely when menu is active */
         .hamburger.active {
-                opacity: 0;
+                opacity: var(--opacity-0);
                 pointer-events: none;
         }
 

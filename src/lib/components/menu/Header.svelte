@@ -201,16 +201,16 @@
         :global(.site-header) {
                 background: linear-gradient(
                         135deg,
-                        rgba(var(--color-white-rgb), 0.8) 0%,
+                        rgba(var(--color-white-rgb), var(--opacity-80)) 0%,
                         rgba(var(--color-primary-rgb), 0.02) 50%,
                         rgba(var(--color-highlight-rgb), 0.01) 100%
                 );
-                backdrop-filter: blur(var(--glass-blur-amount, 20px));
-                -webkit-backdrop-filter: blur(var(--glass-blur-amount, 20px));
-                border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb), 0.3);
+                backdrop-filter: blur(var(--glass-blur-amount, var(--glass-blur-fallback)));
+                -webkit-backdrop-filter: blur(var(--glass-blur-amount, var(--glass-blur-fallback)));
+                border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-30));
                 box-shadow:
                         var(--shadow-lg),
-                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.4);
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-40));
                 position: sticky;
                 top: 0;
                 z-index: var(--z-sticky);
@@ -220,14 +220,14 @@
         :global(.site-header:hover) {
                 background: linear-gradient(
                         135deg,
-                        rgba(var(--color-white-rgb), 0.9) 0%,
+                        rgba(var(--color-white-rgb), var(--opacity-90)) 0%,
                         rgba(var(--color-primary-rgb), 0.03) 50%,
                         rgba(var(--color-highlight-rgb), 0.02) 100%
                 );
-                border-bottom-color: rgba(var(--color-white-rgb), 0.4);
+                border-bottom-color: rgba(var(--color-white-rgb), var(--opacity-40));
                 box-shadow:
                         var(--shadow-xl),
-                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.5);
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-50));
         }
 
         /* Dark mode */

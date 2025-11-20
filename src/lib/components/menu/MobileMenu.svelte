@@ -66,16 +66,16 @@
                 left: 0;
                 height: 100vh;
                 width: 100%;
-                background: rgba(var(--color-white-rgb), 0.98);
-                backdrop-filter: blur(var(--glass-blur-amount, 32px)) saturate(180%);
-                -webkit-backdrop-filter: blur(var(--glass-blur-amount, 32px)) saturate(180%);
+                background: rgba(var(--color-white-rgb), var(--glass-opacity-fallback-light));
+                backdrop-filter: blur(var(--glass-blur-amount, var(--glass-blur-fallback))) saturate(180%);
+                -webkit-backdrop-filter: blur(var(--glass-blur-amount, var(--glass-blur-fallback))) saturate(180%);
                 z-index: var(--z-modal);
                 transform: translateY(-100%);
                 transition: transform var(--anim-duration-base) var(--anim-ease-in-out);
                 overflow-y: auto;
                 box-shadow:
                         var(--shadow-2xl),
-                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.8);
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-80));
                 will-change: transform;
         }
 
@@ -188,25 +188,25 @@
 
 	/* Staggered animation for mobile nav items - faster and smoother */
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(1)) {
-		transition-delay: 0.05s;
+		transition-delay: var(--anim-delay-1);
 	}
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(2)) {
-		transition-delay: 0.08s;
+		transition-delay: var(--anim-delay-2);
 	}
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(3)) {
-		transition-delay: 0.11s;
+		transition-delay: var(--anim-delay-3);
 	}
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(4)) {
-		transition-delay: 0.14s;
+		transition-delay: var(--anim-delay-4);
 	}
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(5)) {
-		transition-delay: 0.17s;
+		transition-delay: var(--anim-delay-5);
 	}
         .mobile-nav-container.active :global(.mobile-nav-item:nth-child(6)) {
-                transition-delay: var(--anim-duration-fast);
+                transition-delay: var(--anim-delay-6);
         }
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(7)) {
-		transition-delay: 0.23s;
+		transition-delay: calc(var(--anim-delay-6) + 0.05s);
 	}
 
 	:global(.mobile-nav-item:last-child) {
