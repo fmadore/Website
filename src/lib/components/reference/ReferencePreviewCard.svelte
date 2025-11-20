@@ -267,9 +267,9 @@
 		color: var(--color-text);
 		overflow: hidden;
 
-		/* Enhanced glassmorphism with deeper blur and saturation */
-		backdrop-filter: blur(20px) saturate(150%);
-		-webkit-backdrop-filter: blur(20px) saturate(150%);
+		/* Enhanced glassmorphism using global variables */
+		backdrop-filter: blur(var(--glass-blur-2xl)) saturate(150%);
+		-webkit-backdrop-filter: blur(var(--glass-blur-2xl)) saturate(150%);
 
 		/* Premium glass background with subtle gradients */
 		background: linear-gradient(
@@ -670,8 +670,8 @@
 			rgba(var(--color-white-rgb), 0.95) 0%,
 			rgba(var(--color-primary-rgb), 0.05) 100%
 		);
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
+		backdrop-filter: blur(var(--glass-blur-amount));
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		
 		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), 0.2);
 		border-radius: var(--border-radius-sm);
@@ -787,7 +787,7 @@
 	}
 
 	/* Backdrop filter fallback */
-	@supports not (backdrop-filter: blur(20px)) {
+	@supports not (backdrop-filter: blur(var(--glass-blur-2xl))) {
 		.preview-card {
 			background: rgba(var(--color-white-rgb), 0.92);
 		}
