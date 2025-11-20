@@ -198,7 +198,7 @@
 	}
 
 	/* Grid layout for medium screens and up */
-	@media (min-width: var(--breakpoint-md)) {
+	@media (min-width: 768px) {
 		.grid {
 			display: grid;
 			grid-template-columns: 1fr 300px; /* Main content takes remaining space, sidebar is 300px */

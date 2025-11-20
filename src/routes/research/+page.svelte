@@ -84,6 +84,6 @@
 	.container {
 		max-width: var(--content-max-width);
 		margin: 0 auto;
-		padding: 0 var(--space-md);
+		padding: 0 var(--spacing-4);
 	}
 </style>
