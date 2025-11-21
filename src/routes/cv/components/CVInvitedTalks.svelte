@@ -9,7 +9,7 @@
 
 {#if invitedTalks.length > 0}
 	<section>
-		<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Invited Talks</h3>
+		<h3>Invited Talks</h3>
 		<div class="space-y-3">
 			{#each invitedTalks as comm (comm.id)}
 				{@const commDate = new Date(comm.dateISO)}

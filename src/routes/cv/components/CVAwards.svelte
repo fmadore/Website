@@ -3,7 +3,7 @@
 </script>
 
 <section>
-	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Awards & Honors</h3>
+	<h3>Awards & Honors</h3>
 	{#if awardsByDate.length > 0}
 		<div class="space-y-3">
 			{#each awardsByDate as award (award.id)}

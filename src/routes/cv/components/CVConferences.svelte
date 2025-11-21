@@ -9,13 +9,11 @@
 
 {#if organizedPanels.length > 0 || presentedPapers.length > 0}
 	<section>
-		<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">
-			Conference Participation
-		</h3>
+		<h3>Conference Participation</h3>
 
 		<!-- Panels Organised -->
 		{#if organizedPanels.length > 0}
-			<h4 class="text-lg font-semibold mt-4 mb-2">Panels organised</h4>
+			<h4>Panels organised</h4>
 			<div class="space-y-3">
 				{#each organizedPanels as comm (comm.id)}
 					{@const commDate = new Date(comm.dateISO)}
@@ -39,7 +37,7 @@
 
 		<!-- Papers Presented -->
 		{#if presentedPapers.length > 0}
-			<h4 class="text-lg font-semibold mt-4 mb-2">Papers presented</h4>
+			<h4>Papers presented</h4>
 			<div class="space-y-3">
 				{#each presentedPapers as comm (comm.id)}
 					{@const commDate = new Date(comm.dateISO)}

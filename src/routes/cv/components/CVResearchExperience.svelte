@@ -47,10 +47,10 @@
 </script>
 
 <section>
-	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Research Experience</h3>
+	<h3>Research Experience</h3>
 
 	<!-- Fieldwork Subsection -->
-	<h4 class="text-lg font-semibold mt-4 mb-2">Fieldwork</h4>
+	<h4>Fieldwork</h4>
 	{#if displayFieldworks.length > 0}
 		<div class="space-y-3">
 			{#each displayFieldworks as item (item.location)}

@@ -34,9 +34,9 @@
 </script>
 
 <section>
-	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Teaching Experience</h3>
+	<h3>Teaching Experience</h3>
 	{#if sortedTeaching.length > 0}
-		<h4 class="text-lg font-semibold mt-4 mb-2">Instructor</h4>
+		<h4>Instructor</h4>
 		<div class="space-y-3">
 			{#each sortedTeaching as course}
 				<div class="flex gap-4">

@@ -19,11 +19,11 @@
 </script>
 
 <section>
-	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Publications</h3>
+	<h3>Publications</h3>
 	{#if filteredPublicationsByDate.length > 0}
 		{#each presentPublicationTypes as pubType (pubType)}
 			{#if publicationsByType[pubType] && publicationsByType[pubType].length > 0}
-				<h4 class="text-lg font-semibold mt-4 mb-2">{getPublicationTypeDisplayName(pubType)}</h4>
+				<h4>{getPublicationTypeDisplayName(pubType)}</h4>
 				<div class="space-y-3">
 					{#each publicationsByType[pubType] as pub (pub.id)}
 						{@const formattedAuthors = formatCVAuthorList(pub.authors)}

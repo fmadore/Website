@@ -17,9 +17,7 @@
 </script>
 
 <section>
-	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">
-		Professional Appointments
-	</h3>
+	<h3>Professional Appointments</h3>
 	{#if appointmentsByDate.length > 0}
 		<div class="space-y-3">
 			{#each appointmentsByDate as appt (appt.id)}

@@ -11,10 +11,10 @@
 </script>
 
 <section>
-	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Education</h3>
+	<h3>Education</h3>
 
 	{#if degrees.length > 0}
-		<h4 class="text-lg font-semibold mt-4 mb-2">Degrees</h4>
+		<h4>Degrees</h4>
 		<div class="space-y-3">
 			{#each degrees as edu (edu.id)}
 				<div class="flex gap-4">

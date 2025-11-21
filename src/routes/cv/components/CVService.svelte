@@ -12,11 +12,11 @@
 </script>
 
 <section>
-	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Service to Profession</h3>
+	<h3>Service to Profession</h3>
 
 	<!-- Editorial Board Memberships Section -->
 	{#if realEditorialMemberships.length > 0}
-		<h4 class="text-lg font-semibold mt-4 mb-2">Editorial Board Memberships</h4>
+		<h4>Editorial Board Memberships</h4>
 		<div class="space-y-3">
 			{#each realEditorialMemberships as member (member.id)}
 				<div class="flex gap-4">

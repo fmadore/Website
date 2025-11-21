@@ -7,11 +7,11 @@
 </script>
 
 <section>
-	<h3 class="text-2xl font-semibold mb-2 border-b border-default pb-1">Media Appearances</h3>
+	<h3>Media Appearances</h3>
 	
 	<!-- Podcasts -->
 	{#if podcasts.length > 0}
-		<h4 class="text-lg font-semibold mt-4 mb-2">Podcasts</h4>
+		<h4>Podcasts</h4>
 		<div class="space-y-3">
 			{#each podcasts as podcast (podcast.id)}
 				{@const podcastDate = new Date(podcast.dateISO)}
