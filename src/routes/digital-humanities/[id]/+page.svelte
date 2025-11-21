@@ -88,7 +88,7 @@
 	ogImage={project.heroImageUrl ? `${base}${project.heroImageUrl}` : `${base}${project.imageUrl}`}
 />
 
-<div class="container mx-auto py-8 px-4">
+<div class="container py-8">
 	<article
 		class="project-detail-article glass-card rounded-lg p-6 mb-8"
 		use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up' }}
