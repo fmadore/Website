@@ -9,7 +9,7 @@
 	});
 </script>
 
-<h1 class="text-3xl font-bold mb-2 border-b-2 pb-2 cv-main-title border-primary">Curriculum Vitae</h1>
+<h1 class="text-3xl font-bold cv-main-title">Curriculum Vitae</h1>
 <h2 class="text-xl font-semibold mb-1 cv-subtitle text-primary">Frédérick Madore, PhD</h2>
 <p class="text-sm text-muted mb-4 cv-date">{today}</p>
 
@@ -65,6 +65,12 @@
 		text-align: center;
 	}
 
+	.cv-main-title {
+		margin-bottom: var(--spacing-2);
+		padding-bottom: var(--spacing-2);
+		border-bottom: var(--border-width-medium) solid var(--color-primary);
+	}
+
 	/* Contact section layout */
 	.cv-contact-section {
 		display: flex;
@@ -91,7 +97,7 @@
 	}
 
 	/* Desktop layout - side by side */
-	@media (min-width: 768px) {
+	@media (--md) {
 		.cv-contact-section {
 			flex-direction: row;
 			justify-content: space-between;
