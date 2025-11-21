@@ -13,6 +13,7 @@
 </script>
 
 <script lang="ts">
+	import { type Snippet } from 'svelte';
 	import { base } from '$app/paths';
 	import RelevantItemCard from '$lib/components/panels/RelevantItemCard.svelte'; // Import the Card-based molecule
 	import PanelBase from './PanelBase.svelte';
@@ -27,7 +28,8 @@
 		viewAllPath,
 		projectName,
 		formatType,
-		formatAuthors
+		formatAuthors,
+		filters
 	}: {
 		title: string; // e.g., "Relevant Publications", "Relevant Communications"
 		items: RelevantItem[];
@@ -37,6 +39,7 @@
 		projectName?: string; // Project name to use as a filter parameter
 		formatType: (type: string) => string;
 		formatAuthors: (authors: string[]) => string;
+		filters?: Snippet;
 	} = $props();
 
 	// Construct the view all URL with project filter if projectName is provided
@@ -46,6 +49,17 @@
 			: `${base}${viewAllPath}`
 	);
 </script>
+
+{#snippet headerContent()}
+	<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between w-full">
+		<h2 class="panel-title mb-0">{title}</h2>
+		{#if filters}
+			<div class="filters-wrapper">
+				{@render filters()}
+			</div>
+		{/if}
+	</div>
+{/snippet}
 
 {#snippet panelContent()}
 	{#if items.length === 0}
@@ -72,7 +86,13 @@
 	{/if}
 {/snippet}
 
-<PanelBase {title} variant="items" glassEffect="glass-panel" content={panelContent} />
+<PanelBase
+	{title}
+	variant="items"
+	glassEffect="glass-panel"
+	header={headerContent}
+	content={panelContent}
+/>
 
 <style>
 	/* Item-specific styles that aren't covered by PanelBase */

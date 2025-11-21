@@ -83,9 +83,9 @@
 	use:scrollAnimate={{ delay: DELAY_STEP * 0, animationClass: 'fade-in-up' }}
 >
 	<!-- Apply grid layout to this container on medium screens and up -->
-	<div class="grid" use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
+	<div class="content-wrapper" use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
 		<!-- Added grid wrapper -->
-		<div class="main-content">
+		<div class="main-content max-w-6xl mx-auto">
 			<Breadcrumb items={breadcrumbItems} />
 
 			<PageHeader title="Religious Activism on Campuses in Togo and Benin" />
@@ -146,16 +146,16 @@
 			/>
 		</div>
 
-		<div class="sidebar">
+		<div class="related-content mt-16 max-w-6xl mx-auto">
 			<RelevantPublications
 				projectName="Religious Activism on Campuses in Togo and Benin"
-				limit={5}
+				limit={6}
 				animationDelay={DELAY_STEP * 12}
 			/>
-			<div class="mt-6">
+			<div class="mt-12">
 				<RelevantCommunications
 					projectName="Religious Activism on Campuses in Togo and Benin"
-					limit={5}
+					limit={6}
 					animationDelay={DELAY_STEP * 15}
 				/>
 			</div>
@@ -168,29 +168,5 @@
 	/* Styles for mobile first */
 	.main-content {
 		width: 100%;
-	}
-
-	.sidebar {
-		width: 100%;
-		margin-top: var(--spacing-8);
-	}
-
-	/* Grid layout for medium screens and up */
-	@media (--md) {
-		.grid {
-			/* Apply to the .grid container */
-			display: grid;
-			grid-template-columns: 1fr 300px; /* Main content takes remaining space, sidebar is 300px */
-			gap: var(--spacing-8); /* Increased gap */
-		}
-
-		.main-content {
-			width: auto; /* Reset width */
-		}
-
-		.sidebar {
-			width: auto; /* Reset width */
-			margin-top: 0; /* Reset margin */
-		}
 	}
 </style>

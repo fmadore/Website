@@ -72,8 +72,8 @@
 </script>
 
 <div use:scrollAnimate={{ delay: animationDelay, animationClass: 'fade-in-up' }}>
-	{#if showTypeFilters && publicationTypes.length > 1}
-		<div class="type-filters-section">
+	{#snippet filterButtons()}
+		{#if showTypeFilters && publicationTypes.length > 1}
 			<div class="type-filters-container">
 				{#each publicationTypes as type (type)}
 					<Button
@@ -87,8 +87,8 @@
 					</Button>
 				{/each}
 			</div>
-		</div>
-	{/if}
+		{/if}
+	{/snippet}
 
 	<RelevantItemsList
 		title="Relevant Publications"
@@ -99,6 +99,7 @@
 		{projectName}
 		formatType={formatPublicationType}
 		{formatAuthors}
+		filters={filterButtons}
 	/>
 </div>
 
