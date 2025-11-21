@@ -7,13 +7,13 @@ export const zmoKitchenTalksPodcast2025: Activity = {
 	dateISO: '2025-11-21',
 	date: formatDisplayDate('2025-11-21'),
 	year: 2025,
-	description: 'Conversation with Elisa Nobel-Dilaty for the Leibniz-Zentrum Moderner Orient "Kitchen Talks" podcast discussing the Islam in West Africa Collection and AI in African studies.',
+	description: 'Joined Elisa Nobel-Dilaty on the ZMO "Kitchen Talks" podcast to discuss the Islam in West Africa Collection and potential and pitfalls of AI in African and Islamic studies.',
 	content: `
-        <p>Had a great conversation today with Elisa Nobel-Dilaty for the Leibniz-Zentrum Moderner Orient (ZMO) "Kitchen Talks" podcast.</p>
+        <p>Had a great conversation today with Elisa Nobel-Dilaty for the Leibniz-Zentrum Moderner Orient (ZMO) <a href="https://www.zmo.de/en/kitchen-talks" target="_blank" rel="noopener noreferrer">Kitchen Talks</a> podcast.</p>
         
-        <p>We discussed my work on the Islam in West Africa Collection, as well as the potential and pitfalls of AI in African and Islamic studies, ranging from "vibe coding" and data extraction to the "seductive danger" of AI-driven OCR and HTR.</p>
+        <p>We discussed my work on the <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer"><em>Islam in West Africa Collection</em></a>, as well as the potential and pitfalls of AI in African and Islamic studies, ranging from "vibe coding" and data extraction to the "seductive danger" of AI-driven OCR and HTR.</p>
         
-        <p>Stay tuned for the release of the episode! In the meantime, here are a couple of photos from the recording.</p>
+        <p>Stay tuned for the release of the episode!</p>
     `,
 	tags: ['Podcast', 'AI', 'African Studies', 'Islamic Studies', 'Digital Humanities', 'ZMO'],
     image: 'images/communications/zmo-kitchen-talks-podcast-2025.webp',
