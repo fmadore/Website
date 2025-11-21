@@ -63,7 +63,7 @@
 <style>
 	.reviews-section {
 		margin-top: var(--spacing-8);
-		padding: var(--spacing-6);
+		padding: var(--spacing-4);
 		border-radius: var(--border-radius-xl);
 		position: relative;
 
@@ -74,14 +74,20 @@
 			rgba(var(--color-accent-rgb), 0.025) 50%,
 			rgba(var(--color-highlight-rgb), 0.02) 100%
 		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 8px));
-		backdrop-filter: blur(var(--glass-blur-fallback, 8px));
+		-webkit-backdrop-filter: blur(var(--glass-blur-fallback));
+		backdrop-filter: blur(var(--glass-blur-fallback));
 		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low, 0.08));
 		box-shadow:
 			var(--shadow-md),
 			inset 0 var(--border-width-thin) 0
 				rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-low, 0.1));
 		transition: all var(--anim-duration-base, 0.3s) var(--anim-ease-out, ease-out);
+	}
+
+	@media (--sm) {
+		.reviews-section {
+			padding: var(--spacing-6);
+		}
 	}
 
 	.reviews-section:hover {
@@ -100,12 +106,18 @@
 
 	.section-title {
 		font-family: var(--font-family-serif);
-		font-size: var(--font-size-xl);
+		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
 		margin-bottom: var(--spacing-6);
 		line-height: var(--line-height-tight);
 		position: relative;
+	}
+
+	@media (--sm) {
+		.section-title {
+			font-size: var(--font-size-xl);
+		}
 	}
 
 	/* Elegant accent line under title matching other components */
@@ -115,7 +127,7 @@
 		bottom: calc(-1 * var(--spacing-2));
 		left: 0;
 		width: var(--spacing-16);
-		height: var(--border-width-medium, 2px);
+		height: var(--border-width-medium);
 		background: linear-gradient(
 			90deg,
 			var(--color-highlight) 0%,
@@ -136,7 +148,7 @@
 	}
 
 	.review-card {
-		padding: var(--spacing-6);
+		padding: var(--spacing-4);
 		border-radius: var(--border-radius-lg);
 		position: relative;
 
@@ -147,11 +159,17 @@
 			rgba(var(--color-primary-rgb), 0.02) 50%,
 			rgba(var(--color-highlight-rgb), 0.015) 100%
 		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
+		-webkit-backdrop-filter: blur(var(--glass-blur-fallback));
+		backdrop-filter: blur(var(--glass-blur-fallback));
 		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low, 0.08));
 		box-shadow: var(--shadow-sm);
 		transition: all var(--anim-duration-base, 0.3s) var(--anim-ease-out, ease-out);
+	}
+
+	@media (--sm) {
+		.review-card {
+			padding: var(--spacing-6);
+		}
 	}
 
 	.review-card:hover {
@@ -184,12 +202,18 @@
 	}
 
 	.review-title {
-		font-size: var(--font-size-lg);
+		font-size: var(--font-size-base);
 		font-weight: var(--font-weight-semibold);
 		margin-bottom: var(--spacing-3);
 		color: var(--color-text-emphasis);
 		line-height: var(--line-height-snug);
 		font-family: var(--font-family-serif);
+	}
+
+	@media (--sm) {
+		.review-title {
+			font-size: var(--font-size-lg);
+		}
 	}
 
 	.review-link {
@@ -256,33 +280,47 @@
 
 	.excerpt {
 		margin-top: var(--spacing-5);
-		padding: var(--spacing-5) var(--spacing-6);
+		padding: var(--spacing-4) var(--spacing-4);
 		border-radius: var(--border-radius-lg);
 		background: linear-gradient(
 			135deg,
 			rgba(var(--color-primary-rgb), 0.08) 0%,
 			rgba(var(--color-accent-rgb), 0.05) 100%
 		);
-		border-left: var(--border-width-thick, 4px) solid var(--color-primary);
+		border-left: var(--border-width-thick) solid var(--color-primary);
 		font-style: italic;
 		color: var(--color-text);
 		position: relative;
 		line-height: var(--line-height-relaxed);
 		letter-spacing: var(--letter-spacing-wide, 0.025em);
 		font-family: var(--font-family-serif);
-		font-size: var(--font-size-base);
+		font-size: var(--font-size-sm);
+	}
+
+	@media (--sm) {
+		.excerpt {
+			padding: var(--spacing-5) var(--spacing-6);
+			font-size: var(--font-size-base);
+		}
 	}
 
 	.excerpt::before {
 		content: '"';
 		position: absolute;
-		left: var(--spacing-3);
+		left: var(--spacing-2);
 		top: -0.2em;
 		color: var(--color-primary);
-		font-size: var(--font-size-3xl);
+		font-size: var(--font-size-2xl);
 		font-family: var(--font-family-serif);
 		font-weight: var(--font-weight-bold);
 		opacity: 0.6;
+	}
+
+	@media (--sm) {
+		.excerpt::before {
+			left: var(--spacing-3);
+			font-size: var(--font-size-3xl);
+		}
 	}
 
 	/* Enhanced focus states for accessibility */
@@ -342,36 +380,7 @@
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 640px) {
-		.reviews-section {
-			padding: var(--spacing-4);
-		}
-
-		.section-title {
-			font-size: var(--font-size-lg);
-		}
-
-		.review-card {
-			padding: var(--spacing-4);
-		}
-
-		.reviews-grid {
-			gap: var(--spacing-4);
-		}
-
-		.review-title {
-			font-size: var(--font-size-base);
-		}
-
-		.excerpt {
-			padding: var(--spacing-3) var(--spacing-4);
-		}
-
-		.excerpt::before {
-			left: var(--spacing-2);
-			font-size: var(--font-size-2xl);
-		}
-	}
+	/* Mobile-first styles are now default, with overrides in media queries above */
 
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {

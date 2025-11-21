@@ -40,7 +40,7 @@
 <style>
 	.cited-by-section {
 		margin-top: var(--spacing-8);
-		padding: var(--spacing-6);
+		padding: var(--spacing-4);
 		border-radius: var(--border-radius-xl);
 		position: relative;
 
@@ -51,14 +51,20 @@
 			rgba(var(--color-accent-rgb), 0.025) 50%,
 			rgba(var(--color-highlight-rgb), 0.02) 100%
 		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 8px));
-		backdrop-filter: blur(var(--glass-blur-fallback, 8px));
+		-webkit-backdrop-filter: blur(var(--glass-blur-fallback));
+		backdrop-filter: blur(var(--glass-blur-fallback));
 		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low, 0.08));
 		box-shadow:
 			var(--shadow-md),
 			inset 0 var(--border-width-thin) 0
 				rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-low, 0.1));
 		transition: all var(--anim-duration-base, 0.3s) var(--anim-ease-out, ease-out);
+	}
+
+	@media (--sm) {
+		.cited-by-section {
+			padding: var(--spacing-6);
+		}
 	}
 
 	.cited-by-section:hover {
@@ -77,12 +83,18 @@
 
 	.section-title {
 		font-family: var(--font-family-serif);
-		font-size: var(--font-size-xl);
+		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
 		margin-bottom: var(--spacing-6);
 		line-height: var(--line-height-tight);
 		position: relative;
+	}
+
+	@media (--sm) {
+		.section-title {
+			font-size: var(--font-size-xl);
+		}
 	}
 
 	/* Elegant accent line under title matching AbstractSection */
@@ -92,7 +104,7 @@
 		bottom: calc(-1 * var(--spacing-2));
 		left: 0;
 		width: var(--spacing-16);
-		height: var(--border-width-medium, 2px);
+		height: var(--border-width-medium);
 		background: linear-gradient(
 			90deg,
 			var(--color-highlight) 0%,
@@ -112,14 +124,14 @@
 		gap: var(--spacing-4);
 	}
 
-	@media (min-width: 768px) {
+	@media (--md) {
 		.citations-grid {
 			grid-template-columns: repeat(2, 1fr);
 		}
 	}
 
 	.citing-work-card {
-		padding: var(--spacing-5);
+		padding: var(--spacing-3);
 		border-radius: var(--border-radius-lg);
 		position: relative;
 
@@ -130,11 +142,17 @@
 			rgba(var(--color-primary-rgb), 0.02) 50%,
 			rgba(var(--color-highlight-rgb), 0.015) 100%
 		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
+		-webkit-backdrop-filter: blur(var(--glass-blur-fallback));
+		backdrop-filter: blur(var(--glass-blur-fallback));
 		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low, 0.08));
 		box-shadow: var(--shadow-sm);
 		transition: all var(--anim-duration-base, 0.3s) var(--anim-ease-out, ease-out);
+	}
+
+	@media (--sm) {
+		.citing-work-card {
+			padding: var(--spacing-5);
+		}
 	}
 
 	.citing-work-card:hover {
@@ -167,12 +185,18 @@
 	}
 
 	.citation-title {
-		font-size: var(--font-size-lg);
+		font-size: var(--font-size-base);
 		font-weight: var(--font-weight-semibold);
 		margin-bottom: var(--spacing-2);
 		color: var(--color-text-emphasis);
 		line-height: var(--line-height-snug);
 		font-family: var(--font-family-serif);
+	}
+
+	@media (--sm) {
+		.citation-title {
+			font-size: var(--font-size-lg);
+		}
 	}
 
 	.citation-link {
@@ -256,23 +280,7 @@
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 640px) {
-		.cited-by-section {
-			padding: var(--spacing-4);
-		}
-
-		.section-title {
-			font-size: var(--font-size-lg);
-		}
-
-		.citing-work-card {
-			padding: var(--spacing-3);
-		}
-
-		.citation-title {
-			font-size: var(--font-size-base);
-		}
-	}
+	/* Mobile-first styles are now default, with overrides in media queries above */
 
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
