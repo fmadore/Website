@@ -51,7 +51,7 @@
 
 					{#if review.excerpt}
 						<blockquote class="excerpt">
-							"{review.excerpt}"
+							{review.excerpt}
 						</blockquote>
 					{/if}
 				</div>
