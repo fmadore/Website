@@ -122,12 +122,6 @@
 </div>
 
 <style>
-	.container {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 0 1rem;
-	}
-
 	/* .dh-grid styles are now handled by .content-grid */
 	/* Ensure any unique styles for this page that were part of .dh-grid are preserved or moved if necessary. */
 	/* .content-grid includes gap: var(--spacing-8) and margin-top: var(--spacing-8) (which was 2rem for .dh-grid) */

@@ -246,7 +246,7 @@
 	/* Award Section */
 	.award-section {
 		margin: var(--spacing-8) 0;
-		padding: var(--spacing-6);
+		padding: var(--spacing-4);
 		border-radius: var(--border-radius-lg);
 		background: linear-gradient(
 			135deg,
@@ -273,7 +273,7 @@
 
 	.award-title {
 		font-family: var(--font-family-serif);
-		font-size: var(--font-size-lg);
+		font-size: var(--font-size-base);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-accent);
 		margin-bottom: var(--spacing-2);
@@ -283,7 +283,7 @@
 	/* Publication Section */
 	.publication-section {
 		margin: var(--spacing-8) 0;
-		padding: var(--spacing-6);
+		padding: var(--spacing-4);
 		border-radius: var(--border-radius-lg);
 		background: linear-gradient(
 			135deg,
@@ -310,7 +310,7 @@
 
 	.publication-title {
 		font-family: var(--font-family-serif);
-		font-size: var(--font-size-lg);
+		font-size: var(--font-size-base);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
 		margin-bottom: var(--spacing-2);
@@ -320,7 +320,7 @@
 	/* Reviews Section */
 	.reviews-section {
 		margin: var(--spacing-8) 0;
-		padding: var(--spacing-6);
+		padding: var(--spacing-4);
 		border-radius: var(--border-radius-lg);
 		background: linear-gradient(
 			135deg,
@@ -347,7 +347,7 @@
 
 	.reviews-title {
 		font-family: var(--font-family-serif);
-		font-size: var(--font-size-lg);
+		font-size: var(--font-size-base);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
 		margin-bottom: var(--spacing-4);
@@ -364,7 +364,7 @@
 	}
 
 	.review-item {
-		padding: var(--spacing-4);
+		padding: var(--spacing-3);
 		border-radius: var(--border-radius-md);
 		background: linear-gradient(
 			135deg,
@@ -445,21 +445,21 @@
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 640px) {
+	@media (--sm) {
 		.award-section,
 		.publication-section,
 		.reviews-section {
-			padding: var(--spacing-4);
+			padding: var(--spacing-6);
 		}
 
 		.award-title,
 		.publication-title,
 		.reviews-title {
-			font-size: var(--font-size-base);
+			font-size: var(--font-size-lg);
 		}
 
 		.review-item {
-			padding: var(--spacing-3);
+			padding: var(--spacing-4);
 		}
 	}
 
