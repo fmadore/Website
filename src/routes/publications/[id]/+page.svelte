@@ -280,7 +280,7 @@
 	title={truncateTitle(publication.title) + ' | Frédérick Madore'}
 	description={seoDescription}
 	keywords={seoKeywords}
-	ogImage={`${base}/${publication.image}`}
+	ogImage={publication.image ? `${base}/${publication.image}` : undefined}
 	includeCitationAuthor={false}
 />
 
