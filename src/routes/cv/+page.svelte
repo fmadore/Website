@@ -190,10 +190,12 @@
 			rgba(var(--color-primary-rgb), 0.02) 0%,
 			rgba(var(--color-highlight-rgb), 0.01) 100%
 		);
+		backdrop-filter: blur(var(--glass-blur-amount));
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		border-radius: var(--border-radius-lg);
 		padding: var(--spacing-4);
 		margin-bottom: var(--spacing-4);
-		border: 1px solid rgba(255, 255, 255, 0.1);
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), 0.1);
 		transition: all var(--transition-duration-200) ease;
 	}
 
@@ -226,8 +228,8 @@
 		position: absolute;
 		bottom: 0;
 		left: 0;
-		width: 3rem;
-		height: 2px;
+		width: var(--spacing-12);
+		height: var(--border-width-medium);
 		background: var(--color-accent);
 		border-radius: var(--border-radius-full);
 	}
@@ -248,7 +250,7 @@
 
 	:global(#cv-content .space-y-3 > div:hover) {
 		background: rgba(var(--color-primary-rgb), 0.03);
-		transform: translateX(4px);
+		transform: translateX(var(--spacing-1));
 	}
 
 	/* Year labels with accent styling */
@@ -284,7 +286,7 @@
 		/* Optimize for print */
 		.cv-container {
 			max-width: 100% !important;
-			padding: 0.5in !important;
+			padding: var(--spacing-10) !important;
 			margin: 0 !important;
 			box-shadow: none !important;
 			border-radius: 0 !important;
