@@ -143,7 +143,7 @@
 			<ul class="lectures-list">
 				{#each lectures as lecture, lectureIndex (lecture.title + lecture.date)}
 					<li
-						class="lecture-item"
+						class="lecture-item glass-card"
 						use:scrollAnimate={{
 							delay: 200 + sectionIndex * 150 + lectureIndex * 50,
 							animationClass: 'fade-in-up'
@@ -195,26 +195,9 @@
 	}
 
 	.lecture-item {
-		/* Glassmorphism card styling */
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.03) 0%,
-			rgba(var(--color-highlight-rgb), 0.02) 50%,
-			rgba(var(--color-accent-rgb), 0.01) 100%
-		);
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
-
-		/* Enhanced borders and shadows */
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium-high));
+		/* Enhanced borders */
 		border-left: var(--border-width-thick) solid var(--color-primary);
-		border-radius: var(--border-radius-lg);
-
-		/* Glassmorphism shadow system */
-		box-shadow:
-			0 8px 32px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-medium-high));
-
+		
 		/* Balanced spacing - less top padding, more bottom padding */
 		padding: var(--space-md) var(--space-lg) var(--space-lg) var(--space-lg);
 		margin-bottom: var(--space-md);
@@ -225,22 +208,8 @@
 	}
 
 	.lecture-item:hover {
-		/* Enhanced hover state with glassmorphism */
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.05) 0%,
-			rgba(var(--color-highlight-rgb), 0.03) 50%,
-			rgba(var(--color-accent-rgb), 0.02) 100%
-		);
-
 		/* Enhanced hover effects */
-		border-color: rgba(var(--color-white-rgb), 0.3);
 		border-left-color: var(--color-highlight);
-
-		/* Enhanced shadow on hover */
-		box-shadow:
-			0 12px 40px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity-hover)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), 0.3);
 
 		/* Subtle lift effect */
 		transform: var(--transform-lift-sm);
@@ -290,34 +259,10 @@
 	}
 
 	/* Dark mode adaptations */
-	:global(html.dark) .lecture-item {
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.06) 0%,
-			rgba(var(--color-highlight-rgb), 0.04) 50%,
-			rgba(var(--color-accent-rgb), 0.02) 100%
-		);
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
-		box-shadow:
-			0 8px 32px 0 rgba(var(--color-black-rgb), 0.3),
-			inset 0 1px 0 rgba(var(--color-white-rgb), 0.1);
-	}
-
-	:global(html.dark) .lecture-item:hover {
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-highlight-rgb), 0.06) 50%,
-			rgba(var(--color-accent-rgb), 0.04) 100%
-		);
-		border-color: rgba(var(--color-white-rgb), 0.15);
-		box-shadow:
-			0 12px 40px 0 rgba(var(--color-black-rgb), 0.4),
-			inset 0 1px 0 rgba(var(--color-white-rgb), 0.15);
-	}
+	/* Handled by glass-card utility */
 
 	/* Responsive design */
-	@media (min-width: 768px) {
+	@media (--md) {
 		.lectures-list {
 			gap: var(--space-lg);
 		}

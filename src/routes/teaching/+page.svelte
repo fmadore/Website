@@ -73,7 +73,7 @@
 		</div>
 
 		<!-- Card Grid Layout -->
-		<div class="content-grid">
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each teachingItems as item, index (item.id)}
 				<div use:scrollAnimate={{ delay: 200 + index * 100, animationClass: 'fade-in-up' }}>
 					<Card
@@ -126,8 +126,6 @@
 		width: 100%;
 	}
 
-	/* .teaching-grid styles are now handled by .content-grid */
-
 	.teaching-card-specific-details p {
 		font-size: var(--font-size-sm);
 		color: var(--color-text-light);
@@ -137,16 +135,4 @@
 		font-weight: var(--font-weight-medium);
 		color: var(--color-text);
 	}
-
-	/* @media (min-width: 640px) {
-        .teaching-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-    
-    @media (min-width: 1024px) {
-        .teaching-grid {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    } */
 </style>

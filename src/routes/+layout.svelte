@@ -205,7 +205,7 @@
 	<Header />
 
 	<main class="main-content-area">
-		<div class="container mx-auto p-4 md:p-8">
+		<div class="container py-6 md:py-10">
 			{#key $page.url}
 				<div>
 					{@render children()}
@@ -225,12 +225,6 @@
 		display: flex;
 		flex-direction: column;
 		min-height: 100vh;
-	}
-
-	.container {
-		max-width: var(--container-xl);
-		margin-left: auto;
-		margin-right: auto;
 	}
 
 	.main-content-area {
