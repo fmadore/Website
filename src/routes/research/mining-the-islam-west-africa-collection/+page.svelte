@@ -79,7 +79,7 @@
 <SEO title="Mining the Islam West Africa Collection | Frédérick Madore" />
 
 <div
-	class="container mx-auto px-4 py-8"
+	class="container py-8"
 	use:scrollAnimate={{ delay: DELAY_STEP * 0, animationClass: 'fade-in-up' }}
 >
 	<!-- Apply grid layout to this container on medium screens and up -->
@@ -173,11 +173,6 @@
 </div>
 
 <style>
-	/* Styles for mobile first */
-	.main-content {
-		width: 100%;
-	}
-
 	.iframe-section {
 		margin-top: var(--spacing-12);
 		margin-bottom: var(--spacing-8);

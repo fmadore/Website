@@ -46,7 +46,7 @@
 
 <SEO title="Research | Frédérick Madore" />
 
-<div class="container" use:scrollAnimate={{ delay: DELAY_STEP * 0, animationClass: 'fade-in-up' }}>
+<div class="container py-8" use:scrollAnimate={{ delay: DELAY_STEP * 0, animationClass: 'fade-in-up' }}>
 	<PageHeader title="Research" />
 
 	<PageIntro>
@@ -81,9 +81,5 @@
 </div>
 
 <style>
-	.container {
-		max-width: var(--content-max-width);
-		margin: 0 auto;
-		padding: 0 var(--spacing-4);
-	}
+	/* .container styles are handled by global layout/container.css */
 </style>

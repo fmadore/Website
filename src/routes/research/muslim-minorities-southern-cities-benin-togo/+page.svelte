@@ -79,7 +79,7 @@
 <SEO title="Muslim Minorities in Southern Cities of Benin and Togo | Frédérick Madore" />
 
 <div
-	class="container mx-auto px-4 py-8"
+	class="container py-8"
 	use:scrollAnimate={{ delay: DELAY_STEP * 0, animationClass: 'fade-in-up' }}
 >
 	<div class="content-wrapper" use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
@@ -163,7 +163,5 @@
 
 <style>
 	/* Styles for mobile first */
-	.main-content {
-		width: 100%;
-	}
+	/* .main-content width is handled by block display default */
 </style>
