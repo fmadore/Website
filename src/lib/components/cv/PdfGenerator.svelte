@@ -82,13 +82,22 @@
 				CONTACT_GAP: 4       // Gap between contact items
 			};
 
+			// Colors matching variables.css
+			const COLORS = {
+				PRIMARY: [30, 58, 95],    // #1e3a5f
+				ACCENT: [8, 145, 178],    // #0891b2
+				TEXT: [30, 41, 59],       // #1e293b
+				TEXT_LIGHT: [71, 85, 105],// #475569
+				BORDER: [226, 232, 240]   // #e2e8f0
+			};
+
 			// Layout constants
 			const yearColumnWidth = 35; // Width for year column in mm
 
 			// Helper to add text with word wrap
-			const addText = (text: string, fontSize: number, isBold: boolean = false) => {
+			const addText = (text: string, fontSize: number, isBold: boolean = false, font: 'helvetica' | 'times' = 'helvetica') => {
 				pdf.setFontSize(fontSize);
-				pdf.setFont('helvetica', isBold ? 'bold' : 'normal');
+				pdf.setFont(font, isBold ? 'bold' : 'normal');
 				const lines = pdf.splitTextToSize(text, contentWidth);
 				
 				lines.forEach((line: string) => {
@@ -107,14 +116,14 @@
 				const pageCount = pdf.internal.pages.length - 1;
 				pdf.setFontSize(FONT_SIZE.PAGE_NUMBER);
 				pdf.setFont('helvetica', 'normal');
-				pdf.setTextColor(128, 128, 128);
+				pdf.setTextColor(...COLORS.TEXT_LIGHT);
 				pdf.text(
 					`Page ${pageCount}`,
 					pageWidth / 2,
 					pageHeight - 10,
 					{ align: 'center' }
 				);
-				pdf.setTextColor(0, 0, 0);
+				pdf.setTextColor(...COLORS.TEXT);
 			};
 
 			// Get CV content from the page
@@ -130,13 +139,18 @@
 				}
 				yPosition += SPACING.SECTION_TOP;
 				pdf.setFontSize(FONT_SIZE.SECTION_HEADING);
-				pdf.setFont('helvetica', 'bold');
+				pdf.setFont('times', 'bold');
+				pdf.setTextColor(...COLORS.PRIMARY);
 				pdf.text(title, margin, yPosition);
 				yPosition += 3;
-				// Subtle line under section heading (matching border-b style)
-				pdf.setDrawColor(226, 232, 240); // ~var(--color-border) = #e2e8f0
+				
+				// Accent line under section heading (matching web style)
+				pdf.setDrawColor(...COLORS.ACCENT);
 				pdf.setLineWidth(0.5);
-				pdf.line(margin, yPosition, pageWidth - margin, yPosition);
+				// Draw a short line (approx 13mm / 3rem)
+				pdf.line(margin, yPosition, margin + 13, yPosition);
+				
+				pdf.setTextColor(...COLORS.TEXT); // Reset text color
 				yPosition += SPACING.SECTION_BOTTOM;
 			};
 
@@ -146,20 +160,21 @@
 
 			// Title - matches text-3xl font-bold
 			pdf.setFontSize(FONT_SIZE.TITLE);
-			pdf.setFont('helvetica', 'bold');
+			pdf.setFont('times', 'bold');
+			pdf.setTextColor(...COLORS.PRIMARY);
 			pdf.text('Curriculum Vitae', pageWidth / 2, yPosition, { align: 'center' });
 			yPosition += 8;
 			
 			// Name - matches text-xl font-semibold
 			pdf.setFontSize(FONT_SIZE.NAME);
-			pdf.setFont('helvetica', 'bold');
+			pdf.setFont('times', 'bold');
 			pdf.text('Frédérick Madore', pageWidth / 2, yPosition, { align: 'center' });
 			yPosition += 6;
 
 			// Date from CVHeader - matches text-sm text-light
 			pdf.setFontSize(FONT_SIZE.DATE);
 			pdf.setFont('helvetica', 'normal');
-			pdf.setTextColor(71, 85, 105); // var(--color-text-light) = #475569
+			pdf.setTextColor(...COLORS.TEXT_LIGHT);
 			const dateText = cvDateElement?.textContent?.trim() || today.toLocaleDateString('en-GB', {
 				year: 'numeric',
 				month: 'long',
@@ -172,7 +187,7 @@
 			// Two-column layout: Left (Address) | Right (Contact links)
 			pdf.setFontSize(FONT_SIZE.CONTACT);
 			pdf.setFont('helvetica', 'normal');
-			pdf.setTextColor(71, 85, 105); // var(--color-text-light)
+			pdf.setTextColor(...COLORS.TEXT_LIGHT);
 			
 			const leftColumn = margin;
 			const rightColumn = pageWidth / 2 + 10;
@@ -216,7 +231,10 @@
 					}
 					
 					if (displayText) {
-						pdf.text(displayText, rightColumn, rightY);
+						// Add clickable link
+						pdf.setTextColor(...COLORS.ACCENT);
+						pdf.textWithLink(displayText, rightColumn, rightY, { url: href });
+						pdf.setTextColor(...COLORS.TEXT_LIGHT);
 						rightY += SPACING.CONTACT_GAP;
 					}
 				}
@@ -224,7 +242,7 @@
 			
 			// Move y position to the max of left and right columns + section gap
 			yPosition = Math.max(yPosition, rightY) + SPACING.SECTION_TOP;
-			pdf.setTextColor(0, 0, 0); // Reset to default text color
+			pdf.setTextColor(...COLORS.TEXT); // Reset to default text color
 
 			// Extract sections
 			const sections = element.querySelectorAll('section');
@@ -253,7 +271,8 @@
 					subsections.forEach((h4) => {
 						yPosition += SPACING.SUBSECTION_TOP;
 						pdf.setFontSize(FONT_SIZE.SUBSECTION);
-						pdf.setFont('helvetica', 'bold');
+						pdf.setFont('times', 'bold');
+						pdf.setTextColor(...COLORS.TEXT);
 						pdf.text(h4.textContent || '', margin + 3, yPosition);
 						yPosition += SPACING.SUBSECTION_BOTTOM;
 
@@ -279,7 +298,9 @@
 										// Year column - matches font-semibold
 										pdf.setFontSize(FONT_SIZE.BODY);
 										pdf.setFont('helvetica', 'bold');
+										pdf.setTextColor(...COLORS.PRIMARY);
 										pdf.text(year, margin + 3, yPosition);
+										pdf.setTextColor(...COLORS.TEXT);
 										
 										// Get main text and nested paragraphs separately
 										const clone = contentDiv.cloneNode(true) as HTMLElement;
@@ -379,7 +400,9 @@
 									// Year column
 									pdf.setFontSize(FONT_SIZE.BODY);
 									pdf.setFont('helvetica', 'bold');
+									pdf.setTextColor(...COLORS.PRIMARY);
 									pdf.text(year, margin + 3, yPosition);
+									pdf.setTextColor(...COLORS.TEXT);
 									
 									// Get main text and nested paragraphs separately
 									const clone = contentDiv.cloneNode(true) as HTMLElement;
@@ -445,10 +468,12 @@
 									if (label || value) {
 										pdf.setFontSize(FONT_SIZE.BODY);
 										pdf.setFont('helvetica', 'bold');
+										pdf.setTextColor(...COLORS.PRIMARY);
 										const labelLines = pdf.splitTextToSize(label, yearColumnWidth);
 										labelLines.forEach((line: string, index: number) => {
 											pdf.text(line, margin + 3, yPosition + (index * SPACING.LINE_HEIGHT_TIGHT));
 										});
+										pdf.setTextColor(...COLORS.TEXT);
 										
 										pdf.setFont('helvetica', 'normal');
 										const valueLines = pdf.splitTextToSize(value, contentWidth - yearColumnWidth);
