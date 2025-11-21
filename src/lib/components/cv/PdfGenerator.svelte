@@ -391,13 +391,17 @@
 									// Layout with year column
 									const year = firstDiv.textContent?.trim() || '';
 									
+									// Check if it's a wide column (e.g. Computer Skills w-60)
+									const isWideColumn = firstDiv.classList.contains('w-60');
+									const currentColumnWidth = isWideColumn ? 65 : yearColumnWidth;
+									
 									if (yPosition > pageHeight - margin - 15) {
 										addPageNumber();
 										pdf.addPage();
 										yPosition = margin;
 									}
 									
-									// Year column
+									// Year column (or Category label)
 									pdf.setFontSize(FONT_SIZE.BODY);
 									pdf.setFont('helvetica', 'bold');
 									pdf.setTextColor(...COLORS.PRIMARY);
@@ -424,14 +428,14 @@
 									if (mainText) {
 										pdf.setFontSize(FONT_SIZE.BODY);
 										pdf.setFont('helvetica', 'normal');
-										const lines = pdf.splitTextToSize(mainText, contentWidth - yearColumnWidth);
+										const lines = pdf.splitTextToSize(mainText, contentWidth - currentColumnWidth);
 										lines.forEach((line: string, index: number) => {
 											if (index > 0 && yPosition > pageHeight - margin - 10) {
 												addPageNumber();
 												pdf.addPage();
 												yPosition = margin;
 											}
-											pdf.text(line, margin + yearColumnWidth, yPosition);
+											pdf.text(line, margin + currentColumnWidth, yPosition);
 											if (index < lines.length - 1) {
 												yPosition += SPACING.LINE_HEIGHT_TIGHT;
 											}
@@ -443,14 +447,14 @@
 									paragraphTexts.forEach((text, idx) => {
 										pdf.setFontSize(FONT_SIZE.BODY - 0.5);
 										pdf.setFont('helvetica', 'normal');
-										const lines = pdf.splitTextToSize(text, contentWidth - yearColumnWidth);
+										const lines = pdf.splitTextToSize(text, contentWidth - currentColumnWidth);
 										lines.forEach((line: string, index: number) => {
 											if (yPosition > pageHeight - margin - 10) {
 												addPageNumber();
 												pdf.addPage();
 												yPosition = margin;
 											}
-											pdf.text(line, margin + yearColumnWidth, yPosition);
+											pdf.text(line, margin + currentColumnWidth, yPosition);
 											if (index < lines.length - 1) {
 												yPosition += SPACING.LINE_HEIGHT_TIGHT;
 											}
