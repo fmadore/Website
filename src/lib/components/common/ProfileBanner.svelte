@@ -78,10 +78,12 @@
 <style>
 	.profile-header {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
-		gap: var(--space-xl);
-		margin-bottom: var(--space-xl);
-		padding: var(--space-xl-tight) var(--space-xl);
+		text-align: center;
+		gap: var(--space-md);
+		margin-bottom: var(--space-md);
+		padding: var(--space-lg) var(--space-md);
 		position: relative;
 		/* Enhanced glassmorphism with subtle gradient overlay */
 		background: linear-gradient(
@@ -99,10 +101,10 @@
 	.profile-photo-container::before {
 		content: '';
 		position: absolute;
-		top: calc(-1 * var(--space-xs));
-		left: calc(-1 * var(--space-xs));
-		right: calc(-1 * var(--space-xs));
-		bottom: calc(-1 * var(--space-xs));
+		top: calc(-2 * var(--space-2xs));
+		left: calc(-2 * var(--space-2xs));
+		right: calc(-2 * var(--space-2xs));
+		bottom: calc(-2 * var(--space-2xs));
 		background: linear-gradient(
 			135deg,
 			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%,
@@ -117,8 +119,8 @@
 
 	.profile-photo {
 		margin: 0;
-		width: 180px;
-		height: 180px;
+		width: var(--space-32); /* ~128px (close to 120px) */
+		height: var(--space-32);
 		flex-shrink: 0;
 		position: relative;
 		z-index: 1;
@@ -139,8 +141,9 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		align-items: center;
 		height: 100%;
-		min-height: 180px;
+		min-height: auto;
 	}
 
 	.profile-title {
@@ -149,7 +152,7 @@
 	}
 
 	.profile-title h1 {
-		font-size: var(--font-size-4xl);
+		font-size: var(--font-size-2xl);
 		font-weight: var(--font-weight-extrabold);
 		margin: 0;
 		color: var(--color-primary);
@@ -158,25 +161,28 @@
 	}
 
 	.title-accent {
-		width: var(--space-3xl);
+		width: var(--space-xl-tight);
 		height: var(--border-width-thick);
 		background: linear-gradient(90deg, var(--color-highlight) 0%, var(--color-accent) 100%);
 		border-radius: var(--border-radius-sm);
 		margin-top: var(--space-xs);
+		margin-left: auto;
+		margin-right: auto;
 	}
 
 	.subtitle {
-		font-size: var(--font-size-xl);
+		font-size: var(--font-size-base);
 		color: var(--color-text-light);
-		margin-bottom: var(--space-lg);
+		margin-bottom: var(--space-md);
 		font-weight: var(--font-weight-medium);
-		line-height: var(--line-height-relaxed);
+		line-height: var(--line-height-snug);
 	}
 
 	.profile-icons {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
+		justify-content: center;
 		gap: var(--space-xs);
 		margin: 0;
 	}
@@ -235,7 +241,7 @@
 
 	/* Focus-visible accessibility rings */
 	.profile-photo:focus-visible img {
-		outline: 3px solid var(--color-highlight);
+		outline: var(--border-width-thick) solid var(--color-highlight);
 		outline-offset: var(--space-2xs);
 	}
 
@@ -246,52 +252,52 @@
 			rgba(var(--color-highlight-rgb), var(--opacity-medium-high));
 	}
 
-	/* Mobile responsive design */
-	@media (max-width: 640px) {
+	/* Desktop responsive design */
+	@media (--sm) {
 		.profile-header {
-			flex-direction: column;
+			flex-direction: row;
 			align-items: center;
-			text-align: center;
-			gap: var(--space-md);
-			padding: var(--space-lg) var(--space-md);
-			margin-bottom: var(--space-md);
-		}
-
-		.profile-content {
-			align-items: center;
-			min-height: auto;
-		}
-
-		.profile-photo {
-			width: 120px;
-			height: 120px;
+			text-align: left;
+			gap: var(--space-xl);
+			margin-bottom: var(--space-xl);
+			padding: var(--space-xl-tight) var(--space-xl);
 		}
 
 		.profile-photo-container::before {
-			top: calc(-2 * var(--space-2xs));
-			left: calc(-2 * var(--space-2xs));
-			right: calc(-2 * var(--space-2xs));
-			bottom: calc(-2 * var(--space-2xs));
+			top: calc(-1 * var(--space-xs));
+			left: calc(-1 * var(--space-xs));
+			right: calc(-1 * var(--space-xs));
+			bottom: calc(-1 * var(--space-xs));
+		}
+
+		.profile-photo {
+			width: var(--space-48); /* ~192px (close to 180px) */
+			height: var(--space-48);
+		}
+
+		.profile-content {
+			align-items: flex-start;
+			min-height: 180px;
 		}
 
 		.profile-title h1 {
-			font-size: var(--font-size-2xl);
-		}
-
-		.subtitle {
-			font-size: var(--font-size-base);
-			margin-bottom: var(--space-md);
-			line-height: var(--line-height-snug);
-		}
-
-		.profile-icons {
-			justify-content: center;
+			font-size: var(--font-size-4xl);
 		}
 
 		.title-accent {
-			margin-left: auto;
-			margin-right: auto;
-			width: var(--space-xl-tight);
+			width: var(--space-3xl);
+			margin-left: 0;
+			margin-right: 0;
+		}
+
+		.subtitle {
+			font-size: var(--font-size-xl);
+			margin-bottom: var(--space-lg);
+			line-height: var(--line-height-relaxed);
+		}
+
+		.profile-icons {
+			justify-content: flex-start;
 		}
 	}
 

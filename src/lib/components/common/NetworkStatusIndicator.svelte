@@ -69,12 +69,15 @@
 	.network-status-indicator {
 		position: fixed;
 		top: var(--space-md);
-		left: 50%;
-		transform: translateX(-50%);
-		max-width: 320px;
+		/* Mobile-first positioning */
+		left: var(--space-xs);
+		right: var(--space-xs);
+		max-width: none;
+		transform: none;
+		
 		border-radius: var(--border-radius-3xl);
 		z-index: var(--z-popover);
-		animation: slideIn var(--anim-duration-base) var(--anim-ease-out);
+		animation: slideInMobile var(--anim-duration-base) var(--anim-ease-out);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		box-shadow: var(--shadow-lg);
@@ -92,7 +95,18 @@
 		border: 1px solid rgba(var(--color-success-rgb), var(--opacity-30));
 	}
 
-	@keyframes slideIn {
+	@keyframes slideInMobile {
+		from {
+			transform: translateY(-100%);
+			opacity: 0;
+		}
+		to {
+			transform: translateY(0);
+			opacity: 1;
+		}
+	}
+
+	@keyframes slideInDesktop {
 		from {
 			transform: translateX(-50%) translateY(-100%);
 			opacity: 0;
@@ -106,12 +120,14 @@
 	.status-content {
 		display: flex;
 		align-items: center;
-		padding: var(--space-sm) var(--space-md);
-		gap: var(--space-sm);
+		/* Mobile-first padding/gap */
+		padding: var(--space-xs) var(--space-sm);
+		gap: var(--space-xs);
 	}
 
 	.status-icon {
-		font-size: var(--font-size-base);
+		/* Mobile-first font size */
+		font-size: var(--font-size-sm);
 		animation: pulse 2s infinite;
 	}
 
@@ -127,7 +143,8 @@
 
 	.status-text {
 		flex: 1;
-		font-size: var(--font-size-sm);
+		/* Mobile-first font size */
+		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-medium);
 	}
 
@@ -138,8 +155,8 @@
 		font-size: var(--font-size-xl);
 		cursor: pointer;
 		padding: 0;
-		width: var(--space-md-tight);
-		height: var(--space-md-tight);
+		width: var(--space-lg);
+		height: var(--space-lg);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -151,26 +168,27 @@
 		background: rgba(var(--color-white-rgb), var(--opacity-20));
 	}
 
-	/* Mobile responsive */
-	@media (max-width: 640px) {
+	/* Desktop responsive */
+	@media (--sm) {
 		.network-status-indicator {
-			left: var(--space-xs);
-			right: var(--space-xs);
-			max-width: none;
-			transform: none;
+			left: 50%;
+			right: auto;
+			transform: translateX(-50%);
+			max-width: 320px;
+			animation-name: slideInDesktop;
 		}
 
 		.status-content {
-			padding: var(--space-xs) var(--space-sm);
-			gap: var(--space-xs);
+			padding: var(--space-sm) var(--space-md);
+			gap: var(--space-sm);
 		}
 
 		.status-text {
-			font-size: var(--font-size-xs);
+			font-size: var(--font-size-sm);
 		}
 
 		.status-icon {
-			font-size: var(--font-size-sm);
+			font-size: var(--font-size-base);
 		}
 	}
 

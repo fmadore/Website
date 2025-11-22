@@ -171,6 +171,17 @@
 		animation: shimmer 1.5s infinite;
 	}
 
+	/* Dark mode shimmer adjustment */
+	:global(html.dark) .loading-placeholder {
+		background: linear-gradient(
+			90deg,
+			var(--color-surface) 25%,
+			var(--color-surface-elevated) 50%,
+			var(--color-surface) 75%
+		);
+		background-size: 200% 100%;
+	}
+
 	.optimized-image-container.loaded .loading-placeholder {
 		display: none;
 	}
@@ -188,35 +199,12 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		min-height: 200px;
+		min-height: var(--space-18);
 		background-color: var(--color-surface);
 		color: var(--color-text-muted);
 		font-size: var(--font-size-sm);
 		border: var(--border-width-thin) dashed var(--color-border);
 		border-radius: var(--border-radius-lg);
-	}
-
-	/* Dark mode support */
-	@media (prefers-color-scheme: dark) {
-		.optimized-image-container {
-			background-color: var(--color-dark-surface);
-		}
-
-		.loading-placeholder {
-			background: linear-gradient(
-				90deg,
-				var(--color-dark-surface) 25%,
-				var(--color-dark-surface-alt) 50%,
-				var(--color-dark-surface) 75%
-			);
-			background-size: 200% 100%;
-		}
-
-		.error-placeholder {
-			background-color: var(--color-dark-surface);
-			color: var(--color-dark-text-muted);
-			border-color: var(--color-dark-border);
-		}
 	}
 
 	/* Reduce animations for users who prefer reduced motion */
@@ -228,13 +216,11 @@
 
 		.loading-placeholder {
 			animation: none;
-			background: #f0f0f0;
+			background: var(--color-surface-alt);
 		}
 
-		@media (prefers-color-scheme: dark) {
-			.loading-placeholder {
-				background: var(--color-dark-surface);
-			}
+		:global(html.dark) .loading-placeholder {
+			background: var(--color-surface);
 		}
 	}
 </style>

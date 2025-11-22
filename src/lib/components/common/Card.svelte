@@ -154,7 +154,7 @@
 	}
 
 	.card:hover .card-image img {
-		transform: scale(1.05);
+		transform: scale(var(--scale-105));
 	}
 
 	.card-body {

@@ -35,8 +35,8 @@
 
 <style>
 	.project-image-banner {
-		margin-bottom: var(--spacing-8);
-		border-radius: var(--border-radius-xl);
+		margin-bottom: var(--spacing-6);
+		border-radius: var(--border-radius-lg);
 		overflow: hidden;
 		position: relative;
 		transition:
@@ -53,7 +53,7 @@
 			rgba(var(--color-primary-rgb), 0.01) 75%,
 			transparent 100%
 		);
-		padding: var(--spacing-5);
+		padding: var(--spacing-4);
 		/* Enhanced glassmorphism shadow with multiple layers */
 		box-shadow:
 			0 8px 32px 0 rgba(31, 38, 135, 0.12),
@@ -112,7 +112,7 @@
 
 	.image-container {
 		position: relative;
-		border-radius: var(--border-radius-lg);
+		border-radius: var(--border-radius-md);
 		overflow: hidden;
 		background: linear-gradient(
 			135deg,
@@ -154,7 +154,7 @@
 			rgba(var(--color-highlight-rgb), 0.04) 50%,
 			rgba(var(--color-accent-rgb), 0.06) 100%
 		);
-		opacity: 0.3;
+		opacity: var(--opacity-30);
 	}
 
 	.overlay-medium {
@@ -164,7 +164,7 @@
 			rgba(var(--color-highlight-rgb), 0.08) 50%,
 			rgba(var(--color-accent-rgb), 0.1) 100%
 		);
-		opacity: 0.4;
+		opacity: var(--opacity-40);
 	}
 
 	.overlay-strong {
@@ -174,11 +174,11 @@
 			rgba(var(--color-highlight-rgb), 0.12) 50%,
 			rgba(var(--color-accent-rgb), 0.15) 100%
 		);
-		opacity: 0.5;
+		opacity: var(--opacity-50);
 	}
 
 	.project-image-banner:hover .image-overlay {
-		opacity: 0.6;
+		opacity: var(--opacity-60);
 	}
 
 	.banner-glow {
@@ -197,11 +197,11 @@
 		opacity: 0;
 		transition: opacity var(--anim-duration-slow) var(--anim-ease-base);
 		z-index: -1;
-		filter: blur(var(--glass-blur-amount));
+		filter: blur(calc(var(--glass-blur-amount) * 0.6));
 	}
 
 	.project-image-banner:hover .banner-glow {
-		opacity: 0.6;
+		opacity: var(--opacity-60);
 	}
 
 	/* Dark mode adjustments */
@@ -294,20 +294,20 @@
 		);
 	}
 
-	/* Responsive adjustments */
-	@media (max-width: 640px) {
+	/* Desktop responsive design */
+	@media (--sm) {
 		.project-image-banner {
-			padding: var(--spacing-4);
-			margin-bottom: var(--spacing-6);
-			border-radius: var(--border-radius-lg);
+			margin-bottom: var(--spacing-8);
+			border-radius: var(--border-radius-xl);
+			padding: var(--spacing-5);
 		}
 
 		.image-container {
-			border-radius: var(--border-radius-md);
+			border-radius: var(--border-radius-lg);
 		}
 
 		.banner-glow {
-			filter: blur(calc(var(--glass-blur-amount) * 0.6));
+			filter: blur(var(--glass-blur-amount));
 		}
 	}
 
@@ -334,15 +334,15 @@
 	/* High contrast mode support */
 	@media (prefers-contrast: high) {
 		.project-image-banner {
-			border-width: 2px;
+			border-width: var(--border-width-thick);
 		}
 
 		.image-overlay {
-			opacity: 0.2;
+			opacity: var(--opacity-20);
 		}
 
 		.project-image-banner:hover .image-overlay {
-			opacity: 0.3;
+			opacity: var(--opacity-30);
 		}
 	}
 </style>

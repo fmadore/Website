@@ -52,9 +52,9 @@
 		bottom: var(--space-sm);
 		left: var(--space-sm);
 		right: var(--space-sm);
-		z-index: 1000;
+		z-index: var(--z-fixed);
 		padding: var(--space-md);
-		max-width: 24rem;
+		max-width: var(--content-width-sm);
 		margin: 0 auto;
 
 		/* Enhanced glassmorphism following design system */
