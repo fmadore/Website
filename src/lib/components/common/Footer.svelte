@@ -335,6 +335,7 @@
 	}
 
 	.copyright-main {
+		font-family: var(--font-family-serif);
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-footer-text);
@@ -437,7 +438,7 @@
 		padding: var(--spacing-2) var(--spacing-3);
 		border-radius: var(--border-radius-md);
 		position: relative;
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transition: all var(--anim-duration-fast) var(--anim-ease-base);
 		overflow: hidden;
 		width: 100%;
 		/* Remove custom background - glass-button utility handles this */
@@ -451,8 +452,8 @@
 		width: calc(var(--spacing-6) + var(--spacing-2));
 		height: calc(var(--spacing-6) + var(--spacing-2));
 		background: rgba(var(--color-primary-rgb), var(--opacity-medium));
-		border-radius: var(--border-radius);
-		transition: all var(--anim-duration-base) ease;
+		border-radius: var(--border-radius-md);
+		transition: all var(--anim-duration-fast) ease;
 		flex-shrink: 0;
 	}
 
