@@ -106,7 +106,7 @@
 		overflow: hidden;
 		height: 100%; /* Make cards in a grid have the same height */
 		border-radius: var(--border-radius-lg);
-		transition: all var(--transition-duration-200) var(--anim-ease-base);
+		transition: all var(--anim-duration-fast) var(--anim-ease-base);
 		position: relative;
 
 		/* Glassmorphism styling consistent with the rest of the website */
@@ -120,7 +120,7 @@
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
 		box-shadow:
-			0 var(--spacing-2) var(--spacing-8) 0 rgba(var(--color-primary-rgb), var(--opacity-medium)),
+			0 var(--space-xs) var(--space-xl) 0 rgba(var(--color-primary-rgb), var(--opacity-medium)),
 			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium-high));
 	}
 
@@ -135,14 +135,14 @@
 		);
 		border-color: rgba(var(--color-white-rgb), var(--opacity-medium-high));
 		box-shadow:
-			0 var(--spacing-3) var(--spacing-10) 0 rgba(var(--color-primary-rgb), var(--opacity-medium-high)),
+			0 var(--space-sm) var(--space-xl-tight) 0 rgba(var(--color-primary-rgb), var(--opacity-medium-high)),
 			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-high));
 	}
 
 	.card-image {
 		overflow: hidden;
 		aspect-ratio: 3/2; /* Consistent aspect ratio for card images */
-		background-color: var(--color-gray-100, #f3f4f6); /* Use gray variable */
+		background-color: var(--color-surface-alt);
 		flex-shrink: 0;
 	}
 
@@ -150,7 +150,7 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		transition: transform var(--transition-duration-200) var(--anim-ease-base);
+		transition: transform var(--anim-duration-fast) var(--anim-ease-base);
 	}
 
 	.card:hover .card-image img {
@@ -158,7 +158,7 @@
 	}
 
 	.card-body {
-		padding: var(--spacing-6); /* Use variable */
+		padding: var(--space-lg);
 		flex-grow: 1;
 		display: flex;
 		flex-direction: column;
@@ -167,7 +167,7 @@
 	.card-title {
 		font-size: var(--font-size-xl);
 		margin-top: 0;
-		margin-bottom: var(--spacing-1);
+		margin-bottom: var(--space-2xs);
 		line-height: var(--line-height-tight);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-primary);
@@ -185,19 +185,19 @@
 	.card-subtitle {
 		font-size: var(--font-size-sm);
 		color: var(--color-text-light);
-		margin-bottom: var(--spacing-3);
+		margin-bottom: var(--space-sm);
 		line-height: var(--line-height-normal);
 	}
 
 	.card-description {
-		margin-bottom: var(--spacing-4);
+		margin-bottom: var(--space-md);
 		flex-grow: 1;
 		line-height: var(--line-height-relaxed);
 	}
 
 	.card-details {
 		font-size: var(--font-size-sm);
-		margin-bottom: var(--spacing-3);
+		margin-bottom: var(--space-sm);
 		line-height: var(--line-height-normal);
 	}
 	/* Styling for elements within card-details slot can be added here or passed via classes */
@@ -214,7 +214,7 @@
 		color: var(--color-primary);
 		text-decoration: none;
 		font-weight: var(--font-weight-medium);
-		transition: color var(--transition-duration-200) var(--anim-ease-base);
+		transition: color var(--anim-duration-fast) var(--anim-ease-base);
 	}
 
 	.card-action :global(a:hover) {
@@ -232,7 +232,7 @@
 		);
 		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
 		box-shadow:
-			0 var(--spacing-2) var(--spacing-8) 0 rgba(var(--color-black-rgb), var(--opacity-medium-high)),
+			0 var(--space-xs) var(--space-xl) 0 rgba(var(--color-black-rgb), var(--opacity-medium-high)),
 			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-low));
 	}
 
@@ -245,7 +245,7 @@
 		);
 		border-color: rgba(var(--color-white-rgb), var(--opacity-medium));
 		box-shadow:
-			0 var(--spacing-3) var(--spacing-10) 0 rgba(var(--color-black-rgb), var(--opacity-high)),
+			0 var(--space-sm) var(--space-xl-tight) 0 rgba(var(--color-black-rgb), var(--opacity-high)),
 			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium));
 	}
 

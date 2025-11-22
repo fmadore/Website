@@ -37,7 +37,7 @@
 <style>
 	/* Base content body styling - uses glassmorphism utilities */
 	.content-body {
-		padding: var(--space-xl);
+		padding: var(--space-lg);
 		border-radius: var(--border-radius-lg);
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
 		position: relative;
@@ -46,16 +46,16 @@
 
 	/* Variant styles */
 	.content-body--default {
-		margin-bottom: var(--space-xl);
+		margin-bottom: var(--space-lg);
 	}
 
 	.content-body--compact {
-		padding: var(--space-lg);
+		padding: var(--space-md);
 		margin-bottom: var(--space-lg);
 	}
 
 	.content-body--wide {
-		padding: var(--space-xl-tight);
+		padding: var(--space-lg);
 		margin-bottom: var(--space-xl-tight);
 	}
 
@@ -105,11 +105,11 @@
 
 	/* Lead paragraph styling */
 	.content-body :global(p:first-child) {
-		font-size: var(--font-size-lg);
+		font-size: var(--font-size-base);
 		font-weight: var(--font-weight-normal);
 		color: var(--color-text-emphasis);
 		position: relative;
-		padding-left: var(--space-lg);
+		padding-left: var(--space-md);
 		border-left: var(--border-width-medium) solid transparent;
 		border-image: linear-gradient(180deg, var(--color-highlight) 0%, var(--color-accent) 100%) 1;
 		border-image-slice: 1;
@@ -206,27 +206,26 @@
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 640px) {
+	@media (--sm) {
 		.content-body {
-			padding: var(--space-lg);
+			padding: var(--space-xl);
 		}
 
 		.content-body--default {
-			margin-bottom: var(--space-lg);
+			margin-bottom: var(--space-xl);
 		}
 
 		.content-body--compact {
-			padding: var(--space-md);
-		}
-
-		.content-body--wide {
 			padding: var(--space-lg);
 		}
 
+		.content-body--wide {
+			padding: var(--space-xl-tight);
+		}
+
 		.content-body :global(p:first-child) {
-			font-size: var(--font-size-base);
-			padding-left: var(--space-md);
-			border-left: var(--border-width-medium) solid transparent;
+			font-size: var(--font-size-lg);
+			padding-left: var(--space-lg);
 		}
 	}
 
