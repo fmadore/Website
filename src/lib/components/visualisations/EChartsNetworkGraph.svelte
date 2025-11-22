@@ -47,10 +47,10 @@ ECharts Network Graph - A network visualization for author collaborations
 	function zoomIn() {
 		if (chart && !chart.isDisposed()) {
 			chart.dispatchAction({
-				type: 'dataZoom',
-				// Zoom in by reducing the range
-				start: 10,
-				end: 90
+				type: 'graphRoam',
+				zoom: 1.2,
+				originX: chart.getWidth() / 2,
+				originY: chart.getHeight() / 2
 			});
 		}
 	}
@@ -58,10 +58,10 @@ ECharts Network Graph - A network visualization for author collaborations
 	function zoomOut() {
 		if (chart && !chart.isDisposed()) {
 			chart.dispatchAction({
-				type: 'dataZoom',
-				// Zoom out by expanding the range
-				start: 0,
-				end: 100
+				type: 'graphRoam',
+				zoom: 0.8,
+				originX: chart.getWidth() / 2,
+				originY: chart.getHeight() / 2
 			});
 		}
 	}
@@ -98,7 +98,7 @@ ECharts Network Graph - A network visualization for author collaborations
 	});
 
 	// Create a color palette for different collaboration counts
-	const collaborationColors = $derived(() => {
+	const collaborationColors = $derived.by(() => {
 		const baseColors = [
 			resolvedColors.highlight, // Orange for 1 collaboration
 			resolvedColors.accent, // Purple for 2 collaborations
@@ -116,7 +116,7 @@ ECharts Network Graph - A network visualization for author collaborations
 	});
 
 	// Process data for network graph
-	const networkData = $derived(() => {
+	const networkData = $derived.by(() => {
 		// Limit to top collaborators for better visualization
 		const topCollaborators = data
 			.sort((a, b) => b.collaborationCount - a.collaborationCount)
@@ -162,8 +162,8 @@ ECharts Network Graph - A network visualization for author collaborations
 				),
 				itemStyle: {
 					color:
-						collaborationColors()[
-							Math.min(collab.collaborationCount - 1, collaborationColors().length - 1)
+						collaborationColors[
+							Math.min(collab.collaborationCount - 1, collaborationColors.length - 1)
 						]
 				},
 				label: {
@@ -334,50 +334,13 @@ ECharts Network Graph - A network visualization for author collaborations
 				return params.data.name;
 			}
 		},
-		legend: {
-			show: !isMobile,
-			orient: 'vertical',
-			right: 10,
-			top: 60,
-			data: [
-				{
-					name: centerAuthor,
-					icon: 'circle',
-					textStyle: { color: resolvedColors.text, fontSize: 12, fontFamily: resolvedColors.fontFamily }
-				},
-				{
-					name: 'Collaborators',
-					icon: 'circle',
-					textStyle: { color: resolvedColors.text, fontSize: 12, fontFamily: resolvedColors.fontFamily }
-				},
-				{
-					name: 'Direct collaboration',
-					icon: 'rect',
-					itemStyle: {
-						color: resolvedColors.primary,
-						borderWidth: 0
-					},
-					textStyle: { color: resolvedColors.text, fontSize: 11, fontFamily: resolvedColors.fontFamily }
-				},
-				{
-					name: 'Co-author connection',
-					icon: 'rect',
-					itemStyle: {
-						color: resolvedColors.accent,
-						borderWidth: 0,
-						borderType: 'dashed'
-					},
-					textStyle: { color: resolvedColors.text, fontSize: 11, fontFamily: resolvedColors.fontFamily }
-				}
-			]
-		},
 		series: [
 			{
 				name: 'Collaboration Network',
 				type: 'graph',
 				layout: 'force',
-				data: networkData().nodes,
-				links: networkData().links,
+				data: networkData.nodes,
+				links: networkData.links,
 				categories: [
 					{ name: centerAuthor },
 					{ name: 'Collaborators' }
@@ -524,6 +487,28 @@ ECharts Network Graph - A network visualization for author collaborations
 			<Icon icon="lucide:zoom-out" width="20" height="20" />
 		</button>
 	</div>
+	
+	{#if !isMobile}
+		<div class="legend-overlay">
+			<div class="legend-item">
+				<div class="legend-icon" style="background-color: {resolvedColors.primary}; border: 2px solid {resolvedColors.primary}"></div>
+				<span>{centerAuthor}</span>
+			</div>
+			<div class="legend-item">
+				<div class="legend-icon" style="background-color: {resolvedColors.highlight}"></div>
+				<span>Collaborators</span>
+			</div>
+			<div class="legend-item">
+				<div class="legend-line" style="background-color: {resolvedColors.primary}"></div>
+				<span>Direct collaboration</span>
+			</div>
+			<div class="legend-item">
+				<div class="legend-line" style="background-color: {resolvedColors.accent}; border-bottom: 2px dashed {resolvedColors.accent}; height: 0;"></div>
+				<span>Co-author connection</span>
+			</div>
+		</div>
+	{/if}
+
 	<div bind:this={chartContainer} class="chart"></div>
 </div>
 
@@ -553,6 +538,43 @@ ECharts Network Graph - A network visualization for author collaborations
 		display: flex;
 		flex-direction: column;
 		gap: var(--spacing-2);
+	}
+
+	.legend-overlay {
+		position: absolute;
+		top: var(--spacing-4);
+		right: var(--spacing-4);
+		z-index: 10;
+		background-color: rgba(var(--color-surface-rgb), 0.8);
+		backdrop-filter: blur(4px);
+		-webkit-backdrop-filter: blur(4px);
+		border: 1px solid var(--color-border);
+		border-radius: var(--border-radius);
+		padding: var(--spacing-3);
+		box-shadow: var(--shadow-sm);
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-2);
+		max-width: 200px;
+	}
+
+	.legend-item {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-2);
+		font-size: 11px;
+		color: var(--color-text);
+	}
+
+	.legend-icon {
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+	}
+
+	.legend-line {
+		width: 20px;
+		height: 2px;
 	}
 
 	.zoom-btn {
