@@ -88,7 +88,7 @@
 
 <style>
 	.empty-state {
-		padding: var(--spacing-8);
+		padding: var(--space-xl);
 		background: linear-gradient(
 			135deg,
 			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
@@ -96,7 +96,7 @@
 		);
 		border-radius: var(--border-radius-lg);
 		text-align: center;
-		margin-top: var(--spacing-6);
+		margin-top: var(--space-lg);
 		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
 	}
 
@@ -107,7 +107,7 @@
 	}
 
 	.empty-state-hint {
-		margin-top: var(--spacing-2);
+		margin-top: var(--space-xs);
 		font-size: var(--font-size-sm);
 		color: var(--color-text-muted);
 		margin-bottom: 0;
