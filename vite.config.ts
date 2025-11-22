@@ -6,7 +6,7 @@ export default defineConfig({
 	build: {
 		// Note: cssCodeSplit is controlled by SvelteKit internally
 		// Use kit.inlineStyleThreshold in svelte.config.js instead
-		chunkSizeWarningLimit: 600, // Warn at 600KB instead of 1MB for better awareness
+		chunkSizeWarningLimit: 1000, // Warn at 1000KB (1MB) to accommodate large libraries like ECharts
 		rollupOptions: {
 			output: {
 				// Optimize chunking for better performance and code splitting
@@ -14,6 +14,11 @@ export default defineConfig({
 					// Heavy charting libraries - dynamically imported, separate chunks
 					if (id.includes('echarts')) {
 						return 'echarts';
+					}
+					
+					// D3 - data visualization
+					if (id.includes('node_modules/d3') || id.includes('d3-')) {
+						return 'd3';
 					}
 					
 					// PDF generation libraries - dynamically imported
