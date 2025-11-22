@@ -2,7 +2,6 @@
 	import type { Activity } from '$lib/types/activity';
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
-	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	let { activity }: { activity: Activity } = $props();
 
@@ -42,7 +41,7 @@
 
 	// Helper to create COinS metadata for blog posts
 	const createCoinsData = (): string => {
-		const params = new SvelteURLSearchParams();
+		const params = new URLSearchParams();
 
 		// Basic COinS parameters
 		params.set('url_ver', 'Z39.88-2004');

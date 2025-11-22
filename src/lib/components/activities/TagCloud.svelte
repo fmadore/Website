@@ -43,10 +43,10 @@
 	function getFontSize(frequency: number): number {
 		const { minFreq, maxFreq } = frequencyStats();
 		const range = maxFreq - minFreq;
-		if (range === 0) return 1; // All tags have same frequency
+		if (range === 0) return 0.85; // All tags have same frequency
 		const normalized = (frequency - minFreq) / range;
-		// Scale between 0.75rem (small) and 1.5rem (large)
-		return 0.75 + normalized * 0.75;
+		// Scale between 0.8rem (small) and 1.1rem (large) - reduced range to prevent layout issues
+		return 0.8 + normalized * 0.3;
 	}
 
 	// Function to calculate opacity based on frequency
@@ -106,14 +106,17 @@
 	}
 
 	.tag-cloud-item {
-		display: inline-block;
-		padding: var(--spacing-1) var(--spacing-2);
+		display: inline-flex;
+		align-items: center;
+		white-space: nowrap;
+		padding: 0.35em 0.75em;
 		color: var(--color-primary);
 		text-decoration: none;
-		border-radius: var(--border-radius-md);
+		border-radius: var(--border-radius-full);
 		transition: all var(--anim-duration-fast) var(--anim-ease-base);
 		background: rgba(var(--color-primary-rgb), var(--opacity-5));
 		font-weight: var(--font-weight-medium);
+		line-height: 1;
 	}
 
 	.tag-name {

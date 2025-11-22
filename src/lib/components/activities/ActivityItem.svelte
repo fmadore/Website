@@ -54,7 +54,7 @@
 
 <style>
 	.activity-meta {
-		color: var(--color-text-light);
+		color: var(--color-text-muted);
 		font-size: var(--font-size-sm);
 		margin-bottom: var(--spacing-2);
 	}
