@@ -161,7 +161,8 @@
 		seminar: 'Seminars',
 		lecture: 'Lectures',
 		panel: 'Panels Organized',
-		event: 'Academic Events Organized'
+		event: 'Academic Events Organized',
+		podcast: 'Podcast'
 	};
 
 	// Reactive values using $derived

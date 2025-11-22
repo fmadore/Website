@@ -23,7 +23,8 @@
 		seminar: 'Seminar',
 		lecture: 'Lecture',
 		panel: 'Panel',
-		event: 'Academic Event'
+		event: 'Academic Event',
+		podcast: 'Podcast'
 	};
 
 	// Helper to format language display
