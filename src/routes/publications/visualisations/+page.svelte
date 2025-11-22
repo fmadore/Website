@@ -712,9 +712,9 @@
 
 <style>
 	.page-container {
-		max-width: var(--container-xl);
+		max-width: var(--content-max-width);
 		margin: 0 auto;
-		padding: 0 var(--spacing-4);
+		padding: var(--spacing-8) var(--spacing-4);
 	}
 
 	.chart-wrapper,
