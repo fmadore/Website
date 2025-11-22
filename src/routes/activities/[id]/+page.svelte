@@ -323,14 +323,14 @@
 			border-radius: var(--border-radius-lg);
 		}
 
-		@media (min-width: 768px) {
+		@media (--md) {
 			:global(.hero-image-wrapper .hero-image) {
 				max-width: 600px;
 				max-height: auto;
 			}
 		}
 
-		@media (min-width: 1024px) {
+		@media (--lg) {
 			:global(.hero-image-wrapper .hero-image) {
 				max-width: 800px;
 			}
@@ -367,13 +367,6 @@
 				rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
 				rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 			);
-		}
-
-		/* Responsive adjustments */
-		@media (max-width: 640px) {
-			.pdf-section {
-				padding: var(--spacing-6) !important;
-			}
 		}
 
 		/* Respect user motion preferences */
