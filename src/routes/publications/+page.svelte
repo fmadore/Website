@@ -325,7 +325,7 @@
 	.page-container {
 		max-width: 1200px;
 		margin: 0 auto;
-		padding: 0 var(--spacing-4);
+		padding: var(--spacing-8) var(--spacing-4);
 	}
 
 	/* Mobile controls styling */

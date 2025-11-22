@@ -54,7 +54,7 @@
 	description="Frédérick Madore, Research Fellow at ZMO, studies Islam in francophone West Africa combining fieldwork, digital humanities, and AI-enhanced pipelines for computational analysis."
 />
 
-<div class="container max-w-7xl">
+<div class="container max-w-7xl py-8">
 	<ProfileBanner />
 	<div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-8">
 		<div class="md:col-span-2">

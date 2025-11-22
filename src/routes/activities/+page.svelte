@@ -47,7 +47,7 @@
 
 <SEO title="Activities | Frédérick Madore" />
 
-<div class="container mx-auto px-4 pb-4">
+<div class="container mx-auto px-4 py-8">
 	<PageHeader title="Activities" />
 	<PageIntro>
 		This section provides an overview of various professional activities, including workshops,
