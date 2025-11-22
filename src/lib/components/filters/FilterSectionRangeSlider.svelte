@@ -135,6 +135,13 @@
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
 	}
 
+	.filter-section-content:hover {
+		background: rgba(var(--color-surface-rgb), var(--opacity-medium));
+		border-color: rgba(var(--color-white-rgb), var(--opacity-medium));
+		box-shadow: var(--shadow-md);
+		transform: var(--transform-lift-sm);
+	}
+
 	.filter-section-header {
 		display: flex;
 		justify-content: space-between;
