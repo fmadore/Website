@@ -129,8 +129,8 @@
 			rgba(var(--color-highlight-rgb), 0.02) 50%,
 			rgba(var(--color-accent-rgb), 0.01) 100%
 		);
-		backdrop-filter: blur(var(--space-xl));
-		-webkit-backdrop-filter: blur(var(--space-xl));
+		backdrop-filter: blur(var(--glass-blur-amount));
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-20));
 		border-radius: var(--border-radius-md);
 		padding: var(--spacing-4);
@@ -299,17 +299,16 @@
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 768px) {
-		.year-sidebar {
-			margin-bottom: var(--spacing-6);
-		}
-	}
-
-	/* Sticky positioning on desktop */
-	@media (min-width: 769px) {
+	@media (--md) {
 		.year-sidebar {
 			position: sticky;
 			top: var(--spacing-4);
+		}
+	}
+
+	@media (max-width: 767px) {
+		.year-sidebar {
+			margin-bottom: var(--spacing-6);
 		}
 	}
 </style>

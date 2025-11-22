@@ -11,7 +11,8 @@
 		tags = undefined,
 		typeBadgeText = undefined, // e.g., "Journal Article", "Conference Paper"
 		authors = undefined,
-		editors = undefined // For publications
+		editors = undefined, // For publications
+		additionalClasses = ''
 	}: {
 		title: string;
 		backLinkHref?: string | undefined;
@@ -21,6 +22,7 @@
 		typeBadgeText?: string | undefined;
 		authors?: string[] | undefined;
 		editors?: string | string[] | undefined;
+		additionalClasses?: string;
 	} = $props();
 
 	// Helper function to format editors (copied from publications/[id])
@@ -34,7 +36,7 @@
 </script>
 
 <header
-	class="page-header enhanced-page-header mb-8"
+	class="page-header enhanced-page-header mb-8 {additionalClasses}"
 	use:scrollAnimate={{ delay: 50, animationClass: 'fade-in-up' }}
 >
 	{#if backLinkHref}

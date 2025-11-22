@@ -85,7 +85,7 @@
 	<div class="flex flex-col">
 		<Breadcrumb items={breadcrumbItems} />
 		<div class="year-page-header-wrapper">
-			<PageHeader title={`Activities in ${year}`} />
+			<PageHeader title={`Activities in ${year}`} additionalClasses="mb-2" />
 		</div>
 
 		<div class="year-filters flex gap-2 overflow-x-auto py-2">
@@ -144,12 +144,5 @@
 		text-align: center;
 		padding: var(--spacing-8);
 		color: var(--color-text-light);
-	}
-
-	/* Reduce PageHeader bottom margin specifically for this page */
-	.year-page-header-wrapper :global(header.page-header) {
-		margin-bottom: var(
-			--spacing-2
-		) !important; /* Corresponds to mb-2, reduces from mb-6 (1.5rem) to 0.5rem */
 	}
 </style>
