@@ -54,7 +54,7 @@
                 gap: var(--spacing-4);
         }
 
-        @media (min-width: 80rem) {
+        @media (--xl) {
                 .desktop-nav {
                         display: block;
                 }

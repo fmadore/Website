@@ -66,7 +66,7 @@
         }
 
         /* Hide hamburger on desktop */
-        @media (min-width: 80rem) {
+        @media (--xl) {
                 .hamburger {
                         display: none;
                 }

@@ -48,7 +48,7 @@
 		transform: var(--transform-lift-md) scale(var(--scale-105));
 		box-shadow:
 			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.4);
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-40));
 	}
 
 	.theme-toggle:active {
@@ -64,7 +64,7 @@
 		outline-offset: var(--spacing-1);
 		box-shadow:
 			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.4),
+			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-40)),
 			0 0 0 var(--border-width-medium) var(--color-primary);
 	}
 
@@ -78,7 +78,7 @@
 
 	.theme-toggle:hover :global(svg) {
 		transform: rotate(var(--rotate-12)) scale(var(--scale-110));
-		filter: drop-shadow(0 var(--spacing-2) var(--spacing-3) rgba(var(--color-black-rgb), 0.15));
+		filter: drop-shadow(0 var(--spacing-2) var(--spacing-3) rgba(var(--color-black-rgb), var(--opacity-medium)));
 	}
 
 	/* Smooth theme transition animation */
@@ -97,7 +97,7 @@
 
 	:global(html.dark) .theme-toggle:hover {
 		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium-high));
-		border-color: rgba(var(--color-white-rgb), 0.15);
+		border-color: rgba(var(--color-white-rgb), var(--opacity-medium));
 		box-shadow:
 			var(--shadow-lg),
 			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.15);
@@ -116,7 +116,7 @@
 	}
 
 	:global(html.dark) .theme-toggle:hover :global(svg) {
-		filter: drop-shadow(0 var(--spacing-2) var(--spacing-3) rgba(var(--color-black-rgb), 0.4));
+		filter: drop-shadow(0 var(--spacing-2) var(--spacing-3) rgba(var(--color-black-rgb), var(--opacity-40)));
 	}
 
 	/* Enhanced glow effect for theme icons */
@@ -130,12 +130,12 @@
 
 	.theme-toggle:hover :global(svg[data-icon*='moon']) {
 		color: var(--color-text-light);
-		text-shadow: 0 0 var(--spacing-3) rgba(var(--color-secondary-rgb), 0.5);
+		text-shadow: 0 0 var(--spacing-3) rgba(var(--color-secondary-rgb), var(--opacity-50));
 	}
 
 	.theme-toggle:hover :global(svg[data-icon*='sun']) {
 		color: var(--color-highlight);
-		text-shadow: 0 0 var(--spacing-4) rgba(var(--color-highlight-rgb), 0.6);
+		text-shadow: 0 0 var(--spacing-4) rgba(var(--color-highlight-rgb), var(--opacity-60));
 	}
 
 	/* Pulse animation on theme change */

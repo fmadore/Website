@@ -305,7 +305,7 @@
         }
 
 	/* Hide mobile nav on desktop */
-        @media (min-width: 80rem) {
+        @media (--xl) {
                 .mobile-nav-container {
                         display: none;
                 }

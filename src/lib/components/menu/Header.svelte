@@ -234,27 +234,27 @@
         :global(html.dark .site-header) {
                 background: linear-gradient(
                         135deg,
-                        rgba(var(--color-dark-surface-rgb), 0.8) 0%,
+                        rgba(var(--color-dark-surface-rgb), var(--opacity-80)) 0%,
                         rgba(var(--color-primary-rgb), 0.04) 50%,
                         rgba(var(--color-highlight-rgb), 0.02) 100%
                 );
-                border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb), 0.15);
+                border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
                 box-shadow:
                         var(--shadow-lg),
-                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.1);
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-10));
         }
 
         :global(html.dark .site-header:hover) {
                 background: linear-gradient(
                         135deg,
-                        rgba(var(--color-dark-surface-rgb), 0.85) 0%,
+                        rgba(var(--color-dark-surface-rgb), var(--glass-opacity-high)) 0%,
                         rgba(var(--color-primary-rgb), 0.06) 50%,
                         rgba(var(--color-highlight-rgb), 0.03) 100%
                 );
-                border-bottom-color: rgba(var(--color-white-rgb), 0.2);
+                border-bottom-color: rgba(var(--color-white-rgb), var(--opacity-20));
                 box-shadow:
                         var(--shadow-xl),
-                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.15);
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium));
         }
 
         .container {
@@ -298,13 +298,13 @@
                 gap: var(--spacing-6);
         }
 
-        @media (min-width: 40rem) {
+        @media (--sm) {
                 .container {
                         padding: 0 var(--spacing-6);
                 }
         }
 
-        @media (min-width: 80rem) {
+        @media (--xl) {
                 .header-inner {
                         min-height: calc(var(--spacing-16) + var(--spacing-2));
                 }
