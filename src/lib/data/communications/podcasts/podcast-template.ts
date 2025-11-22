@@ -9,6 +9,8 @@ export const podcastTemplate: Communication = {
 	dateISO: '2025-06-15', // Use YYYY-MM-DD format for sorting
 	year: 2025,
 	conference: 'Podcast Series Name', // Name of the podcast series
+	episode: 1, // Optional: Episode number
+	doi: '10.1234/example.doi', // Optional: DOI
 	location: 'Platform/Studio', // Platform where published or recording location
 	country: 'Country', // Country of production
 	type: 'podcast', // Type: 'podcast'

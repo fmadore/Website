@@ -40,5 +40,7 @@ export type Communication = {
 		role?: string; // Optional role (chair, discussant, etc.)
 		affiliation?: string; // Optional institutional affiliation
 	}>;
+	episode?: string | number; // Optional: Episode number for podcasts
+	doi?: string; // Optional: DOI for the communication
 	project?: string; // Project association: "Mining the Islam West Africa Collection", "Religious Activism on Campuses in Togo and Benin", etc.
 };

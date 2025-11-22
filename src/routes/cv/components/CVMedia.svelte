@@ -11,20 +11,20 @@
 	
 	<!-- Podcasts -->
 	{#if podcasts.length > 0}
-		<h4>Podcasts</h4>
+		<h4 class="text-lg font-semibold mt-4 mb-2">Podcasts</h4>
 		<div class="space-y-3">
 			{#each podcasts as podcast (podcast.id)}
 				{@const podcastDate = new Date(podcast.dateISO)}
 				<div class="flex gap-4">
 					<div class="font-semibold text-nowrap">{podcastDate.getFullYear()}</div>
 					<div class="flex-1">
-						"{podcast.title}"{#if podcast.conference}, <em>{podcast.conference}</em>{/if}.
+						"{podcast.title}"{#if podcast.conference}, <em>{podcast.conference}</em>{/if}{#if podcast.episode}, ep. {podcast.episode}{/if}.
 						{podcastDate.toLocaleDateString('en-GB', {
 							day: 'numeric',
 							month: 'long'
 						})}.
-						{#if podcast.abstract}
-							<span class="block text-sm text-light mt-1">{podcast.abstract}</span>
+						{#if podcast.doi}
+							<span class="block text-sm text-light mt-1">DOI: <a href="https://doi.org/{podcast.doi}" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">{podcast.doi}</a></span>
 						{/if}
 						{#if podcast.url}
 							<a
