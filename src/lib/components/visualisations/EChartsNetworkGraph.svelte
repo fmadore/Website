@@ -369,6 +369,9 @@ ECharts Network Graph - A network visualization for author collaborations
 					lineStyle: {
 						width: 4,
 						opacity: 0.9
+					},
+					label: {
+						show: true
 					}
 				},
 				lineStyle: {
@@ -377,10 +380,7 @@ ECharts Network Graph - A network visualization for author collaborations
 				},
 				label: {
 					position: 'right',
-					formatter: '{b}',
-					emphasis: {
-						show: true
-					}
+					formatter: '{b}'
 				},
 				avoidLabelOverlap: true
 			}
