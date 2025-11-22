@@ -204,7 +204,7 @@
 <MetaTags {activity} />
 
 {#if activity}
-	<div class="activity-content critical-content">
+	<div class="activity-content critical-content max-w-6xl mx-auto">
 		{#if activity}
 			<!-- Separate page header section - no animation to prevent flash -->
 			<div>
