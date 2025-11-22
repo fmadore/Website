@@ -15,7 +15,7 @@ export const zmoKitchenTalksPodcast2025: Activity = {
         
         <p>Stay tuned for the release of the episode!</p>
     `,
-	tags: ['Podcast', 'AI', 'African Studies', 'Islamic Studies', 'Digital Humanities', 'ZMO'],
+	tags: ['Podcast', 'AI', 'African Studies', 'Islamic Studies', 'Digital Humanities', 'ZMO', 'IWAC'],
     image: 'images/communications/zmo-kitchen-talks-podcast-2025.webp',
 		heroImage: {
 		src: 'images/communications/zmo-kitchen-talks-podcast-2025.webp',
