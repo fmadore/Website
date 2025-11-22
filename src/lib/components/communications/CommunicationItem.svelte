@@ -120,18 +120,30 @@
 					</div>
 				{/if}
 
-				{#if communication?.additionalUrls && communication.additionalUrls.length > 0}
+				{#if (communication?.additionalUrls && communication.additionalUrls.length > 0) || communication?.doi}
 					<div class="entity-links">
-						{#each communication.additionalUrls as url, i (url.url)}
+						{#if communication?.doi}
 							<a
-								href={url.url}
+								href={`https://doi.org/${communication.doi}`}
 								target="_blank"
 								rel="noopener noreferrer"
 								class="entity-link-btn btn btn-outline-primary btn-sm"
 							>
-								{url.label || `Link ${i + 1}`}
+								DOI
 							</a>
-						{/each}
+						{/if}
+						{#if communication?.additionalUrls}
+							{#each communication.additionalUrls as url, i (url.url)}
+								<a
+									href={url.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="entity-link-btn btn btn-outline-primary btn-sm"
+								>
+									{url.label || `Link ${i + 1}`}
+								</a>
+							{/each}
+						{/if}
 					</div>
 				{/if}
 			</div>

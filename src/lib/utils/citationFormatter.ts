@@ -295,6 +295,7 @@ function formatFullDate(isoDate: string | undefined): string {
 export function formatCommunicationCitation(communication: {
 	title: string;
 	conference?: string;
+	episode?: string | number;
 	location?: string;
 	country?: string;
 	date?: string;
@@ -303,7 +304,11 @@ export function formatCommunicationCitation(communication: {
 	
 	// Only include conference name if it's different from the title
 	if (communication.conference && communication.conference !== communication.title) {
-		parts.push(communication.conference);
+		let conf = communication.conference;
+		if (communication.episode) {
+			conf += `, ep. ${communication.episode}`;
+		}
+		parts.push(conf);
 	}
 	
 	// Add location if present
