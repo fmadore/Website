@@ -15,16 +15,17 @@ ECharts Stacked Bar Chart component
 		xAxisLabel = '',
 		yAxisLabel = '',
 		colors = [
-			'var(--color-primary)',
-			'var(--color-success)',
-			'var(--color-highlight)',
-			'var(--color-accent)',
-			'#8B5CF6',
-			'#06B6D4',
-			'#84CC16',
-			'#F97316',
-			'#EC4899',
-			'#6366F1'
+			'var(--color-primary)',           // Blog post - academic blue
+			'var(--color-highlight)',         // Book - gold
+			'var(--color-accent)',            // Book chapter - teal
+			'var(--color-success)',           // Bulletin article - green
+			'var(--sys-color-blue-400)',      // Conference proceedings - medium blue
+			'var(--color-secondary)',         // Encyclopedia entry - neutral gray
+			'var(--sys-color-blue-600)',      // Journal article - deep blue
+			'var(--sys-color-gold-500)',      // Master's thesis - gold variant
+			'var(--color-danger)',            // PhD dissertation - red
+			'var(--sys-color-teal-600)',      // Research report - dark teal
+			'var(--color-primary-dark)'       // Special issue - darkest blue (distinct from journal article)
 		]
 	}: {
 		data?: DataItem[];
