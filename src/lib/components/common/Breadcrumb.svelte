@@ -45,8 +45,8 @@
 <style>
 	.breadcrumb {
 		font-size: var(--font-size-sm);
-		margin-bottom: var(--spacing-4);
-		padding: var(--spacing-3) var(--spacing-5);
+		margin-bottom: var(--space-md);
+		padding: var(--space-sm) var(--space-md-tight);
 		background: radial-gradient(
 			circle at 15% 15%,
 			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
@@ -65,10 +65,10 @@
 	.breadcrumb::after {
 		content: '';
 		position: absolute;
-		bottom: calc(-1 * var(--spacing-2) - var(--border-width-thin));
-		left: var(--spacing-5);
-		width: var(--spacing-12);
-		height: var(--spacing-1);
+		bottom: calc(-1 * var(--space-xs) - var(--border-width-thin));
+		left: var(--space-md-tight);
+		width: var(--space-2xl);
+		height: var(--space-2xs);
 		background: linear-gradient(
 			90deg,
 			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%,
@@ -77,7 +77,7 @@
 		);
 		border-radius: var(--border-radius-sm);
 		opacity: var(--opacity-high);
-		box-shadow: 0 var(--border-width-thin) var(--spacing-1)
+		box-shadow: 0 var(--border-width-thin) var(--space-2xs)
 			rgba(var(--color-primary-rgb), var(--opacity-medium));
 	}
 
@@ -97,12 +97,12 @@
 
 	.breadcrumb li:not(:last-child)::after {
 		content: '›';
-		margin: 0 var(--spacing-3);
+		margin: 0 var(--space-sm);
 		color: var(--color-primary);
 		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-semibold);
 		opacity: var(--opacity-high);
-		text-shadow: 0 var(--border-width-thin) var(--spacing-1)
+		text-shadow: 0 var(--border-width-thin) var(--space-2xs)
 			rgba(var(--color-primary-rgb), var(--opacity-medium));
 	}
 
@@ -110,7 +110,7 @@
 	.breadcrumb-link {
 		color: var(--color-text);
 		text-decoration: none;
-		padding: var(--spacing-2) var(--spacing-3);
+		padding: var(--space-xs) var(--space-sm);
 		border-radius: var(--border-radius-md);
 		transition:
 			color var(--anim-duration-base) var(--anim-ease-base),
@@ -138,14 +138,14 @@
 
 	.breadcrumb-link:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-primary);
-		outline-offset: var(--spacing-1);
+		outline-offset: var(--space-2xs);
 	}
 
 	/* Active/Current Page Styles */
 	.breadcrumb-text {
 		color: var(--color-primary);
 		font-weight: var(--font-weight-bold);
-		padding: var(--spacing-2) var(--spacing-3);
+		padding: var(--space-xs) var(--space-sm);
 		background: linear-gradient(
 			135deg,
 			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%,
@@ -153,30 +153,30 @@
 		);
 		border-radius: var(--border-radius-md);
 		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium));
-		box-shadow: inset 0 var(--border-width-thin) var(--spacing-1)
+		box-shadow: inset 0 var(--border-width-thin) var(--space-2xs)
 			rgba(var(--color-primary-rgb), var(--opacity-medium));
 	}
 
 	/* Responsive Design */
-	@media (max-width: 640px) {
+	@media (--sm) {
 		.breadcrumb {
-			padding: var(--spacing-3) var(--spacing-4);
-			margin-bottom: var(--spacing-3);
+			padding: var(--space-sm) var(--space-md);
+			margin-bottom: var(--space-sm);
 		}
 
 		.breadcrumb li:not(:last-child)::after {
-			margin: 0 var(--spacing-2);
+			margin: 0 var(--space-xs);
 		}
 
 		.breadcrumb-link,
 		.breadcrumb-text {
-			padding: var(--spacing-1) var(--spacing-2);
+			padding: var(--space-2xs) var(--space-xs);
 			font-size: var(--font-size-xs);
 		}
 
 		.breadcrumb::after {
-			left: var(--spacing-4);
-			width: var(--spacing-8);
+			left: var(--space-md);
+			width: var(--space-xl);
 		}
 	}
 
@@ -186,8 +186,8 @@
 			circle at 15% 15%,
 			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
 			rgba(var(--color-accent-rgb), var(--opacity-low)) 35%,
-			var(--color-dark-surface-alt) 65%,
-			var(--color-dark-surface-deep) 100%
+			var(--color-surface-alt) 65%,
+			var(--color-background) 100%
 		);
 		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
 		box-shadow: var(--shadow-lg);
@@ -200,13 +200,13 @@
 			rgba(var(--color-accent-rgb), var(--opacity-medium)) 50%,
 			transparent 100%
 		);
-		box-shadow: 0 var(--border-width-thin) var(--spacing-1)
+		box-shadow: 0 var(--border-width-thin) var(--space-2xs)
 			rgba(var(--color-primary-rgb), var(--opacity-medium-high));
 	}
 
 	:global(html.dark) .breadcrumb-link {
 		color: var(--color-text);
-		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium));
+		background: rgba(var(--color-surface-rgb), var(--opacity-medium));
 	}
 
 	:global(html.dark) .breadcrumb-link:hover {
@@ -225,7 +225,7 @@
 			rgba(var(--color-accent-rgb), var(--opacity-medium-high)) 100%
 		);
 		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
-		box-shadow: inset 0 var(--border-width-thin) var(--spacing-1)
+		box-shadow: inset 0 var(--border-width-thin) var(--space-2xs)
 			rgba(var(--color-primary-rgb), var(--opacity-medium-high));
 	}
 
