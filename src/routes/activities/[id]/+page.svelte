@@ -204,131 +204,113 @@
 <MetaTags {activity} />
 
 {#if activity}
-	<div class="activity-content critical-content max-w-6xl mx-auto">
-		{#if activity}
-			<!-- Separate page header section - no animation to prevent flash -->
-			<div>
-				<Breadcrumb items={breadcrumbItems} />
-			</div>
+	<div class="container py-8">
+		<div class="content-wrapper max-w-6xl mx-auto">
+			{#if activity}
+				<!-- Separate page header section - no animation to prevent flash -->
+				<div>
+					<Breadcrumb items={breadcrumbItems} />
+				</div>
 
-			<div>
-				<PageHeader
-					title={activity.title}
-					date={activity.date}
-					typeBadgeText={formatPanelType(activity.panelType)}
-				/>
-			</div>
-
-			{#if activity.heroImage && activity.heroImage.src}
-				<div class="hero-image-wrapper">
-					<HeroImageDisplay
-						heroImage={{
-							src: activity.heroImage.src,
-							alt: activity.heroImage.alt ?? activity.title,
-							caption: activity.heroImage.caption
-						}}
-						fallbackImage={activity.image}
-						defaultAlt={activity.title}
-						variant="featured"
-						glassEffect={true}
-						fetchpriority="high"
-						loading="eager"
-						maxHeight="60vh"
+				<div>
+					<PageHeader
+						title={activity.title}
+						date={activity.date}
+						typeBadgeText={formatPanelType(activity.panelType)}
 					/>
 				</div>
-			{/if}
 
-			<!-- Main content card -->
-			<div data-animate use:scrollAnimate={{ delay: DELAY_STEP, animationClass: 'fade-in-up' }}>
-				<ContentBody variant="default" glassEffect="glass-card" additionalClasses="mt-6">
-					<!-- Render parsed content segments -->
-					{#each contentSegments as segment, segmentIndex (segmentIndex)}
-						{#if segment.type === 'html'}
-							<!-- Safe: content is from trusted activity data files in src/lib/data/activities/ -->
-							{@html segment.value}
-						{:else if segment.type === 'ItemReference' && segment.id}
-							<ItemReference id={segment.id} />
-						{/if}
-					{/each}
-				</ContentBody>
-			</div>
+				{#if activity.heroImage && activity.heroImage.src}
+					<div class="hero-image-wrapper mb-8">
+						<HeroImageDisplay
+							heroImage={{
+								src: activity.heroImage.src,
+								alt: activity.heroImage.alt ?? activity.title,
+								caption: activity.heroImage.caption
+							}}
+							fallbackImage={activity.image}
+							defaultAlt={activity.title}
+							variant="featured"
+							glassEffect={true}
+							fetchpriority="high"
+							loading="eager"
+							maxHeight="60vh"
+						/>
+					</div>
+				{/if}
 
-			{#if activity.url || (activity.additionalUrls && activity.additionalUrls.length > 0)}
-				<div
-					data-animate
-					use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}
-				>
-					<ActionLinks
-						primaryUrl={activity.url}
-						primaryLabel="Visit Activity"
-						additionalUrls={activity.additionalUrls}
-						sectionClass="action-links mt-4"
-						primaryButtonClass="btn btn-primary glass-button"
-						secondaryButtonClass="btn btn-outline-primary glass-button"
-						primaryDivClass="mb-4"
-					/>
+				<!-- Main content card -->
+				<div data-animate use:scrollAnimate={{ delay: DELAY_STEP, animationClass: 'fade-in-up' }}>
+					<ContentBody variant="default" glassEffect="glass-card">
+						<!-- Render parsed content segments -->
+						{#each contentSegments as segment, segmentIndex (segmentIndex)}
+							{#if segment.type === 'html'}
+								<!-- Safe: content is from trusted activity data files in src/lib/data/activities/ -->
+								{@html segment.value}
+							{:else if segment.type === 'ItemReference' && segment.id}
+								<ItemReference id={segment.id} />
+							{/if}
+						{/each}
+					</ContentBody>
 				</div>
-			{/if}
 
-			{#if activity.pdfPath}
-				<div
-					class="pdf-section glass-card mt-4 p-6 md:p-8"
-					data-animate
-					use:scrollAnimate={{ delay: DELAY_STEP * 3, animationClass: 'fade-in-up' }}
-				>
-					<h2 class="text-xl font-serif font-semibold mb-4 text-emphasis">
-						{activity.pdfTitle || 'Associated Document'}
-					</h2>
-					<IframeRenderer
-						id="activity-pdf-{activity.id}"
-						src="{base}/{activity.pdfPath}"
-						title="{activity.title} PDF Document"
-						height="800px"
-						containerClass="iframe-container iframe-container-fullwidth"
-						glassEffect={true}
-						glassVariant="glass-light"
-					/>
-				</div>
-			{/if}
+				{#if activity.url || (activity.additionalUrls && activity.additionalUrls.length > 0)}
+					<div
+						data-animate
+						use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}
+					>
+						<ActionLinks
+							primaryUrl={activity.url}
+							primaryLabel="Visit Activity"
+							additionalUrls={activity.additionalUrls}
+							sectionClass="action-links mt-4"
+							primaryButtonClass="btn btn-primary glass-button"
+							secondaryButtonClass="btn btn-outline-primary glass-button"
+							primaryDivClass="mb-4"
+						/>
+					</div>
+				{/if}
 
-			{#if formattedTags && formattedTags.length > 0}
-				<div
-					class="mt-4 mb-6"
-					data-animate
-					use:scrollAnimate={{ delay: DELAY_STEP * 4, animationClass: 'fade-in-up' }}
-				>
-					<TagList tags={formattedTags} baseUrl="/activities?tag=" />
-				</div>
+				{#if activity.pdfPath}
+					<div
+						class="pdf-section glass-card mt-4 p-6 md:p-8"
+						data-animate
+						use:scrollAnimate={{ delay: DELAY_STEP * 3, animationClass: 'fade-in-up' }}
+					>
+						<h2 class="text-xl font-serif font-semibold mb-4 text-emphasis">
+							{activity.pdfTitle || 'Associated Document'}
+						</h2>
+						<IframeRenderer
+							id="activity-pdf-{activity.id}"
+							src="{base}/{activity.pdfPath}"
+							title="{activity.title} PDF Document"
+							height="800px"
+							containerClass="iframe-container iframe-container-fullwidth"
+							glassEffect={true}
+							glassVariant="glass-light"
+						/>
+					</div>
+				{/if}
+
+				{#if formattedTags && formattedTags.length > 0}
+					<div
+						class="mt-4 mb-6"
+						data-animate
+						use:scrollAnimate={{ delay: DELAY_STEP * 4, animationClass: 'fade-in-up' }}
+					>
+						<TagList tags={formattedTags} baseUrl="/activities?tag=" />
+					</div>
+				{/if}
 			{/if}
-		{/if}
+		</div>
 	</div>
 
 	<style>
-		/* Activity content wrapper - no z-index to avoid stacking context issues */
-		.activity-content {
-			content-visibility: auto;
-			contain-intrinsic-size: 1000px;
-			/* Optimize container for better rendering */
-			will-change: auto;
-			transform: translateZ(0);
-			/* NO position or z-index - the layout already has a container */
-		}
-
-		/* Prevent flash on above-the-fold content */
-		.activity-content > div:nth-child(1),
-		.activity-content > div:nth-child(2),
-		.hero-image-wrapper {
-			opacity: 1 !important;
-			transform: none !important;
-		}
-
 		/* Hero image wrapper - ensure it doesn't interfere with modal stacking */
 		.hero-image-wrapper {
 			position: relative;
 			z-index: auto; /* Ensure no stacking context issues */
 			isolation: auto; /* Prevent isolation that could interfere with modal */
-			content-visibility: auto;
-			contain-intrinsic-size: 400px;
 		}
 
 		/* Responsive hero image optimization */
@@ -403,13 +385,6 @@
 			.pdf-section:hover {
 				transform: none;
 			}
-		}
-
-		/* Dark mode adjustments are handled automatically through CSS variables */
-
-		/* Critical above-the-fold content - remove contain to prevent stacking context issues */
-		.critical-content {
-			/* contain: layout style paint; - Removed to fix mobile menu z-index issues */
 		}
 	</style>
 {/if}
