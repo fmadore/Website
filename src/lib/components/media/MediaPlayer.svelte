@@ -438,8 +438,8 @@
 								data-muted={isMuted}
 								style="
 									--volume-percentage: {(isMuted ? 0 : volume) * 100}%;
-									--slider-color: {isMuted ? '#dc2626' : '#3b82f6'};
-									background: linear-gradient(to right, var(--slider-color) 0%, var(--slider-color) var(--volume-percentage), rgba(156, 163, 175, 0.3) var(--volume-percentage), rgba(156, 163, 175, 0.3) 100%);
+									--slider-color: {isMuted ? 'var(--color-danger)' : 'var(--color-primary)'};
+									background: linear-gradient(to right, var(--slider-color) 0%, var(--slider-color) var(--volume-percentage), rgba(var(--color-text-rgb), 0.2) var(--volume-percentage), rgba(var(--color-text-rgb), 0.2) 100%);
 								"
 								aria-label="Volume"
 							/>
@@ -541,7 +541,7 @@
 		margin-bottom: var(--spacing-6);
 		border-radius: var(--border-radius-lg);
 		overflow: hidden;
-		background: var(--color-black);
+		background: var(--color-surface-alt);
 	}
 
 	.media-element {
@@ -549,6 +549,10 @@
 		height: auto;
 		display: block;
 		background: var(--color-black);
+	}
+
+	audio.media-element {
+		display: none;
 	}
 
 	.audio-visualization {
@@ -613,7 +617,7 @@
 	}
 
 	.wave-bar {
-		width: 4px;
+		width: var(--spacing-1);
 		background: linear-gradient(to top, var(--color-primary), var(--color-accent));
 		border-radius: var(--border-radius-full);
 		animation: wave 2s ease-in-out infinite;
@@ -668,8 +672,8 @@
 		background: rgba(var(--color-white-rgb), var(--opacity-90));
 		border-radius: var(--border-radius-full);
 		padding: var(--spacing-2);
-		backdrop-filter: blur(10px);
-		border: 1px solid rgba(var(--color-primary-rgb), var(--opacity-20));
+		backdrop-filter: blur(var(--glass-blur-amount));
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-20));
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
 		box-shadow:
 			var(--shadow-sm),
@@ -712,23 +716,21 @@
 	}
 
 	.audio-description {
-		color: var(--color-white);
+		color: var(--color-text-muted);
 		font-size: var(--font-size-sm);
 		margin: 0;
 		line-height: var(--line-height-normal);
 		max-width: 400px;
 		margin-left: auto;
 		margin-right: auto;
-		text-shadow: 0 1px 3px rgba(var(--color-black-rgb), 0.5);
 		font-weight: var(--font-weight-medium);
 	}
 
 	.audio-description a {
-		color: var(--color-white);
+		color: var(--color-primary);
 		text-decoration: underline;
 		font-weight: var(--font-weight-semibold);
 		transition: all var(--anim-duration-base) var(--anim-ease-base);
-		text-shadow: 0 1px 3px rgba(var(--color-black-rgb), 0.7);
 	}
 
 	.audio-description a:hover {
@@ -829,7 +831,7 @@
 
 		/* Modern control panel design */
 		background: rgba(var(--color-surface-rgb), var(--opacity-95));
-		backdrop-filter: blur(20px);
+		backdrop-filter: blur(var(--glass-blur-fallback));
 		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-20));
 		border-radius: var(--border-radius-lg);
 		padding: var(--spacing-3);
@@ -909,7 +911,7 @@
 		height: 100%;
 		background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
 		border-radius: var(--border-radius-full);
-		transition: width 0.1s ease;
+		transition: width var(--anim-duration-instant) ease;
 
 		/* Elegant glow effect */
 		box-shadow:
@@ -986,7 +988,7 @@
 
 		/* Modern glassmorphism design */
 		background: rgba(var(--color-surface-rgb), var(--opacity-90)) !important;
-		backdrop-filter: blur(12px) !important;
+		backdrop-filter: blur(var(--glass-blur-fallback)) !important;
 		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-30)) !important;
 		border-radius: var(--border-radius-lg) !important;
 
@@ -1024,13 +1026,13 @@
 
 	.control-icon--fixed {
 		/* Fixed dimensions for volume icon to prevent layout shifts */
-		width: 20px;
-		height: 20px;
+		width: var(--spacing-5);
+		height: var(--spacing-5);
 	}
 
 	/* Muted state styling */
 	.control-icon--muted {
-		color: #dc2626;
+		color: var(--color-danger);
 	}
 
 	:global(.control-btn:hover) .control-icon {
@@ -1038,7 +1040,7 @@
 	}
 
 	:global(.control-btn:hover) .control-icon--muted {
-		color: #ef4444;
+		color: var(--color-danger);
 	}
 
 	.volume-controls {
@@ -1051,7 +1053,7 @@
 		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-20));
 		border-radius: var(--border-radius-lg);
 		padding: var(--spacing-2) var(--spacing-3);
-		backdrop-filter: blur(8px);
+		backdrop-filter: blur(var(--glass-blur-amount));
 
 		/* Subtle inner glow */
 		box-shadow: inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-10));
@@ -1101,12 +1103,12 @@
 
 	.volume-slider::-webkit-slider-thumb {
 		appearance: none;
-		width: 16px;
-		height: 16px;
+		width: var(--spacing-4);
+		height: var(--spacing-4);
 		background: var(--color-primary);
 		border-radius: var(--border-radius-full);
 		cursor: pointer;
-		border: 2px solid var(--color-white);
+		border: var(--border-width-medium) solid var(--color-white);
 		box-shadow:
 			0 2px 4px rgba(var(--color-black-rgb), var(--opacity-20)),
 			0 0 0 2px rgba(var(--color-primary-rgb), var(--opacity-20));
@@ -1122,12 +1124,12 @@
 	}
 
 	.volume-slider::-moz-range-thumb {
-		width: 16px;
-		height: 16px;
+		width: var(--spacing-4);
+		height: var(--spacing-4);
 		background: var(--color-primary);
 		border-radius: var(--border-radius-full);
 		cursor: pointer;
-		border: 2px solid var(--color-white);
+		border: var(--border-width-medium) solid var(--color-white);
 		box-shadow:
 			0 2px 4px rgba(var(--color-black-rgb), var(--opacity-20)),
 			0 0 0 2px rgba(var(--color-primary-rgb), var(--opacity-20));
