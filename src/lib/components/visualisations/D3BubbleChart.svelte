@@ -6,6 +6,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
+	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 	import { innerWidth as windowInnerWidth } from 'svelte/reactivity/window';
 
 	// Props
@@ -26,8 +27,8 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			'rgba(var(--color-success-rgb), 0.7)',
 			'rgba(var(--color-primary-rgb), 0.6)'
 		],
-		minBubbleSize = 15,
-		maxBubbleSize = 60
+		minBubbleSize = 25,
+		maxBubbleSize = 90
 	}: {
 		data?: DataItem[];
 		nameAccessor: (d: DataItem) => string;
@@ -74,6 +75,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		text: getCSSVariableValue('--color-text'),
 		border: getCSSVariableValue('--color-border'),
 		surface: getCSSVariableValue('--color-surface'),
+		surfaceRgb: getCSSVariableValue('--color-surface-rgb'),
 		chartColors: colors.map((color) => resolveColor(color)),
 		currentTheme: getTheme()
 	});
@@ -146,14 +148,16 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			.attr('class', 'bubble-tooltip')
 			.style('position', 'absolute')
 			.style('visibility', 'hidden')
-			.style('background-color', resolvedColors.surface)
+			.style('background-color', `rgba(${resolvedColors.surfaceRgb}, 0.9)`)
 			.style('color', resolvedColors.text)
 			.style('border', `1px solid ${resolvedColors.border}`)
-			.style('border-radius', '6px')
-			.style('padding', '8px 12px')
-			.style('font-size', '13px')
-			.style('font-family', 'Inter, -apple-system, sans-serif')
-			.style('box-shadow', '0 4px 6px -1px rgba(0, 0, 0, 0.1)')
+			.style('border-radius', '8px')
+			.style('padding', '10px 14px')
+			.style('font-size', '12px')
+			.style('font-family', 'var(--font-family-sans)')
+			.style('backdrop-filter', 'blur(8px)')
+			.style('-webkit-backdrop-filter', 'blur(8px)')
+			.style('box-shadow', 'var(--shadow-lg)')
 			.style('pointer-events', 'none')
 			.style('z-index', '1000')
 			.style('white-space', 'nowrap');
@@ -227,16 +231,24 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			.append('text')
 			.attr('text-anchor', 'middle')
 			.attr('dominant-baseline', 'middle')
-			.style('fill', resolvedColors.text)
-			.style('font-size', (d) => `${Math.max(10, Math.min(16, d.r / 3.2))}px`)
+			.style('fill', 'white')
+			.style('text-shadow', '0 1px 3px rgba(0,0,0,0.5)')
+			.style('font-size', (d) => `${Math.max(11, Math.min(22, d.r / 2.2))}px`)
 			.style('font-weight', '600')
-			.style('font-family', 'Inter, -apple-system, sans-serif')
+			.style('font-family', 'var(--font-family-sans)')
 			.style('pointer-events', 'none')
 			.style('user-select', 'none')
 			.each(function (d) {
-				if (d.r < 24) return;
+				// Only show text if bubble is large enough
+				if (d.r < 18) return;
 
-				const label = d.data.name.length > 14 ? `${d.data.name.slice(0, 12)}…` : d.data.name;
+				// Smarter truncation based on radius
+				const charLimit = Math.floor(d.r / 3);
+				const label =
+					d.data.name.length > Math.max(10, charLimit)
+						? `${d.data.name.slice(0, Math.max(8, charLimit - 1))}…`
+						: d.data.name;
+
 				d3.select(this).text(label);
 			});
 	}
@@ -262,7 +274,15 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 	});
 </script>
 
-<div class="bubble-chart-container">
+<div
+	class="bubble-chart-container"
+	use:scrollAnimate={{
+		delay: 200,
+		animationClass: 'scale-in',
+		rootMargin: '100px',
+		threshold: 0.1
+	}}
+>
 	<div bind:this={chartContainer} class="bubble-chart" role="region" aria-label="Keyword frequency bubble chart"></div>
 	{#if chartData.length === 0}
 		<div class="no-data-message">
@@ -278,6 +298,10 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		position: relative;
 		display: flex;
 		flex-direction: column;
+		/* Initial state for scroll animation */
+		opacity: 0;
+		transform: scale(0.9);
+		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	.bubble-chart {
@@ -285,24 +309,12 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		height: 100%;
 		position: relative;
 		overflow: visible;
-		padding: var(--spacing-6);
-		border-radius: var(--border-radius-2xl);
-		border: 1px solid rgba(var(--color-surface-rgb), 0.25);
-		background:
-			linear-gradient(
-				135deg,
-				rgba(var(--color-primary-rgb), 0.06),
-				rgba(var(--color-highlight-rgb), 0.04)
-			);
-		backdrop-filter: blur(22px);
-		-webkit-backdrop-filter: blur(22px);
-		box-shadow: 0 24px 60px rgba(17, 25, 40, 0.18);
+		/* Remove padding and border radius to match other charts */
 	}
 
 	.bubble-chart :global(svg) {
 		display: block;
 		margin: 0 auto;
-		border-radius: var(--border-radius-xl);
 		isolation: isolate;
 	}
 
