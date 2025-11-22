@@ -41,6 +41,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 	// State management
 	let chartContainer: HTMLDivElement;
 	let svg: d3.Selection<SVGSVGElement, unknown, null, undefined> | null = null;
+	let zoomBehavior: d3.ZoomBehavior<SVGSVGElement, unknown> | null = null;
 	let containerWidth = $state(1000);
 	let containerHeight = $state(800);
 
@@ -141,7 +142,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			.attr('aria-label', 'Keyword frequency bubble chart visualization');
 
 		// Add zoom behavior
-		const zoom = d3.zoom<SVGSVGElement, unknown>()
+		zoomBehavior = d3.zoom<SVGSVGElement, unknown>()
 			.scaleExtent([0.5, 5])
 			.on('zoom', (event) => {
 				svg?.selectAll('g.bubble').attr('transform', (d: any) => {
@@ -151,7 +152,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 				});
 			});
 
-		svg.call(zoom);
+		svg.call(zoomBehavior);
 
 		// Color scale
 		const colorScale = d3
@@ -282,20 +283,20 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 
 	// Zoom controls
 	function zoomIn() {
-		if (svg) {
-			svg.transition().duration(500).call(d3.zoom().scaleBy as any, 1.2);
+		if (svg && zoomBehavior) {
+			svg.transition().duration(500).call(zoomBehavior.scaleBy, 1.2);
 		}
 	}
 
 	function zoomOut() {
-		if (svg) {
-			svg.transition().duration(500).call(d3.zoom().scaleBy as any, 0.8);
+		if (svg && zoomBehavior) {
+			svg.transition().duration(500).call(zoomBehavior.scaleBy, 0.8);
 		}
 	}
 
 	function resetZoom() {
-		if (svg) {
-			svg.transition().duration(500).call(d3.zoom().transform as any, d3.zoomIdentity);
+		if (svg && zoomBehavior) {
+			svg.transition().duration(500).call(zoomBehavior.transform, d3.zoomIdentity);
 		}
 	}
 
