@@ -136,6 +136,8 @@
 		switch (type) {
 			case 'article':
 				return 'Journal Article';
+			case 'bulletin-article':
+				return 'Bulletin Article';
 			case 'book':
 				return 'Book';
 			case 'chapter':
@@ -171,17 +173,26 @@
 		{
 			label: 'Journal',
 			value: publication.journal ?? '',
-			condition: publication.type === 'article' || publication.type === 'special-issue'
+			condition:
+				publication.type === 'article' ||
+				publication.type === 'special-issue' ||
+				publication.type === 'bulletin-article'
 		},
 		{
 			label: 'Volume',
 			value: publication.volume ?? '',
-			condition: publication.type === 'article' || publication.type === 'special-issue'
+			condition:
+				publication.type === 'article' ||
+				publication.type === 'special-issue' ||
+				publication.type === 'bulletin-article'
 		},
 		{
 			label: 'Issue',
 			value: publication.issue ?? '',
-			condition: publication.type === 'article' || publication.type === 'special-issue'
+			condition:
+				publication.type === 'article' ||
+				publication.type === 'special-issue' ||
+				publication.type === 'bulletin-article'
 		},
 		{
 			label: 'Publisher',
