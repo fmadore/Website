@@ -29,11 +29,6 @@ export default defineConfig({
 						return 'html2canvas';
 					}
 					
-					// Map libraries - dynamically imported
-					if (id.includes('leaflet')) {
-						return 'leaflet';
-					}
-					
 					// Icon libraries
 					if (id.includes('@iconify') || id.includes('svelte-fa') || id.includes('@fortawesome')) {
 						return 'icons';

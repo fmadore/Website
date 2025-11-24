@@ -17,7 +17,7 @@ const config = {
 		}),
 		// Inline CSS files smaller than 10KB to reduce render-blocking requests
 		// This helps with PageSpeed performance by reducing HTTP round-trips
-		// inlineStyleThreshold: 10240, // 10KB in bytes
+		inlineStyleThreshold: 10240, // 10KB in bytes
 		paths: {
 			base: ''
 		},

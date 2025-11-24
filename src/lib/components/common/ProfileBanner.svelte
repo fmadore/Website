@@ -14,6 +14,7 @@
 				height="180"
 				loading="eager"
 				decoding="async"
+				fetchpriority="high"
 			/>
 		</div>
 	</div>
