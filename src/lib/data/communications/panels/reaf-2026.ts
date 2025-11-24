@@ -47,7 +47,23 @@ Ce panel organisé par Frédérick Madore et Vincent Hiribarren fait suite à la
 		latitude: 48.911008116361714,
 		longitude: 2.366853761147573
 	},
-	papers: [],
+	papers: [
+		{
+			title: 'Intelligence artificielle et patrimonialisation : entre indexation automatisée et perte de sens',
+			authors: [{ name: 'Mbaye Diouf', affiliation: 'Université Cheikh Anta Diop de Dakar' }],
+			abstract: ''
+		},
+		{
+			title: 'Du terrain aux algorithmes : l’intelligence artificielle au service de la linguistique historique africaine',
+			authors: [{ name: 'Promise Dodzi Kpoglu', affiliation: 'LLACAN, Centre national de la recherche scientifique' }],
+			abstract: ''
+		},
+		{
+			title: 'Quels impacts de l’IA sur les sciences humaines ?',
+			authors: [{ name: 'Racine Oumar N’Diaye', affiliation: 'Université de Nouadhibou' }],
+			abstract: ''
+		}
+	],
 	participants: [],
 	project: 'Mining the Islam West Africa Collection'
 };
