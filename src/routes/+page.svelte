@@ -84,7 +84,7 @@
 						href="https://islam.zmo.de/s/westafrica/"
 						target="_blank"
 						rel="noopener noreferrer"><em>Islam West Africa Collection</em> (IWAC)</a
-					>, an open-access database comprising over 13,500 items relating to Islam across the
+					>, an open-access database comprising over 14,500 items relating to Islam across the
 					region. I use computational methods and
 					<a
 						href="https://github.com/fmadore/iwac-ai-pipelines"
