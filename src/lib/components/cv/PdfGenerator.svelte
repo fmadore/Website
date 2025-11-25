@@ -180,13 +180,7 @@
 			// HEADER DESIGN - Modern, professional layout
 			// ============================================
 			
-			// Decorative top accent line
-			pdf.setDrawColor(...COLORS.PRIMARY);
-			pdf.setLineWidth(1.5);
-			pdf.line(margin, yPosition, pageWidth - margin, yPosition);
-			yPosition += 6;
-
-			// Name - Large, prominent, the focal point
+			// Name - Large, prominent, the focal point (starts first, line comes after)
 			pdf.setFontSize(FONT_SIZE.NAME);
 			pdf.setFont('times', 'bold');
 			pdf.setTextColor(...COLORS.PRIMARY_DARK);
@@ -212,10 +206,10 @@
 			pdf.text(dateText, pageWidth / 2, yPosition, { align: 'center' });
 			yPosition += 6;
 
-			// Decorative divider
+			// Decorative divider line under header
 			pdf.setDrawColor(...COLORS.ACCENT);
-			pdf.setLineWidth(0.4);
-			const dividerWidth = 40;
+			pdf.setLineWidth(0.6);
+			const dividerWidth = 50;
 			pdf.line(pageWidth / 2 - dividerWidth / 2, yPosition, pageWidth / 2 + dividerWidth / 2, yPosition);
 			yPosition += SPACING.HEADER_BOTTOM;
 
@@ -230,29 +224,28 @@
 			const rightColumn = pageWidth / 2 + 5;
 			const startY = yPosition;
 			
-			// Left side - Address
-			const addressDiv = cvContactSection?.querySelector('.cv-contact-group div:last-child');
-			if (addressDiv) {
-				// Address label with underline
-				pdf.setFont('helvetica', 'bold');
-				pdf.setFontSize(FONT_SIZE.CONTACT_LABEL);
-				pdf.setTextColor(...COLORS.PRIMARY);
-				pdf.text('Address', leftColumn, yPosition);
+			// Left side - Address (hardcoded for reliable formatting)
+			// Address label
+			pdf.setFont('helvetica', 'bold');
+			pdf.setFontSize(FONT_SIZE.CONTACT_LABEL);
+			pdf.setTextColor(...COLORS.PRIMARY);
+			pdf.text('Address', leftColumn, yPosition);
+			yPosition += SPACING.CONTACT_LINE;
+			
+			// Address lines - hardcoded for reliable multi-line display
+			pdf.setFont('helvetica', 'normal');
+			pdf.setFontSize(FONT_SIZE.CONTACT_VALUE);
+			pdf.setTextColor(...COLORS.TEXT);
+			const addressLines = [
+				'Leibniz-Zentrum Moderner Orient',
+				'Kirchweg 33',
+				'14129 Berlin',
+				'Germany'
+			];
+			addressLines.forEach((line) => {
+				pdf.text(line, leftColumn, yPosition);
 				yPosition += SPACING.CONTACT_LINE;
-				
-				pdf.setFont('helvetica', 'normal');
-				pdf.setFontSize(FONT_SIZE.CONTACT_VALUE);
-				pdf.setTextColor(...COLORS.TEXT);
-				const addressLines = addressDiv.innerHTML.split('<br>').map(line => 
-					line.trim().replace(/<[^>]*>/g, '')
-				);
-				addressLines.forEach((line) => {
-					if (line) {
-						pdf.text(line, leftColumn, yPosition);
-						yPosition += SPACING.CONTACT_LINE;
-					}
-				});
-			}
+			});
 			
 			// Right side - Contact links
 			let rightY = startY;
