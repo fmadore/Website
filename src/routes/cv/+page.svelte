@@ -86,12 +86,12 @@
 	description="Curriculum Vitae of Frédérick Madore, detailing publications, communications, activities, and fieldwork."
 />
 
-<!-- PDF Generator Button -->
-<div class="flex justify-end mb-4 max-w-4xl mx-auto">
-	<PdfGenerator />
-</div>
-
 <div id="cv-content" class="cv-container glass-card p-8 max-w-4xl mx-auto rounded-lg">
+	<!-- PDF Generator Button - positioned in top right corner of CV -->
+	<div class="cv-download-button">
+		<PdfGenerator />
+	</div>
+	
 	<CVHeader />
 	<div class="cv-section-wrapper">
 		<CVEducation />
@@ -181,6 +181,27 @@
 	.cv-container {
 		box-shadow: var(--shadow-lg);
 		transition: box-shadow var(--transition-duration-200) ease;
+		position: relative;
+		margin-top: var(--space-lg);
+		margin-bottom: var(--space-lg);
+	}
+
+	/* PDF Download button positioning - inside the CV container top-right */
+	.cv-download-button {
+		position: absolute;
+		top: var(--space-lg);
+		right: var(--space-lg);
+		z-index: 10;
+	}
+
+	/* On mobile, use sticky positioning so button stays accessible */
+	@media (max-width: 639px) {
+		.cv-download-button {
+			position: sticky;
+			top: var(--space-md);
+			float: right;
+			margin-bottom: var(--space-md);
+		}
 	}
 
 	/* CV section wrappers with subtle glass effect */
@@ -333,9 +354,9 @@
 			text-decoration: underline !important;
 		}
 
-		/* Remove unnecessary spacing */
-		.mb-4 {
-			margin-bottom: var(--spacing-2) !important;
+		/* Hide download button in print */
+		.cv-download-button {
+			display: none !important;
 		}
 	}
 </style>
