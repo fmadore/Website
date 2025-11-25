@@ -1,31 +1,22 @@
 <script lang="ts">
 	/**
-	 * PDF Generator for CV
+	 * PDF Generator for CV - Enhanced Design v2.0
 	 * 
-	 * This component generates a PDF version of the CV that closely matches the web styling.
-	 * All typography and spacing values are aligned with the CSS design system defined in:
-	 * - src/styles/base/variables.css (CSS custom properties)
-	 * - Typography scale: font sizes, line heights, weights
-	 * - Spacing scale: margins, padding, gaps
-	 * - Color system: text colors, borders
+	 * This component generates a professionally designed PDF CV with:
+	 * - Modern typography with clear hierarchy
+	 * - Elegant header with decorative elements
+	 * - Consistent spacing based on design system
+	 * - Subtle visual accents and dividers
+	 * - Proper page numbering with header/footer
+	 * - Clickable links for contact info
 	 * 
-	 * Typography mapping (CSS → PDF):
-	 * - Title (h1): text-3xl → 18pt
-	 * - Name (h2): text-xl → 14pt
-	 * - Section headings (h3): text-2xl → 13pt
-	 * - Subsection headings (h4): text-lg → 11pt
-	 * - Body text: text-base → 9.5pt
-	 * - Small text: text-sm/text-xs → 8.5-9pt
-	 * 
-	 * Spacing mapping (CSS → PDF mm):
-	 * - Section gaps: var(--spacing-6) → 6mm
-	 * - Entry gaps: var(--spacing-3) → 3.5mm
-	 * - Line height: varies by context (4-5mm)
-	 * 
-	 * Colors (matching CSS variables):
-	 * - Text: #1e293b (var(--color-text))
-	 * - Light text: #475569 (var(--color-text-light))
-	 * - Borders: #e2e8f0 (var(--color-border))
+	 * Design improvements:
+	 * - Refined color palette matching website's academic blue theme
+	 * - Better visual hierarchy with improved font sizes
+	 * - Professional header design with name prominence
+	 * - Decorative accent lines and section dividers
+	 * - Improved contact section with icons simulation
+	 * - Better spacing rhythm throughout
 	 */
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
@@ -52,47 +43,69 @@
 			const pdf = new jsPDF('p', 'mm', 'a4');
 			const pageWidth = pdf.internal.pageSize.getWidth();
 			const pageHeight = pdf.internal.pageSize.getHeight();
-			const margin = 20;
+			const margin = 18; // Slightly tighter margins for more content space
 			const contentWidth = pageWidth - 2 * margin;
 			let yPosition = margin;
 
-			// Typography constants matching CSS design system
-			// Based on variables.css font sizes and spacing
+			// Enhanced typography constants - refined for better readability
 			const FONT_SIZE = {
-				TITLE: 18,           // ~var(--font-size-3xl) for "Curriculum Vitae"
-				NAME: 14,            // ~var(--font-size-xl) for name
-				DATE: 9,             // ~var(--font-size-xs) for date
-				CONTACT: 8.5,        // ~var(--font-size-xs) for contact info
-				SECTION_HEADING: 13, // ~var(--font-size-2xl) for h3
-				SUBSECTION: 11,      // ~var(--font-size-lg) for h4
-				BODY: 9.5,           // ~var(--font-size-base) for body text
-				PAGE_NUMBER: 8.5     // ~var(--font-size-xs) for page numbers
+				NAME: 22,            // Prominent name - the star of the show
+				TITLE: 11,           // "Curriculum Vitae" subtitle
+				DATE: 8.5,           // Date - subtle
+				CONTACT_LABEL: 8,    // Contact labels
+				CONTACT_VALUE: 8.5,  // Contact values
+				SECTION_HEADING: 12, // Section headers - clear hierarchy
+				SUBSECTION: 10.5,    // Subsection headers
+				BODY: 9.5,           // Body text - comfortable reading
+				BODY_SMALL: 9,       // Secondary body text
+				PAGE_NUMBER: 8,      // Page numbers
+				FOOTER: 7.5          // Footer text
 			};
 
-			// Spacing constants matching CSS design system
-			// Based on variables.css spacing scale (1rem = ~3.5mm in PDF)
+			// Refined spacing system - better visual rhythm
 			const SPACING = {
-				SECTION_TOP: 6,      // ~var(--spacing-6) = 1.5rem = 24px
-				SECTION_BOTTOM: 5,   // ~var(--spacing-4) = 1rem = 16px
-				SUBSECTION_TOP: 4,   // ~var(--spacing-3) = 0.75rem = 12px - space before subheader
-				SUBSECTION_BOTTOM: 5,// ~var(--spacing-4) = 1rem = 16px - increased: space after subheader
-				ENTRY_GAP: 3.5,      // ~var(--spacing-3) for space-y-3
-				LINE_HEIGHT_BODY: 5, // Standard line height for body text
-				LINE_HEIGHT_TIGHT: 4,// Tighter line height for multi-line entries
-				CONTACT_GAP: 4       // Gap between contact items
+				HEADER_BOTTOM: 8,    // Space after header block
+				SECTION_TOP: 7,      // Space before new section
+				SECTION_BOTTOM: 4,   // Space after section heading
+				SUBSECTION_TOP: 5,   // Space before subsection
+				SUBSECTION_BOTTOM: 3.5, // Space after subsection heading
+				ENTRY_GAP: 3,        // Gap between entries
+				LINE_HEIGHT: 4.5,    // Standard line height
+				LINE_HEIGHT_TIGHT: 3.8, // Tight line height for multi-line
+				CONTACT_LINE: 4.5,   // Contact info line spacing
+				PARAGRAPH_GAP: 2     // Gap between paragraphs in same entry
 			};
 
-			// Colors matching variables.css
+			// Refined color palette - matching website's academic theme
 			const COLORS = {
-				PRIMARY: [30, 58, 95],    // #1e3a5f
-				ACCENT: [8, 145, 178],    // #0891b2
-				TEXT: [30, 41, 59],       // #1e293b
-				TEXT_LIGHT: [71, 85, 105],// #475569
-				BORDER: [226, 232, 240]   // #e2e8f0
+				PRIMARY: [29, 78, 216] as [number, number, number],     // #1d4ed8 - Academic blue
+				PRIMARY_DARK: [30, 58, 138] as [number, number, number], // #1e3a8a - Darker blue
+				ACCENT: [20, 184, 166] as [number, number, number],      // #14b8a6 - Teal accent
+				TEXT: [30, 41, 59] as [number, number, number],          // #1e293b - Main text
+				TEXT_LIGHT: [100, 116, 139] as [number, number, number], // #64748b - Secondary text
+				TEXT_MUTED: [148, 163, 184] as [number, number, number], // #94a3b8 - Muted text
+				BORDER: [226, 232, 240] as [number, number, number],     // #e2e8f0 - Subtle borders
+				BACKGROUND_LIGHT: [248, 250, 252] as [number, number, number] // #f8fafc - Light bg
 			};
 
 			// Layout constants
-			const yearColumnWidth = 35; // Width for year column in mm
+			const yearColumnWidth = 32; // Slightly narrower year column
+			let currentPage = 1;
+
+			// Helper function for page breaks
+			const newPage = () => {
+				addPageNumber();
+				pdf.addPage();
+				currentPage++;
+				yPosition = margin;
+			};
+
+			// Check if we need a new page
+			const checkPageBreak = (requiredSpace: number = 15) => {
+				if (yPosition > pageHeight - margin - requiredSpace) {
+					newPage();
+				}
+			};
 
 			// Helper to add text with word wrap
 			const addText = (text: string, fontSize: number, isBold: boolean = false, font: 'helvetica' | 'times' = 'helvetica') => {
@@ -101,28 +114,31 @@
 				const lines = pdf.splitTextToSize(text, contentWidth);
 				
 				lines.forEach((line: string) => {
-					if (yPosition > pageHeight - margin - 10) {
-						addPageNumber();
-						pdf.addPage();
-						yPosition = margin;
-					}
+					checkPageBreak(10);
 					pdf.text(line, margin, yPosition);
 					yPosition += fontSize * 0.5;
 				});
 				yPosition += SPACING.ENTRY_GAP;
 			};
 
+			// Enhanced page footer with name and page number
 			const addPageNumber = () => {
-				const pageCount = pdf.internal.pages.length - 1;
-				pdf.setFontSize(FONT_SIZE.PAGE_NUMBER);
+				const pageNum = pdf.internal.pages.length - 1;
+				
+				// Footer line
+				pdf.setDrawColor(...COLORS.BORDER);
+				pdf.setLineWidth(0.2);
+				pdf.line(margin, pageHeight - 14, pageWidth - margin, pageHeight - 14);
+				
+				// Name on left
+				pdf.setFontSize(FONT_SIZE.FOOTER);
 				pdf.setFont('helvetica', 'normal');
-				pdf.setTextColor(...COLORS.TEXT_LIGHT);
-				pdf.text(
-					`Page ${pageCount}`,
-					pageWidth / 2,
-					pageHeight - 10,
-					{ align: 'center' }
-				);
+				pdf.setTextColor(...COLORS.TEXT_MUTED);
+				pdf.text('Frédérick Madore — CV', margin, pageHeight - 9);
+				
+				// Page number on right
+				pdf.text(`Page ${pageNum}`, pageWidth - margin, pageHeight - 9, { align: 'right' });
+				
 				pdf.setTextColor(...COLORS.TEXT);
 			};
 
@@ -130,25 +146,27 @@
 			const element = document.getElementById('cv-content');
 			if (!element) throw new Error('CV content not found');
 
+			// Enhanced section heading with better styling
 			const addSection = (title: string) => {
-				// Check if we need a new page
-				if (yPosition > pageHeight - margin - 30) {
-					addPageNumber();
-					pdf.addPage();
-					yPosition = margin;
-				}
+				// Check if we need a new page (need space for heading + some content)
+				checkPageBreak(35);
 				yPosition += SPACING.SECTION_TOP;
-				pdf.setFontSize(FONT_SIZE.SECTION_HEADING);
-				pdf.setFont('times', 'bold');
-				pdf.setTextColor(...COLORS.PRIMARY);
-				pdf.text(title, margin, yPosition);
-				yPosition += 3;
 				
-				// Accent line under section heading (matching web style)
+				// Section heading with uppercase styling
+				pdf.setFontSize(FONT_SIZE.SECTION_HEADING);
+				pdf.setFont('helvetica', 'bold');
+				pdf.setTextColor(...COLORS.PRIMARY);
+				pdf.text(title.toUpperCase(), margin, yPosition);
+				yPosition += 2;
+				
+				// Gradient-style accent line (thick accent color)
 				pdf.setDrawColor(...COLORS.ACCENT);
-				pdf.setLineWidth(0.5);
-				// Draw a short line (approx 13mm / 3rem)
-				pdf.line(margin, yPosition, margin + 13, yPosition);
+				pdf.setLineWidth(0.8);
+				pdf.line(margin, yPosition, margin + 20, yPosition);
+				// Fade out with thinner line
+				pdf.setLineWidth(0.3);
+				pdf.setDrawColor(...COLORS.BORDER);
+				pdf.line(margin + 20, yPosition, margin + 45, yPosition);
 				
 				pdf.setTextColor(...COLORS.TEXT); // Reset text color
 				yPosition += SPACING.SECTION_BOTTOM;
@@ -158,90 +176,144 @@
 			const cvDateElement = element.querySelector('.cv-date');
 			const cvContactSection = element.querySelector('.cv-contact-section');
 
-			// Title - matches text-3xl font-bold
-			pdf.setFontSize(FONT_SIZE.TITLE);
-			pdf.setFont('times', 'bold');
-			pdf.setTextColor(...COLORS.PRIMARY);
-			pdf.text('Curriculum Vitae', pageWidth / 2, yPosition, { align: 'center' });
-			yPosition += 8;
+			// ============================================
+			// HEADER DESIGN - Modern, professional layout
+			// ============================================
 			
-			// Name - matches text-xl font-semibold
-			pdf.setFontSize(FONT_SIZE.NAME);
-			pdf.setFont('times', 'bold');
-			pdf.text('Frédérick Madore', pageWidth / 2, yPosition, { align: 'center' });
+			// Decorative top accent line
+			pdf.setDrawColor(...COLORS.PRIMARY);
+			pdf.setLineWidth(1.5);
+			pdf.line(margin, yPosition, pageWidth - margin, yPosition);
 			yPosition += 6;
 
-			// Date from CVHeader - matches text-sm text-light
-			pdf.setFontSize(FONT_SIZE.DATE);
+			// Name - Large, prominent, the focal point
+			pdf.setFontSize(FONT_SIZE.NAME);
+			pdf.setFont('times', 'bold');
+			pdf.setTextColor(...COLORS.PRIMARY_DARK);
+			pdf.text('Frédérick Madore, PhD', pageWidth / 2, yPosition, { align: 'center' });
+			yPosition += 7;
+			
+			// Subtitle - "Curriculum Vitae"
+			pdf.setFontSize(FONT_SIZE.TITLE);
 			pdf.setFont('helvetica', 'normal');
 			pdf.setTextColor(...COLORS.TEXT_LIGHT);
+			pdf.text('Curriculum Vitae', pageWidth / 2, yPosition, { align: 'center' });
+			yPosition += 5;
+
+			// Date - subtle
+			pdf.setFontSize(FONT_SIZE.DATE);
+			pdf.setFont('helvetica', 'italic');
+			pdf.setTextColor(...COLORS.TEXT_MUTED);
 			const dateText = cvDateElement?.textContent?.trim() || today.toLocaleDateString('en-GB', {
 				year: 'numeric',
 				month: 'long',
 				day: 'numeric'
 			});
 			pdf.text(dateText, pageWidth / 2, yPosition, { align: 'center' });
-			yPosition += 10;
+			yPosition += 6;
 
-			// Contact Info - matches text-sm text-light
-			// Two-column layout: Left (Address) | Right (Contact links)
-			pdf.setFontSize(FONT_SIZE.CONTACT);
+			// Decorative divider
+			pdf.setDrawColor(...COLORS.ACCENT);
+			pdf.setLineWidth(0.4);
+			const dividerWidth = 40;
+			pdf.line(pageWidth / 2 - dividerWidth / 2, yPosition, pageWidth / 2 + dividerWidth / 2, yPosition);
+			yPosition += SPACING.HEADER_BOTTOM;
+
+			// ============================================
+			// CONTACT INFORMATION - Clean two-column layout
+			// ============================================
+			pdf.setFontSize(FONT_SIZE.CONTACT_VALUE);
 			pdf.setFont('helvetica', 'normal');
-			pdf.setTextColor(...COLORS.TEXT_LIGHT);
+			pdf.setTextColor(...COLORS.TEXT);
 			
 			const leftColumn = margin;
-			const rightColumn = pageWidth / 2 + 10;
+			const rightColumn = pageWidth / 2 + 5;
 			const startY = yPosition;
 			
-			// Left side - Address (extract from DOM)
+			// Left side - Address
 			const addressDiv = cvContactSection?.querySelector('.cv-contact-group div:last-child');
 			if (addressDiv) {
+				// Address label with underline
+				pdf.setFont('helvetica', 'bold');
+				pdf.setFontSize(FONT_SIZE.CONTACT_LABEL);
+				pdf.setTextColor(...COLORS.PRIMARY);
+				pdf.text('Address', leftColumn, yPosition);
+				yPosition += SPACING.CONTACT_LINE;
+				
+				pdf.setFont('helvetica', 'normal');
+				pdf.setFontSize(FONT_SIZE.CONTACT_VALUE);
+				pdf.setTextColor(...COLORS.TEXT);
 				const addressLines = addressDiv.innerHTML.split('<br>').map(line => 
 					line.trim().replace(/<[^>]*>/g, '')
 				);
 				addressLines.forEach((line) => {
 					if (line) {
 						pdf.text(line, leftColumn, yPosition);
-						yPosition += SPACING.CONTACT_GAP;
+						yPosition += SPACING.CONTACT_LINE;
 					}
 				});
 			}
 			
-			// Right side - Contact links (extract from DOM)
+			// Right side - Contact links
 			let rightY = startY;
 			const linkItems = cvContactSection?.querySelectorAll('.cv-link-item');
+			
+			// Contact links header
+			pdf.setFont('helvetica', 'bold');
+			pdf.setFontSize(FONT_SIZE.CONTACT_LABEL);
+			pdf.setTextColor(...COLORS.PRIMARY);
+			pdf.text('Contact', rightColumn, rightY);
+			rightY += SPACING.CONTACT_LINE;
+			
 			linkItems?.forEach((item) => {
 				const anchor = item.querySelector('a');
 				if (anchor) {
 					const label = item.querySelector('a')?.textContent?.trim() || '';
 					const href = anchor.getAttribute('href') || '';
-					let displayText = '';
+					let displayLabel = '';
+					let displayValue = '';
 					
 					// Format based on link type
 					if (href.includes('mailto:')) {
-						displayText = `Email: ${label}`;
+						displayLabel = 'Email:';
+						displayValue = label;
 					} else if (href.includes('frederickmadore.com')) {
-						displayText = `Web: ${label}`;
+						displayLabel = 'Web:';
+						displayValue = label;
 					} else if (href.includes('linkedin.com')) {
-						displayText = `LinkedIn: ${href.split('/in/')[1]?.replace('/', '') || label}`;
+						displayLabel = 'LinkedIn:';
+						displayValue = href.split('/in/')[1]?.replace('/', '') || label;
 					} else if (href.includes('github.com')) {
-						displayText = `GitHub: ${href.split('.com/')[1] || label}`;
+						displayLabel = 'GitHub:';
+						displayValue = href.split('.com/')[1] || label;
 					} else if (href.includes('orcid.org')) {
-						displayText = `ORCID: ${href.split('.org/')[1] || label}`;
+						displayLabel = 'ORCID:';
+						displayValue = href.split('.org/')[1] || label;
 					}
 					
-					if (displayText) {
-						// Add clickable link
-						pdf.setTextColor(...COLORS.ACCENT);
-						pdf.textWithLink(displayText, rightColumn, rightY, { url: href });
+					if (displayLabel && displayValue) {
+						pdf.setFont('helvetica', 'normal');
+						pdf.setFontSize(FONT_SIZE.CONTACT_VALUE);
 						pdf.setTextColor(...COLORS.TEXT_LIGHT);
-						rightY += SPACING.CONTACT_GAP;
+						pdf.text(displayLabel, rightColumn, rightY);
+						
+						// Clickable link value
+						pdf.setTextColor(...COLORS.ACCENT);
+						pdf.textWithLink(displayValue, rightColumn + 15, rightY, { url: href });
+						rightY += SPACING.CONTACT_LINE;
 					}
 				}
 			});
 			
-			// Move y position to the max of left and right columns + section gap
+			// Move y position to the max of left and right columns
 			yPosition = Math.max(yPosition, rightY) + SPACING.SECTION_TOP;
+			
+			// Separator line before content
+			pdf.setDrawColor(...COLORS.BORDER);
+			pdf.setLineWidth(0.3);
+			pdf.line(margin, yPosition, pageWidth - margin, yPosition);
+			yPosition += SPACING.SECTION_TOP;
+			
 			pdf.setTextColor(...COLORS.TEXT); // Reset to default text color
 
 			// Extract sections
@@ -269,11 +341,16 @@
 				const subsections = section.querySelectorAll('h4');
 				if (subsections.length > 0) {
 					subsections.forEach((h4) => {
+						// Check if we need a new page before subsection
+						checkPageBreak(25);
+						
 						yPosition += SPACING.SUBSECTION_TOP;
+						
+						// Subsection heading - italicized for hierarchy
 						pdf.setFontSize(FONT_SIZE.SUBSECTION);
-						pdf.setFont('times', 'bold');
-						pdf.setTextColor(...COLORS.TEXT);
-						pdf.text(h4.textContent || '', margin + 3, yPosition);
+						pdf.setFont('helvetica', 'bolditalic');
+						pdf.setTextColor(...COLORS.PRIMARY_DARK);
+						pdf.text(h4.textContent || '', margin + 2, yPosition);
 						yPosition += SPACING.SUBSECTION_BOTTOM;
 
 						// Get the next sibling div with space-y-3 class (flex layout entries)
@@ -289,17 +366,13 @@
 									if (yearDiv && contentDiv) {
 										const year = yearDiv.textContent?.trim() || '';
 										
-										if (yPosition > pageHeight - margin - 10) {
-											addPageNumber();
-											pdf.addPage();
-											yPosition = margin;
-										}
+										checkPageBreak(12);
 										
-										// Year column - matches font-semibold
+										// Year column - bold primary color
 										pdf.setFontSize(FONT_SIZE.BODY);
 										pdf.setFont('helvetica', 'bold');
 										pdf.setTextColor(...COLORS.PRIMARY);
-										pdf.text(year, margin + 3, yPosition);
+										pdf.text(year, margin + 2, yPosition);
 										pdf.setTextColor(...COLORS.TEXT);
 										
 										// Get main text and nested paragraphs separately
@@ -324,35 +397,29 @@
 											pdf.setFont('helvetica', 'normal');
 											const lines = pdf.splitTextToSize(mainText, contentWidth - yearColumnWidth);
 											lines.forEach((line: string, index: number) => {
-												if (index > 0 && yPosition > pageHeight - margin - 10) {
-													addPageNumber();
-													pdf.addPage();
-													yPosition = margin;
-												}
+												if (index > 0) checkPageBreak(10);
 												pdf.text(line, margin + yearColumnWidth, yPosition);
 												if (index < lines.length - 1) {
 													yPosition += SPACING.LINE_HEIGHT_TIGHT;
 												}
 											});
-											yPosition += SPACING.LINE_HEIGHT_BODY;
+											yPosition += SPACING.LINE_HEIGHT;
 										}
 										
 										// Add nested paragraphs (dissertation, details) on separate lines
 										paragraphTexts.forEach((text, idx) => {
-											pdf.setFontSize(FONT_SIZE.BODY - 0.5);
-											pdf.setFont('helvetica', 'normal');
+											pdf.setFontSize(FONT_SIZE.BODY_SMALL);
+											pdf.setFont('helvetica', 'italic');
+											pdf.setTextColor(...COLORS.TEXT_LIGHT);
 											const lines = pdf.splitTextToSize(text, contentWidth - yearColumnWidth);
 											lines.forEach((line: string, index: number) => {
-												if (yPosition > pageHeight - margin - 10) {
-													addPageNumber();
-													pdf.addPage();
-													yPosition = margin;
-												}
+												checkPageBreak(10);
 												pdf.text(line, margin + yearColumnWidth, yPosition);
 												if (index < lines.length - 1) {
 													yPosition += SPACING.LINE_HEIGHT_TIGHT;
 												}
 											});
+											pdf.setTextColor(...COLORS.TEXT);
 											// Add spacing after each paragraph
 											yPosition += SPACING.LINE_HEIGHT_TIGHT;
 										});
@@ -381,11 +448,7 @@
 								                      firstDiv.classList.contains('w-20') ||
 								                      firstDiv.classList.contains('font-semibold');
 								
-								if (yPosition > pageHeight - margin - 15) {
-									addPageNumber();
-									pdf.addPage();
-									yPosition = margin;
-								}
+								checkPageBreak(15);
 								
 								if (hasYearColumn) {
 									// Layout with year column
@@ -395,17 +458,13 @@
 									const isWideColumn = firstDiv.classList.contains('w-60');
 									const currentColumnWidth = isWideColumn ? 65 : yearColumnWidth;
 									
-									if (yPosition > pageHeight - margin - 15) {
-										addPageNumber();
-										pdf.addPage();
-										yPosition = margin;
-									}
+									checkPageBreak(15);
 									
 									// Year column (or Category label)
 									pdf.setFontSize(FONT_SIZE.BODY);
 									pdf.setFont('helvetica', 'bold');
 									pdf.setTextColor(...COLORS.PRIMARY);
-									pdf.text(year, margin + 3, yPosition);
+									pdf.text(year, margin + 2, yPosition);
 									pdf.setTextColor(...COLORS.TEXT);
 									
 									// Get main text and nested paragraphs separately
@@ -430,35 +489,29 @@
 										pdf.setFont('helvetica', 'normal');
 										const lines = pdf.splitTextToSize(mainText, contentWidth - currentColumnWidth);
 										lines.forEach((line: string, index: number) => {
-											if (index > 0 && yPosition > pageHeight - margin - 10) {
-												addPageNumber();
-												pdf.addPage();
-												yPosition = margin;
-											}
+											if (index > 0) checkPageBreak(10);
 											pdf.text(line, margin + currentColumnWidth, yPosition);
 											if (index < lines.length - 1) {
 												yPosition += SPACING.LINE_HEIGHT_TIGHT;
 											}
 										});
-										yPosition += SPACING.LINE_HEIGHT_BODY;
+										yPosition += SPACING.LINE_HEIGHT;
 									}
 									
 									// Add nested paragraphs (dissertation, details) on separate lines
 									paragraphTexts.forEach((text, idx) => {
-										pdf.setFontSize(FONT_SIZE.BODY - 0.5);
-										pdf.setFont('helvetica', 'normal');
+										pdf.setFontSize(FONT_SIZE.BODY_SMALL);
+										pdf.setFont('helvetica', 'italic');
+										pdf.setTextColor(...COLORS.TEXT_LIGHT);
 										const lines = pdf.splitTextToSize(text, contentWidth - currentColumnWidth);
 										lines.forEach((line: string, index: number) => {
-											if (yPosition > pageHeight - margin - 10) {
-												addPageNumber();
-												pdf.addPage();
-												yPosition = margin;
-											}
+											checkPageBreak(10);
 											pdf.text(line, margin + currentColumnWidth, yPosition);
 											if (index < lines.length - 1) {
 												yPosition += SPACING.LINE_HEIGHT_TIGHT;
 											}
 										});
+										pdf.setTextColor(...COLORS.TEXT);
 										// Add spacing after each paragraph
 										yPosition += SPACING.LINE_HEIGHT_TIGHT;
 									});
@@ -475,18 +528,14 @@
 										pdf.setTextColor(...COLORS.PRIMARY);
 										const labelLines = pdf.splitTextToSize(label, yearColumnWidth);
 										labelLines.forEach((line: string, index: number) => {
-											pdf.text(line, margin + 3, yPosition + (index * SPACING.LINE_HEIGHT_TIGHT));
+											pdf.text(line, margin + 2, yPosition + (index * SPACING.LINE_HEIGHT_TIGHT));
 										});
 										pdf.setTextColor(...COLORS.TEXT);
 										
 										pdf.setFont('helvetica', 'normal');
 										const valueLines = pdf.splitTextToSize(value, contentWidth - yearColumnWidth);
 										valueLines.forEach((line: string, index: number) => {
-											if (index > 0 && yPosition > pageHeight - margin - 10) {
-												addPageNumber();
-												pdf.addPage();
-												yPosition = margin;
-											}
+											if (index > 0) checkPageBreak(10);
 											pdf.text(line, margin + yearColumnWidth, yPosition + (index * SPACING.LINE_HEIGHT_TIGHT));
 										});
 										yPosition += Math.max(labelLines.length, valueLines.length) * SPACING.LINE_HEIGHT_TIGHT + SPACING.SUBSECTION_TOP;
@@ -507,13 +556,9 @@
 								pdf.setFont('helvetica', 'normal');
 								const lines = pdf.splitTextToSize(text, contentWidth - 5);
 								lines.forEach((line: string) => {
-									if (yPosition > pageHeight - margin - 10) {
-										addPageNumber();
-										pdf.addPage();
-										yPosition = margin;
-									}
+									checkPageBreak(10);
 									pdf.text(line, margin + 3, yPosition);
-									yPosition += SPACING.LINE_HEIGHT_BODY;
+									yPosition += SPACING.LINE_HEIGHT;
 								});
 								yPosition += SPACING.SUBSECTION_TOP;
 							}
@@ -524,15 +569,11 @@
 						items.forEach((item) => {
 							const text = item.textContent?.trim() || '';
 							if (text) {
-								pdf.setFontSize(FONT_SIZE.BODY - 0.5); // Slightly smaller for list items
+								pdf.setFontSize(FONT_SIZE.BODY_SMALL);
 								pdf.setFont('helvetica', 'normal');
 								const lines = pdf.splitTextToSize('• ' + text, contentWidth - 10);
 								lines.forEach((line: string) => {
-									if (yPosition > pageHeight - margin - 10) {
-										addPageNumber();
-										pdf.addPage();
-										yPosition = margin;
-									}
+									checkPageBreak(10);
 									pdf.text(line, margin + 8, yPosition);
 									yPosition += SPACING.LINE_HEIGHT_TIGHT;
 								});
