@@ -1,8 +1,12 @@
 /* Enhanced CSS Variables for Academic Website */
+/* Design System v2.0 - Refined for consistency and visual harmony */
 
 :root {
-	/* ===== COLOR FOUNDATION & SEMANTICS ===== */
-	/* Foundations: brand-neutral palette */
+	/* ===== COLOR FOUNDATION ===== */
+	/* 
+	 * Neutral palette: Slate-based for academic sophistication
+	 * Using a consistent lightness progression: 98%, 96%, 92%, 85%, 65%, 45%, 35%, 25%, 15%, 8%
+	 */
 	--sys-color-neutral-0: #ffffff;
 	--sys-color-neutral-50: #f8fafc;
 	--sys-color-neutral-100: #f1f5f9;
@@ -14,103 +18,153 @@
 	--sys-color-neutral-700: #334155;
 	--sys-color-neutral-800: #1e293b;
 	--sys-color-neutral-900: #0f172a;
+	--sys-color-neutral-950: #020617;
 
-	--sys-color-blue-900: #0f1f33;
-	--sys-color-blue-800: #18324c;
-	--sys-color-blue-700: #1e3a5f;
-	--sys-color-blue-600: #2556a0;
-	--sys-color-blue-500: #2d4d7a;
-	--sys-color-blue-400: #3d5f8c;
-	--sys-color-blue-300: #4f6c97;
+	/* 
+	 * Primary: Deep academic blue - refined for better contrast
+	 * Inspired by traditional academic institutions with modern vibrancy
+	 */
+	--sys-color-blue-950: #0c1929;
+	--sys-color-blue-900: #172554;
+	--sys-color-blue-800: #1e3a5f;
+	--sys-color-blue-700: #1d4ed8;
+	--sys-color-blue-600: #2563eb;
+	--sys-color-blue-500: #3b82f6;
+	--sys-color-blue-400: #60a5fa;
+	--sys-color-blue-300: #93c5fd;
+	--sys-color-blue-200: #bfdbfe;
+	--sys-color-blue-100: #dbeafe;
 
-	--sys-color-teal-500: #0891b2;
-	--sys-color-teal-600: #0e7490;
+	/* 
+	 * Accent: Teal/Cyan - scholarly, trustworthy
+	 * Complements blue primary while providing clear distinction
+	 */
+	--sys-color-teal-700: #0f766e;
+	--sys-color-teal-600: #0d9488;
+	--sys-color-teal-500: #14b8a6;
+	--sys-color-teal-400: #2dd4bf;
+	--sys-color-teal-300: #5eead4;
 
-	--sys-color-gold-500: #ca8a04;
-	--sys-color-green-500: #059669;
-	--sys-color-red-500: #dc2626;
-	--sys-color-red-700: #991b1b;
+	/* 
+	 * Highlight: Warm amber - attention, importance
+	 * Used sparingly for emphasis and calls-to-action
+	 */
+	--sys-color-amber-600: #d97706;
+	--sys-color-amber-500: #f59e0b;
+	--sys-color-amber-400: #fbbf24;
+	--sys-color-amber-300: #fcd34d;
 
-	/* Semantic color tokens */
-	/* Note: Using direct hex values for white/black to reduce indirection */
+	/* Success: Emerald - positive outcomes */
+	--sys-color-emerald-600: #059669;
+	--sys-color-emerald-500: #10b981;
+	--sys-color-emerald-400: #34d399;
+
+	/* Danger: Rose-red - errors, warnings */
+	--sys-color-red-700: #b91c1c;
+	--sys-color-red-600: #dc2626;
+	--sys-color-red-500: #ef4444;
+	--sys-color-red-400: #f87171;
+
+	/* ===== SEMANTIC COLOR TOKENS ===== */
+	/* Primary - Main brand color for CTAs, links, active states */
 	--color-primary: var(--sys-color-blue-700);
-	--color-primary-rgb: 30, 58, 95;
-	--color-primary-dark: var(--sys-color-blue-900);
+	--color-primary-rgb: 29, 78, 216;
+	--color-primary-dark: var(--sys-color-blue-800);
 	--color-primary-light: var(--sys-color-blue-500);
+	--color-primary-lighter: var(--sys-color-blue-400);
 
+	/* Secondary - Supporting UI elements */
 	--color-secondary: var(--sys-color-neutral-600);
 	--color-secondary-rgb: 71, 85, 105;
+	--color-secondary-light: var(--sys-color-neutral-500);
 
+	/* Accent - Highlights, badges, special elements */
 	--color-accent: var(--sys-color-teal-500);
-	--color-accent-rgb: 8, 145, 178;
+	--color-accent-rgb: 20, 184, 166;
+	--color-accent-dark: var(--sys-color-teal-600);
+	--color-accent-light: var(--sys-color-teal-400);
 
-	--color-highlight: var(--sys-color-gold-500);
-	--color-highlight-rgb: 202, 138, 4;
+	/* Highlight - Important callouts, featured content */
+	--color-highlight: var(--sys-color-amber-500);
+	--color-highlight-rgb: 245, 158, 11;
+	--color-highlight-dark: var(--sys-color-amber-600);
+	--color-highlight-light: var(--sys-color-amber-400);
 
-	--color-success: var(--sys-color-green-500);
-	--color-success-rgb: 5, 150, 105;
+	/* Success - Positive states, confirmations */
+	--color-success: var(--sys-color-emerald-500);
+	--color-success-rgb: 16, 185, 129;
+	--color-success-dark: var(--sys-color-emerald-600);
 
-	--color-danger: var(--sys-color-red-500);
+	/* Danger - Errors, destructive actions */
+	--color-danger: var(--sys-color-red-600);
 	--color-danger-rgb: 220, 38, 38;
 	--color-danger-dark: var(--sys-color-red-700);
+	--color-danger-light: var(--sys-color-red-400);
 
+	/* ===== BACKGROUND & TEXT COLORS ===== */
 	--color-background: var(--sys-color-neutral-0);
 	--color-background-rgb: 255, 255, 255;
 	--color-background-subtle: var(--sys-color-neutral-50);
+	--color-background-muted: var(--sys-color-neutral-100);
+
 	--color-text: var(--sys-color-neutral-800);
 	--color-text-rgb: 30, 41, 59;
-	--color-text-light: var(--sys-color-neutral-600);
-	--color-text-muted: var(--sys-color-neutral-500);
+	--color-text-light: var(--sys-color-neutral-500);
+	--color-text-muted: var(--sys-color-neutral-400);
 	--color-text-emphasis: var(--sys-color-neutral-900);
 	--color-text-soft: var(--sys-color-neutral-600);
+	--color-text-inverted: var(--sys-color-neutral-0);
 
+	/* ===== SURFACE COLORS ===== */
+	/* Layered surfaces for depth hierarchy */
 	--color-surface: var(--sys-color-neutral-50);
 	--color-surface-rgb: 248, 250, 252;
 	--color-surface-alt: var(--sys-color-neutral-100);
 	--color-surface-elevated: var(--sys-color-neutral-0);
+	--color-surface-sunken: var(--sys-color-neutral-100);
 	--color-surface-border: var(--sys-color-neutral-200);
-	--color-code-bg: var(--color-surface-alt);
 
+	/* ===== BORDER COLORS ===== */
 	--color-border: var(--sys-color-neutral-200);
 	--color-border-light: var(--sys-color-neutral-100);
 	--color-border-dark: var(--sys-color-neutral-300);
+	--color-border-focus: var(--sys-color-blue-500);
 
+	/* ===== ACADEMIC-SPECIFIC COLORS ===== */
 	--color-citation: var(--color-accent);
-	--color-citation-rgb: 8, 145, 178;
+	--color-citation-rgb: 20, 184, 166;
 	--color-quote: var(--sys-color-neutral-700);
 	--color-note: var(--sys-color-neutral-600);
+	--color-code-bg: var(--sys-color-neutral-100);
 
+	/* ===== UTILITY COLORS ===== */
 	--color-white: #ffffff;
 	--color-white-rgb: 255, 255, 255;
 	--color-black: #000000;
 	--color-black-rgb: 0, 0, 0;
 	--color-transparent: transparent;
 
-	/* Component color layers */
+	/* ===== COMPONENT COLOR LAYERS ===== */
 	--color-background-alt: var(--color-surface);
-	--color-background-muted: var(--color-surface-alt);
-	--color-footer-bg: var(--color-primary);
-	--color-footer-text: #f7fafc;
-	--color-footer-text-muted: rgba(247, 250, 252, 0.7);
+	--color-footer-bg: var(--sys-color-blue-900);
+	--color-footer-text: var(--sys-color-neutral-100);
+	--color-footer-text-muted: rgba(241, 245, 249, 0.75);
 	--color-sidebar-bg: var(--color-surface);
 
-	/* Button color schemes */
+	/* Button color schemes - for glass buttons and variants */
 	--color-secondary-scheme: var(--color-accent);
-	--color-secondary-scheme-rgb: 8, 145, 178;
+	--color-secondary-scheme-rgb: 20, 184, 166;
 	--color-secondary-scheme-alt: var(--sys-color-teal-600);
-	--color-secondary-scheme-alt-rgb: 14, 116, 144;
 
 	--color-tertiary-scheme: var(--color-success);
-	--color-tertiary-scheme-rgb: 5, 150, 105;
-	--color-tertiary-scheme-alt: #047857; /* Darker emerald */
-	--color-tertiary-scheme-alt-rgb: 4, 120, 87;
+	--color-tertiary-scheme-rgb: 16, 185, 129;
+	--color-tertiary-scheme-alt: var(--sys-color-emerald-600);
 
 	--color-glass-scheme: var(--color-primary);
-	--color-glass-scheme-rgb: 30, 58, 95;
+	--color-glass-scheme-rgb: 29, 78, 216;
 	--color-glass-scheme-alt: var(--color-primary-light);
-	--color-glass-scheme-alt-rgb: 45, 77, 122;
 
-	/* Legacy compatibility */
+	/* Legacy dark surface tokens (for compatibility) */
 	--color-dark-surface: var(--sys-color-neutral-700);
 	--color-dark-surface-rgb: 51, 65, 85;
 	--color-dark-surface-alt: var(--sys-color-neutral-800);
@@ -118,24 +172,32 @@
 	--color-dark-surface-deep: var(--sys-color-neutral-900);
 	--color-dark-surface-deep-rgb: 15, 23, 42;
 	/* ===== TYPOGRAPHY SCALE ===== */
-	/* Fluid scale anchored between 16px–18px viewport sizing */
+	/* 
+	 * Fluid type scale using a 1.2 (minor third) ratio
+	 * Base: 16px → 18px across viewport range
+	 * More harmonious progression for academic readability
+	 */
 
-	/* Foundations */
+	/* Font Families */
 	--sys-font-family-sans:
 		'Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial',
 		sans-serif;
 	--sys-font-family-serif: 'Crimson Pro', 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
 	--sys-font-family-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Consolas', 'Monaco', monospace;
 
-	--sys-type-step--2: clamp(0.75rem, 0.73rem + 0.1vw, 0.8125rem);
-	--sys-type-step--1: clamp(0.875rem, 0.84rem + 0.15vw, 0.975rem);
-	--sys-type-step-0: clamp(1rem, 0.95rem + 0.25vw, 1.1rem);
-	--sys-type-step-1: clamp(1.2rem, 1.11rem + 0.32vw, 1.35rem);
-	--sys-type-step-2: clamp(1.44rem, 1.32rem + 0.38vw, 1.65rem);
-	--sys-type-step-3: clamp(1.728rem, 1.6rem + 0.48vw, 1.95rem);
-	--sys-type-step-4: clamp(2.074rem, 1.85rem + 0.6vw, 2.35rem);
-	--sys-type-step-5: clamp(2.488rem, 2.05rem + 0.75vw, 2.75rem);
-	--sys-type-step-6: clamp(2.986rem, 2.3rem + 0.85vw, 3.2rem);
+	/* 
+	 * Type Scale - Minor Third (1.2) with fluid sizing
+	 * Step -2: 0.694rem → Step 6: 2.986rem
+	 */
+	--sys-type-step--2: clamp(0.6944rem, 0.6597rem + 0.1736vw, 0.8333rem);
+	--sys-type-step--1: clamp(0.8333rem, 0.7917rem + 0.2083vw, 1rem);
+	--sys-type-step-0: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+	--sys-type-step-1: clamp(1.2rem, 1.14rem + 0.3vw, 1.35rem);
+	--sys-type-step-2: clamp(1.44rem, 1.368rem + 0.36vw, 1.62rem);
+	--sys-type-step-3: clamp(1.728rem, 1.6416rem + 0.4321vw, 1.944rem);
+	--sys-type-step-4: clamp(2.0736rem, 1.9699rem + 0.5186vw, 2.3328rem);
+	--sys-type-step-5: clamp(2.4883rem, 2.3639rem + 0.6221vw, 2.7994rem);
+	--sys-type-step-6: clamp(2.986rem, 2.8367rem + 0.7466vw, 3.3592rem);
 
 	/* Semantic font families */
 	--font-family-sans: var(--sys-font-family-sans);
@@ -153,10 +215,11 @@
 	--font-size-4xl: var(--sys-type-step-5);
 	--font-size-5xl: var(--sys-type-step-6);
 
+	/* Contextual font sizes */
 	--font-size-body: var(--font-size-base);
 	--font-size-body-sm: var(--font-size-sm);
 	--font-size-body-lg: var(--font-size-lg);
-	--font-size-lead: clamp(1.125rem, 1.05rem + 0.35vw, 1.375rem);
+	--font-size-lead: clamp(1.125rem, 1.05rem + 0.375vw, 1.375rem);
 	--font-size-eyebrow: var(--font-size-xs);
 	--font-size-caption: var(--font-size-xs);
 	--font-size-display: var(--font-size-5xl);
@@ -167,30 +230,38 @@
 	--font-size-heading-5: var(--font-size-lg);
 	--font-size-heading-6: var(--font-size-base);
 
-	/* Line heights */
-	--line-height-tight: 1.1;
-	--line-height-snug: 1.35;
-	--line-height-normal: 1.6;
-	--line-height-relaxed: 1.75;
+	/* ===== LINE HEIGHTS ===== */
+	/* Optimized for readability at each size */
+	--line-height-none: 1;
+	--line-height-tight: 1.15;
+	--line-height-snug: 1.375;
+	--line-height-normal: 1.5;
+	--line-height-relaxed: 1.625;
 	--line-height-loose: 2;
+
+	/* Contextual line heights */
 	--line-height-heading: 1.2;
 	--line-height-subheading: 1.35;
 	--line-height-body: 1.65;
-	--line-height-caption: 1.45;
+	--line-height-caption: 1.5;
 
-	/* Letter spacing */
-	--letter-spacing-tighter: -0.03em;
-	--letter-spacing-tight: -0.01em;
+	/* ===== LETTER SPACING ===== */
+	--letter-spacing-tighter: -0.05em;
+	--letter-spacing-tight: -0.025em;
 	--letter-spacing-normal: 0;
 	--letter-spacing-wide: 0.025em;
 	--letter-spacing-wider: 0.05em;
 	--letter-spacing-widest: 0.1em;
+
+	/* Contextual tracking */
 	--tracking-heading: var(--letter-spacing-tight);
 	--tracking-body: var(--letter-spacing-normal);
-	--tracking-eyebrow: var(--letter-spacing-wide);
+	--tracking-eyebrow: var(--letter-spacing-wider);
+	--tracking-caps: var(--letter-spacing-wide);
 
-	/* Font weights */
+	/* ===== FONT WEIGHTS ===== */
 	--font-weight-thin: 100;
+	--font-weight-extralight: 200;
 	--font-weight-light: 300;
 	--font-weight-normal: 400;
 	--font-weight-medium: 500;
@@ -198,138 +269,212 @@
 	--font-weight-bold: 700;
 	--font-weight-extrabold: 800;
 	--font-weight-black: 900;
+
+	/* Contextual weights */
 	--font-weight-body: var(--font-weight-normal);
 	--font-weight-heading: var(--font-weight-semibold);
 	--font-weight-display: var(--font-weight-bold);
+	--font-weight-link: var(--font-weight-medium);
 
-	/* Academic text styling */
+	/* ===== ACADEMIC TEXT STYLING ===== */
 	--text-indent-paragraph: 1.5em;
 	--text-max-width-reading: 65ch;
 	--text-max-width-wide: 80ch;
 	/* ===== SPACING SYSTEM ===== */
-	/* Normalized spacing scale built on a quarter-rem baseline */
+	/* 
+	 * 8-point grid system for consistent rhythm
+	 * Based on 0.25rem (4px) baseline with intentional jumps
+	 * Scale: 4, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 256
+	 */
 
-	/* Foundations */
+	/* Foundation scale */
 	--space-0: 0;
-	--space-hairline: 1px;
-	--sys-space-1: 0.125rem; /* 2px */
-	--sys-space-2: 0.25rem; /* 4px */
-	--sys-space-3: 0.5rem; /* 8px */
-	--sys-space-4: 0.75rem; /* 12px */
-	--sys-space-5: 1rem; /* 16px */
-	--sys-space-6: 1.25rem; /* 20px */
-	--sys-space-7: 1.5rem; /* 24px */
-	--sys-space-8: 2rem; /* 32px */
-	--sys-space-9: 2.5rem; /* 40px */
-	--sys-space-10: 3rem; /* 48px */
-	--sys-space-11: 3.5rem; /* 56px */
-	--sys-space-12: 4rem; /* 64px */
-	--sys-space-13: 5rem; /* 80px */
-	--sys-space-14: 6rem; /* 96px */
-	--sys-space-15: 7rem; /* 112px */
-	--sys-space-16: 8rem; /* 128px */
-	--sys-space-17: 10rem; /* 160px */
-	--sys-space-18: 12rem; /* 192px */
+	--space-px: 1px;
+	--space-0-5: 0.125rem; /* 2px */
+	--space-1: 0.25rem; /* 4px */
+	--space-1-5: 0.375rem; /* 6px */
+	--space-2: 0.5rem; /* 8px */
+	--space-2-5: 0.625rem; /* 10px */
+	--space-3: 0.75rem; /* 12px */
+	--space-3-5: 0.875rem; /* 14px */
+	--space-4: 1rem; /* 16px */
+	--space-5: 1.25rem; /* 20px */
+	--space-6: 1.5rem; /* 24px */
+	--space-7: 1.75rem; /* 28px */
+	--space-8: 2rem; /* 32px */
+	--space-9: 2.25rem; /* 36px */
+	--space-10: 2.5rem; /* 40px */
+	--space-11: 2.75rem; /* 44px */
+	--space-12: 3rem; /* 48px */
+	--space-14: 3.5rem; /* 56px */
+	--space-16: 4rem; /* 64px */
+	--space-20: 5rem; /* 80px */
+	--space-24: 6rem; /* 96px */
+	--space-28: 7rem; /* 112px */
+	--space-32: 8rem; /* 128px */
+	--space-36: 9rem; /* 144px */
+	--space-40: 10rem; /* 160px */
+	--space-44: 11rem; /* 176px */
+	--space-48: 12rem; /* 192px */
+	--space-52: 13rem; /* 208px */
+	--space-56: 14rem; /* 224px */
+	--space-60: 15rem; /* 240px */
+	--space-64: 16rem; /* 256px */
 
-	/* Semantic spacing tokens */
-	--space-3xs: var(--sys-space-1);
-	--space-2xs: var(--sys-space-2);
-	--space-xs: var(--sys-space-3);
-	--space-sm: var(--sys-space-4);
-	--space-md: var(--sys-space-5);
-	--space-md-tight: var(--sys-space-6);
-	--space-lg: var(--sys-space-7);
-	--space-xl: var(--sys-space-8);
-	--space-xl-tight: var(--sys-space-9);
-	--space-2xl: var(--sys-space-10);
-	--space-2xl-tight: var(--sys-space-11);
-	--space-3xl: var(--sys-space-12);
-	--space-4xl: var(--sys-space-13);
-	--space-5xl: var(--sys-space-14);
-	--space-6xl: var(--sys-space-15);
-	--space-7xl: var(--sys-space-16);
-	--space-8xl: var(--sys-space-17);
-	--space-9xl: var(--sys-space-18);
+	/* Semantic spacing (for component design) */
+	--space-3xs: var(--space-0-5);
+	--space-2xs: var(--space-1);
+	--space-xs: var(--space-2);
+	--space-sm: var(--space-3);
+	--space-md: var(--space-4);
+	--space-md-tight: var(--space-3-5); /* 14px - between sm and md */
+	--space-lg: var(--space-6);
+	--space-xl: var(--space-8);
+	--space-xl-tight: var(--space-7); /* 28px - between lg and xl */
+	--space-2xl: var(--space-12);
+	--space-3xl: var(--space-16);
+	--space-4xl: var(--space-24);
+	--space-5xl: var(--space-32);
+	--space-6xl: var(--space-40);
+	--space-7xl: var(--space-48);
 
-	/* Legacy aliases for utility compatibility */
+	/* Legacy spacing aliases (for utility class compatibility) */
 	--spacing-0: var(--space-0);
-	--spacing-px: var(--space-hairline);
-	--spacing-05: var(--space-3xs);
-	--spacing-1: var(--space-2xs);
-	--spacing-2: var(--space-xs);
-	--spacing-3: var(--space-sm);
-	--spacing-4: var(--space-md);
-	--spacing-5: var(--space-md-tight);
-	--spacing-6: var(--space-lg);
-	--spacing-8: var(--space-xl);
-	--spacing-10: var(--space-xl-tight);
-	--spacing-12: var(--space-2xl);
-	--spacing-14: var(--space-2xl-tight);
-	--spacing-16: var(--space-3xl);
-	--spacing-20: var(--space-4xl);
-	--spacing-24: var(--space-5xl);
-	--spacing-28: var(--space-6xl);
-	--spacing-32: var(--space-7xl);
-	--spacing-40: var(--space-8xl);
-	--spacing-48: var(--space-9xl);
-	/* ===== ENHANCED BORDER RADIUS ===== */
-	/* More modern, subtle radii */
-
+	--spacing-px: var(--space-px);
+	--spacing-05: var(--space-0-5);
+	--spacing-1: var(--space-1);
+	--spacing-2: var(--space-2);
+	--spacing-3: var(--space-3);
+	--spacing-4: var(--space-4);
+	--spacing-5: var(--space-5);
+	--spacing-6: var(--space-6);
+	--spacing-8: var(--space-8);
+	--spacing-10: var(--space-10);
+	--spacing-12: var(--space-12);
+	--spacing-14: var(--space-14);
+	--spacing-16: var(--space-16);
+	--spacing-20: var(--space-20);
+	--spacing-24: var(--space-24);
+	--spacing-28: var(--space-28);
+	--spacing-32: var(--space-32);
+	--spacing-40: var(--space-40);
+	--spacing-48: var(--space-48);
+	/* ===== BORDER RADIUS ===== */
+	/* 
+	 * Consistent radius scale for UI cohesion
+	 * Slightly larger defaults for modern, friendly aesthetic
+	 */
 	--border-radius-none: 0;
-	--border-radius-sm: 0.125rem; /* 2px */
-	--border-radius: 0.375rem; /* 6px */
-	--border-radius-md: 0.5rem; /* 8px */
+	--border-radius-sm: 0.25rem; /* 4px */
+	--border-radius: 0.5rem; /* 8px - default */
+	--border-radius-md: 0.625rem; /* 10px */
 	--border-radius-lg: 0.75rem; /* 12px */
 	--border-radius-xl: 1rem; /* 16px */
-	--border-radius-2xl: 1.5rem; /* 24px */
-	--border-radius-3xl: 2rem; /* 32px */
+	--border-radius-2xl: 1.25rem; /* 20px */
+	--border-radius-3xl: 1.5rem; /* 24px */
 	--border-radius-full: 9999px;
 
-	/* ===== REFINED SHADOWS ===== */
-	/* More subtle, layered shadows for depth */
+	/* ===== SHADOWS ===== */
+	/* 
+	 * Layered shadow system for realistic depth
+	 * Uses multiple layers for natural lighting effect
+	 * Colored shadows for brand elements
+	 */
+	--shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	--shadow-sm: 
+		0 1px 3px 0 rgba(0, 0, 0, 0.1),
+		0 1px 2px -1px rgba(0, 0, 0, 0.1);
+	--shadow: 
+		0 4px 6px -1px rgba(0, 0, 0, 0.1),
+		0 2px 4px -2px rgba(0, 0, 0, 0.1);
+	--shadow-md: 
+		0 10px 15px -3px rgba(0, 0, 0, 0.1),
+		0 4px 6px -4px rgba(0, 0, 0, 0.1);
+	--shadow-lg: 
+		0 20px 25px -5px rgba(0, 0, 0, 0.1),
+		0 8px 10px -6px rgba(0, 0, 0, 0.1);
+	--shadow-xl: 
+		0 25px 50px -12px rgba(0, 0, 0, 0.25);
+	--shadow-2xl: 
+		0 35px 60px -15px rgba(0, 0, 0, 0.3);
+	--shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+	--shadow-none: none;
 
-	--shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-	--shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
-	--shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.04), 0 1px 3px -1px rgba(0, 0, 0, 0.03);
-	--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
-	--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
-	--shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
-	--shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-	--shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.03);
+	/* Colored shadows for emphasis */
+	--shadow-primary: 0 4px 14px -2px rgba(29, 78, 216, 0.25);
+	--shadow-primary-lg: 0 10px 25px -5px rgba(29, 78, 216, 0.3);
+	--shadow-accent: 0 4px 14px -2px rgba(20, 184, 166, 0.25);
+	--shadow-highlight: 0 4px 14px -2px rgba(245, 158, 11, 0.25);
+	--shadow-success: 0 4px 14px -2px rgba(16, 185, 129, 0.25);
+	--shadow-danger: 0 4px 14px -2px rgba(220, 38, 38, 0.25);
 
-	/* Colored shadows for special elements */
-	--shadow-primary: 0 4px 14px 0 rgba(30, 58, 95, 0.15);
-	--shadow-accent: 0 4px 14px 0 rgba(8, 145, 178, 0.15);
-	--shadow-highlight: 0 4px 14px 0 rgba(202, 138, 4, 0.15);
+	/* Glass shadows - softer for glassmorphism */
+	--shadow-glass: 
+		0 8px 32px 0 rgba(0, 0, 0, 0.08),
+		0 2px 8px 0 rgba(0, 0, 0, 0.04);
+	--shadow-glass-lg: 
+		0 16px 48px 0 rgba(0, 0, 0, 0.1),
+		0 4px 12px 0 rgba(0, 0, 0, 0.05);
 
-	/* Border widths */
+	/* ===== BORDER WIDTHS ===== */
 	--border-width-thin: 1px;
 	--border-width-medium: 2px;
 	--border-width-thick: 4px;
 
-	/* ===== ANIMATION TIMING ===== */
-	/* Primary animation durations - use these for consistency */
-	--anim-duration-instant: 100ms;
-	--anim-duration-fast: 200ms;
-	--anim-duration-base: 300ms;
-	--anim-duration-slow: 500ms;
-	--anim-duration-slower: 700ms;
+	/* ===== ANIMATION & TRANSITIONS ===== */
+	/* 
+	 * Consistent timing for polished interactions
+	 * Based on Material Design motion principles
+	 */
+
+	/* Duration scale */
+	--duration-instant: 75ms;
+	--duration-fast: 150ms;
+	--duration-normal: 200ms;
+	--duration-moderate: 300ms;
+	--duration-slow: 500ms;
+	--duration-slower: 700ms;
 
 	/* Easing functions */
-	--anim-ease-base: cubic-bezier(0.4, 0, 0.2, 1);
-	--anim-ease-in: cubic-bezier(0.4, 0, 1, 1);
-	--anim-ease-out: cubic-bezier(0, 0, 0.2, 1);
-	--anim-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-	--anim-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-	--anim-ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+	--ease-linear: linear;
+	--ease-in: cubic-bezier(0.4, 0, 1, 1);
+	--ease-out: cubic-bezier(0, 0, 0.2, 1);
+	--ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+	--ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+	--ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+	--ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
-	/* Legacy animation variables for compatibility */
+	/* Legacy animation variables (for compatibility) */
+	--anim-duration-instant: var(--duration-fast);
+	--anim-duration-fast: var(--duration-normal);
+	--anim-duration-base: var(--duration-moderate);
+	--anim-duration-slow: var(--duration-slow);
+	--anim-duration-slower: var(--duration-slower);
 	--anim-duration-bounce: 0.6s;
 	--anim-duration-progress: 0.1s;
-	--anim-ease-mobile: cubic-bezier(0.25, 0.1, 0.25, 1);
 
-	/* ===== LAYOUT CONSTANTS ===== */
+	--anim-ease-base: var(--ease-in-out);
+	--anim-ease-in: var(--ease-in);
+	--anim-ease-out: var(--ease-out);
+	--anim-ease-in-out: var(--ease-in-out);
+	--anim-ease-bounce: var(--ease-bounce);
+	--anim-ease-smooth: var(--ease-smooth);
+	--anim-ease-mobile: var(--ease-smooth);
 
+	/* Transition utility variables */
+	--transition-duration-75: 75ms;
+	--transition-duration-100: 100ms;
+	--transition-duration-150: 150ms;
+	--transition-duration-200: 200ms;
+	--transition-duration-300: 300ms;
+	--transition-duration-500: 500ms;
+
+	--transition-ease-linear: var(--ease-linear);
+	--transition-ease-in: var(--ease-in);
+	--transition-ease-out: var(--ease-out);
+	--transition-ease-in-out: var(--ease-in-out);
+
+	/* ===== LAYOUT ===== */
 	/* Container widths */
 	--container-sm: 640px;
 	--container-md: 768px;
@@ -337,10 +482,14 @@
 	--container-xl: 1280px;
 	--container-2xl: 1536px;
 
-	/* Content widths */
+	/* Content widths for reading */
 	--content-max-width: 1200px;
 	--content-width-xs: 20rem; /* 320px */
 	--content-width-sm: 24rem; /* 384px */
+	--content-width-md: 28rem; /* 448px */
+	--content-width-lg: 32rem; /* 512px */
+	--content-width-xl: 36rem; /* 576px */
+	--content-width-2xl: 42rem; /* 672px */
 	--content-width-3xl: 48rem; /* 768px */
 	--content-width-4xl: 56rem; /* 896px */
 	--content-width-5xl: 64rem; /* 1024px */
@@ -348,6 +497,9 @@
 	--content-width-7xl: 80rem; /* 1280px */
 
 	/* ===== Z-INDEX SCALE ===== */
+	/* Consistent layering system */
+	--z-base: 0;
+	--z-above: 1;
 	--z-dropdown: 1000;
 	--z-sticky: 1020;
 	--z-fixed: 1030;
@@ -355,62 +507,59 @@
 	--z-modal: 1050;
 	--z-popover: 1060;
 	--z-tooltip: 1070;
+	--z-toast: 1080;
 
 	/* ===== OPACITY SCALE ===== */
 	--opacity-0: 0;
 	--opacity-5: 0.05;
 	--opacity-10: 0.1;
+	--opacity-15: 0.15;
 	--opacity-20: 0.2;
+	--opacity-25: 0.25;
 	--opacity-30: 0.3;
 	--opacity-40: 0.4;
 	--opacity-50: 0.5;
 	--opacity-60: 0.6;
 	--opacity-70: 0.7;
+	--opacity-75: 0.75;
 	--opacity-80: 0.8;
 	--opacity-90: 0.9;
 	--opacity-95: 0.95;
 	--opacity-100: 1;
 
-	/* Legacy opacity mappings for compatibility */
+	/* Semantic opacity */
+	--opacity-disabled: 0.5;
+	--opacity-placeholder: 0.5;
+	--opacity-overlay-light: 0.5;
+	--opacity-overlay-dark: 0.75;
+
+	/* Legacy opacity mappings */
 	--opacity-very-low: 0.05;
 	--opacity-low: 0.1;
 	--opacity-medium: 0.15;
 	--opacity-medium-high: 0.3;
 	--opacity-high: 0.9;
 
-	/* Legacy transform and transition variables for compatibility */
-	--transform-lift-sm: translateY(-1px);
-	--transform-lift-md: translateY(-2px);
-	--transform-lift-lg: translateY(-0.3125rem); /* 5px */
+	/* ===== TRANSFORMS ===== */
+	/* Lift effects for hover states */
+	--transform-lift-sm: translateY(-2px);
+	--transform-lift-md: translateY(-4px);
+	--transform-lift-lg: translateY(-6px);
 
-	/* Transition duration aliases for utility classes */
-	/* Note: Prefer using --anim-duration-* for component styles */
-	--transition-duration-75: 75ms;
-	--transition-duration-100: var(--anim-duration-instant);
-	--transition-duration-150: 150ms;
-	--transition-duration-200: var(--anim-duration-fast);
-	--transition-duration-300: var(--anim-duration-base);
-	--transition-duration-500: var(--anim-duration-slow);
-
-	/* Timing function variables for utilities */
-	--transition-ease-linear: linear;
-	--transition-ease-in: cubic-bezier(0.4, 0, 1, 1);
-	--transition-ease-out: cubic-bezier(0, 0, 0.2, 1);
-	--transition-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-
-	/* Scale transform variables */
+	/* Scale transforms */
 	--scale-0: 0;
 	--scale-50: 0.5;
 	--scale-75: 0.75;
 	--scale-90: 0.9;
 	--scale-95: 0.95;
 	--scale-100: 1;
+	--scale-102: 1.02;
 	--scale-105: 1.05;
 	--scale-110: 1.1;
 	--scale-125: 1.25;
 	--scale-150: 1.5;
 
-	/* Rotation variables */
+	/* Rotation */
 	--rotate-0: 0deg;
 	--rotate-1: 1deg;
 	--rotate-2: 2deg;
@@ -421,25 +570,23 @@
 	--rotate-90: 90deg;
 	--rotate-180: 180deg;
 
-	/* Skew variables */
-	--skew-0: 0deg;
-	--skew-1: 1deg;
-	--skew-2: 2deg;
-	--skew-3: 3deg;
-	--skew-6: 6deg;
-	--skew-12: 12deg;
-
-	/* Transform values for animations */
+	/* Transform distances for animations */
+	--transform-distance-xs: 4px;
 	--transform-distance-sm: 8px;
 	--transform-distance-md: 16px;
 	--transform-distance-lg: 24px;
+	--transform-distance-xl: 32px;
 	--transform-distance-full: 100%;
-	--transform-scale-sm: 0.85;
-	--transform-scale-xs: 0.5;
-	--transform-scale-lg: 1.025;
-	--transform-scale-md: 0.975;
 
-	/* Animation delays for staggered effects */
+	/* Animation stagger delays */
+	--stagger-1: 50ms;
+	--stagger-2: 100ms;
+	--stagger-3: 150ms;
+	--stagger-4: 200ms;
+	--stagger-5: 250ms;
+	--stagger-6: 300ms;
+
+	/* Legacy animation delay variables */
 	--anim-delay-1: 0.05s;
 	--anim-delay-2: 0.1s;
 	--anim-delay-3: 0.15s;
@@ -447,59 +594,85 @@
 	--anim-delay-5: 0.25s;
 	--anim-delay-6: 0.3s;
 
-	/* Button-specific variables */
-	--btn-shine-duration: 0.4s;
-	--btn-active-transform: translateY(1px);
+	/* Skew values */
+	--skew-0: 0deg;
+	--skew-1: 1deg;
+	--skew-2: 2deg;
+	--skew-3: 3deg;
+	--skew-6: 6deg;
+	--skew-12: 12deg;
+
+	/* Legacy transform scale tokens */
+	--transform-scale-xs: 0.5;
+	--transform-scale-sm: 0.85;
+	--transform-scale-md: 0.975;
+	--transform-scale-lg: 1.02;
+
+	/* ===== GLASSMORPHISM TOKENS ===== */
+	/* Core glass effect values */
+	--glass-blur-sm: 8px;
+	--glass-blur-md: 12px;
+	--glass-blur-lg: 16px;
+	--glass-blur-xl: 24px;
+	--glass-blur-amount: var(--glass-blur-md);
+	--glass-blur-fallback: var(--glass-blur-lg);
+
+	/* Glass opacity levels */
+	--glass-opacity-light: 0.6;
+	--glass-opacity-medium: 0.7;
 	--glass-opacity-high: 0.85;
-	--glass-opacity-medium: 0.65;
 	--glass-opacity-fallback-light: 0.95;
 	--glass-opacity-fallback-dark: 0.85;
-	--glass-blur-amount: 10px;
-	--glass-blur-fallback: 12px;
 
-	/* Gradient definitions for reusable patterns */
-	--gradient-accent-highlight: linear-gradient(135deg, var(--color-accent) 0%, var(--color-highlight) 100%);
-	--gradient-highlight-accent: linear-gradient(135deg, var(--color-highlight) 0%, var(--color-accent) 100%);
+	/* Card glassmorphism tokens */
+	--card-glass-opacity-light: 0.05;
+	--card-glass-opacity-light-hover: 0.08;
+	--card-glass-border-light: 0.12;
+	--card-glass-border-light-hover: 0.2;
+	--card-glass-inset-light: 0.2;
+	--card-glass-inset-light-hover: 0.3;
+	--card-glass-opacity-dark: 0.1;
+	--card-glass-opacity-dark-hover: 0.15;
+	--card-glass-border-dark: 0.06;
+	--card-glass-border-dark-hover: 0.1;
+	--card-glass-inset-dark: 0.06;
+	--card-glass-inset-dark-hover: 0.1;
 
-	/* ===== COMPONENT-SPECIFIC VARIABLES ===== */
-	/* Note: Consider moving these to respective component files for better encapsulation */
-
-	/* Card & glass tokens */
-	--card-glass-opacity-light: 0.08;
-	--card-glass-opacity-light-hover: 0.12;
-	--card-glass-border-light: 0.15;
-	--card-glass-border-light-hover: 0.25;
-	--card-glass-inset-light: 0.25;
-	--card-glass-inset-light-hover: 0.35;
-	--card-glass-opacity-dark: 0.15;
-	--card-glass-opacity-dark-hover: 0.25;
-	--card-glass-border-dark: 0.08;
-	--card-glass-border-dark-hover: 0.12;
-	--card-glass-inset-dark: 0.08;
-	--card-glass-inset-dark-hover: 0.12;
-	--card-shadow-color: 30, 58, 95;
-	--card-shadow-opacity: 0.3;
-	--card-shadow-opacity-hover: 0.35;
+	/* Card shadow tokens */
+	--card-shadow-color: 29, 78, 216;
+	--card-shadow-opacity: 0.1;
+	--card-shadow-opacity-hover: 0.15;
 	--card-transform-hover: var(--transform-lift-md);
 	--card-link-transform: translateX(var(--spacing-3));
 	--card-height-image: 14rem;
 
-	/* Iframe variables */
+	/* ===== BUTTON TOKENS ===== */
+	--btn-shine-duration: 0.4s;
+	--btn-active-transform: translateY(1px);
+
+	/* ===== GRADIENTS ===== */
+	--gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+	--gradient-accent: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%);
+	--gradient-accent-highlight: linear-gradient(135deg, var(--color-accent) 0%, var(--color-highlight) 100%);
+	--gradient-highlight-accent: linear-gradient(135deg, var(--color-highlight) 0%, var(--color-accent) 100%);
+
+	/* ===== COMPONENT-SPECIFIC TOKENS ===== */
+	/* Iframe heights */
 	--iframe-height-xs: 18.75rem; /* 300px */
 	--iframe-height-sm: 25rem; /* 400px */
 	--iframe-height-default: 37.5rem; /* 600px */
-	--iframe-height-md: 37.5rem; /* 600px - same as default */
+	--iframe-height-md: 37.5rem;
 	--iframe-height-lg: 50rem; /* 800px */
 	--iframe-height-xl: 62.5rem; /* 1000px */
 	--iframe-header-height: 2.5rem; /* 40px */
 	--iframe-header-height-mobile: 2.25rem; /* 36px */
 
-	/* Footer decorative animation durations */
-	--anim-duration-decorative: 4s; /* For subtle decorative animations */
-	--anim-duration-ambient: 8s; /* For very slow ambient animations */
-	--anim-duration-gentle: 12s; /* For ultra-slow gentle animations */
+	/* Decorative animation durations */
+	--anim-duration-decorative: 4s;
+	--anim-duration-ambient: 8s;
+	--anim-duration-gentle: 12s;
 
-	/* Legacy breakpoint variables for compatibility */
+	/* Breakpoints (for JS reference - use PostCSS custom media for CSS) */
 	--breakpoint-sm: 640px;
 	--breakpoint-md: 768px;
 	--breakpoint-lg: 1024px;
@@ -507,107 +680,156 @@
 	--breakpoint-2xl: 1536px;
 }
 
-/* ===== ENHANCED DARK THEME ===== */
+/* ===== DARK THEME ===== */
+/* 
+ * Complete dark mode with proper contrast ratios
+ * WCAG AA compliant color combinations
+ */
 html.dark {
-	/* Primary colors - Better contrast in dark mode */
-	--color-primary: #60a5fa; /* Bright sky blue */
+	/* ===== PRIMARY COLORS ===== */
+	--color-primary: #60a5fa; /* Blue 400 - excellent visibility */
 	--color-primary-rgb: 96, 165, 250;
-	--color-primary-dark: #3b82f6;
-	--color-primary-light: #93c5fd;
+	--color-primary-dark: #3b82f6; /* Blue 500 */
+	--color-primary-light: #93c5fd; /* Blue 300 */
+	--color-primary-lighter: #bfdbfe; /* Blue 200 */
 
-	/* Secondary - Lighter gray */
-	--color-secondary: #e2e8f0;
-	--color-secondary-rgb: 226, 232, 240;
+	/* ===== SECONDARY ===== */
+	--color-secondary: #94a3b8; /* Slate 400 */
+	--color-secondary-rgb: 148, 163, 184;
+	--color-secondary-light: #cbd5e1; /* Slate 300 */
 
-	/* Accent - Vibrant teal */
-	--color-accent: #2dd4bf;
+	/* ===== ACCENT ===== */
+	--color-accent: #2dd4bf; /* Teal 400 */
 	--color-accent-rgb: 45, 212, 191;
+	--color-accent-dark: #14b8a6; /* Teal 500 */
+	--color-accent-light: #5eead4; /* Teal 300 */
 
-	/* Highlight - Warm amber */
-	--color-highlight: #fbbf24;
+	/* ===== HIGHLIGHT ===== */
+	--color-highlight: #fbbf24; /* Amber 400 */
 	--color-highlight-rgb: 251, 191, 36;
+	--color-highlight-dark: #f59e0b; /* Amber 500 */
+	--color-highlight-light: #fcd34d; /* Amber 300 */
 
-	/* Success - Bright emerald */
-	--color-success: #34d399;
+	/* ===== SUCCESS ===== */
+	--color-success: #34d399; /* Emerald 400 */
 	--color-success-rgb: 52, 211, 153;
+	--color-success-dark: #10b981; /* Emerald 500 */
 
-	/* Background & Text - True dark with good contrast */
-	--color-background: #0f172a; /* Rich dark blue */
+	/* ===== DANGER ===== */
+	--color-danger: #f87171; /* Red 400 */
+	--color-danger-rgb: 248, 113, 113;
+	--color-danger-dark: #ef4444; /* Red 500 */
+	--color-danger-light: #fca5a5; /* Red 300 */
+
+	/* ===== BACKGROUNDS ===== */
+	--color-background: #0f172a; /* Slate 900 */
 	--color-background-rgb: 15, 23, 42;
-	--color-background-subtle: #1e293b;
-	--color-text: #f1f5f9;
+	--color-background-subtle: #1e293b; /* Slate 800 */
+	--color-background-muted: #334155; /* Slate 700 */
+
+	/* ===== TEXT ===== */
+	--color-text: #f1f5f9; /* Slate 100 */
 	--color-text-rgb: 241, 245, 249;
-	--color-text-light: #cbd5e1;
-	--color-text-muted: #94a3b8;
+	--color-text-light: #cbd5e1; /* Slate 300 */
+	--color-text-muted: #94a3b8; /* Slate 400 */
 	--color-text-emphasis: #ffffff;
 	--color-text-soft: #94a3b8;
+	--color-text-inverted: #0f172a;
 
-	/* Borders - Subtle in dark mode */
-	--color-border: #334155;
-	--color-border-light: #1e293b;
-	--color-border-dark: #475569;
-
-	/* Academic-specific colors - Updated for dark mode */
-	--color-citation: #2dd4bf; /* Matches accent */
-	--color-citation-rgb: 45, 212, 191;
-	--color-quote: #cbd5e1; /* Light gray for blockquotes in dark mode */
-	--color-note: #e2e8f0; /* For footnotes and annotations in dark mode */
-
-	/* Surface colors - Layered depth */
-	--color-surface: #1e293b;
+	/* ===== SURFACES ===== */
+	--color-surface: #1e293b; /* Slate 800 */
 	--color-surface-rgb: 30, 41, 59;
-	--color-surface-alt: #334155;
-	--color-surface-elevated: #475569;
+	--color-surface-alt: #334155; /* Slate 700 */
+	--color-surface-elevated: #475569; /* Slate 600 */
+	--color-surface-sunken: #0f172a; /* Slate 900 */
+	--color-surface-border: #334155;
+
+	/* ===== BORDERS ===== */
+	--color-border: #334155; /* Slate 700 */
+	--color-border-light: #1e293b; /* Slate 800 */
+	--color-border-dark: #475569; /* Slate 600 */
+	--color-border-focus: #60a5fa;
+
+	/* ===== ACADEMIC COLORS ===== */
+	--color-citation: #2dd4bf;
+	--color-citation-rgb: 45, 212, 191;
+	--color-quote: #e2e8f0; /* Slate 200 */
+	--color-note: #cbd5e1; /* Slate 300 */
 	--color-code-bg: #1e293b;
 
-	/* Legacy footer colors updated for dark theme */
-	--color-footer-bg: #0f172a; /* Deep dark footer */
-	--color-footer-text: #f7fafc; /* Keep consistent footer text */
-	--color-footer-text-muted: rgba(247, 250, 252, 0.7); /* Keep consistent muted */
-	--color-sidebar-bg: #1e293b; /* Dark theme sidebar */
+	/* ===== COMPONENT LAYERS ===== */
+	--color-background-alt: #1e293b;
+	--color-footer-bg: #020617; /* Slate 950 */
+	--color-footer-text: #f1f5f9;
+	--color-footer-text-muted: rgba(241, 245, 249, 0.7);
+	--color-sidebar-bg: #1e293b;
 
-	/* Legacy semantic colors maintained for compatibility */
-	--color-surface-border: #334155; /* Surface borders */
-	--color-dark-surface: #1e293b; /* Dark theme surface */
-	--color-dark-surface-rgb: 30, 41, 59; /* RGB values for dark surface color */
-	--color-dark-surface-alt: #0f172a; /* Dark theme alternative surface */
-	--color-dark-surface-alt-rgb: 15, 23, 42; /* RGB values for dark surface alt color */
-	--color-dark-surface-deep: #020617; /* Dark theme deep surface */
-	--color-dark-surface-deep-rgb: 2, 6, 23; /* RGB values for dark surface deep color */
-
-	/* Button color schemes - Updated for dark mode */
-	--color-secondary-scheme: #60a5fa; /* Bright sky blue for dark mode */
+	/* Button schemes */
+	--color-secondary-scheme: #60a5fa;
 	--color-secondary-scheme-rgb: 96, 165, 250;
-	--color-secondary-scheme-alt: #3b82f6; /* Medium blue */
-	--color-secondary-scheme-alt-rgb: 59, 130, 246;
+	--color-secondary-scheme-alt: #3b82f6;
 
-	--color-tertiary-scheme: #34d399; /* Bright emerald for dark mode */
+	--color-tertiary-scheme: #34d399;
 	--color-tertiary-scheme-rgb: 52, 211, 153;
-	--color-tertiary-scheme-alt: #10b981; /* Medium emerald */
-	--color-tertiary-scheme-alt-rgb: 16, 185, 129;
+	--color-tertiary-scheme-alt: #10b981;
 
-	--color-glass-scheme: #60a5fa; /* Bright sky blue for dark mode */
+	--color-glass-scheme: #60a5fa;
 	--color-glass-scheme-rgb: 96, 165, 250;
-	--color-glass-scheme-alt: #93c5fd; /* Light sky blue */
-	--color-glass-scheme-alt-rgb: 147, 197, 253;
+	--color-glass-scheme-alt: #93c5fd;
 
-	/* Background variations for components */
-	--color-background-alt: #1e293b; /* Uses surface color */
-	--color-background-muted: #334155; /* Uses surface-alt color */
+	/* Legacy dark surface tokens */
+	--color-dark-surface: #1e293b;
+	--color-dark-surface-rgb: 30, 41, 59;
+	--color-dark-surface-alt: #0f172a;
+	--color-dark-surface-alt-rgb: 15, 23, 42;
+	--color-dark-surface-deep: #020617;
+	--color-dark-surface-deep-rgb: 2, 6, 23;
 
-	/* Card tokens - Dark mode overrides */
-	--card-shadow-color: 0, 0, 0; /* Pure black shadows for proper depth in dark mode */
-	--card-glass-opacity-light: 0.05; /* Slightly more transparent in dark mode */
-	--card-glass-opacity-light-hover: 0.1;
+	/* ===== GLASSMORPHISM (DARK) ===== */
+	--card-glass-opacity-light: 0.08;
+	--card-glass-opacity-light-hover: 0.12;
+	--card-glass-border-light: 0.08;
+	--card-glass-border-light-hover: 0.12;
+	--card-glass-inset-light: 0.1;
+	--card-glass-inset-light-hover: 0.15;
 
-	/* Shadows - Deeper for dark mode */
-	--shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.3);
-	--shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3), 0 1px 3px -1px rgba(0, 0, 0, 0.3);
-	--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
-	--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
-	--shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
-	--shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-	--card-shadow-color: 15, 23, 42;
-	--card-shadow-opacity: 0.5;
-	--card-shadow-opacity-hover: 0.6;
+	/* ===== SHADOWS (DARK) ===== */
+	/* Deeper shadows for dark mode contrast */
+	--shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+	--shadow-sm: 
+		0 1px 3px 0 rgba(0, 0, 0, 0.3),
+		0 1px 2px -1px rgba(0, 0, 0, 0.3);
+	--shadow: 
+		0 4px 6px -1px rgba(0, 0, 0, 0.35),
+		0 2px 4px -2px rgba(0, 0, 0, 0.3);
+	--shadow-md: 
+		0 10px 15px -3px rgba(0, 0, 0, 0.4),
+		0 4px 6px -4px rgba(0, 0, 0, 0.35);
+	--shadow-lg: 
+		0 20px 25px -5px rgba(0, 0, 0, 0.45),
+		0 8px 10px -6px rgba(0, 0, 0, 0.4);
+	--shadow-xl: 
+		0 25px 50px -12px rgba(0, 0, 0, 0.6);
+	--shadow-2xl: 
+		0 35px 60px -15px rgba(0, 0, 0, 0.7);
+
+	/* Colored shadows - brighter for dark mode */
+	--shadow-primary: 0 4px 14px -2px rgba(96, 165, 250, 0.3);
+	--shadow-primary-lg: 0 10px 25px -5px rgba(96, 165, 250, 0.35);
+	--shadow-accent: 0 4px 14px -2px rgba(45, 212, 191, 0.3);
+	--shadow-highlight: 0 4px 14px -2px rgba(251, 191, 36, 0.3);
+	--shadow-success: 0 4px 14px -2px rgba(52, 211, 153, 0.3);
+
+	/* Glass shadows */
+	--shadow-glass: 
+		0 8px 32px 0 rgba(0, 0, 0, 0.25),
+		0 2px 8px 0 rgba(0, 0, 0, 0.15);
+	--shadow-glass-lg: 
+		0 16px 48px 0 rgba(0, 0, 0, 0.3),
+		0 4px 12px 0 rgba(0, 0, 0, 0.2);
+
+	/* Card shadows */
+	--card-shadow-color: 0, 0, 0;
+	--card-shadow-opacity: 0.25;
+	--card-shadow-opacity-hover: 0.35;
 }

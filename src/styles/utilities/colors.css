@@ -37,6 +37,9 @@
 .text-emphasis {
 	color: var(--color-text-emphasis);
 }
+.text-danger {
+	color: var(--color-danger);
+}
 
 /* Background colors */
 .bg-primary {
@@ -74,6 +77,15 @@
 }
 .bg-sidebar {
 	background-color: var(--color-sidebar-bg);
+}
+.bg-surface {
+	background-color: var(--color-surface);
+}
+.bg-surface-alt {
+	background-color: var(--color-surface-alt);
+}
+.bg-danger {
+	background-color: var(--color-danger);
 }
 
 /* Background with opacity */
@@ -129,6 +141,9 @@
 }
 .border-transparent {
 	border-color: var(--color-transparent);
+}
+.border-danger {
+	border-color: var(--color-danger);
 }
 
 /* Border styles */

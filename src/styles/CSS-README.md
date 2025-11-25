@@ -43,25 +43,59 @@ Base styles define the foundation of the site's design.
 
 ### Variables (`base/variables.css`)
 
-Contains CSS custom properties (variables) for:
+**Design System v2.0** - A comprehensive design token system with foundation → semantic layering.
 
-- **Colors**: Primary, secondary, accent, highlight, success colors with RGB variants
-- **Academic-specific colors**: Citation, quote, note colors
-- **Surface colors**: Background variations, surface colors for light/dark themes
-- **Spacing**: Comprehensive spacing scale from 1-32 units
-- **Typography**: Font families (sans, serif, mono), font sizes, line heights, letter spacing, font weights
-- **Border radius**: From small to full radius options
-- **Box shadows**: Multiple shadow levels for depth
-- **Opacity and transform values**: For consistent animations
-- **Dark theme overrides**: Complete dark mode color palette
+#### Token Architecture
+
+1. **Foundation Tokens** (`--sys-*`): Raw values that rarely change
+2. **Semantic Tokens** (`--color-*`, `--space-*`, etc.): Meaningful names for usage context
+3. **Legacy Aliases** (`--spacing-*`): Backward-compatible mappings
+
+#### Color System
+
+- **Primary**: Academic blue (`#1d4ed8`) with `-dark`, `-light`, `-lighter` variants
+- **Secondary**: Neutral slate for supporting elements
+- **Accent**: Teal (`#14b8a6`) for highlights and badges
+- **Highlight**: Amber (`#f59e0b`) for attention/importance
+- **Success**: Emerald (`#10b981`) for positive states
+- **Danger**: Red (`#dc2626`) for errors and destructive actions
+- **All colors include RGB variants** for use with `rgba()`
+
+#### Spacing System (8-point grid)
+
+- **Semantic scale**: `--space-2xs` through `--space-7xl`
+- **Numeric scale**: `--space-0` through `--space-64`
+- **Tight variants**: `--space-md-tight` (14px), `--space-xl-tight` (28px) for in-between values
+- **Legacy aliases**: `--spacing-*` map to `--space-*` for compatibility
+
+#### Typography Scale (Minor Third 1.2 ratio)
+
+- **Fluid sizing**: Uses `clamp()` for responsive scaling
+- **Font sizes**: `--font-size-xs` through `--font-size-5xl`
+- **Contextual sizes**: `--font-size-heading-1` through `--font-size-heading-6`
+- **Line heights**: `--line-height-tight` through `--line-height-loose`
+
+#### Shadows (Multi-layer system)
+
+- **Depth levels**: `--shadow-xs` through `--shadow-2xl`
+- **Colored shadows**: `--shadow-primary`, `--shadow-accent`, etc.
+- **Glass shadows**: `--shadow-glass`, `--shadow-glass-lg`
+
+#### Animation & Transitions
+
+- **Duration scale**: `--duration-instant` (75ms) through `--duration-slower` (700ms)
+- **Easing functions**: `--ease-in`, `--ease-out`, `--ease-bounce`, `--ease-spring`
+- **Legacy mappings**: `--anim-duration-*` and `--anim-ease-*`
 
 Example usage:
 
 ```css
 .example {
 	color: var(--color-primary);
-	margin-bottom: var(--spacing-4);
+	margin-bottom: var(--space-md); /* or --spacing-4 */
 	background-color: rgba(var(--color-primary-rgb), 0.1);
+	box-shadow: var(--shadow-md);
+	transition: all var(--duration-normal) var(--ease-out);
 }
 ```
 
@@ -305,22 +339,23 @@ Comprehensive utility class system for rapid development.
 
 ### Spacing (`utilities/spacing.css`)
 
-Essential spacing utility system (optimized for actual usage):
+Essential spacing utility system using the 8-point grid:
 
 - **Margin utilities**: `.m-*`, `.mx-*`, `.my-*`, `.mt-*`, `.mb-*`, `.mr-*`, `.ml-*`
 - **Padding utilities**: `.p-*`, `.px-*`, `.py-*`, `.pt-*`, `.pb-*`
 - **Gap utilities**: `.gap-*`, `.gap-x-*`, `.gap-y-*`
 - **Space between**: `.space-y-*` for consistent vertical spacing
 - **Responsive variants**: Essential utilities available with `sm:`, `md:`, `lg:` prefixes
-- **Scale**: Most commonly used spacing values (0, 1, 2, 3, 4, 6, 8, 12)
+- **Token mapping**: Utilities use semantic tokens (`--space-md`, `--space-lg`) for consistency
+- **Scale**: Common values (0, 1, 2, 3, 4, 6, 8, 12) mapped to semantic names
 
 ### Colors (`utilities/colors.css`)
 
 Comprehensive color utility system:
 
-- **Text colors**: `.text-primary`, `.text-secondary`, `.text-accent`, `.text-highlight`, `.text-success`, `.text-default`, `.text-light`, `.text-white`, `.text-black`, `.text-muted`
-- **Background colors**: `.bg-*` variants including opacity variants (`.bg-primary-10`, `.bg-primary-20`, etc.)
-- **Border colors**: `.border-*` variants with comprehensive color options
+- **Text colors**: `.text-primary`, `.text-secondary`, `.text-accent`, `.text-highlight`, `.text-success`, `.text-danger`, `.text-default`, `.text-light`, `.text-white`, `.text-black`, `.text-muted`, `.text-emphasis`
+- **Background colors**: `.bg-*` variants including `.bg-surface`, `.bg-surface-alt`, `.bg-danger`, and opacity variants (`.bg-primary-10`, `.bg-primary-20`, etc.)
+- **Border colors**: `.border-*` variants including `.border-danger` with comprehensive color options
 - **Border styles**: `.border`, `.border-0`, `.border-2`, `.border-4`, directional borders
 - **Interactive states**: Hover and focus variants for all color utilities
 - **Responsive variants**: All color utilities available at all breakpoints
@@ -371,9 +406,11 @@ Comprehensive border radius utilities:
 
 Box shadow utilities:
 
-- **Shadow levels**: `.shadow-sm`, `.shadow`, `.shadow-md`, `.shadow-lg`, `.shadow-none`
+- **Shadow levels**: `.shadow-xs`, `.shadow-sm`, `.shadow`, `.shadow-md`, `.shadow-lg`, `.shadow-xl`, `.shadow-none`
 - **Interactive states**: `.hover:shadow-*` variants
 - **Responsive variants**: Available at all breakpoints
+
+Note: The design system also includes colored shadows (`--shadow-primary`, `--shadow-accent`) and glass shadows (`--shadow-glass`) defined in variables.css.
 
 ### Transforms (`utilities/transforms.css`)
 

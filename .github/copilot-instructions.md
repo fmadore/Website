@@ -75,33 +75,45 @@ This is a SvelteKit-based academic website using **Svelte 5** with runes, TypeSc
 
 The project uses a comprehensive design token system. **ALWAYS use CSS variables, never hardcoded values.**
 
-**Colors:**
+**Colors (Design System v2.0):**
 
-- Primary: `var(--color-primary)`, `var(--color-primary-rgb)`, `var(--color-primary-dark)`
-- Secondary: `var(--color-secondary)`, `var(--color-secondary-rgb)`
-- Accent: `var(--color-accent)`, `var(--color-accent-rgb)`
-- Highlight: `var(--color-highlight)`, `var(--color-highlight-rgb)`
-- Success: `var(--color-success)`, `var(--color-success-rgb)`
-- Text: `var(--color-text)`, `var(--color-text-light)`, `var(--color-text-muted)`, `var(--color-text-emphasis)`
-- Surface: `var(--color-surface)`, `var(--color-surface-rgb)`, `var(--color-surface-alt)`, `var(--color-background)`
+- Primary: `var(--color-primary)` (#1d4ed8), `var(--color-primary-rgb)`, `var(--color-primary-dark)`, `var(--color-primary-light)`
+- Secondary: `var(--color-secondary)`, `var(--color-secondary-rgb)`, `var(--color-secondary-light)`
+- Accent: `var(--color-accent)` (teal), `var(--color-accent-rgb)`, `var(--color-accent-dark)`, `var(--color-accent-light)`
+- Highlight: `var(--color-highlight)` (amber), `var(--color-highlight-rgb)`, `var(--color-highlight-dark)`
+- Success: `var(--color-success)`, `var(--color-success-rgb)`, `var(--color-success-dark)`
+- Danger: `var(--color-danger)`, `var(--color-danger-rgb)`, `var(--color-danger-dark)`
+- Text: `var(--color-text)`, `var(--color-text-light)`, `var(--color-text-muted)`, `var(--color-text-emphasis)`, `var(--color-text-soft)`
+- Surface: `var(--color-surface)`, `var(--color-surface-rgb)`, `var(--color-surface-alt)`, `var(--color-surface-elevated)`
 
-**Spacing Scale** (0.25rem = 4px base):
+**Spacing Scale** (8-point grid system):
 
-- `var(--spacing-1)` through `var(--spacing-48)` (1-12rem)
-- Common: `var(--spacing-4)` (1rem), `var(--spacing-8)` (2rem), `var(--spacing-16)` (4rem)
+- Semantic: `var(--space-2xs)` through `var(--space-7xl)`
+- Numeric: `var(--space-0)` through `var(--space-64)`
+- Legacy aliases: `var(--spacing-*)` still work (map to `--space-*`)
+- Common: `var(--space-md)` / `var(--spacing-4)` (1rem), `var(--space-xl)` / `var(--spacing-8)` (2rem)
 
-**Typography:**
+**Typography (Minor Third 1.2 scale with fluid sizing):**
 
 - Families: `var(--font-family-sans)`, `var(--font-family-serif)`, `var(--font-family-mono)`
-- Sizes: `var(--font-size-xs)` (0.75rem) through `var(--font-size-6xl)` (4rem)
-- Weights: `var(--font-weight-light)` (300) through `var(--font-weight-black)` (900)
-- Line heights: `var(--line-height-tight)` through `var(--line-height-loose)`
+- Sizes: `var(--font-size-xs)` through `var(--font-size-5xl)` (fluid with `clamp()`)
+- Heading sizes: `var(--font-size-heading-1)` through `var(--font-size-heading-6)`
+- Weights: `var(--font-weight-thin)` (100) through `var(--font-weight-black)` (900)
+- Line heights: `var(--line-height-tight)` (1.15), `var(--line-height-normal)` (1.5), `var(--line-height-body)` (1.65)
+- Letter spacing: `var(--tracking-heading)`, `var(--tracking-body)`, `var(--tracking-eyebrow)`
 
 **Borders & Effects:**
 
-- Radius: `var(--border-radius-sm)` through `var(--border-radius-2xl)`, `var(--border-radius-full)`
-- Shadows: `var(--shadow-sm)` through `var(--shadow-xl)`
-- Transitions: `var(--transition-duration-75)` through `var(--transition-duration-500)`
+- Radius: `var(--border-radius-sm)` (4px) through `var(--border-radius-3xl)` (24px), `var(--border-radius-full)`
+- Shadows: `var(--shadow-xs)` through `var(--shadow-2xl)` (multi-layer for depth)
+- Colored shadows: `var(--shadow-primary)`, `var(--shadow-accent)`, `var(--shadow-primary-lg)`
+- Glass shadows: `var(--shadow-glass)`, `var(--shadow-glass-lg)`
+
+**Animations & Transitions:**
+
+- Duration: `var(--duration-instant)` (75ms) through `var(--duration-slower)` (700ms)
+- Easing: `var(--ease-in)`, `var(--ease-out)`, `var(--ease-in-out)`, `var(--ease-bounce)`, `var(--ease-spring)`
+- Legacy: `var(--anim-duration-*)`, `var(--transition-duration-*)`
 
 **Breakpoints:**
 
