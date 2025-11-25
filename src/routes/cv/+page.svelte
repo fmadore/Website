@@ -23,7 +23,9 @@
 	let CVComputerSkills = $state<any>();
 	let CVResearchExperience = $state<any>();
 
-	let componentsStartedLoading = $state(false);	onMount(() => {
+	let componentsStartedLoading = $state(false);
+	
+	onMount(() => {
 		// Start loading components immediately after mount
 		// This still provides performance benefits by:
 		// 1. Not blocking initial page render

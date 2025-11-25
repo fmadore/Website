@@ -35,6 +35,34 @@
 		isGenerating = true;
 
 		try {
+			// Wait for all lazy-loaded CV sections to be present
+			// The CV page loads components in batches with delays up to 400ms
+			// We check for the presence of key sections that load last
+			const maxWaitTime = 3000; // Maximum 3 seconds
+			const checkInterval = 100;
+			let waited = 0;
+			
+			const cvContent = document.getElementById('cv-content');
+			if (!cvContent) throw new Error('CV content not found');
+			
+			// Wait until we have a reasonable number of sections loaded
+			// The full CV has 15+ sections, wait until we see at least 12
+			while (waited < maxWaitTime) {
+				const sections = cvContent.querySelectorAll('section');
+				const sectionCount = sections.length;
+				
+				// Check if we have most sections loaded (at least 12 of ~15)
+				if (sectionCount >= 12) {
+					break;
+				}
+				
+				await new Promise(resolve => setTimeout(resolve, checkInterval));
+				waited += checkInterval;
+			}
+			
+			// Additional small delay to ensure DOM is fully rendered
+			await new Promise(resolve => setTimeout(resolve, 200));
+			
 			const today = new Date();
 			const dateStr = today.toISOString().split('T')[0];
 			const filename = `Frederick_Madore_CV_${dateStr}.pdf`;
