@@ -191,18 +191,29 @@
 	/* PDF Download button positioning - inside the CV container top-right */
 	.cv-download-button {
 		position: absolute;
-		top: var(--space-lg);
-		right: var(--space-lg);
+		top: var(--space-md);
+		right: var(--space-md);
 		z-index: 10;
 	}
 
-	/* On mobile, use sticky positioning so button stays accessible */
-	@media (max-width: 639px) {
+	/* On tablets, move button below title area */
+	@media (max-width: 900px) {
 		.cv-download-button {
-			position: sticky;
-			top: var(--space-md);
+			position: static;
 			float: right;
 			margin-bottom: var(--space-md);
+			margin-left: var(--space-md);
+		}
+	}
+
+	/* On mobile, full width button */
+	@media (max-width: 639px) {
+		.cv-download-button {
+			float: none;
+			margin-left: 0;
+			margin-bottom: var(--space-lg);
+			display: flex;
+			justify-content: center;
 		}
 	}
 
