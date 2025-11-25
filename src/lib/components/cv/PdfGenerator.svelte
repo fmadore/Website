@@ -68,7 +68,7 @@
 				SECTION_TOP: 7,      // Space before new section
 				SECTION_BOTTOM: 4,   // Space after section heading
 				SUBSECTION_TOP: 5,   // Space before subsection
-				SUBSECTION_BOTTOM: 3.5, // Space after subsection heading
+				SUBSECTION_BOTTOM: 5.5, // Space after subsection heading (increased for better readability)
 				ENTRY_GAP: 3,        // Gap between entries
 				LINE_HEIGHT: 4.5,    // Standard line height
 				LINE_HEIGHT_TIGHT: 3.8, // Tight line height for multi-line
