@@ -97,13 +97,13 @@
                 align-items: center;
                 margin-bottom: 0;
                 padding: var(--spacing-4) var(--spacing-2);
-                border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb), 0.2);
-                background: rgba(var(--color-white-rgb), 0.98);
-                backdrop-filter: blur(var(--glass-blur-amount, 32px)) saturate(180%);
-                -webkit-backdrop-filter: blur(var(--glass-blur-amount, 32px)) saturate(180%);
+                border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-20));
+                background: rgba(var(--color-white-rgb), var(--opacity-95));
+                backdrop-filter: blur(var(--glass-blur-xl)) saturate(180%);
+                -webkit-backdrop-filter: blur(var(--glass-blur-xl)) saturate(180%);
                 position: sticky;
                 top: 0;
-                z-index: 10;
+                z-index: var(--z-above);
                 box-shadow: var(--shadow);
         }
 
@@ -222,10 +222,10 @@
                 font-size: var(--font-size-lg);
                 font-weight: var(--font-weight-semibold);
                 border-radius: var(--border-radius-lg);
-                background: rgba(var(--color-white-rgb), 0.05);
-                backdrop-filter: blur(var(--glass-blur-amount, 8px));
-                -webkit-backdrop-filter: blur(var(--glass-blur-amount, 8px));
-                border: var(--border-width-thin) solid rgba(var(--color-white-rgb), 0.1);
+                background: rgba(var(--color-white-rgb), var(--opacity-5));
+                backdrop-filter: blur(var(--glass-blur-sm));
+                -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+                border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-10));
                 margin: var(--spacing-2) var(--spacing-4);
                 transition: all var(--anim-duration-fast) var(--anim-ease-in-out);
                 position: relative;
@@ -243,7 +243,7 @@
                 background: linear-gradient(
                         90deg,
                         transparent,
-                        rgba(var(--color-white-rgb), 0.3),
+                        rgba(var(--color-white-rgb), var(--opacity-30)),
                         transparent
                 );
                 transition: left var(--anim-duration-slow) var(--anim-ease-in-out);
@@ -252,12 +252,12 @@
         :global(.mobile-nav-link:hover),
         :global(.mobile-nav-link:focus) {
                 color: var(--color-primary);
-                background: rgba(var(--color-primary-rgb), 0.1);
-                border-color: rgba(var(--color-primary-rgb), 0.3);
+                background: rgba(var(--color-primary-rgb), var(--opacity-10));
+                border-color: rgba(var(--color-primary-rgb), var(--opacity-30));
                 transform: translateX(var(--spacing-1));
                 box-shadow:
                         var(--shadow-lg),
-                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.4);
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-40));
         }
 
 	:global(.mobile-nav-link:hover::before) {
@@ -268,14 +268,14 @@
                 list-style: none;
                 padding: var(--spacing-3);
                 margin: var(--spacing-3) var(--spacing-6);
-                background: rgba(var(--color-white-rgb), 0.08);
-                backdrop-filter: blur(var(--glass-blur-amount, 12px));
-                -webkit-backdrop-filter: blur(var(--glass-blur-amount, 12px));
-                border: var(--border-width-thin) solid rgba(var(--color-white-rgb), 0.15);
+                background: rgba(var(--color-white-rgb), var(--opacity-10));
+                backdrop-filter: blur(var(--glass-blur-md));
+                -webkit-backdrop-filter: blur(var(--glass-blur-md));
+                border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-15));
                 border-radius: var(--border-radius-md);
                 box-shadow:
                         var(--shadow-xl),
-                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.3);
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-30));
         }
 
         :global(.mobile-dropdown-link) {
@@ -289,19 +289,19 @@
                 border-radius: var(--border-radius-sm);
                 margin-bottom: var(--spacing-1);
                 position: relative;
-                background: rgba(var(--color-white-rgb), 0.03);
-                border: var(--border-width-thin) solid rgba(var(--color-white-rgb), 0.05);
+                background: rgba(var(--color-white-rgb), var(--opacity-5));
+                border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-5));
                 will-change: transform, background-color, border-color;
         }
 
 	:global(.mobile-dropdown-link:hover),
         :global(.mobile-dropdown-link:focus) {
                 color: var(--color-primary);
-                background: rgba(var(--color-primary-rgb), 0.1);
-                border-color: rgba(var(--color-primary-rgb), 0.3);
+                background: rgba(var(--color-primary-rgb), var(--opacity-10));
+                border-color: rgba(var(--color-primary-rgb), var(--opacity-30));
                 box-shadow:
                         var(--shadow-md),
-                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.3);
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-30));
         }
 
 	/* Hide mobile nav on desktop */
@@ -313,43 +313,43 @@
 
 	/* Dark mode */
         :global(html.dark) .mobile-nav-container {
-                background: rgba(var(--color-dark-surface-rgb), 0.95);
+                background: rgba(var(--color-dark-surface-rgb), var(--opacity-95));
                 box-shadow:
                         var(--shadow-2xl),
-                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.1);
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-10));
         }
 
         :global(html.dark) .mobile-nav-header {
-                background: rgba(var(--color-dark-surface-rgb), 0.98);
-                border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb), 0.1);
+                background: rgba(var(--color-dark-surface-rgb), var(--opacity-95));
+                border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-10));
                 box-shadow: var(--shadow);
         }
 
         :global(html.dark .mobile-nav-link) {
-                background: rgba(var(--color-dark-surface-rgb), 0.1);
-                border: var(--border-width-thin) solid rgba(var(--color-white-rgb), 0.05);
+                background: rgba(var(--color-dark-surface-rgb), var(--opacity-10));
+                border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-5));
         }
 
         :global(html.dark .mobile-nav-link::before) {
                 background: linear-gradient(
                         90deg,
                         transparent,
-                        rgba(var(--color-white-rgb), 0.1),
+                        rgba(var(--color-white-rgb), var(--opacity-10)),
                         transparent
                 );
         }
 
         :global(html.dark .mobile-dropdown) {
-                background: rgba(var(--color-dark-surface-rgb), 0.15);
-                border: var(--border-width-thin) solid rgba(var(--color-white-rgb), 0.08);
+                background: rgba(var(--color-dark-surface-rgb), var(--opacity-15));
+                border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-10));
                 box-shadow:
                         var(--shadow-xl),
-                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.1);
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-10));
         }
 
         :global(html.dark .mobile-dropdown-link) {
-                background: rgba(var(--color-dark-surface-rgb), 0.05);
-                border: var(--border-width-thin) solid rgba(var(--color-white-rgb), 0.03);
+                background: rgba(var(--color-dark-surface-rgb), var(--opacity-5));
+                border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-5));
         }
 
 	/* Touch device optimizations */

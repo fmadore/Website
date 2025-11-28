@@ -100,4 +100,13 @@
                         height: calc(var(--border-width-medium) + var(--border-width-thin));
                 }
         }
+
+	/* Reduced motion support */
+	@media (prefers-reduced-motion: reduce) {
+		.nav-link,
+		.nav-link::after,
+		.dropdown-icon {
+			transition: none;
+		}
+	}
 </style>

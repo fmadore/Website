@@ -107,7 +107,7 @@
                 background: linear-gradient(
                         90deg,
                         transparent,
-                        rgba(var(--color-white-rgb), 0.4),
+                        rgba(var(--color-white-rgb), var(--opacity-40)),
                         transparent
                 );
                 transition: left var(--anim-duration-slow) var(--anim-ease-base);
@@ -120,7 +120,7 @@
                 transform: translateX(var(--spacing-2)) scale(var(--transform-scale-lg));
                 box-shadow:
                         var(--shadow-lg),
-                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.3);
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-30));
         }
 
 	:global(.dropdown-item:hover::before) {
@@ -133,19 +133,19 @@
 
 	/* Dark mode */
         :global(html.dark) .dropdown-menu {
-                background: rgba(var(--color-dark-surface-rgb), 0.9);
-                border: var(--border-width-thin) solid rgba(var(--color-white-rgb), 0.2);
+                background: rgba(var(--color-dark-surface-rgb), var(--opacity-90));
+                border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-20));
                 box-shadow:
                         var(--shadow-xl),
-                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), 0.2),
-                        inset 0 calc(-1 * var(--border-width-thin)) 0 rgba(var(--color-white-rgb), 0.1);
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-20)),
+                        inset 0 calc(-1 * var(--border-width-thin)) 0 rgba(var(--color-white-rgb), var(--opacity-10));
         }
 
         :global(html.dark .dropdown-item::before) {
                 background: linear-gradient(
                         90deg,
                         transparent,
-                        rgba(var(--color-white-rgb), 0.2),
+                        rgba(var(--color-white-rgb), var(--opacity-20)),
                         transparent
                 );
         }
@@ -183,7 +183,7 @@
         /* Staggered item animation */
         :global(.dropdown-item) {
                 opacity: 0;
-                transform: translateX(calc(-1 * (var(--spacing-2) + var(--spacing-05))));
+                transform: translateX(calc(-1 * var(--spacing-3)));
                 animation: dropdownItemFadeIn var(--anim-duration-base) var(--anim-ease-base) forwards;
         }
 
@@ -206,11 +206,37 @@
         @keyframes dropdownItemFadeIn {
                 from {
                         opacity: 0;
-                        transform: translateX(calc(-1 * (var(--spacing-2) + var(--spacing-05))));
+                        transform: translateX(calc(-1 * var(--spacing-3)));
                 }
                 to {
                         opacity: 1;
                         transform: translateX(0);
                 }
+	}
+
+	/* Reduced motion support */
+	@media (prefers-reduced-motion: reduce) {
+		.dropdown-menu {
+			transition: opacity var(--duration-fast) var(--ease-out);
+		}
+
+		.dropdown-menu.active {
+			animation: none;
+		}
+
+		:global(.dropdown-item) {
+			animation: none;
+			opacity: 1;
+			transform: none;
+		}
+
+		:global(.dropdown-item:hover),
+		:global(.dropdown-item:focus) {
+			transform: none;
+		}
+
+		:global(.dropdown-item::before) {
+			transition: none;
+		}
 	}
 </style>
