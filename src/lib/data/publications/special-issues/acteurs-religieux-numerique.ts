@@ -23,14 +23,14 @@ export const acteursReligieuxNumerique: Publication = {
 	},
 	isEditedWork: true,
 	tableOfContents: [
-		"Pour de nouvelles études sur les acteurs religieux africains à l'ère du numérique par Pamela Millet-Mouity et Frédérick Madore",
-		"Mouvement interreligieux et usages d'Internet au Burkina Faso. Le cas de l'Union fraternelle des croyants (UFC) de Dori par Koudbi Kaboré",
-		"Le Sénégal à l'heure des médias numériques confessionnels. Le Hizbut-Tarqiyyah et son site Internet, comme reflets de nouveaux lieux de culte virtuels par Serigne Sylla",
-		"Les musulmans de Facebook en Côte d'Ivoire : nouvelle voie de socialisation, de da'wa et de mobilisation communautaire par Issouf Binaté",
-		"Médias 2.0 et Églises chrétiennes au Burkina Faso. Évangélisation numérique et contrôle du message par Louis Audet Gosselin",
-		"« Modernité néo-pentecôtiste » au travers de pratiques virtuelles camerounaises par Sariette Batibonak et Abia Batibonak",
-		"De l'utilisation d'Internet en République démocratique du Congo. Un outil de mobilisation politique et religieuse par Didier Makal Kanteng",
-		"Interview with Rosalind I. J. Hackett on Religion and Digital Media Trends in Africa par Rosalind I.J. Hackett, Frédérick Madore et Pamela Millet-Mouity",
-		"Pratiques religieuses africaines et médias numériques. Prolonger la réflexion par Katrien Pype"
+		"Pour de nouvelles études sur les acteurs religieux africains à l'ère du numérique (Pamela Millet-Mouity et Frédérick Madore)",
+		"Mouvement interreligieux et usages d'Internet au Burkina Faso. Le cas de l'Union fraternelle des croyants (UFC) de Dori (Koudbi Kaboré)",
+		"Le Sénégal à l'heure des médias numériques confessionnels. Le Hizbut-Tarqiyyah et son site Internet, comme reflets de nouveaux lieux de culte virtuels (Serigne Sylla)",
+		"Les musulmans de Facebook en Côte d'Ivoire : nouvelle voie de socialisation, de da'wa et de mobilisation communautaire (Issouf Binaté)",
+		"Médias 2.0 et Églises chrétiennes au Burkina Faso. Évangélisation numérique et contrôle du message (Louis Audet Gosselin)",
+		"« Modernité néo-pentecôtiste » au travers de pratiques virtuelles camerounaises (Sariette Batibonak et Abia Batibonak)",
+		"De l'utilisation d'Internet en République démocratique du Congo. Un outil de mobilisation politique et religieuse (Didier Makal Kanteng)",
+		"Interview with Rosalind I. J. Hackett on Religion and Digital Media Trends in Africa (Rosalind I.J. Hackett, Frédérick Madore et Pamela Millet-Mouity)",
+		"Pratiques religieuses africaines et médias numériques. Prolonger la réflexion (Katrien Pype)"
 	]
 };
