@@ -271,15 +271,23 @@
 		position: relative;
 	}
 
-	/* Content wrapper for scroll animation */
+	/* Content wrapper for scroll animation - consistent spacing between sections */
 	.content-wrapper {
 		display: flex;
 		flex-direction: column;
 	}
 
+	/* Consistent vertical spacing between major sections */
+	.content-wrapper > :global(*) {
+		margin-bottom: 0;
+	}
+
+	.content-wrapper > :global(* + *) {
+		margin-top: var(--space-xl);
+	}
+
 	/* Panel Papers Section */
 	.panel-papers-section {
-		margin-top: var(--space-xl);
 		padding: var(--space-lg);
 		border-radius: var(--border-radius-xl);
 		position: relative;
@@ -315,7 +323,6 @@
 
 	/* Participants Section */
 	.participants-section {
-		margin-top: var(--space-xl);
 		padding: var(--space-lg);
 		border-radius: var(--border-radius-xl);
 		position: relative;
@@ -509,8 +516,7 @@
 
 	/* Map Section */
 	.map-section {
-		margin-top: var(--space-xl);
-		margin-bottom: var(--space-xl);
+		display: block; /* Ensure block-level for spacing to work */
 	}
 
 	.map-section-title {
