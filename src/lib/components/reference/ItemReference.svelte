@@ -232,21 +232,21 @@
 		cursor: pointer;
 		-webkit-tap-highlight-color: transparent; /* iOS */
 		border-radius: var(--border-radius);
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transition: all var(--duration-moderate) var(--ease-in-out);
 	}
 
 	/* Touch device hint - subtle visual cue */
 	.item-reference::after {
 		content: '';
 		position: absolute;
-		top: -2px;
-		right: -2px;
-		width: 6px;
-		height: 6px;
+		top: calc(-1 * var(--space-0-5));
+		right: calc(-1 * var(--space-0-5));
+		width: var(--space-1-5);
+		height: var(--space-1-5);
 		background: var(--color-accent);
 		border-radius: var(--border-radius-full);
 		opacity: 0;
-		transition: opacity var(--anim-duration-fast) var(--anim-ease-base);
+		transition: opacity var(--duration-normal) var(--ease-in-out);
 		pointer-events: none;
 	}
 
@@ -271,7 +271,7 @@
 		color: var(--color-danger);
 		font-style: italic;
 		font-size: var(--font-size-sm);
-		padding: var(--spacing-1) var(--spacing-2);
+		padding: var(--space-2xs) var(--space-xs);
 		border-radius: var(--border-radius);
 		cursor: not-allowed;
 
