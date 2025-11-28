@@ -257,8 +257,8 @@
 <style>
 	/* Hero figure base styling - consistent with page layout */
 	.hero-figure {
-		margin-bottom: var(--spacing-6); /* Match PageHeader margin for consistency */
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		margin-bottom: var(--space-6); /* Match PageHeader margin for consistency */
+		transition: all var(--duration-moderate) var(--ease-in-out);
 		position: relative;
 		overflow: hidden; /* Contain hover effects */
 
@@ -287,16 +287,16 @@
 	}
 
 	.image-container .hero-image {
-		transition: transform 0.3s var(--anim-ease-base);
+		transition: transform var(--duration-moderate) var(--ease-in-out);
 	}
 
 	.image-container:hover .hero-image {
-		transform: scale(1.05);
+		transform: scale(var(--scale-105));
 	}
 
 	.image-container:focus {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
+		outline: var(--border-width-medium) solid var(--color-primary);
+		outline-offset: var(--space-0-5);
 	}
 
 	.overlay {
@@ -305,14 +305,14 @@
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background: rgba(0, 0, 0, 0.5);
+		background: rgba(var(--color-black-rgb), var(--opacity-medium));
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		color: white;
+		color: var(--color-white);
 		opacity: 0;
-		transition: opacity 0.3s var(--anim-ease-base);
+		transition: opacity var(--duration-moderate) var(--ease-in-out);
 		pointer-events: none; /* Let clicks pass through to the container */
 		border-radius: inherit;
 	}
@@ -325,19 +325,19 @@
 
 	.overlay-caption {
 		font-size: var(--font-size-md);
-		padding: var(--spacing-4);
+		padding: var(--space-4);
 		text-align: center;
 		font-weight: var(--font-weight-semibold);
 		line-height: var(--line-height-relaxed);
 	}
 
 	.zoom-icon {
-		font-size: 2rem;
-		margin-top: var(--spacing-2);
+		font-size: var(--font-size-3xl);
+		margin-top: var(--space-2);
 	}
 
 	.zoom-icon svg {
-		filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+		filter: drop-shadow(0 var(--space-0-5) var(--space-1) rgba(var(--color-black-rgb), var(--opacity-medium)));
 	}
 
 	/* Hero image with integrated glassmorphism effects */
@@ -349,17 +349,17 @@
 		margin-left: auto;
 		margin-right: auto;
 		border-radius: var(--border-radius-lg);
-		transition: all 0.3s ease;
+		transition: all var(--duration-moderate) var(--ease-out);
 		box-shadow: var(--shadow-lg);
 		object-fit: contain; /* Ensure entire image visible without cropping */
 		aspect-ratio: auto;
 		/* Subtle glassmorphism border */
-		border: 1px solid rgba(255, 255, 255, 0.2);
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
 	}
 
 	.hero-figure:hover .hero-image {
 		box-shadow: var(--shadow-xl);
-		border-color: rgba(255, 255, 255, 0.3);
+		border-color: rgba(var(--color-white-rgb), var(--opacity-medium-low));
 	}
 
 	/* Caption styling - improved typography consistency */
@@ -367,11 +367,11 @@
 		font-size: var(--font-size-sm);
 		color: var(--color-text-muted);
 		text-align: center;
-		margin-top: var(--spacing-4);
+		margin-top: var(--space-4);
 		font-style: italic;
 		line-height: var(--line-height-relaxed);
 		font-family: var(--font-family-serif);
-		padding: 0 var(--spacing-4); /* Add horizontal padding for better readability */
+		padding: 0 var(--space-4); /* Add horizontal padding for better readability */
 	}
 
 	/* Glass effect enhancements when enabled - improved integration */
@@ -383,7 +383,7 @@
 			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
 			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		padding: var(--spacing-4); /* Add padding for glass effect */
+		padding: var(--space-4); /* Add padding for glass effect */
 		border-radius: var(--border-radius-xl); /* Match PageHeader border radius */
 		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
 
@@ -391,7 +391,7 @@
 		box-shadow: var(--shadow-md);
 
 		/* Subtle animated lift */
-		transition: all 0.3s var(--anim-ease-base);
+		transition: all var(--duration-moderate) var(--ease-in-out);
 	}
 
 	.hero-figure--glass:hover {
@@ -421,11 +421,11 @@
 
 	/* Caption styling within glass effect */
 	.hero-figure--glass .hero-caption {
-		margin-top: var(--spacing-3);
-		padding: var(--spacing-2) var(--spacing-4);
+		margin-top: var(--space-3);
+		padding: var(--space-2) var(--space-4);
 		background: rgba(var(--color-surface-rgb), var(--opacity-medium));
 		border-radius: var(--border-radius-md);
-		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), 0.3);
+		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-medium-low));
 		color: var(--color-text);
 		font-weight: var(--font-weight-medium);
 	}
@@ -441,14 +441,14 @@
 		max-width: 400px;
 		margin-left: auto;
 		margin-right: auto;
-		margin-bottom: var(--spacing-4); /* Reduced spacing for compact variant */
+		margin-bottom: var(--space-4); /* Reduced spacing for compact variant */
 	}
 
 	.hero-figure--featured {
 		max-width: 800px;
 		margin-left: auto;
 		margin-right: auto;
-		margin-bottom: var(--spacing-8); /* Increased spacing for featured variant */
+		margin-bottom: var(--space-8); /* Increased spacing for featured variant */
 	}
 
 	/* Image variant styles */
@@ -462,11 +462,11 @@
 
 	/* Dark mode adjustments - improved consistency */
 	:global(html.dark) .hero-image {
-		border: 1px solid rgba(255, 255, 255, 0.1);
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-very-low));
 	}
 
 	:global(html.dark) .hero-figure:hover .hero-image {
-		border-color: rgba(255, 255, 255, 0.15);
+		border-color: rgba(var(--color-white-rgb), var(--opacity-low));
 	}
 
 	:global(html.dark) .hero-figure--glass {
@@ -494,7 +494,7 @@
 
 	:global(html.dark) .hero-figure--glass .hero-caption {
 		background: rgba(var(--color-dark-surface-rgb), var(--opacity-high));
-		border-color: rgba(var(--color-border-rgb), 0.2);
+		border-color: rgba(var(--color-border-rgb), var(--opacity-low));
 		color: var(--color-text-light);
 	}
 
@@ -505,7 +505,7 @@
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		z-index: 9999; /* Very high z-index to ensure it's above everything */
+		z-index: var(--z-modal);
 		/* Enhanced glassmorphism background using our design system */
 		background: linear-gradient(
 			135deg,
@@ -513,15 +513,15 @@
 			rgba(var(--color-dark-surface-alt-rgb), 0.9) 50%,
 			rgba(var(--color-dark-surface-rgb), 0.85) 100%
 		);
-		-webkit-backdrop-filter: blur(20px) saturate(120%);
-		backdrop-filter: blur(20px) saturate(120%);
-		border: 1px solid rgba(255, 255, 255, 0.05);
+		-webkit-backdrop-filter: blur(var(--glass-blur-xl)) saturate(120%);
+		backdrop-filter: blur(var(--glass-blur-xl)) saturate(120%);
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-very-low));
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		cursor: zoom-out;
-		animation: fadeIn 0.3s var(--anim-ease-base);
-		padding: var(--spacing-4);
+		animation: fadeIn var(--duration-moderate) var(--ease-in-out);
+		padding: var(--space-4);
 		box-sizing: border-box;
 	}
 
@@ -546,25 +546,25 @@
 		object-fit: contain;
 		box-shadow: var(--shadow-2xl);
 		border-radius: var(--border-radius-lg);
-		border: 1px solid rgba(255, 255, 255, 0.1);
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-very-low));
 		display: block;
-		transition: all 0.3s var(--anim-ease-base);
+		transition: all var(--duration-moderate) var(--ease-in-out);
 	}
 
 	.fullscreen-caption {
 		color: var(--color-text-emphasis);
-		margin-top: var(--spacing-4);
+		margin-top: var(--space-4);
 		font-size: var(--font-size-lg);
 		font-style: italic;
 		text-align: center;
 		max-width: 80vw;
 		line-height: var(--line-height-relaxed);
-		padding: var(--spacing-4) var(--spacing-6);
+		padding: var(--space-4) var(--space-6);
 		/* Use glassmorphism for caption background */
-		background: rgba(var(--color-surface-rgb), 0.15);
-		-webkit-backdrop-filter: blur(12px);
-		backdrop-filter: blur(12px);
-		border: 1px solid rgba(255, 255, 255, 0.2);
+		background: rgba(var(--color-surface-rgb), var(--opacity-low));
+		-webkit-backdrop-filter: blur(var(--glass-blur-md));
+		backdrop-filter: blur(var(--glass-blur-md));
+		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
 		border-radius: var(--border-radius-lg);
 		box-shadow: var(--shadow-lg);
 		font-family: var(--font-family-serif);
@@ -574,11 +574,11 @@
 	/* Close button positioning and styling - perfect round glassmorphism button */
 	:global(.close-button) {
 		position: absolute !important;
-		top: var(--spacing-4) !important;
-		right: var(--spacing-4) !important;
+		top: var(--space-4) !important;
+		right: var(--space-4) !important;
 		z-index: 10 !important;
-		width: calc(var(--spacing-8) + var(--spacing-2)) !important;
-		height: calc(var(--spacing-8) + var(--spacing-2)) !important;
+		width: calc(var(--space-8) + var(--space-2)) !important;
+		height: calc(var(--space-8) + var(--space-2)) !important;
 		border-radius: var(--border-radius-full) !important;
 		padding: 0 !important;
 		display: flex !important;
@@ -588,18 +588,18 @@
 
 		/* Enhanced glassmorphism specifically for close button */
 		background: rgba(var(--color-surface-rgb), var(--opacity-medium-high)) !important;
-		backdrop-filter: blur(12px) !important;
-		-webkit-backdrop-filter: blur(12px) !important;
+		backdrop-filter: blur(var(--glass-blur-md)) !important;
+		-webkit-backdrop-filter: blur(var(--glass-blur-md)) !important;
 		border: var(--border-width-thin) solid
 			rgba(var(--color-surface-rgb), var(--opacity-medium-high)) !important;
 		box-shadow: var(--shadow-lg) !important;
-		transition: all var(--anim-duration-base) var(--anim-ease-base) !important;
+		transition: all var(--duration-normal) var(--ease-in-out) !important;
 	}
 
 	:global(.close-button:hover) {
 		background: rgba(var(--color-surface-rgb), var(--opacity-high)) !important;
 		border-color: rgba(var(--color-surface-rgb), var(--opacity-high)) !important;
-		transform: var(--transform-lift-sm) scale(1.05) !important;
+		transform: var(--transform-lift-sm) scale(var(--scale-105)) !important;
 		box-shadow: var(--shadow-xl) !important;
 	}
 
@@ -619,17 +619,17 @@
 			rgba(var(--color-dark-surface-alt-rgb), 0.95) 50%,
 			rgba(var(--color-dark-surface-rgb), 0.9) 100%
 		);
-		border-color: rgba(255, 255, 255, 0.02);
+		border-color: rgba(var(--color-white-rgb), 0.02);
 	}
 
 	:global(html.dark) .fullscreen-caption {
 		color: var(--color-text-light);
-		background: rgba(var(--color-dark-surface-rgb), 0.2);
-		border-color: rgba(255, 255, 255, 0.1);
+		background: rgba(var(--color-dark-surface-rgb), var(--opacity-low));
+		border-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
 	}
 
 	:global(html.dark) .fullscreen-image {
-		border-color: rgba(255, 255, 255, 0.05);
+		border-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
 	}
 
 	/* Dark theme close button */
@@ -660,31 +660,35 @@
 	}
 
 	/* Responsive adjustments - improved mobile experience */
-	@media (max-width: 768px) {
+	@media (--md) {
+		/* Desktop styles - use as progressive enhancement */
+	}
+
+	@media (max-width: 767px) {
 		.hero-figure {
-			margin-bottom: var(--spacing-4);
+			margin-bottom: var(--space-4);
 		}
 
 		.hero-figure--glass {
-			padding: var(--spacing-3);
+			padding: var(--space-3);
 			border-radius: var(--border-radius-lg);
 		}
 
 		.hero-caption {
 			font-size: var(--font-size-xs);
-			margin-top: var(--spacing-2);
-			padding: 0 var(--spacing-2);
+			margin-top: var(--space-2);
+			padding: 0 var(--space-2);
 		}
 
 		.hero-figure--glass .hero-caption {
-			margin-top: var(--spacing-2);
-			padding: var(--spacing-2) var(--spacing-3);
+			margin-top: var(--space-2);
+			padding: var(--space-2) var(--space-3);
 		}
 
 		/* Adjust max-widths for mobile */
 		.hero-figure--featured {
 			max-width: 100%;
-			margin-bottom: var(--spacing-6);
+			margin-bottom: var(--space-6);
 		}
 
 		.hero-figure--default {
@@ -692,7 +696,7 @@
 		}
 
 		.fullscreen-modal {
-			padding: var(--spacing-2);
+			padding: var(--space-2);
 		}
 
 		.fullscreen-image {
@@ -703,25 +707,25 @@
 		.fullscreen-caption {
 			font-size: var(--font-size-md);
 			max-width: 90vw;
-			padding: var(--spacing-3) var(--spacing-4);
+			padding: var(--space-3) var(--space-4);
 		}
 
 		:global(.close-button) {
-			top: var(--spacing-2) !important;
-			right: var(--spacing-2) !important;
-			width: var(--spacing-8) !important;
-			height: var(--spacing-8) !important;
+			top: var(--space-2) !important;
+			right: var(--space-2) !important;
+			width: var(--space-8) !important;
+			height: var(--space-8) !important;
 		}
 
 		.overlay-caption {
 			font-size: var(--font-size-sm);
-			padding: var(--spacing-2);
+			padding: var(--space-2);
 		}
 	}
 
-	@media (max-width: 640px) {
+	@media (max-width: 639px) {
 		.hero-figure--glass {
-			padding: var(--spacing-2);
+			padding: var(--space-2);
 		}
 	}
 
