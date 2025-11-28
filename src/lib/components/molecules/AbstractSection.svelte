@@ -153,8 +153,11 @@
 			font-size: var(--font-size-lg);
 		}
 
+		/* Keep abstract content at base font size for better mobile readability */
 		.abstract-content {
-			font-size: var(--font-size-sm);
+			font-size: var(--font-size-base);
+			text-align: left; /* Left-align on mobile for better readability */
+			hyphens: none; /* Disable hyphenation on mobile */
 		}
 	}
 
