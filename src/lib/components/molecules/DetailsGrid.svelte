@@ -62,8 +62,9 @@
 
 	.details-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-		gap: var(--space-md) var(--space-lg);
+		/* Two-column layout on larger screens for better use of space */
+		grid-template-columns: 1fr;
+		gap: 0;
 		padding: var(--space-lg);
 		border-radius: var(--border-radius-xl);
 		margin-bottom: var(--space-lg);
@@ -77,59 +78,68 @@
 		position: relative;
 	}
 
-	/* Extra inner subtle separator using pseudo to reduce extra DOM */
-	.details-grid:before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		pointer-events: none;
-		border-radius: inherit;
-		background: linear-gradient(
-			180deg,
-			rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-low)) 0%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0) 40%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0) 60%,
-			rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-low)) 100%
-		);
-		mix-blend-mode: overlay;
-		opacity: var(--opacity-medium);
+	/* Two columns on medium screens and up */
+	@media (--md) {
+		.details-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
 	}
 
 	.detail-item {
 		display: grid;
-		grid-template-columns: 110px 1fr; /* label column */
+		grid-template-columns: 120px 1fr;
 		align-items: baseline;
-		gap: var(--space-sm);
-		padding: var(--space-sm) var(--space-xs) var(--space-xs);
-		border-bottom: var(--border-width-thin) solid var(--color-border-light);
+		gap: var(--space-md);
+		padding: var(--space-sm) var(--space-xs);
+		border-bottom: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-low));
 		position: relative;
 	}
+
+	/* Remove bottom border on last items */
 	.detail-item:last-child {
 		border-bottom: none;
+	}
+
+	/* On two-column layout, handle borders differently */
+	@media (--md) {
+		.detail-item {
+			padding: var(--space-sm) var(--space-md);
+		}
+
+		/* Add right border to left column items */
+		.detail-item:nth-child(odd) {
+			border-right: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-low));
+		}
+
+		/* Remove bottom border from last row items */
+		.detail-item:nth-last-child(1),
+		.detail-item:nth-last-child(2):nth-child(odd) {
+			border-bottom: none;
+		}
 	}
 
 	/* In narrow view collapse to vertical stack */
 	@media (max-width: 520px) {
 		.detail-item {
 			grid-template-columns: 1fr;
-		}
-		.detail-label {
-			margin-bottom: var(--space-2xs);
+			gap: var(--space-2xs);
 		}
 	}
 
 	.detail-label {
-		font-size: var(--font-size-xs);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
 		letter-spacing: var(--letter-spacing-wide);
 		text-transform: uppercase;
-		color: var(--color-text-light);
-		line-height: var(--line-height-tight);
+		color: var(--color-text-muted);
+		line-height: var(--line-height-normal);
+		/* Ensure consistent vertical alignment */
+		padding-top: 2px;
 	}
 
 	.detail-value {
 		font-size: var(--font-size-sm);
-		line-height: var(--line-height-snug);
+		line-height: var(--line-height-relaxed);
 		color: var(--color-text);
 		word-break: break-word;
 	}
@@ -138,12 +148,14 @@
 		color: var(--color-primary);
 		text-decoration: none;
 		position: relative;
-		transition: color var(--anim-duration-fast) var(--anim-ease-out);
+		transition: color var(--duration-fast) var(--ease-out);
 	}
+
 	.detail-link:hover {
 		color: var(--color-primary-dark);
 		text-decoration: underline;
 	}
+
 	.detail-link:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-highlight);
 		outline-offset: var(--space-2xs);
@@ -154,24 +166,33 @@
 	:global(html.dark) .details-grid {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb, 17, 24, 39), var(--opacity-high)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 55%,
-			rgba(var(--color-accent-rgb), var(--opacity-low)) 100%
+			rgba(var(--color-primary-rgb), 0.08) 0%,
+			rgba(var(--color-highlight-rgb), 0.04) 55%,
+			rgba(var(--color-accent-rgb), 0.06) 100%
 		);
 	}
+
 	:global(html.dark) .detail-item {
-		border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-low));
+		border-bottom-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
 	}
+
+	@media (--md) {
+		:global(html.dark) .detail-item:nth-child(odd) {
+			border-right-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
+		}
+	}
+
 	:global(html.dark) .detail-label {
-		color: var(--color-text-light);
+		color: var(--color-text-muted);
 	}
+
 	:global(html.dark) .detail-value {
 		color: var(--color-text);
 	}
 
 	/* Reduced motion preference */
 	@media (prefers-reduced-motion: reduce) {
-		.details-grid {
+		.detail-link {
 			transition: none;
 		}
 	}
