@@ -144,7 +144,7 @@
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 640px) {
+	@media (--sm-down) {
 		.abstract-section {
 			padding: var(--space-md);
 		}

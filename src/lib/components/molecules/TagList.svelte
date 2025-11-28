@@ -81,7 +81,7 @@
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 640px) {
+	@media (--sm-down) {
 		:global(.tag-button) {
 			font-size: var(--font-size-xs);
 			padding: var(--space-2xs) var(--space-xs);

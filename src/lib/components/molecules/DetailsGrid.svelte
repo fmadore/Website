@@ -119,7 +119,7 @@
 	}
 
 	/* In narrow view collapse to vertical stack */
-	@media (max-width: 520px) {
+	@media (--sm-down) {
 		.detail-item {
 			grid-template-columns: 1fr;
 			gap: var(--space-2xs);
