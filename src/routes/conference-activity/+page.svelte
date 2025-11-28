@@ -296,7 +296,7 @@
 				{/if}
 			</div>
 		</div>
-		<EntityListPageLayout containerClass="" gridClass="grid grid-cols-1 md:grid-cols-4 gap-6">
+		<EntityListPageLayout containerClass="" gridClass="grid grid-cols-1 lg:grid-cols-4 gap-6">
 			{#snippet sidebar()}
 				<UniversalFiltersSidebar
 					config={communicationFilterConfig}
@@ -408,16 +408,13 @@
 		margin-bottom: var(--spacing-4);
 	}
 
-	/* Media query for mobile */
-	@media (max-width: 900px) {
+	/* Media query for mobile/tablet - show mobile controls up to 1024px */
+	@media (max-width: 1024px) {
 		.mobile-controls {
 			display: flex; /* Enable flex for column layout */
 		}
-		/* .mobile-controls > .actions-group { // Removed as actions-group logic is changed 
-        /*    margin-left: auto; 
-        /* } */
 		.desktop-controls {
-			display: none; /* Hide desktop controls container on mobile */
+			display: none; /* Hide desktop controls container on tablet and mobile */
 		}
 	}
 

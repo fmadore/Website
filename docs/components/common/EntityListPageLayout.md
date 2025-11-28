@@ -31,7 +31,7 @@ import EntityListPageLayout from '$lib/components/common/EntityListPageLayout.sv
 | Prop             | Type     | Default                                   | Description                       |
 | ---------------- | -------- | ----------------------------------------- | --------------------------------- |
 | `containerClass` | `string` | `"container mx-auto py-6"`                | CSS class for the outer container |
-| `gridClass`      | `string` | `"grid grid-cols-1 md:grid-cols-4 gap-6"` | CSS class for the grid layout     |
+| `gridClass`      | `string` | `"grid grid-cols-1 lg:grid-cols-4 gap-6"` | CSS class for the grid layout     |
 | `sidebarClass`   | `string` | `"md:col-span-1"`                         | CSS class for the sidebar column  |
 
 ## Slots

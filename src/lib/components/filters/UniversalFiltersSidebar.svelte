@@ -203,9 +203,9 @@
 	/* Main sidebar container - Card design for the whole sidebar */
 	.filter-sidebar {
 		background: var(--color-surface);
-		border: 1px solid var(--color-border);
+		border: var(--border-width-thin) solid var(--color-border);
 		border-radius: var(--border-radius-md);
-		padding: var(--spacing-4);
+		padding: var(--space-md);
 		position: relative;
 		box-shadow: var(--shadow-sm);
 		/* Prevent layout shifts during content changes */
@@ -221,9 +221,9 @@
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
 		box-shadow:
-			0 8px 32px 0 rgba(var(--color-primary-rgb), var(--opacity-medium)),
+			var(--shadow-glass),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-medium));
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transition: all var(--duration-normal) var(--ease-out);
 	}
 
 	/* Hover effects for glassmorphism */
@@ -237,12 +237,9 @@
 		);
 		border-color: rgba(var(--color-white-rgb), var(--opacity-medium-high));
 		box-shadow:
-			0 12px 40px 0 rgba(var(--color-primary-rgb), var(--opacity-medium)),
+			var(--shadow-glass-lg),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-medium-high));
 	}
-
-	/* Mobile Toggle Button Styling Removed */
-	/*.mobile-toggle { ... }*/
 
 	/* Filter sections wrapper (for mobile collapse) */
 	.filter-sections-wrapper {
@@ -261,53 +258,62 @@
 		position: static;
 		max-height: none;
 		overflow-y: visible;
-		margin-bottom: var(--spacing-8);
+		margin-bottom: var(--space-xl);
 	}
 
-	@media (max-width: 900px) {
-		/* Mobile breakpoint */
+	/* Mobile/Tablet breakpoint (max-width: 1024px) - show collapsible filters */
+	@media (max-width: 1024px) {
 		.filter-sidebar {
-			background: transparent; /* Make background transparent on mobile */
-			border: none; /* Remove border on mobile */
-			box-shadow: none; /* Remove shadow on mobile */
-			padding: 0; /* Remove padding on mobile as sections are conditionally rendered */
+			background: transparent;
+			border: none;
+			box-shadow: none;
+			padding: 0;
+			backdrop-filter: none;
+			-webkit-backdrop-filter: none;
 		}
 
 		.filter-sidebar::before {
-			display: none; /* Hide accent line on mobile */
+			display: none;
 		}
 
-		/* Mobile toggle button styles removed */
+		.filter-sidebar:hover {
+			transform: none;
+			background: transparent;
+			border-color: transparent;
+			box-shadow: none;
+		}
+
 		.filter-sections-wrapper {
-			display: block; /* Allow Svelte's #if to control visibility */
+			display: block;
 			background: transparent;
 			border: none;
 			padding: 0;
-			margin-top: var(--spacing-4);
+			margin-top: var(--space-md);
 		}
+
 		.filter-sections-wrapper-desktop {
-			display: none; /* Hide the desktop wrapper on mobile */
+			display: none;
 		}
-		/* Remove sticky behavior on mobile */
+
 		.sticky-top {
 			position: static;
 			max-height: none;
 			overflow-y: visible;
-			margin-bottom: 0; /* Removed margin as wrapper handles spacing */
+			margin-bottom: 0;
 		}
 	}
 
-	@media (min-width: 901px) {
-		/* Desktop breakpoint */
-		/* Mobile toggle styles removed */
+	/* Desktop breakpoint (min-width: 1025px) - show sidebar filters */
+	@media (min-width: 1025px) {
 		.filter-sections-wrapper {
-			display: none; /* Hide mobile wrapper on desktop */
+			display: none;
 		}
+
 		.filter-sections-wrapper-desktop {
-			display: block; /* Show desktop wrapper */
+			display: block;
 		}
+
 		.filter-sidebar {
-			/* Restore card design on desktop with glassmorphism */
 			background: linear-gradient(
 				135deg,
 				rgba(var(--color-primary-rgb), 0.03) 0%,
@@ -318,21 +324,27 @@
 			-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 			border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
 			border-radius: var(--border-radius-md);
-			padding: var(--spacing-4);
+			padding: var(--space-md);
 			box-shadow:
-				0 8px 32px 0 rgba(var(--color-primary-rgb), var(--opacity-medium)),
+				var(--shadow-glass),
 				inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-medium));
 			margin-bottom: 0;
 		}
+
 		.sticky-top {
 			position: sticky;
-			top: var(--spacing-8);
+			top: var(--space-xl);
 			max-height: none;
 			overflow-y: visible;
-			/* Ensure stable positioning during content changes */
 			will-change: scroll-position;
-			/* Prevent the sidebar from jumping during filter changes */
 			transform: translateZ(0);
+		}
+	}
+
+	/* Large screens - more padding */
+	@media (min-width: 1024px) {
+		.filter-sidebar {
+			padding: var(--space-lg);
 		}
 	}
 
@@ -341,7 +353,7 @@
 		background: transparent;
 		border: none;
 		padding: 0;
-		margin-bottom: var(--spacing-6);
+		margin-bottom: var(--space-lg);
 		position: relative;
 	}
 
@@ -359,7 +371,7 @@
 		);
 		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
 		box-shadow:
-			0 8px 32px 0 rgba(var(--color-black-rgb), var(--opacity-medium-high)),
+			var(--shadow-glass),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-low));
 	}
 
@@ -372,45 +384,25 @@
 		);
 		border-color: rgba(var(--color-white-rgb), var(--opacity-medium));
 		box-shadow:
-			0 12px 40px 0 rgba(var(--color-black-rgb), var(--opacity-high)),
+			var(--shadow-glass-lg),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-medium));
 	}
 
-	/* Dark mode mobile wrapper - removed, using transparent background */
+	/* Dark mode mobile wrapper */
 	:global(html.dark) .filter-sections-wrapper {
 		background: transparent;
 		border: none;
 		box-shadow: none;
 	}
 
-	/* Clear button styling removed */
-	/*
-    .clear-button-wrapper {
-        margin-top: var(--spacing-6); 
-        padding-top: var(--spacing-4); 
-        border-top: 1px solid var(--color-border); 
-    }
+	/* Respect user motion preferences */
+	@media (prefers-reduced-motion: reduce) {
+		.filter-sidebar {
+			transition: none;
+		}
 
-    .clear-button-wrapper.top-clear-button {
-        margin-top: 0;
-        padding-top: 0;
-        border-top: none;
-        margin-bottom: var(--spacing-4); 
-        padding-bottom: var(--spacing-4); 
-        border-bottom: 1px solid var(--color-border); 
-    }
-
-    .clear-filters {
-        width: 100%; 
-    }
-    .clear-filters.btn-secondary {
-        background-color: var(--color-secondary);
-        border-color: var(--color-secondary);
-        color: white;
-    }
-    .clear-filters.btn-secondary:hover {
-         background-color: #374151; 
-         border-color: #374151;
-    }
-    */
+		.filter-sidebar:hover {
+			transform: none;
+		}
+	}
 </style>

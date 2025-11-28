@@ -3,8 +3,8 @@
 
 	let {
 		containerClass = 'container mx-auto py-6', // Customizable container class
-		gridClass = 'grid grid-cols-1 md:grid-cols-4 gap-6', // Customizable grid class
-		sidebarClass = 'md:col-span-1', // Class for the sidebar
+		gridClass = 'grid grid-cols-1 lg:grid-cols-4 gap-6', // Customizable grid class - lg breakpoint for better filter display
+		sidebarClass = 'lg:col-span-1', // Class for the sidebar
 		sidebar,
 		children
 	}: {
@@ -24,7 +24,7 @@
 			{/if}
 		</div>
 
-		<div class="md:col-span-3 main-content-column">
+		<div class="lg:col-span-3 main-content-column">
 			{#if children}
 				{@render children()}
 			{/if}

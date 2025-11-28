@@ -48,10 +48,10 @@
 
 <style>
 	.filter-section-content {
-		padding: var(--spacing-4);
+		padding: var(--space-md);
 		border-radius: var(--border-radius-md);
-		margin-bottom: var(--spacing-4);
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		margin-bottom: var(--space-md);
+		transition: all var(--duration-normal) var(--ease-out);
 	}
 
 	.filter-section-content:hover {
@@ -66,8 +66,8 @@
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-bold);
 		color: var(--color-text-emphasis);
-		margin: 0 0 var(--spacing-3) 0;
-		padding-bottom: var(--spacing-2);
+		margin: 0 0 var(--space-sm) 0;
+		padding-bottom: var(--space-xs);
 		border-bottom: var(--border-width-thin) solid
 			rgba(var(--color-accent-rgb), var(--opacity-medium));
 	}
@@ -75,8 +75,8 @@
 	.filter-chips-container {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--spacing-2);
-		margin-bottom: var(--spacing-3);
+		gap: var(--space-xs);
+		margin-bottom: var(--space-sm);
 	}
 
 	/* Enhanced styles for active state using design system variables */
@@ -102,11 +102,11 @@
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-semibold);
 		background: rgba(var(--color-white-rgb), var(--opacity-medium));
-		padding: var(--spacing-1) var(--spacing-2);
+		padding: var(--space-2xs) var(--space-xs);
 		border-radius: var(--border-radius-sm);
 		line-height: 1;
-		margin-left: var(--spacing-1);
-		transition: background-color var(--anim-duration-fast) var(--anim-ease-out);
+		margin-left: var(--space-2xs);
+		transition: background-color var(--duration-fast) var(--ease-out);
 	}
 
 	:global(.filter-chip.active .chip-count) {
@@ -118,7 +118,7 @@
 		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium));
 		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
 		box-shadow:
-			0 8px 32px 0 rgba(var(--color-black-rgb), var(--opacity-medium)),
+			var(--shadow-glass),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-low));
 	}
 
@@ -130,10 +130,38 @@
 		background: rgba(var(--color-black-rgb), var(--opacity-medium-high));
 	}
 
-	/* Responsive design */
-	@media (max-width: 640px) {
+	/* Responsive design - Mobile first */
+	@media (max-width: 639px) {
 		.filter-section-content {
-			padding: var(--spacing-3);
+			padding: var(--space-sm);
+			margin-bottom: var(--space-sm);
+		}
+
+		.filter-section-title {
+			font-size: var(--font-size-base);
+			margin-bottom: var(--space-xs);
+		}
+
+		.filter-chips-container {
+			gap: var(--space-2xs);
+		}
+
+		.chip-count {
+			padding: var(--space-3xs) var(--space-2xs);
+		}
+	}
+
+	/* Medium screens */
+	@media (min-width: 640px) and (max-width: 1023px) {
+		.filter-chips-container {
+			gap: var(--space-xs);
+		}
+	}
+
+	/* Large screens */
+	@media (min-width: 1024px) {
+		.filter-section-content {
+			padding: var(--space-lg);
 		}
 	}
 
@@ -142,6 +170,10 @@
 		.filter-section-content,
 		.chip-count {
 			transition: none;
+		}
+
+		.filter-section-content:hover {
+			transform: none;
 		}
 
 		:global(.filter-chip.active:hover) {

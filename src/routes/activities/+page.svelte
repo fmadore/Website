@@ -54,8 +54,8 @@
 		talks, and other engagements. You can browse by year using the sidebar.
 	</PageIntro>
 
-	<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-		<div class="md:col-span-1">
+	<div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+		<div class="lg:col-span-1">
 			<aside class="year-sidebar">
 				<div class="filter-section">
 					<h2 class="filter-section-title">Browse by Year</h2>
@@ -82,7 +82,7 @@
 			</aside>
 		</div>
 
-		<div class="md:col-span-3">
+		<div class="lg:col-span-3">
 			<div class="activity-list-container">
 				<div class="activities-header">
 					<h2 class="activities-title">

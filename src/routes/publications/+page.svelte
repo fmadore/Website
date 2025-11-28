@@ -265,7 +265,7 @@
 				{/if}
 			</div>
 		</div>
-		<EntityListPageLayout containerClass="" gridClass="grid grid-cols-1 md:grid-cols-4 gap-6">
+		<EntityListPageLayout containerClass="" gridClass="grid grid-cols-1 lg:grid-cols-4 gap-6">
 			{#snippet sidebar()}
 				<UniversalFiltersSidebar
 					config={publicationFilterConfig}
@@ -387,16 +387,13 @@
 	/* For example, font size, color, etc. Handled by text-light for now */
 	/* } */
 
-	/* Media query for mobile */
-	@media (max-width: 900px) {
+	/* Media query for mobile/tablet - show mobile controls up to 1024px */
+	@media (max-width: 1024px) {
 		.mobile-controls {
 			display: flex; /* Enable flex for column layout */
 		}
-		/* .mobile-controls > .sorter-clear-group { // Removed as sorter-clear-group is now a row itself
-        /*    margin-left: auto; 
-        /* } */
 		.desktop-controls {
-			display: none; /* Hide desktop controls on mobile */
+			display: none; /* Hide desktop controls on tablet and mobile */
 		}
 	}
 </style>

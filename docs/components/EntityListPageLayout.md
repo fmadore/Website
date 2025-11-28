@@ -31,7 +31,7 @@ A flexible layout component for displaying entities in a standard page format wi
 | ---------------- | --------- | ----------------------------------------- | -------------------------------------------------- |
 | `title`          | `string`  | _Required_                                | The page title displayed at the top                |
 | `containerClass` | `string`  | `"container mx-auto py-6"`                | CSS class for the main container                   |
-| `gridClass`      | `string`  | `"grid grid-cols-1 md:grid-cols-4 gap-6"` | CSS class for the grid layout                      |
+| `gridClass`      | `string`  | `"grid grid-cols-1 lg:grid-cols-4 gap-6"` | CSS class for the grid layout                      |
 | `titleClass`     | `string`  | `"text-primary mb-6"`                     | CSS class for the title                            |
 | `sidebarClass`   | `string`  | `"md:col-span-1"`                         | CSS class for the sidebar                          |
 | `mainClass`      | `string`  | `"md:col-span-3"`                         | CSS class for the main content area                |
