@@ -391,11 +391,10 @@
 		margin-bottom: var(--space-lg);
 	}
 
-	/* Content wrapper for animation */
+	/* Content wrapper for animation - no gap, components manage their own spacing */
 	.content-wrapper {
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-lg);
 	}
 
 	/* Table of Contents Section - Enhanced styling with consistent glassmorphism */

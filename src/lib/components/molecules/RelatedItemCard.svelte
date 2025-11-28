@@ -38,55 +38,36 @@
 </a>
 
 <style>
-	/* Enhanced related publication card styling aligned with sophisticated glassmorphism design */
+	/* Enhanced related publication card styling - simpler to avoid nested card effect */
 	.related-item {
 		position: relative;
 		display: block;
 		text-decoration: none;
-		padding: var(--spacing-5);
+		padding: var(--space-md);
 		border-radius: var(--border-radius-lg);
 
-		/* Enhanced glassmorphism for individual cards matching CitedBy cards */
+		/* Simpler background to avoid heavy nested card appearance */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-accent-rgb), 0.03) 0%,
-			rgba(var(--color-primary-rgb), 0.02) 50%,
-			rgba(var(--color-highlight-rgb), 0.015) 100%
+			rgba(var(--color-surface-rgb), var(--opacity-medium)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 100%
 		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low, 0.08));
+		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-medium));
 		box-shadow: var(--shadow-sm);
-		transition: all var(--anim-duration-base, 0.3s) var(--anim-ease-out, ease-out);
+		transition:
+			transform var(--duration-normal) var(--ease-out),
+			box-shadow var(--duration-normal) var(--ease-out),
+			background var(--duration-normal) var(--ease-out);
 	}
 
 	.related-item:hover {
-		transform: var(--transform-lift-sm, translateY(-2px));
+		transform: var(--transform-lift-sm);
+		box-shadow: var(--shadow-md);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-accent-rgb), 0.05) 0%,
-			rgba(var(--color-primary-rgb), 0.03) 50%,
-			rgba(var(--color-highlight-rgb), 0.025) 100%
+			rgba(var(--color-surface-rgb), var(--opacity-medium-high)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 100%
 		);
-		box-shadow: var(--shadow-md);
-	}
-
-	/* Subtle inner highlight for depth */
-	.related-item::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		pointer-events: none;
-		border-radius: inherit;
-		background: linear-gradient(
-			180deg,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 0%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0) 40%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0) 60%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 100%
-		);
-		mix-blend-mode: overlay;
-		opacity: 0.3;
 	}
 
 	.related-date {
@@ -94,7 +75,7 @@
 		letter-spacing: 0.5px;
 		color: var(--color-text-muted);
 		text-transform: uppercase;
-		margin-bottom: var(--spacing-2);
+		margin-bottom: var(--space-xs);
 	}
 
 	.related-title {
@@ -104,8 +85,8 @@
 		font-family: var(--font-family-serif);
 		color: var(--color-text-emphasis);
 		margin: 0;
-		margin-bottom: var(--spacing-2);
-		transition: color var(--anim-duration-fast, 0.2s) var(--anim-ease-out, ease);
+		margin-bottom: var(--space-xs);
+		transition: color var(--duration-fast) var(--ease-out);
 	}
 
 	.related-item:hover .related-title {
@@ -131,19 +112,17 @@
 	:global(html.dark) .related-item {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.4) 0%,
-			rgba(var(--color-accent-rgb), 0.08) 50%,
-			rgba(var(--color-primary-rgb), 0.06) 100%
+			rgba(var(--color-dark-surface-rgb), var(--opacity-medium)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 100%
 		);
-		border-color: rgba(var(--color-white-rgb, 255, 255, 255), 0.06);
+		border-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
 	}
 
 	:global(html.dark) .related-item:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.5) 0%,
-			rgba(var(--color-accent-rgb), 0.12) 50%,
-			rgba(var(--color-primary-rgb), 0.08) 100%
+			rgba(var(--color-dark-surface-rgb), var(--opacity-medium-high)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 100%
 		);
 	}
 
@@ -153,7 +132,7 @@
 			font-size: var(--font-size-base);
 		}
 		.related-item {
-			padding: var(--spacing-3);
+			padding: var(--space-sm);
 		}
 	}
 

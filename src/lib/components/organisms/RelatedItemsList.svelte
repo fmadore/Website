@@ -80,45 +80,43 @@
 
 <style>
 	.related-items-section {
-		padding: var(--spacing-4);
+		margin-top: var(--space-xl);
+		padding: var(--space-lg);
 		border-radius: var(--border-radius-xl);
 		position: relative;
 
 		/* Sophisticated glassmorphism effect matching other components */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.035) 0%,
-			rgba(var(--color-accent-rgb), 0.025) 50%,
-			rgba(var(--color-highlight-rgb), 0.02) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 8px));
-		backdrop-filter: blur(var(--glass-blur-fallback, 8px));
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+		backdrop-filter: blur(var(--glass-blur-amount));
 		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
-		box-shadow:
-			var(--shadow-md),
-			inset 0 var(--border-width-thin) 0
-				rgba(var(--color-white-rgb), var(--opacity-low));
-		transition: all var(--anim-duration-base) var(--anim-ease-out);
+		box-shadow: var(--shadow-md);
+		transition:
+			transform var(--duration-normal) var(--ease-out),
+			box-shadow var(--duration-normal) var(--ease-out),
+			background var(--duration-normal) var(--ease-out);
 	}
 
 	@media (--sm) {
 		.related-items-section {
-			padding: var(--spacing-6);
+			padding: var(--space-xl);
 		}
 	}
 
 	.related-items-section:hover {
 		transform: var(--transform-lift-sm);
+		box-shadow: var(--shadow-lg);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.05) 0%,
-			rgba(var(--color-accent-rgb), 0.035) 50%,
-			rgba(var(--color-highlight-rgb), 0.03) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		box-shadow:
-			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0
-				rgba(var(--color-white-rgb), var(--opacity-medium));
 	}
 
 	.related-items-title {
@@ -126,7 +124,7 @@
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
-		margin-bottom: var(--spacing-6);
+		margin-bottom: var(--space-lg);
 		line-height: var(--line-height-tight);
 		position: relative;
 	}
@@ -141,9 +139,9 @@
 	.related-items-title::after {
 		content: '';
 		position: absolute;
-		bottom: calc(-1 * var(--spacing-2));
+		bottom: calc(-1 * var(--space-sm));
 		left: 0;
-		width: var(--spacing-16);
+		width: var(--space-3xl);
 		height: var(--border-width-medium);
 		background: linear-gradient(
 			90deg,
@@ -151,21 +149,21 @@
 			rgba(var(--color-highlight-rgb), 0.3) 100%
 		);
 		border-radius: var(--border-radius-full);
-		transition: width var(--anim-duration-base) var(--anim-ease-out);
+		transition: width var(--duration-normal) var(--ease-out);
 	}
 
 	.related-items-section:hover .related-items-title::after {
-		width: var(--spacing-20);
+		width: var(--space-5xl);
 	}
 
 	.related-items-grid {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: var(--spacing-4);
+		gap: var(--space-md);
 	}
 
 	.view-all-container {
-		margin-top: var(--spacing-6);
+		margin-top: var(--space-lg);
 		text-align: center;
 	}
 
@@ -173,19 +171,19 @@
 	:global(html.dark) .related-items-section {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-surface-rgb), 0.6) 0%,
-			rgba(var(--color-primary-rgb), 0.12) 50%,
-			rgba(var(--color-accent-rgb), 0.08) 100%
+			rgba(var(--color-primary-rgb), 0.08) 0%,
+			rgba(var(--color-highlight-rgb), 0.04) 50%,
+			rgba(var(--color-accent-rgb), 0.06) 100%
 		);
-		border-color: rgba(var(--color-white-rgb), 0.08);
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
 	}
 
 	:global(html.dark) .related-items-section:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-surface-rgb), 0.7) 0%,
-			rgba(var(--color-primary-rgb), 0.15) 50%,
-			rgba(var(--color-accent-rgb), 0.1) 100%
+			rgba(var(--color-primary-rgb), 0.12) 0%,
+			rgba(var(--color-highlight-rgb), 0.06) 50%,
+			rgba(var(--color-accent-rgb), 0.08) 100%
 		);
 	}
 

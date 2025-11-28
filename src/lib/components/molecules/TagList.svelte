@@ -49,7 +49,7 @@
 
 <style>
 	.tag-list-section {
-		margin-bottom: var(--spacing-6);
+		margin-bottom: var(--space-lg);
 	}
 
 	.tag-list-title {
@@ -57,14 +57,14 @@
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
-		margin-bottom: var(--spacing-2);
+		margin-bottom: var(--space-sm);
 		line-height: var(--line-height-tight);
 	}
 
 	.tag-list {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--spacing-2);
+		gap: var(--space-sm);
 	}
 
 	/* Enhanced styling for tag buttons with glassmorphism */
@@ -76,7 +76,7 @@
 
 	:global(.tag-button:hover) {
 		transform: var(--transform-lift-sm);
-		box-shadow: 0 var(--spacing-2) var(--spacing-6) 0
+		box-shadow: 0 var(--space-xs) var(--space-md) 0
 			rgba(var(--color-primary-rgb), var(--opacity-medium)) !important;
 	}
 
@@ -84,7 +84,7 @@
 	@media (max-width: 640px) {
 		:global(.tag-button) {
 			font-size: var(--font-size-xs);
-			padding: var(--spacing-1) var(--spacing-2);
+			padding: var(--space-2xs) var(--space-xs);
 		}
 	}
 

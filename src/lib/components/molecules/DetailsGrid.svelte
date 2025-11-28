@@ -24,7 +24,7 @@
 </script>
 
 {#if visibleDetails.length > 0}
-	<section class="details-section mb-8" aria-labelledby="publication-details-heading">
+	<section class="details-section" aria-labelledby="publication-details-heading">
 		<h2 id="publication-details-heading" class="visually-hidden">Publication Details</h2>
 		<dl class="details-grid glass-card">
 			{#each visibleDetails as detail (detail.label)}
@@ -66,6 +66,7 @@
 		gap: var(--space-md) var(--space-lg);
 		padding: var(--space-lg);
 		border-radius: var(--border-radius-xl);
+		margin-bottom: var(--space-lg);
 		/* Subtle layered gradient echoing other glass components */
 		background: linear-gradient(
 			135deg,
