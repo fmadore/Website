@@ -298,22 +298,19 @@
 <MetaTags {publication} />
 
 <div class="container mx-auto py-8 px-4">
-	<article
-		class="publication-article glass-card rounded-lg p-6 mb-8"
-		use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up' }}
-	>
-		<!-- Use the Breadcrumb component -->
-		<Breadcrumb items={breadcrumbItems} />
+	<!-- Breadcrumb outside article for better structure -->
+	<Breadcrumb items={breadcrumbItems} />
 
-		<PageHeader
-			title={publication.title}
-			date={publication.date}
-			typeBadgeText={getTypeBadgeText(publication.type)}
-			authors={publication.authors}
-		/>
+	<article class="publication-article">
+		<div class="content-wrapper" use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up' }}>
+			<PageHeader
+				title={publication.title}
+				date={publication.date}
+				typeBadgeText={getTypeBadgeText(publication.type)}
+				authors={publication.authors}
+			/>
 
-		<!-- Use the new HeroImageDisplay component -->
-		<div use:scrollAnimate={{ delay: 200, animationClass: 'fade-in-up' }}>
+			<!-- Hero Image Display -->
 			<HeroImageDisplay
 				heroImage={publication.heroImage}
 				fallbackImage={publication.image}
@@ -321,21 +318,15 @@
 				imageClass="w-full max-w-md h-auto rounded-md mx-auto"
 				figcaptionClass="text-text-muted text-sm mt-2 italic text-center"
 			/>
-		</div>
 
-		<!-- Use the new AbstractSection component -->
-		<div use:scrollAnimate={{ delay: 300, animationClass: 'fade-in-up' }}>
+			<!-- Abstract Section -->
 			<AbstractSection abstract={publication.abstract} />
-		</div>
 
-		<!-- Use the new DetailsGrid component -->
-		<div use:scrollAnimate={{ delay: 400, animationClass: 'fade-in-up' }}>
+			<!-- Details Grid -->
 			<DetailsGrid details={publicationDetails} />
-		</div>
 
-		<!-- Table of Contents Section -->
-		{#if (publication.type === 'book' || publication.type === 'special-issue') && publication.tableOfContents && publication.tableOfContents.length > 0}
-			<div use:scrollAnimate={{ delay: 500, animationClass: 'fade-in-up' }}>
+			<!-- Table of Contents Section -->
+			{#if (publication.type === 'book' || publication.type === 'special-issue') && publication.tableOfContents && publication.tableOfContents.length > 0}
 				<section class="table-of-contents-section">
 					<h2 class="toc-title">Table of Contents</h2>
 					<ol class="toc-list">
@@ -347,110 +338,95 @@
 						{/each}
 					</ol>
 				</section>
-			</div>
-		{/if}
+			{/if}
 
-		<!-- Use the new TagList component -->
-		<div use:scrollAnimate={{ delay: 600, animationClass: 'fade-in-up' }}>
+			<!-- Tags -->
 			<TagList tags={publication.tags} baseUrl="/publications?tag=" />
-		</div>
 
-		<!-- Container for Action Links and Export Button -->
-		<div
-			class="publication-actions flex flex-wrap items-center gap-4"
-			use:scrollAnimate={{ delay: 700, animationClass: 'fade-in-up' }}
-		>
-			<!-- ActionLinks component -->
-			<ActionLinks
-				primaryUrl={publication.url}
-				primaryLabel="Access Publication"
-				additionalUrls={publication.additionalUrls}
-				sectionClass=""
-				primaryDivClass=""
-			/>
+			<!-- Action Links and Export Button -->
+			<div class="publication-actions flex flex-wrap items-center gap-4">
+				<ActionLinks
+					primaryUrl={publication.url}
+					primaryLabel="Access Publication"
+					additionalUrls={publication.additionalUrls}
+					sectionClass=""
+					primaryDivClass=""
+				/>
 
-			<!-- Export BibTeX Button -->
-			<div>
-				<button onclick={downloadBibtex} class="btn btn-primary cursor-pointer">
-					Export BibTeX
-				</button>
+				<div>
+					<button onclick={downloadBibtex} class="btn btn-primary cursor-pointer">
+						Export BibTeX
+					</button>
+				</div>
 			</div>
-
-			<!-- Export RIS Button - REMOVED -->
-			<!--
-            <div>
-                <button 
-                    onclick={downloadRis} 
-                    class="btn btn-primary cursor-pointer"
-                >
-                    Export RIS
-                </button>
-            </div>
-            -->
 		</div>
 	</article>
 
-	<!-- Use the Reviews component -->
-	<div use:scrollAnimate={{ delay: 800, animationClass: 'fade-in-up' }}>
-		<Reviews reviewedBy={publication.reviewedBy} />
-	</div>
+	<!-- Reviews component -->
+	<Reviews reviewedBy={publication.reviewedBy} />
 
-	<!-- Use the CitedBy component -->
-	<div use:scrollAnimate={{ delay: 900, animationClass: 'fade-in-up' }}>
-		<CitedBy citedBy={publication.citedBy} />
-	</div>
+	<!-- CitedBy component -->
+	<CitedBy citedBy={publication.citedBy} />
 
-	<!-- Use the RelatedItemsList organism -->
+	<!-- Related Publications -->
 	{#if publication.project}
-		<div use:scrollAnimate={{ delay: 1000, animationClass: 'fade-in-up' }}>
-			<RelatedItemsList
-				allItems={allPublications}
-				currentItemId={publication.id}
-				filterKey="project"
-				filterValue={publication.project}
-				title="More Publications in this Project"
-				itemComponent={RelatedItemCard as unknown as ComponentType}
-				baseItemUrl="/publications/"
-				viewAllUrl="{base}/publications"
-				maxItems={3}
-			/>
-		</div>
+		<RelatedItemsList
+			allItems={allPublications}
+			currentItemId={publication.id}
+			filterKey="project"
+			filterValue={publication.project}
+			title="More Publications in this Project"
+			itemComponent={RelatedItemCard as unknown as ComponentType}
+			baseItemUrl="/publications/"
+			viewAllUrl="{base}/publications"
+			maxItems={3}
+		/>
 	{/if}
 </div>
 
 <style>
-	/* Article container - glassmorphism applied via utility class */
+	/* Article container - no outer glass card, sections have their own glassmorphism */
 	.publication-article {
 		position: relative;
-		/* All glassmorphism effects handled by .glass-card utility */
+		margin-bottom: var(--space-lg);
 	}
 
-	/* Table of Contents Section - Enhanced styling */
+	/* Content wrapper for animation */
+	.content-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-lg);
+	}
+
+	/* Table of Contents Section - Enhanced styling with consistent glassmorphism */
 	.table-of-contents-section {
-		margin: var(--spacing-8) 0;
-		padding: var(--spacing-6);
-		border-radius: var(--border-radius-lg);
+		padding: var(--space-lg);
+		border-radius: var(--border-radius-xl);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low));
-		box-shadow: var(--shadow-sm);
-		transition: all var(--anim-duration-base) var(--anim-ease-out);
+		backdrop-filter: blur(var(--glass-blur-amount));
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+		box-shadow: var(--shadow-md);
+		transition:
+			transform var(--duration-normal) var(--ease-out),
+			box-shadow var(--duration-normal) var(--ease-out),
+			background var(--duration-normal) var(--ease-out);
 	}
 
 	.table-of-contents-section:hover {
+		transform: var(--transform-lift-sm);
+		box-shadow: var(--shadow-lg);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-accent-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		box-shadow: var(--shadow-md);
 	}
 
 	.toc-title {
@@ -458,7 +434,7 @@
 		font-size: var(--font-size-xl);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
-		margin-bottom: var(--spacing-4);
+		margin-bottom: var(--space-lg);
 		line-height: var(--line-height-tight);
 		position: relative;
 	}
@@ -466,32 +442,39 @@
 	.toc-title::after {
 		content: '';
 		position: absolute;
-		bottom: calc(-1 * var(--spacing-2));
+		bottom: calc(-1 * var(--space-sm));
 		left: 0;
-		width: var(--spacing-12);
+		width: var(--space-3xl);
 		height: var(--border-width-medium);
 		background: linear-gradient(
 			90deg,
-			var(--color-accent) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-medium)) 100%
+			var(--color-highlight) 0%,
+			rgba(var(--color-highlight-rgb), 0.3) 100%
 		);
 		border-radius: var(--border-radius-full);
+		transition: width var(--duration-normal) var(--ease-out);
+	}
+
+	.table-of-contents-section:hover .toc-title::after {
+		width: var(--space-5xl);
 	}
 
 	.toc-list {
 		list-style: none;
 		padding: 0;
 		margin: 0;
-		counter-reset: toc-counter;
 	}
 
 	.toc-item {
 		display: flex;
 		align-items: flex-start;
-		gap: var(--spacing-3);
-		padding: var(--spacing-3) 0;
-		border-bottom: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-very-low));
-		transition: all var(--anim-duration-fast) var(--anim-ease-out);
+		gap: var(--space-sm);
+		padding: var(--space-sm) 0;
+		border-bottom: var(--border-width-thin) solid
+			rgba(var(--color-primary-rgb), var(--opacity-very-low));
+		transition:
+			background var(--duration-fast) var(--ease-out),
+			padding-left var(--duration-fast) var(--ease-out);
 	}
 
 	.toc-item:last-child {
@@ -499,18 +482,17 @@
 	}
 
 	.toc-item:hover {
-		background: rgba(var(--color-accent-rgb), var(--opacity-very-low));
-		padding-left: var(--spacing-2);
+		background: rgba(var(--color-primary-rgb), var(--opacity-very-low));
+		padding-left: var(--space-sm);
 		border-radius: var(--border-radius-sm);
 	}
 
 	.toc-number {
-		counter-increment: toc-counter;
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-accent);
 		font-size: var(--font-size-sm);
 		line-height: var(--line-height-snug);
-		min-width: var(--spacing-6);
+		min-width: var(--space-lg);
 	}
 
 	.toc-content {
@@ -520,16 +502,55 @@
 		flex: 1;
 	}
 
-	/* Dark mode refinements - glassmorphism utilities handle article container */
+	/* Publication actions container - consistent glassmorphism */
+	.publication-actions {
+		padding: var(--space-md) var(--space-lg);
+		border-radius: var(--border-radius-xl);
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+		);
+		backdrop-filter: blur(var(--glass-blur-amount));
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+		border: var(--border-width-thin) solid rgba(var(--color-highlight-rgb), var(--opacity-low));
+		box-shadow: var(--shadow-md);
+		transition:
+			transform var(--duration-normal) var(--ease-out),
+			box-shadow var(--duration-normal) var(--ease-out),
+			background var(--duration-normal) var(--ease-out);
+	}
 
+	.publication-actions:hover {
+		transform: var(--transform-lift-sm);
+		box-shadow: var(--shadow-lg);
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-highlight-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+		);
+	}
+
+	/* Dark mode adjustments */
 	:global(html.dark) .table-of-contents-section {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 100%
+			rgba(var(--color-primary-rgb), 0.08) 0%,
+			rgba(var(--color-highlight-rgb), 0.04) 50%,
+			rgba(var(--color-accent-rgb), 0.06) 100%
 		);
-		border-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
+	}
+
+	:global(html.dark) .table-of-contents-section:hover {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.12) 0%,
+			rgba(var(--color-highlight-rgb), 0.06) 50%,
+			rgba(var(--color-accent-rgb), 0.08) 100%
+		);
 	}
 
 	:global(html.dark) .toc-item {
@@ -537,105 +558,15 @@
 	}
 
 	:global(html.dark) .toc-item:hover {
-		background: rgba(var(--color-accent-rgb), var(--opacity-low));
+		background: rgba(var(--color-primary-rgb), var(--opacity-low));
 	}
 
-	/* Responsive adjustments */
-	@media (max-width: 640px) {
-		.table-of-contents-section {
-			padding: var(--spacing-4);
-		}
-
-		.toc-title {
-			font-size: var(--font-size-lg);
-		}
-
-		.toc-item {
-			padding: var(--spacing-2) 0;
-		}
-
-		.toc-number,
-		.toc-content {
-			font-size: var(--font-size-xs);
-		}
-	}
-
-	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
-		.publication-article,
-		.publication-article:hover,
-		.table-of-contents-section,
-		.table-of-contents-section:hover,
-		.toc-item,
-		.toc-item:hover {
-			transition: none;
-			transform: none;
-		}
-	}
-
-	/* Publication actions container styling - enhanced for better visual integration */
-	.publication-actions {
-		margin-top: var(--spacing-8);
-		padding: var(--spacing-4) var(--spacing-6);
-		border-radius: var(--border-radius-lg);
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
-		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		border: var(--border-width-thin) solid
-			rgba(var(--color-highlight-rgb), var(--opacity-low));
-		box-shadow: var(--shadow-sm);
-		transition: all var(--anim-duration-base) var(--anim-ease-out);
-	}
-
-	.publication-actions:hover {
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-highlight-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
-		);
-		box-shadow: var(--shadow-md);
-	}
-
-	/* Enhanced styling for export buttons within the actions container */
-	.publication-actions .btn {
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 4px));
-		backdrop-filter: blur(var(--glass-blur-fallback, 4px));
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
-		position: relative;
-		overflow: hidden;
-	}
-
-	.publication-actions .btn::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background: linear-gradient(
-			45deg,
-			rgba(var(--color-white-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-white-rgb), 0) 50%,
-			rgba(var(--color-white-rgb), var(--opacity-low)) 100%
-		);
-		opacity: 0;
-		transition: opacity var(--anim-duration-fast) var(--anim-ease-out);
-	}
-
-	.publication-actions .btn:hover::before {
-		opacity: 1;
-	}
-
-	/* Dark mode adjustments for publication actions */
 	:global(html.dark) .publication-actions {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 100%
+			rgba(var(--color-highlight-rgb), 0.08) 0%,
+			rgba(var(--color-primary-rgb), 0.04) 50%,
+			rgba(var(--color-accent-rgb), 0.06) 100%
 		);
 		border-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
 	}
@@ -643,26 +574,47 @@
 	:global(html.dark) .publication-actions:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb), var(--opacity-medium-high)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 100%
+			rgba(var(--color-highlight-rgb), 0.12) 0%,
+			rgba(var(--color-primary-rgb), 0.06) 50%,
+			rgba(var(--color-accent-rgb), 0.08) 100%
 		);
 	}
 
-	/* Responsive adjustments for actions */
-	@media (max-width: 640px) {
+	/* Responsive adjustments */
+	@media (--sm) {
+		.table-of-contents-section {
+			padding: var(--space-xl);
+		}
+
+		.toc-title {
+			font-size: var(--font-size-2xl);
+		}
+
+		.toc-item {
+			padding: var(--space-md) 0;
+		}
+
+		.toc-number,
+		.toc-content {
+			font-size: var(--font-size-base);
+		}
+
 		.publication-actions {
-			padding: var(--spacing-3) var(--spacing-4);
-			margin-top: var(--spacing-6);
+			padding: var(--space-lg) var(--space-xl);
 		}
 	}
 
-	/* Motion preferences for actions */
+	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
+		.table-of-contents-section,
+		.table-of-contents-section:hover,
+		.toc-item,
+		.toc-item:hover,
+		.toc-title::after,
 		.publication-actions,
-		.publication-actions:hover,
-		.publication-actions .btn::before {
+		.publication-actions:hover {
 			transition: none;
+			transform: none;
 		}
 	}
 </style>

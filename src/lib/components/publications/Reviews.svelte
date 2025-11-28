@@ -62,46 +62,43 @@
 
 <style>
 	.reviews-section {
-		margin-top: var(--spacing-8);
-		padding: var(--spacing-4);
+		margin-top: var(--space-xl);
+		padding: var(--space-lg);
 		border-radius: var(--border-radius-xl);
 		position: relative;
 
 		/* Sophisticated glassmorphism effect matching other components */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.035) 0%,
-			rgba(var(--color-accent-rgb), 0.025) 50%,
-			rgba(var(--color-highlight-rgb), 0.02) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback));
-		backdrop-filter: blur(var(--glass-blur-fallback));
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low, 0.08));
-		box-shadow:
-			var(--shadow-md),
-			inset 0 var(--border-width-thin) 0
-				rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-low, 0.1));
-		transition: all var(--anim-duration-base, 0.3s) var(--anim-ease-out, ease-out);
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+		backdrop-filter: blur(var(--glass-blur-amount));
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+		box-shadow: var(--shadow-md);
+		transition:
+			transform var(--duration-normal) var(--ease-out),
+			box-shadow var(--duration-normal) var(--ease-out),
+			background var(--duration-normal) var(--ease-out);
 	}
 
 	@media (--sm) {
 		.reviews-section {
-			padding: var(--spacing-6);
+			padding: var(--space-xl);
 		}
 	}
 
 	.reviews-section:hover {
-		transform: var(--transform-lift-sm, translateY(-1px));
+		transform: var(--transform-lift-sm);
+		box-shadow: var(--shadow-lg);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.05) 0%,
-			rgba(var(--color-accent-rgb), 0.035) 50%,
-			rgba(var(--color-highlight-rgb), 0.03) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		box-shadow:
-			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0
-				rgba(var(--color-white-rgb, 255, 255, 255), var(--opacity-medium, 0.15));
 	}
 
 	.section-title {
@@ -109,7 +106,7 @@
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
-		margin-bottom: var(--spacing-6);
+		margin-bottom: var(--space-lg);
 		line-height: var(--line-height-tight);
 		position: relative;
 	}
@@ -124,9 +121,9 @@
 	.section-title::after {
 		content: '';
 		position: absolute;
-		bottom: calc(-1 * var(--spacing-2));
+		bottom: calc(-1 * var(--space-sm));
 		left: 0;
-		width: var(--spacing-16);
+		width: var(--space-3xl);
 		height: var(--border-width-medium);
 		background: linear-gradient(
 			90deg,
@@ -134,77 +131,52 @@
 			rgba(var(--color-highlight-rgb), 0.3) 100%
 		);
 		border-radius: var(--border-radius-full);
-		transition: width var(--anim-duration-base, 0.3s) var(--anim-ease-out, ease-out);
+		transition: width var(--duration-normal) var(--ease-out);
 	}
 
 	.reviews-section:hover .section-title::after {
-		width: var(--spacing-20);
+		width: var(--space-5xl);
 	}
 
 	.reviews-grid {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: var(--spacing-6);
+		gap: var(--space-lg);
 	}
 
 	.review-card {
-		padding: var(--spacing-4);
+		padding: var(--space-md);
 		border-radius: var(--border-radius-lg);
 		position: relative;
 
 		/* Enhanced glassmorphism for individual cards */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-accent-rgb), 0.03) 0%,
-			rgba(var(--color-primary-rgb), 0.02) 50%,
-			rgba(var(--color-highlight-rgb), 0.015) 100%
+			rgba(var(--color-surface-rgb), var(--opacity-medium)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 100%
 		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback));
-		backdrop-filter: blur(var(--glass-blur-fallback));
-		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low, 0.08));
+		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-medium));
 		box-shadow: var(--shadow-sm);
-		transition: all var(--anim-duration-base, 0.3s) var(--anim-ease-out, ease-out);
+		transition:
+			transform var(--duration-normal) var(--ease-out),
+			box-shadow var(--duration-normal) var(--ease-out);
 	}
 
 	@media (--sm) {
 		.review-card {
-			padding: var(--spacing-6);
+			padding: var(--space-lg);
 		}
 	}
 
 	.review-card:hover {
-		transform: var(--transform-lift-sm, translateY(-2px));
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-accent-rgb), 0.05) 0%,
-			rgba(var(--color-primary-rgb), 0.03) 50%,
-			rgba(var(--color-highlight-rgb), 0.025) 100%
-		);
+		transform: var(--transform-lift-sm);
 		box-shadow: var(--shadow-md);
-	}
-
-	/* Subtle inner highlight for depth */
-	.review-card::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		pointer-events: none;
-		border-radius: inherit;
-		background: linear-gradient(
-			180deg,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 0%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0) 40%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0) 60%,
-			rgba(var(--color-white-rgb, 255, 255, 255), 0.08) 100%
-		);
-		mix-blend-mode: overlay;
-		opacity: 0.3;
 	}
 
 	.review-title {
 		font-size: var(--font-size-base);
 		font-weight: var(--font-weight-semibold);
-		margin-bottom: var(--spacing-3);
+		margin-bottom: var(--space-sm);
 		color: var(--color-text-emphasis);
 		line-height: var(--line-height-snug);
 		font-family: var(--font-family-serif);
@@ -220,7 +192,7 @@
 		color: var(--color-primary);
 		text-decoration: none;
 		font-weight: var(--font-weight-semibold);
-		transition: color var(--anim-duration-fast, 0.2s) var(--anim-ease-out, ease);
+		transition: color var(--duration-fast) var(--ease-out);
 	}
 
 	.review-link:hover {
@@ -232,14 +204,14 @@
 	.review-link:after {
 		content: '↗';
 		font-size: var(--font-size-sm);
-		margin-left: var(--spacing-1);
-		opacity: var(--opacity-high, 0.8);
+		margin-left: var(--space-2xs);
+		opacity: var(--opacity-high);
 	}
 
 	.review-author {
 		font-size: var(--font-size-sm);
 		color: var(--color-text-light);
-		margin-bottom: var(--spacing-3);
+		margin-bottom: var(--space-sm);
 	}
 
 	.author-label {
@@ -249,7 +221,7 @@
 	.journal-info {
 		font-size: var(--font-size-sm);
 		color: var(--color-text-muted);
-		margin-bottom: var(--spacing-4);
+		margin-bottom: var(--space-md);
 	}
 
 	.journal-name {
@@ -263,14 +235,14 @@
 	}
 
 	.doi {
-		margin-top: var(--spacing-2);
+		margin-top: var(--space-xs);
 	}
 
 	.doi-link {
 		color: var(--color-primary);
 		text-decoration: none;
 		font-weight: var(--font-weight-medium);
-		transition: color var(--anim-duration-fast, 0.2s) var(--anim-ease-out, ease);
+		transition: color var(--duration-fast) var(--ease-out);
 	}
 
 	.doi-link:hover {
@@ -279,47 +251,23 @@
 	}
 
 	.excerpt {
-		margin-top: var(--spacing-5);
-		padding: var(--spacing-4) var(--spacing-4);
-		border-radius: var(--border-radius-lg);
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-accent-rgb), 0.05) 100%
-		);
-		border-left: var(--border-width-thick) solid var(--color-primary);
+		margin-top: var(--space-md);
+		padding: var(--space-md);
+		border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+		background: rgba(var(--color-surface-rgb), var(--opacity-medium));
+		border-left: var(--border-width-thick) solid var(--color-accent);
 		font-style: italic;
-		color: var(--color-text);
+		color: var(--color-text-light);
 		position: relative;
 		line-height: var(--line-height-relaxed);
-		letter-spacing: var(--letter-spacing-wide, 0.025em);
 		font-family: var(--font-family-serif);
 		font-size: var(--font-size-sm);
 	}
 
 	@media (--sm) {
 		.excerpt {
-			padding: var(--spacing-5) var(--spacing-6);
+			padding: var(--space-md) var(--space-lg);
 			font-size: var(--font-size-base);
-		}
-	}
-
-	.excerpt::before {
-		content: '"';
-		position: absolute;
-		left: var(--spacing-2);
-		top: -0.2em;
-		color: var(--color-primary);
-		font-size: var(--font-size-2xl);
-		font-family: var(--font-family-serif);
-		font-weight: var(--font-weight-bold);
-		opacity: 0.6;
-	}
-
-	@media (--sm) {
-		.excerpt::before {
-			left: var(--spacing-3);
-			font-size: var(--font-size-3xl);
 		}
 	}
 
@@ -336,47 +284,41 @@
 	:global(html.dark) .reviews-section {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.6) 0%,
-			rgba(var(--color-primary-rgb), 0.12) 50%,
-			rgba(var(--color-accent-rgb), 0.08) 100%
+			rgba(var(--color-primary-rgb), 0.08) 0%,
+			rgba(var(--color-highlight-rgb), 0.04) 50%,
+			rgba(var(--color-accent-rgb), 0.06) 100%
 		);
-		border-color: rgba(var(--color-white-rgb, 255, 255, 255), 0.08);
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
 	}
 
 	:global(html.dark) .reviews-section:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.7) 0%,
-			rgba(var(--color-primary-rgb), 0.15) 50%,
-			rgba(var(--color-accent-rgb), 0.1) 100%
+			rgba(var(--color-primary-rgb), 0.12) 0%,
+			rgba(var(--color-highlight-rgb), 0.06) 50%,
+			rgba(var(--color-accent-rgb), 0.08) 100%
 		);
 	}
 
 	:global(html.dark) .review-card {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.4) 0%,
-			rgba(var(--color-accent-rgb), 0.08) 50%,
-			rgba(var(--color-primary-rgb), 0.06) 100%
+			rgba(var(--color-dark-surface-rgb), var(--opacity-medium)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 100%
 		);
-		border-color: rgba(var(--color-white-rgb, 255, 255, 255), 0.06);
+		border-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
 	}
 
 	:global(html.dark) .review-card:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.5) 0%,
-			rgba(var(--color-accent-rgb), 0.12) 50%,
-			rgba(var(--color-primary-rgb), 0.08) 100%
+			rgba(var(--color-dark-surface-rgb), var(--opacity-medium-high)) 0%,
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 100%
 		);
 	}
 
 	:global(html.dark) .excerpt {
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.12) 0%,
-			rgba(var(--color-accent-rgb), 0.08) 100%
-		);
+		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium));
 	}
 
 	/* Responsive adjustments */

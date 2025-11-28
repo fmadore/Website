@@ -63,15 +63,15 @@
 	.details-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-		gap: var(--spacing-4) var(--spacing-6);
-		padding: var(--spacing-5) var(--spacing-6);
+		gap: var(--space-md) var(--space-lg);
+		padding: var(--space-lg);
 		border-radius: var(--border-radius-xl);
 		/* Subtle layered gradient echoing other glass components */
 		background: linear-gradient(
 			135deg,
 			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 55%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 55%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
 		position: relative;
 	}
@@ -98,8 +98,8 @@
 		display: grid;
 		grid-template-columns: 110px 1fr; /* label column */
 		align-items: baseline;
-		gap: var(--spacing-3);
-		padding: var(--spacing-3) var(--spacing-2) var(--spacing-2);
+		gap: var(--space-sm);
+		padding: var(--space-sm) var(--space-xs) var(--space-xs);
 		border-bottom: var(--border-width-thin) solid var(--color-border-light);
 		position: relative;
 	}
@@ -113,7 +113,7 @@
 			grid-template-columns: 1fr;
 		}
 		.detail-label {
-			margin-bottom: var(--spacing-1);
+			margin-bottom: var(--space-2xs);
 		}
 	}
 
@@ -145,7 +145,7 @@
 	}
 	.detail-link:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-highlight);
-		outline-offset: var(--spacing-1);
+		outline-offset: var(--space-2xs);
 		border-radius: var(--border-radius-sm);
 	}
 
