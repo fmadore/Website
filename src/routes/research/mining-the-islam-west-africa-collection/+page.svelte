@@ -78,12 +78,12 @@
 
 <SEO title="Mining the Islam West Africa Collection | Frédérick Madore" />
 
-<div
-	class="container py-8"
-	use:scrollAnimate={{ delay: DELAY_STEP * 0, animationClass: 'fade-in-up' }}
->
+<div class="container py-8">
 	<!-- Apply grid layout to this container on medium screens and up -->
-	<div class="content-wrapper" use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
+	<div
+		class="content-wrapper"
+		use:scrollAnimate={{ delay: DELAY_STEP, animationClass: 'fade-in-up' }}
+	>
 		<div class="main-content max-w-6xl mx-auto">
 			<Breadcrumb items={breadcrumbItems} />
 
@@ -173,17 +173,57 @@
 </div>
 
 <style>
+	/* Interactive content section with glassmorphism - consistent with activity pages */
 	.iframe-section {
-		margin-top: var(--spacing-12);
-		margin-bottom: var(--spacing-8);
-		/* Add a subtle background to make glassmorphism more visible */
+		position: relative;
+		margin-top: var(--space-xl);
+		margin-bottom: var(--space-lg);
+		padding: var(--space-lg);
+		border-radius: var(--border-radius-xl);
+		/* Enhanced glassmorphism with subtle gradient overlay */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-5)) 0%,
-			rgba(var(--color-accent-rgb), calc(var(--opacity-low) * 0.3)) 50%,
-			rgba(var(--color-highlight-rgb), var(--opacity-5)) 100%
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 		);
-		padding: var(--spacing-6);
-		border-radius: var(--border-radius-lg);
+		box-shadow: var(--shadow-md);
+		transition:
+			transform var(--duration-normal) var(--ease-out),
+			box-shadow var(--duration-normal) var(--ease-out);
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+	}
+
+	.iframe-section:hover {
+		transform: var(--transform-lift-sm);
+		box-shadow: var(--shadow-lg);
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+		);
+	}
+
+	/* Respect user motion preferences */
+	@media (prefers-reduced-motion: reduce) {
+		.iframe-section {
+			transition: none;
+		}
+
+		.iframe-section:hover {
+			transform: none;
+		}
+	}
+
+	/* Dark mode adjustments */
+	:global(html.dark) .iframe-section {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.08) 0%,
+			rgba(var(--color-highlight-rgb), 0.04) 50%,
+			rgba(var(--color-accent-rgb), 0.06) 100%
+		);
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
 	}
 </style>

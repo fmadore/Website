@@ -336,13 +336,15 @@
 			}
 		}
 
-		/* PDF section styling with glassmorphism */
+		/* PDF section styling with glassmorphism - consistent with research iframe-section */
 		.pdf-section {
 			position: relative;
 			content-visibility: auto;
 			contain-intrinsic-size: 800px;
 			border-radius: var(--border-radius-xl);
-			transition: transform var(--transition-duration-300) var(--transition-timing-ease);
+			transition:
+				transform var(--duration-normal) var(--ease-out),
+				box-shadow var(--duration-normal) var(--ease-out);
 			box-shadow: var(--shadow-md);
 			/* Enhanced glassmorphism with subtle gradient overlay */
 			background: linear-gradient(
@@ -351,6 +353,7 @@
 				rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
 				rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
 			);
+			border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
 		}
 
 		/* Override h2 margin-top inside pdf-section */
@@ -378,6 +381,17 @@
 			.pdf-section:hover {
 				transform: none;
 			}
+		}
+
+		/* Dark mode adjustments */
+		:global(html.dark) .pdf-section {
+			background: linear-gradient(
+				135deg,
+				rgba(var(--color-primary-rgb), 0.08) 0%,
+				rgba(var(--color-highlight-rgb), 0.04) 50%,
+				rgba(var(--color-accent-rgb), 0.06) 100%
+			);
+			border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
 		}
 	</style>
 {/if}
