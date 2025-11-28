@@ -16,6 +16,7 @@
 	import RelatedItemsList from '$lib/components/organisms/RelatedItemsList.svelte';
 	import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
 	import { browser } from '$app/environment';
+	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 	import {
 		createCommunicationSEODescription,
 		createCommunicationSEOKeywords,
@@ -144,108 +145,111 @@
 <MetaTags {communication} />
 
 <div class="container mx-auto py-8 px-4">
-	<article class="communication-article glass-card rounded-lg p-6 mb-8">
-		<!-- Add Breadcrumb component -->
-		<Breadcrumb items={breadcrumbItems} />
+	<Breadcrumb items={breadcrumbItems} />
 
-		<PageHeader
-			title={communication.title}
-			date={communication.date}
-			typeBadgeText={getTypeBadgeText(communication.type || '')}
-			authors={communication.authors}
-		/>
+	<article class="communication-article">
+		<div class="content-wrapper" use:scrollAnimate={{ animationClass: 'fade-in-up' }}>
+			<PageHeader
+				title={communication.title}
+				date={communication.date}
+				typeBadgeText={getTypeBadgeText(communication.type || '')}
+				authors={communication.authors}
+			/>
 
-		<!-- Use the new HeroImageDisplay component -->
-		<HeroImageDisplay
-			heroImage={communication.heroImage}
-			fallbackImage={communication.image}
-			defaultAlt={communication.title}
-			imageClass="w-full max-w-md h-auto rounded-md mx-auto"
-			figcaptionClass="text-muted text-sm mt-2 italic"
-		/>
+			<!-- Hero Image Display -->
+			<HeroImageDisplay
+				heroImage={communication.heroImage}
+				fallbackImage={communication.image}
+				defaultAlt={communication.title}
+				imageClass="w-full max-w-md h-auto rounded-md mx-auto"
+				figcaptionClass="text-muted text-sm mt-2 italic"
+			/>
 
-		<!-- Use the new AbstractSection component -->
-		<AbstractSection abstract={communication.abstract} />
+			<!-- Abstract Section -->
+			<AbstractSection abstract={communication.abstract} />
 
-		<!-- Use the new DetailsGrid component -->
-		<DetailsGrid details={communicationDetails} />
+			<!-- Details Grid -->
+			<DetailsGrid details={communicationDetails} />
 
-		<!-- Panel-specific information -->
-		{#if communication.type === 'panel' && communication.papers && communication.papers.length > 0}
-			<section class="panel-papers-section">
-				<h2 class="panel-section-title">Papers in this Panel</h2>
-				<div class="panel-papers-grid">
-					{#each communication.papers as paper, index (paper.title + index)}
-						<div class="panel-paper-card">
-							<h3 class="panel-paper-title">{paper.title}</h3>
-							{#if paper.authors && paper.authors.length > 0}
-								<div class="panel-paper-authors">
-									{#each paper.authors as author, index (author.name + index)}
-										<span>
-											{author.name}{#if author.affiliation}{' '}({author.affiliation}){/if}{#if index < paper.authors.length - 1},&nbsp;{/if}
-										</span>
-									{/each}
-								</div>
-							{/if}
-							{#if paper.abstract}
-								<div class="panel-paper-abstract">
-									{paper.abstract}
-								</div>
-							{/if}
-						</div>
-					{/each}
-				</div>
-			</section>
-		{/if}
+			<!-- Panel-specific information: Papers in Panel -->
+			{#if communication.type === 'panel' && communication.papers && communication.papers.length > 0}
+				<section class="panel-papers-section">
+					<h2 class="panel-section-title">Papers in this Panel</h2>
+					<div class="panel-papers-grid">
+						{#each communication.papers as paper, index (paper.title + index)}
+							<div class="panel-paper-card">
+								<h3 class="panel-paper-title">{paper.title}</h3>
+								{#if paper.authors && paper.authors.length > 0}
+									<div class="panel-paper-authors">
+										{#each paper.authors as author, index (author.name + index)}
+											<span>
+												{author.name}{#if author.affiliation}{' '}({author.affiliation}){/if}{#if index < paper.authors.length - 1},&nbsp;{/if}
+											</span>
+										{/each}
+									</div>
+								{/if}
+								{#if paper.abstract}
+									<div class="panel-paper-abstract">
+										{paper.abstract}
+									</div>
+								{/if}
+							</div>
+						{/each}
+					</div>
+				</section>
+			{/if}
 
-		{#if communication.participants && communication.participants.length > 0}
-			<section class="participants-section">
-				<h2 class="panel-section-title">Participants</h2>
-				<div class="participants-grid">
-					{#each communication.participants as participant, index (participant.name + index)}
-						<div class="participant-card">
-							<div class="participant-name">{participant.name}</div>
-							{#if participant.role}
-								<div class="participant-role">
-									{participant.role}
-								</div>
-							{/if}
-							{#if participant.affiliation}
-								<div class="participant-affiliation">
-									{participant.affiliation}
-								</div>
-							{/if}
-						</div>
-					{/each}
-				</div>
-			</section>
-		{/if}
+			<!-- Participants Section -->
+			{#if communication.participants && communication.participants.length > 0}
+				<section class="participants-section">
+					<h2 class="panel-section-title">Participants</h2>
+					<div class="participants-grid">
+						{#each communication.participants as participant, index (participant.name + index)}
+							<div class="participant-card">
+								<div class="participant-name">{participant.name}</div>
+								{#if participant.role}
+									<div class="participant-role">
+										{participant.role}
+									</div>
+								{/if}
+								{#if participant.affiliation}
+									<div class="participant-affiliation">
+										{participant.affiliation}
+									</div>
+								{/if}
+							</div>
+						{/each}
+					</div>
+				</section>
+			{/if}
 
-		<!-- Use the new TagList component -->
-		<TagList tags={communication.tags} baseUrl="/conference-activity?tag=" />
+			<!-- Tags -->
+			<TagList tags={communication.tags} baseUrl="/conference-activity?tag=" />
 
-		{#if communication.coordinates}
-			<section class="mb-6">
-				<h2 class="text-lg font-semibold mb-2">Location</h2>
-				<div class="map-container-wrapper rounded-md overflow-hidden shadow-sm">
-					<MapVisualization markersData={singleMarkerData} />
-				</div>
-			</section>
-		{/if}
+			<!-- Map Location -->
+			{#if communication.coordinates}
+				<section class="map-section">
+					<h2 class="map-section-title">Location</h2>
+					<div class="map-container-wrapper">
+						<MapVisualization markersData={singleMarkerData} />
+					</div>
+				</section>
+			{/if}
 
-		<!-- Use the new ActionLinks component -->
-		<ActionLinks
-			primaryUrl={communication.url}
-			primaryLabel="Access Presentation"
-			additionalUrls={communication.additionalUrls}
-			sectionClass="action-links mt-4"
-			primaryButtonClass="btn btn-primary glass-button"
-			secondaryButtonClass="btn btn-outline-primary glass-button"
-			primaryDivClass="mb-4"
-		/>
+			<!-- Action Links -->
+			<ActionLinks
+				primaryUrl={communication.url}
+				primaryLabel="Access Presentation"
+				additionalUrls={communication.additionalUrls}
+				sectionClass="action-links"
+				primaryButtonClass="btn btn-primary glass-button"
+				secondaryButtonClass="btn btn-outline-primary glass-button"
+				primaryDivClass="mb-4"
+			/>
+		</div>
 	</article>
 
-	<!-- Use the RelatedItemsList organism -->
+	<!-- Related Communications in this Project -->
 	{#if communication.project}
 		<RelatedItemsList
 			allItems={allCommunications}
@@ -262,86 +266,87 @@
 </div>
 
 <style>
-	/* Article container - glassmorphism applied via utility class */
+	/* Article container - no outer glassmorphism, individual sections have their own */
 	.communication-article {
 		position: relative;
-		/* All glassmorphism effects handled by .glass-card utility */
+	}
+
+	/* Content wrapper for scroll animation */
+	.content-wrapper {
+		display: flex;
+		flex-direction: column;
 	}
 
 	/* Panel Papers Section */
 	.panel-papers-section {
-		margin: var(--spacing-8) 0;
-		padding: var(--spacing-6);
+		margin-top: var(--space-xl);
+		padding: var(--space-lg);
 		border-radius: var(--border-radius-xl);
 		position: relative;
 
-		/* Glassmorphism effect using CSS variables */
+		/* Glassmorphism effect */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
+			rgba(var(--color-primary-rgb), 0.03) 0%,
+			rgba(var(--color-highlight-rgb), 0.02) 50%,
+			rgba(var(--color-accent-rgb), 0.01) 100%
 		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 8px));
-		backdrop-filter: blur(var(--glass-blur-fallback, 8px));
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+		-webkit-backdrop-filter: blur(8px);
+		backdrop-filter: blur(8px);
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), 0.1);
 		box-shadow:
 			var(--shadow-md),
-			inset 0 var(--border-width-thin) 0
-				rgba(var(--color-white-rgb), var(--opacity-low));
-		transition: all var(--anim-duration-base) var(--anim-ease-out);
+			inset 0 1px 0 rgba(var(--color-white-rgb), 0.1);
+		transition: all var(--duration-normal) var(--ease-out);
 	}
 
 	.panel-papers-section:hover {
-		transform: var(--transform-lift-sm);
+		transform: translateY(-2px);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
+			rgba(var(--color-primary-rgb), 0.05) 0%,
+			rgba(var(--color-highlight-rgb), 0.03) 50%,
+			rgba(var(--color-accent-rgb), 0.02) 100%
 		);
 		box-shadow:
 			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0
-				rgba(var(--color-white-rgb), var(--opacity-medium));
+			inset 0 1px 0 rgba(var(--color-white-rgb), 0.15);
 	}
 
 	/* Participants Section */
 	.participants-section {
-		margin: var(--spacing-8) 0;
-		padding: var(--spacing-6);
+		margin-top: var(--space-xl);
+		padding: var(--space-lg);
 		border-radius: var(--border-radius-xl);
 		position: relative;
 
-		/* Glassmorphism effect using CSS variables */
+		/* Glassmorphism effect */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
+			rgba(var(--color-primary-rgb), 0.03) 0%,
+			rgba(var(--color-highlight-rgb), 0.02) 50%,
+			rgba(var(--color-accent-rgb), 0.01) 100%
 		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 8px));
-		backdrop-filter: blur(var(--glass-blur-fallback, 8px));
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+		-webkit-backdrop-filter: blur(8px);
+		backdrop-filter: blur(8px);
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), 0.1);
 		box-shadow:
 			var(--shadow-md),
-			inset 0 var(--border-width-thin) 0
-				rgba(var(--color-white-rgb), var(--opacity-low));
-		transition: all var(--anim-duration-base) var(--anim-ease-out);
+			inset 0 1px 0 rgba(var(--color-white-rgb), 0.1);
+		transition: all var(--duration-normal) var(--ease-out);
 	}
 
 	.participants-section:hover {
-		transform: var(--transform-lift-sm);
+		transform: translateY(-2px);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
+			rgba(var(--color-primary-rgb), 0.05) 0%,
+			rgba(var(--color-highlight-rgb), 0.03) 50%,
+			rgba(var(--color-accent-rgb), 0.02) 100%
 		);
 		box-shadow:
 			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0
-				rgba(var(--color-white-rgb), var(--opacity-medium));
+			inset 0 1px 0 rgba(var(--color-white-rgb), 0.15);
 	}
 
 	/* Section Titles */
@@ -350,87 +355,69 @@
 		font-size: var(--font-size-xl);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
-		margin-bottom: var(--spacing-6);
+		margin-bottom: var(--space-lg);
 		line-height: var(--line-height-tight);
 		position: relative;
 	}
 
-	/* Elegant accent line under title matching other components */
+	/* Elegant accent line under title */
 	.panel-section-title::after {
 		content: '';
 		position: absolute;
-		bottom: calc(-1 * var(--spacing-2));
+		bottom: calc(-1 * var(--space-xs));
 		left: 0;
-		width: var(--spacing-16);
-		height: var(--border-width-medium);
+		width: 4rem;
+		height: 2px;
 		background: linear-gradient(
 			90deg,
 			var(--color-highlight) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-medium)) 100%
+			rgba(var(--color-highlight-rgb), 0.5) 100%
 		);
 		border-radius: var(--border-radius-full);
-		transition: width var(--anim-duration-base) var(--anim-ease-out);
+		transition: width var(--duration-normal) var(--ease-out);
 	}
 
 	.panel-papers-section:hover .panel-section-title::after,
 	.participants-section:hover .panel-section-title::after {
-		width: var(--spacing-20);
+		width: 5rem;
 	}
 
 	/* Panel Papers Grid */
 	.panel-papers-grid {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: var(--spacing-4);
+		gap: var(--space-md);
 	}
 
 	/* Panel Paper Cards */
 	.panel-paper-card {
-		padding: var(--spacing-5);
+		padding: var(--space-md);
 		border-radius: var(--border-radius-lg);
 		position: relative;
 
-		/* Glassmorphism for individual cards using CSS variables */
+		/* Subtle glassmorphism */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
+			rgba(var(--color-accent-rgb), 0.02) 0%,
+			rgba(var(--color-primary-rgb), 0.02) 50%,
+			rgba(var(--color-highlight-rgb), 0.01) 100%
 		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low));
+		-webkit-backdrop-filter: blur(6px);
+		backdrop-filter: blur(6px);
+		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), 0.1);
 		box-shadow: var(--shadow-sm);
-		transition: all var(--anim-duration-base) var(--anim-ease-out);
+		transition: all var(--duration-normal) var(--ease-out);
 	}
 
 	.panel-paper-card:hover {
-		transform: var(--transform-lift-sm);
+		transform: translateY(-2px);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-accent-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
+			rgba(var(--color-accent-rgb), 0.04) 0%,
+			rgba(var(--color-primary-rgb), 0.03) 50%,
+			rgba(var(--color-highlight-rgb), 0.02) 100%
 		);
 		box-shadow: var(--shadow-md);
-	}
-
-	/* Subtle inner highlight for paper cards */
-	.panel-paper-card::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		pointer-events: none;
-		border-radius: inherit;
-		background: linear-gradient(
-			180deg,
-			rgba(var(--color-white-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-white-rgb), 0) 40%,
-			rgba(var(--color-white-rgb), 0) 60%,
-			rgba(var(--color-white-rgb), var(--opacity-very-low)) 100%
-		);
-		mix-blend-mode: overlay;
-		opacity: var(--opacity-medium);
 	}
 
 	.panel-paper-title {
@@ -438,14 +425,14 @@
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
-		margin-bottom: var(--spacing-3);
+		margin-bottom: var(--space-sm);
 		line-height: var(--line-height-snug);
 	}
 
 	.panel-paper-authors {
 		font-size: var(--font-size-sm);
 		color: var(--color-text-light);
-		margin-bottom: var(--spacing-3);
+		margin-bottom: var(--space-sm);
 		font-weight: var(--font-weight-medium);
 	}
 
@@ -453,14 +440,14 @@
 		font-size: var(--font-size-sm);
 		color: var(--color-text);
 		line-height: var(--line-height-relaxed);
-		margin-top: var(--spacing-2);
+		margin-top: var(--space-xs);
 	}
 
 	/* Participants Grid */
 	.participants-grid {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: var(--spacing-4);
+		gap: var(--space-md);
 	}
 
 	@media (min-width: 768px) {
@@ -471,65 +458,47 @@
 
 	/* Participant Cards */
 	.participant-card {
-		padding: var(--spacing-4);
+		padding: var(--space-md);
 		border-radius: var(--border-radius-lg);
 		position: relative;
 
-		/* Glassmorphism for individual cards using CSS variables */
+		/* Subtle glassmorphism */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
+			rgba(var(--color-accent-rgb), 0.02) 0%,
+			rgba(var(--color-primary-rgb), 0.02) 50%,
+			rgba(var(--color-highlight-rgb), 0.01) 100%
 		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low));
+		-webkit-backdrop-filter: blur(6px);
+		backdrop-filter: blur(6px);
+		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), 0.1);
 		box-shadow: var(--shadow-sm);
-		transition: all var(--anim-duration-base) var(--anim-ease-out);
+		transition: all var(--duration-normal) var(--ease-out);
 	}
 
 	.participant-card:hover {
-		transform: var(--transform-lift-sm);
+		transform: translateY(-2px);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-accent-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
+			rgba(var(--color-accent-rgb), 0.04) 0%,
+			rgba(var(--color-primary-rgb), 0.03) 50%,
+			rgba(var(--color-highlight-rgb), 0.02) 100%
 		);
 		box-shadow: var(--shadow-md);
-	}
-
-	/* Subtle inner highlight for participant cards */
-	.participant-card::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		pointer-events: none;
-		border-radius: inherit;
-		background: linear-gradient(
-			180deg,
-			rgba(var(--color-white-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-white-rgb), 0) 40%,
-			rgba(var(--color-white-rgb), 0) 60%,
-			rgba(var(--color-white-rgb), var(--opacity-very-low)) 100%
-		);
-		mix-blend-mode: overlay;
-		opacity: var(--opacity-medium);
 	}
 
 	.participant-name {
 		font-weight: var(--font-weight-semibold);
 		font-size: var(--font-size-base);
 		color: var(--color-text-emphasis);
-		margin-bottom: var(--spacing-1);
+		margin-bottom: var(--space-2xs);
 	}
 
 	.participant-role {
 		font-size: var(--font-size-sm);
 		color: var(--color-text-light);
 		font-weight: var(--font-weight-medium);
-		margin-bottom: var(--spacing-1);
+		margin-bottom: var(--space-2xs);
 	}
 
 	.participant-affiliation {
@@ -538,73 +507,54 @@
 		line-height: var(--line-height-relaxed);
 	}
 
-	/* Specific styles for the map container */
+	/* Map Section */
+	.map-section {
+		margin-top: var(--space-xl);
+	}
+
+	.map-section-title {
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-lg);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text-emphasis);
+		margin-bottom: var(--space-sm);
+	}
+
 	.map-container-wrapper {
 		height: 400px;
 		border-radius: var(--border-radius-lg);
+		overflow: hidden;
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
+			rgba(var(--color-primary-rgb), 0.03) 0%,
+			rgba(var(--color-highlight-rgb), 0.02) 50%,
+			rgba(var(--color-accent-rgb), 0.01) 100%
 		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		backdrop-filter: blur(var(--glass-blur-fallback, 6px));
-		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-low));
+		-webkit-backdrop-filter: blur(6px);
+		backdrop-filter: blur(6px);
+		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), 0.1);
 		box-shadow: var(--shadow-sm);
 	}
 
-	/* Dark mode refinements - glassmorphism utilities handle article container */
-	:global(html.dark) .panel-papers-section,
-	:global(html.dark) .participants-section {
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-dark-surface-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
-		);
-		border-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
-	}
-
 	/* Dark mode refinements */
-	:global(html.dark) .communication-article {
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.7) 0%,
-			rgba(var(--color-primary-rgb), 0.15) 35%,
-			rgba(var(--color-accent-rgb), 0.1) 65%,
-			var(--color-dark-surface, #334155) 100%
-		);
-	}
-
-	:global(html.dark) .communication-article:hover {
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.8) 0%,
-			rgba(var(--color-primary-rgb), 0.2) 35%,
-			rgba(var(--color-accent-rgb), 0.15) 65%,
-			var(--color-dark-surface, #334155) 100%
-		);
-	}
-
 	:global(html.dark) .panel-papers-section,
 	:global(html.dark) .participants-section {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb, 51, 65, 85), 0.6) 0%,
+			rgba(30, 41, 59, 0.7) 0%,
 			rgba(var(--color-primary-rgb), 0.12) 50%,
 			rgba(var(--color-accent-rgb), 0.08) 100%
 		);
-		border-color: rgba(var(--color-white-rgb, 255, 255, 255), 0.08);
+		border-color: rgba(var(--color-white-rgb), 0.08);
 	}
 
 	:global(html.dark) .panel-papers-section:hover,
 	:global(html.dark) .participants-section:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb), var(--opacity-medium-high)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			rgba(30, 41, 59, 0.8) 0%,
+			rgba(var(--color-primary-rgb), 0.15) 50%,
+			rgba(var(--color-accent-rgb), 0.1) 100%
 		);
 	}
 
@@ -612,38 +562,38 @@
 	:global(html.dark) .participant-card {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 100%
+			rgba(30, 41, 59, 0.5) 0%,
+			rgba(var(--color-accent-rgb), 0.06) 50%,
+			rgba(var(--color-primary-rgb), 0.04) 100%
 		);
-		border-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
+		border-color: rgba(var(--color-white-rgb), 0.06);
 	}
 
 	:global(html.dark) .panel-paper-card:hover,
 	:global(html.dark) .participant-card:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-low)) 50%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 100%
+			rgba(30, 41, 59, 0.6) 0%,
+			rgba(var(--color-accent-rgb), 0.08) 50%,
+			rgba(var(--color-primary-rgb), 0.06) 100%
 		);
 	}
 
 	:global(html.dark) .map-container-wrapper {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 100%
+			rgba(30, 41, 59, 0.5) 0%,
+			rgba(var(--color-accent-rgb), 0.06) 50%,
+			rgba(var(--color-primary-rgb), 0.04) 100%
 		);
-		border-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
+		border-color: rgba(var(--color-white-rgb), 0.06);
 	}
 
 	/* Responsive adjustments */
 	@media (max-width: 640px) {
 		.panel-papers-section,
 		.participants-section {
-			padding: var(--spacing-4);
+			padding: var(--space-md);
 		}
 
 		.panel-section-title {
@@ -652,7 +602,7 @@
 
 		.panel-paper-card,
 		.participant-card {
-			padding: var(--spacing-3);
+			padding: var(--space-sm);
 		}
 
 		.panel-paper-title {
@@ -666,8 +616,6 @@
 
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
-		.communication-article,
-		.communication-article:hover,
 		.panel-papers-section,
 		.panel-papers-section:hover,
 		.participants-section,
