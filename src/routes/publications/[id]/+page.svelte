@@ -391,10 +391,19 @@
 		margin-bottom: var(--space-lg);
 	}
 
-	/* Content wrapper for animation - no gap, components manage their own spacing */
+	/* Content wrapper for animation - consistent spacing between sections */
 	.content-wrapper {
 		display: flex;
 		flex-direction: column;
+	}
+
+	/* Consistent vertical spacing between major sections */
+	.content-wrapper > :global(*) {
+		margin-bottom: 0;
+	}
+
+	.content-wrapper > :global(* + *) {
+		margin-top: var(--space-xl);
 	}
 
 	/* Table of Contents Section - Enhanced styling with consistent glassmorphism */
