@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import TagList from '$lib/components/molecules/TagList.svelte'; // Use the one from molecules
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 
 	let {
 		title,
@@ -35,25 +34,15 @@
 	}
 </script>
 
-<header
-	class="page-header enhanced-page-header mb-8 {additionalClasses}"
-	use:scrollAnimate={{ delay: 50, animationClass: 'fade-in-up' }}
->
+<header class="page-header enhanced-page-header mb-8 {additionalClasses}">
 	{#if backLinkHref}
-		<a
-			href={`${base}/${backLinkHref}`}
-			class="back-link mb-4 inline-block"
-			use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-left' }}
-		>
+		<a href={`${base}/${backLinkHref}`} class="back-link mb-4 inline-block">
 			{backLinkLabel}
 		</a>
 	{/if}
 
 	<div class="header-content">
-		<div
-			class="header-meta flex justify-between items-start mb-3 flex-wrap gap-2"
-			use:scrollAnimate={{ delay: 150, animationClass: 'fade-in-up' }}
-		>
+		<div class="header-meta flex justify-between items-start mb-3 flex-wrap gap-2">
 			{#if typeBadgeText}
 				<div class="type-badge">
 					{typeBadgeText}
@@ -64,31 +53,25 @@
 			{/if}
 		</div>
 
-		<div class="title-section" use:scrollAnimate={{ delay: 200, animationClass: 'fade-in-up' }}>
+		<div class="title-section">
 			<h1 class="page-title text-3xl md:text-4xl font-bold mb-3">{title}</h1>
 			<div class="title-accent"></div>
 		</div>
 
 		{#if authors && authors.length > 0}
-			<div
-				class="authors text-xl mb-3"
-				use:scrollAnimate={{ delay: 250, animationClass: 'fade-in-up' }}
-			>
+			<div class="authors text-xl mb-3">
 				{authors.join(', ')}
 			</div>
 		{/if}
 
 		{#if editors}
-			<div
-				class="editors text-secondary mb-3"
-				use:scrollAnimate={{ delay: 300, animationClass: 'fade-in-up' }}
-			>
+			<div class="editors text-secondary mb-3">
 				Edited by {formatEditors(editors)}
 			</div>
 		{/if}
 
 		{#if tags && tags.length > 0}
-			<div class="mt-4" use:scrollAnimate={{ delay: 350, animationClass: 'fade-in-up' }}>
+			<div class="mt-4">
 				<TagList {tags} />
 			</div>
 		{/if}

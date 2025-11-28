@@ -16,7 +16,6 @@
 	import RelatedItemsList from '$lib/components/organisms/RelatedItemsList.svelte';
 	import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
 	import { browser } from '$app/environment';
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 	import {
 		createCommunicationSEODescription,
 		createCommunicationSEOKeywords,
@@ -148,7 +147,7 @@
 	<Breadcrumb items={breadcrumbItems} />
 
 	<article class="communication-article">
-		<div class="content-wrapper" use:scrollAnimate={{ animationClass: 'fade-in-up' }}>
+		<div class="content-wrapper">
 			<PageHeader
 				title={communication.title}
 				date={communication.date}

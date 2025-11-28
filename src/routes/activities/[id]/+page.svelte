@@ -9,10 +9,6 @@
 	import type { PageData } from './$types';
 	import { browser } from '$app/environment';
 
-	// Animation imports following home page pattern
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
-	import { DELAY_STEP } from '$lib/utils/animationConstants';
-
 	// Added imports for consistency
 	import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
 	import TagList from '$lib/components/molecules/TagList.svelte';
@@ -240,7 +236,7 @@
 				{/if}
 
 				<!-- Main content card -->
-				<div data-animate use:scrollAnimate={{ delay: DELAY_STEP, animationClass: 'fade-in-up' }}>
+				<div>
 					<ContentBody variant="default" glassEffect="glass-card">
 						<!-- Render parsed content segments -->
 						{#each contentSegments as segment, segmentIndex (segmentIndex)}
@@ -255,10 +251,7 @@
 				</div>
 
 				{#if activity.url || (activity.additionalUrls && activity.additionalUrls.length > 0)}
-					<div
-						data-animate
-						use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}
-					>
+					<div>
 						<ActionLinks
 							primaryUrl={activity.url}
 							primaryLabel="Visit Activity"
@@ -272,11 +265,7 @@
 				{/if}
 
 				{#if activity.pdfPath}
-					<div
-						class="pdf-section glass-card mt-4 p-6 md:p-8"
-						data-animate
-						use:scrollAnimate={{ delay: DELAY_STEP * 3, animationClass: 'fade-in-up' }}
-					>
+					<div class="pdf-section glass-card mt-4 p-6 md:p-8">
 						<h2 class="text-xl font-serif font-semibold mb-4 text-emphasis">
 							{activity.pdfTitle || 'Associated Document'}
 						</h2>
@@ -293,11 +282,7 @@
 				{/if}
 
 				{#if formattedTags && formattedTags.length > 0}
-					<div
-						class="mt-4 mb-6"
-						data-animate
-						use:scrollAnimate={{ delay: DELAY_STEP * 4, animationClass: 'fade-in-up' }}
-					>
+					<div class="mt-4 mb-6">
 						<TagList tags={formattedTags} baseUrl="/activities?tag=" />
 					</div>
 				{/if}

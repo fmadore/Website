@@ -23,7 +23,6 @@
 	import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
 	import { allPublications } from '$lib/data/publications/index'; // Keep this for RelatedItemsList
 	import { generateBibtex } from '$lib/utils/bibtexGenerator'; // Import the generator
-	import { scrollAnimate } from '$lib/utils/scrollAnimations'; // Add scroll animations
 	import {
 		createPublicationSEODescription,
 		createPublicationSEOKeywords,
@@ -302,7 +301,7 @@
 	<Breadcrumb items={breadcrumbItems} />
 
 	<article class="publication-article">
-		<div class="content-wrapper" use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up' }}>
+		<div class="content-wrapper">
 			<PageHeader
 				title={publication.title}
 				date={publication.date}

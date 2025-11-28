@@ -4,18 +4,14 @@
 	// import type { Communication } from '$lib/types/communication'; // Removed as unused
 	import RelevantItemsList from '$lib/components/panels/RelevantItemsList.svelte';
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
-	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	// Props - project name and limit
 	let {
 		projectName,
-		limit = 5,
-		animationDelay = DELAY_STEP * 15
+		limit = 5
 	}: {
 		projectName: string;
 		limit?: number;
-		animationDelay?: number;
 	} = $props();
 
 	// Add state for selected type filter
@@ -58,7 +54,7 @@
 	}
 </script>
 
-<div use:scrollAnimate={{ delay: animationDelay, animationClass: 'fade-in-up' }}>
+<div>
 	<RelevantItemsList
 		title="Relevant Communications"
 		items={filteredList}

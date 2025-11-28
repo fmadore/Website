@@ -4,8 +4,6 @@
 	import Card from '$lib/components/common/Card.svelte'; // Import Card component
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
-	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	// Unified teaching items data for cards
 	const teachingItems = [
@@ -62,7 +60,7 @@
 	description="Frédérick Madore teaches African History, Islam in sub-Saharan Africa, and digital humanities."
 />
 
-<div class="container py-8" use:scrollAnimate={{ delay: DELAY_STEP * 0, animationClass: 'fade-in-up' }}>
+<div class="container py-8">
 	<PageHeader title="Teaching" />
 
 	<PageIntro>
@@ -70,14 +68,13 @@
 		Africa, Digital Humanities, West African history.
 	</PageIntro>
 
-	<div class="content-grid" use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
-		{#each teachingItems as item, index (item.id)}
+	<div class="content-grid">
+		{#each teachingItems as item (item.id)}
 			<Card
 				title={item.title}
 				imageUrl={item.imageUrl}
 				linkUrl={item.type === 'course' ? item.syllabusUrl : item.linkUrl}
 				target={item.type === 'guest_lecture' ? '_self' : '_blank'}
-				animationDelay={DELAY_STEP * (5 + index * 2)}
 			>
 				{#snippet subtitle()}
 					<span>{item.institution}</span>

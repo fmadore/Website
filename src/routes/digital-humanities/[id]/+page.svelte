@@ -9,7 +9,6 @@
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 
 	import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
 
@@ -89,29 +88,26 @@
 />
 
 <div class="container py-8">
-	<div
-		class="content-wrapper"
-		use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up' }}
-	>
+	<div class="content-wrapper">
 		<article class="project-detail-article max-w-6xl mx-auto">
 			<Breadcrumb items={breadcrumbItems} />
 
 			<PageHeader title={project.title} authors={project.years ? [project.years] : undefined} />
 
-			<div use:scrollAnimate={{ delay: 200, animationClass: 'fade-in-up' }}>
+			<div>
 				<section class="content-section glass-card">
 					<!-- Safe: project.description is from trusted project data in src/lib/data/digital-humanities/ -->
 					{@html project.description}
 				</section>
 			</div>
 
-			<div use:scrollAnimate={{ delay: 300, animationClass: 'fade-in-up' }}>
+			<div>
 				{#if projectDetails.length > 0}
 					<DetailsGrid details={projectDetails} />
 				{/if}
 			</div>
 
-			<div use:scrollAnimate={{ delay: 400, animationClass: 'fade-in-up' }}>
+			<div>
 				{#if project.skills && project.skills.length > 0}
 					<section class="mb-6">
 						<TagList
@@ -126,7 +122,7 @@
 			</div>
 
 			{#if project.embeddableContent && project.embeddableContent.length > 0}
-				<div use:scrollAnimate={{ delay: 500, animationClass: 'fade-in-up' }}>
+				<div>
 					<section class="embeddable-section">
 						{#each project.embeddableContent as item (item.id)}
 							<div class="embeddable-item">
@@ -173,7 +169,7 @@
 				</div>
 			{/if}
 
-			<div use:scrollAnimate={{ delay: 600, animationClass: 'fade-in-up' }}>
+			<div>
 				{#if project.award}
 					<section class="award-section">
 						<h3 class="section-title">Award</h3>
@@ -183,7 +179,7 @@
 				{/if}
 			</div>
 
-			<div use:scrollAnimate={{ delay: 700, animationClass: 'fade-in-up' }}>
+			<div>
 				{#if project.publication}
 					<section class="publication-section">
 						<h3 class="section-title">Related Publication</h3>
@@ -197,7 +193,7 @@
 				{/if}
 			</div>
 
-			<div use:scrollAnimate={{ delay: 800, animationClass: 'fade-in-up' }}>
+			<div>
 				{#if project.reviews && project.reviews.length > 0}
 					<section class="reviews-section">
 						<h3 class="section-title">Reviews</h3>
@@ -226,7 +222,7 @@
 	</div>
 
 	<!-- Back button -->
-	<div class="mt-8 text-center max-w-6xl mx-auto" use:scrollAnimate={{ delay: 900, animationClass: 'fade-in-up' }}>
+	<div class="mt-8 text-center max-w-6xl mx-auto">
 		<a href="{base}/digital-humanities" class="btn btn-primary glass-button"
 			>Back to Digital Humanities Projects</a
 		>

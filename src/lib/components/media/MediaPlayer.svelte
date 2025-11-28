@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 	import Button from '$lib/components/atoms/Button.svelte';
 
 	// Props using Svelte 5 $props rune
@@ -12,7 +11,6 @@
 		loop = false,
 		muted = false,
 		glassEffect = 'glass-card',
-		animationDelay = 0,
 		showControls = true,
 		width = undefined,
 		height = undefined
@@ -25,7 +23,6 @@
 		loop?: boolean;
 		muted?: boolean;
 		glassEffect?: string;
-		animationDelay?: number;
 		showControls?: boolean;
 		width?: string | number;
 		height?: string | number;
@@ -223,7 +220,6 @@
 
 <div
 	class="media-player {glassEffect}"
-	use:scrollAnimate={{ delay: animationDelay, animationClass: 'fade-in-up' }}
 	role="region"
 	aria-label="Media Player"
 >

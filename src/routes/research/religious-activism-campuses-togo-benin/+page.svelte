@@ -10,8 +10,6 @@
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 	import { page } from '$app/stores'; // Import page store
 	import { browser } from '$app/environment'; // Import browser check
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
-	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	// Pre-construct breadcrumb items with evaluated paths
 	const breadcrumbItems = [
@@ -80,10 +78,7 @@
 
 <div class="container py-8">
 	<!-- Apply grid layout to this container on medium screens and up -->
-	<div
-		class="content-wrapper"
-		use:scrollAnimate={{ delay: DELAY_STEP, animationClass: 'fade-in-up' }}
-	>
+	<div class="content-wrapper">
 		<!-- Added grid wrapper -->
 		<div class="main-content max-w-6xl mx-auto">
 			<Breadcrumb items={breadcrumbItems} />
@@ -143,7 +138,6 @@
 				type="audio"
 				title="Google NotebookLM Podcast Discussion"
 				glassEffect="glass-card"
-				animationDelay={DELAY_STEP * 10}
 				showControls={true}
 			/>
 		</div>
@@ -152,13 +146,11 @@
 			<RelevantPublications
 				projectName="Religious Activism on Campuses in Togo and Benin"
 				limit={6}
-				animationDelay={DELAY_STEP * 12}
 			/>
 			<div class="mt-12">
 				<RelevantCommunications
 					projectName="Religious Activism on Campuses in Togo and Benin"
 					limit={6}
-					animationDelay={DELAY_STEP * 15}
 				/>
 			</div>
 		</div>

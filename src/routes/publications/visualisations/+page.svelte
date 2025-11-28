@@ -13,8 +13,6 @@
 	import EChartsDoughnutChart from '$lib/components/visualisations/EChartsDoughnutChart.svelte';
 	import EChartsNetworkGraph from '$lib/components/visualisations/EChartsNetworkGraph.svelte';
 	import D3BubbleChart from '$lib/components/visualisations/D3BubbleChart.svelte';
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
-	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	type CitationYearData = { year: number; count: number };
 	type CitedAuthorData = { author: string; count: number };
@@ -361,40 +359,18 @@
 
 <div class="page-container">
 	<Breadcrumb items={breadcrumbItems} />
-	<div
-		use:scrollAnimate={{
-			delay: DELAY_STEP,
-			animationClass: 'fade-in-up',
-			rootMargin: '100px',
-			threshold: 0.05
-		}}
-	>
+	<div>
 		<PageHeader title="Publication Visualisations" />
 	</div>
 
-	<div
-		use:scrollAnimate={{
-			delay: DELAY_STEP * 2,
-			animationClass: 'fade-in-up',
-			rootMargin: '100px',
-			threshold: 0.05
-		}}
-	>
+	<div>
 		<PageIntro>
 			This page presents various visualisations of my publication data, offering insights into
 			citation trends, authorship patterns, and more.
 		</PageIntro>
 	</div>
 
-	<section
-		class="visualization-section mb-12"
-		use:scrollAnimate={{
-			delay: DELAY_STEP * 3,
-			animationClass: 'fade-in-up',
-			rootMargin: '150px',
-			threshold: 0.05
-		}}
-	>
+	<section class="visualization-section mb-12">
 		<h2 class="section-heading">Publications per year by type</h2>
 		{#if publicationsPerYearStackedData.length > 0 && publicationTypesForStack.length > 0}
 			<div class="chart-wrapper stacked-chart" style="height: 450px;">
@@ -412,15 +388,7 @@
 		{/if}
 	</section>
 
-	<section
-		class="visualization-section mb-12"
-		use:scrollAnimate={{
-			delay: DELAY_STEP * 4,
-			animationClass: 'fade-in-up',
-			rootMargin: '150px',
-			threshold: 0.05
-		}}
-	>
+	<section class="visualization-section mb-12">
 		<h2 class="section-heading">Number of pages per year</h2>
 		{#if pagesPerYearData.length > 0}
 			<div class="chart-wrapper" style="height: 400px;">
@@ -440,15 +408,7 @@
 		{/if}
 	</section>
 
-	<section
-		class="visualization-section mb-12"
-		use:scrollAnimate={{
-			delay: DELAY_STEP * 5,
-			animationClass: 'fade-in-up',
-			rootMargin: '150px',
-			threshold: 0.05
-		}}
-	>
+	<section class="visualization-section mb-12">
 		<h2 class="section-heading">Publication Languages</h2>
 		{#if languageData.length > 0}
 			<div class="chart-wrapper" style="height: 480px;">
@@ -466,15 +426,7 @@
 		{/if}
 	</section>
 
-	<section
-		class="visualization-section mb-12"
-		use:scrollAnimate={{
-			delay: DELAY_STEP * 6,
-			animationClass: 'fade-in-up',
-			rootMargin: '150px',
-			threshold: 0.05
-		}}
-	>
+	<section class="visualization-section mb-12">
 		<h2 class="section-heading">
 			Keyword Frequency
 			{#if keywordData.length > 0}
@@ -496,15 +448,7 @@
 		{/if}
 	</section>
 
-	<section
-		class="visualization-section mb-12"
-		use:scrollAnimate={{
-			delay: DELAY_STEP * 7,
-			animationClass: 'fade-in-up',
-			rootMargin: '150px',
-			threshold: 0.05
-		}}
-	>
+	<section class="visualization-section mb-12">
 		<h2 class="section-heading">
 			Author Collaboration Network
 			{#if collaborationData.collaborators.length > 0}
@@ -527,27 +471,11 @@
 		{/if}
 	</section>
 
-	<div
-		class="section-divider"
-		use:scrollAnimate={{
-			delay: DELAY_STEP * 8,
-			animationClass: 'fade-in-up',
-			rootMargin: '100px',
-			threshold: 0.05
-		}}
-	>
+	<div class="section-divider">
 		<h2 class="divider-heading">Citation statistics</h2>
 	</div>
 
-	<section
-		class="visualization-section mb-12"
-		use:scrollAnimate={{
-			delay: DELAY_STEP * 9,
-			animationClass: 'fade-in-up',
-			rootMargin: '150px',
-			threshold: 0.05
-		}}
-	>
+	<section class="visualization-section mb-12">
 		<h2 class="section-heading">
 			Citations per year
 			{#if citationsPerYearData.length > 0 && totalCitations > 0}
@@ -574,15 +502,7 @@
 		{/if}
 	</section>
 
-	<section
-		class="visualization-section"
-		use:scrollAnimate={{
-			delay: DELAY_STEP * 10,
-			animationClass: 'fade-in-up',
-			rootMargin: '150px',
-			threshold: 0.05
-		}}
-	>
+	<section class="visualization-section">
 		<h2 class="section-heading">
 			Authors citing my work most frequently
 			{#if citedAuthorsData.length > 0}

@@ -8,8 +8,6 @@
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import { allDhProjects } from '$lib/data/digital-humanities'; // Import the new data source
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
-	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	// Reactive variable for the skill from URL, only access searchParams if in browser
 	let selectedSkill = $derived(browser ? $page.url.searchParams.get('skill') : null);
@@ -47,7 +45,7 @@
 	description="Discover Frédérick Madore's digital humanities projects including the Islam West Africa Collection (IWAC)."
 />
 
-<div class="container py-8" use:scrollAnimate={{ delay: DELAY_STEP * 0, animationClass: 'fade-in-up' }}>
+<div class="container py-8">
 	<PageHeader title="Digital Humanities" />
 
 	{#if selectedSkill}
@@ -69,14 +67,13 @@
 		accessible and engaging.
 	</PageIntro>
 
-	<div class="content-grid" use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
-		{#each finalProjectsToDisplay as project, index (project.id)}
+	<div class="content-grid">
+		{#each finalProjectsToDisplay as project (project.id)}
 			<Card
 				title={project.title}
 				imageUrl={project.imageUrl}
 				linkUrl={project.finalLinkUrl}
 				target={project.linkTarget}
-				animationDelay={DELAY_STEP * (5 + index * 2)}
 			>
 				{#snippet subtitle()}
 					<span>{project.years}</span>

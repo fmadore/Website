@@ -1,6 +1,5 @@
 <script>
 	import { base } from '$app/paths';
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 
 	let {
 		imageUrl = undefined,
@@ -8,7 +7,6 @@
 		linkUrl = undefined,
 		target = '_blank', // Default to opening external links in new tab
 		title = '',
-		animationDelay = 0, // Animation delay in milliseconds
 		// Snippet props
 		subtitle = undefined,
 		details = undefined,
@@ -20,15 +18,7 @@
 	let imageAlt = $derived(_imageAltProp || title);
 </script>
 
-<div
-	class="card"
-	use:scrollAnimate={{
-		delay: animationDelay,
-		animationClass: 'fade-in-up',
-		threshold: 0.2,
-		rootMargin: '100px'
-	}}
->
+<div class="card">
 	{#if imageUrl}
 		<div class="card-image">
 			{#if linkUrl}

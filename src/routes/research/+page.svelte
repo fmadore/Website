@@ -4,8 +4,6 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import SEO from '$lib/SEO.svelte';
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
-	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	// Research projects data
 	const researchProjects = [
@@ -46,7 +44,7 @@
 
 <SEO title="Research | Frédérick Madore" />
 
-<div class="container py-8" use:scrollAnimate={{ delay: DELAY_STEP * 0, animationClass: 'fade-in-up' }}>
+<div class="container py-8">
 	<PageHeader title="Research" />
 
 	<PageIntro>
@@ -56,17 +54,13 @@
 		and Muslim politics.
 	</PageIntro>
 
-	<div
-		class="content-grid"
-		use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}
-	>
-		{#each researchProjects as project, index (project.id)}
+	<div class="content-grid">
+		{#each researchProjects as project (project.id)}
 			<Card
 				title={project.title}
 				imageUrl={project.imageUrl}
 				linkUrl={`${base}/research/${project.id}`}
 				target="_self"
-				animationDelay={DELAY_STEP * (5 + index * 2)}
 			>
 				{#snippet subtitle()}
 					<span>{project.years}</span>

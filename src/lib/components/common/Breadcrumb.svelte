@@ -1,23 +1,18 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
-	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	let {
 		items = [],
-		showHomeLink = true,
-		animationDelay = DELAY_STEP
+		showHomeLink = true
 	}: {
 		items: { label: string; href: string }[];
 		showHomeLink?: boolean;
-		animationDelay?: number;
 	} = $props();
 </script>
 
 <nav
 	aria-label="Breadcrumb"
 	class="breadcrumb"
-	use:scrollAnimate={{ delay: animationDelay, animationClass: 'fade-in-up' }}
 >
 	<ol>
 		{#if showHomeLink}

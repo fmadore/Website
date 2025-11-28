@@ -11,8 +11,6 @@
 	import { page } from '$app/stores'; // Import page store
 	// MODIFIED: Removed onMount, onDestroy. $derived and $effect are assumed to be globally available in Svelte 5.
 	import { browser } from '$app/environment'; // Import browser check
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
-	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	// Pre-construct breadcrumb items with evaluated paths
 	const breadcrumbItems = [
@@ -86,10 +84,7 @@
 />
 
 <div class="container py-8">
-	<div
-		class="content-wrapper"
-		use:scrollAnimate={{ delay: DELAY_STEP, animationClass: 'fade-in-up' }}
-	>
+	<div class="content-wrapper">
 		<div class="main-content max-w-6xl mx-auto">
 			<Breadcrumb items={breadcrumbItems} />
 
@@ -170,13 +165,11 @@
 			<RelevantPublications
 				projectName="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 				limit={6}
-				animationDelay={DELAY_STEP * 12}
 			/>
 			<div class="mt-12">
 				<RelevantCommunications
 					projectName="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 					limit={6}
-					animationDelay={DELAY_STEP * 15}
 				/>
 			</div>
 		</div>

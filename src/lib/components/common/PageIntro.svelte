@@ -1,7 +1,5 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
-	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	let {
 		children,
@@ -26,17 +24,9 @@
 
 	const combinedClasses =
 		`${baseClasses} ${variantClasses[variant]} ${glassEffect} ${additionalClasses}`.trim();
-
-	// Different animation settings based on variant
-	const animationSettings = {
-		default: { delay: DELAY_STEP * 2, animationClass: 'fade-in-up' },
-		compact: { delay: DELAY_STEP * 1, animationClass: 'fade-in-up' },
-		emphasized: { delay: DELAY_STEP * 3, animationClass: 'scale-in-center' },
-		featured: { delay: DELAY_STEP * 4, animationClass: 'scale-in-center' }
-	};
 </script>
 
-<div class={combinedClasses} use:scrollAnimate={animationSettings[variant]}>
+<div class={combinedClasses}>
 	{@render children()}
 </div>
 
