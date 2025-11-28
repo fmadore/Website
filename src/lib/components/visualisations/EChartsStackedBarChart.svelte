@@ -16,13 +16,13 @@ ECharts Stacked Bar Chart component
 		yAxisLabel = '',
 		colors = [
 			'var(--color-primary)',           // Blog post - academic blue
-			'var(--color-highlight)',         // Book - gold
+			'var(--color-highlight)',         // Book - gold/amber
 			'var(--color-accent)',            // Book chapter - teal
 			'var(--color-success)',           // Bulletin article - green
 			'var(--sys-color-blue-400)',      // Conference proceedings - medium blue
 			'var(--color-secondary)',         // Encyclopedia entry - neutral gray
 			'var(--sys-color-blue-600)',      // Journal article - deep blue
-			'var(--sys-color-gold-500)',      // Master's thesis - gold variant
+			'var(--sys-color-amber-400)',     // Master's thesis - amber variant
 			'var(--color-danger)',            // PhD dissertation - red
 			'var(--sys-color-teal-600)',      // Research report - dark teal
 			'var(--color-primary-dark)'       // Special issue - darkest blue (distinct from journal article)
@@ -62,15 +62,16 @@ ECharts Stacked Bar Chart component
 	}
 
 	// Reactive color resolution
+	// Fallbacks match design system v2.0 values from variables.css
 	const resolvedColors = $derived({
-		primary: getCSSVariableValue('--color-primary') || '#3b82f6',
-		text: getCSSVariableValue('--color-text') || '#334155',
+		primary: getCSSVariableValue('--color-primary') || '#1d4ed8',
+		text: getCSSVariableValue('--color-text') || '#1e293b',
 		textLight: getCSSVariableValue('--color-text-light') || '#64748b',
 		border: getCSSVariableValue('--color-border') || '#e2e8f0',
 		surface: getCSSVariableValue('--color-surface') || '#f8fafc',
 		surfaceRgb: getCSSVariableValue('--color-surface-rgb') || '248, 250, 252',
 		resolvedSeriesColors: colors.map((color) => resolveColor(color)),
-		fontFamily: getCSSVariableValue('--font-family-sans') || 'sans-serif',
+		fontFamily: getCSSVariableValue('--font-family-sans') || 'system-ui, sans-serif',
 		currentTheme: getTheme()
 	});
 
@@ -313,7 +314,7 @@ ECharts Stacked Bar Chart component
 		/* Initial state for scroll animation */
 		opacity: 0;
 		transform: translateY(30px);
-		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all var(--duration-slow) var(--ease-out);
 	}
 
 	.chart {

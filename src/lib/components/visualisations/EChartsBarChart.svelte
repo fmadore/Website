@@ -53,16 +53,17 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 	}
 
 	// Reactive color resolution - updates when theme changes
+	// Fallbacks match design system v2.0 values from variables.css
 	const resolvedColors = $derived({
-		primary: getCSSVariableValue('--color-primary') || '#3b82f6',
-		text: getCSSVariableValue('--color-text') || '#334155',
+		primary: getCSSVariableValue('--color-primary') || '#1d4ed8',
+		text: getCSSVariableValue('--color-text') || '#1e293b',
 		textLight: getCSSVariableValue('--color-text-light') || '#64748b',
 		border: getCSSVariableValue('--color-border') || '#e2e8f0',
 		surface: getCSSVariableValue('--color-surface') || '#f8fafc',
 		surfaceRgb: getCSSVariableValue('--color-surface-rgb') || '248, 250, 252',
-		primaryDark: getCSSVariableValue('--color-primary-dark') || '#1d4ed8',
+		primaryDark: getCSSVariableValue('--color-primary-dark') || '#1e3a5f',
 		barColor: resolveColor(barColor),
-		fontFamily: getCSSVariableValue('--font-family-sans') || 'sans-serif',
+		fontFamily: getCSSVariableValue('--font-family-sans') || 'system-ui, sans-serif',
 		// Include theme to make this reactive to theme changes
 		currentTheme: getTheme()
 	});
@@ -269,7 +270,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		/* Initial state for scroll animation */
 		opacity: 0;
 		transform: scale(0.9);
-		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all var(--duration-slow) var(--ease-out);
 	}
 
 	.chart {

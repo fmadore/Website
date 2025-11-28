@@ -83,17 +83,18 @@ ECharts Network Graph - A network visualization for author collaborations
 	}
 
 	// Reactive color resolution
+	// Fallbacks match design system v2.0 values from variables.css
 	const resolvedColors = $derived({
-		primary: getCSSVariableValue('--color-primary') || '#3b82f6',
-		text: getCSSVariableValue('--color-text') || '#334155',
+		primary: getCSSVariableValue('--color-primary') || '#1d4ed8',
+		text: getCSSVariableValue('--color-text') || '#1e293b',
 		textLight: getCSSVariableValue('--color-text-light') || '#64748b',
 		border: getCSSVariableValue('--color-border') || '#e2e8f0',
 		surface: getCSSVariableValue('--color-surface') || '#f8fafc',
 		surfaceRgb: getCSSVariableValue('--color-surface-rgb') || '248, 250, 252',
-		accent: getCSSVariableValue('--color-accent') || '#0ea5e9',
+		accent: getCSSVariableValue('--color-accent') || '#14b8a6',
 		highlight: getCSSVariableValue('--color-highlight') || '#f59e0b',
 		success: getCSSVariableValue('--color-success') || '#10b981',
-		fontFamily: getCSSVariableValue('--font-family-sans') || 'sans-serif',
+		fontFamily: getCSSVariableValue('--font-family-sans') || 'system-ui, sans-serif',
 		currentTheme: getTheme()
 	});
 
@@ -522,7 +523,7 @@ ECharts Network Graph - A network visualization for author collaborations
 		/* Initial state for scroll animation */
 		opacity: 0;
 		transform: scale(0.8) translateY(20px);
-		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all var(--duration-slow) var(--ease-out);
 	}
 
 	.chart {
@@ -546,9 +547,9 @@ ECharts Network Graph - A network visualization for author collaborations
 		right: var(--spacing-4);
 		z-index: 10;
 		background-color: rgba(var(--color-surface-rgb), 0.8);
-		backdrop-filter: blur(4px);
-		-webkit-backdrop-filter: blur(4px);
-		border: 1px solid var(--color-border);
+		backdrop-filter: blur(var(--glass-blur-sm));
+		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
+		border: var(--border-width-thin) solid var(--color-border);
 		border-radius: var(--border-radius);
 		padding: var(--spacing-3);
 		box-shadow: var(--shadow-sm);
@@ -562,14 +563,14 @@ ECharts Network Graph - A network visualization for author collaborations
 		display: flex;
 		align-items: center;
 		gap: var(--spacing-2);
-		font-size: 11px;
+		font-size: var(--font-size-xs);
 		color: var(--color-text);
 	}
 
 	.legend-icon {
 		width: 12px;
 		height: 12px;
-		border-radius: 50%;
+		border-radius: var(--border-radius-full);
 	}
 
 	.legend-line {
@@ -584,13 +585,13 @@ ECharts Network Graph - A network visualization for author collaborations
 		align-items: center;
 		justify-content: center;
 		background-color: rgba(var(--color-surface-rgb), 0.8);
-		backdrop-filter: blur(4px);
-		-webkit-backdrop-filter: blur(4px);
-		border: 1px solid var(--color-border);
+		backdrop-filter: blur(var(--glass-blur-sm));
+		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
+		border: var(--border-width-thin) solid var(--color-border);
 		border-radius: var(--border-radius);
 		color: var(--color-text);
 		cursor: pointer;
-		transition: all var(--transition-duration-150) ease;
+		transition: all var(--duration-fast) var(--ease-out);
 		box-shadow: var(--shadow-sm);
 	}
 
@@ -598,7 +599,7 @@ ECharts Network Graph - A network visualization for author collaborations
 		background-color: var(--color-primary);
 		color: var(--color-white);
 		border-color: var(--color-primary);
-		transform: translateY(-1px);
+		transform: var(--transform-lift-sm);
 		box-shadow: var(--shadow-md);
 	}
 

@@ -49,11 +49,12 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 	const isMobile = $derived((windowInnerWidth.current ?? 1024) < 768);
 
 	// Utility functions for CSS variable resolution
+	// Fallbacks match design system v2.0 values from variables.css
 	function getCSSVariableValue(variableName: string): string {
-		if (typeof window === 'undefined') return '#6366f1';
+		if (typeof window === 'undefined') return '#1d4ed8';
 		const computedStyle = getComputedStyle(document.documentElement);
 		const value = computedStyle.getPropertyValue(variableName).trim();
-		return value || '#6366f1';
+		return value || '#1d4ed8';
 	}
 
 	function resolveColor(color: string): string {
@@ -368,7 +369,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		/* Initial state for scroll animation */
 		opacity: 0;
 		transform: scale(0.9);
-		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all var(--duration-slow) var(--ease-out);
 	}
 
 	.bubble-chart {
@@ -412,13 +413,13 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		align-items: center;
 		justify-content: center;
 		background-color: rgba(var(--color-surface-rgb), 0.8);
-		backdrop-filter: blur(4px);
-		-webkit-backdrop-filter: blur(4px);
-		border: 1px solid var(--color-border);
+		backdrop-filter: blur(var(--glass-blur-sm));
+		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
+		border: var(--border-width-thin) solid var(--color-border);
 		border-radius: var(--border-radius-md);
 		color: var(--color-text);
 		cursor: pointer;
-		transition: all 0.2s ease;
+		transition: all var(--duration-normal) var(--ease-out);
 		box-shadow: var(--shadow-sm);
 		padding: 0;
 	}
@@ -427,7 +428,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		background-color: var(--color-primary);
 		color: white;
 		border-color: var(--color-primary);
-		transform: translateY(-1px);
+		transform: var(--transform-lift-sm);
 		box-shadow: var(--shadow-md);
 	}
 
