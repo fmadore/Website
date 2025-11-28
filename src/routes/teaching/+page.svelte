@@ -5,9 +5,10 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
+	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	// Unified teaching items data for cards
-	let teachingItems = $state([
+	const teachingItems = [
 		{
 			id: 'african-past',
 			type: 'course',
@@ -49,11 +50,11 @@
 			title: 'Guest Lecturer',
 			institution: 'Various Institutions',
 			description:
-				'A list of invited talks and lectures delivered at various academic institutions.', // Updated description
+				'A list of invited talks and lectures delivered at various academic institutions.',
 			imageUrl: `${base}/images/teaching/guest-lecture.jpg`,
-			linkUrl: `${base}/teaching/guest-lectures` // <-- Link to new page
+			linkUrl: `${base}/teaching/guest-lectures`
 		}
-	]);
+	];
 </script>
 
 <SEO
@@ -61,77 +62,65 @@
 	description="Frédérick Madore teaches African History, Islam in sub-Saharan Africa, and digital humanities."
 />
 
-<div class="teaching-container">
-	<div class="main-content">
-		<PageHeader title="Teaching" />
+<div class="container py-8" use:scrollAnimate={{ delay: DELAY_STEP * 0, animationClass: 'fade-in-up' }}>
+	<PageHeader title="Teaching" />
 
-		<div use:scrollAnimate={{ delay: 100, animationClass: 'fade-in-up' }}>
-			<PageIntro>
-				Teaching interests: African History (pre-modern and modern periods), Islam in sub-Saharan
-				Africa, Digital Humanities, West African history.
-			</PageIntro>
-		</div>
+	<PageIntro>
+		Teaching interests: African History (pre-modern and modern periods), Islam in sub-Saharan
+		Africa, Digital Humanities, West African history.
+	</PageIntro>
 
-		<!-- Card Grid Layout -->
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-			{#each teachingItems as item, index (item.id)}
-				<div use:scrollAnimate={{ delay: 200 + index * 100, animationClass: 'fade-in-up' }}>
-					<Card
-						title={item.title}
-						imageUrl={item.imageUrl}
-						linkUrl={item.linkUrl}
-						target={item.type === 'guest_lecture' ? '_self' : '_blank'}
-					>
-						{#snippet subtitle()}
-							<span>{item.institution}</span>
-						{/snippet}
+	<div class="content-grid" use:scrollAnimate={{ delay: DELAY_STEP * 2, animationClass: 'fade-in-up' }}>
+		{#each teachingItems as item, index (item.id)}
+			<Card
+				title={item.title}
+				imageUrl={item.imageUrl}
+				linkUrl={item.type === 'course' ? item.syllabusUrl : item.linkUrl}
+				target={item.type === 'guest_lecture' ? '_self' : '_blank'}
+				animationDelay={DELAY_STEP * (5 + index * 2)}
+			>
+				{#snippet subtitle()}
+					<span>{item.institution}</span>
+				{/snippet}
 
-						{#snippet details()}
-							<div class="teaching-card-specific-details">
-								{#if item.type === 'course'}
-									<p><span class="label">Level:</span> {item.level}</p>
-									<p><span class="label">Period:</span> {item.period}</p>
-								{:else if item.type === 'guest_lecture'}
-									<!-- Specific details not shown on card, link provided -->
-								{/if}
-							</div>
-						{/snippet}
+				{item.description}
 
-						{#snippet action()}
-							<div>
-								{#if item.syllabusUrl}
-									<a href={item.syllabusUrl} target="_blank" rel="noopener noreferrer">
-										View Syllabus →
-									</a>
-								{:else if item.linkUrl && item.type === 'guest_lecture'}
-									<a href={item.linkUrl}> View List → </a>
-								{/if}
-							</div>
-						{/snippet}
-					</Card>
-				</div>
-			{/each}
-		</div>
+				{#snippet details()}
+					{#if item.type === 'course' && (item.level || item.period)}
+						<div class="teaching-details">
+							{#if item.level}
+								<p><span class="detail-label">Level:</span> {item.level}</p>
+							{/if}
+							{#if item.period}
+								<p><span class="detail-label">Period:</span> {item.period}</p>
+							{/if}
+						</div>
+					{/if}
+				{/snippet}
+
+				{#snippet action()}
+					{#if item.type === 'course' && item.syllabusUrl}
+						<a href={item.syllabusUrl} target="_blank" rel="noopener noreferrer">
+							View Syllabus →
+						</a>
+					{:else if item.type === 'guest_lecture' && item.linkUrl}
+						<a href={item.linkUrl}>View List →</a>
+					{/if}
+				{/snippet}
+			</Card>
+		{/each}
 	</div>
 </div>
 
 <style>
-	.teaching-container {
-		max-width: var(--content-max-width);
-		margin: 0 auto;
-		padding: var(--spacing-8) var(--spacing-4);
-	}
-
-	.main-content {
-		width: 100%;
-	}
-
-	.teaching-card-specific-details p {
+	.teaching-details p {
 		font-size: var(--font-size-sm);
 		color: var(--color-text-light);
 		margin-bottom: var(--space-2xs);
+		line-height: var(--line-height-normal);
 	}
-	.teaching-card-specific-details .label {
+
+	.teaching-details .detail-label {
 		font-weight: var(--font-weight-medium);
 		color: var(--color-text);
 	}
