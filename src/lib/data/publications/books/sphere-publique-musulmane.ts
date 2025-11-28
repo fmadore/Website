@@ -183,5 +183,15 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 			source: 'Master thesis, Université Laval',
 			url: 'https://hdl.handle.net/20.500.11794/144445'
 		}
+	],
+	tableOfContents: [
+		"Liste des acronymes",
+		"1 – La période d'incubation de l'islam voltaïque : une cohorte entre divisions internes et implantation du wahhabisme en Haute-Volta (1960-1973)",
+		"2 – L'islam entre processus de maturation et visibilité nouvelle (1973-1991) : une cohorte marquée par l'affirmation de jeunes arabisants et francisants",
+		"3 – Les chemins sinueux de l'affirmation d'une citoyenneté musulmane : entre rapprochements intergénérationnels, autocensure et moralisation de la sphère publique (1991-2015)",
+		"Conclusion",
+		"Glossaire",
+		"Annexes",
+		"Bibliographie"
 	]
 };
