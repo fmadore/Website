@@ -510,6 +510,7 @@
 	/* Map Section */
 	.map-section {
 		margin-top: var(--space-xl);
+		margin-bottom: var(--space-xl);
 	}
 
 	.map-section-title {
