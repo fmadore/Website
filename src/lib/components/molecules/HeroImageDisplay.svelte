@@ -30,13 +30,53 @@
 
 	let zoomed = $state(false);
 
-	function toggleZoom() {
-		zoomed = !zoomed;
-		// Prevent body scroll when modal is open
-		if (browser) {
-			document.body.style.overflow = zoomed ? 'hidden' : '';
+	function openZoom() {
+		if (!zoomed) {
+			zoomed = true;
+			if (browser) {
+				document.body.style.overflow = 'hidden';
+				// Push state to history so back button closes modal
+				history.pushState({ heroImageZoomed: true }, '');
+			}
 		}
 	}
+
+	function closeZoom() {
+		if (zoomed) {
+			zoomed = false;
+			if (browser) {
+				document.body.style.overflow = '';
+			}
+		}
+	}
+
+	function toggleZoom() {
+		if (zoomed) {
+			// When closing via X button or clicking outside, go back in history
+			if (browser) {
+				history.back();
+			}
+		} else {
+			openZoom();
+		}
+	}
+
+	// Handle browser back button
+	function handlePopState(event: PopStateEvent) {
+		if (zoomed) {
+			closeZoom();
+		}
+	}
+
+	// Set up popstate listener
+	$effect(() => {
+		if (browser) {
+			window.addEventListener('popstate', handlePopState);
+			return () => {
+				window.removeEventListener('popstate', handlePopState);
+			};
+		}
+	});
 
 	function handleKeydown(event: KeyboardEvent) {
 		if (event.key === 'Enter' || event.key === ' ') {
@@ -52,10 +92,14 @@
 		}
 	}
 
-	// Clean up body overflow when component is destroyed
+	// Clean up body overflow and history state when component is destroyed
 	$effect(() => {
 		return () => {
 			if (browser) {
+				if (zoomed) {
+					// If modal is open when component unmounts, go back to clean up history
+					history.back();
+				}
 				document.body.style.overflow = '';
 			}
 		};
