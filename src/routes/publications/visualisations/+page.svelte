@@ -14,6 +14,7 @@
 	import EChartsNetworkGraph from '$lib/components/visualisations/EChartsNetworkGraph.svelte';
 	import D3BubbleChart from '$lib/components/visualisations/D3BubbleChart.svelte';
 	import { scrollAnimate } from '$lib/utils/scrollAnimations';
+	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	type CitationYearData = { year: number; count: number };
 	type CitedAuthorData = { author: string; count: number };
@@ -362,7 +363,7 @@
 	<Breadcrumb items={breadcrumbItems} />
 	<div
 		use:scrollAnimate={{
-			delay: 100,
+			delay: DELAY_STEP,
 			animationClass: 'fade-in-up',
 			rootMargin: '100px',
 			threshold: 0.05
@@ -373,7 +374,7 @@
 
 	<div
 		use:scrollAnimate={{
-			delay: 150,
+			delay: DELAY_STEP * 2,
 			animationClass: 'fade-in-up',
 			rootMargin: '100px',
 			threshold: 0.05
@@ -388,13 +389,13 @@
 	<section
 		class="visualization-section mb-12"
 		use:scrollAnimate={{
-			delay: 200,
+			delay: DELAY_STEP * 3,
 			animationClass: 'fade-in-up',
 			rootMargin: '150px',
 			threshold: 0.05
 		}}
 	>
-		<h2 class="text-2xl font-semibold mb-6">Publications per year by type</h2>
+		<h2 class="section-heading">Publications per year by type</h2>
 		{#if publicationsPerYearStackedData.length > 0 && publicationTypesForStack.length > 0}
 			<div class="chart-wrapper stacked-chart" style="height: 450px;">
 				<EChartsStackedBarChart
@@ -414,13 +415,13 @@
 	<section
 		class="visualization-section mb-12"
 		use:scrollAnimate={{
-			delay: 225,
+			delay: DELAY_STEP * 4,
 			animationClass: 'fade-in-up',
 			rootMargin: '150px',
 			threshold: 0.05
 		}}
 	>
-		<h2 class="text-2xl font-semibold mb-6">Number of pages per year</h2>
+		<h2 class="section-heading">Number of pages per year</h2>
 		{#if pagesPerYearData.length > 0}
 			<div class="chart-wrapper" style="height: 400px;">
 				<EChartsBarChart
@@ -442,13 +443,13 @@
 	<section
 		class="visualization-section mb-12"
 		use:scrollAnimate={{
-			delay: 250,
+			delay: DELAY_STEP * 5,
 			animationClass: 'fade-in-up',
 			rootMargin: '150px',
 			threshold: 0.05
 		}}
 	>
-		<h2 class="text-2xl font-semibold mb-6">Publication Languages</h2>
+		<h2 class="section-heading">Publication Languages</h2>
 		{#if languageData.length > 0}
 			<div class="chart-wrapper" style="height: 480px;">
 				<EChartsDoughnutChart
@@ -468,13 +469,13 @@
 	<section
 		class="visualization-section mb-12"
 		use:scrollAnimate={{
-			delay: 275,
+			delay: DELAY_STEP * 6,
 			animationClass: 'fade-in-up',
 			rootMargin: '150px',
 			threshold: 0.05
 		}}
 	>
-		<h2 class="text-2xl font-semibold mb-6">
+		<h2 class="section-heading">
 			Keyword Frequency
 			{#if keywordData.length > 0}
 				({keywordData.length} unique keywords)
@@ -498,13 +499,13 @@
 	<section
 		class="visualization-section mb-12"
 		use:scrollAnimate={{
-			delay: 300,
+			delay: DELAY_STEP * 7,
 			animationClass: 'fade-in-up',
 			rootMargin: '150px',
 			threshold: 0.05
 		}}
 	>
-		<h2 class="text-2xl font-semibold mb-6">
+		<h2 class="section-heading">
 			Author Collaboration Network
 			{#if collaborationData.collaborators.length > 0}
 				({collaborationData.collaborators.length} collaborators)
@@ -527,26 +528,27 @@
 	</section>
 
 	<div
+		class="section-divider"
 		use:scrollAnimate={{
-			delay: 350,
+			delay: DELAY_STEP * 8,
 			animationClass: 'fade-in-up',
 			rootMargin: '100px',
 			threshold: 0.05
 		}}
 	>
-		<h2 class="text-3xl font-bold my-8 pt-4 border-t border-default">Citation statistics</h2>
+		<h2 class="divider-heading">Citation statistics</h2>
 	</div>
 
 	<section
 		class="visualization-section mb-12"
 		use:scrollAnimate={{
-			delay: 400,
+			delay: DELAY_STEP * 9,
 			animationClass: 'fade-in-up',
 			rootMargin: '150px',
 			threshold: 0.05
 		}}
 	>
-		<h2 class="text-2xl font-semibold mb-6">
+		<h2 class="section-heading">
 			Citations per year
 			{#if citationsPerYearData.length > 0 && totalCitations > 0}
 				(Total: {totalCitations})
@@ -575,13 +577,13 @@
 	<section
 		class="visualization-section"
 		use:scrollAnimate={{
-			delay: 450,
+			delay: DELAY_STEP * 10,
 			animationClass: 'fade-in-up',
 			rootMargin: '150px',
 			threshold: 0.05
 		}}
 	>
-		<h2 class="text-2xl font-semibold mb-6">
+		<h2 class="section-heading">
 			Authors citing my work most frequently
 			{#if citedAuthorsData.length > 0}
 				(Total: {citedAuthorsData.length} authors)
@@ -714,27 +716,74 @@
 	.page-container {
 		max-width: var(--content-max-width);
 		margin: 0 auto;
-		padding: var(--spacing-8) var(--spacing-4);
+		padding: var(--space-xl) var(--space-md);
 	}
 
+	/* Section headings - consistent typography using design tokens */
+	.section-heading {
+		font-size: var(--font-size-heading-3);
+		font-family: var(--font-family-serif);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text-emphasis);
+		margin-bottom: var(--space-lg);
+		line-height: var(--line-height-heading);
+	}
+
+	/* Section divider - for "Citation statistics" heading */
+	.section-divider {
+		margin: var(--space-xl) 0;
+		padding-top: var(--space-lg);
+		border-top: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+	}
+
+	.divider-heading {
+		font-size: var(--font-size-heading-2);
+		font-family: var(--font-family-serif);
+		font-weight: var(--font-weight-bold);
+		color: var(--color-text-emphasis);
+		margin: 0;
+		line-height: var(--line-height-heading);
+	}
+
+	/* Chart wrapper with glassmorphism - consistent with iframe-section and pdf-section */
 	.chart-wrapper,
 	.placeholder-message {
-		background-color: var(--color-surface);
-		color: var(--color-text);
-		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: var(--border-radius-lg);
-		box-shadow: var(--shadow-sm);
-		transition: all var(--anim-duration-slow) var(--anim-ease-base);
+		position: relative;
+		border-radius: var(--border-radius-xl);
+		box-shadow: var(--shadow-md);
+		/* Enhanced glassmorphism with subtle gradient overlay */
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+		);
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+		transition:
+			transform var(--duration-normal) var(--ease-out),
+			box-shadow var(--duration-normal) var(--ease-out),
+			background var(--duration-normal) var(--ease-out);
 	}
 
 	.chart-wrapper {
-		padding: var(--spacing-6);
-		position: relative;
+		padding: var(--space-lg);
 		/* Optimize rendering performance */
 		contain: layout style paint;
 		will-change: transform;
 		/* Ensure proper height reservation */
 		min-height: var(--iframe-height-xs);
+	}
+
+	/* Hover effect matching iframe-section and pdf-section patterns */
+	.chart-wrapper:hover {
+		transform: var(--transform-lift-sm);
+		box-shadow: var(--shadow-lg);
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+		);
 	}
 
 	.stacked-chart {
@@ -757,7 +806,7 @@
 	}
 
 	.placeholder-message {
-		padding: var(--spacing-6);
+		padding: var(--space-lg);
 		min-height: var(--iframe-height-xs);
 		display: flex;
 		align-items: center;
@@ -769,10 +818,11 @@
 
 	/* Initial state for scroll animations - prevent layout shifts */
 	.visualization-section,
+	.section-divider,
 	.page-container > div {
 		opacity: 0;
 		transform: translateY(var(--transform-distance-md));
-		transition: all var(--anim-duration-slow) var(--anim-ease-base);
+		transition: all var(--duration-slow) var(--ease-out);
 		/* Reserve space to prevent layout shifts */
 		min-height: 1px;
 		contain: layout style;
@@ -781,26 +831,47 @@
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
 		.visualization-section,
+		.section-divider,
 		.page-container > div,
 		.chart-wrapper {
 			opacity: 1 !important;
 			transform: none !important;
 			transition: none !important;
 		}
+
+		.chart-wrapper:hover {
+			transform: none;
+		}
 	}
 
-	/* Mobile responsiveness using breakpoint variables */
-	@media (max-width: 768px) {
+	/* Dark mode adjustments - consistent with iframe-section and pdf-section */
+	:global(html.dark) .chart-wrapper,
+	:global(html.dark) .placeholder-message {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.08) 0%,
+			rgba(var(--color-highlight-rgb), 0.04) 50%,
+			rgba(var(--color-accent-rgb), 0.06) 100%
+		);
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
+	}
+
+	:global(html.dark) .section-divider {
+		border-top-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
+	}
+
+	/* Mobile responsiveness using PostCSS custom media */
+	@media (--md-down) {
 		.page-container {
-			padding: 0 var(--spacing-3);
+			padding: var(--space-md) var(--space-sm);
 		}
 
 		.chart-wrapper {
-			padding: var(--spacing-4);
+			padding: var(--space-md);
 		}
 
 		.stacked-chart {
-			height: calc(var(--iframe-height-sm) - var(--spacing-16));
+			height: calc(var(--iframe-height-sm) - var(--space-4xl));
 		}
 
 		.network-chart {
@@ -811,56 +882,69 @@
 			height: 550px;
 		}
 
-		.visualization-section h2 {
-			font-size: var(--font-size-xl);
-			margin-bottom: var(--spacing-4);
+		.section-heading {
+			font-size: var(--font-size-heading-4);
+			margin-bottom: var(--space-md);
+		}
+
+		.divider-heading {
+			font-size: var(--font-size-heading-3);
 		}
 	}
 
-	@media (max-width: 640px) {
+	@media (--sm-down) {
 		.chart-wrapper {
-			padding: var(--spacing-3);
+			padding: var(--space-sm);
 		}
 
 		.stacked-chart {
-			height: calc(var(--iframe-height-xs) + var(--spacing-12));
+			height: calc(var(--iframe-height-xs) + var(--space-3xl));
 		}
 
 		.network-chart {
-			height: calc(var(--iframe-height-xs) + var(--spacing-12));
+			height: calc(var(--iframe-height-xs) + var(--space-3xl));
 		}
 
 		.bubble-chart {
 			height: 450px;
 		}
 
-		.visualization-section h2 {
-			font-size: var(--font-size-lg);
+		.section-heading {
+			font-size: var(--font-size-heading-5);
+		}
+
+		.divider-heading {
+			font-size: var(--font-size-heading-4);
 		}
 	}
 
+	/* Pagination controls */
 	.pagination-controls {
-		border-top: var(--border-width-thin) solid var(--color-border);
-		padding-top: var(--spacing-4);
+		border-top: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+		padding-top: var(--space-md);
 	}
 
 	.pagination-btn {
-		padding: var(--spacing-2) var(--spacing-3);
+		padding: var(--space-xs) var(--space-sm);
 		border: var(--border-width-thin) solid var(--color-border);
 		background-color: var(--color-surface);
 		color: var(--color-text);
 		border-radius: var(--border-radius);
 		font-size: var(--font-size-sm);
 		cursor: pointer;
-		transition: all var(--anim-duration-fast) var(--anim-ease-out);
-		min-width: calc(var(--spacing-8) + var(--spacing-2));
+		transition:
+			background-color var(--duration-fast) var(--ease-out),
+			border-color var(--duration-fast) var(--ease-out),
+			transform var(--duration-fast) var(--ease-out),
+			box-shadow var(--duration-fast) var(--ease-out);
+		min-width: calc(var(--space-xl) + var(--space-xs));
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
 
 	.pagination-btn:hover:not(:disabled) {
-		background-color: var(--color-surface-border);
+		background-color: var(--color-surface-alt);
 		border-color: var(--color-primary);
 		transform: var(--transform-lift-sm);
 	}
@@ -869,7 +953,7 @@
 		background-color: var(--color-primary);
 		color: var(--color-white);
 		border-color: var(--color-primary);
-		box-shadow: var(--shadow);
+		box-shadow: var(--shadow-sm);
 	}
 
 	.pagination-btn:disabled {
@@ -878,8 +962,8 @@
 	}
 
 	.pagination-ellipsis {
-		padding: var(--spacing-2) var(--spacing-1);
-		color: var(--color-text-light);
+		padding: var(--space-xs) var(--space-2xs);
+		color: var(--color-text-muted);
 		font-size: var(--font-size-sm);
 		display: flex;
 		align-items: center;
@@ -887,10 +971,10 @@
 
 	.pagination-info {
 		font-size: var(--font-size-sm);
-		color: var(--color-text-light);
+		color: var(--color-text-muted);
 	}
 
-	@media (max-width: 640px) {
+	@media (--sm-down) {
 		.pagination-buttons {
 			flex-wrap: wrap;
 			justify-content: center;
@@ -898,8 +982,8 @@
 
 		.pagination-btn {
 			font-size: var(--font-size-xs);
-			padding: var(--spacing-1) var(--spacing-2);
-			min-width: var(--spacing-8);
+			padding: var(--space-2xs) var(--space-xs);
+			min-width: var(--space-xl);
 		}
 	}
 </style>
