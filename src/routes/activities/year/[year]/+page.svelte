@@ -81,7 +81,7 @@
 
 <SEO title={`Activities (${year}) | Frédérick Madore`} />
 
-<div class="container mx-auto py-6">
+<div class="container py-8">
 	<div class="flex flex-col">
 		<Breadcrumb items={breadcrumbItems} />
 		<div class="year-page-header-wrapper">

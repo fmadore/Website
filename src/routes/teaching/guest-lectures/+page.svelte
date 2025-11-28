@@ -130,7 +130,7 @@
 	description="List of guest lectures delivered by Frédérick Madore."
 />
 
-<div class="container mx-auto py-8 px-4">
+<div class="container py-8">
 	<Breadcrumb items={breadcrumbItems} />
 	<PageHeader title="Guest Lectures" />
 

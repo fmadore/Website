@@ -297,7 +297,7 @@
 
 <MetaTags {publication} />
 
-<div class="container mx-auto py-8 px-4">
+<div class="container py-8">
 	<!-- Breadcrumb outside article for better structure -->
 	<Breadcrumb items={breadcrumbItems} />
 

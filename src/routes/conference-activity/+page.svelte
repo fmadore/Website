@@ -408,6 +408,12 @@
 		margin-bottom: var(--spacing-4);
 	}
 
+	.desktop-controls .actions-group {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-2);
+	}
+
 	/* Media query for mobile/tablet - show mobile controls up to 1024px */
 	@media (max-width: 1024px) {
 		.mobile-controls {

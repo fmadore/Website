@@ -144,7 +144,7 @@
 
 <MetaTags {communication} />
 
-<div class="container mx-auto py-8 px-4">
+<div class="container py-8">
 	<Breadcrumb items={breadcrumbItems} />
 
 	<article class="communication-article">
