@@ -5,7 +5,7 @@ export const cahiersEtudesAfricaines2025: PeerReview = {
 	journal: 'Cahiers d\'études africaines',
 	type: 'Journal Article',
 	year: 2025,
-	dateISO: '2025-11-07'
+	dateISO: '2025-11-28'
 };
 
 export default cahiersEtudesAfricaines2025;
