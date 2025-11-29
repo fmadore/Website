@@ -55,7 +55,7 @@
 	{#if activityList.length === 0}
 		<p class="no-activities">No recent activities found.</p>
 	{:else}
-		<ul class="activities-list">
+		<ul class="activities-list grid-stagger">
 			{#each activityList as activity (activity.id)}
 				<li class="activity-item">
 					<div class="activity-meta">
@@ -126,8 +126,13 @@
 		position: relative;
 		padding: var(--space-md);
 		border-radius: var(--border-radius-md);
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
 		overflow: hidden;
+		will-change: transform, box-shadow;
+		transition:
+			transform var(--duration-normal) var(--ease-out),
+			background var(--duration-normal) var(--ease-out),
+			border-color var(--duration-normal) var(--ease-out),
+			box-shadow var(--duration-normal) var(--ease-out);
 		/* Use glass-card utility for consistent glassmorphism */
 		background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light));
 		backdrop-filter: blur(var(--glass-blur-amount));
@@ -148,7 +153,7 @@
 		width: 0;
 		background: linear-gradient(180deg, var(--color-success) 0%, var(--color-highlight) 100%);
 		border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
-		transition: width var(--anim-duration-base) var(--anim-ease-out);
+		transition: width var(--duration-normal) var(--ease-out);
 		opacity: var(--opacity-high);
 	}
 
@@ -186,7 +191,10 @@
 		white-space: nowrap;
 		line-height: var(--line-height-normal);
 		border: var(--border-width-thin) solid var(--color-border);
-		transition: all var(--anim-duration-fast) var(--anim-ease-out);
+		transition:
+			color var(--duration-fast) var(--ease-out),
+			background-color var(--duration-fast) var(--ease-out),
+			border-color var(--duration-fast) var(--ease-out);
 	}
 
 	.activity-type[data-type='publication'] {
@@ -229,7 +237,7 @@
 		color: var(--color-text);
 		text-decoration: none;
 		margin-bottom: var(--space-xs);
-		transition: color var(--anim-duration-base) var(--anim-ease-out);
+		transition: color var(--duration-normal) var(--ease-out);
 		line-height: var(--line-height-relaxed);
 	}
 
@@ -291,11 +299,12 @@
 		.activity-item::before,
 		.activity-title,
 		.activity-type {
-			transition: none;
+			transition: none !important;
+			will-change: auto !important;
 		}
 
 		.activity-item:hover {
-			transform: none;
+			transform: none !important;
 		}
 	}
 </style>

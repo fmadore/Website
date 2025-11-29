@@ -475,3 +475,70 @@
 .glass-animate-slow {
 	transition: all var(--anim-duration-slow) var(--anim-ease-base);
 }
+
+/* ===== AMBIENT GLASS SHIMMER =====
+ * Subtle light reflection effect for glassmorphism elements
+ * Non-distracting, gentle animation using --anim-duration-gentle (12s)
+ * Disabled for users who prefer reduced motion
+ */
+.glass-shimmer {
+	position: relative;
+	overflow: hidden;
+}
+
+.glass-shimmer::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -100%;
+	width: 50%;
+	height: 100%;
+	background: linear-gradient(
+		90deg,
+		transparent 0%,
+		rgba(var(--color-white-rgb), 0.03) 25%,
+		rgba(var(--color-white-rgb), 0.06) 50%,
+		rgba(var(--color-white-rgb), 0.03) 75%,
+		transparent 100%
+	);
+	animation: glassShimmer var(--anim-duration-gentle, 12s) var(--ease-in-out) infinite;
+	pointer-events: none;
+	z-index: 1;
+}
+
+@keyframes glassShimmer {
+	0% {
+		left: -100%;
+		opacity: 0;
+	}
+	10% {
+		opacity: 1;
+	}
+	90% {
+		opacity: 1;
+	}
+	100% {
+		left: 200%;
+		opacity: 0;
+	}
+}
+
+/* Dark mode - slightly more visible shimmer */
+:global(html.dark) .glass-shimmer::before {
+	background: linear-gradient(
+		90deg,
+		transparent 0%,
+		rgba(var(--color-white-rgb), 0.02) 25%,
+		rgba(var(--color-white-rgb), 0.04) 50%,
+		rgba(var(--color-white-rgb), 0.02) 75%,
+		transparent 100%
+	);
+}
+
+/* Disable shimmer for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+	.glass-shimmer::before {
+		animation: none;
+		display: none;
+	}
+}

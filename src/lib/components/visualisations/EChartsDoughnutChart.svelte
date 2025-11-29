@@ -4,7 +4,6 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 <script lang="ts">
 	import type * as echarts from 'echarts';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 	import { innerWidth } from 'svelte/reactivity/window';
 
 	// Props - keeping interface simple for doughnut chart
@@ -278,15 +277,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 	});
 </script>
 
-<div
-	class="echarts-container"
-	use:scrollAnimate={{
-		delay: 350,
-		animationClass: 'scale-in-center',
-		rootMargin: '100px',
-		threshold: 0.1
-	}}
->
+<div class="echarts-container scroll-reveal-scale">
 	<div bind:this={chartContainer} class="chart"></div>
 </div>
 
@@ -296,25 +287,12 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		height: 480px; /* Increased height to accommodate legend */
 		display: block;
 		position: relative;
-		/* Remove background, border, and styling - let parent handle it */
 		font-family: var(--font-family-sans);
-		/* Initial state for scroll animation */
-		opacity: 0;
-		transform: scale(0.8) translateY(20px);
-		transition: all var(--duration-slow) var(--ease-out);
 	}
 
 	.chart {
 		width: 100%;
 		height: 100%;
-	}
-	/* Reduced motion support */
-	@media (prefers-reduced-motion: reduce) {
-		.echarts-container {
-			opacity: 1 !important;
-			transform: none !important;
-			transition: none !important;
-		}
 	}
 
 	/* Responsive adjustments */

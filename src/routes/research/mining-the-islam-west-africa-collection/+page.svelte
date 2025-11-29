@@ -76,7 +76,7 @@
 
 <SEO title="Mining the Islam West Africa Collection | Frédérick Madore" />
 
-<div class="container py-8">
+<div class="container py-8 page-enter">
 	<!-- Apply grid layout to this container on medium screens and up -->
 	<div class="content-wrapper">
 		<div class="main-content max-w-6xl mx-auto">
@@ -86,14 +86,17 @@
 				title="Mining the Islam West Africa Collection: Mapping Print Culture and Intellectual Networks in Francophone Regions"
 			/>
 
-			<ProjectImageBanner
-				src="{base}/images/research/IWAC.webp"
-				alt="Mining the Islam West Africa Collection"
-				glassEffect="glass-medium"
-				overlayIntensity="medium"
-			/>
+			<div class="scroll-reveal">
+				<ProjectImageBanner
+					src="{base}/images/research/IWAC.webp"
+					alt="Mining the Islam West Africa Collection"
+					glassEffect="glass-medium"
+					overlayIntensity="medium"
+				/>
+			</div>
 
-			<ContentBody variant="default" glassEffect="glass-card">
+			<div class="scroll-reveal">
+				<ContentBody variant="default" glassEffect="glass-card">
 				{#snippet children()}
 					<p>
 						Scholarship on Islam in West Africa has long privileged manuscript traditions, leaving
@@ -134,7 +137,7 @@
 					</p>
 
 					<!-- Enhanced iframe with glassmorphism and responsive design -->
-					<div class="iframe-section">
+					<div class="iframe-section scroll-reveal">
 						<IframeRenderer
 							id="iwac-overview-visualization"
 							src="https://fmadore.github.io/iwac-dashboard/?lang=en&theme=light"
@@ -147,10 +150,11 @@
 						/>
 					</div>
 				{/snippet}
-			</ContentBody>
+				</ContentBody>
+			</div>
 		</div>
 
-		<div class="related-content mt-16 max-w-6xl mx-auto">
+		<div class="related-content mt-16 max-w-6xl mx-auto scroll-reveal">
 			<RelevantPublications
 				projectName="Mining the Islam West Africa Collection"
 				limit={6}

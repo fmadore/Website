@@ -25,7 +25,7 @@
 </script>
 
 {#if primaryUrl || visibleAdditionalUrls.length > 0}
-	<section class={sectionClass}>
+	<section class="{sectionClass} scroll-reveal">
 		{#if primaryUrl && typeof primaryUrl === 'string' && primaryUrl !== 'undefined'}
 			<div class={primaryDivClass}>
 				<a href={primaryUrl} target="_blank" rel="noopener noreferrer" class={primaryButtonClass}>
@@ -47,6 +47,17 @@
 {/if}
 
 <style>
-	/* Button styles (.btn, .btn-primary, .btn-outline) are assumed 
-       to be globally defined or can be included here if needed. */
+	/* Action links section with scroll reveal animation support */
+	.action-links {
+		margin-bottom: var(--space-lg);
+	}
+
+	/* Reduced motion preference */
+	@media (prefers-reduced-motion: reduce) {
+		.action-links {
+			opacity: 1;
+			transform: none;
+			animation: none;
+		}
+	}
 </style>

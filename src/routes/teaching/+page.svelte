@@ -68,7 +68,7 @@
 		Africa, Digital Humanities, West African history.
 	</PageIntro>
 
-	<div class="content-grid">
+	<div class="content-grid grid-stagger">
 		{#each teachingItems as item (item.id)}
 			<Card
 				title={item.title}

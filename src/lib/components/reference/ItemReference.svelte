@@ -232,7 +232,10 @@
 		cursor: pointer;
 		-webkit-tap-highlight-color: transparent; /* iOS */
 		border-radius: var(--border-radius);
-		transition: all var(--duration-moderate) var(--ease-in-out);
+		/* Explicit transition properties for better performance */
+		transition:
+			transform var(--duration-moderate) var(--ease-in-out),
+			z-index var(--duration-moderate) var(--ease-in-out);
 	}
 
 	/* Touch device hint - subtle visual cue */

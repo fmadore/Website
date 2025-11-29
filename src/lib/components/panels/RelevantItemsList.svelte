@@ -65,7 +65,7 @@
 	{#if items.length === 0}
 		<p class="no-items">No {itemTypePlural} found for this project.</p>
 	{:else}
-		<ul class="item-list">
+		<ul class="item-list grid-stagger">
 			{#each items as item (item.id)}
 				<li class="item-list-item">
 					<RelevantItemCard {item} {basePath} {formatType} {formatAuthors} />

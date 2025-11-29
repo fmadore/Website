@@ -562,15 +562,15 @@
 		fill-opacity: 0.9;
 		stroke-width: 1.5; /* Slightly thinner stroke */
 		filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.4)); /* Drop shadow for depth */
-		/* Add transition for potential hover effects */
+		/* Uses design system animation tokens */
 		transition:
-			transform 0.2s ease-in-out,
-			color 0.2s ease-in-out,
-			fill 0.2s ease-in-out;
+			transform var(--duration-fast) var(--ease-out),
+			color var(--duration-fast) var(--ease-out),
+			fill var(--duration-fast) var(--ease-out);
 	}
 
 	:global(.custom-marker-icon:hover svg) {
-		transform: scale(1.1); /* Example hover effect */
+		transform: scale(var(--scale-110)); /* Hover effect using design token */
 	}
 
 	/* Style based on actual simple activityType values */
@@ -596,9 +596,10 @@
 	:global(.marker-cluster) {
 		background-clip: padding-box;
 		border-radius: 50%;
+		/* Uses design system animation tokens */
 		transition:
-			background-color 0.3s ease-in-out,
-			transform 0.3s ease-in-out; /* Animation */
+			background-color var(--duration-moderate) var(--ease-in-out),
+			transform var(--duration-moderate) var(--ease-in-out);
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -618,7 +619,8 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		transition: background-color 0.3s ease-in-out; /* Animation */
+		/* Uses design system animation tokens */
+		transition: background-color var(--duration-moderate) var(--ease-in-out);
 	}
 
 	:global(.marker-cluster span) {
@@ -684,5 +686,18 @@
 		font-size: 16px;
 		margin-left: -5px;
 		margin-top: -5px;
+	}
+
+	/* Reduced motion support */
+	@media (prefers-reduced-motion: reduce) {
+		:global(.marker-cluster),
+		:global(.marker-cluster div),
+		:global(.custom-marker-icon svg) {
+			transition: none !important;
+		}
+
+		:global(.custom-marker-icon:hover svg) {
+			transform: none !important;
+		}
 	}
 </style>

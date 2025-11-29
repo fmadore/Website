@@ -14,7 +14,7 @@
 	} = $props();
 
 	// Combine classes based on variant, glass effect, and additional classes
-	const baseClasses = 'page-intro';
+	const baseClasses = 'page-intro scroll-reveal';
 	const variantClasses = {
 		default: 'page-intro--default',
 		compact: 'page-intro--compact',

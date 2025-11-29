@@ -60,7 +60,7 @@
 	}
 </script>
 
-<div class="tag-cloud-container">
+<div class="tag-cloud-container scroll-reveal">
 	<h3 class="tag-cloud-title">Explore by Tags</h3>
 	{#if sortedTags().length > 0}
 		<div class="tag-cloud">

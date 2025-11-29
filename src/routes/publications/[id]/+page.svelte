@@ -296,7 +296,7 @@
 
 <MetaTags {publication} />
 
-<div class="container py-8">
+<div class="container py-8 page-enter">
 	<!-- Breadcrumb outside article for better structure -->
 	<Breadcrumb items={breadcrumbItems} />
 
@@ -326,7 +326,7 @@
 
 			<!-- Table of Contents Section -->
 			{#if (publication.type === 'book' || publication.type === 'special-issue') && publication.tableOfContents && publication.tableOfContents.length > 0}
-				<section class="table-of-contents-section">
+				<section class="table-of-contents-section scroll-reveal">
 					<h2 class="toc-title">Table of Contents</h2>
 					<ol class="toc-list">
 						{#each publication.tableOfContents as item, index (index)}
@@ -343,7 +343,7 @@
 			<TagList tags={publication.tags} baseUrl="/publications?tag=" />
 
 			<!-- Action Links and Export Button -->
-			<div class="publication-actions flex flex-wrap items-center gap-4">
+			<div class="publication-actions scroll-reveal flex flex-wrap items-center gap-4">
 				<ActionLinks
 					primaryUrl={publication.url}
 					primaryLabel="Access Publication"

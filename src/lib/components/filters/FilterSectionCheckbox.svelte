@@ -28,9 +28,9 @@
 	}
 </script>
 
-<div class="filter-section-content glass-panel-light">
+<div class="filter-section-content glass-panel-light scroll-reveal">
 	<h3 class="filter-section-title">{title}</h3>
-	<div class="filter-chips-container">
+	<div class="filter-chips-container grid-stagger">
 		{#each items as item (item)}
 			<Button
 				variant="outline-secondary"
@@ -79,6 +79,11 @@
 		flex-wrap: wrap;
 		gap: var(--space-xs);
 		margin-bottom: var(--space-sm);
+	}
+
+	/* Animation support for filter chips */
+	:global(.filter-chips-container > *) {
+		will-change: opacity, transform;
 	}
 
 	/* Enhanced styles for active state using design system variables */
@@ -180,6 +185,20 @@
 
 		:global(.filter-chip.active:hover) {
 			transform: none !important;
+		}
+
+		/* Disable scroll-driven animations */
+		.filter-section-content {
+			opacity: 1;
+			transform: none;
+			animation: none;
+		}
+
+		:global(.filter-chips-container > *) {
+			will-change: auto;
+			opacity: 1;
+			transform: none;
+			animation: none;
 		}
 	}
 </style>

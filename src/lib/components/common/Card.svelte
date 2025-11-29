@@ -18,7 +18,7 @@
 	let imageAlt = $derived(_imageAltProp || title);
 </script>
 
-<div class="card">
+<div class="card scroll-reveal-scale">
 	{#if imageUrl}
 		<div class="card-image">
 			{#if linkUrl}

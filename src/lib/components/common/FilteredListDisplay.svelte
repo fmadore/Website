@@ -54,7 +54,7 @@
 
 <div>
 	{#if items && items.length > 0}
-		<ul class="list-none p-0 space-y-8 mt-6">
+		<ul class="list-none p-0 space-y-8 mt-6 grid-stagger">
 			{#each items as item, index (getItemKey(item, index))}
 				{#if onitemrequest}
 					{@const Component = itemComponent}

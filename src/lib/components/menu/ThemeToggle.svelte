@@ -30,7 +30,11 @@
 		padding: var(--spacing-2);
 		color: var(--color-text);
 		border-radius: var(--border-radius-full);
-		transition: all var(--transition-duration-300) var(--anim-ease-in-out);
+		transition:
+			background-color var(--duration-normal) var(--ease-out),
+			border-color var(--duration-normal) var(--ease-out),
+			transform var(--duration-normal) var(--ease-out),
+			box-shadow var(--duration-normal) var(--ease-out);
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
@@ -40,6 +44,7 @@
 		box-shadow:
 			var(--shadow-md),
 			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium-high));
+		will-change: transform, box-shadow;
 	}
 
 	.theme-toggle:hover {
@@ -56,7 +61,7 @@
 		box-shadow:
 			var(--shadow-sm),
 			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium));
-		animation: themeChangePulse var(--transition-duration-300) var(--transition-ease-out);
+		animation: themeChangePulse var(--duration-moderate) var(--ease-out);
 	}
 
 	.theme-toggle:focus-visible {
@@ -70,7 +75,9 @@
 
 	/* Icon animations */
 	.theme-toggle :global(svg) {
-		transition: all var(--anim-duration-slow) var(--anim-ease-in-out);
+		transition:
+			transform var(--duration-slow) var(--ease-spring),
+			filter var(--duration-normal) var(--ease-out);
 		filter: drop-shadow(
 			0 var(--spacing-1) var(--spacing-2) rgba(var(--color-black-rgb), var(--opacity-low))
 		);

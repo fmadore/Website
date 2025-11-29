@@ -290,10 +290,17 @@
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-40)),
 			inset 0 -1px 0 rgba(var(--color-primary-rgb), var(--opacity-5));
 
-		/* Initial state for animation using global variables */
+		/* Initial state for animation using design system tokens */
 		opacity: 0;
-		transform: translateX(-50%) translateY(var(--space-sm)) scale(0.92);
-		transition: all var(--duration-moderate) var(--ease-bounce);
+		transform: translateX(-50%) translateY(var(--transform-distance-sm)) scale(var(--scale-90));
+		/* Explicit transition properties for better performance */
+		transition:
+			opacity var(--duration-moderate) var(--ease-bounce),
+			transform var(--duration-moderate) var(--ease-bounce),
+			box-shadow var(--duration-moderate) var(--ease-bounce),
+			border-color var(--duration-moderate) var(--ease-bounce);
+		/* Performance optimization */
+		will-change: opacity, transform;
 	}
 
 	.preview-card.positioned {
@@ -340,7 +347,7 @@
 	.preview-card.position-below {
 		bottom: auto;
 		top: calc(100% + var(--space-md));
-		transform: translateX(-50%) translateY(calc(-1 * var(--space-sm))) scale(0.92);
+		transform: translateX(-50%) translateY(calc(-1 * var(--transform-distance-sm))) scale(var(--scale-90));
 	}
 
 	.preview-card.position-below.positioned {
@@ -552,8 +559,11 @@
 	.view-more-container {
 		margin-top: var(--space-sm);
 		opacity: 0;
-		transform: translateY(var(--space-xs));
-		transition: all var(--duration-moderate) var(--ease-in-out);
+		transform: translateY(var(--transform-distance-xs));
+		/* Explicit transition properties for better performance */
+		transition:
+			opacity var(--duration-moderate) var(--ease-in-out),
+			transform var(--duration-moderate) var(--ease-in-out);
 	}
 
 	/* Custom styling for view-more hint button */
@@ -614,11 +624,12 @@
 		border-radius: var(--border-radius-full);
 		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-bold);
-		transform: translateX(calc(-1 * var(--space-xs)));
-		transition: 
+		transform: translateX(calc(-1 * var(--transform-distance-xs)));
+		/* Explicit transition properties for better performance */
+		transition:
 			transform var(--duration-moderate) var(--ease-bounce),
 			box-shadow var(--duration-moderate) var(--ease-out);
-		box-shadow: 
+		box-shadow:
 			0 2px 8px rgba(var(--color-primary-rgb), var(--opacity-30)),
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-20));
 	}
@@ -628,7 +639,10 @@
 		color: inherit;
 		display: block;
 		border-radius: var(--border-radius-2xl);
-		transition: all var(--duration-moderate) var(--ease-out);
+		/* Explicit transition properties for better performance */
+		transition:
+			box-shadow var(--duration-moderate) var(--ease-out),
+			border-color var(--duration-moderate) var(--ease-out);
 	}
 
 	.card-link:hover .view-more-container,
@@ -647,7 +661,7 @@
 
 	.card-link:hover .card-image,
 	.card-link:focus .card-image {
-		transform: scale(1.08);
+		transform: scale(var(--scale-105));
 		filter: brightness(1.05) contrast(1.1);
 	}
 
@@ -767,15 +781,30 @@
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
 		.preview-card {
-			transition: none;
+			transition: none !important;
+			will-change: auto !important;
+		}
+
+		.preview-card.positioned {
+			opacity: 1;
+			transform: translateX(-50%) translateY(0) scale(1);
+		}
+
+		.card-link,
+		.card-image,
+		.image-overlay,
+		.view-more-container,
+		.hint-arrow {
+			transition: none !important;
 		}
 
 		.card-link:hover .card-image {
 			transform: none;
 		}
 
-		.view-more-hint {
-			transition: none;
+		.view-more-container {
+			opacity: 1;
+			transform: none;
 		}
 	}
 

@@ -1,8 +1,28 @@
 import { animationsEnabledStore } from '$lib/stores/globalState.svelte';
 
 /**
- * Scroll Animation Utilities
- * Provides reusable functions for implementing smooth scroll animations
+ * @deprecated This module is deprecated in favor of CSS-only scroll animations.
+ * 
+ * Use the modern CSS animation classes instead:
+ * - `scroll-reveal` - Fade-up animation triggered on viewport entry
+ * - `scroll-reveal-scale` - Scale-in animation for cards and images
+ * - `grid-stagger` - Container class for staggered child animations
+ * - `page-enter` - Subtle page load animation
+ * 
+ * These CSS classes use native scroll-driven animations (animation-timeline: view())
+ * with graceful fallbacks for unsupported browsers. They automatically respect
+ * prefers-reduced-motion and require no JavaScript.
+ * 
+ * Example migration:
+ * ```svelte
+ * <!-- OLD -->
+ * <div use:scrollAnimate={{ animationClass: 'scale-in' }}>
+ * 
+ * <!-- NEW -->
+ * <div class="scroll-reveal-scale">
+ * ```
+ * 
+ * See src/styles/components/animations.css for the modern animation system.
  */
 
 // Get animation state helper

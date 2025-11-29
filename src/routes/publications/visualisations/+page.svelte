@@ -357,20 +357,20 @@
 	keywords="publications, visualisations, citations, research analytics, Frédérick Madore"
 />
 
-<div class="page-container">
+<div class="page-container page-enter">
 	<Breadcrumb items={breadcrumbItems} />
-	<div>
+	<div class="scroll-reveal">
 		<PageHeader title="Publication Visualisations" />
 	</div>
 
-	<div>
+	<div class="scroll-reveal">
 		<PageIntro>
 			This page presents various visualisations of my publication data, offering insights into
 			citation trends, authorship patterns, and more.
 		</PageIntro>
 	</div>
 
-	<section class="visualization-section mb-12">
+	<section class="visualization-section scroll-reveal mb-12">
 		<h2 class="section-heading">Publications per year by type</h2>
 		{#if publicationsPerYearStackedData.length > 0 && publicationTypesForStack.length > 0}
 			<div class="chart-wrapper stacked-chart" style="height: 450px;">
@@ -388,7 +388,7 @@
 		{/if}
 	</section>
 
-	<section class="visualization-section mb-12">
+	<section class="visualization-section scroll-reveal mb-12">
 		<h2 class="section-heading">Number of pages per year</h2>
 		{#if pagesPerYearData.length > 0}
 			<div class="chart-wrapper" style="height: 400px;">
@@ -408,7 +408,7 @@
 		{/if}
 	</section>
 
-	<section class="visualization-section mb-12">
+	<section class="visualization-section scroll-reveal mb-12">
 		<h2 class="section-heading">Publication Languages</h2>
 		{#if languageData.length > 0}
 			<div class="chart-wrapper" style="height: 480px;">
@@ -426,7 +426,7 @@
 		{/if}
 	</section>
 
-	<section class="visualization-section mb-12">
+	<section class="visualization-section scroll-reveal mb-12">
 		<h2 class="section-heading">
 			Keyword Frequency
 			{#if keywordData.length > 0}
@@ -448,7 +448,7 @@
 		{/if}
 	</section>
 
-	<section class="visualization-section mb-12">
+	<section class="visualization-section scroll-reveal mb-12">
 		<h2 class="section-heading">
 			Author Collaboration Network
 			{#if collaborationData.collaborators.length > 0}
@@ -471,11 +471,11 @@
 		{/if}
 	</section>
 
-	<div class="section-divider">
+	<div class="section-divider scroll-reveal">
 		<h2 class="divider-heading">Citation statistics</h2>
 	</div>
 
-	<section class="visualization-section mb-12">
+	<section class="visualization-section scroll-reveal mb-12">
 		<h2 class="section-heading">
 			Citations per year
 			{#if citationsPerYearData.length > 0 && totalCitations > 0}
@@ -502,7 +502,7 @@
 		{/if}
 	</section>
 
-	<section class="visualization-section">
+	<section class="visualization-section scroll-reveal">
 		<h2 class="section-heading">
 			Authors citing my work most frequently
 			{#if citedAuthorsData.length > 0}
@@ -736,29 +736,9 @@
 		contain: layout style;
 	}
 
-	/* Initial state for scroll animations - prevent layout shifts */
-	.visualization-section,
-	.section-divider,
-	.page-container > div {
-		opacity: 0;
-		transform: translateY(var(--transform-distance-md));
-		transition: all var(--duration-slow) var(--ease-out);
-		/* Reserve space to prevent layout shifts */
-		min-height: 1px;
-		contain: layout style;
-	}
-
-	/* Reduced motion support */
+	/* Scroll animations now use global .scroll-reveal class from animations.css */
+	/* Chart wrapper hover effect still needs reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
-		.visualization-section,
-		.section-divider,
-		.page-container > div,
-		.chart-wrapper {
-			opacity: 1 !important;
-			transform: none !important;
-			transition: none !important;
-		}
-
 		.chart-wrapper:hover {
 			transform: none;
 		}

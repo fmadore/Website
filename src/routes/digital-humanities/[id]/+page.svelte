@@ -87,27 +87,27 @@
 	ogImage={project.heroImageUrl ? `${base}${project.heroImageUrl}` : `${base}${project.imageUrl}`}
 />
 
-<div class="container py-8">
+<div class="container py-8 page-enter">
 	<div class="content-wrapper">
 		<article class="project-detail-article max-w-6xl mx-auto">
 			<Breadcrumb items={breadcrumbItems} />
 
 			<PageHeader title={project.title} authors={project.years ? [project.years] : undefined} />
 
-			<div>
+			<div class="scroll-reveal">
 				<section class="content-section glass-card">
 					<!-- Safe: project.description is from trusted project data in src/lib/data/digital-humanities/ -->
 					{@html project.description}
 				</section>
 			</div>
 
-			<div>
+			<div class="scroll-reveal">
 				{#if projectDetails.length > 0}
 					<DetailsGrid details={projectDetails} />
 				{/if}
 			</div>
 
-			<div>
+			<div class="scroll-reveal">
 				{#if project.skills && project.skills.length > 0}
 					<section class="mb-6">
 						<TagList
@@ -122,7 +122,7 @@
 			</div>
 
 			{#if project.embeddableContent && project.embeddableContent.length > 0}
-				<div>
+				<div class="scroll-reveal">
 					<section class="embeddable-section">
 						{#each project.embeddableContent as item (item.id)}
 							<div class="embeddable-item">
@@ -169,7 +169,7 @@
 				</div>
 			{/if}
 
-			<div>
+			<div class="scroll-reveal">
 				{#if project.award}
 					<section class="award-section">
 						<h3 class="section-title">Award</h3>
@@ -179,7 +179,7 @@
 				{/if}
 			</div>
 
-			<div>
+			<div class="scroll-reveal">
 				{#if project.publication}
 					<section class="publication-section">
 						<h3 class="section-title">Related Publication</h3>
@@ -193,7 +193,7 @@
 				{/if}
 			</div>
 
-			<div>
+			<div class="scroll-reveal">
 				{#if project.reviews && project.reviews.length > 0}
 					<section class="reviews-section">
 						<h3 class="section-title">Reviews</h3>

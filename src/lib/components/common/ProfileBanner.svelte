@@ -3,7 +3,7 @@
 	import Icon from '@iconify/svelte';
 </script>
 
-<div class="profile-header glass-panel">
+<div class="profile-header glass-panel scroll-reveal">
 	<div class="profile-photo-container">
 		<div class="profile-photo">
 			<img

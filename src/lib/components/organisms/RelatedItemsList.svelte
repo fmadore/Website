@@ -54,9 +54,9 @@
 </script>
 
 {#if relatedItems.length > 0}
-	<section class={sectionClass}>
+	<section class="{sectionClass} scroll-reveal">
 		<h2 class={titleClass}>{title}</h2>
-		<div class={gridClass}>
+		<div class="{gridClass} grid-stagger">
 			{#each relatedItems as item (item.id)}
 				{@const ItemComponent = itemComponent}
 				<ItemComponent {item} itemUrl={`${baseItemUrl}${item.id}`} />

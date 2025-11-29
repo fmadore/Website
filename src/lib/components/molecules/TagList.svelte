@@ -28,11 +28,11 @@
 </script>
 
 {#if visibleTags.length > 0}
-	<section class="tag-list-section">
+	<section class="tag-list-section scroll-reveal">
 		{#if showTitle}
 			<h2 class="tag-list-title">{sectionTitle}</h2>
 		{/if}
-		<div class="tag-list">
+		<div class="tag-list grid-stagger">
 			{#each visibleTags as tag (tag)}
 				<Button
 					href="{base}{baseUrl}{encodeURIComponent(tag)}"
@@ -94,6 +94,15 @@
 		:global(.tag-button:hover) {
 			transition: none;
 			transform: none;
+			animation: none;
+		}
+
+		/* Ensure content is visible when animations are disabled */
+		.tag-list-section,
+		.tag-list > :global(*) {
+			opacity: 1;
+			transform: none;
+			animation: none;
 		}
 	}
 </style>

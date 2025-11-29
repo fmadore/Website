@@ -4,7 +4,8 @@
 		item,
 		itemUrl,
 		// Updated default classes to align with global glass card + typography system
-		cardClass = 'related-item glass-card p-4 focus-outline',
+		// Added scroll-reveal-scale for modern CSS scroll-driven animation
+		cardClass = 'related-item glass-card p-4 focus-outline scroll-reveal-scale',
 		dateClass = 'related-date text-xs mb-1',
 		titleClass = 'related-title',
 		authorsClass = 'related-authors text-xs mt-2'
@@ -141,8 +142,15 @@
 		.related-item,
 		.related-title {
 			transition: none;
+			animation: none;
 		}
 		.related-item:hover {
+			transform: none;
+		}
+
+		/* Ensure content is visible when animations are disabled */
+		.related-item {
+			opacity: 1;
 			transform: none;
 		}
 	}

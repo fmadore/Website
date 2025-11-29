@@ -9,11 +9,11 @@
 </script>
 
 {#if sortedReviews && sortedReviews.length > 0}
-	<section class="reviews-section">
+	<section class="reviews-section scroll-reveal">
 		<h2 class="section-title">Reviews</h2>
-		<div class="reviews-grid">
+		<div class="reviews-grid grid-stagger">
 			{#each sortedReviews as review (review.title + review.year + review.author)}
-				<div class="review-card">
+				<div class="review-card scroll-reveal-scale">
 					<div class="review-title">
 						{#if review.url}
 							<a href={review.url} target="_blank" rel="noopener" class="review-link"
@@ -66,6 +66,7 @@
 		padding: var(--space-lg);
 		border-radius: var(--border-radius-xl);
 		position: relative;
+		will-change: transform, box-shadow;
 
 		/* Sophisticated glassmorphism effect matching other components */
 		background: linear-gradient(
@@ -148,6 +149,7 @@
 		padding: var(--space-md);
 		border-radius: var(--border-radius-lg);
 		position: relative;
+		will-change: transform, box-shadow;
 
 		/* Enhanced glassmorphism for individual cards */
 		background: linear-gradient(
@@ -331,8 +333,9 @@
 		.review-card,
 		.review-card:hover,
 		.section-title::after {
-			transition: none;
-			transform: none;
+			transition: none !important;
+			transform: none !important;
+			will-change: auto !important;
 		}
 	}
 </style>

@@ -4,7 +4,6 @@ ECharts Horizontal Bar Chart component
 <script lang="ts">
 	import type * as echarts from 'echarts';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 	import { innerWidth } from 'svelte/reactivity/window';
 
 	// Props - keeping the same interface as your D3 component for easy replacement
@@ -253,15 +252,7 @@ ECharts Horizontal Bar Chart component
 	});
 </script>
 
-<div
-	class="echarts-container"
-	use:scrollAnimate={{
-		delay: 300,
-		animationClass: 'slide-in-left',
-		rootMargin: '100px',
-		threshold: 0.1
-	}}
->
+<div class="echarts-container scroll-reveal">
 	<div bind:this={chartContainer} class="chart"></div>
 </div>
 
@@ -271,25 +262,11 @@ ECharts Horizontal Bar Chart component
 		height: 100%;
 		display: block;
 		position: relative;
-		/* Remove background, border, and styling - let parent handle it */
 		font-family: var(--font-family-sans);
-		/* Initial state for scroll animation */
-		opacity: 0;
-		transform: translateX(-30px);
-		transition: all var(--duration-slow) var(--ease-out);
 	}
 
 	.chart {
 		width: 100%;
 		height: 100%;
-	}
-
-	/* Reduced motion support */
-	@media (prefers-reduced-motion: reduce) {
-		.echarts-container {
-			opacity: 1 !important;
-			transform: none !important;
-			transition: none !important;
-		}
 	}
 </style>

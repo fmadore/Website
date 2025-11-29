@@ -1,34 +1,183 @@
-/* Scroll Animation Classes */
+/* ===== MODERN CSS ANIMATION SYSTEM =====
+ * CSS-only animations using scroll-driven animations (Chrome 115+, Firefox 110+)
+ * Graceful fallbacks ensure content is always visible in unsupported browsers
+ * All animations respect prefers-reduced-motion
+ */
 
-/* Prevent flash of unstyled content for animated elements */
-[data-animate]:not(.animate-in) {
-	opacity: 0;
-	transform: translateY(var(--transform-distance-md));
+/* ===== PAGE ENTRY ANIMATIONS ===== */
+/* Subtle page load fade for initial content */
+.page-enter {
+	animation: pageEnter var(--duration-moderate) var(--ease-out) forwards;
 }
 
-/* Ensure main content is more visible on mobile */
-@media (max-width: 767px) {
-	/* Reduce initial transform distance on mobile for better visibility */
-	[data-animate]:not(.animate-in) {
+@keyframes pageEnter {
+	from {
+		opacity: 0;
 		transform: translateY(var(--transform-distance-sm));
 	}
-
-	/* Faster animation trigger for mobile */
-	[data-animate] {
-		transition: all var(--anim-duration-slow) var(--anim-ease-mobile) !important;
+	to {
+		opacity: 1;
+		transform: translateY(0);
 	}
 }
 
-/* Ensure smooth page transitions */
-.main-content-area {
+/* ===== SCROLL-DRIVEN ENTRY ANIMATIONS =====
+ * Uses CSS scroll-driven animations for modern browsers
+ * Content is immediately visible in unsupported browsers (graceful degradation)
+ */
+
+/* Base class for scroll-animated elements */
+.scroll-reveal {
+	/* Fallback: content is visible by default */
 	opacity: 1;
-	transition: opacity var(--anim-duration-fast) var(--anim-ease-in-out);
+	transform: translateY(0);
 }
 
-/* Page transition states */
-.page-transitioning .main-content-area {
-	opacity: 0;
+/* Apply animation only in browsers that support scroll-driven animations */
+@supports (animation-timeline: view()) {
+	.scroll-reveal {
+		opacity: 0;
+		transform: translateY(var(--transform-distance-md));
+		animation: scrollReveal linear forwards;
+		animation-timeline: view();
+		animation-range: entry 0% entry 30%;
+	}
 }
+
+@keyframes scrollReveal {
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Subtle scale variant for cards */
+.scroll-reveal-scale {
+	opacity: 1;
+	transform: scale(1);
+}
+
+@supports (animation-timeline: view()) {
+	.scroll-reveal-scale {
+		opacity: 0;
+		transform: scale(0.96);
+		animation: scrollRevealScale linear forwards;
+		animation-timeline: view();
+		animation-range: entry 0% entry 25%;
+	}
+}
+
+@keyframes scrollRevealScale {
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+/* ===== GRID STAGGER ANIMATION =====
+ * Automatic staggered reveal for grid children using :nth-child
+ * No JavaScript required - pure CSS with custom property delays
+ */
+.grid-stagger {
+	/* Container setup */
+}
+
+.grid-stagger > * {
+	/* Fallback: all items visible */
+	opacity: 1;
+	transform: translateY(0);
+}
+
+@supports (animation-timeline: view()) {
+	.grid-stagger > * {
+		opacity: 0;
+		transform: translateY(var(--transform-distance-md));
+		animation: gridItemReveal var(--duration-moderate) var(--ease-out) forwards;
+		animation-timeline: view();
+		animation-range: entry 0% entry 35%;
+	}
+
+	/* Stagger delays using :nth-child */
+	.grid-stagger > *:nth-child(1) { --stagger-delay: 0ms; }
+	.grid-stagger > *:nth-child(2) { --stagger-delay: var(--stagger-1); }
+	.grid-stagger > *:nth-child(3) { --stagger-delay: var(--stagger-2); }
+	.grid-stagger > *:nth-child(4) { --stagger-delay: var(--stagger-3); }
+	.grid-stagger > *:nth-child(5) { --stagger-delay: var(--stagger-4); }
+	.grid-stagger > *:nth-child(6) { --stagger-delay: var(--stagger-5); }
+	.grid-stagger > *:nth-child(n+7) { --stagger-delay: var(--stagger-6); }
+
+	.grid-stagger > * {
+		animation-delay: var(--stagger-delay, 0ms);
+	}
+}
+
+@keyframes gridItemReveal {
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* ===== SKELETON LOADING =====
+ * Loading placeholders with shimmer animation for perceived performance
+ */
+.skeleton {
+	background: linear-gradient(
+		90deg,
+		rgba(var(--color-surface-rgb), 0.6) 0%,
+		rgba(var(--color-surface-rgb), 0.9) 50%,
+		rgba(var(--color-surface-rgb), 0.6) 100%
+	);
+	background-size: 200% 100%;
+	animation: skeletonShimmer 1.5s var(--ease-in-out) infinite;
+	border-radius: var(--border-radius);
+}
+
+.skeleton-text {
+	height: 1em;
+	margin-bottom: var(--space-xs);
+	border-radius: var(--border-radius-sm);
+}
+
+.skeleton-title {
+	height: 1.5em;
+	width: 60%;
+	margin-bottom: var(--space-sm);
+}
+
+.skeleton-image {
+	aspect-ratio: 16 / 9;
+	border-radius: var(--border-radius-md);
+}
+
+.skeleton-card {
+	padding: var(--space-md);
+	border-radius: var(--border-radius-lg);
+}
+
+@keyframes skeletonShimmer {
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
+	}
+}
+
+/* Dark mode skeleton */
+:global(html.dark) .skeleton {
+	background: linear-gradient(
+		90deg,
+		rgba(var(--color-surface-rgb), 0.3) 0%,
+		rgba(var(--color-surface-rgb), 0.5) 50%,
+		rgba(var(--color-surface-rgb), 0.3) 100%
+	);
+	background-size: 200% 100%;
+}
+
+/* ===== LEGACY ANIMATION CLASSES =====
+ * Maintained for backward compatibility
+ */
 
 /* Base animation states */
 .animate-in {
@@ -280,6 +429,12 @@
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+	/* Disable all animations for users who prefer reduced motion */
+	.page-enter,
+	.scroll-reveal,
+	.scroll-reveal-scale,
+	.grid-stagger > *,
+	.skeleton,
 	.fade-in,
 	.fade-in-up,
 	.fade-in-down,
@@ -312,11 +467,24 @@
 [class*='fade-in'],
 [class*='scale-in'],
 [class*='slide-in'],
-.bounce-in {
+.bounce-in,
+.scroll-reveal,
+.scroll-reveal-scale,
+.grid-stagger > * {
 	will-change: opacity, transform;
 }
 
 /* Remove will-change after animation completes */
 .animation-complete {
 	will-change: auto;
+}
+
+/* Mobile optimizations - reduced distances for better performance */
+@media (max-width: 767px) {
+	@supports (animation-timeline: view()) {
+		.scroll-reveal,
+		.grid-stagger > * {
+			transform: translateY(var(--transform-distance-sm));
+		}
+	}
 }

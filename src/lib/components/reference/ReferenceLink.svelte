@@ -82,7 +82,13 @@
 		white-space: nowrap;
 		padding: 0 var(--space-2xs);
 		border-radius: var(--border-radius);
-		transition: all var(--duration-moderate) var(--ease-out);
+		/* Explicit transition properties for better performance */
+		transition:
+			color var(--duration-moderate) var(--ease-out),
+			background-color var(--duration-moderate) var(--ease-out),
+			border-color var(--duration-moderate) var(--ease-out),
+			transform var(--duration-moderate) var(--ease-out),
+			box-shadow var(--duration-moderate) var(--ease-out);
 
 		/* Subtle background instead of underline */
 		background-color: rgba(var(--color-primary-rgb), var(--opacity-10));

@@ -4,7 +4,6 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 <script lang="ts">
 	import type * as echarts from 'echarts';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 	import { innerWidth } from 'svelte/reactivity/window';
 
 	// Props - keeping the same interface as your D3 component for easy replacement
@@ -247,15 +246,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 	});
 </script>
 
-<div
-	class="echarts-container"
-	use:scrollAnimate={{
-		delay: 200,
-		animationClass: 'scale-in',
-		rootMargin: '100px',
-		threshold: 0.1
-	}}
->
+<div class="echarts-container scroll-reveal-scale">
 	<div bind:this={chartContainer} class="chart"></div>
 </div>
 
@@ -265,25 +256,11 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		height: 350px;
 		display: block;
 		position: relative;
-		/* Remove background, border, and styling - let parent handle it */
 		font-family: var(--font-family-sans);
-		/* Initial state for scroll animation */
-		opacity: 0;
-		transform: scale(0.9);
-		transition: all var(--duration-slow) var(--ease-out);
 	}
 
 	.chart {
 		width: 100%;
 		height: 100%;
-	}
-
-	/* Reduced motion support */
-	@media (prefers-reduced-motion: reduce) {
-		.echarts-container {
-			opacity: 1 !important;
-			transform: none !important;
-			transition: none !important;
-		}
 	}
 </style>

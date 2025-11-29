@@ -53,8 +53,13 @@
 		position: relative;
 		padding: var(--spacing-4);
 		border-radius: var(--border-radius-md);
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
 		overflow: hidden;
+		will-change: transform, box-shadow;
+		transition:
+			transform var(--duration-normal) var(--ease-out),
+			background var(--duration-normal) var(--ease-out),
+			border-color var(--duration-normal) var(--ease-out),
+			box-shadow var(--duration-normal) var(--ease-out);
 		/* Use glass-card utility for consistent glassmorphism */
 		background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light));
 		backdrop-filter: blur(var(--glass-blur-amount));
@@ -75,7 +80,7 @@
 		width: 0;
 		background: linear-gradient(180deg, var(--color-accent) 0%, var(--color-highlight) 100%);
 		border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
-		transition: width var(--anim-duration-base) var(--anim-ease-out);
+		transition: width var(--duration-normal) var(--ease-out);
 		opacity: var(--opacity-high);
 	}
 
@@ -110,7 +115,10 @@
 		padding: var(--spacing-1) var(--spacing-3);
 		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-medium-high));
 		border-radius: var(--border-radius-full);
-		transition: all var(--anim-duration-fast) var(--anim-ease-out);
+		transition:
+			color var(--duration-fast) var(--ease-out),
+			background-color var(--duration-fast) var(--ease-out),
+			border-color var(--duration-fast) var(--ease-out);
 	}
 
 	.relevant-item-date {
@@ -131,7 +139,7 @@
 	.relevant-item-title a {
 		color: var(--color-text);
 		text-decoration: none;
-		transition: color var(--anim-duration-base) var(--anim-ease-out);
+		transition: color var(--duration-normal) var(--ease-out);
 	}
 
 	.relevant-item-title a:hover {
@@ -162,7 +170,7 @@
 		text-decoration: none;
 		font-weight: var(--font-weight-medium);
 		font-size: var(--font-size-sm);
-		transition: all var(--anim-duration-base) var(--anim-ease-out);
+		transition: color var(--duration-normal) var(--ease-out);
 		display: inline-flex;
 		align-items: center;
 		gap: var(--spacing-1);
@@ -178,7 +186,7 @@
 		width: 0;
 		height: var(--border-width-thin);
 		background: var(--color-accent);
-		transition: width var(--anim-duration-base) var(--anim-ease-out);
+		transition: width var(--duration-normal) var(--ease-out);
 	}
 
 	.relevant-item-link:hover {
@@ -238,11 +246,12 @@
 		.relevant-item-type,
 		.relevant-item-link,
 		.relevant-item-link::before {
-			transition: none;
+			transition: none !important;
+			will-change: auto !important;
 		}
 
 		.relevant-item:hover {
-			transform: none;
+			transform: none !important;
 		}
 	}
 </style>

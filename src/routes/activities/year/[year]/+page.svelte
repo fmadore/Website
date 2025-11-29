@@ -81,7 +81,7 @@
 
 <SEO title={`Activities (${year}) | Frédérick Madore`} />
 
-<div class="container py-8">
+<div class="container py-8 page-enter">
 	<div class="flex flex-col">
 		<Breadcrumb items={breadcrumbItems} />
 		<div class="year-page-header-wrapper">
@@ -97,7 +97,7 @@
 		</div>
 
 		{#if filteredActivities.length > 0}
-			<div class="activity-grid">
+			<div class="activity-grid grid-stagger">
 				{#each filteredActivities as activity (activity.id)}
 					<ActivityItem {activity} />
 				{/each}

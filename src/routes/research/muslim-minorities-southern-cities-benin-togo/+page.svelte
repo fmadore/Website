@@ -76,21 +76,24 @@
 
 <SEO title="Muslim Minorities in Southern Cities of Benin and Togo | Frédérick Madore" />
 
-<div class="container py-8">
+<div class="container py-8 page-enter">
 	<div class="content-wrapper">
 		<div class="main-content max-w-6xl mx-auto">
 			<Breadcrumb items={breadcrumbItems} />
 
 			<PageHeader title="Muslim Minorities in Southern Cities of Benin and Togo" />
 
-			<ProjectImageBanner
-				src="{base}/images/research/muslim-minorities.webp"
-				alt="Muslim Minorities in Southern Cities of Benin and Togo"
-				glassEffect="glass-medium"
-				overlayIntensity="medium"
-			/>
+			<div class="scroll-reveal">
+				<ProjectImageBanner
+					src="{base}/images/research/muslim-minorities.webp"
+					alt="Muslim Minorities in Southern Cities of Benin and Togo"
+					glassEffect="glass-medium"
+					overlayIntensity="medium"
+				/>
+			</div>
 
-			<ContentBody variant="default" glassEffect="glass-card">
+			<div class="scroll-reveal">
+				<ContentBody variant="default" glassEffect="glass-card">
 				{#snippet children()}
 					<p>
 						Muslims in Benin and Togo rarely make international headlines, except when analysts warn
@@ -136,10 +139,11 @@
 						religiously plural zones.
 					</p>
 				{/snippet}
-			</ContentBody>
+				</ContentBody>
+			</div>
 		</div>
 
-		<div class="related-content mt-16 max-w-6xl mx-auto">
+		<div class="related-content mt-16 max-w-6xl mx-auto scroll-reveal">
 			<RelevantPublications
 				projectName="Muslim Minorities in Southern Cities of Benin and Togo"
 				limit={6}

@@ -67,6 +67,9 @@
 			classes.push(glassVariant, 'glass-animate');
 		}
 
+		// Add scroll-reveal-scale for modern CSS scroll-driven animation
+		classes.push('scroll-reveal-scale');
+
 		return classes;
 	});
 

@@ -13,13 +13,13 @@
 </script>
 
 {#if publications.length > 0}
-	<div class="featured-section">
+	<div class="featured-section scroll-reveal">
 		<div class="featured-header">
 			<Icon icon="lucide:star" width="20" height="20" />
 			<span>Featured Publications</span>
 		</div>
 
-		<ul class="entity-list">
+		<ul class="entity-list grid-stagger">
 			{#each publications as publication, index (publication.id)}
 				<PublicationItem {publication} {onfilterrequest} {index} />
 			{/each}

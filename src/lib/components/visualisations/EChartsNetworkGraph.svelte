@@ -4,7 +4,6 @@ ECharts Network Graph - A network visualization for author collaborations
 <script lang="ts">
 	import type * as echarts from 'echarts';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import Icon from '@iconify/svelte';
 
@@ -453,15 +452,7 @@ ECharts Network Graph - A network visualization for author collaborations
 	});
 </script>
 
-<div
-	class="echarts-container"
-	use:scrollAnimate={{
-		delay: 400,
-		animationClass: 'scale-in-center',
-		rootMargin: '100px',
-		threshold: 0.1
-	}}
->
+<div class="echarts-container scroll-reveal-scale">
 	<div class="zoom-controls">
 		<button 
 			class="zoom-btn" 
@@ -520,10 +511,6 @@ ECharts Network Graph - A network visualization for author collaborations
 		display: block;
 		position: relative;
 		font-family: var(--font-family-sans);
-		/* Initial state for scroll animation */
-		opacity: 0;
-		transform: scale(0.8) translateY(20px);
-		transition: all var(--duration-slow) var(--ease-out);
 	}
 
 	.chart {
@@ -614,6 +601,7 @@ ECharts Network Graph - A network visualization for author collaborations
 			opacity: 1 !important;
 			transform: none !important;
 			transition: none !important;
+			will-change: auto !important;
 		}
 
 		.zoom-btn {

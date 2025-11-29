@@ -134,9 +134,9 @@
 	<PageHeader title="Guest Lectures" />
 
 	{#each Object.entries(guestLecturesByInstitution) as [institution, lectures] (institution)}
-		<section class="institution-section">
+		<section class="institution-section scroll-reveal">
 			<h2>{institution}</h2>
-			<ul class="lectures-list">
+			<ul class="lectures-list grid-stagger">
 				{#each lectures as lecture (lecture.title + lecture.date)}
 					<li class="lecture-item glass-card">
 						<h3 class="lecture-title">{lecture.title}</h3>

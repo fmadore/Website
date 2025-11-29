@@ -138,8 +138,9 @@
 	);
 
 	// Use global glassmorphism utility (glass-card) to ensure visual consistency
+	// Also add scroll-reveal-scale for modern scroll-driven animation
 	const combinedFigureClass = $derived(
-		['hero-figure', `hero-figure--${variant}`, glassEffect ? 'glass-card hero-figure--glass' : '']
+		['hero-figure', `hero-figure--${variant}`, glassEffect ? 'glass-card hero-figure--glass' : '', 'scroll-reveal-scale']
 			.filter(Boolean)
 			.join(' ')
 	);
@@ -520,7 +521,8 @@
 		justify-content: center;
 		align-items: center;
 		cursor: zoom-out;
-		animation: fadeIn var(--duration-moderate) var(--ease-in-out);
+		/* Modern animation using design system tokens */
+		animation: modalFadeIn var(--duration-moderate) var(--ease-out) forwards;
 		padding: var(--space-4);
 		box-sizing: border-box;
 	}
@@ -649,13 +651,15 @@
 		color: var(--color-text-light) !important;
 	}
 
-	/* Animation keyframes */
-	@keyframes fadeIn {
+	/* Animation keyframes - using modern naming convention */
+	@keyframes modalFadeIn {
 		from {
 			opacity: 0;
+			transform: scale(0.98);
 		}
 		to {
 			opacity: 1;
+			transform: scale(1);
 		}
 	}
 
@@ -741,6 +745,17 @@
 
 		.hero-figure:hover,
 		.image-container:hover .hero-image {
+			transform: none;
+		}
+
+		/* Ensure content is visible when animations are disabled */
+		.hero-figure {
+			opacity: 1;
+			transform: none;
+		}
+
+		.fullscreen-modal {
+			opacity: 1;
 			transform: none;
 		}
 	}

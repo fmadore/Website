@@ -1,7 +1,5 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
-	import { DELAY_STEP } from '$lib/utils/animationConstants';
 
 	let {
 		variant = 'default',
@@ -16,7 +14,7 @@
 	} = $props();
 
 	// Combine classes based on variant and additional classes
-	const baseClasses = 'content-body';
+	const baseClasses = 'content-body scroll-reveal';
 	const variantClasses = {
 		default: 'content-body--default',
 		compact: 'content-body--compact',
@@ -27,10 +25,7 @@
 		`${baseClasses} ${variantClasses[variant]} ${glassEffect} ${additionalClasses}`.trim();
 </script>
 
-<div
-	class={combinedClasses}
-	use:scrollAnimate={{ delay: DELAY_STEP * 9, animationClass: 'fade-in-up' }}
->
+<div class={combinedClasses}>
 	{@render children()}
 </div>
 

@@ -71,7 +71,7 @@
                 -webkit-backdrop-filter: blur(var(--glass-blur-amount, var(--glass-blur-fallback))) saturate(180%);
                 z-index: var(--z-modal);
                 transform: translateY(-100%);
-                transition: transform var(--anim-duration-base) var(--anim-ease-in-out);
+                transition: transform var(--duration-moderate) var(--ease-in-out);
                 overflow-y: auto;
                 box-shadow:
                         var(--shadow-2xl),
@@ -112,7 +112,7 @@
                 height: var(--border-width-medium);
                 background-color: var(--color-text);
                 position: absolute;
-                transition: all var(--anim-duration-base) var(--anim-ease-base);
+                transition: transform var(--duration-normal) var(--ease-out);
         }
 
 	.mobile-close-line:first-child {
@@ -138,7 +138,7 @@
                 font-weight: var(--font-weight-bold);
                 color: var(--color-text);
                 text-decoration: none;
-                transition: color var(--anim-duration-fast) var(--anim-ease-base);
+                transition: color var(--duration-fast) var(--ease-out);
                 justify-self: center;
                 text-align: center;
         }
@@ -174,10 +174,10 @@
 
         :global(.mobile-nav-item) {
                 opacity: 0;
-                transform: translateX(calc(-1 * var(--spacing-6)));
+                transform: translateX(calc(-1 * var(--transform-distance-lg)));
                 transition:
-                        transform var(--anim-duration-base) var(--anim-ease-out),
-                        opacity var(--anim-duration-base) var(--anim-ease-out);
+                        transform var(--duration-moderate) var(--ease-out),
+                        opacity var(--duration-moderate) var(--ease-out);
                 will-change: opacity, transform;
         }
 
@@ -186,27 +186,27 @@
 		transform: translateX(0);
 	}
 
-	/* Staggered animation for mobile nav items - faster and smoother */
+	/* Staggered animation for mobile nav items - using modern stagger tokens */
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(1)) {
-		transition-delay: var(--anim-delay-1);
+		transition-delay: var(--stagger-1);
 	}
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(2)) {
-		transition-delay: var(--anim-delay-2);
+		transition-delay: var(--stagger-2);
 	}
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(3)) {
-		transition-delay: var(--anim-delay-3);
+		transition-delay: var(--stagger-3);
 	}
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(4)) {
-		transition-delay: var(--anim-delay-4);
+		transition-delay: var(--stagger-4);
 	}
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(5)) {
-		transition-delay: var(--anim-delay-5);
+		transition-delay: var(--stagger-5);
 	}
         .mobile-nav-container.active :global(.mobile-nav-item:nth-child(6)) {
-                transition-delay: var(--anim-delay-6);
+                transition-delay: var(--stagger-6);
         }
-	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(7)) {
-		transition-delay: calc(var(--anim-delay-6) + 0.05s);
+	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(n+7)) {
+		transition-delay: calc(var(--stagger-6) + var(--stagger-1));
 	}
 
 	:global(.mobile-nav-item:last-child) {
@@ -227,7 +227,12 @@
                 -webkit-backdrop-filter: blur(var(--glass-blur-sm));
                 border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-10));
                 margin: var(--spacing-2) var(--spacing-4);
-                transition: all var(--anim-duration-fast) var(--anim-ease-in-out);
+                transition:
+                        transform var(--duration-fast) var(--ease-out),
+                        background-color var(--duration-fast) var(--ease-out),
+                        border-color var(--duration-fast) var(--ease-out),
+                        color var(--duration-fast) var(--ease-out),
+                        box-shadow var(--duration-fast) var(--ease-out);
                 position: relative;
                 overflow: hidden;
                 will-change: transform, background-color, border-color;
@@ -246,7 +251,7 @@
                         rgba(var(--color-white-rgb), var(--opacity-30)),
                         transparent
                 );
-                transition: left var(--anim-duration-slow) var(--anim-ease-in-out);
+                transition: left var(--duration-slow) var(--ease-out);
         }
 
         :global(.mobile-nav-link:hover),
@@ -285,7 +290,12 @@
                 text-decoration: none;
                 font-size: var(--font-size-base);
                 font-weight: var(--font-weight-medium);
-                transition: all var(--anim-duration-fast) var(--anim-ease-in-out);
+                transition:
+                        transform var(--duration-fast) var(--ease-out),
+                        background-color var(--duration-fast) var(--ease-out),
+                        border-color var(--duration-fast) var(--ease-out),
+                        color var(--duration-fast) var(--ease-out),
+                        box-shadow var(--duration-fast) var(--ease-out);
                 border-radius: var(--border-radius-sm);
                 margin-bottom: var(--spacing-1);
                 position: relative;
@@ -365,7 +375,8 @@
 		}
 	}
 
-	/* Animation keyframes - optimized for performance */
+	/* ===== MODERN ANIMATION SYSTEM ===== */
+	/* Slide-in animation using transform for GPU acceleration */
 	@keyframes mobileNavSlideIn {
 		from {
 			transform: translateY(-100%);
@@ -375,10 +386,11 @@
 		}
 	}
 
-        @keyframes mobileNavItemFadeIn {
+        /* Item reveal animation with optimized transforms */
+        @keyframes mobileNavItemReveal {
                 from {
                         opacity: 0;
-                        transform: translateX(calc(-1 * var(--spacing-5)));
+                        transform: translateX(calc(-1 * var(--transform-distance-md)));
                 }
                 to {
                         opacity: 1;
@@ -386,12 +398,62 @@
                 }
 	}
 
-	/* Use transform-based animations for better performance */
+	/* Use animation for active state - smoother than transition */
         .mobile-nav-container.active {
-                animation: mobileNavSlideIn var(--anim-duration-base) var(--anim-ease-in-out) forwards;
+                animation: mobileNavSlideIn var(--duration-moderate) var(--ease-out) forwards;
         }
 
         .mobile-nav-container.active :global(.mobile-nav-item) {
-                animation: mobileNavItemFadeIn var(--anim-duration-fast) var(--anim-ease-in-out) forwards;
+                animation: mobileNavItemReveal var(--duration-normal) var(--ease-out) forwards;
+        }
+
+        /* ===== REDUCED MOTION SUPPORT ===== */
+        /* Complete disable of animations for users who prefer reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+                .mobile-nav-container {
+                        transition: none;
+                        transform: translateY(-100%);
+                }
+
+                .mobile-nav-container.active {
+                        animation: none;
+                        transform: translateY(0);
+                }
+
+                :global(.mobile-nav-item) {
+                        opacity: 1 !important;
+                        transform: none !important;
+                        transition: none !important;
+                        will-change: auto;
+                }
+
+                .mobile-nav-container.active :global(.mobile-nav-item) {
+                        animation: none;
+                }
+
+                :global(.mobile-nav-link),
+                :global(.mobile-dropdown-link) {
+                        transition: background-color var(--duration-instant) linear,
+                                    color var(--duration-instant) linear;
+                        will-change: auto;
+                }
+
+                :global(.mobile-nav-link::before) {
+                        display: none;
+                }
+
+                .mobile-close-line {
+                        transition: none;
+                }
+        }
+
+        /* ===== PERFORMANCE OPTIMIZATION ===== */
+        /* Remove will-change when menu is closed */
+        .mobile-nav-container:not(.active) {
+                will-change: auto;
+        }
+
+        .mobile-nav-container:not(.active) :global(.mobile-nav-item) {
+                will-change: auto;
         }
 </style>

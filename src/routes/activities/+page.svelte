@@ -47,7 +47,7 @@
 
 <SEO title="Activities | Frédérick Madore" />
 
-<div class="container py-8">
+<div class="container py-8 page-enter">
 	<PageHeader title="Activities" />
 	<PageIntro>
 		This section provides an overview of various professional activities, including workshops,
@@ -56,7 +56,7 @@
 
 	<div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
 		<div class="lg:col-span-1">
-			<aside class="year-sidebar">
+			<aside class="year-sidebar scroll-reveal">
 				<div class="filter-section">
 					<h2 class="filter-section-title">Browse by Year</h2>
 
@@ -102,7 +102,7 @@
 				</p>
 
 				{#if activityList.length > 0}
-					<div class="space-y-8">
+					<div class="space-y-8 grid-stagger">
 						{#each activityList as activity (activity.id)}
 							<ActivityItem {activity} />
 						{/each}

@@ -341,6 +341,7 @@
 		z-index: var(--z-above);
 		touch-action: none;
 		box-shadow: var(--shadow-md);
+		will-change: transform, box-shadow;
 	}
 
 	/* Larger touch target for mobile devices */
@@ -394,6 +395,19 @@
 		box-shadow: var(--shadow-md);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+		/* Entry animation for float labels */
+		animation: floatFadeIn var(--duration-fast) var(--ease-out);
+	}
+
+	@keyframes floatFadeIn {
+		from {
+			opacity: 0;
+			transform: translateX(-50%) translateY(4px);
+		}
+		to {
+			opacity: 1;
+			transform: translateX(-50%) translateY(0);
+		}
 	}
 
 	.range-float::after {
@@ -544,6 +558,15 @@
 		.range-handle:focus,
 		.range-handle.active {
 			transform: translate(-50%, -50%);
+		}
+
+		/* Disable entry animations */
+		.range-float {
+			animation: none;
+		}
+
+		.range-handle {
+			will-change: auto;
 		}
 	}
 </style>

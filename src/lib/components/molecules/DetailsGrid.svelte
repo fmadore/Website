@@ -24,7 +24,7 @@
 </script>
 
 {#if visibleDetails.length > 0}
-	<section class="details-section" aria-labelledby="publication-details-heading">
+	<section class="details-section scroll-reveal" aria-labelledby="publication-details-heading">
 		<h2 id="publication-details-heading" class="visually-hidden">Publication Details</h2>
 		<dl class="details-grid glass-card">
 			{#each visibleDetails as detail (detail.label)}
@@ -194,6 +194,13 @@
 	@media (prefers-reduced-motion: reduce) {
 		.detail-link {
 			transition: none;
+		}
+
+		/* Ensure content is visible when animations are disabled */
+		.details-section {
+			opacity: 1;
+			transform: none;
+			animation: none;
 		}
 	}
 </style>

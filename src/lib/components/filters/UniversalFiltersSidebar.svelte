@@ -86,7 +86,7 @@
 	);
 </script>
 
-<aside class="filter-sidebar sticky-top" bind:this={sidebarElement}>
+<aside class="filter-sidebar sticky-top page-enter" bind:this={sidebarElement}>
 	<!-- Mobile Toggle Button Removed -->
 
 	<!-- Collapsible Filter Sections Wrapper (Mobile) -->
@@ -355,11 +355,20 @@
 		padding: 0;
 		margin-bottom: var(--space-lg);
 		position: relative;
+		will-change: opacity, transform;
 	}
 
 	.filter-section:last-of-type {
 		margin-bottom: 0;
 	}
+
+	/* Staggered animation for filter sections */
+	.filter-section:nth-child(1) { --stagger-delay: 0ms; }
+	.filter-section:nth-child(2) { --stagger-delay: 50ms; }
+	.filter-section:nth-child(3) { --stagger-delay: 100ms; }
+	.filter-section:nth-child(4) { --stagger-delay: 150ms; }
+	.filter-section:nth-child(5) { --stagger-delay: 200ms; }
+	.filter-section:nth-child(n+6) { --stagger-delay: 250ms; }
 
 	/* Dark mode enhancements for glassmorphism */
 	:global(html.dark) .filter-sidebar {
@@ -399,10 +408,16 @@
 	@media (prefers-reduced-motion: reduce) {
 		.filter-sidebar {
 			transition: none;
+			animation: none;
 		}
 
 		.filter-sidebar:hover {
 			transform: none;
+		}
+
+		.filter-section {
+			will-change: auto;
+			animation: none;
 		}
 	}
 </style>

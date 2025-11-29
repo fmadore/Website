@@ -106,6 +106,7 @@ Comprehensive typography system including:
 - **Base font settings**: Modern font features, antialiasing
 - **Headings (h1-h6)**: Serif font family with proper hierarchy
 - **Paragraphs and links**: Default styling with hover states
+- **Animated link underlines**: Gradient underline that expands left-to-right on hover for prose, content-body, paragraph, and list links
 - **Lists**: Styled ordered and unordered lists
 - **Inline elements**: Strong, em, code, small text
 - **Blockquotes**: Enhanced styling with background and borders
@@ -115,6 +116,7 @@ Comprehensive typography system including:
 - **Print optimizations**: Print-friendly styles
 - **Responsive typography utilities**: Font sizes, weights, alignment, line height, letter spacing
 - **Prose class**: Long-form content styling
+- **Accessibility**: Link underlines show statically for users who prefer reduced motion
 
 ### Reset (`base/reset.css`)
 
@@ -305,29 +307,40 @@ Skill/technology tags are now handled through the `TagList` component which uses
 
 ### Animations (`components/animations.css`)
 
-Comprehensive scroll animation system for creating smooth, engaging user experiences:
+Modern CSS-only animation system using scroll-driven animations for performant, accessible effects:
 
-- **Base animation states**: `.animate-in`, `.animate-out` for controlling animation visibility
+#### Scroll-Driven Animations (CSS-only)
+- **`.scroll-reveal`**: Fade-up animation triggered by viewport entry using `animation-timeline: view()`
+- **`.scroll-reveal-scale`**: Subtle scale-in animation for cards and images
+- **`.grid-stagger`**: Container class that applies staggered reveal to child elements using `:nth-child()` selectors
+- **Browser support**: Chrome 115+, Firefox 110+; graceful fallback shows content immediately in unsupported browsers
+
+#### Page Entry Animations
+- **`.page-enter`**: Subtle fade-up animation for initial page load
+
+#### Skeleton Loading
+- **`.skeleton`**: Base class with shimmer animation for loading placeholders
+- **`.skeleton-text`**: Text placeholder sizing
+- **`.skeleton-title`**: Title placeholder with appropriate width
+- **`.skeleton-image`**: Image placeholder with 16:9 aspect ratio
+- **`.skeleton-card`**: Card-shaped loading placeholder
+
+#### Legacy Animation Classes
+Maintained for backward compatibility:
+- **Base states**: `.animate-in`, `.animate-out`
 - **Fade animations**: `.fade-in`, `.fade-in-up`, `.fade-in-down`, `.fade-in-left`, `.fade-in-right`
-- **Scale animations**: `.scale-in`, `.scale-in-center` for zoom effects
+- **Scale animations**: `.scale-in`, `.scale-in-center`
 - **Slide animations**: `.slide-in-up`, `.slide-in-down`, `.slide-in-left`, `.slide-in-right`
-- **Bounce animations**: `.bounce-in` for playful entrance effects
-- **Stagger delays**: `.stagger-1` through `.stagger-6` for sequential list animations
-- **Reading progress**: `.reading-progress` for scroll progress indicators
-- **Parallax support**: `.parallax-container`, `.parallax-element` for depth effects
-- **Performance optimizations**: Uses `will-change` and `transform` for smooth animations
-- **Accessibility**: Respects `prefers-reduced-motion` for users who prefer minimal animation
-- **Mobile optimizations**: Reduced transform distances and faster animations on mobile
-- **Responsive**: All animations work across all device sizes
+- **Bounce animations**: `.bounce-in`
+- **Stagger delays**: `.stagger-1` through `.stagger-6`
+- **Reading progress**: `.reading-progress`
+- **Parallax support**: `.parallax-container`, `.parallax-element`
 
-The animation system integrates with JavaScript utilities (`src/lib/utils/scrollAnimations.ts`) to provide:
-
-- Intersection Observer-based scroll triggers
-- Svelte actions for easy component integration
-- Staggered animations for lists
-- Smooth scrolling navigation
-- Parallax effects
-- Reading progress indicators
+#### Accessibility & Performance
+- **Reduced motion**: All animations disabled for users with `prefers-reduced-motion: reduce`
+- **Graceful fallback**: Content is visible immediately in browsers without scroll-driven animation support
+- **Performance**: Uses `will-change`, `transform`, and `opacity` for GPU-accelerated animations
+- **Mobile optimizations**: Reduced transform distances on smaller screens
 
 ## Page-Specific Styles
 
@@ -454,9 +467,11 @@ Modern glass effect utilities for creating frosted glass UI elements:
 - **Component-specific**: `.glass-card`, `.glass-panel`, `.glass-panel-light`, `.glass-nav`, `.glass-button`
 - **Button variants**: Enhanced glass button styling with improved contrast
 - **Special effects**: `.glass-frosted` with enhanced saturation
-- **Animations**: `.glass-animate`, `.glass-animate-fast`, `.glass-animate-slow`
+- **Ambient effects**: `.glass-shimmer` - subtle light reflection animation using `--anim-duration-gentle` (12s)
+- **Transition utilities**: `.glass-animate`, `.glass-animate-fast`, `.glass-animate-slow`
 - **Dark mode support**: Automatic dark theme adaptations
 - **Browser fallbacks**: Graceful degradation for unsupported browsers
+- **Accessibility**: Glass shimmer disabled when `prefers-reduced-motion: reduce`
 - **Responsive variants**: Available at all breakpoints
 
 ## Class Naming Convention
@@ -507,27 +522,41 @@ We use standard breakpoints defined in `src/styles/base/media.css`:
 
 The CSS framework integrates with several JavaScript utilities for enhanced functionality:
 
-### Scroll Animations (`src/lib/utils/scrollAnimations.ts`)
+### Scroll Animations (Deprecated: `src/lib/utils/scrollAnimations.ts`)
 
-Provides programmatic control over scroll-triggered animations:
+> **⚠️ DEPRECATED**: The JavaScript-based `scrollAnimations.ts` utilities are deprecated in favor of the modern CSS-only scroll animation system. All components should use the CSS classes instead.
 
-- **`scrollAnimate`**: Svelte action for adding scroll animations to any element
-- **`staggeredAnimation`**: Creates sequential animations for lists of elements
-- **`smoothScrollTo`**: Smooth scrolling navigation with customizable easing
-- **`parallaxScroll`**: Parallax effects for background elements
-- **`createReadingProgress`**: Reading progress indicators for long content
+**Migration Guide:**
 
-Example usage:
+Replace the JavaScript `use:scrollAnimate` action with CSS classes:
 
 ```svelte
-<!-- Basic scroll animation -->
-<div use:scrollAnimate={{ animationClass: 'fade-in-up', delay: 200 }}>
-	Content that animates on scroll
+<!-- OLD (deprecated) -->
+<div use:scrollAnimate={{ animationClass: 'scale-in', delay: 200 }}>
+	Content
 </div>
 
-<!-- Smooth scroll navigation -->
-<button onclick={() => smoothScrollTo('#section', { offset: 80 })}> Scroll to Section </button>
+<!-- NEW (use instead) -->
+<div class="scroll-reveal-scale">
+	Content
+</div>
 ```
+
+**Available CSS animation classes:**
+- **`scroll-reveal`**: Fade-up animation triggered on viewport entry
+- **`scroll-reveal-scale`**: Scale-in animation for cards and images
+- **`grid-stagger`**: Container class for staggered child animations
+- **`page-enter`**: Subtle page load animation
+
+**Benefits of CSS-only approach:**
+- No JavaScript dependency - better performance
+- Native browser support via `animation-timeline: view()`
+- Graceful fallback: content visible immediately in unsupported browsers
+- Automatic `prefers-reduced-motion` support
+
+**Legacy animation classes** (still valid for load-time animations):
+- `fade-in-up`, `scale-in`, `slide-in-left`, etc. - for elements that animate on mount, not scroll
+- `stagger-1` through `stagger-6` - for sequential delays on dynamically loaded content
 
 ### Cookie Consent Management (`src/lib/utils/cookieConsent.ts`)
 

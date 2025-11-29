@@ -76,7 +76,7 @@
 
 <SEO title="Religious Activism on Campuses in Togo and Benin | Frédérick Madore" />
 
-<div class="container py-8">
+<div class="container py-8 page-enter">
 	<!-- Apply grid layout to this container on medium screens and up -->
 	<div class="content-wrapper">
 		<!-- Added grid wrapper -->
@@ -85,14 +85,17 @@
 
 			<PageHeader title="Religious Activism on Campuses in Togo and Benin" />
 
-			<ProjectImageBanner
-				src="{base}/images/research/campus-activism.webp"
-				alt="Religious Activism on Campuses in Togo and Benin"
-				glassEffect="glass-medium"
-				overlayIntensity="medium"
-			/>
+			<div class="scroll-reveal">
+				<ProjectImageBanner
+					src="{base}/images/research/campus-activism.webp"
+					alt="Religious Activism on Campuses in Togo and Benin"
+					glassEffect="glass-medium"
+					overlayIntensity="medium"
+				/>
+			</div>
 
-			<ContentBody variant="default" glassEffect="glass-card">
+			<div class="scroll-reveal">
+				<ContentBody variant="default" glassEffect="glass-card">
 				{#snippet children()}
 					<p>
 						This project uncovers the neglected history of Christian and Muslim student associations
@@ -132,17 +135,20 @@
 						student associations since the 1970s.
 					</p>
 				{/snippet}
-			</ContentBody>
-			<MediaPlayer
-				src="{base}/notebooklm/religious_activism_campus.mp3"
-				type="audio"
-				title="Google NotebookLM Podcast Discussion"
-				glassEffect="glass-card"
-				showControls={true}
-			/>
+				</ContentBody>
+			</div>
+			<div class="scroll-reveal">
+				<MediaPlayer
+					src="{base}/notebooklm/religious_activism_campus.mp3"
+					type="audio"
+					title="Google NotebookLM Podcast Discussion"
+					glassEffect="glass-card"
+					showControls={true}
+				/>
+			</div>
 		</div>
 
-		<div class="related-content mt-16 max-w-6xl mx-auto">
+		<div class="related-content mt-16 max-w-6xl mx-auto scroll-reveal">
 			<RelevantPublications
 				projectName="Religious Activism on Campuses in Togo and Benin"
 				limit={6}

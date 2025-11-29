@@ -27,7 +27,7 @@
 	} = $props();
 
 	// Combine classes based on variant and glass effect
-	const baseClasses = 'panel';
+	const baseClasses = 'panel scroll-reveal';
 	const variantClasses = {
 		default: 'panel-default',
 		activities: 'panel-activities',

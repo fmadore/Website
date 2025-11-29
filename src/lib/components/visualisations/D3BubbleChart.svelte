@@ -6,7 +6,6 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
-	import { scrollAnimate } from '$lib/utils/scrollAnimations';
 	import { innerWidth as windowInnerWidth } from 'svelte/reactivity/window';
 
 	// Props
@@ -318,15 +317,9 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 </script>
 
 <div
-	class="bubble-chart-container"
+	class="bubble-chart-container scroll-reveal-scale"
 	bind:clientWidth={containerWidth}
 	bind:clientHeight={containerHeight}
-	use:scrollAnimate={{
-		delay: 200,
-		animationClass: 'scale-in',
-		rootMargin: '100px',
-		threshold: 0.1
-	}}
 >
 	<div class="zoom-controls">
 		<button 
@@ -366,10 +359,6 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		/* Initial state for scroll animation */
-		opacity: 0;
-		transform: scale(0.9);
-		transition: all var(--duration-slow) var(--ease-out);
 	}
 
 	.bubble-chart {
@@ -419,7 +408,12 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		border-radius: var(--border-radius-md);
 		color: var(--color-text);
 		cursor: pointer;
-		transition: all var(--duration-normal) var(--ease-out);
+		transition:
+			background-color var(--duration-fast) var(--ease-out),
+			color var(--duration-fast) var(--ease-out),
+			border-color var(--duration-fast) var(--ease-out),
+			transform var(--duration-fast) var(--ease-out),
+			box-shadow var(--duration-fast) var(--ease-out);
 		box-shadow: var(--shadow-sm);
 		padding: 0;
 	}
@@ -437,10 +431,18 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		box-shadow: var(--shadow-sm);
 	}
 
-	/* Accessibility */
+	/* Accessibility - reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
 		.bubble-chart :global(.bubble circle) {
 			transition: none !important;
+		}
+
+		.zoom-btn {
+			transition: none !important;
+		}
+
+		.zoom-btn:hover {
+			transform: none !important;
 		}
 	}
 

@@ -112,7 +112,7 @@
 	});
 </script>
 
-<div class="filter-section-content glass-panel-light" bind:this={dropdownRef}>
+<div class="filter-section-content glass-panel-light scroll-reveal" bind:this={dropdownRef}>
 	<div class="filter-section-header">
 		<h3 class="filter-section-title">{title}</h3>
 		{#if activeItems.length > 0}
@@ -291,6 +291,19 @@
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		z-index: var(--z-dropdown);
+		/* Entry animation for dropdown */
+		animation: dropdownFadeIn var(--duration-fast) var(--ease-out);
+	}
+
+	@keyframes dropdownFadeIn {
+		from {
+			opacity: 0;
+			transform: translateY(-8px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 
 	/* Search container */
@@ -579,6 +592,17 @@
 
 		.filter-section-content:hover {
 			transform: none;
+		}
+
+		/* Disable scroll-driven and entry animations */
+		.filter-section-content {
+			opacity: 1;
+			transform: none;
+			animation: none;
+		}
+
+		.dropdown-menu {
+			animation: none;
 		}
 	}
 </style>

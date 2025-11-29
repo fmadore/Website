@@ -34,7 +34,7 @@
 	}
 </script>
 
-<header class="page-header enhanced-page-header mb-8 {additionalClasses}">
+<header class="page-header enhanced-page-header page-enter scroll-reveal mb-8 {additionalClasses}">
 	{#if backLinkHref}
 		<a href={`${base}/${backLinkHref}`} class="back-link mb-4 inline-block">
 			{backLinkLabel}

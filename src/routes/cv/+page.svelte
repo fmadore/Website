@@ -88,91 +88,91 @@
 	description="Curriculum Vitae of Frédérick Madore, detailing publications, communications, activities, and fieldwork."
 />
 
-<div id="cv-content" class="cv-container glass-card p-8 max-w-4xl mx-auto rounded-lg">
+<div id="cv-content" class="cv-container glass-card p-8 max-w-4xl mx-auto rounded-lg page-enter">
 	<!-- PDF Generator Button - positioned in top right corner of CV -->
 	<div class="cv-download-button">
 		<PdfGenerator />
 	</div>
 	
 	<CVHeader />
-	<div class="cv-section-wrapper">
+	<div class="cv-section-wrapper scroll-reveal">
 		<CVEducation />
 	</div>
-	<div class="cv-section-wrapper">
+	<div class="cv-section-wrapper scroll-reveal">
 		<CVAppointments />
 	</div>
-	<div class="cv-section-wrapper">
+	<div class="cv-section-wrapper scroll-reveal">
 		<CVPublications />
 	</div>
 	
 	<!-- Components load automatically after page mount in batches -->
 	{#if CVGrants}
-		<div class="cv-section-wrapper">
+		<div class="cv-section-wrapper cv-lazy-section fade-in-up">
 			<CVGrants />
 		</div>
 	{/if}
 	{#if CVAwards}
-		<div class="cv-section-wrapper">
+		<div class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
 			<CVAwards />
 		</div>
 	{/if}
 	{#if CVDigitalHumanities}
-		<div class="cv-section-wrapper">
+		<div class="cv-section-wrapper cv-lazy-section fade-in-up stagger-2">
 			<CVDigitalHumanities />
 		</div>
 	{/if}
 	{#if CVInvitedTalks}
-		<div class="cv-section-wrapper">
+		<div class="cv-section-wrapper cv-lazy-section fade-in-up">
 			<CVInvitedTalks />
 		</div>
 	{/if}
 	{#if CVConferences}
-		<div class="cv-section-wrapper">
+		<div class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
 			<CVConferences />
 		</div>
 	{/if}
 	{#if CVEvents}
-		<div class="cv-section-wrapper">
+		<div class="cv-section-wrapper cv-lazy-section fade-in-up stagger-2">
 			<CVEvents />
 		</div>
 	{/if}
 	{#if CVTeaching}
-		<div class="cv-section-wrapper">
+		<div class="cv-section-wrapper cv-lazy-section fade-in-up">
 			<CVTeaching />
 		</div>
 	{/if}
 	{#if CVResearchExperience}
-		<div class="cv-section-wrapper">
+		<div class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
 			<CVResearchExperience />
 		</div>
 	{/if}
 	{#if CVService}
-		<div class="cv-section-wrapper">
+		<div class="cv-section-wrapper cv-lazy-section fade-in-up stagger-2">
 			<CVService />
 		</div>
 	{/if}
 	{#if CVConsulting}
-		<div class="cv-section-wrapper">
+		<div class="cv-section-wrapper cv-lazy-section fade-in-up">
 			<CVConsulting />
 		</div>
 	{/if}
 	{#if CVMedia}
-		<div class="cv-section-wrapper">
+		<div class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
 			<CVMedia />
 		</div>
 	{/if}
 	{#if CVLanguages}
-		<div class="cv-section-wrapper">
+		<div class="cv-section-wrapper cv-lazy-section fade-in-up stagger-2">
 			<CVLanguages />
 		</div>
 	{/if}
 	{#if CVAffiliations}
-		<div class="cv-section-wrapper">
+		<div class="cv-section-wrapper cv-lazy-section fade-in-up">
 			<CVAffiliations />
 		</div>
 	{/if}
 	{#if CVComputerSkills}
-		<div class="cv-section-wrapper">
+		<div class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
 			<CVComputerSkills />
 		</div>
 	{/if}
@@ -317,6 +317,15 @@
 			display: none !important;
 		}
 
+		/* Disable animations for print */
+		.cv-container,
+		:global(.cv-section-wrapper),
+		:global(.cv-lazy-section) {
+			animation: none !important;
+			opacity: 1 !important;
+			transform: none !important;
+		}
+
 		/* Optimize for print */
 		.cv-container {
 			max-width: 100% !important;
@@ -370,6 +379,22 @@
 		/* Hide download button in print */
 		.cv-download-button {
 			display: none !important;
+		}
+	}
+
+	/* Reduced motion support */
+	@media (prefers-reduced-motion: reduce) {
+		.cv-container,
+		:global(.cv-section-wrapper),
+		:global(.cv-lazy-section) {
+			animation: none !important;
+			transition: none !important;
+			opacity: 1 !important;
+			transform: none !important;
+		}
+
+		:global(#cv-content .space-y-3 > div:hover) {
+			transform: none;
 		}
 	}
 </style>

@@ -41,7 +41,9 @@
                 width: 100%;
                 height: var(--border-width-medium);
                 background-color: var(--color-text);
-                transition: all var(--anim-duration-base) var(--anim-ease-base);
+                transition:
+                        transform var(--duration-normal) var(--ease-out),
+                        opacity var(--duration-fast) var(--ease-out);
                 transform-origin: center;
         }
 

@@ -45,7 +45,8 @@
                 font-weight: var(--font-weight-medium);
                 font-size: var(--font-size-base);
                 padding: var(--spacing-2) 0;
-                transition: all var(--anim-duration-fast) var(--anim-ease-base);
+                transition:
+                        color var(--duration-fast) var(--ease-out);
                 position: relative;
                 display: flex;
                 align-items: center;
@@ -60,7 +61,7 @@
                 width: 0;
                 height: var(--border-width-medium);
                 background-color: var(--color-primary);
-                transition: width var(--anim-duration-base) var(--anim-ease-base);
+                transition: width var(--duration-normal) var(--ease-out);
         }
 
 	.nav-link:hover {
@@ -74,7 +75,7 @@
         .dropdown-icon {
                 display: inline-block;
                 font-size: var(--font-size-xs);
-                transition: transform var(--anim-duration-base) var(--anim-ease-base);
+                transition: transform var(--duration-normal) var(--ease-out);
                 line-height: 1;
         }
 

@@ -54,7 +54,7 @@
 		and Muslim politics.
 	</PageIntro>
 
-	<div class="content-grid">
+	<div class="content-grid grid-stagger">
 		{#each researchProjects as project (project.id)}
 			<Card
 				title={project.title}

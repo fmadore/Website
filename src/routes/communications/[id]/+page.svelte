@@ -143,7 +143,7 @@
 
 <MetaTags {communication} />
 
-<div class="container py-8">
+<div class="container py-8 page-enter">
 	<Breadcrumb items={breadcrumbItems} />
 
 	<article class="communication-article">
@@ -172,9 +172,9 @@
 
 			<!-- Panel-specific information: Papers in Panel -->
 			{#if communication.type === 'panel' && communication.papers && communication.papers.length > 0}
-				<section class="panel-papers-section">
+				<section class="panel-papers-section scroll-reveal">
 					<h2 class="panel-section-title">Papers in this Panel</h2>
-					<div class="panel-papers-grid">
+					<div class="panel-papers-grid grid-stagger">
 						{#each communication.papers as paper, index (paper.title + index)}
 							<div class="panel-paper-card">
 								<h3 class="panel-paper-title">{paper.title}</h3>
@@ -200,9 +200,9 @@
 
 			<!-- Participants Section -->
 			{#if communication.participants && communication.participants.length > 0}
-				<section class="participants-section">
+				<section class="participants-section scroll-reveal">
 					<h2 class="panel-section-title">Participants</h2>
-					<div class="participants-grid">
+					<div class="participants-grid grid-stagger">
 						{#each communication.participants as participant, index (participant.name + index)}
 							<div class="participant-card">
 								<div class="participant-name">{participant.name}</div>
@@ -227,7 +227,7 @@
 
 			<!-- Map Location -->
 			{#if communication.coordinates}
-				<section class="map-section">
+				<section class="map-section scroll-reveal">
 					<h2 class="map-section-title">Location</h2>
 					<div class="map-container-wrapper">
 						<MapVisualization markersData={singleMarkerData} />

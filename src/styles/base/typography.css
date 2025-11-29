@@ -84,12 +84,71 @@ p {
 /* Links */
 a {
 	color: var(--color-primary);
-	text-decoration: underline;
+	text-decoration: none;
 	transition: color var(--anim-duration-base) var(--anim-ease-base);
 }
 
 a:hover {
 	color: var(--color-highlight);
+}
+
+/* ===== ANIMATED LINK UNDERLINES =====
+ * Gradient underline that expands on hover (left-to-right)
+ * Excludes buttons, cards, navigation, and other interactive elements
+ */
+
+/* Prose and content area links get the animated underline */
+.prose a:not(.btn):not(.no-underline),
+.content-body a:not(.btn):not(.no-underline),
+p a:not(.btn):not(.no-underline),
+li a:not(.btn):not(.no-underline) {
+	position: relative;
+	text-decoration: none;
+}
+
+.prose a:not(.btn):not(.no-underline)::after,
+.content-body a:not(.btn):not(.no-underline)::after,
+p a:not(.btn):not(.no-underline)::after,
+li a:not(.btn):not(.no-underline)::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: -1px;
+	width: 0;
+	height: 2px;
+	background: linear-gradient(
+		90deg,
+		var(--color-primary) 0%,
+		var(--color-accent) 100%
+	);
+	border-radius: var(--border-radius-full);
+	transition: width var(--duration-normal) var(--ease-out);
+}
+
+.prose a:not(.btn):not(.no-underline):hover::after,
+.content-body a:not(.btn):not(.no-underline):hover::after,
+p a:not(.btn):not(.no-underline):hover::after,
+li a:not(.btn):not(.no-underline):hover::after {
+	width: 100%;
+}
+
+/* Focus state for accessibility */
+.prose a:not(.btn):not(.no-underline):focus-visible::after,
+.content-body a:not(.btn):not(.no-underline):focus-visible::after,
+p a:not(.btn):not(.no-underline):focus-visible::after,
+li a:not(.btn):not(.no-underline):focus-visible::after {
+	width: 100%;
+}
+
+/* Static underline fallback for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+	.prose a:not(.btn):not(.no-underline)::after,
+	.content-body a:not(.btn):not(.no-underline)::after,
+	p a:not(.btn):not(.no-underline)::after,
+	li a:not(.btn):not(.no-underline)::after {
+		width: 100%;
+		transition: none;
+	}
 }
 
 /* We can keep special cases without underlines */
@@ -98,6 +157,15 @@ a:hover {
 .btn,
 .header-logo a {
 	text-decoration: none;
+}
+
+/* Ensure card links don't get the animated underline */
+.card a::after,
+.entity-card a::after,
+.nav-link::after,
+.btn::after,
+.header-logo a::after {
+	display: none;
 }
 
 /* Lists */

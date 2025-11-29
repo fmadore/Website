@@ -95,7 +95,7 @@
 	});
 </script>
 
-<li class="entity-list-item">
+<li class="entity-list-item scroll-reveal-scale">
 	<div class="entity-card">
 		<div class="entity-grid">
 			{#if publication.image}
@@ -250,7 +250,10 @@
 		display: inline;
 		border-radius: var(--border-radius-sm);
 		font-weight: var(--font-weight-medium);
-		transition: all var(--anim-duration-fast) var(--anim-ease-out);
+		transition:
+			color var(--duration-fast) var(--ease-out),
+			background-color var(--duration-fast) var(--ease-out),
+			text-decoration var(--duration-fast) var(--ease-out);
 	}
 
 	.author-btn:hover {
@@ -262,5 +265,12 @@
 		outline: 2px solid var(--color-highlight);
 		outline-offset: 2px;
 		box-shadow: 0 0 0 4px rgba(var(--color-highlight-rgb), 0.2);
+	}
+
+	/* Respect user motion preferences */
+	@media (prefers-reduced-motion: reduce) {
+		.author-btn {
+			transition: none !important;
+		}
 	}
 </style>

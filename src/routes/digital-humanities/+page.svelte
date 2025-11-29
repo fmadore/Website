@@ -45,7 +45,7 @@
 	description="Discover Frédérick Madore's digital humanities projects including the Islam West Africa Collection (IWAC)."
 />
 
-<div class="container py-8">
+<div class="container py-8 page-enter">
 	<PageHeader title="Digital Humanities" />
 
 	{#if selectedSkill}
@@ -67,7 +67,7 @@
 		accessible and engaging.
 	</PageIntro>
 
-	<div class="content-grid">
+	<div class="content-grid grid-stagger">
 		{#each finalProjectsToDisplay as project (project.id)}
 			<Card
 				title={project.title}

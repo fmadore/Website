@@ -223,7 +223,7 @@
 	keywords="publications, books, journal articles, research, Islam, West Africa, Frédérick Madore"
 />
 
-<div class="page-container" use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}>
+<div class="page-container page-enter" use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}>
 	<PageHeader title="Publications" />
 
 	<PageIntro>

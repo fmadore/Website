@@ -83,21 +83,24 @@
 	title="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso | Frédérick Madore"
 />
 
-<div class="container py-8">
+<div class="container py-8 page-enter">
 	<div class="content-wrapper">
 		<div class="main-content max-w-6xl mx-auto">
 			<Breadcrumb items={breadcrumbItems} />
 
 			<PageHeader title="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso" />
 
-			<ProjectImageBanner
-				src="{base}/images/research/youth-women-activism.webp"
-				alt="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
-				glassEffect="glass-medium"
-				overlayIntensity="medium"
-			/>
+			<div class="scroll-reveal">
+				<ProjectImageBanner
+					src="{base}/images/research/youth-women-activism.webp"
+					alt="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
+					glassEffect="glass-medium"
+					overlayIntensity="medium"
+				/>
+			</div>
 
-			<ContentBody variant="default" glassEffect="glass-card">
+			<div class="scroll-reveal">
+				<ContentBody variant="default" glassEffect="glass-card">
 				{#snippet children()}
 					<p>
 						This research project is situated in the context of the increasing visibility of Islam in
@@ -158,10 +161,11 @@
 						assertion of Islam in the Ivorian and Burkinabe contexts.
 					</p>
 				{/snippet}
-			</ContentBody>
+				</ContentBody>
+			</div>
 		</div>
 
-		<div class="related-content mt-16 max-w-6xl mx-auto">
+		<div class="related-content mt-16 max-w-6xl mx-auto scroll-reveal">
 			<RelevantPublications
 				projectName="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 				limit={6}

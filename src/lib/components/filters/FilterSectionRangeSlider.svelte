@@ -98,7 +98,7 @@
 	);
 </script>
 
-<div class="filter-section-content glass-panel-light">
+<div class="filter-section-content glass-panel-light scroll-reveal">
 	<div class="filter-section-header">
 		<h3 class="filter-section-title">{title}</h3>
 		<div class="range-display">
@@ -366,6 +366,13 @@
 
 		:global(.rangeSlider .rangeHandle:hover) {
 			transform: none;
+		}
+
+		/* Disable scroll-driven animations */
+		.filter-section-content {
+			opacity: 1;
+			transform: none;
+			animation: none;
 		}
 	}
 </style>

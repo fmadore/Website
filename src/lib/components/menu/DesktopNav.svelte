@@ -89,12 +89,24 @@
 		}
 	}
 
-	/* Reduced motion support */
+	/* ===== REDUCED MOTION SUPPORT ===== */
 	@media (prefers-reduced-motion: reduce) {
 		:global(.nav-link),
+		:global(.nav-link::after),
 		:global(.dropdown-icon),
 		:global(.dropdown-menu) {
-			transition: none;
+			transition: none !important;
+			animation: none !important;
+		}
+
+		:global(.nav-link:hover),
+		:global(.nav-link:focus) {
+			color: var(--color-primary);
+		}
+
+		:global(.nav-link:hover::after),
+		:global(.nav-link:focus::after) {
+			width: 100%;
 		}
 	}
 </style>

@@ -254,7 +254,7 @@
 	keywords="conferences, presentations, workshops, panels, lectures, Islam, West Africa, digital humanities, Frédérick Madore"
 />
 
-<div class="page-container" use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}>
+<div class="page-container page-enter" use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}>
 	<PageHeader title="Conference Activity" />
 
 	<PageIntro>

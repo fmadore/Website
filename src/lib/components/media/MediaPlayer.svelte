@@ -219,7 +219,7 @@
 </script>
 
 <div
-	class="media-player {glassEffect}"
+	class="media-player {glassEffect} scroll-reveal"
 	role="region"
 	aria-label="Media Player"
 >
@@ -481,7 +481,7 @@
 		padding: var(--spacing-6);
 		border-radius: var(--border-radius-xl);
 		margin-bottom: var(--spacing-8);
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transition: all var(--duration-normal) var(--ease-out);
 		outline: none;
 		position: relative;
 
@@ -502,7 +502,7 @@
 			border-radius: var(--border-radius-xl);
 			pointer-events: none;
 			opacity: 0;
-			transition: opacity var(--anim-duration-base) var(--anim-ease-base);
+			transition: opacity var(--duration-normal) var(--ease-out);
 		}
 
 		&:hover::before {
@@ -616,14 +616,14 @@
 		width: var(--spacing-1);
 		background: linear-gradient(to top, var(--color-primary), var(--color-accent));
 		border-radius: var(--border-radius-full);
-		animation: wave 2s ease-in-out infinite;
+		animation: wave var(--duration-slower) var(--ease-in-out) infinite;
 		opacity: 0.7;
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transition: all var(--duration-normal) var(--ease-out);
 	}
 
 	.audio-visualization:hover .wave-bar {
 		opacity: 1;
-		animation-duration: 1.5s;
+		animation-duration: var(--duration-slow);
 	}
 
 	@keyframes wave {
@@ -670,7 +670,7 @@
 		padding: var(--spacing-2);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-20));
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transition: all var(--duration-normal) var(--ease-out);
 		box-shadow:
 			var(--shadow-sm),
 			0 0 20px rgba(var(--color-primary-rgb), var(--opacity-10));
@@ -726,7 +726,7 @@
 		color: var(--color-primary);
 		text-decoration: underline;
 		font-weight: var(--font-weight-semibold);
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transition: all var(--duration-fast) var(--ease-out);
 	}
 
 	.audio-description a:hover {
@@ -810,7 +810,7 @@
 		border: var(--border-width-thick) solid rgba(var(--color-primary-rgb), var(--opacity-10));
 		border-top: var(--border-width-thick) solid var(--color-primary);
 		border-radius: var(--border-radius-full);
-		animation: spin var(--anim-duration-slow) linear infinite;
+		animation: spin var(--duration-slow) linear infinite;
 	}
 
 	@keyframes spin {
@@ -856,7 +856,7 @@
 		}
 
 		/* Smooth transitions */
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transition: all var(--duration-normal) var(--ease-out);
 
 		&:hover {
 			background: rgba(var(--color-surface-rgb), var(--opacity-98));
@@ -880,7 +880,7 @@
 		background: rgba(var(--color-text-rgb), var(--opacity-10));
 		border-radius: var(--border-radius-full);
 		cursor: pointer;
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transition: all var(--duration-normal) var(--ease-out);
 		overflow: hidden;
 
 		/* Subtle inner glow */
@@ -907,7 +907,7 @@
 		height: 100%;
 		background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
 		border-radius: var(--border-radius-full);
-		transition: width var(--anim-duration-instant) ease;
+		transition: width var(--duration-instant) ease;
 
 		/* Elegant glow effect */
 		box-shadow:
@@ -925,7 +925,7 @@
 		border-radius: var(--border-radius-full);
 		transform: translate(-50%, -50%);
 		opacity: 0;
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transition: all var(--duration-normal) var(--ease-out);
 		box-shadow:
 			var(--shadow-sm),
 			0 0 0 4px rgba(var(--color-primary-rgb), var(--opacity-20));
@@ -955,7 +955,7 @@
 
 		/* Subtle reveal animation */
 		opacity: 0.8;
-		transition: opacity var(--anim-duration-base) var(--anim-ease-base);
+		transition: opacity var(--duration-normal) var(--ease-out);
 	}
 
 	.progress-container:hover .time-display {
@@ -994,7 +994,7 @@
 			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-15)) !important;
 
 		/* Smooth interactions */
-		transition: all var(--anim-duration-base) var(--anim-ease-base) !important;
+		transition: all var(--duration-normal) var(--ease-out) !important;
 
 		&:hover {
 			background: rgba(var(--color-surface-rgb), var(--opacity-95)) !important;
@@ -1017,7 +1017,7 @@
 		align-items: center;
 		justify-content: center;
 		color: var(--color-text);
-		transition: color var(--anim-duration-base) var(--anim-ease-base);
+		transition: color var(--duration-fast) var(--ease-out);
 	}
 
 	.control-icon--fixed {
@@ -1054,7 +1054,7 @@
 		/* Subtle inner glow */
 		box-shadow: inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-10));
 
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transition: all var(--duration-normal) var(--ease-out);
 	}
 
 	.volume-controls:hover {
@@ -1079,7 +1079,7 @@
 		outline: none;
 		appearance: none;
 		cursor: pointer;
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transition: all var(--duration-normal) var(--ease-out);
 
 		/* Enhanced styling with glassmorphism */
 		backdrop-filter: blur(4px);
@@ -1108,7 +1108,7 @@
 		box-shadow:
 			0 2px 4px rgba(var(--color-black-rgb), var(--opacity-20)),
 			0 0 0 2px rgba(var(--color-primary-rgb), var(--opacity-20));
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transition: all var(--duration-normal) var(--ease-out);
 	}
 
 	.volume-slider::-webkit-slider-thumb:hover {
@@ -1129,7 +1129,7 @@
 		box-shadow:
 			0 2px 4px rgba(var(--color-black-rgb), var(--opacity-20)),
 			0 0 0 2px rgba(var(--color-primary-rgb), var(--opacity-20));
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transition: all var(--duration-normal) var(--ease-out);
 	}
 
 	.volume-slider::-moz-range-thumb:hover {
@@ -1232,9 +1232,36 @@
 		.progress-bar,
 		.progress-fill,
 		.progress-thumb,
-		.loading-spinner {
+		.loading-spinner,
+		.wave-bar,
+		.audio-icon-backdrop,
+		.particle,
+		.audio-visualization,
+		.audio-icon,
+		.volume-slider,
+		.volume-slider::-webkit-slider-thumb,
+		.volume-slider::-moz-range-thumb {
 			transition: none;
 			animation: none;
+		}
+
+		/* Ensure content is visible when animations are disabled */
+		.media-player {
+			opacity: 1;
+			transform: none;
+		}
+
+		.wave-bar {
+			transform: scaleY(0.6);
+			opacity: 0.7;
+		}
+
+		.audio-visualization:hover {
+			transform: none;
+		}
+
+		.audio-icon:hover {
+			transform: none;
 		}
 	}
 

@@ -62,12 +62,13 @@
                 padding: var(--spacing-3);
                 opacity: 0;
                 visibility: hidden;
-                transform: translateY(calc(-1 * var(--spacing-3))) scale(var(--scale-95));
+                transform: translateY(calc(-1 * var(--transform-distance-sm))) scale(var(--scale-95));
                 transition:
-                        opacity var(--anim-duration-base) var(--anim-ease-base),
-                        visibility var(--anim-duration-base) var(--anim-ease-base),
-                        transform var(--anim-duration-base) var(--anim-ease-base);
+                        opacity var(--duration-normal) var(--ease-out),
+                        visibility var(--duration-normal) var(--ease-out),
+                        transform var(--duration-normal) var(--ease-out);
                 pointer-events: none;
+                will-change: opacity, transform, visibility;
         }
 
 	.dropdown-menu.active {
@@ -91,10 +92,15 @@
                 font-size: var(--font-size-sm);
                 font-weight: var(--font-weight-medium);
                 border-radius: var(--border-radius-md);
-                transition: all var(--anim-duration-base) var(--anim-ease-base);
+                transition:
+                        background-color var(--duration-fast) var(--ease-out),
+                        color var(--duration-fast) var(--ease-out),
+                        transform var(--duration-normal) var(--ease-out),
+                        box-shadow var(--duration-normal) var(--ease-out);
                 margin-bottom: var(--spacing-2);
                 position: relative;
                 overflow: hidden;
+                will-change: transform, background-color;
         }
 
         :global(.dropdown-item::before) {
@@ -110,7 +116,7 @@
                         rgba(var(--color-white-rgb), var(--opacity-40)),
                         transparent
                 );
-                transition: left var(--anim-duration-slow) var(--anim-ease-base);
+                transition: left var(--duration-slow) var(--ease-out);
         }
 
         :global(.dropdown-item:hover),
@@ -164,70 +170,90 @@
 		}
 	}
 
-	/* Animation keyframes */
-        @keyframes dropdownFadeIn {
+	/* ===== MODERN ANIMATION SYSTEM ===== */
+        /* Dropdown open animation using transform-based keyframes */
+        @keyframes dropdownReveal {
                 from {
                         opacity: 0;
-                        transform: translateY(calc(-1 * var(--spacing-3))) scale(0.95);
+                        transform: translateY(calc(-1 * var(--transform-distance-sm))) scale(var(--scale-95));
                 }
                 to {
                         opacity: 1;
-                        transform: translateY(0) scale(1);
+                        transform: translateY(0) scale(var(--scale-100));
                 }
         }
 
         .dropdown-menu.active {
-                animation: dropdownFadeIn var(--anim-duration-base) var(--anim-ease-base) forwards;
+                animation: dropdownReveal var(--duration-normal) var(--ease-out) forwards;
         }
 
-        /* Staggered item animation */
-        :global(.dropdown-item) {
-                opacity: 0;
-                transform: translateX(calc(-1 * var(--spacing-3)));
-                animation: dropdownItemFadeIn var(--anim-duration-base) var(--anim-ease-base) forwards;
-        }
-
-	.dropdown-menu.active :global(.dropdown-item:nth-child(1)) {
-		animation-delay: var(--anim-delay-1);
-	}
-
-	.dropdown-menu.active :global(.dropdown-item:nth-child(2)) {
-		animation-delay: var(--anim-delay-2);
-	}
-
-	.dropdown-menu.active :global(.dropdown-item:nth-child(3)) {
-		animation-delay: var(--anim-delay-3);
-	}
-
-	.dropdown-menu.active :global(.dropdown-item:nth-child(4)) {
-		animation-delay: var(--anim-delay-4);
-	}
-
-        @keyframes dropdownItemFadeIn {
+        /* Staggered item reveal animation */
+        @keyframes dropdownItemReveal {
                 from {
                         opacity: 0;
-                        transform: translateX(calc(-1 * var(--spacing-3)));
+                        transform: translateX(calc(-1 * var(--transform-distance-sm)));
                 }
                 to {
                         opacity: 1;
                         transform: translateX(0);
                 }
+        }
+
+        /* Base item state - visible by default, animated when parent is active */
+        :global(.dropdown-item) {
+                opacity: 0;
+                transform: translateX(calc(-1 * var(--transform-distance-sm)));
+        }
+
+        .dropdown-menu.active :global(.dropdown-item) {
+                animation: dropdownItemReveal var(--duration-fast) var(--ease-out) forwards;
+        }
+
+        /* Stagger delays using design tokens */
+	.dropdown-menu.active :global(.dropdown-item:nth-child(1)) {
+		animation-delay: var(--stagger-1);
 	}
 
-	/* Reduced motion support */
+	.dropdown-menu.active :global(.dropdown-item:nth-child(2)) {
+		animation-delay: var(--stagger-2);
+	}
+
+	.dropdown-menu.active :global(.dropdown-item:nth-child(3)) {
+		animation-delay: var(--stagger-3);
+	}
+
+	.dropdown-menu.active :global(.dropdown-item:nth-child(4)) {
+		animation-delay: var(--stagger-4);
+	}
+
+        .dropdown-menu.active :global(.dropdown-item:nth-child(5)) {
+		animation-delay: var(--stagger-5);
+	}
+
+        .dropdown-menu.active :global(.dropdown-item:nth-child(n+6)) {
+		animation-delay: var(--stagger-6);
+	}
+
+	/* ===== REDUCED MOTION SUPPORT ===== */
+        /* Respect user preference for reduced motion */
 	@media (prefers-reduced-motion: reduce) {
 		.dropdown-menu {
-			transition: opacity var(--duration-fast) var(--ease-out);
+			transition: opacity var(--duration-instant) linear;
+                        transform: translateY(0) scale(var(--scale-100));
 		}
 
 		.dropdown-menu.active {
 			animation: none;
+                        opacity: 1;
 		}
 
 		:global(.dropdown-item) {
-			animation: none;
-			opacity: 1;
-			transform: none;
+			animation: none !important;
+			opacity: 1 !important;
+			transform: none !important;
+                        transition: background-color var(--duration-instant) linear,
+                                    color var(--duration-instant) linear;
+                        will-change: auto;
 		}
 
 		:global(.dropdown-item:hover),
@@ -236,7 +262,13 @@
 		}
 
 		:global(.dropdown-item::before) {
-			transition: none;
+			display: none;
 		}
 	}
+
+        /* ===== PERFORMANCE OPTIMIZATION ===== */
+        /* Remove will-change after animation completes for better memory usage */
+        .dropdown-menu:not(.active) {
+                will-change: auto;
+        }
 </style>

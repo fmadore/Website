@@ -29,7 +29,7 @@
 </script>
 
 {#if abstract && paragraphs.length > 0}
-	<section class={sectionClass}>
+	<section class="{sectionClass} scroll-reveal">
 		<h2 class={titleClass}>{titleText}</h2>
 		<div class={contentClass}>
 			{#each paragraphs as paragraph, index (index)}
@@ -168,6 +168,12 @@
 		.abstract-title::after {
 			transition: none;
 			transform: none;
+			animation: none;
+		}
+
+		/* Ensure content is visible when animations are disabled */
+		.abstract-section {
+			opacity: 1;
 		}
 	}
 </style>

@@ -7,7 +7,8 @@
 		glassEffect = 'glass-light',
 		additionalClasses = '',
 		showOverlay = true,
-		overlayIntensity = 'subtle'
+		overlayIntensity = 'subtle',
+		scrollAnimation = true
 	}: {
 		src: string;
 		alt: string;
@@ -17,9 +18,11 @@
 		additionalClasses?: string;
 		showOverlay?: boolean;
 		overlayIntensity?: 'subtle' | 'medium' | 'strong';
+		scrollAnimation?: boolean;
 	} = $props();
 
-	const combinedClasses = `project-image-banner ${glassEffect} ${additionalClasses}`.trim();
+	const animationClass = scrollAnimation ? 'scroll-reveal-scale' : '';
+	const combinedClasses = `project-image-banner ${glassEffect} ${animationClass} ${additionalClasses}`.trim();
 	const overlayClass = showOverlay ? `overlay-${overlayIntensity}` : '';
 </script>
 

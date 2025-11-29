@@ -16,7 +16,7 @@
 	} = $props();
 </script>
 
-<div class="item-card">
+<div class="item-card scroll-reveal">
 	<div class="item-meta improved-meta">
 		{#if item.type}
 			<span class="item-type improved-type-tag" data-type={item.type}>{formatType(item.type)}</span>
@@ -130,5 +130,26 @@
 		margin-top: var(--space-2xs);
 		color: var(--color-text-light);
 		line-height: var(--line-height-normal);
+	}
+
+	/* Reduced motion preference */
+	@media (prefers-reduced-motion: reduce) {
+		.item-card,
+		.item-card::before {
+			transition: none;
+			animation: none;
+		}
+		.item-card:hover {
+			transform: none;
+		}
+		.item-card:hover::before {
+			width: var(--space-1);
+		}
+
+		/* Ensure content is visible when animations are disabled */
+		.item-card {
+			opacity: 1;
+			transform: none;
+		}
 	}
 </style>

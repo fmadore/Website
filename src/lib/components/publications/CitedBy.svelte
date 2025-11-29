@@ -9,11 +9,11 @@
 </script>
 
 {#if sortedCitedBy && sortedCitedBy.length > 0}
-	<section class="cited-by-section">
+	<section class="cited-by-section scroll-reveal">
 		<h2 class="section-title">Cited By ({sortedCitedBy.length})</h2>
-		<div class="citations-grid">
+		<div class="citations-grid grid-stagger">
 			{#each sortedCitedBy as citingWork (citingWork.title + citingWork.year)}
-				<div class="citing-work-card">
+				<div class="citing-work-card scroll-reveal-scale">
 					<div class="citation-title">
 						{#if citingWork.url}
 							<a href={citingWork.url} target="_blank" rel="noopener" class="citation-link"
@@ -43,6 +43,7 @@
 		padding: var(--space-lg);
 		border-radius: var(--border-radius-xl);
 		position: relative;
+		will-change: transform, box-shadow;
 
 		/* Sophisticated glassmorphism effect matching AbstractSection */
 		background: linear-gradient(
@@ -131,6 +132,7 @@
 		padding: var(--space-md);
 		border-radius: var(--border-radius-lg);
 		position: relative;
+		will-change: transform, box-shadow;
 
 		/* Enhanced glassmorphism for individual cards */
 		background: linear-gradient(
@@ -259,8 +261,9 @@
 		.citing-work-card,
 		.citing-work-card:hover,
 		.section-title::after {
-			transition: none;
-			transform: none;
+			transition: none !important;
+			transform: none !important;
+			will-change: auto !important;
 		}
 	}
 </style>

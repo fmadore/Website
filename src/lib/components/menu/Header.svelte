@@ -214,7 +214,10 @@
                 position: sticky;
                 top: 0;
                 z-index: var(--z-sticky);
-                transition: all var(--anim-duration-base) var(--anim-ease-base);
+                transition:
+                        background var(--duration-normal) var(--ease-out),
+                        border-color var(--duration-normal) var(--ease-out),
+                        box-shadow var(--duration-normal) var(--ease-out);
         }
 
         :global(.site-header:hover) {
@@ -285,7 +288,7 @@
                 font-weight: var(--font-weight-bold);
                 color: var(--color-text);
                 text-decoration: none;
-                transition: color var(--anim-duration-fast) var(--anim-ease-base);
+                transition: color var(--duration-fast) var(--ease-out);
         }
 
         .header-logo :global(.site-title:hover) {
