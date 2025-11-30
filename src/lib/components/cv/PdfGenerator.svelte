@@ -442,6 +442,30 @@
 							if (nextElement.tagName === 'DIV' && nextElement.classList.contains('space-y-3')) {
 								// Handle flex layout entries
 								const entries = nextElement.querySelectorAll('.flex.gap-4');
+								
+								// If no flex entries, check for simple div children (e.g., Fieldwork section)
+								if (entries.length === 0) {
+									const simpleEntries = nextElement.querySelectorAll(':scope > div');
+									simpleEntries.forEach((entry) => {
+										const text = extractTextWithUrls(entry).trim();
+										if (text) {
+											checkPageBreak(SPACING.LINE_HEIGHT + SPACING.ENTRY_GAP);
+											pdf.setFontSize(FONT_SIZE.BODY);
+											pdf.setFont('helvetica', 'normal');
+											pdf.setTextColor(...COLORS.TEXT);
+											const lines = pdf.splitTextToSize(text, contentWidth - 5);
+											lines.forEach((line: string, index: number) => {
+												pdf.text(line, margin + 3, yPosition);
+												if (index < lines.length - 1) {
+													yPosition += SPACING.LINE_HEIGHT_TIGHT;
+												}
+											});
+											yPosition += SPACING.LINE_HEIGHT;
+										}
+									});
+									break;
+								}
+								
 								entries.forEach((entry) => {
 									const yearDiv = entry.querySelector('div:first-child');
 									const contentDiv = entry.querySelector('div.flex-1');
@@ -538,6 +562,27 @@
 					const flexEntries = section.querySelectorAll('.flex.gap-4');
 					if (flexEntries.length > 0) {
 						flexEntries.forEach((entry) => {
+							// Check for language badge layout (Languages section)
+							const languageBadge = entry.querySelector('.language-badge');
+							if (languageBadge) {
+								const languageName = entry.querySelector('div.flex-1')?.textContent?.trim() || '';
+								const proficiency = languageBadge.textContent?.trim() || '';
+								
+								if (languageName) {
+									checkPageBreak(SPACING.LINE_HEIGHT + SPACING.ENTRY_GAP);
+									pdf.setFontSize(FONT_SIZE.BODY);
+									pdf.setFont('helvetica', 'bold');
+									pdf.setTextColor(...COLORS.PRIMARY);
+									pdf.text(languageName, margin + 2, yPosition);
+									pdf.setTextColor(...COLORS.TEXT);
+									
+									pdf.setFont('helvetica', 'normal');
+									pdf.text(proficiency, margin + yearColumnWidth, yPosition);
+									yPosition += SPACING.LINE_HEIGHT + SPACING.ENTRY_GAP;
+								}
+								return; // Skip to next entry
+							}
+							
 							// Check for year column (first div with text-nowrap or w-20 class)
 							const firstDiv = entry.querySelector('div:first-child');
 							const contentDiv = entry.querySelector('div.flex-1, div:last-child');
