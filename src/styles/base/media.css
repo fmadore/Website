@@ -1,6 +1,8 @@
 /* Custom Media Queries for PostCSS */
 /* These map to the breakpoints defined in variables.css */
 
+/* ===== BREAKPOINTS ===== */
+
 /* Mobile-first: min-width queries */
 @custom-media --sm (min-width: 640px);
 @custom-media --md (min-width: 768px);
@@ -14,3 +16,26 @@
 @custom-media --lg-down (max-width: 1023px);
 @custom-media --xl-down (max-width: 1279px);
 @custom-media --2xl-down (max-width: 1535px);
+
+/* ===== INTERACTION CAPABILITY ===== */
+/* Use --can-hover for effects that require precise pointer (desktop) */
+/* Use --touch for touch-friendly alternatives */
+@custom-media --can-hover (hover: hover) and (pointer: fine);
+@custom-media --touch (hover: none), (pointer: coarse);
+
+/* ===== DISPLAY & ENVIRONMENT ===== */
+/* Print styles for academic content (CV, publications, etc.) */
+@custom-media --print print;
+
+/* High-DPI displays (retina) - for crisp borders/shadows if needed */
+@custom-media --retina (min-resolution: 2dppx);
+
+/* Orientation - useful for image galleries, hero sections */
+@custom-media --landscape (orientation: landscape);
+@custom-media --portrait (orientation: portrait);
+
+/* ===== ACCESSIBILITY ===== */
+/* Already handled in reset.css, but available for component-level use */
+@custom-media --reduced-motion (prefers-reduced-motion: reduce);
+@custom-media --high-contrast (prefers-contrast: more);
+@custom-media --dark-mode (prefers-color-scheme: dark);

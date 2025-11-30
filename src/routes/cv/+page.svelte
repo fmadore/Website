@@ -275,16 +275,19 @@
 		margin-bottom: var(--spacing-2);
 	}
 
-	/* Entry items with hover effect */
+	/* Entry items with base styling */
 	:global(#cv-content .space-y-3 > div) {
 		padding: var(--spacing-2);
 		border-radius: var(--border-radius-md);
 		transition: all var(--transition-duration-150) ease;
 	}
 
-	:global(#cv-content .space-y-3 > div:hover) {
-		background: rgba(var(--color-primary-rgb), 0.03);
-		transform: translateX(var(--spacing-1));
+	/* Hover effects only for devices with hover capability (not touch) */
+	@media (--can-hover) {
+		:global(#cv-content .space-y-3 > div:hover) {
+			background: rgba(var(--color-primary-rgb), 0.03);
+			transform: translateX(var(--spacing-1));
+		}
 	}
 
 	/* Year labels with accent styling */
@@ -374,6 +377,23 @@
 		:global(#cv-content a) {
 			color: var(--color-primary) !important;
 			text-decoration: underline !important;
+		}
+
+		/* Show URLs after external links for print (academic CV best practice) */
+		:global(#cv-content a[href^="http"]:not(.doi-link))::after {
+			content: " (" attr(href) ")";
+			font-size: 0.75em;
+			font-weight: normal;
+			color: var(--color-text-light);
+			word-break: break-all;
+		}
+
+		/* DOI links - show cleaner format */
+		:global(#cv-content a.doi-link)::after {
+			content: " (https://doi.org/" attr(href) ")";
+			font-size: 0.75em;
+			font-weight: normal;
+			color: var(--color-text-light);
 		}
 
 		/* Hide download button in print */

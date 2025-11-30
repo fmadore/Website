@@ -174,6 +174,68 @@
 			const element = document.getElementById('cv-content');
 			if (!element) throw new Error('CV content not found');
 
+			// Helper to extract text with visible URLs for external links
+			// This makes the PDF self-contained like a printed academic CV
+			const extractTextWithUrls = (node: Element): string => {
+				let result = '';
+				
+				node.childNodes.forEach((child) => {
+					if (child.nodeType === Node.TEXT_NODE) {
+						const text = child.textContent || '';
+						// Check for DOI patterns in plain text (e.g., "DOI: 10.1234/567")
+						// and convert them to clickable format
+						const doiMatch = text.match(/DOI:\s*(10\.\d{4,}\/[^\s]+)/i);
+						if (doiMatch) {
+							const doi = doiMatch[1];
+							result += text.replace(doiMatch[0], `DOI: ${doi} (https://doi.org/${doi})`);
+						} else {
+							result += text;
+						}
+					} else if (child.nodeType === Node.ELEMENT_NODE) {
+						const el = child as Element;
+						
+						// Handle anchor tags - append URL for external links
+						if (el.tagName === 'A') {
+							const href = el.getAttribute('href') || '';
+							const linkText = el.textContent?.trim() || '';
+							
+							// Skip DOI badge images and empty links
+							if (!linkText || el.classList.contains('doi-link')) {
+								result += linkText;
+							} else if (href.includes('doi.org/')) {
+								// DOI link - extract DOI and show it
+								const doi = href.replace('https://doi.org/', '').replace('http://doi.org/', '');
+								result += `${linkText} (https://doi.org/${doi})`;
+							} else if (href.startsWith('http') || href.startsWith('mailto:')) {
+								// Check if link text is generic (e.g., "[Link]", "Link", "[Listen]", etc.)
+								const isGenericLinkText = /^\[?(link|listen|view|read|download|here|click)\]?$/i.test(linkText);
+								
+								if (isGenericLinkText) {
+									// Just show the URL without the generic text
+									result += href;
+								} else {
+									// External link with meaningful text - show both
+									result += `${linkText} (${href})`;
+								}
+							} else {
+								// Internal link - just show text
+								result += linkText;
+							}
+						} else if (el.tagName === 'EM' || el.tagName === 'I') {
+							// Preserve emphasis markers for later processing if needed
+							result += extractTextWithUrls(el);
+						} else if (el.tagName === 'STRONG' || el.tagName === 'B') {
+							result += extractTextWithUrls(el);
+						} else {
+							// Recurse into other elements
+							result += extractTextWithUrls(el);
+						}
+					}
+				});
+				
+				return result;
+			};
+
 			// Enhanced section heading with better styling
 			const addSection = (title: string) => {
 				// Check if we need a new page (need space for heading + some content)
@@ -403,15 +465,15 @@
 										// Store paragraph texts before removing them
 										const paragraphTexts: string[] = [];
 										nestedParagraphs.forEach(p => {
-											const text = p.textContent?.trim();
+											const text = extractTextWithUrls(p).trim();
 											if (text) {
 												paragraphTexts.push(text);
 											}
 											p.remove();
 										});
 										
-										// Get ALL remaining text as one continuous string
-										const mainText = clone.textContent?.replace(/\s+/g, ' ').trim() || '';
+										// Get ALL remaining text as one continuous string (with URLs)
+										const mainText = extractTextWithUrls(clone).replace(/\s+/g, ' ').trim();
 										
 										if (mainText) {
 											pdf.setFontSize(FONT_SIZE.BODY);
@@ -456,6 +518,9 @@
 					});
 				} else {
 					// No subsections - handle items directly
+					// Add extra spacing to match sections with subsections
+					yPosition += SPACING.SUBSECTION_TOP;
+					
 					// First check for flex layout entries
 					const flexEntries = section.querySelectorAll('.flex.gap-4');
 					if (flexEntries.length > 0) {
@@ -495,15 +560,15 @@
 									// Store paragraph texts before removing them
 									const paragraphTexts: string[] = [];
 									nestedParagraphs.forEach(p => {
-										const text = p.textContent?.trim();
+										const text = extractTextWithUrls(p).trim();
 										if (text) {
 											paragraphTexts.push(text);
 										}
 										p.remove();
 									});
 									
-									// Get ALL remaining text as one continuous string
-									const mainText = clone.textContent?.replace(/\s+/g, ' ').trim() || '';
+									// Get ALL remaining text as one continuous string (with URLs)
+									const mainText = extractTextWithUrls(clone).replace(/\s+/g, ' ').trim();
 									
 									if (mainText) {
 										pdf.setFontSize(FONT_SIZE.BODY);
@@ -541,7 +606,7 @@
 								} else {
 									// Layout without year column (Languages, Computer Skills, etc.)
 									const label = firstDiv.textContent?.trim() || '';
-									const value = contentDiv.textContent?.trim() || '';
+									const value = extractTextWithUrls(contentDiv).trim();
 									
 									if (label || value) {
 										pdf.setFontSize(FONT_SIZE.BODY);
@@ -571,7 +636,7 @@
 						
 						const contentElements = paragraphs.length > 0 ? paragraphs : divs;
 						contentElements.forEach((elem) => {
-							const text = elem.textContent?.trim() || '';
+							const text = extractTextWithUrls(elem).trim();
 							if (text && !text.includes('No ') && text.length > 5) {
 								pdf.setFontSize(FONT_SIZE.BODY);
 								pdf.setFont('helvetica', 'normal');
@@ -588,7 +653,7 @@
 						// Also check for list items (nested ul in affiliations, etc.)
 						const items = section.querySelectorAll('li');
 						items.forEach((item) => {
-							const text = item.textContent?.trim() || '';
+							const text = extractTextWithUrls(item).trim();
 							if (text) {
 								pdf.setFontSize(FONT_SIZE.BODY_SMALL);
 								pdf.setFont('helvetica', 'normal');
