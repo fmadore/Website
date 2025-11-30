@@ -449,15 +449,6 @@
 									if (yearDiv && contentDiv) {
 										const year = yearDiv.textContent?.trim() || '';
 										
-										checkPageBreak(12);
-										
-										// Year column - bold primary color
-										pdf.setFontSize(FONT_SIZE.BODY);
-										pdf.setFont('helvetica', 'bold');
-										pdf.setTextColor(...COLORS.PRIMARY);
-										pdf.text(year, margin + 2, yPosition);
-										pdf.setTextColor(...COLORS.TEXT);
-										
 										// Get main text and nested paragraphs separately
 										const clone = contentDiv.cloneNode(true) as HTMLElement;
 										const nestedParagraphs = clone.querySelectorAll('p');
@@ -475,12 +466,35 @@
 										// Get ALL remaining text as one continuous string (with URLs)
 										const mainText = extractTextWithUrls(clone).replace(/\s+/g, ' ').trim();
 										
+										// Calculate total height needed for this entry BEFORE rendering
+										pdf.setFontSize(FONT_SIZE.BODY);
+										const mainLines = mainText ? pdf.splitTextToSize(mainText, contentWidth - yearColumnWidth) : [];
+										let estimatedHeight = mainLines.length * SPACING.LINE_HEIGHT_TIGHT + SPACING.LINE_HEIGHT;
+										
+										// Add height for nested paragraphs
+										pdf.setFontSize(FONT_SIZE.BODY_SMALL);
+										paragraphTexts.forEach(text => {
+											const paraLines = pdf.splitTextToSize(text, contentWidth - yearColumnWidth);
+											estimatedHeight += paraLines.length * SPACING.LINE_HEIGHT_TIGHT + SPACING.LINE_HEIGHT_TIGHT;
+										});
+										
+										estimatedHeight += SPACING.ENTRY_GAP;
+										
+										// Check if entire entry fits on current page
+										checkPageBreak(estimatedHeight);
+										
+										// Year column - bold primary color
+										pdf.setFontSize(FONT_SIZE.BODY);
+										pdf.setFont('helvetica', 'bold');
+										pdf.setTextColor(...COLORS.PRIMARY);
+										pdf.text(year, margin + 2, yPosition);
+										pdf.setTextColor(...COLORS.TEXT);
+										
 										if (mainText) {
 											pdf.setFontSize(FONT_SIZE.BODY);
 											pdf.setFont('helvetica', 'normal');
 											const lines = pdf.splitTextToSize(mainText, contentWidth - yearColumnWidth);
 											lines.forEach((line: string, index: number) => {
-												if (index > 0) checkPageBreak(10);
 												pdf.text(line, margin + yearColumnWidth, yPosition);
 												if (index < lines.length - 1) {
 													yPosition += SPACING.LINE_HEIGHT_TIGHT;
@@ -496,7 +510,6 @@
 											pdf.setTextColor(...COLORS.TEXT_LIGHT);
 											const lines = pdf.splitTextToSize(text, contentWidth - yearColumnWidth);
 											lines.forEach((line: string, index: number) => {
-												checkPageBreak(10);
 												pdf.text(line, margin + yearColumnWidth, yPosition);
 												if (index < lines.length - 1) {
 													yPosition += SPACING.LINE_HEIGHT_TIGHT;
@@ -534,8 +547,6 @@
 								                      firstDiv.classList.contains('w-20') ||
 								                      firstDiv.classList.contains('font-semibold');
 								
-								checkPageBreak(15);
-								
 								if (hasYearColumn) {
 									// Layout with year column
 									const year = firstDiv.textContent?.trim() || '';
@@ -543,15 +554,6 @@
 									// Check if it's a wide column (e.g. Computer Skills w-60)
 									const isWideColumn = firstDiv.classList.contains('w-60');
 									const currentColumnWidth = isWideColumn ? 65 : yearColumnWidth;
-									
-									checkPageBreak(15);
-									
-									// Year column (or Category label)
-									pdf.setFontSize(FONT_SIZE.BODY);
-									pdf.setFont('helvetica', 'bold');
-									pdf.setTextColor(...COLORS.PRIMARY);
-									pdf.text(year, margin + 2, yPosition);
-									pdf.setTextColor(...COLORS.TEXT);
 									
 									// Get main text and nested paragraphs separately
 									const clone = contentDiv.cloneNode(true) as HTMLElement;
@@ -570,12 +572,35 @@
 									// Get ALL remaining text as one continuous string (with URLs)
 									const mainText = extractTextWithUrls(clone).replace(/\s+/g, ' ').trim();
 									
+									// Calculate total height needed for this entry BEFORE rendering
+									pdf.setFontSize(FONT_SIZE.BODY);
+									const mainLines = mainText ? pdf.splitTextToSize(mainText, contentWidth - currentColumnWidth) : [];
+									let estimatedHeight = mainLines.length * SPACING.LINE_HEIGHT_TIGHT + SPACING.LINE_HEIGHT;
+									
+									// Add height for nested paragraphs
+									pdf.setFontSize(FONT_SIZE.BODY_SMALL);
+									paragraphTexts.forEach(text => {
+										const paraLines = pdf.splitTextToSize(text, contentWidth - currentColumnWidth);
+										estimatedHeight += paraLines.length * SPACING.LINE_HEIGHT_TIGHT + SPACING.LINE_HEIGHT_TIGHT;
+									});
+									
+									estimatedHeight += SPACING.ENTRY_GAP;
+									
+									// Check if entire entry fits on current page
+									checkPageBreak(estimatedHeight);
+									
+									// Year column (or Category label)
+									pdf.setFontSize(FONT_SIZE.BODY);
+									pdf.setFont('helvetica', 'bold');
+									pdf.setTextColor(...COLORS.PRIMARY);
+									pdf.text(year, margin + 2, yPosition);
+									pdf.setTextColor(...COLORS.TEXT);
+									
 									if (mainText) {
 										pdf.setFontSize(FONT_SIZE.BODY);
 										pdf.setFont('helvetica', 'normal');
 										const lines = pdf.splitTextToSize(mainText, contentWidth - currentColumnWidth);
 										lines.forEach((line: string, index: number) => {
-											if (index > 0) checkPageBreak(10);
 											pdf.text(line, margin + currentColumnWidth, yPosition);
 											if (index < lines.length - 1) {
 												yPosition += SPACING.LINE_HEIGHT_TIGHT;
@@ -591,7 +616,6 @@
 										pdf.setTextColor(...COLORS.TEXT_LIGHT);
 										const lines = pdf.splitTextToSize(text, contentWidth - currentColumnWidth);
 										lines.forEach((line: string, index: number) => {
-											checkPageBreak(10);
 											pdf.text(line, margin + currentColumnWidth, yPosition);
 											if (index < lines.length - 1) {
 												yPosition += SPACING.LINE_HEIGHT_TIGHT;
