@@ -24,9 +24,9 @@
 /* Reduced motion support for all navigation elements */
 @media (prefers-reduced-motion: reduce) {
 	* {
-		animation-duration: var(--anim-duration-progress) !important;
+		animation-duration: 0.01ms !important;
 		animation-iteration-count: 1 !important;
-		transition-duration: var(--anim-duration-progress) !important;
+		transition-duration: 0.01ms !important;
 	}
 }
 

@@ -78,9 +78,6 @@
  * Automatic staggered reveal for grid children using :nth-child
  * No JavaScript required - pure CSS with custom property delays
  */
-.grid-stagger {
-	/* Container setup */
-}
 
 .grid-stagger > * {
 	/* Fallback: all items visible */
@@ -268,7 +265,7 @@
 	top: 0;
 	left: 0;
 	width: 0%;
-	height: var(--spacing-1);
+	height: var(--space-1);
 	background: linear-gradient(
 		90deg,
 		var(--color-primary),
