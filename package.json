@@ -44,6 +44,9 @@
 		"typescript-eslint": "^8.43.0",
 		"vite": "^7.1.12"
 	},
+	"overrides": {
+		"js-yaml": ">=4.1.1"
+	},
 	"dependencies": {
 		"@fortawesome/free-solid-svg-icons": "^7.0.1",
 		"@iconify/svelte": "^5.0.1",
