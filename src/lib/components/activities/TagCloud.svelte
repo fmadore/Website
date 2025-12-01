@@ -83,7 +83,7 @@
 
 <style>
 	.tag-cloud-container {
-		margin-top: var(--spacing-8);
+		margin-top: var(--space-8);
 	}
 
 	.tag-cloud-title {
@@ -91,15 +91,15 @@
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text);
 		margin-top: 0;
-		margin-bottom: var(--spacing-4);
-		padding-bottom: var(--spacing-2);
+		margin-bottom: var(--space-4);
+		padding-bottom: var(--space-2);
 		border-bottom: var(--border-width-thin) solid var(--color-border);
 	}
 
 	.tag-cloud {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--spacing-2);
+		gap: var(--space-2);
 		align-items: center;
 		justify-content: flex-start;
 		line-height: var(--line-height-relaxed);
@@ -120,7 +120,7 @@
 	}
 
 	.tag-name {
-		margin-right: var(--spacing-1);
+		margin-right: var(--space-1);
 	}
 
 	.tag-count {
@@ -137,7 +137,7 @@
 
 	.tag-cloud-item:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-primary);
-		outline-offset: var(--spacing-1);
+		outline-offset: var(--space-1);
 	}
 
 	.no-tags {

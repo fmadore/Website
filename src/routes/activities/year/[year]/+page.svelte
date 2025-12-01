@@ -113,14 +113,14 @@
 <style>
 	.year-tag {
 		display: inline-block;
-		padding: var(--spacing-2) var(--spacing-4);
+		padding: var(--space-2) var(--space-4);
 		background-color: var(--color-border);
 		color: var(--color-text);
 		border-radius: var(--border-radius-full);
 		font-size: var(--font-size-base);
 		font-weight: var(--font-weight-semibold);
-		margin-right: var(--spacing-2);
-		margin-bottom: var(--spacing-2);
+		margin-right: var(--space-2);
+		margin-bottom: var(--space-2);
 		transition: all var(--anim-duration-fast) var(--anim-ease-base);
 	}
 
@@ -137,12 +137,12 @@
 	.activity-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(var(--content-width-xs), 1fr));
-		gap: var(--spacing-6);
+		gap: var(--space-6);
 	}
 
 	.empty-state {
 		text-align: center;
-		padding: var(--spacing-8);
+		padding: var(--space-8);
 		color: var(--color-text-light);
 	}
 </style>

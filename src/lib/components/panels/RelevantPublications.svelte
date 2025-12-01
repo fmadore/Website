@@ -103,6 +103,6 @@
 	.type-filters-container {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--spacing-2);
+		gap: var(--space-2);
 	}
 </style>

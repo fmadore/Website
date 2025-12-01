@@ -44,19 +44,19 @@
                 text-decoration: none;
                 font-weight: var(--font-weight-medium);
                 font-size: var(--font-size-base);
-                padding: var(--spacing-2) 0;
+                padding: var(--space-2) 0;
                 transition:
                         color var(--duration-fast) var(--ease-out);
                 position: relative;
                 display: flex;
                 align-items: center;
-                gap: var(--spacing-1);
+                gap: var(--space-1);
         }
 
         .nav-link::after {
                 content: '';
                 position: absolute;
-                bottom: calc(-1 * var(--spacing-05));
+                bottom: calc(-1 * var(--space-0-5));
                 left: 0;
                 width: 0;
                 height: var(--border-width-medium);
@@ -81,7 +81,7 @@
 
         .nav-link:focus-visible {
                 outline: var(--border-width-medium) solid var(--color-primary);
-                outline-offset: var(--spacing-1);
+                outline-offset: var(--space-1);
         }
 
 	@media (hover: none) {

@@ -235,13 +235,13 @@
 <style>
 	.advisor-info,
 	.preface-info {
-		margin-top: var(--spacing-1);
+		margin-top: var(--space-1);
 	}
 
 	.author-btn {
 		background: none;
 		border: none;
-		padding: var(--spacing-1);
+		padding: var(--space-1);
 		font-size: inherit;
 		font-family: inherit;
 		color: var(--color-primary);

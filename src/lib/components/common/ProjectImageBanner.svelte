@@ -38,7 +38,7 @@
 
 <style>
 	.project-image-banner {
-		margin-bottom: var(--spacing-6);
+		margin-bottom: var(--space-6);
 		border-radius: var(--border-radius-lg);
 		overflow: hidden;
 		position: relative;
@@ -56,7 +56,7 @@
 			rgba(var(--color-primary-rgb), 0.01) 75%,
 			transparent 100%
 		);
-		padding: var(--spacing-4);
+		padding: var(--space-4);
 		/* Enhanced glassmorphism shadow with multiple layers */
 		box-shadow:
 			0 8px 32px 0 rgba(31, 38, 135, 0.12),
@@ -300,9 +300,9 @@
 	/* Desktop responsive design */
 	@media (--sm) {
 		.project-image-banner {
-			margin-bottom: var(--spacing-8);
+			margin-bottom: var(--space-8);
 			border-radius: var(--border-radius-xl);
-			padding: var(--spacing-5);
+			padding: var(--space-5);
 		}
 
 		.image-container {

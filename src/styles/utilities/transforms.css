@@ -43,82 +43,82 @@
 	transform: translateX(0);
 }
 .translate-x-1 {
-	transform: translateX(var(--spacing-1));
+	transform: translateX(var(--space-1));
 }
 .translate-x-2 {
-	transform: translateX(var(--spacing-2));
+	transform: translateX(var(--space-2));
 }
 .translate-x-3 {
-	transform: translateX(var(--spacing-3));
+	transform: translateX(var(--space-3));
 }
 .translate-x-4 {
-	transform: translateX(var(--spacing-4));
+	transform: translateX(var(--space-4));
 }
 .translate-x-6 {
-	transform: translateX(var(--spacing-6));
+	transform: translateX(var(--space-6));
 }
 .translate-x-8 {
-	transform: translateX(var(--spacing-8));
+	transform: translateX(var(--space-8));
 }
 
 .-translate-x-1 {
-	transform: translateX(calc(-1 * var(--spacing-1)));
+	transform: translateX(calc(-1 * var(--space-1)));
 }
 .-translate-x-2 {
-	transform: translateX(calc(-1 * var(--spacing-2)));
+	transform: translateX(calc(-1 * var(--space-2)));
 }
 .-translate-x-3 {
-	transform: translateX(calc(-1 * var(--spacing-3)));
+	transform: translateX(calc(-1 * var(--space-3)));
 }
 .-translate-x-4 {
-	transform: translateX(calc(-1 * var(--spacing-4)));
+	transform: translateX(calc(-1 * var(--space-4)));
 }
 .-translate-x-6 {
-	transform: translateX(calc(-1 * var(--spacing-6)));
+	transform: translateX(calc(-1 * var(--space-6)));
 }
 .-translate-x-8 {
-	transform: translateX(calc(-1 * var(--spacing-8)));
+	transform: translateX(calc(-1 * var(--space-8)));
 }
 
 .translate-y-0 {
 	transform: translateY(0);
 }
 .translate-y-1 {
-	transform: translateY(var(--spacing-1));
+	transform: translateY(var(--space-1));
 }
 .translate-y-2 {
-	transform: translateY(var(--spacing-2));
+	transform: translateY(var(--space-2));
 }
 .translate-y-3 {
-	transform: translateY(var(--spacing-3));
+	transform: translateY(var(--space-3));
 }
 .translate-y-4 {
-	transform: translateY(var(--spacing-4));
+	transform: translateY(var(--space-4));
 }
 .translate-y-6 {
-	transform: translateY(var(--spacing-6));
+	transform: translateY(var(--space-6));
 }
 .translate-y-8 {
-	transform: translateY(var(--spacing-8));
+	transform: translateY(var(--space-8));
 }
 
 .-translate-y-1 {
-	transform: translateY(calc(-1 * var(--spacing-1)));
+	transform: translateY(calc(-1 * var(--space-1)));
 }
 .-translate-y-2 {
-	transform: translateY(calc(-1 * var(--spacing-2)));
+	transform: translateY(calc(-1 * var(--space-2)));
 }
 .-translate-y-3 {
-	transform: translateY(calc(-1 * var(--spacing-3)));
+	transform: translateY(calc(-1 * var(--space-3)));
 }
 .-translate-y-4 {
-	transform: translateY(calc(-1 * var(--spacing-4)));
+	transform: translateY(calc(-1 * var(--space-4)));
 }
 .-translate-y-6 {
-	transform: translateY(calc(-1 * var(--spacing-6)));
+	transform: translateY(calc(-1 * var(--space-6)));
 }
 .-translate-y-8 {
-	transform: translateY(calc(-1 * var(--spacing-8)));
+	transform: translateY(calc(-1 * var(--space-8)));
 }
 
 /* Rotate utilities */
@@ -296,35 +296,35 @@
 
 	/* Hover translate */
 	.hover\:translate-x-1:hover {
-		transform: translateX(var(--spacing-1));
+		transform: translateX(var(--space-1));
 	}
 	.hover\:translate-x-2:hover {
-		transform: translateX(var(--spacing-2));
+		transform: translateX(var(--space-2));
 	}
 	.hover\:-translate-x-1:hover {
-		transform: translateX(calc(-1 * var(--spacing-1)));
+		transform: translateX(calc(-1 * var(--space-1)));
 	}
 	.hover\:-translate-x-2:hover {
-		transform: translateX(calc(-1 * var(--spacing-2)));
+		transform: translateX(calc(-1 * var(--space-2)));
 	}
 
 	.hover\:translate-y-1:hover {
-		transform: translateY(var(--spacing-1));
+		transform: translateY(var(--space-1));
 	}
 	.hover\:translate-y-2:hover {
-		transform: translateY(var(--spacing-2));
+		transform: translateY(var(--space-2));
 	}
 	.hover\:-translate-y-1:hover {
-		transform: translateY(calc(-1 * var(--spacing-1)));
+		transform: translateY(calc(-1 * var(--space-1)));
 	}
 	.hover\:-translate-y-2:hover {
-		transform: translateY(calc(-1 * var(--spacing-2)));
+		transform: translateY(calc(-1 * var(--space-2)));
 	}
 	.hover\:-translate-y-3:hover {
-		transform: translateY(calc(-1 * var(--spacing-3)));
+		transform: translateY(calc(-1 * var(--space-3)));
 	}
 	.hover\:-translate-y-4:hover {
-		transform: translateY(calc(-1 * var(--spacing-4)));
+		transform: translateY(calc(-1 * var(--space-4)));
 	}
 
 	/* Hover rotate */
@@ -368,10 +368,10 @@
 	transform: scale(var(--scale-105));
 }
 .focus\:-translate-y-1:focus {
-	transform: translateY(calc(-1 * var(--spacing-1)));
+	transform: translateY(calc(-1 * var(--space-1)));
 }
 .focus\:-translate-y-2:focus {
-	transform: translateY(calc(-1 * var(--spacing-2)));
+	transform: translateY(calc(-1 * var(--space-2)));
 }
 
 /* Responsive transform utilities */
@@ -396,10 +396,10 @@
 		transform: translateY(0);
 	}
 	.sm\:-translate-y-1 {
-		transform: translateY(calc(-1 * var(--spacing-1)));
+		transform: translateY(calc(-1 * var(--space-1)));
 	}
 	.sm\:-translate-y-2 {
-		transform: translateY(calc(-1 * var(--spacing-2)));
+		transform: translateY(calc(-1 * var(--space-2)));
 	}
 
 	.sm\:rotate-0 {
@@ -434,10 +434,10 @@
 		transform: translateY(0);
 	}
 	.md\:-translate-y-1 {
-		transform: translateY(calc(-1 * var(--spacing-1)));
+		transform: translateY(calc(-1 * var(--space-1)));
 	}
 	.md\:-translate-y-2 {
-		transform: translateY(calc(-1 * var(--spacing-2)));
+		transform: translateY(calc(-1 * var(--space-2)));
 	}
 
 	.md\:rotate-0 {
@@ -472,10 +472,10 @@
 		transform: translateY(0);
 	}
 	.lg\:-translate-y-1 {
-		transform: translateY(calc(-1 * var(--spacing-1)));
+		transform: translateY(calc(-1 * var(--space-1)));
 	}
 	.lg\:-translate-y-2 {
-		transform: translateY(calc(-1 * var(--spacing-2)));
+		transform: translateY(calc(-1 * var(--space-2)));
 	}
 
 	.lg\:rotate-0 {
@@ -510,10 +510,10 @@
 		transform: translateY(0);
 	}
 	.xl\:-translate-y-1 {
-		transform: translateY(calc(-1 * var(--spacing-1)));
+		transform: translateY(calc(-1 * var(--space-1)));
 	}
 	.xl\:-translate-y-2 {
-		transform: translateY(calc(-1 * var(--spacing-2)));
+		transform: translateY(calc(-1 * var(--space-2)));
 	}
 
 	.xl\:rotate-0 {

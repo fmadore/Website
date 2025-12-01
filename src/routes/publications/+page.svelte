@@ -325,15 +325,15 @@
 	.page-container {
 		max-width: var(--content-max-width);
 		margin: 0 auto;
-		padding: var(--spacing-8) var(--spacing-4);
+		padding: var(--space-8) var(--space-4);
 	}
 
 	/* Mobile controls styling */
 	.mobile-controls {
 		display: none; /* Hidden by default, shown in media query */
 		flex-direction: column; /* Stack rows vertically */
-		gap: var(--spacing-3); /* Space between rows */
-		margin-bottom: var(--spacing-4);
+		gap: var(--space-3); /* Space between rows */
+		margin-bottom: var(--space-4);
 	}
 
 	.mobile-controls-row {
@@ -349,15 +349,15 @@
 	/* The rule for .mobile-controls-row .filter-toggle-button was empty and has been removed. */
 
 	.mobile-controls .sorter-clear-group {
-		gap: var(--spacing-2); /* Explicitly set gap for items in this row */
+		gap: var(--space-2); /* Explicitly set gap for items in this row */
 	}
 
 	/* Styles for .control-button-rounded and its hover effect are now globally handled by Sorter.svelte */
 
 	/* All Publications header */
 	.all-publications-header {
-		margin-top: var(--spacing-4);
-		margin-bottom: var(--spacing-6);
+		margin-top: var(--space-4);
+		margin-bottom: var(--space-6);
 	}
 
 	.section-title {
@@ -373,13 +373,13 @@
 		display: flex; /* Shown by default */
 		justify-content: space-between; /* Pushes status to left, buttons to right */
 		align-items: center; /* Align items vertically */
-		margin-bottom: var(--spacing-4);
+		margin-bottom: var(--space-4);
 	}
 
 	.desktop-controls .buttons-group {
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-2); /* Add gap between sorter and clear button */
+		gap: var(--space-2); /* Add gap between sorter and clear button */
 	}
 
 	/* .list-status { */

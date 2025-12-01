@@ -363,17 +363,17 @@
 	.page-container {
 		max-width: var(--content-max-width);
 		margin: 0 auto;
-		padding: var(--spacing-8) var(--spacing-4);
+		padding: var(--space-8) var(--space-4);
 	}
 
 	.mb-6 {
-		margin-bottom: var(--spacing-6);
+		margin-bottom: var(--space-6);
 	}
 
 	/* All Communications header */
 	.all-communications-header {
-		margin-top: var(--spacing-4);
-		margin-bottom: var(--spacing-6);
+		margin-top: var(--space-4);
+		margin-bottom: var(--space-6);
 	}
 
 	.section-title {
@@ -388,8 +388,8 @@
 	.mobile-controls {
 		display: none; /* Hidden by default, shown in media query */
 		flex-direction: column; /* Stack rows vertically */
-		gap: var(--spacing-3); /* Space between rows */
-		margin-bottom: var(--spacing-4);
+		gap: var(--space-3); /* Space between rows */
+		margin-bottom: var(--space-4);
 	}
 
 	.mobile-controls-row {
@@ -405,13 +405,13 @@
 		display: flex;
 		justify-content: space-between; /* Pushes status to left, buttons to right */
 		align-items: center; /* Align items vertically */
-		margin-bottom: var(--spacing-4);
+		margin-bottom: var(--space-4);
 	}
 
 	.desktop-controls .actions-group {
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-2);
+		gap: var(--space-2);
 	}
 
 	/* Media query for mobile/tablet - show mobile controls up to 1024px */
@@ -427,7 +427,7 @@
 	/* Add margin to the bottom of each communication item */
 	/*
     :global(.communication-item) { 
-        margin-bottom: var(--spacing-6); 
+        margin-bottom: var(--space-6); 
     }
     */
 </style>

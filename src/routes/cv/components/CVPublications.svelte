@@ -143,7 +143,7 @@
 	.doi-link {
 		display: inline-flex;
 		align-items: center;
-		margin-left: var(--spacing-2);
+		margin-left: var(--space-2);
 	}
 
 	.doi-badge-img {
@@ -152,7 +152,7 @@
 
 	.doi-badge-fallback {
 		display: none;
-		padding: var(--spacing-1) var(--spacing-2);
+		padding: var(--space-1) var(--space-2);
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-medium);
 		color: var(--color-white);
@@ -164,7 +164,7 @@
 	.pub-type-badge {
 		font-size: var(--font-size-sm);
 		background-color: var(--color-border);
-		padding: 0 var(--spacing-1);
+		padding: 0 var(--space-1);
 		border-radius: var(--border-radius);
 	}
 </style>

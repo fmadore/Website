@@ -166,7 +166,7 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		gap: var(--spacing-2);
+		gap: var(--space-2);
 		width: 100%;
 		height: 100%;
 		position: relative;

@@ -26,15 +26,15 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
-                width: calc(var(--spacing-6) + var(--spacing-1));
-                height: calc(var(--spacing-6) + var(--spacing-1));
+                width: calc(var(--space-6) + var(--space-1));
+                height: calc(var(--space-6) + var(--space-1));
                 background: transparent;
                 border: none;
                 cursor: pointer;
                 padding: 0;
                 z-index: var(--z-fixed);
                 position: relative;
-                gap: var(--spacing-1);
+                gap: var(--space-1);
         }
 
         .hamburger-line {
@@ -49,7 +49,7 @@
 
 	/* Hamburger to X animation */
         .hamburger.active .hamburger-line:first-child {
-                transform: translateY(calc(var(--spacing-2) - var(--spacing-05))) rotate(var(--rotate-45));
+                transform: translateY(calc(var(--space-2) - var(--space-0-5))) rotate(var(--rotate-45));
         }
 
         .hamburger.active .hamburger-line:nth-child(2) {
@@ -58,7 +58,7 @@
         }
 
         .hamburger.active .hamburger-line:last-child {
-                transform: translateY(calc(-1 * (var(--spacing-2) - var(--spacing-05)))) rotate(calc(-1 * var(--rotate-45)));
+                transform: translateY(calc(-1 * (var(--space-2) - var(--space-0-5)))) rotate(calc(-1 * var(--rotate-45)));
         }
 
         /* Hide hamburger completely when menu is active */
@@ -76,7 +76,7 @@
 
         .hamburger:focus-visible {
                 outline: var(--border-width-medium) solid var(--color-primary);
-                outline-offset: var(--spacing-1);
+                outline-offset: var(--space-1);
                 border-radius: var(--border-radius-sm);
         }
 

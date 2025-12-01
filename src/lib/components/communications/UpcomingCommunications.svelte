@@ -27,20 +27,20 @@
 
 <style>
 	.upcoming-section {
-		margin-bottom: var(--spacing-8);
+		margin-bottom: var(--space-8);
 	}
 
 	.upcoming-header {
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-2);
+		gap: var(--space-2);
 		color: var(--color-accent);
 		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-semibold);
 		text-transform: uppercase;
 		letter-spacing: var(--letter-spacing-wider);
-		margin-bottom: var(--spacing-4);
-		padding-left: var(--spacing-1);
+		margin-bottom: var(--space-4);
+		padding-left: var(--space-1);
 	}
 
 	.entity-list {
@@ -53,7 +53,7 @@
 	.upcoming-section::after {
 		content: '';
 		display: block;
-		margin-top: var(--spacing-8);
+		margin-top: var(--space-8);
 		height: 1px;
 		background: linear-gradient(
 			to right,

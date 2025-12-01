@@ -478,9 +478,9 @@
 
 <style>
 	.media-player {
-		padding: var(--spacing-6);
+		padding: var(--space-6);
 		border-radius: var(--border-radius-xl);
-		margin-bottom: var(--spacing-8);
+		margin-bottom: var(--space-8);
 		transition: all var(--duration-normal) var(--ease-out);
 		outline: none;
 		position: relative;
@@ -511,7 +511,7 @@
 	}
 
 	.player-header {
-		margin-bottom: var(--spacing-4);
+		margin-bottom: var(--space-4);
 	}
 
 	.player-title {
@@ -525,8 +525,8 @@
 		background: rgba(var(--color-danger-rgb), var(--opacity-5));
 		border: var(--border-width-thin) solid var(--color-danger);
 		border-radius: var(--border-radius);
-		padding: var(--spacing-4);
-		margin-bottom: var(--spacing-4);
+		padding: var(--space-4);
+		margin-bottom: var(--space-4);
 		color: var(--color-danger);
 		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-medium);
@@ -534,7 +534,7 @@
 
 	.media-container {
 		position: relative;
-		margin-bottom: var(--spacing-6);
+		margin-bottom: var(--space-6);
 		border-radius: var(--border-radius-lg);
 		overflow: hidden;
 		background: var(--color-surface-alt);
@@ -556,7 +556,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		padding: var(--spacing-4);
+		padding: var(--space-4);
 		background: linear-gradient(
 			135deg,
 			rgba(var(--color-primary-rgb), var(--opacity-5)) 0%,
@@ -608,12 +608,12 @@
 		display: flex;
 		align-items: end;
 		gap: 3px;
-		margin-bottom: var(--spacing-3);
+		margin-bottom: var(--space-3);
 		height: 30px;
 	}
 
 	.wave-bar {
-		width: var(--spacing-1);
+		width: var(--space-1);
 		background: linear-gradient(to top, var(--color-primary), var(--color-accent));
 		border-radius: var(--border-radius-full);
 		animation: wave var(--duration-slower) var(--ease-in-out) infinite;
@@ -641,7 +641,7 @@
 	/* Central audio icon */
 	.audio-icon-container {
 		position: relative;
-		margin-bottom: var(--spacing-2);
+		margin-bottom: var(--space-2);
 		z-index: 2;
 	}
 
@@ -667,7 +667,7 @@
 		color: var(--color-primary);
 		background: rgba(var(--color-white-rgb), var(--opacity-90));
 		border-radius: var(--border-radius-full);
-		padding: var(--spacing-2);
+		padding: var(--space-2);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-20));
 		transition: all var(--duration-normal) var(--ease-out);
@@ -707,7 +707,7 @@
 		color: var(--color-text);
 		font-size: var(--font-size-xl);
 		font-weight: var(--font-weight-semibold);
-		margin: 0 0 var(--spacing-2) 0;
+		margin: 0 0 var(--space-2) 0;
 		line-height: var(--line-height-tight);
 	}
 
@@ -805,8 +805,8 @@
 	}
 
 	.loading-spinner {
-		width: var(--spacing-10);
-		height: var(--spacing-10);
+		width: var(--space-10);
+		height: var(--space-10);
 		border: var(--border-width-thick) solid rgba(var(--color-primary-rgb), var(--opacity-10));
 		border-top: var(--border-width-thick) solid var(--color-primary);
 		border-radius: var(--border-radius-full);
@@ -830,8 +830,8 @@
 		backdrop-filter: blur(var(--glass-blur-fallback));
 		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-20));
 		border-radius: var(--border-radius-lg);
-		padding: var(--spacing-3);
-		margin: var(--spacing-1) 0 0 0;
+		padding: var(--space-3);
+		margin: var(--space-1) 0 0 0;
 
 		/* Elegant shadow system */
 		box-shadow:
@@ -844,8 +844,8 @@
 			content: '';
 			position: absolute;
 			top: 0;
-			left: var(--spacing-6);
-			right: var(--spacing-6);
+			left: var(--space-6);
+			right: var(--space-6);
 			height: 1px;
 			background: linear-gradient(
 				90deg,
@@ -870,8 +870,8 @@
 	.progress-container {
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-3);
-		margin-bottom: var(--spacing-4);
+		gap: var(--space-3);
+		margin-bottom: var(--space-4);
 	}
 
 	.progress-bar {
@@ -897,7 +897,7 @@
 
 	.progress-bar:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-highlight);
-		outline-offset: var(--spacing-1);
+		outline-offset: var(--space-1);
 	}
 
 	.progress-fill {
@@ -918,8 +918,8 @@
 	.progress-thumb {
 		position: absolute;
 		top: 50%;
-		width: var(--spacing-4);
-		height: var(--spacing-4);
+		width: var(--space-4);
+		height: var(--space-4);
 		background: var(--color-primary);
 		border: var(--border-width-medium) solid var(--color-white);
 		border-radius: var(--border-radius-full);
@@ -967,10 +967,10 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: var(--spacing-6);
+		gap: var(--space-6);
 
 		/* Refined layout */
-		padding: var(--spacing-2) 0;
+		padding: var(--space-2) 0;
 	}
 
 	/* Modern control button styling */
@@ -1022,8 +1022,8 @@
 
 	.control-icon--fixed {
 		/* Fixed dimensions for volume icon to prevent layout shifts */
-		width: var(--spacing-5);
-		height: var(--spacing-5);
+		width: var(--space-5);
+		height: var(--space-5);
 	}
 
 	/* Muted state styling */
@@ -1042,13 +1042,13 @@
 	.volume-controls {
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-3);
+		gap: var(--space-3);
 
 		/* Refined container */
 		background: rgba(var(--color-surface-rgb), var(--opacity-50));
 		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-20));
 		border-radius: var(--border-radius-lg);
-		padding: var(--spacing-2) var(--spacing-3);
+		padding: var(--space-2) var(--space-3);
 		backdrop-filter: blur(var(--glass-blur-amount));
 
 		/* Subtle inner glow */
@@ -1068,11 +1068,11 @@
 	.volume-slider-container {
 		display: flex;
 		align-items: center;
-		padding: var(--spacing-1);
+		padding: var(--space-1);
 	}
 
 	.volume-slider {
-		width: var(--spacing-20);
+		width: var(--space-20);
 		height: 6px;
 		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-20));
 		border-radius: var(--border-radius-full);
@@ -1099,8 +1099,8 @@
 
 	.volume-slider::-webkit-slider-thumb {
 		appearance: none;
-		width: var(--spacing-4);
-		height: var(--spacing-4);
+		width: var(--space-4);
+		height: var(--space-4);
 		background: var(--color-primary);
 		border-radius: var(--border-radius-full);
 		cursor: pointer;
@@ -1120,8 +1120,8 @@
 	}
 
 	.volume-slider::-moz-range-thumb {
-		width: var(--spacing-4);
-		height: var(--spacing-4);
+		width: var(--space-4);
+		height: var(--space-4);
 		background: var(--color-primary);
 		border-radius: var(--border-radius-full);
 		cursor: pointer;
@@ -1143,36 +1143,36 @@
 	/* Responsive design */
 	@media (max-width: 640px) {
 		.media-player {
-			padding: var(--spacing-4);
+			padding: var(--space-4);
 		}
 
 		.player-controls {
-			padding: var(--spacing-4);
+			padding: var(--space-4);
 		}
 
 		.control-buttons {
 			flex-wrap: wrap;
-			gap: var(--spacing-4);
+			gap: var(--space-4);
 		}
 
 		.volume-controls {
 			order: 1;
 			width: 100%;
 			justify-content: center;
-			margin-top: var(--spacing-3);
+			margin-top: var(--space-3);
 		}
 
 		.volume-slider {
-			width: var(--spacing-32);
+			width: var(--space-32);
 		}
 
 		.audio-visualization {
-			padding: var(--spacing-8);
+			padding: var(--space-8);
 			min-height: 240px;
 		}
 
 		.waveform {
-			margin-bottom: var(--spacing-6);
+			margin-bottom: var(--space-6);
 		}
 
 		.audio-title {
@@ -1193,31 +1193,31 @@
 	/* Enhanced responsiveness for larger screens */
 	@media (min-width: 768px) {
 		.volume-slider {
-			width: var(--spacing-24);
+			width: var(--space-24);
 		}
 
 		.control-buttons {
-			gap: var(--spacing-8);
+			gap: var(--space-8);
 		}
 
 		.player-controls {
-			padding: var(--spacing-6);
+			padding: var(--space-6);
 		}
 
 		/* More refined spacing on larger screens */
 		.progress-container {
-			margin-bottom: var(--spacing-5);
+			margin-bottom: var(--space-5);
 		}
 	}
 
 	/* Extra large screens get even more refinement */
 	@media (min-width: 1024px) {
 		.volume-slider {
-			width: var(--spacing-28);
+			width: var(--space-28);
 		}
 
 		.control-buttons {
-			gap: var(--spacing-10);
+			gap: var(--space-10);
 		}
 
 		/* Enhanced hover effects for desktop */
@@ -1268,12 +1268,12 @@
 	/* Focus states for accessibility */
 	.media-player:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-highlight);
-		outline-offset: var(--spacing-1);
+		outline-offset: var(--space-1);
 	}
 
 	.progress-bar:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-highlight);
-		outline-offset: var(--spacing-1);
+		outline-offset: var(--space-1);
 	}
 
 	/* High contrast mode support */

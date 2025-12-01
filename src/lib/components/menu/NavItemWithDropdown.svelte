@@ -65,10 +65,10 @@
         .dropdown-hover-wrapper::after {
                 content: '';
                 position: absolute;
-                bottom: calc(-1 * var(--spacing-3));
+                bottom: calc(-1 * var(--space-3));
                 left: 0;
                 width: 100%;
-                height: var(--spacing-3);
+                height: var(--space-3);
                 background: transparent;
         }
 

@@ -56,7 +56,7 @@
 	.activity-meta {
 		color: var(--color-text-muted);
 		font-size: var(--font-size-sm);
-		margin-bottom: var(--spacing-2);
+		margin-bottom: var(--space-2);
 	}
 
 	.activity-description {

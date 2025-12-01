@@ -520,36 +520,36 @@ ECharts Network Graph - A network visualization for author collaborations
 
 	.zoom-controls {
 		position: absolute;
-		top: var(--spacing-4);
-		left: var(--spacing-4);
+		top: var(--space-4);
+		left: var(--space-4);
 		z-index: 10;
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-2);
+		gap: var(--space-2);
 	}
 
 	.legend-overlay {
 		position: absolute;
-		top: var(--spacing-4);
-		right: var(--spacing-4);
+		top: var(--space-4);
+		right: var(--space-4);
 		z-index: 10;
 		background-color: rgba(var(--color-surface-rgb), 0.8);
 		backdrop-filter: blur(var(--glass-blur-sm));
 		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
 		border: var(--border-width-thin) solid var(--color-border);
 		border-radius: var(--border-radius);
-		padding: var(--spacing-3);
+		padding: var(--space-3);
 		box-shadow: var(--shadow-sm);
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-2);
+		gap: var(--space-2);
 		max-width: 200px;
 	}
 
 	.legend-item {
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-2);
+		gap: var(--space-2);
 		font-size: var(--font-size-xs);
 		color: var(--color-text);
 	}
@@ -620,9 +620,9 @@ ECharts Network Graph - A network visualization for author collaborations
 		}
 
 		.zoom-controls {
-			top: var(--spacing-2);
-			left: var(--spacing-2);
-			gap: var(--spacing-1);
+			top: var(--space-2);
+			left: var(--space-2);
+			gap: var(--space-1);
 		}
 
 		.zoom-btn {

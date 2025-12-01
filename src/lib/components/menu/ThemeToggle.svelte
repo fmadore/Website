@@ -27,7 +27,7 @@
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
 		cursor: pointer;
-		padding: var(--spacing-2);
+		padding: var(--space-2);
 		color: var(--color-text);
 		border-radius: var(--border-radius-full);
 		transition:
@@ -38,8 +38,8 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: calc(var(--spacing-8) + var(--spacing-2));
-		height: calc(var(--spacing-8) + var(--spacing-2));
+		width: calc(var(--space-8) + var(--space-2));
+		height: calc(var(--space-8) + var(--space-2));
 		position: relative;
 		box-shadow:
 			var(--shadow-md),
@@ -66,7 +66,7 @@
 
 	.theme-toggle:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-primary);
-		outline-offset: var(--spacing-1);
+		outline-offset: var(--space-1);
 		box-shadow:
 			var(--shadow-lg),
 			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-40)),
@@ -79,13 +79,13 @@
 			transform var(--duration-slow) var(--ease-spring),
 			filter var(--duration-normal) var(--ease-out);
 		filter: drop-shadow(
-			0 var(--spacing-1) var(--spacing-2) rgba(var(--color-black-rgb), var(--opacity-low))
+			0 var(--space-1) var(--space-2) rgba(var(--color-black-rgb), var(--opacity-low))
 		);
 	}
 
 	.theme-toggle:hover :global(svg) {
 		transform: rotate(var(--rotate-12)) scale(var(--scale-110));
-		filter: drop-shadow(0 var(--spacing-2) var(--spacing-3) rgba(var(--color-black-rgb), var(--opacity-medium)));
+		filter: drop-shadow(0 var(--space-2) var(--space-3) rgba(var(--color-black-rgb), var(--opacity-medium)));
 	}
 
 	/* Smooth theme transition animation */
@@ -118,12 +118,12 @@
 
 	:global(html.dark) .theme-toggle :global(svg) {
 		filter: drop-shadow(
-			0 var(--spacing-1) var(--spacing-2) rgba(var(--color-black-rgb), var(--opacity-medium-high))
+			0 var(--space-1) var(--space-2) rgba(var(--color-black-rgb), var(--opacity-medium-high))
 		);
 	}
 
 	:global(html.dark) .theme-toggle:hover :global(svg) {
-		filter: drop-shadow(0 var(--spacing-2) var(--spacing-3) rgba(var(--color-black-rgb), var(--opacity-40)));
+		filter: drop-shadow(0 var(--space-2) var(--space-3) rgba(var(--color-black-rgb), var(--opacity-40)));
 	}
 
 	/* Enhanced glow effect for theme icons */
@@ -137,12 +137,12 @@
 
 	.theme-toggle:hover :global(svg[data-icon*='moon']) {
 		color: var(--color-text-light);
-		text-shadow: 0 0 var(--spacing-3) rgba(var(--color-secondary-rgb), var(--opacity-50));
+		text-shadow: 0 0 var(--space-3) rgba(var(--color-secondary-rgb), var(--opacity-50));
 	}
 
 	.theme-toggle:hover :global(svg[data-icon*='sun']) {
 		color: var(--color-highlight);
-		text-shadow: 0 0 var(--spacing-4) rgba(var(--color-highlight-rgb), var(--opacity-60));
+		text-shadow: 0 0 var(--space-4) rgba(var(--color-highlight-rgb), var(--opacity-60));
 	}
 
 	/* Pulse animation on theme change */

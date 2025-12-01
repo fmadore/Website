@@ -643,7 +643,7 @@
 	--card-shadow-opacity: 0.1;
 	--card-shadow-opacity-hover: 0.15;
 	--card-transform-hover: var(--transform-lift-md);
-	--card-link-transform: translateX(var(--spacing-3));
+	--card-link-transform: translateX(var(--space-3));
 	--card-height-image: 14rem;
 
 	/* ===== BUTTON TOKENS ===== */

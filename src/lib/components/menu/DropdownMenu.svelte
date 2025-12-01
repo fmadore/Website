@@ -44,7 +44,7 @@
 <style>
         .dropdown-menu {
                 position: absolute;
-                top: calc(100% + var(--spacing-3));
+                top: calc(100% + var(--space-3));
                 left: 0;
                 z-index: var(--z-dropdown);
                 min-width: min(90vw, var(--content-width-xs));
@@ -59,7 +59,7 @@
                         var(--shadow-xl),
                         inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-60)),
                         inset 0 calc(-1 * var(--border-width-thin)) 0 rgba(var(--color-white-rgb), var(--opacity-20));
-                padding: var(--spacing-3);
+                padding: var(--space-3);
                 opacity: 0;
                 visibility: hidden;
                 transform: translateY(calc(-1 * var(--transform-distance-sm))) scale(var(--scale-95));
@@ -86,7 +86,7 @@
 
         :global(.dropdown-item) {
                 display: block;
-                padding: var(--spacing-3) var(--spacing-4);
+                padding: var(--space-3) var(--space-4);
                 color: var(--color-text);
                 text-decoration: none;
                 font-size: var(--font-size-sm);
@@ -97,7 +97,7 @@
                         color var(--duration-fast) var(--ease-out),
                         transform var(--duration-normal) var(--ease-out),
                         box-shadow var(--duration-normal) var(--ease-out);
-                margin-bottom: var(--spacing-2);
+                margin-bottom: var(--space-2);
                 position: relative;
                 overflow: hidden;
                 will-change: transform, background-color;
@@ -123,7 +123,7 @@
         :global(.dropdown-item:focus) {
                 background: rgba(var(--color-primary-rgb), var(--opacity-10));
                 color: var(--color-primary);
-                transform: translateX(var(--spacing-2)) scale(var(--transform-scale-lg));
+                transform: translateX(var(--space-2)) scale(var(--transform-scale-lg));
                 box-shadow:
                         var(--shadow-lg),
                         inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-30));

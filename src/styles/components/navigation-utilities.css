@@ -17,7 +17,7 @@
 /* Focus visible utility for all interactive elements */
 *:focus-visible {
 	outline: var(--border-width-medium) solid var(--color-primary);
-	outline-offset: var(--spacing-1);
+	outline-offset: var(--space-1);
 	border-radius: var(--border-radius-sm);
 }
 

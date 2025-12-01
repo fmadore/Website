@@ -94,10 +94,10 @@
 		border-radius: var(--border-radius-xl);
 		box-shadow: var(--shadow-md);
 		/* Mobile-first padding */
-		padding: var(--spacing-6) var(--spacing-4);
+		padding: var(--space-6) var(--space-4);
 		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
 		/* Mobile-first margin */
-		margin-bottom: var(--spacing-4);
+		margin-bottom: var(--space-4);
 	}
 
 	.header-content {
@@ -108,7 +108,7 @@
 	.header-meta {
 		flex-direction: column;
 		align-items: flex-start;
-		gap: var(--spacing-2);
+		gap: var(--space-2);
 	}
 
 	.back-link {
@@ -118,8 +118,8 @@
 		transition: all var(--transition-duration-200) var(--transition-ease-out);
 		display: inline-flex;
 		align-items: center;
-		gap: var(--spacing-1);
-		padding: var(--spacing-2) var(--spacing-3);
+		gap: var(--space-1);
+		padding: var(--space-2) var(--space-3);
 		border-radius: var(--border-radius-md);
 		background: rgba(var(--color-primary-rgb), var(--opacity-low));
 		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium));
@@ -140,7 +140,7 @@
 		font-weight: var(--font-weight-bold);
 		text-transform: uppercase;
 		letter-spacing: var(--letter-spacing-wide);
-		padding: var(--spacing-2) var(--spacing-4);
+		padding: var(--space-2) var(--space-4);
 		border-radius: var(--border-radius-full);
 		box-shadow: var(--shadow-sm);
 		border: var(--border-width-thin) solid
@@ -152,7 +152,7 @@
 		color: var(--color-secondary);
 		font-weight: var(--font-weight-medium);
 		white-space: nowrap;
-		padding: var(--spacing-2) var(--spacing-3);
+		padding: var(--space-2) var(--space-3);
 		background: rgba(var(--color-surface-rgb), var(--opacity-high));
 		border-radius: var(--border-radius-md);
 		/* Fixed missing variable */
@@ -161,7 +161,7 @@
 
 	.title-section {
 		position: relative;
-		margin-bottom: var(--spacing-4);
+		margin-bottom: var(--space-4);
 	}
 
 	.page-title {
@@ -180,7 +180,7 @@
 		height: var(--border-width-thick);
 		background: linear-gradient(90deg, var(--color-highlight) 0%, var(--color-accent) 100%);
 		border-radius: var(--border-radius-sm);
-		margin-top: var(--spacing-3);
+		margin-top: var(--space-3);
 		transition: width var(--transition-duration-300) var(--transition-ease-out);
 	}
 
@@ -230,8 +230,8 @@
 	/* Desktop responsive design */
 	@media (--sm) {
 		.enhanced-page-header {
-			padding: var(--spacing-8) var(--spacing-6);
-			margin-bottom: var(--spacing-6);
+			padding: var(--space-8) var(--space-6);
+			margin-bottom: var(--space-6);
 		}
 
 		.page-title {

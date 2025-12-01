@@ -387,12 +387,12 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 
 	.zoom-controls {
 		position: absolute;
-		top: var(--spacing-4);
-		left: var(--spacing-4);
+		top: var(--space-4);
+		left: var(--space-4);
 		z-index: 10;
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-2);
+		gap: var(--space-2);
 	}
 
 	.zoom-btn {
@@ -453,7 +453,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		}
 
 		.bubble-chart {
-			padding: var(--spacing-4);
+			padding: var(--space-4);
 		}
 	}
 
@@ -463,7 +463,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		}
 
 		.bubble-chart {
-			padding: var(--spacing-3);
+			padding: var(--space-3);
 		}
 	}
 </style>

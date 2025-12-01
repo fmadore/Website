@@ -66,8 +66,8 @@
 	}
 
 	.cv-main-title {
-		margin-bottom: var(--spacing-2);
-		padding-bottom: var(--spacing-2);
+		margin-bottom: var(--space-2);
+		padding-bottom: var(--space-2);
 		border-bottom: var(--border-width-medium) solid var(--color-primary);
 	}
 
@@ -75,25 +75,25 @@
 	.cv-contact-section {
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-6);
+		gap: var(--space-6);
 	}
 
 	.cv-contact-group {
 		display: flex;
 		align-items: start;
-		gap: var(--spacing-2);
+		gap: var(--space-2);
 	}
 
 	.cv-links-group {
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-1);
+		gap: var(--space-1);
 	}
 
 	.cv-link-item {
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-2);
+		gap: var(--space-2);
 	}
 
 	/* Desktop layout - side by side */
@@ -102,7 +102,7 @@
 			flex-direction: row;
 			justify-content: space-between;
 			align-items: start;
-			gap: var(--spacing-6);
+			gap: var(--space-6);
 		}
 
 		.cv-links-group {

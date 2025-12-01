@@ -124,7 +124,7 @@
 <style>
 	/* .dh-grid styles are now handled by .content-grid */
 	/* Ensure any unique styles for this page that were part of .dh-grid are preserved or moved if necessary. */
-	/* .content-grid includes gap: var(--spacing-8) and margin-top: var(--spacing-8) (which was 2rem for .dh-grid) */
+	/* .content-grid includes gap: var(--space-8) and margin-top: var(--space-8) (which was 2rem for .dh-grid) */
 
 	/* Responsive grid adjustments */
 	/* These are now handled by the global .content-grid class */
@@ -137,12 +137,12 @@
 	/* Styles for content within the details slot */
 	.dh-card-extras {
 		font-size: var(--font-size-sm);
-		margin-top: var(--spacing-2);
+		margin-top: var(--space-2);
 		line-height: var(--line-height-snug);
 	}
 
 	.skills-section {
-		margin-bottom: var(--spacing-2);
+		margin-bottom: var(--space-2);
 	}
 
 	/* Customize the skills tag list title */
@@ -150,6 +150,6 @@
 		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-medium);
 		color: var(--color-secondary);
-		margin-bottom: var(--spacing-2);
+		margin-bottom: var(--space-2);
 	}
 </style>

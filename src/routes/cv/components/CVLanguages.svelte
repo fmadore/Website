@@ -23,7 +23,7 @@
 <style>
 	.language-badge {
 		font-size: var(--font-size-sm);
-		padding: var(--spacing-1) var(--spacing-3);
+		padding: var(--space-1) var(--space-3);
 		border-radius: var(--border-radius-full);
 		background: rgba(var(--color-primary-rgb), 0.1);
 		border: 1px solid rgba(var(--color-primary-rgb), 0.2);

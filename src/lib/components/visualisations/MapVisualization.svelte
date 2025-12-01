@@ -437,7 +437,7 @@
 		align-items: center;
 		background-color: rgba(255, 0, 0, 0.1);
 		color: #d32f2f;
-		padding: var(--spacing-4, 1rem);
+		padding: var(--space-4);
 		text-align: center;
 	}
 
@@ -468,7 +468,7 @@
 	}
 
 	:global(.map-popup .map-popup-content-text) {
-		padding: var(--spacing-2, 0.5rem) var(--spacing-3, 0.75rem); /* Padding for text */
+		padding: var(--space-2) var(--space-3); /* Padding for text */
 	}
 
 	:global(.map-popup .leaflet-popup-tip-container) {

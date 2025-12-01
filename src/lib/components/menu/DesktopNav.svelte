@@ -51,7 +51,7 @@
                 list-style: none;
                 padding: 0;
                 margin: 0;
-                gap: var(--spacing-4);
+                gap: var(--space-4);
         }
 
         @media (--xl) {
@@ -60,7 +60,7 @@
                 }
 
                 .nav-list {
-                        gap: var(--spacing-6); /* Wider spacing on larger screens */
+                        gap: var(--space-6); /* Wider spacing on larger screens */
                 }
         }
 
@@ -74,7 +74,7 @@
 	:global(.nav-link:focus-visible),
 	:global(.dropdown-item:focus-visible) {
                 outline: var(--border-width-medium) solid var(--color-primary);
-                outline-offset: var(--spacing-1);
+                outline-offset: var(--space-1);
                 border-radius: var(--border-radius-sm);
         }
 

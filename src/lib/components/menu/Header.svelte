@@ -265,16 +265,16 @@
                 width: 100%;
                 margin-left: auto;
                 margin-right: auto;
-                padding: 0 var(--spacing-4);
+                padding: 0 var(--space-4);
         }
 
         .header-inner {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                padding: var(--spacing-4) 0;
+                padding: var(--space-4) 0;
                 position: relative;
-                min-height: var(--spacing-16);
+                min-height: var(--space-16);
         }
 
         .header-logo {
@@ -298,18 +298,18 @@
         .desktop-controls {
                 display: none;
                 align-items: center;
-                gap: var(--spacing-6);
+                gap: var(--space-6);
         }
 
         @media (--sm) {
                 .container {
-                        padding: 0 var(--spacing-6);
+                        padding: 0 var(--space-6);
                 }
         }
 
         @media (--xl) {
                 .header-inner {
-                        min-height: calc(var(--spacing-16) + var(--spacing-2));
+                        min-height: calc(var(--space-16) + var(--space-2));
                 }
 
                 .desktop-controls {
@@ -319,6 +319,6 @@
 
         /* Theme toggle spacing */
         .desktop-controls :global(.theme-toggle) {
-                margin-left: var(--spacing-4);
+                margin-left: var(--space-4);
         }
 </style>

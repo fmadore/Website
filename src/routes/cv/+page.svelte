@@ -227,8 +227,8 @@
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		border-radius: var(--border-radius-lg);
-		padding: var(--spacing-4);
-		margin-bottom: var(--spacing-4);
+		padding: var(--space-4);
+		margin-bottom: var(--space-4);
 		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), 0.1);
 		transition: all var(--transition-duration-200) ease;
 	}
@@ -252,8 +252,8 @@
 	:global(#cv-content h3) {
 		color: var(--color-primary);
 		border-color: rgba(var(--color-primary-rgb), 0.3);
-		padding-bottom: var(--spacing-2);
-		margin-bottom: var(--spacing-3);
+		padding-bottom: var(--space-2);
+		margin-bottom: var(--space-3);
 		position: relative;
 	}
 
@@ -262,7 +262,7 @@
 		position: absolute;
 		bottom: 0;
 		left: 0;
-		width: var(--spacing-12);
+		width: var(--space-12);
 		height: var(--border-width-medium);
 		background: var(--color-accent);
 		border-radius: var(--border-radius-full);
@@ -271,13 +271,13 @@
 	/* Subsection headings */
 	:global(#cv-content h4) {
 		color: var(--color-text-emphasis);
-		margin-top: var(--spacing-4);
-		margin-bottom: var(--spacing-2);
+		margin-top: var(--space-4);
+		margin-bottom: var(--space-2);
 	}
 
 	/* Entry items with base styling */
 	:global(#cv-content .space-y-3 > div) {
-		padding: var(--spacing-2);
+		padding: var(--space-2);
 		border-radius: var(--border-radius-md);
 		transition: all var(--transition-duration-150) ease;
 	}
@@ -286,7 +286,7 @@
 	@media (--can-hover) {
 		:global(#cv-content .space-y-3 > div:hover) {
 			background: rgba(var(--color-primary-rgb), 0.03);
-			transform: translateX(var(--spacing-1));
+			transform: translateX(var(--space-1));
 		}
 	}
 
@@ -298,7 +298,7 @@
 
 	/* Reduce spacing between items in lists - override space-y-3 utility */
 	:global(.space-y-3 > * + *) {
-		margin-top: var(--spacing-2) !important;
+		margin-top: var(--space-2) !important;
 	}
 
 	/* Links styling */
@@ -332,7 +332,7 @@
 		/* Optimize for print */
 		.cv-container {
 			max-width: 100% !important;
-			padding: var(--spacing-10) !important;
+			padding: var(--space-10) !important;
 			margin: 0 !important;
 			box-shadow: none !important;
 			border-radius: 0 !important;

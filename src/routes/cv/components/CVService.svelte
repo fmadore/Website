@@ -82,11 +82,11 @@
 	.verification-badge {
 		display: inline-flex;
 		align-items: center;
-		gap: var(--spacing-1);
+		gap: var(--space-1);
 		font-size: var(--font-size-xs);
 		color: var(--color-primary);
-		margin-top: var(--spacing-1);
-		padding: var(--spacing-1) var(--spacing-2);
+		margin-top: var(--space-1);
+		padding: var(--space-1) var(--space-2);
 		border-radius: var(--border-radius-md);
 		background: rgba(var(--color-primary-rgb), 0.05);
 		border: 1px solid rgba(var(--color-primary-rgb), 0.2);

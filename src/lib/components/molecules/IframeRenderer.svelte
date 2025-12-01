@@ -120,7 +120,7 @@
 		position: relative;
 		width: 100%;
 		height: var(--iframe-height-default); /* Using iframe-specific variable for default height */
-		margin-bottom: var(--spacing-8);
+		margin-bottom: var(--space-8);
 		border: var(--border-width-thin) solid var(--color-border);
 		border-radius: var(--border-radius-md);
 		box-shadow: var(--shadow-md);
@@ -177,7 +177,7 @@
 		position: relative;
 		width: 100%;
 		padding-top: 56.25%; /* 16:9 Aspect Ratio */
-		margin-bottom: var(--spacing-8);
+		margin-bottom: var(--space-8);
 		border: var(--border-width-thin) solid var(--color-border);
 		border-radius: var(--border-radius-md);
 		box-shadow: var(--shadow-md);
@@ -255,7 +255,7 @@
 
 	:global(.iframe-container-fullheight) {
 		height: calc(
-			100vh - var(--spacing-32)
+			100vh - var(--space-32)
 		); /* Full viewport height minus space for header/footer */
 	}
 
@@ -372,7 +372,7 @@
 		color: var(--color-white);
 		display: flex;
 		align-items: center;
-		padding: 0 var(--spacing-4);
+		padding: 0 var(--space-4);
 		font-weight: var(--font-weight-medium);
 		border-top-left-radius: var(--border-radius-md);
 		border-top-right-radius: var(--border-radius-md);
@@ -427,12 +427,12 @@
 		}
 
 		:global(.iframe-container-fullheight) {
-			height: calc(100vh - var(--spacing-24)); /* Adjust spacing for mobile */
+			height: calc(100vh - var(--space-24)); /* Adjust spacing for mobile */
 		}
 
 		:global(.iframe-header) {
 			font-size: var(--font-size-xs);
-			padding: 0 var(--spacing-3);
+			padding: 0 var(--space-3);
 		}
 	}
 
@@ -461,7 +461,7 @@
 		:global(.iframe-header) {
 			font-size: var(--font-size-xs);
 			height: var(--iframe-header-height-mobile);
-			padding: 0 var(--spacing-2);
+			padding: 0 var(--space-2);
 		}
 
 		:global(.iframe-with-header) {
