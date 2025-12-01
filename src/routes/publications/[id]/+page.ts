@@ -50,19 +50,21 @@ interface PublicationContainer {
 	author?: Person[]; // Added for when container is Book (editors)
 }
 
-// Define Review interface
-interface ReviewJsonLd {
-	'@type': 'Review';
+// Define ScholarlyArticle interface for citations (academic reviews of the book)
+// Note: We use ScholarlyArticle instead of Review because academic book reviews
+// are scholarly critiques published in journals, not consumer reviews with star ratings.
+// Google's Review structured data expects numerical ratings (aggregateRating),
+// which is not appropriate for academic book reviews.
+interface ScholarlyArticleCitation {
+	'@type': 'ScholarlyArticle';
+	name: string;
 	author?: Person;
-	datePublished?: string; // Format YYYY or YYYY-MM-DD
-	reviewBody?: string; // Use excerpt
-	itemReviewed?: {
-		'@type': 'Book'; // Or potentially other types if reviewing articles etc.
+	datePublished?: string;
+	isPartOf?: {
+		'@type': 'Periodical';
 		name: string;
 	};
-	publisher?: Organization; // Publisher of the review journal
-	url?: string; // URL of the review itself
-	identifier?: string | { '@type': 'PropertyValue'; propertyID: string; value: string }; // DOI of the review
+	url?: string;
 }
 
 // --- Main JSON-LD Interfaces ---
@@ -74,7 +76,9 @@ interface BookJsonLd extends BaseJsonLd {
 	isbn?: string;
 	numberOfPages?: number;
 	publisher?: Organization;
-	review?: ReviewJsonLd[]; // Added review array
+	// Academic book reviews are represented as citations (ScholarlyArticle)
+	// rather than consumer-style reviews, to avoid Google's aggregateRating requirement
+	citation?: ScholarlyArticleCitation[];
 }
 
 interface ArticleJsonLd extends BaseJsonLd {
@@ -220,31 +224,28 @@ export const load: PageLoad = ({ params }) => {
 			bookData.numberOfPages = publication.pageCount;
 			bookData.publisher = publisherOrg;
 
-			// Add reviews if they exist
+			// Add academic book reviews as citations (ScholarlyArticle)
+			// This is more appropriate than Review schema because:
+			// 1. Academic reviews don't have numerical ratings
+			// 2. Google's Review schema expects aggregateRating for rich results
+			// 3. Citations better represent the scholarly nature of these reviews
 			if (publication.reviewedBy && publication.reviewedBy.length > 0) {
-				bookData.review = publication.reviewedBy.map((reviewData: ReviewWork) => {
-					const reviewJson: ReviewJsonLd = {
-						'@type': 'Review',
+				bookData.citation = publication.reviewedBy.map((reviewData: ReviewWork) => {
+					const citationJson: ScholarlyArticleCitation = {
+						'@type': 'ScholarlyArticle',
+						name: reviewData.title,
 						author: formatAuthor(reviewData.author),
-						// Use only year for datePublished if full date isn't available
 						datePublished: String(reviewData.year),
-						reviewBody: reviewData.excerpt,
-						itemReviewed: {
-							'@type': 'Book', // Assuming reviews are always for the book itself
-							name: publication.title // Name of the item being reviewed
-						},
-						publisher: {
-							// Publisher of the review journal
-							'@type': 'Organization',
-							name: reviewData.journal
-						},
-						url: reviewData.url // URL of the review
+						url: reviewData.url
 					};
-					// Add DOI as identifier if available
-					if (reviewData.doi) {
-						reviewJson.identifier = reviewData.doi;
+					// Add journal as the periodical this article is part of
+					if (reviewData.journal) {
+						citationJson.isPartOf = {
+							'@type': 'Periodical',
+							name: reviewData.journal
+						};
 					}
-					return reviewJson;
+					return citationJson;
 				});
 			}
 			break;
