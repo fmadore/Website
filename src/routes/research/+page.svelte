@@ -55,7 +55,7 @@
 	pageType="CollectionPage"
 />
 
-<div class="container py-8">
+<div class="container py-8 page-enter">
 	<PageHeader title="Research" />
 
 	<PageIntro>
