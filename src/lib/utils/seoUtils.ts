@@ -2,6 +2,261 @@ import type { Communication } from '$lib/types/communication';
 import type { Publication } from '$lib/types';
 import type { Activity } from '$lib/types/activity';
 
+// ============================================================================
+// JSON-LD SCHEMA TYPES
+// ============================================================================
+
+/**
+ * BreadcrumbItem for JSON-LD BreadcrumbList schema
+ */
+export interface BreadcrumbItem {
+	name: string;
+	url: string;
+}
+
+/**
+ * WebSite schema for JSON-LD - helps Google understand site structure
+ * and enables potential sitelinks in search results
+ */
+export interface WebSiteSchema {
+	'@context': 'https://schema.org';
+	'@type': 'WebSite';
+	'@id': string;
+	name: string;
+	alternateName?: string;
+	url: string;
+	description?: string;
+	publisher?: {
+		'@id': string;
+	};
+	potentialAction?: {
+		'@type': 'SearchAction';
+		target: {
+			'@type': 'EntryPoint';
+			urlTemplate: string;
+		};
+		'query-input': string;
+	};
+	inLanguage?: string;
+}
+
+/**
+ * Organization/Person schema for JSON-LD - establishes entity identity
+ */
+export interface PersonSchema {
+	'@context': 'https://schema.org';
+	'@type': 'Person';
+	'@id': string;
+	name: string;
+	url: string;
+	image?: string;
+	jobTitle?: string;
+	worksFor?: {
+		'@type': 'Organization';
+		name: string;
+		url?: string;
+	};
+	sameAs?: string[];
+}
+
+/**
+ * BreadcrumbList schema for JSON-LD - critical for SEO hierarchy
+ */
+export interface BreadcrumbListSchema {
+	'@context': 'https://schema.org';
+	'@type': 'BreadcrumbList';
+	itemListElement: Array<{
+		'@type': 'ListItem';
+		position: number;
+		name: string;
+		item: string;
+	}>;
+}
+
+/**
+ * WebPage schema for JSON-LD - describes individual pages
+ */
+export interface WebPageSchema {
+	'@context': 'https://schema.org';
+	'@type': 'WebPage' | 'CollectionPage' | 'AboutPage' | 'ProfilePage';
+	'@id': string;
+	name: string;
+	description?: string;
+	url: string;
+	isPartOf?: {
+		'@id': string;
+	};
+	breadcrumb?: {
+		'@id': string;
+	};
+	inLanguage?: string;
+	datePublished?: string;
+	dateModified?: string;
+}
+
+// ============================================================================
+// JSON-LD SCHEMA GENERATORS
+// ============================================================================
+
+const SITE_URL = 'https://www.frederickmadore.com';
+const SITE_NAME = 'Frédérick Madore';
+const SITE_DESCRIPTION =
+	'Personal website of Frédérick Madore, Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO), specializing in Islam and digital humanities in West Africa.';
+
+/**
+ * Creates a WebSite schema - add to root layout for sitelinks eligibility
+ * This schema helps Google understand your site structure and potentially
+ * display sitelinks (sub-pages) in search results
+ */
+export function createWebSiteSchema(): WebSiteSchema {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'WebSite',
+		'@id': `${SITE_URL}/#website`,
+		name: SITE_NAME,
+		alternateName: 'Dr. Frédérick Madore',
+		url: SITE_URL,
+		description: SITE_DESCRIPTION,
+		publisher: {
+			'@id': `${SITE_URL}/#person`
+		},
+		inLanguage: 'en-US'
+	};
+}
+
+/**
+ * Creates a Person schema for the site owner
+ * Links the website to the person entity for better knowledge graph integration
+ */
+export function createPersonSchema(): PersonSchema {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'Person',
+		'@id': `${SITE_URL}/#person`,
+		name: 'Frédérick Madore',
+		url: SITE_URL,
+		image: `${SITE_URL}/images/Profile-picture.webp`,
+		jobTitle: 'Research Fellow',
+		worksFor: {
+			'@type': 'Organization',
+			name: 'Leibniz-Zentrum Moderner Orient (ZMO)',
+			url: 'https://www.zmo.de/en'
+		},
+		sameAs: [
+			'https://www.linkedin.com/in/frederickmadore/',
+			'https://github.com/fmadore',
+			'https://orcid.org/0000-0003-0959-2092',
+			'https://bsky.app/profile/fmadore.bsky.social',
+			'https://scholar.google.com/citations?user=naUK0RQAAAAJ',
+			'https://www.researchgate.net/profile/Frederick-Madore',
+			'https://hcommons.org/members/fmadore/',
+			'https://zmo.academia.edu/FrederickMadore',
+			'https://www.wikidata.org/wiki/Q55725595'
+		]
+	};
+}
+
+/**
+ * Creates a BreadcrumbList schema from an array of breadcrumb items
+ * Critical for SEO - helps Google understand page hierarchy and display
+ * breadcrumb trails in search results
+ *
+ * @param items - Array of breadcrumb items with name and url
+ * @returns BreadcrumbList JSON-LD schema
+ *
+ * @example
+ * createBreadcrumbSchema([
+ *   { name: 'Home', url: 'https://www.frederickmadore.com' },
+ *   { name: 'Research', url: 'https://www.frederickmadore.com/research' }
+ * ])
+ */
+export function createBreadcrumbSchema(items: BreadcrumbItem[]): BreadcrumbListSchema {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: items.map((item, index) => ({
+			'@type': 'ListItem',
+			position: index + 1,
+			name: item.name,
+			item: item.url
+		}))
+	};
+}
+
+/**
+ * Creates a WebPage schema for individual pages
+ * Links to the website and breadcrumb for complete semantic structure
+ */
+export function createWebPageSchema(options: {
+	name: string;
+	description?: string;
+	path: string;
+	type?: 'WebPage' | 'CollectionPage' | 'AboutPage' | 'ProfilePage';
+	datePublished?: string;
+	dateModified?: string;
+}): WebPageSchema {
+	const { name, description, path, type = 'WebPage', datePublished, dateModified } = options;
+	const url = `${SITE_URL}${path}`;
+
+	return {
+		'@context': 'https://schema.org',
+		'@type': type,
+		'@id': `${url}#webpage`,
+		name,
+		description,
+		url,
+		isPartOf: {
+			'@id': `${SITE_URL}/#website`
+		},
+		inLanguage: 'en-US',
+		...(datePublished && { datePublished }),
+		...(dateModified && { dateModified })
+	};
+}
+
+/**
+ * Combines multiple JSON-LD schemas into a single @graph structure
+ * This is the recommended approach for multiple schemas on one page
+ */
+export function combineSchemas(schemas: object[]): string {
+	return JSON.stringify({
+		'@context': 'https://schema.org',
+		'@graph': schemas.map((schema) => {
+			// Remove @context from individual schemas when combining
+			const { '@context': _, ...rest } = schema as { '@context'?: string };
+			return rest;
+		})
+	});
+}
+
+/**
+ * Helper to create breadcrumbs for main sections
+ * Provides consistent breadcrumb structure across the site
+ */
+export function createSectionBreadcrumbs(
+	sectionName: string,
+	sectionPath: string,
+	subPage?: { name: string; path: string }
+): BreadcrumbItem[] {
+	const breadcrumbs: BreadcrumbItem[] = [
+		{ name: 'Home', url: SITE_URL },
+		{ name: sectionName, url: `${SITE_URL}${sectionPath}` }
+	];
+
+	if (subPage) {
+		breadcrumbs.push({
+			name: subPage.name,
+			url: `${SITE_URL}${subPage.path}`
+		});
+	}
+
+	return breadcrumbs;
+}
+
+// ============================================================================
+// SEO DESCRIPTION GENERATORS
+// ============================================================================
+
 /**
  * Creates an optimized SEO description for communication pages
  *

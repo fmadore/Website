@@ -1,11 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import SEO from '$lib/SEO.svelte';
+	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import PdfGenerator from '$lib/components/cv/PdfGenerator.svelte';
 	import CVHeader from './components/CVHeader.svelte';
 	import CVEducation from './components/CVEducation.svelte';
 	import CVAppointments from './components/CVAppointments.svelte';
 	import CVPublications from './components/CVPublications.svelte';
+
+	// Breadcrumbs for this section
+	const breadcrumbs = createSectionBreadcrumbs('CV', '/cv');
 
 	// Lazy load components below the fold using $state
 	let CVGrants = $state<any>();
@@ -85,7 +89,11 @@
 
 <SEO
 	title="Curriculum Vitae - Frédérick Madore"
-	description="Curriculum Vitae of Frédérick Madore, detailing publications, communications, activities, and fieldwork."
+	description="Curriculum Vitae of Frédérick Madore, Research Fellow at ZMO, detailing publications, communications, activities, and fieldwork in West Africa."
+	keywords="CV, curriculum vitae, Frédérick Madore, research fellow, publications, academic career, Islam, West Africa"
+	canonical="https://www.frederickmadore.com/cv"
+	{breadcrumbs}
+	pageType="ProfilePage"
 />
 
 <div id="cv-content" class="cv-container glass-card p-8 max-w-4xl mx-auto rounded-lg page-enter">

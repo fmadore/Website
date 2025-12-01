@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
+	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import { base } from '$app/paths';
 	import { page } from '$app/stores'; // Added page store import
 	import { browser } from '$app/environment'; // Added browser import
@@ -8,6 +9,9 @@
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import { allDhProjects } from '$lib/data/digital-humanities'; // Import the new data source
+
+	// Breadcrumbs for this section
+	const breadcrumbs = createSectionBreadcrumbs('Digital Humanities', '/digital-humanities');
 
 	// Reactive variable for the skill from URL, only access searchParams if in browser
 	let selectedSkill = $derived(browser ? $page.url.searchParams.get('skill') : null);
@@ -42,7 +46,11 @@
 
 <SEO
 	title="Digital Humanities | Frédérick Madore"
-	description="Discover Frédérick Madore's digital humanities projects including the Islam West Africa Collection (IWAC)."
+	description="Digital humanities projects by Frédérick Madore including the Islam West Africa Collection (IWAC), AI-assisted workflows, and data visualization."
+	keywords="digital humanities, IWAC, Islam West Africa Collection, AI, machine learning, data visualization, Frédérick Madore"
+	canonical="https://www.frederickmadore.com/digital-humanities"
+	{breadcrumbs}
+	pageType="CollectionPage"
 />
 
 <div class="container py-8 page-enter">

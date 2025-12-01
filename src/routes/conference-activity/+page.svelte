@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
+	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import {
 		filteredCommunications,
 		activeFilters,
@@ -54,6 +55,9 @@
 	import { sortItems } from '$lib/utils/sortUtils';
 	import Icon from '@iconify/svelte'; // Import Iconify
 	import Button from '$lib/components/atoms/Button.svelte'; // Import Button
+
+	// Breadcrumbs for this section
+	const breadcrumbs = createSectionBreadcrumbs('Conference Activity', '/conference-activity');
 
 	let showMap = $state(false);
 
@@ -250,8 +254,11 @@
 
 <SEO
 	title="Conference Activity | Frédérick Madore"
-	description="Academic conference presentations, workshops, and other speaking engagements by Frédérick Madore."
+	description="Academic conference presentations, workshops, and other speaking engagements by Frédérick Madore across Africa, Europe, and North America."
 	keywords="conferences, presentations, workshops, panels, lectures, Islam, West Africa, digital humanities, Frédérick Madore"
+	canonical="https://www.frederickmadore.com/conference-activity"
+	{breadcrumbs}
+	pageType="CollectionPage"
 />
 
 <div class="page-container page-enter" use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}>

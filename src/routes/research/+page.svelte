@@ -4,6 +4,10 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import SEO from '$lib/SEO.svelte';
+	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
+
+	// Breadcrumbs for this section
+	const breadcrumbs = createSectionBreadcrumbs('Research', '/research');
 
 	// Research projects data
 	const researchProjects = [
@@ -42,7 +46,14 @@
 	];
 </script>
 
-<SEO title="Research | Frédérick Madore" />
+<SEO
+	title="Research | Frédérick Madore"
+	description="Research projects on Islam and Muslim societies in francophone West Africa, including fieldwork in Benin, Togo, Côte d'Ivoire, and Burkina Faso."
+	keywords="research, Islam, West Africa, Muslim societies, Benin, Togo, Côte d'Ivoire, Burkina Faso, Frédérick Madore"
+	canonical="https://www.frederickmadore.com/research"
+	{breadcrumbs}
+	pageType="CollectionPage"
+/>
 
 <div class="container py-8">
 	<PageHeader title="Research" />

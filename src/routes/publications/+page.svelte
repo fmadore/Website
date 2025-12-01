@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
+	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import {
 		filteredPublications,
 		activeFilters,
@@ -47,6 +48,9 @@
 	import { sortItems } from '$lib/utils/sortUtils';
 	import Icon from '@iconify/svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
+
+	// Breadcrumbs for this section
+	const breadcrumbs = createSectionBreadcrumbs('Publications', '/publications');
 
 	// State for the current sort order
 	let activeSort = $state<'date' | 'title' | 'citations'>('date');
@@ -221,6 +225,9 @@
 	title="Publications | Frédérick Madore"
 	description="Academic publications by Frédérick Madore, including books, journal articles, edited volumes, book chapters, and special issues."
 	keywords="publications, books, journal articles, research, Islam, West Africa, Frédérick Madore"
+	canonical="https://www.frederickmadore.com/publications"
+	{breadcrumbs}
+	pageType="CollectionPage"
 />
 
 <div class="page-container page-enter" use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}>

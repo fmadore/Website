@@ -8,9 +8,13 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import SEO from '$lib/SEO.svelte';
+	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
 	import TagCloud from '$lib/components/activities/TagCloud.svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
+
+	// Breadcrumbs for this section
+	const breadcrumbs = createSectionBreadcrumbs('Activities', '/activities');
 
 	// Get activities reactively
 	let activities = $derived(getActivities());
@@ -45,7 +49,14 @@
 	}
 </script>
 
-<SEO title="Activities | Frédérick Madore" />
+<SEO
+	title="Activities | Frédérick Madore"
+	description="Professional activities by Frédérick Madore, including workshops, talks, conferences, and other academic engagements in digital humanities and African studies."
+	keywords="activities, workshops, talks, conferences, academic events, Frédérick Madore, digital humanities, Islam, West Africa"
+	canonical="https://www.frederickmadore.com/activities"
+	{breadcrumbs}
+	pageType="CollectionPage"
+/>
 
 <div class="container py-8 page-enter">
 	<PageHeader title="Activities" />

@@ -1,5 +1,11 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import {
+		createBreadcrumbSchema,
+		createWebPageSchema,
+		combineSchemas,
+		type BreadcrumbItem
+	} from '$lib/utils/seoUtils';
 
 	interface Props {
 		// SEO props
@@ -12,6 +18,15 @@
 		// Control whether to include citation_author (default: true)
 		// Set to false for publication pages that use MetaTags.svelte
 		includeCitationAuthor?: boolean;
+		// Breadcrumb navigation for rich snippets
+		breadcrumbs?: BreadcrumbItem[];
+		// Page type for WebPage schema
+		pageType?: 'WebPage' | 'CollectionPage' | 'AboutPage' | 'ProfilePage';
+		// Date information for pages
+		datePublished?: string;
+		dateModified?: string;
+		// Additional JSON-LD schemas to include
+		additionalSchemas?: object[];
 	}
 
 	let {
@@ -21,8 +36,47 @@
 		canonical = '',
 		ogImage = `${base}/images/Profile-picture.webp`,
 		type = 'website',
-		includeCitationAuthor = true
+		includeCitationAuthor = true,
+		breadcrumbs = [],
+		pageType = 'WebPage',
+		datePublished,
+		dateModified,
+		additionalSchemas = []
 	}: Props = $props();
+
+	// Generate JSON-LD for breadcrumbs and page schema
+	const jsonLdString = $derived.by(() => {
+		const schemas: object[] = [...additionalSchemas];
+
+		// Add breadcrumb schema if breadcrumbs provided
+		if (breadcrumbs.length > 0) {
+			schemas.push(createBreadcrumbSchema(breadcrumbs));
+		}
+
+		// Add WebPage schema for main sections
+		if (breadcrumbs.length > 0 || canonical) {
+			const path = canonical
+				? new URL(canonical).pathname
+				: breadcrumbs.length > 0
+					? new URL(breadcrumbs[breadcrumbs.length - 1].url).pathname
+					: '';
+
+			if (path) {
+				schemas.push(
+					createWebPageSchema({
+						name: title,
+						description,
+						path,
+						type: pageType,
+						datePublished,
+						dateModified
+					})
+				);
+			}
+		}
+
+		return schemas.length > 0 ? combineSchemas(schemas) : '';
+	});
 </script>
 
 <svelte:head>
@@ -42,6 +96,8 @@
 	<meta property="og:title" content={title} />
 	<meta property="og:description" content={description} />
 	<meta property="og:image" content={ogImage} />
+	<meta property="og:site_name" content="Frédérick Madore" />
+	<meta property="og:locale" content="en_US" />
 
 	<!-- Twitter -->
 	<meta property="twitter:card" content="summary_large_image" />
@@ -56,4 +112,10 @@
 	{/if}
 	<meta name="author" content="Frédérick Madore" />
 	<meta name="robots" content="index, follow" />
+	<meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+	<!-- JSON-LD Structured Data -->
+	{#if jsonLdString}
+		{@html `<script type="application/ld+json">${jsonLdString}</script>`}
+	{/if}
 </svelte:head>

@@ -51,7 +51,11 @@
 </script>
 
 <SEO
+	title="Frédérick Madore | Historian | Digital Humanist"
 	description="Frédérick Madore, Research Fellow at ZMO, studies Islam in francophone West Africa combining fieldwork, digital humanities, and AI-enhanced pipelines for computational analysis."
+	keywords="Frédérick Madore, Islam, West Africa, Digital Humanities, Research, ZMO, Leibniz-Zentrum Moderner Orient, historian"
+	canonical="https://www.frederickmadore.com"
+	pageType="ProfilePage"
 />
 
 <div class="container max-w-7xl py-8 page-enter">

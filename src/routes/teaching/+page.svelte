@@ -1,9 +1,13 @@
 <script>
 	import SEO from '$lib/SEO.svelte';
+	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import { base } from '$app/paths'; // Import base path for images
 	import Card from '$lib/components/common/Card.svelte'; // Import Card component
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
+
+	// Breadcrumbs for this section
+	const breadcrumbs = createSectionBreadcrumbs('Teaching', '/teaching');
 
 	// Unified teaching items data for cards
 	const teachingItems = [
@@ -57,7 +61,11 @@
 
 <SEO
 	title="Teaching | Frédérick Madore"
-	description="Frédérick Madore teaches African History, Islam in sub-Saharan Africa, and digital humanities."
+	description="Teaching experience by Frédérick Madore, including courses on African History, Islam in sub-Saharan Africa, and digital humanities."
+	keywords="teaching, courses, African history, Islam, digital humanities, Frédérick Madore, guest lectures"
+	canonical="https://www.frederickmadore.com/teaching"
+	{breadcrumbs}
+	pageType="CollectionPage"
 />
 
 <div class="container py-8">
