@@ -1,0 +1,117 @@
+/* Z-Index utilities */
+/* Uses z-index scale from variables.css */
+
+/* Base z-index values */
+.z-0 {
+	z-index: var(--z-base);
+}
+.z-1 {
+	z-index: var(--z-above);
+}
+.z-10 {
+	z-index: 10;
+}
+.z-20 {
+	z-index: 20;
+}
+.z-30 {
+	z-index: 30;
+}
+.z-40 {
+	z-index: 40;
+}
+.z-50 {
+	z-index: 50;
+}
+
+/* Semantic z-index - matches your design system */
+.z-dropdown {
+	z-index: var(--z-dropdown);
+}
+.z-sticky {
+	z-index: var(--z-sticky);
+}
+.z-fixed {
+	z-index: var(--z-fixed);
+}
+.z-modal-backdrop {
+	z-index: var(--z-modal-backdrop);
+}
+.z-modal {
+	z-index: var(--z-modal);
+}
+.z-popover {
+	z-index: var(--z-popover);
+}
+.z-tooltip {
+	z-index: var(--z-tooltip);
+}
+.z-toast {
+	z-index: var(--z-toast);
+}
+
+/* Auto and negative */
+.z-auto {
+	z-index: auto;
+}
+.-z-1 {
+	z-index: -1;
+}
+.-z-10 {
+	z-index: -10;
+}
+
+/* Responsive */
+@media (--sm) {
+	.sm\:z-0 {
+		z-index: var(--z-base);
+	}
+	.sm\:z-10 {
+		z-index: 10;
+	}
+	.sm\:z-20 {
+		z-index: 20;
+	}
+	.sm\:z-50 {
+		z-index: 50;
+	}
+	.sm\:z-auto {
+		z-index: auto;
+	}
+}
+
+@media (--md) {
+	.md\:z-0 {
+		z-index: var(--z-base);
+	}
+	.md\:z-10 {
+		z-index: 10;
+	}
+	.md\:z-20 {
+		z-index: 20;
+	}
+	.md\:z-50 {
+		z-index: 50;
+	}
+	.md\:z-auto {
+		z-index: auto;
+	}
+}
+
+@media (--lg) {
+	.lg\:z-0 {
+		z-index: var(--z-base);
+	}
+	.lg\:z-10 {
+		z-index: 10;
+	}
+	.lg\:z-20 {
+		z-index: 20;
+	}
+	.lg\:z-50 {
+		z-index: 50;
+	}
+	.lg\:z-auto {
+		z-index: auto;
+	}
+}

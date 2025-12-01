@@ -474,6 +474,17 @@ Modern glass effect utilities for creating frosted glass UI elements:
 - **Accessibility**: Glass shimmer disabled when `prefers-reduced-motion: reduce`
 - **Responsive variants**: Available at all breakpoints
 
+### Z-Index (`utilities/z-index.css`)
+
+Z-index utilities for controlling stacking order:
+
+- **Numeric scale**: `.z-0`, `.z-1`, `.z-10`, `.z-20`, `.z-30`, `.z-40`, `.z-50`
+- **Semantic classes**: `.z-dropdown`, `.z-sticky`, `.z-fixed`, `.z-modal-backdrop`, `.z-modal`, `.z-popover`, `.z-tooltip`, `.z-toast`
+- **Special values**: `.z-auto`, `.-z-1`, `.-z-10`
+- **Responsive variants**: Available at `sm`, `md`, `lg` breakpoints
+
+Note: Semantic z-index classes use tokens from `variables.css` to maintain consistent layering across the site.
+
 ## Class Naming Convention
 
 The CSS follows a component-based naming convention:

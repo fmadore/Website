@@ -1,5 +1,8 @@
 /* Box Shadow utilities */
 
+.shadow-xs {
+	box-shadow: var(--shadow-xs);
+}
 .shadow-sm {
 	box-shadow: var(--shadow-sm);
 }
@@ -20,6 +23,9 @@
 }
 
 /* Hover shadows */
+.hover\:shadow-xs:hover {
+	box-shadow: var(--shadow-xs);
+}
 .hover\:shadow-sm:hover {
 	box-shadow: var(--shadow-sm);
 }
@@ -41,6 +47,9 @@
 
 /* Responsive */
 @media (--sm) {
+	.sm\:shadow-xs {
+		box-shadow: var(--shadow-xs);
+	}
 	.sm\:shadow-sm {
 		box-shadow: var(--shadow-sm);
 	}
@@ -62,6 +71,9 @@
 }
 
 @media (--md) {
+	.md\:shadow-xs {
+		box-shadow: var(--shadow-xs);
+	}
 	.md\:shadow-sm {
 		box-shadow: var(--shadow-sm);
 	}
@@ -83,6 +95,9 @@
 }
 
 @media (--lg) {
+	.lg\:shadow-xs {
+		box-shadow: var(--shadow-xs);
+	}
 	.lg\:shadow-sm {
 		box-shadow: var(--shadow-sm);
 	}
@@ -104,6 +119,9 @@
 }
 
 @media (--xl) {
+	.xl\:shadow-xs {
+		box-shadow: var(--shadow-xs);
+	}
 	.xl\:shadow-sm {
 		box-shadow: var(--shadow-sm);
 	}
