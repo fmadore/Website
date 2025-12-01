@@ -184,6 +184,11 @@
 	/* Page-specific styles - consistent with other research pages */
 	/* Main content container styling handled by utility classes */
 
+	.main-content {
+		position: relative;
+		z-index: 10;
+	}
+
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
 		:global(.main-content),
