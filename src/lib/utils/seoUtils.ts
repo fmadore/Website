@@ -92,6 +92,10 @@ export interface WebPageSchema {
 	inLanguage?: string;
 	datePublished?: string;
 	dateModified?: string;
+	/** Required for ProfilePage - references the Person entity being profiled */
+	mainEntity?: {
+		'@id': string;
+	};
 }
 
 // ============================================================================
@@ -186,6 +190,7 @@ export function createBreadcrumbSchema(items: BreadcrumbItem[]): BreadcrumbListS
 /**
  * Creates a WebPage schema for individual pages
  * Links to the website and breadcrumb for complete semantic structure
+ * For ProfilePage types, automatically includes mainEntity reference to Person
  */
 export function createWebPageSchema(options: {
 	name: string;
@@ -198,7 +203,7 @@ export function createWebPageSchema(options: {
 	const { name, description, path, type = 'WebPage', datePublished, dateModified } = options;
 	const url = `${SITE_URL}${path}`;
 
-	return {
+	const schema: WebPageSchema = {
 		'@context': 'https://schema.org',
 		'@type': type,
 		'@id': `${url}#webpage`,
@@ -212,6 +217,15 @@ export function createWebPageSchema(options: {
 		...(datePublished && { datePublished }),
 		...(dateModified && { dateModified })
 	};
+
+	// ProfilePage requires mainEntity to reference the Person being profiled
+	if (type === 'ProfilePage') {
+		schema.mainEntity = {
+			'@id': `${SITE_URL}/#person`
+		};
+	}
+
+	return schema;
 }
 
 /**

@@ -23,6 +23,7 @@ interface EducationalOccupationalCredential {
 interface Person {
 	'@context': 'https://schema.org';
 	'@type': 'Person';
+	'@id': string; // Required for mainEntity reference from ProfilePage
 	name: string;
 	honorificPrefix?: string; // Added Honorific Prefix (e.g., Dr.)
 	url?: string;
@@ -45,6 +46,7 @@ export const load: PageLoad = () => {
 	const personJsonLd: Person = {
 		'@context': 'https://schema.org',
 		'@type': 'Person',
+		'@id': 'https://www.frederickmadore.com/#person', // Required for ProfilePage mainEntity reference
 		name: 'Frédérick Madore',
 		honorificPrefix: 'Dr.', // Added prefix
 		url: 'https://www.frederickmadore.com',
@@ -123,10 +125,8 @@ export const load: PageLoad = () => {
 		]
 	};
 
-	const jsonLdString = JSON.stringify(personJsonLd);
-
-	// Return only the JSON-LD string, as the page doesn't need other specific load data
+	// Return the Person schema as an object for use in additionalSchemas
 	return {
-		jsonLdString
+		personSchema: personJsonLd
 	};
 };

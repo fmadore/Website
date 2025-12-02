@@ -9,25 +9,9 @@
 	import type { PageData } from './$types';
 
 	let { data } = $props<{ data: PageData }>();
-	const jsonLdString = $derived(data.jsonLdString);
-
-	const jsonLdScriptId = 'person-json-ld';
-
-	$effect(() => {
-		if (browser && jsonLdString) {
-			if (document.getElementById(jsonLdScriptId)) return;
-			const script = document.createElement('script');
-			script.id = jsonLdScriptId;
-			script.type = 'application/ld+json';
-			script.textContent = jsonLdString;
-			document.head.appendChild(script);
-
-			return () => {
-				const scriptElement = document.getElementById(jsonLdScriptId);
-				if (scriptElement) document.head.removeChild(scriptElement);
-			};
-		}
-	});
+	
+	// Use the Person schema from page load data as additional schema
+	const additionalSchemas = $derived(data.personSchema ? [data.personSchema] : []);
 
 	// Preload profile picture since it's above-the-fold on home page
 	$effect(() => {
@@ -56,6 +40,7 @@
 	keywords="Frédérick Madore, Islam, West Africa, Digital Humanities, Research, ZMO, Leibniz-Zentrum Moderner Orient, historian"
 	canonical="https://www.frederickmadore.com"
 	pageType="ProfilePage"
+	{additionalSchemas}
 />
 
 <div class="container max-w-7xl py-8 page-enter">

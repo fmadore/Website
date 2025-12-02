@@ -3,6 +3,7 @@
 	import {
 		createBreadcrumbSchema,
 		createWebPageSchema,
+		createPersonSchema,
 		combineSchemas,
 		type BreadcrumbItem
 	} from '$lib/utils/seoUtils';
@@ -48,6 +49,11 @@
 	const jsonLdString = $derived.by(() => {
 		const schemas: object[] = [...additionalSchemas];
 
+		// Check if a Person schema is already provided in additionalSchemas
+		const hasPersonSchema = additionalSchemas.some(
+			(schema: any) => schema['@type'] === 'Person'
+		);
+
 		// Add breadcrumb schema if breadcrumbs provided
 		if (breadcrumbs.length > 0) {
 			schemas.push(createBreadcrumbSchema(breadcrumbs));
@@ -73,6 +79,12 @@
 					})
 				);
 			}
+		}
+
+		// For ProfilePage, include the Person schema as the mainEntity target
+		// Only add default Person schema if one isn't already provided
+		if (pageType === 'ProfilePage' && !hasPersonSchema) {
+			schemas.push(createPersonSchema());
 		}
 
 		return schemas.length > 0 ? combineSchemas(schemas) : '';
