@@ -76,6 +76,14 @@ Certes, l'IA favorise considérablement l'individualisation des parcours. Elle p
 Est-ce suffisant ? Nous pensons que non ! La limite opérationnelle ne se situerait pas sur les représentations d'ordres gestuels et de postures ? Les techniques du métier par exemple, les savoirs faire, les savoirs-être et les savoirs faire-faire qui relèvent de l'intelligence adaptative, les apprentissages comportemental et situationnel sont-ils bien pris en compte ? Qui plus est, une dimension émotionnelle, inconsciente s'invite dans l'histoire. L'histoire est à la recherche de l'homme et des pistes de son évolution. Les IA s'occupent-elles de l'HOMME ? Mettent-elles l'humain au centre de leurs préoccupations ? Leur gestion de cette donne demeure complexe. Cet état de fait expliquerait, en partie, que toutes les technologies disruptives aient eu leur part de peur et d'inconnu.
 
 D'autre part, les études ont démontré que l'on pouvait réellement apprendre à travers les environnements fournis et dédiés par les IA. Ils permettent une intégration de tuteurs dits intelligents et des scénarios. Des essais très manichéens comme la « guerre des intelligences », « Intelligence Unleashed » et « The Impact of AI on Learning, Teaching, and Education » ont vu jour. Mais cet imbroglio scientifique et technique peut-il remplacer l'historien ? Non ! C'est une technologie de rupture où on doit mettre de l'éthique. L'IA, outil complémentaire des humanités, doit entretenir des interactions avec celles-ci : d'une part, l'intelligence artificielle doit permettre d'élargir le champ d'étude des disciplines en question en y apportant de nouveaux outils, et, d'autre part, les humanités doivent pouvoir concevoir des paradigmes et méthodes permettant de mieux analyser les impacts sociétaux de celle-ci. Nous devons nous orienter vers des approches qui stipulent une hypothèse de bonne entente, et qui favorisent une cohabitation efficiente et pacifique entre cette intelligence dite artificielle et celle du cerveau car l'intelligence naturelle demeure, de nos jours, irremplaçable encore.`
+		},
+		{
+			title: `Retour sur une note de synthèse analysant la relation entre Humanités Numériques, l'IA et les Études Africaines (Hanovre, février 2025)`,
+			authors: [
+				{ name: 'Frédérick Madore', affiliation: 'Université de Bayreuth' },
+				{ name: 'Vincent Hiribarren', affiliation: "King's College London" }
+			],
+			abstract: `Dans ce papier, Frédérick Madore et Vincent Hiribarren analysent le contenu d'une note de synthèse préparée par une équipe de trente chercheur.es et praticien·nes en Humanités numériques sur le rapport entre Humanités numériques, l'IA et études africaines (financement Fondation Volkswagen) en février 2025. Cette note de synthèse s'attarde principalement sur les trois points suivants 1) Intégration méthodologique et préservation numérique 2) Favoriser une collaboration équitable 3) Cadre éthique et souveraineté numérique.`
 		}
 	],
 	participants: [],
