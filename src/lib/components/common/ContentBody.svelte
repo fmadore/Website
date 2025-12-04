@@ -78,14 +78,6 @@
 		text-decoration: underline;
 	}
 
-	/* External link indicator */
-	.content-body :global(a[target='_blank']:after) {
-		content: '↗';
-		font-size: var(--font-size-sm);
-		margin-left: var(--space-2xs);
-		opacity: var(--opacity-high);
-	}
-
 	/* Emphasis styling */
 	.content-body :global(em) {
 		font-style: italic;
