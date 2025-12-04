@@ -75,7 +75,6 @@
 
 	.content-body :global(a:hover) {
 		color: var(--color-primary-dark);
-		text-decoration: underline;
 	}
 
 	/* Emphasis styling */
