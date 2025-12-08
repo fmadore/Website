@@ -13,6 +13,11 @@ export const uppsalaUniversity2025: Communication = {
 	type: 'lecture',
 	language: 'English',
 	tags: ['IWAC', 'AI'],
+	image: 'images/communications/ALMEDA-logo.webp',
+	heroImage: {
+	src: 'images/communications/ALMEDA-logo-hero.webp',
+	alt: 'African Literary Metadata (ALMEDA) logo with African geometric pattern in red, gold, green and brown colors'
+	},
 	coordinates: {
 		latitude: 59.8585638,
 		longitude: 17.6389267
