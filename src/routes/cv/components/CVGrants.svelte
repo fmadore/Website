@@ -34,6 +34,11 @@
 								[{grant.status}]
 							</div>
 						{/if}
+						{#if grant.coApplicants && grant.coApplicants.length > 0}
+							<div class="text-sm text-light">
+								Co-applicant{grant.coApplicants.length > 1 ? 's' : ''}: {grant.coApplicants.join(', ')}
+							</div>
+						{/if}
 						{#if grant.details}
 							<p class="text-sm">{grant.details}</p>
 						{/if}
