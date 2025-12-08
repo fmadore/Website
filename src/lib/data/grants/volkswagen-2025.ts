@@ -11,7 +11,8 @@ export const volkswagen2025: Grant = {
 	dateISOEnd: '2026-03-01',
 	amount: 53670,
 	currency: 'EUR',
-	status: 'Awarded'
+	status: 'Awarded',
+	coApplicants: ['Vincent Hiribarren']
 };
 
 export default volkswagen2025;

@@ -12,7 +12,8 @@ export const pointSud2026: Grant = {
 	dateISOEnd: '2026-12-31',
 	amount: undefined,
 	currency: 'EUR',
-	status: 'Awarded'
+	status: 'Awarded',
+	coApplicants: ['Vincent Hiribarren', 'Emmanuel Ngue Um', 'Menno van Zaanen']
 };
 
 export default pointSud2026;

@@ -12,7 +12,8 @@ export const thyssen2023: Grant = {
 	dateISOEnd: '2023-09-31',
 	amount: 20000,
 	currency: 'EUR',
-	status: 'Awarded'
+	status: 'Awarded',
+	coApplicants: ['Abdoulaye Sounaye']
 };
 
 export default thyssen2023;
