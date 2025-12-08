@@ -29,8 +29,8 @@ export const buildingAiPipelinesAfricanDigitalCollections: Activity = {
 	tags: ['AI', 'Digital Humanities', 'African Studies', 'IWAC', 'ALMEDA', 'Talk'],
 	type: 'lecture',
 	panelType: 'lecture',
-    heroImage: {
-	src: 'images/activities/uppsala-2025-hero.webp',
-	alt: "Poster for an online book talk with Frédérick Madore on “Religious Activism on Campuses in Togo and Benin”, 6 Nov 2025"
+	heroImage: {
+		src: 'images/activities/uppsala-2025-hero.webp',
+		alt: 'Frédérick Madore presenting to the ALMEDA team at Uppsala University around a conference table with laptops and a screen displaying research data'
 	},
 };
