@@ -4,6 +4,7 @@ import type { Grant } from '$lib/types';
 export const sshrcPostdoctoral2018: Grant = {
 	id: 'sshrc-postdoctoral-2018',
 	title: 'Canada Postdoctoral Research Award',
+	projectTitle: 'L\'islam en contexte minoritaire dans des villes du Golfe de Guinée : mutations internes et participation politique des communautés musulmanes du Bénin et du Togo (depuis 1960)',
 	funder: 'SSHRC',
 	startYear: 2018,
 	endYear: 2020,

@@ -3,6 +3,7 @@ import type { Grant } from '$lib/types';
 export const volkswagen2025: Grant = {
 	id: 'volkswagen-2025',
 	title: 'Scoping Workshops',
+	projectTitle: 'Charting New Territory: Digital Humanities and AI in African Studies',
 	funder: 'Volkswagen Foundation',
 	startYear: 2025,
 	endYear: 2026,

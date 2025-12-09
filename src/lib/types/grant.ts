@@ -2,6 +2,7 @@
 export interface Grant {
 	id: string; // Unique identifier (e.g., 'fritz-thyssen-2023')
 	title: string; // e.g., 'Support for an international conference', 'Banting Postdoctoral Fellowship'
+	projectTitle?: string; // Optional project title (e.g., 'Digital Humanities and AI in African Studies')
 	funder: string; // e.g., 'Fritz Thyssen Foundation', 'SSHRC'
 	startYear: number;
 	endYear?: number | null; // Null or omitted if single year or ongoing

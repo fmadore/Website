@@ -4,6 +4,7 @@ import type { Grant } from '$lib/types';
 export const pointSud2026: Grant = {
 	id: 'point-sud-2026',
 	title: 'Organisation of a conference',
+	projectTitle: 'Digital Humanities and Artificial Intelligence in African Studies: Towards Sustainable and Equitable Practices',
 	funder: 'DFG Programme Point Sud',
 	startYear: 2026,
 	endYear: 2026,
