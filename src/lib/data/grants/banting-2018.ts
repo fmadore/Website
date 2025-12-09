@@ -6,6 +6,7 @@ export const banting2018: Grant = {
 	title: 'Banting Postdoctoral Fellowship',
 	projectTitle: 'L\'islam en contexte minoritaire dans des villes du Golfe de Guinée: mutations internes et participation politique des communautés musulmanes du Bénin et du Togo (depuis 1960)',
 	funder: 'Social Sciences and Humanities Research Council of Canada (SSHRC)',
+	project: 'Muslim Minorities in Southern Cities of Benin and Togo',
 	startYear: 2018,
 	endYear: 2020,
 	dateRangeString: '2018-2020',

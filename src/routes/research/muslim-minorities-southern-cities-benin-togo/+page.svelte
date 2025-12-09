@@ -2,6 +2,7 @@
 	import SEO from '$lib/SEO.svelte';
 	import RelevantPublications from '$lib/components/panels/RelevantPublications.svelte';
 	import RelevantCommunications from '$lib/components/panels/RelevantCommunications.svelte';
+	import RelevantGrants from '$lib/components/panels/RelevantGrants.svelte';
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import ProjectImageBanner from '$lib/components/common/ProjectImageBanner.svelte';
 	import { base } from '$app/paths';
@@ -131,15 +132,17 @@
 						overlapping rituals that many believers quietly practice.
 					</p>
 					<p>
-						Taken together, the research shows that minority status is both a constraint and a
-						resource. It can marginalise Muslims in national politics, but also enable strategic
-						alliances, entrepreneurial experimentation and new forms of piety. By looking beyond
-						security tropes, the project offers a fuller picture of how southern Beninese and
-						Togolese Muslims negotiate faith, power and belonging in one of West Africa's most
-						religiously plural zones.
-					</p>
-				{/snippet}
-				</ContentBody>
+					Taken together, the research shows that minority status is both a constraint and a
+					resource. It can marginalise Muslims in national politics, but also enable strategic
+					alliances, entrepreneurial experimentation and new forms of piety. By looking beyond
+					security tropes, the project offers a fuller picture of how southern Beninese and
+					Togolese Muslims negotiate faith, power and belonging in one of West Africa's most
+					religiously plural zones.
+				</p>
+
+				<RelevantGrants projectName="Muslim Minorities in Southern Cities of Benin and Togo" />
+			{/snippet}
+			</ContentBody>
 			</div>
 		</div>
 

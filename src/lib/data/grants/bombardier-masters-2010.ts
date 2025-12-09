@@ -5,6 +5,7 @@ export const bombardierMasters2010: Grant = {
 	id: 'bombardier-masters-2010',
 	title: "Joseph-Armand Bombardier Canada Graduate Scholarships Program Master's Scholarships", // Use single quotes
 	funder: 'SSHRC',
+	project: 'Youth and Women\'s Islamic Activism in Côte d\'Ivoire and Burkina Faso',
 	startYear: 2010,
 	endYear: 2011,
 	dateRangeString: '2010-2011',

@@ -5,6 +5,7 @@ export const volkswagenOpenUp2026: Grant = {
 	title: 'Open Up – New Research Spaces for the Humanities and Cultural Studies',
 	projectTitle: 'Islam\'s "Peripheries": Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia',
 	funder: 'Volkswagen Foundation',
+	project: 'Mining the Islam West Africa Collection',
 	startYear: 2026,
 	endYear: 2027,
 	dateRangeString: '2026-2027',

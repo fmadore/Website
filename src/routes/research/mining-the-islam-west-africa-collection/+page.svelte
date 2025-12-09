@@ -2,6 +2,7 @@
 	import SEO from '$lib/SEO.svelte';
 	import RelevantPublications from '$lib/components/panels/RelevantPublications.svelte';
 	import RelevantCommunications from '$lib/components/panels/RelevantCommunications.svelte';
+	import RelevantGrants from '$lib/components/panels/RelevantGrants.svelte';
 	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import ProjectImageBanner from '$lib/components/common/ProjectImageBanner.svelte';
@@ -135,6 +136,8 @@
 						proposes a new approach to the study of print publics at the intersection of religion,
 						morality, and civic life.
 					</p>
+
+					<RelevantGrants projectName="Mining the Islam West Africa Collection" />
 
 					<!-- Enhanced iframe with glassmorphism and responsive design -->
 					<div class="iframe-section scroll-reveal">

@@ -5,6 +5,7 @@ export const volkswagen2025: Grant = {
 	title: 'Scoping Workshops',
 	projectTitle: 'Charting New Territory: Digital Humanities and AI in African Studies',
 	funder: 'Volkswagen Foundation',
+	project: 'Mining the Islam West Africa Collection',
 	startYear: 2025,
 	endYear: 2026,
 	dateRangeString: '2025',

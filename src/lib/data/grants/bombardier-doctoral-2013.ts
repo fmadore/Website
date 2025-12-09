@@ -5,6 +5,7 @@ export const bombardierDoctoral2013: Grant = {
 	id: 'bombardier-doctoral-2013',
 	title: 'Joseph-Armand Bombardier Canada Graduate Scholarships Program Doctoral Scholarships',
 	funder: 'SSHRC',
+	project: 'Youth and Women\'s Islamic Activism in Côte d\'Ivoire and Burkina Faso',
 	startYear: 2013,
 	endYear: 2015,
 	dateRangeString: '2013-2015',

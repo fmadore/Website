@@ -2,6 +2,7 @@
 	import SEO from '$lib/SEO.svelte';
 	import RelevantPublications from '$lib/components/panels/RelevantPublications.svelte';
 	import RelevantCommunications from '$lib/components/panels/RelevantCommunications.svelte';
+	import RelevantGrants from '$lib/components/panels/RelevantGrants.svelte';
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import ProjectImageBanner from '$lib/components/common/ProjectImageBanner.svelte';
 	import MediaPlayer from '$lib/components/media/MediaPlayer.svelte';
@@ -126,16 +127,18 @@
 						values that complement the secular academic curriculum.
 					</p>
 
-					<p>
-						By analysing the interplay between religion, politics and education, this book provides
-						new insights into the evolving role of faith in public universities and broader societal
-						transformations in West Africa. It explores the implications of growing religiosity for
-						these public universities as secular institutions, and contributes to our understanding of
-						how religious organisations have coexisted with, and sometimes challenged, traditional
-						student associations since the 1970s.
-					</p>
-				{/snippet}
-				</ContentBody>
+				<p>
+					By analysing the interplay between religion, politics and education, this book provides
+					new insights into the evolving role of faith in public universities and broader societal
+					transformations in West Africa. It explores the implications of growing religiosity for
+					these public universities as secular institutions, and contributes to our understanding of
+					how religious organisations have coexisted with, and sometimes challenged, traditional
+					student associations since the 1970s.
+				</p>
+
+				<RelevantGrants projectName="Religious Activism on Campuses in Togo and Benin" />
+			{/snippet}
+			</ContentBody>
 			</div>
 			<div class="scroll-reveal">
 				<MediaPlayer

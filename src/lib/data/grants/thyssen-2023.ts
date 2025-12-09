@@ -6,6 +6,7 @@ export const thyssen2023: Grant = {
 	title: 'Support for an international conference',
 	projectTitle: 'University Campuses in Africa and Beyond: Training Grounds, Moral Spaces and Political Arenas',
 	funder: 'Fritz Thyssen Foundation',
+	project: 'Religious Activism on Campuses in Togo and Benin',
 	startYear: 2023,
 	endYear: 2023,
 	dateRangeString: '2023',

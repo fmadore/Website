@@ -6,6 +6,7 @@ export const pointSud2026: Grant = {
 	title: 'Organisation of a conference',
 	projectTitle: 'Digital Humanities and Artificial Intelligence in African Studies: Towards Sustainable and Equitable Practices',
 	funder: 'DFG Programme Point Sud',
+	project: 'Mining the Islam West Africa Collection',
 	startYear: 2026,
 	endYear: 2026,
 	dateRangeString: '2026',

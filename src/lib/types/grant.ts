@@ -4,6 +4,7 @@ export interface Grant {
 	title: string; // e.g., 'Support for an international conference', 'Banting Postdoctoral Fellowship'
 	projectTitle?: string; // Optional project title (e.g., 'Digital Humanities and AI in African Studies')
 	funder: string; // e.g., 'Fritz Thyssen Foundation', 'SSHRC'
+	project?: string; // Optional research project association for filtering
 	startYear: number;
 	endYear?: number | null; // Null or omitted if single year or ongoing
 	dateRangeString: string; // Display string like '2023', '2018–2020'

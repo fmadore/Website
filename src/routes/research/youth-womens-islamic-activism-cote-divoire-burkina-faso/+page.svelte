@@ -2,6 +2,7 @@
 	import SEO from '$lib/SEO.svelte';
 	import RelevantPublications from '$lib/components/panels/RelevantPublications.svelte';
 	import RelevantCommunications from '$lib/components/panels/RelevantCommunications.svelte';
+	import RelevantGrants from '$lib/components/panels/RelevantGrants.svelte';
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import ProjectImageBanner from '$lib/components/common/ProjectImageBanner.svelte';
 	import { base } from '$app/paths';
@@ -151,17 +152,19 @@
 						their role as religious entrepreneurs and media personalities.
 					</p>
 
-					<p>
-						By combining qualitative research methods - notably interviews with Muslim actors, media
-						content analysis (print media, websites, social media) and a socio-historical approach -
-						this project contributes to a better understanding of the profound transformations taking
-						place within Islam in West Africa, with a particular focus on the engagement and
-						strategies of youth and women. It highlights the complexity of religious dynamics, the
-						diversity of actors and discourses, and the socio-political stakes involved in the
-						assertion of Islam in the Ivorian and Burkinabe contexts.
-					</p>
-				{/snippet}
-				</ContentBody>
+				<p>
+					By combining qualitative research methods - notably interviews with Muslim actors, media
+					content analysis (print media, websites, social media) and a socio-historical approach -
+					this project contributes to a better understanding of the profound transformations taking
+					place within Islam in West Africa, with a particular focus on the engagement and
+					strategies of youth and women. It highlights the complexity of religious dynamics, the
+					diversity of actors and discourses, and the socio-political stakes involved in the
+					assertion of Islam in the Ivorian and Burkinabe contexts.
+				</p>
+
+				<RelevantGrants projectName="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso" />
+			{/snippet}
+			</ContentBody>
 			</div>
 		</div>
 
