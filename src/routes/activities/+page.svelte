@@ -12,6 +12,7 @@
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
 	import TagCloud from '$lib/components/activities/TagCloud.svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
+	import Icon from '@iconify/svelte';
 
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('Activities', '/activities');
@@ -90,6 +91,14 @@
 
 				<!-- Tag Cloud Component - show tags from filtered activities -->
 				<TagCloud activities={activityList} maxTags={25} />
+
+				<!-- RSS Subscribe Button -->
+				<div class="rss-section">
+					<a href="{base}/rss.xml" class="rss-subscribe-link glass-button">
+						<Icon icon="mdi:rss" width="18" height="18" aria-hidden="true" />
+						<span>RSS Feed</span>
+					</a>
+				</div>
 			</aside>
 		</div>
 
@@ -307,6 +316,69 @@
 	:global(html.dark) .year-link:hover {
 		background: rgba(var(--color-primary-rgb), 0.12);
 		border-color: rgba(var(--color-primary-rgb), var(--opacity-30));
+	}
+
+	/* RSS Section in sidebar */
+	.rss-section {
+		margin-top: var(--space-4);
+		padding-top: var(--space-4);
+		border-top: var(--border-width-thin) solid rgba(var(--color-border-rgb), 0.3);
+	}
+
+	.rss-subscribe-link {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-2);
+		width: 100%;
+		padding: var(--space-3) var(--space-4);
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.1) 0%,
+			rgba(var(--color-accent-rgb), 0.05) 100%
+		);
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), 0.2);
+		border-radius: var(--border-radius-md);
+		color: var(--color-primary);
+		font-weight: var(--font-weight-medium);
+		font-size: var(--font-size-sm);
+		text-decoration: none;
+		transition: all var(--duration-normal) var(--ease-out);
+	}
+
+	.rss-subscribe-link:hover {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.15) 0%,
+			rgba(var(--color-accent-rgb), 0.1) 100%
+		);
+		border-color: rgba(var(--color-primary-rgb), 0.4);
+		transform: translateY(-1px);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.rss-subscribe-link:focus-visible {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 2px;
+	}
+
+	/* Dark mode for RSS button */
+	:global(html.dark) .rss-subscribe-link {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.15) 0%,
+			rgba(var(--color-accent-rgb), 0.08) 100%
+		);
+		border-color: rgba(var(--color-primary-rgb), 0.3);
+	}
+
+	:global(html.dark) .rss-subscribe-link:hover {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--color-primary-rgb), 0.2) 0%,
+			rgba(var(--color-accent-rgb), 0.12) 100%
+		);
+		border-color: rgba(var(--color-primary-rgb), 0.5);
 	}
 
 	/* Responsive adjustments */

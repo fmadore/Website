@@ -8,6 +8,7 @@
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import type { PageData } from './$types';
 	import { browser } from '$app/environment';
+	import Icon from '@iconify/svelte';
 
 	// Added imports for consistency
 	import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
@@ -286,6 +287,14 @@
 						<TagList tags={formattedTags} baseUrl="/activities?tag=" />
 					</div>
 				{/if}
+
+				<!-- RSS Feed Button -->
+				<div class="rss-button-wrapper scroll-reveal">
+					<a href="{base}/rss.xml" class="btn btn-outline-primary btn-sm glass-button rss-feed-button">
+						<Icon icon="mdi:rss" width="16" height="16" aria-hidden="true" />
+						RSS Feed
+					</a>
+				</div>
 			{/if}
 		</div>
 	</div>
@@ -377,6 +386,17 @@
 				rgba(var(--color-accent-rgb), 0.06) 100%
 			);
 			border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
+		}
+
+		/* RSS Feed Button */
+		.rss-button-wrapper {
+			margin-top: var(--space-4);
+		}
+
+		.rss-feed-button {
+			display: inline-flex;
+			align-items: center;
+			gap: var(--space-2);
 		}
 	</style>
 {/if}

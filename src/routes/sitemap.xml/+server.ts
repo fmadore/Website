@@ -47,11 +47,14 @@ export const GET: RequestHandler = async () => {
 		// Secondary pages
 		{ path: '/publications/visualisations', priority: 0.8, changefreq: 'monthly' },
 		{ path: '/conference-activity', priority: 0.7, changefreq: 'monthly' },
-		{ path: '/teaching/guest-lectures', priority: 0.8, changefreq: 'monthly' }
+		{ path: '/teaching/guest-lectures', priority: 0.8, changefreq: 'monthly' },
+		// RSS Feed - important for content syndication and discoverability
+		{ path: '/rss.xml', priority: 0.5, changefreq: 'weekly' }
 	];
 
 	// Research project routes (sub-pages of Research)
 	const researchProjectPages: SitemapEntry[] = [
+		'/research/islams-peripheries-dh-ai-west-africa-central-asia',
 		'/research/mining-the-islam-west-africa-collection',
 		'/research/religious-activism-campuses-togo-benin',
 		'/research/muslim-minorities-southern-cities-benin-togo',

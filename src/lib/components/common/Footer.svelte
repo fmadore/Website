@@ -43,6 +43,11 @@
 					name: 'Bluesky',
 					icon: 'simple-icons:bluesky',
 					url: 'https://bsky.app/profile/fmadore.bsky.social'
+				},
+				{
+					name: 'RSS Feed',
+					icon: 'mdi:rss',
+					url: '/rss.xml'
 				}
 			]
 		}
@@ -140,6 +145,7 @@
 					<!-- Use proper semantic list structure -->
 					<ul class="footer-links-grid">
 						{#each group.links as link, linkIndex (link.url)}
+							{@const isExternal = link.url.startsWith('http') || link.url.startsWith('mailto:')}
 							<li
 								class="footer-link-item"
 								style="animation-delay: {(groupIndex * group.links.length + linkIndex) * 50}ms"
@@ -148,9 +154,9 @@
 								<a
 									href={link.url}
 									class="footer-link glass-button"
-									target="_blank"
-									rel="external noopener noreferrer"
-									aria-label="{link.name} - Opens in new tab"
+									target={isExternal ? '_blank' : undefined}
+									rel={isExternal ? 'external noopener noreferrer' : undefined}
+									aria-label={isExternal ? `${link.name} - Opens in new tab` : link.name}
 								>
 									<div class="footer-link-icon" aria-hidden="true">
 										<Icon icon={link.icon} width="20" height="20" />

@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.frederickmadore.com/sitemap.xml 
+Sitemap: https://www.frederickmadore.com/sitemap.xml
+
+# RSS Feed for activities
+# Helps search engines and feed readers discover new content
+RSS: https://www.frederickmadore.com/rss.xml

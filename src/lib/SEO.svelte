@@ -28,6 +28,8 @@
 		dateModified?: string;
 		// Additional JSON-LD schemas to include
 		additionalSchemas?: object[];
+		// RSS feed autodiscovery (default: true for all pages)
+		includeRSSLink?: boolean;
 	}
 
 	let {
@@ -42,7 +44,8 @@
 		pageType = 'WebPage',
 		datePublished,
 		dateModified,
-		additionalSchemas = []
+		additionalSchemas = [],
+		includeRSSLink = true
 	}: Props = $props();
 
 	// Generate JSON-LD for breadcrumbs and page schema
@@ -100,6 +103,11 @@
 	<!-- Canonical URL -->
 	{#if canonical}
 		<link rel="canonical" href={canonical} />
+	{/if}
+
+	<!-- RSS Feed Autodiscovery -->
+	{#if includeRSSLink}
+		<link rel="alternate" type="application/rss+xml" title="Frédérick Madore - Activities RSS Feed" href="https://www.frederickmadore.com/rss.xml" />
 	{/if}
 
 	<!-- Open Graph / Facebook -->
