@@ -108,7 +108,7 @@
 	.tag-cloud-item {
 		display: inline-flex;
 		align-items: center;
-		white-space: nowrap;
+		white-space: normal;
 		padding: 0.35em 0.75em;
 		color: var(--color-primary);
 		text-decoration: none;
@@ -116,7 +116,8 @@
 		transition: all var(--anim-duration-fast) var(--anim-ease-base);
 		background: rgba(var(--color-primary-rgb), var(--opacity-5));
 		font-weight: var(--font-weight-medium);
-		line-height: 1;
+		line-height: 1.2;
+		max-width: 100%;
 	}
 
 	.tag-name {
