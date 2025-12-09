@@ -37,7 +37,7 @@
 			event: 'Event',
 			grant: 'Grant'
 		};
-		return typeMap[type] || 'Activity';
+		return typeMap[type.toLowerCase()] || type;
 	}
 
 	// Add a date formatting helper for '12 December 2024'
