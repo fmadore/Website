@@ -27,7 +27,7 @@ export const activity: Activity = {
 
     <p>If you work at this intersection, what examples, tools or considerations should we be aware of? We welcome your suggestions!</p>
   `,
-	tags: ['VolkswagenStiftung', 'Grant', 'Workshop', 'Digital Humanities', 'AI', 'African Studies'],
+	tags: ['Volkswagen Foundation', 'Grant', 'Workshop', 'Digital Humanities', 'AI', 'African Studies'],
 	panelType: 'grant',
 	image: '',
 	heroImage: {
