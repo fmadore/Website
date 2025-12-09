@@ -6,6 +6,7 @@ export const bombardierMasters2010: Grant = {
 	title: "Joseph-Armand Bombardier Canada Graduate Scholarships Program Master's Scholarships", // Use single quotes
 	funder: 'SSHRC',
 	project: 'Youth and Women\'s Islamic Activism in Côte d\'Ivoire and Burkina Faso',
+	projectTitle: 'D\'instruments du pouvoir néo-patrimonial à « vedettes » médiatiques engagées : différentes générations d\'imâms du vendredi d\'Abidjan face au politique (1960-2007)',
 	startYear: 2010,
 	endYear: 2011,
 	dateRangeString: '2010-2011',
