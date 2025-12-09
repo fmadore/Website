@@ -2,10 +2,10 @@ import type { Communication } from '$lib/types/communication';
 
 export const zmoKitchenTalksAiIslamicAfricanStudies: Communication = {
 	id: 'zmo-kitchen-talks-ai-islamic-african-studies',
-	title: 'AI in Islamic and African Studies',
+	title: 'Artificial Intelligence (AI) in African and Islamic Studies',
 	authors: ['Elisa Nobel-Dilaty', 'Frédérick Madore'],
-	date: '21 November 2025',
-	dateISO: '2025-11-21',
+	date: '10 December 2025',
+	dateISO: '2025-12-10',
 	year: 2025,
 	conference: 'ZMO Kitchen Talks',
 	episode: 14,
@@ -14,7 +14,7 @@ export const zmoKitchenTalksAiIslamicAfricanStudies: Communication = {
 	type: 'podcast',
 	language: 'English',
 	abstract:
-		'Episode 14 of the ZMO Kitchen Talks podcast featuring a conversation about the Islam West Africa Collection and the potential and pitfalls of AI in African and Islamic studies. Topics discussed include "vibe coding" and data extraction, as well as the "seductive danger" of AI-driven OCR and HTR technologies.',
+		'Dr. Frédérick Madore, postdoctoral research fellow at ZMO Berlin, works at the intersection of African Studies, Islamic Studies, and the digital humanities. He has been building the Islam West Africa Collection for more than a decade— an open-access digital archive of more than 14,000 documents on Islamic print culture and Muslim life in West Africa. In this episode, we explore how artificial intelligence is transforming research practices: How can AI support historical and anthropological research—and where are its limits? And how might AI change the future of the humanities—opening up new possibilities while also raising pressing questions about language equity, digitisation gaps, and academic responsibility?',
 	tags: ['Podcast', 'AI', 'African Studies', 'Islamic Studies', 'Digital Humanities', 'IWAC'],
 	url: 'https://www.zmo.de/en/kitchen-talks',
 	image: 'images/communications/zmo-kitchen-talks-logo.webp',
