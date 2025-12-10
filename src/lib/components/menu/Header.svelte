@@ -14,6 +14,10 @@
 			path: `${base}/research`,
 			dropdown: [
 				{
+					name: "Islam's 'Peripheries': DH & AI in West Africa and Central Asia",
+					path: `${base}/research/islams-peripheries-dh-ai-west-africa-central-asia`
+				},
+				{
 					name: 'Mining the Islam West Africa Collection',
 					path: `${base}/research/mining-the-islam-west-africa-collection`
 				},

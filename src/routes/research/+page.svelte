@@ -12,6 +12,14 @@
 	// Research projects data
 	const researchProjects = [
 		{
+			id: 'islams-peripheries-dh-ai-west-africa-central-asia',
+			title: "Islam's 'Peripheries': DH & AI in West Africa and Central Asia",
+			years: '2026-2027',
+			shortDescription:
+				'Using AI to unlock historical collections about Islamic communities in West Africa and Central Asia, focusing on comparative analysis of Islamic discourse.',
+			imageUrl: `${base}/images/research/islams-peripheries.webp`
+		},
+		{
 			id: 'mining-the-islam-west-africa-collection',
 			title: 'Mining the Islam West Africa Collection',
 			years: '2025-',
