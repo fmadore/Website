@@ -16,7 +16,7 @@
 			title: "Islam's 'Peripheries': DH & AI in West Africa and Central Asia",
 			years: '2026-2027',
 			shortDescription:
-				'Using AI to unlock historical collections about Islamic communities in West Africa and Central Asia, focusing on comparative analysis of Islamic discourse.',
+				'Applying AI and computational methods to compare Islamic discourse and responses to modernity in the multilingual archives of West Africa and Central Asia.',
 			imageUrl: `${base}/images/research/islams-peripheries.webp`
 		},
 		{
@@ -24,7 +24,7 @@
 			title: 'Mining the Islam West Africa Collection',
 			years: '2025-',
 			shortDescription:
-				'Using AI and machine learning to analyze the Islam West Africa Collection (IWAC) digital database.',
+				'Tracing the evolution of Islamic print culture and intellectual networks in francophone West Africa through AI-driven analysis of the Islam West Africa Collection.',
 			imageUrl: `${base}/images/research/IWAC.webp`
 		},
 		{
@@ -68,9 +68,9 @@
 
 	<PageIntro>
 		My research focuses on the history of Islam and Muslim societies in francophone West Africa from
-		the 1960s to the present. I have conducted extensive fieldwork and archival research in Benin,
-		Togo, Côte d'Ivoire, and Burkina Faso, examining various aspects of Islamic activism, media use,
-		and Muslim politics.
+		the 1960s to the present. I combine extensive fieldwork and archival research in Benin, Togo,
+		Côte d'Ivoire, and Burkina Faso with Digital Humanities and AI methodologies to examine various
+		aspects of Islamic activism, media use, and Muslim politics.
 	</PageIntro>
 
 	<div class="content-grid grid-stagger">
