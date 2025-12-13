@@ -225,16 +225,6 @@
 			<!-- Tags -->
 			<TagList tags={communication.tags} baseUrl="/conference-activity?tag=" />
 
-			<!-- Map Location -->
-			{#if communication.coordinates}
-				<section class="map-section scroll-reveal">
-					<h2 class="map-section-title">Location</h2>
-					<div class="map-container-wrapper">
-						<MapVisualization markersData={singleMarkerData} />
-					</div>
-				</section>
-			{/if}
-
 			<!-- Action Links -->
 			<ActionLinks
 				primaryUrl={communication.url}
@@ -245,6 +235,16 @@
 				secondaryButtonClass="btn btn-outline-primary glass-button"
 				primaryDivClass="mb-4"
 			/>
+
+			<!-- Map Location -->
+			{#if communication.coordinates}
+				<section class="map-section scroll-reveal">
+					<h2 class="map-section-title">Location</h2>
+					<div class="map-container-wrapper">
+						<MapVisualization markersData={singleMarkerData} />
+					</div>
+				</section>
+			{/if}
 		</div>
 	</article>
 
