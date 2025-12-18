@@ -20,6 +20,10 @@ export const zmoFarewellBayreuth2025: Activity = {
 
 		<p>In this role, I will bridge the gap between technical infrastructure and African Studies, supporting researchers in managing data according to FAIR and CARE principles, and ensuring that digital literacy and ethical standards are integrated into our workflows. This position will also allow me to continue my own research at the intersection of AI, digital humanities and African Studies.</p>
 	`,
+	heroImage: {
+		src: 'images/activities/zmo-farewell-hero.webp',
+		alt: 'The main entrance of the Leibniz-Zentrum Moderner Orient (ZMO) building in Berlin'
+	},
 	tags: ['career', 'ZMO', 'University of Bayreuth', 'Africa Multiple', 'digital humanities', 'data curation'],
 	type: 'career',
 	panelType: 'event'
