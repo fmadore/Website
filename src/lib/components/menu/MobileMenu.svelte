@@ -84,7 +84,7 @@
 	}
 
         .mobile-nav {
-                padding: var(--space-4);
+                padding: var(--space-2);
                 height: 100%;
                 display: flex;
                 flex-direction: column;
@@ -95,16 +95,23 @@
                 display: grid;
                 grid-template-columns: 1fr auto 1fr;
                 align-items: center;
-                margin-bottom: 0;
-                padding: var(--space-4) var(--space-2);
-                border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-20));
-                background: rgba(var(--color-white-rgb), var(--opacity-95));
-                backdrop-filter: blur(var(--glass-blur-xl)) saturate(180%);
-                -webkit-backdrop-filter: blur(var(--glass-blur-xl)) saturate(180%);
+                margin: var(--space-2);
+                padding: var(--space-3) var(--space-4);
+                background: linear-gradient(
+                        135deg,
+                        rgba(var(--color-white-rgb), var(--opacity-60)),
+                        rgba(var(--color-white-rgb), var(--opacity-40))
+                );
+                backdrop-filter: blur(var(--glass-blur-lg)) saturate(180%);
+                -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(180%);
+                border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-50));
+                border-radius: var(--border-radius-xl);
+                box-shadow:
+                        var(--shadow-md),
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-60));
                 position: sticky;
-                top: 0;
+                top: var(--space-2);
                 z-index: var(--z-above);
-                box-shadow: var(--shadow);
         }
 
         .mobile-close-line {
@@ -330,9 +337,15 @@
         }
 
         :global(html.dark) .mobile-nav-header {
-                background: rgba(var(--color-dark-surface-rgb), var(--opacity-95));
-                border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-10));
-                box-shadow: var(--shadow);
+                background: linear-gradient(
+                        135deg,
+                        rgba(var(--color-dark-surface-rgb), var(--opacity-70)),
+                        rgba(var(--color-dark-surface-rgb), var(--opacity-50))
+                );
+                border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-15));
+                box-shadow:
+                        var(--shadow-lg),
+                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-10));
         }
 
         :global(html.dark .mobile-nav-link) {
