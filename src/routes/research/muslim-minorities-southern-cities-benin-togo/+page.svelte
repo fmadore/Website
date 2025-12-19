@@ -6,6 +6,7 @@
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import ProjectImageBanner from '$lib/components/common/ProjectImageBanner.svelte';
 	import ProjectYears from '$lib/components/common/ProjectYears.svelte';
+	import MediaPlayer from '$lib/components/media/MediaPlayer.svelte';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
@@ -148,8 +149,15 @@
 				<RelevantGrants projectName="Muslim Minorities in Southern Cities of Benin and Togo" />
 			{/snippet}
 			</ContentBody>
-			</div>
-		</div>
+			</div>			<div class="scroll-reveal">
+				<MediaPlayer
+					src="{base}/notebooklm/muslim-minorities-southern-cties-Benin-Togo.mp3"
+					type="audio"
+					title="Google NotebookLM Podcast Discussion"
+					glassEffect="glass-card"
+					showControls={true}
+				/>
+			</div>		</div>
 
 		<div class="related-content mt-16 max-w-6xl mx-auto scroll-reveal">
 			<RelevantPublications
