@@ -5,6 +5,7 @@
 	import RelevantGrants from '$lib/components/panels/RelevantGrants.svelte';
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import ProjectImageBanner from '$lib/components/common/ProjectImageBanner.svelte';
+	import ProjectYears from '$lib/components/common/ProjectYears.svelte';
 	import MediaPlayer from '$lib/components/media/MediaPlayer.svelte';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
@@ -85,6 +86,10 @@
 			<Breadcrumb items={breadcrumbItems} />
 
 			<PageHeader title="Religious Activism on Campuses in Togo and Benin" />
+
+			<div class="mb-6">
+				<ProjectYears years="2021-2024" />
+			</div>
 
 			<div class="scroll-reveal">
 				<ProjectImageBanner

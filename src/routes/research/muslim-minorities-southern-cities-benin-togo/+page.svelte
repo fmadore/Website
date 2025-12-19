@@ -5,6 +5,7 @@
 	import RelevantGrants from '$lib/components/panels/RelevantGrants.svelte';
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import ProjectImageBanner from '$lib/components/common/ProjectImageBanner.svelte';
+	import ProjectYears from '$lib/components/common/ProjectYears.svelte';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
@@ -83,6 +84,10 @@
 			<Breadcrumb items={breadcrumbItems} />
 
 			<PageHeader title="Muslim Minorities in Southern Cities of Benin and Togo" />
+
+			<div class="mb-6">
+				<ProjectYears years="2018-2020" />
+			</div>
 
 			<div class="scroll-reveal">
 				<ProjectImageBanner

@@ -5,6 +5,7 @@
 	import RelevantGrants from '$lib/components/panels/RelevantGrants.svelte';
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import ProjectImageBanner from '$lib/components/common/ProjectImageBanner.svelte';
+	import ProjectYears from '$lib/components/common/ProjectYears.svelte';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
@@ -82,6 +83,10 @@
 			<PageHeader
 				title="Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia"
 			/>
+
+			<div class="mb-6">
+				<ProjectYears years="2026-2027" />
+			</div>
 
 			<div class="scroll-reveal">
 				<ProjectImageBanner

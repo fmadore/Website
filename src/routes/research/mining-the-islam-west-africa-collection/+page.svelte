@@ -6,6 +6,7 @@
 	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import ProjectImageBanner from '$lib/components/common/ProjectImageBanner.svelte';
+	import ProjectYears from '$lib/components/common/ProjectYears.svelte';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
@@ -86,6 +87,10 @@
 			<PageHeader
 				title="Mining the Islam West Africa Collection: Mapping Print Culture and Intellectual Networks in Francophone Regions"
 			/>
+
+			<div class="mb-6">
+				<ProjectYears years="2025-" />
+			</div>
 
 			<div class="scroll-reveal">
 				<ProjectImageBanner
