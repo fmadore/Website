@@ -103,48 +103,46 @@
 				<ContentBody variant="default" glassEffect="glass-card">
 				{#snippet children()}
 					<p>
-						Muslims in Benin and Togo rarely make international headlines, except when analysts warn
-						that jihadist groups based in the Sahel are moving south towards the Gulf of Guinea. My
-						project shifts the focus from these narrow security concerns to the everyday lives of
-						Muslim minorities in Cotonou, Porto-Novo and Lomé. Combining archival work with
-						long-term ethnography, it traces their trajectories from the 1960s to the present to see
-						how living as an internally diverse minority in a Christian-majority environment shapes
-						their religious practices, civic engagement and claims to citizenship.
+						Muslims in Benin and Togo rarely make international headlines, except when warnings are 
+						issued about jihadist groups from the Sahel region encroaching on the Gulf of Guinea. 
+						This project moves beyond such narrow security concerns to examine the everyday lives of 
+						Muslim minorities in Cotonou, Porto-Novo, and Lomé. Using a combination of archival 
+						research and long-term ethnography, it traces the trajectories of these communities from 
+						the 1960s to the present day. It explores how living as an internally diverse minority 
+						within a Christian-majority environment shapes religious practice, civic engagement and 
+						claims to citizenship.
 					</p>
 					<p>
-						One consistent finding is how elites instrumentalise fear of extremism. In Togo,
-						political leaders have branded opposition figures "Salafi" to legitimise arrests, while
-						senior Muslim leaders sometimes recycle the same label to sideline rivals within their
-						own organisations. These manoeuvres show that talk of radicalisation often reflects
-						local power struggles rather than imported jihadist ideologies <ItemReference
+						A key finding of this project is that political elites often exploit global terror 
+						narratives to neutralise domestic dissent. In Togo, for example, the Faure Gnassingbé 
+						regime responded to the anti-government protests of 2017–2018 by pitting state-loyal 
+						"good Muslims" against perceived opposition-aligned "bad Muslims". By branding the 
+						opposition leader Tikpi Atchadam and his party as "Salafi" radicals, the state exploited 
+						Western fears of jihadism to discredit calls for democratic reform <ItemReference
+							id="good-muslim-bad-muslim-togo-2021"
+						/>.
+					</p>
+					<p>
+						In neighbouring Benin, Imam Ibrahim Ousmane's controversial election to the National Assembly in 2019 exposed divisions within the Muslim community regarding legitimate representation in a minority context <ItemReference 
+							id="beninese-imam-election-2022" 
+						/>. In both cases, accusations of "radicalisation" are employed as rhetorical weapons in 
+						disputes over local leadership and resources, rather than reflecting imported ideologies <ItemReference
 							id="lutte-terrorisme-salafisme-benin-togo-2022"
 						/>.
 					</p>
 					<p>
-						During the 2017-18 protests in Lomé, the regime drew a sharp line between "good" and
-						"bad" Muslims in order to fracture an opposition coalition led by Muslim politicians <ItemReference
-							id="good-muslim-bad-muslim-togo-2021"
-						/>. In Benin, controversy erupted when a Cotonou imam successfully entered parliament in
-						2019; the episode exposed generational divides over who can legitimately speak for
-						Muslims in a minority context <ItemReference id="beninese-imam-election-2022" />.
-					</p>
-					<p>
-						The project also explored the plurality of ways in which Muslim youth and women make
-						sense of their religious identity in their everyday lives, beyond established analytical
-						categories (Sufi, reformist, Salafi). Their fluid practices echo the argument of
-						"Repenser la catégorisation religieuse à partir du Bénin, terre du vodun" <ItemReference
+						Beyond politics, the project examined the statistical narratives that shape religious 
+						life in these countries. While official census data suggests a clear shift from "African 
+						traditional religions" to monotheism, a critical analysis of religious categorisation 
+						reveals a more complex reality. In Benin, for example, Muslim and Christian 
+						identities rarely exist in isolation; they often overlap with long-standing Vodun 
+						practices <ItemReference
 							id="repenser-categorisation-religieuse-benin-2026"
-						/> that official statistics overstate the advance of monotheism and overlook the hybrid,
-						overlapping rituals that many believers quietly practice.
+						/>. By transcending rigid theological boundaries, this research shows that minority 
+						status is not just a demographic limitation, but a dynamic space in which believers 
+						navigate faith, power and belonging in one of the most religiously diverse areas of West 
+						Africa.
 					</p>
-					<p>
-					Taken together, the research shows that minority status is both a constraint and a
-					resource. It can marginalise Muslims in national politics, but also enable strategic
-					alliances, entrepreneurial experimentation and new forms of piety. By looking beyond
-					security tropes, the project offers a fuller picture of how southern Beninese and
-					Togolese Muslims negotiate faith, power and belonging in one of West Africa's most
-					religiously plural zones.
-				</p>
 
 				<RelevantGrants projectName="Muslim Minorities in Southern Cities of Benin and Togo" />
 			{/snippet}
