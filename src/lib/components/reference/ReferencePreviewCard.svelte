@@ -293,9 +293,9 @@
 		/* Premium glass background with subtle gradients */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-white-rgb), var(--opacity-95)) 0%,
-			rgba(var(--color-white-rgb), 0.92) 50%,
-			rgba(var(--color-primary-rgb), var(--opacity-5)) 100%
+			rgba(var(--color-white-rgb), 0.98) 0%,
+			rgba(var(--color-white-rgb), 0.97) 50%,
+			rgba(var(--color-white-rgb), 0.98) 100%
 		);
 
 		/* Refined border with subtle shimmer effect */
@@ -340,9 +340,9 @@
 	:global(html.dark) .preview-card {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-alt-rgb), 0.96) 0%,
-			rgba(var(--color-dark-surface-alt-rgb), 0.94) 50%,
-			rgba(var(--color-primary-rgb), var(--opacity-10)) 100%
+			rgba(var(--color-dark-surface-alt-rgb), 0.98) 0%,
+			rgba(var(--color-dark-surface-alt-rgb), 0.97) 50%,
+			rgba(var(--color-dark-surface-alt-rgb), 0.98) 100%
 		);
 
 		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-25));
@@ -376,7 +376,6 @@
 	.card-content-wrapper {
 		position: relative;
 		overflow: hidden;
-		border-radius: var(--border-radius-2xl);
 	}
 	
 	/* Smooth scrolling for overflow cases */
@@ -458,25 +457,29 @@
 		position: relative;
 		overflow: hidden;
 		height: 140px;
+		margin: 0;
+		padding: 0;
 		background: linear-gradient(
 			135deg,
 			rgba(var(--color-primary-rgb), var(--opacity-10)),
 			rgba(var(--color-accent-rgb), var(--opacity-10))
 		);
-		
-		/* Add subtle border at bottom of image */
-		border-bottom: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-10));
+		border-radius: var(--border-radius-2xl) var(--border-radius-2xl) 0 0;
 	}
 
 	.card-image {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		object-position: center;
 		display: block;
+		margin: 0;
+		padding: 0;
+		border: none;
 		transition: 
 			transform var(--duration-slow) var(--ease-bounce),
 			filter var(--duration-moderate) var(--ease-out);
-		filter: brightness(1) contrast(1.05);
+		filter: brightness(1) contrast(1.02);
 	}
 
 	.image-overlay {
@@ -508,81 +511,48 @@
 	}
 
 	.card-content {
-		padding: var(--space-5);
+		padding: var(--space-md);
 		position: relative;
-
-		/* Enhanced content area with sophisticated gradient */
-		background: linear-gradient(
-			180deg,
-			rgba(var(--color-white-rgb), 0.85) 0%,
-			rgba(var(--color-white-rgb), var(--opacity-95)) 100%
-		);
-		
-		/* Subtle top border for separation */
-		box-shadow: inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-50));
+		background: transparent;
 	}
 
-	/* Enhanced dark mode content area */
+	/* Dark mode content area */
 	:global(html.dark) .card-content {
-		background: linear-gradient(
-			180deg,
-			rgba(var(--color-dark-surface-alt-rgb), 0.85) 0%,
-			rgba(var(--color-dark-surface-alt-rgb), var(--opacity-95)) 100%
-		);
-		box-shadow: inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-5));
+		background: transparent;
 	}
 
 	/* Container for date badge */
 	.card-date-container {
-		margin-bottom: var(--space-xs);
+		margin-bottom: var(--space-sm);
 		display: flex;
 		justify-content: flex-start;
 	}
 
 	/* Custom styling for date badge button */
 	:global(.card-date-badge) {
-		font-size: var(--font-size-xs) !important;
-		font-weight: var(--font-weight-bold) !important;
+		font-size: var(--font-size-2xs) !important;
+		font-weight: var(--font-weight-semibold) !important;
 		letter-spacing: var(--letter-spacing-wide) !important;
-		padding: var(--space-2xs) var(--space-sm) !important;
-		border-radius: var(--border-radius-md) !important;
+		padding: var(--space-3xs) var(--space-xs) !important;
+		border-radius: var(--border-radius) !important;
 		cursor: default !important;
 		pointer-events: none !important;
-
-		/* Premium glassmorphism for date badge */
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), 0.12) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-10)) 100%
-		) !important;
+		background: rgba(var(--color-primary-rgb), 0.08) !important;
 		color: var(--color-primary) !important;
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-25)) !important;
-		box-shadow: 
-			0 2px 8px rgba(var(--color-primary-rgb), var(--opacity-10)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-30)) !important;
+		border: none !important;
+		box-shadow: none !important;
 	}
 	
 	:global(html.dark .card-date-badge) {
-		background: linear-gradient(
-			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-20)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-15)) 100%
-		) !important;
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-30)) !important;
-		box-shadow: 
-			0 2px 8px rgba(var(--color-primary-rgb), var(--opacity-15)),
-			inset 0 1px 0 rgba(var(--color-primary-rgb), var(--opacity-20)) !important;
+		background: rgba(var(--color-primary-rgb), 0.15) !important;
+		color: var(--color-primary-light) !important;
 	}
 
 	/* Container for view-more hint */
 	.view-more-container {
-		margin-top: var(--space-sm);
-		opacity: 0;
-		transform: translateY(var(--transform-distance-xs));
-		/* Explicit transition properties for better performance */
-		transition:
-			opacity var(--duration-moderate) var(--ease-in-out),
-			transform var(--duration-moderate) var(--ease-in-out);
+		margin-top: var(--space-md);
+		opacity: 0.7;
+		transition: opacity var(--duration-moderate) var(--ease-out);
 	}
 
 	/* Custom styling for view-more hint button */
@@ -590,38 +560,35 @@
 		width: 100% !important;
 		display: flex !important;
 		align-items: center !important;
-		justify-content: space-between !important;
+		justify-content: center !important;
+		gap: var(--space-sm) !important;
 		font-size: var(--font-size-xs) !important;
 		font-weight: var(--font-weight-semibold) !important;
 		letter-spacing: var(--letter-spacing-wide) !important;
 		padding: var(--space-xs) var(--space-md) !important;
-		border-radius: var(--border-radius-lg) !important;
+		border-radius: var(--border-radius-full) !important;
 		cursor: default !important;
 		pointer-events: none !important;
 
-		/* Premium gradient background */
+		/* Clean gradient background */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.12) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-10)) 100%
+			rgba(var(--color-primary-rgb), 0.08) 0%,
+			rgba(var(--color-primary-rgb), 0.04) 100%
 		) !important;
 		color: var(--color-primary) !important;
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-20)) !important;
-		box-shadow: 
-			0 4px 12px rgba(var(--color-primary-rgb), var(--opacity-10)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-30)) !important;
+		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-15)) !important;
+		box-shadow: none !important;
 	}
 	
 	:global(html.dark .view-more-hint) {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.18) 0%,
-			rgba(var(--color-accent-rgb), 0.12) 100%
+			rgba(var(--color-primary-rgb), 0.12) 0%,
+			rgba(var(--color-primary-rgb), 0.08) 100%
 		) !important;
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-30)) !important;
-		box-shadow: 
-			0 4px 12px rgba(var(--color-primary-rgb), var(--opacity-15)),
-			inset 0 1px 0 rgba(var(--color-primary-rgb), var(--opacity-20)) !important;
+		border-color: rgba(var(--color-primary-rgb), var(--opacity-20)) !important;
+		box-shadow: none !important;
 	}
 
 	.hint-text {
@@ -634,23 +601,15 @@
 		justify-content: center;
 		width: var(--space-lg);
 		height: var(--space-lg);
-		background: linear-gradient(
-			135deg,
-			var(--color-primary) 0%,
-			var(--color-primary-dark) 100%
-		);
+		background: var(--color-primary);
 		color: var(--color-white);
 		border-radius: var(--border-radius-full);
-		font-size: var(--font-size-sm);
+		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-bold);
-		transform: translateX(calc(-1 * var(--transform-distance-xs)));
-		/* Explicit transition properties for better performance */
+		flex-shrink: 0;
 		transition:
-			transform var(--duration-moderate) var(--ease-bounce),
-			box-shadow var(--duration-moderate) var(--ease-out);
-		box-shadow:
-			0 2px 8px rgba(var(--color-primary-rgb), var(--opacity-30)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-20));
+			transform var(--duration-moderate) var(--ease-out),
+			background-color var(--duration-moderate) var(--ease-out);
 	}
 
 	.card-link {
@@ -667,21 +626,18 @@
 	.card-link:hover .view-more-container,
 	.card-link:focus .view-more-container {
 		opacity: 1;
-		transform: translateY(0);
 	}
 
 	.card-link:hover .hint-arrow,
 	.card-link:focus .hint-arrow {
-		transform: translateX(0);
-		box-shadow: 
-			0 4px 12px rgba(var(--color-primary-rgb), var(--opacity-40)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-30));
+		transform: translateX(var(--space-2xs));
+		background: var(--color-primary-dark);
 	}
 
 	.card-link:hover .card-image,
 	.card-link:focus .card-image {
-		transform: scale(var(--scale-105));
-		filter: brightness(1.05) contrast(1.1);
+		transform: scale(1.03);
+		filter: brightness(1.02) contrast(1.05);
 	}
 
 	.card-link:hover .image-overlay,
@@ -737,36 +693,14 @@
 
 	.card-title {
 		font-weight: var(--font-weight-bold);
-		margin-bottom: var(--space-sm);
+		margin-bottom: var(--space-xs);
 		color: var(--color-text);
 		line-height: var(--line-height-snug);
 		font-size: var(--font-size-base);
-		
-		/* Enhanced gradient text effect */
-		background: linear-gradient(
-			135deg, 
-			var(--color-text) 0%, 
-			var(--color-primary) 60%,
-			var(--color-accent) 100%
-		);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		
-		/* Subtle text shadow for depth */
-		filter: drop-shadow(0 1px 2px rgba(var(--color-primary-rgb), var(--opacity-10)));
 	}
 	
 	:global(html.dark) .card-title {
-		background: linear-gradient(
-			135deg, 
-			var(--color-text) 0%, 
-			var(--color-primary-light) 60%,
-			var(--color-accent) 100%
-		);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
+		color: var(--color-text);
 	}
 
 	.card-authors {
@@ -839,7 +773,6 @@
 
 		.view-more-container {
 			opacity: 1;
-			transform: none;
 		}
 	}
 
@@ -877,11 +810,11 @@
 		}
 
 		.card-content {
-			padding: var(--space-md);
+			padding: var(--space-sm);
 		}
 
 		.card-image-container {
-			height: 120px;
+			height: 110px;
 		}
 		
 		.card-title {
