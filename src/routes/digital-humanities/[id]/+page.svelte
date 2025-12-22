@@ -275,6 +275,20 @@
 		text-decoration: underline;
 	}
 
+	/* Ensure buttons maintain their proper colors */
+	.content-section :global(.btn) {
+		color: inherit;
+	}
+
+	.content-section :global(.btn-primary) {
+		color: var(--color-white);
+	}
+
+	.content-section :global(.btn-primary:hover) {
+		color: var(--color-white);
+		text-decoration: none;
+	}
+
 	/* Embeddable content section */
 	.embeddable-section {
 		margin-bottom: var(--space-lg);
