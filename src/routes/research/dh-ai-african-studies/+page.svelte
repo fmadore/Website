@@ -118,7 +118,7 @@
 
 					<h2>From Digital Hoarder to Historian-Programmer</h2>
 					<p>
-						My contribution addresses the practical "problem of scale" in African digital collections. I chart my evolution from "digital hoarder" to "historian-programmer" through the practice of "vibe coding", using natural language prompts to generate automation scripts. I argue that pipelines utilising Large Language Models (LLMs) can effectively take on the laborious tasks of optical character recognition (OCR), and named entity recognition (NER). Through the development of these Python-based workflows, I demonstrate how vast, under-resourced collections can be made more navigable for researchers and local communities alike.
+						My contribution addresses the practical "problem of scale" in African digital collections. I chart my evolution from "digital hoarder" to "historian-programmer" through the practice of "vibe coding", using natural language prompts to generate automation scripts. I argue that pipelines utilising Large Language Models (LLMs) can effectively take on the laborious tasks of optical character recognition (OCR), and named entity recognition (NER). Through the development of these Python-based workflows, I demonstrate how vast, under-resourced collections can be made more navigable for researchers and local communities alike <ItemReference id="zmo-kitchen-talks-ai-islamic-african-studies" />.
 					</p>
 
 					<p>
