@@ -67,10 +67,12 @@
 	<PageHeader title="Research" />
 
 	<PageIntro>
-		My research focuses on the history of Islam and Muslim societies in francophone West Africa from
-		the 1960s to the present. I combine extensive fieldwork and archival research in Benin, Togo,
-		Côte d'Ivoire, and Burkina Faso with Digital Humanities and AI methodologies to examine various
-		aspects of Islamic activism, media use, and Muslim politics.
+		My research lies at the intersection of African history, Islamic studies, and digital humanities.
+		I explore the contemporary history of Islam and Muslim societies in Francophone West Africa. I
+		focus on how youth, women and religious minorities have engaged with religious activism, the
+		media and political life from the 1960s to the present day. By combining extensive fieldwork and
+		archival research in Benin, Togo, Côte d'Ivoire and Burkina Faso with computational
+		methodologies, I examine the evolving landscape of Islamic discourse and Muslim politics.
 	</PageIntro>
 
 	<div class="content-grid grid-stagger">
