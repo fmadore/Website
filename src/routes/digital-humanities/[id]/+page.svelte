@@ -272,7 +272,7 @@
 
 	.content-section :global(a:hover) {
 		color: var(--color-primary-dark);
-		text-decoration: underline;
+		/* No text-decoration needed - typography.css handles animated underlines */
 	}
 
 	/* Ensure buttons maintain their proper colors */
