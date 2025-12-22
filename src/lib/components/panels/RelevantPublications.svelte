@@ -47,6 +47,7 @@
 	function formatPublicationType(type: string): string {
 		const typeMap: Record<string, string> = {
 			article: 'Journal Article',
+			'bulletin-article': 'Bulletin Article',
 			book: 'Book',
 			chapter: 'Book Chapter',
 			'special-issue': 'Special Issue',
