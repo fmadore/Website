@@ -18,8 +18,8 @@
 					path: `${base}/research/islams-peripheries-dh-ai-west-africa-central-asia`
 				},
 				{
-					name: 'Mining the Islam West Africa Collection',
-					path: `${base}/research/mining-the-islam-west-africa-collection`
+					name: 'Digital Humanities and AI in African Studies',
+					path: `${base}/research/dh-ai-african-studies`
 				},
 				{
 					name: 'Religious Activism on Campuses in Togo and Benin',

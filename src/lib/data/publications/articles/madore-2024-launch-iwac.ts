@@ -23,5 +23,5 @@ export const madore2024LaunchIwac: Publication = {
 		src: 'images/publications/zmo-bulletin-44-hero.webp',
 		alt: 'Cover of ZMO Bulletin, issue 44'
 	},
-	project: 'Mining the Islam West Africa Collection'
+	project: 'Digital Humanities and AI in African Studies'
 };

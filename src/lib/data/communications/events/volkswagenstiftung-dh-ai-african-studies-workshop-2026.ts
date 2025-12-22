@@ -181,7 +181,7 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			affiliation: 'Leibniz-Zentrum Moderner Orient'
 		}
 	],
-	project: 'Mining the Islam West Africa Collection'
+	project: 'Digital Humanities and AI in African Studies'
 };
 
 export default volkswagenStiftungDHAIAfricanStudiesWorkshop2026;

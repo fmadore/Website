@@ -99,5 +99,5 @@ export const ecas2025Panel: Communication = {
 				"This paper evaluates the potential of large language models in relation to human source criticism, examining two contrasting cases. First, we revisit the British Colonial Office files on the Cameroon War (1957–63), comparing a historian's interpretations with the summaries and targeted answers on chronology, agency and motive provided by Gemini 2.5 Pro. Secondly, we scale up to the Islam West Africa Collection, comprising 24 million words from 15,000 newspaper clippings and 1,500 Islamic publications. This collection is processed through custom pipelines that repair OCR errors, reconstruct layout, tag entities and measure sentiment. While AI excels at scale and pattern detection, it also perpetuates colonial framings, highlighting the necessity of human oversight and contextual judgement. Rather than victory for one side, the evidence points to a collaborative model in which historians design prompts, audit outputs, and ensure that interpretation remains accountable, while machines handle routine, corpus-wide tasks."
 		}
 	],
-	project: 'Mining the Islam West Africa Collection'
+	project: 'Digital Humanities and AI in African Studies'
 };

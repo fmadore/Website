@@ -96,5 +96,5 @@ Comment l'entrainement d'un modèle de deep learning pour affronter cette docume
 		}
 	],
 	participants: [],
-	project: 'Mining the Islam West Africa Collection'
+	project: 'Digital Humanities and AI in African Studies'
 };

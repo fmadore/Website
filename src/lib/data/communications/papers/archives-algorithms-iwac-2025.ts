@@ -27,5 +27,5 @@ export const archivesAlgorithmsIwac: Communication = {
 		latitude: 56.879, // Coordinates for Linnaeus University in Växjö
 		longitude: 14.8059
 	},
-	project: 'Mining the Islam West Africa Collection'
+	project: 'Digital Humanities and AI in African Studies'
 };

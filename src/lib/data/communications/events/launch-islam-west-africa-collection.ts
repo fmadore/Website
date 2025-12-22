@@ -44,7 +44,7 @@ export const launchIslamWestAfricaCollection: Communication = {
 		},
 		{ name: 'Kai Kresse', role: 'Speaker', affiliation: 'Leibniz-Zentrum Moderner Orient' }
 	],
-	project: 'Mining the Islam West Africa Collection'
+	project: 'Digital Humanities and AI in African Studies'
 };
 
 export default launchIslamWestAfricaCollection;

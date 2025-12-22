@@ -23,7 +23,7 @@ This website showcases my academic work including:
 
 ## Major Projects
 
-- **Mining the Islam West Africa Collection**: A digital archive of Islamic materials from West Africa
+- **Digital Humanities and AI in African Studies**: Exploring how DH and AI can transform knowledge production in African studies through ethical, sustainable, and Africa-centred digital infrastructures
 - **Religious Activism on Campuses in Togo and Benin**: Research on Christian and Muslim student organizations
 - **Muslim Minorities in Southern Cities of Benin and Togo**
 - **Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso**

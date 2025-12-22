@@ -26,5 +26,5 @@ export const historianVsAiEcas2025: Communication = {
 		latitude: 50.08896481219099,
 		longitude: 14.416024062407818
 	},
-	project: 'Mining the Islam West Africa Collection'
+	project: 'Digital Humanities and AI in African Studies'
 };

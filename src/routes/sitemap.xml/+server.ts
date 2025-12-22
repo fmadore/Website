@@ -55,7 +55,7 @@ export const GET: RequestHandler = async () => {
 	// Research project routes (sub-pages of Research)
 	const researchProjectPages: SitemapEntry[] = [
 		'/research/islams-peripheries-dh-ai-west-africa-central-asia',
-		'/research/mining-the-islam-west-africa-collection',
+		'/research/dh-ai-african-studies',
 		'/research/religious-activism-campuses-togo-benin',
 		'/research/muslim-minorities-southern-cities-benin-togo',
 		'/research/youth-womens-islamic-activism-cote-divoire-burkina-faso'

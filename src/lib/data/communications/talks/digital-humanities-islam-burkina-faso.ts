@@ -24,7 +24,7 @@ export const digitalHumanismsIslamBurkinaFaso: Communication = {
 		latitude: 52.42814222811816,
 		longitude: 13.202338657893593
 	},
-	project: 'Mining the Islam West Africa Collection'
+	project: 'Digital Humanities and AI in African Studies'
 };
 
 export default digitalHumanismsIslamBurkinaFaso;

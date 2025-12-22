@@ -26,5 +26,5 @@ export const collectionIslamHumanites: Communication = {
 		latitude: 12.65281204482263,
 		longitude: -7.929792400856658
 	},
-	project: 'Mining the Islam West Africa Collection'
+	project: 'Digital Humanities and AI in African Studies'
 };

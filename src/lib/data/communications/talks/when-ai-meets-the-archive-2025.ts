@@ -28,5 +28,5 @@ export const talkWhenAIMeetsTheArchive2025: Communication = {
 		latitude: -26.693492,
 		longitude: 27.093062
 	},
-	project: 'Mining the Islam West Africa Collection'
+	project: 'Digital Humanities and AI in African Studies'
 };

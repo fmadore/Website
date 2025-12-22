@@ -22,5 +22,5 @@ export const encyclopediaTemplate: Publication = {
 	image: '', // Optional: path to image
 	additionalUrls: [{ label: 'Publisher Site', url: 'https://example.com/publisher-site' }],
 	country: ['Country Name'], // Countries covered in the publication
-	project: '' // Options: "Mining the Islam West Africa Collection", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Other"
+	project: '' // Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Other"
 };

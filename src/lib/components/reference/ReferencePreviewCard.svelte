@@ -219,16 +219,35 @@
 					{/if}
 				{:else if itemType === 'communication'}
 					{#if item.type}
-						<p class="card-meta">Type: {item.type}</p>
+						<p class="card-meta">
+							<span class="meta-label">{item.type === 'event' ? 'Event' : item.type === 'podcast' ? 'Podcast' : 'Communication'}</span>
+						</p>
 					{/if}
-					{#if 'event' in item && item.event}
-						<p class="card-meta">Event: {item.event}</p>
-					{/if}
-					{#if 'conference' in item && item.conference}
-						<p class="card-meta">Conference: {item.conference}</p>
-					{/if}
-					{#if 'location' in item && item.location}
-						<p class="card-meta">Location: {item.location}</p>
+					{#if item.type === 'event'}
+						{#if 'conference' in item && item.conference}
+							<p class="card-meta"><em>{item.conference}</em></p>
+						{/if}
+						{#if 'location' in item && 'country' in item && item.location && item.country}
+							<p class="card-meta">{item.location}, {item.country}</p>
+						{:else if 'location' in item && item.location}
+							<p class="card-meta">{item.location}</p>
+						{/if}
+					{:else if item.type === 'podcast'}
+						{#if 'conference' in item && item.conference}
+							<p class="card-meta"><em>{item.conference}</em></p>
+						{/if}
+						{#if 'episode' in item && item.episode}
+							<p class="card-meta">Episode {item.episode}</p>
+						{/if}
+					{:else}
+						{#if 'conference' in item && item.conference}
+							<p class="card-meta"><em>{item.conference}</em></p>
+						{/if}
+						{#if 'location' in item && 'country' in item && item.location && item.country}
+							<p class="card-meta">{item.location}, {item.country}</p>
+						{:else if 'location' in item && item.location}
+							<p class="card-meta">{item.location}</p>
+						{/if}
 					{/if}
 				{/if}
 
@@ -769,6 +788,22 @@
 		font-style: italic;
 		color: var(--color-primary);
 		font-weight: var(--font-weight-semibold);
+	}
+
+	.meta-label {
+		display: inline-block;
+		padding: var(--space-3xs) var(--space-xs);
+		background: rgba(var(--color-accent-rgb), var(--opacity-15));
+		color: var(--color-accent);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-semibold);
+		text-transform: capitalize;
+		border-radius: var(--border-radius);
+		letter-spacing: var(--letter-spacing-wide);
+	}
+
+	:global(html.dark) .meta-label {
+		background: rgba(var(--color-accent-rgb), var(--opacity-20));
 	}
 
 	/* Enhanced focus states */

@@ -22,7 +22,7 @@ export const islamBurkinaCollection: Publication = {
 		alt: "Cover of Revue d'Histoire Contemporaine de l'Afrique"
 	},
 	country: ['Burkina Faso'],
-	project: 'Mining the Islam West Africa Collection',
+	project: 'Digital Humanities and AI in African Studies',
 	citedBy: [
 		{
 			authors: ['Issouf Binaté'],

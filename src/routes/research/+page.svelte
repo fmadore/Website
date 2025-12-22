@@ -20,11 +20,11 @@
 			imageUrl: `${base}/images/research/islams-peripheries.webp`
 		},
 		{
-			id: 'mining-the-islam-west-africa-collection',
-			title: 'Mining the Islam West Africa Collection',
+			id: 'dh-ai-african-studies',
+			title: 'Digital Humanities and AI in African Studies',
 			years: '2025-',
 			shortDescription:
-				'Tracing the evolution of Islamic print culture and intellectual networks in francophone West Africa through AI-driven analysis of the Islam West Africa Collection.',
+				'Exploring how DH and AI can transform knowledge production in African studies through ethical, sustainable, and Africa-centred digital infrastructures.',
 			imageUrl: `${base}/images/research/IWAC.webp`
 		},
 		{

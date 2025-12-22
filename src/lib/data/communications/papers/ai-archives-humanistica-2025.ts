@@ -37,5 +37,5 @@ Cette approche ouvre la voie à des analyses computationnelles à grande échell
 		latitude: 14.6937,
 		longitude: -17.4665
 	},
-	project: 'Mining the Islam West Africa Collection'
+	project: 'Digital Humanities and AI in African Studies'
 };

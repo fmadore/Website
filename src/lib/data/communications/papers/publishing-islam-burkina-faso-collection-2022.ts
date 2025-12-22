@@ -24,5 +24,5 @@ export const publishingIslamBurkinaFasoCollection: Communication = {
 		src: 'images/communications/publishing-islam-burkina-faso-collection-2022-hero.webp',
 		alt: 'Publishing the Islam Burkina Faso Collection: Collaboration for Digital Scholarship'
 	},
-	project: 'Mining the Islam West Africa Collection'
+	project: 'Digital Humanities and AI in African Studies'
 };

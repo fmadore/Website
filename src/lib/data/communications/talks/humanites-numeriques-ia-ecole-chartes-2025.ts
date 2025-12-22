@@ -25,5 +25,5 @@ export const humanitesNumeriquesIaEcoleChartes2025: Communication = {
 		latitude: 48.8489,
 		longitude: 2.3536
 	},
-	project: 'Mining the Islam West Africa Collection'
+	project: 'Digital Humanities and AI in African Studies'
 };

@@ -1,11 +1,11 @@
 # ItemReference Component
 
-A component that displays citation-style references to publications or communications with an interactive preview card that appears on hover/focus.
+A component that displays citation-style references to publications or communications (including events, podcasts, panels, talks, and papers) with an interactive preview card that appears on hover/focus.
 
 ## Import
 
 ```svelte
-import ItemReference from '$lib/components/molecules/ItemReference.svelte';
+import ItemReference from '$lib/components/reference/ItemReference.svelte';
 ```
 
 ## Usage
@@ -15,13 +15,30 @@ import ItemReference from '$lib/components/molecules/ItemReference.svelte';
 	As demonstrated in previous research <ItemReference id="pub-2021-03" />, this approach has proven
 	effective in various contexts.
 </p>
+
+<!-- Referencing an event -->
+<p>
+	This was discussed at the <ItemReference id="launch-islam-west-africa-collection" /> launch event.
+</p>
 ```
 
 ## Props
 
-| Prop | Type     | Default    | Description                                         |
-| ---- | -------- | ---------- | --------------------------------------------------- |
-| `id` | `string` | _required_ | ID of the publication or communication to reference |
+| Prop | Type     | Default    | Description                                                        |
+| ---- | -------- | ---------- | ------------------------------------------------------------------ |
+| `id` | `string` | _required_ | ID of the publication or communication (event, podcast, etc.) to reference |
+
+## Supported Item Types
+
+The component can reference:
+
+- **Publications**: articles, books, chapters, special issues
+- **Communications**:
+  - **Events**: conferences, workshops, launches
+  - **Podcasts**: podcast episodes
+  - **Panels**: organized panels at conferences
+  - **Talks**: presentations and lectures
+  - **Papers**: conference papers
 
 ## Features
 
@@ -68,7 +85,7 @@ The component automatically:
 
 ```svelte
 <script>
-	import ItemReference from '$lib/components/molecules/ItemReference.svelte';
+	import ItemReference from '$lib/components/reference/ItemReference.svelte';
 </script>
 
 <article>
@@ -78,6 +95,11 @@ The component automatically:
 		Recent studies in West Africa <ItemReference id="pub-2023-01" />
 		have shown promising results. This builds on earlier work by
 		<ItemReference id="comm-2022-05" /> presented at the annual conference.
+	</p>
+
+	<p>
+		The collection was officially launched at a special event
+		<ItemReference id="launch-islam-west-africa-collection" /> hosted in Berlin.
 	</p>
 
 	<p>

@@ -42,5 +42,5 @@ export type Communication = {
 	}>;
 	episode?: string | number; // Optional: Episode number for podcasts
 	doi?: string; // Optional: DOI for the communication
-	project?: string; // Project association: "Mining the Islam West Africa Collection", "Religious Activism on Campuses in Togo and Benin", etc.
+	project?: string; // Project association: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", etc.
 };
