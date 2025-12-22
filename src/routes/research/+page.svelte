@@ -56,8 +56,8 @@
 
 <SEO
 	title="Research | Frédérick Madore"
-	description="Research projects on Islam and Muslim societies in francophone West Africa, including fieldwork in Benin, Togo, Côte d'Ivoire, and Burkina Faso."
-	keywords="research, Islam, West Africa, Muslim societies, Benin, Togo, Côte d'Ivoire, Burkina Faso, Frédérick Madore"
+	description="Research at the intersection of African history, Islamic studies, and digital humanities. Exploring Islam and Muslim societies in Francophone West Africa, with focus on youth, women, religious minorities, and computational methodologies."
+	keywords="African history, Islamic studies, digital humanities, West Africa, Muslim societies, youth activism, women, religious minorities, Benin, Togo, Côte d'Ivoire, Burkina Faso, computational methods, Islamic discourse, Muslim politics, Frédérick Madore"
 	canonical="https://www.frederickmadore.com/research"
 	{breadcrumbs}
 	pageType="CollectionPage"
@@ -67,9 +67,9 @@
 	<PageHeader title="Research" />
 
 	<PageIntro>
-		My research lies at the intersection of African history, Islamic studies, and digital humanities.
-		I explore the contemporary history of Islam and Muslim societies in Francophone West Africa. I
-		focus on how youth, women and religious minorities have engaged with religious activism, the
+		My research lies at the intersection of African history, Islamic Studies, and Digital Humanities.
+		I explore the contemporary history of Islam and Muslim societies in francophone West Africa. I
+		focus on how youth, women, and religious minorities have engaged with religious activism, the
 		media and political life from the 1960s to the present day. By combining extensive fieldwork and
 		archival research in Benin, Togo, Côte d'Ivoire and Burkina Faso with computational
 		methodologies, I examine the evolving landscape of Islamic discourse and Muslim politics.
