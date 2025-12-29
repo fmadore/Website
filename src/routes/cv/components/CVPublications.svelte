@@ -30,7 +30,8 @@
 						<div class="flex gap-4">
 							<div class="font-semibold text-nowrap">{pub.year}</div>
 							<div class="flex-1">
-								{#if formattedAuthors}{@html formattedAuthors}{#if (pub.type === 'book' && pub.isEditedVolume) || pub.type === 'special-issue'}&nbsp;(eds.),{:else}.{/if} {/if}
+								{#if formattedAuthors}{@html formattedAuthors}{#if (pub.type === 'book' && pub.isEditedVolume) || pub.type === 'special-issue'}&nbsp;(eds.),{:else}.{/if}
+								{/if}
 								{#if pub.type !== 'book' && pub.type !== 'blogpost'}"{pub.title}".{/if}
 								{#if (pub.type === 'article' || pub.type === 'bulletin-article') && pub.journal}
 									<em>{pub.journal}</em>{formatVolumeIssueDisplay(
@@ -38,9 +39,12 @@
 										pub.issue
 									)}{#if pub.pages}: {pub.pages}{/if}.
 								{:else if pub.type === 'chapter' && pub.book}
-									In {#if pub.editors}{formatEditorList(pub.editors)} (eds.),&nbsp;{/if}<em>{pub.book}</em>{#if pub.placeOfPublication || pub.publisher}.&nbsp;{@const city =
+									In {#if pub.editors}{formatEditorList(pub.editors)} (eds.),&nbsp;{/if}<em
+										>{pub.book}</em
+									>{#if pub.placeOfPublication || pub.publisher}.&nbsp;{@const city =
 											pub.placeOfPublication || ''}{@const publisher =
-											pub.publisher || ''}{#if city && publisher}{city}: {publisher}{:else if city}{city}{:else if publisher}{publisher}{/if}{/if}{#if pub.pages}, {pub.pages}{/if}.
+											pub.publisher || ''}{#if city && publisher}{city}: {publisher}{:else if city}{city}{:else if publisher}{publisher}{/if}{/if}{#if pub.pages},
+										{pub.pages}{/if}.
 								{:else if pub.type === 'book'}
 									<em>{pub.title}</em
 									>{#if pub.placeOfPublication || pub.publisher}.&nbsp;{@const city =
@@ -49,11 +53,19 @@
 								{:else if pub.type === 'special-issue' && pub.journal}
 									<em>{pub.journal}</em>{formatVolumeIssueDisplay(pub.volume, pub.issue)}.
 								{:else if pub.type === 'report'}
-									{#if pub.journal}<em>{pub.journal}</em>{formatVolumeIssueDisplay(pub.volume, pub.issue)}{:else if pub.publisher}<em>{pub.publisher}</em>{formatVolumeIssueDisplay(pub.volume, pub.issue)}{/if}{#if pub.pages}, {pub.pages}{/if}.
+									{#if pub.journal}<em>{pub.journal}</em>{formatVolumeIssueDisplay(
+											pub.volume,
+											pub.issue
+										)}{:else if pub.publisher}<em>{pub.publisher}</em>{formatVolumeIssueDisplay(
+											pub.volume,
+											pub.issue
+										)}{/if}{#if pub.pages}, {pub.pages}{/if}.
 								{:else if pub.type === 'encyclopedia' && pub.encyclopediaTitle}
 									In <em>{pub.encyclopediaTitle}</em>{#if pub.publisher}, {pub.publisher}{/if}.
 								{:else if pub.type === 'blogpost'}
-									"{pub.title}"{#if pub.publisher}. <em>{pub.publisher}</em>{/if}{#if pub.dateISO}, {formatBlogDate(pub.dateISO)}{/if}.
+									"{pub.title}"{#if pub.publisher}. <em>{pub.publisher}</em>{/if}{#if pub.dateISO}, {formatBlogDate(
+											pub.dateISO
+										)}{/if}.
 								{:else if pub.type === 'conference-proceedings'}
 									In <em>{pub.proceedingsTitle}</em>.
 								{:else}
@@ -88,20 +100,19 @@
 										class="ml-1 text-primary hover:underline text-sm">[Link]</a
 									>{/if}
 								{#if pub.reviewedBy && pub.reviewedBy.length > 0}
-									<div class="mt-2 ml-4 text-sm">
+									<p class="text-sm mt-1">
 										Reviewed in
 										{#each pub.reviewedBy as review, i (review.title + review.year)}
 											<a
 												href={review.url}
 												target="_blank"
 												rel="noopener noreferrer"
-												class="text-primary hover:underline"
-												><em>{review.journal}</em></a
+												class="text-primary hover:underline"><em>{review.journal}</em></a
 											>{#if i < pub.reviewedBy.length - 2}, {' '}
 											{:else if i === pub.reviewedBy.length - 2}, and {' '}
 											{:else}.{/if}
 										{/each}
-									</div>
+									</p>
 								{/if}
 							</div>
 						</div>

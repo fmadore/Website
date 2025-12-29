@@ -547,10 +547,14 @@
 													yPosition += SPACING.LINE_HEIGHT_TIGHT;
 												}
 											});
-											yPosition += SPACING.LINE_HEIGHT;
+											// Use tighter spacing if there are nested paragraphs (like "Reviewed in...")
+											// to avoid "big blank space" perceived by user
+											const spacingAfter =
+												paragraphTexts.length > 0 ? SPACING.LINE_HEIGHT_TIGHT : SPACING.LINE_HEIGHT;
+											yPosition += spacingAfter;
 										}
 
-										// Add nested paragraphs (dissertation, details) on separate lines
+										// Add nested paragraphs (dissertation, details, reviews) on separate lines
 										paragraphTexts.forEach((text, idx) => {
 											pdf.setFontSize(FONT_SIZE.BODY_SMALL);
 											pdf.setFont('helvetica', 'italic');
