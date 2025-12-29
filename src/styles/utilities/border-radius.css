@@ -4,6 +4,10 @@
 	border-radius: 0;
 }
 
+.rounded-xs {
+	border-radius: var(--border-radius-xs);
+}
+
 .rounded-sm {
 	border-radius: var(--border-radius-sm);
 }

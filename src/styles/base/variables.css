@@ -397,6 +397,8 @@
 	 * Slightly larger defaults for modern, friendly aesthetic
 	 */
 	--border-radius-none: 0;
+	--border-radius-xs: 0.125rem;
+	/* 2px */
 	--border-radius-sm: 0.25rem;
 	/* 4px */
 	--border-radius: 0.5rem;
@@ -484,8 +486,8 @@
 	--ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
 	/* Legacy animation variables (for compatibility) */
-	--anim-duration-instant: var(--duration-fast);
-	--anim-duration-fast: var(--duration-normal);
+	--anim-duration-instant: var(--duration-instant);
+	--anim-duration-fast: var(--duration-fast);
 	--anim-duration-base: var(--duration-moderate);
 	--anim-duration-slow: var(--duration-slow);
 	--anim-duration-slower: var(--duration-slower);
@@ -583,12 +585,12 @@
 	--opacity-overlay-light: 0.5;
 	--opacity-overlay-dark: 0.75;
 
-	/* Legacy opacity mappings */
-	--opacity-very-low: 0.05;
-	--opacity-low: 0.1;
-	--opacity-medium: 0.15;
-	--opacity-medium-high: 0.3;
-	--opacity-high: 0.9;
+	/* Legacy opacity mappings - reference numeric tokens for consistency */
+	--opacity-very-low: var(--opacity-5);
+	--opacity-low: var(--opacity-10);
+	--opacity-medium: var(--opacity-15);
+	--opacity-medium-high: var(--opacity-30);
+	--opacity-high: var(--opacity-90);
 
 	/* ===== TRANSFORMS ===== */
 	/* Lift effects for hover states */
@@ -636,13 +638,13 @@
 	--stagger-5: 250ms;
 	--stagger-6: 300ms;
 
-	/* Legacy animation delay variables */
-	--anim-delay-1: 0.05s;
-	--anim-delay-2: 0.1s;
-	--anim-delay-3: 0.15s;
-	--anim-delay-4: 0.2s;
-	--anim-delay-5: 0.25s;
-	--anim-delay-6: 0.3s;
+	/* Legacy animation delay variables - reference stagger tokens */
+	--anim-delay-1: var(--stagger-1);
+	--anim-delay-2: var(--stagger-2);
+	--anim-delay-3: var(--stagger-3);
+	--anim-delay-4: var(--stagger-4);
+	--anim-delay-5: var(--stagger-5);
+	--anim-delay-6: var(--stagger-6);
 
 	/* Skew values */
 	--skew-0: 0deg;
