@@ -42,6 +42,20 @@ SvelteKit academic website using **Svelte 5** with runes, TypeScript, and glassm
 - `$effect()` for side effects
 - `{@render children()}` instead of `<slot>`
 
+## State Management
+
+| Pattern | Use For | Files |
+|---------|---------|-------|
+| Module `$state` + getters | Global singleton state | `globalState.svelte.ts` |
+| Svelte `writable`/`derived` | Complex filter state | `filterUtils.ts` |
+
+```typescript
+// Global state pattern
+let state = $state<T>(initial);
+export function getState() { return state; }
+export function setState(v: T) { state = v; }
+```
+
 ## Design System
 
 **Always use CSS variables from `src/styles/base/variables.css`** - never hardcode values.
