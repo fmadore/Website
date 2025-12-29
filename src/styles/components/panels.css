@@ -2,35 +2,31 @@
 /* Shared styling for all panel components - harmonized with ProfileBanner and ContentBody */
 
 .panel {
-	padding: var(--space-8);
+	padding: var(--space-xl);
 	border-radius: var(--border-radius-lg);
 	transition: all var(--anim-duration-base) var(--anim-ease-base);
 	position: relative;
 	overflow: hidden;
-	margin-bottom: var(--space-8);
+	margin-bottom: var(--space-xl);
 	/* Enhanced glassmorphism with subtle gradient overlay to match ProfileBanner and ContentBody */
-	background: linear-gradient(
-		135deg,
-		rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-		rgba(var(--color-highlight-rgb), 0.025) 50%,
-		rgba(var(--color-accent-rgb), 0.015) 100%
-	);
+	background: linear-gradient(135deg,
+			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
+			rgba(var(--color-highlight-rgb), 0.025) 50%,
+			rgba(var(--color-accent-rgb), 0.015) 100%);
 }
 
 /* Hover effects for glassmorphism - consistent with ContentBody */
 .panel:hover {
 	transform: var(--transform-lift-sm);
 	/* Enhanced hover effect with stronger gradient */
-	background: linear-gradient(
-		135deg,
-		rgba(var(--color-primary-rgb), 0.06) 0%,
-		rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-		rgba(var(--color-accent-rgb), 0.025) 100%
-	);
+	background: linear-gradient(135deg,
+			rgba(var(--color-primary-rgb), 0.06) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-accent-rgb), 0.025) 100%);
 }
 
 .panel-header {
-	padding: 0 0 var(--space-6) 0;
+	padding: 0 0 var(--space-lg) 0;
 	border-bottom: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
 	background: transparent;
 	position: relative;
@@ -39,7 +35,7 @@
 .panel-title {
 	font-size: var(--font-size-2xl);
 	font-weight: var(--font-weight-bold);
-	margin: 0 0 var(--space-3) 0;
+	margin: 0 0 var(--space-sm) 0;
 	color: var(--color-primary);
 	line-height: var(--line-height-tight);
 	letter-spacing: var(--letter-spacing-tight);
@@ -51,7 +47,7 @@
 .panel-title::after {
 	content: '';
 	position: absolute;
-	bottom: calc(-1 * var(--space-2));
+	bottom: calc(-1 * var(--space-xs));
 	left: 0;
 	width: 40px;
 	height: var(--border-width-thick);
@@ -66,14 +62,14 @@
 
 .panel-content {
 	padding: 0;
-	margin-top: var(--space-6);
+	margin-top: var(--space-lg);
 }
 
 .panel-footer {
-	padding: var(--space-6) 0 0 0;
+	padding: var(--space-lg) 0 0 0;
 	border-top: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
 	background: transparent;
-	margin-top: var(--space-6);
+	margin-top: var(--space-lg);
 }
 
 /* Common panel content elements */
@@ -83,7 +79,7 @@
 	font-style: italic;
 	text-align: center;
 	margin: 0;
-	padding: var(--space-8) 0;
+	padding: var(--space-xl) 0;
 	font-size: var(--font-size-lg);
 }
 
@@ -94,13 +90,13 @@
 	padding: 0;
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-4);
+	gap: var(--space-md);
 }
 
 .view-all-container {
-	padding: var(--space-6) 0 0 0;
+	padding: var(--space-lg) 0 0 0;
 	border-top: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
-	margin-top: var(--space-6);
+	margin-top: var(--space-lg);
 	text-align: center;
 }
 
@@ -109,41 +105,33 @@
 /* Activities Panel Specific */
 .panel-activities {
 	/* Slightly different gradient for activities */
-	background: linear-gradient(
-		135deg,
-		rgba(var(--color-success-rgb), 0.03) 0%,
-		rgba(var(--color-highlight-rgb), 0.025) 50%,
-		rgba(var(--color-primary-rgb), 0.015) 100%
-	);
+	background: linear-gradient(135deg,
+			rgba(var(--color-success-rgb), 0.03) 0%,
+			rgba(var(--color-highlight-rgb), 0.025) 50%,
+			rgba(var(--color-primary-rgb), 0.015) 100%);
 }
 
 .panel-activities:hover {
-	background: linear-gradient(
-		135deg,
-		rgba(var(--color-success-rgb), 0.05) 0%,
-		rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-		rgba(var(--color-primary-rgb), 0.025) 100%
-	);
+	background: linear-gradient(135deg,
+			rgba(var(--color-success-rgb), 0.05) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-primary-rgb), 0.025) 100%);
 }
 
 /* Items Panel Specific */
 .panel-items {
 	/* Slightly different gradient for items */
-	background: linear-gradient(
-		135deg,
-		rgba(var(--color-accent-rgb), 0.03) 0%,
-		rgba(var(--color-highlight-rgb), 0.025) 50%,
-		rgba(var(--color-primary-rgb), 0.015) 100%
-	);
+	background: linear-gradient(135deg,
+			rgba(var(--color-accent-rgb), 0.03) 0%,
+			rgba(var(--color-highlight-rgb), 0.025) 50%,
+			rgba(var(--color-primary-rgb), 0.015) 100%);
 }
 
 .panel-items:hover {
-	background: linear-gradient(
-		135deg,
-		rgba(var(--color-accent-rgb), 0.05) 0%,
-		rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-		rgba(var(--color-primary-rgb), 0.025) 100%
-	);
+	background: linear-gradient(135deg,
+			rgba(var(--color-accent-rgb), 0.05) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
+			rgba(var(--color-primary-rgb), 0.025) 100%);
 }
 
 /* Filter and container styling for Button components */
@@ -152,23 +140,23 @@
 	font-size: var(--font-size-sm);
 	font-weight: var(--font-weight-medium);
 	color: var(--color-text-light);
-	margin-bottom: var(--space-3);
+	margin-bottom: var(--space-sm);
 }
 
 .year-filters {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--space-2);
+	gap: var(--space-xs);
 }
 
 .type-filters-section {
-	margin-bottom: var(--space-6);
+	margin-bottom: var(--space-lg);
 }
 
 .type-filters-container {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--space-2);
+	gap: var(--space-xs);
 }
 
 /* Additional styling for Button components in panels */
@@ -176,7 +164,7 @@
 
 /* Filter button styles for type filters */
 .filter-button {
-	padding: var(--space-1) var(--space-3);
+	padding: var(--space-2xs) var(--space-sm);
 	background-color: var(--color-surface-alt);
 	border: var(--border-width-thin) solid var(--color-border);
 	border-radius: var(--border-radius);
@@ -197,64 +185,52 @@
 
 /* Dark mode overrides - harmonized with glassmorphism utilities */
 :global(html.dark) .panel {
-	background: linear-gradient(
-		135deg,
-		rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-		rgba(var(--color-highlight-rgb), 0.05) 50%,
-		rgba(var(--color-accent-rgb), 0.03) 100%
-	);
+	background: linear-gradient(135deg,
+			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-highlight-rgb), 0.05) 50%,
+			rgba(var(--color-accent-rgb), 0.03) 100%);
 }
 
 :global(html.dark) .panel:hover {
-	background: linear-gradient(
-		135deg,
-		rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
-		rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
-		rgba(var(--color-accent-rgb), 0.05) 100%
-	);
+	background: linear-gradient(135deg,
+			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
+			rgba(var(--color-accent-rgb), 0.05) 100%);
 }
 
 :global(html.dark) .panel-activities {
-	background: linear-gradient(
-		135deg,
-		rgba(var(--color-success-rgb), 0.06) 0%,
-		rgba(var(--color-highlight-rgb), 0.05) 50%,
-		rgba(var(--color-primary-rgb), 0.03) 100%
-	);
+	background: linear-gradient(135deg,
+			rgba(var(--color-success-rgb), 0.06) 0%,
+			rgba(var(--color-highlight-rgb), 0.05) 50%,
+			rgba(var(--color-primary-rgb), 0.03) 100%);
 }
 
 :global(html.dark) .panel-activities:hover {
-	background: linear-gradient(
-		135deg,
-		rgba(var(--color-success-rgb), var(--opacity-low)) 0%,
-		rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
-		rgba(var(--color-primary-rgb), 0.05) 100%
-	);
+	background: linear-gradient(135deg,
+			rgba(var(--color-success-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
+			rgba(var(--color-primary-rgb), 0.05) 100%);
 }
 
 :global(html.dark) .panel-items {
-	background: linear-gradient(
-		135deg,
-		rgba(var(--color-accent-rgb), 0.06) 0%,
-		rgba(var(--color-highlight-rgb), 0.05) 50%,
-		rgba(var(--color-primary-rgb), 0.03) 100%
-	);
+	background: linear-gradient(135deg,
+			rgba(var(--color-accent-rgb), 0.06) 0%,
+			rgba(var(--color-highlight-rgb), 0.05) 50%,
+			rgba(var(--color-primary-rgb), 0.03) 100%);
 }
 
 :global(html.dark) .panel-items:hover {
-	background: linear-gradient(
-		135deg,
-		rgba(var(--color-accent-rgb), var(--opacity-low)) 0%,
-		rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
-		rgba(var(--color-primary-rgb), 0.05) 100%
-	);
+	background: linear-gradient(135deg,
+			rgba(var(--color-accent-rgb), var(--opacity-low)) 0%,
+			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
+			rgba(var(--color-primary-rgb), 0.05) 100%);
 }
 
 /* Responsive design */
 @media (max-width: 640px) {
 	.panel {
-		padding: var(--space-6);
-		margin-bottom: var(--space-6);
+		padding: var(--space-lg);
+		margin-bottom: var(--space-lg);
 	}
 
 	.panel-title {
@@ -273,6 +249,7 @@
 
 /* Respect user motion preferences */
 @media (prefers-reduced-motion: reduce) {
+
 	.panel,
 	.panel-title::after {
 		transition: none;

@@ -290,36 +290,66 @@
 	/* Foundation scale */
 	--space-0: 0;
 	--space-px: 1px;
-	--space-0-5: 0.125rem; /* 2px */
-	--space-1: 0.25rem; /* 4px */
-	--space-1-5: 0.375rem; /* 6px */
-	--space-2: 0.5rem; /* 8px */
-	--space-2-5: 0.625rem; /* 10px */
-	--space-3: 0.75rem; /* 12px */
-	--space-3-5: 0.875rem; /* 14px */
-	--space-4: 1rem; /* 16px */
-	--space-5: 1.25rem; /* 20px */
-	--space-6: 1.5rem; /* 24px */
-	--space-7: 1.75rem; /* 28px */
-	--space-8: 2rem; /* 32px */
-	--space-9: 2.25rem; /* 36px */
-	--space-10: 2.5rem; /* 40px */
-	--space-11: 2.75rem; /* 44px */
-	--space-12: 3rem; /* 48px */
-	--space-14: 3.5rem; /* 56px */
-	--space-16: 4rem; /* 64px */
-	--space-20: 5rem; /* 80px */
-	--space-24: 6rem; /* 96px */
-	--space-28: 7rem; /* 112px */
-	--space-32: 8rem; /* 128px */
-	--space-36: 9rem; /* 144px */
-	--space-40: 10rem; /* 160px */
-	--space-44: 11rem; /* 176px */
-	--space-48: 12rem; /* 192px */
-	--space-52: 13rem; /* 208px */
-	--space-56: 14rem; /* 224px */
-	--space-60: 15rem; /* 240px */
-	--space-64: 16rem; /* 256px */
+	--space-0-5: 0.125rem;
+	/* 2px */
+	--space-1: 0.25rem;
+	/* 4px */
+	--space-1-5: 0.375rem;
+	/* 6px */
+	--space-2: 0.5rem;
+	/* 8px */
+	--space-2-5: 0.625rem;
+	/* 10px */
+	--space-3: 0.75rem;
+	/* 12px */
+	--space-3-5: 0.875rem;
+	/* 14px */
+	--space-4: 1rem;
+	/* 16px */
+	--space-5: 1.25rem;
+	/* 20px */
+	--space-6: 1.5rem;
+	/* 24px */
+	--space-7: 1.75rem;
+	/* 28px */
+	--space-8: 2rem;
+	/* 32px */
+	--space-9: 2.25rem;
+	/* 36px */
+	--space-10: 2.5rem;
+	/* 40px */
+	--space-11: 2.75rem;
+	/* 44px */
+	--space-12: 3rem;
+	/* 48px */
+	--space-14: 3.5rem;
+	/* 56px */
+	--space-16: 4rem;
+	/* 64px */
+	--space-20: 5rem;
+	/* 80px */
+	--space-24: 6rem;
+	/* 96px */
+	--space-28: 7rem;
+	/* 112px */
+	--space-32: 8rem;
+	/* 128px */
+	--space-36: 9rem;
+	/* 144px */
+	--space-40: 10rem;
+	/* 160px */
+	--space-44: 11rem;
+	/* 176px */
+	--space-48: 12rem;
+	/* 192px */
+	--space-52: 13rem;
+	/* 208px */
+	--space-56: 14rem;
+	/* 224px */
+	--space-60: 15rem;
+	/* 240px */
+	--space-64: 16rem;
+	/* 256px */
 
 	/* Semantic spacing (for component design) */
 	--space-3xs: var(--space-0-5);
@@ -327,10 +357,12 @@
 	--space-xs: var(--space-2);
 	--space-sm: var(--space-3);
 	--space-md: var(--space-4);
-	--space-md-tight: var(--space-3-5); /* 14px - between sm and md */
+	--space-md-tight: var(--space-3-5);
+	/* 14px - between sm and md */
 	--space-lg: var(--space-6);
 	--space-xl: var(--space-8);
-	--space-xl-tight: var(--space-7); /* 28px - between lg and xl */
+	--space-xl-tight: var(--space-7);
+	/* 28px - between lg and xl */
 	--space-2xl: var(--space-12);
 	--space-3xl: var(--space-16);
 	--space-4xl: var(--space-24);
@@ -365,13 +397,20 @@
 	 * Slightly larger defaults for modern, friendly aesthetic
 	 */
 	--border-radius-none: 0;
-	--border-radius-sm: 0.25rem; /* 4px */
-	--border-radius: 0.5rem; /* 8px - default */
-	--border-radius-md: 0.625rem; /* 10px */
-	--border-radius-lg: 0.75rem; /* 12px */
-	--border-radius-xl: 1rem; /* 16px */
-	--border-radius-2xl: 1.25rem; /* 20px */
-	--border-radius-3xl: 1.5rem; /* 24px */
+	--border-radius-sm: 0.25rem;
+	/* 4px */
+	--border-radius: 0.5rem;
+	/* 8px - default */
+	--border-radius-md: 0.625rem;
+	/* 10px */
+	--border-radius-lg: 0.75rem;
+	/* 12px */
+	--border-radius-xl: 1rem;
+	/* 16px */
+	--border-radius-2xl: 1.25rem;
+	/* 20px */
+	--border-radius-3xl: 1.5rem;
+	/* 24px */
 	--border-radius-full: 9999px;
 
 	/* ===== SHADOWS ===== */
@@ -381,21 +420,21 @@
 	 * Colored shadows for brand elements
 	 */
 	--shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-	--shadow-sm: 
+	--shadow-sm:
 		0 1px 3px 0 rgba(0, 0, 0, 0.1),
 		0 1px 2px -1px rgba(0, 0, 0, 0.1);
-	--shadow: 
+	--shadow:
 		0 4px 6px -1px rgba(0, 0, 0, 0.1),
 		0 2px 4px -2px rgba(0, 0, 0, 0.1);
-	--shadow-md: 
+	--shadow-md:
 		0 10px 15px -3px rgba(0, 0, 0, 0.1),
 		0 4px 6px -4px rgba(0, 0, 0, 0.1);
-	--shadow-lg: 
+	--shadow-lg:
 		0 20px 25px -5px rgba(0, 0, 0, 0.1),
 		0 8px 10px -6px rgba(0, 0, 0, 0.1);
-	--shadow-xl: 
+	--shadow-xl:
 		0 25px 50px -12px rgba(0, 0, 0, 0.25);
-	--shadow-2xl: 
+	--shadow-2xl:
 		0 35px 60px -15px rgba(0, 0, 0, 0.3);
 	--shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
 	--shadow-none: none;
@@ -409,10 +448,10 @@
 	--shadow-danger: 0 4px 14px -2px rgba(220, 38, 38, 0.25);
 
 	/* Glass shadows - softer for glassmorphism */
-	--shadow-glass: 
+	--shadow-glass:
 		0 8px 32px 0 rgba(0, 0, 0, 0.08),
 		0 2px 8px 0 rgba(0, 0, 0, 0.04);
-	--shadow-glass-lg: 
+	--shadow-glass-lg:
 		0 16px 48px 0 rgba(0, 0, 0, 0.1),
 		0 4px 12px 0 rgba(0, 0, 0, 0.05);
 
@@ -484,17 +523,28 @@
 
 	/* Content widths for reading */
 	--content-max-width: 1200px;
-	--content-width-xs: 20rem; /* 320px */
-	--content-width-sm: 24rem; /* 384px */
-	--content-width-md: 28rem; /* 448px */
-	--content-width-lg: 32rem; /* 512px */
-	--content-width-xl: 36rem; /* 576px */
-	--content-width-2xl: 42rem; /* 672px */
-	--content-width-3xl: 48rem; /* 768px */
-	--content-width-4xl: 56rem; /* 896px */
-	--content-width-5xl: 64rem; /* 1024px */
-	--content-width-6xl: 72rem; /* 1152px */
-	--content-width-7xl: 80rem; /* 1280px */
+	--content-width-xs: 20rem;
+	/* 320px */
+	--content-width-sm: 24rem;
+	/* 384px */
+	--content-width-md: 28rem;
+	/* 448px */
+	--content-width-lg: 32rem;
+	/* 512px */
+	--content-width-xl: 36rem;
+	/* 576px */
+	--content-width-2xl: 42rem;
+	/* 672px */
+	--content-width-3xl: 48rem;
+	/* 768px */
+	--content-width-4xl: 56rem;
+	/* 896px */
+	--content-width-5xl: 64rem;
+	/* 1024px */
+	--content-width-6xl: 72rem;
+	/* 1152px */
+	--content-width-7xl: 80rem;
+	/* 1280px */
 
 	/* ===== Z-INDEX SCALE ===== */
 	/* Consistent layering system */
@@ -613,7 +663,8 @@
 	--glass-blur-sm: 8px;
 	--glass-blur-md: 12px;
 	--glass-blur-lg: 16px;
-	--glass-blur-xl: 24px;
+	--glass-blur-xl: 20px;
+	--glass-blur-2xl: 24px;
 	--glass-blur-amount: var(--glass-blur-md);
 	--glass-blur-fallback: var(--glass-blur-lg);
 
@@ -658,14 +709,21 @@
 
 	/* ===== COMPONENT-SPECIFIC TOKENS ===== */
 	/* Iframe heights */
-	--iframe-height-xs: 18.75rem; /* 300px */
-	--iframe-height-sm: 25rem; /* 400px */
-	--iframe-height-default: 37.5rem; /* 600px */
+	--iframe-height-xs: 18.75rem;
+	/* 300px */
+	--iframe-height-sm: 25rem;
+	/* 400px */
+	--iframe-height-default: 37.5rem;
+	/* 600px */
 	--iframe-height-md: 37.5rem;
-	--iframe-height-lg: 50rem; /* 800px */
-	--iframe-height-xl: 62.5rem; /* 1000px */
-	--iframe-header-height: 2.5rem; /* 40px */
-	--iframe-header-height-mobile: 2.25rem; /* 36px */
+	--iframe-height-lg: 50rem;
+	/* 800px */
+	--iframe-height-xl: 62.5rem;
+	/* 1000px */
+	--iframe-header-height: 2.5rem;
+	/* 40px */
+	--iframe-header-height-mobile: 2.25rem;
+	/* 36px */
 
 	/* Decorative animation durations */
 	--anim-duration-decorative: 4s;
@@ -687,79 +745,112 @@
  */
 html.dark {
 	/* ===== PRIMARY COLORS ===== */
-	--color-primary: #60a5fa; /* Blue 400 - excellent visibility */
+	--color-primary: #60a5fa;
+	/* Blue 400 - excellent visibility */
 	--color-primary-rgb: 96, 165, 250;
-	--color-primary-dark: #3b82f6; /* Blue 500 */
-	--color-primary-light: #93c5fd; /* Blue 300 */
-	--color-primary-lighter: #bfdbfe; /* Blue 200 */
+	--color-primary-dark: #3b82f6;
+	/* Blue 500 */
+	--color-primary-light: #93c5fd;
+	/* Blue 300 */
+	--color-primary-lighter: #bfdbfe;
+	/* Blue 200 */
 
 	/* ===== SECONDARY ===== */
-	--color-secondary: #94a3b8; /* Slate 400 */
+	--color-secondary: #94a3b8;
+	/* Slate 400 */
 	--color-secondary-rgb: 148, 163, 184;
-	--color-secondary-light: #cbd5e1; /* Slate 300 */
+	--color-secondary-light: #cbd5e1;
+	/* Slate 300 */
 
 	/* ===== ACCENT ===== */
-	--color-accent: #2dd4bf; /* Teal 400 */
+	--color-accent: #2dd4bf;
+	/* Teal 400 */
 	--color-accent-rgb: 45, 212, 191;
-	--color-accent-dark: #14b8a6; /* Teal 500 */
-	--color-accent-light: #5eead4; /* Teal 300 */
+	--color-accent-dark: #14b8a6;
+	/* Teal 500 */
+	--color-accent-light: #5eead4;
+	/* Teal 300 */
 
 	/* ===== HIGHLIGHT ===== */
-	--color-highlight: #fbbf24; /* Amber 400 */
+	--color-highlight: #fbbf24;
+	/* Amber 400 */
 	--color-highlight-rgb: 251, 191, 36;
-	--color-highlight-dark: #f59e0b; /* Amber 500 */
-	--color-highlight-light: #fcd34d; /* Amber 300 */
+	--color-highlight-dark: #f59e0b;
+	/* Amber 500 */
+	--color-highlight-light: #fcd34d;
+	/* Amber 300 */
 
 	/* ===== SUCCESS ===== */
-	--color-success: #34d399; /* Emerald 400 */
+	--color-success: #34d399;
+	/* Emerald 400 */
 	--color-success-rgb: 52, 211, 153;
-	--color-success-dark: #10b981; /* Emerald 500 */
+	--color-success-dark: #10b981;
+	/* Emerald 500 */
 
 	/* ===== DANGER ===== */
-	--color-danger: #f87171; /* Red 400 */
+	--color-danger: #f87171;
+	/* Red 400 */
 	--color-danger-rgb: 248, 113, 113;
-	--color-danger-dark: #ef4444; /* Red 500 */
-	--color-danger-light: #fca5a5; /* Red 300 */
+	--color-danger-dark: #ef4444;
+	/* Red 500 */
+	--color-danger-light: #fca5a5;
+	/* Red 300 */
 
 	/* ===== BACKGROUNDS ===== */
-	--color-background: #0f172a; /* Slate 900 */
+	--color-background: #0f172a;
+	/* Slate 900 */
 	--color-background-rgb: 15, 23, 42;
-	--color-background-subtle: #1e293b; /* Slate 800 */
-	--color-background-muted: #334155; /* Slate 700 */
+	--color-background-subtle: #1e293b;
+	/* Slate 800 */
+	--color-background-muted: #334155;
+	/* Slate 700 */
 
 	/* ===== TEXT ===== */
-	--color-text: #f1f5f9; /* Slate 100 */
+	--color-text: #f1f5f9;
+	/* Slate 100 */
 	--color-text-rgb: 241, 245, 249;
-	--color-text-light: #cbd5e1; /* Slate 300 */
-	--color-text-muted: #94a3b8; /* Slate 400 */
+	--color-text-light: #cbd5e1;
+	/* Slate 300 */
+	--color-text-muted: #94a3b8;
+	/* Slate 400 */
 	--color-text-emphasis: #ffffff;
 	--color-text-soft: #94a3b8;
 	--color-text-inverted: #0f172a;
 
 	/* ===== SURFACES ===== */
-	--color-surface: #1e293b; /* Slate 800 */
+	--color-surface: #1e293b;
+	/* Slate 800 */
 	--color-surface-rgb: 30, 41, 59;
-	--color-surface-alt: #334155; /* Slate 700 */
-	--color-surface-elevated: #475569; /* Slate 600 */
-	--color-surface-sunken: #0f172a; /* Slate 900 */
+	--color-surface-alt: #334155;
+	/* Slate 700 */
+	--color-surface-elevated: #475569;
+	/* Slate 600 */
+	--color-surface-sunken: #0f172a;
+	/* Slate 900 */
 	--color-surface-border: #334155;
 
 	/* ===== BORDERS ===== */
-	--color-border: #334155; /* Slate 700 */
-	--color-border-light: #1e293b; /* Slate 800 */
-	--color-border-dark: #475569; /* Slate 600 */
+	--color-border: #334155;
+	/* Slate 700 */
+	--color-border-light: #1e293b;
+	/* Slate 800 */
+	--color-border-dark: #475569;
+	/* Slate 600 */
 	--color-border-focus: #60a5fa;
 
 	/* ===== ACADEMIC COLORS ===== */
 	--color-citation: #2dd4bf;
 	--color-citation-rgb: 45, 212, 191;
-	--color-quote: #e2e8f0; /* Slate 200 */
-	--color-note: #cbd5e1; /* Slate 300 */
+	--color-quote: #e2e8f0;
+	/* Slate 200 */
+	--color-note: #cbd5e1;
+	/* Slate 300 */
 	--color-code-bg: #1e293b;
 
 	/* ===== COMPONENT LAYERS ===== */
 	--color-background-alt: #1e293b;
-	--color-footer-bg: #020617; /* Slate 950 */
+	--color-footer-bg: #020617;
+	/* Slate 950 */
 	--color-footer-text: #f1f5f9;
 	--color-footer-text-muted: rgba(241, 245, 249, 0.7);
 	--color-sidebar-bg: #1e293b;
@@ -796,21 +887,21 @@ html.dark {
 	/* ===== SHADOWS (DARK) ===== */
 	/* Deeper shadows for dark mode contrast */
 	--shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
-	--shadow-sm: 
+	--shadow-sm:
 		0 1px 3px 0 rgba(0, 0, 0, 0.3),
 		0 1px 2px -1px rgba(0, 0, 0, 0.3);
-	--shadow: 
+	--shadow:
 		0 4px 6px -1px rgba(0, 0, 0, 0.35),
 		0 2px 4px -2px rgba(0, 0, 0, 0.3);
-	--shadow-md: 
+	--shadow-md:
 		0 10px 15px -3px rgba(0, 0, 0, 0.4),
 		0 4px 6px -4px rgba(0, 0, 0, 0.35);
-	--shadow-lg: 
+	--shadow-lg:
 		0 20px 25px -5px rgba(0, 0, 0, 0.45),
 		0 8px 10px -6px rgba(0, 0, 0, 0.4);
-	--shadow-xl: 
+	--shadow-xl:
 		0 25px 50px -12px rgba(0, 0, 0, 0.6);
-	--shadow-2xl: 
+	--shadow-2xl:
 		0 35px 60px -15px rgba(0, 0, 0, 0.7);
 
 	/* Colored shadows - brighter for dark mode */
@@ -821,10 +912,10 @@ html.dark {
 	--shadow-success: 0 4px 14px -2px rgba(52, 211, 153, 0.3);
 
 	/* Glass shadows */
-	--shadow-glass: 
+	--shadow-glass:
 		0 8px 32px 0 rgba(0, 0, 0, 0.25),
 		0 2px 8px 0 rgba(0, 0, 0, 0.15);
-	--shadow-glass-lg: 
+	--shadow-glass-lg:
 		0 16px 48px 0 rgba(0, 0, 0, 0.3),
 		0 4px 12px 0 rgba(0, 0, 0, 0.2);
 
