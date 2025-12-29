@@ -89,7 +89,11 @@
 		text-transform: uppercase;
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-primary);
-		background-color: rgba(var(--color-primary-rgb), var(--opacity-10));
+		background-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-10) * 100%),
+			transparent
+		);
 		padding: var(--space-0-5) var(--space-sm);
 		border-radius: var(--border-radius-full);
 		flex-shrink: 0;

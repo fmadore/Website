@@ -60,7 +60,7 @@
 	let dropdownTimer = $state<ReturnType<typeof setTimeout> | null>(null);
 	let bodyOverflowHidden = $state(false);
 
-        const HIDE_DELAY = 200;
+	const HIDE_DELAY = 200;
 
 	// Dropdown handlers
 	function showDropdown(index: number) {
@@ -141,12 +141,12 @@
 	}
 
 	// Window resize handler
-        function handleResize() {
-                const mobileBreakpoint = 1280; // Match 80rem desktop breakpoint
-                if (window.innerWidth >= mobileBreakpoint && mobileMenuOpen) {
-                        closeMobileMenu();
-                }
-        }
+	function handleResize() {
+		const mobileBreakpoint = 1280; // Match 80rem desktop breakpoint
+		if (window.innerWidth >= mobileBreakpoint && mobileMenuOpen) {
+			closeMobileMenu();
+		}
+	}
 
 	// Lifecycle
 	$effect(() => {
@@ -201,128 +201,147 @@
 </header>
 
 <style>
-        /* Site Header Styles */
-        :global(.site-header) {
-                background: linear-gradient(
-                        135deg,
-                        rgba(var(--color-white-rgb), var(--opacity-80)) 0%,
-                        rgba(var(--color-primary-rgb), 0.02) 50%,
-                        rgba(var(--color-highlight-rgb), 0.01) 100%
-                );
-                backdrop-filter: blur(var(--glass-blur-amount, var(--glass-blur-fallback)));
-                -webkit-backdrop-filter: blur(var(--glass-blur-amount, var(--glass-blur-fallback)));
-                border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-30));
-                box-shadow:
-                        var(--shadow-lg),
-                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-40));
-                position: sticky;
-                top: 0;
-                z-index: var(--z-sticky);
-                transition:
-                        background var(--duration-normal) var(--ease-out),
-                        border-color var(--duration-normal) var(--ease-out),
-                        box-shadow var(--duration-normal) var(--ease-out);
-        }
+	/* Site Header Styles */
+	:global(.site-header) {
+		background: linear-gradient(
+			135deg,
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-80) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-primary) 2%, transparent) 50%,
+			color-mix(in srgb, var(--color-highlight) 1%, transparent) 100%
+		);
+		backdrop-filter: blur(var(--glass-blur-amount, var(--glass-blur-fallback)));
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount, var(--glass-blur-fallback)));
+		border-bottom: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-30) * 100%), transparent);
+		box-shadow:
+			var(--shadow-lg),
+			inset 0 var(--border-width-thin) 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-40) * 100%), transparent);
+		position: sticky;
+		top: 0;
+		z-index: var(--z-sticky);
+		transition:
+			background var(--duration-normal) var(--ease-out),
+			border-color var(--duration-normal) var(--ease-out),
+			box-shadow var(--duration-normal) var(--ease-out);
+	}
 
-        :global(.site-header:hover) {
-                background: linear-gradient(
-                        135deg,
-                        rgba(var(--color-white-rgb), var(--opacity-90)) 0%,
-                        rgba(var(--color-primary-rgb), 0.03) 50%,
-                        rgba(var(--color-highlight-rgb), 0.02) 100%
-                );
-                border-bottom-color: rgba(var(--color-white-rgb), var(--opacity-40));
-                box-shadow:
-                        var(--shadow-xl),
-                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-50));
-        }
+	:global(.site-header:hover) {
+		background: linear-gradient(
+			135deg,
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-90) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-primary) 3%, transparent) 50%,
+			color-mix(in srgb, var(--color-highlight) 2%, transparent) 100%
+		);
+		border-bottom-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--opacity-40) * 100%),
+			transparent
+		);
+		box-shadow:
+			var(--shadow-xl),
+			inset 0 var(--border-width-thin) 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-50) * 100%), transparent);
+	}
 
-        /* Dark mode */
-        :global(html.dark .site-header) {
-                background: linear-gradient(
-                        135deg,
-                        rgba(var(--color-dark-surface-rgb), var(--opacity-80)) 0%,
-                        rgba(var(--color-primary-rgb), 0.04) 50%,
-                        rgba(var(--color-highlight-rgb), 0.02) 100%
-                );
-                border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
-                box-shadow:
-                        var(--shadow-lg),
-                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-10));
-        }
+	/* Dark mode */
+	:global(html.dark .site-header) {
+		background: linear-gradient(
+			135deg,
+			color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-80) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-primary) 4%, transparent) 50%,
+			color-mix(in srgb, var(--color-highlight) 2%, transparent) 100%
+		);
+		border-bottom: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+		box-shadow:
+			var(--shadow-lg),
+			inset 0 var(--border-width-thin) 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
+	}
 
-        :global(html.dark .site-header:hover) {
-                background: linear-gradient(
-                        135deg,
-                        rgba(var(--color-dark-surface-rgb), var(--glass-opacity-high)) 0%,
-                        rgba(var(--color-primary-rgb), 0.06) 50%,
-                        rgba(var(--color-highlight-rgb), 0.03) 100%
-                );
-                border-bottom-color: rgba(var(--color-white-rgb), var(--opacity-20));
-                box-shadow:
-                        var(--shadow-xl),
-                        inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium));
-        }
+	:global(html.dark .site-header:hover) {
+		background: linear-gradient(
+			135deg,
+			color-mix(
+					in srgb,
+					var(--color-dark-surface) calc(var(--glass-opacity-high) * 100%),
+					transparent
+				)
+				0%,
+			color-mix(in srgb, var(--color-primary) 6%, transparent) 50%,
+			color-mix(in srgb, var(--color-highlight) 3%, transparent) 100%
+		);
+		border-bottom-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--opacity-20) * 100%),
+			transparent
+		);
+		box-shadow:
+			var(--shadow-xl),
+			inset 0 var(--border-width-thin) 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+	}
 
-        .container {
-                max-width: var(--container-xl);
-                width: 100%;
-                margin-left: auto;
-                margin-right: auto;
-                padding: 0 var(--space-4);
-        }
+	.container {
+		max-width: var(--container-xl);
+		width: 100%;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 0 var(--space-4);
+	}
 
-        .header-inner {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: var(--space-4) 0;
-                position: relative;
-                min-height: var(--space-16);
-        }
+	.header-inner {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: var(--space-4) 0;
+		position: relative;
+		min-height: var(--space-16);
+	}
 
-        .header-logo {
-                flex-shrink: 0;
-                display: flex;
-                align-items: center;
-        }
+	.header-logo {
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+	}
 
-        .header-logo :global(.site-title) {
-                font-size: var(--font-size-xl);
-                font-weight: var(--font-weight-bold);
-                color: var(--color-text);
-                text-decoration: none;
-                transition: color var(--duration-fast) var(--ease-out);
-        }
+	.header-logo :global(.site-title) {
+		font-size: var(--font-size-xl);
+		font-weight: var(--font-weight-bold);
+		color: var(--color-text);
+		text-decoration: none;
+		transition: color var(--duration-fast) var(--ease-out);
+	}
 
-        .header-logo :global(.site-title:hover) {
-                color: var(--color-primary);
-        }
+	.header-logo :global(.site-title:hover) {
+		color: var(--color-primary);
+	}
 
-        .desktop-controls {
-                display: none;
-                align-items: center;
-                gap: var(--space-6);
-        }
+	.desktop-controls {
+		display: none;
+		align-items: center;
+		gap: var(--space-6);
+	}
 
-        @media (--sm) {
-                .container {
-                        padding: 0 var(--space-6);
-                }
-        }
+	@media (--sm) {
+		.container {
+			padding: 0 var(--space-6);
+		}
+	}
 
-        @media (--xl) {
-                .header-inner {
-                        min-height: calc(var(--space-16) + var(--space-2));
-                }
+	@media (--xl) {
+		.header-inner {
+			min-height: calc(var(--space-16) + var(--space-2));
+		}
 
-                .desktop-controls {
-                        display: flex;
-                }
-        }
+		.desktop-controls {
+			display: flex;
+		}
+	}
 
-        /* Theme toggle spacing */
-        .desktop-controls :global(.theme-toggle) {
-                margin-left: var(--space-4);
-        }
+	/* Theme toggle spacing */
+	.desktop-controls :global(.theme-toggle) {
+		margin-left: var(--space-4);
+	}
 </style>

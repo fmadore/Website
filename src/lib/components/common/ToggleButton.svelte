@@ -87,13 +87,19 @@
 		/* Additional styling for active state if needed */
 		box-shadow:
 			var(--shadow-md),
-			0 0 0 var(--border-width-thin) rgba(var(--color-primary-rgb), var(--opacity-medium));
+			0 0 0 var(--border-width-thin)
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent);
 	}
 
 	:global(.toggle-button-active:hover) {
 		box-shadow:
 			var(--shadow-lg),
-			0 0 0 var(--border-width-medium) rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+			0 0 0 var(--border-width-medium)
+				color-mix(
+					in srgb,
+					var(--color-primary) calc(var(--opacity-medium-high) * 100%),
+					transparent
+				);
 	}
 
 	/* Enhanced glassmorphism integration */
@@ -105,8 +111,9 @@
 		/* Subtle gradient overlay for better visual hierarchy */
 		background-image: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				100%
 		);
 	}
 
@@ -114,8 +121,9 @@
 		/* Enhanced hover state for glassmorphism */
 		background-image: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				100%
 		);
 	}
 
@@ -142,16 +150,17 @@
 	:global(html.dark .toggle-button.glass-button) {
 		background-image: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				100%
 		);
 	}
 
 	:global(html.dark .toggle-button.glass-button:hover) {
 		background-image: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 100%
 		);
 	}
 

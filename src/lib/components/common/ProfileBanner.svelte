@@ -23,9 +23,7 @@
 			<h1>About</h1>
 			<div class="title-accent"></div>
 		</div>
-		<div class="subtitle">
-			Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)
-		</div>
+		<div class="subtitle">Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)</div>
 		<div class="profile-icons">
 			<a
 				href="mailto:frederick.madore@zmo.de"
@@ -89,9 +87,10 @@
 		/* Enhanced glassmorphism with subtle gradient overlay */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
 	}
 
@@ -108,9 +107,16 @@
 		bottom: calc(-2 * var(--space-2xs));
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-medium-high)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-medium-high)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent)
+				0%,
+			color-mix(
+					in srgb,
+					var(--color-highlight) calc(var(--opacity-medium-high) * 100%),
+					transparent
+				)
+				50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium-high) * 100%), transparent)
+				100%
 		);
 		border-radius: var(--border-radius-full);
 		z-index: -1;
@@ -213,7 +219,7 @@
 		background: linear-gradient(
 			90deg,
 			transparent 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-medium)) 50%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-medium) * 100%), transparent) 50%,
 			transparent 100%
 		);
 		transition: left var(--transition-duration-300) var(--transition-ease-out);
@@ -250,7 +256,11 @@
 		outline: var(--border-width-medium) solid var(--color-highlight);
 		outline-offset: var(--space-2xs);
 		box-shadow: 0 0 0 var(--border-width-thick)
-			rgba(var(--color-highlight-rgb), var(--opacity-medium-high));
+			color-mix(
+				in srgb,
+				var(--color-highlight) calc(var(--opacity-medium-high) * 100%),
+				transparent
+			);
 	}
 
 	/* Desktop responsive design */

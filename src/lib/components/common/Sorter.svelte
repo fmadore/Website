@@ -124,8 +124,9 @@
 		/* Subtle gradient overlay for better visual hierarchy */
 		background-image: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				100%
 		);
 	}
 
@@ -133,8 +134,9 @@
 		/* Enhanced hover state for glassmorphism */
 		background-image: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				100%
 		);
 	}
 
@@ -142,16 +144,17 @@
 	:global(html.dark .sorter-button.glass-button) {
 		background-image: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				100%
 		);
 	}
 
 	:global(html.dark .sorter-button.glass-button:hover) {
 		background-image: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 100%
 		);
 	}
 

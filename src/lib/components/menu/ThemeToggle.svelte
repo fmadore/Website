@@ -22,10 +22,11 @@
 
 <style>
 	.theme-toggle {
-		background: rgba(var(--color-white-rgb), var(--opacity-low));
+		background: color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
 		cursor: pointer;
 		padding: var(--space-2);
 		color: var(--color-text);
@@ -43,24 +44,35 @@
 		position: relative;
 		box-shadow:
 			var(--shadow-md),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium-high));
+			inset 0 var(--border-width-thin) 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium-high) * 100%), transparent);
 		will-change: transform, box-shadow;
 	}
 
 	.theme-toggle:hover {
-		background: rgba(var(--color-white-rgb), var(--opacity-medium));
-		border-color: rgba(var(--color-white-rgb), var(--opacity-medium-high));
+		background: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--opacity-medium-high) * 100%),
+			transparent
+		);
 		transform: var(--transform-lift-md) scale(var(--scale-105));
 		box-shadow:
 			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-40));
+			inset 0 var(--border-width-thin) 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-40) * 100%), transparent);
 	}
 
 	.theme-toggle:active {
 		transform: translateY(0) scale(var(--scale-95));
 		box-shadow:
 			var(--shadow-sm),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium));
+			inset 0 var(--border-width-thin) 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
 		animation: themeChangePulse var(--duration-moderate) var(--ease-out);
 	}
 
@@ -69,7 +81,8 @@
 		outline-offset: var(--space-1);
 		box-shadow:
 			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-40)),
+			inset 0 var(--border-width-thin) 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-40) * 100%), transparent),
 			0 0 0 var(--border-width-medium) var(--color-primary);
 	}
 
@@ -79,13 +92,17 @@
 			transform var(--duration-slow) var(--ease-spring),
 			filter var(--duration-normal) var(--ease-out);
 		filter: drop-shadow(
-			0 var(--space-1) var(--space-2) rgba(var(--color-black-rgb), var(--opacity-low))
+			0 var(--space-1) var(--space-2)
+				color-mix(in srgb, var(--color-black) calc(var(--opacity-low) * 100%), transparent)
 		);
 	}
 
 	.theme-toggle:hover :global(svg) {
 		transform: rotate(var(--rotate-12)) scale(var(--scale-110));
-		filter: drop-shadow(0 var(--space-2) var(--space-3) rgba(var(--color-black-rgb), var(--opacity-medium)));
+		filter: drop-shadow(
+			0 var(--space-2) var(--space-3)
+				color-mix(in srgb, var(--color-black) calc(var(--opacity-medium) * 100%), transparent)
+		);
 	}
 
 	/* Smooth theme transition animation */
@@ -95,35 +112,55 @@
 
 	/* Dark mode glassmorphism */
 	:global(html.dark) .theme-toggle {
-		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium));
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
+		background: color-mix(
+			in srgb,
+			var(--color-dark-surface) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 		box-shadow:
 			var(--shadow-md),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-low));
+			inset 0 var(--border-width-thin) 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 	}
 
 	:global(html.dark) .theme-toggle:hover {
-		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium-high));
-		border-color: rgba(var(--color-white-rgb), var(--opacity-medium));
+		background: color-mix(
+			in srgb,
+			var(--color-dark-surface) calc(var(--opacity-medium-high) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 		box-shadow:
 			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-15));
+			inset 0 var(--border-width-thin) 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
 	}
 
 	:global(html.dark) .theme-toggle:active {
 		box-shadow:
 			var(--shadow-sm),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-10));
+			inset 0 var(--border-width-thin) 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 	}
 
 	:global(html.dark) .theme-toggle :global(svg) {
 		filter: drop-shadow(
-			0 var(--space-1) var(--space-2) rgba(var(--color-black-rgb), var(--opacity-medium-high))
+			0 var(--space-1) var(--space-2)
+				color-mix(in srgb, var(--color-black) calc(var(--opacity-medium-high) * 100%), transparent)
 		);
 	}
 
 	:global(html.dark) .theme-toggle:hover :global(svg) {
-		filter: drop-shadow(0 var(--space-2) var(--space-3) rgba(var(--color-black-rgb), var(--opacity-40)));
+		filter: drop-shadow(
+			0 var(--space-2) var(--space-3)
+				color-mix(in srgb, var(--color-black) calc(var(--opacity-40) * 100%), transparent)
+		);
 	}
 
 	/* Enhanced glow effect for theme icons */
@@ -137,12 +174,14 @@
 
 	.theme-toggle:hover :global(svg[data-icon*='moon']) {
 		color: var(--color-text-light);
-		text-shadow: 0 0 var(--space-3) rgba(var(--color-secondary-rgb), var(--opacity-50));
+		text-shadow: 0 0 var(--space-3)
+			color-mix(in srgb, var(--color-secondary) calc(var(--opacity-50) * 100%), transparent);
 	}
 
 	.theme-toggle:hover :global(svg[data-icon*='sun']) {
 		color: var(--color-highlight);
-		text-shadow: 0 0 var(--space-4) rgba(var(--color-highlight-rgb), var(--opacity-60));
+		text-shadow: 0 0 var(--space-4)
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-60) * 100%), transparent);
 	}
 
 	/* Pulse animation on theme change */
@@ -151,19 +190,30 @@
 			transform: scale(var(--scale-100));
 			box-shadow:
 				var(--shadow-md),
-				inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium-high));
+				inset 0 var(--border-width-thin) 0
+					color-mix(
+						in srgb,
+						var(--color-white) calc(var(--opacity-medium-high) * 100%),
+						transparent
+					);
 		}
 		50% {
 			transform: scale(var(--scale-110));
 			box-shadow:
 				var(--shadow-xl),
-				inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-50));
+				inset 0 var(--border-width-thin) 0
+					color-mix(in srgb, var(--color-white) calc(var(--opacity-50) * 100%), transparent);
 		}
 		100% {
 			transform: scale(var(--scale-100));
 			box-shadow:
 				var(--shadow-md),
-				inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium-high));
+				inset 0 var(--border-width-thin) 0
+					color-mix(
+						in srgb,
+						var(--color-white) calc(var(--opacity-medium-high) * 100%),
+						transparent
+					);
 		}
 	}
 

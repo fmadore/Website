@@ -147,7 +147,11 @@
 		margin: var(--space-lg) 0;
 		font-style: italic;
 		color: var(--color-text-light);
-		background: rgba(var(--color-primary-rgb), var(--opacity-low));
+		background: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-low) * 100%),
+			transparent
+		);
 		padding: var(--space-md);
 		border-radius: var(--border-radius);
 	}
@@ -187,7 +191,11 @@
 		outline: var(--border-width-medium) solid var(--color-highlight);
 		outline-offset: var(--space-2xs);
 		box-shadow: 0 0 0 var(--border-width-thick)
-			rgba(var(--color-highlight-rgb), var(--opacity-medium-high));
+			color-mix(
+				in srgb,
+				var(--color-highlight) calc(var(--opacity-medium-high) * 100%),
+				transparent
+			);
 		border-radius: var(--border-radius-sm);
 	}
 

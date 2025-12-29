@@ -187,7 +187,7 @@
 	.lecture-item {
 		/* Enhanced borders */
 		border-left: var(--border-width-thick) solid var(--color-primary);
-		
+
 		/* Balanced spacing - less top padding, more bottom padding */
 		padding: var(--space-md) var(--space-lg) var(--space-lg) var(--space-lg);
 		margin-bottom: var(--space-md);
@@ -234,8 +234,8 @@
 		display: inline-block;
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-accent-rgb), 0.1) 0%,
-			rgba(var(--color-highlight-rgb), 0.05) 100%
+			color-mix(in srgb, var(--color-accent) 10%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 5%, transparent) 100%
 		);
 		color: var(--color-accent);
 		font-size: var(--font-size-xs);
@@ -245,7 +245,8 @@
 		padding: var(--space-2xs) var(--space-xs);
 		border-radius: var(--border-radius-full);
 		margin-left: var(--space-xs);
-		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-medium-high));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium-high) * 100%), transparent);
 	}
 
 	/* Dark mode adaptations */

@@ -130,10 +130,10 @@
 	};
 
 	const publicationTypesForStack = $derived(Object.keys(publicationsByType).sort());
-	
+
 	// Formatted labels for display in the chart
 	const formattedPublicationTypes = $derived(
-		publicationTypesForStack.map(type => formatTypeLabel(type))
+		publicationTypesForStack.map((type) => formatTypeLabel(type))
 	);
 
 	const publicationsPerYearStackedData = $derived(
@@ -156,13 +156,13 @@
 			return Object.entries(yearlyPublicationCounts)
 				.map(([yearStr, counts]) => {
 					const yearData: any = { year: parseInt(yearStr) };
-					
+
 					// Map original type keys to formatted labels
 					types.forEach((originalType, index) => {
 						const formattedType = formattedPublicationTypes[index];
 						yearData[formattedType] = counts[originalType] || 0;
 					});
-					
+
 					return yearData;
 				})
 				.sort((a, b) => a.year - b.year);
@@ -171,7 +171,7 @@
 
 	// Calculate pages per year data
 	type PagesPerYearData = { year: number; pages: number };
-	
+
 	const pagesPerYearData = $derived(
 		(() => {
 			const yearlyPageCounts: Record<number, number> = {};
@@ -198,7 +198,11 @@
 	const collaborationData = $derived(
 		(() => {
 			const collaborations: Record<string, { publications: Set<string> }> = {};
-			const coAuthorConnections: Array<{ source: string; target: string; publications: Set<string> }> = [];
+			const coAuthorConnections: Array<{
+				source: string;
+				target: string;
+				publications: Set<string>;
+			}> = [];
 
 			allPublications.forEach((pub) => {
 				// Get all authors except Frédérick Madore
@@ -233,14 +237,14 @@
 						for (let j = i + 1; j < coAuthors.length; j++) {
 							const author1 = coAuthors[i];
 							const author2 = coAuthors[j];
-							
+
 							// Find or create connection (order-independent)
 							let connection = coAuthorConnections.find(
-								(c) => 
+								(c) =>
 									(c.source === author1 && c.target === author2) ||
 									(c.source === author2 && c.target === author1)
 							);
-							
+
 							if (!connection) {
 								connection = {
 									source: author1,
@@ -249,7 +253,7 @@
 								};
 								coAuthorConnections.push(connection);
 							}
-							
+
 							connection.publications.add(pub.title);
 						}
 					}
@@ -653,7 +657,8 @@
 	.section-divider {
 		margin: var(--space-xl) 0;
 		padding-top: var(--space-lg);
-		border-top: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+		border-top: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
 	}
 
 	.divider-heading {
@@ -674,11 +679,13 @@
 		/* Enhanced glassmorphism with subtle gradient overlay */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
 		transition:
 			transform var(--duration-normal) var(--ease-out),
 			box-shadow var(--duration-normal) var(--ease-out),
@@ -700,9 +707,10 @@
 		box-shadow: var(--shadow-lg);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
 	}
 
@@ -749,15 +757,23 @@
 	:global(html.dark) .placeholder-message {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-highlight-rgb), 0.04) 50%,
-			rgba(var(--color-accent-rgb), 0.06) 100%
+			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 4%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 6%, transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 	}
 
 	:global(html.dark) .section-divider {
-		border-top-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
+		border-top-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 	}
 
 	/* Mobile responsiveness using PostCSS custom media */
@@ -820,7 +836,8 @@
 
 	/* Pagination controls */
 	.pagination-controls {
-		border-top: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+		border-top: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
 		padding-top: var(--space-md);
 	}
 
