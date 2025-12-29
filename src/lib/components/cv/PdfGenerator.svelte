@@ -20,6 +20,13 @@
 	 */
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
+	import {
+		extractRichText,
+		renderRichText,
+		measureRichTextHeight,
+		trimFragments,
+		type TextFragment
+	} from '$lib/utils/pdfRichText';
 
 	let isGenerating = $state(false);
 	let jsPDF: any = $state(null);
@@ -92,16 +99,16 @@
 
 			// Refined spacing system - better visual rhythm
 			const SPACING = {
-				HEADER_BOTTOM: 8, // Space after header block
-				SECTION_TOP: 7, // Space before new section
-				SECTION_BOTTOM: 4, // Space after section heading
-				SUBSECTION_TOP: 5, // Space before subsection
-				SUBSECTION_BOTTOM: 5.5, // Space after subsection heading (increased for better readability)
-				ENTRY_GAP: 3, // Gap between entries
-				LINE_HEIGHT: 4.5, // Standard line height
-				LINE_HEIGHT_TIGHT: 3.8, // Tight line height for multi-line
-				CONTACT_LINE: 4.5, // Contact info line spacing
-				PARAGRAPH_GAP: 2 // Gap between paragraphs in same entry
+				HEADER_BOTTOM: 6, // Space after header block
+				SECTION_TOP: 6, // Space before new section (Increased)
+				SECTION_BOTTOM: 5, // Space after section heading (Increased)
+				SUBSECTION_TOP: 4, // Space before subsection (Increased)
+				SUBSECTION_BOTTOM: 5, // Space after subsection heading (Increased)
+				ENTRY_GAP: 1, // Gap between entries (Tightened)
+				LINE_HEIGHT: 4.5, // Standard line height (Restored)
+				LINE_HEIGHT_TIGHT: 3.8, // Tight line height for multi-line (Restored)
+				CONTACT_LINE: 4.5, // Contact info line spacing (Restored)
+				PARAGRAPH_GAP: 1 // Gap between paragraphs in same entry
 			};
 
 			// Refined color palette - matching website's academic theme
@@ -181,66 +188,7 @@
 
 			// Helper to extract text with visible URLs for external links
 			// This makes the PDF self-contained like a printed academic CV
-			const extractTextWithUrls = (node: Element): string => {
-				let result = '';
-
-				node.childNodes.forEach((child) => {
-					if (child.nodeType === Node.TEXT_NODE) {
-						const text = child.textContent || '';
-						// Check for DOI patterns in plain text (e.g., "DOI: 10.1234/567")
-						// and convert them to clickable format
-						const doiMatch = text.match(/DOI:\s*(10\.\d{4,}\/[^\s]+)/i);
-						if (doiMatch) {
-							const doi = doiMatch[1];
-							result += text.replace(doiMatch[0], `DOI: ${doi} (https://doi.org/${doi})`);
-						} else {
-							result += text;
-						}
-					} else if (child.nodeType === Node.ELEMENT_NODE) {
-						const el = child as Element;
-
-						// Handle anchor tags - append URL for external links
-						if (el.tagName === 'A') {
-							const href = el.getAttribute('href') || '';
-							const linkText = el.textContent?.trim() || '';
-
-							// Skip DOI badge images and empty links
-							if (!linkText || el.classList.contains('doi-link')) {
-								result += linkText;
-							} else if (href.includes('doi.org/')) {
-								// DOI link - extract DOI and show it
-								const doi = href.replace('https://doi.org/', '').replace('http://doi.org/', '');
-								result += `${linkText} (https://doi.org/${doi})`;
-							} else if (href.startsWith('http') || href.startsWith('mailto:')) {
-								// Check if link text is generic (e.g., "[Link]", "Link", "[Listen]", etc.)
-								const isGenericLinkText =
-									/^\[?(link|listen|view|read|download|here|click)\]?$/i.test(linkText);
-
-								if (isGenericLinkText) {
-									// Just show the URL without the generic text
-									result += href;
-								} else {
-									// External link with meaningful text - show both
-									result += `${linkText} (${href})`;
-								}
-							} else {
-								// Internal link - just show text
-								result += linkText;
-							}
-						} else if (el.tagName === 'EM' || el.tagName === 'I') {
-							// Preserve emphasis markers for later processing if needed
-							result += extractTextWithUrls(el);
-						} else if (el.tagName === 'STRONG' || el.tagName === 'B') {
-							result += extractTextWithUrls(el);
-						} else {
-							// Recurse into other elements
-							result += extractTextWithUrls(el);
-						}
-					}
-				});
-
-				return result;
-			};
+			// Rich text extraction is now handled by external utility
 
 			// Enhanced section heading with better styling
 			const addSection = (title: string) => {
@@ -466,19 +414,27 @@
 								if (entries.length === 0) {
 									const simpleEntries = nextElement.querySelectorAll(':scope > div');
 									simpleEntries.forEach((entry) => {
-										const text = extractTextWithUrls(entry).trim();
-										if (text) {
-											checkPageBreak(SPACING.LINE_HEIGHT + SPACING.ENTRY_GAP);
-											pdf.setFontSize(FONT_SIZE.BODY);
-											pdf.setFont('helvetica', 'normal');
-											pdf.setTextColor(...COLORS.TEXT);
-											const lines = pdf.splitTextToSize(text, contentWidth - 5);
-											lines.forEach((line: string, index: number) => {
-												pdf.text(line, margin + 3, yPosition);
-												if (index < lines.length - 1) {
-													yPosition += SPACING.LINE_HEIGHT_TIGHT;
-												}
-											});
+										const fragments = trimFragments(extractRichText(entry));
+										if (fragments.length > 0) {
+											const height =
+												measureRichTextHeight(
+													pdf,
+													fragments,
+													contentWidth - 5,
+													FONT_SIZE.BODY,
+													SPACING.LINE_HEIGHT_TIGHT
+												) + SPACING.LINE_HEIGHT;
+
+											checkPageBreak(height);
+											yPosition = renderRichText(
+												pdf,
+												fragments,
+												margin + 3,
+												yPosition,
+												contentWidth - 5,
+												FONT_SIZE.BODY,
+												SPACING.LINE_HEIGHT_TIGHT
+											);
 											yPosition += SPACING.LINE_HEIGHT;
 										}
 									});
@@ -496,78 +452,91 @@
 										const clone = contentDiv.cloneNode(true) as HTMLElement;
 										const nestedParagraphs = clone.querySelectorAll('p');
 
-										// Store paragraph texts before removing them
-										const paragraphTexts: string[] = [];
+										// Store paragraph fragments
+										const paragraphFragments: any[] = [];
 										nestedParagraphs.forEach((p) => {
-											const text = extractTextWithUrls(p).trim();
-											if (text) {
-												paragraphTexts.push(text);
-											}
+											const fragments = trimFragments(extractRichText(p));
+											if (fragments.length > 0) paragraphFragments.push(fragments);
 											p.remove();
 										});
 
-										// Get ALL remaining text as one continuous string (with URLs)
-										const mainText = extractTextWithUrls(clone).replace(/\s+/g, ' ').trim();
+										// Get main fragments
+										const mainFragments = trimFragments(extractRichText(clone));
 
-										// Calculate total height needed for this entry BEFORE rendering
-										pdf.setFontSize(FONT_SIZE.BODY);
-										const mainLines = mainText
-											? pdf.splitTextToSize(mainText, contentWidth - yearColumnWidth)
-											: [];
-										let estimatedHeight =
-											mainLines.length * SPACING.LINE_HEIGHT_TIGHT + SPACING.LINE_HEIGHT;
+										// Calculate height
+										let estimatedHeight = 0;
+										if (mainFragments.length > 0) {
+											estimatedHeight +=
+												measureRichTextHeight(
+													pdf,
+													mainFragments,
+													contentWidth - yearColumnWidth,
+													FONT_SIZE.BODY,
+													SPACING.LINE_HEIGHT_TIGHT
+												) + SPACING.LINE_HEIGHT;
+										}
 
 										// Add height for nested paragraphs
-										pdf.setFontSize(FONT_SIZE.BODY_SMALL);
-										paragraphTexts.forEach((text) => {
-											const paraLines = pdf.splitTextToSize(text, contentWidth - yearColumnWidth);
+										paragraphFragments.forEach((frags) => {
 											estimatedHeight +=
-												paraLines.length * SPACING.LINE_HEIGHT_TIGHT + SPACING.LINE_HEIGHT_TIGHT;
+												measureRichTextHeight(
+													pdf,
+													frags,
+													contentWidth - yearColumnWidth,
+													FONT_SIZE.BODY_SMALL,
+													SPACING.LINE_HEIGHT_TIGHT
+												) + SPACING.LINE_HEIGHT_TIGHT;
 										});
 
 										estimatedHeight += SPACING.ENTRY_GAP;
-
-										// Check if entire entry fits on current page
 										checkPageBreak(estimatedHeight);
 
-										// Year column - bold primary color
+										// Year column
 										pdf.setFontSize(FONT_SIZE.BODY);
 										pdf.setFont('helvetica', 'bold');
 										pdf.setTextColor(...COLORS.PRIMARY);
 										pdf.text(year, margin + 2, yPosition);
 										pdf.setTextColor(...COLORS.TEXT);
 
-										if (mainText) {
-											pdf.setFontSize(FONT_SIZE.BODY);
-											pdf.setFont('helvetica', 'normal');
-											const lines = pdf.splitTextToSize(mainText, contentWidth - yearColumnWidth);
-											lines.forEach((line: string, index: number) => {
-												pdf.text(line, margin + yearColumnWidth, yPosition);
-												if (index < lines.length - 1) {
-													yPosition += SPACING.LINE_HEIGHT_TIGHT;
-												}
-											});
-											// Use tighter spacing if there are nested paragraphs (like "Reviewed in...")
-											// to avoid "big blank space" perceived by user
+										// Render main text
+										if (mainFragments.length > 0) {
+											yPosition = renderRichText(
+												pdf,
+												mainFragments,
+												margin + yearColumnWidth,
+												yPosition,
+												contentWidth - yearColumnWidth,
+												FONT_SIZE.BODY,
+												SPACING.LINE_HEIGHT_TIGHT
+											);
+
 											const spacingAfter =
-												paragraphTexts.length > 0 ? SPACING.LINE_HEIGHT_TIGHT : SPACING.LINE_HEIGHT;
+												paragraphFragments.length > 0
+													? SPACING.LINE_HEIGHT_TIGHT
+													: SPACING.LINE_HEIGHT;
 											yPosition += spacingAfter;
 										}
 
-										// Add nested paragraphs (dissertation, details, reviews) on separate lines
-										paragraphTexts.forEach((text, idx) => {
-											pdf.setFontSize(FONT_SIZE.BODY_SMALL);
-											pdf.setFont('helvetica', 'italic');
+										// Render nested paragraphs (reviews, etc) - Force Italic/Gray style
+										paragraphFragments.forEach((frags) => {
 											pdf.setTextColor(...COLORS.TEXT_LIGHT);
-											const lines = pdf.splitTextToSize(text, contentWidth - yearColumnWidth);
-											lines.forEach((line: string, index: number) => {
-												pdf.text(line, margin + yearColumnWidth, yPosition);
-												if (index < lines.length - 1) {
-													yPosition += SPACING.LINE_HEIGHT_TIGHT;
-												}
+											// Force italic for "Review in..." style paragraphs
+											frags.forEach((f: any) => {
+												if (f.style === 'normal') f.style = 'italic';
+												else if (f.style === 'bold') f.style = 'bolditalic';
 											});
+
+											yPosition = renderRichText(
+												pdf,
+												frags,
+												margin + yearColumnWidth,
+												yPosition,
+												contentWidth - yearColumnWidth,
+												FONT_SIZE.BODY_SMALL,
+												SPACING.LINE_HEIGHT_TIGHT
+											);
+
 											pdf.setTextColor(...COLORS.TEXT);
-											// Add spacing after each paragraph
 											yPosition += SPACING.LINE_HEIGHT_TIGHT;
 										});
 
@@ -632,74 +601,86 @@
 									const clone = contentDiv.cloneNode(true) as HTMLElement;
 									const nestedParagraphs = clone.querySelectorAll('p');
 
-									// Store paragraph texts before removing them
-									const paragraphTexts: string[] = [];
+									// Store paragraph fragments
+									const paragraphFragments: any[] = [];
 									nestedParagraphs.forEach((p) => {
-										const text = extractTextWithUrls(p).trim();
-										if (text) {
-											paragraphTexts.push(text);
-										}
+										const fragments = trimFragments(extractRichText(p));
+										if (fragments.length > 0) paragraphFragments.push(fragments);
 										p.remove();
 									});
 
-									// Get ALL remaining text as one continuous string (with URLs)
-									const mainText = extractTextWithUrls(clone).replace(/\s+/g, ' ').trim();
+									// Get main fragments
+									const mainFragments = trimFragments(extractRichText(clone));
 
-									// Calculate total height needed for this entry BEFORE rendering
-									pdf.setFontSize(FONT_SIZE.BODY);
-									const mainLines = mainText
-										? pdf.splitTextToSize(mainText, contentWidth - currentColumnWidth)
-										: [];
-									let estimatedHeight =
-										mainLines.length * SPACING.LINE_HEIGHT_TIGHT + SPACING.LINE_HEIGHT;
+									// Calculate height
+									let estimatedHeight = 0;
+									if (mainFragments.length > 0) {
+										estimatedHeight +=
+											measureRichTextHeight(
+												pdf,
+												mainFragments,
+												contentWidth - currentColumnWidth,
+												FONT_SIZE.BODY,
+												SPACING.LINE_HEIGHT_TIGHT
+											) + SPACING.LINE_HEIGHT;
+									}
 
 									// Add height for nested paragraphs
-									pdf.setFontSize(FONT_SIZE.BODY_SMALL);
-									paragraphTexts.forEach((text) => {
-										const paraLines = pdf.splitTextToSize(text, contentWidth - currentColumnWidth);
+									paragraphFragments.forEach((frags) => {
 										estimatedHeight +=
-											paraLines.length * SPACING.LINE_HEIGHT_TIGHT + SPACING.LINE_HEIGHT_TIGHT;
+											measureRichTextHeight(
+												pdf,
+												frags,
+												contentWidth - currentColumnWidth,
+												FONT_SIZE.BODY_SMALL,
+												SPACING.LINE_HEIGHT_TIGHT
+											) + SPACING.LINE_HEIGHT_TIGHT;
 									});
 
 									estimatedHeight += SPACING.ENTRY_GAP;
-
-									// Check if entire entry fits on current page
 									checkPageBreak(estimatedHeight);
 
-									// Year column (or Category label)
+									// Year/Category column
 									pdf.setFontSize(FONT_SIZE.BODY);
 									pdf.setFont('helvetica', 'bold');
 									pdf.setTextColor(...COLORS.PRIMARY);
 									pdf.text(year, margin + 2, yPosition);
 									pdf.setTextColor(...COLORS.TEXT);
 
-									if (mainText) {
-										pdf.setFontSize(FONT_SIZE.BODY);
-										pdf.setFont('helvetica', 'normal');
-										const lines = pdf.splitTextToSize(mainText, contentWidth - currentColumnWidth);
-										lines.forEach((line: string, index: number) => {
-											pdf.text(line, margin + currentColumnWidth, yPosition);
-											if (index < lines.length - 1) {
-												yPosition += SPACING.LINE_HEIGHT_TIGHT;
-											}
-										});
+									// Render main text
+									if (mainFragments.length > 0) {
+										yPosition = renderRichText(
+											pdf,
+											mainFragments,
+											margin + currentColumnWidth,
+											yPosition,
+											contentWidth - currentColumnWidth,
+											FONT_SIZE.BODY,
+											SPACING.LINE_HEIGHT_TIGHT
+										);
 										yPosition += SPACING.LINE_HEIGHT;
 									}
 
-									// Add nested paragraphs (dissertation, details) on separate lines
-									paragraphTexts.forEach((text, idx) => {
-										pdf.setFontSize(FONT_SIZE.BODY_SMALL);
-										pdf.setFont('helvetica', 'italic');
+									// Render nested paragraphs
+									paragraphFragments.forEach((frags) => {
 										pdf.setTextColor(...COLORS.TEXT_LIGHT);
-										const lines = pdf.splitTextToSize(text, contentWidth - currentColumnWidth);
-										lines.forEach((line: string, index: number) => {
-											pdf.text(line, margin + currentColumnWidth, yPosition);
-											if (index < lines.length - 1) {
-												yPosition += SPACING.LINE_HEIGHT_TIGHT;
-											}
+										// Force italic for "Review in..." style paragraphs
+										frags.forEach((f: any) => {
+											if (f.style === 'normal') f.style = 'italic';
+											else if (f.style === 'bold') f.style = 'bolditalic';
 										});
+
+										yPosition = renderRichText(
+											pdf,
+											frags,
+											margin + currentColumnWidth,
+											yPosition,
+											contentWidth - currentColumnWidth,
+											FONT_SIZE.BODY_SMALL,
+											SPACING.LINE_HEIGHT_TIGHT
+										);
+
 										pdf.setTextColor(...COLORS.TEXT);
-										// Add spacing after each paragraph
 										yPosition += SPACING.LINE_HEIGHT_TIGHT;
 									});
 
@@ -707,31 +688,61 @@
 								} else {
 									// Layout without year column (Languages, Computer Skills, etc.)
 									const label = firstDiv.textContent?.trim() || '';
-									const value = extractTextWithUrls(contentDiv).trim();
+									const valueFragments = trimFragments(extractRichText(contentDiv));
 
-									if (label || value) {
+									if (label || valueFragments.length > 0) {
 										pdf.setFontSize(FONT_SIZE.BODY);
 										pdf.setFont('helvetica', 'bold');
 										pdf.setTextColor(...COLORS.PRIMARY);
+
+										// Render Label
 										const labelLines = pdf.splitTextToSize(label, yearColumnWidth);
 										labelLines.forEach((line: string, index: number) => {
 											pdf.text(line, margin + 2, yPosition + index * SPACING.LINE_HEIGHT_TIGHT);
 										});
+
+										const labelHeight = labelLines.length * SPACING.LINE_HEIGHT_TIGHT;
 										pdf.setTextColor(...COLORS.TEXT);
 
-										pdf.setFont('helvetica', 'normal');
-										const valueLines = pdf.splitTextToSize(value, contentWidth - yearColumnWidth);
-										valueLines.forEach((line: string, index: number) => {
-											if (index > 0) checkPageBreak(10);
-											pdf.text(
-												line,
-												margin + yearColumnWidth,
-												yPosition + index * SPACING.LINE_HEIGHT_TIGHT
+										// Render Value (Rich Text)
+										let valueHeight = 0;
+										if (valueFragments.length > 0) {
+											valueHeight = measureRichTextHeight(
+												pdf,
+												valueFragments,
+												contentWidth - yearColumnWidth,
+												FONT_SIZE.BODY,
+												SPACING.LINE_HEIGHT_TIGHT
 											);
-										});
-										yPosition +=
-											Math.max(labelLines.length, valueLines.length) * SPACING.LINE_HEIGHT_TIGHT +
-											SPACING.SUBSECTION_TOP;
+
+											checkPageBreak(Math.max(labelHeight, valueHeight) + SPACING.ENTRY_GAP);
+
+											// Re-render label if page break happened?
+											// checkPageBreak usually adds page and resets yPosition.
+											// But here we rendered label *before* checkPageBreak logic in strict sense?
+											// Actually checkPageBreak checks if there is space.
+											// The logic above renders label, then checks page break for value? That's risky.
+											// Better: Check max height first, THEN render both.
+
+											// Reworking calculation order:
+											// already calculated labelHeight.
+											// already calculated valueHeight.
+											// checkPageBreak(Math.max(labelHeight, valueHeight))
+											// render label
+											// render value
+
+											renderRichText(
+												pdf,
+												valueFragments,
+												margin + yearColumnWidth,
+												yPosition,
+												contentWidth - yearColumnWidth,
+												FONT_SIZE.BODY,
+												SPACING.LINE_HEIGHT_TIGHT
+											);
+										}
+
+										yPosition += Math.max(labelHeight, valueHeight) + SPACING.SUBSECTION_TOP;
 									}
 								}
 							}
@@ -743,16 +754,29 @@
 
 						const contentElements = paragraphs.length > 0 ? paragraphs : divs;
 						contentElements.forEach((elem) => {
-							const text = extractTextWithUrls(elem).trim();
-							if (text && !text.includes('No ') && text.length > 5) {
-								pdf.setFontSize(FONT_SIZE.BODY);
-								pdf.setFont('helvetica', 'normal');
-								const lines = pdf.splitTextToSize(text, contentWidth - 5);
-								lines.forEach((line: string) => {
-									checkPageBreak(10);
-									pdf.text(line, margin + 3, yPosition);
-									yPosition += SPACING.LINE_HEIGHT;
-								});
+							const fragments = trimFragments(extractRichText(elem));
+							const totalText = fragments.map((f) => f.text).join('');
+
+							if (totalText && !totalText.includes('No ') && totalText.length > 5) {
+								const height = measureRichTextHeight(
+									pdf,
+									fragments,
+									contentWidth - 5,
+									FONT_SIZE.BODY,
+									SPACING.LINE_HEIGHT
+								);
+
+								checkPageBreak(height + SPACING.LINE_HEIGHT); // ensure space
+
+								yPosition = renderRichText(
+									pdf,
+									fragments,
+									margin + 3,
+									yPosition,
+									contentWidth - 5,
+									FONT_SIZE.BODY,
+									SPACING.LINE_HEIGHT
+								);
 								yPosition += SPACING.SUBSECTION_TOP;
 							}
 						});
@@ -760,16 +784,33 @@
 						// Also check for list items (nested ul in affiliations, etc.)
 						const items = section.querySelectorAll('li');
 						items.forEach((item) => {
-							const text = extractTextWithUrls(item).trim();
-							if (text) {
-								pdf.setFontSize(FONT_SIZE.BODY_SMALL);
-								pdf.setFont('helvetica', 'normal');
-								const lines = pdf.splitTextToSize('• ' + text, contentWidth - 10);
-								lines.forEach((line: string) => {
-									checkPageBreak(10);
-									pdf.text(line, margin + 8, yPosition);
-									yPosition += SPACING.LINE_HEIGHT_TIGHT;
-								});
+							const fragments = trimFragments(extractRichText(item));
+							if (fragments.length > 0) {
+								// Add bullet point
+								const bulletFragments: TextFragment[] = [
+									{ text: '• ', style: 'normal' },
+									...fragments
+								];
+
+								const height = measureRichTextHeight(
+									pdf,
+									bulletFragments,
+									contentWidth - 10,
+									FONT_SIZE.BODY_SMALL,
+									SPACING.LINE_HEIGHT_TIGHT
+								);
+
+								checkPageBreak(height + 1);
+
+								yPosition = renderRichText(
+									pdf,
+									bulletFragments,
+									margin + 8,
+									yPosition,
+									contentWidth - 10,
+									FONT_SIZE.BODY_SMALL,
+									SPACING.LINE_HEIGHT_TIGHT
+								);
 								yPosition += 1;
 							}
 						});
