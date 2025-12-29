@@ -443,7 +443,8 @@
 				if (subsections.length > 0) {
 					subsections.forEach((h4) => {
 						// Check if we need a new page before subsection
-						checkPageBreak(25);
+						// Increased to 50 to prevent subheaders from appearing alone at the bottom
+						checkPageBreak(50);
 
 						yPosition += SPACING.SUBSECTION_TOP;
 
