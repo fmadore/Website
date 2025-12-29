@@ -10,9 +10,9 @@
 	margin-bottom: var(--space-xl);
 	/* Enhanced glassmorphism with subtle gradient overlay to match ProfileBanner and ContentBody */
 	background: linear-gradient(135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-highlight-rgb), 0.025) 50%,
-			rgba(var(--color-accent-rgb), 0.015) 100%);
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 2.5%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 1.5%, transparent) 100%);
 }
 
 /* Hover effects for glassmorphism - consistent with ContentBody */
@@ -20,14 +20,14 @@
 	transform: var(--transform-lift-sm);
 	/* Enhanced hover effect with stronger gradient */
 	background: linear-gradient(135deg,
-			rgba(var(--color-primary-rgb), 0.06) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), 0.025) 100%);
+			color-mix(in srgb, var(--color-primary) 6%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 2.5%, transparent) 100%);
 }
 
 .panel-header {
 	padding: 0 0 var(--space-lg) 0;
-	border-bottom: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+	border-bottom: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
 	background: transparent;
 	position: relative;
 }
@@ -67,7 +67,7 @@
 
 .panel-footer {
 	padding: var(--space-lg) 0 0 0;
-	border-top: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+	border-top: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
 	background: transparent;
 	margin-top: var(--space-lg);
 }
@@ -95,7 +95,7 @@
 
 .view-all-container {
 	padding: var(--space-lg) 0 0 0;
-	border-top: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+	border-top: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
 	margin-top: var(--space-lg);
 	text-align: center;
 }
@@ -106,32 +106,32 @@
 .panel-activities {
 	/* Slightly different gradient for activities */
 	background: linear-gradient(135deg,
-			rgba(var(--color-success-rgb), 0.03) 0%,
-			rgba(var(--color-highlight-rgb), 0.025) 50%,
-			rgba(var(--color-primary-rgb), 0.015) 100%);
+			color-mix(in srgb, var(--color-success) 3%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 2.5%, transparent) 50%,
+			color-mix(in srgb, var(--color-primary) 1.5%, transparent) 100%);
 }
 
 .panel-activities:hover {
 	background: linear-gradient(135deg,
-			rgba(var(--color-success-rgb), 0.05) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-primary-rgb), 0.025) 100%);
+			color-mix(in srgb, var(--color-success) 5%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-primary) 2.5%, transparent) 100%);
 }
 
 /* Items Panel Specific */
 .panel-items {
 	/* Slightly different gradient for items */
 	background: linear-gradient(135deg,
-			rgba(var(--color-accent-rgb), 0.03) 0%,
-			rgba(var(--color-highlight-rgb), 0.025) 50%,
-			rgba(var(--color-primary-rgb), 0.015) 100%);
+			color-mix(in srgb, var(--color-accent) 3%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 2.5%, transparent) 50%,
+			color-mix(in srgb, var(--color-primary) 1.5%, transparent) 100%);
 }
 
 .panel-items:hover {
 	background: linear-gradient(135deg,
-			rgba(var(--color-accent-rgb), 0.05) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-primary-rgb), 0.025) 100%);
+			color-mix(in srgb, var(--color-accent) 5%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-primary) 2.5%, transparent) 100%);
 }
 
 /* Filter and container styling for Button components */
@@ -186,44 +186,44 @@
 /* Dark mode overrides - harmonized with glassmorphism utilities */
 :global(html.dark) .panel {
 	background: linear-gradient(135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-highlight-rgb), 0.05) 50%,
-			rgba(var(--color-accent-rgb), 0.03) 100%);
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 5%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 3%, transparent) 100%);
 }
 
 :global(html.dark) .panel:hover {
 	background: linear-gradient(135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
-			rgba(var(--color-accent-rgb), 0.05) 100%);
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 5%, transparent) 100%);
 }
 
 :global(html.dark) .panel-activities {
 	background: linear-gradient(135deg,
-			rgba(var(--color-success-rgb), 0.06) 0%,
-			rgba(var(--color-highlight-rgb), 0.05) 50%,
-			rgba(var(--color-primary-rgb), 0.03) 100%);
+			color-mix(in srgb, var(--color-success) 6%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 5%, transparent) 50%,
+			color-mix(in srgb, var(--color-primary) 3%, transparent) 100%);
 }
 
 :global(html.dark) .panel-activities:hover {
 	background: linear-gradient(135deg,
-			rgba(var(--color-success-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
-			rgba(var(--color-primary-rgb), 0.05) 100%);
+			color-mix(in srgb, var(--color-success) calc(var(--opacity-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-primary) 5%, transparent) 100%);
 }
 
 :global(html.dark) .panel-items {
 	background: linear-gradient(135deg,
-			rgba(var(--color-accent-rgb), 0.06) 0%,
-			rgba(var(--color-highlight-rgb), 0.05) 50%,
-			rgba(var(--color-primary-rgb), 0.03) 100%);
+			color-mix(in srgb, var(--color-accent) 6%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 5%, transparent) 50%,
+			color-mix(in srgb, var(--color-primary) 3%, transparent) 100%);
 }
 
 :global(html.dark) .panel-items:hover {
 	background: linear-gradient(135deg,
-			rgba(var(--color-accent-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
-			rgba(var(--color-primary-rgb), 0.05) 100%);
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-primary) 5%, transparent) 100%);
 }
 
 /* Responsive design */

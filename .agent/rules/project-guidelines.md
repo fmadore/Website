@@ -91,6 +91,18 @@ When writing Svelte code, use Context7 MCP to fetch up-to-date Svelte 5 document
 > [!CAUTION]
 > **NEVER** use `var()` in media queries - it's invalid CSS.
 
+### Transparent Colors (color-mix)
+
+Use `color-mix()` instead of `rgba(var(--*-rgb), opacity)` for transparent colors:
+
+```css
+/* ✅ Preferred - uses color directly */
+background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+border: 1px solid color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
+
+/* ❌ Deprecated - requires separate -rgb variable */
+background: rgba(var(--color-primary-rgb), 0.1);
+
 ## Glassmorphism Classes
 
 | Class                       | Use For                  |
