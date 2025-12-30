@@ -151,7 +151,7 @@ export function createPersonSchema(): PersonSchema {
 		worksFor: {
 			'@type': 'Organization',
 			name: `${address.institution} (${address.institutionAbbreviation})`,
-			url: 'https://www.zmo.de/en'
+			url: address.institutionUrl
 		},
 		sameAs: [
 			socialLinks.linkedIn.url,

@@ -58,7 +58,7 @@ export const load: PageLoad = () => {
 			// Used worksFor key
 			'@type': 'Organization',
 			name: `${address.institution} (${address.institutionAbbreviation})`,
-			url: 'https://www.zmo.de/en' // Added affiliation URL
+			url: address.institutionUrl
 		},
 		workLocation: {
 			// Added work location

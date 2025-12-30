@@ -15,6 +15,7 @@ export interface SocialLink {
 export interface Address {
     institution: string;
     institutionAbbreviation: string;
+    institutionUrl: string;
     street: string;
     postalCode: string;
     city: string;
@@ -40,6 +41,7 @@ export const author: AuthorInfo = {
 export const address: Address = {
     institution: 'Leibniz-Zentrum Moderner Orient',
     institutionAbbreviation: 'ZMO',
+    institutionUrl: 'https://www.zmo.de/en',
     street: 'Kirchweg 33',
     postalCode: '14129',
     city: 'Berlin',
