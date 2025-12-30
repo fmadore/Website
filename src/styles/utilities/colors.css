@@ -116,31 +116,31 @@
 
 /* Background with opacity */
 .bg-primary-10 {
-	background-color: rgba(var(--color-primary-rgb), 0.1);
+	background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
 }
 
 .bg-primary-20 {
-	background-color: rgba(var(--color-primary-rgb), 0.2);
+	background-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
 }
 
 .bg-primary-50 {
-	background-color: rgba(var(--color-primary-rgb), 0.5);
+	background-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
 }
 
 .bg-highlight-10 {
-	background-color: rgba(var(--color-highlight-rgb), 0.1);
+	background-color: color-mix(in srgb, var(--color-highlight) 10%, transparent);
 }
 
 .bg-highlight-20 {
-	background-color: rgba(var(--color-highlight-rgb), 0.2);
+	background-color: color-mix(in srgb, var(--color-highlight) 20%, transparent);
 }
 
 .bg-success-10 {
-	background-color: rgba(var(--color-success-rgb), 0.1);
+	background-color: color-mix(in srgb, var(--color-success) 10%, transparent);
 }
 
 .bg-success-20 {
-	background-color: rgba(var(--color-success-rgb), 0.2);
+	background-color: color-mix(in srgb, var(--color-success) 20%, transparent);
 }
 
 /* Border colors */

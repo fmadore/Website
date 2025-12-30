@@ -86,8 +86,8 @@
 	.enhanced-page-header {
 		background: radial-gradient(
 			circle at 20% 20%,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 35%,
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 35%,
 			var(--color-surface) 65%,
 			var(--color-background) 100%
 		);
@@ -95,7 +95,8 @@
 		box-shadow: var(--shadow-md);
 		/* Mobile-first padding */
 		padding: var(--space-6) var(--space-4);
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
 		/* Mobile-first margin */
 		margin-bottom: var(--space-4);
 	}
@@ -121,13 +122,26 @@
 		gap: var(--space-1);
 		padding: var(--space-2) var(--space-3);
 		border-radius: var(--border-radius-md);
-		background: rgba(var(--color-primary-rgb), var(--opacity-low));
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium));
+		background: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-low) * 100%),
+			transparent
+		);
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent);
 	}
 
 	.back-link:hover {
-		background: rgba(var(--color-primary-rgb), var(--opacity-medium));
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		background: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium-high) * 100%),
+			transparent
+		);
 		transform: translateX(calc(-1 * var(--space-3xs)));
 	}
 
@@ -144,7 +158,7 @@
 		border-radius: var(--border-radius-full);
 		box-shadow: var(--shadow-sm);
 		border: var(--border-width-thin) solid
-			rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent);
 	}
 
 	.header-date {
@@ -153,7 +167,11 @@
 		font-weight: var(--font-weight-medium);
 		white-space: nowrap;
 		padding: var(--space-2) var(--space-3);
-		background: rgba(var(--color-surface-rgb), var(--opacity-high));
+		background: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-high) * 100%),
+			transparent
+		);
 		border-radius: var(--border-radius-md);
 		/* Fixed missing variable */
 		border: var(--border-width-thin) solid var(--color-border);
@@ -202,27 +220,51 @@
 	:global(html.dark) .enhanced-page-header {
 		background: radial-gradient(
 			circle at 20% 20%,
-			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-low)) 35%,
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-low) * 100%), transparent) 35%,
 			var(--color-dark-surface-alt) 65%,
 			var(--color-dark-surface-deep) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 		box-shadow: var(--shadow-lg);
 	}
 
 	:global(html.dark) .back-link {
-		background: rgba(var(--color-primary-rgb), var(--opacity-medium));
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		background: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium-high) * 100%),
+			transparent
+		);
 	}
 
 	:global(html.dark) .back-link:hover {
-		background: rgba(var(--color-primary-rgb), var(--opacity-medium));
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		background: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium-high) * 100%),
+			transparent
+		);
 	}
 
 	:global(html.dark) .header-date {
-		background: rgba(var(--color-dark-surface-rgb), var(--opacity-high));
+		background: color-mix(
+			in srgb,
+			var(--color-dark-surface) calc(var(--opacity-high) * 100%),
+			transparent
+		);
 		/* Fixed missing variable */
 		border-color: var(--color-border-dark);
 	}

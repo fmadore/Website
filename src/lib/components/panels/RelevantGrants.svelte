@@ -104,7 +104,7 @@
 
 	.grant-item {
 		padding: var(--space-sm) 0;
-		border-bottom: 1px solid rgba(var(--color-primary-rgb), 0.1);
+		border-bottom: 1px solid color-mix(in srgb, var(--color-primary) 10%, transparent);
 	}
 
 	.grant-item:last-child {
@@ -153,7 +153,7 @@
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-medium);
 		color: var(--color-accent);
-		background: rgba(var(--color-accent-rgb), 0.1);
+		background: color-mix(in srgb, var(--color-accent) 10%, transparent);
 		padding: var(--space-2xs) var(--space-xs);
 		border-radius: var(--border-radius-sm);
 	}
@@ -165,12 +165,12 @@
 	}
 
 	.status-awarded {
-		background: rgba(var(--color-success-rgb), 0.1);
+		background: color-mix(in srgb, var(--color-success) 10%, transparent);
 		color: var(--color-success);
 	}
 
 	.status-other {
-		background: rgba(var(--color-text-rgb), 0.1);
+		background: color-mix(in srgb, var(--color-text) 10%, transparent);
 		color: var(--color-text-muted);
 	}
 
@@ -198,7 +198,7 @@
 	}
 
 	:global(html.dark) .grant-item {
-		border-bottom-color: rgba(var(--color-primary-rgb), 0.15);
+		border-bottom-color: color-mix(in srgb, var(--color-primary) 15%, transparent);
 	}
 
 	/* Responsive adjustments */

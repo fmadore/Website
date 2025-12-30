@@ -20,9 +20,7 @@
 		showIcon?: boolean;
 	} = $props();
 
-	const containerClass = $derived(
-		`project-years project-years--${variant}`.trim()
-	);
+	const containerClass = $derived(`project-years project-years--${variant}`.trim());
 </script>
 
 <div class={containerClass}>
@@ -64,11 +62,12 @@
 		padding: var(--space-3) var(--space-4);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-accent-rgb), 0.05) 100%
+			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
+			color-mix(in srgb, var(--color-accent) 5%, transparent) 100%
 		);
 		border-radius: var(--border-radius-lg);
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
 		box-shadow: var(--shadow-sm);
 		backdrop-filter: blur(8px);
 		-webkit-backdrop-filter: blur(8px);
@@ -77,17 +76,25 @@
 	.project-years--default:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.12) 0%,
-			rgba(var(--color-accent-rgb), 0.08) 100%
+			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
+			color-mix(in srgb, var(--color-accent) 8%, transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 		box-shadow: var(--shadow-md);
 	}
 
 	/* Compact variant - minimal styling */
 	.project-years--compact {
 		padding: var(--space-2) var(--space-3);
-		background: rgba(var(--color-surface-rgb), var(--opacity-high));
+		background: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-high) * 100%),
+			transparent
+		);
 		border-radius: var(--border-radius-md);
 		border: var(--border-width-thin) solid var(--color-border);
 	}
@@ -156,23 +163,35 @@
 	:global(html.dark) .project-years--default {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.15) 0%,
-			rgba(var(--color-accent-rgb), 0.1) 100%
+			color-mix(in srgb, var(--color-primary) 15%, transparent) 0%,
+			color-mix(in srgb, var(--color-accent) 10%, transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 	}
 
 	:global(html.dark) .project-years--default:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.2) 0%,
-			rgba(var(--color-accent-rgb), 0.15) 100%
+			color-mix(in srgb, var(--color-primary) 20%, transparent) 0%,
+			color-mix(in srgb, var(--color-accent) 15%, transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium-high) * 100%),
+			transparent
+		);
 	}
 
 	:global(html.dark) .project-years--compact {
-		background: rgba(var(--color-dark-surface-rgb), var(--opacity-high));
+		background: color-mix(
+			in srgb,
+			var(--color-dark-surface) calc(var(--opacity-high) * 100%),
+			transparent
+		);
 		border-color: var(--color-border-dark);
 	}
 

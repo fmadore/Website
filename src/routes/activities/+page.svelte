@@ -75,10 +75,7 @@
 					<ul class="year-list">
 						{#each years as year (year)}
 							<li class="year-list-item">
-								<a
-									href="{base}/activities/year/{year}"
-									class="year-link"
-								>
+								<a href="{base}/activities/year/{year}" class="year-link">
 									<span class="year-label">{year}</span>
 									<span class="year-count">
 										{getCountByYear(year)}
@@ -118,7 +115,8 @@
 				</div>
 
 				<p class="activities-count">
-					Showing {activityList.length} {activityList.length === 1 ? 'activity' : 'activities'}
+					Showing {activityList.length}
+					{activityList.length === 1 ? 'activity' : 'activities'}
 				</p>
 
 				{#if activityList.length > 0}
@@ -131,7 +129,13 @@
 					<div class="empty-state">
 						<p>No activities found{selectedTag ? ` with the tag "${selectedTag}"` : ''}.</p>
 						{#if selectedTag}
-							<Button variant="primary" size="sm" onclick={clearTagFilter} additionalClasses="mt-4" label="View all activities" />
+							<Button
+								variant="primary"
+								size="sm"
+								onclick={clearTagFilter}
+								additionalClasses="mt-4"
+								label="View all activities"
+							/>
 						{/if}
 					</div>
 				{/if}
@@ -145,13 +149,14 @@
 	.year-sidebar {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.03) 0%,
-			rgba(var(--color-highlight-rgb), 0.02) 50%,
-			rgba(var(--color-accent-rgb), 0.01) 100%
+			color-mix(in srgb, var(--color-primary) 3%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 2%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 1%, transparent) 100%
 		);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-20));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-20) * 100%), transparent);
 		border-radius: var(--border-radius-md);
 		padding: var(--space-4);
 		box-shadow: var(--shadow-primary), var(--shadow-inner);
@@ -211,8 +216,12 @@
 	}
 
 	.year-link:hover {
-		background: rgba(var(--color-primary-rgb), 0.08);
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-20));
+		background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-20) * 100%),
+			transparent
+		);
 		color: var(--color-primary);
 	}
 
@@ -237,13 +246,21 @@
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-muted);
-		background: rgba(var(--color-primary-rgb), var(--opacity-10));
+		background: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-10) * 100%),
+			transparent
+		);
 		border-radius: var(--border-radius-full);
 		transition: all var(--anim-duration-fast) var(--anim-ease-base);
 	}
 
 	.year-link:hover .year-count {
-		background: rgba(var(--color-primary-rgb), var(--opacity-20));
+		background: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-20) * 100%),
+			transparent
+		);
 		color: var(--color-primary);
 	}
 
@@ -297,32 +314,43 @@
 	:global(html.dark) .year-sidebar {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.06) 0%,
-			rgba(var(--color-highlight-rgb), 0.04) 50%,
-			rgba(var(--color-accent-rgb), 0.02) 100%
+			color-mix(in srgb, var(--color-primary) 6%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 4%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 2%, transparent) 100%
 		);
-		border-color: rgba(var(--color-white-rgb), var(--opacity-10));
+		border-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--opacity-10) * 100%),
+			transparent
+		);
 		box-shadow:
-			0 8px 32px 0 rgba(var(--color-black-rgb), var(--opacity-30)),
+			0 8px 32px 0
+				color-mix(in srgb, var(--color-black) calc(var(--opacity-30) * 100%), transparent),
 			var(--shadow-inner);
 	}
 
 	:global(html.dark) .year-sidebar:hover {
 		box-shadow:
-			0 12px 40px 0 rgba(var(--color-black-rgb), var(--opacity-40)),
+			0 12px 40px 0
+				color-mix(in srgb, var(--color-black) calc(var(--opacity-40) * 100%), transparent),
 			var(--shadow-inner);
 	}
 
 	:global(html.dark) .year-link:hover {
-		background: rgba(var(--color-primary-rgb), 0.12);
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-30));
+		background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-30) * 100%),
+			transparent
+		);
 	}
 
 	/* RSS Section in sidebar */
 	.rss-section {
 		margin-top: var(--space-4);
 		padding-top: var(--space-4);
-		border-top: var(--border-width-thin) solid rgba(var(--color-border-rgb), 0.3);
+		border-top: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-border) 30%, transparent);
 	}
 
 	.rss-subscribe-link {
@@ -334,10 +362,10 @@
 		padding: var(--space-3) var(--space-4);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.1) 0%,
-			rgba(var(--color-accent-rgb), 0.05) 100%
+			color-mix(in srgb, var(--color-primary) 10%, transparent) 0%,
+			color-mix(in srgb, var(--color-accent) 5%, transparent) 100%
 		);
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), 0.2);
+		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 20%, transparent);
 		border-radius: var(--border-radius-md);
 		color: var(--color-primary);
 		font-weight: var(--font-weight-medium);
@@ -349,10 +377,10 @@
 	.rss-subscribe-link:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.15) 0%,
-			rgba(var(--color-accent-rgb), 0.1) 100%
+			color-mix(in srgb, var(--color-primary) 15%, transparent) 0%,
+			color-mix(in srgb, var(--color-accent) 10%, transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), 0.4);
+		border-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
 		transform: translateY(-1px);
 		box-shadow: var(--shadow-sm);
 	}
@@ -366,19 +394,19 @@
 	:global(html.dark) .rss-subscribe-link {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.15) 0%,
-			rgba(var(--color-accent-rgb), 0.08) 100%
+			color-mix(in srgb, var(--color-primary) 15%, transparent) 0%,
+			color-mix(in srgb, var(--color-accent) 8%, transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), 0.3);
+		border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
 	}
 
 	:global(html.dark) .rss-subscribe-link:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.2) 0%,
-			rgba(var(--color-accent-rgb), 0.12) 100%
+			color-mix(in srgb, var(--color-primary) 20%, transparent) 0%,
+			color-mix(in srgb, var(--color-accent) 12%, transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), 0.5);
+		border-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
 	}
 
 	/* Responsive adjustments */

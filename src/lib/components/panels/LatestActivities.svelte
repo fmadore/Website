@@ -134,14 +134,32 @@
 			border-color var(--duration-normal) var(--ease-out),
 			box-shadow var(--duration-normal) var(--ease-out);
 		/* Use glass-card utility for consistent glassmorphism */
-		background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light));
+		background: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--card-glass-opacity-light) * 100%),
+			transparent
+		);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		border: var(--border-width-thin) solid
-			rgba(var(--color-white-rgb), var(--card-glass-border-light));
+			color-mix(
+				in srgb,
+				var(--color-white) calc(var(--card-glass-border-light) * 100%),
+				transparent
+			);
 		box-shadow:
-			0 8px 32px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-light));
+			0 8px 32px 0
+				color-mix(
+					in srgb,
+					rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity) * 100%),
+					transparent
+				),
+			inset 0 1px 0
+				color-mix(
+					in srgb,
+					var(--color-white) calc(var(--card-glass-inset-light) * 100%),
+					transparent
+				);
 	}
 
 	.activity-item::before {
@@ -163,11 +181,29 @@
 
 	.activity-item:hover {
 		transform: var(--transform-lift-sm);
-		background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light-hover));
-		border-color: rgba(var(--color-white-rgb), var(--card-glass-border-light-hover));
+		background: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--card-glass-opacity-light-hover) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--card-glass-border-light-hover) * 100%),
+			transparent
+		);
 		box-shadow:
-			0 12px 40px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity-hover)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-light-hover));
+			0 12px 40px 0
+				color-mix(
+					in srgb,
+					rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity-hover) * 100%),
+					transparent
+				),
+			inset 0 1px 0
+				color-mix(
+					in srgb,
+					var(--color-white) calc(var(--card-glass-inset-light-hover) * 100%),
+					transparent
+				);
 	}
 
 	.activity-meta {
@@ -199,26 +235,26 @@
 
 	.activity-type[data-type='publication'] {
 		color: var(--color-primary);
-		background-color: rgba(var(--color-primary-rgb), 0.1);
-		border-color: rgba(var(--color-primary-rgb), 0.2);
+		background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+		border-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
 	}
 
 	.activity-type[data-type='conference'] {
 		color: var(--color-accent);
-		background-color: rgba(var(--color-accent-rgb), 0.1);
-		border-color: rgba(var(--color-accent-rgb), 0.2);
+		background-color: color-mix(in srgb, var(--color-accent) 10%, transparent);
+		border-color: color-mix(in srgb, var(--color-accent) 20%, transparent);
 	}
 
 	.activity-type[data-type='workshop'] {
 		color: var(--color-highlight);
-		background-color: rgba(var(--color-highlight-rgb), 0.1);
-		border-color: rgba(var(--color-highlight-rgb), 0.2);
+		background-color: color-mix(in srgb, var(--color-highlight) 10%, transparent);
+		border-color: color-mix(in srgb, var(--color-highlight) 20%, transparent);
 	}
 
 	.activity-type[data-type='grant'] {
 		color: var(--color-success);
-		background-color: rgba(var(--color-success-rgb), 0.1);
-		border-color: rgba(var(--color-success-rgb), 0.2);
+		background-color: color-mix(in srgb, var(--color-success) 10%, transparent);
+		border-color: color-mix(in srgb, var(--color-success) 20%, transparent);
 	}
 
 	.activity-date {
@@ -254,25 +290,65 @@
 
 	/* Dark mode overrides for activity-specific elements */
 	:global(html.dark) .activity-item {
-		background: rgba(var(--color-black-rgb), var(--card-glass-opacity-dark));
+		background: color-mix(
+			in srgb,
+			var(--color-black) calc(var(--card-glass-opacity-dark) * 100%),
+			transparent
+		);
 		border: var(--border-width-thin) solid
-			rgba(var(--color-white-rgb), var(--card-glass-border-dark));
+			color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-dark) * 100%), transparent);
 		box-shadow:
-			0 8px 32px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-dark));
+			0 8px 32px 0
+				color-mix(
+					in srgb,
+					rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity) * 100%),
+					transparent
+				),
+			inset 0 1px 0
+				color-mix(
+					in srgb,
+					var(--color-white) calc(var(--card-glass-inset-dark) * 100%),
+					transparent
+				);
 	}
 
 	:global(html.dark) .activity-item:hover {
-		background: rgba(var(--color-black-rgb), var(--card-glass-opacity-dark-hover));
-		border-color: rgba(var(--color-white-rgb), var(--card-glass-border-dark-hover));
+		background: color-mix(
+			in srgb,
+			var(--color-black) calc(var(--card-glass-opacity-dark-hover) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--card-glass-border-dark-hover) * 100%),
+			transparent
+		);
 		box-shadow:
-			0 12px 40px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity-hover)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-dark-hover));
+			0 12px 40px 0
+				color-mix(
+					in srgb,
+					rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity-hover) * 100%),
+					transparent
+				),
+			inset 0 1px 0
+				color-mix(
+					in srgb,
+					var(--color-white) calc(var(--card-glass-inset-dark-hover) * 100%),
+					transparent
+				);
 	}
 
 	:global(html.dark) .activity-type {
-		background-color: rgba(var(--color-success-rgb), var(--opacity-medium));
-		border-color: rgba(var(--color-success-rgb), var(--opacity-medium-high));
+		background-color: color-mix(
+			in srgb,
+			var(--color-success) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-success) calc(var(--opacity-medium-high) * 100%),
+			transparent
+		);
 	}
 
 	/* Responsive design */

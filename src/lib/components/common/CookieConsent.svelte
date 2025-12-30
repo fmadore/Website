@@ -60,17 +60,20 @@
 		/* Enhanced glassmorphism following design system */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
 		border-radius: var(--border-radius-xl);
 		box-shadow:
-			0 var(--space-xs) var(--space-xl) 0 rgba(var(--color-primary-rgb), var(--opacity-20)),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium));
+			0 var(--space-xs) var(--space-xl) 0 color-mix(in srgb, var(--color-primary) 20%, transparent),
+			inset 0 var(--border-width-thin) 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
 
 		/* Smooth transitions */
 		transition: all var(--anim-duration-fast) var(--anim-ease-base);
@@ -81,14 +84,21 @@
 		transform: var(--transform-lift-sm);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
-		border-color: rgba(var(--color-white-rgb), var(--opacity-medium-high));
+		border-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--opacity-medium-high) * 100%),
+			transparent
+		);
 		box-shadow:
-			0 var(--space-sm) var(--space-xl-tight) 0 rgba(var(--color-primary-rgb), var(--opacity-medium)),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-medium-high));
+			0 var(--space-sm) var(--space-xl-tight) 0
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent),
+			inset 0 var(--border-width-thin) 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium-high) * 100%), transparent);
 	}
 
 	.cookie-content {
@@ -124,27 +134,30 @@
 	:global(html.dark) .cookie-banner {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-10));
+		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) 10%, transparent);
 		box-shadow:
-			0 var(--space-xs) var(--space-xl) 0 rgba(var(--color-black-rgb), var(--opacity-medium-high)),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-10));
+			0 var(--space-xs) var(--space-xl) 0
+				color-mix(in srgb, var(--color-black) calc(var(--opacity-medium-high) * 100%), transparent),
+			inset 0 var(--border-width-thin) 0 color-mix(in srgb, var(--color-white) 10%, transparent);
 	}
 
 	:global(html.dark) .cookie-banner:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
-		border-color: rgba(var(--color-white-rgb), var(--opacity-20));
+		border-color: color-mix(in srgb, var(--color-white) 20%, transparent);
 		box-shadow:
-			0 var(--space-sm) var(--space-xl-tight) 0 rgba(var(--color-black-rgb), var(--opacity-high)),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-20));
+			0 var(--space-sm) var(--space-xl-tight) 0
+				color-mix(in srgb, var(--color-black) calc(var(--opacity-high) * 100%), transparent),
+			inset 0 var(--border-width-thin) 0 color-mix(in srgb, var(--color-white) 20%, transparent);
 	}
 
 	/* Slide up animation */
@@ -204,11 +217,11 @@
 	/* Fallback for browsers without backdrop-filter support */
 	@supports not (backdrop-filter: blur(var(--glass-blur-amount))) {
 		.cookie-banner {
-			background: rgba(var(--color-white-rgb), var(--opacity-95));
+			background: color-mix(in srgb, var(--color-white) 95%, transparent);
 		}
 
 		:global(html.dark) .cookie-banner {
-			background: rgba(var(--color-black-rgb), var(--opacity-90));
+			background: color-mix(in srgb, var(--color-black) 90%, transparent);
 		}
 	}
 </style>

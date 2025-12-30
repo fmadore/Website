@@ -218,11 +218,7 @@
 	};
 </script>
 
-<div
-	class="media-player {glassEffect} scroll-reveal"
-	role="region"
-	aria-label="Media Player"
->
+<div class="media-player {glassEffect} scroll-reveal" role="region" aria-label="Media Player">
 	{#if title}
 		<div class="player-header">
 			<h3 class="player-title">{title}</h3>
@@ -435,7 +431,7 @@
 								style="
 									--volume-percentage: {(isMuted ? 0 : volume) * 100}%;
 									--slider-color: {isMuted ? 'var(--color-danger)' : 'var(--color-primary)'};
-									background: linear-gradient(to right, var(--slider-color) 0%, var(--slider-color) var(--volume-percentage), rgba(var(--color-text-rgb), 0.2) var(--volume-percentage), rgba(var(--color-text-rgb), 0.2) 100%);
+									background: linear-gradient(to right, var(--slider-color) 0%, var(--slider-color) var(--volume-percentage), color-mix(in srgb, var(--color-text) 20%, transparent) var(--volume-percentage), color-mix(in srgb, var(--color-text) 20%, transparent) 100%);
 								"
 								aria-label="Volume"
 							/>
@@ -495,9 +491,9 @@
 			bottom: 0;
 			background: linear-gradient(
 				135deg,
-				rgba(var(--color-primary-rgb), var(--opacity-5)) 0%,
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
 				transparent 50%,
-				rgba(var(--color-accent-rgb), var(--opacity-5)) 100%
+				color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
 			);
 			border-radius: var(--border-radius-xl);
 			pointer-events: none;
@@ -522,7 +518,7 @@
 	}
 
 	.error-message {
-		background: rgba(var(--color-danger-rgb), var(--opacity-5));
+		background: color-mix(in srgb, var(--color-danger) calc(var(--opacity-5) * 100%), transparent);
 		border: var(--border-width-thin) solid var(--color-danger);
 		border-radius: var(--border-radius);
 		padding: var(--space-4);
@@ -559,8 +555,8 @@
 		padding: var(--space-4);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-5)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
 		min-height: 120px;
 		border-radius: var(--border-radius-lg);
@@ -578,18 +574,19 @@
 			background:
 				radial-gradient(
 					circle at 25% 25%,
-					rgba(var(--color-white-rgb), var(--opacity-5)) 0%,
+					color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent) 0%,
 					transparent 50%
 				),
 				radial-gradient(
 					circle at 75% 75%,
-					rgba(var(--color-highlight-rgb), var(--opacity-5)) 0%,
+					color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 0%,
 					transparent 50%
 				),
 				linear-gradient(
 					45deg,
 					transparent 30%,
-					rgba(var(--color-accent-rgb), var(--opacity-very-low)) 70%
+					color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent)
+						70%
 				);
 			pointer-events: none;
 		}
@@ -599,7 +596,8 @@
 			transform: translateY(-3px);
 			box-shadow:
 				var(--shadow-lg),
-				0 0 40px rgba(var(--color-primary-rgb), var(--opacity-10));
+				0 0 40px
+					color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
 		}
 	}
 
@@ -654,8 +652,8 @@
 		height: 50px;
 		background: radial-gradient(
 			circle,
-			rgba(var(--color-primary-rgb), var(--opacity-10)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-5)) 70%,
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 70%,
 			transparent 100%
 		);
 		border-radius: var(--border-radius-full);
@@ -665,15 +663,16 @@
 	.audio-icon {
 		position: relative;
 		color: var(--color-primary);
-		background: rgba(var(--color-white-rgb), var(--opacity-90));
+		background: color-mix(in srgb, var(--color-white) calc(var(--opacity-90) * 100%), transparent);
 		border-radius: var(--border-radius-full);
 		padding: var(--space-2);
 		backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-20));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
 		transition: all var(--duration-normal) var(--ease-out);
 		box-shadow:
 			var(--shadow-sm),
-			0 0 20px rgba(var(--color-primary-rgb), var(--opacity-10));
+			0 0 20px color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
 	}
 
 	.audio-icon:hover {
@@ -681,7 +680,7 @@
 		color: var(--color-accent);
 		box-shadow:
 			var(--shadow-lg),
-			0 0 30px rgba(var(--color-accent-rgb), var(--opacity-20));
+			0 0 30px color-mix(in srgb, var(--color-accent) calc(var(--opacity-20) * 100%), transparent);
 	}
 
 	@keyframes pulse {
@@ -732,24 +731,24 @@
 	.audio-description a:hover {
 		color: var(--color-accent);
 		text-decoration: underline;
-		text-shadow: 0 1px 3px rgba(var(--color-black-rgb), 0.8);
+		text-shadow: 0 1px 3px color-mix(in srgb, var(--color-black) 80%, transparent);
 		transform: translateY(-1px);
 	}
 
 	/* Dark mode specific adjustments for audio description */
 	:global(html.dark) .audio-description {
 		color: var(--color-white);
-		text-shadow: 0 1px 3px rgba(var(--color-black-rgb), 0.7);
+		text-shadow: 0 1px 3px color-mix(in srgb, var(--color-black) 70%, transparent);
 	}
 
 	:global(html.dark) .audio-description a {
 		color: var(--color-white);
-		text-shadow: 0 1px 3px rgba(var(--color-black-rgb), 0.8);
+		text-shadow: 0 1px 3px color-mix(in srgb, var(--color-black) 80%, transparent);
 	}
 
 	:global(html.dark) .audio-description a:hover {
 		color: var(--color-accent);
-		text-shadow: 0 1px 4px rgba(var(--color-black-rgb), 0.9);
+		text-shadow: 0 1px 4px color-mix(in srgb, var(--color-black) 90%, transparent);
 	}
 
 	/* Floating particles */
@@ -799,7 +798,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: rgba(var(--color-black-rgb), var(--opacity-50));
+		background: color-mix(in srgb, var(--color-black) calc(var(--opacity-50) * 100%), transparent);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		border-radius: var(--border-radius-lg);
 	}
@@ -807,8 +806,14 @@
 	.loading-spinner {
 		width: var(--space-10);
 		height: var(--space-10);
-		border: var(--border-width-thick) solid rgba(var(--color-primary-rgb), var(--opacity-10));
+		border: var(--border-width-thick) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
 		border-top: var(--border-width-thick) solid var(--color-primary);
+		border-left: var(--border-width-thick) solid var(--color-primary);
+		border-bottom: var(--border-width-thick) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
+		border-right: var(--border-width-thick) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
 		border-radius: var(--border-radius-full);
 		animation: spin var(--duration-slow) linear infinite;
 	}
@@ -826,18 +831,24 @@
 		position: relative;
 
 		/* Modern control panel design */
-		background: rgba(var(--color-surface-rgb), var(--opacity-95));
+		background: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-95) * 100%),
+			transparent
+		);
 		backdrop-filter: blur(var(--glass-blur-fallback));
-		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-20));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-border) calc(var(--opacity-20) * 100%), transparent);
 		border-radius: var(--border-radius-lg);
 		padding: var(--space-3);
 		margin: var(--space-1) 0 0 0;
 
 		/* Elegant shadow system */
 		box-shadow:
-			0 4px 20px rgba(var(--color-black-rgb), var(--opacity-5)),
-			0 1px 3px rgba(var(--color-black-rgb), var(--opacity-10)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-10));
+			0 4px 20px color-mix(in srgb, var(--color-black) calc(var(--opacity-5) * 100%), transparent),
+			0 1px 3px color-mix(in srgb, var(--color-black) calc(var(--opacity-10) * 100%), transparent),
+			inset 0 1px 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 
 		/* Subtle academic refinement */
 		&::before {
@@ -850,7 +861,7 @@
 			background: linear-gradient(
 				90deg,
 				transparent 0%,
-				rgba(var(--color-accent-rgb), var(--opacity-20)) 50%,
+				color-mix(in srgb, var(--color-accent) calc(var(--opacity-20) * 100%), transparent) 50%,
 				transparent 100%
 			);
 		}
@@ -859,11 +870,17 @@
 		transition: all var(--duration-normal) var(--ease-out);
 
 		&:hover {
-			background: rgba(var(--color-surface-rgb), var(--opacity-98));
+			background: color-mix(
+				in srgb,
+				var(--color-surface) calc(var(--opacity-98) * 100%),
+				transparent
+			);
 			box-shadow:
-				0 8px 32px rgba(var(--color-black-rgb), var(--opacity-10)),
-				0 2px 8px rgba(var(--color-black-rgb), var(--opacity-15)),
-				inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-15));
+				0 8px 32px
+					color-mix(in srgb, var(--color-black) calc(var(--opacity-10) * 100%), transparent),
+				0 2px 8px color-mix(in srgb, var(--color-black) calc(var(--opacity-15) * 100%), transparent),
+				inset 0 1px 0
+					color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
 		}
 	}
 
@@ -877,22 +894,24 @@
 	.progress-bar {
 		position: relative;
 		height: 6px;
-		background: rgba(var(--color-text-rgb), var(--opacity-10));
+		background: color-mix(in srgb, var(--color-text) calc(var(--opacity-10) * 100%), transparent);
 		border-radius: var(--border-radius-full);
 		cursor: pointer;
 		transition: all var(--duration-normal) var(--ease-out);
 		overflow: hidden;
 
 		/* Subtle inner glow */
-		box-shadow: inset 0 1px 2px rgba(var(--color-black-rgb), var(--opacity-10));
+		box-shadow: inset 0 1px 2px
+			color-mix(in srgb, var(--color-black) calc(var(--opacity-10) * 100%), transparent);
 	}
 
 	.progress-bar:hover {
 		height: 8px;
-		background: rgba(var(--color-text-rgb), var(--opacity-15));
+		background: color-mix(in srgb, var(--color-text) calc(var(--opacity-15) * 100%), transparent);
 		box-shadow:
-			inset 0 1px 3px rgba(var(--color-black-rgb), var(--opacity-15)),
-			0 2px 8px rgba(var(--color-primary-rgb), var(--opacity-20));
+			inset 0 1px 3px
+				color-mix(in srgb, var(--color-black) calc(var(--opacity-15) * 100%), transparent),
+			0 2px 8px color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
 	}
 
 	.progress-bar:focus-visible {
@@ -911,8 +930,9 @@
 
 		/* Elegant glow effect */
 		box-shadow:
-			0 0 8px rgba(var(--color-primary-rgb), var(--opacity-30)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-20));
+			0 0 8px color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent),
+			inset 0 1px 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-20) * 100%), transparent);
 	}
 
 	.progress-thumb {
@@ -928,7 +948,7 @@
 		transition: all var(--duration-normal) var(--ease-out);
 		box-shadow:
 			var(--shadow-sm),
-			0 0 0 4px rgba(var(--color-primary-rgb), var(--opacity-20));
+			0 0 0 4px color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
 	}
 
 	.progress-bar:hover .progress-thumb {
@@ -936,7 +956,7 @@
 		transform: translate(-50%, -50%) scale(1.1);
 		box-shadow:
 			var(--shadow-primary),
-			0 0 0 6px rgba(var(--color-primary-rgb), var(--opacity-30));
+			0 0 0 6px color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
 	}
 
 	.time-display {
@@ -983,27 +1003,39 @@
 		cursor: pointer !important;
 
 		/* Modern glassmorphism design */
-		background: rgba(var(--color-surface-rgb), var(--opacity-90)) !important;
+		background: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-90) * 100%),
+			transparent
+		) !important;
 		backdrop-filter: blur(var(--glass-blur-fallback)) !important;
-		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-30)) !important;
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-border) calc(var(--opacity-30) * 100%), transparent) !important;
 		border-radius: var(--border-radius-lg) !important;
 
 		/* Elegant shadows */
 		box-shadow:
-			0 2px 8px rgba(var(--color-black-rgb), var(--opacity-5)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-15)) !important;
+			0 2px 8px color-mix(in srgb, var(--color-black) calc(var(--opacity-5) * 100%), transparent),
+			inset 0 1px 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent) !important;
 
 		/* Smooth interactions */
 		transition: all var(--duration-normal) var(--ease-out) !important;
 
 		&:hover {
-			background: rgba(var(--color-surface-rgb), var(--opacity-95)) !important;
-			border-color: rgba(var(--color-primary-rgb), var(--opacity-40)) !important;
+			border-color: color-mix(
+				in srgb,
+				var(--color-primary) calc(var(--opacity-40) * 100%),
+				transparent
+			) !important;
 			transform: translateY(-1px) scale(1.02) !important;
 			box-shadow:
-				0 4px 16px rgba(var(--color-black-rgb), var(--opacity-10)),
-				0 2px 8px rgba(var(--color-primary-rgb), var(--opacity-20)),
-				inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-20)) !important;
+				0 4px 16px
+					color-mix(in srgb, var(--color-black) calc(var(--opacity-10) * 100%), transparent),
+				0 2px 8px
+					color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent),
+				inset 0 1px 0
+					color-mix(in srgb, var(--color-white) calc(var(--opacity-20) * 100%), transparent) !important;
 		}
 
 		&:active {
@@ -1045,24 +1077,39 @@
 		gap: var(--space-3);
 
 		/* Refined container */
-		background: rgba(var(--color-surface-rgb), var(--opacity-50));
-		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-20));
+		background: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-50) * 100%),
+			transparent
+		);
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-border) calc(var(--opacity-20) * 100%), transparent);
 		border-radius: var(--border-radius-lg);
 		padding: var(--space-2) var(--space-3);
 		backdrop-filter: blur(var(--glass-blur-amount));
 
 		/* Subtle inner glow */
-		box-shadow: inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-10));
+		box-shadow: inset 0 1px 0
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 
 		transition: all var(--duration-normal) var(--ease-out);
 	}
 
 	.volume-controls:hover {
-		background: rgba(var(--color-surface-rgb), var(--opacity-70));
-		border-color: rgba(var(--color-accent-rgb), var(--opacity-30));
+		background: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-70) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-accent) calc(var(--opacity-30) * 100%),
+			transparent
+		);
 		box-shadow:
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-15)),
-			0 2px 8px rgba(var(--color-accent-rgb), var(--opacity-10));
+			inset 0 1px 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent),
+			0 2px 8px color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent);
 	}
 
 	.volume-slider-container {
@@ -1074,7 +1121,8 @@
 	.volume-slider {
 		width: var(--space-20);
 		height: 6px;
-		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-20));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-border) calc(var(--opacity-20) * 100%), transparent);
 		border-radius: var(--border-radius-full);
 		outline: none;
 		appearance: none;
@@ -1084,16 +1132,22 @@
 		/* Enhanced styling with glassmorphism */
 		backdrop-filter: blur(4px);
 		box-shadow:
-			inset 0 1px 3px rgba(var(--color-black-rgb), var(--opacity-10)),
-			0 1px 2px rgba(var(--color-white-rgb), var(--opacity-10));
+			inset 0 1px 3px
+				color-mix(in srgb, var(--color-black) calc(var(--opacity-10) * 100%), transparent),
+			0 1px 2px color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 	}
 
 	.volume-slider:hover {
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-40));
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-40) * 100%),
+			transparent
+		);
 		box-shadow:
-			inset 0 1px 3px rgba(var(--color-black-rgb), var(--opacity-15)),
-			0 2px 4px rgba(var(--color-primary-rgb), var(--opacity-10)),
-			0 1px 2px rgba(var(--color-white-rgb), var(--opacity-15));
+			inset 0 1px 3px
+				color-mix(in srgb, var(--color-black) calc(var(--opacity-15) * 100%), transparent),
+			0 2px 4px color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent),
+			0 1px 2px color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
 		transform: scaleY(1.2);
 	}
 
@@ -1106,8 +1160,8 @@
 		cursor: pointer;
 		border: var(--border-width-medium) solid var(--color-white);
 		box-shadow:
-			0 2px 4px rgba(var(--color-black-rgb), var(--opacity-20)),
-			0 0 0 2px rgba(var(--color-primary-rgb), var(--opacity-20));
+			0 2px 4px color-mix(in srgb, var(--color-black) calc(var(--opacity-20) * 100%), transparent),
+			0 0 0 2px color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
 		transition: all var(--duration-normal) var(--ease-out);
 	}
 
@@ -1115,8 +1169,8 @@
 		background: var(--color-accent);
 		transform: scale(1.1);
 		box-shadow:
-			0 4px 8px rgba(var(--color-black-rgb), var(--opacity-30)),
-			0 0 0 3px rgba(var(--color-accent-rgb), var(--opacity-30));
+			0 4px 8px color-mix(in srgb, var(--color-black) calc(var(--opacity-30) * 100%), transparent),
+			0 0 0 3px color-mix(in srgb, var(--color-accent) calc(var(--opacity-30) * 100%), transparent);
 	}
 
 	.volume-slider::-moz-range-thumb {
@@ -1127,8 +1181,8 @@
 		cursor: pointer;
 		border: var(--border-width-medium) solid var(--color-white);
 		box-shadow:
-			0 2px 4px rgba(var(--color-black-rgb), var(--opacity-20)),
-			0 0 0 2px rgba(var(--color-primary-rgb), var(--opacity-20));
+			0 2px 4px color-mix(in srgb, var(--color-black) calc(var(--opacity-20) * 100%), transparent),
+			0 0 0 2px color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
 		transition: all var(--duration-normal) var(--ease-out);
 	}
 
@@ -1136,8 +1190,8 @@
 		background: var(--color-accent);
 		transform: scale(1.1);
 		box-shadow:
-			0 4px 8px rgba(var(--color-black-rgb), var(--opacity-30)),
-			0 0 0 3px rgba(var(--color-accent-rgb), var(--opacity-30));
+			0 4px 8px color-mix(in srgb, var(--color-black) calc(var(--opacity-30) * 100%), transparent),
+			0 0 0 3px color-mix(in srgb, var(--color-accent) calc(var(--opacity-30) * 100%), transparent);
 	}
 
 	/* Responsive design */
@@ -1279,7 +1333,7 @@
 	/* High contrast mode support */
 	@media (prefers-contrast: high) {
 		.progress-bar {
-			background: rgba(var(--color-text-rgb), var(--opacity-50));
+			background: color-mix(in srgb, var(--color-text) calc(var(--opacity-50) * 100%), transparent);
 		}
 
 		.progress-fill {
@@ -1298,19 +1352,31 @@
 		&::before {
 			background: linear-gradient(
 				135deg,
-				rgba(var(--color-primary-rgb), var(--opacity-10)) 0%,
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
 				transparent 50%,
-				rgba(var(--color-accent-rgb), var(--opacity-10)) 100%
+				color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent) 100%
 			);
 		}
 	}
 
 	:global(html.dark) .player-controls {
-		background: rgba(var(--color-surface-rgb), var(--opacity-90));
-		border-color: rgba(var(--color-border-rgb), var(--opacity-30));
+		background: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-90) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-border) calc(var(--opacity-30) * 100%),
+			transparent
+		);
 
 		&:hover {
-			background: rgba(var(--color-surface-rgb), var(--opacity-95));
+			background: color-mix(
+				in srgb,
+				var(--color-surface) calc(var(--opacity-95) * 100%),
+				transparent
+			);
 		}
 	}
 
@@ -1318,33 +1384,42 @@
 		/* More vibrant and energetic in dark mode */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-10)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-10)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent) 100%
 		);
 
 		&::before {
 			background:
 				radial-gradient(
 					circle at 25% 25%,
-					rgba(var(--color-accent-rgb), var(--opacity-5)) 0%,
+					color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 0%,
 					transparent 60%
 				),
 				radial-gradient(
 					circle at 75% 75%,
-					rgba(var(--color-highlight-rgb), var(--opacity-10)) 0%,
+					color-mix(in srgb, var(--color-highlight) calc(var(--opacity-10) * 100%), transparent) 0%,
 					transparent 60%
 				),
 				linear-gradient(
 					45deg,
 					transparent 30%,
-					rgba(var(--color-primary-rgb), var(--opacity-very-low)) 70%
+					color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent)
+						70%
 				);
 		}
 	}
 
 	:global(html.dark) .audio-icon {
-		background: rgba(var(--color-surface-rgb), var(--opacity-90));
-		border-color: rgba(var(--color-accent-rgb), var(--opacity-30));
+		background: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-90) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-accent) calc(var(--opacity-30) * 100%),
+			transparent
+		);
 	}
 
 	:global(html.dark) .progress-fill {
@@ -1353,22 +1428,54 @@
 	}
 
 	:global(html.dark .control-btn) {
-		background: rgba(var(--color-surface-rgb), var(--opacity-80)) !important;
-		border-color: rgba(var(--color-border-rgb), var(--opacity-40)) !important;
+		background: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-80) * 100%),
+			transparent
+		) !important;
+		border-color: color-mix(
+			in srgb,
+			var(--color-border) calc(var(--opacity-40) * 100%),
+			transparent
+		) !important;
 
 		&:hover {
-			background: rgba(var(--color-surface-rgb), var(--opacity-95)) !important;
-			border-color: rgba(var(--color-accent-rgb), var(--opacity-50)) !important;
+			background: color-mix(
+				in srgb,
+				var(--color-surface) calc(var(--opacity-95) * 100%),
+				transparent
+			) !important;
+			border-color: color-mix(
+				in srgb,
+				var(--color-accent) calc(var(--opacity-50) * 100%),
+				transparent
+			) !important;
 		}
 	}
 
 	:global(html.dark) .volume-controls {
-		background: rgba(var(--color-surface-rgb), var(--opacity-60));
-		border-color: rgba(var(--color-border-rgb), var(--opacity-30));
+		background: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-60) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-border) calc(var(--opacity-30) * 100%),
+			transparent
+		);
 
 		&:hover {
-			background: rgba(var(--color-surface-rgb), var(--opacity-80));
-			border-color: rgba(var(--color-accent-rgb), var(--opacity-40));
+			background: color-mix(
+				in srgb,
+				var(--color-surface) calc(var(--opacity-80) * 100%),
+				transparent
+			);
+			border-color: color-mix(
+				in srgb,
+				var(--color-accent) calc(var(--opacity-40) * 100%),
+				transparent
+			);
 		}
 	}
 </style>

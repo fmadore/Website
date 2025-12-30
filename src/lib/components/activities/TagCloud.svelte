@@ -114,7 +114,7 @@
 		text-decoration: none;
 		border-radius: var(--border-radius-full);
 		transition: all var(--anim-duration-fast) var(--anim-ease-base);
-		background: rgba(var(--color-primary-rgb), var(--opacity-5));
+		background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent);
 		font-weight: var(--font-weight-medium);
 		line-height: 1.2;
 		max-width: 100%;
@@ -131,7 +131,11 @@
 	}
 
 	.tag-cloud-item:hover {
-		background: rgba(var(--color-primary-rgb), var(--opacity-10));
+		background: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-10) * 100%),
+			transparent
+		);
 		color: var(--color-primary-dark);
 		transform: scale(1.05);
 	}
@@ -149,10 +153,18 @@
 
 	/* Dark mode support */
 	:global(html.dark) .tag-cloud-item {
-		background: rgba(var(--color-primary-rgb), var(--opacity-10));
+		background: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-10) * 100%),
+			transparent
+		);
 	}
 
 	:global(html.dark) .tag-cloud-item:hover {
-		background: rgba(var(--color-primary-rgb), var(--opacity-20));
+		background: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-20) * 100%),
+			transparent
+		);
 	}
 </style>

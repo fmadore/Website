@@ -71,9 +71,10 @@
 		/* Subtle layered gradient echoing other glass components */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 55%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				55%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
 		position: relative;
 	}
@@ -91,7 +92,8 @@
 		align-items: baseline;
 		gap: var(--space-md);
 		padding: var(--space-sm) var(--space-xs);
-		border-bottom: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-low));
+		border-bottom: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-border) calc(var(--opacity-low) * 100%), transparent);
 		position: relative;
 	}
 
@@ -108,7 +110,8 @@
 
 		/* Add right border to left column items */
 		.detail-item:nth-child(odd) {
-			border-right: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-low));
+			border-right: var(--border-width-thin) solid
+				color-mix(in srgb, var(--color-border) calc(var(--opacity-low) * 100%), transparent);
 		}
 
 		/* Remove bottom border from last row items */
@@ -166,19 +169,27 @@
 	:global(html.dark) .details-grid {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-highlight-rgb), 0.04) 55%,
-			rgba(var(--color-accent-rgb), 0.06) 100%
+			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 4%, transparent) 55%,
+			color-mix(in srgb, var(--color-accent) 6%, transparent) 100%
 		);
 	}
 
 	:global(html.dark) .detail-item {
-		border-bottom-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
+		border-bottom-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--opacity-very-low) * 100%),
+			transparent
+		);
 	}
 
 	@media (--md) {
 		:global(html.dark) .detail-item:nth-child(odd) {
-			border-right-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
+			border-right-color: color-mix(
+				in srgb,
+				var(--color-white) calc(var(--opacity-very-low) * 100%),
+				transparent
+			);
 		}
 	}
 

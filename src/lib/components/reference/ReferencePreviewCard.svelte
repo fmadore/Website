@@ -74,7 +74,7 @@
 		// Use requestAnimationFrame to measure after browser layout/paint
 		requestAnimationFrame(() => {
 			if (!cardElement || !referenceElement) return;
-			
+
 			const refRect = referenceElement.getBoundingClientRect();
 			const cardWidth = cardElement.offsetWidth;
 			const cardHeight = cardElement.offsetHeight;
@@ -111,7 +111,7 @@
 
 			// Determine if we should position above or below
 			shouldPositionBelow = spaceAbove < cardHeight + margin && spaceBelow > spaceAbove;
-			
+
 			if (shouldPositionBelow) {
 				// Check if it fits below, otherwise constrain height
 				if (spaceBelow < cardHeight + margin) {
@@ -220,7 +220,13 @@
 				{:else if itemType === 'communication'}
 					{#if item.type}
 						<p class="card-meta">
-							<span class="meta-label">{item.type === 'event' ? 'Event' : item.type === 'podcast' ? 'Podcast' : 'Communication'}</span>
+							<span class="meta-label"
+								>{item.type === 'event'
+									? 'Event'
+									: item.type === 'podcast'
+										? 'Podcast'
+										: 'Communication'}</span
+							>
 						</p>
 					{/if}
 					{#if item.type === 'event'}
@@ -293,21 +299,26 @@
 		/* Premium glass background with subtle gradients */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-white-rgb), 0.98) 0%,
-			rgba(var(--color-white-rgb), 0.97) 50%,
-			rgba(var(--color-white-rgb), 0.98) 100%
+			color-mix(in srgb, var(--color-white) 98%, transparent) 0%,
+			color-mix(in srgb, var(--color-white) 97%, transparent) 50%,
+			color-mix(in srgb, var(--color-white) 98%, transparent) 100%
 		);
 
 		/* Refined border with subtle shimmer effect */
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-20));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
 		border-radius: var(--border-radius-2xl);
 
 		/* Enhanced shadow system with multiple layers for depth */
 		box-shadow:
-			0 20px 60px -15px rgba(var(--color-primary-rgb), var(--opacity-15)),
-			0 10px 30px -10px rgba(var(--color-primary-rgb), var(--opacity-10)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-40)),
-			inset 0 -1px 0 rgba(var(--color-primary-rgb), var(--opacity-5));
+			0 20px 60px -15px
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent),
+			0 10px 30px -10px
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent),
+			inset 0 1px 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-40) * 100%), transparent),
+			inset 0 -1px 0
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent);
 
 		/* Initial state for animation using design system tokens */
 		opacity: 0;
@@ -330,43 +341,57 @@
 	.preview-card.card-clicked {
 		transform: translateX(-50%) translateY(calc(-1 * var(--space-xs))) scale(1.02);
 		box-shadow:
-			0 25px 80px -20px rgba(var(--color-primary-rgb), var(--opacity-25)),
-			0 15px 40px -15px rgba(var(--color-primary-rgb), var(--opacity-15)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-50));
-		border-color: rgba(var(--color-primary-rgb), 0.35);
+			0 25px 80px -20px
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-25) * 100%), transparent),
+			0 15px 40px -15px
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent),
+			inset 0 1px 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-50) * 100%), transparent);
+		border-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
 	}
 
 	/* Enhanced dark mode styles with sophisticated depth */
 	:global(html.dark) .preview-card {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-alt-rgb), 0.98) 0%,
-			rgba(var(--color-dark-surface-alt-rgb), 0.97) 50%,
-			rgba(var(--color-dark-surface-alt-rgb), 0.98) 100%
+			color-mix(in srgb, var(--color-dark-surface-alt) 98%, transparent) 0%,
+			color-mix(in srgb, var(--color-dark-surface-alt) 97%, transparent) 50%,
+			color-mix(in srgb, var(--color-dark-surface-alt) 98%, transparent) 100%
 		);
 
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-25));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-25) * 100%), transparent);
 
 		box-shadow:
-			0 20px 60px -15px rgba(0, 0, 0, var(--opacity-40)),
-			0 10px 30px -10px rgba(var(--color-primary-rgb), var(--opacity-20)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-10)),
-			inset 0 -1px 0 rgba(var(--color-primary-rgb), var(--opacity-10));
+			0 20px 60px -15px color-mix(in srgb, black calc(var(--opacity-40) * 100%), transparent),
+			0 10px 30px -10px
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent),
+			inset 0 1px 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent),
+			inset 0 -1px 0
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
 	}
 
 	:global(html.dark) .preview-card.card-clicked {
 		box-shadow:
-			0 25px 80px -20px rgba(0, 0, 0, var(--opacity-50)),
-			0 15px 40px -15px rgba(var(--color-primary-rgb), var(--opacity-30)),
-			inset 0 1px 0 rgba(var(--color-primary-rgb), var(--opacity-20));
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-40));
+			0 25px 80px -20px color-mix(in srgb, black calc(var(--opacity-50) * 100%), transparent),
+			0 15px 40px -15px
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent),
+			inset 0 1px 0
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-40) * 100%),
+			transparent
+		);
 	}
 
 	/* Position below variant */
 	.preview-card.position-below {
 		bottom: auto;
 		top: calc(100% + var(--space-md));
-		transform: translateX(-50%) translateY(calc(-1 * var(--transform-distance-sm))) scale(var(--scale-90));
+		transform: translateX(-50%) translateY(calc(-1 * var(--transform-distance-sm)))
+			scale(var(--scale-90));
 	}
 
 	.preview-card.position-below.positioned {
@@ -377,48 +402,53 @@
 		position: relative;
 		overflow: hidden;
 	}
-	
+
 	/* Smooth scrolling for overflow cases */
 	.preview-card {
 		scroll-behavior: smooth;
 		-webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
 	}
-	
+
 	/* Custom scrollbar styling for overflow */
 	.preview-card::-webkit-scrollbar {
 		width: 8px;
 	}
-	
+
 	.preview-card::-webkit-scrollbar-track {
-		background: rgba(var(--color-primary-rgb), var(--opacity-5));
+		background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent);
 		border-radius: var(--border-radius-lg);
 	}
-	
+
 	.preview-card::-webkit-scrollbar-thumb {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-30)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-20)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-20) * 100%), transparent) 100%
 		);
 		border-radius: var(--border-radius-lg);
 		border: 2px solid transparent;
 		background-clip: padding-box;
 	}
-	
+
 	.preview-card::-webkit-scrollbar-thumb:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-50)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-40)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-50) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-40) * 100%), transparent) 100%
 		);
 	}
-	
+
 	/* Firefox scrollbar */
 	.preview-card {
 		scrollbar-width: thin;
-		scrollbar-color: rgba(var(--color-primary-rgb), var(--opacity-30)) rgba(var(--color-primary-rgb), var(--opacity-5));
+		scrollbar-color: color-mix(
+				in srgb,
+				var(--color-primary) calc(var(--opacity-30) * 100%),
+				transparent
+			)
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent);
 	}
-	
+
 	/* Fade indicator for scrollable content */
 	.preview-card::after {
 		content: '';
@@ -430,26 +460,28 @@
 		background: linear-gradient(
 			to bottom,
 			transparent 0%,
-			rgba(var(--color-white-rgb), var(--opacity-80)) 70%,
-			rgba(var(--color-white-rgb), var(--opacity-95)) 100%
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-80) * 100%), transparent) 70%,
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-95) * 100%), transparent) 100%
 		);
 		pointer-events: none;
 		opacity: 0;
 		transition: opacity var(--duration-moderate) var(--ease-out);
 		border-radius: 0 0 var(--border-radius-2xl) var(--border-radius-2xl);
 	}
-	
+
 	/* Show fade when scrollable using reactive class */
 	.preview-card.has-overflow::after {
 		opacity: 1;
 	}
-	
+
 	:global(html.dark) .preview-card::after {
 		background: linear-gradient(
 			to bottom,
 			transparent 0%,
-			rgba(var(--color-dark-surface-alt-rgb), var(--opacity-80)) 70%,
-			rgba(var(--color-dark-surface-alt-rgb), var(--opacity-95)) 100%
+			color-mix(in srgb, var(--color-dark-surface-alt) calc(var(--opacity-80) * 100%), transparent)
+				70%,
+			color-mix(in srgb, var(--color-dark-surface-alt) calc(var(--opacity-95) * 100%), transparent)
+				100%
 		);
 	}
 
@@ -461,8 +493,8 @@
 		padding: 0;
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-10)),
-			rgba(var(--color-accent-rgb), var(--opacity-10))
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent),
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent)
 		);
 		border-radius: var(--border-radius-2xl) var(--border-radius-2xl) 0 0;
 	}
@@ -476,7 +508,7 @@
 		margin: 0;
 		padding: 0;
 		border: none;
-		transition: 
+		transition:
 			transform var(--duration-slow) var(--ease-bounce),
 			filter var(--duration-moderate) var(--ease-out);
 		filter: brightness(1) contrast(1.02);
@@ -487,25 +519,25 @@
 		inset: 0;
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-15)) 0%,
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) 0%,
 			transparent 40%,
-			rgba(var(--color-accent-rgb), var(--opacity-15)) 100%
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-15) * 100%), transparent) 100%
 		);
 		opacity: 0;
 		transition: opacity var(--duration-moderate) var(--ease-out);
-		
+
 		/* Add subtle shine effect */
-		background-image: 
+		background-image:
 			linear-gradient(
 				135deg,
-				rgba(var(--color-primary-rgb), var(--opacity-15)) 0%,
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) 0%,
 				transparent 40%,
-				rgba(var(--color-accent-rgb), var(--opacity-15)) 100%
+				color-mix(in srgb, var(--color-accent) calc(var(--opacity-15) * 100%), transparent) 100%
 			),
 			linear-gradient(
 				to right,
 				transparent 0%,
-				rgba(var(--color-white-rgb), var(--opacity-10)) 50%,
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent) 50%,
 				transparent 100%
 			);
 	}
@@ -537,14 +569,14 @@
 		border-radius: var(--border-radius) !important;
 		cursor: default !important;
 		pointer-events: none !important;
-		background: rgba(var(--color-primary-rgb), 0.08) !important;
+		background: color-mix(in srgb, var(--color-primary) 8%, transparent) !important;
 		color: var(--color-primary) !important;
 		border: none !important;
 		box-shadow: none !important;
 	}
-	
+
 	:global(html.dark .card-date-badge) {
-		background: rgba(var(--color-primary-rgb), 0.15) !important;
+		background: color-mix(in srgb, var(--color-primary) 15%, transparent) !important;
 		color: var(--color-primary-light) !important;
 	}
 
@@ -573,21 +605,26 @@
 		/* Clean gradient background */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-primary-rgb), 0.04) 100%
+			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
+			color-mix(in srgb, var(--color-primary) 4%, transparent) 100%
 		) !important;
 		color: var(--color-primary) !important;
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-15)) !important;
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) !important;
 		box-shadow: none !important;
 	}
-	
+
 	:global(html.dark .view-more-hint) {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.12) 0%,
-			rgba(var(--color-primary-rgb), 0.08) 100%
+			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
+			color-mix(in srgb, var(--color-primary) 8%, transparent) 100%
 		) !important;
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-20)) !important;
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-20) * 100%),
+			transparent
+		) !important;
 		box-shadow: none !important;
 	}
 
@@ -652,25 +689,28 @@
 		left: 50%;
 		width: var(--space-lg);
 		height: var(--space-lg);
-		
+
 		/* Sophisticated glass effect for arrow */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-white-rgb), var(--opacity-95)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-5)) 100%
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-95) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 100%
 		);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-20));
+
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
 		border-radius: var(--border-radius-sm);
 		transform: translateX(-50%) rotate(45deg);
 		z-index: var(--z-tooltip);
-		
+
 		/* Enhanced shadow for depth */
-		box-shadow: 
-			0 4px 12px rgba(var(--color-primary-rgb), var(--opacity-15)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-40));
+		box-shadow:
+			0 4px 12px
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent),
+			inset 0 1px 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-40) * 100%), transparent);
 	}
 
 	.position-below .card-arrow {
@@ -682,13 +722,19 @@
 	:global(html.dark) .card-arrow {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-alt-rgb), var(--opacity-95)) 0%,
-			rgba(var(--color-primary-rgb), var(--opacity-10)) 100%
+			color-mix(in srgb, var(--color-dark-surface-alt) calc(var(--opacity-95) * 100%), transparent)
+				0%,
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-25));
-		box-shadow: 
-			0 4px 12px rgba(0, 0, 0, var(--opacity-30)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-10));
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-25) * 100%),
+			transparent
+		);
+		box-shadow:
+			0 4px 12px color-mix(in srgb, black calc(var(--opacity-30) * 100%), transparent),
+			inset 0 1px 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 	}
 
 	.card-title {
@@ -698,7 +744,7 @@
 		line-height: var(--line-height-snug);
 		font-size: var(--font-size-base);
 	}
-	
+
 	:global(html.dark) .card-title {
 		color: var(--color-text);
 	}
@@ -727,7 +773,7 @@
 	.meta-label {
 		display: inline-block;
 		padding: var(--space-3xs) var(--space-xs);
-		background: rgba(var(--color-accent-rgb), var(--opacity-15));
+		background: color-mix(in srgb, var(--color-accent) calc(var(--opacity-15) * 100%), transparent);
 		color: var(--color-accent);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
@@ -737,7 +783,7 @@
 	}
 
 	:global(html.dark) .meta-label {
-		background: rgba(var(--color-accent-rgb), var(--opacity-20));
+		background: color-mix(in srgb, var(--color-accent) calc(var(--opacity-20) * 100%), transparent);
 	}
 
 	/* Enhanced focus states */
@@ -786,19 +832,27 @@
 	/* Backdrop filter fallback */
 	@supports not (backdrop-filter: blur(var(--glass-blur-2xl))) {
 		.preview-card {
-			background: rgba(var(--color-white-rgb), 0.92);
+			background: color-mix(in srgb, var(--color-white) 92%, transparent);
 		}
 
 		:global(html.dark) .preview-card {
-			background: rgba(var(--color-dark-surface-alt-rgb), 0.92);
+			background: color-mix(in srgb, var(--color-dark-surface-alt) 92%, transparent);
 		}
 
 		.card-arrow {
-			background: rgba(var(--color-white-rgb), var(--opacity-95));
+			background: color-mix(
+				in srgb,
+				var(--color-white) calc(var(--opacity-95) * 100%),
+				transparent
+			);
 		}
-		
+
 		:global(html.dark) .card-arrow {
-			background: rgba(var(--color-dark-surface-alt-rgb), var(--opacity-95));
+			background: color-mix(
+				in srgb,
+				var(--color-dark-surface-alt) calc(var(--opacity-95) * 100%),
+				transparent
+			);
 		}
 	}
 
@@ -816,7 +870,7 @@
 		.card-image-container {
 			height: 110px;
 		}
-		
+
 		.card-title {
 			font-size: var(--font-size-sm);
 		}

@@ -146,7 +146,8 @@
 	:global(.iframe-container.glass-frosted) {
 		/* Let the global glassmorphism utilities handle the background and effects */
 		/* Only override the border to match our iframe styling */
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
 	}
 
 	/* Glass effect hover enhancements for interactive iframes */
@@ -156,7 +157,12 @@
 	:global(.iframe-container.glass-heavy.iframe-interactive:hover) {
 		transform: var(--transform-lift-md);
 		box-shadow:
-			0 12px 40px 0 rgba(var(--color-primary-rgb), var(--opacity-medium-high)),
+			0 12px 40px 0
+				color-mix(
+					in srgb,
+					var(--color-primary) calc(var(--opacity-medium-high) * 100%),
+					transparent
+				),
 			var(--shadow-lg);
 	}
 
@@ -169,7 +175,8 @@
 	:global(html.dark .iframe-container.glass-accent),
 	:global(html.dark .iframe-container.glass-highlight),
 	:global(html.dark .iframe-container.glass-frosted) {
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 	}
 
 	/* Aspect ratio iframe container - maintains 16:9 ratio */
@@ -205,7 +212,8 @@
 	:global(.iframe-container-aspect.glass-highlight),
 	:global(.iframe-container-aspect.glass-frosted) {
 		/* Let the global glassmorphism utilities handle the background and effects */
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
 	}
 
 	:global(html.dark .iframe-container-aspect.glass),
@@ -216,7 +224,8 @@
 	:global(html.dark .iframe-container-aspect.glass-accent),
 	:global(html.dark .iframe-container-aspect.glass-highlight),
 	:global(html.dark .iframe-container-aspect.glass-frosted) {
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 	}
 
 	/* Additional aspect ratio variations */
@@ -254,9 +263,7 @@
 	}
 
 	:global(.iframe-container-fullheight) {
-		height: calc(
-			100vh - var(--space-32)
-		); /* Full viewport height minus space for header/footer */
+		height: calc(100vh - var(--space-32)); /* Full viewport height minus space for header/footer */
 	}
 
 	/* Remove margin bottom when needed */
@@ -390,19 +397,28 @@
 	:global(.iframe-with-header.glass-light .iframe-header),
 	:global(.iframe-with-header.glass-medium .iframe-header),
 	:global(.iframe-with-header.glass-heavy .iframe-header) {
-		background: rgba(var(--color-primary-rgb), var(--opacity-high));
+		background: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-high) * 100%),
+			transparent
+		);
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		backdrop-filter: blur(var(--glass-blur-amount));
 		border-bottom: var(--border-width-thin) solid
-			rgba(var(--color-white-rgb), var(--opacity-medium));
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
 	}
 
 	:global(html.dark .iframe-with-header.glass .iframe-header),
 	:global(html.dark .iframe-with-header.glass-light .iframe-header),
 	:global(html.dark .iframe-with-header.glass-medium .iframe-header),
 	:global(html.dark .iframe-with-header.glass-heavy .iframe-header) {
-		background: rgba(var(--color-primary-rgb), var(--glass-opacity-fallback-dark));
-		border-bottom: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
+		background: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--glass-opacity-fallback-dark) * 100%),
+			transparent
+		);
+		border-bottom: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 	}
 
 	/* Responsive adjustments */

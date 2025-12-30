@@ -58,8 +58,8 @@
 		background: linear-gradient(
 			to right,
 			transparent,
-			rgba(var(--color-primary-rgb), 0.1) 20%,
-			rgba(var(--color-primary-rgb), 0.1) 80%,
+			color-mix(in srgb, var(--color-primary) 10%, transparent) 20%,
+			color-mix(in srgb, var(--color-primary) 10%, transparent) 80%,
 			transparent
 		);
 	}
@@ -73,8 +73,8 @@
 		background: linear-gradient(
 			to right,
 			transparent,
-			rgba(var(--color-primary-rgb), 0.2) 20%,
-			rgba(var(--color-primary-rgb), 0.2) 80%,
+			color-mix(in srgb, var(--color-primary) 20%, transparent) 20%,
+			color-mix(in srgb, var(--color-primary) 20%, transparent) 80%,
 			transparent
 		);
 	}

@@ -213,16 +213,18 @@
 		/* Enhanced glassmorphism to match other components */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.03) 0%,
-			rgba(var(--color-highlight-rgb), 0.02) 50%,
-			rgba(var(--color-accent-rgb), 0.01) 100%
+			color-mix(in srgb, var(--color-primary) 3%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 2%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 1%, transparent) 100%
 		);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
 		box-shadow:
 			var(--shadow-glass),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-medium));
+			inset 0 1px 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
 		transition: all var(--duration-normal) var(--ease-out);
 	}
 
@@ -231,14 +233,19 @@
 		transform: var(--transform-lift-sm);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.05) 0%,
-			rgba(var(--color-highlight-rgb), 0.03) 50%,
-			rgba(var(--color-accent-rgb), 0.02) 100%
+			color-mix(in srgb, var(--color-primary) 5%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 3%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 2%, transparent) 100%
 		);
-		border-color: rgba(var(--color-white-rgb), var(--opacity-medium-high));
+		border-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--opacity-medium-high) * 100%),
+			transparent
+		);
 		box-shadow:
 			var(--shadow-glass-lg),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-medium-high));
+			inset 0 1px 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium-high) * 100%), transparent);
 	}
 
 	/* Filter sections wrapper (for mobile collapse) */
@@ -316,18 +323,20 @@
 		.filter-sidebar {
 			background: linear-gradient(
 				135deg,
-				rgba(var(--color-primary-rgb), 0.03) 0%,
-				rgba(var(--color-highlight-rgb), 0.02) 50%,
-				rgba(var(--color-accent-rgb), 0.01) 100%
+				color-mix(in srgb, var(--color-primary) 3%, transparent) 0%,
+				color-mix(in srgb, var(--color-highlight) 2%, transparent) 50%,
+				color-mix(in srgb, var(--color-accent) 1%, transparent) 100%
 			);
 			backdrop-filter: blur(var(--glass-blur-amount));
 			-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-			border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium));
+			border: var(--border-width-thin) solid
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
 			border-radius: var(--border-radius-md);
 			padding: var(--space-md);
 			box-shadow:
 				var(--shadow-glass),
-				inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-medium));
+				inset 0 1px 0
+					color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
 			margin-bottom: 0;
 		}
 
@@ -363,38 +372,57 @@
 	}
 
 	/* Staggered animation for filter sections */
-	.filter-section:nth-child(1) { --stagger-delay: 0ms; }
-	.filter-section:nth-child(2) { --stagger-delay: 50ms; }
-	.filter-section:nth-child(3) { --stagger-delay: 100ms; }
-	.filter-section:nth-child(4) { --stagger-delay: 150ms; }
-	.filter-section:nth-child(5) { --stagger-delay: 200ms; }
-	.filter-section:nth-child(n+6) { --stagger-delay: 250ms; }
+	.filter-section:nth-child(1) {
+		--stagger-delay: 0ms;
+	}
+	.filter-section:nth-child(2) {
+		--stagger-delay: 50ms;
+	}
+	.filter-section:nth-child(3) {
+		--stagger-delay: 100ms;
+	}
+	.filter-section:nth-child(4) {
+		--stagger-delay: 150ms;
+	}
+	.filter-section:nth-child(5) {
+		--stagger-delay: 200ms;
+	}
+	.filter-section:nth-child(n + 6) {
+		--stagger-delay: 250ms;
+	}
 
 	/* Dark mode enhancements for glassmorphism */
 	:global(html.dark) .filter-sidebar {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.06) 0%,
-			rgba(var(--color-highlight-rgb), 0.04) 50%,
-			rgba(var(--color-accent-rgb), 0.02) 100%
+			color-mix(in srgb, var(--color-primary) 6%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 4%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 2%, transparent) 100%
 		);
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 		box-shadow:
 			var(--shadow-glass),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-low));
+			inset 0 1px 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 	}
 
 	:global(html.dark) .filter-sidebar:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-highlight-rgb), 0.06) 50%,
-			rgba(var(--color-accent-rgb), 0.04) 100%
+			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 6%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 4%, transparent) 100%
 		);
-		border-color: rgba(var(--color-white-rgb), var(--opacity-medium));
+		border-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 		box-shadow:
 			var(--shadow-glass-lg),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-medium));
+			inset 0 1px 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
 	}
 
 	/* Dark mode mobile wrapper */

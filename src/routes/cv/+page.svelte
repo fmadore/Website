@@ -28,7 +28,7 @@
 	let CVResearchExperience = $state<any>();
 
 	let componentsStartedLoading = $state(false);
-	
+
 	onMount(() => {
 		// Start loading components immediately after mount
 		// This still provides performance benefits by:
@@ -101,7 +101,7 @@
 	<div class="cv-download-button">
 		<PdfGenerator />
 	</div>
-	
+
 	<CVHeader />
 	<div class="cv-section-wrapper scroll-reveal">
 		<CVEducation />
@@ -112,7 +112,7 @@
 	<div class="cv-section-wrapper scroll-reveal">
 		<CVPublications />
 	</div>
-	
+
 	<!-- Components load automatically after page mount in batches -->
 	{#if CVGrants}
 		<div class="cv-section-wrapper cv-lazy-section fade-in-up">
@@ -229,15 +229,15 @@
 	:global(.cv-section-wrapper) {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.02) 0%,
-			rgba(var(--color-highlight-rgb), 0.01) 100%
+			color-mix(in srgb, var(--color-primary) 2%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 1%, transparent) 100%
 		);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		border-radius: var(--border-radius-lg);
 		padding: var(--space-4);
 		margin-bottom: var(--space-4);
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), 0.1);
+		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) 10%, transparent);
 		transition: all var(--transition-duration-200) ease;
 	}
 
@@ -249,17 +249,17 @@
 	:global(.cv-section-wrapper:hover) {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.04) 0%,
-			rgba(var(--color-highlight-rgb), 0.02) 100%
+			color-mix(in srgb, var(--color-primary) 4%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 2%, transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), 0.2);
+		border-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
 		box-shadow: var(--shadow-sm);
 	}
 
 	/* Enhanced section headings */
 	:global(#cv-content h3) {
 		color: var(--color-primary);
-		border-color: rgba(var(--color-primary-rgb), 0.3);
+		border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
 		padding-bottom: var(--space-2);
 		margin-bottom: var(--space-3);
 		position: relative;
@@ -293,7 +293,7 @@
 	/* Hover effects only for devices with hover capability (not touch) */
 	@media (--can-hover) {
 		:global(#cv-content .space-y-3 > div:hover) {
-			background: rgba(var(--color-primary-rgb), 0.03);
+			background: color-mix(in srgb, var(--color-primary) 3%, transparent);
 			transform: translateX(var(--space-1));
 		}
 	}
@@ -324,7 +324,7 @@
 	@media print {
 		/* Hide the PDF button when printing */
 		:global(.pdf-generator-wrapper),
-		:global(button[onclick*="print"]) {
+		:global(button[onclick*='print']) {
 			display: none !important;
 		}
 
@@ -388,8 +388,8 @@
 		}
 
 		/* Show URLs after external links for print (academic CV best practice) */
-		:global(#cv-content a[href^="http"]:not(.doi-link))::after {
-			content: " (" attr(href) ")";
+		:global(#cv-content a[href^='http']:not(.doi-link))::after {
+			content: ' (' attr(href) ')';
 			font-size: 0.75em;
 			font-weight: normal;
 			color: var(--color-text-light);
@@ -398,7 +398,7 @@
 
 		/* DOI links - show cleaner format */
 		:global(#cv-content a.doi-link)::after {
-			content: " (https://doi.org/" attr(href) ")";
+			content: ' (https://doi.org/' attr(href) ')';
 			font-size: 0.75em;
 			font-weight: normal;
 			color: var(--color-text-light);

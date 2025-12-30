@@ -457,7 +457,11 @@
 		justify-content: center;
 		width: calc(var(--space-6) + var(--space-2));
 		height: calc(var(--space-6) + var(--space-2));
-		background: rgba(var(--color-primary-rgb), var(--opacity-medium));
+		background: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 		border-radius: var(--border-radius-md);
 		transition: all var(--anim-duration-fast) var(--anim-ease-base);
 		flex-shrink: 0;
@@ -479,7 +483,7 @@
 		background: linear-gradient(
 			90deg,
 			transparent,
-			rgba(var(--color-primary-rgb), var(--opacity-medium)),
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent),
 			transparent
 		);
 		transition: left var(--anim-duration-slow) var(--anim-ease-base);
@@ -491,10 +495,14 @@
 	}
 
 	.footer-link:hover .footer-link-icon {
-		background: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		background: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium-high) * 100%),
+			transparent
+		);
 		transform: scale(var(--scale-110));
 		box-shadow: 0 var(--space-1) var(--space-2)
-			rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent);
 	}
 
 	.footer-link:hover .link-hover-effect {

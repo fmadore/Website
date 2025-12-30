@@ -10,10 +10,7 @@
 	} = $props();
 </script>
 
-<nav
-	aria-label="Breadcrumb"
-	class="breadcrumb"
->
+<nav aria-label="Breadcrumb" class="breadcrumb">
 	<ol>
 		{#if showHomeLink}
 			<li>
@@ -44,13 +41,14 @@
 		padding: var(--space-sm) var(--space-md-tight);
 		background: radial-gradient(
 			circle at 15% 15%,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 35%,
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 35%,
 			var(--color-surface) 65%,
 			var(--color-background) 100%
 		);
 		border-radius: var(--border-radius-lg);
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
 		box-shadow: var(--shadow-md);
 		position: relative;
 		backdrop-filter: blur(var(--glass-blur-amount));
@@ -66,14 +64,15 @@
 		height: var(--space-2xs);
 		background: linear-gradient(
 			90deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-medium)) 50%,
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent)
+				0%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium) * 100%), transparent) 50%,
 			transparent 100%
 		);
 		border-radius: var(--border-radius-sm);
 		opacity: var(--opacity-high);
 		box-shadow: 0 var(--border-width-thin) var(--space-2xs)
-			rgba(var(--color-primary-rgb), var(--opacity-medium));
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent);
 	}
 
 	.breadcrumb ol {
@@ -98,7 +97,7 @@
 		font-weight: var(--font-weight-semibold);
 		opacity: var(--opacity-high);
 		text-shadow: 0 var(--border-width-thin) var(--space-2xs)
-			rgba(var(--color-primary-rgb), var(--opacity-medium));
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent);
 	}
 
 	/* Breadcrumb Link Styles */
@@ -115,7 +114,11 @@
 			box-shadow var(--anim-duration-base) var(--anim-ease-base);
 		position: relative;
 		font-weight: var(--font-weight-medium);
-		background: rgba(var(--color-surface-rgb), var(--opacity-medium));
+		background: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 		border: var(--border-width-thin) solid transparent;
 	}
 
@@ -123,10 +126,14 @@
 		color: var(--color-primary);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-low) * 100%), transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium-high) * 100%),
+			transparent
+		);
 		transform: var(--transform-lift-sm);
 		box-shadow: var(--shadow-sm);
 	}
@@ -143,13 +150,15 @@
 		padding: var(--space-xs) var(--space-sm);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-medium)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent)
+				0%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium) * 100%), transparent) 100%
 		);
 		border-radius: var(--border-radius-md);
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-medium));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent);
 		box-shadow: inset 0 var(--border-width-thin) var(--space-2xs)
-			rgba(var(--color-primary-rgb), var(--opacity-medium));
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent);
 	}
 
 	/* Responsive Design */
@@ -179,49 +188,68 @@
 	:global(html.dark) .breadcrumb {
 		background: radial-gradient(
 			circle at 15% 15%,
-			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-low)) 35%,
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-low) * 100%), transparent) 35%,
 			var(--color-surface-alt) 65%,
 			var(--color-background) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 		box-shadow: var(--shadow-lg);
 	}
 
 	:global(html.dark) .breadcrumb::after {
 		background: linear-gradient(
 			90deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-medium)) 50%,
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent)
+				0%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium) * 100%), transparent) 50%,
 			transparent 100%
 		);
 		box-shadow: 0 var(--border-width-thin) var(--space-2xs)
-			rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent);
 	}
 
 	:global(html.dark) .breadcrumb-link {
 		color: var(--color-text);
-		background: rgba(var(--color-surface-rgb), var(--opacity-medium));
+		background: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 	}
 
 	:global(html.dark) .breadcrumb-link:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-medium)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent)
+				0%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium) * 100%), transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 	}
 
 	:global(html.dark) .breadcrumb-text {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-medium-high)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium-high) * 100%), transparent)
+				100%
 		);
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 		box-shadow: inset 0 var(--border-width-thin) var(--space-2xs)
-			rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent);
 	}
 
 	/* Enhanced Visual Effects */
@@ -234,8 +262,8 @@
 		bottom: 0;
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 50%,
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 50%,
 			transparent 100%
 		);
 		opacity: 0;

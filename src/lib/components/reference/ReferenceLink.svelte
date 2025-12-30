@@ -91,7 +91,11 @@
 			box-shadow var(--duration-moderate) var(--ease-out);
 
 		/* Subtle background instead of underline */
-		background-color: rgba(var(--color-primary-rgb), var(--opacity-10));
+		background-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-10) * 100%),
+			transparent
+		);
 		border: var(--border-width-thin) solid transparent;
 	}
 
@@ -104,8 +108,16 @@
 	.reference-link:hover,
 	.reference-link:focus-visible {
 		color: var(--color-primary-dark);
-		background-color: rgba(var(--color-primary-rgb), var(--opacity-15));
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-20));
+		background-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-15) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-20) * 100%),
+			transparent
+		);
 		transform: translateY(-1px);
 		box-shadow: var(--shadow-sm);
 	}
@@ -113,42 +125,75 @@
 	/* Active/clicked state */
 	.reference-link:active {
 		transform: translateY(0);
-		background-color: rgba(var(--color-primary-rgb), var(--opacity-20));
+		background-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-20) * 100%),
+			transparent
+		);
 	}
 
 	/* Focus state for accessibility */
 	.reference-link:focus-visible {
-		outline: var(--border-width-medium) solid rgba(var(--color-primary-rgb), var(--opacity-40));
+		outline: var(--border-width-medium) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-40) * 100%), transparent);
 		outline-offset: var(--space-2xs);
 	}
 
 	/* Dark mode - enhanced adjustments */
 	:global(html.dark) .reference-link {
 		color: var(--color-accent);
-		background-color: rgba(var(--color-accent-rgb), var(--opacity-10));
+		background-color: color-mix(
+			in srgb,
+			var(--color-accent) calc(var(--opacity-10) * 100%),
+			transparent
+		);
 	}
 
 	:global(html.dark) .reference-link:hover,
 	:global(html.dark) .reference-link:focus-visible {
 		color: var(--color-accent);
-		background-color: rgba(var(--color-accent-rgb), var(--opacity-20));
-		border-color: rgba(var(--color-accent-rgb), var(--opacity-30));
+		background-color: color-mix(
+			in srgb,
+			var(--color-accent) calc(var(--opacity-20) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-accent) calc(var(--opacity-30) * 100%),
+			transparent
+		);
 		box-shadow: var(--shadow-sm);
 	}
 
 	/* Active state when preview is visible */
 	.reference-link.is-active {
 		color: var(--color-primary-dark);
-		background-color: rgba(var(--color-primary-rgb), var(--opacity-20));
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-30));
+		background-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-20) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-30) * 100%),
+			transparent
+		);
 		box-shadow: var(--shadow-sm);
 	}
 
 	/* Dark mode active state */
 	:global(html.dark) .reference-link.is-active {
 		color: var(--color-accent);
-		background-color: rgba(var(--color-accent-rgb), var(--opacity-25));
-		border-color: rgba(var(--color-accent-rgb), var(--opacity-40));
+		background-color: color-mix(
+			in srgb,
+			var(--color-accent) calc(var(--opacity-25) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-accent) calc(var(--opacity-40) * 100%),
+			transparent
+		);
 		box-shadow: var(--shadow-sm);
 	}
 

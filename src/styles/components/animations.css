@@ -15,6 +15,7 @@
 		opacity: 0;
 		transform: translateY(var(--transform-distance-sm));
 	}
+
 	to {
 		opacity: 1;
 		transform: translateY(0);
@@ -79,14 +80,14 @@
  * No JavaScript required - pure CSS with custom property delays
  */
 
-.grid-stagger > * {
+.grid-stagger>* {
 	/* Fallback: all items visible */
 	opacity: 1;
 	transform: translateY(0);
 }
 
 @supports (animation-timeline: view()) {
-	.grid-stagger > * {
+	.grid-stagger>* {
 		opacity: 0;
 		transform: translateY(var(--transform-distance-md));
 		animation: gridItemReveal var(--duration-moderate) var(--ease-out) forwards;
@@ -95,15 +96,35 @@
 	}
 
 	/* Stagger delays using :nth-child */
-	.grid-stagger > *:nth-child(1) { --stagger-delay: 0ms; }
-	.grid-stagger > *:nth-child(2) { --stagger-delay: var(--stagger-1); }
-	.grid-stagger > *:nth-child(3) { --stagger-delay: var(--stagger-2); }
-	.grid-stagger > *:nth-child(4) { --stagger-delay: var(--stagger-3); }
-	.grid-stagger > *:nth-child(5) { --stagger-delay: var(--stagger-4); }
-	.grid-stagger > *:nth-child(6) { --stagger-delay: var(--stagger-5); }
-	.grid-stagger > *:nth-child(n+7) { --stagger-delay: var(--stagger-6); }
+	.grid-stagger>*:nth-child(1) {
+		--stagger-delay: 0ms;
+	}
 
-	.grid-stagger > * {
+	.grid-stagger>*:nth-child(2) {
+		--stagger-delay: var(--stagger-1);
+	}
+
+	.grid-stagger>*:nth-child(3) {
+		--stagger-delay: var(--stagger-2);
+	}
+
+	.grid-stagger>*:nth-child(4) {
+		--stagger-delay: var(--stagger-3);
+	}
+
+	.grid-stagger>*:nth-child(5) {
+		--stagger-delay: var(--stagger-4);
+	}
+
+	.grid-stagger>*:nth-child(6) {
+		--stagger-delay: var(--stagger-5);
+	}
+
+	.grid-stagger>*:nth-child(n+7) {
+		--stagger-delay: var(--stagger-6);
+	}
+
+	.grid-stagger>* {
 		animation-delay: var(--stagger-delay, 0ms);
 	}
 }
@@ -119,12 +140,10 @@
  * Loading placeholders with shimmer animation for perceived performance
  */
 .skeleton {
-	background: linear-gradient(
-		90deg,
-		rgba(var(--color-surface-rgb), 0.6) 0%,
-		rgba(var(--color-surface-rgb), 0.9) 50%,
-		rgba(var(--color-surface-rgb), 0.6) 100%
-	);
+	background: linear-gradient(90deg,
+			color-mix(in srgb, var(--color-surface) 60%, transparent) 0%,
+			color-mix(in srgb, var(--color-surface) 90%, transparent) 50%,
+			color-mix(in srgb, var(--color-surface) 60%, transparent) 100%);
 	background-size: 200% 100%;
 	animation: skeletonShimmer 1.5s var(--ease-in-out) infinite;
 	border-radius: var(--border-radius);
@@ -156,6 +175,7 @@
 	0% {
 		background-position: 200% 0;
 	}
+
 	100% {
 		background-position: -200% 0;
 	}
@@ -163,12 +183,10 @@
 
 /* Dark mode skeleton */
 :global(html.dark) .skeleton {
-	background: linear-gradient(
-		90deg,
-		rgba(var(--color-surface-rgb), 0.3) 0%,
-		rgba(var(--color-surface-rgb), 0.5) 50%,
-		rgba(var(--color-surface-rgb), 0.3) 100%
-	);
+	background: linear-gradient(90deg,
+			color-mix(in srgb, var(--color-surface) 30%, transparent) 0%,
+			color-mix(in srgb, var(--color-surface) 50%, transparent) 50%,
+			color-mix(in srgb, var(--color-surface) 30%, transparent) 100%);
 	background-size: 200% 100%;
 }
 
@@ -243,18 +261,23 @@
 .stagger-1 {
 	animation-delay: var(--anim-delay-1);
 }
+
 .stagger-2 {
 	animation-delay: var(--anim-delay-2);
 }
+
 .stagger-3 {
 	animation-delay: var(--anim-delay-3);
 }
+
 .stagger-4 {
 	animation-delay: var(--anim-delay-4);
 }
+
 .stagger-5 {
 	animation-delay: var(--anim-delay-5);
 }
+
 .stagger-6 {
 	animation-delay: var(--anim-delay-6);
 }
@@ -266,12 +289,10 @@
 	left: 0;
 	width: 0%;
 	height: var(--space-1);
-	background: linear-gradient(
-		90deg,
-		var(--color-primary),
-		var(--color-highlight),
-		var(--color-accent)
-	);
+	background: linear-gradient(90deg,
+			var(--color-primary),
+			var(--color-highlight),
+			var(--color-accent));
 	z-index: 1000;
 	transition: width var(--anim-duration-progress) var(--anim-ease-out);
 }
@@ -291,6 +312,7 @@
 	from {
 		opacity: 0;
 	}
+
 	to {
 		opacity: 1;
 	}
@@ -301,6 +323,7 @@
 		opacity: 0;
 		transform: translateY(var(--transform-distance-lg));
 	}
+
 	to {
 		opacity: 1;
 		transform: translateY(0);
@@ -312,6 +335,7 @@
 		opacity: 0;
 		transform: translateY(calc(-1 * var(--transform-distance-lg)));
 	}
+
 	to {
 		opacity: 1;
 		transform: translateY(0);
@@ -323,6 +347,7 @@
 		opacity: 0;
 		transform: translateX(calc(-1 * var(--transform-distance-lg)));
 	}
+
 	to {
 		opacity: 1;
 		transform: translateX(0);
@@ -334,6 +359,7 @@
 		opacity: 0;
 		transform: translateX(var(--transform-distance-lg));
 	}
+
 	to {
 		opacity: 1;
 		transform: translateX(0);
@@ -345,6 +371,7 @@
 		opacity: 0;
 		transform: scale(var(--scale-90));
 	}
+
 	to {
 		opacity: 1;
 		transform: scale(var(--scale-100));
@@ -356,6 +383,7 @@
 		opacity: 0;
 		transform: scale(var(--transform-scale-sm)) translateY(var(--transform-distance-md));
 	}
+
 	to {
 		opacity: 1;
 		transform: scale(var(--scale-100)) translateY(0);
@@ -367,6 +395,7 @@
 		opacity: 0;
 		transform: translateY(var(--transform-distance-full));
 	}
+
 	to {
 		opacity: 1;
 		transform: translateY(0);
@@ -378,6 +407,7 @@
 		opacity: 0;
 		transform: translateY(calc(-1 * var(--transform-distance-full)));
 	}
+
 	to {
 		opacity: 1;
 		transform: translateY(0);
@@ -389,6 +419,7 @@
 		opacity: 0;
 		transform: translateX(calc(-1 * var(--transform-distance-full)));
 	}
+
 	to {
 		opacity: 1;
 		transform: translateX(0);
@@ -400,6 +431,7 @@
 		opacity: 0;
 		transform: translateX(var(--transform-distance-full));
 	}
+
 	to {
 		opacity: 1;
 		transform: translateX(0);
@@ -411,13 +443,16 @@
 		opacity: 0;
 		transform: scale(var(--transform-scale-xs)) translateY(var(--transform-distance-lg));
 	}
+
 	50% {
 		opacity: 1;
 		transform: scale(var(--transform-scale-lg)) translateY(calc(-1 * var(--transform-distance-sm)));
 	}
+
 	70% {
 		transform: scale(var(--transform-scale-md)) translateY(calc(var(--transform-distance-sm) / 2));
 	}
+
 	100% {
 		opacity: 1;
 		transform: scale(var(--scale-100)) translateY(0);
@@ -426,11 +461,12 @@
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+
 	/* Disable all animations for users who prefer reduced motion */
 	.page-enter,
 	.scroll-reveal,
 	.scroll-reveal-scale,
-	.grid-stagger > *,
+	.grid-stagger>*,
 	.skeleton,
 	.fade-in,
 	.fade-in-up,
@@ -467,7 +503,7 @@
 .bounce-in,
 .scroll-reveal,
 .scroll-reveal-scale,
-.grid-stagger > * {
+.grid-stagger>* {
 	will-change: opacity, transform;
 }
 
@@ -479,8 +515,9 @@
 /* Mobile optimizations - reduced distances for better performance */
 @media (max-width: 767px) {
 	@supports (animation-timeline: view()) {
+
 		.scroll-reveal,
-		.grid-stagger > * {
+		.grid-stagger>* {
 			transform: translateY(var(--transform-distance-sm));
 		}
 	}

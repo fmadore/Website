@@ -20,11 +20,11 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			'var(--color-highlight)',
 			'var(--color-success)',
 			'var(--color-secondary)',
-			'rgba(var(--color-primary-rgb), 0.8)',
-			'rgba(var(--color-accent-rgb), 0.8)',
-			'rgba(var(--color-highlight-rgb), 0.8)',
-			'rgba(var(--color-success-rgb), 0.7)',
-			'rgba(var(--color-primary-rgb), 0.6)'
+			'color-mix(in srgb, var(--color-primary) 80%, transparent)',
+			'color-mix(in srgb, var(--color-accent) 80%, transparent)',
+			'color-mix(in srgb, var(--color-highlight) 80%, transparent)',
+			'color-mix(in srgb, var(--color-success) 70%, transparent)',
+			'color-mix(in srgb, var(--color-primary) 60%, transparent)'
 		],
 		minBubbleSize = 22,
 		maxBubbleSize = 75
@@ -97,17 +97,17 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		if (data.length === 0) return [];
 
 		const maxValue = d3.max(data, (d) => valueAccessor(d)) || 1;
-		
+
 		// Adjust bubble size based on container size to ensure they fill space nicely
 		const minDim = Math.min(containerWidth, containerHeight);
 		// Reduced scale factor to prevent overcrowding
 		const scaleFactor = Math.max(0.6, Math.min(1.1, minDim / 800));
-		
+
 		const sizeScale = d3
 			.scaleSqrt()
 			.domain([0, maxValue])
 			.range([
-				minBubbleSize * scaleFactor, 
+				minBubbleSize * scaleFactor,
 				(isMobile ? maxBubbleSize * 0.8 : maxBubbleSize) * scaleFactor
 			]);
 
@@ -142,7 +142,8 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			.attr('aria-label', 'Keyword frequency bubble chart visualization');
 
 		// Add zoom behavior
-		zoomBehavior = d3.zoom<SVGSVGElement, unknown>()
+		zoomBehavior = d3
+			.zoom<SVGSVGElement, unknown>()
 			.scaleExtent([0.5, 5])
 			.on('zoom', (event) => {
 				svg?.selectAll('g.bubble').attr('transform', (d: any) => {
@@ -167,7 +168,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			.attr('class', 'bubble-tooltip')
 			.style('position', 'absolute')
 			.style('visibility', 'hidden')
-			.style('background-color', `rgba(${resolvedColors.surfaceRgb}, 0.9)`)
+			.style('background-color', `color-mix(in srgb, ${resolvedColors.surface} 90%, transparent)`)
 			.style('color', resolvedColors.text)
 			.style('border', `1px solid ${resolvedColors.border}`)
 			.style('border-radius', '8px')
@@ -189,7 +190,8 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		// Weaker X force to allow more horizontal spread
 		const strengthX = strengthY / aspectRatio;
 
-		const simulation = d3.forceSimulation<BubbleNode>(chartData)
+		const simulation = d3
+			.forceSimulation<BubbleNode>(chartData)
 			.force('x', d3.forceX(width / 2).strength(strengthX))
 			.force('y', d3.forceY(height / 2).strength(strengthY))
 			.force('collide', d3.forceCollide<BubbleNode>((d) => d.radius + 1).iterations(4))
@@ -208,27 +210,29 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			.attr('transform', (d) => `translate(${d.x || width / 2},${d.y || height / 2})`)
 			.style('cursor', 'grab');
 
-		bubbleGroups.on('mousedown', function() {
-			d3.select(this).style('cursor', 'grabbing');
-		}).on('mouseup', function() {
-			d3.select(this).style('cursor', 'grab');
-		});
+		bubbleGroups
+			.on('mousedown', function () {
+				d3.select(this).style('cursor', 'grabbing');
+			})
+			.on('mouseup', function () {
+				d3.select(this).style('cursor', 'grab');
+			});
 
 		bubbleGroups
 			.append('circle')
 			.attr('r', (d) => d.radius)
 			.attr('fill', (d) => colorScale(d.name))
-			.attr('stroke', `rgba(var(--color-surface-rgb), 0.35)`)
+			.attr('stroke', `color-mix(in srgb, var(--color-surface) 35%, transparent)`)
 			.attr('stroke-width', 1.25)
 			.style('opacity', 0.9)
-			.style('filter', 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))')
+			.style('filter', 'drop-shadow(0 4px 6px color-mix(in srgb, black 10%, transparent))')
 			.on('mouseenter', function (event, d) {
 				d3.select(this)
 					.transition()
 					.duration(200)
 					.style('opacity', 1)
 					.attr('stroke-width', 2)
-					.style('filter', 'drop-shadow(0 8px 12px rgba(0, 0, 0, 0.15))');
+					.style('filter', 'drop-shadow(0 8px 12px color-mix(in srgb, black 15%, transparent))');
 
 				tooltip
 					.style('visibility', 'visible')
@@ -239,10 +243,8 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 				// Keep tooltip within bounds
 				const x = event.clientX - containerRect.left;
 				const y = event.clientY - containerRect.top;
-				
-				tooltip
-					.style('top', `${y - 60}px`)
-					.style('left', `${x - 50}px`);
+
+				tooltip.style('top', `${y - 60}px`).style('left', `${x - 50}px`);
 			})
 			.on('mouseleave', function () {
 				d3.select(this)
@@ -250,7 +252,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 					.duration(200)
 					.style('opacity', 0.9)
 					.attr('stroke-width', 1.25)
-					.style('filter', 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))');
+					.style('filter', 'drop-shadow(0 4px 6px color-mix(in srgb, black 10%, transparent))');
 
 				tooltip.style('visibility', 'hidden');
 			});
@@ -260,7 +262,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			.attr('text-anchor', 'middle')
 			.attr('dominant-baseline', 'middle')
 			.style('fill', 'white')
-			.style('text-shadow', '0 1px 3px rgba(0,0,0,0.5)')
+			.style('text-shadow', '0 1px 3px color-mix(in srgb, black 50%, transparent)')
 			.style('font-size', (d) => `${Math.max(10, Math.min(20, d.radius / 2.2))}px`)
 			.style('font-weight', '600')
 			.style('font-family', 'var(--font-family-sans)')
@@ -322,29 +324,59 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 	bind:clientHeight={containerHeight}
 >
 	<div class="zoom-controls">
-		<button 
-			class="zoom-btn" 
-			onclick={zoomIn}
-			aria-label="Zoom in"
-		>
-			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+		<button class="zoom-btn" onclick={zoomIn} aria-label="Zoom in">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="20"
+				height="20"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"
+				></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"
+				></line></svg
+			>
 		</button>
-		<button 
-			class="zoom-btn" 
-			onclick={resetZoom}
-			aria-label="Reset zoom"
-		>
-			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+		<button class="zoom-btn" onclick={resetZoom} aria-label="Reset zoom">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="20"
+				height="20"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"
+				></path></svg
+			>
 		</button>
-		<button 
-			class="zoom-btn" 
-			onclick={zoomOut}
-			aria-label="Zoom out"
-		>
-			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+		<button class="zoom-btn" onclick={zoomOut} aria-label="Zoom out">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="20"
+				height="20"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"
+				></line><line x1="8" y1="11" x2="14" y2="11"></line></svg
+			>
 		</button>
 	</div>
-	<div bind:this={chartContainer} class="bubble-chart" role="region" aria-label="Keyword frequency bubble chart"></div>
+	<div
+		bind:this={chartContainer}
+		class="bubble-chart"
+		role="region"
+		aria-label="Keyword frequency bubble chart"
+	></div>
 	{#if chartData.length === 0}
 		<div class="no-data-message">
 			<p>No data available to display</p>
@@ -401,7 +433,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-color: rgba(var(--color-surface-rgb), 0.8);
+		background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
 		backdrop-filter: blur(var(--glass-blur-sm));
 		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
 		border: var(--border-width-thin) solid var(--color-border);

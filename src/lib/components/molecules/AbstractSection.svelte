@@ -51,13 +51,15 @@
 		/* Sophisticated glassmorphism effect matching design system */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
 		box-shadow: var(--shadow-md);
 		transition:
 			transform var(--duration-normal) var(--ease-out),
@@ -70,9 +72,10 @@
 		box-shadow: var(--shadow-lg);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
 	}
 
@@ -97,7 +100,7 @@
 		background: linear-gradient(
 			90deg,
 			var(--color-highlight) 0%,
-			rgba(var(--color-highlight-rgb), 0.3) 100%
+			color-mix(in srgb, var(--color-highlight) 30%, transparent) 100%
 		);
 		border-radius: var(--border-radius-full);
 		transition: width var(--duration-normal) var(--ease-out);
@@ -127,19 +130,23 @@
 	:global(html.dark) .abstract-section {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-highlight-rgb), 0.04) 50%,
-			rgba(var(--color-accent-rgb), 0.06) 100%
+			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 4%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 6%, transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 	}
 
 	:global(html.dark) .abstract-section:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.12) 0%,
-			rgba(var(--color-highlight-rgb), 0.06) 50%,
-			rgba(var(--color-accent-rgb), 0.08) 100%
+			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 6%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 8%, transparent) 100%
 		);
 	}
 

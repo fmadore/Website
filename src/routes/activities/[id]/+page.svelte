@@ -290,7 +290,10 @@
 
 				<!-- RSS Feed Button -->
 				<div class="rss-button-wrapper scroll-reveal">
-					<a href="{base}/rss.xml" class="btn btn-outline-primary btn-sm glass-button rss-feed-button">
+					<a
+						href="{base}/rss.xml"
+						class="btn btn-outline-primary btn-sm glass-button rss-feed-button"
+					>
 						<Icon icon="mdi:rss" width="16" height="16" aria-hidden="true" />
 						RSS Feed
 					</a>
@@ -343,11 +346,15 @@
 			/* Enhanced glassmorphism with subtle gradient overlay */
 			background: linear-gradient(
 				135deg,
-				rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-				rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-				rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent)
+					0%,
+				color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+					50%,
+				color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent)
+					100%
 			);
-			border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+			border: var(--border-width-thin) solid
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
 		}
 
 		/* Override h2 margin-top inside pdf-section */
@@ -360,9 +367,11 @@
 			box-shadow: var(--shadow-lg);
 			background: linear-gradient(
 				135deg,
-				rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-				rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-				rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
+				color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+					50%,
+				color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent)
+					100%
 			);
 		}
 
@@ -381,11 +390,15 @@
 		:global(html.dark) .pdf-section {
 			background: linear-gradient(
 				135deg,
-				rgba(var(--color-primary-rgb), 0.08) 0%,
-				rgba(var(--color-highlight-rgb), 0.04) 50%,
-				rgba(var(--color-accent-rgb), 0.06) 100%
+				color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
+				color-mix(in srgb, var(--color-highlight) 4%, transparent) 50%,
+				color-mix(in srgb, var(--color-accent) 6%, transparent) 100%
 			);
-			border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
+			border-color: color-mix(
+				in srgb,
+				var(--color-primary) calc(var(--opacity-medium) * 100%),
+				transparent
+			);
 		}
 
 		/* RSS Feed Button */

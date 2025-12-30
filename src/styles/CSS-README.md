@@ -92,8 +92,8 @@ Example usage:
 ```css
 .example {
 	color: var(--color-primary);
-	margin-bottom: var(--space-md); /* or --spacing-4 */
-	background-color: rgba(var(--color-primary-rgb), 0.1);
+	margin-bottom: var(--space-md); 	/* ✅ Preferred - uses color directly */
+	background: color-mix(in srgb, var(--color-primary) 10%, transparent);
 	box-shadow: var(--shadow-md);
 	transition: all var(--duration-normal) var(--ease-out);
 }

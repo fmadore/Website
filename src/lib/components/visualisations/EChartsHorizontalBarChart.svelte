@@ -31,7 +31,7 @@ ECharts Horizontal Bar Chart component
 	let chart: echarts.ECharts | null = $state(null);
 	let echartsLib: typeof echarts | null = null;
 	let isChartReady = $state(false);
-	
+
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
 
@@ -80,7 +80,7 @@ ECharts Horizontal Bar Chart component
 	const chartOption = $derived({
 		tooltip: {
 			trigger: 'axis',
-			backgroundColor: `rgba(${resolvedColors.surfaceRgb}, 0.9)`,
+			backgroundColor: `color-mix(in srgb, ${resolvedColors.surface} 90%, transparent)`,
 			textStyle: {
 				color: resolvedColors.text,
 				fontSize: 12,
@@ -90,7 +90,8 @@ ECharts Horizontal Bar Chart component
 			borderColor: resolvedColors.border,
 			borderWidth: 1,
 			padding: [10, 14],
-			extraCssText: 'backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: var(--shadow-lg);'
+			extraCssText:
+				'backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: var(--shadow-lg);'
 		},
 		grid: {
 			left: isMobile ? '120px' : '150px',
@@ -213,7 +214,7 @@ ECharts Horizontal Bar Chart component
 			if (chartContainer && !chart && echartsLib) {
 				try {
 					chart = echartsLib.init(chartContainer);
-					
+
 					// Setup resize observer after chart is created
 					resizeObserver = new ResizeObserver(() => {
 						if (chart && !chart.isDisposed()) {

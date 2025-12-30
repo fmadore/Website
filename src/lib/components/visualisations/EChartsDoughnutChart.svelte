@@ -21,15 +21,15 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 			'var(--color-highlight)',
 			'var(--color-success)',
 			'var(--color-secondary)',
-			'rgba(var(--color-primary-rgb), 0.8)',
-			'rgba(var(--color-highlight-rgb), 0.8)',
-			'rgba(var(--color-success-rgb), 0.8)',
-			'rgba(var(--color-primary-rgb), 0.6)',
-			'rgba(var(--color-highlight-rgb), 0.6)',
-			'rgba(var(--color-success-rgb), 0.6)',
-			'rgba(var(--color-primary-rgb), 0.4)',
-			'rgba(var(--color-highlight-rgb), 0.4)',
-			'rgba(var(--color-success-rgb), 0.4)'
+			'color-mix(in srgb, var(--color-primary) 80%, transparent)',
+			'color-mix(in srgb, var(--color-highlight) 80%, transparent)',
+			'color-mix(in srgb, var(--color-success) 80%, transparent)',
+			'color-mix(in srgb, var(--color-primary) 60%, transparent)',
+			'color-mix(in srgb, var(--color-highlight) 60%, transparent)',
+			'color-mix(in srgb, var(--color-success) 60%, transparent)',
+			'color-mix(in srgb, var(--color-primary) 40%, transparent)',
+			'color-mix(in srgb, var(--color-highlight) 40%, transparent)',
+			'color-mix(in srgb, var(--color-success) 40%, transparent)'
 		]
 	}: {
 		data?: DataItem[];
@@ -46,7 +46,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 	let chart: echarts.ECharts | null = $state(null);
 	let echartsLib: typeof echarts | null = null;
 	let isChartReady = $state(false);
-	
+
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
 
@@ -106,7 +106,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		},
 		tooltip: {
 			trigger: 'item',
-			backgroundColor: `rgba(${resolvedColors.surfaceRgb}, 0.9)`,
+			backgroundColor: `color-mix(in srgb, ${resolvedColors.surface} 90%, transparent)`,
 			textStyle: {
 				color: resolvedColors.text,
 				fontSize: 12,
@@ -116,7 +116,8 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 			borderColor: resolvedColors.border,
 			borderWidth: 1,
 			padding: [10, 14],
-			extraCssText: 'backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: var(--shadow-lg);',
+			extraCssText:
+				'backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: var(--shadow-lg);',
 			formatter: '{a} <br/>{b}: {c} ({d}%)',
 			confine: isMobile,
 			position: isMobile
@@ -163,10 +164,16 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 				center: ['50%', isMobile ? '42%' : '44%'],
 				data: chartData,
 				emphasis: {
+					label: {
+						show: true,
+						fontSize: isMobile ? 16 : 20,
+						fontWeight: 'bold',
+						color: resolvedColors.text
+					},
 					itemStyle: {
 						shadowBlur: 10,
 						shadowOffsetX: 0,
-						shadowColor: 'rgba(0, 0, 0, 0.5)'
+						shadowColor: 'color-mix(in srgb, black 50%, transparent)'
 					}
 				},
 				label: {
@@ -177,9 +184,9 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 					fontFamily: resolvedColors.fontFamily,
 					fontWeight: 'bold',
 					formatter: isMobile ? '{d}%' : '{b}: {d}%',
-					textBorderColor: isMobile ? 'rgba(0, 0, 0, 0.9)' : 'transparent',
+					textBorderColor: isMobile ? 'color-mix(in srgb, black 90%, transparent)' : 'transparent',
 					textBorderWidth: isMobile ? 2 : 0,
-					textShadowColor: isMobile ? 'rgba(0, 0, 0, 0.9)' : 'transparent',
+					textShadowColor: isMobile ? 'color-mix(in srgb, black 90%, transparent)' : 'transparent',
 					textShadowBlur: isMobile ? 3 : 0,
 					minMargin: isMobile ? 8 : 5,
 					padding: isMobile ? [2, 4] : [0, 0]
@@ -238,7 +245,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 			if (chartContainer && !chart && echartsLib) {
 				try {
 					chart = echartsLib.init(chartContainer);
-					
+
 					// Setup resize observer after chart is created
 					resizeObserver = new ResizeObserver(() => {
 						if (chart && !chart.isDisposed()) {

@@ -76,7 +76,13 @@
 		<div class="empty-state">
 			<p class="empty-state-message">{emptyStateMessage}</p>
 			{#if areFiltersActive}
-				<Button variant="primary" size="sm" onclick={clearAllFilters} additionalClasses="mt-4" label="Clear all filters" />
+				<Button
+					variant="primary"
+					size="sm"
+					onclick={clearAllFilters}
+					additionalClasses="mt-4"
+					label="Clear all filters"
+				/>
 			{:else if !areFiltersActive}
 				<p class="empty-state-hint">
 					{emptyStateNoFiltersMessage}
@@ -91,13 +97,14 @@
 		padding: var(--space-xl);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-surface-rgb), var(--opacity-high)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-surface) calc(var(--opacity-high) * 100%), transparent) 100%
 		);
 		border-radius: var(--border-radius-lg);
 		text-align: center;
 		margin-top: var(--space-lg);
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
 	}
 
 	.empty-state-message {

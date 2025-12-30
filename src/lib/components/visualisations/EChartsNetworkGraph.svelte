@@ -38,7 +38,7 @@ ECharts Network Graph - A network visualization for author collaborations
 	let chart: echarts.ECharts | null = $state(null);
 	let echartsLib: typeof echarts | null = null;
 	let isChartReady = $state(false);
-	
+
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
 
@@ -89,7 +89,7 @@ ECharts Network Graph - A network visualization for author collaborations
 		textLight: getCSSVariableValue('--color-text-light') || '#64748b',
 		border: getCSSVariableValue('--color-border') || '#e2e8f0',
 		surface: getCSSVariableValue('--color-surface') || '#f8fafc',
-		surfaceRgb: getCSSVariableValue('--color-surface-rgb') || '248, 250, 252',
+
 		accent: getCSSVariableValue('--color-accent') || '#14b8a6',
 		highlight: getCSSVariableValue('--color-highlight') || '#f59e0b',
 		success: getCSSVariableValue('--color-success') || '#10b981',
@@ -123,7 +123,7 @@ ECharts Network Graph - A network visualization for author collaborations
 			.slice(0, maxConnections);
 
 		// Get list of top collaborator names for filtering connections
-		const topCollaboratorNames = new Set(topCollaborators.map(c => c.author));
+		const topCollaboratorNames = new Set(topCollaborators.map((c) => c.author));
 
 		// Create nodes
 		const nodes = [
@@ -208,9 +208,8 @@ ECharts Network Graph - A network visualization for author collaborations
 
 		// Create links between co-authors (only for those in top collaborators)
 		const coAuthorLinks = coAuthorConnections
-			.filter(conn => 
-				topCollaboratorNames.has(conn.source) && 
-				topCollaboratorNames.has(conn.target)
+			.filter(
+				(conn) => topCollaboratorNames.has(conn.source) && topCollaboratorNames.has(conn.target)
 			)
 			.map((conn) => ({
 				source: conn.source,
@@ -246,7 +245,8 @@ ECharts Network Graph - A network visualization for author collaborations
 		},
 		tooltip: {
 			trigger: 'item',
-			backgroundColor: `rgba(${resolvedColors.surfaceRgb}, 0.9)`,
+			triggerOn: 'mousemove',
+			backgroundColor: `color-mix(in srgb, ${resolvedColors.surface} 90%, transparent)`,
 			textStyle: {
 				color: resolvedColors.text,
 				fontSize: isMobile ? 11 : 12,
@@ -317,7 +317,9 @@ ECharts Network Graph - A network visualization for author collaborations
 					// Check if this is a co-author connection
 					if (params.data.connectionData) {
 						const conn = params.data.connectionData;
-						const publicationList = conn.publications.map((pub: string) => `• ${pub}`).join('<br/>');
+						const publicationList = conn.publications
+							.map((pub: string) => `• ${pub}`)
+							.join('<br/>');
 						return `<strong>Co-author connection</strong><br/>
 							${conn.source} ↔ ${conn.target}<br/>
 							Shared publications: ${conn.publicationCount}<br/>
@@ -341,10 +343,7 @@ ECharts Network Graph - A network visualization for author collaborations
 				layout: 'force',
 				data: networkData.nodes,
 				links: networkData.links,
-				categories: [
-					{ name: centerAuthor },
-					{ name: 'Collaborators' }
-				],
+				categories: [{ name: centerAuthor }, { name: 'Collaborators' }],
 				roam: 'scale', // Enable zoom and pan
 				scaleLimit: {
 					min: 0.5,
@@ -413,7 +412,7 @@ ECharts Network Graph - A network visualization for author collaborations
 			if (chartContainer && !chart && echartsLib) {
 				try {
 					chart = echartsLib.init(chartContainer);
-					
+
 					// Setup resize observer after chart is created
 					resizeObserver = new ResizeObserver(() => {
 						if (chart && !chart.isDisposed()) {
@@ -454,36 +453,34 @@ ECharts Network Graph - A network visualization for author collaborations
 
 <div class="echarts-container scroll-reveal-scale">
 	<div class="zoom-controls">
-		<button 
-			class="zoom-btn" 
-			onclick={zoomIn} 
-			title="Zoom In"
-			aria-label="Zoom in on network graph"
-		>
+		<button class="zoom-btn" onclick={zoomIn} title="Zoom In" aria-label="Zoom in on network graph">
 			<Icon icon="lucide:zoom-in" width="20" height="20" />
 		</button>
-		<button 
-			class="zoom-btn" 
-			onclick={resetZoom} 
+		<button
+			class="zoom-btn"
+			onclick={resetZoom}
 			title="Reset Zoom"
 			aria-label="Reset network graph zoom"
 		>
 			<Icon icon="lucide:maximize-2" width="20" height="20" />
 		</button>
-		<button 
-			class="zoom-btn" 
-			onclick={zoomOut} 
+		<button
+			class="zoom-btn"
+			onclick={zoomOut}
 			title="Zoom Out"
 			aria-label="Zoom out on network graph"
 		>
 			<Icon icon="lucide:zoom-out" width="20" height="20" />
 		</button>
 	</div>
-	
+
 	{#if !isMobile}
 		<div class="legend-overlay">
 			<div class="legend-item">
-				<div class="legend-icon" style="background-color: {resolvedColors.primary}; border: 2px solid {resolvedColors.primary}"></div>
+				<div
+					class="legend-icon"
+					style="background-color: {resolvedColors.primary}; border: 2px solid {resolvedColors.primary}"
+				></div>
 				<span>{centerAuthor}</span>
 			</div>
 			<div class="legend-item">
@@ -495,7 +492,10 @@ ECharts Network Graph - A network visualization for author collaborations
 				<span>Direct collaboration</span>
 			</div>
 			<div class="legend-item">
-				<div class="legend-line" style="background-color: {resolvedColors.accent}; border-bottom: 2px dashed {resolvedColors.accent}; height: 0;"></div>
+				<div
+					class="legend-line"
+					style="background-color: {resolvedColors.accent}; border-bottom: 2px dashed {resolvedColors.accent}; height: 0;"
+				></div>
 				<span>Co-author connection</span>
 			</div>
 		</div>
@@ -533,7 +533,7 @@ ECharts Network Graph - A network visualization for author collaborations
 		top: var(--space-4);
 		right: var(--space-4);
 		z-index: 10;
-		background-color: rgba(var(--color-surface-rgb), 0.8);
+		background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
 		backdrop-filter: blur(var(--glass-blur-sm));
 		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
 		border: var(--border-width-thin) solid var(--color-border);
@@ -567,11 +567,11 @@ ECharts Network Graph - A network visualization for author collaborations
 
 	.zoom-btn {
 		width: 40px;
-		height: 40px;
+		height: 36px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-color: rgba(var(--color-surface-rgb), 0.8);
+		background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
 		backdrop-filter: blur(var(--glass-blur-sm));
 		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
 		border: var(--border-width-thin) solid var(--color-border);
@@ -580,6 +580,15 @@ ECharts Network Graph - A network visualization for author collaborations
 		cursor: pointer;
 		transition: all var(--duration-fast) var(--ease-out);
 		box-shadow: var(--shadow-sm);
+	}
+
+	.node-tooltip {
+		position: absolute;
+		background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
+		color: var(--color-text);
+		border: 1px solid var(--color-border);
+		transform: var(--transform-lift-sm);
+		box-shadow: var(--shadow-md);
 	}
 
 	.zoom-btn:hover {

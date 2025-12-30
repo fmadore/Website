@@ -81,7 +81,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		},
 		tooltip: {
 			trigger: 'axis',
-			backgroundColor: `rgba(${resolvedColors.surfaceRgb}, 0.9)`,
+			backgroundColor: `color-mix(in srgb, ${resolvedColors.surface} 90%, transparent)`,
 			textStyle: {
 				color: resolvedColors.text,
 				fontSize: 12,
@@ -91,7 +91,8 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 			borderColor: resolvedColors.border,
 			borderWidth: 1,
 			padding: [10, 14],
-			extraCssText: 'backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: var(--shadow-lg);'
+			extraCssText:
+				'backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: var(--shadow-lg);'
 		},
 		grid: {
 			left: isMobile ? 32 : 64,
@@ -207,7 +208,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 			if (chartContainer && !chart && echartsLib) {
 				try {
 					chart = echartsLib.init(chartContainer);
-					
+
 					// Setup resize observer after chart is created
 					resizeObserver = new ResizeObserver(() => {
 						if (chart && !chart.isDisposed()) {

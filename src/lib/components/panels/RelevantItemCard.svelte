@@ -61,14 +61,32 @@
 			border-color var(--duration-normal) var(--ease-out),
 			box-shadow var(--duration-normal) var(--ease-out);
 		/* Use glass-card utility for consistent glassmorphism */
-		background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light));
+		background: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--card-glass-opacity-light) * 100%),
+			transparent
+		);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		border: var(--border-width-thin) solid
-			rgba(var(--color-white-rgb), var(--card-glass-border-light));
+			color-mix(
+				in srgb,
+				var(--color-white) calc(var(--card-glass-border-light) * 100%),
+				transparent
+			);
 		box-shadow:
-			0 8px 32px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-light));
+			0 8px 32px 0
+				color-mix(
+					in srgb,
+					rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity) * 100%),
+					transparent
+				),
+			inset 0 1px 0
+				color-mix(
+					in srgb,
+					var(--color-white) calc(var(--card-glass-inset-light) * 100%),
+					transparent
+				);
 	}
 
 	.relevant-item::before {
@@ -90,11 +108,29 @@
 
 	.relevant-item:hover {
 		transform: var(--transform-lift-sm);
-		background: rgba(var(--color-white-rgb), var(--card-glass-opacity-light-hover));
-		border-color: rgba(var(--color-white-rgb), var(--card-glass-border-light-hover));
+		background: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--card-glass-opacity-light-hover) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--card-glass-border-light-hover) * 100%),
+			transparent
+		);
 		box-shadow:
-			0 12px 40px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity-hover)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-light-hover));
+			0 12px 40px 0
+				color-mix(
+					in srgb,
+					rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity-hover) * 100%),
+					transparent
+				),
+			inset 0 1px 0
+				color-mix(
+					in srgb,
+					var(--color-white) calc(var(--card-glass-inset-light-hover) * 100%),
+					transparent
+				);
 	}
 
 	.relevant-item-meta {
@@ -111,9 +147,14 @@
 		text-transform: uppercase;
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-accent);
-		background-color: rgba(var(--color-accent-rgb), var(--opacity-medium));
+		background-color: color-mix(
+			in srgb,
+			var(--color-accent) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 		padding: var(--space-1) var(--space-3);
-		border: var(--border-width-thin) solid rgba(var(--color-accent-rgb), var(--opacity-medium-high));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium-high) * 100%), transparent);
 		border-radius: var(--border-radius-full);
 		transition:
 			color var(--duration-fast) var(--ease-out),
@@ -200,25 +241,68 @@
 
 	/* Dark mode overrides */
 	:global(html.dark) .relevant-item {
-		background: rgba(var(--color-black-rgb), var(--card-glass-opacity-dark));
+		background: color-mix(
+			in srgb,
+			var(--color-black) calc(var(--card-glass-opacity-dark) * 100%),
+			transparent
+		);
 		border: var(--border-width-thin) solid
-			rgba(var(--color-white-rgb), var(--card-glass-border-dark));
+			color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-dark) * 100%), transparent);
 		box-shadow:
-			0 8px 32px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-dark));
+			0 8px 32px 0
+				color-mix(
+					in srgb,
+					rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity) * 100%),
+					transparent
+				),
+			0 2px 8px 0 color-mix(in srgb, var(--color-black) calc(var(--opacity-5) * 100%), transparent),
+			inset 0 1px 0
+				color-mix(
+					in srgb,
+					var(--color-white) calc(var(--card-glass-inset-dark) * 100%),
+					transparent
+				);
 	}
 
 	:global(html.dark) .relevant-item:hover {
-		background: rgba(var(--color-black-rgb), var(--card-glass-opacity-dark-hover));
-		border-color: rgba(var(--color-white-rgb), var(--card-glass-border-dark-hover));
+		background: color-mix(
+			in srgb,
+			var(--color-black) calc(var(--card-glass-opacity-dark-hover) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--card-glass-border-dark-hover) * 100%),
+			transparent
+		);
 		box-shadow:
-			0 12px 40px 0 rgba(var(--card-shadow-color), var(--card-shadow-opacity-hover)),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--card-glass-inset-dark-hover));
+			0 12px 40px 0
+				color-mix(
+					in srgb,
+					rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity-hover) * 100%),
+					transparent
+				),
+			0 4px 12px 0
+				color-mix(in srgb, var(--color-black) calc(var(--opacity-10) * 100%), transparent),
+			inset 0 1px 0
+				color-mix(
+					in srgb,
+					var(--color-white) calc(var(--card-glass-inset-dark-hover) * 100%),
+					transparent
+				);
 	}
 
 	:global(html.dark) .relevant-item-type {
-		background-color: rgba(var(--color-accent-rgb), var(--opacity-medium));
-		border-color: rgba(var(--color-accent-rgb), var(--opacity-medium-high));
+		background-color: color-mix(
+			in srgb,
+			var(--color-accent) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-accent) calc(var(--opacity-medium-high) * 100%),
+			transparent
+		);
 	}
 
 	/* Responsive design */

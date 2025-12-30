@@ -40,7 +40,8 @@
 				<div class="flex gap-4">
 					<div class="font-semibold text-nowrap">{review.year}</div>
 					<div class="flex-1">
-						{review.type}{#if review.journal}&nbsp;–&nbsp;<em>{review.journal}</em>{:else if review.publisher}&nbsp;–&nbsp;{review.publisher}{/if}.
+						{review.type}{#if review.journal}&nbsp;–&nbsp;<em>{review.journal}</em
+							>{:else if review.publisher}&nbsp;–&nbsp;{review.publisher}{/if}.
 						{#if review.details}
 							<div class="text-sm">{review.details}</div>
 						{/if}
@@ -88,15 +89,15 @@
 		margin-top: var(--space-1);
 		padding: var(--space-1) var(--space-2);
 		border-radius: var(--border-radius-md);
-		background: rgba(var(--color-primary-rgb), 0.05);
-		border: 1px solid rgba(var(--color-primary-rgb), 0.2);
+		background: color-mix(in srgb, var(--color-primary) 5%, transparent);
+		border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
 		transition: all var(--transition-duration-150) ease;
 		text-decoration: none;
 	}
 
 	.verification-badge:hover {
 		color: var(--color-accent);
-		background: rgba(var(--color-accent-rgb), 0.08);
-		border-color: rgba(var(--color-accent-rgb), 0.3);
+		background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+		border-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
 	}
 </style>

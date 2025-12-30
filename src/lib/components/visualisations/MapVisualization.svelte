@@ -435,7 +435,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background-color: rgba(255, 0, 0, 0.1);
+		background-color: color-mix(in srgb, #ff0000 10%, transparent);
 		color: #d32f2f;
 		padding: var(--space-4);
 		text-align: center;
@@ -487,7 +487,7 @@
 
 	:global(.map-popup a.leaflet-popup-close-button) {
 		color: var(--color-text-light, #777);
-		background-color: rgba(255, 255, 255, 0.7);
+		background-color: color-mix(in srgb, var(--color-white, #fff) 70%, transparent);
 		border-radius: 50%;
 		width: 20px;
 		height: 20px;
@@ -503,7 +503,7 @@
 
 	:global(.map-popup a.leaflet-popup-close-button:hover) {
 		color: var(--color-text, #333);
-		background-color: rgba(255, 255, 255, 1);
+		background-color: var(--color-white, #fff);
 	}
 
 	/* Style link inside popup */
@@ -561,7 +561,9 @@
 		fill: var(--color-background); /* Fill color for contrast */
 		fill-opacity: 0.9;
 		stroke-width: 1.5; /* Slightly thinner stroke */
-		filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.4)); /* Drop shadow for depth */
+		filter: drop-shadow(
+			1px 1px 1px color-mix(in srgb, black 40%, transparent)
+		); /* Drop shadow for depth */
 		/* Uses design system animation tokens */
 		transition:
 			transform var(--duration-fast) var(--ease-out),
@@ -603,7 +605,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		border: 1px solid rgba(0, 0, 0, 0.2); /* Add a subtle border */
+		border: 1px solid color-mix(in srgb, black 20%, transparent); /* Add a subtle border */
 	}
 
 	:global(.marker-cluster div) {
@@ -629,38 +631,35 @@
 
 	/* Default cluster color */
 	:global(.marker-cluster-default div) {
-		background-color: rgba(
-			var(--color-primary-rgb, 43, 108, 176),
-			0.8
-		); /* Use primary color with alpha */
+		background-color: color-mix(in srgb, var(--color-primary, rgb(43, 108, 176)) 80%, transparent);
 	}
 	:global(.marker-cluster-default:hover div) {
-		background-color: rgba(var(--color-primary-rgb, 43, 108, 176), 1);
+		background-color: var(--color-primary, rgb(43, 108, 176));
 	}
 
 	/* Lecture cluster color */
 	:global(.marker-cluster-lecture div) {
-		background-color: rgba(var(--color-accent-rgb), 0.8);
+		background-color: color-mix(in srgb, var(--color-accent) 80%, transparent);
 	}
 	:global(.marker-cluster-lecture:hover div) {
-		background-color: rgba(var(--color-accent-rgb), 1);
+		background-color: var(--color-accent);
 	}
 
 	/* Event cluster color */
 	:global(.marker-cluster-event div) {
-		background-color: rgba(var(--color-highlight-rgb), 0.8);
+		background-color: color-mix(in srgb, var(--color-highlight) 80%, transparent);
 	}
 	:global(.marker-cluster-event:hover div) {
-		background-color: rgba(var(--color-highlight-rgb), 1);
+		background-color: var(--color-highlight);
 	}
 
 	/* Example: Workshop cluster color */
 	/*
     :global(.marker-cluster-workshop div) {
-        background-color: rgba(var(--color-success-rgb), 0.8);
+        background-color: color-mix(in srgb, var(--color-success) 80%, transparent);
     }
     :global(.marker-cluster-workshop:hover div) {
-        background-color: rgba(var(--color-success-rgb), 1);
+        background-color: var(--color-success);
     }
     */
 

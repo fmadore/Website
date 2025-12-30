@@ -68,47 +68,47 @@
 	/* ===== SEMANTIC COLOR TOKENS ===== */
 	/* Primary - Main brand color for CTAs, links, active states */
 	--color-primary: var(--sys-color-blue-700);
-	--color-primary-rgb: 29, 78, 216;
+
 	--color-primary-dark: var(--sys-color-blue-800);
 	--color-primary-light: var(--sys-color-blue-500);
 	--color-primary-lighter: var(--sys-color-blue-400);
 
 	/* Secondary - Supporting UI elements */
 	--color-secondary: var(--sys-color-neutral-600);
-	--color-secondary-rgb: 71, 85, 105;
+
 	--color-secondary-light: var(--sys-color-neutral-500);
 
 	/* Accent - Highlights, badges, special elements */
 	--color-accent: var(--sys-color-teal-500);
-	--color-accent-rgb: 20, 184, 166;
+
 	--color-accent-dark: var(--sys-color-teal-600);
 	--color-accent-light: var(--sys-color-teal-400);
 
 	/* Highlight - Important callouts, featured content */
 	--color-highlight: var(--sys-color-amber-500);
-	--color-highlight-rgb: 245, 158, 11;
+
 	--color-highlight-dark: var(--sys-color-amber-600);
 	--color-highlight-light: var(--sys-color-amber-400);
 
 	/* Success - Positive states, confirmations */
 	--color-success: var(--sys-color-emerald-500);
-	--color-success-rgb: 16, 185, 129;
+
 	--color-success-dark: var(--sys-color-emerald-600);
 
 	/* Danger - Errors, destructive actions */
 	--color-danger: var(--sys-color-red-600);
-	--color-danger-rgb: 220, 38, 38;
+
 	--color-danger-dark: var(--sys-color-red-700);
 	--color-danger-light: var(--sys-color-red-400);
 
 	/* ===== BACKGROUND & TEXT COLORS ===== */
 	--color-background: var(--sys-color-neutral-0);
-	--color-background-rgb: 255, 255, 255;
+
 	--color-background-subtle: var(--sys-color-neutral-50);
 	--color-background-muted: var(--sys-color-neutral-100);
 
 	--color-text: var(--sys-color-neutral-800);
-	--color-text-rgb: 30, 41, 59;
+
 	--color-text-light: var(--sys-color-neutral-500);
 	--color-text-muted: var(--sys-color-neutral-400);
 	--color-text-emphasis: var(--sys-color-neutral-900);
@@ -118,7 +118,7 @@
 	/* ===== SURFACE COLORS ===== */
 	/* Layered surfaces for depth hierarchy */
 	--color-surface: var(--sys-color-neutral-50);
-	--color-surface-rgb: 248, 250, 252;
+
 	--color-surface-alt: var(--sys-color-neutral-100);
 	--color-surface-elevated: var(--sys-color-neutral-0);
 	--color-surface-sunken: var(--sys-color-neutral-100);
@@ -132,16 +132,16 @@
 
 	/* ===== ACADEMIC-SPECIFIC COLORS ===== */
 	--color-citation: var(--color-accent);
-	--color-citation-rgb: 20, 184, 166;
+
 	--color-quote: var(--sys-color-neutral-700);
 	--color-note: var(--sys-color-neutral-600);
 	--color-code-bg: var(--sys-color-neutral-100);
 
 	/* ===== UTILITY COLORS ===== */
 	--color-white: #ffffff;
-	--color-white-rgb: 255, 255, 255;
+
 	--color-black: #000000;
-	--color-black-rgb: 0, 0, 0;
+
 	--color-transparent: transparent;
 
 	/* ===== COMPONENT COLOR LAYERS ===== */
@@ -153,24 +153,24 @@
 
 	/* Button color schemes - for glass buttons and variants */
 	--color-secondary-scheme: var(--color-accent);
-	--color-secondary-scheme-rgb: 20, 184, 166;
+
 	--color-secondary-scheme-alt: var(--sys-color-teal-600);
 
 	--color-tertiary-scheme: var(--color-success);
-	--color-tertiary-scheme-rgb: 16, 185, 129;
+
 	--color-tertiary-scheme-alt: var(--sys-color-emerald-600);
 
 	--color-glass-scheme: var(--color-primary);
-	--color-glass-scheme-rgb: 29, 78, 216;
+
 	--color-glass-scheme-alt: var(--color-primary-light);
 
 	/* Legacy dark surface tokens (for compatibility) */
 	--color-dark-surface: var(--sys-color-neutral-700);
-	--color-dark-surface-rgb: 51, 65, 85;
+
 	--color-dark-surface-alt: var(--sys-color-neutral-800);
-	--color-dark-surface-alt-rgb: 30, 41, 59;
+
 	--color-dark-surface-deep: var(--sys-color-neutral-900);
-	--color-dark-surface-deep-rgb: 15, 23, 42;
+
 	/* ===== TYPOGRAPHY SCALE ===== */
 	/* 
 	 * Fluid type scale using a 1.2 (minor third) ratio
@@ -749,7 +749,7 @@ html.dark {
 	/* ===== PRIMARY COLORS ===== */
 	--color-primary: #60a5fa;
 	/* Blue 400 - excellent visibility */
-	--color-primary-rgb: 96, 165, 250;
+
 	--color-primary-dark: #3b82f6;
 	/* Blue 500 */
 	--color-primary-light: #93c5fd;
@@ -760,14 +760,14 @@ html.dark {
 	/* ===== SECONDARY ===== */
 	--color-secondary: #94a3b8;
 	/* Slate 400 */
-	--color-secondary-rgb: 148, 163, 184;
+
 	--color-secondary-light: #cbd5e1;
 	/* Slate 300 */
 
 	/* ===== ACCENT ===== */
 	--color-accent: #2dd4bf;
 	/* Teal 400 */
-	--color-accent-rgb: 45, 212, 191;
+
 	--color-accent-dark: #14b8a6;
 	/* Teal 500 */
 	--color-accent-light: #5eead4;
@@ -776,7 +776,7 @@ html.dark {
 	/* ===== HIGHLIGHT ===== */
 	--color-highlight: #fbbf24;
 	/* Amber 400 */
-	--color-highlight-rgb: 251, 191, 36;
+
 	--color-highlight-dark: #f59e0b;
 	/* Amber 500 */
 	--color-highlight-light: #fcd34d;
@@ -785,14 +785,14 @@ html.dark {
 	/* ===== SUCCESS ===== */
 	--color-success: #34d399;
 	/* Emerald 400 */
-	--color-success-rgb: 52, 211, 153;
+
 	--color-success-dark: #10b981;
 	/* Emerald 500 */
 
 	/* ===== DANGER ===== */
 	--color-danger: #f87171;
 	/* Red 400 */
-	--color-danger-rgb: 248, 113, 113;
+
 	--color-danger-dark: #ef4444;
 	/* Red 500 */
 	--color-danger-light: #fca5a5;
@@ -801,7 +801,7 @@ html.dark {
 	/* ===== BACKGROUNDS ===== */
 	--color-background: #0f172a;
 	/* Slate 900 */
-	--color-background-rgb: 15, 23, 42;
+
 	--color-background-subtle: #1e293b;
 	/* Slate 800 */
 	--color-background-muted: #334155;
@@ -810,7 +810,7 @@ html.dark {
 	/* ===== TEXT ===== */
 	--color-text: #f1f5f9;
 	/* Slate 100 */
-	--color-text-rgb: 241, 245, 249;
+
 	--color-text-light: #cbd5e1;
 	/* Slate 300 */
 	--color-text-muted: #94a3b8;
@@ -822,7 +822,7 @@ html.dark {
 	/* ===== SURFACES ===== */
 	--color-surface: #1e293b;
 	/* Slate 800 */
-	--color-surface-rgb: 30, 41, 59;
+
 	--color-surface-alt: #334155;
 	/* Slate 700 */
 	--color-surface-elevated: #475569;
@@ -842,7 +842,7 @@ html.dark {
 
 	/* ===== ACADEMIC COLORS ===== */
 	--color-citation: #2dd4bf;
-	--color-citation-rgb: 45, 212, 191;
+
 	--color-quote: #e2e8f0;
 	/* Slate 200 */
 	--color-note: #cbd5e1;
@@ -859,24 +859,24 @@ html.dark {
 
 	/* Button schemes */
 	--color-secondary-scheme: #60a5fa;
-	--color-secondary-scheme-rgb: 96, 165, 250;
+
 	--color-secondary-scheme-alt: #3b82f6;
 
 	--color-tertiary-scheme: #34d399;
-	--color-tertiary-scheme-rgb: 52, 211, 153;
+
 	--color-tertiary-scheme-alt: #10b981;
 
 	--color-glass-scheme: #60a5fa;
-	--color-glass-scheme-rgb: 96, 165, 250;
+
 	--color-glass-scheme-alt: #93c5fd;
 
 	/* Legacy dark surface tokens */
 	--color-dark-surface: #1e293b;
-	--color-dark-surface-rgb: 30, 41, 59;
+
 	--color-dark-surface-alt: #0f172a;
-	--color-dark-surface-alt-rgb: 15, 23, 42;
+
 	--color-dark-surface-deep: #020617;
-	--color-dark-surface-deep-rgb: 2, 6, 23;
+
 
 	/* ===== GLASSMORPHISM (DARK) ===== */
 	--card-glass-opacity-light: 0.08;

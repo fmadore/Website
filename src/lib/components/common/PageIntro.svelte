@@ -44,13 +44,15 @@
 		/* Built-in glassmorphism for all variants */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-medium-high));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-medium-high) * 100%), transparent);
 		box-shadow: var(--shadow-lg);
 	}
 
@@ -58,11 +60,12 @@
 		transform: var(--transform-lift-sm);
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
-		border-color: rgba(var(--color-white-rgb), var(--opacity-30));
+		border-color: color-mix(in srgb, var(--color-white) 30%, transparent);
 		box-shadow: var(--shadow-xl);
 	}
 
@@ -76,9 +79,10 @@
 		/* Lighter glassmorphism for compact variant */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
@@ -88,9 +92,10 @@
 	.page-intro--compact:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
 		box-shadow: var(--shadow-md);
 	}
@@ -105,13 +110,14 @@
 		/* Enhanced glassmorphism for emphasized variant */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
 		backdrop-filter: blur(var(--glass-blur-fallback));
 		-webkit-backdrop-filter: blur(var(--glass-blur-fallback));
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), 0.15);
+		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 15%, transparent);
 		box-shadow: var(--shadow-xl);
 
 		/* Add subtle accent border for emphasis */
@@ -123,11 +129,15 @@
 	.page-intro--emphasized:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium-high) * 100%),
+			transparent
+		);
 		box-shadow: var(--shadow-2xl);
 	}
 
@@ -140,14 +150,14 @@
 		/* Premium glassmorphism for featured variant */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
 		backdrop-filter: blur(var(--glass-blur-fallback));
 		-webkit-backdrop-filter: blur(var(--glass-blur-fallback));
 		border: var(--border-width-thin) solid
-			rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent);
 		box-shadow: var(--shadow-2xl);
 		position: relative;
 		overflow: hidden;
@@ -172,11 +182,11 @@
 	.page-intro--featured:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.12) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-medium)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-low)) 100%
+			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-medium) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-low) * 100%), transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), 0.25);
+		border-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
 		box-shadow: 0 20px 60px 0 rgba(0, 0, 0, 0.3);
 	}
 
@@ -221,7 +231,11 @@
 		outline: var(--border-width-medium) solid var(--color-highlight);
 		outline-offset: var(--space-2xs);
 		box-shadow: 0 0 0 var(--border-width-thick)
-			rgba(var(--color-highlight-rgb), var(--opacity-medium-high));
+			color-mix(
+				in srgb,
+				var(--color-highlight) calc(var(--opacity-medium-high) * 100%),
+				transparent
+			);
 		border-radius: var(--border-radius-sm);
 	}
 
@@ -240,31 +254,33 @@
 	:global(html.dark) .page-intro {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
-		border: var(--border-width-thin) solid rgba(255, 255, 255, var(--opacity-medium));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, #ffffff calc(var(--opacity-medium) * 100%), transparent);
 		box-shadow: var(--shadow-lg);
 	}
 
 	:global(html.dark) .page-intro:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.12) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-medium)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-low)) 100%
+			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-medium) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-low) * 100%), transparent) 100%
 		);
-		border-color: rgba(255, 255, 255, 0.15);
+		border-color: color-mix(in srgb, #ffffff 15%, transparent);
 		box-shadow: var(--shadow-xl);
 	}
 
 	:global(html.dark) .page-intro--compact {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
 		box-shadow: var(--shadow-sm);
 	}
@@ -272,9 +288,9 @@
 	:global(html.dark) .page-intro--compact:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
 		box-shadow: var(--shadow-md);
 	}
@@ -282,44 +298,49 @@
 	:global(html.dark) .page-intro--emphasized {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.12) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-medium)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-low)) 100%
+			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-medium) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-low) * 100%), transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium-high));
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium-high) * 100%),
+			transparent
+		);
 		box-shadow: var(--shadow-xl);
 	}
 
 	:global(html.dark) .page-intro--emphasized:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.16) 0%,
-			rgba(var(--color-highlight-rgb), 0.12) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-medium)) 100%
+			color-mix(in srgb, var(--color-primary) 16%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 12%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium) * 100%), transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), 0.25);
+		border-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
 		box-shadow: var(--shadow-2xl);
 	}
 
 	:global(html.dark) .page-intro--featured {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.15) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-medium)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-low)) 100%
+			color-mix(in srgb, var(--color-primary) 15%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-medium) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-low) * 100%), transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), 0.25);
+		border-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
 		box-shadow: var(--shadow-2xl);
 	}
 
 	:global(html.dark) .page-intro--featured:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-medium-high)) 0%,
-			rgba(var(--color-highlight-rgb), 0.15) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-medium)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent)
+				0%,
+			color-mix(in srgb, var(--color-highlight) 15%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium) * 100%), transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), 0.3);
+		border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
 		box-shadow: 0 20px 60px 0 rgba(0, 0, 0, 0.6);
 	}
 

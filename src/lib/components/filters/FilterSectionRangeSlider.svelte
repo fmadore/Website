@@ -136,8 +136,16 @@
 	}
 
 	.filter-section-content:hover {
-		background: rgba(var(--color-surface-rgb), var(--opacity-medium));
-		border-color: rgba(var(--color-white-rgb), var(--opacity-medium));
+		background: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 		box-shadow: var(--shadow-md);
 		transform: var(--transform-lift-sm);
 	}
@@ -158,16 +166,20 @@
 		margin: 0;
 		padding-bottom: var(--space-xs);
 		border-bottom: var(--border-width-thin) solid
-			rgba(var(--color-accent-rgb), var(--opacity-medium));
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium) * 100%), transparent);
 		flex-shrink: 0;
 	}
 
 	.range-display {
 		display: flex;
 		align-items: center;
-		background: rgba(var(--color-surface-rgb), var(--opacity-medium));
+		background: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 		border: var(--border-width-thin) solid
-			rgba(var(--color-surface-rgb), var(--opacity-medium-high));
+			color-mix(in srgb, var(--color-surface) calc(var(--opacity-medium-high) * 100%), transparent);
 		border-radius: var(--border-radius-md);
 		padding: var(--space-xs) var(--space-sm);
 		transition: all var(--duration-normal) var(--ease-out);
@@ -177,8 +189,16 @@
 	}
 
 	.range-display:hover {
-		border-color: rgba(var(--color-accent-rgb), var(--opacity-medium-high));
-		background: rgba(var(--color-accent-rgb), var(--opacity-medium));
+		border-color: color-mix(
+			in srgb,
+			var(--color-accent) calc(var(--opacity-medium-high) * 100%),
+			transparent
+		);
+		background: color-mix(
+			in srgb,
+			var(--color-accent) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 		transform: var(--transform-lift-sm);
 		box-shadow: var(--shadow-md);
 	}
@@ -217,21 +237,43 @@
 
 	/* Dark mode overrides using design system variables */
 	:global(html.dark) .filter-section-content {
-		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium));
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
+		background: color-mix(
+			in srgb,
+			var(--color-dark-surface) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 		box-shadow:
 			var(--shadow-glass),
-			inset 0 1px 0 rgba(var(--color-white-rgb), var(--opacity-low));
+			inset 0 1px 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 	}
 
 	:global(html.dark) .range-display {
-		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium));
-		border-color: rgba(var(--color-white-rgb), var(--opacity-low));
+		background: color-mix(
+			in srgb,
+			var(--color-dark-surface) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--opacity-low) * 100%),
+			transparent
+		);
 	}
 
 	:global(html.dark) .range-display:hover {
-		background: rgba(var(--color-accent-rgb), var(--opacity-medium));
-		border-color: rgba(var(--color-accent-rgb), var(--opacity-medium-high));
+		background: color-mix(
+			in srgb,
+			var(--color-accent) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-accent) calc(var(--opacity-medium-high) * 100%),
+			transparent
+		);
 	}
 
 	:global(html.dark) .slider-container {
@@ -240,8 +282,16 @@
 	}
 
 	:global(html.dark) .no-data-message {
-		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium));
-		border-color: rgba(var(--color-white-rgb), var(--opacity-low));
+		background: color-mix(
+			in srgb,
+			var(--color-dark-surface) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--opacity-low) * 100%),
+			transparent
+		);
 	}
 
 	/* Global range slider styling enhancements */

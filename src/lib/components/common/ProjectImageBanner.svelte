@@ -22,7 +22,8 @@
 	} = $props();
 
 	const animationClass = scrollAnimation ? 'scroll-reveal-scale' : '';
-	const combinedClasses = `project-image-banner ${glassEffect} ${animationClass} ${additionalClasses}`.trim();
+	const combinedClasses =
+		`project-image-banner ${glassEffect} ${animationClass} ${additionalClasses}`.trim();
 	const overlayClass = showOverlay ? `overlay-${overlayIntensity}` : '';
 </script>
 
@@ -50,10 +51,10 @@
 		/* Enhanced glassmorphism with sophisticated gradient overlay */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.03) 0%,
-			rgba(var(--color-highlight-rgb), 0.02) 25%,
-			rgba(var(--color-accent-rgb), 0.015) 50%,
-			rgba(var(--color-primary-rgb), 0.01) 75%,
+			color-mix(in srgb, var(--color-primary) 3%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 2%, transparent) 25%,
+			color-mix(in srgb, var(--color-accent) 1.5%, transparent) 50%,
+			color-mix(in srgb, var(--color-primary) 1%, transparent) 75%,
 			transparent 100%
 		);
 		padding: var(--space-4);
@@ -78,10 +79,10 @@
 		bottom: 0;
 		background: linear-gradient(
 			45deg,
-			rgba(var(--color-primary-rgb), 0.02) 0%,
+			color-mix(in srgb, var(--color-primary) 2%, transparent) 0%,
 			transparent 30%,
 			transparent 70%,
-			rgba(var(--color-highlight-rgb), 0.02) 100%
+			color-mix(in srgb, var(--color-highlight) 2%, transparent) 100%
 		);
 		border-radius: inherit;
 		pointer-events: none;
@@ -94,16 +95,16 @@
 		/* Enhanced hover effect with stronger gradient and glow */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.05) 0%,
-			rgba(var(--color-highlight-rgb), 0.04) 25%,
-			rgba(var(--color-accent-rgb), 0.03) 50%,
-			rgba(var(--color-primary-rgb), 0.02) 75%,
-			rgba(var(--color-highlight-rgb), 0.01) 100%
+			color-mix(in srgb, var(--color-primary) 5%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 4%, transparent) 25%,
+			color-mix(in srgb, var(--color-accent) 3%, transparent) 50%,
+			color-mix(in srgb, var(--color-primary) 2%, transparent) 75%,
+			color-mix(in srgb, var(--color-highlight) 1%, transparent) 100%
 		);
 		box-shadow:
 			0 16px 48px 0 rgba(31, 38, 135, 0.18),
 			0 4px 24px 0 rgba(31, 38, 135, 0.12),
-			0 0 0 1px rgba(var(--color-primary-rgb), 0.1),
+			0 0 0 1px color-mix(in srgb, var(--color-primary) 10%, transparent),
 			inset 0 1px 0 rgba(255, 255, 255, 0.35),
 			inset 0 -1px 0 rgba(255, 255, 255, 0.15);
 		border-color: rgba(255, 255, 255, 0.35);
@@ -119,8 +120,8 @@
 		overflow: hidden;
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-surface-rgb), 0.8) 0%,
-			rgba(var(--color-surface-rgb), 0.6) 100%
+			color-mix(in srgb, var(--color-surface) 80%, transparent) 0%,
+			color-mix(in srgb, var(--color-surface) 60%, transparent) 100%
 		);
 	}
 
@@ -153,9 +154,9 @@
 	.overlay-subtle {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-highlight-rgb), 0.04) 50%,
-			rgba(var(--color-accent-rgb), 0.06) 100%
+			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 4%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 6%, transparent) 100%
 		);
 		opacity: var(--opacity-30);
 	}
@@ -163,9 +164,9 @@
 	.overlay-medium {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.12) 0%,
-			rgba(var(--color-highlight-rgb), 0.08) 50%,
-			rgba(var(--color-accent-rgb), 0.1) 100%
+			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 8%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 10%, transparent) 100%
 		);
 		opacity: var(--opacity-40);
 	}
@@ -173,9 +174,9 @@
 	.overlay-strong {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.18) 0%,
-			rgba(var(--color-highlight-rgb), 0.12) 50%,
-			rgba(var(--color-accent-rgb), 0.15) 100%
+			color-mix(in srgb, var(--color-primary) 18%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 12%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 15%, transparent) 100%
 		);
 		opacity: var(--opacity-50);
 	}
@@ -192,9 +193,9 @@
 		bottom: calc(-1 * var(--space-3xs));
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.1) 0%,
-			rgba(var(--color-highlight-rgb), 0.08) 50%,
-			rgba(var(--color-accent-rgb), 0.1) 100%
+			color-mix(in srgb, var(--color-primary) 10%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 8%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 10%, transparent) 100%
 		);
 		border-radius: calc(var(--border-radius-xl) + var(--space-3xs));
 		opacity: 0;
@@ -211,10 +212,10 @@
 	:global(html.dark) .project-image-banner {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.06) 0%,
-			rgba(var(--color-highlight-rgb), 0.04) 25%,
-			rgba(var(--color-accent-rgb), 0.03) 50%,
-			rgba(var(--color-primary-rgb), 0.02) 75%,
+			color-mix(in srgb, var(--color-primary) 6%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 4%, transparent) 25%,
+			color-mix(in srgb, var(--color-accent) 3%, transparent) 50%,
+			color-mix(in srgb, var(--color-primary) 2%, transparent) 75%,
 			transparent 100%
 		);
 		box-shadow:
@@ -228,26 +229,26 @@
 	:global(html.dark) .project-image-banner::before {
 		background: linear-gradient(
 			45deg,
-			rgba(var(--color-primary-rgb), 0.04) 0%,
+			color-mix(in srgb, var(--color-primary) 4%, transparent) 0%,
 			transparent 30%,
 			transparent 70%,
-			rgba(var(--color-highlight-rgb), 0.04) 100%
+			color-mix(in srgb, var(--color-highlight) 4%, transparent) 100%
 		);
 	}
 
 	:global(html.dark) .project-image-banner:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-highlight-rgb), 0.06) 25%,
-			rgba(var(--color-accent-rgb), 0.05) 50%,
-			rgba(var(--color-primary-rgb), 0.04) 75%,
-			rgba(var(--color-highlight-rgb), 0.02) 100%
+			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 6%, transparent) 25%,
+			color-mix(in srgb, var(--color-accent) 5%, transparent) 50%,
+			color-mix(in srgb, var(--color-primary) 4%, transparent) 75%,
+			color-mix(in srgb, var(--color-highlight) 2%, transparent) 100%
 		);
 		box-shadow:
 			0 16px 48px 0 rgba(0, 0, 0, 0.5),
 			0 4px 24px 0 rgba(0, 0, 0, 0.4),
-			0 0 0 1px rgba(var(--color-primary-rgb), 0.2),
+			0 0 0 1px color-mix(in srgb, var(--color-primary) 20%, transparent),
 			inset 0 1px 0 rgba(255, 255, 255, 0.2),
 			inset 0 -1px 0 rgba(255, 255, 255, 0.12);
 		border-color: rgba(255, 255, 255, 0.2);
@@ -256,44 +257,44 @@
 	:global(html.dark) .image-container {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-rgb), 0.9) 0%,
-			rgba(var(--color-dark-surface-rgb), 0.7) 100%
+			color-mix(in srgb, var(--color-dark-surface) 90%, transparent) 0%,
+			color-mix(in srgb, var(--color-dark-surface) 70%, transparent) 100%
 		);
 	}
 
 	:global(html.dark) .overlay-subtle {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.12) 0%,
-			rgba(var(--color-highlight-rgb), 0.08) 50%,
-			rgba(var(--color-accent-rgb), 0.1) 100%
+			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 8%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 10%, transparent) 100%
 		);
 	}
 
 	:global(html.dark) .overlay-medium {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.16) 0%,
-			rgba(var(--color-highlight-rgb), 0.12) 50%,
-			rgba(var(--color-accent-rgb), 0.14) 100%
+			color-mix(in srgb, var(--color-primary) 16%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 12%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 14%, transparent) 100%
 		);
 	}
 
 	:global(html.dark) .overlay-strong {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.22) 0%,
-			rgba(var(--color-highlight-rgb), 0.16) 50%,
-			rgba(var(--color-accent-rgb), 0.18) 100%
+			color-mix(in srgb, var(--color-primary) 22%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 16%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 18%, transparent) 100%
 		);
 	}
 
 	:global(html.dark) .banner-glow {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.15) 0%,
-			rgba(var(--color-highlight-rgb), 0.12) 50%,
-			rgba(var(--color-accent-rgb), 0.15) 100%
+			color-mix(in srgb, var(--color-primary) 15%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 12%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 15%, transparent) 100%
 		);
 	}
 

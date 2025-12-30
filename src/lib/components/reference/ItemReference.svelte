@@ -162,11 +162,11 @@
 			const viewportHeight = window.innerHeight;
 			const previewHeight = 400; // Approximate max height of preview card
 			const margin = 16;
-			
+
 			// Determine if we should position below based on available space
 			const spaceAbove = top;
 			const spaceBelow = viewportHeight - bottom;
-			
+
 			// Position below if:
 			// 1. Not enough space above for the card
 			// 2. AND there's more space below than above
@@ -283,17 +283,18 @@
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-danger-rgb), var(--opacity-15)) 0%,
-			rgba(var(--color-danger-rgb), var(--opacity-10)) 100%
+			color-mix(in srgb, var(--color-danger) calc(var(--opacity-15) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-danger) calc(var(--opacity-10) * 100%), transparent) 100%
 		);
-		border: var(--border-width-thin) solid rgba(var(--color-danger-rgb), var(--opacity-30));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-danger) calc(var(--opacity-30) * 100%), transparent);
 		box-shadow: var(--shadow-sm);
 	}
 
 	/* Focus states */
 	.item-reference:focus {
 		outline: var(--border-width-medium) solid
-			rgba(var(--color-primary-rgb), var(--opacity-30));
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
 		outline-offset: var(--border-width-medium);
 	}
 
@@ -301,16 +302,20 @@
 	:global(html.dark) .item-reference-error {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-danger-rgb), var(--opacity-15)) 0%,
-			rgba(var(--color-danger-rgb), var(--opacity-10)) 100%
+			color-mix(in srgb, var(--color-danger) calc(var(--opacity-15) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-danger) calc(var(--opacity-10) * 100%), transparent) 100%
 		);
 
-		border-color: rgba(var(--color-danger-rgb), var(--opacity-30));
-		color: rgba(var(--color-danger-rgb), var(--opacity-80));
+		border-color: color-mix(
+			in srgb,
+			var(--color-danger) calc(var(--opacity-30) * 100%),
+			transparent
+		);
+		color: color-mix(in srgb, var(--color-danger) calc(var(--opacity-80) * 100%), transparent);
 
 		box-shadow:
 			var(--shadow-sm),
-			inset 0 var(--border-width-thin) 0 rgba(var(--color-white-rgb), var(--opacity-5));
+			inset 0 var(--border-width-thin) 0 color-mix(in srgb, var(--color-white) 5%, transparent);
 	}
 
 	/* Reduced motion support */
@@ -334,11 +339,19 @@
 	/* Backdrop filter fallback */
 	@supports not (backdrop-filter: blur(var(--glass-blur-amount))) {
 		.item-reference-error {
-			background: rgba(var(--color-danger-rgb), var(--opacity-10));
+			background: color-mix(
+				in srgb,
+				var(--color-danger) calc(var(--opacity-10) * 100%),
+				transparent
+			);
 		}
 
 		:global(html.dark) .item-reference-error {
-			background: rgba(var(--color-danger-rgb), var(--opacity-15));
+			background: color-mix(
+				in srgb,
+				var(--color-danger) calc(var(--opacity-15) * 100%),
+				transparent
+			);
 		}
 	}
 </style>

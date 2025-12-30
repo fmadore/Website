@@ -144,20 +144,20 @@
 
 .activity-type[data-type='publication'] {
 	color: var(--color-primary);
-	background-color: rgba(var(--color-primary-rgb), 0.1);
+	background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
 }
 
 .activity-type[data-type='conference'] {
 	color: var(--color-accent);
-	background-color: rgba(var(--color-accent-rgb), 0.1);
+	background-color: color-mix(in srgb, var(--color-accent) 10%, transparent);
 }
 
 .activity-type[data-type='workshop'] {
 	color: var(--color-highlight);
-	background-color: rgba(var(--color-highlight-rgb), 0.1);
+	background-color: color-mix(in srgb, var(--color-highlight) 10%, transparent);
 }
 
 .activity-type[data-type='grant'] {
 	color: var(--color-success);
-	background-color: rgba(var(--color-success-rgb), 0.1);
+	background-color: color-mix(in srgb, var(--color-success) 10%, transparent);
 }

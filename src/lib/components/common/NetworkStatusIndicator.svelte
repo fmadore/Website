@@ -74,7 +74,7 @@
 		right: var(--space-xs);
 		max-width: none;
 		transform: none;
-		
+
 		border-radius: var(--border-radius-3xl);
 		z-index: var(--z-popover);
 		animation: slideInMobile var(--anim-duration-base) var(--anim-ease-out);
@@ -84,15 +84,15 @@
 	}
 
 	.network-status-indicator.offline {
-		background: rgba(var(--color-danger-rgb), var(--opacity-95));
+		background: color-mix(in srgb, var(--color-danger) 95%, transparent);
 		color: var(--color-white);
-		border: 1px solid rgba(var(--color-danger-rgb), var(--opacity-30));
+		border: 1px solid color-mix(in srgb, var(--color-danger) 30%, transparent);
 	}
 
 	.network-status-indicator.online {
-		background: rgba(var(--color-success-rgb), var(--opacity-95));
+		background: color-mix(in srgb, var(--color-success) 95%, transparent);
 		color: var(--color-white);
-		border: 1px solid rgba(var(--color-success-rgb), var(--opacity-30));
+		border: 1px solid color-mix(in srgb, var(--color-success) 30%, transparent);
 	}
 
 	@keyframes slideInMobile {
@@ -165,7 +165,7 @@
 	}
 
 	.dismiss-btn:hover {
-		background: rgba(var(--color-white-rgb), var(--opacity-20));
+		background: color-mix(in srgb, var(--color-white) 20%, transparent);
 	}
 
 	/* Desktop responsive */

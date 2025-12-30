@@ -140,7 +140,12 @@
 	// Use global glassmorphism utility (glass-card) to ensure visual consistency
 	// Also add scroll-reveal-scale for modern scroll-driven animation
 	const combinedFigureClass = $derived(
-		['hero-figure', `hero-figure--${variant}`, glassEffect ? 'glass-card hero-figure--glass' : '', 'scroll-reveal-scale']
+		[
+			'hero-figure',
+			`hero-figure--${variant}`,
+			glassEffect ? 'glass-card hero-figure--glass' : '',
+			'scroll-reveal-scale'
+		]
 			.filter(Boolean)
 			.join(' ')
 	);
@@ -306,7 +311,11 @@
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background: rgba(var(--color-black-rgb), var(--opacity-medium));
+		background: color-mix(
+			in srgb,
+			var(--color-black) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -338,7 +347,10 @@
 	}
 
 	.zoom-icon svg {
-		filter: drop-shadow(0 var(--space-0-5) var(--space-1) rgba(var(--color-black-rgb), var(--opacity-medium)));
+		filter: drop-shadow(
+			0 var(--space-0-5) var(--space-1)
+				color-mix(in srgb, var(--color-black) calc(var(--opacity-medium) * 100%), transparent)
+		);
 	}
 
 	/* Hero image with integrated glassmorphism effects */
@@ -355,12 +367,17 @@
 		object-fit: contain; /* Ensure entire image visible without cropping */
 		aspect-ratio: auto;
 		/* Subtle glassmorphism border */
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 	}
 
 	.hero-figure:hover .hero-image {
 		box-shadow: var(--shadow-xl);
-		border-color: rgba(var(--color-white-rgb), var(--opacity-medium-low));
+		border-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--opacity-medium-low) * 100%),
+			transparent
+		);
 	}
 
 	/* Caption styling - improved typography consistency */
@@ -380,13 +397,15 @@
 		/* Enhanced glassmorphism to match PageHeader and ContentBody */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-very-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
 		padding: var(--space-4); /* Add padding for glass effect */
 		border-radius: var(--border-radius-xl); /* Match PageHeader border radius */
-		border: var(--border-width-thin) solid rgba(var(--color-primary-rgb), var(--opacity-low));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
 
 		/* Enhanced shadow to match other components */
 		box-shadow: var(--shadow-md);
@@ -401,11 +420,16 @@
 		/* Enhanced hover gradient */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), var(--opacity-low)) 0%,
-			rgba(var(--color-highlight-rgb), var(--opacity-very-low)) 50%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), var(--opacity-medium));
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 	}
 
 	/* Adjust container inside glass figure */
@@ -424,9 +448,14 @@
 	.hero-figure--glass .hero-caption {
 		margin-top: var(--space-3);
 		padding: var(--space-2) var(--space-4);
-		background: rgba(var(--color-surface-rgb), var(--opacity-medium));
+		background: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 		border-radius: var(--border-radius-md);
-		border: var(--border-width-thin) solid rgba(var(--color-border-rgb), var(--opacity-medium-low));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-border) calc(var(--opacity-medium-low) * 100%), transparent);
 		color: var(--color-text);
 		font-weight: var(--font-weight-medium);
 	}
@@ -463,39 +492,52 @@
 
 	/* Dark mode adjustments - improved consistency */
 	:global(html.dark) .hero-image {
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-very-low));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-very-low) * 100%), transparent);
 	}
 
 	:global(html.dark) .hero-figure:hover .hero-image {
-		border-color: rgba(var(--color-white-rgb), var(--opacity-low));
+		border-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--opacity-low) * 100%),
+			transparent
+		);
 	}
 
 	:global(html.dark) .hero-figure--glass {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.08) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-very-low)) 35%,
+			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 35%,
 			var(--color-dark-surface-alt) 65%,
 			var(--color-dark-surface-deep) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), 0.12);
+		border-color: color-mix(in srgb, var(--color-primary) 12%, transparent);
 		box-shadow: var(--shadow-lg);
 	}
 
 	:global(html.dark) .hero-figure--glass:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-primary-rgb), 0.12) 0%,
-			rgba(var(--color-accent-rgb), var(--opacity-low)) 35%,
+			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-low) * 100%), transparent) 35%,
 			var(--color-dark-surface-alt) 65%,
 			var(--color-dark-surface-deep) 100%
 		);
-		border-color: rgba(var(--color-primary-rgb), 0.18);
+		border-color: color-mix(in srgb, var(--color-primary) 18%, transparent);
 	}
 
 	:global(html.dark) .hero-figure--glass .hero-caption {
-		background: rgba(var(--color-dark-surface-rgb), var(--opacity-high));
-		border-color: rgba(var(--color-border-rgb), var(--opacity-low));
+		background: color-mix(
+			in srgb,
+			var(--color-dark-surface) calc(var(--opacity-high) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-border) calc(var(--opacity-low) * 100%),
+			transparent
+		);
 		color: var(--color-text-light);
 	}
 
@@ -510,13 +552,14 @@
 		/* Enhanced glassmorphism background using our design system */
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-deep-rgb), 0.85) 0%,
-			rgba(var(--color-dark-surface-alt-rgb), 0.9) 50%,
-			rgba(var(--color-dark-surface-rgb), 0.85) 100%
+			color-mix(in srgb, var(--color-dark-surface-deep) 85%, transparent) 0%,
+			color-mix(in srgb, var(--color-dark-surface-alt) 90%, transparent) 50%,
+			color-mix(in srgb, var(--color-dark-surface) 85%, transparent) 100%
 		);
 		-webkit-backdrop-filter: blur(var(--glass-blur-xl)) saturate(120%);
 		backdrop-filter: blur(var(--glass-blur-xl)) saturate(120%);
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-very-low));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-very-low) * 100%), transparent);
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -548,7 +591,8 @@
 		object-fit: contain;
 		box-shadow: var(--shadow-2xl);
 		border-radius: var(--border-radius-lg);
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-very-low));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-very-low) * 100%), transparent);
 		display: block;
 		transition: all var(--duration-moderate) var(--ease-in-out);
 	}
@@ -563,10 +607,15 @@
 		line-height: var(--line-height-relaxed);
 		padding: var(--space-4) var(--space-6);
 		/* Use glassmorphism for caption background */
-		background: rgba(var(--color-surface-rgb), var(--opacity-low));
+		background: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-low) * 100%),
+			transparent
+		);
 		-webkit-backdrop-filter: blur(var(--glass-blur-md));
 		backdrop-filter: blur(var(--glass-blur-md));
-		border: var(--border-width-thin) solid rgba(var(--color-white-rgb), var(--opacity-low));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 		border-radius: var(--border-radius-lg);
 		box-shadow: var(--shadow-lg);
 		font-family: var(--font-family-serif);
@@ -589,18 +638,30 @@
 		min-width: unset !important;
 
 		/* Enhanced glassmorphism specifically for close button */
-		background: rgba(var(--color-surface-rgb), var(--opacity-medium-high)) !important;
+		background: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-medium-high) * 100%),
+			transparent
+		) !important;
 		backdrop-filter: blur(var(--glass-blur-md)) !important;
 		-webkit-backdrop-filter: blur(var(--glass-blur-md)) !important;
 		border: var(--border-width-thin) solid
-			rgba(var(--color-surface-rgb), var(--opacity-medium-high)) !important;
+			color-mix(in srgb, var(--color-surface) calc(var(--opacity-medium-high) * 100%), transparent) !important;
 		box-shadow: var(--shadow-lg) !important;
 		transition: all var(--duration-normal) var(--ease-in-out) !important;
 	}
 
 	:global(.close-button:hover) {
-		background: rgba(var(--color-surface-rgb), var(--opacity-high)) !important;
-		border-color: rgba(var(--color-surface-rgb), var(--opacity-high)) !important;
+		background: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-high) * 100%),
+			transparent
+		) !important;
+		border-color: color-mix(
+			in srgb,
+			var(--color-surface) calc(var(--opacity-high) * 100%),
+			transparent
+		) !important;
 		transform: var(--transform-lift-sm) scale(var(--scale-105)) !important;
 		box-shadow: var(--shadow-xl) !important;
 	}
@@ -609,7 +670,7 @@
 		color: var(--color-text-emphasis) !important;
 		filter: drop-shadow(
 			0 var(--border-width-thin) var(--border-width-medium)
-				rgba(var(--color-text-rgb), var(--opacity-medium))
+				color-mix(in srgb, var(--color-text) calc(var(--opacity-medium) * 100%), transparent)
 		) !important;
 	}
 
@@ -617,33 +678,61 @@
 	:global(html.dark) .fullscreen-modal {
 		background: linear-gradient(
 			135deg,
-			rgba(var(--color-dark-surface-deep-rgb), 0.9) 0%,
-			rgba(var(--color-dark-surface-alt-rgb), 0.95) 50%,
-			rgba(var(--color-dark-surface-rgb), 0.9) 100%
+			color-mix(in srgb, var(--color-dark-surface-deep) 90%, transparent) 0%,
+			color-mix(in srgb, var(--color-dark-surface-alt) 95%, transparent) 50%,
+			color-mix(in srgb, var(--color-dark-surface) 90%, transparent) 100%
 		);
-		border-color: rgba(var(--color-white-rgb), 0.02);
+		border-color: color-mix(in srgb, var(--color-white) 2%, transparent);
 	}
 
 	:global(html.dark) .fullscreen-caption {
 		color: var(--color-text-light);
-		background: rgba(var(--color-dark-surface-rgb), var(--opacity-low));
-		border-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
+		background: color-mix(
+			in srgb,
+			var(--color-dark-surface) calc(var(--opacity-low) * 100%),
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--opacity-very-low) * 100%),
+			transparent
+		);
 	}
 
 	:global(html.dark) .fullscreen-image {
-		border-color: rgba(var(--color-white-rgb), var(--opacity-very-low));
+		border-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--opacity-very-low) * 100%),
+			transparent
+		);
 	}
 
 	/* Dark theme close button */
 	:global(html.dark .close-button) {
-		background: rgba(var(--color-dark-surface-rgb), var(--opacity-medium-high)) !important;
-		border-color: rgba(var(--color-dark-surface-rgb), var(--opacity-high)) !important;
+		background: color-mix(
+			in srgb,
+			var(--color-dark-surface) calc(var(--opacity-medium-high) * 100%),
+			transparent
+		) !important;
+		border-color: color-mix(
+			in srgb,
+			var(--color-dark-surface) calc(var(--opacity-high) * 100%),
+			transparent
+		) !important;
 		box-shadow: var(--shadow-lg) !important;
 	}
 
 	:global(html.dark .close-button:hover) {
-		background: rgba(var(--color-dark-surface-rgb), var(--opacity-high)) !important;
-		border-color: rgba(var(--color-dark-surface-rgb), var(--opacity-high)) !important;
+		background: color-mix(
+			in srgb,
+			var(--color-dark-surface) calc(var(--opacity-high) * 100%),
+			transparent
+		) !important;
+		border-color: color-mix(
+			in srgb,
+			var(--color-dark-surface) calc(var(--opacity-high) * 100%),
+			transparent
+		) !important;
 		box-shadow: var(--shadow-xl) !important;
 	}
 
