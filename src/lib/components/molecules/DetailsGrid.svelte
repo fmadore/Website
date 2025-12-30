@@ -26,7 +26,7 @@
 {#if visibleDetails.length > 0}
 	<section class="details-section scroll-reveal" aria-labelledby="publication-details-heading">
 		<h2 id="publication-details-heading" class="visually-hidden">Publication Details</h2>
-		<dl class="details-grid glass-card">
+		<dl class="details-grid">
 			{#each visibleDetails as detail (detail.label)}
 				<div class="detail-item">
 					<dt class="detail-label">{detail.label}</dt>
@@ -67,16 +67,39 @@
 		gap: 0;
 		padding: var(--space-lg);
 		border-radius: var(--border-radius-xl);
-		margin-bottom: var(--space-lg);
-		/* Subtle layered gradient echoing other glass components */
+		position: relative;
+
+		/* Glassmorphism effect - matching AbstractSection and other components */
 		background: linear-gradient(
 			135deg,
 			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
 			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				55%,
+				50%,
 			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
-		position: relative;
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+		backdrop-filter: blur(var(--glass-blur-amount));
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
+		box-shadow: var(--shadow-md);
+
+		/* Interactive transition */
+		transition:
+			transform var(--duration-normal) var(--ease-out),
+			box-shadow var(--duration-normal) var(--ease-out),
+			background var(--duration-normal) var(--ease-out);
+	}
+
+	.details-grid:hover {
+		transform: var(--transform-lift-sm);
+		box-shadow: var(--shadow-lg);
+		background: linear-gradient(
+			135deg,
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
+				50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
+		);
 	}
 
 	/* Two columns on medium screens and up */
@@ -170,8 +193,22 @@
 		background: linear-gradient(
 			135deg,
 			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 4%, transparent) 55%,
+			color-mix(in srgb, var(--color-highlight) 4%, transparent) 50%,
 			color-mix(in srgb, var(--color-accent) 6%, transparent) 100%
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
+	}
+
+	:global(html.dark) .details-grid:hover {
+		background: linear-gradient(
+			135deg,
+			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) 6%, transparent) 50%,
+			color-mix(in srgb, var(--color-accent) 8%, transparent) 100%
 		);
 	}
 
@@ -205,6 +242,12 @@
 	@media (prefers-reduced-motion: reduce) {
 		.detail-link {
 			transition: none;
+		}
+
+		.details-grid,
+		.details-grid:hover {
+			transition: none;
+			transform: none;
 		}
 
 		/* Ensure content is visible when animations are disabled */

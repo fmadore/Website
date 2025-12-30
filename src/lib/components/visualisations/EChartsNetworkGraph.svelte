@@ -582,15 +582,6 @@ ECharts Network Graph - A network visualization for author collaborations
 		box-shadow: var(--shadow-sm);
 	}
 
-	.node-tooltip {
-		position: absolute;
-		background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
-		color: var(--color-text);
-		border: 1px solid var(--color-border);
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-md);
-	}
-
 	.zoom-btn:hover {
 		background-color: var(--color-primary);
 		color: var(--color-white);
