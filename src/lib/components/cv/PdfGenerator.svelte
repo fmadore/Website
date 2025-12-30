@@ -27,6 +27,7 @@
 		trimFragments,
 		type TextFragment
 	} from '$lib/utils/pdfRichText';
+	import { getAddressLines } from '$lib/utils/siteHelpers';
 
 	let isGenerating = $state(false);
 	let jsPDF: any = $state(null);
@@ -285,16 +286,11 @@
 			pdf.text('Address', leftColumn, yPosition);
 			yPosition += SPACING.CONTACT_LINE;
 
-			// Address lines - hardcoded for reliable multi-line display
+			// Address lines - from centralized config
 			pdf.setFont('helvetica', 'normal');
 			pdf.setFontSize(FONT_SIZE.CONTACT_VALUE);
 			pdf.setTextColor(...COLORS.TEXT);
-			const addressLines = [
-				'Leibniz-Zentrum Moderner Orient',
-				'Kirchweg 33',
-				'14129 Berlin',
-				'Germany'
-			];
+			const addressLines = getAddressLines();
 			addressLines.forEach((line) => {
 				pdf.text(line, leftColumn, yPosition);
 				yPosition += SPACING.CONTACT_LINE;

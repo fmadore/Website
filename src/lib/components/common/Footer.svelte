@@ -1,57 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-
-	// Grouped social media links with Iconify icon names
-	const socialGroups = [
-		{
-			title: 'Contact',
-			links: [
-				{ name: 'Email', icon: 'mdi:email', url: 'mailto:frederick.madore@zmo.de' },
-				{
-					name: `Kirchweg 33\n14129 Berlin\nGermany`,
-					icon: 'mdi:map-marker',
-					url: 'https://maps.app.goo.gl/AV85XrMqokwShSLZ8'
-				}
-			]
-		},
-		{
-			title: 'Academic',
-			links: [
-				{
-					name: 'Google Scholar',
-					icon: 'academicons:google-scholar',
-					url: 'https://scholar.google.com/citations?user=naUK0RQAAAAJ'
-				},
-				{ name: 'ORCID', icon: 'simple-icons:orcid', url: 'https://orcid.org/0000-0003-0959-2092' },
-				{
-					name: 'ResearchGate',
-					icon: 'simple-icons:researchgate',
-					url: 'https://www.researchgate.net/profile/Frederick-Madore'
-				}
-			]
-		},
-		{
-			title: 'Social',
-			links: [
-				{
-					name: 'LinkedIn',
-					icon: 'simple-icons:linkedin',
-					url: 'https://www.linkedin.com/in/frederickmadore/'
-				},
-				{ name: 'GitHub', icon: 'simple-icons:github', url: 'https://github.com/fmadore' },
-				{
-					name: 'Bluesky',
-					icon: 'simple-icons:bluesky',
-					url: 'https://bsky.app/profile/fmadore.bsky.social'
-				},
-				{
-					name: 'RSS Feed',
-					icon: 'mdi:rss',
-					url: '/rss.xml'
-				}
-			]
-		}
-	];
+	import { socialGroups, author } from '$lib/data/siteConfig';
 
 	const currentYear = new Date().getFullYear();
 
@@ -121,7 +70,7 @@
 					<p class="copyright-main" id="footer-brand-heading">
 						© {currentYear} Frédérick Madore, Ph.D.
 					</p>
-					<p class="copyright-subtitle">Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)</p>
+					<p class="copyright-subtitle">{author.position}</p>
 				</div>
 			</div>
 		</section>

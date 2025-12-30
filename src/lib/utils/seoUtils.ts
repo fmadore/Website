@@ -1,6 +1,14 @@
 import type { Communication } from '$lib/types/communication';
 import type { Publication } from '$lib/types';
 import type { Activity } from '$lib/types/activity';
+import {
+	author,
+	contact,
+	address,
+	website,
+	socialLinks
+} from '$lib/data/siteConfig';
+import { getDefaultDescription } from '$lib/utils/siteHelpers';
 
 // ============================================================================
 // JSON-LD SCHEMA TYPES
@@ -102,10 +110,9 @@ export interface WebPageSchema {
 // JSON-LD SCHEMA GENERATORS
 // ============================================================================
 
-const SITE_URL = 'https://www.frederickmadore.com';
-const SITE_NAME = 'Frédérick Madore';
-const SITE_DESCRIPTION =
-	'Personal website of Frédérick Madore, Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO), specializing in Islam and digital humanities in West Africa.';
+const SITE_URL = website.url;
+const SITE_NAME = author.name;
+const SITE_DESCRIPTION = getDefaultDescription();
 
 /**
  * Creates a WebSite schema - add to root layout for sitelinks eligibility
@@ -137,22 +144,22 @@ export function createPersonSchema(): PersonSchema {
 		'@context': 'https://schema.org',
 		'@type': 'Person',
 		'@id': `${SITE_URL}/#person`,
-		name: 'Frédérick Madore',
+		name: author.name,
 		url: SITE_URL,
 		image: `${SITE_URL}/images/Profile-picture.webp`,
-		jobTitle: 'Research Fellow',
+		jobTitle: author.positionShort,
 		worksFor: {
 			'@type': 'Organization',
-			name: 'Leibniz-Zentrum Moderner Orient (ZMO)',
+			name: `${address.institution} (${address.institutionAbbreviation})`,
 			url: 'https://www.zmo.de/en'
 		},
 		sameAs: [
-			'https://www.linkedin.com/in/frederickmadore/',
-			'https://github.com/fmadore',
-			'https://orcid.org/0000-0003-0959-2092',
-			'https://bsky.app/profile/fmadore.bsky.social',
-			'https://scholar.google.com/citations?user=naUK0RQAAAAJ',
-			'https://www.researchgate.net/profile/Frederick-Madore',
+			socialLinks.linkedIn.url,
+			socialLinks.github.url,
+			socialLinks.orcid.url,
+			socialLinks.bluesky.url,
+			socialLinks.googleScholar.url,
+			socialLinks.researchGate.url,
 			'https://hcommons.org/members/fmadore/',
 			'https://zmo.academia.edu/FrederickMadore',
 			'https://www.wikidata.org/wiki/Q55725595'
@@ -407,7 +414,7 @@ export function createCommunicationSEOKeywords(communication: Communication): st
 	keywords.add('Islam');
 	keywords.add('West Africa');
 	keywords.add('digital humanities');
-	keywords.add('Frédérick Madore');
+	keywords.add(author.name);
 
 	return Array.from(keywords).join(', ');
 }
@@ -588,7 +595,7 @@ export function createPublicationSEOKeywords(publication: Publication): string {
 	keywords.add('Islam');
 	keywords.add('West Africa');
 	keywords.add('digital humanities');
-	keywords.add('Frédérick Madore');
+	keywords.add(author.name);
 
 	// Add research-specific terms
 	if (publication.project) keywords.add(publication.project);
@@ -713,7 +720,7 @@ export function createActivitySEODescription(activity: Activity): string {
 	if (!seoDescription.trim()) {
 		const typeLabel = getBlogTypeLabel(type);
 		const yearText = year ? ` ${year}` : '';
-		seoDescription = `${typeLabel}${yearText} by Frédérick Madore`;
+		seoDescription = `${typeLabel}${yearText} by ${author.name}`;
 	}
 
 	return seoDescription;
@@ -757,7 +764,7 @@ export function createActivitySEOKeywords(activity: Activity): string {
 	keywords.add('research update');
 
 	// Add author/personal branding keywords
-	keywords.add('Frédérick Madore');
+	keywords.add(author.name);
 	keywords.add('digital humanities');
 	keywords.add('Islam studies');
 	keywords.add('West Africa research');

@@ -1,5 +1,6 @@
 import { base } from '$app/paths';
 import type { PageLoad } from './$types';
+import { author, contact, website, address, socialLinks } from '$lib/data/siteConfig';
 
 // --- JSON-LD Interfaces ---
 interface Organization {
@@ -46,23 +47,23 @@ export const load: PageLoad = () => {
 	const personJsonLd: Person = {
 		'@context': 'https://schema.org',
 		'@type': 'Person',
-		'@id': 'https://www.frederickmadore.com/#person', // Required for ProfilePage mainEntity reference
-		name: 'Frédérick Madore',
+		'@id': `${website.url}/#person`, // Required for ProfilePage mainEntity reference
+		name: author.name,
 		honorificPrefix: 'Dr.', // Added prefix
-		url: 'https://www.frederickmadore.com',
+		url: website.url,
 		image: `${base}/images/Profile-picture.webp`,
-		email: 'frederick.madore@zmo.de', // Added email
-		jobTitle: 'Research Fellow', // Keep jobTitle for compatibility
+		email: contact.email, // Added email
+		jobTitle: author.positionShort, // Keep jobTitle for compatibility
 		worksFor: {
 			// Used worksFor key
 			'@type': 'Organization',
-			name: 'Leibniz-Zentrum Moderner Orient (ZMO)',
+			name: `${address.institution} (${address.institutionAbbreviation})`,
 			url: 'https://www.zmo.de/en' // Added affiliation URL
 		},
 		workLocation: {
 			// Added work location
 			'@type': 'Place',
-			name: 'Berlin'
+			name: address.city
 		},
 		nationality: 'Canada', // Added nationality
 		alumniOf: [
@@ -98,14 +99,13 @@ export const load: PageLoad = () => {
 		],
 		knowsLanguage: ['French', 'English', 'German'], // Added languages
 		sameAs: [
-			'https://www.linkedin.com/in/frederickmadore/',
-			'https://github.com/fmadore',
-			'https://orcid.org/0000-0003-0959-2092',
-			'https://bsky.app/profile/fmadore.bsky.social',
-			'https://scholar.google.com/citations?user=naUK0RQAAAAJ&',
-			'https://www.researchgate.net/profile/Frederick-Madore',
+			socialLinks.linkedIn.url,
+			socialLinks.github.url,
+			socialLinks.orcid.url,
+			socialLinks.bluesky.url,
+			socialLinks.googleScholar.url,
+			socialLinks.researchGate.url,
 			'https://hcommons.org/members/fmadore/', // Knowledge Commons
-			'https://zmo.academia.edu/FrederickMadore',
 			'https://www.wikidata.org/wiki/Q55725595'
 		],
 		knowsAbout: [

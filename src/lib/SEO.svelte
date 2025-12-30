@@ -7,6 +7,7 @@
 		combineSchemas,
 		type BreadcrumbItem
 	} from '$lib/utils/seoUtils';
+	import { getDefaultDescription, author, website } from '$lib/utils/siteHelpers';
 
 	interface Props {
 		// SEO props
@@ -33,8 +34,8 @@
 	}
 
 	let {
-		title = 'Frédérick Madore | Historian | Digital Humanist',
-		description = 'Personal website of Frédérick Madore, Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)',
+		title = `${author.name} | Historian | Digital Humanist`,
+		description = getDefaultDescription(),
 		keywords = 'Frédérick Madore, Islam, West Africa, Digital Humanities, Research',
 		canonical = '',
 		ogImage = `${base}/images/Profile-picture.webp`,
@@ -53,9 +54,7 @@
 		const schemas: object[] = [...additionalSchemas];
 
 		// Check if a Person schema is already provided in additionalSchemas
-		const hasPersonSchema = additionalSchemas.some(
-			(schema: any) => schema['@type'] === 'Person'
-		);
+		const hasPersonSchema = additionalSchemas.some((schema: any) => schema['@type'] === 'Person');
 
 		// Add breadcrumb schema if breadcrumbs provided
 		if (breadcrumbs.length > 0) {
@@ -107,32 +106,40 @@
 
 	<!-- RSS Feed Autodiscovery -->
 	{#if includeRSSLink}
-		<link rel="alternate" type="application/rss+xml" title="Frédérick Madore - Activities RSS Feed" href="https://www.frederickmadore.com/rss.xml" />
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title="{author.name} - Activities RSS Feed"
+			href="{website.url}{website.rssPath}"
+		/>
 	{/if}
 
 	<!-- Open Graph / Facebook -->
 	<meta property="og:type" content={type} />
-	<meta property="og:url" content={canonical || 'https://www.frederickmadore.com'} />
+	<meta property="og:url" content={canonical || website.url} />
 	<meta property="og:title" content={title} />
 	<meta property="og:description" content={description} />
 	<meta property="og:image" content={ogImage} />
-	<meta property="og:site_name" content="Frédérick Madore" />
+	<meta property="og:site_name" content={author.name} />
 	<meta property="og:locale" content="en_US" />
 
 	<!-- Twitter -->
 	<meta property="twitter:card" content="summary_large_image" />
-	<meta property="twitter:url" content={canonical || 'https://www.frederickmadore.com'} />
+	<meta property="twitter:url" content={canonical || website.url} />
 	<meta property="twitter:title" content={title} />
 	<meta property="twitter:description" content={description} />
 	<meta property="twitter:image" content={ogImage} />
 
 	<!-- Scholar / Academic -->
 	{#if includeCitationAuthor}
-		<meta name="citation_author" content="Frédérick Madore" />
+		<meta name="citation_author" content={author.name} />
 	{/if}
-	<meta name="author" content="Frédérick Madore" />
+	<meta name="author" content={author.name} />
 	<meta name="robots" content="index, follow" />
-	<meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+	<meta
+		name="googlebot"
+		content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+	/>
 
 	<!-- JSON-LD Structured Data -->
 	{#if jsonLdString}

@@ -1,4 +1,6 @@
 import type { Activity } from '$lib/types/activity';
+import { author, contact, website } from '$lib/data/siteConfig';
+import { getRssDescription, getEmailWithName } from '$lib/utils/siteHelpers';
 
 // ============================================================================
 // RSS FEED CONFIGURATION
@@ -36,19 +38,18 @@ export interface RSSItem {
 // ============================================================================
 
 export const DEFAULT_RSS_CONFIG: RSSFeedConfig = {
-	title: 'Frédérick Madore - Activities',
-	description:
-		'Recent activities, presentations, publications, and academic updates from Frédérick Madore, Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)',
-	siteUrl: 'https://www.frederickmadore.com',
-	feedUrl: 'https://www.frederickmadore.com/rss.xml',
+	title: `${author.name} - Activities`,
+	description: getRssDescription(),
+	siteUrl: website.url,
+	feedUrl: `${website.url}${website.rssPath}`,
 	language: 'en-us',
-	copyright: `Copyright ${new Date().getFullYear()} Frédérick Madore. All rights reserved.`,
-	managingEditor: 'frederick.madore@zmo.de (Frédérick Madore)',
-	webMaster: 'frederick.madore@zmo.de (Frédérick Madore)',
+	copyright: `Copyright ${new Date().getFullYear()} ${author.name}. All rights reserved.`,
+	managingEditor: getEmailWithName(),
+	webMaster: getEmailWithName(),
 	ttl: 60, // Cache for 1 hour
-	imageUrl: 'https://www.frederickmadore.com/images/Profile-picture.webp',
-	imageTitle: 'Frédérick Madore',
-	imageLink: 'https://www.frederickmadore.com'
+	imageUrl: `${website.url}/images/Profile-picture.webp`,
+	imageTitle: author.name,
+	imageLink: website.url
 };
 
 // ============================================================================
@@ -128,7 +129,7 @@ export function activityToRSSItem(activity: Activity, siteUrl: string): RSSItem 
 		description: description || 'No description available',
 		pubDate,
 		guid: `${siteUrl}/activities/${activity.id}`,
-		author: 'Frédérick Madore',
+		author: author.name,
 		categories: activity.tags || [],
 		content: activity.content
 	};

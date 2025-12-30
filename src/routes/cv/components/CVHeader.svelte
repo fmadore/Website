@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
+	import { address, contact, website, socialLinks } from '$lib/data/siteConfig';
 
 	// Get current date formatted as "Day Month Year"
 	const today = new Date().toLocaleDateString('en-GB', {
@@ -7,6 +8,15 @@
 		month: 'long',
 		day: 'numeric'
 	});
+
+	// CV contact links configuration
+	const cvLinks = [
+		{ ...socialLinks.email, displayUrl: contact.email },
+		{ name: 'Website', icon: 'mdi:web', url: website.url, displayUrl: website.domain },
+		{ ...socialLinks.linkedIn, displayUrl: 'LinkedIn' },
+		{ ...socialLinks.github, displayUrl: 'GitHub' },
+		{ ...socialLinks.orcid, displayUrl: 'ORCID' }
+	];
 </script>
 
 <h1 class="text-3xl font-bold cv-main-title">Curriculum Vitae</h1>
@@ -19,42 +29,21 @@
 	<div class="cv-contact-group">
 		<Icon icon="mdi:map-marker" class="text-light shrink-0" width="20" height="20" />
 		<div>
-			Leibniz-Zentrum Moderner Orient<br />
-			Kirchweg 33<br />
-			14129 Berlin<br />
-			Germany
+			{address.institution}<br />
+			{address.street}<br />
+			{address.postalCode}
+			{address.city}<br />
+			{address.country}
 		</div>
 	</div>
 	<!-- Links -->
 	<div class="cv-links-group">
-		<div class="cv-link-item">
-			<Icon icon="mdi:email" class="text-light shrink-0" width="20" height="20" />
-			<a href="mailto:frederick.madore@zmo.de">frederick.madore@zmo.de</a>
-		</div>
-		<div class="cv-link-item">
-			<Icon icon="mdi:web" class="text-light shrink-0" width="20" height="20" />
-			<a href="https://www.frederickmadore.com" target="_blank" rel="noopener noreferrer"
-				>www.frederickmadore.com</a
-			>
-		</div>
-		<div class="cv-link-item">
-			<Icon icon="mdi:linkedin" class="text-light shrink-0" width="20" height="20" />
-			<a
-				href="https://www.linkedin.com/in/frederickmadore/"
-				target="_blank"
-				rel="noopener noreferrer">LinkedIn</a
-			>
-		</div>
-		<div class="cv-link-item">
-			<Icon icon="mdi:github" class="text-light shrink-0" width="20" height="20" />
-			<a href="https://github.com/fmadore" target="_blank" rel="noopener noreferrer">GitHub</a>
-		</div>
-		<div class="cv-link-item">
-			<Icon icon="simple-icons:orcid" class="text-light shrink-0" width="20" height="20" />
-			<a href="https://orcid.org/0000-0003-0959-2092" target="_blank" rel="noopener noreferrer"
-				>ORCID</a
-			>
-		</div>
+		{#each cvLinks as link}
+			<div class="cv-link-item">
+				<Icon icon={link.icon} class="text-light shrink-0" width="20" height="20" />
+				<a href={link.url} target="_blank" rel="noopener noreferrer">{link.displayUrl}</a>
+			</div>
+		{/each}
 	</div>
 </section>
 

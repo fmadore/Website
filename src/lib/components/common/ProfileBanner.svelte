@@ -1,6 +1,16 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import Icon from '@iconify/svelte';
+	import { author, socialLinks } from '$lib/data/siteConfig';
+
+	// Profile icon links - subset of social links for banner
+	const profileIconLinks = [
+		socialLinks.email,
+		socialLinks.googleScholar,
+		socialLinks.github,
+		socialLinks.linkedIn,
+		socialLinks.orcid
+	];
 </script>
 
 <div class="profile-header glass-panel scroll-reveal">
@@ -23,53 +33,19 @@
 			<h1>About</h1>
 			<div class="title-accent"></div>
 		</div>
-		<div class="subtitle">Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)</div>
+		<div class="subtitle">{author.position}</div>
 		<div class="profile-icons">
-			<a
-				href="mailto:frederick.madore@zmo.de"
-				target="_blank"
-				rel="noopener"
-				aria-label="Email"
-				class="icon-link glass-button"
-			>
-				<Icon icon="mdi:email" width="24" height="24" />
-			</a>
-			<a
-				href="https://scholar.google.com/citations?user=naUK0RQAAAAJ"
-				target="_blank"
-				rel="noopener"
-				aria-label="Google Scholar"
-				class="icon-link glass-button"
-			>
-				<Icon icon="academicons:google-scholar" width="24" height="24" />
-			</a>
-			<a
-				href="https://github.com/fmadore"
-				target="_blank"
-				rel="noopener"
-				aria-label="GitHub"
-				class="icon-link glass-button"
-			>
-				<Icon icon="mdi:github" width="24" height="24" />
-			</a>
-			<a
-				href="https://www.linkedin.com/in/frederickmadore"
-				target="_blank"
-				rel="noopener"
-				aria-label="LinkedIn"
-				class="icon-link glass-button"
-			>
-				<Icon icon="mdi:linkedin" width="24" height="24" />
-			</a>
-			<a
-				href="https://orcid.org/0000-0003-0959-2092"
-				target="_blank"
-				rel="noopener"
-				aria-label="ORCID"
-				class="icon-link glass-button"
-			>
-				<Icon icon="simple-icons:orcid" width="24" height="24" />
-			</a>
+			{#each profileIconLinks as link}
+				<a
+					href={link.url}
+					target="_blank"
+					rel="noopener"
+					aria-label={link.name}
+					class="icon-link glass-button"
+				>
+					<Icon icon={link.icon} width="24" height="24" />
+				</a>
+			{/each}
 		</div>
 	</div>
 </div>
