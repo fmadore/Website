@@ -387,7 +387,7 @@
 	}
 
 	.sm\:text-muted {
-		color: var(--color-footer-text-muted);
+		color: var(--color-text-muted);
 	}
 
 	.sm\:bg-primary {
@@ -522,7 +522,7 @@
 	}
 
 	.md\:text-muted {
-		color: var(--color-footer-text-muted);
+		color: var(--color-text-muted);
 	}
 
 	.md\:bg-primary {
@@ -657,7 +657,7 @@
 	}
 
 	.lg\:text-muted {
-		color: var(--color-footer-text-muted);
+		color: var(--color-text-muted);
 	}
 
 	.lg\:bg-primary {
@@ -792,7 +792,7 @@
 	}
 
 	.xl\:text-muted {
-		color: var(--color-footer-text-muted);
+		color: var(--color-text-muted);
 	}
 
 	.xl\:bg-primary {

@@ -20,8 +20,8 @@
 	-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
 	box-shadow:
-		0 var(--space-xs) var(--space-xl) 0 color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent),
-		inset 0 var(--border-width-thin) 0 color-mix(in srgb, var(--color-white) calc(var(--opacity-medium-high) * 100%), transparent);
+		0 8px 32px 0 color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent),
+		inset 0 1px 0 color-mix(in srgb, var(--color-white) calc(var(--opacity-medium-high) * 100%), transparent);
 }
 
 .entity-card:hover {
@@ -32,8 +32,8 @@
 			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%);
 	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-medium-high) * 100%), transparent);
 	box-shadow:
-		0 var(--space-sm) var(--space-xl-tight) 0 color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent),
-		inset 0 var(--border-width-thin) 0 color-mix(in srgb, var(--color-white) calc(var(--opacity-high) * 100%), transparent);
+		0 12px 40px 0 color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent),
+		inset 0 1px 0 color-mix(in srgb, var(--color-white) calc(var(--opacity-high) * 100%), transparent);
 }
 
 .entity-grid {
@@ -42,7 +42,7 @@
 	gap: var(--space-md);
 }
 
-@media (min-width: 768px) {
+@media (--md) {
 	.entity-grid {
 		grid-template-columns: auto 1fr;
 	}
@@ -56,7 +56,7 @@
 	/* Center on mobile */
 }
 
-@media (min-width: 768px) {
+@media (--md) {
 	.entity-image-container {
 		margin: 0;
 		/* Left-aligned on desktop */
@@ -92,9 +92,9 @@
 }
 
 /* Override inline width/height attributes to prevent distortion */
-.entity-cover-image[width][height] {
-	width: 100% !important;
-	height: auto !important;
+img.entity-cover-image[width][height] {
+	width: 100%;
+	height: auto;
 }
 
 .entity-image-container a:hover .entity-cover-image {
@@ -191,7 +191,7 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 640px) {
+@media (--sm-down) {
 	.entity-card {
 		padding: var(--space-sm);
 	}
@@ -228,8 +228,8 @@
 			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%);
 	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 	box-shadow:
-		0 var(--space-xs) var(--space-xl) 0 color-mix(in srgb, var(--color-black) calc(var(--opacity-medium-high) * 100%), transparent),
-		inset 0 var(--border-width-thin) 0 color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
+		0 8px 32px 0 color-mix(in srgb, var(--color-black) calc(var(--opacity-medium-high) * 100%), transparent),
+		inset 0 1px 0 color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 }
 
 :global(html.dark) .entity-card:hover {
@@ -239,8 +239,8 @@
 			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%);
 	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
 	box-shadow:
-		0 var(--space-sm) var(--space-xl-tight) 0 color-mix(in srgb, var(--color-black) calc(var(--opacity-high) * 100%), transparent),
-		inset 0 var(--border-width-thin) 0 color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+		0 12px 40px 0 color-mix(in srgb, var(--color-black) calc(var(--opacity-high) * 100%), transparent),
+		inset 0 1px 0 color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
 }
 
 /* Fallback for browsers that don't support backdrop-filter */

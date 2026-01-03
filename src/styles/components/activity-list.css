@@ -161,3 +161,47 @@
 	color: var(--color-success);
 	background-color: color-mix(in srgb, var(--color-success) 10%, transparent);
 }
+
+/* Dark mode support */
+:global(html.dark) .activity-item {
+	border-left-color: var(--color-border);
+}
+
+:global(html.dark) .activity-item:hover {
+	border-left-color: var(--color-primary);
+}
+
+:global(html.dark) .filter-tag {
+	background-color: var(--color-surface-alt);
+	border-color: var(--color-border);
+	color: var(--color-text);
+}
+
+:global(html.dark) .filter-tag:hover {
+	background-color: var(--color-surface-border);
+}
+
+:global(html.dark) .filter-tag.active {
+	background-color: var(--color-primary);
+	color: var(--color-background);
+	border-color: var(--color-primary);
+}
+
+:global(html.dark) .year-tag {
+	background-color: var(--color-surface-alt);
+	color: var(--color-text);
+}
+
+:global(html.dark) .year-tag:hover {
+	background-color: var(--color-surface-border);
+}
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+
+	.activity-title,
+	.filter-tag,
+	.year-tag {
+		transition: none;
+	}
+}

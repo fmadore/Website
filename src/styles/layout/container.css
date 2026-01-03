@@ -33,6 +33,12 @@
 	}
 }
 
+@media (--2xl) {
+	.container {
+		max-width: var(--container-2xl);
+	}
+}
+
 /* Full width container */
 .container-fluid {
 	width: 100%;

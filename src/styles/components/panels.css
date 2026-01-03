@@ -227,7 +227,7 @@
 }
 
 /* Responsive design */
-@media (max-width: 640px) {
+@media (--sm-down) {
 	.panel {
 		padding: var(--space-lg);
 		margin-bottom: var(--space-lg);
