@@ -15,12 +15,12 @@ export default defineConfig({
 					if (id.includes('echarts')) {
 						return 'echarts';
 					}
-					
+
 					// D3 - data visualization
 					if (id.includes('node_modules/d3') || id.includes('d3-')) {
 						return 'd3';
 					}
-					
+
 					// PDF generation libraries - dynamically imported
 					if (id.includes('jspdf')) {
 						return 'jspdf';
@@ -28,17 +28,17 @@ export default defineConfig({
 					if (id.includes('html2canvas')) {
 						return 'html2canvas';
 					}
-					
+
 					// Icon libraries
 					if (id.includes('@iconify') || id.includes('svelte-fa') || id.includes('@fortawesome')) {
 						return 'icons';
 					}
-					
+
 					// Date utilities
 					if (id.includes('date-fns')) {
 						return 'date-fns';
 					}
-					
+
 					// Other vendor dependencies
 					if (id.includes('node_modules')) {
 						return 'vendor';
