@@ -285,9 +285,9 @@
 	/* Enhanced focus states for accessibility */
 	.review-link:focus-visible,
 	.doi-link:focus-visible {
-		outline: 2px solid var(--color-highlight);
-		outline-offset: 2px;
-		box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-highlight) 20%, transparent);
+		outline: var(--border-width-medium) solid var(--color-highlight);
+		outline-offset: var(--space-0-5);
+		box-shadow: 0 0 0 var(--space-1) color-mix(in srgb, var(--color-highlight) 20%, transparent);
 		border-radius: var(--border-radius-sm);
 	}
 

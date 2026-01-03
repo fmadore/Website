@@ -422,7 +422,7 @@
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 640px) {
+	@media (--sm-down) {
 		:global(.iframe-container),
 		:global(.iframe-container-md) {
 			height: calc(var(--iframe-height-default) * 0.83); /* Slightly shorter on small screens */
@@ -452,7 +452,7 @@
 		}
 	}
 
-	@media (max-width: 480px) {
+	@media (--xs-down) {
 		:global(.iframe-container),
 		:global(.iframe-container-md) {
 			height: calc(var(--iframe-height-default) * 0.67); /* Even shorter on very small screens */

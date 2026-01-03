@@ -352,7 +352,7 @@
 	}
 
 	/* Responsive design */
-	@media (max-width: 640px) {
+	@media (--sm-down) {
 		.activity-meta {
 			flex-direction: column;
 			align-items: flex-start;

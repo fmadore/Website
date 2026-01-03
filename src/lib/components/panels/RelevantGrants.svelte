@@ -76,7 +76,7 @@
 		padding: var(--space-lg);
 		border-radius: var(--border-radius-xl);
 		margin-top: var(--space-xl);
-		border-left: 3px solid var(--color-accent);
+		border-left: var(--border-width-thick) solid var(--color-accent);
 	}
 
 	.grants-header {
@@ -104,7 +104,8 @@
 
 	.grant-item {
 		padding: var(--space-sm) 0;
-		border-bottom: 1px solid color-mix(in srgb, var(--color-primary) 10%, transparent);
+		border-bottom: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) 10%, transparent);
 	}
 
 	.grant-item:last-child {

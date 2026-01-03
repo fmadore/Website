@@ -105,8 +105,8 @@
 
 	/* Enhanced focus accessibility */
 	.related-item:focus-visible {
-		outline: 2px solid var(--color-highlight);
-		outline-offset: 3px;
+		outline: var(--border-width-medium) solid var(--color-highlight);
+		outline-offset: var(--space-1);
 		box-shadow:
 			var(--shadow-md),
 			0 0 0 4px color-mix(in srgb, var(--color-highlight) 20%, transparent);

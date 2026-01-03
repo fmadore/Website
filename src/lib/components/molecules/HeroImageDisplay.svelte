@@ -757,7 +757,7 @@
 		/* Desktop styles - use as progressive enhancement */
 	}
 
-	@media (max-width: 767px) {
+	@media (--sm-down) {
 		.hero-figure {
 			margin-bottom: var(--space-4);
 		}
