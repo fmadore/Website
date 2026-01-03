@@ -59,7 +59,7 @@ Base styles define the foundation of the site's design.
 - **Highlight**: Amber (`#f59e0b`) for attention/importance
 - **Success**: Emerald (`#10b981`) for positive states
 - **Danger**: Red (`#dc2626`) for errors and destructive actions
-- **All colors include RGB variants** for use with `rgba()`
+- **Dynamic opacity**: Use `color-mix()` for transparency (e.g., `color-mix(in srgb, var(--color-primary) 25%, transparent)`)
 
 #### Spacing System (8-point grid)
 
@@ -78,14 +78,26 @@ Base styles define the foundation of the site's design.
 #### Shadows (Multi-layer system)
 
 - **Depth levels**: `--shadow-xs` through `--shadow-2xl`
-- **Colored shadows**: `--shadow-primary`, `--shadow-accent`, etc.
+- **Colored shadows**: `--shadow-primary`, `--shadow-accent`, `--shadow-highlight`, `--shadow-success`, `--shadow-danger`
 - **Glass shadows**: `--shadow-glass`, `--shadow-glass-lg`
+
+#### Focus Ring (Accessibility)
+
+- **`--focus-ring`**: Box-shadow for focus indicators (uses `color-mix()` for transparency)
+- **`--focus-ring-offset`**: Spacing between element and focus ring
+- **`--focus-ring-color`**: Color of the focus indicator
+
+#### Container Queries
+
+- **`--container-query-xs`** through **`--container-query-xl`**: Widths for `@container` queries
+- Use for component-level responsive design independent of viewport
 
 #### Animation & Transitions
 
 - **Duration scale**: `--duration-instant` (75ms) through `--duration-slower` (700ms)
 - **Easing functions**: `--ease-in`, `--ease-out`, `--ease-bounce`, `--ease-spring`
 - **Legacy mappings**: `--anim-duration-*` and `--anim-ease-*`
+- **@deprecated**: `--transition-duration-*` tokens — use `--duration-*` instead
 
 Example usage:
 
@@ -117,6 +129,16 @@ Comprehensive typography system including:
 - **Responsive typography utilities**: Font sizes, weights, alignment, line height, letter spacing
 - **Prose class**: Long-form content styling
 - **Accessibility**: Link underlines show statically for users who prefer reduced motion
+
+### Custom Media (`base/media.css`)
+
+PostCSS Custom Media definitions for responsive and capability-based queries:
+
+- **Breakpoints (min-width)**: `--sm`, `--md`, `--lg`, `--xl`, `--2xl`
+- **Breakpoints (max-width)**: `--xs-down`, `--sm-down`, `--md-down`, `--lg-down`, `--xl-down`
+- **Interaction**: `--can-hover` (desktop), `--touch` (touch devices)
+- **Environment**: `--print`, `--retina`, `--landscape`, `--portrait`
+- **Accessibility**: `--reduced-motion`, `--high-contrast`, `--dark-mode`
 
 ### Reset (`base/reset.css`)
 

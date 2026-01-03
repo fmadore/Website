@@ -66,6 +66,7 @@ export function setState(v: T) { state = v; }
 | Spacing | `--space-sm` through `--space-xl`, or `--spacing-4` (numeric) |
 | Typography | `--font-size-sm`, `--font-family-serif`, `--font-weight-bold` |
 | Effects | `--shadow-md`, `--border-radius-lg`, `--duration-normal` |
+| Focus | `--focus-ring`, `--focus-ring-offset`, `--focus-ring-color` |
 
 **Breakpoints** (use PostCSS Custom Media):
 ```css

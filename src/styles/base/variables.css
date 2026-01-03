@@ -130,6 +130,12 @@
 	--color-border-dark: var(--sys-color-neutral-300);
 	--color-border-focus: var(--sys-color-blue-500);
 
+	/* ===== FOCUS RING ===== */
+	/* Consistent focus indicators for accessibility */
+	--focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-primary) 40%, transparent);
+	--focus-ring-offset: 2px;
+	--focus-ring-color: var(--color-primary);
+
 	/* ===== ACADEMIC-SPECIFIC COLORS ===== */
 	--color-citation: var(--color-accent);
 
@@ -502,7 +508,8 @@
 	--anim-ease-smooth: var(--ease-smooth);
 	--anim-ease-mobile: var(--ease-smooth);
 
-	/* Transition utility variables */
+	/* Transition utility variables (prefer --duration-* tokens) */
+	/* @deprecated Use --duration-instant, --duration-fast, --duration-normal, etc. instead */
 	--transition-duration-75: 75ms;
 	--transition-duration-100: 100ms;
 	--transition-duration-150: 150ms;
@@ -547,6 +554,18 @@
 	/* 1152px */
 	--content-width-7xl: 80rem;
 	/* 1280px */
+
+	/* Container query widths (for @container queries) */
+	--container-query-xs: 16rem;
+	/* 256px */
+	--container-query-sm: 20rem;
+	/* 320px */
+	--container-query-md: 28rem;
+	/* 448px */
+	--container-query-lg: 36rem;
+	/* 576px */
+	--container-query-xl: 48rem;
+	/* 768px */
 
 	/* ===== Z-INDEX SCALE ===== */
 	/* Consistent layering system */
@@ -840,6 +859,10 @@ html.dark {
 	/* Slate 600 */
 	--color-border-focus: #60a5fa;
 
+	/* ===== FOCUS RING ===== */
+	--focus-ring: 0 0 0 3px color-mix(in srgb, #60a5fa 50%, transparent);
+	--focus-ring-color: #60a5fa;
+
 	/* ===== ACADEMIC COLORS ===== */
 	--color-citation: #2dd4bf;
 
@@ -912,6 +935,7 @@ html.dark {
 	--shadow-accent: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-teal-400) 30%, transparent);
 	--shadow-highlight: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-amber-400) 30%, transparent);
 	--shadow-success: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-emerald-400) 30%, transparent);
+	--shadow-danger: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-red-400) 30%, transparent);
 
 	/* Glass shadows */
 	--shadow-glass:
