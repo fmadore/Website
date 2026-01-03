@@ -148,7 +148,7 @@
 	--color-background-alt: var(--color-surface);
 	--color-footer-bg: var(--sys-color-blue-900);
 	--color-footer-text: var(--sys-color-neutral-100);
-	--color-footer-text-muted: rgba(241, 245, 249, 0.75);
+	--color-footer-text-muted: color-mix(in srgb, var(--sys-color-neutral-100) 75%, transparent);
 	--color-sidebar-bg: var(--color-surface);
 
 	/* Button color schemes - for glass buttons and variants */
@@ -421,41 +421,41 @@
 	 * Uses multiple layers for natural lighting effect
 	 * Colored shadows for brand elements
 	 */
-	--shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	--shadow-xs: 0 1px 2px 0 color-mix(in srgb, var(--color-black) 5%, transparent);
 	--shadow-sm:
-		0 1px 3px 0 rgba(0, 0, 0, 0.1),
-		0 1px 2px -1px rgba(0, 0, 0, 0.1);
+		0 1px 3px 0 color-mix(in srgb, var(--color-black) 10%, transparent),
+		0 1px 2px -1px color-mix(in srgb, var(--color-black) 10%, transparent);
 	--shadow:
-		0 4px 6px -1px rgba(0, 0, 0, 0.1),
-		0 2px 4px -2px rgba(0, 0, 0, 0.1);
+		0 4px 6px -1px color-mix(in srgb, var(--color-black) 10%, transparent),
+		0 2px 4px -2px color-mix(in srgb, var(--color-black) 10%, transparent);
 	--shadow-md:
-		0 10px 15px -3px rgba(0, 0, 0, 0.1),
-		0 4px 6px -4px rgba(0, 0, 0, 0.1);
+		0 10px 15px -3px color-mix(in srgb, var(--color-black) 10%, transparent),
+		0 4px 6px -4px color-mix(in srgb, var(--color-black) 10%, transparent);
 	--shadow-lg:
-		0 20px 25px -5px rgba(0, 0, 0, 0.1),
-		0 8px 10px -6px rgba(0, 0, 0, 0.1);
+		0 20px 25px -5px color-mix(in srgb, var(--color-black) 10%, transparent),
+		0 8px 10px -6px color-mix(in srgb, var(--color-black) 10%, transparent);
 	--shadow-xl:
-		0 25px 50px -12px rgba(0, 0, 0, 0.25);
+		0 25px 50px -12px color-mix(in srgb, var(--color-black) 25%, transparent);
 	--shadow-2xl:
-		0 35px 60px -15px rgba(0, 0, 0, 0.3);
-	--shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+		0 35px 60px -15px color-mix(in srgb, var(--color-black) 30%, transparent);
+	--shadow-inner: inset 0 2px 4px 0 color-mix(in srgb, var(--color-black) 5%, transparent);
 	--shadow-none: none;
 
 	/* Colored shadows for emphasis */
-	--shadow-primary: 0 4px 14px -2px rgba(29, 78, 216, 0.25);
-	--shadow-primary-lg: 0 10px 25px -5px rgba(29, 78, 216, 0.3);
-	--shadow-accent: 0 4px 14px -2px rgba(20, 184, 166, 0.25);
-	--shadow-highlight: 0 4px 14px -2px rgba(245, 158, 11, 0.25);
-	--shadow-success: 0 4px 14px -2px rgba(16, 185, 129, 0.25);
-	--shadow-danger: 0 4px 14px -2px rgba(220, 38, 38, 0.25);
+	--shadow-primary: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-blue-700) 25%, transparent);
+	--shadow-primary-lg: 0 10px 25px -5px color-mix(in srgb, var(--sys-color-blue-700) 30%, transparent);
+	--shadow-accent: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-teal-500) 25%, transparent);
+	--shadow-highlight: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-amber-500) 25%, transparent);
+	--shadow-success: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-emerald-500) 25%, transparent);
+	--shadow-danger: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-red-600) 25%, transparent);
 
 	/* Glass shadows - softer for glassmorphism */
 	--shadow-glass:
-		0 8px 32px 0 rgba(0, 0, 0, 0.08),
-		0 2px 8px 0 rgba(0, 0, 0, 0.04);
+		0 8px 32px 0 color-mix(in srgb, var(--color-black) 8%, transparent),
+		0 2px 8px 0 color-mix(in srgb, var(--color-black) 4%, transparent);
 	--shadow-glass-lg:
-		0 16px 48px 0 rgba(0, 0, 0, 0.1),
-		0 4px 12px 0 rgba(0, 0, 0, 0.05);
+		0 16px 48px 0 color-mix(in srgb, var(--color-black) 10%, transparent),
+		0 4px 12px 0 color-mix(in srgb, var(--color-black) 5%, transparent);
 
 	/* ===== BORDER WIDTHS ===== */
 	--border-width-thin: 1px;
@@ -854,7 +854,7 @@ html.dark {
 	--color-footer-bg: #020617;
 	/* Slate 950 */
 	--color-footer-text: #f1f5f9;
-	--color-footer-text-muted: rgba(241, 245, 249, 0.7);
+	--color-footer-text-muted: color-mix(in srgb, var(--sys-color-neutral-100) 70%, transparent);
 	--color-sidebar-bg: #1e293b;
 
 	/* Button schemes */
@@ -888,38 +888,38 @@ html.dark {
 
 	/* ===== SHADOWS (DARK) ===== */
 	/* Deeper shadows for dark mode contrast */
-	--shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+	--shadow-xs: 0 1px 2px 0 color-mix(in srgb, var(--color-black) 20%, transparent);
 	--shadow-sm:
-		0 1px 3px 0 rgba(0, 0, 0, 0.3),
-		0 1px 2px -1px rgba(0, 0, 0, 0.3);
+		0 1px 3px 0 color-mix(in srgb, var(--color-black) 30%, transparent),
+		0 1px 2px -1px color-mix(in srgb, var(--color-black) 30%, transparent);
 	--shadow:
-		0 4px 6px -1px rgba(0, 0, 0, 0.35),
-		0 2px 4px -2px rgba(0, 0, 0, 0.3);
+		0 4px 6px -1px color-mix(in srgb, var(--color-black) 35%, transparent),
+		0 2px 4px -2px color-mix(in srgb, var(--color-black) 30%, transparent);
 	--shadow-md:
-		0 10px 15px -3px rgba(0, 0, 0, 0.4),
-		0 4px 6px -4px rgba(0, 0, 0, 0.35);
+		0 10px 15px -3px color-mix(in srgb, var(--color-black) 40%, transparent),
+		0 4px 6px -4px color-mix(in srgb, var(--color-black) 35%, transparent);
 	--shadow-lg:
-		0 20px 25px -5px rgba(0, 0, 0, 0.45),
-		0 8px 10px -6px rgba(0, 0, 0, 0.4);
+		0 20px 25px -5px color-mix(in srgb, var(--color-black) 45%, transparent),
+		0 8px 10px -6px color-mix(in srgb, var(--color-black) 40%, transparent);
 	--shadow-xl:
-		0 25px 50px -12px rgba(0, 0, 0, 0.6);
+		0 25px 50px -12px color-mix(in srgb, var(--color-black) 60%, transparent);
 	--shadow-2xl:
-		0 35px 60px -15px rgba(0, 0, 0, 0.7);
+		0 35px 60px -15px color-mix(in srgb, var(--color-black) 70%, transparent);
 
 	/* Colored shadows - brighter for dark mode */
-	--shadow-primary: 0 4px 14px -2px rgba(96, 165, 250, 0.3);
-	--shadow-primary-lg: 0 10px 25px -5px rgba(96, 165, 250, 0.35);
-	--shadow-accent: 0 4px 14px -2px rgba(45, 212, 191, 0.3);
-	--shadow-highlight: 0 4px 14px -2px rgba(251, 191, 36, 0.3);
-	--shadow-success: 0 4px 14px -2px rgba(52, 211, 153, 0.3);
+	--shadow-primary: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-blue-400) 30%, transparent);
+	--shadow-primary-lg: 0 10px 25px -5px color-mix(in srgb, var(--sys-color-blue-400) 35%, transparent);
+	--shadow-accent: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-teal-400) 30%, transparent);
+	--shadow-highlight: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-amber-400) 30%, transparent);
+	--shadow-success: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-emerald-400) 30%, transparent);
 
 	/* Glass shadows */
 	--shadow-glass:
-		0 8px 32px 0 rgba(0, 0, 0, 0.25),
-		0 2px 8px 0 rgba(0, 0, 0, 0.15);
+		0 8px 32px 0 color-mix(in srgb, var(--color-black) 25%, transparent),
+		0 2px 8px 0 color-mix(in srgb, var(--color-black) 15%, transparent);
 	--shadow-glass-lg:
-		0 16px 48px 0 rgba(0, 0, 0, 0.3),
-		0 4px 12px 0 rgba(0, 0, 0, 0.2);
+		0 16px 48px 0 color-mix(in srgb, var(--color-black) 30%, transparent),
+		0 4px 12px 0 color-mix(in srgb, var(--color-black) 20%, transparent);
 
 	/* Card shadows */
 	--card-shadow-color: 0, 0, 0;

@@ -1,5 +1,8 @@
 /* Main CSS entry point */
 
+/* Custom media queries (must load first) */
+@import './styles/base/media.css';
+
 /* Design tokens */
 @import './styles/base/variables.css';
 

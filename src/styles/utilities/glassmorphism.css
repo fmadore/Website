@@ -190,77 +190,77 @@
 	box-shadow: var(--shadow-md);
 }
 
-.glass-button {
-	background: color-mix(in srgb, var(--color-white) calc(var(--card-glass-opacity-light) * 100%), transparent) !important;
-	-webkit-backdrop-filter: blur(var(--glass-blur-amount)) !important;
-	backdrop-filter: blur(var(--glass-blur-amount)) !important;
-	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-light) * 100%), transparent) !important;
-	border-radius: var(--border-radius-md) !important;
-	box-shadow: var(--shadow) !important;
-	transition: all var(--anim-duration-fast) var(--anim-ease-out) !important;
+.glass-button.glass-button {
+	background: color-mix(in srgb, var(--color-white) calc(var(--card-glass-opacity-light) * 100%), transparent);
+	-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+	backdrop-filter: blur(var(--glass-blur-amount));
+	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-light) * 100%), transparent);
+	border-radius: var(--border-radius-md);
+	box-shadow: var(--shadow);
+	transition: all var(--anim-duration-fast) var(--anim-ease-out);
 }
 
-.glass-button:hover {
-	background: color-mix(in srgb, var(--color-white) calc(var(--card-glass-opacity-light-hover) * 100%), transparent) !important;
-	border-color: color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-light-hover) * 100%), transparent) !important;
-	box-shadow: var(--shadow-md) !important;
-	transform: var(--transform-lift-sm) !important;
+.glass-button.glass-button:hover {
+	background: color-mix(in srgb, var(--color-white) calc(var(--card-glass-opacity-light-hover) * 100%), transparent);
+	border-color: color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-light-hover) * 100%), transparent);
+	box-shadow: var(--shadow-md);
+	transform: var(--transform-lift-sm);
 }
 
-.glass-button:active {
-	transform: var(--btn-active-transform) !important;
-	box-shadow: var(--shadow-sm) !important;
+.glass-button.glass-button:active {
+	transform: var(--btn-active-transform);
+	box-shadow: var(--shadow-sm);
 }
 
 /* Glass button with primary variant - better contrast */
-.btn-outline-primary.glass-button {
-	color: var(--color-primary) !important;
-	background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) !important;
-	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) calc(var(--card-glass-border-light-hover) * 100%), transparent) !important;
+.btn-outline-primary.glass-button.glass-button {
+	color: var(--color-primary);
+	background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent);
+	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) calc(var(--card-glass-border-light-hover) * 100%), transparent);
 }
 
-.btn-outline-primary.glass-button:hover {
-	color: var(--color-white) !important;
-	background: var(--color-primary) !important;
-	border-color: var(--color-primary) !important;
-	box-shadow: 0 6px 20px 0 color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent) !important;
+.btn-outline-primary.glass-button.glass-button:hover {
+	color: var(--color-white);
+	background: var(--color-primary);
+	border-color: var(--color-primary);
+	box-shadow: 0 6px 20px 0 color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent);
 }
 
 /* Glass button with secondary variant - improved contrast with glassmorphism */
-.btn-outline-secondary.glass-button {
-	color: var(--color-text-emphasis) !important;
-	background: color-mix(in srgb, var(--color-secondary-scheme) calc(var(--opacity-very-low) * 100%), transparent) !important;
-	-webkit-backdrop-filter: blur(var(--glass-blur-amount)) !important;
-	backdrop-filter: blur(var(--glass-blur-amount)) !important;
-	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-secondary-scheme) calc(var(--card-glass-border-light) * 100%), transparent) !important;
-	box-shadow: var(--shadow) !important;
+.btn-outline-secondary.glass-button.glass-button {
+	color: var(--color-text-emphasis);
+	background: color-mix(in srgb, var(--color-secondary-scheme) calc(var(--opacity-very-low) * 100%), transparent);
+	-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+	backdrop-filter: blur(var(--glass-blur-amount));
+	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-secondary-scheme) calc(var(--card-glass-border-light) * 100%), transparent);
+	box-shadow: var(--shadow);
 }
 
-.btn-outline-secondary.glass-button:hover {
-	color: var(--color-white) !important;
-	background: var(--color-secondary-scheme) !important;
-	border-color: var(--color-secondary-scheme) !important;
-	box-shadow: 0 6px 20px 0 color-mix(in srgb, var(--color-secondary-scheme) calc(var(--opacity-medium-high) * 100%), transparent) !important;
+.btn-outline-secondary.glass-button.glass-button:hover {
+	color: var(--color-white);
+	background: var(--color-secondary-scheme);
+	border-color: var(--color-secondary-scheme);
+	box-shadow: 0 6px 20px 0 color-mix(in srgb, var(--color-secondary-scheme) calc(var(--opacity-medium-high) * 100%), transparent);
 }
 
 /* Glass button with primary solid variant */
-.btn-primary.glass-button {
-	color: var(--color-white) !important;
-	background: var(--color-primary) !important;
-	border: var(--border-width-thin) solid var(--color-primary) !important;
-	box-shadow: 0 4px 16px 0 color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent) !important;
-	-webkit-backdrop-filter: none !important;
-	backdrop-filter: none !important;
+.btn-primary.glass-button.glass-button {
+	color: var(--color-white);
+	background: var(--color-primary);
+	border: var(--border-width-thin) solid var(--color-primary);
+	box-shadow: 0 4px 16px 0 color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent);
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
 }
 
-.btn-primary.glass-button:hover {
-	background: var(--color-primary-dark) !important;
-	border-color: var(--color-primary-dark) !important;
-	box-shadow: 0 6px 20px 0 color-mix(in srgb, var(--color-primary) calc(var(--opacity-high) * 100%), transparent) !important;
+.btn-primary.glass-button.glass-button:hover {
+	background: var(--color-primary-dark);
+	border-color: var(--color-primary-dark);
+	box-shadow: 0 6px 20px 0 color-mix(in srgb, var(--color-primary) calc(var(--opacity-high) * 100%), transparent);
 }
 
 /* Dark theme overrides for components */
-:global(html.dark) .glass-card {
+:global(html.dark) .glass-card.glass-card {
 	background: color-mix(in srgb, var(--color-dark-surface) calc(var(--card-glass-opacity-dark) * 100%), transparent);
 	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-dark) * 100%), transparent);
 	box-shadow:
@@ -268,7 +268,7 @@
 		inset 0 1px 0 color-mix(in srgb, var(--color-white) calc(var(--card-glass-inset-dark) * 100%), transparent);
 }
 
-:global(html.dark) .glass-card:hover {
+:global(html.dark) .glass-card.glass-card:hover {
 	background: color-mix(in srgb, var(--color-dark-surface) calc(var(--card-glass-opacity-dark-hover) * 100%), transparent);
 	border-color: color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-dark-hover) * 100%), transparent);
 	box-shadow:
@@ -276,7 +276,7 @@
 		inset 0 1px 0 color-mix(in srgb, var(--color-white) calc(var(--card-glass-inset-dark-hover) * 100%), transparent);
 }
 
-:global(html.dark) .glass-panel {
+:global(html.dark) .glass-panel.glass-panel {
 	background: color-mix(in srgb, var(--color-dark-surface) calc(var(--card-glass-opacity-dark) * 100%), transparent);
 	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-dark) * 100%), transparent);
 	box-shadow:
@@ -284,7 +284,7 @@
 		inset 0 1px 0 color-mix(in srgb, var(--color-white) calc(var(--card-glass-inset-dark) * 100%), transparent);
 }
 
-:global(html.dark) .glass-panel-light {
+:global(html.dark) .glass-panel-light.glass-panel-light {
 	background: color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-low) * 100%), transparent);
 	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) calc(var(--opacity-very-low) * 100%), transparent);
 	box-shadow:
@@ -292,59 +292,59 @@
 		inset 0 1px 0 color-mix(in srgb, var(--color-white) calc(var(--opacity-very-low) * 100%), transparent);
 }
 
-:global(html.dark) .glass-nav {
+:global(html.dark) .glass-nav.glass-nav {
 	background: color-mix(in srgb, var(--color-dark-surface-alt) calc(var(--glass-opacity-fallback-dark) * 100%), transparent);
 	border-bottom: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-dark) * 100%), transparent);
 }
 
-:global(html.dark) .glass-button {
-	background: color-mix(in srgb, var(--color-dark-surface) calc(var(--card-glass-opacity-dark) * 100%), transparent) !important;
-	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-dark) * 100%), transparent) !important;
+:global(html.dark) .glass-button.glass-button {
+	background: color-mix(in srgb, var(--color-dark-surface) calc(var(--card-glass-opacity-dark) * 100%), transparent);
+	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-dark) * 100%), transparent);
 }
 
-:global(html.dark) .glass-button:hover {
-	background: color-mix(in srgb, var(--color-dark-surface) calc(var(--card-glass-opacity-dark-hover) * 100%), transparent) !important;
-	border-color: color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-dark-hover) * 100%), transparent) !important;
+:global(html.dark) .glass-button.glass-button:hover {
+	background: color-mix(in srgb, var(--color-dark-surface) calc(var(--card-glass-opacity-dark-hover) * 100%), transparent);
+	border-color: color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-dark-hover) * 100%), transparent);
 }
 
 /* Dark mode glass button variants */
-:global(html.dark) .btn-outline-primary.glass-button {
-	color: var(--color-primary) !important;
-	background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) !important;
-	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent) !important;
+:global(html.dark) .btn-outline-primary.glass-button.glass-button {
+	color: var(--color-primary);
+	background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent);
+	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent);
 }
 
-:global(html.dark) .btn-outline-primary.glass-button:hover {
-	color: var(--color-background) !important;
-	background: var(--color-primary) !important;
-	border-color: var(--color-primary) !important;
-	box-shadow: 0 6px 20px 0 color-mix(in srgb, var(--color-primary) calc(var(--opacity-high) * 100%), transparent) !important;
+:global(html.dark) .btn-outline-primary.glass-button.glass-button:hover {
+	color: var(--color-background);
+	background: var(--color-primary);
+	border-color: var(--color-primary);
+	box-shadow: 0 6px 20px 0 color-mix(in srgb, var(--color-primary) calc(var(--opacity-high) * 100%), transparent);
 }
 
-:global(html.dark) .btn-outline-secondary.glass-button {
-	color: var(--color-text) !important;
-	background: color-mix(in srgb, var(--color-secondary-scheme) calc(var(--opacity-medium) * 100%), transparent) !important;
-	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-secondary-scheme) calc(var(--opacity-medium-high) * 100%), transparent) !important;
+:global(html.dark) .btn-outline-secondary.glass-button.glass-button {
+	color: var(--color-text);
+	background: color-mix(in srgb, var(--color-secondary-scheme) calc(var(--opacity-medium) * 100%), transparent);
+	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-secondary-scheme) calc(var(--opacity-medium-high) * 100%), transparent);
 }
 
-:global(html.dark) .btn-outline-secondary.glass-button:hover {
-	color: var(--color-background) !important;
-	background: var(--color-secondary-scheme) !important;
-	border-color: var(--color-secondary-scheme) !important;
-	box-shadow: 0 6px 20px 0 color-mix(in srgb, var(--color-secondary-scheme) calc(var(--opacity-high) * 100%), transparent) !important;
+:global(html.dark) .btn-outline-secondary.glass-button.glass-button:hover {
+	color: var(--color-background);
+	background: var(--color-secondary-scheme);
+	border-color: var(--color-secondary-scheme);
+	box-shadow: 0 6px 20px 0 color-mix(in srgb, var(--color-secondary-scheme) calc(var(--opacity-high) * 100%), transparent);
 }
 
-:global(html.dark) .btn-primary.glass-button {
-	color: var(--color-background) !important;
-	background: var(--color-primary) !important;
-	border: var(--border-width-thin) solid var(--color-primary) !important;
-	box-shadow: 0 4px 16px 0 color-mix(in srgb, var(--color-primary) calc(var(--opacity-high) * 100%), transparent) !important;
+:global(html.dark) .btn-primary.glass-button.glass-button {
+	color: var(--color-background);
+	background: var(--color-primary);
+	border: var(--border-width-thin) solid var(--color-primary);
+	box-shadow: 0 4px 16px 0 color-mix(in srgb, var(--color-primary) calc(var(--opacity-high) * 100%), transparent);
 }
 
-:global(html.dark) .btn-primary.glass-button:hover {
-	background: var(--color-primary-dark) !important;
-	border-color: var(--color-primary-dark) !important;
-	box-shadow: 0 6px 20px 0 var(--color-primary) !important;
+:global(html.dark) .btn-primary.glass-button.glass-button:hover {
+	background: var(--color-primary-dark);
+	border-color: var(--color-primary-dark);
+	box-shadow: 0 6px 20px 0 var(--color-primary);
 }
 
 /* Frosted glass effect */

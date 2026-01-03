@@ -8,8 +8,8 @@
 	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-background) calc(var(--card-glass-border-light) * 100%), transparent);
 	overflow: hidden;
 	box-shadow:
-		0 var(--space-xs) var(--space-xl) 0 color-mix(in srgb, rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity) * 100%), transparent),
-		inset 0 var(--border-width-thin) 0 color-mix(in srgb, var(--color-background) calc(var(--card-glass-inset-light) * 100%), transparent);
+		0 8px 32px 0 color-mix(in srgb, rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity) * 100%), transparent),
+		inset 0 1px 0 color-mix(in srgb, var(--color-background) calc(var(--card-glass-inset-light) * 100%), transparent);
 	transition:
 		transform var(--anim-duration-base) var(--anim-ease-out),
 		box-shadow var(--anim-duration-base) var(--anim-ease-out),
@@ -25,8 +25,8 @@
 	border-color: color-mix(in srgb, var(--color-background) calc(var(--card-glass-border-light-hover) * 100%), transparent);
 	transform: var(--card-transform-hover);
 	box-shadow:
-		0 var(--space-sm) var(--space-10) 0 color-mix(in srgb, rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity-hover) * 100%), transparent),
-		inset 0 var(--border-width-thin) 0 color-mix(in srgb, var(--color-background) calc(var(--card-glass-inset-light-hover) * 100%), transparent);
+		0 12px 40px 0 color-mix(in srgb, rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity-hover) * 100%), transparent),
+		inset 0 1px 0 color-mix(in srgb, var(--color-background) calc(var(--card-glass-inset-light-hover) * 100%), transparent);
 }
 
 .card-image {
@@ -202,14 +202,14 @@
 	background: color-mix(in srgb, var(--color-text) calc(var(--card-glass-opacity-dark) * 100%), transparent);
 	border: var(--border-width-thin) solid color-mix(in srgb, var(--color-background) calc(var(--card-glass-border-dark) * 100%), transparent);
 	box-shadow:
-		0 var(--space-2) var(--space-8) 0 color-mix(in srgb, var(--color-text) calc(var(--opacity-medium-high) * 100%), transparent),
-		inset 0 var(--border-width-thin) 0 color-mix(in srgb, var(--color-background) calc(var(--card-glass-inset-dark) * 100%), transparent);
+		0 8px 32px 0 color-mix(in srgb, var(--color-text) calc(var(--opacity-medium-high) * 100%), transparent),
+		inset 0 1px 0 color-mix(in srgb, var(--color-background) calc(var(--card-glass-inset-dark) * 100%), transparent);
 }
 
 :global(html.dark) .card:hover {
 	background: color-mix(in srgb, var(--color-text) calc(var(--card-glass-opacity-dark-hover) * 100%), transparent);
 	border-color: color-mix(in srgb, var(--color-background) calc(var(--card-glass-border-dark-hover) * 100%), transparent);
 	box-shadow:
-		0 var(--space-3) var(--space-10) 0 color-mix(in srgb, var(--color-text) calc(var(--opacity-high) * 100%), transparent),
-		inset 0 var(--border-width-thin) 0 color-mix(in srgb, var(--color-background) calc(var(--card-glass-inset-dark-hover) * 100%), transparent);
+		0 12px 40px 0 color-mix(in srgb, var(--color-text) calc(var(--opacity-high) * 100%), transparent),
+		inset 0 1px 0 color-mix(in srgb, var(--color-background) calc(var(--card-glass-inset-dark-hover) * 100%), transparent);
 }
