@@ -90,10 +90,11 @@
 	}
 
 	// Generate responsive sizes for common breakpoints
-	const responsiveSizes =
+	const responsiveSizes = $derived(
 		width && height
 			? `(max-width: 640px) ${Math.min(width, 640)}px, (max-width: 1024px) ${Math.min(width, 1024)}px, ${width}px`
-			: sizes;
+			: sizes
+	);
 </script>
 
 <div class="optimized-image-container {className}" class:loaded={isLoaded} class:error={hasError}>

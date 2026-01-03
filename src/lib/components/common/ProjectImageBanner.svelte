@@ -21,10 +21,11 @@
 		scrollAnimation?: boolean;
 	} = $props();
 
-	const animationClass = scrollAnimation ? 'scroll-reveal-scale' : '';
-	const combinedClasses =
-		`project-image-banner ${glassEffect} ${animationClass} ${additionalClasses}`.trim();
-	const overlayClass = showOverlay ? `overlay-${overlayIntensity}` : '';
+	const animationClass = $derived(scrollAnimation ? 'scroll-reveal-scale' : '');
+	const combinedClasses = $derived(
+		`project-image-banner ${glassEffect} ${animationClass} ${additionalClasses}`.trim()
+	);
+	const overlayClass = $derived(showOverlay ? `overlay-${overlayIntensity}` : '');
 </script>
 
 <div class={combinedClasses}>

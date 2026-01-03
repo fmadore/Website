@@ -34,7 +34,9 @@
 		items: 'panel-items'
 	};
 
-	const combinedClasses = `${baseClasses} ${variantClasses[variant]} ${glassEffect}`.trim();
+	const combinedClasses = $derived(
+		`${baseClasses} ${variantClasses[variant]} ${glassEffect}`.trim()
+	);
 </script>
 
 <div class={combinedClasses}>

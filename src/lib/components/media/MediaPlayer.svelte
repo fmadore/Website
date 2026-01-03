@@ -33,10 +33,15 @@
 	let currentTime = $state(0);
 	let duration = $state(0);
 	let volume = $state(1);
-	let isMuted = $state(muted);
+	let isMuted = $state(false);
 	let isFullscreen = $state(false);
 	let error = $state<string>('');
 	let isLoading = $state(true);
+
+	// Sync isMuted with the muted prop
+	$effect(() => {
+		isMuted = muted;
+	});
 
 	// DOM element references (use null to make TS narrowing simpler)
 	let mediaElement: HTMLVideoElement | HTMLAudioElement | null = $state(null);
@@ -295,9 +300,9 @@
 								<a href="https://notebooklm.google/audio" target="_blank" rel="noopener noreferrer"
 									>Google NotebookLM</a
 								>
-								is an AI-powered research assistant that can generate podcast-style discussions from
-								uploaded documents. All the publications from this research project were fed into NotebookLM
-								to create this AI-generated conversation.
+								is an AI-powered research assistant that can generate podcast-style discussions from uploaded
+								documents. All the publications from this research project were fed into NotebookLM to
+								create this AI-generated conversation.
 							</p>
 						</div>
 					{/if}

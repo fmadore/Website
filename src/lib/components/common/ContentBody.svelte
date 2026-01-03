@@ -21,8 +21,9 @@
 		wide: 'content-body--wide'
 	};
 
-	const combinedClasses =
-		`${baseClasses} ${variantClasses[variant]} ${glassEffect} ${additionalClasses}`.trim();
+	const combinedClasses = $derived(
+		`${baseClasses} ${variantClasses[variant]} ${glassEffect} ${additionalClasses}`.trim()
+	);
 </script>
 
 <div class={combinedClasses}>
