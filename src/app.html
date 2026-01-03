@@ -1,51 +1,54 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" href="%sveltekit.assets%/favicon.ico" />
 
-		<!-- PWA Configuration -->
-		<link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
-		<link rel="manifest" href="/manifest.webmanifest" />
-		<meta name="theme-color" content="#000000" />
-		<meta name="mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-		<meta name="apple-mobile-web-app-title" content="F. Madore" />
-		<meta name="application-name" content="F. Madore" />
-		<meta name="msapplication-TileColor" content="#000000" />
-		<meta name="msapplication-config" content="/browserconfig.xml" />
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" type="image/png" href="/icons/favicon.png" />
 
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!-- PWA Configuration -->
+	<link rel="apple-touch-icon" href="/icons/favicon.png" />
+	<link rel="manifest" href="/manifest.webmanifest" />
+	<meta name="theme-color" content="#000000" />
+	<meta name="mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+	<meta name="apple-mobile-web-app-title" content="F. Madore" />
+	<meta name="application-name" content="F. Madore" />
+	<meta name="msapplication-TileColor" content="#000000" />
+	<meta name="msapplication-config" content="/browserconfig.xml" />
 
-		<!-- Performance hints -->
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link rel="preconnect" href="https://unpkg.com" crossorigin />
-		<link rel="preconnect" href="https://api.iconify.design" crossorigin />
-		<link rel="preconnect" href="https://zenodo.org" crossorigin />
-		<!-- Profile picture will be preloaded only on home page where it's needed -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-		<!-- Theme initialization script -->
-		<script>
-			(function () {
-				const theme = localStorage.getItem('theme');
-				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-				const defaultTheme = 'light'; // Default theme if nothing else is set
+	<!-- Performance hints -->
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link rel="preconnect" href="https://unpkg.com" crossorigin />
+	<link rel="preconnect" href="https://api.iconify.design" crossorigin />
+	<link rel="preconnect" href="https://zenodo.org" crossorigin />
+	<!-- Profile picture will be preloaded only on home page where it's needed -->
 
-				let initialTheme = defaultTheme;
-				if (theme && ['light', 'dark'].includes(theme)) {
-					initialTheme = theme;
-				} else if (!theme && prefersDark) {
-					initialTheme = 'dark';
-				}
+	<!-- Theme initialization script -->
+	<script>
+		(function () {
+			const theme = localStorage.getItem('theme');
+			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+			const defaultTheme = 'light'; // Default theme if nothing else is set
 
-				document.documentElement.classList.add(initialTheme);
-			})();
-		</script>
+			let initialTheme = defaultTheme;
+			if (theme && ['light', 'dark'].includes(theme)) {
+				initialTheme = theme;
+			} else if (!theme && prefersDark) {
+				initialTheme = 'dark';
+			}
 
-		%sveltekit.head%
-	</head>
-	<body data-sveltekit-preload-data="hover" data-sveltekit-preload-code="hover">
-		<div class="sveltekit-body-container">%sveltekit.body%</div>
-	</body>
+			document.documentElement.classList.add(initialTheme);
+		})();
+	</script>
+
+	%sveltekit.head%
+</head>
+
+<body data-sveltekit-preload-data="hover" data-sveltekit-preload-code="hover">
+	<div class="sveltekit-body-container">%sveltekit.body%</div>
+</body>
+
 </html>

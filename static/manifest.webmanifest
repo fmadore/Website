@@ -9,7 +9,11 @@
 	"orientation": "portrait-primary",
 	"scope": "/",
 	"lang": "en",
-	"categories": ["academia", "research", "personal"],
+	"categories": [
+		"academia",
+		"research",
+		"personal"
+	],
 	"screenshots": [
 		{
 			"src": "/images/screenshot-wide.png",
@@ -24,21 +28,10 @@
 	],
 	"icons": [
 		{
-			"src": "/favicon.ico",
-			"sizes": "48x48",
-			"type": "image/x-icon"
-		},
-		{
-			"src": "/icons/icon-192x192.png",
-			"sizes": "192x192",
+			"src": "/icons/favicon.png",
+			"sizes": "32x32",
 			"type": "image/png",
-			"purpose": "any maskable"
-		},
-		{
-			"src": "/icons/icon-512x512.png",
-			"sizes": "512x512",
-			"type": "image/png",
-			"purpose": "any maskable"
+			"purpose": "any"
 		}
 	]
 }

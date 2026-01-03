@@ -235,8 +235,8 @@ sw.addEventListener('push', (event) => {
 
 	const options = {
 		body: event.data.text(),
-		icon: '/icons/icon-192x192.png',
-		badge: '/icons/icon-192x192.png',
+		icon: '/icons/favicon.png',
+		badge: '/icons/favicon.png',
 		vibrate: [200, 100, 200],
 		tag: 'academic-update',
 		actions: [
