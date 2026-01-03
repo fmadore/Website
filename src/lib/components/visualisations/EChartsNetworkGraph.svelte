@@ -614,7 +614,7 @@ ECharts Network Graph - A network visualization for author collaborations
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 768px) {
+	@media (--md-down) {
 		.echarts-container {
 			height: 400px;
 		}
@@ -631,7 +631,7 @@ ECharts Network Graph - A network visualization for author collaborations
 		}
 	}
 
-	@media (max-width: 480px) {
+	@media (--xs-down) {
 		.echarts-container {
 			height: 350px;
 		}

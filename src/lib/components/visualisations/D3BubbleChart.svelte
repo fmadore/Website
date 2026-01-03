@@ -479,7 +479,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 768px) {
+	@media (--md-down) {
 		.bubble-chart-container {
 			min-height: 400px;
 		}
@@ -489,7 +489,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		}
 	}
 
-	@media (max-width: 640px) {
+	@media (--sm-down) {
 		.bubble-chart-container {
 			min-height: 320px;
 		}

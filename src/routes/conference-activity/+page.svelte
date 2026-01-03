@@ -261,7 +261,10 @@
 	pageType="CollectionPage"
 />
 
-<div class="page-container page-enter" use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}>
+<div
+	class="page-container page-enter"
+	use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}
+>
 	<PageHeader title="Conference Activity" />
 
 	<PageIntro>
@@ -271,61 +274,61 @@
 
 	<!-- Mobile Controls: Two Rows -->
 	<div class="mobile-controls">
-			<div class="mobile-controls-row">
+		<div class="mobile-controls-row">
+			<Button
+				variant="outline-secondary"
+				size="sm"
+				onclick={() => (mobileFiltersExpanded = !mobileFiltersExpanded)}
+				ariaLabel={mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
+				additionalClasses="control-button-rounded"
+			>
+				{#snippet icon()}
+					<Icon icon="lucide:filter" width="18" height="18" />
+				{/snippet}
+				{mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
+			</Button><ToggleButton
+				baseText="Map"
+				isToggled={showMap}
+				onclick={() => (showMap = !showMap)}
+			/>
+		</div>
+		<div class="mobile-controls-row">
+			<Sorter {activeSort} onsortchange={handleSortChange} availableSorts={['date', 'title']} />
+			{#if areFiltersActive($activeFilters)}
 				<Button
-					variant="outline-secondary"
+					variant="primary"
 					size="sm"
-					onclick={() => (mobileFiltersExpanded = !mobileFiltersExpanded)}
-					ariaLabel={mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
+					onclick={clearAllFilters}
 					additionalClasses="control-button-rounded"
 				>
-					{#snippet icon()}
-						<Icon icon="lucide:filter" width="18" height="18" />
-					{/snippet}
-					{mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
-				</Button><ToggleButton
-					baseText="Map"
-					isToggled={showMap}
-					onclick={() => (showMap = !showMap)}
-				/>
-			</div>
-			<div class="mobile-controls-row">
-				<Sorter {activeSort} onsortchange={handleSortChange} availableSorts={['date', 'title']} />
-				{#if areFiltersActive($activeFilters)}
-					<Button
-						variant="primary"
-						size="sm"
-						onclick={clearAllFilters}
-						additionalClasses="control-button-rounded"
-					>
-						Clear all filters
-					</Button>
-				{/if}
-			</div>
+					Clear all filters
+				</Button>
+			{/if}
 		</div>
-		<EntityListPageLayout containerClass="" gridClass="grid grid-cols-1 lg:grid-cols-4 gap-6">
-			{#snippet sidebar()}
-				<UniversalFiltersSidebar
-					config={communicationFilterConfig}
-					isExpandedMobile={mobileFiltersExpanded}
-					oncollapse={() => (mobileFiltersExpanded = false)}
-				/>
-			{/snippet}
+	</div>
+	<EntityListPageLayout containerClass="" gridClass="grid grid-cols-1 lg:grid-cols-4 gap-6">
+		{#snippet sidebar()}
+			<UniversalFiltersSidebar
+				config={communicationFilterConfig}
+				isExpandedMobile={mobileFiltersExpanded}
+				oncollapse={() => (mobileFiltersExpanded = false)}
+			/>
+		{/snippet}
 
-			{#snippet children()}
-				<!-- Upcoming Talks and Events Section (only shown when no filters active) -->
-				{#if shouldShowUpcoming}
-					<UpcomingCommunications communications={upcomingCommunications} />
-				{/if}
+		{#snippet children()}
+			<!-- Upcoming Talks and Events Section (only shown when no filters active) -->
+			{#if shouldShowUpcoming}
+				<UpcomingCommunications communications={upcomingCommunications} />
+			{/if}
 
-				<!-- All Communications Section Header (only when upcoming are shown) -->
-				{#if shouldShowUpcoming}
-					<div class="all-communications-header">
-						<h2 class="section-title">All Conference Activities</h2>
-					</div>
-				{/if}
+			<!-- All Communications Section Header (only when upcoming are shown) -->
+			{#if shouldShowUpcoming}
+				<div class="all-communications-header">
+					<h2 class="section-title">All Conference Activities</h2>
+				</div>
+			{/if}
 
-				<div class="desktop-controls">
+			<div class="desktop-controls">
 				<div class="list-status text-light">
 					Showing {$filteredCommunications.length || 0} conference activities
 					{#if areFiltersActive($activeFilters)}
@@ -348,22 +351,22 @@
 				</div>
 			</div>
 
-				{#if showMap}
-					<div class="mb-6">
-						<MapVisualization markersData={mapMarkers} />
-					</div>
-				{/if}
-				<FilteredListDisplay
-					filteredItems={sortedCommunications}
-					itemComponent={CommunicationItem}
-					itemPropName="communication"
-					areFiltersActive={areFiltersActive($activeFilters)}
-					{clearAllFilters}
-					emptyStateNoFiltersMessage="No conference activities found matching your criteria. Try clearing some filters."
-					onitemrequest={handleFilterRequest}
-				/>
-			{/snippet}
-		</EntityListPageLayout>
+			{#if showMap}
+				<div class="mb-6">
+					<MapVisualization markersData={mapMarkers} />
+				</div>
+			{/if}
+			<FilteredListDisplay
+				filteredItems={sortedCommunications}
+				itemComponent={CommunicationItem}
+				itemPropName="communication"
+				areFiltersActive={areFiltersActive($activeFilters)}
+				{clearAllFilters}
+				emptyStateNoFiltersMessage="No conference activities found matching your criteria. Try clearing some filters."
+				onitemrequest={handleFilterRequest}
+			/>
+		{/snippet}
+	</EntityListPageLayout>
 </div>
 
 <style>
@@ -422,7 +425,7 @@
 	}
 
 	/* Media query for mobile/tablet - show mobile controls up to 1024px */
-	@media (max-width: 1024px) {
+	@media (--lg-down) {
 		.mobile-controls {
 			display: flex; /* Enable flex for column layout */
 		}

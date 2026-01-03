@@ -303,13 +303,13 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 640px) {
+	@media (--sm-down) {
 		.echarts-container {
 			height: 420px; /* Increased height for mobile with legend space */
 		}
 	}
 
-	@media (max-width: 480px) {
+	@media (--xs-down) {
 		.echarts-container {
 			height: 400px; /* Adequate height for very small screens with legend */
 		}

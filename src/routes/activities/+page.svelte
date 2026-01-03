@@ -386,8 +386,8 @@
 	}
 
 	.rss-subscribe-link:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
+		outline: var(--border-width-medium) solid var(--color-primary);
+		outline-offset: var(--space-0-5);
 	}
 
 	/* Dark mode for RSS button */
@@ -417,7 +417,7 @@
 		}
 	}
 
-	@media (max-width: 767px) {
+	@media (--sm-down) {
 		.year-sidebar {
 			margin-bottom: var(--space-6);
 		}

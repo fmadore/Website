@@ -456,7 +456,7 @@
 		gap: var(--space-md);
 	}
 
-	@media (min-width: 768px) {
+	@media (--md) {
 		.participants-grid {
 			grid-template-columns: repeat(2, 1fr);
 		}
@@ -596,7 +596,7 @@
 	}
 
 	/* Responsive adjustments */
-	@media (max-width: 640px) {
+	@media (--sm-down) {
 		.panel-papers-section,
 		.participants-section {
 			padding: var(--space-md);

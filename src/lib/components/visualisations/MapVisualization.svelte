@@ -464,7 +464,7 @@
 		height: 80px; /* Fixed height for popup image */
 		object-fit: cover;
 		display: block;
-		border-bottom: 1px solid var(--color-border, #eee); /* Separator */
+		border-bottom: var(--border-width-thin) solid var(--color-border, #eee); /* Separator */
 	}
 
 	:global(.map-popup .map-popup-content-text) {
