@@ -579,7 +579,7 @@
 	}
 
 	/* Responsive design - Mobile first */
-	@media (max-width: 639px) {
+	@media (--sm-down) {
 		.filter-section-content {
 			padding: var(--space-sm);
 			margin-bottom: var(--space-sm);
@@ -630,14 +630,14 @@
 	}
 
 	/* Medium screens */
-	@media (min-width: 640px) and (max-width: 1023px) {
+	@media (--sm) and (--lg-down) {
 		.dropdown-items {
 			max-height: 280px;
 		}
 	}
 
 	/* Large screens */
-	@media (min-width: 1024px) {
+	@media (--lg) {
 		.filter-section-content {
 			padding: var(--space-lg);
 		}

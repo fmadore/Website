@@ -520,7 +520,7 @@
 	}
 
 	/* Responsive design - Mobile first */
-	@media (max-width: 639px) {
+	@media (--sm-down) {
 		.range-slider {
 			height: 36px;
 			margin: var(--space-xs) 0;
@@ -548,14 +548,14 @@
 	}
 
 	/* Medium screens */
-	@media (min-width: 640px) and (max-width: 1023px) {
+	@media (--sm) and (--lg-down) {
 		.range-slider {
 			height: 44px;
 		}
 	}
 
 	/* Large screens */
-	@media (min-width: 1024px) {
+	@media (--lg) {
 		.range-slider {
 			height: 48px;
 			padding: var(--space-sm);

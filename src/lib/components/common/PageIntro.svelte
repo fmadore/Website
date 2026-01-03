@@ -358,7 +358,7 @@
 	}
 
 	/* Responsive design - mobile first, so this targets smaller screens */
-	@media not all and (--sm) {
+	@media (--sm-down) {
 		.page-intro {
 			font-size: var(--font-size-heading-6);
 			margin-bottom: var(--space-md);
