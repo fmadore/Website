@@ -3,6 +3,5 @@ Allow: /
 
 Sitemap: https://www.frederickmadore.com/sitemap.xml
 
-# RSS Feed for activities
-# Helps search engines and feed readers discover new content
-RSS: https://www.frederickmadore.com/rss.xml
+# RSS Feed available at: https://www.frederickmadore.com/rss.xml
+# (Discovered via <link rel="alternate" type="application/rss+xml"> in HTML)
