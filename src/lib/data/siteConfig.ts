@@ -16,6 +16,7 @@ export interface Address {
     institution: string;
     institutionAbbreviation: string;
     institutionUrl: string;
+    department?: string; // Optional department/research center line
     street: string;
     postalCode: string;
     city: string;
@@ -34,19 +35,20 @@ export interface AuthorInfo {
 export const author: AuthorInfo = {
     name: 'Frédérick Madore',
     fullName: 'Frédérick Madore, PhD',
-    position: 'Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)',
-    positionShort: 'Research Fellow'
+    position: 'Historian & Digital Humanist | Data Curator at the Cluster of Excellence "Africa Multiple"',
+    positionShort: 'Historian & Data Curator'
 };
 
 export const address: Address = {
-    institution: 'Leibniz-Zentrum Moderner Orient',
-    institutionAbbreviation: 'ZMO',
-    institutionUrl: 'https://www.zmo.de/en',
-    street: 'Kirchweg 33',
-    postalCode: '14129',
-    city: 'Berlin',
+    institution: 'University of Bayreuth',
+    institutionAbbreviation: 'UBT',
+    institutionUrl: 'https://www.africamultiple.uni-bayreuth.de/en/index.html',
+    department: 'Forschungszentrum für Afrikastudien',
+    street: 'Gebäude GW1, Zi.: 0.07, Universitätsstr. 30',
+    postalCode: '95447',
+    city: 'Bayreuth',
     country: 'Germany',
-    mapsUrl: 'https://maps.app.goo.gl/AV85XrMqokwShSLZ8'
+    mapsUrl: 'https://maps.app.goo.gl/ZLoe7FJALUqaQ23m6'
 };
 
 export const contact = {

@@ -30,6 +30,9 @@
 		<Icon icon="mdi:map-marker" class="text-light shrink-0" width="20" height="20" />
 		<div>
 			{address.institution}<br />
+			{#if address.department}
+				{address.department}<br />
+			{/if}
 			{address.street}<br />
 			{address.postalCode}
 			{address.city}<br />
