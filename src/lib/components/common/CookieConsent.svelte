@@ -139,11 +139,13 @@
 				50%,
 			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) 10%, transparent);
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 		box-shadow:
 			0 var(--space-xs) var(--space-xl) 0
 				color-mix(in srgb, var(--color-black) calc(var(--opacity-medium-high) * 100%), transparent),
-			inset 0 var(--border-width-thin) 0 color-mix(in srgb, var(--color-white) 10%, transparent);
+			inset 0 var(--border-width-thin) 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 	}
 
 	:global(html.dark) .cookie-banner:hover {
@@ -153,11 +155,16 @@
 			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 50%,
 			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
-		border-color: color-mix(in srgb, var(--color-white) 20%, transparent);
+		border-color: color-mix(
+			in srgb,
+			var(--color-white) calc(var(--opacity-medium) * 100%),
+			transparent
+		);
 		box-shadow:
 			0 var(--space-sm) var(--space-xl-tight) 0
 				color-mix(in srgb, var(--color-black) calc(var(--opacity-high) * 100%), transparent),
-			inset 0 var(--border-width-thin) 0 color-mix(in srgb, var(--color-white) 20%, transparent);
+			inset 0 var(--border-width-thin) 0
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
 	}
 
 	/* Slide up animation */

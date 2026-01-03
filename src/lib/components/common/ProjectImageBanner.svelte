@@ -61,11 +61,11 @@
 		padding: var(--space-4);
 		/* Enhanced glassmorphism shadow with multiple layers */
 		box-shadow:
-			0 8px 32px 0 rgba(31, 38, 135, 0.12),
-			0 2px 16px 0 rgba(31, 38, 135, 0.08),
-			inset 0 1px 0 rgba(255, 255, 255, 0.25),
-			inset 0 -1px 0 rgba(255, 255, 255, 0.1);
-		border: var(--border-width-thin) solid rgba(255, 255, 255, 0.25);
+			0 8px 32px 0 color-mix(in srgb, var(--color-primary) 12%, transparent),
+			0 2px 16px 0 color-mix(in srgb, var(--color-primary) 8%, transparent),
+			inset 0 1px 0 color-mix(in srgb, var(--color-white) 25%, transparent),
+			inset 0 -1px 0 color-mix(in srgb, var(--color-white) 10%, transparent);
+		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) 25%, transparent);
 		/* Add subtle backdrop blur */
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
@@ -103,12 +103,12 @@
 			color-mix(in srgb, var(--color-highlight) 1%, transparent) 100%
 		);
 		box-shadow:
-			0 16px 48px 0 rgba(31, 38, 135, 0.18),
-			0 4px 24px 0 rgba(31, 38, 135, 0.12),
+			0 16px 48px 0 color-mix(in srgb, var(--color-primary) 18%, transparent),
+			0 4px 24px 0 color-mix(in srgb, var(--color-primary) 12%, transparent),
 			0 0 0 1px color-mix(in srgb, var(--color-primary) 10%, transparent),
-			inset 0 1px 0 rgba(255, 255, 255, 0.35),
-			inset 0 -1px 0 rgba(255, 255, 255, 0.15);
-		border-color: rgba(255, 255, 255, 0.35);
+			inset 0 1px 0 color-mix(in srgb, var(--color-white) 35%, transparent),
+			inset 0 -1px 0 color-mix(in srgb, var(--color-white) 15%, transparent);
+		border-color: color-mix(in srgb, var(--color-white) 35%, transparent);
 	}
 
 	.project-image-banner:hover::before {
@@ -220,11 +220,11 @@
 			transparent 100%
 		);
 		box-shadow:
-			0 8px 32px 0 rgba(0, 0, 0, 0.4),
-			0 2px 16px 0 rgba(0, 0, 0, 0.3),
-			inset 0 1px 0 rgba(255, 255, 255, 0.15),
-			inset 0 -1px 0 rgba(255, 255, 255, 0.08);
-		border: var(--border-width-thin) solid rgba(255, 255, 255, 0.15);
+			0 8px 32px 0 color-mix(in srgb, var(--color-black) 40%, transparent),
+			0 2px 16px 0 color-mix(in srgb, var(--color-black) 30%, transparent),
+			inset 0 1px 0 color-mix(in srgb, var(--color-white) 15%, transparent),
+			inset 0 -1px 0 color-mix(in srgb, var(--color-white) 8%, transparent);
+		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) 15%, transparent);
 	}
 
 	:global(html.dark) .project-image-banner::before {
@@ -247,12 +247,12 @@
 			color-mix(in srgb, var(--color-highlight) 2%, transparent) 100%
 		);
 		box-shadow:
-			0 16px 48px 0 rgba(0, 0, 0, 0.5),
-			0 4px 24px 0 rgba(0, 0, 0, 0.4),
+			0 16px 48px 0 color-mix(in srgb, var(--color-black) 50%, transparent),
+			0 4px 24px 0 color-mix(in srgb, var(--color-black) 40%, transparent),
 			0 0 0 1px color-mix(in srgb, var(--color-primary) 20%, transparent),
-			inset 0 1px 0 rgba(255, 255, 255, 0.2),
-			inset 0 -1px 0 rgba(255, 255, 255, 0.12);
-		border-color: rgba(255, 255, 255, 0.2);
+			inset 0 1px 0 color-mix(in srgb, var(--color-white) 20%, transparent),
+			inset 0 -1px 0 color-mix(in srgb, var(--color-white) 12%, transparent);
+		border-color: color-mix(in srgb, var(--color-white) 20%, transparent);
 	}
 
 	:global(html.dark) .image-container {

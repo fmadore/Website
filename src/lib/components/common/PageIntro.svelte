@@ -188,7 +188,7 @@
 			color-mix(in srgb, var(--color-accent) calc(var(--opacity-low) * 100%), transparent) 100%
 		);
 		border-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
-		box-shadow: 0 20px 60px 0 rgba(0, 0, 0, 0.3);
+		box-shadow: 0 20px 60px 0 color-mix(in srgb, var(--color-black) 30%, transparent);
 	}
 
 	/* Typography enhancements */
@@ -342,7 +342,7 @@
 			color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium) * 100%), transparent) 100%
 		);
 		border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
-		box-shadow: 0 20px 60px 0 rgba(0, 0, 0, 0.6);
+		box-shadow: 0 20px 60px 0 color-mix(in srgb, var(--color-black) 60%, transparent);
 	}
 
 	:global(html.dark) .page-intro--featured::before {
@@ -357,8 +357,8 @@
 		color: var(--color-highlight);
 	}
 
-	/* Responsive design */
-	@media (max-width: 640px) {
+	/* Responsive design - mobile first, so this targets smaller screens */
+	@media not all and (--sm) {
 		.page-intro {
 			font-size: var(--font-size-heading-6);
 			margin-bottom: var(--space-md);
