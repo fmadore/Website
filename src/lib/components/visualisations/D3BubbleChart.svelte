@@ -56,6 +56,19 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		return value || '#1d4ed8';
 	}
 
+	function getCSSPx(variableName: string, fallbackPx: number): number {
+		if (typeof window === 'undefined') return fallbackPx;
+		const computedStyle = getComputedStyle(document.documentElement);
+		const value = computedStyle.getPropertyValue(variableName).trim();
+		const match = value.match(/^([\d.]+)px$/);
+		return match ? Number(match[1]) : fallbackPx;
+	}
+
+	function prefersReducedMotion(): boolean {
+		if (typeof window === 'undefined') return false;
+		return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	}
+
 	function resolveColor(color: string): string {
 		if (color.startsWith('var(')) {
 			const varName = color.slice(4, -1).trim();
@@ -141,19 +154,18 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			.attr('role', 'img')
 			.attr('aria-label', 'Keyword frequency bubble chart visualization');
 
+		// Dedicated layer for zoomable content (recommended D3 zoom pattern)
+		const zoomLayer = svg.append('g').attr('class', 'zoom-layer');
+
 		// Add zoom behavior
 		zoomBehavior = d3
 			.zoom<SVGSVGElement, unknown>()
 			.scaleExtent([0.5, 5])
 			.on('zoom', (event) => {
-				svg?.selectAll('g.bubble').attr('transform', (d: any) => {
-					const x = (d.x || width / 2) * event.transform.k + event.transform.x;
-					const y = (d.y || height / 2) * event.transform.k + event.transform.y;
-					return `translate(${x},${y}) scale(${event.transform.k})`;
-				});
+				zoomLayer.attr('transform', event.transform.toString());
 			});
 
-		svg.call(zoomBehavior);
+		svg.call(zoomBehavior as any);
 
 		// Color scale
 		const colorScale = d3
@@ -161,26 +173,49 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			.domain(chartData.map((d) => d.name))
 			.range(resolvedColors.chartColors);
 
-		// Create tooltip
+		// Create tooltip (styling lives in CSS so we can use global tokens)
 		const tooltip = d3
 			.select(chartContainer)
 			.append('div')
 			.attr('class', 'bubble-tooltip')
-			.style('position', 'absolute')
-			.style('visibility', 'hidden')
-			.style('background-color', `color-mix(in srgb, ${resolvedColors.surface} 90%, transparent)`)
-			.style('color', resolvedColors.text)
-			.style('border', `1px solid ${resolvedColors.border}`)
-			.style('border-radius', '8px')
-			.style('padding', '10px 14px')
-			.style('font-size', '12px')
-			.style('font-family', 'var(--font-family-sans)')
-			.style('backdrop-filter', 'blur(8px)')
-			.style('-webkit-backdrop-filter', 'blur(8px)')
-			.style('box-shadow', 'var(--shadow-lg)')
-			.style('pointer-events', 'none')
-			.style('z-index', '1000')
-			.style('white-space', 'nowrap');
+			.attr('role', 'tooltip')
+			.attr('aria-hidden', 'true');
+
+		const tooltipMargin = getCSSPx('--space-2', 8);
+
+		function positionTooltip(clientX: number, clientY: number) {
+			const tooltipNode = tooltip.node();
+			if (!tooltipNode) return;
+
+			const containerRect = chartContainer.getBoundingClientRect();
+			const tooltipRect = tooltipNode.getBoundingClientRect();
+
+			// Convert viewport coords to container-local coords
+			let left = clientX - containerRect.left + tooltipMargin;
+			let top = clientY - containerRect.top - tooltipRect.height - tooltipMargin;
+
+			// Clamp within container
+			left = Math.min(Math.max(left, tooltipMargin), containerRect.width - tooltipRect.width - tooltipMargin);
+			top = Math.min(Math.max(top, tooltipMargin), containerRect.height - tooltipRect.height - tooltipMargin);
+
+			tooltip.style('left', `${left}px`).style('top', `${top}px`);
+		}
+
+		function positionTooltipAtElement(element: Element) {
+			const rect = element.getBoundingClientRect();
+			positionTooltip(rect.left + rect.width / 2, rect.top + rect.height / 2);
+		}
+
+		function showTooltip(d: BubbleNode) {
+			tooltip
+				.attr('aria-hidden', 'false')
+				.style('visibility', 'visible')
+				.html(`<strong>${d.name}</strong><br/>Count: ${d.value}`);
+		}
+
+		function hideTooltip() {
+			tooltip.attr('aria-hidden', 'true').style('visibility', 'hidden');
+		}
 
 		// Force Simulation for rectangular packing
 		// We use forceX and forceY with different strengths to shape the cloud
@@ -201,13 +236,16 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		// 300 ticks is usually enough for stabilization
 		for (let i = 0; i < 300; ++i) simulation.tick();
 
-		const bubbleGroups = svg
+		const bubbleGroups = zoomLayer
 			.selectAll<SVGGElement, BubbleNode>('.bubble')
 			.data(chartData)
 			.enter()
 			.append('g')
 			.attr('class', 'bubble')
 			.attr('transform', (d) => `translate(${d.x || width / 2},${d.y || height / 2})`)
+			.attr('tabindex', 0)
+			.attr('role', 'img')
+			.attr('aria-label', (d) => `${d.name}: ${d.value}`)
 			.style('cursor', 'grab');
 
 		bubbleGroups
@@ -217,6 +255,17 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			.on('mouseup', function () {
 				d3.select(this).style('cursor', 'grab');
 			});
+
+		bubbleGroups
+			.on('focus', function (event, d) {
+				showTooltip(d);
+				positionTooltipAtElement(this);
+			})
+			.on('blur', function () {
+				hideTooltip();
+			});
+
+		const hoverTransitionMs = prefersReducedMotion() ? 0 : 200;
 
 		bubbleGroups
 			.append('circle')
@@ -229,32 +278,26 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			.on('mouseenter', function (event, d) {
 				d3.select(this)
 					.transition()
-					.duration(200)
+					.duration(hoverTransitionMs)
 					.style('opacity', 1)
 					.attr('stroke-width', 2)
 					.style('filter', 'drop-shadow(0 8px 12px color-mix(in srgb, black 15%, transparent))');
 
-				tooltip
-					.style('visibility', 'visible')
-					.html(`<strong>${d.name}</strong><br/>Count: ${d.value}`);
+				showTooltip(d);
+				positionTooltip(event.clientX, event.clientY);
 			})
 			.on('mousemove', function (event) {
-				const containerRect = chartContainer.getBoundingClientRect();
-				// Keep tooltip within bounds
-				const x = event.clientX - containerRect.left;
-				const y = event.clientY - containerRect.top;
-
-				tooltip.style('top', `${y - 60}px`).style('left', `${x - 50}px`);
+				positionTooltip(event.clientX, event.clientY);
 			})
 			.on('mouseleave', function () {
 				d3.select(this)
 					.transition()
-					.duration(200)
+					.duration(hoverTransitionMs)
 					.style('opacity', 0.9)
 					.attr('stroke-width', 1.25)
 					.style('filter', 'drop-shadow(0 4px 6px color-mix(in srgb, black 10%, transparent))');
 
-				tooltip.style('visibility', 'hidden');
+				hideTooltip();
 			});
 
 		bubbleGroups
@@ -286,19 +329,22 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 	// Zoom controls
 	function zoomIn() {
 		if (svg && zoomBehavior) {
-			svg.transition().duration(500).call(zoomBehavior.scaleBy, 1.2);
+			const duration = prefersReducedMotion() ? 0 : 500;
+			svg.transition().duration(duration).call(zoomBehavior.scaleBy, 1.2);
 		}
 	}
 
 	function zoomOut() {
 		if (svg && zoomBehavior) {
-			svg.transition().duration(500).call(zoomBehavior.scaleBy, 0.8);
+			const duration = prefersReducedMotion() ? 0 : 500;
+			svg.transition().duration(duration).call(zoomBehavior.scaleBy, 0.8);
 		}
 	}
 
 	function resetZoom() {
 		if (svg && zoomBehavior) {
-			svg.transition().duration(500).call(zoomBehavior.transform, d3.zoomIdentity);
+			const duration = prefersReducedMotion() ? 0 : 500;
+			svg.transition().duration(duration).call(zoomBehavior.transform, d3.zoomIdentity);
 		}
 	}
 
@@ -393,6 +439,24 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		flex-direction: column;
 	}
 
+	.bubble-chart-container :global(.bubble-tooltip) {
+		position: absolute;
+		visibility: hidden;
+		background-color: color-mix(in srgb, var(--color-surface) 90%, transparent);
+		color: var(--color-text);
+		border: var(--border-width-thin) solid var(--color-border);
+		border-radius: var(--border-radius-md);
+		padding: var(--space-2) var(--space-3);
+		font-size: var(--font-size-xs);
+		font-family: var(--font-family-sans);
+		backdrop-filter: blur(var(--glass-blur-sm));
+		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
+		box-shadow: var(--shadow-lg);
+		pointer-events: none;
+		z-index: 1000;
+		white-space: nowrap;
+	}
+
 	.bubble-chart {
 		width: 100%;
 		height: 100%;
@@ -405,6 +469,16 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		display: block;
 		margin: 0 auto;
 		isolation: isolate;
+	}
+
+	.bubble-chart :global(.bubble:focus-visible) {
+		outline: none;
+	}
+
+	.bubble-chart :global(.bubble:focus-visible circle) {
+		stroke: var(--color-highlight);
+		stroke-width: 2;
+		opacity: 1;
 	}
 
 	.no-data-message {
