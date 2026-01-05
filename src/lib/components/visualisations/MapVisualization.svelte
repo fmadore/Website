@@ -1,20 +1,20 @@
 <script module lang="ts">
-	// Define the structure for marker data (reused from previous version)
+	// Define the structure for marker data (compatible with previous version)
 	export type MarkerData = {
 		id: string;
 		title: string;
 		coordinates: { latitude: number; longitude: number };
-		year?: number; // Optional year for potential popups or styling
-		activityType?: string; // Optional type for styling markers/clusters
-		image?: string; // Optional image path
+		year?: number;
+		activityType?: string;
+		image?: string;
 	};
 </script>
 
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import type { Map as LeafletMap, MarkerClusterGroup, TileLayer } from 'leaflet'; // Import types only
-	import { base } from '$app/paths'; // Import base path
-	import { getTheme } from '$lib/stores/themeStore.svelte'; // Import theme store
+	import { base } from '$app/paths';
+	import { getTheme } from '$lib/stores/themeStore.svelte';
+	import type { Map as MapLibreMap, Popup } from 'maplibre-gl';
 
 	// Map configuration props with defaults using Svelte 5 $props() rune
 	let {
@@ -23,8 +23,8 @@
 		initialZoom = 2,
 		maxZoom = 19,
 		maxClusterZoom = 18,
-		preferDarkMode = null as boolean | null, // Optional override for dark mode preference
-		restrictBounds = true // Whether to restrict map bounds
+		preferDarkMode = null as boolean | null,
+		restrictBounds = true
 	}: {
 		markersData?: MarkerData[];
 		initialView?: [number, number];
@@ -36,109 +36,217 @@
 	} = $props();
 
 	// Maximum bounds for the map (to prevent dragging to empty areas)
-	const MAX_BOUNDS: [number, number][] = [
-		[-85, -180], // Southwest corner
-		[85, 180] // Northeast corner
+	const MAX_BOUNDS: [[number, number], [number, number]] = [
+		[-180, -85], // Southwest: [lng, lat]
+		[180, 85] // Northeast: [lng, lat]
 	];
 
-	// Map tile options (light and dark themes)
-	const tileOptions = {
-		light: {
-			url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-			attribution:
-				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-		},
-		dark: {
-			url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-			attribution:
-				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-		},
-		// Fallback to standard OSM
-		default: {
-			url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-			attribution:
-				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-		}
+	// Map style options (light and dark themes)
+	const styleOptions = {
+		light: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+		dark: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
 	};
+
 	let mapContainer: HTMLElement;
 
 	// State variables using Svelte 5 $state() rune
-	let map = $state<LeafletMap | null>(null);
-	let clusterLayer = $state<MarkerClusterGroup | null>(null);
-	let L = $state<typeof import('leaflet') | null>(null);
+	let map = $state<MapLibreMap | null>(null);
+	let maplibregl = $state<typeof import('maplibre-gl') | null>(null);
 	let importError = $state<string | null>(null);
-	let currentTileLayer = $state<TileLayer | null>(null);
-	let currentThemeIsDark = $state<boolean | null>(null); // Track the currently applied theme state
-	let mobileMenuObserver = $state<MutationObserver | null>(null);
+	let currentThemeIsDark = $state<boolean | null>(null);
+	let activePopup = $state<Popup | null>(null);
+	let markers = $state<Map<string, InstanceType<typeof import('maplibre-gl').Marker>>>(new Map());
+	let isMapLoaded = $state(false);
+
+	// Check if WebGL is available
+	function checkWebGLSupport(): boolean {
+		if (!browser) return false;
+		try {
+			const canvas = document.createElement('canvas');
+			const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+			return gl !== null;
+		} catch {
+			return false;
+		}
+	}
 
 	// Derived value for dark mode detection - reactive to theme store changes
 	let darkModeDetected = $derived.by(() => {
-		// Respect the explicit preference override first
 		if (preferDarkMode !== null) return preferDarkMode;
-
-		// Use the theme store value (reactive)
 		const currentTheme = getTheme();
 		return currentTheme === 'dark';
 	});
 
-	// Function to update tile layer based on theme
-	function updateTileLayer() {
-		if (!map || !L) return;
+	// Function to update map style based on theme
+	function updateMapStyle() {
+		if (!map) return;
 
 		const newDarkMode = darkModeDetected;
-		// console.log('Map theme update check:', { currentThemeIsDark, newDarkMode }); // Keep for debugging if needed
-
-		// Only update if the theme has actually changed or hasn't been set yet
 		if (newDarkMode !== currentThemeIsDark) {
-			// console.log('Applying theme change:', newDarkMode ? 'dark' : 'light'); // Keep for debugging if needed
-			const tileSet = newDarkMode ? tileOptions.dark : tileOptions.light;
+			const styleUrl = newDarkMode ? styleOptions.dark : styleOptions.light;
+			map.setStyle(styleUrl);
+			currentThemeIsDark = newDarkMode;
 
-			// Remove current tile layer if it exists
-			if (currentTileLayer) {
-				map.removeLayer(currentTileLayer);
-			}
-
-			// Add new tile layer
-			currentTileLayer = L.tileLayer(tileSet.url, {
-				attribution: tileSet.attribution,
-				maxZoom: maxZoom
-			}).addTo(map);
-
-			currentThemeIsDark = newDarkMode; // Update the tracked state
+			// Re-add markers after style change (maplibre clears markers on style change)
+			map.once('style.load', () => {
+				addMarkers(markersData);
+			});
 		}
-		// else {
-		//    console.log('Theme already up-to-date.'); // Keep for debugging if needed
-		// }
 	}
 
-	// Setup mobile menu observation to help with z-index issues
-	function setupMobileMenuObserver() {
-		if (!browser) return;
+	// Function to create marker element
+	function createMarkerElement(item: MarkerData): HTMLElement {
+		const el = document.createElement('div');
+		el.className = `map-marker ${item.activityType ? `marker-type-${item.activityType}` : ''}`;
 
-		// Find the mobile menu element
-		const mobileMenu = document.getElementById('mobile-menu');
+		// Set explicit inline styles to ensure visibility
+		el.style.width = '32px';
+		el.style.height = '32px';
+		el.style.cursor = 'pointer';
+		el.style.display = 'flex';
+		el.style.justifyContent = 'center';
+		el.style.alignItems = 'center';
 
-		if (mobileMenu) {
-			// Create a mutation observer to watch for class changes
-			mobileMenuObserver = new MutationObserver((mutations) => {
-				for (const mutation of mutations) {
-					if (mutation.attributeName === 'class') {
-						const isActive = mobileMenu.classList.contains('active');
-						if (isActive) {
-							document.body.classList.add('mobile-menu-open');
-						} else {
-							document.body.classList.remove('mobile-menu-open');
-						}
-					}
+		// Get the color based on activity type - use EXPLICIT hex colors
+		let strokeColor = '#1d4ed8'; // primary blue
+		if (item.activityType === 'lecture') {
+			strokeColor = '#14b8a6'; // accent teal
+		} else if (item.activityType === 'event') {
+			strokeColor = '#f59e0b'; // highlight amber
+		}
+
+		// Use inline style attribute to ensure fill color is not overridden by global CSS
+		el.innerHTML = `
+			<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" 
+				style="fill: #ffffff !important; stroke: ${strokeColor}; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));">
+				<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" style="fill: #ffffff;"/>
+				<circle cx="12" cy="10" r="3" style="fill: ${strokeColor};"/>
+			</svg>
+		`;
+
+		return el;
+	}
+
+	// Function to create popup content
+	function createPopupContent(item: MarkerData): string {
+		const linkUrl = `${base}/communications/${item.id}`;
+		const imageHtml = item.image
+			? `<img src="${base}/${item.image}" alt="${item.title}" class="map-popup-image">`
+			: '';
+
+		return `
+			<a href="${linkUrl}" target="_self" class="map-popup-link">
+				${imageHtml}
+				<div class="map-popup-content-text">
+					<strong>${item.title}</strong>
+					${item.year ? `<br><span class="map-popup-year">(${item.year})</span>` : ''}
+				</div>
+			</a>
+		`;
+	}
+
+	function prefersReducedMotion(): boolean {
+		if (!browser) return false;
+		return window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
+	}
+
+	function keepPopupInView(popup: Popup) {
+		if (!browser || !map || !mapContainer) return;
+		const popupEl = (popup as unknown as { getElement?: () => HTMLElement }).getElement?.();
+		if (!popupEl) return;
+
+		// Wait a frame so MapLibre has positioned the popup.
+		requestAnimationFrame(() => {
+			if (!map || !mapContainer) return;
+			const padding = 12;
+			const containerRect = mapContainer.getBoundingClientRect();
+			const popupRect = popupEl.getBoundingClientRect();
+
+			let dx = 0;
+			let dy = 0;
+
+			if (popupRect.left < containerRect.left + padding) {
+				dx = popupRect.left - (containerRect.left + padding);
+			} else if (popupRect.right > containerRect.right - padding) {
+				dx = popupRect.right - (containerRect.right - padding);
+			}
+
+			if (popupRect.top < containerRect.top + padding) {
+				dy = popupRect.top - (containerRect.top + padding);
+			} else if (popupRect.bottom > containerRect.bottom - padding) {
+				dy = popupRect.bottom - (containerRect.bottom - padding);
+			}
+
+			if (dx !== 0 || dy !== 0) {
+				map.panBy([-dx, -dy], {
+					duration: prefersReducedMotion() ? 0 : 250
+				});
+			}
+		});
+	}
+
+	// Function to add markers to the map
+	function addMarkers(data: MarkerData[]) {
+		if (!map || !maplibregl) return;
+
+		// Clear existing markers
+		markers.forEach((marker) => marker.remove());
+		markers.clear();
+
+		// Close any active popup
+		if (activePopup) {
+			activePopup.remove();
+			activePopup = null;
+		}
+
+		data.forEach((item) => {
+			if (!item.coordinates || !maplibregl) return;
+
+			// Get color based on activity type
+			let markerColor = '#3b82f6'; // blue - default
+			if (item.activityType === 'lecture') {
+				markerColor = '#14b8a6'; // teal
+			} else if (item.activityType === 'event') {
+				markerColor = '#f59e0b'; // amber
+			} else if (item.activityType === 'conference') {
+				markerColor = '#8b5cf6'; // purple
+			} else if (item.activityType === 'workshop') {
+				markerColor = '#ec4899'; // pink
+			}
+
+			const popup = new maplibregl.Popup({
+				offset: 25,
+				className: 'map-popup',
+				closeButton: true,
+				closeOnClick: true,
+				maxWidth: '280px'
+			}).setHTML(createPopupContent(item));
+
+			popup.on('open', () => keepPopupInView(popup));
+
+			// Use the DEFAULT MapLibre marker with color option - this is the official way
+			const marker = new maplibregl.Marker({ color: markerColor })
+				.setLngLat([item.coordinates.longitude, item.coordinates.latitude])
+				.setPopup(popup)
+				.addTo(map!);
+
+			markers.set(item.id, marker);
+		});
+
+		// Fit bounds to markers if there are any
+		if (data.length > 0 && markers.size > 0) {
+			const bounds = new maplibregl.LngLatBounds();
+			data.forEach((item) => {
+				if (item.coordinates) {
+					bounds.extend([item.coordinates.longitude, item.coordinates.latitude]);
 				}
 			});
 
-			// Start observing
-			mobileMenuObserver.observe(mobileMenu, { attributes: true });
-
-			// Set initial state
-			if (mobileMenu.classList.contains('active')) {
-				document.body.classList.add('mobile-menu-open');
+			if (!bounds.isEmpty()) {
+				map.fitBounds(bounds, {
+					padding: 50,
+					maxZoom: 10
+				});
 			}
 		}
 	}
@@ -147,108 +255,96 @@
 	$effect(() => {
 		if (!browser || !mapContainer) return;
 
+		let mapInstance: MapLibreMap | null = null;
+		let cancelled = false;
+
 		// Initialize map asynchronously
 		(async () => {
 			try {
-				// Dynamically import Leaflet
-				L = (await import('leaflet')).default;
+				// Check WebGL support first
+				if (!checkWebGLSupport()) {
+					importError =
+						'WebGL is not supported in your browser. Please enable hardware acceleration or try a different browser.';
+					return;
+				}
 
-				// Then dynamically import the marker cluster plugin
-				await import('leaflet.markercluster');
+				// Wait multiple frames to ensure container is fully laid out
+				await new Promise((resolve) => setTimeout(resolve, 50));
+				await new Promise((resolve) => requestAnimationFrame(resolve));
+				await new Promise((resolve) => requestAnimationFrame(resolve));
 
-				// Import CSS only on client-side
-				await import('leaflet/dist/leaflet.css');
-				await import('leaflet.markercluster/dist/MarkerCluster.css');
-				await import('leaflet.markercluster/dist/MarkerCluster.Default.css');
+				// Check if cancelled during wait
+				if (cancelled) return;
 
-				// Fix icon paths (needs to be after Leaflet import)
-				delete (L.Icon.Default.prototype as any)._getIconUrl;
-
-				// Dynamic import of icon assets
-				const iconRetinaUrl = (await import('leaflet/dist/images/marker-icon-2x.png')).default;
-				const iconUrl = (await import('leaflet/dist/images/marker-icon.png')).default;
-				const shadowUrl = (await import('leaflet/dist/images/marker-shadow.png')).default;
-
-				L.Icon.Default.mergeOptions({
-					iconRetinaUrl,
-					iconUrl,
-					shadowUrl
-				});
-
-				// Initialize the map with configurable options
-				map = L.map(mapContainer, {
-					center: initialView,
-					zoom: initialZoom,
-					maxZoom: maxZoom,
-					minZoom: 2, // Prevent zooming out too far
-					maxBoundsViscosity: 1.0, // Makes bounds completely solid
-					bounceAtZoomLimits: false, // Don't bounce when hitting zoom limits
-					worldCopyJump: true, // Allows seamless horizontal panning
-					// Set maximum bounds if restricted
-					...(restrictBounds ? { maxBounds: MAX_BOUNDS } : {})
-				});
-
-				// Initialize with theme-aware tiles
-				updateTileLayer();
-
-				// Initialize marker cluster layer group with options
-				clusterLayer = L.markerClusterGroup({
-					maxClusterRadius: 50,
-					disableClusteringAtZoom: maxClusterZoom,
-					iconCreateFunction: function (cluster) {
-						const markers = cluster.getAllChildMarkers();
-						const count = cluster.getChildCount();
-						let clusterType = 'default'; // Default type
-
-						// Check for different marker types using simple names
-						const hasLecture = markers.some((marker) =>
-							marker.options.icon?.options.className?.includes('marker-type-lecture')
-						);
-						const hasEvent = markers.some((marker) =>
-							marker.options.icon?.options.className?.includes('marker-type-event')
-						);
-
-						// Set clusterType based on priority (adjust as needed)
-						if (hasLecture) {
-							clusterType = 'lecture'; // Priority 1: Lecture (Accent)
-						}
-						if (hasEvent) {
-							clusterType = 'event'; // Priority 2: Event (Highlight)
-						}
-						// Example: Add workshop back if needed
-						// if (hasWorkshop) {
-						//    clusterType = 'workshop'; // Priority 3: Workshop (Success)
-						// }
-
-						// Default is primary color
-
-						// Adjust cluster size/class based on count for better visual hierarchy
-						let clusterSizeClass = 'marker-cluster-small';
-						if (count < 10) {
-							clusterSizeClass = 'marker-cluster-small';
-						} else if (count < 100) {
-							clusterSizeClass = 'marker-cluster-medium';
-						} else {
-							clusterSizeClass = 'marker-cluster-large';
-						}
-
-						const c = `marker-cluster ${clusterSizeClass} marker-cluster-${clusterType}`;
-						const size = L!.point(40, 40); // Keep base size, CSS will adjust inner div
-
-						// You can customize the HTML further, perhaps adding a small icon inside
-						const html = `<div><span>${count}</span></div>`;
-
-						return L!.divIcon({ html: html, className: c, iconSize: size });
+				// Check if container has valid dimensions
+				const rect = mapContainer.getBoundingClientRect();
+				if (rect.width === 0 || rect.height === 0) {
+					console.warn('Map container has zero dimensions, waiting...');
+					await new Promise((resolve) => setTimeout(resolve, 300));
+					const retryRect = mapContainer.getBoundingClientRect();
+					if (retryRect.width === 0 || retryRect.height === 0) {
+						importError = 'Map container has no dimensions. Please try refreshing the page.';
+						return;
 					}
-				}).addTo(map);
+				}
 
-				// Initialize with theme-aware tiles
-				updateTileLayer();
+				if (cancelled) return;
 
-				// Setup mobile menu observer after DOM is ready
-				setTimeout(() => {
-					setupMobileMenuObserver();
-				}, 500);
+				// Dynamically import MapLibre GL JS
+				maplibregl = await import('maplibre-gl');
+
+				// Import CSS
+				await import('maplibre-gl/dist/maplibre-gl.css');
+
+				if (cancelled) return;
+
+				// Ensure container is still valid
+				if (!mapContainer || !mapContainer.isConnected) return;
+
+				// Final check for container dimensions
+				const finalRect = mapContainer.getBoundingClientRect();
+				if (finalRect.width < 1 || finalRect.height < 1) {
+					importError = 'Map container has no dimensions';
+					return;
+				}
+
+				// Determine initial style based on theme
+				const initialDarkMode = darkModeDetected;
+				const initialStyle = initialDarkMode ? styleOptions.dark : styleOptions.light;
+				currentThemeIsDark = initialDarkMode;
+
+				// Compute center - ensure valid coordinates
+				const centerLng = initialView[1] ?? 0;
+				const centerLat = initialView[0] ?? 20;
+
+				// Initialize the map with minimal options
+				mapInstance = new maplibregl.Map({
+					container: mapContainer,
+					style: initialStyle,
+					center: [centerLng, centerLat],
+					zoom: initialZoom ?? 2,
+					maxZoom: maxZoom ?? 19,
+					minZoom: 2
+				});
+
+				map = mapInstance;
+
+				// Add navigation controls
+				map.addControl(new maplibregl.NavigationControl(), 'top-right');
+
+				// Add fullscreen control
+				map.addControl(new maplibregl.FullscreenControl(), 'top-right');
+
+				// Add markers when map is ready
+				map.on('load', () => {
+					isMapLoaded = true;
+					addMarkers(markersData);
+				});
+
+				// Handle errors during map operation
+				map.on('error', (e) => {
+					console.error('MapLibre error:', e.error);
+				});
 			} catch (error) {
 				console.error('Error initializing map:', error);
 				importError = error instanceof Error ? error.message : 'Unknown error loading map';
@@ -257,108 +353,37 @@
 
 		// Cleanup function
 		return () => {
-			// Clean up observer
-			if (mobileMenuObserver) {
-				mobileMenuObserver.disconnect();
-				mobileMenuObserver = null;
+			cancelled = true;
+			isMapLoaded = false;
+
+			if (activePopup) {
+				activePopup.remove();
+				activePopup = null;
 			}
 
-			// Clean up map
+			markers.forEach((marker) => marker.remove());
+			markers.clear();
+
 			if (map) {
 				map.remove();
+				map = null;
 			}
 
-			// Reset state variables
-			map = null;
-			clusterLayer = null;
-			currentTileLayer = null;
-			L = null;
+			maplibregl = null;
 		};
 	});
 
-	// Function to add/update markers
-	function addMarkers(data: MarkerData[]) {
-		// Check for L, map, and clusterLayer
-		if (!L || !map || !clusterLayer) {
-			console.warn('Leaflet library, map, or cluster layer not ready.');
-			return;
-		}
-
-		clusterLayer.clearLayers(); // Clear the cluster layer
-
-		data.forEach((item) => {
-			if (item.coordinates) {
-				// Create HTML for the Iconify icon
-				// Note: This direct HTML rendering bypasses Svelte reactivity for the icon itself.
-				// For more complex interactions within the icon, a different approach might be needed.
-				const iconHtml = `
-                    <div class="custom-marker-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                    </div>
-                `;
-
-				const typeClass = item.activityType ? `marker-type-${item.activityType}` : ''; // Use simple type name
-
-				// Debugging: Log the activity type and resulting class
-				// console.log(`Marker ID: ${item.id}, Activity Type: ${item.activityType}, Generated Class: ${typeClass}`);
-
-				const customIcon = L!.divIcon({
-					html: iconHtml,
-					className: `clear-leaflet-default-icon-style ${typeClass}`, // Add type class to the icon's wrapper
-					iconSize: [32, 32], // Increased size
-					iconAnchor: [16, 32], // Adjust anchor (center bottom)
-					popupAnchor: [0, -36] // Adjust popup anchor relative to new size
-				});
-
-				const marker = L!.marker([item.coordinates.latitude, item.coordinates.longitude], {
-					icon: customIcon
-				});
-
-				const linkUrl = `${base}/communications/${item.id}`;
-
-				// Conditionally add image HTML
-				const imageHtml = item.image
-					? `<img src="${base}/${item.image}" alt="${item.title}" class="map-popup-image">`
-					: '';
-
-				const popupContent = `
-                    <a href="${linkUrl}" target="_self" class="map-popup-link">
-                        ${imageHtml} 
-                        <div class="map-popup-content-text">
-                            <strong>${item.title}</strong>
-                            ${item.year ? '<br><span class="map-popup-year">(' + item.year + ')</span>' : ''}
-                        </div>
-                    </a>
-                `;
-
-				marker.bindPopup(popupContent, {
-					className: 'map-popup',
-					minWidth: 150 // Allow popup to be wider if needed for image
-				});
-				clusterLayer?.addLayer(marker); // Add marker to cluster layer
-			}
-		});
-
-		if (data.length > 0 && clusterLayer.getLayers().length > 0) {
-			const bounds = clusterLayer.getBounds();
-			if (bounds.isValid()) {
-				map.fitBounds(bounds, { padding: [50, 50], maxZoom: 10 });
-			}
-		}
-	}
-
-	// Reactive effect for markers: Update only when markersData changes (and map is ready)
+	// Reactive effect for markers: Update when markersData changes
 	$effect(() => {
-		if (browser && L && map && clusterLayer) {
-			// console.log('Reactively updating markers due to markersData change.'); // Keep for debugging if needed
+		if (browser && maplibregl && map && isMapLoaded) {
 			addMarkers(markersData);
 		}
 	});
 
-	// Reactive effect for theme preference: Re-check theme when darkModeDetected changes (and map is ready)
+	// Reactive effect for theme: Update map style when theme changes
 	$effect(() => {
-		if (browser && L && map && darkModeDetected !== currentThemeIsDark) {
-			updateTileLayer();
+		if (browser && maplibregl && map && isMapLoaded && darkModeDetected !== currentThemeIsDark) {
+			updateMapStyle();
 		}
 	});
 </script>
@@ -375,57 +400,48 @@
 	/* Map Container Base Styles */
 	.map-container {
 		width: 100%;
-		height: 400px; /* Adjust as needed */
+		height: 400px;
 		position: relative;
-		border-radius: var(--border-radius-md, 4px);
+		border-radius: var(--border-radius-md);
 		overflow: hidden;
-		/* Add z-index to ensure map stays below site navigation */
 		z-index: 1;
-		/* Add isolation to create a new stacking context */
 		isolation: isolate;
 	}
 
-	/* Force Leaflet controls to stay below header/navigation */
-	:global(.leaflet-top),
-	:global(.leaflet-bottom),
-	:global(.leaflet-control),
-	:global(.leaflet-control-container) {
+	/* MapLibre controls z-index management */
+	:global(.maplibregl-ctrl-top-right),
+	:global(.maplibregl-ctrl-top-left),
+	:global(.maplibregl-ctrl-bottom-right),
+	:global(.maplibregl-ctrl-bottom-left) {
 		z-index: 8 !important;
 	}
 
-	:global(.leaflet-pane),
-	:global(.leaflet-overlay-pane),
-	:global(.leaflet-marker-pane),
-	:global(.leaflet-tooltip-pane),
-	:global(.leaflet-popup-pane),
-	:global(.leaflet-map-pane svg),
-	:global(.leaflet-map-pane canvas) {
-		z-index: 2 !important;
+	:global(.maplibregl-canvas-container),
+	:global(.maplibregl-canvas) {
+		/* Keep the WebGL canvas below markers/popups/controls */
+		z-index: 1 !important;
 	}
 
-	/* Override Leaflet's internal z-index stacking */
-	:global(.leaflet-control-zoom) {
+	/* Markers are DOM overlays; ensure they sit above the canvas */
+	:global(.maplibregl-marker) {
+		z-index: 5 !important;
+	}
+
+	:global(.maplibregl-ctrl-group) {
 		z-index: 7 !important;
 	}
 
-	:global(.leaflet-control-attribution) {
-		z-index: 7 !important;
-	}
-
-	:global(.leaflet-popup) {
+	:global(.maplibregl-popup) {
 		z-index: 6 !important;
 	}
 
-	/* Important: Remove map from the stacking context when modal/menu is open */
+	/* Hide map elements when mobile menu is open */
 	:global(body.mobile-menu-open .map-container) {
 		z-index: 0;
 	}
 
-	/* Extreme fix: If the above doesn't work, force the popup elements to be hidden when menu open */
-	:global(body.mobile-menu-open .leaflet-control),
-	:global(body.mobile-menu-open .leaflet-control-container),
-	:global(body.mobile-menu-open .leaflet-pane),
-	:global(body.mobile-menu-open .leaflet-popup) {
+	:global(body.mobile-menu-open .maplibregl-ctrl),
+	:global(body.mobile-menu-open .maplibregl-popup) {
 		visibility: hidden !important;
 	}
 
@@ -435,59 +451,70 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background-color: color-mix(in srgb, #ff0000 10%, transparent);
-		color: #d32f2f;
+		background-color: color-mix(in srgb, var(--color-danger) 10%, transparent);
+		color: var(--color-danger);
 		padding: var(--space-4);
 		text-align: center;
 	}
 
-	/* Custom Popup Styles */
-	:global(.map-popup .leaflet-popup-content-wrapper) {
-		background-color: var(--color-background, white);
-		color: var(--color-text, #333);
-		border-radius: var(--border-radius-lg); /* Match card radius */
-		box-shadow: var(--shadow-md); /* Match card shadow */
-		padding: 0; /* Remove padding, handle internally */
-		overflow: hidden; /* Ensure image corners are rounded */
+	/* Custom Marker Styles */
+	:global(.map-marker) {
+		cursor: pointer;
+		width: 32px;
+		height: 32px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
-	:global(.map-popup .leaflet-popup-content) {
-		margin: 0; /* Remove default margins */
-		line-height: 1.4;
-		font-size: var(--font-size-sm, 0.875rem);
-		display: flex; /* Use flex for layout */
-		flex-direction: column;
-	}
-
-	:global(.map-popup img.map-popup-image) {
+	:global(.map-marker svg) {
 		width: 100%;
-		height: 80px; /* Fixed height for popup image */
-		object-fit: cover;
-		display: block;
-		border-bottom: var(--border-width-thin) solid var(--color-border, #eee); /* Separator */
+		height: 100%;
+		color: var(--color-primary);
+		fill: var(--color-background);
+		fill-opacity: 0.9;
+		stroke-width: 1.5;
+		filter: drop-shadow(1px 1px 1px color-mix(in srgb, var(--color-black) 40%, transparent));
+		transition:
+			transform var(--duration-fast) var(--ease-out),
+			color var(--duration-fast) var(--ease-out),
+			fill var(--duration-fast) var(--ease-out);
 	}
 
-	:global(.map-popup .map-popup-content-text) {
-		padding: var(--space-2) var(--space-3); /* Padding for text */
+	:global(.map-marker:hover svg) {
+		transform: scale(var(--scale-110));
 	}
 
-	:global(.map-popup .leaflet-popup-tip-container) {
-		width: 20px; /* Make tip slightly smaller if desired */
-		height: 10px;
+	/* Marker type variants */
+	:global(.map-marker.marker-type-lecture svg) {
+		color: var(--color-accent);
 	}
 
-	:global(.map-popup .leaflet-popup-tip) {
-		background-color: var(--color-background, white);
-		box-shadow: none;
-		border-left: 1px solid var(--color-border, #eee);
-		border-right: 1px solid var(--color-border, #eee);
-		border-bottom: 1px solid var(--color-border, #eee);
-		margin-top: -1px; /* Adjust position to connect smoothly */
+	:global(.map-marker.marker-type-event svg) {
+		color: var(--color-highlight);
 	}
 
-	:global(.map-popup a.leaflet-popup-close-button) {
-		color: var(--color-text-light, #777);
-		background-color: color-mix(in srgb, var(--color-white, #fff) 70%, transparent);
+	/* Custom Popup Styles - Glassmorphism */
+	:global(.map-popup .maplibregl-popup-content) {
+		background-color: color-mix(in srgb, var(--color-background) 85%, transparent);
+		backdrop-filter: blur(var(--glass-blur-md));
+		-webkit-backdrop-filter: blur(var(--glass-blur-md));
+		color: var(--color-text);
+		border-radius: var(--border-radius-lg);
+		box-shadow: var(--shadow-glass);
+		padding: 0;
+		overflow: hidden;
+		max-height: calc(100% - var(--space-4));
+		border: 1px solid color-mix(in srgb, var(--color-white) 20%, transparent);
+	}
+
+	:global(.map-popup .maplibregl-popup-tip) {
+		border-top-color: color-mix(in srgb, var(--color-background) 85%, transparent);
+	}
+
+	:global(.map-popup .maplibregl-popup-close-button) {
+		color: var(--color-text-light);
+		background-color: color-mix(in srgb, var(--color-white) 70%, transparent);
 		border-radius: 50%;
 		width: 20px;
 		height: 20px;
@@ -497,24 +524,38 @@
 		right: 5px;
 		font-size: 1.1em;
 		transition:
-			background-color 0.2s,
-			color 0.2s;
+			background-color var(--duration-fast) var(--ease-out),
+			color var(--duration-fast) var(--ease-out);
 	}
 
-	:global(.map-popup a.leaflet-popup-close-button:hover) {
-		color: var(--color-text, #333);
-		background-color: var(--color-white, #fff);
+	:global(.map-popup .maplibregl-popup-close-button:hover) {
+		color: var(--color-text);
+		background-color: var(--color-white);
 	}
 
-	/* Style link inside popup */
+	/* Popup content styles */
+	:global(.map-popup img.map-popup-image) {
+		width: 100%;
+		height: 80px;
+		object-fit: cover;
+		display: block;
+		border-bottom: var(--border-width-thin) solid var(--color-border);
+	}
+
+	:global(.map-popup .map-popup-content-text) {
+		padding: var(--space-2) var(--space-3);
+		font-size: var(--font-size-sm);
+		line-height: var(--line-height-normal);
+	}
+
 	:global(.map-popup .map-popup-link) {
-		color: var(--color-text); /* Use standard text color */
+		color: var(--color-text);
 		text-decoration: none;
 		display: block;
 	}
 
 	:global(.map-popup .map-popup-link strong) {
-		color: var(--color-primary); /* Title color */
+		color: var(--color-primary);
 	}
 
 	:global(.map-popup .map-popup-link:hover strong) {
@@ -524,179 +565,53 @@
 	:global(.map-popup .map-popup-year) {
 		font-size: 0.9em;
 		opacity: 0.8;
-		color: var(--color-text-light); /* Muted year text */
+		color: var(--color-text-light);
 	}
 
-	/* Ensure Leaflet controls are visible/styled if needed */
-	/* Example: */
-	:global(.leaflet-control-zoom a) {
-		background-color: white;
-		color: black;
-		border: 1px solid var(--color-gray-300, #ccc);
-	}
-	:global(.leaflet-control-zoom a:hover) {
-		background-color: #f4f4f4;
+	/* Navigation control styling */
+	:global(.maplibregl-ctrl-group button) {
+		background-color: var(--color-background);
+		color: var(--color-text);
+		border: 1px solid var(--color-border);
+		transition: background-color var(--duration-fast) var(--ease-out);
 	}
 
-	/* Remove default Leaflet styles from divIcon */
-	:global(.clear-leaflet-default-icon-style) {
-		background: none;
-		border: none;
+	:global(.maplibregl-ctrl-group button:hover) {
+		background-color: var(--color-surface);
 	}
 
-	/* Style the custom marker icon container */
-	:global(.custom-marker-icon) {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 32px; /* Match increased iconSize */
-		height: 32px; /* Match increased iconSize */
+	:global(.maplibregl-ctrl-group button + button) {
+		border-top: 1px solid var(--color-border);
 	}
 
-	/* Style the SVG icon itself */
-	:global(.custom-marker-icon svg) {
-		width: 100%;
-		height: 100%;
-		color: var(--color-primary); /* Stroke color */
-		fill: var(--color-background); /* Fill color for contrast */
-		fill-opacity: 0.9;
-		stroke-width: 1.5; /* Slightly thinner stroke */
-		filter: drop-shadow(
-			1px 1px 1px color-mix(in srgb, black 40%, transparent)
-		); /* Drop shadow for depth */
-		/* Uses design system animation tokens */
-		transition:
-			transform var(--duration-fast) var(--ease-out),
-			color var(--duration-fast) var(--ease-out),
-			fill var(--duration-fast) var(--ease-out);
-	}
-
-	:global(.custom-marker-icon:hover svg) {
-		transform: scale(var(--scale-110)); /* Hover effect using design token */
-	}
-
-	/* Style based on actual simple activityType values */
-	/* Select parent with type class, then find svg */
-	:global(.clear-leaflet-default-icon-style.marker-type-lecture .custom-marker-icon svg) {
-		color: var(--color-accent); /* Use accent color for lectures */
-		/* fill is inherited or set by default rule */
-	}
-	:global(.clear-leaflet-default-icon-style.marker-type-event .custom-marker-icon svg) {
-		color: var(--color-highlight); /* Use highlight color for events */
-		/* fill is inherited or set by default rule */
-	}
-	/* Example: Add style for workshop if you re-introduce that type */
-	/*
-    :global(.clear-leaflet-default-icon-style.marker-type-workshop .custom-marker-icon svg) {
-        color: var(--color-success);
-    }
-    */
-
-	/* --- Marker Cluster Styles --- */
-
-	/* Base cluster style */
-	:global(.marker-cluster) {
-		background-clip: padding-box;
-		border-radius: 50%;
-		/* Uses design system animation tokens */
-		transition:
-			background-color var(--duration-moderate) var(--ease-in-out),
-			transform var(--duration-moderate) var(--ease-in-out);
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		border: 1px solid color-mix(in srgb, black 20%, transparent); /* Add a subtle border */
-	}
-
-	:global(.marker-cluster div) {
-		width: 30px;
-		height: 30px;
-		margin-left: 5px;
-		margin-top: 5px;
-		text-align: center;
-		border-radius: 50%;
-		font-size: 12px;
-		font-weight: bold;
-		color: white;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		/* Uses design system animation tokens */
-		transition: background-color var(--duration-moderate) var(--ease-in-out);
-	}
-
-	:global(.marker-cluster span) {
-		line-height: inherit; /* Inherit line height from parent div */
-	}
-
-	/* Default cluster color */
-	:global(.marker-cluster-default div) {
-		background-color: color-mix(in srgb, var(--color-primary, rgb(43, 108, 176)) 80%, transparent);
-	}
-	:global(.marker-cluster-default:hover div) {
-		background-color: var(--color-primary, rgb(43, 108, 176));
-	}
-
-	/* Lecture cluster color */
-	:global(.marker-cluster-lecture div) {
-		background-color: color-mix(in srgb, var(--color-accent) 80%, transparent);
-	}
-	:global(.marker-cluster-lecture:hover div) {
-		background-color: var(--color-accent);
-	}
-
-	/* Event cluster color */
-	:global(.marker-cluster-event div) {
-		background-color: color-mix(in srgb, var(--color-highlight) 80%, transparent);
-	}
-	:global(.marker-cluster-event:hover div) {
-		background-color: var(--color-highlight);
-	}
-
-	/* Example: Workshop cluster color */
-	/*
-    :global(.marker-cluster-workshop div) {
-        background-color: color-mix(in srgb, var(--color-success) 80%, transparent);
-    }
-    :global(.marker-cluster-workshop:hover div) {
-        background-color: var(--color-success);
-    }
-    */
-
-	/* --- End Marker Cluster Styles --- */
-
-	:global(.marker-cluster-small div) {
-		width: 30px;
-		height: 30px;
-		line-height: 30px;
-	}
-	:global(.marker-cluster-medium div) {
-		width: 40px;
-		height: 40px;
-		line-height: 40px;
-		font-size: 14px;
-		margin-left: 0px;
-		margin-top: 0px;
-	}
-	:global(.marker-cluster-large div) {
-		width: 50px;
-		height: 50px;
-		line-height: 50px;
-		font-size: 16px;
-		margin-left: -5px;
-		margin-top: -5px;
+	/* Attribution styling */
+	:global(.maplibregl-ctrl-attrib) {
+		background-color: color-mix(in srgb, var(--color-background) 80%, transparent);
+		font-size: var(--font-size-xs);
+		padding: var(--space-1) var(--space-2);
 	}
 
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
-		:global(.marker-cluster),
-		:global(.marker-cluster div),
-		:global(.custom-marker-icon svg) {
+		:global(.map-marker svg) {
 			transition: none !important;
 		}
 
-		:global(.custom-marker-icon:hover svg) {
+		:global(.map-marker:hover svg) {
 			transform: none !important;
 		}
+	}
+
+	/* Dark mode adjustments for popup tip */
+	:global(html.dark .map-popup .maplibregl-popup-tip) {
+		border-top-color: color-mix(in srgb, var(--color-background) 85%, transparent);
+	}
+
+	:global(html.dark .map-popup .maplibregl-popup-close-button) {
+		background-color: color-mix(in srgb, var(--color-white) 15%, transparent);
+	}
+
+	:global(html.dark .map-popup .maplibregl-popup-close-button:hover) {
+		background-color: color-mix(in srgb, var(--color-white) 25%, transparent);
 	}
 </style>
