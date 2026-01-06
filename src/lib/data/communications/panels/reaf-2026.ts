@@ -4,8 +4,8 @@ export const reaf2026Panel: Communication = {
 	id: 'humanites-numeriques-dh-ia-etudes-africaines-reaf-2026',
 	title: 'Humanités numériques (DH) et IA dans les études africaines',
 	authors: ['Vincent Hiribarren', 'Frédérick Madore'],
-	date: '29 juin 2026',
-	dateISO: '2026-06-29',
+	date: '30 juin 2026',
+	dateISO: '2026-06-30',
 	year: 2026,
 	conference: '9èmes Rencontres des études africaines en France (REAF)',
 	location: 'Paris',
@@ -79,7 +79,10 @@ D'autre part, les études ont démontré que l'on pouvait réellement apprendre 
 		},
 		{
 			title: 'Retrouver la révolte malgache de 1947. Le deep learning appliqué aux inventaires de destruction.',
-			authors: [{ name: 'Naomi Bell', affiliation: 'Institut des Mondes Africains (IMAF)' }],
+			authors: [
+				{ name: 'Naomi Bell', affiliation: 'Institut des Mondes Africains (IMAF)' },
+				{ name: 'Stéphane Lamassé', affiliation: 'LAMOP, PIREH, Université Paris 1 Panthéon-Sorbonne' }
+			],
 			abstract: `Dans cette communication, nous allons montrer quelques résultats d'un projet de recherche en cours, mené dans le cadre d'une thèse de doctorat, qui vise à réexaminer la révolte malgache de 1947 par le prisme des dégâts matériels, recensés dans des inventaires de pertes, grâce à l'usage du deep learning. L'objectif est double : mieux comprendre l'ampleur des destructions matérielles et interroger ce que le deep learning, en tant que méthodologie, permet de voir dans un contexte colonial marqué par les rapports de domination.
 
 Le contexte colonial malgache constitue un terrain d'expérience privilégié pour expérimenter les apports du deep learning. D'une part, les dossiers d'indemnisation produits par l'administration coloniale une documentation abondante, normative et fortement structurée, qui se prête à un traitement sériel. D'autre part, l'hétérogénéité de ces archives, mélangeant formulaires, structures tabulaires, imprimés et manuscrites, offre un cas d'étude pour tester l'efficacité du deep learning. À cela s'ajoutent les enjeux linguistiques liés à la coexistence du français et du malgache.
