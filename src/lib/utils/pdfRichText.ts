@@ -5,6 +5,34 @@ export interface TextFragment {
 }
 
 /**
+ * Safely checks if a URL is a valid DOI link by parsing the hostname.
+ * Prevents URL substring attacks by verifying the actual host.
+ */
+const isValidDoiUrl = (href: string): boolean => {
+    try {
+        const url = new URL(href);
+        // Only allow exact doi.org host (not subdomains like evil.doi.org)
+        return url.hostname === 'doi.org' || url.hostname === 'dx.doi.org';
+    } catch {
+        return false;
+    }
+};
+
+/**
+ * Extracts the DOI identifier from a validated DOI URL.
+ * Should only be called after isValidDoiUrl returns true.
+ */
+const extractDoiFromUrl = (href: string): string => {
+    try {
+        const url = new URL(href);
+        // Remove leading slash from pathname
+        return url.pathname.slice(1);
+    } catch {
+        return '';
+    }
+};
+
+/**
  * Extracts text from an HTML element, preserving URL links and basic formatting (italic/bold).
  * Returns an array of TextFragments suitable for rich text rendering.
  * Normalizes whitespace (collapses newlines and tabs to single spaces).
@@ -51,8 +79,9 @@ export const extractRichText = (node: Element | ChildNode): TextFragment[] => {
             // Handle special links logic (similar to originalPdfGenerator)
             if (!linkText || el.classList.contains('doi-link')) {
                 fragments.push({ text: linkText, style: 'normal' });
-            } else if (href.includes('doi.org/')) {
-                const doi = href.replace('https://doi.org/', '').replace('http://doi.org/', '');
+            } else if (isValidDoiUrl(href)) {
+                // Safely extract DOI from validated URL (prevents URL substring attacks)
+                const doi = extractDoiFromUrl(href);
                 fragments.push({ text: `${linkText} (https://doi.org/${doi})`, style: 'normal', href });
             } else if (href.startsWith('http') || href.startsWith('mailto:')) {
                 const isGenericLinkText = /^\[?(link|listen|view|read|download|here|click)\]?$/i.test(linkText);

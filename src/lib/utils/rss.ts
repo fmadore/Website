@@ -84,11 +84,28 @@ function formatRFC822Date(date: Date): string {
 }
 
 /**
- * Strips HTML tags from a string for plain text description
+ * Strips HTML tags from a string for plain text description.
+ * Uses iterative replacement to prevent bypass attacks where nested/crafted
+ * tags like "<scrip<script>t>" would survive a single pass.
  */
 function stripHtml(html: string): string {
-	return html
-		.replace(/<[^>]*>/g, '')
+	// First, remove any script/style tags and their contents entirely
+	let result = html
+		.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+		.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
+	
+	// Iteratively remove HTML tags until no more are found
+	// This prevents bypass attacks with nested constructs
+	let previous: string;
+	do {
+		previous = result;
+		result = result.replace(/<[^>]*>/g, '');
+	} while (result !== previous);
+	
+	// Also remove any remaining angle brackets that could form tags
+	result = result.replace(/[<>]/g, '');
+	
+	return result
 		.replace(/\s+/g, ' ')
 		.trim();
 }
