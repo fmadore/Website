@@ -15,6 +15,10 @@
 		initPerformanceMonitoring,
 		assessConnectionQuality
 	} from '$lib/utils/performanceMonitor';
+	import { registerIcons } from '$lib/icons';
+
+	// Register all icons at app startup to avoid API calls
+	registerIcons();
 
 	// Destructure children and data from $props using LayoutProps
 	let { children, data }: LayoutProps = $props();

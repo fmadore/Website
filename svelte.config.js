@@ -15,9 +15,9 @@ const config = {
 			precompress: true, // Enable gzip/brotli compression for better performance
 			strict: true
 		}),
-		// Inline CSS files smaller than 10KB to reduce render-blocking requests
-		// This helps with PageSpeed performance by reducing HTTP round-trips
-		// inlineStyleThreshold: 10240, // 10KB in bytes
+		// CSS inlining disabled due to compatibility issues with Vite 7
+		// See: https://github.com/sveltejs/kit/issues - monitor for fixes
+		// inlineStyleThreshold: 5120, // 5KB in bytes - balances inlining vs caching
 		paths: {
 			base: ''
 		},
