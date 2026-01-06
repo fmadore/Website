@@ -85,29 +85,56 @@ function formatRFC822Date(date: Date): string {
 
 /**
  * Strips HTML tags from a string for plain text description.
- * Uses iterative replacement to prevent bypass attacks where nested/crafted
- * tags like "<scrip<script>t>" would survive a single pass.
+ * Uses a safe, non-backtracking approach to prevent ReDoS attacks.
+ * Iteratively removes tags and dangerous content.
  */
 function stripHtml(html: string): string {
-	// First, remove any script/style tags and their contents entirely
-	let result = html
-		.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-		.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
-	
+	let result = html;
+
+	// Remove script tags and contents using a safe approach
+	// Use a simple, non-backtracking pattern with a loop
+	let scriptStart = result.toLowerCase().indexOf('<script');
+	while (scriptStart !== -1) {
+		const scriptEnd = result.toLowerCase().indexOf('</script>', scriptStart);
+		if (scriptEnd !== -1) {
+			result = result.slice(0, scriptStart) + result.slice(scriptEnd + 9);
+		} else {
+			// No closing tag found, remove from script start to end
+			result = result.slice(0, scriptStart);
+			break;
+		}
+		scriptStart = result.toLowerCase().indexOf('<script');
+	}
+
+	// Remove style tags and contents using the same safe approach
+	let styleStart = result.toLowerCase().indexOf('<style');
+	while (styleStart !== -1) {
+		const styleEnd = result.toLowerCase().indexOf('</style>', styleStart);
+		if (styleEnd !== -1) {
+			result = result.slice(0, styleStart) + result.slice(styleEnd + 8);
+		} else {
+			result = result.slice(0, styleStart);
+			break;
+		}
+		styleStart = result.toLowerCase().indexOf('<style');
+	}
+
 	// Iteratively remove HTML tags until no more are found
-	// This prevents bypass attacks with nested constructs
+	// This prevents bypass attacks with nested constructs like "<scrip<script>t>"
+	// Using a simple non-greedy pattern that doesn't backtrack
 	let previous: string;
+	let iterations = 0;
+	const maxIterations = 100; // Prevent infinite loops
 	do {
 		previous = result;
 		result = result.replace(/<[^>]*>/g, '');
-	} while (result !== previous);
-	
-	// Also remove any remaining angle brackets that could form tags
+		iterations++;
+	} while (result !== previous && iterations < maxIterations);
+
+	// Remove any remaining angle brackets that could form tags
 	result = result.replace(/[<>]/g, '');
-	
-	return result
-		.replace(/\s+/g, ' ')
-		.trim();
+
+	return result.replace(/\s+/g, ' ').trim();
 }
 
 /**
