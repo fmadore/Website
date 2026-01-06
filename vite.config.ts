@@ -7,6 +7,7 @@ export default defineConfig({
 		// Note: cssCodeSplit is controlled by SvelteKit internally
 		// Use kit.inlineStyleThreshold in svelte.config.js instead
 		chunkSizeWarningLimit: 1000, // Warn at 1000KB (1MB) to accommodate large libraries like ECharts
+		sourcemap: true, // Enable source maps for production debugging and PageSpeed Insights
 		rollupOptions: {
 			output: {
 				// Optimize chunking for better performance and code splitting

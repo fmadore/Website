@@ -20,6 +20,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 	<!-- Security: Content Security Policy -->
+	<!-- Note: frame-ancestors must be set via HTTP headers (not supported in meta tags) -->
+	<!-- Configure frame-ancestors in your hosting provider's headers (e.g., Netlify _headers file) -->
 	<meta http-equiv="Content-Security-Policy" content="
 		default-src 'self';
 		script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com;
@@ -27,7 +29,6 @@
 		font-src 'self' https://fonts.gstatic.com;
 		img-src 'self' data: https: blob:;
 		connect-src 'self' https://www.google-analytics.com https://api.iconify.design https://api.maptiler.com https://zenodo.org;
-		frame-ancestors 'none';
 		base-uri 'self';
 		form-action 'self';
 	" />
