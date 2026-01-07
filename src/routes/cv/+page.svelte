@@ -220,28 +220,12 @@
 		display: flex;
 		gap: var(--space-md);
 		align-items: center;
-		justify-content: flex-end;
+		justify-content: center;
 		margin-bottom: var(--space-md);
 		position: relative;
 		z-index: 10;
-	}
-
-	/* On large screens, position absolute top-right to save vertical space */
-	@media (min-width: 1024px) {
-		.cv-actions {
-			position: absolute;
-			top: var(--space-md);
-			right: var(--space-md);
-			margin-bottom: 0;
-		}
-	}
-
-	/* On mobile, full width buttons centered */
-	@media (max-width: 639px) {
-		.cv-actions {
-			justify-content: center;
-			flex-wrap: wrap;
-		}
+		flex-wrap: wrap;
+		padding-bottom: var(--space-2);
 	}
 
 	/* CV section wrappers with subtle glass effect */
