@@ -35,7 +35,7 @@ export interface AuthorInfo {
 export const author: AuthorInfo = {
     name: 'Frédérick Madore',
     fullName: 'Frédérick Madore, PhD',
-    position: 'Historian & Digital Humanist | Data Curator at the Cluster of Excellence "Africa Multiple"',
+    position: 'Historian & Digital Humanist | Data Curator at the Cluster of Excellence "Africa Multiple", University of Bayreuth',
     positionShort: 'Historian & Data Curator'
 };
 
@@ -112,7 +112,7 @@ export const socialGroups = [
         links: [
             socialLinks.email,
             {
-                name: `${address.street}\n${address.postalCode} ${address.city}\n${address.country}`,
+                name: `${address.institution}\n${address.street}\n${address.postalCode} ${address.city}\n${address.country}`,
                 icon: 'mdi:map-marker',
                 url: address.mapsUrl
             }

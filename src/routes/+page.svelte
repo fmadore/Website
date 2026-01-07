@@ -36,8 +36,8 @@
 
 <SEO
 	title="Frédérick Madore | Historian | Digital Humanist"
-	description="Frédérick Madore, Research Fellow at ZMO, studies Islam in francophone West Africa combining fieldwork, digital humanities, and AI-enhanced pipelines for computational analysis."
-	keywords="Frédérick Madore, Islam, West Africa, Digital Humanities, Research, ZMO, Leibniz-Zentrum Moderner Orient, historian"
+	description="Frédérick Madore, Data Curator at the Cluster of Excellence &quot;Africa Multiple&quot;, University of Bayreuth, and formerly Research Fellow at ZMO, studies Islam in francophone West Africa combining fieldwork, digital humanities, and AI-enhanced pipelines for computational analysis."
+	keywords="Frédérick Madore, Islam, West Africa, Digital Humanities, Research, University of Bayreuth, Cluster of Excellence Africa Multiple, ZMO, Leibniz-Zentrum Moderner Orient, historian"
 	canonical="https://www.frederickmadore.com"
 	pageType="ProfilePage"
 	{additionalSchemas}
@@ -49,7 +49,11 @@
 		<div class="md:col-span-2 scroll-reveal">
 			<ContentBody variant="default" glassEffect="glass-card">
 				<p>
-					I am a Research Fellow in the <a
+					I am a Data Curator at the <a
+						href="https://www.africamultiple.uni-bayreuth.de/en/index.html"
+						target="_blank"
+						rel="noopener noreferrer">Cluster of Excellence "Africa Multiple"</a
+					>, University of Bayreuth. Previously, I was a Research Fellow in the <a
 						href="https://www.zmo.de/en/research/religion-and-intellectual-culture"
 						target="_blank"
 						rel="noopener noreferrer">Religion and Intellectual Culture</a
