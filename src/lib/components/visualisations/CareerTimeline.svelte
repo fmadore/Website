@@ -8,6 +8,7 @@
 		getCategoryLabel
 	} from '$lib/types/timeline';
 	import { fade, fly } from 'svelte/transition';
+	import Icon from '@iconify/svelte';
 
 	interface Props {
 		items?: TimelineItem[];
@@ -94,6 +95,27 @@
 	let selectedItem = $state<TimelineItem | null>(null);
 	let selectedIndex = $state(0);
 
+	// Initialize with the most recent item selected for better discovery
+	$effect(() => {
+		if (items.length > 0 && !selectedItem) {
+			// Try to find the most recent items
+			// Since items might not be sorted by date, let's find the one with the max start date
+			let maxDate = -1;
+			let maxIndex = 0;
+
+			items.forEach((item, index) => {
+				const time = item.startDate.getTime();
+				if (time > maxDate) {
+					maxDate = time;
+					maxIndex = index;
+				}
+			});
+
+			selectedIndex = maxIndex;
+			selectedItem = items[maxIndex];
+		}
+	});
+
 	function updateTooltipPosition(e: PointerEvent) {
 		if (!containerEl) return;
 		const rect = containerEl.getBoundingClientRect();
@@ -116,9 +138,16 @@
 	function selectItem(item: TimelineItem) {
 		selectedItem = item;
 		selectedIndex = items.findIndex((i) => i.id === item.id);
+
+		// Scroll detailed card into view on mobile
+		if (window.innerWidth < 768) {
+			const card = document.querySelector('.detail-card');
+			card?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+		}
 	}
 
 	function goToPrevious() {
+		// Find previous item logically (based on current index)
 		if (selectedIndex > 0) {
 			selectedIndex--;
 			selectedItem = items[selectedIndex];
@@ -154,6 +183,22 @@
 	// Check if item is a duration (has meaningful width) or a point
 	function isDuration(item: TimelineItem): boolean {
 		return !!(item.endDate || item.isOngoing);
+	}
+
+	// Category Icons Mapping
+	const categoryIcons: Record<string, string> = {
+		positions: 'lucide:briefcase',
+		education: 'lucide:graduation-cap',
+		grants: 'lucide:coins',
+		publications: 'lucide:file-text',
+		presentations: 'lucide:presentation',
+		awards: 'lucide:award',
+		fieldwork: 'lucide:map-pin',
+		default: 'lucide:circle'
+	};
+
+	function getIconForCategory(category: string): string {
+		return categoryIcons[category] || categoryIcons.default;
 	}
 </script>
 
@@ -282,141 +327,88 @@
 				</svg>
 			</div>
 
-			<!-- Detail Card -->
+			<!-- Detail Card (Always rendered if selectedItem exists) -->
 			{#if selectedItem}
 				<div class="detail-card glass-card" in:fly={{ y: 20, duration: 300 }}>
-					<button class="close-btn" onclick={closeDetailCard} aria-label="Close">
-						<svg
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-						>
-							<path d="M18 6L6 18M6 6l12 12" />
-						</svg>
-					</button>
-					<div class="detail-header">
+					<!-- Category Icon & Header -->
+					<div class="card-content-wrapper">
 						<div
-							class="category-icon"
-							style="background: {getCategoryColor(selectedItem.category)};"
+							class="category-icon-large"
+							style="background: {getCategoryColor(
+								selectedItem.category
+							)}; box-shadow: 0 4px 12px {getCategoryColor(selectedItem.category)}40;"
 						>
-							{#if selectedItem.category === 'positions'}
-								<svg
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"><path d="M20 7h-9M14 17H5M5 7h5M20 17h-2M15 7v10M9 7v10" /></svg
+							<Icon
+								icon={getIconForCategory(selectedItem.category)}
+								width="28"
+								height="28"
+								color="white"
+							/>
+						</div>
+
+						<div class="card-main-info">
+							<div class="card-header-row">
+								<h3 class="detail-title">{selectedItem.title}</h3>
+								<button class="close-btn-minimal" onclick={closeDetailCard} aria-label="Close">
+									<Icon icon="lucide:x" width="18" height="18" />
+								</button>
+							</div>
+
+							<div class="detail-meta-row">
+								<span
+									class="meta-badge"
+									style="
+										color: {getCategoryColor(selectedItem.category)};
+										background: {getCategoryColor(selectedItem.category)}15;
+										border-color: {getCategoryColor(selectedItem.category)}30;
+									"
 								>
-							{:else if selectedItem.category === 'education'}
-								<svg
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z" /><path
-										d="M6 12v5c3 3 9 3 12 0v-5"
-									/></svg
+									{selectedItem.startDate.getFullYear()}
+									{#if selectedItem.endDate && selectedItem.endDate.getFullYear() !== selectedItem.startDate.getFullYear()}
+										–{selectedItem.endDate.getFullYear()}
+									{:else if selectedItem.isOngoing}
+										–Present
+									{/if}
+								</span>
+								<span class="meta-dot">•</span>
+								<span class="detail-subtitle"
+									>{selectedItem.subtitle || getCategoryLabel(selectedItem.category)}</span
 								>
-							{:else if selectedItem.category === 'grants'}
-								<svg
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg
-								>
-							{:else if selectedItem.category === 'publications'}
-								<svg
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path
-										d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
-									/></svg
-								>
-							{:else if selectedItem.category === 'presentations'}
-								<svg
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									><path d="M15 10l5 5-5 5" /><path d="M4 4v7a4 4 0 0 0 4 4h12" /></svg
-								>
-							{:else if selectedItem.category === 'awards'}
-								<svg
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									><circle cx="12" cy="8" r="7" /><path
-										d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"
-									/></svg
-								>
-							{:else}
-								<svg
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line
-										x1="12"
-										y1="8"
-										x2="12.01"
-										y2="8"
-									/></svg
-								>
+							</div>
+
+							{#if selectedItem.description}
+								<p class="detail-description">{selectedItem.description}</p>
 							{/if}
 						</div>
-						<div class="detail-meta">
-							<span
-								class="detail-subtitle"
-								style="color: {getCategoryColor(selectedItem.category)};"
-							>
-								{selectedItem.subtitle || getCategoryLabel(selectedItem.category)}
-							</span>
-							<span class="detail-year">
-								{selectedItem.startDate.getFullYear()}{selectedItem.endDate
-									? `–${selectedItem.endDate.getFullYear()}`
-									: selectedItem.isOngoing
-										? '–Present'
-										: ''}
-							</span>
-						</div>
 					</div>
-					<h3 class="detail-title">{selectedItem.title}</h3>
-					{#if selectedItem.description}
-						<p class="detail-description">{selectedItem.description}</p>
-					{/if}
+
+					<!-- Navigation Footer -->
 					<div class="detail-navigation">
-						<button class="nav-btn" onclick={goToPrevious} disabled={selectedIndex === 0}>
-							← Previous
+						<button class="nav-btn previous" onclick={goToPrevious} disabled={selectedIndex === 0}>
+							<Icon icon="lucide:chevron-left" width="18" height="18" />
+							<span>Previous</span>
 						</button>
-						<span class="nav-count">{selectedIndex + 1} of {items.length}</span>
+
+						<span class="nav-count">
+							<span class="current">{selectedIndex + 1}</span>
+							<span class="separator">of</span>
+							<span class="total">{items.length}</span>
+						</span>
+
 						<button
-							class="nav-btn"
+							class="nav-btn next"
 							onclick={goToNext}
 							disabled={selectedIndex === items.length - 1}
 						>
-							Next →
+							<span>Next</span>
+							<Icon icon="lucide:chevron-right" width="18" height="18" />
 						</button>
 					</div>
+				</div>
+			{:else}
+				<!-- Clean prompt to select an item if nothing selected (though we try to auto-select) -->
+				<div class="empty-selection-hint">
+					<p>Select an item from the timeline to view details</p>
 				</div>
 			{/if}
 
@@ -448,7 +440,15 @@
 
 	.chart-container {
 		width: 100%;
-		overflow: hidden;
+		overflow-x: auto;
+		overflow-y: hidden;
+		/* Hide scrollbar but keep functionality */
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+	}
+
+	.chart-container::-webkit-scrollbar {
+		display: none;
 	}
 
 	/* Enhanced Hover Tooltip */
@@ -518,6 +518,7 @@
 		width: 100%;
 		height: auto;
 		display: block;
+		min-width: 600px; /* Ensure it doesn't get too squished */
 	}
 
 	.axis-line {
@@ -558,7 +559,6 @@
 	.timeline-bar:hover {
 		filter: brightness(1.2) contrast(1.1);
 		opacity: 1;
-		/* Removed transform: scaleY(1.1) to prevent jarring movement */
 	}
 
 	.timeline-bar.selected {
@@ -577,7 +577,6 @@
 	}
 
 	.timeline-point:hover {
-		/* Removed r: 9 to prevent jarring movement */
 		filter: brightness(1.2) contrast(1.1);
 		opacity: 1;
 	}
@@ -591,112 +590,130 @@
 	/* Detail Card */
 	.detail-card {
 		position: relative;
-		padding: var(--space-xl);
 		border-radius: var(--border-radius-xl);
-		margin-top: var(--space-lg);
-		box-shadow: var(--shadow-xl);
+		margin-top: var(--space-md);
 		border: 1px solid color-mix(in srgb, var(--color-primary) 10%, transparent);
+		overflow: hidden;
+		background: color-mix(in srgb, var(--color-surface) 60%, transparent);
 	}
 
-	.close-btn {
-		position: absolute;
-		top: var(--space-md);
-		right: var(--space-md);
-		background: transparent;
-		border: 1px solid var(--color-border);
-		color: var(--color-text-muted);
-		cursor: pointer;
-		padding: var(--space-2);
-		border-radius: var(--border-radius-full);
-		transition: all 0.2s ease;
+	.card-content-wrapper {
+		padding: var(--space-xl);
 		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.close-btn:hover {
-		color: var(--color-danger);
-		border-color: var(--color-danger);
-		background: color-mix(in srgb, var(--color-danger) 5%, transparent);
-	}
-
-	.detail-header {
-		display: flex;
-		align-items: flex-start;
 		gap: var(--space-lg);
-		margin-bottom: var(--space-lg);
+		align-items: flex-start;
 	}
 
-	.category-icon {
+	.category-icon-large {
 		width: 56px;
 		height: 56px;
-		border-radius: var(--border-radius-lg);
+		border-radius: 16px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
-		color: var(--color-white);
-		box-shadow: var(--shadow-md);
 	}
 
-	.detail-meta {
+	.card-main-info {
+		flex: 1;
+		min-width: 0; /* Prevent flex blowout */
+	}
+
+	.card-header-row {
 		display: flex;
-		flex-direction: column;
-		gap: var(--space-1);
-		padding-top: var(--space-1);
+		justify-content: space-between;
+		align-items: flex-start;
+		gap: var(--space-md);
+		margin-bottom: var(--space-xs);
+	}
+
+	.detail-title {
+		font-size: var(--font-size-xl);
+		font-weight: var(--font-weight-bold);
+		color: var(--color-text);
+		margin: 0;
+		line-height: 1.3;
+	}
+
+	.close-btn-minimal {
+		background: transparent;
+		border: none;
+		color: var(--color-text-muted);
+		cursor: pointer;
+		padding: var(--space-1);
+		margin: -4px -4px 0 0;
+		border-radius: var(--border-radius-full);
+		transition: all 0.2s;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.close-btn-minimal:hover {
+		color: var(--color-danger);
+		background: color-mix(in srgb, var(--color-danger) 10%, transparent);
+	}
+
+	.detail-meta-row {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: var(--space-sm);
+		margin-bottom: var(--space-md);
+	}
+
+	.meta-badge {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-xs);
+		padding: 2px 8px;
+		border-radius: var(--border-radius-sm);
+		border: 1px solid;
+		font-weight: var(--font-weight-medium);
+	}
+
+	.meta-dot {
+		color: var(--color-text-muted);
+		font-size: 8px;
 	}
 
 	.detail-subtitle {
 		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-bold);
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-
-	.detail-year {
-		font-size: var(--font-size-base);
+		font-weight: var(--font-weight-medium);
 		color: var(--color-text-light);
-		font-family: var(--font-family-mono);
-	}
-
-	.detail-title {
-		font-size: var(--font-size-2xl);
-		font-weight: var(--font-weight-bold);
-		color: var(--color-text);
-		margin: 0 0 var(--space-md) 0;
-		line-height: 1.2;
 	}
 
 	.detail-description {
 		font-size: var(--font-size-md);
 		color: var(--color-text-light);
 		line-height: 1.6;
-		margin: 0 0 var(--space-xl) 0;
-		max-width: 65ch;
+		margin: 0;
 	}
 
 	.detail-navigation {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding-top: var(--space-lg);
+		padding: var(--space-md) var(--space-xl);
 		border-top: 1px solid var(--color-border);
+		background: color-mix(in srgb, var(--color-surface) 30%, transparent);
 	}
 
 	.nav-btn {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2);
 		background: transparent;
-		border: 1px solid var(--color-border);
+		border: none;
 		color: var(--color-text);
 		cursor: pointer;
 		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-medium);
-		padding: var(--space-2) var(--space-4);
+		padding: var(--space-2) var(--space-3);
 		border-radius: var(--border-radius-md);
 		transition: all 0.2s ease;
 	}
 
 	.nav-btn:hover:not(:disabled) {
-		border-color: var(--color-primary);
 		color: var(--color-primary);
 		background: color-mix(in srgb, var(--color-primary) 5%, transparent);
 	}
@@ -704,13 +721,32 @@
 	.nav-btn:disabled {
 		opacity: 0.4;
 		cursor: not-allowed;
-		border-color: var(--color-border);
 	}
 
 	.nav-count {
 		font-size: var(--font-size-sm);
 		color: var(--color-text-muted);
+		display: flex;
+		align-items: baseline;
+		gap: 6px;
+	}
+
+	.nav-count .current {
+		color: var(--color-text);
+		font-weight: var(--font-weight-bold);
+	}
+
+	.nav-count .total {
 		font-family: var(--font-family-mono);
+	}
+
+	.empty-selection-hint {
+		text-align: center;
+		padding: var(--space-xl);
+		border: 1px dashed var(--color-border);
+		border-radius: var(--border-radius-lg);
+		color: var(--color-text-muted);
+		font-style: italic;
 	}
 
 	/* Legend */
@@ -720,9 +756,8 @@
 		gap: var(--space-md) var(--space-xl);
 		padding: var(--space-lg);
 		justify-content: center;
-		background: var(--color-surface-alt);
-		border-radius: var(--border-radius-lg);
-		margin-top: var(--space-sm);
+		border-top: 1px solid var(--color-border);
+		margin-top: var(--space-lg);
 	}
 
 	.legend-item {
@@ -732,16 +767,19 @@
 	}
 
 	.legend-color {
-		width: 16px;
-		height: 16px;
-		border-radius: 4px; /* Rounded square/pill shape */
-		box-shadow: var(--shadow-sm);
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+		border: 2px solid transparent;
+		box-shadow: 0 0 0 1px var(--color-border);
 	}
 
 	.legend-label {
-		font-size: var(--font-size-sm);
+		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-medium);
-		color: var(--color-text);
+		color: var(--color-text-light);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
 	}
 
 	/* Empty state */
@@ -752,13 +790,43 @@
 		height: 200px;
 	}
 
+	/* Mobile Optimizations */
+	@media (max-width: 768px) {
+		.card-content-wrapper {
+			flex-direction: column;
+			gap: var(--space-md);
+		}
+
+		.category-icon-large {
+			width: 48px;
+			height: 48px;
+		}
+
+		.card-header-row {
+			margin-top: var(--space-xs);
+		}
+
+		.detail-navigation {
+			padding: var(--space-md);
+		}
+
+		.timeline-legend {
+			gap: var(--space-sm) var(--space-md);
+		}
+
+		.timeline-svg {
+			/* On mobile, let it scroll horizontally */
+			min-width: 800px;
+		}
+	}
+
 	/* Reduced motion */
 	@media (prefers-reduced-motion: reduce) {
 		.tooltip-card,
 		.timeline-bar,
 		.timeline-point,
 		.nav-btn,
-		.close-btn,
+		.close-btn-minimal,
 		.detail-card {
 			transition: none !important;
 			animation: none !important;
