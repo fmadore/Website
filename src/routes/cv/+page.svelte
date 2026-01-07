@@ -8,6 +8,8 @@
 	import CVAppointments from './components/CVAppointments.svelte';
 	import CVPublications from './components/CVPublications.svelte';
 
+	import { base } from '$app/paths';
+
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('CV', '/cv');
 
@@ -97,8 +99,25 @@
 />
 
 <div id="cv-content" class="cv-container glass-card p-8 max-w-6xl mx-auto rounded-lg page-enter">
-	<!-- PDF Generator Button - positioned in top right corner of CV -->
-	<div class="cv-download-button">
+	<!-- Action Buttons - positioned in top right corner of CV -->
+	<div class="cv-actions">
+		<a href="{base}/cv/timeline" class="btn btn-secondary" aria-label="View Career Timeline">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="20"
+				height="20"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<path d="M3 3v18h18" />
+				<path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" />
+			</svg>
+			<span>Timeline</span>
+		</a>
 		<PdfGenerator />
 	</div>
 
@@ -196,32 +215,32 @@
 		margin-bottom: var(--space-lg);
 	}
 
-	/* PDF Download button positioning - inside the CV container top-right */
-	.cv-download-button {
-		position: absolute;
-		top: var(--space-md);
-		right: var(--space-md);
+	/* Action buttons container positioning */
+	.cv-actions {
+		display: flex;
+		gap: var(--space-md);
+		align-items: center;
+		justify-content: flex-end;
+		margin-bottom: var(--space-md);
+		position: relative;
 		z-index: 10;
 	}
 
-	/* On tablets, move button below title area */
-	@media (max-width: 900px) {
-		.cv-download-button {
-			position: static;
-			float: right;
-			margin-bottom: var(--space-md);
-			margin-left: var(--space-md);
+	/* On large screens, position absolute top-right to save vertical space */
+	@media (min-width: 1024px) {
+		.cv-actions {
+			position: absolute;
+			top: var(--space-md);
+			right: var(--space-md);
+			margin-bottom: 0;
 		}
 	}
 
-	/* On mobile, full width button */
+	/* On mobile, full width buttons centered */
 	@media (max-width: 639px) {
-		.cv-download-button {
-			float: none;
-			margin-left: 0;
-			margin-bottom: var(--space-lg);
-			display: flex;
+		.cv-actions {
 			justify-content: center;
+			flex-wrap: wrap;
 		}
 	}
 
@@ -404,8 +423,8 @@
 			color: var(--color-text-light);
 		}
 
-		/* Hide download button in print */
-		.cv-download-button {
+		/* Hide action buttons in print */
+		.cv-actions {
 			display: none !important;
 		}
 	}

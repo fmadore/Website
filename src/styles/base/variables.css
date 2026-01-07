@@ -143,6 +143,24 @@
 	--color-note: var(--sys-color-neutral-600);
 	--color-code-bg: var(--sys-color-neutral-100);
 
+	/* ===== TIMELINE/CHART COLORS ===== */
+	/* Vibrant, distinct colors for data visualization categories */
+	--color-timeline-positions: #f472b6;
+	/* Pink 400 - Work/Positions */
+	--color-timeline-education: #4ade80;
+	/* Green 400 - Education */
+	--color-timeline-grants: #facc15;
+	/* Yellow 400 - Grants/Funding */
+	--color-timeline-publications: #60a5fa;
+	/* Blue 400 - Publications */
+	--color-timeline-presentations: #c084fc;
+	/* Purple 400 - Presentations */
+	--color-timeline-awards: #fb923c;
+	/* Orange 400 - Awards/Honors */
+	--color-timeline-fieldwork: #2dd4bf;
+	/* Teal 400 - Fieldwork */
+
+
 	/* ===== UTILITY COLORS ===== */
 	--color-white: #ffffff;
 

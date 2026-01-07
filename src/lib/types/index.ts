@@ -10,4 +10,6 @@ export * from './grant';
 export * from './language';
 export * from './media-appearance';
 export * from './peer-review';
+export * from './timeline';
 export * from './utils';
+
