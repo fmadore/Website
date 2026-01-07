@@ -548,39 +548,44 @@
 
 	.timeline-bar {
 		cursor: pointer;
-		transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+		transition:
+			opacity var(--duration-fast) var(--ease-out),
+			filter var(--duration-fast) var(--ease-out);
 		stroke: transparent;
 		stroke-width: 2px;
 	}
 
 	.timeline-bar:hover {
-		filter: brightness(1.1);
+		filter: brightness(1.2) contrast(1.1);
 		opacity: 1;
-		transform: scaleY(1.1);
-		transform-origin: center;
+		/* Removed transform: scaleY(1.1) to prevent jarring movement */
 	}
 
 	.timeline-bar.selected {
 		stroke: var(--color-surface);
-		filter: brightness(1.2);
+		filter: brightness(1.3);
+		opacity: 1;
 	}
 
 	.timeline-point {
 		cursor: pointer;
-		transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+		transition:
+			opacity var(--duration-fast) var(--ease-out),
+			filter var(--duration-fast) var(--ease-out);
 		stroke: transparent;
 		stroke-width: 2px;
 	}
 
 	.timeline-point:hover {
-		r: 9;
-		filter: brightness(1.1);
+		/* Removed r: 9 to prevent jarring movement */
+		filter: brightness(1.2) contrast(1.1);
+		opacity: 1;
 	}
 
 	.timeline-point.selected {
 		stroke: var(--color-surface);
-		r: 9;
-		filter: brightness(1.2);
+		filter: brightness(1.3);
+		opacity: 1;
 	}
 
 	/* Detail Card */
