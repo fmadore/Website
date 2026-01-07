@@ -69,7 +69,8 @@
 />
 
 <div class="container py-8 page-enter">
-	<PageHeader title="Teaching" />
+	<div class="max-w-6xl mx-auto">
+		<PageHeader title="Teaching" />
 
 	<PageIntro>
 		Teaching interests: African History (pre-modern and modern periods), Islam in sub-Saharan
@@ -114,6 +115,7 @@
 				{/snippet}
 			</Card>
 		{/each}
+	</div>
 	</div>
 </div>
 

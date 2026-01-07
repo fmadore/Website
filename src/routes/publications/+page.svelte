@@ -330,7 +330,7 @@
 
 <style>
 	.page-container {
-		max-width: var(--container-xl);
+		max-width: var(--content-width-6xl);
 		margin: 0 auto;
 		padding: var(--space-8) var(--space-4);
 	}

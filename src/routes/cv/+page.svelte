@@ -96,7 +96,7 @@
 	pageType="ProfilePage"
 />
 
-<div id="cv-content" class="cv-container glass-card p-8 max-w-4xl mx-auto rounded-lg page-enter">
+<div id="cv-content" class="cv-container glass-card p-8 max-w-6xl mx-auto rounded-lg page-enter">
 	<!-- PDF Generator Button - positioned in top right corner of CV -->
 	<div class="cv-download-button">
 		<PdfGenerator />

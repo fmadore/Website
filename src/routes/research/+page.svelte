@@ -64,7 +64,8 @@
 />
 
 <div class="container py-8 page-enter">
-	<PageHeader title="Research" />
+	<div class="max-w-6xl mx-auto">
+		<PageHeader title="Research" />
 
 	<PageIntro>
 		My research lies at the intersection of African history, Islamic Studies, and Digital Humanities.
@@ -92,6 +93,7 @@
 				{/snippet}
 			</Card>
 		{/each}
+	</div>
 	</div>
 </div>
 

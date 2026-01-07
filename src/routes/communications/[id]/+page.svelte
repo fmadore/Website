@@ -144,9 +144,10 @@
 <MetaTags {communication} />
 
 <div class="container py-8 page-enter">
-	<Breadcrumb items={breadcrumbItems} />
+	<div class="max-w-6xl mx-auto">
+		<Breadcrumb items={breadcrumbItems} />
 
-	<article class="communication-article">
+		<article class="communication-article">
 		<div class="content-wrapper">
 			<PageHeader
 				title={communication.title}
@@ -262,6 +263,7 @@
 			maxItems={3}
 		/>
 	{/if}
+	</div>
 </div>
 
 <style>

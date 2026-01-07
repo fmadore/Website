@@ -298,9 +298,10 @@
 
 <div class="container py-8 page-enter">
 	<!-- Breadcrumb outside article for better structure -->
-	<Breadcrumb items={breadcrumbItems} />
+	<div class="max-w-6xl mx-auto">
+		<Breadcrumb items={breadcrumbItems} />
 
-	<article class="publication-article">
+		<article class="publication-article">
 		<div class="content-wrapper">
 			<PageHeader
 				title={publication.title}
@@ -381,6 +382,7 @@
 			maxItems={3}
 		/>
 	{/if}
+	</div>
 </div>
 
 <style>

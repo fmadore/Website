@@ -60,7 +60,8 @@
 />
 
 <div class="container py-8 page-enter">
-	<PageHeader title="Activities" />
+	<div class="max-w-6xl mx-auto">
+		<PageHeader title="Activities" />
 	<PageIntro>
 		This section provides an overview of various professional activities, including workshops,
 		talks, and other engagements. You can browse by year using the sidebar.
@@ -141,6 +142,7 @@
 				{/if}
 			</div>
 		</div>
+	</div>
 	</div>
 </div>
 

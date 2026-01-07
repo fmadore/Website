@@ -54,7 +54,8 @@
 />
 
 <div class="container py-8 page-enter">
-	<PageHeader title="Digital Humanities" />
+	<div class="max-w-6xl mx-auto">
+		<PageHeader title="Digital Humanities" />
 
 	{#if selectedSkill}
 		<p class="text-lg mb-6">
@@ -127,6 +128,7 @@
         // Add more content here if the cards aren't enough
     </section>
     -->
+	</div>
 </div>
 
 <style>
