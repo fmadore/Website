@@ -216,8 +216,8 @@
 
 	/* Header icons – unified sizing */
 	.profile-icons :global(svg) {
-		width: 24px !important;
-		height: 24px !important;
+		width: var(--space-6) !important;
+		height: var(--space-6) !important;
 		z-index: 1;
 		position: relative;
 	}

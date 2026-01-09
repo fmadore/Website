@@ -167,10 +167,13 @@
 		right: var(--space-md);
 		max-width: 25rem; /* 400px */
 		margin: 0 auto;
-		background: var(--color-surface-elevated);
+		background: color-mix(in srgb, var(--color-surface-elevated) 80%, transparent);
+		backdrop-filter: blur(var(--glass-blur-amount));
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		border-radius: var(--border-radius-xl);
 		box-shadow: var(--shadow-xl);
-		border: var(--border-width-thin) solid var(--color-border);
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-border) 50%, transparent);
 		z-index: var(--z-modal);
 		animation: slideUp var(--anim-duration-base) var(--anim-ease-out);
 	}

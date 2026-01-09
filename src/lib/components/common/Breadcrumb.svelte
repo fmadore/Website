@@ -52,6 +52,7 @@
 		box-shadow: var(--shadow-md);
 		position: relative;
 		backdrop-filter: blur(var(--glass-blur-amount));
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 	}
 
 	/* Enhanced connection line to the page header */
