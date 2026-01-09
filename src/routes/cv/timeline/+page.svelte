@@ -76,6 +76,6 @@
 
 	.timeline-container::-webkit-scrollbar-thumb {
 		background-color: var(--color-border);
-		border-radius: 4px;
+		border-radius: var(--border-radius-sm);
 	}
 </style>

@@ -21,7 +21,7 @@
 	];
 
 	// Inject breadcrumb JSON-LD structured data
-	useBreadcrumbJsonLd(breadcrumbItems);
+	useBreadcrumbJsonLd(() => breadcrumbItems);
 </script>
 
 <SEO

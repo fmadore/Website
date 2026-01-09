@@ -4,9 +4,8 @@
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 	import { base } from '$app/paths';
-	import { page } from '$app/stores';
-	import { browser } from '$app/environment';
-	import { allPublications, publicationsByType } from '$lib/data/publications'; // Import publicationsByType
+	import { allPublications, publicationsByType } from '$lib/data/publications';
+	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
 	import EChartsBarChart from '$lib/components/visualisations/EChartsBarChart.svelte';
 	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
@@ -311,48 +310,8 @@
 		{ label: 'Visualisations', href: `${base}/publications/visualisations` }
 	];
 
-	// Generate Breadcrumb JSON-LD
-	const breadcrumbJsonLdString = $derived(
-		JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': 'BreadcrumbList',
-			itemListElement: breadcrumbItems.map((item, index) => ({
-				'@type': 'ListItem',
-				position: index + 1,
-				name: item.label,
-				item: `${$page.url.origin}${item.href}`
-			}))
-		})
-	);
-
-	// Manage JSON-LD script injection
-	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
-
-	// Handle JSON-LD script injection with $effect - optimized to run only when needed
-	$effect(() => {
-		if (browser && breadcrumbJsonLdString) {
-			const scriptId = breadcrumbJsonLdScriptId;
-			let scriptElement = document.getElementById(scriptId) as HTMLScriptElement | null;
-
-			if (scriptElement) {
-				scriptElement.textContent = breadcrumbJsonLdString;
-			} else {
-				scriptElement = document.createElement('script');
-				scriptElement.id = scriptId;
-				scriptElement.type = 'application/ld+json';
-				scriptElement.textContent = breadcrumbJsonLdString;
-				document.head.appendChild(scriptElement);
-			}
-
-			return () => {
-				// Cleanup: remove script if it exists
-				const scriptToRemove = document.getElementById(scriptId);
-				if (scriptToRemove && scriptToRemove.parentElement === document.head) {
-					document.head.removeChild(scriptToRemove);
-				}
-			};
-		}
-	});
+	// JSON-LD for Breadcrumbs - uses reusable utility
+	useBreadcrumbJsonLd(() => breadcrumbItems, 'breadcrumb-json-ld-pub-viz');
 </script>
 
 <SEO

@@ -17,6 +17,8 @@
 	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
 	import { createActivitySEODescription, createActivitySEOKeywords } from '$lib/utils/seoUtils';
 	import MetaTags from '$lib/components/activities/MetaTags.svelte';
+	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
+	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
 
 	// Get data from the load function
 	let { data }: { data: PageData } = $props();
@@ -39,19 +41,11 @@
 		{ label: truncateTitle(activity.title), href: `${base}/activities/${activity.id}` }
 	]);
 
-	// Generate Breadcrumb JSON-LD - reactive to breadcrumb changes
-	const breadcrumbJsonLdString = $derived(
-		JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': 'BreadcrumbList',
-			itemListElement: breadcrumbItems.map((item, index) => ({
-				'@type': 'ListItem',
-				position: index + 1,
-				name: item.label,
-				item: `${$page.url.origin}${item.href}`
-			}))
-		})
-	);
+	// Inject breadcrumb JSON-LD structured data
+	useBreadcrumbJsonLd(() => breadcrumbItems);
+
+	// Inject activity JSON-LD structured data
+	useJsonLdScript('activity-json-ld', () => jsonLdString);
 
 	// Helper function to format panelType for display
 	function formatPanelType(panelType: string | undefined): string {
@@ -59,13 +53,9 @@
 		return panelType.charAt(0).toUpperCase() + panelType.slice(1);
 	}
 
-	const activityJsonLdScriptId = 'activity-json-ld';
-	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
-
-	// Replace onMount and onDestroy with $effect for JSON-LD management and optimizations
+	// Optimize animations for better performance
 	$effect(() => {
 		if (browser) {
-			// Optimize animations for better performance - WITHOUT contain property that breaks z-index
 			const optimizeAnimations = () => {
 				const animatedElements = document.querySelectorAll('[data-animate]');
 				animatedElements.forEach((el) => {
@@ -82,61 +72,6 @@
 			} else {
 				setTimeout(optimizeAnimations, 0);
 			}
-
-			// Handle activity JSON-LD script
-			const activityScriptId = activityJsonLdScriptId;
-			let activityScript = document.getElementById(activityScriptId) as HTMLScriptElement | null;
-
-			if (jsonLdString) {
-				if (activityScript) {
-					activityScript.textContent = jsonLdString;
-				} else {
-					activityScript = document.createElement('script');
-					activityScript.id = activityScriptId;
-					activityScript.type = 'application/ld+json';
-					activityScript.textContent = jsonLdString;
-					document.head.appendChild(activityScript);
-				}
-			} else if (activityScript && activityScript.parentElement === document.head) {
-				document.head.removeChild(activityScript);
-			}
-
-			// Handle breadcrumb JSON-LD script
-			const breadcrumbScriptId = breadcrumbJsonLdScriptId;
-			let breadcrumbScript = document.getElementById(
-				breadcrumbScriptId
-			) as HTMLScriptElement | null;
-
-			if (breadcrumbJsonLdString) {
-				if (breadcrumbScript) {
-					breadcrumbScript.textContent = breadcrumbJsonLdString;
-				} else {
-					breadcrumbScript = document.createElement('script');
-					breadcrumbScript.id = breadcrumbScriptId;
-					breadcrumbScript.type = 'application/ld+json';
-					breadcrumbScript.textContent = breadcrumbJsonLdString;
-					document.head.appendChild(breadcrumbScript);
-				}
-			} else if (breadcrumbScript && breadcrumbScript.parentElement === document.head) {
-				document.head.removeChild(breadcrumbScript);
-			}
-
-			// Cleanup function
-			return () => {
-				if (browser) {
-					const activityScriptToRemove = document.getElementById(activityScriptId);
-					if (activityScriptToRemove && activityScriptToRemove.parentElement === document.head) {
-						document.head.removeChild(activityScriptToRemove);
-					}
-					const breadcrumbScriptToRemove = document.getElementById(breadcrumbScriptId);
-					if (
-						breadcrumbScriptToRemove &&
-						breadcrumbScriptToRemove.parentElement === document.head
-					) {
-						document.head.removeChild(breadcrumbScriptToRemove);
-					}
-				}
-			};
 		}
 	});
 

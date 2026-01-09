@@ -7,7 +7,7 @@
 	import SEO from '$lib/SEO.svelte';
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
-	import { browser } from '$app/environment';
+	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
 
 	// Get the year parameter from the URL - reactive to route changes
 	let year = $derived(parseInt($page.params.year || ''));
@@ -33,50 +33,8 @@
 		{ label: String(year), href: `${base}/activities/year/${year}` }
 	]);
 
-	// Generate Breadcrumb JSON-LD - reactive to breadcrumb changes
-	let breadcrumbJsonLdString = $derived(
-		JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': 'BreadcrumbList',
-			itemListElement: breadcrumbItems.map((item, index) => ({
-				'@type': 'ListItem',
-				position: index + 1,
-				name: item.label,
-				item: `${$page.url.origin}${item.href}`
-			}))
-		})
-	);
-
-	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld-activities-year';
-
-	// Handle JSON-LD script injection with $effect
-	$effect(() => {
-		if (browser && breadcrumbJsonLdString) {
-			let script = document.getElementById(breadcrumbJsonLdScriptId) as HTMLScriptElement | null;
-
-			if (script) {
-				// Update existing script
-				script.textContent = breadcrumbJsonLdString;
-			} else {
-				// Create new script
-				script = document.createElement('script');
-				script.id = breadcrumbJsonLdScriptId;
-				script.type = 'application/ld+json';
-				script.textContent = breadcrumbJsonLdString;
-				document.head.appendChild(script);
-			}
-		}
-
-		// Cleanup when component is destroyed
-		return () => {
-			if (browser) {
-				const script = document.getElementById(breadcrumbJsonLdScriptId);
-				if (script && script.parentElement === document.head) {
-					document.head.removeChild(script);
-				}
-			}
-		};
-	});
+	// Inject breadcrumb JSON-LD structured data (with unique ID for this page type)
+	useBreadcrumbJsonLd(() => breadcrumbItems, 'breadcrumb-json-ld-activities-year');
 </script>
 
 <SEO title={`Activities (${year}) | Frédérick Madore`} />

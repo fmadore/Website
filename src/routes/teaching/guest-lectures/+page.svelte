@@ -3,8 +3,7 @@
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
-	import { page } from '$app/stores'; // Import page store
-	import { browser } from '$app/environment'; // Import browser check
+	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
 
 	// Define breadcrumb items
 	const breadcrumbItems = [
@@ -12,19 +11,8 @@
 		{ label: 'Guest Lectures', href: `${base}/teaching/guest-lectures` }
 	];
 
-	// Generate Breadcrumb JSON-LD using $derived for Svelte 5 style
-	let breadcrumbJsonLdString = $derived(
-		JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': 'BreadcrumbList',
-			itemListElement: breadcrumbItems.map((item, index) => ({
-				'@type': 'ListItem',
-				position: index + 1,
-				name: item.label,
-				item: `${$page.url.origin}${item.href}` // Use page store here for origin
-			}))
-		})
-	);
+	// JSON-LD for Breadcrumbs - uses reusable utility
+	useBreadcrumbJsonLd(() => breadcrumbItems, 'breadcrumb-json-ld-guest-lectures');
 
 	const guestLecturesByInstitution = {
 		'Universität Bayreuth': [
@@ -83,45 +71,6 @@
 			}
 		]
 	};
-
-	// Manage JSON-LD script injection
-	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
-
-	// Replace onMount and onDestroy with $effect
-	$effect(() => {
-		if (browser) {
-			const scriptId = breadcrumbJsonLdScriptId;
-			let scriptElement = document.getElementById(scriptId) as HTMLScriptElement | null;
-
-			// breadcrumbJsonLdString is reactive via $derived
-			if (breadcrumbJsonLdString) {
-				if (scriptElement) {
-					scriptElement.textContent = breadcrumbJsonLdString;
-				} else {
-					scriptElement = document.createElement('script');
-					scriptElement.id = scriptId;
-					scriptElement.type = 'application/ld+json';
-					scriptElement.textContent = breadcrumbJsonLdString;
-					document.head.appendChild(scriptElement);
-				}
-			} else {
-				// If breadcrumbJsonLdString becomes falsy and the script exists, remove it
-				if (scriptElement) {
-					document.head.removeChild(scriptElement);
-				}
-			}
-
-			return () => {
-				// Cleanup: remove the script if it exists
-				if (browser) {
-					const scriptToRemove = document.getElementById(scriptId);
-					if (scriptToRemove && scriptToRemove.parentElement === document.head) {
-						document.head.removeChild(scriptToRemove);
-					}
-				}
-			};
-		}
-	});
 </script>
 
 <SEO

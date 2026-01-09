@@ -7,7 +7,6 @@
 	import MapVisualization from '$lib/components/visualisations/MapVisualization.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
-	import { page } from '$app/stores';
 	import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
 	import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
 	import TagList from '$lib/components/molecules/TagList.svelte';
@@ -15,13 +14,13 @@
 	import AbstractSection from '$lib/components/molecules/AbstractSection.svelte';
 	import RelatedItemsList from '$lib/components/organisms/RelatedItemsList.svelte';
 	import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
-	import { browser } from '$app/environment';
 	import {
 		createCommunicationSEODescription,
 		createCommunicationSEOKeywords,
 		truncateTitle
 	} from '$lib/utils/seoUtils';
 	import MetaTags from '$lib/components/communications/MetaTags.svelte';
+	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
 
 	// Get communication from the page data
 	let { data } = $props();
@@ -29,7 +28,9 @@
 
 	// Generate optimized SEO content
 	const seoDescription = $derived(createCommunicationSEODescription(communication));
-	const seoKeywords = $derived(createCommunicationSEOKeywords(communication)); // Define breadcrumb items
+	const seoKeywords = $derived(createCommunicationSEOKeywords(communication));
+
+	// Define breadcrumb items
 	const breadcrumbItems = $derived([
 		{ label: 'Conference Activity', href: `${base}/conference-activity` },
 		{
@@ -37,19 +38,11 @@
 			href: `${base}/communications/${communication.id}`
 		}
 	]);
-	// Generate Breadcrumb JSON-LD
-	const breadcrumbJsonLdString = $derived(
-		JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': 'BreadcrumbList',
-			itemListElement: breadcrumbItems.map((item, index) => ({
-				'@type': 'ListItem',
-				position: index + 1,
-				name: item.label,
-				item: `${$page.url.origin}${item.href}`
-			}))
-		})
-	); // Prepare marker data for the map (array with one item)
+
+	// Inject breadcrumb JSON-LD structured data
+	useBreadcrumbJsonLd(() => breadcrumbItems);
+
+	// Prepare marker data for the map (array with one item)
 	const singleMarkerData = $derived(
 		communication.coordinates
 			? [
@@ -81,7 +74,9 @@
 			default:
 				return type;
 		}
-	} // Prepare details for the DetailsGrid component
+	}
+
+	// Prepare details for the DetailsGrid component
 	const communicationDetails = $derived([
 		{ label: 'Event', value: communication.conference ?? '' },
 		{
@@ -94,44 +89,6 @@
 		{ label: 'Language', value: communication.language ?? '' },
 		{ label: 'Year', value: String(communication.year ?? '') }
 	]);
-
-	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
-
-	// Replace onMount and onDestroy with $effect
-	$effect(() => {
-		if (browser) {
-			const scriptId = breadcrumbJsonLdScriptId;
-			let scriptElement = document.getElementById(scriptId) as HTMLScriptElement | null;
-
-			// breadcrumbJsonLdString is reactive via $derived
-			if (breadcrumbJsonLdString) {
-				if (scriptElement) {
-					scriptElement.textContent = breadcrumbJsonLdString;
-				} else {
-					scriptElement = document.createElement('script');
-					scriptElement.id = scriptId;
-					scriptElement.type = 'application/ld+json';
-					scriptElement.textContent = breadcrumbJsonLdString;
-					document.head.appendChild(scriptElement);
-				}
-			} else {
-				// If breadcrumbJsonLdString becomes falsy and the script exists, remove it
-				if (scriptElement) {
-					document.head.removeChild(scriptElement);
-				}
-			}
-
-			return () => {
-				// Cleanup: remove the script if it exists
-				if (browser) {
-					const scriptToRemove = document.getElementById(scriptId);
-					if (scriptToRemove && scriptToRemove.parentElement === document.head) {
-						document.head.removeChild(scriptToRemove);
-					}
-				}
-			};
-		}
-	});
 </script>
 
 <SEO

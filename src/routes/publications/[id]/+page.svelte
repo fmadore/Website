@@ -1,14 +1,13 @@
 <script lang="ts">
-	// Removed local data import: import { allPublications } from '$lib/data/publications/index';
 	import SEO from '$lib/SEO.svelte';
 	import { base } from '$app/paths';
 	import type { Publication } from '$lib/types';
 	import type { ComponentType } from 'svelte';
-	import type { PageData } from './$types'; // Import PageData
-	import { browser } from '$app/environment'; // Add back browser check
-	import { page } from '$app/stores'; // Import page store
-	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte'; // Import Breadcrumb component
-	import MetaTags from '$lib/components/publications/MetaTags.svelte'; // Import MetaTags component
+	import type { PageData } from './$types';
+	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
+	import MetaTags from '$lib/components/publications/MetaTags.svelte';
+	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
+	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
 
 	// CitedBy, Reviews, PageHeader, etc. imports remain
 	import CitedBy from '$lib/components/publications/CitedBy.svelte';
@@ -22,7 +21,7 @@
 	import RelatedItemsList from '$lib/components/organisms/RelatedItemsList.svelte';
 	import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
 	import { allPublications } from '$lib/data/publications/index'; // Keep this for RelatedItemsList
-	import { generateBibtex } from '$lib/utils/bibtexGenerator'; // Import the generator
+	import { generateBibtex } from '$lib/utils/bibtexGenerator';
 	import {
 		createPublicationSEODescription,
 		createPublicationSEOKeywords,
@@ -30,13 +29,12 @@
 	} from '$lib/utils/seoUtils';
 
 	interface Props {
-		// Get data from the load function
 		data: PageData;
 	}
 
 	let { data }: Props = $props();
 	let publication = $derived(data.publication as Publication);
-	let jsonLdString = $derived(data.jsonLdString); // Use the raw string
+	let jsonLdString = $derived(data.jsonLdString);
 
 	// Generate optimized SEO content
 	const seoDescription = $derived(createPublicationSEODescription(publication));
@@ -45,90 +43,12 @@
 	// Define breadcrumb items
 	let breadcrumbItems = $derived([
 		{ label: 'Publications', href: `${base}/publications` },
-		{ label: truncateTitle(publication.title), href: `${base}/publications/${publication.id}` } // Use truncated title
+		{ label: truncateTitle(publication.title), href: `${base}/publications/${publication.id}` }
 	]);
 
-	// Generate Breadcrumb JSON-LD
-	let breadcrumbJsonLdString = $derived(
-		JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': 'BreadcrumbList',
-			itemListElement: breadcrumbItems.map((item, index) => ({
-				'@type': 'ListItem',
-				position: index + 1,
-				name: item.label,
-				item: `${$page.url.origin}${item.href}`
-			}))
-		})
-	);
-
-	// Manage JSON-LD script injection
-	const publicationJsonLdScriptId = 'publication-json-ld';
-	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
-
-	// Replace onMount and onDestroy with $effect
-	$effect(() => {
-		if (browser) {
-			// Handle publication JSON-LD
-			const pubScriptId = publicationJsonLdScriptId;
-			let pubScriptElement = document.getElementById(pubScriptId) as HTMLScriptElement | null;
-
-			if (jsonLdString) {
-				if (pubScriptElement) {
-					pubScriptElement.textContent = jsonLdString;
-				} else {
-					pubScriptElement = document.createElement('script');
-					pubScriptElement.id = pubScriptId;
-					pubScriptElement.type = 'application/ld+json';
-					pubScriptElement.textContent = jsonLdString;
-					document.head.appendChild(pubScriptElement);
-				}
-			} else {
-				if (pubScriptElement) {
-					document.head.removeChild(pubScriptElement);
-				}
-			}
-
-			// Handle breadcrumb JSON-LD
-			const breadcrumbScriptId = breadcrumbJsonLdScriptId;
-			let breadcrumbScriptElement = document.getElementById(
-				breadcrumbScriptId
-			) as HTMLScriptElement | null;
-
-			if (breadcrumbJsonLdString) {
-				if (breadcrumbScriptElement) {
-					breadcrumbScriptElement.textContent = breadcrumbJsonLdString;
-				} else {
-					breadcrumbScriptElement = document.createElement('script');
-					breadcrumbScriptElement.id = breadcrumbScriptId;
-					breadcrumbScriptElement.type = 'application/ld+json';
-					breadcrumbScriptElement.textContent = breadcrumbJsonLdString;
-					document.head.appendChild(breadcrumbScriptElement);
-				}
-			} else {
-				if (breadcrumbScriptElement) {
-					document.head.removeChild(breadcrumbScriptElement);
-				}
-			}
-
-			return () => {
-				// Cleanup: remove scripts if they exist
-				if (browser) {
-					const pubScriptToRemove = document.getElementById(pubScriptId);
-					if (pubScriptToRemove && pubScriptToRemove.parentElement === document.head) {
-						document.head.removeChild(pubScriptToRemove);
-					}
-					const breadcrumbScriptToRemove = document.getElementById(breadcrumbScriptId);
-					if (
-						breadcrumbScriptToRemove &&
-						breadcrumbScriptToRemove.parentElement === document.head
-					) {
-						document.head.removeChild(breadcrumbScriptToRemove);
-					}
-				}
-			};
-		}
-	});
+	// JSON-LD injection using reusable utilities
+	useBreadcrumbJsonLd(() => breadcrumbItems);
+	useJsonLdScript('publication-json-ld', () => jsonLdString);
 
 	// Helper to get badge text
 	function getTypeBadgeText(type: string): string {

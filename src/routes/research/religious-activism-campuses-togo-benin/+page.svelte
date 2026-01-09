@@ -22,7 +22,7 @@
 	];
 
 	// Inject breadcrumb JSON-LD structured data
-	useBreadcrumbJsonLd(breadcrumbItems);
+	useBreadcrumbJsonLd(() => breadcrumbItems);
 </script>
 
 <SEO title="Religious Activism on Campuses in Togo and Benin | Frédérick Madore" />

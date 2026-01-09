@@ -5,10 +5,9 @@
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
 	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
+	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
 
 	import { base } from '$app/paths';
-	import { page } from '$app/stores';
-	import { browser } from '$app/environment';
 
 	import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
 
@@ -29,48 +28,8 @@
 		{ label: project.title, href: `${base}/digital-humanities/${project.id}` }
 	]);
 
-	// JSON-LD for Breadcrumbs
-	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld-dh-project';
-	let breadcrumbJsonLdString = $derived(
-		$page.url && project
-			? JSON.stringify({
-					'@context': 'https://schema.org',
-					'@type': 'BreadcrumbList',
-					itemListElement: breadcrumbItems.map((item, index) => ({
-						'@type': 'ListItem',
-						position: index + 1,
-						name: item.label,
-						item: `${$page.url.origin}${item.href}`
-					}))
-				})
-			: null
-	);
-
-	$effect(() => {
-		if (browser) {
-			const existingScript = document.getElementById(breadcrumbJsonLdScriptId);
-			if (existingScript) {
-				document.head.removeChild(existingScript);
-			}
-
-			if (breadcrumbJsonLdString) {
-				const script = document.createElement('script');
-				script.id = breadcrumbJsonLdScriptId;
-				script.type = 'application/ld+json';
-				script.textContent = breadcrumbJsonLdString;
-				document.head.appendChild(script);
-			}
-
-			return () => {
-				if (browser) {
-					const script = document.getElementById(breadcrumbJsonLdScriptId);
-					if (script) {
-						document.head.removeChild(script);
-					}
-				}
-			};
-		}
-	});
+	// JSON-LD for Breadcrumbs - uses reusable utility
+	useBreadcrumbJsonLd(() => breadcrumbItems, 'breadcrumb-json-ld-dh-project');
 
 	// Prepare details for DetailsGrid
 	const projectDetails: ProjectDetailItem[] = [
