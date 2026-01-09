@@ -5,6 +5,8 @@
 SvelteKit academic website using **Svelte 5** with runes, TypeScript, and glassmorphism design. Uses modular CSS architecture with design tokens.
 
 > **📘 Full CSS Documentation**: See [CSS-README.md](../src/styles/CSS-README.md) for comprehensive details.
+> **🎨 CSS Audit Skill**: Use the `css-design-audit` skill for design system compliance checks.
+> **🔍 CSS Auditor Agent**: Switch to the `CSS Auditor` agent for comprehensive design audits.
 
 ## Critical: Svelte MCP Usage
 
@@ -118,4 +120,49 @@ export function setState(v: T) { state = v; }
 - Components: `src/lib/components/` (atoms, molecules, organisms)
 - Styles: `src/styles/` (base, components, layout, utilities)
 - Pages: `src/routes/`
+
+## CSS Design Consistency
+
+**When creating or reviewing components, ensure design system compliance:**
+
+### Never Hardcode These Values
+
+| Category | Hardcoded (❌) | Use Instead (✅) |
+|----------|----------------|------------------|
+| Colors | `#1d4ed8`, `rgb()` | `var(--color-primary)` |
+| Spacing | `16px`, `1rem` | `var(--space-4)` |
+| Typography | `14px` | `var(--font-size-sm)` |
+| Duration | `200ms` | `var(--duration-normal)` |
+| Shadows | `box-shadow: 0 4px...` | `var(--shadow-md)` |
+
+### Transparency Pattern
+
+```css
+/* ❌ Don't use rgba() */
+background: rgba(29, 78, 216, 0.5);
+
+/* ✅ Use color-mix() */
+background: color-mix(in srgb, var(--color-primary) 50%, transparent);
+```
+
+### Glassmorphism Requirements
+
+```css
+/* Always include Safari fallback */
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+```
+
+### Running the CSS Audit
+
+```bash
+# Audit all components
+node .github/skills/css-design-audit/audit.mjs src/lib/components
+
+# Audit a specific file
+node .github/skills/css-design-audit/audit.mjs src/lib/components/menu/Header.svelte
+```
+
+See [CHECKLIST.md](.github/skills/css-design-audit/CHECKLIST.md) for the full review checklist.
+
 

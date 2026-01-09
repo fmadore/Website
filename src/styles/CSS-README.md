@@ -2,6 +2,8 @@
 
 This document outlines the CSS architecture used in this project. The CSS is organized using a modular approach with a focus on maintainability, scalability, and reusability.
 
+> **🎨 Design Audit**: Use the `css-design-audit` skill or run `node .github/skills/css-design-audit/audit.mjs src/lib/components` to check design system compliance.
+
 ## Directory Structure
 
 The CSS is organized into the following directory structure:
