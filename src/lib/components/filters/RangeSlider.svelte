@@ -277,7 +277,7 @@
 <style>
 	.range-slider {
 		position: relative;
-		height: 40px;
+		height: var(--space-10);
 		width: 100%;
 		margin: var(--space-2xs) 0;
 		padding: var(--space-xs);
@@ -355,8 +355,8 @@
 	/* Larger touch target for mobile devices */
 	@media (pointer: coarse) {
 		.range-handle {
-			width: 24px;
-			height: 24px;
+			width: var(--space-6);
+			height: var(--space-6);
 		}
 
 		.range-handle::before {
@@ -435,7 +435,7 @@
 		top: 100%;
 		left: var(--space-xs);
 		right: var(--space-xs);
-		height: 20px;
+		height: var(--space-5);
 		margin-top: var(--space-2xs);
 	}
 
@@ -557,7 +557,7 @@
 	/* Large screens */
 	@media (--lg) {
 		.range-slider {
-			height: 48px;
+			height: var(--space-12);
 			padding: var(--space-sm);
 		}
 
@@ -572,8 +572,8 @@
 		}
 
 		.range-handle {
-			width: 20px;
-			height: 20px;
+			width: var(--space-5);
+			height: var(--space-5);
 		}
 	}
 

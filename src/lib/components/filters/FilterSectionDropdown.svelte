@@ -294,6 +294,8 @@
 	.dropdown-menu {
 		margin-top: var(--space-xs);
 		background: color-mix(in srgb, var(--color-surface) 95%, transparent);
+		backdrop-filter: blur(var(--glass-blur-amount));
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		border: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-border) calc(var(--opacity-medium) * 100%), transparent);
 		border-radius: var(--border-radius-md);
@@ -606,9 +608,8 @@
 		}
 
 		:global(.dropdown-icon) {
-			width: 16px;
-			height: 16px;
-			margin-left: var(--space-2xs);
+		width: var(--space-4);
+		height: var(--space-4);
 		}
 
 		.dropdown-menu {
@@ -649,7 +650,7 @@
 
 	/* Scrollbar styling */
 	.dropdown-items::-webkit-scrollbar {
-		width: 8px;
+		width: var(--space-2);
 	}
 
 	.dropdown-items::-webkit-scrollbar-track {
