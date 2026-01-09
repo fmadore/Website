@@ -566,8 +566,8 @@ ECharts Network Graph - A network visualization for author collaborations
 	}
 
 	.zoom-btn {
-		width: 40px;
-		height: 36px;
+		width: var(--space-10);
+		height: var(--space-9);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -626,8 +626,8 @@ ECharts Network Graph - A network visualization for author collaborations
 		}
 
 		.zoom-btn {
-			width: 36px;
-			height: 36px;
+			width: var(--space-9);
+			height: var(--space-9);
 		}
 	}
 
@@ -637,8 +637,8 @@ ECharts Network Graph - A network visualization for author collaborations
 		}
 
 		.zoom-btn {
-			width: 32px;
-			height: 32px;
+			width: var(--space-8);
+			height: var(--space-8);
 		}
 	}
 </style>

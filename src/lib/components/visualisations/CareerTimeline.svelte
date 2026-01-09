@@ -460,6 +460,7 @@
 		pointer-events: none;
 		background: color-mix(in srgb, var(--color-surface) 90%, transparent);
 		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
 		border-radius: var(--border-radius-md);
 		border: 1px solid var(--color-border);
 		box-shadow: var(--shadow-lg);
@@ -605,9 +606,9 @@
 	}
 
 	.category-icon-large {
-		width: 56px;
-		height: 56px;
-		border-radius: 16px;
+		width: var(--space-14);
+		height: var(--space-14);
+		border-radius: var(--border-radius-xl);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -791,15 +792,15 @@
 	}
 
 	/* Mobile Optimizations */
-	@media (max-width: 768px) {
+	@media (--md-down) {
 		.card-content-wrapper {
 			flex-direction: column;
 			gap: var(--space-md);
 		}
 
 		.category-icon-large {
-			width: 48px;
-			height: 48px;
+			width: var(--space-12);
+			height: var(--space-12);
 		}
 
 		.card-header-row {

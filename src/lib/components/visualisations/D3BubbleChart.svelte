@@ -453,7 +453,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
 		box-shadow: var(--shadow-lg);
 		pointer-events: none;
-		z-index: 1000;
+		z-index: var(--z-dropdown);
 		white-space: nowrap;
 	}
 
@@ -502,8 +502,8 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 	}
 
 	.zoom-btn {
-		width: 36px;
-		height: 36px;
+		width: var(--space-9);
+		height: var(--space-9);
 		display: flex;
 		align-items: center;
 		justify-content: center;

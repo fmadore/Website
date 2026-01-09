@@ -460,8 +460,8 @@
 	/* Custom Marker Styles */
 	:global(.map-marker) {
 		cursor: pointer;
-		width: 32px;
-		height: 32px;
+		width: var(--space-8);
+		height: var(--space-8);
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -515,13 +515,13 @@
 	:global(.map-popup .maplibregl-popup-close-button) {
 		color: var(--color-text-light);
 		background-color: color-mix(in srgb, var(--color-white) 70%, transparent);
-		border-radius: 50%;
-		width: 20px;
-		height: 20px;
-		line-height: 20px;
+		border-radius: var(--border-radius-full);
+		width: var(--space-5);
+		height: var(--space-5);
+		line-height: var(--space-5);
 		text-align: center;
-		top: 5px;
-		right: 5px;
+		top: var(--space-1);
+		right: var(--space-1);
 		font-size: 1.1em;
 		transition:
 			background-color var(--duration-fast) var(--ease-out),
@@ -536,7 +536,7 @@
 	/* Popup content styles */
 	:global(.map-popup img.map-popup-image) {
 		width: 100%;
-		height: 80px;
+		height: var(--space-20);
 		object-fit: cover;
 		display: block;
 		border-bottom: var(--border-width-thin) solid var(--color-border);
