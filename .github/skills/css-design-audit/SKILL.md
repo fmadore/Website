@@ -119,9 +119,10 @@ Use these to understand the design system's vocabulary, not as a lookup table:
 
 ### Spacing Philosophy (8-Point Grid)
 The grid exists for **visual rhythm**, not rigid compliance:
-- `--space-1` to `--space-4`: Tight, internal spacing
-- `--space-6` to `--space-8`: Standard component spacing  
-- `--space-12` to `--space-24`: Section/layout spacing
+- `--space-1` to `--space-4`: Tight, internal spacing (4px–16px)
+- `--space-5` to `--space-8`: Standard component spacing (20px–32px)
+- `--space-12` to `--space-24`: Section/layout spacing (48px–96px)
+- **Tight variants**: `--space-md-tight` (14px), `--space-xl-tight` (28px) for in-between values
 
 **Judgment call**: If a value like `18px` appears, ask why—it might be optical adjustment or a mistake.
 
@@ -130,6 +131,43 @@ The grid exists for **visual rhythm**, not rigid compliance:
 - `--font-size-sm` = de-emphasized, metadata
 - `--font-size-base` = body content
 - `--font-size-lg`+ = headings, emphasis
+
+### Border Radius Scale
+| Token | Value | Use For |
+|-------|-------|---------|
+| `--border-radius-xs` | 2px | Subtle rounding, badges |
+| `--border-radius-sm` | 4px | Small elements, chips |
+| `--border-radius` | 8px | Default, most UI elements |
+| `--border-radius-md` | 10px | Cards, panels |
+| `--border-radius-lg` | 12px | Larger cards, modals |
+| `--border-radius-xl` | 16px | Hero sections, feature cards |
+| `--border-radius-full` | 9999px | Circular elements, pills |
+
+### Shadow Depth Scale
+| Token | Use For |
+|-------|---------|
+| `--shadow-xs` | Subtle elevation, borders |
+| `--shadow-sm` | Light cards, hover states |
+| `--shadow` | Default card elevation |
+| `--shadow-md` | Dropdowns, floating panels |
+| `--shadow-lg` | Modals, major overlays |
+| `--shadow-xl` | Hero elements, maximum depth |
+| `--shadow-primary/accent/highlight` | Colored glow effects |
+| `--shadow-glass` | Glassmorphism elements |
+
+### Z-Index Semantic Scale
+| Token | Value | Use For |
+|-------|-------|---------|
+| `--z-base` | 0 | Default stacking |
+| `--z-above` | 1 | Slightly elevated |
+| `--z-dropdown` | 1000 | Dropdown menus |
+| `--z-sticky` | 1020 | Sticky headers |
+| `--z-fixed` | 1030 | Fixed elements |
+| `--z-modal-backdrop` | 1040 | Modal overlays |
+| `--z-modal` | 1050 | Modal content |
+| `--z-popover` | 1060 | Popovers, tooltips |
+| `--z-tooltip` | 1070 | Tooltips |
+| `--z-toast` | 1080 | Toast notifications |
 
 ## Accessibility: Beyond Checkboxes
 
@@ -209,13 +247,14 @@ Check if existing utilities can be used instead of custom glass:
 ```
 
 ### Duration Semantics
-| Token | When to Use |
-|-------|-------------|
-| `--duration-instant` | Micro-interactions, toggles |
-| `--duration-fast` | Hover states, small UI feedback |
-| `--duration-normal` | Standard transitions |
-| `--duration-slow` | Larger element movements |
-| `--duration-slower` | Page transitions, complex animations |
+| Token | Value | When to Use |
+|-------|-------|-------------|
+| `--duration-instant` | 75ms | Micro-interactions, toggles |
+| `--duration-fast` | 150ms | Hover states, small UI feedback |
+| `--duration-normal` | 200ms | Standard transitions |
+| `--duration-moderate` | 300ms | Medium transitions, accordion reveals |
+| `--duration-slow` | 500ms | Larger element movements |
+| `--duration-slower` | 700ms | Page transitions, complex animations |
 
 ## Media Query Validation
 

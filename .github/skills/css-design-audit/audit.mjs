@@ -14,67 +14,136 @@ import { join, extname, relative } from 'path';
 
 // Design tokens that should be used instead of hardcoded values
 const COLOR_PATTERNS = {
-	// Primary blues
+	// Primary blues (maps to --sys-color-blue-*)
 	'#1d4ed8': '--color-primary',
 	'#1e3a5f': '--color-primary-dark',
 	'#3b82f6': '--color-primary-light',
 	'#60a5fa': '--color-primary-lighter',
-	// Accent teal
+	'#2563eb': '--color-primary (alt: --sys-color-blue-600)',
+	'#172554': '--sys-color-blue-900',
+	'#93c5fd': '--sys-color-blue-300',
+	'#bfdbfe': '--sys-color-blue-200',
+	'#dbeafe': '--sys-color-blue-100',
+	// Accent teal (maps to --sys-color-teal-*)
 	'#14b8a6': '--color-accent',
 	'#0d9488': '--color-accent-dark',
 	'#2dd4bf': '--color-accent-light',
-	// Highlight amber
+	'#0f766e': '--sys-color-teal-700',
+	'#5eead4': '--sys-color-teal-300',
+	// Highlight amber (maps to --sys-color-amber-*)
 	'#f59e0b': '--color-highlight',
 	'#d97706': '--color-highlight-dark',
 	'#fbbf24': '--color-highlight-light',
-	// Success emerald
+	'#fcd34d': '--sys-color-amber-300',
+	// Success emerald (maps to --sys-color-emerald-*)
 	'#10b981': '--color-success',
 	'#059669': '--color-success-dark',
-	// Danger red
+	'#34d399': '--sys-color-emerald-400',
+	// Danger red (maps to --sys-color-red-*)
 	'#dc2626': '--color-danger',
 	'#b91c1c': '--color-danger-dark',
 	'#ef4444': '--color-danger-light',
-	// Neutrals (most common)
+	'#f87171': '--sys-color-red-400',
+	// Neutrals (maps to --sys-color-neutral-*)
 	'#64748b': '--color-secondary',
 	'#475569': '--color-secondary / --color-text-soft',
+	'#334155': '--sys-color-neutral-700',
 	'#1e293b': '--color-text',
+	'#0f172a': '--color-text-emphasis / --sys-color-neutral-900',
+	'#020617': '--sys-color-neutral-950',
 	'#f8fafc': '--color-surface',
 	'#f1f5f9': '--color-surface-alt',
 	'#e2e8f0': '--color-border',
+	'#cbd5e1': '--color-border-dark / --sys-color-neutral-300',
+	'#94a3b8': '--color-text-muted / --sys-color-neutral-400',
 };
 
 const SPACING_PATTERNS = {
+	// Pixel values (8-point grid)
+	'2px': '--space-0-5',
 	'4px': '--space-1',
+	'6px': '--space-1-5',
 	'8px': '--space-2',
+	'10px': '--space-2-5',
 	'12px': '--space-3',
+	'14px': '--space-3-5 / --space-md-tight',
 	'16px': '--space-4',
 	'20px': '--space-5',
 	'24px': '--space-6',
-	'28px': '--space-7',
+	'28px': '--space-7 / --space-xl-tight',
 	'32px': '--space-8',
+	'36px': '--space-9',
 	'40px': '--space-10',
+	'44px': '--space-11',
 	'48px': '--space-12',
+	'56px': '--space-14',
 	'64px': '--space-16',
 	'80px': '--space-20',
 	'96px': '--space-24',
+	'112px': '--space-28',
+	'128px': '--space-32',
+	// Rem values
+	'0.125rem': '--space-0-5',
 	'0.25rem': '--space-1',
+	'0.375rem': '--space-1-5',
 	'0.5rem': '--space-2',
+	'0.625rem': '--space-2-5',
 	'0.75rem': '--space-3',
+	'0.875rem': '--space-3-5',
 	'1rem': '--space-4',
 	'1.25rem': '--space-5',
 	'1.5rem': '--space-6',
+	'1.75rem': '--space-7',
 	'2rem': '--space-8',
+	'2.25rem': '--space-9',
 	'2.5rem': '--space-10',
+	'2.75rem': '--space-11',
 	'3rem': '--space-12',
+	'3.5rem': '--space-14',
+	'4rem': '--space-16',
+	'5rem': '--space-20',
+	'6rem': '--space-24',
 };
 
 const DURATION_PATTERNS = {
 	'75ms': '--duration-instant',
 	'150ms': '--duration-fast',
 	'200ms': '--duration-normal',
-	'300ms': '--duration-slow',
-	'500ms': '--duration-slower',
+	'300ms': '--duration-moderate',
+	'500ms': '--duration-slow',
 	'700ms': '--duration-slower',
+};
+
+// Border radius patterns (common hardcoded values)
+const BORDER_RADIUS_PATTERNS = {
+	'2px': '--border-radius-xs',
+	'4px': '--border-radius-sm',
+	'8px': '--border-radius',
+	'10px': '--border-radius-md',
+	'12px': '--border-radius-lg',
+	'16px': '--border-radius-xl',
+	'20px': '--border-radius-2xl',
+	'24px': '--border-radius-3xl',
+	'0.125rem': '--border-radius-xs',
+	'0.25rem': '--border-radius-sm',
+	'0.5rem': '--border-radius',
+	'0.625rem': '--border-radius-md',
+	'0.75rem': '--border-radius-lg',
+	'1rem': '--border-radius-xl',
+	'1.25rem': '--border-radius-2xl',
+	'1.5rem': '--border-radius-3xl',
+};
+
+// Z-index patterns (semantic scale)
+const ZINDEX_PATTERNS = {
+	'1000': '--z-dropdown',
+	'1020': '--z-sticky',
+	'1030': '--z-fixed',
+	'1040': '--z-modal-backdrop',
+	'1050': '--z-modal',
+	'1060': '--z-popover',
+	'1070': '--z-tooltip',
+	'1080': '--z-toast',
 };
 
 // Issue types
@@ -82,6 +151,8 @@ const ISSUE_TYPES = {
 	HARDCODED_COLOR: 'hardcoded-color',
 	HARDCODED_SPACING: 'hardcoded-spacing',
 	HARDCODED_DURATION: 'hardcoded-duration',
+	HARDCODED_BORDER_RADIUS: 'hardcoded-border-radius',
+	HARDCODED_ZINDEX: 'hardcoded-zindex',
 	MISSING_WEBKIT_BACKDROP: 'missing-webkit-backdrop',
 	DEPRECATED_ANIMATION: 'deprecated-animation',
 	INVALID_MEDIA_QUERY: 'invalid-media-query',
@@ -269,6 +340,38 @@ function analyzeFile(filePath) {
 					});
 				}
 			}
+			
+			// Check for hardcoded border-radius values
+			if (line.includes('border-radius') && !line.includes('--border-radius')) {
+				for (const [value, token] of Object.entries(BORDER_RADIUS_PATTERNS)) {
+					const regex = new RegExp(`border-radius:\\s*${value.replace('.', '\\.')}[;\\s]`, 'i');
+					if (regex.test(line)) {
+						issues.push({
+							type: ISSUE_TYPES.HARDCODED_BORDER_RADIUS,
+							line: lineNum,
+							current: value,
+							suggestion: `var(${token})`,
+							context: line.trim()
+						});
+					}
+				}
+			}
+			
+			// Check for hardcoded z-index values (semantic scale)
+			if (line.includes('z-index') && !line.includes('--z-')) {
+				for (const [value, token] of Object.entries(ZINDEX_PATTERNS)) {
+					const regex = new RegExp(`z-index:\\s*${value}[;\\s]`, 'i');
+					if (regex.test(line)) {
+						issues.push({
+							type: ISSUE_TYPES.HARDCODED_ZINDEX,
+							line: lineNum,
+							current: value,
+							suggestion: `var(${token})`,
+							context: line.trim()
+						});
+					}
+				}
+			}
 		});
 	}
 	
@@ -356,6 +459,8 @@ function formatIssueType(type) {
 		[ISSUE_TYPES.HARDCODED_COLOR]: 'Hardcoded color',
 		[ISSUE_TYPES.HARDCODED_SPACING]: 'Hardcoded spacing',
 		[ISSUE_TYPES.HARDCODED_DURATION]: 'Hardcoded duration',
+		[ISSUE_TYPES.HARDCODED_BORDER_RADIUS]: 'Hardcoded border-radius',
+		[ISSUE_TYPES.HARDCODED_ZINDEX]: 'Hardcoded z-index',
 		[ISSUE_TYPES.MISSING_WEBKIT_BACKDROP]: 'Missing -webkit-backdrop-filter',
 		[ISSUE_TYPES.DEPRECATED_ANIMATION]: 'Deprecated animation pattern',
 		[ISSUE_TYPES.INVALID_MEDIA_QUERY]: 'Invalid media query',

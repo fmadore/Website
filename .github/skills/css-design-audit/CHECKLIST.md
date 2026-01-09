@@ -130,17 +130,62 @@ Use this for **reference**, not mechanical find-replace:
 #f59e0b  →  var(--color-highlight)    /* Attention, featured */
 #10b981  →  var(--color-success)      /* Positive states */
 #dc2626  →  var(--color-danger)       /* Errors, destructive */
+#64748b  →  var(--color-secondary)    /* Supporting elements */
+#1e293b  →  var(--color-text)         /* Main text */
 
 /* Spacing - 8-point grid */
+4px   →  var(--space-1)
 8px   →  var(--space-2)
+12px  →  var(--space-3)
 16px  →  var(--space-4)
+20px  →  var(--space-5)
 24px  →  var(--space-6)
+28px  →  var(--space-7) / var(--space-xl-tight)
 32px  →  var(--space-8)
 48px  →  var(--space-12)
+64px  →  var(--space-16)
 
-/* Transitions */
+/* Border Radius */
+2px   →  var(--border-radius-xs)
+4px   →  var(--border-radius-sm)
+8px   →  var(--border-radius)         /* default */
+10px  →  var(--border-radius-md)
+12px  →  var(--border-radius-lg)
+16px  →  var(--border-radius-xl)
+20px  →  var(--border-radius-2xl)
+24px  →  var(--border-radius-3xl)
+
+/* Z-Index - use semantic scale */
+1000  →  var(--z-dropdown)
+1020  →  var(--z-sticky)
+1030  →  var(--z-fixed)
+1040  →  var(--z-modal-backdrop)
+1050  →  var(--z-modal)
+1060  →  var(--z-popover)
+1070  →  var(--z-tooltip)
+1080  →  var(--z-toast)
+
+/* Shadows - use token scale */
+box-shadow: 0 1px 2px...   →  var(--shadow-xs)
+box-shadow: 0 1px 3px...   →  var(--shadow-sm)
+box-shadow: 0 4px 6px...   →  var(--shadow)
+box-shadow: 0 10px 15px... →  var(--shadow-md)
+box-shadow: 0 20px 25px... →  var(--shadow-lg)
+box-shadow: 0 25px 50px... →  var(--shadow-xl)
+
+/* Transitions - duration tokens */
+75ms   →  var(--duration-instant)
+150ms  →  var(--duration-fast)
 200ms  →  var(--duration-normal)
-300ms  →  var(--duration-slow)
+300ms  →  var(--duration-moderate)
+500ms  →  var(--duration-slow)
+700ms  →  var(--duration-slower)
+
+/* Easing functions */
+cubic-bezier(0.4, 0, 1, 1)       →  var(--ease-in)
+cubic-bezier(0, 0, 0.2, 1)       →  var(--ease-out)
+cubic-bezier(0.4, 0, 0.2, 1)     →  var(--ease-in-out)
+cubic-bezier(0.34, 1.56, 0.64, 1) →  var(--ease-bounce)
 
 /* Transparency */
 rgba(...)  →  color-mix(in srgb, var(--color-*) 50%, transparent)

@@ -154,7 +154,7 @@ Use these for understanding meaning, not mechanical replacement:
 | Token | Purpose | Use For |
 |-------|---------|---------|
 | `--color-primary` | Main brand action | Primary CTAs, active states, key links |
-| `--color-secondary` | Supporting/neutral | Secondary buttons, less emphasis |
+| `--color-secondary` | Supporting/neutral | Secondary buttons, metadata, less emphasis |
 | `--color-accent` | Distinction/highlight | Badges, tags, special callouts |
 | `--color-highlight` | Attention/importance | Featured items, warnings |
 | `--color-success` | Positive outcome | Confirmations, valid states |
@@ -162,20 +162,59 @@ Use these for understanding meaning, not mechanical replacement:
 
 ### Spacing (8-Point Grid Philosophy)
 The grid exists for **visual rhythm**:
-- `--space-1` to `--space-4`: Internal, tight spacing
-- `--space-6` to `--space-8`: Component spacing
-- `--space-12`+: Layout/section spacing
+- `--space-1` to `--space-4`: Internal, tight spacing (4px–16px)
+- `--space-5` to `--space-8`: Component spacing (20px–32px)
+- `--space-12`+: Layout/section spacing (48px+)
+- `--space-md-tight`, `--space-xl-tight`: In-between values (14px, 28px)
+
+### Duration Tokens
+| Token | Value | Use For |
+|-------|-------|---------|
+| `--duration-instant` | 75ms | Micro-interactions |
+| `--duration-fast` | 150ms | Hover states |
+| `--duration-normal` | 200ms | Standard transitions |
+| `--duration-moderate` | 300ms | Medium animations |
+| `--duration-slow` | 500ms | Larger movements |
+| `--duration-slower` | 700ms | Page transitions |
+
+### Border Radius Tokens
+| Token | Value | Use For |
+|-------|-------|---------|
+| `--border-radius-xs` | 2px | Badges, subtle rounding |
+| `--border-radius-sm` | 4px | Chips, small elements |
+| `--border-radius` | 8px | Default, most UI |
+| `--border-radius-lg` | 12px | Cards, panels |
+| `--border-radius-xl` | 16px | Large cards |
+| `--border-radius-full` | 9999px | Circular, pills |
+
+### Z-Index Scale (Semantic)
+| Token | Value | Use For |
+|-------|-------|---------|
+| `--z-dropdown` | 1000 | Dropdown menus |
+| `--z-sticky` | 1020 | Sticky headers |
+| `--z-modal` | 1050 | Modal dialogs |
+| `--z-tooltip` | 1070 | Tooltips |
+| `--z-toast` | 1080 | Notifications |
+
+### Shadow Scale
+- `--shadow-xs` to `--shadow-xl`: Depth levels
+- `--shadow-primary`, `--shadow-accent`: Colored glows
+- `--shadow-glass`: For glassmorphism elements
 
 ### Key Patterns
 - **Glassmorphism**: Must include `-webkit-backdrop-filter` fallback
 - **Animations**: Use CSS classes (`scroll-reveal`), not deprecated JS
 - **Media queries**: Use `@media (--md)`, never `var()` in queries
 - **Focus**: Use `var(--focus-ring)` for consistency
+- **Border radius**: Use tokens, not hardcoded pixel values
+- **Z-index**: Use semantic scale, avoid magic numbers
 
 ## Reference Files
 
 - Design tokens: `src/styles/base/variables.css`
 - CSS architecture: `src/styles/CSS-README.md`
 - Glass utilities: `src/styles/utilities/glassmorphism.css`
+- Shadow utilities: `src/styles/utilities/shadows.css`
+- Z-index utilities: `src/styles/utilities/z-index.css`
 - Full skill guide: `.github/skills/css-design-audit/SKILL.md`
 - Checklist: `.github/skills/css-design-audit/CHECKLIST.md`
