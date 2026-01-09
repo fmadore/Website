@@ -303,9 +303,9 @@
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		width: 40px;
-		height: 40px;
-		margin: -20px 0 0 -20px;
+		width: var(--space-10);
+		height: var(--space-10);
+		margin: calc(var(--space-10) * -0.5) 0 0 calc(var(--space-10) * -0.5);
 		border: 4px solid var(--color-border);
 		border-top: 4px solid var(--color-primary);
 		border-radius: var(--border-radius-full);

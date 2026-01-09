@@ -68,16 +68,16 @@
 	}
 
 	/* Enhanced styling for tag buttons with glassmorphism */
-	:global(.tag-button) {
+	:global(.tag-list .tag-button) {
 		font-weight: var(--font-weight-medium);
 		letter-spacing: var(--letter-spacing-wide);
-		border-radius: var(--border-radius-full) !important;
+		border-radius: var(--border-radius-full);
 	}
 
-	:global(.tag-button:hover) {
+	:global(.tag-list .tag-button:hover) {
 		transform: var(--transform-lift-sm);
 		box-shadow: 0 var(--space-xs) var(--space-md) 0
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) !important;
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent);
 	}
 
 	/* Responsive adjustments */

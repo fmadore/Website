@@ -25,7 +25,7 @@
 
 {#if visibleDetails.length > 0}
 	<section class="details-section scroll-reveal" aria-labelledby="publication-details-heading">
-		<h2 id="publication-details-heading" class="visually-hidden">Publication Details</h2>
+		<h2 id="publication-details-heading" class="sr-only">Publication Details</h2>
 		<dl class="details-grid">
 			{#each visibleDetails as detail (detail.label)}
 				<div class="detail-item">
@@ -48,17 +48,6 @@
 {/if}
 
 <style>
-	.visually-hidden {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0 0 0 0);
-		white-space: nowrap;
-		border: 0;
-	}
 
 	.details-grid {
 		display: grid;
@@ -111,7 +100,7 @@
 
 	.detail-item {
 		display: grid;
-		grid-template-columns: 120px 1fr;
+		grid-template-columns: var(--space-32) 1fr;
 		align-items: baseline;
 		gap: var(--space-md);
 		padding: var(--space-sm) var(--space-xs);
@@ -160,7 +149,7 @@
 		color: var(--color-text-muted);
 		line-height: var(--line-height-normal);
 		/* Ensure consistent vertical alignment */
-		padding-top: 2px;
+		padding-top: var(--space-0-5);
 	}
 
 	.detail-value {
