@@ -10,8 +10,7 @@
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
-	import { page } from '$app/stores'; // Import page store
-	import { browser } from '$app/environment'; // Import browser check
+	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
 
 	// Pre-construct breadcrumb items with evaluated paths
 	const breadcrumbItems = [
@@ -22,58 +21,8 @@
 		}
 	];
 
-	// Generate Breadcrumb JSON-LD reactively using $derived
-	let breadcrumbJsonLdString = $derived(
-		JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': 'BreadcrumbList',
-			itemListElement: breadcrumbItems.map((item, index) => ({
-				'@type': 'ListItem',
-				position: index + 1,
-				name: item.label,
-				item: `${$page.url.origin}${item.href}`
-			}))
-		})
-	);
-
-	// Manage JSON-LD script injection
-	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
-
-	// Replace onMount and onDestroy with $effect
-	$effect(() => {
-		if (browser) {
-			const scriptId = breadcrumbJsonLdScriptId;
-			let scriptElement = document.getElementById(scriptId) as HTMLScriptElement | null;
-
-			// breadcrumbJsonLdString is reactive via $derived
-			if (breadcrumbJsonLdString) {
-				if (scriptElement) {
-					scriptElement.textContent = breadcrumbJsonLdString;
-				} else {
-					scriptElement = document.createElement('script');
-					scriptElement.id = scriptId;
-					scriptElement.type = 'application/ld+json';
-					scriptElement.textContent = breadcrumbJsonLdString;
-					document.head.appendChild(scriptElement);
-				}
-			} else {
-				// If breadcrumbJsonLdString becomes falsy and the script exists, remove it
-				if (scriptElement) {
-					document.head.removeChild(scriptElement);
-				}
-			}
-
-			return () => {
-				// Cleanup: remove the script if it exists
-				if (browser) {
-					const scriptToRemove = document.getElementById(scriptId);
-					if (scriptToRemove && scriptToRemove.parentElement === document.head) {
-						document.head.removeChild(scriptToRemove);
-					}
-				}
-			};
-		}
-	});
+	// Inject breadcrumb JSON-LD structured data
+	useBreadcrumbJsonLd(breadcrumbItems);
 </script>
 
 <SEO 
@@ -164,7 +113,3 @@
 		</div>
 	</div>
 </div>
-
-<style>
-	/* Page-specific styles can go here */
-</style>

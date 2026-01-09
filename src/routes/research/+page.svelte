@@ -96,7 +96,3 @@
 	</div>
 	</div>
 </div>
-
-<style>
-	/* .container styles are handled by global layout/container.css */
-</style>

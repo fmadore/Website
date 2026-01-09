@@ -9,8 +9,7 @@
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
-	import { page } from '$app/stores';
-	import { browser } from '$app/environment';
+	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
 
 	// Pre-construct breadcrumb items
 	const breadcrumbItems = [
@@ -21,52 +20,8 @@
 		}
 	];
 
-	// Generate Breadcrumb JSON-LD reactively
-	let breadcrumbJsonLdString = $derived(
-		JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': 'BreadcrumbList',
-			itemListElement: breadcrumbItems.map((item, index) => ({
-				'@type': 'ListItem',
-				position: index + 1,
-				name: item.label,
-				item: `${$page.url.origin}${item.href}`
-			}))
-		})
-	);
-
-	// Manage JSON-LD script injection
-	const breadcrumbJsonLdScriptId = 'breadcrumb-json-ld';
-
-	$effect(() => {
-		if (browser) {
-			const scriptId = breadcrumbJsonLdScriptId;
-			let scriptElement = document.getElementById(scriptId) as HTMLScriptElement | null;
-
-			if (breadcrumbJsonLdString) {
-				if (scriptElement) {
-					scriptElement.textContent = breadcrumbJsonLdString;
-				} else {
-					scriptElement = document.createElement('script');
-					scriptElement.id = scriptId;
-					scriptElement.type = 'application/ld+json';
-					scriptElement.textContent = breadcrumbJsonLdString;
-					document.head.appendChild(scriptElement);
-				}
-			} else if (scriptElement) {
-				document.head.removeChild(scriptElement);
-			}
-
-			return () => {
-				if (browser) {
-					const scriptToRemove = document.getElementById(scriptId);
-					if (scriptToRemove && scriptToRemove.parentElement === document.head) {
-						document.head.removeChild(scriptToRemove);
-					}
-				}
-			};
-		}
-	});
+	// Inject breadcrumb JSON-LD structured data
+	useBreadcrumbJsonLd(breadcrumbItems);
 </script>
 
 <SEO
@@ -196,16 +151,3 @@
 		</div>
 	</div>
 </div>
-
-<style>
-	/* Page-specific styles - consistent with other research pages */
-	/* Main content container styling handled by utility classes */
-
-	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
-		:global(.main-content),
-		:global(.related-content) {
-			transition: none;
-		}
-	}
-</style>
