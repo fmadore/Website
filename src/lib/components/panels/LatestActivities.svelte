@@ -57,7 +57,7 @@
 	{:else}
 		<ul class="activities-list grid-stagger">
 			{#each activityList as activity (activity.id)}
-				<li class="activity-item">
+				<li class="activity-item card-accent-border">
 					<div class="activity-meta">
 						{#if activity.type}
 							<span class="activity-type" data-type={activity.type}>
@@ -123,87 +123,7 @@
 <style>
 	/* Activity-specific styles - harmonized with ProfileBanner and ContentBody */
 	.activity-item {
-		position: relative;
-		padding: var(--space-md);
-		border-radius: var(--border-radius-md);
-		overflow: hidden;
-		will-change: transform, box-shadow;
-		transition:
-			transform var(--duration-normal) var(--ease-out),
-			background var(--duration-normal) var(--ease-out),
-			border-color var(--duration-normal) var(--ease-out),
-			box-shadow var(--duration-normal) var(--ease-out);
-		/* Use glass-card utility for consistent glassmorphism */
-		background: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--card-glass-opacity-light) * 100%),
-			transparent
-		);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid
-			color-mix(
-				in srgb,
-				var(--color-white) calc(var(--card-glass-border-light) * 100%),
-				transparent
-			);
-		box-shadow:
-			0 8px 32px 0
-				color-mix(
-					in srgb,
-					rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity) * 100%),
-					transparent
-				),
-			inset 0 1px 0
-				color-mix(
-					in srgb,
-					var(--color-white) calc(var(--card-glass-inset-light) * 100%),
-					transparent
-				);
-	}
-
-	.activity-item::before {
-		content: '';
-		position: absolute;
-		left: 0;
-		top: 0;
-		bottom: 0;
-		width: 0;
-		background: linear-gradient(180deg, var(--color-success) 0%, var(--color-highlight) 100%);
-		border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
-		transition: width var(--duration-normal) var(--ease-out);
-		opacity: var(--opacity-high);
-	}
-
-	.activity-item:hover::before {
-		width: var(--border-width-thick);
-	}
-
-	.activity-item:hover {
-		transform: var(--transform-lift-sm);
-		background: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--card-glass-opacity-light-hover) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--card-glass-border-light-hover) * 100%),
-			transparent
-		);
-		box-shadow:
-			0 12px 40px 0
-				color-mix(
-					in srgb,
-					rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity-hover) * 100%),
-					transparent
-				),
-			inset 0 1px 0
-				color-mix(
-					in srgb,
-					var(--color-white) calc(var(--card-glass-inset-light-hover) * 100%),
-					transparent
-				);
+		--card-accent-gradient: linear-gradient(180deg, var(--color-success) 0%, var(--color-highlight) 100%);
 	}
 
 	.activity-meta {
@@ -289,54 +209,6 @@
 	}
 
 	/* Dark mode overrides for activity-specific elements */
-	:global(html.dark) .activity-item {
-		background: color-mix(
-			in srgb,
-			var(--color-black) calc(var(--card-glass-opacity-dark) * 100%),
-			transparent
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-dark) * 100%), transparent);
-		box-shadow:
-			0 8px 32px 0
-				color-mix(
-					in srgb,
-					rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity) * 100%),
-					transparent
-				),
-			inset 0 1px 0
-				color-mix(
-					in srgb,
-					var(--color-white) calc(var(--card-glass-inset-dark) * 100%),
-					transparent
-				);
-	}
-
-	:global(html.dark) .activity-item:hover {
-		background: color-mix(
-			in srgb,
-			var(--color-black) calc(var(--card-glass-opacity-dark-hover) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--card-glass-border-dark-hover) * 100%),
-			transparent
-		);
-		box-shadow:
-			0 12px 40px 0
-				color-mix(
-					in srgb,
-					rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity-hover) * 100%),
-					transparent
-				),
-			inset 0 1px 0
-				color-mix(
-					in srgb,
-					var(--color-white) calc(var(--card-glass-inset-dark-hover) * 100%),
-					transparent
-				);
-	}
 
 	:global(html.dark) .activity-type {
 		background-color: color-mix(
@@ -371,16 +243,10 @@
 
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
-		.activity-item,
-		.activity-item::before,
 		.activity-title,
 		.activity-type {
 			transition: none !important;
 			will-change: auto !important;
-		}
-
-		.activity-item:hover {
-			transform: none !important;
 		}
 	}
 </style>
