@@ -1,107 +1,174 @@
 # CSS Design Audit Checklist
 
-Use this checklist when reviewing Svelte components and CSS files for design system compliance.
+This checklist guides **intelligent review** of Svelte components and CSS files. It's organized around reasoning, not just pattern detection.
 
-## Quick Checks
+## Audit Philosophy
 
-### ✅ Colors
-- [ ] No hardcoded hex colors (#1d4ed8, #14b8a6, etc.)
-- [ ] Using semantic tokens (`--color-primary`, `--color-accent`)
-- [ ] Transparency via `color-mix()` not `rgba()`
-- [ ] Dark mode colors adapt correctly
+Before checking boxes, ask:
+1. **Does this serve the user?** (Accessibility, usability, performance)
+2. **Does this serve the team?** (Maintainability, consistency, clarity)
+3. **Is there a good reason for deviation?** (Context matters more than rules)
 
-### ✅ Spacing
-- [ ] No hardcoded pixel values for margins/padding
-- [ ] Using spacing scale (`--space-1` through `--space-24`)
-- [ ] Following 8-point grid (4, 8, 12, 16, 24, 32, 48, 64...)
-- [ ] Gap utilities use spacing tokens
+---
 
-### ✅ Typography
-- [ ] Font sizes from scale (`--font-size-sm`, `--font-size-lg`)
-- [ ] Using semantic font families (`--font-family-sans/serif/mono`)
-- [ ] Line heights from tokens (`--line-height-normal`)
-- [ ] Font weights from tokens (`--font-weight-semibold`)
+## 🎨 Semantic Correctness (Most Important)
 
-### ✅ Glassmorphism
-- [ ] Using utility classes (`.glass-card`, `.glass-panel`)
-- [ ] Has `-webkit-backdrop-filter` fallback
-- [ ] Borders use `color-mix()` for transparency
+These require **reasoning**, not pattern matching:
+
+### Color Semantics
+- [ ] Primary color (`--color-primary`) used only for **main actions** and active states
+- [ ] Secondary color used for **supporting** actions, not competing with primary
+- [ ] Accent color represents **distinction**, not errors or warnings
+- [ ] Danger color used for **destructive actions and errors**, not emphasis
+- [ ] Success color used for **positive outcomes**, not generic highlights
+
+**Ask yourself**: *If I swap this color token, does the meaning change incorrectly?*
+
+### State Semantics
+- [ ] Hover states provide **feedback**, not just decoration
+- [ ] Active states visually **confirm** interaction
+- [ ] Disabled states are **clearly** non-interactive (not just grayed)
+- [ ] Error states **stand out** from normal content
+
+### Typography Semantics
+- [ ] Heading levels reflect **actual document hierarchy** (not just size preference)
+- [ ] Emphasis (`strong`, `em`) used for **meaning**, not styling
+- [ ] Font size choices communicate **relative importance**
+
+---
+
+## ♿ Accessibility (Critical Path)
+
+These have real user impact:
+
+### Focus Management
+- [ ] **All** interactive elements have visible `:focus-visible` states
+- [ ] Focus indicators are visible against **all backgrounds** they appear on
+- [ ] Focus order follows **logical reading sequence**
+- [ ] Custom focus styles use `var(--focus-ring)` for consistency
+
+### Motion & Animation
+- [ ] Animations respect `@media (--reduced-motion)` or `prefers-reduced-motion`
+- [ ] Essential information **not conveyed solely through animation**
+- [ ] Auto-playing animations can be **paused or stopped**
+- [ ] No animations that could trigger **vestibular issues** (large parallax, zoom effects)
+
+### Color & Contrast
+- [ ] Text meets **WCAG AA contrast** (4.5:1 normal, 3:1 large text)
+- [ ] Information not conveyed by **color alone** (icons, patterns, text as backup)
+- [ ] Components work in **both light and dark modes**
+- [ ] Interactive elements have **hover/focus** state changes beyond color
+
+### Touch & Interaction
+- [ ] Touch targets are **at least 44×44px** (or have adequate spacing)
+- [ ] Spacing between targets prevents **accidental activation**
+- [ ] Critical actions are **harder to accidentally trigger** than cancel actions
+
+---
+
+## 🏗️ Technical Patterns (Secondary)
+
+These are about maintainability—flag with judgment:
+
+### Design Token Usage
+- [ ] Colors use semantic tokens—but **evaluate if the right token** for the context
+- [ ] Spacing aligns with 8-point grid—but **allow optical adjustments** when intentional
+- [ ] Typography uses scale—but understand **size communicates hierarchy**
+- [ ] Transitions use duration tokens for **consistent motion feel**
+
+### Acceptable Exceptions (Don't Flag These)
+- `1px` borders (intentionally thin, not a spacing value)
+- Colors in SVGs/icons that need fixed brand values
+- Third-party library overrides
+- Optical spacing adjustments with clear rationale
+- Animation keyframe percentages
+
+### Glassmorphism Patterns
+- [ ] Has `-webkit-backdrop-filter` fallback (Safari support)
+- [ ] Uses `color-mix()` for transparency, not `rgba()`
 - [ ] Dark mode has appropriate adaptations
+- [ ] Consider: **Is glass appropriate here?** (readability, performance)
 
-### ✅ Animations
-- [ ] Using CSS classes not JavaScript (`scroll-reveal`, not `use:scrollAnimate`)
-- [ ] Durations use tokens (`--duration-normal`)
-- [ ] Easing uses tokens (`--ease-out`)
-- [ ] Respects `prefers-reduced-motion`
-
-### ✅ Accessibility
-- [ ] Interactive elements have `:focus-visible` styles
-- [ ] Focus ring uses `var(--focus-ring)`
-- [ ] Color contrast meets WCAG AA (4.5:1 / 3:1)
-- [ ] Touch targets are 44x44px minimum
-
-### ✅ Media Queries
-- [ ] Using PostCSS Custom Media (`@media (--md)`)
-- [ ] NOT using `var()` in media queries
+### Media Queries
+- [ ] Uses PostCSS Custom Media (`@media (--md)`)
+- [ ] NOT using `var()` inside media queries (invalid CSS)
 - [ ] Mobile-first approach (base → sm → md → lg)
 
-## Common Replacements
+---
+
+## 🔍 Architectural Observations
+
+Look for patterns, not just individual issues:
+
+### Code Organization
+- [ ] Component has < 15 custom CSS properties (otherwise extract shared patterns)
+- [ ] No deeply nested selectors (> 3 levels indicates coupling)
+- [ ] No `!important` declarations (indicates specificity problems)
+- [ ] No duplicate style definitions within the file
+
+### Pattern Reuse
+- [ ] Check if similar components handle this concern differently (inconsistency?)
+- [ ] Check if existing utility classes could replace custom CSS
+- [ ] Consider if this pattern should be **extracted** to shared CSS
+- [ ] For cards/lists: Consider using `entity-cards.css` patterns
+
+### Browser Compatibility
+- [ ] Experimental features have fallbacks
+- [ ] No assumptions about specific viewport sizes
+- [ ] Responsive behavior tested conceptually
+
+---
+
+## 📝 Quick Reference: Common Replacements
+
+Use this for **reference**, not mechanical find-replace:
 
 ```css
-/* Colors */
-#1d4ed8  →  var(--color-primary)
-#14b8a6  →  var(--color-accent)
-#f59e0b  →  var(--color-highlight)
-#10b981  →  var(--color-success)
-#dc2626  →  var(--color-danger)
-#64748b  →  var(--color-secondary)
+/* Colors - choose by MEANING, not just hex match */
+#1d4ed8  →  var(--color-primary)      /* Main actions */
+#14b8a6  →  var(--color-accent)       /* Highlights, badges */
+#f59e0b  →  var(--color-highlight)    /* Attention, featured */
+#10b981  →  var(--color-success)      /* Positive states */
+#dc2626  →  var(--color-danger)       /* Errors, destructive */
 
-/* Spacing */
+/* Spacing - 8-point grid */
 8px   →  var(--space-2)
 16px  →  var(--space-4)
 24px  →  var(--space-6)
 32px  →  var(--space-8)
 48px  →  var(--space-12)
 
-/* Typography */
-14px  →  var(--font-size-sm)
-16px  →  var(--font-size-base)
-18px  →  var(--font-size-lg)
-
 /* Transitions */
 200ms  →  var(--duration-normal)
 300ms  →  var(--duration-slow)
 
 /* Transparency */
-rgba(0, 0, 0, 0.5)  →  color-mix(in srgb, var(--color-text) 50%, transparent)
+rgba(...)  →  color-mix(in srgb, var(--color-*) 50%, transparent)
 ```
 
-## File-Specific Guidance
+---
 
-### Svelte Components (`*.svelte`)
-1. Prefer utility classes over custom styles
-2. Component-scoped styles for unique visuals only
-3. Reference design tokens, never hardcode
-4. Include proper TypeScript types for props
+## 🚩 Red Flags (Always Investigate)
 
-### Global CSS (`src/styles/**/*.css`)
-1. Use semantic token names (`--color-primary` not `--sys-color-blue-700`)
-2. Document new utilities in CSS-README.md
-3. Follow existing naming conventions
-4. Include responsive variants where appropriate
+These usually indicate problems:
 
-### Entity Cards / List Items
-1. Use `.entity-*` classes from `entity-cards.css`
-2. Combine with `.glass-card` for glass effects
-3. Follow established grid patterns
-4. Maintain visual parity across similar components
+- **Inline `style=` attributes** with hardcoded values
+- **`!important` declarations** (specificity war signs)
+- **Deeply nested selectors** (> 3 levels)
+- **Duplicate style definitions** (copy-paste errors)
+- **Fixed widths/heights** that break responsiveness
+- **Z-index values** not from semantic scale
+- **Color used as only differentiator** (accessibility issue)
 
-## Red Flags 🚩
+---
 
-- `style=` inline styles with hardcoded values
-- `!important` declarations
-- Deeply nested selectors (> 3 levels)
-- Duplicate style definitions
-- Missing browser prefixes for experimental features
-- Fixed widths/heights that break responsiveness
-- Z-index values not from the semantic scale
+## ✅ Positive Patterns (Note These)
+
+When something is done well, mention it:
+
+- Proper use of `var(--focus-ring)` for focus states
+- Respects `prefers-reduced-motion`
+- Consistent with sibling components
+- Good semantic token choices
+- Clear separation of concerns
+- Appropriate use of utility classes
