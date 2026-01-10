@@ -4,9 +4,13 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import * as d3 from 'd3';
+	import type * as d3Type from 'd3';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { innerWidth as windowInnerWidth } from 'svelte/reactivity/window';
+
+	// D3 library loaded dynamically to reduce initial bundle size
+	let d3: typeof d3Type | null = $state(null);
+	let isD3Loaded = $state(false);
 
 	// Props
 	type DataItem = $$Generic;
@@ -39,8 +43,8 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 
 	// State management
 	let chartContainer: HTMLDivElement;
-	let svg: d3.Selection<SVGSVGElement, unknown, null, undefined> | null = null;
-	let zoomBehavior: d3.ZoomBehavior<SVGSVGElement, unknown> | null = null;
+	let svg: d3Type.Selection<SVGSVGElement, unknown, null, undefined> | null = null;
+	let zoomBehavior: d3Type.ZoomBehavior<SVGSVGElement, unknown> | null = null;
 	let containerWidth = $state(1000);
 	let containerHeight = $state(800);
 
@@ -97,7 +101,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 	});
 
 	// Type for simulation nodes
-	type BubbleNode = d3.SimulationNodeDatum & {
+	type BubbleNode = d3Type.SimulationNodeDatum & {
 		name: string;
 		value: number;
 		radius: number;
@@ -107,7 +111,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 
 	// Chart data transformation
 	const chartData: BubbleNode[] = $derived.by(() => {
-		if (data.length === 0) return [];
+		if (data.length === 0 || !d3) return [];
 
 		const maxValue = d3.max(data, (d) => valueAccessor(d)) || 1;
 
@@ -133,7 +137,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 
 	// Create/update chart
 	function createChart() {
-		if (!chartContainer || chartData.length === 0) return;
+		if (!chartContainer || chartData.length === 0 || !d3) return;
 
 		// Clear previous chart
 		d3.select(chartContainer).selectAll('*').remove();
@@ -248,12 +252,13 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			.attr('aria-label', (d) => `${d.name}: ${d.value}`)
 			.style('cursor', 'grab');
 
+		// Note: d3 is guaranteed to be loaded here since createChart guards against !d3
 		bubbleGroups
 			.on('mousedown', function () {
-				d3.select(this).style('cursor', 'grabbing');
+				d3!.select(this).style('cursor', 'grabbing');
 			})
 			.on('mouseup', function () {
-				d3.select(this).style('cursor', 'grab');
+				d3!.select(this).style('cursor', 'grab');
 			});
 
 		bubbleGroups
@@ -276,7 +281,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			.style('opacity', 0.9)
 			.style('filter', 'drop-shadow(0 4px 6px color-mix(in srgb, black 10%, transparent))')
 			.on('mouseenter', function (event, d) {
-				d3.select(this)
+				d3!.select(this)
 					.transition()
 					.duration(hoverTransitionMs)
 					.style('opacity', 1)
@@ -290,7 +295,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 				positionTooltip(event.clientX, event.clientY);
 			})
 			.on('mouseleave', function () {
-				d3.select(this)
+				d3!.select(this)
 					.transition()
 					.duration(hoverTransitionMs)
 					.style('opacity', 0.9)
@@ -322,7 +327,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 						? `${d.name.slice(0, Math.max(8, charLimit - 1))}…`
 						: d.name;
 
-				d3.select(this).text(label);
+				d3!.select(this).text(label);
 			});
 	}
 
@@ -342,14 +347,18 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 	}
 
 	function resetZoom() {
-		if (svg && zoomBehavior) {
+		if (svg && zoomBehavior && d3) {
 			const duration = prefersReducedMotion() ? 0 : 500;
 			svg.transition().duration(duration).call(zoomBehavior.transform, d3.zoomIdentity);
 		}
 	}
 
 	// Lifecycle management
-	onMount(() => {
+	onMount(async () => {
+		// Dynamically import D3 to reduce initial bundle size
+		const d3Module = await import('d3');
+		d3 = d3Module;
+		isD3Loaded = true;
 		createChart();
 	});
 
@@ -358,7 +367,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		// Track dependencies
 		const _ = [chartData, containerWidth, containerHeight, resolvedColors];
 
-		if (chartContainer && chartData.length > 0) {
+		if (chartContainer && chartData.length > 0 && isD3Loaded) {
 			createChart();
 		}
 	});

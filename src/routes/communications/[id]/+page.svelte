@@ -4,7 +4,6 @@
 	import { base } from '$app/paths';
 	import type { Communication } from '$lib/types/communication';
 	import type { ComponentType } from 'svelte';
-	import MapVisualization from '$lib/components/visualisations/MapVisualization.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
 	import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
@@ -41,6 +40,21 @@
 
 	// Inject breadcrumb JSON-LD structured data
 	useBreadcrumbJsonLd(() => breadcrumbItems);
+
+	// Lazy load MapVisualization to avoid loading maplibre-gl until needed
+	let MapVisualization: typeof import('$lib/components/visualisations/MapVisualization.svelte').default | null =
+		$state(null);
+	let mapLoaded = $state(false);
+
+	// Load map component when communication has coordinates
+	$effect(() => {
+		if (communication.coordinates && !mapLoaded) {
+			mapLoaded = true;
+			import('$lib/components/visualisations/MapVisualization.svelte').then((module) => {
+				MapVisualization = module.default;
+			});
+		}
+	});
 
 	// Prepare marker data for the map (array with one item)
 	const singleMarkerData = $derived(
@@ -199,7 +213,13 @@
 				<section class="map-section scroll-reveal">
 					<h2 class="map-section-title">Location</h2>
 					<div class="map-container-wrapper">
-						<MapVisualization markersData={singleMarkerData} />
+						{#if MapVisualization}
+							<MapVisualization markersData={singleMarkerData} />
+						{:else}
+							<div class="flex items-center justify-center py-12">
+								<span class="text-light">Loading map...</span>
+							</div>
+						{/if}
 					</div>
 				</section>
 			{/if}

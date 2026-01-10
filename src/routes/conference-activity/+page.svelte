@@ -44,8 +44,23 @@
 	} from '$lib/types/filters';
 	import CommunicationItem from '$lib/components/communications/CommunicationItem.svelte';
 	import UpcomingCommunications from '$lib/components/communications/UpcomingCommunications.svelte';
-	import MapVisualization from '$lib/components/visualisations/MapVisualization.svelte';
 	import ToggleButton from '$lib/components/common/ToggleButton.svelte';
+
+	// Lazy load MapVisualization to avoid loading maplibre-gl until needed
+	let MapVisualization: typeof import('$lib/components/visualisations/MapVisualization.svelte').default | null =
+		$state(null);
+	let mapLoadError = $state(false);
+
+	async function loadMapComponent() {
+		if (MapVisualization) return; // Already loaded
+		try {
+			const module = await import('$lib/components/visualisations/MapVisualization.svelte');
+			MapVisualization = module.default;
+		} catch (e) {
+			console.error('Failed to load MapVisualization:', e);
+			mapLoadError = true;
+		}
+	}
 	import EntityListPageLayout from '$lib/components/common/EntityListPageLayout.svelte';
 	import FilteredListDisplay from '$lib/components/common/FilteredListDisplay.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
@@ -289,7 +304,10 @@
 			</Button><ToggleButton
 				baseText="Map"
 				isToggled={showMap}
-				onclick={() => (showMap = !showMap)}
+				onclick={() => {
+					showMap = !showMap;
+					if (showMap) loadMapComponent();
+				}}
 			/>
 		</div>
 		<div class="mobile-controls-row">
@@ -336,7 +354,14 @@
 					{/if}
 				</div>
 				<div class="actions-group">
-					<ToggleButton baseText="Map" isToggled={showMap} onclick={() => (showMap = !showMap)} />
+					<ToggleButton
+						baseText="Map"
+						isToggled={showMap}
+						onclick={() => {
+							showMap = !showMap;
+							if (showMap) loadMapComponent();
+						}}
+					/>
 					<Sorter {activeSort} onsortchange={handleSortChange} availableSorts={['date', 'title']} />
 					{#if areFiltersActive($activeFilters)}
 						<Button
@@ -351,9 +376,13 @@
 				</div>
 			</div>
 
-			{#if showMap}
+			{#if showMap && MapVisualization}
 				<div class="mb-6">
 					<MapVisualization markersData={mapMarkers} />
+				</div>
+			{:else if showMap && !MapVisualization && !mapLoadError}
+				<div class="mb-6 flex items-center justify-center py-12">
+					<span class="text-light">Loading map...</span>
 				</div>
 			{/if}
 			<FilteredListDisplay

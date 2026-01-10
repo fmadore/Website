@@ -17,9 +17,14 @@ export default defineConfig({
 						return 'echarts';
 					}
 
-					// D3 - data visualization
+					// D3 - data visualization (dynamically imported)
 					if (id.includes('node_modules/d3') || id.includes('d3-')) {
 						return 'd3';
+					}
+
+					// MapLibre GL - mapping library (dynamically imported)
+					if (id.includes('maplibre-gl')) {
+						return 'maplibre';
 					}
 
 					// PDF generation libraries - dynamically imported
