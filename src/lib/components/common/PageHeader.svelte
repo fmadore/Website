@@ -116,7 +116,7 @@
 		color: var(--color-primary);
 		text-decoration: none;
 		font-weight: var(--font-weight-semibold);
-		transition: all var(--transition-duration-200) var(--transition-ease-out);
+		transition: all var(--duration-normal) var(--transition-ease-out);
 		display: inline-flex;
 		align-items: center;
 		gap: var(--space-1);
@@ -199,7 +199,7 @@
 		background: linear-gradient(90deg, var(--color-highlight) 0%, var(--color-accent) 100%);
 		border-radius: var(--border-radius-sm);
 		margin-top: var(--space-3);
-		transition: width var(--transition-duration-300) var(--transition-ease-out);
+		transition: width var(--duration-moderate) var(--transition-ease-out);
 	}
 
 	.authors {

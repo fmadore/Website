@@ -61,7 +61,7 @@
 		/* Use CSS variables for consistent spacing and typography */
 		font-weight: var(--font-weight-medium);
 		letter-spacing: var(--letter-spacing-wide);
-		transition: all var(--transition-duration-200) var(--transition-ease-out);
+		transition: all var(--duration-normal) var(--transition-ease-out);
 
 		/* Enhanced border radius for better visual appeal */
 		border-radius: var(--border-radius-lg) !important;
@@ -79,7 +79,7 @@
 	:global(.toggle-button:active) {
 		/* Subtle press effect */
 		transform: scale(var(--scale-95));
-		transition-duration: var(--transition-duration-75);
+		transition-duration: var(--duration-instant);
 	}
 
 	/* Active state styling - now works with primary variant */

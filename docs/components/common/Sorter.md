@@ -163,7 +163,7 @@ The component uses several CSS classes for enhanced styling:
 
 ### Features
 
-- **CSS Variables**: Uses design tokens like `--border-radius-lg`, `--shadow-sm`, `--transition-duration-200`
+- **CSS Variables**: Uses design tokens like `--border-radius-lg`, `--shadow-sm`, `--duration-normal`
 - **Glassmorphism**: Backdrop blur with `--glass-blur-amount` and subtle gradients
 - **Hover Effects**: Transform lift with `--transform-lift-sm` and enhanced shadows
 - **Active States**: Scale transform with `--scale-95` for press feedback

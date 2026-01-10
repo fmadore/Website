@@ -9,51 +9,51 @@
 		color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow,
 		transform, filter, backdrop-filter;
 	transition-timing-function: var(--transition-ease-in-out);
-	transition-duration: var(--transition-duration-150);
+	transition-duration: var(--duration-fast);
 }
 
 .transition-colors {
 	transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
 	transition-timing-function: var(--transition-ease-in-out);
-	transition-duration: var(--transition-duration-150);
+	transition-duration: var(--duration-fast);
 }
 
 .transition-opacity {
 	transition-property: opacity;
 	transition-timing-function: var(--transition-ease-in-out);
-	transition-duration: var(--transition-duration-150);
+	transition-duration: var(--duration-fast);
 }
 
 .transition-shadow {
 	transition-property: box-shadow;
 	transition-timing-function: var(--transition-ease-in-out);
-	transition-duration: var(--transition-duration-150);
+	transition-duration: var(--duration-fast);
 }
 
 .transition-transform {
 	transition-property: transform;
 	transition-timing-function: var(--transition-ease-in-out);
-	transition-duration: var(--transition-duration-150);
+	transition-duration: var(--duration-fast);
 }
 
 /* Durations */
 .duration-75 {
-	transition-duration: var(--transition-duration-75);
+	transition-duration: var(--duration-instant);
 }
 .duration-100 {
-	transition-duration: var(--transition-duration-100);
+	transition-duration: var(--duration-fast);
 }
 .duration-150 {
-	transition-duration: var(--transition-duration-150);
+	transition-duration: var(--duration-fast);
 }
 .duration-200 {
-	transition-duration: var(--transition-duration-200);
+	transition-duration: var(--duration-normal);
 }
 .duration-300 {
-	transition-duration: var(--transition-duration-300);
+	transition-duration: var(--duration-moderate);
 }
 .duration-500 {
-	transition-duration: var(--transition-duration-500);
+	transition-duration: var(--duration-slow);
 }
 
 /* Timing Functions */
@@ -77,12 +77,12 @@
 			color, background-color, border-color, text-decoration-color, fill, stroke, opacity,
 			box-shadow, transform, filter, backdrop-filter;
 		transition-timing-function: var(--transition-ease-in-out);
-		transition-duration: var(--transition-duration-150);
+		transition-duration: var(--duration-fast);
 	}
 	.sm\:transition-colors {
 		transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
 		transition-timing-function: var(--transition-ease-in-out);
-		transition-duration: var(--transition-duration-150);
+		transition-duration: var(--duration-fast);
 	}
 }
 
@@ -92,12 +92,12 @@
 			color, background-color, border-color, text-decoration-color, fill, stroke, opacity,
 			box-shadow, transform, filter, backdrop-filter;
 		transition-timing-function: var(--transition-ease-in-out);
-		transition-duration: var(--transition-duration-150);
+		transition-duration: var(--duration-fast);
 	}
 	.md\:transition-colors {
 		transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
 		transition-timing-function: var(--transition-ease-in-out);
-		transition-duration: var(--transition-duration-150);
+		transition-duration: var(--duration-fast);
 	}
 }
 
@@ -107,12 +107,12 @@
 			color, background-color, border-color, text-decoration-color, fill, stroke, opacity,
 			box-shadow, transform, filter, backdrop-filter;
 		transition-timing-function: var(--transition-ease-in-out);
-		transition-duration: var(--transition-duration-150);
+		transition-duration: var(--duration-fast);
 	}
 	.lg\:transition-colors {
 		transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
 		transition-timing-function: var(--transition-ease-in-out);
-		transition-duration: var(--transition-duration-150);
+		transition-duration: var(--duration-fast);
 	}
 }
 
@@ -122,11 +122,11 @@
 			color, background-color, border-color, text-decoration-color, fill, stroke, opacity,
 			box-shadow, transform, filter, backdrop-filter;
 		transition-timing-function: var(--transition-ease-in-out);
-		transition-duration: var(--transition-duration-150);
+		transition-duration: var(--duration-fast);
 	}
 	.xl\:transition-colors {
 		transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
 		transition-timing-function: var(--transition-ease-in-out);
-		transition-duration: var(--transition-duration-150);
+		transition-duration: var(--duration-fast);
 	}
 }

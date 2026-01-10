@@ -97,7 +97,7 @@
 		border-radius: var(--border-radius-full);
 		z-index: -1;
 		opacity: 0;
-		transition: opacity var(--transition-duration-300) var(--transition-ease-out);
+		transition: opacity var(--duration-moderate) var(--transition-ease-out);
 	}
 
 	.profile-photo {
@@ -180,7 +180,7 @@
 		/* Remove custom background - glass-button utility handles this */
 		border: none;
 		border-radius: var(--border-radius-lg);
-		transition: all var(--transition-duration-300) var(--transition-ease-in-out);
+		transition: all var(--duration-moderate) var(--transition-ease-in-out);
 		position: relative;
 		overflow: hidden;
 	}
@@ -198,7 +198,7 @@
 			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-medium) * 100%), transparent) 50%,
 			transparent 100%
 		);
-		transition: left var(--transition-duration-300) var(--transition-ease-out);
+		transition: left var(--duration-moderate) var(--transition-ease-out);
 	}
 
 	.icon-link:hover {
@@ -292,8 +292,8 @@
 	@media (prefers-reduced-motion: no-preference) {
 		.profile-photo img {
 			transition:
-				transform var(--transition-duration-300) var(--transition-ease-out),
-				box-shadow var(--transition-duration-300) var(--transition-ease-out);
+				transform var(--duration-moderate) var(--transition-ease-out),
+				box-shadow var(--duration-moderate) var(--transition-ease-out);
 		}
 
 		.profile-photo-container:hover::before {
@@ -308,7 +308,7 @@
 		}
 
 		.profile-icons :global(svg) {
-			transition: transform var(--transition-duration-200) var(--transition-ease-out);
+			transition: transform var(--duration-normal) var(--transition-ease-out);
 		}
 
 		.icon-link:hover :global(svg),
@@ -318,7 +318,7 @@
 		}
 
 		.title-accent {
-			transition: width var(--transition-duration-300) var(--transition-ease-out);
+			transition: width var(--duration-moderate) var(--transition-ease-out);
 		}
 
 		.profile-title:hover .title-accent {

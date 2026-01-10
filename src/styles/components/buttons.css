@@ -39,7 +39,7 @@
 	touch-action: manipulation;
 
 	/* Animation */
-	transition: all var(--transition-duration-200) var(--anim-ease-base);
+	transition: all var(--duration-normal) var(--anim-ease-base);
 	transform: translateZ(0);
 }
 
@@ -65,7 +65,7 @@
 			color-mix(in srgb, var(--color-black) calc(var(--opacity-very-low) * 100%), transparent) 100%);
 	pointer-events: none;
 	opacity: 0;
-	transition: opacity var(--transition-duration-200) ease;
+	transition: opacity var(--duration-normal) ease;
 }
 
 /* Active state */

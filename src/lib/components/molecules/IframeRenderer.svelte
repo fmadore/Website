@@ -284,7 +284,7 @@
 		background-color: var(--color-background);
 		z-index: 5; /* Higher z-index to ensure it covers the iframe */
 		opacity: 0;
-		transition: opacity var(--transition-duration-200); /* Using global transition duration */
+		transition: opacity var(--duration-normal); /* Using global transition duration */
 		pointer-events: none;
 		display: none;
 	}
@@ -324,7 +324,7 @@
 
 	:global(.iframe-loaded::before) {
 		opacity: 0 !important;
-		transition: opacity var(--transition-duration-200); /* Using global transition duration */
+		transition: opacity var(--duration-normal); /* Using global transition duration */
 		visibility: hidden;
 		display: none;
 	}
@@ -341,8 +341,8 @@
 	/* Interactive hover effect - subtle scale on hover */
 	:global(.iframe-interactive) {
 		transition:
-			transform var(--transition-duration-200) var(--transition-ease-out),
-			box-shadow var(--transition-duration-200) var(--transition-ease-out);
+			transform var(--duration-normal) var(--transition-ease-out),
+			box-shadow var(--duration-normal) var(--transition-ease-out);
 	}
 
 	:global(.iframe-interactive:hover) {
