@@ -179,12 +179,12 @@
 
 	:global(.mobile-nav-list) {
 		list-style: none;
-		padding: var(--space-6) 0 0 0;
+		padding: var(--space-3) 0 0 0;
 		margin: 0;
 		flex: 1;
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-2);
+		gap: var(--space-1);
 	}
 
 	:global(.mobile-nav-item) {
@@ -226,15 +226,15 @@
 
 	:global(.mobile-nav-item:last-child) {
 		margin-top: auto;
-		padding-top: var(--space-4);
+		padding-top: var(--space-2);
 	}
 
 	:global(.mobile-nav-link) {
 		display: block;
-		padding: var(--space-4) var(--space-6);
+		padding: var(--space-3) var(--space-5);
 		color: var(--color-text);
 		text-decoration: none;
-		font-size: var(--font-size-lg);
+		font-size: var(--font-size-base);
 		font-weight: var(--font-weight-semibold);
 		border-radius: var(--border-radius-lg);
 		background: color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
@@ -242,7 +242,7 @@
 		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
 		border: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
-		margin: var(--space-2) var(--space-4);
+		margin: var(--space-1) var(--space-4);
 		transition:
 			transform var(--duration-fast) var(--ease-out),
 			background-color var(--duration-fast) var(--ease-out),
@@ -296,8 +296,8 @@
 
 	:global(.mobile-dropdown) {
 		list-style: none;
-		padding: var(--space-3);
-		margin: var(--space-3) var(--space-6);
+		padding: var(--space-2);
+		margin: var(--space-2) var(--space-5);
 		background: color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 		backdrop-filter: blur(var(--glass-blur-md));
 		-webkit-backdrop-filter: blur(var(--glass-blur-md));
@@ -312,7 +312,7 @@
 
 	:global(.mobile-dropdown-link) {
 		display: block;
-		padding: var(--space-3) var(--space-4);
+		padding: var(--space-2) var(--space-3);
 		color: var(--color-text-light);
 		text-decoration: none;
 		font-size: var(--font-size-base);
