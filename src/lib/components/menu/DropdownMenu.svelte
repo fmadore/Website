@@ -136,6 +136,12 @@
 				color-mix(in srgb, var(--color-white) calc(var(--opacity-30) * 100%), transparent);
 	}
 
+	:global(.dropdown-item:focus-visible) {
+		outline: var(--border-width-medium) solid var(--color-primary);
+		outline-offset: var(--space-1);
+		border-radius: var(--border-radius-sm);
+	}
+
 	:global(.dropdown-item:hover::before) {
 		left: 100%;
 	}

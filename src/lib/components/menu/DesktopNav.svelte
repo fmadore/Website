@@ -64,19 +64,8 @@
                 }
         }
 
-	/* Navigation item styles */
-	:global(.nav-item) {
-		position: relative;
-		display: inline-block;
-	}
-
-	/* Focus and accessibility */
-	:global(.nav-link:focus-visible),
-	:global(.dropdown-item:focus-visible) {
-                outline: var(--border-width-medium) solid var(--color-primary);
-                outline-offset: var(--space-1);
-                border-radius: var(--border-radius-sm);
-        }
+	/* Navigation item styles are defined in NavItemWithDropdown.svelte */
+	/* Focus styles are defined in their respective components (NavLink.svelte, DropdownMenu.svelte) */
 
 	/* Touch device optimizations */
 	@media (hover: none) {

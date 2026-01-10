@@ -82,6 +82,7 @@
         .nav-link:focus-visible {
                 outline: var(--border-width-medium) solid var(--color-primary);
                 outline-offset: var(--space-1);
+                border-radius: var(--border-radius-sm);
         }
 
 	@media (hover: none) {

@@ -164,24 +164,30 @@
 	}
 
 	/* Enhanced glow effect for theme icons */
-	.theme-toggle :global(svg[data-icon*='moon']) {
+	/* Light mode: moon icon (shown when in light mode, to switch to dark) */
+	:global(html:not(.dark)) .theme-toggle :global(svg) {
 		color: var(--color-secondary);
 	}
 
-	.theme-toggle :global(svg[data-icon*='sun']) {
+	/* Dark mode: sun icon (shown when in dark mode, to switch to light) */
+	:global(html.dark) .theme-toggle :global(svg) {
 		color: var(--color-highlight);
 	}
 
-	.theme-toggle:hover :global(svg[data-icon*='moon']) {
+	:global(html:not(.dark)) .theme-toggle:hover :global(svg) {
 		color: var(--color-text-light);
-		text-shadow: 0 0 var(--space-3)
-			color-mix(in srgb, var(--color-secondary) calc(var(--opacity-50) * 100%), transparent);
+		filter: drop-shadow(
+			0 0 var(--space-3)
+				color-mix(in srgb, var(--color-secondary) calc(var(--opacity-50) * 100%), transparent)
+		);
 	}
 
-	.theme-toggle:hover :global(svg[data-icon*='sun']) {
+	:global(html.dark) .theme-toggle:hover :global(svg) {
 		color: var(--color-highlight);
-		text-shadow: 0 0 var(--space-4)
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-60) * 100%), transparent);
+		filter: drop-shadow(
+			0 0 var(--space-4)
+				color-mix(in srgb, var(--color-highlight) calc(var(--opacity-60) * 100%), transparent)
+		);
 	}
 
 	/* Pulse animation on theme change */
