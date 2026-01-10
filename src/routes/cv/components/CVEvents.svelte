@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { communicationsByDate } from '$lib/data/communications';
 	import { formatCVAuthorList } from '../utils/cvFormatters';
+	import CVEntry from './CVEntry.svelte';
 
 	const organizedEvents = communicationsByDate.filter((comm) => comm.type === 'event');
 </script>
@@ -18,13 +19,10 @@
 							day: 'numeric',
 							month: 'long'
 						})}
-				<div class="flex gap-4">
-					<div class="font-semibold text-nowrap">{commDate.getFullYear()}</div>
-					<div class="flex-1">
-						{#if formattedAuthors}{@html formattedAuthors}. {/if}
-						"{comm.title}"{#if comm.location}, {comm.location}{/if}, {dateDisplay}.
-					</div>
-				</div>
+				<CVEntry year={commDate.getFullYear()}>
+					{#if formattedAuthors}{@html formattedAuthors}. {/if}
+					"{comm.title}"{#if comm.location}, {comm.location}{/if}, {dateDisplay}.
+				</CVEntry>
 			{/each}
 		</div>
 	</section>

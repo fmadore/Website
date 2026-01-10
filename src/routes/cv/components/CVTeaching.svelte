@@ -2,6 +2,7 @@
 	import teaching from '$lib/data/teaching';
 	import guestLectures from '$lib/data/teaching/guest-lectures';
 	import { base } from '$app/paths';
+	import CVEntry from './CVEntry.svelte';
 
 	// Format year range for display (e.g., "2013-18" or "2020")
 	function formatYearRange(yearString: string): string {
@@ -39,35 +40,29 @@
 		<h4>Instructor</h4>
 		<div class="space-y-3">
 			{#each sortedTeaching as course}
-				<div class="flex gap-4">
-					<div class="font-semibold text-nowrap w-20">{formatYearRange(course.year)}</div>
-					<div class="flex-1">
-						<strong>{course.title}</strong>, {course.institution}, {course.level === 'undergraduate'
-							? 'Undergraduate'
-							: 'Graduate'}
-						{#if course.sections}
-							({course.sections})
-						{/if}
-						{#if course.period}
-							({course.period})
-						{/if}.
-					</div>
-				</div>
+				<CVEntry year={formatYearRange(course.year)} yearWidth="fixed">
+					<strong>{course.title}</strong>, {course.institution}, {course.level === 'undergraduate'
+						? 'Undergraduate'
+						: 'Graduate'}
+					{#if course.sections}
+						({course.sections})
+					{/if}
+					{#if course.period}
+						({course.period})
+					{/if}.
+				</CVEntry>
 			{/each}
 		</div>
 
 		<h4 class="text-lg font-semibold mt-4 mb-2">Guest Lecturer</h4>
 		<div class="space-y-3">
 			{#each sortedGuestLectures as lecture}
-				<div class="flex gap-4">
-					<div class="font-semibold text-nowrap">{lecture.year}</div>
-					<div class="flex-1">
-						<strong>{lecture.title}</strong>, <em>{lecture.course}</em>, {lecture.institution}, {lecture.level ===
-						'undergraduate'
-							? 'Undergraduate'
-							: 'Graduate'}.
-					</div>
-				</div>
+				<CVEntry year={lecture.year}>
+					<strong>{lecture.title}</strong>, <em>{lecture.course}</em>, {lecture.institution}, {lecture.level ===
+					'undergraduate'
+						? 'Undergraduate'
+						: 'Graduate'}.
+				</CVEntry>
 			{/each}
 		</div>
 	{:else}

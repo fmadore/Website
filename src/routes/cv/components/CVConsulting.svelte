@@ -1,4 +1,6 @@
 <script lang="ts">
+	import CVEntry from './CVEntry.svelte';
+
 	// Future: This could be moved to a data file if more consulting entries are added
 	const consulting = [
 		{
@@ -14,18 +16,15 @@
 	<h3>Consulting and Legal Expertise</h3>
 	<div class="space-y-3">
 		{#each consulting as item}
-			<div class="flex gap-4">
-				<div class="font-semibold text-nowrap">{item.year}</div>
-				<div class="flex-1">
-					{item.role}, {item.organization}.
-					<p class="text-sm mt-1">
-						Provide research-driven analysis and expert testimony in asylum and immigration proceedings.
-					</p>
-					<p class="text-sm mt-1">
-						Prepare Country of Origin Information (COI) reports for cases on Benin, Togo, and Côte d'Ivoire.
-					</p>
-				</div>
-			</div>
+			<CVEntry year={item.year}>
+				{item.role}, {item.organization}.
+				<p class="text-sm mt-1">
+					Provide research-driven analysis and expert testimony in asylum and immigration proceedings.
+				</p>
+				<p class="text-sm mt-1">
+					Prepare Country of Origin Information (COI) reports for cases on Benin, Togo, and Côte d'Ivoire.
+				</p>
+			</CVEntry>
 		{/each}
 	</div>
 </section>

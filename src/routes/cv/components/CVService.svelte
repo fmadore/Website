@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { peerReviewsByDate } from '$lib/data/peer-reviews';
 	import { editorialMembershipsByDate } from '$lib/data/editorial-memberships';
+	import CVEntry from './CVEntry.svelte';
 
 	// Filter out template/placeholder data
 	const realPeerReviews = peerReviewsByDate.filter(
@@ -19,15 +20,12 @@
 		<h4>Editorial Board Memberships</h4>
 		<div class="space-y-3">
 			{#each realEditorialMemberships as member (member.id)}
-				<div class="flex gap-4">
-					<div class="font-semibold text-nowrap">{member.dateRangeString}</div>
-					<div class="flex-1">
-						{member.role}, <em>{member.journal}</em>.
-						{#if member.details}
-							<div class="text-sm">{member.details}</div>
-						{/if}
-					</div>
-				</div>
+				<CVEntry year={member.dateRangeString}>
+					{member.role}, <em>{member.journal}</em>.
+					{#if member.details}
+						<div class="text-sm">{member.details}</div>
+					{/if}
+				</CVEntry>
 			{/each}
 		</div>
 	{/if}
@@ -37,38 +35,35 @@
 		<h4 class="text-lg font-semibold mt-4 mb-2">Peer Review Activities</h4>
 		<div class="space-y-3">
 			{#each realPeerReviews as review (review.id)}
-				<div class="flex gap-4">
-					<div class="font-semibold text-nowrap">{review.year}</div>
-					<div class="flex-1">
-						{review.type}{#if review.journal}&nbsp;–&nbsp;<em>{review.journal}</em
-							>{:else if review.publisher}&nbsp;–&nbsp;{review.publisher}{/if}.
-						{#if review.details}
-							<div class="text-sm">{review.details}</div>
-						{/if}
-						{#if review.publons_record}
-							<a
-								href={review.publons_record}
-								target="_blank"
-								rel="noopener noreferrer"
-								class="verification-badge"
+				<CVEntry year={review.year}>
+					{review.type}{#if review.journal}&nbsp;–&nbsp;<em>{review.journal}</em
+						>{:else if review.publisher}&nbsp;–&nbsp;{review.publisher}{/if}.
+					{#if review.details}
+						<div class="text-sm">{review.details}</div>
+					{/if}
+					{#if review.publons_record}
+						<a
+							href={review.publons_record}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="verification-badge"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="16"
+								height="16"
+								viewBox="0 0 24 24"
+								fill="currentColor"
+								class="shrink-0"
 							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="16"
-									height="16"
-									viewBox="0 0 24 24"
-									fill="currentColor"
-									class="shrink-0"
-								>
-									<path
-										d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
-									/>
-								</svg>
-								<span>Verified on Web of Science</span>
-							</a>
-						{/if}
-					</div>
-				</div>
+								<path
+									d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+								/>
+							</svg>
+							<span>Verified on Web of Science</span>
+						</a>
+					{/if}
+				</CVEntry>
 			{/each}
 		</div>
 	{/if}
@@ -91,7 +86,7 @@
 		border-radius: var(--border-radius-md);
 		background: color-mix(in srgb, var(--color-primary) 5%, transparent);
 		border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
-		transition: all var(--transition-duration-150) ease;
+		transition: all var(--duration-fast) ease;
 		text-decoration: none;
 	}
 

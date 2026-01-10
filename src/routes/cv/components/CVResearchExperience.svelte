@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { fieldworksByDate } from '$lib/data/fieldworks';
 	import { researchRolesByDate } from '$lib/data/research-roles';
+	import CVEntry from './CVEntry.svelte';
 
 	// Format year range for display (e.g., "2016-17" or "2024")
 	function formatYearRange(startYear: number, endYear?: number | null): string {
@@ -68,21 +69,16 @@
 	{#if researchRolesByDate.length > 0}
 		<div class="space-y-3">
 			{#each researchRolesByDate as role (role.id)}
-				<div class="flex gap-4">
-					<div class="font-semibold text-nowrap w-20">
-						{formatYearRange(role.startYear, role.endYear)}
-					</div>
-					<div class="flex-1">
-						<span class="font-medium">{role.title}</span>, {role.institution}.
-						{#if Array.isArray(role.details)}
-							{#each role.details as detail}
-								<p class="text-sm mt-1">{detail}</p>
-							{/each}
-						{:else}
-							<p class="text-sm mt-1">{role.details}</p>
-						{/if}
-					</div>
-				</div>
+				<CVEntry year={formatYearRange(role.startYear, role.endYear)} yearWidth="fixed">
+					<span class="font-medium">{role.title}</span>, {role.institution}.
+					{#if Array.isArray(role.details)}
+						{#each role.details as detail}
+							<p class="text-sm mt-1">{detail}</p>
+						{/each}
+					{:else}
+						<p class="text-sm mt-1">{role.details}</p>
+					{/if}
+				</CVEntry>
 			{/each}
 		</div>
 	{:else}

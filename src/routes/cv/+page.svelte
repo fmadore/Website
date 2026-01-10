@@ -209,7 +209,7 @@
 	/* Main CV container */
 	.cv-container {
 		box-shadow: var(--shadow-lg);
-		transition: box-shadow var(--transition-duration-200) ease;
+		transition: box-shadow var(--duration-normal) ease;
 		position: relative;
 		margin-top: var(--space-lg);
 		margin-bottom: var(--space-lg);
@@ -241,7 +241,7 @@
 		padding: var(--space-4);
 		margin-bottom: var(--space-4);
 		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) 10%, transparent);
-		transition: all var(--transition-duration-200) ease;
+		transition: all var(--duration-normal) ease;
 	}
 
 	/* Remove bottom margin from sections inside wrappers */
@@ -290,7 +290,7 @@
 	:global(#cv-content .space-y-3 > div) {
 		padding: var(--space-2);
 		border-radius: var(--border-radius-md);
-		transition: all var(--transition-duration-150) ease;
+		transition: all var(--duration-fast) ease;
 	}
 
 	/* Hover effects only for devices with hover capability (not touch) */
@@ -315,7 +315,7 @@
 	/* Links styling */
 	:global(#cv-content a) {
 		color: var(--color-primary);
-		transition: all var(--transition-duration-150) ease;
+		transition: all var(--duration-fast) ease;
 	}
 
 	:global(#cv-content a:hover) {

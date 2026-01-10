@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { awardsByDate } from '$lib/data/awards';
+	import CVEntry from './CVEntry.svelte';
 </script>
 
 <section>
@@ -7,15 +8,12 @@
 	{#if awardsByDate.length > 0}
 		<div class="space-y-3">
 			{#each awardsByDate as award (award.id)}
-				<div class="flex gap-4">
-					<div class="font-semibold text-nowrap">{award.year}</div>
-					<div class="flex-1">
-						<span class="font-medium">{award.title}</span>, {award.institution}.
-						{#if award.details}
-							<p class="text-sm mt-1">{award.details}</p>
-						{/if}
-					</div>
-				</div>
+				<CVEntry year={award.year}>
+					<span class="font-medium">{award.title}</span>, {award.institution}.
+					{#if award.details}
+						<p class="text-sm mt-1">{award.details}</p>
+					{/if}
+				</CVEntry>
 			{/each}
 		</div>
 	{:else}

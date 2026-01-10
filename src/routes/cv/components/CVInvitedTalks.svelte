@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { communicationsByDate } from '$lib/data/communications';
 	import { formatCVAuthorList } from '../utils/cvFormatters';
+	import CVEntry from './CVEntry.svelte';
 
 	const invitedTalks = communicationsByDate.filter(
 		(comm) => comm.type === 'lecture' || comm.type === 'seminar' || comm.type === 'workshop'
@@ -14,19 +15,16 @@
 			{#each invitedTalks as comm (comm.id)}
 				{@const commDate = new Date(comm.dateISO)}
 				{@const formattedAuthors = formatCVAuthorList(comm.authors)}
-				<div class="flex gap-4">
-					<div class="font-semibold text-nowrap">{commDate.getFullYear()}</div>
-					<div class="flex-1">
-						{#if formattedAuthors}{@html formattedAuthors}. {/if}
-						"{comm.title}"{#if comm.conference}, <em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}, {commDate.toLocaleDateString(
-							'en-GB',
-							{
-								day: 'numeric',
-								month: 'long'
-							}
-						)}.
-					</div>
-				</div>
+				<CVEntry year={commDate.getFullYear()}>
+					{#if formattedAuthors}{@html formattedAuthors}. {/if}
+					"{comm.title}"{#if comm.conference}, <em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}, {commDate.toLocaleDateString(
+						'en-GB',
+						{
+							day: 'numeric',
+							month: 'long'
+						}
+					)}.
+				</CVEntry>
 			{/each}
 		</div>
 	</section>
