@@ -33,3 +33,7 @@ tests/example.spec.js
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Claude Code
+.claude/
+tmpclaude-*
