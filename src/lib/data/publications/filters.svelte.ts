@@ -5,7 +5,7 @@
  * Uses createActiveFiltersStore and other utilities to maintain reactivity.
  */
 
-import type { Publication, YearRange } from '$lib/types';
+import type { Publication, YearRange, TableOfContentsEntry } from '$lib/types';
 import {
 	allPublications as baseAllPublications,
 	publicationsByType,
@@ -45,6 +45,18 @@ function extractEditors(publication: Publication & { sourceDirType?: string }): 
 	return [];
 }
 
+// Helper function to extract authors from structured tableOfContents entries
+function extractTocAuthors(publication: Publication & { sourceDirType?: string }): string[] {
+	if (!publication.tableOfContents) return [];
+
+	return publication.tableOfContents.flatMap((entry) => {
+		// Skip legacy string format entries
+		if (typeof entry === 'string') return [];
+		// Extract authors from structured entries
+		return (entry as TableOfContentsEntry).authors || [];
+	});
+}
+
 // Extract all unique co-authors from publications, excluding "Frédérick Madore"
 export const allAuthors = Array.from(
 	new SvelteSet([
@@ -60,7 +72,11 @@ export const allAuthors = Array.from(
 		// Get preface authors
 		...allPublications
 			.filter((pub: Publication & { sourceDirType: string }) => pub.prefacedBy)
-			.map((pub: Publication & { sourceDirType: string }) => pub.prefacedBy as string)
+			.map((pub: Publication & { sourceDirType: string }) => pub.prefacedBy as string),
+		// Get authors from structured tableOfContents (edited volumes and special issues)
+		...allPublications.flatMap((pub: Publication & { sourceDirType: string }) =>
+			extractTocAuthors(pub)
+		)
 	])
 )
 	.filter((author: string) => author !== 'Frédérick Madore')
@@ -206,8 +222,19 @@ export const filteredPublications = derived(
 				const hasMatchingPrefaceAuthor =
 					pub.prefacedBy && $activeFilters.authors.includes(pub.prefacedBy);
 
-				// If neither authors, valid editors, nor preface author match, filter out this publication
-				if (!hasMatchingAuthor && !hasMatchingEditor && !hasMatchingPrefaceAuthor) {
+				// Check tableOfContents authors (for edited volumes and special issues)
+				const tocAuthors = extractTocAuthors(pub);
+				const hasMatchingTocAuthor = tocAuthors.some((author) =>
+					$activeFilters.authors.includes(author)
+				);
+
+				// If none of the author sources match, filter out this publication
+				if (
+					!hasMatchingAuthor &&
+					!hasMatchingEditor &&
+					!hasMatchingPrefaceAuthor &&
+					!hasMatchingTocAuthor
+				) {
 					return false;
 				}
 			}
@@ -337,6 +364,14 @@ export const displayedAuthors = derived(activeFilters, ($activeFilters): string[
 		if (pub.prefacedBy && pub.prefacedBy !== 'Frédérick Madore') {
 			authorsFromRelevantPubs.add(pub.prefacedBy);
 		}
+
+		// Add tableOfContents authors (for edited volumes and special issues)
+		const tocAuthors = extractTocAuthors(pub);
+		tocAuthors.forEach((author) => {
+			if (author !== 'Frédérick Madore') {
+				authorsFromRelevantPubs.add(author);
+			}
+		});
 	});
 
 	// Convert Set to array and sort
@@ -405,7 +440,17 @@ export const displayedTypes = derived(activeFilters, ($activeFilters): string[] 
 				extractEditors(pub).some((editor) => $activeFilters.authors.includes(editor));
 			const hasMatchingPrefaceAuthor =
 				pub.prefacedBy && $activeFilters.authors.includes(pub.prefacedBy);
-			if (!hasMatchingAuthor && !hasMatchingEditor && !hasMatchingPrefaceAuthor) return false;
+			const tocAuthors = extractTocAuthors(pub);
+			const hasMatchingTocAuthor = tocAuthors.some((author) =>
+				$activeFilters.authors.includes(author)
+			);
+			if (
+				!hasMatchingAuthor &&
+				!hasMatchingEditor &&
+				!hasMatchingPrefaceAuthor &&
+				!hasMatchingTocAuthor
+			)
+				return false;
 		}
 		// Country filter
 		if (
@@ -457,7 +502,17 @@ export const displayedTags = derived(activeFilters, ($activeFilters): string[] =
 				extractEditors(pub).some((editor) => $activeFilters.authors.includes(editor));
 			const hasMatchingPrefaceAuthor =
 				pub.prefacedBy && $activeFilters.authors.includes(pub.prefacedBy);
-			if (!hasMatchingAuthor && !hasMatchingEditor && !hasMatchingPrefaceAuthor) return false;
+			const tocAuthors = extractTocAuthors(pub);
+			const hasMatchingTocAuthor = tocAuthors.some((author) =>
+				$activeFilters.authors.includes(author)
+			);
+			if (
+				!hasMatchingAuthor &&
+				!hasMatchingEditor &&
+				!hasMatchingPrefaceAuthor &&
+				!hasMatchingTocAuthor
+			)
+				return false;
 		}
 		// Country filter
 		if (
@@ -505,7 +560,17 @@ export const displayedLanguages = derived(activeFilters, ($activeFilters): strin
 				extractEditors(pub).some((editor) => $activeFilters.authors.includes(editor));
 			const hasMatchingPrefaceAuthor =
 				pub.prefacedBy && $activeFilters.authors.includes(pub.prefacedBy);
-			if (!hasMatchingAuthor && !hasMatchingEditor && !hasMatchingPrefaceAuthor) return false;
+			const tocAuthors = extractTocAuthors(pub);
+			const hasMatchingTocAuthor = tocAuthors.some((author) =>
+				$activeFilters.authors.includes(author)
+			);
+			if (
+				!hasMatchingAuthor &&
+				!hasMatchingEditor &&
+				!hasMatchingPrefaceAuthor &&
+				!hasMatchingTocAuthor
+			)
+				return false;
 		}
 		// Country filter
 		if (

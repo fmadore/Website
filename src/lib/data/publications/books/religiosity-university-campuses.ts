@@ -29,17 +29,50 @@ export const religiosityUniversityCampuses: Publication = {
 	project: 'Religious Activism on Campuses in Togo and Benin',
 	featured: true,
 	tableOfContents: [
-		'Introduction: Religiosity on University Campuses in Africa (Abdoulaye Sounaye and Frédérick Madore)',
-		'Straddling the “Epistemic Divide”? Medical and Faith-based Healing among Christian Students in Mbarara, South-Western Uganda (Dorothea Schulz and Britta Bayer)',
-		"Exister en contexte autoritaire : les associations étudiantes chrétiennes et islamiques à l'Université de Lomé sous Gnassingbé Eyadéma, 1970-2005 (Frédérick Madore)",
-		"Pentecostalism in the University Public Sphere of Molyko (Buea, Cameroon): Challenges, Media Strategies and Students' Involvement, 1993-2020 (Francis Arsène Fogue Kuate)",
-		"« Tuba », une construction de l'identité religieuse par les étudiants salafis et pentecôtistes de l'Université Abdou Moumouni de Niamey, Niger (Mahamadou Bello Adamou)",
-		"Vivre sa foi Tabligh au sein des campus de Côte d'Ivoire : ethnographie du cheminement de la religiosité des étudiants (Youssoufou Bakayoko)",
-		'Secular Dynamics and Religious Awakening on University Campuses in Ghana (Mohammed Ameen Kasim)',
-		"Mobiliser l'Histoire dans le contexte académique nigérien : le prisme des récits religieux (Vincent Favier)",
-		'Performing Religiosity: Protest and Prayer Performance in a Nigerian University (Stephen T. Ogundipe)',
-		"Aspiration and Activism: Muslim Students' Future-Making in Mbarara, South-Western Uganda (Dorothea Schulz)",
-		"Islam on University Campuses in Côte d'Ivoire since the 1970s: Muslim Intellectuals and Francophone Salafism (Frédérick Madore and Issouf Binaté)"
+		{
+			title: 'Introduction: Religiosity on University Campuses in Africa',
+			authors: ['Abdoulaye Sounaye', 'Frédérick Madore']
+		},
+		{
+			title: 'Straddling the "Epistemic Divide"? Medical and Faith-based Healing among Christian Students in Mbarara, South-Western Uganda',
+			authors: ['Dorothea Schulz', 'Britta Bayer']
+		},
+		{
+			title: "Exister en contexte autoritaire : les associations étudiantes chrétiennes et islamiques à l'Université de Lomé sous Gnassingbé Eyadéma, 1970-2005",
+			authors: ['Frédérick Madore']
+		},
+		{
+			title: "Pentecostalism in the University Public Sphere of Molyko (Buea, Cameroon): Challenges, Media Strategies and Students' Involvement, 1993-2020",
+			authors: ['Francis Arsène Fogue Kuate']
+		},
+		{
+			title: "« Tuba », une construction de l'identité religieuse par les étudiants salafis et pentecôtistes de l'Université Abdou Moumouni de Niamey, Niger",
+			authors: ['Mahamadou Bello Adamou']
+		},
+		{
+			title: "Vivre sa foi Tabligh au sein des campus de Côte d'Ivoire : ethnographie du cheminement de la religiosité des étudiants",
+			authors: ['Youssoufou Bakayoko']
+		},
+		{
+			title: 'Secular Dynamics and Religious Awakening on University Campuses in Ghana',
+			authors: ['Mohammed Ameen Kasim']
+		},
+		{
+			title: "Mobiliser l'Histoire dans le contexte académique nigérien : le prisme des récits religieux",
+			authors: ['Vincent Favier']
+		},
+		{
+			title: 'Performing Religiosity: Protest and Prayer Performance in a Nigerian University',
+			authors: ['Stephen T. Ogundipe']
+		},
+		{
+			title: "Aspiration and Activism: Muslim Students' Future-Making in Mbarara, South-Western Uganda",
+			authors: ['Dorothea Schulz']
+		},
+		{
+			title: "Islam on University Campuses in Côte d'Ivoire since the 1970s: Muslim Intellectuals and Francophone Salafism",
+			authors: ['Frédérick Madore', 'Issouf Binaté']
+		}
 	],
 	citedBy: [
 		{

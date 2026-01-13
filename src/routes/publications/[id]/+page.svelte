@@ -253,7 +253,20 @@
 						{#each publication.tableOfContents as item, index (index)}
 							<li class="toc-item">
 								<span class="toc-number">{index + 1}.</span>
-								<span class="toc-content">{item}</span>
+								{#if typeof item === 'string'}
+									<span class="toc-content">{item}</span>
+								{:else}
+									<span class="toc-content">
+										{item.title}
+										{#if item.authors && item.authors.length > 0}
+											<span class="toc-authors">({item.authors.length === 1
+													? item.authors[0]
+													: item.authors.length === 2
+														? `${item.authors[0]} and ${item.authors[1]}`
+														: `${item.authors.slice(0, -1).join(', ')} and ${item.authors[item.authors.length - 1]}`})</span>
+										{/if}
+									</span>
+								{/if}
 							</li>
 						{/each}
 					</ol>
@@ -436,6 +449,13 @@
 		line-height: var(--line-height-snug);
 		color: var(--color-text);
 		flex: 1;
+	}
+
+	.toc-authors {
+		font-weight: var(--font-weight-normal);
+		color: var(--color-text-muted);
+		font-style: italic;
+		margin-left: var(--space-2xs);
 	}
 
 	/* Publication actions container - consistent glassmorphism */

@@ -21,6 +21,12 @@ export type ReviewWork = {
 	excerpt?: string; // Optional excerpt from the review
 };
 
+// Define the structure for a table of contents entry (for edited volumes and special issues)
+export type TableOfContentsEntry = {
+	title: string; // Chapter or article title
+	authors?: string[]; // Optional: Authors of the chapter/article (not needed for front/back matter)
+};
+
 export type Publication = {
 	id: string; // URL-friendly ID for routing
 	type:
@@ -85,8 +91,8 @@ export type Publication = {
 	project?: string; // Project name the publication relates to
 	citedBy?: CitingWork[]; // Optional: Array of works citing this publication
 	reviewedBy?: ReviewWork[]; // Optional: Array of reviews of this publication
-	// New field for Table of Contents
-	tableOfContents?: string[]; // Optional: Array of chapter titles or section headings for books
+	// Table of Contents for books and special issues
+	tableOfContents?: (string | TableOfContentsEntry)[]; // Supports both legacy string[] and structured entries
 
 	// Fields for Highwire Press meta tags
 	pdfUrl?: string; // Optional: URL to the PDF version
