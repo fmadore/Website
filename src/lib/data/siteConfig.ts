@@ -52,7 +52,7 @@ export const address: Address = {
 };
 
 export const contact = {
-    email: 'frederick.madore@zmo.de'
+    email: 'Frederick.Madore@uni-bayreuth.de'
 };
 
 export const website = {
