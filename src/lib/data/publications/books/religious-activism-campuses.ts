@@ -41,6 +41,21 @@ The history of these associations reveals the campus as a microcosm reflecting w
 	country: ['Benin', 'Togo'],
 	project: 'Religious Activism on Campuses in Togo and Benin',
 	featured: true,
+	reviewedBy: [
+		{
+			author: 'Macodou Fall',
+			year: 2025,
+			title:
+				'Frédérick Madore, Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023. Berlin: De Gruyter, 2023. 308 Pages. ISBN: 978-3-11-142790-4.',
+			journal: 'Research Africa Reviews',
+			volume: '9',
+			issue: '3',
+			pages: '15-17',
+			url: 'https://researchafrica.duke.edu/sites/default/files/-5-7-Religious-Activism-on-Campuses-in-Togo-and-Benin-Issue3-2025.pdf',
+			excerpt:
+				"These nuances, however, do not detract from the book's contribution, which is considerable; this is due to its comprehensive analysis of the history and development of faith-based movements in Togo and Benin from 1970 to 2023. The book offers a valuable resource for scholars seeking to understand the complex interplay between faith, activism, and adaptation in Francophone Africa."
+		}
+	],
 	citedBy: [
 		{
 			authors: ['Leonardo A. Villalón', 'Mamadou Bodian', 'Abdourahmane Idrissa'],
