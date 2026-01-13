@@ -12,6 +12,7 @@ ECharts Network Graph - A network visualization for author collaborations
 		author: string;
 		collaborationCount: number;
 		publications: string[];
+		isContributor?: boolean;
 	};
 
 	type CoAuthorConnection = {
@@ -24,11 +25,13 @@ ECharts Network Graph - A network visualization for author collaborations
 	let {
 		data = [] as CollaborationData[],
 		coAuthorConnections = [] as CoAuthorConnection[],
+		contributorConnections = [] as CoAuthorConnection[],
 		centerAuthor = 'Frédérick Madore',
 		maxConnections = 20 // Limit to top collaborators for readability
 	}: {
 		data?: CollaborationData[];
 		coAuthorConnections?: CoAuthorConnection[];
+		contributorConnections?: CoAuthorConnection[];
 		centerAuthor?: string;
 		maxConnections?: number;
 	} = $props();
@@ -230,10 +233,39 @@ ECharts Network Graph - A network visualization for author collaborations
 					}
 				},
 				// Store connection data for tooltip
-				connectionData: conn
+				connectionData: conn,
+				connectionType: 'coauthor' as const
 			}));
 
-		const links = [...centerLinks, ...coAuthorLinks];
+		// Create links for contributor connections (TOC authors from edited volumes/special issues)
+		const contributorLinks = contributorConnections
+			.filter(
+				(conn) => topCollaboratorNames.has(conn.source) && topCollaboratorNames.has(conn.target)
+			)
+			.map((conn) => ({
+				source: conn.source,
+				target: conn.target,
+				lineStyle: {
+					width: Math.max(1, Math.min(3, conn.publicationCount * 1)),
+					color: resolvedColors.highlight,
+					opacity: 0.4,
+					type: [4, 4] as [number, number] // Dotted line pattern
+				},
+				label: {
+					show: false
+				},
+				emphasis: {
+					lineStyle: {
+						width: Math.max(1.5, Math.min(4, conn.publicationCount * 1.2)),
+						opacity: 0.7
+					}
+				},
+				// Store connection data for tooltip
+				connectionData: conn,
+				connectionType: 'contributor' as const
+			}));
+
+		const links = [...centerLinks, ...coAuthorLinks, ...contributorLinks];
 
 		return { nodes, links };
 	});
@@ -314,12 +346,21 @@ ECharts Network Graph - A network visualization for author collaborations
 						}
 					}
 				} else if (params.dataType === 'edge') {
-					// Check if this is a co-author connection
+					// Check if this is a co-author or contributor connection
 					if (params.data.connectionData) {
 						const conn = params.data.connectionData;
+						const connectionType = params.data.connectionType;
 						const publicationList = conn.publications
 							.map((pub: string) => `• ${pub}`)
 							.join('<br/>');
+
+						if (connectionType === 'contributor') {
+							return `<strong>Contributor connection</strong><br/>
+								${conn.source} ↔ ${conn.target}<br/>
+								Shared edited volumes/special issues: ${conn.publicationCount}<br/>
+								<em>Publications:</em><br/>
+								${publicationList}`;
+						}
 						return `<strong>Co-author connection</strong><br/>
 							${conn.source} ↔ ${conn.target}<br/>
 							Shared publications: ${conn.publicationCount}<br/>
@@ -498,6 +539,13 @@ ECharts Network Graph - A network visualization for author collaborations
 				></div>
 				<span>Co-author connection</span>
 			</div>
+			<div class="legend-item">
+				<div
+					class="legend-line legend-dotted"
+					style="border-bottom-color: {resolvedColors.highlight};"
+				></div>
+				<span>Contributor connection</span>
+			</div>
 		</div>
 	{/if}
 
@@ -563,6 +611,12 @@ ECharts Network Graph - A network visualization for author collaborations
 	.legend-line {
 		width: 20px;
 		height: 2px;
+	}
+
+	.legend-dotted {
+		background-color: transparent;
+		border-bottom: 2px dotted;
+		height: 0;
 	}
 
 	.zoom-btn {

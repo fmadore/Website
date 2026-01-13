@@ -457,6 +457,7 @@
 		word-wrap: break-word;
 		overflow-wrap: break-word;
 		line-height: var(--line-height-normal);
+		color: var(--color-text);
 	}
 
 	.item-count {

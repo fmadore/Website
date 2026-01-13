@@ -196,8 +196,14 @@
 	// Calculate collaboration data for network graph
 	const collaborationData = $derived(
 		(() => {
-			const collaborations: Record<string, { publications: Set<string> }> = {};
+			const collaborations: Record<string, { publications: Set<string>; isContributor: boolean }> =
+				{};
 			const coAuthorConnections: Array<{
+				source: string;
+				target: string;
+				publications: Set<string>;
+			}> = [];
+			const contributorConnections: Array<{
 				source: string;
 				target: string;
 				publications: Set<string>;
@@ -224,7 +230,7 @@
 				// Count collaborations with Frédérick Madore
 				coAuthors.forEach((author) => {
 					if (!collaborations[author]) {
-						collaborations[author] = { publications: new Set<string>() };
+						collaborations[author] = { publications: new Set<string>(), isContributor: false };
 					}
 					// Use Set to automatically deduplicate publication titles
 					collaborations[author].publications.add(pub.title);
@@ -257,13 +263,64 @@
 						}
 					}
 				}
+
+				// Extract TOC authors (contributors to edited volumes and special issues)
+				if (pub.tableOfContents && (pub.type === 'book' || pub.type === 'special-issue')) {
+					const tocAuthors: string[] = [];
+					pub.tableOfContents.forEach((entry) => {
+						if (typeof entry !== 'string' && entry.authors) {
+							entry.authors.forEach((author) => {
+								if (author !== 'Frédérick Madore') {
+									tocAuthors.push(author);
+									// Add to collaborations as contributor
+									if (!collaborations[author]) {
+										collaborations[author] = {
+											publications: new Set<string>(),
+											isContributor: true
+										};
+									}
+									collaborations[author].publications.add(pub.title);
+								}
+							});
+						}
+					});
+
+					// Track connections between TOC authors (contributors)
+					if (tocAuthors.length >= 2) {
+						for (let i = 0; i < tocAuthors.length; i++) {
+							for (let j = i + 1; j < tocAuthors.length; j++) {
+								const author1 = tocAuthors[i];
+								const author2 = tocAuthors[j];
+
+								// Find or create contributor connection (order-independent)
+								let connection = contributorConnections.find(
+									(c) =>
+										(c.source === author1 && c.target === author2) ||
+										(c.source === author2 && c.target === author1)
+								);
+
+								if (!connection) {
+									connection = {
+										source: author1,
+										target: author2,
+										publications: new Set<string>()
+									};
+									contributorConnections.push(connection);
+								}
+
+								connection.publications.add(pub.title);
+							}
+						}
+					}
+				}
 			});
 
 			// Convert to array format expected by the network graph
 			const collaborators = Object.entries(collaborations).map(([author, data]) => ({
 				author,
 				collaborationCount: data.publications.size, // Count unique publications
-				publications: Array.from(data.publications) // Convert Set back to Array
+				publications: Array.from(data.publications), // Convert Set back to Array
+				isContributor: data.isContributor
 			}));
 
 			// Convert co-author connections to array format
@@ -274,9 +331,18 @@
 				publications: Array.from(conn.publications)
 			}));
 
+			// Convert contributor connections to array format
+			const contribConnections = contributorConnections.map((conn) => ({
+				source: conn.source,
+				target: conn.target,
+				publicationCount: conn.publications.size,
+				publications: Array.from(conn.publications)
+			}));
+
 			return {
 				collaborators,
-				coAuthorConnections: connections
+				coAuthorConnections: connections,
+				contributorConnections: contribConnections
 			};
 		})()
 	);
@@ -423,6 +489,7 @@
 				<EChartsNetworkGraph
 					data={collaborationData.collaborators}
 					coAuthorConnections={collaborationData.coAuthorConnections}
+					contributorConnections={collaborationData.contributorConnections}
 					centerAuthor="Frédérick Madore"
 					maxConnections={25}
 				/>
