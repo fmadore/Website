@@ -283,28 +283,8 @@
 		.sticky-top {
 			position: sticky;
 			top: var(--space-xl);
-			max-height: calc(100vh - var(--space-3xl));
-			overflow-y: auto;
-			will-change: scroll-position;
-			transform: translateZ(0);
-		}
-
-		/* Custom scrollbar for sidebar */
-		.sticky-top::-webkit-scrollbar {
-			width: 6px;
-		}
-
-		.sticky-top::-webkit-scrollbar-track {
-			background: transparent;
-		}
-
-		.sticky-top::-webkit-scrollbar-thumb {
-			background: color-mix(in srgb, var(--color-text-muted) 30%, transparent);
-			border-radius: var(--border-radius-full);
-		}
-
-		.sticky-top::-webkit-scrollbar-thumb:hover {
-			background: color-mix(in srgb, var(--color-text-muted) 50%, transparent);
+			/* No max-height - show all content without scrollbar */
+			overflow: visible;
 		}
 	}
 

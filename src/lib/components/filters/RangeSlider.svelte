@@ -280,7 +280,7 @@
 		height: var(--space-10);
 		width: 100%;
 		margin: var(--space-2xs) 0;
-		padding: var(--space-xs);
+		padding: var(--space-xs) var(--space-md);
 		border-radius: var(--border-radius-md);
 		transition: all var(--duration-normal) var(--ease-out);
 
@@ -310,8 +310,8 @@
 	.range-track {
 		position: absolute;
 		top: 50%;
-		left: var(--space-xs);
-		right: var(--space-xs);
+		left: var(--space-sm);
+		right: var(--space-sm);
 		height: var(--border-width-thick);
 		background-color: var(--color-border);
 		border-radius: var(--border-radius-sm);
@@ -338,8 +338,8 @@
 	.range-handle {
 		position: absolute;
 		top: 50%;
-		width: 18px;
-		height: 18px;
+		width: var(--space-lg);
+		height: var(--space-lg);
 		background: var(--gradient-accent-highlight);
 		border: var(--border-width-medium) solid var(--color-white);
 		border-radius: var(--border-radius-full);
@@ -364,8 +364,8 @@
 			position: absolute;
 			top: 50%;
 			left: 50%;
-			width: 44px; /* Minimum recommended touch target size */
-			height: 44px;
+			width: var(--space-11); /* Minimum recommended touch target size */
+			height: var(--space-11);
 			transform: translate(-50%, -50%);
 		}
 	}
@@ -433,15 +433,15 @@
 	.range-pips {
 		position: absolute;
 		top: 100%;
-		left: var(--space-xs);
-		right: var(--space-xs);
+		left: var(--space-sm);
+		right: var(--space-sm);
 		height: var(--space-5);
 		margin-top: var(--space-2xs);
 	}
 
 	.pip {
 		position: absolute;
-		width: 1px;
+		width: var(--border-width-thin);
 		height: var(--space-xs);
 		background-color: var(--color-text-muted);
 		transform: translateX(-50%);
@@ -451,7 +451,7 @@
 	.pip.pip-large {
 		height: var(--space-sm);
 		background-color: var(--color-text-light);
-		width: 2px;
+		width: var(--border-width-medium);
 	}
 
 	.range-label {
@@ -522,9 +522,9 @@
 	/* Responsive design - Mobile first */
 	@media (--sm-down) {
 		.range-slider {
-			height: 36px;
+			height: var(--space-9);
 			margin: var(--space-xs) 0;
-			padding: var(--space-xs);
+			padding: var(--space-xs) var(--space-sm);
 		}
 
 		.range-track {
@@ -550,7 +550,7 @@
 	/* Medium screens */
 	@media (--sm) and (--lg-down) {
 		.range-slider {
-			height: 44px;
+			height: var(--space-11);
 		}
 	}
 
@@ -558,17 +558,17 @@
 	@media (--lg) {
 		.range-slider {
 			height: var(--space-12);
-			padding: var(--space-sm);
+			padding: var(--space-sm) var(--space-md);
 		}
 
 		.range-track {
-			left: var(--space-sm);
-			right: var(--space-sm);
+			left: var(--space-md);
+			right: var(--space-md);
 		}
 
 		.range-pips {
-			left: var(--space-sm);
-			right: var(--space-sm);
+			left: var(--space-md);
+			right: var(--space-md);
 		}
 
 		.range-handle {

@@ -157,7 +157,7 @@
 	}
 
 	.slider-container {
-		padding: var(--space-sm) var(--space-md) var(--space-lg);
+		padding: var(--space-sm) 0 var(--space-lg);
 		position: relative;
 		overflow: visible;
 		min-height: 50px;
@@ -250,7 +250,7 @@
 		}
 
 		.slider-container {
-			padding: var(--space-xs) var(--space-sm) var(--space-md);
+			padding: var(--space-xs) 0 var(--space-md);
 			min-height: 40px;
 		}
 	}
