@@ -1,6 +1,4 @@
 <script lang="ts">
-	import Button from '$lib/components/atoms/Button.svelte';
-
 	let {
 		title,
 		items, // List of filter items
@@ -46,265 +44,237 @@
 	}
 </script>
 
-<div class="filter-section-content glass-panel-light scroll-reveal">
+<div class="filter-section-content">
 	<div class="filter-section-header">
 		<h3 class="filter-section-title">{title}</h3>
-		<span class="items-count">({items.length})</span>
+		{#if activeItems.length > 0}
+			<span class="active-count">{activeItems.length}</span>
+		{/if}
 	</div>
 
 	<!-- Filter chips -->
-	<div class="filter-chips-container grid-stagger">
+	<div class="filter-chips-container">
 		{#each displayedItems as item (item)}
-			<Button
-				variant="outline-secondary"
-				size="sm"
-				glass={true}
-				additionalClasses="filter-chip {activeItems.includes(item) ? 'active' : ''}"
+			<button
+				type="button"
+				class="filter-chip {activeItems.includes(item) ? 'active' : ''}"
 				onclick={() => handleToggleItem(item)}
 			>
 				<span class="chip-text">{item}</span>
 				{#if counts !== undefined}
-					<span class="chip-count">({getCount(item)})</span>
+					<span class="chip-count">{getCount(item)}</span>
 				{/if}
-			</Button>
+			</button>
 		{/each}
 	</div>
 
-	<!-- Show more/less button -->
-	{#if hasMoreItems}
-		<Button
-			variant="outline-secondary"
-			size="sm"
-			glass={true}
-			additionalClasses="show-more-button"
-			onclick={toggleShowAll}
-		>
-			{showAll
-				? `Show less (${initialDisplayCount})`
-				: `Show more (+${items.length - initialDisplayCount})`}
-		</Button>
-	{/if}
-
-	<!-- Clear selection button -->
-	{#if activeItems.length > 0}
-		<Button
-			variant="secondary"
-			size="sm"
-			glass={true}
-			additionalClasses="clear-selection-button"
-			onclick={clearSelection}
-		>
-			Clear selection ({activeItems.length})
-		</Button>
-	{/if}
+	<!-- Actions row -->
+	<div class="filter-actions">
+		{#if hasMoreItems}
+			<button type="button" class="action-button" onclick={toggleShowAll}>
+				{showAll ? 'Show less' : `+${items.length - initialDisplayCount} more`}
+			</button>
+		{/if}
+		{#if activeItems.length > 0}
+			<button type="button" class="action-button clear" onclick={clearSelection}>
+				Clear
+			</button>
+		{/if}
+	</div>
 </div>
 
 <style>
 	.filter-section-content {
-		padding: var(--space-md);
-		border-radius: var(--border-radius-md);
-		margin-bottom: var(--space-md);
-		transition: all var(--duration-normal) var(--ease-out);
-	}
-
-	.filter-section-content:hover {
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-		box-shadow: var(--shadow-md);
-		transform: var(--transform-lift-sm);
+		padding: 0;
 	}
 
 	.filter-section-header {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		gap: var(--space-xs);
 		margin-bottom: var(--space-sm);
 	}
 
 	.filter-section-title {
-		font-family: var(--font-family-serif);
-		font-size: var(--font-size-lg);
-		font-weight: var(--font-weight-bold);
-		color: var(--color-text-emphasis);
+		font-family: var(--font-family-sans);
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text-muted);
+		text-transform: uppercase;
+		letter-spacing: var(--letter-spacing-wide);
 		margin: 0;
-		padding-bottom: var(--space-xs);
-		border-bottom: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium) * 100%), transparent);
 	}
 
-	.items-count {
-		font-size: var(--font-size-sm);
-		color: var(--color-text-light);
-		font-weight: var(--font-weight-medium);
+	.active-count {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 1.25rem;
+		height: 1.25rem;
+		font-size: var(--font-size-xs);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-white);
+		background: var(--color-accent);
+		border-radius: var(--border-radius-full);
+		padding: 0 var(--space-2xs);
 	}
 
 	.filter-chips-container {
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--space-xs);
-		margin-bottom: var(--space-sm);
 	}
 
-	/* Animation support for filter chips */
-	:global(.filter-chips-container > *) {
-		will-change: opacity, transform;
+	/* Filter chip button styling */
+	.filter-chip {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-xs);
+		padding: var(--space-xs) var(--space-sm);
+		font-family: var(--font-family-sans);
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-medium);
+		color: var(--color-text);
+		background: color-mix(in srgb, var(--color-surface-alt) 50%, transparent);
+		border: var(--border-width-thin) solid var(--color-border);
+		border-radius: var(--border-radius-full);
+		cursor: pointer;
+		transition:
+			background-color var(--duration-fast) var(--ease-out),
+			border-color var(--duration-fast) var(--ease-out),
+			color var(--duration-fast) var(--ease-out),
+			box-shadow var(--duration-fast) var(--ease-out);
 	}
 
-	/* Enhanced styles for active state using design system variables */
-	:global(.filter-chip.active) {
-		background: var(--gradient-accent-highlight) !important;
-		color: var(--color-white) !important;
-		border-color: var(--color-accent) !important;
-		box-shadow: var(--shadow-md) !important;
+	.filter-chip:hover {
+		background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+		border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+		color: var(--color-text-emphasis);
 	}
 
-	:global(.filter-chip.active:hover) {
-		background: var(--gradient-highlight-accent) !important;
-		transform: var(--transform-lift-sm) !important;
-		box-shadow: var(--shadow-lg) !important;
+	.filter-chip.active {
+		background: var(--color-accent);
+		border-color: var(--color-accent);
+		color: var(--color-white);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.filter-chip.active:hover {
+		background: var(--color-accent-dark);
+		border-color: var(--color-accent-dark);
 	}
 
 	.chip-text {
-		line-height: var(--line-height-snug);
+		line-height: var(--line-height-none);
+		max-width: 150px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.chip-count {
-		opacity: var(--opacity-high);
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-semibold);
-		background: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-		padding: var(--space-2xs) var(--space-xs);
-		border-radius: var(--border-radius-sm);
-		line-height: 1;
-		margin-left: var(--space-2xs);
-		transition: background-color var(--duration-fast) var(--ease-out);
+		opacity: 0.7;
+		min-width: 1.25em;
+		text-align: center;
 	}
 
-	:global(.filter-chip.active .chip-count) {
-		background: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-medium-high) * 100%),
-			transparent
-		);
+	.filter-chip.active .chip-count {
+		opacity: 0.9;
 	}
 
-	/* Special styling for control buttons */
-	:global(.show-more-button),
-	:global(.clear-selection-button) {
-		margin-right: var(--space-xs);
-		margin-bottom: var(--space-2xs);
+	/* Actions row */
+	.filter-actions {
+		display: flex;
+		gap: var(--space-sm);
+		margin-top: var(--space-sm);
 	}
 
-	/* Dark mode overrides using design system variables */
-	:global(html.dark) .filter-section-content {
-		background: color-mix(
-			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
-		box-shadow:
-			var(--shadow-glass),
-			inset 0 1px 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
+	.filter-actions:empty {
+		display: none;
 	}
 
-	:global(html.dark) .chip-count {
-		background: color-mix(
-			in srgb,
-			var(--color-black) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
+	.action-button {
+		padding: 0;
+		font-family: var(--font-family-sans);
+		font-size: var(--font-size-xs);
+		font-weight: var(--font-weight-medium);
+		color: var(--color-text-muted);
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		transition: color var(--duration-fast) var(--ease-out);
 	}
 
-	:global(html.dark .filter-chip.active .chip-count) {
-		background: color-mix(
-			in srgb,
-			var(--color-black) calc(var(--opacity-medium-high) * 100%),
-			transparent
-		);
+	.action-button:hover {
+		color: var(--color-accent);
 	}
 
-	/* Responsive design - Mobile first */
-	@media (--sm-down) {
+	.action-button.clear {
+		color: var(--color-danger);
+	}
+
+	.action-button.clear:hover {
+		color: var(--color-danger-dark);
+	}
+
+	/* Dark mode */
+	:global(html.dark) .filter-chip {
+		background: color-mix(in srgb, var(--color-surface-alt) 30%, transparent);
+		border-color: var(--color-border);
+	}
+
+	:global(html.dark) .filter-chip:hover {
+		background: color-mix(in srgb, var(--color-accent) 15%, transparent);
+		border-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+	}
+
+	:global(html.dark) .filter-chip.active {
+		background: var(--color-accent);
+		border-color: var(--color-accent);
+	}
+
+	/* Mobile: Cards for each section */
+	@media (max-width: 1024px) {
 		.filter-section-content {
-			padding: var(--space-sm);
-			margin-bottom: var(--space-sm);
+			background: var(--color-surface);
+			border: var(--border-width-thin) solid var(--color-border);
+			border-radius: var(--border-radius-md);
+			padding: var(--space-md);
 		}
 
-		.filter-section-header {
-			flex-direction: column;
-			align-items: flex-start;
-			gap: var(--space-xs);
+		:global(html.dark) .filter-section-content {
+			background: var(--color-surface);
+			border-color: var(--color-border);
 		}
+	}
 
+	/* Responsive design */
+	@media (--sm-down) {
 		.filter-section-title {
-			font-size: var(--font-size-base);
+			font-size: var(--font-size-xs);
 		}
 
 		.filter-chips-container {
 			gap: var(--space-2xs);
 		}
 
-		.chip-count {
-			padding: var(--space-3xs) var(--space-2xs);
+		.filter-chip {
+			padding: var(--space-2xs) var(--space-xs);
+			font-size: var(--font-size-xs);
 		}
-	}
 
-	/* Medium screens */
-	@media (--sm) and (--lg-down) {
-		.filter-chips-container {
-			gap: var(--space-xs);
-		}
-	}
-
-	/* Large screens */
-	@media (--lg) {
-		.filter-section-content {
-			padding: var(--space-lg);
+		.chip-text {
+			max-width: 120px;
 		}
 	}
 
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
-		.filter-section-content,
-		.chip-count {
+		.filter-chip,
+		.action-button {
 			transition: none;
-		}
-
-		.filter-section-content:hover {
-			transform: none;
-		}
-
-		:global(.filter-chip.active:hover) {
-			transform: none !important;
-		}
-
-		/* Disable scroll-driven animations */
-		.filter-section-content {
-			opacity: 1;
-			transform: none;
-			animation: none;
-		}
-
-		:global(.filter-chips-container > *) {
-			will-change: auto;
-			opacity: 1;
-			transform: none;
-			animation: none;
 		}
 	}
 </style>

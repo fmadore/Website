@@ -98,12 +98,10 @@
 	);
 </script>
 
-<div class="filter-section-content glass-panel-light scroll-reveal">
+<div class="filter-section-content">
 	<div class="filter-section-header">
 		<h3 class="filter-section-title">{title}</h3>
-		<div class="range-display">
-			<span class="range-text">{displayRange}</span>
-		</div>
+		<span class="range-display">{displayRange}</span>
 	</div>
 	{#if allYears.length > 0}
 		<div class="slider-container">
@@ -129,97 +127,40 @@
 
 <style>
 	.filter-section-content {
-		padding: var(--space-md);
-		border-radius: var(--border-radius-md);
-		margin-bottom: var(--space-md);
-		transition: all var(--duration-normal) var(--ease-out);
-	}
-
-	.filter-section-content:hover {
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-		box-shadow: var(--shadow-md);
-		transform: var(--transform-lift-sm);
+		padding: 0;
 	}
 
 	.filter-section-header {
 		display: flex;
-		justify-content: space-between;
-		align-items: flex-start;
+		align-items: center;
+		gap: var(--space-xs);
 		margin-bottom: var(--space-sm);
-		gap: var(--space-sm);
 	}
 
 	.filter-section-title {
-		font-family: var(--font-family-serif);
-		font-size: var(--font-size-lg);
-		font-weight: var(--font-weight-bold);
-		color: var(--color-text-emphasis);
+		font-family: var(--font-family-sans);
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text-muted);
+		text-transform: uppercase;
+		letter-spacing: var(--letter-spacing-wide);
 		margin: 0;
-		padding-bottom: var(--space-xs);
-		border-bottom: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium) * 100%), transparent);
-		flex-shrink: 0;
 	}
 
 	.range-display {
-		display: flex;
-		align-items: center;
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-surface) calc(var(--opacity-medium-high) * 100%), transparent);
-		border-radius: var(--border-radius-md);
-		padding: var(--space-xs) var(--space-sm);
-		transition: all var(--duration-normal) var(--ease-out);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		box-shadow: var(--shadow-sm);
-	}
-
-	.range-display:hover {
-		border-color: color-mix(
-			in srgb,
-			var(--color-accent) calc(var(--opacity-medium-high) * 100%),
-			transparent
-		);
-		background: color-mix(
-			in srgb,
-			var(--color-accent) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-md);
-	}
-
-	.range-text {
 		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-semibold);
-		color: var(--color-text);
-		line-height: 1;
-		white-space: nowrap;
+		color: var(--color-accent);
+		background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+		padding: var(--space-2xs) var(--space-xs);
+		border-radius: var(--border-radius-sm);
 	}
 
 	.slider-container {
-		background: transparent;
-		border: none;
-		border-radius: 0;
-		padding: var(--space-xs) 0 var(--space-md);
-		margin-top: var(--space-xs);
+		padding: var(--space-sm) var(--space-md) var(--space-lg);
 		position: relative;
 		overflow: visible;
-		min-height: 60px;
+		min-height: 50px;
 	}
 
 	.no-data-message {
@@ -227,114 +168,49 @@
 		align-items: center;
 		justify-content: center;
 		padding: var(--space-md);
-		background: transparent;
 		border: var(--border-width-thin) dashed var(--color-border);
 		border-radius: var(--border-radius);
-		color: var(--color-text-light);
-		font-style: italic;
+		color: var(--color-text-muted);
 		font-size: var(--font-size-sm);
 	}
 
-	/* Dark mode overrides using design system variables */
-	:global(html.dark) .filter-section-content {
-		background: color-mix(
-			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
-		box-shadow:
-			var(--shadow-glass),
-			inset 0 1px 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
-	}
-
-	:global(html.dark) .range-display {
-		background: color-mix(
-			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-low) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark) .range-display:hover {
-		background: color-mix(
-			in srgb,
-			var(--color-accent) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-accent) calc(var(--opacity-medium-high) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark) .slider-container {
-		background: transparent;
-		border: none;
-	}
-
-	:global(html.dark) .no-data-message {
-		background: color-mix(
-			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-low) * 100%),
-			transparent
-		);
-	}
-
-	/* Global range slider styling enhancements */
+	/* Global range slider styling */
 	:global(.rangeSlider) {
 		--range-slider: var(--color-border);
 		--range-handle-inactive: var(--color-surface);
-		--range-handle: var(--color-primary);
-		--range-handle-focus: var(--color-primary);
-		--range-handle-border: var(--color-primary);
+		--range-handle: var(--color-accent);
+		--range-handle-focus: var(--color-accent);
+		--range-handle-border: var(--color-accent);
 		--range-range-inactive: var(--color-border);
-		--range-range: var(--color-primary);
+		--range-range: var(--color-accent);
 		--range-float-inactive: var(--color-surface-alt);
-		--range-float: var(--color-primary);
+		--range-float: var(--color-accent);
 		--range-float-text: var(--color-white);
 		margin-bottom: var(--space-xs) !important;
 	}
 
 	:global(.rangeSlider .rangeHandle) {
-		box-shadow: var(--shadow-md);
-		transition: all var(--duration-fast) var(--ease-out);
+		box-shadow: var(--shadow-sm);
+		transition: transform var(--duration-fast) var(--ease-out);
 	}
 
 	:global(.rangeSlider .rangeHandle:hover) {
-		transform: scale(var(--scale-110));
-		box-shadow: var(--shadow-lg);
+		transform: scale(1.1);
 	}
 
 	:global(.rangeSlider .rangeFloat) {
-		border-radius: var(--border-radius);
+		border-radius: var(--border-radius-sm);
 		font-weight: var(--font-weight-semibold);
 		font-size: var(--font-size-xs);
-		box-shadow: var(--shadow-sm);
 	}
 
-	/* Ensure pip labels (years) have adequate space */
 	:global(.rangeSlider .rangePips) {
 		margin-bottom: var(--space-xs) !important;
 	}
 
 	:global(.rangeSlider .pip) {
 		font-size: var(--font-size-xs);
-		color: var(--color-text-light);
-		font-weight: var(--font-weight-medium);
+		color: var(--color-text-muted);
 	}
 
 	:global(.rangeSlider .pip.first),
@@ -343,86 +219,50 @@
 		color: var(--color-text);
 	}
 
-	/* Responsive design - Mobile first */
-	@media (--sm-down) {
+	/* Dark mode */
+	:global(html.dark) .range-display {
+		background: color-mix(in srgb, var(--color-accent) 15%, transparent);
+	}
+
+	/* Mobile: Cards for each section */
+	@media (max-width: 1024px) {
 		.filter-section-content {
-			padding: var(--space-sm);
-			margin-bottom: var(--space-sm);
+			background: var(--color-surface);
+			border: var(--border-width-thin) solid var(--color-border);
+			border-radius: var(--border-radius-md);
+			padding: var(--space-md);
 		}
 
-		.filter-section-header {
-			flex-direction: row;
-			flex-wrap: wrap;
-			align-items: center;
-			gap: var(--space-xs);
+		:global(html.dark) .filter-section-content {
+			background: var(--color-surface);
+			border-color: var(--color-border);
 		}
+	}
 
+	/* Responsive design */
+	@media (--sm-down) {
 		.filter-section-title {
-			font-size: var(--font-size-base);
-			flex: 0 0 auto;
-			max-width: 50%;
+			font-size: var(--font-size-xs);
 		}
 
 		.range-display {
-			padding: var(--space-2xs) var(--space-xs);
-			flex: 0 0 auto;
-			min-width: fit-content;
-		}
-
-		.range-text {
-			font-size: var(--font-size-sm);
+			font-size: var(--font-size-xs);
 		}
 
 		.slider-container {
-			padding: var(--space-2xs) 0 var(--space-lg);
-			min-height: 50px;
-		}
-	}
-
-	/* Medium screens */
-	@media (--sm) and (--lg-down) {
-		.slider-container {
-			padding: var(--space-xs) 0 var(--space-lg);
-		}
-	}
-
-	/* Large screens */
-	@media (--lg) {
-		.filter-section-content {
-			padding: var(--space-lg);
-		}
-
-		.slider-container {
-			padding: var(--space-sm) 0 var(--space-xl);
-			min-height: 70px;
+			padding: var(--space-xs) var(--space-sm) var(--space-md);
+			min-height: 40px;
 		}
 	}
 
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
-		.filter-section-content,
-		.range-display {
-			transition: none;
-		}
-
-		.filter-section-content:hover,
-		.range-display:hover {
-			transform: none;
-		}
-
 		:global(.rangeSlider .rangeHandle) {
 			transition: none;
 		}
 
 		:global(.rangeSlider .rangeHandle:hover) {
 			transform: none;
-		}
-
-		/* Disable scroll-driven animations */
-		.filter-section-content {
-			opacity: 1;
-			transform: none;
-			animation: none;
 		}
 	}
 </style>

@@ -200,64 +200,22 @@
 </aside>
 
 <style>
-	/* Main sidebar container - Card design for the whole sidebar */
+	/* Main sidebar container - Clean unified design */
 	.filter-sidebar {
-		background: var(--color-surface);
-		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: var(--border-radius-md);
-		padding: var(--space-md);
 		position: relative;
-		box-shadow: var(--shadow-sm);
-		/* Prevent layout shifts during content changes */
 		contain: layout style;
-		/* Enhanced glassmorphism to match other components */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 3%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 2%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 1%, transparent) 100%
-		);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
-		box-shadow:
-			var(--shadow-glass),
-			inset 0 1px 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
-		transition: all var(--duration-normal) var(--ease-out);
-	}
-
-	/* Hover effects for glassmorphism */
-	.filter-sidebar:hover {
-		transform: var(--transform-lift-sm);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 5%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 3%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 2%, transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-medium-high) * 100%),
-			transparent
-		);
-		box-shadow:
-			var(--shadow-glass-lg),
-			inset 0 1px 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium-high) * 100%), transparent);
+		transition: box-shadow var(--duration-normal) var(--ease-out);
 	}
 
 	/* Filter sections wrapper (for mobile collapse) */
 	.filter-sections-wrapper {
-		display: none; /* Hidden by default on mobile, shown via JS */
-		overflow: hidden; /* Needed for slide transition */
-		border-radius: var(--border-radius-md);
+		display: none;
+		overflow: hidden;
 	}
 
 	/* Desktop filter sections wrapper */
 	.filter-sections-wrapper-desktop {
-		display: block; /* Always visible on desktop */
+		display: block;
 	}
 
 	/* Sticky positioning for desktop */
@@ -275,25 +233,12 @@
 			border: none;
 			box-shadow: none;
 			padding: 0;
-			backdrop-filter: none;
-			-webkit-backdrop-filter: none;
-		}
-
-		.filter-sidebar::before {
-			display: none;
-		}
-
-		.filter-sidebar:hover {
-			transform: none;
-			background: transparent;
-			border-color: transparent;
-			box-shadow: none;
 		}
 
 		.filter-sections-wrapper {
-			display: block;
-			background: transparent;
-			border: none;
+			display: flex;
+			flex-direction: column;
+			gap: var(--space-sm);
 			padding: 0;
 			margin-top: var(--space-md);
 		}
@@ -317,135 +262,90 @@
 		}
 
 		.filter-sections-wrapper-desktop {
-			display: block;
+			display: flex;
+			flex-direction: column;
+			gap: 0;
 		}
 
 		.filter-sidebar {
-			background: linear-gradient(
-				135deg,
-				color-mix(in srgb, var(--color-primary) 3%, transparent) 0%,
-				color-mix(in srgb, var(--color-highlight) 2%, transparent) 50%,
-				color-mix(in srgb, var(--color-accent) 1%, transparent) 100%
-			);
-			backdrop-filter: blur(var(--glass-blur-amount));
-			-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-			border: var(--border-width-thin) solid
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
-			border-radius: var(--border-radius-md);
-			padding: var(--space-md);
-			box-shadow:
-				var(--shadow-glass),
-				inset 0 1px 0
-					color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+			background: var(--color-surface);
+			border: var(--border-width-thin) solid var(--color-border);
+			border-radius: var(--border-radius-lg);
+			padding: var(--space-lg);
+			box-shadow: var(--shadow-sm);
 			margin-bottom: 0;
+		}
+
+		.filter-sidebar:hover {
+			box-shadow: var(--shadow-md);
 		}
 
 		.sticky-top {
 			position: sticky;
 			top: var(--space-xl);
-			max-height: none;
-			overflow-y: visible;
+			max-height: calc(100vh - var(--space-3xl));
+			overflow-y: auto;
 			will-change: scroll-position;
 			transform: translateZ(0);
 		}
-	}
 
-	/* Large screens - more padding */
-	@media (min-width: 1024px) {
-		.filter-sidebar {
-			padding: var(--space-lg);
+		/* Custom scrollbar for sidebar */
+		.sticky-top::-webkit-scrollbar {
+			width: 6px;
+		}
+
+		.sticky-top::-webkit-scrollbar-track {
+			background: transparent;
+		}
+
+		.sticky-top::-webkit-scrollbar-thumb {
+			background: color-mix(in srgb, var(--color-text-muted) 30%, transparent);
+			border-radius: var(--border-radius-full);
+		}
+
+		.sticky-top::-webkit-scrollbar-thumb:hover {
+			background: color-mix(in srgb, var(--color-text-muted) 50%, transparent);
 		}
 	}
 
-	/* Individual filter section styling - Clean minimal design */
+	/* Individual filter section styling */
 	.filter-section {
 		background: transparent;
 		border: none;
 		padding: 0;
-		margin-bottom: var(--space-lg);
 		position: relative;
-		will-change: opacity, transform;
 	}
 
-	.filter-section:last-of-type {
-		margin-bottom: 0;
+	/* Desktop: Add dividers between sections */
+	@media (min-width: 1025px) {
+		.filter-section {
+			padding-bottom: var(--space-md);
+			margin-bottom: var(--space-md);
+			border-bottom: var(--border-width-thin) solid
+				color-mix(in srgb, var(--color-border) 60%, transparent);
+		}
+
+		.filter-section:last-of-type {
+			border-bottom: none;
+			margin-bottom: 0;
+			padding-bottom: 0;
+		}
 	}
 
-	/* Staggered animation for filter sections */
-	.filter-section:nth-child(1) {
-		--stagger-delay: 0ms;
-	}
-	.filter-section:nth-child(2) {
-		--stagger-delay: 50ms;
-	}
-	.filter-section:nth-child(3) {
-		--stagger-delay: 100ms;
-	}
-	.filter-section:nth-child(4) {
-		--stagger-delay: 150ms;
-	}
-	.filter-section:nth-child(5) {
-		--stagger-delay: 200ms;
-	}
-	.filter-section:nth-child(n + 6) {
-		--stagger-delay: 250ms;
-	}
-
-	/* Dark mode enhancements for glassmorphism */
+	/* Dark mode enhancements */
 	:global(html.dark) .filter-sidebar {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 6%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 4%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 2%, transparent) 100%
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
-		box-shadow:
-			var(--shadow-glass),
-			inset 0 1px 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
+		background: var(--color-surface);
+		border-color: var(--color-border);
 	}
 
-	:global(html.dark) .filter-sidebar:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 6%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 4%, transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-		box-shadow:
-			var(--shadow-glass-lg),
-			inset 0 1px 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
-	}
-
-	/* Dark mode mobile wrapper */
-	:global(html.dark) .filter-sections-wrapper {
-		background: transparent;
-		border: none;
-		box-shadow: none;
+	:global(html.dark) .filter-section {
+		border-color: color-mix(in srgb, var(--color-border) 40%, transparent);
 	}
 
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
 		.filter-sidebar {
 			transition: none;
-			animation: none;
-		}
-
-		.filter-sidebar:hover {
-			transform: none;
-		}
-
-		.filter-section {
-			will-change: auto;
-			animation: none;
 		}
 	}
 </style>
