@@ -58,7 +58,7 @@
 		"echarts": "^6.0.0",
 		"html2canvas": "^1.4.1",
 		"jspdf": "^4.0.0",
-		"maplibre-gl": "^5.15.0",
+		"maplibre-gl": "^5.16.0",
 		"svelte-fa": "^4.0.4"
 	}
 }
