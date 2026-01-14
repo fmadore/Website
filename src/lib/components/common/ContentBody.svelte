@@ -88,8 +88,8 @@
 		color: var(--color-text-emphasis);
 	}
 
-	/* Lead paragraph styling */
-	.content-body :global(p:first-child) {
+	/* Lead paragraph styling - only for direct child, not inside blockquotes */
+	.content-body > :global(p:first-child) {
 		font-size: var(--font-size-base);
 		font-weight: var(--font-weight-normal);
 		color: var(--color-text-emphasis);
@@ -98,6 +98,29 @@
 		border-left: var(--border-width-medium) solid transparent;
 		border-image: linear-gradient(180deg, var(--color-highlight) 0%, var(--color-accent) 100%) 1;
 		border-image-slice: 1;
+	}
+
+	/* Reset styling for paragraphs inside blockquotes */
+	.content-body :global(blockquote p) {
+		padding-left: 0;
+		border-left: none;
+		border-image: none;
+		color: inherit;
+	}
+
+	/* Blockquote box styling */
+	.content-body :global(blockquote) {
+		margin: var(--space-lg) 0;
+		padding: var(--space-lg);
+		background: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-very-low) * 100%),
+			transparent
+		);
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
+		border-radius: var(--border-radius-lg);
+		border-left: none;
 	}
 
 	/* Headings within content */
@@ -139,21 +162,7 @@
 		line-height: var(--line-height-relaxed);
 	}
 
-	/* Blockquotes */
-	.content-body :global(blockquote) {
-		border-left: var(--border-width-thick) solid var(--color-primary);
-		padding-left: var(--space-md);
-		margin: var(--space-lg) 0;
-		font-style: italic;
-		color: var(--color-text-light);
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-low) * 100%),
-			transparent
-		);
-		padding: var(--space-md);
-		border-radius: var(--border-radius);
-	}
+	/* Blockquotes - inherits from global typography.css */
 
 	/* Code styling */
 	.content-body :global(code) {
