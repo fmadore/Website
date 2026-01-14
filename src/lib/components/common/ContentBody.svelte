@@ -81,8 +81,6 @@
 	/* Emphasis styling */
 	.content-body :global(em) {
 		font-style: italic;
-		font-weight: var(--font-weight-medium);
-		color: var(--color-text-emphasis);
 	}
 
 	.content-body :global(strong) {
