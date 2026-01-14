@@ -20,6 +20,10 @@ export const activity: Activity = {
     `,
     tags: ['Book Review', 'Religious Activism', 'Togo', 'Benin', 'Publication'],
     panelType: 'publication',
+    heroImage: {
+        src: 'images/activities/research-africa-reviews-hero.webp',
+        alt: 'Screenshot of Research Africa Reviews journal website showing Volume 9, Issue 3 - December 2025'
+    },
     type: 'publication',
     url: 'https://researchafrica.duke.edu/sites/default/files/-5-7-Religious-Activism-on-Campuses-in-Togo-and-Benin-Issue3-2025.pdf'
 };
