@@ -92,15 +92,23 @@
 					> to process under-resourced African archives at scale.
 				</p>
 				<p>
-					I also explore how "vibe coding" and agentic AI tools democratise access to computational
-					methods, allowing social science scholars to prototype applications through natural
-					language prompts. The
+					I also explore how "vibe coding" and agentic AI tools can democratise the use of
+					computational methods by allowing social science scholars to prototype applications
+					through natural language prompts. Data visualisation transforms analyses into accessible
+					narratives: the
 					<a
 						href="https://fmadore.github.io/iwac-dashboard/"
 						target="_blank"
 						rel="noopener noreferrer">IWAC Dashboard</a
-					>, built without manual coding, lets users navigate the collection through interactive
-					maps, word clouds, and network visualisations.
+					>
+					lets users explore the collection through interactive maps, networks, and word clouds, while
+					the
+					<a
+						href="https://fmadore.github.io/IWAC-sentiment-analysis/"
+						target="_blank"
+						rel="noopener noreferrer">IWAC Sentiment Analysis</a
+					>
+					reveal how newspapers portray Islam across the region.
 				</p>
 
 				<h3>Current Project</h3>
