@@ -146,6 +146,8 @@
 		padding: var(--space-12) 0 var(--space-8) 0;
 		position: relative;
 		overflow: hidden;
+		/* Keep footer below sidebar dropdowns (sidebar-column has z-index: 10) */
+		z-index: 1;
 	}
 
 	/* Enhanced gradient top border with animated shimmer */

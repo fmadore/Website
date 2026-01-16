@@ -38,6 +38,9 @@
 		min-width: 0;
 		/* Prevent layout shifts */
 		contain: layout;
+		/* Ensure dropdowns in sidebar appear above footer */
+		position: relative;
+		z-index: 10;
 	}
 
 	.main-content-column {

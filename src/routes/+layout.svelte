@@ -258,5 +258,8 @@
 
 	.main-content-area {
 		flex-grow: 1;
+		/* Ensure main content (including sidebar dropdowns) appears above footer */
+		position: relative;
+		z-index: 2;
 	}
 </style>
