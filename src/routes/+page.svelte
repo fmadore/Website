@@ -108,16 +108,13 @@
 					I am coordinating
 					<a href="{base}/research/dh-ai-african-studies" data-sveltekit-preload-data
 						><em>Digital Humanities and AI in African Studies</em></a
-					>, a collaborative research initiative comprising two international workshops in 2026 (<a
-						href="https://fmadore.github.io/dh-ai-african-studies-2026/"
-						target="_blank"
-						rel="noopener noreferrer">Hanover</a
-					>
+					>, a collaborative research initiative comprising two international workshops in 2026 (<ItemReference
+						id="volkswagenstiftung-dh-ai-african-studies-workshop-2026"
+						label="Hanover"
+					/>
 					and
-					<a
-						href="{base}/communications/stias-dh-ai-african-studies-workshop-2026"
-						data-sveltekit-preload-data>Stellenbosch</a
-					>) and a
+					<ItemReference id="stias-dh-ai-african-studies-workshop-2026" label="Stellenbosch" />) and
+					a
 					<a
 						href="{base}/activities/dh-ai-african-studies-edited-volume"
 						data-sveltekit-preload-data>forthcoming co-edited volume</a

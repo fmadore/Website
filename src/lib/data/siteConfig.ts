@@ -36,7 +36,7 @@ export interface AuthorInfo {
 export const author: AuthorInfo = {
     name: 'Frédérick Madore',
     fullName: 'Frédérick Madore, PhD',
-    position: 'Historian & Digital Humanist | Data Curator at the Cluster of Excellence "Africa Multiple", University of Bayreuth',
+    position: 'Historian | Digital Humanities & AI | Data Curator, University of Bayreuth',
     positionShort: 'Historian & Data Curator'
 };
 

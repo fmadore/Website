@@ -24,7 +24,8 @@
 
 	/* ───────────────────────────── Props ─────────────────────────────── */
 	/** ID of the referenced item. */
-	let { id }: { id: string } = $props();
+	/** Optional custom label - if provided, displays this instead of (Author, Year) */
+	let { id, label }: { id: string; label?: string } = $props();
 
 	/* ────────────────────────── Cross‑fade setup ─────────────────────── */
 	const [send, receive] = crossfade({
@@ -202,7 +203,7 @@
 		}}
 		onclick={handleLinkClick}
 	>
-		<ReferenceLink {item} {itemType} {id} hasPopup isActive={showPreview} />
+		<ReferenceLink {item} {itemType} {id} {label} hasPopup isActive={showPreview} />
 		{#if showPreview}
 			<div
 				id="item-preview-{id}"

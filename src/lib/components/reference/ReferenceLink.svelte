@@ -6,12 +6,14 @@
 		item = undefined,
 		itemType = undefined,
 		id,
+		label = undefined,
 		hasPopup = false,
 		isActive = false
 	}: {
 		item?: Publication | Communication | undefined;
 		itemType?: 'publication' | 'communication' | undefined;
 		id: string;
+		label?: string;
 		hasPopup?: boolean;
 		isActive?: boolean;
 	} = $props();
@@ -47,7 +49,7 @@
 	}
 
 	const referenceText = $derived(
-		item ? `(${getAuthorCitation(item)}, ${getYear(item)})` : `(${id})`
+		label ? label : item ? `(${getAuthorCitation(item)}, ${getYear(item)})` : `(${id})`
 	);
 
 	const itemUrl = $derived(
