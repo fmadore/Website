@@ -9,7 +9,7 @@
 	import type { PageData } from './$types';
 
 	let { data } = $props<{ data: PageData }>();
-	
+
 	// Use the Person schema from page load data as additional schema
 	const additionalSchemas = $derived(data.personSchema ? [data.personSchema] : []);
 
@@ -53,42 +53,81 @@
 						href="https://www.africamultiple.uni-bayreuth.de/en/index.html"
 						target="_blank"
 						rel="noopener noreferrer">Cluster of Excellence "Africa Multiple"</a
-					>, University of Bayreuth. Previously, I was a Research Fellow in the <a
-						href="https://www.zmo.de/en/research/religion-and-intellectual-culture"
-						target="_blank"
-						rel="noopener noreferrer">Religion and Intellectual Culture</a
+					>, University of Bayreuth (Germany). In this role, I bridge the gap between technical
+					infrastructure and African Studies, supporting researchers in managing data according to
+					FAIR and CARE principles while ensuring that digital literacy and ethical standards are
+					integrated into our workflows. I also continue my research at the intersection of Islamic
+					studies,
+					<a href="{base}/digital-humanities" data-sveltekit-preload-data>digital humanities</a>
+					(DH), and artificial intelligence (AI), exploring how emerging technologies can transform the
+					way we access, analyse, and interpret historical archives.
+				</p>
+				<p>
+					My work combines over a decade of expertise on Islam in Francophone West Africa and
+					extensive fieldwork in the region. My <a
+						href="{base}/research"
+						data-sveltekit-preload-data>research</a
 					>
-					unit at
+					examines the diverse ways Muslim communities, notably youth and women, have engaged with politics,
+					education, and the public sphere in Benin, Burkina Faso, Côte d'Ivoire, and Togo since the 1960s—and
+					how computational methods can reveal new patterns across these histories. Previously, I was
+					a Research Fellow at
 					<a href="https://www.zmo.de/en" target="_blank" rel="noopener noreferrer"
 						>Leibniz-Zentrum Moderner Orient (ZMO)</a
-					>. My research explores how Islamic movements and Muslim intellectuals have navigated
-					secular governance and influenced public discourse in Francophone West Africa since the
-					1960s. I analyse these dynamics by combining extensive fieldwork and archival research
-					with
-					<a href="{base}/digital-humanities" data-sveltekit-preload-data>digital humanities</a> (DH)
-					and artificial intelligence (AI), examining them from local case studies to region-wide patterns.
-					My work focuses on Benin, Burkina Faso, Côte d'Ivoire and Togo, paying particular attention
-					to universities and other educational institutions as key sites of religious mobilisation.
+					>.
 				</p>
 
-				<h2>DH, AI, and the Islam West Africa Collection (IWAC)</h2>
+				<h3>DH, AI, and the <em>Islam West Africa Collection</em> (IWAC)</h3>
 				<p>
-					Since 2023, I am developing the <a
+					Since 2023, I have been developing the <a
 						href="https://islam.zmo.de/s/westafrica/"
 						target="_blank"
 						rel="noopener noreferrer"><em>Islam West Africa Collection</em> (IWAC)</a
 					>, an open-access database comprising over 14,500 items relating to Islam across the
-					region. I use computational methods and
+					region. I experiment with
 					<a
 						href="https://github.com/fmadore/iwac-ai-pipelines"
 						target="_blank"
 						rel="noopener noreferrer">AI-assisted workflows</a
-					> to map patterns in religious mobilisation, track shifts in Islamic discourse, analyse media
-					representations of Islam and trace the changing relationships between Muslim communities and
-					state authorities. Data visualisation transforms these analyses into accessible narratives
-					for scholarly and public audiences.
+					> to process under-resourced African archives at scale.
 				</p>
-				<h2>Books & Publications</h2>
+				<p>
+					I also explore how "vibe coding" and agentic AI tools democratise access to computational
+					methods, allowing social science scholars to prototype applications through natural
+					language prompts. The
+					<a
+						href="https://fmadore.github.io/iwac-dashboard/"
+						target="_blank"
+						rel="noopener noreferrer">IWAC Dashboard</a
+					>, built without manual coding, lets users navigate the collection through interactive
+					maps, word clouds, and network visualisations.
+				</p>
+
+				<h3>Current Project</h3>
+				<p>
+					I am coordinating
+					<a href="{base}/research/dh-ai-african-studies" data-sveltekit-preload-data
+						><em>Digital Humanities and AI in African Studies</em></a
+					>, a collaborative research initiative comprising two international workshops in 2026 (<a
+						href="https://fmadore.github.io/dh-ai-african-studies-2026/"
+						target="_blank"
+						rel="noopener noreferrer">Hanover</a
+					>
+					and
+					<a
+						href="{base}/communications/stias-dh-ai-african-studies-workshop-2026"
+						data-sveltekit-preload-data>Stellenbosch</a
+					>) and a
+					<a
+						href="{base}/activities/dh-ai-african-studies-edited-volume"
+						data-sveltekit-preload-data>forthcoming co-edited volume</a
+					>
+					to be published by Bielefeld University Press. This project brings together scholars from Africa,
+					Europe, and beyond to examine how computational tools can transform research methods while centring
+					African knowledge systems.
+				</p>
+
+				<h3>Books & Publications</h3>
 				<p>
 					My recent book, <em>Religious Activism on Campuses in Togo and Benin</em>
 					<ItemReference id="religious-activism-campuses" />, examines the emergence of Christian
@@ -99,25 +138,27 @@
 					<ItemReference id="sphere-publique-musulmane" /> and the co-editor of
 					<em>Religiosity on University Campuses in Africa</em>
 					<ItemReference id="religiosity-university-campuses" />. In addition, I have co-edited two
-					special journal issues: "Muslim Minorities in Africa, Part 1" <ItemReference
-						id="muslim-minorities-africa-1"
-					/> & "Part 2" <ItemReference id="muslim-minorities-africa-2" /> and "Les acteurs religieux
-					africains à l'ère du numérique" <ItemReference id="acteurs-religieux-numerique" />. My
-					<a href="{base}/publications" data-sveltekit-preload-data>research</a> has been published in
-					eleven peer-reviewed journals and six edited volumes.
+					special journal issues: "Muslim Minorities in Africa, Part 1"
+					<ItemReference id="muslim-minorities-africa-1" /> & "Part 2"
+					<ItemReference id="muslim-minorities-africa-2" /> and "Les acteurs religieux africains à l'ère
+					du numérique"
+					<ItemReference id="acteurs-religieux-numerique" />. My research has been
+					<a href="{base}/publications" data-sveltekit-preload-data>published</a> in eleven peer-reviewed
+					journals and seven edited volumes.
 				</p>
 
-				<h2>Consulting</h2>
+				<h3>Consulting</h3>
 				<p>
 					Beyond academia, I work with <a
 						href="https://communitology.co/"
 						target="_blank"
 						rel="noopener noreferrer">Communitology</a
-					>, to produce specialised Country of Origin Information (COI) reports for asylum and
-					immigration cases involving Benin, Côte d'Ivoire, and Togo.
+					>
+					to produce specialised Country of Origin Information (COI) reports for asylum and immigration
+					cases involving Benin, Côte d'Ivoire, and Togo.
 				</p>
 
-				<h2>Training & Affiliations</h2>
+				<h3>Training & Affiliations</h3>
 				<p>
 					I hold a Ph.D. in History from <a
 						href="https://www.ulaval.ca/"
@@ -133,10 +174,7 @@
 					at the
 					<a href="https://www.ufl.edu/" target="_blank" rel="noopener noreferrer"
 						>University of Florida</a
-					>. Through my ongoing <a href="{base}/research">research</a> and
-					<a href="{base}/digital-humanities">DH projects</a>, I combine historical methods with
-					computational techniques to advance understanding of Muslim societies in Francophone West
-					Africa.
+					>.
 				</p>
 			</ContentBody>
 		</div>
