@@ -214,7 +214,7 @@
 	<div
 		class="range-handle"
 		class:active={isDragging === 'min'}
-		style="left: {minPosition}%"
+		style="--handle-position: {minPosition / 100}"
 		role="slider"
 		tabindex="0"
 		aria-valuemin={min}
@@ -236,7 +236,7 @@
 	<div
 		class="range-handle"
 		class:active={isDragging === 'max'}
-		style="left: {maxPosition}%"
+		style="--handle-position: {maxPosition / 100}"
 		role="slider"
 		tabindex="0"
 		aria-valuemin={values[0]}
@@ -284,6 +284,9 @@
 		border-radius: var(--border-radius-md);
 		transition: all var(--duration-normal) var(--ease-out);
 
+		/* Track offset variable for handle positioning */
+		--track-offset: var(--space-sm);
+
 		/* Glassmorphism styling matching filter sidebar - using global values */
 		background: color-mix(
 			in srgb,
@@ -310,8 +313,8 @@
 	.range-track {
 		position: absolute;
 		top: 50%;
-		left: var(--space-sm);
-		right: var(--space-sm);
+		left: var(--track-offset);
+		right: var(--track-offset);
 		height: var(--border-width-thick);
 		background-color: var(--color-border);
 		border-radius: var(--border-radius-sm);
@@ -338,6 +341,10 @@
 	.range-handle {
 		position: absolute;
 		top: 50%;
+		/* Calculate position relative to track area, not slider container */
+		left: calc(
+			var(--track-offset) + var(--handle-position) * (100% - 2 * var(--track-offset))
+		);
 		width: var(--space-lg);
 		height: var(--space-lg);
 		background: var(--gradient-accent-highlight);
@@ -433,8 +440,8 @@
 	.range-pips {
 		position: absolute;
 		top: 100%;
-		left: var(--space-sm);
-		right: var(--space-sm);
+		left: var(--track-offset);
+		right: var(--track-offset);
 		height: var(--space-5);
 		margin-top: var(--space-2xs);
 	}
@@ -522,19 +529,10 @@
 	/* Responsive design - Mobile first */
 	@media (--sm-down) {
 		.range-slider {
+			--track-offset: var(--space-xs);
 			height: var(--space-9);
 			margin: var(--space-xs) 0;
 			padding: var(--space-xs) var(--space-sm);
-		}
-
-		.range-track {
-			left: var(--space-xs);
-			right: var(--space-xs);
-		}
-
-		.range-pips {
-			left: var(--space-xs);
-			right: var(--space-xs);
 		}
 
 		.range-float {
@@ -557,18 +555,9 @@
 	/* Large screens */
 	@media (--lg) {
 		.range-slider {
+			--track-offset: var(--space-md);
 			height: var(--space-12);
 			padding: var(--space-sm) var(--space-md);
-		}
-
-		.range-track {
-			left: var(--space-md);
-			right: var(--space-md);
-		}
-
-		.range-pips {
-			left: var(--space-md);
-			right: var(--space-md);
 		}
 
 		.range-handle {
