@@ -17,7 +17,8 @@ export interface Address {
     institutionAbbreviation: string;
     institutionUrl: string;
     department?: string; // Optional department/research center line
-    street: string;
+    street?: string; // Optional street address
+    room?: string; // Optional room number
     postalCode: string;
     city: string;
     country: string;
@@ -40,11 +41,12 @@ export const author: AuthorInfo = {
 };
 
 export const address: Address = {
-    institution: 'University of Bayreuth',
+    institution: 'Universität Bayreuth',
     institutionAbbreviation: 'UBT',
     institutionUrl: 'https://www.africamultiple.uni-bayreuth.de/en/index.html',
     department: 'Forschungszentrum für Afrikastudien',
-    street: 'Gebäude GW1, Zi.: 0.07, Universitätsstr. 30',
+    street: 'Universitätsstraße 30',
+    room: 'Room 1.08',
     postalCode: '95447',
     city: 'Bayreuth',
     country: 'Germany',
@@ -112,7 +114,7 @@ export const socialGroups = [
         links: [
             socialLinks.email,
             {
-                name: `${address.institution}\n${address.street}\n${address.postalCode} ${address.city}\n${address.country}`,
+                name: `${address.institution}\n${address.department}\n${address.street}, ${address.postalCode} ${address.city}\n${address.room}`,
                 icon: 'mdi:map-marker',
                 url: address.mapsUrl
             }

@@ -33,10 +33,14 @@
 			{#if address.department}
 				{address.department}<br />
 			{/if}
-			{address.street}<br />
-			{address.postalCode}
-			{address.city}<br />
-			{address.country}
+			{#if address.street}
+				{address.street}, {address.postalCode} {address.city}<br />
+			{:else}
+				{address.postalCode} {address.city}<br />
+			{/if}
+			{#if address.room}
+				{address.room}
+			{/if}
 		</div>
 	</div>
 	<!-- Links -->

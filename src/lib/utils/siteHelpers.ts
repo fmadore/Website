@@ -15,9 +15,17 @@ export function getFormattedAddress(options: { includeInstitution?: boolean } = 
     if (includeInstitution) {
         lines.push(address.institution);
     }
-    lines.push(address.street);
-    lines.push(`${address.postalCode} ${address.city}`);
-    lines.push(address.country);
+    if (address.department) {
+        lines.push(address.department);
+    }
+    if (address.street) {
+        lines.push(`${address.street}, ${address.postalCode} ${address.city}`);
+    } else {
+        lines.push(`${address.postalCode} ${address.city}`);
+    }
+    if (address.room) {
+        lines.push(address.room);
+    }
 
     return lines.join('\n');
 }
@@ -32,9 +40,17 @@ export function getAddressLines(options: { includeInstitution?: boolean } = {}):
     if (includeInstitution) {
         lines.push(address.institution);
     }
-    lines.push(address.street);
-    lines.push(`${address.postalCode} ${address.city}`);
-    lines.push(address.country);
+    if (address.department) {
+        lines.push(address.department);
+    }
+    if (address.street) {
+        lines.push(`${address.street}, ${address.postalCode} ${address.city}`);
+    } else {
+        lines.push(`${address.postalCode} ${address.city}`);
+    }
+    if (address.room) {
+        lines.push(address.room);
+    }
 
     return lines;
 }
