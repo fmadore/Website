@@ -19,7 +19,7 @@
 		"serve:https": "npx serve build -l 8080 --ssl-cert localhost.pem --ssl-key localhost-key.pem"
 	},
 	"devDependencies": {
-		"@csstools/postcss-global-data": "^3.1.0",
+		"@csstools/postcss-global-data": "^4.0.0",
 		"@eslint/compat": "^2.0.1",
 		"@eslint/js": "^9.39.2",
 		"@playwright/test": "^1.57.0",
