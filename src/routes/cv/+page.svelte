@@ -123,10 +123,10 @@
 
 	<CVHeader />
 	<div class="cv-section-wrapper scroll-reveal">
-		<CVEducation />
+		<CVAppointments />
 	</div>
 	<div class="cv-section-wrapper scroll-reveal">
-		<CVAppointments />
+		<CVEducation />
 	</div>
 	<div class="cv-section-wrapper scroll-reveal">
 		<CVPublications />

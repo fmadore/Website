@@ -2,8 +2,13 @@
 	import { appointmentsByDate } from '$lib/data/appointments';
 	import CVEntry from './CVEntry.svelte';
 
-	// Format year range for display (e.g., "2013-15" or "2023")
+	// Format year range for display (e.g., "2013-15", "2023", or "2026-" for ongoing)
 	function formatYearRange(startYear: number, endYear?: number | null): string {
+		// Ongoing position (endYear is null)
+		if (endYear === null) {
+			return `${startYear}-`;
+		}
+		// Single year or no end year provided
 		if (!endYear || endYear === startYear) {
 			return startYear.toString();
 		}
