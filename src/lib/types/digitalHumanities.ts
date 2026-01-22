@@ -65,6 +65,7 @@ export interface DigitalHumanitiesProject {
 	publication?: ProjectPublication;
 	skills?: string[];
 	order?: number; // For sorting projects in a defined order
+	featured?: boolean; // Flag to mark projects as featured/pinned
 
 	embeddableContent?: EmbeddableContentItem[]; // Replaces iframes, for embedding content like timelines, visualizations, or images
 

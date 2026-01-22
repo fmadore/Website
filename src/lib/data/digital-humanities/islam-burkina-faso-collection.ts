@@ -29,6 +29,6 @@ export const islamBurkinaFasoCollection: DigitalHumanitiesProject = {
 		text: 'To learn more about this project, see Frédérick Madore, "La Collection Islam Burkina Faso : promesses et défis des humanités numériques". <em>Revue d\'Histoire Contemporaine de l\'Afrique</em> 2021.',
 		url: 'https://doi.org/10.51185/journals/rhca.2021.e610'
 	},
-	order: 12,
+	order: 11,
 	skills: ['Omeka S', 'Tesseract', 'Metadata Standards', 'OpenRefine', 'Zotero', 'Linked Data']
 };

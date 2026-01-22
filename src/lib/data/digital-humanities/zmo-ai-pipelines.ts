@@ -17,7 +17,7 @@ export const zmoAiPipelines: DigitalHumanitiesProject = {
 		'<p>Perfect for qualitative research, archival digitization, and text analysis. Free GPU access, easy sharing, and always up-to-date with the latest AI models.</p>' +
 		'<p><a href="https://github.com/fmadore/zmo-ai-pipelines" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View on GitHub →</a></p>',
 	imageUrl: `/images/digital-humanities/zmo-ai-pipelines.webp`,
-	order: 4,
+	order: 5,
 	skills: [
 		'Python',
 		'Google Gemini AI',

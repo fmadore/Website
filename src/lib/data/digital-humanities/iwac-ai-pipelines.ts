@@ -23,7 +23,7 @@ export const iwacAiPipelines: DigitalHumanitiesProject = {
 		'<p>These tools are research aids, not replacements for scholarly judgment. LLMs operate as black boxes with algorithmic opacity. Models trained predominantly on Western data may misrepresent African contexts and naming conventions. Unlike traditional OCR which signals failure through garbled text, AI-generated errors appear as fluent prose—shifting the burden from fixing visible mistakes to detecting hidden ones. Effective use requires domain expertise and prior familiarity with the source material.</p>' +
 		'<p><a href="https://github.com/fmadore/iwac-ai-pipelines" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View on GitHub</a></p>',
 	imageUrl: `/images/digital-humanities/iwac-ai-pipelines.webp`,
-	order: 6,
+	order: 2,
 	skills: [
 		'Python',
 		'LLM',

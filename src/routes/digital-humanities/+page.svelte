@@ -2,13 +2,14 @@
 	import SEO from '$lib/SEO.svelte';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import { base } from '$app/paths';
-	import { page } from '$app/stores'; // Added page store import
-	import { browser } from '$app/environment'; // Added browser import
+	import { page } from '$app/stores';
+	import { browser } from '$app/environment';
 	import Card from '$lib/components/common/Card.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import TagList from '$lib/components/molecules/TagList.svelte';
-	import { allDhProjects } from '$lib/data/digital-humanities'; // Import the new data source
+	import FeaturedDHProjects from '$lib/components/digital-humanities/FeaturedDHProjects.svelte';
+	import { allDhProjects } from '$lib/data/digital-humanities';
 
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('Digital Humanities', '/digital-humanities');
@@ -16,11 +17,20 @@
 	// Reactive variable for the skill from URL, only access searchParams if in browser
 	let selectedSkill = $derived(browser ? $page.url.searchParams.get('skill') : null);
 
+	// Get featured projects (only show when no skill filter is active)
+	const featuredProjects = $derived(
+		allDhProjects.filter((project) => project.featured).slice(0, 2)
+	);
+
+	// Check if we should show featured projects
+	const shouldShowFeatured = $derived(!selectedSkill && featuredProjects.length > 0);
+
 	// Filter projects based on selectedSkill, then process them
+	// When showing featured, exclude them from the main list
 	let finalProjectsToDisplay = $derived(
 		(selectedSkill
 			? allDhProjects.filter((project) => project.skills && project.skills.includes(selectedSkill))
-			: allDhProjects
+			: allDhProjects.filter((project) => !project.featured)
 		).map((project) => {
 			const isExternal =
 				project.linkUrl &&
@@ -75,6 +85,18 @@
 		techniques to translate research findings into compelling narratives, making historical findings
 		accessible and engaging.
 	</PageIntro>
+
+	<!-- Featured Projects Section (only shown when no skill filter active) -->
+	{#if shouldShowFeatured}
+		<FeaturedDHProjects projects={featuredProjects} />
+	{/if}
+
+	<!-- All Projects Section Header (only when featured are shown) -->
+	{#if shouldShowFeatured}
+		<div class="all-projects-header">
+			<h2 class="section-title">All Projects</h2>
+		</div>
+	{/if}
 
 	<div class="content-grid grid-stagger">
 		{#each finalProjectsToDisplay as project (project.id)}
@@ -132,17 +154,17 @@
 </div>
 
 <style>
-	/* .dh-grid styles are now handled by .content-grid */
-	/* Ensure any unique styles for this page that were part of .dh-grid are preserved or moved if necessary. */
-	/* .content-grid includes gap: var(--space-8) and margin-top: var(--space-8) (which was 2rem for .dh-grid) */
+	/* All Projects header styling */
+	.all-projects-header {
+		margin-bottom: var(--space-4);
+	}
 
-	/* Responsive grid adjustments */
-	/* These are now handled by the global .content-grid class */
-	/* @media (min-width: 640px) {
-        .dh-grid {
-            grid-template-columns: repeat(2, 1fr); 
-        }
-    } */
+	.section-title {
+		font-size: var(--font-size-lg);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text);
+		margin: 0;
+	}
 
 	/* Styles for content within the details slot */
 	.dh-card-extras {

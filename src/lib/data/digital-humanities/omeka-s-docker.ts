@@ -21,7 +21,7 @@ export const omekaSDocker: DigitalHumanitiesProject = {
 		'<p>The template orchestrates three Docker services: Nginx (reverse proxy and static files), PHP-FPM (Omeka S application), and MySQL (database). All services include health checks and are configured for easy backup and maintenance.</p>' +
 		'<p><a href="https://github.com/AM-Digital-Research-Environment/omeka-s-docker" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View on GitHub</a></p>',
 	imageUrl: `/images/digital-humanities/omeka-s-docker.webp`,
-	order: 7,
+	order: 1,
 	skills: [
 		'Docker',
 		'Nginx',
