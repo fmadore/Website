@@ -2,15 +2,15 @@ import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
 
 export const remoboko: DigitalHumanitiesProject = {
 	id: 'remoboko',
-	title: 'Remoboko: Religion, Morality and Boko in West Africa',
-	years: '2024',
+	title: 'Remoboko Visualizations',
+	years: '2018-2024',
 	shortDescription:
-		'Research group exploring religion, morality, and student life in West African higher education. Includes interactive visualizations.',
+		'Interactive visualizations for the Remoboko research group, including a points of interest map for my book and charts documenting the group\'s publications, activities, and collaborative network.',
 	description:
-		'<p><em>Remoboko</em> is a research group focused on exploring the intersections of religion, morality, and student life (particularly the concept of "boko" - Western education) in the context of West African higher education. This page presents interactive visualizations I generated based on the research group\'s work, aiming to make its findings more accessible and engaging for a wider audience.</p>',
+		'<p>I created a series of interactive visualizations for <a href="https://remoboko.hypotheses.org/" target="_blank" rel="noopener noreferrer">Remoboko</a> (<em>Religion, Morality and Boko in West Africa: Students Training for a Good Life</em>), a Leibniz Junior Research Group based at the Zentrum Moderner Orient (ZMO) that ran from 2018 to 2023. The project examined the presence of Salafism and Pentecostalism on university campuses in Niger, Nigeria, Togo, and Benin. <a href="https://remoboko.hypotheses.org/visualisations" target="_blank" rel="noopener noreferrer">These visualizations</a> make the group\'s research outputs and collaborative network more accessible.</p><h3>Book: Points of Interest Map</h3><p>This interactive map accompanies my book <a href="/publications/religious-activism-campuses"><em>Religious Activism on Campuses in Togo and Benin</em></a> (De Gruyter, 2025), part of the Remoboko project. It plots the geographic locations mentioned throughout the book—universities, mosques, churches, headquarters of religious associations, and other significant sites in Togo, Benin, and the broader West African region.</p><h3>Research Group Outputs</h3><p>Over its five-year lifespan, Remoboko collaborated with 93 researchers from 24 countries, producing over 180 publications and activities. I created visualizations to document this collective output:</p><h4>Publications and Activities at a Glance</h4><ul><li><strong>Stacked bar chart</strong> showing the evolution of publications and activities from 2018 to 2024, categorized by type (journal articles, book chapters, conference papers, lectures, PhD dissertations, etc.)</li><li><strong>Word clouds</strong> (French and English) generated from abstracts, highlighting the key themes and concepts across the group\'s work</li></ul><h4>Collaborators at a Glance</h4><ul><li><strong>Gender distribution</strong> — pie chart showing the breakdown of collaborators (37.6% female, 62.4% male)</li><li><strong>Geographic distribution</strong> — bar chart of collaborators by country, with Germany, USA, Niger, and Nigeria among the most represented</li><li><strong>Institutional affiliations</strong> — overview of the universities and research centers involved</li></ul>',
 	imageUrl: `/images/digital-humanities/remoboko.webp`,
-	order: 8,
-	skills: ['Data Visualization', 'pandas', 'Plotly', 'Python', 'Folium', 'NLTK'],
+	order: 9,
+	skills: ['Data Visualization', 'pandas', 'Plotly', 'Python', 'Folium', 'NLTK', 'Leaflet', 'D3.js'],
 	embeddableContent: [
 		{
 			type: 'iframe',
