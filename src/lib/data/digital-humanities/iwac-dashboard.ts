@@ -7,7 +7,17 @@ export const iwacDashboard: DigitalHumanitiesProject = {
 	shortDescription:
 		'Interactive visualization platform for exploring the Islam West Africa Collection — a dataset of 14,700+ documents on Islam and Muslims in West Africa.',
 	description:
-		'<p>The <em>Islam West Africa Collection</em> Dashboard is an interactive visualization platform for exploring a dataset of documents on Islam and Muslims in West Africa. It offers spatial analysis (country distribution, world map, entity geographic footprints showing where persons, organizations, and events appear), network analysis (entity co-occurrence graph), temporal analysis (collection growth, newspaper coverage spans), and advanced textual analysis including word frequency clouds, ML-based topic modeling (71 discovered topics), co-occurrence matrices, and a "Scary Words" tracker with animated bar chart race visualizing how terms like extremism, fundamentalism, and radicalization evolved over time. The bilingual interface (English/French) covers 79 newspapers from Côte d\'Ivoire, Burkina Faso, Benin, Togo, Niger, and Nigeria (1960–present).</p>',
+		'<p>At 14,500+ documents spanning six decades and six countries, the <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer">Islam West Africa Collection</a> exceeds what traditional reading methods can navigate. This interactive dashboard enables exploration at scale—revealing patterns, connections, and trends that would remain invisible through close reading alone.</p>' +
+		'<p>Through maps, timelines, networks, and word clouds, the interface invites you to filter by country, newspaper, or date range and discover patterns on your own terms.</p>' +
+		'<h3>What you can explore</h3>' +
+		'<ul>' +
+		'<li><strong>Where:</strong> See which countries and cities appear most frequently, and track where specific people or organizations are mentioned</li>' +
+		'<li><strong>When:</strong> Visualize how coverage grew over time, compare newspaper publication spans, and watch an animated chart showing how key terms evolved decade by decade</li>' +
+		'<li><strong>Who and what:</strong> Browse a network graph connecting people, organizations, and events that appear together in articles</li>' +
+		'<li><strong>Language patterns:</strong> Generate word clouds filtered by country and year, explore topic clusters, and examine which terms appear alongside each other</li>' +
+		'</ul>' +
+		'<h3>Interface</h3>' +
+		'<p>Bilingual (English/French), with dark mode support. Filter states are saved in the URL, so you can bookmark or share specific views.</p>',
 	imageUrl: `/images/digital-humanities/iwac-overview.webp`,
 	order: 3,
 	skills: ['SvelteKit', 'Svelte 5', 'TypeScript', 'D3.js', 'Leaflet', 'Sigma.js', 'Data visualization'],

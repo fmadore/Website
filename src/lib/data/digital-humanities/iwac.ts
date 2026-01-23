@@ -11,6 +11,7 @@ export const iwac: DigitalHumanitiesProject = {
 	imageUrl: `/images/digital-humanities/IWAC.webp`,
 	linkUrl: 'https://islam.zmo.de/s/westafrica/',
 	featured: true,
+	order: 1,
 	reviews: [
 		{
 			text: 'Anaïs Wion, "Islam West Africa Collection: Dataset, Distant Reading, and Uses of AI for Discourse Analysis", <em>The Digital Orientalist</em> 23 September 2025.',

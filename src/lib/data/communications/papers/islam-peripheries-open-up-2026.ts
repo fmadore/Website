@@ -18,5 +18,6 @@ export const islamPeripheriesOpenUp: Communication = {
 	coordinates: {
 		latitude: 52.395,
 		longitude: 9.7036
-	}
+	},
+	project: "Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia"
 };
