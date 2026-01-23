@@ -18,6 +18,14 @@ export const allDhProjects: DigitalHumanitiesProject[] = Object.values(projectMo
 	})
 	.filter(Boolean) // Filter out any undefined or null projects if any
 	.sort((a, b) => {
+		// Featured projects come first
+		const featuredA = a.featured ? 0 : 1;
+		const featuredB = b.featured ? 0 : 1;
+		if (featuredA !== featuredB) {
+			return featuredA - featuredB;
+		}
+
+		// Then sort by order property
 		const orderA = a.order === undefined ? Infinity : a.order;
 		const orderB = b.order === undefined ? Infinity : b.order;
 
