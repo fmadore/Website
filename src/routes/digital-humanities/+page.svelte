@@ -78,12 +78,15 @@
 	{/if}
 
 	<PageIntro>
-		This section presents some of my work in digital humanities (DH), applying computational methods
-		to historical research on Islam and Muslim societies in West Africa. DH has taken an
-		increasingly important place in my research in recent years, leading me to develop my skills
-		through both specialised training and continuous self-learning. I use data visualisation
-		techniques to translate research findings into compelling narratives, making historical findings
-		accessible and engaging.
+		Digital humanities has become central to my research practice—not as an end in itself, but as a
+		response to a concrete problem. After years of fieldwork across West Africa, I had accumulated
+		thousands of documents that exceeded what traditional methods could process. The projects below
+		trace my effort to transform this accumulation into open research infrastructure: from building
+		digital archives and AI-assisted processing pipelines to interactive visualizations and
+		conversational interfaces. All code is open source, and all data follows open access principles
+		wherever rights permit, with the conviction that African historical sources should not only be
+		preserved, but made usable for researchers, students, and the communities from which they
+		originate.
 	</PageIntro>
 
 	<!-- Featured Projects Section (only shown when no skill filter active) -->
