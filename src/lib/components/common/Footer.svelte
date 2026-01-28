@@ -49,7 +49,7 @@
 </script>
 
 <!-- Remove redundant role="contentinfo" - footer element already provides this semantic meaning -->
-<footer class="site-footer glass-frosted" bind:this={footerElement}>
+<footer class="site-footer" bind:this={footerElement}>
 	<div class="footer-gradient-top" aria-hidden="true"></div>
 
 	<!-- Background decorative elements -->
@@ -61,7 +61,7 @@
 
 	<div class="footer-container">
 		<section
-			class="footer-branding glass-light"
+			class="footer-branding"
 			class:animate={isVisible}
 			aria-labelledby="footer-brand-heading"
 		>
@@ -82,7 +82,7 @@
 		>
 			{#each socialGroups as group, groupIndex (group.title)}
 				<section
-					class="footer-link-group glass-light"
+					class="footer-link-group"
 					style="animation-delay: {groupIndex * 100}ms"
 					class:animate={isVisible}
 					aria-labelledby="group-{groupIndex}-title"
@@ -102,7 +102,7 @@
 							>
 								<a
 									href={link.url}
-									class="footer-link glass-button"
+									class="footer-link"
 									target={isExternal ? '_blank' : undefined}
 									rel={isExternal ? 'external noopener noreferrer' : undefined}
 									aria-label={isExternal ? `${link.name} - Opens in new tab` : link.name}
@@ -259,7 +259,7 @@
 		z-index: 2;
 	}
 
-	/* Enhanced branding section with glassmorphism */
+	/* Branding section - solid background */
 	.footer-branding {
 		display: flex;
 		align-items: center;
@@ -271,6 +271,8 @@
 		padding: var(--space-6);
 		border-radius: var(--border-radius-xl);
 		width: 100%;
+		background: color-mix(in srgb, var(--color-white) 5%, transparent);
+		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) 8%, transparent);
 	}
 
 	.footer-branding.animate {
@@ -330,6 +332,8 @@
 		padding: var(--space-4);
 		border-radius: var(--border-radius-lg);
 		min-height: auto;
+		background: color-mix(in srgb, var(--color-white) 5%, transparent);
+		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) 8%, transparent);
 	}
 
 	.footer-link-group.animate {
@@ -384,7 +388,7 @@
 		transform: translateX(0);
 	}
 
-	/* Enhanced footer links with glassmorphism */
+	/* Footer links - solid styling with hover effects */
 	.footer-link {
 		display: flex;
 		align-items: center;
@@ -398,8 +402,8 @@
 		transition: all var(--anim-duration-fast) var(--anim-ease-base);
 		overflow: hidden;
 		width: 100%;
-		/* Remove custom background - glass-button utility handles this */
-		border: none;
+		background: color-mix(in srgb, var(--color-white) 5%, transparent);
+		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) 8%, transparent);
 	}
 
 	.footer-link-icon {

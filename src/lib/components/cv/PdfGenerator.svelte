@@ -11,7 +11,7 @@
 	 * - Clickable links for contact info
 	 *
 	 * Design improvements:
-	 * - Refined color palette matching website's academic blue theme
+	 * - Refined color palette matching website's warm earth tone theme (terracotta/gold)
 	 * - Better visual hierarchy with improved font sizes
 	 * - Professional header design with name prominence
 	 * - Decorative accent lines and section dividers
@@ -112,16 +112,16 @@
 				PARAGRAPH_GAP: 1 // Gap between paragraphs in same entry
 			};
 
-			// Refined color palette - matching website's academic theme
+			// Refined color palette - matching website's warm earth tone theme
 			const COLORS = {
-				PRIMARY: [29, 78, 216] as [number, number, number], // #1d4ed8 - Academic blue
-				PRIMARY_DARK: [30, 58, 138] as [number, number, number], // #1e3a8a - Darker blue
-				ACCENT: [20, 184, 166] as [number, number, number], // #14b8a6 - Teal accent
-				TEXT: [30, 41, 59] as [number, number, number], // #1e293b - Main text
-				TEXT_LIGHT: [100, 116, 139] as [number, number, number], // #64748b - Secondary text
-				TEXT_MUTED: [148, 163, 184] as [number, number, number], // #94a3b8 - Muted text
-				BORDER: [226, 232, 240] as [number, number, number], // #e2e8f0 - Subtle borders
-				BACKGROUND_LIGHT: [248, 250, 252] as [number, number, number] // #f8fafc - Light bg
+				PRIMARY: [154, 68, 25] as [number, number, number], // #9a4419 - Terracotta
+				PRIMARY_DARK: [122, 53, 22] as [number, number, number], // #7a3516 - Dark terracotta
+				ACCENT: [196, 163, 90] as [number, number, number], // #c4a35a - Desert gold
+				TEXT: [45, 40, 32] as [number, number, number], // #2d2820 - Warm dark
+				TEXT_LIGHT: [122, 114, 103] as [number, number, number], // #7a7267 - Warm gray
+				TEXT_MUTED: [168, 161, 150] as [number, number, number], // #a8a196 - Warm muted
+				BORDER: [232, 228, 223] as [number, number, number], // #e8e4df - Warm border
+				BACKGROUND_LIGHT: [250, 249, 247] as [number, number, number] // #faf9f7 - Warm light bg
 			};
 
 			// Layout constants
@@ -398,6 +398,7 @@
 						pdf.setTextColor(...COLORS.PRIMARY_DARK);
 						pdf.text(h4.textContent || '', margin + 2, yPosition);
 						yPosition += SPACING.SUBSECTION_BOTTOM;
+						pdf.setTextColor(...COLORS.TEXT); // Reset text color after subsection heading
 
 						// Get the next sibling div with space-y-3 class (flex layout entries)
 						let nextElement = h4.nextElementSibling;
@@ -749,6 +750,7 @@
 						const divs = section.querySelectorAll('div:not(.space-y-3):not(.flex)');
 
 						const contentElements = paragraphs.length > 0 ? paragraphs : divs;
+						pdf.setTextColor(...COLORS.TEXT); // Ensure text color is reset for fallback content
 						contentElements.forEach((elem) => {
 							const fragments = trimFragments(extractRichText(elem));
 							const totalText = fragments.map((f) => f.text).join('');

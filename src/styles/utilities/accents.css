@@ -1,0 +1,229 @@
+/* ===== VISUAL MOTIF: ACCENT SYSTEM =====
+ * Signature gradient accent elements for brand identity
+ * Uses terracotta-gold palette for warm, distinctive styling
+ */
+
+/* ===== ACCENT LINES ===== */
+/* Horizontal gradient line - signature element */
+.accent-line {
+	height: 3px;
+	background: linear-gradient(
+		90deg,
+		var(--color-primary) 0%,
+		var(--color-accent) 50%,
+		var(--color-highlight) 100%
+	);
+	border-radius: var(--border-radius-full);
+}
+
+/* Thinner variant for subtler applications */
+.accent-line-thin {
+	height: 2px;
+	background: linear-gradient(
+		90deg,
+		var(--color-primary) 0%,
+		var(--color-accent) 50%,
+		var(--color-highlight) 100%
+	);
+	border-radius: var(--border-radius-full);
+}
+
+/* Thick variant for emphasis */
+.accent-line-thick {
+	height: 4px;
+	background: linear-gradient(
+		90deg,
+		var(--color-primary) 0%,
+		var(--color-accent) 50%,
+		var(--color-highlight) 100%
+	);
+	border-radius: var(--border-radius-full);
+}
+
+/* Vertical accent line */
+.accent-line-vertical {
+	width: 3px;
+	height: 100%;
+	background: linear-gradient(
+		180deg,
+		var(--color-primary) 0%,
+		var(--color-accent) 50%,
+		var(--color-highlight) 100%
+	);
+	border-radius: var(--border-radius-full);
+}
+
+/* ===== ACCENT DOTS ===== */
+/* Decorative gradient dot */
+.accent-dot {
+	width: var(--space-2);
+	height: var(--space-2);
+	background: linear-gradient(
+		135deg,
+		var(--color-primary) 0%,
+		var(--color-accent) 100%
+	);
+	border-radius: var(--border-radius-full);
+	flex-shrink: 0;
+}
+
+/* Larger dot variant */
+.accent-dot-lg {
+	width: var(--space-3);
+	height: var(--space-3);
+	background: linear-gradient(
+		135deg,
+		var(--color-primary) 0%,
+		var(--color-accent) 100%
+	);
+	border-radius: var(--border-radius-full);
+	flex-shrink: 0;
+}
+
+/* ===== SECTION DIVIDERS ===== */
+/* Gradient divider line with fade */
+.section-divider {
+	width: 100%;
+	height: 1px;
+	background: linear-gradient(
+		90deg,
+		transparent 0%,
+		var(--color-primary) 20%,
+		var(--color-accent) 50%,
+		var(--color-primary) 80%,
+		transparent 100%
+	);
+	margin: var(--space-xl) 0;
+}
+
+/* Shorter centered divider */
+.section-divider-short {
+	width: 60%;
+	max-width: 300px;
+	height: 2px;
+	background: linear-gradient(
+		90deg,
+		var(--color-primary) 0%,
+		var(--color-accent) 50%,
+		var(--color-highlight) 100%
+	);
+	border-radius: var(--border-radius-full);
+	margin: var(--space-xl) auto;
+}
+
+/* ===== TITLE ACCENTS ===== */
+/* Underline accent for headings */
+.title-underline {
+	position: relative;
+	display: inline-block;
+}
+
+.title-underline::after {
+	content: '';
+	position: absolute;
+	bottom: -4px;
+	left: 0;
+	width: var(--space-12);
+	height: 3px;
+	background: linear-gradient(
+		90deg,
+		var(--color-primary) 0%,
+		var(--color-accent) 100%
+	);
+	border-radius: var(--border-radius-full);
+	transition: width var(--duration-normal) var(--ease-out);
+}
+
+.title-underline:hover::after {
+	width: 100%;
+}
+
+/* Centered title underline */
+.title-underline-center::after {
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+/* ===== BORDER ACCENTS ===== */
+/* Left border accent for cards/sections */
+.border-accent-left {
+	position: relative;
+	padding-left: var(--space-md);
+}
+
+.border-accent-left::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 3px;
+	background: linear-gradient(
+		180deg,
+		var(--color-primary) 0%,
+		var(--color-accent) 50%,
+		var(--color-highlight) 100%
+	);
+	border-radius: var(--border-radius-full);
+}
+
+/* Top border accent */
+.border-accent-top {
+	position: relative;
+	padding-top: var(--space-md);
+}
+
+.border-accent-top::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 3px;
+	background: linear-gradient(
+		90deg,
+		var(--color-primary) 0%,
+		var(--color-accent) 50%,
+		var(--color-highlight) 100%
+	);
+	border-radius: var(--border-radius-full);
+}
+
+/* ===== GRADIENT TEXT ===== */
+/* Apply gradient to text (use sparingly) */
+.text-gradient {
+	background: linear-gradient(
+		90deg,
+		var(--color-primary) 0%,
+		var(--color-accent) 100%
+	);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+/* ===== BACKGROUND ACCENTS ===== */
+/* Subtle gradient background tint */
+.bg-accent-tint {
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--color-primary) 5%, var(--color-background)) 0%,
+		color-mix(in srgb, var(--color-accent) 3%, var(--color-background)) 100%
+	);
+}
+
+/* Warm surface with accent */
+.bg-warm-surface {
+	background: color-mix(in srgb, var(--color-primary) 3%, var(--color-surface));
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+	.title-underline::after {
+		transition: none;
+	}
+
+	.title-underline:hover::after {
+		width: var(--space-12);
+	}
+}

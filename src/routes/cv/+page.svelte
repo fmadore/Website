@@ -98,7 +98,7 @@
 	pageType="ProfilePage"
 />
 
-<div id="cv-content" class="cv-container glass-card p-8 max-w-6xl mx-auto rounded-lg page-enter">
+<div id="cv-content" class="cv-container p-8 max-w-6xl mx-auto rounded-lg page-enter">
 	<!-- Action Buttons - positioned in top right corner of CV -->
 	<div class="cv-actions">
 		<a href="{base}/cv/timeline" class="btn btn-secondary" aria-label="View Career Timeline">
@@ -206,8 +206,10 @@
 </div>
 
 <style>
-	/* Main CV container */
+	/* Main CV container - solid background instead of glass */
 	.cv-container {
+		background: var(--color-background);
+		border: var(--border-width-thin) solid var(--color-border);
 		box-shadow: var(--shadow-lg);
 		transition: box-shadow var(--duration-normal) ease;
 		position: relative;
@@ -228,19 +230,13 @@
 		padding-bottom: var(--space-2);
 	}
 
-	/* CV section wrappers with subtle glass effect */
+	/* CV section wrappers - solid backgrounds with subtle tint */
 	:global(.cv-section-wrapper) {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 2%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 1%, transparent) 100%
-		);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+		background: var(--color-surface);
 		border-radius: var(--border-radius-lg);
 		padding: var(--space-4);
 		margin-bottom: var(--space-4);
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) 10%, transparent);
+		border: var(--border-width-thin) solid var(--color-border-light);
 		transition: all var(--duration-normal) ease;
 	}
 
@@ -250,12 +246,8 @@
 	}
 
 	:global(.cv-section-wrapper:hover) {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 4%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 2%, transparent) 100%
-		);
-		border-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
+		background: var(--color-surface-alt);
+		border-color: var(--color-border);
 		box-shadow: var(--shadow-sm);
 	}
 

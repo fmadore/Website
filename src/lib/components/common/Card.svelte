@@ -99,49 +99,26 @@
 		transition: all var(--anim-duration-fast) var(--anim-ease-base);
 		position: relative;
 
-		/* Glassmorphism styling consistent with the rest of the website */
+		/* Warm gradient styling with terracotta/gold */
 		background: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
+			color-mix(in srgb, var(--color-primary) 4%, var(--color-background)) 0%,
+			color-mix(in srgb, var(--color-accent) 2%, var(--color-background)) 100%
 		);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
-		box-shadow:
-			0 var(--space-xs) var(--space-xl) 0
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium-high) * 100%), transparent);
+		border: var(--border-width-thin) solid var(--color-border);
+		box-shadow: var(--shadow);
 	}
 
 	.card:hover {
 		transform: var(--transform-lift-sm);
-		/* Enhanced hover effect with stronger gradient */
+		/* Enhanced hover with warmer tint */
 		background: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
+			color-mix(in srgb, var(--color-primary) 8%, var(--color-background)) 0%,
+			color-mix(in srgb, var(--color-accent) 4%, var(--color-background)) 100%
 		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-medium-high) * 100%),
-			transparent
-		);
-		box-shadow:
-			0 var(--space-sm) var(--space-xl-tight) 0
-				color-mix(
-					in srgb,
-					var(--color-primary) calc(var(--opacity-medium-high) * 100%),
-					transparent
-				),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-high) * 100%), transparent);
+		border-color: var(--color-border-dark);
+		box-shadow: var(--shadow-md);
 	}
 
 	.card-image {
@@ -227,52 +204,25 @@
 		text-decoration: underline;
 	}
 
-	/* Dark mode glassmorphism overrides */
+	/* Dark mode overrides */
 	:global(html.dark) .card {
 		background: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
+			color-mix(in srgb, var(--color-primary) 8%, var(--color-background)) 0%,
+			color-mix(in srgb, var(--color-accent) 4%, var(--color-background)) 100%
 		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
-		box-shadow:
-			0 var(--space-xs) var(--space-xl) 0
-				color-mix(in srgb, var(--color-black) calc(var(--opacity-medium-high) * 100%), transparent),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
+		border-color: var(--color-border);
+		box-shadow: var(--shadow);
 	}
 
 	:global(html.dark) .card:hover {
 		background: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
+			color-mix(in srgb, var(--color-primary) 12%, var(--color-background)) 0%,
+			color-mix(in srgb, var(--color-accent) 6%, var(--color-background)) 100%
 		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-		box-shadow:
-			0 var(--space-sm) var(--space-xl-tight) 0
-				color-mix(in srgb, var(--color-black) calc(var(--opacity-high) * 100%), transparent),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
-	}
-
-	/* Fallback for browsers that don't support backdrop-filter */
-	@supports not (backdrop-filter: blur(var(--glass-blur-amount))) {
-		.card {
-			background: color-mix(in srgb, var(--color-white) 90%, transparent);
-		}
-
-		:global(html.dark) .card {
-			background: color-mix(in srgb, var(--color-black) 80%, transparent);
-		}
+		border-color: var(--color-border-dark);
+		box-shadow: var(--shadow-md);
 	}
 
 	/* Respect user motion preferences */

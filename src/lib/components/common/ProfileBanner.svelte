@@ -13,7 +13,7 @@
 	];
 </script>
 
-<div class="profile-header glass-panel scroll-reveal">
+<div class="profile-header glass-panel scroll-reveal" role="banner">
 	<div class="profile-photo-container">
 		<div class="profile-photo">
 			<img
@@ -41,7 +41,7 @@
 					target="_blank"
 					rel="noopener"
 					aria-label={link.name}
-					class="icon-link glass-button"
+					class="icon-link"
 				>
 					<Icon icon={link.icon} width="24" height="24" />
 				</a>
@@ -60,13 +60,11 @@
 		margin-bottom: var(--space-md);
 		padding: var(--space-lg) var(--space-md);
 		position: relative;
-		/* Enhanced glassmorphism with subtle gradient overlay */
+		/* Glass panel handles base styling - add subtle warm gradient overlay */
 		background: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
+			color-mix(in srgb, var(--color-primary) 8%, var(--color-background)) 0%,
+			color-mix(in srgb, var(--color-accent) 4%, var(--color-background)) 100%
 		);
 	}
 
@@ -177,8 +175,8 @@
 		width: calc(var(--space-xl-tight) + var(--space-2xs));
 		height: calc(var(--space-xl-tight) + var(--space-2xs));
 		color: var(--color-text-light);
-		/* Remove custom background - glass-button utility handles this */
-		border: none;
+		background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 20%, transparent);
 		border-radius: var(--border-radius-lg);
 		transition: all var(--duration-moderate) var(--transition-ease-in-out);
 		position: relative;

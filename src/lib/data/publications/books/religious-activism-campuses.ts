@@ -54,6 +54,17 @@ The history of these associations reveals the campus as a microcosm reflecting w
 			url: 'https://researchafrica.duke.edu/sites/default/files/-5-7-Religious-Activism-on-Campuses-in-Togo-and-Benin-Issue3-2025.pdf',
 			excerpt:
 				"These nuances, however, do not detract from the book's contribution, which is considerable; this is due to its comprehensive analysis of the history and development of faith-based movements in Togo and Benin from 1970 to 2023. The book offers a valuable resource for scholars seeking to understand the complex interplay between faith, activism, and adaptation in Francophone Africa."
+		},
+		{
+			author: 'K. D. Thompson',
+			year: 2026,
+			title:
+				'Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023 by Frédérick Madore. Berlin: De Gruyter, 2025. Pp. xiii + 259. €79.99 (Hbk).',
+			journal: 'The Journal of Modern African Studies',
+			pages: '1-3',
+			url: 'https://doi.org/10.1017/S0022278X25101195',
+			excerpt:
+				'Madore has produced an important work that documents previously neglected histories and demonstrates the significance of faith-based associations in shaping student activism, religious dynamics, and elite formation in West Africa. The book will be valuable for scholars of religion and higher education in Africa, students of social movements and those interested in how religious identity intersects with political and economic change.'
 		}
 	],
 	citedBy: [

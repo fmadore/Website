@@ -13,9 +13,141 @@
 @keyframes pageEnter {
 	from {
 		opacity: 0;
-		transform: translateY(var(--transform-distance-sm));
+		transform: translateY(var(--anim-distance-body));
 	}
 
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* ===== ELEMENT-SPECIFIC ANIMATIONS ===== */
+/* Headings: Slower, larger distance for emphasis */
+.heading-enter {
+	animation: headingEnter 400ms var(--ease-out) forwards;
+}
+
+@keyframes headingEnter {
+	from {
+		opacity: 0;
+		transform: translateY(var(--anim-distance-heading));
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Body content: Standard timing */
+.body-enter {
+	animation: bodyEnter var(--duration-moderate) var(--ease-out) forwards;
+}
+
+@keyframes bodyEnter {
+	from {
+		opacity: 0;
+		transform: translateY(var(--anim-distance-body));
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Cards/list items: Quick, subtle */
+.card-enter {
+	animation: cardEnter 250ms var(--ease-out) forwards;
+}
+
+@keyframes cardEnter {
+	from {
+		opacity: 0;
+		transform: translateY(var(--anim-distance-card));
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Micro interactions: Very quick */
+.micro-enter {
+	animation: microEnter var(--duration-fast) var(--ease-out) forwards;
+}
+
+@keyframes microEnter {
+	from {
+		opacity: 0;
+		transform: translateY(var(--anim-distance-micro));
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* ===== HERO SEQUENCE ANIMATIONS =====
+ * Staggered entrance for hero/profile sections
+ * Photo -> Title -> Subtitle -> Actions
+ */
+.hero-sequence-photo {
+	animation: heroPhoto 500ms var(--ease-out) forwards;
+}
+
+.hero-sequence-title {
+	animation: heroTitle 400ms var(--ease-out) 100ms forwards;
+	opacity: 0;
+}
+
+.hero-sequence-subtitle {
+	animation: heroSubtitle var(--duration-moderate) var(--ease-out) 200ms forwards;
+	opacity: 0;
+}
+
+.hero-sequence-actions {
+	animation: heroActions var(--duration-moderate) var(--ease-out) 300ms forwards;
+	opacity: 0;
+}
+
+@keyframes heroPhoto {
+	from {
+		opacity: 0;
+		transform: scale(0.9);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes heroTitle {
+	from {
+		opacity: 0;
+		transform: translateY(var(--anim-distance-heading));
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes heroSubtitle {
+	from {
+		opacity: 0;
+		transform: translateY(var(--anim-distance-body));
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes heroActions {
+	from {
+		opacity: 0;
+		transform: translateY(var(--anim-distance-card));
+	}
 	to {
 		opacity: 1;
 		transform: translateY(0);
@@ -464,6 +596,14 @@
 
 	/* Disable all animations for users who prefer reduced motion */
 	.page-enter,
+	.heading-enter,
+	.body-enter,
+	.card-enter,
+	.micro-enter,
+	.hero-sequence-photo,
+	.hero-sequence-title,
+	.hero-sequence-subtitle,
+	.hero-sequence-actions,
 	.scroll-reveal,
 	.scroll-reveal-scale,
 	.grid-stagger>*,

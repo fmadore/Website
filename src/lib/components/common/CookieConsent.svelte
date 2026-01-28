@@ -34,7 +34,7 @@
 </script>
 
 {#if showBanner}
-	<div class="cookie-banner glass-card">
+	<div class="cookie-banner">
 		<div class="cookie-content">
 			<h3>Cookie Consent</h3>
 			<p>This website uses cookies to improve your experience and analyse site traffic.</p>
@@ -57,23 +57,11 @@
 		max-width: var(--content-width-sm);
 		margin: 0 auto;
 
-		/* Enhanced glassmorphism following design system */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
-		);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+		/* Solid background with subtle gradient - no glass effect */
+		background: var(--color-surface-elevated);
+		border: var(--border-width-thin) solid var(--color-border);
 		border-radius: var(--border-radius-xl);
-		box-shadow:
-			0 var(--space-xs) var(--space-xl) 0 color-mix(in srgb, var(--color-primary) 20%, transparent),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+		box-shadow: var(--shadow-lg);
 
 		/* Smooth transitions */
 		transition: all var(--anim-duration-fast) var(--anim-ease-base);
@@ -82,23 +70,8 @@
 
 	.cookie-banner:hover {
 		transform: var(--transform-lift-sm);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-medium-high) * 100%),
-			transparent
-		);
-		box-shadow:
-			0 var(--space-sm) var(--space-xl-tight) 0
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium-high) * 100%), transparent);
+		border-color: var(--color-border-dark);
+		box-shadow: var(--shadow-xl);
 	}
 
 	.cookie-content {
@@ -130,41 +103,16 @@
 		margin-top: var(--space-xs);
 	}
 
-	/* Dark mode adaptations */
+	/* Dark mode adaptations - solid background */
 	:global(html.dark) .cookie-banner {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
-		box-shadow:
-			0 var(--space-xs) var(--space-xl) 0
-				color-mix(in srgb, var(--color-black) calc(var(--opacity-medium-high) * 100%), transparent),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
+		background: var(--color-surface-elevated);
+		border-color: var(--color-border);
+		box-shadow: var(--shadow-lg);
 	}
 
 	:global(html.dark) .cookie-banner:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-		box-shadow:
-			0 var(--space-sm) var(--space-xl-tight) 0
-				color-mix(in srgb, var(--color-black) calc(var(--opacity-high) * 100%), transparent),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+		border-color: var(--color-border-dark);
+		box-shadow: var(--shadow-xl);
 	}
 
 	/* Slide up animation */
@@ -221,14 +169,4 @@
 		}
 	}
 
-	/* Fallback for browsers without backdrop-filter support */
-	@supports not (backdrop-filter: blur(var(--glass-blur-amount))) {
-		.cookie-banner {
-			background: color-mix(in srgb, var(--color-white) 95%, transparent);
-		}
-
-		:global(html.dark) .cookie-banner {
-			background: color-mix(in srgb, var(--color-black) 90%, transparent);
-		}
-	}
 </style>
