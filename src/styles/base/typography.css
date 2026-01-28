@@ -104,67 +104,53 @@ p a:not(.btn):not(.no-underline),
 li a:not(.btn):not(.no-underline) {
 	position: relative;
 	text-decoration: none;
-}
-
-.prose a:not(.btn):not(.no-underline)::after,
-.content-body a:not(.btn):not(.no-underline)::after,
-p a:not(.btn):not(.no-underline)::after,
-li a:not(.btn):not(.no-underline)::after {
-	content: '';
-	position: absolute;
-	left: 0;
-	bottom: -1px;
-	width: 0;
-	height: 2px;
-	background: linear-gradient(90deg,
+	background-image: linear-gradient(90deg,
 			var(--color-primary) 0%,
 			var(--color-highlight) 100%);
-	border-radius: var(--border-radius-full);
-	transition: width var(--duration-normal) var(--ease-out);
+	background-size: 0% 2px;
+	background-position: left bottom;
+	background-repeat: no-repeat;
+	padding-bottom: 2px;
+	transition:
+		color var(--anim-duration-base) var(--anim-ease-base),
+		background-size var(--duration-normal) var(--ease-out);
 }
 
-.prose a:not(.btn):not(.no-underline):hover::after,
-.content-body a:not(.btn):not(.no-underline):hover::after,
-p a:not(.btn):not(.no-underline):hover::after,
-li a:not(.btn):not(.no-underline):hover::after {
-	width: 100%;
+.prose a:not(.btn):not(.no-underline):hover,
+.content-body a:not(.btn):not(.no-underline):hover,
+p a:not(.btn):not(.no-underline):hover,
+li a:not(.btn):not(.no-underline):hover {
+	background-size: 100% 2px;
 }
 
 /* Focus state for accessibility */
-.prose a:not(.btn):not(.no-underline):focus-visible::after,
-.content-body a:not(.btn):not(.no-underline):focus-visible::after,
-p a:not(.btn):not(.no-underline):focus-visible::after,
-li a:not(.btn):not(.no-underline):focus-visible::after {
-	width: 100%;
+.prose a:not(.btn):not(.no-underline):focus-visible,
+.content-body a:not(.btn):not(.no-underline):focus-visible,
+p a:not(.btn):not(.no-underline):focus-visible,
+li a:not(.btn):not(.no-underline):focus-visible {
+	background-size: 100% 2px;
 }
 
 /* Static underline fallback for reduced motion */
 @media (prefers-reduced-motion: reduce) {
 
-	.prose a:not(.btn):not(.no-underline)::after,
-	.content-body a:not(.btn):not(.no-underline)::after,
-	p a:not(.btn):not(.no-underline)::after,
-	li a:not(.btn):not(.no-underline)::after {
-		width: 100%;
+	.prose a:not(.btn):not(.no-underline),
+	.content-body a:not(.btn):not(.no-underline),
+	p a:not(.btn):not(.no-underline),
+	li a:not(.btn):not(.no-underline) {
+		background-size: 100% 2px;
 		transition: none;
 	}
 }
 
-/* We can keep special cases without underlines */
+/* Special cases without underlines */
 .card a,
+.entity-card a,
 .nav-link,
 .btn,
 .header-logo a {
 	text-decoration: none;
-}
-
-/* Ensure card links don't get the animated underline */
-.card a::after,
-.entity-card a::after,
-.nav-link::after,
-.btn::after,
-.header-logo a::after {
-	display: none;
+	background-image: none;
 }
 
 /* Lists */
