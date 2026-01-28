@@ -165,7 +165,7 @@
 	/* High contrast mode support */
 	@media (prefers-contrast: high) {
 		.cookie-banner {
-			border-width: 2px;
+			border-width: var(--space-0-5);
 		}
 	}
 

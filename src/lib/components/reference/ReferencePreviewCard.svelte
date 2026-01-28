@@ -411,7 +411,7 @@
 
 	/* Custom scrollbar styling for overflow */
 	.preview-card::-webkit-scrollbar {
-		width: 8px;
+		width: var(--space-2);
 	}
 
 	.preview-card::-webkit-scrollbar-track {
@@ -426,7 +426,7 @@
 			color-mix(in srgb, var(--color-accent) calc(var(--opacity-20) * 100%), transparent) 100%
 		);
 		border-radius: var(--border-radius-lg);
-		border: 2px solid transparent;
+		border: var(--space-0-5) solid transparent;
 		background-clip: padding-box;
 	}
 
@@ -456,7 +456,7 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
-		height: 40px;
+		height: var(--space-10);
 		background: linear-gradient(
 			to bottom,
 			transparent 0%,

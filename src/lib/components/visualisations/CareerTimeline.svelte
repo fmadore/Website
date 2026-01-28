@@ -479,8 +479,8 @@
 	}
 
 	.tooltip-category-indicator {
-		width: 8px;
-		height: 8px;
+		width: var(--space-2);
+		height: var(--space-2);
 		border-radius: 50%;
 	}
 
@@ -554,7 +554,7 @@
 			opacity var(--duration-fast) var(--ease-out),
 			filter var(--duration-fast) var(--ease-out);
 		stroke: transparent;
-		stroke-width: 2px;
+		stroke-width: var(--space-0-5);
 	}
 
 	.timeline-bar:hover {
@@ -574,7 +574,7 @@
 			opacity var(--duration-fast) var(--ease-out),
 			filter var(--duration-fast) var(--ease-out);
 		stroke: transparent;
-		stroke-width: 2px;
+		stroke-width: var(--space-0-5);
 	}
 
 	.timeline-point:hover {
@@ -666,7 +666,7 @@
 	.meta-badge {
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-xs);
-		padding: 2px 8px;
+		padding: var(--space-0-5) var(--space-2);
 		border-radius: var(--border-radius-sm);
 		border: 1px solid;
 		font-weight: var(--font-weight-medium);
@@ -674,7 +674,7 @@
 
 	.meta-dot {
 		color: var(--color-text-muted);
-		font-size: 8px;
+		font-size: var(--space-2);
 	}
 
 	.detail-subtitle {
@@ -729,7 +729,7 @@
 		color: var(--color-text-muted);
 		display: flex;
 		align-items: baseline;
-		gap: 6px;
+		gap: var(--space-1-5);
 	}
 
 	.nav-count .current {
@@ -768,10 +768,10 @@
 	}
 
 	.legend-color {
-		width: 12px;
-		height: 12px;
+		width: var(--space-3);
+		height: var(--space-3);
 		border-radius: 50%;
-		border: 2px solid transparent;
+		border: var(--space-0-5) solid transparent;
 		box-shadow: 0 0 0 1px var(--color-border);
 	}
 

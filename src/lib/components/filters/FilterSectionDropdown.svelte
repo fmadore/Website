@@ -220,8 +220,8 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		min-width: 1.25rem;
-		height: 1.25rem;
+		min-width: var(--space-5);
+		height: var(--space-5);
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-white);
@@ -524,7 +524,7 @@
 
 	/* Scrollbar styling */
 	.dropdown-items::-webkit-scrollbar {
-		width: 4px;
+		width: var(--space-1);
 	}
 
 	.dropdown-items::-webkit-scrollbar-track {

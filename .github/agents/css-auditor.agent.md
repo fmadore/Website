@@ -151,14 +151,21 @@ Before flagging an issue, ask yourself:
 Use these for understanding meaning, not mechanical replacement:
 
 ### Colors (Choose by Semantic Meaning)
-| Token | Purpose | Use For |
-|-------|---------|---------|
-| `--color-primary` | Main brand action | Primary CTAs, active states, key links |
-| `--color-secondary` | Supporting/neutral | Secondary buttons, metadata, less emphasis |
-| `--color-accent` | Distinction/highlight | Badges, tags, special callouts |
-| `--color-highlight` | Attention/importance | Featured items, warnings |
-| `--color-success` | Positive outcome | Confirmations, valid states |
-| `--color-danger` | Error/destructive | Errors, delete actions |
+**Design System v2.0: Warm Earth Tones (Terracotta/Gold)**
+
+| Token | Color | Purpose | Use For |
+|-------|-------|---------|---------|
+| `--color-primary` | Terracotta (#9a4419) | Main brand action | Primary CTAs, active states, key links |
+| `--color-secondary` | Warm neutral | Supporting/neutral | Secondary buttons, metadata, less emphasis |
+| `--color-accent` | Gold (#c4a35a) | Distinction/highlight | Badges, tags, special callouts |
+| `--color-highlight` | Gold-light (#d4b96a) | Attention/importance | Featured items, warnings |
+| `--color-success` | Emerald (#10b981) | Positive outcome | Confirmations, valid states |
+| `--color-danger` | Red (#dc2626) | Error/destructive | Errors, delete actions |
+
+**Legacy Colors (DO NOT USE):**
+- Old blues: #1d4ed8, #3b82f6, #1e3a8a
+- Old teal: #14b8a6, #0d9488
+- Old slate grays: #1e293b, #64748b, #94a3b8
 
 ### Spacing (8-Point Grid Philosophy)
 The grid exists for **visual rhythm**:

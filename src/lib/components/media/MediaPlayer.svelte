@@ -671,6 +671,7 @@
 		background: color-mix(in srgb, var(--color-white) calc(var(--opacity-90) * 100%), transparent);
 		border-radius: var(--border-radius-full);
 		padding: var(--space-2);
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		backdrop-filter: blur(var(--glass-blur-amount));
 		border: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
@@ -769,8 +770,8 @@
 
 	.particle {
 		position: absolute;
-		width: 6px;
-		height: 6px;
+		width: var(--space-1-5);
+		height: var(--space-1-5);
 		background: radial-gradient(circle, var(--color-highlight), transparent);
 		border-radius: var(--border-radius-full);
 		animation: float linear infinite;
@@ -804,6 +805,7 @@
 		align-items: center;
 		justify-content: center;
 		background: color-mix(in srgb, var(--color-black) calc(var(--opacity-50) * 100%), transparent);
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		backdrop-filter: blur(var(--glass-blur-amount));
 		border-radius: var(--border-radius-lg);
 	}
@@ -841,6 +843,7 @@
 			var(--color-surface) calc(var(--opacity-95) * 100%),
 			transparent
 		);
+		-webkit-backdrop-filter: blur(var(--glass-blur-fallback));
 		backdrop-filter: blur(var(--glass-blur-fallback));
 		border: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-border) calc(var(--opacity-20) * 100%), transparent);
@@ -898,7 +901,7 @@
 
 	.progress-bar {
 		position: relative;
-		height: 6px;
+		height: var(--space-1-5);
 		background: color-mix(in srgb, var(--color-text) calc(var(--opacity-10) * 100%), transparent);
 		border-radius: var(--border-radius-full);
 		cursor: pointer;
@@ -911,7 +914,7 @@
 	}
 
 	.progress-bar:hover {
-		height: 8px;
+		height: var(--space-2);
 		background: color-mix(in srgb, var(--color-text) calc(var(--opacity-15) * 100%), transparent);
 		box-shadow:
 			inset 0 1px 3px
@@ -1013,6 +1016,7 @@
 			var(--color-surface) calc(var(--opacity-90) * 100%),
 			transparent
 		) !important;
+		-webkit-backdrop-filter: blur(var(--glass-blur-fallback)) !important;
 		backdrop-filter: blur(var(--glass-blur-fallback)) !important;
 		border: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-border) calc(var(--opacity-30) * 100%), transparent) !important;
@@ -1091,6 +1095,7 @@
 			color-mix(in srgb, var(--color-border) calc(var(--opacity-20) * 100%), transparent);
 		border-radius: var(--border-radius-lg);
 		padding: var(--space-2) var(--space-3);
+		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		backdrop-filter: blur(var(--glass-blur-amount));
 
 		/* Subtle inner glow */
@@ -1125,7 +1130,7 @@
 
 	.volume-slider {
 		width: var(--space-20);
-		height: 6px;
+		height: var(--space-1-5);
 		border: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-border) calc(var(--opacity-20) * 100%), transparent);
 		border-radius: var(--border-radius-full);
@@ -1135,7 +1140,8 @@
 		transition: all var(--duration-normal) var(--ease-out);
 
 		/* Enhanced styling with glassmorphism */
-		backdrop-filter: blur(4px);
+		-webkit-backdrop-filter: blur(var(--space-1));
+		backdrop-filter: blur(var(--space-1));
 		box-shadow:
 			inset 0 1px 3px
 				color-mix(in srgb, var(--color-black) calc(var(--opacity-10) * 100%), transparent),

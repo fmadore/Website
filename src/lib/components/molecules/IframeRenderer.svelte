@@ -306,8 +306,8 @@
 		width: var(--space-10);
 		height: var(--space-10);
 		margin: calc(var(--space-10) * -0.5) 0 0 calc(var(--space-10) * -0.5);
-		border: 4px solid var(--color-border);
-		border-top: 4px solid var(--color-primary);
+		border: var(--space-1) solid var(--color-border);
+		border-top: var(--space-1) solid var(--color-primary);
 		border-radius: var(--border-radius-full);
 		animation: iframe-loading-spin var(--anim-duration-slow) linear infinite;
 		z-index: 6;

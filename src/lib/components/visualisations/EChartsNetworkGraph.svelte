@@ -603,19 +603,19 @@ ECharts Network Graph - A network visualization for author collaborations
 	}
 
 	.legend-icon {
-		width: 12px;
-		height: 12px;
+		width: var(--space-3);
+		height: var(--space-3);
 		border-radius: var(--border-radius-full);
 	}
 
 	.legend-line {
-		width: 20px;
-		height: 2px;
+		width: var(--space-5);
+		height: var(--space-0-5);
 	}
 
 	.legend-dotted {
 		background-color: transparent;
-		border-bottom: 2px dotted;
+		border-bottom: var(--space-0-5) dotted;
 		height: 0;
 	}
 
