@@ -75,7 +75,7 @@
 
 /* ===== BUTTON VARIANTS ===== */
 
-/* Primary Button - Academic blue with subtle gradient */
+/* Primary Button - Terracotta with subtle gradient */
 .btn-primary {
 	background: linear-gradient(135deg,
 			var(--color-primary) 0%,

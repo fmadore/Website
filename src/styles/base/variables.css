@@ -150,7 +150,7 @@
 	--color-border: var(--sys-color-neutral-200);
 	--color-border-light: var(--sys-color-neutral-100);
 	--color-border-dark: var(--sys-color-neutral-300);
-	--color-border-focus: var(--sys-color-blue-500);
+	--color-border-focus: var(--color-primary);
 
 	/* ===== FOCUS RING ===== */
 	/* Consistent focus indicators for accessibility */
@@ -200,7 +200,7 @@
 	/* Button color schemes - for glass buttons and variants */
 	--color-secondary-scheme: var(--color-accent);
 
-	--color-secondary-scheme-alt: var(--sys-color-teal-600);
+	--color-secondary-scheme-alt: var(--sys-color-gold-600);
 
 	--color-tertiary-scheme: var(--color-success);
 

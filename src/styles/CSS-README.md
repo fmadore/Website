@@ -55,10 +55,10 @@ Base styles define the foundation of the site's design.
 
 #### Color System
 
-- **Primary**: Academic blue (`#1d4ed8`) with `-dark`, `-light`, `-lighter` variants
-- **Secondary**: Neutral slate for supporting elements
-- **Accent**: Teal (`#14b8a6`) for highlights and badges
-- **Highlight**: Amber (`#f59e0b`) for attention/importance
+- **Primary**: Terracotta (`#9a4419`) with `-dark`, `-light`, `-lighter` variants
+- **Secondary**: Warm neutral for supporting elements
+- **Accent**: Desert gold (`#c4a35a`) for highlights and badges
+- **Highlight**: Gold (`#d4b96a`) for attention/importance
 - **Success**: Emerald (`#10b981`) for positive states
 - **Danger**: Red (`#dc2626`) for errors and destructive actions
 - **Dynamic opacity**: Use `color-mix()` for transparency (e.g., `color-mix(in srgb, var(--color-primary) 25%, transparent)`)
@@ -188,7 +188,7 @@ Modern, comprehensive button system with enhanced accessibility and user experie
 
 - **Base button**: `.btn` with modern styling, flexbox layout, and smooth transitions
 - **Color variants**:
-  - `.btn-primary`: Academic blue with gradient
+  - `.btn-primary`: Terracotta with gradient
   - `.btn-secondary`: Neutral with subtle background
   - `.btn-ghost`: Minimal style for tertiary actions
   - `.btn-danger`: Red variant for destructive actions

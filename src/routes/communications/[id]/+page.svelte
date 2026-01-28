@@ -526,7 +526,7 @@
 	:global(html.dark) .participants-section {
 		background: linear-gradient(
 			135deg,
-			rgba(30, 41, 59, 0.7) 0%,
+			rgba(26, 22, 18, 0.7) 0%,
 			color-mix(in srgb, var(--color-primary) 12%, transparent) 50%,
 			color-mix(in srgb, var(--color-accent) 8%, transparent) 100%
 		);
@@ -537,7 +537,7 @@
 	:global(html.dark) .participants-section:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(30, 41, 59, 0.8) 0%,
+			rgba(26, 22, 18, 0.8) 0%,
 			color-mix(in srgb, var(--color-primary) 15%, transparent) 50%,
 			color-mix(in srgb, var(--color-accent) 10%, transparent) 100%
 		);
@@ -547,7 +547,7 @@
 	:global(html.dark) .participant-card {
 		background: linear-gradient(
 			135deg,
-			rgba(30, 41, 59, 0.5) 0%,
+			rgba(26, 22, 18, 0.5) 0%,
 			color-mix(in srgb, var(--color-accent) 6%, transparent) 50%,
 			color-mix(in srgb, var(--color-primary) 4%, transparent) 100%
 		);
@@ -558,7 +558,7 @@
 	:global(html.dark) .participant-card:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(30, 41, 59, 0.6) 0%,
+			rgba(26, 22, 18, 0.6) 0%,
 			color-mix(in srgb, var(--color-accent) 8%, transparent) 50%,
 			color-mix(in srgb, var(--color-primary) 6%, transparent) 100%
 		);
@@ -567,7 +567,7 @@
 	:global(html.dark) .map-container-wrapper {
 		background: linear-gradient(
 			135deg,
-			rgba(30, 41, 59, 0.5) 0%,
+			rgba(26, 22, 18, 0.5) 0%,
 			color-mix(in srgb, var(--color-accent) 6%, transparent) 50%,
 			color-mix(in srgb, var(--color-primary) 4%, transparent) 100%
 		);
