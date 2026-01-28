@@ -53,15 +53,15 @@ ECharts Horizontal Bar Chart component
 	}
 
 	// Reactive color resolution
-	// Fallbacks match design system v2.0 values from variables.css
+	// Fallbacks match design system v2.0 values from variables.css (warm earth tones)
 	const resolvedColors = $derived({
-		primary: getCSSVariableValue('--color-primary') || '#1d4ed8',
-		text: getCSSVariableValue('--color-text') || '#1e293b',
-		textLight: getCSSVariableValue('--color-text-light') || '#64748b',
-		border: getCSSVariableValue('--color-border') || '#e2e8f0',
-		surface: getCSSVariableValue('--color-surface') || '#f8fafc',
-		surfaceRgb: getCSSVariableValue('--color-surface-rgb') || '248, 250, 252',
-		primaryDark: getCSSVariableValue('--color-primary-dark') || '#1e3a5f',
+		primary: getCSSVariableValue('--color-primary') || '#9a4419',
+		text: getCSSVariableValue('--color-text') || '#2d2820',
+		textLight: getCSSVariableValue('--color-text-light') || '#7a7267',
+		border: getCSSVariableValue('--color-border') || '#e8e4df',
+		surface: getCSSVariableValue('--color-surface') || '#faf9f7',
+		surfaceRgb: getCSSVariableValue('--color-surface-rgb') || '250, 249, 247',
+		primaryDark: getCSSVariableValue('--color-primary-dark') || '#7a3516',
 		barColor: resolveColor(barColor),
 		fontFamily: getCSSVariableValue('--font-family-sans') || 'system-ui, sans-serif',
 		currentTheme: getTheme()

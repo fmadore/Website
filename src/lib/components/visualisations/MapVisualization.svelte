@@ -108,9 +108,9 @@
 		el.style.alignItems = 'center';
 
 		// Get the color based on activity type - use EXPLICIT hex colors
-		let strokeColor = '#1d4ed8'; // primary blue
+		let strokeColor = '#9a4419'; // primary terracotta
 		if (item.activityType === 'lecture') {
-			strokeColor = '#14b8a6'; // accent teal
+			strokeColor = '#c4a35a'; // accent gold
 		} else if (item.activityType === 'event') {
 			strokeColor = '#f59e0b'; // highlight amber
 		}
@@ -203,9 +203,9 @@
 			if (!item.coordinates || !maplibregl) return;
 
 			// Get color based on activity type
-			let markerColor = '#3b82f6'; // blue - default
+			let markerColor = '#9a4419'; // terracotta - default
 			if (item.activityType === 'lecture') {
-				markerColor = '#14b8a6'; // teal
+				markerColor = '#c4a35a'; // gold
 			} else if (item.activityType === 'event') {
 				markerColor = '#f59e0b'; // amber
 			} else if (item.activityType === 'conference') {

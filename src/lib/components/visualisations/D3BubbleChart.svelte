@@ -54,10 +54,10 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 	// Utility functions for CSS variable resolution
 	// Fallbacks match design system v2.0 values from variables.css
 	function getCSSVariableValue(variableName: string): string {
-		if (typeof window === 'undefined') return '#1d4ed8';
+		if (typeof window === 'undefined') return '#9a4419';
 		const computedStyle = getComputedStyle(document.documentElement);
 		const value = computedStyle.getPropertyValue(variableName).trim();
-		return value || '#1d4ed8';
+		return value || '#9a4419';
 	}
 
 	function getCSSPx(variableName: string, fallbackPx: number): number {
