@@ -5,8 +5,13 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type * as d3Type from 'd3';
-	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { innerWidth as windowInnerWidth } from 'svelte/reactivity/window';
+	import {
+		getResolvedChartColors,
+		resolveColors,
+		getCSSPx,
+		prefersReducedMotion
+	} from '$lib/utils/chartColorUtils';
 
 	// D3 library loaded dynamically to reduce initial bundle size
 	let d3: typeof d3Type | null = $state(null);
@@ -51,53 +56,10 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 	// Reactive values
 	const isMobile = $derived((windowInnerWidth.current ?? 1024) < 768);
 
-	// Utility functions for CSS variable resolution
-	// Fallbacks match design system v2.0 values from variables.css
-	function getCSSVariableValue(variableName: string): string {
-		if (typeof window === 'undefined') return '#9a4419';
-		const computedStyle = getComputedStyle(document.documentElement);
-		const value = computedStyle.getPropertyValue(variableName).trim();
-		return value || '#9a4419';
-	}
-
-	function getCSSPx(variableName: string, fallbackPx: number): number {
-		if (typeof window === 'undefined') return fallbackPx;
-		const computedStyle = getComputedStyle(document.documentElement);
-		const value = computedStyle.getPropertyValue(variableName).trim();
-		const match = value.match(/^([\d.]+)px$/);
-		return match ? Number(match[1]) : fallbackPx;
-	}
-
-	function prefersReducedMotion(): boolean {
-		if (typeof window === 'undefined') return false;
-		return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-	}
-
-	function resolveColor(color: string): string {
-		if (color.startsWith('var(')) {
-			const varName = color.slice(4, -1).trim();
-			return getCSSVariableValue(varName);
-		}
-		if (color.startsWith('rgba(var(')) {
-			const rgbaMatch = color.match(/rgba\(var\(([^)]+)\),\s*([^)]+)\)/);
-			if (rgbaMatch) {
-				const rgbVarName = rgbaMatch[1];
-				const opacity = rgbaMatch[2];
-				const rgbValue = getCSSVariableValue(rgbVarName);
-				return `rgba(${rgbValue}, ${opacity})`;
-			}
-		}
-		return color;
-	}
-
 	// Reactive color resolution
 	const resolvedColors = $derived({
-		text: getCSSVariableValue('--color-text'),
-		border: getCSSVariableValue('--color-border'),
-		surface: getCSSVariableValue('--color-surface'),
-		surfaceRgb: getCSSVariableValue('--color-surface-rgb'),
-		chartColors: colors.map((color) => resolveColor(color)),
-		currentTheme: getTheme()
+		...getResolvedChartColors(),
+		chartColors: resolveColors(colors)
 	});
 
 	// Type for simulation nodes

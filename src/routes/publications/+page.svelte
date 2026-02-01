@@ -46,6 +46,7 @@
 	import { urlFilterSync } from '$lib/actions/urlFilterSync.svelte';
 	import Sorter from '$lib/components/common/Sorter.svelte';
 	import { sortItems } from '$lib/utils/sortUtils';
+	import { areFiltersActive } from '$lib/utils/filterUtils';
 	import Icon from '@iconify/svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
 
@@ -86,24 +87,11 @@
 		} else if (type === 'country') {
 			toggleCountryFilter(value);
 		}
-	} // Handler for the sortChange event from the Sorter component
-	function handleSortChange(data: { sortBy: 'date' | 'title' | 'citations' }) {
-		activeSort = data.sortBy;
 	}
 
-	// Helper to check if any filters are active
-	function areFiltersActive(filters: typeof $activeFilters): boolean {
-		if (!filters) return false;
-		return Object.values(filters).some(
-			(val) =>
-				(Array.isArray(val) && val.length > 0) ||
-				(val !== null &&
-					val !== undefined &&
-					typeof val === 'object' &&
-					Object.keys(val).length > 0 &&
-					val.constructor === Object) || // Check for non-null, non-array objects like yearRange
-				(!Array.isArray(val) && typeof val !== 'object' && val !== null && val !== undefined) // Check for primitive values if needed
-		);
+	// Handler for the sortChange event from the Sorter component
+	function handleSortChange(data: { sortBy: 'date' | 'title' | 'citations' }) {
+		activeSort = data.sortBy;
 	}
 
 	// Prepare setters object for the action

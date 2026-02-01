@@ -3,8 +3,14 @@ ECharts Horizontal Bar Chart component
 -->
 <script lang="ts">
 	import type * as echarts from 'echarts';
-	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { innerWidth } from 'svelte/reactivity/window';
+	import {
+		getResolvedChartColors,
+		resolveColor,
+		getEChartsTooltipStyle,
+		getEChartsAxisLineStyle,
+		getEChartsSplitLineStyle
+	} from '$lib/utils/chartColorUtils';
 
 	// Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;
@@ -35,36 +41,10 @@ ECharts Horizontal Bar Chart component
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
 
-	// Utility functions for CSS variable resolution
-	function getCSSVariableValue(variableName: string): string {
-		if (typeof window === 'undefined') return '';
-		const computedStyle = getComputedStyle(document.documentElement);
-		const value = computedStyle.getPropertyValue(variableName).trim();
-		return value;
-	}
-
-	function resolveColor(color: string): string {
-		if (color.startsWith('var(')) {
-			const varName = color.slice(4, -1).trim();
-			const val = getCSSVariableValue(varName);
-			return val || color;
-		}
-		return color;
-	}
-
 	// Reactive color resolution
-	// Fallbacks match design system v2.0 values from variables.css (warm earth tones)
 	const resolvedColors = $derived({
-		primary: getCSSVariableValue('--color-primary') || '#9a4419',
-		text: getCSSVariableValue('--color-text') || '#2d2820',
-		textLight: getCSSVariableValue('--color-text-light') || '#7a7267',
-		border: getCSSVariableValue('--color-border') || '#e8e4df',
-		surface: getCSSVariableValue('--color-surface') || '#faf9f7',
-		surfaceRgb: getCSSVariableValue('--color-surface-rgb') || '250, 249, 247',
-		primaryDark: getCSSVariableValue('--color-primary-dark') || '#7a3516',
-		barColor: resolveColor(barColor),
-		fontFamily: getCSSVariableValue('--font-family-sans') || 'system-ui, sans-serif',
-		currentTheme: getTheme()
+		...getResolvedChartColors(),
+		barColor: resolveColor(barColor)
 	});
 
 	// Chart data transformation - reverse order so highest values appear at top
@@ -80,18 +60,7 @@ ECharts Horizontal Bar Chart component
 	const chartOption = $derived({
 		tooltip: {
 			trigger: 'axis',
-			backgroundColor: `color-mix(in srgb, ${resolvedColors.surface} 90%, transparent)`,
-			textStyle: {
-				color: resolvedColors.text,
-				fontSize: 12,
-				fontFamily: resolvedColors.fontFamily
-			},
-			borderRadius: 8,
-			borderColor: resolvedColors.border,
-			borderWidth: 1,
-			padding: [10, 14],
-			extraCssText:
-				'backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: var(--shadow-lg);'
+			...getEChartsTooltipStyle(resolvedColors)
 		},
 		grid: {
 			left: isMobile ? '120px' : '150px',
@@ -121,23 +90,9 @@ ECharts Horizontal Bar Chart component
 			interval: 1,
 			minInterval: 1,
 			max: maxValue,
-			axisLine: {
-				lineStyle: {
-					color: resolvedColors.border
-				}
-			},
-			axisTick: {
-				lineStyle: {
-					color: resolvedColors.border
-				}
-			},
-			splitLine: {
-				lineStyle: {
-					color: resolvedColors.border,
-					opacity: 0.3,
-					type: 'dashed'
-				}
-			}
+			axisLine: getEChartsAxisLineStyle(resolvedColors),
+			axisTick: getEChartsAxisLineStyle(resolvedColors),
+			splitLine: getEChartsSplitLineStyle(resolvedColors)
 		},
 		yAxis: {
 			type: 'category',
@@ -157,16 +112,8 @@ ECharts Horizontal Bar Chart component
 				width: isMobile ? 100 : 130,
 				overflow: 'truncate'
 			},
-			axisLine: {
-				lineStyle: {
-					color: resolvedColors.border
-				}
-			},
-			axisTick: {
-				lineStyle: {
-					color: resolvedColors.border
-				}
-			}
+			axisLine: getEChartsAxisLineStyle(resolvedColors),
+			axisTick: getEChartsAxisLineStyle(resolvedColors)
 		},
 		series: [
 			{

@@ -9,6 +9,12 @@ import {
 	socialLinks
 } from '$lib/data/siteConfig';
 import { getDefaultDescription } from '$lib/utils/siteHelpers';
+import { smartTruncate } from '$lib/utils/textUtils';
+import {
+	COMMUNICATION_TYPE_SEO_LABELS,
+	PUBLICATION_TYPE_SEO_LABELS,
+	ACTIVITY_TYPE_SEO_LABELS
+} from '$lib/utils/typeUtils';
 
 // ============================================================================
 // JSON-LD SCHEMA TYPES
@@ -291,42 +297,9 @@ export function createSectionBreadcrumbs(
 export function createCommunicationSEODescription(communication: Communication): string {
 	const { type, title, conference, location, country, year, abstract, authors } = communication;
 
-	// Helper to get readable type labels
-	const getTypeLabel = (type: string): string => {
-		const typeLabels: Record<string, string> = {
-			conference: 'Conference paper',
-			workshop: 'Workshop presentation',
-			seminar: 'Seminar',
-			lecture: 'Lecture',
-			panel: 'Panel discussion',
-			event: 'Academic presentation'
-		};
-		return typeLabels[type] || 'Academic presentation';
-	};
-
-	// Helper to truncate text while preserving sentence boundaries
-	const smartTruncate = (text: string, maxLength: number): string => {
-		if (text.length <= maxLength) return text;
-
-		// Find the last complete sentence within the limit
-		const truncated = text.substring(0, maxLength);
-		const lastSentenceEnd = Math.max(
-			truncated.lastIndexOf('. '),
-			truncated.lastIndexOf('? '),
-			truncated.lastIndexOf('! ')
-		);
-
-		if (lastSentenceEnd > maxLength * 0.6) {
-			// If we have a good sentence break, use it
-			return text.substring(0, lastSentenceEnd + 1).trim();
-		}
-
-		// Otherwise, truncate at word boundary and add ellipsis
-		const lastSpace = truncated.lastIndexOf(' ');
-		return lastSpace > maxLength * 0.6
-			? text.substring(0, lastSpace) + '...'
-			: text.substring(0, maxLength - 3) + '...';
-	};
+	// Get type label from centralized mapping
+	const getTypeLabel = (type: string): string =>
+		COMMUNICATION_TYPE_SEO_LABELS[type] || 'Academic presentation';
 
 	// Start building the description with the most important information first
 	let description = '';
@@ -454,45 +427,9 @@ export function createPublicationSEODescription(publication: Publication): strin
 	const { type, title, journal, publisher, book, year, abstract, authors, placeOfPublication } =
 		publication;
 
-	// Helper to get readable type labels
-	const getTypeLabel = (type: string): string => {
-		const typeLabels: Record<string, string> = {
-			article: 'Journal article',
-			book: 'Book',
-			chapter: 'Book chapter',
-			'special-issue': 'Special issue',
-			report: 'Research report',
-			encyclopedia: 'Encyclopedia entry',
-			blogpost: 'Blog post',
-			'masters-thesis': "Master's thesis",
-			'phd-dissertation': 'PhD dissertation'
-		};
-		return typeLabels[type] || 'Academic publication';
-	};
-
-	// Helper to truncate text while preserving sentence boundaries (reuse existing function)
-	const smartTruncate = (text: string, maxLength: number): string => {
-		if (text.length <= maxLength) return text;
-
-		// Find the last complete sentence within the limit
-		const truncated = text.substring(0, maxLength);
-		const lastSentenceEnd = Math.max(
-			truncated.lastIndexOf('. '),
-			truncated.lastIndexOf('? '),
-			truncated.lastIndexOf('! ')
-		);
-
-		if (lastSentenceEnd > maxLength * 0.6) {
-			// If we have a good sentence break, use it
-			return text.substring(0, lastSentenceEnd + 1).trim();
-		}
-
-		// Otherwise, truncate at word boundary and add ellipsis
-		const lastSpace = truncated.lastIndexOf(' ');
-		return lastSpace > maxLength * 0.6
-			? text.substring(0, lastSpace) + '...'
-			: text.substring(0, maxLength - 3) + '...';
-	};
+	// Get type label from centralized mapping
+	const getTypeLabel = (type: string): string =>
+		PUBLICATION_TYPE_SEO_LABELS[type] || 'Academic publication';
 
 	// Start building the description with the most important information first
 	let description = '';
@@ -617,46 +554,9 @@ export function createPublicationSEOKeywords(publication: Publication): string {
 export function createActivitySEODescription(activity: Activity): string {
 	const { title, description, type, year, tags } = activity;
 
-	// Helper to get blog-friendly type labels with engaging language
-	const getBlogTypeLabel = (type?: string): string => {
-		const typeLabels: Record<string, string> = {
-			conference: 'Conference insights',
-			workshop: 'Workshop highlights',
-			seminar: 'Seminar takeaways',
-			lecture: 'Lecture summary',
-			panel: 'Panel discussion',
-			grant: 'Research funding',
-			publication: 'Publication update',
-			event: 'Academic event',
-			visit: 'Academic visit',
-			news: 'Latest news'
-		};
-		return typeLabels[type || ''] || 'Academic update';
-	};
-
-	// Helper to truncate text while preserving word boundaries
-	const smartTruncate = (text: string, maxLength: number): string => {
-		if (text.length <= maxLength) return text;
-
-		// Find the last complete sentence within the limit
-		const truncated = text.substring(0, maxLength);
-		const lastSentenceEnd = Math.max(
-			truncated.lastIndexOf('. '),
-			truncated.lastIndexOf('? '),
-			truncated.lastIndexOf('! ')
-		);
-
-		if (lastSentenceEnd > maxLength * 0.6) {
-			// If we have a good sentence break, use it
-			return text.substring(0, lastSentenceEnd + 1).trim();
-		}
-
-		// Otherwise, truncate at word boundary and add ellipsis
-		const lastSpace = truncated.lastIndexOf(' ');
-		return lastSpace > maxLength * 0.6
-			? text.substring(0, lastSpace) + '...'
-			: text.substring(0, maxLength - 3) + '...';
-	};
+	// Get blog-friendly type label from centralized mapping
+	const getBlogTypeLabel = (type?: string): string =>
+		ACTIVITY_TYPE_SEO_LABELS[type || ''] || 'Academic update';
 
 	// Start with the activity description (primary content)
 	let seoDescription = description || '';

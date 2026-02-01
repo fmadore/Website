@@ -27,6 +27,7 @@
 		createPublicationSEOKeywords,
 		truncateTitle
 	} from '$lib/utils/seoUtils';
+	import { getPublicationTypeBadge } from '$lib/utils/typeUtils';
 
 	interface Props {
 		data: PageData;
@@ -49,34 +50,6 @@
 	// JSON-LD injection using reusable utilities
 	useBreadcrumbJsonLd(() => breadcrumbItems);
 	useJsonLdScript('publication-json-ld', () => jsonLdString);
-
-	// Helper to get badge text
-	function getTypeBadgeText(type: string): string {
-		switch (type) {
-			case 'article':
-				return 'Journal Article';
-			case 'bulletin-article':
-				return 'Bulletin Article';
-			case 'book':
-				return 'Book';
-			case 'chapter':
-				return 'Book Chapter';
-			case 'special-issue':
-				return 'Special Issue';
-			case 'report':
-				return 'Report';
-			case 'encyclopedia':
-				return 'Encyclopedia Entry';
-			case 'blogpost':
-				return 'Blog Post';
-			case 'masters-thesis':
-				return "Master's Thesis";
-			case 'phd-dissertation':
-				return 'PhD Dissertation';
-			default:
-				return type;
-		}
-	}
 
 	// Project URL mappings
 	let projectMappings = $derived({
@@ -226,7 +199,7 @@
 			<PageHeader
 				title={publication.title}
 				date={publication.date}
-				typeBadgeText={getTypeBadgeText(publication.type)}
+				typeBadgeText={getPublicationTypeBadge(publication.type)}
 				authors={publication.authors}
 			/>
 
