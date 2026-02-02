@@ -1,122 +1,55 @@
 <script lang="ts">
-	import SEO from '$lib/SEO.svelte';
-	import RelevantPublications from '$lib/components/panels/RelevantPublications.svelte';
-	import RelevantCommunications from '$lib/components/panels/RelevantCommunications.svelte';
+	import ResearchProjectLayout from '$lib/components/research/ResearchProjectLayout.svelte';
 	import RelevantGrants from '$lib/components/panels/RelevantGrants.svelte';
-	import ContentBody from '$lib/components/common/ContentBody.svelte';
-	import ProjectImageBanner from '$lib/components/common/ProjectImageBanner.svelte';
-	import ProjectYears from '$lib/components/common/ProjectYears.svelte';
-	import MediaPlayer from '$lib/components/media/MediaPlayer.svelte';
-	import { base } from '$app/paths';
-	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
-	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
-
-	// Pre-construct breadcrumb items with evaluated paths
-	const breadcrumbItems = [
-		{ label: 'Research', href: `${base}/research` },
-		{
-			label: 'Religious Activism on Campuses',
-			href: `${base}/research/religious-activism-campuses-togo-benin`
-		}
-	];
-
-	// Inject breadcrumb JSON-LD structured data
-	useBreadcrumbJsonLd(() => breadcrumbItems);
 </script>
 
-<SEO title="Religious Activism on Campuses in Togo and Benin | Frédérick Madore" />
+<ResearchProjectLayout
+	title="Religious Activism on Campuses in Togo and Benin"
+	shortTitle="Religious Activism on Campuses"
+	slug="religious-activism-campuses-togo-benin"
+	years="2021-2024"
+	imageSrc="campus-activism.webp"
+	imageAlt="Religious Activism on Campuses in Togo and Benin"
+	audioSrc="notebooklm/religious_activism_campus.mp3"
+	projectName="Religious Activism on Campuses in Togo and Benin"
+>
+	<p>
+		This project uncovers the neglected history of Christian and Muslim student associations
+		at the Université de Lomé (Togo) and the Université d'Abomey-Calavi (Benin), and examines
+		their resilience and adaptability over five decades. While much of the literature has
+		focused on the role of student protests in triggering national conferences in Benin and
+		Togo in the early 1990s, this study broadens the lens to include the significant but often
+		overlooked religious dimension of campus life.
+	</p>
 
-<div class="container py-8 page-enter">
-	<!-- Apply grid layout to this container on medium screens and up -->
-	<div class="content-wrapper">
-		<!-- Added grid wrapper -->
-		<div class="main-content max-w-6xl mx-auto">
-			<Breadcrumb items={breadcrumbItems} />
+	<p>
+		Drawing on interviews with several generations of activists and press coverage from both
+		countries, the research analyses the emergence and evolution of these religious
+		associations under challenging political circumstances: a one-party dictatorship in Togo
+		and a Marxist-Leninist regime in Benin. It explores how these groups navigated
+		authoritarian rule, political liberalisation and the principles of laïcité, while shaping
+		campus dynamics in institutions originally known as strongholds of leftist,
+		anti-imperialist and secular ideologies.
+	</p>
 
-			<PageHeader title="Religious Activism on Campuses in Togo and Benin" />
+	<p>
+		The study reveals the university campus as a microcosm reflecting broader national
+		socio-political trends, while also highlighting the importance of translocal factors in
+		shaping the internal dynamics of these groups. Amidst the massification of university
+		enrolments and rising graduate unemployment in recent decades, faith-based associations
+		have expanded their role beyond religious guidance. Increasingly, they offer a "social
+		curriculum", providing a space for socialisation and a set of skills, norms and moral
+		values that complement the secular academic curriculum.
+	</p>
 
-			<div class="mb-6">
-				<ProjectYears years="2021-2024" />
-			</div>
+	<p>
+		By analysing the interplay between religion, politics and education, this book provides
+		new insights into the evolving role of faith in public universities and broader societal
+		transformations in West Africa. It explores the implications of growing religiosity for
+		these public universities as secular institutions, and contributes to our understanding of
+		how religious organisations have coexisted with, and sometimes challenged, traditional
+		student associations since the 1970s.
+	</p>
 
-			<div class="scroll-reveal">
-				<ProjectImageBanner
-					src="{base}/images/research/campus-activism.webp"
-					alt="Religious Activism on Campuses in Togo and Benin"
-					glassEffect="glass-medium"
-					overlayIntensity="medium"
-				/>
-			</div>
-
-			<div class="scroll-reveal">
-				<ContentBody variant="default" glassEffect="glass-card">
-				{#snippet children()}
-					<p>
-						This project uncovers the neglected history of Christian and Muslim student associations
-						at the Université de Lomé (Togo) and the Université d'Abomey-Calavi (Benin), and examines
-						their resilience and adaptability over five decades. While much of the literature has
-						focused on the role of student protests in triggering national conferences in Benin and
-						Togo in the early 1990s, this study broadens the lens to include the significant but often
-						overlooked religious dimension of campus life.
-					</p>
-
-					<p>
-						Drawing on interviews with several generations of activists and press coverage from both
-						countries, the research analyses the emergence and evolution of these religious
-						associations under challenging political circumstances: a one-party dictatorship in Togo
-						and a Marxist-Leninist regime in Benin. It explores how these groups navigated
-						authoritarian rule, political liberalisation and the principles of laïcité, while shaping
-						campus dynamics in institutions originally known as strongholds of leftist,
-						anti-imperialist and secular ideologies.
-					</p>
-
-					<p>
-						The study reveals the university campus as a microcosm reflecting broader national
-						socio-political trends, while also highlighting the importance of translocal factors in
-						shaping the internal dynamics of these groups. Amidst the massification of university
-						enrolments and rising graduate unemployment in recent decades, faith-based associations
-						have expanded their role beyond religious guidance. Increasingly, they offer a "social
-						curriculum", providing a space for socialisation and a set of skills, norms and moral
-						values that complement the secular academic curriculum.
-					</p>
-
-				<p>
-					By analysing the interplay between religion, politics and education, this book provides
-					new insights into the evolving role of faith in public universities and broader societal
-					transformations in West Africa. It explores the implications of growing religiosity for
-					these public universities as secular institutions, and contributes to our understanding of
-					how religious organisations have coexisted with, and sometimes challenged, traditional
-					student associations since the 1970s.
-				</p>
-
-				<RelevantGrants projectName="Religious Activism on Campuses in Togo and Benin" />
-			{/snippet}
-			</ContentBody>
-			</div>
-			<div class="scroll-reveal">
-				<MediaPlayer
-					src="{base}/notebooklm/religious_activism_campus.mp3"
-					type="audio"
-					title="Google NotebookLM Podcast Discussion"
-					glassEffect="glass-card"
-					showControls={true}
-				/>
-			</div>
-		</div>
-
-		<div class="related-content mt-16 max-w-6xl mx-auto scroll-reveal">
-			<RelevantPublications
-				projectName="Religious Activism on Campuses in Togo and Benin"
-				limit={6}
-			/>
-			<div class="mt-12">
-				<RelevantCommunications
-					projectName="Religious Activism on Campuses in Togo and Benin"
-					limit={6}
-				/>
-			</div>
-		</div>
-	</div>
-	<!-- Closed grid wrapper -->
-</div>
+	<RelevantGrants projectName="Religious Activism on Campuses in Togo and Benin" />
+</ResearchProjectLayout>

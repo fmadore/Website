@@ -2,10 +2,10 @@
 ECharts Network Graph - A network visualization for author collaborations
 -->
 <script lang="ts">
-	import type * as echarts from 'echarts';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import Icon from '@iconify/svelte';
 	import { getResolvedChartColors, getEChartsTooltipStyle } from '$lib/utils/chartColorUtils';
+	import { useECharts } from '$lib/utils/useECharts.svelte';
 
 	// Props
 	type CollaborationData = {
@@ -36,45 +36,11 @@ ECharts Network Graph - A network visualization for author collaborations
 		maxConnections?: number;
 	} = $props();
 
-	// State management
+	// Container reference
 	let chartContainer: HTMLDivElement;
-	let chart: echarts.ECharts | null = $state(null);
-	let echartsLib: typeof echarts | null = null;
-	let isChartReady = $state(false);
 
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
-
-	// Zoom functions
-	function zoomIn() {
-		if (chart && !chart.isDisposed()) {
-			chart.dispatchAction({
-				type: 'graphRoam',
-				zoom: 1.2,
-				originX: chart.getWidth() / 2,
-				originY: chart.getHeight() / 2
-			});
-		}
-	}
-
-	function zoomOut() {
-		if (chart && !chart.isDisposed()) {
-			chart.dispatchAction({
-				type: 'graphRoam',
-				zoom: 0.8,
-				originX: chart.getWidth() / 2,
-				originY: chart.getHeight() / 2
-			});
-		}
-	}
-
-	function resetZoom() {
-		if (chart && !chart.isDisposed()) {
-			chart.dispatchAction({
-				type: 'restore'
-			});
-		}
-	}
 
 	// Reactive color resolution
 	const resolvedColors = $derived(getResolvedChartColors());
@@ -405,66 +371,43 @@ ECharts Network Graph - A network visualization for author collaborations
 		animationEasing: 'cubicOut' as any
 	});
 
-	// Effect for initialization and cleanup
-	$effect(() => {
-		let mounted = true;
-		let resizeObserver: ResizeObserver | undefined;
-
-		// Load echarts library and initialize chart
-		(async () => {
-			if (!echartsLib) {
-				try {
-					const echartsModule = await import('echarts');
-					if (mounted) {
-						echartsLib = echartsModule;
-					}
-				} catch (error) {
-					console.error('Failed to load ECharts:', error);
-					return;
-				}
-			}
-
-			// Initialize chart only when container is available and chart doesn't exist
-			if (chartContainer && !chart && echartsLib) {
-				try {
-					chart = echartsLib.init(chartContainer);
-
-					// Setup resize observer after chart is created
-					resizeObserver = new ResizeObserver(() => {
-						if (chart && !chart.isDisposed()) {
-							chart.resize();
-						}
-					});
-					resizeObserver.observe(chartContainer);
-					isChartReady = true;
-				} catch (error) {
-					console.error('Failed to initialize ECharts:', error);
-					return;
-				}
-			}
-		})();
-
-		return () => {
-			mounted = false;
-			isChartReady = false;
-			resizeObserver?.disconnect();
-			if (chart && !chart.isDisposed()) {
-				chart.dispose();
-				chart = null;
-			}
-		};
+	// Use the ECharts hook for lifecycle management
+	const { chart } = useECharts({
+		getContainer: () => chartContainer,
+		getOption: () => chartOption,
+		hasData: () => data.length > 0
 	});
 
-	// Separate effect for updating chart when options change
-	$effect(() => {
-		if (isChartReady && chart && !chart.isDisposed() && data.length > 0) {
-			try {
-				chart.setOption(chartOption, true);
-			} catch (error) {
-				console.error('Failed to update chart options:', error);
-			}
+	// Zoom functions
+	function zoomIn() {
+		if (chart && !chart.isDisposed()) {
+			chart.dispatchAction({
+				type: 'graphRoam',
+				zoom: 1.2,
+				originX: chart.getWidth() / 2,
+				originY: chart.getHeight() / 2
+			});
 		}
-	});
+	}
+
+	function zoomOut() {
+		if (chart && !chart.isDisposed()) {
+			chart.dispatchAction({
+				type: 'graphRoam',
+				zoom: 0.8,
+				originX: chart.getWidth() / 2,
+				originY: chart.getHeight() / 2
+			});
+		}
+	}
+
+	function resetZoom() {
+		if (chart && !chart.isDisposed()) {
+			chart.dispatchAction({
+				type: 'restore'
+			});
+		}
+	}
 </script>
 
 <div class="echarts-container scroll-reveal-scale">

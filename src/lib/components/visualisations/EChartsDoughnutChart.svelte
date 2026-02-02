@@ -2,13 +2,13 @@
 ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 -->
 <script lang="ts">
-	import type * as echarts from 'echarts';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import {
 		getResolvedChartColors,
 		resolveColors,
 		getEChartsTooltipStyle
 	} from '$lib/utils/chartColorUtils';
+	import { useECharts } from '$lib/utils/useECharts.svelte';
 
 	// Props - keeping interface simple for doughnut chart
 	type DataItem = $$Generic;
@@ -45,11 +45,8 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		colors?: string[];
 	} = $props();
 
-	// State management
+	// Container reference
 	let chartContainer: HTMLDivElement;
-	let chart: echarts.ECharts | null = $state(null);
-	let echartsLib: typeof echarts | null = null;
-	let isChartReady = $state(false);
 
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
@@ -179,65 +176,11 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		backgroundColor: 'transparent'
 	});
 
-	// Effect for initialization and cleanup
-	$effect(() => {
-		let mounted = true;
-		let resizeObserver: ResizeObserver | undefined;
-
-		// Load echarts library and initialize chart
-		(async () => {
-			if (!echartsLib) {
-				try {
-					const echartsModule = await import('echarts');
-					if (mounted) {
-						echartsLib = echartsModule;
-					}
-				} catch (error) {
-					console.error('Failed to load ECharts:', error);
-					return;
-				}
-			}
-
-			// Initialize chart only when container is available and chart doesn't exist
-			if (chartContainer && !chart && echartsLib) {
-				try {
-					chart = echartsLib.init(chartContainer);
-
-					// Setup resize observer after chart is created
-					resizeObserver = new ResizeObserver(() => {
-						if (chart && !chart.isDisposed()) {
-							chart.resize();
-						}
-					});
-					resizeObserver.observe(chartContainer);
-					isChartReady = true;
-				} catch (error) {
-					console.error('Failed to initialize ECharts:', error);
-					return;
-				}
-			}
-		})();
-
-		return () => {
-			mounted = false;
-			isChartReady = false;
-			resizeObserver?.disconnect();
-			if (chart && !chart.isDisposed()) {
-				chart.dispose();
-				chart = null;
-			}
-		};
-	});
-
-	// Separate effect for updating chart when options change
-	$effect(() => {
-		if (isChartReady && chart && !chart.isDisposed() && chartData.length > 0) {
-			try {
-				chart.setOption(chartOption, true);
-			} catch (error) {
-				console.error('Failed to update chart options:', error);
-			}
-		}
+	// Use the ECharts hook for lifecycle management
+	useECharts({
+		getContainer: () => chartContainer,
+		getOption: () => chartOption,
+		hasData: () => chartData.length > 0
 	});
 </script>
 

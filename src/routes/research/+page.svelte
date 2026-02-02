@@ -81,7 +81,7 @@
 			<Card
 				title={project.title}
 				imageUrl={project.imageUrl}
-				linkUrl={`${base}/research/${project.id}`}
+				linkUrl={`/research/${project.id}`}
 				target="_self"
 			>
 				{#snippet subtitle()}
