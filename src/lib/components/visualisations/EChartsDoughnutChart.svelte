@@ -3,8 +3,12 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 -->
 <script lang="ts">
 	import type * as echarts from 'echarts';
-	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { innerWidth } from 'svelte/reactivity/window';
+	import {
+		getResolvedChartColors,
+		resolveColors,
+		getEChartsTooltipStyle
+	} from '$lib/utils/chartColorUtils';
 
 	// Props - keeping interface simple for doughnut chart
 	type DataItem = $$Generic;
@@ -50,46 +54,10 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
 
-	// Utility functions for CSS variable resolution
-	function getCSSVariableValue(variableName: string): string {
-		if (typeof window === 'undefined') return '';
-		const computedStyle = getComputedStyle(document.documentElement);
-		const value = computedStyle.getPropertyValue(variableName).trim();
-		return value;
-	}
-
-	function resolveColor(color: string): string {
-		if (color.startsWith('var(')) {
-			const varName = color.slice(4, -1).trim();
-			const val = getCSSVariableValue(varName);
-			return val || color;
-		}
-		if (color.startsWith('rgba(var(')) {
-			const rgbaMatch = color.match(/rgba\(var\(([^)]+)\),\s*([^)]+)\)/);
-			if (rgbaMatch) {
-				const rgbVarName = rgbaMatch[1];
-				const opacity = rgbaMatch[2];
-				const rgbValue = getCSSVariableValue(rgbVarName) || '0, 0, 0';
-				return `rgba(${rgbValue}, ${opacity})`;
-			}
-		}
-		return color;
-	}
-
 	// Reactive color resolution
-	// Fallbacks match design system v2.0 values from variables.css (warm earth tones)
 	const resolvedColors = $derived({
-		primary: getCSSVariableValue('--color-primary') || '#9a4419',
-		text: getCSSVariableValue('--color-text') || '#2d2820',
-		textLight: getCSSVariableValue('--color-text-light') || '#7a7267',
-		border: getCSSVariableValue('--color-border') || '#e8e4df',
-		surface: getCSSVariableValue('--color-surface') || '#faf9f7',
-		surfaceRgb: getCSSVariableValue('--color-surface-rgb') || '250, 249, 247',
-		accent: getCSSVariableValue('--color-accent') || '#c4a35a',
-		highlight: getCSSVariableValue('--color-highlight') || '#f59e0b',
-		chartColors: colors.map((color) => resolveColor(color)),
-		fontFamily: getCSSVariableValue('--font-family-sans') || 'system-ui, sans-serif',
-		currentTheme: getTheme()
+		...getResolvedChartColors(),
+		chartColors: resolveColors(colors)
 	});
 	// Chart data transformation
 	const chartData = $derived(
@@ -106,18 +74,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		},
 		tooltip: {
 			trigger: 'item',
-			backgroundColor: `color-mix(in srgb, ${resolvedColors.surface} 90%, transparent)`,
-			textStyle: {
-				color: resolvedColors.text,
-				fontSize: 12,
-				fontFamily: resolvedColors.fontFamily
-			},
-			borderRadius: 8,
-			borderColor: resolvedColors.border,
-			borderWidth: 1,
-			padding: [10, 14],
-			extraCssText:
-				'backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: var(--shadow-lg);',
+			...getEChartsTooltipStyle(resolvedColors),
 			formatter: '{a} <br/>{b}: {c} ({d}%)',
 			confine: isMobile,
 			position: isMobile

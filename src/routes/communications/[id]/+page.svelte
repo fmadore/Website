@@ -18,6 +18,7 @@
 		createCommunicationSEOKeywords,
 		truncateTitle
 	} from '$lib/utils/seoUtils';
+	import { getCommunicationTypeBadge } from '$lib/utils/typeUtils';
 	import MetaTags from '$lib/components/communications/MetaTags.svelte';
 	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
 
@@ -72,24 +73,6 @@
 			: []
 	);
 
-	// Helper to get badge text
-	function getTypeBadgeText(type: string): string {
-		switch (type) {
-			case 'conference':
-				return 'Conference Paper';
-			case 'workshop':
-				return 'Workshop Presentation';
-			case 'seminar':
-				return 'Seminar';
-			case 'lecture':
-				return 'Lecture';
-			case 'panel':
-				return 'Panel';
-			default:
-				return type;
-		}
-	}
-
 	// Prepare details for the DetailsGrid component
 	const communicationDetails = $derived([
 		{ label: 'Event', value: communication.conference ?? '' },
@@ -123,7 +106,7 @@
 			<PageHeader
 				title={communication.title}
 				date={communication.date}
-				typeBadgeText={getTypeBadgeText(communication.type || '')}
+				typeBadgeText={getCommunicationTypeBadge(communication.type || '')}
 				authors={communication.authors}
 			/>
 

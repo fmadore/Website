@@ -163,3 +163,63 @@ export function createDerivedCountStore<TItem>(
 		return counts;
 	});
 }
+
+/**
+ * Checks if any filters in the filter state object are active.
+ * Handles arrays, objects (like yearRange), and primitive values.
+ *
+ * @param filters - The filter state object to check
+ * @returns True if any filter has active values
+ *
+ * @example
+ * const active = areFiltersActive($activeFilters);
+ * // Returns true if any filter array has items, or yearRange is set, etc.
+ */
+export function areFiltersActive<T extends object>(filters: T | null | undefined): boolean {
+	if (!filters) return false;
+
+	return Object.values(filters).some((val: unknown) => {
+		// Check for non-empty arrays
+		if (Array.isArray(val) && val.length > 0) return true;
+
+		// Check for non-null, non-array objects (like yearRange: { min, max })
+		if (
+			val !== null &&
+			val !== undefined &&
+			typeof val === 'object' &&
+			!Array.isArray(val) &&
+			Object.keys(val).length > 0
+		) {
+			return true;
+		}
+
+		// Check for truthy primitive values (non-empty strings, non-zero numbers, true)
+		if (!Array.isArray(val) && typeof val !== 'object' && val !== null && val !== undefined) {
+			return val !== '' && val !== 0 && val !== false;
+		}
+
+		return false;
+	});
+}
+
+/**
+ * Creates a sort change handler factory.
+ * Returns a function that updates the activeSort variable when sort changes.
+ *
+ * @param allowedSorts - Array of allowed sort keys for the specific page
+ * @returns A handler function for sortChange events
+ *
+ * @example
+ * const handleSortChange = createSortHandler(['date', 'title', 'citations']);
+ * handleSortChange({ sortBy: 'date' }); // Updates activeSort
+ */
+export function createSortHandler<T extends string>(allowedSorts: T[]) {
+	return (
+		data: { sortBy: T },
+		setActiveSort: (sort: T) => void
+	): void => {
+		if (allowedSorts.includes(data.sortBy)) {
+			setActiveSort(data.sortBy);
+		}
+	};
+}

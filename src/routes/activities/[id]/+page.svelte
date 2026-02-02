@@ -15,7 +15,12 @@
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import ActionLinks from '$lib/components/molecules/ActionLinks.svelte';
 	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
-	import { createActivitySEODescription, createActivitySEOKeywords } from '$lib/utils/seoUtils';
+	import {
+		createActivitySEODescription,
+		createActivitySEOKeywords,
+		truncateTitle
+	} from '$lib/utils/seoUtils';
+	import { formatPanelType } from '$lib/utils/typeUtils';
 	import MetaTags from '$lib/components/activities/MetaTags.svelte';
 	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
 	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
@@ -29,12 +34,6 @@
 	const seoDescription = $derived(createActivitySEODescription(activity));
 	const seoKeywords = $derived(createActivitySEOKeywords(activity));
 
-	// Helper function to truncate title at the first colon (copied from publications page)
-	function truncateTitle(title: string): string {
-		const colonIndex = title.indexOf(':');
-		return colonIndex > -1 ? title.substring(0, colonIndex) + '...' : title;
-	}
-
 	// Define breadcrumb items - reactive to activity changes
 	const breadcrumbItems = $derived([
 		{ label: 'Activities', href: `${base}/activities` },
@@ -46,12 +45,6 @@
 
 	// Inject activity JSON-LD structured data
 	useJsonLdScript('activity-json-ld', () => jsonLdString);
-
-	// Helper function to format panelType for display
-	function formatPanelType(panelType: string | undefined): string {
-		if (!panelType) return '';
-		return panelType.charAt(0).toUpperCase() + panelType.slice(1);
-	}
 
 	// Optimize animations for better performance
 	$effect(() => {

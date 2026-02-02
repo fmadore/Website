@@ -68,6 +68,7 @@
 	import { urlFilterSync } from '$lib/actions/urlFilterSync.svelte';
 	import Sorter from '$lib/components/common/Sorter.svelte';
 	import { sortItems } from '$lib/utils/sortUtils';
+	import { areFiltersActive } from '$lib/utils/filterUtils';
 	import Icon from '@iconify/svelte'; // Import Iconify
 	import Button from '$lib/components/atoms/Button.svelte'; // Import Button
 
@@ -123,24 +124,7 @@
 			})) || []
 	);
 
-	// Helper to check if any filters are active (consistent with communications/+page.svelte)
-	function areFiltersActive(filters: typeof $activeFilters): boolean {
-		if (!filters) return false;
-		return Object.values(filters).some(
-			(val) =>
-				(Array.isArray(val) && val.length > 0) ||
-				(val !== null &&
-					val !== undefined &&
-					typeof val === 'object' &&
-					Object.keys(val).length > 0 &&
-					val.constructor === Object) ||
-				(!Array.isArray(val) &&
-					typeof val !== 'object' &&
-					val !== null &&
-					val !== undefined &&
-					val !== '')
-		);
-	} // Function to handle filter requests from items (consistent with communications/+page.svelte)
+	// Function to handle filter requests from items (consistent with communications/+page.svelte)
 	function handleFilterRequest(event: { type: string; value: string }) {
 		const { type, value } = event;
 		if (type === 'tag') {

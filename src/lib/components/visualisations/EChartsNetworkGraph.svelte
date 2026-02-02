@@ -3,9 +3,9 @@ ECharts Network Graph - A network visualization for author collaborations
 -->
 <script lang="ts">
 	import type * as echarts from 'echarts';
-	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import Icon from '@iconify/svelte';
+	import { getResolvedChartColors, getEChartsTooltipStyle } from '$lib/utils/chartColorUtils';
 
 	// Props
 	type CollaborationData = {
@@ -76,29 +76,8 @@ ECharts Network Graph - A network visualization for author collaborations
 		}
 	}
 
-	// Utility functions for CSS variable resolution
-	function getCSSVariableValue(variableName: string): string {
-		if (typeof window === 'undefined') return '';
-		const computedStyle = getComputedStyle(document.documentElement);
-		const value = computedStyle.getPropertyValue(variableName).trim();
-		return value;
-	}
-
 	// Reactive color resolution
-	// Fallbacks match design system v2.0 values from variables.css (warm earth tones)
-	const resolvedColors = $derived({
-		primary: getCSSVariableValue('--color-primary') || '#9a4419',
-		text: getCSSVariableValue('--color-text') || '#2d2820',
-		textLight: getCSSVariableValue('--color-text-light') || '#7a7267',
-		border: getCSSVariableValue('--color-border') || '#e8e4df',
-		surface: getCSSVariableValue('--color-surface') || '#faf9f7',
-
-		accent: getCSSVariableValue('--color-accent') || '#c4a35a',
-		highlight: getCSSVariableValue('--color-highlight') || '#f59e0b',
-		success: getCSSVariableValue('--color-success') || '#10b981',
-		fontFamily: getCSSVariableValue('--font-family-sans') || 'system-ui, sans-serif',
-		currentTheme: getTheme()
-	});
+	const resolvedColors = $derived(getResolvedChartColors());
 
 	// Create a color palette for different collaboration counts
 	const collaborationColors = $derived.by(() => {
@@ -278,19 +257,15 @@ ECharts Network Graph - A network visualization for author collaborations
 		tooltip: {
 			trigger: 'item',
 			triggerOn: 'mousemove',
-			backgroundColor: `color-mix(in srgb, ${resolvedColors.surface} 90%, transparent)`,
+			...getEChartsTooltipStyle(resolvedColors),
 			textStyle: {
 				color: resolvedColors.text,
 				fontSize: isMobile ? 11 : 12,
 				fontFamily: resolvedColors.fontFamily
 			},
-			borderRadius: 8,
-			borderColor: resolvedColors.border,
-			borderWidth: 1,
 			extraCssText:
 				'backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: var(--shadow-lg); max-width: 280px; word-wrap: break-word; white-space: normal; line-height: 1.4;',
 			confine: true,
-			padding: [10, 14],
 			position: function (
 				point: [number, number],
 				params: any,
