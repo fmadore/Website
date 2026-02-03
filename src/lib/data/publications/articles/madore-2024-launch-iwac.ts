@@ -9,6 +9,7 @@ export const madore2024LaunchIwac: Publication = {
 	dateISO: '2024-04',
 	year: 2024,
 	journal: 'ZMO Bulletin',
+	publisherLocation: 'Germany',
 	issue: '44',
 	pages: '9',
 	pageCount: 1,

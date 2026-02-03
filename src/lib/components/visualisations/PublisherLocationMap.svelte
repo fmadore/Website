@@ -7,7 +7,7 @@ Shows where publications are published geographically using the publisherLocatio
 	export type PublisherLocationData = {
 		country: string;
 		count: number;
-		publications: Array<{ title: string; publisher?: string; type: string }>;
+		publications: Array<{ id: string; title: string; publisher?: string; type: string }>;
 	};
 
 	// Country coordinates (capital cities or geographic centers)
@@ -67,6 +67,7 @@ Shows where publications are published geographically using the publisherLocatio
 
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { base } from '$app/paths';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { getResolvedChartColors } from '$lib/utils/chartColorUtils';
 	import type { Map as MapLibreMap, Popup } from 'maplibre-gl';
@@ -140,24 +141,41 @@ Shows where publications are published geographically using the publisherLocatio
 			content += '<ul class="pub-list">';
 			item.publications.forEach((pub) => {
 				const truncated = pub.title.length > 50 ? pub.title.substring(0, 50) + '...' : pub.title;
+				const pubUrl = `${base}/publications/${pub.id}`;
 				content += `<li>
-					<span class="pub-title">${truncated}</span>
-					${pub.publisher ? `<span class="pub-publisher">${pub.publisher}</span>` : ''}
+					<a href="${pubUrl}" class="pub-link">
+						<span class="pub-title">${truncated}</span>
+						${pub.publisher ? `<span class="pub-publisher">${pub.publisher}</span>` : ''}
+					</a>
 				</li>`;
 			});
 			content += '</ul>';
 		} else {
-			// Group by publisher
-			const byPublisher: Record<string, number> = {};
+			// Group by publisher with list of publication IDs
+			const byPublisher: Record<string, { count: number; pubs: Array<{ id: string; title: string }> }> = {};
 			item.publications.forEach((pub) => {
 				const key = pub.publisher || 'Other';
-				byPublisher[key] = (byPublisher[key] || 0) + 1;
+				if (!byPublisher[key]) {
+					byPublisher[key] = { count: 0, pubs: [] };
+				}
+				byPublisher[key].count++;
+				byPublisher[key].pubs.push({ id: pub.id, title: pub.title });
 			});
 			content += '<ul class="pub-list">';
 			Object.entries(byPublisher)
-				.sort((a, b) => b[1] - a[1])
-				.forEach(([publisher, count]) => {
-					content += `<li><span class="pub-publisher">${publisher}</span>: ${count}</li>`;
+				.sort((a, b) => b[1].count - a[1].count)
+				.forEach(([publisher, data]) => {
+					content += `<li class="publisher-group">
+						<span class="pub-publisher">${publisher}</span>: ${data.count}
+						<ul class="pub-sublist">`;
+					data.pubs.slice(0, 3).forEach((pub) => {
+						const truncated = pub.title.length > 40 ? pub.title.substring(0, 40) + '...' : pub.title;
+						content += `<li><a href="${base}/publications/${pub.id}" class="pub-link">${truncated}</a></li>`;
+					});
+					if (data.pubs.length > 3) {
+						content += `<li class="more-pubs">+${data.pubs.length - 3} more</li>`;
+					}
+					content += '</ul></li>';
 				});
 			content += '</ul>';
 		}
@@ -274,12 +292,14 @@ Shows where publications are published geographically using the publisherLocatio
 					style: initialStyle,
 					center: [10, 30],
 					zoom: initialZoom,
-					minZoom: 1
+					minZoom: 1,
+					attributionControl: false
 				});
 
 				map = mapInstance;
 				map.addControl(new maplibregl.NavigationControl(), 'top-right');
 				map.addControl(new maplibregl.FullscreenControl(), 'top-right');
+				map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right');
 
 				map.on('load', () => {
 					isMapLoaded = true;
@@ -447,14 +467,55 @@ Shows where publications are published geographically using the publisherLocatio
 		border-bottom: none;
 	}
 
-	:global(.publisher-popup .pub-title) {
+	:global(.publisher-popup .pub-link) {
 		display: block;
 		color: var(--color-text);
+		text-decoration: none;
+		transition: color var(--duration-fast) var(--ease-out);
+	}
+
+	:global(.publisher-popup .pub-link:hover) {
+		color: var(--color-primary);
+	}
+
+	:global(.publisher-popup .pub-link:hover .pub-title) {
+		text-decoration: underline;
+	}
+
+	:global(.publisher-popup .pub-title) {
+		display: block;
+		color: inherit;
 	}
 
 	:global(.publisher-popup .pub-publisher) {
 		color: var(--color-text-muted);
 		font-style: italic;
+		font-size: var(--font-size-xs);
+	}
+
+	:global(.publisher-popup .publisher-group) {
+		margin-bottom: var(--space-xs);
+	}
+
+	:global(.publisher-popup .pub-sublist) {
+		list-style: none;
+		padding-left: var(--space-sm);
+		margin: var(--space-2xs) 0 0 0;
+	}
+
+	:global(.publisher-popup .pub-sublist li) {
+		border-bottom: none;
+		padding: var(--space-2xs) 0;
+	}
+
+	:global(.publisher-popup .pub-sublist .pub-link) {
+		font-size: var(--font-size-xs);
+	}
+
+	:global(.publisher-popup .more-pubs) {
+		color: var(--color-text-muted);
+		font-style: italic;
+		font-size: var(--font-size-xs);
 	}
 
 	/* Dark mode overrides */

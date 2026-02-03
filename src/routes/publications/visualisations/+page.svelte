@@ -517,7 +517,7 @@
 		(() => {
 			const locationMap: Record<
 				string,
-				{ count: number; publications: Array<{ title: string; publisher?: string; type: string }> }
+				{ count: number; publications: Array<{ id: string; title: string; publisher?: string; type: string }> }
 			> = {};
 
 			allPublications.forEach((pub) => {
@@ -528,6 +528,7 @@
 					}
 					locationMap[location].count++;
 					locationMap[location].publications.push({
+						id: pub.id,
 						title: pub.title,
 						publisher: pub.publisher,
 						type: pub.type

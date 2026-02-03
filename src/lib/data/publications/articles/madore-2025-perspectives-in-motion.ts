@@ -10,6 +10,7 @@ export const madore2025PerspectivesInMotion: Publication = {
 	dateISO: '2025-04',
 	year: 2025,
 	journal: 'ZMO Bulletin',
+	publisherLocation: 'Germany',
 	issue: '46',
 	pages: '7',
 	pageCount: 1,

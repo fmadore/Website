@@ -9,6 +9,7 @@ export const madore2026DecenteringKnowledge: Publication = {
 	dateISO: '2026-04',
 	year: 2026,
 	journal: 'ZMO Bulletin',
+	publisherLocation: 'Germany',
 	issue: '47',
 	pages: '',
 	pageCount: 1,
