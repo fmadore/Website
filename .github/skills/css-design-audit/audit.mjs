@@ -266,7 +266,7 @@ function extractStyles(content, filePath) {
 	}
 
 	const styleBlocks = [];
-	const styleRegex = /<style[^>]*>([\s\S]*?)<\/style>/gi;
+	const styleRegex = /<style[^>]*>([\s\S]*?)<\/style\s*>/gi;
 	let match;
 
 	while ((match = styleRegex.exec(content)) !== null) {
@@ -280,7 +280,7 @@ function extractStyles(content, filePath) {
 	}
 
 	// Also check script sections for JS color values
-	const scriptRegex = /<script[^>]*>([\s\S]*?)<\/script>/gi;
+	const scriptRegex = /<script[^>]*>([\s\S]*?)<\/script\s*>/gi;
 	while ((match = scriptRegex.exec(content)) !== null) {
 		const beforeScript = content.substring(0, match.index);
 		const startLine = beforeScript.split('\n').length;
