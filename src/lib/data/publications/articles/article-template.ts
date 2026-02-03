@@ -10,6 +10,8 @@ export const articleTemplate: Publication = {
 	dateISO: '2025-01', // Use YYYY-MM format when known
 	year: 2025,
 	journal: 'Journal Name',
+	publisher: 'Publisher Name', // Publisher of the journal (e.g., "Brill", "Cambridge University Press")
+	publisherLocation: 'Country', // Country where publisher is based (e.g., "Netherlands", "United Kingdom")
 	volume: '1',
 	issue: '2',
 	pages: '100-120',

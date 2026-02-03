@@ -10,6 +10,8 @@ export const hadjCoteDIvoire: Publication = {
 	dateISO: '2018',
 	year: 2018,
 	journal: "Cahiers d'études africaines",
+	publisher: 'Éditions de l’École des Hautes Études en Sciences Sociales',
+	publisherLocation: 'France',
 	issue: '229',
 	pages: '179-208',
 	pageCount: 30,

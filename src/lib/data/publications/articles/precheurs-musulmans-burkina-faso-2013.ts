@@ -10,6 +10,8 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 	dateISO: '2013',
 	year: 2013,
 	journal: 'Théologiques',
+	publisher: 'Institut d’études religieuses de l’Université de Montréal',
+	publisherLocation: 'Canada',
 	volume: '21',
 	issue: '2',
 	pages: '121-157',

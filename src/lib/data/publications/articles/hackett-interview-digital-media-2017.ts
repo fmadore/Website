@@ -9,6 +9,8 @@ export const hackettInterviewDigitalMedia: Publication = {
 	dateISO: '2017',
 	year: 2017,
 	journal: 'Émulations',
+	publisher: 'Presses universitaires de Louvain',
+	publisherLocation: 'Belgium',
 	issue: '24',
 	pages: '125-133',
 	pageCount: 9,

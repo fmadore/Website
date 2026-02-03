@@ -9,6 +9,8 @@ export const religiousActorsDigitalEra: Publication = {
 	dateISO: '2017',
 	year: 2017,
 	journal: 'Émulations',
+	publisher: 'Presses universitaires de Louvain',
+	publisherLocation: 'Belgium',
 	issue: '24',
 	pages: '11-22',
 	pageCount: 12,

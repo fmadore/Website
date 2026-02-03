@@ -9,6 +9,8 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 	dateISO: '2016',
 	year: 2016,
 	journal: 'Journal des anthropologues',
+	publisher: 'Association Française des Anthropologues',
+	publisherLocation: 'France',
 	issue: '146-147',
 	pages: '151-178',
 	pageCount: 28,

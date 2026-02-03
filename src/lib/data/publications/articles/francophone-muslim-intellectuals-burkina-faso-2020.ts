@@ -10,6 +10,8 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
 	dateISO: '2020-05-21',
 	year: 2020,
 	journal: 'Africa',
+	publisher: 'Cambridge University Press',
+	publisherLocation: 'United Kingdom',
 	volume: '90',
 	issue: '3',
 	pages: '625-646',

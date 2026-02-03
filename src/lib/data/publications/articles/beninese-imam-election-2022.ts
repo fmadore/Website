@@ -10,6 +10,8 @@ export const beninImamElection: Publication = {
 	dateISO: '2022-06-06',
 	year: 2022,
 	journal: 'Islamic Africa',
+	publisher: 'Brill',
+	publisherLocation: 'Netherlands',
 	volume: '13',
 	issue: '1',
 	pages: '1-26',

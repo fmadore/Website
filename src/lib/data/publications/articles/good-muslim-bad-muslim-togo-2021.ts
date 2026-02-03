@@ -10,6 +10,8 @@ export const goodMuslimBadMuslimTogo: Publication = {
 	dateISO: '2021-06-07',
 	year: 2021,
 	journal: 'The Journal of Modern African Studies',
+	publisher: 'Cambridge University Press',
+	publisherLocation: 'United Kingdom',
 	volume: '59',
 	issue: '2',
 	pages: '197-217',

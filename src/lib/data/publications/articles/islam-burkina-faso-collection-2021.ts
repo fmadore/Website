@@ -9,6 +9,8 @@ export const islamBurkinaCollection: Publication = {
 	dateISO: '2021-12-15',
 	year: 2021,
 	journal: "Revue d'Histoire Contemporaine de l'Afrique",
+	publisher: 'University of Geneva',
+	publisherLocation: 'Switzerland',
 	pageCount: 15,
 	language: 'French',
 	doi: '10.51185/journals/rhca.2021.e610',

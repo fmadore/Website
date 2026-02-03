@@ -10,6 +10,8 @@ export const muslimFeministMediaCoteDIvoire: Publication = {
 	dateISO: '2020',
 	year: 2020,
 	journal: 'Africa Today',
+	publisher: 'Indiana University Press',
+	publisherLocation: 'United States',
 	volume: '67',
 	issue: '2-3',
 	pages: '17-38',

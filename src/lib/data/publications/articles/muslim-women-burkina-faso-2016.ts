@@ -10,6 +10,8 @@ export const muslimWomenBurkinaFaso: Publication = {
 	dateISO: '2016-11-02',
 	year: 2016,
 	journal: 'Islamic Africa',
+	publisher: 'Brill',
+	publisherLocation: 'Netherlands',
 	volume: '7',
 	issue: '2',
 	pages: '185-209',

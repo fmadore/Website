@@ -11,6 +11,8 @@ export const specialIssueTemplate: Publication = {
 	dateISO: '2025', // Same as date for special issues
 	year: 2025,
 	journal: 'Journal Name',
+	publisher: 'Publisher Name', // Publisher of the journal (e.g., "Brill", "Cambridge University Press")
+	publisherLocation: 'Country', // Country where publisher is based (e.g., "Netherlands", "United Kingdom")
 	volume: '1',
 	issue: '2',
 	language: 'English',

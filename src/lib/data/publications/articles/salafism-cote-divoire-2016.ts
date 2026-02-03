@@ -10,6 +10,8 @@ export const salafismCoteDIvoire: Publication = {
 	dateISO: '2016-08-04',
 	year: 2016,
 	journal: 'Journal of Religion in Africa',
+	publisher: 'Brill',
+	publisherLocation: 'Netherlands',
 	volume: '46',
 	issue: '4',
 	pages: '417-452',

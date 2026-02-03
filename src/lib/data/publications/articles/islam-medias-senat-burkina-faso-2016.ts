@@ -10,6 +10,8 @@ export const islamMediasSenatBurkinaFaso: Publication = {
 	dateISO: '2016-03-10',
 	year: 2016,
 	journal: 'Canadian Journal of African Studies / Revue canadienne des études africaines',
+	publisher: 'Taylor & Francis',
+	publisherLocation: 'United Kingdom',
 	volume: '50',
 	issue: '1',
 	pages: '7-27',

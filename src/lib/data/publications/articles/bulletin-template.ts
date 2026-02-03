@@ -11,6 +11,8 @@ export const bulletinArticleTemplate: Publication = {
 	dateISO: '2025-04', // ISO format (YYYY-MM or YYYY)
 	year: 2025,
 	journal: 'Bulletin Name', // Name of the bulletin/newsletter
+	publisher: 'Publisher/Institution Name', // Publisher or institution (e.g., "ZMO Berlin")
+	publisherLocation: 'Country', // Country where publisher is based (e.g., "Germany")
 	issue: '1', // Issue number
 	pages: '1-5', // Page range
 	pageCount: 5, // Number of pages

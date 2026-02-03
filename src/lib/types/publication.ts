@@ -46,8 +46,9 @@ export type Publication = {
 	date: string; // Display date (e.g., "2025")
 	dateISO: string; // ISO date format (YYYY) for sorting
 	year: number; // Year for filtering
-	placeOfPublication?: string; // Place of publication
-	publisher?: string; // Publisher/Editor
+	placeOfPublication?: string; // Place of publication (for books)
+	publisher?: string; // Publisher name (books, journals, etc.)
+	publisherLocation?: string; // Country/city where publisher is based (e.g., "Netherlands", "Berlin, Germany")
 	pageCount?: number; // Number of pages
 	language: string; // Publication language
 	isbn?: string; // ISBN for books

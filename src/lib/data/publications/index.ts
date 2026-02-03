@@ -113,5 +113,10 @@ export const allProjects = Array.from(
 	new Set(allPublications.map((pub) => pub.project).filter(Boolean) as string[])
 ).sort();
 
+// Get all unique publisher locations (for geographic visualization)
+export const allPublisherLocations = Array.from(
+	new Set(allPublications.map((pub) => pub.publisherLocation).filter(Boolean) as string[])
+).sort();
+
 // Explicitly export the main list again
 export { allPublications };

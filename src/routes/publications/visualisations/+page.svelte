@@ -11,12 +11,43 @@
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
 	import EChartsDoughnutChart from '$lib/components/visualisations/EChartsDoughnutChart.svelte';
 	import EChartsNetworkGraph from '$lib/components/visualisations/EChartsNetworkGraph.svelte';
+	import EChartsTreemap from '$lib/components/visualisations/EChartsTreemap.svelte';
+	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
 	import D3BubbleChart from '$lib/components/visualisations/D3BubbleChart.svelte';
+	import PublisherLocationMap, {
+		type PublisherLocationData
+	} from '$lib/components/visualisations/PublisherLocationMap.svelte';
 
 	type CitationYearData = { year: number; count: number };
 	type CitedAuthorData = { author: string; count: number };
 	type LanguageData = { language: string; count: number };
 	type KeywordData = { keyword: string; count: number };
+
+	// Types for venue treemap
+	interface TreemapChild {
+		name: string;
+		value: number;
+		publications: string[];
+	}
+
+	interface TreemapNode {
+		name: string;
+		children: TreemapChild[];
+	}
+
+	// Types for project timeline
+	interface ProjectPublication {
+		title: string;
+		year: number;
+		type: string;
+	}
+
+	interface ProjectData {
+		name: string;
+		startYear: number;
+		endYear: number;
+		publications: ProjectPublication[];
+	}
 
 	// Calculate data reactively using $derived - optimized for performance
 	const citationsPerYearData = $derived(
@@ -347,6 +378,181 @@
 		})()
 	);
 
+	// Calculate publication venue treemap data
+	const venueTreemapData = $derived(
+		(() => {
+			// Group publications by venue type and venue name
+			const journals: Record<string, { count: number; publications: string[] }> = {};
+			const publishers: Record<string, { count: number; publications: string[] }> = {};
+			const books: Record<string, { count: number; publications: string[] }> = {};
+
+			allPublications.forEach((pub) => {
+				// Journal articles and special issues
+				if (pub.journal && (pub.type === 'article' || pub.type === 'special-issue' || pub.type === 'bulletin-article')) {
+					if (!journals[pub.journal]) {
+						journals[pub.journal] = { count: 0, publications: [] };
+					}
+					journals[pub.journal].count++;
+					journals[pub.journal].publications.push(pub.title);
+				}
+
+				// Books (monographs) by publisher
+				if (pub.publisher && pub.type === 'book') {
+					if (!publishers[pub.publisher]) {
+						publishers[pub.publisher] = { count: 0, publications: [] };
+					}
+					publishers[pub.publisher].count++;
+					publishers[pub.publisher].publications.push(pub.title);
+				}
+
+				// Book chapters - group by the book they appear in
+				if (pub.type === 'chapter' && pub.book) {
+					if (!books[pub.book]) {
+						books[pub.book] = { count: 0, publications: [] };
+					}
+					books[pub.book].count++;
+					books[pub.book].publications.push(pub.title);
+				}
+			});
+
+			// Build treemap structure
+			const treemapData: TreemapNode[] = [];
+
+			// Add journals category
+			if (Object.keys(journals).length > 0) {
+				treemapData.push({
+					name: 'Journals',
+					children: Object.entries(journals)
+						.map(([name, data]) => ({
+							name,
+							value: data.count,
+							publications: data.publications
+						}))
+						.sort((a, b) => b.value - a.value)
+				});
+			}
+
+			// Add publishers category (for books)
+			if (Object.keys(publishers).length > 0) {
+				treemapData.push({
+					name: 'Book Publishers',
+					children: Object.entries(publishers)
+						.map(([name, data]) => ({
+							name,
+							value: data.count,
+							publications: data.publications
+						}))
+						.sort((a, b) => b.value - a.value)
+				});
+			}
+
+			// Add edited volumes category (books where chapters appear)
+			if (Object.keys(books).length > 0) {
+				treemapData.push({
+					name: 'Edited Volumes',
+					children: Object.entries(books)
+						.map(([name, data]) => ({
+							name,
+							value: data.count,
+							publications: data.publications
+						}))
+						.sort((a, b) => b.value - a.value)
+				});
+			}
+
+			return treemapData;
+		})()
+	);
+
+	// Calculate total venues for display
+	const totalVenues = $derived(
+		venueTreemapData.reduce((sum, category) => sum + category.children.length, 0)
+	);
+
+	// Calculate research projects timeline data
+	const projectTimelineData = $derived(
+		(() => {
+			// Group publications by project
+			const projectMap: Record<
+				string,
+				{ publications: ProjectPublication[]; minYear: number; maxYear: number }
+			> = {};
+
+			allPublications.forEach((pub) => {
+				if (pub.project && pub.project.trim()) {
+					const projectName = pub.project.trim();
+					if (!projectMap[projectName]) {
+						projectMap[projectName] = {
+							publications: [],
+							minYear: pub.year,
+							maxYear: pub.year
+						};
+					}
+					projectMap[projectName].publications.push({
+						title: pub.title,
+						year: pub.year,
+						type: pub.type
+					});
+					projectMap[projectName].minYear = Math.min(projectMap[projectName].minYear, pub.year);
+					projectMap[projectName].maxYear = Math.max(projectMap[projectName].maxYear, pub.year);
+				}
+			});
+
+			// Convert to array format and sort by start year
+			const projectData: ProjectData[] = Object.entries(projectMap)
+				.map(([name, data]) => ({
+					name,
+					startYear: data.minYear,
+					endYear: data.maxYear,
+					publications: data.publications.sort((a, b) => a.year - b.year)
+				}))
+				.sort((a, b) => a.startYear - b.startYear);
+
+			return projectData;
+		})()
+	);
+
+	// Calculate publisher location data for map visualization
+	const publisherLocationData = $derived(
+		(() => {
+			const locationMap: Record<
+				string,
+				{ count: number; publications: Array<{ title: string; publisher?: string; type: string }> }
+			> = {};
+
+			allPublications.forEach((pub) => {
+				if (pub.publisherLocation && pub.publisherLocation.trim()) {
+					const location = pub.publisherLocation.trim();
+					if (!locationMap[location]) {
+						locationMap[location] = { count: 0, publications: [] };
+					}
+					locationMap[location].count++;
+					locationMap[location].publications.push({
+						title: pub.title,
+						publisher: pub.publisher,
+						type: pub.type
+					});
+				}
+			});
+
+			// Convert to array and sort by count
+			const locationData: PublisherLocationData[] = Object.entries(locationMap)
+				.map(([country, data]) => ({
+					country,
+					count: data.count,
+					publications: data.publications
+				}))
+				.sort((a, b) => b.count - a.count);
+
+			return locationData;
+		})()
+	);
+
+	// Calculate total publications with publisher location
+	const totalWithLocation = $derived(
+		publisherLocationData.reduce((sum, loc) => sum + loc.count, 0)
+	);
+
 	// Accessor functions for the D3BarChart
 	const getYear = (d: CitationYearData) => d.year;
 	const getCitationCount = (d: CitationYearData) => d.count;
@@ -497,6 +703,71 @@
 		{:else}
 			<div class="placeholder-message" style="height: 500px;">
 				<p class="text-light">No collaboration data available to display for this visualization.</p>
+			</div>
+		{/if}
+	</section>
+
+	<section class="visualization-section scroll-reveal mb-12">
+		<h2 class="section-heading">
+			Publication Venues
+			{#if totalVenues > 0}
+				({totalVenues} venues)
+			{/if}
+		</h2>
+		<p class="section-description">
+			Where publications appear: journals, book publishers, and edited volumes. Click to zoom into
+			categories.
+		</p>
+		{#if venueTreemapData.length > 0}
+			<div class="chart-wrapper treemap-chart" style="height: 500px;">
+				<EChartsTreemap data={venueTreemapData} title="Publication Venues" />
+			</div>
+		{:else}
+			<div class="placeholder-message" style="height: 500px;">
+				<p class="text-light">No venue data available to display for this visualization.</p>
+			</div>
+		{/if}
+	</section>
+
+	<section class="visualization-section scroll-reveal mb-12">
+		<h2 class="section-heading">
+			Research Projects Timeline
+			{#if projectTimelineData.length > 0}
+				({projectTimelineData.length} projects)
+			{/if}
+		</h2>
+		<p class="section-description">
+			Project durations with publication output markers. Bars show project spans; circles mark
+			individual publications.
+		</p>
+		{#if projectTimelineData.length > 0}
+			<div class="chart-wrapper gantt-chart" style="height: 450px;">
+				<EChartsGanttChart data={projectTimelineData} />
+			</div>
+		{:else}
+			<div class="placeholder-message" style="height: 450px;">
+				<p class="text-light">No project data available to display for this visualization.</p>
+			</div>
+		{/if}
+	</section>
+
+	<section class="visualization-section scroll-reveal mb-12">
+		<h2 class="section-heading">
+			Publisher Locations
+			{#if publisherLocationData.length > 0}
+				({publisherLocationData.length} countries, {totalWithLocation} publications)
+			{/if}
+		</h2>
+		<p class="section-description">
+			Geographic distribution of publication venues. Marker size indicates publication count.
+		</p>
+		{#if publisherLocationData.length > 0}
+			<div class="chart-wrapper map-chart" style="height: 500px;">
+				<PublisherLocationMap data={publisherLocationData} />
+			</div>
+		{:else}
+			<div class="placeholder-message" style="height: 400px;">
+				<p class="text-light">No publisher location data available to display for this visualization.</p>
 			</div>
 		{/if}
 	</section>
@@ -759,6 +1030,33 @@
 		overflow: visible;
 	}
 
+	.treemap-chart {
+		height: 500px;
+		/* Explicit height for treemap */
+		contain: strict;
+	}
+
+	.gantt-chart {
+		height: 450px;
+		/* Explicit height for Gantt chart */
+		contain: strict;
+	}
+
+	.map-chart {
+		height: 500px;
+		/* Explicit height for map */
+		contain: layout style;
+	}
+
+	/* Section description text */
+	.section-description {
+		font-size: var(--font-size-sm);
+		color: var(--color-text-muted);
+		margin-top: calc(-1 * var(--space-sm));
+		margin-bottom: var(--space-md);
+		line-height: var(--line-height-relaxed);
+	}
+
 	.placeholder-message {
 		padding: var(--space-lg);
 		min-height: var(--iframe-height-xs);
@@ -824,6 +1122,18 @@
 			height: 550px;
 		}
 
+		.treemap-chart {
+			height: 450px;
+		}
+
+		.gantt-chart {
+			height: 400px;
+		}
+
+		.map-chart {
+			height: 400px;
+		}
+
 		.section-heading {
 			font-size: var(--font-size-heading-4);
 			margin-bottom: var(--space-md);
@@ -849,6 +1159,18 @@
 
 		.bubble-chart {
 			height: 450px;
+		}
+
+		.treemap-chart {
+			height: 380px;
+		}
+
+		.gantt-chart {
+			height: 350px;
+		}
+
+		.map-chart {
+			height: 350px;
 		}
 
 		.section-heading {

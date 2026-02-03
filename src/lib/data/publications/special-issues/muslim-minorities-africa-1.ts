@@ -10,10 +10,11 @@ export const muslimMinoritiesAfrica1: Publication = {
 	dateISO: '2021-07',
 	year: 2021,
 	journal: 'Islamic Africa',
+	publisher: 'Brill',
+	publisherLocation: 'Netherlands',
 	volume: '12',
 	issue: '2',
 	language: 'English',
-	publisher: 'Brill',
 	tags: [
 		'Islam',
 		'Africa',
