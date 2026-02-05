@@ -1,0 +1,10 @@
+# Ignore source texts for analysis (local only)
+*.md
+*.pdf
+*.txt
+en/*.md
+en/*.pdf
+en/*.txt
+fr/*.md
+fr/*.pdf
+fr/*.txt
