@@ -217,7 +217,6 @@ export const analysis: PublicationTextAnalysis = {
 	bigrams: [
 		{ ngram: 'lutte contre', words: ["lutte", "contre"], count: 10 },
 		{ ngram: 'leader musulman', words: ["leader", "musulman"], count: 7 },
-		{ ngram: 'frédérick madore', words: ["fr\u00e9d\u00e9rick", "madore"], count: 4 },
 		{ ngram: 'dernier année', words: ["dernier", "ann\u00e9e"], count: 4 },
 		{ ngram: 'cohabitation religieux', words: ["cohabitation", "religieux"], count: 4 },
 		{ ngram: 'faure gnassingbé', words: ["faure", "gnassingb\u00e9"], count: 4 },
@@ -244,6 +243,7 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'imam djobo', words: ["imam", "djobo"], count: 2 },
 		{ ngram: 'djobo mohamed', words: ["djobo", "mohamed"], count: 2 },
 		{ ngram: 'mohamed alassani', words: ["mohamed", "alassani"], count: 2 },
-		{ ngram: 'ordre public', words: ["ordre", "public"], count: 2 }
+		{ ngram: 'ordre public', words: ["ordre", "public"], count: 2 },
+		{ ngram: 'jeune afrique', words: ["jeune", "afrique"], count: 2 }
 	]
 };

@@ -224,7 +224,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'young people', words: ["young", "people"], count: 10 },
 		{ ngram: 'blaise compaoré', words: ["blaise", "compaor\u00e9"], count: 8 },
 		{ ngram: 'moussa nombo', words: ["moussa", "nombo"], count: 8 },
-		{ ngram: 'frédéric madore', words: ["fr\u00e9d\u00e9ric", "madore"], count: 7 },
 		{ ngram: 'communauté musulmane', words: ["communaut\u00e9", "musulmane"], count: 7 },
 		{ ngram: 'civil islam', words: ["civil", "islam"], count: 7 },
 		{ ngram: 'faib leader', words: ["faib", "leader"], count: 7 },
@@ -234,7 +233,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'muslim elite', words: ["muslim", "elite"], count: 6 },
 		{ ngram: 'sunni movement', words: ["sunni", "movement"], count: 6 },
 		{ ngram: 'islamic associational', words: ["islamic", "associational"], count: 5 },
-		{ ngram: 'frédérick madore', words: ["fr\u00e9d\u00e9rick", "madore"], count: 5 },
 		{ ngram: 'political debate', words: ["political", "debate"], count: 5 },
 		{ ngram: 'african studies', words: ["african", "studies"], count: 5 },
 		{ ngram: 'common good', words: ["common", "good"], count: 5 },
@@ -244,6 +242,8 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'muslim youth', words: ["muslim", "youth"], count: 5 },
 		{ ngram: 'aboubacar doukouré', words: ["aboubacar", "doukour\u00e9"], count: 5 },
 		{ ngram: 'cerfi president', words: ["cerfi", "president"], count: 5 },
-		{ ngram: 'tiégo tiemtoré', words: ["ti\u00e9go", "tiemtor\u00e9"], count: 5 }
+		{ ngram: 'tiégo tiemtoré', words: ["ti\u00e9go", "tiemtor\u00e9"], count: 5 },
+		{ ngram: 'francophone muslim', words: ["francophone", "muslim"], count: 4 },
+		{ ngram: 'burkinabe muslim', words: ["burkinabe", "muslim"], count: 4 }
 	]
 };

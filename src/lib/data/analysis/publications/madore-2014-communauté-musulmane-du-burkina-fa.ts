@@ -69,7 +69,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'communauté musulmane', words: ["communaut\u00e9", "musulmane"], count: 6 },
 		{ ngram: 'mouvement sunnite', words: ["mouvement", "sunnite"], count: 3 },
 		{ ngram: 'oumarou kanazoé', words: ["oumarou", "kanazo\u00e9"], count: 3 },
-		{ ngram: 'rené otayek', words: ["ren\u00e9", "otayek"], count: 3 },
 		{ ngram: 'upper volta', words: ["upper", "volta"], count: 2 },
 		{ ngram: 'assimi kouanda', words: ["assimi", "kouanda"], count: 2 }
 	]

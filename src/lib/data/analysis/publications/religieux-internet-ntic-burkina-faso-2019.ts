@@ -217,7 +217,6 @@ export const analysis: PublicationTextAnalysis = {
 	bigrams: [
 		{ ngram: 'burkina faso', words: ["burkina", "faso"], count: 62 },
 		{ ngram: 'site web', words: ["site", "web"], count: 20 },
-		{ ngram: 'audet gosselin', words: ["audet", "gosselin"], count: 20 },
 		{ ngram: 'réseau social', words: ["r\u00e9seau", "social"], count: 18 },
 		{ ngram: 'organisation religieux', words: ["organisation", "religieux"], count: 16 },
 		{ ngram: 'rencontre religieux', words: ["rencontre", "religieux"], count: 14 },
@@ -244,6 +243,7 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'page facebook', words: ["page", "facebook"], count: 5 },
 		{ ngram: 'daawatoul islamia', words: ["daawatoul", "islamia"], count: 5 },
 		{ ngram: 'application mobile', words: ["application", "mobile"], count: 4 },
-		{ ngram: 'grand partie', words: ["grand", "partie"], count: 4 }
+		{ ngram: 'grand partie', words: ["grand", "partie"], count: 4 },
+		{ ngram: 'média confessionnel', words: ["m\u00e9dia", "confessionnel"], count: 4 }
 	]
 };

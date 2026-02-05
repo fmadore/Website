@@ -53,6 +53,19 @@ ECharts Horizontal Bar Chart component
 			}))
 			.reverse()
 	);
+
+	// Calculate smart x-axis interval based on max value
+	const xAxisInterval = $derived(() => {
+		const values = chartData.map((d) => d.value);
+		const maxVal = maxValue ?? Math.max(...values, 1);
+		// Aim for approximately 5-8 tick marks
+		if (maxVal <= 10) return 1;
+		if (maxVal <= 20) return 2;
+		if (maxVal <= 50) return 5;
+		if (maxVal <= 100) return 10;
+		if (maxVal <= 200) return 20;
+		return Math.ceil(maxVal / 5 / 10) * 10; // Round to nice intervals
+	});
 	// Chart options - reactive to all dependencies
 	const chartOption = $derived({
 		tooltip: {
@@ -84,7 +97,7 @@ ECharts Horizontal Bar Chart component
 					return Number.isInteger(value) ? value.toString() : '';
 				}
 			},
-			interval: 1,
+			interval: xAxisInterval(),
 			minInterval: 1,
 			max: maxValue,
 			axisLine: getEChartsAxisLineStyle(resolvedColors),

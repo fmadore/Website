@@ -218,8 +218,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'fraternité matin', words: ["fraternit\u00e9", "matin"], count: 40 },
 		{ ngram: 'communauté musulman', words: ["communaut\u00e9", "musulman"], count: 33 },
 		{ ngram: 'diaby koweït', words: ["diaby", "kowe\u00eft"], count: 21 },
-		{ ngram: 'frédérick madore', words: ["fr\u00e9d\u00e9rick", "madore"], count: 16 },
-		{ ngram: 'yssoufou traoré', words: ["yssoufou", "traor\u00e9"], count: 16 },
 		{ ngram: 'association musulman', words: ["association", "musulman"], count: 11 },
 		{ ngram: 'président bédié', words: ["pr\u00e9sident", "b\u00e9di\u00e9"], count: 11 },
 		{ ngram: 'aboubacar fofana', words: ["aboubacar", "fofana"], count: 11 },
@@ -244,6 +242,8 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'état organisateur', words: ["\u00e9tat", "organisateur"], count: 5 },
 		{ ngram: 'burkina faso', words: ["burkina", "faso"], count: 4 },
 		{ ngram: 'comité national', words: ["comit\u00e9", "national"], count: 4 },
-		{ ngram: 'état ivoirien', words: ["\u00e9tat", "ivoirien"], count: 4 }
+		{ ngram: 'état ivoirien', words: ["\u00e9tat", "ivoirien"], count: 4 },
+		{ ngram: 'islam ivoirien', words: ["islam", "ivoirien"], count: 4 },
+		{ ngram: 'libéralisation partiel', words: ["lib\u00e9ralisation", "partiel"], count: 4 }
 	]
 };

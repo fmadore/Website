@@ -218,7 +218,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'togo presse', words: ["togo", "presse"], count: 33 },
 		{ ngram: 'contexte autoritaire', words: ["contexte", "autoritaire"], count: 21 },
 		{ ngram: 'nouvelle marche', words: ["nouvelle", "marche"], count: 20 },
-		{ ngram: 'frédérick madore', words: ["fr\u00e9d\u00e9rick", "madore"], count: 19 },
 		{ ngram: 'groupe biblique', words: ["groupe", "biblique"], count: 15 },
 		{ ngram: 'étudiant musulman', words: ["\u00e9tudiant", "musulman"], count: 14 },
 		{ ngram: 'association étudiant', words: ["association", "\u00e9tudiant"], count: 12 },
@@ -244,6 +243,7 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'secte religieux', words: ["secte", "religieux"], count: 5 },
 		{ ngram: 'université national', words: ["universit\u00e9", "national"], count: 5 },
 		{ ngram: 'ancien jéciste', words: ["ancien", "j\u00e9ciste"], count: 5 },
-		{ ngram: 'école occidental', words: ["\u00e9cole", "occidental"], count: 5 }
+		{ ngram: 'école occidental', words: ["\u00e9cole", "occidental"], count: 5 },
+		{ ngram: 'ancien amir', words: ["ancien", "amir"], count: 5 }
 	]
 };

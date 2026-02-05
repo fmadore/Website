@@ -236,7 +236,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'burkina faso', words: ["burkina", "faso"], count: 6 },
 		{ ngram: 'female figure', words: ["female", "figure"], count: 5 },
 		{ ngram: 'islamic association', words: ["islamic", "association"], count: 5 },
-		{ ngram: 'marie nathalie', words: ["marie", "nathalie"], count: 5 },
 		{ ngram: 'muslim student', words: ["muslim", "student"], count: 5 },
 		{ ngram: 'activity organize', words: ["activity", "organize"], count: 5 },
 		{ ngram: 'aeemci activist', words: ["aeemci", "activist"], count: 5 },
@@ -244,6 +243,7 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'social norm', words: ["social", "norm"], count: 5 },
 		{ ngram: 'young people', words: ["young", "people"], count: 5 },
 		{ ngram: 'new media', words: ["new", "media"], count: 5 },
-		{ ngram: 'femme musulmane', words: ["femme", "musulmane"], count: 5 }
+		{ ngram: 'femme musulmane', words: ["femme", "musulmane"], count: 5 },
+		{ ngram: 'muslim feminist', words: ["muslim", "feminist"], count: 4 }
 	]
 };

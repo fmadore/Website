@@ -217,8 +217,6 @@ export const analysis: PublicationTextAnalysis = {
 	bigrams: [
 		{ ngram: 'university campus', words: ["university", "campus"], count: 28 },
 		{ ngram: 'high education', words: ["high", "education"], count: 14 },
-		{ ngram: 'abdoulaye sounaye', words: ["abdoulaye", "sounaye"], count: 13 },
-		{ ngram: 'frédérick madore', words: ["fr\u00e9d\u00e9rick", "madore"], count: 10 },
 		{ ngram: 'cheikh anta', words: ["cheikh", "anta"], count: 8 },
 		{ ngram: 'anta diop', words: ["anta", "diop"], count: 8 },
 		{ ngram: 'indiana university', words: ["indiana", "university"], count: 8 },
@@ -229,7 +227,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'west africa', words: ["west", "africa"], count: 7 },
 		{ ngram: 'african university', words: ["african", "university"], count: 7 },
 		{ ngram: 'student movement', words: ["student", "movement"], count: 7 },
-		{ ngram: 'mamadou bodian', words: ["mamadou", "bodian"], count: 6 },
 		{ ngram: 'african country', words: ["african", "country"], count: 6 },
 		{ ngram: 'diop university', words: ["diop", "university"], count: 5 },
 		{ ngram: 'abdou moumouni', words: ["abdou", "moumouni"], count: 5 },
@@ -244,6 +241,9 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'west african', words: ["west", "african"], count: 4 },
 		{ ngram: 'new media', words: ["new", "media"], count: 4 },
 		{ ngram: 'pentecostal movements', words: ["pentecostal", "movements"], count: 4 },
-		{ ngram: 'wide society', words: ["wide", "society"], count: 4 }
+		{ ngram: 'wide society', words: ["wide", "society"], count: 4 },
+		{ ngram: 'student politics', words: ["student", "politics"], count: 4 },
+		{ ngram: 'saharan africa', words: ["saharan", "africa"], count: 4 },
+		{ ngram: 'university education', words: ["university", "education"], count: 4 }
 	]
 };

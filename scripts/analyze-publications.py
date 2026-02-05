@@ -295,6 +295,16 @@ def extract_bigrams(text: str, nlp, language: str, top_n: int = 50) -> list:
         'de la', 'de le', 'de les', 'à la', 'à le', 'dans le', 'dans la',
         'sur le', 'sur la', 'pour le', 'pour la', 'par le', 'par la',
         'en le', 'en la', 'au le', 'du le', 'les de', 'des de',
+        # Author names to exclude (website owner and common co-authors/cited authors)
+        'frédérick madore', 'frederick madore', 'madore frédérick', 'madore frederick',
+        'frédéric madore', 'madore frédéric',
+        'muriel gomez', 'gomez muriel', 'marie nathalie', 'nathalie leblanc',
+        'issouf binaté', 'binaté issouf', 'audet gosselin', 'gosselin audet',
+        'yssoufou traoré', 'traoré yssoufou', 'louis audet', 'leblanc marie',
+        'abdoulaye sounaye', 'sounaye abdoulaye', 'rené otayek', 'otayek rené',
+        'issa cissé', 'cissé issa', 'louis triaud', 'triaud louis',
+        'mamadou bodian', 'bodian mamadou', 'marie miran', 'miran marie',
+        'université laval', 'laval université',
     }
 
     bigrams = []

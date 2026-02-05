@@ -221,7 +221,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'muslim women', words: ["muslim", "women"], count: 23 },
 		{ ngram: 'muslim community', words: ["muslim", "community"], count: 16 },
 		{ ngram: 'islamic education', words: ["islamic", "education"], count: 16 },
-		{ ngram: 'muriel gomez', words: ["muriel", "gomez"], count: 14 },
 		{ ngram: 'educate woman', words: ["educate", "woman"], count: 14 },
 		{ ngram: 'female preacher', words: ["female", "preacher"], count: 14 },
 		{ ngram: 'ittihad islami', words: ["ittihad", "islami"], count: 12 },
@@ -243,7 +242,8 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'west african', words: ["west", "african"], count: 4 },
 		{ ngram: 'important role', words: ["important", "role"], count: 4 },
 		{ ngram: 'african studies', words: ["african", "studies"], count: 4 },
-		{ ngram: 'marie nathalie', words: ["marie", "nathalie"], count: 4 },
-		{ ngram: 'nathalie leblanc', words: ["nathalie", "leblanc"], count: 4 }
+		{ ngram: 'study abroad', words: ["study", "abroad"], count: 4 },
+		{ ngram: 'islamic study', words: ["islamic", "study"], count: 4 },
+		{ ngram: 'islamic medium', words: ["islamic", "medium"], count: 4 }
 	]
 };

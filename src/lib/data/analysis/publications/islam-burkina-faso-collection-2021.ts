@@ -223,7 +223,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'histoire contemporaine', words: ["histoire", "contemporaine"], count: 9 },
 		{ ngram: 'presse généraliste', words: ["presse", "g\u00e9n\u00e9raliste"], count: 7 },
 		{ ngram: 'publication islamique', words: ["publication", "islamique"], count: 7 },
-		{ ngram: 'frederick madore', words: ["frederick", "madore"], count: 7 },
 		{ ngram: 'donnée numérique', words: ["donn\u00e9e", "num\u00e9rique"], count: 6 },
 		{ ngram: 'communauté musulman', words: ["communaut\u00e9", "musulman"], count: 6 },
 		{ ngram: 'digital humanities', words: ["digital", "humanities"], count: 5 },
@@ -235,15 +234,16 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'libre accès', words: ["libre", "acc\u00e8s"], count: 4 },
 		{ ngram: 'bibliothèque george', words: ["biblioth\u00e8que", "george"], count: 4 },
 		{ ngram: 'étude africaniste', words: ["\u00e9tude", "africaniste"], count: 4 },
-		{ ngram: 'madore frédérick', words: ["madore", "fr\u00e9d\u00e9rick"], count: 4 },
 		{ ngram: 'association islamique', words: ["association", "islamique"], count: 4 },
 		{ ngram: 'digital turn', words: ["digital", "turn"], count: 4 },
-		{ ngram: 'frédérick madore', words: ["fr\u00e9d\u00e9rick", "madore"], count: 3 },
 		{ ngram: 'référence bibliographique', words: ["r\u00e9f\u00e9rence", "bibliographique"], count: 3 },
 		{ ngram: 'west africa', words: ["west", "africa"], count: 3 },
 		{ ngram: 'archive colonial', words: ["archive", "colonial"], count: 3 },
 		{ ngram: 'enquête oral', words: ["enqu\u00eate", "oral"], count: 3 },
 		{ ngram: 'archive national', words: ["archive", "national"], count: 3 },
-		{ ngram: 'étudiant musulman', words: ["\u00e9tudiant", "musulman"], count: 3 }
+		{ ngram: 'étudiant musulman', words: ["\u00e9tudiant", "musulman"], count: 3 },
+		{ ngram: 'chercheur étranger', words: ["chercheur", "\u00e9tranger"], count: 3 },
+		{ ngram: 'digital library', words: ["digital", "library"], count: 3 },
+		{ ngram: 'étude africain', words: ["\u00e9tude", "africain"], count: 3 }
 	]
 };

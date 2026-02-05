@@ -218,7 +218,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'burkina faso', words: ["burkina", "faso"], count: 73 },
 		{ ngram: 'radio station', words: ["radio", "station"], count: 23 },
 		{ ngram: 'social medium', words: ["social", "medium"], count: 22 },
-		{ ngram: 'audet gosselin', words: ["audet", "gosselin"], count: 19 },
 		{ ngram: 'religious organisation', words: ["religious", "organisation"], count: 16 },
 		{ ngram: 'digital medium', words: ["digital", "medium"], count: 15 },
 		{ ngram: 'religious encounters', words: ["religious", "encounters"], count: 13 },
@@ -244,6 +243,7 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'medium presence', words: ["medium", "presence"], count: 4 },
 		{ ngram: 'salafi islam', words: ["salafi", "islam"], count: 4 },
 		{ ngram: 'charismatic renewal', words: ["charismatic", "renewal"], count: 4 },
-		{ ngram: 'mobile phone', words: ["mobile", "phone"], count: 4 }
+		{ ngram: 'mobile phone', words: ["mobile", "phone"], count: 4 },
+		{ ngram: 'religious medium', words: ["religious", "medium"], count: 4 }
 	]
 };

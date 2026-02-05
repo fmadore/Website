@@ -52,7 +52,6 @@ export const analysis: PublicationTextAnalysis = {
 	bigrams: [
 		{ ngram: 'panel discussion', words: ["panel", "discussion"], count: 3 },
 		{ ngram: 'global south', words: ["global", "south"], count: 2 },
-		{ ngram: 'frédérick madore', words: ["fr\u00e9d\u00e9rick", "madore"], count: 2 },
 		{ ngram: 'knowledge production', words: ["knowledge", "production"], count: 2 },
 		{ ngram: 'swahili term', words: ["swahili", "term"], count: 2 }
 	]

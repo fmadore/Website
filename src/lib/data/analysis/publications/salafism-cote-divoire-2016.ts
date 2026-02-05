@@ -230,7 +230,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'muslim youth', words: ["muslim", "youth"], count: 7 },
 		{ ngram: 'burkina faso', words: ["burkina", "faso"], count: 7 },
 		{ ngram: 'salafi group', words: ["salafi", "group"], count: 7 },
-		{ ngram: 'marie nathalie', words: ["marie", "nathalie"], count: 7 },
 		{ ngram: 'main national', words: ["main", "national"], count: 6 },
 		{ ngram: 'young muslims', words: ["young", "muslims"], count: 6 },
 		{ ngram: 'salafi movement', words: ["salafi", "movement"], count: 6 },
@@ -244,6 +243,7 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'public sphere', words: ["public", "sphere"], count: 5 },
 		{ ngram: 'muslim association', words: ["muslim", "association"], count: 5 },
 		{ ngram: 'general meeting', words: ["general", "meeting"], count: 5 },
-		{ ngram: 'karim dosso', words: ["karim", "dosso"], count: 5 }
+		{ ngram: 'karim dosso', words: ["karim", "dosso"], count: 5 },
+		{ ngram: 'ibn baz', words: ["ibn", "baz"], count: 5 }
 	]
 };

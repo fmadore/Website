@@ -52,7 +52,6 @@ export const analysis: PublicationTextAnalysis = {
 	],
 	bigrams: [
 		{ ngram: 'west africa', words: ["west", "africa"], count: 3 },
-		{ ngram: 'frédérick madore', words: ["fr\u00e9d\u00e9rick", "madore"], count: 3 },
 		{ ngram: 'islam west', words: ["islam", "west"], count: 2 },
 		{ ngram: 'africa collection', words: ["africa", "collection"], count: 2 },
 		{ ngram: 'klaas glenewinkel', words: ["klaas", "glenewinkel"], count: 2 },

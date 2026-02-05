@@ -232,10 +232,8 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'association islamique', words: ["association", "islamique"], count: 7 },
 		{ ngram: 'nasr vendredi', words: ["nasr", "vendredi"], count: 7 },
 		{ ngram: 'grand mosquée', words: ["grand", "mosqu\u00e9e"], count: 7 },
-		{ ngram: 'université laval', words: ["universit\u00e9", "laval"], count: 6 },
 		{ ngram: 'responsable musulman', words: ["responsable", "musulman"], count: 6 },
 		{ ngram: 'grand imam', words: ["grand", "imam"], count: 6 },
-		{ ngram: 'frédérick madore', words: ["fr\u00e9d\u00e9rick", "madore"], count: 5 },
 		{ ngram: 'débat entourer', words: ["d\u00e9bat", "entourer"], count: 5 },
 		{ ngram: 'dernier année', words: ["dernier", "ann\u00e9e"], count: 5 },
 		{ ngram: 'division interne', words: ["division", "interne"], count: 5 },
@@ -244,6 +242,8 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'site web', words: ["site", "web"], count: 5 },
 		{ ngram: 'bon nombre', words: ["bon", "nombre"], count: 5 },
 		{ ngram: 'mouvement sunnite', words: ["mouvement", "sunnite"], count: 5 },
-		{ ngram: 'tiégo tiemtoré', words: ["ti\u00e9go", "tiemtor\u00e9"], count: 5 }
+		{ ngram: 'tiégo tiemtoré', words: ["ti\u00e9go", "tiemtor\u00e9"], count: 5 },
+		{ ngram: 'imam yacoub', words: ["imam", "yacoub"], count: 5 },
+		{ ngram: 'yacoub tiemtoré', words: ["yacoub", "tiemtor\u00e9"], count: 5 }
 	]
 };

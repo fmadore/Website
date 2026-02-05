@@ -218,7 +218,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'burkina faso', words: ["burkina", "faso"], count: 37 },
 		{ ngram: 'islam ivoirien', words: ["islam", "ivoirien"], count: 20 },
 		{ ngram: 'média numérique', words: ["m\u00e9dia", "num\u00e9rique"], count: 17 },
-		{ ngram: 'frédérick madore', words: ["fr\u00e9d\u00e9rick", "madore"], count: 15 },
 		{ ngram: 'site web', words: ["site", "web"], count: 13 },
 		{ ngram: 'page facebook', words: ["page", "facebook"], count: 12 },
 		{ ngram: 'association musulman', words: ["association", "musulman"], count: 12 },
@@ -244,6 +243,7 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'site internet', words: ["site", "internet"], count: 3 },
 		{ ngram: 'nouveau technologie', words: ["nouveau", "technologie"], count: 3 },
 		{ ngram: 'identité islamique', words: ["identit\u00e9", "islamique"], count: 3 },
-		{ ngram: 'islamique local', words: ["islamique", "local"], count: 3 }
+		{ ngram: 'islamique local', words: ["islamique", "local"], count: 3 },
+		{ ngram: 'jeunesse musulman', words: ["jeunesse", "musulman"], count: 3 }
 	]
 };

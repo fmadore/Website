@@ -216,8 +216,6 @@ export const analysis: PublicationTextAnalysis = {
 	],
 	bigrams: [
 		{ ngram: 'muslim student', words: ["muslim", "student"], count: 25 },
-		{ ngram: 'frédérick madore', words: ["fr\u00e9d\u00e9rick", "madore"], count: 24 },
-		{ ngram: 'issouf binaté', words: ["issouf", "binat\u00e9"], count: 22 },
 		{ ngram: 'university campus', words: ["university", "campus"], count: 21 },
 		{ ngram: 'fraternité matin', words: ["fraternit\u00e9", "matin"], count: 21 },
 		{ ngram: 'aeemci activist', words: ["aeemci", "activist"], count: 13 },
@@ -235,15 +233,17 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'amadou hampâté', words: ["amadou", "hamp\u00e2t\u00e9"], count: 8 },
 		{ ngram: 'étudiant musulmans', words: ["\u00e9tudiant", "musulmans"], count: 7 },
 		{ ngram: 'west africa', words: ["west", "africa"], count: 7 },
-		{ ngram: 'marie miran', words: ["marie", "miran"], count: 7 },
 		{ ngram: 'educate muslims', words: ["educate", "muslims"], count: 7 },
-		{ ngram: 'louis triaud', words: ["louis", "triaud"], count: 7 },
 		{ ngram: 'islamic university', words: ["islamic", "university"], count: 7 },
 		{ ngram: 'mamadou koné', words: ["mamadou", "kon\u00e9"], count: 7 },
 		{ ngram: 'félix houphouët', words: ["f\u00e9lix", "houphou\u00ebt"], count: 6 },
 		{ ngram: 'west african', words: ["west", "african"], count: 6 },
 		{ ngram: 'islamic cultural', words: ["islamic", "cultural"], count: 6 },
 		{ ngram: 'allahou akbar', words: ["allahou", "akbar"], count: 6 },
-		{ ngram: 'aeemci leader', words: ["aeemci", "leader"], count: 6 }
+		{ ngram: 'aeemci leader', words: ["aeemci", "leader"], count: 6 },
+		{ ngram: 'national islamic', words: ["national", "islamic"], count: 6 },
+		{ ngram: 'african studies', words: ["african", "studies"], count: 6 },
+		{ ngram: 'student association', words: ["student", "association"], count: 5 },
+		{ ngram: 'muslim intellectual', words: ["muslim", "intellectual"], count: 5 }
 	]
 };

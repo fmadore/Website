@@ -217,12 +217,9 @@ export const analysis: PublicationTextAnalysis = {
 	bigrams: [
 		{ ngram: 'burkina faso', words: ["burkina", "faso"], count: 52 },
 		{ ngram: 'nasr vendredi', words: ["nasr", "vendredi"], count: 27 },
-		{ ngram: 'muriel gomez', words: ["muriel", "gomez"], count: 21 },
 		{ ngram: 'sphère public', words: ["sph\u00e8re", "public"], count: 19 },
-		{ ngram: 'frédérick madore', words: ["fr\u00e9d\u00e9rick", "madore"], count: 18 },
 		{ ngram: 'espace public', words: ["espace", "public"], count: 11 },
 		{ ngram: 'communauté musulman', words: ["communaut\u00e9", "musulman"], count: 10 },
-		{ ngram: 'université laval', words: ["universit\u00e9", "laval"], count: 8 },
 		{ ngram: 'association islamique', words: ["association", "islamique"], count: 8 },
 		{ ngram: 'alidou ilboudo', words: ["alidou", "ilboudo"], count: 8 },
 		{ ngram: 'arabie saoudite', words: ["arabie", "saoudite"], count: 6 },
@@ -244,6 +241,9 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'acteur religieux', words: ["acteur", "religieux"], count: 4 },
 		{ ngram: 'média islamique', words: ["m\u00e9dia", "islamique"], count: 4 },
 		{ ngram: 'ben massoud', words: ["ben", "massoud"], count: 4 },
-		{ ngram: 'grand mosquée', words: ["grand", "mosqu\u00e9e"], count: 4 }
+		{ ngram: 'grand mosquée', words: ["grand", "mosqu\u00e9e"], count: 4 },
+		{ ngram: 'nouveau profil', words: ["nouveau", "profil"], count: 4 },
+		{ ngram: 'musulman francophone', words: ["musulman", "francophone"], count: 4 },
+		{ ngram: 'dernier année', words: ["dernier", "ann\u00e9e"], count: 4 }
 	]
 };
