@@ -55,6 +55,14 @@ export const hackettInterviewDigitalMedia: Publication = {
 				'Promoting Religious Tolerance through the Design of a Pictogram Communication System for Digital Peacemakers on Social Networking Sites',
 			source: 'PhD dissertation, University of Hertfordshire, 2025',
 			url: 'https://uhra.herts.ac.uk/id/eprint/25898/'
+		},
+		{
+			authors: ['K. D. Thompson'],
+			year: 2026,
+			title:
+				'A Woman Is Not Created Mute: An Ethnography of Gender and Voice on Islamic Radio in Tanga, Tanzania',
+			source: 'Journal of the American Academy of Religion, 2026',
+			url: 'https://doi.org/10.1093/jaarel/lfag003'
 		}
 	]
 };
