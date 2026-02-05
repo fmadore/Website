@@ -8,7 +8,7 @@
  * and lazy-loaded via the publications index.
  */
 
-import type { CorpusAnalysis, WordFrequency, WordCloudConfig } from '$lib/types';
+import type { CorpusAnalysis, WordFrequency, WordCloudConfig, NgramFrequency } from '$lib/types';
 
 // Re-export from publications index (individual files for fast loading)
 export {
@@ -200,4 +200,50 @@ export function getCorpusStats() {
 		englishPublications: corpusAnalysis.byLanguage.en.length,
 		frenchPublications: corpusAnalysis.byLanguage.fr.length
 	};
+}
+
+/**
+ * Get bigrams for a specific publication
+ */
+export function getBigrams(publicationId: string): NgramFrequency[] {
+	const analysis = publicationAnalyses[publicationId];
+	if (!analysis || !analysis.bigrams) return [];
+	return analysis.bigrams;
+}
+
+/**
+ * Get combined bigrams for multiple publications
+ */
+export function getCombinedBigrams(
+	publicationIds: string[],
+	maxBigrams: number = 50
+): NgramFrequency[] {
+	const bigramMap = new Map<string, { words: string[]; count: number }>();
+
+	for (const id of publicationIds) {
+		const analysis = publicationAnalyses[id];
+		if (!analysis?.bigrams) continue;
+
+		for (const bigram of analysis.bigrams) {
+			const existing = bigramMap.get(bigram.ngram);
+			if (existing) {
+				existing.count += bigram.count;
+			} else {
+				bigramMap.set(bigram.ngram, {
+					words: bigram.words,
+					count: bigram.count
+				});
+			}
+		}
+	}
+
+	// Convert to sorted array
+	return Array.from(bigramMap.entries())
+		.map(([ngram, data]) => ({
+			ngram,
+			words: data.words,
+			count: data.count
+		}))
+		.sort((a, b) => b.count - a.count)
+		.slice(0, maxBigrams);
 }

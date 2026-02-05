@@ -18,7 +18,8 @@
 		type PublisherLocationData
 	} from '$lib/components/visualisations/PublisherLocationMap.svelte';
 	import EChartsWordCloud from '$lib/components/visualisations/EChartsWordCloud.svelte';
-	import { corpusAnalysis, getCombinedWordCloudData } from '$lib/data/analysis';
+	import { corpusAnalysis, getCombinedWordCloudData, getCombinedBigrams } from '$lib/data/analysis';
+	import type { NgramFrequency } from '$lib/types';
 
 	type CitationYearData = { year: number; count: number };
 	type CitedAuthorData = { author: string; count: number };
@@ -611,6 +612,17 @@
 		};
 	});
 
+	// Get bigrams data for selected language
+	const bigramsData = $derived(() => {
+		const ids = wordCloudPublicationIds();
+		if (ids.length === 0) return [];
+		return getCombinedBigrams(ids, 30);
+	});
+
+	// Accessor functions for bigrams chart
+	const getBigramName = (d: NgramFrequency) => d.ngram;
+	const getBigramCount = (d: NgramFrequency) => d.count;
+
 	// Define breadcrumb items
 	const breadcrumbItems = [
 		{ label: 'Publications', href: `${base}/publications` },
@@ -777,6 +789,73 @@
 			{/if}
 		{:else}
 			<div class="placeholder-message" style="height: 500px;">
+				<p class="text-light">No text analysis data available to display for this visualization.</p>
+			</div>
+		{/if}
+	</section>
+
+	<section class="visualization-section scroll-reveal mb-12">
+		<h2 class="section-heading">
+			Common Phrases (Bigrams)
+			{#if bigramsData().length > 0}
+				({bigramsData().length} phrases)
+			{/if}
+		</h2>
+		<p class="section-description">
+			Most frequent two-word phrases extracted from full-text publications.
+		</p>
+
+		{#if corpusAnalysis.publicationCount > 0}
+			<div class="language-toggle">
+				<span class="toggle-label">Filter by language:</span>
+				<div class="toggle-buttons">
+					<button
+						class="toggle-btn {wordCloudLanguage === 'all' ? 'active' : ''}"
+						onclick={() => (wordCloudLanguage = 'all')}
+					>
+						All ({corpusAnalysis.byLanguage.en.length + corpusAnalysis.byLanguage.fr.length})
+					</button>
+					<button
+						class="toggle-btn {wordCloudLanguage === 'en' ? 'active' : ''}"
+						onclick={() => (wordCloudLanguage = 'en')}
+					>
+						English ({corpusAnalysis.byLanguage.en.length})
+					</button>
+					<button
+						class="toggle-btn {wordCloudLanguage === 'fr' ? 'active' : ''}"
+						onclick={() => (wordCloudLanguage = 'fr')}
+					>
+						French ({corpusAnalysis.byLanguage.fr.length})
+					</button>
+				</div>
+			</div>
+
+			{#if bigramsData().length > 0}
+				<div
+					class="chart-wrapper bigrams-chart"
+					style="height: {Math.max(400, bigramsData().length * 28 + 70)}px;"
+				>
+					<EChartsHorizontalBarChart
+						data={bigramsData()}
+						xAccessor={getBigramCount}
+						yAccessor={getBigramName}
+						xAxisLabel="Frequency"
+						barColor="var(--color-accent)"
+					/>
+				</div>
+			{:else}
+				<div class="placeholder-message" style="height: 400px;">
+					<p class="text-light">
+						No bigram data available for {wordCloudLanguage === 'all'
+							? 'any'
+							: wordCloudLanguage === 'en'
+								? 'English'
+								: 'French'} publications.
+					</p>
+				</div>
+			{/if}
+		{:else}
+			<div class="placeholder-message" style="height: 400px;">
 				<p class="text-light">No text analysis data available to display for this visualization.</p>
 			</div>
 		{/if}
@@ -1151,6 +1230,11 @@
 		height: 500px;
 		/* Explicit height for word cloud */
 		contain: strict;
+	}
+
+	.bigrams-chart {
+		/* Height is dynamic based on data */
+		contain: layout style;
 	}
 
 	/* Language toggle styles */
