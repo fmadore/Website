@@ -12,6 +12,7 @@
 	// CitedBy, Reviews, PageHeader, etc. imports remain
 	import CitedBy from '$lib/components/publications/CitedBy.svelte';
 	import Reviews from '$lib/components/publications/Reviews.svelte';
+	import PublicationWordCloud from '$lib/components/publications/PublicationWordCloud.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
 	import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
@@ -248,6 +249,9 @@
 
 			<!-- Tags -->
 			<TagList tags={publication.tags} baseUrl="/publications?tag=" />
+
+			<!-- Word Cloud (only shows if text analysis available) -->
+			<PublicationWordCloud publicationId={publication.id} />
 
 			<!-- Action Links and Export Button -->
 			<div class="publication-actions scroll-reveal flex flex-wrap items-center gap-4">

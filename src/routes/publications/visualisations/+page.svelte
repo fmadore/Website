@@ -17,6 +17,8 @@
 	import PublisherLocationMap, {
 		type PublisherLocationData
 	} from '$lib/components/visualisations/PublisherLocationMap.svelte';
+	import EChartsWordCloud from '$lib/components/visualisations/EChartsWordCloud.svelte';
+	import { corpusAnalysis, getCombinedWordCloudData } from '$lib/data/analysis';
 
 	type CitationYearData = { year: number; count: number };
 	type CitedAuthorData = { author: string; count: number };
@@ -577,6 +579,38 @@
 	// Pagination state
 	let currentPage = $state(0);
 
+	// Word cloud language filter
+	type WordCloudLanguage = 'all' | 'en' | 'fr';
+	let wordCloudLanguage = $state<WordCloudLanguage>('all');
+
+	// Get publication IDs for the selected language
+	const wordCloudPublicationIds = $derived(() => {
+		if (wordCloudLanguage === 'en') {
+			return corpusAnalysis.byLanguage.en;
+		} else if (wordCloudLanguage === 'fr') {
+			return corpusAnalysis.byLanguage.fr;
+		}
+		return [...corpusAnalysis.byLanguage.en, ...corpusAnalysis.byLanguage.fr];
+	});
+
+	// Get word cloud data for selected language
+	const wordCloudData = $derived(() => {
+		const ids = wordCloudPublicationIds();
+		if (ids.length === 0) return [];
+		return getCombinedWordCloudData(ids, { maxWords: 100 });
+	});
+
+	// Count of publications with text analysis
+	const wordCloudStats = $derived(() => {
+		const ids = wordCloudPublicationIds();
+		const data = wordCloudData();
+		return {
+			publicationCount: ids.length,
+			wordCount: data.reduce((sum, w) => sum + w.count, 0),
+			uniqueTerms: data.length
+		};
+	});
+
 	// Define breadcrumb items
 	const breadcrumbItems = [
 		{ label: 'Publications', href: `${base}/publications` },
@@ -680,6 +714,70 @@
 		{:else}
 			<div class="placeholder-message" style="height: 550px;">
 				<p class="text-light">No keyword data available to display for this visualization.</p>
+			</div>
+		{/if}
+	</section>
+
+	<section class="visualization-section scroll-reveal mb-12">
+		<h2 class="section-heading">
+			Text Analysis Word Cloud
+			{#if wordCloudStats().publicationCount > 0}
+				({wordCloudStats().publicationCount} publications analyzed)
+			{/if}
+		</h2>
+		<p class="section-description">
+			Most frequent terms extracted from full-text publications using lemmatization.
+		</p>
+
+		{#if corpusAnalysis.publicationCount > 0}
+			<div class="language-toggle">
+				<span class="toggle-label">Filter by language:</span>
+				<div class="toggle-buttons">
+					<button
+						class="toggle-btn {wordCloudLanguage === 'all' ? 'active' : ''}"
+						onclick={() => (wordCloudLanguage = 'all')}
+					>
+						All ({corpusAnalysis.byLanguage.en.length + corpusAnalysis.byLanguage.fr.length})
+					</button>
+					<button
+						class="toggle-btn {wordCloudLanguage === 'en' ? 'active' : ''}"
+						onclick={() => (wordCloudLanguage = 'en')}
+					>
+						English ({corpusAnalysis.byLanguage.en.length})
+					</button>
+					<button
+						class="toggle-btn {wordCloudLanguage === 'fr' ? 'active' : ''}"
+						onclick={() => (wordCloudLanguage = 'fr')}
+					>
+						French ({corpusAnalysis.byLanguage.fr.length})
+					</button>
+				</div>
+			</div>
+
+			{#if wordCloudData().length > 0}
+				<div class="chart-wrapper wordcloud-chart" style="height: 500px;">
+					<EChartsWordCloud
+						words={wordCloudData()}
+						maxWords={100}
+						shape="circle"
+						minFontSize={12}
+						maxFontSize={60}
+					/>
+				</div>
+			{:else}
+				<div class="placeholder-message" style="height: 500px;">
+					<p class="text-light">
+						No text analysis data available for {wordCloudLanguage === 'all'
+							? 'any'
+							: wordCloudLanguage === 'en'
+								? 'English'
+								: 'French'} publications.
+					</p>
+				</div>
+			{/if}
+		{:else}
+			<div class="placeholder-message" style="height: 500px;">
+				<p class="text-light">No text analysis data available to display for this visualization.</p>
 			</div>
 		{/if}
 	</section>
@@ -1049,6 +1147,62 @@
 		contain: layout style;
 	}
 
+	.wordcloud-chart {
+		height: 500px;
+		/* Explicit height for word cloud */
+		contain: strict;
+	}
+
+	/* Language toggle styles */
+	.language-toggle {
+		display: flex;
+		align-items: center;
+		gap: var(--space-md);
+		margin-bottom: var(--space-lg);
+		flex-wrap: wrap;
+	}
+
+	.toggle-label {
+		font-size: var(--font-size-sm);
+		color: var(--color-text-muted);
+		font-weight: var(--font-weight-medium);
+	}
+
+	.toggle-buttons {
+		display: flex;
+		gap: var(--space-xs);
+		flex-wrap: wrap;
+	}
+
+	.toggle-btn {
+		padding: var(--space-xs) var(--space-md);
+		border: var(--border-width-thin) solid var(--color-border);
+		background-color: var(--color-surface);
+		color: var(--color-text);
+		border-radius: var(--border-radius-full);
+		font-size: var(--font-size-sm);
+		cursor: pointer;
+		transition:
+			background-color var(--duration-fast) var(--ease-out),
+			border-color var(--duration-fast) var(--ease-out),
+			color var(--duration-fast) var(--ease-out),
+			transform var(--duration-fast) var(--ease-out),
+			box-shadow var(--duration-fast) var(--ease-out);
+	}
+
+	.toggle-btn:hover:not(.active) {
+		background-color: var(--color-surface-alt);
+		border-color: var(--color-primary);
+		transform: var(--transform-lift-sm);
+	}
+
+	.toggle-btn.active {
+		background-color: var(--color-primary);
+		color: var(--color-white);
+		border-color: var(--color-primary);
+		box-shadow: var(--shadow-sm);
+	}
+
 	/* Section description text */
 	.section-description {
 		font-size: var(--font-size-sm);
@@ -1135,6 +1289,10 @@
 			height: 400px;
 		}
 
+		.wordcloud-chart {
+			height: 450px;
+		}
+
 		.section-heading {
 			font-size: var(--font-size-heading-4);
 			margin-bottom: var(--space-md);
@@ -1172,6 +1330,21 @@
 
 		.map-chart {
 			height: 350px;
+		}
+
+		.wordcloud-chart {
+			height: 380px;
+		}
+
+		.language-toggle {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: var(--space-sm);
+		}
+
+		.toggle-btn {
+			padding: var(--space-2xs) var(--space-sm);
+			font-size: var(--font-size-xs);
 		}
 
 		.section-heading {
