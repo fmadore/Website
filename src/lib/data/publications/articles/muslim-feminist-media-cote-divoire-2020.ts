@@ -128,6 +128,13 @@ export const muslimFeministMediaCoteDIvoire: Publication = {
 			source:
 				'In Routledge Handbook of Islam in Africa, edited by Terje Østebø, 267-77. London: Routledge, 2021',
 			url: 'https://doi.org/10.4324/9780367144241-24'
+		},
+		{
+			authors: ['Soleh Hasan Wahid', 'Syahid Abdulloh'],
+			year: 2026,
+			title: 'Digital Islamic authority: a revolutionary shift or mere hype? a systematic review',
+			source: 'SN Social Sciences 6, no. 2 (2026): 62',
+			url: 'https://doi.org/10.1007/s43545-026-01328-5'
 		}
 	]
 };
