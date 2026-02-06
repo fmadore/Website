@@ -88,7 +88,7 @@ class PerformanceMonitor {
 		}
 
 		// Send to analytics in production (if you have analytics setup)
-		if (typeof window !== 'undefined' && window.gtag) {
+		if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
 			window.gtag('event', 'web_vital', {
 				name,
 				value: Math.round(value),
@@ -134,7 +134,7 @@ export function measureResourceLoading(resourceUrl: string) {
 			console.log(`[Resource] ${resourceUrl}: ${Math.round(loadTime)}ms`);
 
 			// Report to analytics
-			if (typeof window !== 'undefined' && window.gtag) {
+			if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
 				window.gtag('event', 'resource_timing', {
 					resource_url: resourceUrl,
 					load_time: Math.round(loadTime)

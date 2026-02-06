@@ -25,7 +25,7 @@ Prioritized improvements for codebase quality, maintainability, and design syste
 
 ### Utilities
 
-- [ ] **Add `window.gtag` existence check** - `performanceMonitor.ts` calls `window.gtag()` without checking if it exists, which can throw if GTM hasn't loaded yet.
+- [x] **Add `window.gtag` existence check** - Made `gtag` and `dataLayer` optional in `gtag.d.ts`, added `typeof window.gtag === 'function'` checks in `performanceMonitor.ts`, and non-null assertions in `+layout.svelte` and `CookieConsent.svelte` where initialization is guaranteed.
 
 ### Code Deduplication
 
@@ -50,13 +50,7 @@ Prioritized improvements for codebase quality, maintainability, and design syste
 
 ### Data Layer
 
-- [ ] **Create `dataAggregation.ts` utility** - Extract duplicated sorting/grouping logic (~140 lines across index files) into reusable functions:
-  ```typescript
-  export function sortByDate<T extends { dateISO: string }>(items: T[]): T[]
-  export function groupByYear<T extends { year: number }>(items: T[]): Record<number, T[]>
-  export function groupByField<T>(items: T[], field: keyof T): Record<string, T[]>
-  export function extractUnique<T, K extends keyof T>(items: T[], field: K): T[K][]
-  ```
+- [x] **Create `dataAggregation.ts` utility** - Created `$lib/utils/dataAggregation.ts` with `sortByDate()`, `sortByYear()`, `groupByYear()`, `groupByField()`, `extractUnique()`, `extractUniqueTags()`, and `extractUniqueDelimited()`. Applied to `communications/index.ts`, `publications/index.ts`, `fieldworks/index.ts`, and `activities/index.ts`.
 
 - [ ] **Migrate all `index.ts` to `loadData()` utility** - 11 of 20 data index files use manual aggregation patterns instead of the shared `loadData()` utility in `dataLoader.ts`. Consolidating would eliminate ~300 lines of boilerplate.
   - Files to migrate: `activities/`, `communications/events/`, `communications/panels/`, `publications/`, `research-roles/`, `affiliations/`, `digital-humanities/`, `teaching/`
@@ -76,13 +70,13 @@ Prioritized improvements for codebase quality, maintainability, and design syste
 
 - [ ] **Extract shared MetaTags logic** - 3 MetaTags components (`publications/`, `communications/`, `activities/`) share 85% identical code (~784 lines total). Extract shared `createConditionalTag()`, `getFullUrl()`, COinS generation, and `MetaTag` interface into a `$lib/utils/metaTags.ts` utility.
 
-- [ ] **Create shared filter CSS mixin** - 7 filter components each duplicate ~80-100 lines of identical card/section CSS. Extract into a shared stylesheet imported by each filter component.
+- [x] **Create shared filter CSS** - Extracted ~470 lines of duplicated CSS (section structure, chip system, action buttons, dark mode, mobile cards, responsive) into `src/styles/components/filters.css`. Updated FilterSectionButtons, FilterSectionCheckbox, FilterSectionChips, FilterSectionDropdown, and FilterSectionRangeSlider to use the shared stylesheet.
 
 ### Routing & SEO
 
-- [ ] **Add JSON-LD structured data to communications and DH detail pages** - Currently missing entity schemas (only publications and activities have them).
+- [x] **Add JSON-LD structured data to communications and DH detail pages** - Added `Event` schema to `communications/[id]/+page.ts` with location, organizer, and performer data. Added `CreativeWork`/`WebSite` schema to `digital-humanities/[id]/+page.ts`. Both inject via `useJsonLdScript()`.
 
-- [ ] **Extract JSON-LD interfaces to shared types** - 7 JSON-LD interfaces duplicated across `publications/[id]/+page.ts`, `activities/[id]/+page.ts`, and root `+page.ts` (~150 lines). Move to `$lib/types/jsonld.ts`.
+- [x] **Extract JSON-LD interfaces to shared types** - Created `$lib/types/jsonld.ts` with all shared interfaces (`BaseJsonLd`, `JsonLdPerson`, `JsonLdOrganization`, `JsonLdPlace`, `PersonPageJsonLd`, etc.) plus utility functions (`formatAuthor`, `formatAuthors`, `formatPlaces`, `formatJsonLdDate`, `formatOrganization`). Updated `publications/[id]/+page.ts`, `activities/[id]/+page.ts`, and root `+page.ts` to use shared types.
 
 ### CSS Remaining Issues
 

@@ -194,40 +194,10 @@
 </div>
 
 <style>
+	/* Base styles provided by src/styles/components/filters.css */
+
 	.filter-section-content {
-		padding: 0;
 		position: relative;
-	}
-
-	.filter-section-header {
-		display: flex;
-		align-items: center;
-		gap: var(--space-xs);
-		margin-bottom: var(--space-sm);
-	}
-
-	.filter-section-title {
-		font-family: var(--font-family-sans);
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-muted);
-		text-transform: uppercase;
-		letter-spacing: var(--letter-spacing-wide);
-		margin: 0;
-	}
-
-	.active-count {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		min-width: var(--space-5);
-		height: var(--space-5);
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-white);
-		background: var(--color-accent);
-		border-radius: var(--border-radius-full);
-		padding: 0 var(--space-2xs);
 	}
 
 	/* Dropdown trigger button */
@@ -484,34 +454,17 @@
 		border-color: var(--color-border);
 	}
 
-	/* Mobile: Cards for each section */
+	/* Mobile dropdown adjustments */
 	@media (--lg-down) {
-		.filter-section-content {
-			background: var(--color-surface);
-			border: var(--border-width-thin) solid var(--color-border);
-			border-radius: var(--border-radius-md);
-			padding: var(--space-md);
-		}
-
 		.dropdown-menu {
 			position: relative;
 			margin-top: var(--space-sm);
 			box-shadow: none;
 			border: var(--border-width-thin) solid var(--color-border);
 		}
-
-		:global(html.dark) .filter-section-content {
-			background: var(--color-surface);
-			border-color: var(--color-border);
-		}
 	}
 
-	/* Responsive design */
 	@media (--sm-down) {
-		.filter-section-title {
-			font-size: var(--font-size-xs);
-		}
-
 		.dropdown-trigger {
 			padding: var(--space-xs);
 			font-size: var(--font-size-xs);

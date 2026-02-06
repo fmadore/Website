@@ -21,10 +21,12 @@
 	import { getCommunicationTypeBadge } from '$lib/utils/typeUtils';
 	import MetaTags from '$lib/components/communications/MetaTags.svelte';
 	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
+	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
 
 	// Get communication from the page data
 	let { data } = $props();
 	const communication = $derived(data.communication as Communication);
+	const jsonLdString = $derived(data.jsonLdString as string | undefined);
 
 	// Generate optimized SEO content
 	const seoDescription = $derived(createCommunicationSEODescription(communication));
@@ -41,6 +43,9 @@
 
 	// Inject breadcrumb JSON-LD structured data
 	useBreadcrumbJsonLd(() => breadcrumbItems);
+
+	// Inject communication JSON-LD structured data
+	useJsonLdScript('communication-json-ld', () => jsonLdString);
 
 	// Lazy load MapVisualization to avoid loading maplibre-gl until needed
 	let MapVisualization: typeof import('$lib/components/visualisations/MapVisualization.svelte').default | null =

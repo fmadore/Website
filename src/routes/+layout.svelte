@@ -120,21 +120,21 @@
 		document.head.appendChild(script);
 
 		// Initialize dataLayer and gtag function
-		window.dataLayer = window.dataLayer || [];
+		window.dataLayer = window.dataLayer ?? [];
 		window.gtag =
-			window.gtag ||
+			window.gtag ??
 			function () {
-				window.dataLayer.push(arguments);
+				window.dataLayer!.push(arguments);
 			};
 
-		window.gtag('js', new Date());
+		window.gtag!('js', new Date());
 
 		// Check consent and localhost status
 		const cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
 		const isLocalhost =
 			window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
-		window.gtag('config', GTM_ID, {
+		window.gtag!('config', GTM_ID, {
 			// Disable automatic page view tracking to prevent conflicts with SvelteKit
 			send_page_view: false,
 			// Enable enhanced measurement for SPAs
@@ -151,7 +151,7 @@
 		// Send initial page view manually if consent is given and not localhost
 		if (!isLocalhost && cookiesAccepted) {
 			try {
-				window.gtag('event', 'page_view', {
+				window.gtag!('event', 'page_view', {
 					page_title: document.title,
 					page_location: window.location.href,
 					page_path: window.location.pathname

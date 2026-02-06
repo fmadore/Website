@@ -1,5 +1,6 @@
 import type { Activity } from '$lib/types';
 import { getYearFromISODate } from '$lib/utils/date-formatter';
+import { sortByDate } from '$lib/utils/dataAggregation';
 
 // Dynamically import all activity files
 const activityModules = import.meta.glob<{ [key: string]: Activity }>('./*.ts', { eager: true });
@@ -13,22 +14,11 @@ const allActivities: Activity[] = Object.entries(activityModules)
 	});
 
 // Sort by date (most recent first)
-export const activitiesByDate = [...allActivities].sort((a, b) => {
-	// Use dateISO for sorting if available, otherwise fall back to the current method
-	if (a.dateISO && b.dateISO) {
-		return new Date(b.dateISO).getTime() - new Date(a.dateISO).getTime();
-	}
+export const activitiesByDate = sortByDate(allActivities);
 
-	// Fallback to current method for backwards compatibility
-	const dateA = new Date(a.date);
-	const dateB = new Date(b.date);
-	return dateB.getTime() - dateA.getTime();
-});
-
-// Group activities by year
+// Group activities by year (uses dateISO year when available, falls back to activity.year)
 export const activitiesByYear = allActivities.reduce<Record<number, Activity[]>>(
 	(acc, activity) => {
-		// Get year from dateISO if available, otherwise use activity.year
 		const year = activity.dateISO ? getYearFromISODate(activity.dateISO) : activity.year;
 
 		if (!acc[year]) {

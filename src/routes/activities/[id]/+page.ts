@@ -2,34 +2,7 @@ import { error } from '@sveltejs/kit';
 import { base } from '$app/paths';
 import { getActivityById } from '$lib/stores/activities.svelte';
 import type { PageLoad } from './$types';
-
-// --- JSON-LD Interfaces ---
-interface BaseJsonLd {
-	'@context': 'https://schema.org';
-	'@type': string;
-	name: string;
-	description?: string;
-	image?: string;
-	keywords?: string;
-}
-
-interface Person {
-	'@type': 'Person';
-	name: string;
-	url?: string;
-	jobTitle?: string;
-	affiliation?: {
-		'@type': 'Organization';
-		name: string;
-	};
-}
-
-interface BlogPostingJsonLd extends BaseJsonLd {
-	'@type': 'BlogPosting';
-	headline?: string;
-	datePublished: string;
-	author?: Person | Person[];
-}
+import type { BlogPostingJsonLd, JsonLdPerson } from '$lib/types/jsonld';
 
 // --- Load Function ---
 export const load: PageLoad = ({ params }) => {
@@ -58,7 +31,7 @@ export const load: PageLoad = ({ params }) => {
 	};
 
 	// Default author
-	const defaultAuthor: Person = {
+	const defaultAuthor: JsonLdPerson = {
 		'@type': 'Person',
 		name: 'Frédérick Madore',
 		url: 'https://www.frederickmadore.com',
@@ -69,26 +42,7 @@ export const load: PageLoad = ({ params }) => {
 		}
 	};
 
-	// Assign fields for BlogPosting
 	jsonLdObject.author = defaultAuthor;
-
-	// Remove the switch statement
-	/* 
-    switch (resolvedType) {
-        case "Event":
-            // ... event logic removed ...
-            break;
-        case "ScholarlyArticle":
-            // ... article logic removed ...
-            break;
-        case "Book":
-            // ... book logic removed ...
-            break;
-        case "BlogPosting": 
-            // ... blog logic moved out ...
-            break;
-    }
-    */
 
 	// Common optional fields
 	if (activity.heroImage?.src) {

@@ -22,6 +22,7 @@
 @import './styles/components/activity-list.css';
 @import './styles/components/panels.css';
 @import './styles/components/animations.css';
+@import './styles/components/filters.css';
 
 /* Utilities */
 @import './styles/utilities/spacing.css';

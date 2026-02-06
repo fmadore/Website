@@ -1,50 +1,11 @@
 import { base } from '$app/paths';
 import type { PageLoad } from './$types';
 import { author, contact, website, address, socialLinks } from '$lib/data/siteConfig';
-
-// --- JSON-LD Interfaces ---
-interface Organization {
-	'@type': 'Organization' | 'EducationalOrganization'; // Allow EducationalOrganization
-	name: string;
-	url?: string;
-}
-
-interface Place {
-	'@type': 'Place';
-	name: string;
-}
-
-interface EducationalOccupationalCredential {
-	'@type': 'EducationalOccupationalCredential';
-	credentialCategory?: string; // e.g., "degree"
-	educationalLevel?: string; // e.g., "Doctorate"
-	name?: string; // e.g., "Ph.D. in History"
-}
-
-interface Person {
-	'@context': 'https://schema.org';
-	'@type': 'Person';
-	'@id': string; // Required for mainEntity reference from ProfilePage
-	name: string;
-	honorificPrefix?: string; // Added Honorific Prefix (e.g., Dr.)
-	url?: string;
-	image?: string;
-	email?: string; // Added email
-	jobTitle?: string;
-	worksFor?: Organization; // Added worksFor
-	workLocation?: Place; // Added workLocation
-	nationality?: string; // Added nationality
-	alumniOf?: Organization[]; // Added alumniOf (using Organization type)
-	memberOf?: Organization[]; // Added memberOf (using Organization type)
-	hasCredential?: EducationalOccupationalCredential[]; // Corrected the type name here
-	knowsLanguage?: string[]; // Added knowsLanguage
-	sameAs?: string[];
-	knowsAbout?: string[]; // Added knowsAbout
-}
+import type { PersonPageJsonLd } from '$lib/types/jsonld';
 
 // --- Load Function ---
 export const load: PageLoad = () => {
-	const personJsonLd: Person = {
+	const personJsonLd: PersonPageJsonLd = {
 		'@context': 'https://schema.org',
 		'@type': 'Person',
 		'@id': `${website.url}/#person`, // Required for ProfilePage mainEntity reference

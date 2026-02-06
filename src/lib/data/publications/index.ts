@@ -1,4 +1,12 @@
 import type { Publication } from '$lib/types';
+import {
+	sortByDate,
+	groupByYear,
+	groupByField,
+	extractUniqueTags,
+	extractUnique,
+	extractUniqueDelimited
+} from '$lib/utils/dataAggregation';
 
 // Define a type for module imports
 type ModuleType = Record<string, any>;
@@ -17,6 +25,19 @@ const templateIds = [
 	'phd-dissertation-template-id',
 	'conference-proceedings-template-id'
 ];
+
+// Directory-to-type mapping for sourceDirType extraction
+const dirTypeMap: Record<string, string> = {
+	'./books/': 'books',
+	'./articles/': 'articles',
+	'./chapters/': 'chapters',
+	'./special-issues/': 'specialIssues',
+	'./reports/': 'reports',
+	'./encyclopedia/': 'encyclopedia',
+	'./blogposts/': 'blogposts',
+	'./dissertations/': 'dissertations',
+	'./proceedings/': 'proceedings'
+};
 
 // Use a single static glob import
 const publicationModules = import.meta.glob<ModuleType>(
@@ -39,84 +60,33 @@ const allPublications: (Publication & { sourceDirType: string })[] = Object.entr
 	publicationModules
 )
 	.map(([path, module]) => {
-		// Extract the publication data (assuming one export per file)
 		const publication = Object.values(module)[0] as Publication;
 
-		// Filter out templates based on ID before determining type
+		// Filter out templates based on ID
 		if (templateIds.includes(publication.id)) {
 			return null;
 		}
 
 		// Determine sourceDirType from the path
-		let sourceDirType = 'unknown';
-		if (path.startsWith('./books/')) sourceDirType = 'books';
-		else if (path.startsWith('./articles/')) sourceDirType = 'articles';
-		else if (path.startsWith('./chapters/')) sourceDirType = 'chapters';
-		else if (path.startsWith('./special-issues/')) sourceDirType = 'specialIssues';
-		else if (path.startsWith('./reports/')) sourceDirType = 'reports';
-		else if (path.startsWith('./encyclopedia/')) sourceDirType = 'encyclopedia';
-		else if (path.startsWith('./blogposts/')) sourceDirType = 'blogposts';
-		else if (path.startsWith('./dissertations/')) sourceDirType = 'dissertations';
-		else if (path.startsWith('./proceedings/')) sourceDirType = 'proceedings';
+		const sourceDirType =
+			Object.entries(dirTypeMap).find(([prefix]) => path.startsWith(prefix))?.[1] ?? 'unknown';
 
 		return { ...publication, sourceDirType };
 	})
-	.filter(Boolean) as (Publication & { sourceDirType: string })[]; // Filter out the nulls (templates)
+	.filter(Boolean) as (Publication & { sourceDirType: string })[];
 
 // Sort by date (most recent first)
-export const publicationsByDate = [...allPublications].sort((a, b) => {
-	return new Date(b.dateISO).getTime() - new Date(a.dateISO).getTime();
-});
+export const publicationsByDate = sortByDate(allPublications);
 
-// Group publications by year
-export const publicationsByYear = allPublications.reduce<
-	Record<number, (Publication & { sourceDirType: string })[]>
->((acc, publication) => {
-	if (!acc[publication.year]) {
-		acc[publication.year] = [];
-	}
-	acc[publication.year].push(publication);
-	return acc;
-}, {});
+// Group publications by year and type
+export const publicationsByYear = groupByYear(allPublications);
+export const publicationsByType = groupByField(allPublications, 'type');
 
-// Group publications by type (using the original 'type' field from data)
-export const publicationsByType = allPublications.reduce<
-	Record<string, (Publication & { sourceDirType: string })[]>
->((acc, publication) => {
-	const pubType = publication.type;
-	if (!acc[pubType]) {
-		acc[pubType] = [];
-	}
-	acc[pubType].push(publication);
-	return acc;
-}, {});
+// Get all unique values for filtering
+export const allTags = extractUniqueTags(allPublications, 'tags');
+export const allLanguages = extractUniqueDelimited(allPublications, 'language');
+export const allCountries = extractUniqueTags(allPublications, 'country');
+export const allProjects = extractUnique(allPublications, 'project');
+export const allPublisherLocations = extractUnique(allPublications, 'publisherLocation');
 
-// Get all unique tags
-export const allTags = Array.from(new Set(allPublications.flatMap((pub) => pub.tags || []))).sort();
-
-// Get all unique languages
-export const allLanguages = Array.from(
-	new Set(
-		allPublications.flatMap((pub) =>
-			pub.language ? pub.language.split(',').map((lang) => lang.trim()) : []
-		)
-	)
-).sort();
-
-// Get all unique countries
-export const allCountries = Array.from(
-	new Set(allPublications.flatMap((pub) => pub.country || []))
-).sort();
-
-// Get all unique projects
-export const allProjects = Array.from(
-	new Set(allPublications.map((pub) => pub.project).filter(Boolean) as string[])
-).sort();
-
-// Get all unique publisher locations (for geographic visualization)
-export const allPublisherLocations = Array.from(
-	new Set(allPublications.map((pub) => pub.publisherLocation).filter(Boolean) as string[])
-).sort();
-
-// Explicitly export the main list again
 export { allPublications };

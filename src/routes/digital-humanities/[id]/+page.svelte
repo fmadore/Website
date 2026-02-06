@@ -6,6 +6,7 @@
 	import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
 	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
 	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
+	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
 
 	import { base } from '$app/paths';
 
@@ -21,6 +22,7 @@
 
 	let { data } = $props<{ data: { project: DigitalHumanitiesProject } }>();
 	let project = $derived(data.project);
+	const jsonLdString = $derived(data.jsonLdString as string | undefined);
 
 	// Breadcrumbs
 	let breadcrumbItems = $derived([
@@ -30,6 +32,9 @@
 
 	// JSON-LD for Breadcrumbs - uses reusable utility
 	useBreadcrumbJsonLd(() => breadcrumbItems, 'breadcrumb-json-ld-dh-project');
+
+	// Inject project JSON-LD structured data
+	useJsonLdScript('dh-project-json-ld', () => jsonLdString);
 
 	// Prepare details for DetailsGrid
 	const projectDetails: ProjectDetailItem[] = [

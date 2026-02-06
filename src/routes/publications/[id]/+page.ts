@@ -3,132 +3,17 @@ import { base } from '$app/paths';
 import { allPublications } from '$lib/data/publications/index';
 import type { ReviewWork } from '$lib/types';
 import type { PageLoad } from './$types';
-
-// --- JSON-LD Helper Interfaces ---
-interface Place {
-	'@type': 'Place';
-	name: string;
-}
-
-interface BaseJsonLd {
-	'@context': 'https://schema.org';
-	'@type': string;
-	name: string;
-	headline?: string;
-	description?: string;
-	image?: string;
-	keywords?: string;
-	url?: string;
-	identifier?:
-		| string
-		| { '@type': 'PropertyValue'; propertyID: string; value: string }
-		| (string | { '@type': 'PropertyValue'; propertyID: string; value: string })[];
-	copyrightYear?: number;
-	inLanguage?: string;
-	spatialCoverage?: Place[];
-}
-
-interface Person {
-	'@type': 'Person';
-	name: string;
-	url?: string;
-}
-
-interface Organization {
-	'@type': 'Organization';
-	name: string;
-}
-
-// Combined type for things an article can be part of
-interface PublicationContainer {
-	'@type': 'PublicationIssue' | 'PublicationVolume' | 'Periodical' | 'Book';
-	name?: string;
-	issn?: string;
-	volumeNumber?: string;
-	issueNumber?: string;
-	isbn?: string; // Added for when container is Book
-	author?: Person[]; // Added for when container is Book (editors)
-}
-
-// Define ScholarlyArticle interface for citations (academic reviews of the book)
-// Note: We use ScholarlyArticle instead of Review because academic book reviews
-// are scholarly critiques published in journals, not consumer reviews with star ratings.
-// Google's Review structured data expects numerical ratings (aggregateRating),
-// which is not appropriate for academic book reviews.
-interface ScholarlyArticleCitation {
-	'@type': 'ScholarlyArticle';
-	name: string;
-	author?: Person;
-	datePublished?: string;
-	isPartOf?: {
-		'@type': 'Periodical';
-		name: string;
-	};
-	url?: string;
-}
-
-// --- Main JSON-LD Interfaces ---
-interface BookJsonLd extends BaseJsonLd {
-	'@type': 'Book';
-	author?: Person[];
-	editor?: Person[];
-	datePublished?: string;
-	isbn?: string;
-	numberOfPages?: number;
-	publisher?: Organization;
-	// Academic book reviews are represented as citations (ScholarlyArticle)
-	// rather than consumer-style reviews, to avoid Google's aggregateRating requirement
-	citation?: ScholarlyArticleCitation[];
-}
-
-interface ArticleJsonLd extends BaseJsonLd {
-	// Used for Articles, Chapters, Encyclopedia Entries
-	'@type': 'ScholarlyArticle' | 'Article';
-	author?: Person[];
-	datePublished?: string;
-	isPartOf?: PublicationContainer; // Use the combined container type
-	pagination?: string;
-	publisher?: Organization; // Can be Journal publisher or Book publisher
-}
-
-interface ReportJsonLd extends BaseJsonLd {
-	'@type': 'Report';
-	author?: Person[];
-	datePublished?: string;
-	reportNumber?: string;
-	publisher?: Organization;
-}
-
-interface BlogPostingJsonLd extends BaseJsonLd {
-	'@type': 'BlogPosting';
-	author?: Person[];
-	datePublished?: string;
-	publisher?: Organization; // Added missing publisher
-}
-
-interface ThesisJsonLd extends BaseJsonLd {
-	'@type': 'Thesis';
-	author?: Person[];
-	datePublished?: string;
-	publisher?: Organization; // University
-}
-
-// Union type for flexibility
-type JsonLd = BookJsonLd | ArticleJsonLd | ReportJsonLd | BlogPostingJsonLd | ThesisJsonLd;
-
-// --- Utility Functions ---
-function formatAuthor(authorName: string): Person {
-	return { '@type': 'Person', name: authorName.trim() };
-}
-
-function formatAuthors(authors: string[]): Person[] {
-	return authors.map(formatAuthor);
-}
-
-// Helper function to format countries into Place objects
-function formatPlaces(countries: string[]): Place[] {
-	return countries.map((country) => ({ '@type': 'Place', name: country.trim() }));
-}
+import type {
+	PublicationJsonLd,
+	JsonLdPerson,
+	BookJsonLd,
+	ArticleJsonLd,
+	ReportJsonLd,
+	BlogPostingJsonLd,
+	ThesisJsonLd,
+	JsonLdScholarlyArticleCitation
+} from '$lib/types/jsonld';
+import { formatAuthor, formatAuthors, formatPlaces } from '$lib/types/jsonld';
 
 // --- Load Function ---
 export const load: PageLoad = ({ params }) => {
@@ -139,7 +24,7 @@ export const load: PageLoad = ({ params }) => {
 		throw error(404, 'Publication not found');
 	}
 
-	let resolvedType: JsonLd['@type']; // Use union of specific types
+	let resolvedType: PublicationJsonLd['@type'];
 	switch (publication.sourceDirType) {
 		case 'books':
 			resolvedType = 'Book';
@@ -174,8 +59,7 @@ export const load: PageLoad = ({ params }) => {
 			resolvedType = 'Book'; // Fallback to Book or maybe CreativeWork?
 	}
 
-	// Base JSON-LD object - Use Partial<JsonLd> for flexibility
-	const jsonLdObject: Partial<JsonLd> = {
+	const jsonLdObject: Partial<PublicationJsonLd> = {
 		'@context': 'https://schema.org',
 		'@type': resolvedType,
 		name: publication.title,
@@ -194,7 +78,7 @@ export const load: PageLoad = ({ params }) => {
 	// Format common fields
 	const authors = publication.authors ? formatAuthors(publication.authors) : undefined;
 	// Add author URL directly here
-	const defaultAuthorWithUrl: Person | undefined = authors?.find(
+	const defaultAuthorWithUrl: JsonLdPerson | undefined = authors?.find(
 		(a) => a.name === 'Frédérick Madore'
 	)
 		? { ...formatAuthor('Frédérick Madore'), url: 'https://www.frederickmadore.com' }
@@ -231,7 +115,7 @@ export const load: PageLoad = ({ params }) => {
 			// 3. Citations better represent the scholarly nature of these reviews
 			if (publication.reviewedBy && publication.reviewedBy.length > 0) {
 				bookData.citation = publication.reviewedBy.map((reviewData: ReviewWork) => {
-					const citationJson: ScholarlyArticleCitation = {
+					const citationJson: JsonLdScholarlyArticleCitation = {
 						'@type': 'ScholarlyArticle',
 						name: reviewData.title,
 						author: formatAuthor(reviewData.author),

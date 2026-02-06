@@ -126,26 +126,7 @@
 </div>
 
 <style>
-	.filter-section-content {
-		padding: 0;
-	}
-
-	.filter-section-header {
-		display: flex;
-		align-items: center;
-		gap: var(--space-xs);
-		margin-bottom: var(--space-sm);
-	}
-
-	.filter-section-title {
-		font-family: var(--font-family-sans);
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-muted);
-		text-transform: uppercase;
-		letter-spacing: var(--letter-spacing-wide);
-		margin: 0;
-	}
+	/* Base styles provided by src/styles/components/filters.css */
 
 	.range-display {
 		font-size: var(--font-size-sm);
@@ -224,27 +205,8 @@
 		background: color-mix(in srgb, var(--color-accent) 15%, transparent);
 	}
 
-	/* Mobile: Cards for each section */
-	@media (--lg-down) {
-		.filter-section-content {
-			background: var(--color-surface);
-			border: var(--border-width-thin) solid var(--color-border);
-			border-radius: var(--border-radius-md);
-			padding: var(--space-md);
-		}
-
-		:global(html.dark) .filter-section-content {
-			background: var(--color-surface);
-			border-color: var(--color-border);
-		}
-	}
-
-	/* Responsive design */
+	/* Responsive slider adjustments */
 	@media (--sm-down) {
-		.filter-section-title {
-			font-size: var(--font-size-xs);
-		}
-
 		.range-display {
 			font-size: var(--font-size-xs);
 		}

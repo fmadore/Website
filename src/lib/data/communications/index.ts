@@ -1,7 +1,13 @@
 import type { Communication } from '$lib/types/communication';
-import { loadData } from '$lib/utils/dataLoader'; // Import the new utility function
+import { loadData } from '$lib/utils/dataLoader';
+import {
+	sortByDate,
+	groupByYear,
+	groupByField,
+	extractUniqueTags,
+	extractUnique
+} from '$lib/utils/dataAggregation';
 
-// Define a type for module imports (can be kept or potentially inferred)
 type ModuleType = Record<string, any>;
 
 // Define all template IDs to filter out
@@ -28,96 +34,34 @@ const filteredModules = Object.fromEntries(
 
 // Load and filter all communications using the utility function
 const allCommunications: Communication[] = loadData<Communication>(
-	filteredModules, // Use the filtered modules
+	filteredModules,
 	templateIds,
-	'communication' // Optional type name for logging
+	'communication'
 );
 
 // Sort by date (most recent first)
-export const communicationsByDate = [...allCommunications].sort((a, b) => {
-	return new Date(b.dateISO).getTime() - new Date(a.dateISO).getTime();
-});
+export const communicationsByDate = sortByDate(allCommunications);
 
-// Group communications by year
-export const communicationsByYear = allCommunications.reduce<Record<number, Communication[]>>(
-	(acc, communication) => {
-		if (communication.year && !acc[communication.year]) {
-			acc[communication.year] = [];
-		}
-		if (communication.year) {
-			acc[communication.year].push(communication);
-		}
-		return acc;
-	},
-	{}
-);
+// Group communications by year, type, country, and project
+export const communicationsByYear = groupByYear(allCommunications);
+export const communicationsByType = groupByField(allCommunications, 'type');
+export const communicationsByCountry = groupByField(allCommunications, 'country');
+export const communicationsByProject = groupByField(allCommunications, 'project');
 
-// Group communications by type
-export const communicationsByType = allCommunications.reduce<Record<string, Communication[]>>(
-	(acc, communication) => {
-		if (communication.type) {
-			if (!acc[communication.type]) {
-				acc[communication.type] = [];
-			}
-			acc[communication.type].push(communication);
-		}
-		return acc;
-	},
-	{}
-);
-
-// Group communications by country
-export const communicationsByCountry = allCommunications.reduce<Record<string, Communication[]>>(
-	(acc, communication) => {
-		if (communication.country) {
-			if (!acc[communication.country]) {
-				acc[communication.country] = [];
-			}
-			acc[communication.country].push(communication);
-		}
-		return acc;
-	},
-	{}
-);
-
-// Group communications by project
-export const communicationsByProject = allCommunications.reduce<Record<string, Communication[]>>(
-	(acc, communication) => {
-		if (communication.project) {
-			if (!acc[communication.project]) {
-				acc[communication.project] = [];
-			}
-			acc[communication.project].push(communication);
-		}
-		return acc;
-	},
-	{}
-);
-
-// Get all unique tags
-export const allTags = Array.from(
-	new Set(allCommunications.flatMap((comm) => comm.tags || []))
-).sort();
-
-// Get all unique projects
-export const allProjects = Array.from(
-	new Set(allCommunications.map((comm) => comm.project).filter(Boolean))
-).sort();
+// Get all unique tags and projects
+export const allTags = extractUniqueTags(allCommunications, 'tags');
+export const allProjects = extractUnique(allCommunications, 'project');
 
 // Get all coordinates for map visualization
 export const allCoordinates = allCommunications
 	.filter((comm) => comm.coordinates)
-	.map((comm) => {
-		const communicationItem = comm as Communication; // Explicitly cast to Communication type
-		// console.log(`Mapping item ID: ${communicationItem.id}, Type found: ${communicationItem.type}`); // Log type after cast
-		return {
-			id: communicationItem.id,
-			title: communicationItem.title,
-			coordinates: communicationItem.coordinates!,
-			year: communicationItem.year,
-			activityType: communicationItem.type // Access type from the casted item
-		};
-	});
+	.map((comm) => ({
+		id: comm.id,
+		title: comm.title,
+		coordinates: comm.coordinates!,
+		year: comm.year,
+		activityType: comm.type
+	}));
 
 // Export the full list of communications
 export { allCommunications };

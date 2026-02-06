@@ -15,7 +15,7 @@
 		if (typeof window !== 'undefined' && 'gtag' in window) {
 			// Send a page view event for the current page after consent (SPA best practice)
 			try {
-				window.gtag('event', 'page_view', {
+				window.gtag!('event', 'page_view', {
 					page_title: document.title,
 					page_location: window.location.href,
 					page_path: window.location.pathname
