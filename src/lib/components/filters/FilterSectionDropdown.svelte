@@ -485,7 +485,7 @@
 	}
 
 	/* Mobile: Cards for each section */
-	@media (max-width: 1024px) {
+	@media (--lg-down) {
 		.filter-section-content {
 			background: var(--color-surface);
 			border: var(--border-width-thin) solid var(--color-border);

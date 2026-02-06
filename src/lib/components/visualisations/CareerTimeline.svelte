@@ -459,8 +459,8 @@
 		z-index: var(--z-tooltip);
 		pointer-events: none;
 		background: color-mix(in srgb, var(--color-surface) 90%, transparent);
-		backdrop-filter: blur(8px);
-		-webkit-backdrop-filter: blur(8px);
+		backdrop-filter: blur(var(--glass-blur-sm));
+		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
 		border-radius: var(--border-radius-md);
 		border: 1px solid var(--color-border);
 		box-shadow: var(--shadow-lg);

@@ -69,8 +69,8 @@
 		border: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
 		box-shadow: var(--shadow-sm);
-		backdrop-filter: blur(8px);
-		-webkit-backdrop-filter: blur(8px);
+		backdrop-filter: blur(var(--glass-blur-sm));
+		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
 	}
 
 	.project-years--default:hover {

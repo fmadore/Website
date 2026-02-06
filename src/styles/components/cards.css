@@ -88,7 +88,7 @@
 	flex-direction: column;
 }
 
-@media (min-width: 768px) {
+@media (--md) {
 	.card-horizontal {
 		flex-direction: row;
 	}
@@ -141,13 +141,13 @@
 	gap: var(--space-lg);
 }
 
-@media (min-width: 640px) {
+@media (--sm) {
 	.card-grid {
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
 
-@media (min-width: 1024px) {
+@media (--lg) {
 	.card-grid {
 		grid-template-columns: repeat(3, 1fr);
 	}

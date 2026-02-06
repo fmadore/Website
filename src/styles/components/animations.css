@@ -653,7 +653,7 @@
 }
 
 /* Mobile optimizations - reduced distances for better performance */
-@media (max-width: 767px) {
+@media (--md-down) {
 	@supports (animation-timeline: view()) {
 
 		.scroll-reveal,

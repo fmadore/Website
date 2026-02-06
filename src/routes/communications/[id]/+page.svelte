@@ -260,8 +260,8 @@
 			color-mix(in srgb, var(--color-highlight) 2%, transparent) 50%,
 			color-mix(in srgb, var(--color-accent) 1%, transparent) 100%
 		);
-		-webkit-backdrop-filter: blur(8px);
-		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
+		backdrop-filter: blur(var(--glass-blur-sm));
 		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 10%, transparent);
 		box-shadow:
 			var(--shadow-md),
@@ -295,8 +295,8 @@
 			color-mix(in srgb, var(--color-highlight) 2%, transparent) 50%,
 			color-mix(in srgb, var(--color-accent) 1%, transparent) 100%
 		);
-		-webkit-backdrop-filter: blur(8px);
-		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
+		backdrop-filter: blur(var(--glass-blur-sm));
 		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 10%, transparent);
 		box-shadow:
 			var(--shadow-md),
@@ -370,8 +370,8 @@
 			color-mix(in srgb, var(--color-primary) 2%, transparent) 50%,
 			color-mix(in srgb, var(--color-highlight) 1%, transparent) 100%
 		);
-		-webkit-backdrop-filter: blur(6px);
-		backdrop-filter: blur(6px);
+		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
+		backdrop-filter: blur(var(--glass-blur-sm));
 		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-accent) 10%, transparent);
 		box-shadow: var(--shadow-sm);
 		transition: all var(--duration-normal) var(--ease-out);
@@ -437,8 +437,8 @@
 			color-mix(in srgb, var(--color-primary) 2%, transparent) 50%,
 			color-mix(in srgb, var(--color-highlight) 1%, transparent) 100%
 		);
-		-webkit-backdrop-filter: blur(6px);
-		backdrop-filter: blur(6px);
+		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
+		backdrop-filter: blur(var(--glass-blur-sm));
 		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-accent) 10%, transparent);
 		box-shadow: var(--shadow-sm);
 		transition: all var(--duration-normal) var(--ease-out);
@@ -498,8 +498,8 @@
 			color-mix(in srgb, var(--color-highlight) 2%, transparent) 50%,
 			color-mix(in srgb, var(--color-accent) 1%, transparent) 100%
 		);
-		-webkit-backdrop-filter: blur(6px);
-		backdrop-filter: blur(6px);
+		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
+		backdrop-filter: blur(var(--glass-blur-sm));
 		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-accent) 10%, transparent);
 		box-shadow: var(--shadow-sm);
 	}
@@ -509,7 +509,7 @@
 	:global(html.dark) .participants-section {
 		background: linear-gradient(
 			135deg,
-			rgba(26, 22, 18, 0.7) 0%,
+			color-mix(in srgb, var(--sys-color-neutral-900) 70%, transparent) 0%,
 			color-mix(in srgb, var(--color-primary) 12%, transparent) 50%,
 			color-mix(in srgb, var(--color-accent) 8%, transparent) 100%
 		);
@@ -520,7 +520,7 @@
 	:global(html.dark) .participants-section:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(26, 22, 18, 0.8) 0%,
+			color-mix(in srgb, var(--sys-color-neutral-900) 80%, transparent) 0%,
 			color-mix(in srgb, var(--color-primary) 15%, transparent) 50%,
 			color-mix(in srgb, var(--color-accent) 10%, transparent) 100%
 		);
@@ -530,7 +530,7 @@
 	:global(html.dark) .participant-card {
 		background: linear-gradient(
 			135deg,
-			rgba(26, 22, 18, 0.5) 0%,
+			color-mix(in srgb, var(--sys-color-neutral-900) 50%, transparent) 0%,
 			color-mix(in srgb, var(--color-accent) 6%, transparent) 50%,
 			color-mix(in srgb, var(--color-primary) 4%, transparent) 100%
 		);
@@ -541,7 +541,7 @@
 	:global(html.dark) .participant-card:hover {
 		background: linear-gradient(
 			135deg,
-			rgba(26, 22, 18, 0.6) 0%,
+			color-mix(in srgb, var(--sys-color-neutral-900) 60%, transparent) 0%,
 			color-mix(in srgb, var(--color-accent) 8%, transparent) 50%,
 			color-mix(in srgb, var(--color-primary) 6%, transparent) 100%
 		);
@@ -550,7 +550,7 @@
 	:global(html.dark) .map-container-wrapper {
 		background: linear-gradient(
 			135deg,
-			rgba(26, 22, 18, 0.5) 0%,
+			color-mix(in srgb, var(--sys-color-neutral-900) 50%, transparent) 0%,
 			color-mix(in srgb, var(--color-accent) 6%, transparent) 50%,
 			color-mix(in srgb, var(--color-primary) 4%, transparent) 100%
 		);

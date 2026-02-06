@@ -1206,7 +1206,7 @@
 	}
 
 	/* Responsive design */
-	@media (max-width: 640px) {
+	@media (--sm-down) {
 		.media-player {
 			padding: var(--space-4);
 		}
@@ -1256,7 +1256,7 @@
 	}
 
 	/* Enhanced responsiveness for larger screens */
-	@media (min-width: 768px) {
+	@media (--md) {
 		.volume-slider {
 			width: var(--space-24);
 		}
@@ -1276,7 +1276,7 @@
 	}
 
 	/* Extra large screens get even more refinement */
-	@media (min-width: 1024px) {
+	@media (--lg) {
 		.volume-slider {
 			width: var(--space-28);
 		}

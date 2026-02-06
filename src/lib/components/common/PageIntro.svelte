@@ -260,7 +260,7 @@
 			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
 		);
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, #ffffff calc(var(--opacity-medium) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
 		box-shadow: var(--shadow-lg);
 	}
 
@@ -271,7 +271,7 @@
 			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-medium) * 100%), transparent) 50%,
 			color-mix(in srgb, var(--color-accent) calc(var(--opacity-low) * 100%), transparent) 100%
 		);
-		border-color: color-mix(in srgb, #ffffff 15%, transparent);
+		border-color: color-mix(in srgb, var(--color-white) 15%, transparent);
 		box-shadow: var(--shadow-xl);
 	}
 

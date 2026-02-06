@@ -555,7 +555,7 @@
 	}
 
 	/* Additional mobile-specific fixes for very small screens */
-	@media (max-width: 480px) {
+	@media (--xs-down) {
 		.footer-social-links {
 			grid-template-columns: 1fr;
 			gap: var(--space-3);

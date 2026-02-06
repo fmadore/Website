@@ -226,8 +226,8 @@
 		margin-bottom: var(--space-xl);
 	}
 
-	/* Mobile/Tablet breakpoint (max-width: 1024px) - show collapsible filters */
-	@media (max-width: 1024px) {
+	/* Mobile/Tablet breakpoint - show collapsible filters */
+	@media (--lg-down) {
 		.filter-sidebar {
 			background: transparent;
 			border: none;
@@ -255,8 +255,8 @@
 		}
 	}
 
-	/* Desktop breakpoint (min-width: 1025px) - show sidebar filters */
-	@media (min-width: 1025px) {
+	/* Desktop breakpoint - show sidebar filters */
+	@media (--lg) {
 		.filter-sections-wrapper {
 			display: none;
 		}
@@ -297,7 +297,7 @@
 	}
 
 	/* Desktop: Add dividers between sections */
-	@media (min-width: 1025px) {
+	@media (--lg) {
 		.filter-section {
 			padding-bottom: var(--space-md);
 			margin-bottom: var(--space-md);

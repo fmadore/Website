@@ -142,7 +142,7 @@
 	}
 
 	/* Responsive tweaks */
-	@media (max-width: 640px) {
+	@media (--sm-down) {
 		.related-title {
 			font-size: var(--font-size-base);
 		}

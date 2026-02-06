@@ -382,8 +382,8 @@
 	/* For example, font size, color, etc. Handled by text-light for now */
 	/* } */
 
-	/* Media query for mobile/tablet - show mobile controls up to 1024px */
-	@media (max-width: 1024px) {
+	/* Media query for mobile/tablet - show mobile controls */
+	@media (--lg-down) {
 		.mobile-controls {
 			display: flex; /* Enable flex for column layout */
 		}

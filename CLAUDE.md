@@ -23,17 +23,22 @@ npm run test:ui      # Playwright tests with UI
 ## Architecture
 
 ### Data-Driven Content
-All academic content (publications, activities, communications, teaching, etc.) is stored as TypeScript files in `src/lib/data/`. Each content type has:
+All academic content is stored as TypeScript files in `src/lib/data/`. Each content type has:
 - Individual item files (e.g., `publications/books/religious-activism-campuses.ts`)
 - An `index.ts` that aggregates items using `import.meta.glob()` and exports precomputed collections (`publicationsByType`, `publicationsByYear`, `allTags`, etc.)
+- **Use `loadData()` from `$lib/utils/dataLoader.ts`** for new data categories — it handles module extraction, template filtering, and validation
+
+**Data categories** (17 total): publications, communications, activities, digital-humanities, appointments, awards, education, editorial-memberships, fieldworks, grants, languages, media-appearances, peer-reviews, research-roles, affiliations, teaching, analysis
+
+**Adding new items**: Create a `.ts` file exporting a typed object in the appropriate `src/lib/data/<category>/` directory. The `import.meta.glob()` in `index.ts` auto-discovers it — no manual registration needed.
 
 ### Component Organization (Atomic Design)
 Components in `src/lib/components/` follow atomic design:
 - **atoms/**: Basic elements (Button, NavLink, Icon)
-- **molecules/**: Simple compositions (ItemCard, FilterSection)
+- **molecules/**: Simple compositions (ItemCard, HeroImageDisplay, RelatedItemCard)
 - **organisms/**: Complex UI (RelevantItemsList, sidebars)
-- **common/**: Shared layout components (Header, Footer, Card, Layout)
-- **Feature-specific**: publications/, communications/, activities/, cv/
+- **common/**: Shared layout (Header, Footer, Card, PageIntro, ProfileBanner)
+- **Feature-specific**: publications/, communications/, activities/, cv/, filters/, menu/, panels/, media/, visualisations/, reference/
 
 ### State Management
 - **Global state**: `globalState.svelte.ts` - module-level `$state()` with getter/setter pattern
@@ -47,8 +52,12 @@ Components in `src/lib/components/` follow atomic design:
 
 ### CSS Architecture
 Modular system in `src/styles/` with import order: Base → Layout → Components → Utilities
-- **Design tokens**: `base/variables.css` (colors, spacing, typography, shadows)
-- **Breakpoints**: PostCSS custom media (`@media (--sm)`, `--md`, `--lg`, `--xl`)
+- **Design tokens**: `base/variables.css` (colors, spacing, typography, shadows, glass blur tokens)
+- **Breakpoints** (defined in `base/media.css`):
+  - Min-width: `--sm` (640px), `--md` (768px), `--lg` (1024px), `--xl` (1280px), `--2xl` (1536px)
+  - Max-width: `--xs-down`, `--sm-down`, `--md-down`, `--lg-down`, `--xl-down`, `--2xl-down`
+  - Interaction: `--can-hover`, `--touch`
+  - Accessibility: `--reduced-motion`, `--high-contrast`, `--dark-mode`
 - **Glassmorphism**: Use `.glass-card`, `.glass-panel`, `.glass-button` classes
 - See `src/styles/CSS-README.md` for comprehensive documentation
 
@@ -81,7 +90,10 @@ Always use runes - never legacy reactive syntax:
 - **Always use CSS variables** - never hardcode colors, spacing, or typography values
 - **Transparency**: Use `color-mix(in srgb, var(--color-primary) 50%, transparent)` not `rgba()`
 - **Glassmorphism**: Always include `-webkit-backdrop-filter` fallback
-- **Never use `var()` in media queries** - use PostCSS custom media syntax
+- **Glass blur tokens**: Use `var(--glass-blur-sm)` through `var(--glass-blur-xl)`, not raw `blur(8px)`
+- **Never use `var()` in media queries** - use PostCSS custom media syntax (e.g., `@media (--md)`)
+- **Avoid `!important`** - only acceptable when overriding third-party library styles (ECharts, MapLibre) or in `prefers-reduced-motion` blocks
+- **Dark mode**: Use `:global(html.dark) .my-class { ... }` selector pattern. Use CSS variables and `color-mix()` with design tokens for dark-mode-specific values
 
 ### Animation System (CSS-only)
 Use CSS classes, not the deprecated `scrollAnimations.ts`:
@@ -126,3 +138,7 @@ Run the audit tool to check design system compliance:
 ```bash
 node .github/skills/css-design-audit/audit.mjs src/lib/components
 ```
+
+## Technical Debt
+
+See `REFACTORING-ROADMAP.md` for the prioritized list of refactoring opportunities with status tracking.

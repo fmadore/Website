@@ -40,12 +40,7 @@ export default defineConfig({
 						return 'icons';
 					}
 
-					// Date utilities
-					if (id.includes('date-fns')) {
-						return 'date-fns';
-					}
-
-					// Other vendor dependencies
+	// Other vendor dependencies
 					if (id.includes('node_modules')) {
 						return 'vendor';
 					}

@@ -816,7 +816,7 @@
 		}
 	}
 
-	@media (max-width: 639px) {
+	@media (--sm-down) {
 		.hero-figure--glass {
 			padding: var(--space-2);
 		}

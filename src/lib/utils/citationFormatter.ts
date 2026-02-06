@@ -1,4 +1,5 @@
-import type { Publication } from '$lib/types/publication'; // Assuming this path
+import type { Publication } from '$lib/types/publication';
+import { formatDisplayDate } from '$lib/utils/date-formatter';
 
 // Human-readable labels for publication types
 export const typeLabels: { [key: string]: string } = {
@@ -185,7 +186,7 @@ export function formatCitation(publication: Publication): FormattedCitation {
 	} else if (type === 'blogpost') {
 		let details = '';
 		// Date (in parentheses) first, then comma, then italicized publisher
-		const formattedDate = formatFullDate(publication.dateISO);
+		const formattedDate = publication.dateISO ? formatDisplayDate(publication.dateISO) : '';
 		if (formattedDate) {
 			details += `(${formattedDate})`; // Add parentheses around the date
 		}
@@ -268,27 +269,6 @@ export function formatCitation(publication: Publication): FormattedCitation {
 		detailsHtml,
 		year // Return the year separately (will be undefined for blogpost)
 	};
-}
-
-// Helper function to format YYYY-MM-DD date to D Month YYYY
-function formatFullDate(isoDate: string | undefined): string {
-	if (!isoDate) return '';
-	try {
-		const date = new Date(isoDate + 'T00:00:00Z'); // Assume UTC to avoid timezone issues
-		if (isNaN(date.getTime())) return isoDate; // Return original if invalid
-
-		// Use options for "D Month YYYY" format, trying 'en-GB' locale
-		const options: Intl.DateTimeFormatOptions = {
-			day: 'numeric',
-			month: 'long',
-			year: 'numeric',
-			timeZone: 'UTC'
-		};
-		return date.toLocaleDateString('en-GB', options); // Use 'en-GB' for D Month YYYY format
-	} catch (e) {
-		console.error('Error formatting date:', e);
-		return isoDate; // Return original on error
-	}
 }
 
 // Communication citation formatter
