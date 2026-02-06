@@ -59,7 +59,7 @@
 		if (activity.title) params.set('rft.title', activity.title);
 
 		// Author (always Frédérick Madore for activities)
-		params.set('rft.au', 'Frédérick Madore');
+		params.set('rft.au', 'Madore, Frédérick');
 		params.set('rft.aufirst', 'Frédérick');
 		params.set('rft.aulast', 'Madore');
 
@@ -82,8 +82,8 @@
 
 		// Author - always Frédérick Madore for activities
 		tags.push(
-			{ name: 'citation_author', content: 'Frédérick Madore' },
-			{ name: 'DC.creator', content: 'Frédérick Madore' }
+			{ name: 'citation_author', content: 'Madore, Frédérick' },
+			{ name: 'DC.creator', content: 'Madore, Frédérick' }
 		);
 
 		// Publication info for blog posts - try multiple approaches

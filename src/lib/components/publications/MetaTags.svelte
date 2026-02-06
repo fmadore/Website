@@ -55,6 +55,16 @@
 		content: string;
 	}
 
+	// Helper to convert "First Last" → "Last, First" for citation managers
+	const toLastFirstFormat = (name: string): string => {
+		if (name.includes(',')) return name; // Already "Last, First"
+		const parts = name.trim().split(/\s+/);
+		if (parts.length <= 1) return name;
+		const lastName = parts[parts.length - 1];
+		const firstName = parts.slice(0, -1).join(' ');
+		return `${lastName}, ${firstName}`;
+	};
+
 	// Helper to split author/editor strings into arrays
 	const splitNames = (names: string): string[] => {
 		return names
@@ -63,12 +73,12 @@
 			.filter(Boolean);
 	};
 
-	// Helper to create author/editor meta tags
+	// Helper to create author/editor meta tags (outputs "Last, First" for Zotero)
 	const createAuthorTags = (authors: string[] | undefined, tagName: string): MetaTag[] => {
 		if (!authors) return [];
 		return authors.map((author) => ({
 			name: tagName,
-			content: author
+			content: toLastFirstFormat(author)
 		}));
 	};
 
@@ -170,11 +180,19 @@
 		if (publication.authors) {
 			publication.authors.forEach((author, index) => {
 				if (index === 0) {
-					const [last, first] = author.split(',').map((s) => s.trim());
-					if (first) params.set('rft.aufirst', first);
-					if (last) params.set('rft.aulast', last);
+					if (author.includes(',')) {
+						const [last, first] = author.split(',').map((s) => s.trim());
+						if (first) params.set('rft.aufirst', first);
+						if (last) params.set('rft.aulast', last);
+					} else {
+						const parts = author.trim().split(/\s+/);
+						if (parts.length > 1) {
+							params.set('rft.aulast', parts[parts.length - 1]);
+							params.set('rft.aufirst', parts.slice(0, -1).join(' '));
+						}
+					}
 				}
-				params.set('rft.au', author);
+				params.set('rft.au', toLastFirstFormat(author));
 			});
 		}
 		if (publication.dateISO) params.set('rft.date', publication.dateISO);

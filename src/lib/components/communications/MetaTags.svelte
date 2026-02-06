@@ -69,7 +69,9 @@
 		if (communication.title) params.set('rft.title', communication.title);
 
 		// Presenter (always Frédérick Madore for communications)
-		params.set('rft.creator', 'Frédérick Madore');
+		params.set('rft.creator', 'Madore, Frédérick');
+		params.set('rft.aufirst', 'Frédérick');
+		params.set('rft.aulast', 'Madore');
 
 		// Meeting/Conference info
 		if (communication.conference) params.set('rft.source', communication.conference);
@@ -94,9 +96,9 @@
 
 		// Author/Presenter - always Frédérick Madore for communications
 		tags.push(
-			{ name: 'citation_author', content: 'Frédérick Madore' },
-			{ name: 'citation_presenter', content: 'Frédérick Madore' },
-			{ name: 'DC.creator', content: 'Frédérick Madore' }
+			{ name: 'citation_author', content: 'Madore, Frédérick' },
+			{ name: 'citation_presenter', content: 'Madore, Frédérick' },
+			{ name: 'DC.creator', content: 'Madore, Frédérick' }
 		);
 
 		// Conference/Meeting info for presentations
