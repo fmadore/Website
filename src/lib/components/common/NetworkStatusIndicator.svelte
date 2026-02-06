@@ -174,7 +174,7 @@
 			left: 50%;
 			right: auto;
 			transform: translateX(-50%);
-			max-width: 320px;
+			max-width: var(--content-width-xs);
 			animation-name: slideInDesktop;
 		}
 

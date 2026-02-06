@@ -14,6 +14,7 @@
 	import { browser } from '$app/environment';
 	import { base } from '$app/paths';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
+	import { CHART_COLOR_FALLBACKS } from '$lib/utils/chartColorUtils';
 	import type { Map as MapLibreMap, Popup } from 'maplibre-gl';
 
 	// Map configuration props with defaults using Svelte 5 $props() rune
@@ -107,19 +108,19 @@
 		el.style.justifyContent = 'center';
 		el.style.alignItems = 'center';
 
-		// Get the color based on activity type - use EXPLICIT hex colors
-		let strokeColor = '#9a4419'; // primary terracotta
+		// Get the color based on activity type
+		let strokeColor: string = CHART_COLOR_FALLBACKS.primary;
 		if (item.activityType === 'lecture') {
-			strokeColor = '#c4a35a'; // accent gold
+			strokeColor = CHART_COLOR_FALLBACKS.accent;
 		} else if (item.activityType === 'event') {
-			strokeColor = '#f59e0b'; // highlight amber
+			strokeColor = CHART_COLOR_FALLBACKS.highlight;
 		}
 
 		// Use inline style attribute to ensure fill color is not overridden by global CSS
 		el.innerHTML = `
-			<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" 
-				style="fill: #ffffff !important; stroke: ${strokeColor}; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));">
-				<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" style="fill: #ffffff;"/>
+			<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+				style="fill: ${CHART_COLOR_FALLBACKS.white} !important; stroke: ${strokeColor}; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));">
+				<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" style="fill: ${CHART_COLOR_FALLBACKS.white};"/>
 				<circle cx="12" cy="10" r="3" style="fill: ${strokeColor};"/>
 			</svg>
 		`;
@@ -203,15 +204,15 @@
 			if (!item.coordinates || !maplibregl) return;
 
 			// Get color based on activity type
-			let markerColor = '#9a4419'; // terracotta - default
+			let markerColor: string = CHART_COLOR_FALLBACKS.primary;
 			if (item.activityType === 'lecture') {
-				markerColor = '#c4a35a'; // gold
+				markerColor = CHART_COLOR_FALLBACKS.accent;
 			} else if (item.activityType === 'event') {
-				markerColor = '#f59e0b'; // amber
+				markerColor = CHART_COLOR_FALLBACKS.highlight;
 			} else if (item.activityType === 'conference') {
-				markerColor = '#8b5cf6'; // purple
+				markerColor = CHART_COLOR_FALLBACKS.purple;
 			} else if (item.activityType === 'workshop') {
-				markerColor = '#ec4899'; // pink
+				markerColor = CHART_COLOR_FALLBACKS.pink;
 			}
 
 			const popup = new maplibregl.Popup({

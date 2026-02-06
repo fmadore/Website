@@ -3,20 +3,17 @@
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import {
+		type MetaTag,
+		createConditionalTag,
+		getFullUrl,
+		deduplicateAndFilterTags
+	} from '$lib/utils/metaTags';
 
 	let { communication }: { communication: Communication } = $props();
 
-	// Helper to generate full URLs
-	const getFullUrl = (path: string | undefined): string | undefined => {
-		if (!path) return undefined;
-		if (path.startsWith('http://') || path.startsWith('https://')) return path;
-		return `${$page.url.origin}${base}${path.startsWith('/') ? '' : '/'}${path}`;
-	};
-
-	// Helper to get citation genre for presentations
-	const getCitationGenre = (): string => {
-		return 'presentation';
-	};
+	// Helper to resolve URLs using current page context
+	const resolveUrl = (path: string | undefined) => getFullUrl($page.url.origin, base, path);
 
 	// Helper to get presentation type for Zotero
 	const getPresentationType = (): string => {
@@ -29,27 +26,6 @@
 			event: 'Presentation'
 		};
 		return typeMap[communication.type || 'conference'] || 'Presentation';
-	};
-
-	// Helper to map communication types to Dublin Core types
-	const getDcType = (): string => {
-		return 'Event'; // Presentations are events
-	};
-
-	// Type for meta tag objects with better type safety
-	interface MetaTag {
-		name: string;
-		content: string;
-	}
-
-	// Helper to create conditional tags
-	const createConditionalTag = (
-		name: string,
-		content: string | undefined,
-		condition: boolean = true
-	): MetaTag[] => {
-		if (!content || !condition) return [];
-		return [{ name, content }];
 	};
 
 	// Helper to create COinS metadata for presentations
@@ -92,7 +68,7 @@
 		tags.push({ name: 'citation_title', content: communication.title });
 
 		// Presentation specific tags
-		tags.push({ name: 'citation_genre', content: getCitationGenre() });
+		tags.push({ name: 'citation_genre', content: 'presentation' });
 
 		// Author/Presenter - always Frédérick Madore for communications
 		tags.push(
@@ -138,7 +114,7 @@
 			{ name: 'citation_public_url', content: currentUrl },
 			{ name: 'citation_abstract_html_url', content: currentUrl },
 			{ name: 'citation_fulltext_html_url', content: currentUrl },
-			...createConditionalTag('citation_pdf_url', getFullUrl(communication.url))
+			...createConditionalTag('citation_pdf_url', resolveUrl(communication.url))
 		);
 
 		// Additional presentation-specific URLs
@@ -149,7 +125,7 @@
 		// Dublin Core tags for presentations
 		tags.push(
 			{ name: 'DC.title', content: communication.title },
-			{ name: 'DC.type', content: getDcType() },
+			{ name: 'DC.type', content: 'Event' },
 			{ name: 'DC.publisher', content: communication.conference },
 			...createConditionalTag('DC.description', communication.abstract),
 			...createConditionalTag('DC.date', communication.dateISO),
@@ -175,7 +151,7 @@
 			{ name: 'og:type', content: 'article' },
 			{ name: 'og:url', content: currentUrl },
 			...createConditionalTag('og:description', communication.abstract),
-			...createConditionalTag('og:image', getFullUrl(communication.image)),
+			...createConditionalTag('og:image', resolveUrl(communication.image)),
 			{ name: 'og:site_name', content: 'Frédérick Madore' }
 		);
 
@@ -184,33 +160,10 @@
 			{ name: 'twitter:card', content: 'summary_large_image' },
 			{ name: 'twitter:title', content: communication.title },
 			...createConditionalTag('twitter:description', communication.abstract),
-			...createConditionalTag('twitter:image', getFullUrl(communication.image))
+			...createConditionalTag('twitter:image', resolveUrl(communication.image))
 		);
 
-		// Remove duplicates and empty content (defensive programming)
-		const uniqueTags = tags.filter((tag, index) => {
-			const key = `${tag.name}:${tag.content}`;
-			return tags.findIndex((t) => `${t.name}:${t.content}` === key) === index;
-		});
-
-		return uniqueTags.filter((tag) => {
-			if (!tag.content) return false;
-			// Handle both string and array content
-			if (typeof tag.content === 'string') {
-				return tag.content.trim() !== '';
-			}
-			// For arrays or other types, check if they have a meaningful value
-			return String(tag.content).trim() !== '';
-		});
-	});
-
-	// Development logging (can be removed in production)
-	$effect(() => {
-		if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-			console.log('Communication MetaTags - Communication:', communication.title);
-			console.log('Communication MetaTags - Generated tags count:', metaTags.length);
-			console.log('Communication MetaTags - Sample tags:', metaTags.slice(0, 5));
-		}
+		return deduplicateAndFilterTags(tags);
 	});
 </script>
 
@@ -222,19 +175,3 @@
 
 <!-- COinS metadata for Zotero compatibility -->
 <span class="Z3988" title={createCoinsData()} style="display: none;"></span>
-
-<!-- 
-	Communication MetaTags Component
-	
-	This component generates comprehensive meta tags for academic communications,
-	treating them as presentations for better citation manager compatibility.
-	Supports Zotero, Mendeley, and other citation tools.
-	
-	Features:
-	- Highwire Press tags optimized for presentations
-	- Dublin Core metadata for general discoverability
-	- Open Graph tags for social media sharing
-	- COinS metadata for Zotero automatic detection
-	- Conference/meeting-specific metadata preservation
-	- Presentation genre classification
--->

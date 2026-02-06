@@ -114,10 +114,13 @@ export const CHART_COLOR_FALLBACKS = {
 	border: '#e8e4df',
 	surface: '#faf9f7',
 	surfaceRgb: '250, 249, 247',
+	white: '#ffffff',
 	accent: '#c4a35a',
 	highlight: '#f59e0b',
 	success: '#10b981',
 	secondary: '#6b7280',
+	purple: '#8b5cf6',
+	pink: '#ec4899',
 	fontFamily: 'system-ui, sans-serif'
 } as const;
 
@@ -132,10 +135,13 @@ export interface ResolvedChartColors {
 	border: string;
 	surface: string;
 	surfaceRgb: string;
+	white: string;
 	accent: string;
 	highlight: string;
 	success: string;
 	secondary: string;
+	purple: string;
+	pink: string;
 	fontFamily: string;
 	currentTheme: string;
 }
@@ -164,6 +170,7 @@ export function getResolvedChartColors(): ResolvedChartColors {
 			'--color-surface-rgb',
 			CHART_COLOR_FALLBACKS.surfaceRgb
 		),
+		white: getCSSVariableValueWithFallback('--color-white', CHART_COLOR_FALLBACKS.white),
 		accent: getCSSVariableValueWithFallback('--color-accent', CHART_COLOR_FALLBACKS.accent),
 		highlight: getCSSVariableValueWithFallback(
 			'--color-highlight',
@@ -174,6 +181,11 @@ export function getResolvedChartColors(): ResolvedChartColors {
 			'--color-secondary',
 			CHART_COLOR_FALLBACKS.secondary
 		),
+		purple: getCSSVariableValueWithFallback(
+			'--sys-color-purple-500',
+			CHART_COLOR_FALLBACKS.purple
+		),
+		pink: getCSSVariableValueWithFallback('--sys-color-pink-500', CHART_COLOR_FALLBACKS.pink),
 		fontFamily: getCSSVariableValueWithFallback(
 			'--font-family-sans',
 			CHART_COLOR_FALLBACKS.fontFamily

@@ -134,7 +134,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 						itemStyle: {
 							color: resolvedColors.primary,
 							textStyle: {
-								color: '#fff'
+								color: resolvedColors.white
 							}
 						}
 					},
@@ -159,7 +159,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 							fontSize: isMobile ? 11 : 13,
 							fontWeight: 'bold',
 							fontFamily: resolvedColors.fontFamily,
-							color: '#fff',
+							color: resolvedColors.white,
 							textShadowColor: 'rgba(0, 0, 0, 0.5)',
 							textShadowBlur: 3,
 							lineHeight: isMobile ? 16 : 20
@@ -180,7 +180,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 					show: true,
 					height: 30,
 					formatter: '{b}',
-					color: '#fff',
+					color: resolvedColors.white,
 					fontWeight: 'bold',
 					fontSize: isMobile ? 12 : 14,
 					fontFamily: resolvedColors.fontFamily,
@@ -196,11 +196,11 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 				emphasis: {
 					upperLabel: {
 						show: true,
-						color: '#fff',
+						color: resolvedColors.white,
 						fontWeight: 'bold'
 					},
 					itemStyle: {
-						borderColor: '#fff',
+						borderColor: resolvedColors.white,
 						borderWidth: 2
 					}
 				},

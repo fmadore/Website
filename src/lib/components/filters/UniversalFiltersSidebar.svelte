@@ -6,7 +6,9 @@
 	import FilterSectionChips from '$lib/components/filters/FilterSectionChips.svelte';
 	import FilterSectionDropdown from '$lib/components/filters/FilterSectionDropdown.svelte';
 	import { slide } from 'svelte/transition';
-	import { animationsEnabledStore as animationsEnabled } from '$lib/stores/globalState.svelte';
+	import { getGlobalState } from '$lib/stores/globalState.svelte';
+
+	const globalState = getGlobalState();
 
 	interface Props {
 		config: UniversalFilterConfig;
@@ -55,7 +57,7 @@
 	// Wrapper function to enhance any filter toggle with sidebar scroll preservation
 	function createScrollPreservingToggle(originalToggle: (item: string) => void) {
 		return (item: string) => {
-			animationsEnabled.set(false); // Disable animations before updating filters
+			globalState.animationsEnabled = false; // Disable animations before updating filters
 			preserveSidebarScroll(() => originalToggle(item));
 		};
 	}
@@ -72,11 +74,11 @@
 				return {
 					...section,
 					updateRange: (min: number, max: number) => {
-						animationsEnabled.set(false); // Disable animations
+						globalState.animationsEnabled = false; // Disable animations
 						preserveSidebarScroll(() => section.updateRange(min, max));
 					},
 					resetRange: () => {
-						animationsEnabled.set(false); // Disable animations
+						globalState.animationsEnabled = false; // Disable animations
 						preserveSidebarScroll(() => section.resetRange());
 					}
 				};

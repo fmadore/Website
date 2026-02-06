@@ -18,17 +18,6 @@ let isGlobalLoading = $state(false);
 let isOnline = $state(true);
 
 /**
- * Direct access to animationsEnabled for components that need simple access
- * This provides a store-like interface for backward compatibility
- */
-export const animationsEnabledStore = {
-	get: () => animationsEnabled,
-	set: (value: boolean) => {
-		animationsEnabled = value;
-	}
-};
-
-/**
  * Get access to the global state with reactive getters and setters
  * This pattern provides controlled access to the state while maintaining reactivity
  */

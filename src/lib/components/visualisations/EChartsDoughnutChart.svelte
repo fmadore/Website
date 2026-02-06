@@ -133,7 +133,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 				label: {
 					show: showLabels,
 					position: isMobile ? 'inside' : 'outside',
-					color: isMobile ? '#ffffff' : resolvedColors.text,
+					color: isMobile ? resolvedColors.white : resolvedColors.text,
 					fontSize: isMobile ? 11 : 12,
 					fontFamily: resolvedColors.fontFamily,
 					fontWeight: 'bold',

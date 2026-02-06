@@ -213,7 +213,7 @@
 
 		.slider-container {
 			padding: var(--space-xs) 0 var(--space-md);
-			min-height: 40px;
+			min-height: var(--space-10);
 		}
 	}
 

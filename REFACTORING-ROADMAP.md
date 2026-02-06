@@ -68,7 +68,7 @@ Prioritized improvements for codebase quality, maintainability, and design syste
 
 ### Component Deduplication
 
-- [ ] **Extract shared MetaTags logic** - 3 MetaTags components (`publications/`, `communications/`, `activities/`) share 85% identical code (~784 lines total). Extract shared `createConditionalTag()`, `getFullUrl()`, COinS generation, and `MetaTag` interface into a `$lib/utils/metaTags.ts` utility.
+- [x] **Extract shared MetaTags logic** - Created `$lib/utils/metaTags.ts` with shared `MetaTag` interface, `createConditionalTag()`, `getFullUrl()`, `toLastFirstFormat()`, `splitNames()`, `createAuthorTags()`, `deduplicateAndFilterTags()`, and `parseAuthorName()`. Updated all 3 MetaTags components to import from shared utility. Removed ~200 lines of duplicated code.
 
 - [x] **Create shared filter CSS** - Extracted ~470 lines of duplicated CSS (section structure, chip system, action buttons, dark mode, mobile cards, responsive) into `src/styles/components/filters.css`. Updated FilterSectionButtons, FilterSectionCheckbox, FilterSectionChips, FilterSectionDropdown, and FilterSectionRangeSlider to use the shared stylesheet.
 
@@ -80,11 +80,11 @@ Prioritized improvements for codebase quality, maintainability, and design syste
 
 ### CSS Remaining Issues
 
-- [ ] **Replace hardcoded spacing values** - Some components use raw pixel/em values (`max-width: 320px`, `padding: 0.35em 0.75em`) instead of design tokens (`var(--space-*)`, `var(--font-size-*)`).
+- [x] **Replace hardcoded spacing values** - Replaced raw pixel/em values with design tokens across 7 files: `TagCloud.svelte` (`0.35em 0.75em` → `--space-1 --space-2`), `NetworkStatusIndicator.svelte` (`320px` → `--content-width-xs`), `MediaPlayer.svelte` (`44px`/`48px` → `--space-11`/`--space-12`), `FilterSectionRangeSlider.svelte` (`40px` → `--space-10`), `entity-cards.css` (`200px`/`150px` → `--space-48`/`--space-36`).
 
 ### Visualization Colors
 
-- [ ] **Replace hardcoded hex colors in visualization components** - ECharts and MapVisualization components use raw hex colors (`#9a4419`, `#c4a35a`, `#fff`, etc.) instead of CSS variables. Note: Some of these are in JS config objects passed to ECharts/MapLibre, where CSS variables can't be used directly - consider a shared color constants file that mirrors the design tokens.
+- [x] **Replace hardcoded hex colors in visualization components** - Extended `CHART_COLOR_FALLBACKS` in `chartColorUtils.ts` with `white`, `purple`, `pink` colors and updated `ResolvedChartColors` interface. Updated `MapVisualization.svelte` to use `CHART_COLOR_FALLBACKS` constants instead of raw hex. Updated `EChartsTreemap.svelte`, `EChartsGanttChart.svelte`, and `EChartsDoughnutChart.svelte` to use `resolvedColors.white` instead of `'#fff'`/`'#ffffff'`.
 
 ---
 
@@ -116,7 +116,7 @@ Prioritized improvements for codebase quality, maintainability, and design syste
 
 ### State Management
 
-- [ ] **Consolidate dual global state API** - `globalState.svelte.ts` exports both `animationsEnabledStore` (Svelte store) and `getGlobalState()` (rune-based). Migrate to a single rune-based API.
+- [x] **Consolidate dual global state API** - Removed `animationsEnabledStore` from `globalState.svelte.ts`. Migrated `UniversalFiltersSidebar.svelte` to use `getGlobalState()` instead. Single rune-based API via `getGlobalState()` is now the only pattern.
 
 ---
 

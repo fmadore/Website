@@ -3,15 +3,21 @@
 	import { base } from '$app/paths';
 	import { page } from '$app/state';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import {
+		type MetaTag,
+		createConditionalTag,
+		toLastFirstFormat,
+		splitNames,
+		createAuthorTags,
+		getFullUrl,
+		deduplicateAndFilterTags,
+		parseAuthorName
+	} from '$lib/utils/metaTags';
 
 	let { publication }: { publication: Publication } = $props();
 
-	// Helper to generate full URLs
-	const getFullUrl = (path: string | undefined): string | undefined => {
-		if (!path) return undefined;
-		if (path.startsWith('http://') || path.startsWith('https://')) return path;
-		return `${page.url.origin}${base}${path.startsWith('/') ? '' : '/'}${path}`;
-	};
+	// Helper to resolve URLs using current page context
+	const resolveUrl = (path: string | undefined) => getFullUrl(page.url.origin, base, path);
 
 	// Helper to get citation genre for OpenURL/COinS compatibility
 	const getCitationGenre = (type: Publication['type']): string => {
@@ -47,39 +53,6 @@
 			'bulletin-article': 'Text'
 		};
 		return typeMap[type] || 'Text';
-	};
-
-	// Type for meta tag objects with better type safety
-	interface MetaTag {
-		name: string;
-		content: string;
-	}
-
-	// Helper to convert "First Last" → "Last, First" for citation managers
-	const toLastFirstFormat = (name: string): string => {
-		if (name.includes(',')) return name; // Already "Last, First"
-		const parts = name.trim().split(/\s+/);
-		if (parts.length <= 1) return name;
-		const lastName = parts[parts.length - 1];
-		const firstName = parts.slice(0, -1).join(' ');
-		return `${lastName}, ${firstName}`;
-	};
-
-	// Helper to split author/editor strings into arrays
-	const splitNames = (names: string): string[] => {
-		return names
-			.split(/,\s*|\s+and\s+/)
-			.map((name) => name.trim())
-			.filter(Boolean);
-	};
-
-	// Helper to create author/editor meta tags (outputs "Last, First" for Zotero)
-	const createAuthorTags = (authors: string[] | undefined, tagName: string): MetaTag[] => {
-		if (!authors) return [];
-		return authors.map((author) => ({
-			name: tagName,
-			content: toLastFirstFormat(author)
-		}));
 	};
 
 	// Helper to create editor tags for different publication types
@@ -127,24 +100,14 @@
 				tags.push({ name: 'citation_lastpage', content: lastPage });
 			}
 		} else if (/^\d+$/.test(publication.pages.trim())) {
-			const page = publication.pages.trim();
+			const pg = publication.pages.trim();
 			tags.push(
-				{ name: 'citation_firstpage', content: page },
-				{ name: 'citation_lastpage', content: page }
+				{ name: 'citation_firstpage', content: pg },
+				{ name: 'citation_lastpage', content: pg }
 			);
 		}
 
 		return tags;
-	};
-
-	// Helper to create conditional tags
-	const createConditionalTag = (
-		name: string,
-		content: string | undefined,
-		condition: boolean = true
-	): MetaTag[] => {
-		if (!content || !condition) return [];
-		return [{ name, content }];
 	};
 
 	// Helper to create COinS metadata
@@ -180,17 +143,9 @@
 		if (publication.authors) {
 			publication.authors.forEach((author, index) => {
 				if (index === 0) {
-					if (author.includes(',')) {
-						const [last, first] = author.split(',').map((s) => s.trim());
-						if (first) params.set('rft.aufirst', first);
-						if (last) params.set('rft.aulast', last);
-					} else {
-						const parts = author.trim().split(/\s+/);
-						if (parts.length > 1) {
-							params.set('rft.aulast', parts[parts.length - 1]);
-							params.set('rft.aufirst', parts.slice(0, -1).join(' '));
-						}
-					}
+					const { first, last } = parseAuthorName(author);
+					if (first) params.set('rft.aufirst', first);
+					if (last) params.set('rft.aulast', last);
 				}
 				params.set('rft.au', toLastFirstFormat(author));
 			});
@@ -246,13 +201,13 @@
 
 		// URLs
 		tags.push(
-			...createConditionalTag('citation_public_url', getFullUrl(publication.url)),
+			...createConditionalTag('citation_public_url', resolveUrl(publication.url)),
 			...createConditionalTag(
 				'citation_abstract_html_url',
 				`${page.url.origin}${page.url.pathname}`
 			),
-			...createConditionalTag('citation_fulltext_html_url', getFullUrl(publication.url)),
-			...createConditionalTag('citation_pdf_url', getFullUrl((publication as any).pdfUrl))
+			...createConditionalTag('citation_fulltext_html_url', resolveUrl(publication.url)),
+			...createConditionalTag('citation_pdf_url', resolveUrl((publication as any).pdfUrl))
 		);
 
 		// Type-specific tags
@@ -307,7 +262,7 @@
 			{ name: 'DC.type', content: getDcType(publication.type) },
 			...createConditionalTag(
 				'DC.identifier',
-				publication.doi ? `doi:${publication.doi}` : getFullUrl(publication.url)
+				publication.doi ? `doi:${publication.doi}` : resolveUrl(publication.url)
 			),
 			...createConditionalTag('DC.language', publication.language)
 		);
@@ -317,29 +272,7 @@
 			tags.push(...publication.tags.map((tag) => ({ name: 'DC.subject', content: tag })));
 		}
 
-		// Remove duplicates before returning (defensive programming)
-		const uniqueTags = tags.filter((tag, index) => {
-			const key = `${tag.name}:${tag.content}`;
-			return tags.findIndex((t) => `${t.name}:${t.content}` === key) === index;
-		});
-
-		return uniqueTags.filter((tag) => {
-			if (!tag.content) return false;
-			// Handle both string and array content
-			if (typeof tag.content === 'string') {
-				return tag.content.trim() !== '';
-			}
-			// For arrays or other types, check if they have a meaningful value
-			return String(tag.content).trim() !== '';
-		});
-	});
-
-	// Development logging (can be removed in production)
-	$effect(() => {
-		if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-			console.log('MetaTags - Publication:', publication.title);
-			console.log('MetaTags - Generated tags count:', metaTags.length);
-		}
+		return deduplicateAndFilterTags(tags);
 	});
 </script>
 
@@ -351,18 +284,3 @@
 
 <!-- COinS metadata for Zotero compatibility -->
 <span class="Z3988" title={createCoinsData()} style="display: none;"></span>
-
-<!-- 
-	MetaTags Component
-	
-	This component generates comprehensive meta tags for academic publications,
-	supporting both Highwire Press and Dublin Core standards for better
-	discoverability and citation management tool compatibility.
-	
-	Features:
-	- Highwire Press tags for citation managers (Zotero, Mendeley, etc.)
-	- Dublin Core metadata for general discoverability
-	- Type-specific tags for different publication types
-	- Proper URL generation and validation
-	- Clean, maintainable code structure
--->

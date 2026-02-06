@@ -109,7 +109,7 @@
 		display: inline-flex;
 		align-items: center;
 		white-space: normal;
-		padding: 0.35em 0.75em;
+		padding: var(--space-1) var(--space-2);
 		color: var(--color-primary);
 		text-decoration: none;
 		border-radius: var(--border-radius-full);

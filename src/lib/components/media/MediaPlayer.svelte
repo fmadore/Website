@@ -1004,8 +1004,8 @@
 	/* Modern control button styling */
 	:global(.control-btn) {
 		/* Fixed sizing to prevent layout shifts */
-		min-width: 44px !important;
-		min-height: 44px !important;
+		min-width: var(--space-11) !important;
+		min-height: var(--space-11) !important;
 
 		/* Proper cursor */
 		cursor: pointer !important;
@@ -1250,8 +1250,8 @@
 
 		/* Ensure buttons remain touchable on mobile */
 		:global(.control-btn) {
-			min-width: 48px !important;
-			min-height: 48px !important;
+			min-width: var(--space-12) !important;
+			min-height: var(--space-12) !important;
 		}
 	}
 

@@ -101,7 +101,7 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 				projectName: project.name,
 				symbolSize: isMobile ? 8 : 12,
 				itemStyle: {
-					color: '#fff',
+					color: resolvedColors.white,
 					borderColor:
 						resolvedColors.chartColors[projectIndex % resolvedColors.chartColors.length],
 					borderWidth: 2
@@ -321,7 +321,7 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 		display: inline-block;
 		width: 10px;
 		height: 10px;
-		background: #fff;
+		background: var(--color-white);
 		border: 2px solid var(--color-primary);
 		border-radius: 50%;
 	}
