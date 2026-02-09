@@ -1,4 +1,5 @@
 import type { Publication } from '$lib/types';
+import { loadData } from '$lib/utils/dataLoader';
 import {
 	sortByDate,
 	groupByYear,
@@ -7,9 +8,6 @@ import {
 	extractUnique,
 	extractUniqueDelimited
 } from '$lib/utils/dataAggregation';
-
-// Define a type for module imports
-type ModuleType = Record<string, any>;
 
 // Define all template IDs to filter out
 const templateIds = [
@@ -40,7 +38,7 @@ const dirTypeMap: Record<string, string> = {
 };
 
 // Use a single static glob import
-const publicationModules = import.meta.glob<ModuleType>(
+const publicationModules = import.meta.glob(
 	[
 		'./books/*.ts',
 		'./articles/*.ts',
@@ -55,25 +53,17 @@ const publicationModules = import.meta.glob<ModuleType>(
 	{ eager: true }
 );
 
-// Process the loaded modules to add sourceDirType
-const allPublications: (Publication & { sourceDirType: string })[] = Object.entries(
-	publicationModules
-)
-	.map(([path, module]) => {
-		const publication = Object.values(module)[0] as Publication;
-
-		// Filter out templates based on ID
-		if (templateIds.includes(publication.id)) {
-			return null;
-		}
-
-		// Determine sourceDirType from the path
+// Load publications using loadData with transform to add sourceDirType
+const allPublications = loadData<Publication>(
+	publicationModules,
+	templateIds,
+	'publication',
+	(item, path) => {
 		const sourceDirType =
 			Object.entries(dirTypeMap).find(([prefix]) => path.startsWith(prefix))?.[1] ?? 'unknown';
-
-		return { ...publication, sourceDirType };
-	})
-	.filter(Boolean) as (Publication & { sourceDirType: string })[];
+		return { ...item, sourceDirType } as Publication;
+	}
+) as (Publication & { sourceDirType: string })[];
 
 // Sort by date (most recent first)
 export const publicationsByDate = sortByDate(allPublications);

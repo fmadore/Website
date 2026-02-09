@@ -62,7 +62,8 @@ type DataItem =
 export function loadData<T extends DataItem>(
 	modules: Record<string, unknown>, // Accept unknown initially
 	templateIdFilter: string | string[],
-	dataTypeName: string = 'item'
+	dataTypeName: string = 'item',
+	transform?: (item: T, path: string) => T
 ): T[] {
 	const filterIds = Array.isArray(templateIdFilter) ? templateIdFilter : [templateIdFilter];
 
@@ -124,8 +125,10 @@ export function loadData<T extends DataItem>(
 					return null;
 				}
 
-				// Debug: Log the extracted data item before filtering
-				// console.log(`DataLoader extracted for path ${path}:`, dataItem);
+				// Apply optional transform
+				if (transform) {
+					dataItem = transform(dataItem, path);
+				}
 
 				return dataItem; // Return the found data item
 			} catch (error) {

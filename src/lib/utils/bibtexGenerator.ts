@@ -94,7 +94,7 @@ function validateRequiredFields(publication: Publication, bibtexType: string): s
 		case 'techreport':
 			if (!publication.authors || publication.authors.length === 0) warnings.push('author');
 			if (!publication.title) warnings.push('title');
-			if (!publication.publisher && !(publication as any).institution) warnings.push('institution');
+			if (!publication.publisher && !publication.institution) warnings.push('institution');
 			if (!publication.dateISO && !publication.year) warnings.push('year');
 			break;
 		case 'unpublished':
@@ -214,8 +214,8 @@ export function generateBibtex(publication: Publication): string {
 			if (publication.issue) bibtexFields.push(`  number = {${escapeBibtex(publication.issue)}}`);
 			if (publication.pages)
 				bibtexFields.push(`  pages = {${escapeBibtex(formatPageRange(publication.pages))}}`);
-			if ((publication as any).issn)
-				bibtexFields.push(`  issn = {${escapeBibtex((publication as any).issn)}}`);
+			if (publication.issn)
+				bibtexFields.push(`  issn = {${escapeBibtex(publication.issn)}}`);
 			break;
 		case 'book': // For both regular books and edited volumes
 			if (publication.publisher)
@@ -264,12 +264,12 @@ export function generateBibtex(publication: Publication): string {
 			}
 			break;
 		case 'techreport':
-			if ((publication as any).institution || publication.publisher)
+			if (publication.institution || publication.publisher)
 				bibtexFields.push(
-					`  institution = {${escapeBibtex((publication as any).institution || publication.publisher)}}`
+					`  institution = {${escapeBibtex(publication.institution || publication.publisher)}}`
 				);
-			if ((publication as any).reportNumber)
-				bibtexFields.push(`  number = {${escapeBibtex((publication as any).reportNumber)}}`);
+			if (publication.reportNumber)
+				bibtexFields.push(`  number = {${escapeBibtex(publication.reportNumber)}}`);
 			if (publication.placeOfPublication)
 				bibtexFields.push(`  address = {${escapeBibtex(publication.placeOfPublication)}}`);
 			break;

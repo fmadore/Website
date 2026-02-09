@@ -1,3 +1,5 @@
+import type { jsPDF } from 'jspdf';
+
 export interface TextFragment {
     text: string;
     style: 'normal' | 'italic' | 'bold' | 'bolditalic';
@@ -157,7 +159,7 @@ export const trimFragments = (fragments: TextFragment[]): TextFragment[] => {
  * @returns The new Y position after rendering.
  */
 export const renderRichText = (
-    pdf: any,
+    pdf: jsPDF,
     fragments: TextFragment[],
     x: number,
     y: number,
@@ -211,7 +213,7 @@ export const renderRichText = (
  * Calculates the height required for rich text without rendering it.
  */
 export const measureRichTextHeight = (
-    pdf: any,
+    pdf: jsPDF,
     fragments: TextFragment[],
     width: number,
     fontSize: number,

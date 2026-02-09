@@ -23,7 +23,7 @@ The `FilterSectionDropdown` component provides a space-efficient way to handle f
 
 ```svelte
 <script>
-	import FilterSectionDropdown from '$lib/components/filters/FilterSectionDropdown.svelte';
+	import FilterSectionDropdown from '$lib/components/molecules/filters/FilterSectionDropdown.svelte';
 	import { toggleAuthorFilter, authorCounts } from '$lib/data/publications/filters.svelte';
 
 	let activeAuthors = $state(['Author One', 'Author Two']);

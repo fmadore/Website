@@ -30,7 +30,7 @@
 	import { getAddressLines } from '$lib/utils/siteHelpers';
 
 	let isGenerating = $state(false);
-	let jsPDF: any = $state(null);
+	let jsPDF: typeof import('jspdf').jsPDF | null = $state(null);
 
 	onMount(async () => {
 		const jsPDFModule = await import('jspdf');
@@ -450,7 +450,7 @@
 										const nestedParagraphs = clone.querySelectorAll('p');
 
 										// Store paragraph fragments
-										const paragraphFragments: any[] = [];
+										const paragraphFragments: TextFragment[][] = [];
 										nestedParagraphs.forEach((p) => {
 											const fragments = trimFragments(extractRichText(p));
 											if (fragments.length > 0) paragraphFragments.push(fragments);
@@ -518,7 +518,7 @@
 										paragraphFragments.forEach((frags) => {
 											pdf.setTextColor(...COLORS.TEXT_LIGHT);
 											// Force italic for "Review in..." style paragraphs
-											frags.forEach((f: any) => {
+											frags.forEach((f: TextFragment) => {
 												if (f.style === 'normal') f.style = 'italic';
 												else if (f.style === 'bold') f.style = 'bolditalic';
 											});
@@ -599,7 +599,7 @@
 									const nestedParagraphs = clone.querySelectorAll('p');
 
 									// Store paragraph fragments
-									const paragraphFragments: any[] = [];
+									const paragraphFragments: TextFragment[][] = [];
 									nestedParagraphs.forEach((p) => {
 										const fragments = trimFragments(extractRichText(p));
 										if (fragments.length > 0) paragraphFragments.push(fragments);
@@ -662,7 +662,7 @@
 									paragraphFragments.forEach((frags) => {
 										pdf.setTextColor(...COLORS.TEXT_LIGHT);
 										// Force italic for "Review in..." style paragraphs
-										frags.forEach((f: any) => {
+										frags.forEach((f: TextFragment) => {
 											if (f.style === 'normal') f.style = 'italic';
 											else if (f.style === 'bold') f.style = 'bolditalic';
 										});

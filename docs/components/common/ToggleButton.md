@@ -5,14 +5,14 @@ A reusable toggle button component that shows/hides content with visual state fe
 ## Import
 
 ```svelte
-import ToggleButton from '$lib/components/common/ToggleButton.svelte';
+import ToggleButton from '$lib/components/atoms/ToggleButton.svelte';
 ```
 
 ## Usage
 
 ```svelte
 <script>
-	import ToggleButton from '$lib/components/common/ToggleButton.svelte';
+	import ToggleButton from '$lib/components/atoms/ToggleButton.svelte';
 
 	let showMap = false;
 
@@ -75,7 +75,7 @@ This component uses the common Button atom component with an "outline-primary" v
 
 ```svelte
 <script>
-	import ToggleButton from '$lib/components/common/ToggleButton.svelte';
+	import ToggleButton from '$lib/components/atoms/ToggleButton.svelte';
 	import { mapVisible } from '$lib/stores/uiState.js';
 
 	function toggleMap() {

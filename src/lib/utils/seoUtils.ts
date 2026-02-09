@@ -454,10 +454,10 @@ export function createPublicationSEODescription(publication: Publication): strin
 		if (publisher) venueInfo.push(publisher);
 		if (placeOfPublication) venueInfo.push(placeOfPublication);
 	} else if (type === 'encyclopedia') {
-		if ((publication as any).encyclopediaTitle)
-			venueInfo.push((publication as any).encyclopediaTitle);
+		if (publication.encyclopediaTitle)
+			venueInfo.push(publication.encyclopediaTitle);
 	} else if (type === 'masters-thesis' || type === 'phd-dissertation') {
-		if ((publication as any).university) venueInfo.push((publication as any).university);
+		if (publication.university) venueInfo.push(publication.university);
 	}
 
 	if (year) venueInfo.push(year.toString());

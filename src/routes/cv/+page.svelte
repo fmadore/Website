@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, type Component } from 'svelte';
 	import SEO from '$lib/SEO.svelte';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import PdfGenerator from '$lib/components/cv/PdfGenerator.svelte';
@@ -14,20 +14,20 @@
 	const breadcrumbs = createSectionBreadcrumbs('CV', '/cv');
 
 	// Lazy load components below the fold using $state
-	let CVGrants = $state<any>();
-	let CVAwards = $state<any>();
-	let CVDigitalHumanities = $state<any>();
-	let CVConferences = $state<any>();
-	let CVEvents = $state<any>();
-	let CVTeaching = $state<any>();
-	let CVConsulting = $state<any>();
-	let CVInvitedTalks = $state<any>();
-	let CVMedia = $state<any>();
-	let CVLanguages = $state<any>();
-	let CVService = $state<any>();
-	let CVAffiliations = $state<any>();
-	let CVComputerSkills = $state<any>();
-	let CVResearchExperience = $state<any>();
+	let CVGrants: Component | undefined = $state();
+	let CVAwards: Component | undefined = $state();
+	let CVDigitalHumanities: Component | undefined = $state();
+	let CVConferences: Component | undefined = $state();
+	let CVEvents: Component | undefined = $state();
+	let CVTeaching: Component | undefined = $state();
+	let CVConsulting: Component | undefined = $state();
+	let CVInvitedTalks: Component | undefined = $state();
+	let CVMedia: Component | undefined = $state();
+	let CVLanguages: Component | undefined = $state();
+	let CVService: Component | undefined = $state();
+	let CVAffiliations: Component | undefined = $state();
+	let CVComputerSkills: Component | undefined = $state();
+	let CVResearchExperience: Component | undefined = $state();
 
 	let componentsStartedLoading = $state(false);
 

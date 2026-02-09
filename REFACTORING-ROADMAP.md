@@ -52,8 +52,7 @@ Prioritized improvements for codebase quality, maintainability, and design syste
 
 - [x] **Create `dataAggregation.ts` utility** - Created `$lib/utils/dataAggregation.ts` with `sortByDate()`, `sortByYear()`, `groupByYear()`, `groupByField()`, `extractUnique()`, `extractUniqueTags()`, and `extractUniqueDelimited()`. Applied to `communications/index.ts`, `publications/index.ts`, `fieldworks/index.ts`, and `activities/index.ts`.
 
-- [x] **Migrate data `index.ts` files to `loadData()` utility** - Migrated `activities/`, `affiliations/`, `digital-humanities/`, `research-roles/`, and `teaching/` to use the shared `loadData()` utility. Communications `index.ts` was already using `loadData()`.
-  - Remaining: `publications/` (needs transform callback for `sourceDirType` logic), `communications/events/`, `communications/panels/`
+- [x] **Migrate data `index.ts` files to `loadData()` utility** - Migrated all data categories to use the shared `loadData()` utility: `activities/`, `affiliations/`, `digital-humanities/`, `research-roles/`, `teaching/`, `communications/events/`, `communications/panels/`, and `publications/` (using transform callback for `sourceDirType`). Communications `index.ts` was already using `loadData()`.
 
 - [x] **Migrate teaching and research-roles to scalable data patterns** - Split `teaching/index.ts` from hardcoded array into 3 individual files (`african-past.ts`, `francophone-west-africa.ts`, `dissertation-historique.ts`) with `loadData()` glob. Split `research-roles/researchRoles.ts` from 5 named exports into 5 individual files with `loadData()` glob. Both now follow the standard individual-file-per-item pattern.
 
@@ -119,6 +118,18 @@ Prioritized improvements for codebase quality, maintainability, and design syste
 ### State Management
 
 - [x] **Consolidate dual global state API** - Removed `animationsEnabledStore` from `globalState.svelte.ts`. Migrated `UniversalFiltersSidebar.svelte` to use `getGlobalState()` instead. Single rune-based API via `getGlobalState()` is now the only pattern.
+
+---
+
+### Type Safety
+
+- [x] **Remove unnecessary `as any` casts** - Removed 11 `as any` casts in `bibtexGenerator.ts` (7), `seoUtils.ts` (3), and `urlFilterSync.svelte.ts` (1) where the Publication type already declares the fields as optional.
+
+- [x] **Type PDF utilities** - Added `jsPDF` type import to `pdfRichText.ts`, typed `pdf` parameter in `renderRichText()` and `measureRichTextHeight()`. Typed `PdfGenerator.svelte` jsPDF state, paragraph fragment arrays (`TextFragment[][]`), and forEach callbacks (`TextFragment`).
+
+- [x] **Type CV lazy-loaded components** - Replaced 14 `$state<any>()` with `Component | undefined` in `cv/+page.svelte`.
+
+- [x] **Add transform callback to `loadData()`** - Extended `loadData()` with optional `transform?: (item: T, path: string) => T` parameter. Used by `publications/index.ts` to add `sourceDirType` from path.
 
 ---
 
