@@ -3,6 +3,11 @@
 	import { base } from '$app/paths';
 	import Button from '$lib/components/atoms/Button.svelte';
 
+	interface RelatedListItem {
+		id: string | number;
+		[key: string]: unknown;
+	}
+
 	// Props
 	let {
 		allItems = [],
@@ -18,17 +23,15 @@
 		titleClass = 'related-items-title',
 		gridClass = 'related-items-grid'
 	}: {
-		allItems?: any[]; // Array of all potential items (e.g., allPublications)
+		allItems?: RelatedListItem[];
 		currentItemId: string | number;
-		filterKey: string; // Property to filter by (e.g., 'project', 'type')
-		filterValue: any; // Value to match for the filterKey
-		title: string; // Section title (e.g., "More Publications in this Project")
-		itemComponent: ComponentType; // Component to render each item (e.g., ItemCard)
-		// Removed itemPropName as it complicates <svelte:component>
-		baseItemUrl: string; // Base URL for item links (e.g., "/publications/")
-		viewAllUrl?: string; // URL for "View All" button (e.g., "/publications" or "/conference-activity")
-		maxItems?: number; // Max items to display
-		// Optional styling props
+		filterKey: string;
+		filterValue: string | number | undefined;
+		title: string;
+		itemComponent: ComponentType;
+		baseItemUrl: string;
+		viewAllUrl?: string;
+		maxItems?: number;
 		sectionClass?: string;
 		titleClass?: string;
 		gridClass?: string;

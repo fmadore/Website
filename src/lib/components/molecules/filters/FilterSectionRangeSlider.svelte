@@ -1,5 +1,5 @@
 <script lang="ts">
-	import RangeSlider from './RangeSlider.svelte';
+	import RangeSlider from '$lib/components/atoms/RangeSlider.svelte';
 
 	// Simple debounce function
 	function debounce<T extends (...args: any[]) => any>(

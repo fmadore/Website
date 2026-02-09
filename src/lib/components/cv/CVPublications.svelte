@@ -8,7 +8,7 @@
 		formatCVAuthorList,
 		formatEditorList,
 		formatBlogDate
-	} from '../utils/cvFormatters';
+	} from '$lib/utils/cvFormatters';
 	import CVEntry from './CVEntry.svelte';
 
 	// Group publications using the utility function

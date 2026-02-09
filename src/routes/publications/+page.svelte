@@ -28,7 +28,7 @@
 		setProjects,
 		setYearRange
 	} from '$lib/data/publications/filters.svelte';
-	import UniversalFiltersSidebar from '$lib/components/filters/UniversalFiltersSidebar.svelte';
+	import UniversalFiltersSidebar from '$lib/components/organisms/UniversalFiltersSidebar.svelte';
 	import type {
 		UniversalFilterConfig,
 		FilterSectionConfig,

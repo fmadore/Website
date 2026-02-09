@@ -6,7 +6,7 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import SEO from '$lib/SEO.svelte';
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
-	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
+	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
 
 	// Get the year parameter from the URL - reactive to route changes

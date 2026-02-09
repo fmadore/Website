@@ -21,7 +21,7 @@ Provides consistent structure for all research project pages including:
 	import ProjectYears from '$lib/components/common/ProjectYears.svelte';
 	import MediaPlayer from '$lib/components/media/MediaPlayer.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
+	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
 	import { base } from '$app/paths';
 

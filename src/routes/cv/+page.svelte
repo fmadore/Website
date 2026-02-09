@@ -3,10 +3,10 @@
 	import SEO from '$lib/SEO.svelte';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import PdfGenerator from '$lib/components/cv/PdfGenerator.svelte';
-	import CVHeader from './components/CVHeader.svelte';
-	import CVEducation from './components/CVEducation.svelte';
-	import CVAppointments from './components/CVAppointments.svelte';
-	import CVPublications from './components/CVPublications.svelte';
+	import CVHeader from '$lib/components/cv/CVHeader.svelte';
+	import CVEducation from '$lib/components/cv/CVEducation.svelte';
+	import CVAppointments from '$lib/components/cv/CVAppointments.svelte';
+	import CVPublications from '$lib/components/cv/CVPublications.svelte';
 
 	import { base } from '$app/paths';
 
@@ -48,9 +48,9 @@
 		// Batch 1: Most important sections
 		setTimeout(() => {
 			Promise.all([
-				import('./components/CVGrants.svelte').then((m) => (CVGrants = m.default)),
-				import('./components/CVAwards.svelte').then((m) => (CVAwards = m.default)),
-				import('./components/CVDigitalHumanities.svelte').then(
+				import('$lib/components/cv/CVGrants.svelte').then((m) => (CVGrants = m.default)),
+				import('$lib/components/cv/CVAwards.svelte').then((m) => (CVAwards = m.default)),
+				import('$lib/components/cv/CVDigitalHumanities.svelte').then(
 					(m) => (CVDigitalHumanities = m.default)
 				)
 			]);
@@ -59,31 +59,31 @@
 		// Batch 2: Conference and talks
 		setTimeout(() => {
 			Promise.all([
-				import('./components/CVInvitedTalks.svelte').then((m) => (CVInvitedTalks = m.default)),
-				import('./components/CVConferences.svelte').then((m) => (CVConferences = m.default)),
-				import('./components/CVEvents.svelte').then((m) => (CVEvents = m.default))
+				import('$lib/components/cv/CVInvitedTalks.svelte').then((m) => (CVInvitedTalks = m.default)),
+				import('$lib/components/cv/CVConferences.svelte').then((m) => (CVConferences = m.default)),
+				import('$lib/components/cv/CVEvents.svelte').then((m) => (CVEvents = m.default))
 			]);
 		}, 200);
 
 		// Batch 3: Experience sections
 		setTimeout(() => {
 			Promise.all([
-				import('./components/CVTeaching.svelte').then((m) => (CVTeaching = m.default)),
-				import('./components/CVResearchExperience.svelte').then(
+				import('$lib/components/cv/CVTeaching.svelte').then((m) => (CVTeaching = m.default)),
+				import('$lib/components/cv/CVResearchExperience.svelte').then(
 					(m) => (CVResearchExperience = m.default)
 				),
-				import('./components/CVService.svelte').then((m) => (CVService = m.default))
+				import('$lib/components/cv/CVService.svelte').then((m) => (CVService = m.default))
 			]);
 		}, 300);
 
 		// Batch 4: Final sections
 		setTimeout(() => {
 			Promise.all([
-				import('./components/CVConsulting.svelte').then((m) => (CVConsulting = m.default)),
-				import('./components/CVMedia.svelte').then((m) => (CVMedia = m.default)),
-				import('./components/CVLanguages.svelte').then((m) => (CVLanguages = m.default)),
-				import('./components/CVAffiliations.svelte').then((m) => (CVAffiliations = m.default)),
-				import('./components/CVComputerSkills.svelte').then((m) => (CVComputerSkills = m.default))
+				import('$lib/components/cv/CVConsulting.svelte').then((m) => (CVConsulting = m.default)),
+				import('$lib/components/cv/CVMedia.svelte').then((m) => (CVMedia = m.default)),
+				import('$lib/components/cv/CVLanguages.svelte').then((m) => (CVLanguages = m.default)),
+				import('$lib/components/cv/CVAffiliations.svelte').then((m) => (CVAffiliations = m.default)),
+				import('$lib/components/cv/CVComputerSkills.svelte').then((m) => (CVComputerSkills = m.default))
 			]);
 		}, 400);
 	}

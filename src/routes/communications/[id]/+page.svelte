@@ -5,7 +5,7 @@
 	import type { Communication } from '$lib/types/communication';
 	import type { ComponentType } from 'svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
+	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
 	import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
 	import TagList from '$lib/components/molecules/TagList.svelte';

@@ -4,7 +4,7 @@
 	import type { Publication } from '$lib/types';
 	import type { ComponentType } from 'svelte';
 	import type { PageData } from './$types';
-	import Breadcrumb from '$lib/components/common/Breadcrumb.svelte';
+	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import MetaTags from '$lib/components/publications/MetaTags.svelte';
 	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
 	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';

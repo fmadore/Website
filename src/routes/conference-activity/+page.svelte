@@ -33,7 +33,7 @@
 	// Remove old sidebar import
 	// import FiltersSidebar from '$lib/components/communications/FiltersSidebar.svelte';
 	// Import the new universal sidebar and its config type
-	import UniversalFiltersSidebar from '$lib/components/filters/UniversalFiltersSidebar.svelte';
+	import UniversalFiltersSidebar from '$lib/components/organisms/UniversalFiltersSidebar.svelte';
 	import type {
 		UniversalFilterConfig,
 		FilterSectionConfig,
@@ -44,7 +44,7 @@
 	} from '$lib/types/filters';
 	import CommunicationItem from '$lib/components/communications/CommunicationItem.svelte';
 	import UpcomingCommunications from '$lib/components/communications/UpcomingCommunications.svelte';
-	import ToggleButton from '$lib/components/common/ToggleButton.svelte';
+	import ToggleButton from '$lib/components/atoms/ToggleButton.svelte';
 
 	// Lazy load MapVisualization to avoid loading maplibre-gl until needed
 	let MapVisualization: typeof import('$lib/components/visualisations/MapVisualization.svelte').default | null =

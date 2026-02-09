@@ -92,27 +92,29 @@ Prioritized improvements for codebase quality, maintainability, and design syste
 
 ### Component Architecture
 
-- [ ] **Split `Header.svelte` (347 lines)** - Currently handles 6+ concerns: nav data, dropdown state, mobile menu, keyboard navigation, click-outside handling, resize observation. Extract nav data to `src/lib/data/navigation.ts`, extract dropdown and mobile menu managers to separate components or composables.
+- [x] **Extract nav data from `Header.svelte`** - Moved nav items (47 lines) to `src/lib/data/navigation.ts`. Header now imports from the shared data file.
 
-- [ ] **Move CV components from routes to lib** - 14 components in `src/routes/cv/components/` should live in `src/lib/components/cv/`. CV formatter utility in `src/routes/cv/utils/` should move to `src/lib/utils/`.
+- [x] **Move CV components from routes to lib** - Moved 19 CV components from `src/routes/cv/components/` to `src/lib/components/cv/`. Moved `cvFormatters.ts` to `src/lib/utils/`. Updated all eager and lazy imports in `+page.svelte`.
 
-- [ ] **Fix atomic design misplacements** - Several components are in wrong categories:
-  | Component | Current | Should Be |
-  |-----------|---------|-----------|
+- [x] **Fix atomic design misplacements** - Reorganized components to proper atomic design categories:
+  | Component | From | To |
+  |-----------|------|------|
   | `ToggleButton.svelte` | `common/` | `atoms/` |
-  | `Breadcrumb.svelte` | `common/` | `atoms/` |
+  | `Breadcrumb.svelte` | `common/` | `molecules/` |
   | `NetworkStatusIndicator.svelte` | `common/` | `atoms/` |
-  | 7 `FilterSection*` components | `filters/` | `molecules/filters/` |
+  | 5 `FilterSection*` components | `filters/` | `molecules/filters/` |
+  | `RangeSlider.svelte` | `filters/` | `atoms/` |
+  | `UniversalFiltersSidebar.svelte` | `filters/` | `organisms/` |
 
-- [ ] **Type `RelatedItemsList` properly** - Replace `any[]` typing for `allItems` and `any` for `filterValue` with proper generic types or a discriminated union.
+- [x] **Type `RelatedItemsList` properly** - Replaced `any[]` with `RelatedListItem[]` interface (`{ id: string | number; [key: string]: unknown }`) and `any` filterValue with `string | number | undefined`.
 
 ### Layout & Routing
 
-- [ ] **Refactor root layout (`+layout.svelte`, 266 lines)** - Mixes 4+ concerns: GTM initialization (~70 lines), network monitoring, animation state, JSON-LD injection. Extract GTM into a utility, network monitoring into a component, and simplify.
+- [x] **Refactor root layout (`+layout.svelte`, 266→107 lines)** - Extracted GTM initialization to `$lib/utils/gtm.svelte.ts` (`useGtm()`) and network monitoring to `$lib/utils/networkMonitor.svelte.ts` (`useNetworkMonitor()`). Layout now delegates to utility hooks.
 
-- [ ] **Consolidate JSON-LD injection methods** - 3 different approaches used inconsistently: `<script>` tag in layout, `<svelte:head>`, and manual injection. Standardize on one pattern.
+- [x] **Consolidate JSON-LD injection in layout** - Replaced manual `$effect()` DOM injection with `useJsonLdScript('global-json-ld', () => globalJsonLd)`, aligning with the pattern used by all detail pages.
 
-- [ ] **Convert 5 static research project pages to dynamic route** - Currently individual page files that could be data-driven like other content types.
+- [ ] **Convert 5 static research project pages to dynamic route** - Deferred: research pages contain inline Svelte components (`<ItemReference>`, `<RelevantGrants>`) in template content, making data-driven rendering impractical without a fundamentally different content approach.
 
 ### State Management
 

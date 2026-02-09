@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { UniversalFilterConfig } from '$lib/types/filters';
-	import FilterSectionCheckbox from '$lib/components/filters/FilterSectionCheckbox.svelte';
-	import FilterSectionRangeSlider from '$lib/components/filters/FilterSectionRangeSlider.svelte';
-	import FilterSectionButtons from '$lib/components/filters/FilterSectionButtons.svelte';
-	import FilterSectionChips from '$lib/components/filters/FilterSectionChips.svelte';
-	import FilterSectionDropdown from '$lib/components/filters/FilterSectionDropdown.svelte';
+	import FilterSectionCheckbox from '$lib/components/molecules/filters/FilterSectionCheckbox.svelte';
+	import FilterSectionRangeSlider from '$lib/components/molecules/filters/FilterSectionRangeSlider.svelte';
+	import FilterSectionButtons from '$lib/components/molecules/filters/FilterSectionButtons.svelte';
+	import FilterSectionChips from '$lib/components/molecules/filters/FilterSectionChips.svelte';
+	import FilterSectionDropdown from '$lib/components/molecules/filters/FilterSectionDropdown.svelte';
 	import { slide } from 'svelte/transition';
 	import { getGlobalState } from '$lib/stores/globalState.svelte';
 

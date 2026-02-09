@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { communicationsByDate } from '$lib/data/communications';
-	import { formatCVAuthorList } from '../utils/cvFormatters';
+	import { formatCVAuthorList } from '$lib/utils/cvFormatters';
 	import CVEntry from './CVEntry.svelte';
 
 	const organizedEvents = communicationsByDate.filter((comm) => comm.type === 'event');

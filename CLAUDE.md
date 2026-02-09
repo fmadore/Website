@@ -30,15 +30,17 @@ All academic content is stored as TypeScript files in `src/lib/data/`. Each cont
 
 **Data categories** (17 total): publications, communications, activities, digital-humanities, appointments, awards, education, editorial-memberships, fieldworks, grants, languages, media-appearances, peer-reviews, research-roles, affiliations, teaching, analysis
 
+**Navigation data**: `src/lib/data/navigation.ts` exports `navItems` used by the Header component.
+
 **Adding new items**: Create a `.ts` file exporting a typed object in the appropriate `src/lib/data/<category>/` directory. The `import.meta.glob()` in `index.ts` auto-discovers it — no manual registration needed.
 
 ### Component Organization (Atomic Design)
 Components in `src/lib/components/` follow atomic design:
-- **atoms/**: Basic elements (Button, NavLink, Icon)
-- **molecules/**: Simple compositions (ItemCard, HeroImageDisplay, RelatedItemCard)
-- **organisms/**: Complex UI (RelevantItemsList, sidebars)
+- **atoms/**: Basic elements (Button, NavLink, Icon, ToggleButton, NetworkStatusIndicator, RangeSlider)
+- **molecules/**: Simple compositions (ItemCard, HeroImageDisplay, RelatedItemCard, Breadcrumb, `filters/` with FilterSection* components)
+- **organisms/**: Complex UI (RelatedItemsList, UniversalFiltersSidebar)
 - **common/**: Shared layout (Header, Footer, Card, PageIntro, ProfileBanner)
-- **Feature-specific**: publications/, communications/, activities/, cv/, filters/, menu/, panels/, media/, visualisations/, reference/
+- **Feature-specific**: publications/, communications/, activities/, cv/, menu/, panels/, media/, visualisations/, reference/
 
 ### State Management
 - **Global state**: `globalState.svelte.ts` - module-level `$state()` with getter/setter pattern
@@ -127,6 +129,7 @@ Multi-format support via `citationFormatter.ts`: BibTeX, APA, MLA, Chicago
 ### SEO
 - `SEO.svelte` component for page metadata
 - `seoUtils.ts` generates JSON-LD structured data
+- `useJsonLdScript()` from `jsonLd.svelte.ts` for injecting JSON-LD scripts (used by layout and all detail pages)
 - RSS at `/rss.xml`, sitemap at `/sitemap.xml`
 
 ### Heavy Libraries (Code Split)

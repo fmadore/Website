@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { affiliationsByStartDate } from '$lib/data/affiliations';
-	import { formatAffiliationPeriod } from '../utils/cvFormatters';
+	import { formatAffiliationPeriod } from '$lib/utils/cvFormatters';
 </script>
 
 <section>
