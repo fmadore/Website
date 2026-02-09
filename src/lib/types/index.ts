@@ -13,4 +13,6 @@ export * from './peer-review';
 export * from './timeline';
 export * from './utils';
 export * from './analysis';
+export * from './affiliation';
+export * from './teachingExperience';
 

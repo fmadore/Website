@@ -1,17 +1,13 @@
 import type { Activity } from '$lib/types';
 import { getYearFromISODate } from '$lib/utils/date-formatter';
 import { sortByDate } from '$lib/utils/dataAggregation';
+import { loadData } from '$lib/utils/dataLoader';
 
 // Dynamically import all activity files
-const activityModules = import.meta.glob<{ [key: string]: Activity }>('./*.ts', { eager: true });
+const activityModules = import.meta.glob<Record<string, Activity>>('./*.ts', { eager: true });
 
-// Convert the modules to an array of activities, excluding the index file and template
-const allActivities: Activity[] = Object.entries(activityModules)
-	.filter(([path]) => !path.includes('index.ts') && !path.includes('activity-template.ts'))
-	.map(([, module]) => {
-		const activity = Object.values(module)[0] as Activity;
-		return activity;
-	});
+// Load and validate activities using loadData, filtering out template
+const allActivities: Activity[] = loadData<Activity>(activityModules, 'activity-template-id', 'activity');
 
 // Sort by date (most recent first)
 export const activitiesByDate = sortByDate(allActivities);

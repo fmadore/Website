@@ -7,17 +7,22 @@
  * It focuses on robustly handling potentially malformed or missing data
  * during the import process.
  */
-import type { Publication } from '$lib/types/publication'; // Assuming this is the primary type for now
-import type { Communication } from '$lib/types/communication'; // Add communication type
-import type { Fieldwork } from '$lib/types/fieldwork'; // Add fieldwork type
-import type { Appointment } from '$lib/types/appointment'; // <-- Import Appointment type
-import type { Education } from '$lib/types/education'; // <-- Import Education type
-import type { Grant } from '$lib/types/grant'; // <-- Import Grant type
-import type { Award } from '$lib/types/award'; // <-- Import Award type
-import type { PeerReview } from '$lib/types/peer-review'; // <-- Import PeerReview type
-import type { MediaAppearance } from '$lib/types/media-appearance'; // <-- Import MediaAppearance type
-import type { EditorialMembership } from '$lib/types/editorial-membership'; // <-- Import EditorialMembership type
-import type { Language } from '$lib/types/language'; // <-- Import Language type
+import type { Publication } from '$lib/types/publication';
+import type { Communication } from '$lib/types/communication';
+import type { Fieldwork } from '$lib/types/fieldwork';
+import type { Appointment } from '$lib/types/appointment';
+import type { Education } from '$lib/types/education';
+import type { Grant } from '$lib/types/grant';
+import type { Award } from '$lib/types/award';
+import type { PeerReview } from '$lib/types/peer-review';
+import type { MediaAppearance } from '$lib/types/media-appearance';
+import type { EditorialMembership } from '$lib/types/editorial-membership';
+import type { Language } from '$lib/types/language';
+import type { Activity } from '$lib/types/activity';
+import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
+import type { ProfessionalAffiliation } from '$lib/types/affiliation';
+import type { ResearchRole } from '$lib/types/researchRole';
+import type { TeachingExperience } from '$lib/types/teachingExperience';
 
 // Define a generic type for the expected module structure
 type DataModule = Record<string, any>;
@@ -34,7 +39,12 @@ type DataItem =
 	| PeerReview
 	| MediaAppearance
 	| EditorialMembership
-	| Language; // <-- Add Language to union
+	| Language
+	| Activity
+	| DigitalHumanitiesProject
+	| ProfessionalAffiliation
+	| ResearchRole
+	| TeachingExperience;
 
 /**
  * Loads and processes data modules based on a glob pattern, expecting each module

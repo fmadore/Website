@@ -52,19 +52,19 @@ Prioritized improvements for codebase quality, maintainability, and design syste
 
 - [x] **Create `dataAggregation.ts` utility** - Created `$lib/utils/dataAggregation.ts` with `sortByDate()`, `sortByYear()`, `groupByYear()`, `groupByField()`, `extractUnique()`, `extractUniqueTags()`, and `extractUniqueDelimited()`. Applied to `communications/index.ts`, `publications/index.ts`, `fieldworks/index.ts`, and `activities/index.ts`.
 
-- [ ] **Migrate all `index.ts` to `loadData()` utility** - 11 of 20 data index files use manual aggregation patterns instead of the shared `loadData()` utility in `dataLoader.ts`. Consolidating would eliminate ~300 lines of boilerplate.
-  - Files to migrate: `activities/`, `communications/events/`, `communications/panels/`, `publications/`, `research-roles/`, `affiliations/`, `digital-humanities/`, `teaching/`
-  - Consider adding optional `transform` callback to `loadData()` for publications' `sourceDirType` logic
+- [x] **Migrate data `index.ts` files to `loadData()` utility** - Migrated `activities/`, `affiliations/`, `digital-humanities/`, `research-roles/`, and `teaching/` to use the shared `loadData()` utility. Communications `index.ts` was already using `loadData()`.
+  - Remaining: `publications/` (needs transform callback for `sourceDirType` logic), `communications/events/`, `communications/panels/`
 
-- [ ] **Migrate teaching and research-roles to scalable data patterns** - `teaching/index.ts` uses a hardcoded array with inline type definition (only data category not using glob). `research-roles/index.ts` uses manual array of imports — adding items requires code changes. Migrate both to individual files + `loadData()`.
+- [x] **Migrate teaching and research-roles to scalable data patterns** - Split `teaching/index.ts` from hardcoded array into 3 individual files (`african-past.ts`, `francophone-west-africa.ts`, `dissertation-historique.ts`) with `loadData()` glob. Split `research-roles/researchRoles.ts` from 5 named exports into 5 individual files with `loadData()` glob. Both now follow the standard individual-file-per-item pattern.
 
-- [ ] **Standardize type inconsistencies** - 11 identified issues:
+- [x] **Move `ProfessionalAffiliation` and `TeachingExperience` types to `$lib/types/`** - Created `affiliation.ts` and `teachingExperience.ts` in `src/lib/types/`. Updated `affiliations/template.ts` to re-export from types. Added `id` field to `TeachingExperience` for `loadData()` compatibility.
+
+- [ ] **Standardize type inconsistencies** - 10 identified issues:
   - `date` fields: Some use `string`, others `Date`, others ISO format strings
   - `ongoing` field: Represented as `null` vs `undefined` vs `'present'` string
   - `language` type: `string` in Publication vs `string | string[]` in Communication
   - `Fieldwork` type: Missing `dateISO` field (year-only sorting)
   - `Communication` has both `authors` and `coAuthors` (unclear semantics)
-  - `TeachingExperience` type defined inline in `teaching/index.ts`, not in `src/lib/types/`
 
 ### Component Deduplication
 

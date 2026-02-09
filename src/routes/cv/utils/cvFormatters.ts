@@ -1,5 +1,4 @@
-import type { Publication } from '$lib/types';
-import type { ProfessionalAffiliation } from '$lib/data/affiliations/template';
+import type { Publication, ProfessionalAffiliation } from '$lib/types';
 
 /**
  * Formats author list with Frédérick Madore in bold for CV display

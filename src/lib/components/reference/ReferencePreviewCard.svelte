@@ -168,6 +168,7 @@
 	style:max-height={cardMaxHeight}
 	style:overflow-y={hasOverflow ? 'auto' : null}
 	role="dialog"
+	tabindex="-1"
 	aria-label="Item Preview"
 	aria-modal="false"
 	onpointerenter={handlePointerEnter}
