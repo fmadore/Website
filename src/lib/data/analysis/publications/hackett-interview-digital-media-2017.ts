@@ -8,8 +8,8 @@ import type { PublicationTextAnalysis } from '$lib/types';
 export const analysis: PublicationTextAnalysis = {
 	publicationId: 'hackett-interview-digital-media-2017',
 	language: 'en',
-	wordCount: 1842,
-	uniqueWords: 862,
+	wordCount: 1825,
+	uniqueWords: 853,
 	source: 'full-text',
 	analyzedAt: '2026-02-12',
 	frequencies: [
@@ -41,7 +41,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'member', count: 7, lemma: 'member', pos: 'noun' },
 		{ word: 'video', count: 7, lemma: 'video', pos: 'noun' },
 		{ word: 'ghana', count: 7, lemma: 'ghana', pos: 'propn' },
-		{ word: 'december', count: 7, lemma: 'december', pos: 'propn' },
 		{ word: 'challenge', count: 7, lemma: 'challenge', pos: 'noun' },
 		{ word: 'give', count: 7, lemma: 'give', pos: 'verb' },
 		{ word: 'dir', count: 7, lemma: 'dir', pos: 'noun' },
@@ -139,7 +138,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'content', count: 3, lemma: 'content', pos: 'noun' },
 		{ word: 'nana', count: 3, lemma: 'nana', pos: 'propn' },
 		{ word: 'kwaku', count: 3, lemma: 'kwaku', pos: 'propn' },
-		{ word: 'november', count: 3, lemma: 'november', pos: 'propn' },
 		{ word: 'africain', count: 3, lemma: 'africain', pos: 'noun' },
 		{ word: 'find', count: 3, lemma: 'find', pos: 'verb' },
 		{ word: 'haron', count: 3, lemma: 'haron', pos: 'propn' },
@@ -212,13 +210,14 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'life', count: 2, lemma: 'life', pos: 'noun' },
 		{ word: 'nearly', count: 2, lemma: 'nearly', pos: 'adv' },
 		{ word: 'savvy', count: 2, lemma: 'savvy', pos: 'adj' },
-		{ word: 'pastor', count: 2, lemma: 'pastor', pos: 'noun' }
+		{ word: 'pastor', count: 2, lemma: 'pastor', pos: 'noun' },
+		{ word: 'central', count: 2, lemma: 'central', pos: 'propn' },
+		{ word: 'expand', count: 2, lemma: 'expand', pos: 'verb' }
 	],
 	bigrams: [
 		{ ngram: 'digital medium', words: ["digital", "medium"], count: 15 },
 		{ ngram: 'social medium', words: ["social", "medium"], count: 12 },
 		{ ngram: 'new medium', words: ["new", "medium"], count: 8 },
-		{ ngram: 'access december', words: ["access", "december"], count: 7 },
 		{ ngram: 'digital media', words: ["digital", "media"], count: 5 },
 		{ ngram: 'religious community', words: ["religious", "community"], count: 4 },
 		{ ngram: 'religious practice', words: ["religious", "practice"], count: 4 },
@@ -233,8 +232,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'religious transformations', words: ["religious", "transformations"], count: 3 },
 		{ ngram: 'public sphere', words: ["public", "sphere"], count: 3 },
 		{ ngram: 'conduct research', words: ["conduct", "research"], count: 3 },
-		{ ngram: 'indiana university', words: ["indiana", "university"], count: 3 },
-		{ ngram: 'special issue', words: ["special", "issue"], count: 2 },
 		{ ngram: 'pioneering scholar', words: ["pioneering", "scholar"], count: 2 },
 		{ ngram: 'take place', words: ["take", "place"], count: 2 },
 		{ ngram: 'new digital', words: ["new", "digital"], count: 2 },
@@ -244,6 +241,9 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'mobile telephony', words: ["mobile", "telephony"], count: 2 },
 		{ ngram: 'redeemed christian', words: ["redeemed", "christian"], count: 2 },
 		{ ngram: 'christian church', words: ["christian", "church"], count: 2 },
-		{ ngram: 'worship service', words: ["worship", "service"], count: 2 }
+		{ ngram: 'worship service', words: ["worship", "service"], count: 2 },
+		{ ngram: 'religious organization', words: ["religious", "organization"], count: 2 },
+		{ ngram: 'new way', words: ["new", "way"], count: 2 },
+		{ ngram: 'acteurs religieux', words: ["acteurs", "religieux"], count: 2 }
 	]
 };

@@ -8,8 +8,8 @@ import type { PublicationTextAnalysis } from '$lib/types';
 export const analysis: PublicationTextAnalysis = {
 	publicationId: 'introduction-religiosity-university-campuses-2023',
 	language: 'en',
-	wordCount: 4660,
-	uniqueWords: 1451,
+	wordCount: 4587,
+	uniqueWords: 1433,
 	source: 'full-text',
 	analyzedAt: '2026-02-12',
 	frequencies: [
@@ -34,7 +34,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'idea', count: 20, lemma: 'idea', pos: 'noun' },
 		{ word: 'niger', count: 19, lemma: 'niger', pos: 'propn' },
 		{ word: 'muslim', count: 19, lemma: 'muslim', pos: 'propn' },
-		{ word: 'madore', count: 18, lemma: 'madore', pos: 'propn' },
 		{ word: 'experience', count: 18, lemma: 'experience', pos: 'noun' },
 		{ word: 'islam', count: 18, lemma: 'islam', pos: 'propn' },
 		{ word: 'introduction', count: 17, lemma: 'introduction', pos: 'noun' },
@@ -75,7 +74,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'knowledge', count: 11, lemma: 'knowledge', pos: 'propn' },
 		{ word: 'state', count: 11, lemma: 'state', pos: 'noun' },
 		{ word: 'christian', count: 11, lemma: 'christian', pos: 'propn' },
-		{ word: 'frédérick', count: 10, lemma: 'frédérick', pos: 'noun' },
 		{ word: 'factor', count: 10, lemma: 'factor', pos: 'noun' },
 		{ word: 'norm', count: 10, lemma: 'norm', pos: 'noun' },
 		{ word: 'attention', count: 10, lemma: 'attention', pos: 'noun' },
@@ -84,7 +82,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'way', count: 10, lemma: 'way', pos: 'noun' },
 		{ word: 'value', count: 10, lemma: 'value', pos: 'noun' },
 		{ word: 'movement', count: 10, lemma: 'movement', pos: 'propn' },
-		{ word: 'paris', count: 10, lemma: 'paris', pos: 'propn' },
 		{ word: 'south', count: 10, lemma: 'south', pos: 'propn' },
 		{ word: 'mamadou', count: 10, lemma: 'mamadou', pos: 'propn' },
 		{ word: 'independence', count: 10, lemma: 'independence', pos: 'noun' },
@@ -160,7 +157,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'palgrave', count: 6, lemma: 'palgrave', pos: 'propn' },
 		{ word: 'macmillan', count: 6, lemma: 'macmillan', pos: 'propn' },
 		{ word: 'mouvement', count: 6, lemma: 'mouvement', pos: 'noun' },
-		{ word: 'karthala', count: 6, lemma: 'karthala', pos: 'propn' },
 		{ word: 'universities', count: 6, lemma: 'universities', pos: 'propn' },
 		{ word: 'fundamentalism', count: 6, lemma: 'fundamentalism', pos: 'noun' },
 		{ word: 'religieux', count: 6, lemma: 'religieux', pos: 'other' },
@@ -212,14 +208,17 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'national', count: 5, lemma: 'national', pos: 'adj' },
 		{ word: 'help', count: 5, lemma: 'help', pos: 'verb' },
 		{ word: 'resistance', count: 5, lemma: 'resistance', pos: 'propn' },
-		{ word: 'binaté', count: 5, lemma: 'binaté', pos: 'propn' }
+		{ word: 'binaté', count: 5, lemma: 'binaté', pos: 'propn' },
+		{ word: 'agency', count: 5, lemma: 'agency', pos: 'noun' },
+		{ word: 'year', count: 5, lemma: 'year', pos: 'noun' },
+		{ word: 'infrastructure', count: 5, lemma: 'infrastructure', pos: 'noun' },
+		{ word: 'adjustment', count: 5, lemma: 'adjustment', pos: 'propn' }
 	],
 	bigrams: [
 		{ ngram: 'university campus', words: ["university", "campus"], count: 28 },
 		{ ngram: 'high education', words: ["high", "education"], count: 14 },
 		{ ngram: 'cheikh anta', words: ["cheikh", "anta"], count: 8 },
 		{ ngram: 'anta diop', words: ["anta", "diop"], count: 8 },
-		{ ngram: 'indiana university', words: ["indiana", "university"], count: 8 },
 		{ ngram: 'étudiants musulmans', words: ["\u00e9tudiants", "musulmans"], count: 8 },
 		{ ngram: 'african studies', words: ["african", "studies"], count: 8 },
 		{ ngram: 'south africa', words: ["south", "africa"], count: 8 },
@@ -231,7 +230,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'diop university', words: ["diop", "university"], count: 5 },
 		{ ngram: 'abdou moumouni', words: ["abdou", "moumouni"], count: 5 },
 		{ ngram: 'public space', words: ["public", "space"], count: 5 },
-		{ ngram: 'collar fundamentalism', words: ["collar", "fundamentalism"], count: 5 },
 		{ ngram: 'social space', words: ["social", "space"], count: 5 },
 		{ ngram: 'religious organization', words: ["religious", "organization"], count: 5 },
 		{ ngram: 'moumouni university', words: ["moumouni", "university"], count: 4 },
@@ -243,7 +241,9 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'pentecostal movements', words: ["pentecostal", "movements"], count: 4 },
 		{ ngram: 'wide society', words: ["wide", "society"], count: 4 },
 		{ ngram: 'student politics', words: ["student", "politics"], count: 4 },
-		{ ngram: 'saharan africa', words: ["saharan", "africa"], count: 4 },
-		{ ngram: 'university education', words: ["university", "education"], count: 4 }
+		{ ngram: 'university education', words: ["university", "education"], count: 4 },
+		{ ngram: 'michael cross', words: ["michael", "cross"], count: 4 },
+		{ ngram: 'african universities', words: ["african", "universities"], count: 4 },
+		{ ngram: 'mouvement religieux', words: ["mouvement", "religieux"], count: 4 }
 	]
 };

@@ -8,8 +8,8 @@ import type { PublicationTextAnalysis } from '$lib/types';
 export const analysis: PublicationTextAnalysis = {
 	publicationId: 'madore-2025-perspectives-in-motion',
 	language: 'en',
-	wordCount: 207,
-	uniqueWords: 162,
+	wordCount: 201,
+	uniqueWords: 158,
 	source: 'full-text',
 	analyzedAt: '2026-02-12',
 	frequencies: [
@@ -24,8 +24,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'term', count: 3, lemma: 'term', pos: 'noun' },
 		{ word: 'global', count: 2, lemma: 'global', pos: 'propn' },
 		{ word: 'south', count: 2, lemma: 'south', pos: 'propn' },
-		{ word: 'frédérick', count: 2, lemma: 'frédérick', pos: 'propn' },
-		{ word: 'madore', count: 2, lemma: 'madore', pos: 'propn' },
 		{ word: 'organise', count: 2, lemma: 'organise', pos: 'verb' },
 		{ word: 'religion', count: 2, lemma: 'religion', pos: 'propn' },
 		{ word: 'explore', count: 2, lemma: 'explore', pos: 'verb' },

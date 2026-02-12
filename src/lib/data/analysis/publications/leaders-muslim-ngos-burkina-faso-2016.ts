@@ -8,15 +8,13 @@ import type { PublicationTextAnalysis } from '$lib/types';
 export const analysis: PublicationTextAnalysis = {
 	publicationId: 'leaders-muslim-ngos-burkina-faso-2016',
 	language: 'en',
-	wordCount: 3541,
-	uniqueWords: 1281,
+	wordCount: 3460,
+	uniqueWords: 1268,
 	source: 'full-text',
 	analyzedAt: '2026-02-12',
 	frequencies: [
 		{ word: 'muslim', count: 43, lemma: 'muslim', pos: 'adj' },
 		{ word: 'ngos', count: 35, lemma: 'ngos', pos: 'propn' },
-		{ word: 'burkina', count: 32, lemma: 'burkina', pos: 'propn' },
-		{ word: 'faso', count: 31, lemma: 'faso', pos: 'propn' },
 		{ word: 'religious', count: 29, lemma: 'religious', pos: 'adj' },
 		{ word: 'support', count: 29, lemma: 'support', pos: 'noun' },
 		{ word: 'country', count: 28, lemma: 'country', pos: 'noun' },
@@ -212,12 +210,12 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'promote', count: 4, lemma: 'promote', pos: 'verb' },
 		{ word: 'specific', count: 4, lemma: 'specific', pos: 'adj' },
 		{ word: 'good', count: 4, lemma: 'good', pos: 'adj' },
-		{ word: 'see', count: 4, lemma: 'see', pos: 'verb' }
+		{ word: 'see', count: 4, lemma: 'see', pos: 'verb' },
+		{ word: 'official', count: 4, lemma: 'official', pos: 'adj' },
+		{ word: 'scope', count: 4, lemma: 'scope', pos: 'noun' }
 	],
 	bigrams: [
-		{ ngram: 'burkina faso', words: ["burkina", "faso"], count: 31 },
 		{ ngram: 'muslim ngos', words: ["muslim", "ngos"], count: 16 },
-		{ ngram: 'speak muslims', words: ["speak", "muslims"], count: 10 },
 		{ ngram: 'muslim association', words: ["muslim", "association"], count: 7 },
 		{ ngram: 'religious entrepreneur', words: ["religious", "entrepreneur"], count: 7 },
 		{ ngram: 'arab country', words: ["arab", "country"], count: 7 },
@@ -225,12 +223,11 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'saudi arabia', words: ["saudi", "arabia"], count: 6 },
 		{ ngram: 'muslim community', words: ["muslim", "community"], count: 6 },
 		{ ngram: 'ngo leader', words: ["ngo", "leader"], count: 5 },
-		{ ngram: 'religious entrepreneurship', words: ["religious", "entrepreneurship"], count: 5 },
-		{ ngram: 'arabic school', words: ["arabic", "school"], count: 5 },
 		{ ngram: 'social action', words: ["social", "action"], count: 5 },
 		{ ngram: 'charitable activity', words: ["charitable", "activity"], count: 4 },
 		{ ngram: 'health care', words: ["health", "care"], count: 4 },
 		{ ngram: 'political authority', words: ["political", "authority"], count: 4 },
+		{ ngram: 'religious entrepreneurship', words: ["religious", "entrepreneurship"], count: 4 },
 		{ ngram: 'international ngos', words: ["international", "ngos"], count: 4 },
 		{ ngram: 'ben néfissa', words: ["ben", "n\u00e9fissa"], count: 4 },
 		{ ngram: 'secondary school', words: ["secondary", "school"], count: 4 },
@@ -240,10 +237,13 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'civic engagement', words: ["civic", "engagement"], count: 3 },
 		{ ngram: 'west africa', words: ["west", "africa"], count: 3 },
 		{ ngram: 'united states', words: ["united", "states"], count: 3 },
-		{ ngram: 'muslim world', words: ["muslim", "world"], count: 3 },
 		{ ngram: 'social concern', words: ["social", "concern"], count: 3 },
 		{ ngram: 'arab world', words: ["arab", "world"], count: 3 },
 		{ ngram: 'international islamic', words: ["international", "islamic"], count: 3 },
-		{ ngram: 'religious authority', words: ["religious", "authority"], count: 3 }
+		{ ngram: 'religious authority', words: ["religious", "authority"], count: 3 },
+		{ ngram: 'ben massoud', words: ["ben", "massoud"], count: 3 },
+		{ ngram: 'social service', words: ["social", "service"], count: 3 },
+		{ ngram: 'development project', words: ["development", "project"], count: 3 },
+		{ ngram: 'social initiative', words: ["social", "initiative"], count: 3 }
 	]
 };

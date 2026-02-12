@@ -96,6 +96,16 @@ CUSTOM_STOPWORDS_EN = {
     'et', 'al', 'ibid', 'pp', 'ed', 'eds', 'vol', 'no', 'cf',
     'http', 'https', 'www', 'org', 'com', 'pdf', 'doi', 'url',
     'amp',  # HTML entity
+    # Author names and bibliographic artifacts
+    'karthala', 'author', 'madore', 'paris', 'perez', 'loc', 'gomez', 'cit',
+    'muriel', 'otayek', 'harmattan', 'frédérick', 'frederick',
+    # Split place names (meaningless as individual words)
+    'porto', 'novo', 'burkina', 'faso',
+    # Months (from references/dates)
+    'january', 'february', 'march', 'april', 'may', 'june',
+    'july', 'august', 'september', 'october', 'november', 'december',
+    'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
 } | FRENCH_STOPWORDS  # Also filter French stopwords from English texts
 
 CUSTOM_STOPWORDS_FR = {
@@ -104,6 +114,16 @@ CUSTOM_STOPWORDS_FR = {
     'bien', 'très', 'peu', 'donc', 'ainsi', 'entre', 'sans',
     'http', 'https', 'www', 'org', 'com', 'pdf', 'doi', 'url',
     'amp',  # HTML entity
+    # Author names and bibliographic artifacts
+    'karthala', 'author', 'madore', 'paris', 'perez', 'loc', 'gomez', 'cit',
+    'muriel', 'otayek', 'harmattan', 'frédérick', 'frederick',
+    # Split place names (meaningless as individual words)
+    'porto', 'novo', 'burkina', 'faso',
+    # Months (from references/dates)
+    'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
+    'january', 'february', 'march', 'april', 'may', 'june',
+    'july', 'august', 'september', 'october', 'november', 'december',
 } | ENGLISH_STOPWORDS  # Also filter English stopwords from French texts
 
 
@@ -305,11 +325,49 @@ def extract_bigrams(text: str, nlp, language: str, top_n: int = 50) -> list:
         'issa cissé', 'cissé issa', 'louis triaud', 'triaud louis',
         'mamadou bodian', 'bodian mamadou', 'marie miran', 'miran marie',
         'université laval', 'laval université',
+        # Generic/non-analytical bigrams
+        'islamic africa', 'africa islamic',
+        # Newspaper/journal names (reference artifacts)
+        'islam info', 'info islam', 'nouvelle marche', 'marche nouvelle',
+        'fraternité matin', 'matin fraternité', 'nasr vendredi', 'vendredi nasr',
+        'observateur paalga', 'paalga observateur',
+        'carrefour africain', 'africain carrefour',
+        'togo presse', 'presse togo',
+        'ivoire dimanche', 'dimanche ivoire',
+        'bulletin francopaix', 'francopaix bulletin',
+        'jeune afrique', 'afrique jeune',
+        'canadian journal', 'journal canadian',
+        'revue canadien', 'canadien revue',
+        'croix africa', 'africa croix',
+        # Publisher/university references
+        'indiana university', 'university indiana',
+        'modern african', 'african modern',
+        'write press', 'press write',
+        # Additional author names
+        'denise brégand', 'brégand denise',
+        'cédric mayrargue', 'mayrargue cédric',
+        'limb peter', 'peter limb',
+        'ulrike freitag', 'freitag ulrike',
+        'klaas glenewinkel', 'glenewinkel klaas',
+        'voir miran', 'miran voir',
+        'voir glossair', 'glossair voir',
+        'gilles holder', 'holder gilles',
+        # Organizations and journal references
+        'amnesty international', 'international amnesty',
+        'special issue', 'issue special',
+        'soir info', 'info soir',
+        # Bibliographic noise
+        'page consulter', 'consulter page',
     }
 
     bigrams = []
     for i in range(len(doc) - 1):
         t1, t2 = doc[i], doc[i + 1]
+
+        # Skip if t1 is the second part of a hyphenated compound
+        # (e.g. "faith-based" splits into "faith","-","based" — avoid "based X" bigrams)
+        if i > 0 and doc[i - 1].text == '-':
+            continue
 
         # Skip if either token is stopword, punct, or space
         if (t1.is_stop or t1.is_punct or t1.is_space or

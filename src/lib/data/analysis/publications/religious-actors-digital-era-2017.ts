@@ -8,8 +8,8 @@ import type { PublicationTextAnalysis } from '$lib/types';
 export const analysis: PublicationTextAnalysis = {
 	publicationId: 'religious-actors-digital-era-2017',
 	language: 'fr',
-	wordCount: 2395,
-	uniqueWords: 1050,
+	wordCount: 2365,
+	uniqueWords: 1039,
 	source: 'full-text',
 	analyzedAt: '2026-02-12',
 	frequencies: [
@@ -43,7 +43,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'musulman', count: 9, lemma: 'musulman', pos: 'adj' },
 		{ word: 'utilisation', count: 9, lemma: 'utilisation', pos: 'noun' },
 		{ word: 'press', count: 9, lemma: 'press', pos: 'propn' },
-		{ word: 'paris', count: 9, lemma: 'paris', pos: 'propn' },
 		{ word: 'année', count: 8, lemma: 'année', pos: 'noun' },
 		{ word: 'manière', count: 8, lemma: 'manière', pos: 'noun' },
 		{ word: 'politique', count: 8, lemma: 'politique', pos: 'adj' },
@@ -141,15 +140,12 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'youtube', count: 4, lemma: 'youtube', pos: 'propn' },
 		{ word: 'soares', count: 4, lemma: 'soares', pos: 'propn' },
 		{ word: 'confession', count: 4, lemma: 'confession', pos: 'noun' },
-		{ word: 'burkina', count: 4, lemma: 'burkina', pos: 'propn' },
-		{ word: 'faso', count: 4, lemma: 'faso', pos: 'propn' },
 		{ word: 'sphère', count: 4, lemma: 'sphère', pos: 'noun' },
 		{ word: 'pype', count: 4, lemma: 'pype', pos: 'noun' },
 		{ word: 'bloomington', count: 4, lemma: 'bloomington', pos: 'propn' },
 		{ word: 'indiana', count: 4, lemma: 'indiana', pos: 'propn' },
 		{ word: 'kuczynski', count: 4, lemma: 'kuczynski', pos: 'propn' },
 		{ word: 'nizard', count: 4, lemma: 'nizard', pos: 'propn' },
-		{ word: 'harmattan', count: 4, lemma: 'harmattan', pos: 'propn' },
 		{ word: 'journal', count: 4, lemma: 'journal', pos: 'noun' },
 		{ word: 'introduction', count: 3, lemma: 'introduction', pos: 'noun' },
 		{ word: 'pionnier', count: 3, lemma: 'pionnier', pos: 'adj' },
@@ -212,7 +208,11 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'public', count: 3, lemma: 'public', pos: 'adj' },
 		{ word: 'civil', count: 3, lemma: 'civil', pos: 'adj' },
 		{ word: 'côte', count: 3, lemma: 'côte', pos: 'noun' },
-		{ word: 'ivoire', count: 3, lemma: 'ivoire', pos: 'propn' }
+		{ word: 'ivoire', count: 3, lemma: 'ivoire', pos: 'propn' },
+		{ word: 'théorique', count: 3, lemma: 'théorique', pos: 'adj' },
+		{ word: 'article', count: 3, lemma: 'article', pos: 'noun' },
+		{ word: 'subjectivité', count: 3, lemma: 'subjectivité', pos: 'noun' },
+		{ word: 'agir', count: 3, lemma: 'agir', pos: 'verb' }
 	],
 	bigrams: [
 		{ ngram: 'média numérique', words: ["m\u00e9dia", "num\u00e9rique"], count: 16 },
@@ -225,8 +225,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'afrique subsaharien', words: ["afrique", "subsaharien"], count: 6 },
 		{ ngram: 'dernier année', words: ["dernier", "ann\u00e9e"], count: 4 },
 		{ ngram: 'religious transformation', words: ["religious", "transformation"], count: 4 },
-		{ ngram: 'burkina faso', words: ["burkina", "faso"], count: 4 },
-		{ ngram: 'indiana university', words: ["indiana", "university"], count: 4 },
 		{ ngram: 'premier étude', words: ["premier", "\u00e9tude"], count: 3 },
 		{ ngram: 'science social', words: ["science", "social"], count: 3 },
 		{ ngram: 'online religion', words: ["online", "religion"], count: 3 },
@@ -244,6 +242,8 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'compte tenir', words: ["compte", "tenir"], count: 2 },
 		{ ngram: 'ouest anglophone', words: ["ouest", "anglophone"], count: 2 },
 		{ ngram: 'confession religieux', words: ["confession", "religieux"], count: 2 },
-		{ ngram: 'espace public', words: ["espace", "public"], count: 2 }
+		{ ngram: 'espace public', words: ["espace", "public"], count: 2 },
+		{ ngram: 'société civil', words: ["soci\u00e9t\u00e9", "civil"], count: 2 },
+		{ ngram: 'civil islamique', words: ["civil", "islamique"], count: 2 }
 	]
 };

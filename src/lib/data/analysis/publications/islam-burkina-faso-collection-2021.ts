@@ -8,8 +8,8 @@ import type { PublicationTextAnalysis } from '$lib/types';
 export const analysis: PublicationTextAnalysis = {
 	publicationId: 'islam-burkina-faso-collection-2021',
 	language: 'fr',
-	wordCount: 3089,
-	uniqueWords: 1200,
+	wordCount: 2967,
+	uniqueWords: 1187,
 	source: 'full-text',
 	analyzedAt: '2026-02-12',
 	frequencies: [
@@ -18,12 +18,9 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'africa', count: 35, lemma: 'africa', pos: 'propn' },
 		{ word: 'digital', count: 34, lemma: 'digital', pos: 'other' },
 		{ word: 'numérique', count: 33, lemma: 'numérique', pos: 'adj' },
-		{ word: 'burkina', count: 31, lemma: 'burkina', pos: 'propn' },
 		{ word: 'islamique', count: 30, lemma: 'islamique', pos: 'adj' },
-		{ word: 'faso', count: 27, lemma: 'faso', pos: 'propn' },
 		{ word: 'musulman', count: 27, lemma: 'musulman', pos: 'noun' },
 		{ word: 'source', count: 27, lemma: 'source', pos: 'noun' },
-		{ word: 'décembre', count: 26, lemma: 'décembre', pos: 'noun' },
 		{ word: 'african', count: 26, lemma: 'african', pos: 'other' },
 		{ word: 'consulter', count: 26, lemma: 'consulter', pos: 'verb' },
 		{ word: 'afrique', count: 24, lemma: 'afrique', pos: 'propn' },
@@ -40,7 +37,6 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'article', count: 16, lemma: 'article', pos: 'noun' },
 		{ word: 'chercheur', count: 16, lemma: 'chercheur', pos: 'noun' },
 		{ word: 'africain', count: 15, lemma: 'africain', pos: 'adj' },
-		{ word: 'madore', count: 14, lemma: 'madore', pos: 'noun' },
 		{ word: 'base', count: 14, lemma: 'base', pos: 'noun' },
 		{ word: 'humanité', count: 12, lemma: 'humanité', pos: 'noun' },
 		{ word: 'accès', count: 12, lemma: 'accès', pos: 'noun' },
@@ -72,11 +68,9 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'association', count: 8, lemma: 'association', pos: 'noun' },
 		{ word: 'développement', count: 8, lemma: 'développement', pos: 'noun' },
 		{ word: 'dir', count: 8, lemma: 'dir', pos: 'noun' },
-		{ word: 'frédérick', count: 7, lemma: 'frédérick', pos: 'propn' },
 		{ word: 'libre', count: 7, lemma: 'libre', pos: 'adj' },
 		{ word: 'lier', count: 7, lemma: 'lier', pos: 'verb' },
 		{ word: 'studies', count: 7, lemma: 'studies', pos: 'other' },
-		{ word: 'frederick', count: 7, lemma: 'frederick', pos: 'noun' },
 		{ word: 'écrire', count: 7, lemma: 'écrire', pos: 'verb' },
 		{ word: 'communauté', count: 7, lemma: 'communauté', pos: 'noun' },
 		{ word: 'particulièrement', count: 7, lemma: 'particulièrement', pos: 'adv' },
@@ -212,14 +206,17 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'partir', count: 3, lemma: 'partir', pos: 'verb' },
 		{ word: 'plateforme', count: 3, lemma: 'plateforme', pos: 'noun' },
 		{ word: 'généralement', count: 3, lemma: 'généralement', pos: 'adv' },
-		{ word: 'riche', count: 3, lemma: 'riche', pos: 'adj' }
+		{ word: 'riche', count: 3, lemma: 'riche', pos: 'adj' },
+		{ word: 'postcolonial', count: 3, lemma: 'postcolonial', pos: 'adj' },
+		{ word: 'privilégier', count: 3, lemma: 'privilégier', pos: 'adj' },
+		{ word: 'rivalité', count: 3, lemma: 'rivalité', pos: 'noun' },
+		{ word: 'white', count: 3, lemma: 'white', pos: 'other' },
+		{ word: 'enquête', count: 3, lemma: 'enquête', pos: 'noun' },
+		{ word: 'bernault', count: 3, lemma: 'bernault', pos: 'noun' }
 	],
 	bigrams: [
-		{ ngram: 'burkina faso', words: ["burkina", "faso"], count: 27 },
-		{ ngram: 'islam burkina', words: ["islam", "burkina"], count: 13 },
 		{ ngram: 'humanité numérique', words: ["humanit\u00e9", "num\u00e9rique"], count: 12 },
 		{ ngram: 'collection islam', words: ["collection", "islam"], count: 11 },
-		{ ngram: 'islamic africa', words: ["islamic", "africa"], count: 10 },
 		{ ngram: 'histoire contemporaine', words: ["histoire", "contemporaine"], count: 9 },
 		{ ngram: 'presse généraliste', words: ["presse", "g\u00e9n\u00e9raliste"], count: 7 },
 		{ ngram: 'publication islamique', words: ["publication", "islamique"], count: 7 },
@@ -244,6 +241,9 @@ export const analysis: PublicationTextAnalysis = {
 		{ ngram: 'étudiant musulman', words: ["\u00e9tudiant", "musulman"], count: 3 },
 		{ ngram: 'chercheur étranger', words: ["chercheur", "\u00e9tranger"], count: 3 },
 		{ ngram: 'digital library', words: ["digital", "library"], count: 3 },
-		{ ngram: 'étude africain', words: ["\u00e9tude", "africain"], count: 3 }
+		{ ngram: 'étude africain', words: ["\u00e9tude", "africain"], count: 3 },
+		{ ngram: 'digital savior', words: ["digital", "savior"], count: 3 },
+		{ ngram: 'savior complex', words: ["savior", "complex"], count: 3 },
+		{ ngram: 'digital reproduction', words: ["digital", "reproduction"], count: 3 }
 	]
 };
