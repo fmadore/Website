@@ -11,7 +11,7 @@ export const analysis: PublicationTextAnalysis = {
 	wordCount: 3047,
 	uniqueWords: 1154,
 	source: 'full-text',
-	analyzedAt: '2026-02-05',
+	analyzedAt: '2026-02-12',
 	frequencies: [
 		{ word: 'côte', count: 60, lemma: 'côte', pos: 'noun' },
 		{ word: 'ivoire', count: 60, lemma: 'ivoire', pos: 'propn' },

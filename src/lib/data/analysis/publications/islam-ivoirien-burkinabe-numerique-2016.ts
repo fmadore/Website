@@ -11,7 +11,7 @@ export const analysis: PublicationTextAnalysis = {
 	wordCount: 4135,
 	uniqueWords: 1414,
 	source: 'full-text',
-	analyzedAt: '2026-02-05',
+	analyzedAt: '2026-02-12',
 	frequencies: [
 		{ word: 'musulman', count: 98, lemma: 'musulman', pos: 'adj' },
 		{ word: 'islam', count: 69, lemma: 'islam', pos: 'noun' },

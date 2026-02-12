@@ -11,7 +11,7 @@ export const analysis: PublicationTextAnalysis = {
 	wordCount: 205,
 	uniqueWords: 149,
 	source: 'full-text',
-	analyzedAt: '2026-02-05',
+	analyzedAt: '2026-02-12',
 	frequencies: [
 		{ word: 'zmo', count: 5, lemma: 'zmo', pos: 'propn' },
 		{ word: 'west', count: 4, lemma: 'west', pos: 'propn' },

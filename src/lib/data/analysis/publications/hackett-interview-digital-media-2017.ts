@@ -11,7 +11,7 @@ export const analysis: PublicationTextAnalysis = {
 	wordCount: 1842,
 	uniqueWords: 862,
 	source: 'full-text',
-	analyzedAt: '2026-02-05',
+	analyzedAt: '2026-02-12',
 	frequencies: [
 		{ word: 'medium', count: 58, lemma: 'medium', pos: 'noun' },
 		{ word: 'religious', count: 46, lemma: 'religious', pos: 'adj' },

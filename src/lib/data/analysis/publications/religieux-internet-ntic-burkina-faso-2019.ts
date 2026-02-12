@@ -11,7 +11,7 @@ export const analysis: PublicationTextAnalysis = {
 	wordCount: 5318,
 	uniqueWords: 1638,
 	source: 'full-text',
-	analyzedAt: '2026-02-05',
+	analyzedAt: '2026-02-12',
 	frequencies: [
 		{ word: 'religieux', count: 92, lemma: 'religieux', pos: 'adj' },
 		{ word: 'burkina', count: 77, lemma: 'burkina', pos: 'propn' },

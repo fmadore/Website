@@ -11,7 +11,7 @@ export const analysis: PublicationTextAnalysis = {
 	wordCount: 5572,
 	uniqueWords: 1987,
 	source: 'full-text',
-	analyzedAt: '2026-02-05',
+	analyzedAt: '2026-02-12',
 	frequencies: [
 		{ word: 'togo', count: 149, lemma: 'togo', pos: 'propn' },
 		{ word: 'muslim', count: 55, lemma: 'muslim', pos: 'adj' },
