@@ -1,6 +1,7 @@
 import type { Communication } from '$lib/types/communication';
 import type { Publication } from '$lib/types';
 import type { Activity } from '$lib/types/activity';
+import type { Grant } from '$lib/types/grant';
 import {
 	author,
 	contact,
@@ -110,6 +111,30 @@ export interface WebPageSchema {
 	mainEntity?: {
 		'@id': string;
 	};
+}
+
+/**
+ * MonetaryGrant schema for JSON-LD - Schema.org structured data for research grants
+ * @see https://schema.org/MonetaryGrant
+ */
+export interface MonetaryGrantSchema {
+	'@context'?: 'https://schema.org';
+	'@type': 'MonetaryGrant';
+	'@id'?: string;
+	name: string;
+	description?: string;
+	funder: {
+		'@type': 'Organization';
+		name: string;
+	};
+	startDate?: string;
+	endDate?: string;
+	amount?: {
+		'@type': 'MonetaryAmount';
+		value: number;
+		currency: string;
+	};
+	identifier?: string;
 }
 
 // ============================================================================
@@ -239,6 +264,73 @@ export function createWebPageSchema(options: {
 	}
 
 	return schema;
+}
+
+/**
+ * Creates a MonetaryGrant schema from a Grant data object
+ * Only includes awarded grants — turned-down grants are excluded from structured data
+ *
+ * @param grant - Grant data object
+ * @param pageUrl - URL of the page containing the grant (used for @id)
+ * @returns MonetaryGrant JSON-LD schema, or null if grant is not awarded
+ */
+export function createMonetaryGrantSchema(
+	grant: Grant,
+	pageUrl: string
+): MonetaryGrantSchema | null {
+	if (grant.status && grant.status !== 'Awarded') return null;
+
+	const schema: MonetaryGrantSchema = {
+		'@type': 'MonetaryGrant',
+		'@id': `${pageUrl}#grant-${grant.id}`,
+		name: grant.title,
+		funder: {
+			'@type': 'Organization',
+			name: grant.funder
+		}
+	};
+
+	if (grant.projectTitle) {
+		schema.description = grant.projectTitle;
+	}
+
+	if (grant.dateISOStart) {
+		schema.startDate = grant.dateISOStart;
+	}
+
+	if (grant.dateISOEnd) {
+		schema.endDate = grant.dateISOEnd;
+	}
+
+	if (grant.amount && grant.currency) {
+		schema.amount = {
+			'@type': 'MonetaryAmount',
+			value: grant.amount,
+			currency: grant.currency
+		};
+	}
+
+	if (grant.id) {
+		schema.identifier = grant.id;
+	}
+
+	return schema;
+}
+
+/**
+ * Creates MonetaryGrant schemas for all awarded grants associated with a project
+ *
+ * @param grants - Array of Grant data objects
+ * @param pageUrl - URL of the page containing the grants
+ * @returns Array of MonetaryGrant JSON-LD schemas (only awarded grants)
+ */
+export function createMonetaryGrantSchemas(
+	grants: Grant[],
+	pageUrl: string
+): MonetaryGrantSchema[] {
+	return grants
+		.map((grant) => createMonetaryGrantSchema(grant, pageUrl))
+		.filter((schema): schema is MonetaryGrantSchema => schema !== null);
 }
 
 /**

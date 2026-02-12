@@ -23,6 +23,7 @@ Provides consistent structure for all research project pages including:
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
+	import { useGrantsJsonLd } from '$lib/utils/grantsJsonLd.svelte';
 	import { base } from '$app/paths';
 
 	interface Props {
@@ -72,6 +73,9 @@ Provides consistent structure for all research project pages including:
 
 	// Inject breadcrumb JSON-LD structured data
 	useBreadcrumbJsonLd(() => breadcrumbItems);
+
+	// Inject MonetaryGrant JSON-LD for associated grants
+	useGrantsJsonLd(() => projectName);
 </script>
 
 <SEO
