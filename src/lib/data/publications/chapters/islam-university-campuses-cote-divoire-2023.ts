@@ -44,6 +44,14 @@ export const islamUniversityCampusesCoteDIvoire: Publication = {
 			source:
 				'In Covid-19 in Africa: Societal and Economic Implications, edited by Susan Arndt, Banhoro Yacouba, Taibat Lawanson, Enocent Msindo, and Peter Simatei, 173-96. Cham: Palgrave Macmillan, 2023',
 			url: 'https://doi.org/10.1007/978-3-031-40316-3_8'
+		},
+		{
+			authors: ["N'Dri, Octavien Marc Aurèle"],
+			year: 2025,
+			title:
+				"Influence sociale et symbolique des prédicateurs indiens et pakistanais de la Jamaʿat Tabligh en Côte d'Ivoire (1964-2016)",
+			source: 'Journal des africanistes 95, no. 2 (2025): 104-28',
+			url: 'https://doi.org/10.4000/15onu'
 		}
 	]
 };
