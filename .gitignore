@@ -37,3 +37,4 @@ tests/example.spec.js
 # Claude Code
 .claude/
 tmpclaude-*
+nul
