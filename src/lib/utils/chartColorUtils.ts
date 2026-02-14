@@ -104,18 +104,18 @@ export function prefersReducedMotion(): boolean {
 
 /**
  * Base chart colors from the design system.
- * These are fallback values matching design system v2.0 (warm earth tones).
+ * These are fallback values matching the teal/amber design system.
  */
 export const CHART_COLOR_FALLBACKS = {
-	primary: '#9a4419',
-	primaryDark: '#7a3516',
-	text: '#2d2820',
-	textLight: '#7a7267',
-	border: '#e8e4df',
-	surface: '#faf9f7',
-	surfaceRgb: '250, 249, 247',
+	primary: '#0f766e',
+	primaryDark: '#115e59',
+	text: '#1f2937',
+	textLight: '#6b7280',
+	border: '#e5e7eb',
+	surface: '#f9fafb',
+	surfaceRgb: '249, 250, 251',
 	white: '#ffffff',
-	accent: '#c4a35a',
+	accent: '#f59e0b',
 	highlight: '#f59e0b',
 	success: '#10b981',
 	secondary: '#6b7280',

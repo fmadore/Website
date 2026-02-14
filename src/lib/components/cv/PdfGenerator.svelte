@@ -11,7 +11,7 @@
 	 * - Clickable links for contact info
 	 *
 	 * Design improvements:
-	 * - Refined color palette matching website's warm earth tone theme (terracotta/gold)
+	 * - Refined color palette matching website's teal/amber design system
 	 * - Better visual hierarchy with improved font sizes
 	 * - Professional header design with name prominence
 	 * - Decorative accent lines and section dividers
@@ -112,16 +112,16 @@
 				PARAGRAPH_GAP: 1 // Gap between paragraphs in same entry
 			};
 
-			// Refined color palette - matching website's warm earth tone theme
+			// Refined color palette - matching website's teal/amber design system
 			const COLORS = {
-				PRIMARY: [154, 68, 25] as [number, number, number], // #9a4419 - Terracotta
-				PRIMARY_DARK: [122, 53, 22] as [number, number, number], // #7a3516 - Dark terracotta
-				ACCENT: [196, 163, 90] as [number, number, number], // #c4a35a - Desert gold
-				TEXT: [45, 40, 32] as [number, number, number], // #2d2820 - Warm dark
-				TEXT_LIGHT: [122, 114, 103] as [number, number, number], // #7a7267 - Warm gray
-				TEXT_MUTED: [168, 161, 150] as [number, number, number], // #a8a196 - Warm muted
-				BORDER: [232, 228, 223] as [number, number, number], // #e8e4df - Warm border
-				BACKGROUND_LIGHT: [250, 249, 247] as [number, number, number] // #faf9f7 - Warm light bg
+				PRIMARY: [15, 118, 110] as [number, number, number], // #0f766e - Teal 700
+				PRIMARY_DARK: [17, 94, 89] as [number, number, number], // #115e59 - Teal 800
+				ACCENT: [245, 158, 11] as [number, number, number], // #f59e0b - Amber 500
+				TEXT: [31, 41, 55] as [number, number, number], // #1f2937 - Neutral 800
+				TEXT_LIGHT: [107, 114, 128] as [number, number, number], // #6b7280 - Neutral 500
+				TEXT_MUTED: [156, 163, 175] as [number, number, number], // #9ca3af - Neutral 400
+				BORDER: [229, 231, 235] as [number, number, number], // #e5e7eb - Neutral 200
+				BACKGROUND_LIGHT: [249, 250, 251] as [number, number, number] // #f9fafb - Neutral 50
 			};
 
 			// Layout constants
@@ -405,9 +405,9 @@
 						while (nextElement) {
 							if (nextElement.tagName === 'DIV' && nextElement.classList.contains('space-y-3')) {
 								// Handle flex layout entries
-								const entries = nextElement.querySelectorAll('.flex.gap-4');
+								const entries = nextElement.querySelectorAll('.cv-entry, .flex.gap-4');
 
-								// If no flex entries, check for simple div children (e.g., Fieldwork section)
+								// If no entries, check for simple div children (e.g., Fieldwork section)
 								if (entries.length === 0) {
 									const simpleEntries = nextElement.querySelectorAll(':scope > div');
 									simpleEntries.forEach((entry) => {
@@ -439,8 +439,8 @@
 								}
 
 								entries.forEach((entry) => {
-									const yearDiv = entry.querySelector('div:first-child');
-									const contentDiv = entry.querySelector('div.flex-1');
+									const yearDiv = entry.querySelector('.cv-entry-year') || entry.querySelector('div:first-child');
+									const contentDiv = entry.querySelector('.cv-entry-content') || entry.querySelector('div.flex-1');
 
 									if (yearDiv && contentDiv) {
 										const year = yearDiv.textContent?.trim() || '';
@@ -551,8 +551,8 @@
 					// Add extra spacing to match sections with subsections
 					yPosition += SPACING.SUBSECTION_TOP;
 
-					// First check for flex layout entries
-					const flexEntries = section.querySelectorAll('.flex.gap-4');
+					// First check for flex layout entries - CVEntry uses .cv-entry, some use .flex.gap-4
+					const flexEntries = section.querySelectorAll('.cv-entry, .flex.gap-4');
 					if (flexEntries.length > 0) {
 						flexEntries.forEach((entry) => {
 							// Check for language badge layout (Languages section)
@@ -576,12 +576,13 @@
 								return; // Skip to next entry
 							}
 
-							// Check for year column (first div with text-nowrap or w-20 class)
-							const firstDiv = entry.querySelector('div:first-child');
-							const contentDiv = entry.querySelector('div.flex-1, div:last-child');
+							// Check for year column - CVEntry uses .cv-entry-year/.cv-entry-content
+							const firstDiv = entry.querySelector('.cv-entry-year') || entry.querySelector('div:first-child');
+							const contentDiv = entry.querySelector('.cv-entry-content') || entry.querySelector('div.flex-1, div:last-child');
 
 							if (firstDiv && contentDiv) {
 								const hasYearColumn =
+									firstDiv.classList.contains('cv-entry-year') ||
 									firstDiv.classList.contains('text-nowrap') ||
 									firstDiv.classList.contains('w-20') ||
 									firstDiv.classList.contains('font-semibold');

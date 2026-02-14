@@ -1,41 +1,35 @@
-/* Enhanced CSS Variables for Academic Website */
-/* Design System v2.0 - Refined for consistency and visual harmony */
+/* CSS Design Tokens */
 
 :root {
 	/* ===== COLOR FOUNDATION ===== */
-	/*
-	 * Neutral palette: Warm gray/taupe for sophisticated warmth
-	 * Shifted from cool slate to warmer tones that complement terracotta
-	 */
+
+	/* Neutral: Cool gray */
 	--sys-color-neutral-0: #ffffff;
-	--sys-color-neutral-50: #faf9f7;
-	--sys-color-neutral-100: #f5f3f0;
-	--sys-color-neutral-200: #e8e4df;
-	--sys-color-neutral-300: #d4cfc7;
-	--sys-color-neutral-400: #a8a196;
-	--sys-color-neutral-500: #7a7267;
-	--sys-color-neutral-600: #5c554b;
-	--sys-color-neutral-700: #443e36;
-	--sys-color-neutral-800: #2d2820;
-	--sys-color-neutral-900: #1a1612;
-	--sys-color-neutral-950: #0d0b09;
+	--sys-color-neutral-50: #f9fafb;
+	--sys-color-neutral-100: #f3f4f6;
+	--sys-color-neutral-200: #e5e7eb;
+	--sys-color-neutral-300: #d1d5db;
+	--sys-color-neutral-400: #9ca3af;
+	--sys-color-neutral-500: #6b7280;
+	--sys-color-neutral-600: #4b5563;
+	--sys-color-neutral-700: #374151;
+	--sys-color-neutral-800: #1f2937;
+	--sys-color-neutral-900: #111827;
+	--sys-color-neutral-950: #030712;
 
-	/*
-	 * Primary: Terracotta/Burnt Sienna - warm, earthy, scholarly
-	 * Inspired by West African earth tones and traditional manuscripts
-	 */
-	--sys-color-terracotta-950: #3d1a0a;
-	--sys-color-terracotta-900: #5c2710;
-	--sys-color-terracotta-800: #7a3516;
-	--sys-color-terracotta-700: #9a4419;
-	--sys-color-terracotta-600: #b5651d;
-	--sys-color-terracotta-500: #cd7f32;
-	--sys-color-terracotta-400: #d4956a;
-	--sys-color-terracotta-300: #e5bfa3;
-	--sys-color-terracotta-200: #f2ddd0;
-	--sys-color-terracotta-100: #faf0e8;
+	/* Primary: Teal */
+	--sys-color-teal-950: #042f2e;
+	--sys-color-teal-900: #134e4a;
+	--sys-color-teal-800: #115e59;
+	--sys-color-teal-700: #0f766e;
+	--sys-color-teal-600: #0d9488;
+	--sys-color-teal-500: #14b8a6;
+	--sys-color-teal-400: #2dd4bf;
+	--sys-color-teal-300: #5eead4;
+	--sys-color-teal-200: #99f6e4;
+	--sys-color-teal-100: #ccfbf1;
 
-	/* Legacy blue colors - kept for compatibility and data viz */
+	/* Blue: Data visualization */
 	--sys-color-blue-950: #0c1929;
 	--sys-color-blue-900: #172554;
 	--sys-color-blue-800: #1e3a5f;
@@ -47,34 +41,14 @@
 	--sys-color-blue-200: #bfdbfe;
 	--sys-color-blue-100: #dbeafe;
 
-	/*
-	 * Accent: Desert Gold/Sand - warm, complementary
-	 * Harmonizes with terracotta while providing clear distinction
-	 */
-	--sys-color-gold-800: #705c14;
-	--sys-color-gold-700: #8b6914;
-	--sys-color-gold-600: #a67c00;
-	--sys-color-gold-500: #c4a35a;
-	--sys-color-gold-400: #d4b96a;
-	--sys-color-gold-300: #e5d4a3;
-	--sys-color-gold-200: #f2ead0;
-	--sys-color-gold-100: #faf6e8;
-
-	/* Legacy teal colors - kept for compatibility */
-	--sys-color-teal-700: #0f766e;
-	--sys-color-teal-600: #0d9488;
-	--sys-color-teal-500: #14b8a6;
-	--sys-color-teal-400: #2dd4bf;
-	--sys-color-teal-300: #5eead4;
-
-	/*
-	 * Highlight: Bright Desert Gold - attention, importance
-	 * Brighter variant for emphasis and calls-to-action
-	 */
+	/* Accent/Highlight: Amber */
+	--sys-color-amber-700: #b45309;
 	--sys-color-amber-600: #d97706;
 	--sys-color-amber-500: #f59e0b;
 	--sys-color-amber-400: #fbbf24;
 	--sys-color-amber-300: #fcd34d;
+	--sys-color-amber-200: #fde68a;
+	--sys-color-amber-100: #fef3c7;
 
 	/* Success: Emerald - positive outcomes */
 	--sys-color-emerald-600: #059669;
@@ -88,29 +62,25 @@
 	--sys-color-red-400: #f87171;
 
 	/* ===== SEMANTIC COLOR TOKENS ===== */
-	/* Primary - Main brand color for CTAs, links, active states (Terracotta) */
-	--color-primary: var(--sys-color-terracotta-700);
+	/* Primary */
+	--color-primary: var(--sys-color-teal-700);
+	--color-primary-dark: var(--sys-color-teal-800);
+	--color-primary-light: var(--sys-color-teal-500);
+	--color-primary-lighter: var(--sys-color-teal-400);
 
-	--color-primary-dark: var(--sys-color-terracotta-800);
-	--color-primary-light: var(--sys-color-terracotta-500);
-	--color-primary-lighter: var(--sys-color-terracotta-400);
-
-	/* Secondary - Supporting UI elements (Warm gray) */
+	/* Secondary */
 	--color-secondary: var(--sys-color-neutral-600);
-
 	--color-secondary-light: var(--sys-color-neutral-500);
 
-	/* Accent - Highlights, badges, special elements (Desert Gold) */
-	--color-accent: var(--sys-color-gold-500);
+	/* Accent */
+	--color-accent: var(--sys-color-amber-500);
+	--color-accent-dark: var(--sys-color-amber-600);
+	--color-accent-light: var(--sys-color-amber-400);
 
-	--color-accent-dark: var(--sys-color-gold-600);
-	--color-accent-light: var(--sys-color-gold-400);
-
-	/* Highlight - Important callouts, featured content (Brighter Gold) */
-	--color-highlight: var(--sys-color-gold-400);
-
-	--color-highlight-dark: var(--sys-color-gold-500);
-	--color-highlight-light: var(--sys-color-gold-300);
+	/* Highlight */
+	--color-highlight: var(--sys-color-amber-400);
+	--color-highlight-dark: var(--sys-color-amber-500);
+	--color-highlight-light: var(--sys-color-amber-300);
 
 	/* Success - Positive states, confirmations */
 	--color-success: var(--sys-color-emerald-500);
@@ -166,21 +136,13 @@
 	--color-code-bg: var(--sys-color-neutral-100);
 
 	/* ===== TIMELINE/CHART COLORS ===== */
-	/* Warm-harmonized palette for data visualization categories */
-	--color-timeline-positions: #d4956a;
-	/* Terracotta 400 - Work/Positions */
-	--color-timeline-education: #6b9e4f;
-	/* Sage Green - Education */
-	--color-timeline-grants: #d4b96a;
-	/* Gold 400 - Grants/Funding */
-	--color-timeline-publications: #5c8ab4;
-	/* Dusty Blue - Publications */
-	--color-timeline-presentations: #a67c9b;
-	/* Mauve - Presentations */
-	--color-timeline-awards: #cd7f32;
-	/* Bronze/Terracotta 500 - Awards/Honors */
-	--color-timeline-fieldwork: #6b9a8d;
-	/* Sage Teal - Fieldwork */
+	--color-timeline-positions: #0d9488; /* Teal 600 */
+	--color-timeline-education: #6b9e4f; /* Sage Green */
+	--color-timeline-grants: #f59e0b; /* Amber 500 */
+	--color-timeline-publications: #5c8ab4; /* Dusty Blue */
+	--color-timeline-presentations: #a67c9b; /* Mauve */
+	--color-timeline-awards: #d97706; /* Amber 600 */
+	--color-timeline-fieldwork: #14b8a6; /* Teal 500 */
 
 
 	/* ===== UTILITY COLORS ===== */
@@ -192,39 +154,27 @@
 
 	/* ===== COMPONENT COLOR LAYERS ===== */
 	--color-background-alt: var(--color-surface);
-	--color-footer-bg: var(--sys-color-terracotta-950);
+	--color-footer-bg: var(--sys-color-teal-950);
 	--color-footer-text: var(--sys-color-neutral-100);
 	--color-footer-text-muted: color-mix(in srgb, var(--sys-color-neutral-100) 75%, transparent);
 	--color-sidebar-bg: var(--color-surface);
 
-	/* Button color schemes - for glass buttons and variants */
+	/* Button color schemes */
 	--color-secondary-scheme: var(--color-accent);
-
-	--color-secondary-scheme-alt: var(--sys-color-gold-600);
-
+	--color-secondary-scheme-alt: var(--sys-color-amber-600);
 	--color-tertiary-scheme: var(--color-success);
-
 	--color-tertiary-scheme-alt: var(--sys-color-emerald-600);
-
 	--color-glass-scheme: var(--color-primary);
-
 	--color-glass-scheme-alt: var(--color-primary-light);
 
-	/* Legacy dark surface tokens (for compatibility) */
+	/* Dark surface tokens */
 	--color-dark-surface: var(--sys-color-neutral-700);
-
 	--color-dark-surface-alt: var(--sys-color-neutral-800);
-
 	--color-dark-surface-deep: var(--sys-color-neutral-900);
 
 	/* ===== TYPOGRAPHY SCALE ===== */
-	/* 
-	 * Fluid type scale using a 1.2 (minor third) ratio
-	 * Base: 16px → 18px across viewport range
-	 * More harmonious progression for academic readability
-	 */
 
-	/* Font Families - Modern Academic: Source Serif 4 (headings) + IBM Plex Sans (body) */
+	/* Font Families */
 	--sys-font-family-sans:
 		'IBM Plex Sans', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial',
 		sans-serif;
@@ -488,10 +438,10 @@
 	--shadow-none: none;
 
 	/* Colored shadows for emphasis */
-	--shadow-primary: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-terracotta-700) 25%, transparent);
-	--shadow-primary-lg: 0 10px 25px -5px color-mix(in srgb, var(--sys-color-terracotta-700) 30%, transparent);
-	--shadow-accent: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-gold-500) 25%, transparent);
-	--shadow-highlight: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-gold-400) 25%, transparent);
+	--shadow-primary: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-teal-700) 25%, transparent);
+	--shadow-primary-lg: 0 10px 25px -5px color-mix(in srgb, var(--sys-color-teal-700) 30%, transparent);
+	--shadow-accent: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-amber-500) 25%, transparent);
+	--shadow-highlight: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-amber-400) 25%, transparent);
 	--shadow-success: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-emerald-500) 25%, transparent);
 	--shadow-danger: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-red-600) 25%, transparent);
 
@@ -756,8 +706,8 @@
 	--card-glass-inset-dark: 0.06;
 	--card-glass-inset-dark-hover: 0.1;
 
-	/* Card shadow tokens - warm terracotta-based */
-	--card-shadow-color: 154, 68, 25;
+	/* Card shadow tokens */
+	--card-shadow-color: 15, 118, 110;
 	--card-shadow-opacity: 0.1;
 	--card-shadow-opacity-hover: 0.15;
 	--card-transform-hover: var(--transform-lift-md);
@@ -806,149 +756,93 @@
 }
 
 /* ===== DARK THEME ===== */
-/*
- * Warm dark mode with terracotta/gold palette
- * WCAG AA compliant color combinations
- */
 html.dark {
-	/* ===== PRIMARY COLORS (Terracotta) ===== */
-	--color-primary: #d4956a;
-	/* Terracotta 400 - warm, excellent visibility */
+	/* Primary (Teal) */
+	--color-primary: #2dd4bf; /* teal-400 */
+	--color-primary-dark: #14b8a6; /* teal-500 */
+	--color-primary-light: #5eead4; /* teal-300 */
+	--color-primary-lighter: #99f6e4; /* teal-200 */
 
-	--color-primary-dark: #cd7f32;
-	/* Terracotta 500 */
-	--color-primary-light: #e5bfa3;
-	/* Terracotta 300 */
-	--color-primary-lighter: #f2ddd0;
-	/* Terracotta 200 */
+	/* Secondary */
+	--color-secondary: #9ca3af; /* neutral-400 */
+	--color-secondary-light: #d1d5db; /* neutral-300 */
 
-	/* ===== SECONDARY (Warm Gray) ===== */
-	--color-secondary: #a8a196;
-	/* Warm neutral 400 */
+	/* Accent (Amber) */
+	--color-accent: #fbbf24; /* amber-400 */
+	--color-accent-dark: #f59e0b; /* amber-500 */
+	--color-accent-light: #fcd34d; /* amber-300 */
 
-	--color-secondary-light: #d4cfc7;
-	/* Warm neutral 300 */
+	/* Highlight */
+	--color-highlight: #fcd34d; /* amber-300 */
+	--color-highlight-dark: #fbbf24; /* amber-400 */
+	--color-highlight-light: #fde68a; /* amber-200 */
 
-	/* ===== ACCENT (Desert Gold) ===== */
-	--color-accent: #d4b96a;
-	/* Gold 400 */
+	/* Success */
+	--color-success: #34d399; /* emerald-400 */
+	--color-success-dark: #10b981; /* emerald-500 */
 
-	--color-accent-dark: #c4a35a;
-	/* Gold 500 */
-	--color-accent-light: #e5d4a3;
-	/* Gold 300 */
+	/* Danger */
+	--color-danger: #f87171; /* red-400 */
+	--color-danger-dark: #ef4444; /* red-500 */
+	--color-danger-light: #fca5a5; /* red-300 */
 
-	/* ===== HIGHLIGHT (Bright Gold) ===== */
-	--color-highlight: #e5d4a3;
-	/* Gold 300 - bright for dark mode */
+	/* Backgrounds */
+	--color-background: #111827; /* neutral-900 */
+	--color-background-subtle: #1f2937; /* neutral-800 */
+	--color-background-muted: #374151; /* neutral-700 */
 
-	--color-highlight-dark: #d4b96a;
-	/* Gold 400 */
-	--color-highlight-light: #f2ead0;
-	/* Gold 200 */
-
-	/* ===== SUCCESS ===== */
-	--color-success: #34d399;
-	/* Emerald 400 */
-
-	--color-success-dark: #10b981;
-	/* Emerald 500 */
-
-	/* ===== DANGER ===== */
-	--color-danger: #f87171;
-	/* Red 400 */
-
-	--color-danger-dark: #ef4444;
-	/* Red 500 */
-	--color-danger-light: #fca5a5;
-	/* Red 300 */
-
-	/* ===== BACKGROUNDS (Warm Dark) ===== */
-	--color-background: #1a1612;
-	/* Warm neutral 900 */
-
-	--color-background-subtle: #2d2820;
-	/* Warm neutral 800 */
-	--color-background-muted: #443e36;
-	/* Warm neutral 700 */
-
-	/* ===== TEXT ===== */
-	--color-text: #f5f3f0;
-	/* Warm neutral 100 */
-
-	--color-text-light: #d4cfc7;
-	/* Warm neutral 300 */
-	--color-text-muted: #a8a196;
-	/* Warm neutral 400 */
+	/* Text */
+	--color-text: #f3f4f6; /* neutral-100 */
+	--color-text-light: #d1d5db; /* neutral-300 */
+	--color-text-muted: #9ca3af; /* neutral-400 */
 	--color-text-emphasis: #ffffff;
-	--color-text-soft: #a8a196;
-	--color-text-inverted: #1a1612;
+	--color-text-soft: #9ca3af;
+	--color-text-inverted: #111827;
 
-	/* ===== SURFACES (Warm Dark) ===== */
-	--color-surface: #2d2820;
-	/* Warm neutral 800 */
+	/* Surfaces */
+	--color-surface: #1f2937; /* neutral-800 */
+	--color-surface-alt: #374151; /* neutral-700 */
+	--color-surface-elevated: #4b5563; /* neutral-600 */
+	--color-surface-sunken: #111827; /* neutral-900 */
+	--color-surface-border: #374151;
 
-	--color-surface-alt: #443e36;
-	/* Warm neutral 700 */
-	--color-surface-elevated: #5c554b;
-	/* Warm neutral 600 */
-	--color-surface-sunken: #1a1612;
-	/* Warm neutral 900 */
-	--color-surface-border: #443e36;
+	/* Borders */
+	--color-border: #374151; /* neutral-700 */
+	--color-border-light: #1f2937; /* neutral-800 */
+	--color-border-dark: #4b5563; /* neutral-600 */
+	--color-border-focus: #2dd4bf;
 
-	/* ===== BORDERS ===== */
-	--color-border: #443e36;
-	/* Warm neutral 700 */
-	--color-border-light: #2d2820;
-	/* Warm neutral 800 */
-	--color-border-dark: #5c554b;
-	/* Warm neutral 600 */
-	--color-border-focus: #d4956a;
+	/* Focus ring */
+	--focus-ring: 0 0 0 3px color-mix(in srgb, #2dd4bf 50%, transparent);
+	--focus-ring-color: #2dd4bf;
 
-	/* ===== FOCUS RING ===== */
-	--focus-ring: 0 0 0 3px color-mix(in srgb, #d4956a 50%, transparent);
-	--focus-ring-color: #d4956a;
+	/* Academic */
+	--color-citation: #fbbf24; /* amber-400 */
+	--color-quote: #e5e7eb; /* neutral-200 */
+	--color-note: #d1d5db; /* neutral-300 */
+	--color-code-bg: #1f2937;
 
-	/* ===== ACADEMIC COLORS ===== */
-	--color-citation: #d4b96a;
-	/* Gold accent */
-
-	--color-quote: #e8e4df;
-	/* Warm neutral 200 */
-	--color-note: #d4cfc7;
-	/* Warm neutral 300 */
-	--color-code-bg: #2d2820;
-
-	/* ===== COMPONENT LAYERS ===== */
-	--color-background-alt: #2d2820;
-	--color-footer-bg: #0d0b09;
-	/* Warm neutral 950 */
-	--color-footer-text: #f5f3f0;
-	--color-footer-text-muted: color-mix(in srgb, var(--sys-color-neutral-100) 70%, transparent);
-	--color-sidebar-bg: #2d2820;
+	/* Component layers */
+	--color-background-alt: #1f2937;
+	--color-footer-bg: #030712; /* neutral-950 */
+	--color-footer-text: #f3f4f6;
+	--color-footer-text-muted: color-mix(in srgb, #f3f4f6 70%, transparent);
+	--color-sidebar-bg: #1f2937;
 
 	/* Button schemes */
-	--color-secondary-scheme: #d4956a;
-
-	--color-secondary-scheme-alt: #cd7f32;
-
+	--color-secondary-scheme: #2dd4bf; /* teal-400 */
+	--color-secondary-scheme-alt: #14b8a6; /* teal-500 */
 	--color-tertiary-scheme: #34d399;
-
 	--color-tertiary-scheme-alt: #10b981;
+	--color-glass-scheme: #2dd4bf;
+	--color-glass-scheme-alt: #5eead4;
 
-	--color-glass-scheme: #d4956a;
+	/* Dark surface tokens */
+	--color-dark-surface: #1f2937;
+	--color-dark-surface-alt: #111827;
+	--color-dark-surface-deep: #030712;
 
-	--color-glass-scheme-alt: #e5bfa3;
-
-	/* Legacy dark surface tokens */
-	--color-dark-surface: #2d2820;
-
-	--color-dark-surface-alt: #1a1612;
-
-	--color-dark-surface-deep: #0d0b09;
-
-
-	/* ===== GLASSMORPHISM (DARK) ===== */
+	/* Glassmorphism (dark) */
 	--card-glass-opacity-light: 0.08;
 	--card-glass-opacity-light-hover: 0.12;
 	--card-glass-border-light: 0.08;
@@ -956,8 +850,7 @@ html.dark {
 	--card-glass-inset-light: 0.1;
 	--card-glass-inset-light-hover: 0.15;
 
-	/* ===== SHADOWS (DARK) ===== */
-	/* Deeper shadows for dark mode contrast */
+	/* Shadows (dark) */
 	--shadow-xs: 0 1px 2px 0 color-mix(in srgb, var(--color-black) 20%, transparent);
 	--shadow-sm:
 		0 1px 3px 0 color-mix(in srgb, var(--color-black) 30%, transparent),
@@ -976,13 +869,13 @@ html.dark {
 	--shadow-2xl:
 		0 35px 60px -15px color-mix(in srgb, var(--color-black) 70%, transparent);
 
-	/* Colored shadows - warm tones for dark mode */
-	--shadow-primary: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-terracotta-400) 30%, transparent);
-	--shadow-primary-lg: 0 10px 25px -5px color-mix(in srgb, var(--sys-color-terracotta-400) 35%, transparent);
-	--shadow-accent: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-gold-400) 30%, transparent);
-	--shadow-highlight: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-gold-300) 30%, transparent);
-	--shadow-success: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-emerald-400) 30%, transparent);
-	--shadow-danger: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-red-400) 30%, transparent);
+	/* Colored shadows (dark) */
+	--shadow-primary: 0 4px 14px -2px color-mix(in srgb, #2dd4bf 30%, transparent);
+	--shadow-primary-lg: 0 10px 25px -5px color-mix(in srgb, #2dd4bf 35%, transparent);
+	--shadow-accent: 0 4px 14px -2px color-mix(in srgb, #fbbf24 30%, transparent);
+	--shadow-highlight: 0 4px 14px -2px color-mix(in srgb, #fcd34d 30%, transparent);
+	--shadow-success: 0 4px 14px -2px color-mix(in srgb, #34d399 30%, transparent);
+	--shadow-danger: 0 4px 14px -2px color-mix(in srgb, #f87171 30%, transparent);
 
 	/* Glass shadows */
 	--shadow-glass:

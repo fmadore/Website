@@ -20,17 +20,17 @@ ECharts Stacked Bar Chart component
 		xAxisLabel = '',
 		yAxisLabel = '',
 		colors = [
-			'var(--color-primary)', // Blog post - terracotta
-			'var(--color-highlight)', // Book - gold/amber
-			'var(--color-accent)', // Book chapter - gold
+			'var(--color-primary)', // Blog post - teal
+			'var(--color-highlight)', // Book - amber
+			'var(--color-accent)', // Book chapter - amber
 			'var(--color-success)', // Bulletin article - green
-			'var(--sys-color-terracotta-400)', // Conference proceedings - light terracotta
+			'var(--sys-color-teal-400)', // Conference proceedings - light teal
 			'var(--color-secondary)', // Encyclopedia entry - neutral gray
-			'var(--sys-color-terracotta-600)', // Journal article - medium terracotta
+			'var(--sys-color-teal-600)', // Journal article - medium teal
 			'var(--sys-color-amber-400)', // Master's thesis - amber variant
 			'var(--color-danger)', // PhD dissertation - red
-			'var(--sys-color-gold-600)', // Research report - dark gold
-			'var(--color-primary-dark)' // Special issue - darkest terracotta
+			'var(--sys-color-amber-600)', // Research report - dark amber
+			'var(--color-primary-dark)' // Special issue - dark teal
 		]
 	}: {
 		data?: DataItem[];
