@@ -10,7 +10,7 @@
 		},
 		{
 			category: 'Development & infrastructure',
-			skills: 'Svelte, Git/GitHub, Docker, Cursor, prompt engineering, RAG implementation'
+			skills: 'Svelte, Git/GitHub, Docker, Claude Code, prompt engineering, RAG implementation'
 		},
 		{
 			category: 'Research & documentation',
