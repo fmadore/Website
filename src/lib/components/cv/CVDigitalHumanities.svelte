@@ -32,7 +32,7 @@
 		<div class="space-y-3">
 			{#each allDhProjects as project (project.id)}
 				<CVEntry year={formatYearRange(project.years)}>
-					<span class="font-medium">{project.title}</span>. {project.shortDescription}
+					<span class="font-medium">{project.title}</span>.
 					{#if project.linkUrl}
 						<a
 							href={project.linkUrl}
@@ -40,6 +40,9 @@
 							rel="noopener noreferrer"
 							class="ml-1 text-primary hover:underline text-sm">[Link]</a
 						>
+					{/if}
+					{#if project.shortDescription}
+						<div class="text-sm text-light">{project.shortDescription}</div>
 					{/if}
 					{#if project.reviews && project.reviews.length > 0}
 						<div class="mt-2 ml-4 text-sm">

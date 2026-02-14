@@ -52,9 +52,13 @@ export const extractRichText = (node: Element | ChildNode): TextFragment[] => {
             const doiMatch = text.match(/DOI:\s*(10\.\d{4,}\/[^\s]+)/i);
             if (doiMatch) {
                 const doi = doiMatch[1];
-                // Format: "DOI: 10.xxxx (https://doi.org/10.xxxx)"
-                const newText = text.replace(doiMatch[0], `DOI: ${doi} (https://doi.org/${doi})`);
-                fragments.push({ text: newText, style: 'normal' });
+                const doiUrl = `https://doi.org/${doi}`;
+                // Split text around DOI, making the DOI a clickable link
+                const beforeDoi = text.slice(0, doiMatch.index);
+                const afterDoi = text.slice((doiMatch.index || 0) + doiMatch[0].length);
+                if (beforeDoi) fragments.push({ text: beforeDoi, style: 'normal' });
+                fragments.push({ text: `DOI: ${doi}`, style: 'normal', href: doiUrl });
+                if (afterDoi) fragments.push({ text: afterDoi, style: 'normal' });
             } else {
                 fragments.push({ text, style: 'normal' });
             }
@@ -80,17 +84,24 @@ export const extractRichText = (node: Element | ChildNode): TextFragment[] => {
 
             // Handle special links logic (similar to originalPdfGenerator)
             if (!linkText || el.classList.contains('doi-link')) {
-                fragments.push({ text: linkText, style: 'normal' });
+                // DOI badge links: show "DOI: identifier" as clickable link
+                if (el.classList.contains('doi-link') && isValidDoiUrl(href)) {
+                    const doi = extractDoiFromUrl(href);
+                    fragments.push({ text: `DOI: ${doi}`, style: 'normal', href });
+                } else {
+                    fragments.push({ text: linkText, style: 'normal' });
+                }
             } else if (isValidDoiUrl(href)) {
-                // Safely extract DOI from validated URL (prevents URL substring attacks)
-                const doi = extractDoiFromUrl(href);
-                fragments.push({ text: `${linkText} (https://doi.org/${doi})`, style: 'normal', href });
+                // Other DOI links: just show the text as clickable
+                fragments.push({ text: linkText, style: 'normal', href });
             } else if (href.startsWith('http') || href.startsWith('mailto:')) {
                 const isGenericLinkText = /^\[?(link|listen|view|read|download|here|click)\]?$/i.test(linkText);
                 if (isGenericLinkText) {
-                    fragments.push({ text: href, style: 'normal', href });
+                    // Generic text: keep short label as clickable link (URL is in the href)
+                    fragments.push({ text: `[${linkText.replace(/[\[\]]/g, '') || 'Link'}]`, style: 'normal', href });
                 } else {
-                    fragments.push({ text: `${linkText} (${href})`, style: 'normal', href });
+                    // Descriptive text: make it a clickable link without appending the URL
+                    fragments.push({ text: linkText, style: 'normal', href });
                 }
             } else {
                 fragments.push({ text: linkText, style: 'normal' });
@@ -196,11 +207,18 @@ export const renderRichText = (
                     return;
                 }
 
-                currentX = x;
-                currentY += defaultLineHeight;
+                // Never break before punctuation — keep it on the current line
+                if (!/^[,.:;!?)}\]]+/.test(word)) {
+                    currentX = x;
+                    currentY += defaultLineHeight;
+                }
             }
 
-            pdf.text(word, currentX, currentY);
+            if (frag.href) {
+                pdf.textWithLink(word, currentX, currentY, { url: frag.href });
+            } else {
+                pdf.text(word, currentX, currentY);
+            }
             currentX += wordWidth;
         });
     });
@@ -240,8 +258,11 @@ export const measureRichTextHeight = (
 
             if (currentX + wordWidth > width) {
                 if (/^\s+$/.test(word) && currentX === 0) return;
-                currentX = 0;
-                lines++;
+                // Never break before punctuation
+                if (!/^[,.:;!?)}\]]+/.test(word)) {
+                    currentX = 0;
+                    lines++;
+                }
             }
             currentX += wordWidth;
         });

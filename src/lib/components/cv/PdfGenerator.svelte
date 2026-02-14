@@ -175,7 +175,7 @@
 				pdf.setFontSize(FONT_SIZE.FOOTER);
 				pdf.setFont('helvetica', 'normal');
 				pdf.setTextColor(...COLORS.TEXT_MUTED);
-				pdf.text('Frédérick Madore — CV', margin, pageHeight - 9);
+				pdf.text('Frédérick Madore, PhD — Curriculum Vitae', margin, pageHeight - 9);
 
 				// Page number on right
 				pdf.text(`Page ${pageNum}`, pageWidth - margin, pageHeight - 9, { align: 'right' });
@@ -445,16 +445,23 @@
 									if (yearDiv && contentDiv) {
 										const year = yearDiv.textContent?.trim() || '';
 
-										// Get main text and nested paragraphs separately
+										// Get main text and nested detail lines separately
 										const clone = contentDiv.cloneNode(true) as HTMLElement;
+										// Extract <p> and direct child <div> as detail lines
 										const nestedParagraphs = clone.querySelectorAll('p');
+										const nestedDivs = clone.querySelectorAll(':scope > div');
 
-										// Store paragraph fragments
+										// Store detail line fragments
 										const paragraphFragments: TextFragment[][] = [];
 										nestedParagraphs.forEach((p) => {
 											const fragments = trimFragments(extractRichText(p));
 											if (fragments.length > 0) paragraphFragments.push(fragments);
 											p.remove();
+										});
+										nestedDivs.forEach((div) => {
+											const fragments = trimFragments(extractRichText(div));
+											if (fragments.length > 0) paragraphFragments.push(fragments);
+											div.remove();
 										});
 
 										// Get main fragments
@@ -506,18 +513,15 @@
 												FONT_SIZE.BODY,
 												SPACING.LINE_HEIGHT_TIGHT
 											);
-
-											const spacingAfter =
-												paragraphFragments.length > 0
-													? SPACING.LINE_HEIGHT_TIGHT
-													: SPACING.LINE_HEIGHT;
-											yPosition += spacingAfter;
+											// Tighter gap when detail lines follow
+											yPosition += paragraphFragments.length > 0
+												? SPACING.PARAGRAPH_GAP
+												: SPACING.LINE_HEIGHT;
 										}
 
-										// Render nested paragraphs (reviews, etc) - Force Italic/Gray style
-										paragraphFragments.forEach((frags) => {
+										// Render detail lines (reviews, amounts, co-applicants, etc.)
+										paragraphFragments.forEach((frags, idx) => {
 											pdf.setTextColor(...COLORS.TEXT_LIGHT);
-											// Force italic for "Review in..." style paragraphs
 											frags.forEach((f: TextFragment) => {
 												if (f.style === 'normal') f.style = 'italic';
 												else if (f.style === 'bold') f.style = 'bolditalic';
@@ -534,7 +538,10 @@
 											);
 
 											pdf.setTextColor(...COLORS.TEXT);
-											yPosition += SPACING.LINE_HEIGHT_TIGHT;
+											// Tight gap between detail lines, larger after last one
+											yPosition += idx < paragraphFragments.length - 1
+												? SPACING.PARAGRAPH_GAP
+												: SPACING.LINE_HEIGHT_TIGHT;
 										});
 
 										yPosition += SPACING.ENTRY_GAP;
@@ -595,16 +602,23 @@
 									const isWideColumn = firstDiv.classList.contains('w-60');
 									const currentColumnWidth = isWideColumn ? 65 : yearColumnWidth;
 
-									// Get main text and nested paragraphs separately
+									// Get main text and nested detail lines separately
 									const clone = contentDiv.cloneNode(true) as HTMLElement;
+									// Extract <p> and direct child <div> as detail lines
 									const nestedParagraphs = clone.querySelectorAll('p');
+									const nestedDivs = clone.querySelectorAll(':scope > div');
 
-									// Store paragraph fragments
+									// Store detail line fragments
 									const paragraphFragments: TextFragment[][] = [];
 									nestedParagraphs.forEach((p) => {
 										const fragments = trimFragments(extractRichText(p));
 										if (fragments.length > 0) paragraphFragments.push(fragments);
 										p.remove();
+									});
+									nestedDivs.forEach((div) => {
+										const fragments = trimFragments(extractRichText(div));
+										if (fragments.length > 0) paragraphFragments.push(fragments);
+										div.remove();
 									});
 
 									// Get main fragments
@@ -656,13 +670,15 @@
 											FONT_SIZE.BODY,
 											SPACING.LINE_HEIGHT_TIGHT
 										);
-										yPosition += SPACING.LINE_HEIGHT;
+										// Tighter gap when detail lines follow
+										yPosition += paragraphFragments.length > 0
+											? SPACING.PARAGRAPH_GAP
+											: SPACING.LINE_HEIGHT;
 									}
 
-									// Render nested paragraphs
-									paragraphFragments.forEach((frags) => {
+									// Render detail lines (amounts, co-applicants, reviews, etc.)
+									paragraphFragments.forEach((frags, idx) => {
 										pdf.setTextColor(...COLORS.TEXT_LIGHT);
-										// Force italic for "Review in..." style paragraphs
 										frags.forEach((f: TextFragment) => {
 											if (f.style === 'normal') f.style = 'italic';
 											else if (f.style === 'bold') f.style = 'bolditalic';
@@ -679,7 +695,10 @@
 										);
 
 										pdf.setTextColor(...COLORS.TEXT);
-										yPosition += SPACING.LINE_HEIGHT_TIGHT;
+										// Tight gap between detail lines, larger after last one
+										yPosition += idx < paragraphFragments.length - 1
+											? SPACING.PARAGRAPH_GAP
+											: SPACING.LINE_HEIGHT_TIGHT;
 									});
 
 									yPosition += SPACING.ENTRY_GAP;
