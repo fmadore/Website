@@ -767,12 +767,15 @@
 					} else {
 						// Fallback: handle simple paragraph content (for sections like Fieldwork)
 						const paragraphs = section.querySelectorAll('p:not(.text-light)');
-						const divs = section.querySelectorAll('div:not(.space-y-3):not(.flex)');
+						const divs = section.querySelectorAll('div:not(.space-y-3):not(.flex):not(.cv-entry)');
 
 						const contentElements = paragraphs.length > 0 ? paragraphs : divs;
 						pdf.setTextColor(...COLORS.TEXT); // Ensure text color is reset for fallback content
 						contentElements.forEach((elem) => {
-							const fragments = trimFragments(extractRichText(elem));
+							// Clone and remove lists to avoid duplication (lists are handled separately below)
+							const clone = elem.cloneNode(true) as HTMLElement;
+							clone.querySelectorAll('ul, ol').forEach((list) => list.remove());
+							const fragments = trimFragments(extractRichText(clone));
 							const totalText = fragments.map((f) => f.text).join('');
 
 							if (totalText && !totalText.includes('No ') && totalText.length > 5) {
