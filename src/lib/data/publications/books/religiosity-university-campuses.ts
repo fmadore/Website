@@ -18,7 +18,7 @@ export const religiosityUniversityCampuses: Publication = {
 	doi: '10.58144/20241107-000',
 	url: 'https://doi.org/10.58144/20241107-000',
 	abstract: `This volume examines religiosity on university campuses in Sub-Saharan Africa. Focusing on both individuals and organized groups, the contributions open a window onto how religion becomes a factor, affects social interactions, is experienced and mobilized by various actors. It brings together case studies from various disciplinary backgrounds (anthropology, sociology, history, religious studies) and theoretical orientations to illustrate the significance of religiosity in recent developments on university campuses. It pays a particular attention to religion-informed activism and contributes a fresh analysis of processes that are shaping both the experience of being student and the university campus as a moral space. Finally, it sheds light onto the ways in which the campus becomes a site of a reformulation of both religiosity and sociality.`,
-	tags: ['religion', 'education', 'Africa', 'university', 'student activism'],
+	tags: ['Religion', 'Education', 'Africa', 'Universities', 'Student Activism'],
 	country: ['Uganda', 'Togo', 'Cameroon', 'Niger', "Côte d'Ivoire", 'Ghana', 'Nigeria'],
 	image: 'images/publications/religiosity-university-campuses.webp',
 	heroImage: {

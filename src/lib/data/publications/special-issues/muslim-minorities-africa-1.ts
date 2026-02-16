@@ -18,11 +18,11 @@ export const muslimMinoritiesAfrica1: Publication = {
 	tags: [
 		'Islam',
 		'Africa',
-		'religious minorities',
-		'Muslim communities',
-		'interfaith relations',
-		'special issue',
-		'religious coexistence'
+		'Religious Minorities',
+		'Muslim Communities',
+		'Interfaith Relations',
+		'Special Issue',
+		'Religious Coexistence'
 	],
 	url: 'https://brill.com/view/journals/iafr/12/2/iafr.12.issue-2.xml',
 	image: 'images/publications/muslim-minorities-africa.webp',

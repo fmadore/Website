@@ -21,8 +21,10 @@ export const madoreIslamPolitiqueOuagadougou2013: Publication = {
 		'Public Sphere',
 		'Ouagadougou',
 		'Imams',
-		'Preachers',
-		'Intergenerational Relations'
+		'Islamic Preachers',
+		'Intergenerational Relations',
+		'Burkina Faso',
+		'West Africa'
 	],
 	url: 'https://corpus.ulaval.ca/jspui/handle/20.500.11794/24012',
 	image: 'images/publications/islam-politique-ouagadougou-2013.webp',

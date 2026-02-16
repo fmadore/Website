@@ -22,10 +22,11 @@ export const islamUniversityCampusesCoteDIvoire: Publication = {
 	tags: [
 		"Côte d'Ivoire",
 		'Islam',
-		'university campuses',
+		'University Campuses',
 		'Salafism',
-		'Muslim intellectuals',
-		'higher education'
+		'Muslim Intellectuals',
+		'Higher Education',
+		'West Africa'
 	],
 	url: 'https://doi.org/10.58144/20241107-000',
 	image: 'images/publications/religiosity-university-campuses.webp',

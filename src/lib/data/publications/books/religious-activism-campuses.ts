@@ -22,16 +22,17 @@ export const religiousActivismCampuses: Publication = {
 
 The history of these associations reveals the campus as a microcosm reflecting wider national socio-political life, while also highlighting the importance of translocal factors in shaping the internal dynamics of these groups. Amidst the massification of university enrolments and rising graduate unemployment in recent decades, faith-based associations have come to offer more than religious guidance. Increasingly, they offer a "social curriculum", providing a space for socialisation and a set of skills, norms and moral values that complement the secular academic curriculum.`,
 	tags: [
-		'religion',
-		'education',
-		'politics',
+		'Religion',
+		'Education',
+		'Politics',
 		'Togo',
 		'Benin',
-		'student activism',
+		'Student Activism',
 		'Islam',
 		'Christianity',
-		'authoritarianism',
-		'secularism'
+		'Authoritarianism',
+		'Secularism',
+		'West Africa'
 	],
 	image: 'images/publications/religious-activism-campuses.webp',
 	heroImage: {

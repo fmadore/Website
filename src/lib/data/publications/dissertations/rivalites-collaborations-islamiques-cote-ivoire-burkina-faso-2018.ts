@@ -18,9 +18,10 @@ export const rivalitesCollaborationsIslam: Publication = {
 		"Côte d'Ivoire",
 		'Burkina Faso',
 		'Islam',
-		'associations islamiques',
-		'histoire',
-		'sociologie'
+		'Islamic Associations',
+		'History',
+		'Sociology',
+		'West Africa'
 	],
 	image: 'images/publications/dissertation-cote-ivoire-burkina-faso-2018.webp',
 	heroImage: {

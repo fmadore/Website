@@ -22,11 +22,13 @@ export const existerContexteAutoritaireLome: Publication = {
 	tags: [
 		'Togo',
 		'Lomé',
-		'authoritarian context',
-		'student associations',
+		'Authoritarian Context',
+		'Student Associations',
 		'Christianity',
 		'Islam',
-		'higher education'
+		'Higher Education',
+		'West Africa',
+		'Universities'
 	],
 	url: 'https://doi.org/10.58144/20241107-000',
 	image: 'images/publications/religiosity-university-campuses.webp',

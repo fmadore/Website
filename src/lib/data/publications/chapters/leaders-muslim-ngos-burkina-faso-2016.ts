@@ -22,10 +22,12 @@ export const leadersMuslimNGOsBurkinaFaso: Publication = {
 	tags: [
 		'Burkina Faso',
 		'Muslim NGOs',
-		'civic engagement',
-		'humanitarian assistance',
-		'Islamic leadership',
-		'transnational organizations'
+		'Civic Engagement',
+		'Humanitarian Assistance',
+		'Islamic Leadership',
+		'Transnational Organizations',
+		'Islam',
+		'West Africa'
 	],
 	url: 'https://doi.org/10.2307/j.ctt1gk0810.11',
 	image: 'images/publications/muslim-ngos-burkina-faso-2016.avif',

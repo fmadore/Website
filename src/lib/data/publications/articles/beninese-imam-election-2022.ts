@@ -19,7 +19,7 @@ export const beninImamElection: Publication = {
 	language: 'English',
 	doi: '10.1163/21540993-01202004',
 	abstract: `In Benin, the general furor surrounding the 2019 legislative elections held without opposition parties caused many to overlook the fact that Ibrahim Ousmane, a well-known imam from Cotonou, was ultimately elected to the National Assembly. His decision to run in the elections had sparked intense debates over political participation, the criteria used to select the community's "legitimate" representatives, and, more broadly, the nature of Islamic religious authority in a minority context. In this article, I use the controversy that erupted in 2019 as a starting point for exploring disputes within Benin's Muslim community and the dilemmas of Muslim minority politics. These disputes center on how its members can engage with national politics to promote their collective interests and maintain their political autonomy from the state. The crisis can also be understood in terms of a "generational" struggle for religious authority, in a context where there are competing sources of legitimacy.`,
-	tags: ['Benin', 'Cotonou', 'imam', 'Muslim leadership', 'elections', 'political engagement', 'laïcité', 'Muslim minority', 'religious authority'],
+	tags: ['Benin', 'Cotonou', 'Imams', 'Muslim Leadership', 'Elections', 'Political Engagement', 'Secularism', 'Muslim Minorities', 'Religious Authority', 'Islam', 'West Africa'],
 	url: 'https://doi.org/10.1163/21540993-01202004',
 	image: 'images/publications/muslim-minorities-africa.webp',
 	heroImage: {

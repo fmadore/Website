@@ -18,11 +18,13 @@ export const religionInternetBurkinaFaso: Publication = {
 	language: 'English',
 	tags: [
 		'Burkina Faso',
-		'religion',
-		'internet',
-		'digital media',
+		'Religion',
+		'Internet',
+		'Digital Media',
 		'ICT',
-		'communication technologies'
+		'Communication Technologies',
+		'Islam',
+		'West Africa'
 	],
 	url: 'https://www.amalion.net/catalogue/religious-encounters-and-social-dynamics-in-burkina-faso/',
 	image: 'images/publications/religion-internet-burkina-faso-2024.webp',

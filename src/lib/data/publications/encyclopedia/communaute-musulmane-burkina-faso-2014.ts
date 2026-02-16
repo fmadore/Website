@@ -22,7 +22,7 @@ export const communauteMusulmaneBurkinaFaso: Publication = {
 		src: 'images/publications/encyclopaedia-of-islam-hero.webp',
 		alt: 'Cover of the Encyclopaedia of Islam'
 	},
-	tags: ['Burkina Faso', 'Islam', 'CMBF'],
+	tags: ['Burkina Faso', 'Islam', 'CMBF', 'West Africa', 'Muslim Organizations'],
 	country: ['Burkina Faso'],
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 };

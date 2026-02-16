@@ -22,9 +22,10 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 		"Côte d'Ivoire",
 		'Burkina Faso',
 		'Islam',
-		'digital media',
-		'technology',
-		'religious practices'
+		'Digital Media',
+		'Technology',
+		'Religious Practices',
+		'West Africa'
 	],
 	url: 'https://doi.org/10.4000/jda.6525',
 	image: 'images/publications/journal-des-anthropologues.webp',
