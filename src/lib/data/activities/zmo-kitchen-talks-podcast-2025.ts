@@ -22,7 +22,7 @@ export const zmoKitchenTalksPodcast2025: Activity = {
             <li><a href="https://link.deezer.com/s/31RQUHFM3mhYI88kbzEW9" target="_blank" rel="noopener noreferrer">Deezer</a></li>
         </ul>
     `,
-	tags: ['Podcast', 'AI', 'African Studies', 'Islamic Studies', 'Digital Humanities', 'ZMO', 'IWAC'],
+	tags: ['Podcast', 'AI', 'African Studies', 'Islamic Studies', 'Digital Humanities', 'ZMO', 'IWAC', 'West Africa', 'Islam'],
     image: 'images/communications/zmo-kitchen-talks-podcast-2025.webp',
 		heroImage: {
 		src: 'images/communications/zmo-kitchen-talks-podcast-2025.webp',

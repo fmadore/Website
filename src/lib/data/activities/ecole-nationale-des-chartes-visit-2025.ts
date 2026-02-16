@@ -20,7 +20,9 @@ export const ecoleNationaleDesChartesVisit2025: Activity = {
 		'Digital Humanities',
 		'AI',
 		'Computational Methods',
-		'IWAC'
+		'IWAC',
+		'West Africa',
+		'Islam'
 	],
 	heroImage: {
 		src: 'images/activities/ecole-nationale-des-chartes.webp',

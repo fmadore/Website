@@ -33,7 +33,9 @@ export const archivesAlgorithmsIwac2025: Activity = {
 		'Transregional History',
 		'ENIUGH',
 		'Conference',
-		'IWAC'
+		'IWAC',
+		'Islam',
+		'West Africa'
 	],
 	type: 'conference',
 	heroImage: {

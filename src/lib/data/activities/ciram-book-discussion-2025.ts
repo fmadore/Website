@@ -24,7 +24,7 @@ export const ciramBookDiscussion2025: Activity = {
         <strong>💻 Format:</strong> Online (Zoom)<br>
         <strong>🔗 Registration:</strong> <a href="https://forms.gle/agWqJLs18daoiyaM9" target="_blank" rel="noreferrer noopener">https://forms.gle/agWqJLs18daoiyaM9</a></p>
     `,
-	tags: ['Book Launch', 'CIRAM', 'Université Laval', 'Talk', 'Togo', 'Benin'],
+	tags: ['Book Launch', 'CIRAM', 'Université Laval', 'Talk', 'Togo', 'Benin', 'Religious Activism', 'Islam'],
 	panelType: 'lecture',
     heroImage: {
 		src: 'images/communications/ciram-2025-hero.webp',

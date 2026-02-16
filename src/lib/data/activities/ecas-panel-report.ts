@@ -44,7 +44,7 @@ export const activity: Activity = {
 
 <p>Success demands radical metric shifts. Rather than celebrating technological sophistication, we must measure our tools' effectiveness in fostering more just and inclusive understandings of African histories and cultures. Progress requires collaborative development, sustained critical engagement with technology, and unwavering commitment to building equitable knowledge infrastructures—infrastructures that serve African communities rather than extract from them.</p>
 	`,
-	tags: ['ECAS', 'Digital Humanities', 'AI', 'African Studies', 'Conference'],
+	tags: ['ECAS', 'Digital Humanities', 'AI', 'African Studies', 'Conference', 'Panel', 'IWAC'],
 	image: '',
 	panelType: 'conference',
 	heroImage: {

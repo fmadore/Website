@@ -24,7 +24,7 @@ export const activity: Activity = {
         
         <p>Fall, Macodou. "Frédérick Madore, Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023. Berlin: De Gruyter, 2023. 308 Pages. ISBN: 978-3-11-142790-4." <em>Research Africa Reviews</em> 9, no. 3 (2025): 15–17.</p>
     `,
-    tags: ['Book Review', 'Religious Activism', 'Togo', 'Benin', 'Publication'],
+    tags: ['Book Review', 'Religious Activism', 'Togo', 'Benin', 'Publication', 'Islam', 'West Africa'],
     panelType: 'publication',
     heroImage: {
         src: 'images/activities/research-africa-reviews-hero.webp',

@@ -12,7 +12,7 @@ const volkswagenFoundationGrantIslamsPeripheries: Activity = {
 		alt: 'VolkswagenStiftung logo',
 	},
 	description: 'Awarded a grant under the Volkswagen Foundation\'s "Open Up" programme for a collaboration with Aksana Ismailbekova on AI-driven comparative history of Islamic archives in West Africa and Central Asia.',
-	tags: ['Grant', 'Digital Humanities', 'AI', 'West Africa', 'Central Asia', 'Volkswagen Foundation'],
+	tags: ['Grant', 'Digital Humanities', 'AI', 'West Africa', 'Central Asia', 'Volkswagen Foundation', 'Islam', 'IWAC', 'Archives', 'ZMO'],
 	content: `
 <p>I would like to express my gratitude to the <a href="https://www.volkswagenstiftung.de/en" target="_blank" rel="noopener noreferrer">VolkswagenStiftung</a> for supporting my research for the second time this year. As part of the <a href="https://www.volkswagenstiftung.de/en/funding/funding-offer/open-new-research-spaces-humanities-and-cultural-studies" target="_blank" rel="noopener noreferrer">"Open Up – New Research Spaces for the Humanities and Cultural Studies"</a> programme, this grant funds a new collaboration with my colleague, <a href="https://www.zmo.de/en/people/dr-aksana-ismailbekova" target="_blank" rel="noopener noreferrer">Aksana Ismailbekova</a>: "Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis and AI in West Africa and Central Asia".</p>
 

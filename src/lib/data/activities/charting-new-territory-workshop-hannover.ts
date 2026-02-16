@@ -23,7 +23,7 @@ export const chartingNewTerritoryWorkshopHannover: Activity = {
 		alt: 'Charting New Territory: Digital Humanities and AI in African Studies Workshop, Hannover',
 		caption: ''
 	},
-	tags: ['Digital Humanities', 'Artificial Intelligence', 'African Studies', 'Workshop'],
+	tags: ['Digital Humanities', 'AI', 'African Studies', 'Workshop', 'Volkswagen Foundation'],
 	type: 'workshop',
 	panelType: 'workshop'
 };

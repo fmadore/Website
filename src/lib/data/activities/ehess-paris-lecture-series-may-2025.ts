@@ -26,7 +26,14 @@ export const ehessParisLectureSeries2025: Activity = {
 		'Islam',
 		'Religious Pluralism',
 		'Digital Humanities',
-		'Talk'
+		'Talk',
+		'West Africa',
+		'Togo',
+		'Benin',
+		'Burkina Faso',
+		"Côte d'Ivoire",
+		'African Studies',
+		'IWAC'
 	],
 	image: 'images/communications/EHESS-2025.webp',
 	heroImage: {

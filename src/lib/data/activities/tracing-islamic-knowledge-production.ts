@@ -14,7 +14,7 @@ export const activity: Activity = {
 	content: `
         <p>At the workshop “Perspectives in Motion: Conceptual Fields from the Global South” hosted by ZMO, I presented findings from my research on Islamic knowledge production in Francophone West Africa. Drawing on a corpus of 1,500 Islamic periodicals from Benin, Burkina Faso, Côte d'Ivoire and Togo, my presentation <a href="${base}/communications/tracing-islamic-knowledge-production">“Tracing Islamic Knowledge Production in Francophone West African Newspapers (1990-Present)”</a> examined how Western-educated Muslim intellectuals navigate multiple epistemological traditions to create new theoretical frameworks.</p>
     `,
-	tags: ['Workshop', 'Digital Humanities', "Côte d'Ivoire", "ZMO"],
+	tags: ['Workshop', 'Digital Humanities', "Côte d'Ivoire", 'ZMO', 'Islam', 'West Africa', 'Benin', 'Burkina Faso', 'Togo', 'IWAC'],
 	image: '',
 	panelType: 'workshop',
 	heroImage: {

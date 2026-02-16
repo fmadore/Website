@@ -30,7 +30,7 @@ export const activity: Activity = {
 
         <p>Thompson, K.D. "Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023 by Frédérick Madore. Berlin: De Gruyter, 2025. Pp. xiii + 259. €79.99 (Hbk)." <em>The Journal of Modern African Studies</em> (2026): 1–3. <a href="https://doi.org/10.1017/S0022278X25101195" target="_blank" rel="noreferrer noopener">https://doi.org/10.1017/S0022278X25101195</a>.</p>
     `,
-	tags: ['Book Review', 'Religious Activism', 'Togo', 'Benin', 'Publication'],
+	tags: ['Book Review', 'Religious Activism', 'Togo', 'Benin', 'Publication', 'Islam', 'West Africa'],
 	panelType: 'publication',
 	type: 'publication',
 	url: 'https://doi.org/10.1017/S0022278X25101195'

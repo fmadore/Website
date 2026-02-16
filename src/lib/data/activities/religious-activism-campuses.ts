@@ -22,7 +22,7 @@ export const religiousActivismCampuses: Activity = {
         
         <p>The history of these associations reveals the campus as a microcosm reflecting wider national socio-political life, while also highlighting the importance of translocal factors in shaping the internal dynamics of these groups. Amidst the massification of university enrolments and rising graduate unemployment, faith-based associations have come to provide more than religious guidance. Increasingly, they offer a "social curriculum", providing a space for socialisation and a set of skills, norms and moral values that complement the secular academic curriculum.</p>
     `,
-	tags: ['Publication', 'Remoboko', 'Togo', 'Benin'],
+	tags: ['Publication', 'Remoboko', 'Togo', 'Benin', 'Religious Activism', 'Islam', 'Open Access', 'Book Launch'],
 	panelType: 'publication',
 	heroImage: {
 		src: 'images/activities/De-Gruyter-ZMO.webp',

@@ -18,7 +18,7 @@ export const whenAIMeetsTheArchiveSadilar2025: Activity = {
         
         <p>Drawing on my experience of working on the IWAC, I presented practical solutions for managing digital abundance, emphasising the importance of maintaining a critical awareness of the inherent limitations of AI technologies. The talk emphasised the transformative potential of AI technologies when applied to historical materials, as well as the necessary cautions.</p>
             `,
-	tags: ['Digital Humanities', 'AI', 'IWAC', 'Large Language Models', "Talk", "SADiLaR"],
+	tags: ['Digital Humanities', 'AI', 'IWAC', 'Large Language Models', 'Talk', 'SADiLaR', 'West Africa', 'Islam', 'Archives'],
 	url: 'https://sadilar.org/en/dh-colloquium/',
 	additionalUrls: [{ label: 'Video Recording', url: 'https://youtu.be/OhbPYA4_URo' }],
 	image: 'images/communications/SADILAR.webp',

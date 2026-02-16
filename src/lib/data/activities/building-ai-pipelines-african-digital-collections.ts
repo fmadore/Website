@@ -26,7 +26,7 @@ export const buildingAiPipelinesAfricanDigitalCollections: Activity = {
 
         <p>We also addressed the messy reality of the archive. Dealing with unstructured data, mixed languages, and irregular layouts requires tools that are not just powerful, but pragmatic.</p>
     `,
-	tags: ['AI', 'Digital Humanities', 'African Studies', 'IWAC', 'ALMEDA', 'Talk'],
+	tags: ['AI', 'Digital Humanities', 'African Studies', 'IWAC', 'ALMEDA', 'Talk', 'West Africa', 'Islam'],
 	type: 'lecture',
 	panelType: 'lecture',
 	heroImage: {
