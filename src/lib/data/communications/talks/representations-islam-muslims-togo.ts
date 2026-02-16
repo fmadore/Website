@@ -15,7 +15,7 @@ export const representationsIslamMuslimsTogo: Communication = {
 	language: 'English',
 	abstract:
 		"This paper offers a broad overview of the changing representations of Islam and Muslims in Togo’s state-owned newspapers since the 1960s. Surprisingly, the Muslim community—now accounting for around 15 to 20% of the country’s population—received relatively wide media coverage in the postcolonial era. Throughout Gnassingbé Eyadéma’s regime (1967–2005), Muslims have been regularly portrayed as a marginal, but a steadfastly loyal religious minority. For instance, media have contributed significantly to the development of a state-sponsored Islam by showcasing the Muslim Union of Togo (UMT) and its leaders as the sole official representatives of the Muslim community. The UMT has become in practice the mouthpiece of the one-party state. However, since the beginning of the Boko Haram insurgency and, more recently, the deteriorating security situation in Burkina Faso, state-owned newspapers have played a pivotal role in the securitization of Muslims. They have tended to reinforce a dichotomy between the so-called “local” and “peaceful” Togolese Islam, and the threatening “foreign” and “radical” Islam. State-owned newspapers have depicted Muslims critical of the ruling regime as part of a dangerous wave of political Islam using terms such as 'jihadism,' 'Salafism,' 'Islamism,' and 'terrorism' to discredit the opposition.",
-	tags: ['Islam', 'Media Representation', 'Togo', 'Muslims', 'State Media'],
+	tags: ['Islam', 'Media Representation', 'Togo', 'Muslims', 'State Media', 'West Africa'],
 	image: 'images/communications/representations-islam-muslims-togo.webp',
 	heroImage: {
 		src: 'images/communications/representations-islam-muslims-togo-hero.webp',

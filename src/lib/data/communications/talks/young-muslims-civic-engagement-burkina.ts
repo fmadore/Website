@@ -20,7 +20,9 @@ export const youngMuslimsCivicEngagementBurkina: Communication = {
 		'Civic Engagement',
 		'Burkina Faso',
 		'Political Participation',
-		'Religious Youth'
+		'Religious Youth',
+		'Islam',
+		'West Africa'
 	],
 	image: 'images/communications/young-muslims-civic-engagement-burkina.webp',
 	heroImage: {

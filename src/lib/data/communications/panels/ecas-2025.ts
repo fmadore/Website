@@ -17,12 +17,12 @@ export const ecas2025Panel: Communication = {
 		'As the "digital turn" in African studies gains momentum, this panel explores the transformative potential and critical challenges of digital humanities (DH) and artificial intelligence (AI) in the field. We examine their impact on the production, dissemination, and interpretation of knowledge about Africa, addressing the persistent Anglocentricity and "digital divide".\n\nWe invite papers that present innovative applications of computational methods in African studies and/or critical reflections on decolonising DH practices. Topics may include:\n\n1. Methodological innovations:\n\tDigital approaches to exploring African, Afropolitan, and Afropean belongings through textual and visual analysis;\n\tAI-driven analysis of digitised African content (e.g., natural language processing, named entity recognition);\n\tTeaching African history with digital tools\n2. Critical perspectives:\n\tDecolonising DH methodologies and epistemologies;\n\tAddressing "digital imperialism" (Breckenridge 2014) and the "digital saviour complex" (Shringarpure 2020) in relation to positionality and knowledge construction;\n\tEthical considerations in applying DH methods to culturally sensitive contexts\n3. Knowledge production and dissemination:\n\tDigital platforms for alternative knowledge production and public scholarship centred on African perspectives;\n\tStrategies for overcoming selective digitisation and colonial hierarchies in digital archiving;\n\tTransnational and cross-continental collaborative digital projects that challenge established Global North paradigms\n\nThe panel aims to showcase cutting-edge transdisciplinary research that uses digital methods to explore the complexities of African realities, identities, and knowledge systems. By fostering dialogue on the potential and pitfalls of digital approaches, we aim to contribute to a more inclusive, diverse, and critically aware digital landscape in African studies.',
 	tags: [
 		'ECAS',
-		'digital humanities',
+		'Digital Humanities',
 		'AI',
-		'african studies',
-		'decolonial',
-		'linked open data',
-		'metadata'
+		'African Studies',
+		'Decolonial',
+		'Linked Open Data',
+		'Metadata'
 	],
 	image: 'images/communications/ecas-2025.webp',
 	heroImage: {

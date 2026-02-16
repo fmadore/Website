@@ -22,7 +22,9 @@ export const hajjOrganizationStateCoteDIvoire: Communication = {
 		'State-Religion Relations',
 		"Côte d'Ivoire",
 		'Muslim Organizations',
-		'Religious Authority'
+		'Religious Authority',
+		'Islam',
+		'West Africa'
 	],
 	image: 'images/communications/ASA-Logo.svg',
 	coordinates: {

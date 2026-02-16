@@ -27,7 +27,7 @@ La présentation s'articulera autour de trois axes principaux :
 3. Le développement d'un chatbot basé sur une architecture de Retrieval Augmented Generation (RAG) peut transformer radicalement l'accès aux archives numériques. Alors que les recherches traditionnelles par mots-clés nécessitent une connaissance préalable du vocabulaire exact et limitent l'exploration aux correspondances strictes, ce système permet aux utilisateurs de formuler des questions complexes en langage naturel. L'architecture RAG ne se contente pas de rechercher des occurrences : elle analyse le contexte sémantique, établit des connexions entre les documents et génère des réponses synthétiques et documentées. Cette approche facilite la découverte de relations thématiques subtiles et de tendances historiques qui échapperaient aux méthodes de recherche conventionnelles, tout en maintenant une rigueur scientifique grâce à la référence systématique aux sources primaires.
 
 Cette approche ouvre la voie à des analyses computationnelles à grande échelle permettant d'identifier des tendances et des relations qui seraient difficilement détectables manuellement. S'inscrivant dans l'axe "Intelligence artificielle (IA) : pratiques et cas d'usages en SHS" du colloque, elle propose un retour d'expérience concret sur l'utilisation de l'IA pour le traitement d'archives numériques dans un contexte africain.`,
-	tags: ['AI', 'digital humanities', 'Islam', 'IWAC', 'Humanistica'],
+	tags: ['AI', 'Digital Humanities', 'Islam', 'IWAC', 'Humanistica', 'West Africa', 'Archives'],
 	image: 'images/communications/humanistica-2025.webp',
 	heroImage: {
 		src: 'images/communications/humanistica-2025-hero.webp',

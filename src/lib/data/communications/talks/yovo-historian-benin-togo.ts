@@ -13,7 +13,7 @@ export const yovoHistorianBeninTogo: Communication = {
 	country: 'Germany',
 	type: 'workshop',
 	language: 'English',
-	tags: ['Fieldwork', 'Benin', 'Togo', 'Research Methodology', 'Pandemic'],
+	tags: ['Fieldwork', 'Benin', 'Togo', 'Research Methodology', 'Pandemic', 'West Africa'],
 	image: 'images/communications/yovo-historian-benin-togo.webp',
 	heroImage: {
 		src: 'images/communications/yovo-historian-benin-togo-hero.webp',

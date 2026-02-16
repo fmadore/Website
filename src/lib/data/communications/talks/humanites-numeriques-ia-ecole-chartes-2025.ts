@@ -15,7 +15,7 @@ export const humanitesNumeriquesIaEcoleChartes2025: Communication = {
 	language: 'French',
 	abstract:
 		"Une présentation sur l'application des humanités numériques et de l'intelligence artificielle pour enrichir les flux de recherche dans la Collection islam Afrique de l'Ouest.",
-	tags: ['Digital humanities', 'AI', 'IWAC'],
+	tags: ['Digital Humanities', 'AI', 'IWAC', 'Islam', 'West Africa', 'Computational Methods'],
 	image: 'images/activities/ecole-nationale-des-chartes.webp',
 	heroImage: {
 		src: 'images/activities/ecole-nationale-des-chartes.webp',

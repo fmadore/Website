@@ -21,7 +21,10 @@ export const islamUniversityCampusesCoteDIvoire: Communication = {
 		'Higher Education',
 		"Côte d'Ivoire",
 		'Salafism',
-		'Muslim Intellectuals'
+		'Muslim Intellectuals',
+		'Islam',
+		'West Africa',
+		'Universities'
 	],
 	coordinates: {
 		latitude: 55.9445,

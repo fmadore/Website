@@ -22,7 +22,9 @@ export const goodMuslimBadMuslimTogo: Communication = {
 		'Constitutional Crisis',
 		'Togo',
 		'Muslim Identity',
-		'Political Islam'
+		'Political Islam',
+		'Islam',
+		'West Africa'
 	],
 	image: 'images/communications/ASA-Logo.svg',
 	coordinates: {

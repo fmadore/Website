@@ -13,7 +13,7 @@ export const islamPeripheriesOpenUp: Communication = {
 	type: 'conference',
 	language: 'English',
 	abstract: '',
-	tags: ['Islam', 'LLM', 'Digital Humanities', 'VolkswagenStiftung'],
+	tags: ['Islam', 'Large Language Models', 'Digital Humanities', 'Volkswagen Foundation', 'AI', 'West Africa', 'Central Asia', 'IWAC', 'Archives'],
 	url: 'https://www.volkswagenstiftung.de/sites/default/files/documents/Entwurf%20Programm_KickOff%20OpenUp_2026.pdf',
 	coordinates: {
 		latitude: 52.395,

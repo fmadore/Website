@@ -15,7 +15,7 @@ export const associationsChretiennesIslamiquesCampus: Communication = {
 	language: 'French',
 	abstract:
 		'A study of Christian and Islamic associations on the campuses of the University of Abomey-Calavi and the University of Lomé since 1970, examining secularism in universities in the face of religious activism.',
-	tags: ['Religious Associations', 'Universities', 'Benin', 'Togo', 'Secularism'],
+	tags: ['Religious Associations', 'Universities', 'Benin', 'Togo', 'Secularism', 'Islam', 'Christianity', 'West Africa'],
 	image: 'images/communications/associations-chretiennes-islamiques-campus.webp',
 	heroImage: {
 		src: 'images/communications/associations-chretiennes-islamiques-campus-hero.webp',

@@ -21,7 +21,7 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 		'African Studies',
 		'Decolonisation',
 		'Workshop',
-		'VolkswagenStiftung'
+		'Volkswagen Foundation'
 	],
 	url: 'https://fmadore.github.io/dh-ai-african-studies-2026/',
 	image: 'images/communications/VWST-logo.webp',

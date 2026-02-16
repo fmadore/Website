@@ -14,7 +14,7 @@ export const islamBurkinaCoteIvoire: Communication = {
 	language: 'French',
 	abstract:
 		'Les attentats terroristes de janvier et mars 2016 à Ouagadougou et Grand-Bassam ont laissé croire à un éveil, voire à une radicalisation de l’islam au Burkina Faso et en Côte d’Ivoire. Pourtant, outre une présence ancienne de cette religion, les musulmans burkinabés et ivoiriens sont caractérisés par une grande diversité de tendances, de stratégies et de sensibilités. Cette conférence exposera quelques-unes des nombreuses mutations à l’œuvre depuis les indépendances : la progression de l’islam et sa visibilité accrue dans l’espace public; les rapports complexes entre les musulmans et l’État; l’importante participation des jeunes et des femmes au dynamisme de l’islam; et la montée d’un courant salafiste d’inspiration wahhabite.',
-	tags: ['Islam', 'Burkina Faso', "Côte d'Ivoire", 'Radicalization', 'Religious Awakening'],
+	tags: ['Islam', 'Burkina Faso', "Côte d'Ivoire", 'Radicalization', 'Religious Awakening', 'West Africa'],
 	image: 'images/communications/islam-burkina-cote-ivoire.webp',
 	heroImage: {
 		src: 'images/communications/islam-burkina-cote-ivoire-hero.webp',

@@ -12,7 +12,7 @@ export const islamAlgorithmsAi: Communication = {
 	country: 'Germany',
 	type: 'lecture',
 	language: 'English',
-	tags: ['Islam', 'Algorithms', 'AI', 'Digital Religion', 'Technology'],
+	tags: ['Islam', 'Algorithms', 'AI', 'Digital Religion', 'Technology', 'Digital Humanities', 'IWAC', 'West Africa'],
 	image: 'images/communications/islam-algorithms-ai.webp',
 	heroImage: {
 		src: 'images/communications/islam-algorithms-ai-hero.webp',

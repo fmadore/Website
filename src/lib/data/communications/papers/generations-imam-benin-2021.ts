@@ -21,7 +21,8 @@ export const generationsImamBenin: Communication = {
 		'Political Engagement',
 		'Benin',
 		'Generational Conflict',
-		'Islam'
+		'Islam',
+		'West Africa'
 	],
 	coordinates: {
 		latitude: 59.8586, // Coordinates for Uppsala University

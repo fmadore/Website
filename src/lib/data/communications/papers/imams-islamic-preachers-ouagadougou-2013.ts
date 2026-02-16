@@ -21,7 +21,10 @@ export const imamsIslamicPreachersOuagadougou: Communication = {
 		'Public Space',
 		'Burkina Faso',
 		'Intergenerational Relations',
-		'Islamic Authority'
+		'Islamic Authority',
+		'Islam',
+		'West Africa',
+		'Media'
 	],
 	image: 'images/communications/University_of_Texas_at_Austin_seal.webp',
 	heroImage: {

@@ -22,7 +22,9 @@ export const imamsEspacePublicOuagadougou: Communication = {
 		'Public Sphere',
 		'Burkina Faso',
 		'Ouagadougou',
-		'Intergenerational Relations'
+		'Intergenerational Relations',
+		'Islam',
+		'West Africa'
 	],
 	image: 'images/communications/CAAS-logo.webp',
 	heroImage: {

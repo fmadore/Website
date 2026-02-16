@@ -19,7 +19,11 @@ export const etablirFaitiereIslamique: Communication = {
 		'West Africa',
 		'Religious Organizations',
 		'Francophone',
-		'Umbrella Organizations'
+		'Umbrella Organizations',
+		'Burkina Faso',
+		'Togo',
+		'Benin',
+		"Côte d'Ivoire"
 	],
 	image: 'images/communications/puidoux.webp',
 	heroImage: {

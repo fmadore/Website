@@ -36,7 +36,7 @@ Les sujets peuvent inclure :
 - Projets numériques collaboratifs transnationaux et transcontinentaux qui remettent en question les paradigmes établis dans le Nord.
 
 Ce panel organisé par Frédérick Madore et Vincent Hiribarren fait suite à la réflexion entamée a l'ECAS2025. Il vise à présenter des recherches transdisciplinaires de pointe dans le monde francophone qui utilisent des méthodes numériques pour explorer les complexités des réalités, des identités et des systèmes de connaissance africains. En encourageant le dialogue sur le potentiel et les pièges des approches numériques, nous souhaitons contribuer à un paysage numérique plus inclusif, plus diversifié et plus critique dans les études africaines.`,
-	tags: ['digital humanities', 'artificial intelligence', 'African studies', 'REAF', 'methodology'],
+	tags: ['Digital Humanities', 'AI', 'African Studies', 'REAF', 'Methodology'],
 	url: 'https://reaf2026.sciencesconf.org/data/pages/A33.pdf',
 	image: 'images/communications/reaf-2026.webp',
 	heroImage: {

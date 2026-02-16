@@ -15,7 +15,7 @@ export const universityCampusesAfrica: Communication = {
 	language: 'English',
 	abstract:
 		"Thanks to a generous grant from the Fritz Thyssen Foundation, our Remoboko research group organised its final conference entitled 'University Campuses in Africa and Beyond: Training Grounds, Moral Spaces and Political Arenas' at Leibniz-Zentrum Moderner Orient (ZMO) in Berlin on 6-8 September.",
-	tags: ['Remoboko', 'University', 'Campus', 'Africa', 'Education', 'Politics'],
+	tags: ['Remoboko', 'University', 'Campus', 'Africa', 'Education', 'Politics', 'Religion', 'ZMO', 'Conference'],
 	url: 'https://remoboko.hypotheses.org/4854',
 	image: 'images/communications/REMOBOKO-final-conference.webp',
 	coordinates: {

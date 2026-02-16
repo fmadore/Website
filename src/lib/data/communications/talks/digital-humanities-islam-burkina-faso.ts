@@ -14,7 +14,7 @@ export const digitalHumanismsIslamBurkinaFaso: Communication = {
 	language: 'English',
 	abstract:
 		'Presentation on the development and implementation of the Islam Burkina Faso Collection digital humanities project.',
-	tags: ['Islam', 'Burkina Faso', 'Digital Humanities', 'Collections', 'West Africa'],
+	tags: ['Islam', 'Burkina Faso', 'Digital Humanities', 'Collections', 'West Africa', 'IWAC'],
 	image: 'images/communications/DH-islam-burkina-faso.webp',
 	heroImage: {
 		src: 'images/communications/DH-islam-burkina-faso-hero.webp',

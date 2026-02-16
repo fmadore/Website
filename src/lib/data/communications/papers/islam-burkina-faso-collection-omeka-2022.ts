@@ -15,7 +15,7 @@ export const islamBurkinaFasoCollectionOmeka: Communication = {
 	language: 'English',
 	abstract:
 		"Despite the growing popularity of digital humanities, a limited number of initiatives related to Islam in Sub-Saharan Africa have attempted to mobilize digital tools to analyze and disseminate research data. Launched in 2021, the Islam Burkina Faso Collection (https://islam.domains.uflib.ufl.edu/s/bf/) is an open-access digital database published by the LibraryPress@UF, which contains more than 3,100 archival materials, newspaper articles, Islamic publications, photographs and bibliographical references related to Islam and Muslims in Burkina Faso. “Digital exhibits” with interactive timelines, which include a selection of documents from the database, contextual information for approaching this material and a selective bibliography, serve as entry points for the larger collection. In the medium to long term, the Islam Burkina Faso Collection will be part of a larger collaborative digital database on Islam in West Africa, which will include material that Frédérick Madore has already digitized as part of his research on Côte d'Ivoire, Benin, and Togo.",
-	tags: ['IWAC', 'Omeka S', 'Digital Collections', 'Islam', 'Burkina Faso', 'Digital Humanities'],
+	tags: ['IWAC', 'Omeka S', 'Digital Collections', 'Islam', 'Burkina Faso', 'Digital Humanities', 'West Africa', 'Archives'],
 	coordinates: {
 		latitude: 49.9427,
 		longitude: 11.5674

@@ -15,13 +15,16 @@ export const presentationDiscussionReligiousActivismCampusCiram2025: Communicati
 	abstract:
 		"Cette présentation-discussion de l'ouvrage Religious Activism on Campuses in Togo and Benin met en lumière l'histoire négligée des associations chrétiennes et musulmanes à l'Université de Lomé et à l'Université d'Abomey-Calavi. Alors que la production scientifique s'est surtout concentrée sur les mobilisations étudiantes ayant conduit aux conférences nationales du début des années 1990, le livre restitue la place du religieux sur des campus longtemps marqués par des héritages gauchistes et laïcs. Basé sur des entretiens avec plusieurs générations de militant.e.s et la presse, il retrace l'essor de ces associations à partir des années 1970, sous le parti unique au Togo et le régime marxiste-léniniste au Bénin, et met en évidence le rôle des circulations translocales. Le livre examine enfin les effets d'une religiosité croissante dans des universités publiques officiellement laïques, où ces associations, face à la massification et au chômage des diplômés, proposent un « curriculum social ».",
 	tags: [
-		'religious activism',
-		'universities',
+		'Religious Activism',
+		'Universities',
 		'Togo',
 		'Benin',
-		'student organizations',
-		'book presentation',
-		'CIRAM'
+		'Student Organizations',
+		'Book Presentation',
+		'CIRAM',
+		'Islam',
+		'Christianity',
+		'West Africa'
 	],
 	url: 'https://www.ciram.hei.ulaval.ca/activite/discussion-autour-du-livre-religious-activism-on-campuses-in-togo-and-benin/',
 	image: 'images/communications/ciram-2025.webp',
