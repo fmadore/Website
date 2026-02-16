@@ -50,7 +50,7 @@
 		}
 	},
 	"dependencies": {
-		"@fortawesome/free-solid-svg-icons": "^7.1.0",
+		"@fortawesome/free-solid-svg-icons": "^7.2.0",
 		"@iconify-icons/academicons": "^1.2.10",
 		"@iconify-icons/lucide": "^1.2.135",
 		"@iconify-icons/mdi": "^1.2.48",
