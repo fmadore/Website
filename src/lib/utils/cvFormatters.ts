@@ -133,6 +133,40 @@ export function formatBlogDate(dateISO?: string): string {
 }
 
 /**
+ * Formats a year range for compact CV display.
+ * Handles both numeric pairs and string ranges.
+ *
+ * Examples:
+ *   formatCVYearRange(2013, 2015)  → "2013-15"
+ *   formatCVYearRange(2023)        → "2023"
+ *   formatCVYearRange(2024, null)  → "2024-"   (ongoing)
+ *   formatCVYearRange("2018-2023") → "2018-23"
+ *   formatCVYearRange("2023-")     → "2023-"   (ongoing)
+ *   formatCVYearRange("2023")      → "2023"
+ */
+export function formatCVYearRange(startYear: number, endYear?: number | null): string;
+export function formatCVYearRange(yearString: string): string;
+export function formatCVYearRange(startOrString: number | string, endYear?: number | null): string {
+	if (typeof startOrString === 'string') {
+		if (!startOrString.includes('-')) return startOrString;
+		const [start, end] = startOrString.split('-');
+		if (!end || end === '') return `${start}-`;
+		return formatCVYearRange(parseInt(start), parseInt(end));
+	}
+
+	const startYear = startOrString;
+	if (endYear === null) return `${startYear}-`;
+	if (!endYear || endYear === startYear) return startYear.toString();
+
+	const startCentury = Math.floor(startYear / 100);
+	const endCentury = Math.floor(endYear / 100);
+	if (startCentury === endCentury) {
+		return `${startYear}-${endYear.toString().slice(-2)}`;
+	}
+	return `${startYear}-${endYear}`;
+}
+
+/**
  * Formats an affiliation period ({ start, end } where null = ongoing)
  */
 export function formatAffiliationPeriod(period: AffiliationPeriod): string {

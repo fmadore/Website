@@ -1,21 +1,8 @@
 <script lang="ts">
 	import { fieldworksByDate } from '$lib/data/fieldworks';
 	import { researchRolesByDate } from '$lib/data/research-roles';
+	import { formatCVYearRange } from '$lib/utils/cvFormatters';
 	import CVEntry from './CVEntry.svelte';
-
-	// Format year range for display (e.g., "2016-17" or "2024")
-	function formatYearRange(startYear: number, endYear?: number | null): string {
-		if (!endYear || endYear === startYear) {
-			return startYear.toString();
-		}
-		// Compact format: use last 2 digits of end year if in same century
-		const startCentury = Math.floor(startYear / 100);
-		const endCentury = Math.floor(endYear / 100);
-		if (startCentury === endCentury) {
-			return `${startYear}-${endYear.toString().slice(-2)}`;
-		}
-		return `${startYear}-${endYear}`;
-	}
 
 	// Group fieldworks by location
 	const groupedFieldworks = $derived(
@@ -69,7 +56,7 @@
 	{#if researchRolesByDate.length > 0}
 		<div class="space-y-3">
 			{#each researchRolesByDate as role (role.id)}
-				<CVEntry year={formatYearRange(role.startYear, role.endYear)} yearWidth="fixed">
+				<CVEntry year={formatCVYearRange(role.startYear, role.endYear)} yearWidth="fixed">
 					<span class="font-medium">{role.title}</span>, {role.institution}.
 					{#if Array.isArray(role.details)}
 						{#each role.details as detail}

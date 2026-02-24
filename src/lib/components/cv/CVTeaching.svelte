@@ -1,23 +1,8 @@
 <script lang="ts">
 	import teaching from '$lib/data/teaching';
 	import guestLectures from '$lib/data/teaching/guest-lectures';
-	import { base } from '$app/paths';
+	import { formatCVYearRange } from '$lib/utils/cvFormatters';
 	import CVEntry from './CVEntry.svelte';
-
-	// Format year range for display (e.g., "2013-18" or "2020")
-	function formatYearRange(yearString: string): string {
-		if (!yearString.includes('-')) {
-			return yearString;
-		}
-		const [startYear, endYear] = yearString.split('-').map((y) => parseInt(y));
-		// Compact format: use last 2 digits of end year if in same century
-		const startCentury = Math.floor(startYear / 100);
-		const endCentury = Math.floor(endYear / 100);
-		if (startCentury === endCentury) {
-			return `${startYear}-${endYear.toString().slice(-2)}`;
-		}
-		return `${startYear}-${endYear}`;
-	}
 
 	// Sort teaching by year (most recent first)
 	const sortedTeaching = teaching.sort((a, b) => {
@@ -40,7 +25,7 @@
 		<h4>Instructor</h4>
 		<div class="space-y-3">
 			{#each sortedTeaching as course}
-				<CVEntry year={formatYearRange(course.year)} yearWidth="fixed">
+				<CVEntry year={formatCVYearRange(course.year)} yearWidth="fixed">
 					<strong>{course.title}</strong>, {course.institution}, {course.level === 'undergraduate'
 						? 'Undergraduate'
 						: 'Graduate'}
