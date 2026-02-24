@@ -29,20 +29,15 @@ Prioritized list of refactoring opportunities identified during codebase review 
 
 ---
 
-## Priority 2: Glassmorphism CSS Extraction (Deferred)
+## Priority 2: Glassmorphism CSS Extraction ✅ (partial)
 
-**Scope**: 113 `backdrop-filter` occurrences across 32 `.svelte` component files
-**Estimated savings**: 300-500 lines of CSS
-**Status**: Analyzed, deferred due to visual regression risk
+**New classes**: `.glass-section-panel` and `.glass-sub-card` in `glassmorphism.css` (+117 lines)
+**Before**: ~773 lines of duplicated scoped CSS | **After**: ~143 lines | **Net saved**: ~630 lines
 
-- [ ] Create `.glass-section-panel` class for the "tri-color section panel" pattern (highest-ROI target, 10+ identical instances across 8 files: AbstractSection, DetailsGrid, RelatedItemsList, CitedBy, PublicationWordCloud, Reviews, TOC sections, digital-humanities pages)
-- [ ] Create modifier classes (`.glass-section-compact`, `.glass-section-elevated`)
-- [ ] Migrate detail page inline glassmorphism styles to utility classes
-- [ ] Migrate component-level glassmorphism styles to utility classes
-
-**Why**: The same glassmorphism pattern (gradient background + backdrop-filter + border + box-shadow + hover transform + dark mode override) is copy-pasted across dozens of components. The existing `.glass-card`, `.glass-panel`, `.glass-button` classes in `glassmorphism.css` don't cover all the variants being used inline.
-
-**Risk note**: These changes require careful visual regression testing across all affected components, dark mode, and reduced-motion preferences. Best done with a visual diff tool or side-by-side comparison.
+- [x] Create `.glass-section-panel` class with CSS custom properties (`--_gsp-c1/c2/c3`) for color order flexibility
+- [x] Create `.glass-sub-card` class for inner cards within section panels
+- [x] Migrate 8 component files: AbstractSection, DetailsGrid, RelatedItemsList, CitedBy, Reviews, PublicationWordCloud, publications/[id], digital-humanities/[id]
+- [ ] Remaining: Group C (communications detail page sections), Group E (nav glass variants), Group F (button/toggle glass), Group G (tooltip/small panel) — smaller wins, more variation between instances
 
 ---
 
