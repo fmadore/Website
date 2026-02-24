@@ -99,7 +99,7 @@
 								{/if}
 
 								{#if item.type === 'iframe'}
-									<div class="iframe-wrapper">
+									<div class="iframe-wrapper glass-section-panel">
 										<IframeRenderer {...item} />
 									</div>
 								{:else if item.type === 'image'}
@@ -140,7 +140,7 @@
 
 			<div class="scroll-reveal">
 				{#if project.award}
-					<section class="award-section">
+					<section class="award-section glass-section-panel">
 						<h3 class="section-title">Award</h3>
 						<!-- Safe: project.award is from trusted project data -->
 						<p>{@html project.award}</p>
@@ -150,7 +150,7 @@
 
 			<div class="scroll-reveal">
 				{#if project.publication}
-					<section class="publication-section">
+					<section class="publication-section glass-section-panel">
 						<h3 class="section-title">Related Publication</h3>
 						<p>
 							<!-- Safe: project.publication.text is from trusted project data -->
@@ -167,11 +167,11 @@
 
 			<div class="scroll-reveal">
 				{#if project.reviews && project.reviews.length > 0}
-					<section class="reviews-section">
+					<section class="reviews-section glass-section-panel">
 						<h3 class="section-title">Reviews</h3>
 						<ul class="reviews-list">
 							{#each project.reviews as review (review.url)}
-								<li class="review-item">
+								<li class="review-item glass-sub-card">
 									<!-- Safe: review.text is from trusted project data -->
 									<a
 										href={review.url}
@@ -289,36 +289,8 @@
 		line-height: var(--line-height-relaxed);
 	}
 
-	/* Iframe wrapper with glassmorphism - consistent with research iframe-section */
 	.iframe-wrapper {
-		position: relative;
 		padding: var(--space-lg);
-		border-radius: var(--border-radius-xl);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
-		);
-		box-shadow: var(--shadow-md);
-		transition:
-			transform var(--duration-normal) var(--ease-out),
-			box-shadow var(--duration-normal) var(--ease-out);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
-	}
-
-	.iframe-wrapper:hover {
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-lg);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
-		);
 	}
 
 	/* Image styling */
@@ -342,43 +314,11 @@
 		box-shadow: var(--shadow-lg);
 	}
 
-	/* Shared section styling - consistent glassmorphism pattern */
 	.award-section,
 	.publication-section,
 	.reviews-section {
 		margin: var(--space-lg) 0;
 		padding: var(--space-lg);
-		border-radius: var(--border-radius-xl);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
-		);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
-		box-shadow: var(--shadow-md);
-		transition:
-			transform var(--duration-normal) var(--ease-out),
-			box-shadow var(--duration-normal) var(--ease-out),
-			background var(--duration-normal) var(--ease-out);
-	}
-
-	.award-section:hover,
-	.publication-section:hover,
-	.reviews-section:hover {
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-lg);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
-		);
 	}
 
 	/* Award section accent color */
@@ -416,24 +356,6 @@
 
 	.review-item {
 		padding: var(--space-md);
-		border-radius: var(--border-radius-lg);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-surface) calc(var(--opacity-medium) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent)
-				100%
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-border) calc(var(--opacity-medium) * 100%), transparent);
-		box-shadow: var(--shadow-sm);
-		transition:
-			transform var(--duration-normal) var(--ease-out),
-			box-shadow var(--duration-normal) var(--ease-out);
-	}
-
-	.review-item:hover {
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-md);
 	}
 
 	.review-quote {
@@ -449,76 +371,6 @@
 			transparent
 		);
 		border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
-	}
-
-	/* Dark mode adjustments - consistent with activity/research pages */
-	:global(html.dark) .iframe-wrapper {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 4%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 6%, transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark) .award-section,
-	:global(html.dark) .publication-section,
-	:global(html.dark) .reviews-section {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 4%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 6%, transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark) .award-section:hover,
-	:global(html.dark) .publication-section:hover,
-	:global(html.dark) .reviews-section:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 6%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 8%, transparent) 100%
-		);
-	}
-
-	:global(html.dark) .review-item {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-medium) * 100%), transparent)
-				0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent)
-				100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-very-low) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark) .review-item:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(
-					in srgb,
-					var(--color-dark-surface) calc(var(--opacity-medium-high) * 100%),
-					transparent
-				)
-				0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 100%
-		);
 	}
 
 	:global(html.dark) .review-quote {
@@ -557,21 +409,11 @@
 
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
-		.iframe-wrapper,
-		.responsive-image,
-		.award-section,
-		.publication-section,
-		.reviews-section,
-		.review-item {
+		.responsive-image {
 			transition: none;
 		}
 
-		.iframe-wrapper:hover,
-		.image-link:hover .responsive-image,
-		.award-section:hover,
-		.publication-section:hover,
-		.reviews-section:hover,
-		.review-item:hover {
+		.image-link:hover .responsive-image {
 			transform: none;
 		}
 	}

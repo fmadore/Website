@@ -221,7 +221,7 @@
 
 			<!-- Table of Contents Section -->
 			{#if (publication.type === 'book' || publication.type === 'special-issue') && publication.tableOfContents && publication.tableOfContents.length > 0}
-				<section class="table-of-contents-section scroll-reveal">
+				<section class="table-of-contents-section glass-section-panel scroll-reveal">
 					<h2 class="toc-title">Table of Contents</h2>
 					<ol class="toc-list">
 						{#each publication.tableOfContents as item, index (index)}
@@ -254,7 +254,7 @@
 			<PublicationWordCloud publicationId={publication.id} />
 
 			<!-- Action Links and Export Button -->
-			<div class="publication-actions scroll-reveal flex flex-wrap items-center gap-4">
+			<div class="publication-actions glass-section-panel scroll-reveal flex flex-wrap items-center gap-4">
 				<ActionLinks
 					primaryUrl={publication.url}
 					primaryLabel="Access Publication"
@@ -317,38 +317,9 @@
 		margin-top: var(--space-xl);
 	}
 
-	/* Table of Contents Section - Enhanced styling with consistent glassmorphism */
+	/* Table of Contents Section */
 	.table-of-contents-section {
 		padding: var(--space-lg);
-		border-radius: var(--border-radius-xl);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
-		);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
-		box-shadow: var(--shadow-md);
-		transition:
-			transform var(--duration-normal) var(--ease-out),
-			box-shadow var(--duration-normal) var(--ease-out),
-			background var(--duration-normal) var(--ease-out);
-	}
-
-	.table-of-contents-section:hover {
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-lg);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
-		);
 	}
 
 	.toc-title {
@@ -435,61 +406,12 @@
 		margin-left: var(--space-2xs);
 	}
 
-	/* Publication actions container - consistent glassmorphism */
+	/* Publication actions container — highlight→primary→accent color order */
 	.publication-actions {
+		--_gsp-c1: var(--color-highlight);
+		--_gsp-c2: var(--color-primary);
+		--_gsp-c3: var(--color-accent);
 		padding: var(--space-md) var(--space-lg);
-		border-radius: var(--border-radius-xl);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
-		);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent);
-		box-shadow: var(--shadow-md);
-		transition:
-			transform var(--duration-normal) var(--ease-out),
-			box-shadow var(--duration-normal) var(--ease-out),
-			background var(--duration-normal) var(--ease-out);
-	}
-
-	.publication-actions:hover {
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-lg);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
-		);
-	}
-
-	/* Dark mode adjustments */
-	:global(html.dark) .table-of-contents-section {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 4%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 6%, transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark) .table-of-contents-section:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 6%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 8%, transparent) 100%
-		);
 	}
 
 	:global(html.dark) .toc-item {
@@ -505,29 +427,6 @@
 			in srgb,
 			var(--color-primary) calc(var(--opacity-low) * 100%),
 			transparent
-		);
-	}
-
-	:global(html.dark) .publication-actions {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-highlight) 8%, transparent) 0%,
-			color-mix(in srgb, var(--color-primary) 4%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 6%, transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-very-low) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark) .publication-actions:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-highlight) 12%, transparent) 0%,
-			color-mix(in srgb, var(--color-primary) 6%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 8%, transparent) 100%
 		);
 	}
 
@@ -557,13 +456,9 @@
 
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
-		.table-of-contents-section,
-		.table-of-contents-section:hover,
 		.toc-item,
 		.toc-item:hover,
-		.toc-title::after,
-		.publication-actions,
-		.publication-actions:hover {
+		.toc-title::after {
 			transition: none;
 			transform: none;
 		}

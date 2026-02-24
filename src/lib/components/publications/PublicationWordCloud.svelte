@@ -19,7 +19,7 @@ Only renders if text analysis data is available for this publication.
 </script>
 
 {#if showWordCloud && analysis}
-	<section class="wordcloud-section scroll-reveal">
+	<section class="wordcloud-section glass-section-panel scroll-reveal">
 		<h2 class="section-title">{title}</h2>
 		<div class="wordcloud-wrapper">
 			<EChartsWordCloud
@@ -38,38 +38,10 @@ Only renders if text analysis data is available for this publication.
 
 <style>
 	.wordcloud-section {
+		--_gsp-c1: var(--color-accent);
+		--_gsp-c2: var(--color-primary);
+		--_gsp-c3: var(--color-highlight);
 		padding: var(--space-lg);
-		border-radius: var(--border-radius-xl);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				100%
-		);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-low) * 100%), transparent);
-		box-shadow: var(--shadow-md);
-		transition:
-			transform var(--duration-normal) var(--ease-out),
-			box-shadow var(--duration-normal) var(--ease-out),
-			background var(--duration-normal) var(--ease-out);
-	}
-
-	.wordcloud-section:hover {
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-lg);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				100%
-		);
 	}
 
 	.section-title {
@@ -114,30 +86,6 @@ Only renders if text analysis data is available for this publication.
 		margin-top: var(--space-sm);
 	}
 
-	/* Dark mode */
-	:global(html.dark) .wordcloud-section {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-accent) 8%, transparent) 0%,
-			color-mix(in srgb, var(--color-primary) 4%, transparent) 50%,
-			color-mix(in srgb, var(--color-highlight) 6%, transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-accent) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark) .wordcloud-section:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-accent) 12%, transparent) 0%,
-			color-mix(in srgb, var(--color-primary) 6%, transparent) 50%,
-			color-mix(in srgb, var(--color-highlight) 8%, transparent) 100%
-		);
-	}
-
 	/* Responsive */
 	@media (--sm) {
 		.wordcloud-section {
@@ -151,11 +99,8 @@ Only renders if text analysis data is available for this publication.
 
 	/* Reduced motion */
 	@media (prefers-reduced-motion: reduce) {
-		.wordcloud-section,
-		.wordcloud-section:hover,
 		.section-title::after {
 			transition: none;
-			transform: none;
 		}
 	}
 </style>

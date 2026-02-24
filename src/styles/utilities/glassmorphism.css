@@ -412,6 +412,117 @@
 	}
 }
 
+/* Tri-color gradient section panel with hover lift effect.
+ * Default colors: primary → highlight → accent.
+ * Override --_gsp-c1/c2/c3 in a scoped rule to change the color order. */
+.glass-section-panel {
+	--_gsp-c1: var(--color-primary);
+	--_gsp-c2: var(--color-highlight);
+	--_gsp-c3: var(--color-accent);
+	border-radius: var(--border-radius-xl);
+	position: relative;
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--_gsp-c1) calc(var(--opacity-very-low) * 100%), transparent) 0%,
+		color-mix(in srgb, var(--_gsp-c2) calc(var(--opacity-very-low) * 100%), transparent) 50%,
+		color-mix(in srgb, var(--_gsp-c3) calc(var(--opacity-very-low) * 100%), transparent) 100%
+	);
+	-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+	backdrop-filter: blur(var(--glass-blur-amount));
+	border: var(--border-width-thin) solid
+		color-mix(in srgb, var(--_gsp-c1) calc(var(--opacity-low) * 100%), transparent);
+	box-shadow: var(--shadow-md);
+	transition:
+		transform var(--duration-normal) var(--ease-out),
+		box-shadow var(--duration-normal) var(--ease-out),
+		background var(--duration-normal) var(--ease-out);
+}
+
+.glass-section-panel:hover {
+	transform: var(--transform-lift-sm);
+	box-shadow: var(--shadow-lg);
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--_gsp-c1) calc(var(--opacity-low) * 100%), transparent) 0%,
+		color-mix(in srgb, var(--_gsp-c2) calc(var(--opacity-very-low) * 100%), transparent) 50%,
+		color-mix(in srgb, var(--_gsp-c3) calc(var(--opacity-very-low) * 100%), transparent) 100%
+	);
+}
+
+:global(html.dark) .glass-section-panel {
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--_gsp-c1) 8%, transparent) 0%,
+		color-mix(in srgb, var(--_gsp-c2) 4%, transparent) 50%,
+		color-mix(in srgb, var(--_gsp-c3) 6%, transparent) 100%
+	);
+	border-color: color-mix(in srgb, var(--_gsp-c1) calc(var(--opacity-medium) * 100%), transparent);
+}
+
+:global(html.dark) .glass-section-panel:hover {
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--_gsp-c1) 12%, transparent) 0%,
+		color-mix(in srgb, var(--_gsp-c2) 6%, transparent) 50%,
+		color-mix(in srgb, var(--_gsp-c3) 8%, transparent) 100%
+	);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.glass-section-panel,
+	.glass-section-panel:hover {
+		transition: none;
+		transform: none;
+	}
+}
+
+/* Inner card within a glass section panel */
+.glass-sub-card {
+	border-radius: var(--border-radius-lg);
+	position: relative;
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--color-surface) calc(var(--opacity-medium) * 100%), transparent) 0%,
+		color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 100%
+	);
+	border: var(--border-width-thin) solid
+		color-mix(in srgb, var(--color-border) calc(var(--opacity-medium) * 100%), transparent);
+	box-shadow: var(--shadow-sm);
+	transition:
+		transform var(--duration-normal) var(--ease-out),
+		box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.glass-sub-card:hover {
+	transform: var(--transform-lift-sm);
+	box-shadow: var(--shadow-md);
+}
+
+:global(html.dark) .glass-sub-card {
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-medium) * 100%), transparent) 0%,
+		color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 100%
+	);
+	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-very-low) * 100%), transparent);
+}
+
+:global(html.dark) .glass-sub-card:hover {
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-medium-high) * 100%), transparent) 0%,
+		color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 100%
+	);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.glass-sub-card,
+	.glass-sub-card:hover {
+		transition: none;
+		transform: none;
+	}
+}
+
 /* Fallback for browsers that don't support backdrop-filter */
 @supports not (backdrop-filter: blur(10px)) {
 
@@ -423,7 +534,8 @@
 	.glass-panel,
 	.glass-nav,
 	.glass-button,
-	.glass-frosted {
+	.glass-frosted,
+	.glass-section-panel {
 		background: color-mix(in srgb, var(--color-white) calc(var(--glass-opacity-fallback-light) * 100%), transparent);
 	}
 
@@ -435,7 +547,8 @@
 	:global(html.dark) .glass-panel,
 	:global(html.dark) .glass-nav,
 	:global(html.dark) .glass-button,
-	:global(html.dark) .glass-frosted {
+	:global(html.dark) .glass-frosted,
+	:global(html.dark) .glass-section-panel {
 		background: color-mix(in srgb, var(--color-dark-surface) calc(var(--glass-opacity-fallback-dark) * 100%), transparent);
 	}
 }

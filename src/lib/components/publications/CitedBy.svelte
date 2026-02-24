@@ -9,11 +9,11 @@
 </script>
 
 {#if sortedCitedBy && sortedCitedBy.length > 0}
-	<section class="cited-by-section scroll-reveal">
+	<section class="cited-by-section glass-section-panel scroll-reveal">
 		<h2 class="section-title">Cited By ({sortedCitedBy.length})</h2>
 		<div class="citations-grid grid-stagger">
 			{#each sortedCitedBy as citingWork (citingWork.title + citingWork.year)}
-				<div class="citing-work-card scroll-reveal-scale">
+				<div class="citing-work-card glass-sub-card scroll-reveal-scale">
 					<div class="citation-title">
 						{#if citingWork.url}
 							<a href={citingWork.url} target="_blank" rel="noopener" class="citation-link"
@@ -41,45 +41,12 @@
 	.cited-by-section {
 		margin-top: var(--space-xl);
 		padding: var(--space-lg);
-		border-radius: var(--border-radius-xl);
-		position: relative;
-		will-change: transform, box-shadow;
-
-		/* Sophisticated glassmorphism effect matching AbstractSection */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
-		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
-		box-shadow: var(--shadow-md);
-		transition:
-			transform var(--duration-normal) var(--ease-out),
-			box-shadow var(--duration-normal) var(--ease-out),
-			background var(--duration-normal) var(--ease-out);
 	}
 
 	@media (--sm) {
 		.cited-by-section {
 			padding: var(--space-xl);
 		}
-	}
-
-	.cited-by-section:hover {
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-lg);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
-		);
 	}
 
 	.section-title {
@@ -133,34 +100,12 @@
 
 	.citing-work-card {
 		padding: var(--space-md);
-		border-radius: var(--border-radius-lg);
-		position: relative;
-		will-change: transform, box-shadow;
-
-		/* Enhanced glassmorphism for individual cards */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-surface) calc(var(--opacity-medium) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent)
-				100%
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-border) calc(var(--opacity-medium) * 100%), transparent);
-		box-shadow: var(--shadow-sm);
-		transition:
-			transform var(--duration-normal) var(--ease-out),
-			box-shadow var(--duration-normal) var(--ease-out);
 	}
 
 	@media (--sm) {
 		.citing-work-card {
 			padding: var(--space-lg);
 		}
-	}
-
-	.citing-work-card:hover {
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-md);
 	}
 
 	.citation-title {
@@ -219,71 +164,10 @@
 		border-radius: var(--border-radius-sm);
 	}
 
-	/* Dark mode refinements */
-	:global(html.dark) .cited-by-section {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 4%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 6%, transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark) .cited-by-section:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 6%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 8%, transparent) 100%
-		);
-	}
-
-	:global(html.dark) .citing-work-card {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-medium) * 100%), transparent)
-				0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent)
-				100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-very-low) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark) .citing-work-card:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(
-					in srgb,
-					var(--color-dark-surface) calc(var(--opacity-medium-high) * 100%),
-					transparent
-				)
-				0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 100%
-		);
-	}
-
-	/* Responsive adjustments */
-	/* Mobile-first styles are now default, with overrides in media queries above */
-
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
-		.cited-by-section,
-		.cited-by-section:hover,
-		.citing-work-card,
-		.citing-work-card:hover,
 		.section-title::after {
-			transition: none !important;
-			transform: none !important;
-			will-change: auto !important;
+			transition: none;
 		}
 	}
 </style>
