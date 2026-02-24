@@ -16,7 +16,7 @@
 					<span class="block ml-4 text-sm text-light">{formatAffiliationPeriod(aff.period)}</span>
 					{#if aff.roles && aff.roles.length > 0}
 						<ul class="list-disc pl-8 mt-1">
-							{#each aff.roles as role (role.title + ('min' in role.period ? role.period.min : role.period.start))}
+							{#each aff.roles as role (role.title + role.period.start)}
 								<li class="text-sm">
 									{role.title} ({formatAffiliationPeriod(role.period)})
 								</li>

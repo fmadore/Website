@@ -50,7 +50,6 @@
 		}
 	},
 	"dependencies": {
-		"@fortawesome/free-solid-svg-icons": "^7.1.0",
 		"@iconify-icons/academicons": "^1.2.10",
 		"@iconify-icons/lucide": "^1.2.135",
 		"@iconify-icons/mdi": "^1.2.48",
@@ -62,7 +61,6 @@
 		"echarts-wordcloud": "^2.1.0",
 		"html2canvas": "^1.4.1",
 		"jspdf": "^4.1.0",
-		"maplibre-gl": "^5.16.0",
-		"svelte-fa": "^4.0.4"
+		"maplibre-gl": "^5.16.0"
 	}
 }

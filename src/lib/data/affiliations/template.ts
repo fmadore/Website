@@ -7,12 +7,12 @@ export const affiliationTemplate: ProfessionalAffiliation = {
     name: 'Islam in Africa Studies Group',
     abbreviation: 'IASG',
     parentOrganization: 'African Studies Association (ASA)',
-    period: { start: 2017, end: 'present' },
+    period: { start: 2017, end: null }, // null = ongoing
     url: 'https://example.com/iasg', // Optional: Add URL if available
     roles: [
         {
             title: 'Secretary',
-            period: { start: 2024, end: 'present' }
+            period: { start: 2024, end: null } // null = ongoing
         }
     ]
 };

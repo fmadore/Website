@@ -5,7 +5,7 @@ export const sahelResearchGroup: ProfessionalAffiliation = {
 	name: 'Sahel Research Group',
 	abbreviation: 'SRG',
 	parentOrganization: 'University of Florida',
-	period: { start: 2018, end: 'present' },
+	period: { start: 2018, end: null },
 	url: 'https://sahelresearch.africa.ufl.edu/'
 	// No roles specified
 };

@@ -16,18 +16,8 @@ export const allAffiliations: ProfessionalAffiliation[] = loadData<ProfessionalA
 
 // Sort by start year of the affiliation period (most recent first, then by name)
 export const affiliationsByStartDate = [...allAffiliations].sort((a, b) => {
-	const getStartYear = (affiliation: ProfessionalAffiliation): number => {
-		if ('min' in affiliation.period) {
-			return affiliation.period.min;
-		}
-		return affiliation.period.start;
-	};
-
-	const startYearA = getStartYear(a);
-	const startYearB = getStartYear(b);
-
-	if (startYearB !== startYearA) {
-		return startYearB - startYearA;
+	if (b.period.start !== a.period.start) {
+		return b.period.start - a.period.start;
 	}
 	return a.name.localeCompare(b.name);
 });

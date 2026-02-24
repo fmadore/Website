@@ -1,4 +1,5 @@
-import type { Publication, ProfessionalAffiliation } from '$lib/types';
+import type { Publication } from '$lib/types';
+import type { AffiliationPeriod } from '$lib/types/affiliation';
 
 /**
  * Formats author list with Frédérick Madore in bold for CV display
@@ -132,22 +133,16 @@ export function formatBlogDate(dateISO?: string): string {
 }
 
 /**
- * Formats an affiliation period (either YearRange or StartEnd format)
+ * Formats an affiliation period ({ start, end } where null = ongoing)
  */
-export function formatAffiliationPeriod(period: ProfessionalAffiliation['period']): string {
-	if ('min' in period) {
-		// It's a YearRange
-		if (period.min === period.max) {
-			return period.min.toString();
-		}
-		return `${period.min}–${period.max}`;
-	} else {
-		// It's { start: number; end: 'present' | number }
-		if (typeof period.end === 'number' && period.start === period.end) {
-			return period.start.toString();
-		}
-		return `${period.start}–${period.end}`;
+export function formatAffiliationPeriod(period: AffiliationPeriod): string {
+	if (period.end === null) {
+		return `${period.start}–Present`;
 	}
+	if (period.start === period.end) {
+		return period.start.toString();
+	}
+	return `${period.start}–${period.end}`;
 }
 
 /**
