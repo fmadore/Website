@@ -6,6 +6,7 @@
 		title,
 		items = [] as T[],
 		year,
+		key,
 		yearWidth = 'auto',
 		emptyMessage,
 		conditional = false,
@@ -14,6 +15,7 @@
 		title: string;
 		items?: T[];
 		year: (item: T) => string | number;
+		key: (item: T) => string | number;
 		yearWidth?: 'auto' | 'fixed';
 		emptyMessage?: string;
 		conditional?: boolean;
@@ -28,7 +30,7 @@
 		<h3>{title}</h3>
 		{#if hasItems}
 			<div class="space-y-3">
-				{#each items as item (item)}
+				{#each items as item (key(item))}
 					<CVEntry year={year(item)} {yearWidth}>
 						{@render entry(item)}
 					</CVEntry>

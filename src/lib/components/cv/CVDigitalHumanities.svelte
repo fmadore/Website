@@ -8,6 +8,7 @@
 	title="Digital Humanities Projects"
 	items={allDhProjects}
 	year={(project) => formatCVYearRange(project.years)}
+	key={(project) => project.id}
 	emptyMessage="No digital humanities projects listed."
 >
 	{#snippet entry(project)}

@@ -7,6 +7,7 @@
 	title="Awards & Honors"
 	items={awardsByDate}
 	year={(award) => award.year}
+	key={(award) => award.id}
 	emptyMessage="No awards or honors listed."
 >
 	{#snippet entry(award)}

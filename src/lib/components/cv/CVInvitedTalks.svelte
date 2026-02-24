@@ -12,6 +12,7 @@
 	title="Invited Talks"
 	items={invitedTalks}
 	year={(comm) => new Date(comm.dateISO).getFullYear()}
+	key={(comm) => comm.id}
 	conditional
 >
 	{#snippet entry(comm)}

@@ -8,6 +8,7 @@
 	title="Professional Appointments"
 	items={appointmentsByDate}
 	year={(appt) => formatCVYearRange(appt.startYear, appt.endYear)}
+	key={(appt) => appt.id}
 	yearWidth="fixed"
 	emptyMessage="No professional appointments listed."
 >

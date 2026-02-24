@@ -10,6 +10,7 @@
 	title="Organization of Academic Events"
 	items={organizedEvents}
 	year={(comm) => new Date(comm.dateISO).getFullYear()}
+	key={(comm) => comm.id}
 	conditional
 >
 	{#snippet entry(comm)}
