@@ -1,8 +1,9 @@
 /**
- * Publications Filters - Svelte 5 Compatible Edition
+ * Publications Filters
  *
- * Exports proper Svelte stores that can be used with $ prefix in components.
- * Uses createActiveFiltersStore and other utilities to maintain reactivity.
+ * Uses the filter store factory for standard filter logic.
+ * Publication-specific behavior (author extraction from editors/ToC)
+ * is handled via dimension match functions.
  */
 
 import type { Publication, YearRange, TableOfContentsEntry } from '$lib/types';
@@ -12,126 +13,66 @@ import {
 	publicationsByYear,
 	allTags
 } from './index';
-import {
-	createActiveFiltersStore,
-	createToggleArrayFilter,
-	createSetArrayFilter,
-	createUpdateRangeFilter,
-	createResetRangeFilter,
-	createSetRangeFilter,
-	createClearAllFilters,
-	createDerivedCountStore
-} from '$lib/utils/filterUtils';
-import { derived, readable } from 'svelte/store';
+import { createFilterSystem } from '$lib/utils/filterStoreFactory';
 import { SvelteSet } from 'svelte/reactivity';
 
-// Explicitly type the imported allPublications to include sourceDirType
-const allPublications: (Publication & { sourceDirType: string })[] = baseAllPublications;
+type Pub = Publication & { sourceDirType: string };
 
-// Helper function to extract editors from a publication
-function extractEditors(publication: Publication & { sourceDirType?: string }): string[] {
+const allPublications: Pub[] = baseAllPublications;
+
+// --- Domain-specific helpers ---
+
+function extractEditors(publication: Pub): string[] {
 	if (!publication.editors) return [];
-
-	// Handle string format (e.g., "Editor1, Editor2" or "Editor1 and Editor2")
 	if (typeof publication.editors === 'string') {
 		return publication.editors.split(/\s*(?:,|and)\s*/).map((name) => name.trim());
 	}
-
-	// Handle array format
 	if (Array.isArray(publication.editors)) {
 		return publication.editors;
 	}
-
 	return [];
 }
 
-// Helper function to extract authors from structured tableOfContents entries
-function extractTocAuthors(publication: Publication & { sourceDirType?: string }): string[] {
+function extractTocAuthors(publication: Pub): string[] {
 	if (!publication.tableOfContents) return [];
-
 	return publication.tableOfContents.flatMap((entry) => {
-		// Skip legacy string format entries
 		if (typeof entry === 'string') return [];
-		// Extract authors from structured entries
 		return (entry as TableOfContentsEntry).authors || [];
 	});
 }
 
-// Extract all unique co-authors from publications, excluding "Frédérick Madore"
+// --- Computed unique values ---
+
 export const allAuthors = Array.from(
 	new SvelteSet([
-		// Get authors from publications
-		...allPublications.flatMap((pub: Publication & { sourceDirType: string }) => pub.authors || []),
-		// Get editors from publications, excluding chapters and encyclopedia entries
+		...allPublications.flatMap((pub) => pub.authors || []),
 		...allPublications
-			.filter(
-				(pub: Publication & { sourceDirType: string }) =>
-					pub.type !== 'chapter' && pub.type !== 'encyclopedia'
-			)
-			.flatMap((pub: Publication & { sourceDirType: string }) => extractEditors(pub)),
-		// Get preface authors
-		...allPublications
-			.filter((pub: Publication & { sourceDirType: string }) => pub.prefacedBy)
-			.map((pub: Publication & { sourceDirType: string }) => pub.prefacedBy as string),
-		// Get authors from structured tableOfContents (edited volumes and special issues)
-		...allPublications.flatMap((pub: Publication & { sourceDirType: string }) =>
-			extractTocAuthors(pub)
-		)
+			.filter((pub) => pub.type !== 'chapter' && pub.type !== 'encyclopedia')
+			.flatMap((pub) => extractEditors(pub)),
+		...allPublications.filter((pub) => pub.prefacedBy).map((pub) => pub.prefacedBy as string),
+		...allPublications.flatMap((pub) => extractTocAuthors(pub))
 	])
 )
 	.filter((author: string) => author !== 'Frédérick Madore')
 	.sort();
 
-// Extract all unique countries from publications
-export const allCountries = Array.from(
-	new SvelteSet(
-		allPublications.flatMap((pub: Publication & { sourceDirType: string }) => pub.country || [])
-	)
+const allCountries = Array.from(
+	new SvelteSet(allPublications.flatMap((pub) => pub.country || []))
 ).sort();
 
-// Extract all unique projects from publications
-export const allProjects = Array.from(
-	new SvelteSet(
-		allPublications
-			.map((pub: Publication & { sourceDirType: string }) => pub.project)
-			.filter(Boolean) as string[]
-	)
+const allProjects = Array.from(
+	new SvelteSet(allPublications.map((pub) => pub.project).filter(Boolean) as string[])
 ).sort();
 
-// Adjust allLanguages to handle comma-separated values consistently
 const uniqueLanguages = Array.from(
 	new Set(
-		allPublications.flatMap((pub: Publication & { sourceDirType: string }) =>
+		allPublications.flatMap((pub) =>
 			pub.language ? pub.language.split(',').map((l: string) => l.trim()) : []
 		)
 	)
 ).sort();
 
-// Create reactive state for active filters
-interface ActivePublicationFilters {
-	types: string[];
-	yearRange: YearRange | null;
-	tags: string[];
-	languages: string[];
-	authors: string[];
-	countries: string[];
-	projects: string[];
-}
-
-const initialFilters: ActivePublicationFilters = {
-	types: [],
-	yearRange: null,
-	tags: [],
-	languages: [],
-	authors: [],
-	countries: [],
-	projects: []
-};
-
-export const activeFilters = createActiveFiltersStore(initialFilters);
-
-// Define type labels for sorting (matching the ones used in the UI)
-const typeLabels: { [key: string]: string } = {
+const typeLabels: Record<string, string> = {
 	blogpost: 'Blog post',
 	book: 'Book',
 	chapter: 'Book chapter',
@@ -144,452 +85,126 @@ const typeLabels: { [key: string]: string } = {
 	'special-issue': 'Special issue'
 };
 
-// Create a readable store for filter options
-export const filterOptions = readable({
-	types: Object.keys(publicationsByType).sort((a, b) => {
-		// Sort by display labels instead of raw values
-		const labelA = typeLabels[a] || a;
-		const labelB = typeLabels[b] || b;
-		return labelA.localeCompare(labelB);
-	}),
-	// Years remain the same here, representing all available options
-	years: Object.keys(publicationsByYear)
-		.map(Number)
-		.sort((a, b) => b - a),
-	tags: allTags,
-	languages: uniqueLanguages,
-	authors: allAuthors,
-	countries: allCountries,
-	projects: allProjects
-});
+// --- Filter System ---
 
-// Derived store that filters publications based on active filters
-export const filteredPublications = derived(
-	activeFilters,
-	($activeFilters): (Publication & { sourceDirType: string })[] => {
-		return allPublications.filter((pub: Publication & { sourceDirType: string }) => {
-			// Filter by publication type
-			if ($activeFilters.types.length > 0 && !$activeFilters.types.includes(pub.type)) {
-				return false;
-			}
-
-			// Filter by year range
-			if (
-				$activeFilters.yearRange &&
-				(pub.year < $activeFilters.yearRange.min || pub.year > $activeFilters.yearRange.max)
-			) {
-				return false;
-			}
-
-			// Filter by tags (if publication has at least one of the selected tags)
-			if (
-				$activeFilters.tags.length > 0 &&
-				(!pub.tags || !pub.tags.some((tag: string) => $activeFilters.tags.includes(tag)))
-			) {
-				return false;
-			}
-
-			// Filter by language
-			if ($activeFilters.languages.length > 0) {
-				const pubLanguages = pub.language
-					? pub.language.split(',').map((lang: string) => lang.trim())
-					: [];
-				if (!pubLanguages.some((lang: string) => $activeFilters.languages.includes(lang))) {
-					return false;
-				}
-			}
-
-			// Filter by author (if publication has at least one of the selected authors)
-			if ($activeFilters.authors.length > 0) {
-				// Check authors array
+const system = createFilterSystem<
+	Publication & { sourceDirType: string },
+	{
+		types: string[];
+		yearRange: YearRange | null;
+		tags: string[];
+		languages: string[];
+		authors: string[];
+		countries: string[];
+		projects: string[];
+	}
+>({
+	items: allPublications,
+	initialFilters: {
+		types: [],
+		yearRange: null,
+		tags: [],
+		languages: [],
+		authors: [],
+		countries: [],
+		projects: []
+	},
+	dimensions: {
+		types: {
+			match: (pub: Pub, values: string[]) => values.includes(pub.type),
+			countExtractor: (pub: Pub) => pub.type
+		},
+		yearRange: {
+			type: 'range',
+			match: (pub: Pub, range: YearRange) => pub.year >= range.min && pub.year <= range.max
+		},
+		tags: {
+			match: (pub: Pub, values: string[]) =>
+				!!pub.tags && pub.tags.some((t) => values.includes(t)),
+			countExtractor: (pub: Pub) => pub.tags
+		},
+		languages: {
+			match: (pub: Pub, values: string[]) => {
+				const langs = pub.language ? pub.language.split(',').map((l) => l.trim()) : [];
+				return langs.some((l) => values.includes(l));
+			},
+			countExtractor: (pub: Pub) => pub.language?.split(',').map((l) => l.trim())
+		},
+		authors: {
+			match: (pub: Pub, values: string[]) => {
 				const hasMatchingAuthor =
-					pub.authors && pub.authors.some((author) => $activeFilters.authors.includes(author));
-
-				// Check editors, but only if the publication type is not chapter or encyclopedia
+					pub.authors && pub.authors.some((a) => values.includes(a));
 				const isExcludedType = pub.type === 'chapter' || pub.type === 'encyclopedia';
 				const hasMatchingEditor =
 					!isExcludedType &&
 					pub.editors &&
-					((typeof pub.editors === 'string' &&
-						pub.editors
-							.split(/\s*(?:,|and)\s*/)
-							.map((name) => name.trim())
-							.some((editor) => $activeFilters.authors.includes(editor))) ||
-						(Array.isArray(pub.editors) &&
-							pub.editors.some((editor) => $activeFilters.authors.includes(editor))));
-
-				// Check preface author
-				const hasMatchingPrefaceAuthor =
-					pub.prefacedBy && $activeFilters.authors.includes(pub.prefacedBy);
-
-				// Check tableOfContents authors (for edited volumes and special issues)
-				const tocAuthors = extractTocAuthors(pub);
-				const hasMatchingTocAuthor = tocAuthors.some((author) =>
-					$activeFilters.authors.includes(author)
+					extractEditors(pub).some((e) => values.includes(e));
+				const hasMatchingPrefaceAuthor = pub.prefacedBy && values.includes(pub.prefacedBy);
+				const hasMatchingTocAuthor = extractTocAuthors(pub).some((a) =>
+					values.includes(a)
 				);
-
-				// If none of the author sources match, filter out this publication
-				if (
-					!hasMatchingAuthor &&
-					!hasMatchingEditor &&
-					!hasMatchingPrefaceAuthor &&
-					!hasMatchingTocAuthor
-				) {
-					return false;
-				}
-			}
-
-			// Filter by country
-			if (
-				$activeFilters.countries.length > 0 &&
-				(!pub.country ||
-					!pub.country.some((country: string) => $activeFilters.countries.includes(country)))
-			) {
-				return false;
-			}
-
-			// Filter by project
-			if (
-				$activeFilters.projects.length > 0 &&
-				(!pub.project || !$activeFilters.projects.includes(pub.project))
-			) {
-				return false;
-			}
-
-			return true;
-		});
+				return !!(
+					hasMatchingAuthor ||
+					hasMatchingEditor ||
+					hasMatchingPrefaceAuthor ||
+					hasMatchingTocAuthor
+				);
+			},
+			countExtractor: (pub: Pub) => pub.authors
+		},
+		countries: {
+			match: (pub: Pub, values: string[]) =>
+				!!pub.country && pub.country.some((c) => values.includes(c)),
+			countExtractor: (pub: Pub) => pub.country
+		},
+		projects: {
+			match: (pub: Pub, values: string[]) => !!pub.project && values.includes(pub.project),
+			countExtractor: (pub: Pub) => pub.project
+		}
+	},
+	filterOptions: {
+		types: Object.keys(publicationsByType).sort((a, b) => {
+			const labelA = typeLabels[a] || a;
+			const labelB = typeLabels[b] || b;
+			return labelA.localeCompare(labelB);
+		}),
+		years: Object.keys(publicationsByYear)
+			.map(Number)
+			.sort((a, b) => b - a),
+		tags: allTags,
+		languages: uniqueLanguages,
+		authors: allAuthors,
+		countries: allCountries,
+		projects: allProjects
 	}
-); // Functions to toggle filters
-export const toggleTypeFilter = createToggleArrayFilter(activeFilters, 'types');
-export const toggleTagFilter = createToggleArrayFilter(activeFilters, 'tags');
-export const toggleLanguageFilter = createToggleArrayFilter(activeFilters, 'languages');
-export const toggleAuthorFilter = createToggleArrayFilter(activeFilters, 'authors');
-export const toggleCountryFilter = createToggleArrayFilter(activeFilters, 'countries');
-export const toggleProjectFilter = createToggleArrayFilter(activeFilters, 'projects');
-
-// Add function to update year range
-export const updateYearRange = createUpdateRangeFilter(activeFilters, 'yearRange');
-
-// Add function to reset year range filter
-export const resetYearRange = createResetRangeFilter(activeFilters, 'yearRange');
-
-// Set Functions
-export const setTypes = createSetArrayFilter(activeFilters, 'types');
-export const setTags = createSetArrayFilter(activeFilters, 'tags');
-export const setLanguages = createSetArrayFilter(activeFilters, 'languages');
-export const setAuthors = createSetArrayFilter(activeFilters, 'authors');
-export const setCountries = createSetArrayFilter(activeFilters, 'countries');
-export const setProjects = createSetArrayFilter(activeFilters, 'projects');
-export const setYearRange = createSetRangeFilter(updateYearRange, resetYearRange);
-
-// Function to clear all filters
-export const clearAllFilters = createClearAllFilters(activeFilters, initialFilters);
-
-// Get available tag counts for current filtered publications
-export const tagCounts = createDerivedCountStore(
-	filteredPublications,
-	(pub: Publication & { sourceDirType: string }) => pub.tags
-);
-
-// Derive displayed authors based on selected publication types, year range, tags, and languages
-export const displayedAuthors = derived(activeFilters, ($activeFilters): string[] => {
-	const noTypeFilter = $activeFilters.types.length === 0;
-	const noYearFilter = !$activeFilters.yearRange;
-	const noTagFilter = $activeFilters.tags.length === 0;
-	const noLanguageFilter = $activeFilters.languages.length === 0;
-	const noCountryFilter = $activeFilters.countries.length === 0;
-
-	// If no types, years, tags, or languages are filtered, show all available authors
-	if (noTypeFilter && noYearFilter && noTagFilter && noLanguageFilter && noCountryFilter) {
-		return allAuthors; // Use the static allAuthors list
-	}
-
-	// Filter publications based on active types, year range, tags, and languages
-	const relevantPublications = allPublications.filter((pub) => {
-		// Type filter
-		if (!noTypeFilter && !$activeFilters.types.includes(pub.type)) {
-			return false;
-		}
-		// Year range filter
-		if (
-			!noYearFilter &&
-			(pub.year < $activeFilters.yearRange!.min || pub.year > $activeFilters.yearRange!.max)
-		) {
-			return false;
-		}
-		// Tag filter
-		if (!noTagFilter && (!pub.tags || !pub.tags.some((tag) => $activeFilters.tags.includes(tag)))) {
-			return false;
-		}
-		// Language filter
-		if (!noLanguageFilter) {
-			const pubLanguages = pub.language ? pub.language.split(',').map((lang) => lang.trim()) : [];
-			if (!pubLanguages.some((lang) => $activeFilters.languages.includes(lang))) {
-				return false;
-			}
-		}
-		// Country filter
-		if (
-			!noCountryFilter &&
-			(!pub.country || !pub.country.some((country) => $activeFilters.countries.includes(country)))
-		) {
-			return false;
-		}
-		return true;
-	});
-
-	// Extract authors and applicable editors from these relevant publications
-	const authorsFromRelevantPubs = new SvelteSet<string>();
-	relevantPublications.forEach((pub) => {
-		// Add authors
-		if (pub.authors) {
-			pub.authors.forEach((author) => {
-				if (author !== 'Frédérick Madore') {
-					authorsFromRelevantPubs.add(author);
-				}
-			});
-		}
-
-		// Add editors, excluding chapter and encyclopedia types
-		if (pub.editors && pub.type !== 'chapter' && pub.type !== 'encyclopedia') {
-			const editorNames = extractEditors(pub);
-			editorNames.forEach((editor) => {
-				if (editor !== 'Frédérick Madore') {
-					authorsFromRelevantPubs.add(editor);
-				}
-			});
-		}
-
-		// Add preface authors
-		if (pub.prefacedBy && pub.prefacedBy !== 'Frédérick Madore') {
-			authorsFromRelevantPubs.add(pub.prefacedBy);
-		}
-
-		// Add tableOfContents authors (for edited volumes and special issues)
-		const tocAuthors = extractTocAuthors(pub);
-		tocAuthors.forEach((author) => {
-			if (author !== 'Frédérick Madore') {
-				authorsFromRelevantPubs.add(author);
-			}
-		});
-	});
-
-	// Convert Set to array and sort
-	return Array.from(authorsFromRelevantPubs).sort();
 });
 
-// Get available author counts for current filtered publications
-export const authorCounts = createDerivedCountStore(
-	filteredPublications,
-	(pub: Publication & { sourceDirType: string }) => pub.authors
-);
+// --- Re-exports (preserves existing consumer API) ---
 
-// Get available country counts for current filtered publications
-export const countryCounts = createDerivedCountStore(
-	filteredPublications,
-	(pub: Publication & { sourceDirType: string }) => pub.country
-);
+export const { activeFilters, filterOptions, clearAllFilters } = system;
+export const filteredPublications = system.filteredItems;
 
-// Get available project counts for current filtered publications
-export const projectCounts = createDerivedCountStore(
-	filteredPublications,
-	(pub: Publication & { sourceDirType: string }) => pub.project
-);
+export const toggleTypeFilter = system.toggles.types;
+export const toggleTagFilter = system.toggles.tags;
+export const toggleLanguageFilter = system.toggles.languages;
+export const toggleAuthorFilter = system.toggles.authors;
+export const toggleCountryFilter = system.toggles.countries;
+export const toggleProjectFilter = system.toggles.projects;
 
-// Get available type counts for current filtered publications
-export const typeCounts = createDerivedCountStore(
-	filteredPublications,
-	(pub: Publication & { sourceDirType: string }) => pub.type
-);
+export const updateYearRange = system.updateYearRange!;
+export const resetYearRange = system.resetYearRange!;
+export const setYearRange = system.setYearRange!;
 
-// Get available language counts for current filtered publications
-export const languageCounts = createDerivedCountStore(
-	filteredPublications,
-	(pub: Publication & { sourceDirType: string }) =>
-		pub.language?.split(',').map((l: string) => l.trim())
-);
+export const setTypes = system.setters.types;
+export const setTags = system.setters.tags;
+export const setLanguages = system.setters.languages;
+export const setAuthors = system.setters.authors;
+export const setCountries = system.setters.countries;
+export const setProjects = system.setters.projects;
 
-// Derive displayed types based on other active filters
-export const displayedTypes = derived(activeFilters, ($activeFilters): string[] => {
-	const relevantPublications = allPublications.filter((pub) => {
-		// Year range filter
-		if (
-			$activeFilters.yearRange &&
-			(pub.year < $activeFilters.yearRange.min || pub.year > $activeFilters.yearRange.max)
-		)
-			return false;
-		// Tag filter
-		if (
-			$activeFilters.tags.length > 0 &&
-			(!pub.tags || !pub.tags.some((tag) => $activeFilters.tags.includes(tag)))
-		)
-			return false;
-		// Language filter
-		if ($activeFilters.languages.length > 0) {
-			const pubLanguages = pub.language ? pub.language.split(',').map((lang) => lang.trim()) : [];
-			if (!pubLanguages.some((lang) => $activeFilters.languages.includes(lang))) return false;
-		}
-		// Author filter
-		if ($activeFilters.authors.length > 0) {
-			const hasMatchingAuthor =
-				pub.authors && pub.authors.some((author) => $activeFilters.authors.includes(author));
-			const isExcludedType = pub.type === 'chapter' || pub.type === 'encyclopedia';
-			const hasMatchingEditor =
-				!isExcludedType &&
-				pub.editors &&
-				extractEditors(pub).some((editor) => $activeFilters.authors.includes(editor));
-			const hasMatchingPrefaceAuthor =
-				pub.prefacedBy && $activeFilters.authors.includes(pub.prefacedBy);
-			const tocAuthors = extractTocAuthors(pub);
-			const hasMatchingTocAuthor = tocAuthors.some((author) =>
-				$activeFilters.authors.includes(author)
-			);
-			if (
-				!hasMatchingAuthor &&
-				!hasMatchingEditor &&
-				!hasMatchingPrefaceAuthor &&
-				!hasMatchingTocAuthor
-			)
-				return false;
-		}
-		// Country filter
-		if (
-			$activeFilters.countries.length > 0 &&
-			(!pub.country || !pub.country.some((country) => $activeFilters.countries.includes(country)))
-		)
-			return false;
-		// Project filter
-		if (
-			$activeFilters.projects.length > 0 &&
-			(!pub.project || !$activeFilters.projects.includes(pub.project))
-		)
-			return false;
-		return true;
-	});
-	const types = new SvelteSet(relevantPublications.map((pub) => pub.type));
-	return Array.from(types).sort((a, b) => {
-		// Sort by display labels instead of raw values
-		const labelA = typeLabels[a] || a;
-		const labelB = typeLabels[b] || b;
-		return labelA.localeCompare(labelB);
-	});
-});
-
-// Derive displayed tags based on other active filters
-export const displayedTags = derived(activeFilters, ($activeFilters): string[] => {
-	const relevantPublications = allPublications.filter((pub) => {
-		// Type filter
-		if ($activeFilters.types.length > 0 && !$activeFilters.types.includes(pub.type)) return false;
-		// Year range filter
-		if (
-			$activeFilters.yearRange &&
-			(pub.year < $activeFilters.yearRange.min || pub.year > $activeFilters.yearRange.max)
-		)
-			return false;
-		// Language filter
-		if ($activeFilters.languages.length > 0) {
-			const pubLanguages = pub.language ? pub.language.split(',').map((lang) => lang.trim()) : [];
-			if (!pubLanguages.some((lang) => $activeFilters.languages.includes(lang))) return false;
-		}
-		// Author filter
-		if ($activeFilters.authors.length > 0) {
-			const hasMatchingAuthor =
-				pub.authors && pub.authors.some((author) => $activeFilters.authors.includes(author));
-			const isExcludedType = pub.type === 'chapter' || pub.type === 'encyclopedia';
-			const hasMatchingEditor =
-				!isExcludedType &&
-				pub.editors &&
-				extractEditors(pub).some((editor) => $activeFilters.authors.includes(editor));
-			const hasMatchingPrefaceAuthor =
-				pub.prefacedBy && $activeFilters.authors.includes(pub.prefacedBy);
-			const tocAuthors = extractTocAuthors(pub);
-			const hasMatchingTocAuthor = tocAuthors.some((author) =>
-				$activeFilters.authors.includes(author)
-			);
-			if (
-				!hasMatchingAuthor &&
-				!hasMatchingEditor &&
-				!hasMatchingPrefaceAuthor &&
-				!hasMatchingTocAuthor
-			)
-				return false;
-		}
-		// Country filter
-		if (
-			$activeFilters.countries.length > 0 &&
-			(!pub.country || !pub.country.some((country) => $activeFilters.countries.includes(country)))
-		)
-			return false;
-		// Project filter
-		if (
-			$activeFilters.projects.length > 0 &&
-			(!pub.project || !$activeFilters.projects.includes(pub.project))
-		)
-			return false;
-		return true;
-	});
-	const tags = new SvelteSet(relevantPublications.flatMap((pub) => pub.tags || []));
-	return Array.from(tags).sort();
-});
-
-// Derive displayed languages based on other active filters
-export const displayedLanguages = derived(activeFilters, ($activeFilters): string[] => {
-	const relevantPublications = allPublications.filter((pub) => {
-		// Type filter
-		if ($activeFilters.types.length > 0 && !$activeFilters.types.includes(pub.type)) return false;
-		// Year range filter
-		if (
-			$activeFilters.yearRange &&
-			(pub.year < $activeFilters.yearRange.min || pub.year > $activeFilters.yearRange.max)
-		)
-			return false;
-		// Tag filter
-		if (
-			$activeFilters.tags.length > 0 &&
-			(!pub.tags || !pub.tags.some((tag) => $activeFilters.tags.includes(tag)))
-		)
-			return false;
-		// Author filter
-		if ($activeFilters.authors.length > 0) {
-			const hasMatchingAuthor =
-				pub.authors && pub.authors.some((author) => $activeFilters.authors.includes(author));
-			const isExcludedType = pub.type === 'chapter' || pub.type === 'encyclopedia';
-			const hasMatchingEditor =
-				!isExcludedType &&
-				pub.editors &&
-				extractEditors(pub).some((editor) => $activeFilters.authors.includes(editor));
-			const hasMatchingPrefaceAuthor =
-				pub.prefacedBy && $activeFilters.authors.includes(pub.prefacedBy);
-			const tocAuthors = extractTocAuthors(pub);
-			const hasMatchingTocAuthor = tocAuthors.some((author) =>
-				$activeFilters.authors.includes(author)
-			);
-			if (
-				!hasMatchingAuthor &&
-				!hasMatchingEditor &&
-				!hasMatchingPrefaceAuthor &&
-				!hasMatchingTocAuthor
-			)
-				return false;
-		}
-		// Country filter
-		if (
-			$activeFilters.countries.length > 0 &&
-			(!pub.country || !pub.country.some((country) => $activeFilters.countries.includes(country)))
-		)
-			return false;
-		// Project filter
-		if (
-			$activeFilters.projects.length > 0 &&
-			(!pub.project || !$activeFilters.projects.includes(pub.project))
-		)
-			return false;
-		return true;
-	});
-	const languages = new SvelteSet(
-		relevantPublications.flatMap((pub) =>
-			pub.language ? pub.language.split(',').map((l) => l.trim()) : []
-		)
-	);
-	return Array.from(languages).sort();
-});
+export const tagCounts = system.counts.tags;
+export const authorCounts = system.counts.authors;
+export const typeCounts = system.counts.types;
+export const languageCounts = system.counts.languages;
+export const countryCounts = system.counts.countries;
+export const projectCounts = system.counts.projects;

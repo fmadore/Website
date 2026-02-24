@@ -16,17 +16,16 @@ Prioritized list of refactoring opportunities identified during codebase review 
 
 ---
 
-## Priority 1: Filter Store Factory
+## Priority 1: Filter Store Factory ✅
 
-**Files**: `src/lib/data/publications/filters.svelte.ts` (595 lines), `src/lib/data/communications/filters.svelte.ts` (265 lines), `src/lib/data/fieldworks/filters.svelte.ts` (101 lines)
-**Total**: 961 lines | **Estimated savings**: ~500 lines
+**Files**: `src/lib/data/publications/filters.svelte.ts` (595→181 lines), `src/lib/data/communications/filters.svelte.ts` (265→148 lines), `src/lib/data/fieldworks/filters.svelte.ts` (101→deleted)
+**New**: `src/lib/utils/filterStoreFactory.ts` (120 lines)
+**Before**: 961 lines | **After**: 449 lines | **Saved**: 512 lines
 
-- [ ] Create `createFilterSystem<T>()` factory in `src/lib/utils/filterStoreFactory.ts`
-- [ ] Refactor publications filter to use factory
-- [ ] Refactor communications filter to use factory
-- [ ] Refactor fieldworks filter to use factory
-
-**Why**: All three files share ~80% identical logic -- store creation, derived filtering, count computation, toggle functions. The factory would accept a config object describing filter dimensions (types, tags, years, countries, etc.) and produce all stores and toggle functions.
+- [x] Create `createFilterSystem<T>()` factory in `src/lib/utils/filterStoreFactory.ts`
+- [x] Refactor publications filter to use factory (also removed 264 lines of dead `displayed*` stores)
+- [x] Refactor communications filter to use factory (also replaced try/catch import.meta.glob with direct import)
+- [x] Delete unused fieldworks filter (never imported anywhere)
 
 ---
 
