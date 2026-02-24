@@ -24,6 +24,7 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 		'Volkswagen Foundation'
 	],
 	url: 'https://fmadore.github.io/dh-ai-african-studies-2026/',
+	urlLabel: 'Workshop Website',
 	image: 'images/communications/VWST-logo.webp',
 	coordinates: {
 		latitude: 52.395,
@@ -33,7 +34,7 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 		{
 			name: 'Frédérick Madore',
 			role: 'Co-organizer',
-			affiliation: 'Leibniz-Zentrum Moderner Orient'
+			affiliation: 'University of Bayreuth'
 		},
 		{
 			name: 'Vincent Hiribarren',
@@ -41,29 +42,24 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			affiliation: "King's College London"
 		},
 		{
-			name: 'Shola Adenekan',
-			role: 'Participant',
-			affiliation: 'Ghent University'
-		},
-		{
 			name: 'Nuraddin Aman',
 			role: 'Participant',
-			affiliation: 'Addis Ababa University'
+			affiliation: 'Addis Ababa University, Institute of Ethiopian Studies'
 		},
 		{
 			name: 'Agata Błoch',
 			role: 'Participant',
-			affiliation: "Tadeusz Manteuffel Institute of History of the Polish Academy of Sciences"
+			affiliation: 'Institute of History, Polish Academy of Sciences'
 		},
 		{
-			name: 'Érika Melek Delgado',
+			name: 'Vera Breitner',
+			role: 'Participant',
+			affiliation: 'Bielefeld University'
+		},
+		{
+			name: 'Erika Melek Delgado',
 			role: 'Participant',
 			affiliation: "King's College London"
-		},
-		{
-			name: 'Augustine Farinola',
-			role: 'Participant',
-			affiliation: 'University of Alberta'
 		},
 		{
 			name: 'Britta Frede',
@@ -76,14 +72,14 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			affiliation: 'Emory University'
 		},
 		{
-			name: 'Thompson Kwarkye Gyedu',
+			name: 'Thompson Gyedu Kwarkye',
 			role: 'Participant',
 			affiliation: 'University of Galway'
 		},
 		{
 			name: 'Ashleigh Harris',
 			role: 'Participant',
-			affiliation: 'Uppsala University'
+			affiliation: 'African Literary Metadata (ALMEDA)'
 		},
 		{
 			name: 'Albrecht Hofheinz',
@@ -91,7 +87,7 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			affiliation: 'University of Oslo'
 		},
 		{
-			name: 'Karen Ijumba',
+			name: 'Karen Byera Ijumba',
 			role: 'Participant',
 			affiliation: 'Open Restitution Africa'
 		},
@@ -108,27 +104,22 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 		{
 			name: 'Cassandra Mark-Thiesen',
 			role: 'Participant',
-			affiliation: 'University of Bayreuth'
-		},
-		{
-			name: 'Fabrice Melka',
-			role: 'Participant',
-			affiliation: 'Institut des mondes africains'
+			affiliation: 'University of Regensburg'
 		},
 		{
 			name: 'Duncan Money',
 			role: 'Participant',
-			affiliation: 'Independant researcher'
+			affiliation: 'Zambia Congress of Trade Unions (ZCTU) project'
 		},
 		{
 			name: 'Irene Mwendwa',
 			role: 'Participant',
-			affiliation: 'Tech Policy Expert'
+			affiliation: 'Sulwe Labs'
 		},
 		{
 			name: 'Augustin Ndione',
 			role: 'Participant',
-			affiliation: 'Université Cheikh Anta Diop de Dakar'
+			affiliation: 'Cheikh Anta Diop University'
 		},
 		{
 			name: 'Fallou Ngom',
@@ -138,12 +129,12 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 		{
 			name: 'Emmanuel Ngue Um',
 			role: 'Participant',
-			affiliation: 'University of Yaounde I'
+			affiliation: 'University of Yaounde 1'
 		},
 		{
 			name: 'Janeth David Nzenga',
 			role: 'Participant',
-			affiliation: 'University of Dar es Salaam'
+			affiliation: 'Ardhi University'
 		},
 		{
 			name: 'Johannes Sibeko',
@@ -151,14 +142,14 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			affiliation: 'Nelson Mandela University'
 		},
 		{
-			name: 'Oumou Sidibé',
+			name: 'Oumou Sidibe',
 			role: 'Participant',
 			affiliation: 'Projet Archives des Femmes du Mali'
 		},
 		{
-			name: 'Kọ́lá Túbọ̀sún',
+			name: 'Kọ́lá Túbọ̀sún',
 			role: 'Participant',
-			affiliation: 'Independant researcher'
+			affiliation: 'www.OlongoAfrica.com'
 		},
 		{
 			name: 'Menno van Zaanen',
@@ -169,16 +160,6 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 			name: 'James Yékú',
 			role: 'Participant',
 			affiliation: 'University of Kansas'
-		},
-		{
-			name: 'Calum Houston',
-			role: 'Student assistant',
-			affiliation: 'Leibniz-Zentrum Moderner Orient'
-		},
-		{
-			name: 'Eline Marie Langbo Holm',
-			role: 'Student assistant',
-			affiliation: 'Leibniz-Zentrum Moderner Orient'
 		}
 	],
 	project: 'Digital Humanities and AI in African Studies'

@@ -188,7 +188,7 @@
 			<!-- Action Links -->
 			<ActionLinks
 				primaryUrl={communication.url}
-				primaryLabel="Access Presentation"
+				primaryLabel={communication.urlLabel ?? 'Access Presentation'}
 				additionalUrls={communication.additionalUrls}
 				sectionClass="action-links"
 				primaryButtonClass="btn btn-primary glass-button"

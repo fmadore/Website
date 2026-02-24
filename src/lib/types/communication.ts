@@ -11,6 +11,7 @@ export type Communication = {
 	country: string; // Country where the conference took place
 	abstract?: string; // Abstract or description (optional)
 	url?: string; // Optional: URL to presentation slides, video, etc.
+	urlLabel?: string; // Optional: Custom label for the primary URL button (default: "Access Presentation")
 	additionalUrls?: Array<{ label: string; url: string }>; // Additional URLs with labels
 	tags?: string[]; // Optional tags for categorization
 	image?: string; // Optional image path (e.g. presentation slide)

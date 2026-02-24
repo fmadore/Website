@@ -16,6 +16,7 @@ export const eventTemplate: Communication = {
 	abstract: 'A comprehensive description of the event, its objectives, and significance.',
 	tags: ['tag1', 'tag2', 'tag3'], // Add relevant tags for categorization
 	url: 'https://example.com/event', // URL to event website or related resources
+	urlLabel: 'Workshop Website', // Optional: custom label for the primary URL button (default: "Access Presentation")
 	additionalUrls: [
 		{ label: 'Call for Papers', url: 'https://example.com/cfp' },
 		{ label: 'Program', url: 'https://example.com/program' }
