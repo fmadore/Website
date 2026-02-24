@@ -82,7 +82,7 @@ export const salafismCoteDIvoire: Publication = {
 			authors: ['Kristin Plys'],
 			year: 2024,
 			title: 'The Cold War from the Global South: Maoism and the Future of Liberalism',
-			source: 'Social Science History, 2024',
+			source: 'Social Science History 49, no. 4 (2025): 933-960',
 			url: 'https://doi.org/10.1017/ssh.2024.22'
 		},
 		{
