@@ -29,52 +29,49 @@ Prioritized list of refactoring opportunities identified during codebase review 
 
 ---
 
-## Priority 2: Glassmorphism CSS Extraction
+## Priority 2: Glassmorphism CSS Extraction (Deferred)
 
 **Scope**: 113 `backdrop-filter` occurrences across 32 `.svelte` component files
 **Estimated savings**: 300-500 lines of CSS
+**Status**: Analyzed, deferred due to visual regression risk
 
-- [ ] Create `.glass-section` base class with hover/dark-mode/reduced-motion variants in `src/styles/`
+- [ ] Create `.glass-section-panel` class for the "tri-color section panel" pattern (highest-ROI target, 10+ identical instances across 8 files: AbstractSection, DetailsGrid, RelatedItemsList, CitedBy, PublicationWordCloud, Reviews, TOC sections, digital-humanities pages)
 - [ ] Create modifier classes (`.glass-section-compact`, `.glass-section-elevated`)
 - [ ] Migrate detail page inline glassmorphism styles to utility classes
 - [ ] Migrate component-level glassmorphism styles to utility classes
 
 **Why**: The same glassmorphism pattern (gradient background + backdrop-filter + border + box-shadow + hover transform + dark mode override) is copy-pasted across dozens of components. The existing `.glass-card`, `.glass-panel`, `.glass-button` classes in `glassmorphism.css` don't cover all the variants being used inline.
 
----
-
-## Priority 3: CV Component Consolidation
-
-**Files**: 19 `CV*.svelte` files in `src/lib/components/cv/` (1,156 lines total)
-**Estimated savings**: ~600 lines
-
-- [ ] Create generic `CVSection.svelte` with subsection support and snippet-based item rendering
-- [ ] Refactor smaller CV components (CVAwards, CVEvents, CVInvitedTalks, etc.) to use CVSection
-- [ ] Refactor larger CV components (CVPublications, CVEducation, CVResearchExperience) to use CVSection
-
-**Why**: Most CV components follow an identical pattern: import data, filter by type/subtype, render groups with `CVEntry`. A generic section component accepting data config and render snippets would eliminate the repetition while keeping type safety.
+**Risk note**: These changes require careful visual regression testing across all affected components, dark mode, and reduced-motion preferences. Best done with a visual diff tool or side-by-side comparison.
 
 ---
 
-## Priority 4: Detail Page Loader + JSON-LD Builder
+## Priority 3: CV Component Consolidation ✅
+
+**New**: `src/lib/components/cv/CVSection.svelte` (40 lines, generic with Svelte 5 snippets)
+**Shared utility**: `formatCVYearRange()` added to `src/lib/utils/cvFormatters.ts` (replaces 5 duplicate implementations)
+
+- [x] Create generic `CVSection.svelte` with Svelte 5 generics and snippet-based item rendering
+- [x] Refactor 6 CV components to use CVSection (CVAwards, CVAppointments, CVGrants, CVDigitalHumanities, CVEvents, CVInvitedTalks)
+- [x] Extract shared `formatCVYearRange()` with TypeScript overloads (numeric + string variants) — used by CVResearchExperience, CVTeaching
+- [ ] Refactor remaining larger CV components (CVPublications, CVEducation) to use CVSection — these have more complex sub-grouping logic that would need additional CVSection features
+
+---
+
+## Priority 4: Detail Page Loader + JSON-LD Builder (Evaluated — Skipped)
 
 **Files**: 4 `[id]/+page.ts` files (429 lines total)
-**Estimated savings**: ~200 lines
+**Original estimate**: ~200 lines savings
+**Conclusion**: Savings are marginal. The shared pattern (find by ID + throw 404) is only 3-4 lines. JSON-LD building is unique per entity type. A factory would add indirection without meaningful reduction.
 
-- [ ] Create `buildJsonLd<T>()` utility in `src/lib/utils/jsonLdBuilder.ts`
-- [ ] Create `createDetailPageLoader()` factory
-- [ ] Refactor `publications/[id]/+page.ts` (234 lines -- largest, with type-switch for 8 publication types)
-- [ ] Refactor `communications/[id]/+page.ts` (85 lines)
-- [ ] Refactor `activities/[id]/+page.ts` (61 lines)
-- [ ] Refactor `digital-humanities/[id]/+page.ts` (49 lines)
-
-**Why**: All four loaders follow the same sequence: find by ID, throw 404, build JSON-LD, return data. The publication loader's 150-line type-switch is the most complex piece but can be extracted into a config-driven JSON-LD builder.
+- [x] Evaluated all 4 loaders — shared pattern too small for abstraction
+- The `publications/[id]/+page.ts` type-switch (8 publication types → different JSON-LD schemas) is inherently complex and wouldn't simplify with a factory
 
 ---
 
-## Low Priority: Minor Improvements
+## Low Priority: Minor Improvements ✅
 
-- [ ] **Standardize data aggregation** -- Some `index.ts` files in `src/lib/data/` use custom inline `reduce()` for grouping-by-year instead of the shared `groupByYear()` utility in `dataAggregation.ts`. Align for consistency.
+- [x] **Standardize data aggregation** -- Replaced inline `reduce()`/`sort()` with shared `sortByDate()` and `groupByYear()` from `dataAggregation.ts` in 4 files: `education/index.ts`, `peer-reviews/index.ts`, `awards/index.ts`, `media-appearances/index.ts`
 
 ---
 

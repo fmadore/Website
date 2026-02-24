@@ -1,6 +1,7 @@
 // src/lib/data/media-appearances/index.ts
 import type { MediaAppearance } from '$lib/types';
 import { loadData } from '$lib/utils/dataLoader';
+import { sortByDate } from '$lib/utils/dataAggregation';
 
 type ModuleType = Record<string, any>;
 
@@ -17,8 +18,6 @@ const allMediaAppearances: MediaAppearance[] = loadData<MediaAppearance>(
 );
 
 // Sort by date (most recent first)
-export const mediaAppearancesByDate = [...allMediaAppearances].sort((a, b) => {
-	return new Date(b.dateISO).getTime() - new Date(a.dateISO).getTime();
-});
+export const mediaAppearancesByDate = sortByDate(allMediaAppearances);
 
 export { allMediaAppearances };

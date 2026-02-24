@@ -1,6 +1,7 @@
 // src/lib/data/peer-reviews/index.ts
 import type { PeerReview } from '$lib/types';
 import { loadData } from '$lib/utils/dataLoader';
+import { sortByDate, groupByYear } from '$lib/utils/dataAggregation';
 
 type ModuleType = Record<string, any>;
 
@@ -18,20 +19,9 @@ const allPeerReviews: PeerReview[] = loadData<PeerReview>(
 );
 
 // Sort by date (most recent first)
-export const peerReviewsByDate = [...allPeerReviews].sort((a, b) => {
-	return new Date(b.dateISO).getTime() - new Date(a.dateISO).getTime();
-});
+export const peerReviewsByDate = sortByDate(allPeerReviews);
 
 // Group by year
-export const peerReviewsByYear = allPeerReviews.reduce<Record<number, PeerReview[]>>(
-	(acc, review) => {
-		if (!acc[review.year]) {
-			acc[review.year] = [];
-		}
-		acc[review.year].push(review);
-		return acc;
-	},
-	{}
-);
+export const peerReviewsByYear = groupByYear(allPeerReviews);
 
 export { allPeerReviews };
