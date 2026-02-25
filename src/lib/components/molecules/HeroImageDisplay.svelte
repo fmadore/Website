@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { browser } from '$app/environment';
+	import { beforeNavigate } from '$app/navigation';
 	import { portal } from '$lib/actions/portal';
 	import Button from '$lib/components/atoms/Button.svelte';
 
@@ -35,8 +36,6 @@
 			zoomed = true;
 			if (browser) {
 				document.body.style.overflow = 'hidden';
-				// Push state to history so back button closes modal
-				history.pushState({ heroImageZoomed: true }, '');
 			}
 		}
 	}
@@ -50,56 +49,32 @@
 		}
 	}
 
-	function toggleZoom() {
+	// Close lightbox on browser back button / SvelteKit navigation
+	beforeNavigate(({ cancel }) => {
 		if (zoomed) {
-			// When closing via X button or clicking outside, go back in history
-			if (browser) {
-				history.back();
-			}
-		} else {
-			openZoom();
-		}
-	}
-
-	// Handle browser back button
-	function handlePopState(event: PopStateEvent) {
-		if (zoomed) {
+			cancel();
 			closeZoom();
-		}
-	}
-
-	// Set up popstate listener
-	$effect(() => {
-		if (browser) {
-			window.addEventListener('popstate', handlePopState);
-			return () => {
-				window.removeEventListener('popstate', handlePopState);
-			};
 		}
 	});
 
 	function handleKeydown(event: KeyboardEvent) {
 		if (event.key === 'Enter' || event.key === ' ') {
 			event.preventDefault();
-			toggleZoom();
+			openZoom();
 		}
 	}
 
 	function handleModalKeydown(event: KeyboardEvent) {
 		if (event.key === 'Escape') {
 			event.preventDefault();
-			toggleZoom();
+			closeZoom();
 		}
 	}
 
-	// Clean up body overflow and history state when component is destroyed
+	// Clean up body overflow when component is destroyed
 	$effect(() => {
 		return () => {
 			if (browser) {
-				if (zoomed) {
-					// If modal is open when component unmounts, go back to clean up history
-					history.back();
-				}
 				document.body.style.overflow = '';
 			}
 		};
@@ -108,7 +83,6 @@
 	// Focus the modal when it opens for keyboard navigation
 	$effect(() => {
 		if (zoomed && browser) {
-			// Small delay to ensure the modal is rendered
 			setTimeout(() => {
 				const modal = document.querySelector('.fullscreen-modal') as HTMLElement;
 				if (modal) {
@@ -159,7 +133,7 @@
 	<figure class={combinedFigureClass}>
 		<button
 			class="image-container"
-			onclick={toggleZoom}
+			onclick={openZoom}
 			onkeydown={handleKeydown}
 			type="button"
 			aria-label="Zoom image to fullscreen"
@@ -211,7 +185,7 @@
 	<div
 		use:portal
 		class="fullscreen-modal"
-		onclick={toggleZoom}
+		onclick={closeZoom}
 		onkeydown={handleModalKeydown}
 		role="dialog"
 		aria-modal="true"
@@ -227,7 +201,7 @@
 			ariaLabel="Close fullscreen view"
 			onclick={(e: MouseEvent) => {
 				e.stopPropagation();
-				toggleZoom();
+				closeZoom();
 			}}
 		>
 			{#snippet icon()}
