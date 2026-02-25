@@ -71,9 +71,24 @@
 	import { areFiltersActive } from '$lib/utils/filterUtils';
 	import Icon from '@iconify/svelte'; // Import Iconify
 	import Button from '$lib/components/atoms/Button.svelte'; // Import Button
+	import TagCloud from '$lib/components/molecules/TagCloud.svelte';
+	import { communicationsByDate } from '$lib/data/communications';
 
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('Conference Activity', '/conference-activity');
+
+	// Compute tag frequencies from all communications for the tag cloud
+	const communicationTagFrequencies: [string, number][] = (() => {
+		const freq = new Map<string, number>();
+		communicationsByDate.forEach((comm) => {
+			if (comm.tags) {
+				comm.tags.forEach((tag) => {
+					freq.set(tag, (freq.get(tag) || 0) + 1);
+				});
+			}
+		});
+		return Array.from(freq.entries()).sort((a, b) => b[1] - a[1]);
+	})();
 
 	let showMap = $state(false);
 
@@ -314,6 +329,14 @@
 				config={communicationFilterConfig}
 				isExpandedMobile={mobileFiltersExpanded}
 				oncollapse={() => (mobileFiltersExpanded = false)}
+			/>
+			<TagCloud
+				tags={communicationTagFrequencies}
+				maxTags={25}
+				itemLabel="conference activity"
+				itemLabelPlural="conference activities"
+				ontagclick={toggleTagFilter}
+				activeTags={$activeFilters.tags}
 			/>
 		{/snippet}
 

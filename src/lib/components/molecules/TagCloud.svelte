@@ -1,75 +1,94 @@
 <script lang="ts">
-	import type { Activity } from '$lib/types';
-	import { base } from '$app/paths';
-
 	interface TagCloudProps {
-		activities: Activity[];
+		/** Array of [tagName, frequency] tuples, pre-sorted by frequency descending */
+		tags: [string, number][];
+		/** Maximum number of tags to display */
 		maxTags?: number;
+		/** Singular noun for the tooltip (e.g. "activity", "publication") */
+		itemLabel?: string;
+		/** Plural noun for the tooltip (e.g. "activities", "publications") */
+		itemLabelPlural?: string;
+		/** Title displayed above the tag cloud */
+		title?: string;
+		/** Callback when a tag is clicked. If not provided, tags are not interactive. */
+		ontagclick?: (tag: string) => void;
+		/** Optional href builder for tags. If provided, tags render as links. */
+		getTagHref?: (tag: string) => string;
+		/** Set of currently active/selected tags (for highlighting) */
+		activeTags?: Set<string> | string[];
 	}
 
-	let { activities, maxTags = 20 }: TagCloudProps = $props();
+	let {
+		tags,
+		maxTags = 20,
+		itemLabel = 'item',
+		itemLabelPlural = 'items',
+		title = 'Explore by Tags',
+		ontagclick,
+		getTagHref,
+		activeTags = []
+	}: TagCloudProps = $props();
 
-	// Calculate tag frequencies using $derived
-	let tagFrequency = $derived(() => {
-		const freq = new Map<string, number>();
-		activities.forEach((activity: Activity) => {
-			if (activity.tags) {
-				activity.tags.forEach((tag: string) => {
-					freq.set(tag, (freq.get(tag) || 0) + 1);
-				});
-			}
-		});
-		return freq;
-	});
+	// Limit to maxTags
+	let displayTags = $derived(tags.slice(0, maxTags));
 
-	// Sort tags by frequency and limit to maxTags using $derived
-	let sortedTags = $derived(() => {
-		const tags = Array.from(tagFrequency().entries())
-			.sort((a, b) => b[1] - a[1])
-			.slice(0, maxTags);
-		return tags;
-	});
-
-	// Calculate min and max frequencies for scaling using $derived
-	let frequencyStats = $derived(() => {
-		const frequencies = sortedTags().map(([, freq]) => freq);
+	// Calculate min and max frequencies for scaling
+	let frequencyStats = $derived.by(() => {
+		const frequencies = displayTags.map(([, freq]) => freq);
 		return {
 			minFreq: Math.min(...frequencies, 1),
 			maxFreq: Math.max(...frequencies, 1)
 		};
 	});
 
-	// Function to calculate font size based on frequency
+	// Normalize active tags to a Set for O(1) lookup
+	let activeTagSet = $derived(
+		activeTags instanceof Set ? activeTags : new Set(activeTags)
+	);
+
 	function getFontSize(frequency: number): number {
-		const { minFreq, maxFreq } = frequencyStats();
+		const { minFreq, maxFreq } = frequencyStats;
 		const range = maxFreq - minFreq;
-		if (range === 0) return 0.85; // All tags have same frequency
+		if (range === 0) return 0.85;
 		const normalized = (frequency - minFreq) / range;
-		// Scale between 0.8rem (small) and 1.1rem (large) - reduced range to prevent layout issues
 		return 0.8 + normalized * 0.3;
 	}
 
-	// Function to calculate opacity based on frequency
 	function getOpacity(frequency: number): number {
-		const { minFreq, maxFreq } = frequencyStats();
+		const { minFreq, maxFreq } = frequencyStats;
 		const range = maxFreq - minFreq;
 		if (range === 0) return 1;
 		const normalized = (frequency - minFreq) / range;
-		// Scale between 0.6 (light) and 1 (full)
 		return 0.6 + normalized * 0.4;
+	}
+
+	function getTitle(tag: string, frequency: number): string {
+		const label = frequency === 1 ? itemLabel : itemLabelPlural;
+		return `${tag} (${frequency} ${label})`;
+	}
+
+	function handleClick(event: MouseEvent, tag: string) {
+		if (ontagclick) {
+			event.preventDefault();
+			ontagclick(tag);
+		}
 	}
 </script>
 
 <div class="tag-cloud-container scroll-reveal">
-	<h3 class="tag-cloud-title">Explore by Tags</h3>
-	{#if sortedTags().length > 0}
+	<h3 class="tag-cloud-title">{title}</h3>
+	{#if displayTags.length > 0}
 		<div class="tag-cloud">
-			{#each sortedTags() as [tag, frequency] (tag)}
+			{#each displayTags as [tag, frequency] (tag)}
+				{@const isActive = activeTagSet.has(tag)}
 				<a
-					href="{base}/activities?tag={encodeURIComponent(tag)}"
+					href={getTagHref ? getTagHref(tag) : '#'}
 					class="tag-cloud-item"
-					style="font-size: {getFontSize(frequency)}rem; opacity: {getOpacity(frequency)}"
-					title="{tag} ({frequency} {frequency === 1 ? 'activity' : 'activities'})"
+					class:active={isActive}
+					style="font-size: {getFontSize(frequency)}rem; opacity: {isActive ? 1 : getOpacity(frequency)}"
+					title={getTitle(tag, frequency)}
+					onclick={(e) => handleClick(e, tag)}
+					role={ontagclick ? 'button' : undefined}
 				>
 					<span class="tag-name">{tag}</span>
 					<span class="tag-count">({frequency})</span>
@@ -140,6 +159,17 @@
 		transform: scale(1.05);
 	}
 
+	.tag-cloud-item.active {
+		background: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-20) * 100%),
+			transparent
+		);
+		color: var(--color-primary-dark);
+		font-weight: var(--font-weight-semibold);
+		box-shadow: 0 0 0 var(--border-width-thin) var(--color-primary);
+	}
+
 	.tag-cloud-item:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-primary);
 		outline-offset: var(--space-1);
@@ -164,6 +194,14 @@
 		background: color-mix(
 			in srgb,
 			var(--color-primary) calc(var(--opacity-20) * 100%),
+			transparent
+		);
+	}
+
+	:global(html.dark) .tag-cloud-item.active {
+		background: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-30) * 100%),
 			transparent
 		);
 	}

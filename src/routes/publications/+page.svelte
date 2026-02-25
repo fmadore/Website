@@ -49,9 +49,24 @@
 	import { areFiltersActive } from '$lib/utils/filterUtils';
 	import Icon from '@iconify/svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
+	import TagCloud from '$lib/components/molecules/TagCloud.svelte';
+	import { allPublications } from '$lib/data/publications';
 
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('Publications', '/publications');
+
+	// Compute tag frequencies from all publications for the tag cloud
+	const publicationTagFrequencies: [string, number][] = (() => {
+		const freq = new Map<string, number>();
+		allPublications.forEach((pub) => {
+			if (pub.tags) {
+				pub.tags.forEach((tag) => {
+					freq.set(tag, (freq.get(tag) || 0) + 1);
+				});
+			}
+		});
+		return Array.from(freq.entries()).sort((a, b) => b[1] - a[1]);
+	})();
 
 	// State for the current sort order
 	let activeSort = $state<'date' | 'title' | 'citations'>('date');
@@ -265,6 +280,14 @@
 				<UniversalFiltersSidebar
 					config={publicationFilterConfig}
 					isExpandedMobile={mobileFiltersExpanded}
+				/>
+				<TagCloud
+					tags={publicationTagFrequencies}
+					maxTags={25}
+					itemLabel="publication"
+					itemLabelPlural="publications"
+					ontagclick={toggleTagFilter}
+					activeTags={$activeFilters.tags}
 				/>
 			{/snippet}
 

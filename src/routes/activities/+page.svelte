@@ -10,7 +10,7 @@
 	import SEO from '$lib/SEO.svelte';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
-	import TagCloud from '$lib/components/activities/TagCloud.svelte';
+	import TagCloud from '$lib/components/molecules/TagCloud.svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
 	import Icon from '@iconify/svelte';
 
@@ -43,6 +43,19 @@
 	function getCountByYear(year: number): number {
 		return activityList.filter((activity: Activity) => activity.year === year).length;
 	}
+
+	// Compute tag frequencies from activities for the tag cloud
+	let tagFrequencies = $derived.by(() => {
+		const freq = new Map<string, number>();
+		activityList.forEach((activity: Activity) => {
+			if (activity.tags) {
+				activity.tags.forEach((tag: string) => {
+					freq.set(tag, (freq.get(tag) || 0) + 1);
+				});
+			}
+		});
+		return Array.from(freq.entries()).sort((a, b) => b[1] - a[1]) as [string, number][];
+	});
 
 	// Function to clear tag filter
 	function clearTagFilter() {
@@ -88,7 +101,13 @@
 				</div>
 
 				<!-- Tag Cloud Component - show tags from filtered activities -->
-				<TagCloud activities={activityList} maxTags={25} />
+				<TagCloud
+					tags={tagFrequencies}
+					maxTags={25}
+					itemLabel="activity"
+					itemLabelPlural="activities"
+					getTagHref={(tag) => `${base}/activities?tag=${encodeURIComponent(tag)}`}
+				/>
 
 				<!-- RSS Subscribe Button -->
 				<div class="rss-section">
