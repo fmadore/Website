@@ -98,10 +98,10 @@ a:hover {
  */
 
 /* Prose and content area links get the animated underline */
-.prose a:not(.btn):not(.no-underline),
-.content-body a:not(.btn):not(.no-underline),
-p a:not(.btn):not(.no-underline),
-li a:not(.btn):not(.no-underline) {
+.prose a:not(.btn):not(.no-underline):not(.nav-link),
+.content-body a:not(.btn):not(.no-underline):not(.nav-link),
+p a:not(.btn):not(.no-underline):not(.nav-link),
+li a:not(.btn):not(.no-underline):not(.nav-link) {
 	position: relative;
 	text-decoration: none;
 	background-image: linear-gradient(90deg,
@@ -116,28 +116,28 @@ li a:not(.btn):not(.no-underline) {
 		background-size var(--duration-normal) var(--ease-out);
 }
 
-.prose a:not(.btn):not(.no-underline):hover,
-.content-body a:not(.btn):not(.no-underline):hover,
-p a:not(.btn):not(.no-underline):hover,
-li a:not(.btn):not(.no-underline):hover {
+.prose a:not(.btn):not(.no-underline):not(.nav-link):hover,
+.content-body a:not(.btn):not(.no-underline):not(.nav-link):hover,
+p a:not(.btn):not(.no-underline):not(.nav-link):hover,
+li a:not(.btn):not(.no-underline):not(.nav-link):hover {
 	background-size: 100% 2px;
 }
 
 /* Focus state for accessibility */
-.prose a:not(.btn):not(.no-underline):focus-visible,
-.content-body a:not(.btn):not(.no-underline):focus-visible,
-p a:not(.btn):not(.no-underline):focus-visible,
-li a:not(.btn):not(.no-underline):focus-visible {
+.prose a:not(.btn):not(.no-underline):not(.nav-link):focus-visible,
+.content-body a:not(.btn):not(.no-underline):not(.nav-link):focus-visible,
+p a:not(.btn):not(.no-underline):not(.nav-link):focus-visible,
+li a:not(.btn):not(.no-underline):not(.nav-link):focus-visible {
 	background-size: 100% 2px;
 }
 
 /* Static underline fallback for reduced motion */
 @media (prefers-reduced-motion: reduce) {
 
-	.prose a:not(.btn):not(.no-underline),
-	.content-body a:not(.btn):not(.no-underline),
-	p a:not(.btn):not(.no-underline),
-	li a:not(.btn):not(.no-underline) {
+	.prose a:not(.btn):not(.no-underline):not(.nav-link),
+	.content-body a:not(.btn):not(.no-underline):not(.nav-link),
+	p a:not(.btn):not(.no-underline):not(.nav-link),
+	li a:not(.btn):not(.no-underline):not(.nav-link) {
 		background-size: 100% 2px;
 		transition: none;
 	}
