@@ -199,13 +199,13 @@
 
 	/* Section title styling - matching filter section titles */
 	.filter-section-title {
-		font-size: var(--font-size-base);
+		font-family: var(--font-family-sans);
+		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-semibold);
-		color: var(--color-text);
-		margin-top: 0; /* Override global h2 margin */
-		margin-bottom: var(--space-4);
-		padding-bottom: var(--space-2);
-		border-bottom: var(--border-width-thin) solid var(--color-border);
+		color: var(--color-text-muted);
+		text-transform: uppercase;
+		letter-spacing: var(--letter-spacing-wide);
+		margin: 0 0 var(--space-sm) 0;
 	}
 
 	/* Year list styling */

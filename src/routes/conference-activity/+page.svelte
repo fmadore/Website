@@ -329,15 +329,16 @@
 				config={communicationFilterConfig}
 				isExpandedMobile={mobileFiltersExpanded}
 				oncollapse={() => (mobileFiltersExpanded = false)}
-			/>
-			<TagCloud
-				tags={communicationTagFrequencies}
-				maxTags={25}
-				itemLabel="conference activity"
-				itemLabelPlural="conference activities"
-				ontagclick={toggleTagFilter}
-				activeTags={$activeFilters.tags}
-			/>
+			>
+				<TagCloud
+					tags={communicationTagFrequencies}
+					maxTags={25}
+					itemLabel="conference activity"
+					itemLabelPlural="conference activities"
+					ontagclick={toggleTagFilter}
+					activeTags={$activeFilters.tags}
+				/>
+			</UniversalFiltersSidebar>
 		{/snippet}
 
 		{#snippet children()}

@@ -280,15 +280,16 @@
 				<UniversalFiltersSidebar
 					config={publicationFilterConfig}
 					isExpandedMobile={mobileFiltersExpanded}
-				/>
-				<TagCloud
-					tags={publicationTagFrequencies}
-					maxTags={25}
-					itemLabel="publication"
-					itemLabelPlural="publications"
-					ontagclick={toggleTagFilter}
-					activeTags={$activeFilters.tags}
-				/>
+				>
+					<TagCloud
+						tags={publicationTagFrequencies}
+						maxTags={25}
+						itemLabel="publication"
+						itemLabelPlural="publications"
+						ontagclick={toggleTagFilter}
+						activeTags={$activeFilters.tags}
+					/>
+				</UniversalFiltersSidebar>
 			{/snippet}
 
 			{#snippet children()}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import type { UniversalFilterConfig } from '$lib/types/filters';
 	import FilterSectionCheckbox from '$lib/components/molecules/filters/FilterSectionCheckbox.svelte';
 	import FilterSectionRangeSlider from '$lib/components/molecules/filters/FilterSectionRangeSlider.svelte';
@@ -14,10 +15,11 @@
 		config: UniversalFilterConfig;
 		isExpandedMobile?: boolean;
 		oncollapse?: () => void;
+		children?: Snippet;
 	}
 
 	// Prop for the configuration object
-	let { config, isExpandedMobile = false, oncollapse }: Props = $props();
+	let { config, isExpandedMobile = false, oncollapse, children }: Props = $props();
 
 	// Reference to the sidebar element
 	let sidebarElement: HTMLElement;
@@ -144,6 +146,9 @@
 					{/if}
 				</div>
 			{/each}
+			{#if children}
+				{@render children()}
+			{/if}
 		</div>
 	{/if}
 	<!-- Always visible on desktop -->
@@ -198,6 +203,9 @@
 				{/if}
 			</div>
 		{/each}
+		{#if children}
+			{@render children()}
+		{/if}
 	</div>
 </aside>
 
