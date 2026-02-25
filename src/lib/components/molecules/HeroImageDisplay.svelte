@@ -211,11 +211,7 @@
 	<div
 		use:portal
 		class="fullscreen-modal"
-		onclick={(e: MouseEvent) => {
-			if (e.target === e.currentTarget) {
-				toggleZoom();
-			}
-		}}
+		onclick={toggleZoom}
 		onkeydown={handleModalKeydown}
 		role="dialog"
 		aria-modal="true"
@@ -804,10 +800,10 @@
 		}
 
 		:global(.close-button) {
-			top: var(--space-2) !important;
-			right: var(--space-2) !important;
-			width: var(--space-8) !important;
-			height: var(--space-8) !important;
+			top: var(--space-3) !important;
+			right: var(--space-3) !important;
+			width: 44px !important;
+			height: 44px !important;
 		}
 
 		.overlay-caption {
