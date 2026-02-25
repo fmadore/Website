@@ -2,8 +2,6 @@
 	import { base } from '$app/paths';
 	import { browser } from '$app/environment';
 	import { beforeNavigate } from '$app/navigation';
-	import { portal } from '$lib/actions/portal';
-	import Button from '$lib/components/atoms/Button.svelte';
 
 	let {
 		heroImage = undefined,
@@ -64,11 +62,41 @@
 		}
 	}
 
-	function handleModalKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape') {
-			event.preventDefault();
+	// Combined action: portals the modal to body AND attaches native event
+	// listeners. Svelte 5 compiles all event directives (both onclick and on:click)
+	// to use delegation at the component root. Portaling moves the element outside
+	// the component tree, so no Svelte event syntax can work. This action attaches
+	// click/keydown listeners directly via addEventListener after portaling.
+	function portalWithEvents(node: HTMLElement) {
+		// Portal to body
+		document.body.appendChild(node);
+		node.hidden = false;
+
+		// Attach native event listeners
+		function handleClick() {
 			closeZoom();
 		}
+		function handleKeydown(e: KeyboardEvent) {
+			if (e.key === 'Escape') {
+				e.preventDefault();
+				closeZoom();
+			}
+		}
+		node.addEventListener('click', handleClick);
+		node.addEventListener('keydown', handleKeydown);
+		node.focus();
+
+		return {
+			destroy() {
+				node.removeEventListener('click', handleClick);
+				node.removeEventListener('keydown', handleKeydown);
+				requestAnimationFrame(() => {
+					if (node.parentNode) {
+						node.parentNode.removeChild(node);
+					}
+				});
+			}
+		};
 	}
 
 	// Clean up body overflow when component is destroyed
@@ -78,18 +106,6 @@
 				document.body.style.overflow = '';
 			}
 		};
-	});
-
-	// Focus the modal when it opens for keyboard navigation
-	$effect(() => {
-		if (zoomed && browser) {
-			setTimeout(() => {
-				const modal = document.querySelector('.fullscreen-modal') as HTMLElement;
-				if (modal) {
-					modal.focus();
-				}
-			}, 100);
-		}
 	});
 
 	const displayImage = $derived(
@@ -180,47 +196,36 @@
 	</figure>
 {/if}
 
-<!-- Modal is now portaled to the body to escape stacking contexts -->
+<!-- Modal is portaled to body to escape ancestor stacking contexts -->
 {#if zoomed && absoluteSrc}
 	<div
-		use:portal
+		use:portalWithEvents
 		class="fullscreen-modal"
-		onclick={closeZoom}
-		onkeydown={handleModalKeydown}
 		role="dialog"
 		aria-modal="true"
 		aria-label="Fullscreen image view"
 		tabindex="0"
 	>
-		<Button
-			variant="outline-secondary"
-			size="sm"
-			glass={true}
-			iconOnly={true}
-			additionalClasses="close-button"
-			ariaLabel="Close fullscreen view"
-			onclick={(e: MouseEvent) => {
-				e.stopPropagation();
-				closeZoom();
-			}}
+		<button
+			class="btn btn-outline-secondary btn-sm btn-with-icon btn-icon-only btn-glass glass-button close-button"
+			type="button"
+			aria-label="Close fullscreen view"
 		>
-			{#snippet icon()}
 				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="16"
-					height="16"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				>
-					<line x1="18" y1="6" x2="6" y2="18"></line>
-					<line x1="6" y1="6" x2="18" y2="18"></line>
-				</svg>
-			{/snippet}
-		</Button>
+				xmlns="http://www.w3.org/2000/svg"
+				width="16"
+				height="16"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<line x1="18" y1="6" x2="6" y2="18"></line>
+				<line x1="6" y1="6" x2="18" y2="18"></line>
+			</svg>
+		</button>
 		<div class="modal-content">
 			<img src={absoluteSrc} alt={altText} class="fullscreen-image" />
 			{#if captionText}
