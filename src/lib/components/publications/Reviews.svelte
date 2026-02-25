@@ -29,14 +29,8 @@
 					</div>
 
 					<div class="journal-info">
-						<span class="journal-name">{review.journal}</span>
-						{#if review.volume || review.issue || review.pages}
-							<span class="publication-details">
-								{#if review.volume}{', ' + review.volume}{/if}
-								{#if review.issue}{', no. ' + review.issue}{/if}
-								{#if review.pages}{', pp. ' + review.pages}{/if}
-							</span>
-						{/if}
+						<span class="journal-name">{review.journal}</span><!--
+						-->{#if review.volume || review.issue || review.pages}<span class="publication-details">{#if review.volume}{', vol. ' + review.volume}{/if}{#if review.issue}{', no. ' + review.issue}{/if}{#if review.pages}{', pp. ' + review.pages}{/if}</span>{/if}
 						{#if review.doi}
 							<div class="doi">
 								DOI: <a
