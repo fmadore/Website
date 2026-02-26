@@ -31,6 +31,7 @@
 			<button
 				type="button"
 				class="filter-chip {activeItems.includes(item) ? 'active' : ''}"
+				title={item}
 				onclick={() => handleToggleItem(item)}
 			>
 				<span class="chip-text">{item}</span>
