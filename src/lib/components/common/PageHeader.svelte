@@ -24,13 +24,13 @@
 		additionalClasses?: string;
 	} = $props();
 
-	// Helper function to format editors (copied from publications/[id])
-	function formatEditors(eds: string | string[] | undefined): string {
-		if (!eds) return '';
-		if (typeof eds === 'string') return eds;
-		if (eds.length === 1) return eds[0];
-		if (eds.length === 2) return `${eds[0]} and ${eds[1]}`;
-		return eds.join(', ');
+	// Helper function to format a list of names with "and" before the last one
+	function formatNameList(names: string | string[] | undefined): string {
+		if (!names) return '';
+		if (typeof names === 'string') return names;
+		if (names.length === 1) return names[0];
+		if (names.length === 2) return `${names[0]} and ${names[1]}`;
+		return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
 	}
 </script>
 
@@ -60,13 +60,13 @@
 
 		{#if authors && authors.length > 0}
 			<div class="authors text-xl mb-3">
-				{authors.join(', ')}
+				{formatNameList(authors)}
 			</div>
 		{/if}
 
 		{#if editors}
 			<div class="editors text-secondary mb-3">
-				Edited by {formatEditors(editors)}
+				Edited by {formatNameList(editors)}
 			</div>
 		{/if}
 

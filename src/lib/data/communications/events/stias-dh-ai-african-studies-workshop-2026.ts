@@ -44,7 +44,7 @@ export const stiasDHAIAfricanStudiesWorkshop2026: Communication = {
 		{
 			name: 'Frédérick Madore',
 			role: 'Organizer',
-			affiliation: 'Leibniz-Zentrum Moderner Orient (ZMO)'
+			affiliation: 'University of Bayreuth'
 		},
 		{
 			name: 'Vincent Hiribarren',
@@ -59,10 +59,10 @@ export const stiasDHAIAfricanStudiesWorkshop2026: Communication = {
 		{
 			name: 'Menno van Zaanen',
 			role: 'Organizer',
-			affiliation: 'South African Centre for Digital Language Resources (SADiLaR), North-West University'
+			affiliation: 'South African Centre for Digital Language Resources (SADiLaR)'
 		}
 	],
-	project: '' // Add project if applicable
+	project: 'Digital Humanities and AI in African Studies'
 };
 
 export default stiasDHAIAfricanStudiesWorkshop2026;
