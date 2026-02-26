@@ -21,5 +21,10 @@ export const retourNoteSyntheseDhIaReaf2026: Communication = {
 		latitude: 48.908553,
 		longitude: 2.366288
 	},
+	image: 'images/communications/reaf-2026.webp',
+	heroImage: {
+		src: 'images/communications/reaf-2026-hero.webp',
+		alt: '9ème édition Rencontres des Études Africaines en France'
+	},
 	project: 'Digital Humanities and AI in African Studies'
 };
