@@ -897,7 +897,7 @@
 			categories.
 		</p>
 		{#if venueTreemapData.length > 0}
-			<div class="chart-wrapper treemap-chart" style="height: 500px;">
+			<div class="chart-wrapper treemap-chart">
 				<EChartsTreemap data={venueTreemapData} title="Publication Venues" />
 			</div>
 		{:else}

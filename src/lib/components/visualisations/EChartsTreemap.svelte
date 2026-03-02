@@ -42,9 +42,44 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 	} = $props();
 
 	// Container reference
+	let outerEl: HTMLDivElement;
 	let chartContainer: HTMLDivElement;
 
-	// Use Svelte's reactive window width
+	// JS-driven sizing: observe the wrapper parent to get its content area dimensions
+	// This is more robust than CSS height:100% which can break with contain:strict
+	let resolvedHeight = $state(0);
+	let resolvedWidth = $state(0);
+
+	$effect(() => {
+		if (!outerEl) return;
+		const parent = outerEl.parentElement;
+		if (!parent) return;
+
+		const sync = () => {
+			const style = getComputedStyle(parent);
+			const ph =
+				parseFloat(style.paddingTop) +
+				parseFloat(style.paddingBottom) +
+				parseFloat(style.borderTopWidth) +
+				parseFloat(style.borderBottomWidth);
+			const pw =
+				parseFloat(style.paddingLeft) +
+				parseFloat(style.paddingRight) +
+				parseFloat(style.borderLeftWidth) +
+				parseFloat(style.borderRightWidth);
+			resolvedHeight = parent.offsetHeight - ph;
+			resolvedWidth = parent.offsetWidth - pw;
+		};
+
+		// Initial sync
+		sync();
+
+		const ro = new ResizeObserver(sync);
+		ro.observe(parent);
+		return () => ro.disconnect();
+	});
+
+	// Use Svelte's reactive window width for responsive breakpoints
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
 
 	// Reactive color resolution
@@ -67,7 +102,6 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 			itemStyle: {
 				color: resolvedColors.chartColors[index % resolvedColors.chartColors.length]
 			},
-			// Children will inherit parent color through colorMappingBy
 			children: node.children.map((child) => ({
 				...child,
 				itemStyle: {
@@ -84,6 +118,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 		},
 		tooltip: {
 			...getEChartsTooltipStyle(resolvedColors),
+			confine: true,
 			formatter: function (params: any) {
 				if (params.data.children) {
 					// Category node (parent)
@@ -162,7 +197,9 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 							color: resolvedColors.white,
 							textShadowColor: 'rgba(0, 0, 0, 0.5)',
 							textShadowBlur: 3,
-							lineHeight: isMobile ? 16 : 20
+							lineHeight: isMobile ? 16 : 20,
+							overflow: 'truncate',
+							ellipsis: '…'
 						},
 						count: {
 							fontSize: isMobile ? 10 : 12,
@@ -178,19 +215,21 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 				},
 				upperLabel: {
 					show: true,
-					height: 30,
+					height: isMobile ? 24 : 30,
 					formatter: '{b}',
 					color: resolvedColors.white,
 					fontWeight: 'bold',
 					fontSize: isMobile ? 12 : 14,
 					fontFamily: resolvedColors.fontFamily,
 					textShadowColor: 'rgba(0, 0, 0, 0.6)',
-					textShadowBlur: 4
+					textShadowBlur: 4,
+					overflow: 'truncate',
+					ellipsis: '…'
 				},
 				itemStyle: {
 					borderColor: resolvedColors.surface,
-					borderWidth: 2,
-					gapWidth: 2,
+					borderWidth: isMobile ? 1 : 2,
+					gapWidth: isMobile ? 1 : 2,
 					borderRadius: 4
 				},
 				emphasis: {
@@ -209,8 +248,8 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 						// Root level (categories like "Journals", "Publishers")
 						itemStyle: {
 							borderColor: resolvedColors.border,
-							borderWidth: 3,
-							gapWidth: 3
+							borderWidth: isMobile ? 2 : 3,
+							gapWidth: isMobile ? 2 : 3
 						},
 						upperLabel: {
 							show: true
@@ -240,14 +279,18 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 	});
 </script>
 
-<div class="echarts-container scroll-reveal-scale">
+<div
+	class="echarts-container scroll-reveal-scale"
+	bind:this={outerEl}
+	style={resolvedHeight > 0 ? `width:${resolvedWidth}px;height:${resolvedHeight}px` : ''}
+>
 	<div bind:this={chartContainer} class="chart"></div>
 </div>
 
 <style>
 	.echarts-container {
 		width: 100%;
-		height: 500px;
+		height: 100%;
 		display: block;
 		position: relative;
 		font-family: var(--font-family-sans);
@@ -256,17 +299,5 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 	.chart {
 		width: 100%;
 		height: 100%;
-	}
-
-	@media (--sm-down) {
-		.echarts-container {
-			height: 450px;
-		}
-	}
-
-	@media (--xs-down) {
-		.echarts-container {
-			height: 400px;
-		}
 	}
 </style>
