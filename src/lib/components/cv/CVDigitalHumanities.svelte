@@ -12,7 +12,7 @@
 	emptyMessage="No digital humanities projects listed."
 >
 	{#snippet entry(project)}
-		<span class="font-medium">{project.title}</span>.
+		<span class="font-medium">{project.title}</span>
 		{#if project.linkUrl}
 			<a
 				href={project.linkUrl}
