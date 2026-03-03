@@ -6,7 +6,7 @@ export const repenserCategorisationReligieuseBenin2026: Publication = {
 	title: 'Repenser la catégorisation religieuse à partir du Bénin, terre du Vodun',
 	authors: ['Frédérick Madore', 'Fiacre Anato'],
 	date: '2026',
-	dateISO: '2026-02-16',
+	dateISO: '2026-04-02',
 	year: 2026,
 	book: "L'Afrique des religions à l'épreuve des chiffres et des catégorisations",
 	editors: 'Marc-Antoine Pérouse de Montclos, Nathalie Bernard-Maugiron, Aurélien Dasré',
