@@ -31,10 +31,9 @@ export const stiasDHAIAfricanStudiesWorkshop2026: Communication = {
 		'Workshop',
 		'STIAS'
 	],
-	url: '', // Add URL when available
-	additionalUrls: [
-		// Add relevant URLs when available
-	],
+	url: 'https://fmadore.github.io/stias-dh-ai-workshop-2026/',
+	urlLabel: 'Workshop Website',
+	additionalUrls: [],
     image: 'images/communications/point-sud-logo.svg',
 	coordinates: {
 		latitude: -33.9321,
