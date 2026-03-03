@@ -387,10 +387,9 @@
 			// Group publications by venue type and venue name
 			const journals: Record<string, { count: number; publications: string[] }> = {};
 			const publishers: Record<string, { count: number; publications: string[] }> = {};
-			const books: Record<string, { count: number; publications: string[] }> = {};
 
 			allPublications.forEach((pub) => {
-				// Journal articles and special issues
+				// Journal articles, special issues, and reports (bulletin-like venues)
 				if (pub.journal && (pub.type === 'article' || pub.type === 'special-issue' || pub.type === 'bulletin-article')) {
 					if (!journals[pub.journal]) {
 						journals[pub.journal] = { count: 0, publications: [] };
@@ -399,22 +398,22 @@
 					journals[pub.journal].publications.push(pub.title);
 				}
 
-				// Books (monographs) by publisher
-				if (pub.publisher && pub.type === 'book') {
+				// Reports - use publisher as journal-like venue
+				if (pub.publisher && pub.type === 'report') {
+					if (!journals[pub.publisher]) {
+						journals[pub.publisher] = { count: 0, publications: [] };
+					}
+					journals[pub.publisher].count++;
+					journals[pub.publisher].publications.push(pub.title);
+				}
+
+				// Books, chapters, and encyclopedias - group by publisher
+				if (pub.publisher && (pub.type === 'book' || pub.type === 'chapter' || pub.type === 'encyclopedia')) {
 					if (!publishers[pub.publisher]) {
 						publishers[pub.publisher] = { count: 0, publications: [] };
 					}
 					publishers[pub.publisher].count++;
 					publishers[pub.publisher].publications.push(pub.title);
-				}
-
-				// Book chapters - group by the book they appear in
-				if (pub.type === 'chapter' && pub.book) {
-					if (!books[pub.book]) {
-						books[pub.book] = { count: 0, publications: [] };
-					}
-					books[pub.book].count++;
-					books[pub.book].publications.push(pub.title);
 				}
 			});
 
@@ -435,25 +434,11 @@
 				});
 			}
 
-			// Add publishers category (for books)
+			// Add publishers category (for books and chapters)
 			if (Object.keys(publishers).length > 0) {
 				treemapData.push({
 					name: 'Book Publishers',
 					children: Object.entries(publishers)
-						.map(([name, data]) => ({
-							name,
-							value: data.count,
-							publications: data.publications
-						}))
-						.sort((a, b) => b.value - a.value)
-				});
-			}
-
-			// Add edited volumes category (books where chapters appear)
-			if (Object.keys(books).length > 0) {
-				treemapData.push({
-					name: 'Edited Volumes',
-					children: Object.entries(books)
 						.map(([name, data]) => ({
 							name,
 							value: data.count,

@@ -13,6 +13,7 @@ export const chapterTemplate: Publication = {
 	editors: 'Editor Name and Second Editor', // Editors of the book
 	placeOfPublication: 'City, Country',
 	publisher: 'Publisher Name',
+	publisherLocation: 'Country', // Country where the publisher is based (used for Publisher Locations map)
 	pages: '100-120', // Page range of the chapter
 	pageCount: 0, // Total number of pages
 	language: 'English',

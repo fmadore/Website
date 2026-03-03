@@ -13,6 +13,7 @@ export const leadersMuslimNGOsBurkinaFaso: Publication = {
 	editors: 'Marie Nathalie LeBlanc, Louis Audet Gosselin',
 	placeOfPublication: 'London',
 	publisher: 'Pluto Press',
+	publisherLocation: 'United Kingdom',
 	pages: '105-123',
 	pageCount: 19,
 	language: 'English',

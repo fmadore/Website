@@ -13,6 +13,7 @@ export const imamsIslamicPreachersOuagadougou: Publication = {
 	editors: 'Lady Jane Acquah, Toyin Falola',
 	placeOfPublication: 'Durham, NC',
 	publisher: 'Carolina Academic Press',
+	publisherLocation: 'United States',
 	pages: '183-213',
 	pageCount: 30,
 	language: 'English',

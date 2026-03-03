@@ -10,6 +10,7 @@ export const reportTemplate: Publication = {
 	dateISO: '2025-01', // Use YYYY-MM format when known
 	year: 2025,
 	publisher: 'Publishing Organization',
+	publisherLocation: 'Country', // Country where the publisher is based (used for Publisher Locations map)
 	pages: '100-120', // Page range or total
 	pageCount: 0, // Total number of pages
 	language: 'English',

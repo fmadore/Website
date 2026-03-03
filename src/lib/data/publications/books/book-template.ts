@@ -12,6 +12,7 @@ export const bookTemplate: Publication = {
 	year: 2025,
 	placeOfPublication: 'City, Country',
 	publisher: 'Publisher Name',
+	publisherLocation: 'Country', // Country where the publisher is based (used for Publisher Locations map)
 	pageCount: 300,
 	language: 'English',
 	isbn: '978-0-000000-00-0',
@@ -59,6 +60,7 @@ export const editedVolumeTemplate: Publication = {
 	year: 2025,
 	placeOfPublication: 'City, Country',
 	publisher: 'Publisher Name',
+	publisherLocation: 'Country', // Country where the publisher is based (used for Publisher Locations map)
 	language: 'English',
 	isbn: '978-0-000000-00-0',
 	doi: '', // Add DOI if available

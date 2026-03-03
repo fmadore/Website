@@ -13,6 +13,7 @@ export const islamUniversityCampusesCoteDIvoire: Publication = {
 	editors: 'Abdoulaye Sounaye, Frédérick Madore',
 	placeOfPublication: 'Berlin',
 	publisher: 'LIT Verlag',
+	publisherLocation: 'Germany',
 	pages: '273-307',
 	pageCount: 35,
 	language: 'English',

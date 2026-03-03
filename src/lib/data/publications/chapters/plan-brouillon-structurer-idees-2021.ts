@@ -13,6 +13,7 @@ export const planBrouillonStructurerIdees: Publication = {
 	editors: 'Florence Piron, Élisabeth Arsenault',
 	placeOfPublication: 'Québec',
 	publisher: 'Éditions science et bien commun',
+	publisherLocation: 'Canada',
 	language: 'French',
 	abstract:
 		'Ce chapitre fournit quelques conseils afin de vous préparer adéquatement à la rédaction du brouillon à travers trois étapes : la planification avec l’élaboration d’un plan structuré et détaillé contenant les idées principales de l’argumentation et les références soutenant les affirmations; la rédaction d’une première version du texte (le brouillon); et enfin, la révision du texte afin de produire une version remaniée plus aboutie.',

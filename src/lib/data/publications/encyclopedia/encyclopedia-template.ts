@@ -10,6 +10,7 @@ export const encyclopediaTemplate: Publication = {
 	dateISO: '2025-01', // Use YYYY-MM format when known
 	year: 2025,
 	publisher: 'Encyclopedia Publisher', // e.g., "Brill", "Oxford University Press"
+	publisherLocation: 'Country', // Country where the publisher is based (used for Publisher Locations map)
 	encyclopediaTitle: 'Name of Encyclopedia', // e.g., "The Encyclopaedia of Islam, Three"
 	editors: 'Editor Name, Second Editor', // Encyclopedia editors
 	pages: '100-120', // Page range

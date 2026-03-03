@@ -10,6 +10,7 @@ export const lutteTerrorismeSalafismeBeninTogo: Publication = {
 	dateISO: '2022-10',
 	year: 2022,
 	publisher: 'Bulletin FrancoPaix',
+	publisherLocation: 'Canada',
 	volume: '7',
 	issue: '8',
 	pages: '2-7',

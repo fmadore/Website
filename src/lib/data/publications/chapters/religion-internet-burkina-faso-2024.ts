@@ -13,6 +13,7 @@ export const religionInternetBurkinaFaso: Publication = {
 	editors: 'Alice Degorce, Ludovic O. Kibora, Katrin Langewiesche',
 	placeOfPublication: 'Dakar',
 	publisher: 'Amalion',
+	publisherLocation: 'Senegal',
 	pages: '263-288',
 	pageCount: 26,
 	language: 'English',

@@ -12,6 +12,7 @@ export const introductionReligiosityUniversityCampuses: Publication = {
 	editors: 'Abdoulaye Sounaye, Frédérick Madore',
 	placeOfPublication: 'Berlin',
 	publisher: 'LIT Verlag',
+	publisherLocation: 'Germany',
 	pages: '3-21',
 	pageCount: 19,
 	language: 'English',

@@ -13,6 +13,7 @@ export const existerContexteAutoritaireLome: Publication = {
 	editors: 'Abdoulaye Sounaye, Frédérick Madore',
 	placeOfPublication: 'Berlin',
 	publisher: 'LIT Verlag',
+	publisherLocation: 'Germany',
 	pages: '51-83',
 	pageCount: 33,
 	language: 'French',

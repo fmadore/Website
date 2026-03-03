@@ -12,6 +12,7 @@ export const religieuxInternetNTICBurkinaFaso: Publication = {
 	editors: 'Alice Degorce, Ludovic O. Kibora, Katrin Langewiesche',
 	placeOfPublication: 'Dakar',
 	publisher: 'Amalion',
+	publisherLocation: 'Senegal',
 	pages: '269-296',
 	pageCount: 28,
 	language: 'French',
