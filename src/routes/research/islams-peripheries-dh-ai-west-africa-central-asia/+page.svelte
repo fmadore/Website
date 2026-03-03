@@ -32,22 +32,34 @@
 		to modernity developed in different contexts.
 	</p>
 
-	<h2>AI-Driven Comparative History</h2>
-	<p>Using AI technologies, we aim to:</p>
+	<h2>Three Innovations</h2>
 	<ol>
 		<li>
-			<strong>Develop systems</strong> that recognize multilingual text and identify key information
-			across diverse scripts and layouts.
+			<strong>From raw documents to structured data.</strong> Current multimodal LLMs (notably
+			Gemini) now outperform specialised OCR/HTR systems, even on low-resource languages and
+			diverse scripts (Hausa, Arabic, Cyrillic, Old Tatar, Tajik). Combined with context-aware
+			named entity extraction, these workflows transform raw documents into structured,
+			interconnected data.
 		</li>
 		<li>
-			<strong>Create a chatbot</strong> that answers complex questions using documents across
-			languages, enabling researchers to ask natural language questions like "How were notions
-			of 'reform' debated differently in these contexts?"
+			<strong>AI-mediated access via MCP and a chatbot.</strong> A <a
+				href="https://modelcontextprotocol.io/"
+				target="_blank"
+				rel="noopener noreferrer">Model Context Protocol</a
+			> (MCP) server provides a standardised interface for any AI assistant to query both collections,
+			while an AI "skill" encodes curatorial expertise (search strategies, transliteration variants,
+			bias documentation). A researcher can ask a single question in natural language and interrogate
+			both archives simultaneously &mdash; no need to master eight languages. The planned deliverable
+			is a conversational assistant on the project website, powered by an open-source LLM.
 		</li>
 		<li>
-			<strong>Ensure accessibility</strong> by prioritizing open-source, low-resource AI models,
-			promoting equitable research practices that don't rely on high-resource institutional
-			walls.
+			<strong>Equitable, accessible, sustainable.</strong> Open-source, low-resource AI models
+			run locally without expensive infrastructure. A human-in-the-loop approach (e.g. the <a
+				href="https://github.com/fmadore/AI-NER-Validator"
+				target="_blank"
+				rel="noopener noreferrer">AI-NER-Validator</a
+			>) ensures domain experts retain final authority. All code, data, and publications released
+			as open access (FAIR principles).
 		</li>
 	</ol>
 
@@ -70,15 +82,18 @@
 		<li>
 			The <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer"
 				><em>Islam West Africa Collection</em></a
-			>: Covering post-1960s Islamic discourse and public engagement.
+			>: 14,500+ items (newspapers, Islamic publications, 9,315 minutes of Hausa audio,
+			photographs) covering Islam and Muslim communities in six West African countries from the
+			1960s onward.
 		</li>
 		<li>
 			The <a
 				href="https://www.zmo.de/en/library/special-collection-1/translate-to-english-reinhard-eisener-bestand"
 				target="_blank"
 				rel="noopener noreferrer"><em>Reinhard Eisener Collection</em></a
-			>: Documenting colonial and early Soviet governance in Central Asia, including materials
-			from the Tajik civil war.
+			>: 1,546 documents across 50 archival boxes in eight languages (Russian, Uzbek, Tajik,
+			Persian, Turki, English, German, French), documenting the Emirate of Bukhara
+			(1917&ndash;30), early Soviet governance, and the Tajik civil war (1992&ndash;97).
 		</li>
 	</ul>
 
