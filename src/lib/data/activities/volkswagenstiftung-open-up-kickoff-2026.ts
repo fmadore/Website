@@ -12,7 +12,7 @@ const volkswagenStiftungOpenUpKickoff2026: Activity = {
 	description:
 		'Aksana Ismailbekova and I presented our project "Islam\'s \'Peripheries\'" at the VolkswagenStiftung "Open Up" kick-off event at Herrenhausen Palace in Hannover.',
 	content: `
-<p>It was a pleasure being back at Herrenhausen Palace in Hannover. <a href="https://www.zmo.de/en/people/dr-aksana-ismailbekova" target="_blank" rel="noopener noreferrer">Aksana Ismailbekova</a> and I presented our project "Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia" at the <a href="https://www.volkswagenstiftung.de/en" target="_blank" rel="noopener noreferrer">VolkswagenStiftung</a> <a href="https://www.volkswagenstiftung.de/en/funding/funding-offer/open-new-research-spaces-humanities-and-cultural-studies" target="_blank" rel="noopener noreferrer">"Open Up"</a> kick-off event.</p>
+<p>It was a pleasure being back at Herrenhausen Palace in Hannover. <a href="https://www.zmo.de/en/people/dr-aksana-ismailbekova" target="_blank" rel="noopener noreferrer">Aksana Ismailbekova</a> and I presented our project "<a href="/research/islams-peripheries-dh-ai-west-africa-central-asia">Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia</a>" at the <a href="https://www.volkswagenstiftung.de/en" target="_blank" rel="noopener noreferrer">VolkswagenStiftung</a> <a href="https://www.volkswagenstiftung.de/en/funding/funding-offer/open-new-research-spaces-humanities-and-cultural-studies" target="_blank" rel="noopener noreferrer">"Open Up"</a> kick-off event.</p>
 
 <p>Over two days, researchers of the funded projects presented their ideas and exchanged feedback. It was fascinating to get to learn about such varied projects, from soundscapes of populism and the historical genealogy of guilty pleasures to paleolithic hominins and environmental peace.</p>
 
@@ -27,8 +27,7 @@ const volkswagenStiftungOpenUpKickoff2026: Activity = {
 		'Islam',
 		'IWAC',
 		'Presentation',
-		'Hannover',
-		'ZMO'
+		'Hannover'
 	],
 	heroImage: {
 		src: 'images/activities/volkswagenstiftung-open-up-kickoff-2026-hero.webp',
