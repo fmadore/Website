@@ -32,6 +32,10 @@ export const activity: Activity = {
     `,
 	tags: ['Book Review', 'Religious Activism', 'Togo', 'Benin', 'Publication', 'Islam', 'West Africa'],
 	panelType: 'publication',
+    heroImage: {
+        src: 'images/activities/jmas-review-hero.webp',
+        alt: 'Screenshot of The Journal of Modern African Studies cover showing Volume 63, Issue 4 - December 2025'
+    },
 	type: 'publication',
 	url: 'https://doi.org/10.1017/S0022278X25101195'
 };
