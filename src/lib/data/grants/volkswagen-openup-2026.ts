@@ -9,9 +9,9 @@ export const volkswagenOpenUp2026: Grant = {
 	startYear: 2026,
 	endYear: 2027,
 	dateRangeString: '2026-2027',
-	dateISOStart: '2026-04-01',
+	dateISOStart: '2026-07-01',
 	dateISOEnd: '2027-09-30',
-	amount: 300000,
+	amount: 332390,
 	currency: 'EUR',
 	status: 'Awarded',
 	coApplicants: ['Aksana Ismailbekova']
