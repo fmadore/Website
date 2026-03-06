@@ -28,6 +28,7 @@ const templateIds = [
 const dirTypeMap: Record<string, string> = {
 	'./books/': 'books',
 	'./articles/': 'articles',
+	'./bulletins/': 'bulletins',
 	'./chapters/': 'chapters',
 	'./special-issues/': 'specialIssues',
 	'./reports/': 'reports',
@@ -42,6 +43,7 @@ const publicationModules = import.meta.glob(
 	[
 		'./books/*.ts',
 		'./articles/*.ts',
+		'./bulletins/*.ts',
 		'./chapters/*.ts',
 		'./special-issues/*.ts',
 		'./reports/*.ts',

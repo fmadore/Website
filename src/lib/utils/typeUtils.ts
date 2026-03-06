@@ -104,6 +104,7 @@ export function formatPanelType(panelType: string | undefined): string {
  */
 export const PUBLICATION_TYPE_SEO_LABELS: Record<string, string> = {
 	article: 'Journal article',
+	'bulletin-article': 'Bulletin article',
 	book: 'Book',
 	chapter: 'Book chapter',
 	'special-issue': 'Special issue',
