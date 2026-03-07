@@ -25,5 +25,6 @@ export const repenserCategorisationReligieuseBenin2026: Publication = {
 		src: 'images/publications/repenser-categorisation-religieuse-benin.webp',
 		alt: 'Cover of the book L\'Afrique des religions à l\'épreuve des chiffres et des catégorisations'
 		},
-	project: 'Muslim Minorities in Southern Cities of Benin and Togo'
+	project: 'Muslim Minorities in Southern Cities of Benin and Togo',
+	url: 'https://www.hemisphereseditions.com/l-afrique-des-religions'
 };
