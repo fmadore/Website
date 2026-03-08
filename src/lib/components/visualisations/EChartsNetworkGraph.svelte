@@ -372,7 +372,8 @@ ECharts Network Graph - A network visualization for author collaborations
 	});
 
 	// Use the ECharts hook for lifecycle management
-	const { chart } = useECharts({
+	// Do NOT destructure `chart` — the getter must be called each time to get the current instance
+	const echartsInstance = useECharts({
 		getContainer: () => chartContainer,
 		getOption: () => chartOption,
 		hasData: () => data.length > 0
@@ -380,30 +381,35 @@ ECharts Network Graph - A network visualization for author collaborations
 
 	// Zoom functions
 	function zoomIn() {
-		if (chart && !chart.isDisposed()) {
-			chart.dispatchAction({
+		const c = echartsInstance.chart;
+		if (c && !c.isDisposed()) {
+			c.dispatchAction({
 				type: 'graphRoam',
+				seriesIndex: 0,
 				zoom: 1.2,
-				originX: chart.getWidth() / 2,
-				originY: chart.getHeight() / 2
+				originX: c.getWidth() / 2,
+				originY: c.getHeight() / 2
 			});
 		}
 	}
 
 	function zoomOut() {
-		if (chart && !chart.isDisposed()) {
-			chart.dispatchAction({
+		const c = echartsInstance.chart;
+		if (c && !c.isDisposed()) {
+			c.dispatchAction({
 				type: 'graphRoam',
+				seriesIndex: 0,
 				zoom: 0.8,
-				originX: chart.getWidth() / 2,
-				originY: chart.getHeight() / 2
+				originX: c.getWidth() / 2,
+				originY: c.getHeight() / 2
 			});
 		}
 	}
 
 	function resetZoom() {
-		if (chart && !chart.isDisposed()) {
-			chart.dispatchAction({
+		const c = echartsInstance.chart;
+		if (c && !c.isDisposed()) {
+			c.dispatchAction({
 				type: 'restore'
 			});
 		}
