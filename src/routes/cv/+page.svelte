@@ -7,6 +7,7 @@
 	import CVEducation from '$lib/components/cv/CVEducation.svelte';
 	import CVAppointments from '$lib/components/cv/CVAppointments.svelte';
 	import CVPublications from '$lib/components/cv/CVPublications.svelte';
+	import CVTableOfContents from '$lib/components/cv/CVTableOfContents.svelte';
 
 	import { base } from '$app/paths';
 
@@ -122,88 +123,90 @@
 	</div>
 
 	<CVHeader />
-	<div class="cv-section-wrapper scroll-reveal">
+	<div id="cv-appointments" class="cv-section-wrapper scroll-reveal">
 		<CVAppointments />
 	</div>
-	<div class="cv-section-wrapper scroll-reveal">
+	<div id="cv-education" class="cv-section-wrapper scroll-reveal">
 		<CVEducation />
 	</div>
-	<div class="cv-section-wrapper scroll-reveal">
+	<div id="cv-publications" class="cv-section-wrapper scroll-reveal">
 		<CVPublications />
 	</div>
 
 	<!-- Components load automatically after page mount in batches -->
 	{#if CVGrants}
-		<div class="cv-section-wrapper cv-lazy-section fade-in-up">
+		<div id="cv-grants" class="cv-section-wrapper cv-lazy-section fade-in-up">
 			<CVGrants />
 		</div>
 	{/if}
 	{#if CVAwards}
-		<div class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
+		<div id="cv-awards" class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
 			<CVAwards />
 		</div>
 	{/if}
 	{#if CVDigitalHumanities}
-		<div class="cv-section-wrapper cv-lazy-section fade-in-up stagger-2">
+		<div id="cv-digital-humanities" class="cv-section-wrapper cv-lazy-section fade-in-up stagger-2">
 			<CVDigitalHumanities />
 		</div>
 	{/if}
 	{#if CVInvitedTalks}
-		<div class="cv-section-wrapper cv-lazy-section fade-in-up">
+		<div id="cv-invited-talks" class="cv-section-wrapper cv-lazy-section fade-in-up">
 			<CVInvitedTalks />
 		</div>
 	{/if}
 	{#if CVConferences}
-		<div class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
+		<div id="cv-conferences" class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
 			<CVConferences />
 		</div>
 	{/if}
 	{#if CVEvents}
-		<div class="cv-section-wrapper cv-lazy-section fade-in-up stagger-2">
+		<div id="cv-events" class="cv-section-wrapper cv-lazy-section fade-in-up stagger-2">
 			<CVEvents />
 		</div>
 	{/if}
 	{#if CVTeaching}
-		<div class="cv-section-wrapper cv-lazy-section fade-in-up">
+		<div id="cv-teaching" class="cv-section-wrapper cv-lazy-section fade-in-up">
 			<CVTeaching />
 		</div>
 	{/if}
 	{#if CVResearchExperience}
-		<div class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
+		<div id="cv-research-experience" class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
 			<CVResearchExperience />
 		</div>
 	{/if}
 	{#if CVService}
-		<div class="cv-section-wrapper cv-lazy-section fade-in-up stagger-2">
+		<div id="cv-service" class="cv-section-wrapper cv-lazy-section fade-in-up stagger-2">
 			<CVService />
 		</div>
 	{/if}
 	{#if CVConsulting}
-		<div class="cv-section-wrapper cv-lazy-section fade-in-up">
+		<div id="cv-consulting" class="cv-section-wrapper cv-lazy-section fade-in-up">
 			<CVConsulting />
 		</div>
 	{/if}
 	{#if CVMedia}
-		<div class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
+		<div id="cv-media" class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
 			<CVMedia />
 		</div>
 	{/if}
 	{#if CVLanguages}
-		<div class="cv-section-wrapper cv-lazy-section fade-in-up stagger-2">
+		<div id="cv-languages" class="cv-section-wrapper cv-lazy-section fade-in-up stagger-2">
 			<CVLanguages />
 		</div>
 	{/if}
 	{#if CVAffiliations}
-		<div class="cv-section-wrapper cv-lazy-section fade-in-up">
+		<div id="cv-affiliations" class="cv-section-wrapper cv-lazy-section fade-in-up">
 			<CVAffiliations />
 		</div>
 	{/if}
 	{#if CVComputerSkills}
-		<div class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
+		<div id="cv-computer-skills" class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
 			<CVComputerSkills />
 		</div>
 	{/if}
 </div>
+
+<CVTableOfContents />
 
 <style>
 	/* Main CV container - solid background instead of glass */
@@ -228,6 +231,11 @@
 		z-index: 10;
 		flex-wrap: wrap;
 		padding-bottom: var(--space-2);
+	}
+
+	/* Scroll offset for anchor navigation past sticky header */
+	:global(.cv-section-wrapper[id]) {
+		scroll-margin-top: calc(var(--space-16) + var(--space-4));
 	}
 
 	/* CV section wrappers - solid backgrounds with subtle tint */
