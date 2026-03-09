@@ -102,7 +102,7 @@
 							>
 								<a
 									href={link.url}
-									class="footer-link"
+									class="footer-link no-underline"
 									target={isExternal ? '_blank' : undefined}
 									rel={isExternal ? 'external noopener noreferrer' : undefined}
 									aria-label={isExternal ? `${link.name} - Opens in new tab` : link.name}
