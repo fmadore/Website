@@ -19,5 +19,10 @@ export const digitalHoardingOpenArchivesWarsaw: Communication = {
 		latitude: 52.24973261398244,
 		longitude: 21.011357126938524
 	},
+	image: 'images/communications/digital-hoarding-open-archives-warsaw-2026.webp',
+	heroImage: {
+		src: 'images/communications/digital-hoarding-open-archives-warsaw-2026-hero.webp',
+		alt: 'Poster for the workshop "Non-European Approaches in European Academia: Strategies for De-Europeanizing Research in Academia"'
+	},
 	project: "Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia"
 };
