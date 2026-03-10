@@ -62,5 +62,8 @@
 		"html2canvas": "^1.4.1",
 		"jspdf": "^4.2.0",
 		"maplibre-gl": "^5.16.0"
+	},
+	"overrides": {
+		"dompurify": "^3.3.2"
 	}
 }
