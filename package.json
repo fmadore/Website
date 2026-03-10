@@ -47,7 +47,8 @@
 		"devalue": ">=5.6.2",
 		"echarts-wordcloud": {
 			"echarts": "$echarts"
-		}
+		},
+		"dompurify": "^3.3.2"
 	},
 	"dependencies": {
 		"@iconify-icons/academicons": "^1.2.10",
@@ -63,7 +64,4 @@
 		"jspdf": "^4.2.0",
 		"maplibre-gl": "^5.16.0"
 	},
-	"overrides": {
-		"dompurify": "^3.3.2"
-	}
 }
