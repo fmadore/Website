@@ -78,7 +78,9 @@ The history of these associations reveals the campus as a microcosm reflecting w
 			journal: 'African Studies Review',
 			volume: '69',
 			issue: '1',
-			url: 'https://doi.org/10.1017/asr.2025.10172'
+			url: 'https://doi.org/10.1017/asr.2025.10172',
+			excerpt:
+				"Madore's account demonstrates an admirable respect for the current and former members he interviewed and a deep knowledge of the complex relationships between student religious associations, politico-economic conditions, and the challenges of Togolese and Beninese students."
 		}
 	],
 	citedBy: [
