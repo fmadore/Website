@@ -69,6 +69,16 @@ The history of these associations reveals the campus as a microcosm reflecting w
 			url: 'https://doi.org/10.1017/S0022278X25101195',
 			excerpt:
 				'Madore has produced an important work that documents previously neglected histories and demonstrates the significance of faith-based associations in shaping student activism, religious dynamics, and elite formation in West Africa. The book will be valuable for scholars of religion and higher education in Africa, students of social movements and those interested in how religious identity intersects with political and economic change.'
+		},
+		{
+			author: 'Douglas J. Falen',
+			year: 2026,
+			title:
+				'Frédérick Madore. Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023. De Gruyter Brill, 2025. 281 Pp. $98.99. Hardcover. ISBN: 9783111427904',
+			journal: 'African Studies Review',
+			volume: '69',
+			issue: '1',
+			url: 'https://doi.org/10.1017/asr.2025.10172'
 		}
 	],
 	citedBy: [
