@@ -40,7 +40,7 @@ const extractDoiFromUrl = (href: string): string => {
  * Normalizes whitespace (collapses newlines and tabs to single spaces).
  */
 export const extractRichText = (node: Element | ChildNode): TextFragment[] => {
-	let fragments: TextFragment[] = [];
+	const fragments: TextFragment[] = [];
 
 	// Handle text nodes with DOI detection
 	if (node.nodeType === 3) {
@@ -143,7 +143,7 @@ export const trimFragments = (fragments: TextFragment[]): TextFragment[] => {
 	if (fragments.length === 0) return [];
 
 	// Clone to avoid mutating original source if implicitly used elsewhere
-	let result = fragments.map((f) => ({ ...f }));
+	const result = fragments.map((f) => ({ ...f }));
 
 	// Trim Start
 	while (result.length > 0) {

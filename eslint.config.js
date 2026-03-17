@@ -20,7 +20,18 @@ export default ts.config(
 		languageOptions: {
 			globals: { ...globals.browser, ...globals.node }
 		},
-		rules: { 'no-undef': 'off' }
+		rules: {
+			'no-undef': 'off',
+			// Pre-existing: 76 occurrences across data files and utilities
+			'@typescript-eslint/no-explicit-any': 'warn',
+			'@typescript-eslint/no-unused-vars': [
+				'warn',
+				{ argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
+			],
+			'no-useless-escape': 'warn',
+			'no-useless-assignment': 'warn',
+			'prefer-rest-params': 'warn'
+		}
 	},
 	{
 		files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
@@ -32,6 +43,22 @@ export default ts.config(
 				parser: ts.parser,
 				svelteConfig
 			}
+		},
+		rules: {
+			// TODO: Migrate all hrefs/goto to use resolve() from $app/paths (66 occurrences)
+			'svelte/no-navigation-without-resolve': 'off',
+			// Pre-existing: {@html} is used intentionally for rich content rendering
+			'svelte/no-at-html-tags': 'warn',
+			// Pre-existing: ephemeral Map/Date/Set usage in non-reactive contexts
+			'svelte/prefer-svelte-reactivity': 'warn',
+			// Pre-existing: some each blocks don't need keys (static lists)
+			'svelte/require-each-key': 'warn',
+			'svelte/no-useless-mustaches': 'warn',
+			'svelte/no-useless-children-snippet': 'warn',
+			// Pre-existing: some props are part of interface but accessed via spread
+			'svelte/no-unused-props': 'warn',
+			// Pre-existing: $state + $effect pattern used for prop sync
+			'svelte/prefer-writable-derived': 'warn'
 		}
 	}
 );

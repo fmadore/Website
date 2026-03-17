@@ -16,6 +16,7 @@
 
 	// Helper to create COinS metadata for blog posts
 	const createCoinsData = (): string => {
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- ephemeral, not reactive
 		const params = new URLSearchParams();
 
 		// Basic COinS parameters

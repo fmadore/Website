@@ -8,10 +8,9 @@
 	interface Props {
 		communication: Communication;
 		index?: number;
-		onfilterrequest?: (event: { type: string; value: string }) => void;
 	}
 
-	let { communication, index, onfilterrequest }: Props = $props();
+	let { communication, index }: Props = $props();
 
 	// Optimize loading for above-the-fold images (first 3 items)
 	const imageLoading = $derived((index ?? 0) < 3 ? 'eager' : 'lazy');

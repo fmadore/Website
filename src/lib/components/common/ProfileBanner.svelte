@@ -35,7 +35,7 @@
 		</div>
 		<div class="subtitle">{author.position}</div>
 		<div class="profile-icons">
-			{#each profileIconLinks as link}
+			{#each profileIconLinks as link (link.name)}
 				<a href={link.url} target="_blank" rel="noopener" aria-label={link.name} class="icon-link">
 					<Icon icon={link.icon} width="24" height="24" />
 				</a>

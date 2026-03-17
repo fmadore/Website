@@ -8,6 +8,7 @@
 		type BreadcrumbItem
 	} from '$lib/utils/seoUtils';
 	import { getDefaultDescription, author, website } from '$lib/utils/siteHelpers';
+	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
 
 	interface Props {
 		// SEO props
@@ -91,6 +92,9 @@
 
 		return schemas.length > 0 ? combineSchemas(schemas) : '';
 	});
+
+	// Inject JSON-LD via DOM to avoid ESLint parsing issues with <script> in template
+	useJsonLdScript('seo-json-ld', () => jsonLdString);
 </script>
 
 <svelte:head>
@@ -140,9 +144,4 @@
 		name="googlebot"
 		content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
 	/>
-
-	<!-- JSON-LD Structured Data -->
-	{#if jsonLdString}
-		{@html `<script type="application/ld+json">${jsonLdString}</script>`}
-	{/if}
 </svelte:head>
