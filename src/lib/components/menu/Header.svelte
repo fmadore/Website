@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 	import { navItems } from '$lib/data/navigation';
 	// Import Components
 	import DesktopNav from '$lib/components/menu/DesktopNav.svelte';
@@ -125,7 +125,7 @@
 	<div class="container">
 		<div class="header-inner">
 			<div class="header-logo">
-				<a href={`${base}/`} class="site-title"> Frédérick Madore </a>
+				<a href={resolve('/')} class="site-title"> Frédérick Madore </a>
 			</div>
 
 			<!-- Desktop Navigation & Theme Toggle -->

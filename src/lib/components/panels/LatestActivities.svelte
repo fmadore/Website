@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getActivities } from '../../stores/activities.svelte';
 	import type { Activity } from '$lib/types';
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 	import PanelBase from './PanelBase.svelte';
 	import Button from '../atoms/Button.svelte';
 
@@ -66,7 +66,10 @@
 						{/if}
 						<span class="activity-date">{formatDateDMY(activity.date)}</span>
 					</div>
-					<a href="{base}/activities/{activity.id}" class="activity-title leading-relaxed">
+					<a
+						href={resolve(`/activities/${activity.id}` as `/activities/${string}`)}
+						class="activity-title leading-relaxed"
+					>
 						{activity.title}
 					</a>
 					{#if activity.description}
@@ -82,7 +85,7 @@
 
 		<div class="view-all-container">
 			<Button
-				href="{base}/activities"
+				href={resolve('/activities')}
 				variant="outline-primary"
 				size="base"
 				additionalClasses="glass-button"
@@ -99,7 +102,7 @@
 		<div class="year-filters">
 			{#each years as year (year)}
 				<Button
-					href="{base}/activities/year/{year}"
+					href={resolve(`/activities/year/${year}` as `/activities/year/${string}`)}
 					variant="outline-secondary"
 					size="sm"
 					additionalClasses="glass-button year-filter-button"

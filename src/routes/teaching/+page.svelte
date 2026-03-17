@@ -1,7 +1,7 @@
 <script>
 	import SEO from '$lib/SEO.svelte';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
-	import { base } from '$app/paths'; // Import base path for images
+	import { base, resolve } from '$app/paths'; // base for images/files, resolve for hrefs
 	import Card from '$lib/components/common/Card.svelte'; // Import Card component
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
@@ -54,7 +54,7 @@
 			description:
 				'A list of invited talks and lectures delivered at various academic institutions.',
 			imageUrl: `${base}/images/teaching/guest-lecture.jpg`,
-			linkUrl: `${base}/teaching/guest-lectures`
+			linkUrl: resolve('/teaching/guest-lectures')
 		}
 	];
 </script>
@@ -106,10 +106,12 @@
 
 					{#snippet action()}
 						{#if item.type === 'course' && item.syllabusUrl}
+							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- static asset URL -->
 							<a href={item.syllabusUrl} target="_blank" rel="noopener noreferrer">
 								View Syllabus →
 							</a>
 						{:else if item.type === 'guest_lecture' && item.linkUrl}
+							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved URL -->
 							<a href={item.linkUrl}>View List →</a>
 						{/if}
 					{/snippet}

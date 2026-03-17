@@ -100,6 +100,7 @@
 		<div class="entity-grid">
 			{#if publication.image}
 				<div class="entity-image-container">
+					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
 					<a href={publicationHref} data-sveltekit-preload-code="tap">
 						<img
 							src={publication.image}
@@ -126,6 +127,7 @@
 				</div>
 
 				<h3 class="entity-title">
+					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
 					<a href={publicationHref} class="entity-title-link" data-sveltekit-preload-code="tap">
 						{publication.title}
 					</a>
@@ -217,6 +219,7 @@
 				{#if publication.additionalUrls && publication.additionalUrls.length > 0}
 					<div class="entity-links">
 						{#each publication.additionalUrls as url, i (url.url + i)}
+							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 							<a
 								href={url.url}
 								target="_blank"

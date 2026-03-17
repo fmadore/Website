@@ -16,6 +16,7 @@
 				<div class="review-card glass-sub-card scroll-reveal-scale">
 					<div class="review-title">
 						{#if review.url}
+							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 							<a href={review.url} target="_blank" rel="noopener" class="review-link"
 								>{review.title}</a
 							>
@@ -38,12 +39,15 @@
 							>{/if}
 						{#if review.doi}
 							<div class="doi">
-								DOI: <a
+								DOI:
+								<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
+								<a
 									href="https://doi.org/{review.doi}"
 									target="_blank"
 									rel="noopener"
 									class="doi-link">{review.doi}</a
 								>
+								<!-- eslint-enable svelte/no-navigation-without-resolve -->
 							</div>
 						{/if}
 					</div>

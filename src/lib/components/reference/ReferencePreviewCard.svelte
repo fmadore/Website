@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { tick } from 'svelte';
 	import { browser } from '$app/environment';
-	import { base } from '$app/paths';
+	import { base, resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import type { Publication, Communication } from '$lib/types';
 	import Button from '$lib/components/atoms/Button.svelte';
@@ -36,7 +36,10 @@
 
 	const itemUrl = $derived(
 		item && itemType
-			? `${base}/${itemType === 'publication' ? 'publications' : 'communications'}/${item.id}`
+			? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+				resolve(
+					`/${itemType === 'publication' ? 'publications' : 'communications'}/${item.id}` as any
+				)
 			: '#'
 	);
 
@@ -87,6 +90,7 @@
 
 		// Delay navigation to allow animation to complete
 		setTimeout(() => {
+			// eslint-disable-next-line svelte/no-navigation-without-resolve -- itemUrl pre-resolved via resolve()
 			goto(itemUrl);
 		}, 300);
 	}
@@ -109,6 +113,7 @@
 	onpointerenter={handlePointerEnter}
 	onpointerleave={handlePointerLeave}
 >
+	<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
 	<a href={itemUrl} class="card-link" tabindex="-1" onclick={handleCardClick}>
 		<div class="card-content-wrapper">
 			{#if imageSrc}

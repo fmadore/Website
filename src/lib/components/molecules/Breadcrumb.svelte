@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 
 	let {
 		items = [],
@@ -14,7 +14,7 @@
 	<ol>
 		{#if showHomeLink}
 			<li>
-				<a href={`${base}/`} class="breadcrumb-link">Home</a>
+				<a href={resolve('/')} class="breadcrumb-link">Home</a>
 			</li>
 		{/if}
 
@@ -25,6 +25,7 @@
 						{item.label}
 					</span>
 				{:else}
+					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- href passed from caller, pre-resolved -->
 					<a href={item.href} class="breadcrumb-link">
 						{item.label}
 					</a>

@@ -25,21 +25,25 @@
 					})}.
 					{#if podcast.doi}
 						<span class="block text-sm text-light mt-1"
-							>DOI: <a
+							>DOI:
+							<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
+							<a
 								href="https://doi.org/{podcast.doi}"
 								target="_blank"
 								rel="noopener noreferrer"
 								class="text-primary hover:underline">{podcast.doi}</a
-							></span
+							><!-- eslint-enable svelte/no-navigation-without-resolve --></span
 						>
 					{/if}
 					{#if podcast.url}
+						<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 						<a
 							href={podcast.url}
 							target="_blank"
 							rel="noopener noreferrer"
 							class="text-primary hover:underline text-sm">[Listen]</a
 						>
+						<!-- eslint-enable svelte/no-navigation-without-resolve -->
 					{/if}
 				</CVEntry>
 			{/each}
@@ -60,12 +64,16 @@
 						month: 'long'
 					})}.
 					<span class="block text-sm text-light mt-1">Topic: {media.topic}</span>
-					{#if media.url}<a
+					{#if media.url}
+						<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
+						<a
 							href={media.url}
 							target="_blank"
 							rel="noopener noreferrer"
 							class="text-primary hover:underline text-sm">[Link]</a
-						>{/if}
+						>
+						<!-- eslint-enable svelte/no-navigation-without-resolve -->
+					{/if}
 				</CVEntry>
 			{/each}
 		</div>

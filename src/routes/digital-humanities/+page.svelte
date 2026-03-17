@@ -1,7 +1,7 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
-	import { base } from '$app/paths';
+	import { base, resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 	import Card from '$lib/components/common/Card.svelte';
@@ -36,8 +36,10 @@
 				project.linkUrl &&
 				(project.linkUrl.startsWith('http://') || project.linkUrl.startsWith('https://'));
 			const internalPath = `/digital-humanities/${project.id}`;
-			// Ensure project.linkUrl is used directly if it's external, otherwise construct internal path with base
-			const finalLinkUrl = isExternal ? project.linkUrl! : `${base}${internalPath}`;
+			// Ensure project.linkUrl is used directly if it's external, otherwise construct internal path with resolve
+			const finalLinkUrl = isExternal
+				? project.linkUrl!
+				: resolve(internalPath as `/digital-humanities/${string}`);
 			const linkTarget = isExternal ? '_blank' : '_self';
 			const actionText = isExternal ? 'Visit Site →' : 'Explore project →';
 
@@ -71,7 +73,7 @@
 			<p class="text-lg mb-6">
 				Showing projects with skill: <span class="font-semibold text-primary">{selectedSkill}</span>
 				<a
-					href="{base}/digital-humanities"
+					href={resolve('/digital-humanities')}
 					class="text-sm ml-2 text-light hover:text-primary hover:underline">(Clear filter)</a
 				>
 			</p>
@@ -134,6 +136,7 @@
 					{/snippet}
 
 					{#snippet action()}
+						<!-- eslint-disable svelte/no-navigation-without-resolve -- pre-resolved URL -->
 						<a
 							href={project.finalLinkUrl}
 							target={project.linkTarget}
@@ -141,6 +144,7 @@
 						>
 							{project.actionText}
 						</a>
+						<!-- eslint-enable svelte/no-navigation-without-resolve -->
 					{/snippet}
 				</Card>
 			{/each}

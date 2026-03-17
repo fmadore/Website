@@ -218,6 +218,7 @@
 
 				<!-- RSS Feed Button -->
 				<div class="rss-button-wrapper scroll-reveal">
+					<!-- eslint-disable svelte/no-navigation-without-resolve -- static asset -->
 					<a
 						href="{base}/rss.xml"
 						class="btn btn-outline-primary btn-sm glass-button rss-feed-button"
@@ -225,6 +226,7 @@
 						<Icon icon="mdi:rss" width="16" height="16" aria-hidden="true" />
 						RSS Feed
 					</a>
+					<!-- eslint-enable svelte/no-navigation-without-resolve -->
 				</div>
 			{/if}
 		</div>

@@ -32,6 +32,7 @@
 					<dt class="detail-label">{detail.label}</dt>
 					<dd class="detail-value">
 						{#if detail.link && detail.link !== 'undefined' && typeof detail.link === 'string'}
+							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 							<a href={detail.link} target="_blank" rel="noopener" class="detail-link">
 								{Array.isArray(detail.value) ? detail.value.join(', ') : detail.value}
 							</a>

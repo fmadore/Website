@@ -79,6 +79,7 @@
 		<div class="tag-cloud">
 			{#each displayTags as [tag, frequency] (tag)}
 				{@const isActive = activeTagSet.has(tag)}
+				<!-- eslint-disable svelte/no-navigation-without-resolve -- href from callback or anchor-only -->
 				<a
 					href={getTagHref ? getTagHref(tag) : '#'}
 					class="tag-cloud-item"
@@ -93,6 +94,7 @@
 					<span class="tag-name">{tag}</span>
 					<span class="tag-count">({frequency})</span>
 				</a>
+				<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			{/each}
 		</div>
 	{:else}

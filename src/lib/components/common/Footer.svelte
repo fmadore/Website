@@ -100,6 +100,7 @@
 								style="animation-delay: {(groupIndex * group.links.length + linkIndex) * 50}ms"
 								class:animate={isVisible}
 							>
+								<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 								<a
 									href={link.url}
 									class="footer-link no-underline"
@@ -113,6 +114,7 @@
 									<span class="footer-link-name">{link.name}</span>
 									<div class="link-hover-effect" aria-hidden="true"></div>
 								</a>
+								<!-- eslint-enable svelte/no-navigation-without-resolve -->
 							</li>
 						{/each}
 					</ul>

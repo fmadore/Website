@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte'; // Use the type from the panel component
 
 	// Props
@@ -14,6 +14,10 @@
 		formatType: (type: string) => string;
 		formatAuthors: (authors: string[]) => string;
 	} = $props();
+
+	// Compute the item href using resolve for base path handling
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const itemHref = $derived(resolve(`${basePath}/${item.id}` as any));
 </script>
 
 <div class="item-card scroll-reveal">
@@ -23,7 +27,8 @@
 		{/if}
 		<span class="item-date improved-date">{item.date}</span>
 	</div>
-	<a href={`${base}${basePath}/${item.id}`} class="item-title">
+	<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
+	<a href={itemHref} class="item-title">
 		{item.title}
 	</a>
 	{#if item.authors && item.authors.length > 0}

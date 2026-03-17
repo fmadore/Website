@@ -9,7 +9,7 @@
 	import CVPublications from '$lib/components/cv/CVPublications.svelte';
 	import CVTableOfContents from '$lib/components/cv/CVTableOfContents.svelte';
 
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('CV', '/cv');
@@ -108,7 +108,7 @@
 <div id="cv-content" class="cv-container p-8 max-w-6xl mx-auto rounded-lg page-enter">
 	<!-- Action Buttons - positioned in top right corner of CV -->
 	<div class="cv-actions">
-		<a href="{base}/cv/timeline" class="btn btn-secondary" aria-label="View Career Timeline">
+		<a href={resolve('/cv/timeline')} class="btn btn-secondary" aria-label="View Career Timeline">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="20"

@@ -45,8 +45,7 @@ export default ts.config(
 			}
 		},
 		rules: {
-			// TODO: Migrate all hrefs/goto to use resolve() from $app/paths (66 occurrences)
-			'svelte/no-navigation-without-resolve': 'off',
+			'svelte/no-navigation-without-resolve': 'error',
 			// Pre-existing: {@html} is used intentionally for rich content rendering
 			'svelte/no-at-html-tags': 'warn',
 			// Pre-existing: ephemeral Map/Date/Set usage in non-reactive contexts

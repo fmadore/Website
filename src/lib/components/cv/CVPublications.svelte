@@ -73,7 +73,7 @@
 								{#if pub.book}In <em>{pub.book}</em>.{/if}
 								{#if pub.publisher}{pub.publisher}.{/if}
 							{/if}
-							{#if pub.doi}<a
+							{#if pub.doi}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
 									href="https://doi.org/{pub.doi}"
 									target="_blank"
 									rel="noopener noreferrer"
@@ -91,23 +91,25 @@
 											}
 										}}
 									/><span class="doi-badge-fallback">DOI: {pub.doi}</span></a
-								>{/if}
-							{#if pub.url && !pub.doi}<a
+								><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
+							{#if pub.url && !pub.doi}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
 									href={pub.url}
 									target="_blank"
 									rel="noopener noreferrer"
 									class="ml-1 text-primary hover:underline text-sm">[Link]</a
-								>{/if}
+								><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
 							{#if pub.reviewedBy && pub.reviewedBy.length > 0}
 								<p class="text-sm mt-1">
 									Reviewed in
 									{#each pub.reviewedBy as review, i (review.title + review.year)}
+										<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 										<a
 											href={review.url}
 											target="_blank"
 											rel="noopener noreferrer"
 											class="text-primary hover:underline"><em>{review.journal}</em></a
-										>{#if i < pub.reviewedBy.length - 2}, {' '}
+										><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < pub.reviewedBy.length - 2},
+											{' '}
 										{:else if i === pub.reviewedBy.length - 2}, and {' '}
 										{:else}.{/if}
 									{/each}
@@ -129,12 +131,12 @@
 							<!-- Simplified display for other types -->
 							<span class="font-medium">{pub.title}</span>.
 							{#if pub.type}<span class="pub-type-badge">{pub.type}</span>{/if}
-							{#if pub.url}<a
+							{#if pub.url}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
 									href={pub.url}
 									target="_blank"
 									rel="noopener noreferrer"
 									class="ml-1 text-primary hover:underline text-sm">[Link]</a
-								>{/if}
+								><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
 						</CVEntry>
 					{/each}
 				{/each}

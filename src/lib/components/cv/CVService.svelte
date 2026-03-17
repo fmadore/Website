@@ -42,6 +42,7 @@
 						<div class="text-sm">{review.details}</div>
 					{/if}
 					{#if review.publons_record}
+						<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 						<a
 							href={review.publons_record}
 							target="_blank"
@@ -62,6 +63,7 @@
 							</svg>
 							<span>Verified on Web of Science</span>
 						</a>
+						<!-- eslint-enable svelte/no-navigation-without-resolve -->
 					{/if}
 				</CVEntry>
 			{/each}

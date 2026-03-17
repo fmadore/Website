@@ -72,6 +72,7 @@
 </script>
 
 {#if href}
+	<!-- eslint-disable svelte/no-navigation-without-resolve -- prop passthrough, caller responsible for resolving -->
 	<a
 		{href}
 		class={buttonClasses}
@@ -114,6 +115,7 @@
 			{/if}
 		</span>
 	</a>
+	<!-- eslint-enable svelte/no-navigation-without-resolve -->
 {:else}
 	<button
 		{type}

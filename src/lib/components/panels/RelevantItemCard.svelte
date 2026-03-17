@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
 
 	// Props - same interface as the old ItemCard for compatibility
@@ -16,7 +16,8 @@
 	} = $props();
 
 	// Construct the link URL
-	let itemLink = $derived(`${base}${basePath}/${item.id}`);
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	let itemLink = $derived(resolve(`${basePath}/${item.id}` as any));
 </script>
 
 <div class="relevant-item card-accent-border">
@@ -28,6 +29,7 @@
 	</div>
 
 	<h3 class="relevant-item-title">
+		<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
 		<a href={itemLink}>{item.title}</a>
 	</h3>
 
@@ -44,6 +46,7 @@
 	{/if}
 
 	<div class="relevant-item-action">
+		<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
 		<a href={itemLink} class="relevant-item-link"> View details → </a>
 	</div>
 </div>

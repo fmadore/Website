@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 	import type { Publication, Communication } from '$lib/types';
 
 	let {
@@ -54,7 +54,10 @@
 
 	const itemUrl = $derived(
 		item && itemType
-			? `${base}/${itemType === 'publication' ? 'publications' : 'communications'}/${item.id}`
+			? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+				resolve(
+					`/${itemType === 'publication' ? 'publications' : 'communications'}/${item.id}` as any
+				)
 			: '#'
 	);
 
@@ -63,6 +66,7 @@
 	);
 </script>
 
+<!-- eslint-disable svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
 <a
 	href={itemUrl}
 	class="reference-link {hasPopup ? 'has-popup' : ''} {isActive ? 'is-active' : ''}"
@@ -71,6 +75,8 @@
 >
 	{referenceText}
 </a>
+
+<!-- eslint-enable svelte/no-navigation-without-resolve -->
 
 <style>
 	.reference-link {

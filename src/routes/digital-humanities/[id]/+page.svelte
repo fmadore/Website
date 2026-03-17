@@ -8,7 +8,7 @@
 	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
 	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
 
-	import { base } from '$app/paths';
+	import { base, resolve } from '$app/paths';
 
 	import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
 
@@ -104,6 +104,7 @@
 									</div>
 								{:else if item.type === 'image'}
 									{#if item.linkUrl}
+										<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 										<a
 											href={item.linkUrl}
 											target="_blank"
@@ -120,6 +121,7 @@
 												decoding="async"
 											/>
 										</a>
+										<!-- eslint-enable svelte/no-navigation-without-resolve -->
 									{:else}
 										<img
 											src={item.src}
@@ -154,12 +156,14 @@
 						<h3 class="section-title">Related Publication</h3>
 						<p>
 							<!-- Safe: project.publication.text is from trusted project data -->
+							<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 							<a
 								href={project.publication.url}
 								target="_blank"
 								rel="noopener noreferrer"
 								class="link">{@html project.publication.text}</a
 							>
+							<!-- eslint-enable svelte/no-navigation-without-resolve -->
 						</p>
 					</section>
 				{/if}
@@ -173,12 +177,14 @@
 							{#each project.reviews as review (review.url)}
 								<li class="review-item glass-sub-card">
 									<!-- Safe: review.text is from trusted project data -->
+									<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 									<a
 										href={review.url}
 										target="_blank"
 										rel="noopener noreferrer"
 										class="link font-medium">{@html review.text}</a
 									>
+									<!-- eslint-enable svelte/no-navigation-without-resolve -->
 									{#if review.quote}
 										<blockquote class="review-quote">
 											<p>{review.quote}</p>
@@ -195,7 +201,7 @@
 
 	<!-- Back button -->
 	<div class="mt-8 text-center max-w-6xl mx-auto">
-		<a href="{base}/digital-humanities" class="btn btn-primary glass-button"
+		<a href={resolve('/digital-humanities')} class="btn btn-primary glass-button"
 			>Back to Digital Humanities Projects</a
 		>
 	</div>

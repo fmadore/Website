@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
-	import { base } from '$app/paths';
+	import { base, resolve } from '$app/paths';
 	import Card from '$lib/components/common/Card.svelte';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import Icon from '@iconify/svelte';
@@ -14,7 +14,9 @@
 				project.linkUrl &&
 				(project.linkUrl.startsWith('http://') || project.linkUrl.startsWith('https://'));
 			const internalPath = `/digital-humanities/${project.id}`;
-			const finalLinkUrl = isExternal ? project.linkUrl! : `${base}${internalPath}`;
+			const finalLinkUrl = isExternal
+				? project.linkUrl!
+				: resolve(internalPath as `/digital-humanities/${string}`);
 			const linkTarget = isExternal ? '_blank' : '_self';
 			const actionText = isExternal ? 'Visit Site' : 'Explore project';
 
@@ -65,6 +67,7 @@
 					{/snippet}
 
 					{#snippet action()}
+						<!-- eslint-disable svelte/no-navigation-without-resolve -- pre-resolved URL -->
 						<a
 							href={project.finalLinkUrl}
 							target={project.linkTarget}
@@ -72,6 +75,7 @@
 						>
 							{project.actionText}
 						</a>
+						<!-- eslint-enable svelte/no-navigation-without-resolve -->
 					{/snippet}
 				</Card>
 			{/each}

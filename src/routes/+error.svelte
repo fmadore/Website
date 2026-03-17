@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { resolve } from '$app/paths';
 </script>
 
 <svelte:head>
@@ -19,7 +20,7 @@
 			<h2 class="text-2xl font-semibold mb-4">Error {$page.status}</h2>
 			<p class="mb-8 text-lg">{$page.error?.message || 'An unexpected error occurred.'}</p>
 		{/if}
-		<a href="/" class="btn btn-primary"> Go to Homepage </a>
+		<a href={resolve('/')} class="btn btn-primary"> Go to Homepage </a>
 	</div>
 </div>
 

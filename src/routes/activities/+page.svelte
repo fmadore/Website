@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getActivities } from '$lib/stores/activities.svelte';
 	import type { Activity } from '$lib/types';
-	import { base } from '$app/paths';
+	import { base, resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
@@ -59,7 +59,7 @@
 
 	// Function to clear tag filter
 	function clearTagFilter() {
-		goto(`${base}/activities`);
+		goto(resolve('/activities'));
 	}
 </script>
 
@@ -89,7 +89,7 @@
 						<ul class="year-list">
 							{#each years as year (year)}
 								<li class="year-list-item">
-									<a href="{base}/activities/year/{year}" class="year-link">
+									<a href={resolve(`/activities/year/${year}`)} class="year-link">
 										<span class="year-label">{year}</span>
 										<span class="year-count">
 											{getCountByYear(year)}
@@ -106,11 +106,12 @@
 						maxTags={25}
 						itemLabel="activity"
 						itemLabelPlural="activities"
-						getTagHref={(tag) => `${base}/activities?tag=${encodeURIComponent(tag)}`}
+						getTagHref={(tag) => `${resolve('/activities')}?tag=${encodeURIComponent(tag)}`}
 					/>
 
 					<!-- RSS Subscribe Button -->
 					<div class="rss-section">
+						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- static asset -->
 						<a href="{base}/rss.xml" class="rss-subscribe-link glass-button">
 							<Icon icon="mdi:rss" width="18" height="18" aria-hidden="true" />
 							<span>RSS Feed</span>

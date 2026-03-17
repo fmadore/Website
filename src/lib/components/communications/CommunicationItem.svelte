@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Communication } from '$lib/types/communication';
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 	import { truncateAbstract } from '$lib/utils/textUtils';
 	import { formatAuthorList, formatCommunicationCitation } from '$lib/utils/citationFormatter';
 	import TagList from '$lib/components/molecules/TagList.svelte';
@@ -54,7 +54,10 @@
 		<div class="entity-grid">
 			{#if communication?.image}
 				<div class="entity-image-container">
-					<a href={`${base}/communications/${communication.id}`} data-sveltekit-preload-code="tap">
+					<a
+						href={resolve(`/communications/${communication.id}`)}
+						data-sveltekit-preload-code="tap"
+					>
 						<img
 							src={communication.image}
 							alt={communication.title}
@@ -82,7 +85,7 @@
 
 				<h3 class="entity-title">
 					<a
-						href={`${base}/communications/${communication.id}`}
+						href={resolve(`/communications/${communication.id}`)}
 						class="entity-title-link"
 						data-sveltekit-preload-code="tap"
 					>
@@ -122,6 +125,7 @@
 				{#if (communication?.additionalUrls && communication.additionalUrls.length > 0) || communication?.doi}
 					<div class="entity-links">
 						{#if communication?.doi}
+							<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 							<a
 								href={`https://doi.org/${communication.doi}`}
 								target="_blank"
@@ -130,9 +134,11 @@
 							>
 								DOI
 							</a>
+							<!-- eslint-enable svelte/no-navigation-without-resolve -->
 						{/if}
 						{#if communication?.additionalUrls}
 							{#each communication.additionalUrls as url, i (url.url)}
+								<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 								<a
 									href={url.url}
 									target="_blank"
@@ -141,6 +147,7 @@
 								>
 									{url.label || `Link ${i + 1}`}
 								</a>
+								<!-- eslint-enable svelte/no-navigation-without-resolve -->
 							{/each}
 						{/if}
 					</div>

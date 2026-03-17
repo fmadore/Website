@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { getActivities } from '$lib/stores/activities.svelte';
 	import type { Activity } from '$lib/types';
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import SEO from '$lib/SEO.svelte';
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
@@ -29,8 +29,11 @@
 
 	// Define breadcrumb items - reactive to year changes
 	let breadcrumbItems = $derived([
-		{ label: 'Activities', href: `${base}/activities` },
-		{ label: String(year), href: `${base}/activities/year/${year}` }
+		{ label: 'Activities', href: resolve('/activities') },
+		{
+			label: String(year),
+			href: resolve(`/activities/year/${year}` as `/activities/year/${string}`)
+		}
 	]);
 
 	// Inject breadcrumb JSON-LD structured data (with unique ID for this page type)
@@ -48,7 +51,10 @@
 
 		<div class="year-filters flex gap-2 overflow-x-auto py-2">
 			{#each allYears as y (y)}
-				<a href="{base}/activities/year/{y}" class="year-tag {y === year ? 'active' : ''}">
+				<a
+					href={resolve(`/activities/year/${y}` as `/activities/year/${string}`)}
+					class="year-tag {y === year ? 'active' : ''}"
+				>
 					{y}
 				</a>
 			{/each}

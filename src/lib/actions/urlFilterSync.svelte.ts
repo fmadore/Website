@@ -94,6 +94,7 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 		const targetUrl = `${basePath}${queryString ? `?${queryString}` : ''}${page.url.hash || ''}`;
 
 		// Use replaceState to avoid cluttering browser history
+		// eslint-disable-next-line svelte/no-navigation-without-resolve -- targetUrl built from page.url.pathname which is already resolved
 		goto(targetUrl, { replaceState: true, keepFocus: true, noScroll: true });
 	});
 

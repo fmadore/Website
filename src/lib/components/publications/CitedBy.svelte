@@ -16,6 +16,7 @@
 				<div class="citing-work-card glass-sub-card scroll-reveal-scale">
 					<div class="citation-title">
 						{#if citingWork.url}
+							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 							<a href={citingWork.url} target="_blank" rel="noopener" class="citation-link"
 								>{citingWork.title}</a
 							>

@@ -21,6 +21,7 @@
 	} = $props();
 </script>
 
+<!-- eslint-disable svelte/no-navigation-without-resolve -- prop passthrough, caller responsible for resolving -->
 <a
 	{href}
 	class="nav-link"
@@ -36,6 +37,8 @@
 		<span class="dropdown-icon">▾</span>
 	{/if}
 </a>
+
+<!-- eslint-enable svelte/no-navigation-without-resolve -->
 
 <style>
 	.nav-link {

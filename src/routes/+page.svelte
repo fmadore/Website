@@ -3,7 +3,7 @@
 	import ProfileBanner from '$lib/components/common/ProfileBanner.svelte';
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import SEO from '$lib/SEO.svelte';
-	import { base } from '$app/paths';
+	import { base, resolve } from '$app/paths';
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
 	import { browser } from '$app/environment';
 	import type { PageData } from './$types';
@@ -58,14 +58,15 @@
 					FAIR and CARE principles while ensuring that digital literacy and ethical standards are
 					integrated into our workflows. I also continue my research at the intersection of Islamic
 					studies,
-					<a href="{base}/digital-humanities" data-sveltekit-preload-data>digital humanities</a>
+					<a href={resolve('/digital-humanities')} data-sveltekit-preload-data>digital humanities</a
+					>
 					(DH), and artificial intelligence (AI), exploring how emerging technologies can transform the
 					way we access, analyse, and interpret historical archives.
 				</p>
 				<p>
 					My work combines over a decade of expertise on Islam in Francophone West Africa and
 					extensive fieldwork in the region. My <a
-						href="{base}/research"
+						href={resolve('/research')}
 						data-sveltekit-preload-data>research</a
 					>
 					examines the diverse ways Muslim communities, notably youth and women, have engaged with politics,
@@ -114,7 +115,7 @@
 				<h3>Current Project</h3>
 				<p>
 					I am coordinating
-					<a href="{base}/research/dh-ai-african-studies" data-sveltekit-preload-data
+					<a href={resolve('/research/dh-ai-african-studies')} data-sveltekit-preload-data
 						><em>Digital Humanities and AI in African Studies</em></a
 					>, a collaborative research initiative comprising two international workshops in 2026 (<ItemReference
 						id="volkswagenstiftung-dh-ai-african-studies-workshop-2026"
@@ -124,7 +125,9 @@
 					<ItemReference id="stias-dh-ai-african-studies-workshop-2026" label="Stellenbosch" />) and
 					a
 					<a
-						href="{base}/activities/dh-ai-african-studies-edited-volume"
+						href={resolve(
+							`/activities/dh-ai-african-studies-edited-volume` as `/activities/${string}`
+						)}
 						data-sveltekit-preload-data>forthcoming co-edited volume</a
 					>
 					to be published by Bielefeld University Press. This project brings together scholars from Africa,
@@ -148,7 +151,7 @@
 					<ItemReference id="muslim-minorities-africa-2" /> and "Les acteurs religieux africains à l'ère
 					du numérique"
 					<ItemReference id="acteurs-religieux-numerique" />. My research has been
-					<a href="{base}/publications" data-sveltekit-preload-data>published</a> in eleven peer-reviewed
+					<a href={resolve('/publications')} data-sveltekit-preload-data>published</a> in eleven peer-reviewed
 					journals and seven edited volumes.
 				</p>
 

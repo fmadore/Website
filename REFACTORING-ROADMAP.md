@@ -125,9 +125,9 @@ Last updated: 2026-03-17
 
 ### 5.7 Fix ESLint Errors: Migrate to resolve() from $app/paths
 
-- **Status:** Pending
-- **Issue:** 66 occurrences of `svelte/no-navigation-without-resolve` across hrefs and goto() calls
-- **Impact:** Currently disabled in eslint config; should be migrated for proper SvelteKit base path handling
+- **Status:** Done
+- **Migrated:** All 66 violations resolved — internal links use `resolve()` from `$app/paths`, external links and prop passthroughs have eslint-disable comments
+- **Rule:** `svelte/no-navigation-without-resolve` now enforced as `error`
 
 ### 5.8 Fix SEO JSON-LD in Pre-existing MetaTags Components
 

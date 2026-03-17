@@ -36,6 +36,7 @@
 		<div class="subtitle">{author.position}</div>
 		<div class="profile-icons">
 			{#each profileIconLinks as link (link.name)}
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 				<a href={link.url} target="_blank" rel="noopener" aria-label={link.name} class="icon-link">
 					<Icon icon={link.icon} width="24" height="24" />
 				</a>

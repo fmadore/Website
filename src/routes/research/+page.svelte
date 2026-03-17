@@ -1,6 +1,9 @@
 <script>
-	import { base } from '$app/paths';
+	import { base, resolve } from '$app/paths';
 	import Card from '$lib/components/common/Card.svelte'; // Import the Card component
+
+	// Helper to resolve dynamic research project paths
+	const resolvePath = (/** @type {string} */ path) => resolve(/** @type {any} */ (path));
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import SEO from '$lib/SEO.svelte';
@@ -82,7 +85,7 @@
 				<Card
 					title={project.title}
 					imageUrl={project.imageUrl}
-					linkUrl={`/research/${project.id}`}
+					linkUrl={resolvePath(`/research/${project.id}`)}
 					target="_self"
 				>
 					{#snippet subtitle()}
@@ -90,7 +93,8 @@
 					{/snippet}
 					{project.shortDescription}
 					{#snippet action()}
-						<a href={`${base}/research/${project.id}`}>Read more →</a>
+						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolvePath -->
+						<a href={resolvePath(`/research/${project.id}`)}>Read more →</a>
 					{/snippet}
 				</Card>
 			{/each}

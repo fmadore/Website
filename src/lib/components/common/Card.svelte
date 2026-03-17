@@ -1,6 +1,4 @@
 <script>
-	import { base } from '$app/paths';
-
 	let {
 		imageUrl = undefined,
 		imageAlt: _imageAltProp = '', // Renamed to avoid conflict with the derived value
@@ -22,11 +20,8 @@
 	{#if imageUrl}
 		<div class="card-image">
 			{#if linkUrl}
-				<a
-					href={linkUrl.startsWith('/') ? `${base}${linkUrl}` : linkUrl}
-					{target}
-					rel="noopener noreferrer"
-				>
+				<!-- eslint-disable svelte/no-navigation-without-resolve -- linkUrl may be pre-resolved or external -->
+				<a href={linkUrl} {target} rel="noopener noreferrer">
 					<img
 						src={imageUrl}
 						alt={imageAlt}
@@ -36,6 +31,7 @@
 						decoding="async"
 					/>
 				</a>
+				<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			{:else}
 				<img
 					src={imageUrl}
@@ -52,13 +48,11 @@
 	<div class="card-body">
 		<h2 class="card-title">
 			{#if linkUrl}
-				<a
-					href={linkUrl.startsWith('/') ? `${base}${linkUrl}` : linkUrl}
-					{target}
-					rel="noopener noreferrer"
-				>
+				<!-- eslint-disable svelte/no-navigation-without-resolve -- caller passes pre-resolved URL -->
+				<a href={linkUrl} {target} rel="noopener noreferrer">
 					{title}
 				</a>
+				<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			{:else}
 				{title}
 			{/if}

@@ -14,12 +14,14 @@
 	{#snippet entry(project)}
 		<span class="font-medium">{project.title}</span>
 		{#if project.linkUrl}
+			<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 			<a
 				href={project.linkUrl}
 				target="_blank"
 				rel="noopener noreferrer"
 				class="ml-1 text-primary hover:underline text-sm">[Link]</a
 			>
+			<!-- eslint-enable svelte/no-navigation-without-resolve -->
 		{/if}
 		{#if project.shortDescription}
 			<div class="text-sm text-light">{project.shortDescription}</div>
@@ -28,12 +30,14 @@
 			<div class="mt-2 ml-4 text-sm">
 				{project.reviews.length === 1 ? 'Review:' : 'Reviews:'}
 				{#each project.reviews as review, i}
+					<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 					<a
 						href={review.url}
 						target="_blank"
 						rel="noopener noreferrer"
 						class="text-primary hover:underline">{@html review.text}</a
-					>{#if i < project.reviews.length - 1}; {' '}{/if}
+					><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < project.reviews.length - 1};
+						{' '}{/if}
 				{/each}
 			</div>
 		{/if}

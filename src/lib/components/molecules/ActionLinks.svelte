@@ -28,6 +28,7 @@
 	<section class="{sectionClass} scroll-reveal">
 		{#if primaryUrl && typeof primaryUrl === 'string' && primaryUrl !== 'undefined'}
 			<div class={primaryDivClass}>
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 				<a href={primaryUrl} target="_blank" rel="noopener noreferrer" class={primaryButtonClass}>
 					{primaryLabel}
 				</a>
@@ -37,6 +38,7 @@
 		{#if visibleAdditionalUrls.length > 0}
 			<div class={secondaryDivClass}>
 				{#each visibleAdditionalUrls as link (link.url)}
+					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 					<a href={link.url} target="_blank" rel="noopener noreferrer" class={secondaryButtonClass}>
 						{link.label}
 					</a>

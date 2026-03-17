@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { base } from '$app/paths';
 	import type { NavItem } from '$lib/types/navigation';
 
 	let {
@@ -19,6 +18,7 @@
 	<ul role="menu" aria-label={`${parentName} submenu`}>
 		{#each items as item (item.path)}
 			<li role="none">
+				<!-- eslint-disable svelte/no-navigation-without-resolve -- path pre-resolved in navigation data -->
 				<a
 					href={item.path}
 					class="dropdown-item"
@@ -30,6 +30,7 @@
 				>
 					{item.name}
 				</a>
+				<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			</li>
 		{/each}
 	</ul>

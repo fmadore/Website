@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { NavItem } from '$lib/types/navigation';
 	import ThemeToggle from '$lib/components/menu/ThemeToggle.svelte';
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 
 	let {
 		navItems,
@@ -20,7 +20,7 @@
 		<div class="mobile-nav-header">
 			<ThemeToggle size={20} />
 
-			<a href="{base}/" class="mobile-site-title" onclick={onCloseMenu}> Frédérick Madore </a>
+			<a href={resolve('/')} class="mobile-site-title" onclick={onCloseMenu}> Frédérick Madore </a>
 
 			<!-- Close button -->
 			<button class="mobile-close-button" onclick={onCloseMenu} aria-label="Close navigation menu">
@@ -32,6 +32,7 @@
 		<ul class="mobile-nav-list">
 			{#each navItems as item (item.path)}
 				<li class="mobile-nav-item">
+					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- path pre-resolved in navigation data -->
 					<a href={item.path} class="mobile-nav-link" onclick={onCloseMenu}>
 						{item.name}
 					</a>
@@ -40,6 +41,7 @@
 						<ul class="mobile-dropdown">
 							{#each item.dropdown as subItem (subItem.path)}
 								<li class="mobile-dropdown-item">
+									<!-- eslint-disable svelte/no-navigation-without-resolve -- path pre-resolved in navigation data -->
 									<a
 										href={subItem.path}
 										class="mobile-dropdown-link"
@@ -49,6 +51,7 @@
 									>
 										{subItem.name}
 									</a>
+									<!-- eslint-enable svelte/no-navigation-without-resolve -->
 								</li>
 							{/each}
 						</ul>

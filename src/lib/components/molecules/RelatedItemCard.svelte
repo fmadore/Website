@@ -26,6 +26,7 @@
 	} = $props();
 </script>
 
+<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- prop passthrough, caller responsible for resolving -->
 <a href={itemUrl} class={cardClass}>
 	{#if item.date}
 		<div class={dateClass}>{item.date}</div>
