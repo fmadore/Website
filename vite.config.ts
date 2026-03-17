@@ -8,7 +8,7 @@ export default defineConfig({
 		// Use kit.inlineStyleThreshold in svelte.config.js instead
 		chunkSizeWarningLimit: 1000, // Warn at 1000KB (1MB) to accommodate large libraries like ECharts
 		sourcemap: true, // Enable source maps for production debugging and PageSpeed Insights
-		rollupOptions: {
+		rolldownOptions: {
 			output: {
 				// Optimize chunking for better performance and code splitting
 				manualChunks: (id) => {

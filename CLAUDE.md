@@ -171,7 +171,7 @@ Multi-format support via `citationFormatter.ts`: BibTeX, APA, MLA, Chicago
 
 ### Heavy Libraries (Code Split)
 
-ECharts, D3, MapLibre, and jsPDF are split into separate chunks via Vite config. Use dynamic imports for visualization components.
+ECharts, D3, MapLibre, and jsPDF are split into separate chunks via `build.rolldownOptions` in Vite config. Use dynamic imports for visualization components.
 
 ## CSS Design Audit
 
