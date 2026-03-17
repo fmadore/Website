@@ -78,7 +78,7 @@
 					>.
 				</p>
 
-				<h3>DH, AI, and the <em>Islam West Africa Collection</em> (IWAC)</h3>
+				<h2>DH, AI, and the <em>Islam West Africa Collection</em> (IWAC)</h2>
 				<p>
 					Since 2023, I have been developing the <a
 						href="https://islam.zmo.de/s/westafrica/"
@@ -112,7 +112,7 @@
 					reveal how newspapers portray Islam across the region.
 				</p>
 
-				<h3>Current Project</h3>
+				<h2>Current Project</h2>
 				<p>
 					I am coordinating
 					<a href={resolve('/research/dh-ai-african-studies')} data-sveltekit-preload-data
@@ -135,9 +135,9 @@
 					African knowledge systems.
 				</p>
 
-				<h3>Books & Publications</h3>
+				<h2>Books & Publications</h2>
 				<p>
-					My recent book, <em>Religious Activism on Campuses in Togo and Benin</em>
+					My latest book, <em>Religious Activism on Campuses in Togo and Benin</em>
 					<ItemReference id="religious-activism-campuses" />, examines the emergence of Christian
 					and Muslim student associations in the 1970s and their subsequent reshaping of university
 					life in Lomé and Abomey-Calavi, challenging the prevailing secular ideologies. I am also
@@ -155,7 +155,7 @@
 					journals and seven edited volumes.
 				</p>
 
-				<h3>Consulting</h3>
+				<h2>Consulting</h2>
 				<p>
 					Beyond academia, I work with <a
 						href="https://communitology.co/"
@@ -166,7 +166,7 @@
 					cases involving Benin, Côte d'Ivoire, and Togo.
 				</p>
 
-				<h3>Training & Affiliations</h3>
+				<h2>Training & Affiliations</h2>
 				<p>
 					I hold a Ph.D. in History from <a
 						href="https://www.ulaval.ca/"
