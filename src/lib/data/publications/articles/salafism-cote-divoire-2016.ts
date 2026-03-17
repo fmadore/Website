@@ -24,6 +24,7 @@ export const salafismCoteDIvoire: Publication = {
 		"Côte d'Ivoire",
 		'Salafism',
 		'Radicalization',
+		'Civic Engagement',
 		'Islam',
 		'Religious Movements',
 		'West Africa'

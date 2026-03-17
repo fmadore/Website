@@ -25,6 +25,8 @@ export const imamsIslamicPreachersOuagadougou: Publication = {
 		'Public Sphere',
 		'Muslim Public Sphere',
 		'Intergenerational Relations',
+		'Religious Authority',
+		'Media',
 		'Islam',
 		'West Africa'
 	],

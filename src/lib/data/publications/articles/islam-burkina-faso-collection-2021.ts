@@ -20,7 +20,8 @@ export const islamBurkinaCollection: Publication = {
 		'Burkina Faso',
 		'Digital Humanities',
 		'Islam',
-		'Collection',
+		'Archives',
+		'Open Access',
 		'Research Methodology',
 		'West Africa',
 		'IWAC'

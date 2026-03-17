@@ -24,6 +24,7 @@ export const religionInternetBurkinaFaso: Publication = {
 		'Digital Media',
 		'ICT',
 		'Communication Technologies',
+		'Christianity',
 		'Islam',
 		'West Africa'
 	],

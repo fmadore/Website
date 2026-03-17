@@ -26,6 +26,7 @@ export const leadersMuslimNGOsBurkinaFaso: Publication = {
 		'Civic Engagement',
 		'Humanitarian Assistance',
 		'Islamic Leadership',
+		'Religious Entrepreneurship',
 		'Transnational Organizations',
 		'Islam',
 		'West Africa'

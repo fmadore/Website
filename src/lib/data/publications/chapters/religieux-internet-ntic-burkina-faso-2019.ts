@@ -23,6 +23,7 @@ export const religieuxInternetNTICBurkinaFaso: Publication = {
 		'ICT',
 		'Digital Media',
 		'Communication Technologies',
+		'Christianity',
 		'Islam',
 		'West Africa'
 	],

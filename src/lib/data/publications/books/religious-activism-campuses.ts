@@ -29,6 +29,8 @@ The history of these associations reveals the campus as a microcosm reflecting w
 		'Togo',
 		'Benin',
 		'Student Activism',
+		'University Campuses',
+		'Higher Education',
 		'Islam',
 		'Christianity',
 		'Authoritarianism',

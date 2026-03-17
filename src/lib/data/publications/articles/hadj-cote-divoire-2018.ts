@@ -22,9 +22,10 @@ export const hadjCoteDIvoire: Publication = {
 	tags: [
 		"Côte d'Ivoire",
 		'Hajj',
-		'Muslim Community',
+		'Muslim Communities',
 		'Religious Organization',
 		'Pilgrimage',
+		'State-Religion Relations',
 		'Islam',
 		'West Africa'
 	],

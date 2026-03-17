@@ -23,6 +23,7 @@ export const introductionReligiosityUniversityCampuses: Publication = {
 		'Religiosity',
 		'Higher Education',
 		'Religious Movements',
+		'Student Activism',
 		'Religion'
 	],
 	url: 'https://doi.org/10.58144/20241107-000',

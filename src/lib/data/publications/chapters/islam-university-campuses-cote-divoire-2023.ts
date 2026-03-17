@@ -26,6 +26,8 @@ export const islamUniversityCampusesCoteDIvoire: Publication = {
 		'University Campuses',
 		'Salafism',
 		'Muslim Intellectuals',
+		'Student Activism',
+		'Religious Authority',
 		'Higher Education',
 		'West Africa'
 	],

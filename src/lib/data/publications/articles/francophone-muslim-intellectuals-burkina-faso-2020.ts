@@ -26,6 +26,8 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
 		'Religious Authority',
 		'Islamic Associations',
 		'Francophone',
+		'Intergenerational Relations',
+		'Public Sphere',
 		'Islam',
 		'West Africa'
 	],

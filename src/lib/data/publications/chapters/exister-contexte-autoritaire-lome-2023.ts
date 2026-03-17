@@ -23,7 +23,7 @@ export const existerContexteAutoritaireLome: Publication = {
 	tags: [
 		'Togo',
 		'Lomé',
-		'Authoritarian Context',
+		'Authoritarianism',
 		'Student Associations',
 		'Christianity',
 		'Islam',

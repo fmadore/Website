@@ -29,6 +29,8 @@ export const beninImamElection: Publication = {
 		'Secularism',
 		'Muslim Minorities',
 		'Religious Authority',
+		'Intergenerational Relations',
+		'Youth',
 		'Islam',
 		'West Africa'
 	],

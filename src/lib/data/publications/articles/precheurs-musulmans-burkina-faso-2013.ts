@@ -25,6 +25,8 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 		'Muslim Preachers',
 		'Communication Strategies',
 		'Gender',
+		'Media',
+		'Religious Authority',
 		'Religious Conversion',
 		'Islam',
 		'West Africa'
