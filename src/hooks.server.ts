@@ -1,31 +1,8 @@
 import type { Handle } from '@sveltejs/kit';
 
 /**
- * Heavy chunk names to exclude from preloading.
- * These are updated by the build process or can be maintained manually.
- *
- * To find heavy chunks after a build, run:
- * Get-ChildItem build/app/immutable/chunks -Filter "*.js" |
- *   Where-Object { $_.Length -gt 200000 } |
- *   Select-Object Name, @{N='KB';E={[math]::Round($_.Length/1KB)}}
- *
- * Then check the content with:
- * Select-String -Path "build/app/immutable/chunks/[FILENAME]" -Pattern "maplibre|echarts|canvg" -List
- */
-const HEAVY_CHUNK_PATTERNS = [
-	// These are file name patterns (not library names) for chunks > 200KB
-	// that contain visualization libraries. They change with each build.
-	// Updated approach: exclude by approximate file size thresholds
-];
-
-/**
  * Server hook to optimize asset preloading.
- *
- * Since chunk filenames are hashed and don't contain library names,
- * we use a size-based heuristic: any JS chunk path that's in the
- * chunks directory and matches known heavy chunk patterns gets excluded.
- *
- * For now, we rely on the preload callback which receives the path.
+ * Skips preloading JS chunks (loaded on-demand) to reduce initial page load.
  */
 export const handle: Handle = async ({ event, resolve }) => {
 	const response = await resolve(event, {

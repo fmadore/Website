@@ -1,11 +1,13 @@
 <script lang="ts">
+	import { getFilterCount, getFilterLabel } from '$lib/utils/filterHelpers';
+
 	let {
 		title,
-		items, // e.g., ['book', 'article'] or ['Author One', 'Author Two']
-		itemLabels = undefined, // Made optional
-		activeItems, // The reactive list of active filters (e.g., $activeFilters.types)
-		toggleItem, // Function to toggle an item
-		counts // e.g., { 'book': 10, 'article': 5 }
+		items,
+		itemLabels = undefined,
+		activeItems,
+		toggleItem,
+		counts
 	}: {
 		title: string;
 		items: string[];
@@ -14,16 +16,6 @@
 		toggleItem: (item: string) => void;
 		counts: { [key: string]: number | undefined } | undefined;
 	} = $props();
-
-	// Helper to safely get count, defaulting to 0
-	function getCount(item: string): number {
-		return counts?.[item] ?? 0;
-	}
-
-	// Direct toggle function (scroll preservation handled at sidebar level)
-	function handleToggleItem(item: string) {
-		toggleItem(item);
-	}
 </script>
 
 <div class="filter-section-content">
@@ -33,11 +25,11 @@
 			<button
 				type="button"
 				class="filter-chip {activeItems.includes(item) ? 'active' : ''}"
-				onclick={() => handleToggleItem(item)}
+				onclick={() => toggleItem(item)}
 			>
-				<span class="chip-text">{itemLabels?.[item] ?? item}</span>
+				<span class="chip-text">{getFilterLabel(itemLabels, item)}</span>
 				{#if counts !== undefined}
-					<span class="chip-count">{getCount(item)}</span>
+					<span class="chip-count">{getFilterCount(counts, item)}</span>
 				{/if}
 			</button>
 		{/each}

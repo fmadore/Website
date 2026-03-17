@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { getFilterCount } from '$lib/utils/filterHelpers';
+
 	let {
 		title,
-		items, // List of tags
-		activeItems, // List of active tags
-		toggleItem, // Function to toggle a tag
-		counts // Tag counts
+		items,
+		activeItems,
+		toggleItem,
+		counts
 	}: {
 		title: string;
 		items: string[];
@@ -12,16 +14,6 @@
 		toggleItem: (item: string) => void;
 		counts: { [key: string]: number | undefined } | undefined;
 	} = $props();
-
-	// Helper to safely get count
-	function getCount(item: string): number {
-		return counts?.[item] ?? 0;
-	}
-
-	// Direct toggle function (scroll preservation handled at sidebar level)
-	function handleToggleItem(item: string) {
-		toggleItem(item);
-	}
 </script>
 
 <div class="filter-section-content">
@@ -32,11 +24,11 @@
 				type="button"
 				class="filter-chip {activeItems.includes(item) ? 'active' : ''}"
 				title={item}
-				onclick={() => handleToggleItem(item)}
+				onclick={() => toggleItem(item)}
 			>
 				<span class="chip-text">{item}</span>
 				{#if counts !== undefined}
-					<span class="chip-count">{getCount(item)}</span>
+					<span class="chip-count">{getFilterCount(counts, item)}</span>
 				{/if}
 			</button>
 		{/each}

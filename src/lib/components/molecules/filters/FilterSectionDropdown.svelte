@@ -1,16 +1,17 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
+	import { getFilterCount, getFilterLabel, clearFilterSelection } from '$lib/utils/filterHelpers';
 
 	let {
 		title,
-		items, // List of filter items
-		itemLabels = undefined, // Optional labels mapping
-		activeItems, // List of active items
-		toggleItem, // Function to toggle an item
-		counts, // Item counts
+		items,
+		itemLabels = undefined,
+		activeItems,
+		toggleItem,
+		counts,
 		placeholder = 'Select...',
-		searchThreshold = 8, // When to show search
-		maxHeight = '400px' // Maximum dropdown height
+		searchThreshold = 8,
+		maxHeight = '400px'
 	}: {
 		title: string;
 		items: string[];
@@ -23,37 +24,25 @@
 		maxHeight?: string;
 	} = $props();
 
-	// Local state
 	let isOpen = $state(false);
 	let searchQuery = $state('');
 	let dropdownRef: HTMLDivElement;
 
-	// Show search if items exceed threshold
 	const showSearch = $derived(items.length >= searchThreshold);
 
-	// Helper to safely get count
-	function getCount(item: string): number {
-		return counts?.[item] ?? 0;
-	}
-
-	// Helper to get label
-	function getLabel(item: string): string {
-		return itemLabels?.[item] ?? item;
-	}
-
-	// Filtered items based on search
 	const filteredItems = $derived(
 		showSearch && searchQuery.trim()
-			? items.filter((item) => getLabel(item).toLowerCase().includes(searchQuery.toLowerCase()))
+			? items.filter((item) =>
+					getFilterLabel(itemLabels, item).toLowerCase().includes(searchQuery.toLowerCase())
+				)
 			: items
 	);
 
-	// Display text for the dropdown button
 	const displayText = $derived(
 		activeItems.length === 0
 			? placeholder
 			: activeItems.length === 1
-				? getLabel(activeItems[0])
+				? getFilterLabel(itemLabels, activeItems[0])
 				: `${activeItems.length} selected`
 	);
 
@@ -71,15 +60,8 @@
 		}
 	}
 
-	// Handle item toggle
 	function handleToggleItem(item: string) {
 		toggleItem(item);
-		// Don't close dropdown on selection for better UX
-	}
-
-	// Clear all selections
-	function clearSelection() {
-		activeItems.forEach((item) => toggleItem(item));
 	}
 
 	// Close dropdown when clicking outside
@@ -172,9 +154,9 @@
 									<Icon icon="mdi:checkbox-blank-outline" width="18" height="18" />
 								{/if}
 							</span>
-							<span class="item-label">{getLabel(item)}</span>
+							<span class="item-label">{getFilterLabel(itemLabels, item)}</span>
 							{#if counts !== undefined}
-								<span class="item-count">{getCount(item)}</span>
+								<span class="item-count">{getFilterCount(counts, item)}</span>
 							{/if}
 						</button>
 					{/each}
@@ -184,7 +166,11 @@
 			<!-- Footer actions -->
 			{#if activeItems.length > 0}
 				<div class="dropdown-footer">
-					<button type="button" class="clear-button" onclick={clearSelection}>
+					<button
+						type="button"
+						class="clear-button"
+						onclick={() => clearFilterSelection(activeItems, toggleItem)}
+					>
 						Clear all ({activeItems.length})
 					</button>
 				</div>

@@ -1,7 +1,7 @@
-const postcssGlobalData = require('@csstools/postcss-global-data');
-const postcssCustomMedia = require('postcss-custom-media');
+import postcssGlobalData from '@csstools/postcss-global-data';
+import postcssCustomMedia from 'postcss-custom-media';
 
-module.exports = {
+export default {
 	plugins: [
 		// 1. Make the variables available to every file
 		postcssGlobalData({

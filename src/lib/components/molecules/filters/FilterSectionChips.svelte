@@ -1,11 +1,13 @@
 <script lang="ts">
+	import { getFilterCount, clearFilterSelection } from '$lib/utils/filterHelpers';
+
 	let {
 		title,
-		items, // List of filter items
-		activeItems, // List of active items
-		toggleItem, // Function to toggle an item
-		counts, // Item counts
-		initialDisplayCount = 9 // Initial number of items to show
+		items,
+		activeItems,
+		toggleItem,
+		counts,
+		initialDisplayCount = 9
 	}: {
 		title: string;
 		items: string[];
@@ -15,32 +17,13 @@
 		initialDisplayCount?: number;
 	} = $props();
 
-	// Local state (no search functionality)
 	let showAll = $state(false);
 
-	// Helper to safely get count
-	function getCount(item: string): number {
-		return counts?.[item] ?? 0;
-	}
-
-	// Items to display (limited or all based on showAll, no search filtering)
 	let displayedItems = $derived(showAll ? items : items.slice(0, initialDisplayCount));
-
-	// Check if we have more items to show
 	let hasMoreItems = $derived(items.length > initialDisplayCount);
-
-	// Direct toggle function (scroll preservation handled at sidebar level)
-	function handleToggleItem(item: string) {
-		toggleItem(item);
-	}
 
 	function toggleShowAll() {
 		showAll = !showAll;
-	}
-
-	function clearSelection() {
-		// Clear all active items for this section
-		activeItems.forEach((item) => handleToggleItem(item));
 	}
 </script>
 
@@ -59,11 +42,11 @@
 				type="button"
 				class="filter-chip {activeItems.includes(item) ? 'active' : ''}"
 				title={item}
-				onclick={() => handleToggleItem(item)}
+				onclick={() => toggleItem(item)}
 			>
 				<span class="chip-text">{item}</span>
 				{#if counts !== undefined}
-					<span class="chip-count">{getCount(item)}</span>
+					<span class="chip-count">{getFilterCount(counts, item)}</span>
 				{/if}
 			</button>
 		{/each}
@@ -77,7 +60,13 @@
 			</button>
 		{/if}
 		{#if activeItems.length > 0}
-			<button type="button" class="action-button clear" onclick={clearSelection}> Clear </button>
+			<button
+				type="button"
+				class="action-button clear"
+				onclick={() => clearFilterSelection(activeItems, toggleItem)}
+			>
+				Clear
+			</button>
 		{/if}
 	</div>
 </div>

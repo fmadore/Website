@@ -72,6 +72,7 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 
 		lastFiltersString = currentFiltersString;
 
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- ephemeral, not reactive
 		const urlParams = new URLSearchParams();
 
 		// Add array filters to URL (only if they have values)

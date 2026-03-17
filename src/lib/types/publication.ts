@@ -44,7 +44,7 @@ export type Publication = {
 	title: string; // Publication title
 	authors: string[]; // Array of authors
 	date: string; // Display date (e.g., "2025")
-	dateISO: string; // ISO date format (YYYY) for sorting
+	dateISO: string; // ISO date (YYYY, YYYY-MM, or YYYY-MM-DD) for sorting
 	year: number; // Year for filtering
 	placeOfPublication?: string; // Place of publication (for books)
 	publisher?: string; // Publisher name (books, journals, etc.)

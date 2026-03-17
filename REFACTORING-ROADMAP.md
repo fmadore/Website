@@ -86,9 +86,12 @@ Last updated: 2026-03-17
 
 ### 5.1 Normalize Date Types Across Data Models
 
-- **Status:** Pending
-- **Issue:** `TeachingExperience.year` is `string` (should be `number`), `Publication.dateISO` is YYYY-only, `DigitalHumanities` has no numeric year, `Fieldwork` has no `dateISO`
-- **Impact:** Low — mostly cosmetic inconsistency, no runtime bugs
+- **Status:** Done (partial — only safe changes applied)
+- **Fixed:** Updated `Publication.dateISO` type comment to reflect actual usage (YYYY, YYYY-MM, or YYYY-MM-DD)
+- **Kept as-is (intentional):**
+  - `TeachingExperience.year: string` — must support ranges like "2013-2018"
+  - `DigitalHumanities.years: string` — must support open-ended ranges like "2023-"
+  - `Fieldwork` without `dateISO` — `year: number` is sufficient, adding dateISO would require month/day data that doesn't exist
 
 ### 5.2 Decompose Large Components
 
@@ -116,6 +119,7 @@ Last updated: 2026-03-17
 
 ### 5.6 Extract Shared Filter Logic
 
-- **Status:** Pending
-- **Issue:** 5 `FilterSection*.svelte` variants share toggle, count display, search, and active state logic
-- **Impact:** Maintainability
+- **Status:** Done
+- **File:** `src/lib/utils/filterHelpers.ts`
+- **Extracted:** `getFilterCount()`, `getFilterLabel()`, `clearFilterSelection()` shared across Checkbox, Buttons, Chips, and Dropdown filter components. Removed duplicate inline helpers from all 4 components.
+- **Not extracted:** RangeSlider stays independent (fundamentally different interaction model)
