@@ -101,16 +101,16 @@
 								><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
 							{#if pub.reviewedBy && pub.reviewedBy.length > 0}
 								<p class="text-sm mt-1">
-									Reviewed in
+									Reviewed in{' '}
 									{#each pub.reviewedBy as review, i (review.title + review.year)}
 										<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 										<a
 											href={review.url}
 											target="_blank"
 											rel="noopener noreferrer"
-											class="text-primary hover:underline"><em>{review.journal}</em></a
-										><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < pub.reviewedBy.length - 2},
-										{:else if i === pub.reviewedBy.length - 2}, and
+											class="text-primary review-link"><em>{review.journal}</em></a
+										><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < pub.reviewedBy.length - 2},{' '}
+										{:else if i === pub.reviewedBy.length - 2},{' '}and{' '}
 										{:else}.{/if}
 									{/each}
 								</p>
@@ -175,4 +175,5 @@
 		padding: 0 var(--space-1);
 		border-radius: var(--border-radius);
 	}
+
 </style>

@@ -332,6 +332,15 @@
 		text-decoration: underline;
 	}
 
+	:global(#cv-content a.review-link) {
+		text-decoration: none;
+	}
+
+	:global(#cv-content a.review-link:hover) {
+		text-decoration: underline;
+		text-decoration-skip-ink: auto;
+	}
+
 	/* Print styles */
 	@media print {
 		/* Hide the PDF button when printing */
