@@ -42,9 +42,7 @@
 	});
 
 	// Normalize active tags to a Set for O(1) lookup
-	let activeTagSet = $derived(
-		activeTags instanceof Set ? activeTags : new Set(activeTags)
-	);
+	let activeTagSet = $derived(activeTags instanceof Set ? activeTags : new Set(activeTags));
 
 	function getFontSize(frequency: number): number {
 		const { minFreq, maxFreq } = frequencyStats;
@@ -85,7 +83,9 @@
 					href={getTagHref ? getTagHref(tag) : '#'}
 					class="tag-cloud-item"
 					class:active={isActive}
-					style="font-size: {getFontSize(frequency)}rem; opacity: {isActive ? 1 : getOpacity(frequency)}"
+					style="font-size: {getFontSize(frequency)}rem; opacity: {isActive
+						? 1
+						: getOpacity(frequency)}"
 					title={getTitle(tag, frequency)}
 					onclick={(e) => handleClick(e, tag)}
 					role={ontagclick ? 'button' : undefined}

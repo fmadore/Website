@@ -7,7 +7,8 @@ export const zmoKitchenTalksPodcast2025: Activity = {
 	dateISO: '2025-11-21',
 	date: formatDisplayDate('2025-11-21'),
 	year: 2025,
-	description: 'Joined Elisa Nobel-Dilaty on the ZMO "Kitchen Talks" podcast to discuss the Islam in West Africa Collection and potential and pitfalls of AI in African and Islamic studies.',
+	description:
+		'Joined Elisa Nobel-Dilaty on the ZMO "Kitchen Talks" podcast to discuss the Islam in West Africa Collection and potential and pitfalls of AI in African and Islamic studies.',
 	content: `
         <p>Had a great conversation with Elisa Nobel-Dilaty for the Leibniz-Zentrum Moderner Orient (ZMO) <a href="https://www.zmo.de/en/kitchen-talks" target="_blank" rel="noopener noreferrer">Kitchen Talks</a> podcast.</p>
         
@@ -22,9 +23,19 @@ export const zmoKitchenTalksPodcast2025: Activity = {
             <li><a href="https://link.deezer.com/s/31RQUHFM3mhYI88kbzEW9" target="_blank" rel="noopener noreferrer">Deezer</a></li>
         </ul>
     `,
-	tags: ['Podcast', 'AI', 'African Studies', 'Islamic Studies', 'Digital Humanities', 'ZMO', 'IWAC', 'West Africa', 'Islam'],
-    image: 'images/communications/zmo-kitchen-talks-podcast-2025.webp',
-		heroImage: {
+	tags: [
+		'Podcast',
+		'AI',
+		'African Studies',
+		'Islamic Studies',
+		'Digital Humanities',
+		'ZMO',
+		'IWAC',
+		'West Africa',
+		'Islam'
+	],
+	image: 'images/communications/zmo-kitchen-talks-podcast-2025.webp',
+	heroImage: {
 		src: 'images/communications/zmo-kitchen-talks-podcast-2025.webp',
 		alt: 'Frédérick Madore and Elisa Nobel-Dilaty sitting at a table with microphones and headphones in a recording studio for the ZMO Kitchen Talks podcast.'
 	},

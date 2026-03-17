@@ -196,102 +196,106 @@
 		<Breadcrumb items={breadcrumbItems} />
 
 		<article class="publication-article">
-		<div class="content-wrapper">
-			<PageHeader
-				title={publication.title}
-				date={publication.date}
-				typeBadgeText={getPublicationTypeBadge(publication.type)}
-				authors={publication.authors}
-			/>
-
-			<!-- Hero Image Display -->
-			<HeroImageDisplay
-				heroImage={publication.heroImage}
-				fallbackImage={publication.image}
-				defaultAlt={publication.title}
-				imageClass="w-full max-w-md h-auto rounded-md mx-auto"
-				figcaptionClass="text-text-muted text-sm mt-2 italic text-center"
-			/>
-
-			<!-- Abstract Section -->
-			<AbstractSection abstract={publication.abstract} />
-
-			<!-- Details Grid -->
-			<DetailsGrid details={publicationDetails} />
-
-			<!-- Table of Contents Section -->
-			{#if (publication.type === 'book' || publication.type === 'special-issue') && publication.tableOfContents && publication.tableOfContents.length > 0}
-				<section class="table-of-contents-section glass-section-panel scroll-reveal">
-					<h2 class="toc-title">Table of Contents</h2>
-					<ol class="toc-list">
-						{#each publication.tableOfContents as item, index (index)}
-							<li class="toc-item">
-								<span class="toc-number">{index + 1}.</span>
-								{#if typeof item === 'string'}
-									<span class="toc-content">{item}</span>
-								{:else}
-									<span class="toc-content">
-										{item.title}
-										{#if item.authors && item.authors.length > 0}
-											<span class="toc-authors">({item.authors.length === 1
-													? item.authors[0]
-													: item.authors.length === 2
-														? `${item.authors[0]} and ${item.authors[1]}`
-														: `${item.authors.slice(0, -1).join(', ')} and ${item.authors[item.authors.length - 1]}`})</span>
-										{/if}
-									</span>
-								{/if}
-							</li>
-						{/each}
-					</ol>
-				</section>
-			{/if}
-
-			<!-- Tags -->
-			<TagList tags={publication.tags} baseUrl="/publications?tag=" />
-
-			<!-- Word Cloud (only shows if text analysis available) -->
-			<PublicationWordCloud publicationId={publication.id} />
-
-			<!-- Action Links and Export Button -->
-			<div class="publication-actions glass-section-panel scroll-reveal flex flex-wrap items-center gap-4">
-				<ActionLinks
-					primaryUrl={publication.url}
-					primaryLabel="Access Publication"
-					additionalUrls={publication.additionalUrls}
-					sectionClass=""
-					primaryDivClass=""
+			<div class="content-wrapper">
+				<PageHeader
+					title={publication.title}
+					date={publication.date}
+					typeBadgeText={getPublicationTypeBadge(publication.type)}
+					authors={publication.authors}
 				/>
 
-				<div>
-					<button onclick={downloadBibtex} class="btn btn-primary cursor-pointer">
-						Export BibTeX
-					</button>
+				<!-- Hero Image Display -->
+				<HeroImageDisplay
+					heroImage={publication.heroImage}
+					fallbackImage={publication.image}
+					defaultAlt={publication.title}
+					imageClass="w-full max-w-md h-auto rounded-md mx-auto"
+					figcaptionClass="text-text-muted text-sm mt-2 italic text-center"
+				/>
+
+				<!-- Abstract Section -->
+				<AbstractSection abstract={publication.abstract} />
+
+				<!-- Details Grid -->
+				<DetailsGrid details={publicationDetails} />
+
+				<!-- Table of Contents Section -->
+				{#if (publication.type === 'book' || publication.type === 'special-issue') && publication.tableOfContents && publication.tableOfContents.length > 0}
+					<section class="table-of-contents-section glass-section-panel scroll-reveal">
+						<h2 class="toc-title">Table of Contents</h2>
+						<ol class="toc-list">
+							{#each publication.tableOfContents as item, index (index)}
+								<li class="toc-item">
+									<span class="toc-number">{index + 1}.</span>
+									{#if typeof item === 'string'}
+										<span class="toc-content">{item}</span>
+									{:else}
+										<span class="toc-content">
+											{item.title}
+											{#if item.authors && item.authors.length > 0}
+												<span class="toc-authors"
+													>({item.authors.length === 1
+														? item.authors[0]
+														: item.authors.length === 2
+															? `${item.authors[0]} and ${item.authors[1]}`
+															: `${item.authors.slice(0, -1).join(', ')} and ${item.authors[item.authors.length - 1]}`})</span
+												>
+											{/if}
+										</span>
+									{/if}
+								</li>
+							{/each}
+						</ol>
+					</section>
+				{/if}
+
+				<!-- Tags -->
+				<TagList tags={publication.tags} baseUrl="/publications?tag=" />
+
+				<!-- Word Cloud (only shows if text analysis available) -->
+				<PublicationWordCloud publicationId={publication.id} />
+
+				<!-- Action Links and Export Button -->
+				<div
+					class="publication-actions glass-section-panel scroll-reveal flex flex-wrap items-center gap-4"
+				>
+					<ActionLinks
+						primaryUrl={publication.url}
+						primaryLabel="Access Publication"
+						additionalUrls={publication.additionalUrls}
+						sectionClass=""
+						primaryDivClass=""
+					/>
+
+					<div>
+						<button onclick={downloadBibtex} class="btn btn-primary cursor-pointer">
+							Export BibTeX
+						</button>
+					</div>
 				</div>
 			</div>
-		</div>
-	</article>
+		</article>
 
-	<!-- Reviews component -->
-	<Reviews reviewedBy={publication.reviewedBy} />
+		<!-- Reviews component -->
+		<Reviews reviewedBy={publication.reviewedBy} />
 
-	<!-- CitedBy component -->
-	<CitedBy citedBy={publication.citedBy} />
+		<!-- CitedBy component -->
+		<CitedBy citedBy={publication.citedBy} />
 
-	<!-- Related Publications -->
-	{#if publication.project}
-		<RelatedItemsList
-			allItems={allPublications}
-			currentItemId={publication.id}
-			filterKey="project"
-			filterValue={publication.project}
-			title="More Publications in this Project"
-			itemComponent={RelatedItemCard as unknown as ComponentType}
-			baseItemUrl="/publications/"
-			viewAllUrl="{base}/publications"
-			maxItems={3}
-		/>
-	{/if}
+		<!-- Related Publications -->
+		{#if publication.project}
+			<RelatedItemsList
+				allItems={allPublications}
+				currentItemId={publication.id}
+				filterKey="project"
+				filterValue={publication.project}
+				title="More Publications in this Project"
+				itemComponent={RelatedItemCard as unknown as ComponentType}
+				baseItemUrl="/publications/"
+				viewAllUrl="{base}/publications"
+				maxItems={3}
+			/>
+		{/if}
 	</div>
 </div>
 

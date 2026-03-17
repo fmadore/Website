@@ -48,8 +48,9 @@
 	useJsonLdScript('communication-json-ld', () => jsonLdString);
 
 	// Lazy load MapVisualization to avoid loading maplibre-gl until needed
-	let MapVisualization: typeof import('$lib/components/visualisations/MapVisualization.svelte').default | null =
-		$state(null);
+	let MapVisualization:
+		| typeof import('$lib/components/visualisations/MapVisualization.svelte').default
+		| null = $state(null);
 	let mapLoaded = $state(false);
 
 	// Load map component when communication has coordinates
@@ -107,127 +108,127 @@
 		<Breadcrumb items={breadcrumbItems} />
 
 		<article class="communication-article">
-		<div class="content-wrapper">
-			<PageHeader
-				title={communication.title}
-				date={communication.date}
-				typeBadgeText={getCommunicationTypeBadge(communication.type || '')}
-				authors={communication.authors}
+			<div class="content-wrapper">
+				<PageHeader
+					title={communication.title}
+					date={communication.date}
+					typeBadgeText={getCommunicationTypeBadge(communication.type || '')}
+					authors={communication.authors}
+				/>
+
+				<!-- Hero Image Display -->
+				<HeroImageDisplay
+					heroImage={communication.heroImage}
+					fallbackImage={communication.image}
+					defaultAlt={communication.title}
+					imageClass="w-full max-w-md h-auto rounded-md mx-auto"
+					figcaptionClass="text-muted text-sm mt-2 italic"
+				/>
+
+				<!-- Abstract Section -->
+				<AbstractSection abstract={communication.abstract} />
+
+				<!-- Details Grid -->
+				<DetailsGrid details={communicationDetails} />
+
+				<!-- Panel-specific information: Papers in Panel -->
+				{#if communication.type === 'panel' && communication.papers && communication.papers.length > 0}
+					<section class="panel-papers-section scroll-reveal">
+						<h2 class="panel-section-title">Papers in this Panel</h2>
+						<div class="panel-papers-grid grid-stagger">
+							{#each communication.papers as paper, index (paper.title + index)}
+								<div class="panel-paper-card">
+									<h3 class="panel-paper-title">{paper.title}</h3>
+									{#if paper.authors && paper.authors.length > 0}
+										<div class="panel-paper-authors">
+											{#each paper.authors as author, index (author.name + index)}
+												<span>
+													{author.name}{#if author.affiliation}{' '}({author.affiliation}){/if}{#if index < paper.authors.length - 1},&nbsp;{/if}
+												</span>
+											{/each}
+										</div>
+									{/if}
+									{#if paper.abstract}
+										<div class="panel-paper-abstract">
+											{paper.abstract}
+										</div>
+									{/if}
+								</div>
+							{/each}
+						</div>
+					</section>
+				{/if}
+
+				<!-- Participants Section -->
+				{#if communication.participants && communication.participants.length > 0}
+					<section class="participants-section scroll-reveal">
+						<h2 class="panel-section-title">Participants</h2>
+						<div class="participants-grid grid-stagger">
+							{#each communication.participants as participant, index (participant.name + index)}
+								<div class="participant-card">
+									<div class="participant-name">{participant.name}</div>
+									{#if participant.role}
+										<div class="participant-role">
+											{participant.role}
+										</div>
+									{/if}
+									{#if participant.affiliation}
+										<div class="participant-affiliation">
+											{participant.affiliation}
+										</div>
+									{/if}
+								</div>
+							{/each}
+						</div>
+					</section>
+				{/if}
+
+				<!-- Tags -->
+				<TagList tags={communication.tags} baseUrl="/conference-activity?tag=" />
+
+				<!-- Action Links -->
+				<ActionLinks
+					primaryUrl={communication.url}
+					primaryLabel={communication.urlLabel ?? 'Access Presentation'}
+					additionalUrls={communication.additionalUrls}
+					sectionClass="action-links"
+					primaryButtonClass="btn btn-primary glass-button"
+					secondaryButtonClass="btn btn-outline-primary glass-button"
+					primaryDivClass="mb-4"
+				/>
+
+				<!-- Map Location -->
+				{#if communication.coordinates}
+					<section class="map-section scroll-reveal">
+						<h2 class="map-section-title">Location</h2>
+						<div class="map-container-wrapper">
+							{#if MapVisualization}
+								<MapVisualization markersData={singleMarkerData} />
+							{:else}
+								<div class="flex items-center justify-center py-12">
+									<span class="text-light">Loading map...</span>
+								</div>
+							{/if}
+						</div>
+					</section>
+				{/if}
+			</div>
+		</article>
+
+		<!-- Related Communications in this Project -->
+		{#if communication.project}
+			<RelatedItemsList
+				allItems={allCommunications}
+				currentItemId={communication.id}
+				filterKey="project"
+				filterValue={communication.project}
+				title="More Conference Activities in this Project"
+				itemComponent={RelatedItemCard as unknown as ComponentType}
+				baseItemUrl="/communications/"
+				viewAllUrl="{base}/conference-activity"
+				maxItems={3}
 			/>
-
-			<!-- Hero Image Display -->
-			<HeroImageDisplay
-				heroImage={communication.heroImage}
-				fallbackImage={communication.image}
-				defaultAlt={communication.title}
-				imageClass="w-full max-w-md h-auto rounded-md mx-auto"
-				figcaptionClass="text-muted text-sm mt-2 italic"
-			/>
-
-			<!-- Abstract Section -->
-			<AbstractSection abstract={communication.abstract} />
-
-			<!-- Details Grid -->
-			<DetailsGrid details={communicationDetails} />
-
-			<!-- Panel-specific information: Papers in Panel -->
-			{#if communication.type === 'panel' && communication.papers && communication.papers.length > 0}
-				<section class="panel-papers-section scroll-reveal">
-					<h2 class="panel-section-title">Papers in this Panel</h2>
-					<div class="panel-papers-grid grid-stagger">
-						{#each communication.papers as paper, index (paper.title + index)}
-							<div class="panel-paper-card">
-								<h3 class="panel-paper-title">{paper.title}</h3>
-								{#if paper.authors && paper.authors.length > 0}
-									<div class="panel-paper-authors">
-										{#each paper.authors as author, index (author.name + index)}
-											<span>
-												{author.name}{#if author.affiliation}{' '}({author.affiliation}){/if}{#if index < paper.authors.length - 1},&nbsp;{/if}
-											</span>
-										{/each}
-									</div>
-								{/if}
-								{#if paper.abstract}
-									<div class="panel-paper-abstract">
-										{paper.abstract}
-									</div>
-								{/if}
-							</div>
-						{/each}
-					</div>
-				</section>
-			{/if}
-
-			<!-- Participants Section -->
-			{#if communication.participants && communication.participants.length > 0}
-				<section class="participants-section scroll-reveal">
-					<h2 class="panel-section-title">Participants</h2>
-					<div class="participants-grid grid-stagger">
-						{#each communication.participants as participant, index (participant.name + index)}
-							<div class="participant-card">
-								<div class="participant-name">{participant.name}</div>
-								{#if participant.role}
-									<div class="participant-role">
-										{participant.role}
-									</div>
-								{/if}
-								{#if participant.affiliation}
-									<div class="participant-affiliation">
-										{participant.affiliation}
-									</div>
-								{/if}
-							</div>
-						{/each}
-					</div>
-				</section>
-			{/if}
-
-			<!-- Tags -->
-			<TagList tags={communication.tags} baseUrl="/conference-activity?tag=" />
-
-			<!-- Action Links -->
-			<ActionLinks
-				primaryUrl={communication.url}
-				primaryLabel={communication.urlLabel ?? 'Access Presentation'}
-				additionalUrls={communication.additionalUrls}
-				sectionClass="action-links"
-				primaryButtonClass="btn btn-primary glass-button"
-				secondaryButtonClass="btn btn-outline-primary glass-button"
-				primaryDivClass="mb-4"
-			/>
-
-			<!-- Map Location -->
-			{#if communication.coordinates}
-				<section class="map-section scroll-reveal">
-					<h2 class="map-section-title">Location</h2>
-					<div class="map-container-wrapper">
-						{#if MapVisualization}
-							<MapVisualization markersData={singleMarkerData} />
-						{:else}
-							<div class="flex items-center justify-center py-12">
-								<span class="text-light">Loading map...</span>
-							</div>
-						{/if}
-					</div>
-				</section>
-			{/if}
-		</div>
-	</article>
-
-	<!-- Related Communications in this Project -->
-	{#if communication.project}
-		<RelatedItemsList
-			allItems={allCommunications}
-			currentItemId={communication.id}
-			filterKey="project"
-			filterValue={communication.project}
-			title="More Conference Activities in this Project"
-			itemComponent={RelatedItemCard as unknown as ComponentType}
-			baseItemUrl="/communications/"
-			viewAllUrl="{base}/conference-activity"
-			maxItems={3}
-		/>
-	{/if}
+		{/if}
 	</div>
 </div>
 

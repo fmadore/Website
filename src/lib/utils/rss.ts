@@ -156,9 +156,7 @@ function truncateText(text: string, maxLength: number = 300): string {
  */
 export function activityToRSSItem(activity: Activity, siteUrl: string): RSSItem {
 	// Parse the date from ISO format or display date
-	const pubDate = activity.dateISO
-		? new Date(activity.dateISO)
-		: new Date(activity.date);
+	const pubDate = activity.dateISO ? new Date(activity.dateISO) : new Date(activity.date);
 
 	// Generate description from activity description or content
 	let description = activity.description;
@@ -186,7 +184,10 @@ export function activityToRSSItem(activity: Activity, siteUrl: string): RSSItem 
 /**
  * Generates an RSS 2.0 compliant XML feed
  */
-export function generateRSSFeed(items: RSSItem[], config: RSSFeedConfig = DEFAULT_RSS_CONFIG): string {
+export function generateRSSFeed(
+	items: RSSItem[],
+	config: RSSFeedConfig = DEFAULT_RSS_CONFIG
+): string {
 	const lastBuildDate = config.lastBuildDate || new Date();
 
 	// Build the channel element
@@ -275,9 +276,7 @@ export function generateActivitiesRSSFeed(
 	const fullConfig = { ...DEFAULT_RSS_CONFIG, ...config };
 
 	// Convert activities to RSS items
-	const items = activities.map((activity) =>
-		activityToRSSItem(activity, fullConfig.siteUrl)
-	);
+	const items = activities.map((activity) => activityToRSSItem(activity, fullConfig.siteUrl));
 
 	// Sort by date (most recent first)
 	items.sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime());

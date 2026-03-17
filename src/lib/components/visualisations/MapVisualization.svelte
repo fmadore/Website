@@ -280,7 +280,7 @@
 				// Check if container has valid dimensions
 				const rect = mapContainer.getBoundingClientRect();
 				if (rect.width === 0 || rect.height === 0) {
-					console.warn('Map container has zero dimensions, waiting...');
+					if (import.meta.env.DEV) console.warn('Map container has zero dimensions, waiting...');
 					await new Promise((resolve) => setTimeout(resolve, 300));
 					const retryRect = mapContainer.getBoundingClientRect();
 					if (retryRect.width === 0 || retryRect.height === 0) {
@@ -347,7 +347,7 @@
 					console.error('MapLibre error:', e.error);
 				});
 			} catch (error) {
-				console.error('Error initializing map:', error);
+				if (import.meta.env.DEV) console.error('Error initializing map:', error);
 				importError = error instanceof Error ? error.message : 'Unknown error loading map';
 			}
 		})();

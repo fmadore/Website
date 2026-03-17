@@ -8,16 +8,16 @@ import type { AffiliationPeriod } from '$lib/types/affiliation';
  */
 export function formatCVAuthorList(authorsInput: string[] | string | undefined): string {
 	if (!authorsInput) return '';
-	
-	const authorsArray = Array.isArray(authorsInput) 
-		? authorsInput 
-		: typeof authorsInput === 'string' 
-			? authorsInput.split(' and ') 
+
+	const authorsArray = Array.isArray(authorsInput)
+		? authorsInput
+		: typeof authorsInput === 'string'
+			? authorsInput.split(' and ')
 			: [];
-	
+
 	const numAuthors = authorsArray.length;
 	if (numAuthors === 0) return '';
-	
+
 	// If only one author and it's Frédérick Madore, return empty string
 	if (numAuthors === 1) {
 		return authorsArray[0] === 'Frédérick Madore' ? '' : authorsArray[0];
@@ -26,10 +26,8 @@ export function formatCVAuthorList(authorsInput: string[] | string | undefined):
 	// Multiple authors - bold Frédérick Madore's name
 	let formatted = '';
 	authorsArray.forEach((author, i) => {
-		const authorName = author === 'Frédérick Madore' 
-			? '<strong>Frédérick Madore</strong>' 
-			: author;
-		
+		const authorName = author === 'Frédérick Madore' ? '<strong>Frédérick Madore</strong>' : author;
+
 		formatted += authorName;
 		if (i < numAuthors - 1) {
 			formatted += i === numAuthors - 2 ? ' and ' : ', ';
@@ -44,14 +42,14 @@ export function formatCVAuthorList(authorsInput: string[] | string | undefined):
  */
 export function formatEditorList(editorsInput: string | undefined): string {
 	if (!editorsInput) return '';
-	
+
 	// Split by common separators
 	const editors = editorsInput.split(/,\s*|\s+and\s+/);
-	
+
 	if (editors.length === 0) return '';
 	if (editors.length === 1) return editors[0];
 	if (editors.length === 2) return `${editors[0]} and ${editors[1]}`;
-	
+
 	// Three or more editors
 	const lastEditor = editors[editors.length - 1];
 	const otherEditors = editors.slice(0, -1).join(', ');
@@ -109,17 +107,27 @@ export function formatVolumeIssueDisplay(
  */
 export function formatBlogDate(dateISO?: string): string {
 	if (!dateISO) return '';
-	
+
 	const months = [
-		'January', 'February', 'March', 'April', 'May', 'June',
-		'July', 'August', 'September', 'October', 'November', 'December'
+		'January',
+		'February',
+		'March',
+		'April',
+		'May',
+		'June',
+		'July',
+		'August',
+		'September',
+		'October',
+		'November',
+		'December'
 	];
-	
+
 	const parts = dateISO.split('-');
 	if (parts.length >= 2) {
 		const monthIndex = parseInt(parts[1], 10) - 1;
 		const month = months[monthIndex] || '';
-		
+
 		if (parts.length >= 3) {
 			// Has day
 			const day = parseInt(parts[2], 10);
@@ -128,7 +136,7 @@ export function formatBlogDate(dateISO?: string): string {
 		// Month only
 		return month;
 	}
-	
+
 	return '';
 }
 

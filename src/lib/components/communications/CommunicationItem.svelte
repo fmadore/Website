@@ -30,18 +30,18 @@
 	// Helper to format language display
 	const languageDisplay = $derived.by(() => {
 		if (!communication?.language) return null;
-		const langs = Array.isArray(communication.language) 
-			? communication.language 
+		const langs = Array.isArray(communication.language)
+			? communication.language
 			: [communication.language];
-		
+
 		// If it's only English, don't show anything
 		if (langs.length === 1 && langs[0] === 'English') return null;
-		
+
 		// If multiple languages (bilingual/multilingual), show all
 		if (langs.length > 1) {
 			return langs.join(', ');
 		}
-		
+
 		// Single non-English language
 		return langs[0];
 	});

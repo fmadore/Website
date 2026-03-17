@@ -390,7 +390,12 @@
 
 			allPublications.forEach((pub) => {
 				// Journal articles, special issues, and reports (bulletin-like venues)
-				if (pub.journal && (pub.type === 'article' || pub.type === 'special-issue' || pub.type === 'bulletin-article')) {
+				if (
+					pub.journal &&
+					(pub.type === 'article' ||
+						pub.type === 'special-issue' ||
+						pub.type === 'bulletin-article')
+				) {
 					if (!journals[pub.journal]) {
 						journals[pub.journal] = { count: 0, publications: [] };
 					}
@@ -408,7 +413,10 @@
 				}
 
 				// Books, chapters, and encyclopedias - group by publisher
-				if (pub.publisher && (pub.type === 'book' || pub.type === 'chapter' || pub.type === 'encyclopedia')) {
+				if (
+					pub.publisher &&
+					(pub.type === 'book' || pub.type === 'chapter' || pub.type === 'encyclopedia')
+				) {
 					if (!publishers[pub.publisher]) {
 						publishers[pub.publisher] = { count: 0, publications: [] };
 					}
@@ -505,7 +513,10 @@
 		(() => {
 			const locationMap: Record<
 				string,
-				{ count: number; publications: Array<{ id: string; title: string; publisher?: string; type: string }> }
+				{
+					count: number;
+					publications: Array<{ id: string; title: string; publisher?: string; type: string }>;
+				}
 			> = {};
 
 			allPublications.forEach((pub) => {
@@ -930,7 +941,9 @@
 			</div>
 		{:else}
 			<div class="placeholder-message" style="height: 400px;">
-				<p class="text-light">No publisher location data available to display for this visualization.</p>
+				<p class="text-light">
+					No publisher location data available to display for this visualization.
+				</p>
 			</div>
 		{/if}
 	</section>

@@ -24,8 +24,8 @@ import ItemReference from '$lib/components/reference/ItemReference.svelte';
 
 ## Props
 
-| Prop | Type     | Default    | Description                                                        |
-| ---- | -------- | ---------- | ------------------------------------------------------------------ |
+| Prop | Type     | Default    | Description                                                                |
+| ---- | -------- | ---------- | -------------------------------------------------------------------------- |
 | `id` | `string` | _required_ | ID of the publication or communication (event, podcast, etc.) to reference |
 
 ## Supported Item Types

@@ -27,7 +27,7 @@ The `FilterSectionDropdown` component provides a space-efficient way to handle f
 	import { toggleAuthorFilter, authorCounts } from '$lib/data/publications/filters.svelte';
 
 	let activeAuthors = $state(['Author One', 'Author Two']);
-	let allAuthors = ['Author One', 'Author Two', 'Author Three', /* ... many more */];
+	let allAuthors = ['Author One', 'Author Two', 'Author Three' /* ... many more */];
 </script>
 
 <FilterSectionDropdown
@@ -85,7 +85,7 @@ const filterConfig = $derived({
 			counts: $authorCounts,
 			placeholder: 'Select authors...',
 			searchThreshold: 10
-		} as DropdownFilterOption<string>,
+		} as DropdownFilterOption<string>
 		// ... other sections
 	],
 	clearAllFilters: clearAllFilters
@@ -94,17 +94,17 @@ const filterConfig = $derived({
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `title` | `string` | Required | Section title displayed above the dropdown |
-| `items` | `string[]` | Required | Array of all available filter items |
-| `activeItems` | `string[]` | Required | Array of currently selected items |
-| `toggleItem` | `(item: string) => void` | Required | Function to toggle an item's selection |
-| `counts` | `{ [key: string]: number }` | `undefined` | Optional count for each item |
-| `itemLabels` | `{ [key: string]: string }` | `undefined` | Optional display labels for items |
-| `placeholder` | `string` | `'Select...'` | Placeholder text when nothing is selected |
-| `searchThreshold` | `number` | `8` | Minimum items to show search functionality |
-| `maxHeight` | `string` | `'400px'` | Maximum height of the dropdown menu |
+| Prop              | Type                        | Default       | Description                                |
+| ----------------- | --------------------------- | ------------- | ------------------------------------------ |
+| `title`           | `string`                    | Required      | Section title displayed above the dropdown |
+| `items`           | `string[]`                  | Required      | Array of all available filter items        |
+| `activeItems`     | `string[]`                  | Required      | Array of currently selected items          |
+| `toggleItem`      | `(item: string) => void`    | Required      | Function to toggle an item's selection     |
+| `counts`          | `{ [key: string]: number }` | `undefined`   | Optional count for each item               |
+| `itemLabels`      | `{ [key: string]: string }` | `undefined`   | Optional display labels for items          |
+| `placeholder`     | `string`                    | `'Select...'` | Placeholder text when nothing is selected  |
+| `searchThreshold` | `number`                    | `8`           | Minimum items to show search functionality |
+| `maxHeight`       | `string`                    | `'400px'`     | Maximum height of the dropdown menu        |
 
 ## Features
 
@@ -125,6 +125,7 @@ const filterConfig = $derived({
 ### Display Text
 
 The trigger button shows:
+
 - Placeholder text when nothing is selected
 - Single item name when one item is selected
 - "X selected" when multiple items are selected
@@ -152,6 +153,7 @@ The component uses CSS variables from the global design system:
 ### Glassmorphism
 
 The dropdown inherits the glassmorphism effects from the design system:
+
 - Backdrop blur filters
 - Semi-transparent backgrounds
 - Subtle gradient overlays
@@ -160,6 +162,7 @@ The dropdown inherits the glassmorphism effects from the design system:
 ### Dark Mode
 
 Full dark mode support with automatic theme switching:
+
 - Adjusted backgrounds and borders
 - Enhanced contrast for readability
 - Consistent glassmorphism effects
@@ -192,11 +195,13 @@ The component is optimized for performance:
 ## Browser Support
 
 Modern browsers with support for:
+
 - CSS custom properties
 - Backdrop filter (with graceful fallback)
 - ES6+ JavaScript
 - Flexbox
 
 Respects user preferences:
+
 - `prefers-reduced-motion` for animations
 - High contrast mode adaptations

@@ -20,8 +20,8 @@
 					page_location: window.location.href,
 					page_path: window.location.pathname
 				});
-			} catch (error) {
-				console.warn('Failed to send page view after cookie consent:', error);
+			} catch {
+				// Silently handle analytics failure — non-critical
 			}
 		}
 	}
@@ -168,5 +168,4 @@
 			border-width: var(--space-0-5);
 		}
 	}
-
 </style>

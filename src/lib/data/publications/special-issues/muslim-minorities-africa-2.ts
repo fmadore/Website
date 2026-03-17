@@ -34,15 +34,18 @@ export const muslimMinoritiesAfrica2: Publication = {
 	project: 'Muslim Minorities in Southern Cities of Benin and Togo',
 	tableOfContents: [
 		{
-			title: "A Beninese Imam's Controversial 2019 Election Campaign: Muslim Leadership and Political Engagement in a Minority Context",
+			title:
+				"A Beninese Imam's Controversial 2019 Election Campaign: Muslim Leadership and Political Engagement in a Minority Context",
 			authors: ['Frédérick Madore']
 		},
 		{
-			title: 'The Quest for Survival, Cohesion and Voice for the Muslim Minority in Maniema, DR Congo',
+			title:
+				'The Quest for Survival, Cohesion and Voice for the Muslim Minority in Maniema, DR Congo',
 			authors: ['Ashley E. Leinweber']
 		},
 		{
-			title: "Media Representations of Local Muslim Associations' Acts of Charity in Zambia's Multi-Religious but Christian-Dominated Context since the 2010s",
+			title:
+				"Media Representations of Local Muslim Associations' Acts of Charity in Zambia's Multi-Religious but Christian-Dominated Context since the 2010s",
 			authors: ['Nelly Mwale']
 		},
 		{
@@ -50,7 +53,8 @@ export const muslimMinoritiesAfrica2: Publication = {
 			authors: ['Nadeem Mahomed']
 		},
 		{
-			title: 'Between the Local and the Global: The Iranian Revolution and Sunni-Shia Relations in South Africa',
+			title:
+				'Between the Local and the Global: The Iranian Revolution and Sunni-Shia Relations in South Africa',
 			authors: ['Goolam Vahed']
 		}
 	]

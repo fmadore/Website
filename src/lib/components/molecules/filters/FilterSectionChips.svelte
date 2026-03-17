@@ -77,9 +77,7 @@
 			</button>
 		{/if}
 		{#if activeItems.length > 0}
-			<button type="button" class="action-button clear" onclick={clearSelection}>
-				Clear
-			</button>
+			<button type="button" class="action-button clear" onclick={clearSelection}> Clear </button>
 		{/if}
 	</div>
 </div>

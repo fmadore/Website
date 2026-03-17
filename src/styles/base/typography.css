@@ -104,9 +104,7 @@ p a:not(.btn):not(.no-underline):not(.nav-link),
 li a:not(.btn):not(.no-underline):not(.nav-link) {
 	position: relative;
 	text-decoration: none;
-	background-image: linear-gradient(90deg,
-			var(--color-primary) 0%,
-			var(--color-highlight) 100%);
+	background-image: linear-gradient(90deg, var(--color-primary) 0%, var(--color-highlight) 100%);
 	background-size: 0% 2px;
 	background-position: left bottom;
 	background-repeat: no-repeat;
@@ -133,7 +131,6 @@ li a:not(.btn):not(.no-underline):not(.nav-link):focus-visible {
 
 /* Static underline fallback for reduced motion */
 @media (prefers-reduced-motion: reduce) {
-
 	.prose a:not(.btn):not(.no-underline):not(.nav-link),
 	.content-body a:not(.btn):not(.no-underline):not(.nav-link),
 	p a:not(.btn):not(.no-underline):not(.nav-link),

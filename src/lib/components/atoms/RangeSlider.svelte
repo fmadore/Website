@@ -57,7 +57,6 @@
 
 	function getValueFromPosition(clientX: number): number {
 		if (!sliderRef) {
-			console.warn('Slider ref is null, returning current min value');
 			return min;
 		}
 		const rect = sliderRef.getBoundingClientRect();
@@ -342,9 +341,7 @@
 		position: absolute;
 		top: 50%;
 		/* Calculate position relative to track area, not slider container */
-		left: calc(
-			var(--track-offset) + var(--handle-position) * (100% - 2 * var(--track-offset))
-		);
+		left: calc(var(--track-offset) + var(--handle-position) * (100% - 2 * var(--track-offset)));
 		width: var(--space-lg);
 		height: var(--space-lg);
 		background: var(--gradient-accent-highlight);

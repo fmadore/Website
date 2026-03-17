@@ -13,55 +13,55 @@ Shows where publications are published geographically using the publisherLocatio
 	// Country coordinates (capital cities or geographic centers)
 	export const COUNTRY_COORDINATES: Record<string, { lat: number; lng: number }> = {
 		// Europe
-		'Netherlands': { lat: 52.3676, lng: 4.9041 },
-		'Germany': { lat: 52.52, lng: 13.405 },
-		'France': { lat: 48.8566, lng: 2.3522 },
+		Netherlands: { lat: 52.3676, lng: 4.9041 },
+		Germany: { lat: 52.52, lng: 13.405 },
+		France: { lat: 48.8566, lng: 2.3522 },
 		'United Kingdom': { lat: 51.5074, lng: -0.1278 },
-		'UK': { lat: 51.5074, lng: -0.1278 },
-		'Belgium': { lat: 50.8503, lng: 4.3517 },
-		'Switzerland': { lat: 46.9481, lng: 7.4474 },
-		'Austria': { lat: 48.2082, lng: 16.3738 },
-		'Italy': { lat: 41.9028, lng: 12.4964 },
-		'Spain': { lat: 40.4168, lng: -3.7038 },
-		'Portugal': { lat: 38.7223, lng: -9.1393 },
-		'Poland': { lat: 52.2297, lng: 21.0122 },
-		'Sweden': { lat: 59.3293, lng: 18.0686 },
-		'Norway': { lat: 59.9139, lng: 10.7522 },
-		'Denmark': { lat: 55.6761, lng: 12.5683 },
-		'Finland': { lat: 60.1699, lng: 24.9384 },
+		UK: { lat: 51.5074, lng: -0.1278 },
+		Belgium: { lat: 50.8503, lng: 4.3517 },
+		Switzerland: { lat: 46.9481, lng: 7.4474 },
+		Austria: { lat: 48.2082, lng: 16.3738 },
+		Italy: { lat: 41.9028, lng: 12.4964 },
+		Spain: { lat: 40.4168, lng: -3.7038 },
+		Portugal: { lat: 38.7223, lng: -9.1393 },
+		Poland: { lat: 52.2297, lng: 21.0122 },
+		Sweden: { lat: 59.3293, lng: 18.0686 },
+		Norway: { lat: 59.9139, lng: 10.7522 },
+		Denmark: { lat: 55.6761, lng: 12.5683 },
+		Finland: { lat: 60.1699, lng: 24.9384 },
 
 		// North America
 		'United States': { lat: 38.9072, lng: -77.0369 },
-		'USA': { lat: 38.9072, lng: -77.0369 },
-		'Canada': { lat: 45.4215, lng: -75.6972 },
+		USA: { lat: 38.9072, lng: -77.0369 },
+		Canada: { lat: 45.4215, lng: -75.6972 },
 
 		// Africa
-		'Senegal': { lat: 14.7167, lng: -17.4677 },
-		'Côte d\'Ivoire': { lat: 6.8276, lng: -5.2893 },
+		Senegal: { lat: 14.7167, lng: -17.4677 },
+		"Côte d'Ivoire": { lat: 6.8276, lng: -5.2893 },
 		'Burkina Faso': { lat: 12.3714, lng: -1.5197 },
-		'Mali': { lat: 12.6392, lng: -8.0029 },
-		'Niger': { lat: 13.5137, lng: 2.1098 },
-		'Nigeria': { lat: 9.0765, lng: 7.3986 },
-		'Ghana': { lat: 5.6037, lng: -0.187 },
-		'Togo': { lat: 6.1256, lng: 1.2254 },
-		'Benin': { lat: 6.4969, lng: 2.6289 },
+		Mali: { lat: 12.6392, lng: -8.0029 },
+		Niger: { lat: 13.5137, lng: 2.1098 },
+		Nigeria: { lat: 9.0765, lng: 7.3986 },
+		Ghana: { lat: 5.6037, lng: -0.187 },
+		Togo: { lat: 6.1256, lng: 1.2254 },
+		Benin: { lat: 6.4969, lng: 2.6289 },
 		'South Africa': { lat: -25.7479, lng: 28.2293 },
-		'Kenya': { lat: -1.2921, lng: 36.8219 },
-		'Egypt': { lat: 30.0444, lng: 31.2357 },
-		'Morocco': { lat: 33.9716, lng: -6.8498 },
-		'Tunisia': { lat: 36.8065, lng: 10.1815 },
-		'Algeria': { lat: 36.7538, lng: 3.0588 },
+		Kenya: { lat: -1.2921, lng: 36.8219 },
+		Egypt: { lat: 30.0444, lng: 31.2357 },
+		Morocco: { lat: 33.9716, lng: -6.8498 },
+		Tunisia: { lat: 36.8065, lng: 10.1815 },
+		Algeria: { lat: 36.7538, lng: 3.0588 },
 
 		// Asia & Middle East
-		'Japan': { lat: 35.6762, lng: 139.6503 },
-		'China': { lat: 39.9042, lng: 116.4074 },
-		'India': { lat: 28.6139, lng: 77.209 },
-		'Singapore': { lat: 1.3521, lng: 103.8198 },
-		'Australia': { lat: -35.2809, lng: 149.13 },
+		Japan: { lat: 35.6762, lng: 139.6503 },
+		China: { lat: 39.9042, lng: 116.4074 },
+		India: { lat: 28.6139, lng: 77.209 },
+		Singapore: { lat: 1.3521, lng: 103.8198 },
+		Australia: { lat: -35.2809, lng: 149.13 },
 
 		// South America
-		'Brazil': { lat: -15.7975, lng: -47.8919 },
-		'Argentina': { lat: -34.6037, lng: -58.3816 }
+		Brazil: { lat: -15.7975, lng: -47.8919 },
+		Argentina: { lat: -34.6037, lng: -58.3816 }
 	};
 </script>
 
@@ -108,14 +108,10 @@ Shows where publications are published geographically using the publisherLocatio
 	const resolvedColors = $derived(getResolvedChartColors());
 
 	// Calculate max count for scaling marker sizes
-	const maxCount = $derived(
-		data.length > 0 ? Math.max(...data.map((d) => d.count)) : 1
-	);
+	const maxCount = $derived(data.length > 0 ? Math.max(...data.map((d) => d.count)) : 1);
 
 	// Filter data to only include countries with coordinates
-	const mappableData = $derived(
-		data.filter((d) => COUNTRY_COORDINATES[d.country])
-	);
+	const mappableData = $derived(data.filter((d) => COUNTRY_COORDINATES[d.country]));
 
 	// Format type label
 	function formatTypeLabel(type: string): string {
@@ -152,7 +148,10 @@ Shows where publications are published geographically using the publisherLocatio
 			content += '</ul>';
 		} else {
 			// Group by publisher with list of publication IDs
-			const byPublisher: Record<string, { count: number; pubs: Array<{ id: string; title: string }> }> = {};
+			const byPublisher: Record<
+				string,
+				{ count: number; pubs: Array<{ id: string; title: string }> }
+			> = {};
 			item.publications.forEach((pub) => {
 				const key = pub.publisher || 'Other';
 				if (!byPublisher[key]) {
@@ -169,7 +168,8 @@ Shows where publications are published geographically using the publisherLocatio
 						<span class="pub-publisher">${publisher}</span>: ${data.count}
 						<ul class="pub-sublist">`;
 					data.pubs.slice(0, 3).forEach((pub) => {
-						const truncated = pub.title.length > 40 ? pub.title.substring(0, 40) + '...' : pub.title;
+						const truncated =
+							pub.title.length > 40 ? pub.title.substring(0, 40) + '...' : pub.title;
 						content += `<li><a href="${base}/publications/${pub.id}" class="pub-link">${truncated}</a></li>`;
 					});
 					if (data.pubs.length > 3) {
@@ -306,7 +306,7 @@ Shows where publications are published geographically using the publisherLocatio
 					addMarkers();
 				});
 			} catch (error) {
-				console.error('Error initializing map:', error);
+				if (import.meta.env.DEV) console.error('Error initializing map:', error);
 				importError = error instanceof Error ? error.message : 'Unknown error loading map';
 			}
 		})();
@@ -353,7 +353,9 @@ Shows where publications are published geographically using the publisherLocatio
 	</div>
 	{#if data.length > 0 && mappableData.length < data.length}
 		<p class="unmapped-note">
-			Note: {data.length - mappableData.length} location{data.length - mappableData.length > 1 ? 's' : ''}
+			Note: {data.length - mappableData.length} location{data.length - mappableData.length > 1
+				? 's'
+				: ''}
 			not shown (coordinates not available)
 		</p>
 	{/if}

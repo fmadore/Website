@@ -32,9 +32,9 @@ When you need to introduce new styling primitives, follow this workflow to stay 
 
 1. **Check existing layers first**: Reuse utilities or component classes whenever possible. Most spacing, color, typography, and interaction patterns already exist.
 2. **Scope deliberately**:
-    - Component-specific visuals belong in the Svelte file's `<style>` block.
-    - Shared UI patterns live under `styles/components/` with descriptive, atomic names.
-    - System-wide helpers go into the utility folder alongside peers (e.g., `utilities/flex.css`).
+   - Component-specific visuals belong in the Svelte file's `<style>` block.
+   - Shared UI patterns live under `styles/components/` with descriptive, atomic names.
+   - System-wide helpers go into the utility folder alongside peers (e.g., `utilities/flex.css`).
 3. **Lean on design tokens**: Reference values from `base/variables.css` instead of hard-coded numbers or hex values. This keeps light/dark themes and glassmorphism effects consistent.
 4. **Respect motion and accessibility**: Mirror the patterns in `reset.css` and `animations.css` by honoring `prefers-reduced-motion`, `prefers-contrast`, and focus-visible treatments.
 5. **Document the change**: Update this README (or the component docs in `docs/components/`) so future contributors know the intent behind the new styles.
@@ -106,7 +106,7 @@ Example usage:
 ```css
 .example {
 	color: var(--color-primary);
-	margin-bottom: var(--space-md); 	/* ✅ Preferred - uses color directly */
+	margin-bottom: var(--space-md); /* ✅ Preferred - uses color directly */
 	background: color-mix(in srgb, var(--color-primary) 10%, transparent);
 	box-shadow: var(--shadow-md);
 	transition: all var(--duration-normal) var(--ease-out);
@@ -334,15 +334,18 @@ Skill/technology tags are now handled through the `TagList` component which uses
 Modern CSS-only animation system using scroll-driven animations for performant, accessible effects:
 
 #### Scroll-Driven Animations (CSS-only)
+
 - **`.scroll-reveal`**: Fade-up animation triggered by viewport entry using `animation-timeline: view()`
 - **`.scroll-reveal-scale`**: Subtle scale-in animation for cards and images
 - **`.grid-stagger`**: Container class that applies staggered reveal to child elements using `:nth-child()` selectors
 - **Browser support**: Chrome 115+, Firefox 110+; graceful fallback shows content immediately in unsupported browsers
 
 #### Page Entry Animations
+
 - **`.page-enter`**: Subtle fade-up animation for initial page load
 
 #### Skeleton Loading
+
 - **`.skeleton`**: Base class with shimmer animation for loading placeholders
 - **`.skeleton-text`**: Text placeholder sizing
 - **`.skeleton-title`**: Title placeholder with appropriate width
@@ -350,7 +353,9 @@ Modern CSS-only animation system using scroll-driven animations for performant, 
 - **`.skeleton-card`**: Card-shaped loading placeholder
 
 #### Legacy Animation Classes
+
 Maintained for backward compatibility:
+
 - **Base states**: `.animate-in`, `.animate-out`
 - **Fade animations**: `.fade-in`, `.fade-in-up`, `.fade-in-down`, `.fade-in-left`, `.fade-in-right`
 - **Scale animations**: `.scale-in`, `.scale-in-center`
@@ -361,6 +366,7 @@ Maintained for backward compatibility:
 - **Parallax support**: `.parallax-container`, `.parallax-element`
 
 #### Accessibility & Performance
+
 - **Reduced motion**: All animations disabled for users with `prefers-reduced-motion: reduce`
 - **Graceful fallback**: Content is visible immediately in browsers without scroll-driven animation support
 - **Performance**: Uses `will-change`, `transform`, and `opacity` for GPU-accelerated animations
@@ -567,29 +573,28 @@ Replace the JavaScript `use:scrollAnimate` action with CSS classes:
 
 ```svelte
 <!-- OLD (deprecated) -->
-<div use:scrollAnimate={{ animationClass: 'scale-in', delay: 200 }}>
-	Content
-</div>
+<div use:scrollAnimate={{ animationClass: 'scale-in', delay: 200 }}>Content</div>
 
 <!-- NEW (use instead) -->
-<div class="scroll-reveal-scale">
-	Content
-</div>
+<div class="scroll-reveal-scale">Content</div>
 ```
 
 **Available CSS animation classes:**
+
 - **`scroll-reveal`**: Fade-up animation triggered on viewport entry
 - **`scroll-reveal-scale`**: Scale-in animation for cards and images
 - **`grid-stagger`**: Container class for staggered child animations
 - **`page-enter`**: Subtle page load animation
 
 **Benefits of CSS-only approach:**
+
 - No JavaScript dependency - better performance
 - Native browser support via `animation-timeline: view()`
 - Graceful fallback: content visible immediately in unsupported browsers
 - Automatic `prefers-reduced-motion` support
 
 **Legacy animation classes** (still valid for load-time animations):
+
 - `fade-in-up`, `scale-in`, `slide-in-left`, etc. - for elements that animate on mount, not scroll
 - `stagger-1` through `stagger-6` - for sequential delays on dynamically loaded content
 

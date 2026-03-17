@@ -46,23 +46,23 @@
 		display: none;
 	}
 
-        .nav-list {
-                display: flex;
-                list-style: none;
-                padding: 0;
-                margin: 0;
-                gap: var(--space-4);
-        }
+	.nav-list {
+		display: flex;
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		gap: var(--space-4);
+	}
 
-        @media (--xl) {
-                .desktop-nav {
-                        display: block;
-                }
+	@media (--xl) {
+		.desktop-nav {
+			display: block;
+		}
 
-                .nav-list {
-                        gap: var(--space-6); /* Wider spacing on larger screens */
-                }
-        }
+		.nav-list {
+			gap: var(--space-6); /* Wider spacing on larger screens */
+		}
+	}
 
 	/* Navigation item styles are defined in NavItemWithDropdown.svelte */
 	/* Focus styles are defined in their respective components (NavLink.svelte, DropdownMenu.svelte) */

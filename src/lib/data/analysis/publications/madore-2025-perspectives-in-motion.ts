@@ -48,9 +48,9 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'swahili', count: 2, lemma: 'swahili', pos: 'propn' }
 	],
 	bigrams: [
-		{ ngram: 'panel discussion', words: ["panel", "discussion"], count: 3 },
-		{ ngram: 'global south', words: ["global", "south"], count: 2 },
-		{ ngram: 'knowledge production', words: ["knowledge", "production"], count: 2 },
-		{ ngram: 'swahili term', words: ["swahili", "term"], count: 2 }
+		{ ngram: 'panel discussion', words: ['panel', 'discussion'], count: 3 },
+		{ ngram: 'global south', words: ['global', 'south'], count: 2 },
+		{ ngram: 'knowledge production', words: ['knowledge', 'production'], count: 2 },
+		{ ngram: 'swahili term', words: ['swahili', 'term'], count: 2 }
 	]
 };

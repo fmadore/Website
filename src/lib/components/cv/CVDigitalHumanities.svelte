@@ -32,8 +32,7 @@
 						href={review.url}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="text-primary hover:underline"
-						>{@html review.text}</a
+						class="text-primary hover:underline">{@html review.text}</a
 					>{#if i < project.reviews.length - 1}; {' '}{/if}
 				{/each}
 			</div>

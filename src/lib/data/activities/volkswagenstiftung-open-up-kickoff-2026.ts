@@ -3,8 +3,7 @@ import { formatDisplayDate } from '$lib/utils/date-formatter';
 
 const volkswagenStiftungOpenUpKickoff2026: Activity = {
 	id: 'volkswagenstiftung-open-up-kickoff-2026',
-	title:
-		'Presenting "Islam\'s Peripheries" at the VolkswagenStiftung "Open Up" Kick-Off Event',
+	title: 'Presenting "Islam\'s Peripheries" at the VolkswagenStiftung "Open Up" Kick-Off Event',
 	dateISO: '2026-03-05',
 	date: formatDisplayDate('2026-03-05'),
 	year: 2026,

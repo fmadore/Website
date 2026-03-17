@@ -67,32 +67,33 @@
 	<div class="max-w-6xl mx-auto">
 		<PageHeader title="Research" />
 
-	<PageIntro>
-		My research lies at the intersection of African history, Islamic Studies, and Digital Humanities.
-		I explore the contemporary history of Islam and Muslim societies in francophone West Africa. I
-		focus on how youth, women, and religious minorities have engaged with religious activism, the
-		media and political life from the 1960s to the present day. By combining extensive fieldwork and
-		archival research in Benin, Togo, Côte d'Ivoire, and Burkina Faso with computational
-		methodologies, I examine the evolving landscape of Islamic discourse and Muslim politics.
-	</PageIntro>
+		<PageIntro>
+			My research lies at the intersection of African history, Islamic Studies, and Digital
+			Humanities. I explore the contemporary history of Islam and Muslim societies in francophone
+			West Africa. I focus on how youth, women, and religious minorities have engaged with religious
+			activism, the media and political life from the 1960s to the present day. By combining
+			extensive fieldwork and archival research in Benin, Togo, Côte d'Ivoire, and Burkina Faso with
+			computational methodologies, I examine the evolving landscape of Islamic discourse and Muslim
+			politics.
+		</PageIntro>
 
-	<div class="content-grid grid-stagger">
-		{#each researchProjects as project (project.id)}
-			<Card
-				title={project.title}
-				imageUrl={project.imageUrl}
-				linkUrl={`/research/${project.id}`}
-				target="_self"
-			>
-				{#snippet subtitle()}
-					<span>{project.years}</span>
-				{/snippet}
-				{project.shortDescription}
-				{#snippet action()}
-					<a href={`${base}/research/${project.id}`}>Read more →</a>
-				{/snippet}
-			</Card>
-		{/each}
-	</div>
+		<div class="content-grid grid-stagger">
+			{#each researchProjects as project (project.id)}
+				<Card
+					title={project.title}
+					imageUrl={project.imageUrl}
+					linkUrl={`/research/${project.id}`}
+					target="_self"
+				>
+					{#snippet subtitle()}
+						<span>{project.years}</span>
+					{/snippet}
+					{project.shortDescription}
+					{#snippet action()}
+						<a href={`${base}/research/${project.id}`}>Read more →</a>
+					{/snippet}
+				</Card>
+			{/each}
+		</div>
 	</div>
 </div>

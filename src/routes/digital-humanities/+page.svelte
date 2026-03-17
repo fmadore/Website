@@ -67,87 +67,87 @@
 	<div class="max-w-6xl mx-auto">
 		<PageHeader title="Digital Humanities" />
 
-	{#if selectedSkill}
-		<p class="text-lg mb-6">
-			Showing projects with skill: <span class="font-semibold text-primary">{selectedSkill}</span>
-			<a
-				href="{base}/digital-humanities"
-				class="text-sm ml-2 text-light hover:text-primary hover:underline">(Clear filter)</a
-			>
-		</p>
-	{/if}
+		{#if selectedSkill}
+			<p class="text-lg mb-6">
+				Showing projects with skill: <span class="font-semibold text-primary">{selectedSkill}</span>
+				<a
+					href="{base}/digital-humanities"
+					class="text-sm ml-2 text-light hover:text-primary hover:underline">(Clear filter)</a
+				>
+			</p>
+		{/if}
 
-	<PageIntro>
-		Digital humanities has become central to my research practice—not as an end in itself, but as a
-		response to a concrete problem. After years of fieldwork across West Africa, I had accumulated
-		thousands of documents that exceeded what traditional methods could process. The projects below
-		trace my effort to transform this accumulation into open research infrastructure: from building
-		digital archives and AI-assisted processing pipelines to interactive visualizations and
-		conversational interfaces. All code is open source, and all data follows open access principles
-		wherever rights permit, with the conviction that African historical sources should not only be
-		preserved, but made usable for researchers, students, and the communities from which they
-		originate.
-	</PageIntro>
+		<PageIntro>
+			Digital humanities has become central to my research practice—not as an end in itself, but as
+			a response to a concrete problem. After years of fieldwork across West Africa, I had
+			accumulated thousands of documents that exceeded what traditional methods could process. The
+			projects below trace my effort to transform this accumulation into open research
+			infrastructure: from building digital archives and AI-assisted processing pipelines to
+			interactive visualizations and conversational interfaces. All code is open source, and all
+			data follows open access principles wherever rights permit, with the conviction that African
+			historical sources should not only be preserved, but made usable for researchers, students,
+			and the communities from which they originate.
+		</PageIntro>
 
-	<!-- Featured Projects Section (only shown when no skill filter active) -->
-	{#if shouldShowFeatured}
-		<FeaturedDHProjects projects={featuredProjects} />
-	{/if}
+		<!-- Featured Projects Section (only shown when no skill filter active) -->
+		{#if shouldShowFeatured}
+			<FeaturedDHProjects projects={featuredProjects} />
+		{/if}
 
-	<!-- All Projects Section Header (only when featured are shown) -->
-	{#if shouldShowFeatured}
-		<div class="all-projects-header">
-			<h2 class="section-title">All Projects</h2>
+		<!-- All Projects Section Header (only when featured are shown) -->
+		{#if shouldShowFeatured}
+			<div class="all-projects-header">
+				<h2 class="section-title">All Projects</h2>
+			</div>
+		{/if}
+
+		<div class="content-grid grid-stagger">
+			{#each finalProjectsToDisplay as project (project.id)}
+				<Card
+					title={project.title}
+					imageUrl={project.imageUrl}
+					linkUrl={project.finalLinkUrl}
+					target={project.linkTarget}
+				>
+					{#snippet subtitle()}
+						<span>{project.years}</span>
+					{/snippet}
+
+					{project.shortDescription}
+
+					{#snippet details()}
+						<div class="dh-card-extras">
+							<!-- Skills section -->
+							{#if project.skills && project.skills.length > 0}
+								<div class="skills-section">
+									<TagList
+										tags={project.skills}
+										baseUrl="/digital-humanities?skill="
+										sectionTitle="Skills"
+										showTitle={true}
+										buttonVariant="outline-secondary"
+										buttonSize="sm"
+									/>
+								</div>
+							{/if}
+						</div>
+					{/snippet}
+
+					{#snippet action()}
+						<a
+							href={project.finalLinkUrl}
+							target={project.linkTarget}
+							rel={project.linkTarget === '_blank' ? 'noopener noreferrer' : null}
+						>
+							{project.actionText}
+						</a>
+					{/snippet}
+				</Card>
+			{/each}
 		</div>
-	{/if}
 
-	<div class="content-grid grid-stagger">
-		{#each finalProjectsToDisplay as project (project.id)}
-			<Card
-				title={project.title}
-				imageUrl={project.imageUrl}
-				linkUrl={project.finalLinkUrl}
-				target={project.linkTarget}
-			>
-				{#snippet subtitle()}
-					<span>{project.years}</span>
-				{/snippet}
-
-				{project.shortDescription}
-
-				{#snippet details()}
-					<div class="dh-card-extras">
-						<!-- Skills section -->
-						{#if project.skills && project.skills.length > 0}
-							<div class="skills-section">
-								<TagList
-									tags={project.skills}
-									baseUrl="/digital-humanities?skill="
-									sectionTitle="Skills"
-									showTitle={true}
-									buttonVariant="outline-secondary"
-									buttonSize="sm"
-								/>
-							</div>
-						{/if}
-					</div>
-				{/snippet}
-
-				{#snippet action()}
-					<a
-						href={project.finalLinkUrl}
-						target={project.linkTarget}
-						rel={project.linkTarget === '_blank' ? 'noopener noreferrer' : null}
-					>
-						{project.actionText}
-					</a>
-				{/snippet}
-			</Card>
-		{/each}
-	</div>
-
-	<!-- Optional: Add back detailed descriptions or other content here if needed -->
-	<!--
+		<!-- Optional: Add back detailed descriptions or other content here if needed -->
+		<!--
     <section class="project-details">
         <h2>Project Details & Publications</h2>
         // Add more content here if the cards aren't enough

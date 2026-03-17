@@ -35,23 +35,28 @@ export const religiosityUniversityCampuses: Publication = {
 			authors: ['Abdoulaye Sounaye', 'Frédérick Madore']
 		},
 		{
-			title: 'Straddling the "Epistemic Divide"? Medical and Faith-based Healing among Christian Students in Mbarara, South-Western Uganda',
+			title:
+				'Straddling the "Epistemic Divide"? Medical and Faith-based Healing among Christian Students in Mbarara, South-Western Uganda',
 			authors: ['Dorothea Schulz', 'Britta Bayer']
 		},
 		{
-			title: "Exister en contexte autoritaire : les associations étudiantes chrétiennes et islamiques à l'Université de Lomé sous Gnassingbé Eyadéma, 1970-2005",
+			title:
+				"Exister en contexte autoritaire : les associations étudiantes chrétiennes et islamiques à l'Université de Lomé sous Gnassingbé Eyadéma, 1970-2005",
 			authors: ['Frédérick Madore']
 		},
 		{
-			title: "Pentecostalism in the University Public Sphere of Molyko (Buea, Cameroon): Challenges, Media Strategies and Students' Involvement, 1993-2020",
+			title:
+				"Pentecostalism in the University Public Sphere of Molyko (Buea, Cameroon): Challenges, Media Strategies and Students' Involvement, 1993-2020",
 			authors: ['Francis Arsène Fogue Kuate']
 		},
 		{
-			title: "« Tuba », une construction de l'identité religieuse par les étudiants salafis et pentecôtistes de l'Université Abdou Moumouni de Niamey, Niger",
+			title:
+				"« Tuba », une construction de l'identité religieuse par les étudiants salafis et pentecôtistes de l'Université Abdou Moumouni de Niamey, Niger",
 			authors: ['Mahamadou Bello Adamou']
 		},
 		{
-			title: "Vivre sa foi Tabligh au sein des campus de Côte d'Ivoire : ethnographie du cheminement de la religiosité des étudiants",
+			title:
+				"Vivre sa foi Tabligh au sein des campus de Côte d'Ivoire : ethnographie du cheminement de la religiosité des étudiants",
 			authors: ['Youssoufou Bakayoko']
 		},
 		{
@@ -59,7 +64,8 @@ export const religiosityUniversityCampuses: Publication = {
 			authors: ['Mohammed Ameen Kasim']
 		},
 		{
-			title: "Mobiliser l'Histoire dans le contexte académique nigérien : le prisme des récits religieux",
+			title:
+				"Mobiliser l'Histoire dans le contexte académique nigérien : le prisme des récits religieux",
 			authors: ['Vincent Favier']
 		},
 		{
@@ -67,11 +73,13 @@ export const religiosityUniversityCampuses: Publication = {
 			authors: ['Stephen T. Ogundipe']
 		},
 		{
-			title: "Aspiration and Activism: Muslim Students' Future-Making in Mbarara, South-Western Uganda",
+			title:
+				"Aspiration and Activism: Muslim Students' Future-Making in Mbarara, South-Western Uganda",
 			authors: ['Dorothea Schulz']
 		},
 		{
-			title: "Islam on University Campuses in Côte d'Ivoire since the 1970s: Muslim Intellectuals and Francophone Salafism",
+			title:
+				"Islam on University Campuses in Côte d'Ivoire since the 1970s: Muslim Intellectuals and Francophone Salafism",
 			authors: ['Frédérick Madore', 'Issouf Binaté']
 		}
 	],

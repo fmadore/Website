@@ -48,7 +48,6 @@
 {/if}
 
 <style>
-
 	.details-grid {
 		display: grid;
 		grid-template-columns: 1fr;

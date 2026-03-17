@@ -18,7 +18,7 @@ export const iwacMcpServer: DigitalHumanitiesProject = {
 		'<li><strong>Sentiment analysis:</strong> Retrieve and compare polarity, centrality, and subjectivity assessments from three AI models (Gemini, ChatGPT, Mistral) for any article</li>' +
 		'<li><strong>Collection statistics:</strong> Get aggregate data on corpus size, newspaper coverage, and cross-country comparisons</li>' +
 		'</ul>' +
-				'<h3>The agent skill: from plumbing to intelligence</h3>' +
+		'<h3>The agent skill: from plumbing to intelligence</h3>' +
 		'<p>A server alone provides plumbing — raw access to data. The companion <a href="https://github.com/fmadore/iwac-mcp-server/tree/main/.claude/skills/iwac-mcp" target="_blank" rel="noopener noreferrer">agent skill</a>, a modular instruction set written in Markdown, encodes the domain knowledge that transforms tool access into methodical research. It structures the AI\'s reasoning into a five-phase workflow inspired by archival research practice:</p>' +
 		'<ol>' +
 		'<li><strong>Scoping:</strong> Assess collection coverage for a given topic across countries, newspapers, and time periods</li>' +

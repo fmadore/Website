@@ -25,12 +25,12 @@ export const appointmentsByDate = [...allAppointments].sort((a, b) => {
 		// Both ongoing, sort by start year descending
 		return b.startYear - a.startYear;
 	}
-	
+
 	// For finished positions, sort by end year descending
 	if (a.endYear !== b.endYear) {
 		return (b.endYear || 0) - (a.endYear || 0);
 	}
-	
+
 	// Same end year, sort by start year descending (more recent start first)
 	return b.startYear - a.startYear;
 });

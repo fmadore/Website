@@ -75,93 +75,93 @@
 <div class="container py-8 page-enter">
 	<div class="max-w-6xl mx-auto">
 		<PageHeader title="Activities" />
-	<PageIntro>
-		This section provides an overview of various professional activities, including workshops,
-		talks, and other engagements. You can browse by year using the sidebar.
-	</PageIntro>
+		<PageIntro>
+			This section provides an overview of various professional activities, including workshops,
+			talks, and other engagements. You can browse by year using the sidebar.
+		</PageIntro>
 
-	<div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-		<div class="lg:col-span-1">
-			<aside class="year-sidebar scroll-reveal">
-				<div class="filter-section">
-					<h2 class="filter-section-title">Browse by Year</h2>
+		<div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+			<div class="lg:col-span-1">
+				<aside class="year-sidebar scroll-reveal">
+					<div class="filter-section">
+						<h2 class="filter-section-title">Browse by Year</h2>
 
-					<ul class="year-list">
-						{#each years as year (year)}
-							<li class="year-list-item">
-								<a href="{base}/activities/year/{year}" class="year-link">
-									<span class="year-label">{year}</span>
-									<span class="year-count">
-										{getCountByYear(year)}
-									</span>
-								</a>
-							</li>
-						{/each}
-					</ul>
-				</div>
+						<ul class="year-list">
+							{#each years as year (year)}
+								<li class="year-list-item">
+									<a href="{base}/activities/year/{year}" class="year-link">
+										<span class="year-label">{year}</span>
+										<span class="year-count">
+											{getCountByYear(year)}
+										</span>
+									</a>
+								</li>
+							{/each}
+						</ul>
+					</div>
 
-				<!-- Tag Cloud Component - show tags from filtered activities -->
-				<TagCloud
-					tags={tagFrequencies}
-					maxTags={25}
-					itemLabel="activity"
-					itemLabelPlural="activities"
-					getTagHref={(tag) => `${base}/activities?tag=${encodeURIComponent(tag)}`}
-				/>
+					<!-- Tag Cloud Component - show tags from filtered activities -->
+					<TagCloud
+						tags={tagFrequencies}
+						maxTags={25}
+						itemLabel="activity"
+						itemLabelPlural="activities"
+						getTagHref={(tag) => `${base}/activities?tag=${encodeURIComponent(tag)}`}
+					/>
 
-				<!-- RSS Subscribe Button -->
-				<div class="rss-section">
-					<a href="{base}/rss.xml" class="rss-subscribe-link glass-button">
-						<Icon icon="mdi:rss" width="18" height="18" aria-hidden="true" />
-						<span>RSS Feed</span>
-					</a>
-				</div>
-			</aside>
-		</div>
+					<!-- RSS Subscribe Button -->
+					<div class="rss-section">
+						<a href="{base}/rss.xml" class="rss-subscribe-link glass-button">
+							<Icon icon="mdi:rss" width="18" height="18" aria-hidden="true" />
+							<span>RSS Feed</span>
+						</a>
+					</div>
+				</aside>
+			</div>
 
-		<div class="lg:col-span-3">
-			<div class="activity-list-container">
-				<div class="activities-header">
-					<h2 class="activities-title">
+			<div class="lg:col-span-3">
+				<div class="activity-list-container">
+					<div class="activities-header">
+						<h2 class="activities-title">
+							{#if selectedTag}
+								Activities tagged with "{selectedTag}"
+							{:else}
+								All Activities
+							{/if}
+						</h2>
 						{#if selectedTag}
-							Activities tagged with "{selectedTag}"
-						{:else}
-							All Activities
+							<Button variant="primary" size="sm" onclick={clearTagFilter} label="Clear filter" />
 						{/if}
-					</h2>
-					{#if selectedTag}
-						<Button variant="primary" size="sm" onclick={clearTagFilter} label="Clear filter" />
+					</div>
+
+					<p class="activities-count">
+						Showing {activityList.length}
+						{activityList.length === 1 ? 'activity' : 'activities'}
+					</p>
+
+					{#if activityList.length > 0}
+						<div class="space-y-8 grid-stagger">
+							{#each activityList as activity (activity.id)}
+								<ActivityItem {activity} />
+							{/each}
+						</div>
+					{:else}
+						<div class="empty-state">
+							<p>No activities found{selectedTag ? ` with the tag "${selectedTag}"` : ''}.</p>
+							{#if selectedTag}
+								<Button
+									variant="primary"
+									size="sm"
+									onclick={clearTagFilter}
+									additionalClasses="mt-4"
+									label="View all activities"
+								/>
+							{/if}
+						</div>
 					{/if}
 				</div>
-
-				<p class="activities-count">
-					Showing {activityList.length}
-					{activityList.length === 1 ? 'activity' : 'activities'}
-				</p>
-
-				{#if activityList.length > 0}
-					<div class="space-y-8 grid-stagger">
-						{#each activityList as activity (activity.id)}
-							<ActivityItem {activity} />
-						{/each}
-					</div>
-				{:else}
-					<div class="empty-state">
-						<p>No activities found{selectedTag ? ` with the tag "${selectedTag}"` : ''}.</p>
-						{#if selectedTag}
-							<Button
-								variant="primary"
-								size="sm"
-								onclick={clearTagFilter}
-								additionalClasses="mt-4"
-								label="View all activities"
-							/>
-						{/if}
-					</div>
-				{/if}
 			</div>
 		</div>
-	</div>
 	</div>
 </div>
 

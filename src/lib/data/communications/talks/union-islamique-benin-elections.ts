@@ -13,7 +13,15 @@ export const unionIslamiqueBenin: Communication = {
 	country: 'Benin',
 	type: 'lecture',
 	language: 'French',
-	tags: ['Benin', 'Islamic Union', 'Elections', 'Religious Organizations', 'Politics', 'Islam', 'West Africa'],
+	tags: [
+		'Benin',
+		'Islamic Union',
+		'Elections',
+		'Religious Organizations',
+		'Politics',
+		'Islam',
+		'West Africa'
+	],
 	image: 'images/communications/union-islamique-benin-elections.webp',
 	heroImage: {
 		src: 'images/communications/union-islamique-benin-elections-hero.webp',

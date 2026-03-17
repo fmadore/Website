@@ -22,7 +22,6 @@
 			const registrations = await navigator.serviceWorker.getRegistrations();
 			for (const reg of registrations) {
 				await reg.unregister();
-				console.log('[PWA] Service Worker unregistered (dev mode)');
 			}
 		}
 	}
@@ -33,7 +32,7 @@
 		try {
 			// Clear any old caches that might contain Workbox or old versions
 			await clearOldCaches();
-			
+
 			const reg = await navigator.serviceWorker.register('/service-worker.js');
 			registration = reg;
 
@@ -62,10 +61,8 @@
 				updateAvailable = true;
 				showUpdatePrompt = true;
 			}
-
-			console.log('[PWA] Service Worker registered');
-		} catch (error) {
-			console.warn('[PWA] Service Worker registration failed:', error);
+		} catch {
+			// Service worker registration failed — non-critical for static site
 		}
 	}
 
@@ -76,25 +73,26 @@
 			const cacheNames = await caches.keys();
 			const currentCachePrefix = 'cache-v';
 			const runtimeCachePrefix = 'runtime-v';
-			
+
 			// Delete caches that don't match our naming convention or contain 'workbox'
 			await Promise.all(
-				cacheNames.map(cacheName => {
+				cacheNames.map((cacheName) => {
 					// Delete Workbox caches
 					if (cacheName.includes('workbox')) {
-						console.log('[PWA] Removing old Workbox cache:', cacheName);
 						return caches.delete(cacheName);
 					}
-					
+
 					// Delete any cache that doesn't start with our expected prefixes
-					if (!cacheName.startsWith(currentCachePrefix) && !cacheName.startsWith(runtimeCachePrefix)) {
-						console.log('[PWA] Removing unrecognized cache:', cacheName);
+					if (
+						!cacheName.startsWith(currentCachePrefix) &&
+						!cacheName.startsWith(runtimeCachePrefix)
+					) {
 						return caches.delete(cacheName);
 					}
 				})
 			);
-		} catch (error) {
-			console.warn('[PWA] Failed to clear old caches:', error);
+		} catch {
+			// Cache cleanup failure is non-critical
 		}
 	}
 
@@ -172,8 +170,7 @@
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		border-radius: var(--border-radius-xl);
 		box-shadow: var(--shadow-xl);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-border) 50%, transparent);
+		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-border) 50%, transparent);
 		z-index: var(--z-modal);
 		animation: slideUp var(--anim-duration-base) var(--anim-ease-out);
 	}

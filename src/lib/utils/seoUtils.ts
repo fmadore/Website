@@ -2,13 +2,7 @@ import type { Communication } from '$lib/types/communication';
 import type { Publication } from '$lib/types';
 import type { Activity } from '$lib/types/activity';
 import type { Grant } from '$lib/types/grant';
-import {
-	author,
-	contact,
-	address,
-	website,
-	socialLinks
-} from '$lib/data/siteConfig';
+import { author, contact, address, website, socialLinks } from '$lib/data/siteConfig';
 import { getDefaultDescription } from '$lib/utils/siteHelpers';
 import { smartTruncate } from '$lib/utils/textUtils';
 import {
@@ -546,8 +540,7 @@ export function createPublicationSEODescription(publication: Publication): strin
 		if (publisher) venueInfo.push(publisher);
 		if (placeOfPublication) venueInfo.push(placeOfPublication);
 	} else if (type === 'encyclopedia') {
-		if (publication.encyclopediaTitle)
-			venueInfo.push(publication.encyclopediaTitle);
+		if (publication.encyclopediaTitle) venueInfo.push(publication.encyclopediaTitle);
 	} else if (type === 'masters-thesis' || type === 'phd-dissertation') {
 		if (publication.university) venueInfo.push(publication.university);
 	}

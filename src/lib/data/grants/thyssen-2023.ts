@@ -4,7 +4,8 @@ import type { Grant } from '$lib/types';
 export const thyssen2023: Grant = {
 	id: 'fritz-thyssen-2023',
 	title: 'Support for an international conference',
-	projectTitle: 'University Campuses in Africa and Beyond: Training Grounds, Moral Spaces and Political Arenas',
+	projectTitle:
+		'University Campuses in Africa and Beyond: Training Grounds, Moral Spaces and Political Arenas',
 	funder: 'Fritz Thyssen Foundation',
 	project: 'Religious Activism on Campuses in Togo and Benin',
 	startYear: 2023,

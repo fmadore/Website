@@ -214,10 +214,7 @@ export function areFiltersActive<T extends object>(filters: T | null | undefined
  * handleSortChange({ sortBy: 'date' }); // Updates activeSort
  */
 export function createSortHandler<T extends string>(allowedSorts: T[]) {
-	return (
-		data: { sortBy: T },
-		setActiveSort: (sort: T) => void
-	): void => {
+	return (data: { sortBy: T }, setActiveSort: (sort: T) => void): void => {
 		if (allowedSorts.includes(data.sortBy)) {
 			setActiveSort(data.sortBy);
 		}

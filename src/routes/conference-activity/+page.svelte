@@ -47,8 +47,9 @@
 	import ToggleButton from '$lib/components/atoms/ToggleButton.svelte';
 
 	// Lazy load MapVisualization to avoid loading maplibre-gl until needed
-	let MapVisualization: typeof import('$lib/components/visualisations/MapVisualization.svelte').default | null =
-		$state(null);
+	let MapVisualization:
+		| typeof import('$lib/components/visualisations/MapVisualization.svelte').default
+		| null = $state(null);
 	let mapLoadError = $state(false);
 
 	async function loadMapComponent() {

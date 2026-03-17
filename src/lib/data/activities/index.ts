@@ -7,7 +7,11 @@ import { loadData } from '$lib/utils/dataLoader';
 const activityModules = import.meta.glob<Record<string, Activity>>('./*.ts', { eager: true });
 
 // Load and validate activities using loadData, filtering out template
-const allActivities: Activity[] = loadData<Activity>(activityModules, 'activity-template-id', 'activity');
+const allActivities: Activity[] = loadData<Activity>(
+	activityModules,
+	'activity-template-id',
+	'activity'
+);
 
 // Sort by date (most recent first)
 export const activitiesByDate = sortByDate(allActivities);

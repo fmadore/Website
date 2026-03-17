@@ -72,50 +72,50 @@
 	<div class="max-w-6xl mx-auto">
 		<PageHeader title="Teaching" />
 
-	<PageIntro>
-		Teaching interests: African History (pre-modern and modern periods), Islam in sub-Saharan
-		Africa, Digital Humanities, West African history.
-	</PageIntro>
+		<PageIntro>
+			Teaching interests: African History (pre-modern and modern periods), Islam in sub-Saharan
+			Africa, Digital Humanities, West African history.
+		</PageIntro>
 
-	<div class="content-grid grid-stagger">
-		{#each teachingItems as item (item.id)}
-			<Card
-				title={item.title}
-				imageUrl={item.imageUrl}
-				linkUrl={item.type === 'course' ? item.syllabusUrl : item.linkUrl}
-				target={item.type === 'guest_lecture' ? '_self' : '_blank'}
-			>
-				{#snippet subtitle()}
-					<span>{item.institution}</span>
-				{/snippet}
+		<div class="content-grid grid-stagger">
+			{#each teachingItems as item (item.id)}
+				<Card
+					title={item.title}
+					imageUrl={item.imageUrl}
+					linkUrl={item.type === 'course' ? item.syllabusUrl : item.linkUrl}
+					target={item.type === 'guest_lecture' ? '_self' : '_blank'}
+				>
+					{#snippet subtitle()}
+						<span>{item.institution}</span>
+					{/snippet}
 
-				{item.description}
+					{item.description}
 
-				{#snippet details()}
-					{#if item.type === 'course' && (item.level || item.period)}
-						<div class="teaching-details">
-							{#if item.level}
-								<p><span class="detail-label">Level:</span> {item.level}</p>
-							{/if}
-							{#if item.period}
-								<p><span class="detail-label">Period:</span> {item.period}</p>
-							{/if}
-						</div>
-					{/if}
-				{/snippet}
+					{#snippet details()}
+						{#if item.type === 'course' && (item.level || item.period)}
+							<div class="teaching-details">
+								{#if item.level}
+									<p><span class="detail-label">Level:</span> {item.level}</p>
+								{/if}
+								{#if item.period}
+									<p><span class="detail-label">Period:</span> {item.period}</p>
+								{/if}
+							</div>
+						{/if}
+					{/snippet}
 
-				{#snippet action()}
-					{#if item.type === 'course' && item.syllabusUrl}
-						<a href={item.syllabusUrl} target="_blank" rel="noopener noreferrer">
-							View Syllabus →
-						</a>
-					{:else if item.type === 'guest_lecture' && item.linkUrl}
-						<a href={item.linkUrl}>View List →</a>
-					{/if}
-				{/snippet}
-			</Card>
-		{/each}
-	</div>
+					{#snippet action()}
+						{#if item.type === 'course' && item.syllabusUrl}
+							<a href={item.syllabusUrl} target="_blank" rel="noopener noreferrer">
+								View Syllabus →
+							</a>
+						{:else if item.type === 'guest_lecture' && item.linkUrl}
+							<a href={item.linkUrl}>View List →</a>
+						{/if}
+					{/snippet}
+				</Card>
+			{/each}
+		</div>
 	</div>
 </div>
 

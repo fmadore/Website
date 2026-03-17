@@ -49,7 +49,8 @@ Ce panel organisé par Frédérick Madore et Vincent Hiribarren fait suite à la
 	},
 	papers: [
 		{
-			title: 'Intelligence artificielle et patrimonialisation : entre indexation automatisée et perte de sens',
+			title:
+				'Intelligence artificielle et patrimonialisation : entre indexation automatisée et perte de sens',
 			authors: [{ name: 'Mbaye Diouf', affiliation: 'Université Cheikh Anta Diop de Dakar' }],
 			abstract: `Dans un contexte de multiplication et de numérisation des archives audiovisuelles, l'intelligence artificielle (IA) s'affirme comme un levier incontournable dans les processus d'indexation et de mise en valeur du patrimoine.
 
@@ -58,8 +59,14 @@ Cette communication interroge les effets de l'automatisation sur la construction
 En mobilisant les apports de l'histoire culturelle, les études critiques sur les données et de l'anthropologie du numérique, cette communication plaide pour une patrimonialisation hybride, combinant intelligence artificielle et médiation humaine, afin de préserver la pluralité interprétative et la mémoire située des pratiques culturelles.`
 		},
 		{
-			title: "Du terrain aux algorithmes : l'intelligence artificielle au service de la linguistique historique africaine",
-			authors: [{ name: 'Promise Dodzi Kpoglu', affiliation: 'LLACAN, Centre national de la recherche scientifique' }],
+			title:
+				"Du terrain aux algorithmes : l'intelligence artificielle au service de la linguistique historique africaine",
+			authors: [
+				{
+					name: 'Promise Dodzi Kpoglu',
+					affiliation: 'LLACAN, Centre national de la recherche scientifique'
+				}
+			],
 			abstract: `La linguistique africaine a longtemps intégré les innovations technologiques dans la documentation et la description. Toutefois, les avancées récentes en intelligence artificielle ouvrent la voie à ce que celles-ci dépassent leurs fonctions traditionnelles pour devenir des outils d'analyse et de la théorisation. Cette étude explore cette question à partir des langues dogons, dont la documentation est riche, mais dont l'étude historique reste limitée par la rareté des données adéquates et l'inaccessibilité du terrain.
 
 Je montre comment des corpus initialement destinés à la description peuvent être mobilisés dans un cadre computationnel afin d'aborder des problématiques historiques. Ainsi, en combinant un modèle de simulation bayésienne et un modèle d'apprentissage profond, l'étude examine la trajectoire diachronique d'un sous-groupe de langues dogon. L'idée est de modéliser les dynamiques d'innovation lexicale, d'emprunt et d'héritage afin d'identifier les processus responsables de la diversité actuelle.
@@ -78,10 +85,14 @@ Est-ce suffisant ? Nous pensons que non ! La limite opérationnelle ne se situer
 D'autre part, les études ont démontré que l'on pouvait réellement apprendre à travers les environnements fournis et dédiés par les IA. Ils permettent une intégration de tuteurs dits intelligents et des scénarios. Des essais très manichéens comme la « guerre des intelligences », « Intelligence Unleashed » et « The Impact of AI on Learning, Teaching, and Education » ont vu jour. Mais cet imbroglio scientifique et technique peut-il remplacer l'historien ? Non ! C'est une technologie de rupture où on doit mettre de l'éthique. L'IA, outil complémentaire des humanités, doit entretenir des interactions avec celles-ci : d'une part, l'intelligence artificielle doit permettre d'élargir le champ d'étude des disciplines en question en y apportant de nouveaux outils, et, d'autre part, les humanités doivent pouvoir concevoir des paradigmes et méthodes permettant de mieux analyser les impacts sociétaux de celle-ci. Nous devons nous orienter vers des approches qui stipulent une hypothèse de bonne entente, et qui favorisent une cohabitation efficiente et pacifique entre cette intelligence dite artificielle et celle du cerveau car l'intelligence naturelle demeure, de nos jours, irremplaçable encore.`
 		},
 		{
-			title: 'Retrouver la révolte malgache de 1947. Le deep learning appliqué aux inventaires de destruction.',
+			title:
+				'Retrouver la révolte malgache de 1947. Le deep learning appliqué aux inventaires de destruction.',
 			authors: [
 				{ name: 'Naomi Bell', affiliation: 'Institut des Mondes Africains (IMAF)' },
-				{ name: 'Stéphane Lamassé', affiliation: 'LAMOP, PIREH, Université Paris 1 Panthéon-Sorbonne' }
+				{
+					name: 'Stéphane Lamassé',
+					affiliation: 'LAMOP, PIREH, Université Paris 1 Panthéon-Sorbonne'
+				}
 			],
 			abstract: `Dans cette communication, nous allons montrer quelques résultats d'un projet de recherche en cours, mené dans le cadre d'une thèse de doctorat, qui vise à réexaminer la révolte malgache de 1947 par le prisme des dégâts matériels, recensés dans des inventaires de pertes, grâce à l'usage du deep learning. L'objectif est double : mieux comprendre l'ampleur des destructions matérielles et interroger ce que le deep learning, en tant que méthodologie, permet de voir dans un contexte colonial marqué par les rapports de domination.
 

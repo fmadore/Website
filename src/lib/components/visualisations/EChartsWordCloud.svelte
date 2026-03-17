@@ -117,7 +117,10 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 				top: title ? 50 : 'center',
 				width: '90%',
 				height: title ? '85%' : '90%',
-				sizeRange: [isMobile ? minFontSize * 0.8 : minFontSize, isMobile ? maxFontSize * 0.7 : maxFontSize],
+				sizeRange: [
+					isMobile ? minFontSize * 0.8 : minFontSize,
+					isMobile ? maxFontSize * 0.7 : maxFontSize
+				],
 				rotationRange: rotationRange,
 				rotationStep: 15,
 				gridSize: isMobile ? 6 : 8,
@@ -175,7 +178,7 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 
 				isReady = true;
 			} catch (error) {
-				console.error('Failed to initialize WordCloud:', error);
+				if (import.meta.env.DEV) console.error('Failed to initialize WordCloud:', error);
 			}
 		})();
 
@@ -196,7 +199,7 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 			try {
 				chart.setOption(chartOption, true);
 			} catch (error) {
-				console.error('Failed to update WordCloud options:', error);
+				if (import.meta.env.DEV) console.error('Failed to update WordCloud options:', error);
 			}
 		}
 	});

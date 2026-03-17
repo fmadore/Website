@@ -1,11 +1,11 @@
 /**
  * Pre-bundled icons for offline use
- * 
+ *
  * This module registers all icons at build time to avoid runtime API calls
  * to api.iconify.design, improving LCP and reducing critical path latency.
- * 
+ *
  * Icons are bundled directly into the JavaScript, eliminating network requests.
- * 
+ *
  * Note: Some newer icons (like bluesky) may not be available in bundled packages
  * and will still be fetched from the API as a fallback.
  */

@@ -13,7 +13,14 @@ export const pointPassageFrontieresReligieuses: Communication = {
 	country: 'Niger',
 	type: 'workshop',
 	language: 'French',
-	tags: ['Religious Boundaries', 'Niger', 'Interfaith Relations', 'Religious Studies', 'Islam', 'West Africa'],
+	tags: [
+		'Religious Boundaries',
+		'Niger',
+		'Interfaith Relations',
+		'Religious Studies',
+		'Islam',
+		'West Africa'
+	],
 	image: 'images/communications/point-de-passage-frontieres-religieuses.webp',
 	heroImage: {
 		src: 'images/communications/point-de-passage-frontieres-religieuses-hero.webp',

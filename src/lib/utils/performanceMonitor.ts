@@ -66,8 +66,8 @@ class PerformanceMonitor {
 
 			observer.observe({ type, buffered: true });
 			this.observers.push(observer);
-		} catch (error) {
-			console.warn(`Failed to observe ${type}:`, error);
+		} catch {
+			// Some browsers don't support all PerformanceObserver types
 		}
 	}
 
@@ -136,7 +136,9 @@ export function assessConnectionQuality(): string {
 		const rtt = connection.rtt;
 		const downlink = connection.downlink;
 
-		console.log(`[Connection] Type: ${effectiveType}, RTT: ${rtt}ms, Downlink: ${downlink}Mbps`);
+		if (import.meta.env.DEV) {
+			console.log(`[Connection] Type: ${effectiveType}, RTT: ${rtt}ms, Downlink: ${downlink}Mbps`);
+		}
 		return effectiveType;
 	}
 
@@ -152,4 +154,3 @@ export function assessConnectionQuality(): string {
 
 	return 'unknown';
 }
-

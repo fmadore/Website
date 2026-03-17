@@ -13,7 +13,14 @@ export const defenseLaiciteMusulmansBurkina: Communication = {
 	country: 'Senegal',
 	type: 'workshop',
 	language: 'French',
-	tags: ['Secularism', 'Burkina Faso', 'Islam', 'Political Claims', 'State-Religion Relations', 'West Africa'],
+	tags: [
+		'Secularism',
+		'Burkina Faso',
+		'Islam',
+		'Political Claims',
+		'State-Religion Relations',
+		'West Africa'
+	],
 	image: 'images/communications/workshop-Dakar-2019.webp',
 	heroImage: {
 		src: 'images/communications/workshop-Dakar-2019-hero.webp',

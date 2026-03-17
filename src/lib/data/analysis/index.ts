@@ -11,12 +11,7 @@
 import type { CorpusAnalysis, WordFrequency, WordCloudConfig, NgramFrequency } from '$lib/types';
 
 // Re-export from publications index (individual files for fast loading)
-export {
-	publicationAnalyses,
-	getAnalysis,
-	hasAnalysis,
-	getAnalyzedIds
-} from './publications';
+export { publicationAnalyses, getAnalysis, hasAnalysis, getAnalyzedIds } from './publications';
 
 import { publicationAnalyses } from './publications';
 
@@ -171,9 +166,7 @@ function filterFrequencies(frequencies: WordFrequency[], config: WordCloudConfig
 
 	// Filter by POS if specified
 	if (config.posFilter && config.posFilter.length > 0) {
-		result = result.filter(
-			(f) => f.pos && f.pos !== 'other' && config.posFilter!.includes(f.pos)
-		);
+		result = result.filter((f) => f.pos && f.pos !== 'other' && config.posFilter!.includes(f.pos));
 	}
 
 	// Sort by TF-IDF if requested
@@ -224,4 +217,3 @@ export function getCombinedBigrams(
 		.sort((a, b) => b.count - a.count)
 		.slice(0, maxBigrams);
 }
-

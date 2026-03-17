@@ -9,11 +9,7 @@
 	"orientation": "portrait-primary",
 	"scope": "/",
 	"lang": "en",
-	"categories": [
-		"academia",
-		"research",
-		"personal"
-	],
+	"categories": ["academia", "research", "personal"],
 	"screenshots": [
 		{
 			"src": "/images/screenshot-wide.png",

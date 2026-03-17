@@ -5,12 +5,7 @@ export const stiasDHAIAfricanStudiesWorkshop2026: Communication = {
 	id: 'stias-dh-ai-african-studies-workshop-2026',
 	title:
 		'Digital Humanities and Artificial Intelligence in African Studies: Towards Sustainable and Equitable Practices',
-	authors: [
-		'Frédérick Madore',
-		'Vincent Hiribarren',
-		'Emmanuel Ngue Um',
-		'Menno van Zaanen'
-	],
+	authors: ['Frédérick Madore', 'Vincent Hiribarren', 'Emmanuel Ngue Um', 'Menno van Zaanen'],
 	date: '21-24 September 2026',
 	dateISO: '2026-09-21',
 	year: 2026,
@@ -34,7 +29,7 @@ export const stiasDHAIAfricanStudiesWorkshop2026: Communication = {
 	url: 'https://fmadore.github.io/stias-dh-ai-workshop-2026/',
 	urlLabel: 'Workshop Website',
 	additionalUrls: [],
-    image: 'images/communications/point-sud-logo.svg',
+	image: 'images/communications/point-sud-logo.svg',
 	coordinates: {
 		latitude: -33.9321,
 		longitude: 18.8602

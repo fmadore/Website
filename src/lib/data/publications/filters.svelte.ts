@@ -120,8 +120,7 @@ const system = createFilterSystem<
 			match: (pub: Pub, range: YearRange) => pub.year >= range.min && pub.year <= range.max
 		},
 		tags: {
-			match: (pub: Pub, values: string[]) =>
-				!!pub.tags && pub.tags.some((t) => values.includes(t)),
+			match: (pub: Pub, values: string[]) => !!pub.tags && pub.tags.some((t) => values.includes(t)),
 			countExtractor: (pub: Pub) => pub.tags
 		},
 		languages: {
@@ -133,17 +132,12 @@ const system = createFilterSystem<
 		},
 		authors: {
 			match: (pub: Pub, values: string[]) => {
-				const hasMatchingAuthor =
-					pub.authors && pub.authors.some((a) => values.includes(a));
+				const hasMatchingAuthor = pub.authors && pub.authors.some((a) => values.includes(a));
 				const isExcludedType = pub.type === 'chapter' || pub.type === 'encyclopedia';
 				const hasMatchingEditor =
-					!isExcludedType &&
-					pub.editors &&
-					extractEditors(pub).some((e) => values.includes(e));
+					!isExcludedType && pub.editors && extractEditors(pub).some((e) => values.includes(e));
 				const hasMatchingPrefaceAuthor = pub.prefacedBy && values.includes(pub.prefacedBy);
-				const hasMatchingTocAuthor = extractTocAuthors(pub).some((a) =>
-					values.includes(a)
-				);
+				const hasMatchingTocAuthor = extractTocAuthors(pub).some((a) => values.includes(a));
 				return !!(
 					hasMatchingAuthor ||
 					hasMatchingEditor ||

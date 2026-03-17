@@ -19,7 +19,6 @@
 		children?: Snippet;
 		[key: string]: unknown;
 	} = $props();
-
 </script>
 
 <a
@@ -39,69 +38,68 @@
 </a>
 
 <style>
-        .nav-link {
-                color: var(--color-text);
-                text-decoration: none;
-                font-weight: var(--font-weight-medium);
-                font-size: var(--font-size-base);
-                padding: var(--space-2) 0;
-                transition:
-                        color var(--duration-fast) var(--ease-out);
-                position: relative;
-                display: flex;
-                align-items: center;
-                gap: var(--space-1);
-        }
+	.nav-link {
+		color: var(--color-text);
+		text-decoration: none;
+		font-weight: var(--font-weight-medium);
+		font-size: var(--font-size-base);
+		padding: var(--space-2) 0;
+		transition: color var(--duration-fast) var(--ease-out);
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: var(--space-1);
+	}
 
-        .nav-link::after {
-                content: '';
-                position: absolute;
-                bottom: calc(-1 * var(--space-0-5));
-                left: 0;
-                width: 0;
-                height: var(--border-width-medium);
-                background-color: var(--color-primary);
-                transition: width var(--duration-normal) var(--ease-out);
-        }
+	.nav-link::after {
+		content: '';
+		position: absolute;
+		bottom: calc(-1 * var(--space-0-5));
+		left: 0;
+		width: 0;
+		height: var(--border-width-medium);
+		background-color: var(--color-primary);
+		transition: width var(--duration-normal) var(--ease-out);
+	}
 
 	.nav-link:hover {
 		color: var(--color-primary);
 	}
 
-        .nav-link:hover::after {
-                width: 100%;
-        }
+	.nav-link:hover::after {
+		width: 100%;
+	}
 
-        .dropdown-icon {
-                display: inline-block;
-                font-size: var(--font-size-xs);
-                transition: transform var(--duration-normal) var(--ease-out);
-                line-height: 1;
-        }
+	.dropdown-icon {
+		display: inline-block;
+		font-size: var(--font-size-xs);
+		transition: transform var(--duration-normal) var(--ease-out);
+		line-height: 1;
+	}
 
-        .nav-link:focus-visible {
-                outline: var(--border-width-medium) solid var(--color-primary);
-                outline-offset: var(--space-1);
-                border-radius: var(--border-radius-sm);
-        }
+	.nav-link:focus-visible {
+		outline: var(--border-width-medium) solid var(--color-primary);
+		outline-offset: var(--space-1);
+		border-radius: var(--border-radius-sm);
+	}
 
 	@media (hover: none) {
 		/* Prevent hover state issues on touch devices */
-                .nav-link:hover::after {
-                        width: 0;
-                }
+		.nav-link:hover::after {
+			width: 0;
+		}
 
-                .nav-link:active::after {
-                        width: 100%;
-                }
-        }
+		.nav-link:active::after {
+			width: 100%;
+		}
+	}
 
-        /* High contrast mode support */
-        @media (prefers-contrast: high) {
-                .nav-link::after {
-                        height: calc(var(--border-width-medium) + var(--border-width-thin));
-                }
-        }
+	/* High contrast mode support */
+	@media (prefers-contrast: high) {
+		.nav-link::after {
+			height: calc(var(--border-width-medium) + var(--border-width-thin));
+		}
+	}
 
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {

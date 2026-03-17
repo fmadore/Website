@@ -60,10 +60,10 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'jean', count: 2, lemma: 'jean', pos: 'propn' }
 	],
 	bigrams: [
-		{ ngram: 'communauté musulmane', words: ["communaut\u00e9", "musulmane"], count: 6 },
-		{ ngram: 'mouvement sunnite', words: ["mouvement", "sunnite"], count: 3 },
-		{ ngram: 'oumarou kanazoé', words: ["oumarou", "kanazo\u00e9"], count: 3 },
-		{ ngram: 'upper volta', words: ["upper", "volta"], count: 2 },
-		{ ngram: 'assimi kouanda', words: ["assimi", "kouanda"], count: 2 }
+		{ ngram: 'communauté musulmane', words: ['communaut\u00e9', 'musulmane'], count: 6 },
+		{ ngram: 'mouvement sunnite', words: ['mouvement', 'sunnite'], count: 3 },
+		{ ngram: 'oumarou kanazoé', words: ['oumarou', 'kanazo\u00e9'], count: 3 },
+		{ ngram: 'upper volta', words: ['upper', 'volta'], count: 2 },
+		{ ngram: 'assimi kouanda', words: ['assimi', 'kouanda'], count: 2 }
 	]
 };

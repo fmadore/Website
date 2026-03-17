@@ -161,8 +161,14 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			let top = clientY - containerRect.top - tooltipRect.height - tooltipMargin;
 
 			// Clamp within container
-			left = Math.min(Math.max(left, tooltipMargin), containerRect.width - tooltipRect.width - tooltipMargin);
-			top = Math.min(Math.max(top, tooltipMargin), containerRect.height - tooltipRect.height - tooltipMargin);
+			left = Math.min(
+				Math.max(left, tooltipMargin),
+				containerRect.width - tooltipRect.width - tooltipMargin
+			);
+			top = Math.min(
+				Math.max(top, tooltipMargin),
+				containerRect.height - tooltipRect.height - tooltipMargin
+			);
 
 			tooltip.style('left', `${left}px`).style('top', `${top}px`);
 		}
@@ -243,7 +249,8 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			.style('opacity', 0.9)
 			.style('filter', 'drop-shadow(0 4px 6px color-mix(in srgb, black 10%, transparent))')
 			.on('mouseenter', function (event, d) {
-				d3!.select(this)
+				d3!
+					.select(this)
 					.transition()
 					.duration(hoverTransitionMs)
 					.style('opacity', 1)
@@ -257,7 +264,8 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 				positionTooltip(event.clientX, event.clientY);
 			})
 			.on('mouseleave', function () {
-				d3!.select(this)
+				d3!
+					.select(this)
 					.transition()
 					.duration(hoverTransitionMs)
 					.style('opacity', 0.9)

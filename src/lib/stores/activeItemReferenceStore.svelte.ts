@@ -21,4 +21,3 @@ export function getActiveReferenceId() {
 export function setActiveReferenceId(value: string | null) {
 	activeId = value;
 }
-

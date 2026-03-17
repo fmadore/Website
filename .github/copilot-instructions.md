@@ -38,6 +38,7 @@ SvelteKit academic website using **Svelte 5** with runes, TypeScript, and glassm
 ```
 
 **Rules:**
+
 - `$props()` for component props with TypeScript types
 - `$state()` for reactive local state
 - `$derived()` for computed values (NOT `$:` labels)
@@ -46,62 +47,73 @@ SvelteKit academic website using **Svelte 5** with runes, TypeScript, and glassm
 
 ## State Management
 
-| Pattern | Use For | Files |
-|---------|---------|-------|
-| Module `$state` + getters | Global singleton state | `globalState.svelte.ts` |
-| Svelte `writable`/`derived` | Complex filter state | `filterUtils.ts` |
+| Pattern                     | Use For                | Files                   |
+| --------------------------- | ---------------------- | ----------------------- |
+| Module `$state` + getters   | Global singleton state | `globalState.svelte.ts` |
+| Svelte `writable`/`derived` | Complex filter state   | `filterUtils.ts`        |
 
 ```typescript
 // Global state pattern
 let state = $state<T>(initial);
-export function getState() { return state; }
-export function setState(v: T) { state = v; }
+export function getState() {
+	return state;
+}
+export function setState(v: T) {
+	state = v;
+}
 ```
 
 ## Design System
 
 **Always use CSS variables from `src/styles/base/variables.css`** - never hardcode values.
 
-| Category | Examples |
-|----------|----------|
-| Colors | `--color-primary`, `--color-accent`, `--color-text`, `--color-surface` |
-| Spacing | `--space-sm` through `--space-xl`, or `--spacing-4` (numeric) |
-| Typography | `--font-size-sm`, `--font-family-serif`, `--font-weight-bold` |
-| Effects | `--shadow-md`, `--border-radius-lg`, `--duration-normal` |
-| Focus | `--focus-ring`, `--focus-ring-offset`, `--focus-ring-color` |
+| Category   | Examples                                                               |
+| ---------- | ---------------------------------------------------------------------- |
+| Colors     | `--color-primary`, `--color-accent`, `--color-text`, `--color-surface` |
+| Spacing    | `--space-sm` through `--space-xl`, or `--spacing-4` (numeric)          |
+| Typography | `--font-size-sm`, `--font-family-serif`, `--font-weight-bold`          |
+| Effects    | `--shadow-md`, `--border-radius-lg`, `--duration-normal`               |
+| Focus      | `--focus-ring`, `--focus-ring-offset`, `--focus-ring-color`            |
 
 **Breakpoints** (use PostCSS Custom Media):
+
 ```css
-@media (--sm) { }  /* 640px */
-@media (--md) { }  /* 768px */
-@media (--lg) { }  /* 1024px */
+@media (--sm) {
+} /* 640px */
+@media (--md) {
+} /* 768px */
+@media (--lg) {
+} /* 1024px */
 ```
+
 ⚠️ **NEVER** use `var()` in media queries - it's invalid CSS.
 
 ## Glassmorphism Classes
 
-| Class | Use For |
-|-------|---------|
-| `.glass-card` | Cards with hover effects |
-| `.glass-panel` | Panels/sidebars |
-| `.glass-button` | Buttons |
-| `.glass-light/medium/heavy` | Intensity variants |
+| Class                       | Use For                  |
+| --------------------------- | ------------------------ |
+| `.glass-card`               | Cards with hover effects |
+| `.glass-panel`              | Panels/sidebars          |
+| `.glass-button`             | Buttons                  |
+| `.glass-light/medium/heavy` | Intensity variants       |
 
 ## Animation System (CSS-Only)
 
 **Use CSS classes, NOT the deprecated `scrollAnimations.ts`:**
 
-| Class | Effect |
-|-------|--------|
-| `.scroll-reveal` | Fade-up on viewport entry |
-| `.scroll-reveal-scale` | Scale-in for cards/images |
-| `.grid-stagger` | Stagger children animations |
-| `.page-enter` | Page load animation |
+| Class                  | Effect                      |
+| ---------------------- | --------------------------- |
+| `.scroll-reveal`       | Fade-up on viewport entry   |
+| `.scroll-reveal-scale` | Scale-in for cards/images   |
+| `.grid-stagger`        | Stagger children animations |
+| `.page-enter`          | Page load animation         |
 
 ```svelte
 <section class="scroll-reveal">...</section>
 <div class="card scroll-reveal-scale">...</div>
-<ul class="grid-stagger">{#each items}<li>...</li>{/each}</ul>
+<ul class="grid-stagger">
+	{#each items}<li>...</li>{/each}
+</ul>
 ```
 
 **Legacy classes** (`fade-in-up`, `stagger-1`-`6`) are valid for mount-time animations only.
@@ -127,13 +139,13 @@ export function setState(v: T) { state = v; }
 
 ### Never Hardcode These Values
 
-| Category | Hardcoded (❌) | Use Instead (✅) |
-|----------|----------------|------------------|
-| Colors | `#1d4ed8`, `rgb()` | `var(--color-primary)` |
-| Spacing | `16px`, `1rem` | `var(--space-4)` |
-| Typography | `14px` | `var(--font-size-sm)` |
-| Duration | `200ms` | `var(--duration-normal)` |
-| Shadows | `box-shadow: 0 4px...` | `var(--shadow-md)` |
+| Category   | Hardcoded (❌)         | Use Instead (✅)         |
+| ---------- | ---------------------- | ------------------------ |
+| Colors     | `#1d4ed8`, `rgb()`     | `var(--color-primary)`   |
+| Spacing    | `16px`, `1rem`         | `var(--space-4)`         |
+| Typography | `14px`                 | `var(--font-size-sm)`    |
+| Duration   | `200ms`                | `var(--duration-normal)` |
+| Shadows    | `box-shadow: 0 4px...` | `var(--shadow-md)`       |
 
 ### Transparency Pattern
 
@@ -164,5 +176,3 @@ node .github/skills/css-design-audit/audit.mjs src/lib/components/menu/Header.sv
 ```
 
 See [CHECKLIST.md](.github/skills/css-design-audit/CHECKLIST.md) for the full review checklist.
-
-

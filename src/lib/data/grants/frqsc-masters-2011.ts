@@ -4,8 +4,9 @@ export const frqscMasters2011: Grant = {
 	id: 'frqsc-masters-2011',
 	title: "Master's Research Scholarship",
 	funder: 'FRQSC',
-	project: 'Youth and Women\'s Islamic Activism in Côte d\'Ivoire and Burkina Faso',
-	projectTitle: 'D\'instruments du pouvoir néo-patrimonial à « vedettes » médiatiques engagées : différentes générations d\'imâms du vendredi d\'Abidjan face au politique (1960-2007)',
+	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
+	projectTitle:
+		"D'instruments du pouvoir néo-patrimonial à « vedettes » médiatiques engagées : différentes générations d'imâms du vendredi d'Abidjan face au politique (1960-2007)",
 	startYear: 2011,
 	endYear: 2012,
 	dateRangeString: '2011-2012',

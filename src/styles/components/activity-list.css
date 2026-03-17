@@ -198,7 +198,6 @@
 
 /* Respect user motion preferences */
 @media (prefers-reduced-motion: reduce) {
-
 	.activity-title,
 	.filter-tag,
 	.year-tag {

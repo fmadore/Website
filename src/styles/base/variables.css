@@ -144,7 +144,6 @@
 	--color-timeline-awards: #d97706; /* Amber 600 */
 	--color-timeline-fieldwork: #14b8a6; /* Teal 500 */
 
-
 	/* ===== UTILITY COLORS ===== */
 	--color-white: #ffffff;
 
@@ -430,19 +429,20 @@
 	--shadow-lg:
 		0 20px 25px -5px color-mix(in srgb, var(--color-black) 10%, transparent),
 		0 8px 10px -6px color-mix(in srgb, var(--color-black) 10%, transparent);
-	--shadow-xl:
-		0 25px 50px -12px color-mix(in srgb, var(--color-black) 25%, transparent);
-	--shadow-2xl:
-		0 35px 60px -15px color-mix(in srgb, var(--color-black) 30%, transparent);
+	--shadow-xl: 0 25px 50px -12px color-mix(in srgb, var(--color-black) 25%, transparent);
+	--shadow-2xl: 0 35px 60px -15px color-mix(in srgb, var(--color-black) 30%, transparent);
 	--shadow-inner: inset 0 2px 4px 0 color-mix(in srgb, var(--color-black) 5%, transparent);
 	--shadow-none: none;
 
 	/* Colored shadows for emphasis */
 	--shadow-primary: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-teal-700) 25%, transparent);
-	--shadow-primary-lg: 0 10px 25px -5px color-mix(in srgb, var(--sys-color-teal-700) 30%, transparent);
+	--shadow-primary-lg: 0 10px 25px -5px
+		color-mix(in srgb, var(--sys-color-teal-700) 30%, transparent);
 	--shadow-accent: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-amber-500) 25%, transparent);
-	--shadow-highlight: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-amber-400) 25%, transparent);
-	--shadow-success: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-emerald-500) 25%, transparent);
+	--shadow-highlight: 0 4px 14px -2px
+		color-mix(in srgb, var(--sys-color-amber-400) 25%, transparent);
+	--shadow-success: 0 4px 14px -2px
+		color-mix(in srgb, var(--sys-color-emerald-500) 25%, transparent);
 	--shadow-danger: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-red-600) 25%, transparent);
 
 	/* Glass shadows - softer for glassmorphism */
@@ -719,10 +719,26 @@
 	--btn-active-transform: translateY(1px);
 
 	/* ===== GRADIENTS ===== */
-	--gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
-	--gradient-accent: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%);
-	--gradient-accent-highlight: linear-gradient(135deg, var(--color-accent) 0%, var(--color-highlight) 100%);
-	--gradient-highlight-accent: linear-gradient(135deg, var(--color-highlight) 0%, var(--color-accent) 100%);
+	--gradient-primary: linear-gradient(
+		135deg,
+		var(--color-primary) 0%,
+		var(--color-primary-light) 100%
+	);
+	--gradient-accent: linear-gradient(
+		135deg,
+		var(--color-accent) 0%,
+		var(--color-accent-light) 100%
+	);
+	--gradient-accent-highlight: linear-gradient(
+		135deg,
+		var(--color-accent) 0%,
+		var(--color-highlight) 100%
+	);
+	--gradient-highlight-accent: linear-gradient(
+		135deg,
+		var(--color-highlight) 0%,
+		var(--color-accent) 100%
+	);
 
 	/* ===== COMPONENT-SPECIFIC TOKENS ===== */
 	/* Iframe heights */
@@ -864,10 +880,8 @@ html.dark {
 	--shadow-lg:
 		0 20px 25px -5px color-mix(in srgb, var(--color-black) 45%, transparent),
 		0 8px 10px -6px color-mix(in srgb, var(--color-black) 40%, transparent);
-	--shadow-xl:
-		0 25px 50px -12px color-mix(in srgb, var(--color-black) 60%, transparent);
-	--shadow-2xl:
-		0 35px 60px -15px color-mix(in srgb, var(--color-black) 70%, transparent);
+	--shadow-xl: 0 25px 50px -12px color-mix(in srgb, var(--color-black) 60%, transparent);
+	--shadow-2xl: 0 35px 60px -15px color-mix(in srgb, var(--color-black) 70%, transparent);
 
 	/* Colored shadows (dark) */
 	--shadow-primary: 0 4px 14px -2px color-mix(in srgb, #2dd4bf 30%, transparent);

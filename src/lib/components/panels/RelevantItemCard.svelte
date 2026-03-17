@@ -50,7 +50,11 @@
 
 <style>
 	.relevant-item {
-		--card-accent-gradient: linear-gradient(180deg, var(--color-accent) 0%, var(--color-highlight) 100%);
+		--card-accent-gradient: linear-gradient(
+			180deg,
+			var(--color-accent) 0%,
+			var(--color-highlight) 100%
+		);
 	}
 
 	.relevant-item-meta {

@@ -123,7 +123,11 @@
 <style>
 	/* Activity-specific styles - harmonized with ProfileBanner and ContentBody */
 	.activity-item {
-		--card-accent-gradient: linear-gradient(180deg, var(--color-success) 0%, var(--color-highlight) 100%);
+		--card-accent-gradient: linear-gradient(
+			180deg,
+			var(--color-success) 0%,
+			var(--color-highlight) 100%
+		);
 	}
 
 	.activity-meta {

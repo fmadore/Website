@@ -70,7 +70,10 @@ function removeScript(scriptId: string): void {
  * @param scriptId - Unique ID for the script element (e.g., 'activity-json-ld')
  * @param jsonLdStringGetter - A function that returns the JSON-LD string (for reactivity)
  */
-export function useJsonLdScript(scriptId: string, jsonLdStringGetter: () => string | null | undefined): void {
+export function useJsonLdScript(
+	scriptId: string,
+	jsonLdStringGetter: () => string | null | undefined
+): void {
 	$effect(() => {
 		if (!browser) return;
 

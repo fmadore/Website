@@ -16,9 +16,7 @@ import { createFilterSystem } from '$lib/utils/filterStoreFactory';
 
 // --- Computed unique values ---
 
-const allCoAuthors = Array.from(
-	new Set(allCommunications.flatMap((comm) => comm.authors || []))
-)
+const allCoAuthors = Array.from(new Set(allCommunications.flatMap((comm) => comm.authors || [])))
 	.filter((author) => author !== 'Frédérick Madore')
 	.sort();
 
@@ -35,11 +33,7 @@ const allLanguages = Array.from(
 const allCountries = Object.keys(communicationsByCountry || {}).sort();
 
 const allProjects = Array.from(
-	new Set(
-		allCommunications
-			.filter((comm) => comm.project)
-			.map((comm) => comm.project as string)
-	)
+	new Set(allCommunications.filter((comm) => comm.project).map((comm) => comm.project as string))
 ).sort();
 
 // --- Filter System ---
@@ -68,8 +62,7 @@ const system = createFilterSystem<
 	},
 	dimensions: {
 		types: {
-			match: (comm: Communication, values: string[]) =>
-				!!comm.type && values.includes(comm.type),
+			match: (comm: Communication, values: string[]) => !!comm.type && values.includes(comm.type),
 			countExtractor: (comm: Communication) => comm.type
 		},
 		yearRange: {
@@ -101,12 +94,9 @@ const system = createFilterSystem<
 		authors: {
 			match: (comm: Communication, values: string[]) => {
 				const authors = comm.authors || [];
-				return authors.some(
-					(a) => a !== 'Frédérick Madore' && values.includes(a)
-				);
+				return authors.some((a) => a !== 'Frédérick Madore' && values.includes(a));
 			},
-			countExtractor: (comm: Communication) =>
-				comm.authors?.filter((a) => a !== 'Frédérick Madore')
+			countExtractor: (comm: Communication) => comm.authors?.filter((a) => a !== 'Frédérick Madore')
 		},
 		countries: {
 			match: (comm: Communication, values: string[]) =>

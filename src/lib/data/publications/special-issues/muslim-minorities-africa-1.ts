@@ -38,19 +38,23 @@ export const muslimMinoritiesAfrica1: Publication = {
 			authors: ['Dorothea E. Schulz']
 		},
 		{
-			title: 'A State of (Dis)unity and Uncertain Belonging: The Central African Republic and its Muslim Minority',
+			title:
+				'A State of (Dis)unity and Uncertain Belonging: The Central African Republic and its Muslim Minority',
 			authors: ['Laura Collins', 'Gino Vlavonou']
 		},
 		{
-			title: 'A Muslim Minority and the Use of Media: Charismatic Aesthetics of the Ahmadiyya in West Africa',
+			title:
+				'A Muslim Minority and the Use of Media: Charismatic Aesthetics of the Ahmadiyya in West Africa',
 			authors: ['Katrin Langewiesche']
 		},
 		{
-			title: "Kenyan Muslims' Minority Status: Theological Divisions, Ethno-Racial Competition and Ambiguous Relations with the State",
+			title:
+				"Kenyan Muslims' Minority Status: Theological Divisions, Ethno-Racial Competition and Ambiguous Relations with the State",
 			authors: ['Hassan Juma Ndzovu']
 		},
 		{
-			title: 'Ambiguous Positionings: The Politics and Experiences of Moral Learning at Gülen Movement Schools in Urban Tanzania',
+			title:
+				'Ambiguous Positionings: The Politics and Experiences of Moral Learning at Gülen Movement Schools in Urban Tanzania',
 			authors: ['Kristina Mashimi']
 		}
 	]

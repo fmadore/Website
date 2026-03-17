@@ -51,9 +51,7 @@ export const load: PageLoad = ({ params }) => {
 		const authors = formatAuthors(communication.authors);
 		// Add URL to the primary author
 		jsonLdObject.performer = authors.map((a) =>
-			a.name === 'Frédérick Madore'
-				? { ...a, url: 'https://www.frederickmadore.com' }
-				: a
+			a.name === 'Frédérick Madore' ? { ...a, url: 'https://www.frederickmadore.com' } : a
 		);
 	}
 

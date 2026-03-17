@@ -58,11 +58,7 @@
 .accent-dot {
 	width: var(--space-2);
 	height: var(--space-2);
-	background: linear-gradient(
-		135deg,
-		var(--color-primary) 0%,
-		var(--color-accent) 100%
-	);
+	background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
 	border-radius: var(--border-radius-full);
 	flex-shrink: 0;
 }
@@ -71,11 +67,7 @@
 .accent-dot-lg {
 	width: var(--space-3);
 	height: var(--space-3);
-	background: linear-gradient(
-		135deg,
-		var(--color-primary) 0%,
-		var(--color-accent) 100%
-	);
+	background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
 	border-radius: var(--border-radius-full);
 	flex-shrink: 0;
 }
@@ -125,11 +117,7 @@
 	left: 0;
 	width: var(--space-12);
 	height: 3px;
-	background: linear-gradient(
-		90deg,
-		var(--color-primary) 0%,
-		var(--color-accent) 100%
-	);
+	background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 100%);
 	border-radius: var(--border-radius-full);
 	transition: width var(--duration-normal) var(--ease-out);
 }
@@ -192,11 +180,7 @@
 /* ===== GRADIENT TEXT ===== */
 /* Apply gradient to text (use sparingly) */
 .text-gradient {
-	background: linear-gradient(
-		90deg,
-		var(--color-primary) 0%,
-		var(--color-accent) 100%
-	);
+	background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 100%);
 	-webkit-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;

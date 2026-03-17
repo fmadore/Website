@@ -16,7 +16,8 @@
 		<span class="font-medium">{grant.title}</span>, {grant.funder}.
 		{#if grant.amount}
 			<div class="text-sm text-light">
-				{grant.amount.toLocaleString('en-US')} {grant.currency}{#if grant.status && grant.status !== 'Awarded'}&nbsp;[{grant.status}]{/if}
+				{grant.amount.toLocaleString('en-US')}
+				{grant.currency}{#if grant.status && grant.status !== 'Awarded'}&nbsp;[{grant.status}]{/if}
 			</div>
 		{:else if grant.status && grant.status !== 'Awarded'}
 			<div class="text-sm text-light">

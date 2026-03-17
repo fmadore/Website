@@ -57,7 +57,16 @@ img {
 }
 
 /* Prevent text overflow on long words/URLs */
-h1, h2, h3, h4, h5, h6, p, li, td, th {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li,
+td,
+th {
 	overflow-wrap: break-word;
 }
 

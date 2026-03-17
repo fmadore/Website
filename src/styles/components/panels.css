@@ -9,25 +9,30 @@
 	overflow: hidden;
 	margin-bottom: var(--space-xl);
 	/* Enhanced glassmorphism with subtle gradient overlay to match ProfileBanner and ContentBody */
-	background: linear-gradient(135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 2.5%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 1.5%, transparent) 100%);
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
+		color-mix(in srgb, var(--color-highlight) 2.5%, transparent) 50%,
+		color-mix(in srgb, var(--color-accent) 1.5%, transparent) 100%
+	);
 }
 
 /* Hover effects for glassmorphism - consistent with ContentBody */
 .panel:hover {
 	transform: var(--transform-lift-sm);
 	/* Enhanced hover effect with stronger gradient */
-	background: linear-gradient(135deg,
-			color-mix(in srgb, var(--color-primary) 6%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 2.5%, transparent) 100%);
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--color-primary) 6%, transparent) 0%,
+		color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent) 50%,
+		color-mix(in srgb, var(--color-accent) 2.5%, transparent) 100%
+	);
 }
 
 .panel-header {
 	padding: 0 0 var(--space-lg) 0;
-	border-bottom: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
+	border-bottom: var(--border-width-thin) solid
+		color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
 	background: transparent;
 	position: relative;
 }
@@ -67,7 +72,8 @@
 
 .panel-footer {
 	padding: var(--space-lg) 0 0 0;
-	border-top: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
+	border-top: var(--border-width-thin) solid
+		color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
 	background: transparent;
 	margin-top: var(--space-lg);
 }
@@ -95,7 +101,8 @@
 
 .view-all-container {
 	padding: var(--space-lg) 0 0 0;
-	border-top: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
+	border-top: var(--border-width-thin) solid
+		color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
 	margin-top: var(--space-lg);
 	text-align: center;
 }
@@ -105,33 +112,41 @@
 /* Activities Panel Specific */
 .panel-activities {
 	/* Slightly different gradient for activities */
-	background: linear-gradient(135deg,
-			color-mix(in srgb, var(--color-success) 3%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 2.5%, transparent) 50%,
-			color-mix(in srgb, var(--color-primary) 1.5%, transparent) 100%);
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--color-success) 3%, transparent) 0%,
+		color-mix(in srgb, var(--color-highlight) 2.5%, transparent) 50%,
+		color-mix(in srgb, var(--color-primary) 1.5%, transparent) 100%
+	);
 }
 
 .panel-activities:hover {
-	background: linear-gradient(135deg,
-			color-mix(in srgb, var(--color-success) 5%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-primary) 2.5%, transparent) 100%);
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--color-success) 5%, transparent) 0%,
+		color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent) 50%,
+		color-mix(in srgb, var(--color-primary) 2.5%, transparent) 100%
+	);
 }
 
 /* Items Panel Specific */
 .panel-items {
 	/* Slightly different gradient for items */
-	background: linear-gradient(135deg,
-			color-mix(in srgb, var(--color-accent) 3%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 2.5%, transparent) 50%,
-			color-mix(in srgb, var(--color-primary) 1.5%, transparent) 100%);
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--color-accent) 3%, transparent) 0%,
+		color-mix(in srgb, var(--color-highlight) 2.5%, transparent) 50%,
+		color-mix(in srgb, var(--color-primary) 1.5%, transparent) 100%
+	);
 }
 
 .panel-items:hover {
-	background: linear-gradient(135deg,
-			color-mix(in srgb, var(--color-accent) 5%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-primary) 2.5%, transparent) 100%);
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--color-accent) 5%, transparent) 0%,
+		color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent) 50%,
+		color-mix(in srgb, var(--color-primary) 2.5%, transparent) 100%
+	);
 }
 
 /* Filter and container styling for Button components */
@@ -185,45 +200,57 @@
 
 /* Dark mode overrides - harmonized with glassmorphism utilities */
 :global(html.dark) .panel {
-	background: linear-gradient(135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 5%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 3%, transparent) 100%);
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
+		color-mix(in srgb, var(--color-highlight) 5%, transparent) 50%,
+		color-mix(in srgb, var(--color-accent) 3%, transparent) 100%
+	);
 }
 
 :global(html.dark) .panel:hover {
-	background: linear-gradient(135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 5%, transparent) 100%);
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) 0%,
+		color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 50%,
+		color-mix(in srgb, var(--color-accent) 5%, transparent) 100%
+	);
 }
 
 :global(html.dark) .panel-activities {
-	background: linear-gradient(135deg,
-			color-mix(in srgb, var(--color-success) 6%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 5%, transparent) 50%,
-			color-mix(in srgb, var(--color-primary) 3%, transparent) 100%);
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--color-success) 6%, transparent) 0%,
+		color-mix(in srgb, var(--color-highlight) 5%, transparent) 50%,
+		color-mix(in srgb, var(--color-primary) 3%, transparent) 100%
+	);
 }
 
 :global(html.dark) .panel-activities:hover {
-	background: linear-gradient(135deg,
-			color-mix(in srgb, var(--color-success) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-primary) 5%, transparent) 100%);
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--color-success) calc(var(--opacity-low) * 100%), transparent) 0%,
+		color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 50%,
+		color-mix(in srgb, var(--color-primary) 5%, transparent) 100%
+	);
 }
 
 :global(html.dark) .panel-items {
-	background: linear-gradient(135deg,
-			color-mix(in srgb, var(--color-accent) 6%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 5%, transparent) 50%,
-			color-mix(in srgb, var(--color-primary) 3%, transparent) 100%);
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--color-accent) 6%, transparent) 0%,
+		color-mix(in srgb, var(--color-highlight) 5%, transparent) 50%,
+		color-mix(in srgb, var(--color-primary) 3%, transparent) 100%
+	);
 }
 
 :global(html.dark) .panel-items:hover {
-	background: linear-gradient(135deg,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-primary) 5%, transparent) 100%);
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--color-accent) calc(var(--opacity-low) * 100%), transparent) 0%,
+		color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 50%,
+		color-mix(in srgb, var(--color-primary) 5%, transparent) 100%
+	);
 }
 
 /* Responsive design */
@@ -249,7 +276,6 @@
 
 /* Respect user motion preferences */
 @media (prefers-reduced-motion: reduce) {
-
 	.panel,
 	.panel-title::after {
 		transition: none;

@@ -7,7 +7,8 @@
 			year: '2025',
 			role: 'Consultant',
 			organization: 'Communitology',
-			description: 'Provide research-driven analysis and expert testimony in asylum and immigration proceedings. Prepare Country of Origin Information (COI) reports for cases on Benin, Togo, and Côte d\'Ivoire.'
+			description:
+				"Provide research-driven analysis and expert testimony in asylum and immigration proceedings. Prepare Country of Origin Information (COI) reports for cases on Benin, Togo, and Côte d'Ivoire."
 		}
 	];
 </script>
@@ -19,10 +20,12 @@
 			<CVEntry year={item.year}>
 				{item.role}, {item.organization}.
 				<p class="text-sm mt-1">
-					Provide research-driven analysis and expert testimony in asylum and immigration proceedings.
+					Provide research-driven analysis and expert testimony in asylum and immigration
+					proceedings.
 				</p>
 				<p class="text-sm mt-1">
-					Prepare Country of Origin Information (COI) reports for cases on Benin, Togo, and Côte d'Ivoire.
+					Prepare Country of Origin Information (COI) reports for cases on Benin, Togo, and Côte
+					d'Ivoire.
 				</p>
 			</CVEntry>
 		{/each}

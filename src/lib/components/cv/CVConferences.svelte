@@ -20,8 +20,10 @@
 					{@const commDate = new Date(comm.dateISO)}
 					{@const formattedAuthors = formatCVAuthorList(comm.authors)}
 					<CVEntry year={commDate.getFullYear()}>
-						{#if formattedAuthors}{@html formattedAuthors}. {/if}
-						"{comm.panelTitle || comm.title}"{#if comm.conference}, <em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}, {commDate.toLocaleDateString(
+						{#if formattedAuthors}{@html formattedAuthors}.
+						{/if}
+						"{comm.panelTitle || comm.title}"{#if comm.conference}, <em>{comm.conference}</em
+							>{/if}{#if comm.location}, {comm.location}{/if}, {commDate.toLocaleDateString(
 							'en-GB',
 							{
 								day: 'numeric',
@@ -41,14 +43,13 @@
 					{@const commDate = new Date(comm.dateISO)}
 					{@const formattedAuthors = formatCVAuthorList(comm.authors)}
 					<CVEntry year={commDate.getFullYear()}>
-						{#if formattedAuthors}{@html formattedAuthors}. {/if}
-						"{comm.title}"{#if comm.conference}, <em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if}, {commDate.toLocaleDateString(
-							'en-GB',
-							{
-								day: 'numeric',
-								month: 'long'
-							}
-						)}.
+						{#if formattedAuthors}{@html formattedAuthors}.
+						{/if}
+						"{comm.title}"{#if comm.conference}, <em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if},
+						{commDate.toLocaleDateString('en-GB', {
+							day: 'numeric',
+							month: 'long'
+						})}.
 					</CVEntry>
 				{/each}
 			</div>

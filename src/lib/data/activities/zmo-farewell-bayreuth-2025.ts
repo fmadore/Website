@@ -24,7 +24,15 @@ export const zmoFarewellBayreuth2025: Activity = {
 		src: 'images/activities/zmo-farewell-hero.webp',
 		alt: 'The main entrance of the Leibniz-Zentrum Moderner Orient (ZMO) building in Berlin'
 	},
-	tags: ['Career', 'ZMO', 'University of Bayreuth', 'Africa Multiple', 'Digital Humanities', 'Data Curation', 'African Studies'],
+	tags: [
+		'Career',
+		'ZMO',
+		'University of Bayreuth',
+		'Africa Multiple',
+		'Digital Humanities',
+		'Data Curation',
+		'African Studies'
+	],
 	type: 'career',
 	panelType: 'event'
 };

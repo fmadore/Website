@@ -59,10 +59,12 @@
 	position: absolute;
 	inset: 0;
 	border-radius: inherit;
-	background: linear-gradient(to bottom,
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-white) 0%, transparent) 50%,
-			color-mix(in srgb, var(--color-black) calc(var(--opacity-very-low) * 100%), transparent) 100%);
+	background: linear-gradient(
+		to bottom,
+		color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent) 0%,
+		color-mix(in srgb, var(--color-white) 0%, transparent) 50%,
+		color-mix(in srgb, var(--color-black) calc(var(--opacity-very-low) * 100%), transparent) 100%
+	);
 	pointer-events: none;
 	opacity: 0;
 	transition: opacity var(--duration-normal) ease;
@@ -77,23 +79,29 @@
 
 /* Primary Button - Terracotta with subtle gradient */
 .btn-primary {
-	background: linear-gradient(135deg,
-			var(--color-primary) 0%,
-			color-mix(in srgb, var(--color-primary) 85%, var(--color-accent)) 100%);
+	background: linear-gradient(
+		135deg,
+		var(--color-primary) 0%,
+		color-mix(in srgb, var(--color-primary) 85%, var(--color-accent)) 100%
+	);
 	color: var(--color-white);
 	border-color: transparent;
 	box-shadow:
 		var(--shadow),
-		inset 0 var(--border-width-thin) 0 color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
+		inset 0 var(--border-width-thin) 0
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 }
 
 .btn-primary:hover:not(:disabled) {
-	background: linear-gradient(135deg,
-			color-mix(in srgb, var(--color-primary) 90%, var(--color-black)),
-			color-mix(in srgb, var(--color-accent) 90%, var(--color-black)));
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, var(--color-primary) 90%, var(--color-black)),
+		color-mix(in srgb, var(--color-accent) 90%, var(--color-black))
+	);
 	box-shadow:
 		var(--shadow-md),
-		inset 0 var(--border-width-thin) 0 color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
+		inset 0 var(--border-width-thin) 0
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 	transform: var(--transform-lift-sm);
 }
 
@@ -111,7 +119,11 @@
 
 .btn-secondary:hover:not(:disabled) {
 	background: color-mix(in srgb, var(--color-surface) 95%, var(--color-primary));
-	border-color: color-mix(in srgb, var(--color-black) calc(var(--opacity-medium) * 100%), transparent);
+	border-color: color-mix(
+		in srgb,
+		var(--color-black) calc(var(--opacity-medium) * 100%),
+		transparent
+	);
 	box-shadow: var(--shadow);
 	transform: var(--transform-lift-sm);
 }
@@ -136,13 +148,21 @@
 .btn-outline-secondary {
 	background: transparent;
 	color: var(--color-text);
-	border-color: color-mix(in srgb, var(--color-black) calc(var(--opacity-medium) * 100%), transparent);
+	border-color: color-mix(
+		in srgb,
+		var(--color-black) calc(var(--opacity-medium) * 100%),
+		transparent
+	);
 	box-shadow: none;
 }
 
 .btn-outline-secondary:hover:not(:disabled) {
 	background: var(--color-surface);
-	border-color: color-mix(in srgb, var(--color-black) calc(var(--opacity-medium-high) * 100%), transparent);
+	border-color: color-mix(
+		in srgb,
+		var(--color-black) calc(var(--opacity-medium-high) * 100%),
+		transparent
+	);
 	box-shadow: var(--shadow);
 	transform: var(--transform-lift-sm);
 }
@@ -156,7 +176,11 @@
 }
 
 .btn-ghost:hover:not(:disabled) {
-	background: color-mix(in srgb, var(--color-black) calc(var(--opacity-very-low) * 100%), transparent);
+	background: color-mix(
+		in srgb,
+		var(--color-black) calc(var(--opacity-very-low) * 100%),
+		transparent
+	);
 	color: var(--color-text);
 	transform: none;
 }
@@ -167,15 +191,19 @@
 	color: var(--color-white);
 	border-color: transparent;
 	box-shadow:
-		0 var(--border-width-thin) var(--space-1) color-mix(in srgb, var(--color-danger) calc(var(--opacity-medium) * 100%), transparent),
-		0 var(--border-width-thin) var(--space-2) color-mix(in srgb, var(--color-danger) calc(var(--opacity-low) * 100%), transparent);
+		0 var(--border-width-thin) var(--space-1)
+			color-mix(in srgb, var(--color-danger) calc(var(--opacity-medium) * 100%), transparent),
+		0 var(--border-width-thin) var(--space-2)
+			color-mix(in srgb, var(--color-danger) calc(var(--opacity-low) * 100%), transparent);
 }
 
 .btn-danger:hover:not(:disabled) {
 	background: var(--color-danger-dark);
 	box-shadow:
-		0 var(--space-1) var(--space-2) color-mix(in srgb, var(--color-danger) calc(var(--opacity-medium-high) * 100%), transparent),
-		0 var(--space-2) var(--space-1) color-mix(in srgb, var(--color-danger) calc(var(--opacity-medium) * 100%), transparent);
+		0 var(--space-1) var(--space-2)
+			color-mix(in srgb, var(--color-danger) calc(var(--opacity-medium-high) * 100%), transparent),
+		0 var(--space-2) var(--space-1)
+			color-mix(in srgb, var(--color-danger) calc(var(--opacity-medium) * 100%), transparent);
 	transform: var(--transform-lift-sm);
 }
 
@@ -247,33 +275,70 @@
 	background: color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 	-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 	backdrop-filter: blur(var(--glass-blur-amount));
-	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+	border-color: color-mix(
+		in srgb,
+		var(--color-white) calc(var(--opacity-medium) * 100%),
+		transparent
+	);
 	box-shadow:
 		var(--shadow-md),
-		inset 0 var(--border-width-thin) 0 color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+		inset 0 var(--border-width-thin) 0
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
 }
 
 .btn-glass:hover:not(:disabled) {
-	background: color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
-	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-medium-high) * 100%), transparent);
+	background: color-mix(
+		in srgb,
+		var(--color-white) calc(var(--opacity-medium) * 100%),
+		transparent
+	);
+	border-color: color-mix(
+		in srgb,
+		var(--color-white) calc(var(--opacity-medium-high) * 100%),
+		transparent
+	);
 	transform: var(--transform-lift-sm);
 }
 
 /* Apply glass effect to other variants */
 .btn-glass.btn-primary {
-	background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent);
-	border-color: color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent);
+	background: color-mix(
+		in srgb,
+		var(--color-primary) calc(var(--opacity-medium) * 100%),
+		transparent
+	);
+	border-color: color-mix(
+		in srgb,
+		var(--color-primary) calc(var(--opacity-medium-high) * 100%),
+		transparent
+	);
 }
 
 .btn-glass.btn-primary:hover:not(:disabled) {
-	background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent);
-	border-color: color-mix(in srgb, var(--color-primary) calc(var(--glass-opacity-medium) * 100%), transparent);
+	background: color-mix(
+		in srgb,
+		var(--color-primary) calc(var(--opacity-medium-high) * 100%),
+		transparent
+	);
+	border-color: color-mix(
+		in srgb,
+		var(--color-primary) calc(var(--glass-opacity-medium) * 100%),
+		transparent
+	);
 }
 
 .btn-glass.btn-outline-primary {
-	background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent);
+	background: color-mix(
+		in srgb,
+		var(--color-primary) calc(var(--opacity-very-low) * 100%),
+		transparent
+	);
 	color: var(--color-primary);
-	border-color: color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent);
+	border-color: color-mix(
+		in srgb,
+		var(--color-primary) calc(var(--opacity-medium-high) * 100%),
+		transparent
+	);
 }
 
 .btn-glass.btn-outline-primary:hover:not(:disabled) {
@@ -285,61 +350,115 @@
 .btn-glass.btn-outline-secondary {
 	background: color-mix(in srgb, var(--color-surface) calc(var(--opacity-low) * 100%), transparent);
 	color: var(--color-text);
-	border-color: color-mix(in srgb, var(--color-text) calc(var(--opacity-medium) * 100%), transparent);
+	border-color: color-mix(
+		in srgb,
+		var(--color-text) calc(var(--opacity-medium) * 100%),
+		transparent
+	);
 }
 
 .btn-glass.btn-outline-secondary:hover:not(:disabled) {
-	background: color-mix(in srgb, var(--color-surface) calc(var(--opacity-medium-high) * 100%), transparent);
+	background: color-mix(
+		in srgb,
+		var(--color-surface) calc(var(--opacity-medium-high) * 100%),
+		transparent
+	);
 	color: var(--color-text);
-	border-color: color-mix(in srgb, var(--color-text) calc(var(--opacity-medium-high) * 100%), transparent);
+	border-color: color-mix(
+		in srgb,
+		var(--color-text) calc(var(--opacity-medium-high) * 100%),
+		transparent
+	);
 }
 
 /* ===== DARK MODE ADJUSTMENTS ===== */
 
 :global(html.dark) .btn::before {
-	background: linear-gradient(to bottom,
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-very-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-white) 0%, transparent) 50%,
-			color-mix(in srgb, var(--color-black) calc(var(--opacity-low) * 100%), transparent) 100%);
+	background: linear-gradient(
+		to bottom,
+		color-mix(in srgb, var(--color-white) calc(var(--opacity-very-low) * 100%), transparent) 0%,
+		color-mix(in srgb, var(--color-white) 0%, transparent) 50%,
+		color-mix(in srgb, var(--color-black) calc(var(--opacity-low) * 100%), transparent) 100%
+	);
 }
 
 :global(html.dark) .btn-secondary {
-	background: color-mix(in srgb, var(--color-white) calc(var(--opacity-very-low) * 100%), transparent);
+	background: color-mix(
+		in srgb,
+		var(--color-white) calc(var(--opacity-very-low) * 100%),
+		transparent
+	);
 	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 }
 
 :global(html.dark) .btn-secondary:hover:not(:disabled) {
 	background: color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
-	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+	border-color: color-mix(
+		in srgb,
+		var(--color-white) calc(var(--opacity-medium) * 100%),
+		transparent
+	);
 }
 
 :global(html.dark) .btn-outline-secondary {
-	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+	border-color: color-mix(
+		in srgb,
+		var(--color-white) calc(var(--opacity-medium) * 100%),
+		transparent
+	);
 }
 
 :global(html.dark) .btn-outline-secondary:hover:not(:disabled) {
-	background: color-mix(in srgb, var(--color-white) calc(var(--opacity-very-low) * 100%), transparent);
-	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-medium-high) * 100%), transparent);
+	background: color-mix(
+		in srgb,
+		var(--color-white) calc(var(--opacity-very-low) * 100%),
+		transparent
+	);
+	border-color: color-mix(
+		in srgb,
+		var(--color-white) calc(var(--opacity-medium-high) * 100%),
+		transparent
+	);
 }
 
 :global(html.dark) .btn-ghost:hover:not(:disabled) {
-	background: color-mix(in srgb, var(--color-white) calc(var(--opacity-very-low) * 100%), transparent);
+	background: color-mix(
+		in srgb,
+		var(--color-white) calc(var(--opacity-very-low) * 100%),
+		transparent
+	);
 }
 
 :global(html.dark) .btn-glass {
-	background: color-mix(in srgb, var(--color-white) calc(var(--opacity-very-low) * 100%), transparent);
+	background: color-mix(
+		in srgb,
+		var(--color-white) calc(var(--opacity-very-low) * 100%),
+		transparent
+	);
 	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 }
 
 :global(html.dark) .btn-glass:hover:not(:disabled) {
 	background: color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
-	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+	border-color: color-mix(
+		in srgb,
+		var(--color-white) calc(var(--opacity-medium) * 100%),
+		transparent
+	);
 }
 
 :global(html.dark) .btn-glass.btn-outline-primary {
-	background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent);
+	background: color-mix(
+		in srgb,
+		var(--color-primary) calc(var(--opacity-very-low) * 100%),
+		transparent
+	);
 	color: var(--color-primary);
-	border-color: color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent);
+	border-color: color-mix(
+		in srgb,
+		var(--color-primary) calc(var(--opacity-medium) * 100%),
+		transparent
+	);
 }
 
 :global(html.dark) .btn-glass.btn-outline-primary:hover:not(:disabled) {
@@ -349,15 +468,27 @@
 }
 
 :global(html.dark) .btn-glass.btn-outline-secondary {
-	background: color-mix(in srgb, var(--color-white) calc(var(--opacity-very-low) * 100%), transparent);
+	background: color-mix(
+		in srgb,
+		var(--color-white) calc(var(--opacity-very-low) * 100%),
+		transparent
+	);
 	color: var(--color-text);
-	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+	border-color: color-mix(
+		in srgb,
+		var(--color-white) calc(var(--opacity-medium) * 100%),
+		transparent
+	);
 }
 
 :global(html.dark) .btn-glass.btn-outline-secondary:hover:not(:disabled) {
 	background: color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 	color: var(--color-text);
-	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-medium-high) * 100%), transparent);
+	border-color: color-mix(
+		in srgb,
+		var(--color-white) calc(var(--opacity-medium-high) * 100%),
+		transparent
+	);
 }
 
 /* ===== ANIMATION UTILITIES ===== */

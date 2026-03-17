@@ -5,8 +5,9 @@ export const bombardierDoctoral2013: Grant = {
 	id: 'bombardier-doctoral-2013',
 	title: 'Joseph-Armand Bombardier Canada Graduate Scholarships Program Doctoral Scholarships',
 	funder: 'SSHRC',
-	project: 'Youth and Women\'s Islamic Activism in Côte d\'Ivoire and Burkina Faso',
-	projectTitle: 'Islam, médias et espace public en Afrique de l\'Ouest (Côte d\'Ivoire et Burkina Faso) : reconfiguration des rapports intergénérationnels et de genre (1960 à nos jours)',
+	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
+	projectTitle:
+		"Islam, médias et espace public en Afrique de l'Ouest (Côte d'Ivoire et Burkina Faso) : reconfiguration des rapports intergénérationnels et de genre (1960 à nos jours)",
 	startYear: 2013,
 	endYear: 2015,
 	dateRangeString: '2013-2015',

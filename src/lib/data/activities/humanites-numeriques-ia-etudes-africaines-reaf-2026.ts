@@ -46,14 +46,24 @@ export const activity: Activity = {
             <li>Vincent Hiribarren, King's College London, Londres, vincent.hiribarren@kcl.ac.uk</li>
         </ul>
     `,
-	tags: ['REAF', 'Digital Humanities', 'AI', 'Methodology', 'Panel', 'Call for Papers', 'African Studies', 'Conference'],
+	tags: [
+		'REAF',
+		'Digital Humanities',
+		'AI',
+		'Methodology',
+		'Panel',
+		'Call for Papers',
+		'African Studies',
+		'Conference'
+	],
 	type: 'conference',
 	image: 'images/communications/reaf-2026.webp',
 	heroImage: {
 		src: 'images/communications/reaf-2026-hero.webp',
 		alt: '9ème édition Rencontres des Études Africaines en France'
 	},
-    pdfPath: 'files/humanites-numeriques-ia-etudes-africaines-reaf-2026.pdf',
-    pdfTitle: 'Appel à propositions - Humanités numériques (DH) et IA et dans les études africaines (REAF 2026)',
+	pdfPath: 'files/humanites-numeriques-ia-etudes-africaines-reaf-2026.pdf',
+	pdfTitle:
+		'Appel à propositions - Humanités numériques (DH) et IA et dans les études africaines (REAF 2026)',
 	panelType: 'conference'
 };

@@ -78,11 +78,7 @@ Provides consistent structure for all research project pages including:
 	useGrantsJsonLd(() => projectName);
 </script>
 
-<SEO
-	title="{title} | Frédérick Madore"
-	description={seoDescription}
-	keywords={seoKeywords}
-/>
+<SEO title="{title} | Frédérick Madore" description={seoDescription} keywords={seoKeywords} />
 
 <div class="container py-8 page-enter">
 	<div class="content-wrapper">

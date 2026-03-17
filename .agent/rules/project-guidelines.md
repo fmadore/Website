@@ -16,12 +16,12 @@ When writing Svelte code, you MUST use the Svelte MCP server tools:
 
 ### Available MCP Tools
 
-| Tool | Purpose | When to Use |
-|------|---------|-------------|
-| `list-sections` | Discover documentation sections | **FIRST** - at start of any Svelte task |
-| `get-documentation` | Fetch full documentation content | After list-sections, get ALL relevant sections |
-| `svelte-autofixer` | Analyze code for issues/suggestions | **ALWAYS** before finalizing Svelte code |
-| `playground-link` | Generate Svelte Playground link | Only after user confirmation |
+| Tool                | Purpose                             | When to Use                                    |
+| ------------------- | ----------------------------------- | ---------------------------------------------- |
+| `list-sections`     | Discover documentation sections     | **FIRST** - at start of any Svelte task        |
+| `get-documentation` | Fetch full documentation content    | After list-sections, get ALL relevant sections |
+| `svelte-autofixer`  | Analyze code for issues/suggestions | **ALWAYS** before finalizing Svelte code       |
+| `playground-link`   | Generate Svelte Playground link     | Only after user confirmation                   |
 
 ### Workflow
 
@@ -37,6 +37,7 @@ When writing Svelte code, you MUST use the Svelte MCP server tools:
 ## Critical: Svelte 5 Requirements
 
 When writing Svelte code, use Context7 MCP to fetch up-to-date Svelte 5 documentation:
+
 1. Query Context7 for Svelte 5 patterns and best practices
 2. Write code following Svelte 5 runes syntax
 3. Run `npm run check` to validate code
@@ -73,19 +74,22 @@ When writing Svelte code, use Context7 MCP to fetch up-to-date Svelte 5 document
 
 **Always use CSS variables from `src/styles/base/variables.css`** - never hardcode values.
 
-| Category   | Examples                                                                 |
-| ---------- | ------------------------------------------------------------------------ |
-| Colors     | `--color-primary`, `--color-accent`, `--color-text`, `--color-surface`   |
-| Spacing    | `--space-sm` through `--space-xl`, or `--spacing-4` (numeric)            |
-| Typography | `--font-size-sm`, `--font-family-serif`, `--font-weight-bold`            |
-| Effects    | `--shadow-md`, `--border-radius-lg`, `--duration-normal`                 |
+| Category   | Examples                                                               |
+| ---------- | ---------------------------------------------------------------------- |
+| Colors     | `--color-primary`, `--color-accent`, `--color-text`, `--color-surface` |
+| Spacing    | `--space-sm` through `--space-xl`, or `--spacing-4` (numeric)          |
+| Typography | `--font-size-sm`, `--font-family-serif`, `--font-weight-bold`          |
+| Effects    | `--shadow-md`, `--border-radius-lg`, `--duration-normal`               |
 
 ### Breakpoints (PostCSS Custom Media)
 
 ```css
-@media (--sm) { }  /* 640px */
-@media (--md) { }  /* 768px */
-@media (--lg) { }  /* 1024px */
+@media (--sm) {
+} /* 640px */
+@media (--md) {
+} /* 768px */
+@media (--lg) {
+} /* 1024px */
 ```
 
 > [!CAUTION]
@@ -95,7 +99,7 @@ When writing Svelte code, use Context7 MCP to fetch up-to-date Svelte 5 document
 
 Use `color-mix()` instead of `rgba(var(--*-rgb), opacity)` for transparent colors:
 
-```css
+````css
 /* ✅ Preferred - uses color directly */
 background: color-mix(in srgb, var(--color-primary) 10%, transparent);
 border: 1px solid color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
@@ -127,7 +131,7 @@ background: rgba(var(--color-primary-rgb), 0.1);
 <section class="scroll-reveal">...</section>
 <div class="card scroll-reveal-scale">...</div>
 <ul class="grid-stagger">{#each items}<li>...</li>{/each}</ul>
-```
+````
 
 **Legacy classes** (`fade-in-up`, `stagger-1`-`6`) are valid for mount-time animations only.
 
@@ -143,12 +147,12 @@ background: rgba(var(--color-primary-rgb), 0.1);
 
 ## File Organization
 
-| Type       | Location                                           |
-| ---------- | -------------------------------------------------- |
+| Type       | Location                                            |
+| ---------- | --------------------------------------------------- |
 | Components | `src/lib/components/` (atoms, molecules, organisms) |
 | Styles     | `src/styles/` (base, components, layout, utilities) |
-| Pages      | `src/routes/`                                      |
-| Data       | `src/lib/data/`                                    |
+| Pages      | `src/routes/`                                       |
+| Data       | `src/lib/data/`                                     |
 
 ## Development Commands
 

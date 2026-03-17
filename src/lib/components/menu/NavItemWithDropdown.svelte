@@ -62,15 +62,15 @@
 	}
 
 	/* Add a buffer zone below the nav link to prevent accidental dropdown closing */
-        .dropdown-hover-wrapper::after {
-                content: '';
-                position: absolute;
-                bottom: calc(-1 * var(--space-3));
-                left: 0;
-                width: 100%;
-                height: var(--space-3);
-                background: transparent;
-        }
+	.dropdown-hover-wrapper::after {
+		content: '';
+		position: absolute;
+		bottom: calc(-1 * var(--space-3));
+		left: 0;
+		width: 100%;
+		height: var(--space-3);
+		background: transparent;
+	}
 
 	/* Ensure the nav item is properly positioned for its dropdown */
 	.nav-item {

@@ -17,7 +17,14 @@ export const introductionReligiosityUniversityCampuses: Publication = {
 	pageCount: 19,
 	language: 'English',
 	doi: '10.58144/20241107-000',
-	tags: ['Africa', 'University Campuses', 'Religiosity', 'Higher Education', 'Religious Movements', 'Religion'],
+	tags: [
+		'Africa',
+		'University Campuses',
+		'Religiosity',
+		'Higher Education',
+		'Religious Movements',
+		'Religion'
+	],
 	url: 'https://doi.org/10.58144/20241107-000',
 	image: 'images/publications/religiosity-university-campuses.webp',
 	heroImage: {

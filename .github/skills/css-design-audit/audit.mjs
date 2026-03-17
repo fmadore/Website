@@ -41,7 +41,7 @@ const CURRENT_PALETTE = {
 	'--color-border': '#e8e4df',
 	// Background
 	'--color-background': '#ffffff',
-	'--color-background-dark': '#1a1612',
+	'--color-background-dark': '#1a1612'
 };
 
 // OLD palette colors that should be flagged as LEGACY/DEPRECATED
@@ -67,7 +67,7 @@ const LEGACY_COLORS = {
 	// Old cool surfaces
 	'#f8fafc': { token: '--color-surface', note: 'OLD cool white - use warm #faf9f7' },
 	'#f1f5f9': { token: '--color-surface-alt', note: 'OLD slate-100 - use #f5f3f0' },
-	'#e2e8f0': { token: '--color-border', note: 'OLD slate-200 - use warm #e8e4df' },
+	'#e2e8f0': { token: '--color-border', note: 'OLD slate-200 - use warm #e8e4df' }
 };
 
 // Colors that are OK (current design tokens or intentional fixed colors)
@@ -105,7 +105,7 @@ const ALLOWED_COLORS = {
 	'#5c8ab4': '--color-timeline-publications (dusty blue)',
 	'#a67c9b': '--color-timeline-presentations (mauve)',
 	'#cd7f32': '--color-timeline-awards (bronze)',
-	'#6b9a8d': '--color-timeline-fieldwork (sage teal)',
+	'#6b9a8d': '--color-timeline-fieldwork (sage teal)'
 };
 
 // Deprecated patterns to flag in comments/documentation
@@ -122,7 +122,7 @@ const DEPRECATED_TERMS = [
 	'blue-500',
 	'teal-700',
 	'teal-600',
-	'teal-500',
+	'teal-500'
 ];
 
 const SPACING_PATTERNS = {
@@ -169,7 +169,7 @@ const SPACING_PATTERNS = {
 	'3.5rem': '--space-14',
 	'4rem': '--space-16',
 	'5rem': '--space-20',
-	'6rem': '--space-24',
+	'6rem': '--space-24'
 };
 
 const DURATION_PATTERNS = {
@@ -178,7 +178,7 @@ const DURATION_PATTERNS = {
 	'200ms': '--duration-normal',
 	'300ms': '--duration-moderate',
 	'500ms': '--duration-slow',
-	'700ms': '--duration-slower',
+	'700ms': '--duration-slower'
 };
 
 const BORDER_RADIUS_PATTERNS = {
@@ -197,18 +197,18 @@ const BORDER_RADIUS_PATTERNS = {
 	'0.75rem': '--border-radius-lg',
 	'1rem': '--border-radius-xl',
 	'1.25rem': '--border-radius-2xl',
-	'1.5rem': '--border-radius-3xl',
+	'1.5rem': '--border-radius-3xl'
 };
 
 const ZINDEX_PATTERNS = {
-	'1000': '--z-dropdown',
-	'1020': '--z-sticky',
-	'1030': '--z-fixed',
-	'1040': '--z-modal-backdrop',
-	'1050': '--z-modal',
-	'1060': '--z-popover',
-	'1070': '--z-tooltip',
-	'1080': '--z-toast',
+	1000: '--z-dropdown',
+	1020: '--z-sticky',
+	1030: '--z-fixed',
+	1040: '--z-modal-backdrop',
+	1050: '--z-modal',
+	1060: '--z-popover',
+	1070: '--z-tooltip',
+	1080: '--z-toast'
 };
 
 // Issue types
@@ -224,7 +224,7 @@ const ISSUE_TYPES = {
 	INVALID_MEDIA_QUERY: 'invalid-media-query',
 	RGBA_COOL_GRAY: 'rgba-cool-gray',
 	DEPRECATED_TERMINOLOGY: 'deprecated-terminology',
-	OLD_SYSTEM_COLOR_VAR: 'old-system-color-var',
+	OLD_SYSTEM_COLOR_VAR: 'old-system-color-var'
 };
 
 /**
@@ -354,8 +354,12 @@ function analyzeFile(filePath) {
 			const lineNum = block.startLine + idx;
 
 			// Skip comments and variable definitions
-			if (line.trim().startsWith('/*') || line.trim().startsWith('*') ||
-			    line.trim().startsWith('//') || line.trim().startsWith('--')) {
+			if (
+				line.trim().startsWith('/*') ||
+				line.trim().startsWith('*') ||
+				line.trim().startsWith('//') ||
+				line.trim().startsWith('--')
+			) {
 				return;
 			}
 
@@ -409,8 +413,16 @@ function analyzeFile(filePath) {
 					});
 				}
 				// Old slate variants
-				if ((r >= 30 && r <= 100) && (g >= 41 && g <= 120) && (b >= 59 && b <= 140) &&
-				    Math.abs(b - r) > 20) { // Cool gray has higher blue than red
+				if (
+					r >= 30 &&
+					r <= 100 &&
+					g >= 41 &&
+					g <= 120 &&
+					b >= 59 &&
+					b <= 140 &&
+					Math.abs(b - r) > 20
+				) {
+					// Cool gray has higher blue than red
 					issues.push({
 						type: ISSUE_TYPES.RGBA_COOL_GRAY,
 						line: lineNum,
@@ -426,15 +438,22 @@ function analyzeFile(filePath) {
 			if (!block.isStyle) return;
 
 			// Check for hardcoded spacing
-			if (!line.includes('--space') && !line.includes('calc(') &&
-			    !line.includes('transition') && !line.includes('min-width') &&
-			    !line.includes('min-height') && !line.includes('max-width') &&
-			    !line.includes('max-height')) {
+			if (
+				!line.includes('--space') &&
+				!line.includes('calc(') &&
+				!line.includes('transition') &&
+				!line.includes('min-width') &&
+				!line.includes('min-height') &&
+				!line.includes('max-width') &&
+				!line.includes('max-height')
+			) {
 				for (const [value, token] of Object.entries(SPACING_PATTERNS)) {
 					const regex = new RegExp(`:\\s*${value.replace('.', '\\.')}[;\\s]`, 'i');
 					if (regex.test(line)) {
-						if ((line.includes('width') || line.includes('height')) &&
-						    ['8px', '12px', '16px', '20px', '24px'].includes(value)) {
+						if (
+							(line.includes('width') || line.includes('height')) &&
+							['8px', '12px', '16px', '20px', '24px'].includes(value)
+						) {
 							issues.push({
 								type: ISSUE_TYPES.HARDCODED_SPACING,
 								line: lineNum,
@@ -457,8 +476,12 @@ function analyzeFile(filePath) {
 			}
 
 			// Check for hardcoded durations
-			if (!line.includes('--duration') && !line.includes('--anim-duration') &&
-			    !line.includes('--stagger') && !line.trim().startsWith('--')) {
+			if (
+				!line.includes('--duration') &&
+				!line.includes('--anim-duration') &&
+				!line.includes('--stagger') &&
+				!line.trim().startsWith('--')
+			) {
 				for (const [value, token] of Object.entries(DURATION_PATTERNS)) {
 					if (line.includes(value) && !line.includes(`var(${token})`)) {
 						issues.push({
@@ -473,8 +496,12 @@ function analyzeFile(filePath) {
 			}
 
 			// Check for backdrop-filter without -webkit- prefix
-			if (line.includes('backdrop-filter:') && !line.includes('-webkit-backdrop-filter') &&
-			    !line.includes('transition') && !line.includes('@supports')) {
+			if (
+				line.includes('backdrop-filter:') &&
+				!line.includes('-webkit-backdrop-filter') &&
+				!line.includes('transition') &&
+				!line.includes('@supports')
+			) {
 				const nearbyLines = blockLines.slice(Math.max(0, idx - 2), idx + 3).join('\n');
 				if (!nearbyLines.includes('-webkit-backdrop-filter')) {
 					issues.push({
@@ -666,7 +693,7 @@ function formatIssueType(type) {
 		[ISSUE_TYPES.INVALID_MEDIA_QUERY]: 'Invalid media query',
 		[ISSUE_TYPES.RGBA_COOL_GRAY]: 'Cool gray rgba() value',
 		[ISSUE_TYPES.DEPRECATED_TERMINOLOGY]: 'Outdated design terminology',
-		[ISSUE_TYPES.OLD_SYSTEM_COLOR_VAR]: 'Old system color variable',
+		[ISSUE_TYPES.OLD_SYSTEM_COLOR_VAR]: 'Old system color variable'
 	};
 	return labels[type] || type;
 }

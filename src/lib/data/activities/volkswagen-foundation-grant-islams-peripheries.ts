@@ -2,17 +2,30 @@ import type { Activity } from '$lib/types';
 
 const volkswagenFoundationGrantIslamsPeripheries: Activity = {
 	id: 'volkswagen-foundation-grant-islams-peripheries',
-	title: "VolkswagenStiftung grant: Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia",
+	title:
+		"VolkswagenStiftung grant: Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia",
 	date: '10 December 2025',
 	dateISO: '2025-12-10',
 	year: 2025,
 	type: 'Grant',
-    heroImage: {
+	heroImage: {
 		src: 'images/activities/VolkswagenStiftung-logo.webp',
-		alt: 'VolkswagenStiftung logo',
+		alt: 'VolkswagenStiftung logo'
 	},
-	description: 'Awarded a grant under the Volkswagen Foundation\'s "Open Up" programme for a collaboration with Aksana Ismailbekova on AI-driven comparative history of Islamic archives in West Africa and Central Asia.',
-	tags: ['Grant', 'Digital Humanities', 'AI', 'West Africa', 'Central Asia', 'Volkswagen Foundation', 'Islam', 'IWAC', 'Archives', 'ZMO'],
+	description:
+		'Awarded a grant under the Volkswagen Foundation\'s "Open Up" programme for a collaboration with Aksana Ismailbekova on AI-driven comparative history of Islamic archives in West Africa and Central Asia.',
+	tags: [
+		'Grant',
+		'Digital Humanities',
+		'AI',
+		'West Africa',
+		'Central Asia',
+		'Volkswagen Foundation',
+		'Islam',
+		'IWAC',
+		'Archives',
+		'ZMO'
+	],
 	content: `
 <p>I would like to express my gratitude to the <a href="https://www.volkswagenstiftung.de/en" target="_blank" rel="noopener noreferrer">VolkswagenStiftung</a> for supporting my research for the second time this year. As part of the <a href="https://www.volkswagenstiftung.de/en/funding/funding-offer/open-new-research-spaces-humanities-and-cultural-studies" target="_blank" rel="noopener noreferrer">"Open Up – New Research Spaces for the Humanities and Cultural Studies"</a> programme, this grant funds a new collaboration with my colleague, <a href="https://www.zmo.de/en/people/dr-aksana-ismailbekova" target="_blank" rel="noopener noreferrer">Aksana Ismailbekova</a>: "Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis and AI in West Africa and Central Asia".</p>
 

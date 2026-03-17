@@ -22,70 +22,71 @@
 </button>
 
 <style>
-        .hamburger {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                width: calc(var(--space-6) + var(--space-1));
-                height: calc(var(--space-6) + var(--space-1));
-                background: transparent;
-                border: none;
-                cursor: pointer;
-                padding: 0;
-                z-index: var(--z-fixed);
-                position: relative;
-                gap: var(--space-1);
-        }
+	.hamburger {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		width: calc(var(--space-6) + var(--space-1));
+		height: calc(var(--space-6) + var(--space-1));
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		padding: 0;
+		z-index: var(--z-fixed);
+		position: relative;
+		gap: var(--space-1);
+	}
 
-        .hamburger-line {
-                width: 100%;
-                height: var(--border-width-medium);
-                background-color: var(--color-text);
-                transition:
-                        transform var(--duration-normal) var(--ease-out),
-                        opacity var(--duration-fast) var(--ease-out);
-                transform-origin: center;
-        }
+	.hamburger-line {
+		width: 100%;
+		height: var(--border-width-medium);
+		background-color: var(--color-text);
+		transition:
+			transform var(--duration-normal) var(--ease-out),
+			opacity var(--duration-fast) var(--ease-out);
+		transform-origin: center;
+	}
 
 	/* Hamburger to X animation */
-        .hamburger.active .hamburger-line:first-child {
-                transform: translateY(calc(var(--space-2) - var(--space-0-5))) rotate(var(--rotate-45));
-        }
+	.hamburger.active .hamburger-line:first-child {
+		transform: translateY(calc(var(--space-2) - var(--space-0-5))) rotate(var(--rotate-45));
+	}
 
-        .hamburger.active .hamburger-line:nth-child(2) {
-                opacity: var(--opacity-0);
-                transform: scaleX(var(--scale-0));
-        }
+	.hamburger.active .hamburger-line:nth-child(2) {
+		opacity: var(--opacity-0);
+		transform: scaleX(var(--scale-0));
+	}
 
-        .hamburger.active .hamburger-line:last-child {
-                transform: translateY(calc(-1 * (var(--space-2) - var(--space-0-5)))) rotate(calc(-1 * var(--rotate-45)));
-        }
+	.hamburger.active .hamburger-line:last-child {
+		transform: translateY(calc(-1 * (var(--space-2) - var(--space-0-5))))
+			rotate(calc(-1 * var(--rotate-45)));
+	}
 
-        /* Hide hamburger completely when menu is active */
-        .hamburger.active {
-                opacity: var(--opacity-0);
-                pointer-events: none;
-        }
+	/* Hide hamburger completely when menu is active */
+	.hamburger.active {
+		opacity: var(--opacity-0);
+		pointer-events: none;
+	}
 
-        /* Hide hamburger on desktop */
-        @media (--xl) {
-                .hamburger {
-                        display: none;
-                }
-        }
+	/* Hide hamburger on desktop */
+	@media (--xl) {
+		.hamburger {
+			display: none;
+		}
+	}
 
-        .hamburger:focus-visible {
-                outline: var(--border-width-medium) solid var(--color-primary);
-                outline-offset: var(--space-1);
-                border-radius: var(--border-radius-sm);
-        }
+	.hamburger:focus-visible {
+		outline: var(--border-width-medium) solid var(--color-primary);
+		outline-offset: var(--space-1);
+		border-radius: var(--border-radius-sm);
+	}
 
-        /* High contrast mode support */
-        @media (prefers-contrast: high) {
-                .hamburger-line {
-                        height: calc(var(--border-width-medium) + var(--border-width-thin));
-                }
-        }
+	/* High contrast mode support */
+	@media (prefers-contrast: high) {
+		.hamburger-line {
+			height: calc(var(--border-width-medium) + var(--border-width-thin));
+		}
+	}
 
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {

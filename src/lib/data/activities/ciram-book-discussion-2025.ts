@@ -11,7 +11,7 @@ export const ciramBookDiscussion2025: Activity = {
 	date: formatDisplayDate(activityDateISO),
 	year: 2025,
 	description:
-		'Book discussion hosted by the Centre interdisciplinaire de recherche sur l\'Afrique et le Moyen-Orient (CIRAM), Université Laval.',
+		"Book discussion hosted by the Centre interdisciplinaire de recherche sur l'Afrique et le Moyen-Orient (CIRAM), Université Laval.",
 	content: `
         <p>Delighted to join a discussion of my book, <em><a href="https://doi.org/10.1515/9783111428895" target="_blank" rel="noreferrer noopener">Religious Activism on Campuses in Togo and Benin</a></em>, hosted by the <a href="https://www.ciram.hei.ulaval.ca/" target="_blank" rel="noreferrer noopener">Centre interdisciplinaire de recherche sur l'Afrique et le Moyen-Orient (CIRAM)</a>, Université Laval.</p>
         
@@ -24,11 +24,20 @@ export const ciramBookDiscussion2025: Activity = {
         <strong>💻 Format:</strong> Online (Zoom)<br>
         <strong>🔗 Registration:</strong> <a href="https://forms.gle/agWqJLs18daoiyaM9" target="_blank" rel="noreferrer noopener">https://forms.gle/agWqJLs18daoiyaM9</a></p>
     `,
-	tags: ['Book Launch', 'CIRAM', 'Université Laval', 'Talk', 'Togo', 'Benin', 'Religious Activism', 'Islam'],
+	tags: [
+		'Book Launch',
+		'CIRAM',
+		'Université Laval',
+		'Talk',
+		'Togo',
+		'Benin',
+		'Religious Activism',
+		'Islam'
+	],
 	panelType: 'lecture',
-    heroImage: {
+	heroImage: {
 		src: 'images/communications/ciram-2025-hero.webp',
-		alt: "Poster for an online book talk with Frédérick Madore on “Religious Activism on Campuses in Togo and Benin”, 6 Nov 2025"
+		alt: 'Poster for an online book talk with Frédérick Madore on “Religious Activism on Campuses in Togo and Benin”, 6 Nov 2025'
 	},
 	type: 'lecture',
 	url: 'https://www.ciram.hei.ulaval.ca/activite/discussion-autour-du-livre-religious-activism-on-campuses-in-togo-and-benin/'

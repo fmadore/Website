@@ -80,7 +80,10 @@
 	// Get featured publications (only show when no filters are active)
 	// Featured publications are also sorted by the active sort order
 	const featuredPublications = $derived(
-		sortItems($filteredPublications.filter((pub) => pub.featured), activeSort).slice(0, 3)
+		sortItems(
+			$filteredPublications.filter((pub) => pub.featured),
+			activeSort
+		).slice(0, 3)
 	);
 
 	// Check if we should show featured publications
@@ -233,7 +236,10 @@
 	pageType="CollectionPage"
 />
 
-<div class="page-container page-enter" use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}>
+<div
+	class="page-container page-enter"
+	use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}
+>
 	<PageHeader title="Publications" />
 
 	<PageIntro>
@@ -243,101 +249,104 @@
 
 	<!-- Mobile Controls: Two Rows -->
 	<div class="mobile-controls">
-			<div class="mobile-controls-row">
-				<Button
-					variant="outline-secondary"
-					size="sm"
-					onclick={() => (mobileFiltersExpanded = !mobileFiltersExpanded)}
-					ariaLabel={mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
-					additionalClasses="control-button-rounded filter-toggle-button"
-				>
-					{#snippet icon()}
-						<Icon icon="lucide:filter" width="18" height="18" />
-					{/snippet}
-					{mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
-				</Button>
-				<!-- Intentionally empty for the first row, right side -->
-			</div>
-			<div
-				class="mobile-controls-row sorter-clear-group"
-				class:single-item-row={!areFiltersActive($activeFilters)}
+		<div class="mobile-controls-row">
+			<Button
+				variant="outline-secondary"
+				size="sm"
+				onclick={() => (mobileFiltersExpanded = !mobileFiltersExpanded)}
+				ariaLabel={mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
+				additionalClasses="control-button-rounded filter-toggle-button"
 			>
-				<Sorter {activeSort} onsortchange={handleSortChange} />
-				{#if areFiltersActive($activeFilters)}
-					<Button
-						variant="primary"
-						size="sm"
-						onclick={clearAllFilters}
-						additionalClasses="control-button-rounded clear-filters-button-page"
-					>
-						Clear all filters
-					</Button>
-				{/if}
-			</div>
+				{#snippet icon()}
+					<Icon icon="lucide:filter" width="18" height="18" />
+				{/snippet}
+				{mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
+			</Button>
+			<!-- Intentionally empty for the first row, right side -->
 		</div>
-		<EntityListPageLayout containerClass="" gridClass="grid grid-cols-1 lg:grid-cols-4 gap-6">
-			{#snippet sidebar()}
-				<UniversalFiltersSidebar
-					config={publicationFilterConfig}
-					isExpandedMobile={mobileFiltersExpanded}
+		<div
+			class="mobile-controls-row sorter-clear-group"
+			class:single-item-row={!areFiltersActive($activeFilters)}
+		>
+			<Sorter {activeSort} onsortchange={handleSortChange} />
+			{#if areFiltersActive($activeFilters)}
+				<Button
+					variant="primary"
+					size="sm"
+					onclick={clearAllFilters}
+					additionalClasses="control-button-rounded clear-filters-button-page"
 				>
-					<TagCloud
-						tags={publicationTagFrequencies}
-						maxTags={25}
-						itemLabel="publication"
-						itemLabelPlural="publications"
-						ontagclick={toggleTagFilter}
-						activeTags={$activeFilters.tags}
-					/>
-				</UniversalFiltersSidebar>
-			{/snippet}
-
-			{#snippet children()}
-				<!-- Featured Publications Section (only shown when no filters active) -->
-				{#if shouldShowFeatured}
-					<FeaturedPublications publications={featuredPublications} onfilterrequest={handleFilterRequest} />
-				{/if}
-
-				<!-- All Publications Section Header (only when featured are shown) -->
-				{#if shouldShowFeatured}
-					<div class="all-publications-header">
-						<h2 class="section-title">All Publications</h2>
-					</div>
-				{/if}
-
-				<!-- Desktop Controls: Sorter + Clear Button -->
-				<div class="desktop-controls">
-					<div class="list-status text-light">
-						Showing {$filteredPublications.length || 0} publications
-						{#if areFiltersActive($activeFilters)}
-							<span class="text-accent"> (Filters applied)</span>
-						{/if}
-					</div>
-					<div class="buttons-group">
-						<Sorter {activeSort} onsortchange={handleSortChange} />
-						{#if areFiltersActive($activeFilters)}
-							<Button
-								variant="primary"
-								size="sm"
-								onclick={clearAllFilters}
-								additionalClasses="control-button-rounded clear-filters-button-page"
-							>
-								Clear all filters
-							</Button>
-						{/if}
-					</div>
-				</div>
-				<FilteredListDisplay
-					filteredItems={sortedPublications}
-					itemComponent={PublicationItem}
-					itemPropName="publication"
-					areFiltersActive={areFiltersActive($activeFilters)}
-					{clearAllFilters}
-					emptyStateNoFiltersMessage="No publications found matching your criteria. Try clearing some filters."
-					onitemrequest={handleFilterRequest}
+					Clear all filters
+				</Button>
+			{/if}
+		</div>
+	</div>
+	<EntityListPageLayout containerClass="" gridClass="grid grid-cols-1 lg:grid-cols-4 gap-6">
+		{#snippet sidebar()}
+			<UniversalFiltersSidebar
+				config={publicationFilterConfig}
+				isExpandedMobile={mobileFiltersExpanded}
+			>
+				<TagCloud
+					tags={publicationTagFrequencies}
+					maxTags={25}
+					itemLabel="publication"
+					itemLabelPlural="publications"
+					ontagclick={toggleTagFilter}
+					activeTags={$activeFilters.tags}
 				/>
-			{/snippet}
-		</EntityListPageLayout>
+			</UniversalFiltersSidebar>
+		{/snippet}
+
+		{#snippet children()}
+			<!-- Featured Publications Section (only shown when no filters active) -->
+			{#if shouldShowFeatured}
+				<FeaturedPublications
+					publications={featuredPublications}
+					onfilterrequest={handleFilterRequest}
+				/>
+			{/if}
+
+			<!-- All Publications Section Header (only when featured are shown) -->
+			{#if shouldShowFeatured}
+				<div class="all-publications-header">
+					<h2 class="section-title">All Publications</h2>
+				</div>
+			{/if}
+
+			<!-- Desktop Controls: Sorter + Clear Button -->
+			<div class="desktop-controls">
+				<div class="list-status text-light">
+					Showing {$filteredPublications.length || 0} publications
+					{#if areFiltersActive($activeFilters)}
+						<span class="text-accent"> (Filters applied)</span>
+					{/if}
+				</div>
+				<div class="buttons-group">
+					<Sorter {activeSort} onsortchange={handleSortChange} />
+					{#if areFiltersActive($activeFilters)}
+						<Button
+							variant="primary"
+							size="sm"
+							onclick={clearAllFilters}
+							additionalClasses="control-button-rounded clear-filters-button-page"
+						>
+							Clear all filters
+						</Button>
+					{/if}
+				</div>
+			</div>
+			<FilteredListDisplay
+				filteredItems={sortedPublications}
+				itemComponent={PublicationItem}
+				itemPropName="publication"
+				areFiltersActive={areFiltersActive($activeFilters)}
+				{clearAllFilters}
+				emptyStateNoFiltersMessage="No publications found matching your criteria. Try clearing some filters."
+				onitemrequest={handleFilterRequest}
+			/>
+		{/snippet}
+	</EntityListPageLayout>
 </div>
 
 <style>

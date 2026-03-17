@@ -214,8 +214,7 @@ export function generateBibtex(publication: Publication): string {
 			if (publication.issue) bibtexFields.push(`  number = {${escapeBibtex(publication.issue)}}`);
 			if (publication.pages)
 				bibtexFields.push(`  pages = {${escapeBibtex(formatPageRange(publication.pages))}}`);
-			if (publication.issn)
-				bibtexFields.push(`  issn = {${escapeBibtex(publication.issn)}}`);
+			if (publication.issn) bibtexFields.push(`  issn = {${escapeBibtex(publication.issn)}}`);
 			break;
 		case 'book': // For both regular books and edited volumes
 			if (publication.publisher)

@@ -22,16 +22,7 @@ export const omekaSDocker: DigitalHumanitiesProject = {
 		'<p><a href="https://github.com/AM-Digital-Research-Environment/omeka-s-docker" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View on GitHub</a></p>',
 	imageUrl: `/images/digital-humanities/omeka-s-docker.webp`,
 	order: 1,
-	skills: [
-		'Docker',
-		'Nginx',
-		'PHP',
-		'MySQL',
-		'Linux',
-		'Omeka S',
-		'IIIF',
-		'Bash'
-	],
+	skills: ['Docker', 'Nginx', 'PHP', 'MySQL', 'Linux', 'Omeka S', 'IIIF', 'Bash'],
 	seoKeywords: [
 		'Omeka S',
 		'Docker',

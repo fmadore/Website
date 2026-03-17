@@ -51,7 +51,8 @@ const guestLectures: GuestLecture[] = [
 	{
 		year: '2017',
 		title: 'Religions et enjeux de pouvoir',
-		course: 'Afrique subsaharienne: diversité culturelle et mondialisation [Sub-Saharan Africa: Cultural Diversity and Globalization]',
+		course:
+			'Afrique subsaharienne: diversité culturelle et mondialisation [Sub-Saharan Africa: Cultural Diversity and Globalization]',
 		institution: 'Université Laval (Canada)',
 		level: 'undergraduate',
 		date: '3 April 2017'

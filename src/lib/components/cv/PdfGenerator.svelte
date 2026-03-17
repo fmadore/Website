@@ -439,8 +439,10 @@
 								}
 
 								entries.forEach((entry) => {
-									const yearDiv = entry.querySelector('.cv-entry-year') || entry.querySelector('div:first-child');
-									const contentDiv = entry.querySelector('.cv-entry-content') || entry.querySelector('div.flex-1');
+									const yearDiv =
+										entry.querySelector('.cv-entry-year') || entry.querySelector('div:first-child');
+									const contentDiv =
+										entry.querySelector('.cv-entry-content') || entry.querySelector('div.flex-1');
 
 									if (yearDiv && contentDiv) {
 										const year = yearDiv.textContent?.trim() || '';
@@ -514,9 +516,8 @@
 												SPACING.LINE_HEIGHT_TIGHT
 											);
 											// Tighter gap when detail lines follow
-											yPosition += paragraphFragments.length > 0
-												? SPACING.PARAGRAPH_GAP
-												: SPACING.LINE_HEIGHT;
+											yPosition +=
+												paragraphFragments.length > 0 ? SPACING.PARAGRAPH_GAP : SPACING.LINE_HEIGHT;
 										}
 
 										// Render detail lines (reviews, amounts, co-applicants, etc.)
@@ -539,9 +540,10 @@
 
 											pdf.setTextColor(...COLORS.TEXT);
 											// Tight gap between detail lines, larger after last one
-											yPosition += idx < paragraphFragments.length - 1
-												? SPACING.PARAGRAPH_GAP
-												: SPACING.LINE_HEIGHT_TIGHT;
+											yPosition +=
+												idx < paragraphFragments.length - 1
+													? SPACING.PARAGRAPH_GAP
+													: SPACING.LINE_HEIGHT_TIGHT;
 										});
 
 										yPosition += SPACING.ENTRY_GAP;
@@ -584,8 +586,11 @@
 							}
 
 							// Check for year column - CVEntry uses .cv-entry-year/.cv-entry-content
-							const firstDiv = entry.querySelector('.cv-entry-year') || entry.querySelector('div:first-child');
-							const contentDiv = entry.querySelector('.cv-entry-content') || entry.querySelector('div.flex-1, div:last-child');
+							const firstDiv =
+								entry.querySelector('.cv-entry-year') || entry.querySelector('div:first-child');
+							const contentDiv =
+								entry.querySelector('.cv-entry-content') ||
+								entry.querySelector('div.flex-1, div:last-child');
 
 							if (firstDiv && contentDiv) {
 								const hasYearColumn =
@@ -671,9 +676,8 @@
 											SPACING.LINE_HEIGHT_TIGHT
 										);
 										// Tighter gap when detail lines follow
-										yPosition += paragraphFragments.length > 0
-											? SPACING.PARAGRAPH_GAP
-											: SPACING.LINE_HEIGHT;
+										yPosition +=
+											paragraphFragments.length > 0 ? SPACING.PARAGRAPH_GAP : SPACING.LINE_HEIGHT;
 									}
 
 									// Render detail lines (amounts, co-applicants, reviews, etc.)
@@ -696,9 +700,10 @@
 
 										pdf.setTextColor(...COLORS.TEXT);
 										// Tight gap between detail lines, larger after last one
-										yPosition += idx < paragraphFragments.length - 1
-											? SPACING.PARAGRAPH_GAP
-											: SPACING.LINE_HEIGHT_TIGHT;
+										yPosition +=
+											idx < paragraphFragments.length - 1
+												? SPACING.PARAGRAPH_GAP
+												: SPACING.LINE_HEIGHT_TIGHT;
 									});
 
 									yPosition += SPACING.ENTRY_GAP;
@@ -844,7 +849,7 @@
 
 			pdf.save(filename);
 		} catch (err) {
-			console.error('PDF generation failed:', err);
+			if (import.meta.env.DEV) console.error('PDF generation failed:', err);
 		} finally {
 			isGenerating = false;
 		}

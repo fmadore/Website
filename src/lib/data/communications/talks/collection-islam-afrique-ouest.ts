@@ -16,7 +16,15 @@ export const collectionIslamAfriqueOuest: Communication = {
 	language: 'French',
 	abstract:
 		'A presentation of the West African Islam Collection, offering new perspectives on the history of Muslim communities through press and digital humanities.',
-	tags: ['West Africa', 'Islam', 'Digital Humanities', 'Press', 'Muslim Communities', 'IWAC', 'Archives'],
+	tags: [
+		'West Africa',
+		'Islam',
+		'Digital Humanities',
+		'Press',
+		'Muslim Communities',
+		'IWAC',
+		'Archives'
+	],
 	image: 'images/communications/distam-2024.webp',
 	heroImage: {
 		src: 'images/communications/distam-2024-hero.webp',

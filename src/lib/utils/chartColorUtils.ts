@@ -181,10 +181,7 @@ export function getResolvedChartColors(): ResolvedChartColors {
 			'--color-secondary',
 			CHART_COLOR_FALLBACKS.secondary
 		),
-		purple: getCSSVariableValueWithFallback(
-			'--sys-color-purple-500',
-			CHART_COLOR_FALLBACKS.purple
-		),
+		purple: getCSSVariableValueWithFallback('--sys-color-purple-500', CHART_COLOR_FALLBACKS.purple),
 		pink: getCSSVariableValueWithFallback('--sys-color-pink-500', CHART_COLOR_FALLBACKS.pink),
 		fontFamily: getCSSVariableValueWithFallback(
 			'--font-family-sans',

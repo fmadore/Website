@@ -22,7 +22,8 @@
 					day: 'numeric',
 					month: 'long'
 				})}
-		{#if formattedAuthors}{@html formattedAuthors}. {/if}
+		{#if formattedAuthors}{@html formattedAuthors}.
+		{/if}
 		"{comm.title}"{#if comm.location}, {comm.location}{/if}, {dateDisplay}.
 	{/snippet}
 </CVSection>

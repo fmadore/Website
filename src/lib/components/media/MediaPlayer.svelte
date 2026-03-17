@@ -187,8 +187,8 @@
 		if (type !== 'video' || !el) return;
 		try {
 			void (!isFullscreen ? await el.requestFullscreen() : await document.exitFullscreen());
-		} catch (err) {
-			console.error('Fullscreen error:', err);
+		} catch {
+			// Fullscreen request can fail silently (e.g. permissions)
 		}
 	};
 

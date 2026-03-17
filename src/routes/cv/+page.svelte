@@ -60,7 +60,9 @@
 		// Batch 2: Conference and talks
 		setTimeout(() => {
 			Promise.all([
-				import('$lib/components/cv/CVInvitedTalks.svelte').then((m) => (CVInvitedTalks = m.default)),
+				import('$lib/components/cv/CVInvitedTalks.svelte').then(
+					(m) => (CVInvitedTalks = m.default)
+				),
 				import('$lib/components/cv/CVConferences.svelte').then((m) => (CVConferences = m.default)),
 				import('$lib/components/cv/CVEvents.svelte').then((m) => (CVEvents = m.default))
 			]);
@@ -83,8 +85,12 @@
 				import('$lib/components/cv/CVConsulting.svelte').then((m) => (CVConsulting = m.default)),
 				import('$lib/components/cv/CVMedia.svelte').then((m) => (CVMedia = m.default)),
 				import('$lib/components/cv/CVLanguages.svelte').then((m) => (CVLanguages = m.default)),
-				import('$lib/components/cv/CVAffiliations.svelte').then((m) => (CVAffiliations = m.default)),
-				import('$lib/components/cv/CVComputerSkills.svelte').then((m) => (CVComputerSkills = m.default))
+				import('$lib/components/cv/CVAffiliations.svelte').then(
+					(m) => (CVAffiliations = m.default)
+				),
+				import('$lib/components/cv/CVComputerSkills.svelte').then(
+					(m) => (CVComputerSkills = m.default)
+				)
 			]);
 		}, 400);
 	}
@@ -170,7 +176,10 @@
 		</div>
 	{/if}
 	{#if CVResearchExperience}
-		<div id="cv-research-experience" class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
+		<div
+			id="cv-research-experience"
+			class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1"
+		>
 			<CVResearchExperience />
 		</div>
 	{/if}

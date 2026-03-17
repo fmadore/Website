@@ -48,11 +48,11 @@ export const analysis: PublicationTextAnalysis = {
 		{ word: 'future', count: 2, lemma: 'future', pos: 'adj' }
 	],
 	bigrams: [
-		{ ngram: 'west africa', words: ["west", "africa"], count: 3 },
-		{ ngram: 'islam west', words: ["islam", "west"], count: 2 },
-		{ ngram: 'africa collection', words: ["africa", "collection"], count: 2 },
-		{ ngram: 'mauro nobili', words: ["mauro", "nobili"], count: 2 },
-		{ ngram: 'vincent favier', words: ["vincent", "favier"], count: 2 },
-		{ ngram: 'kai kresse', words: ["kai", "kresse"], count: 2 }
+		{ ngram: 'west africa', words: ['west', 'africa'], count: 3 },
+		{ ngram: 'islam west', words: ['islam', 'west'], count: 2 },
+		{ ngram: 'africa collection', words: ['africa', 'collection'], count: 2 },
+		{ ngram: 'mauro nobili', words: ['mauro', 'nobili'], count: 2 },
+		{ ngram: 'vincent favier', words: ['vincent', 'favier'], count: 2 },
+		{ ngram: 'kai kresse', words: ['kai', 'kresse'], count: 2 }
 	]
 };

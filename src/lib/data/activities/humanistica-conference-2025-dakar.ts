@@ -16,7 +16,15 @@ export const humanisticaConference2025Dakar: Activity = {
         
         <p>Even more so, I'm excited to be here to learn directly from scholars based on the continent about their innovative uses of digital humanities and AI in research, particularly concerning archives, cultural heritage, and African languages.</p>
     `,
-	tags: ['Digital Humanities', 'AI', 'IWAC', 'Conference', 'Humanistica', 'African Studies', 'West Africa'],
+	tags: [
+		'Digital Humanities',
+		'AI',
+		'IWAC',
+		'Conference',
+		'Humanistica',
+		'African Studies',
+		'West Africa'
+	],
 	url: '',
 	image: 'images/activities/humanistica-2025-dakar.webp',
 	heroImage: {

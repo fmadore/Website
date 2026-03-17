@@ -5,12 +5,21 @@ export const remoboko: DigitalHumanitiesProject = {
 	title: 'Remoboko Visualizations',
 	years: '2018-2024',
 	shortDescription:
-		'Interactive visualizations for the Remoboko research group, including a points of interest map for my book and charts documenting the group\'s publications, activities, and collaborative network.',
+		"Interactive visualizations for the Remoboko research group, including a points of interest map for my book and charts documenting the group's publications, activities, and collaborative network.",
 	description:
 		'<p>I created a series of interactive visualizations for <a href="https://remoboko.hypotheses.org/" target="_blank" rel="noopener noreferrer">Remoboko</a> (<em>Religion, Morality and Boko in West Africa: Students Training for a Good Life</em>), a Leibniz Junior Research Group based at the Zentrum Moderner Orient (ZMO) that ran from 2018 to 2023. The project examined the presence of Salafism and Pentecostalism on university campuses in Niger, Nigeria, Togo, and Benin. <a href="https://remoboko.hypotheses.org/visualisations" target="_blank" rel="noopener noreferrer">These visualizations</a> make the group\'s research outputs and collaborative network more accessible.</p><h3>Book: Points of Interest Map</h3><p>This interactive map accompanies my book <a href="/publications/religious-activism-campuses"><em>Religious Activism on Campuses in Togo and Benin</em></a> (De Gruyter, 2025), part of the Remoboko project. It plots the geographic locations mentioned throughout the book—universities, mosques, churches, headquarters of religious associations, and other significant sites in Togo, Benin, and the broader West African region.</p><h3>Research Group Outputs</h3><p>Over its five-year lifespan, Remoboko collaborated with 93 researchers from 24 countries, producing over 180 publications and activities. I created visualizations to document this collective output:</p><h4>Publications and Activities at a Glance</h4><ul><li><strong>Stacked bar chart and treemap</strong> showing the evolution and breakdown of publications and activities from 2018 to 2024, categorized by type (journal articles, book chapters, conference papers, lectures, PhD dissertations, etc.)</li><li><strong>Word clouds</strong> (French and English) generated from abstracts, highlighting the key themes and concepts across the group\'s work</li></ul><h4>Collaborators at a Glance</h4><ul><li><strong>Gender distribution</strong> — pie chart showing the breakdown of collaborators (37.6% female, 62.4% male)</li><li><strong>Geographic distribution</strong> — bar chart of collaborators by country, with Germany, USA, Niger, and Nigeria among the most represented</li><li><strong>Institutional affiliations</strong> — overview of the universities and research centers involved</li></ul>',
 	imageUrl: `/images/digital-humanities/remoboko.webp`,
 	order: 6,
-	skills: ['Data Visualization', 'pandas', 'Plotly', 'Python', 'Folium', 'NLTK', 'Leaflet', 'D3.js'],
+	skills: [
+		'Data Visualization',
+		'pandas',
+		'Plotly',
+		'Python',
+		'Folium',
+		'NLTK',
+		'Leaflet',
+		'D3.js'
+	],
 	embeddableContent: [
 		{
 			type: 'iframe',
@@ -75,7 +84,7 @@ export const remoboko: DigitalHumanitiesProject = {
 			src: 'https://fmadore.github.io/Remoboko/Final%20report/treemap_chart.html',
 			title: 'Publications and Activities Treemap',
 			description:
-				'<p>This treemap provides a proportional breakdown of all Remoboko publications and activities by type, showing the relative weight of each category within the group\'s total output.</p>',
+				"<p>This treemap provides a proportional breakdown of all Remoboko publications and activities by type, showing the relative weight of each category within the group's total output.</p>",
 			scrolling: 'yes',
 			allowfullscreen: true,
 			showTitle: true,

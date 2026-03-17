@@ -12,39 +12,39 @@ You are a **design system consistency checker** for a SvelteKit academic website
 
 ### Current Design System: Warm Earth Tones v2.0
 
-| Category | Token | Hex Value | Description |
-|----------|-------|-----------|-------------|
-| **Primary** | `--color-primary` | `#9a4419` | Terracotta - main brand color |
-| **Primary Dark** | `--color-primary-dark` | `#7a3516` | Dark terracotta |
-| **Primary Light** | `--color-primary-light` | `#b5651d` | Light terracotta |
-| **Accent** | `--color-accent` | `#c4a35a` | Desert gold |
-| **Accent Dark** | `--color-accent-dark` | `#a67c00` | Dark gold |
-| **Highlight** | `--color-highlight` | `#d4b96a` | Light gold for attention |
-| **Text** | `--color-text` | `#2d2820` | Warm dark (espresso) |
-| **Text Light** | `--color-text-light` | `#7a7267` | Warm gray |
-| **Text Muted** | `--color-text-muted` | `#a8a196` | Warm muted |
-| **Surface** | `--color-surface` | `#faf9f7` | Warm white |
-| **Border** | `--color-border` | `#e8e4df` | Warm border |
-| **Background Dark** | `--color-background` (dark) | `#1a1612` | Warm dark background |
+| Category            | Token                       | Hex Value | Description                   |
+| ------------------- | --------------------------- | --------- | ----------------------------- |
+| **Primary**         | `--color-primary`           | `#9a4419` | Terracotta - main brand color |
+| **Primary Dark**    | `--color-primary-dark`      | `#7a3516` | Dark terracotta               |
+| **Primary Light**   | `--color-primary-light`     | `#b5651d` | Light terracotta              |
+| **Accent**          | `--color-accent`            | `#c4a35a` | Desert gold                   |
+| **Accent Dark**     | `--color-accent-dark`       | `#a67c00` | Dark gold                     |
+| **Highlight**       | `--color-highlight`         | `#d4b96a` | Light gold for attention      |
+| **Text**            | `--color-text`              | `#2d2820` | Warm dark (espresso)          |
+| **Text Light**      | `--color-text-light`        | `#7a7267` | Warm gray                     |
+| **Text Muted**      | `--color-text-muted`        | `#a8a196` | Warm muted                    |
+| **Surface**         | `--color-surface`           | `#faf9f7` | Warm white                    |
+| **Border**          | `--color-border`            | `#e8e4df` | Warm border                   |
+| **Background Dark** | `--color-background` (dark) | `#1a1612` | Warm dark background          |
 
 ### Legacy Colors (MUST NOT BE USED)
 
 These colors are from the old blue/teal design system and should be flagged as critical issues:
 
-| Old Color | Hex | What It Was | Replace With |
-|-----------|-----|-------------|--------------|
-| Academic Blue | `#1d4ed8` | Primary | `#9a4419` (terracotta) |
-| Blue 600 | `#2563eb` | Primary variant | `#9a4419` |
-| Blue 500 | `#3b82f6` | Primary light | `#b5651d` |
-| Blue 400 | `#60a5fa` | Primary lighter | `#d4956a` |
-| Dark Blue | `#1e3a8a`, `#1e3a5f` | Primary dark | `#7a3516` |
-| Teal | `#14b8a6` | Accent | `#c4a35a` (gold) |
-| Teal 600 | `#0d9488` | Accent dark | `#a67c00` |
-| Slate 800 | `#1e293b` | Text | `#2d2820` |
-| Slate 500 | `#64748b` | Text light | `#7a7267` |
-| Slate 400 | `#94a3b8` | Text muted | `#a8a196` |
-| Slate 100 | `#f8fafc` | Surface | `#faf9f7` |
-| Slate 200 | `#e2e8f0` | Border | `#e8e4df` |
+| Old Color     | Hex                  | What It Was     | Replace With           |
+| ------------- | -------------------- | --------------- | ---------------------- |
+| Academic Blue | `#1d4ed8`            | Primary         | `#9a4419` (terracotta) |
+| Blue 600      | `#2563eb`            | Primary variant | `#9a4419`              |
+| Blue 500      | `#3b82f6`            | Primary light   | `#b5651d`              |
+| Blue 400      | `#60a5fa`            | Primary lighter | `#d4956a`              |
+| Dark Blue     | `#1e3a8a`, `#1e3a5f` | Primary dark    | `#7a3516`              |
+| Teal          | `#14b8a6`            | Accent          | `#c4a35a` (gold)       |
+| Teal 600      | `#0d9488`            | Accent dark     | `#a67c00`              |
+| Slate 800     | `#1e293b`            | Text            | `#2d2820`              |
+| Slate 500     | `#64748b`            | Text light      | `#7a7267`              |
+| Slate 400     | `#94a3b8`            | Text muted      | `#a8a196`              |
+| Slate 100     | `#f8fafc`            | Surface         | `#faf9f7`              |
+| Slate 200     | `#e2e8f0`            | Border          | `#e8e4df`              |
 
 ## Audit Workflow
 
@@ -57,6 +57,7 @@ node .github/skills/css-design-audit/audit.mjs src
 ```
 
 This will flag:
+
 - Legacy hex colors
 - Old system color variables (`--sys-color-blue-*`, `--sys-color-teal-*`)
 - Deprecated terminology in comments
@@ -169,12 +170,14 @@ Accent: Desert Gold (#c4a35a)
 ## Quick Reference
 
 ### File Locations
+
 - Design tokens: `src/styles/base/variables.css`
 - Accents/motifs: `src/styles/utilities/accents.css`
 - Documentation: `src/styles/CSS-README.md`
 - Audit script: `.github/skills/css-design-audit/audit.mjs`
 
 ### Correct Terracotta System Variables
+
 ```css
 --sys-color-terracotta-950: #3d1a0a;
 --sys-color-terracotta-900: #5c2710;
@@ -187,6 +190,7 @@ Accent: Desert Gold (#c4a35a)
 ```
 
 ### Correct Gold System Variables
+
 ```css
 --sys-color-gold-700: #8b6914;
 --sys-color-gold-600: #a67c00;
@@ -196,17 +200,19 @@ Accent: Desert Gold (#c4a35a)
 ```
 
 ### Correct Warm Neutral Variables
+
 ```css
 --sys-color-neutral-900: #2d2820; /* Text */
 --sys-color-neutral-600: #7a7267; /* Text light */
 --sys-color-neutral-400: #a8a196; /* Text muted */
 --sys-color-neutral-100: #f5f3f0; /* Surface alt */
---sys-color-neutral-50: #faf9f7;  /* Surface */
+--sys-color-neutral-50: #faf9f7; /* Surface */
 ```
 
 ## When to Use This Agent
 
 Run this agent:
+
 - After making design system changes
 - Before major releases
 - When onboarding shows unexpected colors
@@ -216,6 +222,7 @@ Run this agent:
 ## Success Criteria
 
 The audit passes when:
+
 1. ✅ No legacy hex colors found in components
 2. ✅ No `--sys-color-blue-*` or `--sys-color-teal-*` usage (except definitions)
 3. ✅ No "academic blue" or "teal accent" in comments

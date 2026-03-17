@@ -15,7 +15,9 @@ Only renders if text analysis data is available for this publication.
 	let { publicationId, title = 'Key Terms', maxWords = 80 }: Props = $props();
 
 	const analysis = $derived(getAnalysis(publicationId));
-	const showWordCloud = $derived(hasAnalysis(publicationId) && (analysis?.frequencies?.length ?? 0) > 0);
+	const showWordCloud = $derived(
+		hasAnalysis(publicationId) && (analysis?.frequencies?.length ?? 0) > 0
+	);
 </script>
 
 {#if showWordCloud && analysis}
@@ -30,9 +32,7 @@ Only renders if text analysis data is available for this publication.
 				maxFontSize={56}
 			/>
 		</div>
-		<p class="wordcloud-caption">
-			Displaying the most frequent terms from the full text
-		</p>
+		<p class="wordcloud-caption">Displaying the most frequent terms from the full text</p>
 	</section>
 {/if}
 

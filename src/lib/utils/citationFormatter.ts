@@ -281,7 +281,7 @@ export function formatCommunicationCitation(communication: {
 	date?: string;
 }): string {
 	const parts: string[] = [];
-	
+
 	// Only include conference name if it's different from the title
 	if (communication.conference && communication.conference !== communication.title) {
 		let conf = communication.conference;
@@ -290,21 +290,21 @@ export function formatCommunicationCitation(communication: {
 		}
 		parts.push(conf);
 	}
-	
+
 	// Add location if present
 	if (communication.location) {
 		parts.push(communication.location);
 	}
-	
+
 	// Add country if present
 	if (communication.country) {
 		parts.push(communication.country);
 	}
-	
+
 	// Add date if present
 	if (communication.date) {
 		parts.push(communication.date);
 	}
-	
+
 	return parts.join(', ');
 }

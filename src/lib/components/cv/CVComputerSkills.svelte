@@ -2,7 +2,8 @@
 	const computerSkills = [
 		{
 			category: 'Data analysis & visualisation',
-			skills: 'Python, OpenRefine, data wrangling, topic modelling, network analysis, sentiment analysis'
+			skills:
+				'Python, OpenRefine, data wrangling, topic modelling, network analysis, sentiment analysis'
 		},
 		{
 			category: 'Digital humanities tools',

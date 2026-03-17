@@ -244,11 +244,7 @@
 		box-shadow:
 			var(--shadow-xl),
 			0 6px 20px 0
-				color-mix(
-					in srgb,
-					var(--color-primary) calc(var(--opacity-high) * 100%),
-					transparent
-				);
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-high) * 100%), transparent);
 	}
 
 	.cv-toc-fab.open {
@@ -273,8 +269,7 @@
 		background: color-mix(in srgb, var(--color-white) 85%, transparent);
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount)) saturate(120%);
 		backdrop-filter: blur(var(--glass-blur-amount)) saturate(120%);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) 40%, transparent);
+		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) 40%, transparent);
 		box-shadow:
 			var(--shadow-xl),
 			inset 0 1px 0
