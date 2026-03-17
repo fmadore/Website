@@ -5,6 +5,7 @@
 	import { goto } from '$app/navigation';
 	import type { Publication, Communication } from '$lib/types';
 	import Button from '$lib/components/atoms/Button.svelte';
+	import { calculateCardPosition, getItemYear } from '$lib/utils/cardPositioning';
 
 	let {
 		item,
@@ -33,14 +34,6 @@
 	let cardMaxHeight = $state<string | null>(null);
 	let hasOverflow = $state(false);
 
-	// Helper function to get year consistently
-	function getYear(item: Publication | Communication): string {
-		if ('dateISO' in item && item.dateISO) return item.dateISO.substring(0, 4);
-		if ('date' in item && item.date) return item.date.substring(0, 4);
-		if ('year' in item && item.year) return item.year.toString();
-		return 'N/D';
-	}
-
 	const itemUrl = $derived(
 		item && itemType
 			? `${base}/${itemType === 'publication' ? 'publications' : 'communications'}/${item.id}`
@@ -58,82 +51,24 @@
 	$effect(() => {
 		if (!browser || !referenceElement || !cardElement) return;
 
-		// Let the animation start first
 		tick().then(() => {
-			// Position the card after a short delay to allow initial animations
 			setTimeout(() => {
-				positionCard();
-				isPositioned = true;
+				if (!cardElement || !referenceElement) return;
+
+				requestAnimationFrame(() => {
+					if (!cardElement || !referenceElement) return;
+
+					const pos = calculateCardPosition(referenceElement, cardElement);
+					cardLeft = pos.cardLeft;
+					arrowLeft = pos.arrowLeft;
+					shouldPositionBelow = pos.shouldPositionBelow;
+					cardMaxHeight = pos.cardMaxHeight;
+					hasOverflow = pos.hasOverflow;
+					isPositioned = true;
+				});
 			}, 50);
 		});
 	});
-
-	function positionCard() {
-		if (!browser || !referenceElement || !cardElement) return;
-
-		// Use requestAnimationFrame to measure after browser layout/paint
-		requestAnimationFrame(() => {
-			if (!cardElement || !referenceElement) return;
-
-			const refRect = referenceElement.getBoundingClientRect();
-			const cardWidth = cardElement.offsetWidth;
-			const cardHeight = cardElement.offsetHeight;
-			const viewportWidth = window.innerWidth;
-			const viewportHeight = window.innerHeight;
-			const margin = 16; // Minimum margin from viewport edges
-
-			// ===== HORIZONTAL POSITIONING =====
-			// Calculate how much the card would overflow on each side if centered on refCenter
-			const refCenter = refRect.left + refRect.width / 2;
-			const halfCardWidth = cardWidth / 2;
-			const leftOverflow = halfCardWidth - refCenter;
-			const rightOverflow = refCenter + halfCardWidth - viewportWidth;
-
-			// Calculate the horizontal offset to keep card fully in viewport
-			let horizontalOffset = 0;
-
-			if (leftOverflow > 0) {
-				// Would overflow left edge, shift right
-				horizontalOffset = leftOverflow + margin;
-			} else if (rightOverflow > 0) {
-				// Would overflow right edge, shift left
-				horizontalOffset = -rightOverflow - margin;
-			}
-
-			// Update reactive state instead of direct DOM manipulation
-			cardLeft = `calc(50% + ${horizontalOffset}px)`;
-			arrowLeft = `calc(50% - ${horizontalOffset}px)`;
-
-			// ===== VERTICAL POSITIONING =====
-			// Check if card would overflow viewport vertically
-			const spaceAbove = refRect.top;
-			const spaceBelow = viewportHeight - refRect.bottom;
-
-			// Determine if we should position above or below
-			shouldPositionBelow = spaceAbove < cardHeight + margin && spaceBelow > spaceAbove;
-
-			if (shouldPositionBelow) {
-				// Check if it fits below, otherwise constrain height
-				if (spaceBelow < cardHeight + margin) {
-					cardMaxHeight = `${spaceBelow - margin}px`;
-					hasOverflow = true;
-				} else {
-					cardMaxHeight = null;
-					hasOverflow = false;
-				}
-			} else {
-				// Position above the reference (default)
-				// Check if it fits above, otherwise constrain height
-				if (spaceAbove < cardHeight + margin) {
-					cardMaxHeight = `${spaceAbove - margin}px`;
-					hasOverflow = true;
-				} else {
-					cardMaxHeight = null;
-					hasOverflow = false;
-				}
-			}
-		});
-	}
 
 	function handlePointerEnter() {
 		onpointerenter?.();
@@ -204,7 +139,7 @@
 						glass={true}
 						additionalClasses="card-date-badge"
 					>
-						{item.date || getYear(item)}
+						{item.date || getItemYear(item)}
 					</Button>
 				</div>
 
