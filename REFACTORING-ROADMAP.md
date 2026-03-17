@@ -95,9 +95,15 @@ Last updated: 2026-03-17
 
 ### 5.2 Decompose Large Components
 
-- **Status:** Pending
-- **Files:** `MediaPlayer.svelte` (~1492 lines), `PdfGenerator.svelte` (~882 lines), `CareerTimeline.svelte` (~836 lines), `HeroImageDisplay.svelte` (~826 lines), `ReferencePreviewCard.svelte` (~879 lines)
-- **Impact:** Maintainability — these work correctly but are hard to reason about
+- **Status:** In Progress
+- **Done:**
+  - `MediaPlayer.svelte`: Extracted `AudioVisualization.svelte` (1493→1111 lines)
+  - `PdfGenerator.svelte`: Extracted `pdfDesignTokens.ts` (constants centralized)
+- **Remaining:**
+  - `MediaPlayer.svelte`: Extract ProgressBar and VolumeControl sub-components
+  - `CareerTimeline.svelte` (~836 lines): Extract timeline utilities and sub-components
+  - `HeroImageDisplay.svelte` (~826 lines): Extract image utils only (portal pattern is risky to extract)
+  - `ReferencePreviewCard.svelte` (~879 lines): Extract positioning logic and content sub-component
 
 ### 5.3 Guard Console Statements Behind `import.meta.env.DEV`
 
@@ -116,6 +122,18 @@ Last updated: 2026-03-17
 - **Status:** Deferred
 - **Issue:** 5 static research project pages could use a dynamic `[id]` route
 - **Blocker:** Inline Svelte components in page content prevent pure data-driven approach
+
+### 5.7 Fix ESLint Errors: Migrate to resolve() from $app/paths
+
+- **Status:** Pending
+- **Issue:** 66 occurrences of `svelte/no-navigation-without-resolve` across hrefs and goto() calls
+- **Impact:** Currently disabled in eslint config; should be migrated for proper SvelteKit base path handling
+
+### 5.8 Fix SEO JSON-LD in Pre-existing MetaTags Components
+
+- **Status:** Pending
+- **Issue:** `publications/MetaTags.svelte` and `communications/MetaTags.svelte` still use `{@html <script>}` for COinS/JSON-LD. Should migrate to `useJsonLdScript()` like SEO.svelte
+- **Impact:** Low — works correctly, only an ESLint parse concern
 
 ### 5.6 Extract Shared Filter Logic
 
