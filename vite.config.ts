@@ -11,6 +11,8 @@ export default defineConfig({
 		rolldownOptions: {
 			output: {
 				// Optimize chunking for better performance and code splitting
+				// Only use manualChunks for heavy dynamically-imported libraries
+				// Let Rolldown handle natural code splitting for everything else
 				manualChunks: (id) => {
 					// Heavy charting libraries - dynamically imported, separate chunks
 					if (id.includes('echarts')) {
@@ -25,21 +27,6 @@ export default defineConfig({
 					// MapLibre GL - mapping library (dynamically imported)
 					if (id.includes('maplibre-gl')) {
 						return 'maplibre';
-					}
-
-					// PDF generation libraries - dynamically imported
-					if (id.includes('jspdf')) {
-						return 'jspdf';
-					}
-
-					// Icon libraries
-					if (id.includes('@iconify') || id.includes('svelte-fa') || id.includes('@fortawesome')) {
-						return 'icons';
-					}
-
-					// Other vendor dependencies
-					if (id.includes('node_modules')) {
-						return 'vendor';
 					}
 				}
 			}

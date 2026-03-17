@@ -15,9 +15,8 @@ const config = {
 			precompress: true, // Enable gzip/brotli compression for better performance
 			strict: true
 		}),
-		// CSS inlining disabled due to compatibility issues with Vite 7
-		// See: https://github.com/sveltejs/kit/issues - monitor for fixes
-		// inlineStyleThreshold: 5120, // 5KB in bytes - balances inlining vs caching
+		// Inline small CSS files to reduce render-blocking requests
+		inlineStyleThreshold: 5120, // 5KB in bytes - balances inlining vs caching
 		paths: {
 			base: ''
 		},
