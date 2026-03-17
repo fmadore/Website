@@ -95,15 +95,15 @@ Last updated: 2026-03-17
 
 ### 5.2 Decompose Large Components
 
-- **Status:** In Progress
-- **Done:**
-  - `MediaPlayer.svelte`: Extracted `AudioVisualization.svelte` (1493→1111 lines)
-  - `PdfGenerator.svelte`: Extracted `pdfDesignTokens.ts` (constants centralized)
-- **Remaining:**
-  - `MediaPlayer.svelte`: Extract ProgressBar and VolumeControl sub-components
-  - `CareerTimeline.svelte` (~836 lines): Extract timeline utilities and sub-components
-  - `HeroImageDisplay.svelte` (~826 lines): Extract image utils only (portal pattern is risky to extract)
-  - `ReferencePreviewCard.svelte` (~879 lines): Extract positioning logic and content sub-component
+- **Status:** Done (major components)
+- **Completed:**
+  - `MediaPlayer.svelte`: 1493 → 667 lines (55% reduction) — Extracted `AudioVisualization.svelte`, `ProgressBar.svelte`, `VolumeControl.svelte`
+  - `PdfGenerator.svelte`: Extracted `pdfDesignTokens.ts` (FONT_SIZE, SPACING, COLORS constants)
+  - `ReferencePreviewCard.svelte`: 879 → 814 lines — Extracted `cardPositioning.ts` (positioning algorithm + getItemYear)
+- **Remaining (lower priority):**
+  - `CareerTimeline.svelte` (~836 lines): Could extract timeline utilities and tooltip/legend sub-components
+  - `HeroImageDisplay.svelte` (~826 lines): Portal+event action pattern makes extraction risky — utility-only extraction recommended
+  - `PdfGenerator.svelte`: Further extraction of entry renderers possible but high complexity
 
 ### 5.3 Guard Console Statements Behind `import.meta.env.DEV`
 
