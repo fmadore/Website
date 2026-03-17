@@ -77,10 +77,12 @@ export const extractRichText = (node: Element | ChildNode): TextFragment[] => {
 
 		const tagName = el.tagName;
 
-		// Map styles based on tag
+		// Map styles based on tag and CSS classes
 		let style: 'normal' | 'italic' | 'bold' | 'bolditalic' = 'normal';
 		if (tagName === 'EM' || tagName === 'I') style = 'italic';
 		if (tagName === 'STRONG' || tagName === 'B') style = 'bold';
+		if (el.classList.contains('font-semibold') || el.classList.contains('font-medium'))
+			style = 'bold';
 
 		// Handle links
 		if (tagName === 'A') {
@@ -188,7 +190,9 @@ export const renderRichText = (
 	width: number,
 	fontSize: number,
 	defaultLineHeight: number,
-	baseFont: string = 'helvetica'
+	baseFont: string = 'helvetica',
+	boldColor?: [number, number, number],
+	textColor: [number, number, number] = [0, 0, 0]
 ): number => {
 	let currentX = x;
 	let currentY = y;
@@ -202,6 +206,12 @@ export const renderRichText = (
 		if (frag.style === 'bold') fontStyle = 'bold';
 		if (frag.style === 'bolditalic') fontStyle = 'bolditalic';
 		pdf.setFont(baseFont, fontStyle);
+
+		// Apply bold color if provided
+		const isBold = frag.style === 'bold' || frag.style === 'bolditalic';
+		if (boldColor && isBold) {
+			pdf.setTextColor(...boldColor);
+		}
 
 		// Split by whitespace
 		const words = frag.text.split(/(\s+)/);
@@ -237,6 +247,11 @@ export const renderRichText = (
 			}
 			currentX += wordWidth;
 		});
+
+		// Reset color after bold fragment
+		if (boldColor && isBold) {
+			pdf.setTextColor(...textColor);
+		}
 	});
 
 	// Return next line Y

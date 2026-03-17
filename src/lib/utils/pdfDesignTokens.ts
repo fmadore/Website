@@ -47,4 +47,4 @@ export const COLORS = {
 } as const;
 
 /** Year column width for two-column layout entries */
-export const yearColumnWidth = 24 as const; // Slightly narrower year column
+export const yearColumnWidth = 18 as const; // Compact year column

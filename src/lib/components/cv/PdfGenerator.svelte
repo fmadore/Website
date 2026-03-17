@@ -366,7 +366,10 @@
 												yPosition,
 												contentWidth - 5,
 												FONT_SIZE.BODY,
-												SPACING.LINE_HEIGHT_TIGHT
+												SPACING.LINE_HEIGHT_TIGHT,
+												'helvetica',
+												COLORS.PRIMARY,
+												COLORS.TEXT
 											);
 											yPosition += SPACING.LINE_HEIGHT;
 										}
@@ -737,7 +740,10 @@
 									yPosition,
 									contentWidth - 5,
 									FONT_SIZE.BODY,
-									SPACING.LINE_HEIGHT
+									SPACING.LINE_HEIGHT,
+									'helvetica',
+									COLORS.PRIMARY,
+									COLORS.TEXT
 								);
 								yPosition += SPACING.SUBSECTION_TOP;
 							}
