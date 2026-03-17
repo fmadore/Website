@@ -333,12 +333,12 @@
 	}
 
 	:global(#cv-content a.review-link) {
+		font-style: italic;
 		text-decoration: none;
 	}
 
 	:global(#cv-content a.review-link:hover) {
 		text-decoration: underline;
-		text-decoration-skip-ink: auto;
 	}
 
 	/* Print styles */

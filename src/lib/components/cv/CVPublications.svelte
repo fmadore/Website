@@ -108,7 +108,7 @@
 											href={review.url}
 											target="_blank"
 											rel="noopener noreferrer"
-											class="text-primary review-link"><em>{review.journal}</em></a
+											class="text-primary review-link">{review.journal}</a
 										><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < pub.reviewedBy.length - 2},{' '}
 										{:else if i === pub.reviewedBy.length - 2},{' '}and{' '}
 										{:else}.{/if}
@@ -175,5 +175,4 @@
 		padding: 0 var(--space-1);
 		border-radius: var(--border-radius);
 	}
-
 </style>
