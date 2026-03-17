@@ -48,6 +48,7 @@
 							target="_blank"
 							rel="noopener noreferrer"
 							class="verification-badge"
+							data-pdf-hide
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"

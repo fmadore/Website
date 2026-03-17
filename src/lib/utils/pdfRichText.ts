@@ -71,6 +71,10 @@ export const extractRichText = (node: Element | ChildNode): TextFragment[] => {
 	if (node.nodeType === 1) {
 		// Node.ELEMENT_NODE
 		const el = node as Element;
+
+		// Skip elements marked for PDF exclusion
+		if (el.hasAttribute('data-pdf-hide')) return fragments;
+
 		const tagName = el.tagName;
 
 		// Map styles based on tag
@@ -205,12 +209,17 @@ export const renderRichText = (
 		words.forEach((word) => {
 			if (word.length === 0) return;
 
+			// Skip whitespace at the start of a line
+			if (/^\s+$/.test(word) && currentX === x) {
+				return;
+			}
+
 			const wordWidth = (pdf.getStringUnitWidth(word) * fontSize) / pdf.internal.scaleFactor;
 
 			// Check if word fits
 			if (currentX + wordWidth > x + width) {
-				// Ignore leading whitespace on new line
-				if (/^\s+$/.test(word) && currentX === x) {
+				// Skip whitespace that overflows — don't wrap it to next line
+				if (/^\s+$/.test(word)) {
 					return;
 				}
 
@@ -261,10 +270,15 @@ export const measureRichTextHeight = (
 
 		words.forEach((word) => {
 			if (word.length === 0) return;
+
+			// Skip whitespace at the start of a line
+			if (/^\s+$/.test(word) && currentX === 0) return;
+
 			const wordWidth = (pdf.getStringUnitWidth(word) * fontSize) / pdf.internal.scaleFactor;
 
 			if (currentX + wordWidth > width) {
-				if (/^\s+$/.test(word) && currentX === 0) return;
+				// Skip whitespace that overflows
+				if (/^\s+$/.test(word)) return;
 				// Never break before punctuation
 				if (!/^[,.:;!?)}\]]+/.test(word)) {
 					currentX = 0;

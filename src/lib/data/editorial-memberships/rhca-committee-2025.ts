@@ -6,7 +6,7 @@ export const rhcaCommittee2025: EditorialMembership = {
 	role: 'Editorial committee',
 	startYear: 2025,
 	// endYear: null, // Assuming ongoing, uncomment and set if it has an end date
-	dateRangeString: '2025-Present',
+	dateRangeString: '2025–',
 	dateISOStart: '2025-02-21'
 	// dateISOEnd: null,
 };
