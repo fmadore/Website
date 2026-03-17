@@ -1,7 +1,5 @@
 <script lang="ts">
-	// import { onMount } from 'svelte'; // Removed as unused
 	import { allCommunications } from '../../data/communications/index';
-	// import type { Communication } from '$lib/types/communication'; // Removed as unused
 	import RelevantItemsList from '$lib/components/panels/RelevantItemsList.svelte';
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
 

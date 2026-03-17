@@ -31,16 +31,13 @@ export default defineConfig({
 					if (id.includes('jspdf')) {
 						return 'jspdf';
 					}
-					if (id.includes('html2canvas')) {
-						return 'html2canvas';
-					}
 
 					// Icon libraries
 					if (id.includes('@iconify') || id.includes('svelte-fa') || id.includes('@fortawesome')) {
 						return 'icons';
 					}
 
-	// Other vendor dependencies
+					// Other vendor dependencies
 					if (id.includes('node_modules')) {
 						return 'vendor';
 					}

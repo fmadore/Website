@@ -14,3 +14,5 @@ const allResearchRoles: ResearchRole[] = loadData<ResearchRole>(roleModules, [],
 export const researchRolesByDate = [...allResearchRoles].sort((a, b) => {
 	return b.startYear - a.startYear;
 });
+
+export { allResearchRoles };

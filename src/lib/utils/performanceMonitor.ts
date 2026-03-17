@@ -121,29 +121,6 @@ export function getPerformanceMetrics(): PerformanceMetrics {
 	return performanceMonitor?.getMetrics() || {};
 }
 
-// Resource loading performance
-export function measureResourceLoading(resourceUrl: string) {
-	if (!browser) return;
-
-	const startTime = performance.now();
-
-	return {
-		end: () => {
-			const endTime = performance.now();
-			const loadTime = endTime - startTime;
-			console.log(`[Resource] ${resourceUrl}: ${Math.round(loadTime)}ms`);
-
-			// Report to analytics
-			if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
-				window.gtag('event', 'resource_timing', {
-					resource_url: resourceUrl,
-					load_time: Math.round(loadTime)
-				});
-			}
-		}
-	};
-}
-
 // Connection quality assessment
 export function assessConnectionQuality(): string {
 	if (!browser) return 'unknown';
@@ -176,21 +153,3 @@ export function assessConnectionQuality(): string {
 	return 'unknown';
 }
 
-// Memory usage monitoring (if available)
-export function monitorMemoryUsage() {
-	if (!browser) return null;
-
-	const memory = (performance as any).memory;
-	if (memory) {
-		const usage = {
-			used: Math.round(memory.usedJSHeapSize / 1048576), // MB
-			total: Math.round(memory.totalJSHeapSize / 1048576), // MB
-			limit: Math.round(memory.jsHeapSizeLimit / 1048576) // MB
-		};
-
-		console.log(`[Memory] Used: ${usage.used}MB, Total: ${usage.total}MB, Limit: ${usage.limit}MB`);
-		return usage;
-	}
-
-	return null;
-}

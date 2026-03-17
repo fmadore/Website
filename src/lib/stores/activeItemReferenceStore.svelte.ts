@@ -22,9 +22,3 @@ export function setActiveReferenceId(value: string | null) {
 	activeId = value;
 }
 
-/**
- * Update the active reference ID using a function
- */
-export function updateActiveReferenceId(fn: (value: string | null) => string | null) {
-	activeId = fn(activeId);
-}

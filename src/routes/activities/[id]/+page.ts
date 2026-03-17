@@ -3,6 +3,7 @@ import { base } from '$app/paths';
 import { getActivityById } from '$lib/stores/activities.svelte';
 import type { PageLoad } from './$types';
 import type { BlogPostingJsonLd, JsonLdPerson } from '$lib/types/jsonld';
+import { author, address, website } from '$lib/data/siteConfig';
 
 // --- Load Function ---
 export const load: PageLoad = ({ params }) => {
@@ -30,15 +31,15 @@ export const load: PageLoad = ({ params }) => {
 		datePublished: formattedDatePublished
 	};
 
-	// Default author
+	// Default author from centralized site config
 	const defaultAuthor: JsonLdPerson = {
 		'@type': 'Person',
-		name: 'Frédérick Madore',
-		url: 'https://www.frederickmadore.com',
-		jobTitle: 'Research Fellow',
+		name: author.name,
+		url: website.url,
+		jobTitle: author.positionShort,
 		affiliation: {
 			'@type': 'Organization',
-			name: 'Leibniz-Zentrum Moderner Orient (ZMO)'
+			name: address.institution
 		}
 	};
 

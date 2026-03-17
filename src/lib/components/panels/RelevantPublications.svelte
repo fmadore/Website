@@ -1,7 +1,5 @@
 <script lang="ts">
-	// import { onMount } from 'svelte'; // Removed as unused
 	import { allPublications } from '../../data/publications/index';
-	// import type { Publication } from '$lib/types'; // Removed as unused
 	import RelevantItemsList from '$lib/components/panels/RelevantItemsList.svelte';
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
 	import Button from '../atoms/Button.svelte';

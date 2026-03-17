@@ -190,28 +190,6 @@ function filterFrequencies(frequencies: WordFrequency[], config: WordCloudConfig
 }
 
 /**
- * Get statistics about the analyzed corpus
- */
-export function getCorpusStats() {
-	return {
-		publicationCount: corpusAnalysis.publicationCount,
-		totalWords: corpusAnalysis.totalWords,
-		uniqueWords: corpusAnalysis.frequencies.length,
-		englishPublications: corpusAnalysis.byLanguage.en.length,
-		frenchPublications: corpusAnalysis.byLanguage.fr.length
-	};
-}
-
-/**
- * Get bigrams for a specific publication
- */
-export function getBigrams(publicationId: string): NgramFrequency[] {
-	const analysis = publicationAnalyses[publicationId];
-	if (!analysis || !analysis.bigrams) return [];
-	return analysis.bigrams;
-}
-
-/**
  * Get combined bigrams for multiple publications
  */
 export function getCombinedBigrams(
@@ -237,7 +215,6 @@ export function getCombinedBigrams(
 		}
 	}
 
-	// Convert to sorted array
 	return Array.from(bigramMap.entries())
 		.map(([ngram, data]) => ({
 			ngram,
@@ -247,3 +224,4 @@ export function getCombinedBigrams(
 		.sort((a, b) => b.count - a.count)
 		.slice(0, maxBigrams);
 }
+
