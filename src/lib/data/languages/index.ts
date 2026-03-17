@@ -2,7 +2,7 @@
 import type { Language } from '$lib/types';
 import { loadData } from '$lib/utils/dataLoader';
 
-type ModuleType = Record<string, any>;
+type ModuleType = Record<string, unknown>;
 
 const templateIds: string[] = [
 	// 'language-template-id'

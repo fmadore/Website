@@ -8,7 +8,7 @@ import {
 	extractUnique
 } from '$lib/utils/dataAggregation';
 
-type ModuleType = Record<string, any>;
+type ModuleType = Record<string, unknown>;
 
 // Define all template IDs to filter out
 const templateIds = [

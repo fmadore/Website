@@ -26,7 +26,7 @@ import { writable, readable, derived } from 'svelte/store';
  * @param initialFilterState - The initial state object for the filters.
  * @returns A writable Svelte store
  */
-export function createActiveFiltersStore<T extends Record<string, any>>(initialFilterState: T) {
+export function createActiveFiltersStore<T extends Record<string, unknown>>(initialFilterState: T) {
 	return writable<T>(initialFilterState);
 }
 
@@ -35,7 +35,7 @@ export function createActiveFiltersStore<T extends Record<string, any>>(initialF
  * @param activeFilters - The writable store for filters
  * @param key - The key in the active filters state corresponding to the array to modify.
  */
-export function createToggleArrayFilter<T extends Record<string, any>, K extends keyof T>(
+export function createToggleArrayFilter<T extends Record<string, unknown>, K extends keyof T>(
 	activeFilters: ReturnType<typeof writable<T>>,
 	key: K
 ): (item: T[K] extends (infer U)[] ? U : never) => void {
@@ -55,7 +55,7 @@ export function createToggleArrayFilter<T extends Record<string, any>, K extends
  * @param activeFilters - The writable store for filters
  * @param key - The key in the active filters state corresponding to the array to set.
  */
-export function createSetArrayFilter<T extends Record<string, any>, K extends keyof T>(
+export function createSetArrayFilter<T extends Record<string, unknown>, K extends keyof T>(
 	activeFilters: ReturnType<typeof writable<T>>,
 	key: K
 ): (items: T[K] extends (infer U)[] ? U[] : never) => void {
@@ -69,7 +69,7 @@ export function createSetArrayFilter<T extends Record<string, any>, K extends ke
  * @param activeFilters - The writable store for filters
  * @param key - The key in the active filters state corresponding to the YearRange | null.
  */
-export function createUpdateRangeFilter<T extends Record<string, any>, K extends keyof T>(
+export function createUpdateRangeFilter<T extends Record<string, unknown>, K extends keyof T>(
 	activeFilters: ReturnType<typeof writable<T>>,
 	key: K
 ): (min: number, max: number) => void {
@@ -88,7 +88,7 @@ export function createUpdateRangeFilter<T extends Record<string, any>, K extends
  * @param activeFilters - The writable store for filters
  * @param key - The key in the active filters state corresponding to the YearRange | null.
  */
-export function createResetRangeFilter<T extends Record<string, any>, K extends keyof T>(
+export function createResetRangeFilter<T extends Record<string, unknown>, K extends keyof T>(
 	activeFilters: ReturnType<typeof writable<T>>,
 	key: K
 ): () => void {
@@ -120,7 +120,7 @@ export function createSetRangeFilter(
  * @param activeFilters - The writable store for filters
  * @param initialFilterState - The initial state object for the filters.
  */
-export function createClearAllFilters<T extends Record<string, any>>(
+export function createClearAllFilters<T extends Record<string, unknown>>(
 	activeFilters: ReturnType<typeof writable<T>>,
 	initialFilterState: T
 ): () => void {

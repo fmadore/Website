@@ -2,7 +2,7 @@
 	import { getActivities } from '$lib/stores/activities.svelte';
 	import type { Activity } from '$lib/types';
 	import { base, resolve } from '$app/paths';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
@@ -21,7 +21,7 @@
 	let activities = $derived(getActivities());
 
 	// Get selected tag from URL using $derived
-	let selectedTag = $derived(browser ? $page.url.searchParams.get('tag') : null);
+	let selectedTag = $derived(browser ? page.url.searchParams.get('tag') : null);
 
 	// Filter activities by selected tag using $derived
 	let activityList = $derived(
@@ -46,6 +46,7 @@
 
 	// Compute tag frequencies from activities for the tag cloud
 	let tagFrequencies = $derived.by(() => {
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const freq = new Map<string, number>();
 		activityList.forEach((activity: Activity) => {
 			if (activity.tags) {

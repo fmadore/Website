@@ -4,7 +4,7 @@ import { loadData } from '$lib/utils/dataLoader';
 import { sortByDate, groupByYear } from '$lib/utils/dataAggregation';
 
 // Define a type for module imports
-type ModuleType = Record<string, any>;
+type ModuleType = Record<string, unknown>;
 
 // Define template IDs to filter out (if you create one)
 const templateIds: string[] = [

@@ -116,10 +116,10 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 		},
 		tooltip: {
 			...getEChartsTooltipStyle(resolvedColors),
-			formatter: function (params: any) {
+			formatter: function (params: Record<string, unknown>) {
 				if (params.seriesType === 'custom') {
 					// Gantt bar tooltip
-					const project = params.data;
+					const project = params.data as { name: string; value: number[] };
 					const duration = project.value[2] - project.value[1];
 					let tooltip = `<strong>${project.name}</strong><br/>`;
 					tooltip += `Period: ${project.value[1]} – ${project.value[2]} (${duration + 1} years)<br/>`;
@@ -127,7 +127,13 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 					return tooltip;
 				} else {
 					// Publication marker tooltip
-					return `<strong>${params.data.name}</strong><br/>Type: ${formatTypeLabel(params.data.type)}<br/>Year: ${params.data.value[0]}<br/>Project: ${params.data.projectName}`;
+					const markerData = params.data as {
+						name: string;
+						type: string;
+						value: number[];
+						projectName: string;
+					};
+					return `<strong>${markerData.name}</strong><br/>Type: ${formatTypeLabel(markerData.type)}<br/>Year: ${markerData.value[0]}<br/>Project: ${markerData.projectName}`;
 				}
 			}
 		},
@@ -209,7 +215,14 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 			{
 				// Gantt bars
 				type: 'custom',
-				renderItem: function (params: any, api: any) {
+				renderItem: function (
+					_params: unknown,
+					api: {
+						value: (idx: number) => number;
+						coord: (val: number[]) => number[];
+						style: () => Record<string, unknown>;
+					}
+				) {
 					const categoryIndex = api.value(0);
 					const startYear = api.value(1);
 					const endYear = api.value(2);

@@ -9,6 +9,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 		getEChartsTooltipStyle
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
+	import type { DefaultLabelFormatterCallbackParams } from 'echarts';
 
 	// Types for treemap data
 	interface TreemapChild {
@@ -111,6 +112,10 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 		}))
 	);
 
+	type TreemapFormatterParams = DefaultLabelFormatterCallbackParams & {
+		data: TreemapNode | (TreemapChild & { children?: never });
+	};
+
 	// Chart options
 	const chartOption = $derived({
 		title: {
@@ -119,22 +124,23 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 		tooltip: {
 			...getEChartsTooltipStyle(resolvedColors),
 			confine: true,
-			formatter: function (params: any) {
-				if (params.data.children) {
+			formatter: function (params: TreemapFormatterParams) {
+				if ('children' in params.data && params.data.children) {
 					// Category node (parent)
 					const categoryTotal = params.data.children.reduce(
-						(sum: number, child: any) => sum + child.value,
+						(sum: number, child: TreemapChild) => sum + child.value,
 						0
 					);
 					const percentage = ((categoryTotal / totalPublications) * 100).toFixed(1);
 					return `<strong>${params.name}</strong><br/>Publications: ${categoryTotal} (${percentage}%)`;
 				} else {
 					// Venue node (leaf)
-					const percentage = ((params.value / totalPublications) * 100).toFixed(1);
+					const percentage = (((params.value as number) / totalPublications) * 100).toFixed(1);
+					const leafData = params.data as TreemapChild;
 					let tooltip = `<strong>${params.name}</strong><br/>Publications: ${params.value} (${percentage}%)`;
-					if (params.data.publications && params.data.publications.length <= 5) {
+					if (leafData.publications && leafData.publications.length <= 5) {
 						tooltip += '<br/><br/><em>Titles:</em>';
-						params.data.publications.forEach((pub: string) => {
+						leafData.publications.forEach((pub: string) => {
 							// Truncate long titles
 							const truncated = pub.length > 50 ? pub.substring(0, 50) + '...' : pub;
 							tooltip += `<br/>• ${truncated}`;
@@ -181,11 +187,11 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 				},
 				label: {
 					show: true,
-					formatter: function (params: any) {
-						if (params.data.children) {
-							return `{name|${params.name}}\n{count|${params.data.children.reduce((s: number, c: any) => s + c.value, 0)}}`;
+					formatter: function (params: TreemapFormatterParams) {
+						if ('children' in params.data && params.data.children) {
+							return `{name|${params.name}}\n{count|${params.data.children.reduce((s: number, c: TreemapChild) => s + c.value, 0)}}`;
 						}
-						return isMobile && params.value < 2
+						return isMobile && (params.value as number) < 2
 							? ''
 							: `{name|${params.name}}\n{count|${params.value}}`;
 					},

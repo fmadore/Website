@@ -16,7 +16,7 @@
 <section>
 	<h3>Consulting and Legal Expertise</h3>
 	<div class="space-y-3">
-		{#each consulting as item}
+		{#each consulting as item (item.role)}
 			<CVEntry year={item.year}>
 				{item.role}, {item.organization}.
 				<p class="text-sm mt-1">

@@ -84,7 +84,7 @@
 			const authorCounts: Record<string, number> = {};
 			allPublications.forEach((pub) => {
 				if (pub.citedBy) {
-					pub.citedBy.forEach((citation: any) => {
+					pub.citedBy.forEach((citation) => {
 						if (citation.authors && Array.isArray(citation.authors)) {
 							citation.authors.forEach((author: string) => {
 								authorCounts[author] = (authorCounts[author] || 0) + 1;
@@ -188,7 +188,7 @@
 			// Transform the data to use formatted labels as keys
 			return Object.entries(yearlyPublicationCounts)
 				.map(([yearStr, counts]) => {
-					const yearData: any = { year: parseInt(yearStr) };
+					const yearData: Record<string, number> = { year: parseInt(yearStr) };
 
 					// Map original type keys to formatted labels
 					types.forEach((originalType, index) => {

@@ -119,7 +119,7 @@ function validateRequiredFields(publication: Publication, bibtexType: string): s
 export function generateBibtex(publication: Publication): string {
 	const bibtexFields: string[] = [];
 	const id = publication.id;
-	let bibtexType = 'misc'; // Default type
+	let bibtexType: string;
 
 	// Determine BibTeX entry type based on publication type
 	if (publication.type === 'book' && publication.isEditedVolume) {

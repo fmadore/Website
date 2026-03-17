@@ -160,7 +160,7 @@
 		}
 		if (publication.doi) params.set('rft_id', `info:doi/${publication.doi}`);
 		if (publication.isbn) params.set('rft.isbn', publication.isbn);
-		if ((publication as any).issn) params.set('rft.issn', (publication as any).issn);
+		if (publication.issn) params.set('rft.issn', publication.issn);
 
 		return params.toString();
 	};
@@ -193,8 +193,8 @@
 			...createConditionalTag('citation_publisher', publication.publisher),
 			...createConditionalTag('citation_doi', publication.doi),
 			...createConditionalTag('citation_isbn', publication.isbn),
-			...createConditionalTag('citation_issn', (publication as any).issn),
-			...createConditionalTag('citation_eIssn', (publication as any).eIssn),
+			...createConditionalTag('citation_issn', publication.issn),
+			...createConditionalTag('citation_eIssn', undefined),
 			...createConditionalTag('citation_language', publication.language),
 			...createConditionalTag('citation_keywords', publication.tags?.join('; '))
 		);
@@ -207,7 +207,10 @@
 				`${page.url.origin}${page.url.pathname}`
 			),
 			...createConditionalTag('citation_fulltext_html_url', resolveUrl(publication.url)),
-			...createConditionalTag('citation_pdf_url', resolveUrl((publication as any).pdfUrl))
+			...createConditionalTag(
+				'citation_pdf_url',
+				resolveUrl((publication as Record<string, unknown>).pdfUrl as string | undefined)
+			)
 		);
 
 		// Type-specific tags
@@ -243,12 +246,13 @@
 		tags.push(
 			...createConditionalTag(
 				'citation_technical_report_institution',
-				(publication as any).institution || publication.publisher,
+				(publication as unknown as Record<string, string | undefined>).institution ||
+					publication.publisher,
 				isReport
 			),
 			...createConditionalTag(
 				'citation_technical_report_number',
-				(publication as any).reportNumber,
+				(publication as unknown as Record<string, string | undefined>).reportNumber,
 				isReport
 			)
 		);

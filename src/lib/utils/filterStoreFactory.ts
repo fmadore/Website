@@ -24,7 +24,7 @@ import { derived, readable, type Readable, type Writable } from 'svelte/store';
  */
 export interface ArrayDimension<TItem> {
 	/** Returns true if the item matches the given active filter values. */
-	match: (item: TItem, activeValues: any[]) => boolean;
+	match: (item: TItem, activeValues: string[]) => boolean;
 	/** Extracts countable value(s) from an item for the count store. */
 	countExtractor?: (item: TItem) => string | string[] | undefined | null;
 }
@@ -44,19 +44,19 @@ function isRangeDimension<TItem>(dim: FilterDimension<TItem>): dim is RangeDimen
 	return 'type' in dim && dim.type === 'range';
 }
 
-export interface FilterSystemConfig<TItem, TFilters extends Record<string, any>> {
+export interface FilterSystemConfig<TItem, TFilters extends Record<string, unknown>> {
 	items: TItem[];
 	initialFilters: TFilters;
 	dimensions: { [K in keyof TFilters]?: FilterDimension<TItem> };
-	filterOptions: Record<string, any>;
+	filterOptions: Record<string, unknown>;
 }
 
-export interface FilterSystemResult<TItem, TFilters extends Record<string, any>> {
+export interface FilterSystemResult<TItem, TFilters extends Record<string, unknown>> {
 	activeFilters: Writable<TFilters>;
-	filterOptions: Readable<Record<string, any>>;
+	filterOptions: Readable<Record<string, unknown>>;
 	filteredItems: Readable<TItem[]>;
-	toggles: Record<string, (value: any) => void>;
-	setters: Record<string, (values: any) => void>;
+	toggles: Record<string, (value: string) => void>;
+	setters: Record<string, (values: string[]) => void>;
 	counts: Record<string, Readable<Record<string, number>>>;
 	clearAllFilters: () => void;
 	updateYearRange?: (min: number, max: number) => void;
@@ -75,7 +75,7 @@ export interface FilterSystemResult<TItem, TFilters extends Record<string, any>>
  * - clearAllFilters: resets all filters to initial state
  * - updateYearRange/resetYearRange/setYearRange: range control (if any range dimension exists)
  */
-export function createFilterSystem<TItem, TFilters extends Record<string, any>>(
+export function createFilterSystem<TItem, TFilters extends Record<string, unknown>>(
 	config: FilterSystemConfig<TItem, TFilters>
 ): FilterSystemResult<TItem, TFilters> {
 	const { items, initialFilters, dimensions, filterOptions: options } = config;
@@ -92,7 +92,7 @@ export function createFilterSystem<TItem, TFilters extends Record<string, any>>(
 				if (isRangeDimension(dim)) {
 					if (filterValue != null && !dim.match(item, filterValue as YearRange)) return false;
 				} else {
-					const arr = filterValue as any[];
+					const arr = filterValue as string[];
 					if (arr && arr.length > 0 && !dim.match(item, arr)) return false;
 				}
 			}
@@ -100,8 +100,8 @@ export function createFilterSystem<TItem, TFilters extends Record<string, any>>(
 		});
 	});
 
-	const toggles: Record<string, (value: any) => void> = {};
-	const setters: Record<string, (values: any) => void> = {};
+	const toggles: Record<string, (value: string) => void> = {};
+	const setters: Record<string, (values: string[]) => void> = {};
 	const counts: Record<string, Readable<Record<string, number>>> = {};
 
 	let updateYearRange: ((min: number, max: number) => void) | undefined;
@@ -114,8 +114,12 @@ export function createFilterSystem<TItem, TFilters extends Record<string, any>>(
 			resetYearRange = createResetRangeFilter(activeFilters, key as keyof TFilters);
 			setYearRange = createSetRangeFilter(updateYearRange, resetYearRange);
 		} else {
-			toggles[key] = createToggleArrayFilter(activeFilters, key as keyof TFilters);
-			setters[key] = createSetArrayFilter(activeFilters, key as keyof TFilters);
+			toggles[key] = createToggleArrayFilter(activeFilters, key as keyof TFilters) as unknown as (
+				value: string
+			) => void;
+			setters[key] = createSetArrayFilter(activeFilters, key as keyof TFilters) as unknown as (
+				values: string[]
+			) => void;
 			if (dim.countExtractor) {
 				counts[key] = createDerivedCountStore(filteredItems, dim.countExtractor);
 			}

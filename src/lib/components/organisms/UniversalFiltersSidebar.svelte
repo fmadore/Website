@@ -19,7 +19,7 @@
 	}
 
 	// Prop for the configuration object
-	let { config, isExpandedMobile = false, oncollapse, children }: Props = $props();
+	let { config, isExpandedMobile = false, oncollapse: _oncollapse, children }: Props = $props();
 
 	// Reference to the sidebar element
 	let sidebarElement: HTMLElement;

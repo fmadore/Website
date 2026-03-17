@@ -75,7 +75,13 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 			formatter: '{a} <br/>{b}: {c} ({d}%)',
 			confine: isMobile,
 			position: isMobile
-				? function (point: [number, number], params: any, dom: HTMLElement, rect: any, size: any) {
+				? function (
+						point: [number, number],
+						_params: unknown,
+						_dom: HTMLElement,
+						_rect: unknown,
+						size: { contentSize: [number, number]; viewSize: [number, number] }
+					) {
 						const tooltipWidth = size.contentSize[0];
 						const tooltipHeight = size.contentSize[1];
 						const viewportWidth = size.viewSize[0];
@@ -166,7 +172,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 						}
 					: undefined,
 				animationType: 'scale',
-				animationEasing: 'elasticOut' as any,
+				animationEasing: 'elasticOut',
 				animationDelay: function () {
 					return Math.random() * 200;
 				}

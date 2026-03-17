@@ -45,6 +45,7 @@
 					visibleIds.add(s.id);
 				}
 			}
+			// eslint-disable-next-line svelte/prefer-svelte-reactivity
 			visibleIds = new Set(visibleIds);
 		}
 		scanExisting();

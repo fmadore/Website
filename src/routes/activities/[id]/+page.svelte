@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import SEO from '$lib/SEO.svelte';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
@@ -171,6 +170,7 @@
 						{#each contentSegments as segment, segmentIndex (segmentIndex)}
 							{#if segment.type === 'html'}
 								<!-- Safe: content is from trusted activity data files in src/lib/data/activities/ -->
+								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 								{@html segment.value}
 							{:else if segment.type === 'ItemReference' && segment.id}
 								<ItemReference id={segment.id} />

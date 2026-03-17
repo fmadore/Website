@@ -9,8 +9,6 @@
 		authorCounts,
 		typeCounts,
 		languageCounts,
-		countryCounts,
-		projectCounts,
 		toggleTypeFilter,
 		updateYearRange,
 		resetYearRange,
@@ -57,6 +55,7 @@
 
 	// Compute tag frequencies from all publications for the tag cloud
 	const publicationTagFrequencies: [string, number][] = (() => {
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const freq = new Map<string, number>();
 		allPublications.forEach((pub) => {
 			if (pub.tags) {
@@ -298,54 +297,52 @@
 			</UniversalFiltersSidebar>
 		{/snippet}
 
-		{#snippet children()}
-			<!-- Featured Publications Section (only shown when no filters active) -->
-			{#if shouldShowFeatured}
-				<FeaturedPublications
-					publications={featuredPublications}
-					onfilterrequest={handleFilterRequest}
-				/>
-			{/if}
-
-			<!-- All Publications Section Header (only when featured are shown) -->
-			{#if shouldShowFeatured}
-				<div class="all-publications-header">
-					<h2 class="section-title">All Publications</h2>
-				</div>
-			{/if}
-
-			<!-- Desktop Controls: Sorter + Clear Button -->
-			<div class="desktop-controls">
-				<div class="list-status text-light">
-					Showing {$filteredPublications.length || 0} publications
-					{#if areFiltersActive($activeFilters)}
-						<span class="text-accent"> (Filters applied)</span>
-					{/if}
-				</div>
-				<div class="buttons-group">
-					<Sorter {activeSort} onsortchange={handleSortChange} />
-					{#if areFiltersActive($activeFilters)}
-						<Button
-							variant="primary"
-							size="sm"
-							onclick={clearAllFilters}
-							additionalClasses="control-button-rounded clear-filters-button-page"
-						>
-							Clear all filters
-						</Button>
-					{/if}
-				</div>
-			</div>
-			<FilteredListDisplay
-				filteredItems={sortedPublications}
-				itemComponent={PublicationItem}
-				itemPropName="publication"
-				areFiltersActive={areFiltersActive($activeFilters)}
-				{clearAllFilters}
-				emptyStateNoFiltersMessage="No publications found matching your criteria. Try clearing some filters."
-				onitemrequest={handleFilterRequest}
+		<!-- Featured Publications Section (only shown when no filters active) -->
+		{#if shouldShowFeatured}
+			<FeaturedPublications
+				publications={featuredPublications}
+				onfilterrequest={handleFilterRequest}
 			/>
-		{/snippet}
+		{/if}
+
+		<!-- All Publications Section Header (only when featured are shown) -->
+		{#if shouldShowFeatured}
+			<div class="all-publications-header">
+				<h2 class="section-title">All Publications</h2>
+			</div>
+		{/if}
+
+		<!-- Desktop Controls: Sorter + Clear Button -->
+		<div class="desktop-controls">
+			<div class="list-status text-light">
+				Showing {$filteredPublications.length || 0} publications
+				{#if areFiltersActive($activeFilters)}
+					<span class="text-accent"> (Filters applied)</span>
+				{/if}
+			</div>
+			<div class="buttons-group">
+				<Sorter {activeSort} onsortchange={handleSortChange} />
+				{#if areFiltersActive($activeFilters)}
+					<Button
+						variant="primary"
+						size="sm"
+						onclick={clearAllFilters}
+						additionalClasses="control-button-rounded clear-filters-button-page"
+					>
+						Clear all filters
+					</Button>
+				{/if}
+			</div>
+		</div>
+		<FilteredListDisplay
+			filteredItems={sortedPublications}
+			itemComponent={PublicationItem}
+			itemPropName="publication"
+			areFiltersActive={areFiltersActive($activeFilters)}
+			{clearAllFilters}
+			emptyStateNoFiltersMessage="No publications found matching your criteria. Try clearing some filters."
+			onitemrequest={handleFilterRequest}
+		/>
 	</EntityListPageLayout>
 </div>
 

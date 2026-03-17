@@ -18,6 +18,7 @@
 	{#snippet entry(comm)}
 		{@const commDate = new Date(comm.dateISO)}
 		{@const formattedAuthors = formatCVAuthorList(comm.authors)}
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 		{#if formattedAuthors}{@html formattedAuthors}.
 		{/if}
 		"{comm.title}"{#if comm.conference}, <em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if},

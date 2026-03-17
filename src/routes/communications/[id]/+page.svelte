@@ -143,7 +143,8 @@
 										<div class="panel-paper-authors">
 											{#each paper.authors as author, index (author.name + index)}
 												<span>
-													{author.name}{#if author.affiliation}{' '}({author.affiliation}){/if}{#if index < paper.authors.length - 1},&nbsp;{/if}
+													{author.name}{#if author.affiliation}
+														({author.affiliation}){/if}{#if index < paper.authors.length - 1},&nbsp;{/if}
 												</span>
 											{/each}
 										</div>

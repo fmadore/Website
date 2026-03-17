@@ -2,7 +2,6 @@
 	import { scaleTime, scaleBand } from 'd3-scale';
 	import {
 		type TimelineItem,
-		type TimelineCategory,
 		TIMELINE_CATEGORIES,
 		getCategoryColor,
 		getCategoryLabel
@@ -53,7 +52,9 @@
 			return dates;
 		});
 
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const minDate = new Date(Math.min(...allDates.map((d) => d.getTime())));
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const maxDate = new Date(Math.max(...allDates.map((d) => d.getTime())));
 
 		// Add some padding
@@ -251,7 +252,7 @@
 						<!-- X Axis (top) -->
 						<g class="x-axis">
 							<line x1="0" y1="0" x2={innerWidth} y2="0" class="axis-line" />
-							{#each xTicks as tick}
+							{#each xTicks as tick (tick.getTime())}
 								{@const x = xScale(tick)}
 								<g transform="translate({x}, 0)">
 									<line y1="0" y2="-6" class="tick-line" />
@@ -263,7 +264,7 @@
 						</g>
 
 						<!-- Category swim lanes -->
-						{#each activeCategories() as category, index}
+						{#each activeCategories() as category, index (category.id)}
 							{@const y = yScale(category.id) ?? 0}
 							{@const bandHeight = yScale.bandwidth()}
 							{@const categoryItems = items.filter((item) => item.category === category.id)}
@@ -280,7 +281,7 @@
 							/>
 
 							<!-- Items in this lane -->
-							{#each categoryItems as item}
+							{#each categoryItems as item (item.id)}
 								{@const itemX = getItemX(item)}
 								{@const itemWidth = getItemWidth(item)}
 								{@const itemY = y + bandHeight / 2}
@@ -414,7 +415,7 @@
 
 			<!-- Legend -->
 			<div class="timeline-legend">
-				{#each activeCategories() as category}
+				{#each activeCategories() as category (category.id)}
 					<div class="legend-item">
 						<span class="legend-color" style="background: {category.color};"></span>
 						<span class="legend-label">{category.label}</span>

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { ComponentType } from 'svelte';
-	import { base } from '$app/paths';
 	import Button from '$lib/components/atoms/Button.svelte';
 
 	interface RelatedListItem {

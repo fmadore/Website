@@ -22,6 +22,7 @@
 					day: 'numeric',
 					month: 'long'
 				})}
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 		{#if formattedAuthors}{@html formattedAuthors}.
 		{/if}
 		"{comm.title}"{#if comm.location}, {comm.location}{/if}, {dateDisplay}.

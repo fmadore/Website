@@ -113,20 +113,6 @@ Shows where publications are published geographically using the publisherLocatio
 	// Filter data to only include countries with coordinates
 	const mappableData = $derived(data.filter((d) => COUNTRY_COORDINATES[d.country]));
 
-	// Format type label
-	function formatTypeLabel(type: string): string {
-		const labels: Record<string, string> = {
-			article: 'Article',
-			book: 'Book',
-			chapter: 'Chapter',
-			'special-issue': 'Special Issue',
-			'bulletin-article': 'Bulletin',
-			report: 'Report',
-			blogpost: 'Blog'
-		};
-		return labels[type] || type;
-	}
-
 	// Create popup content
 	function createPopupContent(item: PublisherLocationData): string {
 		let content = `<div class="publisher-popup">
@@ -270,7 +256,6 @@ Shows where publications are published geographically using the publisherLocatio
 	$effect(() => {
 		if (!browser || !mapContainer) return;
 
-		let mapInstance: MapLibreMap | null = null;
 		let cancelled = false;
 
 		(async () => {
@@ -287,7 +272,7 @@ Shows where publications are published geographically using the publisherLocatio
 				const initialStyle = initialDarkMode ? styleOptions.dark : styleOptions.light;
 				currentThemeIsDark = initialDarkMode;
 
-				mapInstance = new maplibregl.Map({
+				const mapInstance = new maplibregl.Map({
 					container: mapContainer,
 					style: initialStyle,
 					center: [10, 30],

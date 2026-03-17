@@ -61,6 +61,7 @@
 			<div class="scroll-reveal">
 				<section class="content-section glass-card">
 					<!-- Safe: project.description is from trusted project data in src/lib/data/digital-humanities/ -->
+					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 					{@html project.description}
 				</section>
 			</div>
@@ -95,6 +96,7 @@
 								{/if}
 								{#if item.description}
 									<!-- Safe: item.description is from trusted project data -->
+									<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 									<p class="embeddable-description">{@html item.description}</p>
 								{/if}
 
@@ -145,6 +147,7 @@
 					<section class="award-section glass-section-panel">
 						<h3 class="section-title">Award</h3>
 						<!-- Safe: project.award is from trusted project data -->
+						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 						<p>{@html project.award}</p>
 					</section>
 				{/if}
@@ -157,12 +160,14 @@
 						<p>
 							<!-- Safe: project.publication.text is from trusted project data -->
 							<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
+							<!-- eslint-disable svelte/no-at-html-tags -->
 							<a
 								href={project.publication.url}
 								target="_blank"
 								rel="noopener noreferrer"
 								class="link">{@html project.publication.text}</a
 							>
+							<!-- eslint-enable svelte/no-at-html-tags -->
 							<!-- eslint-enable svelte/no-navigation-without-resolve -->
 						</p>
 					</section>
@@ -178,12 +183,14 @@
 								<li class="review-item glass-sub-card">
 									<!-- Safe: review.text is from trusted project data -->
 									<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
+									<!-- eslint-disable svelte/no-at-html-tags -->
 									<a
 										href={review.url}
 										target="_blank"
 										rel="noopener noreferrer"
 										class="link font-medium">{@html review.text}</a
 									>
+									<!-- eslint-enable svelte/no-at-html-tags -->
 									<!-- eslint-enable svelte/no-navigation-without-resolve -->
 									{#if review.quote}
 										<blockquote class="review-quote">

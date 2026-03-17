@@ -131,6 +131,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 				zoomLayer.attr('transform', event.transform.toString());
 			});
 
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- D3 zoom/selection type mismatch
 		svg.call(zoomBehavior as any);
 
 		// Color scale

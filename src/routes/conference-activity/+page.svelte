@@ -80,6 +80,7 @@
 
 	// Compute tag frequencies from all communications for the tag cloud
 	const communicationTagFrequencies: [string, number][] = (() => {
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const freq = new Map<string, number>();
 		communicationsByDate.forEach((comm) => {
 			if (comm.tags) {
@@ -342,68 +343,66 @@
 			</UniversalFiltersSidebar>
 		{/snippet}
 
-		{#snippet children()}
-			<!-- Upcoming Talks and Events Section (only shown when no filters active) -->
-			{#if shouldShowUpcoming}
-				<UpcomingCommunications communications={upcomingCommunications} />
-			{/if}
+		<!-- Upcoming Talks and Events Section (only shown when no filters active) -->
+		{#if shouldShowUpcoming}
+			<UpcomingCommunications communications={upcomingCommunications} />
+		{/if}
 
-			<!-- All Communications Section Header (only when upcoming are shown) -->
-			{#if shouldShowUpcoming}
-				<div class="all-communications-header">
-					<h2 class="section-title">All Conference Activities</h2>
-				</div>
-			{/if}
-
-			<div class="desktop-controls">
-				<div class="list-status text-light">
-					Showing {$filteredCommunications.length || 0} conference activities
-					{#if areFiltersActive($activeFilters)}
-						<span class="text-accent"> (Filters applied)</span>
-					{/if}
-				</div>
-				<div class="actions-group">
-					<ToggleButton
-						baseText="Map"
-						isToggled={showMap}
-						onclick={() => {
-							showMap = !showMap;
-							if (showMap) loadMapComponent();
-						}}
-					/>
-					<Sorter {activeSort} onsortchange={handleSortChange} availableSorts={['date', 'title']} />
-					{#if areFiltersActive($activeFilters)}
-						<Button
-							variant="primary"
-							size="sm"
-							onclick={clearAllFilters}
-							additionalClasses="control-button-rounded"
-						>
-							Clear all filters
-						</Button>
-					{/if}
-				</div>
+		<!-- All Communications Section Header (only when upcoming are shown) -->
+		{#if shouldShowUpcoming}
+			<div class="all-communications-header">
+				<h2 class="section-title">All Conference Activities</h2>
 			</div>
+		{/if}
 
-			{#if showMap && MapVisualization}
-				<div class="mb-6">
-					<MapVisualization markersData={mapMarkers} />
-				</div>
-			{:else if showMap && !MapVisualization && !mapLoadError}
-				<div class="mb-6 flex items-center justify-center py-12">
-					<span class="text-light">Loading map...</span>
-				</div>
-			{/if}
-			<FilteredListDisplay
-				filteredItems={sortedCommunications}
-				itemComponent={CommunicationItem}
-				itemPropName="communication"
-				areFiltersActive={areFiltersActive($activeFilters)}
-				{clearAllFilters}
-				emptyStateNoFiltersMessage="No conference activities found matching your criteria. Try clearing some filters."
-				onitemrequest={handleFilterRequest}
-			/>
-		{/snippet}
+		<div class="desktop-controls">
+			<div class="list-status text-light">
+				Showing {$filteredCommunications.length || 0} conference activities
+				{#if areFiltersActive($activeFilters)}
+					<span class="text-accent"> (Filters applied)</span>
+				{/if}
+			</div>
+			<div class="actions-group">
+				<ToggleButton
+					baseText="Map"
+					isToggled={showMap}
+					onclick={() => {
+						showMap = !showMap;
+						if (showMap) loadMapComponent();
+					}}
+				/>
+				<Sorter {activeSort} onsortchange={handleSortChange} availableSorts={['date', 'title']} />
+				{#if areFiltersActive($activeFilters)}
+					<Button
+						variant="primary"
+						size="sm"
+						onclick={clearAllFilters}
+						additionalClasses="control-button-rounded"
+					>
+						Clear all filters
+					</Button>
+				{/if}
+			</div>
+		</div>
+
+		{#if showMap && MapVisualization}
+			<div class="mb-6">
+				<MapVisualization markersData={mapMarkers} />
+			</div>
+		{:else if showMap && !MapVisualization && !mapLoadError}
+			<div class="mb-6 flex items-center justify-center py-12">
+				<span class="text-light">Loading map...</span>
+			</div>
+		{/if}
+		<FilteredListDisplay
+			filteredItems={sortedCommunications}
+			itemComponent={CommunicationItem}
+			itemPropName="communication"
+			areFiltersActive={areFiltersActive($activeFilters)}
+			{clearAllFilters}
+			emptyStateNoFiltersMessage="No conference activities found matching your criteria. Try clearing some filters."
+			onitemrequest={handleFilterRequest}
+		/>
 	</EntityListPageLayout>
 </div>
 

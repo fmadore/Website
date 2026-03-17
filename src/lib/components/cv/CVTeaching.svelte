@@ -24,7 +24,7 @@
 	{#if sortedTeaching.length > 0}
 		<h4>Instructor</h4>
 		<div class="space-y-3">
-			{#each sortedTeaching as course}
+			{#each sortedTeaching as course (course.title + course.year)}
 				<CVEntry year={formatCVYearRange(course.year)} yearWidth="fixed">
 					<strong>{course.title}</strong>, {course.institution}, {course.level === 'undergraduate'
 						? 'Undergraduate'
@@ -41,7 +41,7 @@
 
 		<h4 class="text-lg font-semibold mt-4 mb-2">Guest Lecturer</h4>
 		<div class="space-y-3">
-			{#each sortedGuestLectures as lecture}
+			{#each sortedGuestLectures as lecture (lecture.title + lecture.year)}
 				<CVEntry year={lecture.year}>
 					<strong>{lecture.title}</strong>, <em>{lecture.course}</em>, {lecture.institution}, {lecture.level ===
 					'undergraduate'

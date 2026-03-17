@@ -25,7 +25,7 @@ import type { ResearchRole } from '$lib/types/researchRole';
 import type { TeachingExperience } from '$lib/types/teachingExperience';
 
 // Define a generic type for the expected module structure
-type DataModule = Record<string, any>;
+type DataModule = Record<string, unknown>;
 
 // Define a union type for the data items we expect to load
 type DataItem =

@@ -11,6 +11,7 @@ ECharts Stacked Bar Chart component
 		getEChartsSplitLineStyle
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
+	import type { DefaultLabelFormatterCallbackParams } from 'echarts';
 
 	// Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;
@@ -54,7 +55,10 @@ ECharts Stacked Bar Chart component
 
 	// Chart data transformation
 	const chartCategories = $derived(
-		data.map((d) => String((d as any).year || (d as any).name || (d as any).x))
+		data.map((d) => {
+			const item = d as Record<string, unknown>;
+			return String(item['year'] ?? item['name'] ?? item['x']);
+		})
 	);
 
 	const seriesData = $derived(
@@ -62,7 +66,10 @@ ECharts Stacked Bar Chart component
 			name: key,
 			type: 'bar',
 			stack: 'total',
-			data: data.map((d) => (d as any)[key] || 0),
+			data: data.map((d) => {
+				const item = d as Record<string, unknown>;
+				return (item[key] as number) || 0;
+			}),
 			itemStyle: {
 				color:
 					resolvedColors.resolvedSeriesColors[index % resolvedColors.resolvedSeriesColors.length],
@@ -86,21 +93,27 @@ ECharts Stacked Bar Chart component
 			axisPointer: {
 				type: 'shadow'
 			},
-			formatter: function (params: any) {
+			formatter: function (
+				params: DefaultLabelFormatterCallbackParams | DefaultLabelFormatterCallbackParams[]
+			) {
+				const paramsArray = Array.isArray(params) ? params : [params];
 				// Filter out series with value 0
-				const nonZeroParams = params.filter((param: any) => param.value > 0);
+				const nonZeroParams = paramsArray.filter((param) => (param.value as number) > 0);
 
 				if (nonZeroParams.length === 0) {
-					return `${params[0].axisValueLabel}<br/>No publications`;
+					return `${paramsArray[0].name}<br/>No publications`;
 				}
 
-				let result = `${nonZeroParams[0].axisValueLabel}<br/>`;
+				let result = `${nonZeroParams[0].name}<br/>`;
 
 				// Calculate total for the year
-				const total = nonZeroParams.reduce((sum: number, param: any) => sum + param.value, 0);
+				const total = nonZeroParams.reduce(
+					(sum: number, param) => sum + (param.value as number),
+					0
+				);
 
 				// Add each non-zero publication type
-				nonZeroParams.forEach((param: any) => {
+				nonZeroParams.forEach((param) => {
 					result += `${param.marker}${param.seriesName}: ${param.value}<br/>`;
 				});
 
@@ -173,7 +186,7 @@ ECharts Stacked Bar Chart component
 		series: seriesData,
 		backgroundColor: 'transparent',
 		animationDuration: 1000,
-		animationEasing: 'elasticOut' as any
+		animationEasing: 'elasticOut' as const
 	});
 
 	// Use the ECharts hook for lifecycle management

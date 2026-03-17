@@ -29,15 +29,16 @@
 		{#if project.reviews && project.reviews.length > 0}
 			<div class="mt-2 ml-4 text-sm">
 				{project.reviews.length === 1 ? 'Review:' : 'Reviews:'}
-				{#each project.reviews as review, i}
+				{#each project.reviews as review, i (review.url)}
 					<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 					<a
 						href={review.url}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="text-primary hover:underline">{@html review.text}</a
+						class="text-primary hover:underline"
+						><!-- eslint-disable svelte/no-at-html-tags -->{@html review.text}<!-- eslint-enable svelte/no-at-html-tags --></a
 					><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < project.reviews.length - 1};
-						{' '}{/if}
+					{/if}
 				{/each}
 			</div>
 		{/if}

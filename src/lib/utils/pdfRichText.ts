@@ -103,7 +103,7 @@ export const extractRichText = (node: Element | ChildNode): TextFragment[] => {
 				if (isGenericLinkText) {
 					// Generic text: keep short label as clickable link (URL is in the href)
 					fragments.push({
-						text: `[${linkText.replace(/[\[\]]/g, '') || 'Link'}]`,
+						text: `[${linkText.replace(/[[\]]/g, '') || 'Link'}]`,
 						style: 'normal',
 						href
 					});

@@ -67,9 +67,6 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 		if (!words.length) return [];
 
 		const limitedWords = words.slice(0, maxWords);
-		const maxCount = Math.max(...limitedWords.map((w) => w.count));
-		const minCount = Math.min(...limitedWords.map((w) => w.count));
-		const range = maxCount - minCount || 1;
 
 		return limitedWords.map((word, index) => ({
 			name: word.word,

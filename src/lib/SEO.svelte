@@ -55,7 +55,9 @@
 		const schemas: object[] = [...additionalSchemas];
 
 		// Check if a Person schema is already provided in additionalSchemas
-		const hasPersonSchema = additionalSchemas.some((schema: any) => schema['@type'] === 'Person');
+		const hasPersonSchema = additionalSchemas.some(
+			(schema) => (schema as Record<string, unknown>)['@type'] === 'Person'
+		);
 
 		// Add breadcrumb schema if breadcrumbs provided
 		if (breadcrumbs.length > 0) {

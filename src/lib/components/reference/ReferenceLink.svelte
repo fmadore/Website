@@ -54,10 +54,7 @@
 
 	const itemUrl = $derived(
 		item && itemType
-			? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-				resolve(
-					`/${itemType === 'publication' ? 'publications' : 'communications'}/${item.id}` as any
-				)
+			? resolve(`/${itemType === 'publication' ? 'publications' : 'communications'}/${item.id}`)
 			: '#'
 	);
 

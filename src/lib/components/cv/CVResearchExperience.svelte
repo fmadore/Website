@@ -59,7 +59,7 @@
 				<CVEntry year={formatCVYearRange(role.startYear, role.endYear)} yearWidth="fixed">
 					<span class="font-medium">{role.title}</span>, {role.institution}.
 					{#if Array.isArray(role.details)}
-						{#each role.details as detail}
+						{#each role.details as detail (detail)}
 							<p class="text-sm mt-1">{detail}</p>
 						{/each}
 					{:else}

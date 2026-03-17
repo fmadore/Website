@@ -36,6 +36,7 @@
 	let currentTime = $state(0);
 	let duration = $state(0);
 	let volume = $state(1);
+	// eslint-disable-next-line svelte/prefer-writable-derived -- also written by toggleMute()
 	let isMuted = $state(false);
 	let isFullscreen = $state(false);
 	let error = $state<string>('');

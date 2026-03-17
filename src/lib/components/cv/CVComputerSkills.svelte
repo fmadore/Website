@@ -23,7 +23,7 @@
 <section>
 	<h3>Computer Skills</h3>
 	<div class="space-y-3">
-		{#each computerSkills as skill}
+		{#each computerSkills as skill (skill.category)}
 			<div class="flex gap-4 items-start">
 				<div class="font-semibold w-60 text-primary">{skill.category}:</div>
 				<div class="flex-1 text-light">

@@ -3,7 +3,7 @@ import type { MediaAppearance } from '$lib/types';
 import { loadData } from '$lib/utils/dataLoader';
 import { sortByDate } from '$lib/utils/dataAggregation';
 
-type ModuleType = Record<string, any>;
+type ModuleType = Record<string, unknown>;
 
 const templateIds: string[] = [
 	// 'media-appearance-template-id'

@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Expects the item object and the pre-calculated URL from RelatedItemsList
+	// eslint-disable-next-line svelte/no-unused-props -- id is used for keying in parent components
 	let {
 		item,
 		itemUrl,

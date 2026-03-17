@@ -6,6 +6,10 @@ ECharts Network Graph - A network visualization for author collaborations
 	import Icon from '@iconify/svelte';
 	import { getResolvedChartColors, getEChartsTooltipStyle } from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
+	import type {
+		DefaultLabelFormatterCallbackParams,
+		TooltipComponentPositionCallbackParams
+	} from 'echarts';
 
 	// Props
 	type CollaborationData = {
@@ -121,7 +125,7 @@ ECharts Network Graph - A network visualization for author collaborations
 					fontFamily: resolvedColors.fontFamily,
 					position: 'right',
 					distance: 10,
-					formatter: function (params: any) {
+					formatter: function (params: DefaultLabelFormatterCallbackParams) {
 						const maxLength = isMobile ? 15 : 20;
 						return params.name.length > maxLength
 							? params.name.substring(0, maxLength) + '...'
@@ -234,10 +238,10 @@ ECharts Network Graph - A network visualization for author collaborations
 			confine: true,
 			position: function (
 				point: [number, number],
-				params: any,
+				params: TooltipComponentPositionCallbackParams,
 				dom: HTMLElement,
-				rect: any,
-				size: any
+				rect: Record<string, number> | null,
+				size: { contentSize: [number, number]; viewSize: [number, number] }
 			) {
 				const tooltipWidth = size.contentSize[0];
 				const tooltipHeight = size.contentSize[1];
@@ -271,26 +275,33 @@ ECharts Network Graph - A network visualization for author collaborations
 
 				return [x, y];
 			},
-			formatter: function (params: any) {
-				if (params.dataType === 'node') {
-					if (params.data.id === centerAuthor) {
-						return `<strong>${params.data.name}</strong><br/>Center of collaboration network`;
+			formatter: function (
+				params: DefaultLabelFormatterCallbackParams | DefaultLabelFormatterCallbackParams[]
+			) {
+				if (Array.isArray(params)) return '';
+				const p = params as DefaultLabelFormatterCallbackParams & {
+					dataType?: string;
+					data: Record<string, unknown>;
+				};
+				if (p.dataType === 'node') {
+					if (p.data['id'] === centerAuthor) {
+						return `<strong>${p.data['name']}</strong><br/>Center of collaboration network`;
 					} else {
-						const collab = data.find((c) => c.author === params.data.name);
+						const collab = data.find((c) => c.author === p.data['name']);
 						if (collab) {
 							const publicationList = collab.publications.map((pub) => `• ${pub}`).join('<br/>');
 
-							return `<strong>${params.data.name}</strong><br/>
+							return `<strong>${p.data['name']}</strong><br/>
 								Collaborations with ${centerAuthor}: ${collab.collaborationCount}<br/>
 								<em>Publications:</em><br/>
 								${publicationList}`;
 						}
 					}
-				} else if (params.dataType === 'edge') {
+				} else if (p.dataType === 'edge') {
 					// Check if this is a co-author or contributor connection
-					if (params.data.connectionData) {
-						const conn = params.data.connectionData;
-						const connectionType = params.data.connectionType;
+					if (p.data['connectionData']) {
+						const conn = p.data['connectionData'] as CoAuthorConnection;
+						const connectionType = p.data['connectionType'];
 						const publicationList = conn.publications
 							.map((pub: string) => `• ${pub}`)
 							.join('<br/>');
@@ -309,13 +320,13 @@ ECharts Network Graph - A network visualization for author collaborations
 							${publicationList}`;
 					} else {
 						// Connection to center author
-						const collab = data.find((c) => c.author === params.data.target);
+						const collab = data.find((c) => c.author === (p.data['target'] as string));
 						return collab
 							? `${collab.collaborationCount} collaboration${collab.collaborationCount > 1 ? 's' : ''} with ${centerAuthor}`
 							: '';
 					}
 				}
-				return params.data.name;
+				return p.data['name'] as string;
 			}
 		},
 		series: [
@@ -368,7 +379,7 @@ ECharts Network Graph - A network visualization for author collaborations
 		],
 		backgroundColor: 'transparent',
 		animationDuration: 1500,
-		animationEasing: 'cubicOut' as any
+		animationEasing: 'cubicOut' as const
 	});
 
 	// Use the ECharts hook for lifecycle management

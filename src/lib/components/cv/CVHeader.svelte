@@ -45,7 +45,7 @@
 	</div>
 	<!-- Links -->
 	<div class="cv-links-group">
-		{#each cvLinks as link}
+		{#each cvLinks as link (link.url)}
 			<div class="cv-link-item">
 				<Icon icon={link.icon} class="text-light shrink-0" width="20" height="20" />
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->

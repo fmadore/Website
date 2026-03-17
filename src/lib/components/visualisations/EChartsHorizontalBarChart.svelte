@@ -142,7 +142,7 @@ ECharts Horizontal Bar Chart component
 					}
 				},
 				animationDuration: 1000,
-				animationEasing: 'elasticOut' as any
+				animationEasing: 'elasticOut' as const
 			}
 		],
 		backgroundColor: 'transparent'

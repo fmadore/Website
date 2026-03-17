@@ -20,6 +20,7 @@
 					{@const commDate = new Date(comm.dateISO)}
 					{@const formattedAuthors = formatCVAuthorList(comm.authors)}
 					<CVEntry year={commDate.getFullYear()}>
+						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 						{#if formattedAuthors}{@html formattedAuthors}.
 						{/if}
 						"{comm.panelTitle || comm.title}"{#if comm.conference}, <em>{comm.conference}</em
@@ -43,6 +44,7 @@
 					{@const commDate = new Date(comm.dateISO)}
 					{@const formattedAuthors = formatCVAuthorList(comm.authors)}
 					<CVEntry year={commDate.getFullYear()}>
+						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 						{#if formattedAuthors}{@html formattedAuthors}.
 						{/if}
 						"{comm.title}"{#if comm.conference}, <em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if},

@@ -6,7 +6,7 @@ import { sortByYear, groupByYear, groupByField, extractUnique } from '$lib/utils
 const templateIds = ['fieldwork-template-id'];
 
 // Dynamically import all fieldwork files, excluding index.ts and filters.svelte.ts
-const fieldworkModules = import.meta.glob<Record<string, any>>(
+const fieldworkModules = import.meta.glob<Record<string, unknown>>(
 	[
 		'./*.ts',
 		'!./index.ts', // Exclude index.ts

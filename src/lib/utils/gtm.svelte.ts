@@ -41,9 +41,11 @@ export function useGtm(gtmId: string, isDebugMode = false) {
 		window.gtag =
 			window.gtag ??
 			function () {
+				// eslint-disable-next-line prefer-rest-params
 				window.dataLayer!.push(arguments);
 			};
 
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- ephemeral Date for gtag
 		window.gtag!('js', new Date());
 
 		// Check consent and localhost status

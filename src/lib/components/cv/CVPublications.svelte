@@ -29,6 +29,7 @@
 					{#each publicationsByType[pubType] as pub (pub.id)}
 						{@const formattedAuthors = formatCVAuthorList(pub.authors)}
 						<CVEntry year={pub.year}>
+							<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 							{#if formattedAuthors}{@html formattedAuthors}{#if (pub.type === 'book' && pub.isEditedVolume) || pub.type === 'special-issue'}&nbsp;(eds.),{:else}.{/if}
 							{/if}
 							{#if pub.type !== 'book' && pub.type !== 'blogpost'}"{pub.title}".{/if}
@@ -109,8 +110,7 @@
 											rel="noopener noreferrer"
 											class="text-primary hover:underline"><em>{review.journal}</em></a
 										><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < pub.reviewedBy.length - 2},
-											{' '}
-										{:else if i === pub.reviewedBy.length - 2}, and {' '}
+										{:else if i === pub.reviewedBy.length - 2}, and
 										{:else}.{/if}
 									{/each}
 								</p>

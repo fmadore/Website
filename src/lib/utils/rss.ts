@@ -1,5 +1,5 @@
 import type { Activity } from '$lib/types/activity';
-import { author, contact, website } from '$lib/data/siteConfig';
+import { author, website } from '$lib/data/siteConfig';
 import { getRssDescription, getEmailWithName } from '$lib/utils/siteHelpers';
 
 // ============================================================================

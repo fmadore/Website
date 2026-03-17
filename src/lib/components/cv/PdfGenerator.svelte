@@ -84,13 +84,10 @@
 			const contentWidth = pageWidth - 2 * margin;
 			let yPosition = margin;
 
-			let currentPage = 1;
-
 			// Helper function for page breaks
 			const newPage = () => {
 				addPageNumber();
 				pdf.addPage();
-				currentPage++;
 				yPosition = margin;
 			};
 
@@ -99,25 +96,6 @@
 				if (yPosition > pageHeight - margin - requiredSpace) {
 					newPage();
 				}
-			};
-
-			// Helper to add text with word wrap
-			const addText = (
-				text: string,
-				fontSize: number,
-				isBold: boolean = false,
-				font: 'helvetica' | 'times' = 'helvetica'
-			) => {
-				pdf.setFontSize(fontSize);
-				pdf.setFont(font, isBold ? 'bold' : 'normal');
-				const lines = pdf.splitTextToSize(text, contentWidth);
-
-				lines.forEach((line: string) => {
-					checkPageBreak(10);
-					pdf.text(line, margin, yPosition);
-					yPosition += fontSize * 0.5;
-				});
-				yPosition += SPACING.ENTRY_GAP;
 			};
 
 			// Enhanced page footer with name and page number

@@ -121,7 +121,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 					}
 				},
 				animationDuration: 1000,
-				animationEasing: 'elasticOut' as any
+				animationEasing: 'elasticOut'
 			}
 		],
 		backgroundColor: 'transparent' // Let the container handle background

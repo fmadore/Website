@@ -2,7 +2,7 @@ import type { Communication } from '$lib/types/communication';
 import type { Publication } from '$lib/types';
 import type { Activity } from '$lib/types/activity';
 import type { Grant } from '$lib/types/grant';
-import { author, contact, address, website, socialLinks } from '$lib/data/siteConfig';
+import { author, address, website, socialLinks } from '$lib/data/siteConfig';
 import { getDefaultDescription } from '$lib/utils/siteHelpers';
 import { smartTruncate } from '$lib/utils/textUtils';
 import {

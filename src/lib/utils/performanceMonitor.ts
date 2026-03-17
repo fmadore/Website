@@ -5,6 +5,11 @@
 
 import { browser } from '$app/environment';
 
+interface LayoutShiftEntry extends PerformanceEntry {
+	hadRecentInput: boolean;
+	value: number;
+}
+
 interface PerformanceMetrics {
 	lcp?: number; // Largest Contentful Paint
 	fid?: number; // First Input Delay
@@ -32,14 +37,15 @@ class PerformanceMonitor {
 
 		// First Input Delay (FID)
 		this.observeMetric('first-input', (entry) => {
-			this.metrics.fid = (entry as any).processingStart - entry.startTime;
+			this.metrics.fid = (entry as PerformanceEventTiming).processingStart - entry.startTime;
 			this.reportMetric('FID', this.metrics.fid);
 		});
 
 		// Cumulative Layout Shift (CLS)
 		this.observeMetric('layout-shift', (entry) => {
-			if (!(entry as any).hadRecentInput) {
-				this.metrics.cls = (this.metrics.cls || 0) + (entry as any).value;
+			const layoutShift = entry as LayoutShiftEntry;
+			if (!layoutShift.hadRecentInput) {
+				this.metrics.cls = (this.metrics.cls || 0) + layoutShift.value;
 				this.reportMetric('CLS', this.metrics.cls || 0);
 			}
 		});
@@ -126,10 +132,12 @@ export function assessConnectionQuality(): string {
 	if (!browser) return 'unknown';
 
 	// Check for Network Information API
-	const connection =
-		(navigator as any).connection ||
-		(navigator as any).mozConnection ||
-		(navigator as any).webkitConnection;
+	const nav = navigator as Navigator & {
+		connection?: { effectiveType: string; rtt: number; downlink: number };
+		mozConnection?: { effectiveType: string; rtt: number; downlink: number };
+		webkitConnection?: { effectiveType: string; rtt: number; downlink: number };
+	};
+	const connection = nav.connection || nav.mozConnection || nav.webkitConnection;
 
 	if (connection) {
 		const effectiveType = connection.effectiveType;

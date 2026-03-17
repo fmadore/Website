@@ -36,7 +36,7 @@
 
 <header class="page-header enhanced-page-header page-enter scroll-reveal mb-8 {additionalClasses}">
 	{#if backLinkHref}
-		<a href={resolve(`/${backLinkHref}` as any)} class="back-link mb-4 inline-block">
+		<a href={resolve(`/${backLinkHref}`)} class="back-link mb-4 inline-block">
 			{backLinkLabel}
 		</a>
 	{/if}

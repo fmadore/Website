@@ -2,7 +2,7 @@
 	import RangeSlider from '$lib/components/atoms/RangeSlider.svelte';
 
 	// Simple debounce function
-	function debounce<T extends (...args: any[]) => any>(
+	function debounce<T extends (...args: never[]) => void>(
 		func: T,
 		wait: number
 	): (...args: Parameters<T>) => void {

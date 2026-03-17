@@ -23,9 +23,9 @@
 		initialView = [20, 0] as [number, number],
 		initialZoom = 2,
 		maxZoom = 19,
-		maxClusterZoom = 18,
+		maxClusterZoom: _maxClusterZoom = 18,
 		preferDarkMode = null as boolean | null,
-		restrictBounds = true
+		restrictBounds: _restrictBounds = true
 	}: {
 		markersData?: MarkerData[];
 		initialView?: [number, number];
@@ -35,12 +35,6 @@
 		preferDarkMode?: boolean | null;
 		restrictBounds?: boolean;
 	} = $props();
-
-	// Maximum bounds for the map (to prevent dragging to empty areas)
-	const MAX_BOUNDS: [[number, number], [number, number]] = [
-		[-180, -85], // Southwest: [lng, lat]
-		[180, 85] // Northeast: [lng, lat]
-	];
 
 	// Map style options (light and dark themes)
 	const styleOptions = {
@@ -93,39 +87,6 @@
 				addMarkers(markersData);
 			});
 		}
-	}
-
-	// Function to create marker element
-	function createMarkerElement(item: MarkerData): HTMLElement {
-		const el = document.createElement('div');
-		el.className = `map-marker ${item.activityType ? `marker-type-${item.activityType}` : ''}`;
-
-		// Set explicit inline styles to ensure visibility
-		el.style.width = '32px';
-		el.style.height = '32px';
-		el.style.cursor = 'pointer';
-		el.style.display = 'flex';
-		el.style.justifyContent = 'center';
-		el.style.alignItems = 'center';
-
-		// Get the color based on activity type
-		let strokeColor: string = CHART_COLOR_FALLBACKS.primary;
-		if (item.activityType === 'lecture') {
-			strokeColor = CHART_COLOR_FALLBACKS.accent;
-		} else if (item.activityType === 'event') {
-			strokeColor = CHART_COLOR_FALLBACKS.highlight;
-		}
-
-		// Use inline style attribute to ensure fill color is not overridden by global CSS
-		el.innerHTML = `
-			<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-				style="fill: ${CHART_COLOR_FALLBACKS.white} !important; stroke: ${strokeColor}; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));">
-				<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" style="fill: ${CHART_COLOR_FALLBACKS.white};"/>
-				<circle cx="12" cy="10" r="3" style="fill: ${strokeColor};"/>
-			</svg>
-		`;
-
-		return el;
 	}
 
 	// Function to create popup content
