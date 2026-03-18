@@ -61,6 +61,6 @@
 		"echarts": "^6.0.0",
 		"echarts-wordcloud": "^2.1.0",
 		"jspdf": "^4.2.1",
-		"maplibre-gl": "^5.16.0"
+		"maplibre-gl": "^5.20.2"
 	}
 }
