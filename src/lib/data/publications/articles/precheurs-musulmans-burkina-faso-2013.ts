@@ -146,6 +146,14 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 			title:
 				"« Apprendre à lire le Coran en 12 séances » : les étudiants de l'Université Abdou Moumouni à la quête du savoir religieux",
 			source: 'Revue Nigérienne des Sciences Sociales (RENISS), no. 5 (2022): 21-33'
+		},
+		{
+			authors: ['Sokhna Fatou Seck-Sarr'],
+			year: 2023,
+			title:
+				'Television: Legitimization of Religious Figures and Alternative Discourse on the Status of Muslim Women',
+			source: 'Ziglôbitha, no. 8 (2023): 595-612',
+			url: 'https://www.ziglobitha.org/wp-content/uploads/2024/01/041-Art.-Sokhna-Fatou-Seck-Sarr-pp.595-612-1.pdf'
 		}
 	]
 };
