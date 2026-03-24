@@ -39,5 +39,6 @@ export const beyondKeywordsAiIwacMcp2026: Communication = {
 		latitude: 49.5018, // Maison des Sciences humaines, Esch-sur-Alzette
 		longitude: 5.9485
 	},
-	project: 'Islam\'s "Peripheries": Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia'
+	project:
+		'Islam\'s "Peripheries": Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia'
 };
