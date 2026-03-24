@@ -40,5 +40,5 @@ export const beyondKeywordsAiIwacMcp2026: Communication = {
 		longitude: 5.9485
 	},
 	project:
-		'Islam\'s "Peripheries": Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia'
+		"Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia"
 };

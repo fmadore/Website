@@ -33,5 +33,5 @@ export const talkIslamPeripheriesDhAiWestAfricaCentralAsia2026: Communication = 
 		longitude: 11.0042
 	},
 	project:
-		'Islam\'s "Peripheries": Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia'
+		"Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia"
 };
