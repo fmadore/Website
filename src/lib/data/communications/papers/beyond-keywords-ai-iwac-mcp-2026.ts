@@ -5,8 +5,8 @@ export const beyondKeywordsAiIwacMcp2026: Communication = {
 	title:
 		'Beyond Keywords: AI-Mediated Access to the Islam West Africa Collection through an MCP Server and Agent Skill',
 	authors: ['Frédérick Madore'],
-	date: '14 June 2026',
-	dateISO: '2026-06-14',
+	date: '15 June 2026',
+	dateISO: '2026-06-15',
 	year: 2026,
 	conference: 'Eighth Conference on Digital Humanities and Digital History',
 	location: 'University of Luxembourg',
