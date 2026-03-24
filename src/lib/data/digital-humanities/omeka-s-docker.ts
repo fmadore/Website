@@ -21,7 +21,7 @@ export const omekaSDocker: DigitalHumanitiesProject = {
 		'<p>This template is designed for research teams, librarians, and digital humanists who want to build digital archives without needing deep systems administration expertise.</p>' +
 		'<p><a href="https://github.com/AM-Digital-Research-Environment/omeka-s-docker" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View on GitHub</a></p>',
 	imageUrl: `/images/digital-humanities/omeka-s-docker.webp`,
-	order: 1,
+	order: 2,
 	skills: ['Docker', 'Nginx', 'PHP', 'MySQL', 'Linux', 'Omeka S', 'IIIF', 'Bash'],
 	seoKeywords: [
 		'Omeka S',

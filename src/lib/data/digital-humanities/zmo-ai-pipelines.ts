@@ -26,7 +26,7 @@ export const zmoAiPipelines: DigitalHumanitiesProject = {
 		'<h3>Get Started</h3>' +
 		'<p>All tools are <a href="https://github.com/fmadore/zmo-ai-pipelines" target="_blank" rel="noopener noreferrer">available on GitHub</a>. You need a Gemini API key and can optionally connect Google Drive to save your results.</p>',
 	imageUrl: `/images/digital-humanities/zmo-ai-pipelines.webp`,
-	order: 4,
+	order: 5,
 	skills: ['Python', 'Google Colab', 'NLP', 'OCR', 'HTR', 'LLM', 'Prompt Engineering'],
 	seoKeywords: [
 		'AI tools',

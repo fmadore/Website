@@ -19,7 +19,7 @@ export const iwacDashboard: DigitalHumanitiesProject = {
 		'<h3>Interface</h3>' +
 		'<p>Bilingual (English/French), with dark mode support. Filter states are saved in the URL, so you can bookmark or share specific views.</p>',
 	imageUrl: `/images/digital-humanities/iwac-overview.webp`,
-	order: 3,
+	order: 4,
 	skills: [
 		'SvelteKit',
 		'Svelte 5',
