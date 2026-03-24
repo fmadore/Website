@@ -7,7 +7,7 @@ export const wisskiDashboard: DigitalHumanitiesProject = {
 	shortDescription:
 		'Interactive dashboard for exploring the Africa Multiple Cluster of Excellence research data — projects, people, institutions, and 2,900+ research items across four partner universities.',
 	description:
-		'<p>The <a href="https://www.africamultiple.uni-bayreuth.de/" target="_blank" rel="noopener noreferrer">Africa Multiple Cluster of Excellence</a> holds research data on projects, people, institutions, and 2,900+ research items across four partner universities — but WissKI at the University of Bayreuth, the knowledge-base front end, offers limited options for visual exploration. This dashboard makes the underlying data browsable, filterable, and comparable through interactive charts, maps, and network graphs.</p>' +
+		'<p>The <a href="https://www.africamultiple.uni-bayreuth.de/" target="_blank" rel="noopener noreferrer">Africa Multiple Cluster of Excellence</a> holds research data on projects, people, institutions, and 2,900+ research items across four partner universities — but <a href="https://www.wisski.uni-bayreuth.de/" target="_blank" rel="noopener noreferrer">WissKI</a> at the University of Bayreuth, the knowledge-base front end, offers limited options for visual exploration. This dashboard makes the underlying data browsable, filterable, and comparable through interactive charts, maps, and network graphs.</p>' +
 		'<h3>What you can explore</h3>' +
 		'<ul>' +
 		'<li><strong>Research sections and projects:</strong> Browse the six thematic areas (Affiliations, Arts &amp; Aesthetics, Knowledges, Learning, Mobilities, Moralities) with Gantt timelines and beeswarm charts showing project distribution by section and year</li>' +
