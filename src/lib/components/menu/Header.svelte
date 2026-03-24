@@ -158,7 +158,7 @@
 	:global(.site-header) {
 		background: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-80) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-95) * 100%), transparent) 0%,
 			color-mix(in srgb, var(--color-primary) 2%, transparent) 50%,
 			color-mix(in srgb, var(--color-highlight) 1%, transparent) 100%
 		);
@@ -182,7 +182,7 @@
 	:global(.site-header:hover) {
 		background: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-90) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-95) * 100%), transparent) 0%,
 			color-mix(in srgb, var(--color-primary) 3%, transparent) 50%,
 			color-mix(in srgb, var(--color-highlight) 2%, transparent) 100%
 		);
