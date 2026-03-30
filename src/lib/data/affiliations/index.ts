@@ -3,7 +3,7 @@ import { loadData } from '$lib/utils/dataLoader';
 
 // Dynamically import all affiliation files (excluding template and index)
 const affiliationModules = import.meta.glob<Record<string, ProfessionalAffiliation>>(
-	['./!(template|index).ts'],
+	['./*.ts', '!./template.ts', '!./index.ts'],
 	{ eager: true }
 );
 

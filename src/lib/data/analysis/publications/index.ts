@@ -11,7 +11,9 @@ type AnalysisModule = {
 };
 
 // Auto-import all analysis files except index.ts
-const analysisModules = import.meta.glob<AnalysisModule>(['./!(index).ts'], { eager: true });
+const analysisModules = import.meta.glob<AnalysisModule>(['./*.ts', '!./index.ts'], {
+	eager: true
+});
 
 // Build the publication analyses record from glob imports
 export const publicationAnalyses: Record<string, PublicationTextAnalysis> = {};
