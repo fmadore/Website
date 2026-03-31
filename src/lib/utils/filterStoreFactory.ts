@@ -44,16 +44,24 @@ function isRangeDimension<TItem>(dim: FilterDimension<TItem>): dim is RangeDimen
 	return 'type' in dim && dim.type === 'range';
 }
 
-export interface FilterSystemConfig<TItem, TFilters extends Record<string, unknown>> {
+export interface FilterSystemConfig<
+	TItem,
+	TFilters extends Record<string, unknown>,
+	TOptions extends Record<string, unknown> = Record<string, unknown>
+> {
 	items: TItem[];
 	initialFilters: TFilters;
 	dimensions: { [K in keyof TFilters]?: FilterDimension<TItem> };
-	filterOptions: Record<string, unknown>;
+	filterOptions: TOptions;
 }
 
-export interface FilterSystemResult<TItem, TFilters extends Record<string, unknown>> {
+export interface FilterSystemResult<
+	TItem,
+	TFilters extends Record<string, unknown>,
+	TOptions extends Record<string, unknown> = Record<string, unknown>
+> {
 	activeFilters: Writable<TFilters>;
-	filterOptions: Readable<Record<string, unknown>>;
+	filterOptions: Readable<TOptions>;
 	filteredItems: Readable<TItem[]>;
 	toggles: Record<string, (value: string) => void>;
 	setters: Record<string, (values: string[]) => void>;
@@ -75,9 +83,13 @@ export interface FilterSystemResult<TItem, TFilters extends Record<string, unkno
  * - clearAllFilters: resets all filters to initial state
  * - updateYearRange/resetYearRange/setYearRange: range control (if any range dimension exists)
  */
-export function createFilterSystem<TItem, TFilters extends Record<string, unknown>>(
-	config: FilterSystemConfig<TItem, TFilters>
-): FilterSystemResult<TItem, TFilters> {
+export function createFilterSystem<
+	TItem,
+	TFilters extends Record<string, unknown>,
+	TOptions extends Record<string, unknown> = Record<string, unknown>
+>(
+	config: FilterSystemConfig<TItem, TFilters, TOptions>
+): FilterSystemResult<TItem, TFilters, TOptions> {
 	const { items, initialFilters, dimensions, filterOptions: options } = config;
 
 	const activeFilters = createActiveFiltersStore(initialFilters);

@@ -88,18 +88,7 @@ const typeLabels: Record<string, string> = {
 
 // --- Filter System ---
 
-const system = createFilterSystem<
-	Publication & { sourceDirType: string },
-	{
-		types: string[];
-		yearRange: YearRange | null;
-		tags: string[];
-		languages: string[];
-		authors: string[];
-		countries: string[];
-		projects: string[];
-	}
->({
+const system = createFilterSystem({
 	items: allPublications,
 	initialFilters: {
 		types: [],

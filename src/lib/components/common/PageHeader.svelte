@@ -36,7 +36,8 @@
 
 <header class="page-header enhanced-page-header page-enter scroll-reveal mb-8 {additionalClasses}">
 	{#if backLinkHref}
-		<a href={resolve(`/${backLinkHref}`)} class="back-link mb-4 inline-block">
+		<!-- eslint-disable-next-line @typescript-eslint/no-explicit-any -- dynamic path resolved at runtime -->
+		<a href={resolve(`/${backLinkHref}` as any)} class="back-link mb-4 inline-block">
 			{backLinkLabel}
 		</a>
 	{/if}

@@ -38,18 +38,7 @@ const allProjects = Array.from(
 
 // --- Filter System ---
 
-const system = createFilterSystem<
-	Communication,
-	{
-		types: string[];
-		yearRange: YearRange | null;
-		tags: string[];
-		languages: string[];
-		authors: string[];
-		countries: string[];
-		projects: string[];
-	}
->({
+const system = createFilterSystem({
 	items: allCommunications,
 	initialFilters: {
 		types: [],
