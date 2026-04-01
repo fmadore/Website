@@ -16,7 +16,8 @@ export const volkswagenOpenUp2026: Grant = {
 	amount: 317690,
 	currency: 'EUR',
 	status: 'Awarded',
-	coApplicants: ['Aksana Ismailbekova']
+	coApplicants: ['Aksana Ismailbekova'],
+	url: 'https://projektdatenbank.volkswagenstiftung.de/projekt/0200839'
 };
 
 export default volkswagenOpenUp2026;

@@ -15,4 +15,5 @@ export interface Grant {
 	status?: 'Awarded' | 'Turned Down' | string; // Optional status
 	details?: string; // Optional extra details
 	coApplicants?: string[]; // Optional list of co-applicants
+	url?: string; // Optional link to funder or grant page
 }

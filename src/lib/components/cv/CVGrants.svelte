@@ -13,7 +13,14 @@
 	emptyMessage="No grants or fellowships listed."
 >
 	{#snippet entry(grant)}
-		<span class="font-medium">{grant.title}</span>, {grant.funder}.
+		{#if grant.url}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
+				href={grant.url}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="font-medium">{grant.title}</a
+			><!-- eslint-enable svelte/no-navigation-without-resolve -->{:else}<span class="font-medium"
+				>{grant.title}</span
+			>{/if}, {grant.funder}.
 		{#if grant.amount}
 			<div class="text-sm text-light">
 				{grant.amount.toLocaleString('en-US')}

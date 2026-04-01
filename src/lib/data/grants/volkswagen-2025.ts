@@ -8,13 +8,14 @@ export const volkswagen2025: Grant = {
 	project: 'Digital Humanities and AI in African Studies',
 	startYear: 2025,
 	endYear: 2026,
-	dateRangeString: '2025',
+	dateRangeString: '2025-2026',
 	dateISOStart: '2025-09-01',
-	dateISOEnd: '2026-03-01',
+	dateISOEnd: '2026-09-30',
 	amount: 53670,
 	currency: 'EUR',
 	status: 'Awarded',
-	coApplicants: ['Vincent Hiribarren']
+	coApplicants: ['Vincent Hiribarren'],
+	url: 'https://projektdatenbank.volkswagenstiftung.de/projekt/0200686'
 };
 
 export default volkswagen2025;
