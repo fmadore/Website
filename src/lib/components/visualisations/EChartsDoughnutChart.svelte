@@ -6,9 +6,12 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 	import {
 		getResolvedChartColors,
 		resolveColors,
-		getEChartsTooltipStyle
+		getEChartsTooltipStyle,
+		prefersReducedMotion
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
+	import ChartToolbar from './ChartToolbar.svelte';
+	import { getAriaConfig } from '$lib/utils/chartActions';
 
 	// Props - keeping interface simple for doughnut chart
 	type DataItem = $$Generic;
@@ -47,6 +50,9 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 
 	// Container reference
 	let chartContainer: HTMLDivElement;
+
+	// Toolbar state
+	let showDecal = $state(false);
 
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
@@ -172,18 +178,18 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 						}
 					: undefined,
 				animationType: 'scale',
-				animationEasing: 'elasticOut',
-				animationDelay: function () {
-					return Math.random() * 200;
-				}
+				animationEasing: prefersReducedMotion() ? 'linear' : 'elasticOut',
+				animationDuration: prefersReducedMotion() ? 0 : 800,
+				animationDelay: prefersReducedMotion() ? () => 0 : () => Math.random() * 200
 			}
 		],
 		color: resolvedColors.chartColors,
+		aria: getAriaConfig(showDecal),
 		backgroundColor: 'transparent'
 	});
 
 	// Use the ECharts hook for lifecycle management
-	useECharts({
+	const echartsInstance = useECharts({
 		getContainer: () => chartContainer,
 		getOption: () => chartOption,
 		hasData: () => chartData.length > 0
@@ -191,6 +197,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 </script>
 
 <div class="echarts-container scroll-reveal-scale">
+	<ChartToolbar chart={echartsInstance.chart} bind:showDecal filename={title || 'doughnut-chart'} />
 	<div bind:this={chartContainer} class="chart"></div>
 </div>
 

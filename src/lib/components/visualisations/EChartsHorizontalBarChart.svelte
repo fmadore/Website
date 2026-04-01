@@ -8,9 +8,12 @@ ECharts Horizontal Bar Chart component
 		resolveColor,
 		getEChartsTooltipStyle,
 		getEChartsAxisLineStyle,
-		getEChartsSplitLineStyle
+		getEChartsSplitLineStyle,
+		getAnimationConfig
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
+	import ChartToolbar from './ChartToolbar.svelte';
+	import { getAriaConfig } from '$lib/utils/chartActions';
 
 	// Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;
@@ -34,6 +37,9 @@ ECharts Horizontal Bar Chart component
 
 	// Container reference
 	let chartContainer: HTMLDivElement;
+
+	// Toolbar state
+	let showDecal = $state(false);
 
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
@@ -131,25 +137,39 @@ ECharts Horizontal Bar Chart component
 				type: 'bar',
 				data: chartData.map((d) => d.value),
 				itemStyle: {
-					color: resolvedColors.barColor,
+					color: {
+						type: 'linear',
+						x: 0,
+						y: 0,
+						x2: 1,
+						y2: 0,
+						colorStops: [
+							{
+								offset: 0,
+								color: `color-mix(in srgb, ${resolvedColors.barColor} 60%, transparent)`
+							},
+							{ offset: 1, color: resolvedColors.barColor }
+						]
+					},
 					borderRadius: [0, 4, 4, 0]
 				},
 				emphasis: {
 					itemStyle: {
-						color: resolvedColors.primaryDark,
-						shadowColor: resolvedColors.primary,
-						shadowBlur: 10
+						color: resolvedColors.barColor,
+						shadowColor: `color-mix(in srgb, ${resolvedColors.primary} 40%, transparent)`,
+						shadowBlur: 12,
+						shadowOffsetX: 4
 					}
 				},
-				animationDuration: 1000,
-				animationEasing: 'elasticOut' as const
+				...getAnimationConfig(1000, 'elasticOut')
 			}
 		],
+		aria: getAriaConfig(showDecal),
 		backgroundColor: 'transparent'
 	});
 
 	// Use the ECharts hook for lifecycle management
-	useECharts({
+	const echartsInstance = useECharts({
 		getContainer: () => chartContainer,
 		getOption: () => chartOption,
 		hasData: () => chartData.length > 0
@@ -157,6 +177,11 @@ ECharts Horizontal Bar Chart component
 </script>
 
 <div class="echarts-container scroll-reveal">
+	<ChartToolbar
+		chart={echartsInstance.chart}
+		bind:showDecal
+		filename={xAxisLabel || 'horizontal-bar-chart'}
+	/>
 	<div bind:this={chartContainer} class="chart"></div>
 </div>
 

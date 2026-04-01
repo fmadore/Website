@@ -9,6 +9,8 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 		getEChartsTooltipStyle
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
+	import ChartToolbar from './ChartToolbar.svelte';
+	import { getAriaConfig } from '$lib/utils/chartActions';
 	import type { DefaultLabelFormatterCallbackParams } from 'echarts';
 
 	// Types for treemap data
@@ -45,6 +47,9 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 	// Container reference
 	let outerEl: HTMLDivElement;
 	let chartContainer: HTMLDivElement;
+
+	// Toolbar state
+	let showDecal = $state(false);
 
 	// JS-driven sizing: observe the wrapper parent to get its content area dimensions
 	// This is more robust than CSS height:100% which can break with contain:strict
@@ -274,11 +279,12 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 				colorMappingBy: 'id'
 			}
 		],
+		aria: getAriaConfig(showDecal),
 		backgroundColor: 'transparent'
 	});
 
 	// Use the ECharts hook for lifecycle management
-	useECharts({
+	const echartsInstance = useECharts({
 		getContainer: () => chartContainer,
 		getOption: () => chartOption,
 		hasData: () => data.length > 0
@@ -290,6 +296,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 	bind:this={outerEl}
 	style={resolvedHeight > 0 ? `width:${resolvedWidth}px;height:${resolvedHeight}px` : ''}
 >
+	<ChartToolbar chart={echartsInstance.chart} bind:showDecal filename={title || 'treemap'} />
 	<div bind:this={chartContainer} class="chart"></div>
 </div>
 

@@ -8,9 +8,13 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		resolveColor,
 		getEChartsTooltipStyle,
 		getEChartsAxisLineStyle,
-		getEChartsSplitLineStyle
+		getEChartsSplitLineStyle,
+		getBarGradient,
+		getAnimationConfig
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
+	import ChartToolbar from './ChartToolbar.svelte';
+	import { getAriaConfig } from '$lib/utils/chartActions';
 
 	// Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;
@@ -32,6 +36,9 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 
 	// Container reference
 	let chartContainer: HTMLDivElement;
+
+	// Toolbar state
+	let showDecal = $state(false);
 
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
@@ -110,25 +117,26 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 				type: 'bar',
 				data: chartData.map((d) => d.value),
 				itemStyle: {
-					color: resolvedColors.barColor,
+					color: getBarGradient(resolvedColors.barColor),
 					borderRadius: [4, 4, 0, 0]
 				},
 				emphasis: {
 					itemStyle: {
-						color: resolvedColors.primaryDark,
-						shadowColor: resolvedColors.primary,
-						shadowBlur: 10
+						color: resolvedColors.barColor,
+						shadowColor: `color-mix(in srgb, ${resolvedColors.primary} 40%, transparent)`,
+						shadowBlur: 12,
+						shadowOffsetY: 4
 					}
 				},
-				animationDuration: 1000,
-				animationEasing: 'elasticOut'
+				...getAnimationConfig(1000, 'elasticOut')
 			}
 		],
+		aria: getAriaConfig(showDecal),
 		backgroundColor: 'transparent' // Let the container handle background
 	});
 
 	// Use the ECharts hook for lifecycle management
-	useECharts({
+	const echartsInstance = useECharts({
 		getContainer: () => chartContainer,
 		getOption: () => chartOption,
 		hasData: () => chartData.length > 0
@@ -136,6 +144,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 </script>
 
 <div class="echarts-container scroll-reveal-scale">
+	<ChartToolbar chart={echartsInstance.chart} bind:showDecal filename={yAxisLabel || 'bar-chart'} />
 	<div bind:this={chartContainer} class="chart"></div>
 </div>
 

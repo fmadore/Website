@@ -4,8 +4,14 @@ ECharts Network Graph - A network visualization for author collaborations
 <script lang="ts">
 	import { innerWidth } from 'svelte/reactivity/window';
 	import Icon from '@iconify/svelte';
-	import { getResolvedChartColors, getEChartsTooltipStyle } from '$lib/utils/chartColorUtils';
+	import {
+		getResolvedChartColors,
+		getEChartsTooltipStyle,
+		getAnimationConfig
+	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
+	import ChartToolbar from './ChartToolbar.svelte';
+	import { getAriaConfig } from '$lib/utils/chartActions';
 	import type {
 		DefaultLabelFormatterCallbackParams,
 		TooltipComponentPositionCallbackParams
@@ -42,6 +48,9 @@ ECharts Network Graph - A network visualization for author collaborations
 
 	// Container reference
 	let chartContainer: HTMLDivElement;
+
+	// Toolbar state
+	let showDecal = $state(false);
 
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
@@ -377,9 +386,9 @@ ECharts Network Graph - A network visualization for author collaborations
 				avoidLabelOverlap: true
 			}
 		],
+		aria: getAriaConfig(showDecal),
 		backgroundColor: 'transparent',
-		animationDuration: 1500,
-		animationEasing: 'cubicOut' as const
+		...getAnimationConfig(1500, 'cubicOut')
 	});
 
 	// Use the ECharts hook for lifecycle management
@@ -428,6 +437,7 @@ ECharts Network Graph - A network visualization for author collaborations
 </script>
 
 <div class="echarts-container scroll-reveal-scale">
+	<ChartToolbar chart={echartsInstance.chart} bind:showDecal filename="collaboration-network" />
 	<div class="zoom-controls">
 		<button class="zoom-btn" onclick={zoomIn} title="Zoom In" aria-label="Zoom in on network graph">
 			<Icon icon="lucide:zoom-in" width="20" height="20" />
@@ -513,7 +523,7 @@ ECharts Network Graph - A network visualization for author collaborations
 
 	.legend-overlay {
 		position: absolute;
-		top: var(--space-4);
+		top: calc(var(--space-9) + var(--space-4));
 		right: var(--space-4);
 		z-index: 10;
 		background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);

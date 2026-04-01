@@ -4,6 +4,8 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 <script lang="ts">
 	import { innerWidth } from 'svelte/reactivity/window';
 	import { getResolvedChartColors } from '$lib/utils/chartColorUtils';
+	import ChartToolbar from './ChartToolbar.svelte';
+	import { getAriaConfig } from '$lib/utils/chartActions';
 	import type { WordFrequency } from '$lib/types';
 	import type * as echarts from 'echarts';
 
@@ -40,6 +42,9 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 	let chartContainer: HTMLDivElement | undefined = $state(undefined);
 	let chart: echarts.ECharts | null = $state(null);
 	let isReady = $state(false);
+
+	// Toolbar state
+	let showDecal = $state(false);
 
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
@@ -137,6 +142,7 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 				data: chartData()
 			}
 		],
+		aria: getAriaConfig(showDecal),
 		backgroundColor: 'transparent'
 	});
 
@@ -208,6 +214,7 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 			<p>No word frequency data available</p>
 		</div>
 	{:else}
+		<ChartToolbar {chart} bind:showDecal filename={title || 'word-cloud'} />
 		<div bind:this={chartContainer} class="chart"></div>
 	{/if}
 </div>

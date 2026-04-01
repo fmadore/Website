@@ -8,9 +8,12 @@ ECharts Stacked Bar Chart component
 		resolveColors,
 		getEChartsTooltipStyle,
 		getEChartsAxisLineStyle,
-		getEChartsSplitLineStyle
+		getEChartsSplitLineStyle,
+		getAnimationConfig
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
+	import ChartToolbar from './ChartToolbar.svelte';
+	import { getAriaConfig } from '$lib/utils/chartActions';
 	import type { DefaultLabelFormatterCallbackParams } from 'echarts';
 
 	// Props - keeping the same interface as your D3 component for easy replacement
@@ -43,6 +46,9 @@ ECharts Stacked Bar Chart component
 
 	// Container reference
 	let chartContainer: HTMLDivElement;
+
+	// Toolbar state
+	let showDecal = $state(false);
 
 	// Use Svelte's reactive window width instead of manual event listener
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
@@ -184,13 +190,13 @@ ECharts Stacked Bar Chart component
 			splitLine: getEChartsSplitLineStyle(resolvedColors)
 		},
 		series: seriesData,
+		aria: getAriaConfig(showDecal),
 		backgroundColor: 'transparent',
-		animationDuration: 1000,
-		animationEasing: 'elasticOut' as const
+		...getAnimationConfig(1000, 'elasticOut')
 	});
 
 	// Use the ECharts hook for lifecycle management
-	useECharts({
+	const echartsInstance = useECharts({
 		getContainer: () => chartContainer,
 		getOption: () => chartOption,
 		hasData: () => data.length > 0
@@ -198,6 +204,11 @@ ECharts Stacked Bar Chart component
 </script>
 
 <div class="echarts-container scroll-reveal">
+	<ChartToolbar
+		chart={echartsInstance.chart}
+		bind:showDecal
+		filename={yAxisLabel || 'stacked-bar-chart'}
+	/>
 	<div bind:this={chartContainer} class="chart"></div>
 </div>
 

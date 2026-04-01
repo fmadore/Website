@@ -103,6 +103,59 @@ export function prefersReducedMotion(): boolean {
 }
 
 /**
+ * Creates an ECharts linear gradient from a base color (top) to a lighter shade (bottom).
+ * Useful for bar charts to give a polished, dimensional appearance.
+ *
+ * @param color - The base color (fully resolved, not a CSS variable)
+ * @param opacity - Opacity for the bottom of the gradient (0-1)
+ * @returns An ECharts LinearGradient-compatible config object
+ */
+export function getBarGradient(
+	color: string,
+	opacity: number = 0.6
+): {
+	type: 'linear';
+	x: number;
+	y: number;
+	x2: number;
+	y2: number;
+	colorStops: { offset: number; color: string }[];
+} {
+	return {
+		type: 'linear',
+		x: 0,
+		y: 0,
+		x2: 0,
+		y2: 1,
+		colorStops: [
+			{ offset: 0, color },
+			{
+				offset: 1,
+				color: `color-mix(in srgb, ${color} ${Math.round(opacity * 100)}%, transparent)`
+			}
+		]
+	};
+}
+
+/**
+ * Returns animation config respecting reduced-motion preferences.
+ *
+ * @param duration - Base animation duration in ms
+ * @param easing - ECharts easing function name
+ * @returns Animation configuration object
+ */
+export function getAnimationConfig(
+	duration: number = 1000,
+	easing: string = 'cubicOut'
+): { animationDuration: number; animationEasing: string } {
+	const noMotion = prefersReducedMotion();
+	return {
+		animationDuration: noMotion ? 0 : duration,
+		animationEasing: easing
+	};
+}
+
+/**
  * Base chart colors from the design system.
  * These are fallback values matching the teal/amber design system.
  */
@@ -211,6 +264,7 @@ export function getEChartsTooltipStyle(colors: ResolvedChartColors) {
 		borderColor: colors.border,
 		borderWidth: 1,
 		padding: [10, 14],
+		displayTransition: 0.15,
 		extraCssText:
 			'backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: var(--shadow-lg);'
 	};
