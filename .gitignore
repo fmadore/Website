@@ -38,3 +38,5 @@ tests/example.spec.js
 .claude/
 tmpclaude-*
 nul
+scripts/__pycache__/convert-image.cpython-312.pyc
+.vscode/settings.json

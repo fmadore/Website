@@ -9,11 +9,11 @@ export const volkswagenOpenUp2026: Grant = {
 	project:
 		"Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia",
 	startYear: 2026,
-	endYear: 2027,
-	dateRangeString: '2026-2027',
-	dateISOStart: '2026-07-01',
-	dateISOEnd: '2027-09-30',
-	amount: 332390,
+	endYear: 2028,
+	dateRangeString: '2026-2028',
+	dateISOStart: '2026-04-01',
+	dateISOEnd: '2028-12-31',
+	amount: 317690,
 	currency: 'EUR',
 	status: 'Awarded',
 	coApplicants: ['Aksana Ismailbekova']

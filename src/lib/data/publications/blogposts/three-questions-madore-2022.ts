@@ -19,5 +19,6 @@ export const threeQuestionsToMadore: Publication = {
 	heroImage: {
 		src: 'images/publications/three-questions-madore-2022-hero.webp',
 		alt: 'Screenshot of the blogpost'
-	}
+	},
+	country: ['Benin', 'Togo']
 };
