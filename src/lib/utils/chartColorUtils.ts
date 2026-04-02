@@ -103,24 +103,50 @@ export function prefersReducedMotion(): boolean {
 }
 
 /**
- * Creates an ECharts linear gradient from a base color (top) to a lighter shade (bottom).
- * Useful for bar charts to give a polished, dimensional appearance.
+ * Converts a resolved color (hex or rgb) to rgba with the given opacity.
+ * Use this instead of CSS color-mix() for ECharts canvas-rendered options,
+ * since canvas does not support CSS color functions.
  *
- * @param color - The base color (fully resolved, not a CSS variable)
- * @param opacity - Opacity for the bottom of the gradient (0-1)
- * @returns An ECharts LinearGradient-compatible config object
+ * @param color - Hex (#rgb, #rrggbb) or rgb(r, g, b) color string
+ * @param opacity - Opacity value (0-1)
+ * @returns rgba color string usable in canvas contexts
  */
-export function getBarGradient(
-	color: string,
-	opacity: number = 0.6
-): {
+export function colorWithOpacity(color: string, opacity: number): string {
+	if (color.startsWith('#')) {
+		let hex = color.slice(1);
+		if (hex.length === 3) {
+			hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+		}
+		const r = parseInt(hex.slice(0, 2), 16);
+		const g = parseInt(hex.slice(2, 4), 16);
+		const b = parseInt(hex.slice(4, 6), 16);
+		return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+	}
+	const rgbMatch = color.match(/^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/);
+	if (rgbMatch) {
+		return `rgba(${rgbMatch[1]}, ${rgbMatch[2]}, ${rgbMatch[3]}, ${opacity})`;
+	}
+	return color;
+}
+
+/** Shared gradient return type for ECharts linear gradients */
+type EChartsLinearGradient = {
 	type: 'linear';
 	x: number;
 	y: number;
 	x2: number;
 	y2: number;
 	colorStops: { offset: number; color: string }[];
-} {
+};
+
+/**
+ * Creates a vertical ECharts linear gradient (top-to-bottom).
+ * Useful for vertical bar charts.
+ *
+ * @param color - The base color (fully resolved, not a CSS variable)
+ * @param opacity - Opacity for the bottom of the gradient (0-1)
+ */
+export function getBarGradient(color: string, opacity: number = 0.6): EChartsLinearGradient {
 	return {
 		type: 'linear',
 		x: 0,
@@ -129,10 +155,31 @@ export function getBarGradient(
 		y2: 1,
 		colorStops: [
 			{ offset: 0, color },
-			{
-				offset: 1,
-				color: `color-mix(in srgb, ${color} ${Math.round(opacity * 100)}%, transparent)`
-			}
+			{ offset: 1, color: colorWithOpacity(color, opacity) }
+		]
+	};
+}
+
+/**
+ * Creates a horizontal ECharts linear gradient (left-to-right).
+ * Useful for horizontal bar charts.
+ *
+ * @param color - The base color (fully resolved, not a CSS variable)
+ * @param startOpacity - Opacity at the start (left) of the gradient
+ */
+export function getHorizontalBarGradient(
+	color: string,
+	startOpacity: number = 0.6
+): EChartsLinearGradient {
+	return {
+		type: 'linear',
+		x: 0,
+		y: 0,
+		x2: 1,
+		y2: 0,
+		colorStops: [
+			{ offset: 0, color: colorWithOpacity(color, startOpacity) },
+			{ offset: 1, color }
 		]
 	};
 }
@@ -264,7 +311,7 @@ export function getEChartsTooltipStyle(colors: ResolvedChartColors) {
 		borderColor: colors.border,
 		borderWidth: 1,
 		padding: [10, 14],
-		displayTransition: 0.15,
+		transitionDuration: 0.15,
 		extraCssText:
 			'backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: var(--shadow-lg);'
 	};

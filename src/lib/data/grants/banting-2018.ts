@@ -15,7 +15,8 @@ export const banting2018: Grant = {
 	dateISOEnd: '2020-09-30',
 	amount: 140000,
 	currency: 'CAD',
-	status: 'Awarded'
+	status: 'Awarded',
+	url: 'https://app.dimensions.ai/details/grant/grant.8664929'
 };
 
 export default banting2018;

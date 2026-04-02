@@ -9,7 +9,9 @@ ECharts Horizontal Bar Chart component
 		getEChartsTooltipStyle,
 		getEChartsAxisLineStyle,
 		getEChartsSplitLineStyle,
-		getAnimationConfig
+		getAnimationConfig,
+		getHorizontalBarGradient,
+		colorWithOpacity
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
@@ -137,26 +139,13 @@ ECharts Horizontal Bar Chart component
 				type: 'bar',
 				data: chartData.map((d) => d.value),
 				itemStyle: {
-					color: {
-						type: 'linear',
-						x: 0,
-						y: 0,
-						x2: 1,
-						y2: 0,
-						colorStops: [
-							{
-								offset: 0,
-								color: `color-mix(in srgb, ${resolvedColors.barColor} 60%, transparent)`
-							},
-							{ offset: 1, color: resolvedColors.barColor }
-						]
-					},
+					color: getHorizontalBarGradient(resolvedColors.barColor, 0.6),
 					borderRadius: [0, 4, 4, 0]
 				},
 				emphasis: {
 					itemStyle: {
 						color: resolvedColors.barColor,
-						shadowColor: `color-mix(in srgb, ${resolvedColors.primary} 40%, transparent)`,
+						shadowColor: colorWithOpacity(resolvedColors.primary, 0.4),
 						shadowBlur: 12,
 						shadowOffsetX: 4
 					}

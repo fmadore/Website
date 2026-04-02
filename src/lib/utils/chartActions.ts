@@ -7,9 +7,11 @@
  */
 
 import type * as echarts from 'echarts';
+import { getCSSVariableValueWithFallback, CHART_COLOR_FALLBACKS } from './chartColorUtils';
 
 /**
  * Downloads an ECharts chart instance as a PNG image.
+ * Uses the current theme's surface color as background for readability.
  *
  * @param chart - The ECharts instance
  * @param filename - The filename (without extension) for the downloaded image
@@ -17,10 +19,12 @@ import type * as echarts from 'echarts';
 export function downloadChartAsImage(chart: echarts.ECharts, filename: string = 'chart'): void {
 	if (!chart || chart.isDisposed()) return;
 
+	const bgColor = getCSSVariableValueWithFallback('--color-surface', CHART_COLOR_FALLBACKS.surface);
+
 	const url = chart.getDataURL({
 		type: 'png',
 		pixelRatio: 2,
-		backgroundColor: '#fff',
+		backgroundColor: bgColor,
 		excludeComponents: ['toolbox']
 	});
 

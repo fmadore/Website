@@ -24,17 +24,17 @@ ECharts Stacked Bar Chart component
 		xAxisLabel = '',
 		yAxisLabel = '',
 		colors = [
-			'var(--color-primary)', // Blog post - teal
-			'var(--color-highlight)', // Book - amber
-			'var(--color-accent)', // Book chapter - amber
-			'var(--color-success)', // Bulletin article - green
-			'var(--sys-color-teal-400)', // Conference proceedings - light teal
-			'var(--color-secondary)', // Encyclopedia entry - neutral gray
-			'var(--sys-color-teal-600)', // Journal article - medium teal
-			'var(--sys-color-amber-400)', // Master's thesis - amber variant
-			'var(--color-danger)', // PhD dissertation - red
-			'var(--sys-color-amber-600)', // Research report - dark amber
-			'var(--color-primary-dark)' // Special issue - dark teal
+			'var(--sys-color-amber-400)', // Blog post - gold
+			'var(--sys-color-blue-500)', // Book - blue
+			'#a78bfa', // Book chapter - purple
+			'var(--sys-color-emerald-400)', // Bulletin article - green
+			'var(--sys-color-neutral-400)', // Conference proceedings - gray
+			'#f472b6', // Encyclopedia entry - pink
+			'var(--sys-color-teal-500)', // Journal article - teal
+			'var(--sys-color-red-400)', // Master's thesis - red
+			'var(--sys-color-amber-600)', // PhD dissertation - dark amber
+			'var(--sys-color-blue-300)', // Research report - light blue
+			'var(--sys-color-teal-300)' // Special issue - light teal
 		]
 	}: {
 		data?: DataItem[];
@@ -132,7 +132,7 @@ ECharts Stacked Bar Chart component
 		legend: {
 			orient: 'horizontal',
 			left: 'center',
-			top: 'top',
+			bottom: 0,
 			textStyle: {
 				color: resolvedColors.text,
 				fontSize: isMobile ? 10 : 12,
@@ -145,8 +145,8 @@ ECharts Stacked Bar Chart component
 		grid: {
 			left: isMobile ? 32 : 64,
 			right: 24,
-			top: isMobile ? 80 : 64, // More space on mobile for legend
-			bottom: xAxisLabel ? 80 : 48,
+			top: 24,
+			bottom: isMobile ? 120 : 100,
 			containLabel: false
 		},
 		xAxis: {

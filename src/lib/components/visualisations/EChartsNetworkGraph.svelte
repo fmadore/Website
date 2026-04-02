@@ -46,11 +46,9 @@ ECharts Network Graph - A network visualization for author collaborations
 		maxConnections?: number;
 	} = $props();
 
-	// Container reference
+	// Container references
 	let chartContainer: HTMLDivElement;
-
-	// Toolbar state
-	let showDecal = $state(false);
+	let outerContainer = $state<HTMLDivElement>(undefined!);
 
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
@@ -386,7 +384,7 @@ ECharts Network Graph - A network visualization for author collaborations
 				avoidLabelOverlap: true
 			}
 		],
-		aria: getAriaConfig(showDecal),
+		aria: getAriaConfig(false),
 		backgroundColor: 'transparent',
 		...getAnimationConfig(1500, 'cubicOut')
 	});
@@ -436,8 +434,14 @@ ECharts Network Graph - A network visualization for author collaborations
 	}
 </script>
 
-<div class="echarts-container scroll-reveal-scale">
-	<ChartToolbar chart={echartsInstance.chart} bind:showDecal filename="collaboration-network" />
+<div class="echarts-container scroll-reveal-scale" bind:this={outerContainer}>
+	<ChartToolbar
+		chart={echartsInstance.chart}
+		showDecalToggle={false}
+		showFullscreen={true}
+		fullscreenTarget={outerContainer}
+		filename="collaboration-network"
+	/>
 	<div class="zoom-controls">
 		<button class="zoom-btn" onclick={zoomIn} title="Zoom In" aria-label="Zoom in on network graph">
 			<Icon icon="lucide:zoom-in" width="20" height="20" />
@@ -506,6 +510,12 @@ ECharts Network Graph - A network visualization for author collaborations
 		font-family: var(--font-family-sans);
 	}
 
+	.echarts-container:fullscreen {
+		height: 100vh;
+		width: 100vw;
+		background-color: var(--color-surface);
+	}
+
 	.chart {
 		width: 100%;
 		height: 100%;
@@ -565,19 +575,24 @@ ECharts Network Graph - A network visualization for author collaborations
 	}
 
 	.zoom-btn {
-		width: var(--space-10);
+		width: var(--space-9);
 		height: var(--space-9);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
-		backdrop-filter: blur(var(--glass-blur-sm));
-		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
+		background-color: color-mix(in srgb, var(--color-surface) 85%, transparent);
+		backdrop-filter: var(--glass-blur-sm);
+		-webkit-backdrop-filter: var(--glass-blur-sm);
 		border: var(--border-width-thin) solid var(--color-border);
 		border-radius: var(--border-radius);
-		color: var(--color-text);
+		color: var(--color-text-light);
 		cursor: pointer;
-		transition: all var(--duration-fast) var(--ease-out);
+		transition:
+			background-color var(--duration-fast) var(--ease-out),
+			color var(--duration-fast) var(--ease-out),
+			border-color var(--duration-fast) var(--ease-out),
+			box-shadow var(--duration-fast) var(--ease-out),
+			transform var(--duration-fast) var(--ease-out);
 		box-shadow: var(--shadow-sm);
 	}
 
@@ -587,6 +602,11 @@ ECharts Network Graph - A network visualization for author collaborations
 		border-color: var(--color-primary);
 		transform: var(--transform-lift-sm);
 		box-shadow: var(--shadow-md);
+	}
+
+	.zoom-btn:focus-visible {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 2px;
 	}
 
 	.zoom-btn:active {
@@ -638,6 +658,10 @@ ECharts Network Graph - A network visualization for author collaborations
 		.zoom-btn {
 			width: var(--space-8);
 			height: var(--space-8);
+		}
+
+		.legend-overlay {
+			display: none;
 		}
 	}
 </style>

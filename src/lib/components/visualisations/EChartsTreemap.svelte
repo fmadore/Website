@@ -35,8 +35,8 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 			'var(--color-highlight)',
 			'var(--color-success)',
 			'var(--color-secondary)',
-			'color-mix(in srgb, var(--color-primary) 70%, var(--color-accent))',
-			'color-mix(in srgb, var(--color-highlight) 80%, var(--color-success))'
+			'var(--sys-color-purple-500)',
+			'var(--sys-color-blue-500)'
 		]
 	}: {
 		data?: TreemapNode[];

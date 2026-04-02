@@ -7,7 +7,8 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		getResolvedChartColors,
 		resolveColors,
 		getEChartsTooltipStyle,
-		prefersReducedMotion
+		prefersReducedMotion,
+		colorWithOpacity
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
@@ -28,15 +29,15 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 			'var(--color-highlight)',
 			'var(--color-success)',
 			'var(--color-secondary)',
-			'color-mix(in srgb, var(--color-primary) 80%, transparent)',
-			'color-mix(in srgb, var(--color-highlight) 80%, transparent)',
-			'color-mix(in srgb, var(--color-success) 80%, transparent)',
-			'color-mix(in srgb, var(--color-primary) 60%, transparent)',
-			'color-mix(in srgb, var(--color-highlight) 60%, transparent)',
-			'color-mix(in srgb, var(--color-success) 60%, transparent)',
-			'color-mix(in srgb, var(--color-primary) 40%, transparent)',
-			'color-mix(in srgb, var(--color-highlight) 40%, transparent)',
-			'color-mix(in srgb, var(--color-success) 40%, transparent)'
+			'var(--sys-color-purple-500)',
+			'var(--sys-color-pink-500)',
+			'var(--sys-color-blue-500)',
+			'var(--sys-color-teal-400)',
+			'var(--sys-color-amber-400)',
+			'var(--sys-color-emerald-400)',
+			'var(--sys-color-blue-400)',
+			'var(--sys-color-amber-300)',
+			'var(--sys-color-teal-300)'
 		]
 	}: {
 		data?: DataItem[];
@@ -139,7 +140,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 					itemStyle: {
 						shadowBlur: 10,
 						shadowOffsetX: 0,
-						shadowColor: 'color-mix(in srgb, black 50%, transparent)'
+						shadowColor: 'rgba(0, 0, 0, 0.5)'
 					}
 				},
 				label: {
@@ -150,9 +151,9 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 					fontFamily: resolvedColors.fontFamily,
 					fontWeight: 'bold',
 					formatter: isMobile ? '{d}%' : '{b}: {d}%',
-					textBorderColor: isMobile ? 'color-mix(in srgb, black 90%, transparent)' : 'transparent',
+					textBorderColor: isMobile ? 'rgba(0, 0, 0, 0.9)' : 'transparent',
 					textBorderWidth: isMobile ? 2 : 0,
-					textShadowColor: isMobile ? 'color-mix(in srgb, black 90%, transparent)' : 'transparent',
+					textShadowColor: isMobile ? 'rgba(0, 0, 0, 0.9)' : 'transparent',
 					textShadowBlur: isMobile ? 3 : 0,
 					minMargin: isMobile ? 8 : 5,
 					padding: isMobile ? [2, 4] : [0, 0]

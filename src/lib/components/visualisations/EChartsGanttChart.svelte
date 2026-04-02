@@ -45,9 +45,6 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 	// Container reference
 	let chartContainer: HTMLDivElement;
 
-	// Toolbar state
-	let showDecal = $state(false);
-
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
 
@@ -270,7 +267,7 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 				z: 2
 			}
 		],
-		aria: getAriaConfig(showDecal),
+		aria: getAriaConfig(false),
 		backgroundColor: 'transparent',
 		animation: true,
 		...getAnimationConfig(800, 'cubicOut')
@@ -285,7 +282,7 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 </script>
 
 <div class="echarts-container scroll-reveal-scale">
-	<ChartToolbar chart={echartsInstance.chart} bind:showDecal filename="project-timeline" />
+	<ChartToolbar chart={echartsInstance.chart} showDecalToggle={false} filename="project-timeline" />
 	<div bind:this={chartContainer} class="chart"></div>
 	<div class="legend-hint">
 		<span class="legend-item">

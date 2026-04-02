@@ -10,7 +10,8 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		getEChartsAxisLineStyle,
 		getEChartsSplitLineStyle,
 		getBarGradient,
-		getAnimationConfig
+		getAnimationConfig,
+		colorWithOpacity
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
@@ -123,7 +124,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 				emphasis: {
 					itemStyle: {
 						color: resolvedColors.barColor,
-						shadowColor: `color-mix(in srgb, ${resolvedColors.primary} 40%, transparent)`,
+						shadowColor: colorWithOpacity(resolvedColors.primary, 0.4),
 						shadowBlur: 12,
 						shadowOffsetY: 4
 					}
@@ -160,5 +161,17 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 	.chart {
 		width: 100%;
 		height: 100%;
+	}
+
+	@media (--sm-down) {
+		.echarts-container {
+			height: 300px;
+		}
+	}
+
+	@media (--xs-down) {
+		.echarts-container {
+			height: 260px;
+		}
 	}
 </style>
