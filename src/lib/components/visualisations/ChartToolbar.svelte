@@ -95,11 +95,7 @@ Provides decal toggle (accessibility), download as PNG, and optional fullscreen.
 			title={isFullscreen ? 'Exit fullscreen' : 'View fullscreen'}
 			aria-label={isFullscreen ? 'Exit fullscreen' : 'View fullscreen'}
 		>
-			<Icon
-				icon={isFullscreen ? 'lucide:shrink' : 'lucide:expand'}
-				width="16"
-				height="16"
-			/>
+			<Icon icon={isFullscreen ? 'lucide:shrink' : 'lucide:expand'} width="16" height="16" />
 		</button>
 	{/if}
 	<button
