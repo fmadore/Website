@@ -12,26 +12,54 @@ updates:
       - 'dependencies'
     commit-message:
       prefix: 'chore(deps)'
-    # Prioritize security updates
     groups:
-      # Group minor/patch updates to reduce PR noise
-      dev-dependencies:
+      # SvelteKit/Vite framework core
+      framework:
+        patterns:
+          - '@sveltejs/*'
+          - 'svelte'
+          - 'svelte-check'
+          - 'vite'
+          - 'mdsvex'
+        update-types:
+          - 'minor'
+          - 'patch'
+      # Linting, formatting, types, testing
+      dev-tooling:
         patterns:
           - '@types/*'
+          - '@eslint/*'
           - 'eslint*'
           - 'prettier*'
           - 'typescript*'
           - '@playwright/*'
-          - 'svelte-check'
+          - 'globals'
         update-types:
           - 'minor'
           - 'patch'
-      # Group production dependencies separately
-      production-minor:
+      # PostCSS ecosystem
+      postcss:
         patterns:
-          - '@sveltejs/*'
-          - 'svelte'
-          - 'vite'
+          - '@csstools/*'
+          - 'postcss*'
+        update-types:
+          - 'minor'
+          - 'patch'
+      # Iconify icon libraries
+      iconify:
+        patterns:
+          - '@iconify/*'
+          - '@iconify-icons/*'
+        update-types:
+          - 'minor'
+          - 'patch'
+      # Data visualization libraries
+      visualization:
+        patterns:
+          - 'd3'
+          - '@types/d3'
+          - 'echarts*'
+          - 'maplibre-gl'
         update-types:
           - 'minor'
           - 'patch'
