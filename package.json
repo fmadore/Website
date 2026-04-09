@@ -51,7 +51,8 @@
 		"echarts-wordcloud": {
 			"echarts": "$echarts"
 		},
-		"dompurify": "^3.3.2"
+		"dompurify": "^3.3.2",
+		"cookie": ">=0.7.0"
 	},
 	"dependencies": {
 		"@iconify-icons/academicons": "^1.2.10",
