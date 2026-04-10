@@ -61,7 +61,7 @@ export const hackettInterviewDigitalMedia: Publication = {
 			year: 2025,
 			title:
 				'Promoting Religious Tolerance through the Design of a Pictogram Communication System for Digital Peacemakers on Social Networking Sites',
-			source: 'PhD dissertation, University of Hertfordshire, 2025',
+			source: 'PhD dissertation, University of Hertfordshire',
 			url: 'https://uhra.herts.ac.uk/id/eprint/25898/'
 		},
 		{
