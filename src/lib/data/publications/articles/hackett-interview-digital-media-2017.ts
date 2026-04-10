@@ -69,7 +69,7 @@ export const hackettInterviewDigitalMedia: Publication = {
 			year: 2026,
 			title:
 				'A Woman Is Not Created Mute: An Ethnography of Gender and Voice on Islamic Radio in Tanga, Tanzania',
-			source: 'Journal of the American Academy of Religion, 2026',
+			source: 'Journal of the American Academy of Religion 94, no. 1: 52-80',
 			url: 'https://doi.org/10.1093/jaarel/lfag003'
 		}
 	]
