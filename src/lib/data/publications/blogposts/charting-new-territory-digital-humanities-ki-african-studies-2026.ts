@@ -11,6 +11,7 @@ export const chartingNewTerritoryDigitalHumanitiesKiAfricanStudies: Publication 
 	year: 2026,
 	publisher: 'Digital History Bielefeld',
 	language: 'German',
+	doi: '10.58079/15z9p',
 	tags: [
 		'Digital Humanities',
 		'Artificial Intelligence',
@@ -30,7 +31,6 @@ export const chartingNewTerritoryDigitalHumanitiesKiAfricanStudies: Publication 
 	],
 	abstract:
 		'Im Februar 2026 versammelten sich 26 Forschende aus 16 Ländern im Schloss Herrenhausen in Hannover zu einem von der VolkswagenStiftung geförderten Scoping Workshop über Digital Humanities und Künstliche Intelligenz in den Afrikastudien. In vier thematischen Arbeitsgruppen – Sprachtechnologien, Archive, Infrastruktur und Epistemologie – diskutierten die Teilnehmenden zentrale Herausforderungen wie Datenkolonialismus, digitale Souveränität, die Unterrepräsentation afrikanischer Sprachen in KI-Systemen und die Frage, wie offener Zugang mit gemeinschaftlicher Kontrolle über Kulturerbe vereinbart werden kann. Ein Positionspapier sowie ein Sammelband sind in Vorbereitung.',
-	url: 'https://digihistbie.hypotheses.org/1117',
 	image: 'images/publications/digital-history-bielefeld.webp',
 	heroImage: {
 		src: 'images/publications/digital-history-bielefeld-hero.webp',
