@@ -1,5 +1,9 @@
 <script lang="ts" generics="Item extends Record<string, unknown> = Record<string, unknown>">
 	import type { Component } from 'svelte';
+	import { flip } from 'svelte/animate';
+	import { fade } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
+	import { motionDuration } from '$lib/utils/motion';
 	import Button from '$lib/components/atoms/Button.svelte'; // Import Button component
 
 	// Generic type to represent any store with a subscribe method
@@ -50,28 +54,42 @@
 		}
 		return index;
 	};
+
+	// Motion durations for filter/sort list transitions.
+	// Items reorder with FLIP (350ms) and fade on enter/exit.
+	// Durations collapse to 0 automatically under prefers-reduced-motion.
+	const FLIP_DURATION = 350;
+	const FADE_IN_DURATION = 220;
+	const FADE_OUT_DURATION = 160;
 </script>
 
 <div>
 	{#if items && items.length > 0}
-		<ul class="list-none p-0 space-y-8 mt-6 grid-stagger">
+		<div class="filtered-list grid-stagger">
 			{#each items as item, index (getItemKey(item, index))}
-				{#if onitemrequest}
-					{@const Component = itemComponent}
-					<Component
-						{...itemComponentProps}
-						{...{ [itemPropName]: item }}
-						{index}
-						onfilterrequest={onitemrequest}
-						onclick={onitemrequest}
-						oncustomaction={onitemrequest}
-					/>
-				{:else}
-					{@const Component = itemComponent}
-					<Component {...itemComponentProps} {...{ [itemPropName]: item }} {index} />
-				{/if}
+				<div
+					class="filtered-list-row"
+					animate:flip={{ duration: motionDuration(FLIP_DURATION), easing: cubicOut }}
+					in:fade={{ duration: motionDuration(FADE_IN_DURATION), easing: cubicOut }}
+					out:fade={{ duration: motionDuration(FADE_OUT_DURATION), easing: cubicOut }}
+				>
+					{#if onitemrequest}
+						{@const Component = itemComponent}
+						<Component
+							{...itemComponentProps}
+							{...{ [itemPropName]: item }}
+							{index}
+							onfilterrequest={onitemrequest}
+							onclick={onitemrequest}
+							oncustomaction={onitemrequest}
+						/>
+					{:else}
+						{@const Component = itemComponent}
+						<Component {...itemComponentProps} {...{ [itemPropName]: item }} {index} />
+					{/if}
+				</div>
 			{/each}
-		</ul>
+		</div>
 	{:else}
 		<div class="empty-state">
 			<p class="empty-state-message">{emptyStateMessage}</p>
@@ -93,6 +111,24 @@
 </div>
 
 <style>
+	/* Container for the animated, filterable list.
+	 * Uses a <div> (not <ul>) so children can be wrapper <div>s carrying
+	 * animate:flip — valid HTML regardless of the item component root. */
+	.filtered-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-8);
+		margin-top: var(--space-6);
+		padding: 0;
+		list-style: none;
+	}
+
+	.filtered-list-row {
+		/* The wrapper is purely structural. Its children (item components)
+		 * supply their own visual styling and scroll-reveal animations. */
+		contain: layout style;
+	}
+
 	.empty-state {
 		padding: var(--space-xl);
 		background: linear-gradient(

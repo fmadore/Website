@@ -16,6 +16,7 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
 	import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
+	import ReadingProgress from '$lib/components/common/ReadingProgress.svelte';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import ActionLinks from '$lib/components/molecules/ActionLinks.svelte';
 	import AbstractSection from '$lib/components/molecules/AbstractSection.svelte';
@@ -189,6 +190,8 @@
 />
 
 <MetaTags {publication} />
+
+<ReadingProgress />
 
 <div class="container py-8 page-enter">
 	<!-- Breadcrumb outside article for better structure -->

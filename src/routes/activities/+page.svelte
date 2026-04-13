@@ -13,6 +13,10 @@
 	import TagCloud from '$lib/components/molecules/TagCloud.svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
 	import Icon from '@iconify/svelte';
+	import { flip } from 'svelte/animate';
+	import { fade } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
+	import { motionDuration } from '$lib/utils/motion';
 
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('Activities', '/activities');
@@ -144,7 +148,14 @@
 					{#if activityList.length > 0}
 						<div class="space-y-8 grid-stagger">
 							{#each activityList as activity (activity.id)}
-								<ActivityItem {activity} />
+								<div
+									class="activity-row"
+									animate:flip={{ duration: motionDuration(350), easing: cubicOut }}
+									in:fade={{ duration: motionDuration(220), easing: cubicOut }}
+									out:fade={{ duration: motionDuration(160), easing: cubicOut }}
+								>
+									<ActivityItem {activity} />
+								</div>
 							{/each}
 						</div>
 					{:else}

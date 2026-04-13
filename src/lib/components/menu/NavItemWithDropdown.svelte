@@ -7,6 +7,7 @@
 		item,
 		isActive = false,
 		index,
+		currentPath = '',
 		onMouseEnter,
 		onMouseLeave,
 		onFocusIn,
@@ -17,6 +18,7 @@
 		item: NavItem;
 		isActive?: boolean;
 		index: number;
+		currentPath?: string;
 		onMouseEnter: (index: number) => void;
 		onMouseLeave: () => void;
 		onFocusIn: (index: number) => void;
@@ -24,6 +26,17 @@
 		onKeyDown: (event: KeyboardEvent, index: number) => void;
 		onDropdownItemClick: () => void;
 	} = $props();
+
+	// A nav link is "active" when the current route matches its path or is
+	// nested beneath it. Normalising trailing slashes and the root `/` avoids
+	// matching every route against the home link.
+	const normalize = (p: string) => (p.length > 1 ? p.replace(/\/$/, '') : p);
+	const isCurrent = $derived.by(() => {
+		const itemPath = normalize(item.path);
+		const current = normalize(currentPath);
+		if (itemPath === '/') return current === '/';
+		return current === itemPath || current.startsWith(`${itemPath}/`);
+	});
 </script>
 
 <li class="nav-item dropdown-container">
@@ -38,7 +51,9 @@
 		<NavLink
 			href={item.path}
 			hasDropdown={!!item.dropdown}
+			active={isCurrent}
 			aria-expanded={isActive ? 'true' : 'false'}
+			aria-current={isCurrent ? 'page' : undefined}
 			onkeydown={(e) => onKeyDown(e, index)}
 		>
 			{item.name}

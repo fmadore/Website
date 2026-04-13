@@ -333,9 +333,29 @@
 		color: var(--color-text-light);
 		cursor: pointer;
 		transition:
-			color var(--duration-fast) ease,
-			background var(--duration-fast) ease;
+			color var(--duration-normal) var(--ease-out),
+			background var(--duration-normal) var(--ease-out);
 		position: relative;
+	}
+
+	/* Indicator bar is always present but zero-scaled when inactive; we
+	 * transition transform/opacity so switching the active section slides the
+	 * highlight smoothly from its previous position into the new one. */
+	.cv-toc-link::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: var(--space-1);
+		bottom: var(--space-1);
+		width: var(--border-width-medium);
+		background: var(--color-primary);
+		border-radius: var(--border-radius-full);
+		opacity: 0;
+		transform: scaleY(0);
+		transform-origin: center;
+		transition:
+			transform var(--duration-normal) var(--ease-out),
+			opacity var(--duration-normal) var(--ease-out);
 	}
 
 	.cv-toc-link:hover {
@@ -350,14 +370,8 @@
 	}
 
 	.cv-toc-link.active::before {
-		content: '';
-		position: absolute;
-		left: 0;
-		top: var(--space-1);
-		bottom: var(--space-1);
-		width: var(--border-width-medium);
-		background: var(--color-primary);
-		border-radius: var(--border-radius-full);
+		opacity: 1;
+		transform: scaleY(1);
 	}
 
 	.cv-toc-link:focus-visible {
@@ -374,6 +388,7 @@
 
 	@media (prefers-reduced-motion: reduce) {
 		.cv-toc-link,
+		.cv-toc-link::before,
 		.cv-toc-fab {
 			transition: none;
 		}

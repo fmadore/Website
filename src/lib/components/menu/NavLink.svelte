@@ -62,15 +62,30 @@
 		width: 0;
 		height: var(--border-width-medium);
 		background-color: var(--color-primary);
-		transition: width var(--duration-normal) var(--ease-out);
+		border-radius: var(--border-radius-full);
+		transition:
+			width var(--duration-normal) var(--ease-out),
+			background-color var(--duration-normal) var(--ease-out);
 	}
 
 	.nav-link:hover {
 		color: var(--color-primary);
 	}
 
-	.nav-link:hover::after {
+	.nav-link:hover::after,
+	.nav-link.active::after {
 		width: 100%;
+	}
+
+	/* Active (current-page) link: keep the primary color for the text and
+	 * give the underline a soft highlight gradient so the current section is
+	 * immediately legible without shouting. */
+	.nav-link.active {
+		color: var(--color-primary);
+	}
+
+	.nav-link.active::after {
+		background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-highlight) 100%);
 	}
 
 	.dropdown-icon {

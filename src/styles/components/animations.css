@@ -87,6 +87,28 @@
 	}
 }
 
+/* ===== HERO ENTRANCE =====
+ * Single-image hero entrance for detail pages (e.g. /publications/[id]).
+ * Triggered immediately on mount — unlike .scroll-reveal-scale, which only
+ * animates once the element enters the viewport and so never plays for
+ * above-the-fold hero images.
+ */
+.hero-entrance {
+	animation: heroEntrance 520ms var(--ease-out) forwards;
+	will-change: opacity, transform;
+}
+
+@keyframes heroEntrance {
+	from {
+		opacity: 0;
+		transform: scale(0.97) translateY(var(--anim-distance-card));
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+}
+
 /* ===== HERO SEQUENCE ANIMATIONS =====
  * Staggered entrance for hero/profile sections
  * Photo -> Title -> Subtitle -> Actions
@@ -276,6 +298,7 @@
 	.body-enter,
 	.card-enter,
 	.micro-enter,
+	.hero-entrance,
 	.hero-sequence-photo,
 	.hero-sequence-title,
 	.hero-sequence-subtitle,

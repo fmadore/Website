@@ -95,7 +95,7 @@
 	});
 </script>
 
-<li class="entity-list-item scroll-reveal-scale">
+<article class="entity-list-item scroll-reveal-scale">
 	<div class="entity-card">
 		<div class="entity-grid">
 			{#if publication.image}
@@ -234,7 +234,7 @@
 			</div>
 		</div>
 	</div>
-</li>
+</article>
 
 <style>
 	.advisor-info,

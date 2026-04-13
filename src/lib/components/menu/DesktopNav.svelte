@@ -5,6 +5,7 @@
 	let {
 		navItems,
 		activeDropdown = null,
+		currentPath = '',
 		onMouseEnter,
 		onMouseLeave,
 		onFocusIn,
@@ -14,6 +15,7 @@
 	}: {
 		navItems: NavItem[];
 		activeDropdown?: number | null;
+		currentPath?: string;
 		onMouseEnter: (index: number) => void;
 		onMouseLeave: () => void;
 		onFocusIn: (index: number) => void;
@@ -30,6 +32,7 @@
 				{item}
 				isActive={activeDropdown === i}
 				index={i}
+				{currentPath}
 				{onMouseEnter}
 				{onMouseLeave}
 				{onFocusIn}

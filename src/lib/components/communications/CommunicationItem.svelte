@@ -49,7 +49,7 @@
 	const citationDetails = $derived(formatCommunicationCitation(communication));
 </script>
 
-<li class="entity-list-item scroll-reveal-scale">
+<article class="entity-list-item scroll-reveal-scale">
 	<div class="entity-card">
 		<div class="entity-grid">
 			{#if communication?.image}
@@ -155,4 +155,4 @@
 			</div>
 		</div>
 	</div>
-</li>
+</article>

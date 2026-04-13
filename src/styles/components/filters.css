@@ -66,11 +66,20 @@
 	border: var(--border-width-thin) solid var(--color-border);
 	border-radius: var(--border-radius-full);
 	cursor: pointer;
+	transform: scale(1);
 	transition:
 		background-color var(--duration-fast) var(--ease-out),
 		border-color var(--duration-fast) var(--ease-out),
 		color var(--duration-fast) var(--ease-out),
-		box-shadow var(--duration-fast) var(--ease-out);
+		box-shadow var(--duration-fast) var(--ease-out),
+		transform var(--duration-fast) var(--ease-out);
+}
+
+/* Tactile press feedback — the chip depresses slightly on click, then
+ * springs back when the browser reasserts the normal state. */
+.filter-chip:active {
+	transform: scale(0.96);
+	transition-duration: var(--duration-instant);
 }
 
 .filter-chip:hover {
@@ -199,5 +208,9 @@ html.dark .filter-chip.active {
 	.filter-chip,
 	.action-button {
 		transition: none;
+	}
+
+	.filter-chip:active {
+		transform: none;
 	}
 }

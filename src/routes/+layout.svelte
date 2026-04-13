@@ -2,6 +2,9 @@
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 	import { afterNavigate } from '$app/navigation';
+	import { fade } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
+	import { motionDuration } from '$lib/utils/motion';
 	import Footer from '$lib/components/common/Footer.svelte';
 	import Header from '$lib/components/menu/Header.svelte';
 	import CookieConsent from '$lib/components/common/CookieConsent.svelte';
@@ -76,8 +79,12 @@
 
 	<main class="main-content-area">
 		<div class="container py-6 md:py-10">
-			{#key $page.url}
-				<div>
+			{#key $page.url.pathname}
+				<div
+					class="route-transition-root"
+					in:fade={{ duration: motionDuration(180), delay: motionDuration(30), easing: cubicOut }}
+					out:fade={{ duration: motionDuration(120), easing: cubicOut }}
+				>
 					{@render children()}
 				</div>
 			{/key}
@@ -102,5 +109,13 @@
 		/* Ensure main content (including sidebar dropdowns) appears above footer */
 		position: relative;
 		z-index: 2;
+	}
+
+	/* Route-level cross-fade wrapper.
+	 * Keeps layout stable during navigation (no collapsing height) and
+	 * hints the browser to promote the transitioning subtree for smoother
+	 * opacity interpolation. */
+	.route-transition-root {
+		will-change: opacity;
 	}
 </style>

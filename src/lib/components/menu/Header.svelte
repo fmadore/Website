@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { page } from '$app/stores';
 	import { navItems } from '$lib/data/navigation';
 	// Import Components
 	import DesktopNav from '$lib/components/menu/DesktopNav.svelte';
@@ -13,7 +14,17 @@
 	let dropdownTimer = $state<ReturnType<typeof setTimeout> | null>(null);
 	let bodyOverflowHidden = $state(false);
 
+	// Scroll-direction-aware header: hides on scroll down past a threshold,
+	// reveals on scroll up. Disabled while a dropdown or mobile menu is open
+	// so the header can't vanish mid-interaction.
+	let headerHidden = $state(false);
+
+	// Current pathname, used for highlighting the active nav link.
+	const currentPath = $derived($page.url.pathname);
+
 	const HIDE_DELAY = 200;
+	const SCROLL_HIDE_THRESHOLD = 200; // px before we start hiding
+	const SCROLL_DELTA = 6; // min delta to consider a direction change
 
 	// Dropdown handlers
 	function showDropdown(index: number) {
@@ -101,9 +112,35 @@
 		}
 	}
 
+	// Scroll-direction tracking via rAF-throttled scroll listener.
+	let lastScrollY = 0;
+	let scrollTicking = false;
+
+	function handleScroll() {
+		if (scrollTicking) return;
+		scrollTicking = true;
+
+		requestAnimationFrame(() => {
+			const currentY = window.scrollY;
+			const delta = currentY - lastScrollY;
+
+			// Never hide while menus/dropdowns are open, or near the top.
+			if (mobileMenuOpen || activeDropdown !== null || currentY < SCROLL_HIDE_THRESHOLD) {
+				headerHidden = false;
+			} else if (Math.abs(delta) > SCROLL_DELTA) {
+				headerHidden = delta > 0; // hide on scroll down, show on scroll up
+			}
+
+			lastScrollY = currentY;
+			scrollTicking = false;
+		});
+	}
+
 	// Lifecycle
 	$effect(() => {
 		window.addEventListener('resize', handleResize);
+		window.addEventListener('scroll', handleScroll, { passive: true });
+		lastScrollY = window.scrollY;
 
 		return () => {
 			if (dropdownTimer) {
@@ -115,13 +152,14 @@
 			}
 
 			window.removeEventListener('resize', handleResize);
+			window.removeEventListener('scroll', handleScroll);
 		};
 	});
 </script>
 
 <svelte:window onclick={handleClickOutside} />
 
-<header class="site-header">
+<header class="site-header" class:header-hidden={headerHidden}>
 	<div class="container">
 		<div class="header-inner">
 			<div class="header-logo">
@@ -133,6 +171,7 @@
 				<DesktopNav
 					{navItems}
 					{activeDropdown}
+					{currentPath}
 					onMouseEnter={showDropdown}
 					onMouseLeave={startHideTimer}
 					onFocusIn={showDropdown}
@@ -173,10 +212,27 @@
 		position: sticky;
 		top: 0;
 		z-index: var(--z-sticky);
+		transform: translateY(0);
 		transition:
+			transform var(--duration-normal) var(--ease-out),
 			background var(--duration-normal) var(--ease-out),
 			border-color var(--duration-normal) var(--ease-out),
 			box-shadow var(--duration-normal) var(--ease-out);
+		will-change: transform;
+	}
+
+	/* Scroll-direction hide: transform rather than top/display so the
+	 * sticky behaviour and layout are unaffected when revealed again. */
+	:global(.site-header.header-hidden) {
+		transform: translateY(-100%);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(.site-header),
+		:global(.site-header.header-hidden) {
+			transform: none;
+			transition: none;
+		}
 	}
 
 	:global(.site-header:hover) {

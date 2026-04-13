@@ -127,13 +127,16 @@
 			: null
 	);
 
-	// Use global glassmorphism utility (glass-card) to ensure visual consistency
-	// Also add scroll-reveal-scale for modern scroll-driven animation
+	// Use global glassmorphism utility (glass-card) to ensure visual consistency.
+	// `.hero-entrance` plays an immediate mount animation (for above-the-fold
+	// hero images on detail pages); `.scroll-reveal-scale` handles the
+	// scroll-driven reveal if the figure ever lives below the fold.
 	const combinedFigureClass = $derived(
 		[
 			'hero-figure',
 			`hero-figure--${variant}`,
 			glassEffect ? 'glass-card hero-figure--glass' : '',
+			'hero-entrance',
 			'scroll-reveal-scale'
 		]
 			.filter(Boolean)
