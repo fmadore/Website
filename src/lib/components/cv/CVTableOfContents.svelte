@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { SvelteSet } from 'svelte/reactivity';
 
 	/**
 	 * Static source of truth for all CV sections.
@@ -26,7 +27,7 @@
 	] as const;
 
 	/** Sections currently present in the DOM */
-	let visibleIds = $state<Set<string>>(new Set());
+	let visibleIds = new SvelteSet<string>();
 	/** Currently active (in-viewport) section id */
 	let activeId = $state<string>('');
 	/** Panel open state */
@@ -38,30 +39,19 @@
 		const cvContent = document.getElementById('cv-content');
 		if (!cvContent) return;
 
-		// --- Scan for sections already in the DOM ---
-		function scanExisting() {
-			for (const s of TOC_SECTIONS) {
-				if (document.getElementById(s.id)) {
-					visibleIds.add(s.id);
-				}
-			}
-			// eslint-disable-next-line svelte/prefer-svelte-reactivity
-			visibleIds = new Set(visibleIds);
-		}
-		scanExisting();
-
-		// --- MutationObserver: detect lazy-loaded sections ---
-		const mutationObs = new MutationObserver(() => {
-			let changed = false;
+		// --- Scan DOM for section elements and update visibleIds ---
+		function scanSections() {
 			for (const s of TOC_SECTIONS) {
 				if (!visibleIds.has(s.id) && document.getElementById(s.id)) {
 					visibleIds.add(s.id);
-					changed = true;
 				}
 			}
-			if (changed) {
-				visibleIds = new Set(visibleIds);
-			}
+		}
+		scanSections();
+
+		// --- MutationObserver: detect lazy-loaded sections promptly ---
+		const mutationObs = new MutationObserver(() => {
+			scanSections();
 		});
 		mutationObs.observe(cvContent, { childList: true, subtree: true });
 
@@ -93,24 +83,18 @@
 		}
 		observeAll();
 
-		// Re-observe whenever new lazy sections load
-		const reobserveInterval = setInterval(() => {
+		// Poll until all sections are found (fallback for MutationObserver edge cases)
+		const pollInterval = setInterval(() => {
+			scanSections();
 			observeAll();
-		}, 500);
-
-		// Stop re-observing once all sections are loaded
-		const checkComplete = setInterval(() => {
 			if (visibleIds.size === TOC_SECTIONS.length) {
-				clearInterval(reobserveInterval);
-				clearInterval(checkComplete);
-				observeAll();
+				clearInterval(pollInterval);
 			}
-		}, 1000);
+		}, 500);
 
 		return () => {
 			clearTimeout(debounceTimer);
-			clearInterval(reobserveInterval);
-			clearInterval(checkComplete);
+			clearInterval(pollInterval);
 			mutationObs.disconnect();
 			sectionObserver.disconnect();
 		};
