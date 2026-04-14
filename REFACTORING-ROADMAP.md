@@ -27,9 +27,6 @@ The current baseline includes:
 - Route-level cross-fade in `+layout.svelte` keyed on pathname.
 - Scroll-direction-aware header that hides on scroll-down and reveals on
   scroll-up.
-- Reading-progress bar on publication and communication detail pages
-  (`ReadingProgress.svelte`), using `animation-timeline: scroll()` with a
-  rAF-throttled JS fallback.
 - Active-page underline on `NavLink` with `currentPath` propagation through
   `Header` → `DesktopNav` → `NavItemWithDropdown`.
 - Animated active-section indicator bar on `CVTableOfContents`.
@@ -51,8 +48,8 @@ Run before adding more, regardless of which later phase you pick up.
   dropped frames during flip, or transitions firing on initial mount (they
   shouldn't).
 - **Reduced-motion audit**: toggle `prefers-reduced-motion: reduce` in DevTools
-  and re-walk the same flows. Confirm reading progress still tracks position,
-  the header still hides/shows but without the slide, and filter reordering
+  and re-walk the same flows. Confirm the header still hides/shows but without
+  the slide, and filter reordering
   becomes instantaneous.
 - **Lighthouse CLS check**, especially on `/publications` after a filter
   toggle. Target: zero unexpected CLS from the flip wrappers.
@@ -131,8 +128,7 @@ For people who actually stay and read the academic content.
    pure CSS `:hover` tooltip if not) showing the cited work title without
    leaving the page.
 3. **Estimated reading time** in `PageHeader` for detail pages, computed from
-   the abstract / content word count. Static text, no animation, but it pairs
-   naturally with the reading progress bar.
+   the abstract / content word count.
 4. **Section dividers with scroll-driven reveal**. The `glass-section-panel`
    blocks already use `scroll-reveal` — consider adding a thin animated
    separator between major sections that draws itself as it enters the
@@ -234,8 +230,7 @@ Should be ongoing, not a phase, but bundled here for completeness.
 - **`content-visibility: auto` on long lists**. Already a perf win for long
   lists; pairs especially well with scroll-driven animations because off-screen
   items don't paint.
-- **Audit `will-change`**. The current PR adds it to `.site-header` and
-  `.reading-progress__bar`. Long-term, prefer toggling it on / off via JS
+- **Audit `will-change`**. The current PR adds it to `.site-header`. Long-term, prefer toggling it on / off via JS
   (`onmouseenter` / `onmouseleave`) rather than leaving it permanent — leaving
   it on creates GPU layers indefinitely.
 - **Test with throttled CPU**. Chrome DevTools → Performance → CPU 6× slowdown.

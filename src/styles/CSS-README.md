@@ -362,7 +362,6 @@ Maintained for backward compatibility:
 - **Slide animations**: `.slide-in-up`, `.slide-in-down`, `.slide-in-left`, `.slide-in-right`
 - **Bounce animations**: `.bounce-in`
 - **Stagger delays**: `.stagger-1` through `.stagger-6`
-- **Reading progress**: `.reading-progress`
 - **Parallax support**: `.parallax-container`, `.parallax-element`
 
 #### Accessibility & Performance
