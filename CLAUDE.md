@@ -181,6 +181,6 @@ Run the audit tool to check design system compliance:
 node .github/skills/css-design-audit/audit.mjs src/lib/components
 ```
 
-## Technical Debt
+## Roadmaps
 
-See `REFACTORING-ROADMAP.md` for the prioritized list of refactoring opportunities with status tracking.
+See `REFACTORING-ROADMAP.md` for forward-looking refactoring and feature work, including the phased animation & reactivity roadmap.
