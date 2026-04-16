@@ -59,6 +59,16 @@ export async function loadMapLibre(): Promise<MapLibreModule> {
 			module.setWorkerUrl(cspWorkerUrl);
 		}
 
+		// Prewarm spins up the worker + shared resources eagerly, so the first
+		// `new Map()` paints a frame or two sooner. Safe to no-op if unavailable.
+		if (typeof module.prewarm === 'function') {
+			try {
+				module.prewarm();
+			} catch {
+				// prewarm() is a nice-to-have; never block map creation on it.
+			}
+		}
+
 		return module;
 	})();
 

@@ -14,7 +14,7 @@
 	import { browser } from '$app/environment';
 	import { base } from '$app/paths';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
-	import { CHART_COLOR_FALLBACKS } from '$lib/utils/chartColorUtils';
+	import { getResolvedChartColors } from '$lib/utils/chartColorUtils';
 	import {
 		MAP_STYLES,
 		hasWebGLSupport,
@@ -23,7 +23,7 @@
 		waitForContainerLayout,
 		type MapLibreModule
 	} from '$lib/utils/maplibre';
-	import type { Map as MapLibreMap, Popup } from 'maplibre-gl';
+	import type { GeoJSONSource, Map as MapLibreMap, Popup } from 'maplibre-gl';
 
 	// Map configuration props with defaults using Svelte 5 $props() rune
 	let {
@@ -33,7 +33,8 @@
 		maxZoom = 19,
 		maxClusterZoom: _maxClusterZoom = 18,
 		preferDarkMode = null as boolean | null,
-		restrictBounds: _restrictBounds = true
+		restrictBounds: _restrictBounds = true,
+		showLegend = false
 	}: {
 		markersData?: MarkerData[];
 		initialView?: [number, number];
@@ -42,7 +43,49 @@
 		maxClusterZoom?: number;
 		preferDarkMode?: boolean | null;
 		restrictBounds?: boolean;
+		/** When true, renders a colour legend for the activity-type markers. */
+		showLegend?: boolean;
 	} = $props();
+
+	const SOURCE_ID = 'activities';
+	const CLUSTER_LAYER = 'activity-clusters';
+	const CLUSTER_COUNT_LAYER = 'activity-cluster-count';
+	const POINT_LAYER = 'activity-points';
+
+	// Canonical mapping between activity type, human label, and the CSS variable
+	// used by both the map layer paint and the legend swatches. Keep in sync
+	// with the `match` expression in setupClusterLayers().
+	const LEGEND_ITEMS: Array<{
+		type: string;
+		label: string;
+		colorKey: 'accent' | 'highlight' | 'purple' | 'pink' | 'primary';
+	}> = [
+		{ type: 'conference', label: 'Conference', colorKey: 'purple' },
+		{ type: 'lecture', label: 'Lecture', colorKey: 'accent' },
+		{ type: 'workshop', label: 'Workshop', colorKey: 'pink' },
+		{ type: 'event', label: 'Event', colorKey: 'highlight' },
+		{ type: '__other__', label: 'Other', colorKey: 'primary' }
+	];
+
+	// Only show the legend entries for types that actually appear in the data.
+	// Uses a plain array (not a Set) to avoid svelte/prefer-svelte-reactivity;
+	// the list of known types is tiny so the O(n) includes() lookup is fine.
+	const legendEntries = $derived.by(() => {
+		if (!showLegend) return [];
+		const present: string[] = [];
+		let hasOther = false;
+		for (const item of markersData) {
+			const t = item.activityType;
+			if (t && LEGEND_ITEMS.some((entry) => entry.type === t)) {
+				if (!present.includes(t)) present.push(t);
+			} else {
+				hasOther = true;
+			}
+		}
+		return LEGEND_ITEMS.filter((entry) =>
+			entry.type === '__other__' ? hasOther : present.includes(entry.type)
+		);
+	});
 
 	let mapContainer: HTMLElement;
 
@@ -52,7 +95,6 @@
 	let importError = $state<string | null>(null);
 	let currentThemeIsDark = $state<boolean | null>(null);
 	let activePopup = $state<Popup | null>(null);
-	let markers = $state<Map<string, InstanceType<MapLibreModule['Marker']>>>(new Map());
 	let isMapLoaded = $state(false);
 
 	// Derived value for dark mode detection - reactive to theme store changes
@@ -71,9 +113,11 @@
 			map.setStyle(styleUrl);
 			currentThemeIsDark = newDarkMode;
 
-			// Re-add markers after style change (maplibre clears markers on style change)
+			// setStyle clears our source + layers. Re-register them and re-push data
+			// once the new style finishes loading.
 			map.once('style.load', () => {
-				addMarkers(markersData);
+				setupClusterLayers();
+				pushMarkersToSource(markersData);
 			});
 		}
 	}
@@ -131,70 +175,222 @@
 		});
 	}
 
-	// Function to add markers to the map
-	function addMarkers(data: MarkerData[]) {
+	// Build a GeoJSON FeatureCollection from marker data.
+	function buildFeatureCollection(data: MarkerData[]): GeoJSON.FeatureCollection {
+		return {
+			type: 'FeatureCollection',
+			features: data
+				.filter((item) => item.coordinates)
+				.map((item) => ({
+					type: 'Feature',
+					geometry: {
+						type: 'Point',
+						coordinates: [item.coordinates.longitude, item.coordinates.latitude]
+					},
+					properties: {
+						id: item.id,
+						title: item.title,
+						// Nulls are safer than undefined here: MapLibre's GeoJSON worker
+						// drops properties with undefined values, which breaks `['get', ...]`.
+						year: item.year ?? null,
+						activityType: item.activityType ?? null,
+						image: item.image ?? null
+					}
+				}))
+		};
+	}
+
+	// Register source + cluster/point layers. Call once per style load.
+	function setupClusterLayers() {
 		if (!map || !maplibregl) return;
 
-		// Clear existing markers
-		markers.forEach((marker) => marker.remove());
-		markers.clear();
+		const colors = getResolvedChartColors();
+		const labelColor = colors.white || '#ffffff';
+		const strokeColor = colors.surface || '#ffffff';
 
-		// Close any active popup
+		if (!map.getSource(SOURCE_ID)) {
+			map.addSource(SOURCE_ID, {
+				type: 'geojson',
+				data: { type: 'FeatureCollection', features: [] },
+				cluster: true,
+				clusterMaxZoom: 14,
+				clusterRadius: 50
+			});
+		}
+
+		if (!map.getLayer(CLUSTER_LAYER)) {
+			map.addLayer({
+				id: CLUSTER_LAYER,
+				type: 'circle',
+				source: SOURCE_ID,
+				filter: ['has', 'point_count'],
+				paint: {
+					'circle-color': colors.primary,
+					'circle-opacity': 0.85,
+					'circle-radius': ['step', ['get', 'point_count'], 16, 10, 22, 30, 28],
+					'circle-stroke-width': 2,
+					'circle-stroke-color': strokeColor
+				}
+			});
+		}
+
+		if (!map.getLayer(CLUSTER_COUNT_LAYER)) {
+			map.addLayer({
+				id: CLUSTER_COUNT_LAYER,
+				type: 'symbol',
+				source: SOURCE_ID,
+				filter: ['has', 'point_count'],
+				layout: {
+					'text-field': ['get', 'point_count_abbreviated'],
+					'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+					'text-size': 12,
+					'text-allow-overlap': true
+				},
+				paint: {
+					'text-color': labelColor
+				}
+			});
+		}
+
+		if (!map.getLayer(POINT_LAYER)) {
+			map.addLayer({
+				id: POINT_LAYER,
+				type: 'circle',
+				source: SOURCE_ID,
+				filter: ['!', ['has', 'point_count']],
+				paint: {
+					'circle-color': [
+						'match',
+						['get', 'activityType'],
+						'lecture',
+						colors.accent,
+						'event',
+						colors.highlight,
+						'conference',
+						colors.purple,
+						'workshop',
+						colors.pink,
+						/* other */ colors.primary
+					],
+					'circle-radius': 7,
+					'circle-stroke-width': 2,
+					'circle-stroke-color': strokeColor
+				}
+			});
+		}
+
+		bindLayerInteractions();
+	}
+
+	// Attach click + cursor handlers. Safe to call after every setupClusterLayers().
+	let interactionsBound = false;
+	function bindLayerInteractions() {
+		if (!map || interactionsBound) return;
+		interactionsBound = true;
+
+		// Cluster click: smoothly zoom to the expansion level.
+		map.on('click', CLUSTER_LAYER, async (e) => {
+			if (!map) return;
+			const features = map.queryRenderedFeatures(e.point, { layers: [CLUSTER_LAYER] });
+			const feature = features[0];
+			if (!feature || feature.geometry.type !== 'Point') return;
+			const clusterId = feature.properties?.cluster_id as number | undefined;
+			if (clusterId === undefined) return;
+			const source = map.getSource(SOURCE_ID) as GeoJSONSource | undefined;
+			if (!source) return;
+			try {
+				const zoom = await source.getClusterExpansionZoom(clusterId);
+				map.easeTo({
+					center: feature.geometry.coordinates as [number, number],
+					zoom,
+					duration: prefersReducedMotion() ? 0 : 500
+				});
+			} catch (err) {
+				if (import.meta.env.DEV) console.error('Cluster expansion failed:', err);
+			}
+		});
+
+		// Unclustered point click: open a popup anchored at the feature.
+		map.on('click', POINT_LAYER, (e) => {
+			if (!map || !maplibregl) return;
+			const feature = e.features?.[0];
+			if (!feature || feature.geometry.type !== 'Point') return;
+
+			const coords = (feature.geometry.coordinates as [number, number]).slice() as [number, number];
+			const props = feature.properties ?? {};
+			const item: MarkerData = {
+				id: String(props.id),
+				title: String(props.title),
+				coordinates: { longitude: coords[0], latitude: coords[1] },
+				year: typeof props.year === 'number' ? props.year : undefined,
+				activityType: typeof props.activityType === 'string' ? props.activityType : undefined,
+				image: typeof props.image === 'string' ? props.image : undefined
+			};
+
+			if (activePopup) {
+				activePopup.remove();
+				activePopup = null;
+			}
+
+			const popup = new maplibregl.Popup({
+				offset: 12,
+				className: 'map-popup',
+				closeButton: true,
+				closeOnClick: true,
+				maxWidth: '280px'
+			})
+				.setLngLat(coords)
+				.setHTML(createPopupContent(item))
+				.addTo(map);
+
+			popup.on('open', () => keepPopupInView(popup));
+			popup.on('close', () => {
+				if (activePopup === popup) activePopup = null;
+			});
+			activePopup = popup;
+		});
+
+		// Cursor feedback.
+		for (const layer of [CLUSTER_LAYER, POINT_LAYER]) {
+			map.on('mouseenter', layer, () => {
+				if (map) map.getCanvas().style.cursor = 'pointer';
+			});
+			map.on('mouseleave', layer, () => {
+				if (map) map.getCanvas().style.cursor = '';
+			});
+		}
+	}
+
+	// Push data into the existing source + fit the camera.
+	function pushMarkersToSource(data: MarkerData[]) {
+		if (!map || !maplibregl) return;
+
 		if (activePopup) {
 			activePopup.remove();
 			activePopup = null;
 		}
 
-		data.forEach((item) => {
-			if (!item.coordinates || !maplibregl) return;
+		const source = map.getSource(SOURCE_ID) as GeoJSONSource | undefined;
+		if (!source) return;
+		source.setData(buildFeatureCollection(data));
 
-			// Get color based on activity type
-			let markerColor: string = CHART_COLOR_FALLBACKS.primary;
-			if (item.activityType === 'lecture') {
-				markerColor = CHART_COLOR_FALLBACKS.accent;
-			} else if (item.activityType === 'event') {
-				markerColor = CHART_COLOR_FALLBACKS.highlight;
-			} else if (item.activityType === 'conference') {
-				markerColor = CHART_COLOR_FALLBACKS.purple;
-			} else if (item.activityType === 'workshop') {
-				markerColor = CHART_COLOR_FALLBACKS.pink;
-			}
+		const validPoints = data.filter((item) => item.coordinates);
+		if (validPoints.length === 0) return;
 
-			const popup = new maplibregl.Popup({
-				offset: 25,
-				className: 'map-popup',
-				closeButton: true,
-				closeOnClick: true,
-				maxWidth: '280px'
-			}).setHTML(createPopupContent(item));
-
-			popup.on('open', () => keepPopupInView(popup));
-
-			// Use the DEFAULT MapLibre marker with color option - this is the official way
-			const marker = new maplibregl.Marker({ color: markerColor })
-				.setLngLat([item.coordinates.longitude, item.coordinates.latitude])
-				.setPopup(popup)
-				.addTo(map!);
-
-			markers.set(item.id, marker);
+		const bounds = new maplibregl.LngLatBounds();
+		validPoints.forEach((item) => {
+			bounds.extend([item.coordinates.longitude, item.coordinates.latitude]);
 		});
+		if (bounds.isEmpty()) return;
 
-		// Fit bounds to markers if there are any
-		if (data.length > 0 && markers.size > 0) {
-			const bounds = new maplibregl.LngLatBounds();
-			data.forEach((item) => {
-				if (item.coordinates) {
-					bounds.extend([item.coordinates.longitude, item.coordinates.latitude]);
-				}
-			});
-
-			if (!bounds.isEmpty()) {
-				map.fitBounds(bounds, {
-					padding: 50,
-					maxZoom: 10
-				});
-			}
-		}
+		const reducedMotion = prefersReducedMotion();
+		map.fitBounds(bounds, {
+			padding: 60,
+			maxZoom: validPoints.length === 1 ? 6 : 10,
+			duration: reducedMotion ? 0 : 1200,
+			// `curve: 1.4` gives a gentle ease that reads well in globe projection.
+			curve: 1.4
+		});
 	}
 
 	// Main effect for initialization and cleanup
@@ -239,16 +435,25 @@
 					center: [centerLng, centerLat],
 					zoom: initialZoom ?? 2,
 					maxZoom: maxZoom ?? 19,
-					minZoom: 2
+					minZoom: 1,
+					// Requires Ctrl/Cmd + scroll (or two-finger gesture) to zoom,
+					// so the map doesn't hijack page scroll on long pages.
+					cooperativeGestures: true
 				});
 
 				map = mapInstance;
+				// Globe projection (MapLibre v5+) renders the world as a sphere.
+				// Users can toggle back to mercator via the GlobeControl button.
+				// `setProjection` is the runtime equivalent of the style-spec option.
+				map.setProjection({ type: 'globe' });
 				map.addControl(new maplibregl.NavigationControl(), 'top-right');
+				map.addControl(new maplibregl.GlobeControl(), 'top-right');
 				map.addControl(new maplibregl.FullscreenControl(), 'top-right');
 
 				map.on('load', () => {
 					isMapLoaded = true;
-					addMarkers(markersData);
+					setupClusterLayers();
+					pushMarkersToSource(markersData);
 				});
 
 				map.on('error', (e) => {
@@ -264,14 +469,12 @@
 		return () => {
 			cancelled = true;
 			isMapLoaded = false;
+			interactionsBound = false;
 
 			if (activePopup) {
 				activePopup.remove();
 				activePopup = null;
 			}
-
-			markers.forEach((marker) => marker.remove());
-			markers.clear();
 
 			if (map) {
 				map.remove();
@@ -285,7 +488,7 @@
 	// Reactive effect for markers: Update when markersData changes
 	$effect(() => {
 		if (browser && maplibregl && map && isMapLoaded) {
-			addMarkers(markersData);
+			pushMarkersToSource(markersData);
 		}
 	});
 
@@ -301,6 +504,18 @@
 	{#if importError}
 		<div class="map-error">
 			<p>Error loading map: {importError}</p>
+		</div>
+	{/if}
+	{#if showLegend && legendEntries.length > 0}
+		<div class="map-legend glass-panel" role="group" aria-label="Activity type legend">
+			<ul>
+				{#each legendEntries as entry (entry.type)}
+					<li>
+						<span class="legend-swatch legend-swatch-{entry.colorKey}" aria-hidden="true"></span>
+						<span class="legend-label">{entry.label}</span>
+					</li>
+				{/each}
+			</ul>
 		</div>
 	{/if}
 </div>
@@ -352,6 +567,77 @@
 	:global(body.mobile-menu-open .maplibregl-ctrl),
 	:global(body.mobile-menu-open .maplibregl-popup) {
 		visibility: hidden !important;
+	}
+
+	/* Marker-colour legend (shown on the conference-activity map). */
+	.map-legend {
+		position: absolute;
+		bottom: var(--space-3);
+		left: var(--space-3);
+		z-index: 7;
+		padding: var(--space-2) var(--space-3);
+		font-size: var(--font-size-xs);
+		line-height: var(--line-height-normal);
+		color: var(--color-text);
+		pointer-events: auto;
+	}
+
+	.map-legend ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-1);
+	}
+
+	.map-legend li {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2);
+	}
+
+	.legend-swatch {
+		display: inline-block;
+		width: 0.75rem;
+		height: 0.75rem;
+		border-radius: var(--border-radius-full);
+		border: 2px solid var(--color-surface);
+		box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-text) 20%, transparent);
+		flex-shrink: 0;
+	}
+
+	/* Keep in sync with the `match` expression in setupClusterLayers(). */
+	.legend-swatch-primary {
+		background-color: var(--color-primary);
+	}
+
+	.legend-swatch-accent {
+		background-color: var(--color-accent);
+	}
+
+	.legend-swatch-highlight {
+		background-color: var(--color-highlight);
+	}
+
+	.legend-swatch-purple {
+		background-color: var(--sys-color-purple-500);
+	}
+
+	.legend-swatch-pink {
+		background-color: var(--sys-color-pink-500);
+	}
+
+	@media (--sm-down) {
+		.map-legend {
+			font-size: 0.6875rem;
+			padding: var(--space-1) var(--space-2);
+		}
+	}
+
+	/* Hide legend while the mobile menu is open (consistent with other overlays). */
+	:global(body.mobile-menu-open) .map-legend {
+		visibility: hidden;
 	}
 
 	.map-error {

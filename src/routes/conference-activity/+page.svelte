@@ -387,7 +387,7 @@
 
 		{#if showMap && MapVisualization}
 			<div class="mb-6">
-				<MapVisualization markersData={mapMarkers} />
+				<MapVisualization markersData={mapMarkers} showLegend />
 			</div>
 		{:else if showMap && !MapVisualization && !mapLoadError}
 			<div class="mb-6 flex items-center justify-center py-12">

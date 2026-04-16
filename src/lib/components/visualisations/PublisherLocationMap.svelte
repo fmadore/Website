@@ -73,6 +73,7 @@ Shows where publications are published geographically using the publisherLocatio
 	import {
 		MAP_STYLES,
 		loadMapLibre,
+		prefersReducedMotion,
 		waitForContainerLayout,
 		type MapLibreModule
 	} from '$lib/utils/maplibre';
@@ -113,21 +114,40 @@ Shows where publications are published geographically using the publisherLocatio
 	// Filter data to only include countries with coordinates
 	const mappableData = $derived(data.filter((d) => COUNTRY_COORDINATES[d.country]));
 
+	// Escape user-provided text so it's safe to interpolate into HTML strings
+	// (including attribute values). The popup content is currently populated
+	// from curated data, but escaping keeps us safe if that ever changes and
+	// also handles ampersands / quotes in real publication titles.
+	function escapeHtml(value: string): string {
+		return value
+			.replace(/&/g, '&amp;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;')
+			.replace(/"/g, '&quot;')
+			.replace(/'/g, '&#39;');
+	}
+
 	// Create popup content
 	function createPopupContent(item: PublisherLocationData): string {
 		let content = `<div class="publisher-popup">
-			<strong>${item.country}</strong>
+			<strong>${escapeHtml(item.country)}</strong>
 			<div class="pub-count">${item.count} publication${item.count > 1 ? 's' : ''}</div>`;
 
 		if (item.publications.length <= 6) {
 			content += '<ul class="pub-list">';
 			item.publications.forEach((pub) => {
-				const truncated = pub.title.length > 50 ? pub.title.substring(0, 50) + '...' : pub.title;
+				const fullTitle = escapeHtml(pub.title);
+				const isTruncated = pub.title.length > 50;
+				const truncated = isTruncated
+					? escapeHtml(pub.title.substring(0, 50)) + '&hellip;'
+					: fullTitle;
+				// Always set `title` so the full title shows as a native tooltip on hover,
+				// even for non-truncated entries (keeps behaviour predictable).
 				const pubUrl = `${base}/publications/${pub.id}`;
 				content += `<li>
-					<a href="${pubUrl}" class="pub-link">
+					<a href="${pubUrl}" class="pub-link" title="${fullTitle}">
 						<span class="pub-title">${truncated}</span>
-						${pub.publisher ? `<span class="pub-publisher">${pub.publisher}</span>` : ''}
+						${pub.publisher ? `<span class="pub-publisher">${escapeHtml(pub.publisher)}</span>` : ''}
 					</a>
 				</li>`;
 			});
@@ -151,12 +171,15 @@ Shows where publications are published geographically using the publisherLocatio
 				.sort((a, b) => b[1].count - a[1].count)
 				.forEach(([publisher, data]) => {
 					content += `<li class="publisher-group">
-						<span class="pub-publisher">${publisher}</span>: ${data.count}
+						<span class="pub-publisher">${escapeHtml(publisher)}</span>: ${data.count}
 						<ul class="pub-sublist">`;
 					data.pubs.slice(0, 3).forEach((pub) => {
-						const truncated =
-							pub.title.length > 40 ? pub.title.substring(0, 40) + '...' : pub.title;
-						content += `<li><a href="${base}/publications/${pub.id}" class="pub-link">${truncated}</a></li>`;
+						const fullTitle = escapeHtml(pub.title);
+						const isTruncated = pub.title.length > 40;
+						const truncated = isTruncated
+							? escapeHtml(pub.title.substring(0, 40)) + '&hellip;'
+							: fullTitle;
+						content += `<li><a href="${base}/publications/${pub.id}" class="pub-link" title="${fullTitle}">${truncated}</a></li>`;
 					});
 					if (data.pubs.length > 3) {
 						content += `<li class="more-pubs">+${data.pubs.length - 3} more</li>`;
@@ -246,7 +269,9 @@ Shows where publications are published geographically using the publisherLocatio
 			if (!bounds.isEmpty()) {
 				map.fitBounds(bounds, {
 					padding: 60,
-					maxZoom: 5
+					maxZoom: 5,
+					duration: prefersReducedMotion() ? 0 : 1200,
+					curve: 1.4
 				});
 			}
 		}
@@ -280,11 +305,17 @@ Shows where publications are published geographically using the publisherLocatio
 					center: [10, 30],
 					zoom: initialZoom,
 					minZoom: 1,
-					attributionControl: false
+					attributionControl: false,
+					// Ctrl/Cmd + scroll (or two-finger gesture) required to zoom, so the
+					// map doesn't steal scroll on long visualisation pages.
+					cooperativeGestures: true
 				});
 
 				map = mapInstance;
+				// Globe projection (MapLibre v5+). GlobeControl lets visitors toggle.
+				map.setProjection({ type: 'globe' });
 				map.addControl(new maplibregl.NavigationControl(), 'top-right');
+				map.addControl(new maplibregl.GlobeControl(), 'top-right');
 				map.addControl(new maplibregl.FullscreenControl(), 'top-right');
 				map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right');
 
