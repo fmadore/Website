@@ -312,8 +312,6 @@ Shows where publications are published geographically using the publisherLocatio
 				});
 
 				map = mapInstance;
-				// Globe projection (MapLibre v5+). GlobeControl lets visitors toggle.
-				map.setProjection({ type: 'globe' });
 				map.addControl(new maplibregl.NavigationControl(), 'top-right');
 				map.addControl(new maplibregl.GlobeControl(), 'top-right');
 				map.addControl(new maplibregl.FullscreenControl(), 'top-right');
@@ -321,6 +319,14 @@ Shows where publications are published geographically using the publisherLocatio
 
 				map.on('load', () => {
 					isMapLoaded = true;
+					// Globe projection (MapLibre v5+). `setProjection` must run after the
+					// style finishes loading — calling it earlier throws "Style is not
+					// done loading". GlobeControl lets visitors toggle back to mercator.
+					try {
+						map?.setProjection({ type: 'globe' });
+					} catch (err) {
+						if (import.meta.env.DEV) console.error('setProjection failed:', err);
+					}
 					addMarkers();
 				});
 			} catch (error) {

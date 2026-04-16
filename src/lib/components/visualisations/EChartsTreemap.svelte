@@ -119,6 +119,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 
 	type TreemapFormatterParams = DefaultLabelFormatterCallbackParams & {
 		data: TreemapNode | (TreemapChild & { children?: never });
+		treePathInfo?: Array<{ name: string; dataIndex: number; value: number }>;
 	};
 
 	// Chart options
@@ -161,13 +162,16 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 				type: 'treemap',
 				roam: false,
 				width: '100%',
-				height: isMobile ? '85%' : '90%',
+				// Shrink the tile area so the breadcrumb gets a proper gap below it
+				// instead of visually touching the last row of tiles.
+				height: isMobile ? '80%' : '86%',
 				top: isMobile ? '8%' : '5%',
 				nodeClick: 'zoomToNode',
 				breadcrumb: {
 					show: true,
 					top: isMobile ? 0 : 'auto',
-					bottom: isMobile ? 'auto' : 5,
+					// Push the breadcrumb further from the bottom edge for breathing room.
+					bottom: isMobile ? 'auto' : 12,
 					height: 22,
 					itemStyle: {
 						color: resolvedColors.surface,
@@ -227,12 +231,25 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 				upperLabel: {
 					show: true,
 					height: isMobile ? 24 : 30,
-					formatter: '{b}',
-					color: resolvedColors.white,
+					// Suppress the label on the root node — it would otherwise render a
+					// faded, redundant "Publication Venues" banner on the card background
+					// (the section heading above already says that). The root has a
+					// `treePathInfo` of length 1; category tiles (Journals, Book
+					// Publishers) have length ≥ 2.
+					formatter: (params: TreemapFormatterParams) => {
+						const path = params.treePathInfo;
+						if (!path || path.length <= 1) return '';
+						return params.name;
+					},
+					color: '#ffffff',
 					fontWeight: 'bold',
 					fontSize: isMobile ? 12 : 14,
 					fontFamily: resolvedColors.fontFamily,
-					textShadowColor: 'rgba(0, 0, 0, 0.6)',
+					// Combined stroke + shadow keeps the label readable on either the
+					// teal or the orange category tile.
+					textBorderColor: 'rgba(0, 0, 0, 0.45)',
+					textBorderWidth: 3,
+					textShadowColor: 'rgba(0, 0, 0, 0.55)',
 					textShadowBlur: 4,
 					overflow: 'truncate',
 					ellipsis: '…'

@@ -442,16 +442,21 @@
 				});
 
 				map = mapInstance;
-				// Globe projection (MapLibre v5+) renders the world as a sphere.
-				// Users can toggle back to mercator via the GlobeControl button.
-				// `setProjection` is the runtime equivalent of the style-spec option.
-				map.setProjection({ type: 'globe' });
 				map.addControl(new maplibregl.NavigationControl(), 'top-right');
 				map.addControl(new maplibregl.GlobeControl(), 'top-right');
 				map.addControl(new maplibregl.FullscreenControl(), 'top-right');
 
 				map.on('load', () => {
 					isMapLoaded = true;
+					// Globe projection (MapLibre v5+) renders the world as a sphere.
+					// `setProjection` must run after the style finishes loading; calling
+					// it earlier throws "Style is not done loading". Users can toggle
+					// back to mercator via the GlobeControl button.
+					try {
+						map?.setProjection({ type: 'globe' });
+					} catch (err) {
+						if (import.meta.env.DEV) console.error('setProjection failed:', err);
+					}
 					setupClusterLayers();
 					pushMarkersToSource(markersData);
 				});

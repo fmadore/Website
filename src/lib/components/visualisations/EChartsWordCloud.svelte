@@ -240,7 +240,11 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 		font-style: italic;
 	}
 
-	@media (--md-up) {
+	/* The project's custom-media registry has `--md` (min-width: 768px) but no
+	 `--md-up` alias, so the previous `@media (--md-up)` rule was silently
+	 dropped and the cloud rendered at 400px inside a 500px card (leaving
+	 ~100px of empty space at the bottom). Use the correct custom-media name. */
+	@media (--md) {
 		.wordcloud-container {
 			height: 500px;
 		}
