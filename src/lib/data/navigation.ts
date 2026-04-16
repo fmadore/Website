@@ -42,7 +42,14 @@ export const navItems: NavItem[] = [
 		path: `${base}/digital-humanities`,
 		dropdown: [{ name: 'Islam West Africa Collection', path: 'https://islam.zmo.de/s/westafrica/' }]
 	},
-	{ name: 'Conference Activity', path: `${base}/conference-activity` },
+	{
+		name: 'Conference Activity',
+		path: `${base}/conference-activity`,
+		dropdown: [
+			{ name: 'All Conference Activity', path: `${base}/conference-activity` },
+			{ name: 'Visualisations', path: `${base}/conference-activity/visualisations` }
+		]
+	},
 	{ name: 'Teaching', path: `${base}/teaching` },
 	{ name: 'CV', path: `${base}/cv` }
 ];

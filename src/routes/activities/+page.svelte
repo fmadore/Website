@@ -114,14 +114,6 @@
 						getTagHref={(tag) => `${resolve('/activities')}?tag=${encodeURIComponent(tag)}`}
 					/>
 
-					<!-- Visualisations link -->
-					<div class="rss-section">
-						<a href={resolve('/activities/visualisations')} class="rss-subscribe-link glass-button">
-							<Icon icon="mdi:chart-line" width="18" height="18" aria-hidden="true" />
-							<span>Visualisations</span>
-						</a>
-					</div>
-
 					<!-- RSS Subscribe Button -->
 					<div class="rss-section">
 						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- static asset -->

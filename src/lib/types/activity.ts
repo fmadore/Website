@@ -20,11 +20,4 @@ export type Activity = {
 	pdfPath?: string; // Optional path to an associated PDF file
 	pdfTitle?: string; // Optional title for the PDF section
 	panelType?: string; // Optional: type for display in panels (e.g., 'conference', 'workshop', etc.)
-	location?: {
-		// Optional geographic location for the activity, used by the map visualisation
-		country: string; // Country name — must match a key in src/lib/data/geo.ts COUNTRY_COORDINATES
-		city?: string; // Optional city (shown in popup subtitle)
-		venue?: string; // Optional venue (shown in popup subtitle if city is missing)
-	};
-	series?: string; // Optional grouping key for related activities (lecture series, grant programme, etc.)
 };
