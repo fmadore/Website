@@ -218,10 +218,8 @@
 			// Use a plain record keyed by a sorted pair — this is scratch data inside a
 			// $derived block, not reactive state, so no SvelteMap is needed.
 			const neighbourSet = new Set(collaborators.map((c) => c.author));
-			const pairs: Record<
-				string,
-				{ source: string; target: string; publications: Set<string> }
-			> = {};
+			const pairs: Record<string, { source: string; target: string; publications: Set<string> }> =
+				{};
 			allActivities.forEach((activity) => {
 				const present = (activity.tags ?? []).filter((t) => neighbourSet.has(t));
 				for (let i = 0; i < present.length; i++) {
