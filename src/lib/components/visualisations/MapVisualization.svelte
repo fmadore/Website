@@ -448,15 +448,8 @@
 
 				map.on('load', () => {
 					isMapLoaded = true;
-					// Globe projection (MapLibre v5+) renders the world as a sphere.
-					// `setProjection` must run after the style finishes loading; calling
-					// it earlier throws "Style is not done loading". Users can toggle
-					// back to mercator via the GlobeControl button.
-					try {
-						map?.setProjection({ type: 'globe' });
-					} catch (err) {
-						if (import.meta.env.DEV) console.error('setProjection failed:', err);
-					}
+					// Default to the mercator (flat) projection. The GlobeControl button
+					// in the top-right lets visitors switch to globe if they want.
 					setupClusterLayers();
 					pushMarkersToSource(markersData);
 				});
