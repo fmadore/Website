@@ -70,6 +70,12 @@ Shows where publications are published geographically using the publisherLocatio
 	import { base } from '$app/paths';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { getResolvedChartColors } from '$lib/utils/chartColorUtils';
+	import {
+		MAP_STYLES,
+		loadMapLibre,
+		waitForContainerLayout,
+		type MapLibreModule
+	} from '$lib/utils/maplibre';
 	import type { Map as MapLibreMap, Popup } from 'maplibre-gl';
 
 	// Props
@@ -81,21 +87,15 @@ Shows where publications are published geographically using the publisherLocatio
 		initialZoom?: number;
 	} = $props();
 
-	// Map style options
-	const styleOptions = {
-		light: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
-		dark: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
-	};
-
 	let mapContainer: HTMLElement;
 
 	// State
 	let map = $state<MapLibreMap | null>(null);
-	let maplibregl = $state<typeof import('maplibre-gl') | null>(null);
+	let maplibregl = $state<MapLibreModule | null>(null);
 	let importError = $state<string | null>(null);
 	let currentThemeIsDark = $state<boolean | null>(null);
 	let activePopup = $state<Popup | null>(null);
-	let markers = $state<Map<string, InstanceType<typeof import('maplibre-gl').Marker>>>(new Map());
+	let markers = $state<Map<string, InstanceType<MapLibreModule['Marker']>>>(new Map());
 	let isMapLoaded = $state(false);
 
 	// Theme detection
@@ -175,7 +175,7 @@ Shows where publications are published geographically using the publisherLocatio
 		if (!map) return;
 		const newDarkMode = darkModeDetected;
 		if (newDarkMode !== currentThemeIsDark) {
-			const styleUrl = newDarkMode ? styleOptions.dark : styleOptions.light;
+			const styleUrl = newDarkMode ? MAP_STYLES.dark : MAP_STYLES.light;
 			map.setStyle(styleUrl);
 			currentThemeIsDark = newDarkMode;
 			map.once('style.load', () => {
@@ -260,16 +260,18 @@ Shows where publications are published geographically using the publisherLocatio
 
 		(async () => {
 			try {
-				await new Promise((resolve) => setTimeout(resolve, 50));
+				const ready = await waitForContainerLayout(mapContainer);
 				if (cancelled) return;
+				if (!ready) {
+					importError = 'Map container has no dimensions. Please try refreshing the page.';
+					return;
+				}
 
-				maplibregl = await import('maplibre-gl');
-				await import('maplibre-gl/dist/maplibre-gl.css');
-
+				maplibregl = await loadMapLibre();
 				if (cancelled || !mapContainer?.isConnected) return;
 
 				const initialDarkMode = darkModeDetected;
-				const initialStyle = initialDarkMode ? styleOptions.dark : styleOptions.light;
+				const initialStyle = initialDarkMode ? MAP_STYLES.dark : MAP_STYLES.light;
 				currentThemeIsDark = initialDarkMode;
 
 				const mapInstance = new maplibregl.Map({

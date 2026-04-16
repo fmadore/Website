@@ -24,10 +24,15 @@ export default defineConfig({
 						return 'd3';
 					}
 
-					// MapLibre GL - mapping library (dynamically imported)
-					if (id.includes('maplibre-gl')) {
-						return 'maplibre';
-					}
+					// NOTE: MapLibre GL used to be pinned to its own `maplibre` chunk here,
+					// but that triggers a Rolldown bug where the UMD↔ESM interop emits
+					// `export { maplibre_gl_exports as n }` without declaring the binding,
+					// producing the runtime error
+					//   "Export 'maplibre_gl_exports' is not defined in module"
+					// (surfaces most reliably in Brave because its shields block the
+					// fallback blob: worker and prevent the error from being swallowed).
+					// Letting Rolldown natural-split maplibre-gl avoids the faulty export.
+					// Tracked in maplibre/maplibre-gl-js#7339.
 				}
 			}
 		}

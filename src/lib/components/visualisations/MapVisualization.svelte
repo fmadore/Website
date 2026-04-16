@@ -15,6 +15,14 @@
 	import { base } from '$app/paths';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { CHART_COLOR_FALLBACKS } from '$lib/utils/chartColorUtils';
+	import {
+		MAP_STYLES,
+		hasWebGLSupport,
+		loadMapLibre,
+		prefersReducedMotion,
+		waitForContainerLayout,
+		type MapLibreModule
+	} from '$lib/utils/maplibre';
 	import type { Map as MapLibreMap, Popup } from 'maplibre-gl';
 
 	// Map configuration props with defaults using Svelte 5 $props() rune
@@ -36,40 +44,21 @@
 		restrictBounds?: boolean;
 	} = $props();
 
-	// Map style options (light and dark themes)
-	const styleOptions = {
-		light: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
-		dark: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
-	};
-
 	let mapContainer: HTMLElement;
 
 	// State variables using Svelte 5 $state() rune
 	let map = $state<MapLibreMap | null>(null);
-	let maplibregl = $state<typeof import('maplibre-gl') | null>(null);
+	let maplibregl = $state<MapLibreModule | null>(null);
 	let importError = $state<string | null>(null);
 	let currentThemeIsDark = $state<boolean | null>(null);
 	let activePopup = $state<Popup | null>(null);
-	let markers = $state<Map<string, InstanceType<typeof import('maplibre-gl').Marker>>>(new Map());
+	let markers = $state<Map<string, InstanceType<MapLibreModule['Marker']>>>(new Map());
 	let isMapLoaded = $state(false);
-
-	// Check if WebGL is available
-	function checkWebGLSupport(): boolean {
-		if (!browser) return false;
-		try {
-			const canvas = document.createElement('canvas');
-			const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-			return gl !== null;
-		} catch {
-			return false;
-		}
-	}
 
 	// Derived value for dark mode detection - reactive to theme store changes
 	let darkModeDetected = $derived.by(() => {
 		if (preferDarkMode !== null) return preferDarkMode;
-		const currentTheme = getTheme();
-		return currentTheme === 'dark';
+		return getTheme() === 'dark';
 	});
 
 	// Function to update map style based on theme
@@ -78,7 +67,7 @@
 
 		const newDarkMode = darkModeDetected;
 		if (newDarkMode !== currentThemeIsDark) {
-			const styleUrl = newDarkMode ? styleOptions.dark : styleOptions.light;
+			const styleUrl = newDarkMode ? MAP_STYLES.dark : MAP_STYLES.light;
 			map.setStyle(styleUrl);
 			currentThemeIsDark = newDarkMode;
 
@@ -105,11 +94,6 @@
 				</div>
 			</a>
 		`;
-	}
-
-	function prefersReducedMotion(): boolean {
-		if (!browser) return false;
-		return window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
 	}
 
 	function keepPopupInView(popup: Popup) {
@@ -223,63 +207,32 @@
 		// Initialize map asynchronously
 		(async () => {
 			try {
-				// Check WebGL support first
-				if (!checkWebGLSupport()) {
+				if (!hasWebGLSupport()) {
 					importError =
 						'WebGL is not supported in your browser. Please enable hardware acceleration or try a different browser.';
 					return;
 				}
 
-				// Wait multiple frames to ensure container is fully laid out
-				await new Promise((resolve) => setTimeout(resolve, 50));
-				await new Promise((resolve) => requestAnimationFrame(resolve));
-				await new Promise((resolve) => requestAnimationFrame(resolve));
-
-				// Check if cancelled during wait
+				// Wait for the container to have non-zero layout dimensions.
+				const ready = await waitForContainerLayout(mapContainer);
 				if (cancelled) return;
-
-				// Check if container has valid dimensions
-				const rect = mapContainer.getBoundingClientRect();
-				if (rect.width === 0 || rect.height === 0) {
-					if (import.meta.env.DEV) console.warn('Map container has zero dimensions, waiting...');
-					await new Promise((resolve) => setTimeout(resolve, 300));
-					const retryRect = mapContainer.getBoundingClientRect();
-					if (retryRect.width === 0 || retryRect.height === 0) {
-						importError = 'Map container has no dimensions. Please try refreshing the page.';
-						return;
-					}
-				}
-
-				if (cancelled) return;
-
-				// Dynamically import MapLibre GL JS
-				maplibregl = await import('maplibre-gl');
-
-				// Import CSS
-				await import('maplibre-gl/dist/maplibre-gl.css');
-
-				if (cancelled) return;
-
-				// Ensure container is still valid
-				if (!mapContainer || !mapContainer.isConnected) return;
-
-				// Final check for container dimensions
-				const finalRect = mapContainer.getBoundingClientRect();
-				if (finalRect.width < 1 || finalRect.height < 1) {
-					importError = 'Map container has no dimensions';
+				if (!ready) {
+					importError = 'Map container has no dimensions. Please try refreshing the page.';
 					return;
 				}
 
+				// Load MapLibre + CSS + configure the CSP-safe worker (shared across maps).
+				maplibregl = await loadMapLibre();
+				if (cancelled || !mapContainer?.isConnected) return;
+
 				// Determine initial style based on theme
 				const initialDarkMode = darkModeDetected;
-				const initialStyle = initialDarkMode ? styleOptions.dark : styleOptions.light;
+				const initialStyle = initialDarkMode ? MAP_STYLES.dark : MAP_STYLES.light;
 				currentThemeIsDark = initialDarkMode;
 
-				// Compute center - ensure valid coordinates
 				const centerLng = initialView[1] ?? 0;
 				const centerLat = initialView[0] ?? 20;
 
-				// Initialize the map with minimal options
 				mapInstance = new maplibregl.Map({
 					container: mapContainer,
 					style: initialStyle,
@@ -290,22 +243,16 @@
 				});
 
 				map = mapInstance;
-
-				// Add navigation controls
 				map.addControl(new maplibregl.NavigationControl(), 'top-right');
-
-				// Add fullscreen control
 				map.addControl(new maplibregl.FullscreenControl(), 'top-right');
 
-				// Add markers when map is ready
 				map.on('load', () => {
 					isMapLoaded = true;
 					addMarkers(markersData);
 				});
 
-				// Handle errors during map operation
 				map.on('error', (e) => {
-					console.error('MapLibre error:', e.error);
+					if (import.meta.env.DEV) console.error('MapLibre error:', e.error);
 				});
 			} catch (error) {
 				if (import.meta.env.DEV) console.error('Error initializing map:', error);
