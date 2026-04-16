@@ -14,9 +14,8 @@
 	import EChartsTreemap from '$lib/components/visualisations/EChartsTreemap.svelte';
 	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
 	import D3BubbleChart from '$lib/components/visualisations/D3BubbleChart.svelte';
-	import PublisherLocationMap, {
-		type PublisherLocationData
-	} from '$lib/components/visualisations/PublisherLocationMap.svelte';
+	import LocationMap from '$lib/components/visualisations/LocationMap.svelte';
+	import type { LocationDatum } from '$lib/data/geo';
 	import EChartsWordCloud from '$lib/components/visualisations/EChartsWordCloud.svelte';
 	import { corpusAnalysis, getCombinedWordCloudData, getCombinedBigrams } from '$lib/data/analysis';
 	import type { NgramFrequency } from '$lib/types';
@@ -515,7 +514,7 @@
 				string,
 				{
 					count: number;
-					publications: Array<{ id: string; title: string; publisher?: string; type: string }>;
+					items: Array<{ id: string; title: string; subtitle?: string; type: string }>;
 				}
 			> = {};
 
@@ -523,24 +522,24 @@
 				if (pub.publisherLocation && pub.publisherLocation.trim()) {
 					const location = pub.publisherLocation.trim();
 					if (!locationMap[location]) {
-						locationMap[location] = { count: 0, publications: [] };
+						locationMap[location] = { count: 0, items: [] };
 					}
 					locationMap[location].count++;
-					locationMap[location].publications.push({
+					locationMap[location].items.push({
 						id: pub.id,
 						title: pub.title,
-						publisher: pub.publisher,
+						subtitle: pub.publisher,
 						type: pub.type
 					});
 				}
 			});
 
 			// Convert to array and sort by count
-			const locationData: PublisherLocationData[] = Object.entries(locationMap)
+			const locationData: LocationDatum[] = Object.entries(locationMap)
 				.map(([country, data]) => ({
 					country,
 					count: data.count,
-					publications: data.publications
+					items: data.items
 				}))
 				.sort((a, b) => b.count - a.count);
 
@@ -937,7 +936,11 @@
 		</p>
 		{#if publisherLocationData.length > 0}
 			<div class="chart-wrapper map-chart" style="height: 500px;">
-				<PublisherLocationMap data={publisherLocationData} />
+				<LocationMap
+					data={publisherLocationData}
+					basePath="/publications"
+					itemLabel="publication"
+				/>
 			</div>
 		{:else}
 			<div class="placeholder-message" style="height: 400px;">

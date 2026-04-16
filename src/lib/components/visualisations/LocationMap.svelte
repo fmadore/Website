@@ -1,73 +1,14 @@
 <!--
-Publisher Location Map - MapLibre visualization of publication venues by country
-Shows where publications are published geographically using the publisherLocation field
+LocationMap - MapLibre visualization of per-country aggregated items.
+
+Generic map component used by multiple visualisation pages (e.g. publications,
+activities). Consumers aggregate their data into `LocationDatum[]` and pass a
+`basePath` + `itemLabel` so the popup can link items back to their detail page.
 -->
-<script module lang="ts">
-	// Data structure for publisher locations
-	export type PublisherLocationData = {
-		country: string;
-		count: number;
-		publications: Array<{ id: string; title: string; publisher?: string; type: string }>;
-	};
-
-	// Country coordinates (capital cities or geographic centers)
-	export const COUNTRY_COORDINATES: Record<string, { lat: number; lng: number }> = {
-		// Europe
-		Netherlands: { lat: 52.3676, lng: 4.9041 },
-		Germany: { lat: 52.52, lng: 13.405 },
-		France: { lat: 48.8566, lng: 2.3522 },
-		'United Kingdom': { lat: 51.5074, lng: -0.1278 },
-		UK: { lat: 51.5074, lng: -0.1278 },
-		Belgium: { lat: 50.8503, lng: 4.3517 },
-		Switzerland: { lat: 46.9481, lng: 7.4474 },
-		Austria: { lat: 48.2082, lng: 16.3738 },
-		Italy: { lat: 41.9028, lng: 12.4964 },
-		Spain: { lat: 40.4168, lng: -3.7038 },
-		Portugal: { lat: 38.7223, lng: -9.1393 },
-		Poland: { lat: 52.2297, lng: 21.0122 },
-		Sweden: { lat: 59.3293, lng: 18.0686 },
-		Norway: { lat: 59.9139, lng: 10.7522 },
-		Denmark: { lat: 55.6761, lng: 12.5683 },
-		Finland: { lat: 60.1699, lng: 24.9384 },
-
-		// North America
-		'United States': { lat: 38.9072, lng: -77.0369 },
-		USA: { lat: 38.9072, lng: -77.0369 },
-		Canada: { lat: 45.4215, lng: -75.6972 },
-
-		// Africa
-		Senegal: { lat: 14.7167, lng: -17.4677 },
-		"Côte d'Ivoire": { lat: 6.8276, lng: -5.2893 },
-		'Burkina Faso': { lat: 12.3714, lng: -1.5197 },
-		Mali: { lat: 12.6392, lng: -8.0029 },
-		Niger: { lat: 13.5137, lng: 2.1098 },
-		Nigeria: { lat: 9.0765, lng: 7.3986 },
-		Ghana: { lat: 5.6037, lng: -0.187 },
-		Togo: { lat: 6.1256, lng: 1.2254 },
-		Benin: { lat: 6.4969, lng: 2.6289 },
-		'South Africa': { lat: -25.7479, lng: 28.2293 },
-		Kenya: { lat: -1.2921, lng: 36.8219 },
-		Egypt: { lat: 30.0444, lng: 31.2357 },
-		Morocco: { lat: 33.9716, lng: -6.8498 },
-		Tunisia: { lat: 36.8065, lng: 10.1815 },
-		Algeria: { lat: 36.7538, lng: 3.0588 },
-
-		// Asia & Middle East
-		Japan: { lat: 35.6762, lng: 139.6503 },
-		China: { lat: 39.9042, lng: 116.4074 },
-		India: { lat: 28.6139, lng: 77.209 },
-		Singapore: { lat: 1.3521, lng: 103.8198 },
-		Australia: { lat: -35.2809, lng: 149.13 },
-
-		// South America
-		Brazil: { lat: -15.7975, lng: -47.8919 },
-		Argentina: { lat: -34.6037, lng: -58.3816 }
-	};
-</script>
-
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { base } from '$app/paths';
+	import { COUNTRY_COORDINATES, type LocationDatum } from '$lib/data/geo';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { getResolvedChartColors } from '$lib/utils/chartColorUtils';
 	import {
@@ -81,10 +22,16 @@ Shows where publications are published geographically using the publisherLocatio
 
 	// Props
 	let {
-		data = [] as PublisherLocationData[],
+		data = [] as LocationDatum[],
+		/** Route prefix used for item links, e.g. '/publications' or '/activities'. */
+		basePath,
+		/** Singular label for the popup count line ("2 publications" / "2 activities"). */
+		itemLabel,
 		initialZoom = 2
 	}: {
-		data?: PublisherLocationData[];
+		data?: LocationDatum[];
+		basePath: string;
+		itemLabel: string;
 		initialZoom?: number;
 	} = $props();
 
@@ -96,7 +43,11 @@ Shows where publications are published geographically using the publisherLocatio
 	let importError = $state<string | null>(null);
 	let currentThemeIsDark = $state<boolean | null>(null);
 	let activePopup = $state<Popup | null>(null);
-	let markers = $state<Map<string, InstanceType<MapLibreModule['Marker']>>>(new Map());
+	// Imperative lookup keyed by country, only ever mutated from inside effects to
+	// add/remove MapLibre markers. Not used reactively in the template, so a plain
+	// Map (not SvelteMap) is appropriate.
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity
+	const markers: Map<string, InstanceType<MapLibreModule['Marker']>> = new Map();
 	let isMapLoaded = $state(false);
 
 	// Theme detection
@@ -116,8 +67,7 @@ Shows where publications are published geographically using the publisherLocatio
 
 	// Escape user-provided text so it's safe to interpolate into HTML strings
 	// (including attribute values). The popup content is currently populated
-	// from curated data, but escaping keeps us safe if that ever changes and
-	// also handles ampersands / quotes in real publication titles.
+	// from curated data, but escaping keeps us safe if that ever changes.
 	function escapeHtml(value: string): string {
 		return value
 			.replace(/&/g, '&amp;')
@@ -127,62 +77,64 @@ Shows where publications are published geographically using the publisherLocatio
 			.replace(/'/g, '&#39;');
 	}
 
-	// Create popup content
-	function createPopupContent(item: PublisherLocationData): string {
-		let content = `<div class="publisher-popup">
-			<strong>${escapeHtml(item.country)}</strong>
-			<div class="pub-count">${item.count} publication${item.count > 1 ? 's' : ''}</div>`;
+	function pluralLabel(count: number): string {
+		return `${count} ${itemLabel}${count > 1 ? 's' : ''}`;
+	}
 
-		if (item.publications.length <= 6) {
-			content += '<ul class="pub-list">';
-			item.publications.forEach((pub) => {
-				const fullTitle = escapeHtml(pub.title);
-				const isTruncated = pub.title.length > 50;
+	// Create popup content
+	function createPopupContent(datum: LocationDatum): string {
+		let content = `<div class="location-popup">
+			<strong>${escapeHtml(datum.country)}</strong>
+			<div class="item-count">${pluralLabel(datum.count)}</div>`;
+
+		if (datum.items.length <= 6) {
+			content += '<ul class="item-list">';
+			datum.items.forEach((item) => {
+				const fullTitle = escapeHtml(item.title);
+				const isTruncated = item.title.length > 50;
 				const truncated = isTruncated
-					? escapeHtml(pub.title.substring(0, 50)) + '&hellip;'
+					? escapeHtml(item.title.substring(0, 50)) + '&hellip;'
 					: fullTitle;
-				// Always set `title` so the full title shows as a native tooltip on hover,
-				// even for non-truncated entries (keeps behaviour predictable).
-				const pubUrl = `${base}/publications/${pub.id}`;
+				const itemUrl = `${base}${basePath}/${item.id}`;
 				content += `<li>
-					<a href="${pubUrl}" class="pub-link" title="${fullTitle}">
-						<span class="pub-title">${truncated}</span>
-						${pub.publisher ? `<span class="pub-publisher">${escapeHtml(pub.publisher)}</span>` : ''}
+					<a href="${itemUrl}" class="item-link" title="${fullTitle}">
+						<span class="item-title">${truncated}</span>
+						${item.subtitle ? `<span class="item-subtitle">${escapeHtml(item.subtitle)}</span>` : ''}
 					</a>
 				</li>`;
 			});
 			content += '</ul>';
 		} else {
-			// Group by publisher with list of publication IDs
-			const byPublisher: Record<
+			// Group by subtitle (e.g. publisher, venue) with list of item IDs
+			const bySubtitle: Record<
 				string,
-				{ count: number; pubs: Array<{ id: string; title: string }> }
+				{ count: number; items: Array<{ id: string; title: string }> }
 			> = {};
-			item.publications.forEach((pub) => {
-				const key = pub.publisher || 'Other';
-				if (!byPublisher[key]) {
-					byPublisher[key] = { count: 0, pubs: [] };
+			datum.items.forEach((item) => {
+				const key = item.subtitle || 'Other';
+				if (!bySubtitle[key]) {
+					bySubtitle[key] = { count: 0, items: [] };
 				}
-				byPublisher[key].count++;
-				byPublisher[key].pubs.push({ id: pub.id, title: pub.title });
+				bySubtitle[key].count++;
+				bySubtitle[key].items.push({ id: item.id, title: item.title });
 			});
-			content += '<ul class="pub-list">';
-			Object.entries(byPublisher)
+			content += '<ul class="item-list">';
+			Object.entries(bySubtitle)
 				.sort((a, b) => b[1].count - a[1].count)
-				.forEach(([publisher, data]) => {
-					content += `<li class="publisher-group">
-						<span class="pub-publisher">${escapeHtml(publisher)}</span>: ${data.count}
-						<ul class="pub-sublist">`;
-					data.pubs.slice(0, 3).forEach((pub) => {
-						const fullTitle = escapeHtml(pub.title);
-						const isTruncated = pub.title.length > 40;
+				.forEach(([subtitle, data]) => {
+					content += `<li class="subtitle-group">
+						<span class="item-subtitle">${escapeHtml(subtitle)}</span>: ${data.count}
+						<ul class="item-sublist">`;
+					data.items.slice(0, 3).forEach((item) => {
+						const fullTitle = escapeHtml(item.title);
+						const isTruncated = item.title.length > 40;
 						const truncated = isTruncated
-							? escapeHtml(pub.title.substring(0, 40)) + '&hellip;'
+							? escapeHtml(item.title.substring(0, 40)) + '&hellip;'
 							: fullTitle;
-						content += `<li><a href="${base}/publications/${pub.id}" class="pub-link" title="${fullTitle}">${truncated}</a></li>`;
+						content += `<li><a href="${base}${basePath}/${item.id}" class="item-link" title="${fullTitle}">${truncated}</a></li>`;
 					});
-					if (data.pubs.length > 3) {
-						content += `<li class="more-pubs">+${data.pubs.length - 3} more</li>`;
+					if (data.items.length > 3) {
+						content += `<li class="more-items">+${data.items.length - 3} more</li>`;
 					}
 					content += '</ul></li>';
 				});
@@ -219,49 +171,49 @@ Shows where publications are published geographically using the publisherLocatio
 			activePopup = null;
 		}
 
-		mappableData.forEach((item) => {
-			const coords = COUNTRY_COORDINATES[item.country];
+		mappableData.forEach((datum) => {
+			const coords = COUNTRY_COORDINATES[datum.country];
 			if (!coords || !maplibregl) return;
 
-			// Scale marker size based on publication count
+			// Scale marker size based on item count
 			const minSize = 20;
 			const maxSize = 45;
-			const scale = Math.sqrt(item.count / maxCount);
+			const scale = Math.sqrt(datum.count / maxCount);
 			const size = minSize + scale * (maxSize - minSize);
 
 			// Create custom marker element using resolved theme colors
 			const el = document.createElement('div');
-			el.className = 'publisher-marker';
+			el.className = 'location-marker';
 			el.style.width = `${size}px`;
 			el.style.height = `${size}px`;
 			el.innerHTML = `
 				<svg viewBox="0 0 24 24" width="${size}" height="${size}">
 					<circle cx="12" cy="12" r="10" fill="${resolvedColors.primary}" fill-opacity="0.85" stroke="${resolvedColors.surface}" stroke-width="2"/>
-					<text x="12" y="16" text-anchor="middle" fill="${resolvedColors.surface}" font-size="10" font-weight="bold">${item.count}</text>
+					<text x="12" y="16" text-anchor="middle" fill="${resolvedColors.surface}" font-size="10" font-weight="bold">${datum.count}</text>
 				</svg>
 			`;
 
 			const popup = new maplibregl.Popup({
 				offset: size / 2 + 5,
-				className: 'map-popup publisher-location-popup',
+				className: 'map-popup location-map-popup',
 				closeButton: true,
 				closeOnClick: true,
 				maxWidth: '300px'
-			}).setHTML(createPopupContent(item));
+			}).setHTML(createPopupContent(datum));
 
 			const marker = new maplibregl.Marker({ element: el })
 				.setLngLat([coords.lng, coords.lat])
 				.setPopup(popup)
 				.addTo(map!);
 
-			markers.set(item.country, marker);
+			markers.set(datum.country, marker);
 		});
 
 		// Fit bounds if we have markers
 		if (mappableData.length > 0 && markers.size > 0) {
 			const bounds = new maplibregl.LngLatBounds();
-			mappableData.forEach((item) => {
-				const coords = COUNTRY_COORDINATES[item.country];
+			mappableData.forEach((datum) => {
+				const coords = COUNTRY_COORDINATES[datum.country];
 				if (coords) {
 					bounds.extend([coords.lng, coords.lat]);
 				}
@@ -420,18 +372,18 @@ Shows where publications are published geographically using the publisherLocatio
 	}
 
 	/* Custom marker styles */
-	:global(.publisher-marker) {
+	:global(.location-marker) {
 		cursor: pointer;
 		transition: transform var(--duration-fast) var(--ease-out);
 	}
 
-	:global(.publisher-marker:hover) {
+	:global(.location-marker:hover) {
 		transform: scale(1.15);
 		z-index: 10 !important;
 	}
 
 	/* Popup styles - with glassmorphism */
-	:global(.publisher-location-popup .maplibregl-popup-content) {
+	:global(.location-map-popup .maplibregl-popup-content) {
 		background-color: var(--color-surface);
 		color: var(--color-text);
 		border-radius: var(--border-radius-lg);
@@ -440,11 +392,11 @@ Shows where publications are published geographically using the publisherLocatio
 		border: 1px solid var(--color-border);
 	}
 
-	:global(.publisher-location-popup .maplibregl-popup-tip) {
+	:global(.location-map-popup .maplibregl-popup-tip) {
 		border-top-color: var(--color-surface);
 	}
 
-	:global(.publisher-location-popup .maplibregl-popup-close-button) {
+	:global(.location-map-popup .maplibregl-popup-close-button) {
 		color: var(--color-text-muted);
 		font-size: 18px;
 		padding: 4px 8px;
@@ -452,30 +404,30 @@ Shows where publications are published geographically using the publisherLocatio
 		top: 2px;
 	}
 
-	:global(.publisher-location-popup .maplibregl-popup-close-button:hover) {
+	:global(.location-map-popup .maplibregl-popup-close-button:hover) {
 		color: var(--color-text);
 		background-color: transparent;
 	}
 
-	:global(.publisher-popup) {
+	:global(.location-popup) {
 		font-size: var(--font-size-sm);
 		color: var(--color-text);
 	}
 
-	:global(.publisher-popup strong) {
+	:global(.location-popup strong) {
 		color: var(--color-primary);
 		font-size: var(--font-size-base);
 		display: block;
 		margin-bottom: var(--space-2xs);
 	}
 
-	:global(.publisher-popup .pub-count) {
+	:global(.location-popup .item-count) {
 		color: var(--color-text-muted);
 		margin-bottom: var(--space-xs);
 		font-size: var(--font-size-xs);
 	}
 
-	:global(.publisher-popup .pub-list) {
+	:global(.location-popup .item-list) {
 		list-style: none;
 		padding: 0;
 		margin: var(--space-xs) 0 0 0;
@@ -483,74 +435,74 @@ Shows where publications are published geographically using the publisherLocatio
 		overflow-y: auto;
 	}
 
-	:global(.publisher-popup .pub-list li) {
+	:global(.location-popup .item-list li) {
 		padding: var(--space-2xs) 0;
 		border-bottom: 1px solid var(--color-border);
 		font-size: var(--font-size-xs);
 	}
 
-	:global(.publisher-popup .pub-list li:last-child) {
+	:global(.location-popup .item-list li:last-child) {
 		border-bottom: none;
 	}
 
-	:global(.publisher-popup .pub-link) {
+	:global(.location-popup .item-link) {
 		display: block;
 		color: var(--color-text);
 		text-decoration: none;
 		transition: color var(--duration-fast) var(--ease-out);
 	}
 
-	:global(.publisher-popup .pub-link:hover) {
+	:global(.location-popup .item-link:hover) {
 		color: var(--color-primary);
 	}
 
-	:global(.publisher-popup .pub-link:hover .pub-title) {
+	:global(.location-popup .item-link:hover .item-title) {
 		text-decoration: underline;
 	}
 
-	:global(.publisher-popup .pub-title) {
+	:global(.location-popup .item-title) {
 		display: block;
 		color: inherit;
 	}
 
-	:global(.publisher-popup .pub-publisher) {
+	:global(.location-popup .item-subtitle) {
 		color: var(--color-text-muted);
 		font-style: italic;
 		font-size: var(--font-size-xs);
 	}
 
-	:global(.publisher-popup .publisher-group) {
+	:global(.location-popup .subtitle-group) {
 		margin-bottom: var(--space-xs);
 	}
 
-	:global(.publisher-popup .pub-sublist) {
+	:global(.location-popup .item-sublist) {
 		list-style: none;
 		padding-left: var(--space-sm);
 		margin: var(--space-2xs) 0 0 0;
 	}
 
-	:global(.publisher-popup .pub-sublist li) {
+	:global(.location-popup .item-sublist li) {
 		border-bottom: none;
 		padding: var(--space-2xs) 0;
 	}
 
-	:global(.publisher-popup .pub-sublist .pub-link) {
+	:global(.location-popup .item-sublist .item-link) {
 		font-size: var(--font-size-xs);
 	}
 
-	:global(.publisher-popup .more-pubs) {
+	:global(.location-popup .more-items) {
 		color: var(--color-text-muted);
 		font-style: italic;
 		font-size: var(--font-size-xs);
 	}
 
 	/* Dark mode overrides */
-	:global(html.dark .publisher-location-popup .maplibregl-popup-content) {
+	:global(html.dark .location-map-popup .maplibregl-popup-content) {
 		background-color: var(--color-surface);
 		border-color: var(--color-border);
 	}
 
-	:global(html.dark .publisher-location-popup .maplibregl-popup-tip) {
+	:global(html.dark .location-map-popup .maplibregl-popup-tip) {
 		border-top-color: var(--color-surface);
 	}
 
