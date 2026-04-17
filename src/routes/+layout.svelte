@@ -7,7 +7,6 @@
 	import { motionDuration } from '$lib/utils/motion';
 	import Footer from '$lib/components/common/Footer.svelte';
 	import Header from '$lib/components/menu/Header.svelte';
-	import CookieConsent from '$lib/components/common/CookieConsent.svelte';
 	import PWAUpdatePrompt from '$lib/components/common/PWAUpdatePrompt.svelte';
 	import NetworkStatusIndicator from '$lib/components/atoms/NetworkStatusIndicator.svelte';
 	import '../app.css';
@@ -92,7 +91,6 @@
 	</main>
 
 	<Footer />
-	<CookieConsent />
 	<PWAUpdatePrompt />
 	<NetworkStatusIndicator />
 </div>

@@ -84,7 +84,7 @@ Provides decal toggle (accessibility), download as PNG, and optional fullscreen.
 			aria-label={showDecal ? 'Hide decal patterns' : 'Show decal patterns for accessibility'}
 			aria-pressed={showDecal}
 		>
-			<Icon icon="lucide:blend" width="16" height="16" />
+			<Icon icon="lucide:contrast" width="16" height="16" />
 		</button>
 	{/if}
 	{#if showFullscreen && fullscreenTarget}

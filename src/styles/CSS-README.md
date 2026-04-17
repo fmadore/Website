@@ -597,32 +597,6 @@ Replace the JavaScript `use:scrollAnimate` action with CSS classes:
 - `fade-in-up`, `scale-in`, `slide-in-left`, etc. - for elements that animate on mount, not scroll
 - `stagger-1` through `stagger-6` - for sequential delays on dynamically loaded content
 
-### Cookie Consent Management (`src/lib/utils/cookieConsent.ts`)
-
-Robust cookie consent system with persistence and categorization:
-
-- **Automatic expiration**: Consent expires after configurable period (default: 365 days)
-- **Category management**: Separate consent for analytics, marketing, preferences
-- **Version tracking**: Can require new consent when privacy policy changes
-- **Browser compatibility**: Handles localStorage errors and private browsing
-- **Legacy migration**: Automatically upgrades from older consent formats
-
-The system provides both a class-based API and utility functions:
-
-```typescript
-import { cookieConsent, needsCookieConsent, isAnalyticsAllowed } from '$lib/utils/cookieConsent';
-
-// Check if consent is needed
-if (needsCookieConsent()) {
-	// Show consent banner
-}
-
-// Check specific categories
-if (isAnalyticsAllowed()) {
-	// Enable analytics tracking
-}
-```
-
 ## Best Practices
 
 When using this CSS framework:

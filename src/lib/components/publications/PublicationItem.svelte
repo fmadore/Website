@@ -5,6 +5,7 @@
 	// Import the necessary functions from the new formatter
 	import { formatCitation, getAuthorsArray } from '$lib/utils/citationFormatter';
 	import TagList from '$lib/components/molecules/TagList.svelte';
+	import Icon from '@iconify/svelte';
 
 	interface Props {
 		publication: Publication;
@@ -16,6 +17,9 @@
 
 	// Optimize loading for above-the-fold images (first 3 items)
 	const imageLoading = $derived((index ?? 0) < 3 ? 'eager' : 'lazy');
+
+	// Citation count for the inline badge
+	const citationCount = $derived(publication.citedBy?.length ?? 0);
 
 	// Reactive computation using the citation formatter
 	const formattedCitation = $derived(formatCitation(publication)); // Define structure for display list items
@@ -123,6 +127,16 @@
 						<span class="entity-language">({publication.language})</span>
 					{:else if publication.language && publication.language !== 'English'}
 						<span class="entity-language">({publication.language})</span>
+					{/if}
+					{#if citationCount > 0}
+						<span
+							class="citation-badge"
+							title="Cited by {citationCount} {citationCount === 1 ? 'work' : 'works'}"
+							aria-label="Cited by {citationCount} {citationCount === 1 ? 'work' : 'works'}"
+						>
+							<Icon icon="lucide:quote" width="12" height="12" aria-hidden="true" />
+							<span>{citationCount}</span>
+						</span>
 					{/if}
 				</div>
 
@@ -237,6 +251,27 @@
 </article>
 
 <style>
+	.citation-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-2xs);
+		padding: var(--space-3xs) var(--space-2xs);
+		background-color: color-mix(in srgb, var(--color-accent) 15%, transparent);
+		color: var(--color-accent-dark);
+		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-accent) 30%, transparent);
+		border-radius: var(--border-radius-full);
+		font-size: var(--font-size-xs);
+		font-weight: var(--font-weight-semibold);
+		line-height: 1;
+		white-space: nowrap;
+	}
+
+	:global(html.dark) .citation-badge {
+		background-color: color-mix(in srgb, var(--color-highlight) 20%, transparent);
+		color: var(--color-highlight);
+		border-color: color-mix(in srgb, var(--color-highlight) 40%, transparent);
+	}
+
 	.advisor-info,
 	.preface-info {
 		margin-top: var(--space-1);

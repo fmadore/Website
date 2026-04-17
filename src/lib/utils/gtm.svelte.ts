@@ -48,8 +48,6 @@ export function useGtm(gtmId: string, isDebugMode = false) {
 		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- ephemeral Date for gtag
 		window.gtag!('js', new Date());
 
-		// Check consent and localhost status
-		const cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
 		const isLocalhost =
 			window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
@@ -62,8 +60,8 @@ export function useGtm(gtmId: string, isDebugMode = false) {
 			custom_map: {}
 		});
 
-		// Send initial page view if consent is given and not localhost
-		if (!isLocalhost && cookiesAccepted) {
+		// Send initial page view (skip on localhost)
+		if (!isLocalhost) {
 			try {
 				window.gtag!('event', 'page_view', {
 					page_title: document.title,
@@ -107,11 +105,10 @@ export function useGtm(gtmId: string, isDebugMode = false) {
 	/** Call in afterNavigate to track SPA page views */
 	function trackPageView() {
 		if (browser && state.loaded && typeof window.gtag === 'function') {
-			const cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
 			const isLocalhost =
 				window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
-			if (!isLocalhost && cookiesAccepted) {
+			if (!isLocalhost) {
 				try {
 					window.gtag('event', 'page_view', {
 						page_title: document.title,

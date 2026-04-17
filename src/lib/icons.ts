@@ -19,6 +19,7 @@ import mdiGithub from '@iconify-icons/mdi/github';
 import mdiMapMarker from '@iconify-icons/mdi/map-marker';
 import mdiRss from '@iconify-icons/mdi/rss';
 import mdiChevronUp from '@iconify-icons/mdi/chevron-up';
+import mdiChevronDown from '@iconify-icons/mdi/chevron-down';
 import mdiMoonWaningCrescent from '@iconify-icons/mdi/moon-waning-crescent';
 import mdiWhiteBalanceSunny from '@iconify-icons/mdi/white-balance-sunny';
 import mdiMagnify from '@iconify-icons/mdi/magnify';
@@ -44,6 +45,26 @@ import lucideZoomIn from '@iconify-icons/lucide/zoom-in';
 import lucideZoomOut from '@iconify-icons/lucide/zoom-out';
 import lucideMaximize2 from '@iconify-icons/lucide/maximize-2';
 import lucideMap from '@iconify-icons/lucide/map';
+import lucideContrast from '@iconify-icons/lucide/contrast';
+import lucideDownload from '@iconify-icons/lucide/download';
+import lucideExpand from '@iconify-icons/lucide/expand';
+import lucideShrink from '@iconify-icons/lucide/shrink';
+import lucideX from '@iconify-icons/lucide/x';
+import lucideChevronLeft from '@iconify-icons/lucide/chevron-left';
+import lucideChevronRight from '@iconify-icons/lucide/chevron-right';
+import lucidePin from '@iconify-icons/lucide/pin';
+import lucideQuote from '@iconify-icons/lucide/quote';
+import lucideBriefcase from '@iconify-icons/lucide/briefcase';
+import lucideGraduationCap from '@iconify-icons/lucide/graduation-cap';
+import lucideCoins from '@iconify-icons/lucide/coins';
+import lucideFileText from '@iconify-icons/lucide/file-text';
+import lucidePresentation from '@iconify-icons/lucide/presentation';
+import lucideAward from '@iconify-icons/lucide/award';
+import lucideMapPin from '@iconify-icons/lucide/map-pin';
+import lucideCircle from '@iconify-icons/lucide/circle';
+import lucideArrowDownWideNarrow from '@iconify-icons/lucide/arrow-down-wide-narrow';
+import lucideArrowDownAZ from '@iconify-icons/lucide/arrow-down-a-z';
+import lucideTrendingUp from '@iconify-icons/lucide/trending-up';
 
 // Bluesky SVG path (bundled inline since not available in @iconify-icons packages)
 // Source: Simple Icons - https://simpleicons.org/
@@ -65,6 +86,7 @@ export function registerIcons(): void {
 	addIcon('mdi:map-marker', mdiMapMarker);
 	addIcon('mdi:rss', mdiRss);
 	addIcon('mdi:chevron-up', mdiChevronUp);
+	addIcon('mdi:chevron-down', mdiChevronDown);
 	addIcon('mdi:moon-waning-crescent', mdiMoonWaningCrescent);
 	addIcon('mdi:white-balance-sunny', mdiWhiteBalanceSunny);
 	addIcon('mdi:magnify', mdiMagnify);
@@ -91,6 +113,26 @@ export function registerIcons(): void {
 	addIcon('lucide:zoom-out', lucideZoomOut);
 	addIcon('lucide:maximize-2', lucideMaximize2);
 	addIcon('lucide:map', lucideMap);
+	addIcon('lucide:contrast', lucideContrast);
+	addIcon('lucide:download', lucideDownload);
+	addIcon('lucide:expand', lucideExpand);
+	addIcon('lucide:shrink', lucideShrink);
+	addIcon('lucide:x', lucideX);
+	addIcon('lucide:chevron-left', lucideChevronLeft);
+	addIcon('lucide:chevron-right', lucideChevronRight);
+	addIcon('lucide:pin', lucidePin);
+	addIcon('lucide:quote', lucideQuote);
+	addIcon('lucide:briefcase', lucideBriefcase);
+	addIcon('lucide:graduation-cap', lucideGraduationCap);
+	addIcon('lucide:coins', lucideCoins);
+	addIcon('lucide:file-text', lucideFileText);
+	addIcon('lucide:presentation', lucidePresentation);
+	addIcon('lucide:award', lucideAward);
+	addIcon('lucide:map-pin', lucideMapPin);
+	addIcon('lucide:circle', lucideCircle);
+	addIcon('lucide:arrow-down-wide-narrow', lucideArrowDownWideNarrow);
+	addIcon('lucide:arrow-down-a-z', lucideArrowDownAZ);
+	addIcon('lucide:trending-up', lucideTrendingUp);
 }
 
 // Export individual icons for direct usage if preferred
@@ -124,5 +166,26 @@ export {
 	lucideZoomIn,
 	lucideZoomOut,
 	lucideMaximize2,
-	lucideMap
+	lucideMap,
+	lucideContrast,
+	lucideDownload,
+	lucideExpand,
+	lucideShrink,
+	lucideX,
+	lucideChevronLeft,
+	lucideChevronRight,
+	lucidePin,
+	lucideQuote,
+	lucideBriefcase,
+	lucideGraduationCap,
+	lucideCoins,
+	lucideFileText,
+	lucidePresentation,
+	lucideAward,
+	lucideMapPin,
+	lucideCircle,
+	lucideArrowDownWideNarrow,
+	lucideArrowDownAZ,
+	lucideTrendingUp,
+	mdiChevronDown
 };

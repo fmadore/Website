@@ -870,7 +870,7 @@
 					coAuthorConnections={collaborationData.coAuthorConnections}
 					contributorConnections={collaborationData.contributorConnections}
 					centerAuthor="Frédérick Madore"
-					maxConnections={25}
+					maxConnections={collaborationData.collaborators.length}
 				/>
 			</div>
 		{:else}
