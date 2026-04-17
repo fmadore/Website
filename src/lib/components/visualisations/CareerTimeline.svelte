@@ -335,9 +335,7 @@
 					<div class="card-content-wrapper">
 						<div
 							class="category-icon-large"
-							style="background: {getCategoryColor(
-								selectedItem.category
-							)}; box-shadow: 0 4px 12px {getCategoryColor(selectedItem.category)}40;"
+							style="--_cat-color: {getCategoryColor(selectedItem.category)};"
 						>
 							<Icon
 								icon={getIconForCategory(selectedItem.category)}
@@ -358,11 +356,7 @@
 							<div class="detail-meta-row">
 								<span
 									class="meta-badge"
-									style="
-										color: {getCategoryColor(selectedItem.category)};
-										background: {getCategoryColor(selectedItem.category)}15;
-										border-color: {getCategoryColor(selectedItem.category)}30;
-									"
+									style="--_cat-color: {getCategoryColor(selectedItem.category)};"
 								>
 									{selectedItem.startDate.getFullYear()}
 									{#if selectedItem.endDate && selectedItem.endDate.getFullYear() !== selectedItem.startDate.getFullYear()}
@@ -614,6 +608,14 @@
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
+		/*
+		 * --_cat-color is set inline per item (e.g. var(--color-timeline-positions)).
+		 * We mix it with transparent for the soft glow instead of concatenating a
+		 * hex alpha suffix, which breaks once the token points at a var() reference.
+		 */
+		background: var(--_cat-color, var(--color-primary));
+		box-shadow: 0 4px 12px
+			color-mix(in srgb, var(--_cat-color, var(--color-primary)) 40%, transparent);
 	}
 
 	.card-main-info {
@@ -676,7 +678,10 @@
 		font-size: var(--font-size-xs);
 		padding: var(--space-0-5) var(--space-2);
 		border-radius: var(--border-radius-sm);
-		border: 1px solid;
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--_cat-color, var(--color-primary)) 30%, transparent);
+		background: color-mix(in srgb, var(--_cat-color, var(--color-primary)) 15%, transparent);
+		color: var(--_cat-color, var(--color-primary));
 		font-weight: var(--font-weight-medium);
 	}
 

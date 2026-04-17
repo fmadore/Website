@@ -3,7 +3,7 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 -->
 <script lang="ts">
 	import { innerWidth } from 'svelte/reactivity/window';
-	import { getResolvedChartColors } from '$lib/utils/chartColorUtils';
+	import { getResolvedChartColors, colorWithOpacity } from '$lib/utils/chartColorUtils';
 	import ChartToolbar from './ChartToolbar.svelte';
 	import type { WordFrequency } from '$lib/types';
 	import type * as echarts from 'echarts';
@@ -132,7 +132,7 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 					focus: 'self',
 					textStyle: {
 						textShadowBlur: 10,
-						textShadowColor: 'rgba(0, 0, 0, 0.3)'
+						textShadowColor: colorWithOpacity(resolvedColors.black, 0.3)
 					}
 				},
 				data: chartData()

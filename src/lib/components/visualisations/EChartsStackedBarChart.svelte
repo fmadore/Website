@@ -26,10 +26,10 @@ ECharts Stacked Bar Chart component
 		colors = [
 			'var(--sys-color-amber-400)', // Blog post - gold
 			'var(--sys-color-blue-500)', // Book - blue
-			'#a78bfa', // Book chapter - purple
+			'var(--sys-color-purple-400)', // Book chapter - purple
 			'var(--sys-color-emerald-400)', // Bulletin article - green
 			'var(--sys-color-neutral-400)', // Conference proceedings - gray
-			'#f472b6', // Encyclopedia entry - pink
+			'var(--sys-color-pink-400)', // Encyclopedia entry - pink
 			'var(--sys-color-teal-500)', // Journal article - teal
 			'var(--sys-color-red-400)', // Master's thesis - red
 			'var(--sys-color-amber-600)', // PhD dissertation - dark amber

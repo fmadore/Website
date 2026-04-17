@@ -66,6 +66,12 @@
 	--sys-color-slate-blue-500: #5c8ab4;
 	--sys-color-mauve-500: #a67c9b;
 
+	/* Extended hues used in charts (named after Tailwind equivalents) */
+	--sys-color-purple-400: #a78bfa;
+	--sys-color-purple-500: #8b5cf6;
+	--sys-color-pink-400: #f472b6;
+	--sys-color-pink-500: #ec4899;
+
 	/* ===== SEMANTIC COLOR TOKENS ===== */
 	/* Primary */
 	--color-primary: var(--sys-color-teal-700);
@@ -185,10 +191,12 @@
 	--sys-font-family-serif: 'Source Serif 4', 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
 	--sys-font-family-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Consolas', 'Monaco', monospace;
 
-	/* 
+	/*
 	 * Type Scale - Minor Third (1.2) with fluid sizing
-	 * Step -2: 0.694rem → Step 6: 2.986rem
+	 * Step -3: 0.579rem → Step 6: 2.986rem
+	 * Step -3 is reserved for dense data-viz chrome (map legends, chart axis labels).
 	 */
+	--sys-type-step--3: clamp(0.5787rem, 0.5498rem + 0.1447vw, 0.6944rem);
 	--sys-type-step--2: clamp(0.6944rem, 0.6597rem + 0.1736vw, 0.8333rem);
 	--sys-type-step--1: clamp(0.8333rem, 0.7917rem + 0.2083vw, 1rem);
 	--sys-type-step-0: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
@@ -205,6 +213,7 @@
 	--font-family-mono: var(--sys-font-family-mono);
 
 	/* Semantic font sizes */
+	--font-size-2xs: var(--sys-type-step--3);
 	--font-size-xs: var(--sys-type-step--2);
 	--font-size-sm: var(--sys-type-step--1);
 	--font-size-base: var(--sys-type-step-0);

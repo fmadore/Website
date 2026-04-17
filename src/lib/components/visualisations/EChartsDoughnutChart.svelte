@@ -7,7 +7,8 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		getResolvedChartColors,
 		resolveColors,
 		getEChartsTooltipStyle,
-		prefersReducedMotion
+		prefersReducedMotion,
+		colorWithOpacity
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
@@ -139,7 +140,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 					itemStyle: {
 						shadowBlur: 10,
 						shadowOffsetX: 0,
-						shadowColor: 'rgba(0, 0, 0, 0.5)'
+						shadowColor: colorWithOpacity(resolvedColors.black, 0.5)
 					}
 				},
 				label: {
@@ -150,9 +151,9 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 					fontFamily: resolvedColors.fontFamily,
 					fontWeight: 'bold',
 					formatter: isMobile ? '{d}%' : '{b}: {d}%',
-					textBorderColor: isMobile ? 'rgba(0, 0, 0, 0.9)' : 'transparent',
+					textBorderColor: isMobile ? colorWithOpacity(resolvedColors.black, 0.9) : 'transparent',
 					textBorderWidth: isMobile ? 2 : 0,
-					textShadowColor: isMobile ? 'rgba(0, 0, 0, 0.9)' : 'transparent',
+					textShadowColor: isMobile ? colorWithOpacity(resolvedColors.black, 0.9) : 'transparent',
 					textShadowBlur: isMobile ? 3 : 0,
 					minMargin: isMobile ? 8 : 5,
 					padding: isMobile ? [2, 4] : [0, 0]

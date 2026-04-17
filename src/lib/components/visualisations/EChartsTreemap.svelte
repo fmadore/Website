@@ -6,7 +6,8 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 	import {
 		getResolvedChartColors,
 		resolveColors,
-		getEChartsTooltipStyle
+		getEChartsTooltipStyle,
+		colorWithOpacity
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
@@ -178,7 +179,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 						borderColor: resolvedColors.border,
 						borderWidth: 1,
 						shadowBlur: 3,
-						shadowColor: 'rgba(0, 0, 0, 0.1)'
+						shadowColor: colorWithOpacity(resolvedColors.black, 0.1)
 					},
 					emphasis: {
 						itemStyle: {
@@ -210,7 +211,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 							fontWeight: 'bold',
 							fontFamily: resolvedColors.fontFamily,
 							color: resolvedColors.white,
-							textShadowColor: 'rgba(0, 0, 0, 0.5)',
+							textShadowColor: colorWithOpacity(resolvedColors.black, 0.5),
 							textShadowBlur: 3,
 							lineHeight: isMobile ? 16 : 20,
 							overflow: 'truncate',
@@ -219,8 +220,8 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 						count: {
 							fontSize: isMobile ? 10 : 12,
 							fontFamily: resolvedColors.fontFamily,
-							color: 'rgba(255, 255, 255, 0.85)',
-							textShadowColor: 'rgba(0, 0, 0, 0.5)',
+							color: colorWithOpacity(resolvedColors.white, 0.85),
+							textShadowColor: colorWithOpacity(resolvedColors.black, 0.5),
 							textShadowBlur: 2,
 							lineHeight: isMobile ? 14 : 18
 						}
@@ -241,15 +242,15 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 						if (!path || path.length <= 1) return '';
 						return params.name;
 					},
-					color: '#ffffff',
+					color: resolvedColors.white,
 					fontWeight: 'bold',
 					fontSize: isMobile ? 12 : 14,
 					fontFamily: resolvedColors.fontFamily,
 					// Combined stroke + shadow keeps the label readable on either the
 					// teal or the orange category tile.
-					textBorderColor: 'rgba(0, 0, 0, 0.45)',
+					textBorderColor: colorWithOpacity(resolvedColors.black, 0.45),
 					textBorderWidth: 3,
-					textShadowColor: 'rgba(0, 0, 0, 0.55)',
+					textShadowColor: colorWithOpacity(resolvedColors.black, 0.55),
 					textShadowBlur: 4,
 					overflow: 'truncate',
 					ellipsis: '…'

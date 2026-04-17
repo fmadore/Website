@@ -630,7 +630,7 @@
 
 	@media (--sm-down) {
 		.map-legend {
-			font-size: 0.6875rem;
+			font-size: var(--font-size-2xs);
 			padding: var(--space-1) var(--space-2);
 		}
 	}
