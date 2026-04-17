@@ -30,10 +30,10 @@
 				transparent
 			);
 	transition:
-		transform var(--anim-duration-base) var(--anim-ease-out),
-		box-shadow var(--anim-duration-base) var(--anim-ease-out),
-		background var(--anim-duration-base) var(--anim-ease-out),
-		border-color var(--anim-duration-base) var(--anim-ease-out);
+		transform var(--duration-moderate) var(--ease-out),
+		box-shadow var(--duration-moderate) var(--ease-out),
+		background var(--duration-moderate) var(--ease-out),
+		border-color var(--duration-moderate) var(--ease-out);
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -148,8 +148,8 @@
 	right: var(--space-md);
 	opacity: 0;
 	transition:
-		opacity var(--anim-duration-fast) var(--anim-ease-out),
-		transform var(--anim-duration-fast) var(--anim-ease-out);
+		opacity var(--duration-fast) var(--ease-out),
+		transform var(--duration-fast) var(--ease-out);
 	color: var(--color-primary);
 }
 
@@ -248,8 +248,7 @@
 			transparent
 		);
 	box-shadow:
-		0 8px 32px 0
-			color-mix(in srgb, var(--color-text) calc(var(--opacity-medium-high) * 100%), transparent),
+		0 8px 32px 0 color-mix(in srgb, var(--color-text) calc(var(--opacity-30) * 100%), transparent),
 		inset 0 1px 0
 			color-mix(
 				in srgb,
@@ -270,8 +269,7 @@
 		transparent
 	);
 	box-shadow:
-		0 12px 40px 0
-			color-mix(in srgb, var(--color-text) calc(var(--opacity-high) * 100%), transparent),
+		0 12px 40px 0 color-mix(in srgb, var(--color-text) calc(var(--opacity-90) * 100%), transparent),
 		inset 0 1px 0
 			color-mix(
 				in srgb,
@@ -326,7 +324,7 @@
 	);
 	border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
 	transition: width var(--duration-normal) var(--ease-out);
-	opacity: var(--opacity-high);
+	opacity: var(--opacity-90);
 }
 
 .card-accent-border:hover::before {

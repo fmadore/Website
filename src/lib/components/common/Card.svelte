@@ -49,7 +49,7 @@
 		<h2 class="card-title">
 			{#if linkUrl}
 				<!-- eslint-disable svelte/no-navigation-without-resolve -- caller passes pre-resolved URL -->
-				<a href={linkUrl} {target} rel="noopener noreferrer">
+				<a href={linkUrl} {target} rel="noopener noreferrer" class="link-animated">
 					{title}
 				</a>
 				<!-- eslint-enable svelte/no-navigation-without-resolve -->
@@ -90,7 +90,7 @@
 		overflow: hidden;
 		height: 100%; /* Make cards in a grid have the same height */
 		border-radius: var(--border-radius-lg);
-		transition: all var(--anim-duration-fast) var(--anim-ease-base);
+		transition: all var(--duration-fast) var(--ease-in-out);
 		position: relative;
 
 		/* Warm gradient styling with terracotta/gold */
@@ -126,7 +126,7 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		transition: transform var(--anim-duration-fast) var(--anim-ease-base);
+		transition: transform var(--duration-fast) var(--ease-in-out);
 	}
 
 	.card:hover .card-image img {
@@ -150,13 +150,9 @@
 	}
 
 	.card-title a {
-		color: inherit; /* Inherit color from h2 */
-		text-decoration: none;
+		color: inherit;
 	}
-
-	.card-title a:hover {
-		text-decoration: underline;
-	}
+	/* Hover underline provided by shared .link-animated utility. */
 
 	.card-subtitle {
 		font-size: var(--font-size-sm);
@@ -190,7 +186,7 @@
 		color: var(--color-primary);
 		text-decoration: none;
 		font-weight: var(--font-weight-medium);
-		transition: color var(--anim-duration-fast) var(--anim-ease-base);
+		transition: color var(--duration-fast) var(--ease-in-out);
 	}
 
 	.card-action :global(a:hover) {

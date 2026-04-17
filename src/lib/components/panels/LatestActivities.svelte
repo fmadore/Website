@@ -220,12 +220,12 @@
 	:global(html.dark) .activity-type {
 		background-color: color-mix(
 			in srgb,
-			var(--color-success) calc(var(--opacity-medium) * 100%),
+			var(--color-success) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 		border-color: color-mix(
 			in srgb,
-			var(--color-success) calc(var(--opacity-medium-high) * 100%),
+			var(--color-success) calc(var(--opacity-30) * 100%),
 			transparent
 		);
 	}

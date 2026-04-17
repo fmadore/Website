@@ -19,7 +19,12 @@
 </script>
 
 <div class="filter-section-content">
-	<h3 class="filter-section-title">{title}</h3>
+	<div class="filter-section-header">
+		<h3 class="filter-section-title">{title}</h3>
+		{#if activeItems.length > 0}
+			<span class="active-count">{activeItems.length}</span>
+		{/if}
+	</div>
 	<div class="filter-chips-container">
 		{#each items as item (item)}
 			<button

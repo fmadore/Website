@@ -35,7 +35,7 @@
 	.content-body {
 		padding: var(--space-lg);
 		border-radius: var(--border-radius-lg);
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transition: all var(--duration-moderate) var(--ease-in-out);
 		position: relative;
 		/* Glassmorphism applied via utility classes in template */
 	}
@@ -71,7 +71,7 @@
 		color: var(--color-primary);
 		text-decoration: none;
 		font-weight: var(--font-weight-medium);
-		transition: color var(--anim-duration-fast) var(--anim-ease-base);
+		transition: color var(--duration-fast) var(--ease-in-out);
 	}
 
 	.content-body :global(a:hover) {
@@ -112,13 +112,9 @@
 	.content-body :global(blockquote) {
 		margin: var(--space-lg) 0;
 		padding: var(--space-lg);
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-very-low) * 100%),
-			transparent
-		);
+		background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent);
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
 		border-radius: var(--border-radius-lg);
 		border-left: none;
 	}
@@ -199,11 +195,7 @@
 		outline: var(--border-width-medium) solid var(--color-highlight);
 		outline-offset: var(--space-2xs);
 		box-shadow: 0 0 0 var(--border-width-thick)
-			color-mix(
-				in srgb,
-				var(--color-highlight) calc(var(--opacity-medium-high) * 100%),
-				transparent
-			);
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-30) * 100%), transparent);
 		border-radius: var(--border-radius-sm);
 	}
 

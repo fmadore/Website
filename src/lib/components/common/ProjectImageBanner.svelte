@@ -45,10 +45,10 @@
 		overflow: hidden;
 		position: relative;
 		transition:
-			transform var(--anim-duration-slow) var(--anim-ease-base),
-			box-shadow var(--anim-duration-slow) var(--anim-ease-base),
-			background var(--anim-duration-slow) var(--anim-ease-base),
-			border-color var(--anim-duration-slow) var(--anim-ease-base);
+			transform var(--duration-slow) var(--ease-in-out),
+			box-shadow var(--duration-slow) var(--ease-in-out),
+			background var(--duration-slow) var(--ease-in-out),
+			border-color var(--duration-slow) var(--ease-in-out);
 		/* Enhanced glassmorphism with sophisticated gradient overlay */
 		background: linear-gradient(
 			135deg,
@@ -88,7 +88,7 @@
 		border-radius: inherit;
 		pointer-events: none;
 		opacity: 0;
-		transition: opacity var(--anim-duration-slow) var(--anim-ease-base);
+		transition: opacity var(--duration-slow) var(--ease-in-out);
 	}
 
 	.project-image-banner:hover {
@@ -131,8 +131,8 @@
 		height: auto;
 		display: block;
 		transition:
-			transform var(--anim-duration-slow) var(--anim-ease-base),
-			filter var(--anim-duration-slow) var(--anim-ease-base);
+			transform var(--duration-slow) var(--ease-in-out),
+			filter var(--duration-slow) var(--ease-in-out);
 		filter: contrast(1.05) saturate(1.1);
 	}
 
@@ -148,7 +148,7 @@
 		right: 0;
 		bottom: 0;
 		pointer-events: none;
-		transition: opacity var(--anim-duration-slow) var(--anim-ease-base);
+		transition: opacity var(--duration-slow) var(--ease-in-out);
 		border-radius: inherit;
 	}
 
@@ -200,7 +200,7 @@
 		);
 		border-radius: calc(var(--border-radius-xl) + var(--space-3xs));
 		opacity: 0;
-		transition: opacity var(--anim-duration-slow) var(--anim-ease-base);
+		transition: opacity var(--duration-slow) var(--ease-in-out);
 		z-index: -1;
 		filter: blur(calc(var(--glass-blur-amount) * 0.6));
 	}

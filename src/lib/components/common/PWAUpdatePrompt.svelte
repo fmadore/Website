@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { browser, dev } from '$app/environment';
+	import Button from '$lib/components/atoms/Button.svelte';
 
 	let showUpdatePrompt = $state(false);
 	let updateAvailable = $state(false);
@@ -142,16 +143,20 @@
 				</p>
 			</div>
 			<div class="update-actions">
-				<button class="update-btn primary" onclick={updateApp} aria-label="Update to new version">
-					Update
-				</button>
-				<button
-					class="update-btn secondary"
+				<Button
+					variant="primary"
+					size="sm"
+					onclick={updateApp}
+					ariaLabel="Update to new version"
+					label="Update"
+				/>
+				<Button
+					variant="ghost"
+					size="sm"
 					onclick={dismissUpdate}
-					aria-label="Dismiss update notification"
-				>
-					Later
-				</button>
+					ariaLabel="Dismiss update notification"
+					label="Later"
+				/>
 			</div>
 		</div>
 	</div>
@@ -172,7 +177,7 @@
 		box-shadow: var(--shadow-xl);
 		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-border) 50%, transparent);
 		z-index: var(--z-modal);
-		animation: slideUp var(--anim-duration-base) var(--anim-ease-out);
+		animation: slideUp var(--duration-moderate) var(--ease-out);
 	}
 
 	@keyframes slideUp {
@@ -228,37 +233,6 @@
 		margin-left: auto;
 	}
 
-	.update-btn {
-		padding: var(--space-2xs) var(--space-sm);
-		border-radius: var(--border-radius-md);
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-medium);
-		cursor: pointer;
-		transition: all var(--anim-duration-fast) var(--anim-ease-base);
-		border: none;
-		min-width: var(--space-4xl); /* 80px */
-	}
-
-	.update-btn.primary {
-		background: var(--color-primary);
-		color: var(--color-white);
-	}
-
-	.update-btn.primary:hover {
-		background: var(--color-primary-dark);
-		transform: var(--transform-lift-sm);
-	}
-
-	.update-btn.secondary {
-		background: var(--color-surface);
-		color: var(--color-text-muted);
-	}
-
-	.update-btn.secondary:hover {
-		background: var(--color-surface-alt);
-		color: var(--color-text-light);
-	}
-
 	/* Desktop responsive */
 	@media (--sm) {
 		.pwa-update-prompt {
@@ -283,11 +257,6 @@
 		.update-text p {
 			font-size: var(--font-size-sm);
 		}
-
-		.update-btn {
-			padding: var(--space-xs) var(--space-md);
-			font-size: var(--font-size-sm);
-		}
 	}
 
 	/* Reduced motion support */
@@ -298,10 +267,6 @@
 
 		.update-icon {
 			animation: none;
-		}
-
-		.update-btn:hover {
-			transform: none;
 		}
 	}
 </style>

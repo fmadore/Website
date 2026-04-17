@@ -262,7 +262,7 @@
 			color-mix(in srgb, var(--color-highlight) 2%, transparent) 100%
 		);
 		border-bottom: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
 		box-shadow:
 			var(--shadow-lg),
 			inset 0 var(--border-width-thin) 0
@@ -289,7 +289,7 @@
 		box-shadow:
 			var(--shadow-xl),
 			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
 	}
 
 	.container {

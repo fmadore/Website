@@ -216,6 +216,11 @@
 		background: color-mix(in srgb, var(--color-accent) 5%, transparent);
 	}
 
+	.dropdown-trigger:focus-visible {
+		outline: none;
+		box-shadow: var(--focus-ring);
+	}
+
 	.dropdown-text {
 		flex: 1;
 		overflow: hidden;

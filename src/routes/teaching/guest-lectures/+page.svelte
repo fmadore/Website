@@ -140,7 +140,7 @@
 		/* Balanced spacing - less top padding, more bottom padding */
 		padding: var(--space-md) var(--space-lg) var(--space-lg) var(--space-lg);
 		margin-bottom: var(--space-md);
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transition: all var(--duration-moderate) var(--ease-in-out);
 
 		/* Subtle transform for depth */
 		position: relative;
@@ -195,7 +195,7 @@
 		border-radius: var(--border-radius-full);
 		margin-left: var(--space-xs);
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium-high) * 100%), transparent);
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-30) * 100%), transparent);
 	}
 
 	/* Dark mode adaptations */

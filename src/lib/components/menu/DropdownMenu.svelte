@@ -130,7 +130,7 @@
 			transparent
 		);
 		color: var(--color-primary);
-		transform: translateX(var(--space-2)) scale(var(--transform-scale-lg));
+		transform: translateX(var(--space-2)) scale(var(--scale-102));
 		box-shadow:
 			var(--shadow-lg),
 			inset 0 var(--border-width-thin) 0

@@ -376,7 +376,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 
 	:global(.location-marker:hover) {
 		transform: scale(1.15);
-		z-index: 10 !important;
+		z-index: var(--z-dropdown) !important;
 	}
 
 	/* Popup styles - with glassmorphism */
@@ -395,8 +395,8 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 
 	:global(.location-map-popup .maplibregl-popup-close-button) {
 		color: var(--color-text-muted);
-		font-size: 18px;
-		padding: 4px 8px;
+		font-size: var(--font-size-lg);
+		padding: var(--space-1) var(--space-2);
 		right: 2px;
 		top: 2px;
 	}

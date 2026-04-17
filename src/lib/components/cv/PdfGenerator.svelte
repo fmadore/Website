@@ -815,7 +815,7 @@
 <style>
 	/* All styling handled by global button classes and glassmorphism utilities */
 	:global(.animate-spin) {
-		animation: spin var(--anim-duration-base) linear infinite;
+		animation: spin var(--duration-moderate) linear infinite;
 	}
 
 	@keyframes spin {

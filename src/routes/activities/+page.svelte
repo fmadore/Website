@@ -194,7 +194,7 @@
 		border-radius: var(--border-radius-md);
 		padding: var(--space-4);
 		box-shadow: var(--shadow-primary), var(--shadow-inner);
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transition: all var(--duration-moderate) var(--ease-in-out);
 	}
 
 	.year-sidebar:hover {
@@ -244,7 +244,7 @@
 		border-radius: var(--border-radius-md);
 		color: var(--color-text);
 		text-decoration: none;
-		transition: all var(--anim-duration-fast) var(--anim-ease-base);
+		transition: all var(--duration-fast) var(--ease-in-out);
 		background: transparent;
 		border: var(--border-width-thin) solid transparent;
 	}
@@ -286,7 +286,7 @@
 			transparent
 		);
 		border-radius: var(--border-radius-full);
-		transition: all var(--anim-duration-fast) var(--anim-ease-base);
+		transition: all var(--duration-fast) var(--ease-in-out);
 	}
 
 	.year-link:hover .year-count {

@@ -338,7 +338,7 @@
 	.award-section {
 		border-color: color-mix(
 			in srgb,
-			var(--color-accent) calc(var(--opacity-low) * 100%),
+			var(--color-accent) calc(var(--opacity-10) * 100%),
 			transparent
 		);
 	}
@@ -380,7 +380,7 @@
 		font-style: italic;
 		background: color-mix(
 			in srgb,
-			var(--color-surface) calc(var(--opacity-medium) * 100%),
+			var(--color-surface) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 		border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
@@ -389,7 +389,7 @@
 	:global(html.dark) .review-quote {
 		background: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-medium) * 100%),
+			var(--color-dark-surface) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 	}

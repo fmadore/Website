@@ -85,7 +85,7 @@
 		font-weight: var(--font-weight-semibold);
 		margin-right: var(--space-2);
 		margin-bottom: var(--space-2);
-		transition: all var(--anim-duration-fast) var(--anim-ease-base);
+		transition: all var(--duration-fast) var(--ease-in-out);
 	}
 
 	.year-tag:hover {

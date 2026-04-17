@@ -77,7 +77,7 @@
 
 		border-radius: var(--border-radius-3xl);
 		z-index: var(--z-popover);
-		animation: slideInMobile var(--anim-duration-base) var(--anim-ease-out);
+		animation: slideInMobile var(--duration-moderate) var(--ease-out);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		box-shadow: var(--shadow-lg);
@@ -161,7 +161,7 @@
 		align-items: center;
 		justify-content: center;
 		border-radius: var(--border-radius-full);
-		transition: background-color var(--anim-duration-fast) var(--anim-ease-base);
+		transition: background-color var(--duration-fast) var(--ease-in-out);
 	}
 
 	.dismiss-btn:hover {

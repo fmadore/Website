@@ -506,14 +506,19 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 
 	.zoom-btn:hover {
 		background-color: var(--color-primary);
-		color: white;
+		color: var(--color-text-inverted);
 		border-color: var(--color-primary);
 		transform: var(--transform-lift-sm);
 		box-shadow: var(--shadow-md);
 	}
 
+	.zoom-btn:focus-visible {
+		outline: none;
+		box-shadow: var(--shadow-sm), var(--focus-ring);
+	}
+
 	.zoom-btn:active {
-		transform: translateY(0);
+		transform: var(--btn-active-transform);
 		box-shadow: var(--shadow-sm);
 	}
 

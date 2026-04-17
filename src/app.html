@@ -89,6 +89,7 @@
 			.grid-cols-1 {
 				grid-template-columns: 1fr;
 			}
+			/* app.html is pre-PostCSS; raw px breakpoint is intentional and mirrors --md (768px) from variables.css */
 			@media (min-width: 768px) {
 				.md\:grid-cols-3 {
 					grid-template-columns: repeat(3, 1fr);

@@ -643,9 +643,11 @@
 		color: var(--color-text-muted);
 		cursor: pointer;
 		padding: var(--space-1);
-		margin: -4px -4px 0 0;
+		margin: calc(-1 * var(--space-1)) calc(-1 * var(--space-1)) 0 0;
 		border-radius: var(--border-radius-full);
-		transition: all 0.2s;
+		transition:
+			color var(--duration-normal) var(--ease-out),
+			background-color var(--duration-normal) var(--ease-out);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -654,6 +656,11 @@
 	.close-btn-minimal:hover {
 		color: var(--color-danger);
 		background: color-mix(in srgb, var(--color-danger) 10%, transparent);
+	}
+
+	.close-btn-minimal:focus-visible {
+		outline: none;
+		box-shadow: var(--focus-ring);
 	}
 
 	.detail-meta-row {

@@ -51,7 +51,6 @@ Base styles define the foundation of the site's design.
 
 1. **Foundation Tokens** (`--sys-*`): Raw values that rarely change
 2. **Semantic Tokens** (`--color-*`, `--space-*`, etc.): Meaningful names for usage context
-3. **Legacy Aliases** (`--spacing-*`): Backward-compatible mappings
 
 #### Color System
 
@@ -66,9 +65,8 @@ Base styles define the foundation of the site's design.
 #### Spacing System (8-point grid)
 
 - **Semantic scale**: `--space-2xs` through `--space-7xl`
-- **Numeric scale**: `--space-0` through `--space-64`
+- **Numeric scale**: `--space-0` through `--space-48`
 - **Tight variants**: `--space-md-tight` (14px), `--space-xl-tight` (28px) for in-between values
-- **Legacy aliases**: `--spacing-*` map to `--space-*` for compatibility
 
 #### Typography Scale (Minor Third 1.2 ratio)
 
@@ -97,9 +95,9 @@ Base styles define the foundation of the site's design.
 #### Animation & Transitions
 
 - **Duration scale**: `--duration-instant` (75ms) through `--duration-slower` (700ms)
-- **Easing functions**: `--ease-in`, `--ease-out`, `--ease-bounce`, `--ease-spring`
-- **Legacy mappings**: `--anim-duration-*` and `--anim-ease-*`
-- **@deprecated**: `--transition-duration-*` tokens — use `--duration-*` instead
+- **Ambient loops**: `--duration-ambient-sm` (4s), `--duration-ambient-md` (8s), `--duration-ambient-lg` (12s) for decorative/shimmer animations
+- **Easing functions**: `--ease-in`, `--ease-out`, `--ease-bounce`, `--ease-spring`, `--ease-smooth`
+- **Stagger delays**: `--stagger-1` through `--stagger-6` (40ms step)
 
 Example usage:
 
@@ -496,7 +494,7 @@ Modern glass effect utilities for creating frosted glass UI elements:
 - **Component-specific**: `.glass-card`, `.glass-panel`, `.glass-panel-light`, `.glass-nav`, `.glass-button`
 - **Button variants**: Enhanced glass button styling with improved contrast
 - **Special effects**: `.glass-frosted` with enhanced saturation
-- **Ambient effects**: `.glass-shimmer` - subtle light reflection animation using `--anim-duration-gentle` (12s)
+- **Ambient effects**: `.glass-shimmer` - subtle light reflection animation using `--duration-ambient-lg` (12s)
 - **Transition utilities**: `.glass-animate`, `.glass-animate-fast`, `.glass-animate-slow`
 - **Dark mode support**: Automatic dark theme adaptations
 - **Browser fallbacks**: Graceful degradation for unsupported browsers
@@ -546,7 +544,7 @@ We use standard breakpoints defined in `src/styles/base/media.css`:
 /* Correct usage */
 @media (--md) {
   .my-component {
-    padding: var(--spacing-8);
+    padding: var(--space-8);
   }
 }
 

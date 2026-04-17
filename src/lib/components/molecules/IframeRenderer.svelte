@@ -147,7 +147,7 @@
 		/* Let the global glassmorphism utilities handle the background and effects */
 		/* Only override the border to match our iframe styling */
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
 	}
 
 	/* Glass effect hover enhancements for interactive iframes */
@@ -158,11 +158,7 @@
 		transform: var(--transform-lift-md);
 		box-shadow:
 			0 12px 40px 0
-				color-mix(
-					in srgb,
-					var(--color-primary) calc(var(--opacity-medium-high) * 100%),
-					transparent
-				),
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent),
 			var(--shadow-lg);
 	}
 
@@ -176,7 +172,7 @@
 	:global(html.dark .iframe-container.glass-highlight),
 	:global(html.dark .iframe-container.glass-frosted) {
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 	}
 
 	/* Aspect ratio iframe container - maintains 16:9 ratio */
@@ -213,7 +209,7 @@
 	:global(.iframe-container-aspect.glass-frosted) {
 		/* Let the global glassmorphism utilities handle the background and effects */
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
 	}
 
 	:global(html.dark .iframe-container-aspect.glass),
@@ -225,7 +221,7 @@
 	:global(html.dark .iframe-container-aspect.glass-highlight),
 	:global(html.dark .iframe-container-aspect.glass-frosted) {
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 	}
 
 	/* Additional aspect ratio variations */
@@ -309,7 +305,7 @@
 		border: var(--space-1) solid var(--color-border);
 		border-top: var(--space-1) solid var(--color-primary);
 		border-radius: var(--border-radius-full);
-		animation: iframe-loading-spin var(--anim-duration-slow) linear infinite;
+		animation: iframe-loading-spin var(--duration-slow) linear infinite;
 		z-index: 6;
 	}
 
@@ -341,8 +337,8 @@
 	/* Interactive hover effect - subtle scale on hover */
 	:global(.iframe-interactive) {
 		transition:
-			transform var(--duration-normal) var(--transition-ease-out),
-			box-shadow var(--duration-normal) var(--transition-ease-out);
+			transform var(--duration-normal) var(--ease-out),
+			box-shadow var(--duration-normal) var(--ease-out);
 	}
 
 	:global(.iframe-interactive:hover) {
@@ -399,13 +395,13 @@
 	:global(.iframe-with-header.glass-heavy .iframe-header) {
 		background: color-mix(
 			in srgb,
-			var(--color-primary) calc(var(--opacity-high) * 100%),
+			var(--color-primary) calc(var(--opacity-90) * 100%),
 			transparent
 		);
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		backdrop-filter: blur(var(--glass-blur-amount));
 		border-bottom: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
 	}
 
 	:global(html.dark .iframe-with-header.glass .iframe-header),
@@ -418,7 +414,7 @@
 			transparent
 		);
 		border-bottom: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 	}
 
 	/* Responsive adjustments */

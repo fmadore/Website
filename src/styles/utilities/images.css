@@ -51,11 +51,11 @@
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-	transition: transform var(--anim-duration-base) var(--anim-ease-out);
+	transition: transform var(--duration-moderate) var(--ease-out);
 }
 
 .image-container:hover img {
-	transform: scale(var(--transform-scale-lg));
+	transform: scale(var(--scale-102));
 }
 
 /* Loading states */
@@ -69,7 +69,7 @@
 	);
 	background-size: var(--transform-distance-full) 100%;
 	background-repeat: no-repeat;
-	animation: loading var(--anim-duration-slow) infinite var(--anim-ease-out);
+	animation: loading var(--duration-slow) infinite var(--ease-out);
 }
 
 @keyframes loading {
@@ -78,6 +78,13 @@
 	}
 	100% {
 		background-position: calc(var(--transform-distance-full) + 100%) 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.image-loading {
+		animation: none;
+		background-image: none;
 	}
 }
 

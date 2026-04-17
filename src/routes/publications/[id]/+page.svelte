@@ -368,7 +368,7 @@
 		gap: var(--space-sm);
 		padding: var(--space-sm) 0;
 		border-bottom: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent);
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent);
 		transition:
 			background var(--duration-fast) var(--ease-out),
 			padding-left var(--duration-fast) var(--ease-out);
@@ -379,11 +379,7 @@
 	}
 
 	.toc-item:hover {
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-very-low) * 100%),
-			transparent
-		);
+		background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent);
 		padding-left: var(--space-sm);
 		border-radius: var(--border-radius-sm);
 	}
@@ -421,7 +417,7 @@
 	:global(html.dark) .toc-item {
 		border-bottom-color: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--opacity-very-low) * 100%),
+			var(--color-white) calc(var(--opacity-5) * 100%),
 			transparent
 		);
 	}
@@ -429,7 +425,7 @@
 	:global(html.dark) .toc-item:hover {
 		background: color-mix(
 			in srgb,
-			var(--color-primary) calc(var(--opacity-low) * 100%),
+			var(--color-primary) calc(var(--opacity-10) * 100%),
 			transparent
 		);
 	}

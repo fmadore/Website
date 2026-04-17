@@ -141,7 +141,7 @@
 		content: '↗';
 		font-size: var(--font-size-sm);
 		margin-left: var(--space-2xs);
-		opacity: var(--opacity-high);
+		opacity: var(--opacity-90);
 	}
 
 	.citation-authors {

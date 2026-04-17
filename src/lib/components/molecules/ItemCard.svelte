@@ -20,7 +20,7 @@
 	const itemHref = $derived(resolve(`${basePath}/${item.id}` as any));
 </script>
 
-<div class="item-card scroll-reveal">
+<div class="item-card">
 	<div class="item-meta improved-meta">
 		{#if item.type}
 			<span class="item-type improved-type-tag" data-type={item.type}>{formatType(item.type)}</span>
@@ -28,7 +28,7 @@
 		<span class="item-date improved-date">{item.date}</span>
 	</div>
 	<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
-	<a href={itemHref} class="item-title">
+	<a href={itemHref} class="item-title link-animated">
 		{item.title}
 	</a>
 	{#if item.authors && item.authors.length > 0}
@@ -123,9 +123,10 @@
 		min-width: 0;
 	}
 
-	.item-title:hover {
-		color: var(--color-primary);
-	}
+	/*
+	 * Hover color is inherited from .link-animated (global).
+	 * The gradient underline replaces the previous color-only hover.
+	 */
 
 	.item-authors {
 		font-size: var(--font-size-sm);

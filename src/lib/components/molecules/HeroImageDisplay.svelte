@@ -289,11 +289,7 @@
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background: color-mix(
-			in srgb,
-			var(--color-black) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
+		background: color-mix(in srgb, var(--color-black) calc(var(--opacity-15) * 100%), transparent);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -327,7 +323,7 @@
 	.zoom-icon svg {
 		filter: drop-shadow(
 			0 var(--space-0-5) var(--space-1)
-				color-mix(in srgb, var(--color-black) calc(var(--opacity-medium) * 100%), transparent)
+				color-mix(in srgb, var(--color-black) calc(var(--opacity-15) * 100%), transparent)
 		);
 	}
 
@@ -346,14 +342,14 @@
 		aspect-ratio: auto;
 		/* Subtle glassmorphism border */
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 	}
 
 	.hero-figure:hover .hero-image {
 		box-shadow: var(--shadow-xl);
 		border-color: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--opacity-medium-low) * 100%),
+			var(--color-white) calc(var(--opacity-15-low) * 100%),
 			transparent
 		);
 	}
@@ -375,15 +371,14 @@
 		/* Enhanced glassmorphism to match PageHeader and ContentBody */
 		background: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
 		);
 		padding: var(--space-4); /* Add padding for glass effect */
 		border-radius: var(--border-radius-xl); /* Match PageHeader border radius */
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
 
 		/* Enhanced shadow to match other components */
 		box-shadow: var(--shadow-md);
@@ -398,14 +393,13 @@
 		/* Enhanced hover gradient */
 		background: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
 		);
 		border-color: color-mix(
 			in srgb,
-			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			var(--color-primary) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 	}
@@ -428,12 +422,12 @@
 		padding: var(--space-2) var(--space-4);
 		background: color-mix(
 			in srgb,
-			var(--color-surface) calc(var(--opacity-medium) * 100%),
+			var(--color-surface) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 		border-radius: var(--border-radius-md);
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-border) calc(var(--opacity-medium-low) * 100%), transparent);
+			color-mix(in srgb, var(--color-border) calc(var(--opacity-15-low) * 100%), transparent);
 		color: var(--color-text);
 		font-weight: var(--font-weight-medium);
 	}
@@ -471,13 +465,13 @@
 	/* Dark mode adjustments - improved consistency */
 	:global(html.dark) .hero-image {
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-very-low) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
 	}
 
 	:global(html.dark) .hero-figure:hover .hero-image {
 		border-color: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--opacity-low) * 100%),
+			var(--color-white) calc(var(--opacity-10) * 100%),
 			transparent
 		);
 	}
@@ -486,7 +480,7 @@
 		background: linear-gradient(
 			135deg,
 			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 35%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 35%,
 			var(--color-dark-surface-alt) 65%,
 			var(--color-dark-surface-deep) 100%
 		);
@@ -498,7 +492,7 @@
 		background: linear-gradient(
 			135deg,
 			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-low) * 100%), transparent) 35%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent) 35%,
 			var(--color-dark-surface-alt) 65%,
 			var(--color-dark-surface-deep) 100%
 		);
@@ -508,12 +502,12 @@
 	:global(html.dark) .hero-figure--glass .hero-caption {
 		background: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-high) * 100%),
+			var(--color-dark-surface) calc(var(--opacity-90) * 100%),
 			transparent
 		);
 		border-color: color-mix(
 			in srgb,
-			var(--color-border) calc(var(--opacity-low) * 100%),
+			var(--color-border) calc(var(--opacity-10) * 100%),
 			transparent
 		);
 		color: var(--color-text-light);
@@ -537,7 +531,7 @@
 		-webkit-backdrop-filter: blur(var(--glass-blur-xl)) saturate(120%);
 		backdrop-filter: blur(var(--glass-blur-xl)) saturate(120%);
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-very-low) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -570,7 +564,7 @@
 		box-shadow: var(--shadow-2xl);
 		border-radius: var(--border-radius-lg);
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-very-low) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
 		display: block;
 		transition: all var(--duration-moderate) var(--ease-in-out);
 	}
@@ -587,13 +581,13 @@
 		/* Use glassmorphism for caption background */
 		background: color-mix(
 			in srgb,
-			var(--color-surface) calc(var(--opacity-low) * 100%),
+			var(--color-surface) calc(var(--opacity-10) * 100%),
 			transparent
 		);
 		-webkit-backdrop-filter: blur(var(--glass-blur-md));
 		backdrop-filter: blur(var(--glass-blur-md));
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 		border-radius: var(--border-radius-lg);
 		box-shadow: var(--shadow-lg);
 		font-family: var(--font-family-serif);
@@ -605,7 +599,7 @@
 		position: absolute !important;
 		top: var(--space-4) !important;
 		right: var(--space-4) !important;
-		z-index: 10 !important;
+		z-index: var(--z-dropdown) !important;
 		width: calc(var(--space-8) + var(--space-2)) !important;
 		height: calc(var(--space-8) + var(--space-2)) !important;
 		border-radius: var(--border-radius-full) !important;
@@ -618,13 +612,13 @@
 		/* Enhanced glassmorphism specifically for close button */
 		background: color-mix(
 			in srgb,
-			var(--color-surface) calc(var(--opacity-medium-high) * 100%),
+			var(--color-surface) calc(var(--opacity-30) * 100%),
 			transparent
 		) !important;
 		backdrop-filter: blur(var(--glass-blur-md)) !important;
 		-webkit-backdrop-filter: blur(var(--glass-blur-md)) !important;
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-surface) calc(var(--opacity-medium-high) * 100%), transparent) !important;
+			color-mix(in srgb, var(--color-surface) calc(var(--opacity-30) * 100%), transparent) !important;
 		box-shadow: var(--shadow-lg) !important;
 		transition: all var(--duration-normal) var(--ease-in-out) !important;
 	}
@@ -632,12 +626,12 @@
 	:global(.close-button:hover) {
 		background: color-mix(
 			in srgb,
-			var(--color-surface) calc(var(--opacity-high) * 100%),
+			var(--color-surface) calc(var(--opacity-90) * 100%),
 			transparent
 		) !important;
 		border-color: color-mix(
 			in srgb,
-			var(--color-surface) calc(var(--opacity-high) * 100%),
+			var(--color-surface) calc(var(--opacity-90) * 100%),
 			transparent
 		) !important;
 		transform: var(--transform-lift-sm) scale(var(--scale-105)) !important;
@@ -648,7 +642,7 @@
 		color: var(--color-text-emphasis) !important;
 		filter: drop-shadow(
 			0 var(--border-width-thin) var(--border-width-medium)
-				color-mix(in srgb, var(--color-text) calc(var(--opacity-medium) * 100%), transparent)
+				color-mix(in srgb, var(--color-text) calc(var(--opacity-15) * 100%), transparent)
 		) !important;
 	}
 
@@ -667,34 +661,26 @@
 		color: var(--color-text-light);
 		background: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-low) * 100%),
+			var(--color-dark-surface) calc(var(--opacity-10) * 100%),
 			transparent
 		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-very-low) * 100%),
-			transparent
-		);
+		border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
 	}
 
 	:global(html.dark) .fullscreen-image {
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-very-low) * 100%),
-			transparent
-		);
+		border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
 	}
 
 	/* Dark theme close button */
 	:global(html.dark .close-button) {
 		background: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-medium-high) * 100%),
+			var(--color-dark-surface) calc(var(--opacity-30) * 100%),
 			transparent
 		) !important;
 		border-color: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-high) * 100%),
+			var(--color-dark-surface) calc(var(--opacity-90) * 100%),
 			transparent
 		) !important;
 		box-shadow: var(--shadow-lg) !important;
@@ -703,12 +689,12 @@
 	:global(html.dark .close-button:hover) {
 		background: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-high) * 100%),
+			var(--color-dark-surface) calc(var(--opacity-90) * 100%),
 			transparent
 		) !important;
 		border-color: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-high) * 100%),
+			var(--color-dark-surface) calc(var(--opacity-90) * 100%),
 			transparent
 		) !important;
 		box-shadow: var(--shadow-xl) !important;

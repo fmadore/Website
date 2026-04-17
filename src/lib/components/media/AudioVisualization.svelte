@@ -70,7 +70,7 @@
 		background: linear-gradient(
 			135deg,
 			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent) 100%
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
 		);
 		min-height: 120px;
 		border-radius: var(--border-radius-lg);
@@ -99,8 +99,7 @@
 				linear-gradient(
 					45deg,
 					transparent 30%,
-					color-mix(in srgb, var(--color-accent) calc(var(--opacity-very-low) * 100%), transparent)
-						70%
+					color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 70%
 				);
 			pointer-events: none;
 		}
@@ -328,8 +327,7 @@
 				linear-gradient(
 					45deg,
 					transparent 30%,
-					color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent)
-						70%
+					color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 70%
 				);
 		}
 	}

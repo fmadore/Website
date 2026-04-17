@@ -133,14 +133,14 @@
 		padding: var(--space-xl);
 		background: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-surface) calc(var(--opacity-high) * 100%), transparent) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-surface) calc(var(--opacity-90) * 100%), transparent) 100%
 		);
 		border-radius: var(--border-radius-lg);
 		text-align: center;
 		margin-top: var(--space-lg);
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
 	}
 
 	.empty-state-message {

@@ -77,7 +77,7 @@
 	:global(.tag-list .tag-button:hover) {
 		transform: var(--transform-lift-sm);
 		box-shadow: 0 var(--space-xs) var(--space-md) 0
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent);
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
 	}
 
 	/* Responsive adjustments */

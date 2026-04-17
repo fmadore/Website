@@ -76,21 +76,14 @@
 		bottom: calc(-2 * var(--space-2xs));
 		background: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent)
-				0%,
-			color-mix(
-					in srgb,
-					var(--color-highlight) calc(var(--opacity-medium-high) * 100%),
-					transparent
-				)
-				50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium-high) * 100%), transparent)
-				100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-30) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-30) * 100%), transparent) 100%
 		);
 		border-radius: var(--border-radius-full);
 		z-index: -1;
 		opacity: 0;
-		transition: opacity var(--duration-moderate) var(--transition-ease-out);
+		transition: opacity var(--duration-moderate) var(--ease-out);
 	}
 
 	.profile-photo {
@@ -173,7 +166,7 @@
 		background: color-mix(in srgb, var(--color-primary) 10%, transparent);
 		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 20%, transparent);
 		border-radius: var(--border-radius-lg);
-		transition: all var(--duration-moderate) var(--transition-ease-in-out);
+		transition: all var(--duration-moderate) var(--ease-in-out);
 		position: relative;
 		overflow: hidden;
 	}
@@ -188,10 +181,10 @@
 		background: linear-gradient(
 			90deg,
 			transparent 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-medium) * 100%), transparent) 50%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-15) * 100%), transparent) 50%,
 			transparent 100%
 		);
-		transition: left var(--duration-moderate) var(--transition-ease-out);
+		transition: left var(--duration-moderate) var(--ease-out);
 	}
 
 	.icon-link:hover {
@@ -225,11 +218,7 @@
 		outline: var(--border-width-medium) solid var(--color-highlight);
 		outline-offset: var(--space-2xs);
 		box-shadow: 0 0 0 var(--border-width-thick)
-			color-mix(
-				in srgb,
-				var(--color-highlight) calc(var(--opacity-medium-high) * 100%),
-				transparent
-			);
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-30) * 100%), transparent);
 	}
 
 	/* Desktop responsive design */
@@ -285,8 +274,8 @@
 	@media (prefers-reduced-motion: no-preference) {
 		.profile-photo img {
 			transition:
-				transform var(--duration-moderate) var(--transition-ease-out),
-				box-shadow var(--duration-moderate) var(--transition-ease-out);
+				transform var(--duration-moderate) var(--ease-out),
+				box-shadow var(--duration-moderate) var(--ease-out);
 		}
 
 		.profile-photo-container:hover::before {
@@ -301,7 +290,7 @@
 		}
 
 		.profile-icons :global(svg) {
-			transition: transform var(--duration-normal) var(--transition-ease-out);
+			transition: transform var(--duration-normal) var(--ease-out);
 		}
 
 		.icon-link:hover :global(svg),
@@ -311,7 +300,7 @@
 		}
 
 		.title-accent {
-			transition: width var(--duration-moderate) var(--transition-ease-out);
+			transition: width var(--duration-moderate) var(--ease-out);
 		}
 
 		.profile-title:hover .title-accent {

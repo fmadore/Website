@@ -76,12 +76,12 @@
 		color: var(--color-accent);
 		background-color: color-mix(
 			in srgb,
-			var(--color-accent) calc(var(--opacity-medium) * 100%),
+			var(--color-accent) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 		padding: var(--space-1) var(--space-3);
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium-high) * 100%), transparent);
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-30) * 100%), transparent);
 		border-radius: var(--border-radius-full);
 		transition:
 			color var(--duration-fast) var(--ease-out),
@@ -171,12 +171,12 @@
 	:global(html.dark) .relevant-item-type {
 		background-color: color-mix(
 			in srgb,
-			var(--color-accent) calc(var(--opacity-medium) * 100%),
+			var(--color-accent) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 		border-color: color-mix(
 			in srgb,
-			var(--color-accent) calc(var(--opacity-medium-high) * 100%),
+			var(--color-accent) calc(var(--opacity-30) * 100%),
 			transparent
 		);
 	}

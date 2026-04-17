@@ -52,12 +52,11 @@
 		/* Simpler background to avoid heavy nested card appearance */
 		background: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-surface) calc(var(--opacity-medium) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent)
-				100%
+			color-mix(in srgb, var(--color-surface) calc(var(--opacity-15) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 100%
 		);
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-border) calc(var(--opacity-medium) * 100%), transparent);
+			color-mix(in srgb, var(--color-border) calc(var(--opacity-15) * 100%), transparent);
 		box-shadow: var(--shadow-sm);
 		transition:
 			transform var(--duration-normal) var(--ease-out),
@@ -70,9 +69,8 @@
 		box-shadow: var(--shadow-md);
 		background: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-surface) calc(var(--opacity-medium-high) * 100%), transparent)
-				0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 100%
+			color-mix(in srgb, var(--color-surface) calc(var(--opacity-30) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 100%
 		);
 	}
 
@@ -118,28 +116,17 @@
 	:global(html.dark) .related-item {
 		background: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-medium) * 100%), transparent)
-				0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent)
-				100%
+			color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-15) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 100%
 		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-very-low) * 100%),
-			transparent
-		);
+		border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
 	}
 
 	:global(html.dark) .related-item:hover {
 		background: linear-gradient(
 			135deg,
-			color-mix(
-					in srgb,
-					var(--color-dark-surface) calc(var(--opacity-medium-high) * 100%),
-					transparent
-				)
-				0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 100%
+			color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-30) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 100%
 		);
 	}
 

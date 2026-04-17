@@ -135,7 +135,7 @@
 		color: var(--color-primary);
 		text-decoration: none;
 		border-radius: var(--border-radius-full);
-		transition: all var(--anim-duration-fast) var(--anim-ease-base);
+		transition: all var(--duration-fast) var(--ease-in-out);
 		background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent);
 		font-weight: var(--font-weight-medium);
 		line-height: 1.2;

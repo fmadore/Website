@@ -167,7 +167,7 @@
 			var(--color-primary)
 		);
 		background-size: 200% 100%;
-		animation: shimmer var(--anim-duration-ambient) ease-in-out infinite;
+		animation: shimmer var(--duration-ambient-md) ease-in-out infinite;
 	}
 
 	@keyframes shimmer {
@@ -188,7 +188,7 @@
 		right: 0;
 		bottom: 0;
 		pointer-events: none;
-		opacity: var(--opacity-low);
+		opacity: var(--opacity-10);
 	}
 
 	.decoration-circle {
@@ -202,7 +202,7 @@
 		height: calc(var(--space-32) * 2.375);
 		top: calc(var(--space-32) * -1.1875); /* ~-150px equivalent */
 		right: calc(var(--space-32) * -0.625); /* ~-100px equivalent */
-		animation: float var(--anim-duration-gentle) ease-in-out infinite;
+		animation: float var(--duration-ambient-lg) ease-in-out infinite;
 	}
 
 	.decoration-circle-2 {
@@ -210,7 +210,7 @@
 		height: var(--space-32);
 		bottom: calc(var(--space-32) * -0.625); /* ~-100px equivalent */
 		left: calc(var(--space-32) * -0.3125); /* ~-50px equivalent */
-		animation: float var(--anim-duration-gentle) ease-in-out infinite reverse;
+		animation: float var(--duration-ambient-lg) ease-in-out infinite reverse;
 	}
 
 	.decoration-line {
@@ -227,7 +227,7 @@
 			transparent
 		);
 		transform: translateY(-50%);
-		animation: pulse-line var(--anim-duration-decorative) ease-in-out infinite;
+		animation: pulse-line var(--duration-ambient-sm) ease-in-out infinite;
 	}
 
 	@keyframes float {
@@ -243,10 +243,10 @@
 	@keyframes pulse-line {
 		0%,
 		100% {
-			opacity: var(--opacity-low);
+			opacity: var(--opacity-10);
 		}
 		50% {
-			opacity: var(--opacity-medium);
+			opacity: var(--opacity-15);
 		}
 	}
 
@@ -269,7 +269,7 @@
 		text-align: center;
 		opacity: 0;
 		transform: translateY(var(--transform-distance-lg));
-		transition: all var(--anim-duration-bounce) var(--anim-ease-base);
+		transition: all var(--duration-slower) var(--ease-in-out);
 		padding: var(--space-6);
 		border-radius: var(--border-radius-xl);
 		width: 100%;
@@ -316,7 +316,7 @@
 		gap: var(--space-4);
 		opacity: 0;
 		transform: translateY(var(--transform-distance-lg));
-		transition: all var(--anim-duration-bounce) var(--anim-ease-base) var(--anim-delay-4);
+		transition: all var(--duration-slower) var(--ease-in-out) var(--stagger-4);
 	}
 
 	.footer-social-links.animate {
@@ -330,7 +330,7 @@
 		gap: var(--space-4);
 		opacity: 0;
 		transform: translateY(var(--transform-distance-md));
-		transition: all var(--anim-duration-slow) var(--anim-ease-base);
+		transition: all var(--duration-slow) var(--ease-in-out);
 		padding: var(--space-4);
 		border-radius: var(--border-radius-lg);
 		min-height: auto;
@@ -364,7 +364,7 @@
 		height: var(--border-width-medium);
 		background: linear-gradient(90deg, var(--color-highlight), var(--color-accent), transparent);
 		border-radius: var(--border-radius-sm);
-		opacity: var(--opacity-high);
+		opacity: var(--opacity-90);
 		display: none;
 	}
 
@@ -382,7 +382,7 @@
 	.footer-link-item {
 		opacity: 0;
 		transform: translateX(calc(var(--transform-distance-md) * -1));
-		transition: all var(--anim-duration-slow) var(--anim-ease-base);
+		transition: all var(--duration-slow) var(--ease-in-out);
 	}
 
 	.footer-link-item.animate {
@@ -401,7 +401,7 @@
 		padding: var(--space-2) var(--space-3);
 		border-radius: var(--border-radius-md);
 		position: relative;
-		transition: all var(--anim-duration-fast) var(--anim-ease-base);
+		transition: all var(--duration-fast) var(--ease-in-out);
 		overflow: hidden;
 		width: 100%;
 		background: color-mix(in srgb, var(--color-white) 5%, transparent);
@@ -416,11 +416,11 @@
 		height: calc(var(--space-6) + var(--space-2));
 		background: color-mix(
 			in srgb,
-			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			var(--color-primary) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 		border-radius: var(--border-radius-md);
-		transition: all var(--anim-duration-fast) var(--anim-ease-base);
+		transition: all var(--duration-fast) var(--ease-in-out);
 		flex-shrink: 0;
 	}
 
@@ -440,10 +440,10 @@
 		background: linear-gradient(
 			90deg,
 			transparent,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent),
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent),
 			transparent
 		);
-		transition: left var(--anim-duration-slow) var(--anim-ease-base);
+		transition: left var(--duration-slow) var(--ease-in-out);
 	}
 
 	.footer-link:hover {
@@ -454,12 +454,12 @@
 	.footer-link:hover .footer-link-icon {
 		background: color-mix(
 			in srgb,
-			var(--color-primary) calc(var(--opacity-medium-high) * 100%),
+			var(--color-primary) calc(var(--opacity-30) * 100%),
 			transparent
 		);
 		transform: scale(var(--scale-110));
 		box-shadow: 0 var(--space-1) var(--space-2)
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium-high) * 100%), transparent);
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
 	}
 
 	.footer-link:hover .link-hover-effect {
@@ -483,7 +483,7 @@
 		box-shadow: var(--shadow-lg);
 		transform: translateY(calc(var(--space-24) + var(--space-2)));
 		opacity: 0;
-		transition: all var(--anim-duration-base) var(--anim-ease-base);
+		transition: all var(--duration-moderate) var(--ease-in-out);
 		z-index: var(--z-fixed);
 	}
 

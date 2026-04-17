@@ -31,7 +31,7 @@
 	font-weight: var(--font-weight-medium);
 	margin-bottom: var(--space-2xs);
 	color: var(--color-text);
-	transition: color var(--anim-duration-base) var(--anim-ease-base);
+	transition: color var(--duration-moderate) var(--ease-in-out);
 }
 
 .activity-link:hover .activity-title {
@@ -58,7 +58,7 @@
 	border-radius: var(--border-radius);
 	font-size: var(--font-size-sm);
 	color: var(--color-text);
-	transition: all var(--anim-duration-base) var(--anim-ease-base);
+	transition: all var(--duration-moderate) var(--ease-in-out);
 	cursor: pointer;
 	border: var(--border-width-thin) solid var(--color-border);
 }
@@ -84,7 +84,7 @@
 	font-size: var(--font-size-sm);
 	color: var(--color-text);
 	text-decoration: none;
-	transition: background-color var(--anim-duration-base) var(--anim-ease-base);
+	transition: background-color var(--duration-moderate) var(--ease-in-out);
 }
 
 .year-tag:hover {

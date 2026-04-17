@@ -216,11 +216,7 @@
 		box-shadow:
 			var(--shadow-lg),
 			0 4px 16px 0
-				color-mix(
-					in srgb,
-					var(--color-primary) calc(var(--opacity-medium-high) * 100%),
-					transparent
-				);
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
 		transition: all var(--duration-fast) ease;
 	}
 
@@ -229,7 +225,7 @@
 		box-shadow:
 			var(--shadow-xl),
 			0 6px 20px 0
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-high) * 100%), transparent);
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-90) * 100%), transparent);
 	}
 
 	.cv-toc-fab.open {

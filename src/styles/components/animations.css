@@ -4,34 +4,16 @@
  * All animations respect prefers-reduced-motion
  */
 
-/* ===== PAGE ENTRY ANIMATIONS ===== */
-/* Subtle page load fade for initial content */
-.page-enter {
-	animation: pageEnter var(--duration-moderate) var(--ease-out) forwards;
-}
+/* ===== ENTRY ANIMATIONS =====
+ * Single parametric keyframe; per-class custom properties set distance + duration.
+ * Collapses the prior pageEnter / headingEnter / bodyEnter / cardEnter / microEnter
+ * duplication into one source of truth.
+ */
 
-@keyframes pageEnter {
+@keyframes fadeSlideUp {
 	from {
 		opacity: 0;
-		transform: translateY(var(--anim-distance-body));
-	}
-
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
-/* ===== ELEMENT-SPECIFIC ANIMATIONS ===== */
-/* Headings: Slower, larger distance for emphasis */
-.heading-enter {
-	animation: headingEnter 400ms var(--ease-out) forwards;
-}
-
-@keyframes headingEnter {
-	from {
-		opacity: 0;
-		transform: translateY(var(--anim-distance-heading));
+		transform: translateY(var(--_enter-distance, var(--anim-distance-body)));
 	}
 	to {
 		opacity: 1;
@@ -39,52 +21,25 @@
 	}
 }
 
-/* Body content: Standard timing */
+.page-enter,
 .body-enter {
-	animation: bodyEnter var(--duration-moderate) var(--ease-out) forwards;
+	--_enter-distance: var(--anim-distance-body);
+	animation: fadeSlideUp var(--duration-moderate) var(--ease-out) forwards;
 }
 
-@keyframes bodyEnter {
-	from {
-		opacity: 0;
-		transform: translateY(var(--anim-distance-body));
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+.heading-enter {
+	--_enter-distance: var(--anim-distance-heading);
+	animation: fadeSlideUp 400ms var(--ease-out) forwards;
 }
 
-/* Cards/list items: Quick, subtle */
 .card-enter {
-	animation: cardEnter 250ms var(--ease-out) forwards;
+	--_enter-distance: var(--anim-distance-card);
+	animation: fadeSlideUp 250ms var(--ease-out) forwards;
 }
 
-@keyframes cardEnter {
-	from {
-		opacity: 0;
-		transform: translateY(var(--anim-distance-card));
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
-/* Micro interactions: Very quick */
 .micro-enter {
-	animation: microEnter var(--duration-fast) var(--ease-out) forwards;
-}
-
-@keyframes microEnter {
-	from {
-		opacity: 0;
-		transform: translateY(var(--anim-distance-micro));
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+	--_enter-distance: var(--anim-distance-micro);
+	animation: fadeSlideUp var(--duration-fast) var(--ease-out) forwards;
 }
 
 /* ===== HERO ENTRANCE =====
@@ -118,17 +73,20 @@
 }
 
 .hero-sequence-title {
-	animation: heroTitle 400ms var(--ease-out) 100ms forwards;
+	--_enter-distance: var(--anim-distance-heading);
+	animation: fadeSlideUp 400ms var(--ease-out) 100ms forwards;
 	opacity: 0;
 }
 
 .hero-sequence-subtitle {
-	animation: heroSubtitle var(--duration-moderate) var(--ease-out) 200ms forwards;
+	--_enter-distance: var(--anim-distance-body);
+	animation: fadeSlideUp var(--duration-moderate) var(--ease-out) 200ms forwards;
 	opacity: 0;
 }
 
 .hero-sequence-actions {
-	animation: heroActions var(--duration-moderate) var(--ease-out) 300ms forwards;
+	--_enter-distance: var(--anim-distance-card);
+	animation: fadeSlideUp var(--duration-moderate) var(--ease-out) 300ms forwards;
 	opacity: 0;
 }
 
@@ -140,39 +98,6 @@
 	to {
 		opacity: 1;
 		transform: scale(1);
-	}
-}
-
-@keyframes heroTitle {
-	from {
-		opacity: 0;
-		transform: translateY(var(--anim-distance-heading));
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
-@keyframes heroSubtitle {
-	from {
-		opacity: 0;
-		transform: translateY(var(--anim-distance-body));
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
-@keyframes heroActions {
-	from {
-		opacity: 0;
-		transform: translateY(var(--anim-distance-card));
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
 	}
 }
 

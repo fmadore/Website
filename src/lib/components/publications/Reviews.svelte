@@ -160,7 +160,7 @@
 		content: '↗';
 		font-size: var(--font-size-sm);
 		margin-left: var(--space-2xs);
-		opacity: var(--opacity-high);
+		opacity: var(--opacity-90);
 	}
 
 	.review-author {
@@ -211,7 +211,7 @@
 		border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
 		background: color-mix(
 			in srgb,
-			var(--color-surface) calc(var(--opacity-medium) * 100%),
+			var(--color-surface) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 		border-left: var(--border-width-thick) solid var(--color-accent);
@@ -242,7 +242,7 @@
 	:global(html.dark) .excerpt {
 		background: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-medium) * 100%),
+			var(--color-dark-surface) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 	}

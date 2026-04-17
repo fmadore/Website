@@ -67,7 +67,7 @@
 		);
 		border-radius: var(--border-radius-lg);
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent);
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
 		box-shadow: var(--shadow-sm);
 		backdrop-filter: blur(var(--glass-blur-sm));
 		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
@@ -81,7 +81,7 @@
 		);
 		border-color: color-mix(
 			in srgb,
-			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			var(--color-primary) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 		box-shadow: var(--shadow-md);
@@ -92,7 +92,7 @@
 		padding: var(--space-2) var(--space-3);
 		background: color-mix(
 			in srgb,
-			var(--color-surface) calc(var(--opacity-high) * 100%),
+			var(--color-surface) calc(var(--opacity-90) * 100%),
 			transparent
 		);
 		border-radius: var(--border-radius-md);
@@ -168,7 +168,7 @@
 		);
 		border-color: color-mix(
 			in srgb,
-			var(--color-primary) calc(var(--opacity-medium) * 100%),
+			var(--color-primary) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 	}
@@ -181,7 +181,7 @@
 		);
 		border-color: color-mix(
 			in srgb,
-			var(--color-primary) calc(var(--opacity-medium-high) * 100%),
+			var(--color-primary) calc(var(--opacity-30) * 100%),
 			transparent
 		);
 	}
@@ -189,7 +189,7 @@
 	:global(html.dark) .project-years--compact {
 		background: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-high) * 100%),
+			var(--color-dark-surface) calc(var(--opacity-90) * 100%),
 			transparent
 		);
 		border-color: var(--color-border-dark);

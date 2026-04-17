@@ -530,36 +530,38 @@
 		isolation: isolate;
 	}
 
-	/* MapLibre controls z-index management */
+	/*
+	 * MapLibre controls z-index management — four-tier stack scoped to the map container.
+	 * Uses --z-above (canvas) and --z-sticky/fixed (overlay chrome) so the map coexists
+	 * predictably with the site's z-index scale.
+	 */
+	:global(.maplibregl-canvas-container),
+	:global(.maplibregl-canvas) {
+		z-index: var(--z-above) !important;
+	}
+
+	:global(.maplibregl-marker) {
+		z-index: calc(var(--z-above) + 4) !important;
+	}
+
+	:global(.maplibregl-popup) {
+		z-index: calc(var(--z-above) + 5) !important;
+	}
+
+	:global(.maplibregl-ctrl-group) {
+		z-index: calc(var(--z-above) + 6) !important;
+	}
+
 	:global(.maplibregl-ctrl-top-right),
 	:global(.maplibregl-ctrl-top-left),
 	:global(.maplibregl-ctrl-bottom-right),
 	:global(.maplibregl-ctrl-bottom-left) {
-		z-index: 8 !important;
-	}
-
-	:global(.maplibregl-canvas-container),
-	:global(.maplibregl-canvas) {
-		/* Keep the WebGL canvas below markers/popups/controls */
-		z-index: 1 !important;
-	}
-
-	/* Markers are DOM overlays; ensure they sit above the canvas */
-	:global(.maplibregl-marker) {
-		z-index: 5 !important;
-	}
-
-	:global(.maplibregl-ctrl-group) {
-		z-index: 7 !important;
-	}
-
-	:global(.maplibregl-popup) {
-		z-index: 6 !important;
+		z-index: calc(var(--z-above) + 7) !important;
 	}
 
 	/* Hide map elements when mobile menu is open */
 	:global(body.mobile-menu-open .map-container) {
-		z-index: 0;
+		z-index: var(--z-base);
 	}
 
 	:global(body.mobile-menu-open .maplibregl-ctrl),
@@ -572,7 +574,7 @@
 		position: absolute;
 		bottom: var(--space-3);
 		left: var(--space-3);
-		z-index: 7;
+		z-index: calc(var(--z-above) + 6);
 		padding: var(--space-2) var(--space-3);
 		font-size: var(--font-size-xs);
 		line-height: var(--line-height-normal);

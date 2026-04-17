@@ -298,7 +298,7 @@
 	.author-btn:hover {
 		background-color: color-mix(
 			in srgb,
-			var(--color-primary) calc(var(--opacity-low) * 100%),
+			var(--color-primary) calc(var(--opacity-10) * 100%),
 			transparent
 		);
 		text-decoration: underline;

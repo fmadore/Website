@@ -61,7 +61,7 @@
 		/* Use CSS variables for consistent spacing and typography */
 		font-weight: var(--font-weight-medium);
 		letter-spacing: var(--letter-spacing-wide);
-		transition: all var(--duration-normal) var(--transition-ease-out);
+		transition: all var(--duration-normal) var(--ease-out);
 
 		/* Enhanced border radius for better visual appeal */
 		border-radius: var(--border-radius-lg) !important;
@@ -88,18 +88,14 @@
 		box-shadow:
 			var(--shadow-md),
 			0 0 0 var(--border-width-thin)
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent);
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
 	}
 
 	:global(.toggle-button-active:hover) {
 		box-shadow:
 			var(--shadow-lg),
 			0 0 0 var(--border-width-medium)
-				color-mix(
-					in srgb,
-					var(--color-primary) calc(var(--opacity-medium-high) * 100%),
-					transparent
-				);
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
 	}
 
 	/* Enhanced glassmorphism integration */
@@ -111,9 +107,8 @@
 		/* Subtle gradient overlay for better visual hierarchy */
 		background-image: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 100%
 		);
 	}
 
@@ -121,9 +116,8 @@
 		/* Enhanced hover state for glassmorphism */
 		background-image: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 100%
 		);
 	}
 
@@ -150,17 +144,16 @@
 	:global(html.dark .toggle-button.glass-button) {
 		background-image: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 100%
 		);
 	}
 
 	:global(html.dark .toggle-button.glass-button:hover) {
 		background-image: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-10) * 100%), transparent) 100%
 		);
 	}
 

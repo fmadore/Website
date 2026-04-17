@@ -32,10 +32,16 @@
 					<dt class="detail-label">{detail.label}</dt>
 					<dd class="detail-value">
 						{#if detail.link && detail.link !== 'undefined' && typeof detail.link === 'string'}
-							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
-							<a href={detail.link} target="_blank" rel="noopener" class="detail-link">
+							<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
+							<a
+								href={detail.link}
+								target="_blank"
+								rel="noopener"
+								class="detail-link link-animated"
+							>
 								{Array.isArray(detail.value) ? detail.value.join(', ') : detail.value}
 							</a>
+							<!-- eslint-enable svelte/no-navigation-without-resolve -->
 						{:else}
 							<span>
 								{Array.isArray(detail.value) ? detail.value.join(', ') : detail.value}
@@ -70,7 +76,7 @@
 		gap: var(--space-md);
 		padding: var(--space-sm) var(--space-xs);
 		border-bottom: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-border) calc(var(--opacity-low) * 100%), transparent);
+			color-mix(in srgb, var(--color-border) calc(var(--opacity-10) * 100%), transparent);
 		position: relative;
 	}
 
@@ -88,7 +94,7 @@
 		/* Add right border to left column items */
 		.detail-item:nth-child(odd) {
 			border-right: var(--border-width-thin) solid
-				color-mix(in srgb, var(--color-border) calc(var(--opacity-low) * 100%), transparent);
+				color-mix(in srgb, var(--color-border) calc(var(--opacity-10) * 100%), transparent);
 		}
 
 		/* Remove bottom border from last row items */
@@ -124,16 +130,12 @@
 		word-break: break-word;
 	}
 
+	/*
+	 * .detail-link keeps its color and focus-ring here; the animated underline
+	 * is supplied by the shared .link-animated utility in typography.css.
+	 */
 	.detail-link {
 		color: var(--color-primary);
-		text-decoration: none;
-		position: relative;
-		transition: color var(--duration-fast) var(--ease-out);
-	}
-
-	.detail-link:hover {
-		color: var(--color-primary-dark);
-		text-decoration: underline;
 	}
 
 	.detail-link:focus-visible {
@@ -145,7 +147,7 @@
 	:global(html.dark) .detail-item {
 		border-bottom-color: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--opacity-very-low) * 100%),
+			var(--color-white) calc(var(--opacity-5) * 100%),
 			transparent
 		);
 	}
@@ -154,7 +156,7 @@
 		:global(html.dark) .detail-item:nth-child(odd) {
 			border-right-color: color-mix(
 				in srgb,
-				var(--color-white) calc(var(--opacity-very-low) * 100%),
+				var(--color-white) calc(var(--opacity-5) * 100%),
 				transparent
 			);
 		}

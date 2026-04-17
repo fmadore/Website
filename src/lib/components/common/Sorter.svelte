@@ -94,7 +94,7 @@
 		/* Use CSS variables for consistent spacing and typography */
 		font-weight: var(--font-weight-medium);
 		letter-spacing: var(--letter-spacing-wide);
-		transition: all var(--duration-normal) var(--transition-ease-out);
+		transition: all var(--duration-normal) var(--ease-out);
 
 		/* Enhanced border radius for better visual appeal */
 		border-radius: var(--border-radius-lg) !important;
@@ -124,9 +124,8 @@
 		/* Subtle gradient overlay for better visual hierarchy */
 		background-image: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-very-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 100%
 		);
 	}
 
@@ -134,9 +133,8 @@
 		/* Enhanced hover state for glassmorphism */
 		background-image: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 100%
 		);
 	}
 
@@ -144,17 +142,16 @@
 	:global(html.dark .sorter-button.glass-button) {
 		background-image: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-low) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-very-low) * 100%), transparent)
-				100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 100%
 		);
 	}
 
 	:global(html.dark .sorter-button.glass-button:hover) {
 		background-image: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-medium) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-low) * 100%), transparent) 100%
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) 0%,
+			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-10) * 100%), transparent) 100%
 		);
 	}
 

@@ -289,20 +289,20 @@
 		/* Glassmorphism styling matching filter sidebar - using global values */
 		background: color-mix(
 			in srgb,
-			var(--color-surface) calc(var(--opacity-medium) * 100%),
+			var(--color-surface) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-surface) calc(var(--opacity-medium-high) * 100%), transparent);
+			color-mix(in srgb, var(--color-surface) calc(var(--opacity-30) * 100%), transparent);
 		box-shadow: var(--shadow-md);
 	}
 
 	.range-slider:hover {
 		background: color-mix(
 			in srgb,
-			var(--color-surface) calc(var(--opacity-medium-high) * 100%),
+			var(--color-surface) calc(var(--opacity-30) * 100%),
 			transparent
 		);
 		border-color: color-mix(in srgb, var(--color-surface) 30%, transparent);
@@ -333,7 +333,7 @@
 		background: var(--gradient-accent-highlight);
 		border-radius: var(--border-radius-sm);
 		pointer-events: none;
-		opacity: var(--opacity-high);
+		opacity: var(--opacity-90);
 		transition: opacity var(--duration-fast) var(--ease-out);
 	}
 
@@ -378,7 +378,7 @@
 	.range-handle:focus {
 		box-shadow:
 			0 0 0 var(--border-width-thick)
-				color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium) * 100%), transparent),
+				color-mix(in srgb, var(--color-accent) calc(var(--opacity-15) * 100%), transparent),
 			var(--shadow-lg);
 		outline: none;
 		transform: translate(-50%, -50%) scale(var(--scale-110));
@@ -388,7 +388,7 @@
 		cursor: grabbing;
 		box-shadow:
 			0 0 0 var(--border-width-thick)
-				color-mix(in srgb, var(--color-accent) calc(var(--opacity-medium-high) * 100%), transparent),
+				color-mix(in srgb, var(--color-accent) calc(var(--opacity-30) * 100%), transparent),
 			var(--shadow-xl);
 		transform: translate(-50%, -50%) scale(var(--scale-125));
 	}
@@ -473,22 +473,18 @@
 		/* Use dark surface colors from global variables */
 		background: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-medium) * 100%),
+			var(--color-dark-surface) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 		border: var(--border-width-thin) solid
-			color-mix(
-				in srgb,
-				var(--color-dark-surface) calc(var(--opacity-medium-high) * 100%),
-				transparent
-			);
+			color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-30) * 100%), transparent);
 		box-shadow: var(--shadow-md);
 	}
 
 	:global(html.dark) .range-slider:hover {
 		background: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-medium-high) * 100%),
+			var(--color-dark-surface) calc(var(--opacity-30) * 100%),
 			transparent
 		);
 		border-color: color-mix(in srgb, var(--color-dark-surface) 30%, transparent);
@@ -498,7 +494,7 @@
 	:global(html.dark) .range-track {
 		background-color: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--opacity-low) * 100%),
+			var(--color-white) calc(var(--opacity-10) * 100%),
 			transparent
 		);
 	}
@@ -506,7 +502,7 @@
 	:global(html.dark) .pip {
 		background-color: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--opacity-medium) * 100%),
+			var(--color-white) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 	}
@@ -514,7 +510,7 @@
 	:global(html.dark) .pip.pip-large {
 		background-color: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--opacity-medium-high) * 100%),
+			var(--color-white) calc(var(--opacity-30) * 100%),
 			transparent
 		);
 	}

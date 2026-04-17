@@ -22,11 +22,11 @@
 
 <style>
 	.theme-toggle {
-		background: color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
+		background: color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
 		cursor: pointer;
 		padding: var(--space-2);
 		color: var(--color-text);
@@ -45,19 +45,15 @@
 		box-shadow:
 			var(--shadow-md),
 			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium-high) * 100%), transparent);
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-30) * 100%), transparent);
 		will-change: transform, box-shadow;
 	}
 
 	.theme-toggle:hover {
-		background: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-medium) * 100%),
-			transparent
-		);
+		background: color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
 		border-color: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--opacity-medium-high) * 100%),
+			var(--color-white) calc(var(--opacity-30) * 100%),
 			transparent
 		);
 		transform: var(--transform-lift-md) scale(var(--scale-105));
@@ -72,7 +68,7 @@
 		box-shadow:
 			var(--shadow-sm),
 			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-medium) * 100%), transparent);
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
 		animation: themeChangePulse var(--duration-moderate) var(--ease-out);
 	}
 
@@ -93,7 +89,7 @@
 			filter var(--duration-normal) var(--ease-out);
 		filter: drop-shadow(
 			0 var(--space-1) var(--space-2)
-				color-mix(in srgb, var(--color-black) calc(var(--opacity-low) * 100%), transparent)
+				color-mix(in srgb, var(--color-black) calc(var(--opacity-10) * 100%), transparent)
 		);
 	}
 
@@ -101,7 +97,7 @@
 		transform: rotate(var(--rotate-12)) scale(var(--scale-110));
 		filter: drop-shadow(
 			0 var(--space-2) var(--space-3)
-				color-mix(in srgb, var(--color-black) calc(var(--opacity-medium) * 100%), transparent)
+				color-mix(in srgb, var(--color-black) calc(var(--opacity-15) * 100%), transparent)
 		);
 	}
 
@@ -114,26 +110,26 @@
 	:global(html.dark) .theme-toggle {
 		background: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-medium) * 100%),
+			var(--color-dark-surface) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 		box-shadow:
 			var(--shadow-md),
 			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
+				color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 	}
 
 	:global(html.dark) .theme-toggle:hover {
 		background: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-medium-high) * 100%),
+			var(--color-dark-surface) calc(var(--opacity-30) * 100%),
 			transparent
 		);
 		border-color: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--opacity-medium) * 100%),
+			var(--color-white) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 		box-shadow:
@@ -152,7 +148,7 @@
 	:global(html.dark) .theme-toggle :global(svg) {
 		filter: drop-shadow(
 			0 var(--space-1) var(--space-2)
-				color-mix(in srgb, var(--color-black) calc(var(--opacity-medium-high) * 100%), transparent)
+				color-mix(in srgb, var(--color-black) calc(var(--opacity-30) * 100%), transparent)
 		);
 	}
 
@@ -197,11 +193,7 @@
 			box-shadow:
 				var(--shadow-md),
 				inset 0 var(--border-width-thin) 0
-					color-mix(
-						in srgb,
-						var(--color-white) calc(var(--opacity-medium-high) * 100%),
-						transparent
-					);
+					color-mix(in srgb, var(--color-white) calc(var(--opacity-30) * 100%), transparent);
 		}
 		50% {
 			transform: scale(var(--scale-110));
@@ -215,11 +207,7 @@
 			box-shadow:
 				var(--shadow-md),
 				inset 0 var(--border-width-thin) 0
-					color-mix(
-						in srgb,
-						var(--color-white) calc(var(--opacity-medium-high) * 100%),
-						transparent
-					);
+					color-mix(in srgb, var(--color-white) calc(var(--opacity-30) * 100%), transparent);
 		}
 	}
 
