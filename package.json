@@ -52,7 +52,8 @@
 			"echarts": "$echarts"
 		},
 		"dompurify": "^3.4.0",
-		"cookie": ">=0.7.0"
+		"cookie": ">=0.7.0",
+		"protocol-buffers-schema": ">=3.6.1"
 	},
 	"dependencies": {
 		"@iconify-icons/academicons": "^1.2.10",

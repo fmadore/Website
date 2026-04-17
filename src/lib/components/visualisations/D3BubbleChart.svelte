@@ -330,13 +330,13 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		const d3Module = await import('d3');
 		d3 = d3Module;
 		isD3Loaded = true;
-		createChart();
+		// createChart is triggered via the reactive $effect below once isD3Loaded flips.
 	});
 
 	// Reactive updates when data or dimensions change
 	$effect(() => {
 		// Track dependencies
-		const _ = [chartData, containerWidth, containerHeight, resolvedColors];
+		const _ = [chartData, containerWidth, containerHeight, resolvedColors, isD3Loaded];
 
 		if (chartContainer && chartData.length > 0 && isD3Loaded) {
 			createChart();

@@ -101,7 +101,7 @@
 								><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
 							{#if pub.reviewedBy && pub.reviewedBy.length > 0}
 								<p class="text-sm mt-1">
-									Reviewed in{' '}
+									Reviewed in
 									{#each pub.reviewedBy as review, i (review.title + review.year)}
 										<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 										<a
@@ -109,8 +109,8 @@
 											target="_blank"
 											rel="noopener noreferrer"
 											class="text-primary review-link">{review.journal}</a
-										><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < pub.reviewedBy.length - 2},{' '}
-										{:else if i === pub.reviewedBy.length - 2},{' '}and{' '}
+										><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < pub.reviewedBy.length - 2},
+										{:else if i === pub.reviewedBy.length - 2}, and
 										{:else}.{/if}
 									{/each}
 								</p>

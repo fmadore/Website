@@ -233,6 +233,10 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 	$effect(() => {
 		if (!browser || !mapContainer) return;
 
+		// Snapshot reactive values synchronously before any await so we don't read
+		// them in an async (inert) context.
+		const initialDarkMode = darkModeDetected;
+
 		let cancelled = false;
 
 		(async () => {
@@ -247,7 +251,6 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 				maplibregl = await loadMapLibre();
 				if (cancelled || !mapContainer?.isConnected) return;
 
-				const initialDarkMode = darkModeDetected;
 				const initialStyle = initialDarkMode ? MAP_STYLES.dark : MAP_STYLES.light;
 				currentThemeIsDark = initialDarkMode;
 

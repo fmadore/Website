@@ -7,8 +7,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		getResolvedChartColors,
 		resolveColors,
 		getEChartsTooltipStyle,
-		prefersReducedMotion,
-		colorWithOpacity
+		prefersReducedMotion
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';

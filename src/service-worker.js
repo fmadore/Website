@@ -40,12 +40,17 @@ sw.addEventListener('install', (event) => {
 	console.log('[SW] Installing service worker v' + version);
 
 	event.waitUntil(
-		// Cache essential assets
 		caches
 			.open(CACHE_NAME)
-			.then((cache) => {
+			.then(async (cache) => {
 				console.log('[SW] Pre-caching offline assets');
-				return cache.addAll(ASSETS_TO_CACHE);
+				// Add assets individually so a single 404 doesn't abort the whole install
+				// (cache.addAll is atomic — any failure rejects the entire operation).
+				const results = await Promise.allSettled(ASSETS_TO_CACHE.map((asset) => cache.add(asset)));
+				const failed = results.filter((r) => r.status === 'rejected').length;
+				if (failed > 0) {
+					console.warn(`[SW] ${failed}/${ASSETS_TO_CACHE.length} assets failed to precache`);
+				}
 			})
 			.then(() => {
 				console.log('[SW] Installation complete');
