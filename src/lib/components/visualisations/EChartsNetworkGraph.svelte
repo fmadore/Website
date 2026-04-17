@@ -32,19 +32,39 @@ ECharts Network Graph - A network visualization for author collaborations
 		publications: string[];
 	};
 
+	type NetworkLabels = {
+		itemSingular?: string; // e.g. 'publication' or 'communication'
+		itemPlural?: string; // e.g. 'Publications' or 'Communications'
+		coAuthorEdge?: string; // edge tooltip heading + legend (e.g. 'Co-author connection')
+		coAuthorShared?: string; // line before the list (e.g. 'Shared publications')
+		contributorEdge?: string; // e.g. 'Contributor connection'
+		contributorShared?: string; // e.g. 'Shared edited volumes/special issues'
+	};
+
 	let {
 		data = [] as CollaborationData[],
 		coAuthorConnections = [] as CoAuthorConnection[],
 		contributorConnections = [] as CoAuthorConnection[],
 		centerAuthor = 'Frédérick Madore',
-		maxConnections = 20 // Limit to top collaborators for readability
+		maxConnections = 20, // Limit to top collaborators for readability
+		labels = {} as NetworkLabels
 	}: {
 		data?: CollaborationData[];
 		coAuthorConnections?: CoAuthorConnection[];
 		contributorConnections?: CoAuthorConnection[];
 		centerAuthor?: string;
 		maxConnections?: number;
+		labels?: NetworkLabels;
 	} = $props();
+
+	const labelCopy = $derived({
+		itemSingular: labels.itemSingular ?? 'publication',
+		itemPlural: labels.itemPlural ?? 'Publications',
+		coAuthorEdge: labels.coAuthorEdge ?? 'Co-author connection',
+		coAuthorShared: labels.coAuthorShared ?? 'Shared publications',
+		contributorEdge: labels.contributorEdge ?? 'Contributor connection',
+		contributorShared: labels.contributorShared ?? 'Shared edited volumes/special issues'
+	});
 
 	// Container references
 	let chartContainer: HTMLDivElement;
@@ -296,12 +316,12 @@ ECharts Network Graph - A network visualization for author collaborations
 					} else {
 						const collab = data.find((c) => c.author === p.data['name']);
 						if (collab) {
-							const publicationList = collab.publications.map((pub) => `• ${pub}`).join('<br/>');
+							const itemList = collab.publications.map((pub) => `• ${pub}`).join('<br/>');
 
 							return `<strong>${p.data['name']}</strong><br/>
 								Collaborations with ${centerAuthor}: ${collab.collaborationCount}<br/>
-								<em>Publications:</em><br/>
-								${publicationList}`;
+								<em>${labelCopy.itemPlural}:</em><br/>
+								${itemList}`;
 						}
 					}
 				} else if (p.dataType === 'edge') {
@@ -309,22 +329,20 @@ ECharts Network Graph - A network visualization for author collaborations
 					if (p.data['connectionData']) {
 						const conn = p.data['connectionData'] as CoAuthorConnection;
 						const connectionType = p.data['connectionType'];
-						const publicationList = conn.publications
-							.map((pub: string) => `• ${pub}`)
-							.join('<br/>');
+						const itemList = conn.publications.map((pub: string) => `• ${pub}`).join('<br/>');
 
 						if (connectionType === 'contributor') {
-							return `<strong>Contributor connection</strong><br/>
+							return `<strong>${labelCopy.contributorEdge}</strong><br/>
 								${conn.source} ↔ ${conn.target}<br/>
-								Shared edited volumes/special issues: ${conn.publicationCount}<br/>
-								<em>Publications:</em><br/>
-								${publicationList}`;
+								${labelCopy.contributorShared}: ${conn.publicationCount}<br/>
+								<em>${labelCopy.itemPlural}:</em><br/>
+								${itemList}`;
 						}
-						return `<strong>Co-author connection</strong><br/>
+						return `<strong>${labelCopy.coAuthorEdge}</strong><br/>
 							${conn.source} ↔ ${conn.target}<br/>
-							Shared publications: ${conn.publicationCount}<br/>
-							<em>Publications:</em><br/>
-							${publicationList}`;
+							${labelCopy.coAuthorShared}: ${conn.publicationCount}<br/>
+							<em>${labelCopy.itemPlural}:</em><br/>
+							${itemList}`;
 					} else {
 						// Connection to center author
 						const collab = data.find((c) => c.author === (p.data['target'] as string));
@@ -481,20 +499,24 @@ ECharts Network Graph - A network visualization for author collaborations
 				<div class="legend-line" style="background-color: {resolvedColors.primary}"></div>
 				<span>Direct collaboration</span>
 			</div>
-			<div class="legend-item">
-				<div
-					class="legend-line"
-					style="background-color: {resolvedColors.accent}; border-bottom: 2px dashed {resolvedColors.accent}; height: 0;"
-				></div>
-				<span>Co-author connection</span>
-			</div>
-			<div class="legend-item">
-				<div
-					class="legend-line legend-dotted"
-					style="border-bottom-color: {resolvedColors.highlight};"
-				></div>
-				<span>Contributor connection</span>
-			</div>
+			{#if coAuthorConnections.length > 0}
+				<div class="legend-item">
+					<div
+						class="legend-line"
+						style="background-color: {resolvedColors.accent}; border-bottom: 2px dashed {resolvedColors.accent}; height: 0;"
+					></div>
+					<span>{labelCopy.coAuthorEdge}</span>
+				</div>
+			{/if}
+			{#if contributorConnections.length > 0}
+				<div class="legend-item">
+					<div
+						class="legend-line legend-dotted"
+						style="border-bottom-color: {resolvedColors.highlight};"
+					></div>
+					<span>{labelCopy.contributorEdge}</span>
+				</div>
+			{/if}
 		</div>
 	{/if}
 

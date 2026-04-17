@@ -528,6 +528,12 @@
 					contributorConnections={[]}
 					centerAuthor={CENTER_AUTHOR}
 					maxConnections={copresenterNetworkData.collaborators.length}
+					labels={{
+						itemSingular: 'communication',
+						itemPlural: 'Communications',
+						coAuthorEdge: 'Co-presenter connection',
+						coAuthorShared: 'Shared communications'
+					}}
 				/>
 			</div>
 		{:else}

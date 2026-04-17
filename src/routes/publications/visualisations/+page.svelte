@@ -297,6 +297,52 @@
 					}
 				}
 
+				// For chapters and encyclopedia entries, the `editors` field holds the
+				// book/volume editors — treat them as contributor collaborators (not co-authors,
+				// to avoid spurious co-author edges between the chapter author and the volume editors).
+				if (pub.editors && (pub.type === 'chapter' || pub.type === 'encyclopedia')) {
+					const volumeEditors = (
+						typeof pub.editors === 'string'
+							? pub.editors.split(/\s*(?:,|and)\s*/).map((name) => name.trim())
+							: pub.editors
+					).filter((editor) => editor && editor !== 'Frédérick Madore');
+
+					volumeEditors.forEach((editor) => {
+						if (!collaborations[editor]) {
+							collaborations[editor] = {
+								publications: new Set<string>(),
+								isContributor: true
+							};
+						}
+						collaborations[editor].publications.add(pub.title);
+					});
+
+					// Track connections between co-editors of the same volume
+					for (let i = 0; i < volumeEditors.length; i++) {
+						for (let j = i + 1; j < volumeEditors.length; j++) {
+							const author1 = volumeEditors[i];
+							const author2 = volumeEditors[j];
+
+							let connection = contributorConnections.find(
+								(c) =>
+									(c.source === author1 && c.target === author2) ||
+									(c.source === author2 && c.target === author1)
+							);
+
+							if (!connection) {
+								connection = {
+									source: author1,
+									target: author2,
+									publications: new Set<string>()
+								};
+								contributorConnections.push(connection);
+							}
+
+							connection.publications.add(pub.title);
+						}
+					}
+				}
+
 				// Extract TOC authors (contributors to edited volumes and special issues)
 				if (pub.tableOfContents && (pub.type === 'book' || pub.type === 'special-issue')) {
 					const tocAuthors: string[] = [];
