@@ -527,7 +527,7 @@
 					coAuthorConnections={copresenterNetworkData.connections}
 					contributorConnections={[]}
 					centerAuthor={CENTER_AUTHOR}
-					maxConnections={25}
+					maxConnections={copresenterNetworkData.collaborators.length}
 				/>
 			</div>
 		{:else}
