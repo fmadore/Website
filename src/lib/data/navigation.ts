@@ -47,7 +47,15 @@ export const navItems: NavItem[] = [
 		path: `${base}/conference-activity`,
 		dropdown: [
 			{ name: 'All Conference Activity', path: `${base}/conference-activity` },
-			{ name: 'Visualisations', path: `${base}/conference-activity/visualisations` }
+			{ name: 'Visualisations', path: `${base}/conference-activity/visualisations` },
+			{
+				name: 'STIAS DH & AI Workshop 2026',
+				path: 'https://fmadore.github.io/stias-dh-ai-workshop-2026/'
+			},
+			{
+				name: 'DH & AI in African Studies 2026',
+				path: 'https://fmadore.github.io/dh-ai-african-studies-2026/'
+			}
 		]
 	},
 	{ name: 'Teaching', path: `${base}/teaching` },
