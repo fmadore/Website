@@ -317,11 +317,17 @@
 						collaborations[editor].publications.add(pub.title);
 					});
 
-					// Track connections between co-editors of the same volume
-					for (let i = 0; i < volumeEditors.length; i++) {
-						for (let j = i + 1; j < volumeEditors.length; j++) {
-							const author1 = volumeEditors[i];
-							const author2 = volumeEditors[j];
+					// Connect volume editors to each other AND to the chapter's co-authors
+					// (the editors curated the volume that includes this chapter).
+					const editorTargets = [...volumeEditors, ...coAuthors];
+					for (let i = 0; i < editorTargets.length; i++) {
+						for (let j = i + 1; j < editorTargets.length; j++) {
+							const author1 = editorTargets[i];
+							const author2 = editorTargets[j];
+							// Skip pairs that are both direct co-authors (already linked via coAuthorConnections).
+							if (!volumeEditors.includes(author1) && !volumeEditors.includes(author2)) {
+								continue;
+							}
 
 							let connection = contributorConnections.find(
 								(c) =>
