@@ -50,11 +50,13 @@ export const navItems: NavItem[] = [
 			{ name: 'Visualisations', path: `${base}/conference-activity/visualisations` },
 			{
 				name: 'STIAS DH & AI Workshop 2026',
-				path: 'https://fmadore.github.io/stias-dh-ai-workshop-2026/'
+				path: 'https://fmadore.github.io/stias-dh-ai-workshop-2026/',
+				rel: 'me'
 			},
 			{
 				name: 'DH & AI in African Studies 2026',
-				path: 'https://fmadore.github.io/dh-ai-african-studies-2026/'
+				path: 'https://fmadore.github.io/dh-ai-african-studies-2026/',
+				rel: 'me'
 			}
 		]
 	},

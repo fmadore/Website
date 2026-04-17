@@ -47,6 +47,7 @@ export const GET: RequestHandler = async () => {
 		// Secondary pages
 		{ path: '/publications/visualisations', priority: 0.8, changefreq: 'monthly' },
 		{ path: '/conference-activity', priority: 0.7, changefreq: 'monthly' },
+		{ path: '/conference-activity/visualisations', priority: 0.8, changefreq: 'monthly' },
 		{ path: '/teaching/guest-lectures', priority: 0.8, changefreq: 'monthly' },
 		// RSS Feed - important for content syndication and discoverability
 		{ path: '/rss.xml', priority: 0.5, changefreq: 'weekly' }

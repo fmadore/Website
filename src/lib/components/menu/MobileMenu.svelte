@@ -47,7 +47,9 @@
 										class="mobile-dropdown-link"
 										onclick={onCloseMenu}
 										target={subItem.path.startsWith('http') ? '_blank' : null}
-										rel={subItem.path.startsWith('http') ? 'noopener noreferrer' : null}
+										rel={subItem.path.startsWith('http')
+											? `noopener noreferrer${subItem.rel ? ` ${subItem.rel}` : ''}`
+											: null}
 									>
 										{subItem.name}
 									</a>
