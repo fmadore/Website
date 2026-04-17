@@ -125,18 +125,8 @@
 
 	.breadcrumb-link:hover {
 		color: var(--color-primary);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-30) * 100%),
-			transparent
-		);
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-sm);
+		background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+		border-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
 	}
 
 	.breadcrumb-link:focus-visible {

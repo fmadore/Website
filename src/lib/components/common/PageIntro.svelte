@@ -32,69 +32,31 @@
 </div>
 
 <style>
+	/*
+	 * PageIntro is an intro-hero surface — keeps glass (per the roadmap's
+	 * "glass for chrome and hero") but simplified to a single primary tint
+	 * instead of the prior three-colour gradient. Featured variant adds a
+	 * single left-accent stripe instead of a multi-hue top bar.
+	 */
 	.page-intro {
 		font-size: var(--font-size-heading-5);
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text);
 		margin-bottom: var(--space-lg);
 		position: relative;
-		transition: all var(--duration-moderate) var(--ease-in-out);
 		padding: var(--space-md) var(--space-xl);
 		border-radius: var(--border-radius-lg);
-
-		/* Built-in glassmorphism for all variants */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
+		background: color-mix(in srgb, var(--color-primary) 6%, transparent);
 		backdrop-filter: blur(var(--glass-blur-amount));
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-30) * 100%), transparent);
-		box-shadow: var(--shadow-lg);
+		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+		box-shadow: var(--shadow-sm);
 	}
-
-	.page-intro:hover {
-		transform: var(--transform-lift-sm);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
-		border-color: color-mix(in srgb, var(--color-white) 30%, transparent);
-		box-shadow: var(--shadow-xl);
-	}
-
-	/* Variant styles */
-	/* Default variant uses the base glassmorphism styling applied above */
 
 	.page-intro--compact {
 		font-size: var(--font-size-heading-6);
 		margin-bottom: var(--space-md);
 		padding: var(--space-sm) var(--space-lg);
-		/* Lighter glassmorphism for compact variant */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		box-shadow: var(--shadow-sm);
-	}
-
-	.page-intro--compact:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
-		box-shadow: var(--shadow-md);
 	}
 
 	.page-intro--emphasized {
@@ -103,38 +65,10 @@
 		margin-bottom: var(--space-xl);
 		color: var(--color-text-emphasis);
 		padding: var(--space-xl) var(--space-2xl);
-
-		/* Enhanced glassmorphism for emphasized variant */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
-		backdrop-filter: blur(var(--glass-blur-fallback));
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback));
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 15%, transparent);
-		box-shadow: var(--shadow-xl);
-
-		/* Add subtle accent border for emphasis */
-		border-left: var(--border-width-thick) solid transparent;
-		border-image: linear-gradient(180deg, var(--color-primary) 0%, var(--color-highlight) 100%) 1;
-		border-image-slice: 1;
-	}
-
-	.page-intro--emphasized:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-10) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-30) * 100%),
-			transparent
-		);
-		box-shadow: var(--shadow-2xl);
+		background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 25%, transparent);
+		border-left: var(--border-width-thick) solid var(--color-primary);
+		box-shadow: var(--shadow-md);
 	}
 
 	.page-intro--featured {
@@ -142,48 +76,12 @@
 		font-weight: var(--font-weight-medium);
 		margin-bottom: var(--space-xl);
 		padding: var(--space-2xl);
-
-		/* Premium glassmorphism for featured variant */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-10) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
+		background: color-mix(in srgb, var(--color-primary) 12%, transparent);
 		backdrop-filter: blur(var(--glass-blur-fallback));
 		-webkit-backdrop-filter: blur(var(--glass-blur-fallback));
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
-		box-shadow: var(--shadow-2xl);
-		position: relative;
-		overflow: hidden;
-	}
-
-	.page-intro--featured::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: 3px;
-		background: linear-gradient(
-			90deg,
-			var(--color-primary) 0%,
-			var(--color-highlight) 50%,
-			var(--color-accent) 100%
-		);
-		opacity: var(--opacity-15);
-	}
-
-	.page-intro--featured:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-15) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent) 100%
-		);
-		border-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
-		box-shadow: 0 20px 60px 0 color-mix(in srgb, var(--color-black) 30%, transparent);
+		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+		border-left: var(--border-width-thick) solid var(--color-primary);
+		box-shadow: var(--shadow-lg);
 	}
 
 	/* Typography enhancements */
@@ -242,100 +140,25 @@
 		color: var(--color-text-emphasis);
 	}
 
-	/* Dark mode enhancements */
+	/*
+	 * Dark-mode PageIntro — stronger primary tint so the hero surface reads
+	 * as coloured rather than ghost-grey against the --color-background.
+	 */
 	:global(html.dark) .page-intro {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-10) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
-		box-shadow: var(--shadow-lg);
-	}
-
-	:global(html.dark) .page-intro:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-15) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent) 100%
-		);
-		border-color: color-mix(in srgb, var(--color-white) 15%, transparent);
-		box-shadow: var(--shadow-xl);
-	}
-
-	:global(html.dark) .page-intro--compact {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
-		box-shadow: var(--shadow-sm);
-	}
-
-	:global(html.dark) .page-intro--compact:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-10) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
+		background: color-mix(in srgb, var(--color-primary) 18%, transparent);
+		border-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
 		box-shadow: var(--shadow-md);
 	}
 
 	:global(html.dark) .page-intro--emphasized {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-15) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-30) * 100%),
-			transparent
-		);
-		box-shadow: var(--shadow-xl);
-	}
-
-	:global(html.dark) .page-intro--emphasized:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 16%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 12%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-15) * 100%), transparent) 100%
-		);
-		border-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
-		box-shadow: var(--shadow-2xl);
+		background: color-mix(in srgb, var(--color-primary) 22%, transparent);
+		border-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
 	}
 
 	:global(html.dark) .page-intro--featured {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 15%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-15) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent) 100%
-		);
-		border-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
-		box-shadow: var(--shadow-2xl);
-	}
-
-	:global(html.dark) .page-intro--featured:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 15%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-15) * 100%), transparent) 100%
-		);
-		border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
-		box-shadow: 0 20px 60px 0 color-mix(in srgb, var(--color-black) 60%, transparent);
-	}
-
-	:global(html.dark) .page-intro--featured::before {
-		opacity: var(--opacity-30);
+		background: color-mix(in srgb, var(--color-primary) 26%, transparent);
+		border-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
+		box-shadow: var(--shadow-lg);
 	}
 
 	:global(html.dark) .page-intro :global(a) {
@@ -376,17 +199,9 @@
 
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
-		.page-intro,
 		.page-intro :global(a),
 		.page-intro :global(a::after) {
 			transition: none;
-		}
-
-		.page-intro:hover,
-		.page-intro--compact:hover,
-		.page-intro--emphasized:hover,
-		.page-intro--featured:hover {
-			transform: none;
 		}
 	}
 </style>

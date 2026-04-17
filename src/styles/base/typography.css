@@ -21,7 +21,14 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-/* Headings */
+/*
+ * Headings — serif discipline.
+ * Only the display tier (h1) defaults to Source Serif 4. h2–h6 are the
+ * sans workhorse (IBM Plex Sans) so subheadings and UI chrome feel calm
+ * and the display tier can carry the editorial weight.
+ *
+ * Opt in to serif elsewhere with the `.font-serif` utility class.
+ */
 h1,
 h2,
 h3,
@@ -29,7 +36,7 @@ h4,
 h5,
 h6 {
 	margin-top: 0;
-	font-family: var(--font-family-serif);
+	font-family: var(--font-family-sans);
 	font-weight: var(--font-weight-bold);
 	line-height: var(--line-height-heading);
 	letter-spacing: var(--tracking-heading);
@@ -37,6 +44,7 @@ h6 {
 }
 
 h1 {
+	font-family: var(--font-family-serif);
 	font-size: var(--font-size-heading-1);
 	margin-bottom: var(--space-xl);
 	line-height: var(--line-height-heading);
@@ -47,24 +55,28 @@ h2 {
 	font-size: var(--font-size-heading-2);
 	margin-bottom: var(--space-lg);
 	margin-top: var(--space-2xl);
+	font-weight: var(--font-weight-semibold);
 }
 
 h3 {
 	font-size: var(--font-size-heading-3);
 	margin-bottom: var(--space-md);
 	margin-top: var(--space-xl);
+	font-weight: var(--font-weight-semibold);
 }
 
 h4 {
 	font-size: var(--font-size-heading-4);
 	margin-bottom: var(--space-sm);
 	margin-top: var(--space-lg);
+	font-weight: var(--font-weight-semibold);
 }
 
 h5 {
 	font-size: var(--font-size-heading-5);
 	margin-bottom: var(--space-xs);
 	margin-top: var(--space-md);
+	font-weight: var(--font-weight-semibold);
 }
 
 h6 {

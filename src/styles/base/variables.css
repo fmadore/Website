@@ -192,20 +192,25 @@
 	--sys-font-family-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Consolas', 'Monaco', monospace;
 
 	/*
-	 * Type Scale - Minor Third (1.2) with fluid sizing
-	 * Step -3: 0.579rem → Step 6: 2.986rem
-	 * Step -3 is reserved for dense data-viz chrome (map legends, chart axis labels).
+	 * Type Scale — forked ratios.
+	 *   • Body / UI (step --3 through step 1): Minor Third (1.2) — keeps dense
+	 *     reading and UI chrome tightly rhythmic.
+	 *   • Display (step 2 through step 6): Major Third (1.25) — gives detail-page
+	 *     titles and heroes real weight at wide viewport widths without sprawling
+	 *     into adjacent sections.
+	 *   • Step --3 is reserved for dense data-viz chrome (map legends, chart labels).
 	 */
 	--sys-type-step--3: clamp(0.5787rem, 0.5498rem + 0.1447vw, 0.6944rem);
 	--sys-type-step--2: clamp(0.6944rem, 0.6597rem + 0.1736vw, 0.8333rem);
 	--sys-type-step--1: clamp(0.8333rem, 0.7917rem + 0.2083vw, 1rem);
 	--sys-type-step-0: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
 	--sys-type-step-1: clamp(1.2rem, 1.14rem + 0.3vw, 1.35rem);
-	--sys-type-step-2: clamp(1.44rem, 1.368rem + 0.36vw, 1.62rem);
-	--sys-type-step-3: clamp(1.728rem, 1.6416rem + 0.4321vw, 1.944rem);
-	--sys-type-step-4: clamp(2.0736rem, 1.9699rem + 0.5186vw, 2.3328rem);
-	--sys-type-step-5: clamp(2.4883rem, 2.3639rem + 0.6221vw, 2.7994rem);
-	--sys-type-step-6: clamp(2.986rem, 2.8367rem + 0.7466vw, 3.3592rem);
+	/* Display tier: ratio 1.25 */
+	--sys-type-step-2: clamp(1.5rem, 1.425rem + 0.375vw, 1.6875rem);
+	--sys-type-step-3: clamp(1.875rem, 1.781rem + 0.469vw, 2.109rem);
+	--sys-type-step-4: clamp(2.344rem, 2.227rem + 0.586vw, 2.637rem);
+	--sys-type-step-5: clamp(2.93rem, 2.784rem + 0.732vw, 3.296rem);
+	--sys-type-step-6: clamp(3.663rem, 3.48rem + 0.915vw, 4.12rem);
 
 	/* Semantic font families */
 	--font-family-sans: var(--sys-font-family-sans);
@@ -247,7 +252,7 @@
 	--line-height-loose: 1.9;
 
 	/* Contextual line heights - tuned for Source Serif 4 headings */
-	--line-height-heading: 1.15;
+	--line-height-heading: 1.1;
 	--line-height-subheading: 1.3;
 	--line-height-body: 1.6;
 	--line-height-caption: 1.45;
@@ -364,6 +369,10 @@
 	--space-5xl: var(--space-32);
 	--space-6xl: var(--space-40);
 	--space-7xl: var(--space-48);
+
+	/* Reading rhythm — use on detail pages between sections to give prose room. */
+	--space-reading: var(--space-xl);
+	--space-reading-loose: var(--space-2xl);
 
 	/* ===== BORDER RADIUS ===== */
 	/* 

@@ -30,12 +30,9 @@
 <div class="filter-section-content">
 	<div class="filter-section-header">
 		<h3 class="filter-section-title">{title}</h3>
-		{#if activeItems.length > 0}
-			<span class="active-count">{activeItems.length}</span>
-		{/if}
 	</div>
 
-	<!-- Filter chips -->
+	<!-- Filter chips (active state already communicates selection; no separate count) -->
 	<div class="filter-chips-container">
 		{#each displayedItems as item (item)}
 			<button
@@ -52,17 +49,17 @@
 		{/each}
 	</div>
 
-	<!-- Actions row -->
+	<!-- Actions row — plain text links, not buttons -->
 	<div class="filter-actions">
 		{#if hasMoreItems}
-			<button type="button" class="action-button" onclick={toggleShowAll}>
+			<button type="button" class="filter-action-link" onclick={toggleShowAll}>
 				{showAll ? 'Show less' : `+${items.length - initialDisplayCount} more`}
 			</button>
 		{/if}
 		{#if activeItems.length > 0}
 			<button
 				type="button"
-				class="action-button clear"
+				class="filter-action-link filter-action-link--clear"
 				onclick={() => clearFilterSelection(activeItems, toggleItem)}
 			>
 				Clear

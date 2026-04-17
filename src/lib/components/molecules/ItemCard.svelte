@@ -48,12 +48,14 @@
 	.item-card {
 		position: relative;
 		padding: var(--space-md);
-		border-radius: var(--border-radius-sm);
-		transition:
-			all var(--duration-normal) var(--ease-out),
-			transform var(--duration-normal) var(--ease-out),
-			box-shadow var(--duration-normal) var(--ease-out);
+		border-radius: var(--border-radius-lg);
+		background: var(--color-surface);
+		border: var(--border-width-thin) solid var(--color-border);
 		box-shadow: var(--shadow-sm);
+		transition:
+			transform var(--duration-moderate) var(--ease-spring),
+			box-shadow var(--duration-moderate) var(--ease-out),
+			border-color var(--duration-fast) var(--ease-out);
 	}
 
 	.item-card::before {
@@ -64,7 +66,7 @@
 		bottom: 0;
 		width: 0;
 		background-color: var(--color-primary);
-		border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm);
+		border-radius: var(--border-radius-lg) 0 0 var(--border-radius-lg);
 		transition: width var(--duration-normal) var(--ease-out);
 		opacity: var(--opacity-70);
 	}
@@ -75,7 +77,15 @@
 
 	.item-card:hover {
 		transform: translateY(-2px);
-		box-shadow: var(--shadow-md);
+		border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
+		box-shadow:
+			0 12px 28px -8px color-mix(in srgb, var(--color-primary) 20%, transparent),
+			0 4px 10px -4px color-mix(in srgb, var(--color-black) 6%, transparent);
+	}
+
+	/* Card hover pre-reveals the title's animated underline. */
+	.item-card:hover :global(.item-title.link-animated) {
+		background-size: 100% 2px;
 	}
 
 	/* Improved meta row: type left, date right, both vertically centered */

@@ -149,8 +149,8 @@
 	.type-badge {
 		display: inline-flex;
 		align-items: center;
-		background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-highlight) 100%);
-		color: var(--color-background);
+		background: var(--color-primary);
+		color: var(--color-text-inverted);
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-bold);
 		text-transform: uppercase;

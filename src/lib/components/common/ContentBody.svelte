@@ -40,9 +40,12 @@
 		/* Glassmorphism applied via utility classes in template */
 	}
 
-	/* Variant styles */
+	/*
+	 * Reading rhythm: detail pages need vertical breathing room between
+	 * sections. --space-reading is ~1.5× line-height for the body.
+	 */
 	.content-body--default {
-		margin-bottom: var(--space-lg);
+		margin-bottom: var(--space-reading);
 	}
 
 	.content-body--compact {
@@ -52,12 +55,12 @@
 
 	.content-body--wide {
 		padding: var(--space-lg);
-		margin-bottom: var(--space-xl-tight);
+		margin-bottom: var(--space-reading-loose);
 	}
 
 	/* Typography styling for content within the body */
 	.content-body :global(p) {
-		margin-bottom: var(--space-lg);
+		margin-bottom: var(--space-md);
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text);
 	}

@@ -41,37 +41,27 @@
 </a>
 
 <style>
-	/* Enhanced related publication card styling - simpler to avoid nested card effect */
 	.related-item {
 		position: relative;
 		display: block;
 		text-decoration: none;
 		padding: var(--space-md);
 		border-radius: var(--border-radius-lg);
-
-		/* Simpler background to avoid heavy nested card appearance */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-surface) calc(var(--opacity-15) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-border) calc(var(--opacity-15) * 100%), transparent);
+		background: var(--color-surface);
+		border: var(--border-width-thin) solid var(--color-border);
 		box-shadow: var(--shadow-sm);
 		transition:
-			transform var(--duration-normal) var(--ease-out),
-			box-shadow var(--duration-normal) var(--ease-out),
-			background var(--duration-normal) var(--ease-out);
+			transform var(--duration-moderate) var(--ease-spring),
+			box-shadow var(--duration-moderate) var(--ease-out),
+			border-color var(--duration-fast) var(--ease-out);
 	}
 
 	.related-item:hover {
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-md);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-surface) calc(var(--opacity-30) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 100%
-		);
+		transform: translateY(-2px);
+		border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
+		box-shadow:
+			0 12px 28px -8px color-mix(in srgb, var(--color-primary) 20%, transparent),
+			0 4px 10px -4px color-mix(in srgb, var(--color-black) 6%, transparent);
 	}
 
 	.related-date {
@@ -86,7 +76,6 @@
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-semibold);
 		line-height: var(--line-height-snug);
-		font-family: var(--font-family-serif);
 		color: var(--color-text-emphasis);
 		margin: 0;
 		margin-bottom: var(--space-xs);
@@ -112,22 +101,17 @@
 			0 0 0 4px color-mix(in srgb, var(--color-highlight) 20%, transparent);
 	}
 
-	/* Dark mode refinements */
 	:global(html.dark) .related-item {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-15) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
-		border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
+		background: var(--color-surface);
+		border-color: var(--color-border);
+		box-shadow: var(--shadow-md);
 	}
 
 	:global(html.dark) .related-item:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-30) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 100%
-		);
+		border-color: color-mix(in srgb, var(--color-primary) 50%, var(--color-border));
+		box-shadow:
+			0 12px 28px -8px color-mix(in srgb, var(--color-primary) 35%, transparent),
+			0 4px 10px -4px color-mix(in srgb, var(--color-black) 40%, transparent);
 	}
 
 	/* Responsive tweaks */

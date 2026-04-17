@@ -31,6 +31,11 @@
 	margin-bottom: var(--space-sm);
 }
 
+/*
+ * .active-count retained for any callers still using it, but the filter
+ * section headers no longer render it — the chips' active state plus the
+ * active-filter summary already communicates selection.
+ */
 .active-count {
 	display: inline-flex;
 	align-items: center;
@@ -128,7 +133,13 @@
 	display: none;
 }
 
-.action-button {
+/*
+ * Filter action links — visually demoted to text-underline links so the
+ * affordance reads as "ancillary action on this section" rather than a
+ * competing button. The underlying element is still <button> for
+ * semantics (no href); the styling is link-like.
+ */
+.filter-action-link {
 	padding: 0;
 	font-family: var(--font-family-sans);
 	font-size: var(--font-size-xs);
@@ -137,19 +148,29 @@
 	background: transparent;
 	border: none;
 	cursor: pointer;
+	text-decoration: underline;
+	text-decoration-thickness: var(--border-width-thin);
+	text-underline-offset: 3px;
 	transition: color var(--duration-fast) var(--ease-out);
 }
 
-.action-button:hover {
-	color: var(--color-accent);
+.filter-action-link:hover {
+	color: var(--color-primary);
 }
 
-.action-button.clear {
+.filter-action-link:focus-visible {
+	outline: none;
+	color: var(--color-primary);
+	box-shadow: var(--focus-ring);
+	border-radius: var(--border-radius-sm);
+}
+
+.filter-action-link--clear {
+	color: color-mix(in srgb, var(--color-danger) 80%, var(--color-text-muted));
+}
+
+.filter-action-link--clear:hover {
 	color: var(--color-danger);
-}
-
-.action-button.clear:hover {
-	color: var(--color-danger-dark);
 }
 
 /* === Dark Mode === */
@@ -206,7 +227,7 @@ html.dark .filter-chip.active {
 
 @media (prefers-reduced-motion: reduce) {
 	.filter-chip,
-	.action-button {
+	.filter-action-link {
 		transition: none;
 	}
 

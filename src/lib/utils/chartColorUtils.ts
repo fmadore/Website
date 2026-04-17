@@ -308,6 +308,25 @@ export function getResolvedChartColors(): ResolvedChartColors {
 }
 
 /**
+ * The curated 7-hue timeline palette — use as a default categorical series
+ * palette on visualization pages when a balanced, coordinated set of hues
+ * is preferred over the broader brand palette.
+ *
+ * Returns resolved hex values (canvas-safe) for ECharts/D3 consumption.
+ */
+export function getTimelinePalette(): string[] {
+	return [
+		getCSSVariableValueWithFallback('--color-timeline-positions', '#0d9488'),
+		getCSSVariableValueWithFallback('--color-timeline-education', '#6b9e4f'),
+		getCSSVariableValueWithFallback('--color-timeline-grants', '#f59e0b'),
+		getCSSVariableValueWithFallback('--color-timeline-publications', '#5c8ab4'),
+		getCSSVariableValueWithFallback('--color-timeline-presentations', '#a67c9b'),
+		getCSSVariableValueWithFallback('--color-timeline-awards', '#d97706'),
+		getCSSVariableValueWithFallback('--color-timeline-fieldwork', '#14b8a6')
+	];
+}
+
+/**
  * Common tooltip styles for ECharts components.
  * Returns style configuration object for consistent tooltip appearance.
  *

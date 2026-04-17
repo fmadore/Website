@@ -1171,10 +1171,14 @@
 		padding: var(--space-xl) var(--space-md);
 	}
 
-	/* Section headings - consistent typography using design tokens */
+	/*
+	 * Section heading — sans by default (serif discipline applied globally).
+	 * The display-tier h2 still feels editorial because of the major-third
+	 * type scale; removing the serif also aligns it with the rest of the
+	 * site's section chrome.
+	 */
 	.section-heading {
 		font-size: var(--font-size-heading-3);
-		font-family: var(--font-family-serif);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
 		margin-bottom: var(--space-lg);
@@ -1183,7 +1187,7 @@
 
 	/* Section divider - for "Citation statistics" heading */
 	.section-divider {
-		margin: var(--space-xl) 0;
+		margin: var(--space-reading-loose) 0;
 		padding-top: var(--space-lg);
 		border-top: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
@@ -1191,53 +1195,43 @@
 
 	.divider-heading {
 		font-size: var(--font-size-heading-2);
-		font-family: var(--font-family-serif);
 		font-weight: var(--font-weight-bold);
 		color: var(--color-text-emphasis);
 		margin: 0;
 		line-height: var(--line-height-heading);
 	}
 
-	/* Chart wrapper with glassmorphism - consistent with iframe-section and pdf-section */
+	/*
+	 * Chart wrapper — same visual language as Card.svelte so viz pages feel
+	 * part of the same design system instead of their own aesthetic. Solid
+	 * --color-surface, primary-tinted hover shadow, no glass gradient.
+	 */
 	.chart-wrapper,
 	.placeholder-message {
 		position: relative;
-		border-radius: var(--border-radius-xl);
-		box-shadow: var(--shadow-md);
-		/* Enhanced glassmorphism with subtle gradient overlay */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
+		border-radius: var(--border-radius-lg);
+		background: var(--color-surface);
+		border: var(--border-width-thin) solid var(--color-border);
+		box-shadow: var(--shadow-sm);
 		transition:
-			transform var(--duration-normal) var(--ease-out),
-			box-shadow var(--duration-normal) var(--ease-out),
-			background var(--duration-normal) var(--ease-out);
+			transform var(--duration-moderate) var(--ease-spring),
+			box-shadow var(--duration-moderate) var(--ease-out),
+			border-color var(--duration-fast) var(--ease-out);
 	}
 
 	.chart-wrapper {
 		padding: var(--space-lg);
-		/* Optimize rendering performance */
 		contain: layout style paint;
 		will-change: transform;
-		/* Ensure proper height reservation */
 		min-height: var(--iframe-height-xs);
 	}
 
-	/* Hover effect matching iframe-section and pdf-section patterns */
 	.chart-wrapper:hover {
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-lg);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
+		transform: translateY(-2px);
+		border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
+		box-shadow:
+			0 12px 28px -8px color-mix(in srgb, var(--color-primary) 20%, transparent),
+			0 4px 10px -4px color-mix(in srgb, var(--color-black) 6%, transparent);
 	}
 
 	.stacked-chart {
@@ -1366,20 +1360,19 @@
 		}
 	}
 
-	/* Dark mode adjustments - consistent with iframe-section and pdf-section */
+	/* Dark-mode chart wrapper — solid surface, matches .entity-card dark. */
 	:global(html.dark) .chart-wrapper,
 	:global(html.dark) .placeholder-message {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 4%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 6%, transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-15) * 100%),
-			transparent
-		);
+		background: var(--color-surface);
+		border-color: var(--color-border);
+		box-shadow: var(--shadow-md);
+	}
+
+	:global(html.dark) .chart-wrapper:hover {
+		border-color: color-mix(in srgb, var(--color-primary) 50%, var(--color-border));
+		box-shadow:
+			0 12px 28px -8px color-mix(in srgb, var(--color-primary) 35%, transparent),
+			0 4px 10px -4px color-mix(in srgb, var(--color-black) 40%, transparent);
 	}
 
 	:global(html.dark) .section-divider {

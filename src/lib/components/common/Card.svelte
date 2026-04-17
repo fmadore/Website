@@ -88,31 +88,29 @@
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;
-		height: 100%; /* Make cards in a grid have the same height */
+		height: 100%;
 		border-radius: var(--border-radius-lg);
-		transition: all var(--duration-fast) var(--ease-in-out);
 		position: relative;
-
-		/* Warm gradient styling with terracotta/gold */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 4%, var(--color-background)) 0%,
-			color-mix(in srgb, var(--color-accent) 2%, var(--color-background)) 100%
-		);
+		background: var(--color-surface);
 		border: var(--border-width-thin) solid var(--color-border);
-		box-shadow: var(--shadow);
+		box-shadow: var(--shadow-sm);
+		transition:
+			transform var(--duration-moderate) var(--ease-spring),
+			border-color var(--duration-fast) var(--ease-out),
+			box-shadow var(--duration-moderate) var(--ease-out);
 	}
 
 	.card:hover {
-		transform: var(--transform-lift-sm);
-		/* Enhanced hover with warmer tint */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 8%, var(--color-background)) 0%,
-			color-mix(in srgb, var(--color-accent) 4%, var(--color-background)) 100%
-		);
-		border-color: var(--color-border-dark);
-		box-shadow: var(--shadow-md);
+		transform: translateY(-2px);
+		border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
+		box-shadow:
+			0 12px 28px -8px color-mix(in srgb, var(--color-primary) 20%, transparent),
+			0 4px 10px -4px color-mix(in srgb, var(--color-black) 6%, transparent);
+	}
+
+	/* Card hover pre-reveals the title's animated underline. */
+	.card:hover :global(.card-title .link-animated) {
+		background-size: 100% 2px;
 	}
 
 	.card-image {
