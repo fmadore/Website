@@ -638,6 +638,20 @@
 	--card-glass-inset-dark: 0.06;
 	--card-glass-inset-dark-hover: 0.1;
 
+	/* ===== HEADER / NAVIGATION TOKENS =====
+	 * Dedicated opacities/blurs for the sticky header, mobile overlay and
+	 * dropdowns. Kept separate from --glass-opacity-* so headers remain
+	 * readable when they scroll over body text without affecting cards. */
+	--header-bg-opacity: 0.88;
+	--header-bg-opacity-scrolled: 0.96;
+	--header-overlay-opacity: 0.94;
+	--header-dropdown-opacity: 0.92;
+	--header-blur: var(--glass-blur-lg);
+	--header-blur-fallback: var(--glass-blur-md);
+	--header-border-opacity: 0.5;
+	--header-border-opacity-scrolled: 0.65;
+	--header-inset-opacity: 0.55;
+
 	/* Card shadow tokens */
 	--card-shadow-color: 15, 118, 110;
 	--card-shadow-opacity: 0.1;
@@ -797,6 +811,15 @@ html.dark {
 	--card-glass-border-light-hover: 0.12;
 	--card-glass-inset-light: 0.1;
 	--card-glass-inset-light-hover: 0.15;
+
+	/* Header / navigation tokens (dark) */
+	--header-bg-opacity: 0.82;
+	--header-bg-opacity-scrolled: 0.94;
+	--header-overlay-opacity: 0.94;
+	--header-dropdown-opacity: 0.92;
+	--header-border-opacity: 0.18;
+	--header-border-opacity-scrolled: 0.28;
+	--header-inset-opacity: 0.12;
 
 	/* Shadows (dark) */
 	--shadow-xs: 0 1px 2px 0 color-mix(in srgb, var(--color-black) 20%, transparent);
