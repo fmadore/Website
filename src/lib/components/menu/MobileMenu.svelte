@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import type { NavItem } from '$lib/types/navigation';
 	import ThemeToggle from '$lib/components/menu/ThemeToggle.svelte';
 	import { resolve } from '$app/paths';
@@ -12,9 +13,71 @@
 		isActive?: boolean;
 		onCloseMenu: () => void;
 	} = $props();
+
+	let containerEl: HTMLDivElement | null = $state(null);
+	let closeButtonEl: HTMLButtonElement | null = $state(null);
+	let previouslyFocused: HTMLElement | null = null;
+
+	// Move focus into the menu when it opens and restore it to the element
+	// that triggered opening (the hamburger) when it closes.
+	$effect(() => {
+		if (isActive) {
+			previouslyFocused = document.activeElement as HTMLElement | null;
+			tick().then(() => {
+				closeButtonEl?.focus();
+			});
+		} else if (previouslyFocused) {
+			previouslyFocused.focus?.();
+			previouslyFocused = null;
+		}
+	});
+
+	function getFocusable(): HTMLElement[] {
+		if (!containerEl) return [];
+		return Array.from(
+			containerEl.querySelectorAll<HTMLElement>(
+				'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+			)
+		).filter((el) => !el.hasAttribute('aria-hidden'));
+	}
+
+	function handleKeyDown(event: KeyboardEvent) {
+		if (!isActive) return;
+
+		if (event.key === 'Escape') {
+			event.preventDefault();
+			onCloseMenu();
+			return;
+		}
+
+		if (event.key !== 'Tab') return;
+
+		const focusable = getFocusable();
+		if (focusable.length === 0) return;
+
+		const first = focusable[0];
+		const last = focusable[focusable.length - 1];
+		const active = document.activeElement as HTMLElement | null;
+
+		if (event.shiftKey && active === first) {
+			event.preventDefault();
+			last.focus();
+		} else if (!event.shiftKey && active === last) {
+			event.preventDefault();
+			first.focus();
+		}
+	}
 </script>
 
-<div id="mobile-menu" class="mobile-nav-container" class:active={isActive}>
+<svelte:window onkeydown={handleKeyDown} />
+
+<div
+	id="mobile-menu"
+	class="mobile-nav-container"
+	class:active={isActive}
+	bind:this={containerEl}
+	aria-hidden={isActive ? 'false' : 'true'}
+>
 	<nav class="mobile-nav" aria-label="Mobile navigation">
 		<!-- Mobile Menu Header -->
 		<div class="mobile-nav-header">
@@ -23,7 +86,12 @@
 			<a href={resolve('/')} class="mobile-site-title" onclick={onCloseMenu}> Frédérick Madore </a>
 
 			<!-- Close button -->
-			<button class="mobile-close-button" onclick={onCloseMenu} aria-label="Close navigation menu">
+			<button
+				class="mobile-close-button"
+				onclick={onCloseMenu}
+				aria-label="Close navigation menu"
+				bind:this={closeButtonEl}
+			>
 				<span class="mobile-close-line"></span>
 				<span class="mobile-close-line"></span>
 			</button>
@@ -73,12 +141,11 @@
 		width: 100%;
 		background: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--glass-opacity-fallback-light) * 100%),
+			var(--color-white) calc(var(--header-overlay-opacity) * 100%),
 			transparent
 		);
-		backdrop-filter: blur(var(--glass-blur-amount, var(--glass-blur-fallback))) saturate(180%);
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount, var(--glass-blur-fallback)))
-			saturate(180%);
+		backdrop-filter: blur(var(--header-blur, var(--header-blur-fallback))) saturate(180%);
+		-webkit-backdrop-filter: blur(var(--header-blur, var(--header-blur-fallback))) saturate(180%);
 		z-index: var(--z-modal);
 		transform: translateY(-100%);
 		transition: transform var(--duration-moderate) var(--ease-in-out);
@@ -86,8 +153,15 @@
 		box-shadow:
 			var(--shadow-2xl),
 			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-80) * 100%), transparent);
+				color-mix(in srgb, var(--color-white) calc(var(--header-inset-opacity) * 100%), transparent);
 		will-change: transform;
+	}
+
+	/* Solid fallback for browsers without backdrop-filter support. */
+	@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+		.mobile-nav-container {
+			background: var(--color-background);
+		}
 	}
 
 	.mobile-nav-container.active {
@@ -105,23 +179,24 @@
 	.mobile-nav-header {
 		display: grid;
 		grid-template-columns: 1fr auto 1fr;
+		gap: var(--space-3);
 		align-items: center;
 		margin: var(--space-2);
 		padding: var(--space-3) var(--space-4);
 		background: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-60) * 100%), transparent),
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-40) * 100%), transparent)
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-80) * 100%), transparent),
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-60) * 100%), transparent)
 		);
-		backdrop-filter: blur(var(--glass-blur-lg)) saturate(180%);
-		-webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(180%);
+		backdrop-filter: blur(var(--header-blur)) saturate(180%);
+		-webkit-backdrop-filter: blur(var(--header-blur)) saturate(180%);
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-50) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--header-border-opacity) * 100%), transparent);
 		border-radius: var(--border-radius-xl);
 		box-shadow:
 			var(--shadow-md),
 			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-60) * 100%), transparent);
+				color-mix(in srgb, var(--color-white) calc(var(--header-inset-opacity) * 100%), transparent);
 		position: sticky;
 		top: var(--space-2);
 		z-index: var(--z-above);
@@ -132,7 +207,13 @@
 		height: var(--border-width-medium);
 		background-color: var(--color-text);
 		position: absolute;
-		transition: transform var(--duration-normal) var(--ease-out);
+		transition:
+			transform var(--duration-normal) var(--ease-out),
+			background-color var(--duration-fast) var(--ease-out);
+	}
+
+	.mobile-close-button:hover .mobile-close-line {
+		background-color: var(--color-primary);
 	}
 
 	.mobile-close-line:first-child {
@@ -171,13 +252,13 @@
 		background: none;
 		border: none;
 		cursor: pointer;
-		padding: var(--space-1);
+		padding: 0;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		width: var(--space-6);
-		height: var(--space-6);
+		width: calc(var(--space-6) + var(--space-1));
+		height: calc(var(--space-6) + var(--space-1));
 		position: relative;
 		justify-self: end;
 	}
@@ -303,14 +384,14 @@
 		list-style: none;
 		padding: var(--space-2);
 		margin: var(--space-2) var(--space-5);
-		background: color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
+		background: color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
 		backdrop-filter: blur(var(--glass-blur-md));
 		-webkit-backdrop-filter: blur(var(--glass-blur-md));
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
-		border-radius: var(--border-radius-md);
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-20) * 100%), transparent);
+		border-radius: var(--border-radius-lg);
 		box-shadow:
-			var(--shadow-xl),
+			var(--shadow-md),
 			inset 0 var(--border-width-thin) 0
 				color-mix(in srgb, var(--color-white) calc(var(--opacity-30) * 100%), transparent);
 	}
@@ -328,7 +409,7 @@
 			border-color var(--duration-fast) var(--ease-out),
 			color var(--duration-fast) var(--ease-out),
 			box-shadow var(--duration-fast) var(--ease-out);
-		border-radius: var(--border-radius-sm);
+		border-radius: var(--border-radius-md);
 		margin-bottom: var(--space-1);
 		position: relative;
 		background: color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
@@ -367,27 +448,27 @@
 	:global(html.dark) .mobile-nav-container {
 		background: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-95) * 100%),
+			var(--color-dark-surface) calc(var(--header-overlay-opacity) * 100%),
 			transparent
 		);
 		box-shadow:
 			var(--shadow-2xl),
 			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
+				color-mix(in srgb, var(--color-white) calc(var(--header-inset-opacity) * 100%), transparent);
 	}
 
 	:global(html.dark) .mobile-nav-header {
 		background: linear-gradient(
 			135deg,
-			color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-70) * 100%), transparent),
-			color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-50) * 100%), transparent)
+			color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-80) * 100%), transparent),
+			color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-60) * 100%), transparent)
 		);
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--header-border-opacity) * 100%), transparent);
 		box-shadow:
 			var(--shadow-lg),
 			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
+				color-mix(in srgb, var(--color-white) calc(var(--header-inset-opacity) * 100%), transparent);
 	}
 
 	:global(html.dark .mobile-nav-link) {
@@ -478,8 +559,11 @@
 		animation: mobileNavItemReveal var(--duration-normal) var(--ease-out) forwards;
 	}
 
-	/* ===== REDUCED MOTION SUPPORT ===== */
-	/* Complete disable of animations for users who prefer reduced motion */
+	/* ===== REDUCED MOTION SUPPORT =====
+	 * Fully disable transitions/keyframes for users who ask for it. The
+	 * !important flags are intentional: they override the staggered transition
+	 * delays declared higher in this file and the keyframe animations
+	 * declared below. */
 	@media (prefers-reduced-motion: reduce) {
 		.mobile-nav-container {
 			transition: none;
@@ -487,19 +571,18 @@
 		}
 
 		.mobile-nav-container.active {
-			animation: none;
+			animation: none !important;
 			transform: translateY(0);
 		}
 
-		:global(.mobile-nav-item) {
+		:global(.mobile-nav-item),
+		.mobile-nav-container.active :global(.mobile-nav-item) {
+			animation: none !important;
 			opacity: 1 !important;
 			transform: none !important;
 			transition: none !important;
+			transition-delay: 0ms !important;
 			will-change: auto;
-		}
-
-		.mobile-nav-container.active :global(.mobile-nav-item) {
-			animation: none;
 		}
 
 		:global(.mobile-nav-link),
