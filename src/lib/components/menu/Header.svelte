@@ -159,6 +159,10 @@
 		window.addEventListener('resize', handleResize);
 		window.addEventListener('scroll', handleScroll, { passive: true });
 		lastScrollY = window.scrollY;
+		// Seed the scrolled state so pages opened at a non-zero scroll
+		// position (refresh with scroll restoration, deep-link hash, etc.)
+		// render with the correct header styling before any scroll event.
+		headerScrolled = window.scrollY > SCROLLED_STATE_THRESHOLD;
 
 		return () => {
 			if (dropdownTimer) {
