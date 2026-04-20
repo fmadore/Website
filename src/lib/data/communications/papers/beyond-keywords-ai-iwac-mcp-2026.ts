@@ -35,6 +35,11 @@ export const beyondKeywordsAiIwacMcp2026: Communication = {
 		'Islam',
 		'West Africa'
 	],
+	image: 'images/communications/c2dh.webp',
+	heroImage: {
+		src: 'images/communications/c2dh-hero.webp',
+		alt: 'AI through History, History through AI'
+	},
 	coordinates: {
 		latitude: 49.5018, // Maison des Sciences humaines, Esch-sur-Alzette
 		longitude: 5.9485
