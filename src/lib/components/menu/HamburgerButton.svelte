@@ -43,7 +43,8 @@
 		background-color: var(--color-text);
 		transition:
 			transform var(--duration-normal) var(--ease-out),
-			opacity var(--duration-fast) var(--ease-out);
+			opacity var(--duration-fast) var(--ease-out),
+			background-color var(--duration-fast) var(--ease-out);
 		transform-origin: center;
 	}
 
@@ -78,7 +79,11 @@
 	.hamburger:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-primary);
 		outline-offset: var(--space-1);
-		border-radius: var(--border-radius-sm);
+		border-radius: var(--border-radius-md);
+	}
+
+	.hamburger:hover .hamburger-line {
+		background-color: var(--color-primary);
 	}
 
 	/* High contrast mode support */

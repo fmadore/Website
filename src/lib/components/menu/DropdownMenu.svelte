@@ -49,19 +49,18 @@
 		max-width: min(100vw, var(--content-width-sm));
 		background: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--glass-opacity-fallback-light) * 100%),
+			var(--color-white) calc(var(--header-dropdown-opacity) * 100%),
 			transparent
 		);
-		backdrop-filter: blur(var(--glass-blur-amount, var(--glass-blur-fallback))) saturate(180%);
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount, var(--glass-blur-fallback)))
-			saturate(180%);
+		backdrop-filter: blur(var(--header-blur, var(--header-blur-fallback))) saturate(180%);
+		-webkit-backdrop-filter: blur(var(--header-blur, var(--header-blur-fallback))) saturate(180%);
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-40) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--header-border-opacity) * 100%), transparent);
 		border-radius: var(--border-radius-lg);
 		box-shadow:
 			var(--shadow-xl),
 			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-60) * 100%), transparent),
+				color-mix(in srgb, var(--color-white) calc(var(--header-inset-opacity) * 100%), transparent),
 			inset 0 calc(-1 * var(--border-width-thin)) 0
 				color-mix(in srgb, var(--color-white) calc(var(--opacity-20) * 100%), transparent);
 		padding: var(--space-3);
@@ -74,6 +73,13 @@
 			transform var(--duration-normal) var(--ease-out);
 		pointer-events: none;
 		will-change: opacity, transform, visibility;
+	}
+
+	/* Solid fallback for browsers without backdrop-filter support. */
+	@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+		.dropdown-menu {
+			background: var(--color-background);
+		}
 	}
 
 	.dropdown-menu.active {
@@ -141,8 +147,8 @@
 
 	:global(.dropdown-item:focus-visible) {
 		outline: var(--border-width-medium) solid var(--color-primary);
-		outline-offset: var(--space-1);
-		border-radius: var(--border-radius-sm);
+		outline-offset: var(--space-0-5);
+		border-radius: var(--border-radius-md);
 	}
 
 	:global(.dropdown-item:hover::before) {
@@ -157,15 +163,15 @@
 	:global(html.dark) .dropdown-menu {
 		background: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-90) * 100%),
+			var(--color-dark-surface) calc(var(--header-dropdown-opacity) * 100%),
 			transparent
 		);
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-20) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--header-border-opacity) * 100%), transparent);
 		box-shadow:
 			var(--shadow-xl),
 			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-20) * 100%), transparent),
+				color-mix(in srgb, var(--color-white) calc(var(--header-inset-opacity) * 100%), transparent),
 			inset 0 calc(-1 * var(--border-width-thin)) 0
 				color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 	}
