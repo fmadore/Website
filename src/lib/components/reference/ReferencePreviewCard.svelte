@@ -29,7 +29,9 @@
 
 	// Reactive positioning state using Svelte 5 $state
 	let shouldPositionBelow = $state(false);
-	let cardLeft = $state('50%');
+	let cardLeft = $state<string | null>(null);
+	let cardTop = $state<string | null>(null);
+	let cardBottom = $state<string | null>(null);
 	let arrowLeft = $state('50%');
 	let cardMaxHeight = $state<string | null>(null);
 	let hasOverflow = $state(false);
@@ -60,6 +62,8 @@
 
 					const pos = calculateCardPosition(referenceElement, cardElement);
 					cardLeft = pos.cardLeft;
+					cardTop = pos.cardTop;
+					cardBottom = pos.cardBottom;
 					arrowLeft = pos.arrowLeft;
 					shouldPositionBelow = pos.shouldPositionBelow;
 					cardMaxHeight = pos.cardMaxHeight;
@@ -101,8 +105,10 @@
 	class:card-clicked={isClicked}
 	class:has-overflow={hasOverflow}
 	style:left={cardLeft}
+	style:top={cardTop}
+	style:bottom={cardBottom}
 	style:max-height={cardMaxHeight}
-	style:overflow-y={hasOverflow ? 'auto' : null}
+	style:overflow-y="auto"
 	role="dialog"
 	tabindex="-1"
 	aria-label="Item Preview"
@@ -215,13 +221,13 @@
 
 <style>
 	.preview-card {
-		position: absolute;
-		bottom: calc(100% + var(--space-md));
-		left: 50%;
-		transform: translateX(-50%);
+		/* Fixed positioning means the popover never affects the surrounding
+		 * paragraph text flow and never gets clipped by the reference's inline
+		 * box. JS computes top/left from the reference's getBoundingClientRect. */
+		position: fixed;
 		padding: 0;
 		width: 380px;
-		max-width: 90vw;
+		max-width: calc(100vw - 2rem);
 		z-index: var(--z-popover);
 		pointer-events: auto;
 		text-align: left;
@@ -230,9 +236,7 @@
 		color: var(--color-text);
 		overflow: hidden;
 
-		/* Paper popover — content surface, no backdrop-filter. (Removed in the
-		 * glass-cleanup pass: a floating citation preview is content, not chrome.)
-		 * Depth comes from an elevated warm surface + a primary-tinted shadow. */
+		/* Paper popover — content surface, no backdrop-filter. */
 		background: var(--color-surface-elevated);
 
 		border: var(--border-width-thin) solid
@@ -244,26 +248,24 @@
 				color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent),
 			0 8px 20px -8px color-mix(in srgb, var(--color-black) 10%, transparent);
 
-		/* Initial state for animation using design system tokens */
+		/* Initial state for animation */
 		opacity: 0;
-		transform: translateX(-50%) translateY(var(--transform-distance-sm)) scale(var(--scale-90));
-		/* Explicit transition properties for better performance */
+		transform: translateY(var(--transform-distance-sm)) scale(var(--scale-90));
 		transition:
 			opacity var(--duration-moderate) var(--ease-out),
 			transform var(--duration-moderate) var(--ease-out),
 			box-shadow var(--duration-moderate) var(--ease-out),
 			border-color var(--duration-moderate) var(--ease-out);
-		/* Performance optimization */
 		will-change: opacity, transform;
 	}
 
 	.preview-card.positioned {
 		opacity: 1;
-		transform: translateX(-50%) translateY(0) scale(1);
+		transform: translateY(0) scale(1);
 	}
 
 	.preview-card.card-clicked {
-		transform: translateX(-50%) translateY(calc(-1 * var(--space-xs))) scale(1.02);
+		transform: translateY(calc(-1 * var(--space-xs))) scale(1.02);
 		box-shadow:
 			0 25px 80px -20px
 				color-mix(in srgb, var(--color-primary) calc(var(--opacity-25) * 100%), transparent),
@@ -310,16 +312,14 @@
 		);
 	}
 
-	/* Position below variant */
+	/* Position below variant — JS sets top/bottom directly. The only stylistic
+	 * difference is the entrance animation direction. */
 	.preview-card.position-below {
-		bottom: auto;
-		top: calc(100% + var(--space-md));
-		transform: translateX(-50%) translateY(calc(-1 * var(--transform-distance-sm)))
-			scale(var(--scale-90));
+		transform: translateY(calc(-1 * var(--transform-distance-sm))) scale(var(--scale-90));
 	}
 
 	.preview-card.position-below.positioned {
-		transform: translateX(-50%) translateY(0) scale(1);
+		transform: translateY(0) scale(1);
 	}
 
 	.card-content-wrapper {

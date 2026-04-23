@@ -232,8 +232,12 @@
 	}
 
 	:global(.mobile-site-title) {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-bold);
+		line-height: 1;
 		color: var(--color-text);
 		text-decoration: none;
 		transition: color var(--duration-fast) var(--ease-out);
@@ -319,12 +323,19 @@
 	 * conveys state via warm primary tint + colour shift + small nudge.
 	 */
 	:global(.mobile-nav-link) {
-		display: block;
-		padding: var(--space-3) var(--space-5);
+		/* Grid + place-items centers the text glyph reliably regardless of the
+		 * font's baseline metrics (Commissioner sits slightly high in its em
+		 * box, which made align-items: center with line-height: 1 render the
+		 * label top-heavy). */
+		display: grid;
+		place-items: center start;
+		min-height: 2.75rem;
+		padding: var(--space-2) var(--space-5);
 		color: var(--color-text);
 		text-decoration: none;
 		font-size: var(--font-size-base);
 		font-weight: var(--font-weight-semibold);
+		line-height: var(--line-height-snug);
 		border-radius: var(--border-radius-lg);
 		background: var(--color-surface);
 		border: var(--border-width-thin) solid var(--color-border);
@@ -368,12 +379,14 @@
 	}
 
 	:global(.mobile-dropdown-link) {
-		display: block;
-		padding: var(--space-2) var(--space-3);
+		display: flex;
+		align-items: center;
+		padding: var(--space-2-5) var(--space-3);
 		color: var(--color-text-light);
 		text-decoration: none;
 		font-size: var(--font-size-base);
 		font-weight: var(--font-weight-medium);
+		line-height: var(--line-height-snug);
 		transition:
 			background-color var(--duration-fast) var(--ease-out),
 			border-color var(--duration-fast) var(--ease-out),

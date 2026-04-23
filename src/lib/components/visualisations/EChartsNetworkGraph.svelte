@@ -526,7 +526,8 @@ ECharts Network Graph - A network visualization for author collaborations
 <style>
 	.echarts-container {
 		width: 100%;
-		height: 500px;
+		height: 100%;
+		min-height: 350px;
 		display: block;
 		position: relative;
 		font-family: var(--font-family-sans);
@@ -656,10 +657,6 @@ ECharts Network Graph - A network visualization for author collaborations
 
 	/* Responsive adjustments */
 	@media (--md-down) {
-		.echarts-container {
-			height: 400px;
-		}
-
 		.zoom-controls {
 			top: var(--space-2);
 			left: var(--space-2);
@@ -674,7 +671,7 @@ ECharts Network Graph - A network visualization for author collaborations
 
 	@media (--xs-down) {
 		.echarts-container {
-			height: 350px;
+			min-height: 300px;
 		}
 
 		.zoom-btn {

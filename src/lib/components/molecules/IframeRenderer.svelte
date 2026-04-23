@@ -417,29 +417,36 @@
 			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 	}
 
-	/* Responsive adjustments */
+	/* Responsive adjustments
+	 * Mobile: swap the 16:9 aspect ratio for a taller composition. Interactive
+	 * dashboards, maps, and timelines need vertical room — a 375px viewport
+	 * at 16:9 collapses to ~211px tall, which is unusable. Use a 3:4 portrait
+	 * ratio plus a generous min-height floor so embedded content actually
+	 * breathes on phones. */
 	@media (--sm-down) {
 		:global(.iframe-container),
 		:global(.iframe-container-md) {
-			height: calc(var(--iframe-height-default) * 0.83); /* Slightly shorter on small screens */
+			height: var(--iframe-height-default); /* Keep full default height on small screens */
 		}
 
-		:global(.iframe-container-lg) {
-			height: var(--iframe-height-default); /* Reduce large containers on small screens */
-		}
-
+		:global(.iframe-container-lg),
 		:global(.iframe-container-xl) {
-			height: calc(
-				var(--iframe-height-default) * 1.17
-			); /* Reduce extra large containers on small screens */
+			height: var(--iframe-height-default);
 		}
 
 		:global(.iframe-container-sm) {
-			height: calc(var(--iframe-height-sm) * 0.875); /* Slightly adjust small containers */
+			height: var(--iframe-height-sm);
 		}
 
 		:global(.iframe-container-fullheight) {
 			height: calc(100vh - var(--space-24)); /* Adjust spacing for mobile */
+		}
+
+		:global(.iframe-container-aspect) {
+			/* Portrait-leaning ratio gives interactive embeds usable height on
+			 * narrow screens; min-height prevents collapse on the smallest phones. */
+			padding-top: 133.33%;
+			min-height: 32rem;
 		}
 
 		:global(.iframe-header) {
@@ -451,23 +458,25 @@
 	@media (--xs-down) {
 		:global(.iframe-container),
 		:global(.iframe-container-md) {
-			height: calc(var(--iframe-height-default) * 0.67); /* Even shorter on very small screens */
-		}
-
-		:global(.iframe-container-lg) {
 			height: calc(var(--iframe-height-default) * 0.83);
 		}
 
+		:global(.iframe-container-lg),
 		:global(.iframe-container-xl) {
 			height: var(--iframe-height-default);
 		}
 
 		:global(.iframe-container-sm) {
-			height: calc(var(--iframe-height-sm) * 0.75);
+			height: calc(var(--iframe-height-sm) * 0.9);
 		}
 
 		:global(.iframe-container-xs) {
-			height: calc(var(--iframe-height-xs) * 0.83);
+			height: var(--iframe-height-xs);
+		}
+
+		:global(.iframe-container-aspect) {
+			padding-top: 150%;
+			min-height: 28rem;
 		}
 
 		:global(.iframe-header) {
@@ -482,7 +491,6 @@
 
 		:global(.iframe-with-header iframe) {
 			height: calc(100% - var(--iframe-header-height-mobile));
-			/* Remove margin-top since padding-top on container already creates space for header */
 		}
 	}
 

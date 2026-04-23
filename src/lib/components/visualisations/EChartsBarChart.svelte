@@ -152,7 +152,8 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 <style>
 	.echarts-container {
 		width: 100%;
-		height: 350px;
+		height: 100%;
+		min-height: 260px;
 		display: block;
 		position: relative;
 		font-family: var(--font-family-sans);
@@ -161,17 +162,5 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 	.chart {
 		width: 100%;
 		height: 100%;
-	}
-
-	@media (--sm-down) {
-		.echarts-container {
-			height: 300px;
-		}
-	}
-
-	@media (--xs-down) {
-		.echarts-container {
-			height: 260px;
-		}
 	}
 </style>

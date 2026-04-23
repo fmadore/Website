@@ -2,15 +2,14 @@
 /* Shared styling for all panel components - harmonized with ProfileBanner and ContentBody */
 
 .panel {
-	/* Asymmetric padding: more vertical breathing room than horizontal,
-	 * so the heading and items feel editorial in narrow sidebar columns
-	 * without eating usable content width. */
-	padding: var(--space-2xl) var(--space-xl);
+	/* Editorial padding: tight enough to avoid cavernous empty pockets under
+	 * a short content list, generous enough to keep the title breathing. */
+	padding: var(--space-lg);
 	border-radius: var(--border-radius-lg);
 	transition: all var(--duration-moderate) var(--ease-in-out);
 	position: relative;
 	overflow: hidden;
-	margin-bottom: var(--space-2xl);
+	margin-bottom: var(--space-lg);
 	/* Enhanced glassmorphism with subtle gradient overlay to match ProfileBanner and ContentBody */
 	background: linear-gradient(
 		135deg,
@@ -70,7 +69,7 @@
 
 .panel-content {
 	padding: 0;
-	margin-top: var(--space-lg);
+	margin-top: var(--space-md);
 }
 
 .panel-footer {

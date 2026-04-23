@@ -205,7 +205,8 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 <style>
 	.echarts-container {
 		width: 100%;
-		height: 480px; /* Increased height to accommodate legend */
+		height: 100%;
+		min-height: 400px;
 		display: block;
 		position: relative;
 		font-family: var(--font-family-sans);
@@ -214,18 +215,5 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 	.chart {
 		width: 100%;
 		height: 100%;
-	}
-
-	/* Responsive adjustments */
-	@media (--sm-down) {
-		.echarts-container {
-			height: 420px; /* Increased height for mobile with legend space */
-		}
-	}
-
-	@media (--xs-down) {
-		.echarts-container {
-			height: 400px; /* Adequate height for very small screens with legend */
-		}
 	}
 </style>

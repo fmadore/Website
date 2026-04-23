@@ -202,10 +202,16 @@
 		margin: 0;
 	}
 
-	/* Enhanced social links section with glassmorphism */
+	/* Enhanced social links section with glassmorphism.
+	 * Auto-fit + minmax keeps columns readable across viewport sizes: on narrow
+	 * screens the grid collapses to one column, on mid-width viewports it
+	 * shows two, and only on wide layouts does the three-column treatment
+	 * kick in. Previously the hard `repeat(3, 1fr)` at --sm forced three
+	 * cramped columns at tablet widths, causing the address to wrap on every
+	 * few words. */
 	.footer-social-links {
 		display: grid;
-		grid-template-columns: 1fr;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
 		gap: var(--space-4);
 		opacity: 0;
 		transform: translateY(var(--transform-distance-lg));
@@ -371,12 +377,10 @@
 		}
 
 		.footer-social-links {
-			grid-template-columns: repeat(3, 1fr);
 			gap: var(--space-6);
 		}
 
 		.footer-link-group {
-			min-height: var(--space-32);
 			padding: var(--space-5);
 		}
 
@@ -394,23 +398,13 @@
 		}
 	}
 
-	@media (--md) {
-		.footer-container {
-			gap: var(--space-6);
-		}
-
-		.footer-social-links {
-			grid-template-columns: repeat(3, 1fr);
-		}
-	}
-
 	@media (--lg) {
 		.site-footer {
 			padding: var(--space-16) 0 var(--space-12) 0;
 		}
 
 		.footer-container {
-			gap: var(--space-20);
+			gap: var(--space-12);
 		}
 
 		.footer-links-grid {
@@ -420,11 +414,6 @@
 
 	/* Additional mobile-specific fixes for very small screens */
 	@media (--xs-down) {
-		.footer-social-links {
-			grid-template-columns: 1fr;
-			gap: var(--space-3);
-		}
-
 		.footer-link-group {
 			padding: var(--space-3);
 			margin-bottom: var(--space-2);

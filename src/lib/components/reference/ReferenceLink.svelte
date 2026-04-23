@@ -78,21 +78,20 @@
 <style>
 	.reference-link {
 		/* Blend with text flow - enhanced academic citation style */
-		display: inline-block;
+		display: inline;
 		position: relative;
 		color: var(--color-primary);
 		text-decoration: none;
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-semibold);
+		font-size: inherit;
+		font-weight: var(--font-weight-medium);
 		white-space: nowrap;
-		padding: 0 var(--space-2xs);
-		border-radius: var(--border-radius);
+		padding: 0 0.15em;
+		border-radius: var(--border-radius-sm);
 		/* Explicit transition properties for better performance */
 		transition:
 			color var(--duration-moderate) var(--ease-out),
 			background-color var(--duration-moderate) var(--ease-out),
 			border-color var(--duration-moderate) var(--ease-out),
-			transform var(--duration-moderate) var(--ease-out),
 			box-shadow var(--duration-moderate) var(--ease-out);
 
 		/* Subtle background instead of underline */
@@ -115,24 +114,21 @@
 		color: var(--color-primary-dark);
 		background-color: color-mix(
 			in srgb,
-			var(--color-primary) calc(var(--opacity-15) * 100%),
+			var(--color-primary) calc(var(--opacity-20) * 100%),
 			transparent
 		);
 		border-color: color-mix(
 			in srgb,
-			var(--color-primary) calc(var(--opacity-20) * 100%),
+			var(--color-primary) calc(var(--opacity-25) * 100%),
 			transparent
 		);
-		transform: translateY(-1px);
-		box-shadow: var(--shadow-sm);
 	}
 
 	/* Active/clicked state */
 	.reference-link:active {
-		transform: translateY(0);
 		background-color: color-mix(
 			in srgb,
-			var(--color-primary) calc(var(--opacity-20) * 100%),
+			var(--color-primary) calc(var(--opacity-25) * 100%),
 			transparent
 		);
 	}
@@ -206,10 +202,6 @@
 	@media (prefers-reduced-motion: reduce) {
 		.reference-link {
 			transition: none;
-		}
-
-		.reference-link:hover {
-			transform: none;
 		}
 	}
 

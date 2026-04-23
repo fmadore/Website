@@ -37,6 +37,12 @@
 .mt-8 {
 	margin-top: var(--space-xl);
 }
+.mt-12 {
+	margin-top: var(--space-2xl);
+}
+.mt-16 {
+	margin-top: var(--space-3xl);
+}
 
 /* Margin Bottom - Most used values */
 .mb-1 {

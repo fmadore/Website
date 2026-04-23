@@ -337,11 +337,15 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 <style>
 	.map-wrapper {
 		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.map-container {
 		width: 100%;
-		height: 450px;
+		flex: 1;
+		min-height: 350px;
 		position: relative;
 		border-radius: var(--border-radius-md);
 		overflow: hidden;
@@ -505,7 +509,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 
 	@media (--sm-down) {
 		.map-container {
-			height: 350px;
+			min-height: 300px;
 		}
 	}
 </style>

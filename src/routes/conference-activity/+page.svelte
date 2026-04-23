@@ -452,6 +452,17 @@
 			</UniversalFiltersSidebar>
 		{/snippet}
 
+		<!-- Map (shown above Upcoming on mobile so toggling it doesn't bury the content below the fold) -->
+		{#if showMap && MapVisualization}
+			<div class="map-section mb-6">
+				<MapVisualization markersData={mapMarkers} showLegend />
+			</div>
+		{:else if showMap && !MapVisualization && !mapLoadError}
+			<div class="map-section mb-6 flex items-center justify-center py-12">
+				<span class="text-light">Loading map...</span>
+			</div>
+		{/if}
+
 		<!-- Upcoming Talks and Events Section (only shown when no filters active) -->
 		{#if shouldShowUpcoming}
 			<UpcomingCommunications communications={upcomingCommunications} />
@@ -493,16 +504,6 @@
 				{/if}
 			</div>
 		</div>
-
-		{#if showMap && MapVisualization}
-			<div class="mb-6">
-				<MapVisualization markersData={mapMarkers} showLegend />
-			</div>
-		{:else if showMap && !MapVisualization && !mapLoadError}
-			<div class="mb-6 flex items-center justify-center py-12">
-				<span class="text-light">Loading map...</span>
-			</div>
-		{/if}
 		<FilteredListDisplay
 			filteredItems={sortedCommunications}
 			itemComponent={CommunicationItem}

@@ -226,11 +226,11 @@
 	 *     into adjacent sections.
 	 *   • Step --3 is reserved for dense data-viz chrome (map legends, chart labels).
 	 */
-	--sys-type-step--3: clamp(0.5787rem, 0.5498rem + 0.1447vw, 0.6944rem);
-	--sys-type-step--2: clamp(0.6944rem, 0.6597rem + 0.1736vw, 0.8333rem);
-	--sys-type-step--1: clamp(0.8333rem, 0.7917rem + 0.2083vw, 1rem);
-	--sys-type-step-0: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-	--sys-type-step-1: clamp(1.2rem, 1.14rem + 0.3vw, 1.35rem);
+	--sys-type-step--3: clamp(0.625rem, 0.595rem + 0.15vw, 0.6944rem);
+	--sys-type-step--2: clamp(0.75rem, 0.714rem + 0.178vw, 0.8333rem);
+	--sys-type-step--1: clamp(0.875rem, 0.83rem + 0.226vw, 1rem);
+	--sys-type-step-0: clamp(1.0625rem, 1.009rem + 0.268vw, 1.125rem);
+	--sys-type-step-1: clamp(1.225rem, 1.164rem + 0.305vw, 1.35rem);
 	/* Display tier: ratio 1.25 */
 	--sys-type-step-2: clamp(1.5rem, 1.425rem + 0.375vw, 1.6875rem);
 	--sys-type-step-3: clamp(1.875rem, 1.781rem + 0.469vw, 2.109rem);

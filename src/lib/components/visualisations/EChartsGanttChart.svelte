@@ -299,7 +299,8 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 <style>
 	.echarts-container {
 		width: 100%;
-		height: 450px;
+		height: 100%;
+		min-height: 350px;
 		display: block;
 		position: relative;
 		font-family: var(--font-family-sans);
@@ -343,10 +344,6 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 	}
 
 	@media (--sm-down) {
-		.echarts-container {
-			height: 400px;
-		}
-
 		.legend-hint {
 			gap: var(--space-md);
 			font-size: var(--font-size-xs);
@@ -354,10 +351,6 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 	}
 
 	@media (--xs-down) {
-		.echarts-container {
-			height: 350px;
-		}
-
 		.legend-hint {
 			flex-wrap: wrap;
 			justify-content: center;

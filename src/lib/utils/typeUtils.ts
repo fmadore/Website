@@ -49,7 +49,7 @@ export function getCommunicationTypeBadge(type: string): string {
 		seminar: 'Seminar',
 		lecture: 'Lecture',
 		panel: 'Panel',
-		event: 'Academic Presentation'
+		event: 'Academic Event'
 	};
 	return typeLabels[type] || type;
 }
@@ -121,7 +121,7 @@ export const COMMUNICATION_TYPE_SEO_LABELS: Record<string, string> = {
 	seminar: 'Seminar',
 	lecture: 'Lecture',
 	panel: 'Panel discussion',
-	event: 'Academic presentation'
+	event: 'Academic event'
 };
 
 export const ACTIVITY_TYPE_SEO_LABELS: Record<string, string> = {

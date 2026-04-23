@@ -17,6 +17,7 @@
 
 	import ReferenceLink from './ReferenceLink.svelte';
 	import ReferencePreviewCard from './ReferencePreviewCard.svelte';
+	import { portal } from '$lib/actions/portal';
 	import {
 		getActiveReferenceId,
 		setActiveReferenceId
@@ -83,9 +84,15 @@
 	}
 
 	function handleOutsideClick(event: MouseEvent) {
-		if (spanEl && !spanEl.contains(event.target as Node) && showPreview && viaClick) {
-			togglePreview(false);
-		}
+		if (!spanEl || !showPreview || !viaClick) return;
+		const target = event.target as Node;
+		// The preview card is portaled to document.body, so a click inside it
+		// is NOT inside spanEl. Check the portaled wrapper by id so clicks on
+		// the card don't dismiss the preview before its own handler runs.
+		const previewEl = document.getElementById(`item-preview-${id}`);
+		if (spanEl.contains(target)) return;
+		if (previewEl && previewEl.contains(target)) return;
+		togglePreview(false);
 	}
 
 	function handleLinkClick(event: MouseEvent) {
@@ -206,7 +213,9 @@
 		<ReferenceLink {item} {itemType} {id} {label} hasPopup isActive={showPreview} />
 		{#if showPreview}
 			<div
+				use:portal
 				id="item-preview-{id}"
+				class="reference-preview-wrapper"
 				in:receive={{ key: `preview-${id}` }}
 				out:send={{ key: `preview-${id}` }}
 			>
@@ -229,46 +238,24 @@
 <style>
 	.item-reference {
 		position: relative;
-		display: inline-block;
+		display: inline;
 		cursor: pointer;
 		-webkit-tap-highlight-color: transparent; /* iOS */
 		border-radius: var(--border-radius);
 		/* Explicit transition properties for better performance */
-		transition:
-			transform var(--duration-moderate) var(--ease-in-out),
-			z-index var(--duration-moderate) var(--ease-in-out);
-	}
-
-	/* Touch device hint - subtle visual cue */
-	.item-reference::after {
-		content: '';
-		position: absolute;
-		top: calc(-1 * var(--space-0-5));
-		right: calc(-1 * var(--space-0-5));
-		width: var(--space-1-5);
-		height: var(--space-1-5);
-		background: var(--color-accent);
-		border-radius: var(--border-radius-full);
-		opacity: 0;
-		transition: opacity var(--duration-normal) var(--ease-in-out);
-		pointer-events: none;
-	}
-
-	/* Show indicator on touch devices when not active */
-	@media (hover: none) and (pointer: coarse) {
-		.item-reference:not(.preview-visible)::after {
-			opacity: var(--opacity-60);
-		}
+		transition: z-index var(--duration-moderate) var(--ease-in-out);
 	}
 
 	.item-reference.preview-visible {
-		/* Only apply a subtle lift when preview is visible, no background effects */
-		transform: var(--transform-lift-sm);
+		/* Preview visible — raise stacking context so popup card sits above siblings */
 		z-index: var(--z-popover, 1060);
 	}
 
-	.item-reference.preview-visible::after {
-		opacity: 0;
+	/* The wrapper uses `display: contents` so the popup card (position: fixed)
+	 * doesn't inject a block-level box into the surrounding paragraph text and
+	 * shove characters around when it appears. */
+	.reference-preview-wrapper {
+		display: contents;
 	}
 
 	.item-reference-error {
@@ -323,10 +310,6 @@
 	@media (prefers-reduced-motion: reduce) {
 		.item-reference {
 			transition: none;
-		}
-
-		.item-reference.preview-visible {
-			transform: none;
 		}
 	}
 
