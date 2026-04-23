@@ -20,11 +20,11 @@ export const activity: Activity = {
 	`,
 	tags: [
 		'Digital Humanities',
-		'Artificial Intelligence',
+		'AI',
 		'African Studies',
 		'Workshop',
 		'Blog Post',
-		'VolkswagenStiftung'
+		'Volkswagen Foundation'
 	],
 	type: 'publication',
 	panelType: 'publication',
