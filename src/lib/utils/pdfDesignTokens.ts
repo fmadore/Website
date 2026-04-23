@@ -34,16 +34,16 @@ export const SPACING = {
 	PARAGRAPH_GAP: 1 // Gap between paragraphs in same entry
 } as const;
 
-/** Refined color palette - matching website's teal/amber design system */
+/** Refined color palette - matches website's warm terracotta/ochre design system */
 export const COLORS = {
-	PRIMARY: [15, 118, 110] as [number, number, number], // #0f766e - Teal 700
-	PRIMARY_DARK: [17, 94, 89] as [number, number, number], // #115e59 - Teal 800
-	ACCENT: [245, 158, 11] as [number, number, number], // #f59e0b - Amber 500
-	TEXT: [31, 41, 55] as [number, number, number], // #1f2937 - Neutral 800
-	TEXT_LIGHT: [107, 114, 128] as [number, number, number], // #6b7280 - Neutral 500
-	TEXT_MUTED: [156, 163, 175] as [number, number, number], // #9ca3af - Neutral 400
-	BORDER: [229, 231, 235] as [number, number, number], // #e5e7eb - Neutral 200
-	BACKGROUND_LIGHT: [249, 250, 251] as [number, number, number] // #f9fafb - Neutral 50
+	PRIMARY: [158, 72, 51] as [number, number, number], // #9e4833 - Terracotta 600
+	PRIMARY_DARK: [130, 64, 49] as [number, number, number], // #824031 - Terracotta 700
+	ACCENT: [245, 158, 11] as [number, number, number], // #f59e0b - Amber 500 (gold secondary)
+	TEXT: [42, 33, 26] as [number, number, number], // #2a211a - Warm Neutral 800 (ink)
+	TEXT_LIGHT: [122, 107, 94] as [number, number, number], // #7a6b5e - Warm Neutral 500
+	TEXT_MUTED: [163, 148, 135] as [number, number, number], // #a39487 - Warm Neutral 400
+	BORDER: [233, 226, 213] as [number, number, number], // #e9e2d5 - Warm Neutral 200
+	BACKGROUND_LIGHT: [250, 247, 242] as [number, number, number] // #faf7f2 - Warm Neutral 50 (paper)
 } as const;
 
 /** Year column width for two-column layout entries */

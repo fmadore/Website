@@ -3,21 +3,38 @@
 :root {
 	/* ===== COLOR FOUNDATION ===== */
 
-	/* Neutral: Cool gray */
+	/* Neutral: Warm-tinted (paper → ink), OKLCH-derived.
+	 * Replaces the previous cool-gray scale. Tinted toward warm brown/ochre
+	 * so surfaces feel like good paper instead of cold screen. */
 	--sys-color-neutral-0: #ffffff;
-	--sys-color-neutral-50: #f9fafb;
-	--sys-color-neutral-100: #f3f4f6;
-	--sys-color-neutral-200: #e5e7eb;
-	--sys-color-neutral-300: #d1d5db;
-	--sys-color-neutral-400: #9ca3af;
-	--sys-color-neutral-500: #6b7280;
-	--sys-color-neutral-600: #4b5563;
-	--sys-color-neutral-700: #374151;
-	--sys-color-neutral-800: #1f2937;
-	--sys-color-neutral-900: #111827;
-	--sys-color-neutral-950: #030712;
+	--sys-color-neutral-50: #faf7f2;
+	--sys-color-neutral-100: #f4efe7;
+	--sys-color-neutral-200: #e9e2d5;
+	--sys-color-neutral-300: #d5cdbe;
+	--sys-color-neutral-400: #a39487;
+	--sys-color-neutral-500: #7a6b5e;
+	--sys-color-neutral-600: #584b40;
+	--sys-color-neutral-700: #3e342a;
+	--sys-color-neutral-800: #2a211a;
+	--sys-color-neutral-900: #1c1510;
+	--sys-color-neutral-950: #0e0a07;
 
-	/* Primary: Teal */
+	/* Primary: Terracotta / burnt sienna.
+	 * Warm earth accent. Replaces teal as the brand primary — teal is demoted
+	 * to a data-viz-only role (see timeline tokens below). */
+	--sys-color-terracotta-100: #f6ece5;
+	--sys-color-terracotta-200: #edd6c7;
+	--sys-color-terracotta-300: #dfb69e;
+	--sys-color-terracotta-400: #cf8a6b;
+	--sys-color-terracotta-500: #b65842;
+	--sys-color-terracotta-600: #9e4833;
+	--sys-color-terracotta-700: #824031;
+	--sys-color-terracotta-800: #6a3428;
+	--sys-color-terracotta-900: #4d2820;
+	--sys-color-terracotta-950: #2e1912;
+
+	/* Teal — retained for data-visualisation only (timeline categories, charts).
+	 * No longer the brand primary. Do not reference in new UI code. */
 	--sys-color-teal-950: #042f2e;
 	--sys-color-teal-900: #134e4a;
 	--sys-color-teal-800: #115e59;
@@ -73,11 +90,11 @@
 	--sys-color-pink-500: #ec4899;
 
 	/* ===== SEMANTIC COLOR TOKENS ===== */
-	/* Primary */
-	--color-primary: var(--sys-color-teal-700);
-	--color-primary-dark: var(--sys-color-teal-800);
-	--color-primary-light: var(--sys-color-teal-500);
-	--color-primary-lighter: var(--sys-color-teal-400);
+	/* Primary — Terracotta */
+	--color-primary: var(--sys-color-terracotta-600);
+	--color-primary-dark: var(--sys-color-terracotta-700);
+	--color-primary-light: var(--sys-color-terracotta-500);
+	--color-primary-lighter: var(--sys-color-terracotta-400);
 
 	/* Secondary */
 	--color-secondary: var(--sys-color-neutral-600);
@@ -164,7 +181,10 @@
 
 	/* ===== COMPONENT COLOR LAYERS ===== */
 	--color-background-alt: var(--color-surface);
-	--color-footer-bg: var(--sys-color-teal-950);
+	/* Footer — deep warm bark. Previously pointed at teal-950 (legacy brand);
+	 * retargeted to the warm neutral scale so the footer reads as ink-on-paper
+	 * extended into dusk, not a cool counterweight to the warm page body. */
+	--color-footer-bg: var(--sys-color-neutral-950);
 	--color-footer-text: var(--sys-color-neutral-100);
 	--color-footer-text-muted: color-mix(in srgb, var(--sys-color-neutral-100) 75%, transparent);
 	--color-sidebar-bg: var(--color-surface);
@@ -184,11 +204,17 @@
 
 	/* ===== TYPOGRAPHY SCALE ===== */
 
-	/* Font Families */
+	/* Font Families
+	 * Sans: Commissioner — humanist variable sans with optical sizing; warm,
+	 * character-rich, not on Impeccable's reflex list. UI, nav, body.
+	 * Serif: Spectral — editorial screen-serif by Production Type; warm ink,
+	 * strong italics, full Latin Extended (French + West African diacritics).
+	 * Headings, long-form prose, display.
+	 * Mono: JetBrains Mono — role-constrained to code + data-viz chrome only. */
 	--sys-font-family-sans:
-		'IBM Plex Sans', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial',
+		'Commissioner', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial',
 		sans-serif;
-	--sys-font-family-serif: 'Source Serif 4', 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
+	--sys-font-family-serif: 'Spectral', 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
 	--sys-font-family-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Consolas', 'Monaco', monospace;
 
 	/*
@@ -243,7 +269,7 @@
 	--font-size-heading-6: var(--font-size-base);
 
 	/* ===== LINE HEIGHTS ===== */
-	/* Optimized for Source Serif 4 & IBM Plex Sans readability */
+	/* Tuned for Spectral (editorial serif) + Commissioner (humanist sans) readability */
 	--line-height-none: 1;
 	--line-height-tight: 1.1;
 	--line-height-snug: 1.35;
@@ -251,7 +277,7 @@
 	--line-height-relaxed: 1.6;
 	--line-height-loose: 1.9;
 
-	/* Contextual line heights - tuned for Source Serif 4 headings */
+	/* Contextual line heights - tuned for Spectral headings */
 	--line-height-heading: 1.1;
 	--line-height-subheading: 1.3;
 	--line-height-body: 1.6;
@@ -423,9 +449,10 @@
 	--shadow-none: none;
 
 	/* Colored shadows for emphasis */
-	--shadow-primary: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-teal-700) 25%, transparent);
+	--shadow-primary: 0 4px 14px -2px
+		color-mix(in srgb, var(--sys-color-terracotta-600) 25%, transparent);
 	--shadow-primary-lg: 0 10px 25px -5px
-		color-mix(in srgb, var(--sys-color-teal-700) 30%, transparent);
+		color-mix(in srgb, var(--sys-color-terracotta-600) 30%, transparent);
 	--shadow-accent: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-amber-500) 25%, transparent);
 	--shadow-highlight: 0 4px 14px -2px
 		color-mix(in srgb, var(--sys-color-amber-400) 25%, transparent);
@@ -460,14 +487,24 @@
 	--duration-slow: 500ms;
 	--duration-slower: 700ms;
 
-	/* Easing functions */
+	/* Easing functions.
+	 *
+	 * Phase 4 motion recalibration: overshooting curves (bounce/spring) were
+	 * retuned to exponential-out curves. Real objects decelerate smoothly;
+	 * bounce/elastic easing feels dated and toy-like on a scholarly site.
+	 * Token names are preserved for API stability, but both now render as
+	 * smooth overshoot-free decelerations (quartic/quintic out).
+	 */
 	--ease-linear: linear;
 	--ease-in: cubic-bezier(0.4, 0, 1, 1);
 	--ease-out: cubic-bezier(0, 0, 0.2, 1);
 	--ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-	--ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 	--ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
-	--ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	--ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+	--ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+	/* Legacy aliases — no longer overshoot. Prefer --ease-out-quart / -quint in new code. */
+	--ease-bounce: var(--ease-out-quart);
+	--ease-spring: var(--ease-out-quint);
 
 	/* Ambient / decorative loops (distinct from UI transition durations) */
 	--duration-ambient-sm: 4s;
@@ -652,8 +689,8 @@
 	--header-border-opacity-scrolled: 0.65;
 	--header-inset-opacity: 0.55;
 
-	/* Card shadow tokens */
-	--card-shadow-color: 15, 118, 110;
+	/* Card shadow tokens — rgb triplet for terracotta-600 */
+	--card-shadow-color: 158, 72, 51;
 	--card-shadow-opacity: 0.1;
 	--card-shadow-opacity-hover: 0.15;
 	--card-transform-hover: var(--transform-lift-md);
@@ -717,19 +754,23 @@
 	--breakpoint-2xl: 1536px;
 }
 
-/* ===== DARK THEME ===== */
+/* ===== DARK THEME =====
+ * Warm dusk, not corporate dark-blue. Surfaces read like a reading lamp on
+ * oak; primary is a brightened terracotta (chroma reduced at high lightness
+ * per OKLCH principle). Both themes are first-class — this is its own pass,
+ * not inverted light. */
 html.dark {
-	/* Primary (Teal) */
-	--color-primary: #2dd4bf; /* teal-400 */
-	--color-primary-dark: #14b8a6; /* teal-500 */
-	--color-primary-light: #5eead4; /* teal-300 */
-	--color-primary-lighter: #99f6e4; /* teal-200 */
+	/* Primary — Terracotta, brightened for dark surfaces */
+	--color-primary: #cf8a6b; /* terracotta-400 */
+	--color-primary-dark: #b65842; /* terracotta-500 */
+	--color-primary-light: #dfb69e; /* terracotta-300 */
+	--color-primary-lighter: #edd6c7; /* terracotta-200 */
 
-	/* Secondary */
-	--color-secondary: #9ca3af; /* neutral-400 */
-	--color-secondary-light: #d1d5db; /* neutral-300 */
+	/* Secondary — warm neutrals */
+	--color-secondary: #a39487; /* neutral-400 (warm) */
+	--color-secondary-light: #d5cdbe; /* neutral-300 (warm) */
 
-	/* Accent (Amber) */
+	/* Accent (Amber) — retained as warm gold secondary */
 	--color-accent: #fbbf24; /* amber-400 */
 	--color-accent-dark: #f59e0b; /* amber-500 */
 	--color-accent-light: #fcd34d; /* amber-300 */
@@ -748,61 +789,61 @@ html.dark {
 	--color-danger-dark: #ef4444; /* red-500 */
 	--color-danger-light: #fca5a5; /* red-300 */
 
-	/* Backgrounds */
-	--color-background: #111827; /* neutral-900 */
-	--color-background-subtle: #1f2937; /* neutral-800 */
-	--color-background-muted: #374151; /* neutral-700 */
+	/* Backgrounds — warm dusk */
+	--color-background: #1c1510; /* neutral-900 (warm) */
+	--color-background-subtle: #2a211a; /* neutral-800 (warm) */
+	--color-background-muted: #3e342a; /* neutral-700 (warm) */
 
-	/* Text */
-	--color-text: #f3f4f6; /* neutral-100 */
-	--color-text-light: #d1d5db; /* neutral-300 */
-	--color-text-muted: #9ca3af; /* neutral-400 */
-	--color-text-emphasis: #ffffff;
-	--color-text-soft: #9ca3af;
-	--color-text-inverted: #111827;
+	/* Text — warm paper on dark */
+	--color-text: #f4efe7; /* neutral-100 (warm) */
+	--color-text-light: #d5cdbe; /* neutral-300 (warm) */
+	--color-text-muted: #a39487; /* neutral-400 (warm) */
+	--color-text-emphasis: #faf7f2; /* neutral-50 (warm) */
+	--color-text-soft: #a39487;
+	--color-text-inverted: #1c1510;
 
 	/* Surfaces */
-	--color-surface: #1f2937; /* neutral-800 */
-	--color-surface-alt: #374151; /* neutral-700 */
-	--color-surface-elevated: #4b5563; /* neutral-600 */
-	--color-surface-sunken: #111827; /* neutral-900 */
-	--color-surface-border: #374151;
+	--color-surface: #2a211a; /* neutral-800 (warm) */
+	--color-surface-alt: #3e342a; /* neutral-700 (warm) */
+	--color-surface-elevated: #584b40; /* neutral-600 (warm) */
+	--color-surface-sunken: #1c1510; /* neutral-900 (warm) */
+	--color-surface-border: #3e342a;
 
 	/* Borders */
-	--color-border: #374151; /* neutral-700 */
-	--color-border-light: #1f2937; /* neutral-800 */
-	--color-border-dark: #4b5563; /* neutral-600 */
-	--color-border-focus: #2dd4bf;
+	--color-border: #3e342a; /* neutral-700 (warm) */
+	--color-border-light: #2a211a; /* neutral-800 (warm) */
+	--color-border-dark: #584b40; /* neutral-600 (warm) */
+	--color-border-focus: #cf8a6b;
 
 	/* Focus ring */
-	--focus-ring: 0 0 0 3px color-mix(in srgb, #2dd4bf 50%, transparent);
-	--focus-ring-color: #2dd4bf;
+	--focus-ring: 0 0 0 3px color-mix(in srgb, #cf8a6b 50%, transparent);
+	--focus-ring-color: #cf8a6b;
 
 	/* Academic */
 	--color-citation: #fbbf24; /* amber-400 */
-	--color-quote: #e5e7eb; /* neutral-200 */
-	--color-note: #d1d5db; /* neutral-300 */
-	--color-code-bg: #1f2937;
+	--color-quote: #e9e2d5; /* neutral-200 (warm) */
+	--color-note: #d5cdbe; /* neutral-300 (warm) */
+	--color-code-bg: #2a211a;
 
 	/* Component layers */
-	--color-background-alt: #1f2937;
-	--color-footer-bg: #030712; /* neutral-950 */
-	--color-footer-text: #f3f4f6;
-	--color-footer-text-muted: color-mix(in srgb, #f3f4f6 70%, transparent);
-	--color-sidebar-bg: #1f2937;
+	--color-background-alt: #2a211a;
+	--color-footer-bg: #0e0a07; /* neutral-950 (warm) */
+	--color-footer-text: #f4efe7;
+	--color-footer-text-muted: color-mix(in srgb, #f4efe7 70%, transparent);
+	--color-sidebar-bg: #2a211a;
 
 	/* Button schemes */
-	--color-secondary-scheme: #2dd4bf; /* teal-400 */
-	--color-secondary-scheme-alt: #14b8a6; /* teal-500 */
+	--color-secondary-scheme: #cf8a6b; /* terracotta-400 */
+	--color-secondary-scheme-alt: #b65842; /* terracotta-500 */
 	--color-tertiary-scheme: #34d399;
 	--color-tertiary-scheme-alt: #10b981;
-	--color-glass-scheme: #2dd4bf;
-	--color-glass-scheme-alt: #5eead4;
+	--color-glass-scheme: #cf8a6b;
+	--color-glass-scheme-alt: #dfb69e;
 
 	/* Dark surface tokens */
-	--color-dark-surface: #1f2937;
-	--color-dark-surface-alt: #111827;
-	--color-dark-surface-deep: #030712;
+	--color-dark-surface: #2a211a;
+	--color-dark-surface-alt: #1c1510;
+	--color-dark-surface-deep: #0e0a07;
 
 	/* Glassmorphism (dark) */
 	--card-glass-opacity-light: 0.08;
@@ -839,8 +880,8 @@ html.dark {
 	--shadow-2xl: 0 35px 60px -15px color-mix(in srgb, var(--color-black) 70%, transparent);
 
 	/* Colored shadows (dark) */
-	--shadow-primary: 0 4px 14px -2px color-mix(in srgb, #2dd4bf 30%, transparent);
-	--shadow-primary-lg: 0 10px 25px -5px color-mix(in srgb, #2dd4bf 35%, transparent);
+	--shadow-primary: 0 4px 14px -2px color-mix(in srgb, #cf8a6b 30%, transparent);
+	--shadow-primary-lg: 0 10px 25px -5px color-mix(in srgb, #cf8a6b 35%, transparent);
 	--shadow-accent: 0 4px 14px -2px color-mix(in srgb, #fbbf24 30%, transparent);
 	--shadow-highlight: 0 4px 14px -2px color-mix(in srgb, #fcd34d 30%, transparent);
 	--shadow-success: 0 4px 14px -2px color-mix(in srgb, #34d399 30%, transparent);

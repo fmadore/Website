@@ -8,7 +8,8 @@
  *
  * The hover interaction is the site's "signature" moment: a primary-tinted
  * shadow rises under the card while the title's animated underline
- * pre-reveals, orchestrated with --ease-spring for a subtle overshoot.
+ * pre-reveals, orchestrated with --ease-spring (remapped in Phase 4 to a
+ * smooth exponential-out — no overshoot) for a confident lift.
  */
 
 .entity-list-item {

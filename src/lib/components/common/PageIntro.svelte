@@ -38,6 +38,11 @@
 	 * instead of the prior three-colour gradient. Featured variant adds a
 	 * single left-accent stripe instead of a multi-hue top bar.
 	 */
+	/*
+	 * Base page intro — warm tinted callout, paper not glass. backdrop-filter
+	 * was removed in the Phase 5 glass-cleanup pass: a page intro is content,
+	 * not sticky chrome, so blur added nothing but a recognisable AI-UI tell.
+	 */
 	.page-intro {
 		font-size: var(--font-size-heading-5);
 		line-height: var(--line-height-relaxed);
@@ -47,8 +52,6 @@
 		padding: var(--space-md) var(--space-xl);
 		border-radius: var(--border-radius-lg);
 		background: color-mix(in srgb, var(--color-primary) 6%, transparent);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 20%, transparent);
 		box-shadow: var(--shadow-sm);
 	}
@@ -59,6 +62,12 @@
 		padding: var(--space-sm) var(--space-lg);
 	}
 
+	/*
+	 * Emphasized / featured variants carry more tinted background than the
+	 * default intro. Previously used a thick primary left-stripe accent —
+	 * removed (AI-UI tell). Depth now comes from the tint + full thin
+	 * border + shadow, which read as a warm pull-quote surface.
+	 */
 	.page-intro--emphasized {
 		font-size: var(--font-size-heading-3);
 		font-weight: var(--font-weight-medium);
@@ -67,7 +76,6 @@
 		padding: var(--space-xl) var(--space-2xl);
 		background: color-mix(in srgb, var(--color-primary) 10%, transparent);
 		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 25%, transparent);
-		border-left: var(--border-width-thick) solid var(--color-primary);
 		box-shadow: var(--shadow-md);
 	}
 
@@ -77,10 +85,7 @@
 		margin-bottom: var(--space-xl);
 		padding: var(--space-2xl);
 		background: color-mix(in srgb, var(--color-primary) 12%, transparent);
-		backdrop-filter: blur(var(--glass-blur-fallback));
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback));
 		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 30%, transparent);
-		border-left: var(--border-width-thick) solid var(--color-primary);
 		box-shadow: var(--shadow-lg);
 	}
 
@@ -187,7 +192,6 @@
 			font-size: var(--font-size-heading-4);
 			margin-bottom: var(--space-lg);
 			padding: var(--space-md) var(--space-xl);
-			border-left: 3px solid transparent;
 		}
 
 		.page-intro--featured {

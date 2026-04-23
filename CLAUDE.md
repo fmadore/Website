@@ -184,3 +184,43 @@ node .github/skills/css-design-audit/audit.mjs src/lib/components
 ## Roadmaps
 
 See `REFACTORING-ROADMAP.md` for forward-looking refactoring and feature work, including the phased animation & reactivity roadmap.
+
+## Design Context
+
+Source of truth: `.impeccable.md` (read that file for the full brief). Summary below for every session.
+
+### Users
+
+Primary: **academic peers** — fellow researchers in Islamic studies, African studies, digital humanities. Desk-based, short sessions, more scanning than reading, trust typographic rigor over flash. Job-to-be-done: find and cite Madore's work, or check on current projects, quickly — while having the site corroborate that he's a serious person.
+
+### Brand Personality
+
+**Warm, humanist, grounded.** Three-word distillation: _considered, humane, rigorous._ Closer to an essayist-scholar's journal than an institutional bio page. Editorial-magazine seriousness combined with letterpress warmth. Rigor without coldness. This is a working historian's site, not a university directory entry.
+
+### Aesthetic Direction
+
+**Evolve the current system, don't reset it.** Quiet the glassmorphism, warm the palette, choose typography with more character. Preserve continuity for returning visitors.
+
+**Mood:** editorial-magazine restraint (LRB / n+1), letterpress/fine-book typography, independent scholar-essayist sites (Craig Mod / Robin Sloan lineage), subtle paper/ink tactility.
+
+**Avoid:** templated academic CMS aesthetics; AI-slop tells (blue-purple gradients, cyan-on-dark, gradient text, side-stripe `border-left` accents, glassmorphism everywhere); generic "digital humanities" styling (monospace-as-shorthand-for-technical, terminal aesthetics); institutional chrome (centered heroes, three-column "Our Work" grids).
+
+**Theme.** Light and dark are both first-class — every component designed twice. Light reads like good paper (warm off-whites, ink-black text, neutrals tinted toward warm brown). Dark reads like a reading lamp after dusk (warm dark surfaces, not corporate dark-blue).
+
+**Typography.** `IBM Plex Sans` is on the reflex-rejection list and should be replaced with something more humanist. Reconsider `Source Serif 4` alongside. Pair one distinctive display/serif with a refined workhorse sans. Monospace is reserved for code and data-viz chrome only.
+
+**Color.** Move past templated teal+amber. Warm tinted neutrals, one confident accent (not three in parallel). 60-30-10 by visual weight. OKLCH for new color work; reduce chroma at extreme lightness.
+
+**Motion.** Pages turning, not a web app responding. One orchestrated page-enter with staggered reveals; quieter scroll-reveals. No bounce/elastic easing.
+
+**Layout.** Asymmetry and editorial composition over centered three-column grids. Varied spacing rhythm. Body copy capped at ~65–75ch.
+
+### Design Principles
+
+1. **Typography does the heavy lifting** — before reaching for color or ornament, solve it with hierarchy-through-type.
+2. **Warm neutrals, rare accents** — dominant surface feels like paper; the accent earns its place by being scarce.
+3. **Quiet the glass** — glassmorphism only where it genuinely reinforces depth (sticky header, modals), not on cards or decoration.
+4. **Asymmetry over center alignment** — feel written, not laid out.
+5. **Both themes, equal craft** — dark is its own pass, not inverted light.
+6. **No AI tells** — reject Impeccable's absolute bans and reflex fonts; if the first instinct matches a default, look further.
+7. **Peer-respecting density** — scholars scan; don't pad with whitespace when structured information serves better.

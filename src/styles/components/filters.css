@@ -81,7 +81,7 @@
 }
 
 /* Tactile press feedback — the chip depresses slightly on click, then
- * springs back when the browser reasserts the normal state. */
+ * settles back to rest on release (no overshoot; Phase 4 motion principle). */
 .filter-chip:active {
 	transform: scale(0.96);
 	transition-duration: var(--duration-instant);

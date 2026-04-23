@@ -59,7 +59,7 @@
 			<PageHeader title={project.title} authors={project.years ? [project.years] : undefined} />
 
 			<div class="scroll-reveal">
-				<section class="content-section glass-card">
+				<section class="content-section">
 					<!-- Safe: project.description is from trusted project data in src/lib/data/digital-humanities/ -->
 					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 					{@html project.description}
@@ -237,15 +237,16 @@
 		margin-bottom: 0;
 	}
 
+	/*
+	 * Lead paragraph — slightly larger, full-ink colour. Previously carried a
+	 * gradient left-stripe via border-image; removed (AI-UI tell). Size and
+	 * colour carry the emphasis.
+	 */
 	.content-section :global(p:first-child) {
-		font-size: var(--font-size-base);
+		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-normal);
 		color: var(--color-text-emphasis);
-		position: relative;
-		padding-left: var(--space-md);
-		border-left: var(--border-width-medium) solid transparent;
-		border-image: linear-gradient(180deg, var(--color-highlight) 0%, var(--color-accent) 100%) 1;
-		border-image-slice: 1;
+		line-height: var(--line-height-relaxed);
 	}
 
 	.content-section :global(a) {
@@ -371,19 +372,30 @@
 		padding: var(--space-md);
 	}
 
+	/*
+	 * Review quote — indented italic pull-quote with a leading quote glyph,
+	 * no stripe. Consistent with Reviews.svelte .excerpt.
+	 */
 	.review-quote {
-		margin-top: var(--space-md);
-		padding: var(--space-md);
-		border-left: var(--border-width-thick) solid var(--color-accent);
+		margin: var(--space-md) 0 var(--space-md) var(--space-md);
+		padding: var(--space-sm) 0 var(--space-sm) var(--space-md);
 		font-size: var(--font-size-sm);
 		color: var(--color-text-light);
 		font-style: italic;
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-		border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+		font-family: var(--font-family-serif);
+		line-height: var(--line-height-relaxed);
+		position: relative;
+	}
+
+	.review-quote::before {
+		content: '\201C';
+		position: absolute;
+		left: calc(-1 * var(--space-xs));
+		top: calc(-1 * var(--space-2xs));
+		font-size: var(--font-size-2xl);
+		color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+		font-family: var(--font-family-serif);
+		line-height: 1;
 	}
 
 	:global(html.dark) .review-quote {

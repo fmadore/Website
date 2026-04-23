@@ -21,12 +21,15 @@
 </button>
 
 <style>
+	/*
+	 * Theme toggle chip — warm paper tile inside the header. Previously
+	 * built with white-tinted glass highlights (inset top-edge shine); the
+	 * warm palette calls for tinting toward primary instead.
+	 */
 	.theme-toggle {
-		background: color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+		background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent);
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
 		cursor: pointer;
 		padding: var(--space-2);
 		color: var(--color-text);
@@ -42,33 +45,28 @@
 		width: calc(var(--space-8) + var(--space-2));
 		height: calc(var(--space-8) + var(--space-2));
 		position: relative;
-		box-shadow:
-			var(--shadow-md),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-30) * 100%), transparent);
-		will-change: transform, box-shadow;
+		box-shadow: var(--shadow-sm);
+		will-change: transform;
 	}
 
 	.theme-toggle:hover {
-		background: color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
-		border-color: color-mix(
+		background: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--opacity-30) * 100%),
+			var(--color-primary) calc(var(--opacity-10) * 100%),
 			transparent
 		);
-		transform: var(--transform-lift-md) scale(var(--scale-105));
-		box-shadow:
-			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-40) * 100%), transparent);
+		border-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-30) * 100%),
+			transparent
+		);
+		transform: var(--transform-lift-sm);
+		box-shadow: var(--shadow-md);
 	}
 
 	.theme-toggle:active {
 		transform: translateY(0) scale(var(--scale-95));
-		box-shadow:
-			var(--shadow-sm),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
+		box-shadow: var(--shadow-xs);
 		animation: themeChangePulse var(--duration-moderate) var(--ease-out);
 	}
 
@@ -76,10 +74,8 @@
 		outline: var(--border-width-medium) solid var(--color-primary);
 		outline-offset: var(--space-1);
 		box-shadow:
-			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-40) * 100%), transparent),
-			0 0 0 var(--border-width-medium) var(--color-primary);
+			var(--shadow-md),
+			0 0 0 var(--border-width-medium) color-mix(in srgb, var(--color-primary) 30%, transparent);
 	}
 
 	/* Icon animations */
@@ -106,43 +102,34 @@
 		transform: rotate(var(--rotate-180)) scale(var(--scale-90));
 	}
 
-	/* Dark mode glassmorphism */
+	/* Dark mode — warm primary-tinted tile, no inset white highlights. */
 	:global(html.dark) .theme-toggle {
 		background: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-15) * 100%),
+			var(--color-primary) calc(var(--opacity-10) * 100%),
 			transparent
 		);
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
-		box-shadow:
-			var(--shadow-md),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-25) * 100%), transparent);
+		box-shadow: var(--shadow-sm);
 	}
 
 	:global(html.dark) .theme-toggle:hover {
 		background: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-30) * 100%),
+			var(--color-primary) calc(var(--opacity-20) * 100%),
 			transparent
 		);
 		border-color: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--opacity-15) * 100%),
+			var(--color-primary) calc(var(--opacity-40) * 100%),
 			transparent
 		);
-		box-shadow:
-			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
+		box-shadow: var(--shadow-md);
 	}
 
 	:global(html.dark) .theme-toggle:active {
-		box-shadow:
-			var(--shadow-sm),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
+		box-shadow: var(--shadow-xs);
 	}
 
 	:global(html.dark) .theme-toggle :global(svg) {
@@ -186,28 +173,19 @@
 		);
 	}
 
-	/* Pulse animation on theme change */
+	/* Pulse animation on theme change — single shadow layer, no inset shine. */
 	@keyframes themeChangePulse {
 		0% {
 			transform: scale(var(--scale-100));
-			box-shadow:
-				var(--shadow-md),
-				inset 0 var(--border-width-thin) 0
-					color-mix(in srgb, var(--color-white) calc(var(--opacity-30) * 100%), transparent);
+			box-shadow: var(--shadow-md);
 		}
 		50% {
 			transform: scale(var(--scale-110));
-			box-shadow:
-				var(--shadow-xl),
-				inset 0 var(--border-width-thin) 0
-					color-mix(in srgb, var(--color-white) calc(var(--opacity-50) * 100%), transparent);
+			box-shadow: var(--shadow-lg);
 		}
 		100% {
 			transform: scale(var(--scale-100));
-			box-shadow:
-				var(--shadow-md),
-				inset 0 var(--border-width-thin) 0
-					color-mix(in srgb, var(--color-white) calc(var(--opacity-30) * 100%), transparent);
+			box-shadow: var(--shadow-md);
 		}
 	}
 

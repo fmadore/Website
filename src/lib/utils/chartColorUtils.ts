@@ -204,22 +204,22 @@ export function getAnimationConfig(
 
 /**
  * Base chart colors from the design system.
- * These are fallback values matching the teal/amber design system.
+ * Fallbacks match the warm terracotta/ochre palette in variables.css.
  */
 export const CHART_COLOR_FALLBACKS = {
-	primary: '#0f766e',
-	primaryDark: '#115e59',
-	text: '#1f2937',
-	textLight: '#6b7280',
-	border: '#e5e7eb',
-	surface: '#f9fafb',
-	surfaceRgb: '249, 250, 251',
+	primary: '#9e4833', // terracotta-600
+	primaryDark: '#824031', // terracotta-700
+	text: '#2a211a', // warm neutral-800 (ink)
+	textLight: '#7a6b5e', // warm neutral-500
+	border: '#e9e2d5', // warm neutral-200
+	surface: '#faf7f2', // warm neutral-50 (paper)
+	surfaceRgb: '250, 247, 242',
 	black: '#000000',
 	white: '#ffffff',
-	accent: '#f59e0b',
+	accent: '#f59e0b', // amber-500 (warm gold secondary)
 	highlight: '#f59e0b',
 	success: '#10b981',
-	secondary: '#6b7280',
+	secondary: '#7a6b5e', // warm neutral-500
 	purple: '#8b5cf6',
 	purpleLight: '#a78bfa',
 	pink: '#ec4899',

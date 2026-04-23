@@ -78,8 +78,8 @@
 		border-radius: var(--border-radius-3xl);
 		z-index: var(--z-popover);
 		animation: slideInMobile var(--duration-moderate) var(--ease-out);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+		/* Near-opaque (95%) danger/success background makes the blur invisible
+		 * anyway — removed for consistency with the paper-surface approach. */
 		box-shadow: var(--shadow-lg);
 	}
 

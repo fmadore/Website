@@ -37,23 +37,18 @@
 
 <style>
 	.breadcrumb {
+		/* Paper breadcrumb — content nav chip, not sticky chrome. backdrop-filter
+		 * + radial gradient were decorative; replaced with a single warm-tinted
+		 * surface and a quiet shadow. */
 		font-size: var(--font-size-sm);
 		margin-bottom: var(--space-md);
 		padding: var(--space-sm) var(--space-md-tight);
-		background: radial-gradient(
-			circle at 15% 15%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 35%,
-			var(--color-surface) 65%,
-			var(--color-background) 100%
-		);
+		background: color-mix(in srgb, var(--color-primary) 4%, var(--color-surface));
 		border-radius: var(--border-radius-lg);
 		border: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
-		box-shadow: var(--shadow-md);
+		box-shadow: var(--shadow-sm);
 		position: relative;
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
 	}
 
 	/* Enhanced connection line to the page header */

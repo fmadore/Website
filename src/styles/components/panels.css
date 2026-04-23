@@ -2,12 +2,15 @@
 /* Shared styling for all panel components - harmonized with ProfileBanner and ContentBody */
 
 .panel {
-	padding: var(--space-xl);
+	/* Asymmetric padding: more vertical breathing room than horizontal,
+	 * so the heading and items feel editorial in narrow sidebar columns
+	 * without eating usable content width. */
+	padding: var(--space-2xl) var(--space-xl);
 	border-radius: var(--border-radius-lg);
 	transition: all var(--duration-moderate) var(--ease-in-out);
 	position: relative;
 	overflow: hidden;
-	margin-bottom: var(--space-xl);
+	margin-bottom: var(--space-2xl);
 	/* Enhanced glassmorphism with subtle gradient overlay to match ProfileBanner and ContentBody */
 	background: linear-gradient(
 		135deg,
@@ -104,6 +107,19 @@
 	border-top: var(--border-width-thin) solid
 		color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
 	margin-top: var(--space-lg);
+	text-align: center;
+}
+
+/*
+ * In narrow sidebar panels, buttons default to `white-space: nowrap` (from
+ * .btn) and overflow the container on medium-width viewports. Scope an
+ * override here so the CTA fills the container and wraps gracefully.
+ */
+.view-all-container .btn {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	white-space: normal;
 	text-align: center;
 }
 

@@ -39,6 +39,12 @@
 </div>
 
 <style>
+	/*
+	 * Dropdown popover — warm paper surface with a single chrome blur.
+	 * Previously layered white-based glass with inset highlight + inset
+	 * lowlight; replaced with a single warm-tinted surface and one shadow.
+	 * Opens over body content, so blur is legitimate chrome.
+	 */
 	.dropdown-menu {
 		position: absolute;
 		top: calc(100% + var(--space-3));
@@ -49,24 +55,18 @@
 		max-width: min(100vw, var(--content-width-sm));
 		background: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--header-dropdown-opacity) * 100%),
+			var(--color-surface-elevated) calc(var(--header-dropdown-opacity) * 100%),
 			transparent
 		);
 		backdrop-filter: blur(var(--header-blur, var(--header-blur-fallback))) saturate(180%);
 		-webkit-backdrop-filter: blur(var(--header-blur, var(--header-blur-fallback))) saturate(180%);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--header-border-opacity) * 100%), transparent);
+		border: var(--border-width-thin) solid var(--color-border);
 		border-radius: var(--border-radius-lg);
-		box-shadow:
-			var(--shadow-xl),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--header-inset-opacity) * 100%), transparent),
-			inset 0 calc(-1 * var(--border-width-thin)) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-20) * 100%), transparent);
+		box-shadow: var(--shadow-lg);
 		padding: var(--space-3);
 		opacity: 0;
 		visibility: hidden;
-		transform: translateY(calc(-1 * var(--transform-distance-sm))) scale(var(--scale-95));
+		transform: translateY(calc(-1 * var(--transform-distance-sm)));
 		transition:
 			opacity var(--duration-normal) var(--ease-out),
 			visibility var(--duration-normal) var(--ease-out),
@@ -85,7 +85,7 @@
 	.dropdown-menu.active {
 		opacity: 1;
 		visibility: visible;
-		transform: translateY(0) scale(var(--scale-100));
+		transform: translateY(0);
 		pointer-events: auto;
 	}
 
@@ -95,6 +95,11 @@
 		margin: 0;
 	}
 
+	/*
+	 * Dropdown items — editorial list, not dashboard chips. No sliding
+	 * shimmer ::before, no scale-on-hover. Hover conveys state via a soft
+	 * warm tint + colour shift + a quiet translateX nudge.
+	 */
 	:global(.dropdown-item) {
 		display: block;
 		padding: var(--space-3) var(--space-4);
@@ -106,28 +111,10 @@
 		transition:
 			background-color var(--duration-fast) var(--ease-out),
 			color var(--duration-fast) var(--ease-out),
-			transform var(--duration-normal) var(--ease-out),
-			box-shadow var(--duration-normal) var(--ease-out);
+			transform var(--duration-normal) var(--ease-out);
 		margin-bottom: var(--space-2);
 		position: relative;
-		overflow: hidden;
 		will-change: transform, background-color;
-	}
-
-	:global(.dropdown-item::before) {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: -100%;
-		width: 100%;
-		height: 100%;
-		background: linear-gradient(
-			90deg,
-			transparent,
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-40) * 100%), transparent),
-			transparent
-		);
-		transition: left var(--duration-slow) var(--ease-out);
 	}
 
 	:global(.dropdown-item:hover),
@@ -138,11 +125,7 @@
 			transparent
 		);
 		color: var(--color-primary);
-		transform: translateX(var(--space-2)) scale(var(--scale-102));
-		box-shadow:
-			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-30) * 100%), transparent);
+		transform: translateX(var(--space-2));
 	}
 
 	:global(.dropdown-item:focus-visible) {
@@ -151,38 +134,19 @@
 		border-radius: var(--border-radius-md);
 	}
 
-	:global(.dropdown-item:hover::before) {
-		left: 100%;
-	}
-
 	:global(.dropdown-item:last-child) {
 		margin-bottom: 0;
 	}
 
-	/* Dark mode */
+	/* Dark mode — warm dusk surface matching the header. */
 	:global(html.dark) .dropdown-menu {
 		background: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--header-dropdown-opacity) * 100%),
+			var(--color-surface-alt) calc(var(--header-dropdown-opacity) * 100%),
 			transparent
 		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--header-border-opacity) * 100%), transparent);
-		box-shadow:
-			var(--shadow-xl),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--header-inset-opacity) * 100%), transparent),
-			inset 0 calc(-1 * var(--border-width-thin)) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
-	}
-
-	:global(html.dark .dropdown-item::before) {
-		background: linear-gradient(
-			90deg,
-			transparent,
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-20) * 100%), transparent),
-			transparent
-		);
+		border: var(--border-width-thin) solid var(--color-border-dark);
+		box-shadow: var(--shadow-lg);
 	}
 
 	/* Touch device optimizations */
@@ -204,11 +168,11 @@
 	@keyframes dropdownReveal {
 		from {
 			opacity: 0;
-			transform: translateY(calc(-1 * var(--transform-distance-sm))) scale(var(--scale-95));
+			transform: translateY(calc(-1 * var(--transform-distance-sm)));
 		}
 		to {
 			opacity: 1;
-			transform: translateY(0) scale(var(--scale-100));
+			transform: translateY(0);
 		}
 	}
 
@@ -268,7 +232,7 @@
 	@media (prefers-reduced-motion: reduce) {
 		.dropdown-menu {
 			transition: opacity var(--duration-instant) linear;
-			transform: translateY(0) scale(var(--scale-100));
+			transform: translateY(0);
 		}
 
 		.dropdown-menu.active {
@@ -289,10 +253,6 @@
 		:global(.dropdown-item:hover),
 		:global(.dropdown-item:focus) {
 			transform: none;
-		}
-
-		:global(.dropdown-item::before) {
-			display: none;
 		}
 	}
 

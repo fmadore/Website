@@ -22,12 +22,16 @@ body {
 }
 
 /*
- * Headings — serif discipline.
- * Only the display tier (h1) defaults to Source Serif 4. h2–h6 are the
- * sans workhorse (IBM Plex Sans) so subheadings and UI chrome feel calm
- * and the display tier can carry the editorial weight.
+ * Headings — Spectral throughout.
+ * All of h1–h6 default to the editorial serif (Spectral) for two reasons:
+ *   1. Consistent editorial-magazine voice — Commissioner carries UI/body
+ *      chrome; every heading-level typographic gesture is serif.
+ *   2. Inline <em> inside headings renders with real Spectral italic
+ *      glyphs; Commissioner has no italic axis, so mixing would force the
+ *      browser to synthesise an oblique (visually crude).
  *
- * Opt in to serif elsewhere with the `.font-serif` utility class.
+ * Opt into sans explicitly with the `.font-sans` utility class when a
+ * heading needs to read as label/chrome rather than prose.
  */
 h1,
 h2,
@@ -36,7 +40,7 @@ h4,
 h5,
 h6 {
 	margin-top: 0;
-	font-family: var(--font-family-sans);
+	font-family: var(--font-family-serif);
 	font-weight: var(--font-weight-bold);
 	line-height: var(--line-height-heading);
 	letter-spacing: var(--tracking-heading);
@@ -44,7 +48,6 @@ h6 {
 }
 
 h1 {
-	font-family: var(--font-family-serif);
 	font-size: var(--font-size-heading-1);
 	margin-bottom: var(--space-xl);
 	line-height: var(--line-height-heading);
@@ -116,6 +119,11 @@ a:hover {
  * detail grids, inline anchors in chrome) so every hoverable text link on
  * the site uses the same gradient-underline-expand treatment.
  */
+/*
+ * Left-to-right underline grows on hover. Single-color terracotta — the
+ * previous primary→highlight gradient read as a designy flourish; a solid
+ * brand-colour line feels more typographic and editorial.
+ */
 .prose a:not(.btn):not(.no-underline):not(.nav-link),
 .content-body a:not(.btn):not(.no-underline):not(.nav-link),
 p a:not(.btn):not(.no-underline):not(.nav-link),
@@ -123,8 +131,8 @@ li a:not(.btn):not(.no-underline):not(.nav-link),
 .link-animated {
 	position: relative;
 	text-decoration: none;
-	background-image: linear-gradient(90deg, var(--color-primary) 0%, var(--color-highlight) 100%);
-	background-size: 0% 2px;
+	background-image: linear-gradient(90deg, var(--color-primary), var(--color-primary));
+	background-size: 0% 1px;
 	background-position: left bottom;
 	background-repeat: no-repeat;
 	padding-bottom: 2px;
@@ -143,7 +151,7 @@ li a:not(.btn):not(.no-underline):not(.nav-link):hover,
 .content-body a:not(.btn):not(.no-underline):not(.nav-link):focus-visible,
 p a:not(.btn):not(.no-underline):not(.nav-link):focus-visible,
 li a:not(.btn):not(.no-underline):not(.nav-link):focus-visible {
-	background-size: 100% 2px;
+	background-size: 100% 1px;
 }
 
 /* Static underline fallback for reduced motion */
@@ -153,7 +161,7 @@ li a:not(.btn):not(.no-underline):not(.nav-link):focus-visible {
 	p a:not(.btn):not(.no-underline):not(.nav-link),
 	li a:not(.btn):not(.no-underline):not(.nav-link),
 	.link-animated {
-		background-size: 100% 2px;
+		background-size: 100% 1px;
 		transition: none;
 	}
 }
@@ -188,9 +196,18 @@ b {
 	font-weight: var(--font-weight-bold);
 }
 
+/*
+ * Emphasis renders in Spectral italic even inside Commissioner body copy.
+ * Commissioner has no italic axis — without this rule, <em>/<i>/<cite> in
+ * sans text would be browser-synthesised obliques (visually crude). Using
+ * the serif italic here also mirrors editorial-magazine typography where
+ * emphasis is a genuine italic gesture, not a slant.
+ */
 em,
-i {
+i,
+cite {
 	font-style: italic;
+	font-family: var(--font-family-serif);
 }
 
 /* Code */
@@ -202,15 +219,20 @@ code {
 	border-radius: var(--border-radius-sm);
 }
 
-/* Blockquotes */
+/*
+ * Blockquote — editorial indent, not a coloured stripe.
+ * Traditional magazine/letterpress treatment: left indent, italic serif,
+ * slightly softer colour. Previously used a 4px --color-primary left stripe;
+ * removed because stripe-accent callouts are an AI-UI tell.
+ */
 blockquote {
-	border-left: var(--border-width-thick) solid var(--color-primary);
-	margin: var(--space-lg) 0;
-	margin-left: 0;
-	padding: var(--space-sm) 0 var(--space-sm) var(--space-lg);
+	margin: var(--space-lg) 0 var(--space-lg) var(--space-lg);
+	padding: 0;
+	font-family: var(--font-family-serif);
 	font-style: italic;
 	font-size: var(--font-size-lg);
-	color: var(--color-text-light);
+	line-height: var(--line-height-relaxed);
+	color: var(--color-text-soft);
 }
 
 /* Small text */
@@ -493,15 +515,18 @@ small {
 	line-height: var(--line-height-body);
 }
 
+/*
+ * Abstract — warm callout, no stripe. Soft surface with a thin all-round
+ * border reads as "quoted material" without the dashboard-style left stripe.
+ */
 .abstract {
 	font-style: italic;
 	color: var(--color-text-light);
-	border-left: var(--border-width-thick) solid var(--color-border);
-	padding-left: var(--space-md);
 	margin: var(--space-lg) 0;
+	padding: var(--space-md) var(--space-lg);
 	background-color: var(--color-surface);
-	padding: var(--space-md);
-	border-radius: var(--border-radius);
+	border: var(--border-width-thin) solid var(--color-border);
+	border-radius: var(--border-radius-lg);
 }
 
 .keywords {

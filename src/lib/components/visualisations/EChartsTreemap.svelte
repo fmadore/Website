@@ -246,8 +246,8 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 					fontWeight: 'bold',
 					fontSize: isMobile ? 12 : 14,
 					fontFamily: resolvedColors.fontFamily,
-					// Combined stroke + shadow keeps the label readable on either the
-					// teal or the orange category tile.
+					// Combined stroke + shadow keeps the label readable on either
+					// category-color tile, regardless of contrast against the fill.
 					textBorderColor: colorWithOpacity(resolvedColors.black, 0.45),
 					textBorderWidth: 3,
 					textShadowColor: colorWithOpacity(resolvedColors.black, 0.55),

@@ -3,12 +3,18 @@
 
 	let {
 		variant = 'default',
-		glassEffect = 'glass-card',
+		glassEffect = 'none',
 		additionalClasses = '',
 		children
 	}: {
 		variant?: 'default' | 'compact' | 'wide';
-		glassEffect?: 'glass-card' | 'glass-panel' | 'glass-medium' | 'glass-light';
+		/**
+		 * Default is 'none' — prose sits directly on the warm paper page
+		 * background, editorial-essay style. Callers that want a framed
+		 * card (e.g., a dense data panel, a CTA box) can opt in explicitly.
+		 * Rationale: content prose reads better on paper than card-in-card.
+		 */
+		glassEffect?: 'glass-card' | 'glass-panel' | 'glass-medium' | 'glass-light' | 'none';
 		additionalClasses?: string;
 		children: Snippet;
 	} = $props();
@@ -22,7 +28,9 @@
 	};
 
 	const combinedClasses = $derived(
-		`${baseClasses} ${variantClasses[variant]} ${glassEffect} ${additionalClasses}`.trim()
+		`${baseClasses} ${variantClasses[variant]} ${glassEffect === 'none' ? '' : glassEffect} ${additionalClasses}`
+			.replace(/\s+/g, ' ')
+			.trim()
 	);
 </script>
 
@@ -91,27 +99,29 @@
 		color: var(--color-text-emphasis);
 	}
 
-	/* Lead paragraph styling - only for direct child, not inside blockquotes */
+	/*
+	 * Lead paragraph — direct-child p:first-child only. Editorial treatment:
+	 * slightly larger type and full-contrast ink. Previously carried a
+	 * gradient left-stripe (border-image), removed as part of the Phase 2/3
+	 * visual scrub — stripe-accent on prose is an AI-UI tell.
+	 */
 	.content-body > :global(p:first-child) {
-		font-size: var(--font-size-base);
+		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-normal);
 		color: var(--color-text-emphasis);
-		position: relative;
-		padding-left: var(--space-md);
-		border-left: var(--border-width-medium) solid transparent;
-		border-image: linear-gradient(180deg, var(--color-highlight) 0%, var(--color-accent) 100%) 1;
-		border-image-slice: 1;
+		line-height: var(--line-height-relaxed);
 	}
 
 	/* Reset styling for paragraphs inside blockquotes */
 	.content-body :global(blockquote p) {
-		padding-left: 0;
-		border-left: none;
-		border-image: none;
 		color: inherit;
 	}
 
-	/* Blockquote box styling */
+	/*
+	 * Blockquote callout within a content body — scoped override that turns
+	 * the global blockquote into a full paper-callout (warm primary wash,
+	 * thin border, rounded). No stripe.
+	 */
 	.content-body :global(blockquote) {
 		margin: var(--space-lg) 0;
 		padding: var(--space-lg);
@@ -119,7 +129,6 @@
 		border: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
 		border-radius: var(--border-radius-lg);
-		border-left: none;
 	}
 
 	/* Headings within content */
@@ -221,8 +230,7 @@
 		}
 
 		.content-body :global(p:first-child) {
-			font-size: var(--font-size-lg);
-			padding-left: var(--space-lg);
+			font-size: var(--font-size-xl);
 		}
 	}
 

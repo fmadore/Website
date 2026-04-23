@@ -77,15 +77,15 @@
 		width: 100%;
 	}
 
-	/* Active (current-page) link: keep the primary color for the text and
-	 * give the underline a soft highlight gradient so the current section is
-	 * immediately legible without shouting. */
+	/* Active (current-page) link: primary color for text and a solid terracotta
+	 * underline. Previously used a primary→highlight gradient underline;
+	 * simplified for editorial clarity. */
 	.nav-link.active {
 		color: var(--color-primary);
 	}
 
 	.nav-link.active::after {
-		background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-highlight) 100%);
+		background: var(--color-primary);
 	}
 
 	.dropdown-icon {

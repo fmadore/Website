@@ -291,3 +291,136 @@ If you only do one more thing after the current PR: **Phase 4 item 1**
 (active filter chip row). It's the single largest UX gap remaining on the
 list pages, and it composes naturally with the flip pattern that just
 landed.
+
+---
+
+## Design Evolution — Warm Editorial Direction
+
+Multi-session refactor that migrated the site from a teal/amber + cool-gray
+glassmorphism aesthetic to a warm terracotta + humanist-serif editorial
+direction. Driven by the Impeccable skill brief in [`.impeccable.md`](./.impeccable.md);
+design principles are captured there and mirrored in [`CLAUDE.md`](./CLAUDE.md).
+
+### Landed
+
+**Foundations**
+
+- Typography: `IBM Plex Sans` + `Source Serif 4` → **Commissioner** (humanist
+  variable sans, UI/body) + **Spectral** (editorial serif, headings +
+  long-form prose). Full Spectral italic range (wght 300–700) loaded so
+  heading `<em>` renders with real glyphs. `em`/`i`/`cite` globally route to
+  Spectral italic because Commissioner has no italic axis.
+- Colour: new **warm-tinted neutral scale** (paper → warm ink via warm-brown
+  tint) and a **terracotta primary** (`--sys-color-terracotta-*`). Teal is
+  preserved but demoted to data-viz-only (timeline categories). Amber kept
+  as a warm gold secondary. Both light and dark themes rewritten for warmth
+  (warm dusk dark, not corporate dark-blue).
+- Design tokens: new tokens live in `src/styles/base/variables.css`. PDF
+  palette (`src/lib/utils/pdfDesignTokens.ts`) and chart fallback palette
+  (`src/lib/utils/chartColorUtils.ts`) updated to match. `CSS-README.md`
+  updated to document the new direction.
+
+**Visual scrub**
+
+- Glassmorphism quieted: `.glass-card`, `.glass-panel`, `.glass-panel-light`,
+  `.card`, `.card-accent-border` migrated from `backdrop-filter` blur to
+  solid elevated paper tiles with a hairline border and a single-layer
+  shadow. Legitimate glass retained for `.glass-nav` (sticky header),
+  `.glass-button`, `MobileMenu` overlay, dropdowns, popovers (Sorter,
+  ChartToolbar, MediaPlayer modal, PWAUpdatePrompt, iframe toolbar).
+- Banned `border-left` accent stripes swept: `.abstract`, activity items,
+  lecture items, `PageIntro` `--emphasized` / `--featured`, Reviews excerpt,
+  digital-humanities review quote, global `blockquote`, ContentBody lead
+  paragraph gradient border-image. Each got a context-appropriate rewrite
+  (editorial indent, hairline bottom rule, leading quote glyph, warm
+  callout).
+- Motion overshoot removed: `--ease-bounce` and `--ease-spring` remapped to
+  exponential-out curves (`--ease-out-quart` / `--ease-out-quint`). Token
+  names kept for API stability.
+- Link underlines: simplified from `primary→highlight` gradient to a solid
+  terracotta 1 px line in both prose (`typography.css`) and nav (`NavLink`).
+
+**Component rewrites**
+
+- `ProfileBanner`: rebuilt editorial — serif H1 (the full name with "Ph.D."
+  via `author.fullName`), quiet subtitle, understated round icon buttons,
+  no gradient aura, no decorative accent bar.
+- `ContentBody`: default `glassEffect` flipped from `'glass-card'` to
+  `'none'` so prose sits directly on warm paper across home / activity
+  detail / CV timeline / research / digital humanities detail pages. List
+  items that ARE distinct entities (guest-lectures, related-items, PDF CTA
+  boxes) keep their card treatment.
+- `Footer`: removed the two floating/rotating `decoration-circle` elements,
+  the pulsing `decoration-line`, the shimmer-animated 4-stop top border,
+  the `.title-accent` gradient bar beside group titles, and the
+  `.link-hover-effect` sliding shimmer on footer links. Single warm-dark
+  surface with a hairline top rule; copyright now uses `author.fullName`.
+- `Header`: 3-stop `primary→highlight` gradient replaced with a single
+  warm `--color-surface-elevated` background at `--header-bg-opacity`,
+  chrome blur retained. Dark mode uses `--color-surface-alt`.
+- `DropdownMenu`: warm popover surface, removed `::before` sliding shimmer
+  on items, removed `scale(1.02)` on hover (kept `translateX`), removed
+  inset top/bottom glass-bezel highlights.
+- `MobileMenu`: warm overlay, removed per-item `backdrop-filter` stacking,
+  removed `::before` shimmers on both `.mobile-nav-link` and
+  `.mobile-dropdown-link`, rewrote dark-mode block to use warm surface
+  tokens instead of white color-mixes.
+- `ThemeToggle`: switched from 10 % white-tinted glass tile to a 5 %
+  primary-tinted paper chip; removed all inset white highlight shadows,
+  simplified the `themeChangePulse` keyframe to a single shadow layer.
+- `ReferencePreviewCard`: content popover is now a warm paper tile with a
+  primary-tinted shadow; arrow simplified to match. `--ease-bounce`
+  transitions swapped to `--ease-out`.
+- `PageIntro`, `ProjectImageBanner`, `Breadcrumb`, `RangeSlider`,
+  `NetworkStatusIndicator`: all migrated off decorative `backdrop-filter`
+  to warm tinted surfaces.
+- `LatestActivities` / `.panel`: panel padding bumped to
+  `var(--space-2xl) var(--space-xl)` (48 px vertical / 32 px horizontal).
+  `.card-accent-border` padding bumped from `var(--space-md)` to
+  `var(--space-lg)` (24 px). `.activity-item` in `activity-list.css` no
+  longer sets padding/border (those live on `.card-accent-border` when an
+  activity item is a card).
+
+### Deferred / still open
+
+Not blocking — pick up when convenient:
+
+- **Dark-mode pass on detail pages**: visually walk `/publications/[id]`,
+  `/communications/[id]`, and the CV timeline in dark mode. Spot any
+  token that reverted to a cool-gray assumption in a component I didn't
+  touch. The automated auditor already reported "largely clean" but a human
+  eye over every detail route would close the loop.
+- **Publications / Communications / Activities list pages**: still use a
+  vertical stack of uniform `entity-card` tiles. The brief calls for editorial
+  composition breaks (featured item at the top, pull-quote breakouts,
+  varied rhythm). Low priority — the uniform list is already readable and
+  on-palette; this is a "delight" pass, not a correctness pass.
+- **Heading hierarchy audit**: type sizes are set via a modular scale, but
+  I haven't hand-checked whether section headings on dense pages (CV,
+  publications list, activity index) read with the right visual weight
+  against Spectral. Likely needs a pass after user eyeballs more pages.
+- **Filter sidebar styling** (`UniversalFiltersSidebar`): still uses
+  older glass-tinted treatments for filter sections. Not visually wrong,
+  but could be simplified to match the paper surfaces elsewhere.
+- **Button variants**: `.glass-button` (primary/secondary/outline variants
+  in `glassmorphism.css`) is legitimate chrome glass, but the hover
+  treatments have inset white highlights that clash with warm paper. A
+  dedicated button polish pass is worth doing once buttons are exercised
+  across the site.
+- **Remaining `color-mix(var(--color-white) ...)` audit**: several places
+  still use `var(--color-white)` as a base for semi-transparent overlays.
+  In warm palette these read as slightly-cool. Worth a sweep to migrate
+  toward `var(--color-surface-elevated)` / warm surface tokens as a
+  separate cleanup PR.
+- **MEDIUM audit items fully landed in this evolution** — nothing from the
+  design-philosophy-auditor's MEDIUM list is still open. LOW items (stale
+  "overshoot" / "springs back" comments) all resolved.
+
+### Design-brief source of truth
+
+Future design work should start by reading [`.impeccable.md`](./.impeccable.md)
+for the audience / personality / direction framing, then this roadmap for
+what's already landed. The seven design principles in `.impeccable.md`
+(typography does heavy lifting, warm neutrals + rare accents, quiet the
+glass, asymmetry over center, both themes equal craft, no AI tells,
+peer-respecting density) are the acceptance criteria for anything new.

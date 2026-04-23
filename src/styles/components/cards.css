@@ -1,38 +1,18 @@
-/* Card styles */
+/* Card styles
+ *
+ * Paper-surface card. Phase 2 of the design evolution moved .card off glass
+ * and onto an elevated paper tile matching .glass-card. One quiet single-
+ * layer shadow, subtle warm border, small lift on hover. */
 
 .card {
-	background: color-mix(
-		in srgb,
-		var(--color-background) calc(var(--card-glass-opacity-light) * 100%),
-		transparent
-	);
-	-webkit-backdrop-filter: blur(var(--glass-blur-fallback));
-	backdrop-filter: blur(var(--glass-blur-fallback));
+	background: var(--color-surface-elevated);
+	border: var(--border-width-thin) solid var(--color-border);
 	border-radius: var(--border-radius-lg);
-	border: var(--border-width-thin) solid
-		color-mix(
-			in srgb,
-			var(--color-background) calc(var(--card-glass-border-light) * 100%),
-			transparent
-		);
 	overflow: hidden;
-	box-shadow:
-		0 8px 32px 0
-			color-mix(
-				in srgb,
-				rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity) * 100%),
-				transparent
-			),
-		inset 0 1px 0
-			color-mix(
-				in srgb,
-				var(--color-background) calc(var(--card-glass-inset-light) * 100%),
-				transparent
-			);
+	box-shadow: var(--shadow-sm);
 	transition:
 		transform var(--duration-moderate) var(--ease-out),
 		box-shadow var(--duration-moderate) var(--ease-out),
-		background var(--duration-moderate) var(--ease-out),
 		border-color var(--duration-moderate) var(--ease-out);
 	display: flex;
 	flex-direction: column;
@@ -40,30 +20,9 @@
 }
 
 .card:hover {
-	background: color-mix(
-		in srgb,
-		var(--color-background) calc(var(--card-glass-opacity-light-hover) * 100%),
-		transparent
-	);
-	border-color: color-mix(
-		in srgb,
-		var(--color-background) calc(var(--card-glass-border-light-hover) * 100%),
-		transparent
-	);
-	transform: var(--card-transform-hover);
-	box-shadow:
-		0 12px 40px 0
-			color-mix(
-				in srgb,
-				rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity-hover) * 100%),
-				transparent
-			),
-		inset 0 1px 0
-			color-mix(
-				in srgb,
-				var(--color-background) calc(var(--card-glass-inset-light-hover) * 100%),
-				transparent
-			);
+	transform: var(--transform-lift-sm);
+	box-shadow: var(--shadow-md);
+	border-color: var(--color-border-dark);
 }
 
 .card-image {
@@ -236,89 +195,40 @@
 }
 
 :global(html.dark) .card {
-	background: color-mix(
-		in srgb,
-		var(--color-text) calc(var(--card-glass-opacity-dark) * 100%),
-		transparent
-	);
-	border: var(--border-width-thin) solid
-		color-mix(
-			in srgb,
-			var(--color-background) calc(var(--card-glass-border-dark) * 100%),
-			transparent
-		);
-	box-shadow:
-		0 8px 32px 0 color-mix(in srgb, var(--color-text) calc(var(--opacity-30) * 100%), transparent),
-		inset 0 1px 0
-			color-mix(
-				in srgb,
-				var(--color-background) calc(var(--card-glass-inset-dark) * 100%),
-				transparent
-			);
+	background: var(--color-surface-alt);
+	border: var(--border-width-thin) solid var(--color-border-dark);
+	box-shadow: var(--shadow-sm);
 }
 
 :global(html.dark) .card:hover {
-	background: color-mix(
-		in srgb,
-		var(--color-text) calc(var(--card-glass-opacity-dark-hover) * 100%),
-		transparent
-	);
-	border-color: color-mix(
-		in srgb,
-		var(--color-background) calc(var(--card-glass-border-dark-hover) * 100%),
-		transparent
-	);
-	box-shadow:
-		0 12px 40px 0 color-mix(in srgb, var(--color-text) calc(var(--opacity-90) * 100%), transparent),
-		inset 0 1px 0
-			color-mix(
-				in srgb,
-				var(--color-background) calc(var(--card-glass-inset-dark-hover) * 100%),
-				transparent
-			);
+	background: var(--color-surface-elevated);
+	border-color: var(--color-border-dark);
+	box-shadow: var(--shadow-md);
 }
 /*
- * Card with expanding accent border on hover.
- * Reading-surface variant: solid --color-surface, no glass. The expanding
- * left accent still grows on hover (the distinctive affordance), and the
- * shadow takes a primary tint — both orchestrated with --ease-spring.
+ * Reading-surface card (paper tile) with a primary-tinted hover response.
+ * Previously used an expanding left-stripe ::before on hover — removed in
+ * the Phase 2 design evolution because stripe-accent borders on cards are
+ * one of the most recognisable AI-UI tells. Hover now conveys state through
+ * a deeper border, lifted shadow with a primary tint, and a small rise.
  */
 .card-accent-border {
-	position: relative;
-	padding: var(--space-md);
+	padding: var(--space-lg);
 	border-radius: var(--border-radius-md);
-	overflow: hidden;
 	background: var(--color-surface);
 	border: var(--border-width-thin) solid var(--color-border);
 	box-shadow: var(--shadow-sm);
 	transition:
-		transform var(--duration-moderate) var(--ease-spring),
+		transform var(--duration-moderate) var(--ease-out),
 		border-color var(--duration-fast) var(--ease-out),
 		box-shadow var(--duration-moderate) var(--ease-out);
 }
 
-.card-accent-border::before {
-	content: '';
-	position: absolute;
-	left: 0;
-	top: 0;
-	bottom: 0;
-	width: 0;
-	background: var(--card-accent-color, var(--color-accent));
-	border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
-	transition: width var(--duration-normal) var(--ease-out);
-	opacity: var(--opacity-90);
-}
-
-.card-accent-border:hover::before {
-	width: var(--border-width-medium);
-}
-
 .card-accent-border:hover {
-	transform: translateY(-2px);
-	border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
+	transform: var(--transform-lift-sm);
+	border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-border));
 	box-shadow:
-		0 12px 28px -8px color-mix(in srgb, var(--color-primary) 20%, transparent),
+		0 12px 28px -8px color-mix(in srgb, var(--color-primary) 18%, transparent),
 		0 4px 10px -4px color-mix(in srgb, var(--color-black) 6%, transparent);
 }
 
@@ -329,21 +239,16 @@
 }
 
 :global(html.dark) .card-accent-border:hover {
-	border-color: color-mix(in srgb, var(--color-primary) 50%, var(--color-border));
+	border-color: color-mix(in srgb, var(--color-primary) 55%, var(--color-border));
 	box-shadow:
-		0 12px 28px -8px color-mix(in srgb, var(--color-primary) 35%, transparent),
+		0 12px 28px -8px color-mix(in srgb, var(--color-primary) 30%, transparent),
 		0 4px 10px -4px color-mix(in srgb, var(--color-black) 40%, transparent);
 }
 
-/* Reduce motion preference */
 @media (prefers-reduced-motion: reduce) {
 	.card-accent-border,
-	.card-accent-border::before {
-		transition: none !important;
-		will-change: auto !important;
-	}
-
 	.card-accent-border:hover {
-		transform: none !important;
+		transition: none;
+		transform: none;
 	}
 }

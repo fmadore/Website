@@ -6,19 +6,20 @@
 	margin: 0;
 }
 
+/*
+ * Activity item — used exclusively inside the LatestActivities panel,
+ * where every item also carries .card-accent-border (a paper tile).
+ * This rule must NOT set padding or border: the card class already
+ * provides both, and overriding here stripped the horizontal padding
+ * (the "super ugly no margin" regression after Phase 5). Keep only
+ * position + hover-driven title color shift.
+ */
 .activity-item {
-	margin-bottom: var(--space-md);
-	padding-left: var(--space-md);
-	border-left: var(--border-width-thick) solid var(--color-border);
 	position: relative;
 }
 
-.activity-item:last-child {
-	margin-bottom: 0;
-}
-
-.activity-item:hover {
-	border-left-color: var(--color-primary);
+.activity-item:hover .activity-title {
+	color: var(--color-primary);
 }
 
 .activity-link {
@@ -163,14 +164,6 @@
 }
 
 /* Dark mode support */
-:global(html.dark) .activity-item {
-	border-left-color: var(--color-border);
-}
-
-:global(html.dark) .activity-item:hover {
-	border-left-color: var(--color-primary);
-}
-
 :global(html.dark) .filter-tag {
 	background-color: var(--color-surface-alt);
 	border-color: var(--color-border);

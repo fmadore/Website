@@ -50,15 +50,6 @@
 
 <!-- Remove redundant role="contentinfo" - footer element already provides this semantic meaning -->
 <footer class="site-footer" bind:this={footerElement}>
-	<div class="footer-gradient-top" aria-hidden="true"></div>
-
-	<!-- Background decorative elements -->
-	<div class="footer-decoration" aria-hidden="true">
-		<div class="decoration-circle decoration-circle-1"></div>
-		<div class="decoration-circle decoration-circle-2"></div>
-		<div class="decoration-line"></div>
-	</div>
-
 	<div class="footer-container">
 		<section
 			class="footer-branding"
@@ -68,7 +59,8 @@
 			<div class="footer-logo-section">
 				<div class="footer-copyright">
 					<p class="copyright-main" id="footer-brand-heading">
-						© {currentYear} Frédérick Madore, Ph.D.
+						© {currentYear}
+						{author.fullName}
 					</p>
 					<p class="copyright-subtitle">{author.position}</p>
 				</div>
@@ -89,7 +81,6 @@
 				>
 					<h3 class="footer-group-title" id="group-{groupIndex}-title">
 						{group.title}
-						<span class="title-accent" aria-hidden="true"></span>
 					</h3>
 					<!-- Use proper semantic list structure -->
 					<ul class="footer-links-grid">
@@ -112,7 +103,6 @@
 										<Icon icon={link.icon} width="20" height="20" />
 									</div>
 									<span class="footer-link-name">{link.name}</span>
-									<div class="link-hover-effect" aria-hidden="true"></div>
 								</a>
 								<!-- eslint-enable svelte/no-navigation-without-resolve -->
 							</li>
@@ -137,117 +127,20 @@
 </footer>
 
 <style>
-	/* Enhanced footer styles with glassmorphism */
+	/*
+	 * Editorial footer — solid warm-dark surface, hairline top rule, no
+	 * floating circles, no shimmer, no pulsing line. Page-turning calm
+	 * rather than continuous ambient motion.
+	 */
 	.site-footer {
-		background: linear-gradient(
-			135deg,
-			var(--color-footer-bg) 0%,
-			color-mix(in srgb, var(--color-footer-bg) 95%, var(--color-primary) 5%) 100%
-		);
+		background: var(--color-footer-bg);
 		color: var(--color-footer-text);
 		padding: var(--space-12) 0 var(--space-8) 0;
 		position: relative;
-		overflow: hidden;
+		border-top: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-footer-text) 15%, transparent);
 		/* Keep footer below sidebar dropdowns (sidebar-column has z-index: 10) */
 		z-index: 1;
-	}
-
-	/* Enhanced gradient top border with animated shimmer */
-	.footer-gradient-top {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: var(--space-1);
-		background: linear-gradient(
-			90deg,
-			var(--color-primary),
-			var(--color-highlight),
-			var(--color-accent),
-			var(--color-primary)
-		);
-		background-size: 200% 100%;
-		animation: shimmer var(--duration-ambient-md) ease-in-out infinite;
-	}
-
-	@keyframes shimmer {
-		0%,
-		100% {
-			background-position: 200% 0;
-		}
-		50% {
-			background-position: 0% 0;
-		}
-	}
-
-	/* Decorative background elements */
-	.footer-decoration {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		pointer-events: none;
-		opacity: var(--opacity-10);
-	}
-
-	.decoration-circle {
-		position: absolute;
-		border-radius: 50%;
-		background: linear-gradient(45deg, var(--color-primary), var(--color-highlight));
-	}
-
-	.decoration-circle-1 {
-		width: calc(var(--space-32) * 2.375); /* ~300px equivalent */
-		height: calc(var(--space-32) * 2.375);
-		top: calc(var(--space-32) * -1.1875); /* ~-150px equivalent */
-		right: calc(var(--space-32) * -0.625); /* ~-100px equivalent */
-		animation: float var(--duration-ambient-lg) ease-in-out infinite;
-	}
-
-	.decoration-circle-2 {
-		width: var(--space-32); /* 200px equivalent */
-		height: var(--space-32);
-		bottom: calc(var(--space-32) * -0.625); /* ~-100px equivalent */
-		left: calc(var(--space-32) * -0.3125); /* ~-50px equivalent */
-		animation: float var(--duration-ambient-lg) ease-in-out infinite reverse;
-	}
-
-	.decoration-line {
-		position: absolute;
-		top: 50%;
-		left: 0;
-		right: 0;
-		height: var(--border-width-thin);
-		background: linear-gradient(
-			90deg,
-			transparent,
-			var(--color-primary),
-			var(--color-highlight),
-			transparent
-		);
-		transform: translateY(-50%);
-		animation: pulse-line var(--duration-ambient-sm) ease-in-out infinite;
-	}
-
-	@keyframes float {
-		0%,
-		100% {
-			transform: translateY(0) rotate(var(--rotate-0));
-		}
-		50% {
-			transform: translateY(calc(var(--transform-distance-sm) * -1)) rotate(var(--rotate-180));
-		}
-	}
-
-	@keyframes pulse-line {
-		0%,
-		100% {
-			opacity: var(--opacity-10);
-		}
-		50% {
-			opacity: var(--opacity-15);
-		}
 	}
 
 	.footer-container {
@@ -343,7 +236,10 @@
 		transform: translateY(0);
 	}
 
-	/* Enhanced group titles */
+	/*
+	 * Group titles — small-caps editorial labels. No gradient accent bar;
+	 * the label itself is the heading, weight + tracking do the work.
+	 */
 	.footer-group-title {
 		color: var(--color-footer-text);
 		font-size: var(--font-size-sm);
@@ -351,21 +247,11 @@
 		text-transform: uppercase;
 		letter-spacing: var(--letter-spacing-wider);
 		margin: 0 0 var(--space-4) 0;
-		position: relative;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		text-align: center;
 		gap: var(--space-2);
-	}
-
-	.title-accent {
-		flex: 1;
-		height: var(--border-width-medium);
-		background: linear-gradient(90deg, var(--color-highlight), var(--color-accent), transparent);
-		border-radius: var(--border-radius-sm);
-		opacity: var(--opacity-90);
-		display: none;
 	}
 
 	/* Proper list styling */
@@ -431,21 +317,6 @@
 		line-height: var(--line-height-relaxed);
 	}
 
-	.link-hover-effect {
-		position: absolute;
-		top: 0;
-		left: -100%;
-		width: 100%;
-		height: 100%;
-		background: linear-gradient(
-			90deg,
-			transparent,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent),
-			transparent
-		);
-		transition: left var(--duration-slow) var(--ease-in-out);
-	}
-
 	.footer-link:hover {
 		color: var(--color-footer-text);
 		transform: var(--transform-lift-sm);
@@ -457,13 +328,8 @@
 			var(--color-primary) calc(var(--opacity-30) * 100%),
 			transparent
 		);
-		transform: scale(var(--scale-110));
 		box-shadow: 0 var(--space-1) var(--space-2)
 			color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
-	}
-
-	.footer-link:hover .link-hover-effect {
-		left: 100%;
 	}
 
 	/* Enhanced scroll to top button with glassmorphism */
@@ -519,10 +385,6 @@
 			text-align: left;
 		}
 
-		.title-accent {
-			display: block;
-		}
-
 		.footer-links-grid {
 			align-items: stretch;
 		}
@@ -575,17 +437,6 @@
 
 	/* Accessibility improvements */
 	@media (prefers-reduced-motion: reduce) {
-		.footer-gradient-top,
-		.decoration-circle,
-		.decoration-line,
-		.link-hover-effect {
-			animation: none;
-		}
-
-		.footer-link:hover .link-hover-effect {
-			display: none;
-		}
-
 		.footer-branding,
 		.footer-social-links,
 		.footer-link-group,

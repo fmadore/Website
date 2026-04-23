@@ -133,6 +133,12 @@
 </div>
 
 <style>
+	/*
+	 * Mobile menu overlay — warm paper surface with chrome blur over body
+	 * content. Legitimate glass use (modal overlay). Previously used a
+	 * white-based backdrop with an inset highlight; switched to the warm
+	 * elevated surface for palette coherence.
+	 */
 	.mobile-nav-container {
 		position: fixed;
 		top: 0;
@@ -141,7 +147,7 @@
 		width: 100%;
 		background: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--header-overlay-opacity) * 100%),
+			var(--color-surface-elevated) calc(var(--header-overlay-opacity) * 100%),
 			transparent
 		);
 		backdrop-filter: blur(var(--header-blur, var(--header-blur-fallback))) saturate(180%);
@@ -150,10 +156,7 @@
 		transform: translateY(-100%);
 		transition: transform var(--duration-moderate) var(--ease-in-out);
 		overflow-y: auto;
-		box-shadow:
-			var(--shadow-2xl),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--header-inset-opacity) * 100%), transparent);
+		box-shadow: var(--shadow-2xl);
 		will-change: transform;
 	}
 
@@ -176,6 +179,10 @@
 		gap: var(--space-4);
 	}
 
+	/*
+	 * Sticky header inside the mobile menu — solid warm tile, no
+	 * backdrop-filter (the container already blurs) and no gradient bg.
+	 */
 	.mobile-nav-header {
 		display: grid;
 		grid-template-columns: 1fr auto 1fr;
@@ -183,20 +190,10 @@
 		align-items: center;
 		margin: var(--space-2);
 		padding: var(--space-3) var(--space-4);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-80) * 100%), transparent),
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-60) * 100%), transparent)
-		);
-		backdrop-filter: blur(var(--header-blur)) saturate(180%);
-		-webkit-backdrop-filter: blur(var(--header-blur)) saturate(180%);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--header-border-opacity) * 100%), transparent);
+		background: var(--color-surface);
+		border: var(--border-width-thin) solid var(--color-border);
 		border-radius: var(--border-radius-xl);
-		box-shadow:
-			var(--shadow-md),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--header-inset-opacity) * 100%), transparent);
+		box-shadow: var(--shadow-sm);
 		position: sticky;
 		top: var(--space-2);
 		z-index: var(--z-above);
@@ -315,6 +312,12 @@
 		padding-top: var(--space-2);
 	}
 
+	/*
+	 * Mobile nav links — editorial list entries. Removed the sliding shimmer
+	 * ::before (AI-UI tell), removed the per-item backdrop-filter (container
+	 * already blurs), removed the per-item inset highlight shadow. Hover
+	 * conveys state via warm primary tint + colour shift + small nudge.
+	 */
 	:global(.mobile-nav-link) {
 		display: block;
 		padding: var(--space-3) var(--space-5);
@@ -323,37 +326,16 @@
 		font-size: var(--font-size-base);
 		font-weight: var(--font-weight-semibold);
 		border-radius: var(--border-radius-lg);
-		background: color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
-		backdrop-filter: blur(var(--glass-blur-sm));
-		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
+		background: var(--color-surface);
+		border: var(--border-width-thin) solid var(--color-border);
 		margin: var(--space-1) var(--space-4);
 		transition:
 			transform var(--duration-fast) var(--ease-out),
 			background-color var(--duration-fast) var(--ease-out),
 			border-color var(--duration-fast) var(--ease-out),
-			color var(--duration-fast) var(--ease-out),
-			box-shadow var(--duration-fast) var(--ease-out);
+			color var(--duration-fast) var(--ease-out);
 		position: relative;
-		overflow: hidden;
 		will-change: transform, background-color, border-color;
-	}
-
-	:global(.mobile-nav-link::before) {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: -100%;
-		width: 100%;
-		height: 100%;
-		background: linear-gradient(
-			90deg,
-			transparent,
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-30) * 100%), transparent),
-			transparent
-		);
-		transition: left var(--duration-slow) var(--ease-out);
 	}
 
 	:global(.mobile-nav-link:hover),
@@ -370,30 +352,19 @@
 			transparent
 		);
 		transform: translateX(var(--space-1));
-		box-shadow:
-			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-40) * 100%), transparent);
 	}
 
-	:global(.mobile-nav-link:hover::before) {
-		left: 100%;
-	}
-
+	/*
+	 * Nested sub-menu for dropdown items — same paper treatment as the
+	 * parent nav. No blur stacking, no inset-highlight glass reflection.
+	 */
 	:global(.mobile-dropdown) {
 		list-style: none;
 		padding: var(--space-2);
 		margin: var(--space-2) var(--space-5);
-		background: color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
-		backdrop-filter: blur(var(--glass-blur-md));
-		-webkit-backdrop-filter: blur(var(--glass-blur-md));
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-20) * 100%), transparent);
+		background: var(--color-surface-alt);
+		border: var(--border-width-thin) solid var(--color-border);
 		border-radius: var(--border-radius-lg);
-		box-shadow:
-			var(--shadow-md),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-30) * 100%), transparent);
 	}
 
 	:global(.mobile-dropdown-link) {
@@ -404,18 +375,13 @@
 		font-size: var(--font-size-base);
 		font-weight: var(--font-weight-medium);
 		transition:
-			transform var(--duration-fast) var(--ease-out),
 			background-color var(--duration-fast) var(--ease-out),
 			border-color var(--duration-fast) var(--ease-out),
-			color var(--duration-fast) var(--ease-out),
-			box-shadow var(--duration-fast) var(--ease-out);
+			color var(--duration-fast) var(--ease-out);
 		border-radius: var(--border-radius-md);
 		margin-bottom: var(--space-1);
-		position: relative;
-		background: color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
-		will-change: transform, background-color, border-color;
+		background: transparent;
+		border: var(--border-width-thin) solid transparent;
 	}
 
 	:global(.mobile-dropdown-link:hover),
@@ -431,10 +397,6 @@
 			var(--color-primary) calc(var(--opacity-30) * 100%),
 			transparent
 		);
-		box-shadow:
-			var(--shadow-md),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-30) * 100%), transparent);
 	}
 
 	/* Hide mobile nav on desktop */
@@ -444,74 +406,35 @@
 		}
 	}
 
-	/* Dark mode */
+	/* Dark mode — warm dusk surfaces, no inset highlights, no gradients. */
 	:global(html.dark) .mobile-nav-container {
 		background: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--header-overlay-opacity) * 100%),
+			var(--color-surface-alt) calc(var(--header-overlay-opacity) * 100%),
 			transparent
 		);
-		box-shadow:
-			var(--shadow-2xl),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--header-inset-opacity) * 100%), transparent);
+		box-shadow: var(--shadow-2xl);
 	}
 
 	:global(html.dark) .mobile-nav-header {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-80) * 100%), transparent),
-			color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-60) * 100%), transparent)
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--header-border-opacity) * 100%), transparent);
-		box-shadow:
-			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--header-inset-opacity) * 100%), transparent);
+		background: var(--color-surface);
+		border: var(--border-width-thin) solid var(--color-border-dark);
+		box-shadow: var(--shadow-sm);
 	}
 
 	:global(html.dark .mobile-nav-link) {
-		background: color-mix(
-			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-10) * 100%),
-			transparent
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
-	}
-
-	:global(html.dark .mobile-nav-link::before) {
-		background: linear-gradient(
-			90deg,
-			transparent,
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent),
-			transparent
-		);
+		background: var(--color-surface);
+		border: var(--border-width-thin) solid var(--color-border-dark);
 	}
 
 	:global(html.dark .mobile-dropdown) {
-		background: color-mix(
-			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
-		box-shadow:
-			var(--shadow-xl),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
+		background: var(--color-surface-sunken);
+		border: var(--border-width-thin) solid var(--color-border);
 	}
 
 	:global(html.dark .mobile-dropdown-link) {
-		background: color-mix(
-			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-5) * 100%),
-			transparent
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
+		background: transparent;
+		border: var(--border-width-thin) solid transparent;
 	}
 
 	/* Touch device optimizations */

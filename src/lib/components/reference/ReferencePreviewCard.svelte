@@ -230,43 +230,29 @@
 		color: var(--color-text);
 		overflow: hidden;
 
-		/* Enhanced glassmorphism using global variables */
-		backdrop-filter: blur(var(--glass-blur-2xl)) saturate(150%);
-		-webkit-backdrop-filter: blur(var(--glass-blur-2xl)) saturate(150%);
+		/* Paper popover — content surface, no backdrop-filter. (Removed in the
+		 * glass-cleanup pass: a floating citation preview is content, not chrome.)
+		 * Depth comes from an elevated warm surface + a primary-tinted shadow. */
+		background: var(--color-surface-elevated);
 
-		/* Premium glass background with subtle gradients */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-white) 98%, transparent) 0%,
-			color-mix(in srgb, var(--color-white) 97%, transparent) 50%,
-			color-mix(in srgb, var(--color-white) 98%, transparent) 100%
-		);
-
-		/* Refined border with subtle shimmer effect */
 		border: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
-		border-radius: var(--border-radius-2xl);
+		border-radius: var(--border-radius-xl);
 
-		/* Enhanced shadow system with multiple layers for depth */
 		box-shadow:
 			0 20px 60px -15px
 				color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent),
-			0 10px 30px -10px
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent),
-			inset 0 1px 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-40) * 100%), transparent),
-			inset 0 -1px 0
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent);
+			0 8px 20px -8px color-mix(in srgb, var(--color-black) 10%, transparent);
 
 		/* Initial state for animation using design system tokens */
 		opacity: 0;
 		transform: translateX(-50%) translateY(var(--transform-distance-sm)) scale(var(--scale-90));
 		/* Explicit transition properties for better performance */
 		transition:
-			opacity var(--duration-moderate) var(--ease-bounce),
-			transform var(--duration-moderate) var(--ease-bounce),
-			box-shadow var(--duration-moderate) var(--ease-bounce),
-			border-color var(--duration-moderate) var(--ease-bounce);
+			opacity var(--duration-moderate) var(--ease-out),
+			transform var(--duration-moderate) var(--ease-out),
+			box-shadow var(--duration-moderate) var(--ease-out),
+			border-color var(--duration-moderate) var(--ease-out);
 		/* Performance optimization */
 		will-change: opacity, transform;
 	}
@@ -628,27 +614,13 @@
 		width: var(--space-lg);
 		height: var(--space-lg);
 
-		/* Sophisticated glass effect for arrow */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-95) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-
+		/* Paper arrow — solid warm surface to match the popover body. */
+		background: var(--color-surface-elevated);
 		border: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
 		border-radius: var(--border-radius-sm);
 		transform: translateX(-50%) rotate(45deg);
 		z-index: var(--z-tooltip);
-
-		/* Enhanced shadow for depth */
-		box-shadow:
-			0 4px 12px
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent),
-			inset 0 1px 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-40) * 100%), transparent);
 	}
 
 	.position-below .card-arrow {

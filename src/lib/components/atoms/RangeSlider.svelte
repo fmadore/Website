@@ -286,17 +286,11 @@
 		/* Track offset variable for handle positioning */
 		--track-offset: var(--space-sm);
 
-		/* Glassmorphism styling matching filter sidebar - using global values */
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-surface) calc(var(--opacity-30) * 100%), transparent);
-		box-shadow: var(--shadow-md);
+		/* Paper track surface — no backdrop-filter. The slider sits inside
+		 * filter sidebars which are already paper; blur here was decorative. */
+		background: var(--color-surface-alt);
+		border: var(--border-width-thin) solid var(--color-border);
+		box-shadow: var(--shadow-xs);
 	}
 
 	.range-slider:hover {
@@ -393,6 +387,7 @@
 		transform: translate(-50%, -50%) scale(var(--scale-125));
 	}
 
+	/* Value tooltip above the drag handle. Solid warm gradient, no blur. */
 	.range-float {
 		position: absolute;
 		bottom: 140%;
@@ -407,9 +402,6 @@
 		white-space: nowrap;
 		pointer-events: none;
 		box-shadow: var(--shadow-md);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		/* Entry animation for float labels */
 		animation: floatFadeIn var(--duration-fast) var(--ease-out);
 	}
 

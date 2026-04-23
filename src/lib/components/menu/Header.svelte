@@ -220,35 +220,22 @@
 </header>
 
 <style>
-	/* Site Header Styles
-	 * Uses dedicated --header-* tokens so the navigation stays readable over
-	 * body text and images, rather than borrowing the card-oriented
-	 * --glass-opacity-* values which are intentionally very translucent. */
+	/* Site header — sticky paper-glass.
+	 * Single warm-surface background with chrome blur (legitimate glass use
+	 * for sticky nav over scrolling content). Previously used a 3-stop
+	 * primary→highlight gradient with ~2-3% tint that was visually
+	 * imperceptible but added ornamental code. */
 	:global(.site-header) {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-white) calc(var(--header-bg-opacity) * 100%), transparent) 0%,
-			color-mix(
-					in srgb,
-					var(--color-primary) 3%,
-					color-mix(in srgb, var(--color-white) calc(var(--header-bg-opacity) * 100%), transparent)
-				)
-				50%,
-			color-mix(
-					in srgb,
-					var(--color-highlight) 2%,
-					color-mix(in srgb, var(--color-white) calc(var(--header-bg-opacity) * 100%), transparent)
-				)
-				100%
+		background: color-mix(
+			in srgb,
+			var(--color-surface-elevated) calc(var(--header-bg-opacity) * 100%),
+			transparent
 		);
 		backdrop-filter: blur(var(--header-blur, var(--header-blur-fallback))) saturate(180%);
 		-webkit-backdrop-filter: blur(var(--header-blur, var(--header-blur-fallback))) saturate(180%);
 		border-bottom: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--header-border-opacity) * 100%), transparent);
-		box-shadow:
-			var(--shadow-md),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--header-inset-opacity) * 100%), transparent);
+			color-mix(in srgb, var(--color-text) calc(var(--header-border-opacity) * 12%), transparent);
+		box-shadow: var(--shadow-sm);
 		position: sticky;
 		top: 0;
 		z-index: var(--z-sticky);
@@ -261,48 +248,20 @@
 		will-change: transform;
 	}
 
-	/* Scrolled state: once the user has scrolled past the very top, raise the
-	 * background opacity and bottom-border so the header stays legible over
-	 * page content and asserts a clear separation. */
+	/* Scrolled state: raise opacity + shadow so the header stays legible
+	 * over page content and asserts a clearer separation. */
 	:global(.site-header.header-scrolled) {
-		background: linear-gradient(
-			135deg,
-			color-mix(
-					in srgb,
-					var(--color-white) calc(var(--header-bg-opacity-scrolled) * 100%),
-					transparent
-				)
-				0%,
-			color-mix(
-					in srgb,
-					var(--color-primary) 3%,
-					color-mix(
-						in srgb,
-						var(--color-white) calc(var(--header-bg-opacity-scrolled) * 100%),
-						transparent
-					)
-				)
-				50%,
-			color-mix(
-					in srgb,
-					var(--color-highlight) 2%,
-					color-mix(
-						in srgb,
-						var(--color-white) calc(var(--header-bg-opacity-scrolled) * 100%),
-						transparent
-					)
-				)
-				100%
+		background: color-mix(
+			in srgb,
+			var(--color-surface-elevated) calc(var(--header-bg-opacity-scrolled) * 100%),
+			transparent
 		);
 		border-bottom-color: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--header-border-opacity-scrolled) * 100%),
+			var(--color-text) calc(var(--header-border-opacity-scrolled) * 18%),
 			transparent
 		);
-		box-shadow:
-			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--header-inset-opacity) * 100%), transparent);
+		box-shadow: var(--shadow-md);
 	}
 
 	/* Scroll-direction hide: transform rather than top/display so the
@@ -319,84 +278,30 @@
 		}
 	}
 
-	/* Dark mode */
+	/* Dark mode — warm dusk surface, slightly translucent over body. */
 	:global(html.dark .site-header) {
-		background: linear-gradient(
-			135deg,
-			color-mix(
-					in srgb,
-					var(--color-dark-surface) calc(var(--header-bg-opacity) * 100%),
-					transparent
-				)
-				0%,
-			color-mix(
-					in srgb,
-					var(--color-primary) 5%,
-					color-mix(
-						in srgb,
-						var(--color-dark-surface) calc(var(--header-bg-opacity) * 100%),
-						transparent
-					)
-				)
-				50%,
-			color-mix(
-					in srgb,
-					var(--color-highlight) 3%,
-					color-mix(
-						in srgb,
-						var(--color-dark-surface) calc(var(--header-bg-opacity) * 100%),
-						transparent
-					)
-				)
-				100%
+		background: color-mix(
+			in srgb,
+			var(--color-surface-alt) calc(var(--header-bg-opacity) * 100%),
+			transparent
 		);
 		border-bottom: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--header-border-opacity) * 100%), transparent);
-		box-shadow:
-			var(--shadow-md),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--header-inset-opacity) * 100%), transparent);
+			color-mix(in srgb, var(--color-text) calc(var(--header-border-opacity) * 18%), transparent);
+		box-shadow: var(--shadow-sm);
 	}
 
 	:global(html.dark .site-header.header-scrolled) {
-		background: linear-gradient(
-			135deg,
-			color-mix(
-					in srgb,
-					var(--color-dark-surface) calc(var(--header-bg-opacity-scrolled) * 100%),
-					transparent
-				)
-				0%,
-			color-mix(
-					in srgb,
-					var(--color-primary) 5%,
-					color-mix(
-						in srgb,
-						var(--color-dark-surface) calc(var(--header-bg-opacity-scrolled) * 100%),
-						transparent
-					)
-				)
-				50%,
-			color-mix(
-					in srgb,
-					var(--color-highlight) 3%,
-					color-mix(
-						in srgb,
-						var(--color-dark-surface) calc(var(--header-bg-opacity-scrolled) * 100%),
-						transparent
-					)
-				)
-				100%
+		background: color-mix(
+			in srgb,
+			var(--color-surface-alt) calc(var(--header-bg-opacity-scrolled) * 100%),
+			transparent
 		);
 		border-bottom-color: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--header-border-opacity-scrolled) * 100%),
+			var(--color-text) calc(var(--header-border-opacity-scrolled) * 25%),
 			transparent
 		);
-		box-shadow:
-			var(--shadow-lg),
-			inset 0 var(--border-width-thin) 0
-				color-mix(in srgb, var(--color-white) calc(var(--header-inset-opacity) * 100%), transparent);
+		box-shadow: var(--shadow-md);
 	}
 
 	/* Solid fallback for browsers without backdrop-filter. */

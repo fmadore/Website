@@ -47,7 +47,7 @@
 	<ProfileBanner />
 	<div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-8">
 		<div class="md:col-span-2 scroll-reveal">
-			<ContentBody variant="default" glassEffect="glass-card">
+			<ContentBody variant="default">
 				<p>
 					I am a Data Curator at the <a
 						href="https://www.africamultiple.uni-bayreuth.de/en/index.html"

@@ -133,22 +133,27 @@
 		gap: var(--space-md);
 	}
 
+	/*
+	 * Lecture entry — editorial list item. Previously carried a primary left-
+	 * stripe (AI-UI tell); now uses a hairline bottom rule to separate
+	 * entries, with hover handled via title color + subtle lift.
+	 */
 	.lecture-item {
-		/* Enhanced borders */
-		border-left: var(--border-width-thick) solid var(--color-primary);
-
-		/* Balanced spacing - less top padding, more bottom padding */
-		padding: var(--space-md) var(--space-lg) var(--space-lg) var(--space-lg);
-		margin-bottom: var(--space-md);
-		transition: all var(--duration-moderate) var(--ease-in-out);
-
-		/* Subtle transform for depth */
+		padding: var(--space-md) 0 var(--space-lg);
+		border-bottom: var(--border-width-thin) solid var(--color-border);
+		margin-bottom: 0;
+		transition:
+			transform var(--duration-moderate) var(--ease-out),
+			border-color var(--duration-moderate) var(--ease-out);
 		position: relative;
 	}
 
+	.lecture-item:last-child {
+		border-bottom: none;
+	}
+
 	.lecture-item:hover {
-		/* Enhanced hover effects */
-		border-left-color: var(--color-highlight);
+		border-color: var(--color-border-dark);
 
 		/* Subtle lift effect */
 		transform: var(--transform-lift-sm);

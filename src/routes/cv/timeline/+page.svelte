@@ -45,7 +45,7 @@
 		additionalClasses="mb-8"
 	/>
 
-	<ContentBody variant="wide" glassEffect="glass-card">
+	<ContentBody variant="wide">
 		<p class="mb-6 text-lg text-secondary">
 			An interactive visualization of my academic journey, highlighting positions held, education
 			completed, grants received, and key scholarly outputs over time. Hover over items for details.

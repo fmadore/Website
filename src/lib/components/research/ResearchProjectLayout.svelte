@@ -101,7 +101,7 @@ Provides consistent structure for all research project pages including:
 			</div>
 
 			<div class="scroll-reveal">
-				<ContentBody variant="default" glassEffect="glass-card">
+				<ContentBody variant="default">
 					{@render children()}
 				</ContentBody>
 			</div>

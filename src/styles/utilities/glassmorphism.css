@@ -226,87 +226,57 @@
 	backdrop-filter: blur(var(--glass-blur-xl));
 }
 
-/* Glass morphism for specific components */
+/* ============================================================================
+ * PAPER SURFACES — formerly "glass" cards/panels.
+ *
+ * Phase 2 of the design evolution quieted glassmorphism on content surfaces.
+ * The warm terracotta + paper palette already supplies enough depth without
+ * backdrop-filter blur. These classes keep their legacy names for codebase
+ * compatibility but now render as elevated paper tiles with a single-layer
+ * shadow and a hairline border.
+ *
+ * Glassmorphism is still used for:
+ *   .glass-nav (sticky header) — blur over scrolling content reinforces depth
+ *   .glass-button (interactive surfaces) — tactile feedback
+ *   Modal/overlay scrims (mobile menu) — foreground separation
+ * ============================================================================ */
+
 .glass-card {
-	background: color-mix(
-		in srgb,
-		var(--color-white) calc(var(--card-glass-opacity-light) * 100%),
-		transparent
-	);
-	-webkit-backdrop-filter: blur(var(--glass-blur-amount)) saturate(120%);
-	backdrop-filter: blur(var(--glass-blur-amount)) saturate(120%);
-	border: var(--border-width-thin) solid
-		color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-light) * 100%), transparent);
+	background: var(--color-surface-elevated);
+	border: var(--border-width-thin) solid var(--color-border);
 	border-radius: var(--border-radius-lg);
-	box-shadow:
-		0 8px 32px 0
-			color-mix(
-				in srgb,
-				rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity) * 100%),
-				transparent
-			),
-		inset 0 1px 0
-			color-mix(in srgb, var(--color-white) calc(var(--card-glass-inset-light) * 100%), transparent);
-	transition: all var(--duration-moderate) var(--ease-in-out);
+	box-shadow: var(--shadow-sm);
+	transition:
+		transform var(--duration-moderate) var(--ease-out),
+		box-shadow var(--duration-moderate) var(--ease-out),
+		border-color var(--duration-moderate) var(--ease-out);
 }
 
 .glass-card:hover {
-	background: color-mix(
-		in srgb,
-		var(--color-white) calc(var(--card-glass-opacity-light-hover) * 100%),
-		transparent
-	);
-	border-color: color-mix(
-		in srgb,
-		var(--color-white) calc(var(--card-glass-border-light-hover) * 100%),
-		transparent
-	);
-	transform: var(--card-transform-hover);
-	-webkit-backdrop-filter: blur(var(--glass-blur-amount)) saturate(130%);
-	backdrop-filter: blur(var(--glass-blur-amount)) saturate(130%);
-	box-shadow:
-		0 12px 40px 0
-			color-mix(
-				in srgb,
-				rgb(var(--card-shadow-color)) calc(var(--card-shadow-opacity-hover) * 100%),
-				transparent
-			),
-		inset 0 1px 0
-			color-mix(
-				in srgb,
-				var(--color-white) calc(var(--card-glass-inset-light-hover) * 100%),
-				transparent
-			);
+	transform: var(--transform-lift-sm);
+	box-shadow: var(--shadow-md);
+	border-color: var(--color-border-dark);
 }
 
 .glass-panel {
-	background: color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
-	-webkit-backdrop-filter: blur(var(--glass-blur-fallback));
-	backdrop-filter: blur(var(--glass-blur-fallback));
-	border: var(--border-width-thin) solid
-		color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-light) * 100%), transparent);
+	background: var(--color-surface);
+	border: var(--border-width-thin) solid var(--color-border);
 	border-radius: var(--border-radius-xl);
-	box-shadow:
-		var(--shadow-lg),
-		inset 0 1px 0
-			color-mix(in srgb, var(--color-white) calc(var(--card-glass-inset-light) * 100%), transparent);
+	box-shadow: var(--shadow-xs);
 }
 
 .glass-panel-light {
-	background: color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
-	-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-	backdrop-filter: blur(var(--glass-blur-amount));
-	border: var(--border-width-thin) solid
-		color-mix(in srgb, var(--color-white) calc(var(--card-glass-opacity-light) * 100%), transparent);
+	background: var(--color-surface-alt);
+	border: var(--border-width-thin) solid var(--color-border-light);
 	border-radius: var(--border-radius-lg);
-	box-shadow:
-		var(--shadow-md),
-		inset 0 1px 0
-			color-mix(
-				in srgb,
-				var(--color-white) calc(var(--card-glass-opacity-light-hover) * 100%),
-				transparent
-			);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.glass-card,
+	.glass-card:hover {
+		transition: none;
+		transform: none;
+	}
 }
 
 .glass-nav {
@@ -422,68 +392,28 @@
 		color-mix(in srgb, var(--color-primary) calc(var(--opacity-90) * 100%), transparent);
 }
 
-/* Dark theme overrides for components */
+/* Dark-theme overrides for paper surfaces (see comment above .glass-card). */
 :global(html.dark) .glass-card.glass-card {
-	background: color-mix(
-		in srgb,
-		var(--color-dark-surface) calc(var(--card-glass-opacity-dark) * 100%),
-		transparent
-	);
-	border: var(--border-width-thin) solid
-		color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-dark) * 100%), transparent);
-	box-shadow:
-		0 8px 32px 0 color-mix(in srgb, black calc(var(--card-shadow-opacity) * 100%), transparent),
-		inset 0 1px 0
-			color-mix(in srgb, var(--color-white) calc(var(--card-glass-inset-dark) * 100%), transparent);
+	background: var(--color-surface-alt);
+	border: var(--border-width-thin) solid var(--color-border-dark);
+	box-shadow: var(--shadow-sm);
 }
 
 :global(html.dark) .glass-card.glass-card:hover {
-	background: color-mix(
-		in srgb,
-		var(--color-dark-surface) calc(var(--card-glass-opacity-dark-hover) * 100%),
-		transparent
-	);
-	border-color: color-mix(
-		in srgb,
-		var(--color-white) calc(var(--card-glass-border-dark-hover) * 100%),
-		transparent
-	);
-	box-shadow:
-		0 12px 40px 0
-			color-mix(in srgb, black calc(var(--card-shadow-opacity-hover) * 100%), transparent),
-		inset 0 1px 0
-			color-mix(
-				in srgb,
-				var(--color-white) calc(var(--card-glass-inset-dark-hover) * 100%),
-				transparent
-			);
+	background: var(--color-surface-elevated);
+	border-color: var(--color-border-dark);
+	box-shadow: var(--shadow-md);
 }
 
 :global(html.dark) .glass-panel.glass-panel {
-	background: color-mix(
-		in srgb,
-		var(--color-dark-surface) calc(var(--card-glass-opacity-dark) * 100%),
-		transparent
-	);
-	border: var(--border-width-thin) solid
-		color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-dark) * 100%), transparent);
-	box-shadow:
-		var(--shadow-lg),
-		inset 0 1px 0
-			color-mix(in srgb, var(--color-white) calc(var(--card-glass-inset-dark) * 100%), transparent);
+	background: var(--color-surface);
+	border: var(--border-width-thin) solid var(--color-border);
+	box-shadow: var(--shadow-xs);
 }
 
 :global(html.dark) .glass-panel-light.glass-panel-light {
-	background: color-mix(
-		in srgb,
-		var(--color-dark-surface) calc(var(--opacity-10) * 100%),
-		transparent
-	);
-	border: var(--border-width-thin) solid
-		color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
-	box-shadow:
-		var(--shadow-md),
-		inset 0 1px 0 color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
+	background: var(--color-surface-alt);
+	border: var(--border-width-thin) solid var(--color-border);
 }
 
 :global(html.dark) .glass-nav.glass-nav {
@@ -813,14 +743,14 @@
 	}
 }
 
-/* Fallback for browsers that don't support backdrop-filter */
+/* Fallback for browsers that don't support backdrop-filter.
+ * .glass-card, .glass-panel, .glass-panel-light no longer use backdrop-filter
+ * (they're paper surfaces now) so they're excluded here. */
 @supports not (backdrop-filter: blur(10px)) {
 	.glass,
 	.glass-light,
 	.glass-medium,
 	.glass-heavy,
-	.glass-card,
-	.glass-panel,
 	.glass-nav,
 	.glass-button,
 	.glass-frosted,
@@ -836,8 +766,6 @@
 	:global(html.dark) .glass-light,
 	:global(html.dark) .glass-medium,
 	:global(html.dark) .glass-heavy,
-	:global(html.dark) .glass-card,
-	:global(html.dark) .glass-panel,
 	:global(html.dark) .glass-nav,
 	:global(html.dark) .glass-button,
 	:global(html.dark) .glass-frosted,

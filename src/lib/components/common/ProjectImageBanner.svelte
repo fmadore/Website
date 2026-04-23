@@ -49,26 +49,14 @@
 			box-shadow var(--duration-slow) var(--ease-in-out),
 			background var(--duration-slow) var(--ease-in-out),
 			border-color var(--duration-slow) var(--ease-in-out);
-		/* Enhanced glassmorphism with sophisticated gradient overlay */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 3%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 2%, transparent) 25%,
-			color-mix(in srgb, var(--color-accent) 1.5%, transparent) 50%,
-			color-mix(in srgb, var(--color-primary) 1%, transparent) 75%,
-			transparent 100%
-		);
+		/* Paper banner surface — the image speaks for itself; no backdrop-filter,
+		 * no multi-stop gradient. A quiet warm tint + primary-tinted shadow
+		 * provides the "banner" affordance without frosted-glass decoration. */
+		background: color-mix(in srgb, var(--color-primary) 3%, var(--color-surface));
 		padding: var(--space-4);
-		/* Enhanced glassmorphism shadow with multiple layers */
-		box-shadow:
-			0 8px 32px 0 color-mix(in srgb, var(--color-primary) 12%, transparent),
-			0 2px 16px 0 color-mix(in srgb, var(--color-primary) 8%, transparent),
-			inset 0 1px 0 color-mix(in srgb, var(--color-white) 25%, transparent),
-			inset 0 -1px 0 color-mix(in srgb, var(--color-white) 10%, transparent);
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) 25%, transparent);
-		/* Add subtle backdrop blur */
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
+		box-shadow: 0 4px 14px -2px color-mix(in srgb, var(--color-primary) 15%, transparent);
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-primary) 15%, var(--color-border));
 	}
 
 	.project-image-banner::before {

@@ -205,22 +205,33 @@
 		text-decoration: underline;
 	}
 
+	/*
+	 * Review excerpt — editorial pull-quote. No stripe. Indented italic
+	 * serif with a leading open-quote glyph supplies the "this is quoted"
+	 * cue; the surface tint provides separation from surrounding prose.
+	 */
 	.excerpt {
-		margin-top: var(--space-md);
-		padding: var(--space-md);
-		border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-		border-left: var(--border-width-thick) solid var(--color-accent);
+		margin: var(--space-md) 0 var(--space-md) var(--space-md);
+		padding: var(--space-sm) 0 var(--space-sm) var(--space-md);
+		border-radius: var(--border-radius-sm);
+		background: transparent;
 		font-style: italic;
 		color: var(--color-text-light);
 		position: relative;
 		line-height: var(--line-height-relaxed);
 		font-family: var(--font-family-serif);
 		font-size: var(--font-size-sm);
+	}
+
+	.excerpt::before {
+		content: '\201C';
+		position: absolute;
+		left: calc(-1 * var(--space-xs));
+		top: calc(-1 * var(--space-2xs));
+		font-size: var(--font-size-2xl);
+		color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+		font-family: var(--font-family-serif);
+		line-height: 1;
 	}
 
 	@media (--sm) {

@@ -163,9 +163,9 @@
 					</div>
 				{/if}
 
-				<!-- Main content card -->
+				<!-- Main content (prose on paper, no card wrapper) -->
 				<div class="scroll-reveal">
-					<ContentBody variant="default" glassEffect="glass-card">
+					<ContentBody variant="default">
 						<!-- Render parsed content segments -->
 						{#each contentSegments as segment, segmentIndex (segmentIndex)}
 							{#if segment.type === 'html'}

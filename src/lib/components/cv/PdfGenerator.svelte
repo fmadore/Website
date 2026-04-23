@@ -11,7 +11,7 @@
 	 * - Clickable links for contact info
 	 *
 	 * Design improvements:
-	 * - Refined color palette matching website's teal/amber design system
+	 * - Refined color palette matching website's terracotta/amber warm design system
 	 * - Better visual hierarchy with improved font sizes
 	 * - Professional header design with name prominence
 	 * - Decorative accent lines and section dividers
