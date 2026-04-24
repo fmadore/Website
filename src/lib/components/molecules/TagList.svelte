@@ -57,7 +57,10 @@
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
-		margin-bottom: var(--space-sm);
+		/* Reset the global h2 margin-top (var(--space-2xl)) so the tag section
+		 * doesn't push itself 48 px off the previous block. The content-wrapper
+		 * already provides the inter-section rhythm. */
+		margin: 0 0 var(--space-sm) 0;
 		line-height: var(--line-height-tight);
 	}
 

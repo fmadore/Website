@@ -119,11 +119,32 @@ Provides consistent structure for all research project pages including:
 			{/if}
 		</div>
 
-		<div class="related-content mt-16 max-w-6xl mx-auto scroll-reveal">
+		<div class="related-content max-w-6xl mx-auto scroll-reveal">
 			<RelevantPublications {projectName} limit={6} />
-			<div class="mt-12">
+			<div class="mt-8">
 				<RelevantCommunications {projectName} limit={6} />
 			</div>
 		</div>
 	</div>
 </div>
+
+<style>
+	/* ResearchProjectLayout uses ContentBody as a pure column wrapper — it
+	 * hosts distinct panels (funding, etc.) rather than prose, so its own
+	 * padding and trailing margin just add empty space and make nested panels
+	 * narrower than the sibling .related-content panels. Strip the chrome so
+	 * the Funding panel and Relevant Publications panel share the same
+	 * full-column width and the transition between them is tight. */
+	.main-content :global(> .scroll-reveal:last-child .content-body) {
+		padding: 0;
+		margin-bottom: 0;
+	}
+
+	.main-content :global(> .scroll-reveal:last-child .content-body > *:last-child) {
+		margin-bottom: 0;
+	}
+
+	.related-content {
+		margin-top: var(--space-xl);
+	}
+</style>

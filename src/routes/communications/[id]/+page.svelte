@@ -254,74 +254,18 @@
 		margin-top: var(--space-xl);
 	}
 
-	/* Panel Papers Section */
-	.panel-papers-section {
-		padding: var(--space-lg);
-		border-radius: var(--border-radius-xl);
-		position: relative;
-
-		/* Glassmorphism effect */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 3%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 2%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 1%, transparent) 100%
-		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
-		backdrop-filter: blur(var(--glass-blur-sm));
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 10%, transparent);
-		box-shadow:
-			var(--shadow-md),
-			inset 0 1px 0 color-mix(in srgb, var(--color-white) 10%, transparent);
-		transition: all var(--duration-normal) var(--ease-out);
-	}
-
-	.panel-papers-section:hover {
-		transform: translateY(-2px);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 5%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 3%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 2%, transparent) 100%
-		);
-		box-shadow:
-			var(--shadow-lg),
-			inset 0 1px 0 color-mix(in srgb, var(--color-white) 15%, transparent);
-	}
-
-	/* Participants Section */
+	/* Panel Papers Section & Participants Section
+	 * Warm paper tiles — solid elevated surface, hairline border, single-layer
+	 * shadow. Replaces the previous 3-stop glass gradient + backdrop blur,
+	 * which belonged to the pre-evolution aesthetic. */
+	.panel-papers-section,
 	.participants-section {
 		padding: var(--space-lg);
-		border-radius: var(--border-radius-xl);
+		border-radius: var(--border-radius-lg);
 		position: relative;
-
-		/* Glassmorphism effect */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 3%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 2%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 1%, transparent) 100%
-		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
-		backdrop-filter: blur(var(--glass-blur-sm));
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 10%, transparent);
-		box-shadow:
-			var(--shadow-md),
-			inset 0 1px 0 color-mix(in srgb, var(--color-white) 10%, transparent);
-		transition: all var(--duration-normal) var(--ease-out);
-	}
-
-	.participants-section:hover {
-		transform: translateY(-2px);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 5%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 3%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 2%, transparent) 100%
-		);
-		box-shadow:
-			var(--shadow-lg),
-			inset 0 1px 0 color-mix(in srgb, var(--color-white) 15%, transparent);
+		background: var(--color-surface-elevated);
+		border: var(--border-width-thin) solid var(--color-border);
+		box-shadow: var(--shadow-sm);
 	}
 
 	/* Section Titles */
@@ -330,31 +274,21 @@
 		font-size: var(--font-size-xl);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
-		margin-bottom: var(--space-lg);
+		margin: 0 0 var(--space-lg) 0;
 		line-height: var(--line-height-tight);
 		position: relative;
 	}
 
-	/* Elegant accent line under title */
+	/* Quiet hairline rule under section titles — replaces the highlight-gradient
+	 * underline. Editorial rhythm, no decorative gloss. */
 	.panel-section-title::after {
 		content: '';
 		position: absolute;
 		bottom: calc(-1 * var(--space-xs));
 		left: 0;
-		width: 4rem;
-		height: 2px;
-		background: linear-gradient(
-			90deg,
-			var(--color-highlight) 0%,
-			color-mix(in srgb, var(--color-highlight) 50%, transparent) 100%
-		);
-		border-radius: var(--border-radius-full);
-		transition: width var(--duration-normal) var(--ease-out);
-	}
-
-	.panel-papers-section:hover .panel-section-title::after,
-	.participants-section:hover .panel-section-title::after {
-		width: 5rem;
+		width: var(--space-2xl);
+		height: var(--border-width-thin);
+		background: var(--color-border-dark);
 	}
 
 	/* Panel Papers Grid */
@@ -364,35 +298,15 @@
 		gap: var(--space-md);
 	}
 
-	/* Panel Paper Cards */
+	/* Panel Paper Cards — inner paper tiles nested in the section.
+	 * Subtler than the section container (no hover lift) so the nested hierarchy
+	 * reads as entries-within-a-list, not a wall of hover affordances. */
 	.panel-paper-card {
 		padding: var(--space-md);
-		border-radius: var(--border-radius-lg);
+		border-radius: var(--border-radius);
 		position: relative;
-
-		/* Subtle glassmorphism */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-accent) 2%, transparent) 0%,
-			color-mix(in srgb, var(--color-primary) 2%, transparent) 50%,
-			color-mix(in srgb, var(--color-highlight) 1%, transparent) 100%
-		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
-		backdrop-filter: blur(var(--glass-blur-sm));
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-accent) 10%, transparent);
-		box-shadow: var(--shadow-sm);
-		transition: all var(--duration-normal) var(--ease-out);
-	}
-
-	.panel-paper-card:hover {
-		transform: translateY(-2px);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-accent) 4%, transparent) 0%,
-			color-mix(in srgb, var(--color-primary) 3%, transparent) 50%,
-			color-mix(in srgb, var(--color-highlight) 2%, transparent) 100%
-		);
-		box-shadow: var(--shadow-md);
+		background: var(--color-surface-alt);
+		border: var(--border-width-thin) solid var(--color-border-light);
 	}
 
 	.panel-paper-title {
@@ -400,7 +314,7 @@
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
-		margin-bottom: var(--space-sm);
+		margin: 0 0 var(--space-sm) 0;
 		line-height: var(--line-height-snug);
 	}
 
@@ -431,35 +345,13 @@
 		}
 	}
 
-	/* Participant Cards */
+	/* Participant Cards — same inner-tile treatment as paper cards. */
 	.participant-card {
 		padding: var(--space-md);
-		border-radius: var(--border-radius-lg);
+		border-radius: var(--border-radius);
 		position: relative;
-
-		/* Subtle glassmorphism */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-accent) 2%, transparent) 0%,
-			color-mix(in srgb, var(--color-primary) 2%, transparent) 50%,
-			color-mix(in srgb, var(--color-highlight) 1%, transparent) 100%
-		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
-		backdrop-filter: blur(var(--glass-blur-sm));
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-accent) 10%, transparent);
-		box-shadow: var(--shadow-sm);
-		transition: all var(--duration-normal) var(--ease-out);
-	}
-
-	.participant-card:hover {
-		transform: translateY(-2px);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-accent) 4%, transparent) 0%,
-			color-mix(in srgb, var(--color-primary) 3%, transparent) 50%,
-			color-mix(in srgb, var(--color-highlight) 2%, transparent) 100%
-		);
-		box-shadow: var(--shadow-md);
+		background: var(--color-surface-alt);
+		border: var(--border-width-thin) solid var(--color-border-light);
 	}
 
 	.participant-name {
@@ -492,77 +384,20 @@
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
-		margin-bottom: var(--space-sm);
+		margin: 0 0 var(--space-sm) 0;
 	}
 
 	.map-container-wrapper {
 		height: 400px;
 		border-radius: var(--border-radius-lg);
 		overflow: hidden;
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 3%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 2%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 1%, transparent) 100%
-		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
-		backdrop-filter: blur(var(--glass-blur-sm));
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-accent) 10%, transparent);
+		background: var(--color-surface-alt);
+		border: var(--border-width-thin) solid var(--color-border);
 		box-shadow: var(--shadow-sm);
 	}
 
-	/* Dark mode refinements */
-	:global(html.dark) .panel-papers-section,
-	:global(html.dark) .participants-section {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--sys-color-neutral-900) 70%, transparent) 0%,
-			color-mix(in srgb, var(--color-primary) 12%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 8%, transparent) 100%
-		);
-		border-color: color-mix(in srgb, var(--color-white) 8%, transparent);
-	}
-
-	:global(html.dark) .panel-papers-section:hover,
-	:global(html.dark) .participants-section:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--sys-color-neutral-900) 80%, transparent) 0%,
-			color-mix(in srgb, var(--color-primary) 15%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 10%, transparent) 100%
-		);
-	}
-
-	:global(html.dark) .panel-paper-card,
-	:global(html.dark) .participant-card {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--sys-color-neutral-900) 50%, transparent) 0%,
-			color-mix(in srgb, var(--color-accent) 6%, transparent) 50%,
-			color-mix(in srgb, var(--color-primary) 4%, transparent) 100%
-		);
-		border-color: color-mix(in srgb, var(--color-white) 6%, transparent);
-	}
-
-	:global(html.dark) .panel-paper-card:hover,
-	:global(html.dark) .participant-card:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--sys-color-neutral-900) 60%, transparent) 0%,
-			color-mix(in srgb, var(--color-accent) 8%, transparent) 50%,
-			color-mix(in srgb, var(--color-primary) 6%, transparent) 100%
-		);
-	}
-
-	:global(html.dark) .map-container-wrapper {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--sys-color-neutral-900) 50%, transparent) 0%,
-			color-mix(in srgb, var(--color-accent) 6%, transparent) 50%,
-			color-mix(in srgb, var(--color-primary) 4%, transparent) 100%
-		);
-		border-color: color-mix(in srgb, var(--color-white) 6%, transparent);
-	}
+	/* Dark mode — warm dusk surfaces resolve automatically via the
+	 * `--color-surface-*` tokens; no per-element overrides required. */
 
 	/* Responsive adjustments */
 	@media (--sm-down) {
@@ -586,22 +421,6 @@
 
 		.map-container-wrapper {
 			height: 300px;
-		}
-	}
-
-	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
-		.panel-papers-section,
-		.panel-papers-section:hover,
-		.participants-section,
-		.participants-section:hover,
-		.panel-paper-card,
-		.panel-paper-card:hover,
-		.participant-card,
-		.participant-card:hover,
-		.panel-section-title::after {
-			transition: none;
-			transform: none;
 		}
 	}
 </style>

@@ -97,7 +97,9 @@
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
-		margin-bottom: var(--space-lg);
+		/* Reset global h2 margin-top so the title doesn't push the tile content
+		 * down by 48 px. The panel's own padding provides the breathing room. */
+		margin: 0 0 var(--space-lg) 0;
 		line-height: var(--line-height-tight);
 		position: relative;
 	}
@@ -108,25 +110,16 @@
 		}
 	}
 
-	/* Elegant accent line under title matching other components */
+	/* Quiet hairline rule under the title — replaces the highlight-gradient
+	 * underline that expanded on hover. Editorial rhythm, no decorative gloss. */
 	.related-items-title::after {
 		content: '';
 		position: absolute;
-		bottom: calc(-1 * var(--space-sm));
+		bottom: calc(-1 * var(--space-xs));
 		left: 0;
-		width: var(--space-3xl);
-		height: var(--border-width-medium);
-		background: linear-gradient(
-			90deg,
-			var(--color-highlight) 0%,
-			color-mix(in srgb, var(--color-highlight) 30%, transparent) 100%
-		);
-		border-radius: var(--border-radius-full);
-		transition: width var(--duration-normal) var(--ease-out);
-	}
-
-	.related-items-section:hover .related-items-title::after {
-		width: var(--space-5xl);
+		width: var(--space-2xl);
+		height: var(--border-width-thin);
+		background: var(--color-border-dark);
 	}
 
 	.related-items-grid {
@@ -149,13 +142,6 @@
 	@media (--lg) {
 		.related-items-grid {
 			grid-template-columns: repeat(3, 1fr);
-		}
-	}
-
-	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
-		.related-items-title::after {
-			transition: none;
 		}
 	}
 </style>

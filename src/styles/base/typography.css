@@ -39,7 +39,12 @@ h3,
 h4,
 h5,
 h6 {
+	/* Headings default to zero vertical margin. Prose contexts
+	 * (`.prose`, `.content-body`, `.content-text`) opt back into generous
+	 * top margins below — component-scoped `.*-title` elements stay flush
+	 * with their panel padding instead of inheriting a 48 px gap. */
 	margin-top: 0;
+	margin-bottom: 0;
 	font-family: var(--font-family-serif);
 	font-weight: var(--font-weight-bold);
 	line-height: var(--line-height-heading);
@@ -57,35 +62,30 @@ h1 {
 h2 {
 	font-size: var(--font-size-heading-2);
 	margin-bottom: var(--space-lg);
-	margin-top: var(--space-2xl);
 	font-weight: var(--font-weight-semibold);
 }
 
 h3 {
 	font-size: var(--font-size-heading-3);
 	margin-bottom: var(--space-md);
-	margin-top: var(--space-xl);
 	font-weight: var(--font-weight-semibold);
 }
 
 h4 {
 	font-size: var(--font-size-heading-4);
 	margin-bottom: var(--space-sm);
-	margin-top: var(--space-lg);
 	font-weight: var(--font-weight-semibold);
 }
 
 h5 {
 	font-size: var(--font-size-heading-5);
 	margin-bottom: var(--space-xs);
-	margin-top: var(--space-md);
 	font-weight: var(--font-weight-semibold);
 }
 
 h6 {
 	font-size: var(--font-size-heading-6);
 	margin-bottom: var(--space-xs);
-	margin-top: var(--space-md);
 	font-weight: var(--font-weight-semibold);
 	text-transform: uppercase;
 	letter-spacing: var(--tracking-eyebrow);
@@ -471,9 +471,58 @@ small {
 .prose h3,
 .prose h4,
 .prose h5,
-.prose h6 {
+.prose h6,
+.content-body h1,
+.content-body h2,
+.content-body h3,
+.content-body h4,
+.content-body h5,
+.content-body h6,
+.content-text h1,
+.content-text h2,
+.content-text h3,
+.content-text h4,
+.content-text h5,
+.content-text h6 {
 	font-family: var(--font-family-serif);
 	color: var(--color-text-emphasis);
+}
+
+/* Prose / body-copy heading rhythm — reinstates generous top margin for
+ * headings that sit inside long-form content. The base rule strips it so
+ * component-scoped titles don't inherit a 48 px offset; prose wrappers opt
+ * back in here. The first heading in the flow never contributes a gap. */
+.prose h2,
+.content-body h2,
+.content-text h2 {
+	margin-top: var(--space-2xl);
+}
+
+.prose h3,
+.content-body h3,
+.content-text h3 {
+	margin-top: var(--space-xl);
+}
+
+.prose h4,
+.content-body h4,
+.content-text h4 {
+	margin-top: var(--space-lg);
+}
+
+.prose h5,
+.content-body h5,
+.content-text h5,
+.prose h6,
+.content-body h6,
+.content-text h6 {
+	margin-top: var(--space-md);
+}
+
+.prose > :first-child,
+.content-body > :first-child,
+.content-text > :first-child {
+	margin-top: 0;
 }
 
 .prose p {

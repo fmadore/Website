@@ -237,7 +237,10 @@
 		outline-offset: var(--border-width-medium);
 	}
 
-	/* ===================== PANEL ===================== */
+	/* ===================== PANEL =====================
+	 * Warm popover surface — legitimate chrome glass (a floating panel over
+	 * page content), but tinted from the warm surface token rather than pure
+	 * white so it reads as paper in both themes. */
 	.cv-toc-panel {
 		position: absolute;
 		bottom: calc(var(--space-12) + var(--space-2));
@@ -246,28 +249,18 @@
 		max-height: 60vh;
 		overflow-y: auto;
 		padding: var(--space-3);
-		border-radius: var(--border-radius-xl);
-		background: color-mix(in srgb, var(--color-white) 85%, transparent);
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount)) saturate(120%);
-		backdrop-filter: blur(var(--glass-blur-amount)) saturate(120%);
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) 40%, transparent);
-		box-shadow:
-			var(--shadow-xl),
-			inset 0 1px 0
-				color-mix(
-					in srgb,
-					var(--color-white) calc(var(--card-glass-inset-light) * 100%),
-					transparent
-				);
+		border-radius: var(--border-radius-lg);
+		background: color-mix(in srgb, var(--color-surface-elevated) 94%, transparent);
+		-webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(120%);
+		backdrop-filter: blur(var(--glass-blur-md)) saturate(120%);
+		border: var(--border-width-thin) solid var(--color-border);
+		box-shadow: var(--shadow-lg);
 		animation: tocSlideUp var(--duration-normal) ease forwards;
 	}
 
 	:global(html.dark) .cv-toc-panel {
-		background: color-mix(in srgb, var(--color-dark-surface) 90%, transparent);
-		border-color: color-mix(in srgb, var(--color-white) 10%, transparent);
-		box-shadow:
-			var(--shadow-xl),
-			inset 0 1px 0 color-mix(in srgb, var(--color-white) 5%, transparent);
+		background: color-mix(in srgb, var(--color-surface-alt) 94%, transparent);
+		border-color: var(--color-border);
 	}
 
 	.cv-toc-title {

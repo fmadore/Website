@@ -270,41 +270,27 @@
 			0 25px 80px -20px
 				color-mix(in srgb, var(--color-primary) calc(var(--opacity-25) * 100%), transparent),
 			0 15px 40px -15px
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent),
-			inset 0 1px 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-50) * 100%), transparent);
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
 		border-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
 	}
 
-	/* Enhanced dark mode styles with sophisticated depth */
+	/* Dark mode — warm surface tile, primary-tinted shadow for depth.
+	 * No inset white highlights (those clash with warm dusk). */
 	:global(html.dark) .preview-card {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-dark-surface-alt) 98%, transparent) 0%,
-			color-mix(in srgb, var(--color-dark-surface-alt) 97%, transparent) 50%,
-			color-mix(in srgb, var(--color-dark-surface-alt) 98%, transparent) 100%
-		);
-
+		background: var(--color-surface-alt);
 		border: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-primary) calc(var(--opacity-25) * 100%), transparent);
-
 		box-shadow:
 			0 20px 60px -15px color-mix(in srgb, black calc(var(--opacity-40) * 100%), transparent),
 			0 10px 30px -10px
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent),
-			inset 0 1px 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent),
-			inset 0 -1px 0
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
 	}
 
 	:global(html.dark) .preview-card.card-clicked {
 		box-shadow:
 			0 25px 80px -20px color-mix(in srgb, black calc(var(--opacity-50) * 100%), transparent),
 			0 15px 40px -15px
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent),
-			inset 0 1px 0
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
 		border-color: color-mix(
 			in srgb,
 			var(--color-primary) calc(var(--opacity-40) * 100%),

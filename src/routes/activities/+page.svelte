@@ -179,27 +179,15 @@
 </div>
 
 <style>
-	/* Year sidebar - matching filter sidebar design */
+	/* Year sidebar — warm paper tile mirroring the filter sidebar treatment.
+	 * No glass blur, no primary-tinted shadow; it's a navigation aside, not a
+	 * hero element. */
 	.year-sidebar {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 3%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 2%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 1%, transparent) 100%
-		);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-20) * 100%), transparent);
-		border-radius: var(--border-radius-md);
-		padding: var(--space-4);
-		box-shadow: var(--shadow-primary), var(--shadow-inner);
-		transition: all var(--duration-moderate) var(--ease-in-out);
-	}
-
-	.year-sidebar:hover {
-		transform: var(--transform-lift-md);
-		box-shadow: var(--shadow-lg), var(--shadow-inner);
+		background: var(--color-surface);
+		border: var(--border-width-thin) solid var(--color-border);
+		border-radius: var(--border-radius-lg);
+		padding: var(--space-lg);
+		box-shadow: var(--shadow-sm);
 	}
 
 	/* Filter section styling */
@@ -344,32 +332,9 @@
 		margin-bottom: var(--space-4);
 	}
 
-	/* Dark mode support */
-	:global(html.dark) .year-sidebar {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 6%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 4%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 2%, transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-10) * 100%),
-			transparent
-		);
-		box-shadow:
-			0 8px 32px 0
-				color-mix(in srgb, var(--color-black) calc(var(--opacity-30) * 100%), transparent),
-			var(--shadow-inner);
-	}
-
-	:global(html.dark) .year-sidebar:hover {
-		box-shadow:
-			0 12px 40px 0
-				color-mix(in srgb, var(--color-black) calc(var(--opacity-40) * 100%), transparent),
-			var(--shadow-inner);
-	}
-
+	/* Dark mode — warm dusk surfaces resolve via the --color-surface and
+	 * --color-border tokens; only year-link hover needs a stronger tint to
+	 * read against the darker surface. */
 	:global(html.dark) .year-link:hover {
 		background: color-mix(in srgb, var(--color-primary) 12%, transparent);
 		border-color: color-mix(
@@ -387,6 +352,8 @@
 			color-mix(in srgb, var(--color-border) 30%, transparent);
 	}
 
+	/* RSS subscribe button — primary-tinted paper chip, single accent colour.
+	 * No dual-colour gradient, no inverse RGB dance in dark mode. */
 	.rss-subscribe-link {
 		display: flex;
 		align-items: center;
@@ -394,53 +361,26 @@
 		gap: var(--space-2);
 		width: 100%;
 		padding: var(--space-3) var(--space-4);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 10%, transparent) 0%,
-			color-mix(in srgb, var(--color-accent) 5%, transparent) 100%
-		);
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 20%, transparent);
-		border-radius: var(--border-radius-md);
+		background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 25%, transparent);
+		border-radius: var(--border-radius);
 		color: var(--color-primary);
 		font-weight: var(--font-weight-medium);
 		font-size: var(--font-size-sm);
 		text-decoration: none;
-		transition: all var(--duration-normal) var(--ease-out);
+		transition:
+			background-color var(--duration-fast) var(--ease-out),
+			border-color var(--duration-fast) var(--ease-out);
 	}
 
 	.rss-subscribe-link:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 15%, transparent) 0%,
-			color-mix(in srgb, var(--color-accent) 10%, transparent) 100%
-		);
-		border-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
-		transform: translateY(-1px);
-		box-shadow: var(--shadow-sm);
+		background: color-mix(in srgb, var(--color-primary) 14%, transparent);
+		border-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
 	}
 
 	.rss-subscribe-link:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-primary);
 		outline-offset: var(--space-0-5);
-	}
-
-	/* Dark mode for RSS button */
-	:global(html.dark) .rss-subscribe-link {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 15%, transparent) 0%,
-			color-mix(in srgb, var(--color-accent) 8%, transparent) 100%
-		);
-		border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
-	}
-
-	:global(html.dark) .rss-subscribe-link:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 20%, transparent) 0%,
-			color-mix(in srgb, var(--color-accent) 12%, transparent) 100%
-		);
-		border-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
 	}
 
 	/* Responsive adjustments */
