@@ -143,7 +143,13 @@
 		position: fixed;
 		top: 0;
 		left: 0;
+		/* Dynamic viewport height so the menu resizes as Firefox / Chrome /
+		 * Safari show and hide their URL bar. Plain `100vh` is the largest
+		 * viewport (URL bar collapsed), which clips the bottom items on
+		 * Firefox Android and Safari iOS when the bar is visible. 100vh is
+		 * kept as the fallback for browsers without dvh support. */
 		height: 100vh;
+		height: 100dvh;
 		width: 100%;
 		background: color-mix(
 			in srgb,
@@ -156,6 +162,9 @@
 		transform: translateY(-100%);
 		transition: transform var(--duration-moderate) var(--ease-in-out);
 		overflow-y: auto;
+		/* Respect the iOS home-indicator safe area so the last link never
+		 * sits flush against the gesture zone. */
+		padding-bottom: env(safe-area-inset-bottom, 0);
 		box-shadow: var(--shadow-2xl);
 		will-change: transform;
 	}
