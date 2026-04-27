@@ -16,6 +16,21 @@
 		glass = true
 	}: Props = $props();
 
+	// Tactile click acknowledgment: when the active sort changes, briefly
+	// add a class that runs a short scale pulse so the button itself reacts
+	// (the list flip handles the items, this completes the loop).
+	let isPulsing = $state(false);
+	let pulseTimer: ReturnType<typeof setTimeout> | null = null;
+
+	function triggerPulse() {
+		isPulsing = true;
+		if (pulseTimer !== null) clearTimeout(pulseTimer);
+		pulseTimer = setTimeout(() => {
+			isPulsing = false;
+			pulseTimer = null;
+		}, 220);
+	}
+
 	function toggleSort() {
 		// Find the current index in the available sorts array
 		const currentIndex = availableSorts.indexOf(activeSort);
@@ -23,6 +38,7 @@
 		const nextIndex = (currentIndex + 1) % availableSorts.length;
 		const newSort = availableSorts[nextIndex];
 
+		triggerPulse();
 		onsortchange?.({ sortBy: newSort });
 	}
 
@@ -63,7 +79,11 @@
 	);
 
 	// Compute additional classes based on glass prop
-	let additionalClasses = $derived(glass ? 'glass-button sorter-button' : 'sorter-button');
+	let additionalClasses = $derived(
+		[glass ? 'glass-button' : '', 'sorter-button', isPulsing ? 'sorter-button--pulse' : '']
+			.filter(Boolean)
+			.join(' ')
+	);
 </script>
 
 <div class="sorter">
@@ -113,6 +133,26 @@
 		/* Subtle press effect */
 		transform: scale(var(--scale-95));
 		transition-duration: var(--duration-instant);
+	}
+
+	/* Tactile pulse on sort change — closes the loop with the list's flip
+	 * animation. Triggered from JS by adding `.sorter-button--pulse` for
+	 * ~220ms. Defined as a keyframe so it runs once and self-clears, even
+	 * if the class hangs on a frame longer than expected. */
+	:global(.sorter-button--pulse) {
+		animation: sorter-pulse 220ms var(--ease-out, ease-out);
+	}
+
+	@keyframes sorter-pulse {
+		0% {
+			transform: scale(1);
+		}
+		35% {
+			transform: scale(0.94);
+		}
+		100% {
+			transform: scale(1);
+		}
 	}
 
 	/* Enhanced glassmorphism integration */
@@ -167,6 +207,10 @@
 
 		:global(.sorter-button:active) {
 			transform: none;
+		}
+
+		:global(.sorter-button--pulse) {
+			animation: none;
 		}
 	}
 </style>

@@ -3,9 +3,16 @@
 	let { size = 20 } = $props();
 	import { getTheme, toggleTheme } from '$lib/stores/themeStore.svelte';
 	import Icon from '@iconify/svelte';
+	import { fade } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
+	import { motionDuration } from '$lib/utils/motion';
 
 	// Get reactive theme value
 	const currentTheme = $derived(getTheme());
+
+	// Icon swap timing — short enough to feel instant, long enough to read as
+	// a deliberate transition rather than a flicker.
+	const ICON_FADE = 200;
 </script>
 
 <button
@@ -13,11 +20,25 @@
 	onclick={toggleTheme}
 	aria-label={currentTheme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
 >
-	{#if currentTheme === 'light'}
-		<Icon icon="mdi:moon-waning-crescent" width={size} height={size} />
-	{:else}
-		<Icon icon="mdi:white-balance-sunny" width={size} height={size} />
-	{/if}
+	<span class="icon-stack">
+		{#if currentTheme === 'light'}
+			<span
+				class="icon-slot"
+				in:fade={{ duration: motionDuration(ICON_FADE), easing: cubicOut }}
+				out:fade={{ duration: motionDuration(ICON_FADE), easing: cubicOut }}
+			>
+				<Icon icon="mdi:moon-waning-crescent" width={size} height={size} />
+			</span>
+		{:else}
+			<span
+				class="icon-slot"
+				in:fade={{ duration: motionDuration(ICON_FADE), easing: cubicOut }}
+				out:fade={{ duration: motionDuration(ICON_FADE), easing: cubicOut }}
+			>
+				<Icon icon="mdi:white-balance-sunny" width={size} height={size} />
+			</span>
+		{/if}
+	</span>
 </button>
 
 <style>
@@ -76,6 +97,22 @@
 		box-shadow:
 			var(--shadow-md),
 			0 0 0 var(--border-width-medium) color-mix(in srgb, var(--color-primary) 30%, transparent);
+	}
+
+	/* Icon stack — both icons (when transitioning between themes) occupy the
+	 * same grid cell so the cross-fade reads as one icon morphing into the
+	 * next, not two stacked icons offset from each other. */
+	.icon-stack {
+		display: inline-grid;
+		place-items: center;
+	}
+
+	.icon-slot {
+		grid-column: 1;
+		grid-row: 1;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	/* Icon animations */

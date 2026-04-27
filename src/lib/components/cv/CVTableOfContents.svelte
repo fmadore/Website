@@ -103,7 +103,13 @@
 	function scrollTo(id: string) {
 		const el = document.getElementById(id);
 		if (!el) return;
-		el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		// Honour `prefers-reduced-motion`. Svelte transitions read this via the
+		// `motion` helper, but `scrollIntoView({ behavior: 'smooth' })` does not
+		// — it must be feature-detected and downgraded to 'auto' explicitly.
+		const reduced =
+			typeof window !== 'undefined' &&
+			window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
 		isOpen = false;
 	}
 

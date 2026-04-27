@@ -72,18 +72,25 @@ Small follow-ups that complement the current PR without new concepts.
    `FilteredListDisplay.svelte`.
 2. **Activity year subpages** (`/activities/year/[year]`) currently don't have
    flip — add the same wrapper pattern for consistency.
-3. **`RelatedItemsList`** — when navigating between related items on a detail
-   page, the list re-renders. A short `in:fade` between item sets would feel
-   more cohesive. No flip needed.
-4. **Featured publications carousel/grid** — if filters ever hide it, the
-   disappearance is abrupt. Wrap `<FeaturedPublications>` in an `{#if shouldShowFeatured}`
-   with `transition:fade={{duration: 200}}`.
-5. **Sorter feedback** — when the user changes sort order, the list does its
-   flip dance, but the active sort button itself doesn't acknowledge the
-   click. A 100ms scale pulse mirroring the filter chip pattern would close
-   the loop.
-6. **Tag click in `TagCloud`** — same pulse pattern. The TagCloud is one of
-   the most-clicked elements; a tactile micro-response makes it feel alive.
+3. ~~**`RelatedItemsList`**~~ ✅ _Landed._ Each related item now wraps in a
+   `<div in:fade>` (220 ms, `cubicOut`) so the new set fades in cohesively
+   when the user navigates between detail pages. Keyed by `item.id`, so
+   identical items don't re-fade. Respects `prefers-reduced-motion` via
+   `motionDuration()`.
+4. ~~**Featured publications carousel/grid**~~ ✅ _Landed._ Both the
+   `<FeaturedPublications>` block and the "All Publications" header are
+   wrapped in `transition:fade={{ duration: 220, easing: cubicOut }}` on the
+   publications list page, so they don't snap in/out as the user starts /
+   clears filters.
+5. ~~**Sorter feedback**~~ ✅ _Landed._ `Sorter.svelte` now triggers a
+   220 ms scale pulse (1 → 0.94 → 1, `cubicOut`) on every sort change via a
+   transient `.sorter-button--pulse` class managed in JS. The pulse runs
+   alongside the list's flip so the button visibly acknowledges the click.
+   Respects `prefers-reduced-motion`.
+6. ~~**Tag click in `TagCloud`**~~ ✅ _Landed._ `TagCloud.svelte` adds a
+   `:active { transform: scale(0.96) }` press feedback at instant duration,
+   matching the filter-chip pattern. Pure CSS, automatically suppressed
+   under `prefers-reduced-motion`.
 
 ---
 
@@ -100,18 +107,29 @@ Bigger UX wins around getting around the site.
    `currentPath`-matching to highlight the active item _inside_ an open
    dropdown menu (e.g., when on `/publications/visualisations`, the
    "Visualisations" item in the Publications dropdown should be marked).
-3. **Breadcrumb hover affordance**. Subtle underline expansion on each
-   breadcrumb segment, matching the `NavLink` pattern. Three lines of CSS.
-4. **Theme toggle micro-animation**. The sun/moon icon swap is currently
-   instantaneous — a 200ms cross-fade or rotate would be charming without
-   being gimmicky. Keep it under 250ms.
-5. **Page anchor scroll smoothing**. `CVTableOfContents` uses
-   `scrollIntoView({ behavior: 'smooth' })` — verify it respects
-   `prefers-reduced-motion` (Svelte doesn't, you need to feature-detect and
-   use `'auto'` instead).
-6. **Keyboard focus ring transitions**. Most components have `:focus-visible`
-   outlines that snap on. A 120ms `outline-color` / `box-shadow` transition
-   makes keyboard navigation feel less brittle.
+3. ~~**Breadcrumb hover affordance**~~ ✅ _Landed._ `Breadcrumb.svelte`
+   migrated from a button-tile hover (background + border + ::before
+   gradient) to the editorial NavLink pattern: a thin terracotta underline
+   that expands from `width: 0` to `100%` on hover (`var(--duration-normal)`,
+   `cubicOut`). The active/current segment loses its chip background too —
+   primary text only — so the page heading immediately below stays the
+   dominant title. Touch and reduced-motion handled.
+4. ~~**Theme toggle micro-animation**~~ ✅ _Landed._ `ThemeToggle.svelte`
+   stacks both icons in a single `inline-grid` cell and cross-fades them
+   (200 ms, `cubicOut`) when `currentTheme` flips, instead of swapping
+   instantly. Respects `prefers-reduced-motion` via `motionDuration()`.
+5. ~~**Page anchor scroll smoothing**~~ ✅ _Landed._ `CVTableOfContents`
+   and `CareerTimeline` both feature-detect `prefers-reduced-motion` and
+   pass `behavior: 'auto'` to `scrollIntoView()` when reduced motion is
+   requested. Native `scrollIntoView({ behavior: 'smooth' })` is one of the
+   few APIs that ignores the OS preference, so this had to be done by hand.
+6. ~~**Keyboard focus ring transitions**~~ ✅ _Landed._ The global
+   `:focus-visible` rule in `src/styles/base/reset.css` now transitions
+   `outline-color`, `outline-offset`, and `box-shadow` over 120 ms with
+   `ease-out`, so the ring feels less brittle as keyboard focus moves
+   between elements. Outline width itself stays instant — width snap keeps
+   the indicator unambiguous. The global reduced-motion `*` rule in the
+   same file already drops the duration to ~0.
 
 ---
 
@@ -144,15 +162,31 @@ For people who actually stay and read the academic content.
 The list pages are the most-interacted parts of the site. Worth investing
 here.
 
-1. **Active-filter chip row above the list**. Show all currently active
-   filters as removable chips (`× Tag: islam`, `× Year: 2020-2024`). Each
-   removable with the same flip+fade pattern as the main list. Already 80%
-   supported by the existing filter store. _Highest-value remaining list-page
-   gap._
-2. **Filter count badges with animated transitions**. Right now the result
-   count "Showing 47 publications" snaps to new values. Use a `tweened` store
-   from `svelte/motion` to count up / down (300–500ms duration). Subtle but
-   feels really polished.
+1. ~~**Active-filter chip row above the list**.~~ **Landed.** New
+   `ActiveFiltersBar` (`src/lib/components/organisms/ActiveFiltersBar.svelte`)
+   reads any `UniversalFilterConfig`, flattens the active filters across all
+   sections (including `yearRange`), and renders one removable chip per active
+   value above the list. Each chip is a warm primary-tinted pill (8% terracotta
+   on light / 14% on dark) with the section name as quiet eyebrow text and the
+   value in semibold; clicking the chip calls the section's `toggleItem` /
+   `resetRange`. A `Clear all` text-link sits at the end of the row. Wired into
+   `/publications` and `/conference-activity`. The `transition:fade` wrapper
+   was intentionally omitted on the bar container — Svelte 5's outgoing
+   transition kept the bar visible after the last chip was removed (DOM stayed
+   at `inert` + `opacity:0` indefinitely); chip-level `in:fade` covers the
+   "appearing" feel.
+2. ~~**Filter count badges with animated transitions**.~~ **Landed.** New
+   `TweenedCount` atom (`src/lib/components/atoms/TweenedCount.svelte`)
+   eases between integer values whenever its `value` prop changes (350 ms,
+   `cubicOut`, tabular-nums). Wired into the "Showing N …" status line on
+   `/publications`, `/conference-activity`, and `/activities`. Respects
+   `prefers-reduced-motion` via the existing `motionDuration()` helper.
+   Implementation note: `svelte/motion`'s `Tween` and `tweened` both refused
+   to advance their `current` value when retargeted from a store-derived
+   prop in this codebase, so the component drives its own `requestAnimationFrame`
+   loop with a `setTimeout` safety net for environments where rAF is
+   throttled (background tabs, headless test runners). Watch for similar
+   reactivity gotchas if `svelte/motion` is reused elsewhere.
 3. **Skeleton loaders during initial filter computation**. For pages with
    `.filter()` over hundreds of items, the first paint can have a tiny
    stutter. A 1-frame skeleton wrapped in `transition:fade` would mask it.
@@ -287,10 +321,10 @@ When considering any future motion addition, ask in order:
 5. **Reserve**: Phase 6 items 1–2 (View Transitions / shared element) when
    you're ready to make motion a real design statement.
 
-If you only do one more thing after the current PR: **Phase 4 item 1**
-(active filter chip row). It's the single largest UX gap remaining on the
-list pages, and it composes naturally with the flip pattern that just
-landed.
+Phase 4 items 1 and 2 are both landed (active-filter chip row +
+tweened count display). The next-highest leverage open piece on the list
+pages is Phase 4 item 5 (collapsible sidebar on desktop) or Phase 6 item 1
+(View Transitions API for card → detail morph).
 
 ---
 
@@ -380,6 +414,21 @@ design principles are captured there and mirrored in [`CLAUDE.md`](./CLAUDE.md).
   `var(--space-lg)` (24 px). `.activity-item` in `activity-list.css` no
   longer sets padding/border (those live on `.card-accent-border` when an
   activity item is a card).
+
+**List-page UX (Phase 4 of the animation roadmap)**
+
+- `ActiveFiltersBar` (`organisms/ActiveFiltersBar.svelte`): warm primary
+  pills representing the currently-applied filters, sit above the list on
+  `/publications` and `/conference-activity`. Each chip shows the section
+  name as quiet eyebrow + the value semibold, with a small `lucide:x` glyph
+  and a `Clear all` text-link at the end of the row. Reads any
+  `UniversalFilterConfig` and dispatches the section's own
+  `toggleItem` / `resetRange` on click — no new filter plumbing needed.
+- `TweenedCount` (`atoms/TweenedCount.svelte`): wraps `tweened` from
+  `svelte/motion` to count between integers (350 ms `cubicOut`, tabular
+  nums). Replaces the snap-update `Showing N publications/activities` on
+  `/publications`, `/conference-activity`, `/activities`. Respects
+  `prefers-reduced-motion` via `motionDuration()`.
 
 ### Deferred / still open
 

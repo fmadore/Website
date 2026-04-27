@@ -140,10 +140,13 @@
 		selectedItem = item;
 		selectedIndex = items.findIndex((i) => i.id === item.id);
 
-		// Scroll detailed card into view on mobile
+		// Scroll detailed card into view on mobile. `scrollIntoView({ behavior:
+		// 'smooth' })` ignores `prefers-reduced-motion`; feature-detect and
+		// downgrade to instant scroll for users who opt out of motion.
 		if (window.innerWidth < 768) {
 			const card = document.querySelector('.detail-card');
-			card?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+			const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			card?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'nearest' });
 		}
 	}
 

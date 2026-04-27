@@ -162,6 +162,13 @@
 		transform: scale(1.05);
 	}
 
+	/* Tactile press feedback — matches filter-chip pattern. The TagCloud is
+	 * one of the most-clicked elements; this micro-response makes it feel alive. */
+	.tag-cloud-item:active {
+		transform: scale(0.96);
+		transition-duration: var(--duration-instant);
+	}
+
 	.tag-cloud-item.active {
 		background: color-mix(
 			in srgb,
@@ -207,5 +214,16 @@
 			var(--color-primary) calc(var(--opacity-30) * 100%),
 			transparent
 		);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.tag-cloud-item {
+			transition: none;
+		}
+
+		.tag-cloud-item:hover,
+		.tag-cloud-item:active {
+			transform: none;
+		}
 	}
 </style>

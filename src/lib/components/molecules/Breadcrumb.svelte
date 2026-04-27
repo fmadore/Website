@@ -96,54 +96,61 @@
 			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
 	}
 
-	/* Breadcrumb Link Styles */
+	/* Breadcrumb Link Styles — editorial underline-expand pattern, matching
+	 * NavLink. Quieter than the previous button-tile hover (which stacked
+	 * background + border + ::before gradient). */
 	.breadcrumb-link {
 		color: var(--color-text);
 		text-decoration: none;
-		padding: var(--space-xs) var(--space-sm);
-		border-radius: var(--border-radius-md);
-		transition:
-			color var(--duration-moderate) var(--ease-in-out),
-			background var(--duration-moderate) var(--ease-in-out),
-			border-color var(--duration-moderate) var(--ease-in-out),
-			transform var(--duration-moderate) var(--ease-in-out),
-			box-shadow var(--duration-moderate) var(--ease-in-out);
+		padding: var(--space-2xs) 0;
+		transition: color var(--duration-fast) var(--ease-out);
 		position: relative;
 		font-weight: var(--font-weight-medium);
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-		border: var(--border-width-thin) solid transparent;
+	}
+
+	.breadcrumb-link::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 0;
+		height: var(--border-width-thin);
+		background-color: var(--color-primary);
+		border-radius: var(--border-radius-full);
+		transition: width var(--duration-normal) var(--ease-out);
 	}
 
 	.breadcrumb-link:hover {
 		color: var(--color-primary);
-		background: color-mix(in srgb, var(--color-primary) 10%, transparent);
-		border-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
+	}
+
+	.breadcrumb-link:hover::after {
+		width: 100%;
 	}
 
 	.breadcrumb-link:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-primary);
 		outline-offset: var(--space-2xs);
+		border-radius: var(--border-radius-sm);
 	}
 
-	/* Active/Current Page Styles */
+	@media (hover: none) {
+		.breadcrumb-link:hover::after {
+			width: 0;
+		}
+
+		.breadcrumb-link:active::after {
+			width: 100%;
+		}
+	}
+
+	/* Active/Current Page — primary text, no chip background. The page
+	 * heading immediately below acts as the dominant title; the breadcrumb
+	 * just orients the reader. */
 	.breadcrumb-text {
 		color: var(--color-primary);
-		font-weight: var(--font-weight-bold);
-		padding: var(--space-xs) var(--space-sm);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-15) * 100%), transparent) 100%
-		);
-		border-radius: var(--border-radius-md);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
-		box-shadow: inset 0 var(--border-width-thin) var(--space-2xs)
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
+		font-weight: var(--font-weight-semibold);
+		padding: var(--space-2xs) 0;
 	}
 
 	/* Responsive Design */
@@ -159,7 +166,7 @@
 
 		.breadcrumb-link,
 		.breadcrumb-text {
-			padding: var(--space-2xs) var(--space-xs);
+			padding: var(--space-2xs) 0;
 			font-size: var(--font-size-xs);
 		}
 
@@ -169,108 +176,31 @@
 		}
 	}
 
-	/* Dark Mode Support */
+	/* Dark Mode — keep the paper-tile feel but use warm surface tokens. The
+	 * radial-gradient + heavy shadow that lived here previously was extra
+	 * chrome for a small content nav strip. */
 	:global(html.dark) .breadcrumb {
-		background: radial-gradient(
-			circle at 15% 15%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent) 35%,
-			var(--color-surface-alt) 65%,
-			var(--color-background) 100%
-		);
+		background: color-mix(in srgb, var(--color-primary) 6%, var(--color-surface-alt));
 		border-color: color-mix(
 			in srgb,
 			var(--color-primary) calc(var(--opacity-15) * 100%),
 			transparent
 		);
-		box-shadow: var(--shadow-lg);
-	}
-
-	:global(html.dark) .breadcrumb::after {
-		background: linear-gradient(
-			90deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-15) * 100%), transparent) 50%,
-			transparent 100%
-		);
-		box-shadow: 0 var(--border-width-thin) var(--space-2xs)
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
+		box-shadow: var(--shadow-sm);
 	}
 
 	:global(html.dark) .breadcrumb-link {
 		color: var(--color-text);
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark) .breadcrumb-link:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-15) * 100%), transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark) .breadcrumb-text {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-30) * 100%), transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-		box-shadow: inset 0 var(--border-width-thin) var(--space-2xs)
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
-	}
-
-	/* Enhanced Visual Effects */
-	.breadcrumb-link::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 50%,
-			transparent 100%
-		);
-		opacity: 0;
-		transition: opacity var(--duration-moderate) var(--ease-in-out);
-		border-radius: var(--border-radius-md);
-		z-index: -1;
-	}
-
-	.breadcrumb-link:hover::before {
-		opacity: 1;
 	}
 
 	/* Accessibility - Reduced Motion */
 	@media (prefers-reduced-motion: reduce) {
-		.breadcrumb-link {
-			transition: color var(--duration-fast) var(--ease-in-out);
-			transform: none;
-		}
-
-		.breadcrumb-link:hover {
-			transform: none;
-		}
-
-		.breadcrumb-link::before {
+		.breadcrumb-link::after {
 			transition: none;
+		}
+
+		.breadcrumb-link:hover::after {
+			width: 100%;
 		}
 
 		.breadcrumb::after {

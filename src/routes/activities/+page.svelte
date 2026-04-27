@@ -12,6 +12,7 @@
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
 	import TagCloud from '$lib/components/molecules/TagCloud.svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
+	import TweenedCount from '$lib/components/atoms/TweenedCount.svelte';
 	import Icon from '@iconify/svelte';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
@@ -141,7 +142,7 @@
 					</div>
 
 					<p class="activities-count">
-						Showing {activityList.length}
+						Showing <TweenedCount value={activityList.length} />
 						{activityList.length === 1 ? 'activity' : 'activities'}
 					</p>
 

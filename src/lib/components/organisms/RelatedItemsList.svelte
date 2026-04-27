@@ -1,6 +1,11 @@
 <script lang="ts">
 	import type { ComponentType } from 'svelte';
+	import { fade } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
+	import { motionDuration } from '$lib/utils/motion';
 	import Button from '$lib/components/atoms/Button.svelte';
+
+	const FADE_DURATION = 220;
 
 	interface RelatedListItem {
 		id: string | number;
@@ -61,7 +66,9 @@
 		<div class="{gridClass} grid-stagger">
 			{#each relatedItems as item (item.id)}
 				{@const ItemComponent = itemComponent}
-				<ItemComponent {item} itemUrl={`${baseItemUrl}${item.id}`} />
+				<div in:fade={{ duration: motionDuration(FADE_DURATION), easing: cubicOut }}>
+					<ItemComponent {item} itemUrl={`${baseItemUrl}${item.id}`} />
+				</div>
 			{/each}
 		</div>
 

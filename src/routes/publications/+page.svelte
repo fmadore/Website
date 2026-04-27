@@ -27,6 +27,7 @@
 		setYearRange
 	} from '$lib/data/publications/filters.svelte';
 	import UniversalFiltersSidebar from '$lib/components/organisms/UniversalFiltersSidebar.svelte';
+	import ActiveFiltersBar from '$lib/components/organisms/ActiveFiltersBar.svelte';
 	import type {
 		UniversalFilterConfig,
 		FilterSectionConfig,
@@ -47,7 +48,11 @@
 	import { areFiltersActive } from '$lib/utils/filterUtils';
 	import Icon from '@iconify/svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
+	import TweenedCount from '$lib/components/atoms/TweenedCount.svelte';
 	import TagCloud from '$lib/components/molecules/TagCloud.svelte';
+	import { fade } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
+	import { motionDuration } from '$lib/utils/motion';
 	import { allPublications } from '$lib/data/publications';
 
 	// Breadcrumbs for this section
@@ -75,6 +80,7 @@
 
 	// Use $derived to create sorted publications - this is the proper Svelte 5 pattern
 	const sortedPublications = $derived(sortItems($filteredPublications, activeSort));
+	const filteredCount = $derived($filteredPublications.length || 0);
 
 	// Get featured publications (only show when no filters are active)
 	// Featured publications are also sorted by the active sort order
@@ -297,17 +303,25 @@
 			</UniversalFiltersSidebar>
 		{/snippet}
 
-		<!-- Featured Publications Section (only shown when no filters active) -->
+		<!-- Featured Publications Section (only shown when no filters active).
+			 Wrapped in transition:fade so the disappearance when the user starts
+			 filtering is a soft fade-out rather than an abrupt vanish, and the
+			 reappearance when filters clear feels deliberate. -->
 		{#if shouldShowFeatured}
-			<FeaturedPublications
-				publications={featuredPublications}
-				onfilterrequest={handleFilterRequest}
-			/>
+			<div transition:fade={{ duration: motionDuration(220), easing: cubicOut }}>
+				<FeaturedPublications
+					publications={featuredPublications}
+					onfilterrequest={handleFilterRequest}
+				/>
+			</div>
 		{/if}
 
 		<!-- All Publications Section Header (only when featured are shown) -->
 		{#if shouldShowFeatured}
-			<div class="all-publications-header">
+			<div
+				class="all-publications-header"
+				transition:fade={{ duration: motionDuration(220), easing: cubicOut }}
+			>
 				<h2 class="section-title">All Publications</h2>
 			</div>
 		{/if}
@@ -315,7 +329,7 @@
 		<!-- Desktop Controls: Sorter + Clear Button -->
 		<div class="desktop-controls">
 			<div class="list-status text-light">
-				Showing {$filteredPublications.length || 0} publications
+				Showing <TweenedCount value={filteredCount} /> publications
 				{#if areFiltersActive($activeFilters)}
 					<span class="text-accent"> (Filters applied)</span>
 				{/if}
@@ -334,6 +348,7 @@
 				{/if}
 			</div>
 		</div>
+		<ActiveFiltersBar config={publicationFilterConfig} />
 		<FilteredListDisplay
 			filteredItems={sortedPublications}
 			itemComponent={PublicationItem}

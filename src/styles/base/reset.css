@@ -70,10 +70,18 @@ th {
 	overflow-wrap: break-word;
 }
 
-/* Better default focus for accessibility */
+/* Better default focus for accessibility.
+ * The 120 ms transition on outline-color/box-shadow makes keyboard focus
+ * feel less brittle as it moves between elements (Phase 2 of the animation
+ * roadmap). Outline width itself is not transitioned — instant snap on /
+ * off keeps the indicator visually unambiguous. */
 :focus-visible {
 	outline: 2px solid var(--color-border-focus, currentColor);
 	outline-offset: 2px;
+	transition:
+		outline-color var(--duration-fast, 120ms) var(--ease-out, ease-out),
+		outline-offset var(--duration-fast, 120ms) var(--ease-out, ease-out),
+		box-shadow var(--duration-fast, 120ms) var(--ease-out, ease-out);
 }
 
 /* Inherit fonts for inputs and buttons */

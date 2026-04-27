@@ -34,6 +34,7 @@
 	// import FiltersSidebar from '$lib/components/communications/FiltersSidebar.svelte';
 	// Import the new universal sidebar and its config type
 	import UniversalFiltersSidebar from '$lib/components/organisms/UniversalFiltersSidebar.svelte';
+	import ActiveFiltersBar from '$lib/components/organisms/ActiveFiltersBar.svelte';
 	import type {
 		UniversalFilterConfig,
 		FilterSectionConfig,
@@ -72,6 +73,7 @@
 	import { areFiltersActive } from '$lib/utils/filterUtils';
 	import Icon from '@iconify/svelte'; // Import Iconify
 	import Button from '$lib/components/atoms/Button.svelte'; // Import Button
+	import TweenedCount from '$lib/components/atoms/TweenedCount.svelte';
 	import TagCloud from '$lib/components/molecules/TagCloud.svelte';
 	import { communicationsByDate } from '$lib/data/communications';
 	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
@@ -477,7 +479,7 @@
 
 		<div class="desktop-controls">
 			<div class="list-status text-light">
-				Showing {$filteredCommunications.length || 0} conference activities
+				Showing <TweenedCount value={$filteredCommunications.length || 0} /> conference activities
 				{#if areFiltersActive($activeFilters)}
 					<span class="text-accent"> (Filters applied)</span>
 				{/if}
@@ -504,6 +506,7 @@
 				{/if}
 			</div>
 		</div>
+		<ActiveFiltersBar config={communicationFilterConfig} />
 		<FilteredListDisplay
 			filteredItems={sortedCommunications}
 			itemComponent={CommunicationItem}
