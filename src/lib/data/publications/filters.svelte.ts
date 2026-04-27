@@ -134,7 +134,15 @@ const system = createFilterSystem({
 					hasMatchingTocAuthor
 				);
 			},
-			countExtractor: (pub: Pub) => pub.authors
+			countExtractor: (pub: Pub) => {
+				const isExcludedType = pub.type === 'chapter' || pub.type === 'encyclopedia';
+				const names = new SvelteSet<string>();
+				pub.authors?.forEach((a) => names.add(a));
+				if (!isExcludedType) extractEditors(pub).forEach((e) => names.add(e));
+				if (pub.prefacedBy) names.add(pub.prefacedBy);
+				extractTocAuthors(pub).forEach((a) => names.add(a));
+				return Array.from(names);
+			}
 		},
 		countries: {
 			match: (pub: Pub, values: string[]) =>

@@ -75,13 +75,19 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- ephemeral, not reactive
 		const urlParams = new URLSearchParams();
 
-		// Add array filters to URL (only if they have values)
-		if (filters.types?.length) urlParams.set('type', filters.types.join(','));
-		if (filters.tags?.length) urlParams.set('tag', filters.tags.join(','));
-		if (filters.languages?.length) urlParams.set('language', filters.languages.join(','));
-		if (filters.authors?.length) urlParams.set('author', filters.authors.join(','));
-		if (filters.countries?.length) urlParams.set('country', filters.countries.join(','));
-		if (filters.projects?.length) urlParams.set('project', filters.projects.join(','));
+		// Add array filters to URL using one entry per value so individual values
+		// can safely contain commas (e.g. project names like
+		// "Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, ...").
+		const appendAll = (param: string, values: string[] | undefined) => {
+			if (!values?.length) return;
+			for (const v of values) urlParams.append(param, v);
+		};
+		appendAll('type', filters.types);
+		appendAll('tag', filters.tags);
+		appendAll('language', filters.languages);
+		appendAll('author', filters.authors);
+		appendAll('country', filters.countries);
+		appendAll('project', filters.projects);
 
 		// Add year range filter
 		if (filters.yearRange) {
@@ -111,7 +117,12 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 		) => {
 			const setter = setters[key];
 			if (!setter) return; // Skip if setter doesn't exist
-			const valuesFromUrl = searchParams.get(paramName)?.split(',').filter(Boolean) || [];
+			// Prefer one-entry-per-value (?p=a&p=b). For backward compat with
+			// legacy comma-joined URLs (?p=a,b), fall back to splitting only when
+			// a single entry is present — this preserves single values that
+			// themselves contain commas (e.g. project names).
+			const all = searchParams.getAll(paramName).filter(Boolean);
+			const valuesFromUrl = all.length > 1 ? all : all.length === 1 ? [all[0]] : [];
 			if (JSON.stringify(valuesFromUrl.sort()) !== JSON.stringify((currentValues || []).sort())) {
 				setter(valuesFromUrl);
 				filtersChanged = true;

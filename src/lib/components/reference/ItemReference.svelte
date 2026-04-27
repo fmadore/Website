@@ -226,6 +226,7 @@
 					positionClass={positionBelow ? 'position-below' : ''}
 					onpointerenter={clearCloseTimer}
 					onpointerleave={handlePointerLeave}
+					onclose={() => togglePreview(false)}
 				/>
 			</div>
 		{/if}

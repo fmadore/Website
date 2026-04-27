@@ -13,7 +13,8 @@
 		referenceElement = null,
 		positionClass = '',
 		onpointerenter,
-		onpointerleave
+		onpointerleave,
+		onclose
 	}: {
 		item: Publication | Communication;
 		itemType: 'publication' | 'communication';
@@ -21,6 +22,7 @@
 		positionClass?: string;
 		onpointerenter?: () => void;
 		onpointerleave?: () => void;
+		onclose?: () => void;
 	} = $props();
 
 	let cardElement = $state<HTMLElement>();
@@ -88,6 +90,10 @@
 
 		if (isClicked) return;
 		isClicked = true;
+
+		// Dismiss the popover so it doesn't linger over the destination page
+		// during the click animation or after navigation completes.
+		onclose?.();
 
 		// Delay navigation to allow animation to complete
 		setTimeout(() => {
