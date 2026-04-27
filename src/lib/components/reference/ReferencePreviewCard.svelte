@@ -91,15 +91,18 @@
 		if (isClicked) return;
 		isClicked = true;
 
-		// Dismiss the popover so it doesn't linger over the destination page
-		// during the click animation or after navigation completes.
-		onclose?.();
+		// Drop the .positioned class so the card plays its reverse opening
+		// animation (opacity 1→0). Without this, the wrapper's display:contents
+		// means its out:send fade has no visual effect and the card stays fully
+		// visible until the transition tears the node out of the DOM.
+		isPositioned = false;
 
-		// Delay navigation to allow animation to complete
+		// Wait for the close animation, then dismiss the parent state and navigate.
 		setTimeout(() => {
+			onclose?.();
 			// eslint-disable-next-line svelte/no-navigation-without-resolve -- itemUrl pre-resolved via resolve()
 			goto(itemUrl);
-		}, 300);
+		}, 220);
 	}
 </script>
 
