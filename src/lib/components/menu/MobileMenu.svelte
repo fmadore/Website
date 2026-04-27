@@ -76,7 +76,7 @@
 	class="mobile-nav-container"
 	class:active={isActive}
 	bind:this={containerEl}
-	aria-hidden={isActive ? 'false' : 'true'}
+	inert={!isActive}
 >
 	<nav class="mobile-nav" aria-label="Mobile navigation">
 		<!-- Mobile Menu Header -->

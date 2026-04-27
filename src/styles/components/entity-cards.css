@@ -43,7 +43,7 @@
  * When an entity-card contains a .link-animated title, show the underline
  * on card hover too — the whole card becomes the affordance.
  */
-.entity-card:hover :global(.link-animated),
+.entity-card:hover .link-animated,
 .entity-card:hover .entity-title-link {
 	background-size: 100% 2px;
 }
@@ -174,7 +174,7 @@ img.entity-cover-image[width][height] {
 	margin-top: var(--space-sm);
 }
 
-.entity-tags :global(.tag-list) {
+.entity-tags .tag-list {
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--space-xs);
@@ -237,13 +237,13 @@ img.entity-cover-image[width][height] {
  * with a primary-tinted hover shadow gives the card identity without
  * needing translucency.
  */
-:global(html.dark) .entity-card {
+html.dark .entity-card {
 	background: var(--color-surface);
 	border-color: var(--color-border);
 	box-shadow: var(--shadow-md);
 }
 
-:global(html.dark) .entity-card:hover {
+html.dark .entity-card:hover {
 	border-color: color-mix(in srgb, var(--color-primary) 50%, var(--color-border));
 	box-shadow:
 		0 12px 28px -8px color-mix(in srgb, var(--color-primary) 35%, transparent),

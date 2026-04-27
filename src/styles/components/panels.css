@@ -214,7 +214,7 @@
 }
 
 /* Dark mode overrides - harmonized with glassmorphism utilities */
-:global(html.dark) .panel {
+html.dark .panel {
 	background: linear-gradient(
 		135deg,
 		color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
@@ -223,7 +223,7 @@
 	);
 }
 
-:global(html.dark) .panel:hover {
+html.dark .panel:hover {
 	background: linear-gradient(
 		135deg,
 		color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) 0%,
@@ -232,7 +232,7 @@
 	);
 }
 
-:global(html.dark) .panel-activities {
+html.dark .panel-activities {
 	background: linear-gradient(
 		135deg,
 		color-mix(in srgb, var(--color-success) 6%, transparent) 0%,
@@ -241,7 +241,7 @@
 	);
 }
 
-:global(html.dark) .panel-activities:hover {
+html.dark .panel-activities:hover {
 	background: linear-gradient(
 		135deg,
 		color-mix(in srgb, var(--color-success) calc(var(--opacity-10) * 100%), transparent) 0%,
@@ -250,7 +250,7 @@
 	);
 }
 
-:global(html.dark) .panel-items {
+html.dark .panel-items {
 	background: linear-gradient(
 		135deg,
 		color-mix(in srgb, var(--color-accent) 6%, transparent) 0%,
@@ -259,7 +259,7 @@
 	);
 }
 
-:global(html.dark) .panel-items:hover {
+html.dark .panel-items:hover {
 	background: linear-gradient(
 		135deg,
 		color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent) 0%,

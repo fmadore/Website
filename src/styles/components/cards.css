@@ -194,13 +194,13 @@
 	border-color: var(--color-highlight);
 }
 
-:global(html.dark) .card {
+html.dark .card {
 	background: var(--color-surface-alt);
 	border: var(--border-width-thin) solid var(--color-border-dark);
 	box-shadow: var(--shadow-sm);
 }
 
-:global(html.dark) .card:hover {
+html.dark .card:hover {
 	background: var(--color-surface-elevated);
 	border-color: var(--color-border-dark);
 	box-shadow: var(--shadow-md);
@@ -232,13 +232,13 @@
 		0 4px 10px -4px color-mix(in srgb, var(--color-black) 6%, transparent);
 }
 
-:global(html.dark) .card-accent-border {
+html.dark .card-accent-border {
 	background: var(--color-surface);
 	border-color: var(--color-border);
 	box-shadow: var(--shadow-md);
 }
 
-:global(html.dark) .card-accent-border:hover {
+html.dark .card-accent-border:hover {
 	border-color: color-mix(in srgb, var(--color-primary) 55%, var(--color-border));
 	box-shadow:
 		0 12px 28px -8px color-mix(in srgb, var(--color-primary) 30%, transparent),

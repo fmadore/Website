@@ -125,7 +125,7 @@
 }
 
 /* Dark theme glass effects */
-:global(html.dark) .glass {
+html.dark .glass {
 	background: color-mix(
 		in srgb,
 		var(--color-black) calc(var(--card-glass-opacity-dark) * 100%),
@@ -141,13 +141,13 @@
 		);
 }
 
-:global(html.dark) .glass-light {
+html.dark .glass-light {
 	background: color-mix(in srgb, var(--color-black) calc(var(--opacity-5) * 100%), transparent);
 	border: var(--border-width-thin) solid
 		color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
 }
 
-:global(html.dark) .glass-medium {
+html.dark .glass-medium {
 	background: color-mix(
 		in srgb,
 		var(--color-black) calc(var(--card-glass-opacity-dark) * 100%),
@@ -157,7 +157,7 @@
 		color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-dark) * 100%), transparent);
 }
 
-:global(html.dark) .glass-heavy {
+html.dark .glass-heavy {
 	background: color-mix(
 		in srgb,
 		var(--color-black) calc(var(--card-glass-opacity-dark-hover) * 100%),
@@ -172,19 +172,19 @@
 }
 
 /* Colored glass effects - Dark mode */
-:global(html.dark) .glass-primary {
+html.dark .glass-primary {
 	background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
 	border: var(--border-width-thin) solid
 		color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
 }
 
-:global(html.dark) .glass-accent {
+html.dark .glass-accent {
 	background: color-mix(in srgb, var(--color-accent) calc(var(--opacity-15) * 100%), transparent);
 	border: var(--border-width-thin) solid
 		color-mix(in srgb, var(--color-accent) calc(var(--opacity-30) * 100%), transparent);
 }
 
-:global(html.dark) .glass-highlight {
+html.dark .glass-highlight {
 	background: color-mix(
 		in srgb,
 		var(--color-highlight) calc(var(--opacity-15) * 100%),
@@ -194,7 +194,7 @@
 		color-mix(in srgb, var(--color-highlight) calc(var(--opacity-30) * 100%), transparent);
 }
 
-:global(html.dark) .glass-success {
+html.dark .glass-success {
 	background: color-mix(in srgb, var(--color-success) calc(var(--opacity-15) * 100%), transparent);
 	border: var(--border-width-thin) solid
 		color-mix(in srgb, var(--color-success) calc(var(--opacity-30) * 100%), transparent);
@@ -393,30 +393,30 @@
 }
 
 /* Dark-theme overrides for paper surfaces (see comment above .glass-card). */
-:global(html.dark) .glass-card.glass-card {
+html.dark .glass-card.glass-card {
 	background: var(--color-surface-alt);
 	border: var(--border-width-thin) solid var(--color-border-dark);
 	box-shadow: var(--shadow-sm);
 }
 
-:global(html.dark) .glass-card.glass-card:hover {
+html.dark .glass-card.glass-card:hover {
 	background: var(--color-surface-elevated);
 	border-color: var(--color-border-dark);
 	box-shadow: var(--shadow-md);
 }
 
-:global(html.dark) .glass-panel.glass-panel {
+html.dark .glass-panel.glass-panel {
 	background: var(--color-surface);
 	border: var(--border-width-thin) solid var(--color-border);
 	box-shadow: var(--shadow-xs);
 }
 
-:global(html.dark) .glass-panel-light.glass-panel-light {
+html.dark .glass-panel-light.glass-panel-light {
 	background: var(--color-surface-alt);
 	border: var(--border-width-thin) solid var(--color-border);
 }
 
-:global(html.dark) .glass-nav.glass-nav {
+html.dark .glass-nav.glass-nav {
 	background: color-mix(
 		in srgb,
 		var(--color-dark-surface-alt) calc(var(--glass-opacity-fallback-dark) * 100%),
@@ -426,7 +426,7 @@
 		color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-dark) * 100%), transparent);
 }
 
-:global(html.dark) .glass-button.glass-button {
+html.dark .glass-button.glass-button {
 	background: color-mix(
 		in srgb,
 		var(--color-dark-surface) calc(var(--card-glass-opacity-dark) * 100%),
@@ -436,7 +436,7 @@
 		color-mix(in srgb, var(--color-white) calc(var(--card-glass-border-dark) * 100%), transparent);
 }
 
-:global(html.dark) .glass-button.glass-button:hover {
+html.dark .glass-button.glass-button:hover {
 	background: color-mix(
 		in srgb,
 		var(--color-dark-surface) calc(var(--card-glass-opacity-dark-hover) * 100%),
@@ -450,14 +450,14 @@
 }
 
 /* Dark mode glass button variants */
-:global(html.dark) .btn-outline-primary.glass-button.glass-button {
+html.dark .btn-outline-primary.glass-button.glass-button {
 	color: var(--color-primary);
 	background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
 	border: var(--border-width-thin) solid
 		color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
 }
 
-:global(html.dark) .btn-outline-primary.glass-button.glass-button:hover {
+html.dark .btn-outline-primary.glass-button.glass-button:hover {
 	color: var(--color-background);
 	background: var(--color-primary);
 	border-color: var(--color-primary);
@@ -465,7 +465,7 @@
 		color-mix(in srgb, var(--color-primary) calc(var(--opacity-90) * 100%), transparent);
 }
 
-:global(html.dark) .btn-outline-secondary.glass-button.glass-button {
+html.dark .btn-outline-secondary.glass-button.glass-button {
 	color: var(--color-text);
 	background: color-mix(
 		in srgb,
@@ -476,7 +476,7 @@
 		color-mix(in srgb, var(--color-secondary-scheme) calc(var(--opacity-30) * 100%), transparent);
 }
 
-:global(html.dark) .btn-outline-secondary.glass-button.glass-button:hover {
+html.dark .btn-outline-secondary.glass-button.glass-button:hover {
 	color: var(--color-background);
 	background: var(--color-secondary-scheme);
 	border-color: var(--color-secondary-scheme);
@@ -484,7 +484,7 @@
 		color-mix(in srgb, var(--color-secondary-scheme) calc(var(--opacity-90) * 100%), transparent);
 }
 
-:global(html.dark) .btn-primary.glass-button.glass-button {
+html.dark .btn-primary.glass-button.glass-button {
 	color: var(--color-background);
 	background: var(--color-primary);
 	border: var(--border-width-thin) solid var(--color-primary);
@@ -492,7 +492,7 @@
 		color-mix(in srgb, var(--color-primary) calc(var(--opacity-90) * 100%), transparent);
 }
 
-:global(html.dark) .btn-primary.glass-button.glass-button:hover {
+html.dark .btn-primary.glass-button.glass-button:hover {
 	background: var(--color-primary-dark);
 	border-color: var(--color-primary-dark);
 	box-shadow: 0 6px 20px 0 var(--color-primary);
@@ -515,7 +515,7 @@
 			);
 }
 
-:global(html.dark) .glass-frosted {
+html.dark .glass-frosted {
 	background: color-mix(
 		in srgb,
 		var(--color-dark-surface) calc(var(--card-glass-opacity-light) * 100%),
@@ -553,7 +553,7 @@
 			);
 	}
 
-	:global(html.dark) .sm\:glass {
+	html.dark .sm\:glass {
 		background: color-mix(
 			in srgb,
 			var(--color-black) calc(var(--card-glass-opacity-dark) * 100%),
@@ -587,7 +587,7 @@
 			);
 	}
 
-	:global(html.dark) .md\:glass {
+	html.dark .md\:glass {
 		background: color-mix(
 			in srgb,
 			var(--color-black) calc(var(--card-glass-opacity-dark) * 100%),
@@ -621,7 +621,7 @@
 			);
 	}
 
-	:global(html.dark) .lg\:glass {
+	html.dark .lg\:glass {
 		background: color-mix(
 			in srgb,
 			var(--color-black) calc(var(--card-glass-opacity-dark) * 100%),
@@ -669,7 +669,7 @@
 	);
 }
 
-:global(html.dark) .glass-section-panel {
+html.dark .glass-section-panel {
 	background: linear-gradient(
 		135deg,
 		color-mix(in srgb, var(--_gsp-c1) 8%, transparent) 0%,
@@ -679,7 +679,7 @@
 	border-color: color-mix(in srgb, var(--_gsp-c1) calc(var(--opacity-15) * 100%), transparent);
 }
 
-:global(html.dark) .glass-section-panel:hover {
+html.dark .glass-section-panel:hover {
 	background: linear-gradient(
 		135deg,
 		color-mix(in srgb, var(--_gsp-c1) 12%, transparent) 0%,
@@ -718,7 +718,7 @@
 	box-shadow: var(--shadow-md);
 }
 
-:global(html.dark) .glass-sub-card {
+html.dark .glass-sub-card {
 	background: linear-gradient(
 		135deg,
 		color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-15) * 100%), transparent) 0%,
@@ -727,7 +727,7 @@
 	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
 }
 
-:global(html.dark) .glass-sub-card:hover {
+html.dark .glass-sub-card:hover {
 	background: linear-gradient(
 		135deg,
 		color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-30) * 100%), transparent) 0%,
@@ -762,14 +762,14 @@
 		);
 	}
 
-	:global(html.dark) .glass,
-	:global(html.dark) .glass-light,
-	:global(html.dark) .glass-medium,
-	:global(html.dark) .glass-heavy,
-	:global(html.dark) .glass-nav,
-	:global(html.dark) .glass-button,
-	:global(html.dark) .glass-frosted,
-	:global(html.dark) .glass-section-panel {
+	html.dark .glass,
+	html.dark .glass-light,
+	html.dark .glass-medium,
+	html.dark .glass-heavy,
+	html.dark .glass-nav,
+	html.dark .glass-button,
+	html.dark .glass-frosted,
+	html.dark .glass-section-panel {
 		background: color-mix(
 			in srgb,
 			var(--color-dark-surface) calc(var(--glass-opacity-fallback-dark) * 100%),
@@ -842,7 +842,7 @@
 }
 
 /* Dark mode - slightly more visible shimmer */
-:global(html.dark) .glass-shimmer::before {
+html.dark .glass-shimmer::before {
 	background: linear-gradient(
 		90deg,
 		transparent 0%,
