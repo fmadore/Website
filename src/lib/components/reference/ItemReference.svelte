@@ -9,6 +9,7 @@
 	 */
 
 	import { browser } from '$app/environment';
+	import { beforeNavigate } from '$app/navigation';
 	import { crossfade, fade } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
 
@@ -161,6 +162,12 @@
 		if (getActiveReferenceId() !== id && viaClick) {
 			togglePreview(false);
 		}
+	});
+
+	/* Dismiss the preview before any navigation so it never lingers
+	 * over the destination page. */
+	beforeNavigate(() => {
+		if (showPreview) togglePreview(false);
 	});
 
 	/* Re‑compute card position when preview toggles */
