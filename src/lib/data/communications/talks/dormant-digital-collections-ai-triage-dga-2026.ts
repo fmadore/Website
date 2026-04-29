@@ -9,7 +9,8 @@ export const talkDormantDigitalCollectionsAiTriageDga2026: Communication = {
 	date: '6 May 2026',
 	dateISO: '2026-05-06',
 	year: 2026,
-	conference: 'German Society of Asia Studies (DGA)',
+	conference: 'Deutsche Gesellschaft für Asienforschung (DGA)',
+	panelTitle: 'DGA-Roundtable-Reihe Sommersemester 2026',
 	location: 'Leibniz-Zentrum Moderner Orient',
 	country: 'Germany',
 	type: 'lecture',
@@ -27,6 +28,12 @@ export const talkDormantDigitalCollectionsAiTriageDga2026: Communication = {
 		'West Africa',
 		'Archives'
 	],
+	url: 'https://asienforschung.de/events/roundtable-2-digital-humanities-und-kuenstliche-intelligenz-in-den-regionalwissenschaften/',
+	image: 'images/communications/dormant-digital-collections-ai-triage-dga-2026.webp',
+	heroImage: {
+		src: 'images/communications/dormant-digital-collections-ai-triage-dga-2026-hero.webp',
+		alt: 'Announcement card for DGA Roundtable 2: "Digital Humanities und Künstliche Intelligenz in den Regionalwissenschaften", scheduled for 6 May 2026. The DGA logo, two horizontal teal bars beneath the letters, sits centred on a pale teal background.'
+	},
 	coordinates: {
 		latitude: 52.42814222811816,
 		longitude: 13.202338657893593

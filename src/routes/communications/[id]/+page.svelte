@@ -83,9 +83,9 @@
 	const communicationDetails = $derived([
 		{ label: 'Event', value: communication.conference ?? '' },
 		{
-			label: 'Panel',
+			label: communication.type === 'conference' ? 'Panel' : 'Series',
 			value: communication.panelTitle ?? '',
-			condition: communication.type === 'conference' && !!communication.panelTitle
+			condition: !!communication.panelTitle
 		},
 		{ label: 'Location', value: communication.location ?? '' },
 		{ label: 'Country', value: communication.country ?? '' },
