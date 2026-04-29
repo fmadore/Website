@@ -23,7 +23,8 @@ export const amira: DigitalHumanitiesProject = {
 		'<h3>Interface</h3>' +
 		'<p>Dark mode, shareable links for any filter combination, a PNG export button on every chart, and an installable progressive web app with an offline shell so the dashboard runs on patchy connections.</p>',
 	imageUrl: `/images/digital-humanities/amira.webp`,
-	order: 1,
+	featured: true,
+	order: 2,
 	skills: [
 		'SvelteKit',
 		'Svelte 5',

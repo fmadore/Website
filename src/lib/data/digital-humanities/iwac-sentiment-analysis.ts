@@ -55,7 +55,6 @@ export const iwacSentimentAnalysis: DigitalHumanitiesProject = {
 		<p>This dashboard was built entirely through natural-language collaboration with AI coding assistants (Claude Sonnet and Opus), without manually writing code. This approach demonstrates how researchers without programming expertise can now develop sophisticated analytical tools by articulating their vision in plain language—lowering barriers to digital humanities work for scholars at institutions with limited technical support.</p>
 	`,
 	imageUrl: '/images/digital-humanities/iwac-sentiment-analysis.webp',
-	featured: true,
 	order: 2,
 	skills: [
 		'Svelte',
