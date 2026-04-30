@@ -414,6 +414,29 @@ design principles are captured there and mirrored in [`CLAUDE.md`](./CLAUDE.md).
   `var(--space-lg)` (24 px). `.activity-item` in `activity-list.css` no
   longer sets padding/border (those live on `.card-accent-border` when an
   activity item is a card).
+- Filter sidebar accent migration: `.filter-chip`, `.dropdown-trigger`,
+  `.filter-dropdown-item`, `.range-display`, and the year-range slider
+  handle/track all migrated from `--color-accent` (amber) to
+  `--color-primary` (terracotta) for active and hover states. Active
+  state convention now matches `ActiveFiltersBar` and `NavLink` — every
+  "this is the applied filter" UI in the page reads in the same
+  terracotta primary instead of half terracotta / half amber. Hover
+  treatment also restrained: chips no longer flash a coloured fill on
+  hover, only the border picks up a hint of primary, so the brand colour
+  earns its place by being used solely on selected state. Dark-mode
+  active chips use `--color-text-inverted` for text (warm bark on
+  terracotta-400), giving stronger contrast than the old white-on-amber.
+  Files: `src/styles/components/filters.css`,
+  `src/lib/components/molecules/filters/FilterSectionDropdown.svelte`,
+  `src/lib/components/molecules/filters/FilterSectionRangeSlider.svelte`.
+- Footer warm-paper sweep: the three white-tinted backgrounds in
+  `Footer.svelte` (`.footer-branding`, `.footer-link-group`,
+  `.footer-link`) migrated from `color-mix(var(--color-white), …)` to
+  `color-mix(var(--color-footer-text), …)`. Footer-text is the warm
+  paper foreground (`#f4efe7`), so the inset highlight now reads as
+  warm-paper-on-bark instead of white-on-bark. No visual difference in
+  saturation, but the cool sheen against the warm-bark footer surface
+  is gone.
 
 **List-page UX (Phase 4 of the animation roadmap)**
 
@@ -448,19 +471,20 @@ Not blocking — pick up when convenient:
   I haven't hand-checked whether section headings on dense pages (CV,
   publications list, activity index) read with the right visual weight
   against Spectral. Likely needs a pass after user eyeballs more pages.
-- **Filter sidebar styling** (`UniversalFiltersSidebar`): still uses
-  older glass-tinted treatments for filter sections. Not visually wrong,
-  but could be simplified to match the paper surfaces elsewhere.
 - **Button variants**: `.glass-button` (primary/secondary/outline variants
   in `glassmorphism.css`) is legitimate chrome glass, but the hover
   treatments have inset white highlights that clash with warm paper. A
   dedicated button polish pass is worth doing once buttons are exercised
   across the site.
-- **Remaining `color-mix(var(--color-white) ...)` audit**: several places
-  still use `var(--color-white)` as a base for semi-transparent overlays.
-  In warm palette these read as slightly-cool. Worth a sweep to migrate
-  toward `var(--color-surface-elevated)` / warm surface tokens as a
-  separate cleanup PR.
+- **Remaining `color-mix(var(--color-white) ...)` audit**: Footer surfaces
+  migrated to `--color-footer-text` (warm paper) tinting. Other
+  legitimate uses still stand: glass overlays in
+  `glassmorphism.css` (top inset highlights on dark surfaces are
+  deliberately white-ish for "light from above" effect), media controls
+  and hero overlays sitting atop images, and `MediaPlayer`/`IframeRenderer`
+  chrome over arbitrary backgrounds. The remaining sweep targets are
+  inside `buttons.css` dark-mode hover treatments, deferred to the
+  dedicated button polish pass.
 - **MEDIUM audit items fully landed in this evolution** — nothing from the
   design-philosophy-auditor's MEDIUM list is still open. LOW items (stale
   "overshoot" / "springs back" comments) all resolved.

@@ -131,8 +131,8 @@
 	.range-display {
 		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-semibold);
-		color: var(--color-accent);
-		background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+		color: var(--color-primary);
+		background: color-mix(in srgb, var(--color-primary) 8%, transparent);
 		padding: var(--space-2xs) var(--space-xs);
 		border-radius: var(--border-radius-sm);
 	}
@@ -159,14 +159,14 @@
 	:global(.rangeSlider) {
 		--range-slider: var(--color-border);
 		--range-handle-inactive: var(--color-surface);
-		--range-handle: var(--color-accent);
-		--range-handle-focus: var(--color-accent);
-		--range-handle-border: var(--color-accent);
+		--range-handle: var(--color-primary);
+		--range-handle-focus: var(--color-primary);
+		--range-handle-border: var(--color-primary);
 		--range-range-inactive: var(--color-border);
-		--range-range: var(--color-accent);
+		--range-range: var(--color-primary);
 		--range-float-inactive: var(--color-surface-alt);
-		--range-float: var(--color-accent);
-		--range-float-text: var(--color-white);
+		--range-float: var(--color-primary);
+		--range-float-text: var(--color-text-inverted);
 		margin-bottom: var(--space-xs) !important;
 	}
 
@@ -202,7 +202,8 @@
 
 	/* Dark mode */
 	:global(html.dark) .range-display {
-		background: color-mix(in srgb, var(--color-accent) 15%, transparent);
+		background: color-mix(in srgb, var(--color-primary) 14%, transparent);
+		color: var(--color-primary-light);
 	}
 
 	/* Responsive slider adjustments */

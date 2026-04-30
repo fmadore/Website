@@ -87,22 +87,25 @@
 	transition-duration: var(--duration-instant);
 }
 
+/* Hover keeps the chip on warm paper — the border picks up a hint of
+ * primary so the hover signal is unambiguous, but no fill flash. The
+ * accent only "earns its place" when the chip becomes active. */
 .filter-chip:hover {
-	background: color-mix(in srgb, var(--color-accent) 10%, transparent);
-	border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+	background: var(--color-surface-elevated);
+	border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
 	color: var(--color-text-emphasis);
 }
 
 .filter-chip.active {
-	background: var(--color-accent);
-	border-color: var(--color-accent);
-	color: var(--color-white);
+	background: var(--color-primary);
+	border-color: var(--color-primary);
+	color: var(--color-text-inverted);
 	box-shadow: var(--shadow-sm);
 }
 
 .filter-chip.active:hover {
-	background: var(--color-accent-dark);
-	border-color: var(--color-accent-dark);
+	background: var(--color-primary-dark);
+	border-color: var(--color-primary-dark);
 }
 
 .filter-chip .chip-text {
@@ -181,13 +184,13 @@ html.dark .filter-chip {
 }
 
 html.dark .filter-chip:hover {
-	background: color-mix(in srgb, var(--color-accent) 15%, transparent);
-	border-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+	background: var(--color-surface-elevated);
+	border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-border));
 }
 
 html.dark .filter-chip.active {
-	background: var(--color-accent);
-	border-color: var(--color-accent);
+	background: var(--color-primary);
+	border-color: var(--color-primary);
 }
 
 /* === Mobile: Card Wrapper === */

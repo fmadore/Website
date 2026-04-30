@@ -212,13 +212,13 @@
 	}
 
 	.dropdown-trigger:hover {
-		background: color-mix(in srgb, var(--color-accent) 10%, transparent);
-		border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+		background: var(--color-surface-elevated);
+		border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
 	}
 
 	.dropdown-trigger.open {
-		border-color: var(--color-accent);
-		background: color-mix(in srgb, var(--color-accent) 5%, transparent);
+		border-color: var(--color-primary);
+		background: color-mix(in srgb, var(--color-primary) 5%, transparent);
 	}
 
 	.dropdown-trigger:focus-visible {
@@ -296,7 +296,7 @@
 
 	.search-input:focus {
 		outline: none;
-		border-color: var(--color-accent);
+		border-color: var(--color-primary);
 	}
 
 	.search-clear {
@@ -354,22 +354,22 @@
 	}
 
 	.filter-dropdown-item:hover {
-		background: color-mix(in srgb, var(--color-accent) 10%, var(--color-background));
+		background: color-mix(in srgb, var(--color-primary) 8%, var(--color-background));
 	}
 
 	.filter-dropdown-item.active {
-		background: color-mix(in srgb, var(--color-accent) 15%, var(--color-background));
+		background: color-mix(in srgb, var(--color-primary) 12%, var(--color-background));
 	}
 
 	.filter-dropdown-item.active:hover {
-		background: color-mix(in srgb, var(--color-accent) 20%, var(--color-background));
+		background: color-mix(in srgb, var(--color-primary) 18%, var(--color-background));
 	}
 
 	.item-checkbox {
 		display: flex;
 		align-items: center;
 		margin-right: var(--space-xs);
-		color: var(--color-accent);
+		color: var(--color-primary);
 		flex-shrink: 0;
 	}
 
@@ -424,7 +424,8 @@
 	}
 
 	:global(html.dark) .dropdown-trigger:hover {
-		background: color-mix(in srgb, var(--color-accent) 15%, transparent);
+		background: var(--color-surface-elevated);
+		border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-border));
 	}
 
 	:global(html.dark) .dropdown-menu {
@@ -442,7 +443,7 @@
 	}
 
 	:global(html.dark) .filter-dropdown-item:hover {
-		background: color-mix(in srgb, var(--color-accent) 15%, var(--color-background));
+		background: color-mix(in srgb, var(--color-primary) 14%, var(--color-background));
 	}
 
 	:global(html.dark) .search-input {

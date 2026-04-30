@@ -166,8 +166,12 @@
 		padding: var(--space-6);
 		border-radius: var(--border-radius-xl);
 		width: 100%;
-		background: color-mix(in srgb, var(--color-white) 5%, transparent);
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) 8%, transparent);
+		/* Warm paper tint over the warm-bark footer surface. White tints read as
+		 * a slightly cool sheen against the warm dark; tinting toward the warm
+		 * paper foreground keeps the inset highlight in-palette. */
+		background: color-mix(in srgb, var(--color-footer-text) 5%, transparent);
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-footer-text) 8%, transparent);
 	}
 
 	.footer-branding.animate {
@@ -233,8 +237,9 @@
 		padding: var(--space-4);
 		border-radius: var(--border-radius-lg);
 		min-height: auto;
-		background: color-mix(in srgb, var(--color-white) 5%, transparent);
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) 8%, transparent);
+		background: color-mix(in srgb, var(--color-footer-text) 5%, transparent);
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-footer-text) 8%, transparent);
 	}
 
 	.footer-link-group.animate {
@@ -296,8 +301,9 @@
 		transition: all var(--duration-fast) var(--ease-in-out);
 		overflow: hidden;
 		width: 100%;
-		background: color-mix(in srgb, var(--color-white) 5%, transparent);
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) 8%, transparent);
+		background: color-mix(in srgb, var(--color-footer-text) 5%, transparent);
+		border: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-footer-text) 8%, transparent);
 	}
 
 	.footer-link-icon {
