@@ -437,6 +437,27 @@ design principles are captured there and mirrored in [`CLAUDE.md`](./CLAUDE.md).
   warm-paper-on-bark instead of white-on-bark. No visual difference in
   saturation, but the cool sheen against the warm-bark footer surface
   is gone.
+- Button polish pass: `.btn-primary` rewritten — gradient (terracotta
+  → mix(terracotta, amber)) replaced with solid `var(--color-primary)`,
+  white inset highlight removed, glossy `.btn::before` overlay (and its
+  dead `html.dark` companion) deleted. The button now reads as solid ink
+  on paper, not a Material/SaaS glassy pill. Hover swaps to
+  `--color-primary-dark` straight, no gradient. Colored shadow
+  (`--shadow-primary` / `--shadow-primary-lg`) ties the button to the
+  warm palette without leaning on gloss. Text colour switched from
+  `--color-white` to `--color-text-inverted` on every primary fill
+  (`btn-primary`, `btn-outline-primary:hover`, glass-button primary
+  variants in light + dark) so dark-mode terracotta-400 fills get warm
+  bark text (~7:1 AAA) instead of white-on-light-terracotta (~3:1
+  borderline). Dark-mode non-glass button variants (`btn-secondary`,
+  `btn-outline-secondary`, `btn-ghost:hover`) migrated their white
+  hover/background tints to `var(--color-text)`-tinted (warm paper on
+  dark surface), matching the Footer treatment. Files:
+  `src/styles/components/buttons.css`,
+  `src/styles/utilities/glassmorphism.css`. Glass-button base remains
+  white-tinted because it's chrome over arbitrary backgrounds (Hero
+  image overlays, iframe toolbars, MediaPlayer) — that's legitimate
+  per the brief.
 
 **List-page UX (Phase 4 of the animation roadmap)**
 
@@ -471,20 +492,14 @@ Not blocking — pick up when convenient:
   I haven't hand-checked whether section headings on dense pages (CV,
   publications list, activity index) read with the right visual weight
   against Spectral. Likely needs a pass after user eyeballs more pages.
-- **Button variants**: `.glass-button` (primary/secondary/outline variants
-  in `glassmorphism.css`) is legitimate chrome glass, but the hover
-  treatments have inset white highlights that clash with warm paper. A
-  dedicated button polish pass is worth doing once buttons are exercised
-  across the site.
-- **Remaining `color-mix(var(--color-white) ...)` audit**: Footer surfaces
-  migrated to `--color-footer-text` (warm paper) tinting. Other
-  legitimate uses still stand: glass overlays in
-  `glassmorphism.css` (top inset highlights on dark surfaces are
+- **Remaining `color-mix(var(--color-white) ...)` audit**: Footer
+  surfaces and buttons.css/glassmorphism.css button variants migrated
+  in earlier passes. Other legitimate uses still stand: glass overlays
+  in `glassmorphism.css` (top inset highlights on dark surfaces are
   deliberately white-ish for "light from above" effect), media controls
-  and hero overlays sitting atop images, and `MediaPlayer`/`IframeRenderer`
-  chrome over arbitrary backgrounds. The remaining sweep targets are
-  inside `buttons.css` dark-mode hover treatments, deferred to the
-  dedicated button polish pass.
+  and hero overlays sitting atop images, and `MediaPlayer` /
+  `IframeRenderer` chrome over arbitrary backgrounds. No further sweep
+  needed unless a specific overlay surfaces a clear cool-sheen issue.
 - **MEDIUM audit items fully landed in this evolution** — nothing from the
   design-philosophy-auditor's MEDIUM list is still open. LOW items (stale
   "overshoot" / "springs back" comments) all resolved.

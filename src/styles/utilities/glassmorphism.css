@@ -340,7 +340,7 @@ html.dark .glass-success {
 }
 
 .btn-outline-primary.glass-button.glass-button:hover {
-	color: var(--color-white);
+	color: var(--color-text-inverted);
 	background: var(--color-primary);
 	border-color: var(--color-primary);
 	box-shadow: 0 6px 20px 0
@@ -367,7 +367,7 @@ html.dark .glass-success {
 }
 
 .btn-outline-secondary.glass-button.glass-button:hover {
-	color: var(--color-white);
+	color: var(--color-text-inverted);
 	background: var(--color-secondary-scheme);
 	border-color: var(--color-secondary-scheme);
 	box-shadow: 0 6px 20px 0
@@ -376,7 +376,7 @@ html.dark .glass-success {
 
 /* Glass button with primary solid variant */
 .btn-primary.glass-button.glass-button {
-	color: var(--color-white);
+	color: var(--color-text-inverted);
 	background: var(--color-primary);
 	border: var(--border-width-thin) solid var(--color-primary);
 	box-shadow: 0 4px 16px 0
@@ -458,7 +458,7 @@ html.dark .btn-outline-primary.glass-button.glass-button {
 }
 
 html.dark .btn-outline-primary.glass-button.glass-button:hover {
-	color: var(--color-background);
+	color: var(--color-text-inverted);
 	background: var(--color-primary);
 	border-color: var(--color-primary);
 	box-shadow: 0 6px 20px 0
@@ -477,7 +477,7 @@ html.dark .btn-outline-secondary.glass-button.glass-button {
 }
 
 html.dark .btn-outline-secondary.glass-button.glass-button:hover {
-	color: var(--color-background);
+	color: var(--color-text-inverted);
 	background: var(--color-secondary-scheme);
 	border-color: var(--color-secondary-scheme);
 	box-shadow: 0 6px 20px 0
@@ -485,7 +485,7 @@ html.dark .btn-outline-secondary.glass-button.glass-button:hover {
 }
 
 html.dark .btn-primary.glass-button.glass-button {
-	color: var(--color-background);
+	color: var(--color-text-inverted);
 	background: var(--color-primary);
 	border: var(--border-width-thin) solid var(--color-primary);
 	box-shadow: 0 4px 16px 0
