@@ -13,6 +13,8 @@
 		onmutetoggle: () => void;
 	} = $props();
 
+	const uid = $props.id();
+	const sliderId = `volume-${uid}`;
 	const volumePercentage = $derived((isMuted ? 0 : volume) * 100);
 	const sliderColor = $derived(isMuted ? 'var(--color-danger)' : 'var(--color-primary)');
 </script>
@@ -52,6 +54,8 @@
 
 	<div class="volume-slider-container">
 		<input
+			id={sliderId}
+			name={sliderId}
 			type="range"
 			min="0"
 			max="1"

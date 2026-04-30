@@ -27,6 +27,8 @@
 	let isOpen = $state(false);
 	let searchQuery = $state('');
 	let dropdownRef: HTMLDivElement;
+	const uid = $props.id();
+	const searchInputId = `filter-search-${uid}`;
 
 	const showSearch = $derived(items.length >= searchThreshold);
 
@@ -118,9 +120,12 @@
 				<div class="search-container">
 					<Icon icon="mdi:magnify" class="search-icon" width="16" height="16" />
 					<input
+						id={searchInputId}
+						name={searchInputId}
 						type="text"
 						class="search-input"
 						placeholder="Search..."
+						aria-label="Search {title.toLowerCase()}"
 						bind:value={searchQuery}
 					/>
 					{#if searchQuery}
