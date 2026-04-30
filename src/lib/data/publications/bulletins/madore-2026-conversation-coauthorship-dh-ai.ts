@@ -4,7 +4,7 @@ export const madore2026ConversationCoauthorshipDhAi: Publication = {
 	id: 'madore-2026-conversation-coauthorship-dh-ai',
 	type: 'bulletin-article',
 	title:
-		'From Conversation to Co-authorship: A Workshop on Digital Humanitiesand AI in African Studies, 18–20 February 2026, Herrenhausen, Hanover',
+		'From Conversation to Co-authorship: A Workshop on Digital Humanities and AI in African Studies, 18–20 February 2026, Herrenhausen, Hanover',
 	authors: ['Frédérick Madore'],
 	date: 'May 2026',
 	dateISO: '2026-05',

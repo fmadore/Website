@@ -4,7 +4,7 @@ export const madore2026DecenteringKnowledge: Publication = {
 	id: 'madore-2026-decentering-knowledge',
 	type: 'bulletin-article',
 	title:
-		'Decentering Knowledge: Concepts, Conceptualizations, Translations, 13-14 October 2025, ZMO',
+		'Decentering Knowledge: Concepts, Conceptualizations, Translations, 13–14 October 2025, ZMO',
 	authors: ['Frédérick Madore'],
 	date: 'May 2026',
 	dateISO: '2026-05',
