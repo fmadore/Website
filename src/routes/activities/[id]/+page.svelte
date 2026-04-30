@@ -70,6 +70,17 @@
 	// Format the tags for display - using optional chaining for cleaner syntax
 	const formattedTags = $derived(activity?.tags ?? []);
 
+	// Hero image preload as a string. Using {@html} instead of {#if} inside
+	// <svelte:head> avoids a Svelte 5 hydration bug where falsy {#if} blocks
+	// in the head leave a marker the client cannot walk (TypeError reading
+	// 'nodeType' of null in if.js). Source values come from trusted .ts files
+	// in src/lib/data/activities, so direct interpolation is safe here.
+	const heroImagePreloadHtml = $derived(
+		activity?.heroImage?.src
+			? `<link rel="preload" href="${encodeURI(`${base}/${activity.heroImage.src}`)}" as="image" fetchpriority="high">`
+			: ''
+	);
+
 	// --- Content Parsing Logic (Keep as is, uses activity from data) ---
 	interface ContentSegment {
 		type: 'html' | 'ItemReference';
@@ -107,10 +118,10 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
 
-	<!-- Conditional preload of hero image if it exists to improve LCP -->
-	{#if activity?.heroImage?.src}
-		<link rel="preload" href="{base}/{activity.heroImage.src}" as="image" fetchpriority="high" />
-	{/if}
+	<!-- Conditional preload of hero image if it exists to improve LCP. -->
+	<!-- See heroImagePreloadHtml in <script> for why this uses {@html}. -->
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+	{@html heroImagePreloadHtml}
 </svelte:head>
 
 <!-- SEO Component with blog post optimizations -->

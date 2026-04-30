@@ -73,8 +73,8 @@ export function calculateCardPosition(
 
 	let cardTop: string | null = null;
 	let cardBottom: string | null = null;
-	let cardMaxHeight: string | null = null;
-	let hasOverflow = false;
+	let cardMaxHeight: string | null;
+	let hasOverflow: boolean;
 
 	if (shouldPositionBelow) {
 		const top = Math.round(refRect.bottom + gap);

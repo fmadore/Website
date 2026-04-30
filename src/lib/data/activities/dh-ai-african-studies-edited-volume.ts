@@ -28,12 +28,6 @@ export const activity: Activity = {
     `,
 	tags: ['Digital Humanities', 'AI', 'African Studies', 'Call for Papers'],
 	type: 'publication',
-	image: '',
-	heroImage: {
-		src: '',
-		alt: '',
-		caption: ''
-	},
 	pdfPath: 'files/CfC-DH-and-AI-in-African-Studies.pdf',
 	pdfTitle: 'Call for Chapters',
 	panelType: 'publication'
