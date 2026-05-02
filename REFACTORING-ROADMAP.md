@@ -512,6 +512,22 @@ design principles are captured there and mirrored in [`CLAUDE.md`](./CLAUDE.md).
   `src/lib/components/publications/PublicationItem.svelte`,
   `src/lib/components/publications/FeaturedPublications.svelte`,
   `src/styles/components/entity-cards.css`.
+- Editorial lead extended to `/conference-activity`: `CommunicationItem`
+  inherits the same `entity-card` class structure as `PublicationItem`,
+  so the existing `.entity-card--editorial` rules in `entity-cards.css`
+  apply without modification. Added an `editorial?: boolean` prop to
+  `CommunicationItem` and wired `UpcomingCommunications` to pass
+  `editorial={index === 0}`. The first upcoming talk/event now reads as
+  a content-on-paper editorial lead (transparent card, Spectral 30 px
+  display title, uppercase eyebrow meta, hairline `border-bottom`
+  separator) while the rest of the upcoming block stays as standard
+  warm-paper cards. The main "All Conference Activities" list below is
+  untouched — only the curated upcoming block gets the lead-story
+  break. Mirrors the publications-list precedent so the same brief
+  principle ("asymmetry over centre alignment", "single large figures")
+  reads consistently across both list pages. Files:
+  `src/lib/components/communications/CommunicationItem.svelte`,
+  `src/lib/components/communications/UpcomingCommunications.svelte`.
 - PDF CV alignment: the CV's PDF generator (`PdfGenerator.svelte`)
   inherited the old on-screen aesthetic — terracotta-coloured uppercase
   section heads followed by a 20 mm thick amber + 25 mm thin border-fade
@@ -552,17 +568,21 @@ Not blocking — pick up when convenient:
   token that reverted to a cool-gray assumption in a component I didn't
   touch. The automated auditor already reported "largely clean" but a human
   eye over every detail route would close the loop.
-- **Publications / Communications / Activities list pages**: the
-  publications page now has an editorial-lead variant on the first
-  featured publication (see "Editorial featured-lead variant" above),
-  which is the most visible asymmetric break in the uniform rhythm.
-  Still open: the same treatment could be applied to
-  `/conference-activity` and `/activities` (each has its own list-page
-  patterns and would need a per-page audit), and a "pull-quote breakout"
+- **Activities list-page composition / pull-quote breakout**:
+  publications and `/conference-activity` both now carry an
+  editorial-lead variant on their featured/upcoming block (see the two
+  entries above). Still open: `/activities` has a different
+  architecture — flat `Card`-based grid grouped by year, no curated
+  "featured" subset, descriptions instead of abstracts — so a direct
+  port doesn't fit. A separate pass could either (a) add a "most
+  recent" lead variant on the first activity in the year-flat list, or
+  (b) surface the long-form `description` of the topmost activity into
+  a content-on-paper treatment. Also open: a "pull-quote breakout"
   pass for items with abstract content worth surfacing. Low priority —
-  the lead-story break is the bulk of the brief's "asymmetry over
-  centre alignment" requirement; further composition variations are
-  delight-pass territory.
+  the lead-story break on publications + conference-activity covers
+  the bulk of the brief's "asymmetry over centre alignment"
+  requirement; further composition variations are delight-pass
+  territory.
 - **Remaining `color-mix(var(--color-white) ...)` audit**: Footer
   surfaces and buttons.css/glassmorphism.css button variants migrated
   in earlier passes. Other legitimate uses still stand: glass overlays

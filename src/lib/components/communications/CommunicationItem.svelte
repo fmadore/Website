@@ -8,9 +8,16 @@
 	interface Props {
 		communication: Communication;
 		index?: number;
+		/**
+		 * Render this item as the editorial "lead" of a featured block:
+		 * no card chrome, Spectral display title, larger image, longer-form
+		 * abstract treatment. Mirrors the publications-list lead-story
+		 * pattern; styled by `.entity-card--editorial` in entity-cards.css.
+		 */
+		editorial?: boolean;
 	}
 
-	let { communication, index }: Props = $props();
+	let { communication, index, editorial = false }: Props = $props();
 
 	// Optimize loading for above-the-fold images (first 3 items)
 	const imageLoading = $derived((index ?? 0) < 3 ? 'eager' : 'lazy');
@@ -49,8 +56,8 @@
 	const citationDetails = $derived(formatCommunicationCitation(communication));
 </script>
 
-<article class="entity-list-item scroll-reveal-scale">
-	<div class="entity-card">
+<article class="entity-list-item scroll-reveal-scale" class:editorial>
+	<div class="entity-card" class:entity-card--editorial={editorial}>
 		<div class="entity-grid">
 			{#if communication?.image}
 				<div class="entity-image-container">
