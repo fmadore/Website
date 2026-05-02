@@ -303,14 +303,14 @@
 		flex-wrap: wrap;
 	}
 
-	/* Activities title */
+	/* Activities title — letterpress hairline rule, solid Spectral ink. */
 	.activities-title {
 		font-size: var(--font-size-xl);
 		font-weight: var(--font-weight-semibold);
-		color: var(--color-text);
+		color: var(--color-text-emphasis);
 		margin: 0;
 		padding-bottom: var(--space-3);
-		border-bottom: var(--border-width-medium) solid var(--color-border);
+		border-bottom: var(--border-width-thin) solid var(--color-border);
 		flex: 1 1 auto;
 	}
 

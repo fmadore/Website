@@ -75,41 +75,24 @@
 		}
 	}
 
+	/* Section title — letterpress hairline rule under solid Spectral ink.
+	 * Replaces the previous animated `::after` highlight-gradient bar that
+	 * widened on section hover. */
 	.section-title {
 		font-family: var(--font-family-serif);
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
 		margin-bottom: var(--space-lg);
+		padding-bottom: var(--space-sm);
+		border-bottom: var(--border-width-thin) solid var(--color-border-light);
 		line-height: var(--line-height-tight);
-		position: relative;
 	}
 
 	@media (--sm) {
 		.section-title {
 			font-size: var(--font-size-xl);
 		}
-	}
-
-	/* Elegant accent line under title matching other components */
-	.section-title::after {
-		content: '';
-		position: absolute;
-		bottom: calc(-1 * var(--space-sm));
-		left: 0;
-		width: var(--space-3xl);
-		height: var(--border-width-medium);
-		background: linear-gradient(
-			90deg,
-			var(--color-highlight) 0%,
-			color-mix(in srgb, var(--color-highlight) 30%, transparent) 100%
-		);
-		border-radius: var(--border-radius-full);
-		transition: width var(--duration-normal) var(--ease-out);
-	}
-
-	.reviews-section:hover .section-title::after {
-		width: var(--space-5xl);
 	}
 
 	.reviews-grid {
@@ -260,11 +243,4 @@
 
 	/* Responsive adjustments */
 	/* Mobile-first styles are now default, with overrides in media queries above */
-
-	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
-		.section-title::after {
-			transition: none;
-		}
-	}
 </style>

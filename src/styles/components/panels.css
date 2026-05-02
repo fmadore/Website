@@ -1,40 +1,32 @@
 /* Panel Base Styles */
-/* Shared styling for all panel components - harmonized with ProfileBanner and ContentBody */
+/* Shared styling for all panel components — paired with `.glass-panel` (or
+ * sibling glass utility) which now supplies the warm-paper surface. The
+ * earlier three-stop primary→highlight→accent gradient overlay (plus a
+ * `::after` decorative bar under the title) layered an AI-CMS shimmer over
+ * the warm paper; the surface tile is now flat and the title carries the
+ * heading work via Spectral type alone. */
 
 .panel {
 	/* Editorial padding: tight enough to avoid cavernous empty pockets under
 	 * a short content list, generous enough to keep the title breathing. */
 	padding: var(--space-lg);
 	border-radius: var(--border-radius-lg);
-	transition: all var(--duration-moderate) var(--ease-in-out);
+	transition:
+		transform var(--duration-moderate) var(--ease-in-out),
+		box-shadow var(--duration-moderate) var(--ease-in-out),
+		border-color var(--duration-moderate) var(--ease-in-out);
 	position: relative;
 	overflow: hidden;
 	margin-bottom: var(--space-lg);
-	/* Enhanced glassmorphism with subtle gradient overlay to match ProfileBanner and ContentBody */
-	background: linear-gradient(
-		135deg,
-		color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
-		color-mix(in srgb, var(--color-highlight) 2.5%, transparent) 50%,
-		color-mix(in srgb, var(--color-accent) 1.5%, transparent) 100%
-	);
 }
 
-/* Hover effects for glassmorphism - consistent with ContentBody */
 .panel:hover {
 	transform: var(--transform-lift-sm);
-	/* Enhanced hover effect with stronger gradient */
-	background: linear-gradient(
-		135deg,
-		color-mix(in srgb, var(--color-primary) 6%, transparent) 0%,
-		color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 50%,
-		color-mix(in srgb, var(--color-accent) 2.5%, transparent) 100%
-	);
 }
 
 .panel-header {
 	padding: 0 0 var(--space-lg) 0;
-	border-bottom: var(--border-width-thin) solid
-		color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
+	border-bottom: var(--border-width-thin) solid var(--color-border-light);
 	background: transparent;
 	position: relative;
 }
@@ -43,28 +35,10 @@
 	font-size: var(--font-size-2xl);
 	font-weight: var(--font-weight-bold);
 	margin: 0 0 var(--space-sm) 0;
-	color: var(--color-primary);
+	color: var(--color-text-emphasis);
 	line-height: var(--line-height-tight);
 	letter-spacing: var(--letter-spacing-tight);
 	font-family: var(--font-family-serif);
-	position: relative;
-}
-
-/* Add title accent similar to ProfileBanner */
-.panel-title::after {
-	content: '';
-	position: absolute;
-	bottom: calc(-1 * var(--space-xs));
-	left: 0;
-	width: 40px;
-	height: var(--border-width-thick);
-	background: linear-gradient(90deg, var(--color-highlight) 0%, var(--color-accent) 100%);
-	border-radius: var(--border-radius-sm);
-	transition: width var(--duration-moderate) var(--ease-out);
-}
-
-.panel:hover .panel-title::after {
-	width: 60px;
 }
 
 .panel-content {
@@ -74,8 +48,7 @@
 
 .panel-footer {
 	padding: var(--space-lg) 0 0 0;
-	border-top: var(--border-width-thin) solid
-		color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
+	border-top: var(--border-width-thin) solid var(--color-border-light);
 	background: transparent;
 	margin-top: var(--space-lg);
 }
@@ -103,8 +76,7 @@
 
 .view-all-container {
 	padding: var(--space-lg) 0 0 0;
-	border-top: var(--border-width-thin) solid
-		color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
+	border-top: var(--border-width-thin) solid var(--color-border-light);
 	margin-top: var(--space-lg);
 	text-align: center;
 }
@@ -122,47 +94,18 @@
 	text-align: center;
 }
 
-/* Panel Variants */
-
-/* Activities Panel Specific */
-.panel-activities {
-	/* Slightly different gradient for activities */
-	background: linear-gradient(
-		135deg,
-		color-mix(in srgb, var(--color-success) 3%, transparent) 0%,
-		color-mix(in srgb, var(--color-highlight) 2.5%, transparent) 50%,
-		color-mix(in srgb, var(--color-primary) 1.5%, transparent) 100%
-	);
-}
-
-.panel-activities:hover {
-	background: linear-gradient(
-		135deg,
-		color-mix(in srgb, var(--color-success) 5%, transparent) 0%,
-		color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 50%,
-		color-mix(in srgb, var(--color-primary) 2.5%, transparent) 100%
-	);
-}
-
-/* Items Panel Specific */
-.panel-items {
-	/* Slightly different gradient for items */
-	background: linear-gradient(
-		135deg,
-		color-mix(in srgb, var(--color-accent) 3%, transparent) 0%,
-		color-mix(in srgb, var(--color-highlight) 2.5%, transparent) 50%,
-		color-mix(in srgb, var(--color-primary) 1.5%, transparent) 100%
-	);
-}
-
-.panel-items:hover {
-	background: linear-gradient(
-		135deg,
-		color-mix(in srgb, var(--color-accent) 5%, transparent) 0%,
-		color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 50%,
-		color-mix(in srgb, var(--color-primary) 2.5%, transparent) 100%
-	);
-}
+/*
+ * Panel variants — `default`, `activities`, and `items` previously each
+ * carried their own three-stop coloured-gradient background (success, accent,
+ * primary in different ratios). On a single home page the user could see all
+ * three variants stacked, which read as decorative noise rather than meaningful
+ * differentiation. The variants now share the warm-paper surface from
+ * `.glass-panel`; differentiation comes from titles and content, not hue.
+ *
+ * Variant classes are retained as identifying hooks (filters, scoping) but
+ * intentionally carry no visual treatment. Add per-variant rules here if a
+ * future panel needs a genuinely distinct look.
+ */
 
 /* Filter and container styling for Button components */
 .filter-label {
@@ -213,60 +156,9 @@
 	border-color: var(--color-primary);
 }
 
-/* Dark mode overrides - harmonized with glassmorphism utilities */
-html.dark .panel {
-	background: linear-gradient(
-		135deg,
-		color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
-		color-mix(in srgb, var(--color-highlight) 5%, transparent) 50%,
-		color-mix(in srgb, var(--color-accent) 3%, transparent) 100%
-	);
-}
-
-html.dark .panel:hover {
-	background: linear-gradient(
-		135deg,
-		color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) 0%,
-		color-mix(in srgb, var(--color-highlight) calc(var(--opacity-10) * 100%), transparent) 50%,
-		color-mix(in srgb, var(--color-accent) 5%, transparent) 100%
-	);
-}
-
-html.dark .panel-activities {
-	background: linear-gradient(
-		135deg,
-		color-mix(in srgb, var(--color-success) 6%, transparent) 0%,
-		color-mix(in srgb, var(--color-highlight) 5%, transparent) 50%,
-		color-mix(in srgb, var(--color-primary) 3%, transparent) 100%
-	);
-}
-
-html.dark .panel-activities:hover {
-	background: linear-gradient(
-		135deg,
-		color-mix(in srgb, var(--color-success) calc(var(--opacity-10) * 100%), transparent) 0%,
-		color-mix(in srgb, var(--color-highlight) calc(var(--opacity-10) * 100%), transparent) 50%,
-		color-mix(in srgb, var(--color-primary) 5%, transparent) 100%
-	);
-}
-
-html.dark .panel-items {
-	background: linear-gradient(
-		135deg,
-		color-mix(in srgb, var(--color-accent) 6%, transparent) 0%,
-		color-mix(in srgb, var(--color-highlight) 5%, transparent) 50%,
-		color-mix(in srgb, var(--color-primary) 3%, transparent) 100%
-	);
-}
-
-html.dark .panel-items:hover {
-	background: linear-gradient(
-		135deg,
-		color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent) 0%,
-		color-mix(in srgb, var(--color-highlight) calc(var(--opacity-10) * 100%), transparent) 50%,
-		color-mix(in srgb, var(--color-primary) 5%, transparent) 100%
-	);
-}
+/* Dark mode — surface continues to come from `.glass-panel` (warm dusk
+ * tile in dark mode). No panel-level dark override needed now that the
+ * coloured-gradient backgrounds have been retired. */
 
 /* Responsive design */
 @media (--sm-down) {
@@ -278,21 +170,11 @@ html.dark .panel-items:hover {
 	.panel-title {
 		font-size: var(--font-size-xl);
 	}
-
-	.panel-title::after {
-		width: 30px;
-		height: var(--border-width-medium);
-	}
-
-	.panel:hover .panel-title::after {
-		width: 45px;
-	}
 }
 
 /* Respect user motion preferences */
 @media (prefers-reduced-motion: reduce) {
-	.panel,
-	.panel-title::after {
+	.panel {
 		transition: none;
 	}
 

@@ -268,24 +268,19 @@
 		box-shadow: var(--shadow-sm);
 	}
 
-	/* Enhanced section headings */
+	/*
+	 * Section headings — letterpress hairline rule under solid Spectral ink.
+	 * Previously the h3 was tinted terracotta with an amber decorative bar
+	 * pinned via `::after`. With 14+ section headings on this page, that
+	 * over-applied the brand colour and read as a templated AI-CMS aesthetic.
+	 * Type alone (Spectral semibold, ample size step) and a single hairline
+	 * rule do the section-break work; colour stays scarce.
+	 */
 	:global(#cv-content h3) {
-		color: var(--color-primary);
-		border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
+		color: var(--color-text-emphasis);
+		border-bottom: var(--border-width-thin) solid var(--color-border-light);
 		padding-bottom: var(--space-2);
 		margin-bottom: var(--space-3);
-		position: relative;
-	}
-
-	:global(#cv-content h3::after) {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: var(--space-12);
-		height: var(--border-width-medium);
-		background: var(--color-accent);
-		border-radius: var(--border-radius-full);
 	}
 
 	/* Subsection headings */
@@ -328,7 +323,7 @@
 	}
 
 	:global(#cv-content a:hover) {
-		color: var(--color-accent);
+		color: var(--color-primary-dark);
 		text-decoration: underline;
 	}
 

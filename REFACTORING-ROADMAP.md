@@ -458,6 +458,59 @@ design principles are captured there and mirrored in [`CLAUDE.md`](./CLAUDE.md).
   white-tinted because it's chrome over arbitrary backgrounds (Hero
   image overlays, iframe toolbars, MediaPlayer) — that's legitimate
   per the brief.
+- Heading hierarchy & decorative-bar sweep: across the CV, panels, and
+  long-form publication detail pages, every `h2/h3/.section-title` had
+  picked up the same templated CMS pattern — solid Spectral title plus a
+  short coloured `::after` bar (gold→amber gradient or amber→border
+  fade) that animated wider on hover. With 14+ section headings on the
+  CV alone, the bar over-applied the brand colour and read as
+  AI-CMS-templated rather than letterpress. Replaced the pseudo bars
+  with a single hairline `border-bottom` in `--color-border-light` on
+  each title; titles now in solid `--color-text-emphasis`. The CV page
+  H3s lost their terracotta colour too (saving the accent for the year
+  pinpoints inside entries and the `<h2>` person name). The CV header's
+  H1 underline went from a 2 px primary rule to a hairline neutral one
+  so the terracotta name below earns the page's lone accent. Activities
+  page title border thinned from medium → thin. Guest-lectures level
+  badge stripped of its 135° amber→highlight gradient (now solid 10 %
+  amber tint with a single accent border). Files:
+  `src/routes/cv/+page.svelte`,
+  `src/lib/components/cv/CVHeader.svelte`,
+  `src/routes/activities/+page.svelte`,
+  `src/routes/teaching/guest-lectures/+page.svelte`,
+  `src/routes/publications/[id]/+page.svelte`,
+  `src/lib/components/molecules/AbstractSection.svelte`,
+  `src/lib/components/publications/Reviews.svelte`,
+  `src/lib/components/publications/CitedBy.svelte`,
+  `src/lib/components/publications/PublicationWordCloud.svelte`.
+- Panel system depatterning: `src/styles/components/panels.css` carried
+  three-stop coloured-gradient backgrounds on `.panel`,
+  `.panel-activities`, and `.panel-items` (plus parallel dark-mode
+  rules), layered over `.glass-panel`'s already-warm-paper surface, plus
+  a 40 px → 60 px-on-hover gold→amber `.panel-title::after` accent bar.
+  Three different panel types each shouting in a different hue dilutes
+  "warm neutrals, rare accents" the brief calls for. Variants now share
+  the warm-paper surface from `.glass-panel`; differentiation comes
+  from titles and content. The `::after` bar was retired,
+  `.panel-title` recoloured from `--color-primary` to
+  `--color-text-emphasis`, and `.panel-header`/`.panel-footer`/
+  `.view-all-container` rules switched from `primary 10 %`-tinted to
+  `--color-border-light`.
+- PDF CV alignment: the CV's PDF generator (`PdfGenerator.svelte`)
+  inherited the old on-screen aesthetic — terracotta-coloured uppercase
+  section heads followed by a 20 mm thick amber + 25 mm thin border-fade
+  two-tone "gradient accent line", a 50 mm centred amber bar under the
+  header block, terracotta-italic subsection titles, and amber-coloured
+  contact link values. Each followed the templated pattern that the
+  on-screen CV had just shed. Section headings now use a new
+  `COLORS.TEXT_EMPHASIS` token (warm neutral 900) followed by a single
+  full-content-width hairline rule in `COLORS.BORDER`; the header
+  divider matches the same hairline; H4 subsections render in
+  `TEXT_EMPHASIS` italic; clickable contact link values switched from
+  `ACCENT` to `PRIMARY` so the printed CV matches `#cv-content a` on
+  screen. Year columns kept `PRIMARY` because they are the rare accent
+  pinpoints by design. Files: `src/lib/components/cv/PdfGenerator.svelte`,
+  `src/lib/utils/pdfDesignTokens.ts`.
 
 **List-page UX (Phase 4 of the animation roadmap)**
 
@@ -488,10 +541,6 @@ Not blocking — pick up when convenient:
   composition breaks (featured item at the top, pull-quote breakouts,
   varied rhythm). Low priority — the uniform list is already readable and
   on-palette; this is a "delight" pass, not a correctness pass.
-- **Heading hierarchy audit**: type sizes are set via a modular scale, but
-  I haven't hand-checked whether section headings on dense pages (CV,
-  publications list, activity index) read with the right visual weight
-  against Spectral. Likely needs a pass after user eyeballs more pages.
 - **Remaining `color-mix(var(--color-white) ...)` audit**: Footer
   surfaces and buttons.css/glassmorphism.css button variants migrated
   in earlier passes. Other legitimate uses still stand: glass overlays

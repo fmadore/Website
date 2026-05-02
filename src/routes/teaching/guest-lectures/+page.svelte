@@ -105,6 +105,11 @@
 		margin-bottom: var(--space-2xl);
 	}
 
+	/*
+	 * Institution heading — letterpress hairline rule under solid Spectral ink.
+	 * Replaces the previous `::after` decorative gradient bar (gold→amber)
+	 * which read as templated AI-CMS aesthetic.
+	 */
 	h2 {
 		font-size: var(--font-size-2xl);
 		font-family: var(--font-family-serif);
@@ -112,18 +117,7 @@
 		color: var(--color-text-emphasis);
 		margin-bottom: var(--space-lg);
 		padding-bottom: var(--space-sm);
-		position: relative;
-	}
-
-	h2::after {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: calc(var(--space-2xl) + var(--space-sm));
-		height: var(--border-width-medium);
-		background: linear-gradient(135deg, var(--color-highlight) 0%, var(--color-accent) 100%);
-		border-radius: var(--border-radius-full);
+		border-bottom: var(--border-width-thin) solid var(--color-border-light);
 	}
 
 	.lectures-list {
@@ -182,15 +176,16 @@
 		font-weight: var(--font-weight-medium);
 	}
 
-	/* Level badge styling */
+	/*
+	 * Level badge — `attr(data-level)` reads the level (e.g. "Undergraduate")
+	 * and renders it as a quiet warm-gold pill. Solid 10% amber tint, solid
+	 * accent text — no gradient (gradient on a 10-character pill was three
+	 * design moves where one would do).
+	 */
 	.lecture-details::after {
 		content: attr(data-level);
 		display: inline-block;
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-accent) 10%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 5%, transparent) 100%
-		);
+		background: color-mix(in srgb, var(--color-accent) 10%, transparent);
 		color: var(--color-accent);
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-semibold);
@@ -238,8 +233,8 @@
 			border-width: var(--border-width-medium);
 		}
 
-		h2::after {
-			height: var(--border-width-thick);
+		h2 {
+			border-bottom-width: var(--border-width-medium);
 		}
 	}
 </style>

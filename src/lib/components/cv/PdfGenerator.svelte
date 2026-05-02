@@ -127,29 +127,31 @@
 			// This makes the PDF self-contained like a printed academic CV
 			// Rich text extraction is now handled by external utility
 
-			// Enhanced section heading with better styling
+			/*
+			 * Section heading — letterpress editorial. Solid warm-ink title in
+			 * uppercase, followed by a single full-width hairline rule. Replaces
+			 * the previous terracotta + amber-fade-to-border two-tone accent
+			 * line, which read as a templated CMS section divider rather than
+			 * fine-book typography.
+			 */
 			const addSection = (title: string) => {
 				// Check if we need a new page (need space for heading + some content)
 				// Increased to 60 to prevent headers from appearing alone at the bottom of the page
-				// This ensures space for: section top spacing + header + decorative lines + section bottom spacing + at least one content item
+				// This ensures space for: section top spacing + header + hairline rule + section bottom spacing + at least one content item
 				checkPageBreak(60);
 				yPosition += SPACING.SECTION_TOP;
 
-				// Section heading with uppercase styling
+				// Section heading — solid ink, uppercase
 				pdf.setFontSize(FONT_SIZE.SECTION_HEADING);
 				pdf.setFont('helvetica', 'bold');
-				pdf.setTextColor(...COLORS.PRIMARY);
+				pdf.setTextColor(...COLORS.TEXT_EMPHASIS);
 				pdf.text(title.toUpperCase(), margin, yPosition);
-				yPosition += 2;
+				yPosition += 2.5;
 
-				// Gradient-style accent line (thick accent color)
-				pdf.setDrawColor(...COLORS.ACCENT);
-				pdf.setLineWidth(0.8);
-				pdf.line(margin, yPosition, margin + 20, yPosition);
-				// Fade out with thinner line
-				pdf.setLineWidth(0.3);
+				// Hairline rule under section heading — full content width
 				pdf.setDrawColor(...COLORS.BORDER);
-				pdf.line(margin + 20, yPosition, margin + 45, yPosition);
+				pdf.setLineWidth(0.2);
+				pdf.line(margin, yPosition, pageWidth - margin, yPosition);
 
 				pdf.setTextColor(...COLORS.TEXT); // Reset text color
 				yPosition += SPACING.SECTION_BOTTOM;
@@ -191,16 +193,12 @@
 			pdf.text(dateText, pageWidth / 2, yPosition, { align: 'center' });
 			yPosition += 6;
 
-			// Decorative divider line under header
-			pdf.setDrawColor(...COLORS.ACCENT);
-			pdf.setLineWidth(0.6);
-			const dividerWidth = 50;
-			pdf.line(
-				pageWidth / 2 - dividerWidth / 2,
-				yPosition,
-				pageWidth / 2 + dividerWidth / 2,
-				yPosition
-			);
+			// Hairline rule under header block — letterpress editorial.
+			// Replaces the previous 50 mm centred amber bar; full-width neutral
+			// hairline matches the section dividers below.
+			pdf.setDrawColor(...COLORS.BORDER);
+			pdf.setLineWidth(0.2);
+			pdf.line(margin, yPosition, pageWidth - margin, yPosition);
 			yPosition += SPACING.HEADER_BOTTOM;
 
 			// ============================================
@@ -275,8 +273,8 @@
 						pdf.setTextColor(...COLORS.TEXT_LIGHT);
 						pdf.text(displayLabel, rightColumn, rightY);
 
-						// Clickable link value
-						pdf.setTextColor(...COLORS.ACCENT);
+						// Clickable link value — terracotta to match on-screen `#cv-content a`
+						pdf.setTextColor(...COLORS.PRIMARY);
 						pdf.textWithLink(displayValue, rightColumn + 15, rightY, { url: href });
 						rightY += SPACING.CONTACT_LINE;
 					}
@@ -328,10 +326,12 @@
 
 						yPosition += SPACING.SUBSECTION_TOP;
 
-						// Subsection heading - italicized for hierarchy
+						// Subsection heading — solid ink, bold italic for hierarchy.
+						// Italic style alone differentiates it from the section
+						// heading; no need for additional colour treatment.
 						pdf.setFontSize(FONT_SIZE.SUBSECTION);
 						pdf.setFont('helvetica', 'bolditalic');
-						pdf.setTextColor(...COLORS.PRIMARY_DARK);
+						pdf.setTextColor(...COLORS.TEXT_EMPHASIS);
 						pdf.text(h4.textContent || '', margin + 2, yPosition);
 						yPosition += SPACING.SUBSECTION_BOTTOM;
 						pdf.setTextColor(...COLORS.TEXT); // Reset text color after subsection heading

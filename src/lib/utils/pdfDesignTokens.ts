@@ -39,7 +39,8 @@ export const COLORS = {
 	PRIMARY: [158, 72, 51] as [number, number, number], // #9e4833 - Terracotta 600
 	PRIMARY_DARK: [130, 64, 49] as [number, number, number], // #824031 - Terracotta 700
 	ACCENT: [245, 158, 11] as [number, number, number], // #f59e0b - Amber 500 (gold secondary)
-	TEXT: [42, 33, 26] as [number, number, number], // #2a211a - Warm Neutral 800 (ink)
+	TEXT_EMPHASIS: [28, 21, 16] as [number, number, number], // #1c1510 - Warm Neutral 900 (deepest ink, used for headings)
+	TEXT: [42, 33, 26] as [number, number, number], // #2a211a - Warm Neutral 800 (body ink)
 	TEXT_LIGHT: [122, 107, 94] as [number, number, number], // #7a6b5e - Warm Neutral 500
 	TEXT_MUTED: [163, 148, 135] as [number, number, number], // #a39487 - Warm Neutral 400
 	BORDER: [233, 226, 213] as [number, number, number], // #e9e2d5 - Warm Neutral 200

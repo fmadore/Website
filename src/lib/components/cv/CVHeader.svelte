@@ -62,10 +62,16 @@
 		text-align: center;
 	}
 
+	/*
+	 * Page-level "Curriculum Vitae" label sits above the actual subject (the
+	 * person's name in `<h2>`). Keep this rule a quiet hairline so the
+	 * terracotta accent attaches to the name below — one confident accent,
+	 * not two stacked ones.
+	 */
 	.cv-main-title {
 		margin-bottom: var(--space-2);
 		padding-bottom: var(--space-2);
-		border-bottom: var(--border-width-medium) solid var(--color-primary);
+		border-bottom: var(--border-width-thin) solid var(--color-border);
 	}
 
 	/* Contact section layout */

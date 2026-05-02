@@ -44,34 +44,16 @@ Only renders if text analysis data is available for this publication.
 		padding: var(--space-lg);
 	}
 
+	/* Section title — letterpress hairline rule under solid Spectral ink. */
 	.section-title {
 		font-family: var(--font-family-serif);
 		font-size: var(--font-size-xl);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
 		margin-bottom: var(--space-md);
+		padding-bottom: var(--space-sm);
+		border-bottom: var(--border-width-thin) solid var(--color-border-light);
 		line-height: var(--line-height-tight);
-		position: relative;
-	}
-
-	.section-title::after {
-		content: '';
-		position: absolute;
-		bottom: calc(-1 * var(--space-xs));
-		left: 0;
-		width: var(--space-3xl);
-		height: var(--border-width-medium);
-		background: linear-gradient(
-			90deg,
-			var(--color-accent) 0%,
-			color-mix(in srgb, var(--color-accent) 30%, transparent) 100%
-		);
-		border-radius: var(--border-radius-full);
-		transition: width var(--duration-normal) var(--ease-out);
-	}
-
-	.wordcloud-section:hover .section-title::after {
-		width: var(--space-5xl);
 	}
 
 	.wordcloud-wrapper {
@@ -94,13 +76,6 @@ Only renders if text analysis data is available for this publication.
 
 		.section-title {
 			font-size: var(--font-size-2xl);
-		}
-	}
-
-	/* Reduced motion */
-	@media (prefers-reduced-motion: reduce) {
-		.section-title::after {
-			transition: none;
 		}
 	}
 </style>

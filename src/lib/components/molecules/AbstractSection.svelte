@@ -47,35 +47,16 @@
 		padding: var(--space-lg);
 	}
 
+	/* Abstract title — letterpress hairline rule under solid Spectral ink. */
 	.abstract-title {
 		font-family: var(--font-family-serif);
 		font-size: var(--font-size-xl);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
 		margin-bottom: var(--space-lg);
+		padding-bottom: var(--space-sm);
+		border-bottom: var(--border-width-thin) solid var(--color-border-light);
 		line-height: var(--line-height-tight);
-		position: relative;
-	}
-
-	/* Elegant accent line under title */
-	.abstract-title::after {
-		content: '';
-		position: absolute;
-		bottom: calc(-1 * var(--space-sm));
-		left: 0;
-		width: var(--space-3xl);
-		height: var(--border-width-medium);
-		background: linear-gradient(
-			90deg,
-			var(--color-highlight) 0%,
-			color-mix(in srgb, var(--color-highlight) 30%, transparent) 100%
-		);
-		border-radius: var(--border-radius-full);
-		transition: width var(--duration-normal) var(--ease-out);
-	}
-
-	.abstract-section:hover .abstract-title::after {
-		width: var(--space-5xl);
 	}
 
 	.abstract-content {
@@ -109,13 +90,6 @@
 			font-size: var(--font-size-base);
 			text-align: left; /* Left-align on mobile for better readability */
 			hyphens: none; /* Disable hyphenation on mobile */
-		}
-	}
-
-	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
-		.abstract-title::after {
-			transition: none;
 		}
 	}
 </style>
