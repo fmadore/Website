@@ -39,12 +39,13 @@
 		</div>
 
 		<div class="featured-grid grid-stagger">
-			{#each processedProjects as project (project.id)}
+			{#each processedProjects as project, index (project.id)}
 				<Card
 					title={project.title}
 					imageUrl={project.imageUrl}
 					linkUrl={project.finalLinkUrl}
 					target={project.linkTarget}
+					editorial={index === 0 && processedProjects.length > 1}
 				>
 					{#snippet subtitle()}
 						<span>{project.years}</span>

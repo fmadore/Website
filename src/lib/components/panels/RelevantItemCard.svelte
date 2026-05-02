@@ -149,12 +149,12 @@
 		left: 0;
 		width: 0;
 		height: var(--border-width-thin);
-		background: var(--color-accent);
+		background: var(--color-primary);
 		transition: width var(--duration-normal) var(--ease-out);
 	}
 
 	.relevant-item-link:hover {
-		color: var(--color-highlight);
+		color: var(--color-primary);
 		text-decoration: none;
 	}
 

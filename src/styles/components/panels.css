@@ -152,7 +152,7 @@
 
 .filter-button.active {
 	background-color: var(--color-primary);
-	color: var(--color-background);
+	color: var(--color-text-inverted);
 	border-color: var(--color-primary);
 }
 

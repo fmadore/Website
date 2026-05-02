@@ -150,7 +150,7 @@ Provides decal toggle (accessibility), download as PNG, and optional fullscreen.
 
 	.toolbar-btn:hover:not(:disabled) {
 		background-color: var(--color-primary);
-		color: var(--color-white);
+		color: var(--color-text-inverted);
 		border-color: var(--color-primary);
 		transform: var(--transform-lift-sm);
 		box-shadow: var(--shadow-md);
@@ -173,7 +173,7 @@ Provides decal toggle (accessibility), download as PNG, and optional fullscreen.
 
 	.toolbar-btn.active {
 		background-color: var(--color-primary);
-		color: var(--color-white);
+		color: var(--color-text-inverted);
 		border-color: var(--color-primary);
 		opacity: 1;
 	}

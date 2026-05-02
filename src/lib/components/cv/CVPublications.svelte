@@ -163,7 +163,7 @@
 		padding: var(--space-1) var(--space-2);
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-medium);
-		color: var(--color-white);
+		color: var(--color-text-inverted);
 		background-color: var(--color-primary);
 		border-radius: var(--border-radius);
 		align-items: center;

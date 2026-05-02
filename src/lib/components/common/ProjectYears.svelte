@@ -99,10 +99,12 @@
 		border: var(--border-width-thin) solid var(--color-border);
 	}
 
-	/* Badge variant - pill-shaped, bold styling */
+	/* Badge variant - pill-shaped, bold styling. Solid terracotta — single
+	 * accent colour rather than a 135° two-stop gradient — to match the
+	 * `.btn-primary` and active filter chip conventions. */
 	.project-years--badge {
 		padding: var(--space-2) var(--space-4);
-		background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+		background: var(--color-primary);
 		color: var(--color-text-inverted);
 		border-radius: var(--border-radius-full);
 		box-shadow: var(--shadow-sm);

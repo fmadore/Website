@@ -324,10 +324,9 @@
 		position: absolute;
 		top: 0;
 		height: 100%;
-		background: var(--gradient-accent-highlight);
+		background: var(--color-primary);
 		border-radius: var(--border-radius-sm);
 		pointer-events: none;
-		opacity: var(--opacity-90);
 		transition: opacity var(--duration-fast) var(--ease-out);
 	}
 
@@ -338,8 +337,8 @@
 		left: calc(var(--track-offset) + var(--handle-position) * (100% - 2 * var(--track-offset)));
 		width: var(--space-lg);
 		height: var(--space-lg);
-		background: var(--gradient-accent-highlight);
-		border: var(--border-width-medium) solid var(--color-white);
+		background: var(--color-primary);
+		border: var(--border-width-medium) solid var(--color-surface);
 		border-radius: var(--border-radius-full);
 		transform: translate(-50%, -50%);
 		cursor: grab;
@@ -372,7 +371,7 @@
 	.range-handle:focus {
 		box-shadow:
 			0 0 0 var(--border-width-thick)
-				color-mix(in srgb, var(--color-accent) calc(var(--opacity-15) * 100%), transparent),
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent),
 			var(--shadow-lg);
 		outline: none;
 		transform: translate(-50%, -50%) scale(var(--scale-110));
@@ -382,19 +381,21 @@
 		cursor: grabbing;
 		box-shadow:
 			0 0 0 var(--border-width-thick)
-				color-mix(in srgb, var(--color-accent) calc(var(--opacity-30) * 100%), transparent),
+				color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent),
 			var(--shadow-xl);
 		transform: translate(-50%, -50%) scale(var(--scale-125));
 	}
 
-	/* Value tooltip above the drag handle. Solid warm gradient, no blur. */
+	/* Value tooltip above the drag handle. Solid terracotta, no gradient,
+	 * matches the active filter chip / btn-primary fill convention so the
+	 * "applied filter value" treatment reads consistently. */
 	.range-float {
 		position: absolute;
 		bottom: 140%;
 		left: 50%;
 		transform: translateX(-50%);
-		background: var(--gradient-accent-highlight);
-		color: var(--color-white);
+		background: var(--color-primary);
+		color: var(--color-text-inverted);
 		padding: var(--space-2xs) var(--space-xs);
 		border-radius: var(--border-radius-sm);
 		font-size: var(--font-size-xs);
@@ -423,7 +424,7 @@
 		left: 50%;
 		transform: translateX(-50%);
 		border: var(--border-width-thick) solid transparent;
-		border-top-color: var(--color-accent);
+		border-top-color: var(--color-primary);
 	}
 
 	.range-pips {
@@ -486,7 +487,7 @@
 	:global(html.dark) .range-track {
 		background-color: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--opacity-10) * 100%),
+			var(--color-text) calc(var(--opacity-10) * 100%),
 			transparent
 		);
 	}
@@ -494,7 +495,7 @@
 	:global(html.dark) .pip {
 		background-color: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--opacity-15) * 100%),
+			var(--color-text) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 	}
@@ -502,7 +503,7 @@
 	:global(html.dark) .pip.pip-large {
 		background-color: color-mix(
 			in srgb,
-			var(--color-white) calc(var(--opacity-30) * 100%),
+			var(--color-text) calc(var(--opacity-30) * 100%),
 			transparent
 		);
 	}

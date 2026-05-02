@@ -345,7 +345,7 @@
 	}
 
 	.award-section .section-title {
-		color: var(--color-accent);
+		color: var(--color-text-emphasis);
 	}
 
 	/* Section titles - consistent typography */

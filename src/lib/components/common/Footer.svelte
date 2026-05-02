@@ -356,7 +356,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: var(--color-white);
+		color: var(--color-text-inverted);
 		cursor: pointer;
 		box-shadow: var(--shadow-lg);
 		transform: translateY(calc(var(--space-24) + var(--space-2)));
@@ -449,7 +449,7 @@
 	}
 
 	.scroll-to-top:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-white);
+		outline: var(--border-width-medium) solid var(--color-text-inverted);
 		outline-offset: var(--border-width-medium);
 	}
 </style>

@@ -621,7 +621,7 @@ ECharts Network Graph - A network visualization for author collaborations
 
 	.zoom-btn:hover {
 		background-color: var(--color-primary);
-		color: var(--color-white);
+		color: var(--color-text-inverted);
 		border-color: var(--color-primary);
 		transform: var(--transform-lift-sm);
 		box-shadow: var(--shadow-md);

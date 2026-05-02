@@ -44,8 +44,8 @@
 	height: var(--space-5);
 	font-size: var(--font-size-xs);
 	font-weight: var(--font-weight-semibold);
-	color: var(--color-white);
-	background: var(--color-accent);
+	color: var(--color-text-inverted);
+	background: var(--color-primary);
 	border-radius: var(--border-radius-full);
 	padding: 0 var(--space-2xs);
 }

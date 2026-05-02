@@ -277,6 +277,11 @@
 		}
 
 		/* PDF section styling with glassmorphism - consistent with research iframe-section */
+		/* Warm-paper PDF callout. Single warm surface tile with a hairline
+		 * border and subtle hover lift; the three-stop primary→highlight→
+		 * accent gradient was the same templated pattern retired from
+		 * `panels.css`, and reads as AI-CMS shouting against the editorial
+		 * direction. The CTA inside the section carries the rare terracotta. */
 		.pdf-section {
 			position: relative;
 			content-visibility: auto;
@@ -285,16 +290,9 @@
 			transition:
 				transform var(--duration-normal) var(--ease-out),
 				box-shadow var(--duration-normal) var(--ease-out);
-			box-shadow: var(--shadow-md);
-			/* Enhanced glassmorphism with subtle gradient overlay */
-			background: linear-gradient(
-				135deg,
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
-				color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 50%,
-				color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
-			);
-			border: var(--border-width-thin) solid
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
+			box-shadow: var(--shadow-sm);
+			background: var(--color-surface);
+			border: var(--border-width-thin) solid var(--color-border-light);
 		}
 
 		/* Override h2 margin-top inside pdf-section */
@@ -304,13 +302,7 @@
 
 		.pdf-section:hover {
 			transform: var(--transform-lift-sm);
-			box-shadow: var(--shadow-lg);
-			background: linear-gradient(
-				135deg,
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
-				color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 50%,
-				color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
-			);
+			box-shadow: var(--shadow-md);
 		}
 
 		/* Respect user motion preferences */
@@ -324,19 +316,10 @@
 			}
 		}
 
-		/* Dark mode adjustments */
+		/* Dark mode — same warm tile via cascading tokens, slightly stronger
+		 * default shadow to register lift against the warm-dusk surface. */
 		:global(html.dark) .pdf-section {
-			background: linear-gradient(
-				135deg,
-				color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
-				color-mix(in srgb, var(--color-highlight) 4%, transparent) 50%,
-				color-mix(in srgb, var(--color-accent) 6%, transparent) 100%
-			);
-			border-color: color-mix(
-				in srgb,
-				var(--color-primary) calc(var(--opacity-15) * 100%),
-				transparent
-			);
+			box-shadow: var(--shadow-md);
 		}
 
 		/* RSS Feed Button */

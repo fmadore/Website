@@ -90,12 +90,12 @@
 
 	.year-tag:hover {
 		background-color: var(--color-primary);
-		color: var(--color-background);
+		color: var(--color-text-inverted);
 	}
 
 	.year-tag.active {
 		background-color: var(--color-primary);
-		color: var(--color-background);
+		color: var(--color-text-inverted);
 	}
 
 	.activity-grid {

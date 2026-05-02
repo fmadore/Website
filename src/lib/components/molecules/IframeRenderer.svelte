@@ -372,7 +372,7 @@
 		right: 0;
 		height: var(--iframe-header-height);
 		background-color: var(--color-primary);
-		color: var(--color-white);
+		color: var(--color-text-inverted);
 		display: flex;
 		align-items: center;
 		padding: 0 var(--space-4);

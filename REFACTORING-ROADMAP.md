@@ -528,6 +528,116 @@ design principles are captured there and mirrored in [`CLAUDE.md`](./CLAUDE.md).
   reads consistently across both list pages. Files:
   `src/lib/components/communications/CommunicationItem.svelte`,
   `src/lib/components/communications/UpcomingCommunications.svelte`.
+- Audit cleanup — chrome consistency sweep: a fresh
+  `design-philosophy-auditor` run after the buttons / headings / panels
+  passes surfaced one ~~MEDIUM~~ HIGH-visibility regression and a long
+  tail of stragglers. All landed in a single sweep:
+  - **`PageHeader`** (every detail-page H1): retired the radial-gradient
+    background mixing primary + accent tints, the 60 px gold→amber
+    `.title-accent` decorative bar, and the terracotta H1 colour. The
+    detail-page header now reads as a warm-paper tile with a hairline
+    border, single-layer shadow, and a Spectral semibold ink-on-paper
+    title — letting the type-badge / back-link carry the rare
+    terracotta accents instead of duplicating the brand colour on every
+    page heading. Dark mode dropped its parallel radial gradient too.
+    Files: `src/lib/components/common/PageHeader.svelte`.
+  - **`Card`** (used by `/teaching`, `/research`,
+    `/digital-humanities`, `FeaturedDHProjects`, `ActivityItem`): same
+    pattern of dark-mode `linear-gradient(primary 8%, accent 4%)`
+    background that the panel system retired. Migrated to a solid
+    `--color-surface` warm-dusk tile with a primary-tinted hover
+    shadow. Card title colour also moved from `--color-primary` to
+    `--color-text-emphasis`. Added a `card--editorial` variant
+    mirroring `.entity-card--editorial` (transparent chrome, Spectral
+    display title, serif description capped at 65 ch, uppercase
+    eyebrow meta, hairline `border-bottom` separator). Files:
+    `src/lib/components/common/Card.svelte`.
+  - **`FeaturedDHProjects`**: opts the first card into
+    `editorial={index === 0 && processedProjects.length > 1}` so
+    /digital-humanities and /research/dh-ai-african-studies now show
+    the lead project as a content-on-paper editorial figure when there
+    are peers below; singletons keep the standard card chrome. Files:
+    `src/lib/components/digital-humanities/FeaturedDHProjects.svelte`.
+  - **`RangeSlider`**: track highlight, drag handle, value-tooltip
+    pill, and arrow indicator all migrated from
+    `--gradient-accent-highlight` (amber→gold) to solid
+    `--color-primary`. Handle border switched from `--color-white` to
+    `--color-surface` so it reads as paper-on-terracotta. Hover/focus
+    glow ring tinted from `--color-accent` to `--color-primary`. Dark
+    mode track + pip backgrounds rewritten from `--color-white` mixes
+    to `--color-text` mixes (warm-on-warm-dusk instead of cool sheen).
+    Closes the slider migration the earlier filter-chip pass had only
+    partially done. Files:
+    `src/lib/components/atoms/RangeSlider.svelte`.
+  - **Activities `[id]/+page.svelte` `.pdf-section`**: the same
+    three-stop primary→highlight→accent gradient retired from
+    `panels.css` was still active here (plus its hover and dark-mode
+    parallels). Replaced with a single warm `--color-surface` tile,
+    hairline `--color-border-light` border, and shadow lift on hover.
+    Files: `src/routes/activities/[id]/+page.svelte`.
+  - **`color: var(--color-white)` on `--color-primary` fills**: every
+    remaining instance migrated to `--color-text-inverted` for AAA
+    contrast on dark-mode terracotta-400 backgrounds — `ChartToolbar`
+    button hover/active, `EChartsNetworkGraph` zoom-button hover,
+    `CVPublications` DOI-badge fallback, `IframeRenderer` `.iframe-header`,
+    `Footer` scroll-to-top button + its focus outline,
+    `.active-count` badge in `filters.css` (which was still amber).
+    Files: `src/lib/components/visualisations/ChartToolbar.svelte`,
+    `src/lib/components/visualisations/EChartsNetworkGraph.svelte`,
+    `src/lib/components/cv/CVPublications.svelte`,
+    `src/lib/components/molecules/IframeRenderer.svelte`,
+    `src/lib/components/common/Footer.svelte`,
+    `src/styles/components/filters.css`.
+  - **`color: var(--color-background)` on `--color-primary` active
+    states**: same AAA-contrast issue on the activities page. Active
+    filter-tag, year-tag hover/active in `activities/year/[year]`, and
+    `.filter-button.active` in `panels.css` all migrated to
+    `--color-text-inverted`. Files: `src/styles/components/activity-list.css`,
+    `src/routes/activities/year/[year]/+page.svelte`,
+    `src/styles/components/panels.css`.
+  - **`ProjectYears` badge variant**: the
+    `linear-gradient(135deg, --color-primary, --color-primary-light)`
+    two-stop gradient on the pill background flattened to solid
+    `--color-primary`. Same single-accent treatment as `.btn-primary`
+    and the active filter chip. Files:
+    `src/lib/components/common/ProjectYears.svelte`.
+  - **DH detail `.award-section .section-title`**: was the only
+    surviving `section-title { color: var(--color-accent); }` rule
+    (gold heading inside the awards block). Migrated to
+    `--color-text-emphasis` to match every other heading sweep. Files:
+    `src/routes/digital-humanities/[id]/+page.svelte`.
+  - **`RelevantItemCard` underline animation**: the
+    `width: 0 → 100%` `::before` underline on the panel link was
+    bound to `--color-accent` (amber) with a `--color-highlight`
+    (gold) text colour on hover — the only remaining amber/gold
+    "active" affordance after the chip migration. Both ported to
+    `--color-primary` so panel-link affordances match nav-link
+    affordances. Files:
+    `src/lib/components/panels/RelevantItemCard.svelte`.
+  - **Publications detail `:global(html.dark) .toc-item`**: lone
+    cool-grey dark-mode rule binding the bottom border to
+    `color-mix(--color-white, …)`. Migrated to
+    `--color-border-light` so the warm-bark surface stops carrying
+    cool sheens between TOC rows. Files:
+    `src/routes/publications/[id]/+page.svelte`.
+  - **`AudioVisualization`** dark-mode rules: the `.audio-description`
+    paragraph and link were both bound to `--color-white` (with
+    `--color-accent` link hover). Migrated to `--color-text-emphasis`
+    body text and `--color-primary-light` link hover so the dark-mode
+    audio embed stops reading as cool-white-on-warm. Files:
+    `src/lib/components/media/AudioVisualization.svelte`.
+  - **`accents.css` deleted**: the entire utility file
+    (`.accent-line`, `.accent-dot`, `.section-divider`, `.title-underline`,
+    `.border-accent-left`, `.border-accent-top`, `.text-gradient`,
+    `.bg-accent-tint`, `.bg-warm-surface`) was a 213-line catalogue
+    of brief violations — three-stop primary→accent→highlight
+    gradients on every utility, a banned `border-left` accent stripe
+    helper, a banned gradient-text helper. All but `section-divider`
+    were unconsumed; the one `section-divider` consumer
+    (`/publications/visualisations`) had its own scoped local
+    redefinition that didn't depend on the global utility. Removed
+    from `app.css`'s import chain. Files: `src/styles/utilities/accents.css`
+    (deleted), `src/app.css`.
 - PDF CV alignment: the CV's PDF generator (`PdfGenerator.svelte`)
   inherited the old on-screen aesthetic — terracotta-coloured uppercase
   section heads followed by a 20 mm thick amber + 25 mm thin border-fade
@@ -563,26 +673,31 @@ design principles are captured there and mirrored in [`CLAUDE.md`](./CLAUDE.md).
 
 Not blocking — pick up when convenient:
 
-- **Dark-mode pass on detail pages**: visually walk `/publications/[id]`,
-  `/communications/[id]`, and the CV timeline in dark mode. Spot any
-  token that reverted to a cool-gray assumption in a component I didn't
-  touch. The automated auditor already reported "largely clean" but a human
-  eye over every detail route would close the loop.
+- **Dark-mode pass on detail pages**: closed in the audit cleanup
+  sweep (see "Audit cleanup — chrome consistency sweep" above). The
+  remaining cool-grey / `--color-white`-tinted dark-mode rules in
+  `Card`, `RangeSlider`, `AudioVisualization`, `publications/[id]
+.toc-item`, and `activities/[id] .pdf-section` were all migrated to
+  warm tokens. If a visual smoke walk after a future dev session
+  surfaces another straggler, it's a single-file fix, not a sweep.
 - **Activities list-page composition / pull-quote breakout**:
-  publications and `/conference-activity` both now carry an
-  editorial-lead variant on their featured/upcoming block (see the two
-  entries above). Still open: `/activities` has a different
-  architecture — flat `Card`-based grid grouped by year, no curated
-  "featured" subset, descriptions instead of abstracts — so a direct
-  port doesn't fit. A separate pass could either (a) add a "most
-  recent" lead variant on the first activity in the year-flat list, or
-  (b) surface the long-form `description` of the topmost activity into
-  a content-on-paper treatment. Also open: a "pull-quote breakout"
+  publications, `/conference-activity`, and `/digital-humanities`
+  (via `FeaturedDHProjects`) now all carry an editorial-lead variant
+  on their featured/curated block (see the three landed entries
+  above; the DH projects variant uses a new `card--editorial` modifier
+  on the shared `Card` component, mirroring `.entity-card--editorial`).
+  Still open: `/activities` has a different architecture — flat
+  `Card`-based grid grouped by year, no curated "featured" subset,
+  descriptions instead of abstracts — so a direct port doesn't fit.
+  A separate pass could either (a) add a "most recent" lead variant
+  on the first activity in the year-flat list, or (b) surface the
+  long-form `description` of the topmost activity into a
+  content-on-paper treatment. Also open: a "pull-quote breakout"
   pass for items with abstract content worth surfacing. Low priority —
-  the lead-story break on publications + conference-activity covers
-  the bulk of the brief's "asymmetry over centre alignment"
-  requirement; further composition variations are delight-pass
-  territory.
+  the lead-story break on publications, conference-activity, and DH
+  projects covers the bulk of the brief's "asymmetry over centre
+  alignment" requirement; further composition variations are
+  delight-pass territory.
 - **Remaining `color-mix(var(--color-white) ...)` audit**: Footer
   surfaces and buttons.css/glassmorphism.css button variants migrated
   in earlier passes. Other legitimate uses still stand: glass overlays

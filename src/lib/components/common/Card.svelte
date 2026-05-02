@@ -5,6 +5,14 @@
 		linkUrl = undefined,
 		target = '_blank', // Default to opening external links in new tab
 		title = '',
+		/**
+		 * Render this card as the editorial "lead" of a featured block:
+		 * no chrome (transparent background, no border, no shadow,
+		 * no lift-on-hover), Spectral display title, larger image. Mirrors
+		 * the `.entity-card--editorial` pattern in entity-cards.css for
+		 * the same single-large-figures break called for in the brief.
+		 */
+		editorial = false,
 		// Snippet props
 		subtitle = undefined,
 		details = undefined,
@@ -16,7 +24,7 @@
 	let imageAlt = $derived(_imageAltProp || title);
 </script>
 
-<div class="card scroll-reveal-scale">
+<div class="card scroll-reveal-scale" class:card--editorial={editorial}>
 	{#if imageUrl}
 		<div class="card-image">
 			{#if linkUrl}
@@ -144,7 +152,7 @@
 		margin-bottom: var(--space-2xs);
 		line-height: var(--line-height-tight);
 		font-weight: var(--font-weight-semibold);
-		color: var(--color-primary);
+		color: var(--color-text-emphasis);
 	}
 
 	.card-title a {
@@ -192,25 +200,21 @@
 		text-decoration: underline;
 	}
 
-	/* Dark mode overrides */
+	/* Dark mode — solid warm-dusk surface (the same single-tile treatment
+	 * as `.entity-card`). The retired two-stop primary→accent gradient was
+	 * the same templated pattern banned in `panels.css` and `pdf-section`;
+	 * here the primary-tinted hover shadow gives the lift instead. */
 	:global(html.dark) .card {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 8%, var(--color-background)) 0%,
-			color-mix(in srgb, var(--color-accent) 4%, var(--color-background)) 100%
-		);
+		background: var(--color-surface);
 		border-color: var(--color-border);
-		box-shadow: var(--shadow);
+		box-shadow: var(--shadow-md);
 	}
 
 	:global(html.dark) .card:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 12%, var(--color-background)) 0%,
-			color-mix(in srgb, var(--color-accent) 6%, var(--color-background)) 100%
-		);
-		border-color: var(--color-border-dark);
-		box-shadow: var(--shadow-md);
+		border-color: color-mix(in srgb, var(--color-primary) 50%, var(--color-border));
+		box-shadow:
+			0 12px 28px -8px color-mix(in srgb, var(--color-primary) 35%, transparent),
+			0 4px 10px -4px color-mix(in srgb, var(--color-black) 40%, transparent);
 	}
 
 	/* Respect user motion preferences */
@@ -225,6 +229,83 @@
 		}
 
 		.card:hover .card-image img {
+			transform: none;
+		}
+	}
+
+	/* ============================================================================
+	 * Editorial lead variant
+	 * ============================================================================
+	 * The first card in a curated/featured block (e.g., FeaturedDHProjects)
+	 * opts into this variant via the `editorial` prop. It strips card
+	 * chrome (background, border, shadow, lift-on-hover) so the project
+	 * reads as content-on-paper, not card-on-paper — a deliberate break in
+	 * the uniform list rhythm. The brief calls for "asymmetry over centre
+	 * alignment" and "break the grid intentionally for emphasis (single
+	 * large figures)"; this is the lead-story treatment for the most
+	 * prominent project in a section.
+	 *
+	 * Mirrors `.entity-card--editorial` in entity-cards.css to keep the two
+	 * card systems' editorial conventions visually consistent.
+	 */
+	.card--editorial,
+	:global(html.dark) .card--editorial {
+		background: transparent;
+		border: none;
+		box-shadow: none;
+		padding-bottom: var(--space-xl);
+		margin-bottom: var(--space-lg);
+		border-bottom: var(--border-width-thin) solid var(--color-border);
+	}
+
+	/* Editorial cards do not lift on hover — the chrome is gone, so there's
+	 * nothing to elevate. We keep the bottom-border separator color
+	 * untouched so the hairline rule survives the hover state. */
+	.card--editorial:hover,
+	:global(html.dark) .card--editorial:hover {
+		transform: none;
+		box-shadow: none;
+	}
+
+	.card--editorial .card-body {
+		padding: var(--space-md) 0 0 0;
+	}
+
+	.card--editorial .card-title {
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-2xl);
+		font-weight: var(--font-weight-semibold);
+		line-height: var(--line-height-tight);
+		letter-spacing: var(--letter-spacing-tight);
+		margin-bottom: var(--space-sm);
+	}
+
+	.card--editorial .card-subtitle {
+		text-transform: uppercase;
+		letter-spacing: var(--letter-spacing-wider);
+		font-size: var(--font-size-xs);
+		color: var(--color-text-muted);
+		margin-bottom: var(--space-sm);
+	}
+
+	.card--editorial .card-description {
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-lg);
+		line-height: var(--line-height-relaxed);
+		color: var(--color-text);
+		max-width: 65ch;
+	}
+
+	@media (--md) {
+		.card--editorial .card-title {
+			font-size: var(--font-size-3xl);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.card--editorial,
+		.card--editorial:hover {
+			transition: none;
 			transform: none;
 		}
 	}

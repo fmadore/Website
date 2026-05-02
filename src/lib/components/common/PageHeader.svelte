@@ -56,7 +56,6 @@
 
 		<div class="title-section">
 			<h1 class="page-title text-3xl md:text-4xl font-bold mb-3">{title}</h1>
-			<div class="title-accent"></div>
 		</div>
 
 		{#if authors && authors.length > 0}
@@ -84,20 +83,21 @@
 		position: relative;
 	}
 
+	/*
+	 * Warm-paper detail-page header. Single solid surface, hairline border,
+	 * single-layer shadow — no radial gradient, no double accent tint, no
+	 * decorative `.title-accent` bar. The page title reads as ink on paper
+	 * and inherits Spectral so the serif heading stack matches CV and
+	 * editorial featured-lead conventions; the type-badge / back-link still
+	 * carry the rare terracotta accents around the title.
+	 */
 	.enhanced-page-header {
-		background: radial-gradient(
-			circle at 20% 20%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 35%,
-			var(--color-surface) 65%,
-			var(--color-background) 100%
-		);
+		background: var(--color-surface);
 		border-radius: var(--border-radius-xl);
-		box-shadow: var(--shadow-md);
+		box-shadow: var(--shadow-sm);
 		/* Mobile-first padding */
 		padding: var(--space-6) var(--space-4);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
+		border: var(--border-width-thin) solid var(--color-border-light);
 		/* Mobile-first margin */
 		margin-bottom: var(--space-4);
 	}
@@ -184,23 +184,14 @@
 	}
 
 	.page-title {
-		color: var(--color-primary);
+		font-family: var(--font-family-serif);
+		color: var(--color-text-emphasis);
 		line-height: var(--line-height-tight);
-		font-weight: var(--font-weight-extrabold);
+		font-weight: var(--font-weight-semibold);
 		letter-spacing: var(--letter-spacing-tight);
 		margin: 0;
 		/* Mobile-first font size override */
 		font-size: var(--font-size-2xl);
-	}
-
-	.title-accent {
-		/* Mobile-first width */
-		width: 60px;
-		height: var(--border-width-thick);
-		background: linear-gradient(90deg, var(--color-highlight) 0%, var(--color-accent) 100%);
-		border-radius: var(--border-radius-sm);
-		margin-top: var(--space-3);
-		transition: width var(--duration-moderate) var(--ease-out);
 	}
 
 	.authors {
@@ -217,21 +208,13 @@
 		line-height: var(--line-height-relaxed);
 	}
 
-	/* Dark mode enhancements */
+	/* Dark mode — warm-dusk surface tile, hairline border, single shadow.
+	 * Same depatterning as light mode: no radial gradient, no double-tint
+	 * accent layer. */
 	:global(html.dark) .enhanced-page-header {
-		background: radial-gradient(
-			circle at 20% 20%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent) 35%,
-			var(--color-dark-surface-alt) 65%,
-			var(--color-dark-surface-deep) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-		box-shadow: var(--shadow-lg);
+		background: var(--color-surface);
+		border-color: var(--color-border);
+		box-shadow: var(--shadow-md);
 	}
 
 	:global(html.dark) .back-link {
@@ -286,21 +269,10 @@
 			font-size: var(--font-size-xl);
 		}
 
-		.title-accent {
-			width: var(--space-4xl);
-		}
-
 		.header-meta {
 			flex-direction: row;
 			align-items: flex-start;
 			justify-content: space-between;
-		}
-	}
-
-	/* Animation for title accent on hover */
-	@media (prefers-reduced-motion: no-preference) {
-		.title-section:hover .title-accent {
-			width: calc(var(--space-4xl) + var(--space-md-tight));
 		}
 	}
 </style>

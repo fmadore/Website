@@ -249,19 +249,21 @@
 		transform: translateY(-1px);
 	}
 
-	/* Dark mode specific adjustments for audio description */
+	/* Dark mode — use warm paper foreground (resolves to a bright off-white
+	 * tinted toward the brand warmth, not pure cool white). Link hover
+	 * picks up the rare terracotta accent rather than amber. */
 	:global(html.dark) .audio-description {
-		color: var(--color-white);
+		color: var(--color-text-emphasis);
 		text-shadow: 0 1px 3px color-mix(in srgb, var(--color-black) 70%, transparent);
 	}
 
 	:global(html.dark) .audio-description a {
-		color: var(--color-white);
+		color: var(--color-text-emphasis);
 		text-shadow: 0 1px 3px color-mix(in srgb, var(--color-black) 80%, transparent);
 	}
 
 	:global(html.dark) .audio-description a:hover {
-		color: var(--color-accent);
+		color: var(--color-primary-light);
 		text-shadow: 0 1px 4px color-mix(in srgb, var(--color-black) 90%, transparent);
 	}
 

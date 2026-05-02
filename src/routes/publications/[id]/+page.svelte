@@ -397,11 +397,7 @@
 	}
 
 	:global(html.dark) .toc-item {
-		border-bottom-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-5) * 100%),
-			transparent
-		);
+		border-bottom-color: var(--color-border-light);
 	}
 
 	:global(html.dark) .toc-item:hover {
