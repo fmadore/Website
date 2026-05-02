@@ -496,6 +496,22 @@ design principles are captured there and mirrored in [`CLAUDE.md`](./CLAUDE.md).
   `--color-text-emphasis`, and `.panel-header`/`.panel-footer`/
   `.view-all-container` rules switched from `primary 10 %`-tinted to
   `--color-border-light`.
+- Editorial featured-lead variant: the first item in
+  `FeaturedPublications` now opts into an `editorial` prop on
+  `PublicationItem` that strips the card chrome (background, border,
+  shadow, lift-on-hover) and renders the publication as content-on-paper
+  with Spectral display typography — title at `--font-size-3xl`,
+  abstract in serif at `--font-size-lg` capped at 65ch, image enlarged to
+  16 rem and pulled to the right column at `--md` and up. Mobile keeps
+  the standard card stack so vertical heaviness doesn't compound on
+  narrow viewports. The lead is separated from the rest of the featured
+  block by a hairline `border-bottom` rule. This is the brief's "break
+  the grid intentionally for emphasis (single large figures)" applied
+  to the publications list — a deliberate asymmetric break in the
+  uniform card rhythm. Files:
+  `src/lib/components/publications/PublicationItem.svelte`,
+  `src/lib/components/publications/FeaturedPublications.svelte`,
+  `src/styles/components/entity-cards.css`.
 - PDF CV alignment: the CV's PDF generator (`PdfGenerator.svelte`)
   inherited the old on-screen aesthetic — terracotta-coloured uppercase
   section heads followed by a 20 mm thick amber + 25 mm thin border-fade
@@ -536,11 +552,17 @@ Not blocking — pick up when convenient:
   token that reverted to a cool-gray assumption in a component I didn't
   touch. The automated auditor already reported "largely clean" but a human
   eye over every detail route would close the loop.
-- **Publications / Communications / Activities list pages**: still use a
-  vertical stack of uniform `entity-card` tiles. The brief calls for editorial
-  composition breaks (featured item at the top, pull-quote breakouts,
-  varied rhythm). Low priority — the uniform list is already readable and
-  on-palette; this is a "delight" pass, not a correctness pass.
+- **Publications / Communications / Activities list pages**: the
+  publications page now has an editorial-lead variant on the first
+  featured publication (see "Editorial featured-lead variant" above),
+  which is the most visible asymmetric break in the uniform rhythm.
+  Still open: the same treatment could be applied to
+  `/conference-activity` and `/activities` (each has its own list-page
+  patterns and would need a per-page audit), and a "pull-quote breakout"
+  pass for items with abstract content worth surfacing. Low priority —
+  the lead-story break is the bulk of the brief's "asymmetry over
+  centre alignment" requirement; further composition variations are
+  delight-pass territory.
 - **Remaining `color-mix(var(--color-white) ...)` audit**: Footer
   surfaces and buttons.css/glassmorphism.css button variants migrated
   in earlier passes. Other legitimate uses still stand: glass overlays

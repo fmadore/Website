@@ -249,3 +249,125 @@ html.dark .entity-card:hover {
 		0 12px 28px -8px color-mix(in srgb, var(--color-primary) 35%, transparent),
 		0 4px 10px -4px color-mix(in srgb, var(--color-black) 40%, transparent);
 }
+
+/* ============================================================================
+ * Editorial lead variant
+ * ============================================================================
+ * The first item in `FeaturedPublications` opts into this variant via the
+ * `editorial` prop. It strips the card chrome (background, border, shadow,
+ * lift-on-hover) so the publication reads as content-on-paper, not
+ * card-on-paper — a deliberate break in the uniform list rhythm. The brief
+ * calls for "asymmetry over center alignment" and "break the grid
+ * intentionally for emphasis (single large figures)"; this is the lead-story
+ * treatment that editorial magazines use for the single most prominent piece
+ * in a section.
+ *
+ * Mobile keeps the standard card stack (no editorial layout) so vertical
+ * heaviness doesn't compound on narrow viewports. The variant kicks in at
+ * `--md` and up, where horizontal space lets the image breathe.
+ */
+.entity-list-item.editorial {
+	margin-bottom: var(--space-2xl);
+	padding-bottom: var(--space-xl);
+	border-bottom: var(--border-width-thin) solid var(--color-border);
+}
+
+.entity-card--editorial {
+	background: transparent;
+	border: none;
+	box-shadow: none;
+	padding: 0;
+}
+
+.entity-card--editorial:hover {
+	transform: none;
+	border-color: transparent;
+	box-shadow: none;
+}
+
+/* Dark-mode editorial — same content-on-paper treatment, transparent on the
+ * warm-dusk surface. Specificity match for the `html.dark .entity-card` rule
+ * above. */
+html.dark .entity-card--editorial,
+html.dark .entity-card--editorial:hover {
+	background: transparent;
+	border-color: transparent;
+	box-shadow: none;
+}
+
+.entity-card--editorial .entity-meta {
+	text-transform: uppercase;
+	letter-spacing: var(--letter-spacing-wider);
+	font-size: var(--font-size-xs);
+	margin-bottom: var(--space-sm);
+}
+
+.entity-card--editorial .entity-type {
+	color: var(--color-text-muted);
+	font-weight: var(--font-weight-semibold);
+}
+
+.entity-card--editorial .entity-title {
+	font-family: var(--font-family-serif);
+	font-size: var(--font-size-2xl);
+	font-weight: var(--font-weight-semibold);
+	line-height: var(--line-height-tight);
+	letter-spacing: var(--letter-spacing-tight);
+	margin-bottom: var(--space-sm);
+}
+
+.entity-card--editorial .entity-details {
+	font-size: var(--font-size-base);
+	color: var(--color-text);
+	margin-bottom: var(--space-md);
+}
+
+.entity-card--editorial .entity-abstract {
+	font-family: var(--font-family-serif);
+	font-size: var(--font-size-lg);
+	line-height: var(--line-height-relaxed);
+	color: var(--color-text);
+	max-width: 65ch;
+	margin-bottom: var(--space-lg);
+}
+
+@media (--md) {
+	/* Asymmetric editorial grid: title + abstract take the wider column,
+	 * image sits in a narrower column on the right. Reverses the usual
+	 * "image left, content right" order so the lead story reads
+	 * type-first, image-second — the editorial-magazine convention. */
+	.entity-card--editorial .entity-grid {
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: var(--space-2xl);
+		align-items: start;
+	}
+
+	.entity-card--editorial .entity-image-container {
+		grid-column: 2;
+		grid-row: 1 / span 2;
+		max-width: var(--space-7xl);
+	}
+
+	.entity-card--editorial .entity-content {
+		grid-column: 1;
+		grid-row: 1;
+	}
+
+	.entity-card--editorial .entity-cover-image {
+		max-width: 16rem;
+	}
+
+	.entity-card--editorial .entity-title {
+		font-size: var(--font-size-3xl);
+	}
+}
+
+/* Reduced motion: editorial lead has no hover transforms anyway, but
+ * keep the rule symmetric with the base card. */
+@media (prefers-reduced-motion: reduce) {
+	.entity-card--editorial,
+	.entity-card--editorial:hover {
+		transition: none;
+		transform: none;
+	}
+}

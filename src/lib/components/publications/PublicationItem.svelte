@@ -11,9 +11,16 @@
 		publication: Publication;
 		onfilterrequest?: (event: { type: string; value: string }) => void;
 		index?: number; // Index for loading optimization
+		/**
+		 * Render this item as the editorial "lead" of a featured block:
+		 * no card chrome, Spectral display title, larger image, longer-form
+		 * abstract treatment. Breaks the uniform card stack the way an
+		 * editorial-magazine lead story breaks a section.
+		 */
+		editorial?: boolean;
 	}
 
-	let { publication, onfilterrequest, index }: Props = $props();
+	let { publication, onfilterrequest, index, editorial = false }: Props = $props();
 
 	// Optimize loading for above-the-fold images (first 3 items)
 	const imageLoading = $derived((index ?? 0) < 3 ? 'eager' : 'lazy');
@@ -99,8 +106,8 @@
 	});
 </script>
 
-<article class="entity-list-item scroll-reveal-scale">
-	<div class="entity-card">
+<article class="entity-list-item scroll-reveal-scale" class:editorial>
+	<div class="entity-card" class:entity-card--editorial={editorial}>
 		<div class="entity-grid">
 			{#if publication.image}
 				<div class="entity-image-container">

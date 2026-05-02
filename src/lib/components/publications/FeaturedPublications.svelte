@@ -21,7 +21,7 @@
 
 		<ul class="entity-list grid-stagger">
 			{#each publications as publication, index (publication.id)}
-				<PublicationItem {publication} {onfilterrequest} {index} />
+				<PublicationItem {publication} {onfilterrequest} {index} editorial={index === 0} />
 			{/each}
 		</ul>
 	</div>
