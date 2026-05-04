@@ -39,8 +39,8 @@
 		/>
 
 		<!-- Critical CSS: Inlined to prevent render-blocking and reduce LCP -->
-		<!-- Values align with design system: variables.css tokens (warm neutrals + terracotta) -->
-		<!-- Light: warm paper #faf7f2 bg, warm ink #2a211a text | Dark: warm dusk #1c1914 bg, warm paper #f0ebe3 text -->
+		<!-- Values align with design system: variables.css tokens (warm neutrals (light) / slate (dark) + ink-blue) -->
+		<!-- Light: warm paper #faf7f2 bg, warm ink #2a211a text | Dark: slate #14161e bg, warm paper #f0ebe3 text -->
 		<!-- --border-radius-lg: 0.75rem, --glass-blur-sm: 8px (using sm for perf) -->
 		<style>
 			*,
@@ -69,7 +69,7 @@
 				color: #2a211a;
 			}
 			html.dark body {
-				background-color: #1c1914;
+				background-color: #14161e;
 				color: #f0ebe3;
 			}
 			.container {
@@ -135,8 +135,8 @@
 			}
 			html.dark .glass-card,
 			html.dark .glass-panel {
-				background: #3e342a;
-				border-color: #584b40;
+				background: #292d3c;
+				border-color: #363a4d;
 				box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
 			}
 			.max-w-7xl {

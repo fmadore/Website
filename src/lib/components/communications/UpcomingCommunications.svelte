@@ -19,7 +19,7 @@
 
 		<ul class="entity-list grid-stagger">
 			{#each communications as communication, index (communication.id)}
-				<CommunicationItem {communication} {index} editorial={index === 0} />
+				<CommunicationItem {communication} {index} />
 			{/each}
 		</ul>
 	</div>

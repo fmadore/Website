@@ -156,25 +156,23 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 
 				if (!mounted || !chartContainer) return;
 
-				// Initialize chart
-				chart = echartsModule.init(chartContainer);
+				// Defer init until the container has non-zero dimensions.
+				// ResizeObserver fires synchronously after layout, so this avoids
+				// the "Can't get DOM width or height" warning when the container's
+				// height resolves to 0 during the first effect tick.
+				resizeObserver = new ResizeObserver((entries) => {
+					if (!mounted || !chartContainer) return;
+					const { width, height } = entries[0].contentRect;
+					if (width === 0 || height === 0) return;
 
-				// Setup resize observer
-				resizeObserver = new ResizeObserver(() => {
-					if (chart && !chart.isDisposed()) {
+					if (!chart) {
+						chart = echartsModule.init(chartContainer);
+						isReady = true;
+					} else if (!chart.isDisposed()) {
 						chart.resize();
 					}
 				});
 				resizeObserver.observe(chartContainer);
-
-				// Trigger initial resize after DOM settles
-				requestAnimationFrame(() => {
-					if (chart && !chart.isDisposed()) {
-						chart.resize();
-					}
-				});
-
-				isReady = true;
 			} catch (error) {
 				if (import.meta.env.DEV) console.error('Failed to initialize WordCloud:', error);
 			}
@@ -217,18 +215,17 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 <style>
 	.wordcloud-container {
 		width: 100%;
-		height: 100%;
 		min-height: 350px;
 		display: flex;
 		justify-content: center;
-		align-items: center;
+		align-items: stretch;
 		position: relative;
 		font-family: var(--font-family-sans);
 	}
 
 	.chart {
-		width: 100%;
-		height: 100%;
+		flex: 1;
+		min-height: 350px;
 		max-width: 100%;
 	}
 

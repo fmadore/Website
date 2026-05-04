@@ -54,7 +54,7 @@ Base styles define the foundation of the site's design.
 
 #### Color System
 
-- **Primary**: Terracotta (`#9e4833`) with `-dark`, `-light`, `-lighter` variants — warm earth brand accent
+- **Primary**: Deep ink-blue (`#2e4271`) with `-dark`, `-light`, `-lighter` variants — fountain-pen ink against cream paper
 - **Secondary**: Warm neutral for supporting elements (`--sys-color-neutral-600` is now warm-tinted, not cool gray)
 - **Accent**: Amber (`#f59e0b`) — warm gold secondary for highlights and badges
 - **Highlight**: Amber (`#fbbf24`) for attention/importance

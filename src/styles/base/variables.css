@@ -19,19 +19,20 @@
 	--sys-color-neutral-900: #1c1510;
 	--sys-color-neutral-950: #0e0a07;
 
-	/* Primary: Terracotta / burnt sienna.
-	 * Warm earth accent. Replaces teal as the brand primary — teal is demoted
-	 * to a data-viz-only role (see timeline tokens below). */
-	--sys-color-terracotta-100: #f6ece5;
-	--sys-color-terracotta-200: #edd6c7;
-	--sys-color-terracotta-300: #dfb69e;
-	--sys-color-terracotta-400: #cf8a6b;
-	--sys-color-terracotta-500: #b65842;
-	--sys-color-terracotta-600: #9e4833;
-	--sys-color-terracotta-700: #824031;
-	--sys-color-terracotta-800: #6a3428;
-	--sys-color-terracotta-900: #4d2820;
-	--sys-color-terracotta-950: #2e1912;
+	/* Primary: Deep ink-blue.
+	 * Fountain-pen ink against cream paper — editorial-magazine register.
+	 * Cool primary deliberately set against warm neutrals for letterpress
+	 * contrast, in the LRB / n+1 / Penguin Classics lineage. */
+	--sys-color-ink-100: #eef1f7;
+	--sys-color-ink-200: #d6dded;
+	--sys-color-ink-300: #b0bbd5;
+	--sys-color-ink-400: #7a89b3;
+	--sys-color-ink-500: #4f618d;
+	--sys-color-ink-600: #2e4271;
+	--sys-color-ink-700: #243456;
+	--sys-color-ink-800: #1c2842;
+	--sys-color-ink-900: #131c30;
+	--sys-color-ink-950: #0a0f1c;
 
 	/* Teal — retained for data-visualisation only (timeline categories, charts).
 	 * No longer the brand primary. Do not reference in new UI code. */
@@ -90,11 +91,11 @@
 	--sys-color-pink-500: #ec4899;
 
 	/* ===== SEMANTIC COLOR TOKENS ===== */
-	/* Primary — Terracotta */
-	--color-primary: var(--sys-color-terracotta-600);
-	--color-primary-dark: var(--sys-color-terracotta-700);
-	--color-primary-light: var(--sys-color-terracotta-500);
-	--color-primary-lighter: var(--sys-color-terracotta-400);
+	/* Primary — Deep ink-blue */
+	--color-primary: var(--sys-color-ink-600);
+	--color-primary-dark: var(--sys-color-ink-700);
+	--color-primary-light: var(--sys-color-ink-500);
+	--color-primary-lighter: var(--sys-color-ink-400);
 
 	/* Secondary */
 	--color-secondary: var(--sys-color-neutral-600);
@@ -760,11 +761,11 @@
  * per OKLCH principle). Both themes are first-class — this is its own pass,
  * not inverted light. */
 html.dark {
-	/* Primary — Terracotta, brightened for dark surfaces */
-	--color-primary: #cf8a6b; /* terracotta-400 */
-	--color-primary-dark: #b65842; /* terracotta-500 */
-	--color-primary-light: #dfb69e; /* terracotta-300 */
-	--color-primary-lighter: #edd6c7; /* terracotta-200 */
+	/* Primary — Deep ink-blue, brightened for dark surfaces */
+	--color-primary: #7a89b3; /* ink-400 */
+	--color-primary-dark: #4f618d; /* ink-500 */
+	--color-primary-light: #b0bbd5; /* ink-300 */
+	--color-primary-lighter: #d6dded; /* ink-200 */
 
 	/* Secondary — warm neutrals */
 	--color-secondary: #a39487; /* neutral-400 (warm) */
@@ -789,61 +790,66 @@ html.dark {
 	--color-danger-dark: #ef4444; /* red-500 */
 	--color-danger-light: #fca5a5; /* red-300 */
 
-	/* Backgrounds — warm dusk */
-	--color-background: #1c1510; /* neutral-900 (warm) */
-	--color-background-subtle: #2a211a; /* neutral-800 (warm) */
-	--color-background-muted: #3e342a; /* neutral-700 (warm) */
+	/* Backgrounds — slate dusk.
+	 * Cool-slate surfaces with a slight warm undertone, designed to harmonise
+	 * with the ink-blue primary. Reads like a study desk at night with a
+	 * single lamp, not "warm leather chair" (which clashed with cool ink). */
+	--color-background: #14161e; /* deep slate-charcoal */
+	--color-background-subtle: #1c1f2a; /* slate */
+	--color-background-muted: #292d3c; /* slate, lighter */
 
-	/* Text — warm paper on dark */
+	/* Text — warm cream paper, preserved on cool surfaces.
+	 * Keeping text warm against the cool surface IS the editorial register:
+	 * cream paper struck by ink-blue, viewed under warm lamplight. */
 	--color-text: #f4efe7; /* neutral-100 (warm) */
 	--color-text-light: #d5cdbe; /* neutral-300 (warm) */
 	--color-text-muted: #a39487; /* neutral-400 (warm) */
 	--color-text-emphasis: #faf7f2; /* neutral-50 (warm) */
 	--color-text-soft: #a39487;
-	--color-text-inverted: #1c1510;
+	--color-text-inverted: #14161e;
 
 	/* Surfaces */
-	--color-surface: #2a211a; /* neutral-800 (warm) */
-	--color-surface-alt: #3e342a; /* neutral-700 (warm) */
-	--color-surface-elevated: #584b40; /* neutral-600 (warm) */
-	--color-surface-sunken: #1c1510; /* neutral-900 (warm) */
-	--color-surface-border: #3e342a;
+	--color-surface: #1c1f2a; /* slate */
+	--color-surface-alt: #292d3c; /* slate, lighter */
+	--color-surface-elevated: #363a4d; /* slate, elevated */
+	--color-surface-sunken: #14161e; /* deep slate */
+	--color-surface-border: #292d3c;
 
 	/* Borders */
-	--color-border: #3e342a; /* neutral-700 (warm) */
-	--color-border-light: #2a211a; /* neutral-800 (warm) */
-	--color-border-dark: #584b40; /* neutral-600 (warm) */
-	--color-border-focus: #cf8a6b;
+	--color-border: #292d3c;
+	--color-border-light: #1c1f2a;
+	--color-border-dark: #363a4d;
+	--color-border-focus: #7a89b3;
 
 	/* Focus ring */
-	--focus-ring: 0 0 0 3px color-mix(in srgb, #cf8a6b 50%, transparent);
-	--focus-ring-color: #cf8a6b;
+	--focus-ring: 0 0 0 3px color-mix(in srgb, #7a89b3 50%, transparent);
+	--focus-ring-color: #7a89b3;
 
 	/* Academic */
 	--color-citation: #fbbf24; /* amber-400 */
 	--color-quote: #e9e2d5; /* neutral-200 (warm) */
 	--color-note: #d5cdbe; /* neutral-300 (warm) */
-	--color-code-bg: #2a211a;
+	--color-code-bg: #1c1f2a;
 
 	/* Component layers */
-	--color-background-alt: #2a211a;
-	--color-footer-bg: #0e0a07; /* neutral-950 (warm) */
+	--color-background-alt: #1c1f2a;
+	--color-footer-bg: #0a0c14; /* deep slate */
 	--color-footer-text: #f4efe7;
 	--color-footer-text-muted: color-mix(in srgb, #f4efe7 70%, transparent);
-	--color-sidebar-bg: #2a211a;
+	--color-sidebar-bg: #1c1f2a;
 
 	/* Button schemes */
-	--color-secondary-scheme: #cf8a6b; /* terracotta-400 */
-	--color-secondary-scheme-alt: #b65842; /* terracotta-500 */
+	--color-secondary-scheme: #7a89b3; /* ink-400 */
+	--color-secondary-scheme-alt: #4f618d; /* ink-500 */
 	--color-tertiary-scheme: #34d399;
 	--color-tertiary-scheme-alt: #10b981;
-	--color-glass-scheme: #cf8a6b;
-	--color-glass-scheme-alt: #dfb69e;
+	--color-glass-scheme: #7a89b3;
+	--color-glass-scheme-alt: #b0bbd5;
 
 	/* Dark surface tokens */
-	--color-dark-surface: #2a211a;
-	--color-dark-surface-alt: #1c1510;
-	--color-dark-surface-deep: #0e0a07;
+	--color-dark-surface: #1c1f2a;
+	--color-dark-surface-alt: #14161e;
+	--color-dark-surface-deep: #0a0c14;
 
 	/* Glassmorphism (dark) */
 	--card-glass-opacity-light: 0.08;
@@ -880,8 +886,8 @@ html.dark {
 	--shadow-2xl: 0 35px 60px -15px color-mix(in srgb, var(--color-black) 70%, transparent);
 
 	/* Colored shadows (dark) */
-	--shadow-primary: 0 4px 14px -2px color-mix(in srgb, #cf8a6b 30%, transparent);
-	--shadow-primary-lg: 0 10px 25px -5px color-mix(in srgb, #cf8a6b 35%, transparent);
+	--shadow-primary: 0 4px 14px -2px color-mix(in srgb, #7a89b3 30%, transparent);
+	--shadow-primary-lg: 0 10px 25px -5px color-mix(in srgb, #7a89b3 35%, transparent);
 	--shadow-accent: 0 4px 14px -2px color-mix(in srgb, #fbbf24 30%, transparent);
 	--shadow-highlight: 0 4px 14px -2px color-mix(in srgb, #fcd34d 30%, transparent);
 	--shadow-success: 0 4px 14px -2px color-mix(in srgb, #34d399 30%, transparent);

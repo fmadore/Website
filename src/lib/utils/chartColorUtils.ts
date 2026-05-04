@@ -204,11 +204,11 @@ export function getAnimationConfig(
 
 /**
  * Base chart colors from the design system.
- * Fallbacks match the warm terracotta/ochre palette in variables.css.
+ * Fallbacks match the deep ink-blue / warm-paper palette in variables.css.
  */
 export const CHART_COLOR_FALLBACKS = {
-	primary: '#9e4833', // terracotta-600
-	primaryDark: '#824031', // terracotta-700
+	primary: '#2e4271', // ink-600
+	primaryDark: '#243456', // ink-700
 	text: '#2a211a', // warm neutral-800 (ink)
 	textLight: '#7a6b5e', // warm neutral-500
 	border: '#e9e2d5', // warm neutral-200

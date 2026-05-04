@@ -34,10 +34,10 @@ export const SPACING = {
 	PARAGRAPH_GAP: 1 // Gap between paragraphs in same entry
 } as const;
 
-/** Refined color palette - matches website's warm terracotta/ochre design system */
+/** Refined color palette - matches website's deep ink-blue / warm-paper design system */
 export const COLORS = {
-	PRIMARY: [158, 72, 51] as [number, number, number], // #9e4833 - Terracotta 600
-	PRIMARY_DARK: [130, 64, 49] as [number, number, number], // #824031 - Terracotta 700
+	PRIMARY: [46, 66, 113] as [number, number, number], // #2e4271 - Ink 600
+	PRIMARY_DARK: [36, 52, 86] as [number, number, number], // #243456 - Ink 700
 	ACCENT: [245, 158, 11] as [number, number, number], // #f59e0b - Amber 500 (gold secondary)
 	TEXT_EMPHASIS: [28, 21, 16] as [number, number, number], // #1c1510 - Warm Neutral 900 (deepest ink, used for headings)
 	TEXT: [42, 33, 26] as [number, number, number], // #2a211a - Warm Neutral 800 (body ink)

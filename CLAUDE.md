@@ -205,11 +205,11 @@ Primary: **academic peers** — fellow researchers in Islamic studies, African s
 
 **Avoid:** templated academic CMS aesthetics; AI-slop tells (blue-purple gradients, cyan-on-dark, gradient text, side-stripe `border-left` accents, glassmorphism everywhere); generic "digital humanities" styling (monospace-as-shorthand-for-technical, terminal aesthetics); institutional chrome (centered heroes, three-column "Our Work" grids).
 
-**Theme.** Light and dark are both first-class — every component designed twice. Light reads like good paper (warm off-whites, ink-black text, neutrals tinted toward warm brown). Dark reads like a reading lamp after dusk (warm dark surfaces, not corporate dark-blue).
+**Theme.** Light and dark are both first-class — every component designed twice. Light reads like good paper struck by fountain-pen ink (warm cream off-whites, ink-black body text, neutrals tinted toward warm brown, deep ink-blue brand accent). Dark reads like a study desk after midnight (cool slate surfaces, warm cream text — warmth lives in the type, not the surface, since warm-brown surfaces clashed with the cool primary).
 
 **Typography.** `IBM Plex Sans` is on the reflex-rejection list and should be replaced with something more humanist. Reconsider `Source Serif 4` alongside. Pair one distinctive display/serif with a refined workhorse sans. Monospace is reserved for code and data-viz chrome only.
 
-**Color.** Move past templated teal+amber. Warm tinted neutrals, one confident accent (not three in parallel). 60-30-10 by visual weight. OKLCH for new color work; reduce chroma at extreme lightness.
+**Color.** Settled palette: deep ink-blue primary (`--color-primary: #2e4271`) on warm-paper light / cool-slate dark; amber retained as rare secondary accent. Reference: LRB / Penguin Classics / fountain-pen ink on cream paper. Past primaries retired: terracotta (read too brown against warm paper), teal (data-viz only). 60-30-10 by visual weight. OKLCH for new color work; reduce chroma at extreme lightness.
 
 **Motion.** Pages turning, not a web app responding. One orchestrated page-enter with staggered reveals; quieter scroll-reveals. No bounce/elastic easing.
 
@@ -218,9 +218,9 @@ Primary: **academic peers** — fellow researchers in Islamic studies, African s
 ### Design Principles
 
 1. **Typography does the heavy lifting** — before reaching for color or ornament, solve it with hierarchy-through-type.
-2. **Warm neutrals, rare accents** — dominant surface feels like paper; the accent earns its place by being scarce.
+2. **Warm paper or cool slate, never both warm** — light surfaces are cream paper, dark surfaces are cool slate; text stays warm cream in both modes. Ink-blue accent (and rare amber) earns its place by scarcity.
 3. **Quiet the glass** — glassmorphism only where it genuinely reinforces depth (sticky header, modals), not on cards or decoration.
 4. **Asymmetry over center alignment** — feel written, not laid out.
-5. **Both themes, equal craft** — dark is its own pass, not inverted light.
+5. **Both themes, equal craft** — dark is its own pass, not inverted light. Warmth in dark mode lives in the typography, not the surfaces.
 6. **No AI tells** — reject Impeccable's absolute bans and reflex fonts; if the first instinct matches a default, look further.
 7. **Peer-respecting density** — scholars scan; don't pad with whitespace when structured information serves better.
