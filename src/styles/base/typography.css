@@ -202,12 +202,24 @@ b {
  * sans text would be browser-synthesised obliques (visually crude). Using
  * the serif italic here also mirrors editorial-magazine typography where
  * emphasis is a genuine italic gesture, not a slant.
+ *
+ * `font-size-adjust` rescales the serif so its x-height matches
+ * Commissioner's (~0.50). Without it, Spectral italic (~0.46) renders
+ * visibly smaller than the surrounding sans, making emphasis look
+ * shrunken instead of intentional.
  */
 em,
 i,
 cite {
 	font-style: italic;
 	font-family: var(--font-family-serif);
+	font-size-adjust: 0.5;
+}
+
+/* Inside serif headings, surrounding text is already Spectral — opt out
+ * so emphasis stays the same visual size as the rest of the heading. */
+:where(h1, h2, h3, h4, h5, h6) :is(em, i, cite) {
+	font-size-adjust: none;
 }
 
 /* Code */
