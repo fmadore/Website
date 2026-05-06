@@ -67,8 +67,16 @@ const allPublications = loadData<Publication>(
 	}
 ) as (Publication & { sourceDirType: string })[];
 
-// Sort by date (most recent first)
-export const publicationsByDate = sortByDate(allPublications);
+// Sort by date (most recent first), with forthcoming items floated to the top
+const isForthcomingPublication = (p: Publication) => {
+	const d = p.date?.trim().toLowerCase();
+	return d === 'forthcoming' || d === 'à paraître' || d === 'a paraitre';
+};
+const dateSorted = sortByDate(allPublications);
+export const publicationsByDate = [
+	...dateSorted.filter(isForthcomingPublication),
+	...dateSorted.filter((p) => !isForthcomingPublication(p))
+];
 
 // Group publications by year and type
 export const publicationsByYear = groupByYear(allPublications);

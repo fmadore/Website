@@ -5,6 +5,13 @@ import type { Communication } from '$lib/types/communication';
 // Use union type for items we know we'll sort
 type SortableItem = Publication | Communication;
 
+// Items whose `date` field reads "Forthcoming" (or "À paraître") are treated
+// as not-yet-published and floated above all dated entries when sorting by date.
+function isForthcoming(item: { date?: string }): boolean {
+	const d = item.date?.trim().toLowerCase();
+	return d === 'forthcoming' || d === 'à paraître' || d === 'a paraitre';
+}
+
 /**
  * Sorts an array of items either by date (descending) or title (ascending).
  * @param items The array of items to sort.
@@ -34,6 +41,15 @@ export function sortItems<T extends SortableItem>(
 	} else {
 		// Default to sorting by date (descending)
 		sortedItems.sort((a, b) => {
+			// Forthcoming items always come first, regardless of dateISO/year
+			const aForthcoming = isForthcoming(a);
+			const bForthcoming = isForthcoming(b);
+			if (aForthcoming && !bForthcoming) return -1;
+			if (!aForthcoming && bForthcoming) return 1;
+			if (aForthcoming && bForthcoming) {
+				return (a.title || '').localeCompare(b.title || '');
+			}
+
 			// Use dateISO for proper sorting (handles date ranges by using the first date)
 			// Fall back to date field if dateISO is not available (for backward compatibility)
 			const dateStrA = (a as Communication).dateISO || a.date;

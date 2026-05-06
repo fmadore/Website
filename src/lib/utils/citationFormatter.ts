@@ -264,6 +264,15 @@ export function formatCitation(publication: Publication): FormattedCitation {
 		year = publication.year;
 	}
 
+	// If the publication is forthcoming, surface that label in place of the year
+	// so list views read "(Forthcoming)." rather than "(2026)." for unpublished work.
+	if (typeof publication.date === 'string') {
+		const d = publication.date.trim().toLowerCase();
+		if (d === 'forthcoming' || d === 'à paraître' || d === 'a paraitre') {
+			year = publication.date.trim();
+		}
+	}
+
 	return {
 		typeLabel,
 		detailsHtml,
