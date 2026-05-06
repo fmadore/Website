@@ -2,6 +2,19 @@ import type { Publication } from '$lib/types';
 import type { AffiliationPeriod } from '$lib/types/affiliation';
 
 /**
+ * Returns the year label to show in the CV gutter. Forthcoming publications
+ * surface "Forthcoming" instead of the projected year so unpublished work
+ * isn't misread as already in print.
+ */
+export function getCVDisplayYear(pub: Pick<Publication, 'date' | 'year'>): string | number {
+	const d = pub.date?.trim().toLowerCase();
+	if (d === 'forthcoming' || d === 'à paraître' || d === 'a paraitre') {
+		return pub.date!.trim();
+	}
+	return pub.year;
+}
+
+/**
  * Formats author list with Frédérick Madore in bold for CV display
  * Returns empty string if Frédérick Madore is the only author
  * Only bolds the name when there are multiple authors

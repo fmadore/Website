@@ -7,7 +7,8 @@
 		formatVolumeIssueDisplay,
 		formatCVAuthorList,
 		formatEditorList,
-		formatBlogDate
+		formatBlogDate,
+		getCVDisplayYear
 	} from '$lib/utils/cvFormatters';
 	import CVEntry from './CVEntry.svelte';
 
@@ -28,7 +29,7 @@
 				<div class="space-y-3">
 					{#each publicationsByType[pubType] as pub (pub.id)}
 						{@const formattedAuthors = formatCVAuthorList(pub.authors)}
-						<CVEntry year={pub.year}>
+						<CVEntry year={getCVDisplayYear(pub)}>
 							<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 							{#if formattedAuthors}{@html formattedAuthors}{#if (pub.type === 'book' && pub.isEditedVolume) || pub.type === 'special-issue'}&nbsp;(eds.),{:else}.{/if}
 							{/if}
@@ -127,7 +128,7 @@
 			<div class="space-y-3">
 				{#each otherPublicationTypes as pubType (pubType)}
 					{#each publicationsByType[pubType as Publication['type']] as pub (pub.id)}
-						<CVEntry year={pub.year}>
+						<CVEntry year={getCVDisplayYear(pub)}>
 							<!-- Simplified display for other types -->
 							<span class="font-medium">{pub.title}</span>.
 							{#if pub.type}<span class="pub-type-badge">{pub.type}</span>{/if}
