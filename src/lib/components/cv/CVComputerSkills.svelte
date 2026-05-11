@@ -3,15 +3,16 @@
 		{
 			category: 'Data analysis & visualisation',
 			skills:
-				'Python, OpenRefine, data wrangling, topic modelling, network analysis, sentiment analysis'
+				'Python, OpenRefine, ECharts, MapLibre, data wrangling, topic modelling, network analysis, sentiment analysis, semantic search/embeddings'
 		},
 		{
 			category: 'Digital humanities tools',
-			skills: 'Omeka S, IIIF, Wikidata, Tesseract OCR, web scraping, WordPress'
+			skills:
+				'Omeka S, IIIF, Wikidata, linked data (RDF, SPARQL), Tesseract OCR, web scraping, WordPress'
 		},
 		{
 			category: 'Development & infrastructure',
-			skills: 'Svelte, Git/GitHub, Docker, Claude Code, prompt engineering, RAG implementation'
+			skills: 'Svelte, Git/GitHub, Docker, MongoDB, Claude Code, AI-assisted development'
 		},
 		{
 			category: 'Research & documentation',
