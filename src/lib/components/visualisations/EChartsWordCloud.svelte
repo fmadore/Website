@@ -215,6 +215,9 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 <style>
 	.wordcloud-container {
 		width: 100%;
+		/* Fill an explicit-height parent (page wrappers set height: 500px etc.)
+		   while falling back to min-height when the parent height is auto. */
+		height: 100%;
 		min-height: 350px;
 		display: flex;
 		justify-content: center;
@@ -225,6 +228,7 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 
 	.chart {
 		flex: 1;
+		height: 100%;
 		min-height: 350px;
 		max-width: 100%;
 	}
