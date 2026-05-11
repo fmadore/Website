@@ -4,8 +4,10 @@
 	import CVSection from './CVSection.svelte';
 
 	// CV ordering: strictly most-recent-first, ignoring the DH-page's
-	// featured/order fields. `years` is a string: "2023-" (ongoing),
-	// "2021" (single), or "2018-2023" (closed range).
+	// featured/order fields. Sort by start year so a focused recent
+	// project (e.g. 2023) outranks a long-running older one (2018-24).
+	// End year (Infinity for ongoing) breaks ties: an ongoing project
+	// beats a closed one with the same start year.
 	function parseYears(years: string): { start: number; end: number } {
 		const [startStr, endStr] = years.split('-');
 		const start = parseInt(startStr, 10);
@@ -17,8 +19,8 @@
 	const dhProjectsByRecency = [...allDhProjects].sort((a, b) => {
 		const ay = parseYears(a.years);
 		const by = parseYears(b.years);
-		if (ay.end !== by.end) return by.end - ay.end;
 		if (ay.start !== by.start) return by.start - ay.start;
+		if (ay.end !== by.end) return by.end - ay.end;
 		return a.title.localeCompare(b.title);
 	});
 </script>
