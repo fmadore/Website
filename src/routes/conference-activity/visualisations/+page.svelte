@@ -493,7 +493,7 @@
 			Tags scaled by the number of conference activities they appear in.
 		</p>
 		{#if tagWordCloudData.length > 0}
-			<div class="chart-wrapper wordcloud-chart" style="height: 500px;">
+			<div class="chart-wrapper wordcloud-chart">
 				<EChartsWordCloud
 					words={tagWordCloudData}
 					maxWords={100}

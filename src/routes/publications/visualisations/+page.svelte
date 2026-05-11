@@ -814,7 +814,7 @@
 			</div>
 
 			{#if wordCloudData().length > 0}
-				<div class="chart-wrapper wordcloud-chart" style="height: 500px;">
+				<div class="chart-wrapper wordcloud-chart">
 					<EChartsWordCloud
 						words={wordCloudData()}
 						maxWords={100}
