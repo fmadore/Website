@@ -109,10 +109,8 @@
 											href={review.url}
 											target="_blank"
 											rel="noopener noreferrer"
-											class="text-primary review-link">{review.journal}</a
-										><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < pub.reviewedBy.length - 2},
-										{:else if i === pub.reviewedBy.length - 2}, and
-										{:else}.{/if}
+											class="text-primary review-link no-underline">{review.journal}</a
+										><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < pub.reviewedBy.length - 2},&nbsp;{:else if i === pub.reviewedBy.length - 2},&nbsp;and&nbsp;{:else}.{/if}
 									{/each}
 								</p>
 							{/if}
