@@ -89,19 +89,26 @@ export const extractRichText = (node: Element | ChildNode): TextFragment[] => {
 			const href = el.getAttribute('href') || '';
 			// Normalize link text
 			const linkText = (el.textContent?.trim() || '').replace(/\s+/g, ' ');
+			// Honor bold-implying classes on the <a> itself (e.g. grant titles
+			// rendered as <a class="font-medium">). Without this, linked
+			// entries render in regular weight while non-linked siblings bold.
+			const linkStyle: TextFragment['style'] =
+				el.classList.contains('font-semibold') || el.classList.contains('font-medium')
+					? 'bold'
+					: 'normal';
 
 			// Handle special links logic (similar to originalPdfGenerator)
 			if (!linkText || el.classList.contains('doi-link')) {
 				// DOI badge links: show "DOI: identifier" as clickable link
 				if (el.classList.contains('doi-link') && isValidDoiUrl(href)) {
 					const doi = extractDoiFromUrl(href);
-					fragments.push({ text: `DOI: ${doi}`, style: 'normal', href });
+					fragments.push({ text: `DOI: ${doi}`, style: linkStyle, href });
 				} else {
-					fragments.push({ text: linkText, style: 'normal' });
+					fragments.push({ text: linkText, style: linkStyle });
 				}
 			} else if (isValidDoiUrl(href)) {
 				// Other DOI links: just show the text as clickable
-				fragments.push({ text: linkText, style: 'normal', href });
+				fragments.push({ text: linkText, style: linkStyle, href });
 			} else if (href.startsWith('http') || href.startsWith('mailto:')) {
 				const isGenericLinkText = /^\[?(link|listen|view|read|download|here|click)\]?$/i.test(
 					linkText
@@ -110,15 +117,15 @@ export const extractRichText = (node: Element | ChildNode): TextFragment[] => {
 					// Generic text: keep short label as clickable link (URL is in the href)
 					fragments.push({
 						text: `[${linkText.replace(/[[\]]/g, '') || 'Link'}]`,
-						style: 'normal',
+						style: linkStyle,
 						href
 					});
 				} else {
 					// Descriptive text: make it a clickable link without appending the URL
-					fragments.push({ text: linkText, style: 'normal', href });
+					fragments.push({ text: linkText, style: linkStyle, href });
 				}
 			} else {
-				fragments.push({ text: linkText, style: 'normal' });
+				fragments.push({ text: linkText, style: linkStyle });
 			}
 			return fragments;
 		}
