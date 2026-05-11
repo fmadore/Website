@@ -30,6 +30,7 @@ Only renders if text analysis data is available for this publication.
 				shape="circle"
 				minFontSize={14}
 				maxFontSize={56}
+				height={350}
 			/>
 		</div>
 		<p class="wordcloud-caption">Displaying the most frequent terms from the full text</p>

@@ -493,7 +493,7 @@
 			Tags scaled by the number of conference activities they appear in.
 		</p>
 		{#if tagWordCloudData.length > 0}
-			<div class="chart-wrapper wordcloud-chart">
+			<div class="chart-wrapper">
 				<EChartsWordCloud
 					words={tagWordCloudData}
 					maxWords={100}
@@ -692,11 +692,6 @@
 		contain: layout style;
 	}
 
-	.wordcloud-chart {
-		height: 500px;
-		contain: strict;
-	}
-
 	.placeholder-message {
 		padding: var(--space-lg);
 		min-height: var(--iframe-height-xs);
@@ -760,10 +755,6 @@
 			height: 400px;
 		}
 
-		.wordcloud-chart {
-			height: 450px;
-		}
-
 		.section-heading {
 			font-size: var(--font-size-heading-4);
 			margin-bottom: var(--space-md);
@@ -797,10 +788,6 @@
 
 		.map-chart {
 			height: 350px;
-		}
-
-		.wordcloud-chart {
-			height: 380px;
 		}
 
 		.section-heading {

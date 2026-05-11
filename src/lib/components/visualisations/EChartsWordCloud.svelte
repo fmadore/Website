@@ -25,7 +25,14 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 			'var(--color-highlight)',
 			'var(--color-primary-dark)',
 			'var(--color-accent-light)'
-		]
+		],
+		/**
+		 * Base (desktop) height in pixels. The component scales this down
+		 * automatically on tablet (×0.9) and mobile (×0.76), so callers only
+		 * pick the desktop number. No wrapper height or media queries needed
+		 * on the page side.
+		 */
+		height = 500
 	}: {
 		words?: WordFrequency[];
 		title?: string;
@@ -35,6 +42,7 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 		shape?: 'circle' | 'cardioid' | 'diamond' | 'square' | 'triangle' | 'star';
 		rotationRange?: [number, number];
 		colors?: string[];
+		height?: number;
 	} = $props();
 
 	// Container reference
@@ -201,7 +209,7 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 	});
 </script>
 
-<div class="wordcloud-container scroll-reveal-scale">
+<div class="wordcloud-container scroll-reveal-scale" style:--wc-h="{height}px">
 	{#if words.length === 0}
 		<div class="empty-state">
 			<p>No word frequency data available</p>
@@ -213,12 +221,12 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 </div>
 
 <style>
+	/* Single source of truth for word-cloud sizing. The `height` prop sets
+	   --wc-h; tablet and mobile breakpoints scale it proportionally so the
+	   caller never needs to repeat the height at multiple breakpoints. */
 	.wordcloud-container {
 		width: 100%;
-		/* Fill an explicit-height parent (page wrappers set height: 500px etc.)
-		   while falling back to min-height when the parent height is auto. */
-		height: 100%;
-		min-height: 350px;
+		height: var(--wc-h, 500px);
 		display: flex;
 		justify-content: center;
 		align-items: stretch;
@@ -226,10 +234,21 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 		font-family: var(--font-family-sans);
 	}
 
+	@media (--md-down) {
+		.wordcloud-container {
+			height: calc(var(--wc-h, 500px) * 0.9);
+		}
+	}
+
+	@media (--sm-down) {
+		.wordcloud-container {
+			height: calc(var(--wc-h, 500px) * 0.76);
+		}
+	}
+
 	.chart {
 		flex: 1;
 		height: 100%;
-		min-height: 350px;
 		max-width: 100%;
 	}
 

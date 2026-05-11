@@ -814,7 +814,7 @@
 			</div>
 
 			{#if wordCloudData().length > 0}
-				<div class="chart-wrapper wordcloud-chart">
+				<div class="chart-wrapper">
 					<EChartsWordCloud
 						words={wordCloudData()}
 						maxWords={100}
@@ -1271,12 +1271,6 @@
 		contain: layout style;
 	}
 
-	.wordcloud-chart {
-		height: 500px;
-		/* Explicit height for word cloud */
-		contain: strict;
-	}
-
 	.bigrams-chart {
 		/* Height is dynamic based on data */
 		contain: layout style;
@@ -1417,10 +1411,6 @@
 			height: 400px;
 		}
 
-		.wordcloud-chart {
-			height: 450px;
-		}
-
 		.section-heading {
 			font-size: var(--font-size-heading-4);
 			margin-bottom: var(--space-md);
@@ -1458,10 +1448,6 @@
 
 		.map-chart {
 			height: 350px;
-		}
-
-		.wordcloud-chart {
-			height: 380px;
 		}
 
 		.language-toggle {
