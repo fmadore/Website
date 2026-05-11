@@ -4,7 +4,9 @@
 	import { formatCVYearRange } from '$lib/utils/cvFormatters';
 	import CVEntry from './CVEntry.svelte';
 
-	// Group fieldworks by location
+	// Group fieldworks by location. Extract every year mentioned in the
+	// human-readable `date` string so cross-year trips (e.g. "November 2014
+	// - April 2015") show both years, not just the canonical `fw.year`.
 	const groupedFieldworks = $derived(
 		fieldworksByDate.reduce(
 			(acc, fw) => {
@@ -12,7 +14,12 @@
 				if (!acc[location]) {
 					acc[location] = new Set<number>();
 				}
-				acc[location].add(fw.year);
+				const yearsInDate = fw.date.match(/\b(19|20)\d{2}\b/g);
+				if (yearsInDate && yearsInDate.length > 0) {
+					for (const y of yearsInDate) acc[location].add(Number(y));
+				} else {
+					acc[location].add(fw.year);
+				}
 				return acc;
 			},
 			{} as Record<string, Set<number>>
