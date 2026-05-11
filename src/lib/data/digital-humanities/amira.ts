@@ -3,7 +3,7 @@ import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
 export const amira: DigitalHumanitiesProject = {
 	id: 'amira',
 	title: 'Africa Multiple Interactive Research Atlas (AMIRA)',
-	years: '2026-',
+	years: '2026',
 	shortDescription:
 		'Interactive research atlas for the Africa Multiple Cluster of Excellence — browse, filter, and compare projects, people, institutions, and research items across partner centres in Africa, Brazil, and Germany.',
 	description:
@@ -40,7 +40,7 @@ export const amira: DigitalHumanitiesProject = {
 		{
 			type: 'iframe',
 			id: 'amira-main-embed',
-			src: 'https://am-digital-research-environment.github.io/amira/',
+			src: 'https://amira.africamultiple.uni-bayreuth.de/',
 			scrolling: 'yes',
 			allowfullscreen: true,
 			showTitle: true,
