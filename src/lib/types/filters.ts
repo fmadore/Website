@@ -69,15 +69,3 @@ export interface UniversalFilterConfig {
 	// Optional: Add global properties like sidebar title if needed
 	// title?: string;
 }
-
-// Maybe also define the ActiveFilters structure if it's complex and used across modules
-// Example:
-// export interface ActiveFilters {
-//   types?: string[];
-//   yearRange?: { min: number; max: number } | null;
-//   tags?: string[];
-//   languages?: string[];
-//   authors?: string[];
-//   countries?: string[];
-//   // Add other potential filters
-// }

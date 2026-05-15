@@ -72,10 +72,11 @@ export function loadData<T extends DataItem>(
 		(entry): entry is [string, DataModule] => {
 			const [, module] = entry; // Destructure here
 			if (!module || typeof module !== 'object') {
-				console.warn(
-					`Skipping module that is not a valid object while loading ${dataTypeName}s:`,
-					module
-				);
+				if (import.meta.env.DEV)
+					console.warn(
+						`Skipping module that is not a valid object while loading ${dataTypeName}s:`,
+						module
+					);
 				return false;
 			}
 			// Add any other basic checks for module structure if necessary
@@ -112,16 +113,18 @@ export function loadData<T extends DataItem>(
 
 				// Check if a valid data item was found
 				if (!dataItem) {
-					console.warn(
-						`Module at path ${path} does not seem to contain a valid ${dataTypeName} (no suitable export found):`,
-						module
-					);
+					if (import.meta.env.DEV)
+						console.warn(
+							`Module at path ${path} does not seem to contain a valid ${dataTypeName} (no suitable export found):`,
+							module
+						);
 					return null; // Skip this module gracefully
 				}
 
 				// Check for circular references explicitly (though less likely with this approach)
 				if (dataItem === module) {
-					console.warn(`Circular reference detected in module at path ${path}`);
+					if (import.meta.env.DEV)
+						console.warn(`Circular reference detected in module at path ${path}`);
 					return null;
 				}
 
@@ -132,7 +135,8 @@ export function loadData<T extends DataItem>(
 
 				return dataItem; // Return the found data item
 			} catch (error) {
-				console.error(`Error processing ${dataTypeName} module at path ${path}:`, error);
+				if (import.meta.env.DEV)
+					console.error(`Error processing ${dataTypeName} module at path ${path}:`, error);
 				return null;
 			}
 		})
@@ -144,7 +148,7 @@ export function loadData<T extends DataItem>(
 			// Ensure item has an 'id' property before accessing it
 			if (!item.id) {
 				// This check might be redundant if the check inside map is sufficient, but kept for safety.
-				console.warn(`Loaded ${dataTypeName} missing id:`, item);
+				if (import.meta.env.DEV) console.warn(`Loaded ${dataTypeName} missing id:`, item);
 				return false;
 			}
 			// Filter out specified template IDs
@@ -154,13 +158,3 @@ export function loadData<T extends DataItem>(
 			return true;
 		});
 }
-
-/**
- * Helper to combine multiple glob imports for different subdirectories.
- * Handles potential overlaps or issues if needed.
- * Vite's import.meta.glob handles multiple patterns, so direct combination is often fine.
- */
-// Example of how you might combine contexts if needed, though Vite might handle it directly
-// export function combineGlobContexts(...contexts: Record<string, DataModule>[]): Record<string, DataModule> {
-//     return contexts.reduce((acc, context) => ({ ...acc, ...context }), {});
-// }

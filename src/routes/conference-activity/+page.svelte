@@ -59,7 +59,7 @@
 			const module = await import('$lib/components/visualisations/MapVisualization.svelte');
 			MapVisualization = module.default;
 		} catch (e) {
-			console.error('Failed to load MapVisualization:', e);
+			if (import.meta.env.DEV) console.error('Failed to load MapVisualization:', e);
 			mapLoadError = true;
 		}
 	}
