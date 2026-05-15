@@ -1,4 +1,5 @@
 import type { Publication } from '$lib/types';
+import { splitNames } from '$lib/utils/nameUtils';
 
 // Helper function to format authors for BibTeX
 function formatAuthors(authors: string[] | undefined): string {
@@ -237,10 +238,7 @@ export function generateBibtex(publication: Publication): string {
 
 			if (typeof publication.editors === 'string' && publication.editors) {
 				// Split string by comma or 'and', then format correctly
-				const editorArray = publication.editors
-					.split(/,\s*|\s+and\s+/)
-					.map((name) => name.trim())
-					.filter((name) => name);
+				const editorArray = splitNames(publication.editors);
 				if (editorArray.length > 0) {
 					bibtexFields.push(`  editor = {${formatAuthors(editorArray)}}`);
 				}
