@@ -2,13 +2,14 @@
 	import type { Communication } from '$lib/types/communication';
 	import { base } from '$app/paths';
 	import { page } from '$app/state';
-	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import {
 		type MetaTag,
 		createConditionalTag,
+		createCoinsParams,
 		getFullUrl,
 		deduplicateAndFilterTags
 	} from '$lib/utils/metaTags';
+	import BaseMetaTags from '$lib/components/common/BaseMetaTags.svelte';
 
 	let { communication }: { communication: Communication } = $props();
 
@@ -30,12 +31,7 @@
 
 	// Helper to create COinS metadata for presentations
 	const createCoinsData = (): string => {
-		const params = new SvelteURLSearchParams();
-
-		// Basic COinS parameters
-		params.set('url_ver', 'Z39.88-2004');
-		params.set('ctx_ver', 'Z39.88-2004');
-		params.set('rfr_id', 'info:sid/frederickmadore.com');
+		const params = createCoinsParams();
 
 		// Presentation format
 		params.set('rft_val_fmt', 'info:ofi/fmt:kev:mtx:dc');
@@ -167,11 +163,4 @@
 	});
 </script>
 
-<svelte:head>
-	{#each metaTags as tag, index (tag.name + tag.content + index)}
-		<meta name={tag.name} content={tag.content} />
-	{/each}
-</svelte:head>
-
-<!-- COinS metadata for Zotero compatibility -->
-<span class="Z3988" title={createCoinsData()} style="display: none;"></span>
+<BaseMetaTags tags={metaTags} coins={createCoinsData()} />

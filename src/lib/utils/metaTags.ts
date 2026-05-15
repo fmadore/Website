@@ -86,6 +86,23 @@ export function deduplicateAndFilterTags(tags: MetaTag[]): MetaTag[] {
 }
 
 /**
+ * Seeds an OpenURL/COinS parameter set with the common scaffold params
+ * (`url_ver`, `ctx_ver`, `rfr_id`) in their canonical order. Callers append
+ * format-specific fields afterwards; `URLSearchParams.toString()` preserves
+ * insertion order so the serialized output is stable.
+ *
+ * @param rfrId - The referrer id; publications historically use a different
+ *   value from the rest, so it is parameterised to keep output unchanged.
+ */
+export function createCoinsParams(rfrId: string = 'info:sid/frederickmadore.com'): URLSearchParams {
+	const params = new URLSearchParams();
+	params.set('url_ver', 'Z39.88-2004');
+	params.set('ctx_ver', 'Z39.88-2004');
+	params.set('rfr_id', rfrId);
+	return params;
+}
+
+/**
  * Parses an author name into first/last parts for COinS metadata.
  * Handles both "Last, First" and "First Last" formats.
  */

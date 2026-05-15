@@ -5,9 +5,11 @@
 	import {
 		type MetaTag,
 		createConditionalTag,
+		createCoinsParams,
 		getFullUrl,
 		deduplicateAndFilterTags
 	} from '$lib/utils/metaTags';
+	import BaseMetaTags from '$lib/components/common/BaseMetaTags.svelte';
 
 	let { activity }: { activity: Activity } = $props();
 
@@ -16,13 +18,7 @@
 
 	// Helper to create COinS metadata for blog posts
 	const createCoinsData = (): string => {
-		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- ephemeral, not reactive
-		const params = new URLSearchParams();
-
-		// Basic COinS parameters
-		params.set('url_ver', 'Z39.88-2004');
-		params.set('ctx_ver', 'Z39.88-2004');
-		params.set('rfr_id', 'info:sid/frederickmadore.com');
+		const params = createCoinsParams();
 
 		// Blog post format - use journal format with blog as journal
 		params.set('rft_val_fmt', 'info:ofi/fmt:kev:mtx:journal');
@@ -145,11 +141,4 @@
 	});
 </script>
 
-<svelte:head>
-	{#each metaTags as tag, index (tag.name + tag.content + index)}
-		<meta name={tag.name} content={tag.content} />
-	{/each}
-</svelte:head>
-
-<!-- COinS metadata for Zotero compatibility -->
-<span class="Z3988" title={createCoinsData()} style="display: none;"></span>
+<BaseMetaTags tags={metaTags} coins={createCoinsData()} />
