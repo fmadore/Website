@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Activity } from '$lib/types/activity';
 	import { base } from '$app/paths';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import {
 		type MetaTag,
 		createConditionalTag,
@@ -12,7 +12,7 @@
 	let { activity }: { activity: Activity } = $props();
 
 	// Helper to resolve URLs using current page context
-	const resolveUrl = (path: string | undefined) => getFullUrl($page.url.origin, base, path);
+	const resolveUrl = (path: string | undefined) => getFullUrl(page.url.origin, base, path);
 
 	// Helper to create COinS metadata for blog posts
 	const createCoinsData = (): string => {
@@ -79,7 +79,7 @@
 		tags.push(...createConditionalTag('citation_abstract', activity.description));
 
 		// URLs
-		const currentUrl = `${$page.url.origin}${$page.url.pathname}`;
+		const currentUrl = `${page.url.origin}${page.url.pathname}`;
 		tags.push(
 			{ name: 'citation_public_url', content: currentUrl },
 			{ name: 'citation_abstract_html_url', content: currentUrl },

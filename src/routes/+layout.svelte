@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { browser } from '$app/environment';
 	import { afterNavigate } from '$app/navigation';
 	import { fade } from 'svelte/transition';
@@ -78,7 +78,7 @@
 
 	<main class="main-content-area">
 		<div class="container py-6 md:py-10">
-			{#key $page.url.pathname}
+			{#key page.url.pathname}
 				<div
 					class="route-transition-root"
 					in:fade={{ duration: motionDuration(180), delay: motionDuration(30), easing: cubicOut }}

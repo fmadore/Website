@@ -20,8 +20,7 @@
  */
 
 import { browser } from '$app/environment';
-import { page } from '$app/stores';
-import { get } from 'svelte/store';
+import { page } from '$app/state';
 import { useJsonLdScript } from './jsonLd.svelte';
 
 /**
@@ -71,7 +70,7 @@ export function useBreadcrumbJsonLd(
 		if (!browser) return null;
 		const items = itemsGetter();
 		if (!items || items.length === 0) return null;
-		const origin = get(page).url.origin;
+		const origin = page.url.origin;
 		return generateBreadcrumbJsonLd(items, origin);
 	});
 }

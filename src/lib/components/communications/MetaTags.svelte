@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Communication } from '$lib/types/communication';
 	import { base } from '$app/paths';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import {
 		type MetaTag,
@@ -13,7 +13,7 @@
 	let { communication }: { communication: Communication } = $props();
 
 	// Helper to resolve URLs using current page context
-	const resolveUrl = (path: string | undefined) => getFullUrl($page.url.origin, base, path);
+	const resolveUrl = (path: string | undefined) => getFullUrl(page.url.origin, base, path);
 
 	// Helper to get presentation type for Zotero
 	const getPresentationType = (): string => {
@@ -109,7 +109,7 @@
 		tags.push(...createConditionalTag('citation_abstract', communication.abstract));
 
 		// URLs
-		const currentUrl = `${$page.url.origin}${$page.url.pathname}`;
+		const currentUrl = `${page.url.origin}${page.url.pathname}`;
 		tags.push(
 			{ name: 'citation_public_url', content: currentUrl },
 			{ name: 'citation_abstract_html_url', content: currentUrl },

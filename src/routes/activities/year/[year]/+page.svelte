@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { getActivities } from '$lib/stores/activities.svelte';
 	import type { Activity } from '$lib/types';
 	import { resolve } from '$app/paths';
@@ -10,7 +10,7 @@
 	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
 
 	// Get the year parameter from the URL - reactive to route changes
-	let year = $derived(parseInt($page.params.year || ''));
+	let year = $derived(parseInt(page.params.year || ''));
 
 	// Get activities reactively
 	let activities = $derived(getActivities());

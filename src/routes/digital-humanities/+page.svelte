@@ -2,7 +2,7 @@
 	import SEO from '$lib/SEO.svelte';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import { base, resolve } from '$app/paths';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { browser } from '$app/environment';
 	import Card from '$lib/components/common/Card.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
@@ -15,7 +15,7 @@
 	const breadcrumbs = createSectionBreadcrumbs('Digital Humanities', '/digital-humanities');
 
 	// Reactive variable for the skill from URL, only access searchParams if in browser
-	let selectedSkill = $derived(browser ? $page.url.searchParams.get('skill') : null);
+	let selectedSkill = $derived(browser ? page.url.searchParams.get('skill') : null);
 
 	// Get featured projects (only show when no skill filter is active)
 	const featuredProjects = $derived(
