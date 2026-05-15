@@ -1,5 +1,5 @@
 import type { Publication } from '$lib/types/publication';
-import { formatDisplayDate } from '$lib/utils/date-formatter';
+import { formatDisplayDate, isForthcoming } from '$lib/utils/date-formatter';
 
 // Human-readable labels for publication types
 export const typeLabels: { [key: string]: string } = {
@@ -266,11 +266,8 @@ export function formatCitation(publication: Publication): FormattedCitation {
 
 	// If the publication is forthcoming, surface that label in place of the year
 	// so list views read "(Forthcoming)." rather than "(2026)." for unpublished work.
-	if (typeof publication.date === 'string') {
-		const d = publication.date.trim().toLowerCase();
-		if (d === 'forthcoming' || d === 'à paraître' || d === 'a paraitre') {
-			year = publication.date.trim();
-		}
+	if (typeof publication.date === 'string' && isForthcoming(publication)) {
+		year = publication.date.trim();
 	}
 
 	return {

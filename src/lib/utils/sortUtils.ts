@@ -1,16 +1,10 @@
 import type { Publication } from '$lib/types/publication';
 import type { Communication } from '$lib/types/communication';
+import { isForthcoming } from '$lib/utils/date-formatter';
 
 // Generic type for items that can be sorted (must have date and title)
 // Use union type for items we know we'll sort
 type SortableItem = Publication | Communication;
-
-// Items whose `date` field reads "Forthcoming" (or "À paraître") are treated
-// as not-yet-published and floated above all dated entries when sorting by date.
-function isForthcoming(item: { date?: string }): boolean {
-	const d = item.date?.trim().toLowerCase();
-	return d === 'forthcoming' || d === 'à paraître' || d === 'a paraitre';
-}
 
 /**
  * Sorts an array of items either by date (descending) or title (ascending).

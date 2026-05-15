@@ -1,5 +1,6 @@
 import type { Publication } from '$lib/types';
 import { loadData } from '$lib/utils/dataLoader';
+import { isForthcoming } from '$lib/utils/date-formatter';
 import {
 	sortByDate,
 	groupByYear,
@@ -68,14 +69,10 @@ const allPublications = loadData<Publication>(
 ) as (Publication & { sourceDirType: string })[];
 
 // Sort by date (most recent first), with forthcoming items floated to the top
-const isForthcomingPublication = (p: Publication) => {
-	const d = p.date?.trim().toLowerCase();
-	return d === 'forthcoming' || d === 'à paraître' || d === 'a paraitre';
-};
 const dateSorted = sortByDate(allPublications);
 export const publicationsByDate = [
-	...dateSorted.filter(isForthcomingPublication),
-	...dateSorted.filter((p) => !isForthcomingPublication(p))
+	...dateSorted.filter(isForthcoming),
+	...dateSorted.filter((p) => !isForthcoming(p))
 ];
 
 // Group publications by year and type
