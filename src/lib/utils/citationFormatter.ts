@@ -1,20 +1,10 @@
 import type { Publication } from '$lib/types/publication';
 import { formatDisplayDate, isForthcoming } from '$lib/utils/date-formatter';
+import { PUBLICATION_TYPE_CITATION_LABELS } from '$lib/utils/typeUtils';
 
-// Human-readable labels for publication types
-export const typeLabels: { [key: string]: string } = {
-	book: 'Book',
-	article: 'Journal Article',
-	'bulletin-article': 'Bulletin Article',
-	chapter: 'Book Chapter',
-	'special-issue': 'Special Issue',
-	report: 'Report',
-	encyclopedia: 'Encyclopedia Entry',
-	blogpost: 'Blog Post',
-	'phd-dissertation': 'Ph.D. Dissertation',
-	'masters-thesis': "Master's Thesis",
-	'conference-proceedings': 'Conference Proceedings'
-};
+// Human-readable labels for publication types (citation register).
+// Re-exported from the single type-label registry in typeUtils.
+export const typeLabels = PUBLICATION_TYPE_CITATION_LABELS;
 
 // Helper function to handle authors that might be string or array
 export function getAuthorsArray(authors: string[] | string | undefined): string[] {
