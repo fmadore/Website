@@ -22,6 +22,32 @@ export function sortByDate<T>(items: T[], field: keyof T = 'dateISO' as keyof T)
 }
 
 /**
+ * Sort date-ranged items (grants, editorial memberships, …) by start date
+ * descending, with ongoing entries (null endYear) floated above finished
+ * ones that share the same start date, then broken by end date descending.
+ */
+export function sortByStartDate<
+	T extends {
+		dateISOStart: string;
+		endYear?: number | null;
+		dateISOEnd?: string | null;
+	}
+>(items: T[]): T[] {
+	return [...items].sort((a, b) => {
+		const dateComparison = new Date(b.dateISOStart).getTime() - new Date(a.dateISOStart).getTime();
+		if (dateComparison !== 0) {
+			return dateComparison;
+		}
+		if (a.endYear === null && b.endYear !== null) return -1;
+		if (a.endYear !== null && b.endYear === null) return 1;
+		if (a.dateISOEnd && b.dateISOEnd) {
+			return new Date(b.dateISOEnd).getTime() - new Date(a.dateISOEnd).getTime();
+		}
+		return 0;
+	});
+}
+
+/**
  * Sort items by a numeric year field in descending order (newest first).
  */
 export function sortByYear<T extends { year: number }>(items: T[]): T[] {
