@@ -27,6 +27,17 @@ export function splitNames(names: string): string[] {
 }
 
 /**
+ * Compact author display for list/panel cards: single name as-is,
+ * two names joined with "and", three or more collapsed to "First et al.".
+ */
+export function formatAuthorsCompact(authors: string[]): string {
+	if (!authors || authors.length === 0) return '';
+	if (authors.length === 1) return authors[0];
+	if (authors.length === 2) return `${authors[0]} and ${authors[1]}`;
+	return `${authors[0]} et al.`;
+}
+
+/**
  * Parses an author name into first/last parts for COinS metadata.
  * Handles both "Last, First" and "First Last" formats.
  */
