@@ -20,8 +20,10 @@
 	// Simple counter for reactive key
 	const chartKey = $derived(`career-timeline-${items.length}`);
 
-	// Get unique categories present in the data
-	const activeCategories = $derived(() => {
+	// Get unique categories present in the data.
+	// $derived.by caches the filtered array; the previous $derived(() => fn)
+	// returned a function that recomputed on every call site (4× per render).
+	const activeCategories = $derived.by(() => {
 		const cats = items.map((item) => item.category);
 		const uniqueCats = new Set(cats);
 		// Return all categories but filter by presence in data, preserving order
@@ -32,7 +34,7 @@
 	const margin = { top: 40, right: 30, bottom: 40, left: 20 };
 	const chartWidth = $derived(900);
 	const chartHeight = $derived(
-		Math.max(300, activeCategories().length * 50 + margin.top + margin.bottom)
+		Math.max(300, activeCategories.length * 50 + margin.top + margin.bottom)
 	);
 	const innerWidth = $derived(chartWidth - margin.left - margin.right);
 	const innerHeight = $derived(chartHeight - margin.top - margin.bottom);
@@ -69,7 +71,7 @@
 
 	const yScale = $derived(
 		scaleBand<string>()
-			.domain(activeCategories().map((c) => c.id))
+			.domain(activeCategories.map((c) => c.id))
 			.range([0, innerHeight])
 			.padding(0.25)
 	);
@@ -267,7 +269,7 @@
 						</g>
 
 						<!-- Category swim lanes -->
-						{#each activeCategories() as category, index (category.id)}
+						{#each activeCategories as category, index (category.id)}
 							{@const y = yScale(category.id) ?? 0}
 							{@const bandHeight = yScale.bandwidth()}
 							{@const categoryItems = items.filter((item) => item.category === category.id)}
@@ -412,7 +414,7 @@
 
 			<!-- Legend -->
 			<div class="timeline-legend">
-				{#each activeCategories() as category (category.id)}
+				{#each activeCategories as category (category.id)}
 					<div class="legend-item">
 						<span class="legend-color" style="background: {category.color};"></span>
 						<span class="legend-label">{category.label}</span>
