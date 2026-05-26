@@ -16,6 +16,7 @@
 	import D3BubbleChart from '$lib/components/visualisations/D3BubbleChart.svelte';
 	import LocationMap from '$lib/components/visualisations/LocationMap.svelte';
 	import VizChartCard from '$lib/components/visualisations/VizChartCard.svelte';
+	import LanguageToggle from '$lib/components/visualisations/LanguageToggle.svelte';
 	import type { LocationDatum } from '$lib/data/geo';
 	import EChartsWordCloud from '$lib/components/visualisations/EChartsWordCloud.svelte';
 	import { corpusAnalysis, getCombinedWordCloudData, getCombinedBigrams } from '$lib/data/analysis';
@@ -782,29 +783,11 @@
 		</p>
 
 		{#if corpusAnalysis.publicationCount > 0}
-			<div class="language-toggle">
-				<span class="toggle-label">Filter by language:</span>
-				<div class="toggle-buttons">
-					<button
-						class="toggle-btn {wordCloudLanguage === 'all' ? 'active' : ''}"
-						onclick={() => (wordCloudLanguage = 'all')}
-					>
-						All ({corpusAnalysis.byLanguage.en.length + corpusAnalysis.byLanguage.fr.length})
-					</button>
-					<button
-						class="toggle-btn {wordCloudLanguage === 'en' ? 'active' : ''}"
-						onclick={() => (wordCloudLanguage = 'en')}
-					>
-						English ({corpusAnalysis.byLanguage.en.length})
-					</button>
-					<button
-						class="toggle-btn {wordCloudLanguage === 'fr' ? 'active' : ''}"
-						onclick={() => (wordCloudLanguage = 'fr')}
-					>
-						French ({corpusAnalysis.byLanguage.fr.length})
-					</button>
-				</div>
-			</div>
+			<LanguageToggle
+				bind:current={wordCloudLanguage}
+				enCount={corpusAnalysis.byLanguage.en.length}
+				frCount={corpusAnalysis.byLanguage.fr.length}
+			/>
 
 			<VizChartCard placeholderHeight="500px" hasData={wordCloudData().length > 0}>
 				<EChartsWordCloud
@@ -847,29 +830,11 @@
 		</p>
 
 		{#if corpusAnalysis.publicationCount > 0}
-			<div class="language-toggle">
-				<span class="toggle-label">Filter by language:</span>
-				<div class="toggle-buttons">
-					<button
-						class="toggle-btn {wordCloudLanguage === 'all' ? 'active' : ''}"
-						onclick={() => (wordCloudLanguage = 'all')}
-					>
-						All ({corpusAnalysis.byLanguage.en.length + corpusAnalysis.byLanguage.fr.length})
-					</button>
-					<button
-						class="toggle-btn {wordCloudLanguage === 'en' ? 'active' : ''}"
-						onclick={() => (wordCloudLanguage = 'en')}
-					>
-						English ({corpusAnalysis.byLanguage.en.length})
-					</button>
-					<button
-						class="toggle-btn {wordCloudLanguage === 'fr' ? 'active' : ''}"
-						onclick={() => (wordCloudLanguage = 'fr')}
-					>
-						French ({corpusAnalysis.byLanguage.fr.length})
-					</button>
-				</div>
-			</div>
+			<LanguageToggle
+				bind:current={wordCloudLanguage}
+				enCount={corpusAnalysis.byLanguage.en.length}
+				frCount={corpusAnalysis.byLanguage.fr.length}
+			/>
 
 			<VizChartCard
 				variant="bigrams"
@@ -1192,56 +1157,6 @@
 	/* Chart-card surface, hover, dark-mode and chart-size responsive rules
 	 * now live in VizChartCard.svelte. */
 
-	/* Language toggle styles */
-	.language-toggle {
-		display: flex;
-		align-items: center;
-		gap: var(--space-md);
-		margin-bottom: var(--space-lg);
-		flex-wrap: wrap;
-	}
-
-	.toggle-label {
-		font-size: var(--font-size-sm);
-		color: var(--color-text-muted);
-		font-weight: var(--font-weight-medium);
-	}
-
-	.toggle-buttons {
-		display: flex;
-		gap: var(--space-xs);
-		flex-wrap: wrap;
-	}
-
-	.toggle-btn {
-		padding: var(--space-xs) var(--space-md);
-		border: var(--border-width-thin) solid var(--color-border);
-		background-color: var(--color-surface);
-		color: var(--color-text);
-		border-radius: var(--border-radius-full);
-		font-size: var(--font-size-sm);
-		cursor: pointer;
-		transition:
-			background-color var(--duration-fast) var(--ease-out),
-			border-color var(--duration-fast) var(--ease-out),
-			color var(--duration-fast) var(--ease-out),
-			transform var(--duration-fast) var(--ease-out),
-			box-shadow var(--duration-fast) var(--ease-out);
-	}
-
-	.toggle-btn:hover:not(.active) {
-		background-color: var(--color-surface-alt);
-		border-color: var(--color-primary);
-		transform: var(--transform-lift-sm);
-	}
-
-	.toggle-btn.active {
-		background-color: var(--color-primary);
-		color: var(--color-white);
-		border-color: var(--color-primary);
-		box-shadow: var(--shadow-sm);
-	}
-
 	/* Section description text */
 	.section-description {
 		font-size: var(--font-size-sm);
@@ -1276,17 +1191,6 @@
 	}
 
 	@media (--sm-down) {
-		.language-toggle {
-			flex-direction: column;
-			align-items: flex-start;
-			gap: var(--space-sm);
-		}
-
-		.toggle-btn {
-			padding: var(--space-2xs) var(--space-sm);
-			font-size: var(--font-size-xs);
-		}
-
 		.section-heading {
 			font-size: var(--font-size-heading-5);
 		}
