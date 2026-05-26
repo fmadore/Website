@@ -20,6 +20,7 @@
 	import D3BubbleChart from '$lib/components/visualisations/D3BubbleChart.svelte';
 	import LocationMap from '$lib/components/visualisations/LocationMap.svelte';
 	import VizChartCard from '$lib/components/visualisations/VizChartCard.svelte';
+	import { buildLocationData } from '$lib/utils/vizAggregation';
 	import type { LocationDatum } from '$lib/data/geo';
 	import type { Communication } from '$lib/types/communication';
 	import type { WordFrequency } from '$lib/types';
@@ -293,37 +294,12 @@
 
 	// 9. Locations map — aggregate communications by country and list the
 	// individual titles (with their city as the subtitle) in the popup.
-	const locationMapData = $derived<LocationDatum[]>(
-		(() => {
-			const byCountry: Record<
-				string,
-				{
-					count: number;
-					items: Array<{ id: string; title: string; subtitle?: string; type?: string }>;
-				}
-			> = {};
-
-			allCommunications.forEach((comm) => {
-				const country = comm.country?.trim();
-				if (!country) return;
-				if (!byCountry[country]) byCountry[country] = { count: 0, items: [] };
-				byCountry[country].count++;
-				byCountry[country].items.push({
-					id: comm.id,
-					title: comm.title,
-					subtitle: comm.location,
-					type: comm.type
-				});
-			});
-
-			return Object.entries(byCountry)
-				.map(([country, data]) => ({
-					country,
-					count: data.count,
-					items: data.items
-				}))
-				.sort((a, b) => b.count - a.count);
-		})()
+	const locationMapData: LocationDatum[] = $derived(
+		buildLocationData(
+			allCommunications,
+			(comm) => comm.country,
+			(comm) => ({ id: comm.id, title: comm.title, subtitle: comm.location, type: comm.type })
+		)
 	);
 	const totalMapped = $derived(locationMapData.reduce((sum, loc) => sum + loc.count, 0));
 

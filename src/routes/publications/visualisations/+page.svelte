@@ -17,6 +17,7 @@
 	import LocationMap from '$lib/components/visualisations/LocationMap.svelte';
 	import VizChartCard from '$lib/components/visualisations/VizChartCard.svelte';
 	import LanguageToggle from '$lib/components/visualisations/LanguageToggle.svelte';
+	import { buildLocationData } from '$lib/utils/vizAggregation';
 	import type { LocationDatum } from '$lib/data/geo';
 	import EChartsWordCloud from '$lib/components/visualisations/EChartsWordCloud.svelte';
 	import { corpusAnalysis, getCombinedWordCloudData, getCombinedBigrams } from '$lib/data/analysis';
@@ -562,43 +563,12 @@
 	);
 
 	// Calculate publisher location data for map visualization
-	const publisherLocationData = $derived(
-		(() => {
-			const locationMap: Record<
-				string,
-				{
-					count: number;
-					items: Array<{ id: string; title: string; subtitle?: string; type: string }>;
-				}
-			> = {};
-
-			allPublications.forEach((pub) => {
-				if (pub.publisherLocation && pub.publisherLocation.trim()) {
-					const location = pub.publisherLocation.trim();
-					if (!locationMap[location]) {
-						locationMap[location] = { count: 0, items: [] };
-					}
-					locationMap[location].count++;
-					locationMap[location].items.push({
-						id: pub.id,
-						title: pub.title,
-						subtitle: pub.publisher,
-						type: pub.type
-					});
-				}
-			});
-
-			// Convert to array and sort by count
-			const locationData: LocationDatum[] = Object.entries(locationMap)
-				.map(([country, data]) => ({
-					country,
-					count: data.count,
-					items: data.items
-				}))
-				.sort((a, b) => b.count - a.count);
-
-			return locationData;
-		})()
+	const publisherLocationData: LocationDatum[] = $derived(
+		buildLocationData(
+			allPublications,
+			(pub) => pub.publisherLocation,
+			(pub) => ({ id: pub.id, title: pub.title, subtitle: pub.publisher, type: pub.type })
+		)
 	);
 
 	// Calculate total publications with publisher location
