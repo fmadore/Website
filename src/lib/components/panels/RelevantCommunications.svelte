@@ -2,6 +2,7 @@
 	import { allCommunications } from '../../data/communications/index';
 	import RelevantItemsList from '$lib/components/panels/RelevantItemsList.svelte';
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
+	import { formatAuthorsCompact as formatAuthors } from '$lib/utils/nameUtils';
 
 	// Props - project name and limit
 	let {
@@ -41,14 +42,6 @@
 			event: 'Academic Event'
 		};
 		return typeMap[type] || type;
-	}
-
-	// Format authors for display (can be reused or moved to utils later)
-	function formatAuthors(authors: string[]): string {
-		if (!authors || authors.length === 0) return '';
-		if (authors.length === 1) return authors[0];
-		if (authors.length === 2) return `${authors[0]} and ${authors[1]}`;
-		return `${authors[0]} et al.`;
 	}
 </script>
 

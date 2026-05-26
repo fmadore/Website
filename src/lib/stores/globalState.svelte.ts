@@ -8,9 +8,6 @@
 // Animation control state
 let animationsEnabled = $state(true);
 
-// Theme state (for future use)
-let currentTheme = $state<'light' | 'dark'>('light');
-
 // Loading state for global operations
 let isGlobalLoading = $state(false);
 
@@ -31,14 +28,6 @@ export function getGlobalState() {
 			animationsEnabled = value;
 		},
 
-		// Theme controls
-		get currentTheme() {
-			return currentTheme;
-		},
-		set currentTheme(value: 'light' | 'dark') {
-			currentTheme = value;
-		},
-
 		// Loading state controls
 		get isGlobalLoading() {
 			return isGlobalLoading;
@@ -50,10 +39,6 @@ export function getGlobalState() {
 		// Helper methods
 		toggleAnimations() {
 			animationsEnabled = !animationsEnabled;
-		},
-
-		toggleTheme() {
-			currentTheme = currentTheme === 'light' ? 'dark' : 'light';
 		},
 
 		// Network status controls

@@ -173,14 +173,6 @@ Multi-format support via `citationFormatter.ts`: BibTeX, APA, MLA, Chicago
 
 ECharts, D3, MapLibre, and jsPDF are split into separate chunks via `build.rolldownOptions` in Vite config. Use dynamic imports for visualization components.
 
-## CSS Design Audit
-
-Run the audit tool to check design system compliance:
-
-```bash
-node .github/skills/css-design-audit/audit.mjs src/lib/components
-```
-
 ## Roadmaps
 
 See `REFACTORING-ROADMAP.md` for forward-looking refactoring and feature work, including the phased animation & reactivity roadmap.

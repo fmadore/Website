@@ -30,3 +30,13 @@ export function getYearFromISODate(isoDate: string): number {
 
 	return parseInt(isoDate.split('-')[0], 10);
 }
+
+/**
+ * Whether an item's `date` field marks it as not-yet-published.
+ * Recognises the English and French (accented and unaccented) labels used
+ * across the dataset. Such items are floated above dated entries when sorting.
+ */
+export function isForthcoming(item: { date?: string }): boolean {
+	const d = item.date?.trim().toLowerCase();
+	return d === 'forthcoming' || d === 'à paraître' || d === 'a paraitre';
+}

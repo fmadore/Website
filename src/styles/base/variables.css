@@ -450,10 +450,8 @@
 	--shadow-none: none;
 
 	/* Colored shadows for emphasis */
-	--shadow-primary: 0 4px 14px -2px
-		color-mix(in srgb, var(--sys-color-terracotta-600) 25%, transparent);
-	--shadow-primary-lg: 0 10px 25px -5px
-		color-mix(in srgb, var(--sys-color-terracotta-600) 30%, transparent);
+	--shadow-primary: 0 4px 14px -2px color-mix(in srgb, var(--color-primary) 25%, transparent);
+	--shadow-primary-lg: 0 10px 25px -5px color-mix(in srgb, var(--color-primary) 30%, transparent);
 	--shadow-accent: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-amber-500) 25%, transparent);
 	--shadow-highlight: 0 4px 14px -2px
 		color-mix(in srgb, var(--sys-color-amber-400) 25%, transparent);

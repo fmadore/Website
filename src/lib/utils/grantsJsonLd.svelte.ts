@@ -18,8 +18,7 @@
  */
 
 import { browser } from '$app/environment';
-import { page } from '$app/stores';
-import { get } from 'svelte/store';
+import { page } from '$app/state';
 import { allGrants } from '$lib/data/grants/index';
 import { createMonetaryGrantSchemas, combineSchemas } from '$lib/utils/seoUtils';
 import { useJsonLdScript } from './jsonLd.svelte';
@@ -48,8 +47,8 @@ export function useGrantsJsonLd(
 		const projectGrants = allGrants.filter((grant) => grant.project === projectName);
 		if (projectGrants.length === 0) return null;
 
-		const origin = get(page).url.origin;
-		const pageUrl = `${origin}${get(page).url.pathname}`;
+		const origin = page.url.origin;
+		const pageUrl = `${origin}${page.url.pathname}`;
 
 		const grantSchemas = createMonetaryGrantSchemas(projectGrants, pageUrl);
 		if (grantSchemas.length === 0) return null;

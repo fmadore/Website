@@ -1,20 +1,10 @@
 import type { Publication } from '$lib/types/publication';
-import { formatDisplayDate } from '$lib/utils/date-formatter';
+import { formatDisplayDate, isForthcoming } from '$lib/utils/date-formatter';
+import { PUBLICATION_TYPE_CITATION_LABELS } from '$lib/utils/typeUtils';
 
-// Human-readable labels for publication types
-export const typeLabels: { [key: string]: string } = {
-	book: 'Book',
-	article: 'Journal Article',
-	'bulletin-article': 'Bulletin Article',
-	chapter: 'Book Chapter',
-	'special-issue': 'Special Issue',
-	report: 'Report',
-	encyclopedia: 'Encyclopedia Entry',
-	blogpost: 'Blog Post',
-	'phd-dissertation': 'Ph.D. Dissertation',
-	'masters-thesis': "Master's Thesis",
-	'conference-proceedings': 'Conference Proceedings'
-};
+// Human-readable labels for publication types (citation register).
+// Re-exported from the single type-label registry in typeUtils.
+export const typeLabels = PUBLICATION_TYPE_CITATION_LABELS;
 
 // Helper function to handle authors that might be string or array
 export function getAuthorsArray(authors: string[] | string | undefined): string[] {
@@ -266,11 +256,8 @@ export function formatCitation(publication: Publication): FormattedCitation {
 
 	// If the publication is forthcoming, surface that label in place of the year
 	// so list views read "(Forthcoming)." rather than "(2026)." for unpublished work.
-	if (typeof publication.date === 'string') {
-		const d = publication.date.trim().toLowerCase();
-		if (d === 'forthcoming' || d === 'à paraître' || d === 'a paraitre') {
-			year = publication.date.trim();
-		}
+	if (typeof publication.date === 'string' && isForthcoming(publication)) {
+		year = publication.date.trim();
 	}
 
 	return {

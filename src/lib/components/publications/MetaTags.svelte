@@ -2,10 +2,10 @@
 	import type { Publication } from '$lib/types';
 	import { base } from '$app/paths';
 	import { page } from '$app/state';
-	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import {
 		type MetaTag,
 		createConditionalTag,
+		createCoinsParams,
 		toLastFirstFormat,
 		splitNames,
 		createAuthorTags,
@@ -13,6 +13,7 @@
 		deduplicateAndFilterTags,
 		parseAuthorName
 	} from '$lib/utils/metaTags';
+	import BaseMetaTags from '$lib/components/common/BaseMetaTags.svelte';
 
 	let { publication }: { publication: Publication } = $props();
 
@@ -112,12 +113,7 @@
 
 	// Helper to create COinS metadata
 	const createCoinsData = (): string => {
-		const params = new SvelteURLSearchParams();
-
-		// Basic COinS parameters
-		params.set('url_ver', 'Z39.88-2004');
-		params.set('ctx_ver', 'Z39.88-2004');
-		params.set('rfr_id', 'info:sid/personal-website');
+		const params = createCoinsParams('info:sid/personal-website');
 
 		// Publication type specific format
 		if (publication.type === 'article' || publication.type === 'special-issue') {
@@ -280,11 +276,4 @@
 	});
 </script>
 
-<svelte:head>
-	{#each metaTags as tag, index (tag.name + tag.content + index)}
-		<meta name={tag.name} content={tag.content} />
-	{/each}
-</svelte:head>
-
-<!-- COinS metadata for Zotero compatibility -->
-<span class="Z3988" title={createCoinsData()} style="display: none;"></span>
+<BaseMetaTags tags={metaTags} coins={createCoinsData()} />

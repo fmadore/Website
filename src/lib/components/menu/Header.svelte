@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { navItems } from '$lib/data/navigation';
 	// Import Components
 	import DesktopNav from '$lib/components/menu/DesktopNav.svelte';
@@ -24,7 +24,7 @@
 	let headerEl: HTMLElement | null = $state(null);
 
 	// Current pathname, used for highlighting the active nav link.
-	const currentPath = $derived($page.url.pathname);
+	const currentPath = $derived(page.url.pathname);
 
 	const HIDE_DELAY = 200;
 	const SCROLL_HIDE_THRESHOLD = 120; // px before we start hiding
