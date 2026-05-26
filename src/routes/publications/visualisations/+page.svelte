@@ -15,6 +15,9 @@
 	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
 	import D3BubbleChart from '$lib/components/visualisations/D3BubbleChart.svelte';
 	import LocationMap from '$lib/components/visualisations/LocationMap.svelte';
+	import VizChartCard from '$lib/components/visualisations/VizChartCard.svelte';
+	import LanguageToggle from '$lib/components/visualisations/LanguageToggle.svelte';
+	import { buildLocationData } from '$lib/utils/vizAggregation';
 	import type { LocationDatum } from '$lib/data/geo';
 	import EChartsWordCloud from '$lib/components/visualisations/EChartsWordCloud.svelte';
 	import { corpusAnalysis, getCombinedWordCloudData, getCombinedBigrams } from '$lib/data/analysis';
@@ -560,43 +563,12 @@
 	);
 
 	// Calculate publisher location data for map visualization
-	const publisherLocationData = $derived(
-		(() => {
-			const locationMap: Record<
-				string,
-				{
-					count: number;
-					items: Array<{ id: string; title: string; subtitle?: string; type: string }>;
-				}
-			> = {};
-
-			allPublications.forEach((pub) => {
-				if (pub.publisherLocation && pub.publisherLocation.trim()) {
-					const location = pub.publisherLocation.trim();
-					if (!locationMap[location]) {
-						locationMap[location] = { count: 0, items: [] };
-					}
-					locationMap[location].count++;
-					locationMap[location].items.push({
-						id: pub.id,
-						title: pub.title,
-						subtitle: pub.publisher,
-						type: pub.type
-					});
-				}
-			});
-
-			// Convert to array and sort by count
-			const locationData: LocationDatum[] = Object.entries(locationMap)
-				.map(([country, data]) => ({
-					country,
-					count: data.count,
-					items: data.items
-				}))
-				.sort((a, b) => b.count - a.count);
-
-			return locationData;
-		})()
+	const publisherLocationData: LocationDatum[] = $derived(
+		buildLocationData(
+			allPublications,
+			(pub) => pub.publisherLocation,
+			(pub) => ({ id: pub.id, title: pub.title, subtitle: pub.publisher, type: pub.type })
+		)
 	);
 
 	// Calculate total publications with publisher location
@@ -701,58 +673,53 @@
 
 	<section class="visualization-section scroll-reveal mb-12">
 		<h2 class="section-heading">Publications per year by type</h2>
-		{#if publicationsPerYearStackedData.length > 0 && publicationTypesForStack.length > 0}
-			<div class="chart-wrapper stacked-chart" style="height: 450px;">
-				<EChartsStackedBarChart
-					data={publicationsPerYearStackedData}
-					keys={formattedPublicationTypes}
-					xAxisLabel="Year"
-					yAxisLabel="Number of Publications"
-				/>
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 450px;">
+		<VizChartCard
+			variant="stacked"
+			height="450px"
+			hasData={publicationsPerYearStackedData.length > 0 && publicationTypesForStack.length > 0}
+		>
+			<EChartsStackedBarChart
+				data={publicationsPerYearStackedData}
+				keys={formattedPublicationTypes}
+				xAxisLabel="Year"
+				yAxisLabel="Number of Publications"
+			/>
+			{#snippet placeholder()}
 				<p class="text-light">No publication data available to display for this visualization.</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 
 	<section class="visualization-section scroll-reveal mb-12">
 		<h2 class="section-heading">Number of pages per year</h2>
-		{#if pagesPerYearData.length > 0}
-			<div class="chart-wrapper" style="height: 400px;">
-				<EChartsBarChart
-					data={pagesPerYearData}
-					xAccessor={getPagesYear}
-					yAccessor={getPagesCount}
-					xAxisLabel="Year"
-					yAxisLabel="Total pages published"
-					barColor="var(--color-primary)"
-				/>
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 400px;">
+		<VizChartCard height="400px" hasData={pagesPerYearData.length > 0}>
+			<EChartsBarChart
+				data={pagesPerYearData}
+				xAccessor={getPagesYear}
+				yAccessor={getPagesCount}
+				xAxisLabel="Year"
+				yAxisLabel="Total pages published"
+				barColor="var(--color-primary)"
+			/>
+			{#snippet placeholder()}
 				<p class="text-light">No page count data available to display for this visualization.</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 
 	<section class="visualization-section scroll-reveal mb-12">
 		<h2 class="section-heading">Publication Languages</h2>
-		{#if languageData.length > 0}
-			<div class="chart-wrapper" style="height: 480px;">
-				<EChartsDoughnutChart
-					data={languageData}
-					nameAccessor={getLanguageName}
-					valueAccessor={getLanguageCount}
-					title="Distribution of Publications by Language"
-				/>
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 480px;">
+		<VizChartCard height="480px" hasData={languageData.length > 0}>
+			<EChartsDoughnutChart
+				data={languageData}
+				nameAccessor={getLanguageName}
+				valueAccessor={getLanguageCount}
+				title="Distribution of Publications by Language"
+			/>
+			{#snippet placeholder()}
 				<p class="text-light">No language data available to display for this visualization.</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 
 	<section class="visualization-section scroll-reveal mb-12">
@@ -762,19 +729,16 @@
 				({keywordData.length} unique keywords)
 			{/if}
 		</h2>
-		{#if keywordData.length > 0}
-			<div class="chart-wrapper bubble-chart" style="height: 550px;">
-				<D3BubbleChart
-					data={keywordData}
-					nameAccessor={getKeywordName}
-					valueAccessor={getKeywordCount}
-				/>
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 550px;">
+		<VizChartCard variant="bubble" height="550px" hasData={keywordData.length > 0}>
+			<D3BubbleChart
+				data={keywordData}
+				nameAccessor={getKeywordName}
+				valueAccessor={getKeywordCount}
+			/>
+			{#snippet placeholder()}
 				<p class="text-light">No keyword data available to display for this visualization.</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 
 	<section class="visualization-section scroll-reveal mb-12">
@@ -789,42 +753,21 @@
 		</p>
 
 		{#if corpusAnalysis.publicationCount > 0}
-			<div class="language-toggle">
-				<span class="toggle-label">Filter by language:</span>
-				<div class="toggle-buttons">
-					<button
-						class="toggle-btn {wordCloudLanguage === 'all' ? 'active' : ''}"
-						onclick={() => (wordCloudLanguage = 'all')}
-					>
-						All ({corpusAnalysis.byLanguage.en.length + corpusAnalysis.byLanguage.fr.length})
-					</button>
-					<button
-						class="toggle-btn {wordCloudLanguage === 'en' ? 'active' : ''}"
-						onclick={() => (wordCloudLanguage = 'en')}
-					>
-						English ({corpusAnalysis.byLanguage.en.length})
-					</button>
-					<button
-						class="toggle-btn {wordCloudLanguage === 'fr' ? 'active' : ''}"
-						onclick={() => (wordCloudLanguage = 'fr')}
-					>
-						French ({corpusAnalysis.byLanguage.fr.length})
-					</button>
-				</div>
-			</div>
+			<LanguageToggle
+				bind:current={wordCloudLanguage}
+				enCount={corpusAnalysis.byLanguage.en.length}
+				frCount={corpusAnalysis.byLanguage.fr.length}
+			/>
 
-			{#if wordCloudData().length > 0}
-				<div class="chart-wrapper">
-					<EChartsWordCloud
-						words={wordCloudData()}
-						maxWords={100}
-						shape="circle"
-						minFontSize={12}
-						maxFontSize={60}
-					/>
-				</div>
-			{:else}
-				<div class="placeholder-message" style="height: 500px;">
+			<VizChartCard placeholderHeight="500px" hasData={wordCloudData().length > 0}>
+				<EChartsWordCloud
+					words={wordCloudData()}
+					maxWords={100}
+					shape="circle"
+					minFontSize={12}
+					maxFontSize={60}
+				/>
+				{#snippet placeholder()}
 					<p class="text-light">
 						No text analysis data available for {wordCloudLanguage === 'all'
 							? 'any'
@@ -832,12 +775,16 @@
 								? 'English'
 								: 'French'} publications.
 					</p>
-				</div>
-			{/if}
+				{/snippet}
+			</VizChartCard>
 		{:else}
-			<div class="placeholder-message" style="height: 500px;">
-				<p class="text-light">No text analysis data available to display for this visualization.</p>
-			</div>
+			<VizChartCard placeholderHeight="500px" hasData={false}>
+				{#snippet placeholder()}
+					<p class="text-light">
+						No text analysis data available to display for this visualization.
+					</p>
+				{/snippet}
+			</VizChartCard>
 		{/if}
 	</section>
 
@@ -853,45 +800,26 @@
 		</p>
 
 		{#if corpusAnalysis.publicationCount > 0}
-			<div class="language-toggle">
-				<span class="toggle-label">Filter by language:</span>
-				<div class="toggle-buttons">
-					<button
-						class="toggle-btn {wordCloudLanguage === 'all' ? 'active' : ''}"
-						onclick={() => (wordCloudLanguage = 'all')}
-					>
-						All ({corpusAnalysis.byLanguage.en.length + corpusAnalysis.byLanguage.fr.length})
-					</button>
-					<button
-						class="toggle-btn {wordCloudLanguage === 'en' ? 'active' : ''}"
-						onclick={() => (wordCloudLanguage = 'en')}
-					>
-						English ({corpusAnalysis.byLanguage.en.length})
-					</button>
-					<button
-						class="toggle-btn {wordCloudLanguage === 'fr' ? 'active' : ''}"
-						onclick={() => (wordCloudLanguage = 'fr')}
-					>
-						French ({corpusAnalysis.byLanguage.fr.length})
-					</button>
-				</div>
-			</div>
+			<LanguageToggle
+				bind:current={wordCloudLanguage}
+				enCount={corpusAnalysis.byLanguage.en.length}
+				frCount={corpusAnalysis.byLanguage.fr.length}
+			/>
 
-			{#if bigramsData().length > 0}
-				<div
-					class="chart-wrapper bigrams-chart"
-					style="height: {Math.max(400, bigramsData().length * 28 + 70)}px;"
-				>
-					<EChartsHorizontalBarChart
-						data={bigramsData()}
-						xAccessor={getBigramCount}
-						yAccessor={getBigramName}
-						xAxisLabel="Frequency"
-						barColor="var(--color-accent)"
-					/>
-				</div>
-			{:else}
-				<div class="placeholder-message" style="height: 400px;">
+			<VizChartCard
+				variant="bigrams"
+				height="{Math.max(400, bigramsData().length * 28 + 70)}px"
+				placeholderHeight="400px"
+				hasData={bigramsData().length > 0}
+			>
+				<EChartsHorizontalBarChart
+					data={bigramsData()}
+					xAccessor={getBigramCount}
+					yAccessor={getBigramName}
+					xAxisLabel="Frequency"
+					barColor="var(--color-accent)"
+				/>
+				{#snippet placeholder()}
 					<p class="text-light">
 						No bigram data available for {wordCloudLanguage === 'all'
 							? 'any'
@@ -899,12 +827,16 @@
 								? 'English'
 								: 'French'} publications.
 					</p>
-				</div>
-			{/if}
+				{/snippet}
+			</VizChartCard>
 		{:else}
-			<div class="placeholder-message" style="height: 400px;">
-				<p class="text-light">No text analysis data available to display for this visualization.</p>
-			</div>
+			<VizChartCard placeholderHeight="400px" hasData={false}>
+				{#snippet placeholder()}
+					<p class="text-light">
+						No text analysis data available to display for this visualization.
+					</p>
+				{/snippet}
+			</VizChartCard>
 		{/if}
 	</section>
 
@@ -915,21 +847,22 @@
 				({collaborationData.collaborators.length} collaborators)
 			{/if}
 		</h2>
-		{#if collaborationData.collaborators.length > 0}
-			<div class="chart-wrapper network-chart" style="height: 500px;">
-				<EChartsNetworkGraph
-					data={collaborationData.collaborators}
-					coAuthorConnections={collaborationData.coAuthorConnections}
-					contributorConnections={collaborationData.contributorConnections}
-					centerAuthor="Frédérick Madore"
-					maxConnections={collaborationData.collaborators.length}
-				/>
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 500px;">
+		<VizChartCard
+			variant="network"
+			height="500px"
+			hasData={collaborationData.collaborators.length > 0}
+		>
+			<EChartsNetworkGraph
+				data={collaborationData.collaborators}
+				coAuthorConnections={collaborationData.coAuthorConnections}
+				contributorConnections={collaborationData.contributorConnections}
+				centerAuthor="Frédérick Madore"
+				maxConnections={collaborationData.collaborators.length}
+			/>
+			{#snippet placeholder()}
 				<p class="text-light">No collaboration data available to display for this visualization.</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 
 	<section class="visualization-section scroll-reveal mb-12">
@@ -943,15 +876,12 @@
 			Where publications appear: journals, book publishers, and edited volumes. Click to zoom into
 			categories.
 		</p>
-		{#if venueTreemapData.length > 0}
-			<div class="chart-wrapper treemap-chart">
-				<EChartsTreemap data={venueTreemapData} title="Publication Venues" />
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 500px;">
+		<VizChartCard variant="treemap" placeholderHeight="500px" hasData={venueTreemapData.length > 0}>
+			<EChartsTreemap data={venueTreemapData} title="Publication Venues" />
+			{#snippet placeholder()}
 				<p class="text-light">No venue data available to display for this visualization.</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 
 	<section class="visualization-section scroll-reveal mb-12">
@@ -965,15 +895,12 @@
 			Project durations with publication output markers. Bars show project spans; circles mark
 			individual publications.
 		</p>
-		{#if projectTimelineData.length > 0}
-			<div class="chart-wrapper gantt-chart" style="height: 450px;">
-				<EChartsGanttChart data={projectTimelineData} />
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 450px;">
+		<VizChartCard variant="gantt" height="450px" hasData={projectTimelineData.length > 0}>
+			<EChartsGanttChart data={projectTimelineData} />
+			{#snippet placeholder()}
 				<p class="text-light">No project data available to display for this visualization.</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 
 	<section class="visualization-section scroll-reveal mb-12">
@@ -986,21 +913,19 @@
 		<p class="section-description">
 			Geographic distribution of publication venues. Marker size indicates publication count.
 		</p>
-		{#if publisherLocationData.length > 0}
-			<div class="chart-wrapper map-chart" style="height: 500px;">
-				<LocationMap
-					data={publisherLocationData}
-					basePath="/publications"
-					itemLabel="publication"
-				/>
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 400px;">
+		<VizChartCard
+			variant="map"
+			height="500px"
+			placeholderHeight="400px"
+			hasData={publisherLocationData.length > 0}
+		>
+			<LocationMap data={publisherLocationData} basePath="/publications" itemLabel="publication" />
+			{#snippet placeholder()}
 				<p class="text-light">
 					No publisher location data available to display for this visualization.
 				</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 
 	<div class="section-divider scroll-reveal">
@@ -1014,24 +939,21 @@
 				(Total: {totalCitations})
 			{/if}
 		</h2>
-		{#if citationsPerYearData.length > 0}
-			<div class="chart-wrapper" style="height: 400px;">
-				<EChartsBarChart
-					data={citationsPerYearData}
-					xAccessor={getYear}
-					yAccessor={getCitationCount}
-					xAxisLabel="Year"
-					yAxisLabel="Number of citations"
-					barColor="var(--color-accent)"
-				/>
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 400px;">
+		<VizChartCard height="400px" hasData={citationsPerYearData.length > 0}>
+			<EChartsBarChart
+				data={citationsPerYearData}
+				xAccessor={getYear}
+				yAccessor={getCitationCount}
+				xAxisLabel="Year"
+				yAxisLabel="Number of citations"
+				barColor="var(--color-accent)"
+			/>
+			{#snippet placeholder()}
 				<p class="text-light">
 					No citation data available to display for this visualization, or data is still loading.
 				</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 
 	<section class="visualization-section scroll-reveal">
@@ -1043,10 +965,7 @@
 		</h2>
 		{#if citedAuthorsData.length > 0}
 			{#snippet authorChart(authorsToShow: CitedAuthorData[])}
-				<div
-					class="chart-wrapper"
-					style="height: {Math.max(350, authorsToShow.length * 35 + 70)}px;"
-				>
+				<VizChartCard height="{Math.max(350, authorsToShow.length * 35 + 70)}px">
 					<EChartsHorizontalBarChart
 						data={authorsToShow}
 						xAccessor={getAuthorCitationCount}
@@ -1055,7 +974,7 @@
 						barColor="var(--color-highlight)"
 						maxValue={maxCitationCount}
 					/>
-				</div>
+				</VizChartCard>
 			{/snippet}
 
 			{@const itemsPerPage = 15}
@@ -1157,9 +1076,13 @@
 				</div>
 			{/if}
 		{:else}
-			<div class="placeholder-message">
-				<p class="text-light">No cited author data available to display for this visualization.</p>
-			</div>
+			<VizChartCard hasData={false}>
+				{#snippet placeholder()}
+					<p class="text-light">
+						No cited author data available to display for this visualization.
+					</p>
+				{/snippet}
+			</VizChartCard>
 		{/if}
 	</section>
 </div>
@@ -1201,130 +1124,8 @@
 		line-height: var(--line-height-heading);
 	}
 
-	/*
-	 * Chart wrapper — same visual language as Card.svelte so viz pages feel
-	 * part of the same design system instead of their own aesthetic. Solid
-	 * --color-surface, primary-tinted hover shadow, no glass gradient.
-	 */
-	.chart-wrapper,
-	.placeholder-message {
-		position: relative;
-		border-radius: var(--border-radius-lg);
-		background: var(--color-surface);
-		border: var(--border-width-thin) solid var(--color-border);
-		box-shadow: var(--shadow-sm);
-		transition:
-			transform var(--duration-moderate) var(--ease-spring),
-			box-shadow var(--duration-moderate) var(--ease-out),
-			border-color var(--duration-fast) var(--ease-out);
-	}
-
-	.chart-wrapper {
-		padding: var(--space-lg);
-		contain: layout style paint;
-		will-change: transform;
-		min-height: var(--iframe-height-xs);
-	}
-
-	.chart-wrapper:hover {
-		transform: translateY(-2px);
-		border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
-		box-shadow:
-			0 12px 28px -8px color-mix(in srgb, var(--color-primary) 20%, transparent),
-			0 4px 10px -4px color-mix(in srgb, var(--color-black) 6%, transparent);
-	}
-
-	.stacked-chart {
-		height: var(--iframe-height-sm);
-		/* Explicit height prevents layout shifts */
-		contain: strict;
-	}
-
-	.network-chart {
-		height: var(--iframe-height-md);
-		/* Explicit height prevents layout shifts */
-		contain: strict;
-	}
-
-	.bubble-chart {
-		height: 850px;
-		/* Explicit height for bubble chart */
-		contain: strict;
-		overflow: visible;
-	}
-
-	.treemap-chart {
-		height: 500px;
-		/* Explicit height for treemap */
-		contain: strict;
-	}
-
-	.gantt-chart {
-		height: 450px;
-		/* Explicit height for Gantt chart */
-		contain: strict;
-	}
-
-	.map-chart {
-		height: 500px;
-		/* Explicit height for map */
-		contain: layout style;
-	}
-
-	.bigrams-chart {
-		/* Height is dynamic based on data */
-		contain: layout style;
-	}
-
-	/* Language toggle styles */
-	.language-toggle {
-		display: flex;
-		align-items: center;
-		gap: var(--space-md);
-		margin-bottom: var(--space-lg);
-		flex-wrap: wrap;
-	}
-
-	.toggle-label {
-		font-size: var(--font-size-sm);
-		color: var(--color-text-muted);
-		font-weight: var(--font-weight-medium);
-	}
-
-	.toggle-buttons {
-		display: flex;
-		gap: var(--space-xs);
-		flex-wrap: wrap;
-	}
-
-	.toggle-btn {
-		padding: var(--space-xs) var(--space-md);
-		border: var(--border-width-thin) solid var(--color-border);
-		background-color: var(--color-surface);
-		color: var(--color-text);
-		border-radius: var(--border-radius-full);
-		font-size: var(--font-size-sm);
-		cursor: pointer;
-		transition:
-			background-color var(--duration-fast) var(--ease-out),
-			border-color var(--duration-fast) var(--ease-out),
-			color var(--duration-fast) var(--ease-out),
-			transform var(--duration-fast) var(--ease-out),
-			box-shadow var(--duration-fast) var(--ease-out);
-	}
-
-	.toggle-btn:hover:not(.active) {
-		background-color: var(--color-surface-alt);
-		border-color: var(--color-primary);
-		transform: var(--transform-lift-sm);
-	}
-
-	.toggle-btn.active {
-		background-color: var(--color-primary);
-		color: var(--color-white);
-		border-color: var(--color-primary);
-		box-shadow: var(--shadow-sm);
-	}
+	/* Chart-card surface, hover, dark-mode and chart-size responsive rules
+	 * now live in VizChartCard.svelte. */
 
 	/* Section description text */
 	.section-description {
@@ -1333,40 +1134,6 @@
 		margin-top: calc(-1 * var(--space-sm));
 		margin-bottom: var(--space-md);
 		line-height: var(--line-height-relaxed);
-	}
-
-	.placeholder-message {
-		padding: var(--space-lg);
-		min-height: var(--iframe-height-xs);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		text-align: center;
-		/* Prevent layout shifts */
-		contain: layout style;
-	}
-
-	/* Scroll animations now use global .scroll-reveal class from animations.css */
-	/* Chart wrapper hover effect still needs reduced motion support */
-	@media (prefers-reduced-motion: reduce) {
-		.chart-wrapper:hover {
-			transform: none;
-		}
-	}
-
-	/* Dark-mode chart wrapper — solid surface, matches .entity-card dark. */
-	:global(html.dark) .chart-wrapper,
-	:global(html.dark) .placeholder-message {
-		background: var(--color-surface);
-		border-color: var(--color-border);
-		box-shadow: var(--shadow-md);
-	}
-
-	:global(html.dark) .chart-wrapper:hover {
-		border-color: color-mix(in srgb, var(--color-primary) 50%, var(--color-border));
-		box-shadow:
-			0 12px 28px -8px color-mix(in srgb, var(--color-primary) 35%, transparent),
-			0 4px 10px -4px color-mix(in srgb, var(--color-black) 40%, transparent);
 	}
 
 	:global(html.dark) .section-divider {
@@ -1383,34 +1150,6 @@
 			padding: var(--space-md) var(--space-sm);
 		}
 
-		.chart-wrapper {
-			padding: var(--space-md);
-		}
-
-		.stacked-chart {
-			height: calc(var(--iframe-height-sm) - var(--space-4xl));
-		}
-
-		.network-chart {
-			height: var(--iframe-height-sm);
-		}
-
-		.bubble-chart {
-			height: 550px;
-		}
-
-		.treemap-chart {
-			height: 450px;
-		}
-
-		.gantt-chart {
-			height: 400px;
-		}
-
-		.map-chart {
-			height: 400px;
-		}
-
 		.section-heading {
 			font-size: var(--font-size-heading-4);
 			margin-bottom: var(--space-md);
@@ -1422,45 +1161,6 @@
 	}
 
 	@media (--sm-down) {
-		.chart-wrapper {
-			padding: var(--space-sm);
-		}
-
-		.stacked-chart {
-			height: calc(var(--iframe-height-xs) + var(--space-3xl));
-		}
-
-		.network-chart {
-			height: calc(var(--iframe-height-xs) + var(--space-3xl));
-		}
-
-		.bubble-chart {
-			height: 450px;
-		}
-
-		.treemap-chart {
-			height: 380px;
-		}
-
-		.gantt-chart {
-			height: 350px;
-		}
-
-		.map-chart {
-			height: 350px;
-		}
-
-		.language-toggle {
-			flex-direction: column;
-			align-items: flex-start;
-			gap: var(--space-sm);
-		}
-
-		.toggle-btn {
-			padding: var(--space-2xs) var(--space-sm);
-			font-size: var(--font-size-xs);
-		}
-
 		.section-heading {
 			font-size: var(--font-size-heading-5);
 		}

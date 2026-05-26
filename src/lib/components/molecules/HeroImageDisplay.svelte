@@ -2,6 +2,7 @@
 	import { base } from '$app/paths';
 	import { browser } from '$app/environment';
 	import { beforeNavigate } from '$app/navigation';
+	import { portalModal } from '$lib/actions/portalModal';
 
 	let {
 		heroImage = undefined,
@@ -60,43 +61,6 @@
 			event.preventDefault();
 			openZoom();
 		}
-	}
-
-	// Combined action: portals the modal to body AND attaches native event
-	// listeners. Svelte 5 compiles all event directives (both onclick and on:click)
-	// to use delegation at the component root. Portaling moves the element outside
-	// the component tree, so no Svelte event syntax can work. This action attaches
-	// click/keydown listeners directly via addEventListener after portaling.
-	function portalWithEvents(node: HTMLElement) {
-		// Portal to body
-		document.body.appendChild(node);
-		node.hidden = false;
-
-		// Attach native event listeners
-		function handleClick() {
-			closeZoom();
-		}
-		function handleKeydown(e: KeyboardEvent) {
-			if (e.key === 'Escape') {
-				e.preventDefault();
-				closeZoom();
-			}
-		}
-		node.addEventListener('click', handleClick);
-		node.addEventListener('keydown', handleKeydown);
-		node.focus();
-
-		return {
-			destroy() {
-				node.removeEventListener('click', handleClick);
-				node.removeEventListener('keydown', handleKeydown);
-				requestAnimationFrame(() => {
-					if (node.parentNode) {
-						node.parentNode.removeChild(node);
-					}
-				});
-			}
-		};
 	}
 
 	// Clean up body overflow when component is destroyed
@@ -202,7 +166,7 @@
 <!-- Modal is portaled to body to escape ancestor stacking contexts -->
 {#if zoomed && absoluteSrc}
 	<div
-		use:portalWithEvents
+		use:portalModal={{ onDismiss: closeZoom }}
 		class="fullscreen-modal"
 		role="dialog"
 		aria-modal="true"

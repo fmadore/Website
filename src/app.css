@@ -3,8 +3,9 @@
 /* Custom media queries (must load first) */
 @import './styles/base/media.css';
 
-/* Design tokens */
+/* Design tokens (light theme then dark-theme overrides) */
 @import './styles/base/variables.css';
+@import './styles/base/dark.css';
 
 /* Base styles */
 @import './styles/base/reset.css';

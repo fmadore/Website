@@ -19,6 +19,8 @@
 	import EChartsWordCloud from '$lib/components/visualisations/EChartsWordCloud.svelte';
 	import D3BubbleChart from '$lib/components/visualisations/D3BubbleChart.svelte';
 	import LocationMap from '$lib/components/visualisations/LocationMap.svelte';
+	import VizChartCard from '$lib/components/visualisations/VizChartCard.svelte';
+	import { buildLocationData } from '$lib/utils/vizAggregation';
 	import type { LocationDatum } from '$lib/data/geo';
 	import type { Communication } from '$lib/types/communication';
 	import type { WordFrequency } from '$lib/types';
@@ -292,37 +294,12 @@
 
 	// 9. Locations map — aggregate communications by country and list the
 	// individual titles (with their city as the subtitle) in the popup.
-	const locationMapData = $derived<LocationDatum[]>(
-		(() => {
-			const byCountry: Record<
-				string,
-				{
-					count: number;
-					items: Array<{ id: string; title: string; subtitle?: string; type?: string }>;
-				}
-			> = {};
-
-			allCommunications.forEach((comm) => {
-				const country = comm.country?.trim();
-				if (!country) return;
-				if (!byCountry[country]) byCountry[country] = { count: 0, items: [] };
-				byCountry[country].count++;
-				byCountry[country].items.push({
-					id: comm.id,
-					title: comm.title,
-					subtitle: comm.location,
-					type: comm.type
-				});
-			});
-
-			return Object.entries(byCountry)
-				.map(([country, data]) => ({
-					country,
-					count: data.count,
-					items: data.items
-				}))
-				.sort((a, b) => b.count - a.count);
-		})()
+	const locationMapData: LocationDatum[] = $derived(
+		buildLocationData(
+			allCommunications,
+			(comm) => comm.country,
+			(comm) => ({ id: comm.id, title: comm.title, subtitle: comm.location, type: comm.type })
+		)
 	);
 	const totalMapped = $derived(locationMapData.reduce((sum, loc) => sum + loc.count, 0));
 
@@ -379,20 +356,21 @@
 
 	<section class="visualization-section scroll-reveal mb-12">
 		<h2 class="section-heading">Conference activities per year by type</h2>
-		{#if perYearStackedData.length > 0 && communicationTypes.length > 0}
-			<div class="chart-wrapper stacked-chart" style="height: 450px;">
-				<EChartsStackedBarChart
-					data={perYearStackedData}
-					keys={formattedTypes}
-					xAxisLabel="Year"
-					yAxisLabel="Number of activities"
-				/>
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 450px;">
+		<VizChartCard
+			variant="stacked"
+			height="450px"
+			hasData={perYearStackedData.length > 0 && communicationTypes.length > 0}
+		>
+			<EChartsStackedBarChart
+				data={perYearStackedData}
+				keys={formattedTypes}
+				xAxisLabel="Year"
+				yAxisLabel="Number of activities"
+			/>
+			{#snippet placeholder()}
 				<p class="text-light">No activity data available to display for this visualisation.</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 
 	<section class="visualization-section scroll-reveal mb-12">
@@ -402,20 +380,17 @@
 				({typeDistribution.length} types)
 			{/if}
 		</h2>
-		{#if typeDistribution.length > 0}
-			<div class="chart-wrapper" style="height: 480px;">
-				<EChartsDoughnutChart
-					data={typeDistribution}
-					nameAccessor={getTypeName}
-					valueAccessor={getTypeCount}
-					title="Distribution of activities by type"
-				/>
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 480px;">
+		<VizChartCard height="480px" hasData={typeDistribution.length > 0}>
+			<EChartsDoughnutChart
+				data={typeDistribution}
+				nameAccessor={getTypeName}
+				valueAccessor={getTypeCount}
+				title="Distribution of activities by type"
+			/>
+			{#snippet placeholder()}
 				<p class="text-light">No type data available to display for this visualisation.</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 
 	<section class="visualization-section scroll-reveal mb-12">
@@ -425,20 +400,17 @@
 				({languageData.length} languages)
 			{/if}
 		</h2>
-		{#if languageData.length > 0}
-			<div class="chart-wrapper" style="height: 480px;">
-				<EChartsDoughnutChart
-					data={languageData}
-					nameAccessor={getLanguageName}
-					valueAccessor={getLanguageCount}
-					title="Distribution of activities by language"
-				/>
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 480px;">
+		<VizChartCard height="480px" hasData={languageData.length > 0}>
+			<EChartsDoughnutChart
+				data={languageData}
+				nameAccessor={getLanguageName}
+				valueAccessor={getLanguageCount}
+				title="Distribution of activities by language"
+			/>
+			{#snippet placeholder()}
 				<p class="text-light">No language data available to display for this visualisation.</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 
 	<section class="visualization-section scroll-reveal mb-12">
@@ -448,21 +420,22 @@
 				({countryData.length} countries)
 			{/if}
 		</h2>
-		{#if countryData.length > 0}
-			<div class="chart-wrapper" style="height: {Math.max(350, countryData.length * 32 + 70)}px;">
-				<EChartsHorizontalBarChart
-					data={countryData}
-					xAccessor={getCountryCount}
-					yAccessor={getCountryName}
-					xAxisLabel="Number of activities"
-					barColor="var(--color-accent)"
-				/>
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 400px;">
+		<VizChartCard
+			height="{Math.max(350, countryData.length * 32 + 70)}px"
+			placeholderHeight="400px"
+			hasData={countryData.length > 0}
+		>
+			<EChartsHorizontalBarChart
+				data={countryData}
+				xAccessor={getCountryCount}
+				yAccessor={getCountryName}
+				xAxisLabel="Number of activities"
+				barColor="var(--color-accent)"
+			/>
+			{#snippet placeholder()}
 				<p class="text-light">No country data available to display for this visualisation.</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 
 	<section class="visualization-section scroll-reveal mb-12">
@@ -472,19 +445,16 @@
 				({tagFrequencyList.length} unique tags)
 			{/if}
 		</h2>
-		{#if tagFrequencyList.length > 0}
-			<div class="chart-wrapper bubble-chart" style="height: 550px;">
-				<D3BubbleChart
-					data={tagFrequencyList}
-					nameAccessor={getTagName}
-					valueAccessor={getTagCount}
-				/>
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 550px;">
+		<VizChartCard variant="bubble" height="550px" hasData={tagFrequencyList.length > 0}>
+			<D3BubbleChart
+				data={tagFrequencyList}
+				nameAccessor={getTagName}
+				valueAccessor={getTagCount}
+			/>
+			{#snippet placeholder()}
 				<p class="text-light">No tag data available to display for this visualisation.</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 
 	<section class="visualization-section scroll-reveal mb-12">
@@ -492,21 +462,18 @@
 		<p class="section-description">
 			Tags scaled by the number of conference activities they appear in.
 		</p>
-		{#if tagWordCloudData.length > 0}
-			<div class="chart-wrapper">
-				<EChartsWordCloud
-					words={tagWordCloudData}
-					maxWords={100}
-					shape="circle"
-					minFontSize={12}
-					maxFontSize={60}
-				/>
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 500px;">
+		<VizChartCard placeholderHeight="500px" hasData={tagWordCloudData.length > 0}>
+			<EChartsWordCloud
+				words={tagWordCloudData}
+				maxWords={100}
+				shape="circle"
+				minFontSize={12}
+				maxFontSize={60}
+			/>
+			{#snippet placeholder()}
 				<p class="text-light">No tag data available to display for this visualisation.</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 
 	<section class="visualization-section scroll-reveal mb-12">
@@ -520,27 +487,28 @@
 			People who have co-presented, co-organised panels, or contributed papers alongside me. Edges
 			between non-centre nodes show pairs who appeared together in the same communication.
 		</p>
-		{#if copresenterNetworkData.collaborators.length > 0}
-			<div class="chart-wrapper network-chart" style="height: 500px;">
-				<EChartsNetworkGraph
-					data={copresenterNetworkData.collaborators}
-					coAuthorConnections={copresenterNetworkData.connections}
-					contributorConnections={[]}
-					centerAuthor={CENTER_AUTHOR}
-					maxConnections={copresenterNetworkData.collaborators.length}
-					labels={{
-						itemSingular: 'communication',
-						itemPlural: 'Communications',
-						coAuthorEdge: 'Co-presenter connection',
-						coAuthorShared: 'Shared communications'
-					}}
-				/>
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 500px;">
+		<VizChartCard
+			variant="network"
+			height="500px"
+			hasData={copresenterNetworkData.collaborators.length > 0}
+		>
+			<EChartsNetworkGraph
+				data={copresenterNetworkData.collaborators}
+				coAuthorConnections={copresenterNetworkData.connections}
+				contributorConnections={[]}
+				centerAuthor={CENTER_AUTHOR}
+				maxConnections={copresenterNetworkData.collaborators.length}
+				labels={{
+					itemSingular: 'communication',
+					itemPlural: 'Communications',
+					coAuthorEdge: 'Co-presenter connection',
+					coAuthorShared: 'Shared communications'
+				}}
+			/>
+			{#snippet placeholder()}
 				<p class="text-light">No co-presenter data available to display for this visualisation.</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 
 	<section class="visualization-section scroll-reveal mb-12">
@@ -554,15 +522,16 @@
 			Each outer block is a research project; inner cells are the types of activity produced within
 			that project, sized by count. Click to zoom into categories.
 		</p>
-		{#if projectTreemapData.length > 0}
-			<div class="chart-wrapper treemap-chart">
-				<EChartsTreemap data={projectTreemapData} title="Activities by research project" />
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 500px;">
+		<VizChartCard
+			variant="treemap"
+			placeholderHeight="500px"
+			hasData={projectTreemapData.length > 0}
+		>
+			<EChartsTreemap data={projectTreemapData} title="Activities by research project" />
+			{#snippet placeholder()}
 				<p class="text-light">No project data available to display for this visualisation.</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 
 	<section class="visualization-section scroll-reveal mb-12">
@@ -576,15 +545,17 @@
 			Geographic distribution of conference venues. Marker size indicates the number of activities
 			per country; click a marker to see individual titles and cities.
 		</p>
-		{#if locationMapData.length > 0}
-			<div class="chart-wrapper map-chart" style="height: 500px;">
-				<LocationMap data={locationMapData} basePath="/communications" itemLabel="activity" />
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 400px;">
+		<VizChartCard
+			variant="map"
+			height="500px"
+			placeholderHeight="400px"
+			hasData={locationMapData.length > 0}
+		>
+			<LocationMap data={locationMapData} basePath="/communications" itemLabel="activity" />
+			{#snippet placeholder()}
 				<p class="text-light">No location data available to display for this visualisation.</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 
 	<section class="visualization-section scroll-reveal">
@@ -598,19 +569,19 @@
 			Project durations with conference-activity markers. Bars show project spans; circles mark
 			individual activities.
 		</p>
-		{#if projectTimelineData.length > 0}
-			<div class="chart-wrapper gantt-chart" style="height: 450px;">
-				<EChartsGanttChart data={projectTimelineData} />
-			</div>
-		{:else}
-			<div class="placeholder-message" style="height: 450px;">
+		<VizChartCard variant="gantt" height="450px" hasData={projectTimelineData.length > 0}>
+			<EChartsGanttChart data={projectTimelineData} />
+			{#snippet placeholder()}
 				<p class="text-light">No project data available to display for this visualisation.</p>
-			</div>
-		{/if}
+			{/snippet}
+		</VizChartCard>
 	</section>
 </div>
 
 <style>
+	/* Chart-card surface, hover, dark-mode and chart-size responsive rules
+	 * now live in VizChartCard.svelte. Only page-level layout remains here. */
+
 	.page-container {
 		max-width: var(--container-xl);
 		margin: 0 auto;
@@ -633,126 +604,9 @@
 		line-height: var(--line-height-relaxed);
 	}
 
-	.chart-wrapper,
-	.placeholder-message {
-		position: relative;
-		border-radius: var(--border-radius-lg);
-		background: var(--color-surface);
-		border: var(--border-width-thin) solid var(--color-border);
-		box-shadow: var(--shadow-sm);
-		transition:
-			transform var(--duration-moderate) var(--ease-spring),
-			box-shadow var(--duration-moderate) var(--ease-out),
-			border-color var(--duration-fast) var(--ease-out);
-	}
-
-	.chart-wrapper {
-		padding: var(--space-lg);
-		contain: layout style paint;
-		will-change: transform;
-		min-height: var(--iframe-height-xs);
-	}
-
-	.chart-wrapper:hover {
-		transform: translateY(-2px);
-		border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
-		box-shadow:
-			0 12px 28px -8px color-mix(in srgb, var(--color-primary) 20%, transparent),
-			0 4px 10px -4px color-mix(in srgb, var(--color-black) 6%, transparent);
-	}
-
-	.stacked-chart {
-		height: var(--iframe-height-sm);
-		contain: strict;
-	}
-
-	.network-chart {
-		height: var(--iframe-height-md);
-		contain: strict;
-	}
-
-	.bubble-chart {
-		height: 850px;
-		contain: strict;
-		overflow: visible;
-	}
-
-	.treemap-chart {
-		height: 500px;
-		contain: strict;
-	}
-
-	.gantt-chart {
-		height: 450px;
-		contain: strict;
-	}
-
-	.map-chart {
-		height: 500px;
-		contain: layout style;
-	}
-
-	.placeholder-message {
-		padding: var(--space-lg);
-		min-height: var(--iframe-height-xs);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		text-align: center;
-		contain: layout style;
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.chart-wrapper:hover {
-			transform: none;
-		}
-	}
-
-	:global(html.dark) .chart-wrapper,
-	:global(html.dark) .placeholder-message {
-		background: var(--color-surface);
-		border-color: var(--color-border);
-		box-shadow: var(--shadow-md);
-	}
-
-	:global(html.dark) .chart-wrapper:hover {
-		border-color: color-mix(in srgb, var(--color-primary) 50%, var(--color-border));
-		box-shadow:
-			0 12px 28px -8px color-mix(in srgb, var(--color-primary) 35%, transparent),
-			0 4px 10px -4px color-mix(in srgb, var(--color-black) 40%, transparent);
-	}
-
 	@media (--md-down) {
 		.page-container {
 			padding: var(--space-md) var(--space-sm);
-		}
-
-		.chart-wrapper {
-			padding: var(--space-md);
-		}
-
-		.stacked-chart {
-			height: calc(var(--iframe-height-sm) - var(--space-4xl));
-		}
-
-		.network-chart {
-			height: var(--iframe-height-sm);
-		}
-
-		.bubble-chart {
-			height: 550px;
-		}
-
-		.treemap-chart {
-			height: 450px;
-		}
-
-		.gantt-chart {
-			height: 400px;
-		}
-
-		.map-chart {
-			height: 400px;
 		}
 
 		.section-heading {
@@ -762,34 +616,6 @@
 	}
 
 	@media (--sm-down) {
-		.chart-wrapper {
-			padding: var(--space-sm);
-		}
-
-		.stacked-chart {
-			height: calc(var(--iframe-height-xs) + var(--space-3xl));
-		}
-
-		.network-chart {
-			height: calc(var(--iframe-height-xs) + var(--space-3xl));
-		}
-
-		.bubble-chart {
-			height: 450px;
-		}
-
-		.treemap-chart {
-			height: 380px;
-		}
-
-		.gantt-chart {
-			height: 350px;
-		}
-
-		.map-chart {
-			height: 350px;
-		}
-
 		.section-heading {
 			font-size: var(--font-size-heading-5);
 		}
