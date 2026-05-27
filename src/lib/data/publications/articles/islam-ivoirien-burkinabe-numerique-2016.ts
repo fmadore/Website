@@ -37,6 +37,15 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	citedBy: [
 		{
+			authors: ['Issouf Binaté'],
+			year: 2026,
+			title:
+				"Les structures islamiques d'éducation en contexte de politique de scolarisation obligatoire en Côte d'Ivoire",
+			source:
+				"In Éducation islamique, régulation étatique et gouvernance en Afrique de l'Ouest : une perspective comparative, edited by Luqman Saka, and Kaderi N. Bukari, 203-58. Stockholm: Research and Action for Peace (REcAP) Network",
+			url: 'https://doi.org/10.5281/zenodo.18782361'
+		},
+		{
 			authors: ['Sekou Traoré'],
 			year: 2025,
 			title:
