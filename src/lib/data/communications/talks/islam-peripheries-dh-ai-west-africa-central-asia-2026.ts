@@ -5,9 +5,9 @@ export const talkIslamPeripheriesDhAiWestAfricaCentralAsia2026: Communication = 
 	id: 'islam-peripheries-dh-ai-west-africa-central-asia-2026',
 	title:
 		'Islam\'s "Peripheries": Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia',
-	authors: ['Frédérick Madore', 'Aksana Ismailbekova'],
-	date: '11 June 2026',
-	dateISO: '2026-06-11',
+	authors: ['Aksana Ismailbekova', 'Frédérick Madore'],
+	date: '29 June 2026',
+	dateISO: '2026-06-29',
 	year: 2026,
 	conference: "Seminar series 'Digital History in/of Central Asia'",
 	location: 'Friedrich-Alexander-Universität Erlangen-Nürnberg',
