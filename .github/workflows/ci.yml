@@ -1,13 +1,12 @@
 name: CI
 
-# Runs the quality gate on every PR to main and on pushes to feature branches.
-# Pushes to main are covered by the Deploy workflow (which runs the same checks
-# before publishing), so they're excluded here to avoid duplicate runs.
+# Runs the quality gate on every PR to main. Triggering on pull_request alone
+# (rather than also on push) means each push to a PR branch runs CI exactly
+# once via the PR's synchronize event — no duplicate runs. Pushes to main are
+# covered by the Deploy workflow, which runs the same checks before publishing.
 on:
   pull_request:
     branches: [main]
-  push:
-    branches-ignore: [main]
 
 # Cancel superseded runs on the same ref to save CI minutes.
 concurrency:
