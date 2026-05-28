@@ -1,0 +1,87 @@
+name: CI
+
+# Runs the quality gate on every PR to main and on pushes to feature branches.
+# Pushes to main are covered by the Deploy workflow (which runs the same checks
+# before publishing), so they're excluded here to avoid duplicate runs.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches-ignore: [main]
+
+# Cancel superseded runs on the same ref to save CI minutes.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Lint, type-check, unit tests & build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Cache SvelteKit artifacts
+        uses: actions/cache@v5
+        with:
+          path: |
+            .svelte-kit
+            node_modules/.cache
+          key: ${{ runner.os }}-sveltekit-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-sveltekit-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint (Prettier + ESLint)
+        run: npm run lint
+
+      - name: Type-check
+        run: npm run check
+
+      - name: Unit tests (Vitest)
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+  e2e:
+    name: E2E smoke tests (Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright smoke tests
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
