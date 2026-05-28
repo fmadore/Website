@@ -20,7 +20,12 @@
 	import D3BubbleChart from '$lib/components/visualisations/D3BubbleChart.svelte';
 	import LocationMap from '$lib/components/visualisations/LocationMap.svelte';
 	import VizChartCard from '$lib/components/visualisations/VizChartCard.svelte';
-	import { buildLocationData } from '$lib/utils/vizAggregation';
+	import {
+		buildLocationData,
+		tallyBy,
+		buildGroupedTreemap,
+		buildProjectTimeline
+	} from '$lib/utils/vizAggregation';
 	import type { LocationDatum } from '$lib/data/geo';
 	import type { Communication } from '$lib/types/communication';
 	import type { WordFrequency } from '$lib/types';
@@ -31,30 +36,6 @@
 	type TypeCount = { type: string; count: number };
 	type CountryCount = { country: string; count: number };
 	type TagCount = { tag: string; count: number };
-
-	interface TreemapChild {
-		name: string;
-		value: number;
-		publications: string[]; // component prop name — list of titles shown in tooltip
-	}
-
-	interface TreemapNode {
-		name: string;
-		children: TreemapChild[];
-	}
-
-	interface TimelineItem {
-		title: string;
-		year: number;
-		type: string;
-	}
-
-	interface TimelineEntry {
-		name: string;
-		startYear: number;
-		endYear: number;
-		publications: TimelineItem[]; // component prop name
-	}
 
 	// ---------- Helpers ----------
 
@@ -146,55 +127,32 @@
 	const getTypeCount = (d: TypeCount) => d.count;
 
 	// 3. Language distribution (doughnut). Communications may declare a single
-	// language, a comma-separated string, or an array — we flatten all three.
+	// language, a comma-separated string, or an array — normaliseLanguages flattens
+	// all three before the shared tally.
 	const languageData = $derived<LanguageCount[]>(
-		(() => {
-			const counts: Record<string, number> = {};
-			allCommunications.forEach((comm) => {
-				normaliseLanguages(comm.language).forEach((lang) => {
-					counts[lang] = (counts[lang] || 0) + 1;
-				});
-			});
-			return Object.entries(counts)
-				.map(([language, count]) => ({ language, count }))
-				.sort((a, b) => b.count - a.count);
-		})()
+		tallyBy(allCommunications, (comm) => normaliseLanguages(comm.language)).map(
+			({ key, count }) => ({ language: key, count })
+		)
 	);
 	const getLanguageName = (d: LanguageCount) => d.language;
 	const getLanguageCount = (d: LanguageCount) => d.count;
 
 	// 4. Communications by country (horizontal bar).
 	const countryData = $derived<CountryCount[]>(
-		(() => {
-			const counts: Record<string, number> = {};
-			allCommunications.forEach((comm) => {
-				const country = comm.country?.trim();
-				if (!country) return;
-				counts[country] = (counts[country] || 0) + 1;
-			});
-			return Object.entries(counts)
-				.map(([country, count]) => ({ country, count }))
-				.sort((a, b) => b.count - a.count);
-		})()
+		tallyBy(allCommunications, (comm) => comm.country).map(({ key, count }) => ({
+			country: key,
+			count
+		}))
 	);
 	const getCountryName = (d: CountryCount) => d.country;
 	const getCountryCount = (d: CountryCount) => d.count;
 
 	// 5. & 6. Tag frequencies — shared by bubble chart and word cloud.
 	const tagFrequencyList = $derived<TagCount[]>(
-		(() => {
-			const counts: Record<string, number> = {};
-			allCommunications.forEach((comm) => {
-				comm.tags?.forEach((tag) => {
-					const trimmed = tag.trim();
-					if (!trimmed) return;
-					counts[trimmed] = (counts[trimmed] || 0) + 1;
-				});
-			});
-			return Object.entries(counts)
-				.map(([tag, count]) => ({ tag, count }))
-				.sort((a, b) => b.count - a.count);
-		})()
+		tallyBy(allCommunications, (comm) => comm.tags).map(({ key, count }) => ({
+			tag: key,
+			count
+		}))
 	);
 	const getTagName = (d: TagCount) => d.tag;
 	const getTagCount = (d: TagCount) => d.count;
@@ -260,35 +218,12 @@
 
 	// 8. Projects treemap — outer cells are research projects, inner cells are
 	// communication types, sized by the number of communications.
-	const projectTreemapData = $derived<TreemapNode[]>(
-		(() => {
-			return Object.entries(communicationsByProject)
-				.map(([projectName, items]) => {
-					const byType: Record<string, { count: number; titles: string[] }> = {};
-					items.forEach((comm) => {
-						const typeLabel = formatTypeLabel(comm.type ?? 'other');
-						if (!byType[typeLabel]) byType[typeLabel] = { count: 0, titles: [] };
-						byType[typeLabel].count++;
-						byType[typeLabel].titles.push(comm.title);
-					});
-
-					const children: TreemapChild[] = Object.entries(byType)
-						.map(([name, data]) => ({
-							name,
-							value: data.count,
-							publications: data.titles
-						}))
-						.sort((a, b) => b.value - a.value);
-
-					return { name: projectName, children };
-				})
-				.filter((node) => node.children.length > 0)
-				.sort(
-					(a, b) =>
-						b.children.reduce((s, c) => s + c.value, 0) -
-						a.children.reduce((s, c) => s + c.value, 0)
-				);
-		})()
+	const projectTreemapData = $derived(
+		buildGroupedTreemap(
+			communicationsByProject,
+			(comm) => formatTypeLabel(comm.type ?? 'other'),
+			(comm) => comm.title
+		)
 	);
 	const totalProjects = $derived(projectTreemapData.length);
 
@@ -304,26 +239,12 @@
 	const totalMapped = $derived(locationMapData.reduce((sum, loc) => sum + loc.count, 0));
 
 	// 10. Research project timeline — project spans with communication markers.
-	const projectTimelineData = $derived<TimelineEntry[]>(
-		(() => {
-			return Object.entries(communicationsByProject)
-				.map(([name, items]) => {
-					const years = items.map((c) => c.year);
-					return {
-						name,
-						startYear: Math.min(...years),
-						endYear: Math.max(...years),
-						publications: items
-							.map((c) => ({
-								title: c.title,
-								year: c.year,
-								type: c.type ?? 'other'
-							}))
-							.sort((a, b) => a.year - b.year)
-					};
-				})
-				.sort((a, b) => a.startYear - b.startYear);
-		})()
+	const projectTimelineData = $derived(
+		buildProjectTimeline(communicationsByProject, (comm) => ({
+			title: comm.title,
+			year: comm.year,
+			type: comm.type ?? 'other'
+		}))
 	);
 
 	// ---------- Breadcrumbs + SEO ----------

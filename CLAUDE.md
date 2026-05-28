@@ -16,9 +16,16 @@ npm run check        # Type-check Svelte components
 npm run check:watch  # Watch mode type-checking
 npm run lint         # Run Prettier + ESLint checks
 npm run format       # Auto-format with Prettier
-npm run test         # Run Playwright E2E tests
-npm run test:ui      # Playwright tests with UI
+npm run test         # Run Vitest unit tests (pure utils: aggregation, JSON-LD)
+npm run test:watch   # Vitest in watch mode
+npm run test:e2e     # Run Playwright E2E smoke tests (builds + previews first)
+npm run test:e2e:ui  # Playwright tests with UI
 ```
+
+> **Testing layout**: Unit tests are co-located as `*.test.ts` next to the
+> module they cover (e.g. `src/lib/utils/vizAggregation.test.ts`) and run in a
+> plain Node environment via `vitest.config.ts`. E2E smoke tests live in
+> `tests-e2e/` and run against the production build (`playwright.config.ts`).
 
 ## Architecture
 

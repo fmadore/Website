@@ -15,8 +15,10 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
-		"test": "playwright test",
-		"test:ui": "playwright test --ui",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"test:e2e": "playwright test",
+		"test:e2e:ui": "playwright test --ui",
 		"build:pwa": "npm run build && npm run pwa:validate",
 		"pwa:validate": "echo '✅ PWA built successfully - check Lighthouse for PWA score'",
 		"serve:https": "npx serve build -l 8080 --ssl-cert localhost.pem --ssl-key localhost-key.pem"
@@ -39,11 +41,13 @@
 		"postcss-custom-media": "^12.0.0",
 		"prettier": "^3.8.3",
 		"prettier-plugin-svelte": "^4.0.1",
+		"serve": "^14.2.6",
 		"svelte": "^5.55.9",
 		"svelte-check": "^4.4.8",
 		"typescript": "^6.0.3",
 		"typescript-eslint": "^8.60.0",
-		"vite": "^8.0.14"
+		"vite": "^8.0.14",
+		"vitest": "^4.1.7"
 	},
 	"overrides": {
 		"js-yaml": ">=4.1.1",

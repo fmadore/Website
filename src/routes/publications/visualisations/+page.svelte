@@ -17,7 +17,13 @@
 	import LocationMap from '$lib/components/visualisations/LocationMap.svelte';
 	import VizChartCard from '$lib/components/visualisations/VizChartCard.svelte';
 	import LanguageToggle from '$lib/components/visualisations/LanguageToggle.svelte';
-	import { buildLocationData } from '$lib/utils/vizAggregation';
+	import {
+		buildLocationData,
+		tallyBy,
+		groupByKey,
+		buildProjectTimeline
+	} from '$lib/utils/vizAggregation';
+	import type { TreemapNode } from '$lib/utils/vizAggregation';
 	import type { LocationDatum } from '$lib/data/geo';
 	import EChartsWordCloud from '$lib/components/visualisations/EChartsWordCloud.svelte';
 	import { corpusAnalysis, getCombinedWordCloudData, getCombinedBigrams } from '$lib/data/analysis';
@@ -28,77 +34,22 @@
 	type LanguageData = { language: string; count: number };
 	type KeywordData = { keyword: string; count: number };
 
-	// Types for venue treemap
-	interface TreemapChild {
-		name: string;
-		value: number;
-		publications: string[];
-	}
-
-	interface TreemapNode {
-		name: string;
-		children: TreemapChild[];
-	}
-
-	// Types for project timeline
-	interface ProjectPublication {
-		title: string;
-		year: number;
-		type: string;
-	}
-
-	interface ProjectData {
-		name: string;
-		startYear: number;
-		endYear: number;
-		publications: ProjectPublication[];
-	}
-
 	// Calculate data reactively using $derived - optimized for performance
-	const citationsPerYearData = $derived(
-		(() => {
-			// Process allPublications to derive data for visualizations
-			const citationsReceivedInYear: Record<number, number> = {};
-
-			// Use for loop for better performance than forEach
-			for (let i = 0; i < allPublications.length; i++) {
-				const pub = allPublications[i];
-				if (pub.citedBy && Array.isArray(pub.citedBy)) {
-					for (let j = 0; j < pub.citedBy.length; j++) {
-						const citation = pub.citedBy[j];
-						// Assuming each 'citation' object has a 'year' property indicating the year of the citation
-						if (citation && typeof citation.year === 'number') {
-							citationsReceivedInYear[citation.year] =
-								(citationsReceivedInYear[citation.year] || 0) + 1;
-						}
-					}
-				}
-			}
-
-			return Object.entries(citationsReceivedInYear)
-				.map(([year, count]) => ({ year: parseInt(year), count }))
-				.sort((a, b) => a.year - b.year);
-		})()
+	const citationsPerYearData = $derived<CitationYearData[]>(
+		tallyBy(
+			allPublications,
+			(pub) =>
+				pub.citedBy
+					?.filter((citation) => typeof citation.year === 'number')
+					.map((citation) => String(citation.year)),
+			{ sort: 'key-asc' }
+		).map(({ key, count }) => ({ year: parseInt(key), count }))
 	);
 
-	const citedAuthorsData = $derived(
-		(() => {
-			const authorCounts: Record<string, number> = {};
-			allPublications.forEach((pub) => {
-				if (pub.citedBy) {
-					pub.citedBy.forEach((citation) => {
-						if (citation.authors && Array.isArray(citation.authors)) {
-							citation.authors.forEach((author: string) => {
-								authorCounts[author] = (authorCounts[author] || 0) + 1;
-							});
-						}
-					});
-				}
-			});
-			return Object.entries(authorCounts)
-				.map(([author, count]) => ({ author, count }))
-				.sort((a, b) => b.count - a.count);
-		})()
+	const citedAuthorsData = $derived<CitedAuthorData[]>(
+		tallyBy(allPublications, (pub) =>
+			pub.citedBy?.flatMap((citation) => (Array.isArray(citation.authors) ? citation.authors : []))
+		).map(({ key, count }) => ({ author: key, count }))
 	);
 
 	// Calculate maximum citation count for consistent x-axis scale across pagination
@@ -106,44 +57,20 @@
 		citedAuthorsData.length > 0 ? Math.max(...citedAuthorsData.map((d) => d.count)) : 0
 	);
 
-	const languageData = $derived(
-		(() => {
-			const languageCounts: Record<string, number> = {};
-			allPublications.forEach((pub) => {
-				if (pub.language) {
-					// Split comma-separated languages and count each one
-					const languages = pub.language.split(',').map((lang: string) => lang.trim());
-					languages.forEach((language: string) => {
-						if (language) {
-							// Only count non-empty languages
-							languageCounts[language] = (languageCounts[language] || 0) + 1;
-						}
-					});
-				}
-			});
-			return Object.entries(languageCounts)
-				.map(([language, count]) => ({ language, count }))
-				.sort((a, b) => b.count - a.count);
-		})()
+	// Split comma-separated languages and count each one
+	const languageData = $derived<LanguageData[]>(
+		tallyBy(allPublications, (pub) => pub.language?.split(',')).map(({ key, count }) => ({
+			language: key,
+			count
+		}))
 	);
 
 	// Calculate keyword frequency data
-	const keywordData = $derived(
-		(() => {
-			const keywordCounts: Record<string, number> = {};
-			allPublications.forEach((pub) => {
-				if (pub.tags && Array.isArray(pub.tags)) {
-					pub.tags.forEach((tag: string) => {
-						if (tag && tag.trim()) {
-							keywordCounts[tag] = (keywordCounts[tag] || 0) + 1;
-						}
-					});
-				}
-			});
-			return Object.entries(keywordCounts)
-				.map(([keyword, count]) => ({ keyword, count }))
-				.sort((a, b) => b.count - a.count);
-		})()
+	const keywordData = $derived<KeywordData[]>(
+		tallyBy(allPublications, (pub) => pub.tags).map(({ key, count }) => ({
+			keyword: key,
+			count
+		}))
 	);
 
 	// Helper function to format type labels for display
@@ -519,47 +446,12 @@
 		venueTreemapData.reduce((sum, category) => sum + category.children.length, 0)
 	);
 
-	// Calculate research projects timeline data
+	// Calculate research projects timeline data (group by project, then build spans)
 	const projectTimelineData = $derived(
-		(() => {
-			// Group publications by project
-			const projectMap: Record<
-				string,
-				{ publications: ProjectPublication[]; minYear: number; maxYear: number }
-			> = {};
-
-			allPublications.forEach((pub) => {
-				if (pub.project && pub.project.trim()) {
-					const projectName = pub.project.trim();
-					if (!projectMap[projectName]) {
-						projectMap[projectName] = {
-							publications: [],
-							minYear: pub.year,
-							maxYear: pub.year
-						};
-					}
-					projectMap[projectName].publications.push({
-						title: pub.title,
-						year: pub.year,
-						type: pub.type
-					});
-					projectMap[projectName].minYear = Math.min(projectMap[projectName].minYear, pub.year);
-					projectMap[projectName].maxYear = Math.max(projectMap[projectName].maxYear, pub.year);
-				}
-			});
-
-			// Convert to array format and sort by start year
-			const projectData: ProjectData[] = Object.entries(projectMap)
-				.map(([name, data]) => ({
-					name,
-					startYear: data.minYear,
-					endYear: data.maxYear,
-					publications: data.publications.sort((a, b) => a.year - b.year)
-				}))
-				.sort((a, b) => a.startYear - b.startYear);
-
-			return projectData;
-		})()
+		buildProjectTimeline(
+			groupByKey(allPublications, (pub) => pub.project),
+			(pub) => ({ title: pub.title, year: pub.year, type: pub.type })
+		)
 	);
 
 	// Calculate publisher location data for map visualization

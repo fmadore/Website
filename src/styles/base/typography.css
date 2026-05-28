@@ -22,13 +22,18 @@ body {
 }
 
 /*
- * Headings — Spectral throughout.
+ * Headings — serif throughout, with a two-tier voice.
  * All of h1–h6 default to the editorial serif (Spectral) for two reasons:
  *   1. Consistent editorial-magazine voice — Commissioner carries UI/body
  *      chrome; every heading-level typographic gesture is serif.
- *   2. Inline <em> inside headings renders with real Spectral italic
- *      glyphs; Commissioner has no italic axis, so mixing would force the
- *      browser to synthesise an oblique (visually crude).
+ *   2. Inline <em> inside headings renders with real serif italic glyphs;
+ *      Commissioner has no italic axis, so mixing would force the browser to
+ *      synthesise an oblique (visually crude).
+ *
+ * Top-level headings (h1–h3) then upgrade to the Fraunces *display* serif for
+ * letterpress character at large sizes; h4–h6 stay on Spectral so smaller
+ * structural headings read as quiet prose rather than display. Both faces
+ * share the same fallback stack, so the hierarchy is graceful pre-webfont.
  *
  * Opt into sans explicitly with the `.font-sans` utility class when a
  * heading needs to read as label/chrome rather than prose.
@@ -50,6 +55,15 @@ h6 {
 	line-height: var(--line-height-heading);
 	letter-spacing: var(--tracking-heading);
 	color: var(--color-text-emphasis);
+}
+
+/* Top-level headings use the Fraunces display serif. `optical-sizing: auto`
+ * lets the variable font shift toward its display cut at larger sizes. */
+h1,
+h2,
+h3 {
+	font-family: var(--font-family-display);
+	font-optical-sizing: auto;
 }
 
 h1 {
@@ -498,6 +512,21 @@ small {
 .content-text h6 {
 	font-family: var(--font-family-serif);
 	color: var(--color-text-emphasis);
+}
+
+/* Top-level prose headings track the global h1–h3 display treatment (this
+ * rule follows the serif block so it wins at equal specificity). */
+.prose h1,
+.prose h2,
+.prose h3,
+.content-body h1,
+.content-body h2,
+.content-body h3,
+.content-text h1,
+.content-text h2,
+.content-text h3 {
+	font-family: var(--font-family-display);
+	font-optical-sizing: auto;
 }
 
 /* Prose / body-copy heading rhythm — reinstates generous top margin for

@@ -131,13 +131,13 @@
 				background: #ffffff;
 				border: 1px solid #e9e2d5;
 				border-radius: 0.75rem;
-				box-shadow: 0 1px 2px 0 rgba(42, 33, 26, 0.05);
+				box-shadow: 0 1px 2px 0 color-mix(in srgb, #2a211a 5%, transparent);
 			}
 			html.dark .glass-card,
 			html.dark .glass-panel {
 				background: #292d3c;
 				border-color: #363a4d;
-				box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+				box-shadow: 0 1px 2px 0 color-mix(in srgb, #000000 20%, transparent);
 			}
 			.max-w-7xl {
 				max-width: 80rem;
@@ -152,11 +152,11 @@
 		<link rel="dns-prefetch" href="https://fonts.gstatic.com" />
 
 		<!-- Google Fonts: loaded async to avoid render-blocking -->
-		<!-- Commissioner (humanist variable sans, UI/body) + Spectral (editorial serif, headings/long-form) + JetBrains Mono (code/data-viz chrome only) -->
+		<!-- Fraunces (warm old-style display serif, h1–h3 only) + Commissioner (humanist variable sans, UI/body) + Spectral (editorial serif, body prose / h4–h6) + JetBrains Mono (code/data-viz chrome only) -->
 		<link
 			rel="preload"
 			as="style"
-			href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300..700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Commissioner:wght@300..700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500&display=swap"
 			onload="
 				this.onload = null;
 				this.rel = 'stylesheet';
@@ -164,7 +164,7 @@
 		/>
 		<noscript>
 			<link
-				href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300..700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500&display=swap"
+				href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Commissioner:wght@300..700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500&display=swap"
 				rel="stylesheet"
 			/>
 		</noscript>
