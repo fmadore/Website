@@ -161,37 +161,37 @@
 		backdrop-filter: blur(var(--glass-blur-amount)) saturate(150%);
 		-webkit-backdrop-filter: blur(var(--glass-blur-amount)) saturate(150%);
 
-		/* Subtle gradient overlay for better visual hierarchy */
-		background-image: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 100%
+		/* Quiet, single-tone ink-blue wash for hierarchy — no gradient ornament
+		 * (per design brief: "quiet the glass", avoid decorative gradients). */
+		background-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-5) * 100%),
+			transparent
 		);
 	}
 
 	:global(.sorter-button.glass-button:hover) {
-		/* Enhanced hover state for glassmorphism */
-		background-image: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 100%
+		background-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-10) * 100%),
+			transparent
 		);
 	}
 
-	/* Dark mode enhancements */
+	/* Dark mode — same single-tone wash, slightly stronger for legibility */
 	:global(html.dark .sorter-button.glass-button) {
-		background-image: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 100%
+		background-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-10) * 100%),
+			transparent
 		);
 	}
 
 	:global(html.dark .sorter-button.glass-button:hover) {
-		background-image: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-10) * 100%), transparent) 100%
+		background-color: color-mix(
+			in srgb,
+			var(--color-primary) calc(var(--opacity-15) * 100%),
+			transparent
 		);
 	}
 

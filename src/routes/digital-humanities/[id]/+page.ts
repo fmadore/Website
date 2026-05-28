@@ -5,6 +5,7 @@ import { allDhProjects } from '$lib/data/digital-humanities';
 import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
 import type { CreativeWorkJsonLd } from '$lib/types/jsonld';
 import { formatAuthor } from '$lib/types/jsonld';
+import { website } from '$lib/data/siteConfig';
 
 export const load: PageLoad = (event: PageLoadEvent) => {
 	const project: DigitalHumanitiesProject | undefined = allDhProjects.find(
@@ -26,7 +27,7 @@ export const load: PageLoad = (event: PageLoadEvent) => {
 
 	// Author
 	const author = formatAuthor('Frédérick Madore');
-	jsonLdObject.author = [{ ...author, url: 'https://www.frederickmadore.com' }];
+	jsonLdObject.author = [{ ...author, url: website.url }];
 
 	// Image
 	if (project.heroImageUrl || project.imageUrl) {

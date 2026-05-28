@@ -14,6 +14,7 @@ import type {
 	JsonLdScholarlyArticleCitation
 } from '$lib/types/jsonld';
 import { formatAuthor, formatAuthors, formatPlaces } from '$lib/types/jsonld';
+import { website } from '$lib/data/siteConfig';
 
 // --- Load Function ---
 export const load: PageLoad = ({ params }) => {
@@ -81,7 +82,7 @@ export const load: PageLoad = ({ params }) => {
 	const defaultAuthorWithUrl: JsonLdPerson | undefined = authors?.find(
 		(a) => a.name === 'Frédérick Madore'
 	)
-		? { ...formatAuthor('Frédérick Madore'), url: 'https://www.frederickmadore.com' }
+		? { ...formatAuthor('Frédérick Madore'), url: website.url }
 		: undefined;
 	const finalAuthors = authors?.map((a) =>
 		a.name === 'Frédérick Madore' && defaultAuthorWithUrl ? defaultAuthorWithUrl : a

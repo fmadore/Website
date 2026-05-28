@@ -4,6 +4,7 @@ import { allCommunications } from '$lib/data/communications/index';
 import type { PageLoad } from './$types';
 import type { EventJsonLd } from '$lib/types/jsonld';
 import { formatAuthors, formatJsonLdDate } from '$lib/types/jsonld';
+import { website } from '$lib/data/siteConfig';
 
 export const load: PageLoad = ({ params }) => {
 	const communication = allCommunications.find((comm) => comm.id === params.id);
@@ -51,7 +52,7 @@ export const load: PageLoad = ({ params }) => {
 		const authors = formatAuthors(communication.authors);
 		// Add URL to the primary author
 		jsonLdObject.performer = authors.map((a) =>
-			a.name === 'Frédérick Madore' ? { ...a, url: 'https://www.frederickmadore.com' } : a
+			a.name === 'Frédérick Madore' ? { ...a, url: website.url } : a
 		);
 	}
 
