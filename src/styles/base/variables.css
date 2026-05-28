@@ -216,6 +216,11 @@
 		'Commissioner', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial',
 		sans-serif;
 	--sys-font-family-serif: 'Spectral', 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
+	/* Display: Fraunces — warm old-style display serif, reserved for h1–h3 to
+	 * give top-level headings letterpress character. Falls back to the Spectral
+	 * serif stack so headings stay editorial before the webfont loads. */
+	--sys-font-family-display:
+		'Fraunces', 'Spectral', 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
 	--sys-font-family-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Consolas', 'Monaco', monospace;
 
 	/*
@@ -242,6 +247,7 @@
 	/* Semantic font families */
 	--font-family-sans: var(--sys-font-family-sans);
 	--font-family-serif: var(--sys-font-family-serif);
+	--font-family-display: var(--sys-font-family-display);
 	--font-family-mono: var(--sys-font-family-mono);
 
 	/* Semantic font sizes */
