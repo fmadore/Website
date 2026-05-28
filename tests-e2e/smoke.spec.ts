@@ -12,8 +12,10 @@ test('home page loads with the author name', async ({ page }) => {
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 });
 
-test('main navigation links reach their list pages', async ({ page }) => {
-	for (const path of ['/publications', '/communications', '/activities']) {
+test('main list pages load with a top-level heading', async ({ page }) => {
+	// Note: the communications list lives at /conference-activity; /communications
+	// only has detail routes (/communications/[id]).
+	for (const path of ['/publications', '/conference-activity', '/activities']) {
 		const response = await page.goto(path);
 		expect(response?.status(), `${path} should respond 200`).toBe(200);
 		await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
@@ -22,10 +24,14 @@ test('main navigation links reach their list pages', async ({ page }) => {
 
 test('a publication detail page injects JSON-LD structured data', async ({ page }) => {
 	await page.goto('/publications');
-	// Follow the first publication link through to its detail page.
-	const firstItem = page.locator('a[href*="/publications/"]').first();
+	// Follow the first real publication item through to its detail page,
+	// excluding the visualisations link which also lives under /publications/.
+	const firstItem = page
+		.locator('main a[href*="/publications/"]:not([href*="visualisations"])')
+		.first();
 	await firstItem.click();
-	await expect(page).toHaveURL(/\/publications\/.+/);
+	await expect(page).toHaveURL(/\/publications\/[^/]+$/);
+	// At least one JSON-LD block (layout-level site schema + the page's own).
 	const jsonLd = page.locator('script[type="application/ld+json"]');
-	await expect(jsonLd.first()).toHaveCount(1);
+	expect(await jsonLd.count()).toBeGreaterThan(0);
 });
