@@ -1,0 +1,20 @@
+# Normalise line endings. Without this, Git's core.autocrlf can check files out
+# as CRLF on Windows, which makes `npm run lint` fail locally because Prettier's
+# default `endOfLine: lf` flags those files — even though the Linux CI runner
+# (which checks out LF) passes. Pinning eol=lf keeps local and CI in sync.
+* text=auto eol=lf
+
+# Binary assets: never normalise or diff their bytes.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.avif  binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+*.eot   binary
+*.pdf   binary
