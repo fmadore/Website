@@ -194,9 +194,8 @@
 					<div class="scroll-reveal">
 						<ActionLinks
 							primaryUrl={activity.url}
-							primaryLabel={activity.panelType === 'publication'
-								? 'Read Publication'
-								: 'Visit Activity'}
+							primaryLabel={activity.urlLabel ??
+								(activity.panelType === 'publication' ? 'Read Publication' : 'Visit Activity')}
 							additionalUrls={activity.additionalUrls}
 							sectionClass="action-links mt-4"
 							primaryButtonClass="btn btn-primary glass-button"
