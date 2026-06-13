@@ -134,7 +134,7 @@
 				<!-- Panel-specific information: Papers in Panel -->
 				{#if communication.type === 'panel' && communication.papers && communication.papers.length > 0}
 					<section class="panel-papers-section scroll-reveal">
-						<h2 class="panel-section-title">Papers in this Panel</h2>
+						<h2 class="editorial-section-title">Papers in this Panel</h2>
 						<div class="panel-papers-grid grid-stagger">
 							{#each communication.papers as paper, index (paper.title + index)}
 								<div class="panel-paper-card">
@@ -162,7 +162,7 @@
 				<!-- Participants Section -->
 				{#if communication.participants && communication.participants.length > 0}
 					<section class="participants-section scroll-reveal">
-						<h2 class="panel-section-title">Participants</h2>
+						<h2 class="editorial-section-title">Participants</h2>
 						<div class="participants-grid grid-stagger">
 							{#each communication.participants as participant, index (participant.name + index)}
 								<div class="participant-card">
@@ -253,42 +253,19 @@
 		margin-top: var(--space-xl);
 	}
 
-	/* Panel Papers Section & Participants Section
-	 * Warm paper tiles — solid elevated surface, hairline border, single-layer
-	 * shadow. Replaces the previous 3-stop glass gradient + backdrop blur,
-	 * which belonged to the pre-evolution aesthetic. */
+	/* Panel Papers & Participants — content-on-paper sections, not tiles.
+	 * The outer box (elevated surface + border + shadow) was the last
+	 * cards-in-cards survivor: it wrapped already-bordered inner cards. Now
+	 * the section sits directly on the page like Abstract / Reviews, the
+	 * shared .editorial-section-title carries the heading, and the inner
+	 * cards are the only chrome. */
 	.panel-papers-section,
 	.participants-section {
-		padding: var(--space-lg);
-		border-radius: var(--border-radius-lg);
-		position: relative;
-		background: var(--color-surface-elevated);
-		border: var(--border-width-thin) solid var(--color-border);
-		box-shadow: var(--shadow-sm);
+		margin-top: var(--space-2xl);
 	}
 
-	/* Section Titles */
-	.panel-section-title {
-		font-family: var(--font-family-serif);
-		font-size: var(--font-size-xl);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-emphasis);
-		margin: 0 0 var(--space-lg) 0;
-		line-height: var(--line-height-tight);
-		position: relative;
-	}
-
-	/* Quiet hairline rule under section titles — replaces the highlight-gradient
-	 * underline. Editorial rhythm, no decorative gloss. */
-	.panel-section-title::after {
-		content: '';
-		position: absolute;
-		bottom: calc(-1 * var(--space-xs));
-		left: 0;
-		width: var(--space-2xl);
-		height: var(--border-width-thin);
-		background: var(--color-border-dark);
-	}
+	/* Section titles come from the shared .editorial-section-title utility
+	 * (typography.css). */
 
 	/* Panel Papers Grid */
 	.panel-papers-grid {
@@ -297,15 +274,17 @@
 		gap: var(--space-md);
 	}
 
-	/* Panel Paper Cards — inner paper tiles nested in the section.
-	 * Subtler than the section container (no hover lift) so the nested hierarchy
-	 * reads as entries-within-a-list, not a wall of hover affordances. */
+	/* Panel Paper Cards — paper tiles sitting directly on the page ground.
+	 * Same treatment as the publication-detail review/citation tiles
+	 * (.glass-sub-card): elevated surface, hairline border, faint shadow,
+	 * no hover lift (these are entries, not affordances). */
 	.panel-paper-card {
 		padding: var(--space-md);
-		border-radius: var(--border-radius);
+		border-radius: var(--border-radius-lg);
 		position: relative;
-		background: var(--color-surface-alt);
-		border: var(--border-width-thin) solid var(--color-border-light);
+		background: var(--color-surface-elevated);
+		border: var(--border-width-thin) solid var(--color-border);
+		box-shadow: var(--shadow-xs);
 	}
 
 	.panel-paper-title {
@@ -344,13 +323,14 @@
 		}
 	}
 
-	/* Participant Cards — same inner-tile treatment as paper cards. */
+	/* Participant Cards — same paper-tile treatment as panel-paper cards. */
 	.participant-card {
 		padding: var(--space-md);
-		border-radius: var(--border-radius);
+		border-radius: var(--border-radius-lg);
 		position: relative;
-		background: var(--color-surface-alt);
-		border: var(--border-width-thin) solid var(--color-border-light);
+		background: var(--color-surface-elevated);
+		border: var(--border-width-thin) solid var(--color-border);
+		box-shadow: var(--shadow-xs);
 	}
 
 	.participant-name {
@@ -400,15 +380,6 @@
 
 	/* Responsive adjustments */
 	@media (--sm-down) {
-		.panel-papers-section,
-		.participants-section {
-			padding: var(--space-md);
-		}
-
-		.panel-section-title {
-			font-size: var(--font-size-lg);
-		}
-
 		.panel-paper-card,
 		.participant-card {
 			padding: var(--space-sm);
