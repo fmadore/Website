@@ -406,6 +406,7 @@
 		<FilteredListDisplay
 			filteredItems={sortedCommunications}
 			itemComponent={CommunicationItem}
+			itemComponentProps={{ row: true }}
 			itemPropName="communication"
 			areFiltersActive={areFiltersActive($activeFilters)}
 			{clearAllFilters}

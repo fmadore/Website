@@ -88,15 +88,9 @@
 {/if}
 
 <style>
+	/* Content-on-paper section; related-item cards carry their own chrome. */
 	.related-items-section {
-		margin-top: var(--space-xl);
-		padding: var(--space-lg);
-	}
-
-	@media (--sm) {
-		.related-items-section {
-			padding: var(--space-xl);
-		}
+		margin-top: var(--space-2xl);
 	}
 
 	.related-items-title {
@@ -104,9 +98,11 @@
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
-		/* Reset global h2 margin-top so the title doesn't push the tile content
-		 * down by 48 px. The panel's own padding provides the breathing room. */
+		/* Reset global h2 margin-top so the title doesn't push the section
+		 * content down by 48 px; section spacing handles the breathing room. */
 		margin: 0 0 var(--space-lg) 0;
+		padding-bottom: var(--space-sm);
+		border-bottom: var(--border-width-thin) solid var(--color-border-light);
 		line-height: var(--line-height-tight);
 		position: relative;
 	}

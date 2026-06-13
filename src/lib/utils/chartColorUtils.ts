@@ -220,12 +220,38 @@ export const CHART_COLOR_FALLBACKS = {
 	highlight: '#f59e0b',
 	success: '#10b981',
 	secondary: '#7a6b5e', // warm neutral-500
-	purple: '#8b5cf6',
-	purpleLight: '#a78bfa',
-	pink: '#ec4899',
-	pinkLight: '#f472b6',
+	teal: '#0d9488', // teal-600 (data-viz companion)
+	mauve: '#a67c9b', // mauve-500
+	sage: '#6b9e4f', // sage-500
+	slateBlue: '#5c8ab4', // slate-blue-500
 	fontFamily: 'system-ui, sans-serif'
 } as const;
+
+/**
+ * Editorial categorical palette — the default series palette for every
+ * chart, per the data-viz clause in `.impeccable.md`: ink family first,
+ * amber and teal as companions, extended hues (mauve, sage, slate-blue)
+ * only because category counts demand them. No neon, no purple/pink.
+ *
+ * Entry 1 is `--color-primary`, which resolves to ink-600 on paper and
+ * brightens to ink-400 on slate — charts keep both themes first-class
+ * without per-theme palettes. Pass to `resolveColors()` before handing to
+ * canvas renderers.
+ */
+export const CHART_CATEGORICAL_COLORS: string[] = [
+	'var(--color-primary)', // ink — the brand backbone
+	'var(--sys-color-amber-500)', // gold
+	'var(--sys-color-teal-600)', // teal
+	'var(--sys-color-mauve-500)', // mauve
+	'var(--sys-color-sage-500)', // sage
+	'var(--sys-color-slate-blue-500)', // steel blue
+	'var(--sys-color-amber-700)', // bronze
+	'var(--sys-color-neutral-400)', // warm gray
+	'var(--sys-color-ink-300)', // pale ink
+	'var(--sys-color-teal-400)', // aqua
+	'var(--sys-color-amber-300)', // pale gold
+	'var(--sys-color-neutral-500)' // sepia
+];
 
 /**
  * Type for resolved chart colors
@@ -244,10 +270,10 @@ export interface ResolvedChartColors {
 	highlight: string;
 	success: string;
 	secondary: string;
-	purple: string;
-	purpleLight: string;
-	pink: string;
-	pinkLight: string;
+	teal: string;
+	mauve: string;
+	sage: string;
+	slateBlue: string;
 	fontFamily: string;
 	currentTheme: string;
 }
@@ -288,15 +314,12 @@ export function getResolvedChartColors(): ResolvedChartColors {
 			'--color-secondary',
 			CHART_COLOR_FALLBACKS.secondary
 		),
-		purple: getCSSVariableValueWithFallback('--sys-color-purple-500', CHART_COLOR_FALLBACKS.purple),
-		purpleLight: getCSSVariableValueWithFallback(
-			'--sys-color-purple-400',
-			CHART_COLOR_FALLBACKS.purpleLight
-		),
-		pink: getCSSVariableValueWithFallback('--sys-color-pink-500', CHART_COLOR_FALLBACKS.pink),
-		pinkLight: getCSSVariableValueWithFallback(
-			'--sys-color-pink-400',
-			CHART_COLOR_FALLBACKS.pinkLight
+		teal: getCSSVariableValueWithFallback('--sys-color-teal-600', CHART_COLOR_FALLBACKS.teal),
+		mauve: getCSSVariableValueWithFallback('--sys-color-mauve-500', CHART_COLOR_FALLBACKS.mauve),
+		sage: getCSSVariableValueWithFallback('--sys-color-sage-500', CHART_COLOR_FALLBACKS.sage),
+		slateBlue: getCSSVariableValueWithFallback(
+			'--sys-color-slate-blue-500',
+			CHART_COLOR_FALLBACKS.slateBlue
 		),
 		fontFamily: getCSSVariableValueWithFallback(
 			'--font-family-sans',
@@ -316,12 +339,12 @@ export function getResolvedChartColors(): ResolvedChartColors {
  */
 export function getTimelinePalette(): string[] {
 	return [
-		getCSSVariableValueWithFallback('--color-timeline-positions', '#0d9488'),
+		getCSSVariableValueWithFallback('--color-timeline-positions', '#2e4271'),
 		getCSSVariableValueWithFallback('--color-timeline-education', '#6b9e4f'),
 		getCSSVariableValueWithFallback('--color-timeline-grants', '#f59e0b'),
 		getCSSVariableValueWithFallback('--color-timeline-publications', '#5c8ab4'),
 		getCSSVariableValueWithFallback('--color-timeline-presentations', '#a67c9b'),
-		getCSSVariableValueWithFallback('--color-timeline-awards', '#d97706'),
+		getCSSVariableValueWithFallback('--color-timeline-awards', '#b45309'),
 		getCSSVariableValueWithFallback('--color-timeline-fieldwork', '#14b8a6')
 	];
 }
@@ -347,7 +370,7 @@ export function getEChartsTooltipStyle(colors: ResolvedChartColors) {
 		padding: [10, 14],
 		transitionDuration: 0.15,
 		extraCssText:
-			'backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: var(--shadow-lg);'
+			'backdrop-filter: blur(var(--glass-blur-sm)); -webkit-backdrop-filter: blur(var(--glass-blur-sm)); box-shadow: var(--shadow-lg);'
 	};
 }
 

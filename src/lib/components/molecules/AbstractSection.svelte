@@ -42,9 +42,10 @@
 {/if}
 
 <style>
+	/* Content-on-paper: the section shell carries no tile padding; the title's
+	 * hairline rule and the page's section spacing do the separating. */
 	.abstract-section {
 		margin-bottom: var(--space-xl);
-		padding: var(--space-lg);
 	}
 
 	/* Abstract title — letterpress hairline rule under solid Spectral ink. */
@@ -77,10 +78,6 @@
 
 	/* Responsive adjustments */
 	@media (--sm-down) {
-		.abstract-section {
-			padding: var(--space-md);
-		}
-
 		.abstract-title {
 			font-size: var(--font-size-lg);
 		}

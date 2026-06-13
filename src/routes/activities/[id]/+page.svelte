@@ -280,7 +280,7 @@
 		 * border and subtle hover lift; the three-stop primary→highlight→
 		 * accent gradient was the same templated pattern retired from
 		 * `panels.css`, and reads as AI-CMS shouting against the editorial
-		 * direction. The CTA inside the section carries the rare terracotta. */
+		 * direction. The CTA inside the section carries the rare brand accent. */
 		.pdf-section {
 			position: relative;
 			content-visibility: auto;

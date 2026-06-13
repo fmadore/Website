@@ -7,7 +7,8 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 		getResolvedChartColors,
 		resolveColors,
 		getEChartsTooltipStyle,
-		getAnimationConfig
+		getAnimationConfig,
+		CHART_CATEGORICAL_COLORS
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
@@ -30,13 +31,7 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 	// Props
 	let {
 		data = [] as ProjectData[],
-		colors = [
-			'var(--color-primary)',
-			'var(--color-accent)',
-			'var(--color-highlight)',
-			'var(--color-success)',
-			'var(--color-secondary)'
-		]
+		colors = CHART_CATEGORICAL_COLORS
 	}: {
 		data?: ProjectData[];
 		colors?: string[];

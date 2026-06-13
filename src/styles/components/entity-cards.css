@@ -371,3 +371,75 @@ html.dark .entity-card--editorial:hover {
 		transform: none;
 	}
 }
+
+/* ============================================================================
+ * Quiet row variant
+ * ============================================================================
+ * The long main lists (/publications, /conference-activity) render every
+ * item as a row: no card chrome, a hairline rule below, serif title — a
+ * typeset bibliography, not a stack of forty identical tiles. Card chrome
+ * is reserved for featured/curated blocks, which gives the editorial lead
+ * real contrast. Hover affordance is the title's underline pre-reveal
+ * (inherited from `.entity-card:hover .entity-title-link`), not a lift.
+ */
+.entity-card--row {
+	background: transparent;
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+	padding: 0 0 var(--space-lg);
+	border-bottom: var(--border-width-thin) solid var(--color-border-light);
+}
+
+.entity-card--row:hover {
+	transform: none;
+	box-shadow: none;
+	border-color: transparent;
+	border-bottom-color: var(--color-border);
+}
+
+html.dark .entity-card--row,
+html.dark .entity-card--row:hover {
+	background: transparent;
+	box-shadow: none;
+}
+
+html.dark .entity-card--row {
+	border-bottom-color: var(--color-border);
+}
+
+html.dark .entity-card--row:hover {
+	border-bottom-color: var(--color-border-dark);
+}
+
+/* Serif titles tie the rows to the site's editorial register. */
+.entity-card--row .entity-title {
+	font-family: var(--font-family-serif);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: var(--letter-spacing-tight);
+}
+
+/* Type + language read as a quiet letterspaced eyebrow, matching the
+ * detail-page dateline convention. */
+.entity-card--row .entity-meta {
+	text-transform: uppercase;
+	letter-spacing: var(--tracking-eyebrow);
+	font-size: var(--font-size-xs);
+}
+
+.entity-card--row .entity-meta .entity-type {
+	font-weight: var(--font-weight-semibold);
+	font-size: var(--font-size-xs);
+}
+
+/* Thumbnails shrink to a marginalia-scale figure so the type leads. */
+.entity-card--row .entity-cover-image,
+.entity-card--row .entity-image-container {
+	max-width: 7rem;
+}
+
+@media (--sm-down) {
+	.entity-card--row {
+		padding: 0 0 var(--space-md);
+	}
+}

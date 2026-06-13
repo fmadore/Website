@@ -11,7 +11,7 @@
 	 * - Clickable links for contact info
 	 *
 	 * Design improvements:
-	 * - Refined color palette matching website's terracotta/amber warm design system
+	 * - Refined color palette matching website's ink-blue/amber design system
 	 * - Better visual hierarchy with improved font sizes
 	 * - Professional header design with name prominence
 	 * - Decorative accent lines and section dividers
@@ -273,7 +273,7 @@
 						pdf.setTextColor(...COLORS.TEXT_LIGHT);
 						pdf.text(displayLabel, rightColumn, rightY);
 
-						// Clickable link value — terracotta to match on-screen `#cv-content a`
+						// Clickable link value — primary to match on-screen `#cv-content a`
 						pdf.setTextColor(...COLORS.PRIMARY);
 						pdf.textWithLink(displayValue, rightColumn + 15, rightY, { url: href });
 						rightY += SPACING.CONTACT_LINE;

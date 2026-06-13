@@ -58,12 +58,12 @@
 	const LEGEND_ITEMS: Array<{
 		type: string;
 		label: string;
-		colorKey: 'accent' | 'highlight' | 'purple' | 'pink' | 'primary';
+		colorKey: 'accent' | 'teal' | 'mauve' | 'sage' | 'primary';
 	}> = [
-		{ type: 'conference', label: 'Conference', colorKey: 'purple' },
+		{ type: 'conference', label: 'Conference', colorKey: 'teal' },
 		{ type: 'lecture', label: 'Lecture', colorKey: 'accent' },
-		{ type: 'workshop', label: 'Workshop', colorKey: 'pink' },
-		{ type: 'event', label: 'Event', colorKey: 'highlight' },
+		{ type: 'workshop', label: 'Workshop', colorKey: 'mauve' },
+		{ type: 'event', label: 'Event', colorKey: 'sage' },
 		{ type: '__other__', label: 'Other', colorKey: 'primary' }
 	];
 
@@ -265,11 +265,11 @@
 						'lecture',
 						colors.accent,
 						'event',
-						colors.highlight,
+						colors.sage,
 						'conference',
-						colors.purple,
+						colors.teal,
 						'workshop',
-						colors.pink,
+						colors.mauve,
 						/* other */ colors.primary
 					],
 					'circle-radius': 7,
@@ -616,16 +616,16 @@
 		background-color: var(--color-accent);
 	}
 
-	.legend-swatch-highlight {
-		background-color: var(--color-highlight);
+	.legend-swatch-teal {
+		background-color: var(--sys-color-teal-600);
 	}
 
-	.legend-swatch-purple {
-		background-color: var(--sys-color-purple-500);
+	.legend-swatch-mauve {
+		background-color: var(--sys-color-mauve-500);
 	}
 
-	.legend-swatch-pink {
-		background-color: var(--sys-color-pink-500);
+	.legend-swatch-sage {
+		background-color: var(--sys-color-sage-500);
 	}
 
 	@media (--sm-down) {

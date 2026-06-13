@@ -331,9 +331,17 @@ pages is Phase 4 item 5 (collapsible sidebar on desktop) or Phase 6 item 1
 ## Design Evolution — Warm Editorial Direction
 
 Multi-session refactor that migrated the site from a teal/amber + cool-gray
-glassmorphism aesthetic to a warm terracotta + humanist-serif editorial
-direction. Driven by the Impeccable skill brief in [`.impeccable.md`](./.impeccable.md);
+glassmorphism aesthetic to a warm editorial direction — first via a
+terracotta primary (the era most entries below narrate), since superseded by
+the current **deep ink-blue primary on warm paper / cool slate** palette
+described in [`.impeccable.md`](./.impeccable.md). Where entries below say
+"terracotta", read them as historical; the tokens now resolve to ink-blue.
+Driven by the Impeccable skill brief in [`.impeccable.md`](./.impeccable.md);
 design principles are captured there and mirrored in [`CLAUDE.md`](./CLAUDE.md).
+**June 2026 expert review + Phase A implementation:** see
+[`DESIGN-REVIEW-2026-06.md`](./DESIGN-REVIEW-2026-06.md) (warm paper ground,
+de-boxed page headers/intros/breadcrumbs, colophon footer, masthead display
+face, selection/text-wrap finishing, token hygiene).
 
 ### Landed
 

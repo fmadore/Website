@@ -23,18 +23,23 @@ ECharts Stacked Bar Chart component
 		keys = [] as string[],
 		xAxisLabel = '',
 		yAxisLabel = '',
+		/* Editorial categorical set (see CHART_CATEGORICAL_COLORS), mapped
+		 * positionally to the alphabetically-sorted publication type keys
+		 * (article, blogpost, book, bulletin-article, chapter, …). The
+		 * dominant series (journal articles) carries the brand ink; the book
+		 * family reads as gold/bronze kin. No purple/pink/neon. */
 		colors = [
-			'var(--sys-color-amber-400)', // Blog post - gold
-			'var(--sys-color-blue-500)', // Book - blue
-			'var(--sys-color-purple-400)', // Book chapter - purple
-			'var(--sys-color-emerald-400)', // Bulletin article - green
-			'var(--sys-color-neutral-400)', // Conference proceedings - gray
-			'var(--sys-color-pink-400)', // Encyclopedia entry - pink
-			'var(--sys-color-teal-500)', // Journal article - teal
-			'var(--sys-color-red-400)', // Master's thesis - red
-			'var(--sys-color-amber-600)', // PhD dissertation - dark amber
-			'var(--sys-color-blue-300)', // Research report - light blue
-			'var(--sys-color-teal-300)' // Special issue - light teal
+			'var(--color-primary)', // article → Journal article — ink (brand backbone)
+			'var(--sys-color-ink-300)', // blogpost → Blog post — pale ink
+			'var(--sys-color-amber-500)', // book → Book — gold
+			'var(--sys-color-sage-500)', // bulletin-article → Bulletin article — sage
+			'var(--sys-color-amber-700)', // chapter → Book chapter — bronze
+			'var(--sys-color-neutral-400)', // conference-proceedings — warm gray
+			'var(--sys-color-mauve-500)', // encyclopedia → Encyclopedia entry — mauve
+			'var(--sys-color-slate-blue-500)', // masters-thesis — steel blue
+			'var(--sys-color-teal-600)', // phd-dissertation — teal
+			'var(--sys-color-neutral-500)', // report → Research report — sepia
+			'var(--sys-color-teal-400)' // special-issue → Special issue — aqua
 		]
 	}: {
 		data?: DataItem[];

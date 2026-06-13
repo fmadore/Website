@@ -352,6 +352,7 @@
 		<FilteredListDisplay
 			filteredItems={sortedPublications}
 			itemComponent={PublicationItem}
+			itemComponentProps={{ row: true }}
 			itemPropName="publication"
 			areFiltersActive={areFiltersActive($activeFilters)}
 			{clearAllFilters}

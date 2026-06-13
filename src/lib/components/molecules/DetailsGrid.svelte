@@ -59,7 +59,6 @@
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: 0;
-		padding: var(--space-lg);
 	}
 
 	/* Two columns on medium screens and up */

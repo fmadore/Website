@@ -23,17 +23,18 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		data = [] as DataItem[],
 		nameAccessor,
 		valueAccessor,
+		/* Editorial categorical set + softened repeats for long tag lists. */
 		colors = [
 			'var(--color-primary)',
-			'var(--color-accent)',
-			'var(--color-highlight)',
-			'var(--color-success)',
-			'var(--color-secondary)',
-			'color-mix(in srgb, var(--color-primary) 80%, transparent)',
-			'color-mix(in srgb, var(--color-accent) 80%, transparent)',
-			'color-mix(in srgb, var(--color-highlight) 80%, transparent)',
-			'color-mix(in srgb, var(--color-success) 70%, transparent)',
-			'color-mix(in srgb, var(--color-primary) 60%, transparent)'
+			'var(--sys-color-amber-500)',
+			'var(--sys-color-teal-600)',
+			'var(--sys-color-mauve-500)',
+			'var(--sys-color-sage-500)',
+			'var(--sys-color-slate-blue-500)',
+			'color-mix(in srgb, var(--color-primary) 75%, transparent)',
+			'color-mix(in srgb, var(--sys-color-amber-500) 75%, transparent)',
+			'color-mix(in srgb, var(--sys-color-teal-600) 70%, transparent)',
+			'color-mix(in srgb, var(--sys-color-mauve-500) 70%, transparent)'
 		],
 		minBubbleSize = 22,
 		maxBubbleSize = 75

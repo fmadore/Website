@@ -187,7 +187,7 @@ Modern, comprehensive button system with enhanced accessibility and user experie
 
 - **Base button**: `.btn` with modern styling, flexbox layout, and smooth transitions
 - **Color variants**:
-  - `.btn-primary`: Terracotta with gradient
+  - `.btn-primary`: Solid ink-blue, no gradient
   - `.btn-secondary`: Neutral with subtle background
   - `.btn-ghost`: Minimal style for tertiary actions
   - `.btn-danger`: Red variant for destructive actions
@@ -495,11 +495,9 @@ Modern glass effect utilities for creating frosted glass UI elements:
 - **Component-specific**: `.glass-card`, `.glass-panel`, `.glass-panel-light`, `.glass-nav`, `.glass-button`
 - **Button variants**: Enhanced glass button styling with improved contrast
 - **Special effects**: `.glass-frosted` with enhanced saturation
-- **Ambient effects**: `.glass-shimmer` - subtle light reflection animation using `--duration-ambient-lg` (12s)
-- **Transition utilities**: `.glass-animate`, `.glass-animate-fast`, `.glass-animate-slow`
+- **Transition utility**: `.glass-animate` (used by IframeRenderer glass variants)
 - **Dark mode support**: Automatic dark theme adaptations
 - **Browser fallbacks**: Graceful degradation for unsupported browsers
-- **Accessibility**: Glass shimmer disabled when `prefers-reduced-motion: reduce`
 - **Responsive variants**: Available at all breakpoints
 
 ### Z-Index (`utilities/z-index.css`)

@@ -1,8 +1,8 @@
 /* ===== DARK THEME =====
- * Warm dusk, not corporate dark-blue. Surfaces read like a reading lamp on
- * oak; primary is a brightened terracotta (chroma reduced at high lightness
- * per OKLCH principle). Both themes are first-class — this is its own pass,
- * not inverted light. */
+ * Study desk after midnight: cool slate surfaces, warm cream text, primary
+ * brightened to ink-400 (chroma reduced at high lightness per OKLCH
+ * principle). Both themes are first-class — this is its own pass, not
+ * inverted light. */
 html.dark {
 	/* Primary — Deep ink-blue, brightened for dark surfaces */
 	--color-primary: #7a89b3; /* ink-400 */

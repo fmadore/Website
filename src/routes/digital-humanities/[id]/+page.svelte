@@ -206,15 +206,21 @@
 		</article>
 	</div>
 
-	<!-- Back button -->
-	<div class="mt-8 text-center max-w-6xl mx-auto">
-		<a href={resolve('/digital-humanities')} class="btn btn-primary glass-button"
-			>Back to Digital Humanities Projects</a
+	<!-- Back link — quiet editorial text link, left-aligned like the
+	     header back-links on other detail pages. -->
+	<div class="mt-8 max-w-6xl mx-auto">
+		<a href={resolve('/digital-humanities')} class="link-animated back-to-index"
+			>← Back to Digital Humanities Projects</a
 		>
 	</div>
 </div>
 
 <style>
+	.back-to-index {
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-medium);
+	}
+
 	/* Article container - consistent with activity and research pages */
 	.project-detail-article {
 		position: relative;
@@ -303,8 +309,9 @@
 		line-height: var(--line-height-relaxed);
 	}
 
+	/* The iframe carries its own toolbar chrome; no tile wrapper needed. */
 	.iframe-wrapper {
-		padding: var(--space-lg);
+		margin: var(--space-lg) 0;
 	}
 
 	/* Image styling */
@@ -328,24 +335,12 @@
 		box-shadow: var(--shadow-lg);
 	}
 
+	/* Content-on-paper sections — serif titles with hairline rules carry the
+	 * hierarchy; no tile padding or accent borders. */
 	.award-section,
 	.publication-section,
 	.reviews-section {
-		margin: var(--space-lg) 0;
-		padding: var(--space-lg);
-	}
-
-	/* Award section accent color */
-	.award-section {
-		border-color: color-mix(
-			in srgb,
-			var(--color-accent) calc(var(--opacity-10) * 100%),
-			transparent
-		);
-	}
-
-	.award-section .section-title {
-		color: var(--color-text-emphasis);
+		margin: var(--space-xl) 0;
 	}
 
 	/* Section titles - consistent typography */
@@ -355,6 +350,8 @@
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
 		margin-bottom: var(--space-md);
+		padding-bottom: var(--space-sm);
+		border-bottom: var(--border-width-thin) solid var(--color-border-light);
 		line-height: var(--line-height-tight);
 	}
 

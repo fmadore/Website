@@ -229,12 +229,13 @@
 		margin-bottom: var(--space-lg);
 	}
 
-	/* Action buttons container positioning */
+	/* Action buttons — document chrome, tucked to the top right of the sheet
+	 * like a letterhead's utility row instead of a centered button bar. */
 	.cv-actions {
 		display: flex;
 		gap: var(--space-md);
 		align-items: center;
-		justify-content: center;
+		justify-content: flex-start;
 		margin-bottom: var(--space-md);
 		position: relative;
 		z-index: 10;
@@ -242,30 +243,30 @@
 		padding-bottom: var(--space-2);
 	}
 
+	@media (--md) {
+		.cv-actions {
+			justify-content: flex-end;
+			margin-bottom: 0;
+		}
+	}
+
 	/* Scroll offset for anchor navigation past sticky header */
 	:global(.cv-section-wrapper[id]) {
 		scroll-margin-top: calc(var(--space-16) + var(--space-4));
 	}
 
-	/* CV section wrappers - solid backgrounds with subtle tint */
+	/* CV sections — flat on the sheet, like a printed CV. The previous
+	 * tinted hover-reactive tile per section put cards inside the document
+	 * sheet (cards-in-cards) and made static sections react to the cursor.
+	 * The Spectral h3 with its hairline rule articulates each section;
+	 * spacing does the rest. */
 	:global(.cv-section-wrapper) {
-		background: var(--color-surface);
-		border-radius: var(--border-radius-lg);
-		padding: var(--space-4);
-		margin-bottom: var(--space-4);
-		border: var(--border-width-thin) solid var(--color-border-light);
-		transition: all var(--duration-normal) ease;
+		margin-bottom: var(--space-2xl);
 	}
 
 	/* Remove bottom margin from sections inside wrappers */
 	:global(.cv-section-wrapper > section) {
 		margin-bottom: 0;
-	}
-
-	:global(.cv-section-wrapper:hover) {
-		background: var(--color-surface-alt);
-		border-color: var(--color-border);
-		box-shadow: var(--shadow-sm);
 	}
 
 	/*

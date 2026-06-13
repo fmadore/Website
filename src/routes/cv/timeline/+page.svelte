@@ -1,5 +1,6 @@
 <script lang="ts">
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
+	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import CareerTimeline from '$lib/components/visualisations/CareerTimeline.svelte';
 	import SEO from '$lib/SEO.svelte';
@@ -45,12 +46,12 @@
 		additionalClasses="mb-8"
 	/>
 
-	<ContentBody variant="wide">
-		<p class="mb-6 text-lg text-secondary">
-			An interactive visualization of my academic journey, highlighting positions held, education
-			completed, grants received, and key scholarly outputs over time. Hover over items for details.
-		</p>
+	<PageIntro>
+		An interactive visualization of my academic journey, highlighting positions held, education
+		completed, grants received, and key scholarly outputs over time. Hover over items for details.
+	</PageIntro>
 
+	<ContentBody variant="wide">
 		<div class="timeline-container">
 			<CareerTimeline {items} height={chartHeight} />
 		</div>

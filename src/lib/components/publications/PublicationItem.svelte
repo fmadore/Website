@@ -18,9 +18,15 @@
 		 * editorial-magazine lead story breaks a section.
 		 */
 		editorial?: boolean;
+		/**
+		 * Render as a quiet list row (no card chrome, hairline separator) —
+		 * used by the long main lists so cards stay reserved for featured
+		 * material. A bibliography entry, not a tile.
+		 */
+		row?: boolean;
 	}
 
-	let { publication, onfilterrequest, index, editorial = false }: Props = $props();
+	let { publication, onfilterrequest, index, editorial = false, row = false }: Props = $props();
 
 	// Optimize loading for above-the-fold images (first 3 items)
 	const imageLoading = $derived((index ?? 0) < 3 ? 'eager' : 'lazy');
@@ -107,7 +113,7 @@
 </script>
 
 <article class="entity-list-item scroll-reveal-scale" class:editorial>
-	<div class="entity-card" class:entity-card--editorial={editorial}>
+	<div class="entity-card" class:entity-card--editorial={editorial} class:entity-card--row={row}>
 		<div class="entity-grid">
 			{#if publication.image}
 				<div class="entity-image-container">

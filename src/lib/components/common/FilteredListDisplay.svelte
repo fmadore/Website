@@ -129,23 +129,19 @@
 		contain: layout style;
 	}
 
+	/* Empty state — quiet serif note between hairlines, no tinted box. */
 	.empty-state {
-		padding: var(--space-xl);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-surface) calc(var(--opacity-90) * 100%), transparent) 100%
-		);
-		border-radius: var(--border-radius-lg);
-		text-align: center;
+		padding: var(--space-xl) 0;
 		margin-top: var(--space-lg);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
+		border-top: var(--border-width-thin) solid var(--color-border-light);
+		border-bottom: var(--border-width-thin) solid var(--color-border-light);
 	}
 
 	.empty-state-message {
-		color: var(--color-text);
-		font-size: var(--font-size-base);
+		font-family: var(--font-family-serif);
+		font-style: italic;
+		color: var(--color-text-soft);
+		font-size: var(--font-size-lg);
 		margin: 0;
 	}
 

@@ -22,7 +22,7 @@ Only renders if text analysis data is available for this publication.
 
 {#if showWordCloud && analysis}
 	<section class="wordcloud-section glass-section-panel scroll-reveal">
-		<h2 class="section-title">{title}</h2>
+		<h2 class="editorial-section-title wordcloud-title">{title}</h2>
 		<div class="wordcloud-wrapper">
 			<EChartsWordCloud
 				words={analysis.frequencies}
@@ -38,23 +38,16 @@ Only renders if text analysis data is available for this publication.
 {/if}
 
 <style>
+	/* Content-on-paper section — the word-cloud figure is the surface. */
 	.wordcloud-section {
-		--_gsp-c1: var(--color-accent);
-		--_gsp-c2: var(--color-primary);
-		--_gsp-c3: var(--color-highlight);
-		padding: var(--space-lg);
+		margin-top: var(--space-xl);
 	}
 
-	/* Section title — letterpress hairline rule under solid Spectral ink. */
-	.section-title {
-		font-family: var(--font-family-serif);
+	/* Base treatment comes from the shared .editorial-section-title utility
+	 * (typography.css); the word-cloud figure title steps one size up. */
+	.wordcloud-title {
 		font-size: var(--font-size-xl);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-emphasis);
 		margin-bottom: var(--space-md);
-		padding-bottom: var(--space-sm);
-		border-bottom: var(--border-width-thin) solid var(--color-border-light);
-		line-height: var(--line-height-tight);
 	}
 
 	.wordcloud-wrapper {
@@ -71,11 +64,7 @@ Only renders if text analysis data is available for this publication.
 
 	/* Responsive */
 	@media (--sm) {
-		.wordcloud-section {
-			padding: var(--space-xl);
-		}
-
-		.section-title {
+		.wordcloud-title {
 			font-size: var(--font-size-2xl);
 		}
 	}

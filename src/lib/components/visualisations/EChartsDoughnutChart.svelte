@@ -8,7 +8,8 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		resolveColors,
 		getEChartsTooltipStyle,
 		prefersReducedMotion,
-		colorWithOpacity
+		colorWithOpacity,
+		CHART_CATEGORICAL_COLORS
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
@@ -23,22 +24,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		title = '',
 		showLabels = true,
 		radius = ['40%', '70%'], // Inner and outer radius for doughnut
-		colors = [
-			'var(--color-primary)',
-			'var(--color-accent)',
-			'var(--color-highlight)',
-			'var(--color-success)',
-			'var(--color-secondary)',
-			'var(--sys-color-purple-500)',
-			'var(--sys-color-pink-500)',
-			'var(--sys-color-blue-500)',
-			'var(--sys-color-teal-400)',
-			'var(--sys-color-amber-400)',
-			'var(--sys-color-emerald-400)',
-			'var(--sys-color-blue-400)',
-			'var(--sys-color-amber-300)',
-			'var(--sys-color-teal-300)'
-		]
+		colors = CHART_CATEGORICAL_COLORS
 	}: {
 		data?: DataItem[];
 		nameAccessor: (d: DataItem) => string;

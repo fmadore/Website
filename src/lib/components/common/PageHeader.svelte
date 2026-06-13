@@ -34,7 +34,7 @@
 	}
 </script>
 
-<header class="page-header enhanced-page-header page-enter scroll-reveal mb-8 {additionalClasses}">
+<header class="page-header page-enter scroll-reveal mb-8 {additionalClasses}">
 	{#if backLinkHref}
 		<!-- eslint-disable-next-line @typescript-eslint/no-explicit-any -- dynamic path resolved at runtime -->
 		<a href={resolve(`/${backLinkHref}` as any)} class="back-link mb-4 inline-block">
@@ -43,29 +43,24 @@
 	{/if}
 
 	<div class="header-content">
-		<div class="header-meta flex justify-between items-start mb-3 flex-wrap gap-2">
-			{#if typeBadgeText}
-				<div class="type-badge">
-					{typeBadgeText}
-				</div>
-			{/if}
-			{#if date}
-				<div class="header-date">{date}</div>
-			{/if}
-		</div>
+		{#if typeBadgeText || date}
+			<p class="header-eyebrow">
+				{#if typeBadgeText}<span class="eyebrow-type">{typeBadgeText}</span>{/if}
+				{#if typeBadgeText && date}<span class="eyebrow-separator" aria-hidden="true">·</span>{/if}
+				{#if date}<span class="eyebrow-date">{date}</span>{/if}
+			</p>
+		{/if}
 
-		<div class="title-section">
-			<h1 class="page-title text-3xl md:text-4xl font-bold mb-3">{title}</h1>
-		</div>
+		<h1 class="page-title">{title}</h1>
 
 		{#if authors && authors.length > 0}
-			<div class="authors text-xl mb-3">
+			<div class="authors">
 				{formatNameList(authors)}
 			</div>
 		{/if}
 
 		{#if editors}
-			<div class="editors text-secondary mb-3">
+			<div class="editors">
 				Edited by {formatNameList(editors)}
 			</div>
 		{/if}
@@ -79,200 +74,129 @@
 </header>
 
 <style>
+	/*
+	 * Editorial page header — content on paper, not a tile.
+	 * The previous iteration wrapped every page title in a rounded warm-paper
+	 * box (background + border + shadow). That read as "title in a card" —
+	 * the templated-CMS gesture the brief argues against. Now the title sits
+	 * directly on the page ground, hierarchy carried by the display serif and
+	 * a single hairline rule underneath: a magazine headline, not a banner.
+	 */
 	.page-header {
 		position: relative;
-	}
-
-	/*
-	 * Warm-paper detail-page header. Single solid surface, hairline border,
-	 * single-layer shadow — no radial gradient, no double accent tint, no
-	 * decorative `.title-accent` bar. The page title reads as ink on paper
-	 * and inherits Spectral so the serif heading stack matches CV and
-	 * editorial featured-lead conventions; the type-badge / back-link still
-	 * carry the rare terracotta accents around the title.
-	 */
-	.enhanced-page-header {
-		background: var(--color-surface);
-		border-radius: var(--border-radius-xl);
-		box-shadow: var(--shadow-sm);
-		/* Mobile-first padding */
-		padding: var(--space-6) var(--space-4);
-		border: var(--border-width-thin) solid var(--color-border-light);
-		/* Mobile-first margin */
-		margin-bottom: var(--space-4);
+		padding-bottom: var(--space-lg);
+		border-bottom: var(--border-width-thin) solid var(--color-border);
+		margin-bottom: var(--space-xl);
 	}
 
 	.header-content {
 		position: relative;
 	}
 
-	/* Mobile-first header meta */
-	.header-meta {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: var(--space-2);
+	/* Eyebrow — type + date as one quiet letterspaced line above the title.
+	 * Replaces the solid primary pill + bordered date chip: the rare brand
+	 * accent now lives in type colour, not in button-like chrome. */
+	.header-eyebrow {
+		display: flex;
+		align-items: baseline;
+		flex-wrap: wrap;
+		gap: var(--space-xs);
+		margin: 0 0 var(--space-sm);
+		font-size: var(--font-size-xs);
+		font-weight: var(--font-weight-semibold);
+		text-transform: uppercase;
+		letter-spacing: var(--tracking-eyebrow);
+	}
+
+	.eyebrow-type {
+		color: var(--color-primary);
+	}
+
+	.eyebrow-separator {
+		color: var(--color-text-muted);
+	}
+
+	.eyebrow-date {
+		color: var(--color-text-light);
 	}
 
 	.back-link {
 		color: var(--color-primary);
 		text-decoration: none;
-		font-weight: var(--font-weight-semibold);
-		transition: all var(--duration-normal) var(--ease-out);
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-medium);
 		display: inline-flex;
 		align-items: center;
 		gap: var(--space-1);
-		padding: var(--space-2) var(--space-3);
-		border-radius: var(--border-radius-md);
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-10) * 100%),
-			transparent
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
+		padding-bottom: 2px;
+		background-image: linear-gradient(90deg, var(--color-primary), var(--color-primary));
+		background-size: 0% 1px;
+		background-position: left bottom;
+		background-repeat: no-repeat;
+		transition:
+			color var(--duration-normal) var(--ease-out),
+			background-size var(--duration-normal) var(--ease-out);
 	}
 
 	.back-link:hover {
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-30) * 100%),
-			transparent
-		);
-		transform: translateX(calc(-1 * var(--space-3xs)));
+		background-size: 100% 1px;
 	}
 
-	.type-badge {
-		display: inline-flex;
-		align-items: center;
-		background: var(--color-primary);
-		color: var(--color-text-inverted);
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-bold);
-		text-transform: uppercase;
-		letter-spacing: var(--letter-spacing-wide);
-		padding: var(--space-2) var(--space-4);
-		border-radius: var(--border-radius-full);
-		box-shadow: var(--shadow-sm);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
-	}
-
-	.header-date {
-		font-size: var(--font-size-sm);
-		color: var(--color-secondary);
-		font-weight: var(--font-weight-medium);
-		white-space: nowrap;
-		padding: var(--space-2) var(--space-3);
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-90) * 100%),
-			transparent
-		);
-		border-radius: var(--border-radius-md);
-		/* Fixed missing variable */
-		border: var(--border-width-thin) solid var(--color-border);
-	}
-
-	.title-section {
-		position: relative;
-		margin-bottom: var(--space-4);
+	.back-link:focus-visible {
+		outline: var(--border-width-medium) solid var(--color-primary);
+		outline-offset: var(--space-2xs);
+		border-radius: var(--border-radius-sm);
 	}
 
 	.page-title {
-		font-family: var(--font-family-serif);
+		font-family: var(--font-family-display);
+		font-optical-sizing: auto;
 		color: var(--color-text-emphasis);
-		line-height: var(--line-height-tight);
+		line-height: var(--line-height-heading);
 		font-weight: var(--font-weight-semibold);
-		letter-spacing: var(--letter-spacing-tight);
+		letter-spacing: var(--tracking-heading);
 		margin: 0;
-		/* Mobile-first font size override */
+		/* Mobile-first font size */
 		font-size: var(--font-size-2xl);
+		max-width: 25ch;
 	}
 
+	/* Authors set in the editorial serif — a byline, not UI chrome. */
 	.authors {
-		color: var(--color-text);
-		font-weight: var(--font-weight-medium);
+		font-family: var(--font-family-serif);
+		color: var(--color-text-soft);
 		line-height: var(--line-height-relaxed);
-		/* Mobile-first font size override */
+		margin-top: var(--space-sm);
 		font-size: var(--font-size-lg);
 	}
 
 	.editors {
-		font-size: var(--font-size-lg);
-		font-weight: var(--font-weight-medium);
+		font-family: var(--font-family-serif);
+		color: var(--color-text-soft);
+		font-size: var(--font-size-base);
 		line-height: var(--line-height-relaxed);
+		margin-top: var(--space-2xs);
 	}
 
-	/* Dark mode — warm-dusk surface tile, hairline border, single shadow.
-	 * Same depatterning as light mode: no radial gradient, no double-tint
-	 * accent layer. */
-	:global(html.dark) .enhanced-page-header {
-		background: var(--color-surface);
-		border-color: var(--color-border);
-		box-shadow: var(--shadow-md);
-	}
-
-	:global(html.dark) .back-link {
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-30) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark) .back-link:hover {
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-30) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark) .header-date {
-		background: color-mix(
-			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-90) * 100%),
-			transparent
-		);
-		/* Fixed missing variable */
-		border-color: var(--color-border-dark);
+	@media (prefers-reduced-motion: reduce) {
+		.back-link {
+			background-size: 100% 1px;
+			transition: none;
+		}
 	}
 
 	/* Desktop responsive design */
 	@media (--sm) {
-		.enhanced-page-header {
-			padding: var(--space-8) var(--space-6);
-			margin-bottom: var(--space-6);
+		.page-header {
+			margin-bottom: var(--space-2xl);
 		}
 
 		.page-title {
-			/* Reset to inherit or larger size */
 			font-size: var(--font-size-4xl);
 		}
 
 		.authors {
 			font-size: var(--font-size-xl);
-		}
-
-		.header-meta {
-			flex-direction: row;
-			align-items: flex-start;
-			justify-content: space-between;
 		}
 	}
 </style>

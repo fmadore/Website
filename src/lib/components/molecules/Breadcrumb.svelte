@@ -37,38 +37,11 @@
 
 <style>
 	.breadcrumb {
-		/* Paper breadcrumb — content nav chip, not sticky chrome. backdrop-filter
-		 * + radial gradient were decorative; replaced with a single warm-tinted
-		 * surface and a quiet shadow. */
+		/* Plain orientation line — no tile, no shadow, no decorative connector.
+		 * The breadcrumb just orients the reader above the headline; boxing it
+		 * gave a one-line nav the visual weight of content. */
 		font-size: var(--font-size-sm);
 		margin-bottom: var(--space-md);
-		padding: var(--space-sm) var(--space-md-tight);
-		background: color-mix(in srgb, var(--color-primary) 4%, var(--color-surface));
-		border-radius: var(--border-radius-lg);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
-		box-shadow: var(--shadow-sm);
-		position: relative;
-	}
-
-	/* Enhanced connection line to the page header */
-	.breadcrumb::after {
-		content: '';
-		position: absolute;
-		bottom: calc(-1 * var(--space-xs) - var(--border-width-thin));
-		left: var(--space-md-tight);
-		width: var(--space-2xl);
-		height: var(--space-2xs);
-		background: linear-gradient(
-			90deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-15) * 100%), transparent) 50%,
-			transparent 100%
-		);
-		border-radius: var(--border-radius-sm);
-		opacity: var(--opacity-90);
-		box-shadow: 0 var(--border-width-thin) var(--space-2xs)
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
 	}
 
 	.breadcrumb ol {
@@ -88,12 +61,8 @@
 	.breadcrumb li:not(:last-child)::after {
 		content: '›';
 		margin: 0 var(--space-sm);
-		color: var(--color-primary);
+		color: var(--color-text-muted);
 		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-semibold);
-		opacity: var(--opacity-90);
-		text-shadow: 0 var(--border-width-thin) var(--space-2xs)
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
 	}
 
 	/* Breadcrumb Link Styles — editorial underline-expand pattern, matching
@@ -156,7 +125,6 @@
 	/* Responsive Design */
 	@media (--sm) {
 		.breadcrumb {
-			padding: var(--space-sm) var(--space-md);
 			margin-bottom: var(--space-sm);
 		}
 
@@ -169,28 +137,6 @@
 			padding: var(--space-2xs) 0;
 			font-size: var(--font-size-xs);
 		}
-
-		.breadcrumb::after {
-			left: var(--space-md);
-			width: var(--space-xl);
-		}
-	}
-
-	/* Dark Mode — keep the paper-tile feel but use warm surface tokens. The
-	 * radial-gradient + heavy shadow that lived here previously was extra
-	 * chrome for a small content nav strip. */
-	:global(html.dark) .breadcrumb {
-		background: color-mix(in srgb, var(--color-primary) 6%, var(--color-surface-alt));
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-		box-shadow: var(--shadow-sm);
-	}
-
-	:global(html.dark) .breadcrumb-link {
-		color: var(--color-text);
 	}
 
 	/* Accessibility - Reduced Motion */
@@ -201,10 +147,6 @@
 
 		.breadcrumb-link:hover::after {
 			width: 100%;
-		}
-
-		.breadcrumb::after {
-			display: none;
 		}
 	}
 </style>

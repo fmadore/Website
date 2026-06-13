@@ -77,7 +77,7 @@
 		width: 100%;
 	}
 
-	/* Active (current-page) link: primary color for text and a solid terracotta
+	/* Active (current-page) link: primary color for text and a solid primary
 	 * underline. Previously used a primary→highlight gradient underline;
 	 * simplified for editorial clarity. */
 	.nav-link.active {

@@ -19,9 +19,11 @@
 	];
 </script>
 
-<h1 class="text-3xl font-bold cv-main-title">Curriculum Vitae</h1>
-<h2 class="text-xl font-semibold mb-1 cv-subtitle text-primary">Frédérick Madore, PhD</h2>
-<p class="text-sm text-muted mb-4 cv-date">{today}</p>
+<header class="cv-header">
+	<h1 class="cv-main-title">Curriculum Vitae</h1>
+	<h2 class="cv-subtitle">Frédérick Madore, PhD</h2>
+	<p class="cv-date">{today}</p>
+</header>
 
 <!-- Contact Info Section -->
 <section class="text-sm text-light cv-contact-section mb-8">
@@ -56,29 +58,52 @@
 </section>
 
 <style>
-	.cv-main-title,
-	.cv-subtitle,
-	.cv-date {
-		text-align: center;
-	}
-
 	/*
-	 * Page-level "Curriculum Vitae" label sits above the actual subject (the
-	 * person's name in `<h2>`). Keep this rule a quiet hairline so the
-	 * terracotta accent attaches to the name below — one confident accent,
-	 * not two stacked ones.
+	 * Editorial title block — left-aligned, like the title page of a printed
+	 * CV rather than a centered banner. The h1 "Curriculum Vitae" is the
+	 * document *label*, so it renders as a quiet letterspaced eyebrow; the
+	 * subject (the name, h2) carries the display type. Heading levels stay
+	 * h1 → h2 → h3 for assistive tech; only the visual weight is inverted.
 	 */
-	.cv-main-title {
-		margin-bottom: var(--space-2);
-		padding-bottom: var(--space-2);
-		border-bottom: var(--border-width-thin) solid var(--color-border);
+	.cv-header {
+		margin-bottom: var(--space-6);
 	}
 
-	/* Contact section layout */
+	.cv-main-title {
+		font-family: var(--font-family-sans);
+		font-size: var(--font-size-xs);
+		font-weight: var(--font-weight-semibold);
+		text-transform: uppercase;
+		letter-spacing: var(--tracking-eyebrow);
+		color: var(--color-primary);
+		margin: 0 0 var(--space-3);
+	}
+
+	.cv-subtitle {
+		font-family: var(--font-family-display);
+		font-optical-sizing: auto;
+		font-size: var(--font-size-3xl);
+		font-weight: var(--font-weight-semibold);
+		line-height: var(--line-height-heading);
+		letter-spacing: var(--tracking-heading);
+		color: var(--color-text-emphasis);
+		margin: 0 0 var(--space-2);
+	}
+
+	.cv-date {
+		font-size: var(--font-size-sm);
+		color: var(--color-text-muted);
+		margin: 0;
+	}
+
+	/* Contact section layout — closes the title block with a hairline rule,
+	 * mirroring the page-header convention used across the site. */
 	.cv-contact-section {
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-6);
+		padding-bottom: var(--space-6);
+		border-bottom: var(--border-width-thin) solid var(--color-border);
 	}
 
 	.cv-contact-group {

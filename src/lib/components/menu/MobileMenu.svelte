@@ -280,10 +280,14 @@
 		flex: 1;
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-1);
+		gap: 0;
 	}
 
+	/* Each entry is a typeset line over a hairline rule — a table of
+	 * contents, not a stack of buttons. */
 	:global(.mobile-nav-item) {
+		margin: 0 var(--space-5);
+		border-bottom: var(--border-width-thin) solid var(--color-border-light);
 		opacity: 0;
 		transform: translateX(calc(-1 * var(--transform-distance-lg)));
 		transition:
@@ -320,105 +324,69 @@
 		transition-delay: calc(var(--stagger-6) + var(--stagger-1));
 	}
 
+	/* Last entry closes the contents list — no rule below it, and no
+	 * margin-top: auto (the old boxed layout pinned CV to the bottom of the
+	 * overlay, which reads as a stray gap in a typeset list). */
 	:global(.mobile-nav-item:last-child) {
-		margin-top: auto;
-		padding-top: var(--space-2);
+		border-bottom: none;
 	}
 
 	/*
-	 * Mobile nav links — editorial list entries. Removed the sliding shimmer
-	 * ::before (AI-UI tell), removed the per-item backdrop-filter (container
-	 * already blurs), removed the per-item inset highlight shadow. Hover
-	 * conveys state via warm primary tint + colour shift + small nudge.
+	 * Mobile nav links — typeset contents entries, not buttons. The earlier
+	 * iteration boxed every link in a bordered surface tile; the overlay is
+	 * already chrome, so the links themselves are pure type: serif
+	 * semibold, hairline rules between entries (on the item), hover/active
+	 * conveyed by ink colour and a small nudge.
 	 */
 	:global(.mobile-nav-link) {
-		/* Grid + place-items centers the text glyph reliably regardless of the
-		 * font's baseline metrics (Commissioner sits slightly high in its em
-		 * box, which made align-items: center with line-height: 1 render the
-		 * label top-heavy). */
 		display: grid;
 		place-items: center start;
 		min-height: 2.75rem;
-		padding: var(--space-2) var(--space-5);
-		color: var(--color-text);
+		padding: var(--space-3) var(--space-1);
+		color: var(--color-text-emphasis);
 		text-decoration: none;
-		font-size: var(--font-size-base);
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-semibold);
 		line-height: var(--line-height-snug);
-		border-radius: var(--border-radius-lg);
-		background: var(--color-surface);
-		border: var(--border-width-thin) solid var(--color-border);
-		margin: var(--space-1) var(--space-4);
 		transition:
 			transform var(--duration-fast) var(--ease-out),
-			background-color var(--duration-fast) var(--ease-out),
-			border-color var(--duration-fast) var(--ease-out),
 			color var(--duration-fast) var(--ease-out);
 		position: relative;
-		will-change: transform, background-color, border-color;
+		will-change: transform;
 	}
 
 	:global(.mobile-nav-link:hover),
 	:global(.mobile-nav-link:focus) {
 		color: var(--color-primary);
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-10) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-30) * 100%),
-			transparent
-		);
 		transform: translateX(var(--space-1));
 	}
 
 	/*
-	 * Nested sub-menu for dropdown items — same paper treatment as the
-	 * parent nav. No blur stacking, no inset-highlight glass reflection.
+	 * Nested sub-menu — indented plain links in the sans, like sub-entries
+	 * in a table of contents. No tile, no borders.
 	 */
 	:global(.mobile-dropdown) {
 		list-style: none;
-		padding: var(--space-2);
-		margin: var(--space-2) var(--space-5);
-		background: var(--color-surface-alt);
-		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: var(--border-radius-lg);
+		padding: 0 0 var(--space-3) var(--space-4);
+		margin: 0;
 	}
 
 	:global(.mobile-dropdown-link) {
 		display: flex;
 		align-items: center;
-		padding: var(--space-2-5) var(--space-3);
+		padding: var(--space-2) var(--space-1);
 		color: var(--color-text-light);
 		text-decoration: none;
 		font-size: var(--font-size-base);
 		font-weight: var(--font-weight-medium);
 		line-height: var(--line-height-snug);
-		transition:
-			background-color var(--duration-fast) var(--ease-out),
-			border-color var(--duration-fast) var(--ease-out),
-			color var(--duration-fast) var(--ease-out);
-		border-radius: var(--border-radius-md);
-		margin-bottom: var(--space-1);
-		background: transparent;
-		border: var(--border-width-thin) solid transparent;
+		transition: color var(--duration-fast) var(--ease-out);
 	}
 
 	:global(.mobile-dropdown-link:hover),
 	:global(.mobile-dropdown-link:focus) {
 		color: var(--color-primary);
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-10) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-30) * 100%),
-			transparent
-		);
 	}
 
 	/* Hide mobile nav on desktop */
@@ -444,19 +412,12 @@
 		box-shadow: var(--shadow-sm);
 	}
 
-	:global(html.dark .mobile-nav-link) {
-		background: var(--color-surface);
-		border: var(--border-width-thin) solid var(--color-border-dark);
+	:global(html.dark .mobile-nav-item) {
+		border-bottom-color: var(--color-border);
 	}
 
-	:global(html.dark .mobile-dropdown) {
-		background: var(--color-surface-sunken);
-		border: var(--border-width-thin) solid var(--color-border);
-	}
-
-	:global(html.dark .mobile-dropdown-link) {
-		background: transparent;
-		border: var(--border-width-thin) solid transparent;
+	:global(html.dark .mobile-nav-item:last-child) {
+		border-bottom: none;
 	}
 
 	/* Touch device optimizations */

@@ -18,7 +18,6 @@ Provides consistent structure for all research project pages including:
 	import RelevantCommunications from '$lib/components/panels/RelevantCommunications.svelte';
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import ProjectImageBanner from '$lib/components/common/ProjectImageBanner.svelte';
-	import ProjectYears from '$lib/components/common/ProjectYears.svelte';
 	import MediaPlayer from '$lib/components/media/MediaPlayer.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
@@ -85,11 +84,10 @@ Provides consistent structure for all research project pages including:
 		<div class="main-content max-w-6xl mx-auto">
 			<Breadcrumb items={breadcrumbItems} />
 
-			<PageHeader {title} />
-
-			<div class="mb-6">
-				<ProjectYears {years} />
-			</div>
+			<!-- Years ride the header eyebrow ("RESEARCH PROJECT · 2021–2027")
+			     instead of a separate badge pill below the title, matching the
+			     dateline convention on publication/communication detail pages. -->
+			<PageHeader {title} typeBadgeText="Research Project" date={years} />
 
 			<div class="scroll-reveal">
 				<ProjectImageBanner

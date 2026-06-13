@@ -7,7 +7,8 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 		getResolvedChartColors,
 		resolveColors,
 		getEChartsTooltipStyle,
-		colorWithOpacity
+		colorWithOpacity,
+		CHART_CATEGORICAL_COLORS
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
@@ -30,15 +31,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 	let {
 		data = [] as TreemapNode[],
 		title = '',
-		colors = [
-			'var(--color-primary)',
-			'var(--color-accent)',
-			'var(--color-highlight)',
-			'var(--color-success)',
-			'var(--color-secondary)',
-			'var(--sys-color-purple-500)',
-			'var(--sys-color-blue-500)'
-		]
+		colors = CHART_CATEGORICAL_COLORS
 	}: {
 		data?: TreemapNode[];
 		title?: string;

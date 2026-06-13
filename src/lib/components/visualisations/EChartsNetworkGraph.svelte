@@ -78,11 +78,13 @@ ECharts Network Graph - A network visualization for author collaborations
 
 	// Create a color palette for different collaboration counts
 	const collaborationColors = $derived.by(() => {
+		/* Collaboration intensity ramps toward the brand ink: gold → teal →
+		 * sage → ink. Stays inside the editorial categorical register. */
 		const baseColors = [
-			resolvedColors.highlight, // Orange for 1 collaboration
-			resolvedColors.accent, // Purple for 2 collaborations
-			resolvedColors.success, // Green for 3 collaborations
-			resolvedColors.primary // Blue for 4 collaborations
+			resolvedColors.accent, // 1 collaboration — gold
+			resolvedColors.teal, // 2 collaborations — teal
+			resolvedColors.sage, // 3 collaborations — sage
+			resolvedColors.primary // 4+ collaborations — ink
 		];
 
 		const extendedColors = [...baseColors];

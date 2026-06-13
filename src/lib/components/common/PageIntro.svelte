@@ -33,60 +33,34 @@
 
 <style>
 	/*
-	 * PageIntro is an intro-hero surface — keeps glass (per the roadmap's
-	 * "glass for chrome and hero") but simplified to a single primary tint
-	 * instead of the prior three-colour gradient. Featured variant adds a
-	 * single left-accent stripe instead of a multi-hue top bar.
-	 */
-	/*
-	 * Base page intro — warm tinted callout, paper not glass. backdrop-filter
-	 * was removed in the Phase 5 glass-cleanup pass: a page intro is content,
-	 * not sticky chrome, so blur added nothing but a recognisable AI-UI tell.
+	 * PageIntro — editorial standfirst, not a tinted callout box.
+	 * Magazine convention: the deck below the headline is set larger than
+	 * body copy, in the serif, in a softer ink — no background, no border,
+	 * no shadow. The previous primary-tinted rounded tile made every list
+	 * page open with "a sentence in a box"; this lets the type do the work
+	 * (brief principle 1) and keeps content on paper (principle 3).
 	 */
 	.page-intro {
-		font-size: var(--font-size-heading-5);
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-lead);
 		line-height: var(--line-height-relaxed);
-		color: var(--color-text);
-		margin-bottom: var(--space-lg);
-		position: relative;
-		padding: var(--space-md) var(--space-xl);
-		border-radius: var(--border-radius-lg);
-		background: color-mix(in srgb, var(--color-primary) 6%, transparent);
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 20%, transparent);
-		box-shadow: var(--shadow-sm);
+		color: var(--color-text-soft);
+		margin-bottom: var(--space-xl);
+		max-width: var(--text-max-width-reading);
 	}
 
 	.page-intro--compact {
-		font-size: var(--font-size-heading-6);
-		margin-bottom: var(--space-md);
-		padding: var(--space-sm) var(--space-lg);
+		font-size: var(--font-size-lg);
+		margin-bottom: var(--space-lg);
 	}
 
-	/*
-	 * Emphasized / featured variants carry more tinted background than the
-	 * default intro. Previously used a thick primary left-stripe accent —
-	 * removed (AI-UI tell). Depth now comes from the tint + full thin
-	 * border + shadow, which read as a warm pull-quote surface.
-	 */
-	.page-intro--emphasized {
-		font-size: var(--font-size-heading-3);
-		font-weight: var(--font-weight-medium);
-		margin-bottom: var(--space-xl);
-		color: var(--color-text-emphasis);
-		padding: var(--space-xl) var(--space-2xl);
-		background: color-mix(in srgb, var(--color-primary) 10%, transparent);
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 25%, transparent);
-		box-shadow: var(--shadow-md);
-	}
-
+	/* Emphasized / featured — same standfirst voice, one step louder.
+	 * Differentiation through scale and ink, not through tinted boxes. */
+	.page-intro--emphasized,
 	.page-intro--featured {
-		font-size: var(--font-size-heading-3);
-		font-weight: var(--font-weight-medium);
-		margin-bottom: var(--space-xl);
-		padding: var(--space-2xl);
-		background: color-mix(in srgb, var(--color-primary) 12%, transparent);
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 30%, transparent);
-		box-shadow: var(--shadow-lg);
+		font-size: var(--font-size-xl);
+		color: var(--color-text);
+		margin-bottom: var(--space-2xl);
 	}
 
 	/* Typography enhancements */
@@ -103,41 +77,28 @@
 		color: var(--color-primary);
 		text-decoration: none;
 		font-weight: var(--font-weight-medium);
-		transition: all var(--duration-fast) var(--ease-in-out);
-		position: relative;
-	}
-
-	.page-intro :global(a::after) {
-		content: '';
-		position: absolute;
-		bottom: -2px;
-		left: 0;
-		width: 0;
-		height: 1px;
-		background: var(--color-primary);
-		transition: width var(--duration-moderate) var(--ease-in-out);
+		padding-bottom: 2px;
+		background-image: linear-gradient(90deg, var(--color-primary), var(--color-primary));
+		background-size: 0% 1px;
+		background-position: left bottom;
+		background-repeat: no-repeat;
+		transition:
+			color var(--duration-moderate) var(--ease-in-out),
+			background-size var(--duration-normal) var(--ease-out);
 	}
 
 	.page-intro :global(a:hover) {
-		color: var(--color-primary-dark);
-	}
-
-	.page-intro :global(a:hover::after) {
-		width: 100%;
+		background-size: 100% 1px;
 	}
 
 	.page-intro :global(a:focus-visible) {
-		outline: var(--border-width-medium) solid var(--color-highlight);
+		outline: var(--border-width-medium) solid var(--color-primary);
 		outline-offset: var(--space-2xs);
-		box-shadow: 0 0 0 var(--border-width-thick)
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-30) * 100%), transparent);
 		border-radius: var(--border-radius-sm);
 	}
 
 	.page-intro :global(em) {
 		font-style: italic;
-		color: var(--color-primary);
-		font-weight: var(--font-weight-medium);
 	}
 
 	.page-intro :global(strong) {
@@ -145,66 +106,39 @@
 		color: var(--color-text-emphasis);
 	}
 
-	/*
-	 * Dark-mode PageIntro — stronger primary tint so the hero surface reads
-	 * as coloured rather than ghost-grey against the --color-background.
-	 */
+	/* Dark mode — same standfirst, softer warm ink against slate. */
 	:global(html.dark) .page-intro {
-		background: color-mix(in srgb, var(--color-primary) 18%, transparent);
-		border-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
-		box-shadow: var(--shadow-md);
+		color: var(--color-text-light);
 	}
 
-	:global(html.dark) .page-intro--emphasized {
-		background: color-mix(in srgb, var(--color-primary) 22%, transparent);
-		border-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
-	}
-
+	:global(html.dark) .page-intro--emphasized,
 	:global(html.dark) .page-intro--featured {
-		background: color-mix(in srgb, var(--color-primary) 26%, transparent);
-		border-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
-		box-shadow: var(--shadow-lg);
-	}
-
-	:global(html.dark) .page-intro :global(a) {
-		color: var(--color-primary);
-	}
-
-	:global(html.dark) .page-intro :global(a:hover) {
-		color: var(--color-highlight);
+		color: var(--color-text);
 	}
 
 	/* Responsive design - mobile first, so this targets smaller screens */
 	@media (--sm-down) {
 		.page-intro {
-			font-size: var(--font-size-heading-6);
-			margin-bottom: var(--space-md);
-			padding: var(--space-sm) var(--space-lg);
+			font-size: var(--font-size-lg);
+			margin-bottom: var(--space-lg);
 		}
 
 		.page-intro--compact {
 			font-size: var(--font-size-body);
-			margin-bottom: var(--space-sm);
-			padding: var(--space-2xs) var(--space-md);
+			margin-bottom: var(--space-md);
 		}
 
-		.page-intro--emphasized {
-			font-size: var(--font-size-heading-4);
-			margin-bottom: var(--space-lg);
-			padding: var(--space-md) var(--space-xl);
-		}
-
+		.page-intro--emphasized,
 		.page-intro--featured {
-			font-size: var(--font-size-heading-4);
+			font-size: var(--font-size-lg);
 			margin-bottom: var(--space-lg);
-			padding: var(--space-md) var(--space-xl);
 		}
 	}
 
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
-		.page-intro :global(a),
-		.page-intro :global(a::after) {
+		.page-intro :global(a) {
+			background-size: 100% 1px;
 			transition: none;
 		}
 	}

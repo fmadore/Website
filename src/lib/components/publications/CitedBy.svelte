@@ -10,7 +10,7 @@
 
 {#if sortedCitedBy && sortedCitedBy.length > 0}
 	<section class="cited-by-section glass-section-panel scroll-reveal">
-		<h2 class="section-title">Cited By ({sortedCitedBy.length})</h2>
+		<h2 class="editorial-section-title">Cited By ({sortedCitedBy.length})</h2>
 		<div class="citations-grid grid-stagger">
 			{#each sortedCitedBy as citingWork (citingWork.title + citingWork.year)}
 				<div class="citing-work-card glass-sub-card scroll-reveal-scale">
@@ -39,34 +39,13 @@
 {/if}
 
 <style>
+	/* Content-on-paper section; the entity cards inside carry the chrome. */
 	.cited-by-section {
-		margin-top: var(--space-xl);
-		padding: var(--space-lg);
+		margin-top: var(--space-2xl);
 	}
 
-	@media (--sm) {
-		.cited-by-section {
-			padding: var(--space-xl);
-		}
-	}
-
-	/* Section title — letterpress hairline rule under solid Spectral ink. */
-	.section-title {
-		font-family: var(--font-family-serif);
-		font-size: var(--font-size-lg);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-emphasis);
-		margin-bottom: var(--space-lg);
-		padding-bottom: var(--space-sm);
-		border-bottom: var(--border-width-thin) solid var(--color-border-light);
-		line-height: var(--line-height-tight);
-	}
-
-	@media (--sm) {
-		.section-title {
-			font-size: var(--font-size-xl);
-		}
-	}
+	/* Section title comes from the shared .editorial-section-title utility
+	 * (typography.css). */
 
 	.citations-grid {
 		display: grid;

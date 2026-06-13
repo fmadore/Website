@@ -42,6 +42,47 @@
 	animation: fadeSlideUp var(--duration-fast) var(--ease-out) forwards;
 }
 
+/* Mount-time entrance for lazily loaded sections (e.g. the CV's deferred
+ * section batches). Aliases the shared fadeSlideUp keyframe; pair with a
+ * .stagger-N utility for sequential reveals. The class was referenced by
+ * the CV page but lost its definition in an earlier animation refactor. */
+.fade-in-up {
+	--_enter-distance: var(--anim-distance-body);
+	animation: fadeSlideUp var(--duration-moderate) var(--ease-out) forwards;
+}
+
+/* Stagger delay utilities — `backwards` fill keeps delayed elements hidden
+ * until their animation starts. */
+.stagger-1 {
+	animation-delay: var(--stagger-1);
+	animation-fill-mode: backwards;
+}
+
+.stagger-2 {
+	animation-delay: var(--stagger-2);
+	animation-fill-mode: backwards;
+}
+
+.stagger-3 {
+	animation-delay: var(--stagger-3);
+	animation-fill-mode: backwards;
+}
+
+.stagger-4 {
+	animation-delay: var(--stagger-4);
+	animation-fill-mode: backwards;
+}
+
+.stagger-5 {
+	animation-delay: var(--stagger-5);
+	animation-fill-mode: backwards;
+}
+
+.stagger-6 {
+	animation-delay: var(--stagger-6);
+	animation-fill-mode: backwards;
+}
+
 /* ===== HERO ENTRANCE =====
  * Single-image hero entrance for detail pages (e.g. /publications/[id]).
  * Triggered immediately on mount — unlike .scroll-reveal-scale, which only
@@ -223,6 +264,7 @@
 	.body-enter,
 	.card-enter,
 	.micro-enter,
+	.fade-in-up,
 	.hero-entrance,
 	.hero-sequence-photo,
 	.hero-sequence-title,

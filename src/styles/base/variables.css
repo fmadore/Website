@@ -7,6 +7,10 @@
 	 * Replaces the previous cool-gray scale. Tinted toward warm brown/ochre
 	 * so surfaces feel like good paper instead of cold screen. */
 	--sys-color-neutral-0: #ffffff;
+	/* Page ground in light mode — warm paper, never pure white. Sits between
+	 * neutral-0 (reserved for elevated "sheet" tiles) and neutral-50 (tinted
+	 * surfaces) so cards keep a perceptible lift off the page. */
+	--sys-color-paper: #fcf9f3;
 	--sys-color-neutral-50: #faf7f2;
 	--sys-color-neutral-100: #f4efe7;
 	--sys-color-neutral-200: #e9e2d5;
@@ -84,12 +88,6 @@
 	--sys-color-slate-blue-500: #5c8ab4;
 	--sys-color-mauve-500: #a67c9b;
 
-	/* Extended hues used in charts (named after Tailwind equivalents) */
-	--sys-color-purple-400: #a78bfa;
-	--sys-color-purple-500: #8b5cf6;
-	--sys-color-pink-400: #f472b6;
-	--sys-color-pink-500: #ec4899;
-
 	/* ===== SEMANTIC COLOR TOKENS ===== */
 	/* Primary — Deep ink-blue */
 	--color-primary: var(--sys-color-ink-600);
@@ -123,7 +121,7 @@
 	--color-danger-light: var(--sys-color-red-400);
 
 	/* ===== BACKGROUND & TEXT COLORS ===== */
-	--color-background: var(--sys-color-neutral-0);
+	--color-background: var(--sys-color-paper);
 
 	--color-background-subtle: var(--sys-color-neutral-50);
 	--color-background-muted: var(--sys-color-neutral-100);
@@ -164,13 +162,17 @@
 	--color-note: var(--sys-color-neutral-600);
 	--color-code-bg: var(--sys-color-neutral-100);
 
-	/* ===== TIMELINE/CHART COLORS ===== */
-	--color-timeline-positions: var(--sys-color-teal-600);
+	/* ===== TIMELINE/CHART COLORS =====
+	 * Ink-first per the data-viz clause: positions (the career backbone)
+	 * carry the brand ink and brighten automatically in dark mode via
+	 * --color-primary; awards moved from amber-600 to bronze (amber-700)
+	 * for clearer separation from the amber-500 grants. */
+	--color-timeline-positions: var(--color-primary);
 	--color-timeline-education: var(--sys-color-sage-500);
 	--color-timeline-grants: var(--sys-color-amber-500);
 	--color-timeline-publications: var(--sys-color-slate-blue-500);
 	--color-timeline-presentations: var(--sys-color-mauve-500);
-	--color-timeline-awards: var(--sys-color-amber-600);
+	--color-timeline-awards: var(--sys-color-amber-700);
 	--color-timeline-fieldwork: var(--sys-color-teal-500);
 
 	/* ===== UTILITY COLORS ===== */
@@ -694,8 +696,8 @@
 	--header-border-opacity-scrolled: 0.65;
 	--header-inset-opacity: 0.55;
 
-	/* Card shadow tokens — rgb triplet for terracotta-600 */
-	--card-shadow-color: 158, 72, 51;
+	/* Card shadow tokens — rgb triplet for ink-600 (brand primary) */
+	--card-shadow-color: 46, 66, 113;
 	--card-shadow-opacity: 0.1;
 	--card-shadow-opacity-hover: 0.15;
 	--card-transform-hover: var(--transform-lift-md);
@@ -705,28 +707,6 @@
 	/* ===== BUTTON TOKENS ===== */
 	--btn-shine-duration: 0.4s;
 	--btn-active-transform: translateY(1px);
-
-	/* ===== GRADIENTS ===== */
-	--gradient-primary: linear-gradient(
-		135deg,
-		var(--color-primary) 0%,
-		var(--color-primary-light) 100%
-	);
-	--gradient-accent: linear-gradient(
-		135deg,
-		var(--color-accent) 0%,
-		var(--color-accent-light) 100%
-	);
-	--gradient-accent-highlight: linear-gradient(
-		135deg,
-		var(--color-accent) 0%,
-		var(--color-highlight) 100%
-	);
-	--gradient-highlight-accent: linear-gradient(
-		135deg,
-		var(--color-highlight) 0%,
-		var(--color-accent) 100%
-	);
 
 	/* ===== COMPONENT-SPECIFIC TOKENS ===== */
 	/* Iframe heights */

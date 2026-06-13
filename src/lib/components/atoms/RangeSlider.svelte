@@ -386,7 +386,7 @@
 		transform: translate(-50%, -50%) scale(var(--scale-125));
 	}
 
-	/* Value tooltip above the drag handle. Solid terracotta, no gradient,
+	/* Value tooltip above the drag handle. Solid primary, no gradient,
 	 * matches the active filter chip / btn-primary fill convention so the
 	 * "applied filter value" treatment reads consistently. */
 	.range-float {

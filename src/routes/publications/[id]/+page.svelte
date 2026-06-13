@@ -268,7 +268,9 @@
 					/>
 
 					<div>
-						<button onclick={downloadBibtex} class="btn btn-primary cursor-pointer">
+						<!-- Secondary action: outline, so "Access Publication" stays the page's
+						     one primary button. -->
+						<button onclick={downloadBibtex} class="btn btn-outline-primary cursor-pointer">
 							Export BibTeX
 						</button>
 					</div>
@@ -321,10 +323,7 @@
 		margin-top: var(--space-xl);
 	}
 
-	/* Table of Contents Section */
-	.table-of-contents-section {
-		padding: var(--space-lg);
-	}
+	/* Table of Contents — content on paper; no tile padding. */
 
 	/* Table-of-contents title — letterpress hairline rule under solid Spectral ink. */
 	.toc-title {
@@ -388,12 +387,11 @@
 		margin-left: var(--space-2xs);
 	}
 
-	/* Publication actions container — highlight→primary→accent color order */
+	/* Publication actions — a plain button row on paper, separated from the
+	 * content above by a hairline rule rather than boxed in a tinted tile. */
 	.publication-actions {
-		--_gsp-c1: var(--color-highlight);
-		--_gsp-c2: var(--color-primary);
-		--_gsp-c3: var(--color-accent);
-		padding: var(--space-md) var(--space-lg);
+		padding-top: var(--space-lg);
+		border-top: var(--border-width-thin) solid var(--color-border-light);
 	}
 
 	:global(html.dark) .toc-item {

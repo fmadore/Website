@@ -206,7 +206,7 @@ Primary: **academic peers** — fellow researchers in Islamic studies, African s
 
 **Theme.** Light and dark are both first-class — every component designed twice. Light reads like good paper struck by fountain-pen ink (warm cream off-whites, ink-black body text, neutrals tinted toward warm brown, deep ink-blue brand accent). Dark reads like a study desk after midnight (cool slate surfaces, warm cream text — warmth lives in the type, not the surface, since warm-brown surfaces clashed with the cool primary).
 
-**Typography.** `IBM Plex Sans` is on the reflex-rejection list and should be replaced with something more humanist. Reconsider `Source Serif 4` alongside. Pair one distinctive display/serif with a refined workhorse sans. Monospace is reserved for code and data-viz chrome only.
+**Typography.** Settled stack: **Fraunces** (display, h1–h3 — retained as a documented, examined exception to the reflex-font ban), **Spectral** (editorial serif: h4–h6, prose, bylines, italics), **Commissioner** (humanist sans: UI/body chrome), **JetBrains Mono** (code + data-viz chrome only). Predecessors `IBM Plex Sans` / `Source Serif 4` retired.
 
 **Color.** Settled palette: deep ink-blue primary (`--color-primary: #2e4271`) on warm-paper light / cool-slate dark; amber retained as rare secondary accent. Reference: LRB / Penguin Classics / fountain-pen ink on cream paper. Past primaries retired: terracotta (read too brown against warm paper), teal (data-viz only). 60-30-10 by visual weight. OKLCH for new color work; reduce chroma at extreme lightness.
 

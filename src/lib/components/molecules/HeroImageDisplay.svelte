@@ -291,7 +291,8 @@
 		);
 	}
 
-	/* Hero image with integrated glassmorphism effects */
+	/* Hero image — a plate in a fine book: restrained radius, hairline
+	 * border, modest shadow. No glass chrome on the image itself. */
 	.hero-image {
 		width: auto;
 		max-width: 100%;
@@ -299,23 +300,16 @@
 		display: block;
 		margin-left: auto;
 		margin-right: auto;
-		border-radius: var(--border-radius-lg);
-		transition: all var(--duration-moderate) var(--ease-out);
-		box-shadow: var(--shadow-lg);
+		border-radius: var(--border-radius-md);
+		transition: box-shadow var(--duration-moderate) var(--ease-out);
+		box-shadow: var(--shadow-sm);
 		object-fit: contain; /* Ensure entire image visible without cropping */
 		aspect-ratio: auto;
-		/* Subtle glassmorphism border */
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
+		border: var(--border-width-thin) solid var(--color-border);
 	}
 
 	.hero-figure:hover .hero-image {
-		box-shadow: var(--shadow-xl);
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-15-low) * 100%),
-			transparent
-		);
+		box-shadow: var(--shadow-md);
 	}
 
 	/* Caption styling - improved typography consistency */
@@ -330,70 +324,15 @@
 		padding: 0 var(--space-4); /* Add horizontal padding for better readability */
 	}
 
-	/* Glass effect enhancements when enabled - improved integration */
+	/* "Glass" figure — retired tile chrome. The prop is kept for API
+	 * compatibility, but per the imagery clause the figure is a plate: the
+	 * image carries its own hairline frame, the caption is plain serif
+	 * italic, and there is no gradient tile, padding, or hover lift. */
 	.hero-figure--glass {
-		/* Enhanced glassmorphism to match PageHeader and ContentBody */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
-		padding: var(--space-4); /* Add padding for glass effect */
-		border-radius: var(--border-radius-xl); /* Match PageHeader border radius */
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
-
-		/* Enhanced shadow to match other components */
-		box-shadow: var(--shadow-md);
-
-		/* Subtle animated lift */
-		transition: all var(--duration-moderate) var(--ease-in-out);
-	}
-
-	.hero-figure--glass:hover {
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-lg);
-		/* Enhanced hover gradient */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 50%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-	}
-
-	/* Adjust container inside glass figure */
-	.hero-figure--glass .image-container {
-		border-radius: var(--border-radius-lg); /* Match inner image radius */
-	}
-
-	/* Eliminate the inner border/shadow to prevent a visible double frame */
-	.hero-figure--glass .hero-image {
+		background: transparent;
+		padding: 0;
 		border: none;
 		box-shadow: none;
-		border-radius: var(--border-radius-lg); /* Slightly smaller radius for inner image */
-	}
-
-	/* Caption styling within glass effect */
-	.hero-figure--glass .hero-caption {
-		margin-top: var(--space-3);
-		padding: var(--space-2) var(--space-4);
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-		border-radius: var(--border-radius-md);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-border) calc(var(--opacity-15-low) * 100%), transparent);
-		color: var(--color-text);
-		font-weight: var(--font-weight-medium);
 	}
 
 	/* Variant styles - improved spacing consistency */
@@ -426,55 +365,10 @@
 		border-radius: var(--border-radius-lg); /* Keep consistent with glass container */
 	}
 
-	/* Dark mode adjustments - improved consistency */
+	/* Dark mode — same plate treatment on slate; hairline picks up the
+	 * dark border token. */
 	:global(html.dark) .hero-image {
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
-	}
-
-	:global(html.dark) .hero-figure:hover .hero-image {
-		border-color: color-mix(
-			in srgb,
-			var(--color-white) calc(var(--opacity-10) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark) .hero-figure--glass {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 35%,
-			var(--color-dark-surface-alt) 65%,
-			var(--color-dark-surface-deep) 100%
-		);
-		border-color: color-mix(in srgb, var(--color-primary) 12%, transparent);
-		box-shadow: var(--shadow-lg);
-	}
-
-	:global(html.dark) .hero-figure--glass:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent) 35%,
-			var(--color-dark-surface-alt) 65%,
-			var(--color-dark-surface-deep) 100%
-		);
-		border-color: color-mix(in srgb, var(--color-primary) 18%, transparent);
-	}
-
-	:global(html.dark) .hero-figure--glass .hero-caption {
-		background: color-mix(
-			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-90) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-border) calc(var(--opacity-10) * 100%),
-			transparent
-		);
-		color: var(--color-text-light);
+		border-color: var(--color-border-dark);
 	}
 
 	/* Fullscreen Modal Styling - Enhanced glassmorphism design */

@@ -251,7 +251,7 @@
 
 	/* Dark mode — use warm paper foreground (resolves to a bright off-white
 	 * tinted toward the brand warmth, not pure cool white). Link hover
-	 * picks up the rare terracotta accent rather than amber. */
+	 * picks up the rare primary accent rather than amber. */
 	:global(html.dark) .audio-description {
 		color: var(--color-text-emphasis);
 		text-shadow: 0 1px 3px color-mix(in srgb, var(--color-black) 70%, transparent);
