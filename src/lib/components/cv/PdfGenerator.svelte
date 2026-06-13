@@ -1,22 +1,18 @@
 <script lang="ts">
 	/**
-	 * PDF Generator for CV - Enhanced Design v2.0
+	 * PDF Generator for CV — editorial letterpress design.
 	 *
-	 * This component generates a professionally designed PDF CV with:
-	 * - Modern typography with clear hierarchy
-	 * - Elegant header with decorative elements
-	 * - Consistent spacing based on design system
-	 * - Subtle visual accents and dividers
-	 * - Proper page numbering with header/footer
-	 * - Clickable links for contact info
+	 * Mirrors the on-screen CV's warm-editorial language in print:
+	 * - Left-aligned letterhead: ink-blue letterspaced "CURRICULUM VITAE"
+	 *   eyebrow above a serif name headline, then date, closed by a hairline
+	 * - Serif (times) section + subsection headings in title case, each over a
+	 *   single full-width hairline rule — no decorative bars or accent stripes
+	 * - Deep-ink body text; ink-blue reserved for year pinpoints and links
+	 * - Two-column contact block with small-caps eyebrow labels
+	 * - Page footer with name + page number; clickable contact links
 	 *
-	 * Design improvements:
-	 * - Refined color palette matching website's ink-blue/amber design system
-	 * - Better visual hierarchy with improved font sizes
-	 * - Professional header design with name prominence
-	 * - Decorative accent lines and section dividers
-	 * - Improved contact section with icons simulation
-	 * - Better spacing rhythm throughout
+	 * Palette and type sizes live in $lib/utils/pdfDesignTokens (ink-blue /
+	 * warm-paper), kept in sync with the site's design tokens.
 	 */
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
@@ -28,7 +24,13 @@
 		type TextFragment
 	} from '$lib/utils/pdfRichText';
 	import { getAddressLines } from '$lib/utils/siteHelpers';
-	import { FONT_SIZE, SPACING, COLORS, yearColumnWidth } from '$lib/utils/pdfDesignTokens';
+	import {
+		FONT_SIZE,
+		SPACING,
+		COLORS,
+		LETTER_SPACING,
+		yearColumnWidth
+	} from '$lib/utils/pdfDesignTokens';
 
 	let isGenerating = $state(false);
 	let jsPDF: typeof import('jspdf').jsPDF | null = $state(null);
@@ -128,11 +130,11 @@
 			// Rich text extraction is now handled by external utility
 
 			/*
-			 * Section heading — letterpress editorial. Solid warm-ink title in
-			 * uppercase, followed by a single full-width hairline rule. Replaces
-			 * the previous terracotta + amber-fade-to-border two-tone accent
-			 * line, which read as a templated CMS section divider rather than
-			 * fine-book typography.
+			 * Section heading — serif title-case over a full-width hairline,
+			 * mirroring the on-screen CV's Spectral/Fraunces h3 headings (e.g.
+			 * "Professional Appointments"). `times` is jsPDF's closest serif to
+			 * the site's display face; title case (not uppercase) keeps the
+			 * editorial, fine-book register rather than a templated CMS label.
 			 */
 			const addSection = (title: string) => {
 				// Check if we need a new page (need space for heading + some content)
@@ -141,11 +143,11 @@
 				checkPageBreak(60);
 				yPosition += SPACING.SECTION_TOP;
 
-				// Section heading — solid ink, uppercase
+				// Section heading — serif, deep ink, title case
 				pdf.setFontSize(FONT_SIZE.SECTION_HEADING);
-				pdf.setFont('helvetica', 'bold');
+				pdf.setFont('times', 'bold');
 				pdf.setTextColor(...COLORS.TEXT_EMPHASIS);
-				pdf.text(title.toUpperCase(), margin, yPosition);
+				pdf.text(title, margin, yPosition);
 				yPosition += 2.5;
 
 				// Hairline rule under section heading — full content width
@@ -162,22 +164,28 @@
 			const cvContactSection = element.querySelector('.cv-contact-section');
 
 			// ============================================
-			// HEADER DESIGN - Modern, professional layout
+			// HEADER DESIGN — left-aligned editorial letterhead, mirroring the
+			// on-screen CVHeader: an ink-blue letterspaced "CURRICULUM VITAE"
+			// eyebrow (the document label) sits above the serif name (the
+			// subject); the date follows; a full-width hairline closes the block.
+			// Replaces the previous centred name-over-subtitle layout.
 			// ============================================
 
-			// Name - Large, prominent, the focal point (starts first, line comes after)
-			pdf.setFontSize(FONT_SIZE.NAME);
-			pdf.setFont('times', 'bold');
-			pdf.setTextColor(...COLORS.PRIMARY_DARK);
-			pdf.text('Frédérick Madore, PhD', pageWidth / 2, yPosition, { align: 'center' });
+			// Eyebrow — "CURRICULUM VITAE", small-caps, ink-blue, letterspaced
+			pdf.setFontSize(FONT_SIZE.EYEBROW);
+			pdf.setFont('helvetica', 'bold');
+			pdf.setTextColor(...COLORS.PRIMARY);
+			pdf.setCharSpace(LETTER_SPACING.EYEBROW);
+			pdf.text('CURRICULUM VITAE', margin, yPosition);
+			pdf.setCharSpace(LETTER_SPACING.NONE);
 			yPosition += 7;
 
-			// Subtitle - "Curriculum Vitae"
-			pdf.setFontSize(FONT_SIZE.TITLE);
-			pdf.setFont('helvetica', 'normal');
-			pdf.setTextColor(...COLORS.TEXT_LIGHT);
-			pdf.text('Curriculum Vitae', pageWidth / 2, yPosition, { align: 'center' });
-			yPosition += 5;
+			// Name — large serif headline, deep ink (the subject of the page)
+			pdf.setFontSize(FONT_SIZE.NAME);
+			pdf.setFont('times', 'bold');
+			pdf.setTextColor(...COLORS.TEXT_EMPHASIS);
+			pdf.text('Frédérick Madore, PhD', margin, yPosition);
+			yPosition += 5.5;
 
 			// Date - subtle
 			pdf.setFontSize(FONT_SIZE.DATE);
@@ -190,12 +198,11 @@
 					month: 'long',
 					day: 'numeric'
 				});
-			pdf.text(dateText, pageWidth / 2, yPosition, { align: 'center' });
+			pdf.text(dateText, margin, yPosition);
 			yPosition += 6;
 
-			// Hairline rule under header block — letterpress editorial.
-			// Replaces the previous 50 mm centred amber bar; full-width neutral
-			// hairline matches the section dividers below.
+			// Hairline rule under header block — full-width neutral hairline,
+			// matching the section dividers below.
 			pdf.setDrawColor(...COLORS.BORDER);
 			pdf.setLineWidth(0.2);
 			pdf.line(margin, yPosition, pageWidth - margin, yPosition);
@@ -213,11 +220,13 @@
 			const startY = yPosition;
 
 			// Left side - Address (hardcoded for reliable formatting)
-			// Address label
+			// Address label — small-caps letterspaced eyebrow
 			pdf.setFont('helvetica', 'bold');
 			pdf.setFontSize(FONT_SIZE.CONTACT_LABEL);
-			pdf.setTextColor(...COLORS.PRIMARY);
-			pdf.text('Address', leftColumn, yPosition);
+			pdf.setTextColor(...COLORS.TEXT_MUTED);
+			pdf.setCharSpace(LETTER_SPACING.EYEBROW);
+			pdf.text('ADDRESS', leftColumn, yPosition);
+			pdf.setCharSpace(LETTER_SPACING.NONE);
 			yPosition += SPACING.CONTACT_LINE;
 
 			// Address lines - from centralized config
@@ -234,11 +243,13 @@
 			let rightY = startY;
 			const linkItems = cvContactSection?.querySelectorAll('.cv-link-item');
 
-			// Contact links header
+			// Contact links header — small-caps letterspaced eyebrow
 			pdf.setFont('helvetica', 'bold');
 			pdf.setFontSize(FONT_SIZE.CONTACT_LABEL);
-			pdf.setTextColor(...COLORS.PRIMARY);
-			pdf.text('Contact', rightColumn, rightY);
+			pdf.setTextColor(...COLORS.TEXT_MUTED);
+			pdf.setCharSpace(LETTER_SPACING.EYEBROW);
+			pdf.text('CONTACT', rightColumn, rightY);
+			pdf.setCharSpace(LETTER_SPACING.NONE);
 			rightY += SPACING.CONTACT_LINE;
 
 			linkItems?.forEach((item) => {
@@ -326,11 +337,12 @@
 
 						yPosition += SPACING.SUBSECTION_TOP;
 
-						// Subsection heading — solid ink, bold italic for hierarchy.
-						// Italic style alone differentiates it from the section
-						// heading; no need for additional colour treatment.
+						// Subsection heading — serif bold italic, mirroring the
+						// on-screen Spectral h4. Italic differentiates it from the
+						// section heading; same serif family keeps the hierarchy
+						// consistent. No additional colour treatment needed.
 						pdf.setFontSize(FONT_SIZE.SUBSECTION);
-						pdf.setFont('helvetica', 'bolditalic');
+						pdf.setFont('times', 'bolditalic');
 						pdf.setTextColor(...COLORS.TEXT_EMPHASIS);
 						pdf.text(h4.textContent || '', margin + 2, yPosition);
 						yPosition += SPACING.SUBSECTION_BOTTOM;

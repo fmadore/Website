@@ -7,10 +7,11 @@
 
 /** Enhanced typography constants - refined for better readability */
 export const FONT_SIZE = {
-	NAME: 22, // Prominent name - the star of the show
-	TITLE: 11, // "Curriculum Vitae" subtitle
+	NAME: 22, // Prominent name - the serif headline of the letterhead
+	EYEBROW: 9, // "Curriculum Vitae" eyebrow above the name (letterspaced)
+	TITLE: 11, // Legacy alias (retained for compatibility)
 	DATE: 8.5, // Date - subtle
-	CONTACT_LABEL: 8, // Contact labels
+	CONTACT_LABEL: 8, // Contact labels (small-caps eyebrow)
 	CONTACT_VALUE: 8.5, // Contact values
 	SECTION_HEADING: 12, // Section headers - clear hierarchy
 	SUBSECTION: 10.5, // Subsection headers
@@ -18,6 +19,13 @@ export const FONT_SIZE = {
 	BODY_SMALL: 9, // Secondary body text
 	PAGE_NUMBER: 8, // Page numbers
 	FOOTER: 7.5 // Footer text
+} as const;
+
+/** Letter-spacing values (mm) for jsPDF setCharSpace — used on eyebrow/label
+ * runs to echo the on-screen letterpressed small-caps tracking. */
+export const LETTER_SPACING = {
+	EYEBROW: 0.6, // "CURRICULUM VITAE" + contact labels
+	NONE: 0 // Reset after a letterspaced run
 } as const;
 
 /** Refined spacing system - better visual rhythm */
