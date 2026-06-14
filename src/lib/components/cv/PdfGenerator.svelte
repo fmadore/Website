@@ -159,6 +159,29 @@
 				yPosition += SPACING.SECTION_BOTTOM;
 			};
 
+			/*
+			 * Year/gutter label — ink-blue, bold. Numeric years ("2026") sit at
+			 * FONT_SIZE.BODY; long word labels ("Forthcoming", "à paraître")
+			 * would overrun the fixed gutter and collide with the entry text, so
+			 * they auto-shrink to fit the column instead of widening it. This
+			 * keeps every entry's content indentation identical.
+			 */
+			const drawYearLabel = (label: string, x: number, y: number, columnWidth: number) => {
+				pdf.setFont('helvetica', 'bold');
+				pdf.setFontSize(FONT_SIZE.BODY);
+				// Available width = column minus the x inset minus a ~1mm gutter
+				// before the content column.
+				const maxWidth = columnWidth - (x - margin) - 1;
+				const width = pdf.getTextWidth(label);
+				if (width > maxWidth && maxWidth > 0) {
+					pdf.setFontSize(Math.max(6.5, (FONT_SIZE.BODY * maxWidth) / width));
+				}
+				pdf.setTextColor(...COLORS.PRIMARY);
+				pdf.text(label, x, y);
+				pdf.setTextColor(...COLORS.TEXT);
+				pdf.setFontSize(FONT_SIZE.BODY); // reset for following body text
+			};
+
 			// Extract header information from CVHeader component
 			const cvDateElement = element.querySelector('.cv-date');
 			const cvContactSection = element.querySelector('.cv-contact-section');
@@ -448,12 +471,8 @@
 										estimatedHeight += SPACING.ENTRY_GAP;
 										checkPageBreak(estimatedHeight);
 
-										// Year column
-										pdf.setFontSize(FONT_SIZE.BODY);
-										pdf.setFont('helvetica', 'bold');
-										pdf.setTextColor(...COLORS.PRIMARY);
-										pdf.text(year, margin + 2, yPosition);
-										pdf.setTextColor(...COLORS.TEXT);
+										// Year column (auto-shrinks long labels like "Forthcoming")
+										drawYearLabel(year, margin + 2, yPosition, yearColumnWidth);
 
 										// Render main text
 										if (mainFragments.length > 0) {
@@ -608,12 +627,8 @@
 									estimatedHeight += SPACING.ENTRY_GAP;
 									checkPageBreak(estimatedHeight);
 
-									// Year/Category column
-									pdf.setFontSize(FONT_SIZE.BODY);
-									pdf.setFont('helvetica', 'bold');
-									pdf.setTextColor(...COLORS.PRIMARY);
-									pdf.text(year, margin + 2, yPosition);
-									pdf.setTextColor(...COLORS.TEXT);
+									// Year/Category column (auto-shrinks long labels)
+									drawYearLabel(year, margin + 2, yPosition, currentColumnWidth);
 
 									// Render main text
 									if (mainFragments.length > 0) {
