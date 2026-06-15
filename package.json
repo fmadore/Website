@@ -64,7 +64,7 @@
 		"@iconify-icons/lucide": "^1.2.135",
 		"@iconify-icons/mdi": "^1.2.48",
 		"@iconify-icons/simple-icons": "^1.2.74",
-		"@iconify/svelte": "^5.2.1",
+		"@iconify/svelte": "^5.2.2",
 		"@types/d3": "^7.4.3",
 		"d3": "^7.9.0",
 		"echarts": "^6.1.0",
