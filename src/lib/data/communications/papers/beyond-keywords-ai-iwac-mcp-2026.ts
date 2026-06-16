@@ -13,6 +13,7 @@ export const beyondKeywordsAiIwacMcp2026: Communication = {
 	country: 'Luxembourg',
 	type: 'conference',
 	language: 'English',
+	slidesUrl: 'https://slides.frederickmadore.com/talks/2026-06-15-luxembourg-beyond-keywords/',
 	abstract:
 		'Over the past two years, AI has transformed the development of the Islam West Africa Collection (IWAC), an open-access database of over 14,500 documents covering Muslim public life in six West African countries. Built and maintained by a single researcher without dedicated staff, IWAC now relies on LLMs for tasks that would otherwise require a full team: from OCR on degraded scans to named entity recognition. This paper turns to the next challenge: using AI not only to help process the collection, but to mediate access to it.' +
 		'\n\n' +

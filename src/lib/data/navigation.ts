@@ -47,6 +47,7 @@ export const navItems: NavItem[] = [
 		path: `${base}/conference-activity`,
 		dropdown: [
 			{ name: 'All Conference Activity', path: `${base}/conference-activity` },
+			{ name: 'Slides', path: `${base}/conference-activity/slides` },
 			{ name: 'Visualisations', path: `${base}/conference-activity/visualisations` },
 			{
 				name: 'STIAS DH & AI Workshop 2026',

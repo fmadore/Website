@@ -13,6 +13,7 @@ export type Communication = {
 	url?: string; // Optional: URL to presentation slides, video, etc.
 	urlLabel?: string; // Optional: Custom label for the primary URL button (default: "Access Presentation")
 	additionalUrls?: Array<{ label: string; url: string }>; // Additional URLs with labels
+	slidesUrl?: string; // Optional: URL to an embeddable HTML slide deck (e.g. https://slides.frederickmadore.com/talks/<slug>/). When set, the deck is embedded on this talk's detail page and the talk appears in the Slides gallery.
 	tags?: string[]; // Optional tags for categorization
 	image?: string; // Optional image path (e.g. presentation slide)
 	heroImage?: {

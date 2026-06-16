@@ -42,6 +42,11 @@ const allCommunications: Communication[] = loadData<Communication>(
 // Sort by date (most recent first)
 export const communicationsByDate = sortByDate(allCommunications);
 
+// Communications that ship an embeddable slide deck, newest first. Powers the
+// Slides gallery (/conference-activity/slides) and is the single source of
+// truth for "which talks have slides" — derived from the data, no manifest.
+export const communicationsWithSlides = communicationsByDate.filter((comm) => !!comm.slidesUrl);
+
 // Group communications by year, type, country, and project
 export const communicationsByYear = groupByYear(allCommunications);
 export const communicationsByType = groupByField(allCommunications, 'type');

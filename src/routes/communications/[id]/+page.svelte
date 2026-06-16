@@ -11,6 +11,7 @@
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import ActionLinks from '$lib/components/molecules/ActionLinks.svelte';
 	import AbstractSection from '$lib/components/molecules/AbstractSection.svelte';
+	import SlideDeckEmbed from '$lib/components/communications/SlideDeckEmbed.svelte';
 	import RelatedItemsList from '$lib/components/organisms/RelatedItemsList.svelte';
 	import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
 	import {
@@ -127,6 +128,14 @@
 
 				<!-- Abstract Section -->
 				<AbstractSection abstract={communication.abstract} />
+
+				<!-- Slide Deck — embedded inline when an embeddable deck URL is set -->
+				{#if communication.slidesUrl}
+					<section class="slides-section scroll-reveal" id="slides">
+						<h2 class="editorial-section-title">Slides</h2>
+						<SlideDeckEmbed src={communication.slidesUrl} title={communication.title} />
+					</section>
+				{/if}
 
 				<!-- Details Grid -->
 				<DetailsGrid details={communicationDetails} />
