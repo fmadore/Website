@@ -112,7 +112,7 @@
 
 	<!-- Enhanced scroll indicator -->
 	<button
-		class="scroll-to-top glass-primary"
+		class="scroll-to-top"
 		class:visible={isVisible}
 		onclick={scrollToTop}
 		onkeydown={handleScrollKeydown}
@@ -313,6 +313,7 @@
 		align-items: center;
 		justify-content: center;
 		color: var(--color-text-inverted);
+		background: var(--color-primary);
 		cursor: pointer;
 		box-shadow: var(--shadow-lg);
 		transform: translateY(calc(var(--space-24) + var(--space-2)));
@@ -327,6 +328,7 @@
 	}
 
 	.scroll-to-top:hover {
+		background: var(--color-primary-dark);
 		transform: var(--transform-lift-md) scale(var(--scale-105));
 		box-shadow: var(--shadow-xl);
 	}
@@ -375,7 +377,7 @@
 	}
 
 	.scroll-to-top:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-text-inverted);
+		outline: var(--border-width-medium) solid var(--color-primary);
 		outline-offset: var(--border-width-medium);
 	}
 </style>
