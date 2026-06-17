@@ -244,8 +244,11 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
+		font-family: var(--font-family-display);
+		font-optical-sizing: auto;
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-bold);
+		letter-spacing: var(--tracking-heading);
 		line-height: 1;
 		color: var(--color-text);
 		text-decoration: none;

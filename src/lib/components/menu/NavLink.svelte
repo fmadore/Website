@@ -54,6 +54,10 @@
 		gap: var(--space-1);
 	}
 
+	/* Hover/active underline — a thin, square-cut ink rule, not a rounded pill.
+	 * The squared cap reads as a printed underline in the letterpress register;
+	 * the previous border-radius-full cap gave it the "wiping pill" look of a
+	 * marketing-site micro-interaction. */
 	.nav-link::after {
 		content: '';
 		position: absolute;
@@ -62,7 +66,6 @@
 		width: 0;
 		height: var(--border-width-medium);
 		background-color: var(--color-primary);
-		border-radius: var(--border-radius-full);
 		transition:
 			width var(--duration-normal) var(--ease-out),
 			background-color var(--duration-normal) var(--ease-out);

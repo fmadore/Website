@@ -340,9 +340,17 @@
 		min-width: 0;
 	}
 
+	/* Wordmark — the site's masthead, set in the Fraunces display serif so the
+	 * scholar's name carries the letterpress identity rather than reading as a
+	 * generic sans logotype. Shares the h1–h3 register (display serif, tight
+	 * tracking) so the persistent header speaks the same editorial voice as the
+	 * page headings it sits above. */
 	.header-logo :global(.site-title) {
+		font-family: var(--font-family-display);
+		font-optical-sizing: auto;
 		font-size: var(--font-size-xl);
 		font-weight: var(--font-weight-bold);
+		letter-spacing: var(--tracking-heading);
 		color: var(--color-text);
 		text-decoration: none;
 		transition: color var(--duration-fast) var(--ease-out);
