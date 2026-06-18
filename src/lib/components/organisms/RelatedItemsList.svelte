@@ -24,7 +24,7 @@
 		viewAllUrl,
 		maxItems = 3,
 		sectionClass = 'related-items-section mt-12',
-		titleClass = 'related-items-title',
+		titleClass = 'editorial-section-title',
 		gridClass = 'related-items-grid'
 	}: {
 		allItems?: RelatedListItem[];
@@ -93,37 +93,10 @@
 		margin-top: var(--space-2xl);
 	}
 
-	.related-items-title {
-		font-family: var(--font-family-serif);
-		font-size: var(--font-size-lg);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-emphasis);
-		/* Reset global h2 margin-top so the title doesn't push the section
-		 * content down by 48 px; section spacing handles the breathing room. */
-		margin: 0 0 var(--space-lg) 0;
-		padding-bottom: var(--space-sm);
-		border-bottom: var(--border-width-thin) solid var(--color-border-light);
-		line-height: var(--line-height-tight);
-		position: relative;
-	}
-
-	@media (--sm) {
-		.related-items-title {
-			font-size: var(--font-size-xl);
-		}
-	}
-
-	/* Quiet hairline rule under the title — replaces the highlight-gradient
-	 * underline that expanded on hover. Editorial rhythm, no decorative gloss. */
-	.related-items-title::after {
-		content: '';
-		position: absolute;
-		bottom: calc(-1 * var(--space-xs));
-		left: 0;
-		width: var(--space-2xl);
-		height: var(--border-width-thin);
-		background: var(--color-border-dark);
-	}
+	/* Section title uses the shared .editorial-section-title utility
+	 * (typography.css) so this section's heading matches Reviews, Cited By, and
+	 * the other detail-page sections — the previous bespoke .related-items-title
+	 * added a second short accent rule that read as disconnected. */
 
 	.related-items-grid {
 		display: grid;
