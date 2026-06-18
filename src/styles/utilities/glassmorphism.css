@@ -479,10 +479,14 @@ html.dark .glass-frosted {
 /* Entity card inside an editorial section (a review, a citing work).
  * Distinct entities keep card chrome per the brief — but as a solid warm
  * paper tile, not the previous surface→primary gradient wash. */
+/* Sub-card (citations, reviews) — warm paper tile matching the related-item
+ * cards on the same detail pages. Was --color-surface-elevated (pure white in
+ * light mode, against the no-pure-white brief); uses --color-surface so every
+ * detail-page list card shares one warm surface. */
 .glass-sub-card {
 	border-radius: var(--border-radius-lg);
 	position: relative;
-	background: var(--color-surface-elevated);
+	background: var(--color-surface);
 	border: var(--border-width-thin) solid var(--color-border);
 	box-shadow: var(--shadow-xs);
 	transition: box-shadow var(--duration-normal) var(--ease-out);
@@ -493,7 +497,7 @@ html.dark .glass-frosted {
 }
 
 html.dark .glass-sub-card {
-	background: var(--color-surface-alt);
+	background: var(--color-surface);
 	border-color: var(--color-border-dark);
 }
 
