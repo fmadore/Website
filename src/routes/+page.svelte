@@ -98,7 +98,7 @@
 					through natural language prompts. Data visualisation transforms analyses into accessible
 					narratives: the
 					<a
-						href="https://fmadore.github.io/iwac-dashboard/"
+						href="https://islam.zmo.de/s/westafrica/page/visualisations"
 						target="_blank"
 						rel="noopener noreferrer">IWAC Dashboard</a
 					>

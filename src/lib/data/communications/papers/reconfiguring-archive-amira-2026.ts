@@ -10,7 +10,7 @@ export const reconfiguringArchiveAmira2026: Communication = {
 	year: 2026,
 	conference:
 		'Reimagining the Archive in the Post-Truth Era: An International Interdisciplinary Conference',
-	location: 'Rhodes University, Makhanda',
+	location: 'Cory Library for Historical Research, Makhanda',
 	country: 'South Africa',
 	type: 'conference',
 	language: 'English',
@@ -32,7 +32,7 @@ These ambitions also expose where the work is hardest. An atlas built on relatio
 	url: 'https://ru.za.libguides.com/ilamcoryconf',
 	urlLabel: 'Conference Website',
 	coordinates: {
-		latitude: -33.3111,
+		latitude: -33.3131,
 		longitude: 26.5194
 	},
 	project: 'Digital Humanities and AI in African Studies'

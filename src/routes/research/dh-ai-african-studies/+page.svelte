@@ -52,8 +52,10 @@
 			rel="noopener noreferrer">Python-based workflows</a
 		>, I show how vast, under-resourced collections can be made more accessible. This AI-assisted
 		approach transforms static archives into dynamic,
-		<a href="https://fmadore.github.io/iwac-dashboard/" target="_blank" rel="noopener noreferrer"
-			>interactive visualisations</a
+		<a
+			href="https://islam.zmo.de/s/westafrica/page/visualisations"
+			target="_blank"
+			rel="noopener noreferrer">interactive visualisations</a
 		>, ranging from
 		<a
 			href="https://fmadore.github.io/IWAC-spatial-overview/"
