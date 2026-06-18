@@ -4,6 +4,7 @@
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
+	import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
 	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
 	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
 	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
@@ -57,6 +58,23 @@
 			<Breadcrumb items={breadcrumbItems} />
 
 			<PageHeader title={project.title} authors={project.years ? [project.years] : undefined} />
+
+			{#if project.heroImageUrl || project.imageUrl}
+				<div class="hero-image-wrapper mb-8 scroll-reveal">
+					<HeroImageDisplay
+						heroImage={project.heroImageUrl
+							? { src: project.heroImageUrl, alt: project.title }
+							: undefined}
+						fallbackImage={project.imageUrl}
+						defaultAlt={project.title}
+						variant="featured"
+						glassEffect={true}
+						fetchpriority="high"
+						loading="eager"
+						maxHeight="60vh"
+					/>
+				</div>
+			{/if}
 
 			<div class="scroll-reveal">
 				<section class="content-section">
