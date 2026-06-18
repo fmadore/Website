@@ -37,6 +37,10 @@ tests/example.spec.js
 # Claude Code
 .claude/
 tmpclaude-*
+
+# Codex
+.codex/
+AGENTS.md
 nul
 scripts/__pycache__/convert-image.cpython-312.pyc
 .vscode/settings.json
