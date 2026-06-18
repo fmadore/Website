@@ -193,10 +193,12 @@
 	--color-sidebar-bg: var(--color-surface);
 
 	/* Button color schemes */
-	--color-secondary-scheme: var(--color-accent);
-	--color-secondary-scheme-alt: var(--sys-color-amber-600);
-	--color-tertiary-scheme: var(--color-success);
-	--color-tertiary-scheme-alt: var(--sys-color-emerald-600);
+	/* Secondary glass-button accent. Repointed from amber to the ink family so
+	 * the light theme matches the dark theme (which already used ink-400/500)
+	 * and routine filter chips stop reading as a rare amber accent. The unused
+	 * tertiary (emerald) scheme tokens were removed in the same pass. */
+	--color-secondary-scheme: var(--color-primary-light);
+	--color-secondary-scheme-alt: var(--color-primary);
 	--color-glass-scheme: var(--color-primary);
 	--color-glass-scheme-alt: var(--color-primary-light);
 

@@ -490,7 +490,7 @@ Image handling utilities for better performance and responsiveness:
 Modern glass effect utilities for creating frosted glass UI elements:
 
 - **Base glass effects**: `.glass`, `.glass-light`, `.glass-medium`, `.glass-heavy`
-- **Colored glass**: `.glass-primary`, `.glass-accent`, `.glass-highlight`, `.glass-success`
+- **Colored glass**: `.glass-primary` (ink-blue; amber/emerald variants retired)
 - **Blur levels**: `.glass-blur-sm`, `.glass-blur-md`, `.glass-blur-lg`, `.glass-blur-xl`, `.glass-blur-2xl`
 - **Component-specific**: `.glass-card`, `.glass-panel`, `.glass-panel-light`, `.glass-nav`, `.glass-button`
 - **Button variants**: Enhanced glass button styling with improved contrast

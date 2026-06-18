@@ -17,8 +17,6 @@ export interface IframeEmbed {
 		| 'glass-medium'
 		| 'glass-heavy'
 		| 'glass-primary'
-		| 'glass-accent'
-		| 'glass-highlight'
 		| 'glass-frosted'; // Glass effect variant
 }
 

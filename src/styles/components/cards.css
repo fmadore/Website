@@ -160,39 +160,10 @@
 	text-align: center;
 }
 
-/* Card background variants */
-.card-primary {
-	background-color: var(--color-primary);
-	color: var(--color-background);
-}
-
-.card-secondary {
-	background-color: var(--color-secondary);
-	color: var(--color-background);
-}
-
-.card-accent {
-	background-color: var(--color-accent);
-	color: var(--color-background);
-}
-
-.card-highlight {
-	background-color: var(--color-highlight);
-	color: var(--color-background);
-}
-
-/* Card border variants */
-.card-border-primary {
-	border-color: var(--color-primary);
-}
-
-.card-border-accent {
-	border-color: var(--color-accent);
-}
-
-.card-border-highlight {
-	border-color: var(--color-highlight);
-}
+/* Card colour/border variant utilities (.card-primary / .card-secondary /
+ * .card-accent / .card-highlight and their border equivalents) were removed:
+ * none were used in markup, and the amber/neutral fills sat outside the
+ * settled ink-blue palette. Re-add intentionally if a tinted card is needed. */
 
 html.dark .card {
 	background: var(--color-surface-alt);

@@ -74,55 +74,10 @@
 		color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
 }
 
-.glass-accent {
-	background: color-mix(
-		in srgb,
-		var(--color-accent) calc(var(--card-glass-opacity-light) * 100%),
-		transparent
-	);
-	-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-	backdrop-filter: blur(var(--glass-blur-amount));
-	border: var(--border-width-thin) solid
-		color-mix(in srgb, var(--color-accent) calc(var(--card-glass-border-light) * 100%), transparent);
-	box-shadow: 0 8px 32px 0
-		color-mix(in srgb, var(--color-accent) calc(var(--opacity-15) * 100%), transparent);
-}
-
-.glass-highlight {
-	background: color-mix(
-		in srgb,
-		var(--color-highlight) calc(var(--card-glass-opacity-light) * 100%),
-		transparent
-	);
-	-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-	backdrop-filter: blur(var(--glass-blur-amount));
-	border: var(--border-width-thin) solid
-		color-mix(
-			in srgb,
-			var(--color-highlight) calc(var(--card-glass-border-light) * 100%),
-			transparent
-		);
-	box-shadow: 0 8px 32px 0
-		color-mix(in srgb, var(--color-highlight) calc(var(--opacity-15) * 100%), transparent);
-}
-
-.glass-success {
-	background: color-mix(
-		in srgb,
-		var(--color-success) calc(var(--card-glass-opacity-light) * 100%),
-		transparent
-	);
-	-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-	backdrop-filter: blur(var(--glass-blur-amount));
-	border: var(--border-width-thin) solid
-		color-mix(
-			in srgb,
-			var(--color-success) calc(var(--card-glass-border-light) * 100%),
-			transparent
-		);
-	box-shadow: 0 8px 32px 0
-		color-mix(in srgb, var(--color-success) calc(var(--opacity-15) * 100%), transparent);
-}
+/* Colored-glass amber/emerald variants (.glass-accent / .glass-highlight /
+ * .glass-success) were retired: unused in markup or data, and off the settled
+ * ink-blue brief (amber is a rare accent, never a glass tint). The on-brand
+ * .glass-primary above is retained. */
 
 /* Dark theme glass effects */
 html.dark .glass {
@@ -176,28 +131,6 @@ html.dark .glass-primary {
 	background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
 	border: var(--border-width-thin) solid
 		color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
-}
-
-html.dark .glass-accent {
-	background: color-mix(in srgb, var(--color-accent) calc(var(--opacity-15) * 100%), transparent);
-	border: var(--border-width-thin) solid
-		color-mix(in srgb, var(--color-accent) calc(var(--opacity-30) * 100%), transparent);
-}
-
-html.dark .glass-highlight {
-	background: color-mix(
-		in srgb,
-		var(--color-highlight) calc(var(--opacity-15) * 100%),
-		transparent
-	);
-	border: var(--border-width-thin) solid
-		color-mix(in srgb, var(--color-highlight) calc(var(--opacity-30) * 100%), transparent);
-}
-
-html.dark .glass-success {
-	background: color-mix(in srgb, var(--color-success) calc(var(--opacity-15) * 100%), transparent);
-	border: var(--border-width-thin) solid
-		color-mix(in srgb, var(--color-success) calc(var(--opacity-30) * 100%), transparent);
 }
 
 /* Glass morphism with specific blur levels */

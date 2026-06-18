@@ -87,10 +87,10 @@
 }
 
 .entity-image-container a:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-accent);
+	outline: var(--border-width-medium) solid var(--color-primary);
 	outline-offset: var(--space-1);
 	box-shadow: 0 0 0 var(--space-1)
-		color-mix(in srgb, var(--color-accent) calc(var(--opacity-15) * 100%), transparent);
+		color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
 }
 
 .entity-cover-image {

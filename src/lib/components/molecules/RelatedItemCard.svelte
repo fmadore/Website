@@ -6,7 +6,7 @@
 		itemUrl,
 		// Updated default classes to align with global glass card + typography system
 		// Added scroll-reveal-scale for modern CSS scroll-driven animation
-		cardClass = 'related-item glass-card p-4 focus-outline scroll-reveal-scale',
+		cardClass = 'related-item p-4 focus-outline scroll-reveal-scale',
 		dateClass = 'related-date text-xs mb-1',
 		titleClass = 'related-title',
 		authorsClass = 'related-authors text-xs mt-2'
@@ -94,11 +94,11 @@
 
 	/* Enhanced focus accessibility */
 	.related-item:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-highlight);
+		outline: var(--border-width-medium) solid var(--color-primary);
 		outline-offset: var(--space-1);
 		box-shadow:
 			var(--shadow-md),
-			0 0 0 4px color-mix(in srgb, var(--color-highlight) 20%, transparent);
+			0 0 0 4px color-mix(in srgb, var(--color-primary) 20%, transparent);
 	}
 
 	:global(html.dark) .related-item {
