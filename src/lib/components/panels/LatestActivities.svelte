@@ -125,10 +125,6 @@
 
 <style>
 	/* Activity-specific styles - harmonized with ProfileBanner and ContentBody */
-	.activity-item {
-		--card-accent-color: var(--color-success);
-	}
-
 	.activity-meta {
 		display: flex;
 		flex-direction: row;
@@ -156,28 +152,14 @@
 			border-color var(--duration-fast) var(--ease-out);
 	}
 
+	/* Publications — the headline academic output — carry the lone ink-blue
+	 * accent chip. Other activity types fall back to the neutral chip above; the
+	 * former amber / amber-highlight / emerald per-type palette was retired so
+	 * the panel reads with one confident accent (.impeccable.md, principle 2). */
 	.activity-type[data-type='publication'] {
 		color: var(--color-primary);
 		background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
 		border-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
-	}
-
-	.activity-type[data-type='conference'] {
-		color: var(--color-accent);
-		background-color: color-mix(in srgb, var(--color-accent) 10%, transparent);
-		border-color: color-mix(in srgb, var(--color-accent) 20%, transparent);
-	}
-
-	.activity-type[data-type='workshop'] {
-		color: var(--color-highlight);
-		background-color: color-mix(in srgb, var(--color-highlight) 10%, transparent);
-		border-color: color-mix(in srgb, var(--color-highlight) 20%, transparent);
-	}
-
-	.activity-type[data-type='grant'] {
-		color: var(--color-success);
-		background-color: color-mix(in srgb, var(--color-success) 10%, transparent);
-		border-color: color-mix(in srgb, var(--color-success) 20%, transparent);
 	}
 
 	.activity-date {
@@ -201,7 +183,7 @@
 	}
 
 	.activity-title:hover {
-		color: var(--color-success);
+		color: var(--color-primary);
 	}
 
 	.activity-abstract {
@@ -209,21 +191,6 @@
 		color: var(--color-text-light);
 		margin-top: var(--space-xs);
 		line-height: var(--line-height-relaxed);
-	}
-
-	/* Dark mode overrides for activity-specific elements */
-
-	:global(html.dark) .activity-type {
-		background-color: color-mix(
-			in srgb,
-			var(--color-success) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-success) calc(var(--opacity-30) * 100%),
-			transparent
-		);
 	}
 
 	/* Responsive design */

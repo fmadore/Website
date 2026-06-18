@@ -52,10 +52,6 @@
 </div>
 
 <style>
-	.relevant-item {
-		--card-accent-color: var(--color-accent);
-	}
-
 	.relevant-item-meta {
 		display: flex;
 		flex-direction: row;
@@ -69,15 +65,15 @@
 		font-size: var(--font-size-xs);
 		text-transform: uppercase;
 		font-weight: var(--font-weight-semibold);
-		color: var(--color-accent);
+		color: var(--color-primary);
 		background-color: color-mix(
 			in srgb,
-			var(--color-accent) calc(var(--opacity-15) * 100%),
+			var(--color-primary) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 		padding: var(--space-1) var(--space-3);
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-30) * 100%), transparent);
+			color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
 		border-radius: var(--border-radius-full);
 		transition:
 			color var(--duration-fast) var(--ease-out),
@@ -107,7 +103,7 @@
 	}
 
 	.relevant-item-title a:hover {
-		color: var(--color-accent);
+		color: var(--color-primary);
 	}
 
 	.relevant-item-authors {
@@ -130,7 +126,7 @@
 	}
 
 	.relevant-item-link {
-		color: var(--color-accent);
+		color: var(--color-primary);
 		text-decoration: none;
 		font-weight: var(--font-weight-medium);
 		font-size: var(--font-size-sm);
@@ -167,12 +163,12 @@
 	:global(html.dark) .relevant-item-type {
 		background-color: color-mix(
 			in srgb,
-			var(--color-accent) calc(var(--opacity-15) * 100%),
+			var(--color-primary) calc(var(--opacity-15) * 100%),
 			transparent
 		);
 		border-color: color-mix(
 			in srgb,
-			var(--color-accent) calc(var(--opacity-30) * 100%),
+			var(--color-primary) calc(var(--opacity-30) * 100%),
 			transparent
 		);
 	}

@@ -143,24 +143,13 @@
 	color: var(--color-text-light);
 }
 
+/* Publications — the headline academic output — carry the lone ink-blue accent
+ * chip. All other activity types use the neutral chip above; the former amber /
+ * amber-highlight / emerald per-type palette was retired so the list reads with
+ * one confident accent (.impeccable.md, principle 2). */
 .activity-type[data-type='publication'] {
 	color: var(--color-primary);
 	background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
-}
-
-.activity-type[data-type='conference'] {
-	color: var(--color-accent);
-	background-color: color-mix(in srgb, var(--color-accent) 10%, transparent);
-}
-
-.activity-type[data-type='workshop'] {
-	color: var(--color-highlight);
-	background-color: color-mix(in srgb, var(--color-highlight) 10%, transparent);
-}
-
-.activity-type[data-type='grant'] {
-	color: var(--color-success);
-	background-color: color-mix(in srgb, var(--color-success) 10%, transparent);
 }
 
 /* Dark mode support */

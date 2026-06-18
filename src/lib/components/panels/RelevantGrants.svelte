@@ -131,8 +131,8 @@
 	.grant-amount {
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-medium);
-		color: var(--color-success);
-		background: color-mix(in srgb, var(--color-success) 10%, transparent);
+		color: var(--color-primary);
+		background: color-mix(in srgb, var(--color-primary) 10%, transparent);
 		padding: var(--space-2xs) var(--space-xs);
 		border-radius: var(--border-radius-sm);
 	}
@@ -144,8 +144,8 @@
 	}
 
 	.status-awarded {
-		background: color-mix(in srgb, var(--color-success) 10%, transparent);
-		color: var(--color-success);
+		background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+		color: var(--color-primary);
 	}
 
 	.status-other {
