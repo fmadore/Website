@@ -56,7 +56,7 @@
 		"echarts-wordcloud": {
 			"echarts": "$echarts"
 		},
-		"dompurify": "^3.4.10",
+		"dompurify": "^3.4.11",
 		"cookie": ">=0.7.0",
 		"protocol-buffers-schema": ">=3.6.1"
 	},
