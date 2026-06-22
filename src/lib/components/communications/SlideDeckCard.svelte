@@ -87,10 +87,7 @@
 		box-shadow: var(--shadow-sm);
 		color: inherit;
 		text-decoration: none;
-		transition:
-			transform var(--duration-moderate) var(--ease-spring),
-			box-shadow var(--duration-moderate) var(--ease-out),
-			border-color var(--duration-fast) var(--ease-out);
+		transition: border-color var(--duration-fast) var(--ease-out);
 	}
 
 	/* Stretched link — whole cover clicks through to the talk. */
@@ -101,11 +98,7 @@
 	}
 
 	.deck-card:hover .deck-card-cover {
-		transform: translateY(-2px);
-		border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
-		box-shadow:
-			0 12px 28px -8px color-mix(in srgb, var(--color-primary) 20%, transparent),
-			0 4px 10px -4px color-mix(in srgb, var(--color-black) 6%, transparent);
+		border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
 	}
 
 	.deck-card-cover:focus-visible {
@@ -151,14 +144,14 @@
 		background-image: linear-gradient(var(--color-primary), var(--color-primary));
 		background-repeat: no-repeat;
 		background-position: 0 100%;
-		background-size: 0% 2px;
+		background-size: 0% 1px;
 		padding-bottom: 1px;
 		transition: background-size var(--duration-moderate) var(--ease-out);
 	}
 
 	.deck-card-cover:hover .deck-card-title-text,
 	.deck-card-cover:focus-visible .deck-card-title-text {
-		background-size: 100% 2px;
+		background-size: 100% 1px;
 	}
 
 	.deck-card-venue {

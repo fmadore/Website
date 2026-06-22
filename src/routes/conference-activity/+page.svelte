@@ -71,7 +71,6 @@
 	import Sorter from '$lib/components/common/Sorter.svelte';
 	import { sortItems } from '$lib/utils/sortUtils';
 	import { areFiltersActive } from '$lib/utils/filterUtils';
-	import Icon from '@iconify/svelte'; // Import Iconify
 	import Button from '$lib/components/atoms/Button.svelte'; // Import Button
 	import TweenedCount from '$lib/components/atoms/TweenedCount.svelte';
 	import TagCloud from '$lib/components/molecules/TagCloud.svelte';
@@ -80,7 +79,7 @@
 	import { organisedWorkshopsJsonLd } from '$lib/data/organisedWorkshops';
 
 	// Breadcrumbs for this section
-	const breadcrumbs = createSectionBreadcrumbs('Conference Activity', '/conference-activity');
+	const breadcrumbs = createSectionBreadcrumbs('Talks & Events', '/conference-activity');
 
 	// Organiser-role schema.org Event graph (see $lib/data/organisedWorkshops).
 	useJsonLdScript('organised-workshops-json-ld', () => organisedWorkshopsJsonLd);
@@ -276,7 +275,7 @@
 </script>
 
 <SEO
-	title="Conference Activity | Frédérick Madore"
+	title="Talks & Events | Frédérick Madore"
 	description="Academic conference presentations, workshops, and other speaking engagements by Frédérick Madore across Africa, Europe, and North America."
 	keywords="conferences, presentations, workshops, panels, lectures, Islam, West Africa, digital humanities, Frédérick Madore"
 	canonical="https://www.frederickmadore.com/conference-activity"
@@ -288,7 +287,7 @@
 	class="page-container page-enter"
 	use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}
 >
-	<PageHeader title="Conference Activity" />
+	<PageHeader title="Talks & Events" />
 
 	<PageIntro>
 		Since 2012, I have given talks to audiences in {$filterOptions?.countries?.length || 0} countries
@@ -305,9 +304,6 @@
 				ariaLabel={mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
 				additionalClasses="control-button-rounded"
 			>
-				{#snippet icon()}
-					<Icon icon="lucide:filter" width="18" height="18" />
-				{/snippet}
 				{mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
 			</Button><ToggleButton
 				baseText="Map"
@@ -375,9 +371,9 @@
 
 		<div class="desktop-controls">
 			<div class="list-status text-light">
-				Showing <TweenedCount value={$filteredCommunications.length || 0} /> conference activities
+				Showing <TweenedCount value={$filteredCommunications.length || 0} /> talks and events
 				{#if areFiltersActive($activeFilters)}
-					<span class="text-accent"> (Filters applied)</span>
+					<span class="text-muted"> (filtered)</span>
 				{/if}
 			</div>
 			<div class="actions-group">

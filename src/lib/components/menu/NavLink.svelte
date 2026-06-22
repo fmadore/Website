@@ -64,7 +64,7 @@
 		bottom: calc(-1 * var(--space-0-5));
 		left: 0;
 		width: 0;
-		height: var(--border-width-medium);
+		height: var(--border-width-thin);
 		background-color: var(--color-primary);
 		transition:
 			width var(--duration-normal) var(--ease-out),

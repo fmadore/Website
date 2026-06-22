@@ -29,7 +29,7 @@
 </script>
 
 {#if abstract && paragraphs.length > 0}
-	<section class="{sectionClass} glass-section-panel scroll-reveal">
+	<section class="{sectionClass} scroll-reveal">
 		<h2 class={titleClass}>{titleText}</h2>
 		<div class={contentClass}>
 			{#each paragraphs as paragraph, index (index)}
@@ -60,12 +60,16 @@
 		line-height: var(--line-height-tight);
 	}
 
+	/* A book-setting measure: cap the column near 66ch and let it rag right.
+	 * Justified + hyphenated full-width lines run past 100 characters and open
+	 * rivers; an even left-aligned colour at a controlled measure reads better. */
 	.abstract-content {
 		font-size: var(--font-size-base);
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text);
-		text-align: justify;
-		hyphens: auto;
+		max-width: 66ch;
+		text-align: left;
+		hyphens: none;
 	}
 
 	.abstract-paragraph {

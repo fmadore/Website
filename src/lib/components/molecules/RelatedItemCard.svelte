@@ -50,18 +50,13 @@
 		background: var(--color-surface);
 		border: var(--border-width-thin) solid var(--color-border);
 		box-shadow: var(--shadow-sm);
-		transition:
-			transform var(--duration-moderate) var(--ease-spring),
-			box-shadow var(--duration-moderate) var(--ease-out),
-			border-color var(--duration-fast) var(--ease-out);
+		transition: border-color var(--duration-fast) var(--ease-out);
 	}
 
+	/* Quiet hover: border warm-up plus the title colour shift below. No lift
+	 * or coloured shadow bloom. */
 	.related-item:hover {
-		transform: translateY(-2px);
-		border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
-		box-shadow:
-			0 12px 28px -8px color-mix(in srgb, var(--color-primary) 20%, transparent),
-			0 4px 10px -4px color-mix(in srgb, var(--color-black) 6%, transparent);
+		border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
 	}
 
 	.related-date {
@@ -108,10 +103,7 @@
 	}
 
 	:global(html.dark) .related-item:hover {
-		border-color: color-mix(in srgb, var(--color-primary) 50%, var(--color-border));
-		box-shadow:
-			0 12px 28px -8px color-mix(in srgb, var(--color-primary) 35%, transparent),
-			0 4px 10px -4px color-mix(in srgb, var(--color-black) 40%, transparent);
+		border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
 	}
 
 	/* Responsive tweaks */

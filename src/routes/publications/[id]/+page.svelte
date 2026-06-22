@@ -221,7 +221,7 @@
 
 				<!-- Table of Contents Section -->
 				{#if (publication.type === 'book' || publication.type === 'special-issue') && publication.tableOfContents && publication.tableOfContents.length > 0}
-					<section class="table-of-contents-section glass-section-panel scroll-reveal">
+					<section class="table-of-contents-section scroll-reveal">
 						<h2 class="toc-title">Table of Contents</h2>
 						<ol class="toc-list">
 							{#each publication.tableOfContents as item, index (index)}
@@ -256,9 +256,7 @@
 				<PublicationWordCloud publicationId={publication.id} />
 
 				<!-- Action Links and Export Button -->
-				<div
-					class="publication-actions glass-section-panel scroll-reveal flex flex-wrap items-center gap-4"
-				>
+				<div class="publication-actions scroll-reveal flex flex-wrap items-center gap-4">
 					<ActionLinks
 						primaryUrl={publication.url}
 						primaryLabel="Access Publication"

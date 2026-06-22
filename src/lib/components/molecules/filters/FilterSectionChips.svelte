@@ -69,19 +69,7 @@
 </div>
 
 <style>
-	/* Base styles provided by src/styles/components/filters.css */
-
-	/* Chip text overflow handling (specific to this component) */
-	.chip-text {
-		max-width: 150px;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-
-	@media (--sm-down) {
-		.chip-text {
-			max-width: 120px;
-		}
-	}
+	/* Styling is provided by src/styles/components/filters.css. As a full-width
+	 * list row the label fills the line and wraps when long — a finding-aid
+	 * entry shows its whole title, never an ellipsised stub. */
 </style>

@@ -35,7 +35,7 @@
 
 	// Define breadcrumb items
 	const breadcrumbItems = $derived([
-		{ label: 'Conference Activity', href: `${base}/conference-activity` },
+		{ label: 'Talks & Events', href: `${base}/conference-activity` },
 		{
 			label: truncateTitle(communication.title),
 			href: `${base}/communications/${communication.id}`
@@ -201,8 +201,8 @@
 					primaryLabel={communication.urlLabel ?? 'Access Presentation'}
 					additionalUrls={communication.additionalUrls}
 					sectionClass="action-links"
-					primaryButtonClass="btn btn-primary glass-button"
-					secondaryButtonClass="btn btn-outline-primary glass-button"
+					primaryButtonClass="btn btn-primary"
+					secondaryButtonClass="btn btn-outline-primary"
 					primaryDivClass="mb-4"
 				/>
 

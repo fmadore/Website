@@ -26,7 +26,7 @@
 {#if visibleDetails.length > 0}
 	<section class="details-section scroll-reveal" aria-labelledby="publication-details-heading">
 		<h2 id="publication-details-heading" class="sr-only">Publication Details</h2>
-		<dl class="details-grid glass-section-panel">
+		<dl class="details-grid">
 			{#each visibleDetails as detail (detail.label)}
 				<div class="detail-item">
 					<dt class="detail-label">{detail.label}</dt>

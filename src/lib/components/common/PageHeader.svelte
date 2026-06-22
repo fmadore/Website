@@ -151,6 +151,7 @@
 	.page-title {
 		font-family: var(--font-family-display);
 		font-optical-sizing: auto;
+		font-variation-settings: var(--font-variation-display-md);
 		color: var(--color-text-emphasis);
 		line-height: var(--line-height-heading);
 		font-weight: var(--font-weight-semibold);

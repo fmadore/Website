@@ -5,7 +5,6 @@
 	// Import the necessary functions from the new formatter
 	import { formatCitation, getAuthorsArray } from '$lib/utils/citationFormatter';
 	import TagList from '$lib/components/molecules/TagList.svelte';
-	import Icon from '@iconify/svelte';
 
 	interface Props {
 		publication: Publication;
@@ -147,8 +146,7 @@
 							title="Cited by {citationCount} {citationCount === 1 ? 'work' : 'works'}"
 							aria-label="Cited by {citationCount} {citationCount === 1 ? 'work' : 'works'}"
 						>
-							<Icon icon="lucide:quote" width="12" height="12" aria-hidden="true" />
-							<span>{citationCount}</span>
+							Cited {citationCount}×
 						</span>
 					{/if}
 				</div>
@@ -264,25 +262,15 @@
 </article>
 
 <style>
+	/* Citation count as quiet type, not a pill. A mono count in muted ink reads
+	 * as marginalia beside the byline; the badge chrome (accent fill, border,
+	 * quote glyph) was the kind of generic-UI tell the brief avoids. */
 	.citation-badge {
-		display: inline-flex;
-		align-items: center;
-		gap: var(--space-2xs);
-		padding: var(--space-3xs) var(--space-2xs);
-		background-color: color-mix(in srgb, var(--color-accent) 15%, transparent);
-		color: var(--color-accent-dark);
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-accent) 30%, transparent);
-		border-radius: var(--border-radius-full);
+		font-family: var(--font-family-mono);
 		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-semibold);
-		line-height: 1;
+		letter-spacing: var(--letter-spacing-tight);
+		color: var(--color-text-light);
 		white-space: nowrap;
-	}
-
-	:global(html.dark) .citation-badge {
-		background-color: color-mix(in srgb, var(--color-highlight) 20%, transparent);
-		color: var(--color-highlight);
-		border-color: color-mix(in srgb, var(--color-highlight) 40%, transparent);
 	}
 
 	.advisor-info,

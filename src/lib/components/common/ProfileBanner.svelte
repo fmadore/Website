@@ -85,6 +85,7 @@
 		 * and should speak in the same voice as every other top-level heading. */
 		font-family: var(--font-family-display);
 		font-optical-sizing: auto;
+		font-variation-settings: var(--font-variation-display);
 		font-size: var(--font-size-4xl);
 		font-weight: var(--font-weight-semibold);
 		line-height: var(--line-height-tight);

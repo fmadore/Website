@@ -227,6 +227,18 @@
 		'Fraunces', 'Spectral', 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
 	--sys-font-family-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Consolas', 'Monaco', monospace;
 
+	/* Fraunces display-axis presets. opsz is pushed above the physical render
+	 * size so top-level type reads as a genuine display cut (sharper contrast,
+	 * crisper serifs) rather than enlarged text; WONK 1 turns on Fraunces's
+	 * signature wonky letterforms (the letterpress quirk); SOFT 0 keeps
+	 * terminals sharp. Requires the SOFT + WONK axes to be loaded in the
+	 * Google Fonts request — see src/app.html. Applied to h1–h3 and the
+	 * masthead/CV display surfaces so the two serifs stop competing. */
+	--font-variation-display: 'opsz' 144, 'SOFT' 0, 'WONK' 1;
+	--font-variation-display-md: 'opsz' 96, 'SOFT' 0, 'WONK' 1;
+	--font-variation-display-sm: 'opsz' 72, 'SOFT' 0, 'WONK' 1;
+	--font-variation-wordmark: 'opsz' 40, 'SOFT' 0, 'WONK' 1;
+
 	/*
 	 * Type Scale — forked ratios.
 	 *   • Body / UI (step --3 through step 1): Minor Third (1.2) — keeps dense

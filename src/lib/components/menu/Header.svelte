@@ -348,6 +348,7 @@
 	.header-logo :global(.site-title) {
 		font-family: var(--font-family-display);
 		font-optical-sizing: auto;
+		font-variation-settings: var(--font-variation-wordmark);
 		font-size: var(--font-size-xl);
 		font-weight: var(--font-weight-bold);
 		letter-spacing: var(--tracking-heading);

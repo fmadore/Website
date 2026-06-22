@@ -68,7 +68,7 @@
 						fallbackImage={project.imageUrl}
 						defaultAlt={project.title}
 						variant="featured"
-						glassEffect={true}
+						glassEffect={false}
 						fetchpriority="high"
 						loading="eager"
 						maxHeight="60vh"
@@ -333,24 +333,19 @@
 	}
 
 	/* Image styling */
+	/* Body images sit still — a documentary plate, not a clickable card. The
+	 * link (when present) still opens the larger view; the photograph itself
+	 * does not lift or twitch as the cursor nears. */
 	.responsive-image {
 		max-width: 100%;
 		height: auto;
 		display: block;
 		border-radius: var(--border-radius-lg);
 		box-shadow: var(--shadow-md);
-		transition:
-			transform var(--duration-normal) var(--ease-out),
-			box-shadow var(--duration-normal) var(--ease-out);
 	}
 
 	.image-link {
 		display: block;
-	}
-
-	.image-link:hover .responsive-image {
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-lg);
 	}
 
 	/* Content-on-paper sections — serif titles with hairline rules carry the

@@ -43,10 +43,10 @@ export const navItems: NavItem[] = [
 		dropdown: [{ name: 'Islam West Africa Collection', path: 'https://islam.zmo.de/s/westafrica/' }]
 	},
 	{
-		name: 'Conference Activity',
+		name: 'Talks & Events',
 		path: `${base}/conference-activity`,
 		dropdown: [
-			{ name: 'All Conference Activity', path: `${base}/conference-activity` },
+			{ name: 'All Talks & Events', path: `${base}/conference-activity` },
 			{ name: 'Slides', path: `${base}/conference-activity/slides` },
 			{ name: 'Visualisations', path: `${base}/conference-activity/visualisations` },
 			{

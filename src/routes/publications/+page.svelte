@@ -46,7 +46,6 @@
 	import Sorter from '$lib/components/common/Sorter.svelte';
 	import { sortItems } from '$lib/utils/sortUtils';
 	import { areFiltersActive } from '$lib/utils/filterUtils';
-	import Icon from '@iconify/svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
 	import TweenedCount from '$lib/components/atoms/TweenedCount.svelte';
 	import TagCloud from '$lib/components/molecules/TagCloud.svelte';
@@ -262,9 +261,6 @@
 				ariaLabel={mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
 				additionalClasses="control-button-rounded filter-toggle-button"
 			>
-				{#snippet icon()}
-					<Icon icon="lucide:filter" width="18" height="18" />
-				{/snippet}
 				{mobileFiltersExpanded ? 'Hide Filters' : 'Show Filters'}
 			</Button>
 			<!-- Intentionally empty for the first row, right side -->
@@ -331,7 +327,7 @@
 			<div class="list-status text-light">
 				Showing <TweenedCount value={filteredCount} /> publications
 				{#if areFiltersActive($activeFilters)}
-					<span class="text-accent"> (Filters applied)</span>
+					<span class="text-muted"> (filtered)</span>
 				{/if}
 			</div>
 			<div class="buttons-group">

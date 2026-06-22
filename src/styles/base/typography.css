@@ -92,18 +92,21 @@ h1 {
 	margin-bottom: var(--space-xl);
 	line-height: var(--line-height-heading);
 	letter-spacing: var(--tracking-heading);
+	font-variation-settings: var(--font-variation-display);
 }
 
 h2 {
 	font-size: var(--font-size-heading-2);
 	margin-bottom: var(--space-lg);
 	font-weight: var(--font-weight-semibold);
+	font-variation-settings: var(--font-variation-display-md);
 }
 
 h3 {
 	font-size: var(--font-size-heading-3);
 	margin-bottom: var(--space-md);
 	font-weight: var(--font-weight-semibold);
+	font-variation-settings: var(--font-variation-display-sm);
 }
 
 h4 {

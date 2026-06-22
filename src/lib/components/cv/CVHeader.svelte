@@ -82,6 +82,7 @@
 	.cv-subtitle {
 		font-family: var(--font-family-display);
 		font-optical-sizing: auto;
+		font-variation-settings: var(--font-variation-display-md);
 		font-size: var(--font-size-3xl);
 		font-weight: var(--font-weight-semibold);
 		line-height: var(--line-height-heading);

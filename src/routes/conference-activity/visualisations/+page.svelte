@@ -250,14 +250,14 @@
 	// ---------- Breadcrumbs + SEO ----------
 
 	const breadcrumbItems = [
-		{ label: 'Conference Activity', href: `${base}/conference-activity` },
+		{ label: 'Talks & Events', href: `${base}/conference-activity` },
 		{ label: 'Visualisations', href: `${base}/conference-activity/visualisations` }
 	];
 	useBreadcrumbJsonLd(() => breadcrumbItems, 'breadcrumb-json-ld-conf-activity-viz');
 </script>
 
 <SEO
-	title="Conference Activity Visualisations | Frédérick Madore"
+	title="Talks & Events Visualisations | Frédérick Madore"
 	description="Visualisations of academic conference activity: presentations per year, types, languages, countries, tag networks, research projects, and a geographic map of venues."
 	keywords="conferences, presentations, visualisations, co-presenters, research projects, map, Frédérick Madore"
 />
@@ -265,7 +265,7 @@
 <div class="page-container page-enter">
 	<Breadcrumb items={breadcrumbItems} />
 	<div class="scroll-reveal">
-		<PageHeader title="Conference Activity Visualisations" />
+		<PageHeader title="Talks & Events Visualisations" />
 	</div>
 
 	<div class="scroll-reveal">

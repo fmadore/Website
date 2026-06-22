@@ -214,7 +214,6 @@
 	.filter-sidebar {
 		position: relative;
 		contain: layout style;
-		transition: box-shadow var(--duration-normal) var(--ease-out);
 	}
 
 	/* Filter sections wrapper (for mobile collapse) */
@@ -278,16 +277,9 @@
 		}
 
 		.filter-sidebar {
-			background: var(--color-surface);
-			border: var(--border-width-thin) solid var(--color-border);
-			border-radius: var(--border-radius-lg);
-			padding: var(--space-lg);
-			box-shadow: var(--shadow-sm);
+			/* No box: the sidebar is a column of type-led lists divided by
+			 * hairline rules, not a boxed control panel. */
 			margin-bottom: 0;
-		}
-
-		.filter-sidebar:hover {
-			box-shadow: var(--shadow-md);
 		}
 
 		.sticky-top {
@@ -322,12 +314,7 @@
 		}
 	}
 
-	/* Dark mode enhancements */
-	:global(html.dark) .filter-sidebar {
-		background: var(--color-surface);
-		border-color: var(--color-border);
-	}
-
+	/* Dark mode: keep the section divider rule visible on the slate surface. */
 	:global(html.dark) .filter-section {
 		border-color: color-mix(in srgb, var(--color-border) 40%, transparent);
 	}

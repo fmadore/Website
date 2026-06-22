@@ -90,12 +90,7 @@ Provides consistent structure for all research project pages including:
 			<PageHeader {title} typeBadgeText="Research Project" date={years} />
 
 			<div class="scroll-reveal">
-				<ProjectImageBanner
-					src="{base}/images/research/{imageSrc}"
-					alt={imageAlt}
-					glassEffect="glass-medium"
-					overlayIntensity="medium"
-				/>
+				<ProjectImageBanner src="{base}/images/research/{imageSrc}" alt={imageAlt} />
 			</div>
 
 			<div class="scroll-reveal">

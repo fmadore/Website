@@ -11,7 +11,7 @@
 	const decks = communicationsWithSlides;
 
 	const breadcrumbItems = [
-		{ label: 'Conference Activity', href: `${base}/conference-activity` },
+		{ label: 'Talks & Events', href: `${base}/conference-activity` },
 		{ label: 'Slides', href: `${base}/conference-activity/slides` }
 	];
 	useBreadcrumbJsonLd(() => breadcrumbItems, 'breadcrumb-json-ld-conf-activity-slides');
@@ -45,7 +45,7 @@
 			<p class="deck-empty-title">No decks published yet.</p>
 			<p class="deck-empty-text">
 				Slide decks appear here as talks are presented. In the meantime, browse the
-				<a href={resolve('/conference-activity')}>full conference activity</a>.
+				<a href={resolve('/conference-activity')}>full Talks &amp; Events listing</a>.
 			</p>
 		</div>
 	{/if}

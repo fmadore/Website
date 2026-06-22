@@ -16,13 +16,14 @@
 	margin-bottom: var(--space-sm);
 }
 
+/* Section labels read as quiet editorial sub-heads — Spectral italic, sentence
+ * case — not uppercase dashboard captions. */
 .filter-section-title {
-	font-family: var(--font-family-sans);
-	font-size: var(--font-size-sm);
-	font-weight: var(--font-weight-semibold);
+	font-family: var(--font-family-serif);
+	font-style: italic;
+	font-size: var(--font-size-base);
+	font-weight: var(--font-weight-normal);
 	color: var(--color-text-muted);
-	text-transform: uppercase;
-	letter-spacing: var(--letter-spacing-wide);
 	margin: 0;
 }
 
@@ -37,91 +38,71 @@
  * active-filter summary already communicates selection.
  */
 .active-count {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	min-width: var(--space-5);
-	height: var(--space-5);
+	font-family: var(--font-family-mono);
 	font-size: var(--font-size-xs);
-	font-weight: var(--font-weight-semibold);
-	color: var(--color-text-inverted);
-	background: var(--color-primary);
-	border-radius: var(--border-radius-full);
-	padding: 0 var(--space-2xs);
+	color: var(--color-text-muted);
 }
 
 /* === Filter Chip System === */
 
+/*
+ * Facet options read as a type-led list, not a tray of pills: each option is a
+ * full-width row — label left, count right — with no fill, border, or radius.
+ * Selection is shown with ink-blue type and a little more weight, the way an
+ * active link reads, so the panel scans as a finding aid rather than a control
+ * board.
+ */
 .filter-chips-container {
 	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-xs);
+	flex-direction: column;
+	gap: var(--space-2xs);
 }
 
 .filter-chip {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--space-xs);
-	padding: var(--space-xs) var(--space-sm);
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-sm);
+	width: 100%;
+	padding: var(--space-3xs) 0;
 	font-family: var(--font-family-sans);
-	font-size: var(--font-size-sm);
-	font-weight: var(--font-weight-medium);
+	font-size: var(--font-size-base);
+	font-weight: var(--font-weight-normal);
 	color: var(--color-text);
-	background: color-mix(in srgb, var(--color-surface-alt) 50%, transparent);
-	border: var(--border-width-thin) solid var(--color-border);
-	border-radius: var(--border-radius-full);
+	background: none;
+	border: none;
+	border-radius: 0;
+	text-align: left;
 	cursor: pointer;
-	transform: scale(1);
-	transition:
-		background-color var(--duration-fast) var(--ease-out),
-		border-color var(--duration-fast) var(--ease-out),
-		color var(--duration-fast) var(--ease-out),
-		box-shadow var(--duration-fast) var(--ease-out),
-		transform var(--duration-fast) var(--ease-out);
+	transition: color var(--duration-fast) var(--ease-out);
 }
 
-/* Tactile press feedback — the chip depresses slightly on click, then
- * settles back to rest on release (no overshoot; Phase 4 motion principle). */
-.filter-chip:active {
-	transform: scale(0.96);
-	transition-duration: var(--duration-instant);
-}
-
-/* Hover keeps the chip on warm paper — the border picks up a hint of
- * primary so the hover signal is unambiguous, but no fill flash. The
- * accent only "earns its place" when the chip becomes active. */
 .filter-chip:hover {
-	background: var(--color-surface-elevated);
-	border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
 	color: var(--color-text-emphasis);
 }
 
 .filter-chip.active {
-	background: var(--color-primary);
-	border-color: var(--color-primary);
-	color: var(--color-text-inverted);
-	box-shadow: var(--shadow-sm);
+	color: var(--color-primary);
+	font-weight: var(--font-weight-medium);
 }
 
 .filter-chip.active:hover {
-	background: var(--color-primary-dark);
-	border-color: var(--color-primary-dark);
+	color: var(--color-primary-dark);
 }
 
 .filter-chip .chip-text {
-	line-height: var(--line-height-none);
+	flex: 1;
+	min-width: 0;
+	line-height: var(--line-height-snug);
+	overflow-wrap: break-word;
 }
 
 .filter-chip .chip-count {
+	font-family: var(--font-family-mono);
 	font-size: var(--font-size-xs);
-	font-weight: var(--font-weight-semibold);
-	opacity: 0.7;
-	min-width: 1.25em;
-	text-align: center;
-}
-
-.filter-chip.active .chip-count {
-	opacity: 0.9;
+	font-weight: var(--font-weight-normal);
+	color: var(--color-text-muted);
+	text-align: right;
 }
 
 /* === Filter Actions === */
@@ -176,22 +157,10 @@
 	color: var(--color-danger);
 }
 
-/* === Dark Mode === */
-
-html.dark .filter-chip {
-	background: color-mix(in srgb, var(--color-surface-alt) 30%, transparent);
-	border-color: var(--color-border);
-}
-
-html.dark .filter-chip:hover {
-	background: var(--color-surface-elevated);
-	border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-border));
-}
-
-html.dark .filter-chip.active {
-	background: var(--color-primary);
-	border-color: var(--color-primary);
-}
+/* === Dark Mode ===
+ * The de-pilled list rows need no dark overrides: hover uses
+ * --color-text-emphasis and the active state uses --color-primary, both of
+ * which already adapt to the slate surface. */
 
 /* === Mobile: Card Wrapper === */
 
@@ -216,13 +185,8 @@ html.dark .filter-chip.active {
 		font-size: var(--font-size-xs);
 	}
 
-	.filter-chips-container {
-		gap: var(--space-2xs);
-	}
-
 	.filter-chip {
-		padding: var(--space-2xs) var(--space-xs);
-		font-size: var(--font-size-xs);
+		font-size: var(--font-size-sm);
 	}
 }
 
@@ -232,9 +196,5 @@ html.dark .filter-chip.active {
 	.filter-chip,
 	.filter-action-link {
 		transition: none;
-	}
-
-	.filter-chip:active {
-		transform: none;
 	}
 }

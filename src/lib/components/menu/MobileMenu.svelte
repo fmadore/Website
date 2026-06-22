@@ -246,6 +246,7 @@
 		justify-content: center;
 		font-family: var(--font-family-display);
 		font-optical-sizing: auto;
+		font-variation-settings: var(--font-variation-wordmark);
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-bold);
 		letter-spacing: var(--tracking-heading);
@@ -447,25 +448,13 @@
 		}
 	}
 
-	/* Item reveal animation with optimized transforms */
-	@keyframes mobileNavItemReveal {
-		from {
-			opacity: 0;
-			transform: translateX(calc(-1 * var(--transform-distance-md)));
-		}
-		to {
-			opacity: 1;
-			transform: translateX(0);
-		}
-	}
-
-	/* Use animation for active state - smoother than transition */
+	/* Panel slide-in only. The per-item reveal is the staggered transition
+	 * declared above (opacity + translateX with per-item transition-delay) —
+	 * one mechanism, so items keep their one-after-another cascade. A duplicate
+	 * keyframe here previously overrode that transition and fired every item at
+	 * once; it has been removed. */
 	.mobile-nav-container.active {
 		animation: mobileNavSlideIn var(--duration-moderate) var(--ease-out) forwards;
-	}
-
-	.mobile-nav-container.active :global(.mobile-nav-item) {
-		animation: mobileNavItemReveal var(--duration-normal) var(--ease-out) forwards;
 	}
 
 	/* ===== REDUCED MOTION SUPPORT =====

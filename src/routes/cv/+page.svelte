@@ -129,87 +129,84 @@
 	</div>
 
 	<CVHeader />
-	<div id="cv-appointments" class="cv-section-wrapper scroll-reveal">
+	<div id="cv-appointments" class="cv-section-wrapper">
 		<CVAppointments />
 	</div>
-	<div id="cv-education" class="cv-section-wrapper scroll-reveal">
+	<div id="cv-education" class="cv-section-wrapper">
 		<CVEducation />
 	</div>
-	<div id="cv-publications" class="cv-section-wrapper scroll-reveal">
+	<div id="cv-publications" class="cv-section-wrapper">
 		<CVPublications />
 	</div>
 
 	<!-- Components load automatically after page mount in batches -->
 	{#if CVGrants}
-		<div id="cv-grants" class="cv-section-wrapper cv-lazy-section fade-in-up">
+		<div id="cv-grants" class="cv-section-wrapper cv-lazy-section">
 			<CVGrants />
 		</div>
 	{/if}
 	{#if CVAwards}
-		<div id="cv-awards" class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
+		<div id="cv-awards" class="cv-section-wrapper cv-lazy-section">
 			<CVAwards />
 		</div>
 	{/if}
 	{#if CVDigitalHumanities}
-		<div id="cv-digital-humanities" class="cv-section-wrapper cv-lazy-section fade-in-up stagger-2">
+		<div id="cv-digital-humanities" class="cv-section-wrapper cv-lazy-section">
 			<CVDigitalHumanities />
 		</div>
 	{/if}
 	{#if CVInvitedTalks}
-		<div id="cv-invited-talks" class="cv-section-wrapper cv-lazy-section fade-in-up">
+		<div id="cv-invited-talks" class="cv-section-wrapper cv-lazy-section">
 			<CVInvitedTalks />
 		</div>
 	{/if}
 	{#if CVConferences}
-		<div id="cv-conferences" class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
+		<div id="cv-conferences" class="cv-section-wrapper cv-lazy-section">
 			<CVConferences />
 		</div>
 	{/if}
 	{#if CVEvents}
-		<div id="cv-events" class="cv-section-wrapper cv-lazy-section fade-in-up stagger-2">
+		<div id="cv-events" class="cv-section-wrapper cv-lazy-section">
 			<CVEvents />
 		</div>
 	{/if}
 	{#if CVTeaching}
-		<div id="cv-teaching" class="cv-section-wrapper cv-lazy-section fade-in-up">
+		<div id="cv-teaching" class="cv-section-wrapper cv-lazy-section">
 			<CVTeaching />
 		</div>
 	{/if}
 	{#if CVResearchExperience}
-		<div
-			id="cv-research-experience"
-			class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1"
-		>
+		<div id="cv-research-experience" class="cv-section-wrapper cv-lazy-section">
 			<CVResearchExperience />
 		</div>
 	{/if}
 	{#if CVService}
-		<div id="cv-service" class="cv-section-wrapper cv-lazy-section fade-in-up stagger-2">
+		<div id="cv-service" class="cv-section-wrapper cv-lazy-section">
 			<CVService />
 		</div>
 	{/if}
 	{#if CVConsulting}
-		<div id="cv-consulting" class="cv-section-wrapper cv-lazy-section fade-in-up">
+		<div id="cv-consulting" class="cv-section-wrapper cv-lazy-section">
 			<CVConsulting />
 		</div>
 	{/if}
 	{#if CVMedia}
-		<div id="cv-media" class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
+		<div id="cv-media" class="cv-section-wrapper cv-lazy-section">
 			<CVMedia />
 		</div>
 	{/if}
 	{#if CVLanguages}
-		<div id="cv-languages" class="cv-section-wrapper cv-lazy-section fade-in-up stagger-2">
+		<div id="cv-languages" class="cv-section-wrapper cv-lazy-section">
 			<CVLanguages />
 		</div>
 	{/if}
 	{#if CVAffiliations}
-		<div id="cv-affiliations" class="cv-section-wrapper cv-lazy-section fade-in-up">
+		<div id="cv-affiliations" class="cv-section-wrapper cv-lazy-section">
 			<CVAffiliations />
 		</div>
 	{/if}
 	{#if CVComputerSkills}
-		<div id="cv-computer-skills" class="cv-section-wrapper cv-lazy-section fade-in-up stagger-1">
+		<div id="cv-computer-skills" class="cv-section-wrapper cv-lazy-section">
 			<CVComputerSkills />
 		</div>
 	{/if}
@@ -291,19 +288,12 @@
 		margin-bottom: var(--space-2);
 	}
 
-	/* Entry items with base styling */
+	/* Entry rows sit flat on the sheet — a printed CV doesn't shift or tint
+	 * when you point at it. Links keep their underline-on-hover (below); that
+	 * is the only hover this page needs. */
 	:global(#cv-content .space-y-3 > div) {
 		padding: var(--space-2);
 		border-radius: var(--border-radius-md);
-		transition: all var(--duration-fast) ease;
-	}
-
-	/* Hover effects only for devices with hover capability (not touch) */
-	@media (--can-hover) {
-		:global(#cv-content .space-y-3 > div:hover) {
-			background: color-mix(in srgb, var(--color-primary) 3%, transparent);
-			transform: translateX(var(--space-1));
-		}
 	}
 
 	/* Year labels with accent styling */

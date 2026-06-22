@@ -4,338 +4,67 @@
 		alt,
 		width = 800,
 		height = 600,
-		glassEffect = 'glass-light',
+		caption = undefined,
 		additionalClasses = '',
-		showOverlay = true,
-		overlayIntensity = 'subtle',
 		scrollAnimation = true
 	}: {
 		src: string;
 		alt: string;
 		width?: number;
 		height?: number;
-		glassEffect?: 'glass-card' | 'glass-panel' | 'glass-medium' | 'glass-light';
+		/** Optional caption rendered beneath the plate in Spectral italic. */
+		caption?: string | undefined;
 		additionalClasses?: string;
-		showOverlay?: boolean;
-		overlayIntensity?: 'subtle' | 'medium' | 'strong';
 		scrollAnimation?: boolean;
 	} = $props();
 
 	const animationClass = $derived(scrollAnimation ? 'scroll-reveal-scale' : '');
 	const combinedClasses = $derived(
-		`project-image-banner ${glassEffect} ${animationClass} ${additionalClasses}`.trim()
+		`project-image-banner ${animationClass} ${additionalClasses}`.trim()
 	);
-	const overlayClass = $derived(showOverlay ? `overlay-${overlayIntensity}` : '');
 </script>
 
-<div class={combinedClasses}>
-	<div class="image-container">
-		<img {src} {alt} {width} {height} loading="lazy" decoding="async" class="project-image" />
-		{#if showOverlay}
-			<div class="image-overlay {overlayClass}"></div>
-		{/if}
-	</div>
-	<div class="banner-glow"></div>
-</div>
+<figure class={combinedClasses}>
+	<img {src} {alt} {width} {height} loading="lazy" decoding="async" class="project-image" />
+	{#if caption}
+		<figcaption class="project-image-caption">{caption}</figcaption>
+	{/if}
+</figure>
 
 <style>
+	/*
+	 * Documentary plate. The photograph is presented clean: a hairline frame
+	 * and one quiet shadow, no glass scrim, gradient sheen, glow, hover lift,
+	 * or image zoom. Glass is reserved for true chrome (header, media
+	 * controls); a banner photograph reads at full fidelity and, where it
+	 * needs labelling, takes a plain serif-italic caption beneath.
+	 */
 	.project-image-banner {
-		margin-bottom: var(--space-6);
-		border-radius: var(--border-radius-lg);
-		overflow: hidden;
-		position: relative;
-		transition:
-			transform var(--duration-slow) var(--ease-in-out),
-			box-shadow var(--duration-slow) var(--ease-in-out),
-			background var(--duration-slow) var(--ease-in-out),
-			border-color var(--duration-slow) var(--ease-in-out);
-		/* Paper banner surface — the image speaks for itself; no backdrop-filter,
-		 * no multi-stop gradient. A quiet warm tint + primary-tinted shadow
-		 * provides the "banner" affordance without frosted-glass decoration. */
-		background: color-mix(in srgb, var(--color-primary) 3%, var(--color-surface));
-		padding: var(--space-4);
-		box-shadow: 0 4px 14px -2px color-mix(in srgb, var(--color-primary) 15%, transparent);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) 15%, var(--color-border));
-	}
-
-	.project-image-banner::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background: linear-gradient(
-			45deg,
-			color-mix(in srgb, var(--color-primary) 2%, transparent) 0%,
-			transparent 30%,
-			transparent 70%,
-			color-mix(in srgb, var(--color-highlight) 2%, transparent) 100%
-		);
-		border-radius: inherit;
-		pointer-events: none;
-		opacity: 0;
-		transition: opacity var(--duration-slow) var(--ease-in-out);
-	}
-
-	.project-image-banner:hover {
-		transform: var(--transform-lift-md);
-		/* Enhanced hover effect with stronger gradient and glow */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 5%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 4%, transparent) 25%,
-			color-mix(in srgb, var(--color-accent) 3%, transparent) 50%,
-			color-mix(in srgb, var(--color-primary) 2%, transparent) 75%,
-			color-mix(in srgb, var(--color-highlight) 1%, transparent) 100%
-		);
-		box-shadow:
-			0 16px 48px 0 color-mix(in srgb, var(--color-primary) 18%, transparent),
-			0 4px 24px 0 color-mix(in srgb, var(--color-primary) 12%, transparent),
-			0 0 0 1px color-mix(in srgb, var(--color-primary) 10%, transparent),
-			inset 0 1px 0 color-mix(in srgb, var(--color-white) 35%, transparent),
-			inset 0 -1px 0 color-mix(in srgb, var(--color-white) 15%, transparent);
-		border-color: color-mix(in srgb, var(--color-white) 35%, transparent);
-	}
-
-	.project-image-banner:hover::before {
-		opacity: 1;
-	}
-
-	.image-container {
-		position: relative;
-		border-radius: var(--border-radius-md);
-		overflow: hidden;
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-surface) 80%, transparent) 0%,
-			color-mix(in srgb, var(--color-surface) 60%, transparent) 100%
-		);
+		margin: 0 0 var(--space-6);
+		display: block;
 	}
 
 	.project-image {
+		display: block;
 		width: 100%;
 		height: auto;
-		display: block;
-		transition:
-			transform var(--duration-slow) var(--ease-in-out),
-			filter var(--duration-slow) var(--ease-in-out);
-		filter: contrast(1.05) saturate(1.1);
+		border-radius: var(--border-radius-sm);
+		border: var(--border-width-thin) solid var(--color-border-dark);
+		box-shadow: 0 2px 6px -2px color-mix(in srgb, var(--color-black) 8%, transparent);
 	}
 
-	.project-image-banner:hover .project-image {
-		transform: scale(1.02);
-		filter: contrast(1.08) saturate(1.15) brightness(1.02);
+	.project-image-caption {
+		margin-top: var(--space-2);
+		font-family: var(--font-family-serif);
+		font-style: italic;
+		font-size: var(--font-size-sm);
+		line-height: var(--line-height-snug);
+		color: var(--color-text-light);
 	}
 
-	.image-overlay {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		pointer-events: none;
-		transition: opacity var(--duration-slow) var(--ease-in-out);
-		border-radius: inherit;
-	}
-
-	.overlay-subtle {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 4%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 6%, transparent) 100%
-		);
-		opacity: var(--opacity-30);
-	}
-
-	.overlay-medium {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 8%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 10%, transparent) 100%
-		);
-		opacity: var(--opacity-40);
-	}
-
-	.overlay-strong {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 18%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 12%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 15%, transparent) 100%
-		);
-		opacity: var(--opacity-50);
-	}
-
-	.project-image-banner:hover .image-overlay {
-		opacity: var(--opacity-60);
-	}
-
-	.banner-glow {
-		position: absolute;
-		top: calc(-1 * var(--space-3xs));
-		left: calc(-1 * var(--space-3xs));
-		right: calc(-1 * var(--space-3xs));
-		bottom: calc(-1 * var(--space-3xs));
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 10%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 8%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 10%, transparent) 100%
-		);
-		border-radius: calc(var(--border-radius-xl) + var(--space-3xs));
-		opacity: 0;
-		transition: opacity var(--duration-slow) var(--ease-in-out);
-		z-index: -1;
-		filter: blur(calc(var(--glass-blur-amount) * 0.6));
-	}
-
-	.project-image-banner:hover .banner-glow {
-		opacity: var(--opacity-60);
-	}
-
-	/* Dark mode adjustments */
-	:global(html.dark) .project-image-banner {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 6%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 4%, transparent) 25%,
-			color-mix(in srgb, var(--color-accent) 3%, transparent) 50%,
-			color-mix(in srgb, var(--color-primary) 2%, transparent) 75%,
-			transparent 100%
-		);
-		box-shadow:
-			0 8px 32px 0 color-mix(in srgb, var(--color-black) 40%, transparent),
-			0 2px 16px 0 color-mix(in srgb, var(--color-black) 30%, transparent),
-			inset 0 1px 0 color-mix(in srgb, var(--color-white) 15%, transparent),
-			inset 0 -1px 0 color-mix(in srgb, var(--color-white) 8%, transparent);
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-white) 15%, transparent);
-	}
-
-	:global(html.dark) .project-image-banner::before {
-		background: linear-gradient(
-			45deg,
-			color-mix(in srgb, var(--color-primary) 4%, transparent) 0%,
-			transparent 30%,
-			transparent 70%,
-			color-mix(in srgb, var(--color-highlight) 4%, transparent) 100%
-		);
-	}
-
-	:global(html.dark) .project-image-banner:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 6%, transparent) 25%,
-			color-mix(in srgb, var(--color-accent) 5%, transparent) 50%,
-			color-mix(in srgb, var(--color-primary) 4%, transparent) 75%,
-			color-mix(in srgb, var(--color-highlight) 2%, transparent) 100%
-		);
-		box-shadow:
-			0 16px 48px 0 color-mix(in srgb, var(--color-black) 50%, transparent),
-			0 4px 24px 0 color-mix(in srgb, var(--color-black) 40%, transparent),
-			0 0 0 1px color-mix(in srgb, var(--color-primary) 20%, transparent),
-			inset 0 1px 0 color-mix(in srgb, var(--color-white) 20%, transparent),
-			inset 0 -1px 0 color-mix(in srgb, var(--color-white) 12%, transparent);
-		border-color: color-mix(in srgb, var(--color-white) 20%, transparent);
-	}
-
-	:global(html.dark) .image-container {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-dark-surface) 90%, transparent) 0%,
-			color-mix(in srgb, var(--color-dark-surface) 70%, transparent) 100%
-		);
-	}
-
-	:global(html.dark) .overlay-subtle {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 8%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 10%, transparent) 100%
-		);
-	}
-
-	:global(html.dark) .overlay-medium {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 16%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 12%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 14%, transparent) 100%
-		);
-	}
-
-	:global(html.dark) .overlay-strong {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 22%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 16%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 18%, transparent) 100%
-		);
-	}
-
-	:global(html.dark) .banner-glow {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 15%, transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) 12%, transparent) 50%,
-			color-mix(in srgb, var(--color-accent) 15%, transparent) 100%
-		);
-	}
-
-	/* Desktop responsive design */
 	@media (--sm) {
 		.project-image-banner {
 			margin-bottom: var(--space-8);
-			border-radius: var(--border-radius-xl);
-			padding: var(--space-5);
-		}
-
-		.image-container {
-			border-radius: var(--border-radius-lg);
-		}
-
-		.banner-glow {
-			filter: blur(var(--glass-blur-amount));
-		}
-	}
-
-	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
-		.project-image-banner,
-		.project-image,
-		.image-overlay,
-		.banner-glow,
-		.project-image-banner::before {
-			transition: none;
-		}
-
-		.project-image-banner:hover {
-			transform: none;
-		}
-
-		.project-image-banner:hover .project-image {
-			transform: none;
-			filter: contrast(1.05) saturate(1.1);
-		}
-	}
-
-	/* High contrast mode support */
-	@media (prefers-contrast: high) {
-		.project-image-banner {
-			border-width: var(--border-width-thick);
-		}
-
-		.image-overlay {
-			opacity: var(--opacity-20);
-		}
-
-		.project-image-banner:hover .image-overlay {
-			opacity: var(--opacity-30);
 		}
 	}
 </style>

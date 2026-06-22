@@ -128,13 +128,13 @@
 <style>
 	/* Base styles provided by src/styles/components/filters.css */
 
+	/* Range read-out as quiet mono text, pushed to the right of the label —
+	 * no tinted pill. */
 	.range-display {
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-primary);
-		background: color-mix(in srgb, var(--color-primary) 8%, transparent);
-		padding: var(--space-2xs) var(--space-xs);
-		border-radius: var(--border-radius-sm);
+		margin-left: auto;
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-xs);
+		color: var(--color-text-soft);
 	}
 
 	.slider-container {
@@ -198,12 +198,6 @@
 	:global(.rangeSlider .pip.last) {
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text);
-	}
-
-	/* Dark mode */
-	:global(html.dark) .range-display {
-		background: color-mix(in srgb, var(--color-primary) 14%, transparent);
-		color: var(--color-primary-light);
 	}
 
 	/* Responsive slider adjustments */

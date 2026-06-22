@@ -102,23 +102,19 @@
 		background: var(--color-surface);
 		border: var(--border-width-thin) solid var(--color-border);
 		box-shadow: var(--shadow-sm);
-		transition:
-			transform var(--duration-moderate) var(--ease-spring),
-			border-color var(--duration-fast) var(--ease-out),
-			box-shadow var(--duration-moderate) var(--ease-out);
+		transition: border-color var(--duration-fast) var(--ease-out);
 	}
 
+	/* Quiet hover: a single border warm-up plus the title underline read as
+	 * "this is a link". No lift, image zoom, or coloured shadow bloom — the
+	 * list keeps its composure as the cursor travels down it. */
 	.card:hover {
-		transform: translateY(-2px);
-		border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
-		box-shadow:
-			0 12px 28px -8px color-mix(in srgb, var(--color-primary) 20%, transparent),
-			0 4px 10px -4px color-mix(in srgb, var(--color-black) 6%, transparent);
+		border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
 	}
 
 	/* Card hover pre-reveals the title's animated underline. */
 	.card:hover :global(.card-title .link-animated) {
-		background-size: 100% 2px;
+		background-size: 100% 1px;
 	}
 
 	.card-image {
@@ -132,11 +128,6 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		transition: transform var(--duration-fast) var(--ease-in-out);
-	}
-
-	.card:hover .card-image img {
-		transform: scale(var(--scale-105));
 	}
 
 	.card-body {
@@ -211,25 +202,13 @@
 	}
 
 	:global(html.dark) .card:hover {
-		border-color: color-mix(in srgb, var(--color-primary) 50%, var(--color-border));
-		box-shadow:
-			0 12px 28px -8px color-mix(in srgb, var(--color-primary) 35%, transparent),
-			0 4px 10px -4px color-mix(in srgb, var(--color-black) 40%, transparent);
+		border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
 	}
 
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
-		.card,
-		.card-image img {
+		.card {
 			transition: none;
-		}
-
-		.card:hover {
-			transform: none;
-		}
-
-		.card:hover .card-image img {
-			transform: none;
 		}
 	}
 
