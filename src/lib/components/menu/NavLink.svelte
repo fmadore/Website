@@ -6,7 +6,13 @@
 		hasDropdown = false,
 		onclick,
 		onkeydown,
-		preloadStrategy = 'eager',
+		// 'hover' (not 'eager'): eager preloading downloads EVERY nav target's
+		// route code immediately on load — even for the desktop nav that's
+		// display:none on mobile — pulling the whole app (incl. the full
+		// publications/communications datasets) into the home page's critical
+		// path. 'hover' preloads on pointer-hover (desktop) / touchstart (mobile),
+		// so navigation still feels instant with zero upfront cost.
+		preloadStrategy = 'hover',
 		children,
 		...restProps
 	}: {

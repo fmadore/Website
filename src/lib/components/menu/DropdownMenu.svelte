@@ -22,7 +22,7 @@
 				<a
 					href={item.path}
 					class="dropdown-item"
-					data-sveltekit-preload-code="eager"
+					data-sveltekit-preload-code="hover"
 					onclick={onItemClick}
 					role="menuitem"
 					target={item.path.startsWith('http') ? '_blank' : null}
