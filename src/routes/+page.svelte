@@ -3,8 +3,9 @@
 	import ProfileBanner from '$lib/components/common/ProfileBanner.svelte';
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import SEO from '$lib/SEO.svelte';
-	import { resolve } from '$app/paths';
+	import { base, resolve } from '$app/paths';
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
+	import { browser } from '$app/environment';
 	import type { PageData } from './$types';
 
 	let { data } = $props<{ data: PageData }>();
@@ -12,10 +13,25 @@
 	// Use the Person schema from page load data as additional schema
 	const additionalSchemas = $derived(data.personSchema ? [data.personSchema] : []);
 
-	// Note: the profile picture is preloaded by the browser's preload scanner via
-	// the <img fetchpriority="high" loading="eager"> in ProfileBanner (already in
-	// the prerendered HTML). A runtime <link rel="preload"> here would fire only
-	// after hydration — strictly later — so it was removed as redundant.
+	// Preload profile picture since it's above-the-fold on home page
+	$effect(() => {
+		if (browser) {
+			const profilePreloadId = 'profile-picture-preload';
+			if (document.getElementById(profilePreloadId)) return;
+
+			const preloadLink = document.createElement('link');
+			preloadLink.id = profilePreloadId;
+			preloadLink.rel = 'preload';
+			preloadLink.as = 'image';
+			preloadLink.href = `${base}/images/Profile-picture.webp`;
+			document.head.appendChild(preloadLink);
+
+			return () => {
+				const linkElement = document.getElementById(profilePreloadId);
+				if (linkElement) document.head.removeChild(linkElement);
+			};
+		}
+	});
 </script>
 
 <SEO

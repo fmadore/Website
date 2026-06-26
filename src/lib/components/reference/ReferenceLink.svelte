@@ -1,20 +1,16 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import type { ReferenceIndexEntry } from '$lib/types/referenceIndex';
 
-	// Renders from the ultra-slim citation entry (itemType + precomputed "(Author,
-	// Year)" + title) so the inline link never needs the full reference index —
-	// that heavier preview data is loaded lazily on hover by <ItemReference>.
 	let {
-		cite = undefined,
-		title = undefined,
+		item = undefined,
 		itemType = undefined,
 		id,
 		label = undefined,
 		hasPopup = false,
 		isActive = false
 	}: {
-		cite?: string;
-		title?: string;
+		item?: ReferenceIndexEntry | undefined;
 		itemType?: 'publication' | 'communication' | undefined;
 		id: string;
 		label?: string;
@@ -22,15 +18,49 @@
 		isActive?: boolean;
 	} = $props();
 
-	const referenceText = $derived(label ?? cite ?? `(${id})`);
+	// Helper to get year consistently
+	function getYear(item: ReferenceIndexEntry): string {
+		if ('dateISO' in item && item.dateISO) return item.dateISO.substring(0, 4);
+		if ('date' in item && item.date) return item.date.substring(0, 4);
+		if ('year' in item && item.year) return item.year.toString();
+		return 'N/D';
+	}
+
+	// Helper to get author citation text
+	function getAuthorCitation(item: ReferenceIndexEntry): string {
+		const authors = item.authors;
+		if (!authors || authors.length === 0) return 'N/A';
+
+		// Get last names
+		const lastNames = authors.map((author) => {
+			if (typeof author === 'string') {
+				return author.split(' ').pop() || 'N/A';
+			}
+			return 'N/A';
+		});
+
+		if (lastNames.length === 1) {
+			return lastNames[0];
+		} else if (lastNames.length === 2) {
+			return `${lastNames[0]} and ${lastNames[1]}`;
+		} else {
+			return `${lastNames[0]} et al.`;
+		}
+	}
+
+	const referenceText = $derived(
+		label ? label : item ? `(${getAuthorCitation(item)}, ${getYear(item)})` : `(${id})`
+	);
 
 	const itemUrl = $derived(
-		itemType
-			? resolve(`/${itemType === 'publication' ? 'publications' : 'communications'}/${id}`)
+		item && itemType
+			? resolve(`/${itemType === 'publication' ? 'publications' : 'communications'}/${item.id}`)
 			: '#'
 	);
 
-	const ariaLabel = $derived(title ? `View ${itemType ?? 'item'}: ${title}` : `Reference ${id}`);
+	const ariaLabel = $derived(
+		item ? `View ${itemType || 'item'}: ${item.title}` : `Reference ${id}`
+	);
 </script>
 
 <!-- eslint-disable svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
