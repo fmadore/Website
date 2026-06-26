@@ -13,7 +13,8 @@
 	import { crossfade, fade } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
 
-	import { referenceIndex } from '$lib/data/referenceIndex.generated';
+	import { referenceCitations } from '$lib/data/referenceCitations.generated';
+	import type { ReferenceIndexEntry } from '$lib/types/referenceIndex';
 
 	import ReferenceLink from './ReferenceLink.svelte';
 	import ReferencePreviewCard from './ReferencePreviewCard.svelte';
@@ -33,14 +34,33 @@
 		duration: 300,
 		easing: quintOut,
 		fallback: (node: Element) => fade(node, { duration: 200, easing: quintOut })
-	}); /* ───────────────────────── Derived data ──────────────────────────── */
-	// Resolve the referenced item from the slim, build-time reference index. This
-	// avoids importing the full publications/communications datasets (~117 KiB)
-	// just to render a handful of inline citations. Publication ids take
-	// precedence over communications, matching the previous lookup order.
-	const entry = $derived(referenceIndex[id]);
-	const item = $derived(entry);
-	const itemType = $derived(entry?.itemType);
+	});
+
+	/* ───────────────────────── Derived data ──────────────────────────── */
+	// The inline citation renders from the ultra-slim, eagerly-imported citations
+	// index (itemType + precomputed "(Author, Year)" + title). The full preview
+	// entry — title, authors, image, journal/conference, … — is loaded lazily on
+	// first hover (see ensurePreviewData), so reference-using pages no longer
+	// bundle all 116 entries' preview data into their initial payload.
+	const citation = $derived(referenceCitations[id]);
+	const itemType = $derived(citation?.itemType);
+
+	// Lazily-loaded full entry for the hover preview card (null until first hover).
+	let previewEntry = $state<ReferenceIndexEntry | null>(null);
+	let previewLoading = $state(false);
+
+	async function ensurePreviewData() {
+		if (!citation || previewEntry || previewLoading) return;
+		previewLoading = true;
+		try {
+			const { referenceIndex } = await import('$lib/data/referenceIndex.generated');
+			previewEntry = referenceIndex[id] ?? null;
+		} catch {
+			// Preview is non-critical; the inline link still works if this fails.
+		} finally {
+			previewLoading = false;
+		}
+	}
 
 	/* ──────────────────────── Local state ────────────────────────────── */
 	let showPreview = $state(false); // Preview visibility state
@@ -68,6 +88,7 @@
 	function togglePreview(force?: boolean) {
 		showPreview = force ?? !showPreview;
 		viaClick = showPreview;
+		if (showPreview) ensurePreviewData();
 		setActiveReferenceId(showPreview ? id : null);
 	}
 
@@ -101,6 +122,9 @@
 	function handlePointerEnter() {
 		// Only auto-show on hover for non-touch devices
 		if (!isTouchDevice && !viaClick) {
+			// Start fetching the preview data now so it's ready by the time the
+			// 200ms intent delay elapses and the card mounts.
+			ensurePreviewData();
 			// Add a small delay before showing to avoid accidental triggers
 			clearCloseTimer();
 			closeTimer = window.setTimeout(() => {
@@ -119,6 +143,7 @@
 	function handleFocus() {
 		// Only auto-show on focus for non-touch devices
 		if (!isTouchDevice && !viaClick) {
+			ensurePreviewData();
 			showPreview = true;
 		}
 	}
@@ -177,7 +202,7 @@
 	});
 </script>
 
-{#if item && itemType}
+{#if citation}
 	<span
 		bind:this={spanEl}
 		class="item-reference {showPreview ? 'preview-visible' : ''}"
@@ -204,8 +229,16 @@
 		}}
 		onclick={handleLinkClick}
 	>
-		<ReferenceLink {item} {itemType} {id} {label} hasPopup isActive={showPreview} />
-		{#if showPreview}
+		<ReferenceLink
+			cite={citation.cite}
+			title={citation.title}
+			{itemType}
+			{id}
+			{label}
+			hasPopup
+			isActive={showPreview}
+		/>
+		{#if showPreview && previewEntry}
 			<div
 				use:portal
 				id="item-preview-{id}"
@@ -214,8 +247,8 @@
 				out:send={{ key: `preview-${id}` }}
 			>
 				<ReferencePreviewCard
-					{item}
-					{itemType}
+					item={previewEntry}
+					itemType={previewEntry.itemType}
 					referenceElement={spanEl}
 					positionClass={positionBelow ? 'position-below' : ''}
 					onpointerenter={clearCloseTimer}

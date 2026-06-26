@@ -10,3 +10,4 @@ scripts/venv
 
 # Generated artifacts
 src/lib/data/referenceIndex.generated.ts
+src/lib/data/referenceCitations.generated.ts
