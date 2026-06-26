@@ -9,13 +9,13 @@ export const talkIslamPeripheriesDhAiWestAfricaCentralAsia2026: Communication = 
 	date: '29 June 2026',
 	dateISO: '2026-06-29',
 	year: 2026,
-	conference: "Seminar series 'Digital History in/of Central Asia'",
+	conference: "Seminar series 'Digital History in/of Central Asia and the South Caucasus'",
 	location: 'Friedrich-Alexander-Universität Erlangen-Nürnberg',
 	country: 'Germany',
 	type: 'lecture',
 	language: 'English',
 	abstract:
-		'In Islamic studies, sub-Saharan Africa and Central Asia are often treated as marginal, yet these regions may share underexplored parallels around modernity, governance, secularism, and Islamic intellectual production that this project seeks to examine. This presentation introduces a new VolkswagenStiftung-funded project that will use AI to unlock two unique multilingual collections at the Leibniz-Zentrum Moderner Orient (ZMO): the Islam West Africa Collection (14,500+ items, six countries, 1960s–present) and the Reinhard Eisener Collection (1,546 documents on the Emirate of Bukhara, early Soviet governance, and the Tajik civil war). Together, these ~16,000 documents in over ten languages remain largely inaccessible due to their volume, linguistic diversity, and partial cataloguing. We outline three planned approaches: (1) multimodal large language models for text extraction, transcription, metadata attribution, and named entity extraction across low-resource languages and scripts; (2) a cross-regional chatbot enabling semantic queries across both collections; and (3) open-source, replicable AI-powered workflows with human-in-the-loop validation. The pipeline is designed to be modular and replicable for other multilingual, under-resourced archival collections. As the project is at an early stage, we welcome feedback and seek to connect with researchers facing similar issues.',
+		'In Islamic studies, sub-Saharan Africa and Central Asia are often treated as marginal, yet these regions may share underexplored parallels around modernity, governance, secularism, and Islamic intellectual production that this project seeks to examine. This presentation introduces a new VolkswagenStiftung-funded project that will use AI to unlock two unique multilingual collections at the Leibniz-Zentrum Moderner Orient (ZMO): the Islam West Africa Collection (14,500+ items, six countries, 1960s–present) and the Reinhard Eisener Collection (1,546 documents on the Emirate of Bukhara, early Soviet governance, and the Tajik civil war). Together, these ~16,000 documents in over ten languages remain largely inaccessible due to their volume, linguistic diversity, and partial cataloguing. We outline three planned approaches: (1) multimodal large language models for text extraction, transcription, metadata attribution, and named entity extraction across low-resource languages and scripts; (2) a cross-regional chatbot enabling semantic queries across both collections; and (3) open-source, replicable AI-powered workflows with human-in-the-loop validation. The pipeline is designed to be modular and replicable for other multilingual, under-resourced archival collections.',
 	tags: [
 		'AI',
 		'Digital Humanities',
@@ -27,7 +27,14 @@ export const talkIslamPeripheriesDhAiWestAfricaCentralAsia2026: Communication = 
 		'Archives',
 		'NLP'
 	],
-	url: 'https://www.osteuropa.phil.fau.de/digital-history-central-asia/',
+	url: 'https://www.osteuropa.phil.fau.de/digital-history-seminars/',
+	urlLabel: 'Seminar Series Website',
+	slidesUrl: 'https://slides.frederickmadore.com/talks/2026-06-29-erlangen-islam-peripheries/',
+	image: 'images/communications/islam-peripheries-dh-ai-west-africa-central-asia-2026.webp',
+	heroImage: {
+		src: 'images/communications/islam-peripheries-dh-ai-west-africa-central-asia-2026-hero.webp',
+		alt: "Poster for the seminar series “Digital History in/of Central Asia and the South Caucasus,” advertising the talk “Islam's ‘Peripheries’: Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia” by Dr. Aksana Ismailbekova (Leibniz-Zentrum Moderner Orient, Berlin) and Dr. Frédérick Madore (University of Bayreuth) on 29 June at 14:00 CET. Portraits of the two speakers appear on the right, with the Max Weber Stiftung and Friedrich-Alexander-Universität Erlangen-Nürnberg (FAU) logos along the top."
+	},
 	coordinates: {
 		latitude: 49.598,
 		longitude: 11.0042
