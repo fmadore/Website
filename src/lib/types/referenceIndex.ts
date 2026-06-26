@@ -1,0 +1,34 @@
+/**
+ * Slim metadata for a single referenceable item (publication or communication),
+ * used by the inline `<ItemReference>` link + hover preview card.
+ *
+ * This is a deliberately minimal projection of the full `Publication` /
+ * `Communication` records: it carries only the fields the reference link and
+ * preview card actually render, and omits the heavy ones (abstract, tags,
+ * citations, papers, participants, …). The full datasets weigh ~117 KiB on the
+ * wire; importing them just to label a handful of references dominated home-page
+ * LCP/TBT. The slim index is generated at build time by
+ * `scripts/generate-reference-index.mjs`.
+ */
+export interface ReferenceIndexEntry {
+	id: string;
+	itemType: 'publication' | 'communication';
+	title: string;
+	authors: string[];
+	/** book | article | chapter | special-issue | event | podcast | … */
+	type?: string;
+	date?: string;
+	dateISO?: string;
+	year?: number;
+	image?: string;
+	heroImage?: { src: string };
+	// Publication-specific (preview meta line)
+	journal?: string;
+	book?: string;
+	publisher?: string;
+	// Communication-specific (preview meta line)
+	conference?: string;
+	location?: string;
+	country?: string;
+	episode?: string | number;
+}

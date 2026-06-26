@@ -6,6 +6,8 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import SEO from '$lib/SEO.svelte';
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
+	// Activity-list styles relocated from the global app.css.
+	import '$styles/components/activity-list.css';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import type { Publication, Communication } from '$lib/types';
+	import type { ReferenceIndexEntry } from '$lib/types/referenceIndex';
 
 	let {
 		item = undefined,
@@ -10,7 +10,7 @@
 		hasPopup = false,
 		isActive = false
 	}: {
-		item?: Publication | Communication | undefined;
+		item?: ReferenceIndexEntry | undefined;
 		itemType?: 'publication' | 'communication' | undefined;
 		id: string;
 		label?: string;
@@ -19,7 +19,7 @@
 	} = $props();
 
 	// Helper to get year consistently
-	function getYear(item: Publication | Communication): string {
+	function getYear(item: ReferenceIndexEntry): string {
 		if ('dateISO' in item && item.dateISO) return item.dateISO.substring(0, 4);
 		if ('date' in item && item.date) return item.date.substring(0, 4);
 		if ('year' in item && item.year) return item.year.toString();
@@ -27,7 +27,7 @@
 	}
 
 	// Helper to get author citation text
-	function getAuthorCitation(item: Publication | Communication): string {
+	function getAuthorCitation(item: ReferenceIndexEntry): string {
 		const authors = item.authors;
 		if (!authors || authors.length === 0) return 'N/A';
 

@@ -5,6 +5,9 @@
 	import { cubicOut } from 'svelte/easing';
 	import { motionDuration } from '$lib/utils/motion';
 	import Icon from '@iconify/svelte';
+	// Filter styles (relocated from the global app.css). ActiveFiltersBar renders
+	// outside the sidebar (publications, conference-activity), so import here too.
+	import '$styles/components/filters.css';
 
 	interface ActiveFilterChip {
 		key: string;

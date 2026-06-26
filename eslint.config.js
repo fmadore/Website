@@ -10,6 +10,8 @@ import svelteConfig from './svelte.config.js';
 const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 
 export default ts.config(
+	// Generated artifact (slim reference index) — committed but not hand-edited.
+	{ ignores: ['src/lib/data/referenceIndex.generated.ts'] },
 	includeIgnoreFile(gitignorePath),
 	js.configs.recommended,
 	...ts.configs.recommended,

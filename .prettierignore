@@ -7,3 +7,6 @@ bun.lockb
 
 # Python virtual environments
 scripts/venv
+
+# Generated artifacts
+src/lib/data/referenceIndex.generated.ts

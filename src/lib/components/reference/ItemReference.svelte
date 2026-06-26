@@ -13,8 +13,7 @@
 	import { crossfade, fade } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
 
-	import { allPublications } from '$lib/data/publications/index';
-	import { allCommunications } from '$lib/data/communications/index';
+	import { referenceIndex } from '$lib/data/referenceIndex.generated';
 
 	import ReferenceLink from './ReferenceLink.svelte';
 	import ReferencePreviewCard from './ReferencePreviewCard.svelte';
@@ -35,25 +34,13 @@
 		easing: quintOut,
 		fallback: (node: Element) => fade(node, { duration: 200, easing: quintOut })
 	}); /* ───────────────────────── Derived data ──────────────────────────── */
-	const item = $derived.by(() => {
-		const publicationItem = allPublications.find((p) => p.id === id);
-		if (publicationItem) return publicationItem;
-
-		const communicationItem = allCommunications.find((c) => c.id === id);
-		if (communicationItem) return communicationItem;
-
-		return undefined;
-	});
-
-	const itemType = $derived.by(() => {
-		const publicationItem = allPublications.find((p) => p.id === id);
-		if (publicationItem) return 'publication' as const;
-
-		const communicationItem = allCommunications.find((c) => c.id === id);
-		if (communicationItem) return 'communication' as const;
-
-		return undefined;
-	});
+	// Resolve the referenced item from the slim, build-time reference index. This
+	// avoids importing the full publications/communications datasets (~117 KiB)
+	// just to render a handful of inline citations. Publication ids take
+	// precedence over communications, matching the previous lookup order.
+	const entry = $derived(referenceIndex[id]);
+	const item = $derived(entry);
+	const itemType = $derived(entry?.itemType);
 
 	/* ──────────────────────── Local state ────────────────────────────── */
 	let showPreview = $state(false); // Preview visibility state

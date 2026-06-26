@@ -11,6 +11,10 @@
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
 	import TagCloud from '$lib/components/molecules/TagCloud.svelte';
+	// Page-specific CSS relocated from the global app.css (this page renders both
+	// the activities list and the filter chips).
+	import '$styles/components/activity-list.css';
+	import '$styles/components/filters.css';
 	import Button from '$lib/components/atoms/Button.svelte';
 	import TweenedCount from '$lib/components/atoms/TweenedCount.svelte';
 	import Icon from '@iconify/svelte';

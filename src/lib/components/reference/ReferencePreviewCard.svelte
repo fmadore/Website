@@ -3,7 +3,7 @@
 	import { browser } from '$app/environment';
 	import { base, resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
-	import type { Publication, Communication } from '$lib/types';
+	import type { ReferenceIndexEntry } from '$lib/types/referenceIndex';
 	import Button from '$lib/components/atoms/Button.svelte';
 	import { calculateCardPosition, getItemYear } from '$lib/utils/cardPositioning';
 
@@ -16,7 +16,7 @@
 		onpointerleave,
 		onclose
 	}: {
-		item: Publication | Communication;
+		item: ReferenceIndexEntry;
 		itemType: 'publication' | 'communication';
 		referenceElement?: HTMLElement | null;
 		positionClass?: string;

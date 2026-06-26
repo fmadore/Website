@@ -21,6 +21,12 @@ const config = {
 			base: ''
 		},
 		appDir: 'app', // Ensures all generated JS is under this directory
+		// Alias for shared global stylesheets in src/styles, so page-specific
+		// CSS can be imported by the components that own it (code-split per
+		// route) instead of being bundled into the render-blocking app.css.
+		alias: {
+			$styles: 'src/styles'
+		},
 		// Make sure all pages are pre-rendered
 		prerender: {
 			entries: ['*'],

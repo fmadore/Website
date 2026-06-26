@@ -4,6 +4,9 @@
 	import { resolve } from '$app/paths';
 	import PanelBase from './PanelBase.svelte';
 	import Button from '../atoms/Button.svelte';
+	// Activity-list styles (relocated from the global app.css); loaded wherever
+	// the activities list markup appears — this panel and the /activities routes.
+	import '$styles/components/activity-list.css';
 
 	// Props - limit the number of activities to show
 	let {

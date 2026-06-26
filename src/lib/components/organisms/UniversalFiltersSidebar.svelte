@@ -6,6 +6,9 @@
 	import FilterSectionButtons from '$lib/components/molecules/filters/FilterSectionButtons.svelte';
 	import FilterSectionChips from '$lib/components/molecules/filters/FilterSectionChips.svelte';
 	import FilterSectionDropdown from '$lib/components/molecules/filters/FilterSectionDropdown.svelte';
+	// Filter-chip / section styles (relocated from the global app.css). Importing
+	// here covers all FilterSection* children, which only render inside this sidebar.
+	import '$styles/components/filters.css';
 	import { slide } from 'svelte/transition';
 	import { getGlobalState } from '$lib/stores/globalState.svelte';
 

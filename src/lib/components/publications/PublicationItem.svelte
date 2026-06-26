@@ -5,6 +5,9 @@
 	// Import the necessary functions from the new formatter
 	import { formatCitation, getAuthorsArray } from '$lib/utils/citationFormatter';
 	import TagList from '$lib/components/molecules/TagList.svelte';
+	// Entity-card styles (relocated from the global app.css so they only load on
+	// pages that render publication/communication list items).
+	import '$styles/components/entity-cards.css';
 
 	interface Props {
 		publication: Publication;

@@ -3,7 +3,7 @@
 /// <reference lib="webworker" />
 /// <reference types="@sveltejs/kit" />
 
-import { build, files, prerendered, version } from '$service-worker';
+import { version } from '$service-worker';
 
 // Cast self to ServiceWorkerGlobalScope for proper typing
 const sw = /** @type {ServiceWorkerGlobalScope} */ (/** @type {unknown} */ (globalThis.self));
@@ -12,8 +12,15 @@ const sw = /** @type {ServiceWorkerGlobalScope} */ (/** @type {unknown} */ (glob
 const CACHE_NAME = `cache-v${version}`;
 const RUNTIME_CACHE = `runtime-v${version}`;
 
-// Assets to precache
-const ASSETS_TO_CACHE = [...build, ...files, ...prerendered];
+// Assets to precache — app shell + offline fallback ONLY.
+// Previously this precached [...build, ...files, ...prerendered], which on a
+// first visit downloaded the entire site (~84 MB: every build chunk incl. the
+// ~2 MB ECharts/MapLibre bundles the home page never uses, ~80 MB of static
+// media, and all 186 prerendered pages). That contended for bandwidth on the
+// initial load and ballooned the network dependency tree. The fetch handler
+// below already caches JS/CSS/assets cache-first and navigations network-first
+// on demand, so any visited page still works offline without the upfront bulk.
+const ASSETS_TO_CACHE = ['/', '/offline.html', '/manifest.webmanifest'];
 
 // Cache strategies
 const CACHE_FIRST_ROUTES = [

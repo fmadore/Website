@@ -48,20 +48,47 @@
 	// Inject communication JSON-LD structured data
 	useJsonLdScript('communication-json-ld', () => jsonLdString);
 
-	// Lazy load MapVisualization to avoid loading maplibre-gl until needed
+	// Lazy load MapVisualization only when the map scrolls near the viewport.
+	// maplibre-gl (~267 KiB JS) plus ~2 MB of Carto tiles dominate LCP/TBT, and
+	// the map sits at the very bottom of the page — well below the fold — so
+	// eagerly importing it on mount tanked PageSpeed for no visible benefit.
 	let MapVisualization:
 		| typeof import('$lib/components/visualisations/MapVisualization.svelte').default
 		| null = $state(null);
 	let mapLoaded = $state(false);
+	let mapSectionEl = $state<HTMLElement>();
 
-	// Load map component when communication has coordinates
+	function loadMap() {
+		if (mapLoaded) return;
+		mapLoaded = true;
+		import('$lib/components/visualisations/MapVisualization.svelte').then((module) => {
+			MapVisualization = module.default;
+		});
+	}
+
+	// Defer the maplibre-gl import until the map section approaches the viewport
+	// (200px pre-load margin). Falls back to loading immediately if
+	// IntersectionObserver is unavailable.
 	$effect(() => {
-		if (communication.coordinates && !mapLoaded) {
-			mapLoaded = true;
-			import('$lib/components/visualisations/MapVisualization.svelte').then((module) => {
-				MapVisualization = module.default;
-			});
+		if (!communication.coordinates || mapLoaded || !mapSectionEl) return;
+
+		if (typeof IntersectionObserver === 'undefined') {
+			loadMap();
+			return;
 		}
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (entries.some((entry) => entry.isIntersecting)) {
+					loadMap();
+					observer.disconnect();
+				}
+			},
+			{ rootMargin: '200px' }
+		);
+		observer.observe(mapSectionEl);
+
+		return () => observer.disconnect();
 	});
 
 	// Prepare marker data for the map (array with one item)
@@ -208,7 +235,7 @@
 
 				<!-- Map Location -->
 				{#if communication.coordinates}
-					<section class="map-section scroll-reveal">
+					<section class="map-section scroll-reveal" bind:this={mapSectionEl}>
 						<h2 class="map-section-title">Location</h2>
 						<div class="map-container-wrapper">
 							{#if MapVisualization}

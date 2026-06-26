@@ -42,11 +42,12 @@
 		if (browser) {
 			initPerformanceMonitoring();
 
-			// Assess connection quality on load
-			setTimeout(() => {
-				const connectionQuality = assessConnectionQuality();
-				console.log(`[PWA] Connection quality: ${connectionQuality}`);
-			}, 1000);
+			// Assess connection quality on load (dev-only diagnostic logging)
+			if (import.meta.env.DEV) {
+				setTimeout(() => {
+					console.log(`[PWA] Connection quality: ${assessConnectionQuality()}`);
+				}, 1000);
+			}
 		}
 	});
 
