@@ -1,6 +1,7 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { author, website, contact, address, socialLinks } from '$lib/data/siteConfig';
 import { publicationsByDate } from '$lib/data/publications/index';
+import { communicationsByDate } from '$lib/data/communications/index';
 import { allDhProjects } from '$lib/data/digital-humanities';
 
 // Prerender as a static text file for the agentic-browsing / llms.txt convention.
@@ -53,6 +54,7 @@ const oneLine = (value: string): string => value.replace(/\s+/g, ' ').trim();
 
 export const GET: RequestHandler = async () => {
 	const recentPublications = publicationsByDate.slice(0, 20);
+	const recentCommunications = communicationsByDate.slice(0, 15);
 
 	const lines: string[] = [];
 
@@ -95,7 +97,7 @@ export const GET: RequestHandler = async () => {
 		`- [Activities](${SITE}/activities): News, talks, workshops, and other scholarly activities.`
 	);
 	lines.push(
-		`- [Conference activity](${SITE}/conference-activity): Conference papers, panels, and presentation slides.`
+		`- [Talks & Events](${SITE}/conference-activity): Conference papers, invited lectures, seminars, workshops, panels, podcasts, and presentation slides.`
 	);
 	lines.push(`- [Teaching](${SITE}/teaching): Courses, guest lectures, and syllabi.`);
 	lines.push(`- [CV](${SITE}/cv): Full curriculum vitae.`);
@@ -124,6 +126,18 @@ export const GET: RequestHandler = async () => {
 	for (const pub of recentPublications) {
 		lines.push(
 			`- [${oneLine(pub.title)}](${SITE}/publications/${pub.id}) (${pub.year}) — ${pub.type}`
+		);
+	}
+	lines.push('');
+
+	// Selected recent talks & events.
+	lines.push('## Selected recent talks & events');
+	lines.push('');
+	for (const comm of recentCommunications) {
+		const venue = [comm.conference, comm.location].filter(Boolean).join(', ');
+		const suffix = venue ? ` — ${oneLine(venue)}` : '';
+		lines.push(
+			`- [${oneLine(comm.title)}](${SITE}/communications/${comm.id}) (${comm.year})${suffix}`
 		);
 	}
 	lines.push('');

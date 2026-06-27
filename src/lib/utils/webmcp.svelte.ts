@@ -3,9 +3,9 @@
  *
  * Registers a small set of read-only "tools" with the browser's WebMCP runtime
  * (`navigator.modelContext`) so that AI agents browsing the site can query its
- * content reliably — searching publications, reading publication details, listing
- * research/digital-humanities projects, and fetching author/contact information —
- * instead of scraping the DOM.
+ * content reliably — searching publications and talks/events, reading their
+ * details, listing research/digital-humanities projects, and fetching
+ * author/contact information — instead of scraping the DOM.
  *
  * The API is progressively enhanced: when no WebMCP runtime is present the hook is
  * a no-op. Tools are registered when the layout mounts and unregistered on cleanup.
@@ -187,6 +187,122 @@ function buildTools(): ToolDescriptor[] {
 					tags: pub.tags,
 					url: `${SITE}/publications/${pub.id}`,
 					externalUrl: pub.url
+				});
+			}
+		},
+		{
+			name: 'search_communications',
+			description:
+				"Search Frédérick Madore's talks and events (conference papers, invited lectures, seminars, workshops, panels, and podcasts). Filter by free-text query, type, and/or year. Returns matching talks with titles, dates, venues, and URLs.",
+			inputSchema: {
+				type: 'object',
+				properties: {
+					query: {
+						type: 'string',
+						description:
+							'Free-text search matched against title, conference/venue, location, abstract, and tags.'
+					},
+					type: {
+						type: 'string',
+						description: 'Restrict to a type of talk or event.',
+						enum: ['conference', 'workshop', 'seminar', 'lecture', 'panel', 'event', 'podcast']
+					},
+					year: {
+						type: 'integer',
+						description: 'Restrict to talks from this year.'
+					},
+					limit: {
+						type: 'integer',
+						description: 'Maximum number of results to return (default 10, maximum 50).',
+						minimum: 1,
+						maximum: 50
+					}
+				},
+				required: []
+			},
+			async execute(args) {
+				const { communicationsByDate } = await import('$lib/data/communications/index');
+				const query = typeof args.query === 'string' ? args.query.toLowerCase().trim() : '';
+				const type = typeof args.type === 'string' ? args.type : '';
+				const year = typeof args.year === 'number' ? args.year : undefined;
+				const limit = Math.min(Math.max(Number(args.limit) || 10, 1), 50);
+
+				const results = communicationsByDate
+					.filter((comm) => {
+						if (type && comm.type !== type) return false;
+						if (year !== undefined && comm.year !== year) return false;
+						if (query) {
+							const haystack = [
+								comm.title,
+								comm.conference ?? '',
+								comm.location ?? '',
+								comm.abstract ?? '',
+								comm.tags?.join(' ') ?? ''
+							]
+								.join(' ')
+								.toLowerCase();
+							if (!haystack.includes(query)) return false;
+						}
+						return true;
+					})
+					.slice(0, limit)
+					.map((comm) => ({
+						id: comm.id,
+						title: comm.title,
+						type: comm.type,
+						conference: comm.conference,
+						location: comm.location,
+						country: comm.country,
+						year: comm.year,
+						url: `${SITE}/communications/${comm.id}`
+					}));
+
+				return jsonResult({ count: results.length, results });
+			}
+		},
+		{
+			name: 'get_communication_details',
+			description:
+				'Get full details for a single talk or event by its ID (as returned by search_communications). Includes the abstract, venue, panel, participants, and links.',
+			inputSchema: {
+				type: 'object',
+				properties: {
+					id: {
+						type: 'string',
+						description: 'The communication ID, e.g. "madore-2025-perspectives-in-motion".'
+					}
+				},
+				required: ['id']
+			},
+			async execute(args) {
+				const id = typeof args.id === 'string' ? args.id : '';
+				if (!id) return errorResult('A communication "id" is required.');
+
+				const { allCommunications } = await import('$lib/data/communications/index');
+				const comm = allCommunications.find((c) => c.id === id);
+				if (!comm) return errorResult(`No talk or event found with id "${id}".`);
+
+				return jsonResult({
+					id: comm.id,
+					title: comm.title,
+					type: comm.type,
+					authors: comm.authors,
+					year: comm.year,
+					date: comm.date,
+					conference: comm.conference,
+					panelTitle: comm.panelTitle,
+					location: comm.location,
+					country: comm.country,
+					language: comm.language,
+					abstract: comm.abstract,
+					papers: comm.papers,
+					participants: comm.participants,
+					project: comm.project,
+					tags: comm.tags,
+					doi: comm.doi,
+					url: `${SITE}/communications/${comm.id}`,
+					externalUrl: comm.url,
+					slidesUrl: comm.slidesUrl
 				});
 			}
 		},
