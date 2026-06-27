@@ -20,6 +20,7 @@
 	import { useGtm } from '$lib/utils/gtm.svelte';
 	import { useNetworkMonitor } from '$lib/utils/networkMonitor.svelte';
 	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
+	import { useWebMcp } from '$lib/utils/webmcp.svelte';
 
 	// Register all icons at app startup to avoid API calls
 	registerIcons();
@@ -36,6 +37,9 @@
 
 	// Monitor network status
 	useNetworkMonitor();
+
+	// Register WebMCP tools so AI agents can query the site reliably
+	useWebMcp();
 
 	// Initialize performance monitoring
 	$effect(() => {
