@@ -8,16 +8,22 @@
 
 /**
  * Sort items by an ISO date field in descending order (newest first).
- * Handles missing date values by pushing them to the end.
+ * Missing OR unparseable date values are pushed to the end.
  */
 export function sortByDate<T>(items: T[], field: keyof T = 'dateISO' as keyof T): T[] {
 	return [...items].sort((a, b) => {
-		const dateA = a[field];
-		const dateB = b[field];
-		if (!dateA && !dateB) return 0;
-		if (!dateA) return 1;
-		if (!dateB) return -1;
-		return new Date(String(dateB)).getTime() - new Date(String(dateA)).getTime();
+		// Parse to timestamps, treating missing OR unparseable dates (e.g. a
+		// placeholder like 'YYYY-MM-DD') as "no date". This guarantees the
+		// comparator never returns NaN — a NaN result violates the total-order
+		// contract and silently corrupts Array.sort in an engine-dependent way.
+		const timeA = a[field] ? new Date(String(a[field])).getTime() : NaN;
+		const timeB = b[field] ? new Date(String(b[field])).getTime() : NaN;
+		const validA = !Number.isNaN(timeA);
+		const validB = !Number.isNaN(timeB);
+		if (!validA && !validB) return 0;
+		if (!validA) return 1; // a has no usable date → sorts after b
+		if (!validB) return -1; // b has no usable date → sorts after a
+		return timeB - timeA; // most recent first
 	});
 }
 

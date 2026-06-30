@@ -2,7 +2,7 @@
 import type { PeerReview } from '$lib/types';
 
 export const peerReviewTemplate: PeerReview = {
-	id: 'unique-peer-review-id', // Replace with a unique ID (e.g., journal-name-year-number)
+	id: 'peer-review-template-id', // Replace with a unique ID (e.g., journal-name-year-number)
 	journal: 'Journal Name', // Replace with journal name, or remove if not applicable
 	publisher: 'Publisher Name', // Replace with publisher name, or remove if not applicable
 	type: 'Journal Article', // 'Journal Article', 'Book Manuscript', 'Grant Proposal', etc.
