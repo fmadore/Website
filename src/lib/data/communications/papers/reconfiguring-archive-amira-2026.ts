@@ -31,6 +31,12 @@ These ambitions also expose where the work is hardest. An atlas built on relatio
 	],
 	url: 'https://ru.za.libguides.com/ilamcoryconf',
 	urlLabel: 'Conference Website',
+	slidesUrl: 'https://slides.frederickmadore.com/talks/2026-07-01-rhodes-reconfiguring-archive/',
+	image: 'images/communications/reconfiguring-archive-amira-2026.webp',
+	heroImage: {
+		src: 'images/communications/reconfiguring-archive-amira-2026.webp',
+		alt: "Vintage-style cover of the programme for the conference 'Reimagining the Archive in the Post-Truth Era: An International Interdisciplinary Conference,' hosted by Cory Library & Archives at Rhodes University, Makhanda, South Africa, from 29 June to 2 July 2026. The aged-paper design features ornamental borders and antique pointing-hand engravings, with the Rhodes University crest at top left and the International Library of African Music (ILAM) logo at top right."
+	},
 	coordinates: {
 		latitude: -33.3131,
 		longitude: 26.5194
