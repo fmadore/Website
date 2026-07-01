@@ -31,5 +31,5 @@ export const bulletinArticleTemplate: Publication = {
 	},
 	// New fields
 	country: ['Country Name'], // Countries covered in the publication
-	project: '' // Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", etc., or leave empty
+	project: '' // Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Digital Research Environment (University of Bayreuth)", etc., or leave empty
 };

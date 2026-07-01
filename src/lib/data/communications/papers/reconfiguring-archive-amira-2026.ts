@@ -41,5 +41,5 @@ These ambitions also expose where the work is hardest. An atlas built on relatio
 		latitude: -33.3131,
 		longitude: 26.5194
 	},
-	project: 'Digital Humanities and AI in African Studies'
+	project: 'Digital Research Environment (University of Bayreuth)'
 };

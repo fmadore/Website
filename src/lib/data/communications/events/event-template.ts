@@ -36,7 +36,7 @@ export const eventTemplate: Communication = {
 		{ name: 'Participant Name', role: 'Keynote Speaker', affiliation: 'University Name' },
 		{ name: 'Participant Name', role: 'Panel Chair', affiliation: 'Institution Name' }
 	],
-	project: '' // Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Other"
+	project: '' // Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)", "Other"
 };
 
 export default eventTemplate;
