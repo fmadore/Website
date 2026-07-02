@@ -198,6 +198,14 @@ export const salafismCoteDIvoire: Publication = {
 			source:
 				'In Palgrave Handbook of Terrorism in Africa, edited by Rohan Gunaratna and C. Nna-Emeka Okereke, 601-19. Cham: Palgrave Macmillan, 2025',
 			url: 'https://doi.org/10.1007/978-3-031-89940-9_23'
+		},
+		{
+			authors: ['Terje Østebø'],
+			year: 2026,
+			title: 'Islamic Reform in Africa',
+			source:
+				'In The Oxford Handbook of Islamic Reform, edited by Emad Hamdeh and Natana J. DeLong-Bas. Oxford University Press, 2026',
+			url: 'https://doi.org/10.1093/oxfordhb/9780197532805.013.24'
 		}
 	]
 };

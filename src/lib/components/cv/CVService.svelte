@@ -36,7 +36,8 @@
 		<div class="space-y-3">
 			{#each realPeerReviews as review (review.id)}
 				<CVEntry year={review.year}>
-					{review.type}{#if review.journal}&nbsp;–&nbsp;<em>{review.journal}</em
+					{#if review.count && review.count > 1}{review.count}&nbsp;{review.type}s{:else}{review.type}{/if}{#if review.journal}&nbsp;–&nbsp;<em
+							>{review.journal}</em
 						>{:else if review.publisher}&nbsp;–&nbsp;{review.publisher}{/if}.
 					{#if review.details}
 						<div class="text-sm">{review.details}</div>

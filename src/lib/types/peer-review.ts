@@ -4,6 +4,7 @@ export interface PeerReview {
 	journal?: string; // Journal name if applicable
 	publisher?: string; // Publisher name if applicable (e.g., for book manuscripts)
 	type: 'Journal Article' | 'Book Manuscript' | 'Grant Proposal' | string; // Type of reviewed item
+	count?: number; // Number of items of this type reviewed for the same venue/year (defaults to 1)
 	year: number;
 	dateISO: string; // Full date for sorting, e.g., '2022-01-01'
 	details?: string; // Optional extra details
