@@ -39,13 +39,12 @@
 </div>
 
 <style>
-	/* Base content body styling - uses glassmorphism utilities */
+	/* A prose wrapper, not a card: no surface, no radius, no chrome. Prose sits
+	 * on the warm paper page; the padding only sets the reading measure. */
 	.content-body {
 		padding: var(--space-lg);
-		border-radius: var(--border-radius-lg);
-		transition: all var(--duration-moderate) var(--ease-in-out);
+		border-radius: 0;
 		position: relative;
-		/* Glassmorphism applied via utility classes in template */
 	}
 
 	/*
@@ -77,21 +76,37 @@
 		margin-bottom: 0;
 	}
 
-	/* Link styling within content */
+	/* Prose links — the accent, marked with a pine underline (matching
+	 * the inline-citation idiom), not a bare coloured word. */
 	.content-body :global(a) {
-		color: var(--color-primary);
-		text-decoration: none;
-		font-weight: var(--font-weight-medium);
-		transition: color var(--duration-fast) var(--ease-in-out);
+		color: var(--color-accent);
+		text-decoration: underline;
+		text-decoration-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+		text-decoration-thickness: var(--border-width-thin);
+		text-underline-offset: 0.16em;
+		transition:
+			color var(--duration-fast) var(--ease-out),
+			text-decoration-color var(--duration-fast) var(--ease-out);
 	}
 
 	.content-body :global(a:hover) {
-		color: var(--color-primary-dark);
+		color: var(--color-accent-dark);
+		text-decoration-color: var(--color-accent);
 	}
 
 	/* Emphasis styling */
 	.content-body :global(em) {
 		font-style: italic;
+	}
+
+	/* A title/emphasis inside a display heading stays in the display voice,
+	 * upright — a serif italic bolted into an Archivo head reads as a voice
+	 * collision. Specificity (0,1,2) beats the base `em` serif-italic and the
+	 * `.content-body em` italic above. */
+	.content-body :global(:is(h1, h2, h3) :is(em, i, cite)) {
+		font-family: var(--font-family-display);
+		font-variation-settings: var(--font-variation-display-sm);
+		font-style: normal;
 	}
 
 	.content-body :global(strong) {
@@ -118,27 +133,35 @@
 	}
 
 	/*
-	 * Blockquote callout within a content body — scoped override that turns
-	 * the global blockquote into a full paper-callout (warm primary wash,
-	 * thin border, rounded). No stripe.
+	 * Blockquote — a pulled passage set off by hairline rules top and bottom and
+	 * a serif-italic voice, indented as a block. No tinted box, no side stripe
+	 * (the brief bans left-stripe accents); the rules read as letterpress.
 	 */
 	.content-body :global(blockquote) {
-		margin: var(--space-lg) 0;
-		padding: var(--space-lg);
-		background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
-		border-radius: var(--border-radius-lg);
+		margin: var(--space-xl) 0;
+		padding: var(--space-md) var(--space-lg);
+		background: transparent;
+		border: none;
+		border-top: var(--rule-hairline) solid var(--color-border);
+		border-bottom: var(--rule-hairline) solid var(--color-border);
+		border-radius: 0;
+		font-style: italic;
+		color: var(--color-text-soft);
 	}
 
-	/* Headings within content */
+	/* Headings within content — the DISPLAY voice (Archivo), matching the
+	 * site's §-section titles. h1–h3 are display; blurring them to serif is the
+	 * one thing the two-voice system forbids. */
 	.content-body :global(h2) {
+		font-family: var(--font-family-display);
+		font-variation-settings: var(--font-variation-display-sm);
 		font-size: var(--font-size-2xl);
-		font-weight: var(--font-weight-bold);
+		font-weight: 750;
+		letter-spacing: -0.01em;
+		line-height: 1.05;
 		margin-bottom: var(--space-md);
 		margin-top: var(--space-xl);
 		color: var(--color-text-emphasis);
-		font-family: var(--font-family-serif);
 	}
 
 	.content-body :global(h2:first-child) {
@@ -146,12 +169,15 @@
 	}
 
 	.content-body :global(h3) {
+		font-family: var(--font-family-display);
+		font-variation-settings: var(--font-variation-display-sm);
 		font-size: var(--font-size-xl);
-		font-weight: var(--font-weight-semibold);
+		font-weight: 700;
+		letter-spacing: -0.01em;
+		line-height: 1.1;
 		margin-bottom: var(--space-sm);
 		margin-top: var(--space-lg);
 		color: var(--color-text-emphasis);
-		font-family: var(--font-family-serif);
 	}
 
 	.content-body :global(h3:first-child) {
@@ -172,11 +198,11 @@
 
 	/* Blockquotes - inherits from global typography.css */
 
-	/* Code styling */
+	/* Code styling — square, flat. */
 	.content-body :global(code) {
 		background: var(--color-code-bg);
 		padding: var(--space-2xs) var(--space-xs);
-		border-radius: var(--border-radius-sm);
+		border-radius: 0;
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-sm);
 	}
@@ -184,7 +210,7 @@
 	.content-body :global(pre) {
 		background: var(--color-code-bg);
 		padding: var(--space-md);
-		border-radius: var(--border-radius);
+		border-radius: 0;
 		overflow-x: auto;
 		margin: var(--space-lg) 0;
 	}
@@ -194,21 +220,20 @@
 		padding: 0;
 	}
 
-	/* Images within content */
+	/* Images within content — plates: square, a single hairline frame. */
 	.content-body :global(img) {
 		max-width: 100%;
 		height: auto;
-		border-radius: var(--border-radius);
+		border-radius: 0;
+		border: var(--border-width-thin) solid var(--color-border);
 		margin: var(--space-lg) 0;
 	}
 
-	/* Enhanced focus states for accessibility */
+	/* Focus — a flat accent outline, no shadow bloom. */
 	.content-body :global(a:focus-visible) {
-		outline: var(--border-width-medium) solid var(--color-highlight);
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--space-2xs);
-		box-shadow: 0 0 0 var(--border-width-thick)
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-30) * 100%), transparent);
-		border-radius: var(--border-radius-sm);
+		border-radius: 0;
 	}
 
 	/* Responsive adjustments */

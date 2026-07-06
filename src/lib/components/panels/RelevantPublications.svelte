@@ -67,7 +67,7 @@
 					<Button
 						variant={selectedType === type ? 'primary' : 'outline-secondary'}
 						size="sm"
-						additionalClasses="glass-button filter-button {selectedType === type ? 'active' : ''}"
+						additionalClasses="filter-button {selectedType === type ? 'active' : ''}"
 						onclick={() => selectType(type)}
 						type="button"
 					>

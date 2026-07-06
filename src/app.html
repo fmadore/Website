@@ -7,13 +7,13 @@
 		<!-- PWA Configuration -->
 		<link rel="apple-touch-icon" href="/icons/favicon.png" />
 		<link rel="manifest" href="/manifest.webmanifest" />
-		<meta name="theme-color" content="#1c1914" />
+		<meta name="theme-color" content="#171310" />
 		<meta name="mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 		<meta name="apple-mobile-web-app-title" content="F. Madore" />
 		<meta name="application-name" content="F. Madore" />
-		<meta name="msapplication-TileColor" content="#1c1914" />
+		<meta name="msapplication-TileColor" content="#171310" />
 		<meta name="msapplication-config" content="/browserconfig.xml" />
 
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -39,9 +39,9 @@
 		/>
 
 		<!-- Critical CSS: Inlined to prevent render-blocking and reduce LCP -->
-		<!-- Values align with design system: variables.css tokens (warm neutrals (light) / slate (dark) + ink-blue) -->
-		<!-- Light: warm paper #faf7f2 bg, warm ink #2a211a text | Dark: slate #14161e bg, warm paper #f0ebe3 text -->
-		<!-- --border-radius-lg: 0.75rem, --glass-blur-sm: 8px (using sm for perf) -->
+		<!-- Values align with design system: variables.css Ink + Signal tokens -->
+		<!-- Light (daylight): warm paper #faf7ef bg, ink #191509 text | Dark (midnight/microfilm negative): warm near-black #171310 bg, cream #efe7d6 text -->
+		<!-- Square corners (--border-radius: 0), no shadows, no glass blur -->
 		<style>
 			*,
 			*::before,
@@ -54,23 +54,14 @@
 			body {
 				margin: 0;
 				min-height: 100vh;
-				font-family:
-					'Commissioner',
-					system-ui,
-					-apple-system,
-					BlinkMacSystemFont,
-					'Segoe UI',
-					Roboto,
-					'Helvetica Neue',
-					Arial,
-					sans-serif;
-				line-height: 1.5;
-				background-color: #faf7f2;
-				color: #2a211a;
+				font-family: 'Newsreader', Georgia, Cambria, 'Times New Roman', Times, serif;
+				line-height: 1.6;
+				background-color: #faf7ef;
+				color: #191509;
 			}
 			html.dark body {
-				background-color: #14161e;
-				color: #f0ebe3;
+				background-color: #171310;
+				color: #efe7d6;
 			}
 			.container {
 				width: 100%;
@@ -123,21 +114,19 @@
 			header {
 				min-height: 64px;
 			}
-			/* Paper surfaces (formerly glassmorphism) — elevated paper tiles,
-			 * no backdrop-filter. Full styling in utilities/glassmorphism.css;
-			 * this inline block is for FOUC only. */
+			/* Paper tiles (formerly glassmorphism) — flat warm-paper surfaces,
+			 * square corners, hairline border, no shadow/blur. Full styling in
+			 * utilities/glassmorphism.css; this inline block is for FOUC only. */
 			.glass-card,
 			.glass-panel {
-				background: #ffffff;
-				border: 1px solid #e9e2d5;
-				border-radius: 0.75rem;
-				box-shadow: 0 1px 2px 0 color-mix(in srgb, #2a211a 5%, transparent);
+				background: #fffdf7;
+				border: 1px solid #c9c0aa;
+				border-radius: 0;
 			}
 			html.dark .glass-card,
 			html.dark .glass-panel {
-				background: #292d3c;
-				border-color: #363a4d;
-				box-shadow: 0 1px 2px 0 color-mix(in srgb, #000000 20%, transparent);
+				background: #252017;
+				border-color: #453d2f;
 			}
 			.max-w-7xl {
 				max-width: 80rem;
@@ -152,11 +141,11 @@
 		<link rel="dns-prefetch" href="https://fonts.gstatic.com" />
 
 		<!-- Google Fonts: loaded async to avoid render-blocking -->
-		<!-- Fraunces (warm old-style display serif, h1–h3 only) + Commissioner (humanist variable sans, UI/body) + Spectral (editorial serif, body prose / h4–h6) + JetBrains Mono (code/data-viz chrome only) -->
+		<!-- Ink + Signal type: Archivo (grotesque display — nameplate, h1–h3, section heads) + Newsreader (news serif — prose, h4–h6, italics, captions) + Spline Sans Mono (data voice — metadata, counts, nav, chips, DOIs) -->
 		<link
 			rel="preload"
 			as="style"
-			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..700,0..100,0..1;1,9..144,400..700,0..100,0..1&family=Commissioner:wght@300..700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Spline+Sans+Mono:ital,wght@0,300..700;1,300..700&display=swap"
 			onload="
 				this.onload = null;
 				this.rel = 'stylesheet';
@@ -164,7 +153,7 @@
 		/>
 		<noscript>
 			<link
-				href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..700,0..100,0..1;1,9..144,400..700,0..100,0..1&family=Commissioner:wght@300..700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500&display=swap"
+				href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Spline+Sans+Mono:ital,wght@0,300..700;1,300..700&display=swap"
 				rel="stylesheet"
 			/>
 		</noscript>

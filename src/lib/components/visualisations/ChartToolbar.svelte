@@ -132,38 +132,26 @@ Provides decal toggle (accessibility), download as PNG, and optional fullscreen.
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-color: color-mix(in srgb, var(--color-surface) 85%, transparent);
-		backdrop-filter: var(--glass-blur-sm);
-		-webkit-backdrop-filter: var(--glass-blur-sm);
+		background-color: var(--color-surface-elevated);
 		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: var(--border-radius);
+		border-radius: 0;
 		color: var(--color-text-light);
 		cursor: pointer;
 		transition:
 			background-color var(--duration-fast) var(--ease-out),
 			color var(--duration-fast) var(--ease-out),
-			border-color var(--duration-fast) var(--ease-out),
-			box-shadow var(--duration-fast) var(--ease-out),
-			transform var(--duration-fast) var(--ease-out);
-		box-shadow: var(--shadow-sm);
+			border-color var(--duration-fast) var(--ease-out);
 	}
 
 	.toolbar-btn:hover:not(:disabled) {
-		background-color: var(--color-primary);
+		background-color: var(--color-accent);
 		color: var(--color-text-inverted);
-		border-color: var(--color-primary);
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-md);
+		border-color: var(--color-accent);
 	}
 
 	.toolbar-btn:focus-visible {
-		outline: 2px solid var(--color-primary);
+		outline: 2px solid var(--color-accent);
 		outline-offset: 2px;
-	}
-
-	.toolbar-btn:active:not(:disabled) {
-		transform: translateY(0);
-		box-shadow: var(--shadow-sm);
 	}
 
 	.toolbar-btn:disabled {
@@ -172,19 +160,19 @@ Provides decal toggle (accessibility), download as PNG, and optional fullscreen.
 	}
 
 	.toolbar-btn.active {
-		background-color: var(--color-primary);
+		background-color: var(--color-accent);
 		color: var(--color-text-inverted);
-		border-color: var(--color-primary);
+		border-color: var(--color-accent);
 		opacity: 1;
 	}
 
 	.toolbar-btn.active:hover {
-		background-color: var(--color-primary-dark);
-		border-color: var(--color-primary-dark);
+		background-color: var(--color-accent-dark);
+		border-color: var(--color-accent-dark);
 	}
 
 	:global(html.dark) .toolbar-btn {
-		background-color: color-mix(in srgb, var(--color-surface) 60%, transparent);
+		background-color: var(--color-surface-elevated);
 		color: var(--color-text-light);
 	}
 

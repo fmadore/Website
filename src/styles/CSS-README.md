@@ -2,6 +2,8 @@
 
 This document outlines the CSS architecture used in this project. The CSS is organized using a modular approach with a focus on maintainability, scalability, and reusability.
 
+> **🖋 Design system: Ink + Signal (2026-07).** The site was redesigned from the earlier "editorial ink-blue" direction to **Ink + Signal** — the press archive read computationally. Warm paper + ink with a single **pine (warm teal)** accent (daylight); a warm near-black **microfilm-negative** with cream type (midnight). **Two type voices:** Archivo (display), Newsreader (prose serif), Spline Sans Mono (data voice). **Square corners, no shadows, no glass** — hierarchy is drawn in heavy rules and ledger rows. Structural idioms live in [`components/ink-signal.css`](./components/ink-signal.css); the full brief is in [`.impeccable.md`](../../.impeccable.md). Some prose below still references the retired ink-blue/amber/glass system; treat `.impeccable.md`, `base/variables.css`, and `components/ink-signal.css` as the source of truth.
+
 > **🎨 Design Audit**: Use the `css-design-audit` skill or run `node .github/skills/css-design-audit/audit.mjs src/lib/components` to check design system compliance.
 
 ## Directory Structure
@@ -54,12 +56,12 @@ Base styles define the foundation of the site's design.
 
 #### Color System
 
-- **Primary**: Deep ink-blue (`#2e4271`) with `-dark`, `-light`, `-lighter` variants — fountain-pen ink against cream paper
-- **Secondary**: Warm neutral for supporting elements (`--sys-color-neutral-600` is now warm-tinted, not cool gray)
-- **Accent**: Amber (`#f59e0b`) — warm gold secondary for highlights and badges
-- **Highlight**: Amber (`#fbbf24`) for attention/importance
-- **Teal**: Retained as `--sys-color-teal-*` only for data-visualisation (timeline categories). Do **not** use in new UI code.
-- **Success**: Emerald (`#10b981`) for positive states
+- **Primary**: INK (`#191509` daylight / cream `#efe7d6` midnight) — the dominant structural colour (rules, solid fills, selected chips, the nameplate)
+- **Secondary**: muted ink / muted cream for supporting text
+- **Accent**: PINE — warm teal (`#1e6a56` daylight / `#4fbb99` midnight) — the single accent, applied by scarcity (current/active/newest, the one primary CTA, link underlines, record-kind markers)
+- **Highlight**: pine (aliases `--color-accent`, so link/hover accents resolve to the accent)
+- **Viz palette**: Seven OKLCH-derived categorical hues (`--sys-viz-1..7`), pine-anchored, for data-visualisation only (chart series, timeline categories). Never UI chrome.
+- **Success**: muted olive (`#5c6b3a`) for positive states
 - **Danger**: Red (`#dc2626`) for errors and destructive actions
 - **Dynamic opacity**: Use `color-mix()` for transparency (e.g., `color-mix(in srgb, var(--color-primary) 25%, transparent)`)
 

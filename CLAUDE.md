@@ -186,40 +186,42 @@ See `REFACTORING-ROADMAP.md` for forward-looking refactoring and feature work, i
 
 ## Design Context
 
-Source of truth: `.impeccable.md` (read that file for the full brief). Summary below for every session.
+**Direction: Ink + Signal — the press archive, read computationally.** Source of truth: `.impeccable.md` (read that file for the full brief). Summary below for every session.
 
 ### Users
 
-Primary: **academic peers** — fellow researchers in Islamic studies, African studies, digital humanities. Desk-based, short sessions, more scanning than reading, trust typographic rigor over flash. Job-to-be-done: find and cite Madore's work, or check on current projects, quickly — while having the site corroborate that he's a serious person.
+Primary: **academic peers** — fellow researchers in Islamic studies, African studies, digital humanities. Desk-based, short sessions, more scanning than reading, trust typographic rigor over flash. Job-to-be-done: find and cite Madore's work, or check on current projects, quickly — while having the site corroborate that he's a serious person. Visitors should feel they are inside a working archive, not on a personal-brand page.
 
 ### Brand Personality
 
-**Warm, humanist, grounded.** Three-word distillation: _considered, humane, rigorous._ Closer to an essayist-scholar's journal than an institutional bio page. Editorial-magazine seriousness combined with letterpress warmth. Rigor without coldness. This is a working historian's site, not a university directory entry.
+**Ink + Signal.** Three-word distillation: _documentary, exacting, alive._ The identity comes from the collision of the two source materials: the West African press corpus the scholar studies (nameplates, section rules, typeset bibliographies) and the computational layer he builds (structured metadata, corpus counts, machine-readable everything). The page itself demonstrates the method — primary sources set with editorial gravity, apparatus set in a machine voice. The masthead asserts; the apparatus reassures.
 
 ### Aesthetic Direction
 
-**Evolve the current system, don't reset it.** Quiet the glassmorphism, warm the palette, choose typography with more character. Preserve continuity for returning visitors.
+**Commit to the collision; retire tasteful restraint.** The previous "editorial evolution" (warm paper + ink-blue + Fraunces/Spectral/Commissioner + quiet glass) was a genre — recognisably "thoughtful academic site" — rather than an identity. Ink + Signal keeps the paper ground and editorial discipline but makes the two halves of the work visible and loud where it counts.
 
-**Mood:** editorial-magazine restraint (LRB / n+1), letterpress/fine-book typography, independent scholar-essayist sites (Craig Mod / Robin Sloan lineage), subtle paper/ink tactility.
+**Mood:** post-independence West African newspaper nameplates and press typesetting (heavy rules, capital mastheads, dated columns); critical editions and typeset bibliographies (apparatus as aesthetic); microfilm readers (dark mode is a negative, not a "dark mode"); editorial-brutalist web tempered by book-quality serif text.
 
-**Avoid:** templated academic CMS aesthetics; AI-slop tells (blue-purple gradients, cyan-on-dark, gradient text, side-stripe `border-left` accents, glassmorphism everywhere); generic "digital humanities" styling (monospace-as-shorthand-for-technical, terminal aesthetics); institutional chrome (centered heroes, three-column "Our Work" grids).
+**Avoid:** templated academic CMS defaults; AI-slop tells (gradients of any kind, glassmorphism, glow, `border-left` accent stripes, rounded cards with soft shadows); code-editor/terminal aesthetics (mono is _metadata_, never body copy, never a whole-page theme); soft-launch minimalism (acres of whitespace, single-column feature pages, hero photos with overlay text).
 
-**Theme.** Light and dark are both first-class — every component designed twice. Light reads like good paper struck by fountain-pen ink (warm cream off-whites, ink-black body text, neutrals tinted toward warm brown, deep ink-blue brand accent). Dark reads like a study desk after midnight (cool slate surfaces, warm cream text — warmth lives in the type, not the surface, since warm-brown surfaces clashed with the cool primary).
+**Theme.** Daylight and midnight are both first-class and both _warm_. Daylight: warm paper `#FAF7EF`, ink `#191509`, one accent. Midnight is the same page photographed as a **microfilm negative** — grounds swap warm-black `#171310`, type swaps cream `#EFE7D6`, the pine accent brightens to `#4FBB99`. Not slate, not blue, not an inversion filter. Warmth lives in the grounds and type in both modes; the accent is the one cooler note.
 
-**Typography.** Settled stack: **Fraunces** (display, h1–h3 — retained as a documented, examined exception to the reflex-font ban), **Spectral** (editorial serif: h4–h6, prose, bylines, italics), **Commissioner** (humanist sans: UI/body chrome), **JetBrains Mono** (code + data-viz chrome only). Predecessors `IBM Plex Sans` / `Source Serif 4` retired.
+**Typography — two voices, strictly cast.** **Archivo** (display grotesque: nameplate, h1–h3, section heads, big data numbers), **Newsreader** (news serif: all prose, h4–h6, subtitles, captions, italics), **Spline Sans Mono** (the _data voice_: eyebrows, datelines, counts, nav, filters, chips, DOIs, pagination — anything that could be a database column). Never blur the voices: no mono headlines, no serif metadata. Retired: Fraunces, Spectral, Commissioner, JetBrains Mono — and with them the "knowing exception" clause.
 
-**Color.** Settled palette: deep ink-blue primary (`--color-primary: #2e4271`) on warm-paper light / cool-slate dark; amber retained as rare secondary accent. Reference: LRB / Penguin Classics / fountain-pen ink on cream paper. Past primaries retired: terracotta (read too brown against warm paper), teal (data-viz only). 60-30-10 by visual weight. OKLCH for new color work; reduce chroma at extreme lightness.
+**Color — two inks on two grounds, one accent.** **Pine** — a warm teal (`--color-accent: #1E6A56` daylight / `#4FBB99` midnight) is the single accent; it marks _the current thing_ (active nav, eyebrows, №-markers, key numbers, the one primary CTA, link underlines). **Ink** (`--color-primary`) is the dominant structural colour (rules, solid fills, selected chips, nameplate). Apply by weight: ground ≫ ink ≫ accent — the accent never fills large areas except the single primary button. Grounds and ink stay warm; the accent is the one cooler note. Retired: ink-blue, amber, and the earlier press-vermillion accent. New viz colours derive in OKLCH from the ink + pine anchors (`--sys-viz-1..7`).
 
-**Motion.** Pages turning, not a web app responding. One orchestrated page-enter with staggered reveals; quieter scroll-reveals. No bounce/elastic easing.
+**Structure — hierarchy is drawn in rules.** 5px/4px heavy rules open mastheads; 3px rules open sections; 1px hairlines separate entries (ink-coloured, never gray). **№-numbered sections** (`№ 01` accent mono + Archivo head) are the standard module. **The ledger** (hanging mono key/date left, serif content right, hairline between rows) is the universal record idiom — publications, CV entries, activities, metadata, facets. **Flat chips** (1px border, sharp corners, mono caps, count appended; selected = solid ink fill). **Corners are square; shadows and glass do not exist.** Depth comes from ink density and rule weight. Idiom classes live in `src/styles/components/ink-signal.css`.
 
-**Layout.** Asymmetry and editorial composition over centered three-column grids. Varied spacing rhythm. Body copy capped at ~65–75ch.
+**Data as ornament.** The only decoration permitted is real data made visible: year-distribution bar strips, corpus counts, frequency-scaled key-term lists. If a flourish doesn't encode something true, it goes.
+
+**Imagery.** Photographs, covers, scans are _plates_: square corners, 1px border, mono or serif-italic caption below (`Fig. 1 — …`). **Motion:** nearly none — instant state changes; at most a short fade on page enter. The register is print, not app.
 
 ### Design Principles
 
-1. **Typography does the heavy lifting** — before reaching for color or ornament, solve it with hierarchy-through-type.
-2. **Warm paper or cool slate, never both warm** — light surfaces are cream paper, dark surfaces are cool slate; text stays warm cream in both modes. Ink-blue accent (and rare amber) earns its place by scarcity.
-3. **Quiet the glass** — glassmorphism only where it genuinely reinforces depth (sticky header, modals), not on cards or decoration.
-4. **Asymmetry over center alignment** — feel written, not laid out.
-5. **Both themes, equal craft** — dark is its own pass, not inverted light. Warmth in dark mode lives in the typography, not the surfaces.
-6. **No AI tells** — reject Impeccable's absolute bans and reflex fonts; if the first instinct matches a default, look further.
-7. **Peer-respecting density** — scholars scan; don't pad with whitespace when structured information serves better.
+1. **Two voices, strictly cast.** Document voice (Archivo/Newsreader) for what the scholar writes; data voice (Spline Sans Mono) for what the machine indexes. Every string belongs to one. Blurring them is the system's only unforgivable error.
+2. **Hierarchy is drawn in rules.** Reach for the rule system (5px masthead, 3px section, 1px hairline) before size or colour. The page should be navigable if all type were one size.
+3. **The ledger is the default record.** Any dated/keyed record renders as a hanging-column ledger row, not a card.
+4. **The accent marks the present.** Pine means "current, active, newest, primary." If it appears more than a handful of times per screen, demote occurrences until it's scarce.
+5. **Data is the only ornament.** Year-bars, counts, term frequencies may decorate because they're true. Nothing else may.
+6. **Print register, both themes.** Square corners, no shadows, no glass, no glow, near-zero motion — daylight _and_ midnight. Midnight is a microfilm negative designed as its own pass.
+7. **Peer-respecting density.** Scholars scan; dense, well-typeset information signals seriousness. Don't pad with whitespace when structured information serves better.

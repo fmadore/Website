@@ -37,10 +37,14 @@
 
 <style>
 	.breadcrumb {
-		/* Plain orientation line — no tile, no shadow, no decorative connector.
-		 * The breadcrumb just orients the reader above the headline; boxing it
-		 * gave a one-line nav the visual weight of content. */
-		font-size: var(--font-size-sm);
+		/* Orientation line in the DATA voice: mono, letterspaced caps, faint ink,
+		 * " / " separators. No tile, no shadow — the headline below carries the
+		 * weight; the breadcrumb just stamps the path like a finding-aid header. */
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-medium);
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
 		margin-bottom: var(--space-md);
 	}
 
@@ -59,65 +63,33 @@
 	}
 
 	.breadcrumb li:not(:last-child)::after {
-		content: '›';
-		margin: 0 var(--space-sm);
+		content: '/';
+		margin: 0 var(--space-2);
 		color: var(--color-text-muted);
-		font-size: var(--font-size-sm);
 	}
 
-	/* Breadcrumb Link Styles — editorial underline-expand pattern, matching
-	 * NavLink. Quieter than the previous button-tile hover (which stacked
-	 * background + border + ::before gradient). */
+	/* Links read as faint ink and turn pine on hover — instant colour, no
+	 * moving underline (the redesign keeps chrome nearly motionless). */
 	.breadcrumb-link {
-		color: var(--color-text);
+		color: var(--color-text-light);
 		text-decoration: none;
 		padding: var(--space-2xs) 0;
 		transition: color var(--duration-fast) var(--ease-out);
-		position: relative;
 		font-weight: var(--font-weight-medium);
 	}
 
-	.breadcrumb-link::after {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 0;
-		height: var(--border-width-thin);
-		background-color: var(--color-primary);
-		border-radius: var(--border-radius-full);
-		transition: width var(--duration-normal) var(--ease-out);
-	}
-
 	.breadcrumb-link:hover {
-		color: var(--color-primary);
-	}
-
-	.breadcrumb-link:hover::after {
-		width: 100%;
+		color: var(--color-accent);
 	}
 
 	.breadcrumb-link:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-primary);
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--space-2xs);
-		border-radius: var(--border-radius-sm);
 	}
 
-	@media (hover: none) {
-		.breadcrumb-link:hover::after {
-			width: 0;
-		}
-
-		.breadcrumb-link:active::after {
-			width: 100%;
-		}
-	}
-
-	/* Active/Current Page — primary text, no chip background. The page
-	 * heading immediately below acts as the dominant title; the breadcrumb
-	 * just orients the reader. */
+	/* Active/Current Page — solid ink, the stamp of "you are here". */
 	.breadcrumb-text {
-		color: var(--color-primary);
+		color: var(--color-text-emphasis);
 		font-weight: var(--font-weight-semibold);
 		padding: var(--space-2xs) 0;
 	}
@@ -141,12 +113,8 @@
 
 	/* Accessibility - Reduced Motion */
 	@media (prefers-reduced-motion: reduce) {
-		.breadcrumb-link::after {
+		.breadcrumb-link {
 			transition: none;
-		}
-
-		.breadcrumb-link:hover::after {
-			width: 100%;
 		}
 	}
 </style>

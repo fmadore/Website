@@ -11,10 +11,10 @@
 </script>
 
 {#if communications.length > 0}
-	<div class="upcoming-section scroll-reveal">
+	<section class="upcoming-section scroll-reveal">
 		<div class="upcoming-header">
-			<Icon icon="lucide:calendar" width="20" height="20" />
-			<span>Upcoming Talks and Events</span>
+			<Icon icon="lucide:calendar" width="15" height="15" aria-hidden="true" />
+			<span class="eyebrow upcoming-header-label">Upcoming Talks and Events</span>
 		</div>
 
 		<ul class="entity-list grid-stagger">
@@ -22,12 +22,16 @@
 				<CommunicationItem {communication} {index} />
 			{/each}
 		</ul>
-	</div>
+	</section>
 {/if}
 
 <style>
+	/* The upcoming block is a №-style section: a heavy accent rule marks it as
+	 * the current/forthcoming record, a mono eyebrow labels it. */
 	.upcoming-section {
-		margin-bottom: var(--space-8);
+		margin-bottom: var(--space-2xl);
+		padding-top: var(--space-sm);
+		border-top: var(--rule-section) solid var(--color-accent);
 	}
 
 	.upcoming-header {
@@ -35,12 +39,12 @@
 		align-items: center;
 		gap: var(--space-2);
 		color: var(--color-accent);
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-semibold);
-		text-transform: uppercase;
-		letter-spacing: var(--letter-spacing-wider);
-		margin-bottom: var(--space-4);
-		padding-left: var(--space-1);
+		margin-bottom: var(--space-lg);
+	}
+
+	/* .eyebrow already supplies the mono caps + accent; keep its margin reset. */
+	.upcoming-header-label {
+		margin: 0;
 	}
 
 	.entity-list {
@@ -49,33 +53,11 @@
 		margin: 0;
 	}
 
-	/* Add a subtle visual separator after upcoming section */
+	/* Close the block with a hairline rule under the last item. */
 	.upcoming-section::after {
 		content: '';
 		display: block;
-		margin-top: var(--space-8);
-		height: 1px;
-		background: linear-gradient(
-			to right,
-			transparent,
-			color-mix(in srgb, var(--color-primary) 10%, transparent) 20%,
-			color-mix(in srgb, var(--color-primary) 10%, transparent) 80%,
-			transparent
-		);
-	}
-
-	/* Dark mode adjustments */
-	:global(html.dark) .upcoming-header {
-		color: var(--color-highlight);
-	}
-
-	:global(html.dark) .upcoming-section::after {
-		background: linear-gradient(
-			to right,
-			transparent,
-			color-mix(in srgb, var(--color-primary) 20%, transparent) 20%,
-			color-mix(in srgb, var(--color-primary) 20%, transparent) 80%,
-			transparent
-		);
+		margin-top: var(--space-lg);
+		border-top: var(--rule-hairline) solid var(--color-border);
 	}
 </style>

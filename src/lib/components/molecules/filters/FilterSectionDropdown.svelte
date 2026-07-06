@@ -191,39 +191,41 @@
 		position: relative;
 	}
 
-	/* Dropdown trigger button */
+	/* Dropdown trigger — a flat square mono control (a finding-aid select). */
 	.dropdown-trigger {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		width: 100%;
 		padding: var(--space-xs) var(--space-sm);
-		font-family: var(--font-family-sans);
-		font-size: var(--font-size-sm);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
-		color: var(--color-text);
-		background: color-mix(in srgb, var(--color-surface-alt) 50%, transparent);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--color-text-soft);
+		background: transparent;
 		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: var(--border-radius);
+		border-radius: 0;
 		cursor: pointer;
 		transition:
-			background-color var(--duration-fast) var(--ease-out),
+			color var(--duration-fast) var(--ease-out),
 			border-color var(--duration-fast) var(--ease-out);
 	}
 
 	.dropdown-trigger:hover {
-		background: var(--color-surface-elevated);
-		border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
+		color: var(--color-text-emphasis);
+		border-color: var(--color-border-dark);
 	}
 
 	.dropdown-trigger.open {
-		border-color: var(--color-primary);
-		background: color-mix(in srgb, var(--color-primary) 5%, transparent);
+		border-color: var(--color-accent);
+		color: var(--color-text-emphasis);
 	}
 
 	.dropdown-trigger:focus-visible {
-		outline: none;
-		box-shadow: var(--focus-ring);
+		outline: var(--border-width-medium) solid var(--color-accent);
+		outline-offset: var(--space-2xs);
 	}
 
 	.dropdown-text {
@@ -240,16 +242,16 @@
 		color: var(--color-text-muted);
 	}
 
-	/* Dropdown menu */
+	/* Dropdown menu — a flat paper panel: square, hairline frame, no shadow.
+	 * An ink section rule at the top ties it to the trigger. */
 	.dropdown-menu {
 		position: absolute;
 		left: 0;
 		right: 0;
-		margin-top: var(--space-2xs);
-		background: var(--color-background);
-		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: var(--border-radius);
-		box-shadow: var(--shadow-lg);
+		margin-top: calc(-1 * var(--border-width-thin));
+		background: var(--color-surface);
+		border: var(--border-width-thin) solid var(--color-border-dark);
+		border-radius: 0;
 		overflow: visible;
 		z-index: var(--z-dropdown);
 		animation: dropdownFadeIn var(--duration-fast) var(--ease-out);
@@ -286,17 +288,17 @@
 		width: 100%;
 		padding: var(--space-xs) var(--space-xl);
 		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: var(--border-radius-sm);
+		border-radius: 0;
 		background: var(--color-background);
 		color: var(--color-text);
 		font-size: var(--font-size-sm);
-		font-family: var(--font-family-sans);
+		font-family: var(--font-family-serif);
 		transition: border-color var(--duration-fast) var(--ease-out);
 	}
 
 	.search-input:focus {
 		outline: none;
-		border-color: var(--color-primary);
+		border-color: var(--color-accent);
 	}
 
 	.search-clear {
@@ -333,13 +335,13 @@
 		padding: var(--space-sm) var(--space-sm);
 		border: none;
 		border-bottom: var(--border-width-thin) solid var(--color-border-light);
-		background: var(--color-background);
-		color: var(--color-text);
-		font-size: var(--font-size-sm);
-		font-family: var(--font-family-sans);
+		background: transparent;
+		color: var(--color-text-soft);
+		font-size: var(--font-size-base);
+		font-family: var(--font-family-serif);
 		text-align: left;
 		cursor: pointer;
-		transition: background-color var(--duration-fast) var(--ease-out);
+		transition: color var(--duration-fast) var(--ease-out);
 		/* Override global .dropdown-item styles */
 		opacity: 1 !important;
 		transform: none !important;
@@ -354,35 +356,39 @@
 	}
 
 	.filter-dropdown-item:hover {
-		background: color-mix(in srgb, var(--color-primary) 8%, var(--color-background));
+		color: var(--color-text-emphasis);
 	}
 
+	/* Selected facet — pine type, no fill. */
 	.filter-dropdown-item.active {
-		background: color-mix(in srgb, var(--color-primary) 12%, var(--color-background));
+		color: var(--color-accent);
 	}
 
 	.filter-dropdown-item.active:hover {
-		background: color-mix(in srgb, var(--color-primary) 18%, var(--color-background));
+		color: var(--color-accent-dark);
 	}
 
 	.item-checkbox {
 		display: flex;
 		align-items: center;
 		margin-right: var(--space-xs);
-		color: var(--color-primary);
+		color: currentColor;
 		flex-shrink: 0;
 	}
 
 	.item-label {
 		flex: 1;
 		line-height: var(--line-height-snug);
-		color: var(--color-text);
+		color: inherit;
 	}
 
+	/* Count — mono figure, the data voice. */
 	.item-count {
 		margin-left: var(--space-xs);
+		font-family: var(--font-family-mono);
 		font-size: var(--font-size-xs);
 		color: var(--color-text-muted);
+		font-variant-numeric: tabular-nums;
 		flex-shrink: 0;
 	}
 
@@ -390,6 +396,8 @@
 		padding: var(--space-lg) var(--space-sm);
 		text-align: center;
 		color: var(--color-text-muted);
+		font-family: var(--font-family-serif);
+		font-style: italic;
 		font-size: var(--font-size-sm);
 	}
 
@@ -399,51 +407,49 @@
 		border-top: var(--border-width-thin) solid var(--color-border-light);
 	}
 
+	/* Clear — a mono-caps text action, not a filled button. */
 	.clear-button {
 		width: 100%;
 		padding: var(--space-xs);
-		font-family: var(--font-family-sans);
-		font-size: var(--font-size-xs);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
-		color: var(--color-danger);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: color-mix(in srgb, var(--color-danger) 80%, var(--color-text-muted));
 		background: transparent;
 		border: none;
 		cursor: pointer;
-		border-radius: var(--border-radius-sm);
-		transition: background-color var(--duration-fast) var(--ease-out);
+		border-radius: 0;
+		transition: color var(--duration-fast) var(--ease-out);
 	}
 
 	.clear-button:hover {
-		background: color-mix(in srgb, var(--color-danger) 10%, transparent);
+		color: var(--color-danger);
 	}
 
-	/* Dark mode */
+	/* Dark mode — same flat treatment; only borders need the slate token. */
 	:global(html.dark) .dropdown-trigger {
-		background: color-mix(in srgb, var(--color-surface-alt) 30%, transparent);
+		background: transparent;
 		border-color: var(--color-border);
 	}
 
 	:global(html.dark) .dropdown-trigger:hover {
-		background: var(--color-surface-elevated);
-		border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-border));
+		border-color: var(--color-border-dark);
 	}
 
 	:global(html.dark) .dropdown-menu {
 		background: var(--color-surface);
-		border-color: var(--color-border);
+		border-color: var(--color-border-dark);
 	}
 
 	:global(html.dark) .dropdown-items {
-		background: var(--color-background);
+		background: transparent;
 	}
 
 	:global(html.dark) .filter-dropdown-item {
-		background: var(--color-background);
+		background: transparent;
 		border-color: var(--color-border);
-	}
-
-	:global(html.dark) .filter-dropdown-item:hover {
-		background: color-mix(in srgb, var(--color-primary) 14%, var(--color-background));
 	}
 
 	:global(html.dark) .search-input {

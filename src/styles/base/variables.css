@@ -1,179 +1,157 @@
 /* CSS Design Tokens */
 
 :root {
-	/* ===== COLOR FOUNDATION ===== */
+	/* ===== COLOR FOUNDATION — INK + SIGNAL ===== *
+	 * Two inks on two grounds, one accent. The press archive read
+	 * computationally: warm paper struck by ink, a single pine (warm teal)
+	 * accent for "the current thing". Dark mode is the microfilm negative —
+	 * the same page, grounds swapped to warm near-black, type to cream,
+	 * the accent brightened. Grounds and ink stay warm; the accent is the one
+	 * cooler note, kept scarce. Nothing is web-chrome. */
 
-	/* Neutral: Warm-tinted (paper → ink), OKLCH-derived.
-	 * Replaces the previous cool-gray scale. Tinted toward warm brown/ochre
-	 * so surfaces feel like good paper instead of cold screen. */
-	--sys-color-neutral-0: #ffffff;
-	/* Page ground in light mode — warm paper, never pure white. Sits between
-	 * neutral-0 (reserved for elevated "sheet" tiles) and neutral-50 (tinted
-	 * surfaces) so cards keep a perceptible lift off the page. */
-	--sys-color-paper: #fcf9f3;
-	--sys-color-neutral-50: #faf7f2;
-	--sys-color-neutral-100: #f4efe7;
-	--sys-color-neutral-200: #e9e2d5;
-	--sys-color-neutral-300: #d5cdbe;
-	--sys-color-neutral-400: #a39487;
-	--sys-color-neutral-500: #7a6b5e;
-	--sys-color-neutral-600: #584b40;
-	--sys-color-neutral-700: #3e342a;
-	--sys-color-neutral-800: #2a211a;
-	--sys-color-neutral-900: #1c1510;
-	--sys-color-neutral-950: #0e0a07;
+	/* Paper → ink (warm neutral scale). Page grounds, surfaces, ink text,
+	 * hairlines and borders all live here. Never pure white or pure black. */
+	--sys-color-paper-raised: #fffdf7; /* elevated "sheet" tiles, raised paper */
+	--sys-color-paper: #faf7ef; /* page ground (daylight) */
+	--sys-color-paper-100: #f3eee0; /* subtle warm surface */
+	--sys-color-paper-200: #ece4d1; /* muted warm surface / sunken */
+	--sys-color-hairline: #dcd4be; /* 1px row separators */
+	--sys-color-border: #c9c0aa; /* default borders, image plates */
+	--sys-color-border-strong: #a39b86; /* stronger borders, outline buttons */
+	--sys-color-ink-faint: #93896f; /* faint ink — muted labels, captions */
+	--sys-color-ink-muted: #5c5442; /* muted ink — secondary text, standfirst */
+	--sys-color-ink-soft: #3a352a; /* soft ink — long-form prose body */
+	--sys-color-ink: #191509; /* ink — body, emphasis, rules, solid fills */
+	--sys-color-ink-deep: #0e0b04; /* deepest ink — hover on solid ink */
 
-	/* Primary: Deep ink-blue.
-	 * Fountain-pen ink against cream paper — editorial-magazine register.
-	 * Cool primary deliberately set against warm neutrals for letterpress
-	 * contrast, in the LRB / n+1 / Penguin Classics lineage. */
-	--sys-color-ink-100: #eef1f7;
-	--sys-color-ink-200: #d6dded;
-	--sys-color-ink-300: #b0bbd5;
-	--sys-color-ink-400: #7a89b3;
-	--sys-color-ink-500: #4f618d;
-	--sys-color-ink-600: #2e4271;
-	--sys-color-ink-700: #243456;
-	--sys-color-ink-800: #1c2842;
-	--sys-color-ink-900: #131c30;
-	--sys-color-ink-950: #0a0f1c;
+	/* Pine (warm teal) — the single accent. Marks the current, active,
+	 * newest, primary. Brightened cut used on midnight. Applied by scarcity. */
+	--sys-color-pine: #1e6a56; /* accent (daylight) */
+	--sys-color-pine-deep: #154e40; /* accent hover / pressed (daylight) */
+	--sys-color-pine-bright: #4fbb99; /* accent (midnight) */
 
-	/* Teal — retained for data-visualisation only (timeline categories, charts).
-	 * No longer the brand primary. Do not reference in new UI code. */
-	--sys-color-teal-950: #042f2e;
-	--sys-color-teal-900: #134e4a;
-	--sys-color-teal-800: #115e59;
-	--sys-color-teal-700: #0f766e;
-	--sys-color-teal-600: #0d9488;
-	--sys-color-teal-500: #14b8a6;
-	--sys-color-teal-400: #2dd4bf;
-	--sys-color-teal-300: #5eead4;
-	--sys-color-teal-200: #99f6e4;
-	--sys-color-teal-100: #ccfbf1;
+	/* Midnight (microfilm negative) — resolved here so both palettes are
+	 * documented in one place; applied via dark.css. */
+	--sys-color-film-ground: #171310; /* warm near-black page ground */
+	--sys-color-film-100: #1f1a14; /* subtle raised film surface */
+	--sys-color-film-200: #252017; /* muted film surface */
+	--sys-color-film-hairline: #383126; /* 1px separators (dark) */
+	--sys-color-film-border: #453d2f; /* borders (dark) */
+	--sys-color-film-border-strong: #5a5140; /* stronger borders (dark) */
+	--sys-color-cream-faint: #7e7460; /* faint cream (dark) */
+	--sys-color-cream-muted: #b3a88d; /* muted cream (dark) */
+	--sys-color-cream-soft: #cbc0a6; /* soft cream (dark) */
+	--sys-color-cream-prose: #ddd2b8; /* long-form prose (dark) */
+	--sys-color-cream: #efe7d6; /* cream — body, emphasis (dark) */
 
-	/* Blue: Data visualization */
-	--sys-color-blue-950: #0c1929;
-	--sys-color-blue-900: #172554;
-	--sys-color-blue-800: #1e3a5f;
-	--sys-color-blue-700: #1d4ed8;
-	--sys-color-blue-600: #2563eb;
-	--sys-color-blue-500: #3b82f6;
-	--sys-color-blue-400: #60a5fa;
-	--sys-color-blue-300: #93c5fd;
-	--sys-color-blue-200: #bfdbfe;
-	--sys-color-blue-100: #dbeafe;
+	/* Functional states — errors/success only. Warm-tinted so they read as
+	 * ink annotations, not web toast. Used sparingly (form validation). */
+	--sys-color-danger: #a3341c; /* deep warm red for errors */
+	--sys-color-danger-bright: #d1553a;
+	--sys-color-success: #5c6b3a; /* muted olive for success */
+	--sys-color-success-bright: #8a9a5b;
 
-	/* Accent/Highlight: Amber */
-	--sys-color-amber-700: #b45309;
-	--sys-color-amber-600: #d97706;
-	--sys-color-amber-500: #f59e0b;
-	--sys-color-amber-400: #fbbf24;
-	--sys-color-amber-300: #fcd34d;
-	--sys-color-amber-200: #fde68a;
-	--sys-color-amber-100: #fef3c7;
-
-	/* Success: Emerald - positive outcomes */
-	--sys-color-emerald-600: #059669;
-	--sys-color-emerald-500: #10b981;
-	--sys-color-emerald-400: #34d399;
-
-	/* Danger: Rose-red - errors, warnings */
-	--sys-color-red-700: #b91c1c;
-	--sys-color-red-600: #dc2626;
-	--sys-color-red-500: #ef4444;
-	--sys-color-red-400: #f87171;
-
-	/* Visualisation palette — distinct hues for category encoding */
-	--sys-color-sage-500: #6b9e4f;
-	--sys-color-slate-blue-500: #5c8ab4;
-	--sys-color-mauve-500: #a67c9b;
+	/* Visualisation palette — derived in OKLCH from the ink + pine
+	 * anchors. Muted, earthy, harmonised with warm paper; each holds up on
+	 * the microfilm ground too. Category encoding only — never UI chrome. */
+	--sys-viz-1: #1e6a56; /* pine — the accent anchor (signal series) */
+	--sys-viz-2: oklch(0.52 0.06 250); /* muted slate-blue */
+	--sys-viz-3: oklch(0.58 0.07 128); /* muted olive */
+	--sys-viz-4: oklch(0.66 0.09 72); /* ochre / gold */
+	--sys-viz-5: oklch(0.55 0.06 350); /* mauve */
+	--sys-viz-6: oklch(0.53 0.078 305); /* muted plum */
+	--sys-viz-7: oklch(0.45 0.05 30); /* umber / deep clay */
 
 	/* ===== SEMANTIC COLOR TOKENS ===== */
-	/* Primary — Deep ink-blue */
-	--color-primary: var(--sys-color-ink-600);
-	--color-primary-dark: var(--sys-color-ink-700);
-	--color-primary-light: var(--sys-color-ink-500);
-	--color-primary-lighter: var(--sys-color-ink-400);
+	/* Primary — INK. The dominant structural voice: body emphasis, rules,
+	 * solid fills, selected chips, the nameplate. The accent is NOT primary;
+	 * it is the scarce accent below. In midnight, "ink" becomes cream. */
+	--color-primary: var(--sys-color-ink);
+	--color-primary-dark: var(--sys-color-ink-deep);
+	--color-primary-light: var(--sys-color-ink-muted);
+	--color-primary-lighter: var(--sys-color-ink-faint);
 
-	/* Secondary */
-	--color-secondary: var(--sys-color-neutral-600);
-	--color-secondary-light: var(--sys-color-neutral-500);
+	/* Secondary — muted ink */
+	--color-secondary: var(--sys-color-ink-muted);
+	--color-secondary-light: var(--sys-color-ink-faint);
 
-	/* Accent */
-	--color-accent: var(--sys-color-amber-500);
-	--color-accent-dark: var(--sys-color-amber-600);
-	--color-accent-light: var(--sys-color-amber-400);
+	/* Accent — PINE (warm teal). The single accent; marks the current thing.
+	 * Used by scarcity: eyebrows, active nav, key numbers, the newest year-bar,
+	 * link underlines, the one primary CTA. */
+	--color-accent: var(--sys-color-pine);
+	--color-accent-dark: var(--sys-color-pine-deep);
+	--color-accent-light: var(--sys-color-pine-bright);
 
-	/* Highlight */
-	--color-highlight: var(--sys-color-amber-400);
-	--color-highlight-dark: var(--sys-color-amber-500);
-	--color-highlight-light: var(--sys-color-amber-300);
+	/* Highlight — pine too, so link/hover accents resolve to the accent. */
+	--color-highlight: var(--sys-color-pine);
+	--color-highlight-dark: var(--sys-color-pine-deep);
+	--color-highlight-light: var(--sys-color-pine-bright);
 
-	/* Success - Positive states, confirmations */
-	--color-success: var(--sys-color-emerald-500);
+	/* Success - Positive states, confirmations (muted olive) */
+	--color-success: var(--sys-color-success);
 
-	--color-success-dark: var(--sys-color-emerald-600);
+	--color-success-dark: var(--sys-color-success-bright);
 
-	/* Danger - Errors, destructive actions */
-	--color-danger: var(--sys-color-red-600);
+	/* Danger - Errors, destructive actions (deep warm red) */
+	--color-danger: var(--sys-color-danger);
 
-	--color-danger-dark: var(--sys-color-red-700);
-	--color-danger-light: var(--sys-color-red-400);
+	--color-danger-dark: var(--sys-color-danger);
+	--color-danger-light: var(--sys-color-danger-bright);
 
 	/* ===== BACKGROUND & TEXT COLORS ===== */
 	--color-background: var(--sys-color-paper);
 
-	--color-background-subtle: var(--sys-color-neutral-50);
-	--color-background-muted: var(--sys-color-neutral-100);
+	--color-background-subtle: var(--sys-color-paper-100);
+	--color-background-muted: var(--sys-color-paper-200);
 
-	--color-text: var(--sys-color-neutral-800);
+	--color-text: var(--sys-color-ink);
 
-	--color-text-light: var(--sys-color-neutral-500);
-	--color-text-muted: var(--sys-color-neutral-400);
-	--color-text-emphasis: var(--sys-color-neutral-900);
-	--color-text-soft: var(--sys-color-neutral-600);
-	--color-text-inverted: var(--sys-color-neutral-0);
+	--color-text-light: var(--sys-color-ink-faint);
+	--color-text-muted: var(--sys-color-ink-faint);
+	--color-text-emphasis: var(--sys-color-ink);
+	--color-text-soft: var(--sys-color-ink-muted);
+	--color-text-inverted: var(--sys-color-paper);
 
 	/* ===== SURFACE COLORS ===== */
-	/* Layered surfaces for depth hierarchy */
-	--color-surface: var(--sys-color-neutral-50);
+	/* Layered surfaces for depth hierarchy. Depth now comes from ink density
+	 * and rule weight, not shadows — surfaces stay close in value. */
+	--color-surface: var(--sys-color-paper-100);
 
-	--color-surface-alt: var(--sys-color-neutral-100);
-	--color-surface-elevated: var(--sys-color-neutral-0);
-	--color-surface-sunken: var(--sys-color-neutral-100);
-	--color-surface-border: var(--sys-color-neutral-200);
+	--color-surface-alt: var(--sys-color-paper-200);
+	--color-surface-elevated: var(--sys-color-paper-raised);
+	--color-surface-sunken: var(--sys-color-paper-200);
+	--color-surface-border: var(--sys-color-border);
 
 	/* ===== BORDER COLORS ===== */
-	--color-border: var(--sys-color-neutral-200);
-	--color-border-light: var(--sys-color-neutral-100);
-	--color-border-dark: var(--sys-color-neutral-300);
-	--color-border-focus: var(--color-primary);
+	--color-border: var(--sys-color-border);
+	--color-border-light: var(--sys-color-hairline);
+	--color-border-dark: var(--sys-color-border-strong);
+	--color-border-focus: var(--color-accent);
 
 	/* ===== FOCUS RING ===== */
-	/* Consistent focus indicators for accessibility */
-	--focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-primary) 40%, transparent);
+	/* Accent focus — the accent signals interactivity/keyboard target. */
+	--focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-accent) 45%, transparent);
 	--focus-ring-offset: 2px;
-	--focus-ring-color: var(--color-primary);
+	--focus-ring-color: var(--color-accent);
 
 	/* ===== ACADEMIC-SPECIFIC COLORS ===== */
 	--color-citation: var(--color-accent);
 
-	--color-quote: var(--sys-color-neutral-700);
-	--color-note: var(--sys-color-neutral-600);
-	--color-code-bg: var(--sys-color-neutral-100);
+	--color-quote: var(--sys-color-ink-muted);
+	--color-note: var(--sys-color-ink-muted);
+	--color-code-bg: var(--sys-color-paper-200);
 
 	/* ===== TIMELINE/CHART COLORS =====
-	 * Ink-first per the data-viz clause: positions (the career backbone)
-	 * carry the brand ink and brighten automatically in dark mode via
-	 * --color-primary; awards moved from amber-600 to bronze (amber-700)
-	 * for clearer separation from the amber-500 grants. */
-	--color-timeline-positions: var(--color-primary);
-	--color-timeline-education: var(--sys-color-sage-500);
-	--color-timeline-grants: var(--sys-color-amber-500);
-	--color-timeline-publications: var(--sys-color-slate-blue-500);
-	--color-timeline-presentations: var(--sys-color-mauve-500);
-	--color-timeline-awards: var(--sys-color-amber-700);
-	--color-timeline-fieldwork: var(--sys-color-teal-500);
+	 * Positions (the career backbone) carry the pine accent — the
+	 * "current thing" made structural. Remaining categories draw the
+	 * OKLCH-derived viz palette (earthy, harmonised with paper). */
+	--color-timeline-positions: var(--sys-viz-1);
+	--color-timeline-education: var(--sys-viz-3);
+	--color-timeline-grants: var(--sys-viz-4);
+	--color-timeline-publications: var(--sys-viz-2);
+	--color-timeline-presentations: var(--sys-viz-5);
+	--color-timeline-awards: var(--sys-viz-7);
+	--color-timeline-fieldwork: var(--sys-viz-6);
 
 	/* ===== UTILITY COLORS ===== */
 	--color-white: #ffffff;
@@ -184,60 +162,53 @@
 
 	/* ===== COMPONENT COLOR LAYERS ===== */
 	--color-background-alt: var(--color-surface);
-	/* Footer — deep warm bark. Previously pointed at teal-950 (legacy brand);
-	 * retargeted to the warm neutral scale so the footer reads as ink-on-paper
-	 * extended into dusk, not a cool counterweight to the warm page body. */
-	--color-footer-bg: var(--sys-color-neutral-950);
-	--color-footer-text: var(--sys-color-neutral-100);
-	--color-footer-text-muted: color-mix(in srgb, var(--sys-color-neutral-100) 75%, transparent);
+	/* Footer — the dark colophon "back page". Ink ground with cream type in
+	 * both themes (a printed endpaper), deeper on midnight. */
+	--color-footer-bg: var(--sys-color-ink);
+	--color-footer-text: var(--sys-color-cream);
+	--color-footer-text-muted: #8a8170;
 	--color-sidebar-bg: var(--color-surface);
 
-	/* Button color schemes */
-	/* Secondary glass-button accent. Repointed from amber to the ink family so
-	 * the light theme matches the dark theme (which already used ink-400/500)
-	 * and routine filter chips stop reading as a rare amber accent. The unused
-	 * tertiary (emerald) scheme tokens were removed in the same pass. */
+	/* Button / control schemes — ink family (accent is applied explicitly). */
 	--color-secondary-scheme: var(--color-primary-light);
 	--color-secondary-scheme-alt: var(--color-primary);
 	--color-glass-scheme: var(--color-primary);
 	--color-glass-scheme-alt: var(--color-primary-light);
 
 	/* Dark surface tokens */
-	--color-dark-surface: var(--sys-color-neutral-700);
-	--color-dark-surface-alt: var(--sys-color-neutral-800);
-	--color-dark-surface-deep: var(--sys-color-neutral-900);
+	--color-dark-surface: var(--sys-color-film-100);
+	--color-dark-surface-alt: var(--sys-color-film-ground);
+	--color-dark-surface-deep: #0f0c08;
 
 	/* ===== TYPOGRAPHY SCALE ===== */
 
-	/* Font Families
-	 * Sans: Commissioner — humanist variable sans with optical sizing; warm,
-	 * character-rich, not on Impeccable's reflex list. UI, nav, body.
-	 * Serif: Spectral — editorial screen-serif by Production Type; warm ink,
-	 * strong italics, full Latin Extended (French + West African diacritics).
-	 * Headings, long-form prose, display.
-	 * Mono: JetBrains Mono — role-constrained to code + data-viz chrome only. */
+	/* Font Families — TWO VOICES.
+	 * Display: Archivo — a grotesque built for archive headlines. Nameplate,
+	 * h1–h3, section heads, big data numbers. Variable width (wdth) + weight.
+	 * Serif (prose): Newsreader — designed for news text, opsz axis, strong
+	 * italics, full Latin Extended (French + West African diacritics). All
+	 * prose, h4–h6, subtitles, captions, quotes. This is the reading default.
+	 * Mono (data voice): Spline Sans Mono — metadata ONLY, never body copy.
+	 * Eyebrows, datelines, counts, nav, filters, chips, DOIs, pagination.
+	 * Sans: a neutral system stack, fallback for form controls only — the
+	 * visual language has no humanist sans. */
 	--sys-font-family-sans:
-		'Commissioner', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial',
-		sans-serif;
-	--sys-font-family-serif: 'Spectral', 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
-	/* Display: Fraunces — warm old-style display serif, reserved for h1–h3 to
-	 * give top-level headings letterpress character. Falls back to the Spectral
-	 * serif stack so headings stay editorial before the webfont loads. */
+		'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
+	--sys-font-family-serif: 'Newsreader', 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
 	--sys-font-family-display:
-		'Fraunces', 'Spectral', 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
-	--sys-font-family-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Consolas', 'Monaco', monospace;
+		'Archivo', 'system-ui', 'Segoe UI', 'Helvetica Neue', 'Arial', sans-serif;
+	--sys-font-family-mono:
+		'Spline Sans Mono', 'SF Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
 
-	/* Fraunces display-axis presets. opsz is pushed above the physical render
-	 * size so top-level type reads as a genuine display cut (sharper contrast,
-	 * crisper serifs) rather than enlarged text; WONK 1 turns on Fraunces's
-	 * signature wonky letterforms (the letterpress quirk); SOFT 0 keeps
-	 * terminals sharp. Requires the SOFT + WONK axes to be loaded in the
-	 * Google Fonts request — see src/app.html. Applied to h1–h3 and the
-	 * masthead/CV display surfaces so the two serifs stop competing. */
-	--font-variation-display: 'opsz' 144, 'SOFT' 0, 'WONK' 1;
-	--font-variation-display-md: 'opsz' 96, 'SOFT' 0, 'WONK' 1;
-	--font-variation-display-sm: 'opsz' 72, 'SOFT' 0, 'WONK' 1;
-	--font-variation-wordmark: 'opsz' 40, 'SOFT' 0, 'WONK' 1;
+	/* Archivo width-axis presets. The nameplate/section heads are set on a
+	 * wide, heavy cut (a compressed-broadsheet feel); weight is carried by
+	 * font-weight (wght axis). Applied to the nameplate, h1–h3 and section
+	 * heads. Newsreader carries opsz via `font-optical-sizing: auto`. */
+	--font-variation-nameplate: 'wdth' 123;
+	--font-variation-display: 'wdth' 116;
+	--font-variation-display-md: 'wdth' 112;
+	--font-variation-display-sm: 'wdth' 112;
+	--font-variation-wordmark: 'wdth' 122;
 
 	/*
 	 * Type Scale — forked ratios.
@@ -283,7 +254,10 @@
 	--font-size-body-sm: var(--font-size-sm);
 	--font-size-body-lg: var(--font-size-lg);
 	--font-size-lead: clamp(1.125rem, 1.05rem + 0.375vw, 1.375rem);
-	--font-size-display: var(--font-size-5xl);
+	/* Nameplate — the home masthead. Compressed-broadsheet scale. */
+	--font-size-nameplate: clamp(2.5rem, 1.6rem + 4.2vw, 5rem);
+	/* Display — index-page hero titles (Research / Publications / Activities). */
+	--font-size-display: clamp(2.5rem, 1.9rem + 3vw, 4.5rem);
 	--font-size-heading-1: var(--font-size-4xl);
 	--font-size-heading-2: var(--font-size-3xl);
 	--font-size-heading-3: var(--font-size-2xl);
@@ -292,7 +266,7 @@
 	--font-size-heading-6: var(--font-size-base);
 
 	/* ===== LINE HEIGHTS ===== */
-	/* Tuned for Spectral (editorial serif) + Commissioner (humanist sans) readability */
+	/* Tuned for Newsreader (news serif prose) + Archivo (display) readability */
 	--line-height-none: 1;
 	--line-height-tight: 1.1;
 	--line-height-snug: 1.35;
@@ -300,7 +274,7 @@
 	--line-height-relaxed: 1.6;
 	--line-height-loose: 1.9;
 
-	/* Contextual line heights - tuned for Spectral headings */
+	/* Contextual line heights - tuned for Archivo display headings */
 	--line-height-heading: 1.1;
 	--line-height-subheading: 1.3;
 	--line-height-body: 1.6;
@@ -423,71 +397,56 @@
 	--space-reading: var(--space-xl);
 	--space-reading-loose: var(--space-2xl);
 
-	/* ===== BORDER RADIUS ===== */
-	/* 
-	 * Consistent radius scale for UI cohesion
-	 * Slightly larger defaults for modern, friendly aesthetic
-	 */
+	/* ===== BORDER RADIUS =====
+	 * Ink + Signal: corners are square. Depth comes from ink density and rule
+	 * weight, not rounding. The whole scale is 0 so every card, chip, button,
+	 * panel and image plate is sharp-cornered by default. --border-radius-full
+	 * is retained only for genuinely circular micro-controls (slider thumbs,
+	 * loading spinners, status dots) that opt in explicitly. */
 	--border-radius-none: 0;
-	--border-radius-xs: 0.125rem;
-	/* 2px */
-	--border-radius-sm: 0.25rem;
-	/* 4px */
-	--border-radius: 0.5rem;
-	/* 8px - default */
-	--border-radius-md: 0.625rem;
-	/* 10px */
-	--border-radius-lg: 0.75rem;
-	/* 12px */
-	--border-radius-xl: 1rem;
-	/* 16px */
-	--border-radius-2xl: 1.25rem;
-	/* 20px */
-	--border-radius-3xl: 1.5rem;
-	/* 24px */
+	--border-radius-xs: 0;
+	--border-radius-sm: 0;
+	--border-radius: 0;
+	--border-radius-md: 0;
+	--border-radius-lg: 0;
+	--border-radius-xl: 0;
+	--border-radius-2xl: 0;
+	--border-radius-3xl: 0;
 	--border-radius-full: 9999px;
 
-	/* ===== SHADOWS ===== */
-	/* 
-	 * Layered shadow system for realistic depth
-	 * Uses multiple layers for natural lighting effect
-	 * Colored shadows for brand elements
-	 */
-	--shadow-xs: 0 1px 2px 0 color-mix(in srgb, var(--color-black) 5%, transparent);
-	--shadow-sm:
-		0 1px 3px 0 color-mix(in srgb, var(--color-black) 10%, transparent),
-		0 1px 2px -1px color-mix(in srgb, var(--color-black) 10%, transparent);
-	--shadow:
-		0 4px 6px -1px color-mix(in srgb, var(--color-black) 10%, transparent),
-		0 2px 4px -2px color-mix(in srgb, var(--color-black) 10%, transparent);
-	--shadow-md:
-		0 10px 15px -3px color-mix(in srgb, var(--color-black) 10%, transparent),
-		0 4px 6px -4px color-mix(in srgb, var(--color-black) 10%, transparent);
-	--shadow-lg:
-		0 20px 25px -5px color-mix(in srgb, var(--color-black) 10%, transparent),
-		0 8px 10px -6px color-mix(in srgb, var(--color-black) 10%, transparent);
-	--shadow-xl: 0 25px 50px -12px color-mix(in srgb, var(--color-black) 25%, transparent);
-	--shadow-2xl: 0 35px 60px -15px color-mix(in srgb, var(--color-black) 30%, transparent);
-	--shadow-inner: inset 0 2px 4px 0 color-mix(in srgb, var(--color-black) 5%, transparent);
+	/* ===== RULE WEIGHTS =====
+	 * Hierarchy is drawn in rules, ink-coloured (cream on midnight), never gray.
+	 * 5px nameplate → 4px masthead → 3px section → 1px hairline. */
+	--rule-hairline: 1px;
+	--rule-section: 3px;
+	--rule-masthead: 4px;
+	--rule-nameplate: 5px;
+
+	/* ===== SHADOWS =====
+	 * Shadows do not exist in Ink + Signal. Depth is drawn in rules and ink
+	 * density. Every shadow token resolves to `none` so the whole component
+	 * layer flattens automatically; tokens are kept for API stability. */
+	--shadow-xs: none;
+	--shadow-sm: none;
+	--shadow: none;
+	--shadow-md: none;
+	--shadow-lg: none;
+	--shadow-xl: none;
+	--shadow-2xl: none;
+	--shadow-inner: none;
 	--shadow-none: none;
 
-	/* Colored shadows for emphasis */
-	--shadow-primary: 0 4px 14px -2px color-mix(in srgb, var(--color-primary) 25%, transparent);
-	--shadow-primary-lg: 0 10px 25px -5px color-mix(in srgb, var(--color-primary) 30%, transparent);
-	--shadow-accent: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-amber-500) 25%, transparent);
-	--shadow-highlight: 0 4px 14px -2px
-		color-mix(in srgb, var(--sys-color-amber-400) 25%, transparent);
-	--shadow-success: 0 4px 14px -2px
-		color-mix(in srgb, var(--sys-color-emerald-500) 25%, transparent);
-	--shadow-danger: 0 4px 14px -2px color-mix(in srgb, var(--sys-color-red-600) 25%, transparent);
+	/* Colored shadows — also none. */
+	--shadow-primary: none;
+	--shadow-primary-lg: none;
+	--shadow-accent: none;
+	--shadow-highlight: none;
+	--shadow-success: none;
+	--shadow-danger: none;
 
-	/* Glass shadows - softer for glassmorphism */
-	--shadow-glass:
-		0 8px 32px 0 color-mix(in srgb, var(--color-black) 8%, transparent),
-		0 2px 8px 0 color-mix(in srgb, var(--color-black) 4%, transparent);
-	--shadow-glass-lg:
-		0 16px 48px 0 color-mix(in srgb, var(--color-black) 10%, transparent),
-		0 4px 12px 0 color-mix(in srgb, var(--color-black) 5%, transparent);
+	/* Glass shadows — none. */
+	--shadow-glass: none;
+	--shadow-glass-lg: none;
 
 	/* ===== BORDER WIDTHS ===== */
 	--border-width-thin: 1px;

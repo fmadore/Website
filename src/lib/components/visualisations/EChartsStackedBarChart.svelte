@@ -23,23 +23,27 @@ ECharts Stacked Bar Chart component
 		keys = [] as string[],
 		xAxisLabel = '',
 		yAxisLabel = '',
-		/* Editorial categorical set (see CHART_CATEGORICAL_COLORS), mapped
+		/* Ink + Signal categorical set (see CHART_CATEGORICAL_COLORS), mapped
 		 * positionally to the alphabetically-sorted publication type keys
 		 * (article, blogpost, book, bulletin-article, chapter, …). The
-		 * dominant series (journal articles) carries the brand ink; the book
-		 * family reads as gold/bronze kin. No purple/pink/neon. */
+		 * dominant series (journal articles) carries the pine
+		 * signal; the rest are the earthy --sys-viz-* ramp. */
+		/* Bare var(--sys-viz-*) tokens only — resolveColors() must return
+		 * concrete colours for ECharts' canvas renderer (no color-mix()). The
+		 * 11 keys reuse the 7-hue ramp; the dominant series (journal articles)
+		 * carries the pine signal. */
 		colors = [
-			'var(--color-primary)', // article → Journal article — ink (brand backbone)
-			'var(--sys-color-ink-300)', // blogpost → Blog post — pale ink
-			'var(--sys-color-amber-500)', // book → Book — gold
-			'var(--sys-color-sage-500)', // bulletin-article → Bulletin article — sage
-			'var(--sys-color-amber-700)', // chapter → Book chapter — bronze
-			'var(--sys-color-neutral-400)', // conference-proceedings — warm gray
-			'var(--sys-color-mauve-500)', // encyclopedia → Encyclopedia entry — mauve
-			'var(--sys-color-slate-blue-500)', // masters-thesis — steel blue
-			'var(--sys-color-teal-600)', // phd-dissertation — teal
-			'var(--sys-color-neutral-500)', // report → Research report — sepia
-			'var(--sys-color-teal-400)' // special-issue → Special issue — aqua
+			'var(--sys-viz-1)', // article → Journal article — pine (signal)
+			'var(--sys-viz-2)', // blogpost → Blog post — muted slate-blue
+			'var(--sys-viz-4)', // book → Book — ochre / gold
+			'var(--sys-viz-3)', // bulletin-article → Bulletin article — olive
+			'var(--sys-viz-7)', // chapter → Book chapter — umber
+			'var(--sys-viz-6)', // conference-proceedings — muted plum
+			'var(--sys-viz-5)', // encyclopedia → Encyclopedia entry — mauve
+			'var(--sys-viz-2)', // masters-thesis — slate-blue (reuse)
+			'var(--sys-viz-3)', // phd-dissertation — olive (reuse)
+			'var(--sys-viz-4)', // report → Research report — ochre (reuse)
+			'var(--sys-viz-6)' // special-issue → Special issue — plum (reuse)
 		]
 	}: {
 		data?: DataItem[];
@@ -84,14 +88,10 @@ ECharts Stacked Bar Chart component
 			itemStyle: {
 				color:
 					resolvedColors.resolvedSeriesColors[index % resolvedColors.resolvedSeriesColors.length],
-				borderRadius: [4, 4, 0, 0]
+				borderRadius: 0
 			},
 			emphasis: {
-				itemStyle: {
-					shadowBlur: 10,
-					shadowOffsetX: 0,
-					shadowColor: resolvedColors.primary
-				}
+				focus: 'series'
 			}
 		}))
 	);

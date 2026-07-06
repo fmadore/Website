@@ -13,7 +13,8 @@
 		activeSort = 'date',
 		onsortchange,
 		availableSorts = ['date', 'title', 'citations'],
-		glass = true
+		// Glass retired for the flat redesign; the sorter is a square mono control.
+		glass = false
 	}: Props = $props();
 
 	// Tactile click acknowledgment: when the active sort changes, briefly
@@ -109,108 +110,36 @@
 		display: contents; /* Won't affect layout */
 	}
 
-	/* Enhanced sorter button styling that integrates with glassmorphism */
+	/* A flat square mono control. The sort label is chrome, so it reads in the
+	 * DATA voice: mono caps, letterspaced. No shadow, no lift, no pulse. */
 	:global(.sorter-button) {
-		/* Use CSS variables for consistent spacing and typography */
+		font-family: var(--font-family-mono);
 		font-weight: var(--font-weight-medium);
-		letter-spacing: var(--letter-spacing-wide);
-		transition: all var(--duration-normal) var(--ease-out);
-
-		/* Enhanced border radius for better visual appeal */
-		border-radius: var(--border-radius-lg) !important;
-
-		/* Subtle shadow for depth */
-		box-shadow: var(--shadow-sm);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		border-radius: 0 !important;
+		box-shadow: none !important;
 	}
 
 	:global(.sorter-button:hover) {
-		/* Enhanced hover effect with glassmorphism */
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-md);
+		transform: none !important;
+		box-shadow: none !important;
 	}
 
 	:global(.sorter-button:active) {
-		/* Subtle press effect */
-		transform: scale(var(--scale-95));
-		transition-duration: var(--duration-instant);
+		transform: none !important;
 	}
 
-	/* Tactile pulse on sort change — closes the loop with the list's flip
-	 * animation. Triggered from JS by adding `.sorter-button--pulse` for
-	 * ~220ms. Defined as a keyframe so it runs once and self-clears, even
-	 * if the class hangs on a frame longer than expected. */
+	/* The pulse class is retained as a JS hook but no longer animates — the
+	 * redesign keeps controls still; the list's own reordering is the feedback. */
 	:global(.sorter-button--pulse) {
-		animation: sorter-pulse 220ms var(--ease-out, ease-out);
-	}
-
-	@keyframes sorter-pulse {
-		0% {
-			transform: scale(1);
-		}
-		35% {
-			transform: scale(0.94);
-		}
-		100% {
-			transform: scale(1);
-		}
-	}
-
-	/* Enhanced glassmorphism integration */
-	:global(.sorter-button.glass-button) {
-		/* Additional glassmorphism enhancements for the sorter */
-		backdrop-filter: blur(var(--glass-blur-amount)) saturate(150%);
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount)) saturate(150%);
-
-		/* Quiet, single-tone ink-blue wash for hierarchy — no gradient ornament
-		 * (per design brief: "quiet the glass", avoid decorative gradients). */
-		background-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-5) * 100%),
-			transparent
-		);
-	}
-
-	:global(.sorter-button.glass-button:hover) {
-		background-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-10) * 100%),
-			transparent
-		);
-	}
-
-	/* Dark mode — same single-tone wash, slightly stronger for legibility */
-	:global(html.dark .sorter-button.glass-button) {
-		background-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-10) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark .sorter-button.glass-button:hover) {
-		background-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-15) * 100%),
-			transparent
-		);
+		animation: none;
 	}
 
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
 		:global(.sorter-button) {
 			transition: none;
-		}
-
-		:global(.sorter-button:hover) {
-			transform: none;
-		}
-
-		:global(.sorter-button:active) {
-			transform: none;
-		}
-
-		:global(.sorter-button--pulse) {
-			animation: none;
 		}
 	}
 </style>

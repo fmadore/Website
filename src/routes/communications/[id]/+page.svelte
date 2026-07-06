@@ -236,7 +236,7 @@
 				<!-- Map Location -->
 				{#if communication.coordinates}
 					<section class="map-section scroll-reveal" bind:this={mapSectionEl}>
-						<h2 class="map-section-title">Location</h2>
+						<h2 class="map-section-title editorial-section-title">Location</h2>
 						<div class="map-container-wrapper">
 							{#if MapVisualization}
 								<MapVisualization markersData={singleMarkerData} />
@@ -310,17 +310,15 @@
 		gap: var(--space-md);
 	}
 
-	/* Panel Paper Cards — paper tiles sitting directly on the page ground.
-	 * Same treatment as the publication-detail review/citation tiles
-	 * (.glass-sub-card): elevated surface, hairline border, faint shadow,
-	 * no hover lift (these are entries, not affordances). */
+	/* Panel Paper Cards — flat paper tiles on the page ground: elevated
+	 * surface, hairline border, square corners, no shadow (these are entries,
+	 * not affordances). */
 	.panel-paper-card {
 		padding: var(--space-md);
-		border-radius: var(--border-radius-lg);
+		border-radius: 0;
 		position: relative;
 		background: var(--color-surface-elevated);
 		border: var(--border-width-thin) solid var(--color-border);
-		box-shadow: var(--shadow-xs);
 	}
 
 	.panel-paper-title {
@@ -359,14 +357,13 @@
 		}
 	}
 
-	/* Participant Cards — same paper-tile treatment as panel-paper cards. */
+	/* Participant Cards — same flat paper-tile treatment as panel-paper cards. */
 	.participant-card {
 		padding: var(--space-md);
-		border-radius: var(--border-radius-lg);
+		border-radius: 0;
 		position: relative;
 		background: var(--color-surface-elevated);
 		border: var(--border-width-thin) solid var(--color-border);
-		box-shadow: var(--shadow-xs);
 	}
 
 	.participant-name {
@@ -376,10 +373,14 @@
 		margin-bottom: var(--space-2xs);
 	}
 
+	/* Role — a short record marker in the data voice (mono caps). */
 	.participant-role {
-		font-size: var(--font-size-sm);
-		color: var(--color-text-light);
-		font-weight: var(--font-weight-medium);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--color-accent);
+		font-weight: var(--font-weight-semibold);
 		margin-bottom: var(--space-2xs);
 	}
 
@@ -394,21 +395,19 @@
 		display: block; /* Ensure block-level for spacing to work */
 	}
 
+	/* Heading comes from the shared .editorial-section-title utility; keep the
+	 * spacing to the map plate below. */
 	.map-section-title {
-		font-family: var(--font-family-serif);
-		font-size: var(--font-size-lg);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-emphasis);
-		margin: 0 0 var(--space-sm) 0;
+		margin-bottom: var(--space-sm);
 	}
 
+	/* Map plate — square, hairline border, no shadow. */
 	.map-container-wrapper {
 		height: 400px;
-		border-radius: var(--border-radius-lg);
+		border-radius: 0;
 		overflow: hidden;
 		background: var(--color-surface-alt);
 		border: var(--border-width-thin) solid var(--color-border);
-		box-shadow: var(--shadow-sm);
 	}
 
 	/* Dark mode — warm dusk surfaces resolve automatically via the

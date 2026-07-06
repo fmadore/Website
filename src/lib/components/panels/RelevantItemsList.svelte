@@ -74,25 +74,14 @@
 		</ul>
 
 		<div class="view-all-container">
-			<Button
-				href={viewAllUrl}
-				variant="outline-primary"
-				size="base"
-				additionalClasses="glass-button"
-			>
+			<Button href={viewAllUrl} variant="outline-secondary" size="base">
 				View all {itemTypePlural} →
 			</Button>
 		</div>
 	{/if}
 {/snippet}
 
-<PanelBase
-	{title}
-	variant="items"
-	glassEffect="glass-panel"
-	header={headerContent}
-	content={panelContent}
-/>
+<PanelBase {title} variant="items" header={headerContent} content={panelContent} />
 
 <style>
 	/* Item-specific styles that aren't covered by PanelBase */

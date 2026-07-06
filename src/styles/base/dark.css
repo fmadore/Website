@@ -1,149 +1,91 @@
-/* ===== DARK THEME =====
- * Study desk after midnight: cool slate surfaces, warm cream text, primary
- * brightened to ink-400 (chroma reduced at high lightness per OKLCH
- * principle). Both themes are first-class — this is its own pass, not
- * inverted light. */
+/* ===== MIDNIGHT THEME — THE MICROFILM NEGATIVE =====
+ * Not a slate "dark mode" and not an inversion filter: the same printed page
+ * photographed as a negative. Grounds swap to warm near-black, type to cream,
+ * the pine accent brightens. Warmth lives in the type, not the surface.
+ * Every value is drawn from the film-* / cream-* / pine-bright anchors
+ * defined in variables.css. Shadows and glass are gone globally, so this file
+ * only remaps colour tokens. */
 html.dark {
-	/* Primary — Deep ink-blue, brightened for dark surfaces */
-	--color-primary: #7a89b3; /* ink-400 */
-	--color-primary-dark: #4f618d; /* ink-500 */
-	--color-primary-light: #b0bbd5; /* ink-300 */
-	--color-primary-lighter: #d6dded; /* ink-200 */
+	/* Primary — INK becomes CREAM. Rules, solid fills, selected chips,
+	 * emphasis, the nameplate. */
+	--color-primary: var(--sys-color-cream);
+	--color-primary-dark: var(--sys-color-paper-raised);
+	--color-primary-light: var(--sys-color-cream-soft);
+	--color-primary-lighter: var(--sys-color-cream-muted);
 
-	/* Secondary — warm neutrals */
-	--color-secondary: #a39487; /* neutral-400 (warm) */
-	--color-secondary-light: #d5cdbe; /* neutral-300 (warm) */
+	/* Secondary — muted cream */
+	--color-secondary: var(--sys-color-cream-muted);
+	--color-secondary-light: var(--sys-color-cream-soft);
 
-	/* Accent (Amber) — retained as warm gold secondary */
-	--color-accent: #fbbf24; /* amber-400 */
-	--color-accent-dark: #f59e0b; /* amber-500 */
-	--color-accent-light: #fcd34d; /* amber-300 */
+	/* Accent — pine, brightened for the negative. */
+	--color-accent: var(--sys-color-pine-bright);
+	--color-accent-dark: var(--sys-color-pine);
+	--color-accent-light: #74cdb0;
 
-	/* Highlight */
-	--color-highlight: #fcd34d; /* amber-300 */
-	--color-highlight-dark: #fbbf24; /* amber-400 */
-	--color-highlight-light: #fde68a; /* amber-200 */
+	/* Highlight — accent */
+	--color-highlight: var(--sys-color-pine-bright);
+	--color-highlight-dark: var(--sys-color-pine);
+	--color-highlight-light: #74cdb0;
 
-	/* Success */
-	--color-success: #34d399; /* emerald-400 */
-	--color-success-dark: #10b981; /* emerald-500 */
+	/* Functional states */
+	--color-success: var(--sys-color-success-bright);
+	--color-success-dark: var(--sys-color-success);
+	--color-danger: var(--sys-color-danger-bright);
+	--color-danger-dark: var(--sys-color-danger);
+	--color-danger-light: #e07458;
 
-	/* Danger */
-	--color-danger: #f87171; /* red-400 */
-	--color-danger-dark: #ef4444; /* red-500 */
-	--color-danger-light: #fca5a5; /* red-300 */
+	/* Backgrounds — the warm near-black film ground. */
+	--color-background: var(--sys-color-film-ground);
+	--color-background-subtle: var(--sys-color-film-100);
+	--color-background-muted: var(--sys-color-film-200);
 
-	/* Backgrounds — slate dusk.
-	 * Cool-slate surfaces with a slight warm undertone, designed to harmonise
-	 * with the ink-blue primary. Reads like a study desk at night with a
-	 * single lamp, not "warm leather chair" (which clashed with cool ink). */
-	--color-background: #14161e; /* deep slate-charcoal */
-	--color-background-subtle: #1c1f2a; /* slate */
-	--color-background-muted: #292d3c; /* slate, lighter */
+	/* Text — cream on film. Emphasis is the brightest cream; long prose sits
+	 * a touch dimmer (handled in .prose) but the reading default is cream. */
+	--color-text: var(--sys-color-cream);
+	--color-text-light: var(--sys-color-cream-muted);
+	--color-text-muted: var(--sys-color-cream-faint);
+	--color-text-emphasis: var(--sys-color-cream);
+	--color-text-soft: var(--sys-color-cream-soft);
+	--color-text-inverted: var(--sys-color-film-ground);
 
-	/* Text — warm cream paper, preserved on cool surfaces.
-	 * Keeping text warm against the cool surface IS the editorial register:
-	 * cream paper struck by ink-blue, viewed under warm lamplight. */
-	--color-text: #f4efe7; /* neutral-100 (warm) */
-	--color-text-light: #d5cdbe; /* neutral-300 (warm) */
-	--color-text-muted: #a39487; /* neutral-400 (warm) */
-	--color-text-emphasis: #faf7f2; /* neutral-50 (warm) */
-	--color-text-soft: #a39487;
-	--color-text-inverted: #14161e;
-
-	/* Surfaces */
-	--color-surface: #1c1f2a; /* slate */
-	--color-surface-alt: #292d3c; /* slate, lighter */
-	--color-surface-elevated: #363a4d; /* slate, elevated */
-	--color-surface-sunken: #14161e; /* deep slate */
-	--color-surface-border: #292d3c;
+	/* Surfaces — kept close in value; separation comes from rules. */
+	--color-surface: var(--sys-color-film-100);
+	--color-surface-alt: var(--sys-color-film-200);
+	--color-surface-elevated: var(--sys-color-film-200);
+	--color-surface-sunken: var(--sys-color-film-ground);
+	--color-surface-border: var(--sys-color-film-border);
 
 	/* Borders */
-	--color-border: #292d3c;
-	--color-border-light: #1c1f2a;
-	--color-border-dark: #363a4d;
-	--color-border-focus: #7a89b3;
+	--color-border: var(--sys-color-film-border);
+	--color-border-light: var(--sys-color-film-hairline);
+	--color-border-dark: var(--sys-color-film-border-strong);
+	--color-border-focus: var(--color-accent);
 
 	/* Focus ring */
-	--focus-ring: 0 0 0 3px color-mix(in srgb, #7a89b3 50%, transparent);
-	--focus-ring-color: #7a89b3;
+	--focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-accent) 50%, transparent);
+	--focus-ring-color: var(--color-accent);
 
 	/* Academic */
-	--color-citation: #fbbf24; /* amber-400 */
-	--color-quote: #e9e2d5; /* neutral-200 (warm) */
-	--color-note: #d5cdbe; /* neutral-300 (warm) */
-	--color-code-bg: #1c1f2a;
+	--color-citation: var(--color-accent);
+	--color-quote: var(--sys-color-cream-soft);
+	--color-note: var(--sys-color-cream-muted);
+	--color-code-bg: var(--sys-color-film-100);
 
 	/* Component layers */
-	--color-background-alt: #1c1f2a;
-	--color-footer-bg: #0a0c14; /* deep slate */
-	--color-footer-text: #f4efe7;
-	--color-footer-text-muted: color-mix(in srgb, #f4efe7 70%, transparent);
-	--color-sidebar-bg: #1c1f2a;
+	--color-background-alt: var(--sys-color-film-100);
+	--color-footer-bg: #0f0c08;
+	--color-footer-text: var(--sys-color-cream);
+	--color-footer-text-muted: #8a8170;
+	--color-sidebar-bg: var(--sys-color-film-100);
 
-	/* Button schemes */
-	--color-secondary-scheme: #7a89b3; /* ink-400 */
-	--color-secondary-scheme-alt: #4f618d; /* ink-500 */
-	--color-glass-scheme: #7a89b3;
-	--color-glass-scheme-alt: #b0bbd5;
+	/* Button / control schemes — cream family */
+	--color-secondary-scheme: var(--color-primary-light);
+	--color-secondary-scheme-alt: var(--color-primary);
+	--color-glass-scheme: var(--color-primary);
+	--color-glass-scheme-alt: var(--color-primary-light);
 
 	/* Dark surface tokens */
-	--color-dark-surface: #1c1f2a;
-	--color-dark-surface-alt: #14161e;
-	--color-dark-surface-deep: #0a0c14;
-
-	/* Glassmorphism (dark) */
-	--card-glass-opacity-light: 0.08;
-	--card-glass-opacity-light-hover: 0.12;
-	--card-glass-border-light: 0.08;
-	--card-glass-border-light-hover: 0.12;
-	--card-glass-inset-light: 0.1;
-	--card-glass-inset-light-hover: 0.15;
-
-	/* Header / navigation tokens (dark) */
-	--header-bg-opacity: 0.82;
-	--header-bg-opacity-scrolled: 0.94;
-	--header-overlay-opacity: 0.94;
-	--header-dropdown-opacity: 0.92;
-	--header-border-opacity: 0.18;
-	--header-border-opacity-scrolled: 0.28;
-	--header-inset-opacity: 0.12;
-
-	/* Shadows (dark) */
-	--shadow-xs: 0 1px 2px 0 color-mix(in srgb, var(--color-black) 20%, transparent);
-	--shadow-sm:
-		0 1px 3px 0 color-mix(in srgb, var(--color-black) 30%, transparent),
-		0 1px 2px -1px color-mix(in srgb, var(--color-black) 30%, transparent);
-	--shadow:
-		0 4px 6px -1px color-mix(in srgb, var(--color-black) 35%, transparent),
-		0 2px 4px -2px color-mix(in srgb, var(--color-black) 30%, transparent);
-	--shadow-md:
-		0 10px 15px -3px color-mix(in srgb, var(--color-black) 40%, transparent),
-		0 4px 6px -4px color-mix(in srgb, var(--color-black) 35%, transparent);
-	--shadow-lg:
-		0 20px 25px -5px color-mix(in srgb, var(--color-black) 45%, transparent),
-		0 8px 10px -6px color-mix(in srgb, var(--color-black) 40%, transparent);
-	--shadow-xl: 0 25px 50px -12px color-mix(in srgb, var(--color-black) 60%, transparent);
-	--shadow-2xl: 0 35px 60px -15px color-mix(in srgb, var(--color-black) 70%, transparent);
-
-	/* Colored shadows (dark) */
-	--shadow-primary: 0 4px 14px -2px color-mix(in srgb, #7a89b3 30%, transparent);
-	--shadow-primary-lg: 0 10px 25px -5px color-mix(in srgb, #7a89b3 35%, transparent);
-	--shadow-accent: 0 4px 14px -2px color-mix(in srgb, #fbbf24 30%, transparent);
-	--shadow-highlight: 0 4px 14px -2px color-mix(in srgb, #fcd34d 30%, transparent);
-	--shadow-success: 0 4px 14px -2px color-mix(in srgb, #34d399 30%, transparent);
-	--shadow-danger: 0 4px 14px -2px color-mix(in srgb, #f87171 30%, transparent);
-
-	/* Glass shadows */
-	--shadow-glass:
-		0 8px 32px 0 color-mix(in srgb, var(--color-black) 25%, transparent),
-		0 2px 8px 0 color-mix(in srgb, var(--color-black) 15%, transparent);
-	--shadow-glass-lg:
-		0 16px 48px 0 color-mix(in srgb, var(--color-black) 30%, transparent),
-		0 4px 12px 0 color-mix(in srgb, var(--color-black) 20%, transparent);
-
-	/* Card shadows */
-	--card-shadow-color: 0, 0, 0;
-	--card-shadow-opacity: 0.25;
-	--card-shadow-opacity-hover: 0.35;
+	--color-dark-surface: var(--sys-color-film-100);
+	--color-dark-surface-alt: var(--sys-color-film-ground);
+	--color-dark-surface-deep: #0f0c08;
 }

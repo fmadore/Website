@@ -44,17 +44,17 @@
 
 <style>
 	/*
-	 * Chart wrapper — same visual language as Card.svelte so viz pages feel
-	 * part of the same design system instead of their own aesthetic. Solid
-	 * --color-surface, primary-tinted hover shadow, no glass gradient.
+	 * Chart wrapper — Ink + Signal: a flat archival panel. Square corners,
+	 * no shadow, no glass; a single hairline rule sits the chart on the page
+	 * like a plate in a printed volume. The chart chrome (axes, labels) carries
+	 * the data voice; the container stays quiet.
 	 */
 	.chart-wrapper,
 	.placeholder-message {
 		position: relative;
-		border-radius: var(--border-radius-lg);
-		background: var(--color-surface);
-		border: var(--border-width-thin) solid var(--color-border);
-		box-shadow: var(--shadow-sm);
+		border-radius: 0;
+		background: var(--color-background);
+		border: var(--border-width-thin) solid var(--color-border-light);
 		transition: border-color var(--duration-fast) var(--ease-out);
 	}
 
@@ -65,7 +65,7 @@
 	}
 
 	.chart-wrapper:hover {
-		border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
+		border-color: var(--color-border);
 	}
 
 	.stacked-chart {
@@ -122,13 +122,12 @@
 
 	:global(html.dark) .chart-wrapper,
 	:global(html.dark) .placeholder-message {
-		background: var(--color-surface);
-		border-color: var(--color-border);
-		box-shadow: var(--shadow-md);
+		background: var(--color-background);
+		border-color: var(--color-border-light);
 	}
 
 	:global(html.dark) .chart-wrapper:hover {
-		border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
+		border-color: var(--color-border);
 	}
 
 	@media (--md-down) {

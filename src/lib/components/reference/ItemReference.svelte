@@ -236,7 +236,7 @@
 		display: inline;
 		cursor: pointer;
 		-webkit-tap-highlight-color: transparent; /* iOS */
-		border-radius: var(--border-radius);
+		border-radius: 0;
 		/* Explicit transition properties for better performance */
 		transition: z-index var(--duration-moderate) var(--ease-in-out);
 	}
@@ -253,84 +253,27 @@
 		display: contents;
 	}
 
+	/* Unknown-reference marker — a plain flat stamp, no glass/blur/shadow. */
 	.item-reference-error {
 		color: var(--color-danger);
-		font-style: italic;
-		font-size: var(--font-size-sm);
-		padding: var(--space-2xs) var(--space-xs);
-		border-radius: var(--border-radius);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		letter-spacing: 0.04em;
+		padding: 0 0.2em;
+		border-radius: 0;
 		cursor: not-allowed;
-
-		/* Glassmorphism for error state using global values */
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-danger) calc(var(--opacity-15) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-danger) calc(var(--opacity-10) * 100%), transparent) 100%
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-danger) calc(var(--opacity-30) * 100%), transparent);
-		box-shadow: var(--shadow-sm);
 	}
 
 	/* Focus states */
-	.item-reference:focus {
-		outline: var(--border-width-medium) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
+	.item-reference:focus-visible {
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--border-width-medium);
-	}
-
-	/* Dark mode for error state only */
-	:global(html.dark) .item-reference-error {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-danger) calc(var(--opacity-15) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-danger) calc(var(--opacity-10) * 100%), transparent) 100%
-		);
-
-		border-color: color-mix(
-			in srgb,
-			var(--color-danger) calc(var(--opacity-30) * 100%),
-			transparent
-		);
-		color: color-mix(in srgb, var(--color-danger) calc(var(--opacity-80) * 100%), transparent);
-
-		box-shadow:
-			var(--shadow-sm),
-			inset 0 var(--border-width-thin) 0 color-mix(in srgb, var(--color-white) 5%, transparent);
 	}
 
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
 		.item-reference {
 			transition: none;
-		}
-	}
-
-	/* High contrast support */
-	@media (prefers-contrast: high) {
-		.item-reference-error {
-			border-width: var(--border-width-medium);
-		}
-	}
-
-	/* Backdrop filter fallback */
-	@supports not (backdrop-filter: blur(var(--glass-blur-amount))) {
-		.item-reference-error {
-			background: color-mix(
-				in srgb,
-				var(--color-danger) calc(var(--opacity-10) * 100%),
-				transparent
-			);
-		}
-
-		:global(html.dark) .item-reference-error {
-			background: color-mix(
-				in srgb,
-				var(--color-danger) calc(var(--opacity-15) * 100%),
-				transparent
-			);
 		}
 	}
 </style>

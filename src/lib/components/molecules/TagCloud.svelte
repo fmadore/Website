@@ -107,123 +107,84 @@
 		padding-top: 0;
 	}
 
+	/* Title — the DATA voice: mono, letterspaced caps, faint ink. */
 	.tag-cloud-title {
-		font-family: var(--font-family-sans);
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-semibold);
-		line-height: var(--line-height-body);
-		color: var(--color-text-muted);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-bold);
+		line-height: var(--line-height-snug);
+		color: var(--color-text-emphasis);
 		text-transform: uppercase;
-		letter-spacing: var(--letter-spacing-wide);
+		letter-spacing: var(--tracking-eyebrow);
 		margin: 0 0 var(--space-sm) 0;
 	}
 
+	/* A frequency-scaled term cloud (real data as ornament): serif terms, no
+	 * pills, no boxes — size carries weight. Sits like a key-terms list. */
 	.tag-cloud {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--space-2);
-		align-items: center;
+		align-items: baseline;
 		justify-content: flex-start;
-		line-height: var(--line-height-relaxed);
+		column-gap: var(--space-3);
+		row-gap: var(--space-1-5);
+		line-height: 1.25;
 	}
 
 	.tag-cloud-item {
 		display: inline-flex;
-		align-items: center;
+		align-items: baseline;
 		white-space: normal;
-		padding: var(--space-1) var(--space-2);
-		color: var(--color-primary);
+		color: var(--color-text-soft);
 		text-decoration: none;
-		border-radius: var(--border-radius-full);
-		transition: all var(--duration-fast) var(--ease-in-out);
-		background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent);
-		font-weight: var(--font-weight-medium);
+		font-family: var(--font-family-serif);
+		transition: color var(--duration-fast) var(--ease-out);
 		line-height: 1.2;
 		max-width: 100%;
+		/* font-size is set inline, frequency-scaled */
 	}
 
 	.tag-name {
 		margin-right: var(--space-1);
 	}
 
+	/* Count — a small mono figure trailing the term, in the data voice. */
 	.tag-count {
-		font-size: 0.85em;
-		opacity: 0.7;
-		font-weight: var(--font-weight-normal);
+		font-family: var(--font-family-mono);
+		font-size: 0.62em;
+		color: var(--color-text-muted);
+		font-variant-numeric: tabular-nums;
 	}
 
 	.tag-cloud-item:hover {
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-10) * 100%),
-			transparent
-		);
-		color: var(--color-primary-dark);
-		transform: scale(1.05);
+		color: var(--color-accent);
 	}
 
-	/* Tactile press feedback — matches filter-chip pattern. The TagCloud is
-	 * one of the most-clicked elements; this micro-response makes it feel alive. */
-	.tag-cloud-item:active {
-		transform: scale(0.96);
-		transition-duration: var(--duration-instant);
-	}
-
+	/* Selected term — pine, the accent marking the active filter. */
 	.tag-cloud-item.active {
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-20) * 100%),
-			transparent
-		);
-		color: var(--color-primary-dark);
+		color: var(--color-accent);
 		font-weight: var(--font-weight-semibold);
-		box-shadow: 0 0 0 var(--border-width-thin) var(--color-primary);
+	}
+
+	.tag-cloud-item.active .tag-count {
+		color: color-mix(in srgb, var(--color-accent) 70%, transparent);
 	}
 
 	.tag-cloud-item:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-primary);
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--space-1);
 	}
 
 	.no-tags {
+		font-family: var(--font-family-serif);
 		font-size: var(--font-size-sm);
 		color: var(--color-text-muted);
 		font-style: italic;
 	}
 
-	/* Dark mode support */
-	:global(html.dark) .tag-cloud-item {
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-10) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark) .tag-cloud-item:hover {
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-20) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark) .tag-cloud-item.active {
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-30) * 100%),
-			transparent
-		);
-	}
-
 	@media (prefers-reduced-motion: reduce) {
 		.tag-cloud-item {
 			transition: none;
-		}
-
-		.tag-cloud-item:hover,
-		.tag-cloud-item:active {
-			transform: none;
 		}
 	}
 </style>

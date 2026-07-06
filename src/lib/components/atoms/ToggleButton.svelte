@@ -9,7 +9,8 @@
 		glass?: boolean; // Enable glassmorphism effect
 	}
 
-	let { isToggled = false, baseText = 'Toggle', onclick, glass = true }: Props = $props();
+	// Glass retired for the flat redesign; the toggle is a square mono control.
+	let { isToggled = false, baseText = 'Toggle', onclick, glass = false }: Props = $props();
 
 	function handleClick() {
 		onclick?.(); // Call the onclick callback if provided
@@ -56,119 +57,24 @@
 		display: none !important;
 	}
 
-	/* Enhanced toggle button styling that integrates with glassmorphism */
+	/* A flat square mono control. The active state is carried by the Button's
+	 * primary variant (ink fill); here we only enforce square corners, the mono
+	 * data voice, and no shadow/lift/blur. */
 	:global(.toggle-button) {
-		/* Use CSS variables for consistent spacing and typography */
+		font-family: var(--font-family-mono);
 		font-weight: var(--font-weight-medium);
-		letter-spacing: var(--letter-spacing-wide);
-		transition: all var(--duration-normal) var(--ease-out);
-
-		/* Enhanced border radius for better visual appeal */
-		border-radius: var(--border-radius-lg) !important;
-
-		/* Subtle shadow for depth */
-		box-shadow: var(--shadow-sm);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		border-radius: 0 !important;
+		box-shadow: none !important;
 	}
 
 	:global(.toggle-button:hover) {
-		/* Enhanced hover effect */
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-md);
+		transform: none !important;
+		box-shadow: none !important;
 	}
 
 	:global(.toggle-button:active) {
-		/* Subtle press effect */
-		transform: scale(var(--scale-95));
-		transition-duration: var(--duration-instant);
-	}
-
-	/* Active state styling - now works with primary variant */
-	:global(.toggle-button-active) {
-		/* Additional styling for active state if needed */
-		box-shadow:
-			var(--shadow-md),
-			0 0 0 var(--border-width-thin)
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
-	}
-
-	:global(.toggle-button-active:hover) {
-		box-shadow:
-			var(--shadow-lg),
-			0 0 0 var(--border-width-medium)
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
-	}
-
-	/* Enhanced glassmorphism integration */
-	:global(.toggle-button.glass-button) {
-		/* Additional glassmorphism enhancements for the toggle button */
-		backdrop-filter: blur(var(--glass-blur-amount)) saturate(150%);
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount)) saturate(150%);
-
-		/* Subtle gradient overlay for better visual hierarchy */
-		background-image: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
-	}
-
-	:global(.toggle-button.glass-button:hover) {
-		/* Enhanced hover state for glassmorphism */
-		background-image: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
-	}
-
-	/* Glassmorphism active state - enhanced for primary variant */
-	:global(.toggle-button-active.glass-button) {
-		background-image: linear-gradient(
-			135deg,
-			var(--color-primary) 0%,
-			color-mix(in srgb, var(--color-primary) 90%, var(--color-highlight)) 100%
-		) !important;
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-	}
-
-	:global(.toggle-button-active.glass-button:hover) {
-		background-image: linear-gradient(
-			135deg,
-			var(--color-primary-dark) 0%,
-			color-mix(in srgb, var(--color-primary-dark) 90%, var(--color-highlight)) 100%
-		) !important;
-	}
-
-	/* Dark mode enhancements */
-	:global(html.dark .toggle-button.glass-button) {
-		background-image: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
-	}
-
-	:global(html.dark .toggle-button.glass-button:hover) {
-		background-image: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-highlight) calc(var(--opacity-10) * 100%), transparent) 100%
-		);
-	}
-
-	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
-		:global(.toggle-button) {
-			transition: none;
-		}
-
-		:global(.toggle-button:hover) {
-			transform: none;
-		}
-
-		:global(.toggle-button:active) {
-			transform: none;
-		}
+		transform: none !important;
 	}
 </style>

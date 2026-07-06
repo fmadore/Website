@@ -7,7 +7,6 @@
 		title = '',
 		variant = 'default',
 		showFooter = false,
-		glassEffect = 'glass-panel',
 		header,
 		content,
 		footer
@@ -15,28 +14,21 @@
 		title?: string;
 		variant?: 'default' | 'activities' | 'items';
 		showFooter?: boolean;
-		glassEffect?:
-			| 'glass-card'
-			| 'glass-panel'
-			| 'glass-panel-light'
-			| 'glass-medium'
-			| 'glass-light';
 		header?: Snippet;
 		content?: Snippet;
 		footer?: Snippet;
 	} = $props();
 
-	// Combine classes based on variant and glass effect
-	const baseClasses = 'panel scroll-reveal';
+	// The redesign renders panels as flat ruled sections rather than glass
+	// boxes: `.panel--ruled` (styled below) supplies the 3px section rule.
+	const baseClasses = 'panel panel--ruled scroll-reveal';
 	const variantClasses = {
 		default: 'panel-default',
 		activities: 'panel-activities',
 		items: 'panel-items'
 	};
 
-	const combinedClasses = $derived(
-		`${baseClasses} ${variantClasses[variant]} ${glassEffect}`.trim()
-	);
+	const combinedClasses = $derived(`${baseClasses} ${variantClasses[variant]}`.trim());
 </script>
 
 <div class={combinedClasses}>
@@ -60,3 +52,18 @@
 		</div>
 	{/if}
 </div>
+
+<style>
+	/* A ruled section, not a glass box: transparent surface, a 3px ink rule
+	 * across the top, and the mono panel-title label hanging beneath it. The
+	 * side padding is dropped so the panel reads as content on paper; the
+	 * hairline-separated rows inside carry the structure. */
+	.panel.panel--ruled {
+		background: transparent;
+		border: none;
+		border-top: var(--rule-section) solid var(--color-primary);
+		border-radius: 0;
+		padding: var(--space-md) 0 0 0;
+		overflow: visible;
+	}
+</style>

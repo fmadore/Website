@@ -102,14 +102,15 @@
 		flex-wrap: wrap;
 		gap: var(--space-xs);
 		margin: 0 0 var(--space-sm);
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-semibold);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-bold);
 		text-transform: uppercase;
-		letter-spacing: var(--tracking-eyebrow);
+		letter-spacing: 0.16em;
 	}
 
 	.eyebrow-type {
-		color: var(--color-primary);
+		color: var(--color-accent);
 	}
 
 	.eyebrow-separator {
@@ -121,45 +122,41 @@
 	}
 
 	.back-link {
-		color: var(--color-primary);
+		color: var(--color-text-light);
 		text-decoration: none;
-		font-size: var(--font-size-sm);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
 		display: inline-flex;
 		align-items: center;
 		gap: var(--space-1);
-		padding-bottom: 2px;
-		background-image: linear-gradient(90deg, var(--color-primary), var(--color-primary));
-		background-size: 0% 1px;
-		background-position: left bottom;
-		background-repeat: no-repeat;
-		transition:
-			color var(--duration-normal) var(--ease-out),
-			background-size var(--duration-normal) var(--ease-out);
+		transition: color var(--duration-fast) var(--ease-out);
 	}
 
 	.back-link:hover {
-		background-size: 100% 1px;
+		color: var(--color-accent);
 	}
 
 	.back-link:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-primary);
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--space-2xs);
-		border-radius: var(--border-radius-sm);
+		border-radius: 0;
 	}
 
 	.page-title {
 		font-family: var(--font-family-display);
-		font-optical-sizing: auto;
-		font-variation-settings: var(--font-variation-display-md);
+		font-variation-settings: var(--font-variation-display);
 		color: var(--color-text-emphasis);
-		line-height: var(--line-height-heading);
-		font-weight: var(--font-weight-semibold);
-		letter-spacing: var(--tracking-heading);
+		line-height: 1;
+		font-weight: 820;
+		letter-spacing: -0.015em;
 		margin: 0;
 		/* Mobile-first font size */
-		font-size: var(--font-size-2xl);
-		max-width: 25ch;
+		font-size: var(--font-size-3xl);
+		max-width: 20ch;
+		text-wrap: balance;
 	}
 
 	/* Authors set in the editorial serif — a byline, not UI chrome. */
@@ -181,7 +178,6 @@
 
 	@media (prefers-reduced-motion: reduce) {
 		.back-link {
-			background-size: 100% 1px;
 			transition: none;
 		}
 	}

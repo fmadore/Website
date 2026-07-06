@@ -1,27 +1,16 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import Button from '../atoms/Button.svelte';
 
 	let {
 		tags = [],
 		baseUrl = '/search?tag=', // Default base URL, can be overridden
 		sectionTitle = 'Tags',
-		showTitle = true,
-		buttonVariant = 'outline-secondary',
-		buttonSize = 'sm'
+		showTitle = true
 	}: {
 		tags?: string[] | undefined | null;
 		baseUrl?: string;
 		sectionTitle?: string;
 		showTitle?: boolean;
-		buttonVariant?:
-			| 'primary'
-			| 'secondary'
-			| 'outline-primary'
-			| 'outline-secondary'
-			| 'ghost'
-			| 'danger';
-		buttonSize?: 'sm' | 'base' | 'lg';
 	} = $props();
 
 	let visibleTags = $derived(tags?.filter((tag) => !!tag) ?? []);
@@ -32,16 +21,10 @@
 		{#if showTitle}
 			<h2 class="tag-list-title">{sectionTitle}</h2>
 		{/if}
-		<div class="tag-list grid-stagger">
+		<div class="tag-list chip-row grid-stagger">
 			{#each visibleTags as tag (tag)}
-				<Button
-					href="{base}{baseUrl}{encodeURIComponent(tag)}"
-					variant={buttonVariant}
-					size={buttonSize}
-					glass={true}
-					additionalClasses="tag-button"
-					label={tag}
-				/>
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- tag search URL -->
+				<a class="chip" href="{base}{baseUrl}{encodeURIComponent(tag)}">{tag}</a>
 			{/each}
 		</div>
 	</section>
@@ -52,55 +35,27 @@
 		margin-bottom: var(--space-lg);
 	}
 
+	/* Section label — the data voice: mono caps over a hairline. */
 	.tag-list-title {
-		font-family: var(--font-family-serif);
-		font-size: var(--font-size-lg);
-		font-weight: var(--font-weight-semibold);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-bold);
+		text-transform: uppercase;
+		letter-spacing: var(--tracking-eyebrow);
 		color: var(--color-text-emphasis);
-		/* Reset the global h2 margin-top (var(--space-2xl)) so the tag section
-		 * doesn't push itself 48 px off the previous block. The content-wrapper
-		 * already provides the inter-section rhythm. */
 		margin: 0 0 var(--space-sm) 0;
-		line-height: var(--line-height-tight);
+		padding-bottom: var(--space-2);
+		border-bottom: var(--rule-hairline) solid var(--color-border);
+		line-height: var(--line-height-snug);
 	}
 
 	.tag-list {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--space-sm);
+		gap: var(--space-2);
 	}
 
-	/* Enhanced styling for tag buttons with glassmorphism */
-	:global(.tag-list .tag-button) {
-		font-weight: var(--font-weight-medium);
-		letter-spacing: var(--letter-spacing-wide);
-		border-radius: var(--border-radius-full);
-	}
-
-	:global(.tag-list .tag-button:hover) {
-		transform: var(--transform-lift-sm);
-		box-shadow: 0 var(--space-xs) var(--space-md) 0
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
-	}
-
-	/* Responsive adjustments */
-	@media (--sm-down) {
-		:global(.tag-button) {
-			font-size: var(--font-size-xs);
-			padding: var(--space-2xs) var(--space-xs);
-		}
-	}
-
-	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
-		:global(.tag-button),
-		:global(.tag-button:hover) {
-			transition: none;
-			transform: none;
-			animation: none;
-		}
-
-		/* Ensure content is visible when animations are disabled */
 		.tag-list-section,
 		.tag-list > :global(*) {
 			opacity: 1;

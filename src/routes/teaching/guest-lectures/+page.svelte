@@ -83,19 +83,27 @@
 	<PageHeader title="Guest Lectures" />
 
 	{#each Object.entries(guestLecturesByInstitution) as [institution, lectures] (institution)}
-		<section class="institution-section scroll-reveal">
-			<h2>{institution}</h2>
-			<ul class="lectures-list grid-stagger">
+		<section class="section institution-section scroll-reveal">
+			<div class="section-head">
+				<h2 class="section-title">{institution}</h2>
+			</div>
+
+			<!-- Lectures as a ledger: date key + level status left, serif title +
+			     course right. -->
+			<div class="ledger ledger--ruled grid-stagger" style="--ledger-key-w: 11rem">
 				{#each lectures as lecture (lecture.title + lecture.date)}
-					<li class="lecture-item glass-card">
-						<h3 class="lecture-title">{lecture.title}</h3>
-						<p class="lecture-details" data-level={lecture.level}>
-							In course: <em>{lecture.course}</em><br />
-							Date: {lecture.date}
-						</p>
-					</li>
+					<div class="ledger-row lecture-row">
+						<span class="ledger-key">
+							<span class="lecture-date">{lecture.date}</span>
+							<span class="ledger-status">{lecture.level}</span>
+						</span>
+						<span class="ledger-content">
+							<span class="ledger-title">{lecture.title}</span>
+							<span class="lecture-course">In course: <em>{lecture.course}</em></span>
+						</span>
+					</div>
 				{/each}
-			</ul>
+			</div>
 		</section>
 	{/each}
 </div>
@@ -105,136 +113,32 @@
 		margin-bottom: var(--space-2xl);
 	}
 
-	/*
-	 * Institution heading — letterpress hairline rule under solid Spectral ink.
-	 * Replaces the previous `::after` decorative gradient bar (gold→amber)
-	 * which read as templated AI-CMS aesthetic.
-	 */
-	h2 {
-		font-size: var(--font-size-2xl);
-		font-family: var(--font-family-serif);
-		font-weight: var(--font-weight-bold);
-		color: var(--color-text-emphasis);
-		margin-bottom: var(--space-lg);
-		padding-bottom: var(--space-sm);
-		border-bottom: var(--border-width-thin) solid var(--color-border-light);
-	}
-
-	.lectures-list {
-		list-style: none;
-		padding-left: 0;
-		display: grid;
-		gap: var(--space-md);
-	}
-
-	/*
-	 * Lecture entry — editorial list item. Previously carried a primary left-
-	 * stripe (AI-UI tell); now uses a hairline bottom rule to separate
-	 * entries, with hover handled via title color + subtle lift.
-	 */
-	.lecture-item {
-		padding: var(--space-md) 0 var(--space-lg);
-		border-bottom: var(--border-width-thin) solid var(--color-border);
-		margin-bottom: 0;
-		transition:
-			transform var(--duration-moderate) var(--ease-out),
-			border-color var(--duration-moderate) var(--ease-out);
-		position: relative;
-	}
-
-	.lecture-item:last-child {
-		border-bottom: none;
-	}
-
-	.lecture-item:hover {
-		border-color: var(--color-border-dark);
-
-		/* Subtle lift effect */
-		transform: var(--transform-lift-sm);
-	}
-
-	.lecture-title {
-		font-size: var(--font-size-lg);
-		font-family: var(--font-family-serif);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-emphasis);
-		margin-top: 0;
-		margin-bottom: var(--space-md);
-		line-height: var(--line-height-tight);
-	}
-
-	.lecture-details {
-		font-size: var(--font-size-base);
+	/* Date key rides the mono data voice above the level status. */
+	.lecture-date {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-sm);
 		color: var(--color-text-light);
+		letter-spacing: 0.02em;
+	}
+
+	/* Course line — serif prose, title of the host course set in italic. */
+	.lecture-course {
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-base);
+		color: var(--color-text-soft);
 		line-height: var(--line-height-relaxed);
-		margin: 0;
 	}
 
-	.lecture-details em {
+	.lecture-course em {
 		font-style: italic;
-		color: var(--color-primary);
-		font-weight: var(--font-weight-medium);
+		color: var(--color-text-emphasis);
 	}
 
-	/*
-	 * Level badge — `attr(data-level)` reads the level (e.g. "Undergraduate")
-	 * and renders it as a quiet warm-gold pill. Solid 10% amber tint, solid
-	 * accent text — no gradient (gradient on a 10-character pill was three
-	 * design moves where one would do).
-	 */
-	.lecture-details::after {
-		content: attr(data-level);
-		display: inline-block;
-		background: color-mix(in srgb, var(--color-accent) 10%, transparent);
-		color: var(--color-accent);
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-semibold);
-		text-transform: uppercase;
-		letter-spacing: var(--letter-spacing-wide);
-		padding: var(--space-2xs) var(--space-xs);
-		border-radius: var(--border-radius-full);
-		margin-left: var(--space-xs);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-30) * 100%), transparent);
-	}
-
-	/* Dark mode adaptations */
-	/* Handled by glass-card utility */
-
-	/* Responsive design */
-	@media (--md) {
-		.lectures-list {
-			gap: var(--space-lg);
-		}
-
-		.lecture-item {
-			/* Maintain balanced padding on larger screens */
-			padding: var(--space-lg) var(--space-xl) var(--space-xl) var(--space-xl);
-		}
-
-		.lecture-title {
-			font-size: var(--font-size-xl);
-		}
-	}
-
-	/* Accessibility improvements */
-	@media (prefers-reduced-motion: reduce) {
-		.lecture-item {
-			transition: none;
-		}
-
-		.lecture-item:hover {
-			transform: none;
-		}
-	}
-
-	@media (prefers-contrast: high) {
-		.lecture-item {
-			border-width: var(--border-width-medium);
-		}
-
-		h2 {
-			border-bottom-width: var(--border-width-medium);
+	/* On narrow screens collapse the two-column ledger to a stacked row. */
+	@media (--md-down) {
+		.lecture-row {
+			grid-template-columns: 1fr;
+			gap: var(--space-sm);
 		}
 	}
 </style>

@@ -23,18 +23,19 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		data = [] as DataItem[],
 		nameAccessor,
 		valueAccessor,
-		/* Editorial categorical set + softened repeats for long tag lists. */
+		/* Ink + Signal categorical set. Bare var(--sys-viz-*) tokens only —
+		 * resolveColors() resolves each to a concrete colour before it becomes
+		 * an SVG fill (a color-mix() string with a nested var() would not
+		 * resolve in an SVG presentation attribute). D3's ordinal scale cycles
+		 * the seven hues for longer tag lists. */
 		colors = [
-			'var(--color-primary)',
-			'var(--sys-color-amber-500)',
-			'var(--sys-color-teal-600)',
-			'var(--sys-color-mauve-500)',
-			'var(--sys-color-sage-500)',
-			'var(--sys-color-slate-blue-500)',
-			'color-mix(in srgb, var(--color-primary) 75%, transparent)',
-			'color-mix(in srgb, var(--sys-color-amber-500) 75%, transparent)',
-			'color-mix(in srgb, var(--sys-color-teal-600) 70%, transparent)',
-			'color-mix(in srgb, var(--sys-color-mauve-500) 70%, transparent)'
+			'var(--sys-viz-1)',
+			'var(--sys-viz-2)',
+			'var(--sys-viz-3)',
+			'var(--sys-viz-4)',
+			'var(--sys-viz-5)',
+			'var(--sys-viz-6)',
+			'var(--sys-viz-7)'
 		],
 		minBubbleSize = 22,
 		maxBubbleSize = 75
@@ -246,18 +247,20 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			.append('circle')
 			.attr('r', (d) => d.radius)
 			.attr('fill', (d) => colorScale(d.name))
-			.attr('stroke', `color-mix(in srgb, var(--color-surface) 35%, transparent)`)
-			.attr('stroke-width', 1.25)
-			.style('opacity', 0.9)
-			.style('filter', 'drop-shadow(0 4px 6px color-mix(in srgb, black 10%, transparent))')
+			// Hairline paper-coloured rule between adjacent bubbles; no shadow —
+			// flat ink shapes on paper (Ink + Signal). Resolved concrete colours
+			// (not var()) so they apply as SVG paint attributes.
+			.attr('stroke', resolvedColors.surface)
+			.attr('stroke-width', 1)
+			.style('opacity', 0.92)
 			.on('mouseenter', function (event, d) {
 				d3!
 					.select(this)
 					.transition()
 					.duration(hoverTransitionMs)
 					.style('opacity', 1)
-					.attr('stroke-width', 2)
-					.style('filter', 'drop-shadow(0 8px 12px color-mix(in srgb, black 15%, transparent))');
+					.attr('stroke', resolvedColors.accent)
+					.attr('stroke-width', 2);
 
 				showTooltip(d);
 				positionTooltip(event.clientX, event.clientY);
@@ -270,9 +273,9 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 					.select(this)
 					.transition()
 					.duration(hoverTransitionMs)
-					.style('opacity', 0.9)
-					.attr('stroke-width', 1.25)
-					.style('filter', 'drop-shadow(0 4px 6px color-mix(in srgb, black 10%, transparent))');
+					.style('opacity', 0.92)
+					.attr('stroke', resolvedColors.surface)
+					.attr('stroke-width', 1);
 
 				hideTooltip();
 			});
@@ -282,10 +285,10 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			.attr('text-anchor', 'middle')
 			.attr('dominant-baseline', 'middle')
 			.style('fill', 'white')
-			.style('text-shadow', '0 1px 3px color-mix(in srgb, black 50%, transparent)')
+			.style('text-shadow', '0 1px 2px color-mix(in srgb, black 45%, transparent)')
 			.style('font-size', (d) => `${Math.max(10, Math.min(20, d.radius / 2.2))}px`)
 			.style('font-weight', '600')
-			.style('font-family', 'var(--font-family-sans)')
+			.style('font-family', 'var(--font-family-mono)')
 			.style('pointer-events', 'none')
 			.style('user-select', 'none')
 			.each(function (d) {
@@ -423,16 +426,13 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 	.bubble-chart-container :global(.bubble-tooltip) {
 		position: absolute;
 		visibility: hidden;
-		background-color: color-mix(in srgb, var(--color-surface) 90%, transparent);
+		background-color: var(--color-surface-elevated);
 		color: var(--color-text);
 		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: var(--border-radius-md);
+		border-radius: 0;
 		padding: var(--space-2) var(--space-3);
 		font-size: var(--font-size-xs);
-		font-family: var(--font-family-sans);
-		backdrop-filter: blur(var(--glass-blur-sm));
-		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
-		box-shadow: var(--shadow-lg);
+		font-family: var(--font-family-mono);
 		pointer-events: none;
 		z-index: var(--z-dropdown);
 		white-space: nowrap;
@@ -488,39 +488,27 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
-		backdrop-filter: blur(var(--glass-blur-sm));
-		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
+		background-color: var(--color-surface-elevated);
 		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: var(--border-radius-md);
-		color: var(--color-text);
+		border-radius: 0;
+		color: var(--color-text-light);
 		cursor: pointer;
 		transition:
 			background-color var(--duration-fast) var(--ease-out),
 			color var(--duration-fast) var(--ease-out),
-			border-color var(--duration-fast) var(--ease-out),
-			transform var(--duration-fast) var(--ease-out),
-			box-shadow var(--duration-fast) var(--ease-out);
-		box-shadow: var(--shadow-sm);
+			border-color var(--duration-fast) var(--ease-out);
 		padding: 0;
 	}
 
 	.zoom-btn:hover {
-		background-color: var(--color-primary);
+		background-color: var(--color-accent);
 		color: var(--color-text-inverted);
-		border-color: var(--color-primary);
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-md);
+		border-color: var(--color-accent);
 	}
 
 	.zoom-btn:focus-visible {
-		outline: none;
-		box-shadow: var(--shadow-sm), var(--focus-ring);
-	}
-
-	.zoom-btn:active {
-		transform: var(--btn-active-transform);
-		box-shadow: var(--shadow-sm);
+		outline: 2px solid var(--color-accent);
+		outline-offset: 2px;
 	}
 
 	/* Accessibility - reduced motion support */

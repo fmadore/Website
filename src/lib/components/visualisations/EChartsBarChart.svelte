@@ -9,9 +9,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		getEChartsTooltipStyle,
 		getEChartsAxisLineStyle,
 		getEChartsSplitLineStyle,
-		getBarGradient,
-		getAnimationConfig,
-		colorWithOpacity
+		getAnimationConfig
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
@@ -25,7 +23,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		yAccessor,
 		xAxisLabel = '',
 		yAxisLabel = '',
-		barColor = 'var(--color-primary)'
+		barColor = 'var(--color-accent)'
 	}: {
 		data?: DataItem[];
 		xAccessor: (d: DataItem) => string | number;
@@ -118,15 +116,14 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 				type: 'bar',
 				data: chartData.map((d) => d.value),
 				itemStyle: {
-					color: getBarGradient(resolvedColors.barColor),
-					borderRadius: [4, 4, 0, 0]
+					// Flat solid fill — Ink + Signal permits no gradients; a faded
+					// bar base read as "broken". The bar is one honest ink/pine block.
+					color: resolvedColors.barColor,
+					borderRadius: 0
 				},
 				emphasis: {
 					itemStyle: {
-						color: resolvedColors.barColor,
-						shadowColor: colorWithOpacity(resolvedColors.primary, 0.4),
-						shadowBlur: 12,
-						shadowOffsetY: 4
+						color: resolvedColors.barColor
 					}
 				},
 				...getAnimationConfig(1000, 'elasticOut')

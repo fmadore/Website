@@ -3,74 +3,129 @@
 	import type { Activity } from '$lib/types';
 	import { base, resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
-	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import SEO from '$lib/SEO.svelte';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
-	import TagCloud from '$lib/components/molecules/TagCloud.svelte';
-	// Page-specific CSS relocated from the global app.css (this page renders both
-	// the activities list and the filter chips).
+	import Pagination from '$lib/components/molecules/Pagination.svelte';
+	// Page-specific CSS relocated from the global app.css (this page renders the
+	// activities log, the browse-by-year meter, and the tag facet).
 	import '$styles/components/activity-list.css';
-	import '$styles/components/filters.css';
-	import Button from '$lib/components/atoms/Button.svelte';
-	import TweenedCount from '$lib/components/atoms/TweenedCount.svelte';
-	import Icon from '@iconify/svelte';
-	import { flip } from 'svelte/animate';
-	import { fade } from 'svelte/transition';
-	import { cubicOut } from 'svelte/easing';
-	import { motionDuration } from '$lib/utils/motion';
 
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('Activities', '/activities');
 
-	// Get activities reactively
+	const PER_PAGE = 8;
+	const PRIMARY_TAGS = 8;
+
+	// All activities, newest first (the store pre-sorts by date).
 	let activities = $derived(getActivities());
 
-	// Get selected tag from URL using $derived
+	// The active tag filter rides in the URL (?tag=…) so any filtered view is
+	// bookmarkable/shareable. Only read searchParams in the browser.
 	let selectedTag = $derived(browser ? page.url.searchParams.get('tag') : null);
 
-	// Filter activities by selected tag using $derived
-	let activityList = $derived(
+	// The filtered record set (tag filter applied case-insensitively).
+	let filtered = $derived(
 		selectedTag
 			? activities.filter((activity: Activity) =>
-					activity.tags?.some((tag) => tag.toLowerCase() === selectedTag.toLowerCase())
+					activity.tags?.some((tag) => tag.toLowerCase() === selectedTag!.toLowerCase())
 				)
 			: activities
 	);
 
-	// Years array - derived from filtered activities and sorted in descending order
-	let years = $derived(
-		[...new Set(activityList.map((activity: Activity) => activity.year))].sort(
-			(a: number, b: number) => b - a
-		)
+	// --- Hero apparatus: total count + year span across ALL activities. ---
+	const totalCount = $derived(activities.length);
+	const allYears = $derived(
+		[...new Set(activities.map((a: Activity) => a.year))].sort((a, b) => a - b)
 	);
+	const minYear = $derived(allYears[0]);
+	const maxYear = $derived(allYears[allYears.length - 1]);
 
-	// Get activities count by year for display - pure function approach
-	function getCountByYear(year: number): number {
-		return activityList.filter((activity: Activity) => activity.year === year).length;
+	// --- Browse-by-year meter (aside): counts over the FILTERED set so the
+	// sidebar reflects the current view; newest year carries the lone accent. ---
+	const yearsDesc = $derived(
+		[...new Set(filtered.map((a: Activity) => a.year))].sort((a, b) => b - a)
+	);
+	function countForYear(year: number): number {
+		return filtered.filter((a: Activity) => a.year === year).length;
 	}
+	const maxYearCount = $derived(Math.max(1, ...yearsDesc.map((y) => countForYear(y))));
+	const newestYear = $derived(yearsDesc[0]);
 
-	// Compute tag frequencies from activities for the tag cloud
-	let tagFrequencies = $derived.by(() => {
-		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+	// --- Tag facet (aside): frequency across the filtered set, most used first. ---
+	const tagCounts = $derived.by(() => {
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- build-time tally
 		const freq = new Map<string, number>();
-		activityList.forEach((activity: Activity) => {
-			if (activity.tags) {
-				activity.tags.forEach((tag: string) => {
-					freq.set(tag, (freq.get(tag) || 0) + 1);
-				});
+		for (const a of filtered) {
+			for (const tag of a.tags ?? []) freq.set(tag, (freq.get(tag) ?? 0) + 1);
+		}
+		return Array.from(freq.entries()).sort((a, b) =>
+			b[1] === a[1] ? a[0].localeCompare(b[0]) : b[1] - a[1]
+		);
+	});
+	let showAllTags = $state(false);
+	const visibleTags = $derived(showAllTags ? tagCounts : tagCounts.slice(0, PRIMARY_TAGS));
+	const overflowTagCount = $derived(Math.max(0, tagCounts.length - PRIMARY_TAGS));
+
+	// --- Pagination over the flat filtered list; reset to page 1 on filter change. ---
+	let currentPage = $state(1);
+	$effect(() => {
+		void selectedTag;
+		currentPage = 1;
+	});
+	const pageStart = $derived((currentPage - 1) * PER_PAGE);
+	const paged = $derived(filtered.slice(pageStart, pageStart + PER_PAGE));
+
+	// Group the current page's entries by year, newest year first, preserving the
+	// store's within-year date order. Each group also reports its total count in
+	// the full filtered set (not just this page) as the year header tally.
+	const pageGroups = $derived.by(() => {
+		const order: number[] = [];
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- local grouping, not reactive state
+		const byYear = new Map<number, Activity[]>();
+		for (const a of paged) {
+			if (!byYear.has(a.year)) {
+				byYear.set(a.year, []);
+				order.push(a.year);
 			}
-		});
-		return Array.from(freq.entries()).sort((a, b) => b[1] - a[1]) as [string, number][];
+			byYear.get(a.year)!.push(a);
+		}
+		return order.map((year) => ({
+			year,
+			items: byYear.get(year)!,
+			total: countForYear(year)
+		}));
 	});
 
-	// Function to clear tag filter
-	function clearTagFilter() {
-		goto(resolve('/activities'));
+	// URL helpers — base-prefixed query strings so filtered views are shareable.
+	function tagHref(tag: string): string {
+		return `${base}/activities?tag=${encodeURIComponent(tag)}`;
 	}
+
+	// The "Updated" date in the aside footer — newest dated entry, mono form.
+	const MONTHS = [
+		'JAN',
+		'FEB',
+		'MAR',
+		'APR',
+		'MAY',
+		'JUN',
+		'JUL',
+		'AUG',
+		'SEP',
+		'OCT',
+		'NOV',
+		'DEC'
+	];
+	const updatedLabel = $derived.by(() => {
+		const iso = activities.find((a: Activity) =>
+			/^\d{4}-\d{2}-\d{2}$/.test(a.dateISO ?? '')
+		)?.dateISO;
+		if (!iso) return '';
+		const [y, m, d] = iso.split('-');
+		return `${parseInt(d, 10)} ${MONTHS[parseInt(m, 10) - 1]} ${y}`;
+	});
 </script>
 
 <SEO
@@ -83,322 +138,139 @@
 />
 
 <div class="container py-8 page-enter">
-	<div class="max-w-6xl mx-auto">
-		<PageHeader title="Activities" />
-		<PageIntro>
-			This section provides an overview of various professional activities, including workshops,
-			talks, and other engagements. You can browse by year using the sidebar.
-		</PageIntro>
+	<div class="max-w-6xl mx-auto activities-page">
+		<!-- HERO — mono log eyebrow, Archivo masthead, serif standfirst, year strip. -->
+		<header class="activities-hero scroll-reveal">
+			<p class="eyebrow activities-hero-eyebrow">
+				Log · {totalCount} entries · {minYear} — {maxYear}
+			</p>
+			<h1 class="activities-hero-title">Activities</h1>
+			<p class="standfirst activities-hero-standfirst">
+				A running record of talks, workshops, conferences, grants and publications — the working log
+				of a research practice, most recent first.
+			</p>
+		</header>
 
-		<div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-			<div class="lg:col-span-1">
-				<aside class="year-sidebar scroll-reveal">
-					<div class="filter-section">
-						<h2 class="filter-section-title">Browse by Year</h2>
-
-						<ul class="year-list">
-							{#each years as year (year)}
-								<li class="year-list-item">
-									<a href={resolve(`/activities/year/${year}`)} class="year-link">
-										<span class="year-label">{year}</span>
-										<span class="year-count">
-											{getCountByYear(year)}
-										</span>
-									</a>
-								</li>
-							{/each}
-						</ul>
-					</div>
-
-					<!-- Tag Cloud Component - show tags from filtered activities -->
-					<TagCloud
-						tags={tagFrequencies}
-						maxTags={25}
-						itemLabel="activity"
-						itemLabelPlural="activities"
-						getTagHref={(tag) => `${resolve('/activities')}?tag=${encodeURIComponent(tag)}`}
-					/>
-
-					<!-- RSS Subscribe Button -->
-					<div class="rss-section">
-						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- static asset -->
-						<a href="{base}/rss.xml" class="rss-subscribe-link glass-button">
-							<Icon icon="mdi:rss" width="18" height="18" aria-hidden="true" />
-							<span>RSS Feed</span>
-						</a>
-					</div>
-				</aside>
-			</div>
-
-			<div class="lg:col-span-3">
-				<div class="activity-list-container">
-					<div class="activities-header">
-						<h2 class="activities-title">
-							{#if selectedTag}
-								Activities tagged with "{selectedTag}"
-							{:else}
-								All Activities
-							{/if}
-						</h2>
-						{#if selectedTag}
-							<Button variant="primary" size="sm" onclick={clearTagFilter} label="Clear filter" />
-						{/if}
-					</div>
-
-					<p class="activities-count">
-						Showing <TweenedCount value={activityList.length} />
-						{activityList.length === 1 ? 'activity' : 'activities'}
+		<!-- Two columns opened by a 3px rule: the log, then the browse aside. -->
+		<div class="activities-layout">
+			<!-- MAIN — a press-column log grouped by year, hairline-separated rows. -->
+			<main class="activities-log" id="activities-log">
+				{#if selectedTag}
+					<p class="filter-note">
+						<span class="filter-note-label">Filtered by tag</span>
+						<span class="filter-note-value">{selectedTag}</span>
+						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed -->
+						<a href="{base}/activities" class="filter-note-clear">Clear ✕</a>
 					</p>
+				{/if}
 
-					{#if activityList.length > 0}
-						<div class="space-y-8 grid-stagger">
-							{#each activityList as activity (activity.id)}
-								<div
-									class="activity-row"
-									animate:flip={{ duration: motionDuration(350), easing: cubicOut }}
-									in:fade={{ duration: motionDuration(220), easing: cubicOut }}
-									out:fade={{ duration: motionDuration(160), easing: cubicOut }}
-								>
+				{#if filtered.length === 0}
+					<p class="log-empty">
+						No activities found{selectedTag ? ` with the tag “${selectedTag}”` : ''}.
+					</p>
+				{:else}
+					{#each pageGroups as group (group.year)}
+						<section class="year-group" aria-label="Activities from {group.year}">
+							<div class="year-group-head">
+								<span class="year-group-year">{group.year}</span>
+								<span class="year-group-count">
+									{group.total}
+									{group.total === 1 ? 'entry' : 'entries'}
+								</span>
+							</div>
+							<div class="year-group-entries grid-stagger">
+								{#each group.items as activity (activity.id)}
 									<ActivityItem {activity} />
-								</div>
+								{/each}
+							</div>
+						</section>
+					{/each}
+
+					<Pagination
+						page={currentPage}
+						perPage={PER_PAGE}
+						total={filtered.length}
+						onchange={(p) => (currentPage = p)}
+						label="entries"
+						scrollTargetId="activities-log"
+					/>
+				{/if}
+			</main>
+
+			<!-- ASIDE — browse-by-year meter, tag facet, RSS/updated footer. -->
+			<aside class="activities-aside scroll-reveal">
+				<section class="aside-block">
+					<h2 class="aside-title">Browse by year</h2>
+					<ul class="year-meter">
+						{#each yearsDesc as year (year)}
+							{@const count = countForYear(year)}
+							<li>
+								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
+								<a class="year-meter-row" href={resolve(`/activities/year/${year}`)}>
+									<span class="year-meter-key" class:year-meter-key--current={year === newestYear}>
+										{year}
+									</span>
+									<span
+										class="hbar"
+										class:hbar--current={year === newestYear}
+										style="--pct: {(count / maxYearCount) * 100}%"
+										aria-hidden="true"
+									></span>
+									<span class="year-meter-count">{count}</span>
+								</a>
+							</li>
+						{/each}
+					</ul>
+				</section>
+
+				{#if tagCounts.length > 0}
+					<section class="aside-block">
+						<h2 class="aside-title">Explore by tag</h2>
+						<div class="chip-row aside-tags">
+							<!-- eslint-disable svelte/no-navigation-without-resolve -- base-prefixed query strings -->
+							<a
+								class="chip"
+								class:chip--selected={!selectedTag}
+								href="{base}/activities"
+								aria-current={!selectedTag ? 'true' : undefined}
+							>
+								All <span class="chip-count">{tagCounts.length}</span>
+							</a>
+							{#each visibleTags as [tag, count] (tag)}
+								<a
+									class="chip"
+									class:chip--selected={selectedTag?.toLowerCase() === tag.toLowerCase()}
+									href={tagHref(tag)}
+									aria-current={selectedTag?.toLowerCase() === tag.toLowerCase()
+										? 'true'
+										: undefined}
+								>
+									{tag} <span class="chip-count">{count}</span>
+								</a>
 							{/each}
-						</div>
-					{:else}
-						<div class="empty-state">
-							<p>No activities found{selectedTag ? ` with the tag "${selectedTag}"` : ''}.</p>
-							{#if selectedTag}
-								<Button
-									variant="primary"
-									size="sm"
-									onclick={clearTagFilter}
-									additionalClasses="mt-4"
-									label="View all activities"
-								/>
+							<!-- eslint-enable svelte/no-navigation-without-resolve -->
+							{#if overflowTagCount > 0}
+								<button
+									type="button"
+									class="chip-more"
+									aria-expanded={showAllTags}
+									onclick={() => (showAllTags = !showAllTags)}
+								>
+									{showAllTags ? 'Fewer tags ↑' : `All ${tagCounts.length} tags ↓`}
+								</button>
 							{/if}
 						</div>
+					</section>
+				{/if}
+
+				<section class="aside-block aside-footer">
+					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- static asset -->
+					<a href="{base}/rss.xml" class="aside-rss">RSS Feed ↗</a>
+					{#if updatedLabel}
+						<span class="aside-updated">Updated {updatedLabel}</span>
 					{/if}
-				</div>
-			</div>
+				</section>
+			</aside>
 		</div>
 	</div>
 </div>
-
-<style>
-	/* Year sidebar — warm paper tile mirroring the filter sidebar treatment.
-	 * No glass blur, no primary-tinted shadow; it's a navigation aside, not a
-	 * hero element. */
-	.year-sidebar {
-		background: var(--color-surface);
-		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: var(--border-radius-lg);
-		padding: var(--space-lg);
-		box-shadow: var(--shadow-sm);
-	}
-
-	/* Filter section styling */
-	.filter-section {
-		background: transparent;
-		border: none;
-		padding: 0;
-		margin-bottom: 0;
-	}
-
-	/* Section title styling - matching filter section titles */
-	.filter-section-title {
-		font-family: var(--font-family-sans);
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-muted);
-		text-transform: uppercase;
-		letter-spacing: var(--letter-spacing-wide);
-		margin: 0 0 var(--space-sm) 0;
-	}
-
-	/* Year list styling */
-	.year-list {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-1);
-	}
-
-	.year-list-item {
-		margin: 0;
-	}
-
-	/* Year link styling - matching filter buttons */
-	.year-link {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: var(--space-2) var(--space-3);
-		border-radius: var(--border-radius-md);
-		color: var(--color-text);
-		text-decoration: none;
-		transition: all var(--duration-fast) var(--ease-in-out);
-		background: transparent;
-		border: var(--border-width-thin) solid transparent;
-	}
-
-	.year-link:hover {
-		background: color-mix(in srgb, var(--color-primary) 8%, transparent);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-20) * 100%),
-			transparent
-		);
-		color: var(--color-primary);
-	}
-
-	.year-link:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-primary);
-		outline-offset: var(--space-1);
-	}
-
-	.year-label {
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-medium);
-	}
-
-	/* Year count badge */
-	.year-count {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		min-width: var(--space-6);
-		height: var(--space-6);
-		padding: 0 var(--space-2);
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-muted);
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-10) * 100%),
-			transparent
-		);
-		border-radius: var(--border-radius-full);
-		transition: all var(--duration-fast) var(--ease-in-out);
-	}
-
-	.year-link:hover .year-count {
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-20) * 100%),
-			transparent
-		);
-		color: var(--color-primary);
-	}
-
-	/* Activity list container */
-	.activity-list-container {
-		background: transparent;
-		padding: 0;
-	}
-
-	/* Activities header - flex container for title and button */
-	.activities-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		gap: var(--space-4);
-		margin-bottom: var(--space-4);
-		flex-wrap: wrap;
-	}
-
-	/* Activities title — letterpress hairline rule, solid Spectral ink. */
-	.activities-title {
-		font-size: var(--font-size-xl);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-emphasis);
-		margin: 0;
-		padding-bottom: var(--space-3);
-		border-bottom: var(--border-width-thin) solid var(--color-border);
-		flex: 1 1 auto;
-	}
-
-	/* Activities count */
-	.activities-count {
-		font-size: var(--font-size-sm);
-		color: var(--color-text-light);
-		margin-bottom: var(--space-6);
-	}
-
-	/* Empty state */
-	.empty-state {
-		text-align: center;
-		padding: var(--space-12) var(--space-4);
-		color: var(--color-text-muted);
-	}
-
-	.empty-state p {
-		font-size: var(--font-size-lg);
-		margin-bottom: var(--space-4);
-	}
-
-	/* Dark mode — warm dusk surfaces resolve via the --color-surface and
-	 * --color-border tokens; only year-link hover needs a stronger tint to
-	 * read against the darker surface. */
-	:global(html.dark) .year-link:hover {
-		background: color-mix(in srgb, var(--color-primary) 12%, transparent);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-30) * 100%),
-			transparent
-		);
-	}
-
-	/* RSS Section in sidebar */
-	.rss-section {
-		margin-top: var(--space-4);
-		padding-top: var(--space-4);
-		border-top: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-border) 30%, transparent);
-	}
-
-	/* RSS subscribe button — primary-tinted paper chip, single accent colour.
-	 * No dual-colour gradient, no inverse RGB dance in dark mode. */
-	.rss-subscribe-link {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: var(--space-2);
-		width: 100%;
-		padding: var(--space-3) var(--space-4);
-		background: color-mix(in srgb, var(--color-primary) 8%, transparent);
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 25%, transparent);
-		border-radius: var(--border-radius);
-		color: var(--color-primary);
-		font-weight: var(--font-weight-medium);
-		font-size: var(--font-size-sm);
-		text-decoration: none;
-		transition:
-			background-color var(--duration-fast) var(--ease-out),
-			border-color var(--duration-fast) var(--ease-out);
-	}
-
-	.rss-subscribe-link:hover {
-		background: color-mix(in srgb, var(--color-primary) 14%, transparent);
-		border-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
-	}
-
-	.rss-subscribe-link:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-primary);
-		outline-offset: var(--space-0-5);
-	}
-
-	/* Responsive adjustments */
-	@media (--md) {
-		.year-sidebar {
-			position: sticky;
-			top: var(--space-4);
-		}
-	}
-
-	@media (--sm-down) {
-		.year-sidebar {
-			margin-bottom: var(--space-6);
-		}
-	}
-</style>

@@ -20,25 +20,25 @@
 
 .entity-card {
 	padding: var(--space-md);
-	border-radius: var(--border-radius-lg);
+	border-radius: 0;
 	position: relative;
 	background: var(--color-surface);
 	border: var(--border-width-thin) solid var(--color-border);
-	box-shadow: var(--shadow-sm);
+	box-shadow: none;
 	transition: border-color var(--duration-fast) var(--ease-out);
 }
 
 .entity-card:hover {
-	border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
+	border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
 }
 
 /*
- * When an entity-card contains a .link-animated title, show the underline
- * on card hover too — the whole card becomes the affordance.
+ * Hovering anywhere on the row/card warms the title to the pine accent —
+ * the whole card is the affordance.
  */
 .entity-card:hover .link-animated,
 .entity-card:hover .entity-title-link {
-	background-size: 100% 1px;
+	color: var(--color-accent);
 }
 
 .entity-grid {
@@ -70,31 +70,26 @@
 
 .entity-image-container a {
 	display: block;
-	border-radius: var(--border-radius);
+	border-radius: 0;
 	overflow: hidden;
-	transition: transform var(--duration-moderate) var(--ease-out);
-}
-
-.entity-image-container a:hover {
-	transform: var(--transform-lift-sm);
 }
 
 .entity-image-container a:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-primary);
+	outline: var(--border-width-medium) solid var(--color-accent);
 	outline-offset: var(--space-1);
-	box-shadow: 0 0 0 var(--space-1)
-		color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
 }
 
+/* Covers are plates: square, hairline border, no shadow. */
 .entity-cover-image {
 	display: block;
 	width: 100%;
 	max-width: var(--space-48);
 	height: auto;
 	object-fit: contain;
-	border-radius: var(--border-radius);
-	box-shadow: var(--shadow-md);
-	transition: box-shadow var(--duration-moderate) var(--ease-out);
+	border-radius: 0;
+	border: var(--border-width-thin) solid var(--color-border);
+	box-shadow: none;
+	transition: border-color var(--duration-fast) var(--ease-out);
 }
 
 /* Override inline width/height attributes to prevent distortion */
@@ -104,7 +99,7 @@ img.entity-cover-image[width][height] {
 }
 
 .entity-image-container a:hover .entity-cover-image {
-	box-shadow: var(--shadow-lg);
+	border-color: var(--color-border-dark);
 }
 
 .entity-content {
@@ -118,17 +113,20 @@ img.entity-cover-image[width][height] {
 	align-items: center;
 	gap: var(--space-xs);
 	margin-bottom: var(--space-2xs);
+	font-family: var(--font-family-mono);
+	text-transform: uppercase;
+	letter-spacing: var(--tracking-caps);
 }
 
 .entity-type {
-	color: var(--color-primary);
-	font-size: var(--font-size-sm);
-	font-weight: var(--font-weight-medium);
+	color: var(--color-text-light);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-semibold);
 }
 
 .entity-language {
 	color: var(--color-text-muted);
-	font-size: var(--font-size-sm);
+	font-size: var(--font-size-2xs);
 }
 
 .entity-title {
@@ -146,7 +144,7 @@ img.entity-cover-image[width][height] {
 }
 
 .entity-title-link:hover {
-	color: var(--color-primary);
+	color: var(--color-accent);
 }
 
 .entity-details {
@@ -233,11 +231,11 @@ img.entity-cover-image[width][height] {
 html.dark .entity-card {
 	background: var(--color-surface);
 	border-color: var(--color-border);
-	box-shadow: var(--shadow-md);
+	box-shadow: none;
 }
 
 html.dark .entity-card:hover {
-	border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
+	border-color: color-mix(in srgb, var(--color-accent) 50%, var(--color-border));
 }
 
 /* ============================================================================

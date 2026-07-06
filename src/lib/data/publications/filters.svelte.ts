@@ -86,6 +86,35 @@ const typeLabels: Record<string, string> = {
 	'special-issue': 'Special issue'
 };
 
+// --- Facet ordering by frequency ---
+// Tags and authors surface most-used first so the truncated sidebar facet lists
+// show the meaningful ones; ties fall back to alphabetical.
+function publicationAuthorNames(pub: Pub): string[] {
+	const isExcludedType = pub.type === 'chapter' || pub.type === 'encyclopedia';
+	const names = new SvelteSet<string>();
+	pub.authors?.forEach((a) => names.add(a));
+	if (!isExcludedType) extractEditors(pub).forEach((e) => names.add(e));
+	if (pub.prefacedBy) names.add(pub.prefacedBy);
+	extractTocAuthors(pub).forEach((a) => names.add(a));
+	return Array.from(names);
+}
+
+function countOccurrences(lists: string[][]): Map<string, number> {
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity -- build-time tally, never reactive
+	const freq = new Map<string, number>();
+	for (const list of lists) {
+		for (const value of list) freq.set(value, (freq.get(value) ?? 0) + 1);
+	}
+	return freq;
+}
+
+function byFrequencyThenAlpha(values: string[], freq: Map<string, number>): string[] {
+	return [...values].sort((a, b) => (freq.get(b) ?? 0) - (freq.get(a) ?? 0) || a.localeCompare(b));
+}
+
+const tagFrequency = countOccurrences(allPublications.map((pub) => pub.tags ?? []));
+const authorFrequency = countOccurrences(allPublications.map(publicationAuthorNames));
+
 // --- Filter System ---
 
 const system = createFilterSystem({
@@ -163,9 +192,9 @@ const system = createFilterSystem({
 		years: Object.keys(publicationsByYear)
 			.map(Number)
 			.sort((a, b) => b - a),
-		tags: allTags,
+		tags: byFrequencyThenAlpha(allTags, tagFrequency),
 		languages: uniqueLanguages,
-		authors: allAuthors,
+		authors: byFrequencyThenAlpha(allAuthors, authorFrequency),
 		countries: allCountries,
 		projects: allProjects
 	}

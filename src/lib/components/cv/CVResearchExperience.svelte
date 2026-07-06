@@ -47,21 +47,22 @@
 	<!-- Fieldwork Subsection -->
 	<h4>Fieldwork</h4>
 	{#if displayFieldworks.length > 0}
-		<div class="space-y-3">
+		<div class="space-y-3 ledger">
 			{#each displayFieldworks as item (item.location)}
-				<div>
-					<span class="font-medium">{item.location}</span>: {item.years.join(', ')}.
+				<div class="cv-fieldwork-row">
+					<span class="cv-fieldwork-place">{item.location}</span>:
+					<span class="cv-fieldwork-years">{item.years.join(', ')}</span>.
 				</div>
 			{/each}
 		</div>
 	{:else}
-		<p class="text-light">No fieldwork listed.</p>
+		<p class="cv-empty">No fieldwork listed.</p>
 	{/if}
 
 	<!-- Research Roles Subsection -->
-	<h4 class="text-lg font-semibold mt-4 mb-2">Research Roles</h4>
+	<h4>Research Roles</h4>
 	{#if researchRolesByDate.length > 0}
-		<div class="space-y-3">
+		<div class="space-y-3 ledger">
 			{#each researchRolesByDate as role (role.id)}
 				<CVEntry year={formatCVYearRange(role.startYear, role.endYear)} yearWidth="fixed">
 					<span class="font-medium">{role.title}</span>, {role.institution}.
@@ -76,6 +77,34 @@
 			{/each}
 		</div>
 	{:else}
-		<p class="text-light">No research roles listed.</p>
+		<p class="cv-empty">No research roles listed.</p>
 	{/if}
 </section>
+
+<style>
+	/* Fieldwork ledger row — serif place, mono years, hairline between rows. */
+	.cv-fieldwork-row {
+		padding: var(--space-2-5) 0;
+		border-top: var(--rule-hairline) solid var(--color-border-light);
+		font-family: var(--font-family-serif);
+		color: var(--color-text-soft);
+		line-height: var(--line-height-relaxed);
+	}
+
+	.cv-fieldwork-row:last-child {
+		border-bottom: var(--rule-hairline) solid var(--color-border-light);
+	}
+
+	.cv-fieldwork-place {
+		font-weight: var(--font-weight-medium);
+		color: var(--color-text-emphasis);
+	}
+
+	.cv-fieldwork-years {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-sm);
+		letter-spacing: 0.02em;
+		font-variant-numeric: tabular-nums;
+		color: var(--color-text-light);
+	}
+</style>

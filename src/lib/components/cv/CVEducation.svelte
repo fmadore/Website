@@ -16,7 +16,7 @@
 
 	{#if degrees.length > 0}
 		<h4>Degrees</h4>
-		<div class="space-y-3">
+		<div class="space-y-3 ledger">
 			{#each degrees as edu (edu.id)}
 				<CVEntry year={edu.year}>
 					{edu.degree}.
@@ -31,8 +31,8 @@
 	{/if}
 
 	{#if trainings.length > 0}
-		<h4 class="text-lg font-semibold mt-4 mb-2">Digital Humanities Trainings</h4>
-		<div class="space-y-3">
+		<h4>Digital Humanities Trainings</h4>
+		<div class="space-y-3 ledger">
 			{#each trainings as edu (edu.id)}
 				<CVEntry year={edu.year}>
 					"{edu.degree}".
@@ -43,8 +43,8 @@
 	{/if}
 
 	{#if certificates.length > 0}
-		<h4 class="text-lg font-semibold mt-4 mb-2">Certificates</h4>
-		<div class="space-y-3">
+		<h4>Certificates</h4>
+		<div class="space-y-3 ledger">
 			{#each certificates as edu (edu.id)}
 				<CVEntry year={edu.year}>
 					{edu.degree}.
@@ -55,8 +55,8 @@
 	{/if}
 
 	{#if otherEducation.length > 0}
-		<h4 class="text-lg font-semibold mt-4 mb-2">Other Education</h4>
-		<div class="space-y-3">
+		<h4>Other Education</h4>
+		<div class="space-y-3 ledger">
 			{#each otherEducation as edu (edu.id)}
 				<CVEntry year={edu.year}>
 					{edu.degree}.
@@ -69,6 +69,6 @@
 	{/if}
 
 	{#if educationByDate.length === 0}
-		<p class="text-light">No educational qualifications listed.</p>
+		<p class="cv-empty">No educational qualifications listed.</p>
 	{/if}
 </section>

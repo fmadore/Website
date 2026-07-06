@@ -36,6 +36,27 @@ const allProjects = Array.from(
 	new Set(allCommunications.filter((comm) => comm.project).map((comm) => comm.project as string))
 ).sort();
 
+// --- Facet ordering by frequency ---
+// Tags and co-authors surface most-used first so the truncated sidebar facet
+// lists show the meaningful ones; ties fall back to alphabetical.
+function countOccurrences(lists: string[][]): Map<string, number> {
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity -- build-time tally, never reactive
+	const freq = new Map<string, number>();
+	for (const list of lists) {
+		for (const value of list) freq.set(value, (freq.get(value) ?? 0) + 1);
+	}
+	return freq;
+}
+
+function byFrequencyThenAlpha(values: string[], freq: Map<string, number>): string[] {
+	return [...values].sort((a, b) => (freq.get(b) ?? 0) - (freq.get(a) ?? 0) || a.localeCompare(b));
+}
+
+const tagFrequency = countOccurrences(allCommunications.map((comm) => comm.tags ?? []));
+const coAuthorFrequency = countOccurrences(
+	allCommunications.map((comm) => (comm.authors ?? []).filter((a) => a !== 'Frédérick Madore'))
+);
+
 // --- Filter System ---
 
 const system = createFilterSystem({
@@ -103,9 +124,9 @@ const system = createFilterSystem({
 		years: Object.keys(communicationsByYear || {})
 			.map(Number)
 			.sort((a, b) => b - a),
-		tags: allTags || [],
+		tags: byFrequencyThenAlpha(allTags || [], tagFrequency),
 		languages: allLanguages,
-		authors: allCoAuthors,
+		authors: byFrequencyThenAlpha(allCoAuthors, coAuthorFrequency),
 		countries: allCountries,
 		projects: allProjects
 	}
@@ -134,6 +155,7 @@ export const setAuthors = system.setters.authors;
 export const setCountries = system.setters.countries;
 export const setProjects = system.setters.projects;
 
+export const typeCounts = system.counts.types;
 export const tagCounts = system.counts.tags;
 export const countryCounts = system.counts.countries;
 export const projectCounts = system.counts.projects;

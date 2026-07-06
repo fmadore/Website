@@ -40,10 +40,9 @@
 
 <style>
 	/*
-	 * Dropdown popover — warm paper surface with a single chrome blur.
-	 * Previously layered white-based glass with inset highlight + inset
-	 * lowlight; replaced with a single warm-tinted surface and one shadow.
-	 * Opens over body content, so blur is legitimate chrome.
+	 * Dropdown popover — a flat warm-paper sheet (Ink + Signal): solid surface,
+	 * 1px border, square corners, no blur and no shadow. Opens over body content;
+	 * separation comes from the border and ground contrast, not chrome.
 	 */
 	.dropdown-menu {
 		position: absolute;
@@ -53,17 +52,11 @@
 		min-width: min(90vw, var(--content-width-xs));
 		width: max-content;
 		max-width: min(100vw, var(--content-width-sm));
-		background: color-mix(
-			in srgb,
-			var(--color-surface-elevated) calc(var(--header-dropdown-opacity) * 100%),
-			transparent
-		);
-		backdrop-filter: blur(var(--header-blur, var(--header-blur-fallback))) saturate(180%);
-		-webkit-backdrop-filter: blur(var(--header-blur, var(--header-blur-fallback))) saturate(180%);
-		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: var(--border-radius-lg);
-		box-shadow: var(--shadow-lg);
-		padding: var(--space-3);
+		background: var(--color-surface-elevated);
+		border: var(--border-width-thin) solid var(--color-border-dark);
+		border-radius: 0;
+		box-shadow: none;
+		padding: var(--space-2);
 		opacity: 0;
 		visibility: hidden;
 		transform: translateY(calc(-1 * var(--transform-distance-sm)));
@@ -102,51 +95,48 @@
 	 */
 	:global(.dropdown-item) {
 		display: block;
-		padding: var(--space-3) var(--space-4);
+		padding: var(--space-2-5) var(--space-3);
 		color: var(--color-text);
 		text-decoration: none;
+		/* Document voice — the submenu lists destinations (section heads), so
+		   Archivo reads as an editorial index rather than a terminal-style column
+		   of monospace titles. The top-level nav keeps the mono data voice. */
+		font-family: var(--font-family-display);
+		font-variation-settings: normal;
 		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-medium);
-		border-radius: var(--border-radius-md);
+		font-weight: var(--font-weight-semibold);
+		letter-spacing: 0;
+		border-radius: 0;
 		transition:
 			background-color var(--duration-fast) var(--ease-out),
 			color var(--duration-fast) var(--ease-out),
-			transform var(--duration-normal) var(--ease-out);
-		margin-bottom: var(--space-2);
+			transform var(--duration-fast) var(--ease-out);
 		position: relative;
 		will-change: transform, background-color;
 	}
 
 	:global(.dropdown-item:hover),
 	:global(.dropdown-item:focus) {
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-10) * 100%),
-			transparent
-		);
-		color: var(--color-primary);
+		background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+		color: var(--color-accent);
 		transform: translateX(var(--space-2));
 	}
 
 	:global(.dropdown-item:focus-visible) {
-		outline: var(--border-width-medium) solid var(--color-primary);
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--space-0-5);
-		border-radius: var(--border-radius-md);
+		border-radius: 0;
 	}
 
 	:global(.dropdown-item:last-child) {
 		margin-bottom: 0;
 	}
 
-	/* Dark mode — warm dusk surface matching the header. */
+	/* Dark mode — flat film surface matching the masthead. */
 	:global(html.dark) .dropdown-menu {
-		background: color-mix(
-			in srgb,
-			var(--color-surface-alt) calc(var(--header-dropdown-opacity) * 100%),
-			transparent
-		);
+		background: var(--color-surface-alt);
 		border: var(--border-width-thin) solid var(--color-border-dark);
-		box-shadow: var(--shadow-lg);
+		box-shadow: none;
 	}
 
 	/* Touch device optimizations */

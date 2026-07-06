@@ -52,61 +52,60 @@
 </div>
 
 <style>
+	/* Meta line — the DATA voice: a mono type "kind" marker and a mono dateline,
+	 * hairline-ruled beneath, the way a finding-aid entry is headed. */
 	.relevant-item-meta {
 		display: flex;
 		flex-direction: row;
-		align-items: center;
+		align-items: baseline;
 		justify-content: space-between;
 		gap: var(--space-2);
-		margin-bottom: var(--space-3);
+		margin-bottom: var(--space-2);
+		padding-bottom: var(--space-2);
+		border-bottom: var(--rule-hairline) solid var(--color-border-light);
 	}
 
+	/* Type — a mono "kind" marker in accent, no pill, no fill. */
 	.relevant-item-type {
-		font-size: var(--font-size-xs);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		text-transform: uppercase;
 		font-weight: var(--font-weight-semibold);
-		color: var(--color-primary);
-		background-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-		padding: var(--space-1) var(--space-3);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
-		border-radius: var(--border-radius-full);
-		transition:
-			color var(--duration-fast) var(--ease-out),
-			background-color var(--duration-fast) var(--ease-out),
-			border-color var(--duration-fast) var(--ease-out);
+		letter-spacing: 0.1em;
+		color: var(--color-accent);
 	}
 
 	.relevant-item-date {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
 		color: var(--color-text-light);
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-medium);
 		min-width: 0;
 		line-height: var(--line-height-snug);
 	}
 
+	/* Title — the DOCUMENT voice: Newsreader serif. */
 	.relevant-item-title {
+		font-family: var(--font-family-serif);
 		font-size: var(--font-size-lg);
-		font-weight: var(--font-weight-semibold);
+		font-weight: var(--font-weight-medium);
 		margin: 0 0 var(--space-2) 0;
-		line-height: var(--line-height-relaxed);
+		line-height: var(--line-height-snug);
 	}
 
 	.relevant-item-title a {
-		color: var(--color-text);
+		color: var(--color-text-emphasis);
 		text-decoration: none;
-		transition: color var(--duration-normal) var(--ease-out);
+		transition: color var(--duration-fast) var(--ease-out);
 	}
 
 	.relevant-item-title a:hover {
-		color: var(--color-primary);
+		color: var(--color-accent);
 	}
 
 	.relevant-item-authors {
+		font-family: var(--font-family-serif);
 		font-size: var(--font-size-sm);
 		color: var(--color-text-light);
 		font-style: italic;
@@ -115,8 +114,9 @@
 	}
 
 	.relevant-item-abstract {
+		font-family: var(--font-family-serif);
 		font-size: var(--font-size-sm);
-		color: var(--color-text-light);
+		color: var(--color-text-soft);
 		line-height: var(--line-height-relaxed);
 		margin-bottom: var(--space-3);
 	}
@@ -125,66 +125,27 @@
 		margin-top: auto;
 	}
 
+	/* Action — a mono-caps link, the data voice, accent-coloured. */
 	.relevant-item-link {
-		color: var(--color-primary);
-		text-decoration: none;
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
 		font-weight: var(--font-weight-medium);
-		font-size: var(--font-size-sm);
-		transition: color var(--duration-normal) var(--ease-out);
+		color: var(--color-accent);
+		text-decoration: none;
+		transition: color var(--duration-fast) var(--ease-out);
 		display: inline-flex;
 		align-items: center;
 		gap: var(--space-1);
-		position: relative;
-		overflow: hidden;
-	}
-
-	.relevant-item-link::before {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 0;
-		height: var(--border-width-thin);
-		background: var(--color-primary);
-		transition: width var(--duration-normal) var(--ease-out);
 	}
 
 	.relevant-item-link:hover {
-		color: var(--color-primary);
-		text-decoration: none;
-	}
-
-	.relevant-item-link:hover::before {
-		width: 100%;
-	}
-
-	/* Dark mode overrides */
-
-	:global(html.dark) .relevant-item-type {
-		background-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-30) * 100%),
-			transparent
-		);
+		color: var(--color-accent-dark);
 	}
 
 	/* Responsive design */
 	@media (--sm-down) {
-		.relevant-item-meta {
-			flex-direction: column;
-			align-items: flex-start;
-			gap: var(--space-2);
-		}
-
-		.relevant-item-date {
-			align-self: flex-end;
-		}
-
 		.relevant-item-title {
 			font-size: var(--font-size-base);
 		}
@@ -193,11 +154,8 @@
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
 		.relevant-item-title a,
-		.relevant-item-type,
-		.relevant-item-link,
-		.relevant-item-link::before {
+		.relevant-item-link {
 			transition: none !important;
-			will-change: auto !important;
 		}
 	}
 </style>

@@ -4,10 +4,12 @@
 		primaryLabel = 'Access Item',
 		additionalUrls = [],
 		sectionClass = 'action-links',
-		primaryButtonClass = 'btn btn-primary',
-		secondaryButtonClass = 'btn btn-outline',
+		// The single primary action is the one pine fill on the screen;
+		// secondary links stay outline. Call sites may override.
+		primaryButtonClass = 'btn btn-accent',
+		secondaryButtonClass = 'btn btn-outline-secondary',
 		primaryDivClass = 'mb-2',
-		secondaryDivClass = 'flex flex-wrap gap-2'
+		secondaryDivClass = 'action-links-secondary'
 	}: {
 		primaryUrl?: string | undefined | null;
 		primaryLabel?: string;
@@ -49,9 +51,22 @@
 {/if}
 
 <style>
-	/* Action links section with scroll reveal animation support */
+	/* A row of actions in the data voice: one pine primary, the rest
+	 * outline. Secondary links wrap in a mono row with a trailing ↗. */
 	.action-links {
 		margin-bottom: var(--space-lg);
+	}
+
+	.action-links-secondary {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2);
+	}
+
+	.action-links-secondary :global(a[target='_blank'])::after {
+		content: ' ↗';
+		font-family: var(--font-family-mono);
+		font-size: 0.9em;
 	}
 
 	/* Reduced motion preference */

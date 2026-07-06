@@ -87,12 +87,7 @@
 		</ul>
 
 		<div class="view-all-container">
-			<Button
-				href={resolve('/activities')}
-				variant="outline-primary"
-				size="base"
-				additionalClasses="glass-button"
-			>
+			<Button href={resolve('/activities')} variant="outline-secondary" size="base">
 				View all activities →
 			</Button>
 		</div>
@@ -108,7 +103,7 @@
 					href={resolve(`/activities/year/${year}` as `/activities/year/${string}`)}
 					variant="outline-secondary"
 					size="sm"
-					additionalClasses="glass-button year-filter-button"
+					additionalClasses="year-filter-button"
 				>
 					{year}
 				</Button>
@@ -120,95 +115,82 @@
 <PanelBase
 	title="Latest Activities"
 	variant="activities"
-	glassEffect="glass-panel"
 	showFooter={true}
 	content={panelContent}
 	footer={panelFooter}
 />
 
 <style>
-	/* Activity-specific styles - harmonized with ProfileBanner and ContentBody */
+	/* Meta line — the DATA voice: a mono "kind" marker and a mono dateline,
+	 * hairline-ruled beneath, like a finding-aid entry header. */
 	.activity-meta {
 		display: flex;
 		flex-direction: row;
-		align-items: center;
+		align-items: baseline;
 		justify-content: space-between;
 		gap: var(--space-xs);
-		margin-bottom: var(--space-sm);
+		margin-bottom: var(--space-2);
+		padding-bottom: var(--space-2);
+		border-bottom: var(--rule-hairline) solid var(--color-border-light);
 	}
 
+	/* Type — a mono "kind" marker, no pill. Neutral by default. */
 	.activity-type {
-		font-size: var(--font-size-xs);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		text-transform: uppercase;
 		font-weight: var(--font-weight-semibold);
+		letter-spacing: 0.1em;
 		color: var(--color-text-light);
-		background-color: var(--color-surface-alt);
-		padding: var(--space-2xs) var(--space-sm);
-		border-radius: var(--border-radius-full);
 		flex-shrink: 0;
 		white-space: nowrap;
-		line-height: var(--line-height-normal);
-		border: var(--border-width-thin) solid var(--color-border);
-		transition:
-			color var(--duration-fast) var(--ease-out),
-			background-color var(--duration-fast) var(--ease-out),
-			border-color var(--duration-fast) var(--ease-out);
+		line-height: var(--line-height-snug);
 	}
 
-	/* Publications — the headline academic output — carry the lone ink-blue
-	 * accent chip. Other activity types fall back to the neutral chip above; the
-	 * former amber / amber-highlight / emerald per-type palette was retired so
+	/* Publications — the headline output — carry the lone pine accent so
 	 * the panel reads with one confident accent (.impeccable.md, principle 2). */
 	.activity-type[data-type='publication'] {
-		color: var(--color-primary);
-		background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
-		border-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
+		color: var(--color-accent);
 	}
 
 	.activity-date {
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-medium);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
 		color: var(--color-text-light);
 		text-align: right;
 		line-height: var(--line-height-snug);
 		min-width: 0;
 	}
 
+	/* Title — the DOCUMENT voice: Newsreader serif. */
 	.activity-title {
 		display: block;
+		font-family: var(--font-family-serif);
 		font-size: var(--font-size-lg);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text);
+		font-weight: var(--font-weight-medium);
+		color: var(--color-text-emphasis);
 		text-decoration: none;
 		margin-bottom: var(--space-xs);
-		transition: color var(--duration-normal) var(--ease-out);
-		line-height: var(--line-height-relaxed);
+		transition: color var(--duration-fast) var(--ease-out);
+		line-height: var(--line-height-snug);
 	}
 
 	.activity-title:hover {
-		color: var(--color-primary);
+		color: var(--color-accent);
 	}
 
 	.activity-abstract {
+		font-family: var(--font-family-serif);
 		font-size: var(--font-size-sm);
-		color: var(--color-text-light);
+		color: var(--color-text-soft);
 		margin-top: var(--space-xs);
 		line-height: var(--line-height-relaxed);
 	}
 
 	/* Responsive design */
 	@media (--sm-down) {
-		.activity-meta {
-			flex-direction: column;
-			align-items: flex-start;
-			gap: var(--space-xs);
-		}
-
-		.activity-date {
-			text-align: left;
-			align-self: flex-end;
-		}
-
 		.activity-title {
 			font-size: var(--font-size-base);
 		}
@@ -219,7 +201,6 @@
 		.activity-title,
 		.activity-type {
 			transition: none !important;
-			will-change: auto !important;
 		}
 	}
 </style>

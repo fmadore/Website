@@ -12,6 +12,7 @@
 	imageSrc="youth-women-activism.webp"
 	imageAlt="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 	projectName="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
+	funder="Social Sciences and Humanities Research Council of Canada (SSHRC)"
 >
 	<p>
 		This research project is situated in the context of the increasing visibility of Islam in the

@@ -122,8 +122,7 @@
 		height: var(--iframe-height-default); /* Using iframe-specific variable for default height */
 		margin-bottom: var(--space-8);
 		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: var(--border-radius-md);
-		box-shadow: var(--shadow-md);
+		border-radius: 0;
 		background: var(--color-surface);
 		overflow: hidden; /* Ensure contents don't overflow */
 	}
@@ -150,18 +149,6 @@
 			color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
 	}
 
-	/* Glass effect hover enhancements for interactive iframes */
-	:global(.iframe-container.glass.iframe-interactive:hover),
-	:global(.iframe-container.glass-light.iframe-interactive:hover),
-	:global(.iframe-container.glass-medium.iframe-interactive:hover),
-	:global(.iframe-container.glass-heavy.iframe-interactive:hover) {
-		transform: var(--transform-lift-md);
-		box-shadow:
-			0 12px 40px 0
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent),
-			var(--shadow-lg);
-	}
-
 	/* Dark mode glass effect adjustments */
 	:global(html.dark .iframe-container.glass),
 	:global(html.dark .iframe-container.glass-light),
@@ -182,8 +169,7 @@
 		padding-top: 56.25%; /* 16:9 Aspect Ratio */
 		margin-bottom: var(--space-8);
 		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: var(--border-radius-md);
-		box-shadow: var(--shadow-md);
+		border-radius: 0;
 		background: var(--color-surface);
 		overflow: hidden;
 	}
@@ -334,16 +320,13 @@
 		display: none !important;
 	}
 
-	/* Interactive hover effect - subtle scale on hover */
+	/* Interactive embeds warm their border on hover — no lift, no shadow. */
 	:global(.iframe-interactive) {
-		transition:
-			transform var(--duration-normal) var(--ease-out),
-			box-shadow var(--duration-normal) var(--ease-out);
+		transition: border-color var(--duration-fast) var(--ease-out);
 	}
 
 	:global(.iframe-interactive:hover) {
-		transform: var(--transform-lift-lg);
-		box-shadow: var(--shadow-lg);
+		border-color: var(--color-accent);
 	}
 
 	/* Theme variations */
@@ -365,6 +348,7 @@
 		padding-top: var(--iframe-header-height); /* Space for header */
 	}
 
+	/* Header — an ink bar with a DATA-voice mono-caps label. Square. */
 	:global(.iframe-header) {
 		position: absolute;
 		top: 0;
@@ -376,11 +360,13 @@
 		display: flex;
 		align-items: center;
 		padding: 0 var(--space-4);
-		font-weight: var(--font-weight-medium);
-		border-top-left-radius: var(--border-radius-md);
-		border-top-right-radius: var(--border-radius-md);
+		font-family: var(--font-family-mono);
+		font-weight: var(--font-weight-semibold);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		border-radius: 0;
 		border-bottom: var(--border-width-thin) solid var(--color-border);
-		font-size: var(--font-size-sm);
+		font-size: var(--font-size-2xs);
 	}
 
 	:global(.iframe-with-header iframe) {
@@ -393,13 +379,7 @@
 	:global(.iframe-with-header.glass-light .iframe-header),
 	:global(.iframe-with-header.glass-medium .iframe-header),
 	:global(.iframe-with-header.glass-heavy .iframe-header) {
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-90) * 100%),
-			transparent
-		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		backdrop-filter: blur(var(--glass-blur-amount));
+		background: var(--color-primary);
 		border-bottom: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
 	}

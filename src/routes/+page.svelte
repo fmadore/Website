@@ -45,8 +45,20 @@
 
 <div class="container max-w-7xl py-8 page-enter">
 	<ProfileBanner />
-	<div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-8">
-		<div class="md:col-span-2 scroll-reveal">
+	<div class="home-grid">
+		<figure class="home-portrait scroll-reveal">
+			<img
+				class="plate"
+				src="{base}/images/Profile-picture.webp"
+				alt="Frédérick Madore"
+				width="380"
+				height="330"
+				loading="eager"
+				decoding="async"
+				fetchpriority="high"
+			/>
+		</figure>
+		<div class="home-main scroll-reveal">
 			<ContentBody variant="default">
 				<p>
 					I am a Data Curator at the <a
@@ -186,8 +198,87 @@
 				</p>
 			</ContentBody>
 		</div>
-		<aside class="md:col-span-1 scroll-reveal">
+		<div class="home-rail scroll-reveal">
 			<LatestActivities limit={3} />
-		</aside>
+		</div>
 	</div>
 </div>
+
+<style>
+	/* Asymmetric editorial grid: prose + №-sections in the wide column, the
+	 * portrait plate and the latest-activities ledger in the rail. On mobile the
+	 * source order (portrait → prose → activities) puts the photo up top, right
+	 * above the intro; on desktop it moves into the right rail via grid placement. */
+	.home-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-xl);
+		margin-top: var(--space-2xl);
+	}
+
+	@media (--md) {
+		.home-grid {
+			grid-template-columns: minmax(0, 1fr) 22rem;
+			grid-template-rows: auto 1fr;
+			column-gap: var(--space-3xl);
+			row-gap: var(--space-xl);
+			align-items: start;
+		}
+
+		.home-main {
+			grid-column: 1;
+			grid-row: 1 / 3;
+		}
+
+		.home-portrait {
+			grid-column: 2;
+			grid-row: 1;
+		}
+
+		.home-rail {
+			grid-column: 2;
+			grid-row: 2;
+		}
+	}
+
+	/* Lead paragraph — the standfirst of the page body, one step larger. */
+	.home-main :global(.content-body > p:first-of-type),
+	.home-main :global(.prose > p:first-of-type) {
+		font-size: var(--font-size-xl);
+		line-height: var(--line-height-normal);
+		color: var(--color-text-emphasis);
+	}
+
+	/* Body copy sits one step up from the site base — the homepage intro is meant
+	 * to be read, not scanned. The lead paragraph above stays a step larger. */
+	.home-main :global(.content-body > p) {
+		font-size: var(--font-size-lg);
+		line-height: var(--line-height-relaxed);
+	}
+
+	/* Each content section opens with a 3px ink rule above the Archivo title —
+	 * hierarchy drawn in rules, so the page scans as a set of sections. */
+	.home-main :global(.content-body > h2) {
+		margin-top: var(--space-2xl);
+		padding-top: var(--space-md);
+		border-top: var(--rule-section) solid var(--color-primary);
+	}
+
+	.home-portrait {
+		margin: 0;
+	}
+
+	.home-portrait .plate {
+		width: 100%;
+		aspect-ratio: 380 / 330;
+		object-fit: cover;
+	}
+
+	/* Cap the portrait on mobile so the hero photo reads as a plate, not a
+	 * full-bleed banner, while still sitting right above the intro. */
+	@media (--sm-down) {
+		.home-portrait {
+			max-width: 22rem;
+		}
+	}
+</style>

@@ -105,7 +105,7 @@
 	pageType="ProfilePage"
 />
 
-<div id="cv-content" class="cv-container p-8 max-w-6xl mx-auto rounded-lg page-enter">
+<div id="cv-content" class="cv-container p-8 max-w-6xl mx-auto page-enter">
 	<!-- Action Buttons - positioned in top right corner of CV -->
 	<div class="cv-actions">
 		<a href={resolve('/cv/timeline')} class="btn btn-secondary" aria-label="View Career Timeline">
@@ -215,15 +215,24 @@
 <CVTableOfContents />
 
 <style>
-	/* Main CV container - solid background instead of glass */
+	/*
+	 * The CV is the purest ledger on the site: a single sheet of paper, no glass,
+	 * no shadows, square corners. Every section is a №-numbered module; every
+	 * entry is a ledger row (mono year key + serif content, hairline between).
+	 * Section numbers are drawn with a CSS counter so they stay correct as the
+	 * lazy-loaded sections stream in — and because ::before content is invisible
+	 * to textContent, the PDF generator (which reads h3.textContent) is untouched.
+	 */
 	.cv-container {
 		background: var(--color-background);
-		border: var(--border-width-thin) solid var(--color-border);
-		box-shadow: var(--shadow-lg);
-		transition: box-shadow var(--duration-normal) ease;
+		border: var(--rule-hairline) solid var(--color-border);
+		border-radius: 0;
+		box-shadow: none;
 		position: relative;
 		margin-top: var(--space-lg);
-		margin-bottom: var(--space-lg);
+		margin-bottom: var(--space-2xl);
+		/* Counter for №-numbered sections (scoped to the numbered wrappers below). */
+		counter-reset: cv-section;
 	}
 
 	/* Action buttons — document chrome, tucked to the top right of the sheet
@@ -252,70 +261,112 @@
 		scroll-margin-top: calc(var(--space-16) + var(--space-4));
 	}
 
-	/* CV sections — flat on the sheet, like a printed CV. The previous
-	 * tinted hover-reactive tile per section put cards inside the document
-	 * sheet (cards-in-cards) and made static sections react to the cursor.
-	 * The Spectral h3 with its hairline rule articulates each section;
-	 * spacing does the rest. */
+	/* Each numbered section module — a section-rule (3px ink) across the top,
+	 * generous air above, like the .section idiom used site-wide. The <section>
+	 * inside carries the rule so the header's contact <section> (which lives
+	 * outside a .cv-section-wrapper) stays un-numbered and un-ruled. */
 	:global(.cv-section-wrapper) {
-		margin-bottom: var(--space-2xl);
-	}
-
-	/* Remove bottom margin from sections inside wrappers */
-	:global(.cv-section-wrapper > section) {
 		margin-bottom: 0;
 	}
 
+	:global(.cv-section-wrapper > section) {
+		border-top: var(--rule-section) solid var(--color-primary);
+		padding-top: var(--space-sm);
+		margin-top: var(--space-2xl);
+		margin-bottom: 0;
+		counter-increment: cv-section;
+	}
+
 	/*
-	 * Section headings — letterpress hairline rule under solid Spectral ink.
-	 * Previously the h3 was tinted terracotta with an amber decorative bar
-	 * pinned via `::after`. With 14+ section headings on this page, that
-	 * over-applied the brand colour and read as a templated AI-CMS aesthetic.
-	 * Type alone (Spectral semibold, ample size step) and a single hairline
-	 * rule do the section-break work; colour stays scarce.
+	 * Section heading — DOCUMENT voice (Archivo display), preceded by a DATA-voice
+	 * "№ 0N" counter marker in accent mono. The marker is a ::before so it never
+	 * enters the accessible name or the PDF text extraction.
 	 */
 	:global(#cv-content h3) {
+		font-family: var(--font-family-display);
+		font-variation-settings: var(--font-variation-display-sm);
+		font-size: var(--font-size-2xl);
+		font-weight: 750;
+		letter-spacing: -0.01em;
+		line-height: 1.05;
 		color: var(--color-text-emphasis);
-		border-bottom: var(--border-width-thin) solid var(--color-border-light);
-		padding-bottom: var(--space-2);
-		margin-bottom: var(--space-3);
+		margin: 0 0 var(--space-md);
+		padding-bottom: 0;
+		border-bottom: none;
 	}
 
-	/* Subsection headings */
+	:global(#cv-content .cv-section-wrapper > section > h3::before) {
+		content: '№ ' counter(cv-section, decimal-leading-zero);
+		display: block;
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-bold);
+		letter-spacing: 0.14em;
+		color: var(--color-accent);
+		margin-bottom: var(--space-1-5);
+	}
+
+	/* Subsection labels (BOOKS, ARTICLES, INSTRUCTOR…) — DATA voice: small mono
+	 * uppercase, letterspaced, quiet ink, over a hairline. */
 	:global(#cv-content h4) {
-		color: var(--color-text-emphasis);
-		margin-top: var(--space-4);
-		margin-bottom: var(--space-2);
-	}
-
-	/* Entry rows sit flat on the sheet — a printed CV doesn't shift or tint
-	 * when you point at it. Links keep their underline-on-hover (below); that
-	 * is the only hover this page needs. */
-	:global(#cv-content .space-y-3 > div) {
-		padding: var(--space-2);
-		border-radius: var(--border-radius-md);
-	}
-
-	/* Year labels with accent styling */
-	:global(#cv-content .font-semibold.text-nowrap) {
-		color: var(--color-primary);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--color-text-muted);
+		margin: var(--space-lg) 0 var(--space-1);
+		padding-bottom: var(--space-1-5);
+		border-bottom: var(--rule-hairline) solid var(--color-border-light);
 	}
 
-	/* Reduce spacing between items in lists - override space-y-3 utility */
-	:global(.space-y-3 > * + *) {
-		margin-top: var(--space-2) !important;
+	/* Empty-state note. */
+	:global(#cv-content .cv-empty) {
+		font-family: var(--font-family-serif);
+		font-style: italic;
+		color: var(--color-text-light);
 	}
 
-	/* Links styling */
+	/* Ledger rows are contiguous — the hairline is drawn by each row's border-top,
+	 * so cancel the .space-y-3 inter-row margin that would otherwise gap them. */
+	:global(#cv-content .ledger.space-y-3 > * + *) {
+		margin-top: 0;
+	}
+
+	/* Non-ledger stacked content keeps a small rhythm. */
+	:global(#cv-content .space-y-3:not(.ledger) > * + *) {
+		margin-top: var(--space-2);
+	}
+
+	/* Close each ledger with a hairline under its final CVEntry row. */
+	:global(#cv-content .ledger > :last-child .cv-entry) {
+		border-bottom: var(--rule-hairline) solid var(--color-border-light);
+	}
+
+	/* Year keys inside the fixed-width bare rows (older markup path). */
+	:global(#cv-content .font-semibold.text-nowrap) {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-xs);
+		letter-spacing: 0.04em;
+		color: var(--color-text-light);
+		font-weight: var(--font-weight-medium);
+	}
+
+	/* Links — accent, underline on hover only (the single hover this page needs). */
 	:global(#cv-content a) {
-		color: var(--color-primary);
-		transition: all var(--duration-fast) ease;
+		color: var(--color-accent);
+		text-decoration: none;
+		transition: color var(--duration-fast) ease;
 	}
 
 	:global(#cv-content a:hover) {
-		color: var(--color-primary-dark);
+		color: var(--color-accent-dark);
 		text-decoration: underline;
+	}
+
+	:global(#cv-content a:focus-visible) {
+		outline: var(--border-width-medium) solid var(--color-accent);
+		outline-offset: var(--border-width-thin);
 	}
 
 	:global(#cv-content a.review-link) {
@@ -344,13 +395,14 @@
 			transform: none !important;
 		}
 
-		/* Optimize for print */
+		/* Optimize for print — flat sheet, no border, ledger rules preserved. */
 		.cv-container {
 			max-width: 100% !important;
 			padding: var(--space-10) !important;
 			margin: 0 !important;
 			box-shadow: none !important;
 			border-radius: 0 !important;
+			border: none !important;
 			background: var(--color-white) !important;
 		}
 
@@ -361,12 +413,23 @@
 		:global(.cv-section-wrapper) {
 			background: var(--color-white) !important;
 			backdrop-filter: none !important;
-			border: none !important;
 			box-shadow: none !important;
 		}
 
+		/* Keep the ledger's ink rules in print: section rule + row hairlines. */
+		:global(.cv-section-wrapper > section) {
+			border-top: var(--rule-section) solid var(--color-primary) !important;
+		}
+
+		:global(#cv-content .cv-entry) {
+			border-top: var(--rule-hairline) solid var(--color-border) !important;
+		}
+
+		:global(#cv-content h4) {
+			border-bottom: var(--rule-hairline) solid var(--color-border) !important;
+		}
+
 		/* Remove hover effects and transitions */
-		:global(#cv-content .space-y-3 > div:hover),
 		:global(.cv-section-wrapper:hover) {
 			background: var(--color-white) !important;
 			transform: none !important;
@@ -388,7 +451,7 @@
 			page-break-after: avoid;
 		}
 
-		/* Links */
+		/* Links — ink underline in print (accent reads muddy on paper). */
 		:global(#cv-content a) {
 			color: var(--color-primary) !important;
 			text-decoration: underline !important;
@@ -426,10 +489,6 @@
 			transition: none !important;
 			opacity: 1 !important;
 			transform: none !important;
-		}
-
-		:global(#cv-content .space-y-3 > div:hover) {
-			transform: none;
 		}
 	}
 </style>

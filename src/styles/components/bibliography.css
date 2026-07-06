@@ -1,0 +1,276 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+ * BIBLIOGRAPHY ROW — the finding-aid ledger entry (Ink + Signal)
+ *
+ * Shared by the /publications and /conference-activity finding-aid lists
+ * (PublicationItem + CommunicationItem, `bibliography` mode). Kept in one place
+ * so the two record lists stay in visual lock-step.
+ *
+ * Grid: [year] [cover] [body] [actions]. Every row reserves the same four
+ * tracks so titles stay aligned down the list even when an entry has no cover.
+ * The hairline between rows is drawn by the parent <ol> so year-group spacing
+ * stays under the list's control.
+ *
+ * Tunables (set on the parent or the row):
+ *   --bib-year-w      width of the hanging year column   (default 5rem)
+ *   --bib-cover-w     width of the cover-plate column    (default 80px)
+ *   --bib-plate-aspect  plate aspect ratio               (default 104/148,
+ *                       i.e. portrait book cover; set 1/1 for square logos)
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+.bib-row {
+	display: grid;
+	grid-template-columns:
+		var(--bib-year-w, 5rem)
+		var(--bib-cover-w, 80px)
+		minmax(0, 1fr)
+		auto;
+	gap: var(--space-2) var(--space-md);
+	align-items: start;
+	padding: var(--space-md) 0;
+}
+
+/* Explicit placement so the columns never collide. Every row reserves the same
+ * four tracks — year | cover | body | actions — so titles stay aligned down the
+ * list even when an entry has no cover. (A prior version placed the actions with
+ * `grid-column: -2 / -1` on a two-track grid, which silently bumped the body
+ * into the ~4rem year column and crushed every entry.) */
+.bib-year {
+	grid-column: 1;
+	grid-row: 1;
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-semibold);
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.04em;
+	color: var(--color-text-light);
+	line-height: 1.5;
+	padding-top: 0.15em;
+	white-space: nowrap;
+}
+
+/* Featured lead: heavier vertical rhythm. It pops through a larger year, title
+ * and standfirst — not a wider cover — so the column grid stays true. */
+.bib-row--featured {
+	padding: var(--space-lg) 0;
+}
+
+.bib-row--featured .bib-year {
+	font-family: var(--font-family-display);
+	font-variation-settings: var(--font-variation-display-sm);
+	font-size: var(--font-size-2xl);
+	font-weight: 750;
+	color: var(--color-text-emphasis);
+	line-height: 1;
+	padding-top: 0;
+	white-space: nowrap;
+}
+
+.bib-plate-col {
+	grid-column: 2;
+	grid-row: 1;
+	width: 100%;
+}
+
+.bib-plate-link {
+	display: block;
+}
+
+.bib-plate-link:focus-visible {
+	outline: var(--border-width-medium) solid var(--color-accent);
+	outline-offset: var(--space-1);
+}
+
+.bib-plate {
+	width: 100%;
+	height: auto;
+	aspect-ratio: var(--bib-plate-aspect, 104 / 148);
+	object-fit: cover;
+}
+
+.bib-body {
+	grid-column: 3;
+	grid-row: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+}
+
+/* Kind eyebrow — mono dateline. Gray by default; pine for the lead. */
+.bib-kind {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-1) var(--space-1-5);
+	margin: 0 0 var(--space-1);
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--color-text-light);
+}
+
+.bib-kind--current {
+	color: var(--color-accent);
+}
+
+.bib-kind-sep {
+	color: var(--color-text-muted);
+}
+
+.bib-kind-lang {
+	color: var(--color-text-muted);
+}
+
+/* Serif title — the document voice. Books/edited works go italic. */
+.bib-title {
+	font-family: var(--font-family-serif);
+	font-size: var(--font-size-lg);
+	font-weight: var(--font-weight-medium);
+	line-height: var(--line-height-snug);
+	letter-spacing: var(--letter-spacing-tight);
+	color: var(--color-text-emphasis);
+	margin: 0;
+}
+
+.bib-row--featured .bib-title {
+	font-size: var(--font-size-2xl);
+	font-weight: var(--font-weight-semibold);
+}
+
+.bib-title--italic {
+	font-style: italic;
+}
+
+.bib-title-link {
+	color: inherit;
+	text-decoration: none;
+	transition: color var(--duration-fast) var(--ease-out);
+}
+
+.bib-title-link:hover {
+	color: var(--color-accent);
+}
+
+.bib-title-link:focus-visible {
+	outline: var(--border-width-medium) solid var(--color-accent);
+	outline-offset: var(--space-0-5);
+}
+
+.bib-byline {
+	font-family: var(--font-family-serif);
+	font-size: var(--font-size-sm);
+	line-height: var(--line-height-snug);
+	color: var(--color-text-light);
+	margin: var(--space-0-5) 0 0;
+}
+
+.bib-standfirst {
+	font-family: var(--font-family-serif);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-relaxed);
+	color: var(--color-text-soft);
+	margin: var(--space-1-5) 0 0;
+	max-width: 62ch;
+}
+
+/* Right-aligned mono action column — DOI / OPEN ACCESS / CITE (publications),
+ * SLIDES / VIDEO / DETAILS (talks). Grid placement is set above; this block
+ * owns only the visual styling. */
+.bib-actions {
+	grid-column: 4;
+	grid-row: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: var(--space-1-5);
+	font-family: var(--font-family-mono);
+	text-align: right;
+}
+
+.bib-action {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--color-text-soft);
+	text-decoration: none;
+	white-space: nowrap;
+	transition: color var(--duration-fast) var(--ease-out);
+}
+
+.bib-action:hover {
+	color: var(--color-accent);
+}
+
+/* The primary action (open-access / DOI / slides) carries a hairline box to
+ * read as the lead affordance, the way the mockup frames it. */
+.bib-action--primary {
+	padding: var(--space-1) var(--space-2);
+	border: var(--border-width-thin) solid var(--color-border-dark);
+	color: var(--color-text-emphasis);
+}
+
+.bib-action--primary:hover {
+	border-color: var(--color-accent);
+	color: var(--color-accent);
+}
+
+.bib-cited {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-medium);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--color-text-light);
+	white-space: nowrap;
+}
+
+/* On narrow screens the action column drops under the content so the title gets
+ * full width; the cover shrinks and sits left, and the year stays hanging. */
+@media (--sm-down) {
+	.bib-row,
+	.bib-row--featured {
+		grid-template-columns: var(--bib-year-w, 3rem) 3.5rem minmax(0, 1fr);
+		gap: var(--space-1) var(--space-sm);
+	}
+
+	.bib-year {
+		grid-column: 1;
+		grid-row: 1;
+	}
+
+	.bib-plate-col {
+		grid-column: 2;
+		grid-row: 1 / span 2;
+	}
+
+	.bib-body {
+		grid-column: 3;
+		grid-row: 1;
+	}
+
+	.bib-actions {
+		grid-column: 3;
+		grid-row: 2;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: flex-start;
+		gap: var(--space-2) var(--space-3);
+		margin-top: var(--space-2);
+	}
+
+	.bib-row--featured .bib-year {
+		font-size: var(--font-size-lg);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.bib-title-link,
+	.bib-action {
+		transition: none;
+	}
+}

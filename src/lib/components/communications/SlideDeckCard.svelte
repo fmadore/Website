@@ -73,7 +73,8 @@
 		flex-direction: column;
 	}
 
-	/* Cover reads like a title slide: eyebrow, display-type title, venue line. */
+	/* Cover reads like a title slide: mono kicker, display-type title, serif
+	 * venue line. Flat paper plate — square, hairline border, no shadow. */
 	.deck-card-cover {
 		position: relative;
 		display: flex;
@@ -81,10 +82,9 @@
 		gap: var(--space-sm);
 		min-height: 14rem;
 		padding: var(--space-lg);
-		border-radius: var(--border-radius-lg);
+		border-radius: 0;
 		background: var(--color-surface);
 		border: var(--border-width-thin) solid var(--color-border);
-		box-shadow: var(--shadow-sm);
 		color: inherit;
 		text-decoration: none;
 		transition: border-color var(--duration-fast) var(--ease-out);
@@ -98,11 +98,11 @@
 	}
 
 	.deck-card:hover .deck-card-cover {
-		border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
+		border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
 	}
 
 	.deck-card-cover:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-primary);
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: 3px;
 	}
 
@@ -111,47 +111,48 @@
 		align-items: baseline;
 		justify-content: space-between;
 		gap: var(--space-sm);
-		font-size: var(--font-size-xs);
-		text-transform: uppercase;
-		letter-spacing: var(--tracking-eyebrow);
 	}
 
+	/* Record kind — the data voice, in the lone pine accent. */
 	.deck-card-type {
-		font-family: var(--font-family-sans);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
-		color: var(--color-primary);
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: var(--color-accent);
 	}
 
+	/* Plate number — mono, tabular, quiet ink. */
 	.deck-card-no {
 		font-family: var(--font-family-mono);
-		letter-spacing: var(--letter-spacing-wider);
-		color: color-mix(in srgb, var(--color-text-muted) 75%, transparent);
+		font-size: var(--font-size-2xs);
+		font-variant-numeric: tabular-nums;
+		letter-spacing: 0.12em;
+		color: var(--color-text-muted);
 	}
 
+	/* Title — the display voice. */
 	.deck-card-title {
 		margin: 0;
 		font-family: var(--font-family-display);
+		font-variation-settings: var(--font-variation-display-sm);
 		font-size: var(--font-size-xl);
-		font-weight: var(--font-weight-semibold);
+		font-weight: 700;
 		line-height: var(--line-height-snug);
-		letter-spacing: var(--letter-spacing-tight);
+		letter-spacing: -0.01em;
 		color: var(--color-text-emphasis);
 		/* Full title, never truncated — the cover grows to fit it. */
 	}
 
-	/* Animated underline pre-revealed on cover hover — signals the cover links. */
+	/* The title follows the cover's accent warm-up on hover. */
 	.deck-card-title-text {
-		background-image: linear-gradient(var(--color-primary), var(--color-primary));
-		background-repeat: no-repeat;
-		background-position: 0 100%;
-		background-size: 0% 1px;
-		padding-bottom: 1px;
-		transition: background-size var(--duration-moderate) var(--ease-out);
+		transition: color var(--duration-fast) var(--ease-out);
 	}
 
-	.deck-card-cover:hover .deck-card-title-text,
+	.deck-card:hover .deck-card-title-text,
 	.deck-card-cover:focus-visible .deck-card-title-text {
-		background-size: 100% 1px;
+		color: var(--color-accent);
 	}
 
 	.deck-card-venue {
@@ -168,41 +169,42 @@
 		align-items: center;
 		justify-content: space-between;
 		gap: var(--space-sm);
-		padding: var(--space-sm) var(--space-2xs) 0;
+		padding: var(--space-sm) 0 0;
 	}
 
+	/* Date — a mono dateline stamp. */
 	.deck-card-date {
 		font-family: var(--font-family-mono);
-		font-size: var(--font-size-xs);
-		letter-spacing: var(--letter-spacing-tight);
-		color: var(--color-text-muted);
+		font-size: var(--font-size-2xs);
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--color-text-light);
 	}
 
+	/* "Open deck" — the data voice: a mono accent affordance. */
 	.deck-card-launch {
 		position: relative; /* lift above the cover's stretched ::after */
 		z-index: 1;
 		display: inline-flex;
 		align-items: center;
-		gap: var(--space-2xs);
-		font-family: var(--font-family-sans);
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-medium);
-		color: var(--color-text-light);
+		gap: var(--space-1);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-semibold);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--color-accent);
 		text-decoration: none;
-		border-radius: var(--border-radius);
-		padding: var(--space-2xs) var(--space-xs);
-		transition:
-			color var(--duration-fast) var(--ease-out),
-			background-color var(--duration-fast) var(--ease-out);
+		padding: var(--space-1) 0;
+		transition: color var(--duration-fast) var(--ease-out);
 	}
 
 	.deck-card-launch:hover {
-		color: var(--color-primary);
-		background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+		color: var(--color-accent-dark);
 	}
 
 	.deck-card-launch:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-primary);
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: 2px;
 	}
 
@@ -218,12 +220,9 @@
 
 	@media (prefers-reduced-motion: reduce) {
 		.deck-card-cover,
-		.deck-card-title-text {
+		.deck-card-title-text,
+		.deck-card-launch {
 			transition: none;
-		}
-
-		.deck-card:hover .deck-card-cover {
-			transform: none;
 		}
 	}
 </style>

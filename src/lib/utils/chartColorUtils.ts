@@ -204,53 +204,52 @@ export function getAnimationConfig(
 
 /**
  * Base chart colors from the design system.
- * Fallbacks match the deep ink-blue / warm-paper palette in variables.css.
+ * Fallbacks match the Ink + Signal palette in variables.css: warm paper +
+ * ink, one pine (warm teal) accent. `accent`/`highlight` resolve to the
+ * pine so the "current / emphasised" series reads as the signal colour.
  */
 export const CHART_COLOR_FALLBACKS = {
-	primary: '#2e4271', // ink-600
-	primaryDark: '#243456', // ink-700
-	text: '#2a211a', // warm neutral-800 (ink)
-	textLight: '#7a6b5e', // warm neutral-500
-	border: '#e9e2d5', // warm neutral-200
-	surface: '#faf7f2', // warm neutral-50 (paper)
-	surfaceRgb: '250, 247, 242',
+	primary: '#191509', // ink (--color-primary) — dominant structural series colour
+	primaryDark: '#0e0b04', // ink-deep (--color-primary-dark)
+	text: '#191509', // ink (--color-text)
+	textLight: '#93896f', // faint ink (--color-text-light)
+	border: '#c9c0aa', // border (--color-border)
+	surface: '#f3eee0', // paper-100 (--color-surface)
+	surfaceRgb: '250, 247, 239', // warm paper #faf7ef (--color-surface-rgb is unset, so this fallback renders)
 	black: '#000000',
 	white: '#ffffff',
-	accent: '#f59e0b', // amber-500 (warm gold secondary)
-	highlight: '#f59e0b',
-	success: '#10b981',
-	secondary: '#7a6b5e', // warm neutral-500
-	teal: '#0d9488', // teal-600 (data-viz companion)
-	mauve: '#a67c9b', // mauve-500
-	sage: '#6b9e4f', // sage-500
-	slateBlue: '#5c8ab4', // slate-blue-500
-	fontFamily: 'system-ui, sans-serif'
+	accent: '#1e6a56', // pine — the signal accent (--color-accent)
+	highlight: '#1e6a56', // pine (--color-highlight)
+	success: '#5c6b3a', // muted olive (--color-success)
+	secondary: '#5c5442', // muted ink (--color-secondary)
+	plum: '#766090', // --sys-viz-6 (muted plum)
+	mauve: '#8d6376', // --sys-viz-5 (mauve)
+	sage: '#6e8255', // --sys-viz-3 (muted olive)
+	slateBlue: '#4e6c8b', // --sys-viz-2 (muted slate-blue)
+	fontFamily: "'Spline Sans Mono', 'SF Mono', 'Consolas', monospace"
 } as const;
 
 /**
- * Editorial categorical palette — the default series palette for every
- * chart, per the data-viz clause in `.impeccable.md`: ink family first,
- * amber and teal as companions, extended hues (mauve, sage, slate-blue)
- * only because category counts demand them. No neon, no purple/pink.
+ * Ink + Signal categorical palette — the default series palette for every
+ * chart. Derived from the OKLCH-anchored `--sys-viz-*` tokens: earthy hues
+ * harmonised with warm paper that also hold up on the dark microfilm ground.
+ * Entry 1 is the pine signal; the rest are muted slate, olive,
+ * ochre, mauve, teal and umber. Longer category lists reuse the ramp.
  *
- * Entry 1 is `--color-primary`, which resolves to ink-600 on paper and
- * brightens to ink-400 on slate — charts keep both themes first-class
- * without per-theme palettes. Pass to `resolveColors()` before handing to
- * canvas renderers.
+ * Pass to `resolveColors()` before handing to canvas renderers.
  */
 export const CHART_CATEGORICAL_COLORS: string[] = [
-	'var(--color-primary)', // ink — the brand backbone
-	'var(--sys-color-amber-500)', // gold
-	'var(--sys-color-teal-600)', // teal
-	'var(--sys-color-mauve-500)', // mauve
-	'var(--sys-color-sage-500)', // sage
-	'var(--sys-color-slate-blue-500)', // steel blue
-	'var(--sys-color-amber-700)', // bronze
-	'var(--sys-color-neutral-400)', // warm gray
-	'var(--sys-color-ink-300)', // pale ink
-	'var(--sys-color-teal-400)', // aqua
-	'var(--sys-color-amber-300)', // pale gold
-	'var(--sys-color-neutral-500)' // sepia
+	'var(--sys-viz-1)', // pine (signal)
+	'var(--sys-viz-2)', // muted slate-blue
+	'var(--sys-viz-3)', // muted olive
+	'var(--sys-viz-4)', // ochre / gold
+	'var(--sys-viz-5)', // mauve
+	'var(--sys-viz-6)', // muted plum
+	'var(--sys-viz-7)' // umber / deep clay
+	// NOTE: keep every entry a bare `var(--x)` token so resolveColor() returns a
+	// concrete colour for ECharts' canvas renderer (canvas cannot parse
+	// color-mix()). Consumers cycle this list with `index % length`, so seven
+	// distinct hues suffice; do not append color-mix() variants here.
 ];
 
 /**
@@ -263,6 +262,7 @@ export interface ResolvedChartColors {
 	textLight: string;
 	border: string;
 	surface: string;
+	surfaceElevated: string;
 	surfaceRgb: string;
 	black: string;
 	white: string;
@@ -270,7 +270,7 @@ export interface ResolvedChartColors {
 	highlight: string;
 	success: string;
 	secondary: string;
-	teal: string;
+	plum: string;
 	mauve: string;
 	sage: string;
 	slateBlue: string;
@@ -298,6 +298,10 @@ export function getResolvedChartColors(): ResolvedChartColors {
 		),
 		border: getCSSVariableValueWithFallback('--color-border', CHART_COLOR_FALLBACKS.border),
 		surface: getCSSVariableValueWithFallback('--color-surface', CHART_COLOR_FALLBACKS.surface),
+		surfaceElevated: getCSSVariableValueWithFallback(
+			'--color-surface-elevated',
+			CHART_COLOR_FALLBACKS.surface
+		),
 		surfaceRgb: getCSSVariableValueWithFallback(
 			'--color-surface-rgb',
 			CHART_COLOR_FALLBACKS.surfaceRgb
@@ -314,15 +318,16 @@ export function getResolvedChartColors(): ResolvedChartColors {
 			'--color-secondary',
 			CHART_COLOR_FALLBACKS.secondary
 		),
-		teal: getCSSVariableValueWithFallback('--sys-color-teal-600', CHART_COLOR_FALLBACKS.teal),
-		mauve: getCSSVariableValueWithFallback('--sys-color-mauve-500', CHART_COLOR_FALLBACKS.mauve),
-		sage: getCSSVariableValueWithFallback('--sys-color-sage-500', CHART_COLOR_FALLBACKS.sage),
-		slateBlue: getCSSVariableValueWithFallback(
-			'--sys-color-slate-blue-500',
-			CHART_COLOR_FALLBACKS.slateBlue
-		),
+		// Ink + Signal viz companions, read from the OKLCH-anchored --sys-viz-*
+		// tokens so charts recolour with the theme instead of the retired
+		// plum/mauve/sage/slate-blue system hues.
+		plum: getCSSVariableValueWithFallback('--sys-viz-6', CHART_COLOR_FALLBACKS.plum),
+		mauve: getCSSVariableValueWithFallback('--sys-viz-5', CHART_COLOR_FALLBACKS.mauve),
+		sage: getCSSVariableValueWithFallback('--sys-viz-3', CHART_COLOR_FALLBACKS.sage),
+		slateBlue: getCSSVariableValueWithFallback('--sys-viz-2', CHART_COLOR_FALLBACKS.slateBlue),
+		// Chart chrome speaks the data voice: Spline Sans Mono.
 		fontFamily: getCSSVariableValueWithFallback(
-			'--font-family-sans',
+			'--font-family-mono',
 			CHART_COLOR_FALLBACKS.fontFamily
 		),
 		// Include theme to make $derived reactive to theme changes
@@ -338,14 +343,15 @@ export function getResolvedChartColors(): ResolvedChartColors {
  * Returns resolved hex values (canvas-safe) for ECharts/D3 consumption.
  */
 export function getTimelinePalette(): string[] {
+	// Fallbacks mirror the --sys-viz-* anchors the timeline tokens point at.
 	return [
-		getCSSVariableValueWithFallback('--color-timeline-positions', '#2e4271'),
-		getCSSVariableValueWithFallback('--color-timeline-education', '#6b9e4f'),
-		getCSSVariableValueWithFallback('--color-timeline-grants', '#f59e0b'),
-		getCSSVariableValueWithFallback('--color-timeline-publications', '#5c8ab4'),
-		getCSSVariableValueWithFallback('--color-timeline-presentations', '#a67c9b'),
-		getCSSVariableValueWithFallback('--color-timeline-awards', '#b45309'),
-		getCSSVariableValueWithFallback('--color-timeline-fieldwork', '#14b8a6')
+		getCSSVariableValueWithFallback('--color-timeline-positions', '#1e6a56'), // viz-1 pine
+		getCSSVariableValueWithFallback('--color-timeline-education', '#6e8255'), // viz-3 olive
+		getCSSVariableValueWithFallback('--color-timeline-grants', '#b48952'), // viz-4 ochre
+		getCSSVariableValueWithFallback('--color-timeline-publications', '#4e6c8b'), // viz-2 slate-blue
+		getCSSVariableValueWithFallback('--color-timeline-presentations', '#8d6376'), // viz-5 mauve
+		getCSSVariableValueWithFallback('--color-timeline-awards', '#6e4b45'), // viz-7 umber
+		getCSSVariableValueWithFallback('--color-timeline-fieldwork', '#766090') // viz-6 plum
 	];
 }
 
@@ -357,20 +363,22 @@ export function getTimelinePalette(): string[] {
  * @returns ECharts tooltip configuration object
  */
 export function getEChartsTooltipStyle(colors: ResolvedChartColors) {
+	// Ink + Signal: flat archival tooltip. Square corners, hairline border,
+	// solid elevated paper — no glass blur, no shadow, no radius. Text speaks
+	// the data voice (Spline Sans Mono via colors.fontFamily).
 	return {
-		backgroundColor: `color-mix(in srgb, ${colors.surface} 90%, transparent)`,
+		backgroundColor: colors.surfaceElevated || colors.surface,
 		textStyle: {
 			color: colors.text,
 			fontSize: 12,
 			fontFamily: colors.fontFamily
 		},
-		borderRadius: 8,
+		borderRadius: 0,
 		borderColor: colors.border,
 		borderWidth: 1,
-		padding: [10, 14],
-		transitionDuration: 0.15,
-		extraCssText:
-			'backdrop-filter: blur(var(--glass-blur-sm)); -webkit-backdrop-filter: blur(var(--glass-blur-sm)); box-shadow: var(--shadow-lg);'
+		padding: [8, 12],
+		transitionDuration: 0.12,
+		extraCssText: 'box-shadow: none;'
 	};
 }
 

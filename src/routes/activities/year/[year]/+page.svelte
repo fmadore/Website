@@ -51,16 +51,17 @@
 			<PageHeader title={`Activities in ${year}`} additionalClasses="mb-2" />
 		</div>
 
-		<div class="year-filters flex gap-2 overflow-x-auto py-2">
+		<nav class="year-filters pager" aria-label="Browse activities by year">
 			{#each allYears as y (y)}
 				<a
 					href={resolve(`/activities/year/${y}` as `/activities/year/${string}`)}
-					class="year-tag {y === year ? 'active' : ''}"
+					class="pager-item {y === year ? 'pager-item--current' : ''}"
+					aria-current={y === year ? 'page' : undefined}
 				>
 					{y}
 				</a>
 			{/each}
-		</div>
+		</nav>
 
 		{#if filteredActivities.length > 0}
 			<div class="activity-grid grid-stagger">
@@ -77,38 +78,29 @@
 </div>
 
 <style>
-	.year-tag {
-		display: inline-block;
-		padding: var(--space-2) var(--space-4);
-		background-color: var(--color-border);
-		color: var(--color-text);
-		border-radius: var(--border-radius-full);
-		font-size: var(--font-size-base);
-		font-weight: var(--font-weight-semibold);
-		margin-right: var(--space-2);
-		margin-bottom: var(--space-2);
-		transition: all var(--duration-fast) var(--ease-in-out);
+	/* Year navigation reads as pagination — mono square items, ink-fill on the
+	 * current year (the .pager idiom). Scrolls horizontally on narrow viewports. */
+	.year-filters {
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		padding: var(--space-2) 0 var(--space-4);
+		margin-bottom: var(--space-lg);
 	}
 
-	.year-tag:hover {
-		background-color: var(--color-primary);
-		color: var(--color-text-inverted);
+	.year-filters .pager-item {
+		flex: 0 0 auto;
 	}
 
-	.year-tag.active {
-		background-color: var(--color-primary);
-		color: var(--color-text-inverted);
-	}
-
+	/* Entries in this year sit as a flush ledger column — each ActivityItem
+	 * draws its own hairline rule above, forming one continuous dated column. */
 	.activity-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(var(--content-width-xs), 1fr));
-		gap: var(--space-6);
+		display: block;
 	}
 
 	.empty-state {
-		text-align: center;
-		padding: var(--space-8);
+		padding: var(--space-8) 0;
 		color: var(--color-text-light);
+		border-top: var(--rule-hairline) solid var(--color-border);
+		font-family: var(--font-family-serif);
 	}
 </style>

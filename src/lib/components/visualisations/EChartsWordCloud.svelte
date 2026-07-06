@@ -17,14 +17,17 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 		maxFontSize = 60,
 		shape = 'circle' as 'circle' | 'cardioid' | 'diamond' | 'square' | 'triangle' | 'star',
 		rotationRange = [-45, 45] as [number, number],
+		/* Ink + Signal word cloud: archival ink for the body of terms, the
+		 * pine signal (and its bright/deep kin) for emphasis, with
+		 * a few earthy --sys-viz-* hues so a dense cloud keeps some texture. */
 		colors = [
-			'var(--color-primary)',
-			'var(--color-primary-light)',
+			'var(--sys-viz-1)',
+			'var(--color-text-emphasis)',
+			'var(--sys-viz-7)',
 			'var(--color-accent)',
-			'var(--color-accent-dark)',
-			'var(--color-highlight)',
-			'var(--color-primary-dark)',
-			'var(--color-accent-light)'
+			'var(--sys-viz-2)',
+			'var(--sys-viz-4)',
+			'var(--color-text-soft)'
 		],
 		/**
 		 * Base (desktop) height in pixels. The component scales this down
@@ -104,9 +107,12 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 			: { show: false },
 		tooltip: {
 			show: true,
-			backgroundColor: resolvedColors.surface,
+			backgroundColor: resolvedColors.surfaceElevated,
 			borderColor: resolvedColors.border,
 			borderWidth: 1,
+			borderRadius: 0,
+			padding: [8, 12],
+			extraCssText: 'box-shadow: none;',
 			textStyle: {
 				color: resolvedColors.text,
 				fontFamily: resolvedColors.fontFamily

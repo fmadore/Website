@@ -10,35 +10,31 @@
 	/* Editorial padding: tight enough to avoid cavernous empty pockets under
 	 * a short content list, generous enough to keep the title breathing. */
 	padding: var(--space-lg);
-	border-radius: var(--border-radius-lg);
-	transition:
-		transform var(--duration-moderate) var(--ease-in-out),
-		box-shadow var(--duration-moderate) var(--ease-in-out),
-		border-color var(--duration-moderate) var(--ease-in-out);
+	border-radius: 0;
+	transition: border-color var(--duration-fast) var(--ease-out);
 	position: relative;
 	overflow: hidden;
 	margin-bottom: var(--space-lg);
 }
 
-.panel:hover {
-	transform: var(--transform-lift-sm);
-}
-
 .panel-header {
-	padding: 0 0 var(--space-lg) 0;
-	border-bottom: var(--border-width-thin) solid var(--color-border-light);
+	padding: 0 0 var(--space-md) 0;
+	border-bottom: var(--rule-hairline) solid var(--color-border);
 	background: transparent;
 	position: relative;
 }
 
+/* Panel title — the DATA voice: a mono, letterspaced caps label opening a
+ * ruled sidebar section (Latest activities, The corpus in numbers). */
 .panel-title {
-	font-size: var(--font-size-2xl);
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-xs);
 	font-weight: var(--font-weight-bold);
+	text-transform: uppercase;
+	letter-spacing: var(--tracking-eyebrow);
 	margin: 0 0 var(--space-sm) 0;
 	color: var(--color-text-emphasis);
-	line-height: var(--line-height-tight);
-	letter-spacing: var(--letter-spacing-tight);
-	font-family: var(--font-family-serif);
+	line-height: var(--line-height-snug);
 }
 
 .panel-content {
@@ -135,19 +131,27 @@
 /* Additional styling for Button components in panels */
 /* .year-filter-button and .filter-button styles can be added here when needed */
 
-/* Filter button styles for type filters */
+/* Filter button styles for type filters — flat square mono chip. */
 .filter-button {
 	padding: var(--space-2xs) var(--space-sm);
-	background-color: var(--color-surface-alt);
+	background-color: transparent;
 	border: var(--border-width-thin) solid var(--color-border);
-	border-radius: var(--border-radius);
-	font-size: var(--font-size-sm);
+	border-radius: 0;
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-xs);
+	text-transform: uppercase;
+	letter-spacing: var(--tracking-caps);
+	color: var(--color-text-soft);
 	cursor: pointer;
-	transition: background-color var(--duration-fast) var(--ease-out);
+	transition:
+		background-color var(--duration-fast) var(--ease-out),
+		border-color var(--duration-fast) var(--ease-out),
+		color var(--duration-fast) var(--ease-out);
 }
 
 .filter-button:hover {
-	background-color: var(--color-surface-border);
+	border-color: var(--color-border-dark);
+	color: var(--color-text-emphasis);
 }
 
 .filter-button.active {
@@ -176,9 +180,5 @@
 @media (prefers-reduced-motion: reduce) {
 	.panel {
 		transition: none;
-	}
-
-	.panel:hover {
-		transform: none;
 	}
 }

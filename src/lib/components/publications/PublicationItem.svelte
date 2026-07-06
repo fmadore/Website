@@ -8,6 +8,9 @@
 	// Entity-card styles (relocated from the global app.css so they only load on
 	// pages that render publication/communication list items).
 	import '$styles/components/entity-cards.css';
+	// Bibliography-row idiom, shared with CommunicationItem so the /publications
+	// and /conference-activity finding-aid lists stay in visual lock-step.
+	import '$styles/components/bibliography.css';
 
 	interface Props {
 		publication: Publication;
@@ -26,9 +29,39 @@
 		 * material. A bibliography entry, not a tile.
 		 */
 		row?: boolean;
+		/**
+		 * Render as a typeset bibliography entry (Ink + Signal): a hanging
+		 * mono/Archivo year column owned by the parent, a kind eyebrow (mono),
+		 * a serif title (italic for books/edited works), an optional serif
+		 * standfirst, and a right-aligned mono action column (DOI / OPEN
+		 * ACCESS / CITE). Used by the /publications finding-aid list.
+		 */
+		bibliography?: boolean;
+		/**
+		 * In bibliography mode: the hanging year to print in the left column.
+		 * The parent passes it only for the first entry of each year (so the
+		 * ledger reads the year once, then blank rows beneath). Pass `null`
+		 * / omit to leave the column blank.
+		 */
+		yearLabel?: string | number | null;
+		/**
+		 * In bibliography mode: mark this entry as the current/featured lead —
+		 * pine kind eyebrow, larger Archivo year, and (if a cover exists)
+		 * an inline plate. Reserved for the newest/featured record.
+		 */
+		featured?: boolean;
 	}
 
-	let { publication, onfilterrequest, index, editorial = false, row = false }: Props = $props();
+	let {
+		publication,
+		onfilterrequest,
+		index,
+		editorial = false,
+		row = false,
+		bibliography = false,
+		yearLabel = null,
+		featured = false
+	}: Props = $props();
 
 	// Optimize loading for above-the-fold images (first 3 items)
 	const imageLoading = $derived((index ?? 0) < 3 ? 'eager' : 'lazy');
@@ -40,6 +73,71 @@
 	const formattedCitation = $derived(formatCitation(publication)); // Define structure for display list items
 	const publicationHref = $derived(resolve('/publications/[id]', { id: publication.id }));
 	const tagFilterBase = $derived(`${resolve('/publications')}?tag=`);
+
+	// ── Bibliography mode helpers ──────────────────────────────────────────────
+	// Books, edited volumes and special issues set their title in italic serif —
+	// the convention for a standalone published work vs. an article within one.
+	const isItalicTitle = $derived(
+		publication.type === 'book' ||
+			publication.type === 'special-issue' ||
+			publication.isEditedVolume === true ||
+			publication.isEditedWork === true
+	);
+
+	// Kind eyebrow — the mono dateline that opens a bibliography row. A short,
+	// finding-aid label per type ("MONOGRAPH · BOOK", "JOURNAL ARTICLE",
+	// "SPECIAL ISSUE · CO-EDITED"), derived from structured fields only.
+	const kindLabel = $derived.by(() => {
+		const t = publication.type;
+		switch (t) {
+			case 'book':
+				return publication.isEditedVolume ? 'Edited Volume · Book' : 'Monograph · Book';
+			case 'article':
+				return 'Journal Article';
+			case 'bulletin-article':
+				return 'Bulletin Article';
+			case 'chapter':
+				return 'Book Chapter';
+			case 'special-issue':
+				return 'Special Issue · Co-edited';
+			case 'report':
+				return 'Report';
+			case 'encyclopedia':
+				return 'Encyclopedia Entry';
+			case 'blogpost':
+				return 'Blog Post';
+			case 'phd-dissertation':
+				return 'Ph.D. Dissertation';
+			case 'masters-thesis':
+				return "Master's Thesis";
+			case 'conference-proceedings':
+				return 'Conference Proceedings';
+			default:
+				return formattedCitation.typeLabel;
+		}
+	});
+
+	// A DOI/URL means we can send the reader to the freely-accessible copy — the
+	// site only lists the author's own open work. Same rule as the detail page.
+	const isOpenAccess = $derived(Boolean(publication.doi || publication.url));
+	const openHref = $derived(
+		publication.doi ? `https://doi.org/${publication.doi}` : (publication.url ?? undefined)
+	);
+
+	// Language tag for the eyebrow — only surfaced when it isn't plain English.
+	const languageNote = $derived(
+		publication.language && publication.language !== 'English' ? publication.language : ''
+	);
+
+	// A one-line standfirst under the title: a trimmed abstract if present.
+	const bibStandfirst = $derived(
+		publication.abstract ? truncateAbstract(publication.abstract, 180) : ''
+	);
+
+	// Cover plate: shown for every bibliography entry that has one — the list is
+	// a shelf of catalogue plates, not a bare text ledger. The column is reserved
+	// on every row (blank when an entry lacks a cover) so titles stay aligned.
+	const hasCover = $derived(bibliography && Boolean(publication.image));
 	interface DisplayListItem {
 		name: string;
 		isClickable: boolean;
@@ -114,164 +212,235 @@
 	});
 </script>
 
-<article class="entity-list-item scroll-reveal-scale" class:editorial>
-	<div class="entity-card" class:entity-card--editorial={editorial} class:entity-card--row={row}>
-		<div class="entity-grid">
-			{#if publication.image}
-				<div class="entity-image-container">
-					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
-					<a href={publicationHref} data-sveltekit-preload-code="tap">
-						<img
-							src={publication.image}
-							alt={publication.title}
-							class="entity-cover-image"
-							width="200"
-							height="280"
-							loading={imageLoading}
-							decoding="async"
-						/>
-					</a>
-				</div>
+{#if bibliography}
+	<!-- ═══ BIBLIOGRAPHY ROW — the finding-aid ledger entry ═══
+		 Grid: year | cover | body | actions. The year column is filled once per
+		 year-group by the parent; the cover column is reserved on every row (a
+		 catalogue shelf) and holds a plate whenever the entry has a cover. -->
+	<article class="bib-row" class:bib-row--featured={featured}>
+		<div class="bib-year" aria-hidden={yearLabel == null ? 'true' : undefined}>
+			{#if yearLabel != null}{yearLabel}{/if}
+		</div>
+
+		<div class="bib-plate-col">
+			{#if hasCover}
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
+				<a href={publicationHref} data-sveltekit-preload-code="tap" class="bib-plate-link">
+					<img
+						class="plate bib-plate"
+						src={publication.image}
+						alt="Cover — {publication.title}"
+						width="200"
+						height="280"
+						loading={imageLoading}
+						decoding="async"
+					/>
+				</a>
+			{/if}
+		</div>
+
+		<div class="bib-body">
+			<p class="bib-kind" class:bib-kind--current={featured}>
+				<span>{kindLabel}</span>
+				{#if languageNote}
+					<span class="bib-kind-sep" aria-hidden="true">·</span>
+					<span class="bib-kind-lang">{languageNote}</span>
+				{/if}
+			</p>
+
+			<h3 class="bib-title" class:bib-title--italic={isItalicTitle}>
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
+				<a href={publicationHref} class="bib-title-link" data-sveltekit-preload-code="tap">
+					{publication.title}
+				</a>
+			</h3>
+
+			{#if displayData.authorString}
+				<p class="bib-byline">
+					{displayData.listPrefix}{displayData.authorString}
+				</p>
 			{/if}
 
-			<div class="entity-content">
-				<div class="entity-meta">
-					<!-- Use typeLabel from formattedCitation -->
-					<span class="entity-type">{formattedCitation.typeLabel}</span>
-					{#if publication.language && publication.language.includes(',')}
-						<span class="entity-language">({publication.language})</span>
-					{:else if publication.language && publication.language !== 'English'}
-						<span class="entity-language">({publication.language})</span>
-					{/if}
-					{#if citationCount > 0}
-						<span
-							class="citation-badge"
-							title="Cited by {citationCount} {citationCount === 1 ? 'work' : 'works'}"
-							aria-label="Cited by {citationCount} {citationCount === 1 ? 'work' : 'works'}"
-						>
-							Cited {citationCount}×
-						</span>
-					{/if}
-				</div>
+			{#if featured && bibStandfirst}
+				<p class="bib-standfirst">{bibStandfirst}</p>
+			{/if}
+		</div>
 
-				<h3 class="entity-title">
-					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
-					<a href={publicationHref} class="entity-title-link" data-sveltekit-preload-code="tap">
-						{publication.title}
-					</a>
-				</h3>
+		<!-- openHref is external; publicationHref is pre-resolved via resolve(). -->
+		<!-- eslint-disable svelte/no-navigation-without-resolve -->
+		<div class="bib-actions">
+			{#if isOpenAccess && openHref}
+				<a
+					href={openHref}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="bib-action bib-action--primary"
+				>
+					{publication.doi ? 'DOI ↗' : 'Open Access ↗'}
+				</a>
+			{/if}
+			<a href={publicationHref} class="bib-action" data-sveltekit-preload-code="tap">Cite</a>
+			{#if citationCount > 0}
+				<span class="bib-cited">Cited {citationCount}×</span>
+			{/if}
+		</div>
+		<!-- eslint-enable svelte/no-navigation-without-resolve -->
+	</article>
+{:else}
+	<article class="entity-list-item scroll-reveal-scale" class:editorial>
+		<div class="entity-card" class:entity-card--editorial={editorial} class:entity-card--row={row}>
+			<div class="entity-grid">
+				{#if publication.image}
+					<div class="entity-image-container">
+						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
+						<a href={publicationHref} data-sveltekit-preload-code="tap">
+							<img
+								src={publication.image}
+								alt={publication.title}
+								class="entity-cover-image"
+								width="200"
+								height="280"
+								loading={imageLoading}
+								decoding="async"
+							/>
+						</a>
+					</div>
+				{/if}
 
-				<div class="entity-details">
-					<!-- Render prefix and the constructed author string -->
-					{displayData.listPrefix}{displayData.authorString}
-					<!-- Space, then (Year). Only if year is defined -->
-					{#if formattedCitation.year}
-						({formattedCitation.year}).
-					{/if}
+				<div class="entity-content">
+					<div class="entity-meta">
+						<!-- Use typeLabel from formattedCitation -->
+						<span class="entity-type">{formattedCitation.typeLabel}</span>
+						{#if publication.language && publication.language.includes(',')}
+							<span class="entity-language">({publication.language})</span>
+						{:else if publication.language && publication.language !== 'English'}
+							<span class="entity-language">({publication.language})</span>
+						{/if}
+						{#if citationCount > 0}
+							<span
+								class="citation-badge"
+								title="Cited by {citationCount} {citationCount === 1 ? 'work' : 'works'}"
+								aria-label="Cited by {citationCount} {citationCount === 1 ? 'work' : 'works'}"
+							>
+								Cited {citationCount}×
+							</span>
+						{/if}
+					</div>
 
-					<!-- Add type-specific prefixes before detailsHtml -->
-					{#if publication.type === 'phd-dissertation' || publication.type === 'masters-thesis'}
-						<span>"{publication.title}". </span>
-						<!-- Safe: detailsHtml is generated by internal citationFormatter.ts from structured data -->
-						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-						{@html formattedCitation.detailsHtml}
-						<!-- Supervisor info remains separate -->
-						{#if publication.advisors && publication.advisors.length > 0}
-							<div class="advisor-info">
-								<span>Supervised by </span>
-								{#each publication.advisors as advisor, i (advisor)}
-									{#if advisor !== 'Frédérick Madore'}
-										<button
-											class="author-btn"
-											onclick={() => onfilterrequest?.({ type: 'author', value: advisor })}
-										>
-											{advisor}
-										</button>
-									{:else}
-										<span>{advisor}</span>
-									{/if}
-									{#if i < publication.advisors.length - 1}
-										<span> and </span>
-									{/if}
-								{/each}
+					<h3 class="entity-title">
+						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
+						<a href={publicationHref} class="entity-title-link" data-sveltekit-preload-code="tap">
+							{publication.title}
+						</a>
+					</h3>
+
+					<div class="entity-details">
+						<!-- Render prefix and the constructed author string -->
+						{displayData.listPrefix}{displayData.authorString}
+						<!-- Space, then (Year). Only if year is defined -->
+						{#if formattedCitation.year}
+							({formattedCitation.year}).
+						{/if}
+
+						<!-- Add type-specific prefixes before detailsHtml -->
+						{#if publication.type === 'phd-dissertation' || publication.type === 'masters-thesis'}
+							<span>"{publication.title}". </span>
+							<!-- Safe: detailsHtml is generated by internal citationFormatter.ts from structured data -->
+							<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+							{@html formattedCitation.detailsHtml}
+							<!-- Supervisor info remains separate -->
+							{#if publication.advisors && publication.advisors.length > 0}
+								<div class="advisor-info">
+									<span>Supervised by </span>
+									{#each publication.advisors as advisor, i (advisor)}
+										{#if advisor !== 'Frédérick Madore'}
+											<button
+												class="author-btn"
+												onclick={() => onfilterrequest?.({ type: 'author', value: advisor })}
+											>
+												{advisor}
+											</button>
+										{:else}
+											<span>{advisor}</span>
+										{/if}
+										{#if i < publication.advisors.length - 1}
+											<span> and </span>
+										{/if}
+									{/each}
+								</div>
+							{/if}
+						{:else if publication.type === 'encyclopedia'}
+							<span>"{publication.title}". </span>
+							<!-- Safe: detailsHtml is generated by internal citationFormatter.ts from structured data -->
+							<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+							{@html formattedCitation.detailsHtml}
+						{:else}
+							<!-- Safe: detailsHtml is generated by internal citationFormatter.ts from structured data -->
+							<!-- Render details generated by formatter (covers article, chapter, book, report, special-issue, blogpost, conference-proceedings) -->
+							<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+							{@html formattedCitation.detailsHtml}
+						{/if}
+						<!-- Preface information -->
+						{#if publication.prefacedBy}
+							<div class="preface-info">
+								<span>Preface by </span>
+								{#if publication.prefacedBy !== 'Frédérick Madore'}
+									<button
+										class="author-btn"
+										onclick={() =>
+											onfilterrequest?.({ type: 'author', value: publication.prefacedBy || '' })}
+									>
+										{publication.prefacedBy}
+									</button>
+								{:else}
+									<span>{publication.prefacedBy}</span>
+								{/if}
 							</div>
 						{/if}
-					{:else if publication.type === 'encyclopedia'}
-						<span>"{publication.title}". </span>
-						<!-- Safe: detailsHtml is generated by internal citationFormatter.ts from structured data -->
-						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-						{@html formattedCitation.detailsHtml}
-					{:else}
-						<!-- Safe: detailsHtml is generated by internal citationFormatter.ts from structured data -->
-						<!-- Render details generated by formatter (covers article, chapter, book, report, special-issue, blogpost, conference-proceedings) -->
-						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-						{@html formattedCitation.detailsHtml}
+					</div>
+
+					{#if publication.abstract}
+						<div class="entity-abstract">
+							{truncateAbstract(publication.abstract)}
+						</div>
 					{/if}
-					<!-- Preface information -->
-					{#if publication.prefacedBy}
-						<div class="preface-info">
-							<span>Preface by </span>
-							{#if publication.prefacedBy !== 'Frédérick Madore'}
-								<button
-									class="author-btn"
-									onclick={() =>
-										onfilterrequest?.({ type: 'author', value: publication.prefacedBy || '' })}
+
+					{#if publication.tags && publication.tags.length > 0}
+						<div class="entity-tags">
+							<TagList tags={publication.tags} baseUrl={tagFilterBase} showTitle={false} />
+						</div>
+					{/if}
+
+					{#if publication.additionalUrls && publication.additionalUrls.length > 0}
+						<div class="entity-links">
+							{#each publication.additionalUrls as url, i (url.url + i)}
+								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
+								<a
+									href={url.url}
+									target="_blank"
+									rel="external noopener noreferrer"
+									class="entity-link-btn btn btn-outline-primary btn-sm"
 								>
-									{publication.prefacedBy}
-								</button>
-							{:else}
-								<span>{publication.prefacedBy}</span>
-							{/if}
+									{url.label || `Link ${i + 1}`}
+								</a>
+							{/each}
 						</div>
 					{/if}
 				</div>
-
-				{#if publication.abstract}
-					<div class="entity-abstract">
-						{truncateAbstract(publication.abstract)}
-					</div>
-				{/if}
-
-				{#if publication.tags && publication.tags.length > 0}
-					<div class="entity-tags">
-						<TagList
-							tags={publication.tags}
-							baseUrl={tagFilterBase}
-							showTitle={false}
-							buttonVariant="outline-secondary"
-							buttonSize="sm"
-						/>
-					</div>
-				{/if}
-
-				{#if publication.additionalUrls && publication.additionalUrls.length > 0}
-					<div class="entity-links">
-						{#each publication.additionalUrls as url, i (url.url + i)}
-							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
-							<a
-								href={url.url}
-								target="_blank"
-								rel="external noopener noreferrer"
-								class="entity-link-btn btn btn-outline-primary btn-sm"
-							>
-								{url.label || `Link ${i + 1}`}
-							</a>
-						{/each}
-					</div>
-				{/if}
 			</div>
 		</div>
-	</div>
-</article>
+	</article>
+{/if}
 
 <style>
 	/* Citation count as quiet type, not a pill. A mono count in muted ink reads
-	 * as marginalia beside the byline; the badge chrome (accent fill, border,
-	 * quote glyph) was the kind of generic-UI tell the brief avoids. */
+	 * as marginalia beside the byline — the data voice of the meta row. */
 	.citation-badge {
 		font-family: var(--font-family-mono);
-		font-size: var(--font-size-xs);
-		letter-spacing: var(--letter-spacing-tight);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-semibold);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
 		color: var(--color-text-light);
 		white-space: nowrap;
 	}
@@ -281,37 +450,33 @@
 		margin-top: var(--space-1);
 	}
 
+	/* Author as an inline ink link — no pill background, no rounded corners,
+	 * no tinted hover box. Underline on hover carries the affordance. */
 	.author-btn {
 		background: none;
 		border: none;
-		padding: var(--space-1);
+		padding: 0;
 		font-size: inherit;
 		font-family: inherit;
 		color: var(--color-primary);
 		text-decoration: none;
 		cursor: pointer;
 		display: inline;
-		border-radius: var(--border-radius-sm);
+		border-radius: 0;
 		font-weight: var(--font-weight-medium);
 		transition:
 			color var(--duration-fast) var(--ease-out),
-			background-color var(--duration-fast) var(--ease-out),
 			text-decoration var(--duration-fast) var(--ease-out);
 	}
 
 	.author-btn:hover {
-		background-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-10) * 100%),
-			transparent
-		);
+		color: var(--color-accent);
 		text-decoration: underline;
 	}
 
 	.author-btn:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-highlight);
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--space-0-5);
-		box-shadow: 0 0 0 var(--space-1) color-mix(in srgb, var(--color-highlight) 20%, transparent);
 	}
 
 	/* Respect user motion preferences */
@@ -320,4 +485,8 @@
 			transition: none !important;
 		}
 	}
+
+	/* Bibliography-row styles (.bib-row, .bib-year, .bib-plate, .bib-title,
+	 * .bib-actions …) live in $styles/components/bibliography.css, imported above
+	 * and shared with CommunicationItem so both record lists stay in sync. */
 </style>

@@ -47,38 +47,40 @@
 <!-- eslint-enable svelte/no-navigation-without-resolve -->
 
 <style>
+	/* Nav link — the DATA voice: mono, letterspaced caps, muted ink. The
+	 * current section is pine with a persistent 2px accent underline. */
 	.nav-link {
-		color: var(--color-text);
+		font-family: var(--font-family-mono);
+		color: var(--color-text-soft);
 		text-decoration: none;
-		font-weight: var(--font-weight-medium);
-		font-size: var(--font-size-base);
+		font-weight: var(--font-weight-semibold);
+		font-size: var(--font-size-2xs);
+		letter-spacing: 0.13em;
+		text-transform: uppercase;
 		padding: var(--space-2) 0;
 		transition: color var(--duration-fast) var(--ease-out);
 		position: relative;
 		display: flex;
 		align-items: center;
 		gap: var(--space-1);
+		white-space: nowrap;
 	}
 
-	/* Hover/active underline — a thin, square-cut ink rule, not a rounded pill.
-	 * The squared cap reads as a printed underline in the letterpress register;
-	 * the previous border-radius-full cap gave it the "wiping pill" look of a
-	 * marketing-site micro-interaction. */
+	/* Underline — a square-cut pine rule that grows on hover and holds
+	 * on the active section. */
 	.nav-link::after {
 		content: '';
 		position: absolute;
 		bottom: calc(-1 * var(--space-0-5));
 		left: 0;
 		width: 0;
-		height: var(--border-width-thin);
-		background-color: var(--color-primary);
-		transition:
-			width var(--duration-normal) var(--ease-out),
-			background-color var(--duration-normal) var(--ease-out);
+		height: var(--border-width-medium);
+		background-color: var(--color-accent);
+		transition: width var(--duration-fast) var(--ease-out);
 	}
 
 	.nav-link:hover {
-		color: var(--color-primary);
+		color: var(--color-text-emphasis);
 	}
 
 	.nav-link:hover::after,
@@ -86,28 +88,21 @@
 		width: 100%;
 	}
 
-	/* Active (current-page) link: primary color for text and a solid primary
-	 * underline. Previously used a primary→highlight gradient underline;
-	 * simplified for editorial clarity. */
 	.nav-link.active {
-		color: var(--color-primary);
-	}
-
-	.nav-link.active::after {
-		background: var(--color-primary);
+		color: var(--color-accent);
 	}
 
 	.dropdown-icon {
 		display: inline-block;
-		font-size: var(--font-size-xs);
-		transition: transform var(--duration-normal) var(--ease-out);
+		font-size: var(--font-size-2xs);
+		transition: transform var(--duration-fast) var(--ease-out);
 		line-height: 1;
 	}
 
 	.nav-link:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-primary);
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--space-1);
-		border-radius: var(--border-radius-sm);
+		border-radius: 0;
 	}
 
 	@media (hover: none) {

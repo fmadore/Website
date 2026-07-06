@@ -3,6 +3,7 @@
 	import type { NavItem } from '$lib/types/navigation';
 	import ThemeToggle from '$lib/components/menu/ThemeToggle.svelte';
 	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
 
 	let {
 		navItems,
@@ -17,6 +18,23 @@
 	let containerEl: HTMLDivElement | null = $state(null);
 	let closeButtonEl: HTMLButtonElement | null = $state(null);
 	let previouslyFocused: HTMLElement | null = null;
+
+	// Current pathname, used for highlighting the active nav entry — mirrors the
+	// desktop NavLink active treatment (pine text + accent marker).
+	const currentPath = $derived(page.url.pathname);
+
+	// A nav entry is "current" when the route matches its path or is nested
+	// beneath it. Normalising trailing slashes and the root `/` keeps every
+	// route from matching the home link. Same logic as NavItemWithDropdown.
+	const normalize = (p: string) => (p.length > 1 ? p.replace(/\/$/, '') : p);
+	function isCurrent(path: string): boolean {
+		// External links (dropdown children) are never "current".
+		if (path.startsWith('http')) return false;
+		const itemPath = normalize(path);
+		const current = normalize(currentPath);
+		if (itemPath === '/') return current === '/';
+		return current === itemPath || current.startsWith(`${itemPath}/`);
+	}
 
 	// Move focus into the menu when it opens and restore it to the element
 	// that triggered opening (the hamburger) when it closes.
@@ -79,40 +97,55 @@
 	inert={!isActive}
 >
 	<nav class="mobile-nav" aria-label="Mobile navigation">
-		<!-- Mobile Menu Header -->
+		<!-- Masthead strip — the menu opens as the top of the press page. -->
 		<div class="mobile-nav-header">
-			<ThemeToggle size={20} />
-
 			<a href={resolve('/')} class="mobile-site-title" onclick={onCloseMenu}> Frédérick Madore </a>
 
-			<!-- Close button -->
-			<button
-				class="mobile-close-button"
-				onclick={onCloseMenu}
-				aria-label="Close navigation menu"
-				bind:this={closeButtonEl}
-			>
-				<span class="mobile-close-line"></span>
-				<span class="mobile-close-line"></span>
-			</button>
+			<div class="mobile-nav-controls">
+				<ThemeToggle size={18} />
+
+				<!-- Close button -->
+				<button
+					class="mobile-close-button"
+					onclick={onCloseMenu}
+					aria-label="Close navigation menu"
+					bind:this={closeButtonEl}
+				>
+					<span class="mobile-close-line"></span>
+					<span class="mobile-close-line"></span>
+				</button>
+			</div>
 		</div>
+
+		<span class="mobile-nav-eyebrow" aria-hidden="true">Navigation</span>
 
 		<ul class="mobile-nav-list">
 			{#each navItems as item (item.path)}
+				{@const current = isCurrent(item.path)}
 				<li class="mobile-nav-item">
-					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- path pre-resolved in navigation data -->
-					<a href={item.path} class="mobile-nav-link" onclick={onCloseMenu}>
+					<!-- eslint-disable svelte/no-navigation-without-resolve -- path pre-resolved in navigation data -->
+					<a
+						href={item.path}
+						class="mobile-nav-link"
+						class:current
+						aria-current={current ? 'page' : undefined}
+						onclick={onCloseMenu}
+					>
 						{item.name}
 					</a>
+					<!-- eslint-enable svelte/no-navigation-without-resolve -->
 
 					{#if item.dropdown}
 						<ul class="mobile-dropdown">
 							{#each item.dropdown as subItem (subItem.path)}
+								{@const subCurrent = isCurrent(subItem.path)}
 								<li class="mobile-dropdown-item">
 									<!-- eslint-disable svelte/no-navigation-without-resolve -- path pre-resolved in navigation data -->
 									<a
 										href={subItem.path}
 										class="mobile-dropdown-link"
+										class:current={subCurrent}
+										aria-current={subCurrent ? 'page' : undefined}
 										onclick={onCloseMenu}
 										target={subItem.path.startsWith('http') ? '_blank' : null}
 										rel={subItem.path.startsWith('http')
@@ -134,10 +167,10 @@
 
 <style>
 	/*
-	 * Mobile menu overlay — warm paper surface with chrome blur over body
-	 * content. Legitimate glass use (modal overlay). Previously used a
-	 * white-based backdrop with an inset highlight; switched to the warm
-	 * elevated surface for palette coherence.
+	 * Mobile menu — the masthead, full-bleed. Not an overlay panel with glass
+	 * and shadow: it is the top of the press page pulled down over the body.
+	 * Solid warm-paper ground (microfilm-dark in midnight, via tokens), square
+	 * corners, no blur, no shadow. Hierarchy is drawn in rules.
 	 */
 	.mobile-nav-container {
 		position: fixed;
@@ -151,13 +184,7 @@
 		height: 100vh;
 		height: 100dvh;
 		width: 100%;
-		background: color-mix(
-			in srgb,
-			var(--color-surface-elevated) calc(var(--header-overlay-opacity) * 100%),
-			transparent
-		);
-		backdrop-filter: blur(var(--header-blur, var(--header-blur-fallback))) saturate(180%);
-		-webkit-backdrop-filter: blur(var(--header-blur, var(--header-blur-fallback))) saturate(180%);
+		background: var(--color-background);
 		z-index: var(--z-modal);
 		transform: translateY(-100%);
 		transition: transform var(--duration-moderate) var(--ease-in-out);
@@ -165,15 +192,7 @@
 		/* Respect the iOS home-indicator safe area so the last link never
 		 * sits flush against the gesture zone. */
 		padding-bottom: env(safe-area-inset-bottom, 0);
-		box-shadow: var(--shadow-2xl);
 		will-change: transform;
-	}
-
-	/* Solid fallback for browsers without backdrop-filter support. */
-	@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-		.mobile-nav-container {
-			background: var(--color-background);
-		}
 	}
 
 	.mobile-nav-container.active {
@@ -181,31 +200,79 @@
 	}
 
 	.mobile-nav {
-		padding: var(--space-2);
 		height: 100%;
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-4);
+		padding: 0 var(--space-5) var(--space-6);
 	}
 
 	/*
-	 * Sticky header inside the mobile menu — solid warm tile, no
-	 * backdrop-filter (the container already blurs) and no gradient bg.
+	 * Masthead strip — the wordmark left, controls right, closed by the 4px
+	 * ink rule that opens every masthead on the site. Sticky so the nameplate
+	 * and close control stay reachable while the contents scroll.
 	 */
 	.mobile-nav-header {
-		display: grid;
-		grid-template-columns: 1fr auto 1fr;
-		gap: var(--space-3);
+		display: flex;
 		align-items: center;
-		margin: var(--space-2);
-		padding: var(--space-3) var(--space-4);
-		background: var(--color-surface);
-		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: var(--border-radius-xl);
-		box-shadow: var(--shadow-sm);
+		justify-content: space-between;
+		gap: var(--space-4);
+		padding: var(--space-4) 0 var(--space-3);
+		border-bottom: var(--rule-masthead) solid var(--color-primary);
+		background: var(--color-background);
 		position: sticky;
-		top: var(--space-2);
+		top: 0;
 		z-index: var(--z-above);
+	}
+
+	.mobile-nav-controls {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
+	}
+
+	/* Wordmark — the compact nameplate, echoing the header masthead in
+	 * miniature. Archivo, wide and heavy, uppercase; warms to pine. */
+	:global(.mobile-site-title) {
+		display: inline-flex;
+		align-items: center;
+		font-family: var(--font-family-display);
+		font-variation-settings: var(--font-variation-wordmark);
+		font-size: clamp(1.15rem, 0.95rem + 0.9vw, 1.5rem);
+		font-weight: 830;
+		letter-spacing: -0.01em;
+		text-transform: uppercase;
+		line-height: 1;
+		color: var(--color-text-emphasis);
+		text-decoration: none;
+		transition: color var(--duration-fast) var(--ease-out);
+	}
+
+	:global(.mobile-site-title:hover),
+	:global(.mobile-site-title:focus-visible) {
+		color: var(--color-accent);
+	}
+
+	:global(.mobile-site-title:focus-visible) {
+		outline: var(--border-width-medium) solid var(--color-accent);
+		outline-offset: var(--space-1);
+		border-radius: 0;
+	}
+
+	/* Close control — a square ink glyph, two crossed rules; warms to
+	 * pine. No tile, no radius. */
+	.mobile-close-button {
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: calc(var(--space-8) + var(--space-1));
+		height: calc(var(--space-8) + var(--space-1));
+		position: relative;
+		flex-shrink: 0;
 	}
 
 	.mobile-close-line {
@@ -213,13 +280,7 @@
 		height: var(--border-width-medium);
 		background-color: var(--color-text);
 		position: absolute;
-		transition:
-			transform var(--duration-normal) var(--ease-out),
-			background-color var(--duration-fast) var(--ease-out);
-	}
-
-	.mobile-close-button:hover .mobile-close-line {
-		background-color: var(--color-primary);
+		transition: background-color var(--duration-fast) var(--ease-out);
 	}
 
 	.mobile-close-line:first-child {
@@ -230,68 +291,45 @@
 		transform: rotate(-45deg);
 	}
 
+	.mobile-close-button:hover .mobile-close-line {
+		background-color: var(--color-accent);
+	}
+
 	.mobile-close-button:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-primary);
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--space-1);
-		border-radius: var(--border-radius-sm);
+		border-radius: 0;
 	}
 
-	:global(.mobile-nav-header .theme-toggle) {
-		justify-self: start;
-	}
-
-	:global(.mobile-site-title) {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		font-family: var(--font-family-display);
-		font-optical-sizing: auto;
-		font-variation-settings: var(--font-variation-wordmark);
-		font-size: var(--font-size-lg);
+	/* Data-voice kicker labelling the contents — mono caps, quiet ink. */
+	.mobile-nav-eyebrow {
+		display: block;
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-bold);
-		letter-spacing: var(--tracking-heading);
-		line-height: 1;
-		color: var(--color-text);
-		text-decoration: none;
-		transition: color var(--duration-fast) var(--ease-out);
-		justify-self: center;
-		text-align: center;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--color-text-light);
+		padding: var(--space-4) 0 var(--space-2);
 	}
 
-	:global(.mobile-site-title:hover) {
-		color: var(--color-primary);
-	}
-
-	.mobile-close-button {
-		background: none;
-		border: none;
-		cursor: pointer;
-		padding: 0;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		width: calc(var(--space-6) + var(--space-1));
-		height: calc(var(--space-6) + var(--space-1));
-		position: relative;
-		justify-self: end;
-	}
-
+	/*
+	 * Contents — a run of typeset lines separated by ink hairlines, opened by a
+	 * 3px section rule. Not a stack of cards.
+	 */
 	:global(.mobile-nav-list) {
 		list-style: none;
-		padding: var(--space-3) 0 0 0;
+		padding: 0;
 		margin: 0;
 		flex: 1;
 		display: flex;
 		flex-direction: column;
-		gap: 0;
+		border-top: var(--rule-section) solid var(--color-primary);
 	}
 
-	/* Each entry is a typeset line over a hairline rule — a table of
-	 * contents, not a stack of buttons. */
+	/* Each entry sits over a hairline rule — ink-coloured, never gray. */
 	:global(.mobile-nav-item) {
-		margin: 0 var(--space-5);
-		border-bottom: var(--border-width-thin) solid var(--color-border-light);
+		border-bottom: var(--rule-hairline) solid var(--color-border);
 		opacity: 0;
 		transform: translateX(calc(-1 * var(--transform-distance-lg)));
 		transition:
@@ -305,7 +343,7 @@
 		transform: translateX(0);
 	}
 
-	/* Staggered animation for mobile nav items - using modern stagger tokens */
+	/* Staggered reveal for mobile nav items — modern stagger tokens. */
 	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(1)) {
 		transition-delay: var(--stagger-1);
 	}
@@ -328,47 +366,68 @@
 		transition-delay: calc(var(--stagger-6) + var(--stagger-1));
 	}
 
-	/* Last entry closes the contents list — no rule below it, and no
-	 * margin-top: auto (the old boxed layout pinned CV to the bottom of the
-	 * overlay, which reads as a stray gap in a typeset list). */
-	:global(.mobile-nav-item:last-child) {
-		border-bottom: none;
-	}
-
 	/*
-	 * Mobile nav links — typeset contents entries, not buttons. The earlier
-	 * iteration boxed every link in a bordered surface tile; the overlay is
-	 * already chrome, so the links themselves are pure type: serif
-	 * semibold, hairline rules between entries (on the item), hover/active
-	 * conveyed by ink colour and a small nudge.
+	 * Nav entries — the DATA voice: Spline Sans Mono, uppercase, letterspaced,
+	 * muted ink. Matches the desktop NavLink. The current section is pine
+	 * with a persistent square-cut accent marker on the left.
 	 */
 	:global(.mobile-nav-link) {
 		display: grid;
 		place-items: center start;
-		min-height: 2.75rem;
-		padding: var(--space-3) var(--space-1);
-		color: var(--color-text-emphasis);
+		min-height: 3rem;
+		padding: var(--space-3) 0 var(--space-3) var(--space-4);
+		color: var(--color-text-soft);
 		text-decoration: none;
-		font-family: var(--font-family-serif);
-		font-size: var(--font-size-lg);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-semibold);
+		letter-spacing: 0.13em;
+		text-transform: uppercase;
 		line-height: var(--line-height-snug);
-		transition:
-			transform var(--duration-fast) var(--ease-out),
-			color var(--duration-fast) var(--ease-out);
 		position: relative;
-		will-change: transform;
+		transition: color var(--duration-fast) var(--ease-out);
+	}
+
+	/* Left marker — a square-cut pine rule, hidden until hover/current. */
+	:global(.mobile-nav-link::before) {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translateY(-50%) scaleY(0);
+		transform-origin: center;
+		width: var(--border-width-thick);
+		height: 1.4em;
+		background-color: var(--color-accent);
+		transition: transform var(--duration-fast) var(--ease-out);
 	}
 
 	:global(.mobile-nav-link:hover),
-	:global(.mobile-nav-link:focus) {
-		color: var(--color-primary);
-		transform: translateX(var(--space-1));
+	:global(.mobile-nav-link:focus-visible) {
+		color: var(--color-accent);
+	}
+
+	:global(.mobile-nav-link:hover::before),
+	:global(.mobile-nav-link:focus-visible::before),
+	:global(.mobile-nav-link.current::before) {
+		transform: translateY(-50%) scaleY(1);
+	}
+
+	/* Current section — pine, marker held open. */
+	:global(.mobile-nav-link.current) {
+		color: var(--color-accent);
+	}
+
+	:global(.mobile-nav-link:focus-visible) {
+		outline: var(--border-width-medium) solid var(--color-accent);
+		outline-offset: calc(-1 * var(--border-width-medium));
+		border-radius: 0;
 	}
 
 	/*
-	 * Nested sub-menu — indented plain links in the sans, like sub-entries
-	 * in a table of contents. No tile, no borders.
+	 * Sub-menu — the quieter apparatus: mono, smaller, faint ink, indented under
+	 * the parent with a hanging hairline. Sub-entries in a machine index, not
+	 * prose links.
 	 */
 	:global(.mobile-dropdown) {
 		list-style: none;
@@ -376,21 +435,63 @@
 		margin: 0;
 	}
 
+	:global(.mobile-dropdown-item) {
+		border-top: var(--rule-hairline) solid var(--color-border);
+	}
+
+	:global(.mobile-dropdown-item:first-child) {
+		border-top: none;
+	}
+
 	:global(.mobile-dropdown-link) {
 		display: flex;
 		align-items: center;
-		padding: var(--space-2) var(--space-1);
+		min-height: 2.5rem;
+		padding: var(--space-2) 0 var(--space-2) var(--space-4);
 		color: var(--color-text-light);
 		text-decoration: none;
-		font-size: var(--font-size-base);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
 		line-height: var(--line-height-snug);
+		position: relative;
 		transition: color var(--duration-fast) var(--ease-out);
 	}
 
+	/* Hanging index tick — a short accent rule at the indent, on hover/current. */
+	:global(.mobile-dropdown-link::before) {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translateY(-50%);
+		width: var(--space-2);
+		height: var(--rule-hairline);
+		background-color: var(--color-border);
+		transition: background-color var(--duration-fast) var(--ease-out);
+	}
+
 	:global(.mobile-dropdown-link:hover),
-	:global(.mobile-dropdown-link:focus) {
-		color: var(--color-primary);
+	:global(.mobile-dropdown-link:focus-visible) {
+		color: var(--color-accent);
+	}
+
+	:global(.mobile-dropdown-link:hover::before),
+	:global(.mobile-dropdown-link:focus-visible::before),
+	:global(.mobile-dropdown-link.current::before) {
+		background-color: var(--color-accent);
+	}
+
+	:global(.mobile-dropdown-link.current) {
+		color: var(--color-accent);
+	}
+
+	:global(.mobile-dropdown-link:focus-visible) {
+		outline: var(--border-width-medium) solid var(--color-accent);
+		outline-offset: calc(-1 * var(--border-width-medium));
+		border-radius: 0;
 	}
 
 	/* Hide mobile nav on desktop */
@@ -400,45 +501,48 @@
 		}
 	}
 
-	/* Dark mode — warm dusk surfaces, no inset highlights, no gradients. */
-	:global(html.dark) .mobile-nav-container {
-		background: color-mix(
-			in srgb,
-			var(--color-surface-alt) calc(var(--header-overlay-opacity) * 100%),
-			transparent
-		);
-		box-shadow: var(--shadow-2xl);
-	}
-
-	:global(html.dark) .mobile-nav-header {
-		background: var(--color-surface);
-		border: var(--border-width-thin) solid var(--color-border-dark);
-		box-shadow: var(--shadow-sm);
-	}
-
-	:global(html.dark .mobile-nav-item) {
-		border-bottom-color: var(--color-border);
-	}
-
-	:global(html.dark .mobile-nav-item:last-child) {
-		border-bottom: none;
-	}
-
-	/* Touch device optimizations */
+	/* Touch device optimizations — no lingering hover state. */
 	@media (hover: none) {
-		:global(.mobile-dropdown-link:hover) {
+		:global(.mobile-nav-link:hover:not(.current)) {
+			color: var(--color-text-soft);
+		}
+
+		:global(.mobile-nav-link:hover:not(.current)::before) {
+			transform: translateY(-50%) scaleY(0);
+		}
+
+		:global(.mobile-dropdown-link:hover:not(.current)) {
 			color: var(--color-text-light);
-			transform: none;
+		}
+
+		:global(.mobile-dropdown-link:hover:not(.current)::before) {
+			background-color: var(--color-border);
+		}
+
+		:global(.mobile-nav-link:active) {
+			color: var(--color-accent);
+		}
+
+		:global(.mobile-nav-link:active::before) {
+			transform: translateY(-50%) scaleY(1);
 		}
 
 		:global(.mobile-dropdown-link:active) {
-			color: var(--color-primary);
-			transform: translateX(var(--space-2));
+			color: var(--color-accent);
+		}
+	}
+
+	/* High contrast — thicken the current marker and rules. */
+	@media (prefers-contrast: high) {
+		:global(.mobile-nav-link.current::before) {
+			width: calc(var(--border-width-thick) + var(--border-width-thin));
 		}
 	}
 
 	/* ===== MODERN ANIMATION SYSTEM ===== */
-	/* Slide-in animation using transform for GPU acceleration */
+	/* Panel slide-in. The per-item reveal is the staggered transition declared
+	 * above (opacity + translateX with per-item transition-delay) — one
+	 * mechanism, so items keep their one-after-another cascade. */
 	@keyframes mobileNavSlideIn {
 		from {
 			transform: translateY(-100%);
@@ -448,11 +552,6 @@
 		}
 	}
 
-	/* Panel slide-in only. The per-item reveal is the staggered transition
-	 * declared above (opacity + translateX with per-item transition-delay) —
-	 * one mechanism, so items keep their one-after-another cascade. A duplicate
-	 * keyframe here previously overrode that transition and fired every item at
-	 * once; it has been removed. */
 	.mobile-nav-container.active {
 		animation: mobileNavSlideIn var(--duration-moderate) var(--ease-out) forwards;
 	}
@@ -460,8 +559,7 @@
 	/* ===== REDUCED MOTION SUPPORT =====
 	 * Fully disable transitions/keyframes for users who ask for it. The
 	 * !important flags are intentional: they override the staggered transition
-	 * delays declared higher in this file and the keyframe animations
-	 * declared below. */
+	 * delays and the keyframe animations declared above. */
 	@media (prefers-reduced-motion: reduce) {
 		.mobile-nav-container {
 			transition: none;
@@ -485,14 +583,13 @@
 
 		:global(.mobile-nav-link),
 		:global(.mobile-dropdown-link) {
-			transition:
-				background-color var(--duration-instant) linear,
-				color var(--duration-instant) linear;
+			transition: color var(--duration-instant) linear;
 			will-change: auto;
 		}
 
-		:global(.mobile-nav-link::before) {
-			display: none;
+		:global(.mobile-nav-link::before),
+		:global(.mobile-dropdown-link::before) {
+			transition: none;
 		}
 
 		.mobile-close-line {

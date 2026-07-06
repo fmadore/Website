@@ -21,6 +21,9 @@
 @import './styles/components/navigation-utilities.css';
 @import './styles/components/panels.css';
 @import './styles/components/animations.css';
+/* Ink + Signal structural idioms: nameplate, rules, №-sections, ledger,
+ * chips, year-bars, key-terms, drop cap, plates, pagination. */
+@import './styles/components/ink-signal.css';
 
 /* Page-specific component CSS is imported by the components that own it
  * (code-split per route) rather than bundled here, to keep the render-blocking

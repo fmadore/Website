@@ -2,7 +2,6 @@
 	import SEO from '$lib/SEO.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
-	import TagList from '$lib/components/molecules/TagList.svelte';
 	import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
 	import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
 	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
@@ -57,7 +56,7 @@
 		<article class="project-detail-article max-w-6xl mx-auto">
 			<Breadcrumb items={breadcrumbItems} />
 
-			<PageHeader title={project.title} authors={project.years ? [project.years] : undefined} />
+			<PageHeader title={project.title} typeBadgeText="Digital Humanities" date={project.years} />
 
 			{#if project.heroImageUrl || project.imageUrl}
 				<div class="hero-image-wrapper mb-8 scroll-reveal">
@@ -77,7 +76,7 @@
 			{/if}
 
 			<div class="scroll-reveal">
-				<section class="content-section">
+				<section class="content-section drop-cap">
 					<!-- Safe: project.description is from trusted project data in src/lib/data/digital-humanities/ -->
 					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 					{@html project.description}
@@ -92,14 +91,19 @@
 
 			<div class="scroll-reveal">
 				{#if project.skills && project.skills.length > 0}
-					<section class="mb-6">
-						<TagList
-							tags={project.skills}
-							sectionTitle="Skills"
-							baseUrl="/digital-humanities?skill="
-							buttonVariant="outline-primary"
-							buttonSize="sm"
-						/>
+					<section class="section">
+						<div class="section-head">
+							<span class="section-no">№</span>
+							<h2 class="section-title">Methods &amp; tools</h2>
+						</div>
+						<div class="chip-row">
+							{#each project.skills as skill (skill)}
+								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- skill filter URL -->
+								<a class="chip" href="{base}/digital-humanities?skill={encodeURIComponent(skill)}"
+									>{skill}</a
+								>
+							{/each}
+						</div>
 					</section>
 				{/if}
 			</div>
@@ -119,7 +123,7 @@
 								{/if}
 
 								{#if item.type === 'iframe'}
-									<div class="iframe-wrapper glass-section-panel">
+									<div class="iframe-wrapper">
 										<IframeRenderer {...item} />
 									</div>
 								{:else if item.type === 'image'}
@@ -134,7 +138,7 @@
 											<img
 												src={item.src}
 												alt={item.alt}
-												class="responsive-image"
+												class="plate responsive-image"
 												width="800"
 												height="600"
 												loading="lazy"
@@ -146,7 +150,7 @@
 										<img
 											src={item.src}
 											alt={item.alt}
-											class="responsive-image"
+											class="plate responsive-image"
 											width="800"
 											height="600"
 											loading="lazy"
@@ -162,20 +166,26 @@
 
 			<div class="scroll-reveal">
 				{#if project.award}
-					<section class="award-section glass-section-panel">
-						<h3 class="section-title">Award</h3>
+					<section class="section apparatus-section">
+						<div class="section-head">
+							<span class="section-no">№</span>
+							<h2 class="section-title">Award</h2>
+						</div>
 						<!-- Safe: project.award is from trusted project data -->
 						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-						<p>{@html project.award}</p>
+						<p class="apparatus-text">{@html project.award}</p>
 					</section>
 				{/if}
 			</div>
 
 			<div class="scroll-reveal">
 				{#if project.publication}
-					<section class="publication-section glass-section-panel">
-						<h3 class="section-title">Related Publication</h3>
-						<p>
+					<section class="section apparatus-section">
+						<div class="section-head">
+							<span class="section-no">№</span>
+							<h2 class="section-title">Related publication</h2>
+						</div>
+						<p class="apparatus-text">
 							<!-- Safe: project.publication.text is from trusted project data -->
 							<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 							<!-- eslint-disable svelte/no-at-html-tags -->
@@ -194,11 +204,14 @@
 
 			<div class="scroll-reveal">
 				{#if project.reviews && project.reviews.length > 0}
-					<section class="reviews-section glass-section-panel">
-						<h3 class="section-title">Reviews</h3>
+					<section class="section apparatus-section">
+						<div class="section-head">
+							<span class="section-no">№</span>
+							<h2 class="section-title">Reviews</h2>
+						</div>
 						<ul class="reviews-list">
 							{#each project.reviews as review (review.url)}
-								<li class="review-item glass-sub-card">
+								<li class="review-item">
 									<!-- Safe: review.text is from trusted project data -->
 									<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 									<!-- eslint-disable svelte/no-at-html-tags -->
@@ -227,16 +240,32 @@
 	<!-- Back link — quiet editorial text link, left-aligned like the
 	     header back-links on other detail pages. -->
 	<div class="mt-8 max-w-6xl mx-auto">
-		<a href={resolve('/digital-humanities')} class="link-animated back-to-index"
-			>← Back to Digital Humanities Projects</a
-		>
+		<a href={resolve('/digital-humanities')} class="back-to-index">
+			← Back to Digital Humanities projects
+		</a>
 	</div>
 </div>
 
 <style>
+	/* Back link — mono data-voice affordance matching the header back-link. */
 	.back-to-index {
-		font-size: var(--font-size-sm);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: var(--color-text-light);
+		text-decoration: none;
+		transition: color var(--duration-fast) var(--ease-out);
+	}
+
+	.back-to-index:hover {
+		color: var(--color-accent);
+	}
+
+	.back-to-index:focus-visible {
+		outline: var(--border-width-medium) solid var(--color-accent);
+		outline-offset: var(--space-2xs);
 	}
 
 	/* Article container - consistent with activity and research pages */
@@ -244,11 +273,9 @@
 		position: relative;
 	}
 
-	/* Content section with glassmorphism - consistent with ContentBody styling */
+	/* Content section — prose on paper, no tile. The drop-cap idiom opens it. */
 	.content-section {
-		padding: var(--space-lg);
-		border-radius: var(--border-radius-lg);
-		margin-bottom: var(--space-lg);
+		margin-bottom: var(--space-xl);
 	}
 
 	.content-section :global(p) {
@@ -261,11 +288,8 @@
 		margin-bottom: 0;
 	}
 
-	/*
-	 * Lead paragraph — slightly larger, full-ink colour. Previously carried a
-	 * gradient left-stripe via border-image; removed (AI-UI tell). Size and
-	 * colour carry the emphasis.
-	 */
+	/* Lead paragraph — slightly larger, full-ink colour; the drop-cap on the
+	 * section carries the opening flourish. */
 	.content-section :global(p:first-child) {
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-normal);
@@ -274,14 +298,14 @@
 	}
 
 	.content-section :global(a) {
-		color: var(--color-primary);
+		color: var(--color-accent);
 		text-decoration: none;
 		font-weight: var(--font-weight-medium);
 		transition: color var(--duration-fast) var(--ease-out);
 	}
 
 	.content-section :global(a:hover) {
-		color: var(--color-primary-dark);
+		color: var(--color-accent-dark);
 		/* No text-decoration needed - typography.css handles animated underlines */
 	}
 
@@ -301,11 +325,12 @@
 
 	/* Embeddable content section */
 	.embeddable-section {
-		margin-bottom: var(--space-lg);
+		margin-bottom: var(--space-xl);
+		margin-top: var(--space-2xl);
 	}
 
 	.embeddable-item {
-		margin-bottom: var(--space-xl);
+		margin-bottom: var(--space-2xl);
 	}
 
 	.embeddable-item:last-child {
@@ -313,16 +338,19 @@
 	}
 
 	.embeddable-title {
-		font-family: var(--font-family-serif);
+		font-family: var(--font-family-display);
+		font-variation-settings: var(--font-variation-display-sm);
 		font-size: var(--font-size-xl);
-		font-weight: var(--font-weight-semibold);
+		font-weight: 720;
+		letter-spacing: -0.01em;
 		color: var(--color-text-emphasis);
 		margin-bottom: var(--space-sm);
 		line-height: var(--line-height-tight);
 	}
 
 	.embeddable-description {
-		color: var(--color-text-light);
+		font-family: var(--font-family-serif);
+		color: var(--color-text-soft);
 		margin-bottom: var(--space-md);
 		line-height: var(--line-height-relaxed);
 	}
@@ -332,40 +360,38 @@
 		margin: var(--space-lg) 0;
 	}
 
-	/* Image styling */
-	/* Body images sit still — a documentary plate, not a clickable card. The
-	 * link (when present) still opens the larger view; the photograph itself
-	 * does not lift or twitch as the cursor nears. */
+	/* Image plate — a documentary scan set flat and square (.plate idiom).
+	 * The link (when present) opens the larger view; the plate does not lift. */
 	.responsive-image {
 		max-width: 100%;
 		height: auto;
-		display: block;
-		border-radius: var(--border-radius-lg);
-		box-shadow: var(--shadow-md);
 	}
 
 	.image-link {
 		display: block;
 	}
 
-	/* Content-on-paper sections — serif titles with hairline rules carry the
-	 * hierarchy; no tile padding or accent borders. */
-	.award-section,
-	.publication-section,
-	.reviews-section {
-		margin: var(--space-xl) 0;
+	/* Apparatus sections — award / publication / reviews. Serif prose under a
+	 * §-numbered section rule; no tile, no glass. */
+	.apparatus-text {
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-base);
+		line-height: var(--line-height-relaxed);
+		color: var(--color-text-soft);
+		margin: 0;
+		max-width: 66ch;
 	}
 
-	/* Section titles - consistent typography */
-	.section-title {
-		font-family: var(--font-family-serif);
-		font-size: var(--font-size-lg);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-emphasis);
-		margin-bottom: var(--space-md);
-		padding-bottom: var(--space-sm);
-		border-bottom: var(--border-width-thin) solid var(--color-border-light);
-		line-height: var(--line-height-tight);
+	.apparatus-text :global(a),
+	.reviews-list :global(a.link) {
+		color: var(--color-accent);
+		text-decoration: none;
+		font-weight: var(--font-weight-medium);
+	}
+
+	.apparatus-text :global(a:hover),
+	.reviews-list :global(a.link:hover) {
+		color: var(--color-accent-dark);
 	}
 
 	/* Reviews list */
@@ -375,20 +401,25 @@
 		margin: 0;
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-md);
 	}
 
 	.review-item {
-		padding: var(--space-md);
+		font-family: var(--font-family-serif);
+		padding: var(--space-md) 0;
+		border-top: var(--rule-hairline) solid var(--color-border);
+	}
+
+	.review-item:first-child {
+		border-top: none;
+		padding-top: 0;
 	}
 
 	/*
-	 * Review quote — indented italic pull-quote with a leading quote glyph,
-	 * no stripe. Consistent with Reviews.svelte .excerpt.
+	 * Review quote — indented italic pull-quote with a leading quote glyph.
 	 */
 	.review-quote {
-		margin: var(--space-md) 0 var(--space-md) var(--space-md);
-		padding: var(--space-sm) 0 var(--space-sm) var(--space-md);
+		margin: var(--space-sm) 0 0 var(--space-md);
+		padding: var(--space-2xs) 0 var(--space-2xs) var(--space-md);
 		font-size: var(--font-size-sm);
 		color: var(--color-text-light);
 		font-style: italic;
@@ -403,53 +434,15 @@
 		left: calc(-1 * var(--space-xs));
 		top: calc(-1 * var(--space-2xs));
 		font-size: var(--font-size-2xl);
-		color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+		color: color-mix(in srgb, var(--color-accent) 45%, transparent);
 		font-family: var(--font-family-serif);
 		line-height: 1;
 	}
 
-	:global(html.dark) .review-quote {
-		background: color-mix(
-			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-	}
-
 	/* Responsive adjustments */
 	@media (--sm) {
-		.content-section {
-			padding: var(--space-xl);
-		}
-
-		.content-section :global(p:first-child) {
-			font-size: var(--font-size-lg);
-			padding-left: var(--space-lg);
-		}
-
-		.award-section,
-		.publication-section,
-		.reviews-section {
-			padding: var(--space-xl);
-		}
-
-		.section-title {
-			font-size: var(--font-size-xl);
-		}
-
-		.review-item {
-			padding: var(--space-lg);
-		}
-	}
-
-	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
-		.responsive-image {
-			transition: none;
-		}
-
-		.image-link:hover .responsive-image {
-			transform: none;
+		.embeddable-title {
+			font-size: var(--font-size-2xl);
 		}
 	}
 </style>

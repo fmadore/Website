@@ -78,12 +78,12 @@ ECharts Network Graph - A network visualization for author collaborations
 
 	// Create a color palette for different collaboration counts
 	const collaborationColors = $derived.by(() => {
-		/* Collaboration intensity ramps toward the brand ink: gold → teal →
-		 * sage → ink. Stays inside the editorial categorical register. */
+		/* Collaboration intensity ramps from the pine signal toward
+		 * solid ink: pine → muted plum → olive → ink. Ink + Signal. */
 		const baseColors = [
-			resolvedColors.accent, // 1 collaboration — gold
-			resolvedColors.teal, // 2 collaborations — teal
-			resolvedColors.sage, // 3 collaborations — sage
+			resolvedColors.accent, // 1 collaboration — pine (signal)
+			resolvedColors.plum, // 2 collaborations — muted plum
+			resolvedColors.sage, // 3 collaborations — olive
 			resolvedColors.primary // 4+ collaborations — ink
 		];
 
@@ -263,7 +263,7 @@ ECharts Network Graph - A network visualization for author collaborations
 				fontFamily: resolvedColors.fontFamily
 			},
 			extraCssText:
-				'backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: var(--shadow-lg); max-width: 280px; word-wrap: break-word; white-space: normal; line-height: 1.4;',
+				'box-shadow: none; max-width: 280px; word-wrap: break-word; white-space: normal; line-height: 1.4;',
 			confine: true,
 			position: function (
 				point: [number, number],
@@ -561,13 +561,10 @@ ECharts Network Graph - A network visualization for author collaborations
 		top: calc(var(--space-9) + var(--space-4));
 		right: var(--space-4);
 		z-index: 10;
-		background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
-		backdrop-filter: blur(var(--glass-blur-sm));
-		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
+		background-color: var(--color-surface-elevated);
 		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: var(--border-radius);
+		border-radius: 0;
 		padding: var(--space-3);
-		box-shadow: var(--shadow-sm);
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-2);
@@ -578,14 +575,16 @@ ECharts Network Graph - A network visualization for author collaborations
 		display: flex;
 		align-items: center;
 		gap: var(--space-2);
+		font-family: var(--font-family-mono);
 		font-size: var(--font-size-xs);
-		color: var(--color-text);
+		letter-spacing: var(--letter-spacing-wide);
+		color: var(--color-text-soft);
 	}
 
 	.legend-icon {
 		width: var(--space-3);
 		height: var(--space-3);
-		border-radius: var(--border-radius-full);
+		border-radius: 0;
 	}
 
 	.legend-line {
@@ -605,38 +604,26 @@ ECharts Network Graph - A network visualization for author collaborations
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-color: color-mix(in srgb, var(--color-surface) 85%, transparent);
-		backdrop-filter: var(--glass-blur-sm);
-		-webkit-backdrop-filter: var(--glass-blur-sm);
+		background-color: var(--color-surface-elevated);
 		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: var(--border-radius);
+		border-radius: 0;
 		color: var(--color-text-light);
 		cursor: pointer;
 		transition:
 			background-color var(--duration-fast) var(--ease-out),
 			color var(--duration-fast) var(--ease-out),
-			border-color var(--duration-fast) var(--ease-out),
-			box-shadow var(--duration-fast) var(--ease-out),
-			transform var(--duration-fast) var(--ease-out);
-		box-shadow: var(--shadow-sm);
+			border-color var(--duration-fast) var(--ease-out);
 	}
 
 	.zoom-btn:hover {
-		background-color: var(--color-primary);
+		background-color: var(--color-accent);
 		color: var(--color-text-inverted);
-		border-color: var(--color-primary);
-		transform: var(--transform-lift-sm);
-		box-shadow: var(--shadow-md);
+		border-color: var(--color-accent);
 	}
 
 	.zoom-btn:focus-visible {
-		outline: 2px solid var(--color-primary);
+		outline: 2px solid var(--color-accent);
 		outline-offset: 2px;
-	}
-
-	.zoom-btn:active {
-		transform: translateY(0);
-		box-shadow: var(--shadow-sm);
 	}
 
 	/* Reduced motion support */

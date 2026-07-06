@@ -280,27 +280,13 @@
 		width: 100%;
 		margin: var(--space-2xs) 0;
 		padding: var(--space-xs) var(--space-md);
-		border-radius: var(--border-radius-md);
-		transition: all var(--duration-normal) var(--ease-out);
 
 		/* Track offset variable for handle positioning */
 		--track-offset: var(--space-sm);
 
-		/* Paper track surface — no backdrop-filter. The slider sits inside
-		 * filter sidebars which are already paper; blur here was decorative. */
-		background: var(--color-surface-alt);
-		border: var(--border-width-thin) solid var(--color-border);
-		box-shadow: var(--shadow-xs);
-	}
-
-	.range-slider:hover {
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-30) * 100%),
-			transparent
-		);
-		border-color: color-mix(in srgb, var(--color-surface) 30%, transparent);
-		box-shadow: var(--shadow-lg);
+		/* No boxed container — the control is a bare track laid into the filter
+		 * panel: a hairline rule, a solid ink selection, square ink markers. */
+		background: transparent;
 	}
 
 	.range-track {
@@ -310,7 +296,7 @@
 		right: var(--track-offset);
 		height: var(--border-width-thick);
 		background-color: var(--color-border);
-		border-radius: var(--border-radius-sm);
+		border-radius: 0;
 		transform: translateY(-50%);
 		cursor: pointer;
 		transition: background-color var(--duration-fast) var(--ease-out);
@@ -320,39 +306,40 @@
 		background-color: var(--color-text-muted);
 	}
 
+	/* Active range — a solid ink bar. Square. */
 	.range-highlight {
 		position: absolute;
 		top: 0;
 		height: 100%;
 		background: var(--color-primary);
-		border-radius: var(--border-radius-sm);
+		border-radius: 0;
 		pointer-events: none;
-		transition: opacity var(--duration-fast) var(--ease-out);
 	}
 
+	/* A square ink marker, not a round knob — the system's corners are square. A
+	 * tall thin bar reads as an editorial gate on the track and stays distinct
+	 * from the ink selection it rides on. Hover/active shift it to pine. */
 	.range-handle {
 		position: absolute;
 		top: 50%;
 		/* Calculate position relative to track area, not slider container */
 		left: calc(var(--track-offset) + var(--handle-position) * (100% - 2 * var(--track-offset)));
-		width: var(--space-lg);
-		height: var(--space-lg);
+		width: var(--space-2-5);
+		height: var(--space-5);
 		background: var(--color-primary);
-		border: var(--border-width-medium) solid var(--color-surface);
-		border-radius: var(--border-radius-full);
+		border: none;
+		border-radius: 0;
 		transform: translate(-50%, -50%);
 		cursor: grab;
-		transition: all var(--duration-fast) var(--ease-out);
+		transition: background-color var(--duration-fast) var(--ease-out);
 		z-index: var(--z-above);
 		touch-action: none;
-		box-shadow: var(--shadow-md);
-		will-change: transform, box-shadow;
 	}
 
 	/* Larger touch target for mobile devices */
 	@media (pointer: coarse) {
 		.range-handle {
-			width: var(--space-6);
+			width: var(--space-3);
 			height: var(--space-6);
 		}
 
@@ -368,27 +355,20 @@
 	}
 
 	.range-handle:hover,
-	.range-handle:focus {
-		box-shadow:
-			0 0 0 var(--border-width-thick)
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent),
-			var(--shadow-lg);
+	.range-handle:focus-visible {
 		outline: none;
-		transform: translate(-50%, -50%) scale(var(--scale-110));
+		background: var(--color-accent);
+		border-color: var(--color-accent);
 	}
 
 	.range-handle.active {
 		cursor: grabbing;
-		box-shadow:
-			0 0 0 var(--border-width-thick)
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent),
-			var(--shadow-xl);
-		transform: translate(-50%, -50%) scale(var(--scale-125));
+		background: var(--color-accent);
+		border-color: var(--color-accent);
 	}
 
-	/* Value tooltip above the drag handle. Solid primary, no gradient,
-	 * matches the active filter chip / btn-primary fill convention so the
-	 * "applied filter value" treatment reads consistently. */
+	/* Value read-out above the handle — a solid ink stamp, square, in the mono
+	 * data voice. No shadow, no entrance animation. */
 	.range-float {
 		position: absolute;
 		bottom: 140%;
@@ -397,24 +377,13 @@
 		background: var(--color-primary);
 		color: var(--color-text-inverted);
 		padding: var(--space-2xs) var(--space-xs);
-		border-radius: var(--border-radius-sm);
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-medium);
+		border-radius: 0;
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-semibold);
+		font-variant-numeric: tabular-nums;
 		white-space: nowrap;
 		pointer-events: none;
-		box-shadow: var(--shadow-md);
-		animation: floatFadeIn var(--duration-fast) var(--ease-out);
-	}
-
-	@keyframes floatFadeIn {
-		from {
-			opacity: 0;
-			transform: translateX(-50%) translateY(4px);
-		}
-		to {
-			opacity: 1;
-			transform: translateX(-50%) translateY(0);
-		}
 	}
 
 	.range-float::after {
@@ -451,39 +420,21 @@
 		width: var(--border-width-medium);
 	}
 
+	/* Pip labels — mono figures, the data voice. */
 	.range-label {
 		position: absolute;
 		top: var(--space-xs);
 		transform: translateX(-50%);
-		font-size: var(--font-size-xs);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
+		font-variant-numeric: tabular-nums;
 		color: var(--color-text-light);
 		white-space: nowrap;
 	}
 
-	/* Dark mode overrides - using global CSS variables for consistency */
-	:global(html.dark) .range-slider {
-		/* Use dark surface colors from global variables */
-		background: color-mix(
-			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-dark-surface) calc(var(--opacity-30) * 100%), transparent);
-		box-shadow: var(--shadow-md);
-	}
-
-	:global(html.dark) .range-slider:hover {
-		background: color-mix(
-			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-30) * 100%),
-			transparent
-		);
-		border-color: color-mix(in srgb, var(--color-dark-surface) 30%, transparent);
-		box-shadow: var(--shadow-lg);
-	}
-
+	/* Dark mode — the bare track carries the microfilm-negative colours below;
+	 * no container to restyle. */
 	:global(html.dark) .range-track {
 		background-color: color-mix(
 			in srgb,
@@ -547,35 +498,19 @@
 		}
 
 		.range-handle {
-			width: var(--space-5);
-			height: var(--space-5);
+			width: var(--space-3);
+			height: var(--space-6);
 		}
 	}
 
-	/* Respect user motion preferences */
+	/* Respect user motion preferences — controls already shift colour instantly;
+	 * disabling the remaining hairline transitions is enough. */
 	@media (prefers-reduced-motion: reduce) {
 		.range-slider,
 		.range-track,
-		.range-highlight,
 		.range-handle,
-		.range-float,
 		.pip {
 			transition: none;
-		}
-
-		.range-handle:hover,
-		.range-handle:focus,
-		.range-handle.active {
-			transform: translate(-50%, -50%);
-		}
-
-		/* Disable entry animations */
-		.range-float {
-			animation: none;
-		}
-
-		.range-handle {
-			will-change: auto;
 		}
 	}
 </style>

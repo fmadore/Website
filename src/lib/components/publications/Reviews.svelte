@@ -1,223 +1,218 @@
 <script lang="ts">
 	import type { ReviewWork } from '$lib/types/publication';
 
-	// Prop to receive the array of reviews
-	let { reviewedBy = [] }: { reviewedBy?: ReviewWork[] } = $props();
+	// Prop to receive the array of reviews + the section's №-marker.
+	let {
+		reviewedBy = [],
+		sectionNumber = undefined
+	}: { reviewedBy?: ReviewWork[]; sectionNumber?: string } = $props();
 
-	// Sort the array by year descending
-	const sortedReviews = $derived((reviewedBy || []).sort((a, b) => b.year - a.year));
+	// Sort the array by year descending (copy first — never mutate the prop).
+	const sortedReviews = $derived([...(reviewedBy ?? [])].sort((a, b) => b.year - a.year));
 </script>
 
-{#if sortedReviews && sortedReviews.length > 0}
-	<section class="reviews-section glass-section-panel scroll-reveal">
-		<h2 class="editorial-section-title">Reviews</h2>
-		<div class="reviews-grid grid-stagger">
+{#if sortedReviews.length > 0}
+	<section class="reviews-section section scroll-reveal">
+		<div class="section-head">
+			<span class="section-no">{sectionNumber ? `№ ${sectionNumber}` : '№'}</span>
+			<h2 class="section-title">Reviews</h2>
+			<span class="dateline reviews-count">{sortedReviews.length}</span>
+		</div>
+
+		<!-- Each review: a serif-italic pull-quote (the document voice) closed by
+		     a mono attribution line — AUTHOR · VENUE · YEAR · DOI ↗ (the data
+		     voice). No cards, no stripes. -->
+		<div class="review-list grid-stagger">
 			{#each sortedReviews as review (review.title + review.year + review.author)}
-				<div class="review-card glass-sub-card scroll-reveal-scale">
-					<div class="review-title">
+				<article class="review">
+					{#if review.excerpt}
+						<blockquote class="review-quote">{review.excerpt}</blockquote>
+					{/if}
+
+					<p class="review-attribution">
 						{#if review.url}
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
-							<a href={review.url} target="_blank" rel="noopener" class="review-link"
+							<a href={review.url} target="_blank" rel="noopener" class="review-link">
+								{review.author}<span class="review-cite-arrow"> ↗</span>
+							</a>
+						{:else}
+							<span>{review.author}</span>
+						{/if}
+						<span class="review-sep" aria-hidden="true">·</span>
+						<span class="review-venue">{review.journal}</span>
+						<span class="review-sep" aria-hidden="true">·</span>
+						<span class="review-year">{review.year}</span>
+						{#if review.doi}
+							<span class="review-sep" aria-hidden="true">·</span>
+							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
+							<a
+								href="https://doi.org/{review.doi}"
+								target="_blank"
+								rel="noopener"
+								class="review-doi">DOI ↗</a
+							>
+						{/if}
+					</p>
+
+					<!-- Full review reference in serif — the record behind the quote. -->
+					<p class="review-ref">
+						{#if review.url}
+							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
+							<a href={review.url} target="_blank" rel="noopener" class="review-ref-link"
 								>{review.title}</a
 							>
 						{:else}
 							{review.title}
 						{/if}
-					</div>
-
-					<div class="review-author">
-						<span class="author-label">By {review.author}</span> ({review.year})
-					</div>
-
-					<div class="journal-info">
-						<span class="journal-name">{review.journal}</span
-						><!--
-						-->{#if review.volume || review.issue || review.pages}<span
-								class="publication-details"
-								>{#if review.volume}{', vol. ' + review.volume}{/if}{#if review.issue}{', no. ' +
-										review.issue}{/if}{#if review.pages}{', pp. ' + review.pages}{/if}</span
-							>{/if}
-						{#if review.doi}
-							<div class="doi">
-								DOI:
-								<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
-								<a
-									href="https://doi.org/{review.doi}"
-									target="_blank"
-									rel="noopener"
-									class="doi-link">{review.doi}</a
-								>
-								<!-- eslint-enable svelte/no-navigation-without-resolve -->
-							</div>
-						{/if}
-					</div>
-
-					{#if review.excerpt}
-						<blockquote class="excerpt">
-							{review.excerpt}
-						</blockquote>
-					{/if}
-				</div>
+					</p>
+				</article>
 			{/each}
 		</div>
 	</section>
 {/if}
 
 <style>
-	/* Content-on-paper section; the entity cards inside carry the chrome. */
+	/* №-numbered section (3px top rule) supplied by the .section idiom. */
 	.reviews-section {
 		margin-top: var(--space-2xl);
 	}
 
-	/* Section title comes from the shared .editorial-section-title utility
-	 * (typography.css). */
-
-	.reviews-grid {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-lg);
+	/* Count stamp sits after the title as a faint mono dateline. */
+	.reviews-count {
+		margin-left: auto;
 	}
 
-	.review-card {
-		padding: var(--space-md);
+	.review-list {
+		display: flex;
+		flex-direction: column;
 	}
 
-	@media (--sm) {
-		.review-card {
-			padding: var(--space-lg);
-		}
+	/* Each review is separated from the previous by a hairline — a bibliography
+	 * of quoted opinion, ruled like the ledger but quote-led. */
+	.review {
+		padding: var(--space-lg) 0;
+		border-top: var(--rule-hairline) solid var(--color-border);
 	}
 
-	.review-title {
-		font-size: var(--font-size-base);
-		font-weight: var(--font-weight-semibold);
-		margin-bottom: var(--space-sm);
-		color: var(--color-text-emphasis);
-		line-height: var(--line-height-snug);
+	.review:first-child {
+		border-top: none;
+		padding-top: var(--space-xs);
+	}
+
+	/*
+	 * Review quote — editorial pull-quote in the document voice: italic serif,
+	 * opened by a hanging pine quotation mark. No box, no stripe.
+	 */
+	.review-quote {
+		position: relative;
+		margin: 0 0 var(--space-md);
+		padding-left: var(--space-lg);
 		font-family: var(--font-family-serif);
+		font-style: italic;
+		font-size: var(--font-size-lg);
+		line-height: var(--line-height-relaxed);
+		color: var(--color-text-soft);
+		max-width: 62ch;
 	}
 
-	@media (--sm) {
-		.review-title {
-			font-size: var(--font-size-lg);
-		}
+	.review-quote::before {
+		content: '\201C';
+		position: absolute;
+		left: 0;
+		top: -0.1em;
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-3xl);
+		line-height: 1;
+		color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+	}
+
+	/* Attribution — the data voice: mono caps, dot-separated, DOI stamped. */
+	.review-attribution {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: var(--space-1) var(--space-2);
+		margin: 0;
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-medium);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--color-text-light);
+	}
+
+	.review-venue {
+		color: var(--color-text-soft);
+	}
+
+	.review-year {
+		color: var(--color-text-muted);
+	}
+
+	.review-sep {
+		color: var(--color-text-muted);
 	}
 
 	.review-link {
-		color: var(--color-primary);
-		text-decoration: none;
+		color: var(--color-text-emphasis);
 		font-weight: var(--font-weight-semibold);
+		text-decoration: none;
 		transition: color var(--duration-fast) var(--ease-out);
 	}
 
 	.review-link:hover {
-		color: var(--color-primary-dark);
-		text-decoration: underline;
+		color: var(--color-accent);
 	}
 
-	/* External link indicator */
-	.review-link:after {
-		content: '↗';
-		font-size: var(--font-size-sm);
-		margin-left: var(--space-2xs);
-		opacity: var(--opacity-90);
-	}
-
-	.review-author {
-		font-size: var(--font-size-sm);
-		color: var(--color-text-light);
-		margin-bottom: var(--space-sm);
-	}
-
-	.author-label {
-		font-weight: var(--font-weight-medium);
-	}
-
-	.journal-info {
-		font-size: var(--font-size-sm);
+	.review-cite-arrow {
 		color: var(--color-text-muted);
-		margin-bottom: var(--space-md);
 	}
 
-	.journal-name {
-		font-style: italic;
-		font-weight: var(--font-weight-medium);
-		color: var(--color-text);
-	}
-
-	.publication-details {
-		color: var(--color-text-light);
-	}
-
-	.doi {
-		margin-top: var(--space-xs);
-	}
-
-	.doi-link {
-		color: var(--color-primary);
+	.review-doi {
+		color: var(--color-accent);
 		text-decoration: none;
-		font-weight: var(--font-weight-medium);
 		transition: color var(--duration-fast) var(--ease-out);
 	}
 
-	.doi-link:hover {
-		color: var(--color-primary-dark);
+	.review-doi:hover {
+		color: var(--color-accent-dark);
 		text-decoration: underline;
 	}
 
-	/*
-	 * Review excerpt — editorial pull-quote. No stripe. Indented italic
-	 * serif with a leading open-quote glyph supplies the "this is quoted"
-	 * cue; the surface tint provides separation from surrounding prose.
-	 */
-	.excerpt {
-		margin: var(--space-md) 0 var(--space-md) var(--space-md);
-		padding: var(--space-sm) 0 var(--space-sm) var(--space-md);
-		border-radius: var(--border-radius-sm);
-		background: transparent;
-		font-style: italic;
-		color: var(--color-text-light);
-		position: relative;
-		line-height: var(--line-height-relaxed);
+	/* The full review reference — quiet serif, the bibliographic record. */
+	.review-ref {
+		margin: var(--space-sm) 0 0;
 		font-family: var(--font-family-serif);
 		font-size: var(--font-size-sm);
+		line-height: var(--line-height-snug);
+		color: var(--color-text-light);
+		max-width: 64ch;
 	}
 
-	.excerpt::before {
-		content: '\201C';
-		position: absolute;
-		left: calc(-1 * var(--space-xs));
-		top: calc(-1 * var(--space-2xs));
-		font-size: var(--font-size-2xl);
-		color: color-mix(in srgb, var(--color-primary) 40%, transparent);
-		font-family: var(--font-family-serif);
-		line-height: 1;
+	.review-ref-link {
+		color: inherit;
+		text-decoration: none;
+		transition: color var(--duration-fast) var(--ease-out);
 	}
 
-	@media (--sm) {
-		.excerpt {
-			padding: var(--space-md) var(--space-lg);
-			font-size: var(--font-size-base);
-		}
+	.review-ref-link:hover {
+		color: var(--color-accent);
+		text-decoration: underline;
 	}
 
 	/* Enhanced focus states for accessibility */
 	.review-link:focus-visible,
-	.doi-link:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-highlight);
+	.review-doi:focus-visible,
+	.review-ref-link:focus-visible {
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--space-0-5);
-		box-shadow: 0 0 0 var(--space-1) color-mix(in srgb, var(--color-highlight) 20%, transparent);
-		border-radius: var(--border-radius-sm);
 	}
 
-	:global(html.dark) .excerpt {
-		background: color-mix(
-			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-15) * 100%),
-			transparent
-		);
+	@media (prefers-reduced-motion: reduce) {
+		.review-link,
+		.review-doi,
+		.review-ref-link {
+			transition: none;
+		}
 	}
-
-	/* Responsive adjustments */
-	/* Mobile-first styles are now default, with overrides in media queries above */
 </style>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { address, contact, website, socialLinks } from '$lib/data/siteConfig';
+	import { address, contact, website, socialLinks, author } from '$lib/data/siteConfig';
 
 	// Get current date formatted as "Day Month Year"
 	const today = new Date().toLocaleDateString('en-GB', {
@@ -20,9 +20,9 @@
 </script>
 
 <header class="cv-header">
+	<p class="cv-date">As of {today}</p>
 	<h1 class="cv-main-title">Curriculum Vitae</h1>
-	<h2 class="cv-subtitle">Frédérick Madore, PhD</h2>
-	<p class="cv-date">{today}</p>
+	<h2 class="cv-subtitle">{author.fullName} — {author.position}</h2>
 </header>
 
 <!-- Contact Info Section -->
@@ -59,41 +59,46 @@
 
 <style>
 	/*
-	 * Editorial title block — left-aligned, like the title page of a printed
-	 * CV rather than a centered banner. The h1 "Curriculum Vitae" is the
-	 * document *label*, so it renders as a quiet letterspaced eyebrow; the
-	 * subject (the name, h2) carries the display type. Heading levels stay
-	 * h1 → h2 → h3 for assistive tech; only the visual weight is inverted.
+	 * Editorial title block — the CV masthead, matching every other index
+	 * page: an accent mono dateline, the page name "Curriculum Vitae" in the
+	 * Archivo display voice, and the subject as a serif-italic standfirst.
 	 */
 	.cv-header {
 		margin-bottom: var(--space-6);
 	}
 
-	.cv-main-title {
-		font-family: var(--font-family-sans);
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-semibold);
+	/* Dateline — DATA voice: accent mono eyebrow above the title. */
+	.cv-date {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-bold);
 		text-transform: uppercase;
-		letter-spacing: var(--tracking-eyebrow);
-		color: var(--color-primary);
+		letter-spacing: 0.16em;
+		color: var(--color-accent);
 		margin: 0 0 var(--space-3);
 	}
 
-	.cv-subtitle {
+	/* Page title — DOCUMENT voice: Archivo display, the page's largest type. */
+	.cv-main-title {
 		font-family: var(--font-family-display);
-		font-optical-sizing: auto;
-		font-variation-settings: var(--font-variation-display-md);
-		font-size: var(--font-size-3xl);
-		font-weight: var(--font-weight-semibold);
-		line-height: var(--line-height-heading);
-		letter-spacing: var(--tracking-heading);
+		font-variation-settings: var(--font-variation-display);
+		font-size: var(--font-size-4xl);
+		font-weight: 830;
+		line-height: 1;
+		letter-spacing: -0.015em;
 		color: var(--color-text-emphasis);
-		margin: 0 0 var(--space-2);
+		margin: 0 0 var(--space-3);
 	}
 
-	.cv-date {
-		font-size: var(--font-size-sm);
-		color: var(--color-text-muted);
+	/* Subject — the serif-italic standfirst. */
+	.cv-subtitle {
+		font-family: var(--font-family-serif);
+		font-style: italic;
+		font-size: var(--font-size-lg);
+		font-weight: var(--font-weight-normal);
+		line-height: var(--line-height-snug);
+		color: var(--color-text-soft);
+		max-width: 60ch;
 		margin: 0;
 	}
 

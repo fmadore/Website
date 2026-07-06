@@ -42,6 +42,7 @@
 	 */
 	.page-intro {
 		font-family: var(--font-family-serif);
+		font-style: italic;
 		font-size: var(--font-size-lead);
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text-soft);
@@ -75,26 +76,25 @@
 
 	.page-intro :global(a) {
 		color: var(--color-primary);
-		text-decoration: none;
+		text-decoration: underline;
+		text-decoration-color: var(--color-accent);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 3px;
 		font-weight: var(--font-weight-medium);
-		padding-bottom: 2px;
-		background-image: linear-gradient(90deg, var(--color-primary), var(--color-primary));
-		background-size: 0% 1px;
-		background-position: left bottom;
-		background-repeat: no-repeat;
 		transition:
-			color var(--duration-moderate) var(--ease-in-out),
-			background-size var(--duration-normal) var(--ease-out);
+			color var(--duration-fast) var(--ease-out),
+			text-decoration-thickness var(--duration-fast) var(--ease-out);
 	}
 
 	.page-intro :global(a:hover) {
-		background-size: 100% 1px;
+		color: var(--color-accent);
+		text-decoration-thickness: 2px;
 	}
 
 	.page-intro :global(a:focus-visible) {
-		outline: var(--border-width-medium) solid var(--color-primary);
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--space-2xs);
-		border-radius: var(--border-radius-sm);
+		border-radius: 0;
 	}
 
 	.page-intro :global(em) {
@@ -138,7 +138,6 @@
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
 		.page-intro :global(a) {
-			background-size: 100% 1px;
 			transition: none;
 		}
 	}

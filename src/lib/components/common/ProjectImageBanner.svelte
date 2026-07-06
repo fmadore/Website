@@ -33,11 +33,10 @@
 
 <style>
 	/*
-	 * Documentary plate. The photograph is presented clean: a hairline frame
-	 * and one quiet shadow, no glass scrim, gradient sheen, glow, hover lift,
-	 * or image zoom. Glass is reserved for true chrome (header, media
-	 * controls); a banner photograph reads at full fidelity and, where it
-	 * needs labelling, takes a plain serif-italic caption beneath.
+	 * Documentary plate. The photograph is presented clean: square corners, a
+	 * single hairline frame, no shadow, no glass scrim, gradient sheen, glow,
+	 * hover lift, or image zoom — a scan mounted flat on the page. Where it
+	 * needs labelling, it takes a plain serif-italic caption beneath.
 	 */
 	.project-image-banner {
 		margin: 0 0 var(--space-6);
@@ -48,9 +47,8 @@
 		display: block;
 		width: 100%;
 		height: auto;
-		border-radius: var(--border-radius-sm);
+		border-radius: 0;
 		border: var(--border-width-thin) solid var(--color-border-dark);
-		box-shadow: 0 2px 6px -2px color-mix(in srgb, var(--color-black) 8%, transparent);
 	}
 
 	.project-image-caption {

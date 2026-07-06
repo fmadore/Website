@@ -12,6 +12,7 @@
 	imageAlt="Religious Activism on Campuses in Togo and Benin"
 	audioSrc="notebooklm/religious_activism_campus.mp3"
 	projectName="Religious Activism on Campuses in Togo and Benin"
+	showFunding={false}
 >
 	<p>
 		This project uncovers the neglected history of Christian and Muslim student associations at the

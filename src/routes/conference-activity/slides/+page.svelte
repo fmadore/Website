@@ -78,23 +78,32 @@
 	}
 
 	.deck-empty-title {
-		font-family: var(--font-family-serif);
-		font-size: var(--font-size-lg);
+		font-family: var(--font-family-display);
+		font-variation-settings: var(--font-variation-display-sm);
+		font-size: var(--font-size-xl);
+		font-weight: 700;
+		letter-spacing: -0.01em;
 		color: var(--color-text-emphasis);
 		margin: 0 0 var(--space-2xs);
 	}
 
 	.deck-empty-text {
+		font-family: var(--font-family-serif);
 		font-size: var(--font-size-base);
 		line-height: var(--line-height-relaxed);
-		color: var(--color-text-light);
+		color: var(--color-text-soft);
 		margin: 0;
 	}
 
+	/* Accent underline — the link role carries the lone pine. */
 	.deck-empty-text a {
-		color: var(--color-primary);
+		color: var(--color-accent);
 		text-decoration: underline;
 		text-underline-offset: 2px;
+	}
+
+	.deck-empty-text a:hover {
+		color: var(--color-accent-dark);
 	}
 
 	@media (--md-down) {

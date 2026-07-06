@@ -26,7 +26,7 @@
 		{#each presentPublicationTypes as pubType (pubType)}
 			{#if publicationsByType[pubType] && publicationsByType[pubType].length > 0}
 				<h4>{getPublicationTypeDisplayName(pubType)}</h4>
-				<div class="space-y-3">
+				<div class="space-y-3 ledger">
 					{#each publicationsByType[pubType] as pub (pub.id)}
 						{@const formattedAuthors = formatCVAuthorList(pub.authors)}
 						<CVEntry year={getCVDisplayYear(pub)}>
@@ -122,8 +122,8 @@
 
 		<!-- Optional: Section for other publication types -->
 		{#if otherPublicationTypes.length > 0}
-			<h4 class="text-lg font-semibold mt-4 mb-2">Other</h4>
-			<div class="space-y-3">
+			<h4>Other</h4>
+			<div class="space-y-3 ledger">
 				{#each otherPublicationTypes as pubType (pubType)}
 					{#each publicationsByType[pubType as Publication['type']] as pub (pub.id)}
 						<CVEntry year={getCVDisplayYear(pub)}>
@@ -142,7 +142,7 @@
 			</div>
 		{/if}
 	{:else}
-		<p class="text-light">No publications listed.</p>
+		<p class="cv-empty">No publications listed.</p>
 	{/if}
 </section>
 
@@ -157,21 +157,32 @@
 		height: var(--space-5);
 	}
 
+	/* DOI fallback (shown only if the Zenodo badge image fails) — square ink
+	 * stamp with mono data-voice figures. */
 	.doi-badge-fallback {
 		display: none;
 		padding: var(--space-1) var(--space-2);
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-medium);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-semibold);
+		letter-spacing: 0.04em;
 		color: var(--color-text-inverted);
 		background-color: var(--color-primary);
-		border-radius: var(--border-radius);
+		border-radius: 0;
 		align-items: center;
 	}
 
+	/* "Other" type tag — square, mono uppercase, hairline outline. */
 	.pub-type-badge {
-		font-size: var(--font-size-sm);
-		background-color: var(--color-border);
-		padding: 0 var(--space-1);
-		border-radius: var(--border-radius);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-medium);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--color-text-muted);
+		background-color: transparent;
+		border: var(--border-width-thin) solid var(--color-border);
+		padding: 0 var(--space-1-5);
+		border-radius: 0;
 	}
 </style>

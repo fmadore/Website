@@ -67,7 +67,7 @@
 {/snippet}
 
 {#if grantList.length > 0}
-	<PanelBase title="Funding" variant="items" glassEffect="glass-card" content={panelContent} />
+	<PanelBase title="Funding" variant="items" content={panelContent} />
 {/if}
 
 <style>
@@ -80,10 +80,12 @@
 		gap: var(--space-md);
 	}
 
+	/* Each grant is a ledger row: a hairline separates entries, the funder and
+	 * title read in the DOCUMENT serif voice, the figures/dates/status in the
+	 * DATA mono voice. No pills, no tinted boxes. */
 	.grant-item {
 		padding: var(--space-sm) 0;
-		border-bottom: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) 10%, transparent);
+		border-bottom: var(--rule-hairline) solid var(--color-border-light);
 	}
 
 	.grant-item:last-child {
@@ -97,20 +99,28 @@
 		gap: var(--space-2xs);
 	}
 
+	/* Funder — a mono eyebrow above the serif title. */
 	.grant-funder {
-		font-size: var(--font-size-sm);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
-		color: var(--color-primary);
-	}
-
-	.grant-program {
-		font-size: var(--font-size-sm);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
 		color: var(--color-text-light);
 	}
 
+	.grant-program {
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-base);
+		font-weight: var(--font-weight-medium);
+		color: var(--color-text-emphasis);
+		line-height: var(--line-height-snug);
+	}
+
 	.grant-project-title {
+		font-family: var(--font-family-serif);
 		font-size: var(--font-size-sm);
-		color: var(--color-text);
+		color: var(--color-text-soft);
 		font-style: italic;
 		margin-top: var(--space-2xs);
 	}
@@ -119,61 +129,57 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--space-sm);
-		margin-top: var(--space-xs);
-		align-items: center;
+		margin-top: var(--space-2);
+		align-items: baseline;
+		font-family: var(--font-family-mono);
+		font-variant-numeric: tabular-nums;
 	}
 
 	.grant-date {
-		font-size: var(--font-size-xs);
+		font-size: var(--font-size-2xs);
+		letter-spacing: 0.06em;
 		color: var(--color-text-muted);
 	}
 
+	/* Amount — mono figure, quiet emphasis (ink, no fill). */
 	.grant-amount {
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-medium);
-		color: var(--color-primary);
-		background: color-mix(in srgb, var(--color-primary) 10%, transparent);
-		padding: var(--space-2xs) var(--space-xs);
-		border-radius: var(--border-radius-sm);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text-emphasis);
 	}
 
+	/* Status — a flat mono marker; "Awarded" earns the lone pine accent. */
 	.grant-status {
-		font-size: var(--font-size-xs);
-		padding: var(--space-2xs) var(--space-xs);
-		border-radius: var(--border-radius-sm);
+		font-size: var(--font-size-2xs);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		font-weight: var(--font-weight-semibold);
 	}
 
 	.status-awarded {
-		background: color-mix(in srgb, var(--color-primary) 10%, transparent);
-		color: var(--color-primary);
+		color: var(--color-accent);
 	}
 
 	.status-other {
-		background: color-mix(in srgb, var(--color-text) 10%, transparent);
 		color: var(--color-text-muted);
 	}
 
 	.grant-coapplicants {
+		font-family: var(--font-family-serif);
 		font-size: var(--font-size-xs);
 		color: var(--color-text-muted);
 		margin-top: var(--space-xs);
 	}
 
 	.coapplicants-label {
-		font-weight: var(--font-weight-medium);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
 	}
 
 	.coapplicants-names {
 		font-style: italic;
-	}
-
-	/* Dark mode adjustments */
-	:global(html.dark) .grant-funder {
-		color: var(--color-primary-light);
-	}
-
-	:global(html.dark) .grant-item {
-		border-bottom-color: color-mix(in srgb, var(--color-primary) 15%, transparent);
 	}
 
 	/* Responsive adjustments */

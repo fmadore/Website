@@ -207,75 +207,77 @@
 		z-index: var(--z-fixed);
 	}
 
-	/* ===================== FAB BUTTON ===================== */
+	/* ===================== FAB BUTTON =====================
+	 * Square ink stamp, no shadow, no scale-lift — a printer's mark, not a
+	 * material-design fab. Paper text on ink; inverts to a quiet outline when
+	 * open. */
 	.cv-toc-fab {
 		width: var(--space-12);
 		height: var(--space-12);
-		border-radius: var(--border-radius-full);
-		border: none;
+		border-radius: 0;
+		border: var(--border-width-thin) solid var(--color-primary);
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		cursor: pointer;
-		color: var(--color-white);
+		color: var(--color-text-inverted);
 		background: var(--color-primary);
-		box-shadow:
-			var(--shadow-lg),
-			0 4px 16px 0
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
-		transition: all var(--duration-fast) ease;
+		transition:
+			background var(--duration-fast) var(--ease-out),
+			color var(--duration-fast) var(--ease-out),
+			border-color var(--duration-fast) var(--ease-out);
 	}
 
 	.cv-toc-fab:hover {
-		transform: scale(var(--scale-105));
-		box-shadow:
-			var(--shadow-xl),
-			0 6px 20px 0
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-90) * 100%), transparent);
+		background: var(--color-primary-dark);
+		border-color: var(--color-primary-dark);
 	}
 
 	.cv-toc-fab.open {
-		background: var(--color-text-light);
+		background: var(--color-surface);
+		color: var(--color-text-emphasis);
+		border-color: var(--color-border-dark);
 	}
 
 	.cv-toc-fab:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-white);
-		outline-offset: var(--border-width-medium);
+		outline: var(--border-width-medium) solid var(--color-accent);
+		outline-offset: var(--border-width-thin);
 	}
 
 	/* ===================== PANEL =====================
-	 * Warm popover surface — legitimate chrome glass (a floating panel over
-	 * page content), but tinted from the warm surface token rather than pure
-	 * white so it reads as paper in both themes. */
+	 * Flat paper popover — solid surface, square corners, hairline border, no
+	 * glass or shadow. A slip of index-card stock pinned over the page. */
 	.cv-toc-panel {
 		position: absolute;
 		bottom: calc(var(--space-12) + var(--space-2));
 		left: 0;
-		width: 200px;
+		width: 208px;
 		max-height: 60vh;
 		overflow-y: auto;
 		padding: var(--space-3);
-		border-radius: var(--border-radius-lg);
-		background: color-mix(in srgb, var(--color-surface-elevated) 94%, transparent);
-		-webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(120%);
-		backdrop-filter: blur(var(--glass-blur-md)) saturate(120%);
-		border: var(--border-width-thin) solid var(--color-border);
-		box-shadow: var(--shadow-lg);
+		border-radius: 0;
+		background: var(--color-surface-elevated);
+		border: var(--border-width-thin) solid var(--color-border-dark);
+		box-shadow: none;
 		animation: tocSlideUp var(--duration-normal) ease forwards;
 	}
 
 	:global(html.dark) .cv-toc-panel {
-		background: color-mix(in srgb, var(--color-surface-alt) 94%, transparent);
-		border-color: var(--color-border);
+		background: var(--color-surface-alt);
+		border-color: var(--color-border-dark);
 	}
 
+	/* Panel title — DATA voice: mono, uppercase, letterspaced, over a hairline. */
 	.cv-toc-title {
-		font-size: var(--font-size-xs);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-bold);
 		text-transform: uppercase;
-		letter-spacing: var(--letter-spacing-wider);
-		color: var(--color-text-light);
-		margin: 0 0 var(--space-2) var(--space-2);
+		letter-spacing: 0.14em;
+		color: var(--color-text-muted);
+		margin: 0 0 var(--space-2);
+		padding: 0 var(--space-1) var(--space-2);
+		border-bottom: var(--rule-hairline) solid var(--color-border-light);
 	}
 
 	@keyframes tocSlideUp {
@@ -299,27 +301,30 @@
 		gap: var(--space-px);
 	}
 
+	/* TOC entry — DATA voice: mono, uppercase, letterspaced. A square accent tick
+	 * marks the active section; no rounded pill, no tinted fill. */
 	.cv-toc-link {
 		display: block;
 		width: 100%;
 		text-align: left;
 		background: none;
 		border: none;
+		border-radius: 0;
 		padding: var(--space-1) var(--space-2);
-		border-radius: var(--border-radius-md);
-		font-size: var(--font-size-xs);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-medium);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
 		line-height: var(--line-height-snug);
 		color: var(--color-text-light);
 		cursor: pointer;
-		transition:
-			color var(--duration-normal) var(--ease-out),
-			background var(--duration-normal) var(--ease-out);
+		transition: color var(--duration-normal) var(--ease-out);
 		position: relative;
 	}
 
-	/* Indicator bar is always present but zero-scaled when inactive; we
-	 * transition transform/opacity so switching the active section slides the
-	 * highlight smoothly from its previous position into the new one. */
+	/* Active-section tick — a solid accent bar, zero-scaled until active so the
+	 * highlight slides between sections rather than popping. */
 	.cv-toc-link::before {
 		content: '';
 		position: absolute;
@@ -327,8 +332,8 @@
 		top: var(--space-1);
 		bottom: var(--space-1);
 		width: var(--border-width-medium);
-		background: var(--color-primary);
-		border-radius: var(--border-radius-full);
+		background: var(--color-accent);
+		border-radius: 0;
 		opacity: 0;
 		transform: scaleY(0);
 		transform-origin: center;
@@ -338,14 +343,12 @@
 	}
 
 	.cv-toc-link:hover {
-		color: var(--color-primary);
-		background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+		color: var(--color-text-emphasis);
 	}
 
 	.cv-toc-link.active {
-		color: var(--color-primary);
+		color: var(--color-accent);
 		font-weight: var(--font-weight-semibold);
-		background: color-mix(in srgb, var(--color-primary) 12%, transparent);
 	}
 
 	.cv-toc-link.active::before {
@@ -354,7 +357,7 @@
 	}
 
 	.cv-toc-link:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-primary);
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--border-width-thin);
 	}
 

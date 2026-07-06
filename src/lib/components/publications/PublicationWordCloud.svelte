@@ -21,8 +21,11 @@ Only renders if text analysis data is available for this publication.
 </script>
 
 {#if showWordCloud && analysis}
-	<section class="wordcloud-section glass-section-panel scroll-reveal">
-		<h2 class="editorial-section-title wordcloud-title">{title}</h2>
+	<section class="wordcloud-section section scroll-reveal">
+		<div class="section-head">
+			<span class="section-no">№</span>
+			<h2 class="section-title">{title}</h2>
+		</div>
 		<div class="wordcloud-wrapper">
 			<EChartsWordCloud
 				words={analysis.frequencies}
@@ -33,39 +36,30 @@ Only renders if text analysis data is available for this publication.
 				height={350}
 			/>
 		</div>
-		<p class="wordcloud-caption">Displaying the most frequent terms from the full text</p>
+		<p class="wordcloud-caption">Most frequent terms from the full text</p>
 	</section>
 {/if}
 
 <style>
-	/* Content-on-paper section — the word-cloud figure is the surface. */
+	/* №-numbered section (3px top rule) supplied by the .section idiom —
+	 * the word-cloud figure is the surface. */
 	.wordcloud-section {
 		margin-top: var(--space-xl);
-	}
-
-	/* Base treatment comes from the shared .editorial-section-title utility
-	 * (typography.css); the word-cloud figure title steps one size up. */
-	.wordcloud-title {
-		font-size: var(--font-size-xl);
-		margin-bottom: var(--space-md);
 	}
 
 	.wordcloud-wrapper {
 		margin: var(--space-md) 0;
 	}
 
+	/* Caption — data voice: mono caps stamp beneath the figure. */
 	.wordcloud-caption {
-		font-size: var(--font-size-sm);
-		color: var(--color-text-muted);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-medium);
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--color-text-light);
 		text-align: center;
-		font-style: italic;
 		margin-top: var(--space-sm);
-	}
-
-	/* Responsive */
-	@media (--sm) {
-		.wordcloud-title {
-			font-size: var(--font-size-2xl);
-		}
 	}
 </style>

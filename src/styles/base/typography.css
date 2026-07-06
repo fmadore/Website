@@ -1,8 +1,10 @@
 /* Typography styles */
 
-/* Base font settings */
+/* Base font settings — the reading default is the PROSE voice (Newsreader).
+ * The visual language has no humanist sans; chrome opts into the mono data
+ * voice explicitly, headings into the Archivo display voice. */
 body {
-	font-family: var(--font-family-sans);
+	font-family: var(--font-family-serif);
 	font-size: var(--font-size-body);
 	line-height: var(--line-height-body);
 	color: var(--color-text);
@@ -21,28 +23,22 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-/* Text selection — ink wash on paper. Translucent primary so it reads
- * correctly over both warm paper (light) and slate (dark) surfaces. */
+/* Text selection — a pine editor's mark washed over ink. Translucent
+ * accent so ink/cream text stays legible on paper and on the film negative. */
 ::selection {
-	background-color: color-mix(in srgb, var(--color-primary) 24%, transparent);
+	background-color: color-mix(in srgb, var(--color-accent) 26%, transparent);
 }
 
 /*
- * Headings — serif throughout, with a two-tier voice.
- * All of h1–h6 default to the editorial serif (Spectral) for two reasons:
- *   1. Consistent editorial-magazine voice — Commissioner carries UI/body
- *      chrome; every heading-level typographic gesture is serif.
- *   2. Inline <em> inside headings renders with real serif italic glyphs;
- *      Commissioner has no italic axis, so mixing would force the browser to
- *      synthesise an oblique (visually crude).
- *
- * Top-level headings (h1–h3) then upgrade to the Fraunces *display* serif for
- * letterpress character at large sizes; h4–h6 stay on Spectral so smaller
- * structural headings read as quiet prose rather than display. Both faces
- * share the same fallback stack, so the hierarchy is graceful pre-webfont.
- *
- * Opt into sans explicitly with the `.font-sans` utility class when a
- * heading needs to read as label/chrome rather than prose.
+ * Headings — the two voices.
+ * h1–h3 are the DISPLAY voice: Archivo, a grotesque built for archive
+ * headlines, set on a wide/heavy cut (wdth axis via --font-variation-display,
+ * weight 750–850). Nameplate, page titles, section heads.
+ * h4–h5 stay in the PROSE voice: Newsreader, quiet structural headings that
+ * read as typeset prose rather than display. h6 drops to the DATA voice
+ * (mono caps) — it is used as an eyebrow/label.
+ * Inline <em> inside a display heading switches to Newsreader serif italic
+ * (a work title quoted inside an Archivo section head).
  */
 h1,
 h2,
@@ -50,10 +46,8 @@ h3,
 h4,
 h5,
 h6 {
-	/* Headings default to zero vertical margin. Prose contexts
-	 * (`.prose`, `.content-body`, `.content-text`) opt back into generous
-	 * top margins below — component-scoped `.*-title` elements stay flush
-	 * with their panel padding instead of inheriting a 48 px gap. */
+	/* Headings default to zero vertical margin. Prose contexts opt back into
+	 * generous top margins below; component-scoped titles stay flush. */
 	margin-top: 0;
 	margin-bottom: 0;
 	font-family: var(--font-family-serif);
@@ -63,17 +57,29 @@ h6 {
 	color: var(--color-text-emphasis);
 }
 
-/* Top-level headings use the Fraunces display serif. `optical-sizing: auto`
- * lets the variable font shift toward its display cut at larger sizes. */
+/* Top-level headings use the Archivo display grotesque, wide and heavy. */
 h1,
 h2,
 h3 {
 	font-family: var(--font-family-display);
-	font-optical-sizing: auto;
+	font-weight: 800;
+	letter-spacing: -0.015em;
 }
 
-/* Headings avoid one-word orphan lines; body copy avoids ragged last lines.
- * Progressive enhancement — browsers without text-wrap support ignore it. */
+/* A title or emphasised phrase inside a display heading stays in the display
+ * voice. A serif italic bolted into a heavy Archivo head reads as a voice
+ * collision at display sizes, so titles in a grotesque head are set upright in
+ * the same face, not italicised. (Prose italics still switch to Newsreader — see
+ * the running-text rules below.) */
+:is(h1, h2, h3) :is(em, i, cite) {
+	font-family: inherit;
+	font-variation-settings: inherit;
+	font-weight: inherit;
+	font-style: normal;
+	letter-spacing: inherit;
+}
+
+/* Headings avoid one-word orphan lines; body copy avoids ragged last lines. */
 h1,
 h2,
 h3,
@@ -90,23 +96,25 @@ li {
 h1 {
 	font-size: var(--font-size-heading-1);
 	margin-bottom: var(--space-xl);
-	line-height: var(--line-height-heading);
-	letter-spacing: var(--tracking-heading);
+	line-height: 1;
 	font-variation-settings: var(--font-variation-display);
+	font-weight: 830;
 }
 
 h2 {
 	font-size: var(--font-size-heading-2);
 	margin-bottom: var(--space-lg);
-	font-weight: var(--font-weight-semibold);
+	line-height: 1.02;
 	font-variation-settings: var(--font-variation-display-md);
+	font-weight: 780;
 }
 
 h3 {
 	font-size: var(--font-size-heading-3);
 	margin-bottom: var(--space-md);
-	font-weight: var(--font-weight-semibold);
+	line-height: 1.05;
 	font-variation-settings: var(--font-variation-display-sm);
+	font-weight: 750;
 }
 
 h4 {
@@ -121,9 +129,11 @@ h5 {
 	font-weight: var(--font-weight-semibold);
 }
 
+/* h6 = the data voice: a mono, letterspaced caps label. */
 h6 {
 	font-size: var(--font-size-heading-6);
 	margin-bottom: var(--space-xs);
+	font-family: var(--font-family-mono);
 	font-weight: var(--font-weight-semibold);
 	text-transform: uppercase;
 	letter-spacing: var(--tracking-eyebrow);
@@ -134,74 +144,58 @@ p {
 	margin-bottom: var(--space-md);
 }
 
-/* Links */
+/* Links — ink text with a static pine underline in prose; the
+ * accent marks a live cross-reference. Hover warms the text to pine and
+ * thickens the rule. The register is print, so nothing grows or sweeps. */
 a {
 	color: var(--color-primary);
 	text-decoration: none;
-	transition: color var(--duration-moderate) var(--ease-in-out);
+	transition: color var(--duration-fast) var(--ease-out);
 }
 
 a:hover {
 	color: var(--color-highlight);
 }
 
-/* ===== ANIMATED LINK UNDERLINES =====
- * Gradient underline that expands on hover (left-to-right)
- * Excludes buttons, cards, navigation, and other interactive elements
- */
-
 /*
- * Unified animated-underline link pattern.
- * Prose / content-body / <p> / <li> links get it automatically.
- * Opt-in via the `.link-animated` class for links outside prose (card titles,
- * detail grids, inline anchors in chrome) so every hoverable text link on
- * the site uses the same gradient-underline-expand treatment.
- */
-/*
- * Left-to-right underline grows on hover. Single-color ink-blue — the
- * previous primary→highlight gradient read as a designy flourish; a solid
- * brand-colour line feels more typographic and editorial.
+ * Prose / content links carry the pine underline automatically.
+ * Outside prose, opt in with `.link-animated` for a quiet hover-to-accent
+ * response WITHOUT the underline (card/ledger titles, inline apparatus).
  */
 .prose a:not(.btn):not(.no-underline):not(.nav-link),
 .content-body a:not(.btn):not(.no-underline):not(.nav-link),
 p a:not(.btn):not(.no-underline):not(.nav-link),
-li a:not(.btn):not(.no-underline):not(.nav-link),
-.link-animated {
-	position: relative;
-	text-decoration: none;
-	background-image: linear-gradient(90deg, var(--color-primary), var(--color-primary));
-	background-size: 0% 1px;
-	background-position: left bottom;
-	background-repeat: no-repeat;
-	padding-bottom: 2px;
+li a:not(.btn):not(.no-underline):not(.nav-link):not(.dropdown-item) {
+	text-decoration: underline;
+	text-decoration-color: var(--color-accent);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 3px;
 	transition:
-		color var(--duration-moderate) var(--ease-in-out),
-		background-size var(--duration-normal) var(--ease-out);
+		color var(--duration-fast) var(--ease-out),
+		text-decoration-thickness var(--duration-fast) var(--ease-out);
 }
 
 .prose a:not(.btn):not(.no-underline):not(.nav-link):hover,
 .content-body a:not(.btn):not(.no-underline):not(.nav-link):hover,
 p a:not(.btn):not(.no-underline):not(.nav-link):hover,
-li a:not(.btn):not(.no-underline):not(.nav-link):hover,
-.link-animated:hover,
-.link-animated:focus-visible,
+li a:not(.btn):not(.no-underline):not(.nav-link):not(.dropdown-item):hover,
 .prose a:not(.btn):not(.no-underline):not(.nav-link):focus-visible,
 .content-body a:not(.btn):not(.no-underline):not(.nav-link):focus-visible,
 p a:not(.btn):not(.no-underline):not(.nav-link):focus-visible,
-li a:not(.btn):not(.no-underline):not(.nav-link):focus-visible {
-	background-size: 100% 1px;
+li a:not(.btn):not(.no-underline):not(.nav-link):not(.dropdown-item):focus-visible {
+	color: var(--color-accent);
+	text-decoration-thickness: 2px;
 }
 
-/* Static underline fallback for reduced motion */
-@media (prefers-reduced-motion: reduce) {
-	.prose a:not(.btn):not(.no-underline):not(.nav-link),
-	.content-body a:not(.btn):not(.no-underline):not(.nav-link),
-	p a:not(.btn):not(.no-underline):not(.nav-link),
-	li a:not(.btn):not(.no-underline):not(.nav-link),
-	.link-animated {
-		background-size: 100% 1px;
-		transition: none;
-	}
+/* Chrome links (card/ledger titles, inline apparatus) — quiet hover to accent. */
+.link-animated {
+	text-decoration: none;
+	transition: color var(--duration-fast) var(--ease-out);
+}
+
+.link-animated:hover,
+.link-animated:focus-visible {
+	color: var(--color-accent);
 }
 
 /* Special cases without underlines */
@@ -234,30 +228,13 @@ b {
 	font-weight: var(--font-weight-bold);
 }
 
-/*
- * Emphasis renders in Spectral italic even inside Commissioner body copy.
- * Commissioner has no italic axis — without this rule, <em>/<i>/<cite> in
- * sans text would be browser-synthesised obliques (visually crude). Using
- * the serif italic here also mirrors editorial-magazine typography where
- * emphasis is a genuine italic gesture, not a slant.
- *
- * `font-size-adjust` rescales the serif so its x-height matches
- * Commissioner's (~0.50). Without it, Spectral italic (~0.46) renders
- * visibly smaller than the surrounding sans, making emphasis look
- * shrunken instead of intentional.
- */
+/* Emphasis — the body is already Newsreader, so <em>/<i>/<cite> are genuine
+ * serif italics (no synthesis, no x-height correction needed). */
 em,
 i,
 cite {
 	font-style: italic;
 	font-family: var(--font-family-serif);
-	font-size-adjust: 0.5;
-}
-
-/* Inside serif headings, surrounding text is already Spectral — opt out
- * so emphasis stays the same visual size as the rest of the heading. */
-:where(h1, h2, h3, h4, h5, h6) :is(em, i, cite) {
-	font-size-adjust: none;
 }
 
 /* Code */
@@ -612,20 +589,21 @@ small {
 	margin-bottom: var(--space-sm);
 }
 
-/* Editorial section title — Spectral over a hairline rule. The shared
- * heading treatment for detail-page sections (reviews, citations, word
- * cloud, table of contents); previously each component duplicated these
- * declarations in scoped styles. Components may override font-size in a
- * scoped rule when a section needs a different step. */
+/* Editorial section title — Archivo section-head voice over a hairline rule.
+ * The shared heading treatment for detail-page sections (reviews, citations,
+ * word cloud, table of contents). Pair with an accent № eyebrow (.section-no)
+ * from the idiom sheet for the full module. Components may override font-size. */
 .editorial-section-title {
-	font-family: var(--font-family-serif);
+	font-family: var(--font-family-display);
+	font-variation-settings: var(--font-variation-display-sm);
 	font-size: var(--font-size-lg);
-	font-weight: var(--font-weight-semibold);
+	font-weight: 750;
+	letter-spacing: -0.01em;
 	color: var(--color-text-emphasis);
-	margin: 0 0 var(--space-lg);
+	margin: 0 0 var(--space-md);
 	padding-bottom: var(--space-sm);
-	border-bottom: var(--border-width-thin) solid var(--color-border-light);
-	line-height: var(--line-height-tight);
+	border-bottom: var(--rule-hairline) solid var(--color-border);
+	line-height: 1.05;
 }
 
 @media (--sm) {
@@ -652,17 +630,16 @@ small {
 }
 
 /*
- * Abstract — warm callout, no stripe. Soft surface with a thin all-round
- * border reads as "quoted material" without the dashboard-style left stripe.
+ * Abstract — a serif-italic standfirst, no box. Reads as the lead of a
+ * typeset article; a drop cap (.drop-cap from the idiom sheet) may open it.
  */
 .abstract {
+	font-family: var(--font-family-serif);
 	font-style: italic;
-	color: var(--color-text-light);
+	font-size: var(--font-size-lg);
+	line-height: var(--line-height-relaxed);
+	color: var(--color-text-soft);
 	margin: var(--space-lg) 0;
-	padding: var(--space-md) var(--space-lg);
-	background-color: var(--color-surface);
-	border: var(--border-width-thin) solid var(--color-border);
-	border-radius: var(--border-radius-lg);
 }
 
 .keywords {

@@ -174,7 +174,7 @@
 		tabindex="0"
 	>
 		<button
-			class="btn btn-outline-secondary btn-sm btn-with-icon btn-icon-only btn-glass glass-button close-button"
+			class="btn btn-sm btn-with-icon btn-icon-only close-button"
 			type="button"
 			aria-label="Close fullscreen view"
 		>
@@ -203,12 +203,12 @@
 {/if}
 
 <style>
-	/* Hero figure base styling - consistent with page layout */
+	/* Hero figure — a plate on the page. Square, flat, no lift: the archive
+	 * mounts a scan, it does not float a card. */
 	.hero-figure {
 		margin-bottom: var(--space-6); /* Match PageHeader margin for consistency */
-		transition: all var(--duration-moderate) var(--ease-in-out);
 		position: relative;
-		overflow: hidden; /* Contain hover effects */
+		overflow: hidden; /* Contain the overlay */
 
 		/* Shrink to intrinsic content width and center horizontally */
 		display: block;
@@ -218,15 +218,11 @@
 		max-width: 100%;
 	}
 
-	.hero-figure:hover {
-		transform: var(--transform-lift-sm);
-	}
-
 	.image-container {
 		position: relative;
 		cursor: pointer;
 		overflow: hidden;
-		border-radius: var(--border-radius-lg);
+		border-radius: 0;
 		border: none;
 		background: none;
 		padding: 0;
@@ -234,16 +230,8 @@
 		width: 100%;
 	}
 
-	.image-container .hero-image {
-		transition: transform var(--duration-moderate) var(--ease-in-out);
-	}
-
-	.image-container:hover .hero-image {
-		transform: scale(var(--scale-105));
-	}
-
-	.image-container:focus {
-		outline: var(--border-width-medium) solid var(--color-primary);
+	.image-container:focus-visible {
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--space-0-5);
 	}
 
@@ -291,8 +279,8 @@
 		);
 	}
 
-	/* Hero image — a plate in a fine book: restrained radius, hairline
-	 * border, modest shadow. No glass chrome on the image itself. */
+	/* Hero image — the plate itself: square corners, a single hairline frame,
+	 * no shadow. The scan sits flat on the page like a mounted print. */
 	.hero-image {
 		width: auto;
 		max-width: 100%;
@@ -300,26 +288,20 @@
 		display: block;
 		margin-left: auto;
 		margin-right: auto;
-		border-radius: var(--border-radius-md);
-		transition: box-shadow var(--duration-moderate) var(--ease-out);
-		box-shadow: var(--shadow-sm);
+		border-radius: 0;
 		object-fit: contain; /* Ensure entire image visible without cropping */
 		aspect-ratio: auto;
 		border: var(--border-width-thin) solid var(--color-border);
 	}
 
-	.hero-figure:hover .hero-image {
-		box-shadow: var(--shadow-md);
-	}
-
-	/* Caption styling - improved typography consistency */
+	/* Caption — serif italic, the plate's fine-book legend ("Fig. — …"). */
 	.hero-caption {
 		font-size: var(--font-size-sm);
-		color: var(--color-text-muted);
+		color: var(--color-text-light);
 		text-align: center;
-		margin-top: var(--space-4);
+		margin-top: var(--space-3);
 		font-style: italic;
-		line-height: var(--line-height-relaxed);
+		line-height: var(--line-height-caption);
 		font-family: var(--font-family-serif);
 		padding: 0 var(--space-4); /* Add horizontal padding for better readability */
 	}
@@ -356,13 +338,10 @@
 		margin-bottom: var(--space-8); /* Increased spacing for featured variant */
 	}
 
-	/* Image variant styles */
-	.hero-image--compact {
-		border-radius: var(--border-radius-md);
-	}
-
+	/* Image variant styles — all square; the plate never rounds. */
+	.hero-image--compact,
 	.hero-image--featured {
-		border-radius: var(--border-radius-lg); /* Keep consistent with glass container */
+		border-radius: 0;
 	}
 
 	/* Dark mode — same plate treatment on slate; hairline picks up the
@@ -379,22 +358,13 @@
 		width: 100vw;
 		height: 100vh;
 		z-index: var(--z-modal);
-		/* Enhanced glassmorphism background using our design system */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-dark-surface-deep) 85%, transparent) 0%,
-			color-mix(in srgb, var(--color-dark-surface-alt) 90%, transparent) 50%,
-			color-mix(in srgb, var(--color-dark-surface) 85%, transparent) 100%
-		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-xl)) saturate(120%);
-		backdrop-filter: blur(var(--glass-blur-xl)) saturate(120%);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
+		/* A flat microfilm-negative scrim: solid near-black ink, no blur. */
+		background: color-mix(in srgb, var(--color-primary) 92%, var(--color-black));
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		cursor: zoom-out;
-		/* Modern animation using design system tokens */
+		/* A plain fade-in; no scale (the redesign keeps motion minimal). */
 		animation: modalFadeIn var(--duration-moderate) var(--ease-out) forwards;
 		padding: var(--space-4);
 		box-sizing: border-box;
@@ -419,40 +389,26 @@
 		width: auto;
 		height: auto;
 		object-fit: contain;
-		box-shadow: var(--shadow-2xl);
-		border-radius: var(--border-radius-lg);
+		border-radius: 0;
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
 		display: block;
-		transition: all var(--duration-moderate) var(--ease-in-out);
 	}
 
 	.fullscreen-caption {
-		color: var(--color-text-emphasis);
+		color: color-mix(in srgb, var(--color-white) 82%, transparent);
 		margin-top: var(--space-4);
 		font-size: var(--font-size-lg);
 		font-style: italic;
 		text-align: center;
 		max-width: 80vw;
-		line-height: var(--line-height-relaxed);
-		padding: var(--space-4) var(--space-6);
-		/* Use glassmorphism for caption background */
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-10) * 100%),
-			transparent
-		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-md));
-		backdrop-filter: blur(var(--glass-blur-md));
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
-		border-radius: var(--border-radius-lg);
-		box-shadow: var(--shadow-lg);
+		line-height: var(--line-height-caption);
+		padding: var(--space-3) var(--space-4);
 		font-family: var(--font-family-serif);
-		font-weight: var(--font-weight-medium);
 	}
 
-	/* Close button positioning and styling - perfect round glassmorphism button */
+	/* Close button — a flat square control on the scrim: hairline frame in
+	 * paper-white, no blur, no shadow, no lift. Pine border on hover. */
 	:global(.close-button) {
 		position: absolute !important;
 		top: var(--space-4) !important;
@@ -460,117 +416,54 @@
 		z-index: var(--z-dropdown) !important;
 		width: calc(var(--space-8) + var(--space-2)) !important;
 		height: calc(var(--space-8) + var(--space-2)) !important;
-		border-radius: var(--border-radius-full) !important;
+		border-radius: 0 !important;
 		padding: 0 !important;
 		display: flex !important;
 		align-items: center !important;
 		justify-content: center !important;
 		min-width: unset !important;
 
-		/* Enhanced glassmorphism specifically for close button */
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-30) * 100%),
-			transparent
-		) !important;
-		backdrop-filter: blur(var(--glass-blur-md)) !important;
-		-webkit-backdrop-filter: blur(var(--glass-blur-md)) !important;
+		background: transparent !important;
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-surface) calc(var(--opacity-30) * 100%), transparent) !important;
-		box-shadow: var(--shadow-lg) !important;
-		transition: all var(--duration-normal) var(--ease-in-out) !important;
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-40) * 100%), transparent) !important;
+		box-shadow: none !important;
+		transition:
+			border-color var(--duration-fast) var(--ease-out),
+			color var(--duration-fast) var(--ease-out) !important;
 	}
 
 	:global(.close-button:hover) {
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-90) * 100%),
-			transparent
-		) !important;
-		border-color: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-90) * 100%),
-			transparent
-		) !important;
-		transform: var(--transform-lift-sm) scale(var(--scale-105)) !important;
-		box-shadow: var(--shadow-xl) !important;
+		background: transparent !important;
+		border-color: var(--color-accent) !important;
+		transform: none !important;
+		box-shadow: none !important;
 	}
 
 	:global(.close-button svg) {
-		color: var(--color-text-emphasis) !important;
-		filter: drop-shadow(
-			0 var(--border-width-thin) var(--border-width-medium)
-				color-mix(in srgb, var(--color-text) calc(var(--opacity-15) * 100%), transparent)
-		) !important;
+		color: color-mix(in srgb, var(--color-white) 88%, transparent) !important;
 	}
 
-	/* Dark theme overrides for fullscreen modal */
-	:global(html.dark) .fullscreen-modal {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-dark-surface-deep) 90%, transparent) 0%,
-			color-mix(in srgb, var(--color-dark-surface-alt) 95%, transparent) 50%,
-			color-mix(in srgb, var(--color-dark-surface) 90%, transparent) 100%
-		);
-		border-color: color-mix(in srgb, var(--color-white) 2%, transparent);
+	:global(.close-button:hover svg) {
+		color: var(--color-accent) !important;
 	}
 
-	:global(html.dark) .fullscreen-caption {
-		color: var(--color-text-light);
-		background: color-mix(
-			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-10) * 100%),
-			transparent
-		);
-		border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
-	}
-
+	/* Dark theme — the ink scrim and paper-white frames already read on slate;
+	 * only the negative needs a touch more contrast on its hairline. */
 	:global(html.dark) .fullscreen-image {
-		border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
-	}
-
-	/* Dark theme close button */
-	:global(html.dark .close-button) {
-		background: color-mix(
-			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-30) * 100%),
-			transparent
-		) !important;
 		border-color: color-mix(
 			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-90) * 100%),
+			var(--color-white) calc(var(--opacity-15) * 100%),
 			transparent
-		) !important;
-		box-shadow: var(--shadow-lg) !important;
+		);
 	}
 
-	:global(html.dark .close-button:hover) {
-		background: color-mix(
-			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-90) * 100%),
-			transparent
-		) !important;
-		border-color: color-mix(
-			in srgb,
-			var(--color-dark-surface) calc(var(--opacity-90) * 100%),
-			transparent
-		) !important;
-		box-shadow: var(--shadow-xl) !important;
-	}
-
-	:global(html.dark .close-button svg) {
-		color: var(--color-text-light) !important;
-	}
-
-	/* Animation keyframes - using modern naming convention */
+	/* Animation keyframes — a plain opacity fade, no scale. */
 	@keyframes modalFadeIn {
 		from {
 			opacity: 0;
-			transform: scale(0.98);
 		}
 		to {
 			opacity: 1;
-			transform: scale(1);
 		}
 	}
 
@@ -584,20 +477,10 @@
 			margin-bottom: var(--space-4);
 		}
 
-		.hero-figure--glass {
-			padding: var(--space-3);
-			border-radius: var(--border-radius-lg);
-		}
-
 		.hero-caption {
 			font-size: var(--font-size-xs);
 			margin-top: var(--space-2);
 			padding: 0 var(--space-2);
-		}
-
-		.hero-figure--glass .hero-caption {
-			margin-top: var(--space-2);
-			padding: var(--space-2) var(--space-3);
 		}
 
 		/* Adjust max-widths for mobile */
@@ -634,12 +517,6 @@
 
 		.overlay-caption {
 			font-size: var(--font-size-sm);
-			padding: var(--space-2);
-		}
-	}
-
-	@media (--sm-down) {
-		.hero-figure--glass {
 			padding: var(--space-2);
 		}
 	}

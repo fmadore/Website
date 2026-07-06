@@ -122,11 +122,6 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 						fontSize: isMobile ? 16 : 20,
 						fontWeight: 'bold',
 						color: resolvedColors.text
-					},
-					itemStyle: {
-						shadowBlur: 10,
-						shadowOffsetX: 0,
-						shadowColor: colorWithOpacity(resolvedColors.black, 0.5)
 					}
 				},
 				label: {
@@ -154,7 +149,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 					}
 				},
 				itemStyle: {
-					borderRadius: 6,
+					borderRadius: 0,
 					borderColor: resolvedColors.surface,
 					borderWidth: 2
 				},

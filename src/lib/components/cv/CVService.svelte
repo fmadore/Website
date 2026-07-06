@@ -18,7 +18,7 @@
 	<!-- Editorial Board Memberships Section -->
 	{#if realEditorialMemberships.length > 0}
 		<h4>Editorial Board Memberships</h4>
-		<div class="space-y-3">
+		<div class="space-y-3 ledger">
 			{#each realEditorialMemberships as member (member.id)}
 				<CVEntry year={member.dateRangeString}>
 					{member.role}, <em>{member.journal}</em>.
@@ -32,8 +32,8 @@
 
 	<!-- Peer Review Section -->
 	{#if realPeerReviews.length > 0}
-		<h4 class="text-lg font-semibold mt-4 mb-2">Peer Review Activities</h4>
-		<div class="space-y-3">
+		<h4>Peer Review Activities</h4>
+		<div class="space-y-3 ledger">
 			{#each realPeerReviews as review (review.id)}
 				<CVEntry year={review.year}>
 					{#if review.count && review.count > 1}{review.count}&nbsp;{review.type}s{:else}{review.type}{/if}{#if review.journal}&nbsp;–&nbsp;<em
@@ -74,29 +74,36 @@
 
 	<!-- Optional: Message if no service activities -->
 	{#if realPeerReviews.length === 0 && realEditorialMemberships.length === 0}
-		<p class="text-light">No service activities listed.</p>
+		<p class="cv-empty">No service activities listed.</p>
 	{/if}
 </section>
 
 <style>
+	/* Verification affordance — DATA voice: square, mono uppercase, hairline
+	 * outline, no fill. Accent on hover. */
 	.verification-badge {
 		display: inline-flex;
 		align-items: center;
-		gap: var(--space-1);
-		font-size: var(--font-size-xs);
-		color: var(--color-primary);
-		margin-top: var(--space-1);
+		gap: var(--space-1-5);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-medium);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--color-text-muted);
+		margin-top: var(--space-1-5);
 		padding: var(--space-1) var(--space-2);
-		border-radius: var(--border-radius-md);
-		background: color-mix(in srgb, var(--color-primary) 5%, transparent);
-		border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
-		transition: all var(--duration-fast) ease;
+		border-radius: 0;
+		background: transparent;
+		border: var(--border-width-thin) solid var(--color-border);
+		transition:
+			color var(--duration-fast) var(--ease-out),
+			border-color var(--duration-fast) var(--ease-out);
 		text-decoration: none;
 	}
 
 	.verification-badge:hover {
 		color: var(--color-accent);
-		background: color-mix(in srgb, var(--color-accent) 8%, transparent);
-		border-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
+		border-color: var(--color-accent);
 	}
 </style>

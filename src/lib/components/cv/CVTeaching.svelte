@@ -23,7 +23,7 @@
 	<h3>Teaching Experience</h3>
 	{#if sortedTeaching.length > 0}
 		<h4>Instructor</h4>
-		<div class="space-y-3">
+		<div class="space-y-3 ledger">
 			{#each sortedTeaching as course (course.title + course.year)}
 				<CVEntry year={formatCVYearRange(course.year)} yearWidth="fixed">
 					<strong>{course.title}</strong>, {course.institution}, {course.level === 'undergraduate'
@@ -39,8 +39,8 @@
 			{/each}
 		</div>
 
-		<h4 class="text-lg font-semibold mt-4 mb-2">Guest Lecturer</h4>
-		<div class="space-y-3">
+		<h4>Guest Lecturer</h4>
+		<div class="space-y-3 ledger">
 			{#each sortedGuestLectures as lecture (lecture.title + lecture.year)}
 				<CVEntry year={lecture.year}>
 					<strong>{lecture.title}</strong>, <em>{lecture.course}</em>, {lecture.institution}, {lecture.level ===
@@ -51,6 +51,6 @@
 			{/each}
 		</div>
 	{:else}
-		<p class="text-light">No teaching experience listed.</p>
+		<p class="cv-empty">No teaching experience listed.</p>
 	{/if}
 </section>

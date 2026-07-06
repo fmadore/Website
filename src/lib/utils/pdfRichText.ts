@@ -186,6 +186,18 @@ export const trimFragments = (fragments: TextFragment[]): TextFragment[] => {
 };
 
 /**
+ * The base font family used by renderRichText / measureRichTextHeight when a
+ * caller doesn't pass one explicitly. Defaults to a standard PDF font; the CV
+ * generator points it at the embedded Newsreader serif once its fonts load, so
+ * body prose renders in the real face while measurement stays in sync with it.
+ */
+let defaultBaseFont = 'helvetica';
+
+export const setPdfBaseFont = (font: string): void => {
+	defaultBaseFont = font;
+};
+
+/**
  * Renders rich text fragments to the PDF, handling line wrapping and style switches.
  * @returns The new Y position after rendering.
  */
@@ -197,7 +209,7 @@ export const renderRichText = (
 	width: number,
 	fontSize: number,
 	defaultLineHeight: number,
-	baseFont: string = 'helvetica',
+	baseFont: string = defaultBaseFont,
 	boldColor?: [number, number, number],
 	textColor: [number, number, number] = [0, 0, 0]
 ): number => {

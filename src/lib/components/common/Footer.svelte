@@ -48,7 +48,6 @@
 	}
 </script>
 
-<!-- Remove redundant role="contentinfo" - footer element already provides this semantic meaning -->
 <footer class="site-footer" bind:this={footerElement}>
 	<div class="footer-container">
 		<section
@@ -56,12 +55,8 @@
 			class:animate={isVisible}
 			aria-labelledby="footer-brand-heading"
 		>
-			<p class="copyright-main" id="footer-brand-heading">
-				© {currentYear}
-				{author.fullName}
-			</p>
-			<p class="copyright-subtitle">{author.position}</p>
-			<p class="colophon">Set in Fraunces, Spectral &amp; Commissioner.</p>
+			<p class="footer-wordmark" id="footer-brand-heading">{author.fullName}</p>
+			<p class="footer-tagline">{author.position}</p>
 		</section>
 
 		<nav
@@ -97,7 +92,7 @@
 									aria-label={isExternal ? `${link.name} - Opens in new tab` : link.name}
 								>
 									<span class="footer-link-icon" aria-hidden="true">
-										<Icon icon={link.icon} width="16" height="16" />
+										<Icon icon={link.icon} width="15" height="15" />
 									</span>
 									<span class="footer-link-name">{link.name}</span>
 								</a>
@@ -110,7 +105,13 @@
 		</nav>
 	</div>
 
-	<!-- Enhanced scroll indicator -->
+	<!-- Colophon rule — the fine-book signature line -->
+	<div class="footer-colophon" class:animate={isVisible}>
+		<span class="footer-copyright">© {currentYear} {author.fullName}</span>
+		<span class="footer-typecredit">Set in Archivo, Newsreader &amp; Spline Sans Mono.</span>
+	</div>
+
+	<!-- Scroll indicator -->
 	<button
 		class="scroll-to-top"
 		class:visible={isVisible}
@@ -119,31 +120,26 @@
 		aria-label="Scroll to top of page"
 		type="button"
 	>
-		<Icon icon="mdi:chevron-up" width="24" height="24" aria-hidden="true" />
+		<Icon icon="mdi:arrow-up" width="20" height="20" aria-hidden="true" />
 	</button>
 </footer>
 
 <style>
 	/*
-	 * Colophon footer — the back page of a well-made book, not a widget area.
-	 * One dark surface, a hairline top rule, left-aligned text columns. The
-	 * previous iteration nested three rounded boxes (branding tile + one per
-	 * link group) with pill-shaped links inside; all of that chrome is gone.
-	 * Hierarchy comes from small-caps group labels and ink contrast alone.
+	 * Colophon footer — the printed endpaper. One dark ink ground (cream type
+	 * in both themes), heavy masthead rule on top, asymmetric editorial grid.
+	 * No boxes, no glass, no shadow: mono small-caps labels and rules alone.
 	 */
 	.site-footer {
 		background: var(--color-footer-bg);
 		color: var(--color-footer-text);
-		padding: var(--space-12) 0 var(--space-10) 0;
+		padding: var(--space-12) 0 var(--space-8) 0;
 		position: relative;
-		border-top: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-footer-text) 15%, transparent);
+		border-top: var(--rule-masthead) solid var(--color-footer-text);
 		/* Keep footer below sidebar dropdowns (sidebar-column has z-index: 10) */
 		z-index: 1;
 	}
 
-	/* Asymmetric editorial grid: brand/colophon column left, link columns
-	 * right. Collapses to a single left-aligned stack on narrow screens. */
 	.footer-container {
 		max-width: var(--container-lg);
 		margin: 0 auto;
@@ -167,30 +163,28 @@
 		transform: translateY(0);
 	}
 
-	.copyright-main {
-		font-family: var(--font-family-serif);
-		font-size: var(--font-size-lg);
-		font-weight: var(--font-weight-semibold);
+	/* Brand wordmark — Archivo, wide and heavy, uppercase. */
+	.footer-wordmark {
+		font-family: var(--font-family-display);
+		font-variation-settings: var(--font-variation-wordmark);
+		font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+		font-weight: 830;
+		letter-spacing: -0.01em;
+		text-transform: uppercase;
+		line-height: 0.95;
 		color: var(--color-footer-text);
-		margin: 0 0 var(--space-1);
-	}
-
-	.copyright-subtitle {
-		font-size: var(--font-size-sm);
-		color: var(--color-footer-text-muted);
 		margin: 0;
-		max-width: 36ch;
-		line-height: var(--line-height-snug);
 	}
 
-	/* Type credit — the fine-book signature line. Serif italic, quietest ink
-	 * in the footer; a deliberate letterpress gesture, not UI chrome. */
-	.colophon {
+	/* Tagline — serif italic, quiet cream. */
+	.footer-tagline {
 		font-family: var(--font-family-serif);
 		font-style: italic;
-		font-size: var(--font-size-sm);
+		font-size: var(--font-size-base);
 		color: var(--color-footer-text-muted);
-		margin: var(--space-6) 0 0;
+		margin: var(--space-3) 0 0;
+		max-width: 40ch;
+		line-height: var(--line-height-snug);
 	}
 
 	.footer-social-links {
@@ -214,23 +208,20 @@
 		flex-direction: column;
 	}
 
-	/*
-	 * Group titles — small-caps editorial labels. No boxes, no accent bars;
-	 * tracking and a short hairline underneath do the work.
-	 */
+	/* Group titles — the data voice: mono small-caps over a hairline. */
 	.footer-group-title {
+		font-family: var(--font-family-mono);
 		color: var(--color-footer-text-muted);
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-semibold);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-bold);
 		text-transform: uppercase;
-		letter-spacing: var(--tracking-eyebrow);
+		letter-spacing: 0.16em;
 		margin: 0 0 var(--space-4) 0;
 		padding-bottom: var(--space-2);
 		border-bottom: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-footer-text) 15%, transparent);
+			color-mix(in srgb, var(--color-footer-text) 20%, transparent);
 	}
 
-	/* Proper list styling */
 	.footer-links-grid {
 		list-style: none;
 		padding: 0;
@@ -253,8 +244,8 @@
 		transform: translateY(0);
 	}
 
-	/* Plain text links — quiet ink that brightens on hover, with the same
-	 * grow-from-left underline used in prose and nav. */
+	/* Links — Archivo at text weight, a grotesque set of section names, warming
+	 * to the bright pine on hover. */
 	.footer-link {
 		display: inline-flex;
 		align-items: flex-start;
@@ -269,56 +260,86 @@
 		display: inline-flex;
 		align-items: center;
 		flex-shrink: 0;
-		/* Optically align the icon with the first text line */
 		margin-top: var(--space-0-5);
 		opacity: var(--opacity-70);
 		transition: opacity var(--duration-fast) var(--ease-out);
 	}
 
 	.footer-link-name {
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-medium);
+		font-family: var(--font-family-display);
+		font-size: var(--font-size-base);
+		font-weight: var(--font-weight-normal);
 		white-space: pre-line;
 		line-height: var(--line-height-snug);
-		padding-bottom: 2px;
-		background-image: linear-gradient(90deg, var(--color-footer-text), var(--color-footer-text));
-		background-size: 0% 1px;
-		background-position: left bottom;
-		background-repeat: no-repeat;
-		transition: background-size var(--duration-normal) var(--ease-out);
 	}
 
 	.footer-link:hover {
-		color: var(--color-footer-text);
+		color: var(--sys-color-pine-bright);
 	}
 
 	.footer-link:hover .footer-link-icon {
 		opacity: 1;
 	}
 
-	.footer-link:hover .footer-link-name {
-		background-size: 100% 1px;
+	/* Colophon rule — the signature line: © in mono, type credit in serif italic. */
+	.footer-colophon {
+		max-width: var(--container-lg);
+		margin: var(--space-10) auto 0;
+		padding: var(--space-4) var(--space-6) 0;
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: var(--space-4);
+		flex-wrap: wrap;
+		border-top: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-footer-text) 20%, transparent);
+		opacity: 0;
+		transition: opacity var(--duration-slower) var(--ease-out-quart) var(--stagger-3);
 	}
 
-	/* Enhanced scroll to top button with glassmorphism */
+	.footer-colophon.animate {
+		opacity: 1;
+	}
+
+	.footer-copyright {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-medium);
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--color-footer-text-muted);
+	}
+
+	.footer-typecredit {
+		font-family: var(--font-family-serif);
+		font-style: italic;
+		font-size: var(--font-size-sm);
+		color: var(--color-footer-text-muted);
+	}
+
+	/* Scroll-to-top — a square ink control, no round, no shadow. */
 	.scroll-to-top {
 		position: fixed;
 		bottom: var(--space-6);
 		right: var(--space-6);
-		width: var(--space-12);
-		height: var(--space-12);
-		border: none;
-		border-radius: var(--border-radius-full);
+		width: var(--space-11);
+		height: var(--space-11);
+		border: var(--border-width-thin) solid var(--color-primary);
+		border-radius: 0;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		color: var(--color-text-inverted);
 		background: var(--color-primary);
 		cursor: pointer;
-		box-shadow: var(--shadow-lg);
+		box-shadow: none;
 		transform: translateY(calc(var(--space-24) + var(--space-2)));
 		opacity: 0;
-		transition: all var(--duration-moderate) var(--ease-in-out);
+		transition:
+			transform var(--duration-moderate) var(--ease-out-quart),
+			opacity var(--duration-moderate) var(--ease-out),
+			background var(--duration-fast) var(--ease-out),
+			border-color var(--duration-fast) var(--ease-out);
 		z-index: var(--z-fixed);
 	}
 
@@ -328,15 +349,17 @@
 	}
 
 	.scroll-to-top:hover {
-		background: var(--color-primary-dark);
-		transform: var(--transform-lift-md) scale(var(--scale-105));
-		box-shadow: var(--shadow-xl);
+		background: var(--color-accent);
+		border-color: var(--color-accent);
+		color: var(--sys-color-paper);
 	}
 
 	/* Responsive design improvements */
 	@media (--sm) {
-		.footer-container {
-			padding: 0 var(--space-8);
+		.footer-container,
+		.footer-colophon {
+			padding-left: var(--space-8);
+			padding-right: var(--space-8);
 		}
 	}
 
@@ -349,7 +372,7 @@
 
 	@media (--lg) {
 		.site-footer {
-			padding: var(--space-16) 0 var(--space-12) 0;
+			padding: var(--space-16) 0 var(--space-10) 0;
 		}
 	}
 
@@ -357,27 +380,22 @@
 	@media (prefers-reduced-motion: reduce) {
 		.footer-branding,
 		.footer-social-links,
-		.footer-link-item {
+		.footer-link-item,
+		.footer-colophon {
 			transition: none;
 			opacity: 1;
 			transform: none;
-		}
-
-		.footer-link-name {
-			background-size: 100% 1px;
-			transition: none;
 		}
 	}
 
 	/* Focus states */
 	.footer-link:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-footer-text);
+		outline: var(--border-width-medium) solid var(--sys-color-pine-bright);
 		outline-offset: var(--border-width-medium);
-		border-radius: var(--border-radius-sm);
 	}
 
 	.scroll-to-top:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-primary);
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--border-width-medium);
 	}
 </style>

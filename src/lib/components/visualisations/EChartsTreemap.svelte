@@ -168,11 +168,11 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 					bottom: isMobile ? 'auto' : 12,
 					height: 22,
 					itemStyle: {
-						color: resolvedColors.surface,
+						color: resolvedColors.surfaceElevated,
 						borderColor: resolvedColors.border,
 						borderWidth: 1,
-						shadowBlur: 3,
-						shadowColor: colorWithOpacity(resolvedColors.black, 0.1)
+						shadowBlur: 0,
+						borderRadius: 0
 					},
 					emphasis: {
 						itemStyle: {
@@ -252,7 +252,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 					borderColor: resolvedColors.surface,
 					borderWidth: isMobile ? 1 : 2,
 					gapWidth: isMobile ? 1 : 2,
-					borderRadius: 4
+					borderRadius: 0
 				},
 				emphasis: {
 					upperLabel: {

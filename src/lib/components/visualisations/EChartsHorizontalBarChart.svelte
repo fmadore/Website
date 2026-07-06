@@ -10,8 +10,7 @@ ECharts Horizontal Bar Chart component
 		getEChartsAxisLineStyle,
 		getEChartsSplitLineStyle,
 		getAnimationConfig,
-		getHorizontalBarGradient,
-		colorWithOpacity
+		getHorizontalBarGradient
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
@@ -25,7 +24,7 @@ ECharts Horizontal Bar Chart component
 		yAccessor,
 		xAxisLabel = '',
 		yAxisLabel = '',
-		barColor = 'var(--color-primary)',
+		barColor = 'var(--color-accent)',
 		maxValue
 	}: {
 		data?: DataItem[];
@@ -140,14 +139,11 @@ ECharts Horizontal Bar Chart component
 				data: chartData.map((d) => d.value),
 				itemStyle: {
 					color: getHorizontalBarGradient(resolvedColors.barColor, 0.6),
-					borderRadius: [0, 4, 4, 0]
+					borderRadius: 0
 				},
 				emphasis: {
 					itemStyle: {
-						color: resolvedColors.barColor,
-						shadowColor: colorWithOpacity(resolvedColors.primary, 0.4),
-						shadowBlur: 12,
-						shadowOffsetX: 4
+						color: resolvedColors.barColor
 					}
 				},
 				...getAnimationConfig(1000, 'elasticOut')

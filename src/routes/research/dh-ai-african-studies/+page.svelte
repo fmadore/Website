@@ -8,12 +8,13 @@
 	title="Digital Humanities and Artificial Intelligence in African Studies"
 	shortTitle="Digital Humanities and AI in African Studies"
 	slug="dh-ai-african-studies"
-	years="2025-"
+	years="2025-2027"
 	imageSrc="IWAC.webp"
 	imageAlt="Digital Humanities and AI in African Studies"
 	seoDescription="Exploring how digital humanities and artificial intelligence can transform knowledge production in African studies through ethical, sustainable, and Africa-centred digital infrastructures."
 	seoKeywords="digital humanities, artificial intelligence, African studies, AI, DH, African epistemologies, Islam West Africa Collection, IWAC, LLM, OCR, NER, vibe coding"
 	projectName="Digital Humanities and AI in African Studies"
+	funder="Volkswagen Foundation · DFG Programme Point Sud"
 >
 	<p>
 		The convergence of digital humanities (DH) and artificial intelligence (AI) is transforming the

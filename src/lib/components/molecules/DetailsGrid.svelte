@@ -112,18 +112,20 @@
 	}
 
 	.detail-label {
+		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
-		letter-spacing: var(--letter-spacing-wide);
+		letter-spacing: 0.1em;
 		text-transform: uppercase;
-		color: var(--color-text-muted);
+		color: var(--color-text-light);
 		line-height: var(--line-height-normal);
 		/* Ensure consistent vertical alignment */
 		padding-top: var(--space-0-5);
 	}
 
 	.detail-value {
-		font-size: var(--font-size-sm);
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-base);
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text);
 		word-break: break-word;

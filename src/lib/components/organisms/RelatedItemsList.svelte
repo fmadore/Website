@@ -25,7 +25,8 @@
 		maxItems = 3,
 		sectionClass = 'related-items-section mt-12',
 		titleClass = 'editorial-section-title',
-		gridClass = 'related-items-grid'
+		gridClass = 'related-items-grid',
+		sectionNumber = undefined
 	}: {
 		allItems?: RelatedListItem[];
 		currentItemId: string | number;
@@ -39,6 +40,9 @@
 		sectionClass?: string;
 		titleClass?: string;
 		gridClass?: string;
+		/** Optional №-marker; when set, the heading renders as an Ink+Signal
+		 * section head (№ NN + title) instead of a bare title. */
+		sectionNumber?: string;
 	} = $props();
 
 	// Reactive calculation for related items
@@ -61,8 +65,15 @@
 </script>
 
 {#if relatedItems.length > 0}
-	<section class="{sectionClass} glass-section-panel scroll-reveal">
-		<h2 class={titleClass}>{title}</h2>
+	<section class="{sectionClass} scroll-reveal">
+		{#if sectionNumber}
+			<div class="section-head">
+				<span class="section-no">№ {sectionNumber}</span>
+				<h2 class={titleClass}>{title}</h2>
+			</div>
+		{:else}
+			<h2 class={titleClass}>{title}</h2>
+		{/if}
 		<div class="{gridClass} grid-stagger">
 			{#each relatedItems as item (item.id)}
 				{@const ItemComponent = itemComponent}
@@ -74,14 +85,7 @@
 
 		{#if viewAllLink}
 			<div class="view-all-container">
-				<Button
-					href={viewAllLink}
-					variant="outline-primary"
-					size="base"
-					additionalClasses="glass-button"
-				>
-					View all →
-				</Button>
+				<Button href={viewAllLink} variant="outline-secondary" size="base">View all →</Button>
 			</div>
 		{/if}
 	</section>
@@ -106,7 +110,7 @@
 
 	.view-all-container {
 		margin-top: var(--space-lg);
-		text-align: center;
+		text-align: left;
 	}
 
 	/* Responsive adjustments */

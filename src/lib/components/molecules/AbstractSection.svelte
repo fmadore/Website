@@ -30,10 +30,17 @@
 
 {#if abstract && paragraphs.length > 0}
 	<section class="{sectionClass} scroll-reveal">
-		<h2 class={titleClass}>{titleText}</h2>
+		<div class="abstract-head">
+			<span class="section-no" aria-hidden="true">§</span>
+			<h2 class={titleClass}>{titleText}</h2>
+		</div>
 		<div class={contentClass}>
 			{#each paragraphs as paragraph, index (index)}
-				<p class="abstract-paragraph" class:mb-4={index < paragraphs.length - 1}>
+				<p
+					class="abstract-paragraph"
+					class:drop-cap={index === 0}
+					class:mb-4={index < paragraphs.length - 1}
+				>
 					{paragraph}
 				</p>
 			{/each}
@@ -42,22 +49,37 @@
 {/if}
 
 <style>
-	/* Content-on-paper: the section shell carries no tile padding; the title's
-	 * hairline rule and the page's section spacing do the separating. */
+	/* Content-on-paper: the section shell carries no tile padding; the section
+	 * rule and the page's spacing do the separating. */
 	.abstract-section {
 		margin-bottom: var(--space-xl);
 	}
 
-	/* Abstract title — letterpress hairline rule under solid Spectral ink. */
-	.abstract-title {
-		font-family: var(--font-family-serif);
-		font-size: var(--font-size-xl);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-emphasis);
+	/* Section head — the DATA-voice § marker sitting inline before a DOCUMENT-
+	 * voice display title, over a 3px section rule (no box, no hairline tile). */
+	.abstract-head {
+		display: flex;
+		align-items: baseline;
+		gap: var(--space-sm);
+		border-top: var(--rule-section) solid var(--color-primary);
+		padding-top: var(--space-sm);
 		margin-bottom: var(--space-lg);
-		padding-bottom: var(--space-sm);
-		border-bottom: var(--border-width-thin) solid var(--color-border-light);
-		line-height: var(--line-height-tight);
+	}
+
+	.abstract-head .section-no {
+		font-size: var(--font-size-base);
+	}
+
+	/* Abstract title — Archivo display, the scholar's heading voice. */
+	.abstract-title {
+		font-family: var(--font-family-display);
+		font-variation-settings: var(--font-variation-display-sm);
+		font-size: var(--font-size-2xl);
+		font-weight: 750;
+		letter-spacing: -0.01em;
+		color: var(--color-text-emphasis);
+		margin: 0;
+		line-height: 1.05;
 	}
 
 	/* A book-setting measure: cap the column near 66ch and let it rag right.
@@ -83,7 +105,7 @@
 	/* Responsive adjustments */
 	@media (--sm-down) {
 		.abstract-title {
-			font-size: var(--font-size-lg);
+			font-size: var(--font-size-xl);
 		}
 
 		/* Keep abstract content at base font size for better mobile readability */

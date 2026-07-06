@@ -1,188 +1,431 @@
-/* Activity list styles */
+/* Activity list styles — Ink + Signal.
+ *
+ * The /activities page is a dated press column: a mono log eyebrow over an
+ * Archivo masthead, then year-grouped entries as hairline-separated rows —
+ * a mono date/kind column, an optional image plate, serif title + summary,
+ * a mono tag run. A quiet ruled aside carries browse-by-year + tag facets.
+ *
+ * Two voices, strictly cast: Archivo (masthead, year headers), Newsreader
+ * (titles, summaries, standfirst), Spline Sans Mono (eyebrow, datelines,
+ * counts, tags, browse-by-year, pagination). Square corners, no cards,
+ * no shadows; hierarchy is drawn in rules. */
 
-.activity-list {
+/* ===========================================================================
+ * HERO
+ * =========================================================================== */
+
+.activities-hero {
+	margin-bottom: var(--space-8);
+}
+
+.activities-hero-eyebrow {
+	margin-bottom: var(--space-3);
+}
+
+/* Masthead — the display voice, large. */
+.activities-hero-title {
+	font-family: var(--font-family-display);
+	font-variation-settings: var(--font-variation-display);
+	font-size: var(--font-size-5xl);
+	font-weight: 800;
+	line-height: 0.98;
+	letter-spacing: -0.02em;
+	color: var(--color-text-emphasis);
+	margin: 0 0 var(--space-4);
+}
+
+.activities-hero-standfirst {
+	font-size: var(--font-size-lg);
+}
+
+/* Year-bar strip under the standfirst — output distribution, newest in accent. */
+.activities-hero-bars {
+	margin-top: var(--space-5);
+	max-width: 20rem;
+}
+
+/* ===========================================================================
+ * LAYOUT — main log + browse aside, opened by a 3px rule
+ * =========================================================================== */
+
+.activities-layout {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--space-8);
+	padding-top: var(--space-6);
+	border-top: var(--rule-section) solid var(--color-primary);
+}
+
+@media (--lg) {
+	.activities-layout {
+		grid-template-columns: 1fr 320px;
+		gap: var(--space-10);
+	}
+}
+
+/* ===========================================================================
+ * MAIN LOG — year groups of hairline-separated entry rows
+ * =========================================================================== */
+
+.activities-log {
+	min-width: 0;
+}
+
+.year-group {
+	margin-bottom: var(--space-8);
+}
+
+.year-group:last-of-type {
+	margin-bottom: var(--space-4);
+}
+
+/* Year header — Archivo number + mono tally, sharing a baseline. */
+.year-group-head {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-3);
+	margin-bottom: var(--space-2);
+}
+
+.year-group-year {
+	font-family: var(--font-family-display);
+	font-variation-settings: var(--font-variation-display-sm);
+	font-size: var(--font-size-2xl);
+	font-weight: 800;
+	line-height: 1;
+	letter-spacing: -0.01em;
+	color: var(--color-text-emphasis);
+}
+
+.year-group-count {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-medium);
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	color: var(--color-text-light);
+}
+
+.year-group-entries {
+	display: block;
+}
+
+/* --- Entry row: date/kind | (plate) | body, hairline rule above each. --- */
+.activity-row-link {
+	display: grid;
+	grid-template-columns: 7rem 1fr;
+	gap: var(--space-4) var(--space-5);
+	align-items: start;
+	padding: var(--space-5) 0;
+	border-top: var(--rule-hairline) solid var(--color-border);
+	text-decoration: none;
+	color: inherit;
+}
+
+.activity-row-link.has-photo {
+	grid-template-columns: 7rem 150px 1fr;
+}
+
+.activity-row-link:hover .activity-title {
+	color: var(--color-accent);
+}
+
+.activity-row-link:focus-visible {
+	outline: var(--border-width-medium) solid var(--color-accent);
+	outline-offset: var(--space-1);
+}
+
+/* Date / kind — the data voice: compact day+month, kind in pine. */
+.activity-dateline {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+	font-family: var(--font-family-mono);
+	font-variant-numeric: tabular-nums;
+}
+
+.activity-day {
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-medium);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--color-text-light);
+}
+
+.activity-kind {
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.11em;
+	text-transform: uppercase;
+	color: var(--color-accent);
+}
+
+/* Image plate — a square-cornered, hairline-bordered thumbnail. */
+.activity-plate-wrap {
+	width: 150px;
+}
+
+.activity-plate {
+	width: 150px;
+	height: 96px;
+	object-fit: cover;
+}
+
+/* Body — the prose voice. */
+.activity-body {
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1-5);
+}
+
+.activity-title {
+	font-family: var(--font-family-serif);
+	font-size: var(--font-size-xl);
+	font-weight: var(--font-weight-medium);
+	line-height: var(--line-height-snug);
+	color: var(--color-text-emphasis);
+	margin: 0;
+	transition: color var(--duration-fast) var(--ease-out);
+}
+
+.activity-summary {
+	font-family: var(--font-family-serif);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-relaxed);
+	color: var(--color-text-soft);
+	margin: 0;
+	max-width: 62ch;
+}
+
+/* Tag run — the data voice: uppercase mono, dot-separated. */
+.activity-tagrun {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-medium);
+	letter-spacing: 0.09em;
+	text-transform: uppercase;
+	color: var(--color-text-light);
+	margin: var(--space-1) 0 0;
+	line-height: var(--line-height-normal);
+}
+
+/* Filter note — the active tag facet, above the log. */
+.filter-note {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-2);
+	margin: 0 0 var(--space-5);
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.filter-note-label {
+	color: var(--color-text-light);
+}
+
+.filter-note-value {
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-text-emphasis);
+}
+
+.filter-note-clear {
+	color: var(--color-accent);
+	text-decoration: none;
+	font-weight: var(--font-weight-semibold);
+}
+
+.filter-note-clear:hover {
+	color: var(--color-accent-dark);
+}
+
+/* Empty state — the prose voice. */
+.log-empty {
+	font-family: var(--font-family-serif);
+	font-size: var(--font-size-lg);
+	color: var(--color-text-muted);
+	padding: var(--space-10) 0;
+	border-top: var(--rule-hairline) solid var(--color-border);
+	margin: 0;
+}
+
+/* ===========================================================================
+ * ASIDE — ruled blocks (no cards): browse-by-year, tag facet, RSS footer
+ * =========================================================================== */
+
+.activities-aside {
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-6);
+}
+
+@media (--lg) {
+	.activities-aside {
+		position: sticky;
+		top: var(--space-6);
+		align-self: start;
+	}
+}
+
+.aside-block {
+	margin: 0;
+}
+
+/* Block heading — a quiet ink mono eyebrow over a hairline. */
+.aside-title {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-bold);
+	text-transform: uppercase;
+	letter-spacing: 0.16em;
+	color: var(--color-text-emphasis);
+	margin: 0 0 var(--space-3);
+	padding-bottom: var(--space-2);
+	border-bottom: var(--rule-hairline) solid var(--color-border-dark);
+}
+
+/* --- Browse-by-year meter: mono year | proportion bar | count. --- */
+.year-meter {
 	list-style: none;
 	padding: 0;
 	margin: 0;
 }
 
-/*
- * Activity item — used exclusively inside the LatestActivities panel,
- * where every item also carries .card-accent-border (a paper tile).
- * This rule must NOT set padding or border: the card class already
- * provides both, and overriding here stripped the horizontal padding
- * (the "super ugly no margin" regression after Phase 5). Keep only
- * position + hover-driven title color shift.
- */
-.activity-item {
-	position: relative;
+.year-meter li {
+	margin: 0;
+	border-top: var(--rule-hairline) solid var(--color-border-light);
 }
 
-.activity-item:hover .activity-title {
-	color: var(--color-primary);
+.year-meter li:first-child {
+	border-top: none;
 }
 
-.activity-link {
-	display: block;
-	text-decoration: none;
-	color: inherit;
-}
-
-.activity-title {
-	font-weight: var(--font-weight-medium);
-	margin-bottom: var(--space-2xs);
-	color: var(--color-text);
-	transition: color var(--duration-moderate) var(--ease-in-out);
-}
-
-.activity-link:hover .activity-title {
-	color: var(--color-primary);
-}
-
-.activity-date {
-	font-size: var(--font-size-sm);
-	color: var(--color-text-light);
-}
-
-/* Activity filter */
-.activity-filters {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-xs);
-	margin-bottom: var(--space-lg);
-}
-
-.filter-tag {
-	display: inline-block;
-	padding: var(--space-2xs) var(--space-sm);
-	background-color: var(--color-surface-alt);
-	border-radius: var(--border-radius);
-	font-size: var(--font-size-sm);
-	color: var(--color-text);
-	transition: all var(--duration-moderate) var(--ease-in-out);
-	cursor: pointer;
-	border: var(--border-width-thin) solid var(--color-border);
-}
-
-.filter-tag:hover {
-	background-color: var(--color-surface-border);
-}
-
-.filter-tag.active {
-	background-color: var(--color-primary);
-	color: var(--color-text-inverted);
-	border-color: var(--color-primary);
-}
-
-/* Year tags */
-.year-tag {
-	display: inline-flex;
+.year-meter-row {
+	display: grid;
+	grid-template-columns: 3.25rem 1fr auto;
 	align-items: center;
-	justify-content: center;
-	padding: var(--space-2xs) var(--space-sm);
-	background-color: var(--color-surface-alt);
-	border-radius: var(--border-radius);
-	font-size: var(--font-size-sm);
-	color: var(--color-text);
+	gap: var(--space-3);
+	padding: var(--space-2) 0;
 	text-decoration: none;
-	transition: background-color var(--duration-moderate) var(--ease-in-out);
+	color: var(--color-text-soft);
+	transition: color var(--duration-fast) var(--ease-out);
 }
 
-.year-tag:hover {
-	background-color: var(--color-surface-border);
+.year-meter-row:hover {
+	color: var(--color-text-emphasis);
 }
 
-.year-count {
-	margin-left: var(--space-2xs);
-	display: inline-block;
-	font-size: var(--font-size-xs);
-	color: var(--color-text-light);
+.year-meter-row:hover .hbar {
+	filter: brightness(1.08);
 }
 
-/* Activity summary */
-.activity-summary {
-	margin-top: var(--space-xs);
-	color: var(--color-text-light);
-	font-size: var(--font-size-sm);
-	line-height: var(--line-height-normal);
+.year-meter-row:focus-visible {
+	outline: var(--border-width-medium) solid var(--color-accent);
+	outline-offset: var(--space-1);
 }
 
-/* See more link */
-.see-more {
-	display: inline-block;
-	margin-top: var(--space-md);
+.year-meter-key {
+	font-family: var(--font-family-mono);
 	font-size: var(--font-size-sm);
 	font-weight: var(--font-weight-medium);
-	color: var(--color-primary);
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.04em;
+	color: var(--color-text-soft);
+}
+
+.year-meter-key--current {
+	color: var(--color-accent);
+	font-weight: var(--font-weight-semibold);
+}
+
+.year-meter-count {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-semibold);
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.08em;
+	color: var(--color-text-light);
+	min-width: 2ch;
+	text-align: right;
+}
+
+/* --- Tag facet: flat mono chips (selected = solid ink fill). --- */
+.aside-tags {
+	gap: var(--space-2);
+}
+
+/* --- Footer: RSS + updated stamp, opened by a 3px rule. --- */
+.aside-footer {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-3);
+	padding-top: var(--space-4);
+	border-top: var(--rule-section) solid var(--color-primary);
+}
+
+.aside-rss {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-semibold);
+	text-transform: uppercase;
+	letter-spacing: 0.11em;
+	color: var(--color-accent);
 	text-decoration: none;
 }
 
-.see-more:hover {
-	text-decoration: underline;
+.aside-rss:hover {
+	color: var(--color-accent-dark);
 }
 
-/* Activity metadata and types */
-.activity-meta {
-	display: flex;
-	align-items: center;
-	flex-wrap: wrap;
-	gap: var(--space-xs);
-	margin-bottom: var(--space-2xs);
-}
-
-.activity-type {
-	display: inline-flex;
-	align-items: center;
-	font-size: var(--font-size-xs);
+.aside-updated {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
 	font-weight: var(--font-weight-medium);
 	text-transform: uppercase;
-	letter-spacing: var(--letter-spacing-wide);
-	padding: var(--space-3xs) var(--space-xs);
-	border-radius: var(--border-radius-sm);
-	background-color: var(--color-surface-alt);
+	letter-spacing: 0.09em;
 	color: var(--color-text-light);
 }
 
-/* Publications — the headline academic output — carry the lone ink-blue accent
- * chip. All other activity types use the neutral chip above; the former amber /
- * amber-highlight / emerald per-type palette was retired so the list reads with
- * one confident accent (.impeccable.md, principle 2). */
-.activity-type[data-type='publication'] {
-	color: var(--color-primary);
-	background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+/* ===========================================================================
+ * RESPONSIVE — stack the row's date/plate above the body on narrow screens
+ * =========================================================================== */
+
+@media (--sm-down) {
+	.activity-row-link,
+	.activity-row-link.has-photo {
+		grid-template-columns: 1fr;
+		gap: var(--space-3);
+	}
+
+	.activity-dateline {
+		flex-direction: row;
+		gap: var(--space-2);
+	}
+
+	.activity-plate-wrap,
+	.activity-plate {
+		width: 100%;
+	}
+
+	.activity-plate {
+		height: auto;
+		aspect-ratio: 150 / 96;
+	}
 }
 
-/* Dark mode support */
-html.dark .filter-tag {
-	background-color: var(--color-surface-alt);
-	border-color: var(--color-border);
-	color: var(--color-text);
-}
+/* ===========================================================================
+ * MOTION
+ * =========================================================================== */
 
-html.dark .filter-tag:hover {
-	background-color: var(--color-surface-border);
-}
-
-html.dark .filter-tag.active {
-	background-color: var(--color-primary);
-	color: var(--color-text-inverted);
-	border-color: var(--color-primary);
-}
-
-html.dark .year-tag {
-	background-color: var(--color-surface-alt);
-	color: var(--color-text);
-}
-
-html.dark .year-tag:hover {
-	background-color: var(--color-surface-border);
-}
-
-/* Respect user motion preferences */
 @media (prefers-reduced-motion: reduce) {
 	.activity-title,
-	.filter-tag,
-	.year-tag {
+	.year-meter-row {
 		transition: none;
 	}
 }

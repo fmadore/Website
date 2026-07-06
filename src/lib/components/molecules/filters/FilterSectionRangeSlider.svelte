@@ -150,8 +150,10 @@
 		justify-content: center;
 		padding: var(--space-md);
 		border: var(--border-width-thin) dashed var(--color-border);
-		border-radius: var(--border-radius);
+		border-radius: 0;
 		color: var(--color-text-muted);
+		font-family: var(--font-family-serif);
+		font-style: italic;
 		font-size: var(--font-size-sm);
 	}
 
@@ -170,19 +172,18 @@
 		margin-bottom: var(--space-xs) !important;
 	}
 
+	/* The handle stays round (a slider thumb reads better circular) but sheds
+	 * its shadow and scale-on-hover — the redesign keeps controls flat and still. */
 	:global(.rangeSlider .rangeHandle) {
-		box-shadow: var(--shadow-sm);
-		transition: transform var(--duration-fast) var(--ease-out);
+		box-shadow: none;
 	}
 
-	:global(.rangeSlider .rangeHandle:hover) {
-		transform: scale(1.1);
-	}
-
+	/* Float read-out — square, mono, the data voice. */
 	:global(.rangeSlider .rangeFloat) {
-		border-radius: var(--border-radius-sm);
+		border-radius: 0;
+		font-family: var(--font-family-mono);
 		font-weight: var(--font-weight-semibold);
-		font-size: var(--font-size-xs);
+		font-size: var(--font-size-2xs);
 	}
 
 	:global(.rangeSlider .rangePips) {
@@ -212,14 +213,6 @@
 		}
 	}
 
-	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
-		:global(.rangeSlider .rangeHandle) {
-			transition: none;
-		}
-
-		:global(.rangeSlider .rangeHandle:hover) {
-			transform: none;
-		}
-	}
+	/* Respect user motion preferences — the handle no longer animates, so
+	 * there is nothing to disable here. */
 </style>

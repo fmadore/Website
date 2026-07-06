@@ -302,37 +302,20 @@
 <svelte:document onfullscreenchange={handleFullscreenChange} />
 
 <style>
+	/* Ink + Signal: flat archival player shell. Square, hairline, no glass,
+	   no shadow, no gradient wash — overrides the .glass-card global. */
 	.media-player {
 		padding: var(--space-6);
-		border-radius: var(--border-radius-xl);
+		border-radius: 0;
 		margin-bottom: var(--space-8);
-		transition: all var(--duration-normal) var(--ease-out);
+		background: var(--color-surface-elevated);
+		border: var(--border-width-thin) solid var(--color-border);
+		backdrop-filter: none;
+		-webkit-backdrop-filter: none;
+		box-shadow: none;
+		transition: border-color var(--duration-normal) var(--ease-out);
 		outline: none;
 		position: relative;
-
-		/* Enhanced glassmorphism for "layers of knowledge" */
-		&::before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			background: linear-gradient(
-				135deg,
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
-				transparent 50%,
-				color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
-			);
-			border-radius: var(--border-radius-xl);
-			pointer-events: none;
-			opacity: 0;
-			transition: opacity var(--duration-normal) var(--ease-out);
-		}
-
-		&:hover::before {
-			opacity: 1;
-		}
 	}
 
 	.player-header {
@@ -340,9 +323,10 @@
 	}
 
 	.player-title {
+		font-family: var(--font-family-display);
 		font-size: var(--font-size-xl);
 		font-weight: var(--font-weight-semibold);
-		color: var(--color-text);
+		color: var(--color-text-emphasis);
 		margin: 0;
 	}
 
@@ -360,7 +344,7 @@
 	.media-container {
 		position: relative;
 		margin-bottom: var(--space-6);
-		border-radius: var(--border-radius-lg);
+		border-radius: 0;
 		overflow: hidden;
 		background: var(--color-surface-alt);
 	}
@@ -386,9 +370,7 @@
 		align-items: center;
 		justify-content: center;
 		background: color-mix(in srgb, var(--color-black) calc(var(--opacity-50) * 100%), transparent);
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		backdrop-filter: blur(var(--glass-blur-amount));
-		border-radius: var(--border-radius-lg);
+		border-radius: 0;
 	}
 
 	.loading-spinner {
@@ -415,62 +397,15 @@
 		}
 	}
 
+	/* Flat control panel: elevated paper, hairline top rule, square. */
 	.player-controls {
 		position: relative;
-
-		/* Modern control panel design */
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-95) * 100%),
-			transparent
-		);
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback));
-		backdrop-filter: blur(var(--glass-blur-fallback));
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-border) calc(var(--opacity-20) * 100%), transparent);
-		border-radius: var(--border-radius-lg);
+		background: var(--color-surface);
+		border: var(--border-width-thin) solid var(--color-border);
+		border-radius: 0;
 		padding: var(--space-3);
 		margin: var(--space-1) 0 0 0;
-
-		/* Elegant shadow system */
-		box-shadow:
-			0 4px 20px color-mix(in srgb, var(--color-black) calc(var(--opacity-5) * 100%), transparent),
-			0 1px 3px color-mix(in srgb, var(--color-black) calc(var(--opacity-10) * 100%), transparent),
-			inset 0 1px 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
-
-		/* Subtle academic refinement */
-		&::before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: var(--space-6);
-			right: var(--space-6);
-			height: 1px;
-			background: linear-gradient(
-				90deg,
-				transparent 0%,
-				color-mix(in srgb, var(--color-accent) calc(var(--opacity-20) * 100%), transparent) 50%,
-				transparent 100%
-			);
-		}
-
-		/* Smooth transitions */
-		transition: all var(--duration-normal) var(--ease-out);
-
-		&:hover {
-			background: color-mix(
-				in srgb,
-				var(--color-surface) calc(var(--opacity-98) * 100%),
-				transparent
-			);
-			box-shadow:
-				0 8px 32px
-					color-mix(in srgb, var(--color-black) calc(var(--opacity-10) * 100%), transparent),
-				0 2px 8px color-mix(in srgb, var(--color-black) calc(var(--opacity-15) * 100%), transparent),
-				inset 0 1px 0
-					color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
-		}
+		transition: border-color var(--duration-normal) var(--ease-out);
 	}
 
 	.control-buttons {
@@ -483,54 +418,33 @@
 		padding: var(--space-2) 0;
 	}
 
-	/* Modern control button styling */
+	/* Flat square control buttons — no glass, no shadow, hairline border. */
 	:global(.control-btn) {
 		/* Fixed sizing to prevent layout shifts */
 		min-width: var(--space-11) !important;
 		min-height: var(--space-11) !important;
 
-		/* Proper cursor */
 		cursor: pointer !important;
 
-		/* Modern glassmorphism design */
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-90) * 100%),
-			transparent
-		) !important;
-		-webkit-backdrop-filter: blur(var(--glass-blur-fallback)) !important;
-		backdrop-filter: blur(var(--glass-blur-fallback)) !important;
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-border) calc(var(--opacity-30) * 100%), transparent) !important;
-		border-radius: var(--border-radius-lg) !important;
+		background: var(--color-surface-elevated) !important;
+		border: var(--border-width-thin) solid var(--color-border) !important;
+		border-radius: 0 !important;
+		box-shadow: none !important;
+		color: var(--color-text-soft) !important;
 
-		/* Elegant shadows */
-		box-shadow:
-			0 2px 8px color-mix(in srgb, var(--color-black) calc(var(--opacity-5) * 100%), transparent),
-			inset 0 1px 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent) !important;
-
-		/* Smooth interactions */
-		transition: all var(--duration-normal) var(--ease-out) !important;
+		transition:
+			background-color var(--duration-normal) var(--ease-out),
+			border-color var(--duration-normal) var(--ease-out),
+			color var(--duration-normal) var(--ease-out) !important;
 
 		&:hover {
-			border-color: color-mix(
-				in srgb,
-				var(--color-primary) calc(var(--opacity-40) * 100%),
-				transparent
-			) !important;
-			transform: translateY(-1px) scale(1.02) !important;
-			box-shadow:
-				0 4px 16px
-					color-mix(in srgb, var(--color-black) calc(var(--opacity-10) * 100%), transparent),
-				0 2px 8px
-					color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent),
-				inset 0 1px 0
-					color-mix(in srgb, var(--color-white) calc(var(--opacity-20) * 100%), transparent) !important;
+			background: var(--color-accent) !important;
+			border-color: var(--color-accent) !important;
+			color: var(--color-text-inverted) !important;
 		}
 
 		&:active {
-			transform: translateY(0) scale(0.98) !important;
+			background: var(--color-accent-dark) !important;
 		}
 	}
 
@@ -539,7 +453,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: var(--color-text);
+		color: inherit;
 		transition: color var(--duration-fast) var(--ease-out);
 	}
 
@@ -606,63 +520,20 @@
 		outline-offset: var(--space-1);
 	}
 
-	/* Dark mode enhancements for "paper-like to modern focused" experience */
-	:global(html.dark) .media-player {
-		/* Enhanced glassmorphism in dark mode */
-		&::before {
-			background: linear-gradient(
-				135deg,
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
-				transparent 50%,
-				color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent) 100%
-			);
-		}
-	}
-
+	/* Dark mode: warm near-black film ground, same flat treatment. */
 	:global(html.dark) .player-controls {
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-90) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-border) calc(var(--opacity-30) * 100%),
-			transparent
-		);
-
-		&:hover {
-			background: color-mix(
-				in srgb,
-				var(--color-surface) calc(var(--opacity-95) * 100%),
-				transparent
-			);
-		}
+		background: var(--color-surface);
+		border-color: var(--color-border);
 	}
 
 	:global(html.dark .control-btn) {
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-80) * 100%),
-			transparent
-		) !important;
-		border-color: color-mix(
-			in srgb,
-			var(--color-border) calc(var(--opacity-40) * 100%),
-			transparent
-		) !important;
+		background: var(--color-surface-elevated) !important;
+		border-color: var(--color-border) !important;
 
 		&:hover {
-			background: color-mix(
-				in srgb,
-				var(--color-surface) calc(var(--opacity-95) * 100%),
-				transparent
-			) !important;
-			border-color: color-mix(
-				in srgb,
-				var(--color-accent) calc(var(--opacity-50) * 100%),
-				transparent
-			) !important;
+			background: var(--color-accent) !important;
+			border-color: var(--color-accent) !important;
+			color: var(--color-text-inverted) !important;
 		}
 	}
 </style>

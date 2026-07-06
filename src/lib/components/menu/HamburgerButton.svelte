@@ -77,13 +77,13 @@
 	}
 
 	.hamburger:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-primary);
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--space-1);
-		border-radius: var(--border-radius-md);
+		border-radius: 0;
 	}
 
 	.hamburger:hover .hamburger-line {
-		background-color: var(--color-primary);
+		background-color: var(--color-accent);
 	}
 
 	/* High contrast mode support */

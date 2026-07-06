@@ -299,8 +299,8 @@
 										width={itemWidth}
 										height={20}
 										fill={color}
-										rx="6"
-										ry="6"
+										rx="0"
+										ry="0"
 										class="timeline-bar"
 										class:selected={selectedItem?.id === item.id}
 										onpointermove={(e) => showTooltip(e, item)}
@@ -458,12 +458,9 @@
 		left: 0;
 		z-index: var(--z-tooltip);
 		pointer-events: none;
-		background: color-mix(in srgb, var(--color-surface) 90%, transparent);
-		backdrop-filter: blur(var(--glass-blur-sm));
-		-webkit-backdrop-filter: blur(var(--glass-blur-sm));
-		border-radius: var(--border-radius-md);
+		background: var(--color-surface-elevated);
+		border-radius: 0;
 		border: 1px solid var(--color-border);
-		box-shadow: var(--shadow-lg);
 		padding: var(--space-3);
 		min-width: 200px;
 		max-width: 300px;
@@ -485,11 +482,12 @@
 	}
 
 	.tooltip-category {
+		font-family: var(--font-family-mono);
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-medium);
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		color: var(--color-text-muted);
+		letter-spacing: var(--letter-spacing-wide);
+		color: var(--color-text-light);
 	}
 
 	.tooltip-title {
@@ -541,7 +539,7 @@
 	.lane-background {
 		fill: var(--color-surface-alt);
 		opacity: 0.3;
-		rx: 6;
+		rx: 0;
 	}
 
 	.lane-background:nth-child(even) {
@@ -563,8 +561,9 @@
 	}
 
 	.timeline-bar.selected {
-		stroke: var(--color-surface);
-		filter: brightness(1.3);
+		stroke: var(--color-accent);
+		stroke-width: var(--space-0-5);
+		filter: brightness(1.05);
 		opacity: 1;
 	}
 
@@ -583,19 +582,25 @@
 	}
 
 	.timeline-point.selected {
-		stroke: var(--color-surface);
-		filter: brightness(1.3);
+		stroke: var(--color-accent);
+		stroke-width: var(--space-0-5);
+		filter: brightness(1.05);
 		opacity: 1;
 	}
 
 	/* Detail Card */
+	/* Flat archival panel — override the .glass-card global so the detail
+	   card reads as a printed plate: square, hairline, no glass, no shadow. */
 	.detail-card {
 		position: relative;
-		border-radius: var(--border-radius-xl);
+		border-radius: 0;
 		margin-top: var(--space-md);
-		border: 1px solid color-mix(in srgb, var(--color-primary) 10%, transparent);
+		border: 1px solid var(--color-border);
 		overflow: hidden;
-		background: color-mix(in srgb, var(--color-surface) 60%, transparent);
+		background: var(--color-surface-elevated);
+		backdrop-filter: none;
+		-webkit-backdrop-filter: none;
+		box-shadow: none;
 	}
 
 	.card-content-wrapper {
@@ -608,19 +613,16 @@
 	.category-icon-large {
 		width: var(--space-14);
 		height: var(--space-14);
-		border-radius: var(--border-radius-xl);
+		border-radius: 0;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
 		/*
 		 * --_cat-color is set inline per item (e.g. var(--color-timeline-positions)).
-		 * We mix it with transparent for the soft glow instead of concatenating a
-		 * hex alpha suffix, which breaks once the token points at a var() reference.
+		 * Flat category-coloured tile, no glow — Ink + Signal.
 		 */
-		background: var(--_cat-color, var(--color-primary));
-		box-shadow: 0 4px 12px
-			color-mix(in srgb, var(--_cat-color, var(--color-primary)) 40%, transparent);
+		background: var(--_cat-color, var(--color-accent));
 	}
 
 	.card-main-info {
@@ -682,11 +684,11 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-xs);
 		padding: var(--space-0-5) var(--space-2);
-		border-radius: var(--border-radius-sm);
+		border-radius: 0;
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--_cat-color, var(--color-primary)) 30%, transparent);
-		background: color-mix(in srgb, var(--_cat-color, var(--color-primary)) 15%, transparent);
-		color: var(--_cat-color, var(--color-primary));
+			color-mix(in srgb, var(--_cat-color, var(--color-accent)) 40%, transparent);
+		background: color-mix(in srgb, var(--_cat-color, var(--color-accent)) 15%, transparent);
+		color: var(--_cat-color, var(--color-accent));
 		font-weight: var(--font-weight-medium);
 	}
 
@@ -728,7 +730,7 @@
 		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-medium);
 		padding: var(--space-2) var(--space-3);
-		border-radius: var(--border-radius-md);
+		border-radius: 0;
 		transition: all 0.2s ease;
 	}
 
@@ -763,8 +765,9 @@
 		text-align: center;
 		padding: var(--space-xl);
 		border: 1px dashed var(--color-border);
-		border-radius: var(--border-radius-lg);
-		color: var(--color-text-muted);
+		border-radius: 0;
+		color: var(--color-text-light);
+		font-family: var(--font-family-serif);
 		font-style: italic;
 	}
 
@@ -794,11 +797,12 @@
 	}
 
 	.legend-label {
+		font-family: var(--font-family-mono);
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-medium);
 		color: var(--color-text-light);
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		letter-spacing: var(--letter-spacing-wide);
 	}
 
 	/* Empty state */

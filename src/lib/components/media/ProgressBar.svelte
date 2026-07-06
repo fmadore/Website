@@ -90,31 +90,26 @@
 		margin-bottom: var(--space-4);
 	}
 
+	/* Flat archival seek bar: ink track, pine fill, square, no glow. */
 	.progress-bar {
 		position: relative;
 		height: var(--space-1-5);
-		background: color-mix(in srgb, var(--color-text) calc(var(--opacity-10) * 100%), transparent);
-		border-radius: var(--border-radius-full);
+		background: color-mix(in srgb, var(--color-text) calc(var(--opacity-15) * 100%), transparent);
+		border-radius: 0;
 		cursor: pointer;
-		transition: all var(--duration-normal) var(--ease-out);
+		transition:
+			height var(--duration-normal) var(--ease-out),
+			background-color var(--duration-normal) var(--ease-out);
 		overflow: hidden;
-
-		/* Subtle inner glow */
-		box-shadow: inset 0 1px 2px
-			color-mix(in srgb, var(--color-black) calc(var(--opacity-10) * 100%), transparent);
 	}
 
 	.progress-bar:hover {
 		height: var(--space-2);
-		background: color-mix(in srgb, var(--color-text) calc(var(--opacity-15) * 100%), transparent);
-		box-shadow:
-			inset 0 1px 3px
-				color-mix(in srgb, var(--color-black) calc(var(--opacity-15) * 100%), transparent),
-			0 2px 8px color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
+		background: color-mix(in srgb, var(--color-text) calc(var(--opacity-20) * 100%), transparent);
 	}
 
 	.progress-bar:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-highlight);
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--space-1);
 	}
 
@@ -123,39 +118,29 @@
 		top: 0;
 		left: 0;
 		height: 100%;
-		background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
-		border-radius: var(--border-radius-full);
+		background: var(--color-accent);
+		border-radius: 0;
 		transition: width var(--duration-instant) ease;
-
-		/* Elegant glow effect */
-		box-shadow:
-			0 0 8px color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent),
-			inset 0 1px 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-20) * 100%), transparent);
 	}
 
 	.progress-thumb {
 		position: absolute;
 		top: 50%;
-		width: var(--space-4);
-		height: var(--space-4);
-		background: var(--color-primary);
-		border: var(--border-width-medium) solid var(--color-white);
-		border-radius: var(--border-radius-full);
+		width: var(--space-3);
+		height: var(--space-3);
+		background: var(--color-accent);
+		border: var(--border-width-medium) solid var(--color-surface-elevated);
+		border-radius: 0;
 		transform: translate(-50%, -50%);
 		opacity: 0;
-		transition: all var(--duration-normal) var(--ease-out);
-		box-shadow:
-			var(--shadow-sm),
-			0 0 0 4px color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
+		transition:
+			opacity var(--duration-normal) var(--ease-out),
+			transform var(--duration-normal) var(--ease-out);
 	}
 
 	.progress-bar:hover .progress-thumb {
 		opacity: 1;
-		transform: translate(-50%, -50%) scale(1.1);
-		box-shadow:
-			var(--shadow-primary),
-			0 0 0 6px color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
+		transform: translate(-50%, -50%);
 	}
 
 	.time-display {
@@ -209,9 +194,8 @@
 		}
 	}
 
-	/* Dark mode enhancements */
+	/* Dark mode: the pine signal reads bright on the film ground. */
 	:global(html.dark) .progress-fill {
-		/* More vibrant gradient in dark mode */
-		background: linear-gradient(90deg, var(--color-accent), var(--color-highlight));
+		background: var(--color-accent);
 	}
 </style>

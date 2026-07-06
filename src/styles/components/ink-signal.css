@@ -1,0 +1,511 @@
+/* ============================================================================
+ * INK + SIGNAL — structural idioms
+ *
+ * The vocabulary of the redesign, in one place: the nameplate, the rule
+ * system, №-numbered sections, the ledger, flat chips, data-voice utilities,
+ * year-bar strips, key-term clouds, drop caps and image plates.
+ *
+ * Two voices, strictly cast. The DOCUMENT voice is Archivo (display) and
+ * Newsreader (prose) — what the scholar writes. The DATA voice is Spline Sans
+ * Mono — what the machine indexes. Every class here belongs to exactly one.
+ * Corners are square, shadows do not exist, hierarchy is drawn in rules.
+ * ============================================================================ */
+
+/* ===========================================================================
+ * DATA VOICE — eyebrows, datelines, counts, labels
+ * =========================================================================== */
+
+.data-voice {
+	font-family: var(--font-family-mono);
+	font-feature-settings: 'tnum' 1;
+}
+
+/* Eyebrow — the accent kicker above a title (DOSSIERS · 5 PROJECTS · 2013—2027). */
+.eyebrow {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-bold);
+	text-transform: uppercase;
+	letter-spacing: 0.16em;
+	color: var(--color-accent);
+	margin: 0 0 var(--space-sm);
+	display: block;
+}
+
+/* Ink eyebrow — same label, quiet ink (a section kicker that isn't "current"). */
+.eyebrow--ink {
+	color: var(--color-text-emphasis);
+}
+
+.eyebrow--faint {
+	color: var(--color-text-light);
+	font-weight: var(--font-weight-medium);
+}
+
+/* Dateline — a mono date/label stamp, faint ink (17 JUN · CONFERENCE). */
+.dateline {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-medium);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--color-text-light);
+}
+
+.dateline-kind {
+	color: var(--color-accent);
+}
+
+/* An accent number inline in a data-voice run (14,700+ ITEMS). */
+.figure-accent {
+	color: var(--color-accent);
+	font-variant-numeric: tabular-nums;
+}
+
+/* ===========================================================================
+ * RULES — hierarchy is drawn, not floated
+ * =========================================================================== */
+
+.rule-nameplate {
+	border-top: var(--rule-nameplate) solid var(--color-primary);
+}
+.rule-masthead {
+	border-top: var(--rule-masthead) solid var(--color-primary);
+}
+.rule-section {
+	border-top: var(--rule-section) solid var(--color-primary);
+}
+.rule-hairline {
+	border-top: var(--rule-hairline) solid var(--color-border);
+}
+
+/* ===========================================================================
+ * NAMEPLATE — the masthead wordmark
+ * =========================================================================== */
+
+.nameplate {
+	font-family: var(--font-family-display);
+	font-variation-settings: var(--font-variation-nameplate);
+	font-weight: 850;
+	font-size: var(--font-size-nameplate);
+	line-height: 0.9;
+	letter-spacing: -0.015em;
+	text-transform: uppercase;
+	color: var(--color-text-emphasis);
+	margin: 0;
+}
+
+/* Compact nameplate — the persistent inner-page masthead name. */
+.nameplate--sm {
+	font-size: clamp(1.25rem, 1rem + 1vw, 1.7rem);
+	font-weight: 830;
+	font-variation-settings: var(--font-variation-wordmark);
+	line-height: 1;
+	white-space: nowrap;
+}
+
+/* ===========================================================================
+ * №-NUMBERED SECTION — the standard content module
+ * =========================================================================== */
+
+.section {
+	border-top: var(--rule-section) solid var(--color-primary);
+	padding-top: var(--space-sm);
+	margin-top: var(--space-2xl);
+}
+
+.section:first-child,
+.section--flush {
+	margin-top: 0;
+}
+
+.section-head {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-sm);
+	margin-bottom: var(--space-md);
+}
+
+/* № 01 — accent mono marker. */
+.section-no {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-bold);
+	letter-spacing: 0.14em;
+	color: var(--color-accent);
+	white-space: nowrap;
+}
+
+.section-title {
+	font-family: var(--font-family-display);
+	font-variation-settings: var(--font-variation-display-sm);
+	font-size: var(--font-size-2xl);
+	font-weight: 750;
+	letter-spacing: -0.01em;
+	line-height: 1.05;
+	color: var(--color-text-emphasis);
+	margin: 0;
+}
+
+/* ===========================================================================
+ * LEDGER — the universal record idiom
+ * Hanging mono key/date column left, serif content right, hairline per row.
+ * Column widths are tunable per-instance via --ledger-key-w / --ledger-meta-w.
+ * =========================================================================== */
+
+.ledger {
+	display: block;
+}
+
+.ledger-row {
+	display: grid;
+	grid-template-columns: var(--ledger-key-w, 7rem) 1fr;
+	gap: var(--space-md) var(--space-lg);
+	padding: var(--space-md) 0;
+	border-top: var(--rule-hairline) solid var(--color-border);
+	align-items: baseline;
+}
+
+/* Three-column ledger row: key | content | meta. */
+.ledger-row--meta {
+	grid-template-columns: var(--ledger-key-w, 7rem) 1fr var(--ledger-meta-w, 12rem);
+}
+
+/* Close the ledger with a hairline under the last row. */
+.ledger--ruled > .ledger-row:last-child {
+	border-bottom: var(--rule-hairline) solid var(--color-border);
+}
+
+.ledger-key {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-medium);
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--color-text-light);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+}
+
+.ledger-key--current {
+	color: var(--color-accent);
+	font-weight: var(--font-weight-semibold);
+}
+
+/* A small status stamp under the key (ACTIVE / COMPLETED / UNDERGRADUATE). */
+.ledger-status {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--color-text-muted);
+}
+
+.ledger-content {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1-5);
+	min-width: 0;
+}
+
+.ledger-title {
+	font-family: var(--font-family-serif);
+	font-size: var(--font-size-xl);
+	font-weight: var(--font-weight-medium);
+	line-height: var(--line-height-snug);
+	color: var(--color-text-emphasis);
+	margin: 0;
+}
+
+.ledger-desc {
+	font-family: var(--font-family-serif);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-relaxed);
+	color: var(--color-text-soft);
+	margin: 0;
+	max-width: 66ch;
+}
+
+.ledger-meta {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--color-text-emphasis);
+	text-align: right;
+}
+
+/* ===========================================================================
+ * CHIPS — flat, square, mono caps, count appended
+ * =========================================================================== */
+
+.chip {
+	display: inline-flex;
+	align-items: baseline;
+	gap: var(--space-2);
+	padding: var(--space-1) var(--space-2);
+	border: var(--border-width-thin) solid var(--color-border);
+	border-radius: 0;
+	background: transparent;
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-medium);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--color-text-soft);
+	text-decoration: none;
+	cursor: pointer;
+	transition:
+		border-color var(--duration-fast) var(--ease-out),
+		color var(--duration-fast) var(--ease-out),
+		background var(--duration-fast) var(--ease-out);
+}
+
+.chip:hover {
+	border-color: var(--color-border-dark);
+	color: var(--color-text-emphasis);
+}
+
+/* The appended count (ISLAM 33) — quiet ink after the label. */
+.chip .chip-count {
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-text-muted);
+}
+
+/* Selected — solid ink fill, paper text. */
+.chip--selected {
+	background: var(--color-primary);
+	border-color: var(--color-primary);
+	color: var(--color-text-inverted);
+}
+
+.chip--selected:hover {
+	background: var(--color-primary-dark);
+	border-color: var(--color-primary-dark);
+	color: var(--color-text-inverted);
+}
+
+.chip--selected .chip-count {
+	color: color-mix(in srgb, var(--color-text-inverted) 72%, transparent);
+}
+
+/* "All N tags ↓" style accent affordance, sits inline with a chip row. */
+.chip-more {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.13em;
+	text-transform: uppercase;
+	color: var(--color-accent);
+	text-decoration: none;
+	padding: var(--space-1) 0;
+}
+
+.chip-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2);
+	align-items: center;
+}
+
+/* ===========================================================================
+ * YEAR-BAR STRIP — output distribution as ink bars, accent on the newest year
+ * =========================================================================== */
+
+.year-bars {
+	display: flex;
+	align-items: flex-end;
+	gap: 4px;
+	height: var(--year-bars-h, 44px);
+}
+
+.year-bar {
+	flex: 1 1 auto;
+	min-width: 3px;
+	background: var(--color-primary);
+	/* Individual bar height is set inline: style="height: 62%" */
+}
+
+.year-bar--current {
+	background: var(--color-accent);
+}
+
+.year-bars-legend {
+	display: flex;
+	justify-content: space-between;
+	margin-top: var(--space-1-5);
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-medium);
+	letter-spacing: 0.1em;
+	color: var(--color-text-light);
+}
+
+/* Horizontal proportion bar (browse-by-year meter). Fill % via --pct. */
+.hbar {
+	position: relative;
+	height: 10px;
+	background: linear-gradient(
+		to right,
+		var(--color-primary) 0 var(--pct, 0%),
+		transparent var(--pct, 0%) 100%
+	);
+}
+
+.hbar--current {
+	background: linear-gradient(
+		to right,
+		var(--color-accent) 0 var(--pct, 0%),
+		transparent var(--pct, 0%) 100%
+	);
+}
+
+/* ===========================================================================
+ * KEY-TERMS CLOUD — frequency-scaled term list (real data as ornament)
+ * =========================================================================== */
+
+.key-terms {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	column-gap: var(--space-3-5);
+	row-gap: var(--space-1-5);
+	font-family: var(--font-family-serif);
+	line-height: 1.2;
+}
+
+.key-terms > * {
+	color: var(--color-text-soft);
+	/* size set inline per term: style="font-size: 21px" */
+}
+
+/* ===========================================================================
+ * STAT LEDGER — "the corpus, in numbers"
+ * =========================================================================== */
+
+.stat-ledger {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-sm);
+	letter-spacing: 0.02em;
+	color: var(--color-text-soft);
+}
+
+.stat-row {
+	display: flex;
+	justify-content: space-between;
+	gap: var(--space-3);
+}
+
+.stat-value {
+	font-variant-numeric: tabular-nums;
+	color: var(--color-text-emphasis);
+}
+
+.stat-value--accent {
+	color: var(--color-accent);
+}
+
+/* ===========================================================================
+ * DROP CAP — Archivo initial, accent, opening an abstract or standfirst
+ * =========================================================================== */
+
+.drop-cap::first-letter {
+	float: left;
+	font-family: var(--font-family-display);
+	font-variation-settings: 'wdth' 118;
+	font-weight: 850;
+	font-size: 4.4em;
+	line-height: 0.72;
+	padding: 0.06em 0.1em 0 0;
+	color: var(--color-accent);
+}
+
+/* ===========================================================================
+ * IMAGE PLATE — a scan/cover/photo set as a plate, with a serif-italic caption
+ * =========================================================================== */
+
+.plate {
+	display: block;
+	width: 100%;
+	border: var(--border-width-thin) solid var(--color-border);
+	border-radius: 0;
+	background: var(--color-background-muted);
+	object-fit: cover;
+}
+
+.plate-caption {
+	margin-top: var(--space-2);
+	font-family: var(--font-family-serif);
+	font-style: italic;
+	font-size: var(--font-size-sm);
+	line-height: var(--line-height-caption);
+	color: var(--color-text-light);
+}
+
+/* ===========================================================================
+ * STANDFIRST — the serif-italic deck under a page title
+ * =========================================================================== */
+
+.standfirst {
+	font-family: var(--font-family-serif);
+	font-style: italic;
+	font-size: var(--font-size-lg);
+	line-height: var(--line-height-normal);
+	color: var(--color-text-soft);
+	max-width: 60ch;
+	margin: 0;
+}
+
+/* ===========================================================================
+ * PAGINATION — mono, square, ink-fill on the current page
+ * =========================================================================== */
+
+.pager {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.pager-item {
+	padding: var(--space-1-5) var(--space-2-5);
+	border: var(--border-width-thin) solid var(--color-border);
+	color: var(--color-text-soft);
+	text-decoration: none;
+	transition:
+		border-color var(--duration-fast) var(--ease-out),
+		color var(--duration-fast) var(--ease-out);
+}
+
+.pager-item:hover {
+	border-color: var(--color-border-dark);
+	color: var(--color-text-emphasis);
+}
+
+.pager-item--current {
+	background: var(--color-primary);
+	border-color: var(--color-primary);
+	color: var(--color-text-inverted);
+}
+
+.pager-item--edge {
+	border-color: var(--color-primary);
+	color: var(--color-text-emphasis);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.chip,
+	.pager-item {
+		transition: none;
+	}
+}

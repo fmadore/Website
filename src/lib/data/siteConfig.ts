@@ -31,13 +31,16 @@ export interface AuthorInfo {
 	fullName: string; // With title
 	position: string;
 	positionShort: string; // Without institution name
+	tagline: string; // Descriptive hero standfirst — subject + affiliation, not a role list
 }
 
 export const author: AuthorInfo = {
 	name: 'Frédérick Madore',
 	fullName: 'Frédérick Madore, Ph.D.',
 	position: 'Historian | Digital Humanities & AI | Data Curator, University of Bayreuth',
-	positionShort: 'Historian & Data Curator'
+	positionShort: 'Historian & Data Curator',
+	tagline:
+		'Historian of Islam in francophone West Africa, working with digital humanities and AI · Data Curator, Cluster of Excellence “Africa Multiple”, University of Bayreuth'
 };
 
 export const address: Address = {

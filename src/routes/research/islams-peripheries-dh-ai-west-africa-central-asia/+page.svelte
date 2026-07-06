@@ -13,6 +13,40 @@
 	seoDescription="A research project using AI to unlock historical collections about Islamic communities in West Africa and Central Asia, focusing on comparative analysis of Islamic discourse and responses to modernity."
 	seoKeywords="Digital Humanities, AI, West Africa, Central Asia, Islam, Archives, Comparative History, Algorithmic Analysis"
 	projectName="Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia"
+	subtitle="Using AI to read two multilingual archives against each other — West African and Central Asian Islam, made computationally legible."
+	programme="Open Up · 2026–28"
+	regions={['West Africa', 'Central Asia']}
+	sourceLanguages={[
+		'Russian',
+		'Arabic',
+		'Hausa',
+		'Tajik',
+		'Uzbek',
+		'Persian',
+		'Turki',
+		'French',
+		'Ewe',
+		'Kabyè',
+		'German'
+	]}
+	ctas={[
+		{
+			label: 'Islam West Africa Collection',
+			href: 'https://islam.zmo.de/s/westafrica/',
+			external: true,
+			primary: true
+		},
+		{
+			label: 'Reinhard Eisener Collection',
+			href: 'https://www.zmo.de/en/library/special-collection-1/translate-to-english-reinhard-eisener-bestand',
+			external: true
+		},
+		{
+			label: 'AI-NER-Validator · GitHub',
+			href: 'https://github.com/fmadore/AI-NER-Validator',
+			external: true
+		}
+	]}
 >
 	<p class="lead">
 		This research project (2026-2027), co-directed with <a

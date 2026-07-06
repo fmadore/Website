@@ -135,9 +135,8 @@
 		aria-describedby="update-description"
 	>
 		<div class="update-content">
-			<div class="update-icon">🔄</div>
 			<div class="update-text">
-				<h3 id="update-title">Update Available</h3>
+				<h3 id="update-title">Update available</h3>
 				<p id="update-description">
 					A new version of the site is available with improvements and fixes.
 				</p>
@@ -163,6 +162,7 @@
 {/if}
 
 <style>
+	/* A flat paper notice, square, opened by an accent rule. No glass/shadow. */
 	.pwa-update-prompt {
 		position: fixed;
 		bottom: var(--space-md);
@@ -170,12 +170,11 @@
 		right: var(--space-md);
 		max-width: 25rem; /* 400px */
 		margin: 0 auto;
-		background: color-mix(in srgb, var(--color-surface-elevated) 80%, transparent);
-		backdrop-filter: blur(var(--glass-blur-amount));
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		border-radius: var(--border-radius-xl);
-		box-shadow: var(--shadow-xl);
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-border) 50%, transparent);
+		background: var(--color-surface-elevated);
+		border-radius: 0;
+		box-shadow: none;
+		border: var(--border-width-thin) solid var(--color-border-dark);
+		border-top: var(--rule-section) solid var(--color-accent);
 		z-index: var(--z-modal);
 		animation: slideUp var(--duration-moderate) var(--ease-out);
 	}
@@ -195,34 +194,25 @@
 		padding: var(--space-md);
 		display: flex;
 		align-items: center;
-		gap: var(--space-sm);
+		gap: var(--space-md);
 	}
 
-	.update-icon {
-		font-size: var(--font-size-2xl);
-		animation: rotate 2s linear infinite;
-	}
-
-	@keyframes rotate {
-		from {
-			transform: rotate(0deg);
-		}
-		to {
-			transform: rotate(360deg);
-		}
-	}
-
+	/* Title — the data voice: a mono caps notice label. */
 	.update-text h3 {
 		margin: 0 0 var(--space-xs) 0;
-		font-size: var(--font-size-base);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-emphasis);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-bold);
+		text-transform: uppercase;
+		letter-spacing: var(--tracking-eyebrow);
+		color: var(--color-accent);
 	}
 
 	.update-text p {
 		margin: 0;
-		font-size: var(--font-size-xs);
-		color: var(--color-text-muted);
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-sm);
+		color: var(--color-text-soft);
 		line-height: var(--line-height-relaxed);
 	}
 
@@ -246,26 +236,18 @@
 			gap: var(--space-md);
 		}
 
-		.update-icon {
-			font-size: var(--font-size-3xl);
-		}
-
 		.update-text h3 {
-			font-size: var(--font-size-lg);
+			font-size: var(--font-size-xs);
 		}
 
 		.update-text p {
-			font-size: var(--font-size-sm);
+			font-size: var(--font-size-base);
 		}
 	}
 
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
 		.pwa-update-prompt {
-			animation: none;
-		}
-
-		.update-icon {
 			animation: none;
 		}
 	}

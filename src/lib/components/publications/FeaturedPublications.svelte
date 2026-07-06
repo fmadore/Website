@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Publication } from '$lib/types';
 	import PublicationItem from './PublicationItem.svelte';
-	import Icon from '@iconify/svelte';
 
 	let {
 		publications = [],
@@ -14,10 +13,7 @@
 
 {#if publications.length > 0}
 	<div class="featured-section scroll-reveal">
-		<div class="featured-header">
-			<Icon icon="lucide:star" width="20" height="20" />
-			<span>Featured Publications</span>
-		</div>
+		<p class="eyebrow featured-header">Featured</p>
 
 		<ul class="entity-list grid-stagger">
 			{#each publications as publication, index (publication.id)}
@@ -28,21 +24,16 @@
 {/if}
 
 <style>
+	/* Featured block — content on paper. The section marker is the accent
+	 * mono eyebrow (.eyebrow); a hairline rule under the block closes it,
+	 * separating the curated lead from the long bibliography that follows. */
 	.featured-section {
 		margin-bottom: var(--space-8);
 	}
 
 	.featured-header {
-		display: flex;
-		align-items: center;
-		gap: var(--space-2);
-		color: var(--color-accent);
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-semibold);
-		text-transform: uppercase;
-		letter-spacing: var(--letter-spacing-wider);
+		/* .eyebrow supplies the mono accent kicker; only the spacing is local. */
 		margin-bottom: var(--space-4);
-		padding-left: var(--space-1);
 	}
 
 	.entity-list {
@@ -51,33 +42,12 @@
 		margin: 0;
 	}
 
-	/* Add a subtle visual separator after featured section */
+	/* Close the featured block with a full ink hairline, not a fading gradient. */
 	.featured-section::after {
 		content: '';
 		display: block;
 		margin-top: var(--space-8);
-		height: 1px;
-		background: linear-gradient(
-			to right,
-			transparent,
-			color-mix(in srgb, var(--color-primary) 10%, transparent) 20%,
-			color-mix(in srgb, var(--color-primary) 10%, transparent) 80%,
-			transparent
-		);
-	}
-
-	/* Dark mode adjustments */
-	:global(html.dark) .featured-header {
-		color: var(--color-highlight);
-	}
-
-	:global(html.dark) .featured-section::after {
-		background: linear-gradient(
-			to right,
-			transparent,
-			color-mix(in srgb, var(--color-primary) 20%, transparent) 20%,
-			color-mix(in srgb, var(--color-primary) 20%, transparent) 80%,
-			transparent
-		);
+		height: var(--rule-hairline);
+		background: var(--color-border);
 	}
 </style>

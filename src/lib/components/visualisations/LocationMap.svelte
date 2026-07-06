@@ -188,8 +188,8 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 			el.style.height = `${size}px`;
 			el.innerHTML = `
 				<svg viewBox="0 0 24 24" width="${size}" height="${size}">
-					<circle cx="12" cy="12" r="10" fill="${resolvedColors.primary}" fill-opacity="0.85" stroke="${resolvedColors.surface}" stroke-width="2"/>
-					<text x="12" y="16" text-anchor="middle" fill="${resolvedColors.surface}" font-size="10" font-weight="bold">${datum.count}</text>
+					<circle cx="12" cy="12" r="10" fill="${resolvedColors.accent}" fill-opacity="0.9" stroke="${resolvedColors.surface}" stroke-width="2"/>
+					<text x="12" y="16" text-anchor="middle" fill="${resolvedColors.surface}" font-size="10" font-weight="bold" font-family="${resolvedColors.fontFamily}">${datum.count}</text>
 				</svg>
 			`;
 
@@ -347,7 +347,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		flex: 1;
 		min-height: 350px;
 		position: relative;
-		border-radius: var(--border-radius-md);
+		border-radius: 0;
 		overflow: hidden;
 		z-index: 1;
 		isolation: isolate;
@@ -383,18 +383,18 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		z-index: var(--z-dropdown) !important;
 	}
 
-	/* Popup styles - with glassmorphism */
+	/* Popup styles — flat archival card: square, hairline, no shadow. */
 	:global(.location-map-popup .maplibregl-popup-content) {
-		background-color: var(--color-surface);
+		background-color: var(--color-surface-elevated);
 		color: var(--color-text);
-		border-radius: var(--border-radius-lg);
-		box-shadow: var(--shadow-lg);
+		border-radius: 0;
+		box-shadow: none;
 		padding: var(--space-sm) var(--space-md);
 		border: 1px solid var(--color-border);
 	}
 
 	:global(.location-map-popup .maplibregl-popup-tip) {
-		border-top-color: var(--color-surface);
+		border-top-color: var(--color-surface-elevated);
 	}
 
 	:global(.location-map-popup .maplibregl-popup-close-button) {
@@ -423,9 +423,11 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 	}
 
 	:global(.location-popup .item-count) {
-		color: var(--color-text-muted);
+		color: var(--color-text-light);
 		margin-bottom: var(--space-xs);
+		font-family: var(--font-family-mono);
 		font-size: var(--font-size-xs);
+		letter-spacing: var(--letter-spacing-wide);
 	}
 
 	:global(.location-popup .item-list) {
@@ -499,12 +501,12 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 
 	/* Dark mode overrides */
 	:global(html.dark .location-map-popup .maplibregl-popup-content) {
-		background-color: var(--color-surface);
+		background-color: var(--color-surface-elevated);
 		border-color: var(--color-border);
 	}
 
 	:global(html.dark .location-map-popup .maplibregl-popup-tip) {
-		border-top-color: var(--color-surface);
+		border-top-color: var(--color-surface-elevated);
 	}
 
 	@media (--sm-down) {

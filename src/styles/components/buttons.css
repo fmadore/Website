@@ -1,6 +1,11 @@
-/* Modern Button Styles for Academic Website */
+/* Button styles — Ink + Signal.
+ *
+ * Buttons speak the DATA voice: Spline Sans Mono, uppercase, letterspaced,
+ * square corners, no shadow, no lift, no ripple. Two solid fills carry the
+ * hierarchy — ink (.btn-primary) for standard primary actions, press
+ * pine (.btn-accent) for the single hero CTA per screen. Everything
+ * else is an outlined or ghost control. */
 
-/* Base button reset and core styles */
 .btn {
 	/* Layout */
 	display: inline-flex;
@@ -8,24 +13,25 @@
 	justify-content: center;
 	position: relative;
 
-	/* Typography */
-	font-family: inherit;
-	font-weight: var(--font-weight-medium);
-	font-size: var(--font-size-base);
+	/* Typography — the data voice */
+	font-family: var(--font-family-mono);
+	font-weight: var(--font-weight-semibold);
+	font-size: var(--font-size-sm);
 	line-height: var(--line-height-tight);
-	letter-spacing: var(--letter-spacing-wide);
+	letter-spacing: var(--tracking-eyebrow);
+	text-transform: uppercase;
 	text-align: center;
 	text-decoration: none;
 	white-space: nowrap;
 	word-wrap: normal;
 
 	/* Spacing */
-	padding: var(--space-3) var(--space-6);
+	padding: var(--space-3) var(--space-5);
 	gap: var(--space-2);
 
-	/* Appearance */
+	/* Appearance — square, flat */
 	border: var(--border-width-thin) solid transparent;
-	border-radius: var(--border-radius-lg);
+	border-radius: 0;
 	background: transparent;
 	color: inherit;
 	cursor: pointer;
@@ -38,151 +44,145 @@
 	-webkit-tap-highlight-color: transparent;
 	touch-action: manipulation;
 
-	/* Animation */
-	transition: all var(--duration-normal) var(--ease-in-out);
-	transform: translateZ(0);
+	/* Animation — colour only, instant register */
+	transition:
+		background var(--duration-fast) var(--ease-out),
+		border-color var(--duration-fast) var(--ease-out),
+		color var(--duration-fast) var(--ease-out);
 }
 
-/* Remove default focus outline and add custom */
 .btn:focus {
 	outline: none;
 }
 
 .btn:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-primary);
+	outline: var(--border-width-medium) solid var(--color-accent);
 	outline-offset: var(--border-width-medium);
 }
 
-/* Active state */
 .btn:active:not(:disabled) {
-	transform: scale(var(--scale-95));
+	transform: none;
 }
 
 /* ===== BUTTON VARIANTS ===== */
 
-/*
- * Primary Button — solid ink-blue on paper. No gradient (primary + amber
- * mix dilutes both brand hues), no white inset highlight (3D-gloss reads as
- * Material/SaaS template, not letterpress). The colored shadow ties the button
- * to the warm palette without resorting to gloss.
- */
+/* Primary — solid INK (cream on midnight). The standard primary action. */
 .btn-primary {
 	background: var(--color-primary);
 	color: var(--color-text-inverted);
-	border-color: transparent;
-	box-shadow: var(--shadow-primary);
+	border-color: var(--color-primary);
 }
 
 .btn-primary:hover:not(:disabled) {
 	background: var(--color-primary-dark);
-	box-shadow: var(--shadow-primary-lg);
-	transform: var(--transform-lift-sm);
+	border-color: var(--color-primary-dark);
 }
 
-/* Secondary Button - Neutral with subtle background */
+/* Accent — solid PINE. The single hero CTA per screen; use by
+ * scarcity (Access publication, Explore project, subscribe). */
+.btn-accent {
+	background: var(--color-accent);
+	color: var(--sys-color-paper);
+	border-color: var(--color-accent);
+}
+
+.btn-accent:hover:not(:disabled) {
+	background: var(--color-accent-dark);
+	border-color: var(--color-accent-dark);
+}
+
+/* Secondary — flat outlined control on paper. */
 .btn-secondary {
-	background: var(--color-surface);
-	color: var(--color-text);
-	border-color: color-mix(in srgb, var(--color-black) calc(var(--opacity-10) * 100%), transparent);
-	box-shadow: var(--shadow-sm);
+	background: transparent;
+	color: var(--color-text-emphasis);
+	border-color: var(--color-border-dark);
 }
 
 .btn-secondary:hover:not(:disabled) {
-	background: color-mix(in srgb, var(--color-surface) 95%, var(--color-primary));
-	border-color: color-mix(in srgb, var(--color-black) calc(var(--opacity-15) * 100%), transparent);
-	box-shadow: var(--shadow);
-	transform: var(--transform-lift-sm);
+	background: var(--color-surface-alt);
+	border-color: var(--color-primary);
 }
 
-/* Outline Primary - Transparent with colored border */
+/* Outline primary — ink outline that fills on hover. */
 .btn-outline-primary {
 	background: transparent;
 	color: var(--color-primary);
 	border-color: var(--color-primary);
-	box-shadow: none;
 }
 
 .btn-outline-primary:hover:not(:disabled) {
 	background: var(--color-primary);
 	color: var(--color-text-inverted);
 	border-color: var(--color-primary);
-	box-shadow: var(--shadow-primary);
-	transform: var(--transform-lift-sm);
 }
 
-/* Outline Secondary - Subtle border */
+/* Outline secondary — subtle border. */
 .btn-outline-secondary {
 	background: transparent;
 	color: var(--color-text);
-	border-color: color-mix(in srgb, var(--color-black) calc(var(--opacity-15) * 100%), transparent);
-	box-shadow: none;
+	border-color: var(--color-border-dark);
 }
 
 .btn-outline-secondary:hover:not(:disabled) {
-	background: var(--color-surface);
-	border-color: color-mix(in srgb, var(--color-black) calc(var(--opacity-30) * 100%), transparent);
-	box-shadow: var(--shadow);
-	transform: var(--transform-lift-sm);
+	background: var(--color-surface-alt);
+	border-color: var(--color-primary);
 }
 
-/* Ghost Button - Minimal style for tertiary actions */
+/* Outline accent — pine outline that fills on hover. */
+.btn-outline-accent {
+	background: transparent;
+	color: var(--color-accent);
+	border-color: var(--color-accent);
+}
+
+.btn-outline-accent:hover:not(:disabled) {
+	background: var(--color-accent);
+	color: var(--sys-color-paper);
+	border-color: var(--color-accent);
+}
+
+/* Ghost — minimal tertiary. */
 .btn-ghost {
 	background: transparent;
 	color: var(--color-text-light);
 	border-color: transparent;
-	box-shadow: none;
 }
 
 .btn-ghost:hover:not(:disabled) {
-	background: color-mix(in srgb, var(--color-black) calc(var(--opacity-5) * 100%), transparent);
+	background: var(--color-surface-alt);
 	color: var(--color-text);
-	transform: none;
 }
 
-/* Danger Button - For destructive actions */
+/* Danger — destructive actions. */
 .btn-danger {
 	background: var(--color-danger);
-	color: var(--color-white);
-	border-color: transparent;
-	box-shadow:
-		0 var(--border-width-thin) var(--space-1)
-			color-mix(in srgb, var(--color-danger) calc(var(--opacity-15) * 100%), transparent),
-		0 var(--border-width-thin) var(--space-2)
-			color-mix(in srgb, var(--color-danger) calc(var(--opacity-10) * 100%), transparent);
+	color: var(--sys-color-paper);
+	border-color: var(--color-danger);
 }
 
 .btn-danger:hover:not(:disabled) {
 	background: var(--color-danger-dark);
-	box-shadow:
-		0 var(--space-1) var(--space-2)
-			color-mix(in srgb, var(--color-danger) calc(var(--opacity-30) * 100%), transparent),
-		0 var(--space-2) var(--space-1)
-			color-mix(in srgb, var(--color-danger) calc(var(--opacity-15) * 100%), transparent);
-	transform: var(--transform-lift-sm);
+	border-color: var(--color-danger-dark);
 }
 
 /* ===== BUTTON SIZES ===== */
 
 .btn-sm {
 	padding: var(--space-2) var(--space-4);
-	font-size: var(--font-size-sm);
-	border-radius: var(--border-radius-md);
+	font-size: var(--font-size-xs);
 }
 
 .btn-lg {
-	padding: var(--space-4) var(--space-8);
-	font-size: var(--font-size-lg);
-	border-radius: var(--border-radius-xl);
+	padding: var(--space-4) var(--space-7);
+	font-size: var(--font-size-base);
 }
 
 /* ===== BUTTON STATES ===== */
 
-/* Block button */
 .btn-block {
 	width: 100%;
 }
 
-/* Icon-only button */
 .btn-icon-only {
 	padding: var(--space-3);
 	min-width: calc(var(--space-3) * 2 + var(--space-6));
@@ -201,7 +201,6 @@
 	min-height: calc(var(--space-4) * 2 + var(--space-8));
 }
 
-/* Loading state */
 .btn-loading {
 	color: transparent !important;
 	pointer-events: none;
@@ -215,192 +214,43 @@
 	visibility: hidden;
 }
 
-/* Disabled state */
 .btn:disabled,
 .btn[aria-disabled='true'] {
-	opacity: var(--opacity-90);
+	opacity: var(--opacity-50);
 	cursor: not-allowed;
 	transform: none !important;
 }
 
-/* ===== GLASS MORPHISM VARIANT ===== */
-
+/* ===== GLASS VARIANT — neutralised =====
+ * `.btn-glass` used to add backdrop-filter chrome. Glass is gone; it now
+ * behaves as a flat outlined control. */
 .btn-glass {
-	background: color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
-	-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-	backdrop-filter: blur(var(--glass-blur-amount));
-	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
-	box-shadow:
-		var(--shadow-md),
-		inset 0 var(--border-width-thin) 0
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
+	background: transparent;
+	border-color: var(--color-border-dark);
+	box-shadow: none;
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
 }
 
 .btn-glass:hover:not(:disabled) {
-	background: color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
-	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-30) * 100%), transparent);
-	transform: var(--transform-lift-sm);
-}
-
-/* Apply glass effect to other variants */
-.btn-glass.btn-primary {
-	background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
-	border-color: color-mix(
-		in srgb,
-		var(--color-primary) calc(var(--opacity-30) * 100%),
-		transparent
-	);
-}
-
-.btn-glass.btn-primary:hover:not(:disabled) {
-	background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
-	border-color: color-mix(
-		in srgb,
-		var(--color-primary) calc(var(--glass-opacity-medium) * 100%),
-		transparent
-	);
-}
-
-.btn-glass.btn-outline-primary {
-	background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent);
-	color: var(--color-primary);
-	border-color: color-mix(
-		in srgb,
-		var(--color-primary) calc(var(--opacity-30) * 100%),
-		transparent
-	);
-}
-
-.btn-glass.btn-outline-primary:hover:not(:disabled) {
-	background: var(--color-primary);
-	color: var(--color-text-inverted);
+	background: var(--color-surface-alt);
 	border-color: var(--color-primary);
-}
-
-.btn-glass.btn-outline-secondary {
-	background: color-mix(in srgb, var(--color-surface) calc(var(--opacity-10) * 100%), transparent);
-	color: var(--color-text);
-	border-color: color-mix(in srgb, var(--color-text) calc(var(--opacity-15) * 100%), transparent);
-}
-
-.btn-glass.btn-outline-secondary:hover:not(:disabled) {
-	background: color-mix(in srgb, var(--color-surface) calc(var(--opacity-30) * 100%), transparent);
-	color: var(--color-text);
-	border-color: color-mix(in srgb, var(--color-text) calc(var(--opacity-30) * 100%), transparent);
-}
-
-/* ===== DARK MODE ADJUSTMENTS =====
- * On warm-dusk surfaces, white tints read as a slightly cool sheen.
- * Tinting toward --color-text (warm paper foreground) keeps inset highlights
- * in the same warm family as the page surface. Glass variants further down
- * keep their white tinting because they are legitimate chrome glass over
- * arbitrary backgrounds (images, iframes, media), not paper-on-paper buttons.
- */
-
-html.dark .btn-secondary {
-	background: color-mix(in srgb, var(--color-text) calc(var(--opacity-5) * 100%), transparent);
-	border-color: color-mix(in srgb, var(--color-text) calc(var(--opacity-10) * 100%), transparent);
-}
-
-html.dark .btn-secondary:hover:not(:disabled) {
-	background: color-mix(in srgb, var(--color-text) calc(var(--opacity-10) * 100%), transparent);
-	border-color: color-mix(in srgb, var(--color-text) calc(var(--opacity-15) * 100%), transparent);
-}
-
-html.dark .btn-outline-secondary {
-	border-color: color-mix(in srgb, var(--color-text) calc(var(--opacity-15) * 100%), transparent);
-}
-
-html.dark .btn-outline-secondary:hover:not(:disabled) {
-	background: color-mix(in srgb, var(--color-text) calc(var(--opacity-5) * 100%), transparent);
-	border-color: color-mix(in srgb, var(--color-text) calc(var(--opacity-30) * 100%), transparent);
-}
-
-html.dark .btn-ghost:hover:not(:disabled) {
-	background: color-mix(in srgb, var(--color-text) calc(var(--opacity-5) * 100%), transparent);
-}
-
-html.dark .btn-glass {
-	background: color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
-	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
-}
-
-html.dark .btn-glass:hover:not(:disabled) {
-	background: color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
-	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
-}
-
-html.dark .btn-glass.btn-outline-primary {
-	background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent);
-	color: var(--color-primary);
-	border-color: color-mix(
-		in srgb,
-		var(--color-primary) calc(var(--opacity-15) * 100%),
-		transparent
-	);
-}
-
-html.dark .btn-glass.btn-outline-primary:hover:not(:disabled) {
-	background: var(--color-primary);
-	color: var(--color-text-inverted);
-	border-color: var(--color-primary);
-}
-
-html.dark .btn-glass.btn-outline-secondary {
-	background: color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent);
-	color: var(--color-text);
-	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
-}
-
-html.dark .btn-glass.btn-outline-secondary:hover:not(:disabled) {
-	background: color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
-	color: var(--color-text);
-	border-color: color-mix(in srgb, var(--color-white) calc(var(--opacity-30) * 100%), transparent);
-}
-
-/* ===== ANIMATION UTILITIES ===== */
-
-/* Ripple effect on click */
-@keyframes btn-ripple {
-	to {
-		transform: scale(var(--scale-150));
-		opacity: 0;
-	}
-}
-
-.btn::after {
-	content: '';
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	border-radius: var(--border-radius-full);
-	background: currentColor;
-	opacity: 0;
-	transform: scale(var(--scale-0));
-	pointer-events: none;
-}
-
-.btn:active::after {
-	animation: btn-ripple var(--btn-shine-duration) ease-out;
 }
 
 /* ===== LEGACY COMPATIBILITY ===== */
 
-/* Keep some legacy classes for backward compatibility */
-
 .control-button-rounded {
-	border-radius: var(--border-radius-md) !important;
+	border-radius: 0 !important;
 }
 
 .control-button-rounded:hover,
 .control-button-rounded:focus {
 	background-color: var(--color-primary) !important;
-	color: var(--color-background) !important;
+	color: var(--color-text-inverted) !important;
 }
 
 /* ===== ACCESSIBILITY ===== */
 
-/* High contrast mode adjustments */
 @media (prefers-contrast: high) {
 	.btn {
 		border-width: var(--border-width-medium);
@@ -411,68 +261,13 @@ html.dark .btn-glass.btn-outline-secondary:hover:not(:disabled) {
 	}
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
 	.btn {
 		transition: none;
 	}
 
-	.btn::before,
-	.btn::after {
-		animation: none;
-	}
-
-	.btn:hover:not(:disabled) {
+	.btn:hover:not(:disabled),
+	.btn:active:not(:disabled) {
 		transform: none;
 	}
-
-	.btn:active:not(:disabled) {
-		transform: scale(var(--scale-95));
-	}
-}
-
-/* Filter chip buttons - allow text wrapping for better display */
-.filter-chip {
-	white-space: normal;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	text-align: left;
-	line-height: var(--line-height-normal);
-	padding: var(--space-2) var(--space-3);
-	min-height: 2.5rem;
-	height: auto;
-	max-width: 100%;
-	align-items: center;
-}
-
-.filter-chip .btn-content {
-	display: inline-flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: var(--space-2);
-	width: 100%;
-}
-
-.filter-chip .chip-text {
-	display: inline;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	white-space: normal;
-	line-height: var(--line-height-normal);
-}
-
-.filter-chip .chip-count {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	flex-shrink: 0;
-	margin-left: var(--space-1);
-	min-width: 1.5rem;
-	padding: var(--space-0-5) var(--space-2);
-	font-size: var(--font-size-xs);
-	font-weight: var(--font-weight-semibold);
-	line-height: 1;
-	border-radius: var(--border-radius-sm);
-	white-space: nowrap;
-	vertical-align: middle;
 }

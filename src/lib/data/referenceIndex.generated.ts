@@ -1568,6 +1568,10 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"date": "1 July 2026",
 		"dateISO": "2026-07-01",
 		"year": 2026,
+		"image": "images/communications/reconfiguring-archive-amira-2026.webp",
+		"heroImage": {
+			"src": "images/communications/reconfiguring-archive-amira-2026.webp"
+		},
 		"conference": "Reimagining the Archive in the Post-Truth Era: An International Interdisciplinary Conference",
 		"location": "Cory Library for Historical Research, Makhanda",
 		"country": "South Africa"

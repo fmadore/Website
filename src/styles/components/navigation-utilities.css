@@ -14,11 +14,12 @@
 	border: 0;
 }
 
-/* Focus visible utility for all interactive elements */
+/* Focus visible utility for all interactive elements — pine signals the
+ * keyboard target. Square (no radius). */
 *:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-primary);
+	outline: var(--border-width-medium) solid var(--color-accent);
 	outline-offset: var(--space-1);
-	border-radius: var(--border-radius-sm);
+	border-radius: 0;
 }
 
 /* Reduced motion support for all navigation elements */

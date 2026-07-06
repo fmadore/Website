@@ -76,31 +76,23 @@
 <!-- eslint-enable svelte/no-navigation-without-resolve -->
 
 <style>
+	/* An inline citation reads as text with a pine underline — the accent
+	 * marking a link — not a tinted chip. Colour and underline only; no box,
+	 * no fill, no shadow. */
 	.reference-link {
-		/* Blend with text flow - enhanced academic citation style */
 		display: inline;
 		position: relative;
-		color: var(--color-primary);
-		text-decoration: none;
+		color: var(--color-accent);
+		text-decoration: underline;
+		text-decoration-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
+		text-decoration-thickness: var(--border-width-thin);
+		text-underline-offset: 0.18em;
 		font-size: inherit;
 		font-weight: var(--font-weight-medium);
 		white-space: nowrap;
-		padding: 0 0.15em;
-		border-radius: var(--border-radius-sm);
-		/* Explicit transition properties for better performance */
 		transition:
-			color var(--duration-moderate) var(--ease-out),
-			background-color var(--duration-moderate) var(--ease-out),
-			border-color var(--duration-moderate) var(--ease-out),
-			box-shadow var(--duration-moderate) var(--ease-out);
-
-		/* Subtle background instead of underline */
-		background-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-10) * 100%),
-			transparent
-		);
-		border: var(--border-width-thin) solid transparent;
+			color var(--duration-fast) var(--ease-out),
+			text-decoration-color var(--duration-fast) var(--ease-out);
 	}
 
 	.reference-link.has-popup {
@@ -108,94 +100,17 @@
 		pointer-events: auto;
 	}
 
-	/* Enhanced hover state */
+	/* Hover / active — the underline firms up to full pine. */
 	.reference-link:hover,
-	.reference-link:focus-visible {
-		color: var(--color-primary-dark);
-		background-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-20) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-25) * 100%),
-			transparent
-		);
-	}
-
-	/* Active/clicked state */
-	.reference-link:active {
-		background-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-25) * 100%),
-			transparent
-		);
-	}
-
-	/* Focus state for accessibility */
-	.reference-link:focus-visible {
-		outline: var(--border-width-medium) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-40) * 100%), transparent);
-		outline-offset: var(--space-2xs);
-	}
-
-	/* Dark mode - enhanced adjustments */
-	:global(html.dark) .reference-link {
-		color: var(--color-accent);
-		background-color: color-mix(
-			in srgb,
-			var(--color-accent) calc(var(--opacity-10) * 100%),
-			transparent
-		);
-	}
-
-	:global(html.dark) .reference-link:hover,
-	:global(html.dark) .reference-link:focus-visible {
-		color: var(--color-accent);
-		background-color: color-mix(
-			in srgb,
-			var(--color-accent) calc(var(--opacity-20) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-accent) calc(var(--opacity-30) * 100%),
-			transparent
-		);
-		box-shadow: var(--shadow-sm);
-	}
-
-	/* Active state when preview is visible */
+	.reference-link:focus-visible,
 	.reference-link.is-active {
-		color: var(--color-primary-dark);
-		background-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-20) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-30) * 100%),
-			transparent
-		);
-		box-shadow: var(--shadow-sm);
+		color: var(--color-accent-dark);
+		text-decoration-color: var(--color-accent);
 	}
 
-	/* Dark mode active state */
-	:global(html.dark) .reference-link.is-active {
-		color: var(--color-accent);
-		background-color: color-mix(
-			in srgb,
-			var(--color-accent) calc(var(--opacity-25) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-accent) calc(var(--opacity-40) * 100%),
-			transparent
-		);
-		box-shadow: var(--shadow-sm);
+	.reference-link:focus-visible {
+		outline: var(--border-width-medium) solid var(--color-accent);
+		outline-offset: var(--space-2xs);
 	}
 
 	/* Reduced motion support */
@@ -208,12 +123,8 @@
 	/* High contrast mode */
 	@media (prefers-contrast: high) {
 		.reference-link {
-			border-bottom-width: var(--border-width-medium);
+			text-decoration-thickness: var(--border-width-medium);
 			font-weight: var(--font-weight-semibold);
-		}
-
-		.reference-link:hover {
-			text-decoration: underline;
 		}
 	}
 </style>

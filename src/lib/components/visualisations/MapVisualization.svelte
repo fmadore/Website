@@ -267,7 +267,7 @@
 						'event',
 						colors.sage,
 						'conference',
-						colors.teal,
+						colors.plum,
 						'workshop',
 						colors.mauve,
 						/* other */ colors.primary
@@ -524,7 +524,7 @@
 		width: 100%;
 		height: 400px;
 		position: relative;
-		border-radius: var(--border-radius-md);
+		border-radius: 0;
 		overflow: hidden;
 		z-index: 1;
 		isolation: isolate;
@@ -569,16 +569,25 @@
 		visibility: hidden !important;
 	}
 
-	/* Marker-colour legend (shown on the conference-activity map). */
+	/* Marker-colour legend (shown on the conference-activity map). Flat
+	   archival key: square, hairline, no glass — overrides .glass-panel. */
 	.map-legend {
 		position: absolute;
 		bottom: var(--space-3);
 		left: var(--space-3);
 		z-index: calc(var(--z-above) + 6);
 		padding: var(--space-2) var(--space-3);
+		font-family: var(--font-family-mono);
 		font-size: var(--font-size-xs);
+		letter-spacing: var(--letter-spacing-wide);
 		line-height: var(--line-height-normal);
-		color: var(--color-text);
+		color: var(--color-text-soft);
+		background-color: var(--color-surface-elevated);
+		border: var(--border-width-thin) solid var(--color-border);
+		border-radius: 0;
+		box-shadow: none;
+		backdrop-filter: none;
+		-webkit-backdrop-filter: none;
 		pointer-events: auto;
 	}
 
@@ -607,7 +616,9 @@
 		flex-shrink: 0;
 	}
 
-	/* Keep in sync with the `match` expression in setupClusterLayers(). */
+	/* Keep in sync with the `match` expression in setupClusterLayers(). The
+	   colour keys map to the Ink + Signal viz palette: accent=pine,
+	   plum=--sys-viz-6, mauve=--sys-viz-5, sage=--sys-viz-3, primary=ink. */
 	.legend-swatch-primary {
 		background-color: var(--color-primary);
 	}
@@ -617,15 +628,15 @@
 	}
 
 	.legend-swatch-teal {
-		background-color: var(--sys-color-teal-600);
+		background-color: var(--sys-viz-6);
 	}
 
 	.legend-swatch-mauve {
-		background-color: var(--sys-color-mauve-500);
+		background-color: var(--sys-viz-5);
 	}
 
 	.legend-swatch-sage {
-		background-color: var(--sys-color-sage-500);
+		background-color: var(--sys-viz-3);
 	}
 
 	@media (--sm-down) {
@@ -689,28 +700,26 @@
 		color: var(--color-highlight);
 	}
 
-	/* Custom Popup Styles - Glassmorphism */
+	/* Custom Popup Styles — flat archival card: square, hairline, no glass. */
 	:global(.map-popup .maplibregl-popup-content) {
-		background-color: color-mix(in srgb, var(--color-background) 85%, transparent);
-		backdrop-filter: blur(var(--glass-blur-md));
-		-webkit-backdrop-filter: blur(var(--glass-blur-md));
+		background-color: var(--color-surface-elevated);
 		color: var(--color-text);
-		border-radius: var(--border-radius-lg);
-		box-shadow: var(--shadow-glass);
+		border-radius: 0;
+		box-shadow: none;
 		padding: 0;
 		overflow: hidden;
 		max-height: calc(100% - var(--space-4));
-		border: 1px solid color-mix(in srgb, var(--color-white) 20%, transparent);
+		border: 1px solid var(--color-border);
 	}
 
 	:global(.map-popup .maplibregl-popup-tip) {
-		border-top-color: color-mix(in srgb, var(--color-background) 85%, transparent);
+		border-top-color: var(--color-surface-elevated);
 	}
 
 	:global(.map-popup .maplibregl-popup-close-button) {
 		color: var(--color-text-light);
-		background-color: color-mix(in srgb, var(--color-white) 70%, transparent);
-		border-radius: var(--border-radius-full);
+		background-color: transparent;
+		border-radius: 0;
 		width: var(--space-5);
 		height: var(--space-5);
 		line-height: var(--space-5);
@@ -724,8 +733,8 @@
 	}
 
 	:global(.map-popup .maplibregl-popup-close-button:hover) {
-		color: var(--color-text);
-		background-color: var(--color-white);
+		color: var(--color-accent);
+		background-color: transparent;
 	}
 
 	/* Popup content styles */
@@ -758,8 +767,9 @@
 	}
 
 	:global(.map-popup .map-popup-year) {
+		font-family: var(--font-family-mono);
 		font-size: 0.9em;
-		opacity: 0.8;
+		opacity: 0.85;
 		color: var(--color-text-light);
 	}
 
@@ -799,14 +809,15 @@
 
 	/* Dark mode adjustments for popup tip */
 	:global(html.dark .map-popup .maplibregl-popup-tip) {
-		border-top-color: color-mix(in srgb, var(--color-background) 85%, transparent);
+		border-top-color: var(--color-surface-elevated);
 	}
 
 	:global(html.dark .map-popup .maplibregl-popup-close-button) {
-		background-color: color-mix(in srgb, var(--color-white) 15%, transparent);
+		background-color: transparent;
 	}
 
 	:global(html.dark .map-popup .maplibregl-popup-close-button:hover) {
-		background-color: color-mix(in srgb, var(--color-white) 25%, transparent);
+		background-color: transparent;
+		color: var(--color-accent);
 	}
 </style>

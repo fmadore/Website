@@ -1,36 +1,99 @@
 <script lang="ts">
 	/**
-	 * PDF Generator for CV — editorial letterpress design.
+	 * PDF Generator for CV — Ink + Signal, the press archive read as a typeset sheet.
 	 *
-	 * Mirrors the on-screen CV's warm-editorial language in print:
-	 * - Left-aligned letterhead: ink-blue letterspaced "CURRICULUM VITAE"
-	 *   eyebrow above a serif name headline, then date, closed by a hairline
-	 * - Serif (times) section + subsection headings in title case, each over a
-	 *   single full-width hairline rule — no decorative bars or accent stripes
-	 * - Deep-ink body text; ink-blue reserved for year pinpoints and links
-	 * - Two-column contact block with small-caps eyebrow labels
-	 * - Page footer with name + page number; clickable contact links
+	 * Mirrors the on-screen CV's two-voice, rule-drawn language in print:
+	 * - Nameplate letterhead: a pine mono "CURRICULUM VITAE" data-voice
+	 *   eyebrow above an Archivo/helvetica name headline, a mono dateline, closed
+	 *   by a full-width ink hairline
+	 * - Section heads in the DISPLAY voice (Archivo → helvetica bold), each opened
+	 *   by a heavy 3px-equivalent ink rule and a "№ 0N" accent-mono marker — no
+	 *   boxes, no shadows, no accent stripes
+	 * - Subsection labels (BOOKS, ARTICLES…) in the DATA voice (mono uppercase,
+	 *   letterspaced, quiet ink) over a hairline
+	 * - Prose body in the SERIF voice (Newsreader → times); year/date keys in the
+	 *   DATA voice (mono), the sole pine reserved for the current/ongoing key
+	 * - Ledger rows separated by ink hairlines, exactly like the web CVEntry
+	 * - Two-column contact block with mono small-caps labels; clickable links in ink
 	 *
-	 * Palette and type sizes live in $lib/utils/pdfDesignTokens (ink-blue /
-	 * warm-paper), kept in sync with the site's design tokens.
+	 * Voice→font mapping, palette and type sizes live in $lib/utils/pdfDesignTokens,
+	 * kept in sync with the site's Ink + Signal design tokens.
 	 */
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
+	import { base } from '$app/paths';
 	import {
 		extractRichText,
 		renderRichText,
 		measureRichTextHeight,
 		trimFragments,
+		setPdfBaseFont,
 		type TextFragment
 	} from '$lib/utils/pdfRichText';
 	import { getAddressLines } from '$lib/utils/siteHelpers';
 	import {
+		FONTS,
 		FONT_SIZE,
 		SPACING,
+		RULE,
 		COLORS,
 		LETTER_SPACING,
 		yearColumnWidth
 	} from '$lib/utils/pdfDesignTokens';
+
+	/**
+	 * CV PDF web fonts — the three Ink + Signal voices as static TTFs served from
+	 * /static/fonts/pdf. Registered into jsPDF's virtual file system at generation
+	 * time so the PDF renders in the real faces (Archivo / Newsreader / Spline Sans
+	 * Mono) instead of the Helvetica/Times/Courier stand-ins. Fetched on demand, so
+	 * they never touch the page's critical path.
+	 */
+	const CV_FONTS: { file: string; family: string; style: string }[] = [
+		{ file: 'Archivo-Regular.ttf', family: 'Archivo', style: 'normal' },
+		{ file: 'Archivo-Bold.ttf', family: 'Archivo', style: 'bold' },
+		{ file: 'Newsreader-Regular.ttf', family: 'Newsreader', style: 'normal' },
+		{ file: 'Newsreader-SemiBold.ttf', family: 'Newsreader', style: 'bold' },
+		{ file: 'Newsreader-Italic.ttf', family: 'Newsreader', style: 'italic' },
+		{ file: 'Newsreader-MediumItalic.ttf', family: 'Newsreader', style: 'bolditalic' },
+		{ file: 'SplineSansMono-Regular.ttf', family: 'SplineSansMono', style: 'normal' },
+		{ file: 'SplineSansMono-Bold.ttf', family: 'SplineSansMono', style: 'bold' }
+	];
+
+	/** Encode a font's bytes as base64 for jsPDF's VFS. Chunked so a large TTF
+	 * doesn't overflow the call stack via String.fromCharCode(...spread). */
+	function arrayBufferToBase64(buffer: ArrayBuffer): string {
+		const bytes = new Uint8Array(buffer);
+		let binary = '';
+		const chunkSize = 0x8000;
+		for (let i = 0; i < bytes.length; i += chunkSize) {
+			binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+		}
+		return btoa(binary);
+	}
+
+	/**
+	 * Fetch and register the three CV voices into the jsPDF instance. Returns true
+	 * when every face loaded, false on any failure — the caller then falls back to
+	 * the standard PDF fonts so a font hiccup never blocks the download.
+	 */
+	async function registerCvFonts(pdf: import('jspdf').jsPDF): Promise<boolean> {
+		try {
+			await Promise.all(
+				CV_FONTS.map(async ({ file, family, style }) => {
+					const res = await fetch(`${base}/fonts/pdf/${file}`);
+					if (!res.ok) throw new Error(`${file}: HTTP ${res.status}`);
+					const b64 = arrayBufferToBase64(await res.arrayBuffer());
+					pdf.addFileToVFS(file, b64);
+					pdf.addFont(file, family, style);
+				})
+			);
+			return true;
+		} catch (err) {
+			if (import.meta.env.DEV)
+				console.error('CV font embedding failed; using standard fonts:', err);
+			return false;
+		}
+	}
 
 	let isGenerating = $state(false);
 	let jsPDF: typeof import('jspdf').jsPDF | null = $state(null);
@@ -80,6 +143,16 @@
 
 			// Create PDF with proper text rendering
 			const pdf = new jsPDF('p', 'mm', 'a4');
+
+			// Embed the real Ink + Signal faces; fall back to the standard PDF fonts
+			// if the fetch fails. Resolve each voice to its font-family id once so
+			// every setFont call below names a voice, never a raw font string.
+			const fontsReady = await registerCvFonts(pdf);
+			const DISPLAY = fontsReady ? 'Archivo' : FONTS.DISPLAY;
+			const SERIF = fontsReady ? 'Newsreader' : FONTS.SERIF;
+			const MONO = fontsReady ? 'SplineSansMono' : FONTS.MONO;
+			setPdfBaseFont(SERIF);
+
 			const pageWidth = pdf.internal.pageSize.getWidth();
 			const pageHeight = pdf.internal.pageSize.getHeight();
 			const margin = 18; // Slightly tighter margins for more content space
@@ -100,22 +173,23 @@
 				}
 			};
 
-			// Enhanced page footer with name and page number
+			// Page footer — running-foot metadata in the DATA voice (mono), closed
+			// by a faint hairline. Name/document label left, page number right.
 			const addPageNumber = () => {
 				const pageNum = pdf.internal.pages.length - 1;
 
-				// Footer line
-				pdf.setDrawColor(...COLORS.BORDER);
-				pdf.setLineWidth(0.2);
+				// Footer hairline
+				pdf.setDrawColor(...COLORS.HAIRLINE);
+				pdf.setLineWidth(RULE.FOOTER);
 				pdf.line(margin, pageHeight - 14, pageWidth - margin, pageHeight - 14);
 
-				// Name on left
+				// Name / document label on left — mono data voice
 				pdf.setFontSize(FONT_SIZE.FOOTER);
-				pdf.setFont('helvetica', 'normal');
+				pdf.setFont(MONO, 'normal');
 				pdf.setTextColor(...COLORS.TEXT_MUTED);
 				pdf.text('Frédérick Madore, PhD — Curriculum Vitae', margin, pageHeight - 9);
 
-				// Page number on right
+				// Page number on right — mono data voice
 				pdf.text(`Page ${pageNum}`, pageWidth - margin, pageHeight - 9, { align: 'right' });
 
 				pdf.setTextColor(...COLORS.TEXT);
@@ -145,7 +219,7 @@
 
 				// Section heading — serif, deep ink, title case
 				pdf.setFontSize(FONT_SIZE.SECTION_HEADING);
-				pdf.setFont('times', 'bold');
+				pdf.setFont(DISPLAY, 'bold');
 				pdf.setTextColor(...COLORS.TEXT_EMPHASIS);
 				pdf.text(title, margin, yPosition);
 				yPosition += 2.5;
@@ -167,7 +241,7 @@
 			 * keeps every entry's content indentation identical.
 			 */
 			const drawYearLabel = (label: string, x: number, y: number, columnWidth: number) => {
-				pdf.setFont('helvetica', 'bold');
+				pdf.setFont(DISPLAY, 'bold');
 				pdf.setFontSize(FONT_SIZE.BODY);
 				// Available width = column minus the x inset minus a ~1mm gutter
 				// before the content column.
@@ -196,7 +270,7 @@
 
 			// Eyebrow — "CURRICULUM VITAE", small-caps, ink-blue, letterspaced
 			pdf.setFontSize(FONT_SIZE.EYEBROW);
-			pdf.setFont('helvetica', 'bold');
+			pdf.setFont(MONO, 'bold');
 			pdf.setTextColor(...COLORS.PRIMARY);
 			pdf.setCharSpace(LETTER_SPACING.EYEBROW);
 			pdf.text('CURRICULUM VITAE', margin, yPosition);
@@ -205,14 +279,14 @@
 
 			// Name — large serif headline, deep ink (the subject of the page)
 			pdf.setFontSize(FONT_SIZE.NAME);
-			pdf.setFont('times', 'bold');
+			pdf.setFont(DISPLAY, 'bold');
 			pdf.setTextColor(...COLORS.TEXT_EMPHASIS);
 			pdf.text('Frédérick Madore, PhD', margin, yPosition);
 			yPosition += 5.5;
 
-			// Date - subtle
+			// Date — dateline in the data voice (mono)
 			pdf.setFontSize(FONT_SIZE.DATE);
-			pdf.setFont('helvetica', 'italic');
+			pdf.setFont(MONO, 'normal');
 			pdf.setTextColor(...COLORS.TEXT_MUTED);
 			const dateText =
 				cvDateElement?.textContent?.trim() ||
@@ -235,7 +309,7 @@
 			// CONTACT INFORMATION - Clean two-column layout
 			// ============================================
 			pdf.setFontSize(FONT_SIZE.CONTACT_VALUE);
-			pdf.setFont('helvetica', 'normal');
+			pdf.setFont(SERIF, 'normal');
 			pdf.setTextColor(...COLORS.TEXT);
 
 			const leftColumn = margin;
@@ -244,7 +318,7 @@
 
 			// Left side - Address (hardcoded for reliable formatting)
 			// Address label — small-caps letterspaced eyebrow
-			pdf.setFont('helvetica', 'bold');
+			pdf.setFont(MONO, 'bold');
 			pdf.setFontSize(FONT_SIZE.CONTACT_LABEL);
 			pdf.setTextColor(...COLORS.TEXT_MUTED);
 			pdf.setCharSpace(LETTER_SPACING.EYEBROW);
@@ -253,7 +327,7 @@
 			yPosition += SPACING.CONTACT_LINE;
 
 			// Address lines - from centralized config
-			pdf.setFont('helvetica', 'normal');
+			pdf.setFont(SERIF, 'normal');
 			pdf.setFontSize(FONT_SIZE.CONTACT_VALUE);
 			pdf.setTextColor(...COLORS.TEXT);
 			const addressLines = getAddressLines();
@@ -267,7 +341,7 @@
 			const linkItems = cvContactSection?.querySelectorAll('.cv-link-item');
 
 			// Contact links header — small-caps letterspaced eyebrow
-			pdf.setFont('helvetica', 'bold');
+			pdf.setFont(MONO, 'bold');
 			pdf.setFontSize(FONT_SIZE.CONTACT_LABEL);
 			pdf.setTextColor(...COLORS.TEXT_MUTED);
 			pdf.setCharSpace(LETTER_SPACING.EYEBROW);
@@ -302,7 +376,7 @@
 					}
 
 					if (displayLabel && displayValue) {
-						pdf.setFont('helvetica', 'normal');
+						pdf.setFont(SERIF, 'normal');
 						pdf.setFontSize(FONT_SIZE.CONTACT_VALUE);
 						pdf.setTextColor(...COLORS.TEXT_LIGHT);
 						pdf.text(displayLabel, rightColumn, rightY);
@@ -360,14 +434,16 @@
 
 						yPosition += SPACING.SUBSECTION_TOP;
 
-						// Subsection heading — serif bold italic, mirroring the
-						// on-screen Spectral h4. Italic differentiates it from the
-						// section heading; same serif family keeps the hierarchy
-						// consistent. No additional colour treatment needed.
+						// Subsection label — the DATA voice: mono, uppercase and
+						// letterspaced (e.g. "DEGREES", "BOOKS"). A grouping key, not
+						// a heading, so it never competes with the Archivo section
+						// head above it.
 						pdf.setFontSize(FONT_SIZE.SUBSECTION);
-						pdf.setFont('times', 'bolditalic');
-						pdf.setTextColor(...COLORS.TEXT_EMPHASIS);
-						pdf.text(h4.textContent || '', margin + 2, yPosition);
+						pdf.setFont(MONO, 'bold');
+						pdf.setTextColor(...COLORS.TEXT_LIGHT);
+						pdf.setCharSpace(LETTER_SPACING.LABEL);
+						pdf.text((h4.textContent || '').toUpperCase(), margin + 2, yPosition);
+						pdf.setCharSpace(LETTER_SPACING.NONE);
 						yPosition += SPACING.SUBSECTION_BOTTOM;
 						pdf.setTextColor(...COLORS.TEXT); // Reset text color after subsection heading
 
@@ -402,7 +478,7 @@
 												contentWidth - 5,
 												FONT_SIZE.BODY,
 												SPACING.LINE_HEIGHT_TIGHT,
-												'helvetica',
+												SERIF,
 												COLORS.PRIMARY,
 												COLORS.TEXT
 											);
@@ -543,12 +619,12 @@
 								if (languageName) {
 									checkPageBreak(SPACING.LINE_HEIGHT + SPACING.ENTRY_GAP);
 									pdf.setFontSize(FONT_SIZE.BODY);
-									pdf.setFont('helvetica', 'bold');
+									pdf.setFont(DISPLAY, 'bold');
 									pdf.setTextColor(...COLORS.PRIMARY);
 									pdf.text(languageName, margin + 2, yPosition);
 									pdf.setTextColor(...COLORS.TEXT);
 
-									pdf.setFont('helvetica', 'normal');
+									pdf.setFont(SERIF, 'normal');
 									pdf.text(proficiency, margin + yearColumnWidth, yPosition);
 									yPosition += SPACING.LINE_HEIGHT + SPACING.ENTRY_GAP;
 								}
@@ -680,7 +756,7 @@
 
 									if (label || valueFragments.length > 0) {
 										pdf.setFontSize(FONT_SIZE.BODY);
-										pdf.setFont('helvetica', 'bold');
+										pdf.setFont(DISPLAY, 'bold');
 										pdf.setTextColor(...COLORS.PRIMARY);
 
 										// Render Label
@@ -768,7 +844,7 @@
 									contentWidth - 5,
 									FONT_SIZE.BODY,
 									SPACING.LINE_HEIGHT,
-									'helvetica',
+									SERIF,
 									COLORS.PRIMARY,
 									COLORS.TEXT
 								);
@@ -825,11 +901,7 @@
 	}
 </script>
 
-<button
-	class="btn btn-primary glass-button"
-	onclick={generatePDF}
-	disabled={isGenerating || !jsPDF}
->
+<button class="btn btn-primary" onclick={generatePDF} disabled={isGenerating || !jsPDF}>
 	{#if isGenerating}
 		<Icon icon="mdi:loading" class="animate-spin" width="20" height="20" />
 		<span>Generating...</span>
@@ -840,7 +912,7 @@
 </button>
 
 <style>
-	/* All styling handled by global button classes and glassmorphism utilities */
+	/* Button styling is handled by the global .btn / .btn-primary classes. */
 	:global(.animate-spin) {
 		animation: spin var(--duration-moderate) linear infinite;
 	}

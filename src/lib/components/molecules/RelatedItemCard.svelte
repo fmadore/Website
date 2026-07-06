@@ -41,35 +41,40 @@
 </a>
 
 <style>
+	/* A flat paper tile — square corners, single hairline frame, no shadow.
+	 * The grid needs a bounded card; the record inside reads in two voices:
+	 * a mono dateline key over a serif title. Hover warms the border only. */
 	.related-item {
 		position: relative;
 		display: block;
 		text-decoration: none;
 		padding: var(--space-md);
-		border-radius: var(--border-radius-lg);
+		border-radius: 0;
 		background: var(--color-surface);
 		border: var(--border-width-thin) solid var(--color-border);
-		box-shadow: var(--shadow-sm);
 		transition: border-color var(--duration-fast) var(--ease-out);
 	}
 
-	/* Quiet hover: border warm-up plus the title colour shift below. No lift
-	 * or coloured shadow bloom. */
 	.related-item:hover {
-		border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
+		border-color: var(--color-accent);
 	}
 
+	/* Dateline — the DATA voice: mono, letterspaced caps, faint ink. */
 	.related-date {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
-		letter-spacing: 0.5px;
-		color: var(--color-text-muted);
+		letter-spacing: 0.1em;
+		color: var(--color-text-light);
 		text-transform: uppercase;
-		margin-bottom: var(--space-xs);
+		margin-bottom: var(--space-2);
 	}
 
+	/* Title — the DOCUMENT voice: Newsreader serif. */
 	.related-title {
+		font-family: var(--font-family-serif);
 		font-size: var(--font-size-lg);
-		font-weight: var(--font-weight-semibold);
+		font-weight: var(--font-weight-medium);
 		line-height: var(--line-height-snug);
 		color: var(--color-text-emphasis);
 		margin: 0;
@@ -78,32 +83,28 @@
 	}
 
 	.related-item:hover .related-title {
-		color: var(--color-primary);
+		color: var(--color-accent);
 	}
 
 	.related-authors {
+		font-family: var(--font-family-serif);
 		color: var(--color-text-light);
-		font-weight: var(--font-weight-medium);
 		font-size: var(--font-size-sm);
 	}
 
-	/* Enhanced focus accessibility */
+	/* Focus — a flat accent outline, no shadow bloom. */
 	.related-item:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-primary);
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--space-1);
-		box-shadow:
-			var(--shadow-md),
-			0 0 0 4px color-mix(in srgb, var(--color-primary) 20%, transparent);
 	}
 
 	:global(html.dark) .related-item {
 		background: var(--color-surface);
 		border-color: var(--color-border);
-		box-shadow: var(--shadow-md);
 	}
 
 	:global(html.dark) .related-item:hover {
-		border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
+		border-color: var(--color-accent);
 	}
 
 	/* Responsive tweaks */
@@ -122,9 +123,6 @@
 		.related-title {
 			transition: none;
 			animation: none;
-		}
-		.related-item:hover {
-			transform: none;
 		}
 
 		/* Ensure content is visible when animations are disabled */

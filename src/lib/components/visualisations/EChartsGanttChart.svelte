@@ -241,7 +241,7 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 						transition: ['shape'],
 						shape: {
 							...rectShape,
-							r: 4
+							r: 0
 						},
 						style: api.style()
 					};
@@ -311,8 +311,10 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 		justify-content: center;
 		gap: var(--space-lg);
 		padding-top: var(--space-xs);
-		font-size: var(--font-size-sm);
-		color: var(--color-text-muted);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-xs);
+		letter-spacing: var(--letter-spacing-wide);
+		color: var(--color-text-light);
 	}
 
 	.legend-item {
@@ -325,17 +327,17 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 		display: inline-block;
 		width: 24px;
 		height: 12px;
-		background: var(--color-primary);
-		border-radius: 3px;
+		background: var(--color-accent);
+		border-radius: 0;
 	}
 
 	.legend-marker {
 		display: inline-block;
 		width: 10px;
 		height: 10px;
-		background: var(--color-white);
-		border: 2px solid var(--color-primary);
-		border-radius: 50%;
+		background: var(--color-surface-elevated);
+		border: 2px solid var(--color-accent);
+		border-radius: 0;
 	}
 
 	@media (--sm-down) {

@@ -591,7 +591,7 @@
 				yAccessor={getPagesCount}
 				xAxisLabel="Year"
 				yAxisLabel="Total pages published"
-				barColor="var(--color-primary)"
+				barColor="var(--color-accent)"
 			/>
 			{#snippet placeholder()}
 				<p class="text-light">No page count data available to display for this visualization.</p>
@@ -1019,10 +1019,11 @@
 	/* Chart-card surface, hover, dark-mode and chart-size responsive rules
 	 * now live in VizChartCard.svelte. */
 
-	/* Section description text */
+	/* Section description text — editorial serif (Newsreader). */
 	.section-description {
-		font-size: var(--font-size-sm);
-		color: var(--color-text-muted);
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-base);
+		color: var(--color-text-soft);
 		margin-top: calc(-1 * var(--space-sm));
 		margin-bottom: var(--space-md);
 		line-height: var(--line-height-relaxed);
@@ -1072,16 +1073,17 @@
 	.pagination-btn {
 		padding: var(--space-xs) var(--space-sm);
 		border: var(--border-width-thin) solid var(--color-border);
-		background-color: var(--color-surface);
-		color: var(--color-text);
-		border-radius: var(--border-radius);
-		font-size: var(--font-size-sm);
+		background-color: var(--color-surface-elevated);
+		color: var(--color-text-soft);
+		border-radius: 0;
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-xs);
+		letter-spacing: var(--letter-spacing-wide);
 		cursor: pointer;
 		transition:
 			background-color var(--duration-fast) var(--ease-out),
 			border-color var(--duration-fast) var(--ease-out),
-			transform var(--duration-fast) var(--ease-out),
-			box-shadow var(--duration-fast) var(--ease-out);
+			color var(--duration-fast) var(--ease-out);
 		min-width: calc(var(--space-xl) + var(--space-xs));
 		display: flex;
 		align-items: center;
@@ -1089,16 +1091,15 @@
 	}
 
 	.pagination-btn:hover:not(:disabled) {
-		background-color: var(--color-surface-alt);
-		border-color: var(--color-primary);
-		transform: var(--transform-lift-sm);
+		background-color: var(--color-surface);
+		border-color: var(--color-accent);
+		color: var(--color-text-emphasis);
 	}
 
 	.pagination-btn.active {
-		background-color: var(--color-primary);
-		color: var(--color-white);
-		border-color: var(--color-primary);
-		box-shadow: var(--shadow-sm);
+		background-color: var(--color-accent);
+		color: var(--color-text-inverted);
+		border-color: var(--color-accent);
 	}
 
 	.pagination-btn:disabled {
@@ -1108,15 +1109,18 @@
 
 	.pagination-ellipsis {
 		padding: var(--space-xs) var(--space-2xs);
-		color: var(--color-text-muted);
-		font-size: var(--font-size-sm);
+		color: var(--color-text-light);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-xs);
 		display: flex;
 		align-items: center;
 	}
 
 	.pagination-info {
-		font-size: var(--font-size-sm);
-		color: var(--color-text-muted);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-xs);
+		letter-spacing: var(--letter-spacing-wide);
+		color: var(--color-text-light);
 	}
 
 	@media (--sm-down) {

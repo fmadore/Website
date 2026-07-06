@@ -96,13 +96,14 @@
 			color-mix(in srgb, var(--color-border) 60%, transparent);
 	}
 
+	/* Label — the DATA voice: mono, letterspaced caps. */
 	.active-filters-label {
-		font-family: var(--font-family-sans);
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-muted);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-bold);
+		color: var(--color-text-emphasis);
 		text-transform: uppercase;
-		letter-spacing: var(--letter-spacing-wide);
+		letter-spacing: var(--tracking-eyebrow);
 		flex-shrink: 0;
 	}
 
@@ -114,55 +115,51 @@
 		flex: 1 1 auto;
 	}
 
+	/* Applied filter — a flat mono chip carrying an ✕. Square, hairline frame,
+	 * no fill: the section label reads faint, the value in accent, so it stamps
+	 * "this filter is on" without a coloured pill. */
 	.active-filter-chip {
 		display: inline-flex;
 		align-items: center;
 		gap: var(--space-2xs);
-		padding: var(--space-2xs) var(--space-xs) var(--space-2xs) var(--space-sm);
-		font-family: var(--font-family-sans);
-		font-size: var(--font-size-xs);
+		padding: var(--space-1) var(--space-2);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
-		color: var(--color-primary);
-		background: color-mix(in srgb, var(--color-primary) 8%, transparent);
-		border: var(--border-width-thin) solid color-mix(in srgb, var(--color-primary) 25%, transparent);
-		border-radius: var(--border-radius-full);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--color-text-soft);
+		background: transparent;
+		border: var(--border-width-thin) solid var(--color-border);
+		border-radius: 0;
 		cursor: pointer;
 		line-height: var(--line-height-none);
-		transform: scale(1);
 		transition:
-			background-color var(--duration-fast) var(--ease-out),
 			border-color var(--duration-fast) var(--ease-out),
-			color var(--duration-fast) var(--ease-out),
-			transform var(--duration-fast) var(--ease-out);
+			color var(--duration-fast) var(--ease-out);
 	}
 
 	.active-filter-chip:hover {
-		background: color-mix(in srgb, var(--color-primary) 16%, transparent);
-		border-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
-		color: var(--color-primary-dark);
-	}
-
-	.active-filter-chip:active {
-		transform: scale(0.96);
-		transition-duration: var(--duration-instant);
+		border-color: var(--color-accent);
+		color: var(--color-text-emphasis);
 	}
 
 	.active-filter-chip:focus-visible {
-		outline: none;
-		box-shadow: var(--focus-ring);
+		outline: var(--border-width-medium) solid var(--color-accent);
+		outline-offset: var(--space-2xs);
 	}
 
 	.chip-section {
-		opacity: 0.75;
-		font-weight: var(--font-weight-medium);
+		color: var(--color-text-muted);
 	}
 
 	.chip-divider {
-		opacity: 0.4;
+		color: var(--color-text-muted);
 	}
 
 	.chip-value {
 		font-weight: var(--font-weight-semibold);
+		color: var(--color-accent);
 		max-width: 18ch;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -171,21 +168,24 @@
 
 	:global(.active-filter-chip .chip-remove) {
 		margin-left: var(--space-2xs);
-		opacity: 0.65;
+		color: var(--color-text-muted);
 		flex-shrink: 0;
-		transition: opacity var(--duration-fast) var(--ease-out);
+		transition: color var(--duration-fast) var(--ease-out);
 	}
 
 	.active-filter-chip:hover :global(.chip-remove) {
-		opacity: 1;
+		color: var(--color-accent);
 	}
 
+	/* Clear all — a mono-caps text action. */
 	.active-filters-clear {
 		padding: 0;
 		margin-left: var(--space-xs);
-		font-family: var(--font-family-sans);
-		font-size: var(--font-size-xs);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
 		color: var(--color-text-muted);
 		background: transparent;
 		border: none;
@@ -197,27 +197,13 @@
 	}
 
 	.active-filters-clear:hover {
-		color: var(--color-primary);
+		color: var(--color-accent);
 	}
 
 	.active-filters-clear:focus-visible {
 		outline: none;
-		color: var(--color-primary);
+		color: var(--color-accent);
 		box-shadow: var(--focus-ring);
-		border-radius: var(--border-radius-sm);
-	}
-
-	/* Dark mode — slightly stronger primary tint to read against the warm dusk surface */
-	:global(html.dark) .active-filter-chip {
-		background: color-mix(in srgb, var(--color-primary) 14%, transparent);
-		border-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
-		color: var(--color-primary-light);
-	}
-
-	:global(html.dark) .active-filter-chip:hover {
-		background: color-mix(in srgb, var(--color-primary) 22%, transparent);
-		border-color: color-mix(in srgb, var(--color-primary) 55%, transparent);
-		color: var(--color-primary-lighter);
 	}
 
 	@media (--sm-down) {
@@ -233,10 +219,6 @@
 	@media (prefers-reduced-motion: reduce) {
 		.active-filter-chip {
 			transition: none;
-		}
-
-		.active-filter-chip:active {
-			transform: none;
 		}
 	}
 </style>

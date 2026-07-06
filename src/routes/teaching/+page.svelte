@@ -2,7 +2,6 @@
 	import SEO from '$lib/SEO.svelte';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import { base, resolve } from '$app/paths'; // base for images/files, resolve for hrefs
-	import Card from '$lib/components/common/Card.svelte'; // Import Card component
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 
@@ -77,60 +76,92 @@
 			Africa, Digital Humanities, West African history.
 		</PageIntro>
 
-		<div class="content-grid grid-stagger">
+		<!-- Courses as a pure ledger: term key + level status left, serif title +
+		     institution right, mono syllabus/list action. -->
+		<div class="ledger ledger--ruled grid-stagger" style="--ledger-key-w: 12rem">
 			{#each teachingItems as item (item.id)}
-				<Card
-					title={item.title}
-					imageUrl={item.imageUrl}
-					linkUrl={item.type === 'course' ? item.syllabusUrl : item.linkUrl}
-					target={item.type === 'guest_lecture' ? '_self' : '_blank'}
-				>
-					{#snippet subtitle()}
-						<span>{item.institution}</span>
-					{/snippet}
-
-					{item.description}
-
-					{#snippet details()}
-						{#if item.type === 'course' && (item.level || item.period)}
-							<div class="teaching-details">
-								{#if item.level}
-									<p><span class="detail-label">Level:</span> {item.level}</p>
-								{/if}
-								{#if item.period}
-									<p><span class="detail-label">Period:</span> {item.period}</p>
-								{/if}
-							</div>
+				<div class="ledger-row ledger-row--meta course-row">
+					<span class="ledger-key">
+						{#if item.period}
+							<span class="course-term">{item.period}</span>
 						{/if}
-					{/snippet}
+						{#if item.type === 'course' && item.level}
+							<span class="ledger-status">{item.level}</span>
+						{:else if item.type === 'guest_lecture'}
+							<span class="ledger-status">Invited talks</span>
+						{/if}
+					</span>
 
-					{#snippet action()}
+					<span class="ledger-content">
+						<span class="ledger-title">{item.title}</span>
+						<span class="course-institution">{item.institution}</span>
+						<span class="ledger-desc">{item.description}</span>
+					</span>
+
+					<span class="ledger-meta course-action">
 						{#if item.type === 'course' && item.syllabusUrl}
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- static asset URL -->
 							<a href={item.syllabusUrl} target="_blank" rel="noopener noreferrer">
-								View Syllabus →
+								Syllabus PDF ↗
 							</a>
 						{:else if item.type === 'guest_lecture' && item.linkUrl}
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved URL -->
-							<a href={item.linkUrl}>View List →</a>
+							<a href={item.linkUrl}>View list →</a>
 						{/if}
-					{/snippet}
-				</Card>
+					</span>
+				</div>
 			{/each}
 		</div>
 	</div>
 </div>
 
 <style>
-	.teaching-details p {
+	/* The term key sits in the mono data voice, one line above the level status. */
+	.course-term {
+		font-family: var(--font-family-mono);
 		font-size: var(--font-size-sm);
 		color: var(--color-text-light);
-		margin-bottom: var(--space-2xs);
-		line-height: var(--line-height-normal);
+		letter-spacing: 0.02em;
 	}
 
-	.teaching-details .detail-label {
-		font-weight: var(--font-weight-medium);
-		color: var(--color-text);
+	/* Institution — serif byline under the course title. */
+	.course-institution {
+		font-family: var(--font-family-serif);
+		font-style: italic;
+		font-size: var(--font-size-base);
+		color: var(--color-text-soft);
+	}
+
+	/* The action column carries the accent link; align its top to the title. */
+	.course-action {
+		text-align: right;
+	}
+
+	.course-action a {
+		color: var(--color-accent);
+		text-decoration: none;
+		white-space: nowrap;
+	}
+
+	.course-action a:hover {
+		color: var(--color-accent-dark);
+	}
+
+	.course-action a:focus-visible {
+		outline: var(--border-width-medium) solid var(--color-accent);
+		outline-offset: var(--space-2xs);
+	}
+
+	/* On narrow screens the three-column ledger collapses to a single column;
+	   the action drops under the content and left-aligns with it. */
+	@media (--md-down) {
+		.course-row {
+			grid-template-columns: 1fr;
+			gap: var(--space-sm);
+		}
+
+		.course-action {
+			text-align: left;
+		}
 	}
 </style>

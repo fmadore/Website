@@ -16,7 +16,7 @@
 	const uid = $props.id();
 	const sliderId = `volume-${uid}`;
 	const volumePercentage = $derived((isMuted ? 0 : volume) * 100);
-	const sliderColor = $derived(isMuted ? 'var(--color-danger)' : 'var(--color-primary)');
+	const sliderColor = $derived(isMuted ? 'var(--color-danger)' : 'var(--color-accent)');
 </script>
 
 <div class="volume-controls">
@@ -75,46 +75,23 @@
 </div>
 
 <style>
+	/* Flat archival control cluster: elevated paper, hairline, square. */
 	.volume-controls {
 		display: flex;
 		align-items: center;
 		gap: var(--space-3);
-
-		/* Refined container */
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-50) * 100%),
-			transparent
-		);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-border) calc(var(--opacity-20) * 100%), transparent);
-		border-radius: var(--border-radius-lg);
+		background: var(--color-surface-elevated);
+		border: var(--border-width-thin) solid var(--color-border);
+		border-radius: 0;
 		padding: var(--space-2) var(--space-3);
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		backdrop-filter: blur(var(--glass-blur-amount));
-
-		/* Subtle inner glow */
-		box-shadow: inset 0 1px 0
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
-
-		transition: all var(--duration-normal) var(--ease-out);
+		transition:
+			background-color var(--duration-normal) var(--ease-out),
+			border-color var(--duration-normal) var(--ease-out);
 	}
 
 	.volume-controls:hover {
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-70) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-accent) calc(var(--opacity-30) * 100%),
-			transparent
-		);
-		box-shadow:
-			inset 0 1px 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent),
-			0 2px 8px color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent);
+		background: var(--color-surface);
+		border-color: var(--color-accent);
 	}
 
 	.volume-slider-container {
@@ -126,78 +103,54 @@
 	.volume-slider {
 		width: var(--space-20);
 		height: var(--space-1-5);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-border) calc(var(--opacity-20) * 100%), transparent);
-		border-radius: var(--border-radius-full);
+		border: var(--border-width-thin) solid var(--color-border);
+		border-radius: 0;
 		outline: none;
 		appearance: none;
 		cursor: pointer;
-		transition: all var(--duration-normal) var(--ease-out);
-
-		/* Enhanced styling with glassmorphism */
-		-webkit-backdrop-filter: blur(var(--space-1));
-		backdrop-filter: blur(var(--space-1));
-		box-shadow:
-			inset 0 1px 3px
-				color-mix(in srgb, var(--color-black) calc(var(--opacity-10) * 100%), transparent),
-			0 1px 2px color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
+		transition:
+			border-color var(--duration-normal) var(--ease-out),
+			transform var(--duration-normal) var(--ease-out);
 	}
 
 	.volume-slider:hover {
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-40) * 100%),
-			transparent
-		);
-		box-shadow:
-			inset 0 1px 3px
-				color-mix(in srgb, var(--color-black) calc(var(--opacity-15) * 100%), transparent),
-			0 2px 4px color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent),
-			0 1px 2px color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
+		border-color: var(--color-accent);
 		transform: scaleY(1.2);
 	}
 
 	.volume-slider::-webkit-slider-thumb {
 		appearance: none;
-		width: var(--space-4);
-		height: var(--space-4);
-		background: var(--color-primary);
-		border-radius: var(--border-radius-full);
+		width: var(--space-3);
+		height: var(--space-3);
+		background: var(--color-accent);
+		border-radius: 0;
 		cursor: pointer;
-		border: var(--border-width-medium) solid var(--color-white);
-		box-shadow:
-			0 2px 4px color-mix(in srgb, var(--color-black) calc(var(--opacity-20) * 100%), transparent),
-			0 0 0 2px color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
-		transition: all var(--duration-normal) var(--ease-out);
+		border: var(--border-width-thin) solid var(--color-surface-elevated);
+		transition:
+			background-color var(--duration-normal) var(--ease-out),
+			transform var(--duration-normal) var(--ease-out);
 	}
 
 	.volume-slider::-webkit-slider-thumb:hover {
-		background: var(--color-accent);
+		background: var(--color-accent-dark);
 		transform: scale(1.1);
-		box-shadow:
-			0 4px 8px color-mix(in srgb, var(--color-black) calc(var(--opacity-30) * 100%), transparent),
-			0 0 0 3px color-mix(in srgb, var(--color-accent) calc(var(--opacity-30) * 100%), transparent);
 	}
 
 	.volume-slider::-moz-range-thumb {
-		width: var(--space-4);
-		height: var(--space-4);
-		background: var(--color-primary);
-		border-radius: var(--border-radius-full);
+		width: var(--space-3);
+		height: var(--space-3);
+		background: var(--color-accent);
+		border-radius: 0;
 		cursor: pointer;
-		border: var(--border-width-medium) solid var(--color-white);
-		box-shadow:
-			0 2px 4px color-mix(in srgb, var(--color-black) calc(var(--opacity-20) * 100%), transparent),
-			0 0 0 2px color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
-		transition: all var(--duration-normal) var(--ease-out);
+		border: var(--border-width-thin) solid var(--color-surface-elevated);
+		transition:
+			background-color var(--duration-normal) var(--ease-out),
+			transform var(--duration-normal) var(--ease-out);
 	}
 
 	.volume-slider::-moz-range-thumb:hover {
-		background: var(--color-accent);
+		background: var(--color-accent-dark);
 		transform: scale(1.1);
-		box-shadow:
-			0 4px 8px color-mix(in srgb, var(--color-black) calc(var(--opacity-30) * 100%), transparent),
-			0 0 0 3px color-mix(in srgb, var(--color-accent) calc(var(--opacity-30) * 100%), transparent);
 	}
 
 	/* Fixed icon container to prevent layout shifts */
@@ -254,30 +207,14 @@
 		}
 	}
 
-	/* Dark mode enhancements */
+	/* Dark mode: flat on the film ground. */
 	:global(html.dark) .volume-controls {
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-60) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-border) calc(var(--opacity-30) * 100%),
-			transparent
-		);
+		background: var(--color-surface-elevated);
+		border-color: var(--color-border);
 
 		&:hover {
-			background: color-mix(
-				in srgb,
-				var(--color-surface) calc(var(--opacity-80) * 100%),
-				transparent
-			);
-			border-color: color-mix(
-				in srgb,
-				var(--color-accent) calc(var(--opacity-40) * 100%),
-				transparent
-			);
+			background: var(--color-surface);
+			border-color: var(--color-accent);
 		}
 	}
 </style>

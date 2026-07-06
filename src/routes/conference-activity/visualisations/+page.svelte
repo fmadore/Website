@@ -518,8 +518,9 @@
 	}
 
 	.section-description {
-		font-size: var(--font-size-sm);
-		color: var(--color-text-muted);
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-base);
+		color: var(--color-text-soft);
 		margin-top: calc(-1 * var(--space-sm));
 		margin-bottom: var(--space-md);
 		line-height: var(--line-height-relaxed);

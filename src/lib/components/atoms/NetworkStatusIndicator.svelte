@@ -75,12 +75,11 @@
 		max-width: none;
 		transform: none;
 
-		border-radius: var(--border-radius-3xl);
+		border-radius: 0;
 		z-index: var(--z-popover);
 		animation: slideInMobile var(--duration-moderate) var(--ease-out);
-		/* Near-opaque (95%) danger/success background makes the blur invisible
-		 * anyway — removed for consistency with the paper-surface approach. */
-		box-shadow: var(--shadow-lg);
+		/* Flat status bar — square, no shadow. The solid danger/success fill and
+		 * the hairline border carry it against the page. */
 	}
 
 	.network-status-indicator.offline {
@@ -160,7 +159,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border-radius: var(--border-radius-full);
+		border-radius: 0;
 		transition: background-color var(--duration-fast) var(--ease-in-out);
 	}
 

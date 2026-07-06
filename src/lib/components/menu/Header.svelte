@@ -220,48 +220,24 @@
 </header>
 
 <style>
-	/* Site header — sticky paper-glass.
-	 * Single warm-surface background with chrome blur (legitimate glass use
-	 * for sticky nav over scrolling content). Previously used a 3-stop
-	 * primary→highlight gradient with ~2-3% tint that was visually
-	 * imperceptible but added ornamental code. */
+	/* Site header — the masthead. A solid page-ground bar closed by a heavy
+	 * ink rule (cream on midnight). No glass, no blur, no shadow: the rule
+	 * does the separating. */
 	:global(.site-header) {
-		background: color-mix(
-			in srgb,
-			var(--color-surface-elevated) calc(var(--header-bg-opacity) * 100%),
-			transparent
-		);
-		backdrop-filter: blur(var(--header-blur, var(--header-blur-fallback))) saturate(180%);
-		-webkit-backdrop-filter: blur(var(--header-blur, var(--header-blur-fallback))) saturate(180%);
-		border-bottom: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-text) calc(var(--header-border-opacity) * 12%), transparent);
-		box-shadow: var(--shadow-sm);
+		background: var(--color-background);
+		border-bottom: var(--rule-masthead) solid var(--color-primary);
+		box-shadow: none;
 		position: sticky;
 		top: 0;
 		z-index: var(--z-sticky);
 		transform: translateY(0);
-		transition:
-			transform var(--duration-normal) var(--ease-out),
-			background var(--duration-normal) var(--ease-out),
-			border-color var(--duration-normal) var(--ease-out),
-			box-shadow var(--duration-normal) var(--ease-out);
+		transition: transform var(--duration-normal) var(--ease-out);
 		will-change: transform;
 	}
 
-	/* Scrolled state: raise opacity + shadow so the header stays legible
-	 * over page content and asserts a clearer separation. */
+	/* Scrolled state — the masthead stays solid; no opacity or shadow change. */
 	:global(.site-header.header-scrolled) {
-		background: color-mix(
-			in srgb,
-			var(--color-surface-elevated) calc(var(--header-bg-opacity-scrolled) * 100%),
-			transparent
-		);
-		border-bottom-color: color-mix(
-			in srgb,
-			var(--color-text) calc(var(--header-border-opacity-scrolled) * 18%),
-			transparent
-		);
-		box-shadow: var(--shadow-md);
+		background: var(--color-background);
 	}
 
 	/* Scroll-direction hide: transform rather than top/display so the
@@ -278,41 +254,15 @@
 		}
 	}
 
-	/* Dark mode — warm dusk surface, slightly translucent over body. */
+	/* Midnight — the negative: film ground closed by a cream masthead rule. */
 	:global(html.dark .site-header) {
-		background: color-mix(
-			in srgb,
-			var(--color-surface-alt) calc(var(--header-bg-opacity) * 100%),
-			transparent
-		);
-		border-bottom: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-text) calc(var(--header-border-opacity) * 18%), transparent);
-		box-shadow: var(--shadow-sm);
+		background: var(--color-background);
+		border-bottom: var(--rule-masthead) solid var(--color-primary);
+		box-shadow: none;
 	}
 
 	:global(html.dark .site-header.header-scrolled) {
-		background: color-mix(
-			in srgb,
-			var(--color-surface-alt) calc(var(--header-bg-opacity-scrolled) * 100%),
-			transparent
-		);
-		border-bottom-color: color-mix(
-			in srgb,
-			var(--color-text) calc(var(--header-border-opacity-scrolled) * 25%),
-			transparent
-		);
-		box-shadow: var(--shadow-md);
-	}
-
-	/* Solid fallback for browsers without backdrop-filter. */
-	@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-		:global(.site-header) {
-			background: var(--color-background);
-		}
-
-		:global(html.dark .site-header) {
-			background: var(--color-background);
-		}
+		background: var(--color-background);
 	}
 
 	.container {
@@ -340,32 +290,31 @@
 		min-width: 0;
 	}
 
-	/* Wordmark — the site's masthead, set in the Fraunces display serif so the
-	 * scholar's name carries the letterpress identity rather than reading as a
-	 * generic sans logotype. Shares the h1–h3 register (display serif, tight
-	 * tracking) so the persistent header speaks the same editorial voice as the
-	 * page headings it sits above. */
+	/* Wordmark — the compact nameplate: Archivo, wide and heavy, uppercase.
+	 * The persistent masthead name, echoing the home hero nameplate in
+	 * miniature. Warms to pine on hover. */
 	.header-logo :global(.site-title) {
 		font-family: var(--font-family-display);
-		font-optical-sizing: auto;
 		font-variation-settings: var(--font-variation-wordmark);
-		font-size: var(--font-size-xl);
-		font-weight: var(--font-weight-bold);
-		letter-spacing: var(--tracking-heading);
-		color: var(--color-text);
+		font-size: clamp(1.15rem, 0.95rem + 0.9vw, 1.6rem);
+		font-weight: 830;
+		letter-spacing: -0.01em;
+		text-transform: uppercase;
+		line-height: 1;
+		color: var(--color-text-emphasis);
 		text-decoration: none;
 		transition: color var(--duration-fast) var(--ease-out);
 		white-space: nowrap;
 	}
 
 	.header-logo :global(.site-title:hover) {
-		color: var(--color-primary);
+		color: var(--color-accent);
 	}
 
 	.header-logo :global(.site-title:focus-visible) {
-		outline: var(--border-width-medium) solid var(--color-primary);
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--space-1);
-		border-radius: var(--border-radius-sm);
+		border-radius: 0;
 	}
 
 	.desktop-controls {

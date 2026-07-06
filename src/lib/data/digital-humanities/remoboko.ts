@@ -11,7 +11,7 @@ export const remoboko: DigitalHumanitiesProject = {
 	imageUrl: `/images/digital-humanities/remoboko.webp`,
 	order: 7,
 	skills: [
-		'Data Visualization',
+		'Data Visualisation',
 		'pandas',
 		'Plotly',
 		'Python',

@@ -50,44 +50,51 @@
 	}
 
 	.toggle-label {
-		font-size: var(--font-size-sm);
-		color: var(--color-text-muted);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-xs);
+		letter-spacing: var(--letter-spacing-wide);
+		text-transform: uppercase;
+		color: var(--color-text-light);
 		font-weight: var(--font-weight-medium);
 	}
 
 	.toggle-buttons {
 		display: flex;
-		gap: var(--space-xs);
+		gap: 0;
 		flex-wrap: wrap;
+		/* Segmented control: shared hairline, no gaps between cells. */
+		margin-left: calc(-1 * var(--border-width-thin));
 	}
 
 	.toggle-btn {
 		padding: var(--space-xs) var(--space-md);
 		border: var(--border-width-thin) solid var(--color-border);
-		background-color: var(--color-surface);
-		color: var(--color-text);
-		border-radius: var(--border-radius-full);
-		font-size: var(--font-size-sm);
+		margin-left: calc(-1 * var(--border-width-thin));
+		background-color: var(--color-surface-elevated);
+		color: var(--color-text-soft);
+		border-radius: 0;
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-xs);
+		letter-spacing: var(--letter-spacing-wide);
 		cursor: pointer;
 		transition:
 			background-color var(--duration-fast) var(--ease-out),
 			border-color var(--duration-fast) var(--ease-out),
-			color var(--duration-fast) var(--ease-out),
-			transform var(--duration-fast) var(--ease-out),
-			box-shadow var(--duration-fast) var(--ease-out);
+			color var(--duration-fast) var(--ease-out);
 	}
 
 	.toggle-btn:hover:not(.active) {
-		background-color: var(--color-surface-alt);
-		border-color: var(--color-primary);
-		transform: var(--transform-lift-sm);
+		background-color: var(--color-surface);
+		border-color: var(--color-accent);
+		color: var(--color-text-emphasis);
+		z-index: 1;
 	}
 
 	.toggle-btn.active {
-		background-color: var(--color-primary);
-		color: var(--color-white);
-		border-color: var(--color-primary);
-		box-shadow: var(--shadow-sm);
+		background-color: var(--color-accent);
+		color: var(--color-text-inverted);
+		border-color: var(--color-accent);
+		z-index: 2;
 	}
 
 	@media (--sm-down) {

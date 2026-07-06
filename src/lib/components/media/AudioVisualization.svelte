@@ -61,57 +61,20 @@
 </div>
 
 <style>
+	/* Ink + Signal: a flat archival panel — warm paper ground, hairline rule,
+	   square corners, no gradient wash, no glass, no shadow. */
 	.audio-visualization {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		padding: var(--space-4);
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 100%
-		);
+		background: var(--color-surface-elevated);
+		border: var(--border-width-thin) solid var(--color-border-light);
 		min-height: 120px;
-		border-radius: var(--border-radius-lg);
+		border-radius: 0;
 		position: relative;
 		overflow: hidden;
-
-		/* Enhanced academic paper texture */
-		&::before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			background:
-				radial-gradient(
-					circle at 25% 25%,
-					color-mix(in srgb, var(--color-white) calc(var(--opacity-5) * 100%), transparent) 0%,
-					transparent 50%
-				),
-				radial-gradient(
-					circle at 75% 75%,
-					color-mix(in srgb, var(--color-highlight) calc(var(--opacity-5) * 100%), transparent) 0%,
-					transparent 50%
-				),
-				linear-gradient(
-					45deg,
-					transparent 30%,
-					color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 70%
-				);
-			pointer-events: none;
-		}
-
-		/* Subtle hover elevation */
-		&:hover {
-			transform: translateY(-3px);
-			box-shadow:
-				var(--shadow-lg),
-				0 0 40px
-					color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
-		}
 	}
 
 	/* Animated waveform */
@@ -125,10 +88,10 @@
 
 	.wave-bar {
 		width: var(--space-1);
-		background: linear-gradient(to top, var(--color-primary), var(--color-accent));
-		border-radius: var(--border-radius-full);
+		background: linear-gradient(to top, var(--color-text-emphasis), var(--color-accent));
+		border-radius: 0;
 		animation: wave var(--duration-slower) var(--ease-in-out) infinite;
-		opacity: 0.7;
+		opacity: 0.75;
 		transition: all var(--duration-normal) var(--ease-out);
 	}
 
@@ -165,36 +128,29 @@
 		height: 50px;
 		background: radial-gradient(
 			circle,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 70%,
-			transparent 100%
+			color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent) 0%,
+			transparent 70%
 		);
-		border-radius: var(--border-radius-full);
+		border-radius: 0;
 		animation: pulse 3s ease-in-out infinite;
 	}
 
+	/* Flat ink plate with a hairline rule — no glass, no shadow. */
 	.audio-icon {
 		position: relative;
-		color: var(--color-primary);
-		background: color-mix(in srgb, var(--color-white) calc(var(--opacity-90) * 100%), transparent);
-		border-radius: var(--border-radius-full);
+		color: var(--color-accent);
+		background: var(--color-surface);
+		border-radius: 0;
 		padding: var(--space-2);
-		-webkit-backdrop-filter: blur(var(--glass-blur-amount));
-		backdrop-filter: blur(var(--glass-blur-amount));
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
-		transition: all var(--duration-normal) var(--ease-out);
-		box-shadow:
-			var(--shadow-sm),
-			0 0 20px color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
+		border: var(--border-width-thin) solid var(--color-border);
+		transition:
+			color var(--duration-normal) var(--ease-out),
+			border-color var(--duration-normal) var(--ease-out);
 	}
 
 	.audio-icon:hover {
-		transform: scale(1.1);
-		color: var(--color-accent);
-		box-shadow:
-			var(--shadow-lg),
-			0 0 30px color-mix(in srgb, var(--color-accent) calc(var(--opacity-20) * 100%), transparent);
+		color: var(--color-accent-dark);
+		border-color: var(--color-accent);
 	}
 
 	@keyframes pulse {
@@ -217,7 +173,8 @@
 	}
 
 	.audio-title {
-		color: var(--color-text);
+		color: var(--color-text-emphasis);
+		font-family: var(--font-family-display);
 		font-size: var(--font-size-xl);
 		font-weight: var(--font-weight-semibold);
 		margin: 0 0 var(--space-2) 0;
@@ -225,14 +182,14 @@
 	}
 
 	.audio-description {
-		color: var(--color-text-muted);
+		color: var(--color-text-soft);
+		font-family: var(--font-family-serif);
 		font-size: var(--font-size-sm);
 		margin: 0;
 		line-height: var(--line-height-normal);
 		max-width: 400px;
 		margin-left: auto;
 		margin-right: auto;
-		font-weight: var(--font-weight-medium);
 	}
 
 	.audio-description a {
@@ -305,46 +262,15 @@
 		}
 	}
 
-	/* Dark mode enhancements */
+	/* Dark mode: warm near-black microfilm ground, same flat treatment. */
 	:global(html.dark) .audio-visualization {
-		/* More vibrant and energetic in dark mode */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent) 100%
-		);
-
-		&::before {
-			background:
-				radial-gradient(
-					circle at 25% 25%,
-					color-mix(in srgb, var(--color-accent) calc(var(--opacity-5) * 100%), transparent) 0%,
-					transparent 60%
-				),
-				radial-gradient(
-					circle at 75% 75%,
-					color-mix(in srgb, var(--color-highlight) calc(var(--opacity-10) * 100%), transparent) 0%,
-					transparent 60%
-				),
-				linear-gradient(
-					45deg,
-					transparent 30%,
-					color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent) 70%
-				);
-		}
+		background: var(--color-surface-elevated);
+		border-color: var(--color-border);
 	}
 
 	:global(html.dark) .audio-icon {
-		background: color-mix(
-			in srgb,
-			var(--color-surface) calc(var(--opacity-90) * 100%),
-			transparent
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-accent) calc(var(--opacity-30) * 100%),
-			transparent
-		);
+		background: var(--color-surface);
+		border-color: var(--color-border);
 	}
 
 	/* Respect user motion preferences */

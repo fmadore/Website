@@ -15,7 +15,7 @@
 		<!-- Panels Organised -->
 		{#if organizedPanels.length > 0}
 			<h4>Panels organised</h4>
-			<div class="space-y-3">
+			<div class="space-y-3 ledger">
 				{#each organizedPanels as comm (comm.id)}
 					{@const commDate = new Date(comm.dateISO)}
 					{@const formattedAuthors = formatCVAuthorList(comm.authors)}
@@ -39,7 +39,7 @@
 		<!-- Papers Presented -->
 		{#if presentedPapers.length > 0}
 			<h4>Papers presented</h4>
-			<div class="space-y-3">
+			<div class="space-y-3 ledger">
 				{#each presentedPapers as comm (comm.id)}
 					{@const commDate = new Date(comm.dateISO)}
 					{@const formattedAuthors = formatCVAuthorList(comm.authors)}

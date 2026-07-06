@@ -4,7 +4,6 @@
 	import { base, resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import type { ReferenceIndexEntry } from '$lib/types/referenceIndex';
-	import Button from '$lib/components/atoms/Button.svelte';
 	import { calculateCardPosition, getItemYear } from '$lib/utils/cardPositioning';
 
 	let {
@@ -148,16 +147,9 @@
 					<p class="card-authors">{item.authors.join(', ')}</p>
 				{/if}
 
-				<!-- Using Button component for date badge -->
+				<!-- Dateline — a mono data stamp, not a filled badge. -->
 				<div class="card-date-container">
-					<Button
-						variant="outline-primary"
-						size="sm"
-						glass={true}
-						additionalClasses="card-date-badge"
-					>
-						{item.date || getItemYear(item)}
-					</Button>
+					<span class="card-date-badge">{item.date || getItemYear(item)}</span>
 				</div>
 
 				{#if itemType === 'publication'}
@@ -210,17 +202,12 @@
 					{/if}
 				{/if}
 
-				<!-- Using Button component for view-more-hint -->
+				<!-- View-more hint — a mono-caps apparatus line with a trailing arrow. -->
 				<div class="view-more-container">
-					<Button
-						variant="outline-primary"
-						size="sm"
-						glass={true}
-						additionalClasses="view-more-hint"
-					>
+					<span class="view-more-hint">
 						<span class="hint-text">View full details</span>
 						<span class="hint-arrow">→</span>
-					</Button>
+					</span>
 				</div>
 			</div>
 		</div>
@@ -245,76 +232,26 @@
 		color: var(--color-text);
 		overflow: hidden;
 
-		/* Paper popover — content surface, no backdrop-filter. */
+		/* A flat paper tile: elevated surface, single hairline frame, square
+		 * corners, no shadow. It sits on the page like a mounted apparatus card. */
 		background: var(--color-surface-elevated);
+		border: var(--border-width-thin) solid var(--color-border-dark);
+		border-radius: 0;
 
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
-		border-radius: var(--border-radius-xl);
-
-		box-shadow:
-			0 20px 60px -15px
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent),
-			0 8px 20px -8px color-mix(in srgb, var(--color-black) 10%, transparent);
-
-		/* Initial state for animation */
+		/* Entrance is a plain opacity fade — no scale, no lift. The `positioned`
+		 * class still drives the fade so JS positioning stays in control. */
 		opacity: 0;
-		transform: translateY(var(--transform-distance-sm)) scale(var(--scale-90));
-		transition:
-			opacity var(--duration-moderate) var(--ease-out),
-			transform var(--duration-moderate) var(--ease-out),
-			box-shadow var(--duration-moderate) var(--ease-out),
-			border-color var(--duration-moderate) var(--ease-out);
-		will-change: opacity, transform;
+		transition: opacity var(--duration-moderate) var(--ease-out);
 	}
 
 	.preview-card.positioned {
 		opacity: 1;
-		transform: translateY(0) scale(1);
 	}
 
-	.preview-card.card-clicked {
-		transform: translateY(calc(-1 * var(--space-xs))) scale(1.02);
-		box-shadow:
-			0 25px 80px -20px
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-25) * 100%), transparent),
-			0 15px 40px -15px
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent);
-		border-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
-	}
-
-	/* Dark mode — warm surface tile, primary-tinted shadow for depth.
-	 * No inset white highlights (those clash with warm dusk). */
+	/* Dark mode — same flat tile on slate; only the border token changes. */
 	:global(html.dark) .preview-card {
 		background: var(--color-surface-alt);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-25) * 100%), transparent);
-		box-shadow:
-			0 20px 60px -15px color-mix(in srgb, black calc(var(--opacity-40) * 100%), transparent),
-			0 10px 30px -10px
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
-	}
-
-	:global(html.dark) .preview-card.card-clicked {
-		box-shadow:
-			0 25px 80px -20px color-mix(in srgb, black calc(var(--opacity-50) * 100%), transparent),
-			0 15px 40px -15px
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-40) * 100%),
-			transparent
-		);
-	}
-
-	/* Position below variant — JS sets top/bottom directly. The only stylistic
-	 * difference is the entrance animation direction. */
-	.preview-card.position-below {
-		transform: translateY(calc(-1 * var(--transform-distance-sm))) scale(var(--scale-90));
-	}
-
-	.preview-card.position-below.positioned {
-		transform: translateY(0) scale(1);
+		border: var(--border-width-thin) solid var(--color-border-dark);
 	}
 
 	.card-content-wrapper {
@@ -334,38 +271,24 @@
 	}
 
 	.preview-card::-webkit-scrollbar-track {
-		background: color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent);
-		border-radius: var(--border-radius-lg);
+		background: transparent;
 	}
 
 	.preview-card::-webkit-scrollbar-thumb {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-30) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-20) * 100%), transparent) 100%
-		);
-		border-radius: var(--border-radius-lg);
+		background: color-mix(in srgb, var(--color-text-muted) 30%, transparent);
 		border: var(--space-0-5) solid transparent;
 		background-clip: padding-box;
 	}
 
 	.preview-card::-webkit-scrollbar-thumb:hover {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-50) * 100%), transparent) 0%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-40) * 100%), transparent) 100%
-		);
+		background: color-mix(in srgb, var(--color-text-muted) 50%, transparent);
+		background-clip: padding-box;
 	}
 
 	/* Firefox scrollbar */
 	.preview-card {
 		scrollbar-width: thin;
-		scrollbar-color: color-mix(
-				in srgb,
-				var(--color-primary) calc(var(--opacity-30) * 100%),
-				transparent
-			)
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-5) * 100%), transparent);
+		scrollbar-color: color-mix(in srgb, var(--color-text-muted) 30%, transparent) transparent;
 	}
 
 	/* Fade indicator for scrollable content */
@@ -379,13 +302,13 @@
 		background: linear-gradient(
 			to bottom,
 			transparent 0%,
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-80) * 100%), transparent) 70%,
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-95) * 100%), transparent) 100%
+			color-mix(in srgb, var(--color-surface-elevated) 80%, transparent) 70%,
+			var(--color-surface-elevated) 100%
 		);
 		pointer-events: none;
 		opacity: 0;
 		transition: opacity var(--duration-moderate) var(--ease-out);
-		border-radius: 0 0 var(--border-radius-2xl) var(--border-radius-2xl);
+		border-radius: 0;
 	}
 
 	/* Show fade when scrollable using reactive class */
@@ -397,25 +320,22 @@
 		background: linear-gradient(
 			to bottom,
 			transparent 0%,
-			color-mix(in srgb, var(--color-dark-surface-alt) calc(var(--opacity-80) * 100%), transparent)
-				70%,
-			color-mix(in srgb, var(--color-dark-surface-alt) calc(var(--opacity-95) * 100%), transparent)
-				100%
+			color-mix(in srgb, var(--color-surface-alt) 80%, transparent) 70%,
+			var(--color-surface-alt) 100%
 		);
 	}
 
+	/* The scan sits as a plate: square, a hairline rule beneath it, no gradient
+	 * wash, no zoom on hover. */
 	.card-image-container {
 		position: relative;
 		overflow: hidden;
 		height: 140px;
 		margin: 0;
 		padding: 0;
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent),
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-10) * 100%), transparent)
-		);
-		border-radius: var(--border-radius-2xl) var(--border-radius-2xl) 0 0;
+		background: var(--color-background-muted);
+		border-bottom: var(--border-width-thin) solid var(--color-border);
+		border-radius: 0;
 	}
 
 	.card-image {
@@ -427,38 +347,10 @@
 		margin: 0;
 		padding: 0;
 		border: none;
-		transition:
-			transform var(--duration-slow) var(--ease-bounce),
-			filter var(--duration-moderate) var(--ease-out);
-		filter: brightness(1) contrast(1.02);
 	}
 
 	.image-overlay {
-		position: absolute;
-		inset: 0;
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) 0%,
-			transparent 40%,
-			color-mix(in srgb, var(--color-accent) calc(var(--opacity-15) * 100%), transparent) 100%
-		);
-		opacity: 0;
-		transition: opacity var(--duration-moderate) var(--ease-out);
-
-		/* Add subtle shine effect */
-		background-image:
-			linear-gradient(
-				135deg,
-				color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) 0%,
-				transparent 40%,
-				color-mix(in srgb, var(--color-accent) calc(var(--opacity-15) * 100%), transparent) 100%
-			),
-			linear-gradient(
-				to right,
-				transparent 0%,
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent) 50%,
-				transparent 100%
-			);
+		display: none;
 	}
 
 	.card-content {
@@ -479,251 +371,161 @@
 		justify-content: flex-start;
 	}
 
-	/* Custom styling for date badge button */
-	:global(.card-date-badge) {
-		font-size: var(--font-size-2xs) !important;
-		font-weight: var(--font-weight-semibold) !important;
-		letter-spacing: var(--letter-spacing-wide) !important;
-		padding: var(--space-3xs) var(--space-xs) !important;
-		border-radius: var(--border-radius) !important;
-		cursor: default !important;
-		pointer-events: none !important;
-		background: color-mix(in srgb, var(--color-primary) 8%, transparent) !important;
-		color: var(--color-primary) !important;
-		border: none !important;
-		box-shadow: none !important;
+	/* Dateline — a mono data stamp, no fill, no box. */
+	.card-date-badge {
+		display: inline-block;
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-semibold);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--color-text-light);
 	}
 
-	:global(html.dark .card-date-badge) {
-		background: color-mix(in srgb, var(--color-primary) 15%, transparent) !important;
-		color: var(--color-primary-light) !important;
-	}
-
-	/* Container for view-more hint */
+	/* View-more hint — a mono-caps apparatus line over a top hairline, in the
+	 * accent, with a trailing arrow. No pill, no gradient. */
 	.view-more-container {
 		margin-top: var(--space-md);
-		opacity: 0.7;
-		transition: opacity var(--duration-moderate) var(--ease-out);
+		padding-top: var(--space-sm);
+		border-top: var(--rule-hairline) solid var(--color-border-light);
 	}
 
-	/* Custom styling for view-more hint button */
-	:global(.view-more-hint) {
-		width: 100% !important;
-		display: flex !important;
-		align-items: center !important;
-		justify-content: center !important;
-		gap: var(--space-sm) !important;
-		font-size: var(--font-size-xs) !important;
-		font-weight: var(--font-weight-semibold) !important;
-		letter-spacing: var(--letter-spacing-wide) !important;
-		padding: var(--space-xs) var(--space-md) !important;
-		border-radius: var(--border-radius-full) !important;
-		cursor: default !important;
-		pointer-events: none !important;
-
-		/* Clean gradient background */
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 8%, transparent) 0%,
-			color-mix(in srgb, var(--color-primary) 4%, transparent) 100%
-		) !important;
-		color: var(--color-primary) !important;
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-15) * 100%), transparent) !important;
-		box-shadow: none !important;
-	}
-
-	:global(html.dark .view-more-hint) {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
-			color-mix(in srgb, var(--color-primary) 8%, transparent) 100%
-		) !important;
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-20) * 100%),
-			transparent
-		) !important;
-		box-shadow: none !important;
-	}
-
-	.hint-text {
-		letter-spacing: var(--letter-spacing-wide);
+	.view-more-hint {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-2);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-semibold);
+		line-height: 1;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--color-accent);
 	}
 
 	.hint-arrow {
 		display: inline-flex;
 		align-items: center;
-		justify-content: center;
-		width: var(--space-lg);
-		height: var(--space-lg);
-		background: var(--color-primary);
-		color: var(--color-white);
-		border-radius: var(--border-radius-full);
+		/* Match the caps text size with a tight box so the glyph centres on the
+		 * text instead of floating above the mono baseline. */
 		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-bold);
+		line-height: 1;
 		flex-shrink: 0;
-		transition:
-			transform var(--duration-moderate) var(--ease-out),
-			background-color var(--duration-moderate) var(--ease-out);
+		transition: transform var(--duration-fast) var(--ease-out);
 	}
 
 	.card-link {
 		text-decoration: none;
 		color: inherit;
 		display: block;
-		border-radius: var(--border-radius-2xl);
-		/* Explicit transition properties for better performance */
-		transition:
-			box-shadow var(--duration-moderate) var(--ease-out),
-			border-color var(--duration-moderate) var(--ease-out);
+		border-radius: 0;
 	}
 
-	.card-link:hover .view-more-container,
-	.card-link:focus .view-more-container {
-		opacity: 1;
+	.card-link:hover .view-more-hint,
+	.card-link:focus-visible .view-more-hint {
+		color: var(--color-accent-dark);
 	}
 
 	.card-link:hover .hint-arrow,
-	.card-link:focus .hint-arrow {
-		transform: translateX(var(--space-2xs));
-		background: var(--color-primary-dark);
+	.card-link:focus-visible .hint-arrow {
+		transform: translateX(var(--space-1));
 	}
 
-	.card-link:hover .card-image,
-	.card-link:focus .card-image {
-		transform: scale(1.03);
-		filter: brightness(1.02) contrast(1.05);
-	}
-
-	.card-link:hover .image-overlay,
-	.card-link:focus .image-overlay {
-		opacity: 1;
-	}
-
-	/* ENHANCED ARROW STYLES */
+	/* Arrow — a small square of the paper body rotated 45°, with two hairline
+	 * edges showing, tying the tile to its reference. No shadow. */
 	.card-arrow {
 		position: absolute;
-		bottom: calc(-1 * var(--space-md));
+		bottom: calc(-1 * var(--space-2));
 		left: 50%;
-		width: var(--space-lg);
-		height: var(--space-lg);
+		width: var(--space-3);
+		height: var(--space-3);
 
-		/* Paper arrow — solid warm surface to match the popover body. */
 		background: var(--color-surface-elevated);
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-20) * 100%), transparent);
-		border-radius: var(--border-radius-sm);
+		border-right: var(--border-width-thin) solid var(--color-border-dark);
+		border-bottom: var(--border-width-thin) solid var(--color-border-dark);
+		border-radius: 0;
 		transform: translateX(-50%) rotate(45deg);
 		z-index: var(--z-tooltip);
 	}
 
 	.position-below .card-arrow {
 		bottom: auto;
-		top: calc(-1 * var(--space-md));
+		top: calc(-1 * var(--space-2));
+		/* Point upward: show the top-left edges instead. */
+		border-right: none;
+		border-bottom: none;
+		border-top: var(--border-width-thin) solid var(--color-border-dark);
+		border-left: var(--border-width-thin) solid var(--color-border-dark);
 	}
 
-	/* Dark mode arrow with sophisticated glass */
 	:global(html.dark) .card-arrow {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-dark-surface-alt) calc(var(--opacity-95) * 100%), transparent)
-				0%,
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent) 100%
-		);
-		border-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-25) * 100%),
-			transparent
-		);
-		box-shadow:
-			0 4px 12px color-mix(in srgb, black calc(var(--opacity-30) * 100%), transparent),
-			inset 0 1px 0
-				color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
+		background: var(--color-surface-alt);
+		border-color: var(--color-border-dark);
 	}
 
+	/* Title — the DOCUMENT voice: Newsreader serif. */
 	.card-title {
-		font-weight: var(--font-weight-bold);
+		font-family: var(--font-family-serif);
+		font-weight: var(--font-weight-medium);
 		margin-bottom: var(--space-xs);
-		color: var(--color-text);
+		color: var(--color-text-emphasis);
 		line-height: var(--line-height-snug);
-		font-size: var(--font-size-base);
-	}
-
-	:global(html.dark) .card-title {
-		color: var(--color-text);
+		font-size: var(--font-size-lg);
 	}
 
 	.card-authors {
+		font-family: var(--font-family-serif);
 		margin-bottom: var(--space-xs);
 		color: var(--color-text-light);
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-semibold);
-		letter-spacing: var(--letter-spacing-wide);
+		font-size: var(--font-size-sm);
+		font-style: italic;
 	}
 
 	.card-meta {
+		font-family: var(--font-family-serif);
 		margin-bottom: var(--space-xs);
-		color: var(--color-text-light);
-		font-size: var(--font-size-xs);
+		color: var(--color-text-soft);
+		font-size: var(--font-size-sm);
 		line-height: var(--line-height-relaxed);
 	}
 
 	.card-meta em {
 		font-style: italic;
-		color: var(--color-primary);
-		font-weight: var(--font-weight-semibold);
+		color: var(--color-text-emphasis);
 	}
 
+	/* Kind marker — a mono "kind" stamp in the data voice, no pill. */
 	.meta-label {
 		display: inline-block;
-		padding: var(--space-3xs) var(--space-xs);
-		background: color-mix(in srgb, var(--color-accent) calc(var(--opacity-15) * 100%), transparent);
+		font-family: var(--font-family-mono);
 		color: var(--color-accent);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
-		text-transform: capitalize;
-		border-radius: var(--border-radius);
-		letter-spacing: var(--letter-spacing-wide);
-	}
-
-	:global(html.dark) .meta-label {
-		background: color-mix(in srgb, var(--color-accent) calc(var(--opacity-20) * 100%), transparent);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
 	}
 
 	/* Enhanced focus states */
-	.card-link:focus {
-		outline: var(--border-width-medium) solid var(--color-primary);
+	.card-link:focus-visible {
+		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--space-2xs);
-		border-radius: var(--border-radius-2xl);
+		border-radius: 0;
 	}
 
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
-		.preview-card {
-			transition: none !important;
-			will-change: auto !important;
-		}
-
-		.preview-card.positioned {
-			opacity: 1;
-			transform: translateX(-50%) translateY(0) scale(1);
-		}
-
-		.card-link,
-		.card-image,
-		.image-overlay,
-		.view-more-container,
+		.preview-card,
 		.hint-arrow {
 			transition: none !important;
 		}
 
-		.card-link:hover .card-image {
-			transform: none;
+		.preview-card.positioned {
+			opacity: 1;
 		}
 
-		.view-more-container {
-			opacity: 1;
+		.card-link:hover .hint-arrow,
+		.card-link:focus-visible .hint-arrow {
+			transform: none;
 		}
 	}
 
@@ -731,33 +533,6 @@
 	@media (prefers-contrast: high) {
 		.preview-card {
 			border-width: var(--border-width-medium);
-		}
-	}
-
-	/* Backdrop filter fallback */
-	@supports not (backdrop-filter: blur(var(--glass-blur-2xl))) {
-		.preview-card {
-			background: color-mix(in srgb, var(--color-white) 92%, transparent);
-		}
-
-		:global(html.dark) .preview-card {
-			background: color-mix(in srgb, var(--color-dark-surface-alt) 92%, transparent);
-		}
-
-		.card-arrow {
-			background: color-mix(
-				in srgb,
-				var(--color-white) calc(var(--opacity-95) * 100%),
-				transparent
-			);
-		}
-
-		:global(html.dark) .card-arrow {
-			background: color-mix(
-				in srgb,
-				var(--color-dark-surface-alt) calc(var(--opacity-95) * 100%),
-				transparent
-			);
 		}
 	}
 

@@ -198,16 +198,16 @@
 								(activity.panelType === 'publication' ? 'Read Publication' : 'Visit Activity')}
 							additionalUrls={activity.additionalUrls}
 							sectionClass="action-links mt-4"
-							primaryButtonClass="btn btn-primary glass-button"
-							secondaryButtonClass="btn btn-outline-primary glass-button"
+							primaryButtonClass="btn btn-primary"
+							secondaryButtonClass="btn btn-outline-primary"
 							primaryDivClass="mb-4"
 						/>
 					</div>
 				{/if}
 
 				{#if activity.pdfPath}
-					<div class="pdf-section glass-card mt-4 p-6 md:p-8 scroll-reveal">
-						<h2 class="text-xl font-serif font-semibold mb-4 text-emphasis">
+					<div class="pdf-section mt-4 p-6 md:p-8 scroll-reveal">
+						<h2 class="pdf-section-title editorial-section-title">
 							{activity.pdfTitle || 'Associated Document'}
 						</h2>
 						<IframeRenderer
@@ -216,8 +216,7 @@
 							title="{activity.title} PDF Document"
 							height="800px"
 							containerClass="iframe-container iframe-container-fullwidth"
-							glassEffect={true}
-							glassVariant="glass-light"
+							glassEffect={false}
 						/>
 					</div>
 				{/if}
@@ -231,10 +230,7 @@
 				<!-- RSS Feed Button -->
 				<div class="rss-button-wrapper scroll-reveal">
 					<!-- eslint-disable svelte/no-navigation-without-resolve -- static asset -->
-					<a
-						href="{base}/rss.xml"
-						class="btn btn-outline-primary btn-sm glass-button rss-feed-button"
-					>
+					<a href="{base}/rss.xml" class="rss-feed-button">
 						<Icon icon="mdi:rss" width="16" height="16" aria-hidden="true" />
 						RSS Feed
 					</a>
@@ -259,7 +255,7 @@
 			max-width: 330px; /* Match the displayed dimensions from PageSpeed Insights */
 			max-height: 438px;
 			object-fit: cover;
-			border-radius: var(--border-radius-lg);
+			border-radius: 0;
 		}
 
 		@media (--md) {
@@ -275,53 +271,23 @@
 			}
 		}
 
-		/* PDF section styling with glassmorphism - consistent with research iframe-section */
-		/* Warm-paper PDF callout. Single warm surface tile with a hairline
-		 * border and subtle hover lift; the three-stop primary→highlight→
-		 * accent gradient was the same templated pattern retired from
-		 * `panels.css`, and reads as AI-CMS shouting against the editorial
-		 * direction. The CTA inside the section carries the rare brand accent. */
+		/* PDF callout — a flat paper document plate: hairline border, square
+		 * corners, no shadow, no hover lift. It's an enclosure, not an
+		 * affordance. */
 		.pdf-section {
 			position: relative;
 			content-visibility: auto;
 			contain-intrinsic-size: 800px;
-			border-radius: var(--border-radius-xl);
-			transition:
-				transform var(--duration-normal) var(--ease-out),
-				box-shadow var(--duration-normal) var(--ease-out);
-			box-shadow: var(--shadow-sm);
+			border-radius: 0;
 			background: var(--color-surface);
-			border: var(--border-width-thin) solid var(--color-border-light);
+			border: var(--border-width-thin) solid var(--color-border);
 		}
 
-		/* Override h2 margin-top inside pdf-section */
-		.pdf-section h2 {
+		.pdf-section-title {
 			margin-top: 0;
 		}
 
-		.pdf-section:hover {
-			transform: var(--transform-lift-sm);
-			box-shadow: var(--shadow-md);
-		}
-
-		/* Respect user motion preferences */
-		@media (prefers-reduced-motion: reduce) {
-			.pdf-section {
-				transition: none;
-			}
-
-			.pdf-section:hover {
-				transform: none;
-			}
-		}
-
-		/* Dark mode — same warm tile via cascading tokens, slightly stronger
-		 * default shadow to register lift against the warm-dusk surface. */
-		:global(html.dark) .pdf-section {
-			box-shadow: var(--shadow-md);
-		}
-
-		/* RSS Feed Button */
+		/* RSS Feed Button — the data voice: a flat square mono chip. */
 		.rss-button-wrapper {
 			margin-top: var(--space-4);
 		}
@@ -330,6 +296,35 @@
 			display: inline-flex;
 			align-items: center;
 			gap: var(--space-2);
+			padding: var(--space-1-5) var(--space-2-5);
+			border: var(--border-width-thin) solid var(--color-border);
+			border-radius: 0;
+			color: var(--color-text-soft);
+			font-family: var(--font-family-mono);
+			font-size: var(--font-size-2xs);
+			font-weight: var(--font-weight-semibold);
+			text-transform: uppercase;
+			letter-spacing: 0.1em;
+			text-decoration: none;
+			transition:
+				border-color var(--duration-fast) var(--ease-out),
+				color var(--duration-fast) var(--ease-out);
+		}
+
+		.rss-feed-button:hover {
+			border-color: var(--color-accent);
+			color: var(--color-accent);
+		}
+
+		.rss-feed-button:focus-visible {
+			outline: var(--border-width-medium) solid var(--color-accent);
+			outline-offset: var(--space-0-5);
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			.rss-feed-button {
+				transition: none;
+			}
 		}
 	</style>
 {/if}

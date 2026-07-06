@@ -97,24 +97,22 @@
 		flex-direction: column;
 		overflow: hidden;
 		height: 100%;
-		border-radius: var(--border-radius-lg);
+		border-radius: 0;
 		position: relative;
 		background: var(--color-surface);
 		border: var(--border-width-thin) solid var(--color-border);
-		box-shadow: var(--shadow-sm);
+		box-shadow: none;
 		transition: border-color var(--duration-fast) var(--ease-out);
 	}
 
-	/* Quiet hover: a single border warm-up plus the title underline read as
-	 * "this is a link". No lift, image zoom, or coloured shadow bloom — the
-	 * list keeps its composure as the cursor travels down it. */
+	/* Quiet hover: the border warms to the pine accent and the title
+	 * follows. No lift, image zoom, or shadow — the list keeps its composure. */
 	.card:hover {
-		border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
+		border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
 	}
 
-	/* Card hover pre-reveals the title's animated underline. */
 	.card:hover :global(.card-title .link-animated) {
-		background-size: 100% 1px;
+		color: var(--color-accent);
 	}
 
 	.card-image {
@@ -138,21 +136,26 @@
 	}
 
 	.card-title {
+		font-family: var(--font-family-serif);
 		font-size: var(--font-size-xl);
 		margin-top: 0;
 		margin-bottom: var(--space-2xs);
-		line-height: var(--line-height-tight);
-		font-weight: var(--font-weight-semibold);
+		line-height: var(--line-height-snug);
+		font-weight: var(--font-weight-medium);
 		color: var(--color-text-emphasis);
 	}
 
 	.card-title a {
 		color: inherit;
 	}
-	/* Hover underline provided by shared .link-animated utility. */
+	/* Hover colour shift provided by shared .link-animated utility. */
 
+	/* Subtitle — the data voice: mono, letterspaced caps. */
 	.card-subtitle {
-		font-size: var(--font-size-sm);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		text-transform: uppercase;
+		letter-spacing: var(--tracking-caps);
 		color: var(--color-text-light);
 		margin-bottom: var(--space-sm);
 		line-height: var(--line-height-normal);
@@ -176,33 +179,34 @@
 		align-self: flex-start; /* Align link to the left */
 	}
 
-	/* Default styling for links inside the action slot */
-	/* Consumers can override this by styling their slotted element */
+	/* Action link — the data voice: a mono accent affordance (Read the dossier →). */
 	.card-action :global(a) {
-		display: inline-block;
-		color: var(--color-primary);
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-1);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-semibold);
+		text-transform: uppercase;
+		letter-spacing: var(--tracking-eyebrow);
+		color: var(--color-accent);
 		text-decoration: none;
-		font-weight: var(--font-weight-medium);
-		transition: color var(--duration-fast) var(--ease-in-out);
+		transition: color var(--duration-fast) var(--ease-out);
 	}
 
 	.card-action :global(a:hover) {
-		color: var(--color-primary-dark);
-		text-decoration: underline;
+		color: var(--color-accent-dark);
 	}
 
-	/* Dark mode — solid warm-dusk surface (the same single-tile treatment
-	 * as `.entity-card`). The retired two-stop primary→accent gradient was
-	 * the same templated pattern banned in `panels.css` and `pdf-section`;
-	 * here the primary-tinted hover shadow gives the lift instead. */
+	/* Midnight — flat film surface, accent border on hover. */
 	:global(html.dark) .card {
 		background: var(--color-surface);
 		border-color: var(--color-border);
-		box-shadow: var(--shadow-md);
+		box-shadow: none;
 	}
 
 	:global(html.dark) .card:hover {
-		border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
+		border-color: color-mix(in srgb, var(--color-accent) 50%, var(--color-border));
 	}
 
 	/* Respect user motion preferences */
