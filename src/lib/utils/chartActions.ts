@@ -39,13 +39,16 @@ export function downloadChartAsImage(chart: echarts.ECharts, filename: string = 
  * Enables screen reader labels and optionally decal patterns.
  *
  * @param showDecal - Whether to show decal patterns
+ * @param description - Optional data-derived description read to screen
+ *   readers instead of ECharts' generic auto-generated label
  * @returns ECharts aria configuration object
  */
-export function getAriaConfig(showDecal: boolean): Record<string, unknown> {
+export function getAriaConfig(showDecal: boolean, description?: string): Record<string, unknown> {
 	return {
 		enabled: true,
 		decal: {
 			show: showDecal
-		}
+		},
+		...(description ? { label: { description } } : {})
 	};
 }
