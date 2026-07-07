@@ -2,7 +2,8 @@ import type { Action } from 'svelte/action';
 
 /**
  * A Svelte action to portal an element to a different part of the DOM.
- * Modernized for Svelte 5 using $effect() for cleanup.
+ * Cleanup runs via the action's `destroy` lifecycle method — runes such as
+ * `$effect` are unavailable in a plain `.ts` file and throw at runtime.
  * @param {HTMLElement} node The element to portal.
  * @param {string | HTMLElement} target The target to portal to. Defaults to 'body'.
  */
@@ -37,25 +38,19 @@ export const portal: Action<HTMLElement, string | HTMLElement | undefined> = (
 	// Initial mount
 	moveElement(currentTarget);
 
-	// Use $effect for cleanup (Svelte 5 pattern)
-	$effect(() => {
-		// Setup: element is already moved by the initial call above or update below
-
-		return () => {
-			// Cleanup: remove element from DOM when action is destroyed
-			// Use requestAnimationFrame to prevent focus issues
+	return {
+		update(newTarget: string | HTMLElement = 'body') {
+			currentTarget = newTarget;
+			moveElement(currentTarget);
+		},
+		destroy() {
+			// Remove the element from the DOM when the action is destroyed.
+			// requestAnimationFrame avoids focus issues during teardown.
 			requestAnimationFrame(() => {
 				if (node.parentNode) {
 					node.parentNode.removeChild(node);
 				}
 			});
-		};
-	});
-
-	return {
-		update(newTarget: string | HTMLElement = 'body') {
-			currentTarget = newTarget;
-			moveElement(currentTarget);
 		}
 	};
 };
