@@ -23,7 +23,10 @@
 		groupByKey,
 		buildProjectTimeline
 	} from '$lib/utils/vizAggregation';
-	import { buildPublicationCollaborationNetwork } from '$lib/utils/networkAggregation';
+	import {
+		buildPublicationCollaborationNetwork,
+		buildCooccurrenceNetwork
+	} from '$lib/utils/networkAggregation';
 	import type { NetworkEdgeKind } from '$lib/utils/networkAggregation';
 	import NetworkControls from '$lib/components/visualisations/NetworkControls.svelte';
 	import type { TreemapNode } from '$lib/utils/vizAggregation';
@@ -190,6 +193,18 @@
 	let collabTopN = $state(20);
 	let collabVisibleKinds = $state<NetworkEdgeKind[]>(['peer', 'contributor']);
 	let collabSearch = $state('');
+
+	// Keyword co-occurrence network: tags linked when they appear on the same
+	// publication. Entity nodes, single edge kind (co-occurrence, always on).
+	const keywordNetwork = $derived(
+		buildCooccurrenceNetwork(allPublications, {
+			getKeys: (pub) => pub.tags,
+			getTitle: (pub) => pub.title
+		})
+	);
+	const keywordSuggestions = $derived(keywordNetwork.nodes.map((n) => n.id));
+	let keywordTopN = $state(25);
+	let keywordSearch = $state('');
 
 	// Calculate publication venue treemap data
 	const venueTreemapData = $derived(
@@ -458,6 +473,49 @@
 			/>
 			{#snippet placeholder()}
 				<p class="text-light">No keyword data available to display for this visualization.</p>
+			{/snippet}
+		</VizChartCard>
+	</section>
+
+	<section class="visualization-section scroll-reveal mb-12">
+		<h2 class="section-heading">
+			Keyword co-occurrence network
+			{#if keywordNetwork.nodes.length > 0}
+				({keywordNetwork.nodes.length} keywords)
+			{/if}
+		</h2>
+		<p class="section-description">
+			Keywords are linked when they appear together on the same publication; node size reflects how
+			many publications carry each keyword. Singletons and one-off pairings are omitted to keep the
+			map legible.
+		</p>
+		{#if keywordNetwork.nodes.length > 0}
+			<NetworkControls
+				bind:topN={keywordTopN}
+				bind:searchQuery={keywordSearch}
+				maxN={keywordNetwork.nodes.length}
+				minN={10}
+				searchLabel="Search keywords"
+				suggestions={keywordSuggestions}
+			/>
+		{/if}
+		<VizChartCard variant="network" height="500px" hasData={keywordNetwork.nodes.length > 0}>
+			<EChartsNetworkGraph
+				nodes={keywordNetwork.nodes}
+				edges={keywordNetwork.edges}
+				maxNodes={keywordTopN}
+				highlightQuery={keywordSearch}
+				filename="keyword-cooccurrence-network"
+				labels={{
+					itemSingular: 'publication',
+					itemPlural: 'Publications',
+					entityNode: 'Keywords',
+					cooccurrenceEdge: 'Keyword co-occurrence',
+					cooccurrenceShared: 'Publications sharing both keywords'
+				}}
+			/>
+			{#snippet placeholder()}
+				<p class="text-light">Not enough keyword overlap to display a co-occurrence network.</p>
 			{/snippet}
 		</VizChartCard>
 	</section>

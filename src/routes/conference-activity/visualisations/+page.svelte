@@ -26,7 +26,11 @@
 		buildGroupedTreemap,
 		buildProjectTimeline
 	} from '$lib/utils/vizAggregation';
-	import { buildCommunicationCoPresenterNetwork } from '$lib/utils/networkAggregation';
+	import {
+		buildCommunicationCoPresenterNetwork,
+		buildCooccurrenceNetwork,
+		buildInstitutionNetwork
+	} from '$lib/utils/networkAggregation';
 	import type { NetworkEdgeKind } from '$lib/utils/networkAggregation';
 	import NetworkControls from '$lib/components/visualisations/NetworkControls.svelte';
 	import type { LocationDatum } from '$lib/data/geo';
@@ -167,6 +171,26 @@
 	let copresenterTopN = $state(20);
 	let copresenterVisibleKinds = $state<NetworkEdgeKind[]>(['peer']);
 	let copresenterSearch = $state('');
+
+	// Institution network: institutions linked when their members appeared in the
+	// same panel, workshop, or event. Small affiliation corpus, so thresholds stay
+	// at 1/1 (see buildInstitutionNetwork). Olive entity nodes.
+	const institutionNetwork = $derived(buildInstitutionNetwork(allCommunications));
+	const institutionSuggestions = $derived(institutionNetwork.nodes.map((n) => n.id));
+	let institutionTopN = $state(20);
+	let institutionSearch = $state('');
+
+	// Tag co-occurrence network: tags linked when they appear on the same
+	// communication. Keeps the page symmetric with the publications one.
+	const tagNetwork = $derived(
+		buildCooccurrenceNetwork(allCommunications, {
+			getKeys: (comm) => comm.tags,
+			getTitle: (comm) => comm.title
+		})
+	);
+	const tagSuggestions = $derived(tagNetwork.nodes.map((n) => n.id));
+	let tagTopN = $state(25);
+	let tagSearch = $state('');
 
 	// 8. Projects treemap — outer cells are research projects, inner cells are
 	// communication types, sized by the number of communications.
@@ -351,6 +375,48 @@
 
 	<section class="visualization-section scroll-reveal mb-12">
 		<h2 class="section-heading">
+			Tag co-occurrence network
+			{#if tagNetwork.nodes.length > 0}
+				({tagNetwork.nodes.length} tags)
+			{/if}
+		</h2>
+		<p class="section-description">
+			Tags are linked when they appear together on the same conference activity; node size reflects
+			how many activities carry each tag. Singletons and one-off pairings are omitted.
+		</p>
+		{#if tagNetwork.nodes.length > 0}
+			<NetworkControls
+				bind:topN={tagTopN}
+				bind:searchQuery={tagSearch}
+				maxN={tagNetwork.nodes.length}
+				minN={10}
+				searchLabel="Search tags"
+				suggestions={tagSuggestions}
+			/>
+		{/if}
+		<VizChartCard variant="network" height="500px" hasData={tagNetwork.nodes.length > 0}>
+			<EChartsNetworkGraph
+				nodes={tagNetwork.nodes}
+				edges={tagNetwork.edges}
+				maxNodes={tagTopN}
+				highlightQuery={tagSearch}
+				filename="tag-cooccurrence-network"
+				labels={{
+					itemSingular: 'activity',
+					itemPlural: 'Activities',
+					entityNode: 'Tags',
+					cooccurrenceEdge: 'Tag co-occurrence',
+					cooccurrenceShared: 'Activities sharing both tags'
+				}}
+			/>
+			{#snippet placeholder()}
+				<p class="text-light">Not enough tag overlap to display a co-occurrence network.</p>
+			{/snippet}
+		</VizChartCard>
+	</section>
+
+	<section class="visualization-section scroll-reveal mb-12">
+		<h2 class="section-heading">
 			Co-presenter network
 			{#if copresenterCount > 0}
 				({copresenterCount} collaborators)
@@ -389,6 +455,48 @@
 			/>
 			{#snippet placeholder()}
 				<p class="text-light">No co-presenter data available to display for this visualisation.</p>
+			{/snippet}
+		</VizChartCard>
+	</section>
+
+	<section class="visualization-section scroll-reveal mb-12">
+		<h2 class="section-heading">
+			Institution network
+			{#if institutionNetwork.nodes.length > 0}
+				({institutionNetwork.nodes.length} institutions)
+			{/if}
+		</h2>
+		<p class="section-description">
+			Institutions are linked when their members appeared in the same panel, workshop, or event.
+			Node size reflects how many activities each institution took part in.
+		</p>
+		{#if institutionNetwork.nodes.length > 0}
+			<NetworkControls
+				bind:topN={institutionTopN}
+				bind:searchQuery={institutionSearch}
+				maxN={institutionNetwork.nodes.length}
+				searchLabel="Search institutions"
+				suggestions={institutionSuggestions}
+			/>
+		{/if}
+		<VizChartCard variant="network" height="500px" hasData={institutionNetwork.nodes.length > 0}>
+			<EChartsNetworkGraph
+				nodes={institutionNetwork.nodes}
+				edges={institutionNetwork.edges}
+				entityColor="sage"
+				maxNodes={institutionTopN}
+				highlightQuery={institutionSearch}
+				filename="institution-network"
+				labels={{
+					itemSingular: 'activity',
+					itemPlural: 'Activities',
+					entityNode: 'Institutions',
+					cooccurrenceEdge: 'Shared event',
+					cooccurrenceShared: 'Activities in common'
+				}}
+			/>
+			{#snippet placeholder()}
+				<p class="text-light">No institution data available to display for this visualisation.</p>
 			{/snippet}
 		</VizChartCard>
 	</section>
