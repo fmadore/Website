@@ -9,7 +9,7 @@ Ink + Signal dossier layout (mockup 2b). A two-column record:
   │ H1 (Archivo)                  │      │ metadata ledger     │
   │ serif-italic subtitle         │      │ source languages    │
   │ prose (drop-cap first ¶,      │      │ CTA buttons         │
-  │   <h2> → №-numbered sections) │      └─────────────────────┘
+  │   <h2> → ruled sections)      │      └─────────────────────┘
   │ relevant publications / comms │
   └───────────────────────────────┘
 
@@ -19,7 +19,7 @@ by projectName) plus a handful of optional props. Every row renders only when
 its value exists — projects with no co-director, programme or grant simply drop
 those rows. The prose still arrives through the `children` snippet, so each
 project page keeps its own narrative; the layout only supplies the frame, the
-apparatus, and the №-section styling.
+apparatus, and the ruled-section styling.
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
@@ -425,15 +425,13 @@ apparatus, and the №-section styling.
 	}
 
 	/* ==========================================================================
-	 * PROSE — the narrative slot, cast in №-numbered sections
+	 * PROSE — the narrative slot, cast in ruled sections
 	 *
 	 * Each project page authors its body as paragraphs, lists and <h2> heads.
 	 * Here the first paragraph gets a drop cap, and every <h2> is drawn as a
-	 * №-numbered section: a 3px rule, an accent № counter, and an Archivo title.
-	 * A CSS counter numbers the heads 01, 02, 03… without touching the markup.
+	 * ruled section head: a 3px rule and an Archivo title.
 	 * ======================================================================== */
 	.project-prose {
-		counter-reset: project-section;
 		color: var(--color-text);
 		font-family: var(--font-family-serif);
 	}
@@ -496,9 +494,8 @@ apparatus, and the №-section styling.
 		font-style: italic;
 	}
 
-	/* <h2> → №-numbered section head. */
+	/* <h2> → section head opened by a 3px section rule. */
 	.project-prose :global(h2) {
-		counter-increment: project-section;
 		border-top: var(--rule-section) solid var(--color-primary);
 		padding-top: var(--space-sm);
 		margin: var(--space-2xl) 0 var(--space-md);
@@ -509,19 +506,6 @@ apparatus, and the №-section styling.
 		letter-spacing: -0.01em;
 		line-height: 1.05;
 		color: var(--color-text-emphasis);
-	}
-
-	/* № marker — accent mono, generated from the section counter. */
-	.project-prose :global(h2::before) {
-		content: '№ ' counter(project-section, decimal-leading-zero);
-		display: block;
-		font-family: var(--font-family-mono);
-		font-variation-settings: normal;
-		font-size: var(--font-size-2xs);
-		font-weight: var(--font-weight-bold);
-		letter-spacing: 0.14em;
-		color: var(--color-accent);
-		margin-bottom: var(--space-2);
 	}
 
 	/* <h3> — quiet serif subhead inside a section. */

@@ -138,7 +138,6 @@
 		     rows for any other still-running projects. -->
 		<section class="section section--flush lead-dossier scroll-reveal">
 			<div class="section-head">
-				<span class="section-no">№ 01</span>
 				<h2 class="section-title">
 					{currentProjects.length > 1 ? 'Current projects' : 'Current project'}
 				</h2>
@@ -175,7 +174,6 @@
 		{#if pastProjects.length > 0}
 			<section class="section catalogue scroll-reveal">
 				<div class="section-head">
-					<span class="section-no">№ 02</span>
 					<h2 class="section-title">Earlier projects</h2>
 				</div>
 
