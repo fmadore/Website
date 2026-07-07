@@ -24,6 +24,8 @@
 		buildProjectTimeline
 	} from '$lib/utils/vizAggregation';
 	import { buildPublicationCollaborationNetwork } from '$lib/utils/networkAggregation';
+	import type { NetworkEdgeKind } from '$lib/utils/networkAggregation';
+	import NetworkControls from '$lib/components/visualisations/NetworkControls.svelte';
 	import type { TreemapNode } from '$lib/utils/vizAggregation';
 	import { author } from '$lib/data/siteConfig';
 	import type { LocationDatum } from '$lib/data/geo';
@@ -166,6 +168,28 @@
 	const collaboratorCount = $derived(
 		collaborationNetwork.nodes.filter((n) => n.kind !== 'center').length
 	);
+	// Toggleable edge layers (peer + contributor) with live counts for the chips.
+	const collaborationEdgeOptions = $derived(
+		(
+			[
+				{ kind: 'peer', label: 'Co-author' },
+				{ kind: 'contributor', label: 'Contributor' }
+			] as const
+		)
+			.map((o) => ({
+				...o,
+				count: collaborationNetwork.edges.filter((e) => e.kind === o.kind).length
+			}))
+			.filter((o) => o.count > 0)
+	);
+	const collaborationSuggestions = $derived(
+		collaborationNetwork.nodes.filter((n) => n.kind !== 'center').map((n) => n.id)
+	);
+
+	// Network control state (Author Collaboration Network).
+	let collabTopN = $state(20);
+	let collabVisibleKinds = $state<NetworkEdgeKind[]>(['peer', 'contributor']);
+	let collabSearch = $state('');
 
 	// Calculate publication venue treemap data
 	const venueTreemapData = $derived(
@@ -544,11 +568,25 @@
 				({collaboratorCount} collaborators)
 			{/if}
 		</h2>
+		{#if collaboratorCount > 0}
+			<NetworkControls
+				bind:topN={collabTopN}
+				bind:visibleKinds={collabVisibleKinds}
+				bind:searchQuery={collabSearch}
+				maxN={collaboratorCount}
+				edgeKindOptions={collaborationEdgeOptions}
+				searchLabel="Search collaborators"
+				suggestions={collaborationSuggestions}
+			/>
+		{/if}
 		<VizChartCard variant="network" height="500px" hasData={collaboratorCount > 0}>
 			<EChartsNetworkGraph
 				nodes={collaborationNetwork.nodes}
 				edges={collaborationNetwork.edges}
 				centerId={author.name}
+				maxNodes={collabTopN}
+				visibleEdgeKinds={collabVisibleKinds}
+				highlightQuery={collabSearch}
 				filename="collaboration-network"
 			/>
 			{#snippet placeholder()}

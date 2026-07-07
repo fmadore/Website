@@ -27,6 +27,8 @@
 		buildProjectTimeline
 	} from '$lib/utils/vizAggregation';
 	import { buildCommunicationCoPresenterNetwork } from '$lib/utils/networkAggregation';
+	import type { NetworkEdgeKind } from '$lib/utils/networkAggregation';
+	import NetworkControls from '$lib/components/visualisations/NetworkControls.svelte';
 	import type { LocationDatum } from '$lib/data/geo';
 	import type { Communication } from '$lib/types/communication';
 	import type { WordFrequency } from '$lib/types';
@@ -150,6 +152,21 @@
 	const copresenterCount = $derived(
 		copresenterNetwork.nodes.filter((n) => n.kind !== 'center').length
 	);
+	const copresenterEdgeOptions = $derived(
+		[{ kind: 'peer', label: 'Co-presenter' } as const]
+			.map((o) => ({
+				...o,
+				count: copresenterNetwork.edges.filter((e) => e.kind === o.kind).length
+			}))
+			.filter((o) => o.count > 0)
+	);
+	const copresenterSuggestions = $derived(
+		copresenterNetwork.nodes.filter((n) => n.kind !== 'center').map((n) => n.id)
+	);
+
+	let copresenterTopN = $state(20);
+	let copresenterVisibleKinds = $state<NetworkEdgeKind[]>(['peer']);
+	let copresenterSearch = $state('');
 
 	// 8. Projects treemap — outer cells are research projects, inner cells are
 	// communication types, sized by the number of communications.
@@ -343,11 +360,25 @@
 			People who have co-presented, co-organised panels, or contributed papers alongside me. Edges
 			between non-centre nodes show pairs who appeared together in the same communication.
 		</p>
+		{#if copresenterCount > 0}
+			<NetworkControls
+				bind:topN={copresenterTopN}
+				bind:visibleKinds={copresenterVisibleKinds}
+				bind:searchQuery={copresenterSearch}
+				maxN={copresenterCount}
+				edgeKindOptions={copresenterEdgeOptions}
+				searchLabel="Search co-presenters"
+				suggestions={copresenterSuggestions}
+			/>
+		{/if}
 		<VizChartCard variant="network" height="500px" hasData={copresenterCount > 0}>
 			<EChartsNetworkGraph
 				nodes={copresenterNetwork.nodes}
 				edges={copresenterNetwork.edges}
 				centerId={author.name}
+				maxNodes={copresenterTopN}
+				visibleEdgeKinds={copresenterVisibleKinds}
+				highlightQuery={copresenterSearch}
 				filename="copresenter-network"
 				labels={{
 					itemSingular: 'communication',
