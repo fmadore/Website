@@ -9,7 +9,7 @@ ECharts Stacked Bar Chart component
 		getEChartsTooltipStyle,
 		getEChartsAxisLineStyle,
 		getEChartsSplitLineStyle,
-		getAnimationConfig
+		getChartMotion
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
@@ -197,7 +197,7 @@ ECharts Stacked Bar Chart component
 		series: seriesData,
 		aria: getAriaConfig(showDecal),
 		backgroundColor: 'transparent',
-		...getAnimationConfig(1000, 'elasticOut')
+		...getChartMotion('settle')
 	});
 
 	// Use the ECharts hook for lifecycle management

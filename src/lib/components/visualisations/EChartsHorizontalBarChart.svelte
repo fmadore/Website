@@ -9,7 +9,7 @@ ECharts Horizontal Bar Chart component
 		getEChartsTooltipStyle,
 		getEChartsAxisLineStyle,
 		getEChartsSplitLineStyle,
-		getAnimationConfig,
+		getChartMotion,
 		getHorizontalBarGradient
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
@@ -145,12 +145,12 @@ ECharts Horizontal Bar Chart component
 					itemStyle: {
 						color: resolvedColors.barColor
 					}
-				},
-				...getAnimationConfig(1000, 'elasticOut')
+				}
 			}
 		],
 		aria: getAriaConfig(showDecal),
-		backgroundColor: 'transparent'
+		backgroundColor: 'transparent',
+		...getChartMotion('settle')
 	});
 
 	// Use the ECharts hook for lifecycle management

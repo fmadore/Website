@@ -18,6 +18,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		waitForContainerLayout,
 		type MapLibreModule
 	} from '$lib/utils/maplibre';
+	import { createContainedPopup } from '$lib/utils/mapPopups';
 	import type { Map as MapLibreMap, Popup } from 'maplibre-gl';
 
 	// Props
@@ -162,6 +163,9 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 	// Add markers to map
 	function addMarkers() {
 		if (!map || !maplibregl) return;
+		// Capture the narrowed instances for the nested forEach closure below.
+		const activeMap = map;
+		const gl = maplibregl;
 
 		// Clear existing
 		markers.forEach((marker) => marker.remove());
@@ -193,18 +197,23 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 				</svg>
 			`;
 
-			const popup = new maplibregl.Popup({
-				offset: size / 2 + 5,
-				className: 'map-popup location-map-popup',
-				closeButton: true,
-				closeOnClick: true,
-				maxWidth: '300px'
-			}).setHTML(createPopupContent(datum));
+			const popup = createContainedPopup(
+				gl,
+				activeMap,
+				mapContainer,
+				{
+					lngLat: [coords.lng, coords.lat],
+					className: 'map-popup location-map-popup',
+					offset: size / 2 + 5,
+					maxWidth: '300px'
+				},
+				createPopupContent(datum)
+			);
 
-			const marker = new maplibregl.Marker({ element: el })
+			const marker = new gl.Marker({ element: el })
 				.setLngLat([coords.lng, coords.lat])
 				.setPopup(popup)
-				.addTo(map!);
+				.addTo(activeMap);
 
 			markers.set(datum.country, marker);
 		});

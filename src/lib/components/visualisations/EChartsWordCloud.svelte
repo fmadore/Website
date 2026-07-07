@@ -4,9 +4,9 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 <script lang="ts">
 	import { innerWidth } from 'svelte/reactivity/window';
 	import { getResolvedChartColors, colorWithOpacity } from '$lib/utils/chartColorUtils';
+	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
 	import type { WordFrequency } from '$lib/types';
-	import type * as echarts from 'echarts';
 
 	// Props
 	let {
@@ -50,8 +50,6 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 
 	// Container reference
 	let chartContainer: HTMLDivElement | undefined = $state(undefined);
-	let chart: echarts.ECharts | null = $state(null);
-	let isReady = $state(false);
 
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
@@ -155,63 +153,16 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 		backgroundColor: 'transparent'
 	});
 
-	// Initialize chart with wordcloud extension
-	$effect(() => {
-		let mounted = true;
-		let resizeObserver: ResizeObserver | undefined;
-
-		(async () => {
-			if (!chartContainer) return;
-
-			try {
-				// Import echarts first, then the wordcloud extension
-				const echartsModule = await import('echarts');
-				await import('echarts-wordcloud');
-
-				if (!mounted || !chartContainer) return;
-
-				// Defer init until the container has non-zero dimensions.
-				// ResizeObserver fires synchronously after layout, so this avoids
-				// the "Can't get DOM width or height" warning when the container's
-				// height resolves to 0 during the first effect tick.
-				resizeObserver = new ResizeObserver((entries) => {
-					if (!mounted || !chartContainer) return;
-					const { width, height } = entries[0].contentRect;
-					if (width === 0 || height === 0) return;
-
-					if (!chart) {
-						chart = echartsModule.init(chartContainer);
-						isReady = true;
-					} else if (!chart.isDisposed()) {
-						chart.resize();
-					}
-				});
-				resizeObserver.observe(chartContainer);
-			} catch (error) {
-				if (import.meta.env.DEV) console.error('Failed to initialize WordCloud:', error);
-			}
-		})();
-
-		return () => {
-			mounted = false;
-			isReady = false;
-			resizeObserver?.disconnect();
-			if (chart && !chart.isDisposed()) {
-				chart.dispose();
-				chart = null;
-			}
-		};
-	});
-
-	// Update chart when options change
-	$effect(() => {
-		if (isReady && chart && !chart.isDisposed() && words.length > 0) {
-			try {
-				chart.setOption(chartOption, true);
-			} catch (error) {
-				if (import.meta.env.DEV) console.error('Failed to update WordCloud options:', error);
-			}
-		}
+	// Shared ECharts lifecycle. `loadExtensions` pulls in echarts-wordcloud
+	// (which registers the 'wordCloud' series type on the core module) before
+	// init, and `requireDimensions` defers init until the container is sized —
+	// preserving the two behaviours this component used to hand-roll.
+	const echartsInstance = useECharts({
+		getContainer: () => chartContainer,
+		getOption: () => chartOption,
+		hasData: () => words.length > 0,
+		loadExtensions: () => import('echarts-wordcloud').then(() => undefined),
+		requireDimensions: true
 	});
 </script>
 
@@ -221,7 +172,11 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 			<p>No word frequency data available</p>
 		</div>
 	{:else}
-		<ChartToolbar {chart} showDecalToggle={false} filename={title || 'word-cloud'} />
+		<ChartToolbar
+			chart={echartsInstance.chart}
+			showDecalToggle={false}
+			filename={title || 'word-cloud'}
+		/>
 		<div bind:this={chartContainer} class="chart"></div>
 	{/if}
 </div>

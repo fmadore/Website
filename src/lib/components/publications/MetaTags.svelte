@@ -88,7 +88,10 @@
 	// Helper to create page-related tags
 	const createPageTags = (): MetaTag[] => {
 		const tags: MetaTag[] = [];
-		const isPagedContent = publication.type === 'article' || publication.type === 'chapter';
+		const isPagedContent =
+			publication.type === 'article' ||
+			publication.type === 'chapter' ||
+			publication.type === 'bulletin-article';
 
 		if (!isPagedContent || !publication.pages) return tags;
 
@@ -115,8 +118,15 @@
 	const createCoinsData = (): string => {
 		const params = createCoinsParams('info:sid/personal-website');
 
-		// Publication type specific format
-		if (publication.type === 'article' || publication.type === 'special-issue') {
+		// Publication type specific format. Bulletin articles (e.g. the ZMO
+		// Bulletin) are journal-shaped for citation managers: same OpenURL
+		// journal format, jtitle, issue, and spage (spage comes from the common
+		// pages handling below).
+		if (
+			publication.type === 'article' ||
+			publication.type === 'special-issue' ||
+			publication.type === 'bulletin-article'
+		) {
 			params.set('rft_val_fmt', 'info:ofi/fmt:kev:mtx:journal');
 			params.set('rft.genre', 'article');
 			if (publication.journal) params.set('rft.jtitle', publication.journal);
@@ -209,8 +219,13 @@
 			)
 		);
 
-		// Type-specific tags
-		const isJournalContent = publication.type === 'article' || publication.type === 'special-issue';
+		// Type-specific tags. Bulletin articles carry a journal title (e.g. the
+		// ZMO Bulletin) + issue, so treat them as journal-like for the Highwire
+		// citation_journal_title/volume/issue tags Zotero reads.
+		const isJournalContent =
+			publication.type === 'article' ||
+			publication.type === 'special-issue' ||
+			publication.type === 'bulletin-article';
 		tags.push(
 			...createConditionalTag('citation_journal_title', publication.journal, isJournalContent),
 			...createConditionalTag('citation_volume', publication.volume, isJournalContent),

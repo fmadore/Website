@@ -9,7 +9,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		getEChartsTooltipStyle,
 		getEChartsAxisLineStyle,
 		getEChartsSplitLineStyle,
-		getAnimationConfig
+		getChartMotion
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
@@ -125,12 +125,12 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 					itemStyle: {
 						color: resolvedColors.barColor
 					}
-				},
-				...getAnimationConfig(1000, 'elasticOut')
+				}
 			}
 		],
 		aria: getAriaConfig(showDecal),
-		backgroundColor: 'transparent' // Let the container handle background
+		backgroundColor: 'transparent', // Let the container handle background
+		...getChartMotion('settle')
 	});
 
 	// Use the ECharts hook for lifecycle management

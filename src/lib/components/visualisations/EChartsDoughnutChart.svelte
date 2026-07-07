@@ -7,7 +7,8 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		getResolvedChartColors,
 		resolveColors,
 		getEChartsTooltipStyle,
-		prefersReducedMotion,
+		getBoundedTooltipPosition,
+		getChartMotion,
 		colorWithOpacity,
 		CHART_CATEGORICAL_COLORS
 	} from '$lib/utils/chartColorUtils';
@@ -67,31 +68,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 			...getEChartsTooltipStyle(resolvedColors),
 			formatter: '{a} <br/>{b}: {c} ({d}%)',
 			confine: isMobile,
-			position: isMobile
-				? function (
-						point: [number, number],
-						_params: unknown,
-						_dom: HTMLElement,
-						_rect: unknown,
-						size: { contentSize: [number, number]; viewSize: [number, number] }
-					) {
-						const tooltipWidth = size.contentSize[0];
-						const tooltipHeight = size.contentSize[1];
-						const viewportWidth = size.viewSize[0];
-
-						let x = Math.max(
-							10,
-							Math.min(viewportWidth - tooltipWidth - 10, point[0] - tooltipWidth / 2)
-						);
-						let y = point[1] - tooltipHeight - 10;
-
-						if (y < 10) {
-							y = point[1] + 20;
-						}
-
-						return [x, y];
-					}
-				: undefined
+			position: isMobile ? getBoundedTooltipPosition(true) : undefined
 		},
 		legend: {
 			orient: 'horizontal',
@@ -159,15 +136,15 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 							moveOverlap: 'shiftY'
 						}
 					: undefined,
-				animationType: 'scale',
-				animationEasing: prefersReducedMotion() ? 'linear' : 'elasticOut',
-				animationDuration: prefersReducedMotion() ? 0 : 800,
-				animationDelay: prefersReducedMotion() ? () => 0 : () => Math.random() * 200
+				// Calm scale-in; the elastic bounce + random per-slice delay were
+				// retired for the site's quiet motion policy.
+				animationType: 'scale'
 			}
 		],
 		color: resolvedColors.chartColors,
 		aria: getAriaConfig(showDecal),
-		backgroundColor: 'transparent'
+		backgroundColor: 'transparent',
+		...getChartMotion('settle')
 	});
 
 	// Use the ECharts hook for lifecycle management

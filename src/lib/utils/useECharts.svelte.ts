@@ -2,7 +2,8 @@
  * ECharts Initialization Hook
  *
  * Centralized lifecycle management for ECharts components.
- * Handles dynamic import, initialization, resize observation, and cleanup.
+ * Handles dynamic import, optional extension loading, initialization, resize
+ * observation, and cleanup.
  *
  * Usage:
  * ```svelte
@@ -21,9 +22,30 @@
  *
  * <div bind:this={chartContainer}></div>
  * ```
+ *
+ * Charts that need an ECharts extension (e.g. `echarts-wordcloud`) or must wait
+ * for the container to have real dimensions pass the optional `loadExtensions`
+ * / `requireDimensions` hooks instead of reimplementing the lifecycle:
+ *
+ * ```ts
+ * useECharts({
+ *   getContainer: () => chartContainer,
+ *   getOption: () => chartOption,
+ *   hasData: () => words.length > 0,
+ *   loadExtensions: () => import('echarts-wordcloud').then(() => undefined),
+ *   requireDimensions: true
+ * });
+ * ```
  */
 
 import type * as echarts from 'echarts';
+
+/** Options accepted by ECharts' `setOption`, in object form. */
+export interface EChartsSetOptionOpts {
+	notMerge?: boolean;
+	lazyUpdate?: boolean;
+	silent?: boolean;
+}
 
 export interface UseEChartsOptions {
 	/** Returns the container element (may be undefined during initial render) */
@@ -32,6 +54,25 @@ export interface UseEChartsOptions {
 	getOption: () => Record<string, unknown>;
 	/** Returns whether there is data to display */
 	hasData: () => boolean;
+	/**
+	 * Optional async hook run after `echarts` loads but before `init`. Use it to
+	 * pull in an ECharts extension that registers itself on the core module
+	 * (e.g. `() => import('echarts-wordcloud').then(() => undefined)`).
+	 */
+	loadExtensions?: () => Promise<void>;
+	/** Optional `echarts.init` options (e.g. `{ renderer: 'svg' }`). */
+	initOptions?: Parameters<typeof echarts.init>[2];
+	/**
+	 * Defer initialization until the container reports non-zero dimensions.
+	 * Prevents ECharts' "Can't get DOM width or height" warning for charts whose
+	 * height resolves after the first effect tick (e.g. the word cloud).
+	 */
+	requireDimensions?: boolean;
+	/**
+	 * Options passed to `setOption` on every update. Defaults to
+	 * `{ notMerge: true }` — each update fully replaces the previous option.
+	 */
+	setOptionOpts?: EChartsSetOptionOpts;
 }
 
 export interface UseEChartsReturn {
@@ -45,8 +86,8 @@ export interface UseEChartsReturn {
  * Creates an ECharts instance with automatic lifecycle management.
  *
  * This hook handles:
- * - Dynamic import of the ECharts library
- * - Chart initialization when container is available
+ * - Dynamic import of the ECharts library (+ optional extensions)
+ * - Chart initialization when the container is available (and, optionally, sized)
  * - ResizeObserver for responsive sizing
  * - Automatic option updates when data/options change
  * - Proper cleanup on component unmount
@@ -55,7 +96,15 @@ export interface UseEChartsReturn {
  * @returns Object with chart instance and ready state
  */
 export function useECharts(options: UseEChartsOptions): UseEChartsReturn {
-	const { getContainer, getOption, hasData } = options;
+	const {
+		getContainer,
+		getOption,
+		hasData,
+		loadExtensions,
+		initOptions,
+		requireDimensions = false,
+		setOptionOpts
+	} = options;
 
 	// Internal state
 	let chart: echarts.ECharts | null = $state(null);
@@ -67,40 +116,63 @@ export function useECharts(options: UseEChartsOptions): UseEChartsReturn {
 		let mounted = true;
 		let resizeObserver: ResizeObserver | undefined;
 
-		// Load echarts library and initialize chart
+		// Attempt to initialize the chart. No-ops until the library is loaded, the
+		// container exists, and (when required) it has non-zero dimensions.
+		const tryInit = (container: HTMLDivElement) => {
+			if (!mounted || chart || !echartsLib) return;
+			if (requireDimensions) {
+				const rect = container.getBoundingClientRect();
+				if (rect.width < 1 || rect.height < 1) return; // wait for a sized resize callback
+			}
+			try {
+				chart = echartsLib.init(container, undefined, initOptions);
+				isReady = true;
+			} catch (error) {
+				if (import.meta.env.DEV) console.error('Failed to initialize ECharts:', error);
+			}
+		};
+
+		// Load echarts library (+ extensions) and initialize the chart
 		(async () => {
 			if (!echartsLib) {
 				try {
 					const echartsModule = await import('echarts');
-					if (mounted) {
-						echartsLib = echartsModule;
-					}
+					if (!mounted) return;
+					echartsLib = echartsModule;
 				} catch (error) {
-					console.error('Failed to load ECharts:', error);
+					if (import.meta.env.DEV) console.error('Failed to load ECharts:', error);
 					return;
 				}
+			}
+
+			if (loadExtensions) {
+				try {
+					await loadExtensions();
+				} catch (error) {
+					if (import.meta.env.DEV) console.error('Failed to load ECharts extension:', error);
+					return;
+				}
+				if (!mounted) return;
 			}
 
 			const container = getContainer();
+			if (!container) return;
 
-			// Initialize chart only when container is available and chart doesn't exist
-			if (container && !chart && echartsLib) {
-				try {
-					chart = echartsLib.init(container);
-
-					// Setup resize observer after chart is created
-					resizeObserver = new ResizeObserver(() => {
-						if (chart && !chart.isDisposed()) {
-							chart.resize();
-						}
-					});
-					resizeObserver.observe(container);
-					isReady = true;
-				} catch (error) {
-					console.error('Failed to initialize ECharts:', error);
-					return;
+			// Setup resize observer: it both drives the deferred first init (for
+			// requireDimensions) and handles subsequent resizes.
+			resizeObserver = new ResizeObserver(() => {
+				if (!mounted) return;
+				if (!chart) {
+					tryInit(container);
+				} else if (!chart.isDisposed()) {
+					chart.resize();
 				}
-			}
+			});
+			resizeObserver.observe(container);
+
+			// Immediate attempt covers the common (already-sized, no-extension) case;
+			// for requireDimensions it no-ops until the observer delivers real dims.
+			tryInit(container);
 		})();
 
 		return () => {
@@ -118,9 +190,10 @@ export function useECharts(options: UseEChartsOptions): UseEChartsReturn {
 	$effect(() => {
 		if (isReady && chart && !chart.isDisposed() && hasData()) {
 			try {
-				chart.setOption(getOption(), true);
+				// Object-form setOption for clarity; default fully replaces the option.
+				chart.setOption(getOption(), setOptionOpts ?? { notMerge: true });
 			} catch (error) {
-				console.error('Failed to update chart options:', error);
+				if (import.meta.env.DEV) console.error('Failed to update chart options:', error);
 			}
 		}
 	});

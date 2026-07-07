@@ -7,7 +7,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 		getResolvedChartColors,
 		resolveColors,
 		getEChartsTooltipStyle,
-		colorWithOpacity,
+		getContrastLabelStyle,
 		CHART_CATEGORICAL_COLORS
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
@@ -95,20 +95,60 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 		}, 0)
 	);
 
-	// Pre-process data to assign colors to parent nodes so children inherit them
-	const coloredData = $derived(
-		data.map((node, index) => ({
-			...node,
-			itemStyle: {
-				color: resolvedColors.chartColors[index % resolvedColors.chartColors.length]
+	// Build the rich-text label fragments for a tile, coloured for readable
+	// contrast against that tile's fill. Data voice: mono, medium weight, no
+	// glowing shadow — getContrastLabelStyle adds a minimal hairline stroke only
+	// when neither pure ink nor pure paper clears the contrast target.
+	function tileLabelRich(style: ReturnType<typeof getContrastLabelStyle>) {
+		const shared = {
+			fontFamily: resolvedColors.fontFamily,
+			color: style.color,
+			textBorderColor: style.textBorderColor,
+			textBorderWidth: style.textBorderWidth
+		};
+		return {
+			name: {
+				...shared,
+				fontSize: isMobile ? 11 : 13,
+				fontWeight: 600,
+				lineHeight: isMobile ? 16 : 20,
+				overflow: 'truncate',
+				ellipsis: '…'
 			},
-			children: node.children.map((child) => ({
-				...child,
-				itemStyle: {
-					color: resolvedColors.chartColors[index % resolvedColors.chartColors.length]
-				}
-			}))
-		}))
+			count: {
+				...shared,
+				fontSize: isMobile ? 10 : 12,
+				lineHeight: isMobile ? 14 : 18
+			}
+		};
+	}
+
+	// Pre-process data: assign each category a fill (children inherit it) plus a
+	// theme-aware label style derived from that fill, so parent `upperLabel` and
+	// leaf labels carry their own contrast-correct colours instead of one
+	// white-on-everything style.
+	const coloredData = $derived(
+		data.map((node, index) => {
+			const fill = resolvedColors.chartColors[index % resolvedColors.chartColors.length];
+			const labelStyle = getContrastLabelStyle(fill);
+			const rich = tileLabelRich(labelStyle);
+			const upperLabel = {
+				color: labelStyle.color,
+				textBorderColor: labelStyle.textBorderColor,
+				textBorderWidth: labelStyle.textBorderWidth
+			};
+			return {
+				...node,
+				itemStyle: { color: fill },
+				label: { rich },
+				upperLabel,
+				children: node.children.map((child) => ({
+					...child,
+					itemStyle: { color: fill },
+					label: { rich }
+				}))
+			};
+		})
 	);
 
 	type TreemapFormatterParams = DefaultLabelFormatterCallbackParams & {
@@ -178,7 +218,9 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 						itemStyle: {
 							color: resolvedColors.primary,
 							textStyle: {
-								color: resolvedColors.white
+								// Inverse of the ink fill — paper on ink (light) / warm-black
+								// on cream (dark) — so the crumb stays readable in both themes.
+								color: resolvedColors.surface
 							}
 						}
 					},
@@ -198,14 +240,15 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 							? ''
 							: `{name|${params.name}}\n{count|${params.value}}`;
 					},
+					// Fallback rich fragments (used only by the virtual root, which
+					// otherwise never renders a label); every visible tile overrides
+					// these with its own contrast-aware colours via coloredData.
 					rich: {
 						name: {
 							fontSize: isMobile ? 11 : 13,
-							fontWeight: 'bold',
+							fontWeight: 600,
 							fontFamily: resolvedColors.fontFamily,
-							color: resolvedColors.white,
-							textShadowColor: colorWithOpacity(resolvedColors.black, 0.5),
-							textShadowBlur: 3,
+							color: resolvedColors.text,
 							lineHeight: isMobile ? 16 : 20,
 							overflow: 'truncate',
 							ellipsis: '…'
@@ -213,9 +256,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 						count: {
 							fontSize: isMobile ? 10 : 12,
 							fontFamily: resolvedColors.fontFamily,
-							color: colorWithOpacity(resolvedColors.white, 0.85),
-							textShadowColor: colorWithOpacity(resolvedColors.black, 0.5),
-							textShadowBlur: 2,
+							color: resolvedColors.text,
 							lineHeight: isMobile ? 14 : 18
 						}
 					},
@@ -235,16 +276,12 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 						if (!path || path.length <= 1) return '';
 						return params.name;
 					},
-					color: resolvedColors.white,
-					fontWeight: 'bold',
+					// Fallback colour; each category overrides it with a contrast-aware
+					// colour (+ a minimal stroke only when needed) via coloredData.
+					color: resolvedColors.text,
+					fontWeight: 600,
 					fontSize: isMobile ? 12 : 14,
 					fontFamily: resolvedColors.fontFamily,
-					// Combined stroke + shadow keeps the label readable on either
-					// category-color tile, regardless of contrast against the fill.
-					textBorderColor: colorWithOpacity(resolvedColors.black, 0.45),
-					textBorderWidth: 3,
-					textShadowColor: colorWithOpacity(resolvedColors.black, 0.55),
-					textShadowBlur: 4,
 					overflow: 'truncate',
 					ellipsis: '…'
 				},
@@ -256,12 +293,15 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 				},
 				emphasis: {
 					upperLabel: {
+						// Inherit the tile's contrast-aware colour (set per node); just
+						// keep it shown and mid-weight on hover.
 						show: true,
-						color: resolvedColors.white,
-						fontWeight: 'bold'
+						fontWeight: 600
 					},
 					itemStyle: {
-						borderColor: resolvedColors.white,
+						// Ink (cream on midnight) emphasis border — the structural
+						// selection colour, not a loud white overlay.
+						borderColor: resolvedColors.primary,
 						borderWidth: 2
 					}
 				},

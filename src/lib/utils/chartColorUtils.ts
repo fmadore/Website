@@ -6,6 +6,7 @@
  */
 
 import { getTheme } from '$lib/stores/themeStore.svelte';
+import { contrastRatio, pickContrastColor } from '$lib/utils/colorContrast';
 
 /**
  * Gets the computed value of a CSS custom property from the document root.
@@ -187,6 +188,8 @@ export function getHorizontalBarGradient(
 /**
  * Returns animation config respecting reduced-motion preferences.
  *
+ * @deprecated Prefer {@link getChartMotion}, which encodes the one documented
+ * visualization motion policy. Retained for the Gantt chart's bespoke timing.
  * @param duration - Base animation duration in ms
  * @param easing - ECharts easing function name
  * @returns Animation configuration object
@@ -201,6 +204,151 @@ export function getAnimationConfig(
 		animationEasing: easing
 	};
 }
+
+/** The three presets in the visualization motion policy. */
+export type ChartMotionPreset = 'none' | 'quick' | 'settle';
+
+/** Object shape ECharts reads at the top level of a chart option. */
+export interface ChartMotionConfig {
+	animation: boolean;
+	animationDuration: number;
+	animationDurationUpdate: number;
+	animationEasing: string;
+	animationEasingUpdate: string;
+}
+
+/**
+ * The site's single visualization motion policy (Ink + Signal — print register,
+ * near-zero motion). One set of presets, all easing on `cubicOut` — never
+ * `elasticOut`/`bounce`, which read as app-like on an archival page:
+ *
+ * - `none`   — purely analytical charts; no entrance animation.
+ * - `quick`  — 240 ms; the default for simple charts and all data updates.
+ * - `settle` — 420 ms; a single calm settle for the first paint of a complex
+ *   chart (network graph, treemap, doughnut).
+ *
+ * Collapses to no animation under `prefers-reduced-motion`. Spread at the **top
+ * level** of the chart option (not inside `series`) so `animation: false` and
+ * the update timings apply to every series.
+ */
+export function getChartMotion(preset: ChartMotionPreset = 'quick'): ChartMotionConfig {
+	if (preset === 'none' || prefersReducedMotion()) {
+		return {
+			animation: false,
+			animationDuration: 0,
+			animationDurationUpdate: 0,
+			animationEasing: 'linear',
+			animationEasingUpdate: 'linear'
+		};
+	}
+	const duration = preset === 'settle' ? 420 : 240;
+	return {
+		animation: true,
+		animationDuration: duration,
+		// Updates (theme swap, data change) always use the shorter, calmer timing.
+		animationDurationUpdate: 240,
+		animationEasing: 'cubicOut',
+		animationEasingUpdate: 'cubicOut'
+	};
+}
+
+/** Size payload ECharts passes to a tooltip `position` callback. */
+export interface EChartsTooltipSize {
+	contentSize: [number, number];
+	viewSize: [number, number];
+}
+
+/**
+ * Factory for an ECharts tooltip `position` callback that keeps the tooltip
+ * fully inside the chart's view box on both desktop and mobile. Extracted from
+ * the network graph so every chart with a custom position shares one bounded
+ * implementation instead of reimplementing the clamps.
+ *
+ * Desktop: placed beside the cursor, flipping to the other side / clamping
+ * vertically when it would overflow. Mobile: centred horizontally and lifted
+ * above the point (dropping below only when there isn't room above).
+ *
+ * @param isMobile - Use the mobile placement strategy.
+ * @param gap - Pixel gap between cursor and tooltip / view edges.
+ */
+export function getBoundedTooltipPosition(isMobile: boolean = false, gap: number = 12) {
+	return function boundedPosition(
+		point: [number, number],
+		_params: unknown,
+		_dom: HTMLElement,
+		_rect: unknown,
+		size: EChartsTooltipSize
+	): [number, number] {
+		const [tooltipWidth, tooltipHeight] = size.contentSize;
+		const [viewWidth, viewHeight] = size.viewSize;
+
+		if (isMobile) {
+			const x = Math.max(
+				gap,
+				Math.min(viewWidth - tooltipWidth - gap, point[0] - tooltipWidth / 2)
+			);
+			let y = point[1] - tooltipHeight - gap;
+			if (y < gap) {
+				y = point[1] + gap;
+				if (y + tooltipHeight > viewHeight) {
+					y = Math.max(gap, viewHeight - tooltipHeight - gap);
+				}
+			}
+			return [x, y];
+		}
+
+		let x = point[0] + gap;
+		if (x + tooltipWidth > viewWidth) {
+			x = point[0] - tooltipWidth - gap;
+		}
+		x = Math.max(gap, Math.min(x, viewWidth - tooltipWidth - gap));
+
+		let y = point[1] - tooltipHeight / 2;
+		y = Math.max(gap, Math.min(y, viewHeight - tooltipHeight - gap));
+
+		return [x, y];
+	};
+}
+
+/**
+ * Warm Ink + Signal label anchors for canvas-drawn chart labels. They contrast
+ * the *tile fill*, not the page ground, so they stay fixed across themes: ink
+ * for light tiles, paper for dark tiles (the brief's two inks).
+ */
+const LABEL_INK = '#191509';
+const LABEL_PAPER = '#faf7ef';
+
+/** Contrast-aware label style for a canvas-rendered fill. */
+export interface ContrastLabelStyle {
+	color: string;
+	textBorderColor: string;
+	textBorderWidth: number;
+}
+
+/**
+ * Choose a readable label colour for text drawn on top of an arbitrary chart
+ * `fill` (treemap tiles, pie slices, …). Picks warm ink or warm paper by WCAG
+ * contrast, and only adds a minimal hairline stroke of the opposite tone when
+ * neither pure colour clears the contrast `target` — so labels read as the data
+ * voice rather than glowing/stroked overlay text.
+ *
+ * @param fill - Resolved fill colour (hex / rgb / oklch — not a CSS variable).
+ * @param target - WCAG contrast target below which a fallback stroke is added.
+ */
+export function getContrastLabelStyle(fill: string, target: number = 4.5): ContrastLabelStyle {
+	const { color, ratio } = pickContrastColor(fill, LABEL_INK, LABEL_PAPER);
+	const needsStroke = ratio < target;
+	return {
+		color,
+		textBorderColor: needsStroke
+			? colorWithOpacity(color === LABEL_INK ? LABEL_PAPER : LABEL_INK, 0.55)
+			: 'transparent',
+		textBorderWidth: needsStroke ? 2 : 0
+	};
+}
+
+/** Contrast ratio between two resolved colours (re-exported for chart code). */
+export { contrastRatio };
 
 /**
  * Base chart colors from the design system.

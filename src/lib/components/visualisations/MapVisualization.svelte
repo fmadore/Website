@@ -15,6 +15,7 @@
 	import { base } from '$app/paths';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { getResolvedChartColors } from '$lib/utils/chartColorUtils';
+	import { toRgbString } from '$lib/utils/colorContrast';
 	import {
 		MAP_STYLES,
 		hasWebGLSupport,
@@ -23,6 +24,7 @@
 		waitForContainerLayout,
 		type MapLibreModule
 	} from '$lib/utils/maplibre';
+	import { createContainedPopup } from '$lib/utils/mapPopups';
 	import type { GeoJSONSource, Map as MapLibreMap, Popup } from 'maplibre-gl';
 
 	// Map configuration props with defaults using Svelte 5 $props() rune
@@ -140,41 +142,6 @@
 		`;
 	}
 
-	function keepPopupInView(popup: Popup) {
-		if (!browser || !map || !mapContainer) return;
-		const popupEl = (popup as unknown as { getElement?: () => HTMLElement }).getElement?.();
-		if (!popupEl) return;
-
-		// Wait a frame so MapLibre has positioned the popup.
-		requestAnimationFrame(() => {
-			if (!map || !mapContainer) return;
-			const padding = 12;
-			const containerRect = mapContainer.getBoundingClientRect();
-			const popupRect = popupEl.getBoundingClientRect();
-
-			let dx = 0;
-			let dy = 0;
-
-			if (popupRect.left < containerRect.left + padding) {
-				dx = popupRect.left - (containerRect.left + padding);
-			} else if (popupRect.right > containerRect.right - padding) {
-				dx = popupRect.right - (containerRect.right - padding);
-			}
-
-			if (popupRect.top < containerRect.top + padding) {
-				dy = popupRect.top - (containerRect.top + padding);
-			} else if (popupRect.bottom > containerRect.bottom - padding) {
-				dy = popupRect.bottom - (containerRect.bottom - padding);
-			}
-
-			if (dx !== 0 || dy !== 0) {
-				map.panBy([-dx, -dy], {
-					duration: prefersReducedMotion() ? 0 : 250
-				});
-			}
-		});
-	}
-
 	// Build a GeoJSON FeatureCollection from marker data.
 	function buildFeatureCollection(data: MarkerData[]): GeoJSON.FeatureCollection {
 		return {
@@ -205,8 +172,19 @@
 		if (!map || !maplibregl) return;
 
 		const colors = getResolvedChartColors();
-		const labelColor = colors.white || '#ffffff';
-		const strokeColor = colors.surface || '#ffffff';
+		// MapLibre's style spec can't parse oklch() (which several --sys-viz-*
+		// palette tokens resolve to), so every colour handed to a paint property
+		// is normalised to rgb() first.
+		const labelColor = toRgbString(colors.white || '#ffffff');
+		const strokeColor = toRgbString(colors.surface || '#ffffff');
+		const clusterColor = toRgbString(colors.primary);
+		const pointColors = {
+			lecture: toRgbString(colors.accent),
+			event: toRgbString(colors.sage),
+			conference: toRgbString(colors.plum),
+			workshop: toRgbString(colors.mauve),
+			other: toRgbString(colors.primary)
+		};
 
 		if (!map.getSource(SOURCE_ID)) {
 			map.addSource(SOURCE_ID, {
@@ -225,7 +203,7 @@
 				source: SOURCE_ID,
 				filter: ['has', 'point_count'],
 				paint: {
-					'circle-color': colors.primary,
+					'circle-color': clusterColor,
 					'circle-opacity': 0.85,
 					'circle-radius': ['step', ['get', 'point_count'], 16, 10, 22, 30, 28],
 					'circle-stroke-width': 2,
@@ -263,14 +241,14 @@
 						'match',
 						['get', 'activityType'],
 						'lecture',
-						colors.accent,
+						pointColors.lecture,
 						'event',
-						colors.sage,
+						pointColors.event,
 						'conference',
-						colors.plum,
+						pointColors.conference,
 						'workshop',
-						colors.mauve,
-						/* other */ colors.primary
+						pointColors.workshop,
+						/* other */ pointColors.other
 					],
 					'circle-radius': 7,
 					'circle-stroke-width': 2,
@@ -332,21 +310,17 @@
 				activePopup = null;
 			}
 
-			const popup = new maplibregl.Popup({
-				offset: 12,
-				className: 'map-popup',
-				closeButton: true,
-				closeOnClick: true,
-				maxWidth: '280px'
-			})
-				.setLngLat(coords)
-				.setHTML(createPopupContent(item))
-				.addTo(map);
-
-			popup.on('open', () => keepPopupInView(popup));
+			const popup = createContainedPopup(
+				maplibregl,
+				map,
+				mapContainer,
+				{ lngLat: coords, className: 'map-popup', offset: 12, maxWidth: '280px' },
+				createPopupContent(item)
+			);
 			popup.on('close', () => {
 				if (activePopup === popup) activePopup = null;
 			});
+			popup.addTo(map);
 			activePopup = popup;
 		});
 

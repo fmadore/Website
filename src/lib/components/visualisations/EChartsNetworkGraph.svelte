@@ -7,15 +7,13 @@ ECharts Network Graph - A network visualization for author collaborations
 	import {
 		getResolvedChartColors,
 		getEChartsTooltipStyle,
-		getAnimationConfig
+		getBoundedTooltipPosition,
+		getChartMotion
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
 	import { getAriaConfig } from '$lib/utils/chartActions';
-	import type {
-		DefaultLabelFormatterCallbackParams,
-		TooltipComponentPositionCallbackParams
-	} from 'echarts';
+	import type { DefaultLabelFormatterCallbackParams } from 'echarts';
 
 	// Props
 	type CollaborationData = {
@@ -265,45 +263,7 @@ ECharts Network Graph - A network visualization for author collaborations
 			extraCssText:
 				'box-shadow: none; max-width: 280px; word-wrap: break-word; white-space: normal; line-height: 1.4;',
 			confine: true,
-			position: function (
-				point: [number, number],
-				params: TooltipComponentPositionCallbackParams,
-				dom: HTMLElement,
-				rect: Record<string, number> | null,
-				size: { contentSize: [number, number]; viewSize: [number, number] }
-			) {
-				const tooltipWidth = size.contentSize[0];
-				const tooltipHeight = size.contentSize[1];
-				const chartWidth = size.viewSize[0];
-				const chartHeight = size.viewSize[1];
-
-				let x = point[0] + 10;
-				let y = point[1] - tooltipHeight / 2;
-
-				if (x + tooltipWidth > chartWidth) {
-					x = point[0] - tooltipWidth - 10;
-				}
-
-				if (y < 0) {
-					y = 10;
-				} else if (y + tooltipHeight > chartHeight) {
-					y = chartHeight - tooltipHeight - 10;
-				}
-
-				if (isMobile) {
-					x = Math.max(10, Math.min(chartWidth - tooltipWidth - 10, point[0] - tooltipWidth / 2));
-					if (point[1] - tooltipHeight - 15 >= 0) {
-						y = point[1] - tooltipHeight - 15;
-					} else {
-						y = point[1] + 15;
-						if (y + tooltipHeight > chartHeight) {
-							y = chartHeight - tooltipHeight - 10;
-						}
-					}
-				}
-
-				return [x, y];
-			},
+			position: getBoundedTooltipPosition(isMobile),
 			formatter: function (
 				params: DefaultLabelFormatterCallbackParams | DefaultLabelFormatterCallbackParams[]
 			) {
@@ -364,13 +324,15 @@ ECharts Network Graph - A network visualization for author collaborations
 				data: networkData.nodes,
 				links: networkData.links,
 				categories: [{ name: centerAuthor }, { name: 'Collaborators' }],
-				roam: 'scale', // Enable zoom and pan
+				roam: true, // Pan AND zoom the whole graph freely
 				scaleLimit: {
 					min: 0.5,
 					max: 3
 				},
 				zoom: 1,
 				focusNodeAdjacency: true,
+				// Nodes stay draggable so you can pull the graph around; the shake came
+				// from the animated layout below, not from dragging.
 				draggable: true,
 				left: isMobile ? '5%' : '10%',
 				right: isMobile ? '5%' : '20%',
@@ -380,8 +342,11 @@ ECharts Network Graph - A network visualization for author collaborations
 					repulsion: isMobile ? 300 : 500,
 					gravity: 0.08,
 					edgeLength: isMobile ? 120 : 180,
+					// Live force layout (ECharts default): the graph stays organic and
+					// you can drag nodes and watch neighbours settle. friction dampens
+					// the motion so it settles reasonably fast instead of oscillating.
 					layoutAnimation: true,
-					friction: 0.6
+					friction: 0.7
 				},
 				emphasis: {
 					focus: 'adjacency',
@@ -406,7 +371,7 @@ ECharts Network Graph - A network visualization for author collaborations
 		],
 		aria: getAriaConfig(false),
 		backgroundColor: 'transparent',
-		...getAnimationConfig(1500, 'cubicOut')
+		...getChartMotion('settle')
 	});
 
 	// Use the ECharts hook for lifecycle management
