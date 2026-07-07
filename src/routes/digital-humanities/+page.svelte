@@ -226,7 +226,7 @@
 
 							{#if project.skills && project.skills.length > 0}
 								<div class="chip-row dh-row-tech">
-									{#each project.skills.slice(0, 4) as skill (skill)}
+									{#each project.skills as skill (skill)}
 										<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- skill filter URL -->
 										<a class="chip chip--tech" href={skillHref(skill)}>{skill}</a>
 									{/each}

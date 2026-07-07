@@ -292,8 +292,16 @@
 	color: color-mix(in srgb, var(--color-text-inverted) 72%, transparent);
 }
 
-/* "All N tags ↓" style accent affordance, sits inline with a chip row. */
+/* "All N tags ↓" — accent action affordance sitting inline with a chip row.
+ * It is a native <button>, so the user-agent chrome (grey/dark box, bevel,
+ * default cursor) must be reset; it then reads as an accent mono text action,
+ * matching .featured-action. */
 .chip-more {
+	appearance: none;
+	-webkit-appearance: none;
+	background: none;
+	border: none;
+	cursor: pointer;
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-2xs);
 	font-weight: var(--font-weight-semibold);
@@ -302,6 +310,16 @@
 	color: var(--color-accent);
 	text-decoration: none;
 	padding: var(--space-1) 0;
+	transition: color var(--duration-fast) var(--ease-out);
+}
+
+.chip-more:hover {
+	color: var(--color-accent-dark);
+}
+
+.chip-more:focus-visible {
+	outline: var(--border-width-medium) solid var(--color-accent);
+	outline-offset: var(--space-2xs);
 }
 
 .chip-row {

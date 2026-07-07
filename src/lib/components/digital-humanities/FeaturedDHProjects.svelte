@@ -133,7 +133,7 @@
 
 					{#if project.skills && project.skills.length > 0}
 						<div class="chip-row featured-tech">
-							{#each project.skills.slice(0, 5) as skill (skill)}
+							{#each project.skills as skill (skill)}
 								<span class="chip chip--tech">{skill}</span>
 							{/each}
 						</div>
