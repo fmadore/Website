@@ -26,9 +26,11 @@
 		buildGroupedTreemap,
 		buildProjectTimeline
 	} from '$lib/utils/vizAggregation';
+	import { buildCommunicationCoPresenterNetwork } from '$lib/utils/networkAggregation';
 	import type { LocationDatum } from '$lib/data/geo';
 	import type { Communication } from '$lib/types/communication';
 	import type { WordFrequency } from '$lib/types';
+	import { author } from '$lib/data/siteConfig';
 
 	// ---------- Shared types for derived data ----------
 
@@ -58,27 +60,6 @@
 			.split(',')
 			.map((v) => v.trim())
 			.filter(Boolean);
-	}
-
-	// Every unique presenter across papers[] and participants[] plus the top-level
-	// `authors` array. Used by the co-presenter network. Uses a plain record for
-	// deduplication so the linter doesn't flag the Set as mutable reactive state.
-	function extractCoPresenters(comm: Communication): string[] {
-		const seen: Record<string, true> = {};
-
-		(comm.authors ?? []).forEach((a) => {
-			if (a) seen[a] = true;
-		});
-		(comm.participants ?? []).forEach((p) => {
-			if (p.name) seen[p.name] = true;
-		});
-		(comm.papers ?? []).forEach((paper) => {
-			(paper.authors ?? []).forEach((a) => {
-				if (a.name) seen[a.name] = true;
-			});
-		});
-
-		return Object.keys(seen);
 	}
 
 	// ---------- Derived data for each visualisation ----------
@@ -163,57 +144,11 @@
 
 	// 7. Co-presenter network — anchored on Frédérick Madore, radiating out to
 	// every co-author, panel participant, and paper author.
-	const CENTER_AUTHOR = 'Frédérick Madore';
-
-	const copresenterNetworkData = $derived(
-		(() => {
-			// For each non-centre presenter, track which communication titles they
-			// share with the centre.
-			const collabMap: Record<string, Set<string>> = {};
-			// Edges between non-centre presenters (they co-presented together in the
-			// same communication as the centre).
-			const pairs: Record<string, { source: string; target: string; publications: Set<string> }> =
-				{};
-
-			allCommunications.forEach((comm) => {
-				const presenters = extractCoPresenters(comm).filter((name) => name !== CENTER_AUTHOR);
-				if (presenters.length === 0) return;
-
-				presenters.forEach((name) => {
-					if (!collabMap[name]) collabMap[name] = new Set();
-					collabMap[name].add(comm.title);
-				});
-
-				// Pairwise edges between non-centre presenters on this communication.
-				for (let i = 0; i < presenters.length; i++) {
-					for (let j = i + 1; j < presenters.length; j++) {
-						const [a, b] = [presenters[i], presenters[j]].sort();
-						const key = `${a}|${b}`;
-						if (!pairs[key]) {
-							pairs[key] = { source: a, target: b, publications: new Set() };
-						}
-						pairs[key].publications.add(comm.title);
-					}
-				}
-			});
-
-			const collaborators = Object.entries(collabMap)
-				.map(([author, titles]) => ({
-					author,
-					collaborationCount: titles.size,
-					publications: Array.from(titles)
-				}))
-				.sort((a, b) => b.collaborationCount - a.collaborationCount);
-
-			const connections = Object.values(pairs).map((p) => ({
-				source: p.source,
-				target: p.target,
-				publicationCount: p.publications.size,
-				publications: Array.from(p.publications)
-			}));
-
-			return { collaborators, connections };
-		})()
+	const copresenterNetwork = $derived(
+		buildCommunicationCoPresenterNetwork(allCommunications, author.name)
+	);
+	const copresenterCount = $derived(
+		copresenterNetwork.nodes.filter((n) => n.kind !== 'center').length
 	);
 
 	// 8. Projects treemap — outer cells are research projects, inner cells are
@@ -400,30 +335,25 @@
 	<section class="visualization-section scroll-reveal mb-12">
 		<h2 class="section-heading">
 			Co-presenter network
-			{#if copresenterNetworkData.collaborators.length > 0}
-				({copresenterNetworkData.collaborators.length} collaborators)
+			{#if copresenterCount > 0}
+				({copresenterCount} collaborators)
 			{/if}
 		</h2>
 		<p class="section-description">
 			People who have co-presented, co-organised panels, or contributed papers alongside me. Edges
 			between non-centre nodes show pairs who appeared together in the same communication.
 		</p>
-		<VizChartCard
-			variant="network"
-			height="500px"
-			hasData={copresenterNetworkData.collaborators.length > 0}
-		>
+		<VizChartCard variant="network" height="500px" hasData={copresenterCount > 0}>
 			<EChartsNetworkGraph
-				data={copresenterNetworkData.collaborators}
-				coAuthorConnections={copresenterNetworkData.connections}
-				contributorConnections={[]}
-				centerAuthor={CENTER_AUTHOR}
-				maxConnections={copresenterNetworkData.collaborators.length}
+				nodes={copresenterNetwork.nodes}
+				edges={copresenterNetwork.edges}
+				centerId={author.name}
+				filename="copresenter-network"
 				labels={{
 					itemSingular: 'communication',
 					itemPlural: 'Communications',
-					coAuthorEdge: 'Co-presenter connection',
-					coAuthorShared: 'Shared communications'
+					peerEdge: 'Co-presenter connection',
+					peerShared: 'Shared communications'
 				}}
 			/>
 			{#snippet placeholder()}

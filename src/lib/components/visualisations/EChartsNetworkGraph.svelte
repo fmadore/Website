@@ -1,5 +1,8 @@
 <!--
-ECharts Network Graph - A network visualization for author collaborations
+ECharts Network Graph - renders NetworkData from $lib/utils/networkAggregation:
+egocentric collaboration networks (with a centre node) and flat co-occurrence
+networks (keywords, institutions). Colour encodes the node/edge kind, size
+encodes the weight; the two channels never double-encode the same value.
 -->
 <script lang="ts">
 	import { innerWidth } from 'svelte/reactivity/window';
@@ -8,60 +11,67 @@ ECharts Network Graph - A network visualization for author collaborations
 		getResolvedChartColors,
 		getEChartsTooltipStyle,
 		getBoundedTooltipPosition,
-		getChartMotion
+		getChartMotion,
+		prefersReducedMotion
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
 	import { getAriaConfig } from '$lib/utils/chartActions';
 	import type { DefaultLabelFormatterCallbackParams } from 'echarts';
-
-	// Props
-	type CollaborationData = {
-		author: string;
-		collaborationCount: number;
-		publications: string[];
-		isContributor?: boolean;
-	};
-
-	type CoAuthorConnection = {
-		source: string;
-		target: string;
-		publicationCount: number;
-		publications: string[];
-	};
+	import type { NetworkNode, NetworkEdge, NetworkEdgeKind } from '$lib/utils/networkAggregation';
 
 	type NetworkLabels = {
 		itemSingular?: string; // e.g. 'publication' or 'communication'
 		itemPlural?: string; // e.g. 'Publications' or 'Communications'
-		coAuthorEdge?: string; // edge tooltip heading + legend (e.g. 'Co-author connection')
-		coAuthorShared?: string; // line before the list (e.g. 'Shared publications')
+		collaboratorNode?: string; // legend label for collaborator nodes
+		contributorNode?: string; // legend label for contributor nodes
+		entityNode?: string; // legend label for entity nodes (keywords, institutions)
+		directEdge?: string; // e.g. 'Direct collaboration'
+		peerEdge?: string; // edge tooltip heading + legend (e.g. 'Co-author connection')
+		peerShared?: string; // line before the list (e.g. 'Shared publications')
 		contributorEdge?: string; // e.g. 'Contributor connection'
 		contributorShared?: string; // e.g. 'Shared edited volumes/special issues'
+		cooccurrenceEdge?: string; // e.g. 'Keyword co-occurrence'
+		cooccurrenceShared?: string; // e.g. 'Publications sharing both'
 	};
 
 	let {
-		data = [] as CollaborationData[],
-		coAuthorConnections = [] as CoAuthorConnection[],
-		contributorConnections = [] as CoAuthorConnection[],
-		centerAuthor = 'Frédérick Madore',
-		maxConnections = 20, // Limit to top collaborators for readability
-		labels = {} as NetworkLabels
+		nodes = [] as NetworkNode[],
+		edges = [] as NetworkEdge[],
+		centerId = undefined,
+		maxNodes = 20, // Cap on non-centre nodes, for readability
+		visibleEdgeKinds = undefined,
+		highlightQuery = '',
+		entityColor = 'slateBlue',
+		labels = {} as NetworkLabels,
+		filename = 'network',
+		ariaDescription = undefined
 	}: {
-		data?: CollaborationData[];
-		coAuthorConnections?: CoAuthorConnection[];
-		contributorConnections?: CoAuthorConnection[];
-		centerAuthor?: string;
-		maxConnections?: number;
+		nodes?: NetworkNode[];
+		edges?: NetworkEdge[];
+		centerId?: string;
+		maxNodes?: number;
+		visibleEdgeKinds?: NetworkEdgeKind[];
+		highlightQuery?: string;
+		entityColor?: 'slateBlue' | 'sage';
 		labels?: NetworkLabels;
+		filename?: string;
+		ariaDescription?: string;
 	} = $props();
 
 	const labelCopy = $derived({
 		itemSingular: labels.itemSingular ?? 'publication',
 		itemPlural: labels.itemPlural ?? 'Publications',
-		coAuthorEdge: labels.coAuthorEdge ?? 'Co-author connection',
-		coAuthorShared: labels.coAuthorShared ?? 'Shared publications',
+		collaboratorNode: labels.collaboratorNode ?? 'Collaborators',
+		contributorNode: labels.contributorNode ?? 'Contributors',
+		entityNode: labels.entityNode ?? 'Entities',
+		directEdge: labels.directEdge ?? 'Direct collaboration',
+		peerEdge: labels.peerEdge ?? 'Co-author connection',
+		peerShared: labels.peerShared ?? 'Shared publications',
 		contributorEdge: labels.contributorEdge ?? 'Contributor connection',
-		contributorShared: labels.contributorShared ?? 'Shared edited volumes/special issues'
+		contributorShared: labels.contributorShared ?? 'Shared edited volumes/special issues',
+		cooccurrenceEdge: labels.cooccurrenceEdge ?? 'Co-occurrence',
+		cooccurrenceShared: labels.cooccurrenceShared ?? 'Shared items'
 	});
 
 	// Container references
@@ -71,180 +81,264 @@ ECharts Network Graph - A network visualization for author collaborations
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
 
-	// Reactive color resolution
+	// Reactive colour resolution — getResolvedChartColors() reads getTheme()
+	// internally, so this $derived re-runs (and the chart recolours) on toggle.
 	const resolvedColors = $derived(getResolvedChartColors());
 
-	// Create a color palette for different collaboration counts
-	const collaborationColors = $derived.by(() => {
-		/* Collaboration intensity ramps from the pine signal toward
-		 * solid ink: pine → muted plum → olive → ink. Ink + Signal. */
-		const baseColors = [
-			resolvedColors.accent, // 1 collaboration — pine (signal)
-			resolvedColors.plum, // 2 collaborations — muted plum
-			resolvedColors.sage, // 3 collaborations — olive
-			resolvedColors.primary // 4+ collaborations — ink
-		];
-
-		const extendedColors = [...baseColors];
-		for (let i = baseColors.length; i < 10; i++) {
-			const baseIndex = i % baseColors.length;
-			extendedColors.push(baseColors[baseIndex]);
-		}
-
-		return extendedColors;
+	/* Colour encodes the node's role — size already encodes the weight, so the
+	 * old count-keyed colour ramp double-encoded it. Ink = centre, pine =
+	 * collaborators (the living connections), ochre = contributor-only,
+	 * slate-blue/olive = entities (keywords, institutions). */
+	const nodeColors = $derived({
+		center: resolvedColors.primary,
+		collaborator: resolvedColors.accent,
+		contributor: resolvedColors.ochre,
+		entity: entityColor === 'sage' ? resolvedColors.sage : resolvedColors.slateBlue
 	});
 
-	// Process data for network graph
+	// Diacritic-insensitive matching ("Frédérick" matches "frederick").
+	function fold(value: string): string {
+		return value
+			.toLowerCase()
+			.normalize('NFD')
+			.replace(/\p{Diacritic}/gu, '');
+	}
+
+	const foldedQuery = $derived(fold(highlightQuery.trim()));
+
+	// Top-N selection + edge filtering, shared by the chart, the sr-only list,
+	// the legend, and the search effect.
+	const graphData = $derived.by(() => {
+		const centerNode = centerId ? nodes.find((n) => n.id === centerId) : undefined;
+		const others = nodes
+			.filter((n) => n.id !== centerId)
+			.sort((a, b) => b.weight - a.weight)
+			.slice(0, Math.max(0, maxNodes));
+		const kept = centerNode ? [centerNode, ...others] : others;
+		const keptIds = new Set(kept.map((n) => n.id));
+		const kindSet = visibleEdgeKinds ? new Set(visibleEdgeKinds) : undefined;
+		const keptEdges = edges.filter(
+			(e) =>
+				keptIds.has(e.source) &&
+				keptIds.has(e.target) &&
+				(kindSet === undefined || e.kind === 'direct' || kindSet.has(e.kind))
+		);
+		const maxWeight = others.reduce((m, n) => Math.max(m, n.weight), 1);
+		const matchedIds = foldedQuery
+			? new Set(kept.filter((n) => fold(n.id).includes(foldedQuery)).map((n) => n.id))
+			: undefined;
+		return { kept, keptEdges, maxWeight, matchedIds };
+	});
+
+	// Data-derived screen-reader description (overridable via prop).
+	const effectiveAriaDescription = $derived.by(() => {
+		if (ariaDescription) return ariaDescription;
+		const { kept } = graphData;
+		if (kept.length === 0) return 'Empty network graph.';
+		const others = kept.filter((n) => n.kind !== 'center');
+		const top = others
+			.slice(0, 3)
+			.map((n) => `${n.id} (${n.weight})`)
+			.join(', ');
+		return centerId
+			? `Network centred on ${centerId} with ${others.length} connected nodes. Strongest connections: ${top}.`
+			: `Network of ${others.length} nodes. Largest: ${top}.`;
+	});
+
+	function clampWidth(min: number, max: number, value: number): number {
+		return Math.max(min, Math.min(max, value));
+	}
+
+	// Process data for the ECharts graph series
 	const networkData = $derived.by(() => {
-		// Limit to top collaborators for better visualization
-		const topCollaborators = data
-			.sort((a, b) => b.collaborationCount - a.collaborationCount)
-			.slice(0, maxConnections);
+		const { kept, keptEdges, maxWeight, matchedIds } = graphData;
 
-		// Get list of top collaborator names for filtering connections
-		const topCollaboratorNames = new Set(topCollaborators.map((c) => c.author));
-
-		// Create nodes
-		const nodes = [
-			// Center node (main author)
-			{
-				id: centerAuthor,
-				name: centerAuthor,
-				symbolSize: isMobile ? 50 : 70,
-				itemStyle: {
-					color: resolvedColors.primary,
-					borderColor: resolvedColors.primary,
-					borderWidth: 3
-				},
-				label: {
-					show: true,
-					fontSize: isMobile ? 13 : 15,
-					fontWeight: 'bold',
-					color: resolvedColors.text,
-					fontFamily: resolvedColors.fontFamily
-				},
-				category: 0,
-				fixed: false
-			},
-			// Collaborator nodes
-			...topCollaborators.map((collab) => ({
-				id: collab.author,
-				name: collab.author,
-				symbolSize: Math.max(
-					isMobile ? 20 : 25,
-					Math.min(
+		const chartNodes = kept.map((node) => {
+			const isCenter = node.kind === 'center';
+			const dimmed = matchedIds !== undefined && !matchedIds.has(node.id);
+			const symbolSize = isCenter
+				? isMobile
+					? 50
+					: 70
+				: clampWidth(
+						isMobile ? 20 : 25,
 						isMobile ? 40 : 50,
-						(collab.collaborationCount /
-							Math.max(...topCollaborators.map((c) => c.collaborationCount))) *
-							(isMobile ? 40 : 50)
-					)
-				),
+						(node.weight / maxWeight) * (isMobile ? 40 : 50)
+					);
+			return {
+				id: node.id,
+				name: node.id,
+				symbolSize,
+				// Contributor nodes are squares — a non-colour channel for the
+				// role, and on-brand (the system's corners are square).
+				symbol: node.kind === 'contributor' ? 'rect' : 'circle',
 				itemStyle: {
-					color:
-						collaborationColors[
-							Math.min(collab.collaborationCount - 1, collaborationColors.length - 1)
-						]
+					color: nodeColors[node.kind],
+					opacity: dimmed ? 0.15 : 1,
+					...(isCenter ? { borderColor: resolvedColors.primary, borderWidth: 3 } : {})
 				},
 				label: {
-					show: !isMobile || collab.collaborationCount > 2,
-					fontSize: isMobile ? 10 : 12,
+					show: !dimmed && (isCenter || !isMobile || node.weight > 2),
+					fontSize: isCenter ? (isMobile ? 13 : 15) : isMobile ? 10 : 12,
+					...(isCenter ? { fontWeight: 'bold' } : {}),
 					color: resolvedColors.text,
 					fontFamily: resolvedColors.fontFamily,
-					position: 'right',
+					position: 'right' as const,
 					distance: 10,
-					formatter: function (params: DefaultLabelFormatterCallbackParams) {
+					formatter: (params: DefaultLabelFormatterCallbackParams) => {
 						const maxLength = isMobile ? 15 : 20;
 						return params.name.length > maxLength
 							? params.name.substring(0, maxLength) + '...'
 							: params.name;
 					}
 				},
-				category: 1,
+				// Payload for the tooltip formatter
+				nodeData: node,
 				fixed: false
-			}))
-		];
+			};
+		});
 
-		// Create links - connections to center author
-		const centerLinks = topCollaborators.map((collab) => ({
-			source: centerAuthor,
-			target: collab.author,
-			lineStyle: {
-				width: Math.max(1.5, Math.min(6, collab.collaborationCount * 1.5)),
-				color: resolvedColors.primary,
-				opacity: 0.5,
-				type: 'solid' as const
-			},
-			label: {
-				show: false
-			},
-			emphasis: {
-				lineStyle: {
-					width: Math.max(2, Math.min(8, collab.collaborationCount * 2)),
-					opacity: 0.8
-				}
+		const edgeStyle = (edge: NetworkEdge) => {
+			switch (edge.kind) {
+				case 'direct':
+					return {
+						width: clampWidth(1.5, 6, edge.weight * 1.5),
+						color: resolvedColors.primary,
+						opacity: 0.5,
+						type: 'solid' as const
+					};
+				case 'peer':
+					return {
+						width: clampWidth(1, 4, edge.weight * 1.2),
+						color: resolvedColors.accent,
+						opacity: 0.3,
+						type: 'dashed' as const
+					};
+				case 'contributor':
+					return {
+						width: clampWidth(1, 3, edge.weight),
+						color: resolvedColors.ochre,
+						opacity: 0.4,
+						type: [2, 3] as [number, number] // dotted
+					};
+				case 'cooccurrence':
+					return {
+						width: clampWidth(1, 5, edge.weight),
+						color: resolvedColors.primary,
+						opacity: 0.25,
+						type: 'solid' as const
+					};
 			}
-		}));
+		};
 
-		// Create links between co-authors (only for those in top collaborators)
-		const coAuthorLinks = coAuthorConnections
-			.filter(
-				(conn) => topCollaboratorNames.has(conn.source) && topCollaboratorNames.has(conn.target)
-			)
-			.map((conn) => ({
-				source: conn.source,
-				target: conn.target,
-				lineStyle: {
-					width: Math.max(1, Math.min(4, conn.publicationCount * 1.2)),
-					color: resolvedColors.accent,
-					opacity: 0.3,
-					type: 'dashed' as const
-				},
-				label: {
-					show: false
-				},
+		const chartLinks = keptEdges.map((edge) => {
+			const base = edgeStyle(edge);
+			const dimmed =
+				matchedIds !== undefined && !matchedIds.has(edge.source) && !matchedIds.has(edge.target);
+			return {
+				source: edge.source,
+				target: edge.target,
+				lineStyle: { ...base, opacity: dimmed ? 0.06 : base.opacity },
+				label: { show: false },
 				emphasis: {
 					lineStyle: {
-						width: Math.max(1.5, Math.min(5, conn.publicationCount * 1.5)),
-						opacity: 0.6
+						width: clampWidth(1.5, 8, edge.weight * 1.5),
+						opacity: 0.8
 					}
 				},
-				// Store connection data for tooltip
-				connectionData: conn,
-				connectionType: 'coauthor' as const
-			}));
+				// Payload for the tooltip formatter
+				edgeData: edge
+			};
+		});
 
-		// Create links for contributor connections (TOC authors from edited volumes/special issues)
-		const contributorLinks = contributorConnections
-			.filter(
-				(conn) => topCollaboratorNames.has(conn.source) && topCollaboratorNames.has(conn.target)
-			)
-			.map((conn) => ({
-				source: conn.source,
-				target: conn.target,
-				lineStyle: {
-					width: Math.max(1, Math.min(3, conn.publicationCount * 1)),
-					color: resolvedColors.highlight,
-					opacity: 0.4,
-					type: [4, 4] as [number, number] // Dotted line pattern
-				},
-				label: {
-					show: false
-				},
-				emphasis: {
-					lineStyle: {
-						width: Math.max(1.5, Math.min(4, conn.publicationCount * 1.2)),
-						opacity: 0.7
-					}
-				},
-				// Store connection data for tooltip
-				connectionData: conn,
-				connectionType: 'contributor' as const
-			}));
-
-		const links = [...centerLinks, ...coAuthorLinks, ...contributorLinks];
-
-		return { nodes, links };
+		return { nodes: chartNodes, links: chartLinks };
 	});
+
+	// Legend entries — only the kinds actually present in the filtered graph.
+	const legendEntries = $derived.by(() => {
+		const nodeKinds = new Set(graphData.kept.map((n) => n.kind));
+		const edgeKinds = new Set(graphData.keptEdges.map((e) => e.kind));
+		const entries: Array<{
+			key: string;
+			shape: 'circle' | 'square' | 'solid' | 'dashed' | 'dotted';
+			color: string;
+			label: string;
+		}> = [];
+
+		if (nodeKinds.has('center') && centerId) {
+			entries.push({ key: 'center', shape: 'circle', color: nodeColors.center, label: centerId });
+		}
+		if (nodeKinds.has('collaborator')) {
+			entries.push({
+				key: 'collaborator',
+				shape: 'circle',
+				color: nodeColors.collaborator,
+				label: labelCopy.collaboratorNode
+			});
+		}
+		if (nodeKinds.has('contributor')) {
+			entries.push({
+				key: 'contributor',
+				shape: 'square',
+				color: nodeColors.contributor,
+				label: labelCopy.contributorNode
+			});
+		}
+		if (nodeKinds.has('entity')) {
+			entries.push({
+				key: 'entity',
+				shape: 'circle',
+				color: nodeColors.entity,
+				label: labelCopy.entityNode
+			});
+		}
+		if (edgeKinds.has('direct')) {
+			entries.push({
+				key: 'direct',
+				shape: 'solid',
+				color: resolvedColors.primary,
+				label: labelCopy.directEdge
+			});
+		}
+		if (edgeKinds.has('peer')) {
+			entries.push({
+				key: 'peer',
+				shape: 'dashed',
+				color: resolvedColors.accent,
+				label: labelCopy.peerEdge
+			});
+		}
+		if (edgeKinds.has('contributor')) {
+			entries.push({
+				key: 'contributor-edge',
+				shape: 'dotted',
+				color: resolvedColors.ochre,
+				label: labelCopy.contributorEdge
+			});
+		}
+		if (edgeKinds.has('cooccurrence')) {
+			entries.push({
+				key: 'cooccurrence',
+				shape: 'solid',
+				color: resolvedColors.primary,
+				label: labelCopy.cooccurrenceEdge
+			});
+		}
+		return entries;
+	});
+
+	function edgeHeading(kind: NetworkEdgeKind): { heading: string; shared: string } {
+		switch (kind) {
+			case 'peer':
+				return { heading: labelCopy.peerEdge, shared: labelCopy.peerShared };
+			case 'contributor':
+				return { heading: labelCopy.contributorEdge, shared: labelCopy.contributorShared };
+			case 'cooccurrence':
+				return { heading: labelCopy.cooccurrenceEdge, shared: labelCopy.cooccurrenceShared };
+			default:
+				return { heading: labelCopy.directEdge, shared: labelCopy.peerShared };
+		}
+	}
 
 	// Chart options - reactive to all dependencies
 	const chartOption = $derived({
@@ -272,58 +366,38 @@ ECharts Network Graph - A network visualization for author collaborations
 					dataType?: string;
 					data: Record<string, unknown>;
 				};
-				if (p.dataType === 'node') {
-					if (p.data['id'] === centerAuthor) {
-						return `<strong>${p.data['name']}</strong><br/>Center of collaboration network`;
-					} else {
-						const collab = data.find((c) => c.author === p.data['name']);
-						if (collab) {
-							const itemList = collab.publications.map((pub) => `• ${pub}`).join('<br/>');
-
-							return `<strong>${p.data['name']}</strong><br/>
-								Collaborations with ${centerAuthor}: ${collab.collaborationCount}<br/>
-								<em>${labelCopy.itemPlural}:</em><br/>
-								${itemList}`;
-						}
+				if (p.dataType === 'node' && p.data['nodeData']) {
+					const node = p.data['nodeData'] as NetworkNode;
+					if (node.kind === 'center') {
+						return `<strong>${node.id}</strong><br/>Centre of the network<br/>${labelCopy.itemPlural} with collaborators: ${node.weight}`;
 					}
-				} else if (p.dataType === 'edge') {
-					// Check if this is a co-author or contributor connection
-					if (p.data['connectionData']) {
-						const conn = p.data['connectionData'] as CoAuthorConnection;
-						const connectionType = p.data['connectionType'];
-						const itemList = conn.publications.map((pub: string) => `• ${pub}`).join('<br/>');
-
-						if (connectionType === 'contributor') {
-							return `<strong>${labelCopy.contributorEdge}</strong><br/>
-								${conn.source} ↔ ${conn.target}<br/>
-								${labelCopy.contributorShared}: ${conn.publicationCount}<br/>
-								<em>${labelCopy.itemPlural}:</em><br/>
-								${itemList}`;
-						}
-						return `<strong>${labelCopy.coAuthorEdge}</strong><br/>
-							${conn.source} ↔ ${conn.target}<br/>
-							${labelCopy.coAuthorShared}: ${conn.publicationCount}<br/>
-							<em>${labelCopy.itemPlural}:</em><br/>
-							${itemList}`;
-					} else {
-						// Connection to center author
-						const collab = data.find((c) => c.author === (p.data['target'] as string));
-						return collab
-							? `${collab.collaborationCount} collaboration${collab.collaborationCount > 1 ? 's' : ''} with ${centerAuthor}`
-							: '';
-					}
+					const itemList = node.items.map((item) => `• ${item}`).join('<br/>');
+					return `<strong>${node.id}</strong><br/>
+						<em>${labelCopy.itemPlural}: ${node.weight}</em><br/>
+						${itemList}`;
 				}
-				return p.data['name'] as string;
+				if (p.dataType === 'edge' && p.data['edgeData']) {
+					const edge = p.data['edgeData'] as NetworkEdge;
+					if (edge.kind === 'direct') {
+						return `${edge.weight} ${edge.weight > 1 ? labelCopy.itemPlural.toLowerCase() : labelCopy.itemSingular} with ${edge.source}`;
+					}
+					const { heading, shared } = edgeHeading(edge.kind);
+					const itemList = edge.items.map((item) => `• ${item}`).join('<br/>');
+					return `<strong>${heading}</strong><br/>
+						${edge.source} ↔ ${edge.target}<br/>
+						${shared}: ${edge.weight}<br/>
+						${itemList}`;
+				}
+				return (p.data['name'] as string) ?? '';
 			}
 		},
 		series: [
 			{
-				name: 'Collaboration Network',
+				name: 'Network',
 				type: 'graph',
 				layout: 'force',
 				data: networkData.nodes,
 				links: networkData.links,
-				categories: [{ name: centerAuthor }, { name: 'Collaborators' }],
 				roam: true, // Pan AND zoom the whole graph freely
 				scaleLimit: {
 					min: 0.5,
@@ -342,11 +416,12 @@ ECharts Network Graph - A network visualization for author collaborations
 					repulsion: isMobile ? 300 : 500,
 					gravity: 0.08,
 					edgeLength: isMobile ? 120 : 180,
-					// Live force layout (ECharts default): the graph stays organic and
-					// you can drag nodes and watch neighbours settle. friction dampens
-					// the motion so it settles reasonably fast instead of oscillating.
-					layoutAnimation: true,
-					friction: 0.7
+					// Live force layout: the graph stays organic and you can drag
+					// nodes and watch neighbours settle. Higher friction makes it
+					// settle instead of oscillating; reduced-motion users get a
+					// static, pre-settled layout.
+					layoutAnimation: !prefersReducedMotion(),
+					friction: 0.8
 				},
 				emphasis: {
 					focus: 'adjacency',
@@ -369,7 +444,7 @@ ECharts Network Graph - A network visualization for author collaborations
 				avoidLabelOverlap: true
 			}
 		],
-		aria: getAriaConfig(false),
+		aria: getAriaConfig(false, effectiveAriaDescription),
 		backgroundColor: 'transparent',
 		...getChartMotion('settle')
 	});
@@ -379,7 +454,25 @@ ECharts Network Graph - A network visualization for author collaborations
 	const echartsInstance = useECharts({
 		getContainer: () => chartContainer,
 		getOption: () => chartOption,
-		hasData: () => data.length > 0
+		hasData: () => nodes.length > 0
+	});
+
+	// When the search narrows to exactly one node, surface its tooltip so the
+	// match is visible without hovering (keyboard/mobile path).
+	$effect(() => {
+		const matchedIds = graphData.matchedIds;
+		const dataIndex =
+			matchedIds?.size === 1 ? graphData.kept.findIndex((n) => matchedIds.has(n.id)) : -1;
+		const frame = requestAnimationFrame(() => {
+			const c = echartsInstance.chart;
+			if (!c || c.isDisposed()) return;
+			if (dataIndex >= 0) {
+				c.dispatchAction({ type: 'showTip', seriesIndex: 0, dataIndex });
+			} else {
+				c.dispatchAction({ type: 'hideTip' });
+			}
+		});
+		return () => cancelAnimationFrame(frame);
 	});
 
 	// Zoom functions
@@ -425,7 +518,7 @@ ECharts Network Graph - A network visualization for author collaborations
 		showDecalToggle={false}
 		showFullscreen={true}
 		fullscreenTarget={outerContainer}
-		filename="collaboration-network"
+		{filename}
 	/>
 	<div class="zoom-controls">
 		<button class="zoom-btn" onclick={zoomIn} title="Zoom In" aria-label="Zoom in on network graph">
@@ -449,45 +542,39 @@ ECharts Network Graph - A network visualization for author collaborations
 		</button>
 	</div>
 
-	{#if !isMobile}
-		<div class="legend-overlay">
-			<div class="legend-item">
-				<div
-					class="legend-icon"
-					style="background-color: {resolvedColors.primary}; border: 2px solid {resolvedColors.primary}"
-				></div>
-				<span>{centerAuthor}</span>
-			</div>
-			<div class="legend-item">
-				<div class="legend-icon" style="background-color: {resolvedColors.highlight}"></div>
-				<span>Collaborators</span>
-			</div>
-			<div class="legend-item">
-				<div class="legend-line" style="background-color: {resolvedColors.primary}"></div>
-				<span>Direct collaboration</span>
-			</div>
-			{#if coAuthorConnections.length > 0}
-				<div class="legend-item">
-					<div
-						class="legend-line"
-						style="background-color: {resolvedColors.accent}; border-bottom: 2px dashed {resolvedColors.accent}; height: 0;"
-					></div>
-					<span>{labelCopy.coAuthorEdge}</span>
-				</div>
-			{/if}
-			{#if contributorConnections.length > 0}
-				<div class="legend-item">
-					<div
-						class="legend-line legend-dotted"
-						style="border-bottom-color: {resolvedColors.highlight};"
-					></div>
-					<span>{labelCopy.contributorEdge}</span>
-				</div>
-			{/if}
+	<div bind:this={chartContainer} class="chart"></div>
+
+	<!-- Always-visible legend strip: the meaning of colours and dashes must
+	     survive on mobile, where the old absolute overlay was hidden. -->
+	{#if legendEntries.length > 0}
+		<div class="network-legend">
+			{#each legendEntries as entry (entry.key)}
+				<span class="legend-entry">
+					{#if entry.shape === 'circle' || entry.shape === 'square'}
+						<span
+							class="legend-swatch"
+							class:legend-swatch-round={entry.shape === 'circle'}
+							style="background-color: {entry.color}"
+						></span>
+					{:else}
+						<span class="legend-line legend-line-{entry.shape}" style="color: {entry.color}"></span>
+					{/if}
+					{entry.label}
+				</span>
+			{/each}
 		</div>
 	{/if}
 
-	<div bind:this={chartContainer} class="chart"></div>
+	<!-- Canvas graphs aren't keyboard-navigable; this list plus the search box
+	     is the accessible path to the same data. -->
+	<ul class="sr-only">
+		{#each graphData.kept as node (node.id)}
+			<li>
+				{node.id}: {node.weight}
+				{node.weight === 1 ? labelCopy.itemSingular : labelCopy.itemSingular + 's'}
+			</li>
+		{/each}
+	</ul>
 </div>
 
 <style>
@@ -495,7 +582,8 @@ ECharts Network Graph - A network visualization for author collaborations
 		width: 100%;
 		height: 100%;
 		min-height: 350px;
-		display: block;
+		display: flex;
+		flex-direction: column;
 		position: relative;
 		font-family: var(--font-family-sans);
 	}
@@ -508,7 +596,8 @@ ECharts Network Graph - A network visualization for author collaborations
 
 	.chart {
 		width: 100%;
-		height: 100%;
+		flex: 1 1 auto;
+		min-height: 0;
 	}
 
 	.zoom-controls {
@@ -521,46 +610,55 @@ ECharts Network Graph - A network visualization for author collaborations
 		gap: var(--space-2);
 	}
 
-	.legend-overlay {
-		position: absolute;
-		top: calc(var(--space-9) + var(--space-4));
-		right: var(--space-4);
-		z-index: 10;
-		background-color: var(--color-surface-elevated);
-		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: 0;
-		padding: var(--space-3);
+	/* Legend strip — mono data voice, hairline rule above, wraps on mobile. */
+	.network-legend {
+		flex: none;
 		display: flex;
-		flex-direction: column;
-		gap: var(--space-2);
-		max-width: 200px;
+		flex-wrap: wrap;
+		gap: var(--space-2) var(--space-4);
+		padding: var(--space-2) var(--space-1) 0;
+		border-top: var(--border-width-thin) solid var(--color-border);
+		margin-top: var(--space-2);
 	}
 
-	.legend-item {
-		display: flex;
+	.legend-entry {
+		display: inline-flex;
 		align-items: center;
 		gap: var(--space-2);
 		font-family: var(--font-family-mono);
-		font-size: var(--font-size-xs);
+		font-size: var(--font-size-2xs);
 		letter-spacing: var(--letter-spacing-wide);
+		text-transform: uppercase;
 		color: var(--color-text-soft);
 	}
 
-	.legend-icon {
+	.legend-swatch {
 		width: var(--space-3);
 		height: var(--space-3);
 		border-radius: 0;
 	}
 
-	.legend-line {
-		width: var(--space-5);
-		height: var(--space-0-5);
+	.legend-swatch-round {
+		border-radius: var(--border-radius-full);
 	}
 
-	.legend-dotted {
-		background-color: transparent;
-		border-bottom: var(--space-0-5) dotted;
+	.legend-line {
+		width: var(--space-5);
 		height: 0;
+		border-bottom-width: var(--space-0-5);
+		border-bottom-color: currentColor;
+	}
+
+	.legend-line-solid {
+		border-bottom-style: solid;
+	}
+
+	.legend-line-dashed {
+		border-bottom-style: dashed;
+	}
+
+	.legend-line-dotted {
+		border-bottom-style: dotted;
 	}
 
 	.zoom-btn {
@@ -631,10 +729,6 @@ ECharts Network Graph - A network visualization for author collaborations
 		.zoom-btn {
 			width: var(--space-8);
 			height: var(--space-8);
-		}
-
-		.legend-overlay {
-			display: none;
 		}
 	}
 </style>
