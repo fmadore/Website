@@ -52,12 +52,28 @@ const normTitle = (s) =>
 		.replace(/[^a-z0-9 ]+/g, ' ')
 		.replace(/\s+/g, ' ')
 		.trim();
+// Anchored to the host so only a real doi.org URL is treated as a DOI — an
+// unanchored /doi\.org/ would also match e.g. https://evil.example/?doi.org.
+const DOI_URL_RE = /^https?:\/\/(dx\.)?doi\.org\//i;
 const normDoi = (s) =>
 	String(s || '')
 		.toLowerCase()
-		.replace(/^https?:\/\/(dx\.)?doi\.org\//, '')
+		.replace(DOI_URL_RE, '')
 		.replace(/^doi:\s*/, '')
 		.trim();
+
+// Escape a value for a Markdown table cell: backslash first (so it can't defeat
+// the pipe escaping), then the pipe, then flatten any newlines.
+const mdCell = (s) =>
+	String(s ?? '')
+		.replace(/\\/g, '\\\\')
+		.replace(/\|/g, '\\|')
+		.replace(/\r?\n/g, ' ');
+
+// Zotero item keys are short upper-case base-32 tokens (e.g. "A1B2C3D4"). Match
+// against an anchored allowlist before any value from the HTTP response is
+// written into the report, so nothing untrusted flows through unchecked.
+const safeZoteroKey = (k) => (/^[A-Z0-9]{1,32}$/.test(k) ? k : '(invalid key)');
 
 function frontmatter(raw) {
 	const text = (raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw).replace(/\r\n/g, '\n');
@@ -81,7 +97,7 @@ for (const f of readdirSync(ZOTERO_DIR)) {
 	zCount++;
 	const fm = frontmatter(readFileSync(path.join(ZOTERO_DIR, f), 'utf8'));
 	const citekey = fm.citekey || f.slice(1, -3);
-	const doi = normDoi(fm.doi || (fm.url && /doi\.org/.test(fm.url) ? fm.url : ''));
+	const doi = normDoi(fm.doi || (fm.url && DOI_URL_RE.test(fm.url) ? fm.url : ''));
 	if (doi) zByDoi.set(doi, citekey);
 	if (fm.title) zByTitle.set(normTitle(fm.title), citekey);
 }
@@ -112,8 +128,8 @@ try {
 	libCount = items.length;
 	for (const it of items) {
 		const d = it.data || {};
-		const doi = normDoi(d.DOI || (d.url && /doi\.org/.test(d.url) ? d.url : ''));
-		const rec = { key: it.key, itemType: d.itemType };
+		const doi = normDoi(d.DOI || (d.url && DOI_URL_RE.test(d.url) ? d.url : ''));
+		const rec = { key: safeZoteroKey(it.key), itemType: d.itemType };
 		if (doi) libByDoi.set(doi, rec);
 		if (d.title) libByTitle.set(normTitle(d.title), rec);
 	}
@@ -160,9 +176,7 @@ lines.push('| Zotero key | Type | Year | Title | DOI/ISBN |');
 lines.push('|---|---|---|---|---|');
 for (const m of inZoteroNoNote.sort((a, b) => (b.p.year || 0) - (a.p.year || 0))) {
 	const ref = m.p.doi || (m.p.isbn ? 'ISBN ' + m.p.isbn : '—');
-	lines.push(
-		`| \`${m.key}\` | ${m.p.type} | ${m.p.year || ''} | ${m.p.title.replace(/\|/g, '\\|')} | ${ref} |`
-	);
+	lines.push(`| \`${m.key}\` | ${m.p.type} | ${m.p.year || ''} | ${mdCell(m.p.title)} | ${ref} |`);
 }
 
 lines.push('', '## ➕ Absent from Zotero — add these', '');
@@ -170,7 +184,7 @@ lines.push('| Type | Year | Title | DOI/ISBN (addable?) |');
 lines.push('|---|---|---|---|');
 for (const p of absent.sort((a, b) => (b.year || 0) - (a.year || 0))) {
 	const ref = p.doi ? p.doi + ' ✔' : p.isbn ? 'ISBN ' + p.isbn + ' ✔' : '— (manual)';
-	lines.push(`| ${p.type} | ${p.year || ''} | ${p.title.replace(/\|/g, '\\|')} | ${ref} |`);
+	lines.push(`| ${p.type} | ${p.year || ''} | ${mdCell(p.title)} | ${ref} |`);
 }
 
 lines.push('', '## ✅ Already covered', '');

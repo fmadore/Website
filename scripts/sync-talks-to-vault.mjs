@@ -127,7 +127,9 @@ function hyphenTag(tag) {
 }
 
 function yamlStr(s) {
-	return '"' + String(s).replace(/"/g, '\\"') + '"';
+	// Escape backslashes first, then double quotes, so a value containing a
+	// literal backslash can't defeat the quote escaping and break the YAML.
+	return '"' + String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
 }
 
 // ---- rendering -------------------------------------------------------------
@@ -288,8 +290,16 @@ for (const { c, subtype } of comms) {
 	let content;
 	let action;
 
-	if (existsSync(full)) {
-		const existing = readFileSync(full, 'utf8');
+	// Read the existing note in one shot instead of existsSync()-then-read: a
+	// stat-then-use pair is a TOCTOU race. ENOENT simply means "create fresh".
+	let existing = null;
+	try {
+		existing = readFileSync(full, 'utf8');
+	} catch (err) {
+		if (err.code !== 'ENOENT') throw err;
+	}
+
+	if (existing !== null) {
 		if (existing.includes(BEGIN)) {
 			content = spliceGenerated(existing, generated);
 			action = 'updated';
