@@ -374,6 +374,8 @@ export const CHART_COLOR_FALLBACKS = {
 	mauve: '#8d6376', // --sys-viz-5 (mauve)
 	sage: '#6e8255', // --sys-viz-3 (muted olive)
 	slateBlue: '#4e6c8b', // --sys-viz-2 (muted slate-blue)
+	ochre: '#b48952', // --sys-viz-4 (ochre / gold)
+	umber: '#6e4b45', // --sys-viz-7 (umber / deep clay)
 	fontFamily: "'Spline Sans Mono', 'SF Mono', 'Consolas', monospace"
 } as const;
 
@@ -422,6 +424,8 @@ export interface ResolvedChartColors {
 	mauve: string;
 	sage: string;
 	slateBlue: string;
+	ochre: string;
+	umber: string;
 	fontFamily: string;
 	currentTheme: string;
 }
@@ -473,6 +477,8 @@ export function getResolvedChartColors(): ResolvedChartColors {
 		mauve: getCSSVariableValueWithFallback('--sys-viz-5', CHART_COLOR_FALLBACKS.mauve),
 		sage: getCSSVariableValueWithFallback('--sys-viz-3', CHART_COLOR_FALLBACKS.sage),
 		slateBlue: getCSSVariableValueWithFallback('--sys-viz-2', CHART_COLOR_FALLBACKS.slateBlue),
+		ochre: getCSSVariableValueWithFallback('--sys-viz-4', CHART_COLOR_FALLBACKS.ochre),
+		umber: getCSSVariableValueWithFallback('--sys-viz-7', CHART_COLOR_FALLBACKS.umber),
 		// Chart chrome speaks the data voice: Spline Sans Mono.
 		fontFamily: getCSSVariableValueWithFallback(
 			'--font-family-mono',

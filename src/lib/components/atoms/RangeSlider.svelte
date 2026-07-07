@@ -5,24 +5,42 @@
 		max = 100,
 		step = 1,
 		values = $bindable([min, max]),
+		single = false,
 		pips = false,
 		pipstep = 10,
 		first = undefined,
 		last = undefined,
 		float = false,
+		ariaLabel = undefined,
 		onchange
 	}: {
 		min?: number;
 		max?: number;
 		step?: number;
 		values?: [number, number];
+		/**
+		 * Single-handle mode: only the max handle is shown and interactive; the
+		 * lower bound stays pinned to `min`, so the active bar reads as "0 → value".
+		 * Used for top-N style controls (`values[1]` is the value).
+		 */
+		single?: boolean;
 		pips?: boolean;
 		pipstep?: number;
 		first?: string;
 		last?: string;
 		float?: boolean;
+		/** Accessible label for the (max) handle. */
+		ariaLabel?: string;
 		onchange?: (event: CustomEvent<{ values: [number, number] }>) => void;
 	} = $props();
+
+	// In single mode the lower bound is pinned to `min` so only the upper value
+	// is meaningful.
+	$effect(() => {
+		if (single && values[0] !== min) {
+			values = [min, values[1]];
+		}
+	});
 
 	let sliderRef: HTMLDivElement;
 	let isDragging = $state<'min' | 'max' | null>(null);
@@ -131,36 +149,27 @@
 		document.addEventListener('touchend', handleTouchEnd);
 	}
 
-	function handleTrackClick(event: MouseEvent) {
-		if (isDragging) return;
-
-		const newValue = getValueFromPosition(event.clientX);
+	// Which handle a track interaction at `newValue` should drive. Single mode
+	// always drives the max handle; otherwise pick the closest.
+	function targetHandle(newValue: number): 'min' | 'max' {
+		if (single) return 'max';
 		const distanceToMin = Math.abs(newValue - values[0]);
 		const distanceToMax = Math.abs(newValue - values[1]);
+		return distanceToMin <= distanceToMax ? 'min' : 'max';
+	}
 
-		// Update the closest handle
-		if (distanceToMin <= distanceToMax) {
-			updateValue('min', newValue);
-		} else {
-			updateValue('max', newValue);
-		}
+	function handleTrackClick(event: MouseEvent) {
+		if (isDragging) return;
+		const newValue = getValueFromPosition(event.clientX);
+		updateValue(targetHandle(newValue), newValue);
 	}
 
 	function handleTrackTouch(event: TouchEvent) {
 		if (isDragging) return;
-
 		const touch = event.touches[0];
 		if (touch) {
 			const newValue = getValueFromPosition(touch.clientX);
-			const distanceToMin = Math.abs(newValue - values[0]);
-			const distanceToMax = Math.abs(newValue - values[1]);
-
-			// Update the closest handle
-			if (distanceToMin <= distanceToMax) {
-				updateValue('min', newValue);
-			} else {
-				updateValue('max', newValue);
-			}
+			updateValue(targetHandle(newValue), newValue);
 		}
 	}
 
@@ -209,27 +218,29 @@
 		></div>
 	</div>
 
-	<!-- Min handle -->
-	<div
-		class="range-handle"
-		class:active={isDragging === 'min'}
-		style="--handle-position: {minPosition / 100}"
-		role="slider"
-		tabindex="0"
-		aria-valuemin={min}
-		aria-valuemax={values[1]}
-		aria-valuenow={values[0]}
-		aria-label="Minimum value"
-		onmousedown={(e) => handleMouseDown(e, 'min')}
-		ontouchstart={(e) => handleTouchStart(e, 'min')}
-		onkeydown={(e) => handleKeyDown(e, 'min')}
-		onfocus={() => (showFloats.min = float)}
-		onblur={() => (showFloats.min = false)}
-	>
-		{#if showFloats.min}
-			<div class="range-float">{values[0]}</div>
-		{/if}
-	</div>
+	<!-- Min handle (hidden in single mode) -->
+	{#if !single}
+		<div
+			class="range-handle"
+			class:active={isDragging === 'min'}
+			style="--handle-position: {minPosition / 100}"
+			role="slider"
+			tabindex="0"
+			aria-valuemin={min}
+			aria-valuemax={values[1]}
+			aria-valuenow={values[0]}
+			aria-label="Minimum value"
+			onmousedown={(e) => handleMouseDown(e, 'min')}
+			ontouchstart={(e) => handleTouchStart(e, 'min')}
+			onkeydown={(e) => handleKeyDown(e, 'min')}
+			onfocus={() => (showFloats.min = float)}
+			onblur={() => (showFloats.min = false)}
+		>
+			{#if showFloats.min}
+				<div class="range-float">{values[0]}</div>
+			{/if}
+		</div>
+	{/if}
 
 	<!-- Max handle -->
 	<div
@@ -238,10 +249,10 @@
 		style="--handle-position: {maxPosition / 100}"
 		role="slider"
 		tabindex="0"
-		aria-valuemin={values[0]}
+		aria-valuemin={single ? min : values[0]}
 		aria-valuemax={max}
 		aria-valuenow={values[1]}
-		aria-label="Maximum value"
+		aria-label={ariaLabel ?? (single ? 'Value' : 'Maximum value')}
 		onmousedown={(e) => handleMouseDown(e, 'max')}
 		ontouchstart={(e) => handleTouchStart(e, 'max')}
 		onkeydown={(e) => handleKeyDown(e, 'max')}

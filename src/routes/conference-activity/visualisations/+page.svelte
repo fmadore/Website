@@ -26,9 +26,17 @@
 		buildGroupedTreemap,
 		buildProjectTimeline
 	} from '$lib/utils/vizAggregation';
+	import {
+		buildCommunicationCoPresenterNetwork,
+		buildCooccurrenceNetwork,
+		buildInstitutionNetwork
+	} from '$lib/utils/networkAggregation';
+	import type { NetworkEdgeKind } from '$lib/utils/networkAggregation';
+	import NetworkControls from '$lib/components/visualisations/NetworkControls.svelte';
 	import type { LocationDatum } from '$lib/data/geo';
 	import type { Communication } from '$lib/types/communication';
 	import type { WordFrequency } from '$lib/types';
+	import { author } from '$lib/data/siteConfig';
 
 	// ---------- Shared types for derived data ----------
 
@@ -58,27 +66,6 @@
 			.split(',')
 			.map((v) => v.trim())
 			.filter(Boolean);
-	}
-
-	// Every unique presenter across papers[] and participants[] plus the top-level
-	// `authors` array. Used by the co-presenter network. Uses a plain record for
-	// deduplication so the linter doesn't flag the Set as mutable reactive state.
-	function extractCoPresenters(comm: Communication): string[] {
-		const seen: Record<string, true> = {};
-
-		(comm.authors ?? []).forEach((a) => {
-			if (a) seen[a] = true;
-		});
-		(comm.participants ?? []).forEach((p) => {
-			if (p.name) seen[p.name] = true;
-		});
-		(comm.papers ?? []).forEach((paper) => {
-			(paper.authors ?? []).forEach((a) => {
-				if (a.name) seen[a.name] = true;
-			});
-		});
-
-		return Object.keys(seen);
 	}
 
 	// ---------- Derived data for each visualisation ----------
@@ -163,58 +150,47 @@
 
 	// 7. Co-presenter network — anchored on Frédérick Madore, radiating out to
 	// every co-author, panel participant, and paper author.
-	const CENTER_AUTHOR = 'Frédérick Madore';
-
-	const copresenterNetworkData = $derived(
-		(() => {
-			// For each non-centre presenter, track which communication titles they
-			// share with the centre.
-			const collabMap: Record<string, Set<string>> = {};
-			// Edges between non-centre presenters (they co-presented together in the
-			// same communication as the centre).
-			const pairs: Record<string, { source: string; target: string; publications: Set<string> }> =
-				{};
-
-			allCommunications.forEach((comm) => {
-				const presenters = extractCoPresenters(comm).filter((name) => name !== CENTER_AUTHOR);
-				if (presenters.length === 0) return;
-
-				presenters.forEach((name) => {
-					if (!collabMap[name]) collabMap[name] = new Set();
-					collabMap[name].add(comm.title);
-				});
-
-				// Pairwise edges between non-centre presenters on this communication.
-				for (let i = 0; i < presenters.length; i++) {
-					for (let j = i + 1; j < presenters.length; j++) {
-						const [a, b] = [presenters[i], presenters[j]].sort();
-						const key = `${a}|${b}`;
-						if (!pairs[key]) {
-							pairs[key] = { source: a, target: b, publications: new Set() };
-						}
-						pairs[key].publications.add(comm.title);
-					}
-				}
-			});
-
-			const collaborators = Object.entries(collabMap)
-				.map(([author, titles]) => ({
-					author,
-					collaborationCount: titles.size,
-					publications: Array.from(titles)
-				}))
-				.sort((a, b) => b.collaborationCount - a.collaborationCount);
-
-			const connections = Object.values(pairs).map((p) => ({
-				source: p.source,
-				target: p.target,
-				publicationCount: p.publications.size,
-				publications: Array.from(p.publications)
-			}));
-
-			return { collaborators, connections };
-		})()
+	const copresenterNetwork = $derived(
+		buildCommunicationCoPresenterNetwork(allCommunications, author.name)
 	);
+	const copresenterCount = $derived(
+		copresenterNetwork.nodes.filter((n) => n.kind !== 'center').length
+	);
+	const copresenterEdgeOptions = $derived(
+		[{ kind: 'peer', label: 'Co-presenter' } as const]
+			.map((o) => ({
+				...o,
+				count: copresenterNetwork.edges.filter((e) => e.kind === o.kind).length
+			}))
+			.filter((o) => o.count > 0)
+	);
+	const copresenterSuggestions = $derived(
+		copresenterNetwork.nodes.filter((n) => n.kind !== 'center').map((n) => n.id)
+	);
+
+	let copresenterTopN = $state(20);
+	let copresenterVisibleKinds = $state<NetworkEdgeKind[]>(['peer']);
+	let copresenterSearch = $state('');
+
+	// Institution network: institutions linked when their members appeared in the
+	// same panel, workshop, or event. Small affiliation corpus, so thresholds stay
+	// at 1/1 (see buildInstitutionNetwork). Olive entity nodes.
+	const institutionNetwork = $derived(buildInstitutionNetwork(allCommunications));
+	const institutionSuggestions = $derived(institutionNetwork.nodes.map((n) => n.id));
+	let institutionTopN = $state(20);
+	let institutionSearch = $state('');
+
+	// Tag co-occurrence network: tags linked when they appear on the same
+	// communication. Keeps the page symmetric with the publications one.
+	const tagNetwork = $derived(
+		buildCooccurrenceNetwork(allCommunications, {
+			getKeys: (comm) => comm.tags,
+			getTitle: (comm) => comm.title
+		})
+	);
+	const tagSuggestions = $derived(tagNetwork.nodes.map((n) => n.id));
+	let tagTopN = $state(25);
+	let tagSearch = $state('');
 
 	// 8. Projects treemap — outer cells are research projects, inner cells are
 	// communication types, sized by the number of communications.
@@ -399,35 +375,128 @@
 
 	<section class="visualization-section scroll-reveal mb-12">
 		<h2 class="section-heading">
+			Tag co-occurrence network
+			{#if tagNetwork.nodes.length > 0}
+				({tagNetwork.nodes.length} tags)
+			{/if}
+		</h2>
+		<p class="section-description">
+			Tags are linked when they appear together on the same conference activity; node size reflects
+			how many activities carry each tag. Singletons and one-off pairings are omitted.
+		</p>
+		{#if tagNetwork.nodes.length > 0}
+			<NetworkControls
+				bind:topN={tagTopN}
+				bind:searchQuery={tagSearch}
+				maxN={tagNetwork.nodes.length}
+				minN={10}
+				searchLabel="Search tags"
+				suggestions={tagSuggestions}
+			/>
+		{/if}
+		<VizChartCard variant="network" height="500px" hasData={tagNetwork.nodes.length > 0}>
+			<EChartsNetworkGraph
+				nodes={tagNetwork.nodes}
+				edges={tagNetwork.edges}
+				maxNodes={tagTopN}
+				highlightQuery={tagSearch}
+				filename="tag-cooccurrence-network"
+				labels={{
+					itemSingular: 'activity',
+					itemPlural: 'Activities',
+					entityNode: 'Tags',
+					cooccurrenceEdge: 'Tag co-occurrence',
+					cooccurrenceShared: 'Activities sharing both tags'
+				}}
+			/>
+			{#snippet placeholder()}
+				<p class="text-light">Not enough tag overlap to display a co-occurrence network.</p>
+			{/snippet}
+		</VizChartCard>
+	</section>
+
+	<section class="visualization-section scroll-reveal mb-12">
+		<h2 class="section-heading">
 			Co-presenter network
-			{#if copresenterNetworkData.collaborators.length > 0}
-				({copresenterNetworkData.collaborators.length} collaborators)
+			{#if copresenterCount > 0}
+				({copresenterCount} collaborators)
 			{/if}
 		</h2>
 		<p class="section-description">
 			People who have co-presented, co-organised panels, or contributed papers alongside me. Edges
 			between non-centre nodes show pairs who appeared together in the same communication.
 		</p>
-		<VizChartCard
-			variant="network"
-			height="500px"
-			hasData={copresenterNetworkData.collaborators.length > 0}
-		>
+		{#if copresenterCount > 0}
+			<NetworkControls
+				bind:topN={copresenterTopN}
+				bind:visibleKinds={copresenterVisibleKinds}
+				bind:searchQuery={copresenterSearch}
+				maxN={copresenterCount}
+				edgeKindOptions={copresenterEdgeOptions}
+				searchLabel="Search co-presenters"
+				suggestions={copresenterSuggestions}
+			/>
+		{/if}
+		<VizChartCard variant="network" height="500px" hasData={copresenterCount > 0}>
 			<EChartsNetworkGraph
-				data={copresenterNetworkData.collaborators}
-				coAuthorConnections={copresenterNetworkData.connections}
-				contributorConnections={[]}
-				centerAuthor={CENTER_AUTHOR}
-				maxConnections={copresenterNetworkData.collaborators.length}
+				nodes={copresenterNetwork.nodes}
+				edges={copresenterNetwork.edges}
+				centerId={author.name}
+				maxNodes={copresenterTopN}
+				visibleEdgeKinds={copresenterVisibleKinds}
+				highlightQuery={copresenterSearch}
+				filename="copresenter-network"
 				labels={{
 					itemSingular: 'communication',
 					itemPlural: 'Communications',
-					coAuthorEdge: 'Co-presenter connection',
-					coAuthorShared: 'Shared communications'
+					peerEdge: 'Co-presenter connection',
+					peerShared: 'Shared communications'
 				}}
 			/>
 			{#snippet placeholder()}
 				<p class="text-light">No co-presenter data available to display for this visualisation.</p>
+			{/snippet}
+		</VizChartCard>
+	</section>
+
+	<section class="visualization-section scroll-reveal mb-12">
+		<h2 class="section-heading">
+			Institution network
+			{#if institutionNetwork.nodes.length > 0}
+				({institutionNetwork.nodes.length} institutions)
+			{/if}
+		</h2>
+		<p class="section-description">
+			Institutions are linked when their members appeared in the same panel, workshop, or event.
+			Node size reflects how many activities each institution took part in.
+		</p>
+		{#if institutionNetwork.nodes.length > 0}
+			<NetworkControls
+				bind:topN={institutionTopN}
+				bind:searchQuery={institutionSearch}
+				maxN={institutionNetwork.nodes.length}
+				searchLabel="Search institutions"
+				suggestions={institutionSuggestions}
+			/>
+		{/if}
+		<VizChartCard variant="network" height="500px" hasData={institutionNetwork.nodes.length > 0}>
+			<EChartsNetworkGraph
+				nodes={institutionNetwork.nodes}
+				edges={institutionNetwork.edges}
+				entityColor="sage"
+				maxNodes={institutionTopN}
+				highlightQuery={institutionSearch}
+				filename="institution-network"
+				labels={{
+					itemSingular: 'activity',
+					itemPlural: 'Activities',
+					entityNode: 'Institutions',
+					cooccurrenceEdge: 'Shared event',
+					cooccurrenceShared: 'Activities in common'
+				}}
+			/>
+			{#snippet placeholder()}
+				<p class="text-light">No institution data available to display for this visualisation.</p>
 			{/snippet}
 		</VizChartCard>
 	</section>

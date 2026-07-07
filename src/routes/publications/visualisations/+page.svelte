@@ -23,7 +23,14 @@
 		groupByKey,
 		buildProjectTimeline
 	} from '$lib/utils/vizAggregation';
+	import {
+		buildPublicationCollaborationNetwork,
+		buildCooccurrenceNetwork
+	} from '$lib/utils/networkAggregation';
+	import type { NetworkEdgeKind } from '$lib/utils/networkAggregation';
+	import NetworkControls from '$lib/components/visualisations/NetworkControls.svelte';
 	import type { TreemapNode } from '$lib/utils/vizAggregation';
+	import { author } from '$lib/data/siteConfig';
 	import type { LocationDatum } from '$lib/data/geo';
 	import EChartsWordCloud from '$lib/components/visualisations/EChartsWordCloud.svelte';
 	import { corpusAnalysis, getCombinedWordCloudData, getCombinedBigrams } from '$lib/data/analysis';
@@ -156,211 +163,48 @@
 		citationsPerYearData.reduce((sum: number, item: CitationYearData) => sum + item.count, 0)
 	);
 
-	// Calculate collaboration data for network graph
-	const collaborationData = $derived(
-		(() => {
-			const collaborations: Record<string, { publications: Set<string>; isContributor: boolean }> =
-				{};
-			const coAuthorConnections: Array<{
-				source: string;
-				target: string;
-				publications: Set<string>;
-			}> = [];
-			const contributorConnections: Array<{
-				source: string;
-				target: string;
-				publications: Set<string>;
-			}> = [];
-
-			allPublications.forEach((pub) => {
-				// Get all authors except Frédérick Madore
-				const coAuthors = (pub.authors || []).filter((author) => author !== 'Frédérick Madore');
-
-				// Add editors for non-chapter/encyclopedia publications
-				if (pub.editors && pub.type !== 'chapter' && pub.type !== 'encyclopedia') {
-					const editors =
-						typeof pub.editors === 'string'
-							? pub.editors.split(/\s*(?:,|and)\s*/).map((name) => name.trim())
-							: pub.editors;
-					coAuthors.push(...editors.filter((editor) => editor !== 'Frédérick Madore'));
-				}
-
-				// Add preface author if exists
-				if (pub.prefacedBy && pub.prefacedBy !== 'Frédérick Madore') {
-					coAuthors.push(pub.prefacedBy);
-				}
-
-				// Count collaborations with Frédérick Madore
-				coAuthors.forEach((author) => {
-					if (!collaborations[author]) {
-						collaborations[author] = { publications: new Set<string>(), isContributor: false };
-					}
-					// Use Set to automatically deduplicate publication titles
-					collaborations[author].publications.add(pub.title);
-				});
-
-				// Track connections between co-authors (for publications with 3+ authors including Frédérick)
-				if (coAuthors.length >= 2) {
-					for (let i = 0; i < coAuthors.length; i++) {
-						for (let j = i + 1; j < coAuthors.length; j++) {
-							const author1 = coAuthors[i];
-							const author2 = coAuthors[j];
-
-							// Find or create connection (order-independent)
-							let connection = coAuthorConnections.find(
-								(c) =>
-									(c.source === author1 && c.target === author2) ||
-									(c.source === author2 && c.target === author1)
-							);
-
-							if (!connection) {
-								connection = {
-									source: author1,
-									target: author2,
-									publications: new Set<string>()
-								};
-								coAuthorConnections.push(connection);
-							}
-
-							connection.publications.add(pub.title);
-						}
-					}
-				}
-
-				// For chapters and encyclopedia entries, the `editors` field holds the
-				// book/volume editors — treat them as contributor collaborators (not co-authors,
-				// to avoid spurious co-author edges between the chapter author and the volume editors).
-				if (pub.editors && (pub.type === 'chapter' || pub.type === 'encyclopedia')) {
-					const volumeEditors = (
-						typeof pub.editors === 'string'
-							? pub.editors.split(/\s*(?:,|and)\s*/).map((name) => name.trim())
-							: pub.editors
-					).filter((editor) => editor && editor !== 'Frédérick Madore');
-
-					volumeEditors.forEach((editor) => {
-						if (!collaborations[editor]) {
-							collaborations[editor] = {
-								publications: new Set<string>(),
-								isContributor: true
-							};
-						}
-						collaborations[editor].publications.add(pub.title);
-					});
-
-					// Connect volume editors to each other AND to the chapter's co-authors
-					// (the editors curated the volume that includes this chapter).
-					const editorTargets = [...volumeEditors, ...coAuthors];
-					for (let i = 0; i < editorTargets.length; i++) {
-						for (let j = i + 1; j < editorTargets.length; j++) {
-							const author1 = editorTargets[i];
-							const author2 = editorTargets[j];
-							// Skip pairs that are both direct co-authors (already linked via coAuthorConnections).
-							if (!volumeEditors.includes(author1) && !volumeEditors.includes(author2)) {
-								continue;
-							}
-
-							let connection = contributorConnections.find(
-								(c) =>
-									(c.source === author1 && c.target === author2) ||
-									(c.source === author2 && c.target === author1)
-							);
-
-							if (!connection) {
-								connection = {
-									source: author1,
-									target: author2,
-									publications: new Set<string>()
-								};
-								contributorConnections.push(connection);
-							}
-
-							connection.publications.add(pub.title);
-						}
-					}
-				}
-
-				// Extract TOC authors (contributors to edited volumes and special issues)
-				if (pub.tableOfContents && (pub.type === 'book' || pub.type === 'special-issue')) {
-					const tocAuthors: string[] = [];
-					pub.tableOfContents.forEach((entry) => {
-						if (typeof entry !== 'string' && entry.authors) {
-							entry.authors.forEach((author) => {
-								if (author !== 'Frédérick Madore') {
-									tocAuthors.push(author);
-									// Add to collaborations as contributor
-									if (!collaborations[author]) {
-										collaborations[author] = {
-											publications: new Set<string>(),
-											isContributor: true
-										};
-									}
-									collaborations[author].publications.add(pub.title);
-								}
-							});
-						}
-					});
-
-					// Track connections between TOC authors (contributors)
-					if (tocAuthors.length >= 2) {
-						for (let i = 0; i < tocAuthors.length; i++) {
-							for (let j = i + 1; j < tocAuthors.length; j++) {
-								const author1 = tocAuthors[i];
-								const author2 = tocAuthors[j];
-
-								// Find or create contributor connection (order-independent)
-								let connection = contributorConnections.find(
-									(c) =>
-										(c.source === author1 && c.target === author2) ||
-										(c.source === author2 && c.target === author1)
-								);
-
-								if (!connection) {
-									connection = {
-										source: author1,
-										target: author2,
-										publications: new Set<string>()
-									};
-									contributorConnections.push(connection);
-								}
-
-								connection.publications.add(pub.title);
-							}
-						}
-					}
-				}
-			});
-
-			// Convert to array format expected by the network graph
-			const collaborators = Object.entries(collaborations).map(([author, data]) => ({
-				author,
-				collaborationCount: data.publications.size, // Count unique publications
-				publications: Array.from(data.publications), // Convert Set back to Array
-				isContributor: data.isContributor
-			}));
-
-			// Convert co-author connections to array format
-			const connections = coAuthorConnections.map((conn) => ({
-				source: conn.source,
-				target: conn.target,
-				publicationCount: conn.publications.size,
-				publications: Array.from(conn.publications)
-			}));
-
-			// Convert contributor connections to array format
-			const contribConnections = contributorConnections.map((conn) => ({
-				source: conn.source,
-				target: conn.target,
-				publicationCount: conn.publications.size,
-				publications: Array.from(conn.publications)
-			}));
-
-			return {
-				collaborators,
-				coAuthorConnections: connections,
-				contributorConnections: contribConnections
-			};
-		})()
+	// Author collaboration network (nodes + weighted edges), built by the shared
+	// tested aggregator. `collaborators` counts the non-centre nodes for the heading.
+	const collaborationNetwork = $derived(
+		buildPublicationCollaborationNetwork(allPublications, author.name)
 	);
+	const collaboratorCount = $derived(
+		collaborationNetwork.nodes.filter((n) => n.kind !== 'center').length
+	);
+	// Toggleable edge layers (peer + contributor) with live counts for the chips.
+	const collaborationEdgeOptions = $derived(
+		(
+			[
+				{ kind: 'peer', label: 'Co-author' },
+				{ kind: 'contributor', label: 'Contributor' }
+			] as const
+		)
+			.map((o) => ({
+				...o,
+				count: collaborationNetwork.edges.filter((e) => e.kind === o.kind).length
+			}))
+			.filter((o) => o.count > 0)
+	);
+	const collaborationSuggestions = $derived(
+		collaborationNetwork.nodes.filter((n) => n.kind !== 'center').map((n) => n.id)
+	);
+
+	// Network control state (Author Collaboration Network).
+	let collabTopN = $state(20);
+	let collabVisibleKinds = $state<NetworkEdgeKind[]>(['peer', 'contributor']);
+	let collabSearch = $state('');
+
+	// Keyword co-occurrence network: tags linked when they appear on the same
+	// publication. Entity nodes, single edge kind (co-occurrence, always on).
+	const keywordNetwork = $derived(
+		buildCooccurrenceNetwork(allPublications, {
+			getKeys: (pub) => pub.tags,
+			getTitle: (pub) => pub.title
+		})
+	);
+	const keywordSuggestions = $derived(keywordNetwork.nodes.map((n) => n.id));
+	let keywordTopN = $state(25);
+	let keywordSearch = $state('');
 
 	// Calculate publication venue treemap data
 	const venueTreemapData = $derived(
@@ -635,6 +479,49 @@
 
 	<section class="visualization-section scroll-reveal mb-12">
 		<h2 class="section-heading">
+			Keyword co-occurrence network
+			{#if keywordNetwork.nodes.length > 0}
+				({keywordNetwork.nodes.length} keywords)
+			{/if}
+		</h2>
+		<p class="section-description">
+			Keywords are linked when they appear together on the same publication; node size reflects how
+			many publications carry each keyword. Singletons and one-off pairings are omitted to keep the
+			map legible.
+		</p>
+		{#if keywordNetwork.nodes.length > 0}
+			<NetworkControls
+				bind:topN={keywordTopN}
+				bind:searchQuery={keywordSearch}
+				maxN={keywordNetwork.nodes.length}
+				minN={10}
+				searchLabel="Search keywords"
+				suggestions={keywordSuggestions}
+			/>
+		{/if}
+		<VizChartCard variant="network" height="500px" hasData={keywordNetwork.nodes.length > 0}>
+			<EChartsNetworkGraph
+				nodes={keywordNetwork.nodes}
+				edges={keywordNetwork.edges}
+				maxNodes={keywordTopN}
+				highlightQuery={keywordSearch}
+				filename="keyword-cooccurrence-network"
+				labels={{
+					itemSingular: 'publication',
+					itemPlural: 'Publications',
+					entityNode: 'Keywords',
+					cooccurrenceEdge: 'Keyword co-occurrence',
+					cooccurrenceShared: 'Publications sharing both keywords'
+				}}
+			/>
+			{#snippet placeholder()}
+				<p class="text-light">Not enough keyword overlap to display a co-occurrence network.</p>
+			{/snippet}
+		</VizChartCard>
+	</section>
+
+	<section class="visualization-section scroll-reveal mb-12">
+		<h2 class="section-heading">
 			Text Analysis Word Cloud
 			{#if wordCloudStats().publicationCount > 0}
 				({wordCloudStats().publicationCount} publications analyzed)
@@ -735,21 +622,30 @@
 	<section class="visualization-section scroll-reveal mb-12">
 		<h2 class="section-heading">
 			Author Collaboration Network
-			{#if collaborationData.collaborators.length > 0}
-				({collaborationData.collaborators.length} collaborators)
+			{#if collaboratorCount > 0}
+				({collaboratorCount} collaborators)
 			{/if}
 		</h2>
-		<VizChartCard
-			variant="network"
-			height="500px"
-			hasData={collaborationData.collaborators.length > 0}
-		>
+		{#if collaboratorCount > 0}
+			<NetworkControls
+				bind:topN={collabTopN}
+				bind:visibleKinds={collabVisibleKinds}
+				bind:searchQuery={collabSearch}
+				maxN={collaboratorCount}
+				edgeKindOptions={collaborationEdgeOptions}
+				searchLabel="Search collaborators"
+				suggestions={collaborationSuggestions}
+			/>
+		{/if}
+		<VizChartCard variant="network" height="500px" hasData={collaboratorCount > 0}>
 			<EChartsNetworkGraph
-				data={collaborationData.collaborators}
-				coAuthorConnections={collaborationData.coAuthorConnections}
-				contributorConnections={collaborationData.contributorConnections}
-				centerAuthor="Frédérick Madore"
-				maxConnections={collaborationData.collaborators.length}
+				nodes={collaborationNetwork.nodes}
+				edges={collaborationNetwork.edges}
+				centerId={author.name}
+				maxNodes={collabTopN}
+				visibleEdgeKinds={collabVisibleKinds}
+				highlightQuery={collabSearch}
+				filename="collaboration-network"
 			/>
 			{#snippet placeholder()}
 				<p class="text-light">No collaboration data available to display for this visualization.</p>

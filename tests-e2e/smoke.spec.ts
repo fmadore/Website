@@ -22,6 +22,26 @@ test('main list pages load with a top-level heading', async ({ page }) => {
 	}
 });
 
+test('visualisation pages render their network graphs and controls', async ({ page }) => {
+	const cases = [
+		{ path: '/publications/visualisations', heading: 'Author Collaboration Network' },
+		{ path: '/conference-activity/visualisations', heading: 'Co-presenter network' }
+	];
+	for (const { path, heading } of cases) {
+		await page.goto(path);
+		const section = page.locator('section').filter({ hasText: heading }).first();
+		await section.scrollIntoViewIfNeeded();
+		// The graph renders to a canvas, and the accessible node list is populated.
+		await expect(section.locator('canvas')).toBeVisible();
+		await expect(section.locator('ul.sr-only li').first()).toBeAttached();
+		// Controls: the search box filters the graph; typing updates its value.
+		const search = section.locator('.network-controls input[type="search"]');
+		await expect(search).toBeVisible();
+		await search.fill('a');
+		await expect(search).toHaveValue('a');
+	}
+});
+
 test('a publication detail page injects JSON-LD structured data', async ({ page }) => {
 	await page.goto('/publications');
 	// Follow the first real publication item through to its detail page,
