@@ -205,7 +205,7 @@
 </div>
 
 <style>
-	/* Asymmetric editorial grid: prose + №-sections in the wide column, the
+	/* Asymmetric editorial grid: prose + sections in the wide column, the
 	 * portrait plate and the latest-activities ledger in the rail. On mobile the
 	 * source order (portrait → prose → activities) puts the photo up top, right
 	 * above the intro; on desktop it moves into the right rail via grid placement. */

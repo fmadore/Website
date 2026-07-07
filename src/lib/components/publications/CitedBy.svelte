@@ -1,11 +1,8 @@
 <script lang="ts">
 	import type { CitingWork } from '$lib/types/publication';
 
-	// Prop to receive the array of citing works + the section's №-marker.
-	let {
-		citedBy = [],
-		sectionNumber = undefined
-	}: { citedBy?: CitingWork[]; sectionNumber?: string } = $props();
+	// Prop to receive the array of citing works.
+	let { citedBy = [] }: { citedBy?: CitingWork[] } = $props();
 
 	// Sort the array by year descending (copy first — never mutate the prop).
 	const sortedCitedBy = $derived([...(citedBy ?? [])].sort((a, b) => b.year - a.year));
@@ -14,7 +11,6 @@
 {#if sortedCitedBy && sortedCitedBy.length > 0}
 	<section class="cited-by-section section scroll-reveal">
 		<div class="section-head">
-			<span class="section-no">{sectionNumber ? `№ ${sectionNumber}` : '№'}</span>
 			<h2 class="section-title">Cited By</h2>
 			<span class="dateline cited-by-count">{sortedCitedBy.length} works</span>
 		</div>
@@ -52,7 +48,7 @@
 {/if}
 
 <style>
-	/* №-numbered section (3px top rule) supplied by the .section idiom;
+	/* Section (3px top rule) supplied by the .section idiom;
 	 * only the top-margin rhythm is local. */
 	.cited-by-section {
 		margin-top: var(--space-2xl);

@@ -591,8 +591,7 @@ small {
 
 /* Editorial section title — Archivo section-head voice over a hairline rule.
  * The shared heading treatment for detail-page sections (reviews, citations,
- * word cloud, table of contents). Pair with an accent № eyebrow (.section-no)
- * from the idiom sheet for the full module. Components may override font-size. */
+ * word cloud, table of contents). Components may override font-size. */
 .editorial-section-title {
 	font-family: var(--font-family-display);
 	font-variation-settings: var(--font-variation-display-sm);

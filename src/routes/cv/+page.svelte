@@ -217,11 +217,8 @@
 <style>
 	/*
 	 * The CV is the purest ledger on the site: a single sheet of paper, no glass,
-	 * no shadows, square corners. Every section is a №-numbered module; every
+	 * no shadows, square corners. Every section is a ruled module; every
 	 * entry is a ledger row (mono year key + serif content, hairline between).
-	 * Section numbers are drawn with a CSS counter so they stay correct as the
-	 * lazy-loaded sections stream in — and because ::before content is invisible
-	 * to textContent, the PDF generator (which reads h3.textContent) is untouched.
 	 */
 	.cv-container {
 		background: var(--color-background);
@@ -231,8 +228,6 @@
 		position: relative;
 		margin-top: var(--space-lg);
 		margin-bottom: var(--space-2xl);
-		/* Counter for №-numbered sections (scoped to the numbered wrappers below). */
-		counter-reset: cv-section;
 	}
 
 	/* Action buttons — document chrome, tucked to the top right of the sheet
@@ -261,10 +256,10 @@
 		scroll-margin-top: calc(var(--space-16) + var(--space-4));
 	}
 
-	/* Each numbered section module — a section-rule (3px ink) across the top,
+	/* Each section module — a section-rule (3px ink) across the top,
 	 * generous air above, like the .section idiom used site-wide. The <section>
 	 * inside carries the rule so the header's contact <section> (which lives
-	 * outside a .cv-section-wrapper) stays un-numbered and un-ruled. */
+	 * outside a .cv-section-wrapper) stays un-ruled. */
 	:global(.cv-section-wrapper) {
 		margin-bottom: 0;
 	}
@@ -274,13 +269,10 @@
 		padding-top: var(--space-sm);
 		margin-top: var(--space-2xl);
 		margin-bottom: 0;
-		counter-increment: cv-section;
 	}
 
 	/*
-	 * Section heading — DOCUMENT voice (Archivo display), preceded by a DATA-voice
-	 * "№ 0N" counter marker in accent mono. The marker is a ::before so it never
-	 * enters the accessible name or the PDF text extraction.
+	 * Section heading — DOCUMENT voice (Archivo display).
 	 */
 	:global(#cv-content h3) {
 		font-family: var(--font-family-display);
@@ -293,17 +285,6 @@
 		margin: 0 0 var(--space-md);
 		padding-bottom: 0;
 		border-bottom: none;
-	}
-
-	:global(#cv-content .cv-section-wrapper > section > h3::before) {
-		content: '№ ' counter(cv-section, decimal-leading-zero);
-		display: block;
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-2xs);
-		font-weight: var(--font-weight-bold);
-		letter-spacing: 0.14em;
-		color: var(--color-accent);
-		margin-bottom: var(--space-1-5);
 	}
 
 	/* Subsection labels (BOOKS, ARTICLES, INSTRUCTOR…) — DATA voice: small mono

@@ -23,7 +23,6 @@ Only renders if text analysis data is available for this publication.
 {#if showWordCloud && analysis}
 	<section class="wordcloud-section section scroll-reveal">
 		<div class="section-head">
-			<span class="section-no">№</span>
 			<h2 class="section-title">{title}</h2>
 		</div>
 		<div class="wordcloud-wrapper">
@@ -41,7 +40,7 @@ Only renders if text analysis data is available for this publication.
 {/if}
 
 <style>
-	/* №-numbered section (3px top rule) supplied by the .section idiom —
+	/* Section (3px top rule) supplied by the .section idiom —
 	 * the word-cloud figure is the surface. */
 	.wordcloud-section {
 		margin-top: var(--space-xl);

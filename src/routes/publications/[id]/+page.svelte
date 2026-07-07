@@ -98,20 +98,6 @@
 			: []
 	);
 
-	// Sequential №-markers for the main column — only sections with data are
-	// numbered, so the ledger reads 01, 02, 03… without gaps.
-	const sectionNumbers = $derived.by(() => {
-		let n = 0;
-		const next = () => String(++n).padStart(2, '0');
-		return {
-			abstract: abstractParagraphs.length > 0 ? next() : undefined,
-			toc: tocEntries.length > 0 ? next() : undefined,
-			reviews: reviews.length > 0 ? next() : undefined,
-			citedBy: citedBy.length > 0 ? next() : undefined,
-			related: relatedInProject.length > 0 ? next() : undefined
-		};
-	});
-
 	// KEY TERMS — real full-text frequencies, sized by rank. Only shown when a
 	// text analysis exists for this publication (data as ornament, never faked).
 	const keyTerms = $derived.by(() => {
@@ -269,11 +255,10 @@
 					{/if}
 				</header>
 
-				<!-- № Abstract -->
-				{#if sectionNumbers.abstract}
+				<!-- Abstract -->
+				{#if abstractParagraphs.length > 0}
 					<section class="section pub-section scroll-reveal" aria-labelledby="pub-abstract-head">
 						<div class="section-head">
-							<span class="section-no">№ {sectionNumbers.abstract}</span>
 							<h2 id="pub-abstract-head" class="section-title">Abstract</h2>
 						</div>
 						<div class="pub-abstract">
@@ -284,11 +269,10 @@
 					</section>
 				{/if}
 
-				<!-- № Table of contents -->
-				{#if sectionNumbers.toc}
+				<!-- Table of contents -->
+				{#if tocEntries.length > 0}
 					<section class="section pub-section scroll-reveal" aria-labelledby="pub-toc-head">
 						<div class="section-head">
-							<span class="section-no">№ {sectionNumbers.toc}</span>
 							<h2 id="pub-toc-head" class="section-title">Table of Contents</h2>
 						</div>
 						<ol class="pub-toc">
@@ -311,14 +295,14 @@
 					</section>
 				{/if}
 
-				<!-- № Reviews -->
-				<Reviews reviewedBy={reviews} sectionNumber={sectionNumbers.reviews} />
+				<!-- Reviews -->
+				<Reviews reviewedBy={reviews} />
 
-				<!-- № Cited by -->
-				<CitedBy {citedBy} sectionNumber={sectionNumbers.citedBy} />
+				<!-- Cited by -->
+				<CitedBy {citedBy} />
 
-				<!-- № More in this project -->
-				{#if sectionNumbers.related}
+				<!-- More in this project -->
+				{#if relatedInProject.length > 0}
 					<div class="pub-section">
 						<RelatedItemsList
 							allItems={allPublications}
@@ -332,7 +316,6 @@
 							maxItems={3}
 							sectionClass="pub-related section"
 							titleClass="pub-related-title section-title"
-							sectionNumber={sectionNumbers.related}
 						/>
 					</div>
 				{/if}

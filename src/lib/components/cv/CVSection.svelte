@@ -26,7 +26,7 @@
 </script>
 
 <!--
-	CV section — a №-numbered ledger module. The <section> + <h3> structure and
+	CV section — a ruled ledger module. The <section> + <h3> structure and
 	the .space-y-3 entry wrapper are load-bearing DOM hooks for the PDF generator,
 	so they are preserved; the ledger look comes from #cv-content styles in
 	+page.svelte (which number the h3 and rule each row) plus CVEntry.

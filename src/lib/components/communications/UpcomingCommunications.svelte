@@ -26,7 +26,7 @@
 {/if}
 
 <style>
-	/* The upcoming block is a №-style section: a heavy accent rule marks it as
+	/* The upcoming block is a ruled section: a heavy accent rule marks it as
 	 * the current/forthcoming record, a mono eyebrow labels it. */
 	.upcoming-section {
 		margin-bottom: var(--space-2xl);

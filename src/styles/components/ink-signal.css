@@ -2,7 +2,7 @@
  * INK + SIGNAL — structural idioms
  *
  * The vocabulary of the redesign, in one place: the nameplate, the rule
- * system, №-numbered sections, the ledger, flat chips, data-voice utilities,
+ * system, sections, the ledger, flat chips, data-voice utilities,
  * year-bar strips, key-term clouds, drop caps and image plates.
  *
  * Two voices, strictly cast. The DOCUMENT voice is Archivo (display) and
@@ -105,7 +105,7 @@
 }
 
 /* ===========================================================================
- * №-NUMBERED SECTION — the standard content module
+ * SECTION — the standard content module
  * =========================================================================== */
 
 .section {
@@ -126,7 +126,7 @@
 	margin-bottom: var(--space-md);
 }
 
-/* № 01 — accent mono marker. */
+/* Section marker — accent mono (e.g. the podcast ♪ glyph). */
 .section-no {
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-2xs);

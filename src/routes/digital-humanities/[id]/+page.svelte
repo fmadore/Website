@@ -93,7 +93,6 @@
 				{#if project.skills && project.skills.length > 0}
 					<section class="section">
 						<div class="section-head">
-							<span class="section-no">№</span>
 							<h2 class="section-title">Methods &amp; tools</h2>
 						</div>
 						<div class="chip-row">
@@ -168,7 +167,6 @@
 				{#if project.award}
 					<section class="section apparatus-section">
 						<div class="section-head">
-							<span class="section-no">№</span>
 							<h2 class="section-title">Award</h2>
 						</div>
 						<!-- Safe: project.award is from trusted project data -->
@@ -182,7 +180,6 @@
 				{#if project.publication}
 					<section class="section apparatus-section">
 						<div class="section-head">
-							<span class="section-no">№</span>
 							<h2 class="section-title">Related publication</h2>
 						</div>
 						<p class="apparatus-text">
@@ -206,7 +203,6 @@
 				{#if project.reviews && project.reviews.length > 0}
 					<section class="section apparatus-section">
 						<div class="section-head">
-							<span class="section-no">№</span>
 							<h2 class="section-title">Reviews</h2>
 						</div>
 						<ul class="reviews-list">

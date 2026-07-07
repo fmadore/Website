@@ -13,7 +13,7 @@
  *   - DISPLAY  (Archivo)           → helvetica  — name, section heads, big numerals
  *   - SERIF    (Newsreader)        → times      — all prose / body / italics
  *   - MONO     (Spline Sans Mono)  → courier    — the DATA voice: dates, keys,
- *                                                  labels, counts, eyebrows, №-marks
+ *                                                  labels, counts, eyebrows
  * Never blur the voices: no mono headlines, no serif metadata.
  */
 
@@ -33,7 +33,6 @@ export const FONT_SIZE = {
 	DATE: 8.5, // "As of …" dateline — data voice
 	CONTACT_LABEL: 7.5, // Contact labels (mono small-caps eyebrow)
 	CONTACT_VALUE: 8.5, // Contact values
-	SECTION_NUMBER: 7.5, // "№ 0N" section marker (accent mono)
 	SECTION_HEADING: 13, // Section headers — Archivo/helvetica, clear hierarchy
 	SUBSECTION: 8, // Subsection labels (BOOKS, ARTICLES…) — mono uppercase
 	BODY: 9.5, // Body text — serif, comfortable reading

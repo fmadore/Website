@@ -7,8 +7,7 @@
 	 *   eyebrow above an Archivo/helvetica name headline, a mono dateline, closed
 	 *   by a full-width ink hairline
 	 * - Section heads in the DISPLAY voice (Archivo → helvetica bold), each opened
-	 *   by a heavy 3px-equivalent ink rule and a "№ 0N" accent-mono marker — no
-	 *   boxes, no shadows, no accent stripes
+	 *   by a heavy 3px-equivalent ink rule — no boxes, no shadows, no accent stripes
 	 * - Subsection labels (BOOKS, ARTICLES…) in the DATA voice (mono uppercase,
 	 *   letterspaced, quiet ink) over a hairline
 	 * - Prose body in the SERIF voice (Newsreader → times); year/date keys in the

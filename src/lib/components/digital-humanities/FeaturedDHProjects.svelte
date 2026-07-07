@@ -48,6 +48,12 @@
 		return isOngoing(years) ? `${years.replace(/[-–—]\s*$/, '').trim()} —` : years.trim();
 	}
 
+	// Skill chip → catalogue filter URL (mirrors the /digital-humanities page),
+	// so a featured project's skills activate the same skill filter/sort.
+	function skillHref(skill: string): string {
+		return `${base}/digital-humanities?skill=${encodeURIComponent(skill)}`;
+	}
+
 	const processedProjects = $derived(
 		projects.map((project, i) => {
 			const isExternal =
@@ -134,7 +140,8 @@
 					{#if project.skills && project.skills.length > 0}
 						<div class="chip-row featured-tech">
 							{#each project.skills as skill (skill)}
-								<span class="chip chip--tech">{skill}</span>
+								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- skill filter URL -->
+								<a class="chip chip--tech" href={skillHref(skill)}>{skill}</a>
 							{/each}
 						</div>
 					{/if}
@@ -271,13 +278,19 @@
 		gap: var(--space-1-5);
 	}
 
-	/* Tech chip — static (not a link), tighter than the filter chips. */
+	/* Tech chip — a filter link (activates the skill filter), tighter than the
+	 * catalogue filter chips. */
 	.chip--tech {
-		cursor: default;
 		font-size: var(--font-size-2xs);
 		letter-spacing: 0.08em;
 		padding: var(--space-0-5) var(--space-1-5);
 		color: var(--color-text-light);
+		text-decoration: none;
+	}
+
+	.chip--tech:hover {
+		color: var(--color-accent);
+		border-color: var(--color-accent);
 	}
 
 	.featured-action {

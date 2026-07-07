@@ -1,11 +1,8 @@
 <script lang="ts">
 	import type { ReviewWork } from '$lib/types/publication';
 
-	// Prop to receive the array of reviews + the section's №-marker.
-	let {
-		reviewedBy = [],
-		sectionNumber = undefined
-	}: { reviewedBy?: ReviewWork[]; sectionNumber?: string } = $props();
+	// Prop to receive the array of reviews.
+	let { reviewedBy = [] }: { reviewedBy?: ReviewWork[] } = $props();
 
 	// Sort the array by year descending (copy first — never mutate the prop).
 	const sortedReviews = $derived([...(reviewedBy ?? [])].sort((a, b) => b.year - a.year));
@@ -14,7 +11,6 @@
 {#if sortedReviews.length > 0}
 	<section class="reviews-section section scroll-reveal">
 		<div class="section-head">
-			<span class="section-no">{sectionNumber ? `№ ${sectionNumber}` : '№'}</span>
 			<h2 class="section-title">Reviews</h2>
 			<span class="dateline reviews-count">{sortedReviews.length}</span>
 		</div>
@@ -72,7 +68,7 @@
 {/if}
 
 <style>
-	/* №-numbered section (3px top rule) supplied by the .section idiom. */
+	/* Section (3px top rule) supplied by the .section idiom. */
 	.reviews-section {
 		margin-top: var(--space-2xl);
 	}

@@ -202,7 +202,7 @@ apparatus, and the ruled-section styling.
 		<!-- MAIN COLUMN ------------------------------------------------------- -->
 		<div class="project-main">
 			<!-- Project narrative. Prose arrives through the slot; scoped styles
-			     below turn its <h2> headings into №-numbered section heads and
+			     below turn its <h2> headings into ruled section heads and
 			     drop-cap the opening paragraph. -->
 			<div class="project-prose scroll-reveal">
 				{@render children()}
@@ -535,7 +535,7 @@ apparatus, and the ruled-section styling.
 	}
 
 	/* ==========================================================================
-	 * PODCAST + RELATED — closing №-sections on the main column
+	 * PODCAST + RELATED — closing sections on the main column
 	 * ======================================================================== */
 	.podcast-section {
 		margin-top: var(--space-2xl);

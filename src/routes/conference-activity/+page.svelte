@@ -623,7 +623,6 @@
 	<section class="bibliography rule-section" id="bibliography" aria-label="Talks and events">
 		{#if shouldShowUpcoming}
 			<div class="record-head">
-				<span class="record-head-no">№</span>
 				<h2 class="record-head-title">The record</h2>
 				<span class="record-head-count">{matchCount} past</span>
 			</div>
@@ -1209,14 +1208,6 @@
 		align-items: baseline;
 		gap: var(--space-2);
 		margin-bottom: var(--space-sm);
-	}
-
-	.record-head-no {
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-2xs);
-		font-weight: var(--font-weight-bold);
-		letter-spacing: 0.14em;
-		color: var(--color-accent);
 	}
 
 	.record-head-title {
