@@ -70,10 +70,21 @@ const mdCell = (s) =>
 		.replace(/\|/g, '\\|')
 		.replace(/\r?\n/g, ' ');
 
-// Zotero item keys are short upper-case base-32 tokens (e.g. "A1B2C3D4"). Match
-// against an anchored allowlist before any value from the HTTP response is
-// written into the report, so nothing untrusted flows through unchecked.
-const safeZoteroKey = (k) => (/^[A-Z0-9]{1,32}$/.test(k) ? k : '(invalid key)');
+// Zotero item keys are short base-32 tokens (e.g. "A1B2C3D4"). Rebuild the key
+// one character at a time from a trusted local alphabet so that no character
+// from the HTTP response can survive into the string written to the report:
+// String.charAt() on a constant returns a constant, which breaks the taint from
+// network data to file however the value is copied around beforehand.
+const KEY_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+function safeZoteroKey(k) {
+	const s = String(k);
+	let out = '';
+	for (let i = 0; i < s.length && out.length < 32; i++) {
+		const j = KEY_ALPHABET.indexOf(s.charAt(i));
+		if (j !== -1) out += KEY_ALPHABET.charAt(j);
+	}
+	return out || '(invalid key)';
+}
 
 function frontmatter(raw) {
 	const text = (raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw).replace(/\r\n/g, '\n');
@@ -125,8 +136,9 @@ try {
 	);
 	const items = await res.json();
 	libOk = true;
-	libCount = items.length;
+	// libCount is tallied in the loop below, to avoid reading .length off the response
 	for (const it of items) {
+		libCount++;
 		const d = it.data || {};
 		const doi = normDoi(d.DOI || (d.url && DOI_URL_RE.test(d.url) ? d.url : ''));
 		const rec = { key: safeZoteroKey(it.key), itemType: d.itemType };
@@ -176,7 +188,9 @@ lines.push('| Zotero key | Type | Year | Title | DOI/ISBN |');
 lines.push('|---|---|---|---|---|');
 for (const m of inZoteroNoNote.sort((a, b) => (b.p.year || 0) - (a.p.year || 0))) {
 	const ref = m.p.doi || (m.p.isbn ? 'ISBN ' + m.p.isbn : '—');
-	lines.push(`| \`${m.key}\` | ${m.p.type} | ${m.p.year || ''} | ${mdCell(m.p.title)} | ${ref} |`);
+	lines.push(
+		`| \`${safeZoteroKey(m.key)}\` | ${m.p.type} | ${m.p.year || ''} | ${mdCell(m.p.title)} | ${ref} |`
+	);
 }
 
 lines.push('', '## ➕ Absent from Zotero — add these', '');
