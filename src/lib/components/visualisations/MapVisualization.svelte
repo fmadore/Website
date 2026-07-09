@@ -637,43 +637,6 @@
 		text-align: center;
 	}
 
-	/* Custom Marker Styles */
-	:global(.map-marker) {
-		cursor: pointer;
-		width: var(--space-8);
-		height: var(--space-8);
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	:global(.map-marker svg) {
-		width: 100%;
-		height: 100%;
-		color: var(--color-primary);
-		fill: var(--color-background);
-		fill-opacity: 0.9;
-		stroke-width: 1.5;
-		filter: drop-shadow(1px 1px 1px color-mix(in srgb, var(--color-black) 40%, transparent));
-		transition:
-			transform var(--duration-fast) var(--ease-out),
-			color var(--duration-fast) var(--ease-out),
-			fill var(--duration-fast) var(--ease-out);
-	}
-
-	:global(.map-marker:hover svg) {
-		transform: scale(var(--scale-110));
-	}
-
-	/* Marker type variants */
-	:global(.map-marker.marker-type-lecture svg) {
-		color: var(--color-accent);
-	}
-
-	:global(.map-marker.marker-type-event svg) {
-		color: var(--color-highlight);
-	}
-
 	/* Custom Popup Styles — flat archival card: square, hairline, no glass. */
 	:global(.map-popup .maplibregl-popup-content) {
 		background-color: var(--color-surface-elevated);
@@ -768,17 +731,6 @@
 		background-color: color-mix(in srgb, var(--color-background) 80%, transparent);
 		font-size: var(--font-size-xs);
 		padding: var(--space-1) var(--space-2);
-	}
-
-	/* Reduced motion support */
-	@media (prefers-reduced-motion: reduce) {
-		:global(.map-marker svg) {
-			transition: none !important;
-		}
-
-		:global(.map-marker:hover svg) {
-			transform: none !important;
-		}
 	}
 
 	/* Dark mode adjustments for popup tip */

@@ -3,7 +3,11 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 -->
 <script lang="ts">
 	import { innerWidth } from 'svelte/reactivity/window';
-	import { getResolvedChartColors, colorWithOpacity } from '$lib/utils/chartColorUtils';
+	import {
+		getResolvedChartColors,
+		resolveColors,
+		getEChartsTooltipStyle
+	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
 	import type { WordFrequency } from '$lib/types';
@@ -54,22 +58,9 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 	// Use Svelte's reactive window width
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
 
-	// Resolve CSS variables to actual colors
-	function resolveColor(color: string): string {
-		if (!color.startsWith('var(')) return color;
-		const varName = color.match(/var\(([^)]+)\)/)?.[1];
-		if (!varName) return color;
-
-		if (typeof document !== 'undefined') {
-			const computed = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
-			return computed || color;
-		}
-		return color;
-	}
-
 	const resolvedColors = $derived({
 		...getResolvedChartColors(),
-		wordColors: colors.map(resolveColor)
+		wordColors: resolveColors(colors)
 	});
 
 	// Process words for the chart - limit and normalize
@@ -105,16 +96,7 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 			: { show: false },
 		tooltip: {
 			show: true,
-			backgroundColor: resolvedColors.surfaceElevated,
-			borderColor: resolvedColors.border,
-			borderWidth: 1,
-			borderRadius: 0,
-			padding: [8, 12],
-			extraCssText: 'box-shadow: none;',
-			textStyle: {
-				color: resolvedColors.text,
-				fontFamily: resolvedColors.fontFamily
-			},
+			...getEChartsTooltipStyle(resolvedColors),
 			formatter: (params: { name: string; value: number }) => {
 				return `<strong>${params.name}</strong><br/>Count: ${params.value}`;
 			}
@@ -143,8 +125,8 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 				emphasis: {
 					focus: 'self',
 					textStyle: {
-						textShadowBlur: 10,
-						textShadowColor: colorWithOpacity(resolvedColors.black, 0.3)
+						// No glow (brief bans shadows) — emphasize with the accent ink.
+						color: resolvedColors.accent
 					}
 				},
 				data: chartData()

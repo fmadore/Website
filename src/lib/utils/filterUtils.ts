@@ -1,19 +1,10 @@
-/** * Svelte 5 store-based filter utilities for shared reactive state management.
+/**
+ * Store-based filter utilities for shared reactive state management.
  *
- * Uses Svelte stores (writable, readable, derived) which remain valid in Svelte 5
- * for cases requiring manual control over updates and complex reactive logic.
- * - Exports Svelte stores that can be used with $ prefix in components
- * - Compatible with Svelte 5's reactivity system
- * - Ideal for shared state management across componentsterUtils.ts
- *
- * Svelte 5 store-based filter utilities for shared reactive state management.
- * This replaces the legacy store-based filterUtils.ts.
- *
- * Key differences from Svelte 4 stores:
- * - Uses $state() internally for reactive state
- * - Exports proper Svelte stores that can be used with $ prefix
- * - Compatible with both runes and store patterns
- * - More performant and integrates better with Svelte 5's reactivity system
+ * Uses Svelte stores (writable, readable, derived) — still the right tool for
+ * this cross-component state that is consumed with the `$` prefix and composed
+ * by `filterStoreFactory.ts` into per-page filter systems. All helpers here
+ * are generic factories; no entity-specific filter logic lives in this file.
  */
 
 import type { YearRange } from '$lib/types';
@@ -200,23 +191,4 @@ export function areFiltersActive<T extends object>(filters: T | null | undefined
 
 		return false;
 	});
-}
-
-/**
- * Creates a sort change handler factory.
- * Returns a function that updates the activeSort variable when sort changes.
- *
- * @param allowedSorts - Array of allowed sort keys for the specific page
- * @returns A handler function for sortChange events
- *
- * @example
- * const handleSortChange = createSortHandler(['date', 'title', 'citations']);
- * handleSortChange({ sortBy: 'date' }); // Updates activeSort
- */
-export function createSortHandler<T extends string>(allowedSorts: T[]) {
-	return (data: { sortBy: T }, setActiveSort: (sort: T) => void): void => {
-		if (allowedSorts.includes(data.sortBy)) {
-			setActiveSort(data.sortBy);
-		}
-	};
 }

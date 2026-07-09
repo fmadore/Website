@@ -1,5 +1,6 @@
 import type { Publication } from '$lib/types';
 import type { AffiliationPeriod } from '$lib/types/affiliation';
+import { author as siteAuthor } from '$lib/data/siteConfig';
 
 /**
  * Returns the year label to show in the CV gutter. Forthcoming publications
@@ -15,8 +16,8 @@ export function getCVDisplayYear(pub: Pick<Publication, 'date' | 'year'>): strin
 }
 
 /**
- * Formats author list with Frédérick Madore in bold for CV display
- * Returns empty string if Frédérick Madore is the only author
+ * Formats author list with the site owner in bold for CV display
+ * Returns empty string if the site owner is the only author
  * Only bolds the name when there are multiple authors
  */
 export function formatCVAuthorList(authorsInput: string[] | string | undefined): string {
@@ -31,15 +32,15 @@ export function formatCVAuthorList(authorsInput: string[] | string | undefined):
 	const numAuthors = authorsArray.length;
 	if (numAuthors === 0) return '';
 
-	// If only one author and it's Frédérick Madore, return empty string
+	// If the site owner is the only author, return empty string
 	if (numAuthors === 1) {
-		return authorsArray[0] === 'Frédérick Madore' ? '' : authorsArray[0];
+		return authorsArray[0] === siteAuthor.name ? '' : authorsArray[0];
 	}
 
-	// Multiple authors - bold Frédérick Madore's name
+	// Multiple authors - bold the site owner's name
 	let formatted = '';
 	authorsArray.forEach((author, i) => {
-		const authorName = author === 'Frédérick Madore' ? '<strong>Frédérick Madore</strong>' : author;
+		const authorName = author === siteAuthor.name ? `<strong>${siteAuthor.name}</strong>` : author;
 
 		formatted += authorName;
 		if (i < numAuthors - 1) {

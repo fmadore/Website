@@ -388,11 +388,7 @@
 	:global(html.dark .iframe-with-header.glass-light .iframe-header),
 	:global(html.dark .iframe-with-header.glass-medium .iframe-header),
 	:global(html.dark .iframe-with-header.glass-heavy .iframe-header) {
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--glass-opacity-fallback-dark) * 100%),
-			transparent
-		);
+		background: color-mix(in srgb, var(--color-primary) 85%, transparent);
 		border-bottom: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 	}

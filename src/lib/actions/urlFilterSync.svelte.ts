@@ -99,7 +99,9 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 		const basePath = page.url.pathname;
 		const targetUrl = `${basePath}${queryString ? `?${queryString}` : ''}${page.url.hash || ''}`;
 
-		// Use replaceState to avoid cluttering browser history
+		// Deliberate trade-off: replaceState keeps filter tweaks out of browser
+		// history, so Back/Forward leaves the page rather than stepping through
+		// filter states. Switch to pushState if history-per-filter is wanted.
 		// eslint-disable-next-line svelte/no-navigation-without-resolve -- targetUrl built from page.url.pathname which is already resolved
 		goto(targetUrl, { replaceState: true, keepFocus: true, noScroll: true });
 	});
@@ -123,7 +125,11 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 			// themselves contain commas (e.g. project names).
 			const all = searchParams.getAll(paramName).filter(Boolean);
 			const valuesFromUrl = all.length > 1 ? all : all.length === 1 ? [all[0]] : [];
-			if (JSON.stringify(valuesFromUrl.sort()) !== JSON.stringify((currentValues || []).sort())) {
+			// Compare order-insensitively on copies — sorting in place would both
+			// mutate the live reactive filter array mid-effect and reorder the
+			// values handed to the setter.
+			const sortedCopy = (values: string[] | undefined) => [...(values || [])].sort();
+			if (JSON.stringify(sortedCopy(valuesFromUrl)) !== JSON.stringify(sortedCopy(currentValues))) {
 				setter(valuesFromUrl);
 				filtersChanged = true;
 			}

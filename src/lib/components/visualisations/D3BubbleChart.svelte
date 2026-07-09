@@ -10,6 +10,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		getResolvedChartColors,
 		resolveColors,
 		getCSSPx,
+		getContrastLabelStyle,
 		prefersReducedMotion
 	} from '$lib/utils/chartColorUtils';
 
@@ -284,8 +285,9 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			.append('text')
 			.attr('text-anchor', 'middle')
 			.attr('dominant-baseline', 'middle')
-			.style('fill', 'white')
-			.style('text-shadow', '0 1px 2px color-mix(in srgb, black 45%, transparent)')
+			// Contrast-aware ink/paper label per bubble fill — no white text, no
+			// text-shadow (the brief bans glow; the treemap uses the same helper).
+			.style('fill', (d) => getContrastLabelStyle(colorScale(d.name)).color)
 			.style('font-size', (d) => `${Math.max(10, Math.min(20, d.radius / 2.2))}px`)
 			.style('font-weight', '600')
 			.style('font-family', 'var(--font-family-mono)')
