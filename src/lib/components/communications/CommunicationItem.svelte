@@ -16,7 +16,7 @@
 		index?: number;
 		/**
 		 * Render this item as the editorial "lead" of a featured block:
-		 * no card chrome, Spectral display title, larger image, longer-form
+		 * no card chrome, serif display title, larger image, longer-form
 		 * abstract treatment. Mirrors the publications-list lead-story
 		 * pattern; styled by `.entity-card--editorial` in entity-cards.css.
 		 */

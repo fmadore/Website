@@ -8,7 +8,7 @@
 		/**
 		 * Render this card as the editorial "lead" of a featured block:
 		 * no chrome (transparent background, no border, no shadow,
-		 * no lift-on-hover), Spectral display title, larger image. Mirrors
+		 * no lift-on-hover), serif display title, larger image. Mirrors
 		 * the `.entity-card--editorial` pattern in entity-cards.css for
 		 * the same single-large-figures break called for in the brief.
 		 */

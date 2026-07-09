@@ -12,7 +12,7 @@
 		alt: string;
 		width?: number;
 		height?: number;
-		/** Optional caption rendered beneath the plate in Spectral italic. */
+		/** Optional caption rendered beneath the plate in serif italic. */
 		caption?: string | undefined;
 		additionalClasses?: string;
 		scrollAnimation?: boolean;

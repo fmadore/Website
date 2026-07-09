@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Academic personal website for Dr. Frédérick Madore (historian specializing in Islam in West Africa). Built with **SvelteKit 2** using **Svelte 5 runes**, TypeScript, and a glassmorphism-based custom CSS framework. Deployed as a static site to GitHub Pages.
+Academic personal website for Dr. Frédérick Madore (historian specializing in Islam in West Africa). Built with **SvelteKit 2** using **Svelte 5 runes**, TypeScript, and a custom token-driven CSS system implementing the **Ink + Signal** design language (flat print register — no glass, no shadows, square corners). Deployed as a static site to GitHub Pages.
 
 ## Commands
 
@@ -69,13 +69,13 @@ Components in `src/lib/components/` follow atomic design:
 
 Modular system in `src/styles/` with import order: Base → Layout → Components → Utilities
 
-- **Design tokens**: `base/variables.css` (colors, spacing, typography, shadows, glass blur tokens)
+- **Design tokens**: `base/variables.css` (colors, spacing, typography, rules; all `--shadow-*` resolve to `none` and all `--border-radius-*` except `-full` resolve to `0` by design)
 - **Breakpoints** (defined in `base/media.css`):
   - Min-width: `--sm` (640px), `--md` (768px), `--lg` (1024px), `--xl` (1280px), `--2xl` (1536px)
   - Max-width: `--xs-down`, `--sm-down`, `--md-down`, `--lg-down`, `--xl-down`, `--2xl-down`
   - Interaction: `--can-hover`, `--touch`
   - Accessibility: `--reduced-motion`, `--high-contrast`, `--dark-mode`
-- **Glassmorphism**: Use `.glass-card`, `.glass-panel`, `.glass-button` classes
+- **Ink + Signal idioms**: ruled sections, ledger rows, flat chips, plates — see `src/styles/components/ink-signal.css`. Legacy `.glass-*` class names survive in a few components but render as flat surfaces; do not add new usages.
 - See `src/styles/CSS-README.md` for comprehensive documentation
 
 ## Svelte 5 Patterns (Required)
@@ -109,15 +109,14 @@ Always use runes - never legacy reactive syntax:
 
 - **Always use CSS variables** - never hardcode colors, spacing, or typography values
 - **Transparency**: Use `color-mix(in srgb, var(--color-primary) 50%, transparent)` not `rgba()`
-- **Glassmorphism**: Always include `-webkit-backdrop-filter` fallback
-- **Glass blur tokens**: Use `var(--glass-blur-sm)` through `var(--glass-blur-xl)`, not raw `blur(8px)`
+- **No glass, no shadows, no gradients, no rounded corners** — depth comes from ink density and rule weight (5px masthead / 3px section / 1px hairline). Never add `backdrop-filter`, `box-shadow`, or `border-radius` to new styles (the only gradient exception is a real data-proportion bar like `.hbar`)
 - **Never use `var()` in media queries** - use PostCSS custom media syntax (e.g., `@media (--md)`)
 - **Avoid `!important`** - only acceptable when overriding third-party library styles (ECharts, MapLibre) or in `prefers-reduced-motion` blocks
 - **Dark mode**: Use `:global(html.dark) .my-class { ... }` selector pattern. Use CSS variables and `color-mix()` with design tokens for dark-mode-specific values
 
 ### Animation System (CSS-only)
 
-Use CSS classes, not the deprecated `scrollAnimations.ts`:
+Motion is near-zero by design (print register). When an entrance animation is warranted, use the CSS classes in `animations.css` (the old `scrollAnimations.ts` util was deleted):
 
 - `.scroll-reveal` - fade-up on viewport entry
 - `.scroll-reveal-scale` - scale-in for cards/images
