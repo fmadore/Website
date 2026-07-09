@@ -2,104 +2,98 @@
 
 This document outlines the CSS architecture used in this project. The CSS is organized using a modular approach with a focus on maintainability, scalability, and reusability.
 
-> **🖋 Design system: Ink + Signal (2026-07).** The site was redesigned from the earlier "editorial ink-blue" direction to **Ink + Signal** — the press archive read computationally. Warm paper + ink with a single **pine (warm teal)** accent (daylight); a warm near-black **microfilm-negative** with cream type (midnight). **Two type voices:** Archivo (display), Newsreader (prose serif), Spline Sans Mono (data voice). **Square corners, no shadows, no glass** — hierarchy is drawn in heavy rules and ledger rows. Structural idioms live in [`components/ink-signal.css`](./components/ink-signal.css); the full brief is in [`.impeccable.md`](../../.impeccable.md). Some prose below still references the retired ink-blue/amber/glass system; treat `.impeccable.md`, `base/variables.css`, and `components/ink-signal.css` as the source of truth.
-
-> **🎨 Design Audit**: Use the `css-design-audit` skill or run `node .github/skills/css-design-audit/audit.mjs src/lib/components` to check design system compliance.
+> **🖋 Design system: Ink + Signal (2026-07).** The press archive, read computationally. Warm paper + ink with a single **pine (warm teal)** accent in daylight; a warm near-black **microfilm negative** with cream type at midnight. **Two type voices, strictly cast:** Archivo (display), Newsreader (prose serif), Spline Sans Mono (data voice). **Square corners, no shadows, no glass, no gradients** — hierarchy is drawn in rules (5px masthead, 3px section, 1px hairline) and ledger rows. Structural idioms live in [`components/ink-signal.css`](./components/ink-signal.css); the full brief is in [`.impeccable.md`](../../.impeccable.md). Source of truth for tokens: [`base/variables.css`](./base/variables.css) and [`base/dark.css`](./base/dark.css).
 
 ## Directory Structure
-
-The CSS is organized into the following directory structure:
 
 ```
 src/
 ├── app.css            # Main entry point that stitches the modules together
 └── styles/
-    ├── base/          # Base styles, resets, and variables
-    ├── components/    # Reusable UI components
+    ├── base/          # Custom media, design tokens, dark theme, reset, typography
+    ├── components/    # Reusable UI components + Ink + Signal idioms
     ├── layout/        # Layout components and structures
     └── utilities/     # Utility classes
 ```
 
 ## Main CSS Entry Point
 
-The `src/app.css` file serves as the main entry point that imports all other CSS files. Imports are grouped so that design tokens load first, followed by layout scaffolding, component collections, and finally the utility layer. This guarantees that variables and mixins are available before anything depends on them and keeps bundle composition predictable when the project is prerendered.
+The `src/app.css` file imports the global stylesheet in a fixed order so tokens are available before anything depends on them:
 
 - **Import order**: Base → Layout → Components → Utilities (mirrors the block comments inside `app.css`).
-- **Adding new modules**: Place new files under the appropriate directory, then add a matching `@import` in the same section to preserve the layering above.
+- **Route-scoped CSS**: `components/entity-cards.css`, `components/activity-list.css`, `components/bibliography.css`, and `components/filters.css` are **not** imported globally — they are imported by the components that own them, so they code-split per route and keep the render-blocking global stylesheet small.
+- **Adding new modules**: Place new files under the appropriate directory, then add a matching `@import` in the same section of `app.css` (or import from the owning component if the styles are route-specific).
 - **Component overrides**: Prefer Svelte component-scoped styles for one-off tweaks; reach for global imports only when multiple pages need the change.
 
 ## Extending the CSS System
 
-When you need to introduce new styling primitives, follow this workflow to stay aligned with the design system:
-
-1. **Check existing layers first**: Reuse utilities or component classes whenever possible. Most spacing, color, typography, and interaction patterns already exist.
-2. **Scope deliberately**:
-   - Component-specific visuals belong in the Svelte file's `<style>` block.
-   - Shared UI patterns live under `styles/components/` with descriptive, atomic names.
-   - System-wide helpers go into the utility folder alongside peers (e.g., `utilities/flex.css`).
-3. **Lean on design tokens**: Reference values from `base/variables.css` instead of hard-coded numbers or hex values. This keeps light/dark themes and glassmorphism effects consistent.
-4. **Respect motion and accessibility**: Mirror the patterns in `reset.css` and `animations.css` by honoring `prefers-reduced-motion`, `prefers-contrast`, and focus-visible treatments.
-5. **Document the change**: Update this README (or the component docs in `docs/components/`) so future contributors know the intent behind the new styles.
+1. **Check existing layers first**: Reuse the Ink + Signal idiom classes (`.ledger`, `.section`, `.chip`, `.plate`, `.eyebrow`) and the utilities before writing new CSS.
+2. **Scope deliberately**: Component-specific visuals belong in the Svelte file's `<style>` block; shared UI patterns live under `styles/components/`; system-wide helpers go in `styles/utilities/`.
+3. **Lean on design tokens**: Reference values from `base/variables.css` instead of hard-coded numbers or hex values. This keeps daylight/midnight theming consistent.
+4. **Respect motion and accessibility**: Honor `prefers-reduced-motion`, `prefers-contrast`, and focus-visible treatments as `reset.css` and `animations.css` do. Motion is near-zero by design — the register is print, not app.
+5. **Document the change**: Update this README so future contributors know the intent behind the new styles.
 
 ## Base Styles
 
-Base styles define the foundation of the site's design.
-
 ### Variables (`base/variables.css`)
 
-**Design System v2.0** - A comprehensive design token system with foundation → semantic layering.
+A design token system with foundation → semantic layering:
 
-#### Token Architecture
+1. **Foundation tokens** (`--sys-*`): Raw values that rarely change
+2. **Semantic tokens** (`--color-*`, `--space-*`, etc.): Meaningful names for usage context
 
-1. **Foundation Tokens** (`--sys-*`): Raw values that rarely change
-2. **Semantic Tokens** (`--color-*`, `--space-*`, etc.): Meaningful names for usage context
-
-#### Color System
+#### Color System — two inks on two grounds, one accent
 
 - **Primary**: INK (`#191509` daylight / cream `#efe7d6` midnight) — the dominant structural colour (rules, solid fills, selected chips, the nameplate)
-- **Secondary**: muted ink / muted cream for supporting text
-- **Accent**: PINE — warm teal (`#1e6a56` daylight / `#4fbb99` midnight) — the single accent, applied by scarcity (current/active/newest, the one primary CTA, link underlines, record-kind markers)
-- **Highlight**: pine (aliases `--color-accent`, so link/hover accents resolve to the accent)
-- **Viz palette**: Seven OKLCH-derived categorical hues (`--sys-viz-1..7`), pine-anchored, for data-visualisation only (chart series, timeline categories). Never UI chrome.
-- **Success**: muted olive (`#5c6b3a`) for positive states
-- **Danger**: Red (`#dc2626`) for errors and destructive actions
-- **Dynamic opacity**: Use `color-mix()` for transparency (e.g., `color-mix(in srgb, var(--color-primary) 25%, transparent)`)
+- **Secondary**: Muted ink / muted cream for supporting text
+- **Accent**: PINE — warm teal (`--color-accent: #1e6a56` daylight / `#4fbb99` midnight) — the single accent, applied by scarcity: eyebrows, active nav, key numbers, link underlines, the one primary CTA per screen
+- **Highlight**: Aliases pine, so link/hover accents resolve to the accent
+- **Viz palette**: Seven OKLCH-derived categorical hues (`--sys-viz-1..7`), pine-anchored, for data visualisation only — never UI chrome
+- **Success**: Muted olive (`#5c6b3a`); **Danger**: deep warm red (`#a3341c`)
+- **Grounds**: Warm paper scale (`--sys-color-paper*`, hairline/border steps) in daylight; warm film scale (`--sys-color-film-*`) at midnight — never pure white or pure black, never slate
+- **Dynamic opacity**: Use `color-mix()` for transparency (e.g., `color-mix(in srgb, var(--color-primary) 25%, transparent)`), not `rgba()`
+
+#### Rule Weights
+
+Hierarchy is drawn in rules, ink-coloured (cream on midnight), never gray:
+
+- `--rule-nameplate` (5px) → `--rule-masthead` (4px) → `--rule-section` (3px) → `--rule-hairline` (1px)
+
+#### Border Radius — corners are square
+
+Every `--border-radius-*` token resolves to `0`. The only exception is `--border-radius-full` (9999px), retained for genuinely circular micro-controls (slider thumbs, spinners, status dots) that opt in explicitly.
+
+#### Shadows — shadows do not exist
+
+Every `--shadow-*` token (including the colored and glass variants) resolves to `none`. The tokens are kept for API stability so the whole component layer flattens automatically. Depth comes from ink density and rule weight, not elevation.
 
 #### Spacing System (8-point grid)
 
-- **Semantic scale**: `--space-2xs` through `--space-7xl`
+- **Semantic scale**: `--space-3xs` through `--space-7xl`
 - **Numeric scale**: `--space-0` through `--space-48`
-- **Tight variants**: `--space-md-tight` (14px), `--space-xl-tight` (28px) for in-between values
+- **Tight variants**: `--space-md-tight` (14px), `--space-xl-tight` (28px)
+- **Reading rhythm**: `--space-reading`, `--space-reading-loose` for detail-page sections
 
-#### Typography Scale (Minor Third 1.2 ratio)
+#### Typography Tokens — two voices
 
-- **Fluid sizing**: Uses `clamp()` for responsive scaling
-- **Font sizes**: `--font-size-xs` through `--font-size-5xl`
-- **Contextual sizes**: `--font-size-heading-1` through `--font-size-heading-6`
-- **Line heights**: `--line-height-tight` through `--line-height-loose`
-
-#### Shadows (Multi-layer system)
-
-- **Depth levels**: `--shadow-xs` through `--shadow-2xl`
-- **Colored shadows**: `--shadow-primary`, `--shadow-accent`, `--shadow-highlight`, `--shadow-success`, `--shadow-danger`
-- **Glass shadows**: `--shadow-glass`, `--shadow-glass-lg`
+- **Font families**: `--font-family-display` (Archivo — nameplate, h1–h3, section heads, big data numbers), `--font-family-serif` (Newsreader — all prose, h4–h5, captions, italics; the reading default), `--font-family-mono` (Spline Sans Mono — the data voice: eyebrows, datelines, counts, nav, chips, DOIs, pagination; **never body copy**). `--font-family-sans` is a neutral system stack kept only as a form-control fallback.
+- **Archivo width axis**: `--font-variation-nameplate/-display/-display-md/-display-sm/-wordmark` presets for the wide, heavy display cut
+- **Type scale**: Fluid `clamp()` steps with forked ratios — Minor Third (1.2) for body/UI, Major Third (1.25) for display; plus `--font-size-nameplate` and `--font-size-display` for mastheads and index heroes
+- **Semantic sizes**: `--font-size-2xs` through `--font-size-5xl`, `--font-size-heading-1..6`
+- **Line heights / tracking / weights**: `--line-height-*`, `--letter-spacing-*` and contextual aliases (`--tracking-eyebrow`, etc.)
 
 #### Focus Ring (Accessibility)
 
-- **`--focus-ring`**: Box-shadow for focus indicators (uses `color-mix()` for transparency)
-- **`--focus-ring-offset`**: Spacing between element and focus ring
-- **`--focus-ring-color`**: Color of the focus indicator
+- **`--focus-ring`** / **`--focus-ring-color`** / **`--focus-ring-offset`**: Accent-coloured focus indicators (pine signals the keyboard target)
 
 #### Container Queries
 
 - **`--container-query-xs`** through **`--container-query-xl`**: Widths for `@container` queries
-- Use for component-level responsive design independent of viewport
 
 #### Animation & Transitions
 
-- **Duration scale**: `--duration-instant` (75ms) through `--duration-slower` (700ms)
-- **Ambient loops**: `--duration-ambient-sm` (4s), `--duration-ambient-md` (8s), `--duration-ambient-lg` (12s) for decorative/shimmer animations
-- **Easing functions**: `--ease-in`, `--ease-out`, `--ease-bounce`, `--ease-spring`, `--ease-smooth`
+- **Duration scale**: `--duration-instant` (75ms) through `--duration-slower` (700ms); ambient loop durations exist but decorative motion is essentially retired
+- **Easing**: `--ease-in`, `--ease-out`, `--ease-in-out`, `--ease-smooth`, `--ease-out-quart`, `--ease-out-quint`. `--ease-bounce` and `--ease-spring` survive as **legacy aliases** of the quart/quint out-curves — nothing overshoots anymore; prefer `--ease-out-quart` / `--ease-out-quint` in new code
 - **Stagger delays**: `--stagger-1` through `--stagger-6` (40ms step)
 
 Example usage:
@@ -107,439 +101,235 @@ Example usage:
 ```css
 .example {
 	color: var(--color-primary);
-	margin-bottom: var(--space-md); /* ✅ Preferred - uses color directly */
+	margin-bottom: var(--space-md);
+	border-top: var(--rule-section) solid var(--color-primary);
 	background: color-mix(in srgb, var(--color-primary) 10%, transparent);
-	box-shadow: var(--shadow-md);
-	transition: all var(--duration-normal) var(--ease-out);
+	transition: border-color var(--duration-fast) var(--ease-out);
 }
 ```
 
+### Dark Theme (`base/dark.css`)
+
+Midnight is **the microfilm negative** — the same printed page photographed as a negative, not a slate "dark mode" and not an inversion filter. `html.dark` only remaps colour tokens: grounds swap to warm near-black (`#171310` film scale), "ink" becomes cream (`#efe7d6` scale), and the pine accent brightens to `#4fbb99`. Because shadows and glass are gone globally, no other overrides are needed. Component dark-mode tweaks use the `:global(html.dark) .my-class` selector pattern with tokens and `color-mix()`.
+
 ### Typography (`base/typography.css`)
 
-Comprehensive typography system including:
-
-- **Base font settings**: Modern font features, antialiasing
-- **Headings (h1-h6)**: Serif font family with proper hierarchy
-- **Paragraphs and links**: Default styling with hover states
-- **Animated link underlines**: Gradient underline that expands left-to-right on hover for prose, content-body, paragraph, and list links
-- **Lists**: Styled ordered and unordered lists
-- **Inline elements**: Strong, em, code, small text
-- **Blockquotes**: Enhanced styling with background and borders
-- **Academic elements**: Citations, footnotes, abstracts, keywords
-- **Code blocks**: Enhanced pre and code styling
-- **Tables**: Responsive table styling
-- **Print optimizations**: Print-friendly styles
-- **Responsive typography utilities**: Font sizes, weights, alignment, line height, letter spacing
-- **Prose class**: Long-form content styling
-- **Accessibility**: Link underlines show statically for users who prefer reduced motion
+- **Reading default**: `body` is set in Newsreader (the prose voice); chrome opts into mono, headings into Archivo
+- **Headings**: h1–h3 are the display voice (Archivo, wide/heavy via `font-variation-settings`); h4–h5 stay in Newsreader; **h6 is the data voice** (mono, letterspaced caps — an eyebrow/label)
+- **Links**: Ink text with a **static pine underline** in prose contexts (`text-decoration-color: var(--color-accent)`, 1px, offset 3px). Hover warms the text to pine and thickens the rule to 2px — nothing grows or sweeps. Outside prose, `.link-animated` gives a quiet hover-to-accent response without the underline
+- **Blockquotes**: Editorial indent — left margin, italic serif, softer colour. No background, no border stripe
+- **Emphasis**: `em`/`i`/`cite` are genuine Newsreader italics; inside h1–h3 they stay upright in the display face to avoid a voice collision
+- **Academic elements**: `.citation`, `.footnote`, `.abstract` (a serif-italic standfirst, no box), `.keywords`
+- **`.editorial-section-title`**: Archivo section head over a hairline rule, shared by detail-page sections
+- **Prose class**: `.prose` for long-form content (reading measure, relaxed leading, heading rhythm)
+- **Utilities**: Font family/size/weight, alignment, leading, tracking, transforms, truncation
+- **Selection**: Translucent pine `::selection`
+- **Print optimizations** for CV and publication pages
 
 ### Custom Media (`base/media.css`)
 
 PostCSS Custom Media definitions for responsive and capability-based queries:
 
 - **Breakpoints (min-width)**: `--sm`, `--md`, `--lg`, `--xl`, `--2xl`
-- **Breakpoints (max-width)**: `--xs-down`, `--sm-down`, `--md-down`, `--lg-down`, `--xl-down`
+- **Breakpoints (max-width)**: `--xs-down`, `--sm-down`, `--md-down`, `--lg-down`, `--xl-down`, `--2xl-down`
 - **Interaction**: `--can-hover` (desktop), `--touch` (touch devices)
 - **Environment**: `--print`, `--retina`, `--landscape`, `--portrait`
 - **Accessibility**: `--reduced-motion`, `--high-contrast`, `--dark-mode`
 
 ### Reset (`base/reset.css`)
 
-Provides consistent styling across browsers by:
-
-- Setting box-sizing to border-box for all elements
-- Removing default margins and paddings
-- Setting core body defaults with smooth scrolling
-- Normalizing image display
-- Improving form element styling
-- Respecting reduced motion preferences
+Provides consistent styling across browsers: border-box sizing, margin/padding normalization, core body defaults, image normalization, form element improvements, and reduced-motion support.
 
 ## Layout Components
 
-Layout styles define the structural elements of the site.
-
 ### Container (`layout/container.css`)
-
-Provides responsive container classes:
 
 - `.container`: Responsive container with max-widths at breakpoints (640px, 768px, 1024px, 1280px)
 - `.container-fluid`: Full-width container
-- `.section`: Content section with vertical padding
-- `.section-sm`, `.section-lg`: Size variations
+- `.section-sm`, `.section-lg`: Section padding variations (note: the bare `.section` class is owned by `ink-signal.css` as the ruled-section idiom)
 
 ### Grid (`layout/grid.css`)
 
-Comprehensive grid system:
-
-- `.grid`: Base grid container
-- `.grid-cols-*`: Grid column templates (1-12 columns)
-- **Responsive variants**: `sm:`, `md:`, `lg:`, `xl:` prefixes
-- **Column spans**: `.col-span-*` classes
-- **Grid rows**: Row template classes
-- **Auto flow**: Row and column flow control
-- **Content grid**: Specialized grid for content cards
+- `.grid`, `.grid-cols-*` (1–12), responsive `sm:`/`md:`/`lg:`/`xl:` variants, `.col-span-*`, row templates, auto-flow control, and a specialized content grid
 
 ## UI Components
 
-Reusable components that can be used across the site.
+### Ink + Signal Idioms (`components/ink-signal.css`)
+
+The vocabulary of the design system, in one place. Every class belongs to exactly one voice — document (Archivo/Newsreader) or data (Spline Sans Mono):
+
+- **Data voice**: `.data-voice`, `.eyebrow` (accent mono kicker; `--ink`, `--faint` variants), `.dateline` / `.dateline-kind`, `.figure-accent`
+- **Rules**: `.rule-nameplate` (5px), `.rule-masthead` (4px), `.rule-section` (3px), `.rule-hairline` (1px) — ink-coloured border-tops
+- **Nameplate**: `.nameplate` (the masthead wordmark, wide heavy Archivo caps), `.nameplate--sm` (inner-page masthead)
+- **Section**: `.section` (3px ink rule + spacing — the standard content module), `.section-head`, `.section-no`, `.section-title`
+- **Ledger** — the universal record idiom: `.ledger`, `.ledger-row` (hanging mono key column left, serif content right, hairline per row; `--meta` three-column variant), `.ledger-key` / `--current`, `.ledger-status`, `.ledger-content`, `.ledger-title`, `.ledger-desc`, `.ledger-meta`. Column widths tune via `--ledger-key-w` / `--ledger-meta-w`
+- **Chips**: `.chip` (flat, square, 1px border, mono caps, `.chip-count` appended; `.chip--selected` = solid ink fill), `.chip-more` (accent mono text action), `.chip-row`
+- **Data as ornament**: `.year-bars` / `.year-bar` / `.year-bar--current` (output distribution as ink bars, accent on the newest year), `.hbar` / `.hbar--current` (horizontal proportion meter — a hard-stop `linear-gradient` fill via `--pct`, the **only** gradient in the system), `.key-terms` (frequency-scaled term cloud), `.stat-ledger` / `.stat-row` / `.stat-value`
+- **Editorial**: `.drop-cap` (accent Archivo initial), `.plate` / `.plate-caption` (images as plates: 1px border, square, serif-italic caption), `.standfirst` (serif-italic deck)
+- **Pagination**: `.pager` / `.pager-item` (mono, square, ink fill on the current page)
 
 ### Buttons (`components/buttons.css`)
 
-Modern, comprehensive button system with enhanced accessibility and user experience:
+Buttons speak the **data voice**: Spline Sans Mono, uppercase, letterspaced, square corners, no shadow, no lift, no ripple. Transitions are colour-only:
 
-- **Base button**: `.btn` with modern styling, flexbox layout, and smooth transitions
-- **Color variants**:
-  - `.btn-primary`: Solid ink-blue, no gradient
-  - `.btn-secondary`: Neutral with subtle background
-  - `.btn-ghost`: Minimal style for tertiary actions
-  - `.btn-danger`: Red variant for destructive actions
-- **Outline variants**: `.btn-outline-primary`, `.btn-outline-secondary` with transparent backgrounds
-- **Glass variants**: `.btn-glass` with glassmorphism effects, can be combined with other variants
-- **Size variants**: `.btn-sm`, `.btn-lg` with proportional spacing
-- **Layout variants**:
-  - `.btn-block`: Full width
-  - `.btn-icon-only`: Square buttons for icons with proper sizing
-  - `.btn-with-icon`: Automatically applied when icons are present
-- **States**:
-  - Hover effects with subtle lift animations
-  - Focus-visible with custom outline
-  - Active state with scale effect
-  - Loading state with spinner (`.btn-loading`)
-  - Disabled state with reduced opacity
-- **Accessibility features**:
-  - Proper ARIA attributes support
-  - High contrast mode adjustments
-  - Reduced motion support
-  - Touch-friendly sizing
-- **Dark mode support**: Automatic adaptations for all button variants
-- **Legacy compatibility**: Maintains support for existing `.control-button-rounded` class
+- `.btn-primary`: Solid **ink** (cream on midnight) — the standard primary action
+- `.btn-accent`: Solid **pine** — the single hero CTA per screen, used by scarcity
+- `.btn-secondary`: Flat outlined control
+- `.btn-outline-primary`, `.btn-outline-secondary`, `.btn-outline-accent`: Outlines that fill on hover
+- `.btn-ghost`: Minimal tertiary; `.btn-danger`: destructive actions
+- `.btn-glass`: **Neutralised legacy variant** — now a flat outlined control (no backdrop-filter)
+- **Sizes**: `.btn-sm`, `.btn-lg`; **layout**: `.btn-block`, `.btn-icon-only`
+- **States**: `.btn-loading`, disabled opacity; focus-visible uses an accent outline
+- **Accessibility**: High-contrast border widening, reduced-motion support
 
 ### Cards (`components/cards.css`)
 
-Flexible card component system with glassmorphism effects:
+`.card` is a **flat warm-paper tile**: `--color-surface-elevated` background, 1px hairline border, square corners, no shadow. Hover darkens the border only — no lift. Many former card grids have been reworked into ledger rows; `.card` remains the bounded-tile primitive for genuinely distinct entities (featured items, project plates).
 
-- `.card`: Base card with glassmorphism styling, backdrop blur, and hover effects
-- **Card elements**: `.card-image`, `.card-body`, `.card-title`, `.card-subtitle`, `.card-text`, `.card-footer`
-- **Variations**: `.card-compact`, `.card-bordered`, `.card-shadow`, `.card-shadow-lg`
-- **Layouts**: `.card-horizontal` with responsive behavior
-- **Visual indicators**: `.card-link` with animated arrows
-- **Grid system**: `.card-grid` with responsive columns
-- **Background variants**: Color-themed cards
-- **Border variants**: Colored borders
-- **Glass effects**: Automatic glassmorphism with backdrop blur and transparency
-- **Dark mode support**: Seamless dark theme adaptations
+- **Elements**: `.card-image` (bordered), `.card-body`, `.card-title` (Newsreader), `.card-subtitle` (mono caps), `.card-text`, `.card-footer`
+- **Variations**: `.card-compact`, `.card-horizontal`; `.card-shadow` / `.card-shadow-lg` survive as no-ops (`box-shadow: none`)
+- **`.card-link`**: Mono arrow that slides in on hover
+- **`.card-accent-border`**: Reading-surface tile whose border warms to pine on hover
+- **Grid**: `.card-grid` with responsive columns
 
-### Entity Cards (`components/entity-cards.css`)
+### Entity Cards (`components/entity-cards.css`) — route-scoped
 
-Unified card styles for list-based entities (e.g., Publications, Communications) that align with the design philosophy and global CSS tokens.
+Shared styles for list-based entities (Publications, Communications). `.entity-card` is a flat `--color-surface` tile with a 1px border and square corners; hover warms the border toward the accent and the title to pine — no lift, no zoom, no shadow. Core classes: `.entity-list-item`, `.entity-card`, `.entity-grid`, `.entity-image-container` / `.entity-cover-image`, `.entity-content`, `.entity-meta` / `.entity-type` / `.entity-language`, `.entity-title` / `.entity-title-link`, `.entity-details` / `.entity-abstract`, `.entity-tags` / `.entity-links` / `.entity-link-btn`.
 
-- Purpose: Provide a consistent look-and-feel for content cards across pages without duplicating styles in components.
-- Uses only global design tokens: colors, spacing, typography, border radius, shadows, and transitions.
-- Glassmorphism: Works in tandem with `.glass-card` from glass utilities for subtle depth and dark-mode support.
-- Responsive: Single-column on mobile; image + content grid from `md` breakpoint.
-- Core classes:
-  - `.entity-list-item` – list item wrapper with consistent spacing
-  - `.entity-card` – glass gradient background, radius, hover lift, shadows
-  - `.entity-grid` – layout for image and content columns
-  - `.entity-image-container`, `.entity-cover-image` – image placement and styling (5/7 aspect)
-  - `.entity-content` – vertical stack container
-  - `.entity-meta`, `.entity-type`, `.entity-language` – compact metadata line
-  - `.entity-title`, `.entity-title-link` – title style and hover color
-  - `.entity-details`, `.entity-abstract` – body text styles
-  - `.entity-tags`, `.entity-links`, `.entity-link-btn` – tag row and external links with arrow indicator
+### Bibliography (`components/bibliography.css`) — route-scoped
 
-Usage notes:
-
-- Combine `.entity-card` with `.glass-card` to inherit the global glass effects and dark mode.
-- For external links in cards, prefer `entity-link-btn` alongside button utilities (e.g., `btn btn-outline-primary btn-sm`).
-- Keep component-specific micro-styles local (e.g., an author or country filter button), but rely on entity classes for layout and visual system.
-
-Adoption:
-
-- `PublicationItem.svelte` and `CommunicationItem.svelte` are refactored to use these classes for full visual parity across pages.
-
-### ContentBody Component
-
-The `ContentBody` component (`src/lib/components/common/ContentBody.svelte`) is a reusable container for main content areas that provides:
-
-- **Glassmorphism effects**: Consistent glass effects using the glassmorphism utilities
-- **Typography styling**: Comprehensive text styling with CSS variables
-- **Responsive design**: Mobile-first approach with proper scaling
-- **Dark mode support**: Automatic theme adaptation
-- **Multiple variants**: Default, compact, and wide options
-- **Flexible glass effects**: Support for all glassmorphism utility classes
-
-The component centralizes content styling that was previously scattered across individual pages, ensuring consistency and maintainability.
-
-### PageHeader Component
-
-The `PageHeader` component (`src/lib/components/common/PageHeader.svelte`) provides a consistent, animated header for pages with:
-
-- **Dynamic metadata**: Supports title, date, type badges, authors, editors, and tags
-- **Navigation**: Optional back link with animation
-- **Visual styling**: Glassmorphism effects, title accents, and responsive typography
-- **Animations**: Staggered entrance animations for all elements
-- **Flexibility**: Adapts to different content types (articles, events, standard pages)
-
-### Navigation Components
-
-Navigation is now implemented using component-scoped styles in individual Svelte components:
-
-- **Header.svelte**: Site header with glassmorphism effects, logo, and desktop controls
-- **DesktopNav.svelte**: Desktop navigation with responsive behavior
-- **NavLink.svelte**: Individual navigation links with hover effects and accessibility
-- **NavItemWithDropdown.svelte**: Navigation items with dropdown functionality
-- **DropdownMenu.svelte**: Dropdown menus with glassmorphism and animations
-- **HamburgerButton.svelte**: Mobile menu toggle with smooth animations
-- **MobileMenu.svelte**: Full-screen mobile navigation with staggered animations
-- **ThemeToggle.svelte**: Theme switching component
-
-### Navigation Utilities (`components/navigation-utilities.css`)
-
-Shared utilities used across navigation components:
-
-- **Accessibility**: `.sr-only` for screen readers, focus-visible styles
-- **Reduced motion**: Respects user motion preferences
-- **High contrast**: Enhanced visibility for accessibility
+`.bib-row` — the finding-aid ledger entry shared by `/publications` and `/conference-activity`: a fixed `[year] [cover] [body] [actions]` grid with hairlines drawn by the parent list. Tunables: `--bib-year-w`, `--bib-cover-w`, `--bib-plate-aspect`.
 
 ### Panels (`components/panels.css`)
 
-Reusable panel components for content organization:
+Flat ruled sidebar modules (pair with `.glass-panel`, which now supplies a flat paper surface):
 
-- `.panel`: Base panel with glassmorphism effects and subtle gradient overlays
-- **Panel structure**: `.panel-header`, `.panel-content`, `.panel-footer`
-- **Panel titles**: `.panel-title` with animated accent lines
+- `.panel`: Square, flat, border-colour transition only — the earlier gradient overlays and animated accent lines are gone
+- `.panel-header` / `.panel-content` / `.panel-footer` separated by hairlines
+- `.panel-title`: The data voice — mono, letterspaced caps
 - **Content elements**: `.no-items`, `.item-list`, `.view-all-container`
 - **Filter systems**: `.year-filters`, `.filter-button`, `.type-filters-section`
-- **Variants**: `.panel-activities`, `.panel-items` with different gradient schemes
-- **Dark mode support**: Complete dark theme overrides
-- **Responsive design**: Mobile-optimized spacing and typography
 
-### Activity List (`components/activity-list.css`)
+### Activity List (`components/activity-list.css`) — route-scoped
 
-Specialized component for activity timelines:
+The `/activities` page as a dated press column: mono log eyebrow over an Archivo masthead, year-grouped entries as hairline-separated rows (mono date/kind column, optional image plate, serif title + summary, mono tag run), and a ruled browse-by-year/tag aside.
 
-- `.activity-list`: Timeline-style list
-- `.activity-item`: Individual activity with border accent and hover effects
-- **Activity elements**: `.activity-title`, `.activity-date`, `.activity-summary`
-- **Filters**: `.activity-filters`, `.filter-tag`, `.year-tag`
-- **Interactive elements**: Hover effects, active states
-- **Year navigation**: `.year-count` for activity counts
+### Filters (`components/filters.css`) — route-scoped
 
-### Skill Tags (Component-based)
+Shared `filter-*` classes for the filter sidebar components: mono caps section labels over hairlines, flat chip-style controls.
 
-Skill/technology tags are now handled through the `TagList` component which uses the `Button` component with glassmorphism effects. No dedicated CSS file is needed as styling is handled through the button system and component props.
+### Navigation Utilities (`components/navigation-utilities.css`)
+
+Shared utilities used across navigation components: `.sr-only`, focus-visible styles, reduced-motion and high-contrast support. Navigation itself (Header, DesktopNav, NavLink, DropdownMenu, MobileMenu, ThemeToggle, etc.) is styled with component-scoped CSS in the Svelte files.
 
 ### Animations (`components/animations.css`)
 
-Modern CSS-only animation system using scroll-driven animations for performant, accessible effects:
+CSS-only animation system. Motion is nearly none by design — instant state changes, at most a short fade on entry:
 
-#### Scroll-Driven Animations (CSS-only)
+#### Mount-time entry
 
-- **`.scroll-reveal`**: Fade-up animation triggered by viewport entry using `animation-timeline: view()`
-- **`.scroll-reveal-scale`**: Subtle scale-in animation for cards and images
-- **`.grid-stagger`**: Container class that applies staggered reveal to child elements using `:nth-child()` selectors
-- **Browser support**: Chrome 115+, Firefox 110+; graceful fallback shows content immediately in unsupported browsers
+- **`.page-enter`** / **`.body-enter`**: Subtle fade-up on page load
+- **`.heading-enter`**, **`.card-enter`**, **`.micro-enter`**: Same parametric keyframe with contextual distances/durations
+- **`.fade-in-up`**: Mount-time entrance for lazily loaded sections (e.g. deferred CV batches)
+- **`.stagger-1`** through **`.stagger-6`**: Sequential delay utilities (`backwards` fill keeps delayed elements hidden until they start)
+- **`.hero-entrance`**, **`.hero-sequence-photo/-title/-subtitle/-actions`**: Detail-page and profile hero sequences
 
-#### Page Entry Animations
+#### Scroll-driven entry (CSS-only)
 
-- **`.page-enter`**: Subtle fade-up animation for initial page load
-
-#### Skeleton Loading
-
-- **`.skeleton`**: Base class with shimmer animation for loading placeholders
-- **`.skeleton-text`**: Text placeholder sizing
-- **`.skeleton-title`**: Title placeholder with appropriate width
-- **`.skeleton-image`**: Image placeholder with 16:9 aspect ratio
-- **`.skeleton-card`**: Card-shaped loading placeholder
-
-#### Legacy Animation Classes
-
-Maintained for backward compatibility:
-
-- **Base states**: `.animate-in`, `.animate-out`
-- **Fade animations**: `.fade-in`, `.fade-in-up`, `.fade-in-down`, `.fade-in-left`, `.fade-in-right`
-- **Scale animations**: `.scale-in`, `.scale-in-center`
-- **Slide animations**: `.slide-in-up`, `.slide-in-down`, `.slide-in-left`, `.slide-in-right`
-- **Bounce animations**: `.bounce-in`
-- **Stagger delays**: `.stagger-1` through `.stagger-6`
-- **Parallax support**: `.parallax-container`, `.parallax-element`
+- **`.scroll-reveal`**: Fade-up on viewport entry via `animation-timeline: view()`
+- **`.scroll-reveal-scale`**: Subtle scale-in for cards and images
+- **`.grid-stagger`**: Staggered reveal of grid children via `:nth-child()` delays
+- **Browser support**: Chrome 115+, Firefox 110+; graceful fallback shows content immediately elsewhere
 
 #### Accessibility & Performance
 
-- **Reduced motion**: All animations disabled for users with `prefers-reduced-motion: reduce`
-- **Graceful fallback**: Content is visible immediately in browsers without scroll-driven animation support
-- **Performance**: Uses `will-change`, `transform`, and `opacity` for GPU-accelerated animations
-- **Mobile optimizations**: Reduced transform distances on smaller screens
+- All animations are disabled under `prefers-reduced-motion: reduce`
+- GPU-friendly (`opacity`/`transform` only, `will-change` on scroll-driven classes); reduced distances on mobile
 
 ## Page-Specific Styles
 
-**Note**: There is intentionally no `styles/pages/` directory anymore. Page-level design lives alongside its Svelte component so the styles ship only where they are used. Shared presentation (e.g., publications and communications) is centralized in `components/entity-cards.css`, while components keep only minimal, truly unique tweaks such as advisor badges or filter button placement.
+There is intentionally no `styles/pages/` directory. Page-level design lives alongside its Svelte component so styles ship only where they are used. Shared presentation is centralized in the route-scoped modules above (`entity-cards.css`, `bibliography.css`, `activity-list.css`, `filters.css`). The `ContentBody` and `PageHeader` components (`src/lib/components/common/`) centralize common content-area and page-header styling with component-scoped CSS.
 
 ## Utilities
 
-Comprehensive utility class system for rapid development.
-
 ### Spacing (`utilities/spacing.css`)
 
-Essential spacing utility system using the 8-point grid:
-
-- **Margin utilities**: `.m-*`, `.mx-*`, `.my-*`, `.mt-*`, `.mb-*`, `.mr-*`, `.ml-*`
-- **Padding utilities**: `.p-*`, `.px-*`, `.py-*`, `.pt-*`, `.pb-*`
-- **Gap utilities**: `.gap-*`, `.gap-x-*`, `.gap-y-*`
-- **Space between**: `.space-y-*` for consistent vertical spacing
-- **Responsive variants**: Essential utilities available with `sm:`, `md:`, `lg:` prefixes
-- **Token mapping**: Utilities use semantic tokens (`--space-md`, `--space-lg`) for consistency
-- **Scale**: Common values (0, 1, 2, 3, 4, 6, 8, 12) mapped to semantic names
+Margin (`.m-*`, `.mx-*`, …), padding (`.p-*`, `.px-*`, …), gap (`.gap-*`), and `.space-y-*` utilities on the 8-point grid, with `sm:`/`md:`/`lg:` variants. Values map to the semantic tokens.
 
 ### Colors (`utilities/colors.css`)
 
-Comprehensive color utility system:
-
-- **Text colors**: `.text-primary`, `.text-secondary`, `.text-accent`, `.text-highlight`, `.text-success`, `.text-danger`, `.text-default`, `.text-light`, `.text-white`, `.text-black`, `.text-muted`, `.text-emphasis`
-- **Background colors**: `.bg-*` variants including `.bg-surface`, `.bg-surface-alt`, `.bg-danger`, and opacity variants (`.bg-primary-10`, `.bg-primary-20`, etc.)
-- **Border colors**: `.border-*` variants including `.border-danger` with comprehensive color options
-- **Border styles**: `.border`, `.border-0`, `.border-2`, `.border-4`, directional borders
-- **Interactive states**: Hover and focus variants for all color utilities
-- **Responsive variants**: All color utilities available at all breakpoints
+- **Text**: `.text-primary`, `.text-secondary`, `.text-accent`, `.text-highlight`, `.text-success`, `.text-danger`, `.text-muted`, `.text-emphasis`, etc.
+- **Backgrounds**: `.bg-*` including `.bg-surface`, `.bg-surface-alt`, and opacity variants (`.bg-primary-10`, …)
+- **Borders**: `.border-*` colour and width/side utilities
+- **Interactive states** and responsive variants throughout
 
 ### Flexbox (`utilities/flex.css`)
 
-Complete flexbox utility system:
-
-- **Flex containers**: `.flex`, `.inline-flex`
-- **Direction**: `.flex-row`, `.flex-col`, `.flex-row-reverse`, `.flex-col-reverse`
-- **Wrap**: `.flex-wrap`, `.flex-nowrap`, `.flex-wrap-reverse`
-- **Grow/Shrink**: `.flex-grow`, `.flex-shrink`, `.flex-1`, `.flex-auto`, `.flex-initial`, `.flex-none`
-- **Justify content**: `.justify-start`, `.justify-end`, `.justify-center`, `.justify-between`, `.justify-around`, `.justify-evenly`
-- **Align items**: `.items-start`, `.items-end`, `.items-center`, `.items-baseline`, `.items-stretch`
-- **Align content**: `.content-*` variants
-- **Align self**: `.self-*` variants
-- **Order**: `.order-*` utilities
-- **Responsive variants**: Available at all breakpoints
+`.flex`/`.inline-flex`, direction, wrap, grow/shrink, justify/align/order utilities with responsive variants.
 
 ### Layout (`utilities/layout.css`)
 
-Display and overflow utilities:
-
-- **Display**: `.block`, `.inline-block`, `.inline`, `.inline-grid`, `.hidden`
-- **Overflow**: `.overflow-auto`, `.overflow-hidden`, `.overflow-visible`, `.overflow-scroll`
-- **Directional overflow**: `.overflow-x-*`, `.overflow-y-*`
-- **SvelteKit integration**: `.sveltekit-body-container`
-- **Responsive variants**: All utilities available at all breakpoints
+Display (`.block`, `.hidden`, …) and overflow utilities, plus `.sveltekit-body-container`; responsive variants.
 
 ### Sizing (`utilities/sizing.css`)
 
-Width, height, and max-width utilities:
-
-- **Width**: `.w-auto`, `.w-full`, `.w-screen`
-- **Height**: `.h-auto`, `.h-full`, `.h-screen`
-- **Max width**: `.max-w-none`, `.max-w-xs` through `.max-w-7xl`, `.max-w-full`, `.max-w-prose`
-- **Responsive variants**: All sizing utilities available at all breakpoints
+Width/height (`.w-full`, `.h-screen`, …) and `.max-w-*` utilities (including `.max-w-prose`); responsive variants.
 
 ### Border Radius (`utilities/border-radius.css`)
 
-Comprehensive border radius utilities:
-
-- **All sides**: `.rounded-none`, `.rounded-sm`, `.rounded`, `.rounded-md`, `.rounded-lg`, `.rounded-xl`, `.rounded-2xl`, `.rounded-full`
-- **Directional**: `.rounded-t-*`, `.rounded-r-*`, `.rounded-b-*`, `.rounded-l-*`
-- **Responsive variants**: Available at all breakpoints
+`.rounded-*` classes still exist, but because every radius token is `0`, they all render square. `.rounded-full` is the only meaningful class — reserve it for genuinely circular micro-controls. Do not reach for these classes in new code.
 
 ### Shadows (`utilities/shadows.css`)
 
-Box shadow utilities:
-
-- **Shadow levels**: `.shadow-xs`, `.shadow-sm`, `.shadow`, `.shadow-md`, `.shadow-lg`, `.shadow-xl`, `.shadow-none`
-- **Interactive states**: `.hover:shadow-*` variants
-- **Responsive variants**: Available at all breakpoints
-
-Note: The design system also includes colored shadows (`--shadow-primary`, `--shadow-accent`) and glass shadows (`--shadow-glass`) defined in variables.css.
+`.shadow-*` and `.hover:shadow-*` classes still exist for compatibility, but every shadow token resolves to `none`, so they are all no-ops. Do not use shadows for depth — draw a rule or strengthen a border instead.
 
 ### Transforms (`utilities/transforms.css`)
 
-Transform utilities for animations and effects:
-
-- **Scale**: `.scale-*` from 0 to 150
-- **Translate**: `.translate-x-*`, `.translate-y-*` with positive and negative values
-- **Rotate**: `.rotate-*` with positive and negative values
-- **Skew**: `.skew-x-*`, `.skew-y-*` with positive and negative values
-- **Transform origin**: `.origin-*` for transform origins
-- **Interactive states**: `.hover:*` and `.focus:*` variants
-- **Responsive variants**: Available at all breakpoints
+Scale, translate, rotate, skew, and origin utilities with hover/focus and responsive variants.
 
 ### Transitions (`utilities/transitions.css`)
 
-Transition and animation utilities:
-
-- **Transition types**: `.transition`, `.transition-colors`, `.transition-opacity`, `.transition-shadow`, `.transition-transform`, `.transition-none`
-- **Duration**: `.duration-75` through `.duration-500`
-- **Easing**: `.ease-linear`, `.ease-in`, `.ease-out`, `.ease-in-out`
-- **Responsive variants**: Available at all breakpoints
+`.transition-*` type, `.duration-*`, and `.ease-*` utilities with responsive variants.
 
 ### Images (`utilities/images.css`)
 
-Image handling utilities for better performance and responsiveness:
+`.responsive-image`, aspect ratios (`.aspect-square`, `.aspect-book`, …), object-fit, image containers, loading states, and component-specific image classes. Prefer the `.plate` idiom for content imagery (scans, covers, photos).
 
-- **Responsive images**: `.responsive-image`
-- **Aspect ratios**: `.aspect-square`, `.aspect-video`, `.aspect-photo`, `.aspect-card`, `.aspect-book`
-- **Object fit**: `.object-cover`, `.object-contain`, `.object-fill`
-- **Image containers**: `.image-container` with hover effects
-- **Loading states**: `.image-loading` with skeleton animation
-- **Specific components**: `.publication-cover`, `.communication-image`, `.hero-image`, `.card-image-content`, `.preview-card-image`
+### Glassmorphism (`utilities/glassmorphism.css`) — legacy naming, neutralised
 
-### Glassmorphism (`utilities/glassmorphism.css`)
+Glass does not exist in Ink + Signal: no `backdrop-filter`, no blur, no translucency, no glow. This file survives because the `.glass-*` class names are still referenced throughout the codebase, but every class now renders a **flat surface** and the names are slated for renaming:
 
-Modern glass effect utilities for creating frosted glass UI elements:
+- `.glass`, `.glass-light/-medium/-heavy`, `.glass-frosted`, `.glass-primary`: Flat `--color-surface` tile with a 1px border
+- `.glass-card`, `.glass-panel`, `.glass-panel-light`, `.glass-sub-card`: The workhorse paper/film tiles — flat background, hairline border, square corners; `.glass-card` gets a border-colour hover only
+- `.glass-nav`: Solid page-ground masthead surface with a hairline base rule
+- `.glass-button` (and its `.btn-*` combos): Square flat ink/paper control
+- `.glass-blur-*`: Explicit no-ops (`backdrop-filter: none`)
+- `.glass-section-panel`: Transparent — content sits directly on the page ground
+- `.glass-animate`: Border-colour transition only
 
-- **Base glass effects**: `.glass`, `.glass-light`, `.glass-medium`, `.glass-heavy`
-- **Colored glass**: `.glass-primary` (ink-blue; amber/emerald variants retired)
-- **Blur levels**: `.glass-blur-sm`, `.glass-blur-md`, `.glass-blur-lg`, `.glass-blur-xl`, `.glass-blur-2xl`
-- **Component-specific**: `.glass-card`, `.glass-panel`, `.glass-panel-light`, `.glass-nav`, `.glass-button`
-- **Button variants**: Enhanced glass button styling with improved contrast
-- **Special effects**: `.glass-frosted` with enhanced saturation
-- **Transition utility**: `.glass-animate` (used by IframeRenderer glass variants)
-- **Dark mode support**: Automatic dark theme adaptations
-- **Browser fallbacks**: Graceful degradation for unsupported browsers
-- **Responsive variants**: Available at all breakpoints
+New code should prefer the idiom classes (`.ledger`, `.section`, `.chip`, `.plate`) or `.card` over any `.glass-*` name.
 
 ### Z-Index (`utilities/z-index.css`)
 
-Z-index utilities for controlling stacking order:
-
-- **Numeric scale**: `.z-0`, `.z-1`, `.z-10`, `.z-20`, `.z-30`, `.z-40`, `.z-50`
-- **Semantic classes**: `.z-dropdown`, `.z-sticky`, `.z-fixed`, `.z-modal-backdrop`, `.z-modal`, `.z-popover`, `.z-tooltip`, `.z-toast`
-- **Special values**: `.z-auto`, `.-z-1`, `.-z-10`
-- **Responsive variants**: Available at `sm`, `md`, `lg` breakpoints
-
-Note: Semantic z-index classes use tokens from `variables.css` to maintain consistent layering across the site.
+Numeric (`.z-0` … `.z-50`) and semantic (`.z-dropdown`, `.z-modal`, `.z-tooltip`, …) stacking utilities backed by the `--z-*` tokens.
 
 ## Class Naming Convention
 
-The CSS follows a component-based naming convention:
-
-- **Component**: `.component-name`
-- **Element**: `.component-name-element`
-- **Modifier**: `.component-name--modifier` or `.component-name-element--modifier`
+- **Component**: `.component-name`; **element**: `.component-name-element`; **modifier**: `.component-name--modifier`
 - **Utility**: `.utility-value` (e.g., `.text-center`, `.p-4`)
-- **Responsive**: `.breakpoint:utility-value` (e.g., `.md:text-lg`, `.lg:p-8`)
+- **Responsive**: `.breakpoint:utility-value` (e.g., `.md:text-lg`)
 
 ## Responsive Approach
 
-The CSS is built with a mobile-first approach using PostCSS Custom Media queries.
+Mobile-first, using PostCSS Custom Media queries.
 
 ### Breakpoints
 
-We use standard breakpoints defined in `src/styles/base/media.css`:
-
-- **Small (`--sm`)**: 640px
-- **Medium (`--md`)**: 768px
-- **Large (`--lg`)**: 1024px
-- **Extra Large (`--xl`)**: 1280px
-- **2X Large (`--2xl`)**: 1536px
+Defined in `src/styles/base/media.css`: `--sm` 640px, `--md` 768px, `--lg` 1024px, `--xl` 1280px, `--2xl` 1536px (plus the `-down` max-width set).
 
 ### Writing Media Queries
 
-**IMPORTANT**: Do NOT use CSS variables (e.g., `var(--breakpoint-md)`) inside media queries as this is not supported by browsers. Instead, use the PostCSS Custom Media syntax:
+**IMPORTANT**: Do NOT use CSS variables (e.g., `var(--breakpoint-md)`) inside media queries — browsers do not support this. Use the PostCSS Custom Media syntax:
 
 ```css
 /* Correct usage */
@@ -549,79 +339,31 @@ We use standard breakpoints defined in `src/styles/base/media.css`:
   }
 }
 
-/* Legacy/Invalid usage - DO NOT USE */
+/* Invalid — DO NOT USE */
 @media (min-width: var(--breakpoint-md)) { ... }
 ```
 
-- **Base styles**: Designed for mobile devices first (no media query).
-- **Progressive enhancement**: Use `@media (--breakpoint)` to apply styles for larger screens.
-- **Utility responsiveness**: Most utilities are available with breakpoint prefixes (e.g., `.md:text-lg`).
-
-## JavaScript Utilities Integration
-
-The CSS framework integrates with several JavaScript utilities for enhanced functionality:
-
-### Scroll Animations (Deprecated: `src/lib/utils/scrollAnimations.ts`)
-
-> **⚠️ DEPRECATED**: The JavaScript-based `scrollAnimations.ts` utilities are deprecated in favor of the modern CSS-only scroll animation system. All components should use the CSS classes instead.
-
-**Migration Guide:**
-
-Replace the JavaScript `use:scrollAnimate` action with CSS classes:
-
-```svelte
-<!-- OLD (deprecated) -->
-<div use:scrollAnimate={{ animationClass: 'scale-in', delay: 200 }}>Content</div>
-
-<!-- NEW (use instead) -->
-<div class="scroll-reveal-scale">Content</div>
-```
-
-**Available CSS animation classes:**
-
-- **`scroll-reveal`**: Fade-up animation triggered on viewport entry
-- **`scroll-reveal-scale`**: Scale-in animation for cards and images
-- **`grid-stagger`**: Container class for staggered child animations
-- **`page-enter`**: Subtle page load animation
-
-**Benefits of CSS-only approach:**
-
-- No JavaScript dependency - better performance
-- Native browser support via `animation-timeline: view()`
-- Graceful fallback: content visible immediately in unsupported browsers
-- Automatic `prefers-reduced-motion` support
-
-**Legacy animation classes** (still valid for load-time animations):
-
-- `fade-in-up`, `scale-in`, `slide-in-left`, etc. - for elements that animate on mount, not scroll
-- `stagger-1` through `stagger-6` - for sequential delays on dynamically loaded content
+- **Base styles**: Designed for mobile first (no media query)
+- **Progressive enhancement**: `@media (--breakpoint)` for larger screens
+- **Utility responsiveness**: Most utilities take breakpoint prefixes (e.g., `.md:text-lg`)
 
 ## Best Practices
 
-When using this CSS framework:
-
-1. **Use existing components and utilities** whenever possible
-2. **Follow the established naming patterns** when creating new styles
-3. **Use semantic class names** for complex components
-4. **Leverage utility classes** for layout, spacing, color, and typography
-5. **Place page-specific styles** in the appropriate page CSS file
-6. **Use CSS variables** for colors, spacing, and other design tokens
-7. **Avoid inline styles** or `!important` declarations
-8. **Test responsive behavior** across all breakpoints
-9. **Consider dark mode** when adding new styles
-10. **Document new utilities** and component classes
-11. **Use scroll animations judiciously** - respect user preferences and performance
-12. **Implement proper cookie consent** using the provided utilities for GDPR compliance
-13. **For list-based content cards**, use the `entity-cards.css` module instead of creating bespoke card CSS inside components, and augment only when component-specific behavior truly requires it.
+1. **Use existing idioms, components, and utilities** before writing new CSS — the ledger, section rules, and chips cover most record/list/label needs
+2. **Keep the two voices strictly cast**: mono is metadata only, never body copy; serif is never used for machine-indexed strings
+3. **Use CSS variables** for colors, spacing, and typography; use `color-mix()` for transparency
+4. **Draw hierarchy in rules** (5px/3px/1px), not in shadows, radii, or size jumps
+5. **Keep the accent scarce**: pine marks the current/active/primary thing — demote occurrences if it appears more than a handful of times per screen
+6. **Avoid inline styles and `!important`** (exceptions: third-party overrides and `prefers-reduced-motion` blocks)
+7. **Test both themes**: midnight is a first-class microfilm negative, not an afterthought
+8. **Use motion sparingly** and respect `prefers-reduced-motion`
+9. **For list-based content**, use the ledger idiom or `entity-cards.css` / `bibliography.css` rather than bespoke card CSS in components
 
 ## Performance Considerations
 
-- **Modular imports**: CSS is split into logical modules for better caching
+- **Modular imports**: The global stylesheet stays small; route-scoped CSS (`entity-cards`, `activity-list`, `bibliography`, `filters`) code-splits with its components
 - **Utility-first approach**: Reduces CSS bloat through reusable classes
-- **CSS variables**: Enable efficient theming and customization
-- **Modern features**: Uses modern CSS features for better performance
-- **Print optimization**: Includes print-specific styles where needed
-- **Animation performance**: Scroll animations use `transform` and `opacity` for optimal performance
-- **Intersection Observer**: Efficient scroll detection without performance impact
-- **Reduced motion support**: Respects user accessibility preferences
-- **Cookie consent optimization**: Minimal localStorage usage with error handling
+- **CSS variables**: Enable theming without duplicate rule sets (dark mode is a token remap)
+- **Animation performance**: Entry animations use `transform`/`opacity` only; scroll effects are native CSS (`animation-timeline: view()`), no JavaScript observers
+- **Print optimization**: Print-specific styles for academic content
+- **Reduced motion support**: Respected globally
