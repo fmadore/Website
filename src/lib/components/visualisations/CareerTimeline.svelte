@@ -346,7 +346,7 @@
 
 			<!-- Detail Card (Always rendered if selectedItem exists) -->
 			{#if selectedItem}
-				<div class="detail-card glass-card" in:fly={{ y: 20, duration: 300 }}>
+				<div class="detail-card surface-card" in:fly={{ y: 20, duration: 300 }}>
 					<!-- Category Icon & Header -->
 					<div class="card-content-wrapper">
 						<div
@@ -600,7 +600,7 @@
 	}
 
 	/* Detail Card */
-	/* Flat archival panel — override the .glass-card global so the detail
+	/* Flat archival panel — override the .surface-card global so the detail
 	   card reads as a printed plate: square, hairline, no glass, no shadow. */
 	.detail-card {
 		position: relative;

@@ -4,7 +4,7 @@
 	let {
 		item,
 		itemUrl,
-		// Updated default classes to align with global glass card + typography system
+		// Updated default classes to align with the global surface card + typography system
 		// Added scroll-reveal-scale for modern CSS scroll-driven animation
 		cardClass = 'related-item p-4 focus-outline scroll-reveal-scale',
 		dateClass = 'related-date text-xs mb-1',

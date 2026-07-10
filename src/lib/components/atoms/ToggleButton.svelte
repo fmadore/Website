@@ -6,11 +6,11 @@
 		isToggled?: boolean;
 		baseText?: string; // e.g., "Map", "Details"
 		onclick?: () => void; // Svelte 5: callback prop instead of event dispatcher
-		glass?: boolean; // Enable glassmorphism effect
+		surface?: boolean; // Render on a flat surface tile
 	}
 
 	// Glass retired for the flat redesign; the toggle is a square mono control.
-	let { isToggled = false, baseText = 'Toggle', onclick, glass = false }: Props = $props();
+	let { isToggled = false, baseText = 'Toggle', onclick, surface = false }: Props = $props();
 
 	function handleClick() {
 		onclick?.(); // Call the onclick callback if provided
@@ -25,10 +25,10 @@
 		isToggled ? 'primary' : 'outline-primary'
 	);
 
-	// Compute additional classes based on glass prop and toggle state
+	// Compute additional classes based on surface prop and toggle state
 	let additionalClasses = $derived(
-		glass
-			? `glass-button toggle-button ${isToggled ? 'toggle-button-active' : ''}`
+		surface
+			? `surface-button toggle-button ${isToggled ? 'toggle-button-active' : ''}`
 			: `toggle-button ${isToggled ? 'toggle-button-active' : ''}`
 	);
 </script>
@@ -40,7 +40,7 @@
 	ariaLabel={ariaTitle}
 	title={ariaTitle}
 	{additionalClasses}
-	{glass}
+	{surface}
 >
 	{#snippet icon()}
 		<Icon icon="lucide:map" width="18" height="18" />

@@ -166,7 +166,7 @@
 							fallbackImage={activity.image}
 							defaultAlt={activity.title}
 							variant="featured"
-							glassEffect={true}
+							framed={true}
 							fetchpriority="high"
 							loading="eager"
 							maxHeight="60vh"
@@ -216,7 +216,7 @@
 							title="{activity.title} PDF Document"
 							height="800px"
 							containerClass="iframe-container iframe-container-fullwidth"
-							glassEffect={false}
+							framed={false}
 						/>
 					</div>
 				{/if}

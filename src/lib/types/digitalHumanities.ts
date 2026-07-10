@@ -10,14 +10,14 @@ export interface IframeEmbed {
 	scrolling?: 'yes' | 'no' | 'auto';
 	allowfullscreen?: boolean;
 	showTitle?: boolean; // Whether to display the iframe title above the embed
-	glassEffect?: boolean; // Enable glassmorphism effects
-	glassVariant?:
-		| 'glass'
-		| 'glass-light'
-		| 'glass-medium'
-		| 'glass-heavy'
-		| 'glass-primary'
-		| 'glass-frosted'; // Glass effect variant
+	framed?: boolean; // Wrap the embed in a flat framed surface
+	frameVariant?:
+		| 'surface'
+		| 'surface-light'
+		| 'surface-medium'
+		| 'surface-heavy'
+		| 'surface-primary'
+		| 'surface-frosted'; // Flat surface variant (formerly the glass variants)
 }
 
 export interface ImageEmbed {

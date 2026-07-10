@@ -218,7 +218,7 @@ apparatus, and the ruled-section styling.
 						src="{base}/{audioSrc}"
 						type="audio"
 						title="Google NotebookLM Podcast Discussion"
-						glassEffect=""
+						surface=""
 						showControls={true}
 					/>
 				</section>

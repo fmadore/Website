@@ -377,7 +377,7 @@
 		</div>
 	{/if}
 	{#if showLegend && legendEntries.length > 0}
-		<div class="map-legend glass-panel" role="group" aria-label="Activity type legend">
+		<div class="map-legend surface-panel" role="group" aria-label="Activity type legend">
 			<ul>
 				{#each legendEntries as entry (entry.type)}
 					<li>
@@ -442,7 +442,7 @@
 	}
 
 	/* Marker-colour legend (shown on the conference-activity map). Flat
-	   archival key: square, hairline, no glass — overrides .glass-panel. */
+	   archival key: square, hairline, no glass — overrides .surface-panel. */
 	.map-legend {
 		position: absolute;
 		bottom: var(--space-3);

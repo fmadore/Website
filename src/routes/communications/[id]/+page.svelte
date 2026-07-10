@@ -269,7 +269,7 @@
 </div>
 
 <style>
-	/* Article container - no outer glassmorphism, individual sections have their own */
+	/* Article container — no outer tile; individual sections carry their own styling */
 	.communication-article {
 		position: relative;
 	}
