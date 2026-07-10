@@ -25,8 +25,21 @@ compliance, and the ECharts/D3/MapLibre visualization layer). Baseline at
 audit time: `svelte-check` 0 errors, lint clean, 64/64 unit tests passing,
 zero legacy Svelte syntax (`export let`, `$:`, `on:` directives),
 `loadData()` adopted by 16/17 data categories, and the Ink + Signal token
-layer fully landed. The items below are the debt that remains, ordered by
+layer fully landed. The items below are the debt that remained, ordered by
 phase; each phase is a self-contained PR-sized unit.
+
+> **Status (July 2026, branch `claude/repo-website-review-u1jjxf`):
+> Phases 1–7 landed** — see the commit series `docs(roadmap)` →
+> `refactor(css): retire the glass vocabulary`. Along the way the ECharts
+> chunk shrank 1,141,754 → 682,289 bytes (tree-shaken `echarts/core`), the
+> two list pages dropped ~550 duplicated style lines each into
+> `entity-index.css`, and unit tests grew 64 → 160. Still open from this
+> review (deliberately deferred, see "Explicitly deferred" below plus):
+> a generic `BibliographyRow` for PublicationItem/CommunicationItem; the
+> known `formatCitation` trailing-space and "Published in in <book>" SEO
+> quirks (asserted as current behavior in the new tests); DH detail-page
+> `MetaTags` intent check; and full facet-grid/filter-bar _markup_
+> extraction into shared components (only the CSS is shared so far).
 
 ### Phase 1 — Correctness & brief-compliance quick wins
 
