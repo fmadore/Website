@@ -5,6 +5,7 @@
  * construction; seoUtils.ts owns SEO description/keyword generation and
  * re-exports everything here for backward-compatible imports.
  */
+import type { Activity } from '$lib/types/activity';
 import type { Grant } from '$lib/types/grant';
 import type { Publication } from '$lib/types/publication';
 import type { Communication } from '$lib/types/communication';
@@ -678,4 +679,42 @@ export function buildDhProjectJsonLd(
 	}
 
 	return jsonLdObject as CreativeWorkJsonLd;
+}
+
+/**
+ * Build the schema.org BlogPosting JSON-LD object for an activity page.
+ * Extracted verbatim from `activities/[id]/+page.ts`.
+ */
+export function buildActivityJsonLd(activity: Activity, base = ''): BlogPostingJsonLd {
+	// Format date with time and timezone (Berlin CET = UTC+1)
+	// Note: This assumes CET. If activity dates span DST changes, logic might need adjustment.
+	const formattedDatePublished = `${activity.dateISO}T00:00:00+01:00`;
+
+	const jsonLdObject: Partial<BlogPostingJsonLd> = {
+		'@context': 'https://schema.org',
+		'@type': 'BlogPosting',
+		name: activity.title,
+		headline: activity.title,
+		description: activity.description,
+		datePublished: formattedDatePublished
+	};
+
+	// Site owner as author, with position + affiliation for the blog register
+	jsonLdObject.author = {
+		...siteAuthorWithUrl(),
+		jobTitle: author.positionShort,
+		affiliation: {
+			'@type': 'Organization',
+			name: address.institution
+		}
+	};
+
+	if (activity.heroImage?.src) {
+		jsonLdObject.image = `${base}/${activity.heroImage.src}`;
+	}
+	if (activity.tags) {
+		jsonLdObject.keywords = activity.tags.join(', ');
+	}
+
+	return jsonLdObject as BlogPostingJsonLd;
 }

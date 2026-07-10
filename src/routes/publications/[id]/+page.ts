@@ -1,21 +1,15 @@
-import { error } from '@sveltejs/kit';
-import { base } from '$app/paths';
 import { allPublications } from '$lib/data/publications/index';
 import { buildPublicationJsonLd } from '$lib/utils/jsonLdSchemas';
+import { loadEntityDetail } from '$lib/utils/entityPageLoader';
 import type { PageLoad } from './$types';
 
-// --- Load Function ---
 export const load: PageLoad = ({ params }) => {
-	const publication = allPublications.find((p) => p.id === params.id);
+	const { entity: publication, jsonLdString } = loadEntityDetail({
+		id: params.id,
+		find: (id) => allPublications.find((p) => p.id === id),
+		buildJsonLd: buildPublicationJsonLd,
+		notFound: 'Publication not found'
+	});
 
-	if (!publication) {
-		throw error(404, 'Publication not found');
-	}
-
-	const jsonLdString = JSON.stringify(buildPublicationJsonLd(publication, base));
-
-	return {
-		publication,
-		jsonLdString
-	};
+	return { publication, jsonLdString };
 };

@@ -61,6 +61,25 @@ export function sortByYear<T extends { year: number }>(items: T[]): T[] {
 }
 
 /**
+ * Sort year-ranged items (appointments, …) most-recent first: ongoing entries
+ * (null endYear) float above finished ones (ordered among themselves by start
+ * year descending); finished entries order by end year descending, then start
+ * year descending. The year-field sibling of {@link sortByStartDate}.
+ */
+export function sortByYearRange<T extends { startYear: number; endYear?: number | null }>(
+	items: T[]
+): T[] {
+	return [...items].sort((a, b) => {
+		if (a.endYear === null && b.endYear !== null) return -1;
+		if (a.endYear !== null && b.endYear === null) return 1;
+		if (a.endYear !== b.endYear) {
+			return (b.endYear || 0) - (a.endYear || 0);
+		}
+		return b.startYear - a.startYear;
+	});
+}
+
+/**
  * Group items by a numeric year field.
  * Returns a record mapping year numbers to arrays of items.
  */
