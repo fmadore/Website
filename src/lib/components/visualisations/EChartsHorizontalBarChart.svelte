@@ -9,8 +9,7 @@ ECharts Horizontal Bar Chart component
 		getEChartsTooltipStyle,
 		getEChartsAxisLineStyle,
 		getEChartsSplitLineStyle,
-		getChartMotion,
-		getHorizontalBarGradient
+		getChartMotion
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
@@ -138,7 +137,9 @@ ECharts Horizontal Bar Chart component
 				type: 'bar',
 				data: chartData.map((d) => d.value),
 				itemStyle: {
-					color: getHorizontalBarGradient(resolvedColors.barColor, 0.6),
+					// Flat solid fill — Ink + Signal permits no gradients; a faded
+					// bar base read as "broken". The bar is one honest ink/pine block.
+					color: resolvedColors.barColor,
 					borderRadius: 0
 				},
 				emphasis: {

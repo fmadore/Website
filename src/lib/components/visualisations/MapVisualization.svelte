@@ -11,21 +11,14 @@
 </script>
 
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { base } from '$app/paths';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { getResolvedChartColors } from '$lib/utils/chartColorUtils';
 	import { toRgbString } from '$lib/utils/colorContrast';
-	import {
-		MAP_STYLES,
-		hasWebGLSupport,
-		loadMapLibre,
-		prefersReducedMotion,
-		waitForContainerLayout,
-		type MapLibreModule
-	} from '$lib/utils/maplibre';
+	import { prefersReducedMotion } from '$lib/utils/maplibre';
+	import { useMapLibre } from '$lib/utils/useMapLibre.svelte';
 	import { createContainedPopup } from '$lib/utils/mapPopups';
-	import type { GeoJSONSource, Map as MapLibreMap, Popup } from 'maplibre-gl';
+	import type { GeoJSONSource, Popup } from 'maplibre-gl';
 
 	// Map configuration props with defaults using Svelte 5 $props() rune
 	let {
@@ -60,9 +53,9 @@
 	const LEGEND_ITEMS: Array<{
 		type: string;
 		label: string;
-		colorKey: 'accent' | 'teal' | 'mauve' | 'sage' | 'primary';
+		colorKey: 'accent' | 'plum' | 'mauve' | 'sage' | 'primary';
 	}> = [
-		{ type: 'conference', label: 'Conference', colorKey: 'teal' },
+		{ type: 'conference', label: 'Conference', colorKey: 'plum' },
 		{ type: 'lecture', label: 'Lecture', colorKey: 'accent' },
 		{ type: 'workshop', label: 'Workshop', colorKey: 'mauve' },
 		{ type: 'event', label: 'Event', colorKey: 'sage' },
@@ -91,38 +84,14 @@
 
 	let mapContainer: HTMLElement;
 
-	// State variables using Svelte 5 $state() rune
-	let map = $state<MapLibreMap | null>(null);
-	let maplibregl = $state<MapLibreModule | null>(null);
-	let importError = $state<string | null>(null);
-	let currentThemeIsDark = $state<boolean | null>(null);
-	let activePopup = $state<Popup | null>(null);
-	let isMapLoaded = $state(false);
+	// State
+	let activePopup: Popup | null = null;
 
 	// Derived value for dark mode detection - reactive to theme store changes
 	let darkModeDetected = $derived.by(() => {
 		if (preferDarkMode !== null) return preferDarkMode;
 		return getTheme() === 'dark';
 	});
-
-	// Function to update map style based on theme
-	function updateMapStyle() {
-		if (!map) return;
-
-		const newDarkMode = darkModeDetected;
-		if (newDarkMode !== currentThemeIsDark) {
-			const styleUrl = newDarkMode ? MAP_STYLES.dark : MAP_STYLES.light;
-			map.setStyle(styleUrl);
-			currentThemeIsDark = newDarkMode;
-
-			// setStyle clears our source + layers. Re-register them and re-push data
-			// once the new style finishes loading.
-			map.once('style.load', () => {
-				setupClusterLayers();
-				pushMarkersToSource(markersData);
-			});
-		}
-	}
 
 	// Function to create popup content
 	function createPopupContent(item: MarkerData): string {
@@ -169,7 +138,8 @@
 
 	// Register source + cluster/point layers. Call once per style load.
 	function setupClusterLayers() {
-		if (!map || !maplibregl) return;
+		const map = ml.map;
+		if (!map || !ml.maplibregl) return;
 
 		const colors = getResolvedChartColors();
 		// MapLibre's style spec can't parse oklch() (which several --sys-viz-*
@@ -263,7 +233,9 @@
 	// Attach click + cursor handlers. Safe to call after every setupClusterLayers().
 	let interactionsBound = false;
 	function bindLayerInteractions() {
-		if (!map || interactionsBound) return;
+		const map = ml.map;
+		const maplibregl = ml.maplibregl;
+		if (!map || !maplibregl || interactionsBound) return;
 		interactionsBound = true;
 
 		// Cluster click: smoothly zoom to the expansion level.
@@ -337,6 +309,8 @@
 
 	// Push data into the existing source + fit the camera.
 	function pushMarkersToSource(data: MarkerData[]) {
+		const map = ml.map;
+		const maplibregl = ml.maplibregl;
 		if (!map || !maplibregl) return;
 
 		if (activePopup) {
@@ -367,109 +341,33 @@
 		});
 	}
 
-	// Main effect for initialization and cleanup
-	$effect(() => {
-		if (!browser || !mapContainer) return;
-
-		let mapInstance: MapLibreMap | null = null;
-		let cancelled = false;
-
-		// Initialize map asynchronously
-		(async () => {
-			try {
-				if (!hasWebGLSupport()) {
-					importError =
-						'WebGL is not supported in your browser. Please enable hardware acceleration or try a different browser.';
-					return;
-				}
-
-				// Wait for the container to have non-zero layout dimensions.
-				const ready = await waitForContainerLayout(mapContainer);
-				if (cancelled) return;
-				if (!ready) {
-					importError = 'Map container has no dimensions. Please try refreshing the page.';
-					return;
-				}
-
-				// Load MapLibre + CSS + configure the CSP-safe worker (shared across maps).
-				maplibregl = await loadMapLibre();
-				if (cancelled || !mapContainer?.isConnected) return;
-
-				// Determine initial style based on theme
-				const initialDarkMode = darkModeDetected;
-				const initialStyle = initialDarkMode ? MAP_STYLES.dark : MAP_STYLES.light;
-				currentThemeIsDark = initialDarkMode;
-
-				const centerLng = initialView[1] ?? 0;
-				const centerLat = initialView[0] ?? 20;
-
-				mapInstance = new maplibregl.Map({
-					container: mapContainer,
-					style: initialStyle,
-					center: [centerLng, centerLat],
-					zoom: initialZoom ?? 2,
-					maxZoom: maxZoom ?? 19,
-					minZoom: 1,
-					// Requires Ctrl/Cmd + scroll (or two-finger gesture) to zoom,
-					// so the map doesn't hijack page scroll on long pages.
-					cooperativeGestures: true
-				});
-
-				map = mapInstance;
-				map.addControl(new maplibregl.NavigationControl(), 'top-right');
-				map.addControl(new maplibregl.GlobeControl(), 'top-right');
-				map.addControl(new maplibregl.FullscreenControl(), 'top-right');
-
-				map.on('load', () => {
-					isMapLoaded = true;
-					// Default to the mercator (flat) projection. The GlobeControl button
-					// in the top-right lets visitors switch to globe if they want.
-					setupClusterLayers();
-					pushMarkersToSource(markersData);
-				});
-
-				map.on('error', (e) => {
-					if (import.meta.env.DEV) console.error('MapLibre error:', e.error);
-				});
-			} catch (error) {
-				if (import.meta.env.DEV) console.error('Error initializing map:', error);
-				importError = error instanceof Error ? error.message : 'Unknown error loading map';
-			}
-		})();
-
-		// Cleanup function
-		return () => {
-			cancelled = true;
-			isMapLoaded = false;
+	// Shared MapLibre lifecycle (WebGL guard, dynamic import, controls, theme
+	// style swap, cleanup). setStyle clears sources/layers, so onStyleReady
+	// re-registers them and re-pushes the data after every style load.
+	const ml = useMapLibre({
+		getContainer: () => mapContainer,
+		getMapOptions: () => ({
+			center: [initialView[1] ?? 0, initialView[0] ?? 20],
+			zoom: initialZoom ?? 2,
+			maxZoom: maxZoom ?? 19,
+			minZoom: 1
+		}),
+		isDark: () => darkModeDetected,
+		onStyleReady: () => {
+			setupClusterLayers();
+			pushMarkersToSource(markersData);
+		},
+		watchData: () => markersData,
+		onDataChange: () => pushMarkersToSource(markersData),
+		onCleanup: () => {
 			interactionsBound = false;
-
 			if (activePopup) {
 				activePopup.remove();
 				activePopup = null;
 			}
-
-			if (map) {
-				map.remove();
-				map = null;
-			}
-
-			maplibregl = null;
-		};
-	});
-
-	// Reactive effect for markers: Update when markersData changes
-	$effect(() => {
-		if (browser && maplibregl && map && isMapLoaded) {
-			pushMarkersToSource(markersData);
 		}
 	});
-
-	// Reactive effect for theme: Update map style when theme changes
-	$effect(() => {
-		if (browser && maplibregl && map && isMapLoaded && darkModeDetected !== currentThemeIsDark) {
-			updateMapStyle();
-		}
-	});
+	const importError = $derived(ml.importError);
 </script>
 
 <div bind:this={mapContainer} class="map-container">
@@ -586,7 +484,7 @@
 		height: 0.75rem;
 		border-radius: var(--border-radius-full);
 		border: 2px solid var(--color-surface);
-		box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-text) 20%, transparent);
+		outline: 1px solid color-mix(in srgb, var(--color-text) 20%, transparent);
 		flex-shrink: 0;
 	}
 
@@ -601,7 +499,7 @@
 		background-color: var(--color-accent);
 	}
 
-	.legend-swatch-teal {
+	.legend-swatch-plum {
 		background-color: var(--sys-viz-6);
 	}
 

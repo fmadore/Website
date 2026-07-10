@@ -7,7 +7,7 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 		getResolvedChartColors,
 		resolveColors,
 		getEChartsTooltipStyle,
-		getAnimationConfig,
+		getChartMotion,
 		CHART_CATEGORICAL_COLORS
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
@@ -48,6 +48,19 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 		...getResolvedChartColors(),
 		chartColors: resolveColors(colors)
 	});
+
+	// Data-derived screen-reader description (canvas charts are otherwise opaque)
+	const ganttAriaDescription = $derived(
+		data.length === 0
+			? 'Project timeline chart with no data.'
+			: `Timeline of ${data.length} research projects: ${data
+					.map(
+						(p) =>
+							`${p.name} from ${p.startYear} to ${p.endYear}` +
+							(p.publications.length > 0 ? ` with ${p.publications.length} publications` : '')
+					)
+					.join('; ')}.`
+	);
 
 	// Calculate year range from data
 	const yearRange = $derived(() => {
@@ -262,10 +275,9 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 				z: 2
 			}
 		],
-		aria: getAriaConfig(false),
+		aria: getAriaConfig(false, ganttAriaDescription),
 		backgroundColor: 'transparent',
-		animation: true,
-		...getAnimationConfig(800, 'cubicOut')
+		...getChartMotion('settle')
 	});
 
 	// Use the ECharts hook for lifecycle management
