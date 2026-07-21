@@ -3,13 +3,14 @@ D3 Bubble Chart - A bubble chart for visualizing keyword frequency
 Uses D3.js circle packing for a balanced, overlap-free layout
 -->
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
 	import type * as d3Type from 'd3';
 	import { innerWidth as windowInnerWidth } from 'svelte/reactivity/window';
 	import {
 		getResolvedChartColors,
 		resolveColors,
 		getCSSPx,
+		getContrastLabelStyle,
 		prefersReducedMotion
 	} from '$lib/utils/chartColorUtils';
 
@@ -52,6 +53,9 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 	let chartContainer: HTMLDivElement;
 	let svg: d3Type.Selection<SVGSVGElement, unknown, null, undefined> | null = null;
 	let zoomBehavior: d3Type.ZoomBehavior<SVGSVGElement, unknown> | null = null;
+	// Ordinal color domain captured at build time so the theme-recolor effect
+	// can rebuild an identical scale without re-running the layout.
+	let colorDomain: string[] = [];
 	let containerWidth = $state(1000);
 	let containerHeight = $state(800);
 
@@ -136,10 +140,11 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- D3 zoom/selection type mismatch
 		svg.call(zoomBehavior as any);
 
-		// Color scale
+		// Color scale (domain captured for the theme-recolor effect)
+		colorDomain = chartData.map((d) => d.name);
 		const colorScale = d3
 			.scaleOrdinal<string>()
-			.domain(chartData.map((d) => d.name))
+			.domain(colorDomain)
 			.range(resolvedColors.chartColors);
 
 		// Create tooltip (styling lives in CSS so we can use global tokens)
@@ -284,8 +289,9 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 			.append('text')
 			.attr('text-anchor', 'middle')
 			.attr('dominant-baseline', 'middle')
-			.style('fill', 'white')
-			.style('text-shadow', '0 1px 2px color-mix(in srgb, black 45%, transparent)')
+			// Contrast-aware ink/paper label per bubble fill — no white text, no
+			// text-shadow (the brief bans glow; the treemap uses the same helper).
+			.style('fill', (d) => getContrastLabelStyle(colorScale(d.name)).color)
 			.style('font-size', (d) => `${Math.max(10, Math.min(20, d.radius / 2.2))}px`)
 			.style('font-weight', '600')
 			.style('font-family', 'var(--font-family-mono)')
@@ -330,21 +336,67 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 
 	// Lifecycle management
 	onMount(async () => {
-		// Dynamically import D3 to reduce initial bundle size
-		const d3Module = await import('d3');
-		d3 = d3Module;
+		// Import only the d3 sub-packages this chart uses (selection, scales,
+		// force layout, zoom, max) rather than the whole of d3. d3-transition
+		// is a side-effect import that patches selection.transition() for the
+		// hover/zoom animations.
+		const [selection, scale, force, zoom, array, transition] = await Promise.all([
+			import('d3-selection'),
+			import('d3-scale'),
+			import('d3-force'),
+			import('d3-zoom'),
+			import('d3-array'),
+			import('d3-transition')
+		]);
+		d3 = {
+			...selection,
+			...scale,
+			...force,
+			...zoom,
+			...array,
+			...transition
+		} as unknown as typeof d3Type;
 		isD3Loaded = true;
 		// createChart is triggered via the reactive $effect below once isD3Loaded flips.
 	});
 
-	// Reactive updates when data or dimensions change
+	// Rebuild when data/dimensions change — debounced, because bind:clientWidth
+	// streams values during window drags and every rebuild tears down the SVG
+	// and reruns a synchronous 300-tick force simulation. The first sized paint
+	// renders immediately; subsequent changes coalesce.
+	let rebuildTimer: ReturnType<typeof setTimeout> | undefined;
+	let hasBuilt = false;
 	$effect(() => {
-		// Track dependencies
-		const _ = [chartData, containerWidth, containerHeight, resolvedColors, isD3Loaded];
+		// Track data/size/library readiness only — theme changes recolor in place
+		// (below) instead of re-simulating, so createChart runs untracked.
+		const _ = [chartData, isD3Loaded];
 
-		if (chartContainer && chartData.length > 0 && isD3Loaded) {
-			createChart();
+		if (!chartContainer || chartData.length === 0 || !isD3Loaded) return;
+
+		if (!hasBuilt) {
+			hasBuilt = true;
+			untrack(() => createChart());
+			return;
 		}
+		clearTimeout(rebuildTimer);
+		rebuildTimer = setTimeout(() => createChart(), 150);
+		return () => clearTimeout(rebuildTimer);
+	});
+
+	// Theme change: restyle the existing bubbles in place — no teardown, no
+	// re-simulation. Fill/stroke/label colors are the only theme-dependent bits.
+	$effect(() => {
+		const colors = resolvedColors;
+		if (!svg || !d3 || !hasBuilt) return;
+
+		const scale = d3.scaleOrdinal<string>().domain(colorDomain).range(colors.chartColors);
+		svg
+			.selectAll<SVGCircleElement, BubbleNode>('.bubble circle')
+			.attr('fill', (d) => scale(d.name))
+			.attr('stroke', colors.surface);
+		svg
+			.selectAll<SVGTextElement, BubbleNode>('.bubble text')
+			.style('fill', (d) => getContrastLabelStyle(scale(d.name)).color);
 	});
 </script>
 

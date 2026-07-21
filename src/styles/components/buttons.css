@@ -221,10 +221,10 @@
 	transform: none !important;
 }
 
-/* ===== GLASS VARIANT — neutralised =====
- * `.btn-glass` used to add backdrop-filter chrome. Glass is gone; it now
- * behaves as a flat outlined control. */
-.btn-glass {
+/* ===== SURFACE VARIANT =====
+ * Formerly `.btn-glass`, which added backdrop-filter chrome. Glass is gone;
+ * this is a flat outlined control. */
+.btn-surface {
 	background: transparent;
 	border-color: var(--color-border-dark);
 	box-shadow: none;
@@ -232,7 +232,7 @@
 	backdrop-filter: none;
 }
 
-.btn-glass:hover:not(:disabled) {
+.btn-surface:hover:not(:disabled) {
 	background: var(--color-surface-alt);
 	border-color: var(--color-primary);
 }

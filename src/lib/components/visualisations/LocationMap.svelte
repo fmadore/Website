@@ -6,20 +6,14 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 `basePath` + `itemLabel` so the popup can link items back to their detail page.
 -->
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { base } from '$app/paths';
 	import { COUNTRY_COORDINATES, type LocationDatum } from '$lib/data/geo';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { getResolvedChartColors } from '$lib/utils/chartColorUtils';
-	import {
-		MAP_STYLES,
-		loadMapLibre,
-		prefersReducedMotion,
-		waitForContainerLayout,
-		type MapLibreModule
-	} from '$lib/utils/maplibre';
+	import { prefersReducedMotion, type MapLibreModule } from '$lib/utils/maplibre';
+	import { useMapLibre } from '$lib/utils/useMapLibre.svelte';
 	import { createContainedPopup } from '$lib/utils/mapPopups';
-	import type { Map as MapLibreMap, Popup } from 'maplibre-gl';
+	import type { Popup } from 'maplibre-gl';
 
 	// Props
 	let {
@@ -39,17 +33,12 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 	let mapContainer: HTMLElement;
 
 	// State
-	let map = $state<MapLibreMap | null>(null);
-	let maplibregl = $state<MapLibreModule | null>(null);
-	let importError = $state<string | null>(null);
-	let currentThemeIsDark = $state<boolean | null>(null);
-	let activePopup = $state<Popup | null>(null);
+	let activePopup: Popup | null = null;
 	// Imperative lookup keyed by country, only ever mutated from inside effects to
 	// add/remove MapLibre markers. Not used reactively in the template, so a plain
 	// Map (not SvelteMap) is appropriate.
 	// eslint-disable-next-line svelte/prefer-svelte-reactivity
 	const markers: Map<string, InstanceType<MapLibreModule['Marker']>> = new Map();
-	let isMapLoaded = $state(false);
 
 	// Theme detection
 	let darkModeDetected = $derived.by(() => {
@@ -146,26 +135,11 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		return content;
 	}
 
-	// Update map style on theme change
-	function updateMapStyle() {
-		if (!map) return;
-		const newDarkMode = darkModeDetected;
-		if (newDarkMode !== currentThemeIsDark) {
-			const styleUrl = newDarkMode ? MAP_STYLES.dark : MAP_STYLES.light;
-			map.setStyle(styleUrl);
-			currentThemeIsDark = newDarkMode;
-			map.once('style.load', () => {
-				addMarkers();
-			});
-		}
-	}
-
 	// Add markers to map
 	function addMarkers() {
-		if (!map || !maplibregl) return;
-		// Capture the narrowed instances for the nested forEach closure below.
-		const activeMap = map;
-		const gl = maplibregl;
+		const activeMap = ml.map;
+		const gl = ml.maplibregl;
+		if (!activeMap || !gl) return;
 
 		// Clear existing
 		markers.forEach((marker) => marker.remove());
@@ -177,7 +151,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 
 		mappableData.forEach((datum) => {
 			const coords = COUNTRY_COORDINATES[datum.country];
-			if (!coords || !maplibregl) return;
+			if (!coords) return;
 
 			// Scale marker size based on item count
 			const minSize = 20;
@@ -220,7 +194,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 
 		// Fit bounds if we have markers
 		if (mappableData.length > 0 && markers.size > 0) {
-			const bounds = new maplibregl.LngLatBounds();
+			const bounds = new gl.LngLatBounds();
 			mappableData.forEach((datum) => {
 				const coords = COUNTRY_COORDINATES[datum.country];
 				if (coords) {
@@ -228,7 +202,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 				}
 			});
 			if (!bounds.isEmpty()) {
-				map.fitBounds(bounds, {
+				activeMap.fitBounds(bounds, {
 					padding: 60,
 					maxZoom: 5,
 					duration: prefersReducedMotion() ? 0 : 1200,
@@ -238,91 +212,34 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		}
 	}
 
-	// Initialize map
-	$effect(() => {
-		if (!browser || !mapContainer) return;
-
-		// Snapshot reactive values synchronously before any await so we don't read
-		// them in an async (inert) context.
-		const initialDarkMode = darkModeDetected;
-
-		let cancelled = false;
-
-		(async () => {
-			try {
-				const ready = await waitForContainerLayout(mapContainer);
-				if (cancelled) return;
-				if (!ready) {
-					importError = 'Map container has no dimensions. Please try refreshing the page.';
-					return;
-				}
-
-				maplibregl = await loadMapLibre();
-				if (cancelled || !mapContainer?.isConnected) return;
-
-				const initialStyle = initialDarkMode ? MAP_STYLES.dark : MAP_STYLES.light;
-				currentThemeIsDark = initialDarkMode;
-
-				const mapInstance = new maplibregl.Map({
-					container: mapContainer,
-					style: initialStyle,
-					center: [10, 30],
-					zoom: initialZoom,
-					minZoom: 1,
-					attributionControl: false,
-					// Ctrl/Cmd + scroll (or two-finger gesture) required to zoom, so the
-					// map doesn't steal scroll on long visualisation pages.
-					cooperativeGestures: true
-				});
-
-				map = mapInstance;
-				map.addControl(new maplibregl.NavigationControl(), 'top-right');
-				map.addControl(new maplibregl.GlobeControl(), 'top-right');
-				map.addControl(new maplibregl.FullscreenControl(), 'top-right');
-				map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right');
-
-				map.on('load', () => {
-					isMapLoaded = true;
-					// Default to the mercator (flat) projection. The GlobeControl button
-					// in the top-right lets visitors switch to globe if they want.
-					addMarkers();
-				});
-			} catch (error) {
-				if (import.meta.env.DEV) console.error('Error initializing map:', error);
-				importError = error instanceof Error ? error.message : 'Unknown error loading map';
-			}
-		})();
-
-		return () => {
-			cancelled = true;
-			isMapLoaded = false;
+	// Shared MapLibre lifecycle (WebGL guard, dynamic import, controls, theme
+	// style swap, cleanup). Markers re-render via onStyleReady on theme change
+	// and via watchData/onDataChange on data change — never twice per toggle.
+	const ml = useMapLibre({
+		getContainer: () => mapContainer,
+		getMapOptions: () => ({
+			center: [10, 30],
+			zoom: initialZoom,
+			minZoom: 1,
+			attributionControl: false
+		}),
+		isDark: () => darkModeDetected,
+		onInit: (m, gl) => {
+			m.addControl(new gl.AttributionControl({ compact: true }), 'bottom-right');
+		},
+		onStyleReady: () => addMarkers(),
+		watchData: () => data,
+		onDataChange: () => addMarkers(),
+		onCleanup: () => {
 			if (activePopup) {
 				activePopup.remove();
 				activePopup = null;
 			}
 			markers.forEach((marker) => marker.remove());
 			markers.clear();
-			if (map) {
-				map.remove();
-				map = null;
-			}
-			maplibregl = null;
-		};
-	});
-
-	// Update markers when data changes
-	$effect(() => {
-		if (browser && maplibregl && map && isMapLoaded && data.length >= 0) {
-			addMarkers();
 		}
 	});
-
-	// Update style on theme change
-	$effect(() => {
-		if (browser && maplibregl && map && isMapLoaded && darkModeDetected !== currentThemeIsDark) {
-			updateMapStyle();
-		}
-	});
+	const importError = $derived(ml.importError);
 </script>
 
 <div class="map-wrapper">

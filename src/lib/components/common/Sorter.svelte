@@ -6,7 +6,7 @@
 		activeSort?: 'date' | 'title' | 'citations'; // Default sort
 		onsortchange?: (data: { sortBy: 'date' | 'title' | 'citations' }) => void; // Svelte 5: callback prop
 		availableSorts?: ('date' | 'title' | 'citations')[]; // Which sort options are available
-		glass?: boolean; // Enable glassmorphism effect
+		surface?: boolean; // Render on a flat surface tile
 	}
 
 	let {
@@ -14,7 +14,7 @@
 		onsortchange,
 		availableSorts = ['date', 'title', 'citations'],
 		// Glass retired for the flat redesign; the sorter is a square mono control.
-		glass = false
+		surface = false
 	}: Props = $props();
 
 	// Tactile click acknowledgment: when the active sort changes, briefly
@@ -79,9 +79,9 @@
 		})()
 	);
 
-	// Compute additional classes based on glass prop
+	// Compute additional classes based on surface prop
 	let additionalClasses = $derived(
-		[glass ? 'glass-button' : '', 'sorter-button', isPulsing ? 'sorter-button--pulse' : '']
+		[surface ? 'surface-button' : '', 'sorter-button', isPulsing ? 'sorter-button--pulse' : '']
 			.filter(Boolean)
 			.join(' ')
 	);
@@ -95,7 +95,7 @@
 		ariaLabel={ariaTitle}
 		title={ariaTitle}
 		{additionalClasses}
-		{glass}
+		{surface}
 	>
 		{#snippet icon()}
 			<Icon icon={iconName} width="18" height="18" />

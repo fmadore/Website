@@ -3,7 +3,7 @@
 
 	let {
 		variant = 'default',
-		glassEffect = 'none',
+		surface = 'none',
 		additionalClasses = '',
 		children
 	}: {
@@ -14,7 +14,7 @@
 		 * card (e.g., a dense data panel, a CTA box) can opt in explicitly.
 		 * Rationale: content prose reads better on paper than card-in-card.
 		 */
-		glassEffect?: 'glass-card' | 'glass-panel' | 'glass-medium' | 'glass-light' | 'none';
+		surface?: 'surface-card' | 'surface-panel' | 'surface-medium' | 'surface-light' | 'none';
 		additionalClasses?: string;
 		children: Snippet;
 	} = $props();
@@ -28,7 +28,7 @@
 	};
 
 	const combinedClasses = $derived(
-		`${baseClasses} ${variantClasses[variant]} ${glassEffect === 'none' ? '' : glassEffect} ${additionalClasses}`
+		`${baseClasses} ${variantClasses[variant]} ${surface === 'none' ? '' : surface} ${additionalClasses}`
 			.replace(/\s+/g, ' ')
 			.trim()
 	);
@@ -266,5 +266,5 @@
 		}
 	}
 
-	/* Dark mode adjustments are handled automatically through CSS variables and glassmorphism utilities */
+	/* Dark mode adjustments are handled automatically through CSS variables and the flat surface utilities */
 </style>

@@ -8,6 +8,181 @@ previous "all actionable items completed" snapshot of `REFACTORING-ROADMAP.md`
 Each section can be picked up independently — phases inside a section are
 roughly ordered by polish-per-effort but are self-contained.
 
+> **Historical note (July 2026).** The "Animation & Reactivity Roadmap" and
+> "Design Evolution — Warm Editorial Direction" sections below predate the
+> **Ink + Signal** redesign (see `.impeccable.md` and the Design Context in
+> `CLAUDE.md`). They narrate the retired warm-editorial era
+> (Fraunces/Spectral/Commissioner, glass-for-chrome) and are kept as a
+> record of landed work, not as guidance. Current forward-looking work
+> lives in the section directly below.
+
+---
+
+## Code Architecture & Consistency Roadmap — July 2026 review
+
+Findings from a full-repo audit (data layer, components/routes, CSS/design
+compliance, and the ECharts/D3/MapLibre visualization layer). Baseline at
+audit time: `svelte-check` 0 errors, lint clean, 64/64 unit tests passing,
+zero legacy Svelte syntax (`export let`, `$:`, `on:` directives),
+`loadData()` adopted by 16/17 data categories, and the Ink + Signal token
+layer fully landed. The items below are the debt that remained, ordered by
+phase; each phase is a self-contained PR-sized unit.
+
+> **Status (July 2026, branch `claude/repo-website-review-u1jjxf`):
+> Phases 1–7 landed** — see the commit series `docs(roadmap)` →
+> `refactor(css): retire the glass vocabulary`. Along the way the ECharts
+> chunk shrank 1,141,754 → 682,289 bytes (tree-shaken `echarts/core`), the
+> two list pages dropped ~550 duplicated style lines each into
+> `entity-index.css`, and unit tests grew 64 → 160. Still open from this
+> review (deliberately deferred, see "Explicitly deferred" below plus):
+> a generic `BibliographyRow` for PublicationItem/CommunicationItem; the
+> known `formatCitation` trailing-space and "Published in in <book>" SEO
+> quirks (asserted as current behavior in the new tests); DH detail-page
+> `MetaTags` intent check; and full facet-grid/filter-bar _markup_
+> extraction into shared components (only the CSS is shared so far).
+
+### Phase 1 — Correctness & brief-compliance quick wins
+
+- **Hardcoded author name** (violates the CLAUDE.md siteConfig rule): the
+  literal `'Frédérick Madore'` appears in `jsonLdSchemas.ts` (6 sites,
+  incl. `alternateName`), `cvFormatters.ts` (2), and `webmcp.svelte.ts`
+  (4). Replace with `author.name` from `$lib/data/siteConfig`.
+- **Reactive-state mutation**: `urlFilterSync.svelte.ts:126` calls
+  `.sort()` in place on the live filter array inside an `$effect`. Sort a
+  copy. Also document the deliberate `replaceState: true` trade-off
+  (Back/Forward does not step through filter states).
+- **`AudioVisualization.svelte`**: gradient wave bars, two
+  radial-gradient glow backdrops, and an infinite pulse loop — the one
+  rendered violation of "no gradients / no glow / near-zero motion".
+  Replace with flat ink/accent fills, delete the glows and the loop.
+- **Chart glows**: `D3BubbleChart` hardcoded white labels + `text-shadow`
+  (use the existing `getContrastLabelStyle()` like the treemap);
+  `EChartsWordCloud` emphasis `textShadowBlur: 10`;
+  `EChartsDoughnutChart` mobile-label `textShadowBlur: 3`. Remove all.
+- **Dead code**: unused `.map-marker` CSS block with `drop-shadow` in
+  `MapVisualization.svelte`; `createSortHandler` in `filterUtils.ts`;
+  `setActivities`/`addActivity`/`getActivitiesByYear` in
+  `stores/activities.svelte.ts`; corrupted JSDoc header in
+  `filterUtils.ts:1-17`.
+- **Dead tokens**: the glass/blur/header-opacity block
+  (`variables.css:628-670`) and the retired ink-blue
+  `--card-shadow-color` triplet — nothing consumes them.
+
+### Phase 2 — Documentation truth pass
+
+- **CLAUDE.md contradicts itself**: line 7 ("glassmorphism-based custom
+  CSS framework") and the Styling Rules bullets instructing `.glass-card`
+  / glass-blur-token usage directly contradict the Design Context ("glass
+  does not exist"). Rewrite to the Ink + Signal idioms.
+- **CSS-README.md**: body still documents glass gradients, `--ease-bounce`,
+  "ink-blue" buttons, gradient link underlines, and the deleted
+  `scrollAnimations.ts`. Reconcile with shipped reality.
+- **Stale era comments**: "Spectral"/"amber"/"ink-blue" comments in
+  `panels.css`, `PdfGenerator.svelte`, `ProjectImageBanner.svelte`,
+  `Card.svelte`, `PublicationItem.svelte`, `CommunicationItem.svelte`,
+  `AudioVisualization.svelte`.
+- Mark `DESIGN-REVIEW-2026-06.md` as a historical document of the
+  superseded direction.
+
+### Phase 3 — Visualization layer
+
+- **Extract `useMapLibre.svelte.ts`**: `LocationMap` and
+  `MapVisualization` duplicate ~120 lines of lifecycle each (dynamic
+  import → container-layout wait → controls → theme-driven style swap →
+  data-change effect → cleanup). Mirror the existing `useECharts` hook;
+  this also gives `LocationMap` the `hasWebGLSupport()` guard it is
+  missing today, and stops its double marker rebuild on theme toggle.
+- **Tree-shake ECharts**: `useECharts.svelte.ts` imports the full
+  `echarts` package (~1 MB chunk). Move to `echarts/core` +
+  `use([...])` registering only the series/components actually used
+  (bar, pie, scatter, custom, treemap, graph + grid/tooltip/legend/aria
+  - canvas renderer; wordcloud via `echarts-wordcloud`). Largest byte
+    win in the repo. Verify with a before/after build-size comparison.
+- **`D3BubbleChart` perf**: the resize/theme `$effect` tears down the SVG
+  and reruns a synchronous 300-tick force simulation. Debounce resize,
+  and split "recompute layout" (data/size) from "recolor" (theme).
+  Import `d3-*` sub-packages instead of the whole of `d3`.
+- **Chart consistency**: WordCloud re-implements `resolveColor` and
+  hand-rolls its tooltip (use `chartColorUtils` shared helpers); Gantt is
+  the last consumer of deprecated `getAnimationConfig` (migrate to
+  `getChartMotion`, delete the shim) and lacks a data-derived aria
+  description; `CareerTimeline` category icons are hardcoded white on
+  category-colored tiles (use contrast-aware color); the
+  `MapVisualization` legend `colorKey: 'teal'` actually maps to plum —
+  rename.
+
+### Phase 4 — Data-layer dedupe
+
+- **`withAuthorUrl(authors)` helper**: author-URL attachment is
+  triplicated across publication/communication/DH JSON-LD builders.
+- **`buildActivityJsonLd`**: `activities/[id]/+page.ts` builds its
+  BlogPosting JSON-LD inline (~35 lines) because the builder is missing
+  from `jsonLdSchemas.ts`.
+- **Generic `loadEntityById(finder, buildJsonLd, notFound)`**: the four
+  `[id]/+page.ts` loaders repeat find-by-id → 404 → JSON-LD → return.
+- **`seoUtils.ts`**: the publication/communication/activity SEO
+  description builders are ~70% the same algorithm — extract a
+  parameterized `buildSeoDescription()`.
+- **`citationFormatter.ts`**: the "place: publisher" imprint block is
+  copy-pasted 4×; `formatAuthorList`/`formatEditors` duplicate the
+  join-with-and logic. Extract `formatImprint()` + `joinNames()`.
+- **`dataAggregation.ts`**: add a year-field sort variant so
+  `appointments/index.ts` stops hand-rolling ongoing-first ordering.
+
+### Phase 5 — Route & component consolidation
+
+- **The big one**: `src/routes/publications/+page.svelte` (1,138 lines)
+  and `src/routes/conference-activity/+page.svelte` (1,288 lines) are
+  ~85% copy-paste twins (~950 duplicated lines: hero, filter bar,
+  byte-identical facet grid, ~550 lines of duplicated scoped CSS each).
+  Both already consume the same `createFilterSystem` contract, so
+  extract shared building blocks (an entity-index component family +
+  `src/styles/components/entity-index.css`) parameterized by filter
+  module, type labels, hero copy, item component, and optional slots for
+  the map toggle / upcoming block.
+- **`PublicationItem` ↔ `CommunicationItem`**: parallel bib-row and
+  entity-card markup (~140 near-duplicate lines) — extract a generic
+  `BibliographyRow` with per-entity adapters when touching these next.
+- **Detail-page shell**: `publications/[id]/+page.svelte` (719 lines) is
+  a bespoke rewrite (own breadcrumb + header markup) while the other
+  three detail routes compose `Breadcrumb`/`PageHeader`. Minimum: use
+  the shared `Breadcrumb`. Decide whether to promote its editorial
+  treatment into `PageHeader` or document the divergence.
+- **A11y**: `/activities` year-group labels are `<span>`s, producing an
+  h1→h3 skip (make them `<h2>`); add `aria-live="polite"` to the
+  "Showing N" match-count line on list pages; DH detail page omits
+  `MetaTags` (confirm intent or add).
+- `/activities` remains a third list architecture (URL-`?tag=` only, no
+  `createFilterSystem`) — converging it is a follow-on, not part of this
+  pass.
+
+### Phase 6 — Test coverage for pure utils
+
+In value order: `citationFormatter.ts` (per-type formatting switch, most
+regression-prone), `chartColorUtils.ts` (`colorWithOpacity`,
+`resolveColor` incl. the `rgba(var())` branch, `getContrastLabelStyle`,
+`getBoundedTooltipPosition`, `getChartMotion`), `dataAggregation.ts`
+(NaN-date total-order guard), `seoUtils.ts` (160-char budget math).
+
+### Phase 7 — Retire the glass vocabulary
+
+The `.glass-*` classes are fully neutralized (flat paper tiles, no
+`backdrop-filter` anywhere) but the names survive in
+`utilities/glassmorphism.css` and 49 usages across 11 components — a
+misleading vocabulary for contributors. Rename to surface/plate idiom
+names, and drop the no-op `shadows.css` / `border-radius.css` utility
+files from the import chain (every value resolves to `none`/`0`).
+
+### Explicitly deferred
+
+- Migrating `createFilterSystem` from Svelte stores to a runed class
+  (would remove the `as unknown as` casts on the list pages) — larger
+  reactivity-model change, do standalone.
+- Converging `/activities` onto the shared entity-index architecture.
+- Splitting oversized components (`PdfGenerator` 927, `CareerTimeline`
+  858, `ResearchProjectLayout` 683, `MobileMenu` 609 lines) — mostly
+  mechanical, low risk of rot, pick up opportunistically.
+
 ---
 
 ## Animation & Reactivity Roadmap

@@ -149,7 +149,7 @@
 					heroImage={communication.heroImage}
 					fallbackImage={communication.image}
 					defaultAlt={communication.title}
-					imageClass="w-full max-w-md h-auto rounded-md mx-auto"
+					imageClass="w-full max-w-md h-auto mx-auto"
 					figcaptionClass="text-muted text-sm mt-2 italic"
 				/>
 
@@ -269,7 +269,7 @@
 </div>
 
 <style>
-	/* Article container - no outer glassmorphism, individual sections have their own */
+	/* Article container — no outer tile; individual sections carry their own styling */
 	.communication-article {
 		position: relative;
 	}

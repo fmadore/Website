@@ -18,7 +18,7 @@
 		index?: number; // Index for loading optimization
 		/**
 		 * Render this item as the editorial "lead" of a featured block:
-		 * no card chrome, Spectral display title, larger image, longer-form
+		 * no card chrome, serif display title, larger image, longer-form
 		 * abstract treatment. Breaks the uniform card stack the way an
 		 * editorial-magazine lead story breaks a section.
 		 */

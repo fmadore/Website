@@ -387,10 +387,10 @@
 			background: var(--color-white) !important;
 		}
 
-		/* Remove glassmorphism effects */
-		:global(.glass),
-		:global(.glass-card),
-		:global(.glass-panel),
+		/* Flatten surface tiles onto plain print paper */
+		:global(.surface),
+		:global(.surface-card),
+		:global(.surface-panel),
 		:global(.cv-section-wrapper) {
 			background: var(--color-white) !important;
 			backdrop-filter: none !important;

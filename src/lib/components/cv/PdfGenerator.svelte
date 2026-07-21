@@ -204,7 +204,7 @@
 
 			/*
 			 * Section heading — serif title-case over a full-width hairline,
-			 * mirroring the on-screen CV's Spectral/Fraunces h3 headings (e.g.
+			 * mirroring the on-screen CV's serif h3 headings (e.g.
 			 * "Professional Appointments"). `times` is jsPDF's closest serif to
 			 * the site's display face; title case (not uppercase) keeps the
 			 * editorial, fine-book register rather than a templated CMS label.
@@ -233,7 +233,7 @@
 			};
 
 			/*
-			 * Year/gutter label — ink-blue, bold. Numeric years ("2026") sit at
+			 * Year/gutter label — primary ink, bold. Numeric years ("2026") sit at
 			 * FONT_SIZE.BODY; long word labels ("Forthcoming", "à paraître")
 			 * would overrun the fixed gutter and collide with the entry text, so
 			 * they auto-shrink to fit the column instead of widening it. This
@@ -261,13 +261,13 @@
 
 			// ============================================
 			// HEADER DESIGN — left-aligned editorial letterhead, mirroring the
-			// on-screen CVHeader: an ink-blue letterspaced "CURRICULUM VITAE"
+			// on-screen CVHeader: a primary-ink letterspaced "CURRICULUM VITAE"
 			// eyebrow (the document label) sits above the serif name (the
 			// subject); the date follows; a full-width hairline closes the block.
 			// Replaces the previous centred name-over-subtitle layout.
 			// ============================================
 
-			// Eyebrow — "CURRICULUM VITAE", small-caps, ink-blue, letterspaced
+			// Eyebrow — "CURRICULUM VITAE", small-caps, primary ink, letterspaced
 			pdf.setFontSize(FONT_SIZE.EYEBROW);
 			pdf.setFont(MONO, 'bold');
 			pdf.setTextColor(...COLORS.PRIMARY);

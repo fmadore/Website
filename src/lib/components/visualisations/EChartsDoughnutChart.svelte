@@ -9,7 +9,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		getEChartsTooltipStyle,
 		getBoundedTooltipPosition,
 		getChartMotion,
-		colorWithOpacity,
+		getContrastLabelStyle,
 		CHART_CATEGORICAL_COLORS
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
@@ -50,12 +50,18 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		...getResolvedChartColors(),
 		chartColors: resolveColors(colors)
 	});
-	// Chart data transformation
+	// Chart data transformation. On mobile, labels render inside the slices, so
+	// each item carries a contrast-aware ink/paper label color for its slice
+	// fill — no white text, no text-shadow (the brief bans glow).
 	const chartData = $derived(
-		data.map((d) => ({
-			name: nameAccessor(d),
-			value: valueAccessor(d)
-		}))
+		data.map((d, i) => {
+			const sliceColor = resolvedColors.chartColors[i % resolvedColors.chartColors.length];
+			return {
+				name: nameAccessor(d),
+				value: valueAccessor(d),
+				label: isMobile ? { color: getContrastLabelStyle(sliceColor).color } : undefined
+			};
+		})
 	);
 
 	// Chart options - reactive to all dependencies
@@ -104,15 +110,11 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 				label: {
 					show: showLabels,
 					position: isMobile ? 'inside' : 'outside',
-					color: isMobile ? resolvedColors.white : resolvedColors.text,
+					color: resolvedColors.text,
 					fontSize: isMobile ? 11 : 12,
 					fontFamily: resolvedColors.fontFamily,
 					fontWeight: 'bold',
 					formatter: isMobile ? '{d}%' : '{b}: {d}%',
-					textBorderColor: isMobile ? colorWithOpacity(resolvedColors.black, 0.9) : 'transparent',
-					textBorderWidth: isMobile ? 2 : 0,
-					textShadowColor: isMobile ? colorWithOpacity(resolvedColors.black, 0.9) : 'transparent',
-					textShadowBlur: isMobile ? 3 : 0,
 					minMargin: isMobile ? 8 : 5,
 					padding: isMobile ? [2, 4] : [0, 0]
 				},

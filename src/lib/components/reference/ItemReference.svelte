@@ -3,7 +3,7 @@
 	 * ItemReference.svelte  ─────────────────────────────────────────────
 	 * Inline reference that shows a hover/click‑activated preview card.
 	 * Re‑written for improved readability, accessibility, and maintainability.
-	 * Migrated to Svelte 5 with improved mobile support and glassmorphism design.
+	 * Migrated to Svelte 5 with improved mobile support; flat Ink + Signal styling.
 	 * ────────────────────────────────────────────────────────────────────
 	 * Usage: <ItemReference id="my‑item‑id" />
 	 */

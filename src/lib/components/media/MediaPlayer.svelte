@@ -13,7 +13,7 @@
 		autoplay = false,
 		loop = false,
 		muted = false,
-		glassEffect = 'glass-card',
+		surface = 'surface-card',
 		showControls = true,
 		width = undefined,
 		height = undefined
@@ -25,7 +25,7 @@
 		autoplay?: boolean;
 		loop?: boolean;
 		muted?: boolean;
-		glassEffect?: string;
+		surface?: string;
 		showControls?: boolean;
 		width?: string | number;
 		height?: string | number;
@@ -185,7 +185,7 @@
 	};
 </script>
 
-<div class="media-player {glassEffect} scroll-reveal" role="region" aria-label="Media Player">
+<div class="media-player {surface} scroll-reveal" role="region" aria-label="Media Player">
 	{#if title}
 		<div class="player-header">
 			<h3 class="player-title">{title}</h3>
@@ -303,7 +303,7 @@
 
 <style>
 	/* Ink + Signal: flat archival player shell. Square, hairline, no glass,
-	   no shadow, no gradient wash — overrides the .glass-card global. */
+	   no shadow, no gradient wash — overrides the .surface-card global. */
 	.media-player {
 		padding: var(--space-6);
 		border-radius: 0;

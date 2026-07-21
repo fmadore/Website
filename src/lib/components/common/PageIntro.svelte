@@ -4,16 +4,16 @@
 	let {
 		children,
 		variant = 'default',
-		glassEffect = '',
+		surface = '',
 		additionalClasses = ''
 	}: {
 		children: Snippet;
 		variant?: 'default' | 'compact' | 'emphasized' | 'featured';
-		glassEffect?: '' | 'glass-light' | 'glass-medium' | 'glass-panel-light';
+		surface?: '' | 'surface-light' | 'surface-medium' | 'surface-panel-light';
 		additionalClasses?: string;
 	} = $props();
 
-	// Combine classes based on variant, glass effect, and additional classes
+	// Combine classes based on variant, surface, and additional classes
 	const baseClasses = 'page-intro scroll-reveal';
 	const variantClasses = {
 		default: 'page-intro--default',
@@ -23,7 +23,7 @@
 	};
 
 	const combinedClasses = $derived(
-		`${baseClasses} ${variantClasses[variant]} ${glassEffect} ${additionalClasses}`.trim()
+		`${baseClasses} ${variantClasses[variant]} ${surface} ${additionalClasses}`.trim()
 	);
 </script>
 

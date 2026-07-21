@@ -14,7 +14,7 @@
  */
 
 import { browser } from '$app/environment';
-import { website } from '$lib/data/siteConfig';
+import { author, website } from '$lib/data/siteConfig';
 
 // ---------------------------------------------------------------------------
 // Minimal typings for the (still-experimental) WebMCP API.
@@ -68,8 +68,7 @@ function buildTools(): ToolDescriptor[] {
 	return [
 		{
 			name: 'search_publications',
-			description:
-				"Search Frédérick Madore's academic publications (books, journal articles, book chapters, edited volumes, reports, and encyclopedia entries). Filter by free-text query, publication type, and/or year. Returns matching publications with titles, years, types, authors, and URLs.",
+			description: `Search ${author.name}'s academic publications (books, journal articles, book chapters, edited volumes, reports, and encyclopedia entries). Filter by free-text query, publication type, and/or year. Returns matching publications with titles, years, types, authors, and URLs.`,
 			inputSchema: {
 				type: 'object',
 				properties: {
@@ -192,8 +191,7 @@ function buildTools(): ToolDescriptor[] {
 		},
 		{
 			name: 'search_communications',
-			description:
-				"Search Frédérick Madore's talks and events (conference papers, invited lectures, seminars, workshops, panels, and podcasts). Filter by free-text query, type, and/or year. Returns matching talks with titles, dates, venues, and URLs.",
+			description: `Search ${author.name}'s talks and events (conference papers, invited lectures, seminars, workshops, panels, and podcasts). Filter by free-text query, type, and/or year. Returns matching talks with titles, dates, venues, and URLs.`,
 			inputSchema: {
 				type: 'object',
 				properties: {
@@ -308,8 +306,7 @@ function buildTools(): ToolDescriptor[] {
 		},
 		{
 			name: 'list_research_projects',
-			description:
-				"List Frédérick Madore's research projects and digital humanities projects, with short descriptions and URLs.",
+			description: `List ${author.name}'s research projects and digital humanities projects, with short descriptions and URLs.`,
 			inputSchema: {
 				type: 'object',
 				properties: {},
@@ -353,8 +350,7 @@ function buildTools(): ToolDescriptor[] {
 		},
 		{
 			name: 'get_author_info',
-			description:
-				'Get information about the site owner, Frédérick Madore: name, academic position, affiliation, contact email, and scholarly/social profile links.',
+			description: `Get information about the site owner, ${author.name}: name, academic position, affiliation, contact email, and scholarly/social profile links.`,
 			inputSchema: {
 				type: 'object',
 				properties: {},

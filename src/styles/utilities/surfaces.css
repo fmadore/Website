@@ -1,21 +1,22 @@
 /* ============================================================================
- * "Glass" utilities — NEUTRALISED for Ink + Signal.
+ * Flat surface utilities (Ink + Signal).
  *
- * Glass does not exist in this system: no backdrop-filter, no blur, no glow,
- * no shadow, square corners. Depth comes from ink density and rule weight.
- * These class names are retained for codebase compatibility but now render as
- * flat paper tiles (daylight) / film tiles (midnight) with a hairline or full
+ * Formerly the `.glass-*` glassmorphism classes: glass was neutralised for
+ * Ink + Signal (no backdrop-filter, no blur, no glow, no shadow, square
+ * corners) and the classes were then renamed `.glass-*` → `.surface-*`.
+ * Depth comes from ink density and rule weight. These classes render flat
+ * paper tiles (daylight) / film tiles (midnight) with a hairline or full
  * border. New code should prefer the idiom classes (.ledger, .section, .chip,
  * .plate) over these.
  * ============================================================================ */
 
 /* Generic flat surfaces (formerly translucent glass over media/chrome). */
-.glass,
-.glass-light,
-.glass-medium,
-.glass-heavy,
-.glass-frosted,
-.glass-primary {
+.surface,
+.surface-light,
+.surface-medium,
+.surface-heavy,
+.surface-frosted,
+.surface-primary {
 	background: var(--color-surface);
 	border: var(--border-width-thin) solid var(--color-border);
 	border-radius: 0;
@@ -24,69 +25,59 @@
 	backdrop-filter: none;
 }
 
-html.dark .glass,
-html.dark .glass-light,
-html.dark .glass-medium,
-html.dark .glass-heavy,
-html.dark .glass-frosted,
-html.dark .glass-primary {
+html.dark .surface,
+html.dark .surface-light,
+html.dark .surface-medium,
+html.dark .surface-heavy,
+html.dark .surface-frosted,
+html.dark .surface-primary {
 	background: var(--color-surface);
 	border-color: var(--color-border);
 }
 
-/* Blur helpers → no-ops. */
-.glass-blur-sm,
-.glass-blur-md,
-.glass-blur-lg,
-.glass-blur-xl,
-.glass-blur-2xl {
-	-webkit-backdrop-filter: none;
-	backdrop-filter: none;
-}
-
 /* Paper tiles — the workhorse card/panel surfaces. Flat warm paper, hairline
  * border, square corners, no shadow, no hover lift. */
-.glass-card,
-.glass-panel {
+.surface-card,
+.surface-panel {
 	background: var(--color-surface-elevated);
 	border: var(--border-width-thin) solid var(--color-border);
 	border-radius: 0;
 	box-shadow: none;
 }
 
-.glass-panel-light {
+.surface-panel-light {
 	background: var(--color-surface);
 	border: var(--border-width-thin) solid var(--color-border);
 	border-radius: 0;
 	box-shadow: none;
 }
 
-.glass-card {
+.surface-card {
 	transition: border-color var(--duration-fast) var(--ease-out);
 }
 
-.glass-card:hover {
+.surface-card:hover {
 	border-color: var(--color-border-dark);
 }
 
-html.dark .glass-card.glass-card,
-html.dark .glass-panel.glass-panel {
+html.dark .surface-card.surface-card,
+html.dark .surface-panel.surface-panel {
 	background: var(--color-surface);
 	border-color: var(--color-border);
 }
 
-html.dark .glass-panel-light.glass-panel-light {
+html.dark .surface-panel-light.surface-panel-light {
 	background: var(--color-surface-alt);
 	border-color: var(--color-border);
 }
 
-html.dark .glass-card.glass-card:hover {
+html.dark .surface-card.surface-card:hover {
 	border-color: var(--color-border-dark);
 }
 
 /* Sticky masthead surface (Header.svelte owns the full rule system). Solid
  * page ground with a hairline base rule — no translucency, no blur. */
-.glass-nav {
+.surface-nav {
 	background: var(--color-background);
 	border-bottom: var(--rule-hairline) solid var(--color-border);
 	box-shadow: none;
@@ -94,16 +85,16 @@ html.dark .glass-card.glass-card:hover {
 	backdrop-filter: none;
 }
 
-html.dark .glass-nav.glass-nav {
+html.dark .surface-nav.surface-nav {
 	background: var(--color-background);
 	border-bottom-color: var(--color-border);
 }
 
 /* Standalone flat control (toggles, iframe chrome) — a square ink/paper
  * button. The typed button system lives in buttons.css; these rules only
- * catch bare `.glass-button` usages. Doubled selector keeps specificity above
- * `.btn-*` so button variants below can still win where intended. */
-.glass-button.glass-button {
+ * catch bare `.surface-button` usages. Doubled selector keeps specificity
+ * above `.btn-*` so button variants below can still win where intended. */
+.surface-button.surface-button {
 	background: var(--color-surface);
 	border: var(--border-width-thin) solid var(--color-border);
 	border-radius: 0;
@@ -116,93 +107,72 @@ html.dark .glass-nav.glass-nav {
 		color var(--duration-fast) var(--ease-out);
 }
 
-.glass-button.glass-button:hover {
+.surface-button.surface-button:hover {
 	background: var(--color-surface-alt);
 	border-color: var(--color-border-dark);
 }
 
-.glass-button.glass-button:active {
+.surface-button.surface-button:active {
 	background: var(--color-surface-alt);
 	transform: none;
 }
 
-html.dark .glass-button.glass-button {
+html.dark .surface-button.surface-button {
 	background: var(--color-surface);
 	border-color: var(--color-border);
 }
 
-html.dark .glass-button.glass-button:hover {
+html.dark .surface-button.surface-button:hover {
 	background: var(--color-surface-alt);
 	border-color: var(--color-border-dark);
 }
 
-/* Button-variant + glass combos — flattened to match each variant's solid
- * look so a `glass` prop never reintroduces chrome. */
-.btn-primary.glass-button.glass-button {
+/* Button-variant + surface combos — flattened to match each variant's solid
+ * look so a surface class never reintroduces chrome. */
+.btn-primary.surface-button.surface-button {
 	color: var(--color-text-inverted);
 	background: var(--color-primary);
 	border-color: var(--color-primary);
 }
 
-.btn-primary.glass-button.glass-button:hover {
+.btn-primary.surface-button.surface-button:hover {
 	background: var(--color-primary-dark);
 	border-color: var(--color-primary-dark);
 }
 
-.btn-outline-primary.glass-button.glass-button {
+.btn-outline-primary.surface-button.surface-button {
 	color: var(--color-primary);
 	background: transparent;
 	border-color: var(--color-primary);
 }
 
-.btn-outline-primary.glass-button.glass-button:hover {
+.btn-outline-primary.surface-button.surface-button:hover {
 	color: var(--color-text-inverted);
 	background: var(--color-primary);
 	border-color: var(--color-primary);
 }
 
-.btn-outline-secondary.glass-button.glass-button {
+.btn-outline-secondary.surface-button.surface-button {
 	color: var(--color-text);
 	background: transparent;
 	border-color: var(--color-border-dark);
 }
 
-.btn-outline-secondary.glass-button.glass-button:hover {
+.btn-outline-secondary.surface-button.surface-button:hover {
 	color: var(--color-text-emphasis);
 	background: var(--color-surface-alt);
 	border-color: var(--color-primary);
 }
 
-/* Editorial section — content on the page ground, no chrome at all. */
-.glass-section-panel {
-	position: relative;
-	background: transparent;
-	border: none;
-	box-shadow: none;
-}
-
-/* Sub-card (a review, a citing work) — flat paper tile with a hairline. */
-.glass-sub-card {
-	background: var(--color-surface);
-	border: var(--border-width-thin) solid var(--color-border);
-	border-radius: 0;
-	box-shadow: none;
-}
-
-html.dark .glass-sub-card {
-	background: var(--color-surface);
-	border-color: var(--color-border);
-}
-
 /* Animation utility (used by IframeRenderer variants) — border only. */
-.glass-animate {
+.surface-animate {
 	transition: border-color var(--duration-fast) var(--ease-out);
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.glass-card,
-	.glass-button.glass-button,
-	.glass-animate {
+	.surface-card,
+	.surface-button.surface-button,
+	.surface-animate {
 		transition: none;
 	}
 }

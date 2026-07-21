@@ -1,5 +1,12 @@
 # Design Review — June 2026
 
+> **Historical document.** This review audited the retired "warm editorial"
+> direction (Fraunces/Spectral/Commissioner, warm paper + glass-for-chrome).
+> The site has since moved to the **Ink + Signal** design language — see
+> `.impeccable.md` and the Design Context in `CLAUDE.md` for the current
+> brief, and `REFACTORING-ROADMAP.md` for current forward-looking work.
+> Kept as a record of the landed phases it describes.
+
 Expert review of the design philosophy (`.impeccable.md`), how faithfully the
 codebase applies it, and a phased roadmap. Phase A was implemented and
 verified in the browser (light + dark) as part of this review; see

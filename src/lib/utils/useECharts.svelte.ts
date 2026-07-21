@@ -38,7 +38,7 @@
  * ```
  */
 
-import type * as echarts from 'echarts';
+import type * as echarts from '$lib/utils/echartsCore';
 
 /** Options accepted by ECharts' `setOption`, in object form. */
 export interface EChartsSetOptionOpts {
@@ -136,7 +136,8 @@ export function useECharts(options: UseEChartsOptions): UseEChartsReturn {
 		(async () => {
 			if (!echartsLib) {
 				try {
-					const echartsModule = await import('echarts');
+					// Tree-shaken core (see echartsCore.ts) — never the full 'echarts'.
+					const echartsModule = await import('$lib/utils/echartsCore');
 					if (!mounted) return;
 					echartsLib = echartsModule;
 				} catch (error) {

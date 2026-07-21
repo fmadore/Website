@@ -13,21 +13,16 @@ export function getAuthorsArray(authors: string[] | string | undefined): string[
 	return authors;
 }
 
+// Join names citation-style: ", " between entries, " and " before the last.
+function joinNames(names: string[]): string {
+	if (names.length === 0) return '';
+	if (names.length === 1) return names[0];
+	return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
+}
+
 // New function to format author list
 export function formatAuthorList(authorsInput: string[] | string | undefined): string {
-	const authorsArray = getAuthorsArray(authorsInput);
-	const numAuthors = authorsArray.length;
-	if (numAuthors === 0) return '';
-	if (numAuthors === 1) return authorsArray[0];
-
-	let formatted = '';
-	authorsArray.forEach((author, i) => {
-		formatted += author;
-		if (i < numAuthors - 1) {
-			formatted += i === numAuthors - 2 ? ' and ' : ', ';
-		}
-	});
-	return formatted;
+	return joinNames(getAuthorsArray(authorsInput));
 }
 
 // Helper function to format editor string (e.g., "Name1, Name2 and Name3")
@@ -39,16 +34,28 @@ function formatEditors(editors: string | undefined): string {
 		.split(',')
 		.map((name) => name.trim())
 		.filter(Boolean);
-	const numEditors = editorsArray.length;
-	let formatted = '';
-	editorsArray.forEach((editor, i) => {
-		formatted += editor;
-		if (i < numEditors - 1) {
-			// Use " and " before the last editor, ", " otherwise
-			formatted += i === numEditors - 2 ? ' and ' : ', ';
-		}
-	});
-	return formatted;
+	return joinNames(editorsArray);
+}
+
+// "Place: Publisher" imprint block shared by book/chapter/encyclopedia/
+// conference-proceedings citations. Either half may be absent.
+function formatImprint(publication: Pick<Publication, 'placeOfPublication' | 'publisher'>): string {
+	let imprint = '';
+	if (publication.placeOfPublication) {
+		imprint += publication.placeOfPublication;
+		if (publication.publisher) imprint += ':';
+	}
+	if (publication.placeOfPublication && publication.publisher) imprint += ' ';
+	if (publication.publisher) imprint += publication.publisher;
+	return imprint;
+}
+
+// Ensure a non-empty details string closes with a period.
+function withFinalPeriod(details: string): string {
+	if (details.trim() && !details.trim().endsWith('.')) {
+		return details + '.';
+	}
+	return details;
 }
 
 // Define the structure for the formatted citation output
@@ -70,13 +77,7 @@ export function formatCitation(publication: Publication): FormattedCitation {
 	// (This will consolidate logic from PublicationItem's metadata block and template)
 
 	if (type === 'book') {
-		let details = '';
-		if (publication.placeOfPublication) {
-			details += publication.placeOfPublication;
-			if (publication.publisher) details += ':';
-		}
-		if (publication.placeOfPublication && publication.publisher) details += ' ';
-		if (publication.publisher) details += publication.publisher;
+		let details = formatImprint(publication);
 		if (details) details += '.'; // Add period if details exist
 		detailsHtml = details;
 		year = publication.year;
@@ -103,23 +104,9 @@ export function formatCitation(publication: Publication): FormattedCitation {
 		}
 		if (hasBookInfo) details += '. '; // Separator after main book/editor/page info
 
-		// Build and append book publication info
-		let bookPubInfo = '';
-		if (publication.placeOfPublication) {
-			bookPubInfo += publication.placeOfPublication;
-			if (publication.publisher) bookPubInfo += ':';
-		}
-		if (publication.placeOfPublication && publication.publisher) bookPubInfo += ' ';
-		if (publication.publisher) bookPubInfo += publication.publisher;
-
-		// Append the publication info
-		details += bookPubInfo;
-
-		// Ensure final period after all details
-		if (details.trim() && !details.trim().endsWith('.')) {
-			details += '.';
-		}
-		detailsHtml = details;
+		// Append the "place: publisher" imprint and close with a period
+		details += formatImprint(publication);
+		detailsHtml = withFinalPeriod(details);
 		year = publication.year;
 	} else if (type === 'article' || type === 'bulletin-article') {
 		let details = '';
@@ -127,10 +114,7 @@ export function formatCitation(publication: Publication): FormattedCitation {
 		if (publication.volume) details += ` ${publication.volume}`; // Space before volume
 		if (publication.issue) details += ` (${publication.issue})`;
 		if (publication.pages) details += `: ${publication.pages}`; // Colon before pages
-		if (details.trim() && !details.trim().endsWith('.')) {
-			details += '.'; // Ensure final period
-		}
-		detailsHtml = details;
+		detailsHtml = withFinalPeriod(details);
 		year = publication.year;
 	} else if (type === 'encyclopedia') {
 		let details = `In <em>${publication.encyclopediaTitle || ''}</em>`;
@@ -147,31 +131,15 @@ export function formatCitation(publication: Publication): FormattedCitation {
 		}
 		details += '. '; // Separator after title/editors/pages info
 
-		// Build and append publication info like chapters (place: publisher)
-		let pubInfo = '';
-		if (publication.placeOfPublication) {
-			pubInfo += publication.placeOfPublication;
-			if (publication.publisher) pubInfo += ':';
-		}
-		if (publication.placeOfPublication && publication.publisher) pubInfo += ' ';
-		if (publication.publisher) pubInfo += publication.publisher;
-
-		details += pubInfo; // Append the publication info
-
-		// Ensure final period
-		if (details.trim() && !details.trim().endsWith('.')) {
-			details += '.';
-		}
-		detailsHtml = details;
+		// Append the "place: publisher" imprint and close with a period
+		details += formatImprint(publication);
+		detailsHtml = withFinalPeriod(details);
 		year = publication.year;
 	} else if (type === 'phd-dissertation' || type === 'masters-thesis') {
 		let details = typeLabel; // Use the already determined typeLabel
 		if (publication.department) details += `, ${publication.department}`;
 		if (publication.university) details += `, ${publication.university}`;
-		if (details.trim() && !details.trim().endsWith('.')) {
-			details += '.'; // Ensure final period
-		}
-		detailsHtml = details;
+		detailsHtml = withFinalPeriod(details);
 		year = publication.year;
 	} else if (type === 'blogpost') {
 		let details = '';
@@ -185,10 +153,7 @@ export function formatCitation(publication: Publication): FormattedCitation {
 			details += `<em>${publication.publisher}</em>`;
 		}
 
-		if (details.trim() && !details.trim().endsWith('.')) {
-			details += '.'; // Ensure final period
-		}
-		detailsHtml = details;
+		detailsHtml = withFinalPeriod(details);
 		year = undefined; // Year is included in the full date
 	} else if (type === 'report') {
 		// Format similar to article: *Publisher* Volume(Issue): Pages.
@@ -198,11 +163,7 @@ export function formatCitation(publication: Publication): FormattedCitation {
 		if (publication.issue) details += ` (${publication.issue})`; // Issue in parentheses
 		if (publication.pages) details += `: ${publication.pages}`; // Colon before pages
 
-		// Ensure final period
-		if (details.trim() && !details.trim().endsWith('.')) {
-			details += '.';
-		}
-		detailsHtml = details;
+		detailsHtml = withFinalPeriod(details);
 		year = publication.year;
 	} else if (type === 'special-issue') {
 		// Format: *Journal Name* Volume(Issue).
@@ -211,11 +172,7 @@ export function formatCitation(publication: Publication): FormattedCitation {
 		if (publication.volume) details += ` ${publication.volume}`; // Space before volume
 		if (publication.issue) details += ` (${publication.issue})`; // Issue in parentheses
 
-		// Ensure final period
-		if (details.trim() && !details.trim().endsWith('.')) {
-			details += '.';
-		}
-		detailsHtml = details;
+		detailsHtml = withFinalPeriod(details);
 		year = publication.year;
 	} else if (type === 'conference-proceedings') {
 		// Format: In *Proceedings Title*
@@ -235,22 +192,9 @@ export function formatCitation(publication: Publication): FormattedCitation {
 		}
 		details += '. '; // Separator after proceedings info
 
-		// Build and append publication info
-		let pubInfo = '';
-		if (publication.placeOfPublication) {
-			pubInfo += publication.placeOfPublication;
-			if (publication.publisher) pubInfo += ':';
-		}
-		if (publication.placeOfPublication && publication.publisher) pubInfo += ' ';
-		if (publication.publisher) pubInfo += publication.publisher;
-
-		details += pubInfo; // Append the publication info
-
-		// Ensure final period
-		if (details.trim() && !details.trim().endsWith('.')) {
-			details += '.';
-		}
-		detailsHtml = details;
+		// Append the "place: publisher" imprint and close with a period
+		details += formatImprint(publication);
+		detailsHtml = withFinalPeriod(details);
 		year = publication.year;
 	}
 

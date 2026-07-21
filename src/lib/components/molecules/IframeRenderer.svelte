@@ -3,16 +3,16 @@
 
 	// Create a more flexible type for direct component usage
 	type IframeRendererProps = Omit<IframeEmbed, 'type'> & {
-		glassEffect?: boolean;
-		glassVariant?:
-			| 'glass'
-			| 'glass-light'
-			| 'glass-medium'
-			| 'glass-heavy'
-			| 'glass-primary'
-			| 'glass-accent'
-			| 'glass-highlight'
-			| 'glass-frosted';
+		framed?: boolean;
+		frameVariant?:
+			| 'surface'
+			| 'surface-light'
+			| 'surface-medium'
+			| 'surface-heavy'
+			| 'surface-primary'
+			| 'surface-accent'
+			| 'surface-highlight'
+			| 'surface-frosted';
 	};
 
 	let {
@@ -24,8 +24,8 @@
 		containerClass = undefined,
 		scrolling = 'auto',
 		allowfullscreen = true,
-		glassEffect = false,
-		glassVariant = 'glass'
+		framed = false,
+		frameVariant = 'surface'
 	}: IframeRendererProps = $props();
 
 	// Helper to determine if height is a CSS value (not a class name)
@@ -62,9 +62,9 @@
 			classes.push(height);
 		}
 
-		// Add glass effect classes if enabled
-		if (glassEffect) {
-			classes.push(glassVariant, 'glass-animate');
+		// Add flat surface classes if enabled
+		if (framed) {
+			classes.push(frameVariant, 'surface-animate');
 		}
 
 		// Add scroll-reveal-scale for modern CSS scroll-driven animation
@@ -134,30 +134,30 @@
 		display: block;
 	}
 
-	/* Glass effect integration for iframe containers */
-	:global(.iframe-container.glass),
-	:global(.iframe-container.glass-light),
-	:global(.iframe-container.glass-medium),
-	:global(.iframe-container.glass-heavy),
-	:global(.iframe-container.glass-primary),
-	:global(.iframe-container.glass-accent),
-	:global(.iframe-container.glass-highlight),
-	:global(.iframe-container.glass-frosted) {
-		/* Let the global glassmorphism utilities handle the background and effects */
+	/* Flat surface variant integration for iframe containers */
+	:global(.iframe-container.surface),
+	:global(.iframe-container.surface-light),
+	:global(.iframe-container.surface-medium),
+	:global(.iframe-container.surface-heavy),
+	:global(.iframe-container.surface-primary),
+	:global(.iframe-container.surface-accent),
+	:global(.iframe-container.surface-highlight),
+	:global(.iframe-container.surface-frosted) {
+		/* Let the global flat-surface utilities handle the background */
 		/* Only override the border to match our iframe styling */
 		border: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
 	}
 
-	/* Dark mode glass effect adjustments */
-	:global(html.dark .iframe-container.glass),
-	:global(html.dark .iframe-container.glass-light),
-	:global(html.dark .iframe-container.glass-medium),
-	:global(html.dark .iframe-container.glass-heavy),
-	:global(html.dark .iframe-container.glass-primary),
-	:global(html.dark .iframe-container.glass-accent),
-	:global(html.dark .iframe-container.glass-highlight),
-	:global(html.dark .iframe-container.glass-frosted) {
+	/* Dark mode surface adjustments */
+	:global(html.dark .iframe-container.surface),
+	:global(html.dark .iframe-container.surface-light),
+	:global(html.dark .iframe-container.surface-medium),
+	:global(html.dark .iframe-container.surface-heavy),
+	:global(html.dark .iframe-container.surface-primary),
+	:global(html.dark .iframe-container.surface-accent),
+	:global(html.dark .iframe-container.surface-highlight),
+	:global(html.dark .iframe-container.surface-frosted) {
 		border: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 	}
@@ -184,28 +184,28 @@
 		display: block;
 	}
 
-	/* Glass effect integration for aspect ratio containers */
-	:global(.iframe-container-aspect.glass),
-	:global(.iframe-container-aspect.glass-light),
-	:global(.iframe-container-aspect.glass-medium),
-	:global(.iframe-container-aspect.glass-heavy),
-	:global(.iframe-container-aspect.glass-primary),
-	:global(.iframe-container-aspect.glass-accent),
-	:global(.iframe-container-aspect.glass-highlight),
-	:global(.iframe-container-aspect.glass-frosted) {
-		/* Let the global glassmorphism utilities handle the background and effects */
+	/* Flat surface variant integration for aspect ratio containers */
+	:global(.iframe-container-aspect.surface),
+	:global(.iframe-container-aspect.surface-light),
+	:global(.iframe-container-aspect.surface-medium),
+	:global(.iframe-container-aspect.surface-heavy),
+	:global(.iframe-container-aspect.surface-primary),
+	:global(.iframe-container-aspect.surface-accent),
+	:global(.iframe-container-aspect.surface-highlight),
+	:global(.iframe-container-aspect.surface-frosted) {
+		/* Let the global flat-surface utilities handle the background */
 		border: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
 	}
 
-	:global(html.dark .iframe-container-aspect.glass),
-	:global(html.dark .iframe-container-aspect.glass-light),
-	:global(html.dark .iframe-container-aspect.glass-medium),
-	:global(html.dark .iframe-container-aspect.glass-heavy),
-	:global(html.dark .iframe-container-aspect.glass-primary),
-	:global(html.dark .iframe-container-aspect.glass-accent),
-	:global(html.dark .iframe-container-aspect.glass-highlight),
-	:global(html.dark .iframe-container-aspect.glass-frosted) {
+	:global(html.dark .iframe-container-aspect.surface),
+	:global(html.dark .iframe-container-aspect.surface-light),
+	:global(html.dark .iframe-container-aspect.surface-medium),
+	:global(html.dark .iframe-container-aspect.surface-heavy),
+	:global(html.dark .iframe-container-aspect.surface-primary),
+	:global(html.dark .iframe-container-aspect.surface-accent),
+	:global(html.dark .iframe-container-aspect.surface-highlight),
+	:global(html.dark .iframe-container-aspect.surface-frosted) {
 		border: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 	}
@@ -374,25 +374,21 @@
 		/* Remove margin-top since padding-top on container already creates space for header */
 	}
 
-	/* Glass effect for iframe headers */
-	:global(.iframe-with-header.glass .iframe-header),
-	:global(.iframe-with-header.glass-light .iframe-header),
-	:global(.iframe-with-header.glass-medium .iframe-header),
-	:global(.iframe-with-header.glass-heavy .iframe-header) {
+	/* Surface variants for iframe headers */
+	:global(.iframe-with-header.surface .iframe-header),
+	:global(.iframe-with-header.surface-light .iframe-header),
+	:global(.iframe-with-header.surface-medium .iframe-header),
+	:global(.iframe-with-header.surface-heavy .iframe-header) {
 		background: var(--color-primary);
 		border-bottom: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-white) calc(var(--opacity-15) * 100%), transparent);
 	}
 
-	:global(html.dark .iframe-with-header.glass .iframe-header),
-	:global(html.dark .iframe-with-header.glass-light .iframe-header),
-	:global(html.dark .iframe-with-header.glass-medium .iframe-header),
-	:global(html.dark .iframe-with-header.glass-heavy .iframe-header) {
-		background: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--glass-opacity-fallback-dark) * 100%),
-			transparent
-		);
+	:global(html.dark .iframe-with-header.surface .iframe-header),
+	:global(html.dark .iframe-with-header.surface-light .iframe-header),
+	:global(html.dark .iframe-with-header.surface-medium .iframe-header),
+	:global(html.dark .iframe-with-header.surface-heavy .iframe-header) {
+		background: color-mix(in srgb, var(--color-primary) 85%, transparent);
 		border-bottom: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-white) calc(var(--opacity-10) * 100%), transparent);
 	}
@@ -495,15 +491,15 @@
 			height: 100%;
 		}
 
-		/* Remove glass effects in print */
-		:global(.iframe-container.glass),
-		:global(.iframe-container.glass-light),
-		:global(.iframe-container.glass-medium),
-		:global(.iframe-container.glass-heavy),
-		:global(.iframe-container-aspect.glass),
-		:global(.iframe-container-aspect.glass-light),
-		:global(.iframe-container-aspect.glass-medium),
-		:global(.iframe-container-aspect.glass-heavy) {
+		/* Flatten surface variants in print */
+		:global(.iframe-container.surface),
+		:global(.iframe-container.surface-light),
+		:global(.iframe-container.surface-medium),
+		:global(.iframe-container.surface-heavy),
+		:global(.iframe-container-aspect.surface),
+		:global(.iframe-container-aspect.surface-light),
+		:global(.iframe-container-aspect.surface-medium),
+		:global(.iframe-container-aspect.surface-heavy) {
 			background: var(--color-white) !important;
 			-webkit-backdrop-filter: none !important;
 			backdrop-filter: none !important;

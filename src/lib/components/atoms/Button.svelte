@@ -14,7 +14,7 @@
 		disabled?: boolean;
 		block?: boolean; // For btn-block
 		iconOnly?: boolean; // For icon-only buttons
-		glass?: boolean; // Enable glassmorphism effect
+		surface?: boolean; // Render as a flat outlined surface control
 		loading?: boolean; // Loading state
 		ariaLabel?: string | undefined; // For accessibility, esp. for iconOnly
 		additionalClasses?: string;
@@ -33,7 +33,7 @@
 		disabled = false,
 		block = false,
 		iconOnly = false,
-		glass = false,
+		surface = false,
 		loading = false,
 		ariaLabel = undefined,
 		additionalClasses = '',
@@ -53,7 +53,7 @@
 			block ? 'btn-block' : '',
 			icon || loading ? 'btn-with-icon' : '',
 			iconOnly ? 'btn-icon-only' : '',
-			glass ? 'btn-glass glass-button' : '',
+			surface ? 'btn-surface surface-button' : '',
 			loading ? 'btn-loading' : '',
 			additionalClasses
 		]

@@ -67,7 +67,7 @@
 						fallbackImage={project.imageUrl}
 						defaultAlt={project.title}
 						variant="featured"
-						glassEffect={false}
+						framed={false}
 						fetchpriority="high"
 						loading="eager"
 						maxHeight="60vh"

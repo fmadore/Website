@@ -6,6 +6,8 @@
 		getCategoryColor,
 		getCategoryLabel
 	} from '$lib/types/timeline';
+	import { getContrastLabelStyle, resolveColor } from '$lib/utils/chartColorUtils';
+	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { fade, fly } from 'svelte/transition';
 	import Icon from '@iconify/svelte';
 
@@ -96,6 +98,15 @@
 	let tooltipY = $state(0);
 	let tooltipItem = $state<TimelineItem | null>(null);
 	let selectedItem = $state<TimelineItem | null>(null);
+
+	// Contrast-aware ink/paper icon color for the detail card's category tile
+	// (no hardcoded white). Tracks the theme so the resolved --color-timeline-*
+	// value is re-read when daylight/midnight toggles.
+	const iconColorOnCategory = $derived.by(() => {
+		void getTheme();
+		if (!selectedItem) return 'currentColor';
+		return getContrastLabelStyle(resolveColor(getCategoryColor(selectedItem.category))).color;
+	});
 	let selectedIndex = $state(0);
 
 	// Initialize with the most recent item selected for better discovery
@@ -335,7 +346,7 @@
 
 			<!-- Detail Card (Always rendered if selectedItem exists) -->
 			{#if selectedItem}
-				<div class="detail-card glass-card" in:fly={{ y: 20, duration: 300 }}>
+				<div class="detail-card surface-card" in:fly={{ y: 20, duration: 300 }}>
 					<!-- Category Icon & Header -->
 					<div class="card-content-wrapper">
 						<div
@@ -346,7 +357,7 @@
 								icon={getIconForCategory(selectedItem.category)}
 								width="28"
 								height="28"
-								color="white"
+								color={iconColorOnCategory}
 							/>
 						</div>
 
@@ -589,7 +600,7 @@
 	}
 
 	/* Detail Card */
-	/* Flat archival panel — override the .glass-card global so the detail
+	/* Flat archival panel — override the .surface-card global so the detail
 	   card reads as a printed plate: square, hairline, no glass, no shadow. */
 	.detail-card {
 		position: relative;

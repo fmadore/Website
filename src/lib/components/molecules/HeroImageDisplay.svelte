@@ -10,7 +10,7 @@
 		defaultAlt = 'Hero image',
 		imageClass = 'hero-image', // Default class using our styling
 		figcaptionClass = 'hero-caption',
-		glassEffect = true,
+		framed = true,
 		variant = 'default',
 		maxHeight = '60vh',
 		fetchpriority = 'auto',
@@ -21,7 +21,7 @@
 		defaultAlt?: string;
 		imageClass?: string;
 		figcaptionClass?: string;
-		glassEffect?: boolean;
+		framed?: boolean;
 		variant?: 'default' | 'compact' | 'featured';
 		maxHeight?: string;
 		fetchpriority?: 'high' | 'low' | 'auto';
@@ -91,7 +91,7 @@
 			: null
 	);
 
-	// Use global glassmorphism utility (glass-card) to ensure visual consistency.
+	// Use the global flat-surface utility (surface-card) to ensure visual consistency.
 	// `.hero-entrance` plays an immediate mount animation (for above-the-fold
 	// hero images on detail pages); `.scroll-reveal-scale` handles the
 	// scroll-driven reveal if the figure ever lives below the fold.
@@ -99,7 +99,7 @@
 		[
 			'hero-figure',
 			`hero-figure--${variant}`,
-			glassEffect ? 'glass-card hero-figure--glass' : '',
+			framed ? 'surface-card hero-figure--framed' : '',
 			'hero-entrance',
 			'scroll-reveal-scale'
 		]
@@ -306,11 +306,12 @@
 		padding: 0 var(--space-4); /* Add horizontal padding for better readability */
 	}
 
-	/* "Glass" figure — retired tile chrome. The prop is kept for API
-	 * compatibility, but per the imagery clause the figure is a plate: the
-	 * image carries its own hairline frame, the caption is plain serif
-	 * italic, and there is no gradient tile, padding, or hover lift. */
-	.hero-figure--glass {
+	/* Framed figure (formerly the "glass" figure) — retired tile chrome. The
+	 * prop is kept for API compatibility, but per the imagery clause the
+	 * figure is a plate: the image carries its own hairline frame, the caption
+	 * is plain serif italic, and there is no gradient tile, padding, or hover
+	 * lift. */
+	.hero-figure--framed {
 		background: transparent;
 		padding: 0;
 		border: none;
@@ -350,7 +351,7 @@
 		border-color: var(--color-border-dark);
 	}
 
-	/* Fullscreen Modal Styling - Enhanced glassmorphism design */
+	/* Fullscreen Modal Styling — flat microfilm scrim, no blur or glass */
 	.fullscreen-modal {
 		position: fixed;
 		top: 0;

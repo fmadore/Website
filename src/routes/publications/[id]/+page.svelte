@@ -223,7 +223,11 @@
 
 <div class="container py-8 page-enter">
 	<div class="pub-shell">
-		<!-- Breadcrumb — mono, muted. -->
+		<!-- Breadcrumb — mono, muted. Deliberate editorial variant of the shared
+		     <Breadcrumb> molecule: a back-link ("← Publications / Type") instead
+		     of the Home/Section/Title trail, so it reads as document chrome on
+		     the bibliographic record. Breadcrumb JSON-LD still ships via
+		     useBreadcrumbJsonLd like every other detail page. -->
 		<nav class="pub-breadcrumb" aria-label="Breadcrumb">
 			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed path -->
 			<a href="{base}/publications" class="pub-breadcrumb-link">← Publications</a>

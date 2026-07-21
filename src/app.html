@@ -41,7 +41,7 @@
 		<!-- Critical CSS: Inlined to prevent render-blocking and reduce LCP -->
 		<!-- Values align with design system: variables.css Ink + Signal tokens -->
 		<!-- Light (daylight): warm paper #faf7ef bg, ink #191509 text | Dark (midnight/microfilm negative): warm near-black #171310 bg, cream #efe7d6 text -->
-		<!-- Square corners (--border-radius: 0), no shadows, no glass blur -->
+		<!-- Square corners (--border-radius: 0), no shadows, no backdrop blur -->
 		<style>
 			*,
 			*::before,
@@ -114,17 +114,17 @@
 			header {
 				min-height: 64px;
 			}
-			/* Paper tiles (formerly glassmorphism) — flat warm-paper surfaces,
-			 * square corners, hairline border, no shadow/blur. Full styling in
-			 * utilities/glassmorphism.css; this inline block is for FOUC only. */
-			.glass-card,
-			.glass-panel {
+			/* Paper tiles (formerly the glassmorphism classes) — flat warm-paper
+			 * surfaces, square corners, hairline border, no shadow/blur. Full
+			 * styling in utilities/surfaces.css; this inline block is for FOUC only. */
+			.surface-card,
+			.surface-panel {
 				background: #fffdf7;
 				border: 1px solid #c9c0aa;
 				border-radius: 0;
 			}
-			html.dark .glass-card,
-			html.dark .glass-panel {
+			html.dark .surface-card,
+			html.dark .surface-panel {
 				background: #252017;
 				border-color: #453d2f;
 			}

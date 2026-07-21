@@ -172,7 +172,8 @@
 					{#each pageGroups as group (group.year)}
 						<section class="year-group" aria-label="Activities from {group.year}">
 							<div class="year-group-head">
-								<span class="year-group-year">{group.year}</span>
+								<!-- Real h2 so the h1 → h2 (year) → h3 (item) outline holds for AT -->
+								<h2 class="year-group-year">{group.year}</h2>
 								<span class="year-group-count">
 									{group.total}
 									{group.total === 1 ? 'entry' : 'entries'}

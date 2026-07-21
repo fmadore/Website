@@ -1,10 +1,10 @@
 /* Panel Base Styles */
-/* Shared styling for all panel components — paired with `.glass-panel` (or
- * sibling glass utility) which now supplies the warm-paper surface. The
+/* Shared styling for all panel components — paired with `.surface-panel` (or
+ * sibling surface utility) which now supplies the warm-paper surface. The
  * earlier three-stop primary→highlight→accent gradient overlay (plus a
  * `::after` decorative bar under the title) layered an AI-CMS shimmer over
  * the warm paper; the surface tile is now flat and the title carries the
- * heading work via Spectral type alone. */
+ * heading work via the serif type alone. */
 
 .panel {
 	/* Editorial padding: tight enough to avoid cavernous empty pockets under
@@ -96,7 +96,7 @@
  * primary in different ratios). On a single home page the user could see all
  * three variants stacked, which read as decorative noise rather than meaningful
  * differentiation. The variants now share the warm-paper surface from
- * `.glass-panel`; differentiation comes from titles and content, not hue.
+ * `.surface-panel`; differentiation comes from titles and content, not hue.
  *
  * Variant classes are retained as identifying hooks (filters, scoping) but
  * intentionally carry no visual treatment. Add per-variant rules here if a
@@ -160,7 +160,7 @@
 	border-color: var(--color-primary);
 }
 
-/* Dark mode — surface continues to come from `.glass-panel` (warm dusk
+/* Dark mode — surface continues to come from `.surface-panel` (warm dusk
  * tile in dark mode). No panel-level dark override needed now that the
  * coloured-gradient backgrounds have been retired. */
 

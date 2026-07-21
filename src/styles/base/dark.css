@@ -81,8 +81,8 @@ html.dark {
 	/* Button / control schemes — cream family */
 	--color-secondary-scheme: var(--color-primary-light);
 	--color-secondary-scheme-alt: var(--color-primary);
-	--color-glass-scheme: var(--color-primary);
-	--color-glass-scheme-alt: var(--color-primary-light);
+	--color-surface-scheme: var(--color-primary);
+	--color-surface-scheme-alt: var(--color-primary-light);
 
 	/* Dark surface tokens */
 	--color-dark-surface: var(--sys-color-film-100);

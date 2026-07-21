@@ -17,57 +17,49 @@ export * from '$lib/utils/jsonLdSchemas';
 // SEO DESCRIPTION GENERATORS
 // ============================================================================
 
+/** The common 160-char SERP budget shared by all description builders. */
+const SEO_DESCRIPTION_LIMIT = 160;
+
+interface SeoDescriptionParts {
+	/** Front-loaded lead, e.g. "Book: Title". */
+	lead: string;
+	/** Full context sentence (leading space included), e.g. " Presented at X, 2024." */
+	contextSentence?: string;
+	/** Compact fallback used when the full sentence doesn't fit and the lead is short. */
+	contextCompact?: string;
+	/** Abstract to fill remaining space with (smart-truncated). */
+	abstract?: string;
+	/** Used verbatim when everything else produced an empty string. */
+	fallback: string;
+}
+
 /**
- * Creates an optimized SEO description for communication pages
- *
- * Best practices applied:
- * - 150-160 characters optimal length for Google SERPs
- * - Front-loads important keywords (type, topic, location)
- * - Uses smart truncation to avoid cutting mid-sentence
- * - Includes call-to-action when space allows
- * - Fallback logic for missing fields
+ * Shared SEO description algorithm (publications + communications):
+ * front-loaded lead → context sentence if it fits (compact variant when the
+ * lead is short) → abstract fill → 160-char smart truncation → fallback.
  */
-export function createCommunicationSEODescription(communication: Communication): string {
-	const { type, title, conference, location, country, year, abstract, authors } = communication;
+function buildSeoDescription({
+	lead,
+	contextSentence,
+	contextCompact,
+	abstract,
+	fallback
+}: SeoDescriptionParts): string {
+	let description = lead;
 
-	// Get type label from centralized mapping
-	const getTypeLabel = (type: string): string =>
-		COMMUNICATION_TYPE_SEO_LABELS[type] || 'Academic presentation';
-
-	// Start building the description with the most important information first
-	let description = '';
-
-	// Begin with type and title (most important for academic content)
-	if (type && title) {
-		const typeLabel = getTypeLabel(type);
-		description = `${typeLabel}: ${title}`;
-	} else if (title) {
-		description = title;
-	}
-
-	// Add location and year context (highly valuable for academic presentations)
-	const locationInfo = [];
-	if (conference) locationInfo.push(conference);
-	if (location && location !== conference) locationInfo.push(location);
-	if (country && !location?.includes(country)) locationInfo.push(country);
-	if (year) locationInfo.push(year.toString());
-
-	if (locationInfo.length > 0) {
-		const locationText = ` Presented at ${locationInfo.join(', ')}.`;
-		if ((description + locationText).length <= 160) {
-			description += locationText;
-		} else if (description.length < 100) {
-			// For shorter descriptions, try a more compact format
-			const shortLocationText = ` at ${conference || location || country || year}`;
-			if ((description + shortLocationText).length <= 160) {
-				description += shortLocationText;
+	if (contextSentence) {
+		if ((description + contextSentence).length <= SEO_DESCRIPTION_LIMIT) {
+			description += contextSentence;
+		} else if (description.length < 100 && contextCompact) {
+			if ((description + contextCompact).length <= SEO_DESCRIPTION_LIMIT) {
+				description += contextCompact;
 			}
 		}
 	}
 
 	// If we have space and an abstract, add a summary
 	if (abstract && description.length < 120) {
-		const remainingSpace = 160 - description.length - 1; // -1 for space
+		const remainingSpace = SEO_DESCRIPTION_LIMIT - description.length - 1; // -1 for space
 		const abstractPreview = smartTruncate(abstract, remainingSpace);
 		if (abstractPreview.length > 20) {
 			// Only add if meaningful content
@@ -75,20 +67,47 @@ export function createCommunicationSEODescription(communication: Communication):
 		}
 	}
 
-	// Ensure we don't exceed 160 characters
-	if (description.length > 160) {
-		description = smartTruncate(description, 160);
+	if (description.length > SEO_DESCRIPTION_LIMIT) {
+		description = smartTruncate(description, SEO_DESCRIPTION_LIMIT);
 	}
 
-	// Fallback if somehow we still don't have a good description
-	if (!description.trim()) {
-		const authorText = authors?.length ? ` by ${authors[0]}` : '';
-		const eventText = conference ? ` at ${conference}` : '';
-		const yearText = year ? ` (${year})` : '';
-		description = `Academic presentation${eventText}${authorText}${yearText}`;
-	}
+	return description.trim() ? description : fallback;
+}
 
-	return description;
+/**
+ * Creates an optimized SEO description for communication pages
+ *
+ * Best practices applied:
+ * - 150-160 characters optimal length for Google SERPs
+ * - Front-loads important keywords (type, topic, location)
+ * - Uses smart truncation to avoid cutting mid-sentence
+ * - Fallback logic for missing fields
+ */
+export function createCommunicationSEODescription(communication: Communication): string {
+	const { type, title, conference, location, country, year, abstract, authors } = communication;
+
+	const typeLabel = (type && COMMUNICATION_TYPE_SEO_LABELS[type]) || 'Academic presentation';
+	const lead = type && title ? `${typeLabel}: ${title}` : (title ?? '');
+
+	// Location and year context (highly valuable for academic presentations)
+	const locationInfo = [];
+	if (conference) locationInfo.push(conference);
+	if (location && location !== conference) locationInfo.push(location);
+	if (country && !location?.includes(country)) locationInfo.push(country);
+	if (year) locationInfo.push(year.toString());
+
+	const authorText = authors?.length ? ` by ${authors[0]}` : '';
+	const eventText = conference ? ` at ${conference}` : '';
+	const yearText = year ? ` (${year})` : '';
+
+	return buildSeoDescription({
+		lead,
+		contextSentence:
+			locationInfo.length > 0 ? ` Presented at ${locationInfo.join(', ')}.` : undefined,
+		contextCompact: ` at ${conference || location || country || year}`,
+		abstract,
+		fallback: `Academic presentation${eventText}${authorText}${yearText}`
+	});
 }
 
 /**
@@ -160,25 +179,11 @@ export function createPublicationSEODescription(publication: Publication): strin
 	const { type, title, journal, publisher, book, year, abstract, authors, placeOfPublication } =
 		publication;
 
-	// Get type label from centralized mapping
-	const getTypeLabel = (type: string): string =>
-		PUBLICATION_TYPE_SEO_LABELS[type] || 'Academic publication';
+	const typeLabel = PUBLICATION_TYPE_SEO_LABELS[type] || 'Academic publication';
+	const lead = type && title ? `${typeLabel}: ${title}` : (title ?? '');
 
-	// Start building the description with the most important information first
-	let description = '';
-
-	// Begin with type and title (most important for academic content)
-	if (type && title) {
-		const typeLabel = getTypeLabel(type);
-		description = `${typeLabel}: ${title}`;
-	} else if (title) {
-		description = title;
-	}
-
-	// Add publication venue context (highly valuable for academic publications)
+	// Publication venue context (highly valuable for academic publications)
 	const venueInfo = [];
-
-	// Different venue information based on publication type
 	if (type === 'article' || type === 'special-issue') {
 		if (journal) venueInfo.push(journal);
 	} else if (type === 'chapter') {
@@ -191,49 +196,18 @@ export function createPublicationSEODescription(publication: Publication): strin
 	} else if (type === 'masters-thesis' || type === 'phd-dissertation') {
 		if (publication.university) venueInfo.push(publication.university);
 	}
-
 	if (year) venueInfo.push(year.toString());
 
-	if (venueInfo.length > 0) {
-		const venueText = ` Published in ${venueInfo.join(', ')}.`;
-		if ((description + venueText).length <= 160) {
-			description += venueText;
-		} else if (description.length < 100) {
-			// For shorter descriptions, try a more compact format
-			const shortVenueText = ` (${venueInfo[0] || year})`;
-			if ((description + shortVenueText).length <= 160) {
-				description += shortVenueText;
-			}
-		}
-	} else if (year && description.length < 140) {
-		// If no venue info but we have a year, add it
-		description += ` (${year})`;
-	}
+	const authorText = authors?.length ? ` by ${authors[0]}` : '';
+	const yearText = year ? ` (${year})` : '';
 
-	// If we have space and an abstract, add a summary
-	if (abstract && description.length < 120) {
-		const remainingSpace = 160 - description.length - 1; // -1 for space
-		const abstractPreview = smartTruncate(abstract, remainingSpace);
-		if (abstractPreview.length > 20) {
-			// Only add if meaningful content
-			description += ` ${abstractPreview}`;
-		}
-	}
-
-	// Ensure we don't exceed 160 characters
-	if (description.length > 160) {
-		description = smartTruncate(description, 160);
-	}
-
-	// Fallback if somehow we still don't have a good description
-	if (!description.trim()) {
-		const authorText = authors?.length ? ` by ${authors[0]}` : '';
-		const yearText = year ? ` (${year})` : '';
-		const typeLabel = getTypeLabel(type);
-		description = `${typeLabel}${authorText}${yearText}`;
-	}
-
-	return description;
+	return buildSeoDescription({
+		lead,
+		contextSentence: venueInfo.length > 0 ? ` Published in ${venueInfo.join(', ')}.` : undefined,
+		contextCompact: ` (${venueInfo[0] || year})`,
+		abstract,
+		fallback: `${typeLabel}${authorText}${yearText}`
+	});
 }
 
 /**

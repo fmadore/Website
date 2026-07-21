@@ -87,7 +87,10 @@
 	margin-bottom: var(--space-2);
 }
 
+/* An <h2> for the document outline; margins zeroed so it keeps sitting on
+   the year-group-head baseline like the former <span>. */
 .year-group-year {
+	margin: 0;
 	font-family: var(--font-family-display);
 	font-variation-settings: var(--font-variation-display-sm);
 	font-size: var(--font-size-2xl);

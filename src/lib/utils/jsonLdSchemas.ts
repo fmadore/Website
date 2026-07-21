@@ -5,6 +5,7 @@
  * construction; seoUtils.ts owns SEO description/keyword generation and
  * re-exports everything here for backward-compatible imports.
  */
+import type { Activity } from '$lib/types/activity';
 import type { Grant } from '$lib/types/grant';
 import type { Publication } from '$lib/types/publication';
 import type { Communication } from '$lib/types/communication';
@@ -155,6 +156,20 @@ const SITE_NAME = author.name;
 const SITE_DESCRIPTION = getDefaultDescription();
 
 /**
+ * The site owner as a JSON-LD Person with the canonical site URL attached.
+ * Identity is checked against `author.name` from siteConfig — never a
+ * hardcoded name string (see CLAUDE.md "Author/Affiliation Data").
+ */
+function siteAuthorWithUrl(): JsonLdPerson {
+	return { ...formatAuthor(author.name), url: website.url };
+}
+
+/** Attach the canonical site URL to the site owner within an author list. */
+function withAuthorUrl(persons: JsonLdPerson[]): JsonLdPerson[] {
+	return persons.map((a) => (a.name === author.name ? { ...a, url: website.url } : a));
+}
+
+/**
  * Creates a WebSite schema - add to root layout for sitelinks eligibility
  * This schema helps Google understand your site structure and potentially
  * display sitelinks (sub-pages) in search results
@@ -165,7 +180,7 @@ export function createWebSiteSchema(): WebSiteSchema {
 		'@type': 'WebSite',
 		'@id': `${SITE_URL}/#website`,
 		name: SITE_NAME,
-		alternateName: 'Dr. Frédérick Madore',
+		alternateName: `Dr. ${author.name}`,
 		url: SITE_URL,
 		description: SITE_DESCRIPTION,
 		publisher: {
@@ -444,15 +459,9 @@ export function buildPublicationJsonLd(
 	}
 
 	// Format common fields; attach the canonical site URL to the primary author.
-	const authors = publication.authors ? formatAuthors(publication.authors) : undefined;
-	const defaultAuthorWithUrl: JsonLdPerson | undefined = authors?.find(
-		(a) => a.name === 'Frédérick Madore'
-	)
-		? { ...formatAuthor('Frédérick Madore'), url: website.url }
+	const finalAuthors = publication.authors
+		? withAuthorUrl(formatAuthors(publication.authors))
 		: undefined;
-	const finalAuthors = authors?.map((a) =>
-		a.name === 'Frédérick Madore' && defaultAuthorWithUrl ? defaultAuthorWithUrl : a
-	);
 
 	const formattedDatePublished = publication.dateISO
 		? `${publication.dateISO}T00:00:00+01:00`
@@ -617,10 +626,7 @@ export function buildCommunicationJsonLd(communication: Communication, base = ''
 	}
 
 	if (communication.authors && communication.authors.length > 0) {
-		const authors = formatAuthors(communication.authors);
-		jsonLdObject.performer = authors.map((a) =>
-			a.name === 'Frédérick Madore' ? { ...a, url: website.url } : a
-		);
+		jsonLdObject.performer = withAuthorUrl(formatAuthors(communication.authors));
 	}
 
 	if (communication.heroImage?.src) {
@@ -660,7 +666,7 @@ export function buildDhProjectJsonLd(
 		url: project.linkUrl || `${base}/digital-humanities/${project.id}`
 	};
 
-	jsonLdObject.author = [{ ...formatAuthor('Frédérick Madore'), url: website.url }];
+	jsonLdObject.author = [siteAuthorWithUrl()];
 
 	if (project.heroImageUrl || project.imageUrl) {
 		jsonLdObject.image = `${base}/${project.heroImageUrl || project.imageUrl}`;
@@ -673,4 +679,42 @@ export function buildDhProjectJsonLd(
 	}
 
 	return jsonLdObject as CreativeWorkJsonLd;
+}
+
+/**
+ * Build the schema.org BlogPosting JSON-LD object for an activity page.
+ * Extracted verbatim from `activities/[id]/+page.ts`.
+ */
+export function buildActivityJsonLd(activity: Activity, base = ''): BlogPostingJsonLd {
+	// Format date with time and timezone (Berlin CET = UTC+1)
+	// Note: This assumes CET. If activity dates span DST changes, logic might need adjustment.
+	const formattedDatePublished = `${activity.dateISO}T00:00:00+01:00`;
+
+	const jsonLdObject: Partial<BlogPostingJsonLd> = {
+		'@context': 'https://schema.org',
+		'@type': 'BlogPosting',
+		name: activity.title,
+		headline: activity.title,
+		description: activity.description,
+		datePublished: formattedDatePublished
+	};
+
+	// Site owner as author, with position + affiliation for the blog register
+	jsonLdObject.author = {
+		...siteAuthorWithUrl(),
+		jobTitle: author.positionShort,
+		affiliation: {
+			'@type': 'Organization',
+			name: address.institution
+		}
+	};
+
+	if (activity.heroImage?.src) {
+		jsonLdObject.image = `${base}/${activity.heroImage.src}`;
+	}
+	if (activity.tags) {
+		jsonLdObject.keywords = activity.tags.join(', ');
+	}
+
+	return jsonLdObject as BlogPostingJsonLd;
 }
