@@ -5,12 +5,11 @@
 	// Import the necessary functions from the new formatter
 	import { formatCitation, getAuthorsArray } from '$lib/utils/citationFormatter';
 	import TagList from '$lib/components/molecules/TagList.svelte';
+	import BibliographyRow from '$lib/components/molecules/BibliographyRow.svelte';
+	import type { BibliographyAction } from '$lib/components/molecules/BibliographyRow.svelte';
 	// Entity-card styles (relocated from the global app.css so they only load on
 	// pages that render publication/communication list items).
 	import '$styles/components/entity-cards.css';
-	// Bibliography-row idiom, shared with CommunicationItem so the /publications
-	// and /conference-activity finding-aid lists stay in visual lock-step.
-	import '$styles/components/bibliography.css';
 
 	interface Props {
 		publication: Publication;
@@ -134,10 +133,13 @@
 		publication.abstract ? truncateAbstract(publication.abstract, 180) : ''
 	);
 
-	// Cover plate: shown for every bibliography entry that has one — the list is
-	// a shelf of catalogue plates, not a bare text ledger. The column is reserved
-	// on every row (blank when an entry lacks a cover) so titles stay aligned.
-	const hasCover = $derived(bibliography && Boolean(publication.image));
+	// Right-aligned action column: the freely-accessible copy (DOI or URL) as
+	// the primary action; BibliographyRow appends the internal "Cite" link.
+	const bibActions = $derived<BibliographyAction[]>(
+		isOpenAccess && openHref
+			? [{ href: openHref, label: publication.doi ? 'DOI ↗' : 'Open Access ↗', primary: true }]
+			: []
+	);
 	interface DisplayListItem {
 		name: string;
 		isClickable: boolean;
@@ -213,79 +215,25 @@
 </script>
 
 {#if bibliography}
-	<!-- ═══ BIBLIOGRAPHY ROW — the finding-aid ledger entry ═══
-		 Grid: year | cover | body | actions. The year column is filled once per
-		 year-group by the parent; the cover column is reserved on every row (a
-		 catalogue shelf) and holds a plate whenever the entry has a cover. -->
-	<article class="bib-row" class:bib-row--featured={featured}>
-		<div class="bib-year" aria-hidden={yearLabel == null ? 'true' : undefined}>
-			{#if yearLabel != null}{yearLabel}{/if}
-		</div>
-
-		<div class="bib-plate-col">
-			{#if hasCover}
-				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
-				<a href={publicationHref} data-sveltekit-preload-code="tap" class="bib-plate-link">
-					<img
-						class="plate bib-plate"
-						src={publication.image}
-						alt="Cover — {publication.title}"
-						width="200"
-						height="280"
-						loading={imageLoading}
-						decoding="async"
-					/>
-				</a>
-			{/if}
-		</div>
-
-		<div class="bib-body">
-			<p class="bib-kind" class:bib-kind--current={featured}>
-				<span>{kindLabel}</span>
-				{#if languageNote}
-					<span class="bib-kind-sep" aria-hidden="true">·</span>
-					<span class="bib-kind-lang">{languageNote}</span>
-				{/if}
-			</p>
-
-			<h3 class="bib-title" class:bib-title--italic={isItalicTitle}>
-				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
-				<a href={publicationHref} class="bib-title-link" data-sveltekit-preload-code="tap">
-					{publication.title}
-				</a>
-			</h3>
-
-			{#if displayData.authorString}
-				<p class="bib-byline">
-					{displayData.listPrefix}{displayData.authorString}
-				</p>
-			{/if}
-
-			{#if featured && bibStandfirst}
-				<p class="bib-standfirst">{bibStandfirst}</p>
-			{/if}
-		</div>
-
-		<!-- openHref is external; publicationHref is pre-resolved via resolve(). -->
-		<!-- eslint-disable svelte/no-navigation-without-resolve -->
-		<div class="bib-actions">
-			{#if isOpenAccess && openHref}
-				<a
-					href={openHref}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="bib-action bib-action--primary"
-				>
-					{publication.doi ? 'DOI ↗' : 'Open Access ↗'}
-				</a>
-			{/if}
-			<a href={publicationHref} class="bib-action" data-sveltekit-preload-code="tap">Cite</a>
-			{#if citationCount > 0}
-				<span class="bib-cited">Cited {citationCount}×</span>
-			{/if}
-		</div>
-		<!-- eslint-enable svelte/no-navigation-without-resolve -->
-	</article>
+	<BibliographyRow
+		href={publicationHref}
+		{kindLabel}
+		{languageNote}
+		title={publication.title}
+		italicTitle={isItalicTitle}
+		byline={displayData.authorString ? `${displayData.listPrefix}${displayData.authorString}` : ''}
+		standfirst={bibStandfirst}
+		image={publication.image}
+		imageAlt="Cover — {publication.title}"
+		imageWidth={200}
+		imageHeight={280}
+		loading={imageLoading}
+		actions={bibActions}
+		detailLabel="Cite"
+		citedCount={citationCount}
+		{yearLabel}
+		{featured}
+	/>
 {:else}
 	<article class="entity-list-item scroll-reveal-scale" class:editorial>
 		<div class="entity-card" class:entity-card--editorial={editorial} class:entity-card--row={row}>
@@ -486,7 +434,6 @@
 		}
 	}
 
-	/* Bibliography-row styles (.bib-row, .bib-year, .bib-plate, .bib-title,
-	 * .bib-actions …) live in $styles/components/bibliography.css, imported above
-	 * and shared with CommunicationItem so both record lists stay in sync. */
+	/* Bibliography mode renders through the shared BibliographyRow molecule;
+	 * its styles live in $styles/components/bibliography.css. */
 </style>
