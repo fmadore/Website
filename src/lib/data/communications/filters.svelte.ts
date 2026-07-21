@@ -1,7 +1,7 @@
 /**
  * Communications Filters
  *
- * Uses the filter store factory for standard filter logic.
+ * Instantiates the runed EntityFilterSystem for the /conference-activity index.
  */
 
 import type { Communication, YearRange } from '$lib/types';
@@ -12,7 +12,7 @@ import {
 	allTags,
 	communicationsByCountry
 } from './index';
-import { createFilterSystem } from '$lib/utils/filterStoreFactory';
+import { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
 
 // --- Computed unique values ---
 
@@ -59,26 +59,14 @@ const coAuthorFrequency = countOccurrences(
 
 // --- Filter System ---
 
-const system = createFilterSystem({
+export const communicationFilters = new EntityFilterSystem<Communication>({
 	items: allCommunications,
-	initialFilters: {
-		types: [],
-		yearRange: null,
-		tags: [],
-		languages: [],
-		authors: [],
-		countries: [],
-		projects: []
-	},
+	matchesYearRange: (comm: Communication, range: YearRange) =>
+		!!comm.year && comm.year >= range.min && comm.year <= range.max,
 	dimensions: {
 		types: {
 			match: (comm: Communication, values: string[]) => !!comm.type && values.includes(comm.type),
 			countExtractor: (comm: Communication) => comm.type
-		},
-		yearRange: {
-			type: 'range',
-			match: (comm: Communication, range: YearRange) =>
-				!!comm.year && comm.year >= range.min && comm.year <= range.max
 		},
 		tags: {
 			match: (comm: Communication, values: string[]) =>
@@ -131,33 +119,3 @@ const system = createFilterSystem({
 		projects: allProjects
 	}
 });
-
-// --- Re-exports (preserves existing consumer API) ---
-
-export const { activeFilters, filterOptions, clearAllFilters } = system;
-export const filteredCommunications = system.filteredItems;
-
-export const toggleTypeFilter = system.toggles.types;
-export const toggleTagFilter = system.toggles.tags;
-export const toggleLanguageFilter = system.toggles.languages;
-export const toggleAuthorFilter = system.toggles.authors;
-export const toggleCountryFilter = system.toggles.countries;
-export const toggleProjectFilter = system.toggles.projects;
-
-export const updateYearRange = system.updateYearRange!;
-export const resetYearRange = system.resetYearRange!;
-export const setYearRange = system.setYearRange!;
-
-export const setTypes = system.setters.types;
-export const setTags = system.setters.tags;
-export const setLanguages = system.setters.languages;
-export const setAuthors = system.setters.authors;
-export const setCountries = system.setters.countries;
-export const setProjects = system.setters.projects;
-
-export const typeCounts = system.counts.types;
-export const tagCounts = system.counts.tags;
-export const countryCounts = system.counts.countries;
-export const projectCounts = system.counts.projects;
-export const languageCounts = system.counts.languages;
-export const authorCounts = system.counts.authors;

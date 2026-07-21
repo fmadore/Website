@@ -33,13 +33,26 @@ phase; each phase is a self-contained PR-sized unit.
 > `refactor(css): retire the glass vocabulary`. Along the way the ECharts
 > chunk shrank 1,141,754 → 682,289 bytes (tree-shaken `echarts/core`), the
 > two list pages dropped ~550 duplicated style lines each into
-> `entity-index.css`, and unit tests grew 64 → 160. Still open from this
-> review (deliberately deferred, see "Explicitly deferred" below plus):
-> a generic `BibliographyRow` for PublicationItem/CommunicationItem; the
-> known `formatCitation` trailing-space and "Published in in <book>" SEO
-> quirks (asserted as current behavior in the new tests); DH detail-page
-> `MetaTags` intent check; and full facet-grid/filter-bar _markup_
-> extraction into shared components (only the CSS is shared so far).
+> `entity-index.css`, and unit tests grew 64 → 160.
+>
+> **Follow-up status (July 2026, branch
+> `claude/bibliography-refactoring-6ovkgu`): the deferred remainder
+> landed.** The `formatCitation` trailing-space and "Published in in
+> <book>" SEO quirks are fixed (tests now assert the fixes); the shared
+> `BibliographyRow` molecule replaced the duplicated bib-row markup in
+> PublicationItem/CommunicationItem; the filter system migrated from
+> Svelte stores to the runed `EntityFilterSystem` class
+> (`entityFilterSystem.svelte.ts` — the `as unknown as` casts on the list
+> pages are gone, and `filterStoreFactory.ts` was deleted); the
+> facet-grid and filter-bar _markup_ was extracted into
+> `entity-index/EntityFacetGrid.svelte` + `EntityFilterBar.svelte`; and
+> the four oversized components were split (PdfGenerator 927 → 57 via
+> `utils/pdfCvGenerator.ts`, CareerTimeline 869 → 494 via
+> `timeline/TimelineTooltip` + `TimelineDetailCard`, MobileMenu 609 → 380
+> via `MobileNavItem`, ResearchProjectLayout 683 → 475 via
+> `ResearchProjectAside`). Still open from this review: the DH
+> detail-page `MetaTags` intent check, and converging `/activities` onto
+> the shared entity-index architecture.
 
 ### Phase 1 — Correctness & brief-compliance quick wins
 
@@ -175,13 +188,19 @@ files from the import chain (every value resolves to `none`/`0`).
 
 ### Explicitly deferred
 
-- Migrating `createFilterSystem` from Svelte stores to a runed class
-  (would remove the `as unknown as` casts on the list pages) — larger
-  reactivity-model change, do standalone.
-- Converging `/activities` onto the shared entity-index architecture.
-- Splitting oversized components (`PdfGenerator` 927, `CareerTimeline`
-  858, `ResearchProjectLayout` 683, `MobileMenu` 609 lines) — mostly
-  mechanical, low risk of rot, pick up opportunistically.
+- ~~Migrating `createFilterSystem` from Svelte stores to a runed class~~
+  ✅ _Landed_ — `EntityFilterSystem` in
+  `src/lib/utils/entityFilterSystem.svelte.ts`; the store factory and
+  its casts are gone. A side effect worth knowing: `urlFilterSync`'s
+  filters→URL effect now tracks live deep `$state` instead of a store
+  snapshot captured at action mount, so filter changes reliably rewrite
+  the query string.
+- Converging `/activities` onto the shared entity-index architecture —
+  still open.
+- ~~Splitting oversized components~~ ✅ _Landed_ — PdfGenerator,
+  CareerTimeline, MobileMenu and ResearchProjectLayout each split into a
+  thin shell plus extracted sub-components/utils (see the
+  `refactor(components): split the four oversized components` commit).
 
 ---
 

@@ -104,22 +104,22 @@ describe('formatCitation — chapter', () => {
 		);
 	});
 
-	it('formats book and pages without an imprint (trailing separator space is kept)', () => {
+	it('formats book and pages without an imprint (no trailing separator space)', () => {
 		const result = formatCitation(
 			pub({ type: 'chapter', book: 'Muslim Minorities', pages: '45-67' })
 		);
-		expect(result.detailsHtml).toBe('In <em>Muslim Minorities</em>, 45-67. ');
+		expect(result.detailsHtml).toBe('In <em>Muslim Minorities</em>, 45-67.');
 	});
 
-	it('formats book only (trailing separator space is kept)', () => {
+	it('formats book only (no trailing separator space)', () => {
 		expect(formatCitation(pub({ type: 'chapter', book: 'Muslim Minorities' })).detailsHtml).toBe(
-			'In <em>Muslim Minorities</em>. '
+			'In <em>Muslim Minorities</em>.'
 		);
 	});
 
 	it('normalises comma/and editor strings to ", … and …"', () => {
 		const result = formatCitation(pub({ type: 'chapter', book: 'B', editors: 'A, B and C' }));
-		expect(result.detailsHtml).toBe('In <em>B</em>, ed. A, B and C. ');
+		expect(result.detailsHtml).toBe('In <em>B</em>, ed. A, B and C.');
 	});
 
 	it('appends the imprint after the book info and closes with a period', () => {
@@ -188,8 +188,8 @@ describe('formatCitation — encyclopedia', () => {
 		);
 	});
 
-	it('renders empty <em></em> when the encyclopedia title is missing (trailing space kept)', () => {
-		expect(formatCitation(pub({ type: 'encyclopedia' })).detailsHtml).toBe('In <em></em>. ');
+	it('renders empty <em></em> when the encyclopedia title is missing (no trailing space)', () => {
+		expect(formatCitation(pub({ type: 'encyclopedia' })).detailsHtml).toBe('In <em></em>.');
 	});
 });
 
