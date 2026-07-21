@@ -14,11 +14,14 @@
 		parseAuthorName
 	} from '$lib/utils/metaTags';
 	import BaseMetaTags from '$lib/components/common/BaseMetaTags.svelte';
+	import { website } from '$lib/data/siteConfig';
 
 	let { publication }: { publication: Publication } = $props();
 
-	// Helper to resolve URLs using current page context
-	const resolveUrl = (path: string | undefined) => getFullUrl(page.url.origin, base, path);
+	// Resolve URLs against the canonical site origin — at prerender time
+	// page.url.origin is the placeholder http://sveltekit-prerender, which must
+	// never reach the baked head tags Zotero and crawlers consume.
+	const resolveUrl = (path: string | undefined) => getFullUrl(website.url, base, path);
 
 	// Helper to get citation genre for OpenURL/COinS compatibility
 	const getCitationGenre = (type: Publication['type']): string => {
@@ -208,10 +211,7 @@
 		// URLs
 		tags.push(
 			...createConditionalTag('citation_public_url', resolveUrl(publication.url)),
-			...createConditionalTag(
-				'citation_abstract_html_url',
-				`${page.url.origin}${page.url.pathname}`
-			),
+			...createConditionalTag('citation_abstract_html_url', `${website.url}${page.url.pathname}`),
 			...createConditionalTag('citation_fulltext_html_url', resolveUrl(publication.url)),
 			...createConditionalTag(
 				'citation_pdf_url',

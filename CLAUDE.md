@@ -180,10 +180,6 @@ Multi-format support via `citationFormatter.ts`: BibTeX, APA, MLA, Chicago
 
 ECharts, D3, MapLibre, and jsPDF are split into separate chunks via `build.rolldownOptions` in Vite config. Use dynamic imports for visualization components.
 
-## Roadmaps
-
-See `REFACTORING-ROADMAP.md` for forward-looking refactoring and feature work, including the phased animation & reactivity roadmap.
-
 ## Design Context
 
 **Direction: Ink + Signal — the press archive, read computationally.** Source of truth: `.impeccable.md` (read that file for the full brief). Summary below for every session.

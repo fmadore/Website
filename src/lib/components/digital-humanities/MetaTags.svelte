@@ -5,7 +5,7 @@
 	// A DH project is described as a web resource (DC format, type "webpage").
 	import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
 	import { page } from '$app/state';
-	import { author } from '$lib/data/siteConfig';
+	import { author, website } from '$lib/data/siteConfig';
 	import {
 		type MetaTag,
 		createConditionalTag,
@@ -23,7 +23,10 @@
 	// project's publication year for citation purposes.
 	const projectYear = $derived(project.years?.match(/\d{4}/)?.[0]);
 
-	const currentUrl = $derived(`${page.url.origin}${page.url.pathname}`);
+	// Canonical page URL — built from the configured site origin, because at
+	// prerender time page.url.origin is the placeholder http://sveltekit-prerender
+	// and these tags are baked into the static head Zotero and crawlers consume.
+	const currentUrl = $derived(`${website.url}${page.url.pathname}`);
 
 	// COinS — DC document format, typed as a web page. Zotero saves this as a
 	// "Web Page" item with title, creator, date and URL.

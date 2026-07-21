@@ -10,11 +10,14 @@
 		deduplicateAndFilterTags
 	} from '$lib/utils/metaTags';
 	import BaseMetaTags from '$lib/components/common/BaseMetaTags.svelte';
+	import { website } from '$lib/data/siteConfig';
 
 	let { communication }: { communication: Communication } = $props();
 
-	// Helper to resolve URLs using current page context
-	const resolveUrl = (path: string | undefined) => getFullUrl(page.url.origin, base, path);
+	// Resolve URLs against the canonical site origin — at prerender time
+	// page.url.origin is the placeholder http://sveltekit-prerender, which must
+	// never reach the baked head tags Zotero and crawlers consume.
+	const resolveUrl = (path: string | undefined) => getFullUrl(website.url, base, path);
 
 	// Helper to get presentation type for Zotero
 	const getPresentationType = (): string => {
@@ -105,7 +108,7 @@
 		tags.push(...createConditionalTag('citation_abstract', communication.abstract));
 
 		// URLs
-		const currentUrl = `${page.url.origin}${page.url.pathname}`;
+		const currentUrl = `${website.url}${page.url.pathname}`;
 		tags.push(
 			{ name: 'citation_public_url', content: currentUrl },
 			{ name: 'citation_abstract_html_url', content: currentUrl },

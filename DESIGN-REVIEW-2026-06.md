@@ -4,7 +4,8 @@
 > direction (Fraunces/Spectral/Commissioner, warm paper + glass-for-chrome).
 > The site has since moved to the **Ink + Signal** design language — see
 > `.impeccable.md` and the Design Context in `CLAUDE.md` for the current
-> brief, and `REFACTORING-ROADMAP.md` for current forward-looking work.
+> brief. (`REFACTORING-ROADMAP.md`, referenced below, was retired in July
+> 2026 once every item on it had landed.)
 > Kept as a record of the landed phases it describes.
 
 Expert review of the design philosophy (`.impeccable.md`), how faithfully the
