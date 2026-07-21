@@ -327,33 +327,43 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 	pdf.setCharSpace(LETTER_SPACING.NONE);
 	rightY += SPACING.CONTACT_LINE;
 
+	// Classify a contact link by its actual hostname (not a substring match,
+	// which would also accept e.g. "evil.com/github.com"). Returns null for
+	// unrecognized links, which are then skipped.
+	const classifyContactLink = (
+		href: string,
+		label: string
+	): { displayLabel: string; displayValue: string } | null => {
+		if (href.startsWith('mailto:')) return { displayLabel: 'Email:', displayValue: label };
+		let url: URL;
+		try {
+			url = new URL(href);
+		} catch {
+			return null;
+		}
+		const host = url.hostname.toLowerCase();
+		const isHost = (domain: string) => host === domain || host.endsWith(`.${domain}`);
+		const pathValue = url.pathname.replace(/^\//, '').replace(/\/$/, '');
+		if (isHost('frederickmadore.com')) return { displayLabel: 'Web:', displayValue: label };
+		if (isHost('linkedin.com'))
+			return {
+				displayLabel: 'LinkedIn:',
+				displayValue: url.pathname.split('/in/')[1]?.replace('/', '') || label
+			};
+		if (isHost('github.com')) return { displayLabel: 'GitHub:', displayValue: pathValue || label };
+		if (isHost('orcid.org')) return { displayLabel: 'ORCID:', displayValue: pathValue || label };
+		return null;
+	};
+
 	linkItems?.forEach((item) => {
 		const anchor = item.querySelector('a');
 		if (anchor) {
-			const label = item.querySelector('a')?.textContent?.trim() || '';
+			const label = anchor.textContent?.trim() || '';
 			const href = anchor.getAttribute('href') || '';
-			let displayLabel = '';
-			let displayValue = '';
+			const contact = classifyContactLink(href, label);
 
-			// Format based on link type
-			if (href.includes('mailto:')) {
-				displayLabel = 'Email:';
-				displayValue = label;
-			} else if (href.includes('frederickmadore.com')) {
-				displayLabel = 'Web:';
-				displayValue = label;
-			} else if (href.includes('linkedin.com')) {
-				displayLabel = 'LinkedIn:';
-				displayValue = href.split('/in/')[1]?.replace('/', '') || label;
-			} else if (href.includes('github.com')) {
-				displayLabel = 'GitHub:';
-				displayValue = href.split('.com/')[1] || label;
-			} else if (href.includes('orcid.org')) {
-				displayLabel = 'ORCID:';
-				displayValue = href.split('.org/')[1] || label;
-			}
-
-			if (displayLabel && displayValue) {
+			if (contact?.displayValue) {
+				const { displayLabel, displayValue } = contact;
 				pdf.setFont(SERIF, 'normal');
 				pdf.setFontSize(FONT_SIZE.CONTACT_VALUE);
 				pdf.setTextColor(...COLORS.TEXT_LIGHT);

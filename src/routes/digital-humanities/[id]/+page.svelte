@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
+	import MetaTags from '$lib/components/digital-humanities/MetaTags.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
@@ -50,6 +51,9 @@
 		[project.title, 'Digital Humanities', 'Frédérick Madore', ...(project.skills || [])].join(', ')}
 	ogImage={project.heroImageUrl ? `${base}${project.heroImageUrl}` : `${base}${project.imageUrl}`}
 />
+
+<!-- Zotero/COinS metadata — mirrors the other detail routes' MetaTags. -->
+<MetaTags {project} />
 
 <div class="container py-8 page-enter">
 	<div class="content-wrapper">
