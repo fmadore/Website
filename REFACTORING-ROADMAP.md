@@ -50,9 +50,15 @@ phase; each phase is a self-contained PR-sized unit.
 > `utils/pdfCvGenerator.ts`, CareerTimeline 869 → 494 via
 > `timeline/TimelineTooltip` + `TimelineDetailCard`, MobileMenu 609 → 380
 > via `MobileNavItem`, ResearchProjectLayout 683 → 475 via
-> `ResearchProjectAside`). Still open from this review: the DH
-> detail-page `MetaTags` intent check, and converging `/activities` onto
-> the shared entity-index architecture.
+> `ResearchProjectAside`). The last two open items landed in the same
+> series: the DH detail page now carries a `MetaTags` component
+> (Highwire/DC tags + COinS describing the project as a web resource),
+> and `/activities` converged onto the shared filter architecture — a
+> new `data/activities/filters.svelte.ts` EntityFilterSystem instance
+> wired through `urlFilterSync` (multi-select tag chips, a new
+> filter-by-type facet, `?tag=` deep links preserved), retiring the
+> hand-rolled `?tag=`-only third architecture while keeping the log's
+> visual design. Nothing from this review remains open.
 
 ### Phase 1 — Correctness & brief-compliance quick wins
 
@@ -195,8 +201,11 @@ files from the import chain (every value resolves to `none`/`0`).
   filters→URL effect now tracks live deep `$state` instead of a store
   snapshot captured at action mount, so filter changes reliably rewrite
   the query string.
-- Converging `/activities` onto the shared entity-index architecture —
-  still open.
+- ~~Converging `/activities` onto the shared entity-index architecture~~
+  ✅ _Landed_ — `data/activities/filters.svelte.ts` + `urlFilterSync`;
+  the page keeps its log composition (year groups, year meter, aside
+  facets) but the filter state now flows through the same runed system
+  as the other two list pages.
 - ~~Splitting oversized components~~ ✅ _Landed_ — PdfGenerator,
   CareerTimeline, MobileMenu and ResearchProjectLayout each split into a
   thin shell plus extracted sub-components/utils (see the

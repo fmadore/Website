@@ -2,12 +2,14 @@
 	import { getActivities } from '$lib/stores/activities.svelte';
 	import type { Activity } from '$lib/types';
 	import { base, resolve } from '$app/paths';
-	import { page } from '$app/state';
-	import { browser } from '$app/environment';
 	import SEO from '$lib/SEO.svelte';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
 	import Pagination from '$lib/components/molecules/Pagination.svelte';
+	import { activityFilters } from '$lib/data/activities/filters.svelte';
+	import { urlFilterSync } from '$lib/actions/urlFilterSync.svelte';
+	import { areFiltersActive } from '$lib/utils/filterUtils';
+	import { ACTIVITY_TYPE_BADGE_LABELS } from '$lib/utils/typeUtils';
 	// Page-specific CSS relocated from the global app.css (this page renders the
 	// activities log, the browse-by-year meter, and the tag facet).
 	import '$styles/components/activity-list.css';
@@ -21,18 +23,22 @@
 	// All activities, newest first (the store pre-sorts by date).
 	let activities = $derived(getActivities());
 
-	// The active tag filter rides in the URL (?tag=…) so any filtered view is
-	// bookmarkable/shareable. Only read searchParams in the browser.
-	let selectedTag = $derived(browser ? page.url.searchParams.get('tag') : null);
+	// The shared runed filter system (same architecture as /publications and
+	// /conference-activity): tag and type filters ride in the URL via
+	// urlFilterSync, so filtered views stay bookmarkable/shareable — including
+	// the ?tag=… deep links from activity detail pages.
+	const filters = activityFilters;
+	const af = filters.activeFilters;
 
-	// The filtered record set (tag filter applied case-insensitively).
-	let filtered = $derived(
-		selectedTag
-			? activities.filter((activity: Activity) =>
-					activity.tags?.some((tag) => tag.toLowerCase() === selectedTag!.toLowerCase())
-				)
-			: activities
-	);
+	// The filtered record set.
+	let filtered = $derived(filters.filteredItems);
+	const anyFiltering = $derived(areFiltersActive(af));
+
+	// Human-readable list of the active filters for the log's filter note.
+	const activeFilterLabels = $derived([
+		...af.types.map((t) => ACTIVITY_TYPE_BADGE_LABELS[t] ?? t),
+		...af.tags
+	]);
 
 	// --- Hero apparatus: total count + year span across ALL activities. ---
 	const totalCount = $derived(activities.length);
@@ -53,25 +59,26 @@
 	const maxYearCount = $derived(Math.max(1, ...yearsDesc.map((y) => countForYear(y))));
 	const newestYear = $derived(yearsDesc[0]);
 
-	// --- Tag facet (aside): frequency across the filtered set, most used first. ---
-	const tagCounts = $derived.by(() => {
-		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- build-time tally
-		const freq = new Map<string, number>();
-		for (const a of filtered) {
-			for (const tag of a.tags ?? []) freq.set(tag, (freq.get(tag) ?? 0) + 1);
-		}
-		return Array.from(freq.entries()).sort((a, b) =>
+	// --- Tag facet (aside): frequency across the filtered set, most used first.
+	// The system's counts are computed over filteredItems, so this reflects the
+	// current view; a selected tag always appears (its items all carry it). ---
+	const tagCounts = $derived(
+		Object.entries(filters.counts.tags).sort((a, b) =>
 			b[1] === a[1] ? a[0].localeCompare(b[0]) : b[1] - a[1]
-		);
-	});
+		)
+	);
 	let showAllTags = $state(false);
 	const visibleTags = $derived(showAllTags ? tagCounts : tagCounts.slice(0, PRIMARY_TAGS));
 	const overflowTagCount = $derived(Math.max(0, tagCounts.length - PRIMARY_TAGS));
 
+	// --- Type facet (aside): the activity kinds, labelled, with counts over the
+	// filtered set — same convention as the entity-index facet grids. ---
+	const typeOptions = filters.filterOptions.types;
+
 	// --- Pagination over the flat filtered list; reset to page 1 on filter change. ---
 	let currentPage = $state(1);
 	$effect(() => {
-		void selectedTag;
+		void filtered;
 		currentPage = 1;
 	});
 	const pageStart = $derived((currentPage - 1) * PER_PAGE);
@@ -97,11 +104,6 @@
 			total: countForYear(year)
 		}));
 	});
-
-	// URL helpers — base-prefixed query strings so filtered views are shareable.
-	function tagHref(tag: string): string {
-		return `${base}/activities?tag=${encodeURIComponent(tag)}`;
-	}
 
 	// The "Updated" date in the aside footer — newest dated entry, mono form.
 	const MONTHS = [
@@ -137,7 +139,13 @@
 	pageType="CollectionPage"
 />
 
-<div class="container py-8 page-enter">
+<div
+	class="container py-8 page-enter"
+	use:urlFilterSync={{
+		filters: af,
+		setters: { setTags: filters.setters.setTags, setTypes: filters.setters.setTypes }
+	}}
+>
 	<div class="max-w-6xl mx-auto activities-page">
 		<!-- HERO — mono log eyebrow, Archivo masthead, serif standfirst, year strip. -->
 		<header class="activities-hero scroll-reveal">
@@ -155,19 +163,18 @@
 		<div class="activities-layout">
 			<!-- MAIN — a press-column log grouped by year, hairline-separated rows. -->
 			<main class="activities-log" id="activities-log">
-				{#if selectedTag}
-					<p class="filter-note">
-						<span class="filter-note-label">Filtered by tag</span>
-						<span class="filter-note-value">{selectedTag}</span>
-						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed -->
-						<a href="{base}/activities" class="filter-note-clear">Clear ✕</a>
+				{#if anyFiltering}
+					<p class="filter-note" aria-live="polite">
+						<span class="filter-note-label">Filtered by</span>
+						<span class="filter-note-value">{activeFilterLabels.join(' · ')}</span>
+						<button type="button" class="filter-note-clear" onclick={filters.clearAllFilters}>
+							Clear ✕
+						</button>
 					</p>
 				{/if}
 
 				{#if filtered.length === 0}
-					<p class="log-empty">
-						No activities found{selectedTag ? ` with the tag “${selectedTag}”` : ''}.
-					</p>
+					<p class="log-empty">No activities match the current filters.</p>
 				{:else}
 					{#each pageGroups as group (group.year)}
 						<section class="year-group" aria-label="Activities from {group.year}">
@@ -224,32 +231,57 @@
 					</ul>
 				</section>
 
+				{#if typeOptions.length > 0}
+					<section class="aside-block">
+						<h2 class="aside-title">Filter by type</h2>
+						<div class="chip-row aside-tags">
+							<button
+								type="button"
+								class="chip"
+								class:chip--selected={af.types.length === 0}
+								onclick={() => filters.setValues('types', [])}
+							>
+								All <span class="chip-count">{typeOptions.length}</span>
+							</button>
+							{#each typeOptions as type (type)}
+								<button
+									type="button"
+									class="chip"
+									class:chip--selected={af.types.includes(type)}
+									aria-pressed={af.types.includes(type)}
+									onclick={() => filters.toggle('types', type)}
+								>
+									{ACTIVITY_TYPE_BADGE_LABELS[type] ?? type}
+									<span class="chip-count">{filters.counts.types[type] ?? 0}</span>
+								</button>
+							{/each}
+						</div>
+					</section>
+				{/if}
+
 				{#if tagCounts.length > 0}
 					<section class="aside-block">
 						<h2 class="aside-title">Explore by tag</h2>
 						<div class="chip-row aside-tags">
-							<!-- eslint-disable svelte/no-navigation-without-resolve -- base-prefixed query strings -->
-							<a
+							<button
+								type="button"
 								class="chip"
-								class:chip--selected={!selectedTag}
-								href="{base}/activities"
-								aria-current={!selectedTag ? 'true' : undefined}
+								class:chip--selected={af.tags.length === 0}
+								onclick={() => filters.setValues('tags', [])}
 							>
 								All <span class="chip-count">{tagCounts.length}</span>
-							</a>
+							</button>
 							{#each visibleTags as [tag, count] (tag)}
-								<a
+								<button
+									type="button"
 									class="chip"
-									class:chip--selected={selectedTag?.toLowerCase() === tag.toLowerCase()}
-									href={tagHref(tag)}
-									aria-current={selectedTag?.toLowerCase() === tag.toLowerCase()
-										? 'true'
-										: undefined}
+									class:chip--selected={af.tags.includes(tag)}
+									aria-pressed={af.tags.includes(tag)}
+									onclick={() => filters.toggle('tags', tag)}
 								>
 									{tag} <span class="chip-count">{count}</span>
-								</a>
+								</button>
 							{/each}
-							<!-- eslint-enable svelte/no-navigation-without-resolve -->
 							{#if overflowTagCount > 0}
 								<button
 									type="button"

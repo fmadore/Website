@@ -89,7 +89,10 @@ export const ACTIVITY_TYPE_BADGE_LABELS: Record<string, string> = {
 	publication: 'Publication',
 	event: 'Event',
 	visit: 'Academic Visit',
-	news: 'News'
+	news: 'News',
+	presentation: 'Presentation',
+	podcast: 'Podcast',
+	career: 'Career'
 };
 
 export const ACTIVITY_TYPE_SEO_LABELS: Record<string, string> = {

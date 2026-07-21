@@ -7,7 +7,7 @@ const volkswagenFoundationGrantIslamsPeripheries: Activity = {
 	date: '10 December 2025',
 	dateISO: '2025-12-10',
 	year: 2025,
-	type: 'Grant',
+	type: 'grant',
 	heroImage: {
 		src: 'images/activities/VolkswagenStiftung-logo.webp',
 		alt: 'VolkswagenStiftung logo'
