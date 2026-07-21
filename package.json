@@ -39,7 +39,7 @@
 		"eslint-plugin-svelte": "^3.19.0",
 		"globals": "^17.6.0",
 		"mdsvex": "^0.12.8",
-		"postcss": "^8.5.16",
+		"postcss": "^8.5.21",
 		"postcss-custom-media": "^12.0.0",
 		"prettier": "^3.8.4",
 		"prettier-plugin-svelte": "^4.1.1",
