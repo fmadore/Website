@@ -187,7 +187,7 @@ export function createPublicationSEODescription(publication: Publication): strin
 	if (type === 'article' || type === 'special-issue') {
 		if (journal) venueInfo.push(journal);
 	} else if (type === 'chapter') {
-		if (book) venueInfo.push(`in ${book}`);
+		if (book) venueInfo.push(book);
 	} else if (type === 'book' || type === 'report') {
 		if (publisher) venueInfo.push(publisher);
 		if (placeOfPublication) venueInfo.push(placeOfPublication);

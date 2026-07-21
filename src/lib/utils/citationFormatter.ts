@@ -50,12 +50,14 @@ function formatImprint(publication: Pick<Publication, 'placeOfPublication' | 'pu
 	return imprint;
 }
 
-// Ensure a non-empty details string closes with a period.
+// Ensure a non-empty details string closes with a period, dropping any
+// trailing separator space left behind when an optional imprint is absent.
 function withFinalPeriod(details: string): string {
-	if (details.trim() && !details.trim().endsWith('.')) {
-		return details + '.';
+	const trimmed = details.trimEnd();
+	if (trimmed && !trimmed.endsWith('.')) {
+		return trimmed + '.';
 	}
-	return details;
+	return trimmed;
 }
 
 // Define the structure for the formatted citation output

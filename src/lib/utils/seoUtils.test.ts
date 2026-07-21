@@ -48,12 +48,11 @@ describe('createPublicationSEODescription', () => {
 		expect(result).toBe('Journal article: Salafism in Benin Published in Islamic Africa, 2019.');
 	});
 
-	it('prefixes the containing book with "in" for chapters', () => {
+	it('uses the containing book as the venue for chapters', () => {
 		const result = createPublicationSEODescription(
 			pub({ type: 'chapter', title: 'A Chapter', book: 'An Edited Volume', year: 2020 })
 		);
-		// Current behavior doubles the "in": "Published in in <book>".
-		expect(result).toBe('Book chapter: A Chapter Published in in An Edited Volume, 2020.');
+		expect(result).toBe('Book chapter: A Chapter Published in An Edited Volume, 2020.');
 	});
 
 	it('falls back to the compact venue when the lead is short but the full sentence overflows', () => {
