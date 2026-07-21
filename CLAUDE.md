@@ -13,6 +13,7 @@ npm run dev          # Start dev server at localhost:5173
 npm run build        # Production build (static prerendering)
 npm run preview      # Preview production build
 npm run check        # Type-check Svelte components
+npm run check:tsgo   # Same check via the TypeScript 7 native compiler (~2x faster, experimental)
 npm run check:watch  # Watch mode type-checking
 npm run lint         # Run Prettier + ESLint checks
 npm run format       # Auto-format with Prettier
