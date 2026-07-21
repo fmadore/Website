@@ -3,8 +3,12 @@ import { getYearFromISODate } from '$lib/utils/date-formatter';
 import { sortByDate } from '$lib/utils/dataAggregation';
 import { loadData } from '$lib/utils/dataLoader';
 
-// Dynamically import all activity files
-const activityModules = import.meta.glob<Record<string, Activity>>('./*.ts', { eager: true });
+// Dynamically import all activity files (excluding the filter-system module,
+// which lives alongside the items but is not an activity record)
+const activityModules = import.meta.glob<Record<string, Activity>>(
+	['./*.ts', '!./filters.svelte.ts'],
+	{ eager: true }
+);
 
 // Load and validate activities using loadData, filtering out template
 const allActivities: Activity[] = loadData<Activity>(
