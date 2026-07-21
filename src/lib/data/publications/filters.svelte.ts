@@ -1,7 +1,7 @@
 /**
  * Publications Filters
  *
- * Uses the filter store factory for standard filter logic.
+ * Instantiates the runed EntityFilterSystem for the /publications index.
  * Publication-specific behavior (author extraction from editors/ToC)
  * is handled via dimension match functions.
  */
@@ -13,7 +13,7 @@ import {
 	publicationsByYear,
 	allTags
 } from './index';
-import { createFilterSystem } from '$lib/utils/filterStoreFactory';
+import { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
 import { SvelteSet } from 'svelte/reactivity';
 
 type Pub = Publication & { sourceDirType: string };
@@ -117,25 +117,13 @@ const authorFrequency = countOccurrences(allPublications.map(publicationAuthorNa
 
 // --- Filter System ---
 
-const system = createFilterSystem({
+export const publicationFilters = new EntityFilterSystem<Pub>({
 	items: allPublications,
-	initialFilters: {
-		types: [],
-		yearRange: null,
-		tags: [],
-		languages: [],
-		authors: [],
-		countries: [],
-		projects: []
-	},
+	matchesYearRange: (pub: Pub, range: YearRange) => pub.year >= range.min && pub.year <= range.max,
 	dimensions: {
 		types: {
 			match: (pub: Pub, values: string[]) => values.includes(pub.type),
 			countExtractor: (pub: Pub) => pub.type
-		},
-		yearRange: {
-			type: 'range',
-			match: (pub: Pub, range: YearRange) => pub.year >= range.min && pub.year <= range.max
 		},
 		tags: {
 			match: (pub: Pub, values: string[]) => !!pub.tags && pub.tags.some((t) => values.includes(t)),
@@ -199,33 +187,3 @@ const system = createFilterSystem({
 		projects: allProjects
 	}
 });
-
-// --- Re-exports (preserves existing consumer API) ---
-
-export const { activeFilters, filterOptions, clearAllFilters } = system;
-export const filteredPublications = system.filteredItems;
-
-export const toggleTypeFilter = system.toggles.types;
-export const toggleTagFilter = system.toggles.tags;
-export const toggleLanguageFilter = system.toggles.languages;
-export const toggleAuthorFilter = system.toggles.authors;
-export const toggleCountryFilter = system.toggles.countries;
-export const toggleProjectFilter = system.toggles.projects;
-
-export const updateYearRange = system.updateYearRange!;
-export const resetYearRange = system.resetYearRange!;
-export const setYearRange = system.setYearRange!;
-
-export const setTypes = system.setters.types;
-export const setTags = system.setters.tags;
-export const setLanguages = system.setters.languages;
-export const setAuthors = system.setters.authors;
-export const setCountries = system.setters.countries;
-export const setProjects = system.setters.projects;
-
-export const tagCounts = system.counts.tags;
-export const authorCounts = system.counts.authors;
-export const typeCounts = system.counts.types;
-export const languageCounts = system.counts.languages;
-export const countryCounts = system.counts.countries;
-export const projectCounts = system.counts.projects;

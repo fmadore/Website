@@ -2,37 +2,12 @@
 	import SEO from '$lib/SEO.svelte';
 	import '$styles/components/entity-index.css';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
-	import {
-		filteredCommunications,
-		activeFilters,
-		filterOptions,
-		typeCounts,
-		tagCounts,
-		authorCounts,
-		countryCounts,
-		projectCounts,
-		languageCounts,
-		toggleTypeFilter,
-		updateYearRange,
-		resetYearRange,
-		toggleTagFilter,
-		toggleLanguageFilter,
-		toggleAuthorFilter,
-		toggleCountryFilter,
-		toggleProjectFilter,
-		clearAllFilters,
-		setTypes,
-		setTags,
-		setLanguages,
-		setAuthors,
-		setCountries,
-		setProjects,
-		setYearRange
-	} from '$lib/data/communications/filters.svelte';
+	import { communicationFilters } from '$lib/data/communications/filters.svelte';
 	import CommunicationItem from '$lib/components/communications/CommunicationItem.svelte';
 	import UpcomingCommunications from '$lib/components/communications/UpcomingCommunications.svelte';
 	import Pagination from '$lib/components/molecules/Pagination.svelte';
-	import RangeSlider from '$lib/components/atoms/RangeSlider.svelte';
+	import EntityFilterBar from '$lib/components/entity-index/EntityFilterBar.svelte';
+	import EntityFacetGrid from '$lib/components/entity-index/EntityFacetGrid.svelte';
 	import { urlFilterSync } from '$lib/actions/urlFilterSync.svelte';
 	import { sortItems } from '$lib/utils/sortUtils';
 	import { areFiltersActive } from '$lib/utils/filterUtils';
@@ -40,26 +15,12 @@
 	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
 	import { organisedWorkshopsJsonLd } from '$lib/data/organisedWorkshops';
 	import type { Communication } from '$lib/types/communication';
-	import type { YearRange } from '$lib/types';
 
-	// The filter store infers its state members from `initialFilters`, so reading
-	// dimensions directly trips the type-checker. This typed view of the live
-	// store — and the string-array setter signatures — annotate the shape without
-	// touching the state logic. (Mirrors the /publications page.)
-	type CommFilters = {
-		types: string[];
-		yearRange: YearRange | null;
-		tags: string[];
-		languages: string[];
-		authors: string[];
-		countries: string[];
-		projects: string[];
-	};
-	const af = $derived($activeFilters as unknown as CommFilters);
-	const setStrings = {
-		types: setTypes as unknown as (v: string[]) => void,
-		languages: setLanguages as unknown as (v: string[]) => void
-	};
+	// The runed filter system: `af` is the stable deep-reactive filter state,
+	// `options` the static facet vocabularies. (Mirrors the /publications page.)
+	const filters = communicationFilters;
+	const af = filters.activeFilters;
+	const options = filters.filterOptions;
 
 	// Breadcrumbs + organiser-role schema.org Event graph.
 	const breadcrumbs = createSectionBreadcrumbs('Talks & Events', '/conference-activity');
@@ -72,7 +33,7 @@
 		.filter((y): y is number => Number.isFinite(y));
 	const minYear = allYears.length ? Math.min(...allYears) : new Date().getFullYear();
 	const maxYear = allYears.length ? Math.max(...allYears) : new Date().getFullYear();
-	const countryCount = $derived($filterOptions?.countries?.length ?? 0);
+	const countryCount = options.countries.length;
 
 	// Per-year output counts → a continuous run of bars minYear..maxYear.
 	const yearBars = (() => {
@@ -99,12 +60,14 @@
 	let currentPage = $state(1);
 	const PER_PAGE = 15;
 
-	// Overflow toggles for the long facet columns.
-	let showAllAuthors = $state(false);
-	let showAllTags = $state(false);
-	let showAllCountries = $state(false);
 	// Mobile: the whole facet apparatus collapses behind a toggle.
 	let facetsOpen = $state(false);
+
+	// Clears the system's filters plus the page-local free-text search.
+	function clearAllNarrowing() {
+		filters.clearAllFilters();
+		searchTerm = '';
+	}
 
 	// ── Map (lazy — maplibre-gl is only fetched when the reader asks for it) ─────
 	let MapVisualization:
@@ -149,13 +112,13 @@
 	// Today (YYYY-MM-DD) for the upcoming/past split.
 	const today = new Date().toISOString().split('T')[0];
 
-	// The store's filtered list, narrowed by the free-text search.
+	// The system's filtered list, narrowed by the free-text search.
 	const searchedCommunications = $derived(
-		$filteredCommunications.filter((comm) => matchesSearch(comm, searchTerm))
+		filters.filteredItems.filter((comm) => matchesSearch(comm, searchTerm))
 	);
 
-	// Any narrowing at all — store filters OR the text search.
-	const anyNarrowing = $derived(areFiltersActive($activeFilters) || searchTerm.trim().length > 0);
+	// Any narrowing at all — system filters OR the text search.
+	const anyNarrowing = $derived(areFiltersActive(af) || searchTerm.trim().length > 0);
 
 	// Upcoming talks surface as their own block only when nothing is narrowing the
 	// list; otherwise they fold back into the main chronological record.
@@ -176,22 +139,22 @@
 	const sortedCommunications = $derived(sortItems(mainListBase, activeSort));
 	const matchCount = $derived(sortedCommunications.length);
 
-	// Count of active store-filter dimensions, for the "N FILTERS ACTIVE" readout.
+	// Count of active filter dimensions, for the "N FILTERS ACTIVE" readout.
 	const activeFilterCount = $derived(
-		(af.types?.length ?? 0) +
-			(af.languages?.length ?? 0) +
-			(af.projects?.length ?? 0) +
-			(af.authors?.length ?? 0) +
-			(af.countries?.length ?? 0) +
-			(af.tags?.length ?? 0) +
+		af.types.length +
+			af.languages.length +
+			af.projects.length +
+			af.authors.length +
+			af.countries.length +
+			af.tags.length +
 			(af.yearRange ? 1 : 0) +
 			(searchTerm.trim() ? 1 : 0)
 	);
 
 	// Map markers from the filtered set (independent of the upcoming/past split).
 	const mapMarkers = $derived(
-		$filteredCommunications
-			?.filter((comm: Communication) => comm.coordinates)
+		filters.filteredItems
+			.filter((comm: Communication) => comm.coordinates)
 			.map((comm: Communication) => ({
 				id: comm.id,
 				title: comm.title,
@@ -199,7 +162,7 @@
 				year: comm.year,
 				activityType: comm.type,
 				image: comm.image
-			})) || []
+			}))
 	);
 
 	// Reset to page 1 whenever the visible list identity changes.
@@ -252,48 +215,6 @@
 		event: 'Events',
 		podcast: 'Podcasts'
 	};
-
-	// Years ascending for the slider; the active window (or full span when unset).
-	const sortedYearsAsc = $derived(
-		($filterOptions?.years ?? []).slice().sort((a: number, b: number) => a - b)
-	);
-	const yearRangeValues = $derived<[number, number]>([
-		af.yearRange?.min ?? minYear,
-		af.yearRange?.max ?? maxYear
-	]);
-	function handleYearChange(event: CustomEvent<{ values: [number, number] }>) {
-		const [min, max] = event.detail.values;
-		updateYearRange(min, max);
-	}
-
-	// Facet overflow windows.
-	const AUTHOR_LIMIT = 8;
-	const TAG_LIMIT = 12;
-	const COUNTRY_LIMIT = 8;
-	const visibleAuthors = $derived(
-		showAllAuthors ? $filterOptions.authors : $filterOptions.authors.slice(0, AUTHOR_LIMIT)
-	);
-	const visibleTags = $derived(
-		showAllTags ? $filterOptions.tags : $filterOptions.tags.slice(0, TAG_LIMIT)
-	);
-	const visibleCountries = $derived(
-		showAllCountries ? $filterOptions.countries : $filterOptions.countries.slice(0, COUNTRY_LIMIT)
-	);
-
-	// Prepare setters object for the URL-sync action (unchanged wiring).
-	const filterSetters = {
-		setTypes,
-		setTags,
-		setLanguages,
-		setAuthors,
-		setCountries,
-		setProjects,
-		setYearRange
-	};
-
-	function isTypeActive(t: string) {
-		return af.types?.includes(t) ?? false;
-	}
 </script>
 
 <SEO
@@ -305,10 +226,7 @@
 	pageType="CollectionPage"
 />
 
-<div
-	class="entity-index page-enter"
-	use:urlFilterSync={{ filters: $activeFilters, setters: filterSetters }}
->
+<div class="entity-index page-enter" use:urlFilterSync={{ filters: af, setters: filters.setters }}>
 	<!-- ═══ INDEX HERO ═══ -->
 	<header class="index-hero rule-masthead">
 		<div class="index-hero-lede">
@@ -342,270 +260,44 @@
 	</header>
 
 	<!-- ═══ FILTER BAR ═══ -->
-	<section class="filter-bar" aria-label="Filter talks and events">
-		<div class="filter-bar-top">
-			<div class="pub-search">
-				<span class="pub-search-icon" aria-hidden="true">⌕</span>
-				<input
-					type="search"
-					class="pub-search-input"
-					placeholder="Filter — title, venue, city, co-author, tag, year…"
-					aria-label="Filter talks by title, venue, city, co-author, tag or year"
-					bind:value={searchTerm}
-				/>
-			</div>
-
-			<div class="chip-row type-chips">
-				<button
-					type="button"
-					class="chip"
-					class:chip--selected={(af.types?.length ?? 0) === 0}
-					onclick={() => setStrings.types([])}
-				>
-					All <span class="chip-count">{totalEntries}</span>
-				</button>
-				{#each $filterOptions.types as type (type)}
-					<button
-						type="button"
-						class="chip"
-						class:chip--selected={isTypeActive(type)}
-						onclick={() => toggleTypeFilter(type)}
-						title={typeLabels[type] ?? type}
-					>
-						{typeChipLabels[type] ?? typeLabels[type] ?? type}
-						<span class="chip-count">{$typeCounts[type] ?? 0}</span>
-					</button>
-				{/each}
-			</div>
-		</div>
-
-		<div class="filter-bar-bottom">
-			<div class="language-row">
-				<span class="language-label">Language:</span>
-				<button
-					type="button"
-					class="language-opt"
-					class:language-opt--active={(af.languages?.length ?? 0) === 0}
-					onclick={() => setStrings.languages([])}
-				>
-					All
-				</button>
-				{#each $filterOptions.languages as lang (lang)}
-					<button
-						type="button"
-						class="language-opt"
-						class:language-opt--active={af.languages?.includes(lang)}
-						onclick={() => toggleLanguageFilter(lang)}
-					>
-						{lang}
-						<span class="language-count">{$languageCounts[lang] ?? 0}</span>
-					</button>
-				{/each}
-			</div>
-
-			<div class="filter-bar-controls">
-				<button
-					type="button"
-					class="facet-toggle"
-					aria-expanded={facetsOpen}
-					onclick={() => (facetsOpen = !facetsOpen)}
-				>
-					Advanced filters {facetsOpen ? '▴' : '▾'}
-				</button>
-				<button
-					type="button"
-					class="map-toggle"
-					class:map-toggle--active={showMap}
-					aria-pressed={showMap}
-					onclick={toggleMap}
-				>
-					Map {showMap ? '▾' : '▸'}
-				</button>
-				<div class="sort-control" role="group" aria-label="Sort talks">
-					<span class="sort-label">Sort:</span>
-					<button
-						type="button"
-						class="sort-opt"
-						class:sort-opt--active={activeSort === 'date'}
-						aria-pressed={activeSort === 'date'}
-						onclick={() => (activeSort = 'date')}
-					>
-						Year ↓
-					</button>
-					<span class="sort-sep" aria-hidden="true">·</span>
-					<button
-						type="button"
-						class="sort-opt"
-						class:sort-opt--active={activeSort === 'title'}
-						aria-pressed={activeSort === 'title'}
-						onclick={() => (activeSort = 'title')}
-					>
-						A–Z
-					</button>
-				</div>
-			</div>
-		</div>
-	</section>
+	<EntityFilterBar
+		{filters}
+		{totalEntries}
+		{typeLabels}
+		{typeChipLabels}
+		ariaLabel="Filter talks and events"
+		searchPlaceholder="Filter — title, venue, city, co-author, tag, year…"
+		searchAriaLabel="Filter talks by title, venue, city, co-author, tag or year"
+		sortAriaLabel="Sort talks"
+		bind:searchTerm
+		bind:facetsOpen
+		bind:activeSort
+	>
+		{#snippet extraControls()}
+			<button
+				type="button"
+				class="map-toggle"
+				class:map-toggle--active={showMap}
+				aria-pressed={showMap}
+				onclick={toggleMap}
+			>
+				Map {showMap ? '▾' : '▸'}
+			</button>
+		{/snippet}
+	</EntityFilterBar>
 
 	<!-- ═══ FACET GRID (finding-aid) ═══ -->
-	<section class="facet-grid rule-hairline" class:facet-grid--open={facetsOpen} aria-label="Facets">
-		<!-- PROJECTS -->
-		{#if $filterOptions.projects.length > 0}
-			<div class="facet-col">
-				<h2 class="facet-label">Projects</h2>
-				<ul class="facet-list">
-					{#each $filterOptions.projects as project (project)}
-						{@const active = af.projects?.includes(project)}
-						<li>
-							<button
-								type="button"
-								class="facet-row facet-row--marker"
-								class:facet-row--active={active}
-								onclick={() => toggleProjectFilter(project)}
-							>
-								<span class="facet-marker" class:facet-marker--on={active} aria-hidden="true"
-								></span>
-								<span class="facet-name">{project}</span>
-								<span class="facet-count">{$projectCounts[project] ?? 0}</span>
-							</button>
-						</li>
-					{/each}
-				</ul>
-			</div>
-		{/if}
-
-		<!-- CO-AUTHORS -->
-		{#if $filterOptions.authors.length > 0}
-			<div class="facet-col">
-				<h2 class="facet-label">Co-authors</h2>
-				<ul class="facet-list">
-					{#each visibleAuthors as author (author)}
-						<li>
-							<button
-								type="button"
-								class="facet-row"
-								class:facet-row--active={af.authors?.includes(author)}
-								onclick={() => toggleAuthorFilter(author)}
-							>
-								<span class="facet-name">{author}</span>
-								<span class="facet-count">{$authorCounts[author] ?? 0}</span>
-							</button>
-						</li>
-					{/each}
-				</ul>
-				{#if $filterOptions.authors.length > AUTHOR_LIMIT}
-					<button
-						type="button"
-						class="facet-more"
-						onclick={() => (showAllAuthors = !showAllAuthors)}
-					>
-						{showAllAuthors ? 'Show fewer ↑' : `All ${$filterOptions.authors.length} co-authors ↓`}
-					</button>
-				{/if}
-			</div>
-		{/if}
-
-		<!-- COUNTRIES + YEARS -->
-		<div class="facet-col">
-			{#if $filterOptions.countries.length > 0}
-				<h2 class="facet-label">Countries</h2>
-				<ul class="facet-list">
-					{#each visibleCountries as country (country)}
-						<li>
-							<button
-								type="button"
-								class="facet-row"
-								class:facet-row--active={af.countries?.includes(country)}
-								onclick={() => toggleCountryFilter(country)}
-							>
-								<span class="facet-name">{country}</span>
-								<span class="facet-count">{$countryCounts[country] ?? 0}</span>
-							</button>
-						</li>
-					{/each}
-				</ul>
-				{#if $filterOptions.countries.length > COUNTRY_LIMIT}
-					<button
-						type="button"
-						class="facet-more"
-						onclick={() => (showAllCountries = !showAllCountries)}
-					>
-						{showAllCountries ? 'Show fewer ↑' : `All ${$filterOptions.countries.length} ↓`}
-					</button>
-				{/if}
-			{/if}
-
-			{#if sortedYearsAsc.length > 1}
-				<h2 class="facet-label facet-label--years">Years</h2>
-				<div class="facet-years">
-					<span class="facet-years-bound">{minYear}</span>
-					<div class="facet-years-slider">
-						<RangeSlider
-							min={minYear}
-							max={maxYear}
-							step={1}
-							values={yearRangeValues}
-							onchange={handleYearChange}
-						/>
-					</div>
-					<span class="facet-years-bound">{maxYear}</span>
-				</div>
-				{#if af.yearRange}
-					<button type="button" class="facet-more" onclick={resetYearRange}>Reset years ✕</button>
-				{/if}
-			{/if}
-		</div>
-
-		<!-- TAGS + summary -->
-		{#if $filterOptions.tags.length > 0}
-			<div class="facet-col facet-col--tags">
-				<h2 class="facet-label">Tags</h2>
-				<div class="chip-row facet-tags">
-					{#each visibleTags as tag (tag)}
-						<button
-							type="button"
-							class="chip"
-							class:chip--selected={af.tags?.includes(tag)}
-							onclick={() => toggleTagFilter(tag)}
-						>
-							{tag} <span class="chip-count">{$tagCounts[tag] ?? 0}</span>
-						</button>
-					{/each}
-				</div>
-				{#if $filterOptions.tags.length > TAG_LIMIT}
-					<button type="button" class="facet-more" onclick={() => (showAllTags = !showAllTags)}>
-						{showAllTags ? 'Show fewer ↑' : `All ${$filterOptions.tags.length} tags ↓`}
-					</button>
-				{/if}
-
-				<div class="facet-summary">
-					<!-- Announce filter-result changes to screen readers -->
-					<span class="facet-summary-stat" aria-live="polite">
-						{#if activeFilterCount > 0}
-							<span class="facet-summary-count">{activeFilterCount}</span>
-							{activeFilterCount === 1 ? 'filter' : 'filters'} active ·
-							<span class="facet-summary-count">{matchCount}</span>
-							{matchCount === 1 ? 'match' : 'matches'}
-						{:else}
-							{totalEntries} entries
-						{/if}
-					</span>
-					{#if anyNarrowing}
-						<button
-							type="button"
-							class="facet-clear"
-							onclick={() => {
-								clearAllFilters();
-								searchTerm = '';
-							}}
-						>
-							Clear all ✕
-						</button>
-					{/if}
-				</div>
-			</div>
-		{/if}
-	</section>
+	<EntityFacetGrid
+		{filters}
+		open={facetsOpen}
+		{minYear}
+		{maxYear}
+		{totalEntries}
+		{matchCount}
+		{activeFilterCount}
+		{anyNarrowing}
+		onclearall={clearAllNarrowing}
+	/>
 
 	<!-- ═══ MAP (lazy, toggled from the filter bar) ═══ -->
 	{#if showMap && MapVisualization}
@@ -656,16 +348,7 @@
 		{:else}
 			<div class="bib-empty">
 				<p class="bib-empty-line">No talks or events match the current filters.</p>
-				<button
-					type="button"
-					class="facet-clear"
-					onclick={() => {
-						clearAllFilters();
-						searchTerm = '';
-					}}
-				>
-					Clear all ✕
-				</button>
+				<button type="button" class="facet-clear" onclick={clearAllNarrowing}>Clear all ✕</button>
 			</div>
 		{/if}
 	</section>
