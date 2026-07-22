@@ -21,7 +21,7 @@ src/
 The `src/app.css` file imports the global stylesheet in a fixed order so tokens are available before anything depends on them:
 
 - **Import order**: Base → Layout → Components → Utilities (mirrors the block comments inside `app.css`).
-- **Route-scoped CSS**: `components/entity-cards.css`, `components/activity-list.css`, `components/bibliography.css`, and `components/filters.css` are **not** imported globally — they are imported by the components that own them, so they code-split per route and keep the render-blocking global stylesheet small.
+- **Route-scoped CSS**: `components/entity-cards.css`, `components/activity-list.css`, and `components/bibliography.css` are **not** imported globally — they are imported by the components that own them, so they code-split per route and keep the render-blocking global stylesheet small.
 - **Adding new modules**: Place new files under the appropriate directory, then add a matching `@import` in the same section of `app.css` (or import from the owning component if the styles are route-specific).
 - **Component overrides**: Prefer Svelte component-scoped styles for one-off tweaks; reach for global imports only when multiple pages need the change.
 
@@ -177,7 +177,7 @@ Buttons speak the **data voice**: Spline Sans Mono, uppercase, letterspaced, squ
 - `.btn-secondary`: Flat outlined control
 - `.btn-outline-primary`, `.btn-outline-secondary`, `.btn-outline-accent`: Outlines that fill on hover
 - `.btn-ghost`: Minimal tertiary; `.btn-danger`: destructive actions
-- `.btn-glass`: **Neutralised legacy variant** — now a flat outlined control (no backdrop-filter)
+- `.btn-surface`: **Neutralised legacy variant** (formerly `.btn-glass`) — now a flat outlined control (no backdrop-filter)
 - **Sizes**: `.btn-sm`, `.btn-lg`; **layout**: `.btn-block`, `.btn-icon-only`
 - **States**: `.btn-loading`, disabled opacity; focus-visible uses an accent outline
 - **Accessibility**: High-contrast border widening, reduced-motion support
@@ -202,7 +202,7 @@ Shared styles for list-based entities (Publications, Communications). `.entity-c
 
 ### Panels (`components/panels.css`)
 
-Flat ruled sidebar modules (pair with `.glass-panel`, which now supplies a flat paper surface):
+Flat ruled sidebar modules (pair with `.surface-panel`, which supplies a flat paper surface):
 
 - `.panel`: Square, flat, border-colour transition only — the earlier gradient overlays and animated accent lines are gone
 - `.panel-header` / `.panel-content` / `.panel-footer` separated by hairlines
@@ -213,10 +213,6 @@ Flat ruled sidebar modules (pair with `.glass-panel`, which now supplies a flat 
 ### Activity List (`components/activity-list.css`) — route-scoped
 
 The `/activities` page as a dated press column: mono log eyebrow over an Archivo masthead, year-grouped entries as hairline-separated rows (mono date/kind column, optional image plate, serif title + summary, mono tag run), and a ruled browse-by-year/tag aside.
-
-### Filters (`components/filters.css`) — route-scoped
-
-Shared `filter-*` classes for the filter sidebar components: mono caps section labels over hairlines, flat chip-style controls.
 
 ### Navigation Utilities (`components/navigation-utilities.css`)
 
@@ -248,7 +244,7 @@ CSS-only animation system. Motion is nearly none by design — instant state cha
 
 ## Page-Specific Styles
 
-There is intentionally no `styles/pages/` directory. Page-level design lives alongside its Svelte component so styles ship only where they are used. Shared presentation is centralized in the route-scoped modules above (`entity-cards.css`, `bibliography.css`, `activity-list.css`, `filters.css`). The `ContentBody` and `PageHeader` components (`src/lib/components/common/`) centralize common content-area and page-header styling with component-scoped CSS.
+There is intentionally no `styles/pages/` directory. Page-level design lives alongside its Svelte component so styles ship only where they are used. Shared presentation is centralized in the route-scoped modules above (`entity-cards.css`, `bibliography.css`, `activity-list.css`). The `ContentBody` and `PageHeader` components (`src/lib/components/common/`) centralize common content-area and page-header styling with component-scoped CSS.
 
 ## Utilities
 
@@ -295,19 +291,16 @@ Scale, translate, rotate, skew, and origin utilities with hover/focus and respon
 
 `.responsive-image`, aspect ratios (`.aspect-square`, `.aspect-book`, …), object-fit, image containers, loading states, and component-specific image classes. Prefer the `.plate` idiom for content imagery (scans, covers, photos).
 
-### Glassmorphism (`utilities/glassmorphism.css`) — legacy naming, neutralised
+### Surfaces (`utilities/surfaces.css`)
 
-Glass does not exist in Ink + Signal: no `backdrop-filter`, no blur, no translucency, no glow. This file survives because the `.glass-*` class names are still referenced throughout the codebase, but every class now renders a **flat surface** and the names are slated for renaming:
+Flat surface utilities — formerly the glassmorphism classes, neutralised for Ink + Signal (no `backdrop-filter`, no blur, no translucency, no glow) and since renamed `.glass-*` → `.surface-*`. Every class renders a **flat surface**:
 
-- `.glass`, `.glass-light/-medium/-heavy`, `.glass-frosted`, `.glass-primary`: Flat `--color-surface` tile with a 1px border
-- `.glass-card`, `.glass-panel`, `.glass-panel-light`, `.glass-sub-card`: The workhorse paper/film tiles — flat background, hairline border, square corners; `.glass-card` gets a border-colour hover only
-- `.glass-nav`: Solid page-ground masthead surface with a hairline base rule
-- `.glass-button` (and its `.btn-*` combos): Square flat ink/paper control
-- `.glass-blur-*`: Explicit no-ops (`backdrop-filter: none`)
-- `.glass-section-panel`: Transparent — content sits directly on the page ground
-- `.glass-animate`: Border-colour transition only
+- `.surface`, `.surface-light/-medium/-heavy`, `.surface-frosted`, `.surface-primary`: Flat `--color-surface` tile with a 1px border
+- `.surface-card`, `.surface-panel`, `.surface-panel-light`: The workhorse paper/film tiles — flat background, hairline border, square corners; `.surface-card` gets a border-colour hover only
+- `.surface-nav`: Solid page-ground masthead surface with a hairline base rule
+- `.surface-button` (and its `.btn-*` combos): Square flat ink/paper control
 
-New code should prefer the idiom classes (`.ledger`, `.section`, `.chip`, `.plate`) or `.card` over any `.glass-*` name.
+New code should prefer the idiom classes (`.ledger`, `.section`, `.chip`, `.plate`) or `.card` over the `.surface-*` names.
 
 ### Z-Index (`utilities/z-index.css`)
 
