@@ -4,6 +4,7 @@ export const baHistUlaval: Education = {
 	id: 'ba-hist-ulaval',
 	degree: 'B.A. in History',
 	institution: 'Université Laval',
+	institutionUrl: 'https://www.ulaval.ca/en',
 	location: 'Quebec City, Canada',
 	year: 2010,
 	type: 'Degree',

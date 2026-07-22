@@ -4,7 +4,9 @@ import {
 	buildCommunicationJsonLd,
 	buildDhProjectJsonLd
 } from './entityJsonLd';
-import { website } from '$lib/data/siteConfig';
+import { createPersonSchema, createFullPersonSchema } from './jsonLdSchemas';
+import { website, contact, author, researchTopics } from '$lib/data/siteConfig';
+import { allAffiliations } from '$lib/data/affiliations';
 import type { Publication } from '$lib/types/publication';
 import type { Communication } from '$lib/types/communication';
 import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
@@ -119,5 +121,69 @@ describe('buildDhProjectJsonLd', () => {
 		expect(result['@type']).toBe('CreativeWork');
 		expect(result.url).toBe('/b/digital-humanities/iwac');
 		expect(result.keywords).toBe('Python, NLP');
+	});
+});
+
+describe('createFullPersonSchema', () => {
+	const full = createFullPersonSchema();
+	const base = createPersonSchema();
+
+	it('shares the layout Person @id and core identity (one merged Person node)', () => {
+		expect(full['@id']).toBe(base['@id']);
+		expect(full['@id']).toBe(`${website.url}/#person`);
+		expect(full.name).toBe(base.name);
+		expect(full.jobTitle).toBe(base.jobTitle);
+		expect(full.worksFor).toEqual(base.worksFor);
+		expect(full.sameAs).toEqual(base.sameAs);
+	});
+
+	it('uses an absolute image URL identical to the base schema (no conflicting values)', () => {
+		expect(full.image).toBe(base.image);
+		expect(full.image).toMatch(/^https:\/\//);
+	});
+
+	it('derives alumniOf from degree-granting institutions in the education data', () => {
+		expect(full.alumniOf).toEqual([
+			{
+				'@type': 'EducationalOrganization',
+				name: 'Université Laval',
+				url: 'https://www.ulaval.ca/en'
+			}
+		]);
+	});
+
+	it('derives hasCredential from education degrees with mapped levels', () => {
+		expect(full.hasCredential).toContainEqual({
+			'@type': 'EducationalOccupationalCredential',
+			credentialCategory: 'degree',
+			educationalLevel: 'Doctorate',
+			name: 'Ph.D. in History'
+		});
+		// Degrees only — training and certificates are not credentials here
+		expect(full.hasCredential?.every((c) => c.credentialCategory === 'degree')).toBe(true);
+		expect(full.hasCredential?.length).toBe(3);
+	});
+
+	it('derives memberOf from ongoing affiliations only', () => {
+		const names = full.memberOf?.map((org) => org.name) ?? [];
+		expect(names).toContain('Islam in Africa Studies Group (IASG)');
+		const ongoing = allAffiliations.filter((a) => a.period.end === null);
+		expect(full.memberOf?.length).toBe(ongoing.length);
+		// Ended memberships (period.end set) must not appear
+		expect(names.some((n) => n.includes('Mande Studies Association'))).toBe(false);
+		const iasg = full.memberOf?.find((org) => org.name.includes('IASG'));
+		expect(iasg?.url).toBe('https://iasg.hcommons.org/');
+	});
+
+	it('derives knowsLanguage from the languages data in proficiency order', () => {
+		expect(full.knowsLanguage).toEqual(['French', 'English', 'German']);
+	});
+
+	it('sources editorial fields from siteConfig', () => {
+		expect(full.email).toBe(contact.email);
+		expect(full.nationality).toBe(author.nationality);
+		expect(full.knowsAbout).toEqual(researchTopics);
+		expect(full.knowsAbout).toContain('Islam');
+		expect(full.knowsAbout).toContain('Digital Humanities');
 	});
 });

@@ -32,6 +32,7 @@ export interface AuthorInfo {
 	position: string;
 	positionShort: string; // Without institution name
 	tagline: string; // Descriptive hero standfirst — subject + affiliation, not a role list
+	nationality: string; // Used in Person JSON-LD structured data
 }
 
 export const author: AuthorInfo = {
@@ -40,8 +41,29 @@ export const author: AuthorInfo = {
 	position: 'Historian | Digital Humanities & AI | Data Curator, University of Bayreuth',
 	positionShort: 'Historian & Data Curator',
 	tagline:
-		'Historian of Islam in francophone West Africa, working with digital humanities and AI · Data Curator, Cluster of Excellence “Africa Multiple”, University of Bayreuth'
+		'Historian of Islam in francophone West Africa, working with digital humanities and AI · Data Curator, Cluster of Excellence “Africa Multiple”, University of Bayreuth',
+	nationality: 'Canada'
 };
+
+/**
+ * Curated research topics for the Person JSON-LD `knowsAbout` field.
+ * This list is editorial (it summarises the research profile for search
+ * engines), so it lives here rather than being derived from tag data.
+ */
+export const researchTopics: string[] = [
+	'Islam',
+	'West Africa',
+	'Muslim Societies',
+	'History',
+	'Religious Activism',
+	'Secularism',
+	'Muslim Politics',
+	'Digital Humanities',
+	'Benin',
+	'Togo',
+	"Côte d'Ivoire",
+	'Burkina Faso'
+];
 
 export const address: Address = {
 	institution: 'Universität Bayreuth',
