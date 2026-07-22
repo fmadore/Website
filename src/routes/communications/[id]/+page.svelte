@@ -4,8 +4,7 @@
 	import { base } from '$app/paths';
 	import type { Communication } from '$lib/types/communication';
 	import type { ComponentType } from 'svelte';
-	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+	import EntityDetailLayout from '$lib/components/common/EntityDetailLayout.svelte';
 	import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
 	import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
 	import TagList from '$lib/components/molecules/TagList.svelte';
@@ -21,8 +20,6 @@
 	} from '$lib/utils/seoUtils';
 	import { getCommunicationTypeBadge } from '$lib/utils/typeUtils';
 	import MetaTags from '$lib/components/communications/MetaTags.svelte';
-	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
-	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
 
 	// Get communication from the page data
 	let { data } = $props();
@@ -42,11 +39,7 @@
 		}
 	]);
 
-	// Inject breadcrumb JSON-LD structured data
-	useBreadcrumbJsonLd(() => breadcrumbItems);
-
-	// Inject communication JSON-LD structured data
-	useJsonLdScript('communication-json-ld', () => jsonLdString);
+	// Breadcrumb + communication JSON-LD injection is handled by EntityDetailLayout.
 
 	// Lazy load MapVisualization only when the map scrolls near the viewport.
 	// maplibre-gl (~267 KiB JS) plus ~2 MB of Carto tiles dominate LCP/TBT, and
@@ -131,18 +124,21 @@
 
 <MetaTags {communication} />
 
-<div class="container py-8 page-enter">
-	<div class="max-w-6xl mx-auto">
-		<Breadcrumb items={breadcrumbItems} />
+<EntityDetailLayout
+	{breadcrumbItems}
+	jsonLdScriptId="communication-json-ld"
+	{jsonLdString}
+	title={communication.title}
+	date={communication.date}
+	typeBadgeText={getCommunicationTypeBadge(communication.type || '')}
+	authors={communication.authors}
+>
+	{#snippet children({ breadcrumb, header })}
+		{@render breadcrumb()}
 
 		<article class="communication-article">
 			<div class="content-wrapper">
-				<PageHeader
-					title={communication.title}
-					date={communication.date}
-					typeBadgeText={getCommunicationTypeBadge(communication.type || '')}
-					authors={communication.authors}
-				/>
+				{@render header()}
 
 				<!-- Hero Image Display -->
 				<HeroImageDisplay
@@ -265,8 +261,8 @@
 				maxItems={3}
 			/>
 		{/if}
-	</div>
-</div>
+	{/snippet}
+</EntityDetailLayout>
 
 <style>
 	/* Article container — no outer tile; individual sections carry their own styling */

@@ -1,8 +1,7 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
 	import { base } from '$app/paths';
-	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+	import EntityDetailLayout from '$lib/components/common/EntityDetailLayout.svelte';
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import type { PageData } from './$types';
@@ -21,8 +20,6 @@
 	} from '$lib/utils/seoUtils';
 	import { formatPanelType } from '$lib/utils/typeUtils';
 	import MetaTags from '$lib/components/activities/MetaTags.svelte';
-	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
-	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
 
 	// Get data from the load function
 	let { data }: { data: PageData } = $props();
@@ -39,11 +36,7 @@
 		{ label: truncateTitle(activity.title), href: `${base}/activities/${activity.id}` }
 	]);
 
-	// Inject breadcrumb JSON-LD structured data
-	useBreadcrumbJsonLd(() => breadcrumbItems);
-
-	// Inject activity JSON-LD structured data
-	useJsonLdScript('activity-json-ld', () => jsonLdString);
+	// Breadcrumb + activity JSON-LD injection is handled by EntityDetailLayout.
 
 	// Optimize animations for better performance
 	$effect(() => {
@@ -137,20 +130,24 @@
 <MetaTags {activity} />
 
 {#if activity}
-	<div class="container py-8 page-enter">
-		<div class="content-wrapper max-w-6xl mx-auto">
+	<EntityDetailLayout
+		{breadcrumbItems}
+		jsonLdScriptId="activity-json-ld"
+		{jsonLdString}
+		title={activity.title}
+		date={activity.date}
+		typeBadgeText={formatPanelType(activity.panelType)}
+		wrapperClass="content-wrapper max-w-6xl mx-auto"
+	>
+		{#snippet children({ breadcrumb, header })}
 			{#if activity}
 				<!-- Separate page header section - no animation to prevent flash -->
 				<div>
-					<Breadcrumb items={breadcrumbItems} />
+					{@render breadcrumb()}
 				</div>
 
 				<div>
-					<PageHeader
-						title={activity.title}
-						date={activity.date}
-						typeBadgeText={formatPanelType(activity.panelType)}
-					/>
+					{@render header()}
 				</div>
 
 				{#if activity.heroImage && activity.heroImage.src}
@@ -235,94 +232,94 @@
 					<!-- eslint-enable svelte/no-navigation-without-resolve -->
 				</div>
 			{/if}
-		</div>
-	</div>
+		{/snippet}
+	</EntityDetailLayout>
+{/if}
 
-	<style>
-		/* Hero image wrapper - ensure it doesn't interfere with modal stacking */
-		.hero-image-wrapper {
-			position: relative;
-			z-index: auto; /* Ensure no stacking context issues */
-			isolation: auto; /* Prevent isolation that could interfere with modal */
-		}
+<style>
+	/* Hero image wrapper - ensure it doesn't interfere with modal stacking */
+	.hero-image-wrapper {
+		position: relative;
+		z-index: auto; /* Ensure no stacking context issues */
+		isolation: auto; /* Prevent isolation that could interfere with modal */
+	}
 
-		/* Responsive hero image optimization */
+	/* Responsive hero image optimization */
+	:global(.hero-image-wrapper .hero-image) {
+		width: 100%;
+		height: auto;
+		max-width: 330px; /* Match the displayed dimensions from PageSpeed Insights */
+		max-height: 438px;
+		object-fit: cover;
+		border-radius: 0;
+	}
+
+	@media (--md) {
 		:global(.hero-image-wrapper .hero-image) {
-			width: 100%;
-			height: auto;
-			max-width: 330px; /* Match the displayed dimensions from PageSpeed Insights */
-			max-height: 438px;
-			object-fit: cover;
-			border-radius: 0;
+			max-width: 600px;
+			max-height: auto;
 		}
+	}
 
-		@media (--md) {
-			:global(.hero-image-wrapper .hero-image) {
-				max-width: 600px;
-				max-height: auto;
-			}
+	@media (--lg) {
+		:global(.hero-image-wrapper .hero-image) {
+			max-width: 800px;
 		}
+	}
 
-		@media (--lg) {
-			:global(.hero-image-wrapper .hero-image) {
-				max-width: 800px;
-			}
-		}
-
-		/* PDF callout — a flat paper document plate: hairline border, square
+	/* PDF callout — a flat paper document plate: hairline border, square
 		 * corners, no shadow, no hover lift. It's an enclosure, not an
 		 * affordance. */
-		.pdf-section {
-			position: relative;
-			content-visibility: auto;
-			contain-intrinsic-size: 800px;
-			border-radius: 0;
-			background: var(--color-surface);
-			border: var(--border-width-thin) solid var(--color-border);
-		}
+	.pdf-section {
+		position: relative;
+		content-visibility: auto;
+		contain-intrinsic-size: 800px;
+		border-radius: 0;
+		background: var(--color-surface);
+		border: var(--border-width-thin) solid var(--color-border);
+	}
 
-		.pdf-section-title {
-			margin-top: 0;
-		}
+	.pdf-section-title {
+		margin-top: 0;
+	}
 
-		/* RSS Feed Button — the data voice: a flat square mono chip. */
-		.rss-button-wrapper {
-			margin-top: var(--space-4);
-		}
+	/* RSS Feed Button — the data voice: a flat square mono chip. */
+	.rss-button-wrapper {
+		margin-top: var(--space-4);
+	}
 
+	.rss-feed-button {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-2);
+		padding: var(--space-1-5) var(--space-2-5);
+		border: var(--border-width-thin) solid var(--color-border);
+		border-radius: 0;
+		color: var(--color-text-soft);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-semibold);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		text-decoration: none;
+		transition:
+			border-color var(--duration-fast) var(--ease-out),
+			color var(--duration-fast) var(--ease-out);
+	}
+
+	.rss-feed-button:hover {
+		border-color: var(--color-accent);
+		color: var(--color-accent);
+	}
+
+	.rss-feed-button:focus-visible {
+		outline: var(--border-width-medium) solid var(--color-accent);
+		outline-offset: var(--space-0-5);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
 		.rss-feed-button {
-			display: inline-flex;
-			align-items: center;
-			gap: var(--space-2);
-			padding: var(--space-1-5) var(--space-2-5);
-			border: var(--border-width-thin) solid var(--color-border);
-			border-radius: 0;
-			color: var(--color-text-soft);
-			font-family: var(--font-family-mono);
-			font-size: var(--font-size-2xs);
-			font-weight: var(--font-weight-semibold);
-			text-transform: uppercase;
-			letter-spacing: 0.1em;
-			text-decoration: none;
-			transition:
-				border-color var(--duration-fast) var(--ease-out),
-				color var(--duration-fast) var(--ease-out);
+			transition: none;
 		}
-
-		.rss-feed-button:hover {
-			border-color: var(--color-accent);
-			color: var(--color-accent);
-		}
-
-		.rss-feed-button:focus-visible {
-			outline: var(--border-width-medium) solid var(--color-accent);
-			outline-offset: var(--space-0-5);
-		}
-
-		@media (prefers-reduced-motion: reduce) {
-			.rss-feed-button {
-				transition: none;
-			}
-		}
-	</style>
-{/if}
+	}
+</style>
