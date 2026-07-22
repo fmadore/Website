@@ -3,7 +3,7 @@ import {
 	buildPublicationJsonLd,
 	buildCommunicationJsonLd,
 	buildDhProjectJsonLd
-} from './jsonLdSchemas';
+} from './entityJsonLd';
 import { website } from '$lib/data/siteConfig';
 import type { Publication } from '$lib/types/publication';
 import type { Communication } from '$lib/types/communication';

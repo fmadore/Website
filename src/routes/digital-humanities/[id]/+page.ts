@@ -1,5 +1,5 @@
 import { allDhProjects } from '$lib/data/digital-humanities';
-import { buildDhProjectJsonLd } from '$lib/utils/jsonLdSchemas';
+import { buildDhProjectJsonLd } from '$lib/utils/entityJsonLd';
 import { loadEntityDetail } from '$lib/utils/entityPageLoader';
 import type { PageLoad } from './$types';
 
