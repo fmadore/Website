@@ -31,58 +31,41 @@ import Card from '$lib/components/common/Card.svelte';
 	linkUrl="/projects/research-project"
 	target="_self"
 >
-	<svelte:fragment slot="subtitle">2020-2022 • Collaborative Research</svelte:fragment>
+	{#snippet subtitle()}2020-2022 • Collaborative Research{/snippet}
 
-	<p>This research project focused on exploring new methodologies...</p>
-
-	<svelte:fragment slot="details">
+	{#snippet details()}
 		<div>Lead Researcher: Dr. Jane Smith</div>
 		<div>Funding: National Science Foundation</div>
-	</svelte:fragment>
+	{/snippet}
 
-	<svelte:fragment slot="action">
+	{#snippet action()}
 		<a href="/projects/research-project" class="btn btn-primary">Learn More</a>
-	</svelte:fragment>
+	{/snippet}
+
+	<p>This research project focused on exploring new methodologies...</p>
 </Card>
 ```
 
 ## Props
 
-| Prop       | Type                          | Default                    | Description                                          |
-| ---------- | ----------------------------- | -------------------------- | ---------------------------------------------------- |
-| `imageUrl` | `string \| undefined \| null` | `undefined`                | Optional URL for the card's image                    |
-| `imageAlt` | `string`                      | `''` (falls back to title) | Alt text for the image                               |
-| `linkUrl`  | `string \| undefined \| null` | `undefined`                | Optional URL to link the title and image             |
-| `target`   | `string`                      | `'_blank'`                 | Target attribute for links (`_blank`, `_self`, etc.) |
-| `title`    | `string`                      | `''`                       | The main title for the card                          |
+| Prop        | Type                          | Default                    | Description                                                    |
+| ----------- | ----------------------------- | -------------------------- | -------------------------------------------------------------- |
+| `imageUrl`  | `string \| undefined \| null` | `undefined`                | Optional URL for the card's image                              |
+| `imageAlt`  | `string`                      | `''` (falls back to title) | Alt text for the image                                         |
+| `linkUrl`   | `string \| undefined \| null` | `undefined`                | Optional URL to link the title and image                       |
+| `target`    | `string`                      | `'_blank'`                 | Target attribute for links (`_blank`, `_self`, etc.)           |
+| `title`     | `string`                      | `''`                       | The main title for the card                                    |
+| `editorial` | `boolean`                     | `false`                    | Render as the chrome-less editorial "lead" of a featured block |
 
-## Slots
+## Snippet props (Svelte 5)
 
 | Name       | Description                                                    |
 | ---------- | -------------------------------------------------------------- |
-| default    | The main content/description of the card                       |
+| `children` | The main content/description of the card (default content)     |
 | `subtitle` | Optional subtitle displayed below the title                    |
 | `details`  | Additional details displayed below the main content            |
 | `action`   | Action elements like buttons or links, displayed at the bottom |
 
 ## Styling
 
-The card component includes several visual features:
-
-- Subtle elevation with shadow that increases on hover
-- Card slightly elevates on hover (translateY)
-- Images scale slightly on hover
-- Consistent spacing using CSS variables
-
-## CSS Variables Used
-
-The component uses these CSS variables for styling:
-
-- `--border-radius-lg` - Border radius for the card
-- `--shadow-md`, `--shadow-lg` - Shadow for normal and hover states
-- `--color-background` - Background color of the card
-- `--color-border` - Border color
-- `--color-primary` - Color for title and links
-- `--color-primary-dark` - Color for link hover state
-- `--spacing-*` - Various spacing values (1, 3, 4, 6)
-- `--font-size-sm`, `--font-size-xl` - Font sizes for subtitle and title
+The card follows the flat Ink + Signal print register: square corners, 1px border, no shadow or glass. All colours, spacing, and type sizes come from the design tokens in `src/styles/base/variables.css`.

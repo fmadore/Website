@@ -34,35 +34,29 @@ import FilteredListDisplay from '$lib/components/common/FilteredListDisplay.svel
 	filteredItems={filteredPublications}
 	itemComponent={PublicationItem}
 	itemPropName="publication"
-	entityName="publications"
 	areFiltersActive={true}
 	{clearAllFilters}
-	onItemEvent={handleItemEvent}
+	onitemrequest={handleItemEvent}
 />
 ```
 
 ## Props
 
-| Prop                         | Type                                     | Default                                    | Description                                             |
-| ---------------------------- | ---------------------------------------- | ------------------------------------------ | ------------------------------------------------------- |
-| `filteredItems`              | `Readable<any[]>`                        | _required_                                 | Svelte store containing the filtered items              |
-| `itemComponent`              | `ComponentType`                          | _required_                                 | Component to render for each item                       |
-| `itemComponentProps`         | `ComponentProps<any>`                    | `{}`                                       | Additional props to pass to each item component         |
-| `entityName`                 | `string`                                 | `"items"`                                  | Name of entities being displayed (e.g., "publications") |
-| `areFiltersActive`           | `boolean`                                | `false`                                    | Whether any filters are currently active                |
-| `clearAllFilters`            | `() => void`                             | _required_                                 | Function to clear all active filters                    |
-| `emptyStateMessage`          | `string`                                 | `"No items found matching your criteria."` | Message shown when no items match filters               |
-| `emptyStateNoFiltersMessage` | `string`                                 | `"Try adding some items to the system."`   | Message shown when no items exist (no filters active)   |
-| `itemPropName`               | `string`                                 | `"item"`                                   | The prop name used by the item component                |
-| `onItemEvent`                | `((event: CustomEvent) => void) \| null` | `null`                                     | Optional handler for events from items                  |
+| Prop                         | Type                                                         | Default                                    | Description                                              |
+| ---------------------------- | ------------------------------------------------------------ | ------------------------------------------ | -------------------------------------------------------- |
+| `filteredItems`              | `Readable<Item[]> \| Item[]`                                 | _required_                                 | Store (or plain array) of filtered items                 |
+| `itemComponent`              | `ComponentType`                                              | _required_                                 | Component to render for each item                        |
+| `itemComponentProps`         | `ComponentProps<any>`                                        | `{}`                                       | Additional props to pass to each item component          |
+| `areFiltersActive`           | `boolean`                                                    | `false`                                    | Whether any filters are currently active                 |
+| `clearAllFilters`            | `() => void`                                                 | _required_                                 | Function to clear all active filters                     |
+| `emptyStateMessage`          | `string`                                                     | `"No items found matching your criteria."` | Message shown when no items match filters                |
+| `emptyStateNoFiltersMessage` | `string`                                                     | `"Try adding some items to the system."`   | Message shown when no items exist (no filters active)    |
+| `itemPropName`               | `string`                                                     | `"item"`                                   | The prop name used by the item component                 |
+| `onitemrequest`              | `((event: { type: string; value: string }) => void) \| null` | `null`                                     | Optional handler for item events (e.g., filter requests) |
 
-## Events
+## Item events
 
-The component itself doesn't dispatch events, but it forwards these events from item components:
-
-- `filterrequest` - When an item element requests a filter change
-- `click` - Click events from items
-- `customaction` - Any custom actions from items
+Item components receive an `onitemrequest` callback (when provided) so they can request actions such as adding a filter for a clicked tag.
 
 ## Empty States
 

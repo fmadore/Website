@@ -23,6 +23,8 @@ import Button from '$lib/components/atoms/Button.svelte';
 <Button variant="secondary">Secondary Button</Button>
 <Button variant="outline-primary">Outline Primary</Button>
 <Button variant="outline-secondary">Outline Secondary</Button>
+<Button variant="ghost">Ghost Button</Button>
+<Button variant="danger">Danger Button</Button>
 ```
 
 ### Button Sizes
@@ -43,9 +45,9 @@ import Button from '$lib/components/atoms/Button.svelte';
 
 ```svelte
 <Button>
-	<svelte:fragment slot="icon">
+	{#snippet icon()}
 		<SomeIcon />
-	</svelte:fragment>
+	{/snippet}
 	Button with Icon
 </Button>
 ```
@@ -54,38 +56,38 @@ import Button from '$lib/components/atoms/Button.svelte';
 
 ```svelte
 <Button iconOnly={true} ariaLabel="Close dialog">
-	<svelte:fragment slot="icon">
+	{#snippet icon()}
 		<CloseIcon />
-	</svelte:fragment>
+	{/snippet}
 </Button>
 ```
 
 ## Props
 
-| Prop                | Type                                                                   | Default     | Description                                         |
-| ------------------- | ---------------------------------------------------------------------- | ----------- | --------------------------------------------------- |
-| `variant`           | `'primary' \| 'secondary' \| 'outline-primary' \| 'outline-secondary'` | `'primary'` | Style variant of the button                         |
-| `size`              | `'sm' \| 'base' \| 'lg'`                                               | `'base'`    | Size of the button                                  |
-| `href`              | `string \| undefined`                                                  | `undefined` | If provided, renders as an anchor tag               |
-| `type`              | `'button' \| 'submit' \| 'reset'`                                      | `'button'`  | Native button type (only for `<button>`)            |
-| `disabled`          | `boolean`                                                              | `false`     | Whether the button is disabled                      |
-| `block`             | `boolean`                                                              | `false`     | Whether the button should take up full width        |
-| `iconOnly`          | `boolean`                                                              | `false`     | For icon-only buttons (adjusts padding)             |
-| `ariaLabel`         | `string \| undefined`                                                  | `undefined` | Accessibility label, required for icon-only buttons |
-| `additionalClasses` | `string`                                                               | `''`        | Additional CSS classes to apply to the button       |
+| Prop                | Type                                                                                          | Default     | Description                                         |
+| ------------------- | --------------------------------------------------------------------------------------------- | ----------- | --------------------------------------------------- |
+| `variant`           | `'primary' \| 'secondary' \| 'outline-primary' \| 'outline-secondary' \| 'ghost' \| 'danger'` | `'primary'` | Style variant of the button                         |
+| `size`              | `'sm' \| 'base' \| 'lg'`                                                                      | `'base'`    | Size of the button                                  |
+| `href`              | `string \| undefined`                                                                         | `undefined` | If provided, renders as an anchor tag               |
+| `type`              | `'button' \| 'submit' \| 'reset'`                                                             | `'button'`  | Native button type (only for `<button>`)            |
+| `disabled`          | `boolean`                                                                                     | `false`     | Whether the button is disabled                      |
+| `block`             | `boolean`                                                                                     | `false`     | Whether the button should take up full width        |
+| `iconOnly`          | `boolean`                                                                                     | `false`     | For icon-only buttons (adjusts padding)             |
+| `ariaLabel`         | `string \| undefined`                                                                         | `undefined` | Accessibility label, required for icon-only buttons |
+| `additionalClasses` | `string`                                                                                      | `''`        | Additional CSS classes to apply to the button       |
 
-## Slots
+## Snippet props (Svelte 5)
 
-| Slot    | Description                                |
-| ------- | ------------------------------------------ |
-| default | Main content of the button                 |
-| icon    | Optional icon to display inside the button |
+| Name       | Description                                |
+| ---------- | ------------------------------------------ |
+| `children` | Main content of the button                 |
+| `icon`     | Optional icon to display inside the button |
 
-## Events
+## Callback props
 
-| Event   | Description                                              |
-| ------- | -------------------------------------------------------- |
-| `click` | Fired when the button is clicked (not fired if disabled) |
+| Prop      | Description                                                |
+| --------- | ---------------------------------------------------------- |
+| `onclick` | Called when the button is clicked (not called if disabled) |
 
 ## CSS Variables
 
@@ -109,7 +111,7 @@ The button uses these CSS variables for styling:
 ### Form Submit Button
 
 ```svelte
-<form on:submit={handleSubmit}>
+<form onsubmit={handleSubmit}>
 	<!-- form fields -->
 	<Button type="submit" variant="primary">Submit</Button>
 </form>

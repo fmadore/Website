@@ -12,9 +12,9 @@ import EntityListPageLayout from '$lib/components/common/EntityListPageLayout.sv
 
 ```svelte
 <EntityListPageLayout>
-	<svelte:fragment slot="sidebar">
-		<FiltersSidebar activeFilters={$activeFilters} on:filterChange={handleFilterChange} />
-	</svelte:fragment>
+	{#snippet sidebar()}
+		<!-- Sidebar content (typically filters) -->
+	{/snippet}
 
 	<FilteredListDisplay
 		filteredItems={$filteredItems}
@@ -32,14 +32,14 @@ import EntityListPageLayout from '$lib/components/common/EntityListPageLayout.sv
 | ---------------- | -------- | ----------------------------------------- | --------------------------------- |
 | `containerClass` | `string` | `"container mx-auto py-6"`                | CSS class for the outer container |
 | `gridClass`      | `string` | `"grid grid-cols-1 lg:grid-cols-4 gap-6"` | CSS class for the grid layout     |
-| `sidebarClass`   | `string` | `"md:col-span-1"`                         | CSS class for the sidebar column  |
+| `sidebarClass`   | `string` | `"lg:col-span-1"`                         | CSS class for the sidebar column  |
 
-## Slots
+## Snippet props (Svelte 5)
 
-| Name      | Description                                                   |
-| --------- | ------------------------------------------------------------- |
-| default   | Content for the main content area (typically a list of items) |
-| `sidebar` | Content for the sidebar (typically filters)                   |
+| Name       | Description                                                   |
+| ---------- | ------------------------------------------------------------- |
+| `children` | Content for the main content area (typically a list of items) |
+| `sidebar`  | Content for the sidebar (typically filters)                   |
 
 ## Layout Structure
 
