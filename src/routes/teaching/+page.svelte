@@ -52,7 +52,7 @@
 			institution: 'Various Institutions',
 			description:
 				'A list of invited talks and lectures delivered at various academic institutions.',
-			imageUrl: `${base}/images/teaching/guest-lecture.jpg`,
+			imageUrl: `${base}/images/teaching/guest-lecture.webp`,
 			linkUrl: resolve('/teaching/guest-lectures')
 		}
 	];
