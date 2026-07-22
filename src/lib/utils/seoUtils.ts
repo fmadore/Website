@@ -3,14 +3,12 @@ import type { Publication } from '$lib/types';
 import type { Activity } from '$lib/types/activity';
 import { author } from '$lib/data/siteConfig';
 import { smartTruncate } from '$lib/utils/textUtils';
-import {
-	COMMUNICATION_TYPE_SEO_LABELS,
-	PUBLICATION_TYPE_SEO_LABELS,
-	ACTIVITY_TYPE_SEO_LABELS
-} from '$lib/utils/typeUtils';
+import { COMMUNICATION_TYPE_SEO_LABELS, ACTIVITY_TYPE_SEO_LABELS } from '$lib/utils/typeUtils';
+import { PUBLICATION_TYPE_SEO_LABELS } from '$lib/utils/publicationTypeLabels';
 
-// JSON-LD schema construction lives in jsonLdSchemas.ts. Re-exported here
-// so existing `$lib/utils/seoUtils` imports keep working unchanged.
+// JSON-LD schema construction (including `createSectionBreadcrumbs`, whose
+// canonical definition lives in jsonLdSchemas.ts) is re-exported here so
+// existing `$lib/utils/seoUtils` imports keep working unchanged.
 export * from '$lib/utils/jsonLdSchemas';
 
 // ============================================================================
@@ -20,59 +18,188 @@ export * from '$lib/utils/jsonLdSchemas';
 /** The common 160-char SERP budget shared by all description builders. */
 const SEO_DESCRIPTION_LIMIT = 160;
 
-interface SeoDescriptionParts {
+/**
+ * A description segment: given the entity and the description built so far,
+ * returns the text to append (or `''` when it doesn't apply / doesn't fit).
+ * Each segment encodes its own fit rules against `SEO_DESCRIPTION_LIMIT`.
+ */
+type SeoDescriptionSegment<T> = (entity: T, current: string) => string;
+
+/** Per-entity configuration for {@link buildSeoDescription}. */
+interface SeoDescriptionConfig<T> {
 	/** Front-loaded lead, e.g. "Book: Title". */
-	lead: string;
-	/** Full context sentence (leading space included), e.g. " Presented at X, 2024." */
-	contextSentence?: string;
-	/** Compact fallback used when the full sentence doesn't fit and the lead is short. */
-	contextCompact?: string;
-	/** Abstract to fill remaining space with (smart-truncated). */
-	abstract?: string;
+	lead: (entity: T) => string;
+	/** Ordered appendages (context sentence, abstract, tags, CTA, …). */
+	segments: ReadonlyArray<SeoDescriptionSegment<T>>;
 	/** Used verbatim when everything else produced an empty string. */
-	fallback: string;
+	fallback: (entity: T) => string;
 }
 
 /**
- * Shared SEO description algorithm (publications + communications):
- * front-loaded lead → context sentence if it fits (compact variant when the
- * lead is short) → abstract fill → 160-char smart truncation → fallback.
+ * Shared SEO description algorithm for all entity types:
+ * front-loaded lead → each configured segment in order (each enforcing its own
+ * fit rules) → 160-char smart truncation → fallback when empty.
  */
-function buildSeoDescription({
-	lead,
-	contextSentence,
-	contextCompact,
-	abstract,
-	fallback
-}: SeoDescriptionParts): string {
-	let description = lead;
+function buildSeoDescription<T>(entity: T, config: SeoDescriptionConfig<T>): string {
+	let description = config.lead(entity);
 
-	if (contextSentence) {
-		if ((description + contextSentence).length <= SEO_DESCRIPTION_LIMIT) {
-			description += contextSentence;
-		} else if (description.length < 100 && contextCompact) {
-			if ((description + contextCompact).length <= SEO_DESCRIPTION_LIMIT) {
-				description += contextCompact;
-			}
-		}
-	}
-
-	// If we have space and an abstract, add a summary
-	if (abstract && description.length < 120) {
-		const remainingSpace = SEO_DESCRIPTION_LIMIT - description.length - 1; // -1 for space
-		const abstractPreview = smartTruncate(abstract, remainingSpace);
-		if (abstractPreview.length > 20) {
-			// Only add if meaningful content
-			description += ` ${abstractPreview}`;
-		}
+	for (const segment of config.segments) {
+		description += segment(entity, description);
 	}
 
 	if (description.length > SEO_DESCRIPTION_LIMIT) {
 		description = smartTruncate(description, SEO_DESCRIPTION_LIMIT);
 	}
 
-	return description.trim() ? description : fallback;
+	return description.trim() ? description : config.fallback(entity);
 }
+
+/**
+ * Segment factory: full context sentence when it fits within the budget,
+ * otherwise a compact variant when the lead is still short (< 100 chars).
+ */
+function contextSegment<T>(
+	sentence: (entity: T) => string | undefined,
+	compact: (entity: T) => string | undefined
+): SeoDescriptionSegment<T> {
+	return (entity, current) => {
+		const contextSentence = sentence(entity);
+		if (!contextSentence) return '';
+		if ((current + contextSentence).length <= SEO_DESCRIPTION_LIMIT) {
+			return contextSentence;
+		}
+		if (current.length < 100) {
+			const contextCompact = compact(entity);
+			if (contextCompact && (current + contextCompact).length <= SEO_DESCRIPTION_LIMIT) {
+				return contextCompact;
+			}
+		}
+		return '';
+	};
+}
+
+/**
+ * Segment factory: fills remaining space with a smart-truncated abstract
+ * preview when the description is still under 120 chars and the preview is
+ * meaningful (> 20 chars).
+ */
+function abstractSegment<T>(
+	getAbstract: (entity: T) => string | undefined
+): SeoDescriptionSegment<T> {
+	return (entity, current) => {
+		const abstract = getAbstract(entity);
+		// If we have space and an abstract, add a summary
+		if (abstract && current.length < 120) {
+			const remainingSpace = SEO_DESCRIPTION_LIMIT - current.length - 1; // -1 for space
+			const abstractPreview = smartTruncate(abstract, remainingSpace);
+			if (abstractPreview.length > 20) {
+				// Only add if meaningful content
+				return ` ${abstractPreview}`;
+			}
+		}
+		return '';
+	};
+}
+
+// ============================================================================
+// SEO KEYWORD GENERATORS
+// ============================================================================
+
+/**
+ * One keyword source: a static keyword, or a function of the entity returning
+ * a keyword, a list of keywords, or a falsy guard result (`undefined` / `false`
+ * / `''`) that skips the source entirely. Items inside a returned array are
+ * added as-is, mirroring the original unguarded `forEach(add)` loops.
+ */
+type SeoKeywordSource<T> = string | ((entity: T) => string | readonly string[] | false | undefined);
+
+/** Per-entity configuration for {@link buildSeoKeywords}. */
+interface SeoKeywordConfig<T> {
+	/** Ordered keyword sources; insertion order is preserved by the Set. */
+	sources: ReadonlyArray<SeoKeywordSource<T>>;
+	/** Optional cap on the number of keywords kept (in insertion order). */
+	limit?: number;
+}
+
+/**
+ * Shared SEO keyword algorithm for all entity types: evaluate each source in
+ * order, dedupe via a Set (insertion order preserved), optionally cap the
+ * list, and join with ", ".
+ */
+function buildSeoKeywords<T>(entity: T, { sources, limit }: SeoKeywordConfig<T>): string {
+	const keywords = new Set<string>();
+
+	for (const source of sources) {
+		const value = typeof source === 'function' ? source(entity) : source;
+		if (!value) continue;
+		if (Array.isArray(value)) {
+			value.forEach((keyword: string) => keywords.add(keyword));
+		} else {
+			keywords.add(value as string);
+		}
+	}
+
+	const list = Array.from(keywords);
+	return (limit !== undefined ? list.slice(0, limit) : list).join(', ');
+}
+
+// ============================================================================
+// COMMUNICATIONS
+// ============================================================================
+
+/** Location and year context (highly valuable for academic presentations). */
+function communicationLocationInfo({ conference, location, country, year }: Communication) {
+	const locationInfo: string[] = [];
+	if (conference) locationInfo.push(conference);
+	if (location && location !== conference) locationInfo.push(location);
+	if (country && !location?.includes(country)) locationInfo.push(country);
+	if (year) locationInfo.push(year.toString());
+	return locationInfo;
+}
+
+const COMMUNICATION_SEO_DESCRIPTION: SeoDescriptionConfig<Communication> = {
+	lead: ({ type, title }) => {
+		const typeLabel = (type && COMMUNICATION_TYPE_SEO_LABELS[type]) || 'Academic presentation';
+		return type && title ? `${typeLabel}: ${title}` : (title ?? '');
+	},
+	segments: [
+		contextSegment(
+			(communication) => {
+				const locationInfo = communicationLocationInfo(communication);
+				return locationInfo.length > 0 ? ` Presented at ${locationInfo.join(', ')}.` : undefined;
+			},
+			({ conference, location, country, year }) =>
+				` at ${conference || location || country || year}`
+		),
+		abstractSegment(({ abstract }) => abstract)
+	],
+	fallback: ({ conference, authors, year }) => {
+		const authorText = authors?.length ? ` by ${authors[0]}` : '';
+		const eventText = conference ? ` at ${conference}` : '';
+		const yearText = year ? ` (${year})` : '';
+		return `Academic presentation${eventText}${authorText}${yearText}`;
+	}
+};
+
+const COMMUNICATION_SEO_KEYWORDS: SeoKeywordConfig<Communication> = {
+	sources: [
+		// Communication-specific keywords
+		(communication) => communication.type,
+		(communication) => communication.tags,
+		(communication) => communication.authors,
+		(communication) => communication.country,
+		(communication) => communication.language,
+		// Context-appropriate academic keywords
+		'academic presentation',
+		(communication) => communication.type === 'conference' && 'conference paper',
+		(communication) => communication.type === 'workshop' && 'workshop presentation',
+		// Subject-matter keywords based on typical content
+		'Islam',
+		'West Africa',
+		'digital humanities',
+		author.name
+	]
+};
 
 /**
  * Creates an optimized SEO description for communication pages
@@ -84,30 +211,7 @@ function buildSeoDescription({
  * - Fallback logic for missing fields
  */
 export function createCommunicationSEODescription(communication: Communication): string {
-	const { type, title, conference, location, country, year, abstract, authors } = communication;
-
-	const typeLabel = (type && COMMUNICATION_TYPE_SEO_LABELS[type]) || 'Academic presentation';
-	const lead = type && title ? `${typeLabel}: ${title}` : (title ?? '');
-
-	// Location and year context (highly valuable for academic presentations)
-	const locationInfo = [];
-	if (conference) locationInfo.push(conference);
-	if (location && location !== conference) locationInfo.push(location);
-	if (country && !location?.includes(country)) locationInfo.push(country);
-	if (year) locationInfo.push(year.toString());
-
-	const authorText = authors?.length ? ` by ${authors[0]}` : '';
-	const eventText = conference ? ` at ${conference}` : '';
-	const yearText = year ? ` (${year})` : '';
-
-	return buildSeoDescription({
-		lead,
-		contextSentence:
-			locationInfo.length > 0 ? ` Presented at ${locationInfo.join(', ')}.` : undefined,
-		contextCompact: ` at ${conference || location || country || year}`,
-		abstract,
-		fallback: `Academic presentation${eventText}${authorText}${yearText}`
-	});
+	return buildSeoDescription(communication, COMMUNICATION_SEO_DESCRIPTION);
 }
 
 /**
@@ -115,33 +219,7 @@ export function createCommunicationSEODescription(communication: Communication):
  * Combines communication-specific terms with general academic keywords
  */
 export function createCommunicationSEOKeywords(communication: Communication): string {
-	const keywords = new Set<string>();
-
-	// Add communication-specific keywords
-	if (communication.type) keywords.add(communication.type);
-	if (communication.tags) communication.tags.forEach((tag) => keywords.add(tag));
-	if (communication.authors) communication.authors.forEach((author) => keywords.add(author));
-	if (communication.country) keywords.add(communication.country);
-	if (communication.language) {
-		if (Array.isArray(communication.language)) {
-			communication.language.forEach((lang) => keywords.add(lang));
-		} else {
-			keywords.add(communication.language);
-		}
-	}
-
-	// Add context-appropriate academic keywords
-	keywords.add('academic presentation');
-	if (communication.type === 'conference') keywords.add('conference paper');
-	if (communication.type === 'workshop') keywords.add('workshop presentation');
-
-	// Add subject-matter keywords based on typical content
-	keywords.add('Islam');
-	keywords.add('West Africa');
-	keywords.add('digital humanities');
-	keywords.add(author.name);
-
-	return Array.from(keywords).join(', ');
+	return buildSeoKeywords(communication, COMMUNICATION_SEO_KEYWORDS);
 }
 
 /**
@@ -165,25 +243,15 @@ export function truncateTitle(title: string, maxLength: number = 50): string {
 		: title.substring(0, maxLength - 3) + '...';
 }
 
-/**
- * Creates an optimized SEO description for publication pages
- *
- * Best practices applied:
- * - 150-160 characters optimal length for Google SERPs
- * - Front-loads important keywords (type, journal/publisher, year)
- * - Uses smart truncation to avoid cutting mid-sentence
- * - Includes publication venue information
- * - Fallback logic for missing fields
- */
-export function createPublicationSEODescription(publication: Publication): string {
-	const { type, title, journal, publisher, book, year, abstract, authors, placeOfPublication } =
-		publication;
+// ============================================================================
+// PUBLICATIONS
+// ============================================================================
 
-	const typeLabel = PUBLICATION_TYPE_SEO_LABELS[type] || 'Academic publication';
-	const lead = type && title ? `${typeLabel}: ${title}` : (title ?? '');
+/** Publication venue context (highly valuable for academic publications). */
+function publicationVenueInfo(publication: Publication) {
+	const { type, journal, publisher, book, year, placeOfPublication } = publication;
 
-	// Publication venue context (highly valuable for academic publications)
-	const venueInfo = [];
+	const venueInfo: string[] = [];
 	if (type === 'article' || type === 'special-issue') {
 		if (journal) venueInfo.push(journal);
 	} else if (type === 'chapter') {
@@ -197,17 +265,70 @@ export function createPublicationSEODescription(publication: Publication): strin
 		if (publication.university) venueInfo.push(publication.university);
 	}
 	if (year) venueInfo.push(year.toString());
+	return venueInfo;
+}
 
-	const authorText = authors?.length ? ` by ${authors[0]}` : '';
-	const yearText = year ? ` (${year})` : '';
+const PUBLICATION_SEO_DESCRIPTION: SeoDescriptionConfig<Publication> = {
+	lead: ({ type, title }) => {
+		const typeLabel = PUBLICATION_TYPE_SEO_LABELS[type] || 'Academic publication';
+		return type && title ? `${typeLabel}: ${title}` : (title ?? '');
+	},
+	segments: [
+		contextSegment(
+			(publication) => {
+				const venueInfo = publicationVenueInfo(publication);
+				return venueInfo.length > 0 ? ` Published in ${venueInfo.join(', ')}.` : undefined;
+			},
+			(publication) => ` (${publicationVenueInfo(publication)[0] || publication.year})`
+		),
+		abstractSegment(({ abstract }) => abstract)
+	],
+	fallback: ({ type, authors, year }) => {
+		const typeLabel = PUBLICATION_TYPE_SEO_LABELS[type] || 'Academic publication';
+		const authorText = authors?.length ? ` by ${authors[0]}` : '';
+		const yearText = year ? ` (${year})` : '';
+		return `${typeLabel}${authorText}${yearText}`;
+	}
+};
 
-	return buildSeoDescription({
-		lead,
-		contextSentence: venueInfo.length > 0 ? ` Published in ${venueInfo.join(', ')}.` : undefined,
-		contextCompact: ` (${venueInfo[0] || year})`,
-		abstract,
-		fallback: `${typeLabel}${authorText}${yearText}`
-	});
+const PUBLICATION_SEO_KEYWORDS: SeoKeywordConfig<Publication> = {
+	sources: [
+		// Publication-specific keywords
+		(publication) => publication.type,
+		(publication) => publication.tags,
+		(publication) => publication.authors,
+		(publication) => publication.language,
+		// Venue-specific keywords
+		(publication) => publication.journal,
+		(publication) => publication.publisher,
+		(publication) => publication.book,
+		// Context-appropriate academic keywords
+		'academic publication',
+		(publication) => publication.type === 'article' && 'journal article',
+		(publication) => publication.type === 'book' && 'academic book',
+		(publication) => publication.type === 'chapter' && 'book chapter',
+		// Subject-matter keywords based on typical content
+		'Islam',
+		'West Africa',
+		'digital humanities',
+		author.name,
+		// Research-specific terms
+		(publication) => publication.project
+	]
+};
+
+/**
+ * Creates an optimized SEO description for publication pages
+ *
+ * Best practices applied:
+ * - 150-160 characters optimal length for Google SERPs
+ * - Front-loads important keywords (type, journal/publisher, year)
+ * - Uses smart truncation to avoid cutting mid-sentence
+ * - Includes publication venue information
+ * - Fallback logic for missing fields
+ */
+export function createPublicationSEODescription(publication: Publication): string {
+	return buildSeoDescription(publication, PUBLICATION_SEO_DESCRIPTION);
 }
 
 /**
@@ -215,36 +336,129 @@ export function createPublicationSEODescription(publication: Publication): strin
  * Combines publication-specific terms with general academic keywords
  */
 export function createPublicationSEOKeywords(publication: Publication): string {
-	const keywords = new Set<string>();
-
-	// Add publication-specific keywords
-	if (publication.type) keywords.add(publication.type);
-	if (publication.tags) publication.tags.forEach((tag) => keywords.add(tag));
-	if (publication.authors) publication.authors.forEach((author) => keywords.add(author));
-	if (publication.language) keywords.add(publication.language);
-
-	// Add venue-specific keywords
-	if (publication.journal) keywords.add(publication.journal);
-	if (publication.publisher) keywords.add(publication.publisher);
-	if (publication.book) keywords.add(publication.book);
-
-	// Add context-appropriate academic keywords
-	keywords.add('academic publication');
-	if (publication.type === 'article') keywords.add('journal article');
-	if (publication.type === 'book') keywords.add('academic book');
-	if (publication.type === 'chapter') keywords.add('book chapter');
-
-	// Add subject-matter keywords based on typical content
-	keywords.add('Islam');
-	keywords.add('West Africa');
-	keywords.add('digital humanities');
-	keywords.add(author.name);
-
-	// Add research-specific terms
-	if (publication.project) keywords.add(publication.project);
-
-	return Array.from(keywords).join(', ');
+	return buildSeoKeywords(publication, PUBLICATION_SEO_KEYWORDS);
 }
+
+// ============================================================================
+// ACTIVITIES
+// ============================================================================
+
+/** Get blog-friendly type label from centralized mapping */
+const getBlogTypeLabel = (type?: string): string =>
+	ACTIVITY_TYPE_SEO_LABELS[type || ''] || 'Academic update';
+
+const ACTIVITY_SEO_DESCRIPTION: SeoDescriptionConfig<Activity> = {
+	lead: ({ title, description, type, year }) => {
+		// Start with the activity description (primary content)
+		let seoDescription = description || '';
+
+		// If description is too short or missing, build one from available data
+		if (!seoDescription || seoDescription.length < 50) {
+			const typeLabel = getBlogTypeLabel(type);
+			const yearText = year ? ` (${year})` : '';
+
+			// Create engaging blog-style description
+			if (type === 'publication') {
+				seoDescription = `Latest publication update${yearText}: ${title}`;
+			} else if (type === 'grant') {
+				seoDescription = `Research funding news${yearText}: ${title}`;
+			} else if (['conference', 'workshop', 'panel'].includes(type || '')) {
+				seoDescription = `${typeLabel} from ${title}${yearText}`;
+			} else {
+				seoDescription = `${typeLabel}${yearText}: ${title}`;
+			}
+		}
+		return seoDescription;
+	},
+	segments: [
+		// Contextual tag keywords, added only when they fit and add value
+		({ tags }, current) => {
+			const remainingSpace = SEO_DESCRIPTION_LIMIT - current.length;
+			if (remainingSpace > 20 && tags && tags.length > 0) {
+				// Add relevant tags that provide additional context
+				const contextTags = tags
+					.filter((tag) =>
+						['Digital Humanities', 'Islam', 'West Africa', 'Research', 'Academic'].some((keyword) =>
+							tag.toLowerCase().includes(keyword.toLowerCase())
+						)
+					)
+					.slice(0, 2); // Limit to 2 most relevant tags
+
+				if (contextTags.length > 0) {
+					const tagText = ` Topics: ${contextTags.join(', ')}.`;
+					if (tagText.length <= remainingSpace) {
+						return tagText;
+					}
+				}
+			}
+			return '';
+		},
+		// Engaging call-to-action if space allows
+		({ type }, current) => {
+			if (current.length < 140) {
+				// Choose CTA based on activity type
+				let cta = 'Learn more →';
+				if (type === 'publication') cta = 'Read details →';
+				else if (type === 'conference' || type === 'workshop') cta = 'Read insights →';
+				else if (type === 'grant') cta = 'Discover details →';
+
+				if (current.length + cta.length + 1 <= SEO_DESCRIPTION_LIMIT) {
+					return ` ${cta}`;
+				}
+			}
+			return '';
+		}
+	],
+	fallback: ({ type, year }) => {
+		const typeLabel = getBlogTypeLabel(type);
+		const yearText = year ? ` ${year}` : '';
+		return `${typeLabel}${yearText} by ${author.name}`;
+	}
+};
+
+/** Maps activity types to blog-friendly keywords. */
+const ACTIVITY_TYPE_KEYWORDS: Record<string, string[]> = {
+	conference: ['conference', 'academic conference', 'research presentation'],
+	workshop: ['workshop', 'academic workshop', 'professional development'],
+	seminar: ['seminar', 'academic seminar', 'research seminar'],
+	lecture: ['lecture', 'academic lecture', 'keynote'],
+	panel: ['panel discussion', 'academic panel', 'expert panel'],
+	grant: ['research grant', 'funding', 'academic funding'],
+	publication: ['publication', 'academic publication', 'research'],
+	event: ['academic event', 'scholarly event'],
+	visit: ['academic visit', 'research visit', 'collaboration'],
+	news: ['academic news', 'research news', 'updates']
+};
+
+const ACTIVITY_SEO_KEYWORDS: SeoKeywordConfig<Activity> = {
+	sources: [
+		// Activity-specific keywords (mapped to blog-friendly terms)
+		(activity) => activity.type && (ACTIVITY_TYPE_KEYWORDS[activity.type] || ['academic activity']),
+		// Tag-based keywords (these are often topical)
+		(activity) => activity.tags,
+		// Blog-relevant keywords
+		'blog post',
+		'academic blog',
+		'research update',
+		// Author/personal branding keywords
+		author.name,
+		'digital humanities',
+		'Islam studies',
+		'West Africa research',
+		'academic researcher',
+		// Year if available (helps with temporal searches)
+		(activity) => (activity.year ? activity.year.toString() : undefined),
+		// Content-type specific keywords (generic blog-post terms)
+		(activity) => activity.content && ['analysis', 'insights', 'findings'],
+		// Geographic keywords commonly relevant
+		'Africa',
+		'Francophone Africa',
+		// Methodological keywords common to digital humanities
+		'research methods',
+		'academic research'
+	],
+	limit: 15 // Limit to 15 most relevant keywords
+};
 
 /**
  * Creates an optimized SEO description for activity pages treated as blog posts
@@ -258,78 +472,7 @@ export function createPublicationSEOKeywords(publication: Publication): string {
  * - Focus on reader benefits rather than just event details
  */
 export function createActivitySEODescription(activity: Activity): string {
-	const { title, description, type, year, tags } = activity;
-
-	// Get blog-friendly type label from centralized mapping
-	const getBlogTypeLabel = (type?: string): string =>
-		ACTIVITY_TYPE_SEO_LABELS[type || ''] || 'Academic update';
-
-	// Start with the activity description (primary content)
-	let seoDescription = description || '';
-
-	// If description is too short or missing, build one from available data
-	if (!seoDescription || seoDescription.length < 50) {
-		const typeLabel = getBlogTypeLabel(type);
-		const yearText = year ? ` (${year})` : '';
-
-		// Create engaging blog-style description
-		if (type === 'publication') {
-			seoDescription = `Latest publication update${yearText}: ${title}`;
-		} else if (type === 'grant') {
-			seoDescription = `Research funding news${yearText}: ${title}`;
-		} else if (['conference', 'workshop', 'panel'].includes(type || '')) {
-			seoDescription = `${typeLabel} from ${title}${yearText}`;
-		} else {
-			seoDescription = `${typeLabel}${yearText}: ${title}`;
-		}
-	}
-
-	// Add contextual keywords if we have space and they add value
-	const remainingSpace = 160 - seoDescription.length;
-	if (remainingSpace > 20 && tags && tags.length > 0) {
-		// Add relevant tags that provide additional context
-		const contextTags = tags
-			.filter((tag) =>
-				['Digital Humanities', 'Islam', 'West Africa', 'Research', 'Academic'].some((keyword) =>
-					tag.toLowerCase().includes(keyword.toLowerCase())
-				)
-			)
-			.slice(0, 2); // Limit to 2 most relevant tags
-
-		if (contextTags.length > 0) {
-			const tagText = ` Topics: ${contextTags.join(', ')}.`;
-			if (tagText.length <= remainingSpace) {
-				seoDescription += tagText;
-			}
-		}
-	}
-
-	// Add engaging call-to-action if space allows
-	if (seoDescription.length < 140) {
-		// Choose CTA based on activity type
-		let cta = 'Learn more →';
-		if (type === 'publication') cta = 'Read details →';
-		else if (type === 'conference' || type === 'workshop') cta = 'Read insights →';
-		else if (type === 'grant') cta = 'Discover details →';
-
-		if (seoDescription.length + cta.length + 1 <= 160) {
-			seoDescription += ` ${cta}`;
-		}
-	}
-
-	// Ensure optimal length (150-160 characters)
-	if (seoDescription.length > 160) {
-		seoDescription = smartTruncate(seoDescription, 160);
-	}
-
-	// Final fallback if somehow we don't have content
-	if (!seoDescription.trim()) {
-		const typeLabel = getBlogTypeLabel(type);
-		const yearText = year ? ` ${year}` : '';
-		seoDescription = `${typeLabel}${yearText} by ${author.name}`;
-	}
-
-	return seoDescription;
+	return buildSeoDescription(activity, ACTIVITY_SEO_DESCRIPTION);
 }
 
 /**
@@ -337,65 +480,5 @@ export function createActivitySEODescription(activity: Activity): string {
  * Focuses on blog-relevant keywords, topics, and searchable terms
  */
 export function createActivitySEOKeywords(activity: Activity): string {
-	const keywords = new Set<string>();
-
-	// Add activity-specific keywords
-	if (activity.type) {
-		// Map activity types to blog-friendly keywords
-		const typeKeywords: Record<string, string[]> = {
-			conference: ['conference', 'academic conference', 'research presentation'],
-			workshop: ['workshop', 'academic workshop', 'professional development'],
-			seminar: ['seminar', 'academic seminar', 'research seminar'],
-			lecture: ['lecture', 'academic lecture', 'keynote'],
-			panel: ['panel discussion', 'academic panel', 'expert panel'],
-			grant: ['research grant', 'funding', 'academic funding'],
-			publication: ['publication', 'academic publication', 'research'],
-			event: ['academic event', 'scholarly event'],
-			visit: ['academic visit', 'research visit', 'collaboration'],
-			news: ['academic news', 'research news', 'updates']
-		};
-
-		const relatedKeywords = typeKeywords[activity.type] || ['academic activity'];
-		relatedKeywords.forEach((keyword) => keywords.add(keyword));
-	}
-
-	// Add tag-based keywords (these are often topical)
-	if (activity.tags) {
-		activity.tags.forEach((tag) => keywords.add(tag));
-	}
-
-	// Add blog-relevant keywords
-	keywords.add('blog post');
-	keywords.add('academic blog');
-	keywords.add('research update');
-
-	// Add author/personal branding keywords
-	keywords.add(author.name);
-	keywords.add('digital humanities');
-	keywords.add('Islam studies');
-	keywords.add('West Africa research');
-	keywords.add('academic researcher');
-
-	// Add year if available (helps with temporal searches)
-	if (activity.year) {
-		keywords.add(activity.year.toString());
-	}
-
-	// Add content-type specific keywords
-	if (activity.content) {
-		// Add generic content keywords for blog posts
-		keywords.add('analysis');
-		keywords.add('insights');
-		keywords.add('findings');
-	}
-
-	// Add geographic keywords if commonly relevant
-	keywords.add('Africa');
-	keywords.add('Francophone Africa');
-
-	// Add methodological keywords common to digital humanities
-	keywords.add('research methods');
-	keywords.add('academic research');
-
-	return Array.from(keywords).slice(0, 15).join(', '); // Limit to 15 most relevant keywords
+	return buildSeoKeywords(activity, ACTIVITY_SEO_KEYWORDS);
 }
