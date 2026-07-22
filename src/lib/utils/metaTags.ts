@@ -69,6 +69,69 @@ export function deduplicateAndFilterTags(tags: MetaTag[]): MetaTag[] {
 }
 
 /**
+ * One entry in a declarative head-tag list consumed by {@link buildHeadTags}.
+ *
+ * - `content` may be `undefined`/empty — the entry is then skipped, mirroring
+ *   the old `createConditionalTag` behaviour.
+ * - `when` (default `true`) gates the entry on a type-specific condition
+ *   (e.g. "only journal-shaped publications carry `citation_volume`").
+ */
+export interface HeadTagEntry {
+	name: string;
+	content: string | undefined;
+	when?: boolean;
+}
+
+/**
+ * Builds the final ordered meta-tag list from a declarative entry list.
+ *
+ * Each MetaTags component declares its per-type field mapping as an ordered
+ * array of entries (nested arrays are flattened in place, so repeated tags
+ * like per-author `citation_author` or per-keyword `DC.subject` slot into the
+ * sequence); this helper applies the shared emission rules:
+ *
+ * 1. an entry is dropped when `when` is `false` or `content` is falsy
+ *    (identical end state to the previous push-then-filter flow, since
+ *    `deduplicateAndFilterTags` removed empty-content tags anyway);
+ * 2. duplicates (same name + content) are removed, keeping the first;
+ * 3. whitespace-only content is removed.
+ *
+ * Output order is exactly the entry order of the surviving tags.
+ */
+export function buildHeadTags(entries: ReadonlyArray<HeadTagEntry | HeadTagEntry[]>): MetaTag[] {
+	const tags: MetaTag[] = [];
+	for (const entry of entries.flat()) {
+		if (entry.when === false || !entry.content) continue;
+		tags.push({ name: entry.name, content: entry.content });
+	}
+	return deduplicateAndFilterTags(tags);
+}
+
+/**
+ * One `[key, value]` field for {@link buildCoins}. A falsy value skips the
+ * field — the exact semantics of the `if (x) params.set(...)` guards the
+ * per-category COinS builders used before.
+ */
+export type CoinsField = readonly [key: string, value: string | undefined];
+
+/**
+ * Serializes an ordered COinS field list into an OpenURL context string,
+ * seeded with the scaffold params from {@link createCoinsParams}.
+ *
+ * Uses `URLSearchParams.set` (not `append`), preserving the historical
+ * behaviour that a repeated key (e.g. `rft.au` pushed once per author by the
+ * publications component) keeps its first insertion position but the last
+ * value wins.
+ */
+export function buildCoins(fields: ReadonlyArray<CoinsField>, rfrId?: string): string {
+	const params = createCoinsParams(rfrId);
+	for (const [key, value] of fields) {
+		if (value) params.set(key, value);
+	}
+	return params.toString();
+}
+
+/**
  * Seeds an OpenURL/COinS parameter set with the common scaffold params
  * (`url_ver`, `ctx_ver`, `rfr_id`) in their canonical order. Callers append
  * format-specific fields afterwards; `URLSearchParams.toString()` preserves

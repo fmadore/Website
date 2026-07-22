@@ -2,13 +2,7 @@
 	import type { Communication } from '$lib/types/communication';
 	import { base } from '$app/paths';
 	import { page } from '$app/state';
-	import {
-		type MetaTag,
-		createConditionalTag,
-		createCoinsParams,
-		getFullUrl,
-		deduplicateAndFilterTags
-	} from '$lib/utils/metaTags';
+	import { type CoinsField, buildCoins, buildHeadTags, getFullUrl } from '$lib/utils/metaTags';
 	import BaseMetaTags from '$lib/components/common/BaseMetaTags.svelte';
 	import { website } from '$lib/data/siteConfig';
 
@@ -32,138 +26,91 @@
 		return typeMap[communication.type || 'conference'] || 'Presentation';
 	};
 
-	// Helper to create COinS metadata for presentations
-	const createCoinsData = (): string => {
-		const params = createCoinsParams();
+	// Canonical page URL (see resolveUrl note above).
+	const currentUrl = $derived(`${website.url}${page.url.pathname}`);
 
-		// Presentation format
-		params.set('rft_val_fmt', 'info:ofi/fmt:kev:mtx:dc');
-		params.set('rft.type', 'presentation');
+	// Language: joined list or 'en' fallback.
+	const language = $derived(
+		communication.language
+			? Array.isArray(communication.language)
+				? communication.language.join(', ')
+				: communication.language
+			: 'en'
+	);
 
-		// Basic fields
-		if (communication.title) params.set('rft.title', communication.title);
-
+	// COinS field mapping — presentations use the DC format.
+	const coinsFields = (): CoinsField[] => [
+		['rft_val_fmt', 'info:ofi/fmt:kev:mtx:dc'],
+		['rft.type', 'presentation'],
+		['rft.title', communication.title],
 		// Presenter (always Frédérick Madore for communications)
-		params.set('rft.creator', 'Madore, Frédérick');
-		params.set('rft.aufirst', 'Frédérick');
-		params.set('rft.aulast', 'Madore');
-
+		['rft.creator', 'Madore, Frédérick'],
+		['rft.aufirst', 'Frédérick'],
+		['rft.aulast', 'Madore'],
 		// Meeting/Conference info
-		if (communication.conference) params.set('rft.source', communication.conference);
-		if (communication.location) params.set('rft.coverage', communication.location);
+		['rft.source', communication.conference],
+		['rft.coverage', communication.location],
+		['rft.date', communication.dateISO || communication.year?.toString()]
+	];
 
-		// Date
-		if (communication.dateISO) params.set('rft.date', communication.dateISO);
-		else if (communication.year) params.set('rft.date', communication.year.toString());
+	// Head tag field mapping — order here is emission order.
+	const metaTags = $derived.by(() => {
+		const place = `${communication.location}, ${communication.country}`;
 
-		return params.toString();
-	};
-
-	// Main meta tags computation for presentations
-	const metaTags = $derived.by((): MetaTag[] => {
-		const tags: MetaTag[] = [];
-
-		// Basic Highwire Press tags for presentations
-		tags.push({ name: 'citation_title', content: communication.title });
-
-		// Presentation specific tags
-		tags.push({ name: 'citation_genre', content: 'presentation' });
-
-		// Author/Presenter - always Frédérick Madore for communications
-		tags.push(
+		return buildHeadTags([
+			// Basic Highwire Press tags for presentations
+			{ name: 'citation_title', content: communication.title },
+			{ name: 'citation_genre', content: 'presentation' },
+			// Author/Presenter - always Frédérick Madore for communications
 			{ name: 'citation_author', content: 'Madore, Frédérick' },
 			{ name: 'citation_presenter', content: 'Madore, Frédérick' },
-			{ name: 'DC.creator', content: 'Madore, Frédérick' }
-		);
-
-		// Conference/Meeting info for presentations
-		tags.push(
+			{ name: 'DC.creator', content: 'Madore, Frédérick' },
+			// Conference/Meeting info for presentations
 			{ name: 'citation_conference_title', content: communication.conference },
 			{ name: 'citation_meeting_name', content: communication.conference },
-			...createConditionalTag(
-				'citation_place',
-				`${communication.location}, ${communication.country}`
-			),
-			...createConditionalTag('citation_presentation_type', getPresentationType()),
-			...createConditionalTag('citation_date', communication.dateISO),
-			...createConditionalTag('citation_publication_date', communication.dateISO),
-			...createConditionalTag('citation_year', communication.year?.toString()),
-			...createConditionalTag(
-				'citation_language',
-				communication.language
-					? Array.isArray(communication.language)
-						? communication.language.join(', ')
-						: communication.language
-					: 'en'
-			),
-			...createConditionalTag('citation_keywords', communication.tags?.join('; '))
-		);
-
-		// Panel-specific information
-		if (communication.panelTitle) {
-			tags.push(...createConditionalTag('citation_panel_title', communication.panelTitle));
-		}
-
-		// Abstract/Description
-		tags.push(...createConditionalTag('citation_abstract', communication.abstract));
-
-		// URLs
-		const currentUrl = `${website.url}${page.url.pathname}`;
-		tags.push(
+			{ name: 'citation_place', content: place },
+			{ name: 'citation_presentation_type', content: getPresentationType() },
+			{ name: 'citation_date', content: communication.dateISO },
+			{ name: 'citation_publication_date', content: communication.dateISO },
+			{ name: 'citation_year', content: communication.year?.toString() },
+			{ name: 'citation_language', content: language },
+			{ name: 'citation_keywords', content: communication.tags?.join('; ') },
+			// Panel-specific information
+			{ name: 'citation_panel_title', content: communication.panelTitle },
+			// Abstract/Description
+			{ name: 'citation_abstract', content: communication.abstract },
+			// URLs
 			{ name: 'citation_public_url', content: currentUrl },
 			{ name: 'citation_abstract_html_url', content: currentUrl },
 			{ name: 'citation_fulltext_html_url', content: currentUrl },
-			...createConditionalTag('citation_pdf_url', resolveUrl(communication.url))
-		);
-
-		// Additional presentation-specific URLs
-		if (communication.url) {
-			tags.push(...createConditionalTag('citation_presentation_url', communication.url));
-		}
-
-		// Dublin Core tags for presentations
-		tags.push(
+			{ name: 'citation_pdf_url', content: resolveUrl(communication.url) },
+			// Additional presentation-specific URL — raw (unresolved) by
+			// long-standing behaviour, unlike citation_pdf_url above.
+			{ name: 'citation_presentation_url', content: communication.url },
+			// Dublin Core tags for presentations
 			{ name: 'DC.title', content: communication.title },
 			{ name: 'DC.type', content: 'Event' },
 			{ name: 'DC.publisher', content: communication.conference },
-			...createConditionalTag('DC.description', communication.abstract),
-			...createConditionalTag('DC.date', communication.dateISO),
-			...createConditionalTag('DC.coverage', `${communication.location}, ${communication.country}`),
-			...createConditionalTag(
-				'DC.language',
-				communication.language
-					? Array.isArray(communication.language)
-						? communication.language.join(', ')
-						: communication.language
-					: 'en'
-			)
-		);
-
-		// Subject tags from communication tags
-		if (communication.tags) {
-			tags.push(...communication.tags.map((tag) => ({ name: 'DC.subject', content: tag })));
-		}
-
-		// Open Graph tags for social media sharing
-		tags.push(
+			{ name: 'DC.description', content: communication.abstract },
+			{ name: 'DC.date', content: communication.dateISO },
+			{ name: 'DC.coverage', content: place },
+			{ name: 'DC.language', content: language },
+			// Subject tags from communication tags
+			(communication.tags ?? []).map((tag) => ({ name: 'DC.subject', content: tag })),
+			// Open Graph tags for social media sharing
 			{ name: 'og:title', content: communication.title },
 			{ name: 'og:type', content: 'article' },
 			{ name: 'og:url', content: currentUrl },
-			...createConditionalTag('og:description', communication.abstract),
-			...createConditionalTag('og:image', resolveUrl(communication.image)),
-			{ name: 'og:site_name', content: 'Frédérick Madore' }
-		);
-
-		// Twitter Card tags
-		tags.push(
+			{ name: 'og:description', content: communication.abstract },
+			{ name: 'og:image', content: resolveUrl(communication.image) },
+			{ name: 'og:site_name', content: 'Frédérick Madore' },
+			// Twitter Card tags
 			{ name: 'twitter:card', content: 'summary_large_image' },
 			{ name: 'twitter:title', content: communication.title },
-			...createConditionalTag('twitter:description', communication.abstract),
-			...createConditionalTag('twitter:image', resolveUrl(communication.image))
-		);
-
-		return deduplicateAndFilterTags(tags);
+			{ name: 'twitter:description', content: communication.abstract },
+			{ name: 'twitter:image', content: resolveUrl(communication.image) }
+		]);
 	});
 </script>
 
-<BaseMetaTags tags={metaTags} coins={createCoinsData()} />
+<BaseMetaTags tags={metaTags} coins={buildCoins(coinsFields())} />

@@ -2,13 +2,7 @@
 	import type { Activity } from '$lib/types/activity';
 	import { base } from '$app/paths';
 	import { page } from '$app/state';
-	import {
-		type MetaTag,
-		createConditionalTag,
-		createCoinsParams,
-		getFullUrl,
-		deduplicateAndFilterTags
-	} from '$lib/utils/metaTags';
+	import { type CoinsField, buildCoins, buildHeadTags, getFullUrl } from '$lib/utils/metaTags';
 	import BaseMetaTags from '$lib/components/common/BaseMetaTags.svelte';
 	import { website } from '$lib/data/siteConfig';
 
@@ -19,129 +13,83 @@
 	// never reach the baked head tags Zotero and crawlers consume.
 	const resolveUrl = (path: string | undefined) => getFullUrl(website.url, base, path);
 
-	// Helper to create COinS metadata for blog posts
-	const createCoinsData = (): string => {
-		const params = createCoinsParams();
+	// Canonical page URL (see resolveUrl note above).
+	const currentUrl = $derived(`${website.url}${page.url.pathname}`);
 
-		// Blog post format - use journal format with blog as journal
-		params.set('rft_val_fmt', 'info:ofi/fmt:kev:mtx:journal');
-		params.set('rft.genre', 'article');
-
-		// Use website name as "journal" title for blog
-		params.set('rft.jtitle', 'Frédérick Madore');
-
-		// Basic fields
-		if (activity.title) params.set('rft.title', activity.title);
-
+	// COinS field mapping — blog posts use the journal format with the site
+	// name as "journal" title.
+	const coinsFields = (): CoinsField[] => [
+		['rft_val_fmt', 'info:ofi/fmt:kev:mtx:journal'],
+		['rft.genre', 'article'],
+		['rft.jtitle', 'Frédérick Madore'],
+		['rft.title', activity.title],
 		// Author (always Frédérick Madore for activities)
-		params.set('rft.au', 'Madore, Frédérick');
-		params.set('rft.aufirst', 'Frédérick');
-		params.set('rft.aulast', 'Madore');
+		['rft.au', 'Madore, Frédérick'],
+		['rft.aufirst', 'Frédérick'],
+		['rft.aulast', 'Madore'],
+		['rft.date', activity.dateISO || activity.year?.toString()]
+	];
 
-		// Date
-		if (activity.dateISO) params.set('rft.date', activity.dateISO);
-		else if (activity.year) params.set('rft.date', activity.year.toString());
-
-		return params.toString();
-	};
-
-	// Main meta tags computation for blog post activities
-	const metaTags = $derived.by((): MetaTag[] => {
-		const tags: MetaTag[] = [];
-
-		// Basic Highwire Press tags for blog posts
-		tags.push({ name: 'citation_title', content: activity.title });
-
-		// Blog post specific tags
-		tags.push({ name: 'citation_genre', content: 'blogPost' });
-
-		// Author - always Frédérick Madore for activities
-		tags.push(
+	// Head tag field mapping — order here is emission order.
+	const metaTags = $derived.by(() =>
+		buildHeadTags([
+			// Basic Highwire Press tags for blog posts
+			{ name: 'citation_title', content: activity.title },
+			{ name: 'citation_genre', content: 'blogPost' },
+			// Author - always Frédérick Madore for activities
 			{ name: 'citation_author', content: 'Madore, Frédérick' },
-			{ name: 'DC.creator', content: 'Madore, Frédérick' }
-		);
-
-		// Publication info for blog posts - try multiple approaches
-		tags.push(
+			{ name: 'DC.creator', content: 'Madore, Frédérick' },
+			// Publication info for blog posts - try multiple approaches
 			{ name: 'citation_journal_title', content: 'Frédérick Madore' },
 			{ name: 'citation_publication_title', content: 'Frédérick Madore' },
 			{ name: 'citation_publisher', content: 'Frédérick Madore' },
-			...createConditionalTag('citation_date', activity.dateISO),
-			...createConditionalTag('citation_publication_date', activity.dateISO),
-			...createConditionalTag('citation_online_date', activity.dateISO),
-			...createConditionalTag('citation_year', activity.year?.toString()),
+			{ name: 'citation_date', content: activity.dateISO },
+			{ name: 'citation_publication_date', content: activity.dateISO },
+			{ name: 'citation_online_date', content: activity.dateISO },
+			{ name: 'citation_year', content: activity.year?.toString() },
 			{ name: 'citation_language', content: 'en' },
-			...createConditionalTag('citation_keywords', activity.tags?.join('; '))
-		);
-
-		// Abstract/Description
-		tags.push(...createConditionalTag('citation_abstract', activity.description));
-
-		// URLs
-		const currentUrl = `${website.url}${page.url.pathname}`;
-		tags.push(
+			{ name: 'citation_keywords', content: activity.tags?.join('; ') },
+			// Abstract/Description
+			{ name: 'citation_abstract', content: activity.description },
+			// URLs
 			{ name: 'citation_public_url', content: currentUrl },
 			{ name: 'citation_abstract_html_url', content: currentUrl },
 			{ name: 'citation_fulltext_html_url', content: currentUrl },
-			...createConditionalTag('citation_pdf_url', resolveUrl(activity.pdfPath))
-		);
-
-		// Additional blog-specific URLs
-		if (activity.url) {
-			tags.push(...createConditionalTag('citation_reference_url', activity.url));
-		}
-
-		// Dublin Core tags for blog posts
-		tags.push(
+			{ name: 'citation_pdf_url', content: resolveUrl(activity.pdfPath) },
+			// Additional blog-specific URL — raw (unresolved) by long-standing
+			// behaviour, unlike citation_pdf_url above.
+			{ name: 'citation_reference_url', content: activity.url },
+			// Dublin Core tags for blog posts
 			{ name: 'DC.title', content: activity.title },
 			{ name: 'DC.type', content: 'Text' },
 			{ name: 'DC.publisher', content: 'Frédérick Madore' },
-			...createConditionalTag('DC.description', activity.description),
-			...createConditionalTag('DC.date', activity.dateISO),
+			{ name: 'DC.description', content: activity.description },
+			{ name: 'DC.date', content: activity.dateISO },
 			{ name: 'DC.identifier', content: currentUrl },
-			{ name: 'DC.language', content: 'en' }
-		);
-
-		// Subject tags from activity tags
-		if (activity.tags) {
-			tags.push(...activity.tags.map((tag) => ({ name: 'DC.subject', content: tag })));
-		}
-
-		// Activity type as subject
-		if (activity.type) {
-			tags.push({ name: 'DC.subject', content: activity.type });
-		}
-
-		// Blog post specific meta tags for better detection
-		tags.push(
+			{ name: 'DC.language', content: 'en' },
+			// Subject tags from activity tags, plus the activity type
+			(activity.tags ?? []).map((tag) => ({ name: 'DC.subject', content: tag })),
+			{ name: 'DC.subject', content: activity.type },
+			// Blog post specific meta tags for better detection
 			{ name: 'article:author', content: 'Frédérick Madore' },
 			{ name: 'article:section', content: 'Academic Activities' },
-			...createConditionalTag('article:published_time', activity.dateISO),
-			...createConditionalTag('article:modified_time', activity.dateISO)
-		);
-
-		// Website/blog identification
-		tags.push(
+			{ name: 'article:published_time', content: activity.dateISO },
+			{ name: 'article:modified_time', content: activity.dateISO },
+			// Website/blog identification
 			{ name: 'og:site_name', content: 'Frédérick Madore' },
 			{ name: 'og:type', content: 'article' },
 			{ name: 'og:title', content: activity.title },
-			...createConditionalTag('og:description', activity.description),
-			{ name: 'og:url', content: currentUrl }
-		);
-
-		// Add image if available
-		if (activity.heroImage?.src) {
-			const imageUrl = resolveUrl(activity.heroImage.src);
-			if (imageUrl) {
-				tags.push(
-					{ name: 'og:image', content: imageUrl },
-					...createConditionalTag('og:image:alt', activity.heroImage.alt)
-				);
+			{ name: 'og:description', content: activity.description },
+			{ name: 'og:url', content: currentUrl },
+			// Hero image if available
+			{ name: 'og:image', content: resolveUrl(activity.heroImage?.src) },
+			{
+				name: 'og:image:alt',
+				content: activity.heroImage?.alt,
+				when: Boolean(activity.heroImage?.src)
 			}
-		}
-
-		return deduplicateAndFilterTags(tags);
-	});
+		])
+	);
 </script>
 
-<BaseMetaTags tags={metaTags} coins={createCoinsData()} />
+<BaseMetaTags tags={metaTags} coins={buildCoins(coinsFields())} />
