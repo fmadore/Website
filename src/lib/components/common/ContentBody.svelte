@@ -19,8 +19,12 @@
 		children: Snippet;
 	} = $props();
 
-	// Combine classes based on variant and additional classes
-	const baseClasses = 'content-body scroll-reveal';
+	// Combine classes based on variant and additional classes.
+	// No scroll-reveal here: prose columns are often taller than the viewport,
+	// and a view()-timeline reveal keeps such a column semi-transparent until
+	// the reader has scrolled well into it (a WCAG contrast failure). Reveals
+	// belong on bounded elements (cards, figures), not the reading column.
+	const baseClasses = 'content-body';
 	const variantClasses = {
 		default: 'content-body--default',
 		compact: 'content-body--compact',

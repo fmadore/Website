@@ -160,8 +160,12 @@
 		opacity: 0;
 		transform: translateY(var(--transform-distance-md));
 		animation: scrollReveal linear forwards;
+		/* The length cap bounds the reveal for elements taller than the
+		 * viewport: with a bare percentage, a multi-viewport element (e.g. a
+		 * long prose column) stays semi-transparent until most of it has been
+		 * scrolled past, which fails WCAG contrast and hides content. */
 		animation-timeline: view();
-		animation-range: entry 0% entry 30%;
+		animation-range: entry 0% entry min(30%, 200px);
 	}
 }
 
@@ -184,7 +188,7 @@
 		transform: scale(0.96);
 		animation: scrollRevealScale linear forwards;
 		animation-timeline: view();
-		animation-range: entry 0% entry 25%;
+		animation-range: entry 0% entry min(25%, 160px);
 	}
 }
 
@@ -212,7 +216,7 @@
 		transform: translateY(var(--transform-distance-md));
 		animation: gridItemReveal var(--duration-moderate) var(--ease-out) forwards;
 		animation-timeline: view();
-		animation-range: entry 0% entry 35%;
+		animation-range: entry 0% entry min(35%, 200px);
 	}
 
 	/* Stagger delays using :nth-child */

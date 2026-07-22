@@ -136,7 +136,11 @@
 		<!-- Self-hosted fonts (formerly Google Fonts): removes two third-party
 		     origins from every page's critical path. Files in static/fonts/web/,
 		     one woff2 per family/style/script-subset; unicode-range ensures a
-		     subset only downloads when its codepoints appear on the page. -->
+		     subset only downloads when its codepoints appear on the page.
+		     The variable fonts are instanced (fontTools varLib.instancer) to the
+		     axis ranges the CSS actually uses — Archivo wght 400:900 wdth 100:125,
+		     Newsreader/Spline Sans Mono wght 400:700 — cutting ~30% of font bytes;
+		     keep the @font-face ranges below in sync if the files are regenerated. -->
 		<link
 			rel="preload"
 			as="font"
@@ -163,8 +167,8 @@
 			@font-face {
 				font-family: 'Archivo';
 				font-style: italic;
-				font-weight: 100 900;
-				font-stretch: 62% 125%;
+				font-weight: 400 900;
+				font-stretch: 100% 125%;
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/archivo-italic-vietnamese.woff2) format('woff2');
 				unicode-range:
@@ -175,8 +179,8 @@
 			@font-face {
 				font-family: 'Archivo';
 				font-style: italic;
-				font-weight: 100 900;
-				font-stretch: 62% 125%;
+				font-weight: 400 900;
+				font-stretch: 100% 125%;
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/archivo-italic-latin-ext.woff2) format('woff2');
 				unicode-range:
@@ -188,8 +192,8 @@
 			@font-face {
 				font-family: 'Archivo';
 				font-style: italic;
-				font-weight: 100 900;
-				font-stretch: 62% 125%;
+				font-weight: 400 900;
+				font-stretch: 100% 125%;
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/archivo-italic-latin.woff2) format('woff2');
 				unicode-range:
@@ -200,8 +204,8 @@
 			@font-face {
 				font-family: 'Archivo';
 				font-style: normal;
-				font-weight: 100 900;
-				font-stretch: 62% 125%;
+				font-weight: 400 900;
+				font-stretch: 100% 125%;
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/archivo-normal-vietnamese.woff2) format('woff2');
 				unicode-range:
@@ -212,8 +216,8 @@
 			@font-face {
 				font-family: 'Archivo';
 				font-style: normal;
-				font-weight: 100 900;
-				font-stretch: 62% 125%;
+				font-weight: 400 900;
+				font-stretch: 100% 125%;
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/archivo-normal-latin-ext.woff2) format('woff2');
 				unicode-range:
@@ -225,8 +229,8 @@
 			@font-face {
 				font-family: 'Archivo';
 				font-style: normal;
-				font-weight: 100 900;
-				font-stretch: 62% 125%;
+				font-weight: 400 900;
+				font-stretch: 100% 125%;
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/archivo-normal-latin.woff2) format('woff2');
 				unicode-range:
@@ -237,7 +241,7 @@
 			@font-face {
 				font-family: 'Newsreader';
 				font-style: italic;
-				font-weight: 200 800;
+				font-weight: 400 700;
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/newsreader-italic-vietnamese.woff2) format('woff2');
 				unicode-range:
@@ -248,7 +252,7 @@
 			@font-face {
 				font-family: 'Newsreader';
 				font-style: italic;
-				font-weight: 200 800;
+				font-weight: 400 700;
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/newsreader-italic-latin-ext.woff2) format('woff2');
 				unicode-range:
@@ -260,7 +264,7 @@
 			@font-face {
 				font-family: 'Newsreader';
 				font-style: italic;
-				font-weight: 200 800;
+				font-weight: 400 700;
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/newsreader-italic-latin.woff2) format('woff2');
 				unicode-range:
@@ -271,7 +275,7 @@
 			@font-face {
 				font-family: 'Newsreader';
 				font-style: normal;
-				font-weight: 200 800;
+				font-weight: 400 700;
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/newsreader-normal-vietnamese.woff2) format('woff2');
 				unicode-range:
@@ -282,7 +286,7 @@
 			@font-face {
 				font-family: 'Newsreader';
 				font-style: normal;
-				font-weight: 200 800;
+				font-weight: 400 700;
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/newsreader-normal-latin-ext.woff2) format('woff2');
 				unicode-range:
@@ -294,7 +298,7 @@
 			@font-face {
 				font-family: 'Newsreader';
 				font-style: normal;
-				font-weight: 200 800;
+				font-weight: 400 700;
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/newsreader-normal-latin.woff2) format('woff2');
 				unicode-range:
@@ -305,7 +309,7 @@
 			@font-face {
 				font-family: 'Spline Sans Mono';
 				font-style: italic;
-				font-weight: 300 700;
+				font-weight: 400 700;
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/spline-sans-mono-italic-latin-ext.woff2)
 					format('woff2');
@@ -318,7 +322,7 @@
 			@font-face {
 				font-family: 'Spline Sans Mono';
 				font-style: italic;
-				font-weight: 300 700;
+				font-weight: 400 700;
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/spline-sans-mono-italic-latin.woff2) format('woff2');
 				unicode-range:
@@ -329,7 +333,7 @@
 			@font-face {
 				font-family: 'Spline Sans Mono';
 				font-style: normal;
-				font-weight: 300 700;
+				font-weight: 400 700;
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/spline-sans-mono-normal-latin-ext.woff2)
 					format('woff2');
@@ -342,7 +346,7 @@
 			@font-face {
 				font-family: 'Spline Sans Mono';
 				font-style: normal;
-				font-weight: 300 700;
+				font-weight: 400 700;
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/spline-sans-mono-normal-latin.woff2) format('woff2');
 				unicode-range:

@@ -186,11 +186,6 @@
 		aria-haspopup="dialog"
 		aria-expanded={showPreview}
 		aria-controls={showPreview ? `item-preview-${id}` : undefined}
-		aria-label={isTouchDevice
-			? showPreview
-				? 'Close preview and view full details'
-				: 'Click to preview this reference'
-			: 'Hover to preview, click to view full details'}
 		onpointerenter={handlePointerEnter}
 		onpointerleave={handlePointerLeave}
 		onfocus={handleFocus}
