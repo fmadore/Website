@@ -111,14 +111,11 @@ sw.addEventListener('fetch', (event) => {
 		return;
 	}
 
-	// Skip cross-origin requests (except for fonts/CDN assets you want to cache)
+	// Skip cross-origin requests (except CDN assets we want to cache).
+	// Fonts are self-hosted now, so the only cacheable third-party origin left
+	// is the iconify API fallback (bundled icons normally make it unnecessary).
 	if (url.origin !== sw.location.origin) {
-		// Allow caching of Google Fonts and other CDN assets
-		if (
-			url.hostname === 'fonts.googleapis.com' ||
-			url.hostname === 'fonts.gstatic.com' ||
-			url.hostname === 'api.iconify.design'
-		) {
+		if (url.hostname === 'api.iconify.design') {
 			event.respondWith(handleCDNRequest(request));
 		}
 		return;
