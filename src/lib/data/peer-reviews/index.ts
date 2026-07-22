@@ -7,7 +7,10 @@ type ModuleType = Record<string, unknown>;
 
 const templateIds: string[] = ['peer-review-template-id'];
 
-const peerReviewModules = import.meta.glob<ModuleType>(['./*.ts'], { eager: true });
+const peerReviewModules = import.meta.glob<ModuleType>(
+	['./*.ts', '!./index.ts', '!./peer-review-template.ts'],
+	{ eager: true }
+);
 
 const allPeerReviews: PeerReview[] = loadData<PeerReview>(
 	peerReviewModules,

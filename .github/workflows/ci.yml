@@ -52,6 +52,9 @@ jobs:
       - name: Unit tests (Vitest)
         run: npm run test
 
+      - name: Reference index freshness
+        run: node scripts/generate-reference-index.mjs --check
+
       - name: Build
         run: npm run build
 

@@ -1,6 +1,12 @@
 /**
  * Auto-loading index of publication text analyses.
  * Uses import.meta.glob to automatically import all analysis files.
+ *
+ * NOTE: this category deliberately does NOT use loadData() (the convention
+ * for the other 16 data categories): analyses are a keyed record
+ * (publication id → analysis) built from a named `analysis` export, not an
+ * array of id-carrying items with a default export, so the shared loader's
+ * shape doesn't apply.
  */
 
 import type { PublicationTextAnalysis } from '$lib/types';

@@ -9,17 +9,60 @@
  * the few fields the link + preview actually render, and emits a static literal
  * module — so reference-using pages no longer bundle the heavy datasets.
  *
- * How: every data item file uses only `import type` (verified), so Node's
- * native TS type-stripping (Node >= 24) can `import()` each one directly — no
- * Vite, no bundler. Run automatically via the npm `prebuild` hook, or manually
- * with `npm run gen:refs`. Output is deterministic (sorted keys) to avoid churn.
+ * How: this script relies on Node's built-in TypeScript type stripping
+ * (enabled by default since Node v22.18 / v23.6, so in every supported Node
+ * line today). That works here only because every data item file is
+ * erasable-syntax-only and uses `import type` exclusively (verified — no
+ * runtime imports, so `$lib`/`$app` aliases never need resolving), letting
+ * plain `import()` load each one directly — no Vite, no bundler. Run
+ * automatically via the npm `prebuild` hook, or manually with
+ * `npm run gen:refs`. Output is deterministic (sorted keys) to avoid churn.
+ *
+ * Modes:
+ *   node scripts/generate-reference-index.mjs          # (re)write the index
+ *   node scripts/generate-reference-index.mjs --check  # CI freshness check:
+ *       regenerate in memory and exit 1 if the committed file is stale.
  */
-import { globSync } from 'node:fs';
-import { writeFileSync } from 'node:fs';
+import { globSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve, basename } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const OUT_FILE = 'src/lib/data/referenceIndex.generated.ts';
+const CHECK_MODE = process.argv.includes('--check');
+
+/**
+ * Template ids excluded from the index.
+ *
+ * !! KEEP IN SYNC — this list DUPLICATES the canonical runtime `templateIds`
+ * arrays in:
+ *   - src/lib/data/publications/index.ts
+ *   - src/lib/data/communications/index.ts
+ * Those index files can't be imported here (they use Vite's import.meta.glob),
+ * so the ids are mirrored as a constant. If you add a template file with a new
+ * id, add it to BOTH places. The filename/id `includes('template')` heuristics
+ * below remain as a second line of defence, mirroring the runtime's own
+ * two-layer filtering (glob negation + explicit id list).
+ */
+const TEMPLATE_IDS = new Set([
+	// src/lib/data/publications/index.ts → templateIds
+	'book-template-id',
+	'edited-volume-template-id',
+	'article-template-id',
+	'bulletin-article-template-id',
+	'chapter-template-id',
+	'special-issue-template-id',
+	'report-template-id',
+	'encyclopedia-template-id',
+	'blogpost-template-id',
+	'phd-dissertation-template-id',
+	'conference-proceedings-template-id',
+	// src/lib/data/communications/index.ts → templateIds
+	'paper-template-id',
+	'panel-template-id',
+	'talk-template-id',
+	'event-template-id',
+	'podcast-template-id'
+]);
 
 /** Files that are not data items (aggregators, filter stores, templates). */
 function isDataItem(file) {
@@ -65,11 +108,26 @@ function slim(obj, itemType) {
 async function collect(globPattern, itemType) {
 	const files = globSync(globPattern).filter(isDataItem);
 	const entries = [];
+	const seen = new Map(); // id → first file it came from
+	const duplicates = [];
 	for (const file of files) {
 		const mod = await import(pathToFileURL(resolve(file)).href);
 		const record = pickRecord(mod);
-		if (!record || record.id.includes('template')) continue;
+		if (!record || TEMPLATE_IDS.has(record.id) || record.id.includes('template')) continue;
+		if (seen.has(record.id)) {
+			duplicates.push(`"${record.id}" (${seen.get(record.id)} and ${file})`);
+			continue;
+		}
+		seen.set(record.id, file);
 		entries.push(slim(record, itemType));
+	}
+	if (duplicates.length) {
+		console.error(
+			`[gen:refs] ERROR: duplicate id(s) within the ${itemType} dataset:\n` +
+				duplicates.map((d) => `  - ${d}`).join('\n') +
+				'\nEach data file must export a unique id. Aborting.'
+		);
+		process.exit(1);
 	}
 	return entries;
 }
@@ -97,7 +155,14 @@ for (const id of Object.keys(merged).sort((a, b) => a.localeCompare(b))) {
 
 if (conflicts.length) {
 	console.warn(
-		`[gen:refs] ${conflicts.length} id(s) in both datasets; kept the publication: ${conflicts.join(', ')}`
+		'\n' +
+			'='.repeat(72) +
+			`\n[gen:refs] WARNING: ${conflicts.length} id(s) exist in BOTH datasets; kept the\n` +
+			`[gen:refs] publication (mirrors ItemReference lookup order):\n` +
+			conflicts.map((id) => `[gen:refs]   - ${id}`).join('\n') +
+			'\n' +
+			'='.repeat(72) +
+			'\n'
 	);
 }
 
@@ -108,5 +173,26 @@ import type { ReferenceIndexEntry } from '$lib/types/referenceIndex';
 
 export const referenceIndex: Record<string, ReferenceIndexEntry> = `;
 
-writeFileSync(OUT_FILE, banner + JSON.stringify(index, null, '\t') + ';\n', 'utf8');
-console.log(`[gen:refs] Wrote ${Object.keys(index).length} entries → ${OUT_FILE}`);
+const output = banner + JSON.stringify(index, null, '\t') + ';\n';
+
+if (CHECK_MODE) {
+	let committed = null;
+	try {
+		committed = readFileSync(OUT_FILE, 'utf8');
+	} catch {
+		// Missing file counts as stale.
+	}
+	if (committed !== output) {
+		console.error(
+			`[gen:refs] ERROR: ${OUT_FILE} is stale (or missing). ` +
+				'Run `npm run gen:refs` and commit the result.'
+		);
+		process.exit(1);
+	}
+	console.log(
+		`[gen:refs] --check OK: ${OUT_FILE} is up to date (${Object.keys(index).length} entries).`
+	);
+} else {
+	writeFileSync(OUT_FILE, output, 'utf8');
+	console.log(`[gen:refs] Wrote ${Object.keys(index).length} entries → ${OUT_FILE}`);
+}

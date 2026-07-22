@@ -12,7 +12,7 @@ const templateIds: string[] = [
 ];
 
 // Dynamically import all education files
-const educationModules = import.meta.glob<ModuleType>(['./*.ts'], { eager: true });
+const educationModules = import.meta.glob<ModuleType>(['./*.ts', '!./index.ts'], { eager: true });
 
 // Load and filter all education entries using the utility function
 const allEducation: Education[] = loadData<Education>(educationModules, templateIds, 'education');

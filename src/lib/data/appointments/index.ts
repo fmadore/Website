@@ -9,7 +9,9 @@ const templateIds: string[] = [
 	// 'appointment-template-id'
 ];
 
-const appointmentModules = import.meta.glob<ModuleType>(['./*.ts'], { eager: true });
+const appointmentModules = import.meta.glob<ModuleType>(['./*.ts', '!./index.ts'], {
+	eager: true
+});
 
 const allAppointments: Appointment[] = loadData<Appointment>(
 	appointmentModules,

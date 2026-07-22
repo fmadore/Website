@@ -8,7 +8,7 @@ const templateIds: string[] = [
 	// 'language-template-id'
 ];
 
-const languageModules = import.meta.glob<ModuleType>(['./*.ts'], { eager: true });
+const languageModules = import.meta.glob<ModuleType>(['./*.ts', '!./index.ts'], { eager: true });
 
 const allLanguages: Language[] = loadData<Language>(languageModules, templateIds, 'language');
 

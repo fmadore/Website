@@ -9,7 +9,7 @@ const templateIds: string[] = [
 	// 'editorial-membership-template-id'
 ];
 
-const editorialModules = import.meta.glob<ModuleType>(['./*.ts'], { eager: true });
+const editorialModules = import.meta.glob<ModuleType>(['./*.ts', '!./index.ts'], { eager: true });
 
 const allEditorialMemberships: EditorialMembership[] = loadData<EditorialMembership>(
 	editorialModules,

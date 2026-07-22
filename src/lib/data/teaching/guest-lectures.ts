@@ -1,11 +1,4 @@
-export interface GuestLecture {
-	year: string;
-	title: string;
-	course: string;
-	institution: string;
-	level: 'undergraduate' | 'graduate';
-	date: string;
-}
+import type { GuestLecture } from '$lib/types';
 
 const guestLectures: GuestLecture[] = [
 	{

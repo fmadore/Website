@@ -1,4 +1,4 @@
-import type { ProfessionalAffiliation } from './template';
+import type { ProfessionalAffiliation } from '$lib/types';
 import { loadData } from '$lib/utils/dataLoader';
 
 // Dynamically import all affiliation files (excluding template and index)
