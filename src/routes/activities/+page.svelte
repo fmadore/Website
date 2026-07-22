@@ -154,8 +154,7 @@
 			</p>
 			<h1 class="activities-hero-title">Activities</h1>
 			<p class="standfirst activities-hero-standfirst">
-				A running record of talks, workshops, conferences, grants and publications — the working log
-				of a research practice, most recent first.
+				Talks, workshops, conferences, grants and publications, most recent first.
 			</p>
 		</header>
 
