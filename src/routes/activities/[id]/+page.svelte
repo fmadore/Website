@@ -114,9 +114,7 @@
 </script>
 
 <svelte:head>
-	<!-- Preconnect to improve performance -->
-	<link rel="preconnect" href="https://fonts.googleapis.com" />
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+	<!-- Font preconnects are global in app.html; no per-route duplicates. -->
 
 	<!-- Conditional preload of hero image if it exists to improve LCP. -->
 	<!-- See heroImagePreloadHtml in <script> for why this uses {@html}. -->

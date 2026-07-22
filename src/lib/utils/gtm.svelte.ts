@@ -33,7 +33,9 @@ export function useGtm(gtmId: string, isDebugMode = false) {
 		const script = document.createElement('script');
 		script.async = true;
 		script.src = `https://www.googletagmanager.com/gtag/js?id=${gtmId}`;
-		script.onerror = () => console.warn('Failed to load Google Analytics');
+		script.onerror = () => {
+			if (import.meta.env.DEV) console.warn('Failed to load Google Analytics');
+		};
 		document.head.appendChild(script);
 
 		// Initialize dataLayer and gtag function
@@ -69,7 +71,9 @@ export function useGtm(gtmId: string, isDebugMode = false) {
 					page_path: window.location.pathname
 				});
 			} catch (error) {
-				console.warn('Failed to send initial page view to Google Analytics:', error);
+				if (import.meta.env.DEV) {
+					console.warn('Failed to send initial page view to Google Analytics:', error);
+				}
 			}
 		}
 
@@ -78,7 +82,7 @@ export function useGtm(gtmId: string, isDebugMode = false) {
 		window.removeEventListener('mousemove', state.listener);
 		window.removeEventListener('touchstart', state.listener);
 		if (state.timer) clearTimeout(state.timer);
-		console.log('GTM loaded.');
+		if (import.meta.env.DEV) console.log('GTM loaded.');
 	}
 
 	// Set up lazy loading via $effect
@@ -116,7 +120,9 @@ export function useGtm(gtmId: string, isDebugMode = false) {
 						page_path: window.location.pathname
 					});
 				} catch (error) {
-					console.warn('Failed to send page view to Google Analytics:', error);
+					if (import.meta.env.DEV) {
+						console.warn('Failed to send page view to Google Analytics:', error);
+					}
 				}
 			}
 		}

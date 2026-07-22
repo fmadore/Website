@@ -22,7 +22,11 @@ const RUNTIME_CACHE = `runtime-v${version}`;
 // on demand, so any visited page still works offline without the upfront bulk.
 const ASSETS_TO_CACHE = ['/', '/offline.html', '/manifest.webmanifest'];
 
-// Cache strategies
+// Cache strategies. Entries starting with '.' are file extensions and must
+// match the END of the pathname; everything else is a path-prefix substring.
+// (Substring-matching extensions is how '.json' used to match the '.js' rule,
+// which routed all JSON to cache-first and made stale-while-revalidate dead
+// code — data was served stale until the next deploy.)
 const CACHE_FIRST_ROUTES = [
 	'/images/',
 	'/icons/',
@@ -41,6 +45,9 @@ const CACHE_FIRST_ROUTES = [
 ];
 
 const STALE_WHILE_REVALIDATE_ROUTES = ['/api/', '.json'];
+
+// Bound the runtime cache so it can't grow without limit between deploys.
+const RUNTIME_CACHE_MAX_ENTRIES = 150;
 
 // Install event: Cache essential assets
 sw.addEventListener('install', (event) => {
@@ -157,7 +164,7 @@ async function handleStaleWhileRevalidate(request) {
 	const fetchPromise = fetch(request)
 		.then((response) => {
 			if (response.ok) {
-				cache.put(request, response.clone());
+				putRuntime(cache, request, response.clone());
 			}
 			return response;
 		})
@@ -181,7 +188,7 @@ async function handleNetworkFirst(request, event) {
 		// Cache successful responses
 		if (response.ok && response.status < 400) {
 			const cache = await caches.open(RUNTIME_CACHE);
-			cache.put(request, response.clone());
+			putRuntime(cache, request, response.clone());
 		}
 
 		return response;
@@ -222,7 +229,7 @@ async function handleCDNRequest(request) {
 	try {
 		const response = await fetch(request);
 		if (response.ok) {
-			cache.put(request, response.clone());
+			putRuntime(cache, request, response.clone());
 		}
 		return response;
 	} catch {
@@ -231,14 +238,27 @@ async function handleCDNRequest(request) {
 }
 
 // Helper functions to determine caching strategy
+function matchesRoute(pathname, route) {
+	return route.startsWith('.') ? pathname.endsWith(route) : pathname.includes(route);
+}
+
 function shouldUseCacheFirst(pathname) {
-	return CACHE_FIRST_ROUTES.some((route) => pathname.includes(route) || pathname.endsWith(route));
+	return CACHE_FIRST_ROUTES.some((route) => matchesRoute(pathname, route));
 }
 
 function shouldUseStaleWhileRevalidate(pathname) {
-	return STALE_WHILE_REVALIDATE_ROUTES.some(
-		(route) => pathname.includes(route) || pathname.endsWith(route)
-	);
+	return STALE_WHILE_REVALIDATE_ROUTES.some((route) => matchesRoute(pathname, route));
+}
+
+// Store a response in the runtime cache, evicting oldest entries past the cap.
+async function putRuntime(cache, request, response) {
+	await cache.put(request, response);
+	const keys = await cache.keys();
+	if (keys.length > RUNTIME_CACHE_MAX_ENTRIES) {
+		await Promise.all(
+			keys.slice(0, keys.length - RUNTIME_CACHE_MAX_ENTRIES).map((key) => cache.delete(key))
+		);
+	}
 }
 
 // Handle push notifications (if you plan to implement them)
