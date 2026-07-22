@@ -24,15 +24,15 @@ export default ts.config(
 		},
 		rules: {
 			'no-undef': 'off',
-			// Pre-existing: 76 occurrences across data files and utilities
-			'@typescript-eslint/no-explicit-any': 'warn',
+			// Ratcheted to error 2026-07 after the grandfathered occurrences were burned down to zero.
+			'@typescript-eslint/no-explicit-any': 'error',
 			'@typescript-eslint/no-unused-vars': [
-				'warn',
+				'error',
 				{ argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
 			],
-			'no-useless-escape': 'warn',
-			'no-useless-assignment': 'warn',
-			'prefer-rest-params': 'warn'
+			'no-useless-escape': 'error',
+			'no-useless-assignment': 'error',
+			'prefer-rest-params': 'error'
 		}
 	},
 	{
@@ -48,18 +48,16 @@ export default ts.config(
 		},
 		rules: {
 			'svelte/no-navigation-without-resolve': 'error',
-			// Pre-existing: {@html} is used intentionally for rich content rendering
-			'svelte/no-at-html-tags': 'warn',
-			// Pre-existing: ephemeral Map/Date/Set usage in non-reactive contexts
-			'svelte/prefer-svelte-reactivity': 'warn',
-			// Pre-existing: some each blocks don't need keys (static lists)
-			'svelte/require-each-key': 'warn',
-			'svelte/no-useless-mustaches': 'warn',
-			'svelte/no-useless-children-snippet': 'warn',
-			// Pre-existing: some props are part of interface but accessed via spread
-			'svelte/no-unused-props': 'warn',
-			// Pre-existing: $state + $effect pattern used for prop sync
-			'svelte/prefer-writable-derived': 'warn'
+			// Ratcheted to error 2026-07: every remaining {@html} site renders trusted static
+			// data or internal-formatter output and carries an eslint-disable with justification.
+			'svelte/no-at-html-tags': 'error',
+			// Ratcheted to error 2026-07 after grandfathered occurrences reached zero.
+			'svelte/prefer-svelte-reactivity': 'error',
+			'svelte/require-each-key': 'error',
+			'svelte/no-useless-mustaches': 'error',
+			'svelte/no-useless-children-snippet': 'error',
+			'svelte/no-unused-props': 'error',
+			'svelte/prefer-writable-derived': 'error'
 		}
 	}
 );

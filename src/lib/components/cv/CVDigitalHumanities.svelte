@@ -57,7 +57,7 @@
 						target="_blank"
 						rel="noopener noreferrer"
 						class="text-primary hover:underline"
-						><!-- eslint-disable svelte/no-at-html-tags -->{@html review.text}<!-- eslint-enable svelte/no-at-html-tags --></a
+						><!-- eslint-disable svelte/no-at-html-tags -- Safe: review.text is from trusted static project data files -->{@html review.text}<!-- eslint-enable svelte/no-at-html-tags --></a
 					><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < project.reviews.length - 1};
 					{/if}
 				{/each}

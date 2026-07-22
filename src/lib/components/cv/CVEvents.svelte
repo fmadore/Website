@@ -22,7 +22,7 @@
 					day: 'numeric',
 					month: 'long'
 				})}
-		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
 		{#if formattedAuthors}{@html formattedAuthors}.
 		{/if}
 		"{comm.title}"{#if comm.location}, {comm.location}{/if}, {dateDisplay}.
