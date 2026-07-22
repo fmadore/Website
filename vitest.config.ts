@@ -18,6 +18,10 @@ export default defineConfig({
 			'$app/environment': fileURLToPath(
 				new URL('./src/lib/test-support/app-environment-stub.ts', import.meta.url)
 			),
+			// Data files import `base` from `$app/paths` for internal links.
+			'$app/paths': fileURLToPath(
+				new URL('./src/lib/test-support/app-paths-stub.ts', import.meta.url)
+			),
 			// themeStore uses Svelte 5 runes ($state), which need the Svelte
 			// compiler; stub it with a rune-free getTheme() for plain-Node tests.
 			'$lib/stores/themeStore.svelte': fileURLToPath(
