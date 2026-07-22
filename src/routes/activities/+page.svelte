@@ -175,7 +175,7 @@
 				{#if filtered.length === 0}
 					<p class="log-empty">No activities match the current filters.</p>
 				{:else}
-					{#each pageGroups as group (group.year)}
+					{#each pageGroups as group, groupIndex (group.year)}
 						<section class="year-group" aria-label="Activities from {group.year}">
 							<div class="year-group-head">
 								<!-- Real h2 so the h1 → h2 (year) → h3 (item) outline holds for AT -->
@@ -186,8 +186,8 @@
 								</span>
 							</div>
 							<div class="year-group-entries grid-stagger">
-								{#each group.items as activity (activity.id)}
-									<ActivityItem {activity} />
+								{#each group.items as activity, itemIndex (activity.id)}
+									<ActivityItem {activity} eager={groupIndex === 0 && itemIndex === 0} />
 								{/each}
 							</div>
 						</section>

@@ -154,20 +154,25 @@
 	transform: translateY(0);
 }
 
-/* Apply animation only in browsers that support scroll-driven animations */
+/* Apply animation only in browsers that support scroll-driven animations.
+ * Transform-only by design: an opacity reveal leaves any element that
+ * straddles the viewport edge at load (or any element taller than the
+ * viewport) semi-transparent until scrolled past — hiding content and
+ * failing WCAG contrast. A translate never affects legibility.
+ * The length cap bounds the reveal for tall elements: with a bare
+ * percentage, a multi-viewport element would keep sliding until most of it
+ * had been scrolled past. */
 @supports (animation-timeline: view()) {
 	.scroll-reveal {
-		opacity: 0;
 		transform: translateY(var(--transform-distance-md));
 		animation: scrollReveal linear forwards;
 		animation-timeline: view();
-		animation-range: entry 0% entry 30%;
+		animation-range: entry 0% entry min(30%, 200px);
 	}
 }
 
 @keyframes scrollReveal {
 	to {
-		opacity: 1;
 		transform: translateY(0);
 	}
 }
@@ -180,17 +185,15 @@
 
 @supports (animation-timeline: view()) {
 	.scroll-reveal-scale {
-		opacity: 0;
 		transform: scale(0.96);
 		animation: scrollRevealScale linear forwards;
 		animation-timeline: view();
-		animation-range: entry 0% entry 25%;
+		animation-range: entry 0% entry min(25%, 160px);
 	}
 }
 
 @keyframes scrollRevealScale {
 	to {
-		opacity: 1;
 		transform: scale(1);
 	}
 }
@@ -208,11 +211,10 @@
 
 @supports (animation-timeline: view()) {
 	.grid-stagger > * {
-		opacity: 0;
 		transform: translateY(var(--transform-distance-md));
 		animation: gridItemReveal var(--duration-moderate) var(--ease-out) forwards;
 		animation-timeline: view();
-		animation-range: entry 0% entry 35%;
+		animation-range: entry 0% entry min(35%, 200px);
 	}
 
 	/* Stagger delays using :nth-child */
@@ -251,7 +253,6 @@
 
 @keyframes gridItemReveal {
 	to {
-		opacity: 1;
 		transform: translateY(0);
 	}
 }
@@ -283,7 +284,7 @@
 .scroll-reveal,
 .scroll-reveal-scale,
 .grid-stagger > * {
-	will-change: opacity, transform;
+	will-change: transform;
 }
 
 /* Mobile optimizations - reduced distances for better performance */

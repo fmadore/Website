@@ -71,9 +71,11 @@
 					class:animate={isVisible}
 					aria-labelledby="group-{groupIndex}-title"
 				>
-					<h3 class="footer-group-title" id="group-{groupIndex}-title">
+					<!-- h2, not h3: pages whose content has no h2 (e.g. /teaching) would
+					     otherwise skip a heading level going into the footer. -->
+					<h2 class="footer-group-title" id="group-{groupIndex}-title">
 						{group.title}
-					</h3>
+					</h2>
 					<!-- Use proper semantic list structure -->
 					<ul class="footer-links-grid">
 						{#each group.links as link, linkIndex (link.url)}

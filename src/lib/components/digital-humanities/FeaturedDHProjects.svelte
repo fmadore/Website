@@ -93,16 +93,26 @@
 			{#each processedProjects as project (project.id)}
 				<article class="featured-cell">
 					<!-- eslint-disable svelte/no-navigation-without-resolve -- pre-resolved URL -->
-					<a
-						class="featured-media"
-						href={project.finalLinkUrl}
-						target={project.linkTarget}
-						rel={project.linkTarget === '_blank' ? 'noopener noreferrer' : null}
-						tabindex="-1"
-						aria-hidden="true"
-					>
-						<img class="plate featured-plate" src={project.imageUrl} alt="" loading="lazy" />
-					</a>
+					{#if project.imageUrl}
+						<a
+							class="featured-media"
+							href={project.finalLinkUrl}
+							target={project.linkTarget}
+							rel={project.linkTarget === '_blank' ? 'noopener noreferrer' : null}
+							tabindex="-1"
+							aria-hidden="true"
+						>
+							<img
+								class="plate featured-plate"
+								src={project.imageUrl}
+								alt=""
+								width="1280"
+								height="720"
+								loading="lazy"
+								decoding="async"
+							/>
+						</a>
+					{/if}
 					<!-- eslint-enable svelte/no-navigation-without-resolve -->
 
 					<p class="eyebrow featured-eyebrow">
@@ -204,6 +214,7 @@
 	}
 
 	.featured-plate {
+		width: 100%;
 		height: 220px;
 		object-fit: cover;
 	}

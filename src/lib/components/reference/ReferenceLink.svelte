@@ -58,8 +58,10 @@
 			: '#'
 	);
 
+	// WCAG 2.5.3 (Label in Name): the accessible name must contain the visible
+	// link text, so the label leads with referenceText before the full title.
 	const ariaLabel = $derived(
-		item ? `View ${itemType || 'item'}: ${item.title}` : `Reference ${id}`
+		item ? `${referenceText} — view ${itemType || 'item'}: ${item.title}` : `Reference ${id}`
 	);
 </script>
 

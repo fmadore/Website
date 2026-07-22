@@ -5,7 +5,6 @@
 	import SEO from '$lib/SEO.svelte';
 	import { base, resolve } from '$app/paths';
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
-	import { browser } from '$app/environment';
 	import type { PageData } from './$types';
 
 	let { data } = $props<{ data: PageData }>();
@@ -13,25 +12,10 @@
 	// Use the Person schema from page load data as additional schema
 	const additionalSchemas = $derived(data.personSchema ? [data.personSchema] : []);
 
-	// Preload profile picture since it's above-the-fold on home page
-	$effect(() => {
-		if (browser) {
-			const profilePreloadId = 'profile-picture-preload';
-			if (document.getElementById(profilePreloadId)) return;
-
-			const preloadLink = document.createElement('link');
-			preloadLink.id = profilePreloadId;
-			preloadLink.rel = 'preload';
-			preloadLink.as = 'image';
-			preloadLink.href = `${base}/images/Profile-picture.webp`;
-			document.head.appendChild(preloadLink);
-
-			return () => {
-				const linkElement = document.getElementById(profilePreloadId);
-				if (linkElement) document.head.removeChild(linkElement);
-			};
-		}
-	});
+	// No JS preload for the portrait: the <img> below is in the prerendered
+	// HTML with loading="eager" + fetchpriority="high", so the browser already
+	// requests it from the preload scanner — a link injected after hydration
+	// arrives long after the image has loaded.
 </script>
 
 <SEO
@@ -58,7 +42,10 @@
 				fetchpriority="high"
 			/>
 		</figure>
-		<div class="home-main scroll-reveal">
+		<!-- No scroll-reveal here: this column is several viewports tall, so a
+		     view()-timeline reveal would hold the whole prose at near-zero
+		     opacity until the user scrolls most of it (and fails WCAG contrast). -->
+		<div class="home-main">
 			<ContentBody variant="default">
 				<p>
 					I am a Data Curator at the <a

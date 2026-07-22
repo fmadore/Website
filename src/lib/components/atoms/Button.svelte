@@ -61,8 +61,10 @@
 			.join(' ')
 	);
 
-	// Determine if we have content for aria-label fallback
-	const hasContent = $derived(!!label || !!ariaLabel);
+	// Determine if we have content for aria-label fallback. Children count as
+	// content: a generic fallback label would override the visible text as the
+	// accessible name (WCAG 2.5.3 Label in Name failure).
+	const hasContent = $derived(!!label || !!ariaLabel || !!children);
 
 	function handleClick(event: MouseEvent) {
 		if (!disabled && !loading && onclick) {

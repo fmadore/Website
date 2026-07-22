@@ -18,7 +18,7 @@
 	--sys-color-hairline: #dcd4be; /* 1px row separators */
 	--sys-color-border: #c9c0aa; /* default borders, image plates */
 	--sys-color-border-strong: #a39b86; /* stronger borders, outline buttons */
-	--sys-color-ink-faint: #93896f; /* faint ink — muted labels, captions */
+	--sys-color-ink-faint: #6b634e; /* faint ink — muted labels, captions (≥4.5:1 on all paper surfaces) */
 	--sys-color-ink-muted: #5c5442; /* muted ink — secondary text, standfirst */
 	--sys-color-ink: #191509; /* ink — body, emphasis, rules, solid fills */
 	--sys-color-ink-deep: #0e0b04; /* deepest ink — hover on solid ink */
@@ -37,7 +37,7 @@
 	--sys-color-film-hairline: #383126; /* 1px separators (dark) */
 	--sys-color-film-border: #453d2f; /* borders (dark) */
 	--sys-color-film-border-strong: #5a5140; /* stronger borders (dark) */
-	--sys-color-cream-faint: #7e7460; /* faint cream (dark) */
+	--sys-color-cream-faint: #948a73; /* faint cream (dark) (≥4.5:1 on all film surfaces) */
 	--sys-color-cream-muted: #b3a88d; /* muted cream (dark) */
 	--sys-color-cream-soft: #cbc0a6; /* soft cream (dark) */
 	--sys-color-cream: #efe7d6; /* cream — body, emphasis (dark) */

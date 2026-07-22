@@ -14,8 +14,11 @@ const config = {
 			precompress: true, // Enable gzip/brotli compression for better performance
 			strict: true
 		}),
-		// Inline small CSS files to reduce render-blocking requests
-		inlineStyleThreshold: 5120, // 5KB in bytes - balances inlining vs caching
+		// Inline stylesheets into the prerendered HTML to eliminate
+		// render-blocking CSS requests. 20KB covers the shared app stylesheet
+		// (~14KB) plus route CSS; the caching trade-off is minor because GitHub
+		// Pages caps Cache-Control at max-age=600 anyway.
+		inlineStyleThreshold: 20480,
 		paths: {
 			base: ''
 		},

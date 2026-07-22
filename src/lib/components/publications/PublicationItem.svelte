@@ -235,7 +235,10 @@
 		{featured}
 	/>
 {:else}
-	<article class="entity-list-item scroll-reveal-scale" class:editorial>
+	<!-- li, not article: this branch renders as a direct child of the
+	     <ul class="entity-list"> in FeaturedPublications, and a ul may only
+	     contain li children. -->
+	<li class="entity-list-item scroll-reveal-scale" class:editorial>
 		<div class="entity-card" class:entity-card--editorial={editorial} class:entity-card--row={row}>
 			<div class="entity-grid">
 				{#if publication.image}
@@ -275,12 +278,14 @@
 						{/if}
 					</div>
 
-					<h3 class="entity-title">
+					<!-- h2: these cards sit under the page h1 with only a non-heading
+					     eyebrow above them, so h3 would skip a level. -->
+					<h2 class="entity-title">
 						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
 						<a href={publicationHref} class="entity-title-link" data-sveltekit-preload-code="tap">
 							{publication.title}
 						</a>
-					</h3>
+					</h2>
 
 					<div class="entity-details">
 						<!-- Render prefix and the constructed author string -->
@@ -377,7 +382,7 @@
 				</div>
 			</div>
 		</div>
-	</article>
+	</li>
 {/if}
 
 <style>

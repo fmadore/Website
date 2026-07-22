@@ -134,7 +134,10 @@
 		{featured}
 	/>
 {:else}
-	<article class="entity-list-item scroll-reveal-scale" class:editorial>
+	<!-- li, not article: this branch renders as a direct child of the
+	     <ul class="entity-list"> in UpcomingCommunications, and a ul may only
+	     contain li children. -->
+	<li class="entity-list-item scroll-reveal-scale" class:editorial>
 		<div class="entity-card" class:entity-card--editorial={editorial} class:entity-card--row={row}>
 			<div class="entity-grid">
 				{#if communication?.image}
@@ -168,7 +171,9 @@
 						{/if}
 					</div>
 
-					<h3 class="entity-title">
+					<!-- h2: these cards sit under the page h1 with only a non-heading
+					     eyebrow above them, so h3 would skip a level. -->
+					<h2 class="entity-title">
 						<a
 							href={resolve(`/communications/${communication.id}`)}
 							class="entity-title-link"
@@ -176,7 +181,7 @@
 						>
 							{communication?.title || 'Untitled Communication'}
 						</a>
-					</h3>
+					</h2>
 					<div class="entity-details">
 						{#if communication?.authors && communication.authors.length > 0}
 							<div>
@@ -238,5 +243,5 @@
 				</div>
 			</div>
 		</div>
-	</article>
+	</li>
 {/if}

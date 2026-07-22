@@ -121,6 +121,8 @@
 .pub-search-input {
 	flex: 1;
 	min-width: 0;
+	/* WCAG 2.5.8: interactive targets need ≥24px in both dimensions. */
+	min-height: 24px;
 	border: none;
 	background: transparent;
 	font-family: var(--font-family-mono);
