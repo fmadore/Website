@@ -12,49 +12,32 @@
  * type is generic. The `activeFilters` object identity is stable for the life
  * of the instance — updates mutate its members — so captured references
  * (pages, actions) never go stale.
+ *
+ * The pure logic (predicate composition, facet counts, toggle/range helpers)
+ * lives in `entityFilterCore.ts` so it can be unit-tested without the Svelte
+ * compiler; this module wires it to `$state`/`$derived`.
  */
 
 import type { YearRange } from '$lib/types';
+import {
+	ENTITY_ARRAY_FILTER_KEYS,
+	filterEntityItems,
+	computeFacetCounts,
+	toggleArrayValue,
+	normalizeYearRange,
+	type EntityIndexFilters,
+	type EntityArrayFilterKey,
+	type EntityIndexFilterOptions,
+	type EntityArrayDimension
+} from './entityFilterCore';
 
-export interface EntityIndexFilters {
-	types: string[];
-	yearRange: YearRange | null;
-	tags: string[];
-	languages: string[];
-	authors: string[];
-	countries: string[];
-	projects: string[];
-}
-
-/** The array-valued filter dimensions (everything except `yearRange`). */
-export type EntityArrayFilterKey = Exclude<keyof EntityIndexFilters, 'yearRange'>;
-
-export const ENTITY_ARRAY_FILTER_KEYS: EntityArrayFilterKey[] = [
-	'types',
-	'tags',
-	'languages',
-	'authors',
-	'countries',
-	'projects'
-];
-
-export interface EntityIndexFilterOptions {
-	types: string[];
-	years: number[];
-	tags: string[];
-	languages: string[];
-	authors: string[];
-	countries: string[];
-	projects: string[];
-}
-
-/** One array-valued filter dimension: how to match and how to count. */
-export interface EntityArrayDimension<TItem> {
-	/** Returns true if the item matches any of the active filter values. */
-	match: (item: TItem, activeValues: string[]) => boolean;
-	/** Extracts countable value(s) from an item for the facet counts. */
-	countExtractor: (item: TItem) => string | string[] | undefined | null;
-}
+export {
+	ENTITY_ARRAY_FILTER_KEYS,
+	type EntityIndexFilters,
+	type EntityArrayFilterKey,
+	type EntityIndexFilterOptions,
+	type EntityArrayDimension
+};
 
 export interface EntityFilterConfig<TItem> {
 	items: TItem[];
@@ -83,35 +66,14 @@ export class EntityFilterSystem<TItem> {
 	});
 
 	/** Items matching every active dimension. */
-	readonly filteredItems: TItem[] = $derived.by(() => {
-		const filters = this.activeFilters;
-		return this.items.filter((item) => {
-			if (filters.yearRange && !this.matchesYearRange(item, filters.yearRange)) return false;
-			for (const key of ENTITY_ARRAY_FILTER_KEYS) {
-				const active = filters[key];
-				if (active.length > 0 && !this.dimensions[key].match(item, active)) return false;
-			}
-			return true;
-		});
-	});
+	readonly filteredItems: TItem[] = $derived.by(() =>
+		filterEntityItems(this.items, this.activeFilters, this.dimensions, this.matchesYearRange)
+	);
 
 	/** Per-dimension value counts over the filtered items. */
-	readonly counts: Record<EntityArrayFilterKey, Record<string, number>> = $derived.by(() => {
-		const result = {} as Record<EntityArrayFilterKey, Record<string, number>>;
-		for (const key of ENTITY_ARRAY_FILTER_KEYS) {
-			const extractor = this.dimensions[key].countExtractor;
-			const counts: Record<string, number> = {};
-			for (const item of this.filteredItems) {
-				const extracted = extractor(item);
-				if (!extracted) continue;
-				for (const value of Array.isArray(extracted) ? extracted : [extracted]) {
-					if (value) counts[value] = (counts[value] || 0) + 1;
-				}
-			}
-			result[key] = counts;
-		}
-		return result;
-	});
+	readonly counts: Record<EntityArrayFilterKey, Record<string, number>> = $derived.by(() =>
+		computeFacetCounts(this.filteredItems, this.dimensions)
+	);
 
 	constructor(config: EntityFilterConfig<TItem>) {
 		this.items = config.items;
@@ -124,10 +86,7 @@ export class EntityFilterSystem<TItem> {
 	// (onclick={system.resetYearRange}, setter maps, …).
 
 	toggle = (key: EntityArrayFilterKey, value: string): void => {
-		const current = this.activeFilters[key];
-		this.activeFilters[key] = current.includes(value)
-			? current.filter((v) => v !== value)
-			: [...current, value];
+		this.activeFilters[key] = toggleArrayValue(this.activeFilters[key], value);
 	};
 
 	setValues = (key: EntityArrayFilterKey, values: string[]): void => {
@@ -135,7 +94,7 @@ export class EntityFilterSystem<TItem> {
 	};
 
 	updateYearRange = (min: number, max: number): void => {
-		this.activeFilters.yearRange = { min: Math.min(min, max), max: Math.max(min, max) };
+		this.activeFilters.yearRange = normalizeYearRange(min, max);
 	};
 
 	resetYearRange = (): void => {

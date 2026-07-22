@@ -1,17 +1,17 @@
 import { page } from '$app/state';
 import { goto } from '$app/navigation';
 import type { Action } from 'svelte/action';
+import {
+	ARRAY_FILTER_PARAMS,
+	serializeFiltersToQuery,
+	parseArrayFilterParam,
+	parseYearRangeParams,
+	arrayValuesEqual,
+	yearRangesEqual,
+	type UrlSyncableFilters
+} from '$lib/utils/filterSerialization';
 
-interface ActiveFilters {
-	types?: string[];
-	tags?: string[];
-	languages?: string[];
-	authors?: string[];
-	countries?: string[];
-	projects?: string[];
-	yearRange?: { min: number; max: number } | null;
-	// Add other filter categories as needed
-}
+type ActiveFilters = UrlSyncableFilters;
 
 interface FilterSetters {
 	setTypes?: (value: string[]) => void;
@@ -31,18 +31,20 @@ interface UrlFilterSyncParams {
 	setters: FilterSetters;
 }
 
-// Define a type for keys corresponding to array filters
-type ArrayFilterKey =
-	| 'setTypes'
-	| 'setTags'
-	| 'setLanguages'
-	| 'setAuthors'
-	| 'setCountries'
-	| 'setProjects';
+/** Setter name for each array-valued filter key. */
+const ARRAY_FILTER_SETTERS = {
+	types: 'setTypes',
+	tags: 'setTags',
+	languages: 'setLanguages',
+	authors: 'setAuthors',
+	countries: 'setCountries',
+	projects: 'setProjects'
+} as const;
 
 /**
  * Svelte Action to synchronize filter state with URL query parameters.
- * Modernized for Svelte 5 using $effect() and $app/state.
+ * Modernized for Svelte 5 using $effect() and $app/state. The pure
+ * serialization/parsing logic lives in `$lib/utils/filterSerialization`.
  *
  * @example
  * ```svelte
@@ -72,30 +74,11 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 
 		lastFiltersString = currentFiltersString;
 
-		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- ephemeral, not reactive
-		const urlParams = new URLSearchParams();
-
-		// Add array filters to URL using one entry per value so individual values
-		// can safely contain commas (e.g. project names like
-		// "Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, ...").
-		const appendAll = (param: string, values: string[] | undefined) => {
-			if (!values?.length) return;
-			for (const v of values) urlParams.append(param, v);
-		};
-		appendAll('type', filters.types);
-		appendAll('tag', filters.tags);
-		appendAll('language', filters.languages);
-		appendAll('author', filters.authors);
-		appendAll('country', filters.countries);
-		appendAll('project', filters.projects);
-
-		// Add year range filter
-		if (filters.yearRange) {
-			urlParams.set('year_min', filters.yearRange.min.toString());
-			urlParams.set('year_max', filters.yearRange.max.toString());
-		}
-
-		const queryString = urlParams.toString();
+		// Array filters use one entry per value so individual values can safely
+		// contain commas (e.g. project names like "Islam's 'Peripheries':
+		// Digital Humanities, Algorithmic Analysis, ..."); the year range
+		// serializes as year_min/year_max.
+		const queryString = serializeFiltersToQuery(filters);
 		const basePath = page.url.pathname;
 		const targetUrl = `${basePath}${queryString ? `?${queryString}` : ''}${page.url.hash || ''}`;
 
@@ -111,51 +94,26 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 		const searchParams = page.url.searchParams;
 		let filtersChanged = false;
 
-		// Helper to compare arrays and update if needed
-		const syncArrayFilter = (
-			key: ArrayFilterKey,
-			paramName: string,
-			currentValues: string[] | undefined
-		) => {
-			const setter = setters[key];
-			if (!setter) return; // Skip if setter doesn't exist
-			// Prefer one-entry-per-value (?p=a&p=b). For backward compat with
-			// legacy comma-joined URLs (?p=a,b), fall back to splitting only when
-			// a single entry is present — this preserves single values that
-			// themselves contain commas (e.g. project names).
-			const all = searchParams.getAll(paramName).filter(Boolean);
-			const valuesFromUrl = all.length > 1 ? all : all.length === 1 ? [all[0]] : [];
-			// Compare order-insensitively on copies — sorting in place would both
-			// mutate the live reactive filter array mid-effect and reorder the
-			// values handed to the setter.
-			const sortedCopy = (values: string[] | undefined) => [...(values || [])].sort();
-			if (JSON.stringify(sortedCopy(valuesFromUrl)) !== JSON.stringify(sortedCopy(currentValues))) {
+		// Sync array filters: compare order-insensitively and update via the
+		// dimension's setter only when the URL disagrees with current state.
+		for (const [paramName, filterKey] of ARRAY_FILTER_PARAMS) {
+			const setter = setters[ARRAY_FILTER_SETTERS[filterKey]];
+			if (!setter) continue; // Skip if setter doesn't exist
+			const valuesFromUrl = parseArrayFilterParam(searchParams, paramName);
+			const currentValues = filters[filterKey];
+			if (!arrayValuesEqual(valuesFromUrl, currentValues)) {
 				setter(valuesFromUrl);
 				filtersChanged = true;
 			}
-		};
-
-		// Sync array filters
-		if (setters.setTypes) syncArrayFilter('setTypes', 'type', filters.types);
-		if (setters.setTags) syncArrayFilter('setTags', 'tag', filters.tags);
-		if (setters.setLanguages) syncArrayFilter('setLanguages', 'language', filters.languages);
-		if (setters.setAuthors) syncArrayFilter('setAuthors', 'author', filters.authors);
-		if (setters.setCountries) syncArrayFilter('setCountries', 'country', filters.countries);
-		if (setters.setProjects) syncArrayFilter('setProjects', 'project', filters.projects);
+		}
 
 		// Sync year range filter
 		if (setters.setYearRange) {
-			const yearMinStr = searchParams.get('year_min');
-			const yearMaxStr = searchParams.get('year_max');
-			let newRange: { min: number; max: number } | null = null;
-			if (yearMinStr && yearMaxStr) {
-				const min = parseInt(yearMinStr, 10);
-				const max = parseInt(yearMaxStr, 10);
-				if (!isNaN(min) && !isNaN(max)) {
-					newRange = { min, max };
-				}
-			}
-			if (JSON.stringify(newRange) !== JSON.stringify(filters.yearRange || null)) {
+			const newRange = parseYearRangeParams(
+				searchParams.get('year_min'),
+				searchParams.get('year_max')
+			);
+			if (!yearRangesEqual(newRange, filters.yearRange)) {
 				setters.setYearRange(newRange);
 				filtersChanged = true;
 			}

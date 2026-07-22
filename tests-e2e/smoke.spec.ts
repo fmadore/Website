@@ -42,6 +42,56 @@ test('visualisation pages render their network graphs and controls', async ({ pa
 	}
 });
 
+test('rss.xml is served and is a well-formed feed', async ({ page, request }) => {
+	const response = await request.get('/rss.xml');
+	expect(response.status()).toBe(200);
+	const xml = await response.text();
+	// Parse in the browser (Node has no DOMParser); the page starts blank.
+	const parsed = await page.evaluate((xmlText) => {
+		const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
+		return {
+			hasParseError: doc.getElementsByTagName('parsererror').length > 0,
+			root: doc.documentElement.nodeName,
+			itemCount: doc.getElementsByTagName('item').length,
+			channelTitle: doc.querySelector('channel > title')?.textContent ?? ''
+		};
+	}, xml);
+	expect(parsed.hasParseError).toBe(false);
+	expect(parsed.root).toBe('rss');
+	expect(parsed.itemCount).toBeGreaterThanOrEqual(10);
+	expect(parsed.channelTitle).toContain('Frédérick Madore');
+});
+
+test('sitemap.xml is served and is a well-formed urlset', async ({ page, request }) => {
+	const response = await request.get('/sitemap.xml');
+	expect(response.status()).toBe(200);
+	const xml = await response.text();
+	const parsed = await page.evaluate((xmlText) => {
+		const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
+		const locs = Array.from(doc.getElementsByTagName('loc')).map((el) => el.textContent ?? '');
+		return {
+			hasParseError: doc.getElementsByTagName('parsererror').length > 0,
+			root: doc.documentElement.nodeName,
+			urlCount: doc.getElementsByTagName('url').length,
+			firstLoc: locs[0] ?? ''
+		};
+	}, xml);
+	expect(parsed.hasParseError).toBe(false);
+	expect(parsed.root).toBe('urlset');
+	expect(parsed.urlCount).toBeGreaterThanOrEqual(50);
+	expect(parsed.firstLoc).toContain('frederickmadore.com');
+});
+
+test('an unknown path renders the static 404 page', async ({ page }) => {
+	const response = await page.goto('/this-page-does-not-exist');
+	// `serve` (like GitHub Pages) responds with the prerendered 404.html and a
+	// real 404 status. The content assertions are the primary guard in case a
+	// different static server maps the error page to another status.
+	expect(response?.status()).toBe(404);
+	await expect(page).toHaveTitle(/Page not found/i);
+	await expect(page.getByRole('heading', { level: 1 })).toContainText(/couldn.t be found/i);
+});
+
 test('a publication detail page injects JSON-LD structured data', async ({ page }) => {
 	await page.goto('/publications');
 	// Follow the first real publication item through to its detail page,
