@@ -5,7 +5,7 @@ The Header is a complex organism component that provides the main navigation int
 ## Import
 
 ```svelte
-import Header from '$lib/components/organisms/Header.svelte';
+import Header from '$lib/components/menu/Header.svelte';
 ```
 
 ## Usage
@@ -133,8 +133,7 @@ The component implements several sophisticated event handling patterns:
 The Header uses a clean, minimal design with:
 
 - Subtle hover and focus effects
-- Box shadow for depth
-- Smooth transitions for state changes
+- Heavy masthead rule per the Ink + Signal print register (no shadows or glass)
 - Proper z-indexing to ensure it appears above page content
 
 ## Accessibility
@@ -149,7 +148,7 @@ The Header uses a clean, minimal design with:
 ```svelte
 <!-- Layout.svelte -->
 <script>
-	import Header from '$lib/components/organisms/Header.svelte';
+	import Header from '$lib/components/menu/Header.svelte';
 	import Footer from '$lib/components/common/Footer.svelte';
 </script>
 
@@ -166,11 +165,4 @@ The Header uses a clean, minimal design with:
 
 ## CSS Variables
 
-The component uses these CSS variables for styling:
-
-- `--color-background` - Background color of the header
-- `--color-text` - Text color for navigation items
-- `--shadow` - Box shadow for the header
-- `--shadow-md` - Box shadow for hover state
-- `--spacing-4` - Standard padding
-- `--spacing-6` - Larger padding for wider screens
+The component uses the design tokens from `src/styles/base/variables.css` (colors, spacing, rules) — never hardcoded values.

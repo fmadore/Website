@@ -4,7 +4,7 @@
  * organiser attribution machine-readable. Consumed by the
  * conference-activity route via useJsonLdScript.
  */
-import { author, website } from '$lib/data/siteConfig';
+import { address, author, website } from '$lib/data/siteConfig';
 
 const organiserPerson = {
 	'@type': 'Person',
@@ -12,8 +12,10 @@ const organiserPerson = {
 	url: website.url,
 	affiliation: {
 		'@type': 'Organization',
+		// English form for schema.org consumers; siteConfig.address.institution
+		// deliberately carries the German name ('Universität Bayreuth').
 		name: 'University of Bayreuth',
-		url: 'https://www.africamultiple.uni-bayreuth.de/en/index.html'
+		url: address.institutionUrl
 	}
 };
 

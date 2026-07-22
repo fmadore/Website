@@ -29,6 +29,7 @@ import mdiCheckboxBlankOutline from '@iconify-icons/mdi/checkbox-blank-outline';
 import mdiLoading from '@iconify-icons/mdi/loading';
 import mdiFilePdfBox from '@iconify-icons/mdi/file-pdf-box';
 import mdiWeb from '@iconify-icons/mdi/web';
+import mdiArrowUp from '@iconify-icons/mdi/arrow-up';
 
 // Simple Icons (brand icons)
 import simpleIconsOrcid from '@iconify-icons/simple-icons/orcid';
@@ -65,6 +66,9 @@ import lucideCircle from '@iconify-icons/lucide/circle';
 import lucideArrowDownWideNarrow from '@iconify-icons/lucide/arrow-down-wide-narrow';
 import lucideArrowDownAZ from '@iconify-icons/lucide/arrow-down-a-z';
 import lucideTrendingUp from '@iconify-icons/lucide/trending-up';
+import lucideMaximize from '@iconify-icons/lucide/maximize';
+import lucideArrowUpRight from '@iconify-icons/lucide/arrow-up-right';
+import lucidePlay from '@iconify-icons/lucide/play';
 
 // Bluesky SVG path (bundled inline since not available in @iconify-icons packages)
 // Source: Simple Icons - https://simpleicons.org/
@@ -96,6 +100,7 @@ export function registerIcons(): void {
 	addIcon('mdi:loading', mdiLoading);
 	addIcon('mdi:file-pdf-box', mdiFilePdfBox);
 	addIcon('mdi:web', mdiWeb);
+	addIcon('mdi:arrow-up', mdiArrowUp);
 
 	// Simple Icons
 	addIcon('simple-icons:orcid', simpleIconsOrcid);
@@ -133,6 +138,9 @@ export function registerIcons(): void {
 	addIcon('lucide:arrow-down-wide-narrow', lucideArrowDownWideNarrow);
 	addIcon('lucide:arrow-down-a-z', lucideArrowDownAZ);
 	addIcon('lucide:trending-up', lucideTrendingUp);
+	addIcon('lucide:maximize', lucideMaximize);
+	addIcon('lucide:arrow-up-right', lucideArrowUpRight);
+	addIcon('lucide:play', lucidePlay);
 }
 
 // Export individual icons for direct usage if preferred

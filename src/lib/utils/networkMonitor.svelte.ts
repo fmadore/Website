@@ -22,12 +22,12 @@ export function useNetworkMonitor() {
 
 			const handleOnline = () => {
 				globalState.isOnline = true;
-				console.log('[PWA] Connection restored');
+				if (import.meta.env.DEV) console.log('[PWA] Connection restored');
 			};
 
 			const handleOffline = () => {
 				globalState.isOnline = false;
-				console.log('[PWA] Connection lost - offline mode active');
+				if (import.meta.env.DEV) console.log('[PWA] Connection lost - offline mode active');
 			};
 
 			// Prevent install prompts completely

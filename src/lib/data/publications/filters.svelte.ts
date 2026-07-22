@@ -15,6 +15,7 @@ import {
 } from './index';
 import { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
 import { SvelteSet } from 'svelte/reactivity';
+import { PUBLICATION_TYPE_FILTER_LABELS as typeLabels } from '$lib/utils/publicationTypeLabels';
 
 type Pub = Publication & { sourceDirType: string };
 
@@ -71,20 +72,6 @@ const uniqueLanguages = Array.from(
 		)
 	)
 ).sort();
-
-const typeLabels: Record<string, string> = {
-	blogpost: 'Blog post',
-	book: 'Book',
-	'bulletin-article': 'Bulletin article',
-	chapter: 'Book chapter',
-	'conference-proceedings': 'Conference proceedings',
-	encyclopedia: 'Encyclopedia entry',
-	article: 'Journal article',
-	'masters-thesis': "Master's thesis",
-	'phd-dissertation': 'Ph.D. dissertation',
-	report: 'Report',
-	'special-issue': 'Special issue'
-};
 
 // --- Facet ordering by frequency ---
 // Tags and authors surface most-used first so the truncated sidebar facet lists

@@ -5,7 +5,7 @@ A specialized navigation link component that supports active states and dropdown
 ## Import
 
 ```svelte
-import NavLink from '$lib/components/atoms/NavLink.svelte';
+import NavLink from '$lib/components/menu/NavLink.svelte';
 ```
 
 ## Usage
@@ -36,18 +36,18 @@ import NavLink from '$lib/components/atoms/NavLink.svelte';
 | `active`      | `boolean` | `false`    | Whether this link represents the current page     |
 | `hasDropdown` | `boolean` | `false`    | Whether this link has an associated dropdown menu |
 
-## Slots
+## Snippet props (Svelte 5)
 
-| Slot    | Description                                     |
-| ------- | ----------------------------------------------- |
-| default | Content of the navigation link (typically text) |
+| Name       | Description                                     |
+| ---------- | ----------------------------------------------- |
+| `children` | Content of the navigation link (typically text) |
 
-## Events
+## Callback props
 
-| Event     | Description                                 |
-| --------- | ------------------------------------------- |
-| `click`   | Forwarded from the underlying `<a>` element |
-| `keydown` | Forwarded from the underlying `<a>` element |
+| Prop        | Description                            |
+| ----------- | -------------------------------------- |
+| `onclick`   | Passed to the underlying `<a>` element |
+| `onkeydown` | Passed to the underlying `<a>` element |
 
 ## Styling
 

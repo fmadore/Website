@@ -13,6 +13,7 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
 	import { getAriaConfig } from '$lib/utils/chartActions';
+	import { PUBLICATION_TYPE_GANTT_LABELS } from '$lib/utils/publicationTypeLabels';
 
 	// Types for project data
 	interface ProjectPublication {
@@ -73,22 +74,7 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 	});
 
 	// Format type labels for display
-	const formatTypeLabel = (type: string): string => {
-		const typeLabels: Record<string, string> = {
-			article: 'Article',
-			'bulletin-article': 'Bulletin',
-			book: 'Book',
-			chapter: 'Chapter',
-			'conference-proceedings': 'Proceedings',
-			'special-issue': 'Special Issue',
-			report: 'Report',
-			encyclopedia: 'Encyclopedia',
-			blogpost: 'Blog Post',
-			'masters-thesis': 'Thesis',
-			'phd-dissertation': 'Dissertation'
-		};
-		return typeLabels[type] || type;
-	};
+	const formatTypeLabel = (type: string): string => PUBLICATION_TYPE_GANTT_LABELS[type] || type;
 
 	// Transform data for ECharts custom series (Gantt bars)
 	const ganttData = $derived(

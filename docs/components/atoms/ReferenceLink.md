@@ -5,7 +5,7 @@ An atomic component that renders a citation-style reference link to publications
 ## Import
 
 ```svelte
-import ReferenceLink from '$lib/components/atoms/ReferenceLink.svelte';
+import ReferenceLink from '$lib/components/reference/ReferenceLink.svelte';
 ```
 
 ## Usage

@@ -5,7 +5,7 @@ A navigation item component that combines a link with dropdown menu functionalit
 ## Import
 
 ```svelte
-import NavItemWithDropdown from '$lib/components/molecules/NavItemWithDropdown.svelte';
+import NavItemWithDropdown from '$lib/components/menu/NavItemWithDropdown.svelte';
 ```
 
 ## Usage
@@ -73,7 +73,7 @@ The component handles multiple interaction patterns:
 ```svelte
 <script lang="ts">
 	import type { NavItem } from '$lib/types/navigation';
-	import NavItemWithDropdown from '$lib/components/molecules/NavItemWithDropdown.svelte';
+	import NavItemWithDropdown from '$lib/components/menu/NavItemWithDropdown.svelte';
 
 	const navItems: NavItem[] = [
 		{

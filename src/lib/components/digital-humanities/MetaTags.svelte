@@ -6,13 +6,7 @@
 	import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
 	import { page } from '$app/state';
 	import { author, website } from '$lib/data/siteConfig';
-	import {
-		type MetaTag,
-		createConditionalTag,
-		createCoinsParams,
-		deduplicateAndFilterTags,
-		toLastFirstFormat
-	} from '$lib/utils/metaTags';
+	import { buildCoins, buildHeadTags, toLastFirstFormat } from '$lib/utils/metaTags';
 	import BaseMetaTags from '$lib/components/common/BaseMetaTags.svelte';
 
 	let { project }: { project: DigitalHumanitiesProject } = $props();
@@ -28,60 +22,51 @@
 	// and these tags are baked into the static head Zotero and crawlers consume.
 	const currentUrl = $derived(`${website.url}${page.url.pathname}`);
 
-	// COinS — DC document format, typed as a web page. Zotero saves this as a
-	// "Web Page" item with title, creator, date and URL.
-	const coinsData = $derived.by((): string => {
-		const params = createCoinsParams();
-		params.set('rft_val_fmt', 'info:ofi/fmt:kev:mtx:dc');
-		params.set('rft.type', 'webpage');
-		params.set('rft.title', project.title);
-		params.set('rft.creator', authorLastFirst);
-		if (projectYear) params.set('rft.date', projectYear);
-		params.set('rft.source', author.name);
-		params.set('rft.identifier', project.linkUrl || currentUrl);
-		if (project.shortDescription) params.set('rft.description', project.shortDescription);
-		params.set('rft.language', 'en');
-		return params.toString();
-	});
+	// COinS field mapping — DC document format, typed as a web page. Zotero
+	// saves this as a "Web Page" item with title, creator, date and URL.
+	const coinsData = $derived(
+		buildCoins([
+			['rft_val_fmt', 'info:ofi/fmt:kev:mtx:dc'],
+			['rft.type', 'webpage'],
+			['rft.title', project.title],
+			['rft.creator', authorLastFirst],
+			['rft.date', projectYear],
+			['rft.source', author.name],
+			['rft.identifier', project.linkUrl || currentUrl],
+			['rft.description', project.shortDescription],
+			['rft.language', 'en']
+		])
+	);
 
-	const metaTags = $derived.by((): MetaTag[] => {
-		const tags: MetaTag[] = [];
-
-		// Highwire Press tags
-		tags.push(
+	// Head tag field mapping — order here is emission order.
+	const metaTags = $derived.by(() =>
+		buildHeadTags([
+			// Highwire Press tags
 			{ name: 'citation_title', content: project.title },
 			{ name: 'citation_author', content: authorLastFirst },
 			{ name: 'citation_publisher', content: author.name },
-			...createConditionalTag('citation_year', projectYear),
-			...createConditionalTag('citation_date', projectYear),
+			{ name: 'citation_year', content: projectYear },
+			{ name: 'citation_date', content: projectYear },
 			{ name: 'citation_language', content: 'en' },
-			...createConditionalTag('citation_keywords', project.skills?.join('; ')),
-			...createConditionalTag('citation_abstract', project.shortDescription),
+			{ name: 'citation_keywords', content: project.skills?.join('; ') },
+			{ name: 'citation_abstract', content: project.shortDescription },
 			{ name: 'citation_public_url', content: currentUrl },
-			...createConditionalTag('citation_reference_url', project.linkUrl)
-		);
-
-		// Dublin Core tags
-		tags.push(
+			{ name: 'citation_reference_url', content: project.linkUrl },
+			// Dublin Core tags
 			{ name: 'DC.title', content: project.title },
 			{ name: 'DC.creator', content: authorLastFirst },
 			{ name: 'DC.type', content: 'InteractiveResource' },
 			{ name: 'DC.publisher', content: author.name },
-			...createConditionalTag('DC.description', project.shortDescription),
-			...createConditionalTag('DC.date', projectYear),
+			{ name: 'DC.description', content: project.shortDescription },
+			{ name: 'DC.date', content: projectYear },
 			{ name: 'DC.identifier', content: currentUrl },
 			{ name: 'DC.language', content: 'en' },
-			...createConditionalTag('DC.relation', project.linkUrl)
-		);
-
-		// Subject tags from the project's skills/methods
-		if (project.skills) {
-			tags.push(...project.skills.map((skill) => ({ name: 'DC.subject', content: skill })));
-		}
-		tags.push({ name: 'DC.subject', content: 'Digital Humanities' });
-
-		return deduplicateAndFilterTags(tags);
-	});
+			{ name: 'DC.relation', content: project.linkUrl },
+			// Subject tags from the project's skills/methods
+			(project.skills ?? []).map((skill) => ({ name: 'DC.subject', content: skill })),
+			{ name: 'DC.subject', content: 'Digital Humanities' }
+		])
+	);
 </script>
 
 <BaseMetaTags tags={metaTags} coins={coinsData} />

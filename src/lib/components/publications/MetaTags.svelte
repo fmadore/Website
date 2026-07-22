@@ -3,18 +3,19 @@
 	import { base } from '$app/paths';
 	import { page } from '$app/state';
 	import {
-		type MetaTag,
-		createConditionalTag,
-		createCoinsParams,
+		type CoinsField,
+		type HeadTagEntry,
+		buildCoins,
+		buildHeadTags,
 		toLastFirstFormat,
 		splitNames,
 		createAuthorTags,
 		getFullUrl,
-		deduplicateAndFilterTags,
 		parseAuthorName
 	} from '$lib/utils/metaTags';
 	import BaseMetaTags from '$lib/components/common/BaseMetaTags.svelte';
 	import { website } from '$lib/data/siteConfig';
+	import { getCitationGenre, getDcType } from '$lib/utils/publicationTypeLabels';
 
 	let { publication }: { publication: Publication } = $props();
 
@@ -23,56 +24,17 @@
 	// never reach the baked head tags Zotero and crawlers consume.
 	const resolveUrl = (path: string | undefined) => getFullUrl(website.url, base, path);
 
-	// Helper to get citation genre for OpenURL/COinS compatibility
-	const getCitationGenre = (type: Publication['type']): string => {
-		const genreMap: Record<Publication['type'], string> = {
-			article: 'article',
-			chapter: 'bookitem',
-			encyclopedia: 'bookitem',
-			blogpost: 'article',
-			book: 'book',
-			'special-issue': 'journal',
-			report: 'report',
-			'phd-dissertation': 'dissertation',
-			'masters-thesis': 'dissertation',
-			'conference-proceedings': 'proceeding',
-			'bulletin-article': 'article'
-		};
-		return genreMap[type] || 'unknown';
-	};
-
-	// Helper to map publication types to Dublin Core types
-	const getDcType = (type: Publication['type']): string => {
-		const typeMap: Record<Publication['type'], string> = {
-			article: 'Text',
-			chapter: 'Text',
-			encyclopedia: 'Text',
-			blogpost: 'Text',
-			book: 'Book',
-			'special-issue': 'Collection',
-			report: 'Text',
-			'phd-dissertation': 'Text',
-			'masters-thesis': 'Text',
-			'conference-proceedings': 'Text',
-			'bulletin-article': 'Text'
-		};
-		return typeMap[type] || 'Text';
-	};
-
-	// Helper to create editor tags for different publication types
-	const createEditorTags = (): MetaTag[] => {
-		const tags: MetaTag[] = [];
+	// Editor entries for the publication types that carry editors.
+	const editorEntries = (): HeadTagEntry[] => {
+		const entries: HeadTagEntry[] = [];
 
 		// Handle chapters with editors
 		if (publication.type === 'chapter' && publication.editors) {
-			if (Array.isArray(publication.editors)) {
-				tags.push(...createAuthorTags(publication.editors, 'citation_editor'));
-				tags.push(...createAuthorTags(publication.editors, 'DC.creator'));
-			} else if (typeof publication.editors === 'string') {
-				const editorNames = splitNames(publication.editors);
-				tags.push(...createAuthorTags(editorNames, 'citation_editor'));
-				tags.push(...createAuthorTags(editorNames, 'DC.creator'));
-			}
+			const editorNames = Array.isArray(publication.editors)
+				? publication.editors
+				: splitNames(publication.editors);
+			entries.push(...createAuthorTags(editorNames, 'citation_editor'));
+			entries.push(...createAuthorTags(editorNames, 'DC.creator'));
 		}
 
 		// Handle special issues and edited volumes
@@ -81,214 +43,189 @@
 				(publication.type === 'book' && publication.isEditedVolume)) &&
 			Array.isArray(publication.authors)
 		) {
-			tags.push(...createAuthorTags(publication.authors, 'citation_editor'));
-			tags.push(...createAuthorTags(publication.authors, 'DC.creator'));
+			entries.push(...createAuthorTags(publication.authors, 'citation_editor'));
+			entries.push(...createAuthorTags(publication.authors, 'DC.creator'));
 		}
 
-		return tags;
+		return entries;
 	};
 
-	// Helper to create page-related tags
-	const createPageTags = (): MetaTag[] => {
-		const tags: MetaTag[] = [];
+	// Page-range entries — only paged content types emit first/last page.
+	const pageEntries = (): HeadTagEntry[] => {
+		const entries: HeadTagEntry[] = [];
 		const isPagedContent =
 			publication.type === 'article' ||
 			publication.type === 'chapter' ||
 			publication.type === 'bulletin-article';
 
-		if (!isPagedContent || !publication.pages) return tags;
+		if (!isPagedContent || !publication.pages) return entries;
 
 		if (publication.pages.includes('-')) {
 			const [firstPage, lastPage] = publication.pages.split('-').map((p) => p.trim());
-			if (firstPage) {
-				tags.push({ name: 'citation_firstpage', content: firstPage });
-			}
-			if (lastPage) {
-				tags.push({ name: 'citation_lastpage', content: lastPage });
-			}
+			entries.push(
+				{ name: 'citation_firstpage', content: firstPage || undefined },
+				{ name: 'citation_lastpage', content: lastPage || undefined }
+			);
 		} else if (/^\d+$/.test(publication.pages.trim())) {
 			const pg = publication.pages.trim();
-			tags.push(
+			entries.push(
 				{ name: 'citation_firstpage', content: pg },
 				{ name: 'citation_lastpage', content: pg }
 			);
 		}
 
-		return tags;
+		return entries;
 	};
 
-	// Helper to create COinS metadata
-	const createCoinsData = (): string => {
-		const params = createCoinsParams('info:sid/personal-website');
+	// COinS field mapping. Bulletin articles (e.g. the ZMO Bulletin) are
+	// journal-shaped for citation managers: same OpenURL journal format,
+	// jtitle, issue, and spage (spage comes from the common pages handling
+	// below).
+	const coinsFields = (): CoinsField[] => {
+		const fields: CoinsField[] = [];
 
-		// Publication type specific format. Bulletin articles (e.g. the ZMO
-		// Bulletin) are journal-shaped for citation managers: same OpenURL
-		// journal format, jtitle, issue, and spage (spage comes from the common
-		// pages handling below).
+		// Publication type specific format
 		if (
 			publication.type === 'article' ||
 			publication.type === 'special-issue' ||
 			publication.type === 'bulletin-article'
 		) {
-			params.set('rft_val_fmt', 'info:ofi/fmt:kev:mtx:journal');
-			params.set('rft.genre', 'article');
-			if (publication.journal) params.set('rft.jtitle', publication.journal);
-			if (publication.volume) params.set('rft.volume', publication.volume);
-			if (publication.issue) params.set('rft.issue', publication.issue);
+			fields.push(
+				['rft_val_fmt', 'info:ofi/fmt:kev:mtx:journal'],
+				['rft.genre', 'article'],
+				['rft.jtitle', publication.journal],
+				['rft.volume', publication.volume],
+				['rft.issue', publication.issue]
+			);
 		} else if (publication.type === 'book') {
-			params.set('rft_val_fmt', 'info:ofi/fmt:kev:mtx:book');
-			params.set('rft.genre', 'book');
-			if (publication.publisher) params.set('rft.pub', publication.publisher);
-			if (publication.placeOfPublication) params.set('rft.place', publication.placeOfPublication);
+			fields.push(
+				['rft_val_fmt', 'info:ofi/fmt:kev:mtx:book'],
+				['rft.genre', 'book'],
+				['rft.pub', publication.publisher],
+				['rft.place', publication.placeOfPublication]
+			);
 		} else if (publication.type === 'chapter') {
-			params.set('rft_val_fmt', 'info:ofi/fmt:kev:mtx:book');
-			params.set('rft.genre', 'bookitem');
-			if (publication.book) params.set('rft.btitle', publication.book);
-			if (publication.publisher) params.set('rft.pub', publication.publisher);
+			fields.push(
+				['rft_val_fmt', 'info:ofi/fmt:kev:mtx:book'],
+				['rft.genre', 'bookitem'],
+				['rft.btitle', publication.book],
+				['rft.pub', publication.publisher]
+			);
 		}
 
 		// Common fields
-		if (publication.title) params.set('rft.title', publication.title);
-		if (publication.authors) {
-			publication.authors.forEach((author, index) => {
-				if (index === 0) {
-					const { first, last } = parseAuthorName(author);
-					if (first) params.set('rft.aufirst', first);
-					if (last) params.set('rft.aulast', last);
-				}
-				params.set('rft.au', toLastFirstFormat(author));
-			});
+		fields.push(['rft.title', publication.title]);
+		if (publication.authors?.length) {
+			// First author split into aufirst/aulast; every author repeated as
+			// rft.au (URLSearchParams.set semantics: last value wins, kept for
+			// output stability).
+			const { first, last } = parseAuthorName(publication.authors[0]);
+			fields.push(['rft.aufirst', first], ['rft.aulast', last]);
+			for (const author of publication.authors) {
+				fields.push(['rft.au', toLastFirstFormat(author)]);
+			}
 		}
-		if (publication.dateISO) params.set('rft.date', publication.dateISO);
-		else if (publication.year) params.set('rft.date', publication.year.toString());
+		fields.push(['rft.date', publication.dateISO || publication.year?.toString()]);
 		if (publication.pages) {
-			params.set('rft.pages', publication.pages);
 			const [start, end] = publication.pages.split('-').map((s) => s.trim());
-			if (start) params.set('rft.spage', start);
-			if (end) params.set('rft.epage', end);
+			fields.push(['rft.pages', publication.pages], ['rft.spage', start], ['rft.epage', end]);
 		}
-		if (publication.doi) params.set('rft_id', `info:doi/${publication.doi}`);
-		if (publication.isbn) params.set('rft.isbn', publication.isbn);
-		if (publication.issn) params.set('rft.issn', publication.issn);
+		fields.push(
+			['rft_id', publication.doi ? `info:doi/${publication.doi}` : undefined],
+			['rft.isbn', publication.isbn],
+			['rft.issn', publication.issn]
+		);
 
-		return params.toString();
+		return fields;
 	};
 
-	// Main meta tags computation
-	const metaTags = $derived.by((): MetaTag[] => {
-		const tags: MetaTag[] = [];
-
-		// Basic Highwire Press tags
-		tags.push({ name: 'citation_title', content: publication.title });
-
-		// Add citation genre for better type detection
-		tags.push({ name: 'citation_genre', content: getCitationGenre(publication.type) });
-
-		// Authors
-		if (publication.authors) {
-			tags.push(...createAuthorTags(publication.authors, 'citation_author'));
-			tags.push(...createAuthorTags(publication.authors, 'DC.creator'));
-		}
-
-		// Editors
-		tags.push(...createEditorTags());
-
-		// Basic publication info
-		tags.push(
-			...createConditionalTag('citation_series_title', publication.series),
-			...createConditionalTag('citation_date', publication.dateISO || publication.date),
-			...createConditionalTag('citation_publication_date', publication.dateISO || publication.date),
-			...createConditionalTag('citation_year', publication.year?.toString()),
-			...createConditionalTag('citation_publisher', publication.publisher),
-			...createConditionalTag('citation_doi', publication.doi),
-			...createConditionalTag('citation_isbn', publication.isbn),
-			...createConditionalTag('citation_issn', publication.issn),
-			...createConditionalTag('citation_eIssn', undefined),
-			...createConditionalTag('citation_language', publication.language),
-			...createConditionalTag('citation_keywords', publication.tags?.join('; '))
-		);
-
-		// URLs
-		tags.push(
-			...createConditionalTag('citation_public_url', resolveUrl(publication.url)),
-			...createConditionalTag('citation_abstract_html_url', `${website.url}${page.url.pathname}`),
-			...createConditionalTag('citation_fulltext_html_url', resolveUrl(publication.url)),
-			...createConditionalTag(
-				'citation_pdf_url',
-				resolveUrl((publication as Record<string, unknown>).pdfUrl as string | undefined)
-			)
-		);
-
-		// Type-specific tags. Bulletin articles carry a journal title (e.g. the
-		// ZMO Bulletin) + issue, so treat them as journal-like for the Highwire
+	// Head tag field mapping — order here is emission order.
+	const metaTags = $derived.by(() => {
+		// Bulletin articles carry a journal title (e.g. the ZMO Bulletin) +
+		// issue, so treat them as journal-like for the Highwire
 		// citation_journal_title/volume/issue tags Zotero reads.
 		const isJournalContent =
 			publication.type === 'article' ||
 			publication.type === 'special-issue' ||
 			publication.type === 'bulletin-article';
-		tags.push(
-			...createConditionalTag('citation_journal_title', publication.journal, isJournalContent),
-			...createConditionalTag('citation_volume', publication.volume, isJournalContent),
-			...createConditionalTag('citation_issue', publication.issue, isJournalContent)
-		);
-
-		// Book-related tags
-		tags.push(
-			...createConditionalTag(
-				'citation_book_title',
-				publication.book,
-				publication.type === 'chapter'
-			),
-			...createConditionalTag('citation_book_title', publication.title, publication.type === 'book')
-		);
-
-		// Page tags
-		tags.push(...createPageTags());
-
-		// Dissertation/thesis tags
 		const isThesis =
 			publication.type === 'phd-dissertation' || publication.type === 'masters-thesis';
-		tags.push(
-			...createConditionalTag('citation_dissertation_institution', publication.university, isThesis)
-		);
-
-		// Report tags
 		const isReport = publication.type === 'report';
-		tags.push(
-			...createConditionalTag(
-				'citation_technical_report_institution',
-				(publication as unknown as Record<string, string | undefined>).institution ||
-					publication.publisher,
-				isReport
-			),
-			...createConditionalTag(
-				'citation_technical_report_number',
-				(publication as unknown as Record<string, string | undefined>).reportNumber,
-				isReport
-			)
-		);
+		const extra = publication as unknown as Record<string, string | undefined>;
 
-		// Dublin Core tags
-		tags.push(
+		return buildHeadTags([
+			// Basic Highwire Press tags
+			{ name: 'citation_title', content: publication.title },
+			{ name: 'citation_genre', content: getCitationGenre(publication.type) },
+			// Authors
+			createAuthorTags(publication.authors, 'citation_author'),
+			createAuthorTags(publication.authors, 'DC.creator'),
+			// Editors
+			editorEntries(),
+			// Basic publication info
+			{ name: 'citation_series_title', content: publication.series },
+			{ name: 'citation_date', content: publication.dateISO || publication.date },
+			{ name: 'citation_publication_date', content: publication.dateISO || publication.date },
+			{ name: 'citation_year', content: publication.year?.toString() },
+			{ name: 'citation_publisher', content: publication.publisher },
+			{ name: 'citation_doi', content: publication.doi },
+			{ name: 'citation_isbn', content: publication.isbn },
+			{ name: 'citation_issn', content: publication.issn },
+			// Historical no-op kept verbatim: content is always undefined, so
+			// this tag never renders.
+			{ name: 'citation_eIssn', content: undefined },
+			{ name: 'citation_language', content: publication.language },
+			{ name: 'citation_keywords', content: publication.tags?.join('; ') },
+			// URLs
+			{ name: 'citation_public_url', content: resolveUrl(publication.url) },
+			{ name: 'citation_abstract_html_url', content: `${website.url}${page.url.pathname}` },
+			{ name: 'citation_fulltext_html_url', content: resolveUrl(publication.url) },
+			{ name: 'citation_pdf_url', content: resolveUrl(extra.pdfUrl) },
+			// Type-specific journal tags
+			{ name: 'citation_journal_title', content: publication.journal, when: isJournalContent },
+			{ name: 'citation_volume', content: publication.volume, when: isJournalContent },
+			{ name: 'citation_issue', content: publication.issue, when: isJournalContent },
+			// Book-related tags
+			{
+				name: 'citation_book_title',
+				content: publication.book,
+				when: publication.type === 'chapter'
+			},
+			{
+				name: 'citation_book_title',
+				content: publication.title,
+				when: publication.type === 'book'
+			},
+			// Page tags
+			pageEntries(),
+			// Dissertation/thesis tags
+			{
+				name: 'citation_dissertation_institution',
+				content: publication.university,
+				when: isThesis
+			},
+			// Report tags
+			{
+				name: 'citation_technical_report_institution',
+				content: extra.institution || publication.publisher,
+				when: isReport
+			},
+			{ name: 'citation_technical_report_number', content: extra.reportNumber, when: isReport },
+			// Dublin Core tags
 			{ name: 'DC.title', content: publication.title },
-			...createConditionalTag('DC.description', publication.abstract),
-			...createConditionalTag('DC.publisher', publication.publisher),
-			...createConditionalTag('DC.date', publication.dateISO || publication.date),
+			{ name: 'DC.description', content: publication.abstract },
+			{ name: 'DC.publisher', content: publication.publisher },
+			{ name: 'DC.date', content: publication.dateISO || publication.date },
 			{ name: 'DC.type', content: getDcType(publication.type) },
-			...createConditionalTag(
-				'DC.identifier',
-				publication.doi ? `doi:${publication.doi}` : resolveUrl(publication.url)
-			),
-			...createConditionalTag('DC.language', publication.language)
-		);
-
-		// Subject tags from publication tags
-		if (publication.tags) {
-			tags.push(...publication.tags.map((tag) => ({ name: 'DC.subject', content: tag })));
-		}
-
-		return deduplicateAndFilterTags(tags);
+			{
+				name: 'DC.identifier',
+				content: publication.doi ? `doi:${publication.doi}` : resolveUrl(publication.url)
+			},
+			{ name: 'DC.language', content: publication.language },
+			// Subject tags from publication tags
+			(publication.tags ?? []).map((tag) => ({ name: 'DC.subject', content: tag }))
+		]);
 	});
 </script>
 
-<BaseMetaTags tags={metaTags} coins={createCoinsData()} />
+<BaseMetaTags tags={metaTags} coins={buildCoins(coinsFields(), 'info:sid/personal-website')} />

@@ -21,7 +21,7 @@ src/
 The `src/app.css` file imports the global stylesheet in a fixed order so tokens are available before anything depends on them:
 
 - **Import order**: Base → Layout → Components → Utilities (mirrors the block comments inside `app.css`).
-- **Route-scoped CSS**: `components/entity-cards.css`, `components/activity-list.css`, `components/bibliography.css`, and `components/filters.css` are **not** imported globally — they are imported by the components that own them, so they code-split per route and keep the render-blocking global stylesheet small.
+- **Route-scoped CSS**: `components/entity-cards.css`, `components/activity-list.css`, and `components/bibliography.css` are **not** imported globally — they are imported by the components that own them, so they code-split per route and keep the render-blocking global stylesheet small.
 - **Adding new modules**: Place new files under the appropriate directory, then add a matching `@import` in the same section of `app.css` (or import from the owning component if the styles are route-specific).
 - **Component overrides**: Prefer Svelte component-scoped styles for one-off tweaks; reach for global imports only when multiple pages need the change.
 
@@ -61,17 +61,17 @@ Hierarchy is drawn in rules, ink-coloured (cream on midnight), never gray:
 
 #### Border Radius — corners are square
 
-Every `--border-radius-*` token resolves to `0`. The only exception is `--border-radius-full` (9999px), retained for genuinely circular micro-controls (slider thumbs, spinners, status dots) that opt in explicitly.
+Every `--border-radius-*` token (`--border-radius`, `-sm`, `-md`) resolves to `0`. The only exception is `--border-radius-full` (9999px), retained for genuinely circular micro-controls (slider thumbs, spinners, status dots) that opt in explicitly.
 
 #### Shadows — shadows do not exist
 
-Every `--shadow-*` token (including the colored and glass variants) resolves to `none`. The tokens are kept for API stability so the whole component layer flattens automatically. Depth comes from ink density and rule weight, not elevation.
+There are no `--shadow-*` tokens. Depth comes from ink density and rule weight, not elevation — never add `box-shadow` to new styles.
 
 #### Spacing System (8-point grid)
 
-- **Semantic scale**: `--space-3xs` through `--space-7xl`
-- **Numeric scale**: `--space-0` through `--space-48`
-- **Tight variants**: `--space-md-tight` (14px), `--space-xl-tight` (28px)
+- **Semantic scale**: `--space-3xs` through `--space-4xl`, plus `--space-7xl`
+- **Numeric scale**: `--space-px` through `--space-48`
+- **Tight variant**: `--space-xl-tight` (28px)
 - **Reading rhythm**: `--space-reading`, `--space-reading-loose` for detail-page sections
 
 #### Typography Tokens — two voices
@@ -84,16 +84,12 @@ Every `--shadow-*` token (including the colored and glass variants) resolves to 
 
 #### Focus Ring (Accessibility)
 
-- **`--focus-ring`** / **`--focus-ring-color`** / **`--focus-ring-offset`**: Accent-coloured focus indicators (pine signals the keyboard target)
-
-#### Container Queries
-
-- **`--container-query-xs`** through **`--container-query-xl`**: Widths for `@container` queries
+- **`--focus-ring`**: Accent-coloured focus indicator (pine signals the keyboard target)
 
 #### Animation & Transitions
 
-- **Duration scale**: `--duration-instant` (75ms) through `--duration-slower` (700ms); ambient loop durations exist but decorative motion is essentially retired
-- **Easing**: `--ease-in`, `--ease-out`, `--ease-in-out`, `--ease-smooth`, `--ease-out-quart`, `--ease-out-quint`. `--ease-bounce` and `--ease-spring` survive as **legacy aliases** of the quart/quint out-curves — nothing overshoots anymore; prefer `--ease-out-quart` / `--ease-out-quint` in new code
+- **Duration scale**: `--duration-instant` (75ms) through `--duration-slower` (700ms); decorative motion is essentially retired
+- **Easing**: `--ease-out`, `--ease-in-out`, `--ease-out-quart` — smooth decelerations only, nothing overshoots
 - **Stagger delays**: `--stagger-1` through `--stagger-6` (40ms step)
 
 Example usage:
@@ -177,20 +173,18 @@ Buttons speak the **data voice**: Spline Sans Mono, uppercase, letterspaced, squ
 - `.btn-secondary`: Flat outlined control
 - `.btn-outline-primary`, `.btn-outline-secondary`, `.btn-outline-accent`: Outlines that fill on hover
 - `.btn-ghost`: Minimal tertiary; `.btn-danger`: destructive actions
-- `.btn-glass`: **Neutralised legacy variant** — now a flat outlined control (no backdrop-filter)
+- `.btn-surface`: **Neutralised legacy variant** (formerly `.btn-glass`) — now a flat outlined control (no backdrop-filter)
 - **Sizes**: `.btn-sm`, `.btn-lg`; **layout**: `.btn-block`, `.btn-icon-only`
 - **States**: `.btn-loading`, disabled opacity; focus-visible uses an accent outline
 - **Accessibility**: High-contrast border widening, reduced-motion support
 
 ### Cards (`components/cards.css`)
 
-`.card` is a **flat warm-paper tile**: `--color-surface-elevated` background, 1px hairline border, square corners, no shadow. Hover darkens the border only — no lift. Many former card grids have been reworked into ledger rows; `.card` remains the bounded-tile primitive for genuinely distinct entities (featured items, project plates).
+The bounded-tile `.card` primitive (flat warm-paper tile: 1px hairline border, square corners, no shadow, border-colour hover only) is **owned by `Card.svelte`** (`src/lib/components/common/`) as component-scoped CSS, including its `.card-image` / `.card-body` / `.card-title` / `.card-subtitle` elements, the `.card--editorial` lead variant, and dark-mode rules. Many former card grids have been reworked into ledger rows.
 
-- **Elements**: `.card-image` (bordered), `.card-body`, `.card-title` (Newsreader), `.card-subtitle` (mono caps), `.card-text`, `.card-footer`
-- **Variations**: `.card-compact`, `.card-horizontal`; `.card-shadow` / `.card-shadow-lg` survive as no-ops (`box-shadow: none`)
-- **`.card-link`**: Mono arrow that slides in on hover
-- **`.card-accent-border`**: Reading-surface tile whose border warms to pine on hover
-- **Grid**: `.card-grid` with responsive columns
+This sheet only carries the one shared card class used outside that component:
+
+- **`.card-accent-border`**: Reading-surface tile whose border warms to pine on hover (used by `RelevantItemCard`, `LatestActivities`)
 
 ### Entity Cards (`components/entity-cards.css`) — route-scoped
 
@@ -202,7 +196,7 @@ Shared styles for list-based entities (Publications, Communications). `.entity-c
 
 ### Panels (`components/panels.css`)
 
-Flat ruled sidebar modules (pair with `.glass-panel`, which now supplies a flat paper surface):
+Flat ruled sidebar modules (pair with `.surface-panel`, which supplies a flat paper surface):
 
 - `.panel`: Square, flat, border-colour transition only — the earlier gradient overlays and animated accent lines are gone
 - `.panel-header` / `.panel-content` / `.panel-footer` separated by hairlines
@@ -213,10 +207,6 @@ Flat ruled sidebar modules (pair with `.glass-panel`, which now supplies a flat 
 ### Activity List (`components/activity-list.css`) — route-scoped
 
 The `/activities` page as a dated press column: mono log eyebrow over an Archivo masthead, year-grouped entries as hairline-separated rows (mono date/kind column, optional image plate, serif title + summary, mono tag run), and a ruled browse-by-year/tag aside.
-
-### Filters (`components/filters.css`) — route-scoped
-
-Shared `filter-*` classes for the filter sidebar components: mono caps section labels over hairlines, flat chip-style controls.
 
 ### Navigation Utilities (`components/navigation-utilities.css`)
 
@@ -248,70 +238,50 @@ CSS-only animation system. Motion is nearly none by design — instant state cha
 
 ## Page-Specific Styles
 
-There is intentionally no `styles/pages/` directory. Page-level design lives alongside its Svelte component so styles ship only where they are used. Shared presentation is centralized in the route-scoped modules above (`entity-cards.css`, `bibliography.css`, `activity-list.css`, `filters.css`). The `ContentBody` and `PageHeader` components (`src/lib/components/common/`) centralize common content-area and page-header styling with component-scoped CSS.
+There is intentionally no `styles/pages/` directory. Page-level design lives alongside its Svelte component so styles ship only where they are used. Shared presentation is centralized in the route-scoped modules above (`entity-cards.css`, `bibliography.css`, `activity-list.css`). The `ContentBody` and `PageHeader` components (`src/lib/components/common/`) centralize common content-area and page-header styling with component-scoped CSS.
 
 ## Utilities
 
+The utility sheets are intentionally lean: each class exists because markup actually uses it. Add new utilities only alongside real usage (and delete them again when the last usage goes).
+
 ### Spacing (`utilities/spacing.css`)
 
-Margin (`.m-*`, `.mx-*`, …), padding (`.p-*`, `.px-*`, …), gap (`.gap-*`), and `.space-y-*` utilities on the 8-point grid, with `sm:`/`md:`/`lg:` variants. Values map to the semantic tokens.
+Margin (`.mx-auto`, `.mt-*`, `.mb-*`, `.ml-*`), padding (`.p-*`, `.px-4`, `.py-8`), gap (`.gap-2/-4/-6`), and `.space-y-3` utilities on the 8-point grid. Values map to the semantic tokens.
 
 ### Colors (`utilities/colors.css`)
 
-- **Text**: `.text-primary`, `.text-secondary`, `.text-accent`, `.text-highlight`, `.text-success`, `.text-danger`, `.text-muted`, `.text-emphasis`, etc.
-- **Backgrounds**: `.bg-*` including `.bg-surface`, `.bg-surface-alt`, and opacity variants (`.bg-primary-10`, …)
-- **Borders**: `.border-*` colour and width/side utilities
-- **Interactive states** and responsive variants throughout
+Text colour utilities only: `.text-primary`, `.text-light`, `.text-muted`, `.text-emphasis`.
 
 ### Flexbox (`utilities/flex.css`)
 
-`.flex`/`.inline-flex`, direction, wrap, grow/shrink, justify/align/order utilities with responsive variants.
+`.flex`, `.flex-col`, `.flex-1`, `.justify-center`, `.justify-between`, `.items-center`, `.items-baseline`, plus the `sm:` variants in use (`.sm:flex-row`, `.sm:justify-between`, `.sm:items-center`).
 
 ### Layout (`utilities/layout.css`)
 
-Display (`.block`, `.hidden`, …) and overflow utilities, plus `.sveltekit-body-container`; responsive variants.
+`.block`, `.inline-block`, and `.sveltekit-body-container`.
 
 ### Sizing (`utilities/sizing.css`)
 
-Width/height (`.w-full`, `.h-screen`, …) and `.max-w-*` utilities (including `.max-w-prose`); responsive variants.
-
-### Border Radius (`utilities/border-radius.css`)
-
-`.rounded-*` classes still exist, but because every radius token is `0`, they all render square. `.rounded-full` is the only meaningful class — reserve it for genuinely circular micro-controls. Do not reach for these classes in new code.
-
-### Shadows (`utilities/shadows.css`)
-
-`.shadow-*` and `.hover:shadow-*` classes still exist for compatibility, but every shadow token resolves to `none`, so they are all no-ops. Do not use shadows for depth — draw a rule or strengthen a border instead.
-
-### Transforms (`utilities/transforms.css`)
-
-Scale, translate, rotate, skew, and origin utilities with hover/focus and responsive variants.
-
-### Transitions (`utilities/transitions.css`)
-
-`.transition-*` type, `.duration-*`, and `.ease-*` utilities with responsive variants.
+`.w-full`, fixed CV-column widths (`.w-20`, `.w-60`), `.h-auto`, and the `.max-w-md/-6xl/-7xl` widths in use.
 
 ### Images (`utilities/images.css`)
 
-`.responsive-image`, aspect ratios (`.aspect-square`, `.aspect-book`, …), object-fit, image containers, loading states, and component-specific image classes. Prefer the `.plate` idiom for content imagery (scans, covers, photos).
+`.responsive-image`, `.image-container` (with its hover zoom), and `.hero-image`. Prefer the `.plate` idiom for content imagery (scans, covers, photos).
 
-### Glassmorphism (`utilities/glassmorphism.css`) — legacy naming, neutralised
+### Surfaces (`utilities/surfaces.css`)
 
-Glass does not exist in Ink + Signal: no `backdrop-filter`, no blur, no translucency, no glow. This file survives because the `.glass-*` class names are still referenced throughout the codebase, but every class now renders a **flat surface** and the names are slated for renaming:
+Flat surface utilities — formerly the glassmorphism classes, neutralised for Ink + Signal (no `backdrop-filter`, no blur, no translucency, no glow) and since renamed `.glass-*` → `.surface-*`. Every class renders a **flat surface**:
 
-- `.glass`, `.glass-light/-medium/-heavy`, `.glass-frosted`, `.glass-primary`: Flat `--color-surface` tile with a 1px border
-- `.glass-card`, `.glass-panel`, `.glass-panel-light`, `.glass-sub-card`: The workhorse paper/film tiles — flat background, hairline border, square corners; `.glass-card` gets a border-colour hover only
-- `.glass-nav`: Solid page-ground masthead surface with a hairline base rule
-- `.glass-button` (and its `.btn-*` combos): Square flat ink/paper control
-- `.glass-blur-*`: Explicit no-ops (`backdrop-filter: none`)
-- `.glass-section-panel`: Transparent — content sits directly on the page ground
-- `.glass-animate`: Border-colour transition only
+- `.surface`, `.surface-light/-medium/-heavy`, `.surface-frosted`, `.surface-primary`: Flat `--color-surface` tile with a 1px border
+- `.surface-card`, `.surface-panel`, `.surface-panel-light`: The workhorse paper/film tiles — flat background, hairline border, square corners; `.surface-card` gets a border-colour hover only
+- `.surface-button` (and its `.btn-*` combos): Square flat ink/paper control
+- `.surface-animate`: Border-colour transition helper (IframeRenderer variants)
 
-New code should prefer the idiom classes (`.ledger`, `.section`, `.chip`, `.plate`) or `.card` over any `.glass-*` name.
+New code should prefer the idiom classes (`.ledger`, `.section`, `.chip`, `.plate`) or `.card` over the `.surface-*` names.
 
-### Z-Index (`utilities/z-index.css`)
+### Z-Index
 
-Numeric (`.z-0` … `.z-50`) and semantic (`.z-dropdown`, `.z-modal`, `.z-tooltip`, …) stacking utilities backed by the `--z-*` tokens.
+There is no z-index utility sheet; layer with the `--z-*` tokens (`--z-dropdown`, `--z-modal`, `--z-tooltip`, …) in component styles.
 
 ## Class Naming Convention
 
@@ -329,7 +299,7 @@ Defined in `src/styles/base/media.css`: `--sm` 640px, `--md` 768px, `--lg` 1024p
 
 ### Writing Media Queries
 
-**IMPORTANT**: Do NOT use CSS variables (e.g., `var(--breakpoint-md)`) inside media queries — browsers do not support this. Use the PostCSS Custom Media syntax:
+**IMPORTANT**: Do NOT use CSS variables inside media queries — browsers do not support this (there are deliberately no `--breakpoint-*` tokens). Use the PostCSS Custom Media syntax:
 
 ```css
 /* Correct usage */
@@ -340,12 +310,12 @@ Defined in `src/styles/base/media.css`: `--sm` 640px, `--md` 768px, `--lg` 1024p
 }
 
 /* Invalid — DO NOT USE */
-@media (min-width: var(--breakpoint-md)) { ... }
+@media (min-width: var(--some-token)) { ... }
 ```
 
 - **Base styles**: Designed for mobile first (no media query)
 - **Progressive enhancement**: `@media (--breakpoint)` for larger screens
-- **Utility responsiveness**: Most utilities take breakpoint prefixes (e.g., `.md:text-lg`)
+- **Utility responsiveness**: Some utilities have breakpoint-prefixed variants (e.g., `.sm:flex-row`); only variants with real usage are kept
 
 ## Best Practices
 

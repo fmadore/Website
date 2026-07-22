@@ -9,7 +9,7 @@ const templateIds: string[] = [
 	// 'award-template-id'
 ];
 
-const awardModules = import.meta.glob<ModuleType>(['./*.ts'], { eager: true });
+const awardModules = import.meta.glob<ModuleType>(['./*.ts', '!./index.ts'], { eager: true });
 
 const allAwards: Award[] = loadData<Award>(awardModules, templateIds, 'award');
 

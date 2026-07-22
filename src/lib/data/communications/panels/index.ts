@@ -1,10 +1,10 @@
 import type { Communication } from '$lib/types/communication';
 import { loadData } from '$lib/utils/dataLoader';
 
-// Dynamically import all panel files (exclude index to avoid circular import)
-const panelModules = import.meta.glob('./*.ts', { eager: true });
-// Remove self from modules to avoid circular reference
-delete panelModules['./index.ts'];
+// Dynamically import all panel files (excluding this index and the template)
+const panelModules = import.meta.glob(['./*.ts', '!./index.ts', '!./panel-template.ts'], {
+	eager: true
+});
 
 const allPanels: Communication[] = loadData<Communication>(
 	panelModules,

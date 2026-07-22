@@ -57,11 +57,11 @@ The ItemReference component provides several interactive features:
 
 This component follows the atomic design pattern and is composed of:
 
-1. **Atoms**:
+1. **Atoms** (in `src/lib/components/reference/`):
    - `ReferenceLink` - The citation link itself
    - `ReferencePreviewCard` - The preview card with item details
 
-2. **Molecules**:
+2. **Molecules** (in `src/lib/components/reference/`):
    - `ItemReference` - Combines the atoms with interaction logic
 
 ## Integration with Data

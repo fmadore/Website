@@ -75,21 +75,6 @@ html.dark .surface-card.surface-card:hover {
 	border-color: var(--color-border-dark);
 }
 
-/* Sticky masthead surface (Header.svelte owns the full rule system). Solid
- * page ground with a hairline base rule — no translucency, no blur. */
-.surface-nav {
-	background: var(--color-background);
-	border-bottom: var(--rule-hairline) solid var(--color-border);
-	box-shadow: none;
-	-webkit-backdrop-filter: none;
-	backdrop-filter: none;
-}
-
-html.dark .surface-nav.surface-nav {
-	background: var(--color-background);
-	border-bottom-color: var(--color-border);
-}
-
 /* Standalone flat control (toggles, iframe chrome) — a square ink/paper
  * button. The typed button system lives in buttons.css; these rules only
  * catch bare `.surface-button` usages. Doubled selector keeps specificity

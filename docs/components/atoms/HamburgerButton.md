@@ -5,7 +5,7 @@ A customizable hamburger button component that toggles between normal and active
 ## Import
 
 ```svelte
-import HamburgerButton from '$lib/components/atoms/HamburgerButton.svelte';
+import HamburgerButton from '$lib/components/menu/HamburgerButton.svelte';
 ```
 
 ## Usage

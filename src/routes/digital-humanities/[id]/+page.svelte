@@ -1,13 +1,10 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
 	import MetaTags from '$lib/components/digital-humanities/MetaTags.svelte';
-	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+	import EntityDetailLayout from '$lib/components/common/EntityDetailLayout.svelte';
 	import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
 	import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
 	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
-	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
-	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
 
 	import { base, resolve } from '$app/paths';
 
@@ -31,11 +28,8 @@
 		{ label: project.title, href: `${base}/digital-humanities/${project.id}` }
 	]);
 
-	// JSON-LD for Breadcrumbs - uses reusable utility
-	useBreadcrumbJsonLd(() => breadcrumbItems, 'breadcrumb-json-ld-dh-project');
-
-	// Inject project JSON-LD structured data
-	useJsonLdScript('dh-project-json-ld', () => jsonLdString);
+	// Breadcrumb + project JSON-LD injection is handled by EntityDetailLayout
+	// (with this route's custom breadcrumb script id).
 
 	// Prepare details for DetailsGrid
 	const projectDetails: ProjectDetailItem[] = [
@@ -55,12 +49,21 @@
 <!-- Zotero/COinS metadata — mirrors the other detail routes' MetaTags. -->
 <MetaTags {project} />
 
-<div class="container py-8 page-enter">
-	<div class="content-wrapper">
+<EntityDetailLayout
+	{breadcrumbItems}
+	breadcrumbJsonLdId="breadcrumb-json-ld-dh-project"
+	jsonLdScriptId="dh-project-json-ld"
+	{jsonLdString}
+	title={project.title}
+	typeBadgeText="Digital Humanities"
+	date={project.years}
+	wrapperClass="content-wrapper"
+>
+	{#snippet children({ breadcrumb, header })}
 		<article class="project-detail-article max-w-6xl mx-auto">
-			<Breadcrumb items={breadcrumbItems} />
+			{@render breadcrumb()}
 
-			<PageHeader title={project.title} typeBadgeText="Digital Humanities" date={project.years} />
+			{@render header()}
 
 			{#if project.heroImageUrl || project.imageUrl}
 				<div class="hero-image-wrapper mb-8 scroll-reveal">
@@ -235,16 +238,18 @@
 				{/if}
 			</div>
 		</article>
-	</div>
+	{/snippet}
 
-	<!-- Back link — quiet editorial text link, left-aligned like the
-	     header back-links on other detail pages. -->
-	<div class="mt-8 max-w-6xl mx-auto">
-		<a href={resolve('/digital-humanities')} class="back-to-index">
-			← Back to Digital Humanities projects
-		</a>
-	</div>
-</div>
+	{#snippet after()}
+		<!-- Back link — quiet editorial text link, left-aligned like the
+		     header back-links on other detail pages. -->
+		<div class="mt-8 max-w-6xl mx-auto">
+			<a href={resolve('/digital-humanities')} class="back-to-index">
+				← Back to Digital Humanities projects
+			</a>
+		</div>
+	{/snippet}
+</EntityDetailLayout>
 
 <style>
 	/* Back link — mono data-voice affordance matching the header back-link. */

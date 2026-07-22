@@ -11,32 +11,24 @@ html.dark {
 	--color-primary: var(--sys-color-cream);
 	--color-primary-dark: var(--sys-color-paper-raised);
 	--color-primary-light: var(--sys-color-cream-soft);
-	--color-primary-lighter: var(--sys-color-cream-muted);
 
 	/* Secondary — muted cream */
 	--color-secondary: var(--sys-color-cream-muted);
-	--color-secondary-light: var(--sys-color-cream-soft);
 
 	/* Accent — pine, brightened for the negative. */
 	--color-accent: var(--sys-color-pine-bright);
 	--color-accent-dark: var(--sys-color-pine);
-	--color-accent-light: #74cdb0;
 
 	/* Highlight — accent */
 	--color-highlight: var(--sys-color-pine-bright);
-	--color-highlight-dark: var(--sys-color-pine);
-	--color-highlight-light: #74cdb0;
 
 	/* Functional states */
 	--color-success: var(--sys-color-success-bright);
-	--color-success-dark: var(--sys-color-success);
 	--color-danger: var(--sys-color-danger-bright);
 	--color-danger-dark: var(--sys-color-danger);
-	--color-danger-light: #e07458;
 
 	/* Backgrounds — the warm near-black film ground. */
 	--color-background: var(--sys-color-film-ground);
-	--color-background-subtle: var(--sys-color-film-100);
 	--color-background-muted: var(--sys-color-film-200);
 
 	/* Text — cream on film. Emphasis is the brightest cream; long prose sits
@@ -52,8 +44,6 @@ html.dark {
 	--color-surface: var(--sys-color-film-100);
 	--color-surface-alt: var(--sys-color-film-200);
 	--color-surface-elevated: var(--sys-color-film-200);
-	--color-surface-sunken: var(--sys-color-film-ground);
-	--color-surface-border: var(--sys-color-film-border);
 
 	/* Borders */
 	--color-border: var(--sys-color-film-border);
@@ -63,29 +53,13 @@ html.dark {
 
 	/* Focus ring */
 	--focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-accent) 50%, transparent);
-	--focus-ring-color: var(--color-accent);
 
 	/* Academic */
 	--color-citation: var(--color-accent);
-	--color-quote: var(--sys-color-cream-soft);
-	--color-note: var(--sys-color-cream-muted);
 	--color-code-bg: var(--sys-color-film-100);
 
 	/* Component layers */
-	--color-background-alt: var(--sys-color-film-100);
 	--color-footer-bg: #0f0c08;
 	--color-footer-text: var(--sys-color-cream);
 	--color-footer-text-muted: #8a8170;
-	--color-sidebar-bg: var(--sys-color-film-100);
-
-	/* Button / control schemes — cream family */
-	--color-secondary-scheme: var(--color-primary-light);
-	--color-secondary-scheme-alt: var(--color-primary);
-	--color-surface-scheme: var(--color-primary);
-	--color-surface-scheme-alt: var(--color-primary-light);
-
-	/* Dark surface tokens */
-	--color-dark-surface: var(--sys-color-film-100);
-	--color-dark-surface-alt: var(--sys-color-film-ground);
-	--color-dark-surface-deep: #0f0c08;
 }

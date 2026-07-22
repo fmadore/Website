@@ -12,6 +12,10 @@
 	import { areFiltersActive } from '$lib/utils/filterUtils';
 	import { getAuthorsArray } from '$lib/utils/citationFormatter';
 	import { allPublications, publicationsByYear } from '$lib/data/publications';
+	import {
+		PUBLICATION_TYPE_FILTER_LABELS as typeLabels,
+		PUBLICATION_TYPE_CHIP_LABELS as typeChipLabels
+	} from '$lib/utils/publicationTypeLabels';
 
 	// The runed filter system: `af` is the stable deep-reactive filter state.
 	// No store prefixes, no casts.
@@ -135,35 +139,6 @@
 			return { pub, yearLabel: showYear ? pub.year : null, isLead };
 		});
 	});
-
-	// ── Type chips (real granular types + counts) ───────────────────────────────
-	const typeLabels: Record<string, string> = {
-		blogpost: 'Blog post',
-		book: 'Book',
-		'bulletin-article': 'Bulletin article',
-		chapter: 'Book chapter',
-		'conference-proceedings': 'Conference proceedings',
-		encyclopedia: 'Encyclopedia entry',
-		article: 'Journal article',
-		'masters-thesis': "Master's thesis",
-		'phd-dissertation': 'Ph.D. dissertation',
-		report: 'Report',
-		'special-issue': 'Special issue'
-	};
-	// Short chip labels — the mockup's compact type row.
-	const typeChipLabels: Record<string, string> = {
-		blogpost: 'Blog posts',
-		book: 'Books',
-		'bulletin-article': 'Bulletins',
-		chapter: 'Chapters',
-		'conference-proceedings': 'Proceedings',
-		encyclopedia: 'Encyclopedia',
-		article: 'Articles',
-		'masters-thesis': 'Theses',
-		'phd-dissertation': 'Dissertations',
-		report: 'Reports',
-		'special-issue': 'Special issues'
-	};
 </script>
 
 <SEO

@@ -1,5 +1,5 @@
 import { allCommunications } from '$lib/data/communications/index';
-import { buildCommunicationJsonLd } from '$lib/utils/jsonLdSchemas';
+import { buildCommunicationJsonLd } from '$lib/utils/entityJsonLd';
 import { loadEntityDetail } from '$lib/utils/entityPageLoader';
 import type { PageLoad } from './$types';
 

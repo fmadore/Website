@@ -1,5 +1,5 @@
 import { allPublications } from '$lib/data/publications/index';
-import { buildPublicationJsonLd } from '$lib/utils/jsonLdSchemas';
+import { buildPublicationJsonLd } from '$lib/utils/entityJsonLd';
 import { loadEntityDetail } from '$lib/utils/entityPageLoader';
 import type { PageLoad } from './$types';
 

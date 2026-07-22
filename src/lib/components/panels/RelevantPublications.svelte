@@ -3,6 +3,7 @@
 	import RelevantItemsList from '$lib/components/panels/RelevantItemsList.svelte';
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
 	import { formatAuthorsCompact as formatAuthors } from '$lib/utils/nameUtils';
+	import { PUBLICATION_TYPE_PANEL_LABELS } from '$lib/utils/publicationTypeLabels';
 	import Button from '../atoms/Button.svelte';
 
 	// Props - project name and limit
@@ -44,18 +45,7 @@
 
 	// Format publication type for display
 	function formatPublicationType(type: string): string {
-		const typeMap: Record<string, string> = {
-			article: 'Journal Article',
-			'bulletin-article': 'Bulletin Article',
-			book: 'Book',
-			chapter: 'Book Chapter',
-			'special-issue': 'Special Issue',
-			report: 'Report',
-			encyclopedia: 'Encyclopedia Entry',
-			blogpost: 'Blog Post',
-			dissertation: 'Dissertation'
-		};
-		return typeMap[type] || type;
+		return PUBLICATION_TYPE_PANEL_LABELS[type] || type;
 	}
 </script>
 

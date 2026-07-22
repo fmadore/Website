@@ -5,7 +5,7 @@ A navigation component designed for desktop displays that renders a horizontal n
 ## Import
 
 ```svelte
-import DesktopNav from '$lib/components/molecules/DesktopNav.svelte';
+import DesktopNav from '$lib/components/menu/DesktopNav.svelte';
 ```
 
 ## Usage
@@ -64,7 +64,7 @@ This component uses:
 <script lang="ts">
 	import { base } from '$app/paths';
 	import type { NavItem } from '$lib/types/navigation';
-	import DesktopNav from '$lib/components/molecules/DesktopNav.svelte';
+	import DesktopNav from '$lib/components/menu/DesktopNav.svelte';
 
 	// Navigation items data
 	const navItems: NavItem[] = [

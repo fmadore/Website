@@ -5,7 +5,7 @@ An atomic component that displays a rich preview card for referenced publication
 ## Import
 
 ```svelte
-import ReferencePreviewCard from '$lib/components/atoms/ReferencePreviewCard.svelte';
+import ReferencePreviewCard from '$lib/components/reference/ReferencePreviewCard.svelte';
 ```
 
 ## Usage
@@ -16,8 +16,8 @@ import ReferencePreviewCard from '$lib/components/atoms/ReferencePreviewCard.sve
 	itemType="publication"
 	referenceElement={spanElement}
 	positionClass="position-below"
-	on:pointerenter={handlePointerEnter}
-	on:pointerleave={handlePointerLeave}
+	onpointerenter={handlePointerEnter}
+	onpointerleave={handlePointerLeave}
 />
 ```
 
@@ -30,12 +30,13 @@ import ReferencePreviewCard from '$lib/components/atoms/ReferencePreviewCard.sve
 | `referenceElement` | `HTMLElement \| null`              | `null`     | Reference to the parent element for positioning    |
 | `positionClass`    | `string`                           | `''`       | CSS class for positioning ('' or 'position-below') |
 
-## Events
+## Callback props
 
-| Event          | Description                        |
-| -------------- | ---------------------------------- |
-| `pointerenter` | Fired when pointer enters the card |
-| `pointerleave` | Fired when pointer leaves the card |
+| Prop             | Description                         |
+| ---------------- | ----------------------------------- |
+| `onpointerenter` | Called when pointer enters the card |
+| `onpointerleave` | Called when pointer leaves the card |
+| `onclose`        | Called when the card requests close |
 
 ## Features
 

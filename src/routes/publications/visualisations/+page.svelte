@@ -28,6 +28,7 @@
 		buildCooccurrenceNetwork
 	} from '$lib/utils/networkAggregation';
 	import type { NetworkEdgeKind } from '$lib/utils/networkAggregation';
+	import { PUBLICATION_TYPE_CHART_LABELS } from '$lib/utils/publicationTypeLabels';
 	import NetworkControls from '$lib/components/visualisations/NetworkControls.svelte';
 	import type { TreemapNode } from '$lib/utils/vizAggregation';
 	import { author } from '$lib/data/siteConfig';
@@ -81,22 +82,8 @@
 	);
 
 	// Helper function to format type labels for display
-	const formatTypeLabel = (type: string): string => {
-		const typeLabels: Record<string, string> = {
-			article: 'Journal article',
-			'bulletin-article': 'Bulletin article',
-			book: 'Book',
-			chapter: 'Book chapter',
-			'conference-proceedings': 'Conference proceedings',
-			'special-issue': 'Special issue',
-			report: 'Research report',
-			encyclopedia: 'Encyclopedia entry',
-			blogpost: 'Blog post',
-			'masters-thesis': "Master's thesis",
-			'phd-dissertation': 'PhD dissertation'
-		};
-		return typeLabels[type] || type.charAt(0).toUpperCase() + type.slice(1);
-	};
+	const formatTypeLabel = (type: string): string =>
+		PUBLICATION_TYPE_CHART_LABELS[type] || type.charAt(0).toUpperCase() + type.slice(1);
 
 	const publicationTypesForStack = $derived(Object.keys(publicationsByType).sort());
 

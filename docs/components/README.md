@@ -1,148 +1,70 @@
 # Components Documentation
 
-This website follows the **Atomic Design** methodology, organizing components into a hierarchical structure that promotes reusability, consistency, and maintainability.
+Documentation for a subset of the components in `src/lib/components/`. The component library loosely follows **Atomic Design** (atoms → molecules → organisms) plus shared `common/` components and feature-specific directories.
 
-## Atomic Design Structure
+> **Note:** All components use **Svelte 5 runes** (`$props()`, `$state()`, `$derived()`, `$effect()`) and snippet/children render patterns (`{@render children?.()}`, `{#snippet ...}`), not Svelte 4 slots or `export let` props. See the repository root `CLAUDE.md` for the required patterns and styling conventions (Ink + Signal design system).
 
-The component library is organized into three main levels:
+## Directory Structure
 
-1. **[Atoms](./atoms/README.md)** - Basic building blocks that cannot be broken down further
-2. **[Molecules](./molecules/README.md)** - Simple functional groups of atoms
-   - `ItemCard` - Displays a single generic item (like a publication or communication) with meta, title, authors, and abstract.
-3. **[Organisms](./organisms/README.md)** - Complex UI components composed of molecules and atoms
-   - `RelevantItemsList` - Displays a titled list of items (e.g., publications, communications) relevant to a specific context (like a project), including filtering links and a "view all" link.
-
-## Other Component Categories
-
-In addition to the atomic design components, we have:
-
-- **[Common](./common/README.md)** - Shared components used across multiple pages
-- **[Filters](./filters/README.md)** - Components related to data filtering
-- **[Publications](./publications/README.md)** - Components specific to the publications section
-- **[Communications](./communications/README.md)** - Components specific to the communications section
-
-## Component Usage Guidelines
-
-When using or creating components:
-
-1. **Component Placement**: Place new components in the appropriate category based on their complexity
-2. **Props Documentation**: Document all props with their types, defaults, and purpose
-3. **Event Handling**: Document events emitted by components and how to handle them
-4. **Accessibility**: Ensure components meet accessibility standards (WCAG)
-5. **Responsive Design**: All components should be responsive by default
-
-## Component Development Workflow
-
-When developing new components:
-
-1. Identify the appropriate level (atom, molecule, organism)
-2. Check for existing components that might fulfill the need
-3. Create the new component following the established patterns
-4. Document the component in the appropriate docs directory
-5. Update this documentation if introducing new patterns or categories
-
-## Layout Components
-
-- [EntityListPageLayout](./EntityListPageLayout.md) - A flexible layout component for entity list pages with sidebar and main content
-
-## Display Components
-
-- [FilteredListDisplay](./FilteredListDisplay.md) - A component for displaying filtered lists with empty states
-- [Card](./Card.md) - A versatile card component for displaying content with image, title, and various sections (moved to common/)
-
-## Interface Components
-
-- ToggleButton - A simple button that toggles between two states
-- MapVisualization - Displays items on an interactive map using Leaflet
-
-## Item Components
-
-- PublicationItem - Displays a publication with all its details
-- CommunicationItem - Displays a communication/conference activity
-- `ItemCard` - Moved to molecules (Generic display for list items)
-- CitedBy - Displays works that cited a publication
-- Reviews - Displays reviews of a publication
-
-## Filter Components
-
-- FilterSectionButtons - Displays filter options as clickable buttons (e.g., tags)
-- FilterSectionCheckbox - Displays filter options as checkboxes
-- FilterSectionRangeSlider - Provides a range slider for filtering by year
-- FiltersSidebar (Publications) - Complete sidebar with filter sections for publications
-- FiltersSidebar (Communications) - Complete sidebar with filter sections for communications
-
-## Component Structure
+The real tree of `src/lib/components/`:
 
 ```
 src/lib/components/
-├── common/
-│   ├── EntityListPageLayout.svelte
-│   ├── FilteredListDisplay.svelte
-│   ├── ToggleButton.svelte
-│   └── Card.svelte
-├── filters/
-│   ├── FilterSectionButtons.svelte
-│   ├── FilterSectionCheckbox.svelte
-│   └── FilterSectionRangeSlider.svelte
-├── molecules/
-│   └── ItemCard.svelte
-├── organisms/
-│   ├── RelevantItemsList.svelte
-│   ├── RelevantPublications.svelte
-│   └── RelevantCommunications.svelte
-├── publications/
-│   ├── FiltersSidebar.svelte
-│   ├── PublicationItem.svelte
-│   ├── Reviews.svelte
-│   └── CitedBy.svelte
-├── communications/
-│   ├── CommunicationItem.svelte
-│   ├── FiltersSidebar.svelte
-│   └── MapVisualization.svelte
+├── atoms/               # Basic elements (Button, ToggleButton, RangeSlider, ...)
+├── molecules/           # Simple compositions (Breadcrumb, TagList, Pagination, ...)
+├── organisms/           # Complex UI (RelatedItemsList)
+├── common/              # Shared layout & display (Card, PageHeader, EntityListPageLayout, ...)
+├── entity-index/        # Entity index facets and filter bar
+├── activities/          # Activities feature components
+├── communications/      # Communications feature components
+├── cv/                  # CV feature components
+├── digital-humanities/  # Digital humanities feature components
+├── media/               # Media feature components
+├── menu/                # Header, navigation, theme toggle
+├── panels/              # Panel components
+├── publications/        # Publications feature components
+├── reference/           # Citation references (ItemReference, ReferenceLink, ...)
+├── research/            # Research feature components
+└── visualisations/      # ECharts/D3/MapLibre visualisation components
 ```
 
-## Usage Patterns
+## Documented Components
 
-Most components follow these usage patterns:
+Several documented components now live outside the folder their doc sits in; the actual source location is given for each.
 
-### List Pages
+### Atoms (`docs/components/atoms/`)
 
-```svelte
-<EntityListPageLayout title="Publications">
-	<svelte:fragment slot="top-area">
-		<ToggleButton ... />
-	</svelte:fragment>
+- [Button](./atoms/Button.md) — `atoms/Button.svelte`
+- [HamburgerButton](./atoms/HamburgerButton.md) — `menu/HamburgerButton.svelte`
+- [NavLink](./atoms/NavLink.md) — `menu/NavLink.svelte`
+- [ThemeToggle](./atoms/ThemeToggle.md) — `menu/ThemeToggle.svelte`
+- [ReferenceLink](./atoms/ReferenceLink.md) — `reference/ReferenceLink.svelte`
+- [ReferencePreviewCard](./atoms/ReferencePreviewCard.md) — `reference/ReferencePreviewCard.svelte`
 
-	<svelte:fragment slot="sidebar">
-		<FiltersSidebar ... />
-	</svelte:fragment>
+### Molecules (`docs/components/molecules/`)
 
-	<FilteredListDisplay ... />
-</EntityListPageLayout>
-```
+- [Breadcrumb](./molecules/Breadcrumb.md) — `molecules/Breadcrumb.svelte`
+- [ItemReference](./molecules/ItemReference.md) — `reference/ItemReference.svelte`
+- [DesktopNav](./molecules/DesktopNav.md) — `menu/DesktopNav.svelte`
+- [MobileMenu](./molecules/MobileMenu.md) — `menu/MobileMenu.svelte`
+- [DropdownMenu](./molecules/DropdownMenu.md) — `menu/DropdownMenu.svelte`
+- [NavItemWithDropdown](./molecules/NavItemWithDropdown.md) — `menu/NavItemWithDropdown.svelte`
 
-### Item Display
+### Organisms (`docs/components/organisms/`)
 
-Item components can be used directly within `FilteredListDisplay`:
+- [Header](./organisms/Header.md) — `menu/Header.svelte`
 
-```svelte
-<FilteredListDisplay
-	filteredItems={filteredPublications}
-	itemComponent={PublicationItem}
-	itemPropName="publication"
-	onItemEvent={handleItemEvent}
-	...
-/>
-```
+### Common (`docs/components/common/`)
 
-### Creating Custom Filter Sections
+- [Card](./common/Card.md) — `common/Card.svelte`
+- [EntityListPageLayout](./common/EntityListPageLayout.md) — `common/EntityListPageLayout.svelte`
+- [FilteredListDisplay](./common/FilteredListDisplay.md) — `common/FilteredListDisplay.svelte`
+- [PageHeader](./common/PageHeader.md) — `common/PageHeader.svelte`
 
-Filter sections can be composed to create custom filtering interfaces:
+## Component Usage Guidelines
 
-```svelte
-<aside class="filter-sidebar">
-	<FilterSectionCheckbox ... />
-	<FilterSectionRangeSlider ... />
-	<FilterSectionButtons ... />
-</aside>
-```
+1. **Component placement**: Put new components in the directory matching their role (atomic level, `common/`, or the relevant feature directory)
+2. **Svelte 5 only**: Use runes and snippet props; never legacy reactive syntax, slots, or `createEventDispatcher`
+3. **Styling**: Use CSS variables/design tokens only; flat print register (no shadows, glass, gradients, or rounded corners) — see `CLAUDE.md`
+4. **Accessibility**: Components must meet WCAG standards (ARIA attributes, keyboard navigation, focus states)
+5. **Docs**: When a documented component's props change, update its doc file here or delete it

@@ -5,7 +5,7 @@ A responsive mobile navigation menu that slides in from the right side of the sc
 ## Import
 
 ```svelte
-import MobileMenu from '$lib/components/molecules/MobileMenu.svelte';
+import MobileMenu from '$lib/components/menu/MobileMenu.svelte';
 ```
 
 ## Usage
@@ -36,7 +36,7 @@ interface NavItem {
 
 This component uses:
 
-- `ThemeToggle` atom - For theme switching within the mobile menu
+- `ThemeToggle` (menu/) - For theme switching within the mobile menu
 
 ## Features
 
@@ -48,9 +48,7 @@ This component uses:
 
 ## Visual Effects
 
-- Backdrop blur to partially obscure content behind the menu
-- Animation for smooth entry/exit
-- Box shadow for depth effect
+- Backdrop overlay to obscure content behind the menu (flat, no blur or shadow per the print register)
 
 ## Example
 
@@ -58,8 +56,8 @@ This component uses:
 <script lang="ts">
 	import { base } from '$app/paths';
 	import type { NavItem } from '$lib/types/navigation';
-	import MobileMenu from '$lib/components/molecules/MobileMenu.svelte';
-	import HamburgerButton from '$lib/components/atoms/HamburgerButton.svelte';
+	import MobileMenu from '$lib/components/menu/MobileMenu.svelte';
+	import HamburgerButton from '$lib/components/menu/HamburgerButton.svelte';
 
 	// Navigation items data
 	const navItems: NavItem[] = [

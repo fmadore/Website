@@ -5,7 +5,7 @@ A toggle button component that switches between light and dark themes. It displa
 ## Import
 
 ```svelte
-import ThemeToggle from '$lib/components/atoms/ThemeToggle.svelte';
+import ThemeToggle from '$lib/components/menu/ThemeToggle.svelte';
 ```
 
 ## Usage
@@ -26,23 +26,23 @@ import ThemeToggle from '$lib/components/atoms/ThemeToggle.svelte';
 
 | Prop   | Type     | Default | Description                |
 | ------ | -------- | ------- | -------------------------- |
-| `size` | `number` | `20`    | Size of the icon in pixels |
+| `size` | `number` | `18`    | Size of the icon in pixels |
 
 ## Functionality
 
 The component:
 
-- Reads the current theme from the Svelte store (`$theme`)
+- Reads the current theme via `getTheme()` from `$lib/stores/themeStore.svelte`
 - Calls `toggleTheme()` when clicked to switch between light and dark modes
 - Displays a Moon icon in light mode and a Sun icon in dark mode
-- Uses the Lucide SVG icon library
+- Uses Iconify (`@iconify/svelte`) for the icons
 
 ## Stores
 
-The component uses the following Svelte stores:
+The component uses `$lib/stores/themeStore.svelte`:
 
-- `theme` - A readable store with the current theme value ('light' or 'dark')
-- `toggleTheme` - A function to toggle between light and dark themes
+- `getTheme()` - Returns the current theme value ('light' or 'dark')
+- `toggleTheme()` - Toggles between light and dark themes
 
 ## Accessibility
 
@@ -53,7 +53,7 @@ The component uses the following Svelte stores:
 
 ```svelte
 <script>
-	import ThemeToggle from '$lib/components/atoms/ThemeToggle.svelte';
+	import ThemeToggle from '$lib/components/menu/ThemeToggle.svelte';
 </script>
 
 <header>

@@ -1,9 +1,10 @@
 import type { Publication } from '$lib/types/publication';
 import { formatDisplayDate, isForthcoming } from '$lib/utils/date-formatter';
-import { PUBLICATION_TYPE_CITATION_LABELS } from '$lib/utils/typeUtils';
+import { joinNames, splitNames } from '$lib/utils/nameUtils';
+import { PUBLICATION_TYPE_CITATION_LABELS } from '$lib/utils/publicationTypeLabels';
 
 // Human-readable labels for publication types (citation register).
-// Re-exported from the single type-label registry in typeUtils.
+// Re-exported from the single type-label registry in publicationTypeLabels.
 export const typeLabels = PUBLICATION_TYPE_CITATION_LABELS;
 
 // Helper function to handle authors that might be string or array
@@ -13,14 +14,8 @@ export function getAuthorsArray(authors: string[] | string | undefined): string[
 	return authors;
 }
 
-// Join names citation-style: ", " between entries, " and " before the last.
-function joinNames(names: string[]): string {
-	if (names.length === 0) return '';
-	if (names.length === 1) return names[0];
-	return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
-}
-
-// New function to format author list
+// New function to format author list. Citation style: ", " between entries,
+// " and " before the last (no serial comma) — the joinNames defaults.
 export function formatAuthorList(authorsInput: string[] | string | undefined): string {
 	return joinNames(getAuthorsArray(authorsInput));
 }
@@ -28,13 +23,7 @@ export function formatAuthorList(authorsInput: string[] | string | undefined): s
 // Helper function to format editor string (e.g., "Name1, Name2 and Name3")
 function formatEditors(editors: string | undefined): string {
 	if (!editors) return '';
-	// Replace " and " with ", " then split by comma, trim, and filter empty
-	const editorsArray = editors
-		.replace(/\s+and\s+/g, ', ')
-		.split(',')
-		.map((name) => name.trim())
-		.filter(Boolean);
-	return joinNames(editorsArray);
+	return joinNames(splitNames(editors));
 }
 
 // "Place: Publisher" imprint block shared by book/chapter/encyclopedia/

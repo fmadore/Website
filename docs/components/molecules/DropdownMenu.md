@@ -5,7 +5,7 @@ A dropdown menu component that displays a list of navigation items in a styled p
 ## Import
 
 ```svelte
-import DropdownMenu from '$lib/components/molecules/DropdownMenu.svelte';
+import DropdownMenu from '$lib/components/menu/DropdownMenu.svelte';
 ```
 
 ## Usage
@@ -56,7 +56,7 @@ interface NavItem {
 ```svelte
 <script>
 	import { base } from '$app/paths';
-	import DropdownMenu from '$lib/components/molecules/DropdownMenu.svelte';
+	import DropdownMenu from '$lib/components/menu/DropdownMenu.svelte';
 
 	// Navigation dropdown items
 	const researchItems = [
@@ -77,7 +77,7 @@ interface NavItem {
 </script>
 
 <div class="nav-item">
-	<button on:click={toggleDropdown}>
+	<button onclick={toggleDropdown}>
 		Research
 		<span class="caret">▾</span>
 	</button>

@@ -19,9 +19,27 @@ export default defineConfig({
 						return 'echarts';
 					}
 
-					// D3 - data visualization (dynamically imported)
-					if (id.includes('node_modules/d3') || id.includes('d3-')) {
-						return 'd3';
+					// D3 — split the DOM/interaction modules (only needed by the
+					// lazily-loaded D3BubbleChart) from the scale/math modules
+					// (statically imported by CareerTimeline on /cv/timeline).
+					// A single merged 'd3' chunk made /cv/timeline eagerly download
+					// force/zoom/selection it never uses.
+					const d3Interactive = [
+						'd3-selection',
+						'd3-force',
+						'd3-zoom',
+						'd3-transition',
+						'd3-drag',
+						'd3-dispatch',
+						'd3-timer',
+						'd3-ease',
+						'd3-quadtree'
+					];
+					if (d3Interactive.some((pkg) => id.includes(`node_modules/${pkg}/`))) {
+						return 'd3-interactive';
+					}
+					if (id.includes('node_modules/d3-') || id.includes('node_modules/d3/')) {
+						return 'd3-core';
 					}
 
 					// NOTE: MapLibre GL used to be pinned to its own `maplibre` chunk here,

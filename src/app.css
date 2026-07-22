@@ -30,7 +30,6 @@
  * global stylesheet small:
  *   - components/entity-cards.css  → PublicationItem / CommunicationItem
  *   - components/activity-list.css → LatestActivities + /activities routes
- *   - components/filters.css       → UniversalFiltersSidebar / ActiveFiltersBar / /activities
  */
 
 /* Utilities */
@@ -39,8 +38,5 @@
 @import './styles/utilities/flex.css';
 @import './styles/utilities/layout.css';
 @import './styles/utilities/sizing.css';
-@import './styles/utilities/transitions.css';
-@import './styles/utilities/transforms.css';
 @import './styles/utilities/images.css';
 @import './styles/utilities/surfaces.css';
-@import './styles/utilities/z-index.css';

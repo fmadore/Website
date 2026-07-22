@@ -118,7 +118,10 @@
 	.card-image {
 		overflow: hidden;
 		aspect-ratio: 3/2; /* Consistent aspect ratio for card images */
+		width: 100%;
+		height: var(--card-height-image); /* Ported from the retired global cards.css rule */
 		background-color: var(--color-surface-alt);
+		border-bottom: var(--border-width-thin) solid var(--color-border);
 		flex-shrink: 0;
 	}
 

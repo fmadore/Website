@@ -28,12 +28,6 @@ import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 | `items`        | `Array<{ label: string; href: string; }>` | `[]`    | Array of breadcrumb items to display             |
 | `showHomeLink` | `boolean`                                 | `true`  | Whether to show the "Home" link at the beginning |
 
-## Component Composition
-
-This component is built using:
-
-- `BreadcrumbLink` atom - For each individual link in the breadcrumb path
-
 ## Accessibility
 
 - Uses semantic HTML with appropriate ARIA attributes

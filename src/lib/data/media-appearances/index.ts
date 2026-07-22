@@ -9,7 +9,7 @@ const templateIds: string[] = [
 	// 'media-appearance-template-id'
 ];
 
-const mediaModules = import.meta.glob<ModuleType>(['./*.ts'], { eager: true });
+const mediaModules = import.meta.glob<ModuleType>(['./*.ts', '!./index.ts'], { eager: true });
 
 const allMediaAppearances: MediaAppearance[] = loadData<MediaAppearance>(
 	mediaModules,

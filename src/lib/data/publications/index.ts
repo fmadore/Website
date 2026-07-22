@@ -39,7 +39,7 @@ const dirTypeMap: Record<string, string> = {
 	'./proceedings/': 'proceedings'
 };
 
-// Use a single static glob import
+// Use a single static glob import (excluding per-type template files)
 const publicationModules = import.meta.glob(
 	[
 		'./books/*.ts',
@@ -51,7 +51,8 @@ const publicationModules = import.meta.glob(
 		'./encyclopedia/*.ts',
 		'./blogposts/*.ts',
 		'./dissertations/*.ts',
-		'./proceedings/*.ts'
+		'./proceedings/*.ts',
+		'!./*/*-template.ts'
 	],
 	{ eager: true }
 );
