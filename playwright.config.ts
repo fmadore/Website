@@ -36,7 +36,13 @@ export default defineConfig({
 		}
 	],
 	webServer: {
-		command: `npm run build && npx serve build --listen ${PORT} --no-port-switching`,
+		// In CI the production build is produced once by an earlier job and
+		// downloaded as an artifact; set PLAYWRIGHT_SKIP_BUILD=1 to serve that
+		// existing `build/` directory instead of rebuilding. Locally (unset),
+		// `npm run test:e2e` still builds first, as before.
+		command: process.env.PLAYWRIGHT_SKIP_BUILD
+			? `npx serve build --listen ${PORT} --no-port-switching`
+			: `npm run build && npx serve build --listen ${PORT} --no-port-switching`,
 		port: PORT,
 		reuseExistingServer: !process.env.CI,
 		timeout: 120_000
