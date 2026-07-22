@@ -56,6 +56,14 @@ export const islamUniversityCampusesCoteDIvoire: Publication = {
 				"Influence sociale et symbolique des prédicateurs indiens et pakistanais de la Jamaʿat Tabligh en Côte d'Ivoire (1964-2016)",
 			source: 'Journal des africanistes 95, no. 2 (2025): 104-28',
 			url: 'https://doi.org/10.4000/15onu'
+		},
+		{
+			authors: ['Riski Taufikur Rahman', 'Irfan Fauzi', "Naufalun Ni'am"],
+			year: 2026,
+			title:
+				"Peran Muslim Sunni Moderat Dalam Menangkal Gerakan Ektrimisme Jama'at Nusrat Al-Islam Wal-Muslimin (JNIM) Di Pantai Gading",
+			source: 'NUANSA: Jurnal Penelitian Ilmu Sosial dan Keagamaan Islam 23, no. 1 (2026): 233-47',
+			url: 'https://doi.org/10.19105/nuansa.v23i1.24610'
 		}
 	]
 };

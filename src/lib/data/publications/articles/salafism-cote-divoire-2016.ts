@@ -206,6 +206,14 @@ export const salafismCoteDIvoire: Publication = {
 			source:
 				'In The Oxford Handbook of Islamic Reform, edited by Emad Hamdeh and Natana J. DeLong-Bas. Oxford University Press, 2026',
 			url: 'https://doi.org/10.1093/oxfordhb/9780197532805.013.24'
+		},
+		{
+			authors: ['Riski Taufikur Rahman', 'Irfan Fauzi', "Naufalun Ni'am"],
+			year: 2026,
+			title:
+				"Peran Muslim Sunni Moderat Dalam Menangkal Gerakan Ektrimisme Jama'at Nusrat Al-Islam Wal-Muslimin (JNIM) Di Pantai Gading",
+			source: 'NUANSA: Jurnal Penelitian Ilmu Sosial dan Keagamaan Islam 23, no. 1 (2026): 233-47',
+			url: 'https://doi.org/10.19105/nuansa.v23i1.24610'
 		}
 	]
 };
