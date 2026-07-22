@@ -13,20 +13,14 @@
 	 * hairlines and borders all live here. Never pure white or pure black. */
 	--sys-color-paper-raised: #fffdf7; /* elevated "sheet" tiles, raised paper */
 	--sys-color-paper: #faf7ef; /* page ground (daylight) */
-	--sys-color-paper-100: #f3eee0; /* subtle warm surface */
 	--sys-color-paper-200: #ece4d1; /* muted warm surface / sunken */
-	--sys-color-hairline: #dcd4be; /* 1px row separators */
-	--sys-color-border: #c9c0aa; /* default borders, image plates */
-	--sys-color-border-strong: #a39b86; /* stronger borders, outline buttons */
 	--sys-color-ink-faint: #6b634e; /* faint ink — muted labels, captions (≥4.5:1 on all paper surfaces) */
 	--sys-color-ink-muted: #5c5442; /* muted ink — secondary text, standfirst */
 	--sys-color-ink: #191509; /* ink — body, emphasis, rules, solid fills */
-	--sys-color-ink-deep: #0e0b04; /* deepest ink — hover on solid ink */
 
 	/* Pine (warm teal) — the single accent. Marks the current, active,
 	 * newest, primary. Brightened cut used on midnight. Applied by scarcity. */
 	--sys-color-pine: #1e6a56; /* accent (daylight) */
-	--sys-color-pine-deep: #154e40; /* accent hover / pressed (daylight) */
 	--sys-color-pine-bright: #4fbb99; /* accent (midnight) */
 
 	/* Midnight (microfilm negative) — resolved here so both palettes are
@@ -46,7 +40,6 @@
 	 * ink annotations, not web toast. Used sparingly (form validation). */
 	--sys-color-danger: #a3341c; /* deep warm red for errors */
 	--sys-color-danger-bright: #d1553a;
-	--sys-color-success: #5c6b3a; /* muted olive for success */
 	--sys-color-success-bright: #8a9a5b;
 
 	/* Visualisation palette — derived in OKLCH from the ink + pine
@@ -65,7 +58,7 @@
 	 * solid fills, selected chips, the nameplate. The accent is NOT primary;
 	 * it is the scarce accent below. In midnight, "ink" becomes cream. */
 	--color-primary: var(--sys-color-ink);
-	--color-primary-dark: var(--sys-color-ink-deep);
+	--color-primary-dark: #0e0b04; /* deepest ink — hover on solid ink */
 	--color-primary-light: var(--sys-color-ink-muted);
 
 	/* Secondary — muted ink */
@@ -75,13 +68,13 @@
 	 * Used by scarcity: eyebrows, active nav, key numbers, the newest year-bar,
 	 * link underlines, the one primary CTA. */
 	--color-accent: var(--sys-color-pine);
-	--color-accent-dark: var(--sys-color-pine-deep);
+	--color-accent-dark: #154e40; /* accent hover / pressed (daylight) */
 
 	/* Highlight — pine too, so link/hover accents resolve to the accent. */
 	--color-highlight: var(--sys-color-pine);
 
 	/* Success - Positive states, confirmations (muted olive) */
-	--color-success: var(--sys-color-success);
+	--color-success: #5c6b3a;
 
 	/* Danger - Errors, destructive actions (deep warm red) */
 	--color-danger: var(--sys-color-danger);
@@ -104,15 +97,15 @@
 	/* ===== SURFACE COLORS ===== */
 	/* Layered surfaces for depth hierarchy. Depth now comes from ink density
 	 * and rule weight, not shadows — surfaces stay close in value. */
-	--color-surface: var(--sys-color-paper-100);
+	--color-surface: #f3eee0; /* subtle warm surface */
 
 	--color-surface-alt: var(--sys-color-paper-200);
 	--color-surface-elevated: var(--sys-color-paper-raised);
 
 	/* ===== BORDER COLORS ===== */
-	--color-border: var(--sys-color-border);
-	--color-border-light: var(--sys-color-hairline);
-	--color-border-dark: var(--sys-color-border-strong);
+	--color-border: #c9c0aa; /* default borders, image plates */
+	--color-border-light: #dcd4be; /* 1px row separators (hairlines) */
+	--color-border-dark: #a39b86; /* stronger borders, outline buttons */
 	--color-border-focus: var(--color-accent);
 
 	/* ===== FOCUS RING ===== */
@@ -160,13 +153,11 @@
 	 * Eyebrows, datelines, counts, nav, filters, chips, DOIs, pagination.
 	 * Sans: a neutral system stack, fallback for form controls only — the
 	 * visual language has no humanist sans. */
-	--sys-font-family-sans:
+	--font-family-sans:
 		'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
-	--sys-font-family-serif: 'Newsreader', 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
-	--sys-font-family-display:
-		'Archivo', 'system-ui', 'Segoe UI', 'Helvetica Neue', 'Arial', sans-serif;
-	--sys-font-family-mono:
-		'Spline Sans Mono', 'SF Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
+	--font-family-serif: 'Newsreader', 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
+	--font-family-display: 'Archivo', 'system-ui', 'Segoe UI', 'Helvetica Neue', 'Arial', sans-serif;
+	--font-family-mono: 'Spline Sans Mono', 'SF Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
 
 	/* Archivo width-axis presets. The nameplate/section heads are set on a
 	 * wide, heavy cut (a compressed-broadsheet feel); weight is carried by
@@ -185,37 +176,20 @@
 	 *   • Display (step 2 through step 6): Major Third (1.25) — gives detail-page
 	 *     titles and heroes real weight at wide viewport widths without sprawling
 	 *     into adjacent sections.
-	 *   • Step --3 is reserved for dense data-viz chrome (map legends, chart labels).
+	 *   • --font-size-2xs (step --3) is reserved for dense data-viz chrome
+	 *     (map legends, chart labels).
 	 */
-	--sys-type-step--3: clamp(0.625rem, 0.595rem + 0.15vw, 0.6944rem);
-	--sys-type-step--2: clamp(0.75rem, 0.714rem + 0.178vw, 0.8333rem);
-	--sys-type-step--1: clamp(0.875rem, 0.83rem + 0.226vw, 1rem);
-	--sys-type-step-0: clamp(1.0625rem, 1.009rem + 0.268vw, 1.125rem);
-	--sys-type-step-1: clamp(1.225rem, 1.164rem + 0.305vw, 1.35rem);
+	--font-size-2xs: clamp(0.625rem, 0.595rem + 0.15vw, 0.6944rem);
+	--font-size-xs: clamp(0.75rem, 0.714rem + 0.178vw, 0.8333rem);
+	--font-size-sm: clamp(0.875rem, 0.83rem + 0.226vw, 1rem);
+	--font-size-base: clamp(1.0625rem, 1.009rem + 0.268vw, 1.125rem);
+	--font-size-lg: clamp(1.225rem, 1.164rem + 0.305vw, 1.35rem);
 	/* Display tier: ratio 1.25 */
-	--sys-type-step-2: clamp(1.5rem, 1.425rem + 0.375vw, 1.6875rem);
-	--sys-type-step-3: clamp(1.875rem, 1.781rem + 0.469vw, 2.109rem);
-	--sys-type-step-4: clamp(2.344rem, 2.227rem + 0.586vw, 2.637rem);
-	--sys-type-step-5: clamp(2.93rem, 2.784rem + 0.732vw, 3.296rem);
-	--sys-type-step-6: clamp(3.663rem, 3.48rem + 0.915vw, 4.12rem);
-
-	/* Semantic font families */
-	--font-family-sans: var(--sys-font-family-sans);
-	--font-family-serif: var(--sys-font-family-serif);
-	--font-family-display: var(--sys-font-family-display);
-	--font-family-mono: var(--sys-font-family-mono);
-
-	/* Semantic font sizes */
-	--font-size-2xs: var(--sys-type-step--3);
-	--font-size-xs: var(--sys-type-step--2);
-	--font-size-sm: var(--sys-type-step--1);
-	--font-size-base: var(--sys-type-step-0);
-	--font-size-lg: var(--sys-type-step-1);
-	--font-size-xl: var(--sys-type-step-2);
-	--font-size-2xl: var(--sys-type-step-3);
-	--font-size-3xl: var(--sys-type-step-4);
-	--font-size-4xl: var(--sys-type-step-5);
-	--font-size-5xl: var(--sys-type-step-6);
+	--font-size-xl: clamp(1.5rem, 1.425rem + 0.375vw, 1.6875rem);
+	--font-size-2xl: clamp(1.875rem, 1.781rem + 0.469vw, 2.109rem);
+	--font-size-3xl: clamp(2.344rem, 2.227rem + 0.586vw, 2.637rem);
+	--font-size-4xl: clamp(2.93rem, 2.784rem + 0.732vw, 3.296rem);
+	--font-size-5xl: clamp(3.663rem, 3.48rem + 0.915vw, 4.12rem);
 
 	/* Contextual font sizes */
 	--font-size-body: var(--font-size-base);
@@ -349,7 +323,6 @@
 	 * in explicitly. */
 	--border-radius-sm: 0;
 	--border-radius: 0;
-	--border-radius-md: 0;
 	--border-radius-full: 9999px;
 
 	/* ===== RULE WEIGHTS =====

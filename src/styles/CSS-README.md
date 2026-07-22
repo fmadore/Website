@@ -39,8 +39,8 @@ The `src/app.css` file imports the global stylesheet in a fixed order so tokens 
 
 A design token system with foundation → semantic layering:
 
-1. **Foundation tokens** (`--sys-*`): Raw values that rarely change
-2. **Semantic tokens** (`--color-*`, `--space-*`, etc.): Meaningful names for usage context
+1. **Foundation tokens** (`--sys-*`): Raw palette values shared by several semantic tokens or by the dark-theme overrides in `dark.css`
+2. **Semantic tokens** (`--color-*`, `--space-*`, `--font-*`, etc.): Meaningful names for usage context — always prefer these in components. Single-consumer values are defined directly on the semantic token (no one-off `--sys-*` indirection)
 
 #### Color System — two inks on two grounds, one accent
 
@@ -61,7 +61,7 @@ Hierarchy is drawn in rules, ink-coloured (cream on midnight), never gray:
 
 #### Border Radius — corners are square
 
-Every `--border-radius-*` token (`--border-radius`, `-sm`, `-md`) resolves to `0`. The only exception is `--border-radius-full` (9999px), retained for genuinely circular micro-controls (slider thumbs, spinners, status dots) that opt in explicitly.
+Every `--border-radius-*` token (`--border-radius`, `-sm`) resolves to `0`. The only exception is `--border-radius-full` (9999px), retained for genuinely circular micro-controls (slider thumbs, spinners, status dots) that opt in explicitly.
 
 #### Shadows — shadows do not exist
 
@@ -194,15 +194,15 @@ Shared styles for list-based entities (Publications, Communications). `.entity-c
 
 `.bib-row` — the finding-aid ledger entry shared by `/publications` and `/conference-activity`: a fixed `[year] [cover] [body] [actions]` grid with hairlines drawn by the parent list. Tunables: `--bib-year-w`, `--bib-cover-w`, `--bib-plate-aspect`.
 
-### Panels (`components/panels.css`)
+### Panels (`components/panels.css`) — route-scoped
 
-Flat ruled sidebar modules (pair with `.surface-panel`, which supplies a flat paper surface):
+Flat ruled sidebar modules (pair with `.surface-panel`, which supplies a flat paper surface). Imported by `PanelBase` (and transitively by the other panel components) rather than bundled globally:
 
 - `.panel`: Square, flat, border-colour transition only — the earlier gradient overlays and animated accent lines are gone
 - `.panel-header` / `.panel-content` / `.panel-footer` separated by hairlines
 - `.panel-title`: The data voice — mono, letterspaced caps
 - **Content elements**: `.no-items`, `.item-list`, `.view-all-container`
-- **Filter systems**: `.year-filters`, `.filter-button`, `.type-filters-section`
+- **Filter systems**: `.year-filters`, `.filter-button`, `.type-filters-container`
 
 ### Activity List (`components/activity-list.css`) — route-scoped
 

@@ -117,7 +117,5 @@ The component uses these CSS variables for styling:
 - `--color-background` - Background color for preview card
 - `--color-border` - Border color for preview card
 - `--color-text`, `--color-text-secondary` - Text colors
-- `--shadow-lg` - Shadow for preview card
-- `--border-radius-md` - Border radius for preview card
 - `--font-size-*` - Various font size variables
 - `--spacing-*` - Various spacing variables
