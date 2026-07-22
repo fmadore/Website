@@ -20,7 +20,7 @@
 		createPublicationSEOKeywords,
 		truncateTitle
 	} from '$lib/utils/seoUtils';
-	import { getPublicationTypeBadge } from '$lib/utils/typeUtils';
+	import { getPublicationTypeBadge } from '$lib/utils/publicationTypeLabels';
 
 	interface Props {
 		data: PageData;

@@ -15,6 +15,7 @@
 	} from '$lib/utils/metaTags';
 	import BaseMetaTags from '$lib/components/common/BaseMetaTags.svelte';
 	import { website } from '$lib/data/siteConfig';
+	import { getCitationGenre, getDcType } from '$lib/utils/publicationTypeLabels';
 
 	let { publication }: { publication: Publication } = $props();
 
@@ -22,42 +23,6 @@
 	// page.url.origin is the placeholder http://sveltekit-prerender, which must
 	// never reach the baked head tags Zotero and crawlers consume.
 	const resolveUrl = (path: string | undefined) => getFullUrl(website.url, base, path);
-
-	// Helper to get citation genre for OpenURL/COinS compatibility
-	const getCitationGenre = (type: Publication['type']): string => {
-		const genreMap: Record<Publication['type'], string> = {
-			article: 'article',
-			chapter: 'bookitem',
-			encyclopedia: 'bookitem',
-			blogpost: 'article',
-			book: 'book',
-			'special-issue': 'journal',
-			report: 'report',
-			'phd-dissertation': 'dissertation',
-			'masters-thesis': 'dissertation',
-			'conference-proceedings': 'proceeding',
-			'bulletin-article': 'article'
-		};
-		return genreMap[type] || 'unknown';
-	};
-
-	// Helper to map publication types to Dublin Core types
-	const getDcType = (type: Publication['type']): string => {
-		const typeMap: Record<Publication['type'], string> = {
-			article: 'Text',
-			chapter: 'Text',
-			encyclopedia: 'Text',
-			blogpost: 'Text',
-			book: 'Book',
-			'special-issue': 'Collection',
-			report: 'Text',
-			'phd-dissertation': 'Text',
-			'masters-thesis': 'Text',
-			'conference-proceedings': 'Text',
-			'bulletin-article': 'Text'
-		};
-		return typeMap[type] || 'Text';
-	};
 
 	// Helper to create editor tags for different publication types
 	const createEditorTags = (): MetaTag[] => {

@@ -3,13 +3,13 @@
 	import type { Publication } from '$lib/types';
 	import {
 		groupPublicationsByType,
-		getPublicationTypeDisplayName,
 		formatVolumeIssueDisplay,
 		formatCVAuthorList,
 		formatEditorList,
 		formatBlogDate,
 		getCVDisplayYear
 	} from '$lib/utils/cvFormatters';
+	import { getPublicationTypeDisplayName } from '$lib/utils/publicationTypeLabels';
 	import CVEntry from './CVEntry.svelte';
 
 	// Group publications using the utility function

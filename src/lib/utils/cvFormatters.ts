@@ -1,6 +1,7 @@
 import type { Publication } from '$lib/types';
 import type { AffiliationPeriod } from '$lib/types/affiliation';
 import { author as siteAuthor } from '$lib/data/siteConfig';
+import { joinNames, splitNames } from '$lib/utils/nameUtils';
 
 /**
  * Returns the year label to show in the CV gutter. Forthcoming publications
@@ -37,65 +38,22 @@ export function formatCVAuthorList(authorsInput: string[] | string | undefined):
 		return authorsArray[0] === siteAuthor.name ? '' : authorsArray[0];
 	}
 
-	// Multiple authors - bold the site owner's name
-	let formatted = '';
-	authorsArray.forEach((author, i) => {
-		const authorName = author === siteAuthor.name ? `<strong>${siteAuthor.name}</strong>` : author;
-
-		formatted += authorName;
-		if (i < numAuthors - 1) {
-			formatted += i === numAuthors - 2 ? ' and ' : ', ';
-		}
-	});
-	return formatted;
+	// Multiple authors - bold the site owner's name, join CV-style
+	// (", " between entries, " and " before the last, no serial comma).
+	return joinNames(
+		authorsArray.map((author) =>
+			author === siteAuthor.name ? `<strong>${siteAuthor.name}</strong>` : author
+		)
+	);
 }
 
 /**
  * Formats editor list with proper formatting for CV display
- * Adds "and" before the last editor
+ * Adds ", and" (serial comma) before the last of three or more editors
  */
 export function formatEditorList(editorsInput: string | undefined): string {
 	if (!editorsInput) return '';
-
-	// Split by common separators
-	const editors = editorsInput.split(/,\s*|\s+and\s+/);
-
-	if (editors.length === 0) return '';
-	if (editors.length === 1) return editors[0];
-	if (editors.length === 2) return `${editors[0]} and ${editors[1]}`;
-
-	// Three or more editors
-	const lastEditor = editors[editors.length - 1];
-	const otherEditors = editors.slice(0, -1).join(', ');
-	return `${otherEditors}, and ${lastEditor}`;
-}
-
-/**
- * Formats a publication type into a human-readable display name
- */
-export function getPublicationTypeDisplayName(type: Publication['type']): string {
-	switch (type) {
-		case 'book':
-			return 'Books';
-		case 'special-issue':
-			return 'Guest Edited Journals';
-		case 'article':
-			return 'Journal Articles';
-		case 'chapter':
-			return 'Book Chapters';
-		case 'report':
-			return 'Report';
-		case 'encyclopedia':
-			return 'Encyclopedia Entry';
-		case 'bulletin-article':
-			return 'Bulletin Articles';
-		case 'blogpost':
-			return 'Blog Posts';
-		case 'conference-proceedings':
-			return 'Conference Proceedings';
-		default:
-			return 'Other Publications';
-	}
+	return joinNames(splitNames(editorsInput), { serialComma: true });
 }
 
 /**

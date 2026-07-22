@@ -120,10 +120,11 @@ src/routes/cv/
 
 Contains shared formatting functions:
 
-- `getPublicationTypeDisplayName(type)` - Converts publication types to display names
 - `formatVolumeIssueDisplay(volume, issue)` - Formats journal volume/issue info
 - `formatAffiliationPeriod(period)` - Formats date ranges for affiliations
 - `groupPublicationsByType(publications)` - Groups and filters publications
+
+(CV section headings per publication type come from `getPublicationTypeDisplayName` in `$lib/utils/publicationTypeLabels`.)
 
 ## Benefits
 
