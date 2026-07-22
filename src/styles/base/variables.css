@@ -20,7 +20,6 @@
 	--sys-color-border-strong: #a39b86; /* stronger borders, outline buttons */
 	--sys-color-ink-faint: #93896f; /* faint ink — muted labels, captions */
 	--sys-color-ink-muted: #5c5442; /* muted ink — secondary text, standfirst */
-	--sys-color-ink-soft: #3a352a; /* soft ink — long-form prose body */
 	--sys-color-ink: #191509; /* ink — body, emphasis, rules, solid fills */
 	--sys-color-ink-deep: #0e0b04; /* deepest ink — hover on solid ink */
 
@@ -41,7 +40,6 @@
 	--sys-color-cream-faint: #7e7460; /* faint cream (dark) */
 	--sys-color-cream-muted: #b3a88d; /* muted cream (dark) */
 	--sys-color-cream-soft: #cbc0a6; /* soft cream (dark) */
-	--sys-color-cream-prose: #ddd2b8; /* long-form prose (dark) */
 	--sys-color-cream: #efe7d6; /* cream — body, emphasis (dark) */
 
 	/* Functional states — errors/success only. Warm-tinted so they read as
@@ -69,39 +67,30 @@
 	--color-primary: var(--sys-color-ink);
 	--color-primary-dark: var(--sys-color-ink-deep);
 	--color-primary-light: var(--sys-color-ink-muted);
-	--color-primary-lighter: var(--sys-color-ink-faint);
 
 	/* Secondary — muted ink */
 	--color-secondary: var(--sys-color-ink-muted);
-	--color-secondary-light: var(--sys-color-ink-faint);
 
 	/* Accent — PINE (warm teal). The single accent; marks the current thing.
 	 * Used by scarcity: eyebrows, active nav, key numbers, the newest year-bar,
 	 * link underlines, the one primary CTA. */
 	--color-accent: var(--sys-color-pine);
 	--color-accent-dark: var(--sys-color-pine-deep);
-	--color-accent-light: var(--sys-color-pine-bright);
 
 	/* Highlight — pine too, so link/hover accents resolve to the accent. */
 	--color-highlight: var(--sys-color-pine);
-	--color-highlight-dark: var(--sys-color-pine-deep);
-	--color-highlight-light: var(--sys-color-pine-bright);
 
 	/* Success - Positive states, confirmations (muted olive) */
 	--color-success: var(--sys-color-success);
-
-	--color-success-dark: var(--sys-color-success-bright);
 
 	/* Danger - Errors, destructive actions (deep warm red) */
 	--color-danger: var(--sys-color-danger);
 
 	--color-danger-dark: var(--sys-color-danger);
-	--color-danger-light: var(--sys-color-danger-bright);
 
 	/* ===== BACKGROUND & TEXT COLORS ===== */
 	--color-background: var(--sys-color-paper);
 
-	--color-background-subtle: var(--sys-color-paper-100);
 	--color-background-muted: var(--sys-color-paper-200);
 
 	--color-text: var(--sys-color-ink);
@@ -119,8 +108,6 @@
 
 	--color-surface-alt: var(--sys-color-paper-200);
 	--color-surface-elevated: var(--sys-color-paper-raised);
-	--color-surface-sunken: var(--sys-color-paper-200);
-	--color-surface-border: var(--sys-color-border);
 
 	/* ===== BORDER COLORS ===== */
 	--color-border: var(--sys-color-border);
@@ -131,14 +118,10 @@
 	/* ===== FOCUS RING ===== */
 	/* Accent focus — the accent signals interactivity/keyboard target. */
 	--focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-accent) 45%, transparent);
-	--focus-ring-offset: 2px;
-	--focus-ring-color: var(--color-accent);
 
 	/* ===== ACADEMIC-SPECIFIC COLORS ===== */
 	--color-citation: var(--color-accent);
 
-	--color-quote: var(--sys-color-ink-muted);
-	--color-note: var(--sys-color-ink-muted);
 	--color-code-bg: var(--sys-color-paper-200);
 
 	/* ===== TIMELINE/CHART COLORS =====
@@ -158,27 +141,12 @@
 
 	--color-black: #000000;
 
-	--color-transparent: transparent;
-
 	/* ===== COMPONENT COLOR LAYERS ===== */
-	--color-background-alt: var(--color-surface);
 	/* Footer — the dark colophon "back page". Ink ground with cream type in
 	 * both themes (a printed endpaper), deeper on midnight. */
 	--color-footer-bg: var(--sys-color-ink);
 	--color-footer-text: var(--sys-color-cream);
 	--color-footer-text-muted: #8a8170;
-	--color-sidebar-bg: var(--color-surface);
-
-	/* Button / control schemes — ink family (accent is applied explicitly). */
-	--color-secondary-scheme: var(--color-primary-light);
-	--color-secondary-scheme-alt: var(--color-primary);
-	--color-surface-scheme: var(--color-primary);
-	--color-surface-scheme-alt: var(--color-primary-light);
-
-	/* Dark surface tokens */
-	--color-dark-surface: var(--sys-color-film-100);
-	--color-dark-surface-alt: var(--sys-color-film-ground);
-	--color-dark-surface-deep: #0f0c08;
 
 	/* ===== TYPOGRAPHY SCALE ===== */
 
@@ -251,8 +219,6 @@
 
 	/* Contextual font sizes */
 	--font-size-body: var(--font-size-base);
-	--font-size-body-sm: var(--font-size-sm);
-	--font-size-body-lg: var(--font-size-lg);
 	--font-size-lead: clamp(1.125rem, 1.05rem + 0.375vw, 1.375rem);
 	/* Nameplate — the home masthead. Compressed-broadsheet scale. */
 	--font-size-nameplate: clamp(2.5rem, 1.6rem + 4.2vw, 5rem);
@@ -267,7 +233,6 @@
 
 	/* ===== LINE HEIGHTS ===== */
 	/* Tuned for Newsreader (news serif prose) + Archivo (display) readability */
-	--line-height-none: 1;
 	--line-height-tight: 1.1;
 	--line-height-snug: 1.35;
 	--line-height-normal: 1.5;
@@ -276,7 +241,6 @@
 
 	/* Contextual line heights - tuned for Archivo display headings */
 	--line-height-heading: 1.1;
-	--line-height-subheading: 1.3;
 	--line-height-body: 1.6;
 	--line-height-caption: 1.45;
 
@@ -290,31 +254,17 @@
 
 	/* Contextual tracking */
 	--tracking-heading: var(--letter-spacing-tight);
-	--tracking-body: var(--letter-spacing-normal);
 	--tracking-eyebrow: var(--letter-spacing-wider);
 	--tracking-caps: var(--letter-spacing-wide);
 
 	/* ===== FONT WEIGHTS ===== */
-	--font-weight-thin: 100;
-	--font-weight-extralight: 200;
-	--font-weight-light: 300;
 	--font-weight-normal: 400;
 	--font-weight-medium: 500;
 	--font-weight-semibold: 600;
 	--font-weight-bold: 700;
-	--font-weight-extrabold: 800;
-	--font-weight-black: 900;
-
-	/* Contextual weights */
-	--font-weight-body: var(--font-weight-normal);
-	--font-weight-heading: var(--font-weight-semibold);
-	--font-weight-display: var(--font-weight-bold);
-	--font-weight-link: var(--font-weight-medium);
 
 	/* ===== ACADEMIC TEXT STYLING ===== */
-	--text-indent-paragraph: 1.5em;
 	--text-max-width-reading: 65ch;
-	--text-max-width-wide: 80ch;
 	/* ===== SPACING SYSTEM ===== */
 	/* 
 	 * 8-point grid system for consistent rhythm
@@ -323,7 +273,6 @@
 	 */
 
 	/* Foundation scale */
-	--space-0: 0;
 	--space-px: 1px;
 	--space-0-5: 0.125rem;
 	/* 2px */
@@ -369,8 +318,6 @@
 	/* 112px */
 	--space-32: 8rem;
 	/* 128px */
-	--space-40: 10rem;
-	/* 160px */
 	--space-48: 12rem;
 	/* 192px */
 
@@ -380,8 +327,6 @@
 	--space-xs: var(--space-2);
 	--space-sm: var(--space-3);
 	--space-md: var(--space-4);
-	--space-md-tight: var(--space-3-5);
-	/* 14px - between sm and md */
 	--space-lg: var(--space-6);
 	--space-xl: var(--space-8);
 	--space-xl-tight: var(--space-7);
@@ -389,8 +334,6 @@
 	--space-2xl: var(--space-12);
 	--space-3xl: var(--space-16);
 	--space-4xl: var(--space-24);
-	--space-5xl: var(--space-32);
-	--space-6xl: var(--space-40);
 	--space-7xl: var(--space-48);
 
 	/* Reading rhythm — use on detail pages between sections to give prose room. */
@@ -399,19 +342,14 @@
 
 	/* ===== BORDER RADIUS =====
 	 * Ink + Signal: corners are square. Depth comes from ink density and rule
-	 * weight, not rounding. The whole scale is 0 so every card, chip, button,
-	 * panel and image plate is sharp-cornered by default. --border-radius-full
-	 * is retained only for genuinely circular micro-controls (slider thumbs,
-	 * loading spinners, status dots) that opt in explicitly. */
-	--border-radius-none: 0;
-	--border-radius-xs: 0;
+	 * weight, not rounding. Every radius token is 0 so every card, chip,
+	 * button, panel and image plate is sharp-cornered by default.
+	 * --border-radius-full is retained only for genuinely circular
+	 * micro-controls (slider thumbs, loading spinners, status dots) that opt
+	 * in explicitly. */
 	--border-radius-sm: 0;
 	--border-radius: 0;
 	--border-radius-md: 0;
-	--border-radius-lg: 0;
-	--border-radius-xl: 0;
-	--border-radius-2xl: 0;
-	--border-radius-3xl: 0;
 	--border-radius-full: 9999px;
 
 	/* ===== RULE WEIGHTS =====
@@ -422,29 +360,9 @@
 	--rule-masthead: 4px;
 	--rule-nameplate: 5px;
 
-	/* ===== SHADOWS =====
-	 * Shadows do not exist in Ink + Signal. Depth is drawn in rules and ink
-	 * density. Every shadow token resolves to `none` so the whole component
-	 * layer flattens automatically; tokens are kept for API stability. */
-	--shadow-xs: none;
-	--shadow-sm: none;
-	--shadow: none;
-	--shadow-md: none;
-	--shadow-lg: none;
-	--shadow-xl: none;
-	--shadow-2xl: none;
-	--shadow-inner: none;
-	--shadow-none: none;
-
-	/* Colored shadows — also none. */
-	--shadow-primary: none;
-	--shadow-primary-lg: none;
-	--shadow-accent: none;
-	--shadow-highlight: none;
-	--shadow-success: none;
-	--shadow-danger: none;
-
-	/* Glass shadows — none. */
+	/* Shadows do not exist in Ink + Signal — depth is drawn in rules and ink
+	 * density, so there are no shadow tokens. Never add `box-shadow` (or new
+	 * `--shadow-*` tokens) to styles. */
 
 	/* ===== BORDER WIDTHS ===== */
 	--border-width-thin: 1px;
@@ -467,27 +385,12 @@
 
 	/* Easing functions.
 	 *
-	 * Phase 4 motion recalibration: overshooting curves (bounce/spring) were
-	 * retuned to exponential-out curves. Real objects decelerate smoothly;
-	 * bounce/elastic easing feels dated and toy-like on a scholarly site.
-	 * Token names are preserved for API stability, but both now render as
-	 * smooth overshoot-free decelerations (quartic/quintic out).
-	 */
-	--ease-linear: linear;
-	--ease-in: cubic-bezier(0.4, 0, 1, 1);
+	 * Smooth overshoot-free decelerations only — real objects decelerate
+	 * smoothly; bounce/elastic easing feels dated and toy-like on a
+	 * scholarly site. */
 	--ease-out: cubic-bezier(0, 0, 0.2, 1);
 	--ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-	--ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
 	--ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
-	--ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
-	/* Legacy aliases — no longer overshoot. Prefer --ease-out-quart / -quint in new code. */
-	--ease-bounce: var(--ease-out-quart);
-	--ease-spring: var(--ease-out-quint);
-
-	/* Ambient / decorative loops (distinct from UI transition durations) */
-	--duration-ambient-sm: 4s;
-	--duration-ambient-md: 8s;
-	--duration-ambient-lg: 12s;
 
 	/* ===== LAYOUT ===== */
 	/* Container widths */
@@ -498,41 +401,14 @@
 	--container-2xl: 1536px;
 
 	/* Content widths for reading */
-	--content-max-width: 1200px;
 	--content-width-xs: 20rem;
 	/* 320px */
 	--content-width-sm: 24rem;
 	/* 384px */
-	--content-width-md: 28rem;
-	/* 448px */
-	--content-width-lg: 32rem;
-	/* 512px */
-	--content-width-xl: 36rem;
-	/* 576px */
-	--content-width-2xl: 42rem;
-	/* 672px */
-	--content-width-3xl: 48rem;
-	/* 768px */
-	--content-width-4xl: 56rem;
-	/* 896px */
-	--content-width-5xl: 64rem;
-	/* 1024px */
 	--content-width-6xl: 72rem;
 	/* 1152px */
 	--content-width-7xl: 80rem;
 	/* 1280px */
-
-	/* Container query widths (for @container queries) */
-	--container-query-xs: 16rem;
-	/* 256px */
-	--container-query-sm: 20rem;
-	/* 320px */
-	--container-query-md: 28rem;
-	/* 448px */
-	--container-query-lg: 36rem;
-	/* 576px */
-	--container-query-xl: 48rem;
-	/* 768px */
 
 	/* ===== Z-INDEX SCALE ===== */
 	/* Consistent layering system */
@@ -541,11 +417,9 @@
 	--z-dropdown: 1000;
 	--z-sticky: 1020;
 	--z-fixed: 1030;
-	--z-modal-backdrop: 1040;
 	--z-modal: 1050;
 	--z-popover: 1060;
 	--z-tooltip: 1070;
-	--z-toast: 1080;
 
 	/* ===== OPACITY SCALE ===== */
 	--opacity-0: 0;
@@ -553,52 +427,20 @@
 	--opacity-10: 0.1;
 	--opacity-15: 0.15;
 	--opacity-20: 0.2;
-	--opacity-25: 0.25;
 	--opacity-30: 0.3;
 	--opacity-40: 0.4;
 	--opacity-50: 0.5;
-	--opacity-60: 0.6;
 	--opacity-70: 0.7;
-	--opacity-75: 0.75;
-	--opacity-80: 0.8;
 	--opacity-90: 0.9;
-	--opacity-95: 0.95;
 	--opacity-100: 1;
 
-	/* Semantic opacity */
-	--opacity-disabled: 0.5;
-	--opacity-placeholder: 0.5;
-	--opacity-overlay-light: 0.5;
-	--opacity-overlay-dark: 0.75;
-
 	/* ===== TRANSFORMS ===== */
-	/* Lift effects for hover states */
-	--transform-lift-sm: translateY(-2px);
-	--transform-lift-md: translateY(-4px);
-	--transform-lift-lg: translateY(-6px);
-
 	/* Scale transforms */
 	--scale-0: 0;
-	--scale-50: 0.5;
-	--scale-75: 0.75;
-	--scale-90: 0.9;
-	--scale-95: 0.95;
-	--scale-100: 1;
 	--scale-102: 1.02;
-	--scale-105: 1.05;
-	--scale-110: 1.1;
-	--scale-125: 1.25;
-	--scale-150: 1.5;
 
 	/* Rotation */
-	--rotate-0: 0deg;
-	--rotate-1: 1deg;
-	--rotate-2: 2deg;
-	--rotate-3: 3deg;
-	--rotate-6: 6deg;
-	--rotate-12: 12deg;
 	--rotate-45: 45deg;
-	--rotate-90: 90deg;
 	--rotate-180: 180deg;
 
 	/* Transform distances for animations - differentiated by element type */
@@ -606,8 +448,6 @@
 	--transform-distance-sm: 8px;
 	--transform-distance-md: 12px;
 	--transform-distance-lg: 16px;
-	--transform-distance-xl: 24px;
-	--transform-distance-full: 100%;
 
 	/* Contextual animation distances */
 	--anim-distance-heading: 24px;
@@ -624,7 +464,6 @@
 	--stagger-6: 240ms;
 
 	/* ===== CARD TOKENS ===== */
-	--card-link-transform: translateX(var(--space-3));
 	--card-height-image: 14rem;
 
 	/* ===== COMPONENT-SPECIFIC TOKENS ===== */
@@ -644,16 +483,4 @@
 	/* 40px */
 	--iframe-header-height-mobile: 2.25rem;
 	/* 36px */
-
-	/* Decorative animation durations */
-	--anim-duration-decorative: 4s;
-	--anim-duration-ambient: 8s;
-	--anim-duration-gentle: 12s;
-
-	/* Breakpoints (for JS reference - use PostCSS custom media for CSS) */
-	--breakpoint-sm: 640px;
-	--breakpoint-md: 768px;
-	--breakpoint-lg: 1024px;
-	--breakpoint-xl: 1280px;
-	--breakpoint-2xl: 1536px;
 }

@@ -61,17 +61,17 @@ Hierarchy is drawn in rules, ink-coloured (cream on midnight), never gray:
 
 #### Border Radius — corners are square
 
-Every `--border-radius-*` token resolves to `0`. The only exception is `--border-radius-full` (9999px), retained for genuinely circular micro-controls (slider thumbs, spinners, status dots) that opt in explicitly.
+Every `--border-radius-*` token (`--border-radius`, `-sm`, `-md`) resolves to `0`. The only exception is `--border-radius-full` (9999px), retained for genuinely circular micro-controls (slider thumbs, spinners, status dots) that opt in explicitly.
 
 #### Shadows — shadows do not exist
 
-Every `--shadow-*` token (including the colored and glass variants) resolves to `none`. The tokens are kept for API stability so the whole component layer flattens automatically. Depth comes from ink density and rule weight, not elevation.
+There are no `--shadow-*` tokens. Depth comes from ink density and rule weight, not elevation — never add `box-shadow` to new styles.
 
 #### Spacing System (8-point grid)
 
-- **Semantic scale**: `--space-3xs` through `--space-7xl`
-- **Numeric scale**: `--space-0` through `--space-48`
-- **Tight variants**: `--space-md-tight` (14px), `--space-xl-tight` (28px)
+- **Semantic scale**: `--space-3xs` through `--space-4xl`, plus `--space-7xl`
+- **Numeric scale**: `--space-px` through `--space-48`
+- **Tight variant**: `--space-xl-tight` (28px)
 - **Reading rhythm**: `--space-reading`, `--space-reading-loose` for detail-page sections
 
 #### Typography Tokens — two voices
@@ -84,16 +84,12 @@ Every `--shadow-*` token (including the colored and glass variants) resolves to 
 
 #### Focus Ring (Accessibility)
 
-- **`--focus-ring`** / **`--focus-ring-color`** / **`--focus-ring-offset`**: Accent-coloured focus indicators (pine signals the keyboard target)
-
-#### Container Queries
-
-- **`--container-query-xs`** through **`--container-query-xl`**: Widths for `@container` queries
+- **`--focus-ring`**: Accent-coloured focus indicator (pine signals the keyboard target)
 
 #### Animation & Transitions
 
-- **Duration scale**: `--duration-instant` (75ms) through `--duration-slower` (700ms); ambient loop durations exist but decorative motion is essentially retired
-- **Easing**: `--ease-in`, `--ease-out`, `--ease-in-out`, `--ease-smooth`, `--ease-out-quart`, `--ease-out-quint`. `--ease-bounce` and `--ease-spring` survive as **legacy aliases** of the quart/quint out-curves — nothing overshoots anymore; prefer `--ease-out-quart` / `--ease-out-quint` in new code
+- **Duration scale**: `--duration-instant` (75ms) through `--duration-slower` (700ms); decorative motion is essentially retired
+- **Easing**: `--ease-out`, `--ease-in-out`, `--ease-out-quart` — smooth decelerations only, nothing overshoots
 - **Stagger delays**: `--stagger-1` through `--stagger-6` (40ms step)
 
 Example usage:
@@ -184,13 +180,11 @@ Buttons speak the **data voice**: Spline Sans Mono, uppercase, letterspaced, squ
 
 ### Cards (`components/cards.css`)
 
-`.card` is a **flat warm-paper tile**: `--color-surface-elevated` background, 1px hairline border, square corners, no shadow. Hover darkens the border only — no lift. Many former card grids have been reworked into ledger rows; `.card` remains the bounded-tile primitive for genuinely distinct entities (featured items, project plates).
+The bounded-tile `.card` primitive (flat warm-paper tile: 1px hairline border, square corners, no shadow, border-colour hover only) is **owned by `Card.svelte`** (`src/lib/components/common/`) as component-scoped CSS, including its `.card-image` / `.card-body` / `.card-title` / `.card-subtitle` elements, the `.card--editorial` lead variant, and dark-mode rules. Many former card grids have been reworked into ledger rows.
 
-- **Elements**: `.card-image` (bordered), `.card-body`, `.card-title` (Newsreader), `.card-subtitle` (mono caps), `.card-text`, `.card-footer`
-- **Variations**: `.card-compact`, `.card-horizontal`; `.card-shadow` / `.card-shadow-lg` survive as no-ops (`box-shadow: none`)
-- **`.card-link`**: Mono arrow that slides in on hover
-- **`.card-accent-border`**: Reading-surface tile whose border warms to pine on hover
-- **Grid**: `.card-grid` with responsive columns
+This sheet only carries the one shared card class used outside that component:
+
+- **`.card-accent-border`**: Reading-surface tile whose border warms to pine on hover (used by `RelevantItemCard`, `LatestActivities`)
 
 ### Entity Cards (`components/entity-cards.css`) — route-scoped
 
@@ -248,48 +242,31 @@ There is intentionally no `styles/pages/` directory. Page-level design lives alo
 
 ## Utilities
 
+The utility sheets are intentionally lean: each class exists because markup actually uses it. Add new utilities only alongside real usage (and delete them again when the last usage goes).
+
 ### Spacing (`utilities/spacing.css`)
 
-Margin (`.m-*`, `.mx-*`, …), padding (`.p-*`, `.px-*`, …), gap (`.gap-*`), and `.space-y-*` utilities on the 8-point grid, with `sm:`/`md:`/`lg:` variants. Values map to the semantic tokens.
+Margin (`.mx-auto`, `.mt-*`, `.mb-*`, `.ml-*`), padding (`.p-*`, `.px-4`, `.py-8`), gap (`.gap-2/-4/-6`), and `.space-y-3` utilities on the 8-point grid. Values map to the semantic tokens.
 
 ### Colors (`utilities/colors.css`)
 
-- **Text**: `.text-primary`, `.text-secondary`, `.text-accent`, `.text-highlight`, `.text-success`, `.text-danger`, `.text-muted`, `.text-emphasis`, etc.
-- **Backgrounds**: `.bg-*` including `.bg-surface`, `.bg-surface-alt`, and opacity variants (`.bg-primary-10`, …)
-- **Borders**: `.border-*` colour and width/side utilities
-- **Interactive states** and responsive variants throughout
+Text colour utilities only: `.text-primary`, `.text-light`, `.text-muted`, `.text-emphasis`.
 
 ### Flexbox (`utilities/flex.css`)
 
-`.flex`/`.inline-flex`, direction, wrap, grow/shrink, justify/align/order utilities with responsive variants.
+`.flex`, `.flex-col`, `.flex-1`, `.justify-center`, `.justify-between`, `.items-center`, `.items-baseline`, plus the `sm:` variants in use (`.sm:flex-row`, `.sm:justify-between`, `.sm:items-center`).
 
 ### Layout (`utilities/layout.css`)
 
-Display (`.block`, `.hidden`, …) and overflow utilities, plus `.sveltekit-body-container`; responsive variants.
+`.block`, `.inline-block`, and `.sveltekit-body-container`.
 
 ### Sizing (`utilities/sizing.css`)
 
-Width/height (`.w-full`, `.h-screen`, …) and `.max-w-*` utilities (including `.max-w-prose`); responsive variants.
-
-### Border Radius (`utilities/border-radius.css`)
-
-`.rounded-*` classes still exist, but because every radius token is `0`, they all render square. `.rounded-full` is the only meaningful class — reserve it for genuinely circular micro-controls. Do not reach for these classes in new code.
-
-### Shadows (`utilities/shadows.css`)
-
-`.shadow-*` and `.hover:shadow-*` classes still exist for compatibility, but every shadow token resolves to `none`, so they are all no-ops. Do not use shadows for depth — draw a rule or strengthen a border instead.
-
-### Transforms (`utilities/transforms.css`)
-
-Scale, translate, rotate, skew, and origin utilities with hover/focus and responsive variants.
-
-### Transitions (`utilities/transitions.css`)
-
-`.transition-*` type, `.duration-*`, and `.ease-*` utilities with responsive variants.
+`.w-full`, fixed CV-column widths (`.w-20`, `.w-60`), `.h-auto`, and the `.max-w-md/-6xl/-7xl` widths in use.
 
 ### Images (`utilities/images.css`)
 
-`.responsive-image`, aspect ratios (`.aspect-square`, `.aspect-book`, …), object-fit, image containers, loading states, and component-specific image classes. Prefer the `.plate` idiom for content imagery (scans, covers, photos).
+`.responsive-image`, `.image-container` (with its hover zoom), and `.hero-image`. Prefer the `.plate` idiom for content imagery (scans, covers, photos).
 
 ### Surfaces (`utilities/surfaces.css`)
 
@@ -297,14 +274,14 @@ Flat surface utilities — formerly the glassmorphism classes, neutralised for I
 
 - `.surface`, `.surface-light/-medium/-heavy`, `.surface-frosted`, `.surface-primary`: Flat `--color-surface` tile with a 1px border
 - `.surface-card`, `.surface-panel`, `.surface-panel-light`: The workhorse paper/film tiles — flat background, hairline border, square corners; `.surface-card` gets a border-colour hover only
-- `.surface-nav`: Solid page-ground masthead surface with a hairline base rule
 - `.surface-button` (and its `.btn-*` combos): Square flat ink/paper control
+- `.surface-animate`: Border-colour transition helper (IframeRenderer variants)
 
 New code should prefer the idiom classes (`.ledger`, `.section`, `.chip`, `.plate`) or `.card` over the `.surface-*` names.
 
-### Z-Index (`utilities/z-index.css`)
+### Z-Index
 
-Numeric (`.z-0` … `.z-50`) and semantic (`.z-dropdown`, `.z-modal`, `.z-tooltip`, …) stacking utilities backed by the `--z-*` tokens.
+There is no z-index utility sheet; layer with the `--z-*` tokens (`--z-dropdown`, `--z-modal`, `--z-tooltip`, …) in component styles.
 
 ## Class Naming Convention
 
@@ -322,7 +299,7 @@ Defined in `src/styles/base/media.css`: `--sm` 640px, `--md` 768px, `--lg` 1024p
 
 ### Writing Media Queries
 
-**IMPORTANT**: Do NOT use CSS variables (e.g., `var(--breakpoint-md)`) inside media queries — browsers do not support this. Use the PostCSS Custom Media syntax:
+**IMPORTANT**: Do NOT use CSS variables inside media queries — browsers do not support this (there are deliberately no `--breakpoint-*` tokens). Use the PostCSS Custom Media syntax:
 
 ```css
 /* Correct usage */
@@ -333,12 +310,12 @@ Defined in `src/styles/base/media.css`: `--sm` 640px, `--md` 768px, `--lg` 1024p
 }
 
 /* Invalid — DO NOT USE */
-@media (min-width: var(--breakpoint-md)) { ... }
+@media (min-width: var(--some-token)) { ... }
 ```
 
 - **Base styles**: Designed for mobile first (no media query)
 - **Progressive enhancement**: `@media (--breakpoint)` for larger screens
-- **Utility responsiveness**: Most utilities take breakpoint prefixes (e.g., `.md:text-lg`)
+- **Utility responsiveness**: Some utilities have breakpoint-prefixed variants (e.g., `.sm:flex-row`); only variants with real usage are kept
 
 ## Best Practices
 

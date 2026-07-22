@@ -7,40 +7,6 @@
 	display: block;
 }
 
-/* Aspect ratio utilities for consistent image layouts */
-.aspect-square {
-	aspect-ratio: 1/1;
-}
-
-.aspect-video {
-	aspect-ratio: 16/9;
-}
-
-.aspect-photo {
-	aspect-ratio: 4/3;
-}
-
-.aspect-card {
-	aspect-ratio: 3/2;
-}
-
-.aspect-book {
-	aspect-ratio: 5/7;
-}
-
-/* Object-fit utilities */
-.object-cover {
-	object-fit: cover;
-}
-
-.object-contain {
-	object-fit: contain;
-}
-
-.object-fill {
-	object-fit: fill;
-}
-
 /* Image container utilities */
 .image-container {
 	overflow: hidden;
@@ -58,57 +24,9 @@
 	transform: scale(var(--scale-102));
 }
 
-/* Loading states */
-.image-loading {
-	background-color: var(--color-surface);
-	background-image: linear-gradient(
-		90deg,
-		var(--color-surface) 0%,
-		var(--color-surface-alt) 50%,
-		var(--color-surface) 100%
-	);
-	background-size: var(--transform-distance-full) 100%;
-	background-repeat: no-repeat;
-	animation: loading var(--duration-slow) infinite var(--ease-out);
-}
-
-@keyframes loading {
-	0% {
-		background-position: calc(-1 * var(--transform-distance-full)) 0;
-	}
-	100% {
-		background-position: calc(var(--transform-distance-full) + 100%) 0;
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.image-loading {
-		animation: none;
-		background-image: none;
-	}
-}
-
 /* Specific image component classes */
-.publication-cover,
-.communication-image {
-	aspect-ratio: 5/7;
-	object-fit: cover;
-	border-radius: var(--border-radius);
-	box-shadow: var(--shadow-md);
-}
-
 .hero-image {
 	aspect-ratio: 3/2;
 	object-fit: cover;
 	border-radius: var(--border-radius);
-}
-
-.card-image-content {
-	aspect-ratio: 3/2;
-	object-fit: cover;
-}
-
-.preview-card-image {
-	aspect-ratio: 5/7;
-	object-fit: cover;
 }
