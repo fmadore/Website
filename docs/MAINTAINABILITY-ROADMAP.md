@@ -118,20 +118,23 @@ Status legend: ☐ pending · ☑ done · ◪ partial / deferred (see notes)
   to lazy-load only for `D3BubbleChart`. Split the manual chunk (scales vs.
   the rest) or dynamic-import the timeline's scales. Also narrow the broad
   `id.includes('d3-')` matcher.
-- ◪ **Self-host and subset the three font families** (Archivo, Newsreader,
-  Spline Sans Mono). Currently loaded from Google Fonts with full variable
-  axes — two third-party origins on every page's critical path. _Deferred to
-  a dedicated PR: visual-critical, needs subsetting tooling and careful axis
-  selection._
-- ◪ **Responsive images.** No `srcset` anywhere;
-  `HeroImageDisplay.svelte` sets `sizes` without `srcset` (inert). Five hero
-  images are 1–2.2 MB; three files still raw JPEG. _Deferred: needs an image
-  pipeline (e.g. `@sveltejs/enhanced-img` or a resize script) and a decision
-  on generated-variant storage._
+- ☑ **Self-host the three font families** (Archivo, Newsreader, Spline Sans
+  Mono). The 16 script-subset woff2 files now live in `static/fonts/web/`
+  with `@font-face` inlined in `app.html`; Google origins removed from CSP,
+  preconnects, and the service worker. Full variable axes retained so
+  rendering is unchanged.
+- ◪ **Responsive images.** In-place optimization landed: the 13 oversized
+  images (2500–5700px, up to 2.2 MB) are capped at 1920px/q80 and the last
+  raw JPEGs converted to webp — `static/images` 33 MB → 24 MB. _Still open:
+  a true `srcset` pipeline (multi-resolution variants via
+  `@sveltejs/enhanced-img` or a resize script); `HeroImageDisplay`'s `sizes`
+  attribute remains inert until variants exist._
 - ◪ **Audio weight.** `static/notebooklm/` ships 44 MB of MP3 (more than all
-  images combined). Re-encoding at a speech-appropriate bitrate (~64 kb/s
-  mono) would roughly halve the deploy artifact. _Deferred: content decision
-  for the author._
+  images combined). _Attempted 2026-07-22: the sandbox has no ffmpeg and the
+  pure-WASM decode was unreliable (decoder errors, implausible duration), so
+  the originals were left untouched rather than risk corrupting content.
+  Locally, run: `ffmpeg -i in.mp3 -ac 1 -b:a 64k out.mp3` per file
+  (~44 MB → ~11 MB for spoken-word content) and listen before committing._
 - ☑ **Cap the service-worker runtime cache** (currently unbounded until the
   next deploy).
 
