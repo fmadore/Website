@@ -148,7 +148,15 @@
 					<article class="dossier {i === 0 ? 'dossier--lead' : ''}">
 						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolvePath -->
 						<a class="dossier-plate-link" href={resolvePath(`/research/${project.id}`)}>
-							<img class="plate dossier-plate" src={project.imageUrl} alt={project.title} />
+							<img
+								class="plate dossier-plate"
+								src={project.imageUrl}
+								alt={project.title}
+								width="1280"
+								height="720"
+								loading="lazy"
+								decoding="async"
+							/>
 						</a>
 
 						<div class="dossier-body">
@@ -266,8 +274,11 @@
 	}
 
 	.dossier-plate {
+		width: 100%;
 		aspect-ratio: 16 / 9;
 		height: auto;
+		/* Sources aren't all 16:9 (one is square) — crop instead of stretching. */
+		object-fit: cover;
 	}
 
 	.dossier-dateline {

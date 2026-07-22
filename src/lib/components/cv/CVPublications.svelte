@@ -84,6 +84,10 @@
 										src="https://zenodo.org/badge/DOI/{pub.doi}.svg"
 										alt="DOI: {pub.doi}"
 										class="doi-badge-img"
+										width="150"
+										height="20"
+										loading="lazy"
+										decoding="async"
 										onerror={(e) => {
 											const img = e.currentTarget as HTMLImageElement;
 											img.style.display = 'none';
@@ -155,6 +159,9 @@
 
 	.doi-badge-img {
 		height: var(--space-5);
+		/* The width/height attributes reserve layout space before load (badge
+		 * width varies per DOI); once loaded, the intrinsic ratio takes over. */
+		width: auto;
 	}
 
 	/* DOI fallback (shown only if the Zenodo badge image fails) — square ink

@@ -154,16 +154,18 @@
 	transform: translateY(0);
 }
 
-/* Apply animation only in browsers that support scroll-driven animations */
+/* Apply animation only in browsers that support scroll-driven animations.
+ * Transform-only by design: an opacity reveal leaves any element that
+ * straddles the viewport edge at load (or any element taller than the
+ * viewport) semi-transparent until scrolled past — hiding content and
+ * failing WCAG contrast. A translate never affects legibility.
+ * The length cap bounds the reveal for tall elements: with a bare
+ * percentage, a multi-viewport element would keep sliding until most of it
+ * had been scrolled past. */
 @supports (animation-timeline: view()) {
 	.scroll-reveal {
-		opacity: 0;
 		transform: translateY(var(--transform-distance-md));
 		animation: scrollReveal linear forwards;
-		/* The length cap bounds the reveal for elements taller than the
-		 * viewport: with a bare percentage, a multi-viewport element (e.g. a
-		 * long prose column) stays semi-transparent until most of it has been
-		 * scrolled past, which fails WCAG contrast and hides content. */
 		animation-timeline: view();
 		animation-range: entry 0% entry min(30%, 200px);
 	}
@@ -171,7 +173,6 @@
 
 @keyframes scrollReveal {
 	to {
-		opacity: 1;
 		transform: translateY(0);
 	}
 }
@@ -184,7 +185,6 @@
 
 @supports (animation-timeline: view()) {
 	.scroll-reveal-scale {
-		opacity: 0;
 		transform: scale(0.96);
 		animation: scrollRevealScale linear forwards;
 		animation-timeline: view();
@@ -194,7 +194,6 @@
 
 @keyframes scrollRevealScale {
 	to {
-		opacity: 1;
 		transform: scale(1);
 	}
 }
@@ -212,7 +211,6 @@
 
 @supports (animation-timeline: view()) {
 	.grid-stagger > * {
-		opacity: 0;
 		transform: translateY(var(--transform-distance-md));
 		animation: gridItemReveal var(--duration-moderate) var(--ease-out) forwards;
 		animation-timeline: view();
@@ -255,7 +253,6 @@
 
 @keyframes gridItemReveal {
 	to {
-		opacity: 1;
 		transform: translateY(0);
 	}
 }
@@ -287,7 +284,7 @@
 .scroll-reveal,
 .scroll-reveal-scale,
 .grid-stagger > * {
-	will-change: opacity, transform;
+	will-change: transform;
 }
 
 /* Mobile optimizations - reduced distances for better performance */

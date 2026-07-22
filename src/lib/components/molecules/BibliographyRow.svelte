@@ -109,12 +109,14 @@
 			{/if}
 		</p>
 
-		<h3 class="bib-title" class:bib-title--italic={italicTitle}>
+		<!-- h2, not h3: on the list pages these rows sit directly under the page
+		     h1 with no intermediate h2, so h3 would skip a heading level. -->
+		<h2 class="bib-title" class:bib-title--italic={italicTitle}>
 			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
 			<a {href} class="bib-title-link" data-sveltekit-preload-code="tap">
 				{title}
 			</a>
-		</h3>
+		</h2>
 
 		{#if byline}
 			<p class="bib-byline">{byline}</p>

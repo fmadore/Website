@@ -4,23 +4,20 @@
 	 * in $lib/utils/pdfCvGenerator (Ink + Signal print design notes there);
 	 * this component only lazy-loads jsPDF and tracks the busy state.
 	 */
-	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 	import { generateCvPdf } from '$lib/utils/pdfCvGenerator';
 
 	let isGenerating = $state(false);
-	let jsPDF: typeof import('jspdf').jsPDF | null = $state(null);
-
-	onMount(async () => {
-		const jsPDFModule = await import('jspdf');
-		jsPDF = jsPDFModule.default;
-	});
 
 	async function generatePDF() {
-		if (!jsPDF) return;
+		if (isGenerating) return;
 
 		isGenerating = true;
 		try {
+			// jsPDF (~126KB chunk incl. fflate) is fetched on first click, not on
+			// mount — eager-loading it cost every /cv visitor the download even
+			// if they never export the PDF.
+			const { default: jsPDF } = await import('jspdf');
 			await generateCvPdf(jsPDF);
 		} catch (err) {
 			if (import.meta.env.DEV) console.error('PDF generation failed:', err);
@@ -30,7 +27,7 @@
 	}
 </script>
 
-<button class="btn btn-primary" onclick={generatePDF} disabled={isGenerating || !jsPDF}>
+<button class="btn btn-primary" onclick={generatePDF} disabled={isGenerating}>
 	{#if isGenerating}
 		<Icon icon="mdi:loading" class="animate-spin" width="20" height="20" />
 		<span>Generating...</span>

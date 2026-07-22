@@ -2,7 +2,7 @@
 	import type { Activity } from '$lib/stores/activities.svelte';
 	import { base, resolve } from '$app/paths';
 
-	let { activity }: { activity: Activity } = $props();
+	let { activity, eager = false }: { activity: Activity; eager?: boolean } = $props();
 
 	let activityLink = $derived(resolve('/activities/[id]', { id: activity.id }));
 
@@ -86,7 +86,15 @@
 
 	{#if hasPhoto}
 		<div class="activity-plate-wrap">
-			<img class="plate activity-plate" src="{base}/{thumbSrc}" alt={thumbAlt} loading="lazy" />
+			<!-- The first row's plate is usually the page's LCP element, so the
+			     caller marks it eager + high priority; the rest stay lazy. -->
+			<img
+				class="plate activity-plate"
+				src="{base}/{thumbSrc}"
+				alt={thumbAlt}
+				loading={eager ? 'eager' : 'lazy'}
+				fetchpriority={eager ? 'high' : undefined}
+			/>
 		</div>
 	{/if}
 
