@@ -97,9 +97,21 @@
 		gap: var(--space-md);
 	}
 
+	/* Hairline-ruled footer row; formerly split with the global panels.css
+	 * .view-all-container rule (now route-scoped to the panel components). */
 	.view-all-container {
 		margin-top: var(--space-lg);
+		padding-top: var(--space-lg);
+		border-top: var(--border-width-thin) solid var(--color-border-light);
 		text-align: left;
+	}
+
+	.view-all-container :global(.btn) {
+		display: flex;
+		width: 100%;
+		justify-content: center;
+		white-space: normal;
+		text-align: center;
 	}
 
 	/* Responsive adjustments */

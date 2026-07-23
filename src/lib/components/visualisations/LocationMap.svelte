@@ -362,6 +362,11 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		margin: var(--space-xs) 0 0 0;
 		max-height: 200px;
 		overflow-y: auto;
+		/* Layout formerly inherited from the global panels.css .item-list rule
+		 * (now route-scoped to the panel components). */
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
 	}
 
 	:global(.location-popup .item-list li) {

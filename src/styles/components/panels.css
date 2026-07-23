@@ -118,10 +118,6 @@
 	gap: var(--space-xs);
 }
 
-.type-filters-section {
-	margin-bottom: var(--space-lg);
-}
-
 .type-filters-container {
 	display: flex;
 	flex-wrap: wrap;

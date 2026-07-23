@@ -1,12 +1,14 @@
 # CSS bundle roadmap — shrinking the global stylesheet
 
-_Last updated: July 2026 (PageSpeed improvement pass)._
+_Last updated: July 2026 (dead-token pruning + utility audit + panels.css
+route-scoping pass; original numbers from the PageSpeed improvement pass)._
 
 ## Where things stand
 
 The render-blocking global stylesheet (`0.<hash>.css`, built from `src/app.css`)
-weighs **~80 KB raw / ~13 KB gzipped**. Chrome CSS-coverage measurements against
-the production build show:
+now weighs **~75 KB raw / ~12.6 KB gzipped** (was ~80 KB / ~13 KB before the
+July 2026 pruning pass). Chrome CSS-coverage measurements against
+the production build (pre-pass) showed:
 
 | Route                  | Share of `0.css` actually used |
 | ---------------------- | ------------------------------ |
@@ -44,24 +46,38 @@ extend.
 
 ## Roadmap (ordered by value/effort)
 
-1. **Prune dead design tokens in `variables.css` (~17.5K → target ~10K).**
-   Many tokens survive from the pre-Ink+Signal design (legacy shadows, radii,
-   retired color scales). For each `--token:` definition, grep for `var(--token`
-   across `src/`; delete unreferenced ones. Zero visual risk if grep-verified.
-   The `--shadow-*`/`--border-radius-*` aliases that all resolve to `none`/`0`
-   can collapse to a handful of lines.
+1. ✅ **Prune dead design tokens in `variables.css`.** _Done (July 2026)._
+   The earlier `fdd3e3a` purge had already removed most legacy tokens; a full
+   grep-verification pass found only `--border-radius-md` completely dead.
+   The remaining fat was one-to-one indirection: `--sys-*` tokens whose sole
+   consumer was a single semantic alias (`--sys-type-step-*` → `--font-size-*`,
+   `--sys-font-family-*` → `--font-family-*`, and seven single-use sys colors)
+   were collapsed into the semantic tokens directly. `--sys-*` tokens shared by
+   several aliases or referenced by `dark.css` remain. Every token now has a
+   grep-verified consumer (17.5K → 16.4K source; savings in the minified
+   bundle are the deleted/collapsed declarations, comments never shipped).
 
-2. **Route-scope the remaining page-flavored modules.** `panels.css` (used by
-   LatestActivities/panels), parts of `buttons.css` (rare variants: danger,
-   loading spinner, block), and the pagination/key-terms/year-bar sections of
-   `ink-signal.css` are only used on a few routes. Move them next to the
-   components that own them (same pattern as `entity-cards.css`) so they ride
-   the per-route CSS chunks instead of the global bundle.
+2. **Route-scope the remaining page-flavored modules.** _Partially done
+   (July 2026)._ ✅ `panels.css` no longer ships globally — `PanelBase.svelte`
+   already imported it, so it now rides the per-route chunks for the home and
+   research pages only. The two components that borrowed its declarations
+   outside those routes (`LocationMap` popup `.item-list`,
+   `RelatedItemsList` `.view-all-container`) now own local copies, and the
+   dead `.type-filters-section` class was dropped. _Remaining:_ parts of
+   `buttons.css` (rare variants: danger, loading spinner, block) and the
+   pagination/key-terms/year-bar sections of `ink-signal.css` are only used on
+   a few routes; they are addressed through dynamic variant props, so moving
+   them needs per-variant usage tracing plus a coverage re-measure.
 
-3. **Audit utility classes against actual usage.** The spacing/flex/sizing
-   utility files are small individually but pure dead weight where unused:
-   `rg -o 'class="[^"]*"' src | tr ' ' '\n'` against the utility class list, or
-   run the coverage script below and diff. Delete what nothing references.
+3. ✅ **Audit utility classes against actual usage.** _Done (July 2026)._
+   Grep-verified every class in `utilities/*.css`, `layout/*.css`, `cards.css`
+   and `navigation-utilities.css` against markup (including dynamically built
+   class strings and prop defaults). `grid.css` shrank from the full
+   Tailwind-style matrix to the five classes actually used (4.0K → 0.6K);
+   `container-fluid`/`section-sm`/`section-lg` were dropped from
+   `container.css`; three stale critical-CSS rules (`md:grid-cols-3`,
+   `md:gap-8`, `md:col-span-2`) were removed from `app.html`. Everything else
+   is in real use — the spacing/flex/color/sizing utilities are already lean.
 
 4. **Split `typography.css` prose styles.** Long-form prose rules (blockquotes,
    lists, code blocks, footnote styling) only matter on content pages; the

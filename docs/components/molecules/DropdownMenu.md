@@ -99,8 +99,5 @@ The component uses these CSS variables for styling:
 - `--color-text` - Text color of dropdown items
 - `--color-primary` - Color for hover state
 - `--color-border` - Color for hover state background
-- `--shadow-md` - Box shadow for the dropdown
-- `--border-radius-md` - Border radius for the dropdown
-- `--border-radius-sm` - Border radius for individual items
 - `--spacing-2`, `--spacing-3`, `--spacing-4` - Padding and spacing
 - `--font-size-sm` - Font size for dropdown items
