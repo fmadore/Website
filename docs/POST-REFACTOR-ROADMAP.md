@@ -18,35 +18,35 @@ Status legend: ☐ pending · ☑ done · ◪ partial / deferred · ⊘ blocked 
 
 ## Phase A — Quick wins & regressions
 
-- ☐ **A1. `preload="none"` on the audio player.** `MediaPlayer.svelte`
+- ☑ **A1. `preload` on the audio player.** `MediaPlayer.svelte`
   renders `<audio>` with no `preload` attribute below the fold on research
-  pages; browsers may prefetch the 17–28 MB MP3s. One-attribute fix.
-- ☐ **A2. Fix `$derived(() => …)` memoization loss (4 files).** These store
+  pages; browsers may prefetch the 17–28 MB MP3s. Landed as `preload="metadata"` — duration still displays, media bytes stay unfetched until play.
+- ☑ **A2. Fix `$derived(() => …)` memoization loss (4 files).** These store
   an uncached function recomputed on every template read. Convert to
   `$derived.by(…)` and drop call parentheses:
   `publications/visualisations/+page.svelte` (wordCloudPublicationIds /
   wordCloudData / wordCloudStats / bigramsData), `EChartsGanttChart.svelte`
   (yearRange, read twice per render), `EChartsHorizontalBarChart.svelte`
   (xAxisInterval), `EChartsWordCloud.svelte` (chartData).
-- ☐ **A3. Sitemap correctness.** `/research/mining-the-islam-west-africa-collection`,
+- ☑ **A3. Sitemap correctness.** `/research/mining-the-islam-west-africa-collection`,
   `/communications`, and `/cv/timeline` are missing; derive the research
   paths from the route tree (`import.meta.glob`) so they can't drift again.
   Emit real `lastmod` from `dateISO` for publications/communications and
   omit `lastmod` where no true value exists (every URL currently claims
   "modified today" on each build).
-- ☐ **A4. Restyle `static/404.html` and `static/offline.html` to
+- ☑ **A4. Restyle `static/404.html` and `static/offline.html` to
   Ink + Signal.** Both still load the retired Fraunces/Commissioner from
   Google Fonts (origins that were removed from CSP when fonts were
   self-hosted) and use the retired ink-blue accent and wrong paper value.
   Move to self-hosted Archivo/Newsreader with pine/warm-paper tokens.
-- ☐ **A5. Fix `static/manifest.webmanifest`.** Description names the wrong
+- ☑ **A5. Fix `static/manifest.webmanifest`.** Description names the wrong
   institution (ZMO; siteConfig says University of Bayreuth), `theme_color`/
   `background_color` are `#000000`/`#ffffff` instead of ink/paper, the only
   icon is declared 32×32 (the file is actually 64×64), and there are no
   192/512 or maskable icons, so installability fails. Add a
   `scripts/generate-pwa-icons.mjs` (sharp) emitting an Ink + Signal
   geometric mark at 192/512/512-maskable.
-- ☐ **A6. Deploy-path parity: reference-index freshness.** `deploy.yml`
+- ☑ **A6. Deploy-path parity: reference-index freshness.** `deploy.yml`
   omits the `generate-reference-index.mjs --check` step that PR CI runs, so
   a stale committed index merged to main deploys unguarded.
 
@@ -127,7 +127,7 @@ Status legend: ☐ pending · ☑ done · ◪ partial / deferred · ⊘ blocked 
   taken here — LFS migration rewrites history).
 - ⊘ **D4. Re-encode `static/notebooklm/` audio (~17 MB saving).** BLOCKED
   in this sandbox (no ffmpeg; a prior pure-WASM attempt was unreliable).
-  `religious_activism_campus.mp3` is 28.1 MB at 160 kbps *stereo* for
+  `religious_activism_campus.mp3` is 28.1 MB at 160 kbps _stereo_ for
   spoken word. Locally run
   `ffmpeg -i religious_activism_campus.mp3 -ac 1 -b:a 64k out.mp3`
   (matches the other file's 64 kbps encoding, → ~11 MB), listen, replace.

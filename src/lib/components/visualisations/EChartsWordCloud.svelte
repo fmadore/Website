@@ -64,7 +64,7 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 	});
 
 	// Process words for the chart - limit and normalize
-	const chartData = $derived(() => {
+	const chartData = $derived.by(() => {
 		if (!words.length) return [];
 
 		const limitedWords = words.slice(0, maxWords);
@@ -129,7 +129,7 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 						color: resolvedColors.accent
 					}
 				},
-				data: chartData()
+				data: chartData
 			}
 		],
 		backgroundColor: 'transparent'

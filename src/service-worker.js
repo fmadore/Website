@@ -20,7 +20,16 @@ const RUNTIME_CACHE = `runtime-v${version}`;
 // initial load and ballooned the network dependency tree. The fetch handler
 // below already caches JS/CSS/assets cache-first and navigations network-first
 // on demand, so any visited page still works offline without the upfront bulk.
-const ASSETS_TO_CACHE = ['/', '/offline.html', '/manifest.webmanifest'];
+// The three latin font subsets are what offline.html (and any cached page)
+// renders with — a few dozen KB that keep the offline fallback on-brand.
+const ASSETS_TO_CACHE = [
+	'/',
+	'/offline.html',
+	'/manifest.webmanifest',
+	'/fonts/web/archivo-normal-latin.woff2',
+	'/fonts/web/newsreader-normal-latin.woff2',
+	'/fonts/web/spline-sans-mono-normal-latin.woff2'
+];
 
 // Cache strategies. Entries starting with '.' are file extensions and must
 // match the END of the pathname; everything else is a path-prefix substring.

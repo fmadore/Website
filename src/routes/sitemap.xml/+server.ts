@@ -23,28 +23,37 @@ interface SitemapEntry {
 	lastmod?: string;
 }
 
+// Research project routes derived from the route tree so the sitemap can't
+// drift when a project page is added or removed.
+const researchRouteModules = import.meta.glob('/src/routes/research/*/+page.svelte');
+const researchProjectPaths = Object.keys(researchRouteModules)
+	.map((file) => file.replace('/src/routes', '').replace('/+page.svelte', ''))
+	.filter((path) => !path.includes('['));
+
+// Valid W3C datetime forms accepted by sitemap <lastmod>: YYYY, YYYY-MM, YYYY-MM-DD.
+const W3C_DATE = /^\d{4}(-\d{2}(-\d{2})?)?$/;
+const toLastmod = (dateISO?: string): string | undefined =>
+	dateISO && W3C_DATE.test(dateISO) ? dateISO : undefined;
+
 export const GET: RequestHandler = async () => {
 	const website = 'https://www.frederickmadore.com';
-	const currentDate = new Date().toISOString();
 
-	// Helper to format dates properly for sitemap
-	const formatDate = (date?: Date | string): string => {
-		if (!date) return currentDate;
-		return new Date(date).toISOString();
-	};
-
-	// Static pages with specific priorities for sitelinks optimization
+	// Static pages with specific priorities for sitelinks optimization.
+	// No lastmod: these pages carry no true modification date, and a fabricated
+	// "modified today" on every build is worse for crawlers than omission.
 	const staticPages: SitemapEntry[] = [
 		// Homepage - highest priority
 		{ path: '', priority: 1.0, changefreq: 'weekly' },
 		// Main navigation sections - these should become sitelinks
 		{ path: '/research', priority: 0.9, changefreq: 'monthly' },
 		{ path: '/publications', priority: 0.9, changefreq: 'weekly' },
+		{ path: '/communications', priority: 0.9, changefreq: 'monthly' },
 		{ path: '/cv', priority: 0.9, changefreq: 'monthly' },
 		{ path: '/activities', priority: 0.9, changefreq: 'weekly' },
 		{ path: '/digital-humanities', priority: 0.9, changefreq: 'monthly' },
 		{ path: '/teaching', priority: 0.9, changefreq: 'monthly' },
 		// Secondary pages
+		{ path: '/cv/timeline', priority: 0.8, changefreq: 'monthly' },
 		{ path: '/publications/visualisations', priority: 0.8, changefreq: 'monthly' },
 		{ path: '/conference-activity', priority: 0.7, changefreq: 'monthly' },
 		{ path: '/conference-activity/slides', priority: 0.8, changefreq: 'monthly' },
@@ -54,14 +63,8 @@ export const GET: RequestHandler = async () => {
 		{ path: '/rss.xml', priority: 0.5, changefreq: 'weekly' }
 	];
 
-	// Research project routes (sub-pages of Research)
-	const researchProjectPages: SitemapEntry[] = [
-		'/research/islams-peripheries-dh-ai-west-africa-central-asia',
-		'/research/dh-ai-african-studies',
-		'/research/religious-activism-campuses-togo-benin',
-		'/research/muslim-minorities-southern-cities-benin-togo',
-		'/research/youth-womens-islamic-activism-cote-divoire-burkina-faso'
-	].map((path) => ({
+	// Research project routes (sub-pages of Research), derived from the route tree
+	const researchProjectPages: SitemapEntry[] = researchProjectPaths.map((path) => ({
 		path,
 		priority: 0.8,
 		changefreq: 'monthly' as const
@@ -79,7 +82,7 @@ export const GET: RequestHandler = async () => {
 		path: `/activities/${activity.id}`,
 		priority: 0.7,
 		changefreq: 'yearly' as const,
-		lastmod: activity.date ? formatDate(activity.date) : currentDate
+		lastmod: toLastmod(activity.dateISO)
 	}));
 
 	// Activity year archive pages
@@ -94,14 +97,16 @@ export const GET: RequestHandler = async () => {
 	const publicationPages: SitemapEntry[] = allPublications.map((pub) => ({
 		path: `/publications/${pub.id}`,
 		priority: 0.7,
-		changefreq: 'yearly' as const
+		changefreq: 'yearly' as const,
+		lastmod: toLastmod(pub.dateISO)
 	}));
 
 	// Communication pages
 	const communicationPages: SitemapEntry[] = allCommunications.map((comm) => ({
 		path: `/communications/${comm.id}`,
 		priority: 0.7,
-		changefreq: 'yearly' as const
+		changefreq: 'yearly' as const,
+		lastmod: toLastmod(comm.dateISO)
 	}));
 
 	// Combine all entries
@@ -123,14 +128,14 @@ export const GET: RequestHandler = async () => {
     xmlns:image="https://www.google.com/schemas/sitemap-image/1.1"
 >
 ${allEntries
-	.map(
-		(entry) => `    <url>
-        <loc>${website}${entry.path}</loc>
-        <lastmod>${entry.lastmod || currentDate}</lastmod>
+	.map((entry) => {
+		const lastmod = entry.lastmod ? `\n        <lastmod>${entry.lastmod}</lastmod>` : '';
+		return `    <url>
+        <loc>${website}${entry.path}</loc>${lastmod}
         <changefreq>${entry.changefreq}</changefreq>
         <priority>${entry.priority.toFixed(1)}</priority>
-    </url>`
-	)
+    </url>`;
+	})
 	.join('\n')}
 </urlset>`;
 

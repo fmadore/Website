@@ -64,7 +64,7 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 	);
 
 	// Calculate year range from data
-	const yearRange = $derived(() => {
+	const yearRange = $derived.by(() => {
 		if (data.length === 0) return { min: 2010, max: new Date().getFullYear() + 1 };
 		const allYears = data.flatMap((p) => [p.startYear, p.endYear]);
 		return {
@@ -146,8 +146,8 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 		},
 		xAxis: {
 			type: 'value',
-			min: yearRange().min,
-			max: yearRange().max,
+			min: yearRange.min,
+			max: yearRange.max,
 			axisLabel: {
 				color: resolvedColors.text,
 				fontSize: isMobile ? 10 : 12,

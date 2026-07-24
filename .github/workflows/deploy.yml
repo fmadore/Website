@@ -53,6 +53,9 @@ jobs:
       - name: Run unit tests
         run: npm run test
 
+      - name: Reference index freshness
+        run: node scripts/generate-reference-index.mjs --check
+
       - name: Build with SvelteKit
         run: npm run build
 

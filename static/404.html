@@ -13,38 +13,53 @@
 			SvelteKit app never boots here, so styles are inlined and theming follows
 			the OS via prefers-color-scheme (the app's theme toggle does not run).
 			All hrefs/assets are absolute because this page is served at the
-			(arbitrary) missing path.
+			(arbitrary) missing path. Fonts are the site's self-hosted files;
+			colours mirror src/styles/base/variables.css (Ink + Signal).
 		-->
 		<link rel="icon" type="image/png" href="/icons/favicon.png" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Commissioner:wght@400;500&display=swap"
-			rel="stylesheet"
-		/>
 
 		<style>
+			@font-face {
+				font-family: 'Archivo';
+				font-style: normal;
+				font-weight: 400 900;
+				font-stretch: 100% 125%;
+				font-display: swap;
+				src: url(/fonts/web/archivo-normal-latin.woff2) format('woff2');
+			}
+			@font-face {
+				font-family: 'Newsreader';
+				font-style: normal;
+				font-weight: 400 700;
+				font-display: swap;
+				src: url(/fonts/web/newsreader-normal-latin.woff2) format('woff2');
+			}
+			@font-face {
+				font-family: 'Spline Sans Mono';
+				font-style: normal;
+				font-weight: 400 700;
+				font-display: swap;
+				src: url(/fonts/web/spline-sans-mono-normal-latin.woff2) format('woff2');
+			}
+
 			:root {
-				/* Warm paper light theme (mirrors the site's design tokens) */
-				--bg: #faf7f2;
-				--surface: #ffffff;
-				--border: #e9e2d5;
-				--text: #2a211a;
-				--muted: #584b40;
-				--primary: #2e4271;
-				--font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
-				--font-sans: 'Commissioner', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+				/* Daylight: warm paper + ink + pine (mirrors the design tokens) */
+				--bg: #faf7ef;
+				--ink: #191509;
+				--muted: #5c5442;
+				--accent: #1e6a56;
+				--font-display: 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+				--font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+				--font-mono: 'Spline Sans Mono', ui-monospace, 'Cascadia Mono', Menlo, monospace;
 			}
 
 			@media (prefers-color-scheme: dark) {
 				:root {
-					/* Cool slate dark theme */
-					--bg: #14161e;
-					--surface: #1c1f2a;
-					--border: #363a4d;
-					--text: #f4efe7;
-					--muted: #a39487;
-					--primary: #7a89b3;
+					/* Midnight: the microfilm negative — warm film ground, cream type */
+					--bg: #171310;
+					--ink: #efe7d6;
+					--muted: #b3a88d;
+					--accent: #4fbb99;
 				}
 			}
 
@@ -61,9 +76,9 @@
 			}
 
 			body {
-				font-family: var(--font-sans);
+				font-family: var(--font-serif);
 				background-color: var(--bg);
-				color: var(--text);
+				color: var(--ink);
 				min-height: 100vh;
 				display: flex;
 				align-items: center;
@@ -73,24 +88,27 @@
 
 			main {
 				width: 100%;
-				max-width: 38rem;
+				max-width: 40rem;
 				margin: 0 auto;
 				padding: 2rem 1.5rem 4rem;
+				/* Masthead rule: hierarchy is drawn in rules, not colour */
+				border-top: 5px solid var(--ink);
 			}
 
 			.eyebrow {
+				font-family: var(--font-mono);
 				font-size: 0.8125rem;
 				font-weight: 500;
 				letter-spacing: 0.12em;
 				text-transform: uppercase;
-				color: var(--muted);
+				color: var(--accent);
+				margin-top: 1.25rem;
 				margin-bottom: 1rem;
 			}
 
 			h1 {
 				font-family: var(--font-display);
-				font-optical-sizing: auto;
-				font-weight: 500;
+				font-weight: 700;
 				font-size: clamp(2rem, 1.5rem + 2.5vw, 3rem);
 				line-height: 1.1;
 				letter-spacing: -0.01em;
@@ -98,62 +116,63 @@
 			}
 
 			p {
-				font-size: 1.0625rem;
+				font-size: 1.125rem;
 				color: var(--muted);
-				max-width: 32rem;
+				max-width: 34rem;
 				margin-bottom: 2.25rem;
 			}
 
 			.links {
 				display: flex;
 				flex-wrap: wrap;
-				gap: 0.5rem 0.75rem;
+				gap: 0.5rem 0.625rem;
 				list-style: none;
-				font-size: 1rem;
 			}
 
+			/* Flat chips: 1px ink border, square corners, mono caps */
 			.links a {
 				display: inline-block;
-				color: var(--primary);
+				font-family: var(--font-mono);
+				font-size: 0.8125rem;
+				letter-spacing: 0.06em;
+				text-transform: uppercase;
+				color: var(--ink);
 				text-decoration: none;
 				padding: 0.5rem 0.95rem;
-				border: 1px solid var(--border);
-				border-radius: 0.5rem;
-				background-color: var(--surface);
-				transition:
-					border-color 0.2s ease,
-					transform 0.2s ease;
+				border: 1px solid var(--ink);
 			}
 
 			.links a:hover,
 			.links a:focus-visible {
-				border-color: var(--primary);
-				transform: translateY(-1px);
+				background-color: var(--ink);
+				color: var(--bg);
 			}
 
 			.links a:focus-visible {
-				outline: 2px solid var(--primary);
+				outline: 2px solid var(--accent);
 				outline-offset: 2px;
 			}
 
 			.home-link {
 				display: inline-block;
-				margin-top: 2rem;
-				color: var(--primary);
-				font-weight: 500;
-				text-decoration: none;
-				border-bottom: 1px solid transparent;
+				margin-top: 2.25rem;
+				font-family: var(--font-mono);
+				font-size: 0.875rem;
+				color: var(--ink);
+				text-decoration: underline;
+				text-decoration-color: var(--accent);
+				text-underline-offset: 0.2em;
 			}
 
 			.home-link:hover,
 			.home-link:focus-visible {
-				border-bottom-color: currentColor;
+				color: var(--accent);
 			}
 		</style>
 	</head>
 	<body>
 		<main>
-			<p class="eyebrow">Error 404</p>
+			<p class="eyebrow">Error · 404</p>
 			<h1>This page couldn&rsquo;t be found.</h1>
 			<p>
 				The page you&rsquo;re looking for may have moved, been renamed, or never existed &mdash; and

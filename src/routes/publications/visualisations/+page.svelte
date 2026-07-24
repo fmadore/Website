@@ -327,7 +327,7 @@
 	let wordCloudLanguage = $state<WordCloudLanguage>('all');
 
 	// Get publication IDs for the selected language
-	const wordCloudPublicationIds = $derived(() => {
+	const wordCloudPublicationIds = $derived.by(() => {
 		if (wordCloudLanguage === 'en') {
 			return corpusAnalysis.byLanguage.en;
 		} else if (wordCloudLanguage === 'fr') {
@@ -337,28 +337,22 @@
 	});
 
 	// Get word cloud data for selected language
-	const wordCloudData = $derived(() => {
-		const ids = wordCloudPublicationIds();
-		if (ids.length === 0) return [];
-		return getCombinedWordCloudData(ids, { maxWords: 100 });
+	const wordCloudData = $derived.by(() => {
+		if (wordCloudPublicationIds.length === 0) return [];
+		return getCombinedWordCloudData(wordCloudPublicationIds, { maxWords: 100 });
 	});
 
 	// Count of publications with text analysis
-	const wordCloudStats = $derived(() => {
-		const ids = wordCloudPublicationIds();
-		const data = wordCloudData();
-		return {
-			publicationCount: ids.length,
-			wordCount: data.reduce((sum, w) => sum + w.count, 0),
-			uniqueTerms: data.length
-		};
+	const wordCloudStats = $derived({
+		publicationCount: wordCloudPublicationIds.length,
+		wordCount: wordCloudData.reduce((sum, w) => sum + w.count, 0),
+		uniqueTerms: wordCloudData.length
 	});
 
 	// Get bigrams data for selected language
-	const bigramsData = $derived(() => {
-		const ids = wordCloudPublicationIds();
-		if (ids.length === 0) return [];
-		return getCombinedBigrams(ids, 30);
+	const bigramsData = $derived.by(() => {
+		if (wordCloudPublicationIds.length === 0) return [];
+		return getCombinedBigrams(wordCloudPublicationIds, 30);
 	});
 
 	// Accessor functions for bigrams chart
@@ -510,8 +504,8 @@
 	<section class="visualization-section scroll-reveal mb-12">
 		<h2 class="section-heading">
 			Text Analysis Word Cloud
-			{#if wordCloudStats().publicationCount > 0}
-				({wordCloudStats().publicationCount} publications analyzed)
+			{#if wordCloudStats.publicationCount > 0}
+				({wordCloudStats.publicationCount} publications analyzed)
 			{/if}
 		</h2>
 		<p class="section-description">
@@ -525,9 +519,9 @@
 				frCount={corpusAnalysis.byLanguage.fr.length}
 			/>
 
-			<VizChartCard placeholderHeight="500px" hasData={wordCloudData().length > 0}>
+			<VizChartCard placeholderHeight="500px" hasData={wordCloudData.length > 0}>
 				<EChartsWordCloud
-					words={wordCloudData()}
+					words={wordCloudData}
 					maxWords={100}
 					shape="circle"
 					minFontSize={12}
@@ -557,8 +551,8 @@
 	<section class="visualization-section scroll-reveal mb-12">
 		<h2 class="section-heading">
 			Common Phrases (Bigrams)
-			{#if bigramsData().length > 0}
-				({bigramsData().length} phrases)
+			{#if bigramsData.length > 0}
+				({bigramsData.length} phrases)
 			{/if}
 		</h2>
 		<p class="section-description">
@@ -574,12 +568,12 @@
 
 			<VizChartCard
 				variant="bigrams"
-				height="{Math.max(400, bigramsData().length * 28 + 70)}px"
+				height="{Math.max(400, bigramsData.length * 28 + 70)}px"
 				placeholderHeight="400px"
-				hasData={bigramsData().length > 0}
+				hasData={bigramsData.length > 0}
 			>
 				<EChartsHorizontalBarChart
-					data={bigramsData()}
+					data={bigramsData}
 					xAccessor={getBigramCount}
 					yAccessor={getBigramName}
 					xAxisLabel="Frequency"
