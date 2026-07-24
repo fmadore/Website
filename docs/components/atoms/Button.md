@@ -73,8 +73,13 @@ import Button from '$lib/components/atoms/Button.svelte';
 | `disabled`          | `boolean`                                                                                     | `false`     | Whether the button is disabled                      |
 | `block`             | `boolean`                                                                                     | `false`     | Whether the button should take up full width        |
 | `iconOnly`          | `boolean`                                                                                     | `false`     | For icon-only buttons (adjusts padding)             |
+| `surface`           | `boolean`                                                                                     | `false`     | Render as a flat outlined surface control           |
+| `loading`           | `boolean`                                                                                     | `false`     | Loading state (suppresses clicks, shows spinner)    |
+| `label`             | `string \| undefined`                                                                         | `undefined` | Plain-text content, alternative to `children`       |
 | `ariaLabel`         | `string \| undefined`                                                                         | `undefined` | Accessibility label, required for icon-only buttons |
 | `additionalClasses` | `string`                                                                                      | `''`        | Additional CSS classes to apply to the button       |
+
+Any other attribute (e.g. `title`, `data-*`) is passed through to the underlying element.
 
 ## Snippet props (Svelte 5)
 

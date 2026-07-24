@@ -67,4 +67,4 @@ Several documented components now live outside the folder their doc sits in; the
 2. **Svelte 5 only**: Use runes and snippet props; never legacy reactive syntax, slots, or `createEventDispatcher`
 3. **Styling**: Use CSS variables/design tokens only; flat print register (no shadows, glass, gradients, or rounded corners) — see `CLAUDE.md`
 4. **Accessibility**: Components must meet WCAG standards (ARIA attributes, keyboard navigation, focus states)
-5. **Docs**: When a documented component's props change, update its doc file here or delete it
+5. **Docs**: The typed `Props` interface in each `.svelte` file is the source of truth — these pages are a curated, hand-maintained subset. When a documented component's props change, update its doc file here or delete it

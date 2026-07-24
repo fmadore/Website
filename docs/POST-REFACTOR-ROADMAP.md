@@ -52,23 +52,23 @@ Status legend: ☐ pending · ☑ done · ◪ partial / deferred · ⊘ blocked 
 
 ## Phase B — Documentation accuracy
 
-- ☐ **B1. CLAUDE.md catch-up.** The atoms/molecules/organisms lists name
+- ☑ **B1. CLAUDE.md catch-up.** The atoms/molecules/organisms lists name
   deleted components (`ItemCard`, `UniversalFiltersSidebar`, the
   `molecules/filters/` island) and miss real ones; the State
   Management / Filter Implementation sections document the deleted
   store-based API (`toggleTypeFilter` etc.) instead of the live
   `entityFilterSystem.svelte.ts`. Since CLAUDE.md steers future agent
   sessions, staleness here actively causes wrong work.
-- ☐ **B2. Rewrite `src/routes/cv/README.md`.** Describes
+- ☑ **B2. Rewrite `src/routes/cv/README.md`.** Describes
   `src/routes/cv/components/` and `src/routes/cv/utils/` which no longer
   exist (components live in `src/lib/components/cv/`, formatter in
   `src/lib/utils/cvFormatters.ts`); lists a non-existent `CVFieldwork` and
   omits ~10 real components.
-- ☐ **B3. Correct `docs/MAINTAINABILITY-ROADMAP.md` status header.** Fonts,
+- ☑ **B3. Correct `docs/MAINTAINABILITY-ROADMAP.md` status header.** Fonts,
   the ESLint ratchet, and the home-page Person JSON-LD have all since
   landed; only responsive images and the audio re-encode remain open (both
   addressed by this roadmap: D1 landed, D4 blocked in sandbox).
-- ☐ **B4. Component-docs drift.** `docs/components/atoms/Button.md` omits
+- ☑ **B4. Component-docs drift.** `docs/components/atoms/Button.md` omits
   the current `surface`, `loading`, and `label` props. Update it and state
   in `docs/components/README.md` that the typed `Props` interfaces are the
   source of truth and the docs are a curated subset.
