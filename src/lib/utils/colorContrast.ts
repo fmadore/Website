@@ -35,7 +35,8 @@ function parseComponent(token: string, percentBasis: number): number {
 function parseHex(hex: string): RGB | null {
 	let h = hex.slice(1);
 	if (h.length === 3 || h.length === 4) {
-		h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+		const [c1 = '', c2 = '', c3 = ''] = h;
+		h = c1 + c1 + c2 + c2 + c3 + c3;
 	} else if (h.length === 8) {
 		h = h.slice(0, 6);
 	} else if (h.length !== 6) {
@@ -52,9 +53,9 @@ function parseRgb(str: string): RGB | null {
 	// Split on commas, or on whitespace/slash for the modern space syntax.
 	const parts = inner.includes(',') ? inner.split(',') : inner.split(/[\s/]+/);
 	if (parts.length < 3) return null;
-	const r = clamp(Math.round(parseComponent(parts[0], 255)), 0, 255);
-	const g = clamp(Math.round(parseComponent(parts[1], 255)), 0, 255);
-	const b = clamp(Math.round(parseComponent(parts[2], 255)), 0, 255);
+	const r = clamp(Math.round(parseComponent(parts[0]!, 255)), 0, 255);
+	const g = clamp(Math.round(parseComponent(parts[1]!, 255)), 0, 255);
+	const b = clamp(Math.round(parseComponent(parts[2]!, 255)), 0, 255);
 	if ([r, g, b].some(Number.isNaN)) return null;
 	return { r, g, b };
 }
@@ -74,16 +75,16 @@ function linearToSrgb8(channel: number): number {
 function parseOklch(str: string): RGB | null {
 	const inner = str.slice(str.indexOf('(') + 1, str.lastIndexOf(')'));
 	const parts = inner
-		.split('/')[0]
+		.split('/')[0]!
 		.trim()
 		.split(/[\s,]+/);
 	if (parts.length < 3) return null;
 
-	const L = parseComponent(parts[0], 1);
-	const C = parts[1].trim().endsWith('%')
-		? (parseFloat(parts[1]) / 100) * 0.4
-		: parseFloat(parts[1]);
-	const hToken = parts[2].trim().replace(/deg$/, '');
+	const L = parseComponent(parts[0]!, 1);
+	const C = parts[1]!.trim().endsWith('%')
+		? (parseFloat(parts[1]!) / 100) * 0.4
+		: parseFloat(parts[1]!);
+	const hToken = parts[2]!.trim().replace(/deg$/, '');
 	const H = hToken === 'none' ? 0 : parseFloat(hToken);
 	if ([L, C, H].some(Number.isNaN)) return null;
 

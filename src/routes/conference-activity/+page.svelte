@@ -114,7 +114,7 @@
 	}
 
 	// Today (YYYY-MM-DD) for the upcoming/past split.
-	const today = new Date().toISOString().split('T')[0];
+	const today = new Date().toISOString().split('T')[0]!;
 
 	// The system's filtered list, narrowed by the free-text search.
 	const searchedCommunications = $derived(

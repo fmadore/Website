@@ -32,12 +32,13 @@ This website showcases my academic work including:
 
 This site is built with:
 
-- [SvelteKit](https://kit.svelte.dev/) - Frontend framework
-- Custom CSS Framework (see `src/styles/CSS-README.md`)
-- [TypeScript](https://www.typescriptlang.org/) - Language
-- Deployed on [GitHub Pages](https://pages.github.com/)
+- [SvelteKit 2](https://kit.svelte.dev/) with [Svelte 5 runes](https://svelte.dev/docs/svelte/what-are-runes) - Frontend framework, fully prerendered to static HTML
+- [TypeScript](https://www.typescriptlang.org/) (strict, `noUncheckedIndexedAccess`) - Language
+- Custom token-driven CSS system — the **Ink + Signal** design language (see `src/styles/CSS-README.md`)
+- Content as typed TypeScript data files in `src/lib/data/` (17 categories), auto-discovered via `import.meta.glob`
+- Deployed to [GitHub Pages](https://pages.github.com/) via GitHub Actions
 
-## Development Notes
+## Development
 
 ### Running Locally
 
@@ -46,7 +47,7 @@ This site is built with:
    git clone https://github.com/fmadore/Website.git
    cd Website
    ```
-2. Install dependencies
+2. Install dependencies (Node ≥ 24)
    ```bash
    npm install
    ```
@@ -55,6 +56,19 @@ This site is built with:
    npm run dev
    ```
 4. Open your browser and navigate to `http://localhost:5173`
+
+### Quality Gates
+
+| Command                 | What it does                                                             |
+| ----------------------- | ------------------------------------------------------------------------ |
+| `npm run check`         | Type-checks all Svelte components and TS modules (`svelte-check`)        |
+| `npm run lint`          | Prettier + ESLint (all rules at `error`)                                 |
+| `npm run test`          | Vitest unit tests — pure utils, data-integrity validation of all content |
+| `npm run test:coverage` | Unit tests with V8 coverage report                                       |
+| `npm run test:e2e`      | Playwright smoke tests against the production build                      |
+| `npm run test:all`      | Everything above in sequence                                             |
+
+CI runs the full gate (lint, type-check, unit tests, dependency audit, reference-index freshness, build, E2E) on every pull request, and again on the deploy path before publishing. CodeQL scans weekly and on every change.
 
 ## License
 

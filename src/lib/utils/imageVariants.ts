@@ -25,7 +25,8 @@ export function buildSrcset(src: string | null | undefined): string | undefined 
 	if (!src || src.startsWith('http://') || src.startsWith('https://')) return undefined;
 	const match = src.match(IMAGE_PATH_RE);
 	if (!match) return undefined;
-	const [, prefix, name] = match;
-	if (name.startsWith('_r/')) return undefined;
+	const prefix = match[1];
+	const name = match[2];
+	if (!name || name.startsWith('_r/')) return undefined;
 	return VARIANT_WIDTHS.map((w) => `${prefix}_r/${name}-${w}.webp ${w}w`).join(', ');
 }

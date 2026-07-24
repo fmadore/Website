@@ -72,7 +72,7 @@ export function resolveColor(color: string): string {
 	if (color.startsWith('rgba(var(')) {
 		const rgbaMatch = color.match(/rgba\(var\(([^)]+)\),\s*([^)]+)\)/);
 		if (rgbaMatch) {
-			const rgbVarName = rgbaMatch[1];
+			const rgbVarName = rgbaMatch[1]!;
 			const opacity = rgbaMatch[2];
 			const rgbValue = getCSSVariableValue(rgbVarName) || '0, 0, 0';
 			return `rgba(${rgbValue}, ${opacity})`;
@@ -116,7 +116,8 @@ export function colorWithOpacity(color: string, opacity: number): string {
 	if (color.startsWith('#')) {
 		let hex = color.slice(1);
 		if (hex.length === 3) {
-			hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+			const [c1 = '', c2 = '', c3 = ''] = hex;
+			hex = c1 + c1 + c2 + c2 + c3 + c3;
 		}
 		const r = parseInt(hex.slice(0, 2), 16);
 		const g = parseInt(hex.slice(2, 4), 16);

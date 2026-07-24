@@ -58,6 +58,11 @@ export default ts.config(
 			'svelte/no-useless-children-snippet': 'error',
 			'svelte/no-unused-props': 'error',
 			'svelte/prefer-writable-derived': 'error'
+			// Note: a11y rules are NOT configured here — eslint-plugin-svelte v3
+			// removed them; accessibility checks now live in the Svelte compiler
+			// (surfaced by `svelte-check`, which `npm run check` runs with
+			// --fail-on-warnings) and are additionally guarded at runtime by the
+			// axe-core E2E pass in tests-e2e/a11y.spec.ts.
 		}
 	}
 );

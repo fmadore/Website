@@ -54,8 +54,8 @@ describe('groupByKey', () => {
 		];
 		const groups = groupByKey(items, (i) => i.p);
 		expect(Object.keys(groups).sort()).toEqual(['A', 'B']);
-		expect(groups.A.map((i) => i.id)).toEqual([1, 3]);
-		expect(groups.B.map((i) => i.id)).toEqual([2]);
+		expect(groups.A!.map((i) => i.id)).toEqual([1, 3]);
+		expect(groups.B!.map((i) => i.id)).toEqual([2]);
 	});
 });
 
@@ -76,8 +76,8 @@ describe('buildGroupedTreemap', () => {
 		);
 		// Empty group is dropped.
 		expect(result).toHaveLength(1);
-		expect(result[0].name).toBe('Project X');
-		expect(result[0].children).toEqual([
+		expect(result[0]!.name).toBe('Project X');
+		expect(result[0]!.children).toEqual([
 			{ name: 'article', value: 2, publications: ['A1', 'A2'] },
 			{ name: 'book', value: 1, publications: ['B1'] }
 		]);
@@ -116,7 +116,7 @@ describe('buildProjectTimeline', () => {
 		}));
 		expect(result.map((e) => e.name)).toEqual(['Earlier', 'Later']);
 		expect(result[1]).toMatchObject({ startYear: 2018, endYear: 2020 });
-		expect(result[1].publications.map((p) => p.title)).toEqual(['L1', 'L2']);
+		expect(result[1]!.publications.map((p) => p.title)).toEqual(['L1', 'L2']);
 	});
 });
 

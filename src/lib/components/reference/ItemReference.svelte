@@ -178,28 +178,32 @@
 </script>
 
 {#if item && itemType}
-	<span
-		bind:this={spanEl}
-		class="item-reference {showPreview ? 'preview-visible' : ''}"
-		role="button"
-		tabindex="0"
-		aria-haspopup="dialog"
-		aria-expanded={showPreview}
-		aria-controls={showPreview ? `item-preview-${id}` : undefined}
-		onpointerenter={handlePointerEnter}
-		onpointerleave={handlePointerLeave}
-		onfocus={handleFocus}
-		onblur={handleBlur}
-		onkeydown={(e: KeyboardEvent) => {
-			if (e.key === 'Enter' || e.key === ' ') {
-				e.preventDefault();
-				togglePreview();
-			}
-			if (e.key === 'Escape') togglePreview(false);
-		}}
-		onclick={handleLinkClick}
-	>
-		<ReferenceLink {item} {itemType} {id} {label} hasPopup isActive={showPreview} />
+	<!-- Non-interactive positioning wrapper. The single interactive control is
+	     the <a> inside ReferenceLink, which carries the popup role, ARIA state,
+	     and all interaction handlers — so no button nests a link (WCAG 4.1.2). -->
+	<span bind:this={spanEl} class="item-reference {showPreview ? 'preview-visible' : ''}">
+		<ReferenceLink
+			{item}
+			{itemType}
+			{id}
+			{label}
+			hasPopup
+			isActive={showPreview}
+			ariaExpanded={showPreview}
+			ariaControls={showPreview ? `item-preview-${id}` : undefined}
+			onpointerenter={handlePointerEnter}
+			onpointerleave={handlePointerLeave}
+			onfocus={handleFocus}
+			onblur={handleBlur}
+			onkeydown={(e) => {
+				if (e.key === 'Enter' || e.key === ' ') {
+					e.preventDefault();
+					togglePreview();
+				}
+				if (e.key === 'Escape') togglePreview(false);
+			}}
+			onclick={handleLinkClick}
+		/>
 		{#if showPreview}
 			<div
 				use:portal

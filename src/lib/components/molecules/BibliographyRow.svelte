@@ -26,6 +26,8 @@
 		/** Language shown after the kind — only when it isn't plain English. */
 		languageNote?: string | null;
 		title: string;
+		/** BCP-47 lang for the title when it isn't English (screen-reader pronunciation). */
+		titleLang?: string;
 		/** Italic serif title — the convention for a standalone published work. */
 		italicTitle?: boolean;
 		/** Serif byline under the title (authors / venue line). */
@@ -57,6 +59,7 @@
 		kindLabel,
 		languageNote = null,
 		title,
+		titleLang = undefined,
 		italicTitle = false,
 		byline = '',
 		standfirst = '',
@@ -111,7 +114,7 @@
 
 		<!-- h2, not h3: on the list pages these rows sit directly under the page
 		     h1 with no intermediate h2, so h3 would skip a heading level. -->
-		<h2 class="bib-title" class:bib-title--italic={italicTitle}>
+		<h2 class="bib-title" class:bib-title--italic={italicTitle} lang={titleLang}>
 			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
 			<a {href} class="bib-title-link" data-sveltekit-preload-code="tap">
 				{title}

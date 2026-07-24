@@ -102,8 +102,8 @@ describe('groupByYear', () => {
 		];
 		const groups = groupByYear(items);
 		expect(Object.keys(groups).sort()).toEqual(['2020', '2021']);
-		expect(groups[2020].map((i) => i.id)).toEqual([1, 3]);
-		expect(groups[2021].map((i) => i.id)).toEqual([2]);
+		expect(groups[2020]!.map((i) => i.id)).toEqual([1, 3]);
+		expect(groups[2021]!.map((i) => i.id)).toEqual([2]);
 	});
 });
 
@@ -118,8 +118,8 @@ describe('groupByField', () => {
 		];
 		const groups = groupByField(items, 'project');
 		expect(Object.keys(groups).sort()).toEqual(['Alpha', 'Beta']);
-		expect(groups.Alpha.map((i) => i.id)).toEqual([1, 5]);
-		expect(groups.Beta.map((i) => i.id)).toEqual([3]);
+		expect(groups.Alpha!.map((i) => i.id)).toEqual([1, 5]);
+		expect(groups.Beta!.map((i) => i.id)).toEqual([3]);
 	});
 });
 

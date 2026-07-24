@@ -8,7 +8,15 @@
 		id,
 		label = undefined,
 		hasPopup = false,
-		isActive = false
+		isActive = false,
+		ariaExpanded = undefined,
+		ariaControls = undefined,
+		onclick = undefined,
+		onkeydown = undefined,
+		onfocus = undefined,
+		onblur = undefined,
+		onpointerenter = undefined,
+		onpointerleave = undefined
 	}: {
 		item?: ReferenceIndexEntry | undefined;
 		itemType?: 'publication' | 'communication' | undefined;
@@ -16,6 +24,17 @@
 		label?: string;
 		hasPopup?: boolean;
 		isActive?: boolean;
+		// When the link hosts a preview popup, the interaction attributes and
+		// handlers live on the <a> itself (the single interactive control) so it
+		// never nests inside a role="button" wrapper (WCAG 4.1.2).
+		ariaExpanded?: boolean;
+		ariaControls?: string;
+		onclick?: (event: MouseEvent) => void;
+		onkeydown?: (event: KeyboardEvent) => void;
+		onfocus?: (event: FocusEvent) => void;
+		onblur?: (event: FocusEvent) => void;
+		onpointerenter?: (event: PointerEvent) => void;
+		onpointerleave?: (event: PointerEvent) => void;
 	} = $props();
 
 	// Helper to get year consistently
@@ -40,7 +59,7 @@
 		});
 
 		if (lastNames.length === 1) {
-			return lastNames[0];
+			return lastNames[0] ?? '';
 		} else if (lastNames.length === 2) {
 			return `${lastNames[0]} and ${lastNames[1]}`;
 		} else {
@@ -70,7 +89,15 @@
 	href={itemUrl}
 	class="reference-link {hasPopup ? 'has-popup' : ''} {isActive ? 'is-active' : ''}"
 	aria-label={ariaLabel}
-	tabindex={hasPopup ? -1 : 0}
+	aria-haspopup={hasPopup ? 'dialog' : undefined}
+	aria-expanded={hasPopup ? ariaExpanded : undefined}
+	aria-controls={ariaControls}
+	{onclick}
+	{onkeydown}
+	{onfocus}
+	{onblur}
+	{onpointerenter}
+	{onpointerleave}
 >
 	{referenceText}
 </a>

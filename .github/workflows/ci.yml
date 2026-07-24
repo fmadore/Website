@@ -53,6 +53,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Tripwire for the hand-maintained `overrides` list in package.json:
+      # fail the PR gate on known high/critical advisories. (Deliberately not
+      # in the deploy workflow so a freshly published CVE can't block an
+      # urgent content deploy.)
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
+
       - name: Lint (Prettier + ESLint)
         run: npm run lint
 

@@ -136,31 +136,43 @@ Status legend: ☐ pending · ☑ done · ◪ partial / deferred · ⊘ blocked 
 
 ## Phase E — Testing, CI & rigor
 
-- ☐ **E1. Unit-test the untested load-bearing pure utils:**
-  `bibtexGenerator.ts` (BibTeX export), `rss.ts` (feed correctness beyond
-  the E2E existence check), `date-formatter.ts`, `entityJsonLd.ts`
-  (SEO-critical structured data).
-- ☐ **E2. Automated accessibility checks.** Add `@axe-core/playwright`
-  assertions on key routes (home, a list page, a detail page); ratchet the
-  `svelte/a11y-*` lint rules from `warn` to `error` if the codebase is
-  clean (matching the July ratchet of the other rules).
-- ☐ **E3. Coverage tooling.** Add `@vitest/coverage-v8` and a
-  `test:coverage` script so the unit-test gap is measurable.
-- ☐ **E4. `npm audit` gate in CI.** The hand-maintained `overrides` list in
-  package.json shows CVEs are patched by hand with no automated tripwire;
-  add an `npm audit --audit-level=high` step.
-- ☐ **E5. Enable `noUncheckedIndexedAccess`.** High value for a site whose
-  utils are dominated by array/record lookups; fix the fallout.
-- ☐ **E6. Publications RSS feed.** `/rss.xml` covers activities only; add
-  `/publications/rss.xml` (publications are the highest-value content for
-  academic subscribers) and advertise it (robots.txt, head link).
-- ☐ **E7. `lang` markup for French titles.** Publications already carry a
-  `language` field; emit `lang="fr"` on rendered titles for French items so
-  screen readers stop announcing them with English phonology.
-- ☐ **E8. Tooling odds and ends.** `test:all` aggregate script; README
-  "Development & testing" section (the engineering story — unit/E2E suites,
-  CI gate — is currently undocumented); `concurrency` group for
-  `codeql.yml` (the only workflow without one).
+- ☑ **E1. Unit-test the untested load-bearing pure utils:**
+  `bibtexGenerator.ts`, `rss.ts` (incl. the new publications feed),
+  `date-formatter.ts`, `entityJsonLd.ts`, plus `languageUtils.ts` (new).
+  Unit suite: 364 → 416 tests.
+- ☑ **E2. Automated accessibility checks.** `@axe-core/playwright` asserts
+  zero WCAG 2 A/AA violations on home, the publications list, and the CV
+  (`tests-e2e/a11y.spec.ts`) — which surfaced and fixed a real
+  nested-interactive defect (an `<a>` inside a `role="button"` citation, see
+  below). _The `svelte/a11y-*` eslint ratchet does not apply: eslint-plugin-
+  svelte v3 removed those rules; a11y now lives in the Svelte compiler, so
+  `npm run check` runs `svelte-check --fail-on-warnings` and the axe E2E
+  guards rendered output._
+- ☑ **E3. Coverage tooling.** `@vitest/coverage-v8` + `test:coverage`
+  (scoped to the pure `utils`/`data` modules).
+- ☑ **E4. `npm audit` gate in CI.** `npm audit --audit-level=high` in the PR
+  workflow (kept out of deploy so a fresh CVE can't block an urgent content
+  push).
+- ☑ **E5. Enable `noUncheckedIndexedAccess`.** Enabled; all 93 resulting
+  errors fixed (restructure > `?? fallback` > guard > `!` only behind a
+  proven invariant).
+- ☑ **E6. Publications RSS feed.** `/publications/rss.xml` added, advertised
+  via `<link rel="alternate">`, robots.txt, and the sitemap.
+- ☑ **E7. `lang` markup for French titles.** `titleLangAttr()` derives a
+  BCP-47 code from the `language` field; `BibliographyRow` emits `lang` on
+  the title for single-language non-English works.
+- ☑ **E8. Tooling odds and ends.** `test:all` aggregate script; README
+  "Development & Quality Gates" section; `concurrency` group on
+  `codeql.yml`.
+
+### Accessibility defect fixed under E2
+
+- ☑ **Nested interactive control in inline citations.**
+  `reference/ItemReference.svelte` wrapped the `<a>` from `ReferenceLink` in
+  a `role="button"` span (a button containing a link — WCAG 4.1.2 failure
+  flagged by axe as `nested-interactive`). Restructured so the `<a>` is the
+  single interactive control (it now carries the popup role, ARIA state, and
+  all interaction handlers) and the span is a plain positioning wrapper.
 
 ---
 

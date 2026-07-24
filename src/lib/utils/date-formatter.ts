@@ -62,7 +62,7 @@ export function formatShortDateMono(isoDate: string): string {
 		'NOV',
 		'DEC'
 	] as const;
-	const [y, m, d] = isoDate.split('-');
+	const [y = '', m = '', d = ''] = isoDate.split('-');
 	return `${parseInt(d, 10)} ${MONTHS_MONO[parseInt(m, 10) - 1]} ${y}`;
 }
 
@@ -76,7 +76,7 @@ export function getYearFromISODate(isoDate: string): number {
 		return new Date().getFullYear(); // Return current year as fallback
 	}
 
-	return parseInt(isoDate.split('-')[0], 10);
+	return parseInt(isoDate.slice(0, 4), 10);
 }
 
 /**

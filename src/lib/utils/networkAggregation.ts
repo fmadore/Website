@@ -167,7 +167,7 @@ export function buildEgoNetwork<T>(
 		for (const name of directNames) track(name, title, true);
 		for (let i = 0; i < directNames.length; i++) {
 			for (let j = i + 1; j < directNames.length; j++) {
-				addPair(peerPairs, directNames[i], directNames[j], title, 'peer');
+				addPair(peerPairs, directNames[i]!, directNames[j]!, title, 'peer');
 			}
 		}
 
@@ -177,10 +177,10 @@ export function buildEgoNetwork<T>(
 			for (const name of members) track(name, title, false);
 			for (let i = 0; i < members.length; i++) {
 				for (let j = i + 1; j < members.length; j++) {
-					addPair(contributorPairs, members[i], members[j], title, 'contributor');
+					addPair(contributorPairs, members[i]!, members[j]!, title, 'contributor');
 				}
 				for (const bridged of bridgeTo) {
-					addPair(contributorPairs, members[i], bridged, title, 'contributor');
+					addPair(contributorPairs, members[i]!, bridged, title, 'contributor');
 				}
 			}
 		}
@@ -328,7 +328,7 @@ export function buildCooccurrenceNetwork<T>(
 		}
 		for (let i = 0; i < keys.length; i++) {
 			for (let j = i + 1; j < keys.length; j++) {
-				addPair(pairs, keys[i], keys[j], title, 'cooccurrence');
+				addPair(pairs, keys[i]!, keys[j]!, title, 'cooccurrence');
 			}
 		}
 	}

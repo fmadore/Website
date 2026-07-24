@@ -1,4 +1,5 @@
 import type { Activity } from '$lib/types/activity';
+import type { Publication } from '$lib/types/publication';
 import { author, website } from '$lib/data/siteConfig';
 import { getRssDescription, getEmailWithName } from '$lib/utils/siteHelpers';
 
@@ -178,6 +179,34 @@ export function activityToRSSItem(activity: Activity, siteUrl: string): RSSItem 
 }
 
 // ============================================================================
+// PUBLICATION TO RSS ITEM CONVERSION
+// ============================================================================
+
+/**
+ * Converts a Publication to an RSS item.
+ */
+export function publicationToRSSItem(publication: Publication, siteUrl: string): RSSItem {
+	const pubDate = publication.dateISO ? new Date(publication.dateISO) : new Date(publication.date);
+
+	// Prefer the abstract; fall back to a citation-ish line so every item has
+	// a description.
+	const venue = publication.journal || publication.publisher || '';
+	const description = publication.abstract
+		? truncateText(stripHtml(publication.abstract), 300)
+		: [publication.type, venue, publication.year].filter(Boolean).join(' — ');
+
+	return {
+		title: publication.title,
+		link: `${siteUrl}/publications/${publication.id}`,
+		description,
+		pubDate,
+		guid: `${siteUrl}/publications/${publication.id}`,
+		author: Array.isArray(publication.authors) ? publication.authors.join(', ') : author.name,
+		categories: publication.tags || []
+	};
+}
+
+// ============================================================================
 // RSS FEED GENERATION
 // ============================================================================
 
@@ -264,6 +293,26 @@ export function generateRSSFeed(
   <channel>${channel}${itemsXml}
   </channel>
 </rss>`;
+}
+
+/**
+ * Generates an RSS feed from an array of publications
+ */
+export function generatePublicationsRSSFeed(
+	publications: Publication[],
+	config: Partial<RSSFeedConfig> = {}
+): string {
+	const fullConfig: RSSFeedConfig = {
+		...DEFAULT_RSS_CONFIG,
+		title: `${author.name} - Publications`,
+		feedUrl: `${website.url}/publications/rss.xml`,
+		...config
+	};
+
+	const items = publications.map((pub) => publicationToRSSItem(pub, fullConfig.siteUrl));
+	items.sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime());
+
+	return generateRSSFeed(items.slice(0, 50), fullConfig);
 }
 
 /**

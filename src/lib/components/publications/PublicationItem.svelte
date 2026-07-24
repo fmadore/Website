@@ -4,6 +4,7 @@
 	import { truncateAbstract } from '$lib/utils/textUtils';
 	// Import the necessary functions from the new formatter
 	import { formatCitation, getAuthorsArray } from '$lib/utils/citationFormatter';
+	import { titleLangAttr } from '$lib/utils/languageUtils';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import BibliographyRow from '$lib/components/molecules/BibliographyRow.svelte';
 	import type { BibliographyAction } from '$lib/components/molecules/BibliographyRow.svelte';
@@ -220,6 +221,7 @@
 		{kindLabel}
 		{languageNote}
 		title={publication.title}
+		titleLang={titleLangAttr(publication.language)}
 		italicTitle={isItalicTitle}
 		byline={displayData.authorString ? `${displayData.listPrefix}${displayData.authorString}` : ''}
 		standfirst={bibStandfirst}

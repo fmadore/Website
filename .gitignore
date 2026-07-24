@@ -47,3 +47,6 @@ scripts/__pycache__/convert-image.cpython-312.pyc
 
 # Generated responsive image variants (scripts/generate-image-variants.mjs)
 /static/images/_r/
+
+# Vitest coverage output
+/coverage/

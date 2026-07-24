@@ -3,7 +3,9 @@ Allow: /
 
 Sitemap: https://www.frederickmadore.com/sitemap.xml
 
-# RSS Feed available at: https://www.frederickmadore.com/rss.xml
+# RSS Feeds available at:
+#   https://www.frederickmadore.com/rss.xml               (activities)
+#   https://www.frederickmadore.com/publications/rss.xml  (publications)
 # (Discovered via <link rel="alternate" type="application/rss+xml"> in HTML)
 
 # LLM/AI agent guidance: https://www.frederickmadore.com/llms.txt

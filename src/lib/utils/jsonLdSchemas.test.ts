@@ -44,8 +44,8 @@ describe('buildPublicationJsonLd', () => {
 			pub({ sourceDirType: 'articles', type: 'article', authors: ['Frédérick Madore', 'Jane Doe'] })
 		);
 		const author = result.author as Array<{ name: string; url?: string }>;
-		expect(author[0]).toMatchObject({ name: 'Frédérick Madore', url: website.url });
-		expect(author[1].url).toBeUndefined();
+		expect(author[0]!).toMatchObject({ name: 'Frédérick Madore', url: website.url });
+		expect(author[1]!.url).toBeUndefined();
 	});
 
 	it('uses editor (not author) for edited volumes and maps book reviews to citations', () => {
@@ -64,8 +64,8 @@ describe('buildPublicationJsonLd', () => {
 		};
 		expect(book.author).toBeUndefined();
 		expect(book.editor).toBeDefined();
-		expect(book.citation?.[0]['@type']).toBe('ScholarlyArticle');
-		expect(book.citation?.[0].isPartOf?.name).toBe('JRA');
+		expect(book.citation?.[0]!['@type']).toBe('ScholarlyArticle');
+		expect(book.citation?.[0]!.isPartOf?.name).toBe('JRA');
 	});
 
 	it('serialises deterministically (stable property order)', () => {
@@ -92,7 +92,7 @@ describe('buildCommunicationJsonLd', () => {
 		);
 		expect(result.location).toMatchObject({ '@type': 'Place', name: 'Lomé, Togo' });
 		const performer = result.performer as Array<{ name: string; url?: string }>;
-		expect(performer[0].url).toBe(website.url);
+		expect(performer[0]!.url).toBe(website.url);
 	});
 
 	it('picks the first language from an array', () => {

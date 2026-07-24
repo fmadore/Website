@@ -110,7 +110,7 @@
 			});
 
 			selectedIndex = maxIndex;
-			selectedItem = items[maxIndex];
+			selectedItem = items[maxIndex] ?? null;
 		}
 	});
 
@@ -151,14 +151,14 @@
 		// Find previous item logically (based on current index)
 		if (selectedIndex > 0) {
 			selectedIndex--;
-			selectedItem = items[selectedIndex];
+			selectedItem = items[selectedIndex] ?? null;
 		}
 	}
 
 	function goToNext() {
 		if (selectedIndex < items.length - 1) {
 			selectedIndex++;
-			selectedItem = items[selectedIndex];
+			selectedItem = items[selectedIndex] ?? null;
 		}
 	}
 

@@ -182,8 +182,12 @@
 	const venueTreemapData = $derived(
 		(() => {
 			// Group publications by venue type and venue name
-			const journals: Record<string, { count: number; publications: string[] }> = {};
-			const publishers: Record<string, { count: number; publications: string[] }> = {};
+			type VenueBucket = { count: number; publications: string[] };
+			const journals: Record<string, VenueBucket> = {};
+			const publishers: Record<string, VenueBucket> = {};
+			// Get-or-create the venue bucket, returning a reference NUIA can trust.
+			const bucket = (map: Record<string, VenueBucket>, key: string): VenueBucket =>
+				(map[key] ??= { count: 0, publications: [] });
 
 			allPublications.forEach((pub) => {
 				// Journal articles, special issues, and reports (bulletin-like venues)
@@ -193,20 +197,16 @@
 						pub.type === 'special-issue' ||
 						pub.type === 'bulletin-article')
 				) {
-					if (!journals[pub.journal]) {
-						journals[pub.journal] = { count: 0, publications: [] };
-					}
-					journals[pub.journal].count++;
-					journals[pub.journal].publications.push(pub.title);
+					const b = bucket(journals, pub.journal);
+					b.count++;
+					b.publications.push(pub.title);
 				}
 
 				// Reports - use publisher as journal-like venue
 				if (pub.publisher && pub.type === 'report') {
-					if (!journals[pub.publisher]) {
-						journals[pub.publisher] = { count: 0, publications: [] };
-					}
-					journals[pub.publisher].count++;
-					journals[pub.publisher].publications.push(pub.title);
+					const b = bucket(journals, pub.publisher);
+					b.count++;
+					b.publications.push(pub.title);
 				}
 
 				// Books, chapters, and encyclopedias - group by publisher
@@ -214,11 +214,9 @@
 					pub.publisher &&
 					(pub.type === 'book' || pub.type === 'chapter' || pub.type === 'encyclopedia')
 				) {
-					if (!publishers[pub.publisher]) {
-						publishers[pub.publisher] = { count: 0, publications: [] };
-					}
-					publishers[pub.publisher].count++;
-					publishers[pub.publisher].publications.push(pub.title);
+					const b = bucket(publishers, pub.publisher);
+					b.count++;
+					b.publications.push(pub.title);
 				}
 			});
 

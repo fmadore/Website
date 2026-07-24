@@ -55,7 +55,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 	// fill — no white text, no text-shadow (the brief bans glow).
 	const chartData = $derived(
 		data.map((d, i) => {
-			const sliceColor = resolvedColors.chartColors[i % resolvedColors.chartColors.length];
+			const sliceColor = resolvedColors.chartColors[i % resolvedColors.chartColors.length]!;
 			return {
 				name: nameAccessor(d),
 				value: valueAccessor(d),

@@ -28,7 +28,7 @@ function computeCorpusAnalysis(): CorpusAnalysis {
 			totalWords: 0,
 			frequencies: [],
 			byLanguage: { en: [], fr: [] },
-			analyzedAt: new Date().toISOString().split('T')[0]
+			analyzedAt: new Date().toISOString().slice(0, 10)
 		};
 	}
 
@@ -82,7 +82,7 @@ function computeCorpusAnalysis(): CorpusAnalysis {
 		totalWords,
 		frequencies,
 		byLanguage,
-		analyzedAt: new Date().toISOString().split('T')[0]
+		analyzedAt: new Date().toISOString().slice(0, 10)
 	};
 }
 

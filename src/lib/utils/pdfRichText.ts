@@ -160,7 +160,7 @@ export const trimFragments = (fragments: TextFragment[]): TextFragment[] => {
 
 	// Trim Start
 	while (result.length > 0) {
-		const first = result[0];
+		const first = result[0]!;
 		const trimmed = first.text.trimStart();
 		if (trimmed.length === 0) {
 			result.shift(); // Remove empty fragment
@@ -172,7 +172,7 @@ export const trimFragments = (fragments: TextFragment[]): TextFragment[] => {
 
 	// Trim End
 	while (result.length > 0) {
-		const last = result[result.length - 1];
+		const last = result[result.length - 1]!;
 		const trimmed = last.text.trimEnd();
 		if (trimmed.length === 0) {
 			result.pop();

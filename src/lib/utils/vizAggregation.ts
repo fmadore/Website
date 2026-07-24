@@ -201,25 +201,27 @@ export function buildStackedByYear<T>(
 	}
 ): Array<Record<string, number>> {
 	const { getYear, getType, typeKeys, labelFor = (t) => t } = options;
-	const yearly: Record<number, Record<string, number>> = {};
+	const yearly = new Map<number, Record<string, number>>();
 
 	for (const item of items) {
 		const year = getYear(item);
-		if (!yearly[year]) {
-			yearly[year] = {};
-			typeKeys.forEach((t) => (yearly[year][t] = 0));
+		let counts = yearly.get(year);
+		if (!counts) {
+			counts = {};
+			typeKeys.forEach((t) => (counts![t] = 0));
+			yearly.set(year, counts);
 		}
 		const type = getType(item);
-		yearly[year][type] = (yearly[year][type] || 0) + 1;
+		counts[type] = (counts[type] || 0) + 1;
 	}
 
-	return Object.entries(yearly)
-		.map(([yearStr, counts]) => {
-			const row: Record<string, number> = { year: parseInt(yearStr) };
+	return [...yearly.entries()]
+		.map(([year, counts]) => {
+			const row: Record<string, number> = { year };
 			typeKeys.forEach((rawType) => {
 				row[labelFor(rawType)] = counts[rawType] || 0;
 			});
 			return row;
 		})
-		.sort((a, b) => a.year - b.year);
+		.sort((a, b) => (a.year ?? 0) - (b.year ?? 0));
 }

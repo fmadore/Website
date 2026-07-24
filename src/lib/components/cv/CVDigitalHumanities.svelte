@@ -9,7 +9,7 @@
 	// End year (Infinity for ongoing) breaks ties: an ongoing project
 	// beats a closed one with the same start year.
 	function parseYears(years: string): { start: number; end: number } {
-		const [startStr, endStr] = years.split('-');
+		const [startStr = '', endStr] = years.split('-');
 		const start = parseInt(startStr, 10);
 		const ongoing = years.endsWith('-');
 		const end = ongoing ? Infinity : endStr ? parseInt(endStr, 10) : start;

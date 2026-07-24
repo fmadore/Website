@@ -85,8 +85,7 @@ export function sortByYearRange<T extends { startYear: number; endYear?: number 
  */
 export function groupByYear<T extends { year: number }>(items: T[]): Record<number, T[]> {
 	return items.reduce<Record<number, T[]>>((acc, item) => {
-		if (!acc[item.year]) acc[item.year] = [];
-		acc[item.year].push(item);
+		(acc[item.year] ??= []).push(item);
 		return acc;
 	}, {});
 }
