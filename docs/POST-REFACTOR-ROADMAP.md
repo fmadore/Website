@@ -111,19 +111,19 @@ Status legend: ☐ pending · ☑ done · ◪ partial / deferred · ⊘ blocked 
 
 ## Phase D — Assets & delivery
 
-- ☐ **D1. Responsive-image `srcset` pipeline.** `HeroImageDisplay` already
+- ☑ **D1. Responsive-image `srcset` pipeline.** `HeroImageDisplay` already
   declares `sizes` but has no `srcset` (browsers ignore `sizes` alone), and
   `Card` serves full-resolution webp into 300×200 slots on every list page.
   Add a sharp-based generator (`scripts/generate-image-variants.mjs`,
   wired into `predev`/`prebuild`, output gitignored) emitting 400w/800w
   variants, plus a `srcset.ts` util consumed by `Card`, `HeroImageDisplay`,
   and `ProjectImageBanner`.
-- ☐ **D2. Stop shipping production source maps.** `vite.config.ts` sets
+- ☑ **D2. Stop shipping production source maps.** `vite.config.ts` sets
   `sourcemap: true` and everything in `build/` deploys to Pages, so every
   chunk ships a `.map` (multi-MB for echarts/maplibre) plus `.gz`/`.br`
   copies. Switch to `sourcemap: 'hidden'` and strip `*.map` before the
   Pages upload.
-- ☐ **D3. Mark audio as binary in `.gitattributes`** (`*.mp3 binary`); the
+- ☑ **D3. Mark audio as binary in `.gitattributes`** (`*.mp3 binary`); the
   repo pack is already ~88 MB largely from `static/notebooklm/`. Consider
   Git LFS or external hosting before the next audio update (decision, not
   taken here — LFS migration rewrites history).

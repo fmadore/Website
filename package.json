@@ -8,8 +8,10 @@
 	},
 	"scripts": {
 		"dev": "vite dev",
+		"predev": "npm run gen:images",
 		"build": "vite build",
-		"prebuild": "npm run gen:refs",
+		"prebuild": "npm run gen:refs && npm run gen:images",
+		"gen:images": "node scripts/generate-image-variants.mjs",
 		"preview": "vite preview",
 		"gen:refs": "node scripts/generate-reference-index.mjs",
 		"prepare": "svelte-kit sync || echo ''",

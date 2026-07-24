@@ -3,6 +3,7 @@
 	import { browser } from '$app/environment';
 	import { beforeNavigate } from '$app/navigation';
 	import { portalModal } from '$lib/actions/portalModal';
+	import { buildSrcset } from '$lib/utils/imageVariants';
 
 	let {
 		heroImage = undefined,
@@ -110,6 +111,11 @@
 	const combinedImageClass = $derived(
 		['hero-image', `hero-image--${variant}`, imageClass].filter(Boolean).join(' ')
 	);
+
+	// Responsive variants (400/800/1600 webp) generated at build time; the
+	// sizes attribute below finally has a srcset to act on. External URLs
+	// yield undefined and render with the plain src.
+	const heroSrcset = $derived(buildSrcset(absoluteSrc));
 </script>
 
 {#if displayImage && absoluteSrc}
@@ -123,6 +129,7 @@
 		>
 			<img
 				src={absoluteSrc}
+				srcset={heroSrcset}
 				alt={altText}
 				class={combinedImageClass}
 				{loading}
@@ -130,7 +137,9 @@
 				decoding="async"
 				width="330"
 				height="438"
-				sizes="(max-width: 640px) 100vw, (max-width: 768px) 330px, (max-width: 1024px) 600px, 800px"
+				sizes={heroSrcset
+					? '(max-width: 640px) 100vw, (max-width: 768px) 330px, (max-width: 1024px) 600px, 800px'
+					: undefined}
 				style={`max-height: ${maxHeight}; contain: layout style paint;`}
 			/>
 			<div class="overlay">
