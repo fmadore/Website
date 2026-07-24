@@ -1,0 +1,18 @@
+/*
+ * Shared layout for the two visualisation pages
+ * (/publications/visualisations, /conference-activity/visualisations).
+ * Imported route-scoped by those pages; section heading/description styles
+ * live in the VizSection component.
+ */
+
+.viz-page-container {
+	max-width: var(--container-xl);
+	margin: 0 auto;
+	padding: var(--space-xl) var(--space-md);
+}
+
+@media (--md-down) {
+	.viz-page-container {
+		padding: var(--space-md) var(--space-sm);
+	}
+}

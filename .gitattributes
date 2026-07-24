@@ -18,3 +18,7 @@
 *.otf   binary
 *.eot   binary
 *.pdf   binary
+*.mp3   binary
+*.mp4   binary
+*.ogg   binary
+*.wav   binary

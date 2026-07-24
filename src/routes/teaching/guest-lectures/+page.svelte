@@ -3,13 +3,19 @@
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
-	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
+	import {
+		useBreadcrumbJsonLd,
+		createSubsectionBreadcrumbs
+	} from '$lib/utils/breadcrumbJsonLd.svelte';
 
 	// Define breadcrumb items
-	const breadcrumbItems = [
-		{ label: 'Teaching', href: `${base}/teaching` },
-		{ label: 'Guest Lectures', href: `${base}/teaching/guest-lectures` }
-	];
+	const breadcrumbItems = createSubsectionBreadcrumbs(
+		base,
+		'Teaching',
+		'/teaching',
+		'Guest Lectures',
+		'/teaching/guest-lectures'
+	);
 
 	// JSON-LD for Breadcrumbs - uses reusable utility
 	useBreadcrumbJsonLd(() => breadcrumbItems, 'breadcrumb-json-ld-guest-lectures');

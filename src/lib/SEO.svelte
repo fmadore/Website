@@ -66,10 +66,11 @@
 
 		// Add WebPage schema for main sections
 		if (breadcrumbs.length > 0 || canonical) {
+			const lastCrumb = breadcrumbs[breadcrumbs.length - 1];
 			const path = canonical
 				? new URL(canonical).pathname
-				: breadcrumbs.length > 0
-					? new URL(breadcrumbs[breadcrumbs.length - 1].url).pathname
+				: lastCrumb
+					? new URL(lastCrumb.url).pathname
 					: '';
 
 			if (path) {
@@ -117,6 +118,12 @@
 			type="application/rss+xml"
 			title="{author.name} - Activities RSS Feed"
 			href="{website.url}{website.rssPath}"
+		/>
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title="{author.name} - Publications RSS Feed"
+			href="{website.url}/publications/rss.xml"
 		/>
 	{/if}
 

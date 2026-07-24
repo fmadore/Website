@@ -8,10 +8,13 @@ independently shippable; phases are ordered by risk-adjusted value.
 
 Status legend: ☐ pending · ☑ done · ◪ partial / deferred (see notes)
 
-> **Status as of 2026-07-22:** every non-deferred item below has landed on
-> `claude/repo-maintainability-review-oc7fdh`. Remaining work is the four
-> deferred items (fonts, responsive images, audio re-encoding, ESLint
-> ratchet) plus the home-page Person JSON-LD duplication noted in Phase 7.
+> **Status as of 2026-07-24:** closed. Every non-deferred item landed on
+> `claude/repo-maintainability-review-oc7fdh`; the deferred remainder has
+> since landed too — fonts (`0f3d68a`), the ESLint ratchet (`59885b7`), the
+> home-page Person JSON-LD derivation (`ac5a69c`), and the responsive-image
+> `srcset` pipeline (wave 2). The only still-open item is the audio
+> re-encode, which needs ffmpeg on a local machine. Follow-up work is
+> tracked in `docs/POST-REFACTOR-ROADMAP.md` (wave 2).
 
 ---
 
@@ -123,12 +126,12 @@ Status legend: ☐ pending · ☑ done · ◪ partial / deferred (see notes)
   with `@font-face` inlined in `app.html`; Google origins removed from CSP,
   preconnects, and the service worker. Full variable axes retained so
   rendering is unchanged.
-- ◪ **Responsive images.** In-place optimization landed: the 13 oversized
-  images (2500–5700px, up to 2.2 MB) are capped at 1920px/q80 and the last
-  raw JPEGs converted to webp — `static/images` 33 MB → 24 MB. _Still open:
-  a true `srcset` pipeline (multi-resolution variants via
-  `@sveltejs/enhanced-img` or a resize script); `HeroImageDisplay`'s `sizes`
-  attribute remains inert until variants exist._
+- ☑ **Responsive images.** In-place optimization landed first: the 13
+  oversized images (2500–5700px, up to 2.2 MB) are capped at 1920px/q80 and
+  the last raw JPEGs converted to webp — `static/images` 33 MB → 24 MB.
+  _The true `srcset` pipeline landed in wave 2
+  (`docs/POST-REFACTOR-ROADMAP.md`, item D1): build-time sharp variants +
+  `srcset` on Card/HeroImageDisplay._
 - ◪ **Audio weight.** `static/notebooklm/` ships 44 MB of MP3 (more than all
   images combined). _Attempted 2026-07-22: the sandbox has no ffmpeg and the
   pure-WASM decode was unreliable (decoder errors, implausible duration), so
@@ -149,11 +152,10 @@ Status legend: ☐ pending · ☑ done · ◪ partial / deferred (see notes)
   the slowest step) and reuse the quality-job build in the e2e job instead
   of building twice per PR.
 - ☑ **CI: run e2e on the deploy path** (today only PR CI runs it).
-- ◪ **Ratchet the grandfathered ESLint warnings** (`no-explicit-any`,
+- ☑ **Ratchet the grandfathered ESLint warnings** (`no-explicit-any`,
   `no-unused-vars`, `svelte/no-at-html-tags` are `warn`, so lint passes
   despite them). Track counts; flip to `error` per rule as they reach zero.
-  _Deferred: policy decision — flipping now would fail CI on ~76 grandfathered
-  `any`s; ratchet as they are burned down._
+  _Landed 2026-07 (`59885b7`): all grandfathered rules now `error`._
 
 ## Phase 7 — Data-layer hardening
 
@@ -174,9 +176,8 @@ Status legend: ☐ pending · ☑ done · ◪ partial / deferred (see notes)
   of `$lib/types`; `organisedWorkshops.ts` hardcodes institution strings
   that exist in `siteConfig.address`; `+page.ts` (home) hand-maintains a
   second `Person` JSON-LD duplicating `createPersonSchema()` and the
-  education/affiliations/languages datasets. _All landed except the home-page
-  Person JSON-LD consolidation, which changes emitted structured data and is
-  left as an editorial follow-up. The `analysis` deviation from `loadData()`
+  education/affiliations/languages datasets. _All landed; the home-page
+  Person JSON-LD consolidation followed in `ac5a69c`. The `analysis` deviation from `loadData()`
   is deliberate (keyed record, named export) and now documented in place;
   `organisedWorkshops` keeps its English institution name intentionally
   (siteConfig carries the German form) but takes the URL from siteConfig._

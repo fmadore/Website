@@ -34,6 +34,27 @@ export interface BreadcrumbNavItem {
 const BREADCRUMB_SCRIPT_ID = 'breadcrumb-json-ld';
 
 /**
+ * Builds the two-level breadcrumb trail used by sub-pages
+ * (section index → sub-page), for both the visible `Breadcrumb`
+ * component and `useBreadcrumbJsonLd`.
+ *
+ * @example
+ * createSubsectionBreadcrumbs(base, 'Publications', '/publications', 'Visualisations', '/publications/visualisations')
+ */
+export function createSubsectionBreadcrumbs(
+	base: string,
+	sectionLabel: string,
+	sectionPath: string,
+	subLabel: string,
+	subPath: string
+): BreadcrumbNavItem[] {
+	return [
+		{ label: sectionLabel, href: `${base}${sectionPath}` },
+		{ label: subLabel, href: `${base}${subPath}` }
+	];
+}
+
+/**
  * Generates the JSON-LD string for breadcrumb structured data
  */
 function generateBreadcrumbJsonLd(items: BreadcrumbNavItem[], origin: string): string {

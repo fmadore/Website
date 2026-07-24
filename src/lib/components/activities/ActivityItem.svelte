@@ -43,7 +43,7 @@
 	const dayMonth = $derived.by(() => {
 		const iso = activity.dateISO;
 		if (iso && /^\d{4}-\d{2}-\d{2}$/.test(iso)) {
-			const [, m, d] = iso.split('-');
+			const [, m = '', d = ''] = iso.split('-');
 			const month = MONTHS[parseInt(m, 10) - 1] ?? '';
 			return `${parseInt(d, 10)} ${month}`;
 		}

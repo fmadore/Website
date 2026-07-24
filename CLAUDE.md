@@ -48,17 +48,17 @@ All academic content is stored as TypeScript files in `src/lib/data/`. Each cont
 
 Components in `src/lib/components/` follow atomic design:
 
-- **atoms/**: Basic elements (Button, NavLink, Icon, ToggleButton, NetworkStatusIndicator, RangeSlider)
-- **molecules/**: Simple compositions (ItemCard, HeroImageDisplay, RelatedItemCard, Breadcrumb, `filters/` with FilterSection\* components)
-- **organisms/**: Complex UI (RelatedItemsList, UniversalFiltersSidebar)
-- **common/**: Shared layout (Header, Footer, Card, PageIntro, ProfileBanner)
-- **Feature-specific**: publications/, communications/, activities/, cv/, menu/, panels/, media/, visualisations/, reference/
+- **atoms/**: Basic elements (Button, ToggleButton, NetworkStatusIndicator, RangeSlider, TweenedCount)
+- **molecules/**: Simple compositions (BibliographyRow, Breadcrumb, HeroImageDisplay, Pagination, RelatedItemCard, TagList, DetailsGrid, …)
+- **organisms/**: Complex UI (RelatedItemsList)
+- **common/**: Shared layout (Footer, Card, PageHeader, PageIntro, ProfileBanner, EntityDetailLayout, EntityListPageLayout, FilteredListDisplay)
+- **entity-index/**: The live filter UI (EntityFilterBar, EntityFacetGrid)
+- **Feature-specific**: publications/, communications/, activities/, cv/, menu/ (Header, NavLink, …), panels/, media/, visualisations/, reference/, research/, digital-humanities/
 
 ### State Management
 
 - **Global state**: `globalState.svelte.ts` - module-level `$state()` with getter/setter pattern
-- **Filter state**: `filterUtils.ts` - Svelte `writable`/`derived` stores with URL sync via `urlFilterSync` action
-- **Filter stores expose counts** for UI (tagCounts, authorCounts, etc.)
+- **Filter state**: `entityFilterSystem.svelte.ts` - a runed `EntityFilterSystem` class per entity-index page (deep `$state` `activeFilters`, `$derived` `filteredItems`/`counts`), with URL sync via the `urlFilterSync` action. Pure logic (predicates, facet counts, toggle/range helpers) lives in `entityFilterCore.ts` for testability; `filterUtils.ts` retains only the `areFiltersActive()` helper.
 
 ### Routing Pattern
 
@@ -159,11 +159,12 @@ Run `npm run format` before committing. CI enforces Prettier + ESLint via `npm r
 
 ### Filter Implementation
 
-Filters use reactive stores with URL synchronization:
+Entity-index pages instantiate `new EntityFilterSystem(config)` from `$lib/utils/entityFilterSystem.svelte.ts` and read/mutate it directly (no store `$` prefix):
 
-- Toggle filters: `toggleTypeFilter(value)`, `toggleTagFilter(value)`
-- Range filters: `updateYearRange()`, `resetYearRange()`
-- Clear all: `clearAllFilters()`
+- Toggle facet values: `system.toggle('types' | 'tags' | …, value)`
+- Range filters: `system.updateYearRange(min, max)`, `system.resetYearRange()`
+- Clear all: `system.clearAllFilters()`
+- Pass `system.activeFilters` to the `urlFilterSync` action for URL⇄state sync
 
 ### Citation/Bibliography
 

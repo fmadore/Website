@@ -64,7 +64,7 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 	);
 
 	// Calculate year range from data
-	const yearRange = $derived(() => {
+	const yearRange = $derived.by(() => {
 		if (data.length === 0) return { min: 2010, max: new Date().getFullYear() + 1 };
 		const allYears = data.flatMap((p) => [p.startYear, p.endYear]);
 		return {
@@ -117,7 +117,7 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 				if (params.seriesType === 'custom') {
 					// Gantt bar tooltip
 					const project = params.data as { name: string; value: number[] };
-					const duration = project.value[2] - project.value[1];
+					const duration = project.value[2]! - project.value[1]!;
 					let tooltip = `<strong>${project.name}</strong><br/>`;
 					tooltip += `Period: ${project.value[1]} – ${project.value[2]} (${duration + 1} years)<br/>`;
 					tooltip += `Publications: ${project.value[3]}`;
@@ -146,8 +146,8 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 		},
 		xAxis: {
 			type: 'value',
-			min: yearRange().min,
-			max: yearRange().max,
+			min: yearRange.min,
+			max: yearRange.max,
 			axisLabel: {
 				color: resolvedColors.text,
 				fontSize: isMobile ? 10 : 12,
@@ -229,9 +229,9 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 
 					const barHeight = isMobile ? 18 : 24;
 					const rectShape = {
-						x: startCoord[0],
-						y: startCoord[1] - barHeight / 2,
-						width: endCoord[0] - startCoord[0],
+						x: startCoord[0]!,
+						y: startCoord[1]! - barHeight / 2,
+						width: endCoord[0]! - startCoord[0]!,
 						height: barHeight
 					};
 

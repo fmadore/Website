@@ -32,6 +32,14 @@ export default defineConfig({
 	},
 	test: {
 		include: ['src/**/*.{test,spec}.ts'],
-		environment: 'node'
+		environment: 'node',
+		coverage: {
+			provider: 'v8',
+			// Pure-logic modules only: components and routes are exercised by the
+			// Playwright smoke suite, not these plain-Node tests.
+			include: ['src/lib/utils/**/*.ts', 'src/lib/data/**/index.ts'],
+			exclude: ['src/lib/**/*.test.ts', 'src/lib/**/*.d.ts'],
+			reporter: ['text', 'html']
+		}
 	}
 });

@@ -1,11 +1,11 @@
 {
 	"name": "Frédérick Madore",
 	"short_name": "F. Madore",
-	"description": "Personal website of Frédérick Madore, Research Fellow at Leibniz-Zentrum Moderner Orient (ZMO)",
+	"description": "Personal website of Frédérick Madore, historian and data curator at the University of Bayreuth",
 	"start_url": "/",
 	"display": "standalone",
-	"background_color": "#ffffff",
-	"theme_color": "#000000",
+	"background_color": "#faf7ef",
+	"theme_color": "#191509",
 	"orientation": "portrait-primary",
 	"scope": "/",
 	"lang": "en",
@@ -25,9 +25,27 @@
 	"icons": [
 		{
 			"src": "/icons/favicon.png",
-			"sizes": "32x32",
+			"sizes": "64x64",
 			"type": "image/png",
 			"purpose": "any"
+		},
+		{
+			"src": "/icons/icon-192.png",
+			"sizes": "192x192",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "/icons/icon-512.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "/icons/icon-maskable-512.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "maskable"
 		}
 	]
 }

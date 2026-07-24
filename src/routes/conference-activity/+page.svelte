@@ -10,6 +10,10 @@
 	import EntityFacetGrid from '$lib/components/entity-index/EntityFacetGrid.svelte';
 	import { urlFilterSync } from '$lib/actions/urlFilterSync.svelte';
 	import { sortItems } from '$lib/utils/sortUtils';
+	import {
+		COMMUNICATION_TYPE_LIST_LABELS,
+		COMMUNICATION_TYPE_CHIP_LABELS
+	} from '$lib/utils/typeUtils';
 	import { areFiltersActive } from '$lib/utils/filterUtils';
 	import { allCommunications, communicationsByYear } from '$lib/data/communications';
 	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
@@ -110,7 +114,7 @@
 	}
 
 	// Today (YYYY-MM-DD) for the upcoming/past split.
-	const today = new Date().toISOString().split('T')[0];
+	const today = new Date().toISOString().split('T')[0]!;
 
 	// The system's filtered list, narrowed by the free-text search.
 	const searchedCommunications = $derived(
@@ -197,24 +201,8 @@
 	});
 
 	// ── Type chips (real types + counts) ────────────────────────────────────────
-	const typeLabels: Record<string, string> = {
-		conference: 'Conference paper',
-		workshop: 'Workshop',
-		seminar: 'Seminar',
-		lecture: 'Lecture',
-		panel: 'Panel organised',
-		event: 'Academic event',
-		podcast: 'Podcast'
-	};
-	const typeChipLabels: Record<string, string> = {
-		conference: 'Conferences',
-		workshop: 'Workshops',
-		seminar: 'Seminars',
-		lecture: 'Lectures',
-		panel: 'Panels',
-		event: 'Events',
-		podcast: 'Podcasts'
-	};
+	const typeLabels = COMMUNICATION_TYPE_LIST_LABELS;
+	const typeChipLabels = COMMUNICATION_TYPE_CHIP_LABELS;
 </script>
 
 <SEO

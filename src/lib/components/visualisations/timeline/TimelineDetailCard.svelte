@@ -40,7 +40,7 @@
 	};
 
 	function getIconForCategory(category: string): string {
-		return categoryIcons[category] || categoryIcons.default;
+		return categoryIcons[category] || categoryIcons.default || 'lucide:circle';
 	}
 </script>
 

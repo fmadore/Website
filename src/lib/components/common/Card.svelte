@@ -1,4 +1,6 @@
 <script>
+	import { buildSrcset } from '$lib/utils/imageVariants';
+
 	let {
 		imageUrl = undefined,
 		imageAlt: _imageAltProp = '', // Renamed to avoid conflict with the derived value
@@ -22,6 +24,12 @@
 
 	// Set default imageAlt if not provided, using $derived for Svelte 5
 	let imageAlt = $derived(_imageAltProp || title);
+
+	// Responsive variants: the card figure renders ~300px wide (full-width on
+	// small screens), so the 400w/800w derivatives cover it without pulling
+	// the full-resolution original.
+	const imageSrcset = $derived(buildSrcset(imageUrl));
+	const imageSizes = '(max-width: 640px) 100vw, 300px';
 </script>
 
 <div class="card scroll-reveal-scale" class:card--editorial={editorial}>
@@ -32,6 +40,8 @@
 				<a href={linkUrl} {target} rel="noopener noreferrer">
 					<img
 						src={imageUrl}
+						srcset={imageSrcset}
+						sizes={imageSrcset ? imageSizes : undefined}
 						alt={imageAlt}
 						width="300"
 						height="200"
@@ -43,6 +53,8 @@
 			{:else}
 				<img
 					src={imageUrl}
+					srcset={imageSrcset}
+					sizes={imageSrcset ? imageSizes : undefined}
 					alt={imageAlt}
 					width="300"
 					height="200"

@@ -220,6 +220,7 @@
 					{autoplay}
 					{loop}
 					{muted}
+					preload="metadata"
 					class="media-element"
 					onkeydown={handleKeydown}
 					tabindex="0"

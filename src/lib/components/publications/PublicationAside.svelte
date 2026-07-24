@@ -31,8 +31,8 @@ key-term sizing, BibTeX download — is assembled here.
 		const freqs = getAnalysis(publication.id)?.frequencies ?? [];
 		const top = freqs.slice(0, 28);
 		if (top.length === 0) return [];
-		const max = top[0].count;
-		const min = top[top.length - 1].count;
+		const max = top[0]!.count;
+		const min = top[top.length - 1]!.count;
 		const span = Math.max(1, max - min);
 		// Map raw count → a serif size between ~13px and ~30px.
 		return top.map((f) => ({

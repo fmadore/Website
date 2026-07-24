@@ -72,7 +72,7 @@
 	const CAREER_END = 2027;
 	const AXIS_SPAN = CAREER_END - CAREER_START;
 	const parseSpan = (/** @type {string} */ years) => {
-		const [rawStart, rawEnd] = years.split('-');
+		const [rawStart = '', rawEnd] = years.split('-');
 		const start = parseInt(rawStart, 10);
 		const end = rawEnd ? parseInt(rawEnd, 10) : CAREER_END;
 		return { start, end: Number.isNaN(end) ? CAREER_END : end };

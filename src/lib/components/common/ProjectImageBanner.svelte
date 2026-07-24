@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { buildSrcset } from '$lib/utils/imageVariants';
+
 	let {
 		src,
 		alt,
@@ -22,10 +24,24 @@
 	const combinedClasses = $derived(
 		`project-image-banner ${animationClass} ${additionalClasses}`.trim()
 	);
+
+	// Responsive variants: the plate spans the content column (~800px, full
+	// width on small screens); 400/800/1600 covers 1x and retina.
+	const plateSrcset = $derived(buildSrcset(src));
 </script>
 
 <figure class={combinedClasses}>
-	<img {src} {alt} {width} {height} loading="lazy" decoding="async" class="project-image" />
+	<img
+		{src}
+		srcset={plateSrcset}
+		sizes={plateSrcset ? '(max-width: 900px) 100vw, 800px' : undefined}
+		{alt}
+		{width}
+		{height}
+		loading="lazy"
+		decoding="async"
+		class="project-image"
+	/>
 	{#if caption}
 		<figcaption class="project-image-caption">{caption}</figcaption>
 	{/if}

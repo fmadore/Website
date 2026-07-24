@@ -112,10 +112,10 @@ ECharts Stacked Bar Chart component
 				const nonZeroParams = paramsArray.filter((param) => (param.value as number) > 0);
 
 				if (nonZeroParams.length === 0) {
-					return `${paramsArray[0].name}<br/>No publications`;
+					return `${paramsArray[0]?.name ?? ''}<br/>No publications`;
 				}
 
-				let result = `${nonZeroParams[0].name}<br/>`;
+				let result = `${nonZeroParams[0]!.name}<br/>`;
 
 				// Calculate total for the year
 				const total = nonZeroParams.reduce(

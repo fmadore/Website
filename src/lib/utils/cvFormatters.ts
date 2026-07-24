@@ -35,7 +35,8 @@ export function formatCVAuthorList(authorsInput: string[] | string | undefined):
 
 	// If the site owner is the only author, return empty string
 	if (numAuthors === 1) {
-		return authorsArray[0] === siteAuthor.name ? '' : authorsArray[0];
+		const only = authorsArray[0] ?? '';
+		return only === siteAuthor.name ? '' : only;
 	}
 
 	// Multiple authors - bold the site owner's name, join CV-style
@@ -97,12 +98,12 @@ export function formatBlogDate(dateISO?: string): string {
 
 	const parts = dateISO.split('-');
 	if (parts.length >= 2) {
-		const monthIndex = parseInt(parts[1], 10) - 1;
+		const monthIndex = parseInt(parts[1]!, 10) - 1;
 		const month = months[monthIndex] || '';
 
 		if (parts.length >= 3) {
 			// Has day
-			const day = parseInt(parts[2], 10);
+			const day = parseInt(parts[2]!, 10);
 			return `${day} ${month}`;
 		}
 		// Month only
@@ -129,7 +130,7 @@ export function formatCVYearRange(yearString: string): string;
 export function formatCVYearRange(startOrString: number | string, endYear?: number | null): string {
 	if (typeof startOrString === 'string') {
 		if (!startOrString.includes('-')) return startOrString;
-		const [start, end] = startOrString.split('-');
+		const [start = '', end] = startOrString.split('-');
 		if (!end || end === '') return `${start}-`;
 		return formatCVYearRange(parseInt(start), parseInt(end));
 	}

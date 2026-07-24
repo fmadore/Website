@@ -38,6 +38,7 @@
 		// Get the next index, wrapping around to 0 if we're at the end
 		const nextIndex = (currentIndex + 1) % availableSorts.length;
 		const newSort = availableSorts[nextIndex];
+		if (!newSort) return;
 
 		triggerPulse();
 		onsortchange?.({ sortBy: newSort });
@@ -64,7 +65,7 @@
 		(() => {
 			const currentIndex = availableSorts.indexOf(activeSort);
 			const nextIndex = (currentIndex + 1) % availableSorts.length;
-			const nextSort = availableSorts[nextIndex];
+			const nextSort = availableSorts[nextIndex] ?? activeSort;
 
 			const sortLabels = {
 				date: 'Date (Newest First)',

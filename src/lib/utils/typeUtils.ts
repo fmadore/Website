@@ -31,6 +31,39 @@ export const COMMUNICATION_TYPE_SEO_LABELS: Record<string, string> = {
 	event: 'Academic event'
 };
 
+/* LIST — singular row labels on the Talks & Events index */
+export const COMMUNICATION_TYPE_LIST_LABELS: Record<string, string> = {
+	conference: 'Conference paper',
+	workshop: 'Workshop',
+	seminar: 'Seminar',
+	lecture: 'Lecture',
+	panel: 'Panel organised',
+	event: 'Academic event',
+	podcast: 'Podcast'
+};
+
+/* CHIP — plural facet-chip labels on the Talks & Events index */
+export const COMMUNICATION_TYPE_CHIP_LABELS: Record<string, string> = {
+	conference: 'Conferences',
+	workshop: 'Workshops',
+	seminar: 'Seminars',
+	lecture: 'Lectures',
+	panel: 'Panels',
+	event: 'Events',
+	podcast: 'Podcasts'
+};
+
+/* CHART — axis/legend labels on the visualisations page */
+export const COMMUNICATION_TYPE_CHART_LABELS: Record<string, string> = {
+	conference: 'Conference paper',
+	workshop: 'Workshop',
+	seminar: 'Seminar',
+	lecture: 'Lecture',
+	panel: 'Panel organised',
+	event: 'Academic event organised',
+	podcast: 'Podcast'
+};
+
 /* ===== Activity type labels ===== */
 
 export const ACTIVITY_TYPE_BADGE_LABELS: Record<string, string> = {

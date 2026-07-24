@@ -52,7 +52,7 @@ export interface JoinNamesOptions {
 export function joinNames(names: string[], options: JoinNamesOptions = {}): string {
 	const { separator = ', ', conjunction = ' and ', serialComma = false, maxBeforeEtAl } = options;
 	if (!names || names.length === 0) return '';
-	if (names.length === 1) return names[0];
+	if (names.length === 1) return names[0]!;
 	if (maxBeforeEtAl !== undefined && names.length > maxBeforeEtAl) {
 		return `${names[0]} et al.`;
 	}

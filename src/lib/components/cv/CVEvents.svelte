@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { communicationsByDate } from '$lib/data/communications';
 	import { formatCVAuthorList } from '$lib/utils/cvFormatters';
+	import { formatDayMonth } from '$lib/utils/date-formatter';
 	import CVSection from './CVSection.svelte';
 
 	const organizedEvents = communicationsByDate.filter((comm) => comm.type === 'event');
@@ -14,14 +15,10 @@
 	conditional
 >
 	{#snippet entry(comm)}
-		{@const commDate = new Date(comm.dateISO)}
 		{@const formattedAuthors = formatCVAuthorList(comm.authors)}
 		{@const dateDisplay = comm.date.includes('-')
 			? comm.date.replace(/\s+\d{4}$/, '')
-			: commDate.toLocaleDateString('en-GB', {
-					day: 'numeric',
-					month: 'long'
-				})}
+			: formatDayMonth(comm.dateISO)}
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
 		{#if formattedAuthors}{@html formattedAuthors}.
 		{/if}

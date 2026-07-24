@@ -44,3 +44,9 @@ AGENTS.md
 nul
 scripts/__pycache__/convert-image.cpython-312.pyc
 .vscode/settings.json
+
+# Generated responsive image variants (scripts/generate-image-variants.mjs)
+/static/images/_r/
+
+# Vitest coverage output
+/coverage/

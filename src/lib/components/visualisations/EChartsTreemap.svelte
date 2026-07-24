@@ -129,7 +129,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 	// white-on-everything style.
 	const coloredData = $derived(
 		data.map((node, index) => {
-			const fill = resolvedColors.chartColors[index % resolvedColors.chartColors.length];
+			const fill = resolvedColors.chartColors[index % resolvedColors.chartColors.length]!;
 			const labelStyle = getContrastLabelStyle(fill);
 			const rich = tileLabelRich(labelStyle);
 			const upperLabel = {

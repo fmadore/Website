@@ -26,9 +26,8 @@ export const publicationAnalyses: Record<string, PublicationTextAnalysis> = {};
 
 for (const [path, module] of Object.entries(analysisModules)) {
 	// Extract publication ID from path (e.g., './my-publication.ts' -> 'my-publication')
-	const match = path.match(/\.\/(.+)\.ts$/);
-	if (match && module.analysis) {
-		const id = match[1];
+	const id = path.match(/\.\/(.+)\.ts$/)?.[1];
+	if (id && module.analysis) {
 		publicationAnalyses[id] = module.analysis;
 	}
 }

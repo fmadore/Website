@@ -62,6 +62,30 @@ test('rss.xml is served and is a well-formed feed', async ({ page, request }) =>
 	expect(parsed.channelTitle).toContain('Frédérick Madore');
 });
 
+test('publications/rss.xml is served and is a well-formed publications feed', async ({
+	page,
+	request
+}) => {
+	const response = await request.get('/publications/rss.xml');
+	expect(response.status()).toBe(200);
+	const xml = await response.text();
+	const parsed = await page.evaluate((xmlText) => {
+		const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
+		return {
+			hasParseError: doc.getElementsByTagName('parsererror').length > 0,
+			root: doc.documentElement.nodeName,
+			itemCount: doc.getElementsByTagName('item').length,
+			channelTitle: doc.querySelector('channel > title')?.textContent ?? '',
+			firstLink: doc.querySelector('item > link')?.textContent ?? ''
+		};
+	}, xml);
+	expect(parsed.hasParseError).toBe(false);
+	expect(parsed.root).toBe('rss');
+	expect(parsed.itemCount).toBeGreaterThanOrEqual(10);
+	expect(parsed.channelTitle).toContain('Publications');
+	expect(parsed.firstLink).toContain('/publications/');
+});
+
 test('sitemap.xml is served and is a well-formed urlset', async ({ page, request }) => {
 	const response = await request.get('/sitemap.xml');
 	expect(response.status()).toBe(200);

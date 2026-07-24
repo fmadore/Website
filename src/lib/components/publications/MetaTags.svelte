@@ -119,7 +119,7 @@
 			// First author split into aufirst/aulast; every author repeated as
 			// rft.au (URLSearchParams.set semantics: last value wins, kept for
 			// output stability).
-			const { first, last } = parseAuthorName(publication.authors[0]);
+			const { first, last } = parseAuthorName(publication.authors[0]!);
 			fields.push(['rft.aufirst', first], ['rft.aulast', last]);
 			for (const author of publication.authors) {
 				fields.push(['rft.au', toLastFirstFormat(author)]);

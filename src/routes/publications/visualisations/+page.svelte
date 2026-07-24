@@ -5,7 +5,10 @@
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import { base } from '$app/paths';
 	import { allPublications, publicationsByType } from '$lib/data/publications';
-	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
+	import {
+		useBreadcrumbJsonLd,
+		createSubsectionBreadcrumbs
+	} from '$lib/utils/breadcrumbJsonLd.svelte';
 	import EChartsBarChart from '$lib/components/visualisations/EChartsBarChart.svelte';
 	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
@@ -16,13 +19,18 @@
 	import D3BubbleChart from '$lib/components/visualisations/D3BubbleChart.svelte';
 	import LocationMap from '$lib/components/visualisations/LocationMap.svelte';
 	import VizChartCard from '$lib/components/visualisations/VizChartCard.svelte';
+	import VizSection from '$lib/components/visualisations/VizSection.svelte';
 	import LanguageToggle from '$lib/components/visualisations/LanguageToggle.svelte';
+	import Pagination from '$lib/components/molecules/Pagination.svelte';
 	import {
 		buildLocationData,
 		tallyBy,
 		groupByKey,
-		buildProjectTimeline
+		buildProjectTimeline,
+		buildStackedByYear
 	} from '$lib/utils/vizAggregation';
+	// Shared page layout for the two visualisation routes.
+	import '$styles/components/viz-page.css';
 	import {
 		buildPublicationCollaborationNetwork,
 		buildCooccurrenceNetwork
@@ -92,37 +100,14 @@
 		publicationTypesForStack.map((type) => formatTypeLabel(type))
 	);
 
+	// Stacked bar rows (Publications per Year by Type) via the shared aggregator.
 	const publicationsPerYearStackedData = $derived(
-		(() => {
-			// Prepare data for stacked bar chart (Publications per Year by Type)
-			const types = publicationTypesForStack;
-			const yearlyPublicationCounts: Record<number, { [type: string]: number; total: number }> = {};
-
-			allPublications.forEach((pub) => {
-				if (!yearlyPublicationCounts[pub.year]) {
-					yearlyPublicationCounts[pub.year] = { total: 0 };
-					types.forEach((type: string) => (yearlyPublicationCounts[pub.year][type] = 0)); // Initialize all types with 0
-				}
-				yearlyPublicationCounts[pub.year][pub.type] =
-					(yearlyPublicationCounts[pub.year][pub.type] || 0) + 1;
-				yearlyPublicationCounts[pub.year].total++;
-			});
-
-			// Transform the data to use formatted labels as keys
-			return Object.entries(yearlyPublicationCounts)
-				.map(([yearStr, counts]) => {
-					const yearData: Record<string, number> = { year: parseInt(yearStr) };
-
-					// Map original type keys to formatted labels
-					types.forEach((originalType, index) => {
-						const formattedType = formattedPublicationTypes[index];
-						yearData[formattedType] = counts[originalType] || 0;
-					});
-
-					return yearData;
-				})
-				.sort((a, b) => a.year - b.year);
-		})()
+		buildStackedByYear(allPublications, {
+			getYear: (pub) => pub.year,
+			getType: (pub) => pub.type,
+			typeKeys: publicationTypesForStack,
+			labelFor: formatTypeLabel
+		})
 	);
 
 	// Calculate pages per year data
@@ -197,8 +182,12 @@
 	const venueTreemapData = $derived(
 		(() => {
 			// Group publications by venue type and venue name
-			const journals: Record<string, { count: number; publications: string[] }> = {};
-			const publishers: Record<string, { count: number; publications: string[] }> = {};
+			type VenueBucket = { count: number; publications: string[] };
+			const journals: Record<string, VenueBucket> = {};
+			const publishers: Record<string, VenueBucket> = {};
+			// Get-or-create the venue bucket, returning a reference NUIA can trust.
+			const bucket = (map: Record<string, VenueBucket>, key: string): VenueBucket =>
+				(map[key] ??= { count: 0, publications: [] });
 
 			allPublications.forEach((pub) => {
 				// Journal articles, special issues, and reports (bulletin-like venues)
@@ -208,20 +197,16 @@
 						pub.type === 'special-issue' ||
 						pub.type === 'bulletin-article')
 				) {
-					if (!journals[pub.journal]) {
-						journals[pub.journal] = { count: 0, publications: [] };
-					}
-					journals[pub.journal].count++;
-					journals[pub.journal].publications.push(pub.title);
+					const b = bucket(journals, pub.journal);
+					b.count++;
+					b.publications.push(pub.title);
 				}
 
 				// Reports - use publisher as journal-like venue
 				if (pub.publisher && pub.type === 'report') {
-					if (!journals[pub.publisher]) {
-						journals[pub.publisher] = { count: 0, publications: [] };
-					}
-					journals[pub.publisher].count++;
-					journals[pub.publisher].publications.push(pub.title);
+					const b = bucket(journals, pub.publisher);
+					b.count++;
+					b.publications.push(pub.title);
 				}
 
 				// Books, chapters, and encyclopedias - group by publisher
@@ -229,11 +214,9 @@
 					pub.publisher &&
 					(pub.type === 'book' || pub.type === 'chapter' || pub.type === 'encyclopedia')
 				) {
-					if (!publishers[pub.publisher]) {
-						publishers[pub.publisher] = { count: 0, publications: [] };
-					}
-					publishers[pub.publisher].count++;
-					publishers[pub.publisher].publications.push(pub.title);
+					const b = bucket(publishers, pub.publisher);
+					b.count++;
+					b.publications.push(pub.title);
 				}
 			});
 
@@ -319,15 +302,19 @@
 	const getKeywordName = (d: KeywordData) => d.keyword;
 	const getKeywordCount = (d: KeywordData) => d.count;
 
-	// Pagination state
-	let currentPage = $state(0);
+	// Pagination state for the cited-authors chart (1-based, Pagination component)
+	const AUTHORS_PER_PAGE = 15;
+	let currentPage = $state(1);
+	const pagedAuthors = $derived(
+		citedAuthorsData.slice((currentPage - 1) * AUTHORS_PER_PAGE, currentPage * AUTHORS_PER_PAGE)
+	);
 
 	// Word cloud language filter
 	type WordCloudLanguage = 'all' | 'en' | 'fr';
 	let wordCloudLanguage = $state<WordCloudLanguage>('all');
 
 	// Get publication IDs for the selected language
-	const wordCloudPublicationIds = $derived(() => {
+	const wordCloudPublicationIds = $derived.by(() => {
 		if (wordCloudLanguage === 'en') {
 			return corpusAnalysis.byLanguage.en;
 		} else if (wordCloudLanguage === 'fr') {
@@ -337,28 +324,22 @@
 	});
 
 	// Get word cloud data for selected language
-	const wordCloudData = $derived(() => {
-		const ids = wordCloudPublicationIds();
-		if (ids.length === 0) return [];
-		return getCombinedWordCloudData(ids, { maxWords: 100 });
+	const wordCloudData = $derived.by(() => {
+		if (wordCloudPublicationIds.length === 0) return [];
+		return getCombinedWordCloudData(wordCloudPublicationIds, { maxWords: 100 });
 	});
 
 	// Count of publications with text analysis
-	const wordCloudStats = $derived(() => {
-		const ids = wordCloudPublicationIds();
-		const data = wordCloudData();
-		return {
-			publicationCount: ids.length,
-			wordCount: data.reduce((sum, w) => sum + w.count, 0),
-			uniqueTerms: data.length
-		};
+	const wordCloudStats = $derived({
+		publicationCount: wordCloudPublicationIds.length,
+		wordCount: wordCloudData.reduce((sum, w) => sum + w.count, 0),
+		uniqueTerms: wordCloudData.length
 	});
 
 	// Get bigrams data for selected language
-	const bigramsData = $derived(() => {
-		const ids = wordCloudPublicationIds();
-		if (ids.length === 0) return [];
-		return getCombinedBigrams(ids, 30);
+	const bigramsData = $derived.by(() => {
+		if (wordCloudPublicationIds.length === 0) return [];
+		return getCombinedBigrams(wordCloudPublicationIds, 30);
 	});
 
 	// Accessor functions for bigrams chart
@@ -366,10 +347,13 @@
 	const getBigramCount = (d: NgramFrequency) => d.count;
 
 	// Define breadcrumb items
-	const breadcrumbItems = [
-		{ label: 'Publications', href: `${base}/publications` },
-		{ label: 'Visualisations', href: `${base}/publications/visualisations` }
-	];
+	const breadcrumbItems = createSubsectionBreadcrumbs(
+		base,
+		'Publications',
+		'/publications',
+		'Visualisations',
+		'/publications/visualisations'
+	);
 
 	// JSON-LD for Breadcrumbs - uses reusable utility
 	useBreadcrumbJsonLd(() => breadcrumbItems, 'breadcrumb-json-ld-pub-viz');
@@ -381,7 +365,7 @@
 	keywords="publications, visualisations, citations, research analytics, Frédérick Madore"
 />
 
-<div class="page-container page-enter">
+<div class="viz-page-container page-enter">
 	<Breadcrumb items={breadcrumbItems} />
 	<div class="scroll-reveal">
 		<PageHeader title="Publication Visualisations" />
@@ -394,8 +378,7 @@
 		</PageIntro>
 	</div>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">Publications per year by type</h2>
+	<VizSection title="Publications per year by type">
 		<VizChartCard
 			variant="stacked"
 			height="450px"
@@ -411,10 +394,9 @@
 				<p class="text-light">No publication data available to display for this visualization.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">Number of pages per year</h2>
+	<VizSection title="Number of pages per year">
 		<VizChartCard height="400px" hasData={pagesPerYearData.length > 0}>
 			<EChartsBarChart
 				data={pagesPerYearData}
@@ -428,10 +410,9 @@
 				<p class="text-light">No page count data available to display for this visualization.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">Publication Languages</h2>
+	<VizSection title="Publication Languages">
 		<VizChartCard height="480px" hasData={languageData.length > 0}>
 			<EChartsDoughnutChart
 				data={languageData}
@@ -443,15 +424,12 @@
 				<p class="text-light">No language data available to display for this visualization.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">
-			Keyword Frequency
-			{#if keywordData.length > 0}
-				({keywordData.length} unique keywords)
-			{/if}
-		</h2>
+	<VizSection
+		title="Keyword Frequency"
+		count={keywordData.length > 0 ? `${keywordData.length} unique keywords` : ''}
+	>
 		<VizChartCard variant="bubble" height="550px" hasData={keywordData.length > 0}>
 			<D3BubbleChart
 				data={keywordData}
@@ -462,20 +440,13 @@
 				<p class="text-light">No keyword data available to display for this visualization.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">
-			Keyword co-occurrence network
-			{#if keywordNetwork.nodes.length > 0}
-				({keywordNetwork.nodes.length} keywords)
-			{/if}
-		</h2>
-		<p class="section-description">
-			Keywords are linked when they appear together on the same publication; node size reflects how
-			many publications carry each keyword. Singletons and one-off pairings are omitted to keep the
-			map legible.
-		</p>
+	<VizSection
+		title="Keyword co-occurrence network"
+		count={keywordNetwork.nodes.length > 0 ? `${keywordNetwork.nodes.length} keywords` : ''}
+		description="Keywords are linked when they appear together on the same publication; node size reflects how many publications carry each keyword. Singletons and one-off pairings are omitted to keep the map legible."
+	>
 		{#if keywordNetwork.nodes.length > 0}
 			<NetworkControls
 				bind:topN={keywordTopN}
@@ -505,19 +476,15 @@
 				<p class="text-light">Not enough keyword overlap to display a co-occurrence network.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">
-			Text Analysis Word Cloud
-			{#if wordCloudStats().publicationCount > 0}
-				({wordCloudStats().publicationCount} publications analyzed)
-			{/if}
-		</h2>
-		<p class="section-description">
-			Most frequent terms extracted from full-text publications using lemmatization.
-		</p>
-
+	<VizSection
+		title="Text Analysis Word Cloud"
+		count={wordCloudStats.publicationCount > 0
+			? `${wordCloudStats.publicationCount} publications analyzed`
+			: ''}
+		description="Most frequent terms extracted from full-text publications using lemmatization."
+	>
 		{#if corpusAnalysis.publicationCount > 0}
 			<LanguageToggle
 				bind:current={wordCloudLanguage}
@@ -525,9 +492,9 @@
 				frCount={corpusAnalysis.byLanguage.fr.length}
 			/>
 
-			<VizChartCard placeholderHeight="500px" hasData={wordCloudData().length > 0}>
+			<VizChartCard placeholderHeight="500px" hasData={wordCloudData.length > 0}>
 				<EChartsWordCloud
-					words={wordCloudData()}
+					words={wordCloudData}
 					maxWords={100}
 					shape="circle"
 					minFontSize={12}
@@ -552,19 +519,13 @@
 				{/snippet}
 			</VizChartCard>
 		{/if}
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">
-			Common Phrases (Bigrams)
-			{#if bigramsData().length > 0}
-				({bigramsData().length} phrases)
-			{/if}
-		</h2>
-		<p class="section-description">
-			Most frequent two-word phrases extracted from full-text publications.
-		</p>
-
+	<VizSection
+		title="Common Phrases (Bigrams)"
+		count={bigramsData.length > 0 ? `${bigramsData.length} phrases` : ''}
+		description="Most frequent two-word phrases extracted from full-text publications."
+	>
 		{#if corpusAnalysis.publicationCount > 0}
 			<LanguageToggle
 				bind:current={wordCloudLanguage}
@@ -574,12 +535,12 @@
 
 			<VizChartCard
 				variant="bigrams"
-				height="{Math.max(400, bigramsData().length * 28 + 70)}px"
+				height="{Math.max(400, bigramsData.length * 28 + 70)}px"
 				placeholderHeight="400px"
-				hasData={bigramsData().length > 0}
+				hasData={bigramsData.length > 0}
 			>
 				<EChartsHorizontalBarChart
-					data={bigramsData()}
+					data={bigramsData}
 					xAccessor={getBigramCount}
 					yAccessor={getBigramName}
 					xAxisLabel="Frequency"
@@ -604,15 +565,12 @@
 				{/snippet}
 			</VizChartCard>
 		{/if}
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">
-			Author Collaboration Network
-			{#if collaboratorCount > 0}
-				({collaboratorCount} collaborators)
-			{/if}
-		</h2>
+	<VizSection
+		title="Author Collaboration Network"
+		count={collaboratorCount > 0 ? `${collaboratorCount} collaborators` : ''}
+	>
 		{#if collaboratorCount > 0}
 			<NetworkControls
 				bind:topN={collabTopN}
@@ -638,56 +596,41 @@
 				<p class="text-light">No collaboration data available to display for this visualization.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">
-			Publication Venues
-			{#if totalVenues > 0}
-				({totalVenues} venues)
-			{/if}
-		</h2>
-		<p class="section-description">
-			Where publications appear: journals, book publishers, and edited volumes. Click to zoom into
-			categories.
-		</p>
+	<VizSection
+		title="Publication Venues"
+		count={totalVenues > 0 ? `${totalVenues} venues` : ''}
+		description="Where publications appear: journals, book publishers, and edited volumes. Click to zoom into categories."
+	>
 		<VizChartCard variant="treemap" placeholderHeight="500px" hasData={venueTreemapData.length > 0}>
 			<EChartsTreemap data={venueTreemapData} title="Publication Venues" />
 			{#snippet placeholder()}
 				<p class="text-light">No venue data available to display for this visualization.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">
-			Research Projects Timeline
-			{#if projectTimelineData.length > 0}
-				({projectTimelineData.length} projects)
-			{/if}
-		</h2>
-		<p class="section-description">
-			Project durations with publication output markers. Bars show project spans; circles mark
-			individual publications.
-		</p>
+	<VizSection
+		title="Research Projects Timeline"
+		count={projectTimelineData.length > 0 ? `${projectTimelineData.length} projects` : ''}
+		description="Project durations with publication output markers. Bars show project spans; circles mark individual publications."
+	>
 		<VizChartCard variant="gantt" height="450px" hasData={projectTimelineData.length > 0}>
 			<EChartsGanttChart data={projectTimelineData} />
 			{#snippet placeholder()}
 				<p class="text-light">No project data available to display for this visualization.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">
-			Publisher Locations
-			{#if publisherLocationData.length > 0}
-				({publisherLocationData.length} countries, {totalWithLocation} publications)
-			{/if}
-		</h2>
-		<p class="section-description">
-			Geographic distribution of publication venues. Marker size indicates publication count.
-		</p>
+	<VizSection
+		title="Publisher Locations"
+		count={publisherLocationData.length > 0
+			? `${publisherLocationData.length} countries, ${totalWithLocation} publications`
+			: ''}
+		description="Geographic distribution of publication venues. Marker size indicates publication count."
+	>
 		<VizChartCard
 			variant="map"
 			height="500px"
@@ -701,19 +644,16 @@
 				</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
 	<div class="section-divider scroll-reveal">
 		<h2 class="divider-heading">Citation statistics</h2>
 	</div>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">
-			Citations per year
-			{#if citationsPerYearData.length > 0 && totalCitations > 0}
-				(Total: {totalCitations})
-			{/if}
-		</h2>
+	<VizSection
+		title="Citations per year"
+		count={citationsPerYearData.length > 0 && totalCitations > 0 ? `Total: ${totalCitations}` : ''}
+	>
 		<VizChartCard height="400px" hasData={citationsPerYearData.length > 0}>
 			<EChartsBarChart
 				data={citationsPerYearData}
@@ -729,15 +669,13 @@
 				</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal">
-		<h2 class="section-heading">
-			Authors citing my work most frequently
-			{#if citedAuthorsData.length > 0}
-				(Total: {citedAuthorsData.length} authors)
-			{/if}
-		</h2>
+	<VizSection
+		title="Authors citing my work most frequently"
+		count={citedAuthorsData.length > 0 ? `Total: ${citedAuthorsData.length} authors` : ''}
+		last
+	>
 		{#if citedAuthorsData.length > 0}
 			{#snippet authorChart(authorsToShow: CitedAuthorData[])}
 				<VizChartCard height="{Math.max(350, authorsToShow.length * 35 + 70)}px">
@@ -752,104 +690,17 @@
 				</VizChartCard>
 			{/snippet}
 
-			{@const itemsPerPage = 15}
-			{@const totalPages = Math.ceil(citedAuthorsData.length / itemsPerPage)}
-			{@const startIndex = currentPage * itemsPerPage}
-			{@const endIndex = Math.min(startIndex + itemsPerPage, citedAuthorsData.length)}
-			{@const currentAuthors = citedAuthorsData.slice(startIndex, endIndex)}
-
 			{#key currentPage}
-				{@render authorChart(currentAuthors)}
+				{@render authorChart(pagedAuthors)}
 			{/key}
 
-			{#if totalPages > 1}
-				<div
-					class="pagination-controls mt-6 flex flex-col sm:flex-row items-center justify-between gap-4"
-				>
-					<div class="pagination-info text-sm text-light">
-						Showing {startIndex + 1}-{endIndex} of {citedAuthorsData.length} authors
-					</div>
-					<div class="pagination-buttons flex gap-2">
-						<button
-							class="pagination-btn"
-							onclick={() => (currentPage = Math.max(0, currentPage - 1))}
-							disabled={currentPage === 0}
-						>
-							← Previous
-						</button>
-
-						{#if totalPages <= 7}
-							{#each Array(totalPages) as _unused, i (i)}
-								<button
-									class="pagination-btn {currentPage === i ? 'active' : ''}"
-									onclick={() => (currentPage = i)}
-								>
-									{i + 1}
-								</button>
-							{/each}
-						{:else}
-							{@const maxMiddlePages = 3}
-							{@const halfRange = Math.floor(maxMiddlePages / 2)}
-
-							<!-- Calculate the range of middle pages to show -->
-							{@const idealStart = Math.max(1, currentPage - halfRange)}
-							{@const idealEnd = Math.min(totalPages - 2, currentPage + halfRange)}
-
-							<!-- Adjust if we're too close to the beginning or end -->
-							{@const actualStart = Math.max(
-								1,
-								Math.min(idealStart, totalPages - maxMiddlePages - 1)
-							)}
-							{@const actualEnd = Math.min(totalPages - 2, Math.max(idealEnd, maxMiddlePages))}
-
-							{@const showStartEllipsis = actualStart > 1}
-							{@const showEndEllipsis = actualEnd < totalPages - 2}
-
-							<!-- Show first page -->
-							<button
-								class="pagination-btn {currentPage === 0 ? 'active' : ''}"
-								onclick={() => (currentPage = 0)}
-							>
-								1
-							</button>
-
-							{#if showStartEllipsis}
-								<span class="pagination-ellipsis">…</span>
-							{/if}
-
-							<!-- Show pages around current page -->
-							{#each Array(actualEnd - actualStart + 1) as _unused, i (actualStart + i)}
-								{@const pageIndex = actualStart + i}
-								<button
-									class="pagination-btn {currentPage === pageIndex ? 'active' : ''}"
-									onclick={() => (currentPage = pageIndex)}
-								>
-									{pageIndex + 1}
-								</button>
-							{/each}
-							{#if showEndEllipsis}
-								<span class="pagination-ellipsis">…</span>
-							{/if}
-
-							<!-- Show last page -->
-							<button
-								class="pagination-btn {currentPage === totalPages - 1 ? 'active' : ''}"
-								onclick={() => (currentPage = totalPages - 1)}
-							>
-								{totalPages}
-							</button>
-						{/if}
-
-						<button
-							class="pagination-btn"
-							onclick={() => (currentPage = Math.min(totalPages - 1, currentPage + 1))}
-							disabled={currentPage === totalPages - 1}
-						>
-							Next →
-						</button>
-					</div>
-				</div>
-			{/if}
+			<Pagination
+				page={currentPage}
+				perPage={AUTHORS_PER_PAGE}
+				total={citedAuthorsData.length}
+				label="authors"
+				onchange={(p) => (currentPage = p)}
+			/>
 		{:else}
 			<VizChartCard hasData={false}>
 				{#snippet placeholder()}
@@ -859,31 +710,15 @@
 				{/snippet}
 			</VizChartCard>
 		{/if}
-	</section>
+	</VizSection>
 </div>
 
 <style>
-	.page-container {
-		max-width: var(--container-xl);
-		margin: 0 auto;
-		padding: var(--space-xl) var(--space-md);
-	}
+	/* Page container comes from viz-page.css; section heading/description
+	 * styles live in VizSection; chart-card surface rules in VizChartCard;
+	 * pagination in the shared Pagination component. Only the "Citation
+	 * statistics" divider is page-specific. */
 
-	/*
-	 * Section heading — sans by default (serif discipline applied globally).
-	 * The display-tier h2 still feels editorial because of the major-third
-	 * type scale; removing the serif also aligns it with the rest of the
-	 * site's section chrome.
-	 */
-	.section-heading {
-		font-size: var(--font-size-heading-3);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-emphasis);
-		margin-bottom: var(--space-lg);
-		line-height: var(--line-height-heading);
-	}
-
-	/* Section divider - for "Citation statistics" heading */
 	.section-divider {
 		margin: var(--space-reading-loose) 0;
 		padding-top: var(--space-lg);
@@ -899,19 +734,6 @@
 		line-height: var(--line-height-heading);
 	}
 
-	/* Chart-card surface, hover, dark-mode and chart-size responsive rules
-	 * now live in VizChartCard.svelte. */
-
-	/* Section description text — editorial serif (Newsreader). */
-	.section-description {
-		font-family: var(--font-family-serif);
-		font-size: var(--font-size-base);
-		color: var(--color-text-soft);
-		margin-top: calc(-1 * var(--space-sm));
-		margin-bottom: var(--space-md);
-		line-height: var(--line-height-relaxed);
-	}
-
 	:global(html.dark) .section-divider {
 		border-top-color: color-mix(
 			in srgb,
@@ -920,102 +742,15 @@
 		);
 	}
 
-	/* Mobile responsiveness using PostCSS custom media */
 	@media (--md-down) {
-		.page-container {
-			padding: var(--space-md) var(--space-sm);
-		}
-
-		.section-heading {
-			font-size: var(--font-size-heading-4);
-			margin-bottom: var(--space-md);
-		}
-
 		.divider-heading {
 			font-size: var(--font-size-heading-3);
 		}
 	}
 
 	@media (--sm-down) {
-		.section-heading {
-			font-size: var(--font-size-heading-5);
-		}
-
 		.divider-heading {
 			font-size: var(--font-size-heading-4);
-		}
-	}
-
-	/* Pagination controls */
-	.pagination-controls {
-		border-top: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
-		padding-top: var(--space-md);
-	}
-
-	.pagination-btn {
-		padding: var(--space-xs) var(--space-sm);
-		border: var(--border-width-thin) solid var(--color-border);
-		background-color: var(--color-surface-elevated);
-		color: var(--color-text-soft);
-		border-radius: 0;
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-xs);
-		letter-spacing: var(--letter-spacing-wide);
-		cursor: pointer;
-		transition:
-			background-color var(--duration-fast) var(--ease-out),
-			border-color var(--duration-fast) var(--ease-out),
-			color var(--duration-fast) var(--ease-out);
-		min-width: calc(var(--space-xl) + var(--space-xs));
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.pagination-btn:hover:not(:disabled) {
-		background-color: var(--color-surface);
-		border-color: var(--color-accent);
-		color: var(--color-text-emphasis);
-	}
-
-	.pagination-btn.active {
-		background-color: var(--color-accent);
-		color: var(--color-text-inverted);
-		border-color: var(--color-accent);
-	}
-
-	.pagination-btn:disabled {
-		opacity: var(--opacity-30);
-		cursor: not-allowed;
-	}
-
-	.pagination-ellipsis {
-		padding: var(--space-xs) var(--space-2xs);
-		color: var(--color-text-light);
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-xs);
-		display: flex;
-		align-items: center;
-	}
-
-	.pagination-info {
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-xs);
-		letter-spacing: var(--letter-spacing-wide);
-		color: var(--color-text-light);
-	}
-
-	@media (--sm-down) {
-		.pagination-buttons {
-			flex-wrap: wrap;
-			justify-content: center;
-		}
-
-		.pagination-btn {
-			font-size: var(--font-size-xs);
-			padding: var(--space-2xs) var(--space-xs);
-			min-width: var(--space-xl);
 		}
 	}
 </style>

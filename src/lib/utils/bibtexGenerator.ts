@@ -36,7 +36,7 @@ function getBibtexMonth(dateISO: string | undefined): string | undefined {
 	if (!dateISO) return undefined;
 	const parts = dateISO.split('-');
 	if (parts.length >= 2) {
-		const monthNum = parseInt(parts[1], 10);
+		const monthNum = parseInt(parts[1]!, 10);
 		if (monthNum >= 1 && monthNum <= 12) {
 			return ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'][
 				monthNum - 1

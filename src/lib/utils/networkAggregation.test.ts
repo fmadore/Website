@@ -86,7 +86,7 @@ describe('buildEgoNetwork', () => {
 			{ title: 'P2', direct: ['Ann', 'Bob'] }
 		]);
 		expect(network.nodes.map((n) => n.id)).toEqual([CENTER, 'Ann', 'Bob']);
-		expect(network.nodes[0].kind).toBe('center');
+		expect(network.nodes[0]!.kind).toBe('center');
 		expect(node(network, 'Ann')?.weight).toBe(2);
 		expect(node(network, 'Bob')?.weight).toBe(1);
 	});
@@ -122,7 +122,7 @@ describe('buildEgoNetwork', () => {
 		]);
 		const peers = network.edges.filter((e) => e.kind === 'peer');
 		expect(peers).toHaveLength(1);
-		expect(peers[0].weight).toBe(2);
+		expect(peers[0]!.weight).toBe(2);
 	});
 
 	it('links contributor group members to each other and to bridge targets', () => {

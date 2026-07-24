@@ -3,6 +3,7 @@
 	import { resolve } from '$app/paths';
 	import { truncateAbstract } from '$lib/utils/textUtils';
 	import { formatAuthorList, formatCommunicationCitation } from '$lib/utils/citationFormatter';
+	import { titleLangAttr } from '$lib/utils/languageUtils';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import BibliographyRow from '$lib/components/molecules/BibliographyRow.svelte';
 	import type { BibliographyAction } from '$lib/components/molecules/BibliographyRow.svelte';
@@ -120,6 +121,7 @@
 		{kindLabel}
 		languageNote={languageDisplay}
 		title={communication.title}
+		titleLang={titleLangAttr(communication.language)}
 		byline={venueLine}
 		standfirst={bibStandfirst}
 		image={communication.image}

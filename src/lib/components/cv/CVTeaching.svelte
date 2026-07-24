@@ -6,8 +6,8 @@
 
 	// Sort teaching by year (most recent first)
 	const sortedTeaching = teaching.sort((a, b) => {
-		const yearA = parseInt(a.year.split('-')[0]);
-		const yearB = parseInt(b.year.split('-')[0]);
+		const yearA = parseInt(a.year.split('-')[0] ?? a.year);
+		const yearB = parseInt(b.year.split('-')[0] ?? b.year);
 		return yearB - yearA;
 	});
 
