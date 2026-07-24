@@ -10,6 +10,7 @@
 	import { urlFilterSync } from '$lib/actions/urlFilterSync.svelte';
 	import { areFiltersActive } from '$lib/utils/filterUtils';
 	import { ACTIVITY_TYPE_BADGE_LABELS } from '$lib/utils/typeUtils';
+	import { formatShortDateMono } from '$lib/utils/date-formatter';
 	// Page-specific CSS relocated from the global app.css (this page renders the
 	// activities log, the browse-by-year meter, and the tag facet).
 	import '$styles/components/activity-list.css';
@@ -106,27 +107,11 @@
 	});
 
 	// The "Updated" date in the aside footer — newest dated entry, mono form.
-	const MONTHS = [
-		'JAN',
-		'FEB',
-		'MAR',
-		'APR',
-		'MAY',
-		'JUN',
-		'JUL',
-		'AUG',
-		'SEP',
-		'OCT',
-		'NOV',
-		'DEC'
-	];
 	const updatedLabel = $derived.by(() => {
 		const iso = activities.find((a: Activity) =>
 			/^\d{4}-\d{2}-\d{2}$/.test(a.dateISO ?? '')
 		)?.dateISO;
-		if (!iso) return '';
-		const [y, m, d] = iso.split('-');
-		return `${parseInt(d, 10)} ${MONTHS[parseInt(m, 10) - 1]} ${y}`;
+		return iso ? formatShortDateMono(iso) : '';
 	});
 </script>
 

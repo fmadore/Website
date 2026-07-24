@@ -9,7 +9,10 @@
 		communicationsByType,
 		communicationsByProject
 	} from '$lib/data/communications';
-	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
+	import {
+		useBreadcrumbJsonLd,
+		createSubsectionBreadcrumbs
+	} from '$lib/utils/breadcrumbJsonLd.svelte';
 	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
 	import EChartsDoughnutChart from '$lib/components/visualisations/EChartsDoughnutChart.svelte';
@@ -20,12 +23,16 @@
 	import D3BubbleChart from '$lib/components/visualisations/D3BubbleChart.svelte';
 	import LocationMap from '$lib/components/visualisations/LocationMap.svelte';
 	import VizChartCard from '$lib/components/visualisations/VizChartCard.svelte';
+	import VizSection from '$lib/components/visualisations/VizSection.svelte';
 	import {
 		buildLocationData,
 		tallyBy,
 		buildGroupedTreemap,
-		buildProjectTimeline
+		buildProjectTimeline,
+		buildStackedByYear
 	} from '$lib/utils/vizAggregation';
+	// Shared page layout for the two visualisation routes.
+	import '$styles/components/viz-page.css';
 	import {
 		buildCommunicationCoPresenterNetwork,
 		buildCooccurrenceNetwork,
@@ -37,6 +44,7 @@
 	import type { Communication } from '$lib/types/communication';
 	import type { WordFrequency } from '$lib/types';
 	import { author } from '$lib/data/siteConfig';
+	import { COMMUNICATION_TYPE_CHART_LABELS } from '$lib/utils/typeUtils';
 
 	// ---------- Shared types for derived data ----------
 
@@ -47,17 +55,8 @@
 
 	// ---------- Helpers ----------
 
-	const TYPE_LABELS: Record<string, string> = {
-		conference: 'Conference paper',
-		workshop: 'Workshop',
-		seminar: 'Seminar',
-		lecture: 'Lecture',
-		panel: 'Panel organised',
-		event: 'Academic event organised',
-		podcast: 'Podcast'
-	};
 	const formatTypeLabel = (type: string): string =>
-		TYPE_LABELS[type] ?? type.charAt(0).toUpperCase() + type.slice(1);
+		COMMUNICATION_TYPE_CHART_LABELS[type] ?? type.charAt(0).toUpperCase() + type.slice(1);
 
 	function normaliseLanguages(value: Communication['language']): string[] {
 		if (!value) return [];
@@ -73,32 +72,14 @@
 	const communicationTypes = $derived(Object.keys(communicationsByType).sort());
 	const formattedTypes = $derived(communicationTypes.map(formatTypeLabel));
 
-	// 1. Communications per year by type (stacked bar).
+	// 1. Communications per year by type (stacked bar) via the shared aggregator.
 	const perYearStackedData = $derived(
-		(() => {
-			const yearly: Record<number, Record<string, number>> = {};
-
-			allCommunications.forEach((comm) => {
-				const year = comm.year;
-				const type = comm.type ?? 'other';
-
-				if (!yearly[year]) {
-					yearly[year] = {};
-					communicationTypes.forEach((t) => (yearly[year][t] = 0));
-				}
-				yearly[year][type] = (yearly[year][type] || 0) + 1;
-			});
-
-			return Object.entries(yearly)
-				.map(([yearStr, counts]) => {
-					const row: Record<string, number> = { year: parseInt(yearStr) };
-					communicationTypes.forEach((rawType, i) => {
-						row[formattedTypes[i]] = counts[rawType] || 0;
-					});
-					return row;
-				})
-				.sort((a, b) => (a.year as number) - (b.year as number));
-		})()
+		buildStackedByYear(allCommunications, {
+			getYear: (comm) => comm.year,
+			getType: (comm) => comm.type ?? 'other',
+			typeKeys: communicationTypes,
+			labelFor: formatTypeLabel
+		})
 	);
 
 	// 2. Communications by type (doughnut).
@@ -225,10 +206,13 @@
 
 	// ---------- Breadcrumbs + SEO ----------
 
-	const breadcrumbItems = [
-		{ label: 'Talks & Events', href: `${base}/conference-activity` },
-		{ label: 'Visualisations', href: `${base}/conference-activity/visualisations` }
-	];
+	const breadcrumbItems = createSubsectionBreadcrumbs(
+		base,
+		'Talks & Events',
+		'/conference-activity',
+		'Visualisations',
+		'/conference-activity/visualisations'
+	);
 	useBreadcrumbJsonLd(() => breadcrumbItems, 'breadcrumb-json-ld-conf-activity-viz');
 </script>
 
@@ -238,7 +222,7 @@
 	keywords="conferences, presentations, visualisations, co-presenters, research projects, map, Frédérick Madore"
 />
 
-<div class="page-container page-enter">
+<div class="viz-page-container page-enter">
 	<Breadcrumb items={breadcrumbItems} />
 	<div class="scroll-reveal">
 		<PageHeader title="Talks & Events Visualisations" />
@@ -251,8 +235,7 @@
 		</PageIntro>
 	</div>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">Conference activities per year by type</h2>
+	<VizSection title="Conference activities per year by type">
 		<VizChartCard
 			variant="stacked"
 			height="450px"
@@ -268,15 +251,12 @@
 				<p class="text-light">No activity data available to display for this visualisation.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">
-			Activities by type
-			{#if typeDistribution.length > 0}
-				({typeDistribution.length} types)
-			{/if}
-		</h2>
+	<VizSection
+		title="Activities by type"
+		count={typeDistribution.length > 0 ? `${typeDistribution.length} types` : ''}
+	>
 		<VizChartCard height="480px" hasData={typeDistribution.length > 0}>
 			<EChartsDoughnutChart
 				data={typeDistribution}
@@ -288,15 +268,12 @@
 				<p class="text-light">No type data available to display for this visualisation.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">
-			Languages
-			{#if languageData.length > 0}
-				({languageData.length} languages)
-			{/if}
-		</h2>
+	<VizSection
+		title="Languages"
+		count={languageData.length > 0 ? `${languageData.length} languages` : ''}
+	>
 		<VizChartCard height="480px" hasData={languageData.length > 0}>
 			<EChartsDoughnutChart
 				data={languageData}
@@ -308,15 +285,12 @@
 				<p class="text-light">No language data available to display for this visualisation.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">
-			Activities by country
-			{#if countryData.length > 0}
-				({countryData.length} countries)
-			{/if}
-		</h2>
+	<VizSection
+		title="Activities by country"
+		count={countryData.length > 0 ? `${countryData.length} countries` : ''}
+	>
 		<VizChartCard
 			height="{Math.max(350, countryData.length * 32 + 70)}px"
 			placeholderHeight="400px"
@@ -333,15 +307,12 @@
 				<p class="text-light">No country data available to display for this visualisation.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">
-			Tag frequency
-			{#if tagFrequencyList.length > 0}
-				({tagFrequencyList.length} unique tags)
-			{/if}
-		</h2>
+	<VizSection
+		title="Tag frequency"
+		count={tagFrequencyList.length > 0 ? `${tagFrequencyList.length} unique tags` : ''}
+	>
 		<VizChartCard variant="bubble" height="550px" hasData={tagFrequencyList.length > 0}>
 			<D3BubbleChart
 				data={tagFrequencyList}
@@ -352,13 +323,12 @@
 				<p class="text-light">No tag data available to display for this visualisation.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">Tag cloud</h2>
-		<p class="section-description">
-			Tags scaled by the number of conference activities they appear in.
-		</p>
+	<VizSection
+		title="Tag cloud"
+		description="Tags scaled by the number of conference activities they appear in."
+	>
 		<VizChartCard placeholderHeight="500px" hasData={tagWordCloudData.length > 0}>
 			<EChartsWordCloud
 				words={tagWordCloudData}
@@ -371,19 +341,13 @@
 				<p class="text-light">No tag data available to display for this visualisation.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">
-			Tag co-occurrence network
-			{#if tagNetwork.nodes.length > 0}
-				({tagNetwork.nodes.length} tags)
-			{/if}
-		</h2>
-		<p class="section-description">
-			Tags are linked when they appear together on the same conference activity; node size reflects
-			how many activities carry each tag. Singletons and one-off pairings are omitted.
-		</p>
+	<VizSection
+		title="Tag co-occurrence network"
+		count={tagNetwork.nodes.length > 0 ? `${tagNetwork.nodes.length} tags` : ''}
+		description="Tags are linked when they appear together on the same conference activity; node size reflects how many activities carry each tag. Singletons and one-off pairings are omitted."
+	>
 		{#if tagNetwork.nodes.length > 0}
 			<NetworkControls
 				bind:topN={tagTopN}
@@ -413,19 +377,13 @@
 				<p class="text-light">Not enough tag overlap to display a co-occurrence network.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">
-			Co-presenter network
-			{#if copresenterCount > 0}
-				({copresenterCount} collaborators)
-			{/if}
-		</h2>
-		<p class="section-description">
-			People who have co-presented, co-organised panels, or contributed papers alongside me. Edges
-			between non-centre nodes show pairs who appeared together in the same communication.
-		</p>
+	<VizSection
+		title="Co-presenter network"
+		count={copresenterCount > 0 ? `${copresenterCount} collaborators` : ''}
+		description="People who have co-presented, co-organised panels, or contributed papers alongside me. Edges between non-centre nodes show pairs who appeared together in the same communication."
+	>
 		{#if copresenterCount > 0}
 			<NetworkControls
 				bind:topN={copresenterTopN}
@@ -457,19 +415,15 @@
 				<p class="text-light">No co-presenter data available to display for this visualisation.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">
-			Institution network
-			{#if institutionNetwork.nodes.length > 0}
-				({institutionNetwork.nodes.length} institutions)
-			{/if}
-		</h2>
-		<p class="section-description">
-			Institutions are linked when their members appeared in the same panel, workshop, or event.
-			Node size reflects how many activities each institution took part in.
-		</p>
+	<VizSection
+		title="Institution network"
+		count={institutionNetwork.nodes.length > 0
+			? `${institutionNetwork.nodes.length} institutions`
+			: ''}
+		description="Institutions are linked when their members appeared in the same panel, workshop, or event. Node size reflects how many activities each institution took part in."
+	>
 		{#if institutionNetwork.nodes.length > 0}
 			<NetworkControls
 				bind:topN={institutionTopN}
@@ -499,19 +453,13 @@
 				<p class="text-light">No institution data available to display for this visualisation.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">
-			Activities by research project
-			{#if totalProjects > 0}
-				({totalProjects} projects)
-			{/if}
-		</h2>
-		<p class="section-description">
-			Each outer block is a research project; inner cells are the types of activity produced within
-			that project, sized by count. Click to zoom into categories.
-		</p>
+	<VizSection
+		title="Activities by research project"
+		count={totalProjects > 0 ? `${totalProjects} projects` : ''}
+		description="Each outer block is a research project; inner cells are the types of activity produced within that project, sized by count. Click to zoom into categories."
+	>
 		<VizChartCard
 			variant="treemap"
 			placeholderHeight="500px"
@@ -522,19 +470,15 @@
 				<p class="text-light">No project data available to display for this visualisation.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal mb-12">
-		<h2 class="section-heading">
-			Conference venue locations
-			{#if locationMapData.length > 0}
-				({locationMapData.length} countries, {totalMapped} activities)
-			{/if}
-		</h2>
-		<p class="section-description">
-			Geographic distribution of conference venues. Marker size indicates the number of activities
-			per country; click a marker to see individual titles and cities.
-		</p>
+	<VizSection
+		title="Conference venue locations"
+		count={locationMapData.length > 0
+			? `${locationMapData.length} countries, ${totalMapped} activities`
+			: ''}
+		description="Geographic distribution of conference venues. Marker size indicates the number of activities per country; click a marker to see individual titles and cities."
+	>
 		<VizChartCard
 			variant="map"
 			height="500px"
@@ -546,69 +490,19 @@
 				<p class="text-light">No location data available to display for this visualisation.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 
-	<section class="visualization-section scroll-reveal">
-		<h2 class="section-heading">
-			Research projects timeline
-			{#if projectTimelineData.length > 0}
-				({projectTimelineData.length} projects)
-			{/if}
-		</h2>
-		<p class="section-description">
-			Project durations with conference-activity markers. Bars show project spans; circles mark
-			individual activities.
-		</p>
+	<VizSection
+		title="Research projects timeline"
+		count={projectTimelineData.length > 0 ? `${projectTimelineData.length} projects` : ''}
+		description="Project durations with conference-activity markers. Bars show project spans; circles mark individual activities."
+		last
+	>
 		<VizChartCard variant="gantt" height="450px" hasData={projectTimelineData.length > 0}>
 			<EChartsGanttChart data={projectTimelineData} />
 			{#snippet placeholder()}
 				<p class="text-light">No project data available to display for this visualisation.</p>
 			{/snippet}
 		</VizChartCard>
-	</section>
+	</VizSection>
 </div>
-
-<style>
-	/* Chart-card surface, hover, dark-mode and chart-size responsive rules
-	 * now live in VizChartCard.svelte. Only page-level layout remains here. */
-
-	.page-container {
-		max-width: var(--container-xl);
-		margin: 0 auto;
-		padding: var(--space-xl) var(--space-md);
-	}
-
-	.section-heading {
-		font-size: var(--font-size-heading-3);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-emphasis);
-		margin-bottom: var(--space-lg);
-		line-height: var(--line-height-heading);
-	}
-
-	.section-description {
-		font-family: var(--font-family-serif);
-		font-size: var(--font-size-base);
-		color: var(--color-text-soft);
-		margin-top: calc(-1 * var(--space-sm));
-		margin-bottom: var(--space-md);
-		line-height: var(--line-height-relaxed);
-	}
-
-	@media (--md-down) {
-		.page-container {
-			padding: var(--space-md) var(--space-sm);
-		}
-
-		.section-heading {
-			font-size: var(--font-size-heading-4);
-			margin-bottom: var(--space-md);
-		}
-	}
-
-	@media (--sm-down) {
-		.section-heading {
-			font-size: var(--font-size-heading-5);
-		}
-	}
-</style>

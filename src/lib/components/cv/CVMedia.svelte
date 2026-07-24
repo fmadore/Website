@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { mediaAppearancesByDate } from '$lib/data/media-appearances';
 	import { communicationsByDate } from '$lib/data/communications';
+	import { formatDayMonth } from '$lib/utils/date-formatter';
 	import CVEntry from './CVEntry.svelte';
 
 	// Filter podcasts from communications
@@ -19,10 +20,7 @@
 				<CVEntry year={podcastDate.getFullYear()}>
 					"{podcast.title}"{#if podcast.conference}, <em>{podcast.conference}</em
 						>{/if}{#if podcast.episode}, ep. {podcast.episode}{/if}.
-					{podcastDate.toLocaleDateString('en-GB', {
-						day: 'numeric',
-						month: 'long'
-					})}.
+					{formatDayMonth(podcast.dateISO)}.
 					{#if podcast.doi}
 						<span class="block text-sm text-light mt-1"
 							>DOI:
@@ -59,10 +57,7 @@
 				<CVEntry year={mediaDate.getFullYear()}>
 					{media.type === 'interview' ? 'Interviewed by' : 'Appeared in'}
 					<em>{media.outlet}</em>{#if media.program}, {media.program}{/if}.
-					{mediaDate.toLocaleDateString('en-GB', {
-						day: 'numeric',
-						month: 'long'
-					})}.
+					{formatDayMonth(media.dateISO)}.
 					<span class="block text-sm text-light mt-1">Topic: {media.topic}</span>
 					{#if media.url}
 						<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->

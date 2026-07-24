@@ -4,7 +4,8 @@ import {
 	groupByKey,
 	buildGroupedTreemap,
 	buildProjectTimeline,
-	buildLocationData
+	buildLocationData,
+	buildStackedByYear
 } from './vizAggregation';
 
 describe('tallyBy', () => {
@@ -143,5 +144,48 @@ describe('buildLocationData', () => {
 			},
 			{ country: 'Togo', count: 1, items: [{ id: '2', title: 'Two' }] }
 		]);
+	});
+});
+
+describe('buildStackedByYear', () => {
+	const items = [
+		{ year: 2020, type: 'article' },
+		{ year: 2020, type: 'article' },
+		{ year: 2020, type: 'book' },
+		{ year: 2022, type: 'book' }
+	];
+
+	it('builds one row per year with a column per type key, sorted by year', () => {
+		const rows = buildStackedByYear(items, {
+			getYear: (i) => i.year,
+			getType: (i) => i.type,
+			typeKeys: ['article', 'book']
+		});
+		expect(rows).toEqual([
+			{ year: 2020, article: 2, book: 1 },
+			{ year: 2022, article: 0, book: 1 }
+		]);
+	});
+
+	it('maps column names through labelFor', () => {
+		const rows = buildStackedByYear(items, {
+			getYear: (i) => i.year,
+			getType: (i) => i.type,
+			typeKeys: ['article', 'book'],
+			labelFor: (t) => t.toUpperCase()
+		});
+		expect(rows[0]).toEqual({ year: 2020, ARTICLE: 2, BOOK: 1 });
+	});
+
+	it('ignores types outside typeKeys and returns [] for no items', () => {
+		const rows = buildStackedByYear([{ year: 2021, type: 'stray' }], {
+			getYear: (i) => i.year,
+			getType: (i) => i.type,
+			typeKeys: ['article']
+		});
+		expect(rows).toEqual([{ year: 2021, article: 0 }]);
+		expect(buildStackedByYear([], { getYear: () => 0, getType: () => '', typeKeys: [] })).toEqual(
+			[]
+		);
 	});
 });

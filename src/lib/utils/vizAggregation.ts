@@ -181,3 +181,45 @@ export function buildProjectTimeline<T>(
 		})
 		.sort((a, b) => a.startYear - b.startYear);
 }
+
+/**
+ * Build the rows of a "per year by type" stacked bar chart: one row per year
+ * (ascending) with a column per type key, holding that year's count. Column
+ * names go through `labelFor` so chart legends can show display labels while
+ * counting on raw type keys. Items whose type is not in `typeKeys` are
+ * ignored (they would have no column).
+ */
+export function buildStackedByYear<T>(
+	items: T[],
+	options: {
+		getYear: (item: T) => number;
+		getType: (item: T) => string;
+		/** Raw type keys, in column order. */
+		typeKeys: string[];
+		/** Maps a raw type key to the column/legend label. Defaults to identity. */
+		labelFor?: (type: string) => string;
+	}
+): Array<Record<string, number>> {
+	const { getYear, getType, typeKeys, labelFor = (t) => t } = options;
+	const yearly: Record<number, Record<string, number>> = {};
+
+	for (const item of items) {
+		const year = getYear(item);
+		if (!yearly[year]) {
+			yearly[year] = {};
+			typeKeys.forEach((t) => (yearly[year][t] = 0));
+		}
+		const type = getType(item);
+		yearly[year][type] = (yearly[year][type] || 0) + 1;
+	}
+
+	return Object.entries(yearly)
+		.map(([yearStr, counts]) => {
+			const row: Record<string, number> = { year: parseInt(yearStr) };
+			typeKeys.forEach((rawType) => {
+				row[labelFor(rawType)] = counts[rawType] || 0;
+			});
+			return row;
+		})
+		.sort((a, b) => a.year - b.year);
+}

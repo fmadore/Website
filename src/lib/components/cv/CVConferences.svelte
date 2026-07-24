@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { communicationsByDate } from '$lib/data/communications';
 	import { formatCVAuthorList } from '$lib/utils/cvFormatters';
+	import { formatDayMonth } from '$lib/utils/date-formatter';
 	import CVEntry from './CVEntry.svelte';
 
 	// Filter communications by type
@@ -24,13 +25,7 @@
 						{#if formattedAuthors}{@html formattedAuthors}.
 						{/if}
 						"{comm.panelTitle || comm.title}"{#if comm.conference}, <em>{comm.conference}</em
-							>{/if}{#if comm.location}, {comm.location}{/if}, {commDate.toLocaleDateString(
-							'en-GB',
-							{
-								day: 'numeric',
-								month: 'long'
-							}
-						)}.
+							>{/if}{#if comm.location}, {comm.location}{/if}, {formatDayMonth(comm.dateISO)}.
 					</CVEntry>
 				{/each}
 			</div>
@@ -48,10 +43,7 @@
 						{#if formattedAuthors}{@html formattedAuthors}.
 						{/if}
 						"{comm.title}"{#if comm.conference}, <em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if},
-						{commDate.toLocaleDateString('en-GB', {
-							day: 'numeric',
-							month: 'long'
-						})}.
+						{formatDayMonth(comm.dateISO)}.
 					</CVEntry>
 				{/each}
 			</div>

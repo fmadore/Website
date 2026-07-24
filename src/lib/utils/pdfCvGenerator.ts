@@ -2,7 +2,11 @@
  * CV PDF generation — Ink + Signal, the press archive read as a typeset sheet.
  *
  * Extracted from `cv/PdfGenerator.svelte` so the component stays a thin
- * download button; everything here is plain DOM-reading + jsPDF drawing.
+ * download button; this module reads the rendered #cv-content DOM and
+ * orchestrates the document. The typeset mechanics (page cursor, page
+ * breaks, running foot, section heads, year gutter, ledger entries) and the
+ * pure helpers (font embedding, contact-link classification) live in
+ * `pdfCvLayout.ts`.
  *
  * Mirrors the on-screen CV's two-voice, rule-drawn language in print:
  * - Nameplate letterhead: a pine mono "CURRICULUM VITAE" data-voice
@@ -20,7 +24,6 @@
  * Voice→font mapping, palette and type sizes live in $lib/utils/pdfDesignTokens,
  * kept in sync with the site's Ink + Signal design tokens.
  */
-import { base } from '$app/paths';
 import {
 	extractRichText,
 	renderRichText,
@@ -34,85 +37,18 @@ import {
 	FONTS,
 	FONT_SIZE,
 	SPACING,
-	RULE,
 	COLORS,
 	LETTER_SPACING,
 	yearColumnWidth
 } from '$lib/utils/pdfDesignTokens';
+import {
+	CvPdfLayout,
+	registerCvFonts,
+	waitForCvSections,
+	classifyContactLink
+} from '$lib/utils/pdfCvLayout';
 
-type JsPdf = import('jspdf').jsPDF;
 type JsPdfConstructor = typeof import('jspdf').jsPDF;
-
-/**
- * CV PDF web fonts — the three Ink + Signal voices as static TTFs served from
- * /static/fonts/pdf. Registered into jsPDF's virtual file system at generation
- * time so the PDF renders in the real faces (Archivo / Newsreader / Spline Sans
- * Mono) instead of the Helvetica/Times/Courier stand-ins. Fetched on demand, so
- * they never touch the page's critical path.
- */
-const CV_FONTS: { file: string; family: string; style: string }[] = [
-	{ file: 'Archivo-Regular.ttf', family: 'Archivo', style: 'normal' },
-	{ file: 'Archivo-Bold.ttf', family: 'Archivo', style: 'bold' },
-	{ file: 'Newsreader-Regular.ttf', family: 'Newsreader', style: 'normal' },
-	{ file: 'Newsreader-SemiBold.ttf', family: 'Newsreader', style: 'bold' },
-	{ file: 'Newsreader-Italic.ttf', family: 'Newsreader', style: 'italic' },
-	{ file: 'Newsreader-MediumItalic.ttf', family: 'Newsreader', style: 'bolditalic' },
-	{ file: 'SplineSansMono-Regular.ttf', family: 'SplineSansMono', style: 'normal' },
-	{ file: 'SplineSansMono-Bold.ttf', family: 'SplineSansMono', style: 'bold' }
-];
-
-/** Encode a font's bytes as base64 for jsPDF's VFS. Chunked so a large TTF
- * doesn't overflow the call stack via String.fromCharCode(...spread). */
-function arrayBufferToBase64(buffer: ArrayBuffer): string {
-	const bytes = new Uint8Array(buffer);
-	let binary = '';
-	const chunkSize = 0x8000;
-	for (let i = 0; i < bytes.length; i += chunkSize) {
-		binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
-	}
-	return btoa(binary);
-}
-
-/**
- * Fetch and register the three CV voices into the jsPDF instance. Returns true
- * when every face loaded, false on any failure — the caller then falls back to
- * the standard PDF fonts so a font hiccup never blocks the download.
- */
-async function registerCvFonts(pdf: JsPdf): Promise<boolean> {
-	try {
-		await Promise.all(
-			CV_FONTS.map(async ({ file, family, style }) => {
-				const res = await fetch(`${base}/fonts/pdf/${file}`);
-				if (!res.ok) throw new Error(`${file}: HTTP ${res.status}`);
-				const b64 = arrayBufferToBase64(await res.arrayBuffer());
-				pdf.addFileToVFS(file, b64);
-				pdf.addFont(file, family, style);
-			})
-		);
-		return true;
-	} catch (err) {
-		if (import.meta.env.DEV) console.error('CV font embedding failed; using standard fonts:', err);
-		return false;
-	}
-}
-
-/** Wait for the lazily-loaded CV sections to be present in #cv-content. */
-async function waitForCvSections(cvContent: HTMLElement): Promise<void> {
-	// The CV page loads components in batches with delays up to 400ms.
-	// The full CV has 15+ sections; wait until we see at least 12.
-	const maxWaitTime = 3000;
-	const checkInterval = 100;
-	let waited = 0;
-
-	while (waited < maxWaitTime) {
-		if (cvContent.querySelectorAll('section').length >= 12) break;
-		await new Promise((resolve) => setTimeout(resolve, checkInterval));
-		waited += checkInterval;
-	}
-
-	// Additional small delay to ensure DOM is fully rendered
-	await new Promise((resolve) => setTimeout(resolve, 200));
-}
 
 /**
  * Read the rendered #cv-content DOM and typeset it into a downloaded PDF.
@@ -141,99 +77,8 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 	const MONO = fontsReady ? 'SplineSansMono' : FONTS.MONO;
 	setPdfBaseFont(SERIF);
 
-	const pageWidth = pdf.internal.pageSize.getWidth();
-	const pageHeight = pdf.internal.pageSize.getHeight();
-	const margin = 18; // Slightly tighter margins for more content space
-	const contentWidth = pageWidth - 2 * margin;
-	let yPosition = margin;
-
-	// Helper function for page breaks
-	const newPage = () => {
-		addPageNumber();
-		pdf.addPage();
-		yPosition = margin;
-	};
-
-	// Check if we need a new page
-	const checkPageBreak = (requiredSpace: number = 15) => {
-		if (yPosition > pageHeight - margin - requiredSpace) {
-			newPage();
-		}
-	};
-
-	// Page footer — running-foot metadata in the DATA voice (mono), closed
-	// by a faint hairline. Name/document label left, page number right.
-	const addPageNumber = () => {
-		const pageNum = pdf.internal.pages.length - 1;
-
-		// Footer hairline
-		pdf.setDrawColor(...COLORS.HAIRLINE);
-		pdf.setLineWidth(RULE.FOOTER);
-		pdf.line(margin, pageHeight - 14, pageWidth - margin, pageHeight - 14);
-
-		// Name / document label on left — mono data voice
-		pdf.setFontSize(FONT_SIZE.FOOTER);
-		pdf.setFont(MONO, 'normal');
-		pdf.setTextColor(...COLORS.TEXT_MUTED);
-		pdf.text('Frédérick Madore, PhD — Curriculum Vitae', margin, pageHeight - 9);
-
-		// Page number on right — mono data voice
-		pdf.text(`Page ${pageNum}`, pageWidth - margin, pageHeight - 9, { align: 'right' });
-
-		pdf.setTextColor(...COLORS.TEXT);
-	};
-
-	/*
-	 * Section heading — serif title-case over a full-width hairline,
-	 * mirroring the on-screen CV's serif h3 headings (e.g.
-	 * "Professional Appointments"). Title case (not uppercase) keeps the
-	 * editorial, fine-book register rather than a templated CMS label.
-	 */
-	const addSection = (title: string) => {
-		// Check if we need a new page (need space for heading + some content)
-		// Increased to 60 to prevent headers from appearing alone at the bottom of the page
-		// This ensures space for: section top spacing + header + hairline rule + section bottom spacing + at least one content item
-		checkPageBreak(60);
-		yPosition += SPACING.SECTION_TOP;
-
-		// Section heading — serif, deep ink, title case
-		pdf.setFontSize(FONT_SIZE.SECTION_HEADING);
-		pdf.setFont(DISPLAY, 'bold');
-		pdf.setTextColor(...COLORS.TEXT_EMPHASIS);
-		pdf.text(title, margin, yPosition);
-		yPosition += 2.5;
-
-		// Hairline rule under section heading — full content width
-		pdf.setDrawColor(...COLORS.BORDER);
-		pdf.setLineWidth(0.2);
-		pdf.line(margin, yPosition, pageWidth - margin, yPosition);
-
-		pdf.setTextColor(...COLORS.TEXT); // Reset text color
-		yPosition += SPACING.SECTION_BOTTOM;
-	};
-
-	/*
-	 * Year/gutter label — primary ink, bold. Numeric years ("2026") sit at
-	 * FONT_SIZE.BODY; long word labels ("Forthcoming", "à paraître")
-	 * would overrun the fixed gutter and collide with the entry text, so
-	 * they auto-shrink to fit the column instead of widening it. This
-	 * keeps every entry's content indentation identical.
-	 */
-	const drawYearLabel = (label: string, x: number, y: number, columnWidth: number) => {
-		pdf.setFont(DISPLAY, 'bold');
-		pdf.setFontSize(FONT_SIZE.BODY);
-		// Available width = column minus the x inset minus a ~1mm gutter
-		// before the content column.
-		const maxWidth = columnWidth - (x - margin) - 1;
-		const width = pdf.getTextWidth(label);
-		if (width > maxWidth && maxWidth > 0) {
-			pdf.setFontSize(Math.max(6.5, (FONT_SIZE.BODY * maxWidth) / width));
-		}
-		pdf.setTextColor(...COLORS.PRIMARY);
-		pdf.text(label, x, y);
-		pdf.setTextColor(...COLORS.TEXT);
-		pdf.setFontSize(FONT_SIZE.BODY); // reset for following body text
-	};
+	const layout = new CvPdfLayout(pdf, { DISPLAY, SERIF, MONO }, 18);
+	const { margin, pageWidth, contentWidth } = layout;
 
 	// Extract header information from CVHeader component
 	const cvDateElement = element.querySelector('.cv-date');
@@ -251,16 +96,16 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 	pdf.setFont(MONO, 'bold');
 	pdf.setTextColor(...COLORS.PRIMARY);
 	pdf.setCharSpace(LETTER_SPACING.EYEBROW);
-	pdf.text('CURRICULUM VITAE', margin, yPosition);
+	pdf.text('CURRICULUM VITAE', margin, layout.y);
 	pdf.setCharSpace(LETTER_SPACING.NONE);
-	yPosition += 7;
+	layout.y += 7;
 
 	// Name — large serif headline, deep ink (the subject of the page)
 	pdf.setFontSize(FONT_SIZE.NAME);
 	pdf.setFont(DISPLAY, 'bold');
 	pdf.setTextColor(...COLORS.TEXT_EMPHASIS);
-	pdf.text('Frédérick Madore, PhD', margin, yPosition);
-	yPosition += 5.5;
+	pdf.text('Frédérick Madore, PhD', margin, layout.y);
+	layout.y += 5.5;
 
 	// Date — dateline in the data voice (mono)
 	pdf.setFontSize(FONT_SIZE.DATE);
@@ -273,15 +118,15 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 			month: 'long',
 			day: 'numeric'
 		});
-	pdf.text(dateText, margin, yPosition);
-	yPosition += 6;
+	pdf.text(dateText, margin, layout.y);
+	layout.y += 6;
 
 	// Hairline rule under header block — full-width neutral hairline,
 	// matching the section dividers below.
 	pdf.setDrawColor(...COLORS.BORDER);
 	pdf.setLineWidth(0.2);
-	pdf.line(margin, yPosition, pageWidth - margin, yPosition);
-	yPosition += SPACING.HEADER_BOTTOM;
+	pdf.line(margin, layout.y, pageWidth - margin, layout.y);
+	layout.y += SPACING.HEADER_BOTTOM;
 
 	// ============================================
 	// CONTACT INFORMATION - Clean two-column layout
@@ -292,7 +137,7 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 
 	const leftColumn = margin;
 	const rightColumn = pageWidth / 2 + 5;
-	const startY = yPosition;
+	const startY = layout.y;
 
 	// Left side - Address (from centralized config)
 	// Address label — small-caps letterspaced eyebrow
@@ -300,9 +145,9 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 	pdf.setFontSize(FONT_SIZE.CONTACT_LABEL);
 	pdf.setTextColor(...COLORS.TEXT_MUTED);
 	pdf.setCharSpace(LETTER_SPACING.EYEBROW);
-	pdf.text('ADDRESS', leftColumn, yPosition);
+	pdf.text('ADDRESS', leftColumn, layout.y);
 	pdf.setCharSpace(LETTER_SPACING.NONE);
-	yPosition += SPACING.CONTACT_LINE;
+	layout.y += SPACING.CONTACT_LINE;
 
 	// Address lines - from centralized config
 	pdf.setFont(SERIF, 'normal');
@@ -310,8 +155,8 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 	pdf.setTextColor(...COLORS.TEXT);
 	const addressLines = getAddressLines();
 	addressLines.forEach((line) => {
-		pdf.text(line, leftColumn, yPosition);
-		yPosition += SPACING.CONTACT_LINE;
+		pdf.text(line, leftColumn, layout.y);
+		layout.y += SPACING.CONTACT_LINE;
 	});
 
 	// Right side - Contact links
@@ -326,34 +171,6 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 	pdf.text('CONTACT', rightColumn, rightY);
 	pdf.setCharSpace(LETTER_SPACING.NONE);
 	rightY += SPACING.CONTACT_LINE;
-
-	// Classify a contact link by its actual hostname (not a substring match,
-	// which would also accept e.g. "evil.com/github.com"). Returns null for
-	// unrecognized links, which are then skipped.
-	const classifyContactLink = (
-		href: string,
-		label: string
-	): { displayLabel: string; displayValue: string } | null => {
-		if (href.startsWith('mailto:')) return { displayLabel: 'Email:', displayValue: label };
-		let url: URL;
-		try {
-			url = new URL(href);
-		} catch {
-			return null;
-		}
-		const host = url.hostname.toLowerCase();
-		const isHost = (domain: string) => host === domain || host.endsWith(`.${domain}`);
-		const pathValue = url.pathname.replace(/^\//, '').replace(/\/$/, '');
-		if (isHost('frederickmadore.com')) return { displayLabel: 'Web:', displayValue: label };
-		if (isHost('linkedin.com'))
-			return {
-				displayLabel: 'LinkedIn:',
-				displayValue: url.pathname.split('/in/')[1]?.replace('/', '') || label
-			};
-		if (isHost('github.com')) return { displayLabel: 'GitHub:', displayValue: pathValue || label };
-		if (isHost('orcid.org')) return { displayLabel: 'ORCID:', displayValue: pathValue || label };
-		return null;
-	};
 
 	linkItems?.forEach((item) => {
 		const anchor = item.querySelector('a');
@@ -378,118 +195,15 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 	});
 
 	// Move y position to the max of left and right columns
-	yPosition = Math.max(yPosition, rightY) + SPACING.SECTION_TOP;
+	layout.y = Math.max(layout.y, rightY) + SPACING.SECTION_TOP;
 
 	// Separator line before content
 	pdf.setDrawColor(...COLORS.BORDER);
 	pdf.setLineWidth(0.3);
-	pdf.line(margin, yPosition, pageWidth - margin, yPosition);
-	yPosition += SPACING.SECTION_TOP;
+	pdf.line(margin, layout.y, pageWidth - margin, layout.y);
+	layout.y += SPACING.SECTION_TOP;
 
 	pdf.setTextColor(...COLORS.TEXT); // Reset to default text color
-
-	// Render a ledger entry (year column + rich-text content with optional
-	// italicised detail lines) — the shared shape between subsection entries
-	// and top-level entries.
-	const renderLedgerEntry = (
-		year: string,
-		contentDiv: Element,
-		currentColumnWidth: number
-	): void => {
-		// Get main text and nested detail lines separately
-		const clone = contentDiv.cloneNode(true) as HTMLElement;
-		// Extract <p> and direct child <div> as detail lines
-		const nestedParagraphs = clone.querySelectorAll('p');
-		const nestedDivs = clone.querySelectorAll(':scope > div');
-
-		// Store detail line fragments
-		const paragraphFragments: TextFragment[][] = [];
-		nestedParagraphs.forEach((p) => {
-			const fragments = trimFragments(extractRichText(p));
-			if (fragments.length > 0) paragraphFragments.push(fragments);
-			p.remove();
-		});
-		nestedDivs.forEach((div) => {
-			const fragments = trimFragments(extractRichText(div));
-			if (fragments.length > 0) paragraphFragments.push(fragments);
-			div.remove();
-		});
-
-		// Get main fragments
-		const mainFragments = trimFragments(extractRichText(clone));
-
-		// Calculate height
-		let estimatedHeight = 0;
-		if (mainFragments.length > 0) {
-			estimatedHeight +=
-				measureRichTextHeight(
-					pdf,
-					mainFragments,
-					contentWidth - currentColumnWidth,
-					FONT_SIZE.BODY,
-					SPACING.LINE_HEIGHT_TIGHT
-				) + SPACING.LINE_HEIGHT;
-		}
-
-		// Add height for nested paragraphs
-		paragraphFragments.forEach((frags) => {
-			estimatedHeight +=
-				measureRichTextHeight(
-					pdf,
-					frags,
-					contentWidth - currentColumnWidth,
-					FONT_SIZE.BODY_SMALL,
-					SPACING.LINE_HEIGHT_TIGHT
-				) + SPACING.LINE_HEIGHT_TIGHT;
-		});
-
-		estimatedHeight += SPACING.ENTRY_GAP;
-		checkPageBreak(estimatedHeight);
-
-		// Year/Category column (auto-shrinks long labels like "Forthcoming")
-		drawYearLabel(year, margin + 2, yPosition, currentColumnWidth);
-
-		// Render main text
-		if (mainFragments.length > 0) {
-			yPosition = renderRichText(
-				pdf,
-				mainFragments,
-				margin + currentColumnWidth,
-				yPosition,
-				contentWidth - currentColumnWidth,
-				FONT_SIZE.BODY,
-				SPACING.LINE_HEIGHT_TIGHT
-			);
-			// Tighter gap when detail lines follow
-			yPosition += paragraphFragments.length > 0 ? SPACING.PARAGRAPH_GAP : SPACING.LINE_HEIGHT;
-		}
-
-		// Render detail lines (reviews, amounts, co-applicants, etc.)
-		paragraphFragments.forEach((frags, idx) => {
-			pdf.setTextColor(...COLORS.TEXT_LIGHT);
-			frags.forEach((f: TextFragment) => {
-				if (f.style === 'normal') f.style = 'italic';
-				else if (f.style === 'bold') f.style = 'bolditalic';
-			});
-
-			yPosition = renderRichText(
-				pdf,
-				frags,
-				margin + currentColumnWidth,
-				yPosition,
-				contentWidth - currentColumnWidth,
-				FONT_SIZE.BODY_SMALL,
-				SPACING.LINE_HEIGHT_TIGHT
-			);
-
-			pdf.setTextColor(...COLORS.TEXT);
-			// Tight gap between detail lines, larger after last one
-			yPosition +=
-				idx < paragraphFragments.length - 1 ? SPACING.PARAGRAPH_GAP : SPACING.LINE_HEIGHT_TIGHT;
-		});
-
-		yPosition += SPACING.ENTRY_GAP;
-	};
 
 	// Extract sections
 	const sections = element.querySelectorAll('section');
@@ -506,7 +220,7 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 			if (sectionTitle === 'Curriculum Vitae' || !sectionTitle) {
 				return;
 			}
-			addSection(sectionTitle);
+			layout.addSection(sectionTitle);
 		} else {
 			// Section without h3 - this is likely the contact section, skip it
 			return;
@@ -516,24 +230,7 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 		const subsections = section.querySelectorAll('h4');
 		if (subsections.length > 0) {
 			subsections.forEach((h4) => {
-				// Check if we need a new page before subsection
-				// Increased to 50 to prevent subheaders from appearing alone at the bottom
-				checkPageBreak(50);
-
-				yPosition += SPACING.SUBSECTION_TOP;
-
-				// Subsection label — the DATA voice: mono, uppercase and
-				// letterspaced (e.g. "DEGREES", "BOOKS"). A grouping key, not
-				// a heading, so it never competes with the Archivo section
-				// head above it.
-				pdf.setFontSize(FONT_SIZE.SUBSECTION);
-				pdf.setFont(MONO, 'bold');
-				pdf.setTextColor(...COLORS.TEXT_LIGHT);
-				pdf.setCharSpace(LETTER_SPACING.LABEL);
-				pdf.text((h4.textContent || '').toUpperCase(), margin + 2, yPosition);
-				pdf.setCharSpace(LETTER_SPACING.NONE);
-				yPosition += SPACING.SUBSECTION_BOTTOM;
-				pdf.setTextColor(...COLORS.TEXT); // Reset text color after subsection heading
+				layout.addSubsectionLabel(h4.textContent || '');
 
 				// Get the next sibling div with space-y-3 class (flex layout entries)
 				let nextElement = h4.nextElementSibling;
@@ -557,12 +254,12 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 											SPACING.LINE_HEIGHT_TIGHT
 										) + SPACING.LINE_HEIGHT;
 
-									checkPageBreak(height);
-									yPosition = renderRichText(
+									layout.checkPageBreak(height);
+									layout.y = renderRichText(
 										pdf,
 										fragments,
 										margin + 3,
-										yPosition,
+										layout.y,
 										contentWidth - 5,
 										FONT_SIZE.BODY,
 										SPACING.LINE_HEIGHT_TIGHT,
@@ -570,7 +267,7 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 										COLORS.PRIMARY,
 										COLORS.TEXT
 									);
-									yPosition += SPACING.LINE_HEIGHT;
+									layout.y += SPACING.LINE_HEIGHT;
 								}
 							});
 							break;
@@ -584,7 +281,7 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 
 							if (yearDiv && contentDiv) {
 								const year = yearDiv.textContent?.trim() || '';
-								renderLedgerEntry(year, contentDiv, yearColumnWidth);
+								layout.renderLedgerEntry(year, contentDiv, yearColumnWidth);
 							}
 						});
 						break;
@@ -596,7 +293,7 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 		} else {
 			// No subsections - handle items directly
 			// Add extra spacing to match sections with subsections
-			yPosition += SPACING.SUBSECTION_TOP;
+			layout.y += SPACING.SUBSECTION_TOP;
 
 			// First check for flex layout entries - CVEntry uses .cv-entry, some use .flex.gap-4
 			const flexEntries = section.querySelectorAll('.cv-entry, .flex.gap-4');
@@ -609,16 +306,16 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 						const proficiency = languageBadge.textContent?.trim() || '';
 
 						if (languageName) {
-							checkPageBreak(SPACING.LINE_HEIGHT + SPACING.ENTRY_GAP);
+							layout.checkPageBreak(SPACING.LINE_HEIGHT + SPACING.ENTRY_GAP);
 							pdf.setFontSize(FONT_SIZE.BODY);
 							pdf.setFont(DISPLAY, 'bold');
 							pdf.setTextColor(...COLORS.PRIMARY);
-							pdf.text(languageName, margin + 2, yPosition);
+							pdf.text(languageName, margin + 2, layout.y);
 							pdf.setTextColor(...COLORS.TEXT);
 
 							pdf.setFont(SERIF, 'normal');
-							pdf.text(proficiency, margin + yearColumnWidth, yPosition);
-							yPosition += SPACING.LINE_HEIGHT + SPACING.ENTRY_GAP;
+							pdf.text(proficiency, margin + yearColumnWidth, layout.y);
+							layout.y += SPACING.LINE_HEIGHT + SPACING.ENTRY_GAP;
 						}
 						return; // Skip to next entry
 					}
@@ -645,7 +342,7 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 							const isWideColumn = firstDiv.classList.contains('w-60');
 							const currentColumnWidth = isWideColumn ? 65 : yearColumnWidth;
 
-							renderLedgerEntry(year, contentDiv, currentColumnWidth);
+							layout.renderLedgerEntry(year, contentDiv, currentColumnWidth);
 						} else {
 							// Layout without year column (Languages, Computer Skills, etc.)
 							const label = firstDiv.textContent?.trim() || '';
@@ -659,7 +356,7 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 								// Render Label
 								const labelLines = pdf.splitTextToSize(label, yearColumnWidth);
 								labelLines.forEach((line: string, index: number) => {
-									pdf.text(line, margin + 2, yPosition + index * SPACING.LINE_HEIGHT_TIGHT);
+									pdf.text(line, margin + 2, layout.y + index * SPACING.LINE_HEIGHT_TIGHT);
 								});
 
 								const labelHeight = labelLines.length * SPACING.LINE_HEIGHT_TIGHT;
@@ -676,20 +373,20 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 										SPACING.LINE_HEIGHT_TIGHT
 									);
 
-									checkPageBreak(Math.max(labelHeight, valueHeight) + SPACING.ENTRY_GAP);
+									layout.checkPageBreak(Math.max(labelHeight, valueHeight) + SPACING.ENTRY_GAP);
 
 									renderRichText(
 										pdf,
 										valueFragments,
 										margin + yearColumnWidth,
-										yPosition,
+										layout.y,
 										contentWidth - yearColumnWidth,
 										FONT_SIZE.BODY,
 										SPACING.LINE_HEIGHT_TIGHT
 									);
 								}
 
-								yPosition += Math.max(labelHeight, valueHeight) + SPACING.SUBSECTION_TOP;
+								layout.y += Math.max(labelHeight, valueHeight) + SPACING.SUBSECTION_TOP;
 							}
 						}
 					}
@@ -717,13 +414,13 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 							SPACING.LINE_HEIGHT
 						);
 
-						checkPageBreak(height + SPACING.LINE_HEIGHT); // ensure space
+						layout.checkPageBreak(height + SPACING.LINE_HEIGHT); // ensure space
 
-						yPosition = renderRichText(
+						layout.y = renderRichText(
 							pdf,
 							fragments,
 							margin + 3,
-							yPosition,
+							layout.y,
 							contentWidth - 5,
 							FONT_SIZE.BODY,
 							SPACING.LINE_HEIGHT,
@@ -731,7 +428,7 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 							COLORS.PRIMARY,
 							COLORS.TEXT
 						);
-						yPosition += SPACING.SUBSECTION_TOP;
+						layout.y += SPACING.SUBSECTION_TOP;
 					}
 				});
 
@@ -751,18 +448,18 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 							SPACING.LINE_HEIGHT_TIGHT
 						);
 
-						checkPageBreak(height + 1);
+						layout.checkPageBreak(height + 1);
 
-						yPosition = renderRichText(
+						layout.y = renderRichText(
 							pdf,
 							bulletFragments,
 							margin + 8,
-							yPosition,
+							layout.y,
 							contentWidth - 10,
 							FONT_SIZE.BODY_SMALL,
 							SPACING.LINE_HEIGHT_TIGHT
 						);
-						yPosition += 1;
+						layout.y += 1;
 					}
 				});
 			}
@@ -770,7 +467,7 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 	});
 
 	// Add page number to the last page
-	addPageNumber();
+	layout.addPageNumber();
 
 	pdf.save(filename);
 }

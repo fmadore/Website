@@ -6,14 +6,20 @@
 	import SlideDeckCard from '$lib/components/communications/SlideDeckCard.svelte';
 	import { base, resolve } from '$app/paths';
 	import { communicationsWithSlides } from '$lib/data/communications';
-	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
+	import {
+		useBreadcrumbJsonLd,
+		createSubsectionBreadcrumbs
+	} from '$lib/utils/breadcrumbJsonLd.svelte';
 
 	const decks = communicationsWithSlides;
 
-	const breadcrumbItems = [
-		{ label: 'Talks & Events', href: `${base}/conference-activity` },
-		{ label: 'Slides', href: `${base}/conference-activity/slides` }
-	];
+	const breadcrumbItems = createSubsectionBreadcrumbs(
+		base,
+		'Talks & Events',
+		'/conference-activity',
+		'Slides',
+		'/conference-activity/slides'
+	);
 	useBreadcrumbJsonLd(() => breadcrumbItems, 'breadcrumb-json-ld-conf-activity-slides');
 </script>
 

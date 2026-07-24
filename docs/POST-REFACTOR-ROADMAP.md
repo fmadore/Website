@@ -75,7 +75,7 @@ Status legend: ☐ pending · ☑ done · ◪ partial / deferred · ⊘ blocked 
 
 ## Phase C — Code health
 
-- ☐ **C1. De-duplicate the two visualisation pages.**
+- ☑ **C1. De-duplicate the two visualisation pages.**
   `publications/visualisations/+page.svelte` (1,021 lines) hand-rolls
   pagination that duplicates `molecules/Pagination.svelte` (~90 lines of
   markup + ~70 lines of duplicate CSS) and shares ~11 near-identical
@@ -84,25 +84,27 @@ Status legend: ☐ pending · ☑ done · ◪ partial / deferred · ⊘ blocked 
   chart/placeholder snippets), lift the shared page CSS, and extract a
   `buildStackedByYear()` aggregation into `vizAggregation.ts` (both pages
   hand-build the same year→type matrix).
-- ☐ **C2. Communication type labels into `typeUtils.ts`.** Two routes
+- ☑ **C2. Communication type labels into `typeUtils.ts`.** Two routes
   (`conference-activity/+page.svelte`, its `visualisations` sibling) inline
   their own label maps despite `typeUtils.ts` being documented as the
   single source of truth. Add chip/chart registers mirroring
   `publicationTypeLabels.ts`.
-- ☐ **C3. `formatDayMonth()` in `date-formatter.ts`.** The day-month
+- ☑ **C3. `formatDayMonth()` in `date-formatter.ts`.** The day-month
   variant of `toLocaleDateString('en-GB', …)` is hand-inlined 6× across
   `CVConferences`, `CVInvitedTalks`, `CVEvents`, `CVMedia`; and
   `activities/+page.svelte` hand-rolls a `MONTHS[]` array for its
   "Updated 3 JUN 2025" label.
-- ☐ **C4. `createSubsectionBreadcrumbs()` helper.** Four sub-pages
+- ☑ **C4. `createSubsectionBreadcrumbs()` helper.** Four sub-pages
   hand-build breadcrumb arrays (`publications/visualisations`,
   `conference-activity/visualisations`, `conference-activity/slides`,
   `teaching/guest-lectures`) while section pages use
   `createSectionBreadcrumbs()`.
-- ☐ **C5. Migrate hand-rolled CV sections to `CVSection`** where no PDF
-  hook applies (e.g. `CVService`, `CVConsulting`); leave the ones whose raw
-  markup is a deliberate PDF-generator hook.
-- ☐ **C6. Split `pdfCvGenerator.ts` (776 lines).** Extract the layout
+- ◪ **C5. Migrate hand-rolled CV sections to `CVSection`.** Audited all of
+  them: only `CVConsulting` fit the single-list shape (migrated). The rest
+  are hand-rolled for structural reasons — multiple `h4` subsections
+  (Education, Teaching, Conferences, Service, Media, ResearchExperience) or
+  a non-ledger idiom (Affiliations) — not gratuitous drift; left as is.
+- ☑ **C6. Split `pdfCvGenerator.ts` (776 lines).** Extract the layout
   primitives (`newPage`, `checkPageBreak`, `addSection`, `drawYearLabel`,
   `renderLedgerEntry`, …) into a `pdfLayout` module and
   `classifyContactLink` into a pure function.
