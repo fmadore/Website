@@ -106,6 +106,30 @@ test('sitemap.xml is served and is a well-formed urlset', async ({ page, request
 	expect(parsed.firstLoc).toContain('frederickmadore.com');
 });
 
+test('every top-level section path in the sitemap resolves (no advertised 404s)', async ({
+	request
+}) => {
+	// Guards against a hardcoded sitemap entry with no matching route (e.g. a
+	// /communications index that never existed — the list is /conference-activity).
+	// Scoped to single-segment section paths, the hand-maintained ones where
+	// this bug class lives; deeper [id] detail URLs are data-driven and valid
+	// by construction (and covered by the JSON-LD detail test above).
+	const response = await request.get('/sitemap.xml');
+	const xml = await response.text();
+	const paths = [...xml.matchAll(/<loc>https:\/\/www\.frederickmadore\.com([^<]*)<\/loc>/g)]
+		.map((m) => m[1])
+		.filter((p): p is string => !!p)
+		.filter((p) => p !== '' && !p.endsWith('.xml') && p.split('/').filter(Boolean).length === 1);
+
+	// Sanity: we actually collected the section paths, not an empty set.
+	expect(paths.length).toBeGreaterThan(3);
+
+	for (const path of paths) {
+		const res = await request.get(path, { maxRedirects: 0 });
+		expect(res.status(), `${path} should not be a 404`).not.toBe(404);
+	}
+});
+
 test('an unknown path renders the static 404 page', async ({ page }) => {
 	const response = await page.goto('/this-page-does-not-exist');
 	// `serve` (like GitHub Pages) responds with the prerendered 404.html and a

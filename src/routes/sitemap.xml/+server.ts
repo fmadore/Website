@@ -44,10 +44,12 @@ export const GET: RequestHandler = async () => {
 	const staticPages: SitemapEntry[] = [
 		// Homepage - highest priority
 		{ path: '', priority: 1.0, changefreq: 'weekly' },
-		// Main navigation sections - these should become sitelinks
+		// Main navigation sections - these should become sitelinks.
+		// Note: there is no /communications index route — the talks/communications
+		// list lives at /conference-activity (below); /communications only has
+		// [id] detail pages, which are added individually further down.
 		{ path: '/research', priority: 0.9, changefreq: 'monthly' },
 		{ path: '/publications', priority: 0.9, changefreq: 'weekly' },
-		{ path: '/communications', priority: 0.9, changefreq: 'monthly' },
 		{ path: '/cv', priority: 0.9, changefreq: 'monthly' },
 		{ path: '/activities', priority: 0.9, changefreq: 'weekly' },
 		{ path: '/digital-humanities', priority: 0.9, changefreq: 'monthly' },
