@@ -13,7 +13,8 @@
 	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
 	import EChartsDoughnutChart from '$lib/components/visualisations/EChartsDoughnutChart.svelte';
-	import NetworkGraph from '$lib/components/visualisations/NetworkGraph.svelte';
+	import NetworkMatrix from '$lib/components/visualisations/NetworkMatrix.svelte';
+	import NetworkArcDiagram from '$lib/components/visualisations/NetworkArcDiagram.svelte';
 	import EChartsTreemap from '$lib/components/visualisations/EChartsTreemap.svelte';
 	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
 	import D3BubbleChart from '$lib/components/visualisations/D3BubbleChart.svelte';
@@ -165,6 +166,10 @@
 	let collabTopN = $state(20);
 	let collabVisibleKinds = $state<NetworkEdgeKind[]>(['peer', 'contributor']);
 	let collabSearch = $state('');
+	// A ledger is as tall as its rows; past ~30 the plate scrolls instead.
+	const collabArcHeight = $derived(
+		Math.round(Math.min(Math.min(collabTopN, collaboratorCount) * 24 + 150, 940))
+	);
 
 	// Keyword co-occurrence network: tags linked when they appear on the same
 	// publication. Entity nodes, single edge kind (co-occurrence, always on).
@@ -443,13 +448,13 @@
 	</VizSection>
 
 	<VizSection
-		title="Keyword co-occurrence network"
+		title="Keyword co-occurrence matrix"
 		count={keywordNetwork.nodes.length > 0 ? `${keywordNetwork.nodes.length} keywords` : ''}
-		description="Keywords are linked when they appear together on the same publication; node size reflects how many publications carry each keyword. Singletons and one-off pairings are omitted to keep the map legible."
-		variant="network"
-		height="500px"
+		description="Each cell is a pair of keywords that appear together on the same publication; the darker the cell, the more publications carry both. Rows are ordered so related keywords sit next to each other, which gathers the thematic blocks along the diagonal. Singletons and one-off pairings are omitted."
+		variant="matrix"
+		placeholderHeight="400px"
 		hasData={keywordNetwork.nodes.length > 0}
-		empty="Not enough keyword overlap to display a co-occurrence network."
+		empty="Not enough keyword overlap to display a co-occurrence matrix."
 	>
 		{#snippet controls()}
 			{#if keywordNetwork.nodes.length > 0}
@@ -463,18 +468,17 @@
 				/>
 			{/if}
 		{/snippet}
-		<NetworkGraph
+		<NetworkMatrix
 			nodes={keywordNetwork.nodes}
 			edges={keywordNetwork.edges}
 			maxNodes={keywordTopN}
 			highlightQuery={keywordSearch}
-			filename="keyword-cooccurrence-network"
+			filename="keyword-cooccurrence-matrix"
 			labels={{
 				itemSingular: 'publication',
 				itemPlural: 'Publications',
 				entityNode: 'Keywords',
-				cooccurrenceEdge: 'Keyword co-occurrence',
-				cooccurrenceShared: 'Publications sharing both keywords'
+				sharedLabel: 'Publications sharing both'
 			}}
 		/>
 	</VizSection>
@@ -554,8 +558,10 @@
 	<VizSection
 		title="Author Collaboration Network"
 		count={collaboratorCount > 0 ? `${collaboratorCount} collaborators` : ''}
-		variant="network"
-		height="500px"
+		description="Collaborators ranked by how many publications we share. The arcs on the left join people who have worked with each other — my own link to each of them is a given, so it is not drawn."
+		variant="arc"
+		height="{collabArcHeight}px"
+		placeholderHeight="400px"
 		hasData={collaboratorCount > 0}
 		empty="No collaboration data available to display for this visualisation."
 	>
@@ -572,14 +578,14 @@
 				/>
 			{/if}
 		{/snippet}
-		<NetworkGraph
+		<NetworkArcDiagram
 			nodes={collaborationNetwork.nodes}
 			edges={collaborationNetwork.edges}
 			centerId={author.name}
 			maxNodes={collabTopN}
 			visibleEdgeKinds={collabVisibleKinds}
 			highlightQuery={collabSearch}
-			filename="collaboration-network"
+			filename="collaboration-arcs"
 		/>
 	</VizSection>
 

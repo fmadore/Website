@@ -22,23 +22,40 @@ test('main list pages load with a top-level heading', async ({ page }) => {
 	}
 });
 
-test('visualisation pages render their network graphs and controls', async ({ page }) => {
+test('visualisation pages render each network view and its controls', async ({ page }) => {
+	// Three encodings, each chosen for its data: a ranked arc ledger for the
+	// egocentric networks, a seriated matrix for the co-occurrence corpora, and
+	// a force graph only where spatial clustering is the actual question.
 	const cases = [
-		{ path: '/publications/visualisations', heading: 'Author Collaboration Network' },
-		{ path: '/conference-activity/visualisations', heading: 'Co-presenter network' }
+		{
+			path: '/publications/visualisations',
+			heading: 'Author Collaboration Network',
+			mark: 'svg.arc-svg .arc-row'
+		},
+		{
+			path: '/publications/visualisations',
+			heading: 'Keyword co-occurrence matrix',
+			mark: 'svg.matrix-svg .matrix-cell'
+		},
+		{
+			path: '/conference-activity/visualisations',
+			heading: 'Co-presenter network',
+			mark: 'svg.arc-svg .arc-row'
+		},
+		{
+			path: '/conference-activity/visualisations',
+			heading: 'Institution network',
+			mark: 'svg.network-svg .nodes .node'
+		}
 	];
-	for (const { path, heading } of cases) {
+	for (const { path, heading, mark } of cases) {
 		await page.goto(path);
 		const section = page.locator('section').filter({ hasText: heading }).first();
 		await section.scrollIntoViewIfNeeded();
 
-		// The graph is inline SVG (not a canvas), so its nodes are real elements.
-		const svg = section.locator('svg.network-svg');
-		await expect(svg).toBeVisible();
-		await expect(svg.locator('.nodes .node').first()).toBeVisible();
-		await expect(section.locator('ul.sr-only li').first()).toBeAttached();
+		// Inline SVG (never a canvas), so every mark is a real element.
+		await expect(section.locator(mark).first()).toBeVisible();
 
-		// Controls: the search box filters the graph; typing updates its value.
 		const search = section.locator('.network-controls .search-input');
 		await expect(search).toBeVisible();
 		await search.fill('a');
@@ -46,15 +63,80 @@ test('visualisation pages render their network graphs and controls', async ({ pa
 	}
 });
 
-test('searching a network dims nodes without moving them', async ({ page }) => {
-	// Regression guard for the ECharts behaviour this replaced: every option
-	// change discarded the node positions and restarted the force simulation,
-	// so the whole graph rescaled on each keystroke.
+test('the arc diagram ranks collaborators and omits the centre', async ({ page }) => {
+	// The egocentric centre is joined to everyone by construction, so it is not
+	// a data point — dropping it is the whole reason this is not a node-link map.
 	await page.goto('/publications/visualisations');
 	const section = page
 		.locator('section')
 		.filter({ hasText: 'Author Collaboration Network' })
 		.first();
+	await section.scrollIntoViewIfNeeded();
+
+	const counts = await section
+		.locator('svg.arc-svg .arc-row .arc-count')
+		.evaluateAll((els) => els.map((e) => Number(e.textContent)));
+	expect(counts.length).toBeGreaterThan(3);
+	// Ranked, heaviest first.
+	expect([...counts].sort((a, b) => b - a)).toEqual(counts);
+
+	const names = await section
+		.locator('svg.arc-svg .arc-row .arc-name')
+		.evaluateAll((els) => els.map((e) => e.textContent?.trim()));
+	expect(names).not.toContain('Frédérick Madore');
+
+	// Arcs join collaborators to each other, not to a hub.
+	await expect(section.locator('svg.arc-svg .arcs path').first()).toBeAttached();
+});
+
+test('the co-occurrence matrix renders a labelled, seriated grid', async ({ page }) => {
+	await page.goto('/publications/visualisations');
+	const section = page
+		.locator('section')
+		.filter({ hasText: 'Keyword co-occurrence matrix' })
+		.first();
+	await section.scrollIntoViewIfNeeded();
+
+	// Both triangles are drawn, so either axis can be scanned.
+	const cells = section.locator('svg.matrix-svg .matrix-cell');
+	expect(await cells.count()).toBeGreaterThan(10);
+	await expect(section.locator('svg.matrix-svg .matrix-label').first()).toBeVisible();
+
+	// The accessible reading of a matrix is a table.
+	await expect(section.locator('table.sr-only tbody tr').first()).toBeAttached();
+
+	// Hovering a cell lights its row and column and opens the tooltip.
+	await cells.first().hover();
+	await expect(section.locator('.viz-tooltip')).toBeVisible();
+	await expect(section.locator('svg.matrix-svg .matrix-label--hit').first()).toBeAttached();
+});
+
+test('the matrix draws the same grid on every load', async ({ page }) => {
+	// Spectral seriation is deterministic: an archive should not reshuffle its
+	// rows between visits.
+	const read = async () => {
+		await page.goto('/publications/visualisations');
+		const section = page
+			.locator('section')
+			.filter({ hasText: 'Keyword co-occurrence matrix' })
+			.first();
+		await section.scrollIntoViewIfNeeded();
+		await expect(section.locator('svg.matrix-svg .matrix-label').first()).toBeVisible();
+		return section
+			.locator('svg.matrix-svg .matrix-label')
+			.evaluateAll((els) => els.map((e) => e.textContent).join('|'));
+	};
+	const first = await read();
+	expect(first.length).toBeGreaterThan(0);
+	expect(await read()).toBe(first);
+});
+
+test('searching a network dims marks without moving them', async ({ page }) => {
+	// Regression guard for the ECharts behaviour this replaced: every option
+	// change discarded the node positions and restarted the force simulation,
+	// so the whole graph rescaled on each keystroke.
+	await page.goto('/conference-activity/visualisations');
+	const section = page.locator('section').filter({ hasText: 'Institution network' }).first();
 	await section.scrollIntoViewIfNeeded();
 
 	const positions = () =>
@@ -68,12 +150,12 @@ test('searching a network dims nodes without moving them', async ({ page }) => {
 	const before = await positions();
 	expect(before.length).toBeGreaterThan(0);
 
-	await section.locator('.network-controls .search-input').fill('made');
+	await section.locator('.network-controls .search-input').fill('uni');
 	await expect(section.locator('svg.network-svg .node--dim').first()).toBeAttached();
 	expect(await positions()).toBe(before);
 });
 
-test('network graph nodes are keyboard focusable', async ({ page }) => {
+test('network marks are keyboard focusable', async ({ page }) => {
 	// The canvas series this replaced could only be read via the sr-only list.
 	await page.goto('/publications/visualisations');
 	const section = page
@@ -82,13 +164,13 @@ test('network graph nodes are keyboard focusable', async ({ page }) => {
 		.first();
 	await section.scrollIntoViewIfNeeded();
 
-	const node = section.locator('svg.network-svg .nodes .node').first();
-	await expect(node).toBeVisible();
-	await expect(node).toHaveAttribute('tabindex', '0');
-	await expect(node).toHaveAttribute('aria-label', /.+/);
+	const row = section.locator('svg.arc-svg .arc-row').first();
+	await expect(row).toBeVisible();
+	await expect(row).toHaveAttribute('tabindex', '0');
+	await expect(row).toHaveAttribute('aria-label', /.+/);
 
-	await node.focus();
-	await expect(section.locator('.network-tooltip')).toBeVisible();
+	await row.focus();
+	await expect(section.locator('.viz-tooltip')).toBeVisible();
 });
 
 test('rss.xml is served and is a well-formed feed', async ({ page, request }) => {

@@ -25,6 +25,9 @@ no two channels carry the same value.
 	import { getResolvedChartColors } from '$lib/utils/chartColorUtils';
 	import { downloadSvgAsImage } from '$lib/utils/chartActions';
 	import ChartToolbar from './ChartToolbar.svelte';
+	import NetworkTooltip from './NetworkTooltip.svelte';
+	import type { TooltipContent } from './NetworkTooltip.svelte';
+	import '$styles/components/network-viz.css';
 	import { selectGraph } from '$lib/utils/networkAggregation';
 	import type { NetworkNode, NetworkEdge, NetworkEdgeKind } from '$lib/utils/networkAggregation';
 	import type { FitTransform, NetworkLayout } from '$lib/utils/networkLayout';
@@ -308,7 +311,6 @@ no two channels carry the same value.
 	}
 
 	// --- Tooltip ------------------------------------------------------------
-	type TooltipContent = { title: string; meta?: string; lines: string[] };
 	let tooltip = $state<{ content: TooltipContent; x: number; y: number } | null>(null);
 
 	function edgeHeading(kind: NetworkEdgeKind): { heading: string; shared: string } {
@@ -492,7 +494,7 @@ no two channels carry the same value.
 	}
 </script>
 
-<div class="network-container scroll-reveal-scale" bind:this={outerContainer}>
+<div class="viz-plate scroll-reveal-scale" bind:this={outerContainer}>
 	<ChartToolbar
 		chart={null}
 		onDownload={handleDownload}
@@ -501,9 +503,9 @@ no two channels carry the same value.
 		fullscreenTarget={outerContainer}
 		{filename}
 	/>
-	<div class="zoom-controls">
+	<div class="viz-zoom-controls">
 		<button
-			class="zoom-btn"
+			class="viz-zoom-btn"
 			onclick={() => zoomBy(1.25)}
 			title="Zoom In"
 			aria-label="Zoom in on network graph"
@@ -511,7 +513,7 @@ no two channels carry the same value.
 			<Icon icon="lucide:zoom-in" width="20" height="20" />
 		</button>
 		<button
-			class="zoom-btn"
+			class="viz-zoom-btn"
 			onclick={applyFit}
 			title="Reset Zoom"
 			aria-label="Reset network graph zoom"
@@ -519,7 +521,7 @@ no two channels carry the same value.
 			<Icon icon="lucide:maximize-2" width="20" height="20" />
 		</button>
 		<button
-			class="zoom-btn"
+			class="viz-zoom-btn"
 			onclick={() => zoomBy(0.8)}
 			title="Zoom Out"
 			aria-label="Zoom out on network graph"
@@ -529,7 +531,7 @@ no two channels carry the same value.
 	</div>
 
 	<div
-		class="plot"
+		class="viz-plate-area"
 		bind:this={plotContainer}
 		bind:clientWidth={containerWidth}
 		bind:clientHeight={containerHeight}
@@ -654,41 +656,27 @@ no two channels carry the same value.
 		</svg>
 
 		{#if tooltip}
-			<div
-				class="network-tooltip"
-				role="tooltip"
-				style:left="{tooltip.x}px"
-				style:top="{tooltip.y}px"
-			>
-				<strong>{tooltip.content.title}</strong>
-				{#if tooltip.content.meta}
-					<em>{tooltip.content.meta}</em>
-				{/if}
-				{#if tooltip.content.lines.length > 0}
-					<ul>
-						{#each tooltip.content.lines as line (line)}
-							<li>{line}</li>
-						{/each}
-					</ul>
-				{/if}
-			</div>
+			<NetworkTooltip content={tooltip.content} x={tooltip.x} y={tooltip.y} />
 		{/if}
 	</div>
 
 	<!-- Always-visible legend strip: the meaning of colours and dashes must
 	     survive on mobile, where an absolute overlay would be hidden. -->
 	{#if legendEntries.length > 0}
-		<div class="network-legend">
+		<div class="viz-legend">
 			{#each legendEntries as entry (entry.key)}
-				<span class="legend-entry">
+				<span class="viz-legend-entry">
 					{#if entry.shape === 'circle' || entry.shape === 'square'}
 						<span
-							class="legend-swatch"
-							class:legend-swatch-round={entry.shape === 'circle'}
+							class="viz-legend-swatch"
+							class:viz-legend-swatch--round={entry.shape === 'circle'}
 							style="background-color: {entry.color}"
 						></span>
 					{:else}
-						<span class="legend-line legend-line-{entry.shape}" style="color: {entry.color}"></span>
+						<span
+							class="viz-legend-line viz-legend-line--{entry.shape}"
+							style="color: {entry.color}"
+						></span>
 					{/if}
 					{entry.label}
 				</span>
@@ -709,29 +697,6 @@ no two channels carry the same value.
 </div>
 
 <style>
-	.network-container {
-		width: 100%;
-		height: 100%;
-		min-height: 350px;
-		display: flex;
-		flex-direction: column;
-		position: relative;
-		font-family: var(--font-family-sans);
-	}
-
-	.network-container:fullscreen {
-		height: 100vh;
-		width: 100vw;
-		background-color: var(--color-surface);
-	}
-
-	.plot {
-		position: relative;
-		width: 100%;
-		flex: 1 1 auto;
-		min-height: 0;
-	}
-
 	.network-svg {
 		display: block;
 		width: 100%;
@@ -766,171 +731,5 @@ no two channels carry the same value.
 	.node:focus-visible rect {
 		stroke: var(--color-accent);
 		stroke-width: 3;
-	}
-
-	/* Flat archival tooltip: square corners, hairline border, no shadow. */
-	.network-tooltip {
-		position: absolute;
-		z-index: var(--z-dropdown);
-		max-width: 280px;
-		padding: var(--space-2) var(--space-3);
-		background-color: var(--color-surface-elevated);
-		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: 0;
-		color: var(--color-text);
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-2xs);
-		line-height: var(--line-height-normal);
-		pointer-events: none;
-	}
-
-	.network-tooltip strong {
-		display: block;
-		font-weight: var(--font-weight-semibold);
-	}
-
-	.network-tooltip em {
-		display: block;
-		margin-top: var(--space-3xs);
-		color: var(--color-text-light);
-		font-style: normal;
-	}
-
-	.network-tooltip ul {
-		margin: var(--space-2xs) 0 0;
-		padding: 0;
-		list-style: none;
-	}
-
-	.network-tooltip li {
-		margin-top: var(--space-3xs);
-		padding-left: var(--space-3);
-		text-indent: calc(-1 * var(--space-3));
-		color: var(--color-text-soft);
-	}
-
-	.network-tooltip li::before {
-		content: '· ';
-	}
-
-	/* Legend strip — mono data voice, hairline rule above, wraps on mobile. */
-	.network-legend {
-		flex: none;
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-2) var(--space-4);
-		padding: var(--space-2) var(--space-1) 0;
-		border-top: var(--border-width-thin) solid var(--color-border);
-		margin-top: var(--space-2);
-	}
-
-	.legend-entry {
-		display: inline-flex;
-		align-items: center;
-		gap: var(--space-2);
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-2xs);
-		letter-spacing: var(--letter-spacing-wide);
-		text-transform: uppercase;
-		color: var(--color-text-soft);
-	}
-
-	.legend-swatch {
-		width: var(--space-3);
-		height: var(--space-3);
-		border-radius: 0;
-	}
-
-	.legend-swatch-round {
-		border-radius: var(--border-radius-full);
-	}
-
-	.legend-line {
-		width: var(--space-5);
-		height: 0;
-		border-bottom-width: var(--space-0-5);
-		border-bottom-color: currentColor;
-	}
-
-	.legend-line-solid {
-		border-bottom-style: solid;
-	}
-
-	.legend-line-dashed {
-		border-bottom-style: dashed;
-	}
-
-	.legend-line-dotted {
-		border-bottom-style: dotted;
-	}
-
-	.zoom-controls {
-		position: absolute;
-		top: var(--space-4);
-		left: var(--space-4);
-		z-index: 10;
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-2);
-	}
-
-	.zoom-btn {
-		width: var(--space-9);
-		height: var(--space-9);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background-color: var(--color-surface-elevated);
-		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: 0;
-		color: var(--color-text-light);
-		cursor: pointer;
-		transition:
-			background-color var(--duration-fast) var(--ease-out),
-			color var(--duration-fast) var(--ease-out),
-			border-color var(--duration-fast) var(--ease-out);
-	}
-
-	.zoom-btn:hover {
-		background-color: var(--color-accent);
-		color: var(--color-text-inverted);
-		border-color: var(--color-accent);
-	}
-
-	.zoom-btn:focus-visible {
-		outline: 2px solid var(--color-accent);
-		outline-offset: 2px;
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.network-container {
-			opacity: 1 !important;
-			transform: none !important;
-			transition: none !important;
-			will-change: auto !important;
-		}
-
-		.zoom-btn {
-			transition: none !important;
-		}
-	}
-
-	@media (--md-down) {
-		.zoom-controls {
-			top: var(--space-2);
-			left: var(--space-2);
-			gap: var(--space-1);
-		}
-	}
-
-	@media (--xs-down) {
-		.network-container {
-			min-height: 300px;
-		}
-
-		.zoom-btn {
-			width: var(--space-8);
-			height: var(--space-8);
-		}
 	}
 </style>
