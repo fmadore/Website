@@ -13,7 +13,7 @@
 	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
 	import EChartsDoughnutChart from '$lib/components/visualisations/EChartsDoughnutChart.svelte';
-	import EChartsNetworkGraph from '$lib/components/visualisations/EChartsNetworkGraph.svelte';
+	import NetworkGraph from '$lib/components/visualisations/NetworkGraph.svelte';
 	import EChartsTreemap from '$lib/components/visualisations/EChartsTreemap.svelte';
 	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
 	import D3BubbleChart from '$lib/components/visualisations/D3BubbleChart.svelte';
@@ -458,7 +458,7 @@
 			/>
 		{/if}
 		<VizChartCard variant="network" height="500px" hasData={keywordNetwork.nodes.length > 0}>
-			<EChartsNetworkGraph
+			<NetworkGraph
 				nodes={keywordNetwork.nodes}
 				edges={keywordNetwork.edges}
 				maxNodes={keywordTopN}
@@ -583,7 +583,7 @@
 			/>
 		{/if}
 		<VizChartCard variant="network" height="500px" hasData={collaboratorCount > 0}>
-			<EChartsNetworkGraph
+			<NetworkGraph
 				nodes={collaborationNetwork.nodes}
 				edges={collaborationNetwork.edges}
 				centerId={author.name}

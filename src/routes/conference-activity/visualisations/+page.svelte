@@ -16,7 +16,7 @@
 	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
 	import EChartsDoughnutChart from '$lib/components/visualisations/EChartsDoughnutChart.svelte';
-	import EChartsNetworkGraph from '$lib/components/visualisations/EChartsNetworkGraph.svelte';
+	import NetworkGraph from '$lib/components/visualisations/NetworkGraph.svelte';
 	import EChartsTreemap from '$lib/components/visualisations/EChartsTreemap.svelte';
 	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
 	import EChartsWordCloud from '$lib/components/visualisations/EChartsWordCloud.svelte';
@@ -359,7 +359,7 @@
 			/>
 		{/if}
 		<VizChartCard variant="network" height="500px" hasData={tagNetwork.nodes.length > 0}>
-			<EChartsNetworkGraph
+			<NetworkGraph
 				nodes={tagNetwork.nodes}
 				edges={tagNetwork.edges}
 				maxNodes={tagTopN}
@@ -396,7 +396,7 @@
 			/>
 		{/if}
 		<VizChartCard variant="network" height="500px" hasData={copresenterCount > 0}>
-			<EChartsNetworkGraph
+			<NetworkGraph
 				nodes={copresenterNetwork.nodes}
 				edges={copresenterNetwork.edges}
 				centerId={author.name}
@@ -434,7 +434,7 @@
 			/>
 		{/if}
 		<VizChartCard variant="network" height="500px" hasData={institutionNetwork.nodes.length > 0}>
-			<EChartsNetworkGraph
+			<NetworkGraph
 				nodes={institutionNetwork.nodes}
 				edges={institutionNetwork.edges}
 				entityColor="sage"
