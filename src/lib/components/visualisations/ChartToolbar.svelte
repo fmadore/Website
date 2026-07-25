@@ -1,14 +1,20 @@
 <!--
-ChartToolbar - Reusable toolbar for ECharts visualizations.
+ChartToolbar - Reusable toolbar for chart visualizations.
 Provides decal toggle (accessibility), download as PNG, and optional fullscreen.
+
+Works for both renderers: pass an ECharts instance as `chart` for the canvas
+charts, or an `onDownload` callback for the SVG ones (NetworkGraph), which
+export themselves via `downloadSvgAsImage`.
 -->
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import type * as echarts from 'echarts';
+	// Types from the tree-shaken core, never the all-in-one 'echarts' entry.
+	import type * as echarts from '$lib/utils/echartsCore';
 	import { downloadChartAsImage } from '$lib/utils/chartActions';
 
 	let {
 		chart,
+		onDownload,
 		showDecal = $bindable(false),
 		showDecalToggle = true,
 		showFullscreen = false,
@@ -16,6 +22,8 @@ Provides decal toggle (accessibility), download as PNG, and optional fullscreen.
 		filename = 'chart'
 	}: {
 		chart: echarts.ECharts | null;
+		/** Overrides the ECharts export path; used by SVG-rendered charts. */
+		onDownload?: () => void;
 		showDecal?: boolean;
 		showDecalToggle?: boolean;
 		showFullscreen?: boolean;
@@ -26,6 +34,10 @@ Provides decal toggle (accessibility), download as PNG, and optional fullscreen.
 	let isFullscreen = $state(false);
 
 	function handleDownload() {
+		if (onDownload) {
+			onDownload();
+			return;
+		}
 		if (chart && !chart.isDisposed()) {
 			downloadChartAsImage(chart, filename);
 		}
@@ -101,7 +113,7 @@ Provides decal toggle (accessibility), download as PNG, and optional fullscreen.
 	<button
 		class="toolbar-btn"
 		onclick={handleDownload}
-		disabled={!chart}
+		disabled={!chart && !onDownload}
 		title="Download chart as PNG"
 		aria-label="Download chart as PNG"
 	>

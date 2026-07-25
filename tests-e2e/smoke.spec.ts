@@ -31,15 +31,64 @@ test('visualisation pages render their network graphs and controls', async ({ pa
 		await page.goto(path);
 		const section = page.locator('section').filter({ hasText: heading }).first();
 		await section.scrollIntoViewIfNeeded();
-		// The graph renders to a canvas, and the accessible node list is populated.
-		await expect(section.locator('canvas')).toBeVisible();
+
+		// The graph is inline SVG (not a canvas), so its nodes are real elements.
+		const svg = section.locator('svg.network-svg');
+		await expect(svg).toBeVisible();
+		await expect(svg.locator('.nodes .node').first()).toBeVisible();
 		await expect(section.locator('ul.sr-only li').first()).toBeAttached();
+
 		// Controls: the search box filters the graph; typing updates its value.
-		const search = section.locator('.network-controls input[type="search"]');
+		const search = section.locator('.network-controls .search-input');
 		await expect(search).toBeVisible();
 		await search.fill('a');
 		await expect(search).toHaveValue('a');
 	}
+});
+
+test('searching a network dims nodes without moving them', async ({ page }) => {
+	// Regression guard for the ECharts behaviour this replaced: every option
+	// change discarded the node positions and restarted the force simulation,
+	// so the whole graph rescaled on each keystroke.
+	await page.goto('/publications/visualisations');
+	const section = page
+		.locator('section')
+		.filter({ hasText: 'Author Collaboration Network' })
+		.first();
+	await section.scrollIntoViewIfNeeded();
+
+	const positions = () =>
+		section
+			.locator('svg.network-svg .nodes circle')
+			.evaluateAll((els) =>
+				els.map((e) => `${e.getAttribute('cx')},${e.getAttribute('cy')}`).join('|')
+			);
+
+	await expect(section.locator('svg.network-svg .nodes circle').first()).toBeVisible();
+	const before = await positions();
+	expect(before.length).toBeGreaterThan(0);
+
+	await section.locator('.network-controls .search-input').fill('made');
+	await expect(section.locator('svg.network-svg .node--dim').first()).toBeAttached();
+	expect(await positions()).toBe(before);
+});
+
+test('network graph nodes are keyboard focusable', async ({ page }) => {
+	// The canvas series this replaced could only be read via the sr-only list.
+	await page.goto('/publications/visualisations');
+	const section = page
+		.locator('section')
+		.filter({ hasText: 'Author Collaboration Network' })
+		.first();
+	await section.scrollIntoViewIfNeeded();
+
+	const node = section.locator('svg.network-svg .nodes .node').first();
+	await expect(node).toBeVisible();
+	await expect(node).toHaveAttribute('tabindex', '0');
+	await expect(node).toHaveAttribute('aria-label', /.+/);
+
+	await node.focus();
+	await expect(section.locator('.network-tooltip')).toBeVisible();
 });
 
 test('rss.xml is served and is a well-formed feed', async ({ page, request }) => {

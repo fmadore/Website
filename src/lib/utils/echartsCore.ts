@@ -13,14 +13,7 @@
  */
 
 import * as echarts from 'echarts/core';
-import {
-	BarChart,
-	PieChart,
-	ScatterChart,
-	CustomChart,
-	TreemapChart,
-	GraphChart
-} from 'echarts/charts';
+import { BarChart, PieChart, ScatterChart, CustomChart, TreemapChart } from 'echarts/charts';
 import {
 	GridComponent,
 	TooltipComponent,
@@ -38,7 +31,10 @@ echarts.use([
 	ScatterChart, // gantt milestone points
 	CustomChart, // gantt range bars
 	TreemapChart,
-	GraphChart, // co-presenter / keyword / institution networks
+	// NOTE: GraphChart (force-directed networks) is deliberately absent — the
+	// networks are drawn as declarative SVG by NetworkGraph.svelte, which gives
+	// keyboard-navigable nodes, label-collision handling and a settled layout
+	// that the canvas series could not. Do not re-register it.
 	// Components
 	GridComponent,
 	TooltipComponent,

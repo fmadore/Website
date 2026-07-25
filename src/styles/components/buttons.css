@@ -64,6 +64,54 @@
 	transform: none;
 }
 
+/* ===== BARE CONTROL =====
+ * For controls that are buttons semantically but must not look like `.btn` at
+ * all: the media-player transport, the fullscreen close cross, the sorter and
+ * toggle chips. They used to take `.btn` and then claw every declaration back
+ * with `!important`, because a consumer's single-class selector cannot outrank
+ * `.btn-primary` from outside. Opting out of the base is the honest fix — the
+ * consumer's own class is then the only thing styling the control.
+ *
+ * This carries only what any control needs regardless of skin: hit behaviour,
+ * a focus ring, and the reset a <button> element requires.
+ *
+ * Wrapped in `:where()` so the whole primitive carries ZERO specificity. That
+ * is the point: a consumer's plain `.close-button { border: … }` then wins on
+ * merit, with no `!important` and — critically — no dependence on whether this
+ * stylesheet or the component's chunk happens to load last. A plain
+ * `.btn-bare` would merely move the specificity tie rather than end it. */
+:where(.btn-bare) {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	border: none;
+	border-radius: 0;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+	cursor: pointer;
+	-webkit-user-select: none;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
+	touch-action: manipulation;
+}
+
+:where(.btn-bare):focus {
+	outline: none;
+}
+
+:where(.btn-bare):focus-visible {
+	outline: var(--border-width-medium) solid var(--color-accent);
+	outline-offset: var(--border-width-medium);
+}
+
+:where(.btn-bare):disabled,
+:where(.btn-bare)[aria-disabled='true'] {
+	opacity: var(--opacity-50);
+	cursor: not-allowed;
+}
+
 /* ===== BUTTON VARIANTS ===== */
 
 /* Primary — solid INK (cream on midnight). The standard primary action. */
@@ -235,18 +283,6 @@
 .btn-surface:hover:not(:disabled) {
 	background: var(--color-surface-alt);
 	border-color: var(--color-primary);
-}
-
-/* ===== LEGACY COMPATIBILITY ===== */
-
-.control-button-rounded {
-	border-radius: 0 !important;
-}
-
-.control-button-rounded:hover,
-.control-button-rounded:focus {
-	background-color: var(--color-primary) !important;
-	color: var(--color-text-inverted) !important;
 }
 
 /* ===== ACCESSIBILITY ===== */

@@ -3,7 +3,7 @@
  * (publications/visualisations and conference-activity/visualisations).
  *
  * Every builder returns the same `NetworkData` shape consumed by
- * `EChartsNetworkGraph`: weighted nodes plus weighted edges, each tagged with
+ * `NetworkGraph`: weighted nodes plus weighted edges, each tagged with
  * a `kind` that drives styling (colour, dash pattern, symbol) and legend copy
  * in the component. Keeping the graph *structure* here — including the
  * explicit centre→node edges of the egocentric networks — leaves the
@@ -48,6 +48,60 @@ export interface NetworkData {
 	/** Sorted weight-descending; the centre node (when present) comes first. */
 	nodes: NetworkNode[];
 	edges: NetworkEdge[];
+}
+
+/** The subset of a `NetworkData` a chart actually draws. */
+export interface SelectedGraph {
+	nodes: NetworkNode[];
+	edges: NetworkEdge[];
+	/** Largest weight among the non-centre nodes; the radius scale's domain. */
+	maxWeight: number;
+}
+
+/**
+ * Narrow a network to the top-N heaviest nodes and the edges between them.
+ *
+ * Lives here rather than in the chart so the drawn graph, the legend and the
+ * screen-reader list all read from one source — and so it stays free of the
+ * d3-force import in `networkLayout.ts`, letting the non-visual parts of the
+ * component prerender.
+ *
+ * Ties break on the id, which keeps the selection (and therefore the layout
+ * seeded from it) stable across builds.
+ *
+ * `direct` edges are never hidden by `visibleEdgeKinds`: they are the spokes
+ * that define an egocentric network, and dropping them would leave the centre
+ * node floating unconnected.
+ */
+export function selectGraph(
+	nodes: NetworkNode[],
+	edges: NetworkEdge[],
+	options: { centerId?: string; maxNodes: number; visibleEdgeKinds?: NetworkEdgeKind[] }
+): SelectedGraph {
+	const { centerId, maxNodes, visibleEdgeKinds } = options;
+
+	const centerNode = centerId ? nodes.find((n) => n.id === centerId) : undefined;
+	const others = nodes
+		.filter((n) => n.id !== centerId)
+		.sort((a, b) => b.weight - a.weight || a.id.localeCompare(b.id))
+		.slice(0, Math.max(0, maxNodes));
+
+	const kept = centerNode ? [centerNode, ...others] : others;
+	const keptIds = new Set(kept.map((n) => n.id));
+	const kindSet = visibleEdgeKinds ? new Set(visibleEdgeKinds) : undefined;
+
+	const keptEdges = edges.filter(
+		(e) =>
+			keptIds.has(e.source) &&
+			keptIds.has(e.target) &&
+			(kindSet === undefined || e.kind === 'direct' || kindSet.has(e.kind))
+	);
+
+	return {
+		nodes: kept,
+		edges: keptEdges,
+		maxWeight: others.reduce((m, n) => Math.max(m, n.weight), 1)
+	};
 }
 
 /**

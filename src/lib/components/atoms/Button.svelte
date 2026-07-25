@@ -15,6 +15,13 @@
 		block?: boolean; // For btn-block
 		iconOnly?: boolean; // For icon-only buttons
 		surface?: boolean; // Render as a flat outlined surface control
+		/**
+		 * Drop the `.btn` skin entirely and render a bare control (`.btn-bare`:
+		 * hit behaviour + focus ring only). For controls that are buttons
+		 * semantically but must not look like one — transport controls, close
+		 * crosses, chips. `variant`/`size`/`surface` are ignored when set.
+		 */
+		bare?: boolean;
 		loading?: boolean; // Loading state
 		ariaLabel?: string | undefined; // For accessibility, esp. for iconOnly
 		additionalClasses?: string;
@@ -34,9 +41,17 @@
 		block = false,
 		iconOnly = false,
 		surface = false,
+		bare = false,
 		loading = false,
 		ariaLabel = undefined,
 		additionalClasses = '',
+		// Pulled out of `...rest` on purpose. `class` is spread onto the element
+		// *after* `class={buttonClasses}`, so a caller passing `class="…"` used to
+		// clobber every class this component computes — `.btn`, the variant, the
+		// size — silently. (That is why MediaPlayer's `.control-btn` rules were
+		// full of `!important` fighting a `.btn` skin that was never applied.)
+		// Merging it in makes `class` and `additionalClasses` equivalent.
+		class: className = '',
 		onclick,
 		icon,
 		children,
@@ -44,19 +59,25 @@
 		...rest
 	}: Props = $props();
 
-	// Compute classes based on props
+	// Compute classes based on props. `bare` opts out of the whole `.btn`
+	// skin — see the `.btn-bare` note in buttons.css — leaving the caller's
+	// own classes as the only styling, so they need no `!important` to win.
 	let buttonClasses = $derived(
-		[
-			'btn',
-			`btn-${variant}`,
-			size !== 'base' ? `btn-${size}` : '',
-			block ? 'btn-block' : '',
-			icon || loading ? 'btn-with-icon' : '',
-			iconOnly ? 'btn-icon-only' : '',
-			surface ? 'btn-surface surface-button' : '',
-			loading ? 'btn-loading' : '',
-			additionalClasses
-		]
+		(bare
+			? ['btn-bare', loading ? 'btn-loading' : '', additionalClasses, className]
+			: [
+					'btn',
+					`btn-${variant}`,
+					size !== 'base' ? `btn-${size}` : '',
+					block ? 'btn-block' : '',
+					icon || loading ? 'btn-with-icon' : '',
+					iconOnly ? 'btn-icon-only' : '',
+					surface ? 'btn-surface surface-button' : '',
+					loading ? 'btn-loading' : '',
+					additionalClasses,
+					className
+				]
+		)
 			.filter(Boolean)
 			.join(' ')
 	);

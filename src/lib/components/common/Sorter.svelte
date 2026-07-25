@@ -113,22 +113,14 @@
 
 	/* A flat square mono control. The sort label is chrome, so it reads in the
 	 * DATA voice: mono caps, letterspaced. No shadow, no lift, no pulse. */
+	/* Only the voice needs stating: `.btn` already ships square corners, no
+	 * shadow and no active transform, so the overrides that used to sit here
+	 * (with `!important`, against the pre-redesign skin) were all no-ops. */
 	:global(.sorter-button) {
 		font-family: var(--font-family-mono);
 		font-weight: var(--font-weight-medium);
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
-		border-radius: 0 !important;
-		box-shadow: none !important;
-	}
-
-	:global(.sorter-button:hover) {
-		transform: none !important;
-		box-shadow: none !important;
-	}
-
-	:global(.sorter-button:active) {
-		transform: none !important;
 	}
 
 	/* The pulse class is retained as a JS hook but no longer animates — the

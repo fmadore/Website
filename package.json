@@ -61,7 +61,7 @@
 	"overrides": {
 		"js-yaml": ">=4.1.1",
 		"devalue": ">=5.8.1",
-		"brace-expansion": ">=5.0.7",
+		"brace-expansion": ">=5.0.8",
 		"echarts-wordcloud": {
 			"echarts": "$echarts"
 		},

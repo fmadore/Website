@@ -16,7 +16,10 @@ const WCAG_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'];
 const pages: { name: string; path: string }[] = [
 	{ name: 'home', path: '/' },
 	{ name: 'publications list', path: '/publications' },
-	{ name: 'CV', path: '/cv' }
+	{ name: 'CV', path: '/cv' },
+	// The densest chrome on the site: charts, the SVG network graph with its
+	// focusable nodes, sliders, chips and a datalist-backed search field.
+	{ name: 'publication visualisations', path: '/publications/visualisations' }
 ];
 
 for (const { name, path } of pages) {

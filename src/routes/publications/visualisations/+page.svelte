@@ -13,7 +13,7 @@
 	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
 	import EChartsDoughnutChart from '$lib/components/visualisations/EChartsDoughnutChart.svelte';
-	import EChartsNetworkGraph from '$lib/components/visualisations/EChartsNetworkGraph.svelte';
+	import NetworkGraph from '$lib/components/visualisations/NetworkGraph.svelte';
 	import EChartsTreemap from '$lib/components/visualisations/EChartsTreemap.svelte';
 	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
 	import D3BubbleChart from '$lib/components/visualisations/D3BubbleChart.svelte';
@@ -313,6 +313,10 @@
 	type WordCloudLanguage = 'all' | 'en' | 'fr';
 	let wordCloudLanguage = $state<WordCloudLanguage>('all');
 
+	/** Reader-facing name of the current filter, for the empty-state messages. */
+	const languageLabel = (lang: WordCloudLanguage) =>
+		lang === 'all' ? 'any' : lang === 'en' ? 'English' : 'French';
+
 	// Get publication IDs for the selected language
 	const wordCloudPublicationIds = $derived.by(() => {
 		if (wordCloudLanguage === 'en') {
@@ -378,250 +382,229 @@
 		</PageIntro>
 	</div>
 
-	<VizSection title="Publications per year by type">
-		<VizChartCard
-			variant="stacked"
-			height="450px"
-			hasData={publicationsPerYearStackedData.length > 0 && publicationTypesForStack.length > 0}
-		>
-			<EChartsStackedBarChart
-				data={publicationsPerYearStackedData}
-				keys={formattedPublicationTypes}
-				xAxisLabel="Year"
-				yAxisLabel="Number of Publications"
-			/>
-			{#snippet placeholder()}
-				<p class="text-light">No publication data available to display for this visualization.</p>
-			{/snippet}
-		</VizChartCard>
+	<VizSection
+		title="Publications per year by type"
+		variant="stacked"
+		height="450px"
+		hasData={publicationsPerYearStackedData.length > 0 && publicationTypesForStack.length > 0}
+		empty="No publication data available to display for this visualisation."
+	>
+		<EChartsStackedBarChart
+			data={publicationsPerYearStackedData}
+			keys={formattedPublicationTypes}
+			xAxisLabel="Year"
+			yAxisLabel="Number of Publications"
+		/>
 	</VizSection>
 
-	<VizSection title="Number of pages per year">
-		<VizChartCard height="400px" hasData={pagesPerYearData.length > 0}>
-			<EChartsBarChart
-				data={pagesPerYearData}
-				xAccessor={getPagesYear}
-				yAccessor={getPagesCount}
-				xAxisLabel="Year"
-				yAxisLabel="Total pages published"
-				barColor="var(--color-accent)"
-			/>
-			{#snippet placeholder()}
-				<p class="text-light">No page count data available to display for this visualization.</p>
-			{/snippet}
-		</VizChartCard>
+	<VizSection
+		title="Number of pages per year"
+		height="400px"
+		hasData={pagesPerYearData.length > 0}
+		empty="No page count data available to display for this visualisation."
+	>
+		<EChartsBarChart
+			data={pagesPerYearData}
+			xAccessor={getPagesYear}
+			yAccessor={getPagesCount}
+			xAxisLabel="Year"
+			yAxisLabel="Total pages published"
+			barColor="var(--color-accent)"
+		/>
 	</VizSection>
 
-	<VizSection title="Publication Languages">
-		<VizChartCard height="480px" hasData={languageData.length > 0}>
-			<EChartsDoughnutChart
-				data={languageData}
-				nameAccessor={getLanguageName}
-				valueAccessor={getLanguageCount}
-				title="Distribution of Publications by Language"
-			/>
-			{#snippet placeholder()}
-				<p class="text-light">No language data available to display for this visualization.</p>
-			{/snippet}
-		</VizChartCard>
+	<VizSection
+		title="Publication Languages"
+		height="480px"
+		hasData={languageData.length > 0}
+		empty="No language data available to display for this visualisation."
+	>
+		<EChartsDoughnutChart
+			data={languageData}
+			nameAccessor={getLanguageName}
+			valueAccessor={getLanguageCount}
+			title="Distribution of Publications by Language"
+		/>
 	</VizSection>
 
 	<VizSection
 		title="Keyword Frequency"
 		count={keywordData.length > 0 ? `${keywordData.length} unique keywords` : ''}
+		variant="bubble"
+		height="550px"
+		hasData={keywordData.length > 0}
+		empty="No keyword data available to display for this visualisation."
 	>
-		<VizChartCard variant="bubble" height="550px" hasData={keywordData.length > 0}>
-			<D3BubbleChart
-				data={keywordData}
-				nameAccessor={getKeywordName}
-				valueAccessor={getKeywordCount}
-			/>
-			{#snippet placeholder()}
-				<p class="text-light">No keyword data available to display for this visualization.</p>
-			{/snippet}
-		</VizChartCard>
+		<D3BubbleChart
+			data={keywordData}
+			nameAccessor={getKeywordName}
+			valueAccessor={getKeywordCount}
+		/>
 	</VizSection>
 
 	<VizSection
 		title="Keyword co-occurrence network"
 		count={keywordNetwork.nodes.length > 0 ? `${keywordNetwork.nodes.length} keywords` : ''}
 		description="Keywords are linked when they appear together on the same publication; node size reflects how many publications carry each keyword. Singletons and one-off pairings are omitted to keep the map legible."
+		variant="network"
+		height="500px"
+		hasData={keywordNetwork.nodes.length > 0}
+		empty="Not enough keyword overlap to display a co-occurrence network."
 	>
-		{#if keywordNetwork.nodes.length > 0}
-			<NetworkControls
-				bind:topN={keywordTopN}
-				bind:searchQuery={keywordSearch}
-				maxN={keywordNetwork.nodes.length}
-				minN={10}
-				searchLabel="Search keywords"
-				suggestions={keywordSuggestions}
-			/>
-		{/if}
-		<VizChartCard variant="network" height="500px" hasData={keywordNetwork.nodes.length > 0}>
-			<EChartsNetworkGraph
-				nodes={keywordNetwork.nodes}
-				edges={keywordNetwork.edges}
-				maxNodes={keywordTopN}
-				highlightQuery={keywordSearch}
-				filename="keyword-cooccurrence-network"
-				labels={{
-					itemSingular: 'publication',
-					itemPlural: 'Publications',
-					entityNode: 'Keywords',
-					cooccurrenceEdge: 'Keyword co-occurrence',
-					cooccurrenceShared: 'Publications sharing both keywords'
-				}}
-			/>
-			{#snippet placeholder()}
-				<p class="text-light">Not enough keyword overlap to display a co-occurrence network.</p>
-			{/snippet}
-		</VizChartCard>
+		{#snippet controls()}
+			{#if keywordNetwork.nodes.length > 0}
+				<NetworkControls
+					bind:topN={keywordTopN}
+					bind:searchQuery={keywordSearch}
+					maxN={keywordNetwork.nodes.length}
+					minN={10}
+					searchLabel="Search keywords"
+					suggestions={keywordSuggestions}
+				/>
+			{/if}
+		{/snippet}
+		<NetworkGraph
+			nodes={keywordNetwork.nodes}
+			edges={keywordNetwork.edges}
+			maxNodes={keywordTopN}
+			highlightQuery={keywordSearch}
+			filename="keyword-cooccurrence-network"
+			labels={{
+				itemSingular: 'publication',
+				itemPlural: 'Publications',
+				entityNode: 'Keywords',
+				cooccurrenceEdge: 'Keyword co-occurrence',
+				cooccurrenceShared: 'Publications sharing both keywords'
+			}}
+		/>
 	</VizSection>
 
 	<VizSection
 		title="Text Analysis Word Cloud"
 		count={wordCloudStats.publicationCount > 0
-			? `${wordCloudStats.publicationCount} publications analyzed`
+			? `${wordCloudStats.publicationCount} publications analysed`
 			: ''}
-		description="Most frequent terms extracted from full-text publications using lemmatization."
+		description="Most frequent terms extracted from full-text publications using lemmatisation."
+		placeholderHeight="500px"
+		hasData={corpusAnalysis.publicationCount > 0 && wordCloudData.length > 0}
 	>
-		{#if corpusAnalysis.publicationCount > 0}
-			<LanguageToggle
-				bind:current={wordCloudLanguage}
-				enCount={corpusAnalysis.byLanguage.en.length}
-				frCount={corpusAnalysis.byLanguage.fr.length}
-			/>
-
-			<VizChartCard placeholderHeight="500px" hasData={wordCloudData.length > 0}>
-				<EChartsWordCloud
-					words={wordCloudData}
-					maxWords={100}
-					shape="circle"
-					minFontSize={12}
-					maxFontSize={60}
+		{#snippet controls()}
+			{#if corpusAnalysis.publicationCount > 0}
+				<LanguageToggle
+					bind:current={wordCloudLanguage}
+					enCount={corpusAnalysis.byLanguage.en.length}
+					frCount={corpusAnalysis.byLanguage.fr.length}
 				/>
-				{#snippet placeholder()}
-					<p class="text-light">
-						No text analysis data available for {wordCloudLanguage === 'all'
-							? 'any'
-							: wordCloudLanguage === 'en'
-								? 'English'
-								: 'French'} publications.
-					</p>
-				{/snippet}
-			</VizChartCard>
-		{:else}
-			<VizChartCard placeholderHeight="500px" hasData={false}>
-				{#snippet placeholder()}
-					<p class="text-light">
-						No text analysis data available to display for this visualization.
-					</p>
-				{/snippet}
-			</VizChartCard>
-		{/if}
+			{/if}
+		{/snippet}
+		{#snippet placeholder()}
+			<p class="text-light">
+				{#if corpusAnalysis.publicationCount === 0}
+					No text analysis data available to display for this visualisation.
+				{:else}
+					No text analysis data available for {languageLabel(wordCloudLanguage)} publications.
+				{/if}
+			</p>
+		{/snippet}
+		<EChartsWordCloud
+			words={wordCloudData}
+			maxWords={100}
+			shape="circle"
+			minFontSize={12}
+			maxFontSize={60}
+		/>
 	</VizSection>
 
 	<VizSection
 		title="Common Phrases (Bigrams)"
 		count={bigramsData.length > 0 ? `${bigramsData.length} phrases` : ''}
 		description="Most frequent two-word phrases extracted from full-text publications."
+		variant="bigrams"
+		height="{Math.max(400, bigramsData.length * 28 + 70)}px"
+		placeholderHeight="400px"
+		hasData={corpusAnalysis.publicationCount > 0 && bigramsData.length > 0}
 	>
-		{#if corpusAnalysis.publicationCount > 0}
-			<LanguageToggle
-				bind:current={wordCloudLanguage}
-				enCount={corpusAnalysis.byLanguage.en.length}
-				frCount={corpusAnalysis.byLanguage.fr.length}
-			/>
-
-			<VizChartCard
-				variant="bigrams"
-				height="{Math.max(400, bigramsData.length * 28 + 70)}px"
-				placeholderHeight="400px"
-				hasData={bigramsData.length > 0}
-			>
-				<EChartsHorizontalBarChart
-					data={bigramsData}
-					xAccessor={getBigramCount}
-					yAccessor={getBigramName}
-					xAxisLabel="Frequency"
-					barColor="var(--color-accent)"
+		{#snippet controls()}
+			{#if corpusAnalysis.publicationCount > 0}
+				<LanguageToggle
+					bind:current={wordCloudLanguage}
+					enCount={corpusAnalysis.byLanguage.en.length}
+					frCount={corpusAnalysis.byLanguage.fr.length}
 				/>
-				{#snippet placeholder()}
-					<p class="text-light">
-						No bigram data available for {wordCloudLanguage === 'all'
-							? 'any'
-							: wordCloudLanguage === 'en'
-								? 'English'
-								: 'French'} publications.
-					</p>
-				{/snippet}
-			</VizChartCard>
-		{:else}
-			<VizChartCard placeholderHeight="400px" hasData={false}>
-				{#snippet placeholder()}
-					<p class="text-light">
-						No text analysis data available to display for this visualization.
-					</p>
-				{/snippet}
-			</VizChartCard>
-		{/if}
+			{/if}
+		{/snippet}
+		{#snippet placeholder()}
+			<p class="text-light">
+				{#if corpusAnalysis.publicationCount === 0}
+					No text analysis data available to display for this visualisation.
+				{:else}
+					No bigram data available for {languageLabel(wordCloudLanguage)} publications.
+				{/if}
+			</p>
+		{/snippet}
+		<EChartsHorizontalBarChart
+			data={bigramsData}
+			xAccessor={getBigramCount}
+			yAccessor={getBigramName}
+			xAxisLabel="Frequency"
+			barColor="var(--color-accent)"
+		/>
 	</VizSection>
 
 	<VizSection
 		title="Author Collaboration Network"
 		count={collaboratorCount > 0 ? `${collaboratorCount} collaborators` : ''}
+		variant="network"
+		height="500px"
+		hasData={collaboratorCount > 0}
+		empty="No collaboration data available to display for this visualisation."
 	>
-		{#if collaboratorCount > 0}
-			<NetworkControls
-				bind:topN={collabTopN}
-				bind:visibleKinds={collabVisibleKinds}
-				bind:searchQuery={collabSearch}
-				maxN={collaboratorCount}
-				edgeKindOptions={collaborationEdgeOptions}
-				searchLabel="Search collaborators"
-				suggestions={collaborationSuggestions}
-			/>
-		{/if}
-		<VizChartCard variant="network" height="500px" hasData={collaboratorCount > 0}>
-			<EChartsNetworkGraph
-				nodes={collaborationNetwork.nodes}
-				edges={collaborationNetwork.edges}
-				centerId={author.name}
-				maxNodes={collabTopN}
-				visibleEdgeKinds={collabVisibleKinds}
-				highlightQuery={collabSearch}
-				filename="collaboration-network"
-			/>
-			{#snippet placeholder()}
-				<p class="text-light">No collaboration data available to display for this visualization.</p>
-			{/snippet}
-		</VizChartCard>
+		{#snippet controls()}
+			{#if collaboratorCount > 0}
+				<NetworkControls
+					bind:topN={collabTopN}
+					bind:visibleKinds={collabVisibleKinds}
+					bind:searchQuery={collabSearch}
+					maxN={collaboratorCount}
+					edgeKindOptions={collaborationEdgeOptions}
+					searchLabel="Search collaborators"
+					suggestions={collaborationSuggestions}
+				/>
+			{/if}
+		{/snippet}
+		<NetworkGraph
+			nodes={collaborationNetwork.nodes}
+			edges={collaborationNetwork.edges}
+			centerId={author.name}
+			maxNodes={collabTopN}
+			visibleEdgeKinds={collabVisibleKinds}
+			highlightQuery={collabSearch}
+			filename="collaboration-network"
+		/>
 	</VizSection>
 
 	<VizSection
 		title="Publication Venues"
 		count={totalVenues > 0 ? `${totalVenues} venues` : ''}
 		description="Where publications appear: journals, book publishers, and edited volumes. Click to zoom into categories."
+		variant="treemap"
+		placeholderHeight="500px"
+		hasData={venueTreemapData.length > 0}
+		empty="No venue data available to display for this visualisation."
 	>
-		<VizChartCard variant="treemap" placeholderHeight="500px" hasData={venueTreemapData.length > 0}>
-			<EChartsTreemap data={venueTreemapData} title="Publication Venues" />
-			{#snippet placeholder()}
-				<p class="text-light">No venue data available to display for this visualization.</p>
-			{/snippet}
-		</VizChartCard>
+		<EChartsTreemap data={venueTreemapData} title="Publication Venues" />
 	</VizSection>
 
 	<VizSection
 		title="Research Projects Timeline"
 		count={projectTimelineData.length > 0 ? `${projectTimelineData.length} projects` : ''}
 		description="Project durations with publication output markers. Bars show project spans; circles mark individual publications."
+		variant="gantt"
+		height="450px"
+		hasData={projectTimelineData.length > 0}
+		empty="No project data available to display for this visualisation."
 	>
-		<VizChartCard variant="gantt" height="450px" hasData={projectTimelineData.length > 0}>
-			<EChartsGanttChart data={projectTimelineData} />
-			{#snippet placeholder()}
-				<p class="text-light">No project data available to display for this visualization.</p>
-			{/snippet}
-		</VizChartCard>
+		<EChartsGanttChart data={projectTimelineData} />
 	</VizSection>
 
 	<VizSection
@@ -630,20 +613,13 @@
 			? `${publisherLocationData.length} countries, ${totalWithLocation} publications`
 			: ''}
 		description="Geographic distribution of publication venues. Marker size indicates publication count."
+		variant="map"
+		height="500px"
+		placeholderHeight="400px"
+		hasData={publisherLocationData.length > 0}
+		empty="No publisher location data available to display for this visualisation."
 	>
-		<VizChartCard
-			variant="map"
-			height="500px"
-			placeholderHeight="400px"
-			hasData={publisherLocationData.length > 0}
-		>
-			<LocationMap data={publisherLocationData} basePath="/publications" itemLabel="publication" />
-			{#snippet placeholder()}
-				<p class="text-light">
-					No publisher location data available to display for this visualization.
-				</p>
-			{/snippet}
-		</VizChartCard>
+		<LocationMap data={publisherLocationData} basePath="/publications" itemLabel="publication" />
 	</VizSection>
 
 	<div class="section-divider scroll-reveal">
@@ -653,24 +629,22 @@
 	<VizSection
 		title="Citations per year"
 		count={citationsPerYearData.length > 0 && totalCitations > 0 ? `Total: ${totalCitations}` : ''}
+		height="400px"
+		hasData={citationsPerYearData.length > 0}
+		empty="No citation data available to display for this visualisation, or data is still loading."
 	>
-		<VizChartCard height="400px" hasData={citationsPerYearData.length > 0}>
-			<EChartsBarChart
-				data={citationsPerYearData}
-				xAccessor={getYear}
-				yAccessor={getCitationCount}
-				xAxisLabel="Year"
-				yAxisLabel="Number of citations"
-				barColor="var(--color-accent)"
-			/>
-			{#snippet placeholder()}
-				<p class="text-light">
-					No citation data available to display for this visualization, or data is still loading.
-				</p>
-			{/snippet}
-		</VizChartCard>
+		<EChartsBarChart
+			data={citationsPerYearData}
+			xAccessor={getYear}
+			yAccessor={getCitationCount}
+			xAxisLabel="Year"
+			yAxisLabel="Number of citations"
+			barColor="var(--color-accent)"
+		/>
 	</VizSection>
 
+	<!-- Paginated: the chart is re-keyed per page and followed by the pager, so
+	     this section composes VizChartCard itself rather than delegating. -->
 	<VizSection
 		title="Authors citing my work most frequently"
 		count={citedAuthorsData.length > 0 ? `Total: ${citedAuthorsData.length} authors` : ''}
@@ -705,7 +679,7 @@
 			<VizChartCard hasData={false}>
 				{#snippet placeholder()}
 					<p class="text-light">
-						No cited author data available to display for this visualization.
+						No cited author data available to display for this visualisation.
 					</p>
 				{/snippet}
 			</VizChartCard>

@@ -92,9 +92,12 @@
 	<div class="control control-search">
 		<label class="control-label" for={datalistId + '-input'}>{searchLabel}</label>
 		<div class="search-field">
+			<!-- type="text", not "search": with a datalist attached, a search input
+			     renders the browser's own clear button *and* the datalist arrow on
+			     top of our clear button — three affordances in one field. -->
 			<input
 				id={datalistId + '-input'}
-				type="search"
+				type="text"
 				class="search-input"
 				list={datalistId}
 				placeholder="Type a name…"
@@ -184,6 +187,13 @@
 
 	.search-input::placeholder {
 		color: var(--color-text-muted);
+	}
+
+	/* Suppress the datalist dropdown arrow Chrome draws inside the field; the
+	   suggestions still open on focus/typing. Our own clear button is the only
+	   control in the box. */
+	.search-input::-webkit-calendar-picker-indicator {
+		display: none !important;
 	}
 
 	.search-clear {
