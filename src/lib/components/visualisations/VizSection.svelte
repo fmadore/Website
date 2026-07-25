@@ -2,17 +2,46 @@
 VizSection — the ruled-section scaffold shared by the two visualisation
 pages (publications, conference activity). Renders the Archivo section
 heading with an optional parenthetical count (the data voice's corpus
-count), an optional serif description, then whatever the page puts inside
-(NetworkControls, LanguageToggle, VizChartCard, …).
+count), an optional serif description, then the chart.
+
+Both pages were repeating the same ten-line unit twenty-odd times:
+
+    <VizSection title=… count=…>
+      <VizChartCard variant=… height=… hasData={xs.length > 0}>
+        <SomeChart … />
+        {#snippet placeholder()}
+          <p class="text-light">No … data available for this visualisation.</p>
+        {/snippet}
+      </VizChartCard>
+    </VizSection>
+
+so the card and its placeholder now live here. Passing `hasData` opts into
+the card; the message is a plain `empty` string, with the `placeholder`
+snippet kept as the escape hatch for the few that interpolate state.
+
+Sections that need their own structure (the paginated cited-authors chart)
+omit `hasData` and get their children rendered raw, exactly as before — they
+can still compose `VizChartCard` themselves.
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import VizChartCard from './VizChartCard.svelte';
+
+	type Variant = 'stacked' | 'network' | 'bubble' | 'treemap' | 'gantt' | 'map' | 'bigrams';
 
 	let {
 		title,
 		count = '',
 		description = '',
 		last = false,
+		variant,
+		height,
+		placeholderHeight,
+		hasData = undefined,
+		empty = '',
+		controls,
+		// Aliased: the local `{#snippet placeholder()}` below would shadow it.
+		placeholder: placeholderSnippet,
 		children
 	}: {
 		title: string;
@@ -22,6 +51,23 @@ count), an optional serif description, then whatever the page puts inside
 		description?: string;
 		/** Set on the page's final section to drop the bottom margin. */
 		last?: boolean;
+		/** Card sizing preset. Ignored unless `hasData` is set. */
+		variant?: Variant;
+		/** CSS height applied when `hasData` is true (e.g. "450px"). */
+		height?: string;
+		/** CSS height applied when `hasData` is false. Defaults to `height`. */
+		placeholderHeight?: string;
+		/**
+		 * Whether there is data to chart. Providing it wraps `children` in a
+		 * VizChartCard; omitting it renders them raw for bespoke sections.
+		 */
+		hasData?: boolean;
+		/** Empty-state message. Superseded by the `placeholder` snippet. */
+		empty?: string;
+		/** Rendered between the heading and the card (filters, toggles). */
+		controls?: Snippet;
+		/** Empty state for the few sections whose message interpolates state. */
+		placeholder?: Snippet;
 		children?: Snippet;
 	} = $props();
 </script>
@@ -34,7 +80,22 @@ count), an optional serif description, then whatever the page puts inside
 	{#if description}
 		<p class="section-description">{description}</p>
 	{/if}
-	{@render children?.()}
+	{@render controls?.()}
+
+	{#if hasData === undefined}
+		{@render children?.()}
+	{:else}
+		<VizChartCard {variant} {height} {placeholderHeight} {hasData}>
+			{@render children?.()}
+			{#snippet placeholder()}
+				{#if placeholderSnippet}
+					{@render placeholderSnippet()}
+				{:else}
+					<p class="text-light">{empty}</p>
+				{/if}
+			{/snippet}
+		</VizChartCard>
+	{/if}
 </section>
 
 <style>

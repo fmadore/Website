@@ -22,7 +22,6 @@
 	import EChartsWordCloud from '$lib/components/visualisations/EChartsWordCloud.svelte';
 	import D3BubbleChart from '$lib/components/visualisations/D3BubbleChart.svelte';
 	import LocationMap from '$lib/components/visualisations/LocationMap.svelte';
-	import VizChartCard from '$lib/components/visualisations/VizChartCard.svelte';
 	import VizSection from '$lib/components/visualisations/VizSection.svelte';
 	import {
 		buildLocationData,
@@ -235,186 +234,169 @@
 		</PageIntro>
 	</div>
 
-	<VizSection title="Conference activities per year by type">
-		<VizChartCard
-			variant="stacked"
-			height="450px"
-			hasData={perYearStackedData.length > 0 && communicationTypes.length > 0}
-		>
-			<EChartsStackedBarChart
-				data={perYearStackedData}
-				keys={formattedTypes}
-				xAxisLabel="Year"
-				yAxisLabel="Number of activities"
-			/>
-			{#snippet placeholder()}
-				<p class="text-light">No activity data available to display for this visualisation.</p>
-			{/snippet}
-		</VizChartCard>
+	<VizSection
+		title="Conference activities per year by type"
+		variant="stacked"
+		height="450px"
+		hasData={perYearStackedData.length > 0 && communicationTypes.length > 0}
+		empty="No activity data available to display for this visualisation."
+	>
+		<EChartsStackedBarChart
+			data={perYearStackedData}
+			keys={formattedTypes}
+			xAxisLabel="Year"
+			yAxisLabel="Number of activities"
+		/>
 	</VizSection>
 
 	<VizSection
 		title="Activities by type"
 		count={typeDistribution.length > 0 ? `${typeDistribution.length} types` : ''}
+		height="480px"
+		hasData={typeDistribution.length > 0}
+		empty="No type data available to display for this visualisation."
 	>
-		<VizChartCard height="480px" hasData={typeDistribution.length > 0}>
-			<EChartsDoughnutChart
-				data={typeDistribution}
-				nameAccessor={getTypeName}
-				valueAccessor={getTypeCount}
-				title="Distribution of activities by type"
-			/>
-			{#snippet placeholder()}
-				<p class="text-light">No type data available to display for this visualisation.</p>
-			{/snippet}
-		</VizChartCard>
+		<EChartsDoughnutChart
+			data={typeDistribution}
+			nameAccessor={getTypeName}
+			valueAccessor={getTypeCount}
+			title="Distribution of activities by type"
+		/>
 	</VizSection>
 
 	<VizSection
 		title="Languages"
 		count={languageData.length > 0 ? `${languageData.length} languages` : ''}
+		height="480px"
+		hasData={languageData.length > 0}
+		empty="No language data available to display for this visualisation."
 	>
-		<VizChartCard height="480px" hasData={languageData.length > 0}>
-			<EChartsDoughnutChart
-				data={languageData}
-				nameAccessor={getLanguageName}
-				valueAccessor={getLanguageCount}
-				title="Distribution of activities by language"
-			/>
-			{#snippet placeholder()}
-				<p class="text-light">No language data available to display for this visualisation.</p>
-			{/snippet}
-		</VizChartCard>
+		<EChartsDoughnutChart
+			data={languageData}
+			nameAccessor={getLanguageName}
+			valueAccessor={getLanguageCount}
+			title="Distribution of activities by language"
+		/>
 	</VizSection>
 
 	<VizSection
 		title="Activities by country"
 		count={countryData.length > 0 ? `${countryData.length} countries` : ''}
+		height="{Math.max(350, countryData.length * 32 + 70)}px"
+		placeholderHeight="400px"
+		hasData={countryData.length > 0}
+		empty="No country data available to display for this visualisation."
 	>
-		<VizChartCard
-			height="{Math.max(350, countryData.length * 32 + 70)}px"
-			placeholderHeight="400px"
-			hasData={countryData.length > 0}
-		>
-			<EChartsHorizontalBarChart
-				data={countryData}
-				xAccessor={getCountryCount}
-				yAccessor={getCountryName}
-				xAxisLabel="Number of activities"
-				barColor="var(--color-accent)"
-			/>
-			{#snippet placeholder()}
-				<p class="text-light">No country data available to display for this visualisation.</p>
-			{/snippet}
-		</VizChartCard>
+		<EChartsHorizontalBarChart
+			data={countryData}
+			xAccessor={getCountryCount}
+			yAccessor={getCountryName}
+			xAxisLabel="Number of activities"
+			barColor="var(--color-accent)"
+		/>
 	</VizSection>
 
 	<VizSection
 		title="Tag frequency"
 		count={tagFrequencyList.length > 0 ? `${tagFrequencyList.length} unique tags` : ''}
+		variant="bubble"
+		height="550px"
+		hasData={tagFrequencyList.length > 0}
+		empty="No tag data available to display for this visualisation."
 	>
-		<VizChartCard variant="bubble" height="550px" hasData={tagFrequencyList.length > 0}>
-			<D3BubbleChart
-				data={tagFrequencyList}
-				nameAccessor={getTagName}
-				valueAccessor={getTagCount}
-			/>
-			{#snippet placeholder()}
-				<p class="text-light">No tag data available to display for this visualisation.</p>
-			{/snippet}
-		</VizChartCard>
+		<D3BubbleChart data={tagFrequencyList} nameAccessor={getTagName} valueAccessor={getTagCount} />
 	</VizSection>
 
 	<VizSection
 		title="Tag cloud"
 		description="Tags scaled by the number of conference activities they appear in."
+		placeholderHeight="500px"
+		hasData={tagWordCloudData.length > 0}
+		empty="No tag data available to display for this visualisation."
 	>
-		<VizChartCard placeholderHeight="500px" hasData={tagWordCloudData.length > 0}>
-			<EChartsWordCloud
-				words={tagWordCloudData}
-				maxWords={100}
-				shape="circle"
-				minFontSize={12}
-				maxFontSize={60}
-			/>
-			{#snippet placeholder()}
-				<p class="text-light">No tag data available to display for this visualisation.</p>
-			{/snippet}
-		</VizChartCard>
+		<EChartsWordCloud
+			words={tagWordCloudData}
+			maxWords={100}
+			shape="circle"
+			minFontSize={12}
+			maxFontSize={60}
+		/>
 	</VizSection>
 
 	<VizSection
 		title="Tag co-occurrence network"
 		count={tagNetwork.nodes.length > 0 ? `${tagNetwork.nodes.length} tags` : ''}
 		description="Tags are linked when they appear together on the same conference activity; node size reflects how many activities carry each tag. Singletons and one-off pairings are omitted."
+		variant="network"
+		height="500px"
+		hasData={tagNetwork.nodes.length > 0}
+		empty="Not enough tag overlap to display a co-occurrence network."
 	>
-		{#if tagNetwork.nodes.length > 0}
-			<NetworkControls
-				bind:topN={tagTopN}
-				bind:searchQuery={tagSearch}
-				maxN={tagNetwork.nodes.length}
-				minN={10}
-				searchLabel="Search tags"
-				suggestions={tagSuggestions}
-			/>
-		{/if}
-		<VizChartCard variant="network" height="500px" hasData={tagNetwork.nodes.length > 0}>
-			<NetworkGraph
-				nodes={tagNetwork.nodes}
-				edges={tagNetwork.edges}
-				maxNodes={tagTopN}
-				highlightQuery={tagSearch}
-				filename="tag-cooccurrence-network"
-				labels={{
-					itemSingular: 'activity',
-					itemPlural: 'Activities',
-					entityNode: 'Tags',
-					cooccurrenceEdge: 'Tag co-occurrence',
-					cooccurrenceShared: 'Activities sharing both tags'
-				}}
-			/>
-			{#snippet placeholder()}
-				<p class="text-light">Not enough tag overlap to display a co-occurrence network.</p>
-			{/snippet}
-		</VizChartCard>
+		{#snippet controls()}
+			{#if tagNetwork.nodes.length > 0}
+				<NetworkControls
+					bind:topN={tagTopN}
+					bind:searchQuery={tagSearch}
+					maxN={tagNetwork.nodes.length}
+					minN={10}
+					searchLabel="Search tags"
+					suggestions={tagSuggestions}
+				/>
+			{/if}
+		{/snippet}
+		<NetworkGraph
+			nodes={tagNetwork.nodes}
+			edges={tagNetwork.edges}
+			maxNodes={tagTopN}
+			highlightQuery={tagSearch}
+			filename="tag-cooccurrence-network"
+			labels={{
+				itemSingular: 'activity',
+				itemPlural: 'Activities',
+				entityNode: 'Tags',
+				cooccurrenceEdge: 'Tag co-occurrence',
+				cooccurrenceShared: 'Activities sharing both tags'
+			}}
+		/>
 	</VizSection>
 
 	<VizSection
 		title="Co-presenter network"
 		count={copresenterCount > 0 ? `${copresenterCount} collaborators` : ''}
 		description="People who have co-presented, co-organised panels, or contributed papers alongside me. Edges between non-centre nodes show pairs who appeared together in the same communication."
+		variant="network"
+		height="500px"
+		hasData={copresenterCount > 0}
+		empty="No co-presenter data available to display for this visualisation."
 	>
-		{#if copresenterCount > 0}
-			<NetworkControls
-				bind:topN={copresenterTopN}
-				bind:visibleKinds={copresenterVisibleKinds}
-				bind:searchQuery={copresenterSearch}
-				maxN={copresenterCount}
-				edgeKindOptions={copresenterEdgeOptions}
-				searchLabel="Search co-presenters"
-				suggestions={copresenterSuggestions}
-			/>
-		{/if}
-		<VizChartCard variant="network" height="500px" hasData={copresenterCount > 0}>
-			<NetworkGraph
-				nodes={copresenterNetwork.nodes}
-				edges={copresenterNetwork.edges}
-				centerId={author.name}
-				maxNodes={copresenterTopN}
-				visibleEdgeKinds={copresenterVisibleKinds}
-				highlightQuery={copresenterSearch}
-				filename="copresenter-network"
-				labels={{
-					itemSingular: 'communication',
-					itemPlural: 'Communications',
-					peerEdge: 'Co-presenter connection',
-					peerShared: 'Shared communications'
-				}}
-			/>
-			{#snippet placeholder()}
-				<p class="text-light">No co-presenter data available to display for this visualisation.</p>
-			{/snippet}
-		</VizChartCard>
+		{#snippet controls()}
+			{#if copresenterCount > 0}
+				<NetworkControls
+					bind:topN={copresenterTopN}
+					bind:visibleKinds={copresenterVisibleKinds}
+					bind:searchQuery={copresenterSearch}
+					maxN={copresenterCount}
+					edgeKindOptions={copresenterEdgeOptions}
+					searchLabel="Search co-presenters"
+					suggestions={copresenterSuggestions}
+				/>
+			{/if}
+		{/snippet}
+		<NetworkGraph
+			nodes={copresenterNetwork.nodes}
+			edges={copresenterNetwork.edges}
+			centerId={author.name}
+			maxNodes={copresenterTopN}
+			visibleEdgeKinds={copresenterVisibleKinds}
+			highlightQuery={copresenterSearch}
+			filename="copresenter-network"
+			labels={{
+				itemSingular: 'communication',
+				itemPlural: 'Communications',
+				peerEdge: 'Co-presenter connection',
+				peerShared: 'Shared communications'
+			}}
+		/>
 	</VizSection>
 
 	<VizSection
@@ -423,53 +405,49 @@
 			? `${institutionNetwork.nodes.length} institutions`
 			: ''}
 		description="Institutions are linked when their members appeared in the same panel, workshop, or event. Node size reflects how many activities each institution took part in."
+		variant="network"
+		height="500px"
+		hasData={institutionNetwork.nodes.length > 0}
+		empty="No institution data available to display for this visualisation."
 	>
-		{#if institutionNetwork.nodes.length > 0}
-			<NetworkControls
-				bind:topN={institutionTopN}
-				bind:searchQuery={institutionSearch}
-				maxN={institutionNetwork.nodes.length}
-				searchLabel="Search institutions"
-				suggestions={institutionSuggestions}
-			/>
-		{/if}
-		<VizChartCard variant="network" height="500px" hasData={institutionNetwork.nodes.length > 0}>
-			<NetworkGraph
-				nodes={institutionNetwork.nodes}
-				edges={institutionNetwork.edges}
-				entityColor="sage"
-				maxNodes={institutionTopN}
-				highlightQuery={institutionSearch}
-				filename="institution-network"
-				labels={{
-					itemSingular: 'activity',
-					itemPlural: 'Activities',
-					entityNode: 'Institutions',
-					cooccurrenceEdge: 'Shared event',
-					cooccurrenceShared: 'Activities in common'
-				}}
-			/>
-			{#snippet placeholder()}
-				<p class="text-light">No institution data available to display for this visualisation.</p>
-			{/snippet}
-		</VizChartCard>
+		{#snippet controls()}
+			{#if institutionNetwork.nodes.length > 0}
+				<NetworkControls
+					bind:topN={institutionTopN}
+					bind:searchQuery={institutionSearch}
+					maxN={institutionNetwork.nodes.length}
+					searchLabel="Search institutions"
+					suggestions={institutionSuggestions}
+				/>
+			{/if}
+		{/snippet}
+		<NetworkGraph
+			nodes={institutionNetwork.nodes}
+			edges={institutionNetwork.edges}
+			entityColor="sage"
+			maxNodes={institutionTopN}
+			highlightQuery={institutionSearch}
+			filename="institution-network"
+			labels={{
+				itemSingular: 'activity',
+				itemPlural: 'Activities',
+				entityNode: 'Institutions',
+				cooccurrenceEdge: 'Shared event',
+				cooccurrenceShared: 'Activities in common'
+			}}
+		/>
 	</VizSection>
 
 	<VizSection
 		title="Activities by research project"
 		count={totalProjects > 0 ? `${totalProjects} projects` : ''}
 		description="Each outer block is a research project; inner cells are the types of activity produced within that project, sized by count. Click to zoom into categories."
+		variant="treemap"
+		placeholderHeight="500px"
+		hasData={projectTreemapData.length > 0}
+		empty="No project data available to display for this visualisation."
 	>
-		<VizChartCard
-			variant="treemap"
-			placeholderHeight="500px"
-			hasData={projectTreemapData.length > 0}
-		>
-			<EChartsTreemap data={projectTreemapData} title="Activities by research project" />
-			{#snippet placeholder()}
-				<p class="text-light">No project data available to display for this visualisation.</p>
-			{/snippet}
-		</VizChartCard>
+		<EChartsTreemap data={projectTreemapData} title="Activities by research project" />
 	</VizSection>
 
 	<VizSection
@@ -478,31 +456,25 @@
 			? `${locationMapData.length} countries, ${totalMapped} activities`
 			: ''}
 		description="Geographic distribution of conference venues. Marker size indicates the number of activities per country; click a marker to see individual titles and cities."
+		variant="map"
+		height="500px"
+		placeholderHeight="400px"
+		hasData={locationMapData.length > 0}
+		empty="No location data available to display for this visualisation."
 	>
-		<VizChartCard
-			variant="map"
-			height="500px"
-			placeholderHeight="400px"
-			hasData={locationMapData.length > 0}
-		>
-			<LocationMap data={locationMapData} basePath="/communications" itemLabel="activity" />
-			{#snippet placeholder()}
-				<p class="text-light">No location data available to display for this visualisation.</p>
-			{/snippet}
-		</VizChartCard>
+		<LocationMap data={locationMapData} basePath="/communications" itemLabel="activity" />
 	</VizSection>
 
 	<VizSection
 		title="Research projects timeline"
 		count={projectTimelineData.length > 0 ? `${projectTimelineData.length} projects` : ''}
 		description="Project durations with conference-activity markers. Bars show project spans; circles mark individual activities."
+		variant="gantt"
+		height="450px"
+		hasData={projectTimelineData.length > 0}
+		empty="No project data available to display for this visualisation."
 		last
 	>
-		<VizChartCard variant="gantt" height="450px" hasData={projectTimelineData.length > 0}>
-			<EChartsGanttChart data={projectTimelineData} />
-			{#snippet placeholder()}
-				<p class="text-light">No project data available to display for this visualisation.</p>
-			{/snippet}
-		</VizChartCard>
+		<EChartsGanttChart data={projectTimelineData} />
 	</VizSection>
 </div>
