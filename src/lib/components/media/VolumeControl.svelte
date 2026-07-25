@@ -20,13 +20,7 @@
 </script>
 
 <div class="volume-controls">
-	<Button
-		variant="ghost"
-		size="sm"
-		onclick={onmutetoggle}
-		ariaLabel={isMuted ? 'Unmute' : 'Mute'}
-		class="control-btn"
-	>
+	<Button bare onclick={onmutetoggle} ariaLabel={isMuted ? 'Unmute' : 'Mute'} class="control-btn">
 		{#snippet icon()}
 			<div class="control-icon control-icon--fixed {isMuted ? 'control-icon--muted' : ''}">
 				{#if isMuted || volume === 0}

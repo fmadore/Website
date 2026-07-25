@@ -155,17 +155,20 @@ no two channels carry the same value.
 	);
 
 	let hoveredId = $state<string | null>(null);
-	let hoveredEdge = $state<NetworkEdge | null>(null);
 
-	/** Nodes adjacent to the hovered/focused one — the `focus: 'adjacency'` idiom. */
+	/**
+	 * Nodes adjacent to the hovered/focused one — the `focus: 'adjacency'` idiom.
+	 * Collected as an array and frozen into a Set at the end: the derived
+	 * recomputes wholesale, so nothing ever mutates the Set after it is read.
+	 */
 	const adjacentIds = $derived.by(() => {
 		if (!hoveredId) return undefined;
-		const set = new Set<string>([hoveredId]);
+		const ids = [hoveredId];
 		for (const edge of selection.edges) {
-			if (edge.source === hoveredId) set.add(edge.target);
-			else if (edge.target === hoveredId) set.add(edge.source);
+			if (edge.source === hoveredId) ids.push(edge.target);
+			else if (edge.target === hoveredId) ids.push(edge.source);
 		}
-		return set;
+		return new Set(ids);
 	});
 
 	/** A node is dimmed when it is outside the search match or the focus set. */
@@ -393,7 +396,6 @@ no two channels carry the same value.
 
 	function clearHover() {
 		hoveredId = null;
-		hoveredEdge = null;
 		tooltip = null;
 	}
 
@@ -532,7 +534,7 @@ no two channels carry the same value.
 		bind:clientWidth={containerWidth}
 		bind:clientHeight={containerHeight}
 	>
-		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -- pointer handlers only clear the hover state -->
+		<!-- The pointer handler here only clears the hover state on exit. -->
 		<svg
 			bind:this={svgEl}
 			class="network-svg"
@@ -575,10 +577,7 @@ no two channels carry the same value.
 								y2={b.y}
 								stroke="transparent"
 								stroke-width={Math.max(10, edgeWidth(edge) + 8)}
-								onpointerenter={(e) => {
-									hoveredEdge = edge;
-									positionTooltip(e.clientX, e.clientY, edgeTooltip(edge));
-								}}
+								onpointerenter={(e) => positionTooltip(e.clientX, e.clientY, edgeTooltip(edge))}
 								onpointermove={(e) => positionTooltip(e.clientX, e.clientY, edgeTooltip(edge))}
 								onpointerleave={clearHover}
 							/>
@@ -591,10 +590,10 @@ no two channels carry the same value.
 				<g class="nodes">
 					{#each layout?.nodes ?? [] as node (node.id)}
 						{@const dim = nodeDimmed(node.id)}
-						<!-- svelte-ignore a11y_no_noninteractive_tabindex -- a focusable
-						     graphic that reveals its description on focus is the documented
-						     SVG pattern (and the only keyboard path into the graph); role
-						     "button" would be a lie, since nothing is activated. -->
+						<!-- A focusable graphic that reveals its description on focus is the
+						     documented SVG pattern, and it is the only keyboard path into the
+						     graph. role="button" would be a lie: nothing is activated. -->
+						<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 						<g
 							class="node"
 							class:node--dim={dim}

@@ -244,8 +244,7 @@
 				<div class="control-buttons">
 					<!-- Play/Pause Button -->
 					<Button
-						variant="ghost"
-						size="sm"
+						bare
 						onclick={togglePlayPause}
 						ariaLabel={isPlaying ? 'Pause' : 'Play'}
 						class="control-btn"
@@ -270,8 +269,7 @@
 
 					{#if type === 'video'}
 						<Button
-							variant="ghost"
-							size="sm"
+							bare
 							onclick={toggleFullscreen}
 							ariaLabel="Fullscreen"
 							class="control-btn control-btn--fullscreen"
@@ -419,33 +417,31 @@
 		padding: var(--space-2) 0;
 	}
 
-	/* Flat square control buttons — no glass, no shadow, hairline border. */
+	/* Flat square control buttons — no glass, no shadow, hairline border.
+	 * Built on `.btn-bare`, so these are plain declarations rather than a
+	 * clawback against `.btn`'s skin. */
 	:global(.control-btn) {
 		/* Fixed sizing to prevent layout shifts */
-		min-width: var(--space-11) !important;
-		min-height: var(--space-11) !important;
+		min-width: var(--space-11);
+		min-height: var(--space-11);
 
-		cursor: pointer !important;
-
-		background: var(--color-surface-elevated) !important;
-		border: var(--border-width-thin) solid var(--color-border) !important;
-		border-radius: 0 !important;
-		box-shadow: none !important;
-		color: var(--color-text-soft) !important;
+		background: var(--color-surface-elevated);
+		border: var(--border-width-thin) solid var(--color-border);
+		color: var(--color-text-soft);
 
 		transition:
 			background-color var(--duration-normal) var(--ease-out),
 			border-color var(--duration-normal) var(--ease-out),
-			color var(--duration-normal) var(--ease-out) !important;
+			color var(--duration-normal) var(--ease-out);
 
 		&:hover {
-			background: var(--color-accent) !important;
-			border-color: var(--color-accent) !important;
-			color: var(--color-text-inverted) !important;
+			background: var(--color-accent);
+			border-color: var(--color-accent);
+			color: var(--color-text-inverted);
 		}
 
 		&:active {
-			background: var(--color-accent-dark) !important;
+			background: var(--color-accent-dark);
 		}
 	}
 
@@ -475,8 +471,8 @@
 
 		/* Ensure buttons remain touchable on mobile */
 		:global(.control-btn) {
-			min-width: var(--space-12) !important;
-			min-height: var(--space-12) !important;
+			min-width: var(--space-12);
+			min-height: var(--space-12);
 		}
 	}
 
@@ -495,9 +491,9 @@
 			gap: var(--space-10);
 		}
 
-		:global(.control-btn:hover) {
-			transform: translateY(-2px) scale(1.05) !important;
-		}
+		/* The hover lift that used to live here was left over from the pre-Ink +
+		 * Signal design and contradicted this file's own "no lift" note: the
+		 * register is print, and hover is a colour change only. */
 	}
 
 	/* Respect user motion preferences */
@@ -528,13 +524,13 @@
 	}
 
 	:global(html.dark .control-btn) {
-		background: var(--color-surface-elevated) !important;
-		border-color: var(--color-border) !important;
+		background: var(--color-surface-elevated);
+		border-color: var(--color-border);
 
 		&:hover {
-			background: var(--color-accent) !important;
-			border-color: var(--color-accent) !important;
-			color: var(--color-text-inverted) !important;
+			background: var(--color-accent);
+			border-color: var(--color-accent);
+			color: var(--color-text-inverted);
 		}
 	}
 </style>

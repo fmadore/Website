@@ -182,11 +182,7 @@
 		aria-label="Fullscreen image view"
 		tabindex="0"
 	>
-		<button
-			class="btn btn-sm btn-with-icon btn-icon-only close-button"
-			type="button"
-			aria-label="Close fullscreen view"
-		>
+		<button class="btn-bare close-button" type="button" aria-label="Close fullscreen view">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="16"
@@ -418,43 +414,33 @@
 	}
 
 	/* Close button — a flat square control on the scrim: hairline frame in
-	 * paper-white, no blur, no shadow, no lift. Pine border on hover. */
+	 * paper-white, no blur, no shadow, no lift. Pine border on hover.
+	 * Built on `.btn-bare`, not `.btn`, so none of this needs `!important`. */
 	:global(.close-button) {
-		position: absolute !important;
-		top: var(--space-4) !important;
-		right: var(--space-4) !important;
-		z-index: var(--z-dropdown) !important;
-		width: calc(var(--space-8) + var(--space-2)) !important;
-		height: calc(var(--space-8) + var(--space-2)) !important;
-		border-radius: 0 !important;
-		padding: 0 !important;
-		display: flex !important;
-		align-items: center !important;
-		justify-content: center !important;
-		min-width: unset !important;
+		position: absolute;
+		top: var(--space-4);
+		right: var(--space-4);
+		z-index: var(--z-dropdown);
+		width: calc(var(--space-8) + var(--space-2));
+		height: calc(var(--space-8) + var(--space-2));
 
-		background: transparent !important;
 		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-white) calc(var(--opacity-40) * 100%), transparent) !important;
-		box-shadow: none !important;
+			color-mix(in srgb, var(--color-white) calc(var(--opacity-40) * 100%), transparent);
 		transition:
 			border-color var(--duration-fast) var(--ease-out),
-			color var(--duration-fast) var(--ease-out) !important;
+			color var(--duration-fast) var(--ease-out);
 	}
 
 	:global(.close-button:hover) {
-		background: transparent !important;
-		border-color: var(--color-accent) !important;
-		transform: none !important;
-		box-shadow: none !important;
+		border-color: var(--color-accent);
 	}
 
 	:global(.close-button svg) {
-		color: color-mix(in srgb, var(--color-white) 88%, transparent) !important;
+		color: color-mix(in srgb, var(--color-white) 88%, transparent);
 	}
 
 	:global(.close-button:hover svg) {
-		color: var(--color-accent) !important;
+		color: var(--color-accent);
 	}
 
 	/* Dark theme — the ink scrim and paper-white frames already read on slate;
@@ -519,10 +505,10 @@
 		}
 
 		:global(.close-button) {
-			top: var(--space-3) !important;
-			right: var(--space-3) !important;
-			width: 44px !important;
-			height: 44px !important;
+			top: var(--space-3);
+			right: var(--space-3);
+			width: var(--space-11);
+			height: var(--space-11);
 		}
 
 		.overlay-caption {

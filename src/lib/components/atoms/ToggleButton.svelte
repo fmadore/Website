@@ -54,27 +54,18 @@
 <style>
 	/* Scoped element to prevent warning */
 	.toggle-button-styles {
-		display: none !important;
+		display: none;
 	}
 
 	/* A flat square mono control. The active state is carried by the Button's
-	 * primary variant (ink fill); here we only enforce square corners, the mono
-	 * data voice, and no shadow/lift/blur. */
+	 * primary variant (ink fill); all this needs to state is the data voice.
+	 * `.btn` already ships square corners, no shadow and no active transform,
+	 * so the overrides that used to sit here were no-ops against the current
+	 * skin — they dated from the pre-Ink + Signal button. */
 	:global(.toggle-button) {
 		font-family: var(--font-family-mono);
 		font-weight: var(--font-weight-medium);
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
-		border-radius: 0 !important;
-		box-shadow: none !important;
-	}
-
-	:global(.toggle-button:hover) {
-		transform: none !important;
-		box-shadow: none !important;
-	}
-
-	:global(.toggle-button:active) {
-		transform: none !important;
 	}
 </style>
