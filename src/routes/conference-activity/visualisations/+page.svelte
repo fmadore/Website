@@ -17,6 +17,8 @@
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
 	import EChartsDoughnutChart from '$lib/components/visualisations/EChartsDoughnutChart.svelte';
 	import NetworkGraph from '$lib/components/visualisations/NetworkGraph.svelte';
+	import NetworkMatrix from '$lib/components/visualisations/NetworkMatrix.svelte';
+	import NetworkArcDiagram from '$lib/components/visualisations/NetworkArcDiagram.svelte';
 	import EChartsTreemap from '$lib/components/visualisations/EChartsTreemap.svelte';
 	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
 	import EChartsWordCloud from '$lib/components/visualisations/EChartsWordCloud.svelte';
@@ -151,6 +153,10 @@
 	let copresenterTopN = $state(20);
 	let copresenterVisibleKinds = $state<NetworkEdgeKind[]>(['peer']);
 	let copresenterSearch = $state('');
+	// A ledger is as tall as its rows; past ~30 the plate scrolls instead.
+	const copresenterArcHeight = $derived(
+		Math.round(Math.min(Math.min(copresenterTopN, copresenterCount) * 24 + 150, 940))
+	);
 
 	// Institution network: institutions linked when their members appeared in the
 	// same panel, workshop, or event. Small affiliation corpus, so thresholds stay
@@ -324,13 +330,13 @@
 	</VizSection>
 
 	<VizSection
-		title="Tag co-occurrence network"
+		title="Tag co-occurrence matrix"
 		count={tagNetwork.nodes.length > 0 ? `${tagNetwork.nodes.length} tags` : ''}
-		description="Tags are linked when they appear together on the same conference activity; node size reflects how many activities carry each tag. Singletons and one-off pairings are omitted."
-		variant="network"
-		height="500px"
+		description="Each cell is a pair of tags that appear together on the same conference activity; the darker the cell, the more activities carry both. Rows are ordered so related tags sit next to each other, gathering the thematic blocks along the diagonal. Singletons and one-off pairings are omitted."
+		variant="matrix"
+		placeholderHeight="400px"
 		hasData={tagNetwork.nodes.length > 0}
-		empty="Not enough tag overlap to display a co-occurrence network."
+		empty="Not enough tag overlap to display a co-occurrence matrix."
 	>
 		{#snippet controls()}
 			{#if tagNetwork.nodes.length > 0}
@@ -344,18 +350,17 @@
 				/>
 			{/if}
 		{/snippet}
-		<NetworkGraph
+		<NetworkMatrix
 			nodes={tagNetwork.nodes}
 			edges={tagNetwork.edges}
 			maxNodes={tagTopN}
 			highlightQuery={tagSearch}
-			filename="tag-cooccurrence-network"
+			filename="tag-cooccurrence-matrix"
 			labels={{
 				itemSingular: 'activity',
 				itemPlural: 'Activities',
 				entityNode: 'Tags',
-				cooccurrenceEdge: 'Tag co-occurrence',
-				cooccurrenceShared: 'Activities sharing both tags'
+				sharedLabel: 'Activities sharing both'
 			}}
 		/>
 	</VizSection>
@@ -363,9 +368,10 @@
 	<VizSection
 		title="Co-presenter network"
 		count={copresenterCount > 0 ? `${copresenterCount} collaborators` : ''}
-		description="People who have co-presented, co-organised panels, or contributed papers alongside me. Edges between non-centre nodes show pairs who appeared together in the same communication."
-		variant="network"
-		height="500px"
+		description="People who have co-presented, co-organised panels, or contributed papers alongside me, ranked by how many communications we share. The arcs join pairs who appeared together in the same communication — my own link to each of them is a given, so it is not drawn."
+		variant="arc"
+		height="{copresenterArcHeight}px"
+		placeholderHeight="400px"
 		hasData={copresenterCount > 0}
 		empty="No co-presenter data available to display for this visualisation."
 	>
@@ -382,14 +388,14 @@
 				/>
 			{/if}
 		{/snippet}
-		<NetworkGraph
+		<NetworkArcDiagram
 			nodes={copresenterNetwork.nodes}
 			edges={copresenterNetwork.edges}
 			centerId={author.name}
 			maxNodes={copresenterTopN}
 			visibleEdgeKinds={copresenterVisibleKinds}
 			highlightQuery={copresenterSearch}
-			filename="copresenter-network"
+			filename="copresenter-arcs"
 			labels={{
 				itemSingular: 'communication',
 				itemPlural: 'Communications',
@@ -404,7 +410,7 @@
 		count={institutionNetwork.nodes.length > 0
 			? `${institutionNetwork.nodes.length} institutions`
 			: ''}
-		description="Institutions are linked when their members appeared in the same panel, workshop, or event. Node size reflects how many activities each institution took part in."
+		description="Institutions are linked when their members appeared in the same panel, workshop, or event. Node size reflects how many activities each institution took part in. This one stays a map rather than a matrix: the question here is which institutions cluster together, and spatial grouping answers it more directly than a grid of pairs."
 		variant="network"
 		height="500px"
 		hasData={institutionNetwork.nodes.length > 0}

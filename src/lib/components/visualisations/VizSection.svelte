@@ -27,7 +27,16 @@ can still compose `VizChartCard` themselves.
 	import type { Snippet } from 'svelte';
 	import VizChartCard from './VizChartCard.svelte';
 
-	type Variant = 'stacked' | 'network' | 'bubble' | 'treemap' | 'gantt' | 'map' | 'bigrams';
+	type Variant =
+		| 'stacked'
+		| 'network'
+		| 'arc'
+		| 'matrix'
+		| 'bubble'
+		| 'treemap'
+		| 'gantt'
+		| 'map'
+		| 'bigrams';
 
 	let {
 		title,

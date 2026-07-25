@@ -48,7 +48,7 @@ All academic content is stored as TypeScript files in `src/lib/data/`. Each cont
 
 Components in `src/lib/components/` follow atomic design:
 
-- **atoms/**: Basic elements (Button, NetworkStatusIndicator, RangeSlider, TweenedCount). `Button` skins a control as `.btn`; pass `bare` for a control that is a button semantically but must not look like one (transport controls, close crosses) — it renders the zero-specificity `.btn-bare` primitive instead, so your own class styles it without `!important`. Note: `ToggleButton` and `common/Sorter` are currently unreferenced.
+- **atoms/**: Basic elements (Button, NetworkStatusIndicator, RangeSlider, TweenedCount). `Button` skins a control as `.btn`; pass `bare` for a control that is a button semantically but must not look like one (transport controls, close crosses) — it renders the zero-specificity `.btn-bare` primitive instead, so your own class styles it without `!important`.
 - **molecules/**: Simple compositions (BibliographyRow, Breadcrumb, HeroImageDisplay, Pagination, RelatedItemCard, TagList, DetailsGrid, …)
 - **organisms/**: Complex UI (RelatedItemsList)
 - **common/**: Shared layout (Footer, Card, PageHeader, PageIntro, ProfileBanner, EntityDetailLayout, EntityListPageLayout, FilteredListDisplay)
@@ -177,9 +177,19 @@ Multi-format support via `citationFormatter.ts`: BibTeX, APA, MLA, Chicago
 - `useJsonLdScript()` from `jsonLd.svelte.ts` for injecting JSON-LD scripts (used by layout and all detail pages)
 - RSS at `/rss.xml`, sitemap at `/sitemap.xml`
 
+### Network Visualisations
+
+Three views share one data model (`NetworkData` from `networkAggregation.ts`), and which one a section uses is a **data decision, not a stylistic one**:
+
+- **`NetworkArcDiagram`** — egocentric networks (co-authors, co-presenters). Every node joins the centre by construction, so those spokes encode nothing; the centre is dropped and the collaborators become a ranked ledger with arcs for the connections that _do_ carry information.
+- **`NetworkMatrix`** — co-occurrence corpora (keywords, tags). At ~25 terms and density ≈ 0.3 a force layout is a hairball; a matrix draws the same pairs with no overlap. Rows are spectrally seriated (`seriation.ts`) so thematic blocks gather on the diagonal.
+- **`NetworkGraph`** — a settled, deterministic d3-force map. Reserved for the institution network, where spatial clustering is the actual question.
+
+All three render inline SVG (never canvas), so marks are focusable and CSS-themed; shared plate chrome lives in `src/styles/components/network-viz.css` and `NetworkTooltip.svelte`. Layout maths is pure and unit-tested in `networkLayout.ts`, `networkMatrix.ts`, and `seriation.ts` — keep it there rather than in the components.
+
 ### Heavy Libraries (Code Split)
 
-ECharts, D3, MapLibre, and jsPDF are split into separate chunks via `build.rolldownOptions` in Vite config. Use dynamic imports for visualization components.
+ECharts, D3, MapLibre, and jsPDF are split into separate chunks via `build.rolldownOptions` in Vite config. Use dynamic imports for visualization components. ECharts is tree-shaken via `echartsCore.ts`; `GraphChart` is deliberately absent (networks are SVG, see above).
 
 ## Design Context
 

@@ -8,7 +8,16 @@
 	 * viz section reduces to <VizChartCard variant="stacked" height="450px"
 	 * {hasData}> ... {#snippet placeholder()}...{/snippet} </VizChartCard>.
 	 */
-	type Variant = 'stacked' | 'network' | 'bubble' | 'treemap' | 'gantt' | 'map' | 'bigrams';
+	type Variant =
+		| 'stacked'
+		| 'network'
+		| 'arc'
+		| 'matrix'
+		| 'bubble'
+		| 'treemap'
+		| 'gantt'
+		| 'map'
+		| 'bigrams';
 
 	let {
 		variant,
@@ -76,6 +85,18 @@
 	.network-chart {
 		height: var(--iframe-height-md);
 		contain: strict;
+	}
+
+	/* The arc ledger's height follows its row count, supplied via the `height`
+	   prop, so it must not be `contain: strict` (which would fix the size). */
+	.arc-chart {
+		contain: layout style;
+	}
+
+	/* The matrix is square: its height comes from the row count via the `height`
+	   prop, so it must not be `contain: strict` (which would fix the size). */
+	.matrix-chart {
+		contain: layout style;
 	}
 
 	.bubble-chart {
