@@ -48,7 +48,7 @@ All academic content is stored as TypeScript files in `src/lib/data/`. Each cont
 
 Components in `src/lib/components/` follow atomic design:
 
-- **atoms/**: Basic elements (Button, NetworkStatusIndicator, RangeSlider, TweenedCount). `Button` skins a control as `.btn`; pass `bare` for a control that is a button semantically but must not look like one (transport controls, close crosses) — it renders the zero-specificity `.btn-bare` primitive instead, so your own class styles it without `!important`. Note: `ToggleButton` and `common/Sorter` are currently unreferenced.
+- **atoms/**: Basic elements (Button, NetworkStatusIndicator, RangeSlider, TweenedCount). `Button` skins a control as `.btn`; pass `bare` for a control that is a button semantically but must not look like one (transport controls, close crosses) — it renders the zero-specificity `.btn-bare` primitive instead, so your own class styles it without `!important`.
 - **molecules/**: Simple compositions (BibliographyRow, Breadcrumb, HeroImageDisplay, Pagination, RelatedItemCard, TagList, DetailsGrid, …)
 - **organisms/**: Complex UI (RelatedItemsList)
 - **common/**: Shared layout (Footer, Card, PageHeader, PageIntro, ProfileBanner, EntityDetailLayout, EntityListPageLayout, FilteredListDisplay)
