@@ -13,7 +13,7 @@ export const pointSud2026: Grant = {
 	dateRangeString: '2026',
 	dateISOStart: '2026-01-01',
 	dateISOEnd: '2026-12-31',
-	amount: undefined,
+	amount: 60410,
 	currency: 'EUR',
 	status: 'Awarded',
 	coApplicants: ['Vincent Hiribarren', 'Emmanuel Ngue Um', 'Menno van Zaanen']
