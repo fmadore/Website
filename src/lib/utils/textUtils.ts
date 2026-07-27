@@ -1,4 +1,18 @@
 /**
+ * Strips a URL down to what a printed page should show: no scheme, no `www.`,
+ * no trailing slash. `https://www.example.org/path/` → `example.org/path`.
+ *
+ * Used for project links on the CV, where the address itself is the label.
+ */
+export function formatDisplayUrl(url: string): string {
+	return url
+		.trim()
+		.replace(/^https?:\/\//i, '')
+		.replace(/^www\./i, '')
+		.replace(/\/+$/, '');
+}
+
+/**
  * Truncates a string to a specified maximum length and appends an ellipsis.
  *
  * @param text The string to truncate.

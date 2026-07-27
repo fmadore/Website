@@ -23,10 +23,17 @@ export const iwacAiPipelines: DigitalHumanitiesProject = {
 		'<h3>Open source</h3>' +
 		'<p>The code is open source and documented for adaptation. As lightweight open-source models improve, these workflows could eventually run locally without relying on commercial APIs—an important consideration for data sovereignty and long-term sustainability.</p>' +
 		'<h3>Limitations</h3>' +
-		'<p>These tools are research aids, not replacements for scholarly judgment. LLMs operate as black boxes with algorithmic opacity. Models trained predominantly on Western data may misrepresent African contexts and naming conventions. Unlike traditional OCR, which signals failure through garbled text, AI-generated errors appear as fluent prose—shifting the burden from fixing visible mistakes to detecting hidden ones. Effective use requires domain expertise and familiarity with the source material.</p>' +
-		'<p><a href="https://github.com/fmadore/iwac-ai-pipelines" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View on GitHub</a></p>',
+		'<p>These tools are research aids, not replacements for scholarly judgment. LLMs operate as black boxes with algorithmic opacity. Models trained predominantly on Western data may misrepresent African contexts and naming conventions. Unlike traditional OCR, which signals failure through garbled text, AI-generated errors appear as fluent prose—shifting the burden from fixing visible mistakes to detecting hidden ones. Effective use requires domain expertise and familiarity with the source material.</p>',
 	imageUrl: `/images/digital-humanities/iwac-ai-pipelines.webp`,
 	order: 3,
+	links: [
+		{
+			url: 'https://github.com/fmadore/iwac-ai-pipelines',
+			label: 'iwac-ai-pipelines',
+			type: 'code'
+		},
+		{ url: 'https://github.com/fmadore/AI-NER-Validator', label: 'AI-NER-Validator', type: 'code' }
+	],
 	skills: [
 		'Python',
 		'LLM',

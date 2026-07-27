@@ -45,6 +45,28 @@ export interface ProjectPublication {
 	url: string;
 }
 
+/**
+ * What a project link points at. Drives the mono key printed before the
+ * addresses on the CV ("Site", "Code", "Data"). Defaults to 'site'.
+ */
+export type ProjectLinkType = 'site' | 'code' | 'data';
+
+/**
+ * A public address for the project: its live site, a source repository, a
+ * published dataset. Distinct from `linkUrl`, which redirects the project's
+ * card away from its detail page — these are additive apparatus.
+ */
+export interface ProjectLink {
+	url: string;
+	/**
+	 * Display text. Defaults to the URL minus scheme/www/trailing slash, which
+	 * is what a CV should print. Set it where the bare URL reads badly (a repo
+	 * listed among siblings, a long dataset path).
+	 */
+	label?: string;
+	type?: ProjectLinkType;
+}
+
 export interface DigitalHumanitiesProject {
 	id: string; // kebab-case identifier, used for URL and internal linking
 	title: string;
@@ -57,6 +79,13 @@ export interface DigitalHumanitiesProject {
 	linkUrl?: string; // Optional: External link to the live project
 	// linkTarget will be derived: '_blank' for external, '_self' for internal to /digital-humanities/[id]
 	// actionText will be derived: 'Visit Site ->' or 'Explore project ->'
+
+	/**
+	 * Public addresses for the project — live site, source repositories,
+	 * datasets. Printed as apparatus under the CV entry; unlike `linkUrl` they
+	 * never change where the project's card points.
+	 */
+	links?: ProjectLink[];
 
 	award?: string;
 	reviews?: Review[];

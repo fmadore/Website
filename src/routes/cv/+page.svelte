@@ -438,8 +438,10 @@
 			text-decoration: underline !important;
 		}
 
-		/* Show URLs after external links for print (academic CV best practice) */
-		:global(#cv-content a[href^='http']:not(.doi-link))::after {
+		/* Show URLs after external links for print (academic CV best practice).
+		 * `.link-url` opts out: those links already print the URL as their text
+		 * (DH project addresses), so appending the href would double it. */
+		:global(#cv-content a[href^='http']:not(.doi-link):not(.link-url))::after {
 			content: ' (' attr(href) ')';
 			font-size: 0.75em;
 			font-weight: normal;

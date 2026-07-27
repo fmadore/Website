@@ -38,12 +38,28 @@ export const amira: DigitalHumanitiesProject = {
 
 		<h3>Interface</h3>
 		<p>Light and dark modes, a public Omeka S REST API behind every page, and a save-as-image button on each chart.</p>
-
-		<p><a href="https://data.africamultiple.uni-bayreuth.de/s/amira" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Visit AMIRA →</a></p>
 	`,
 	imageUrl: `/images/digital-humanities/amira.webp`,
 	featured: true,
 	order: 2,
+	links: [
+		{ url: 'https://data.africamultiple.uni-bayreuth.de/s/amira' },
+		{
+			url: 'https://github.com/AM-Digital-Research-Environment/DRE-theme',
+			label: 'DRE-theme',
+			type: 'code'
+		},
+		{
+			url: 'https://github.com/AM-Digital-Research-Environment/DRESearch',
+			label: 'DRESearch',
+			type: 'code'
+		},
+		{
+			url: 'https://github.com/AM-Digital-Research-Environment/ResourceVisualizations',
+			label: 'ResourceVisualizations',
+			type: 'code'
+		}
+	],
 	skills: [
 		'Omeka S',
 		'Typesense',

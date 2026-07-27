@@ -34,11 +34,10 @@ export const globalHeshmat: DigitalHumanitiesProject = {
 		</ul>
 
 		<p>The site complements ZMO's <a href="https://www.zmo.de/en/knowledgetransfer/h-heshmat-digital" target="_blank" rel="noopener noreferrer">audiovisual exhibition on Hassan Heshmat</a>.</p>
-
-		<p><a href="https://heshmat.zmo.de/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Visit Global Heshmat →</a></p>
 	`,
 	imageUrl: `/images/digital-humanities/global-heshmat.webp`,
 	order: 3,
+	links: [{ url: 'https://heshmat.zmo.de/' }],
 	skills: [
 		'Svelte 5',
 		'SvelteKit',

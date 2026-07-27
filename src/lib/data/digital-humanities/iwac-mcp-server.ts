@@ -29,10 +29,10 @@ export const iwacMcpServer: DigitalHumanitiesProject = {
 		'</ol>' +
 		'<p>The skill also documents collection biases — which countries and decades have stronger coverage, which newspapers are over- or under-represented — so that the AI can contextualise its findings rather than present them as exhaustive.</p>' +
 		'<h3>Why MCP rather than fine-tuning?</h3>' +
-		'<p>Approaches like fine-tuning or retrieval-augmented generation require surrendering data to external training pipelines. MCP takes a different path: the collection stays on its own infrastructure while AI assistants query it through defined, inspectable tools. For African digital collections, historically subject to extractive knowledge practices, this matters. The institution retains full control over its data. The skill layer makes every assumption transparent and versionable. And because MCP is an open standard, any AI model — commercial or open-source — can use the same tools without vendor lock-in.</p>' +
-		'<p><a href="https://github.com/fmadore/iwac-mcp-server" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View on GitHub</a></p>',
+		'<p>Approaches like fine-tuning or retrieval-augmented generation require surrendering data to external training pipelines. MCP takes a different path: the collection stays on its own infrastructure while AI assistants query it through defined, inspectable tools. For African digital collections, historically subject to extractive knowledge practices, this matters. The institution retains full control over its data. The skill layer makes every assumption transparent and versionable. And because MCP is an open standard, any AI model — commercial or open-source — can use the same tools without vendor lock-in.</p>',
 	imageUrl: '/images/digital-humanities/iwac-mcp-server.webp',
 	order: 0,
+	links: [{ url: 'https://github.com/fmadore/iwac-mcp-server', type: 'code' }],
 	skills: [
 		'Python',
 		'Model Context Protocol',

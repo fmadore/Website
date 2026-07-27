@@ -10,7 +10,7 @@ export const iwacSentimentAnalysis: DigitalHumanitiesProject = {
 		<p>An interactive dashboard exploring how West African newspapers portray Islam and Muslims, using AI-powered sentiment analysis of the <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer">Islam West Africa Collection (IWAC)</a> corpus. Three large language models (LLMs) analyzed over 12,000 Francophone press articles to assess their tone, objectivity, and thematic focus on Islam.</p>
 
 		<h3>Corpus</h3>
-		<p><strong>12,280+ articles</strong> from <strong>56 newspapers</strong> across <strong>5 countries</strong> (Benin, Burkina Faso, Côte d'Ivoire, Niger, Togo), sourced from the <a href="https://huggingface.co/datasets/fmadore/iwac-newspaper-articles" target="_blank" rel="noopener noreferrer">IWAC Hugging Face dataset</a>.</p>
+		<p><strong>12,280+ articles</strong> from <strong>56 newspapers</strong> across <strong>5 countries</strong> (Benin, Burkina Faso, Côte d'Ivoire, Niger, Togo), sourced from the <a href="https://huggingface.co/datasets/fmadore/islam-west-africa-collection" target="_blank" rel="noopener noreferrer">IWAC Hugging Face dataset</a>.</p>
 
 		<h3>Methodology</h3>
 		<p>Each article was analyzed by three LLMs using a task-specific French-language prompt:</p>
@@ -56,6 +56,14 @@ export const iwacSentimentAnalysis: DigitalHumanitiesProject = {
 	`,
 	imageUrl: '/images/digital-humanities/iwac-sentiment-analysis.webp',
 	order: 2,
+	links: [
+		{ url: 'https://fmadore.github.io/IWAC-sentiment-analysis/' },
+		{
+			url: 'https://github.com/fmadore/IWAC-sentiment-analysis',
+			label: 'IWAC-sentiment-analysis',
+			type: 'code'
+		}
+	],
 	skills: [
 		'Svelte',
 		'Data Visualisation',

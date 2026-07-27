@@ -33,12 +33,25 @@ export const iwac: DigitalHumanitiesProject = {
 
 		<h4>A bilingual, adaptable interface</h4>
 		<p>The site itself is a custom Omeka S theme with a light/dark toggle and full French/English switching. It defines its colours and typography as a single set of design tokens, which the search and visualisation modules read as they run. A change to the site's brand colour then flows through to every chart and control without any change to their code.</p>
-
-		<p><a href="https://islam.zmo.de/s/afrique_ouest/page/accueil" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Explore the collection →</a></p>
 	`,
 	imageUrl: `/images/digital-humanities/IWAC.webp`,
 	featured: true,
 	order: 1,
+	links: [
+		// Two parallel editions, as the description explains — both are entry
+		// points, and the French one was the page's original call to action.
+		{ url: 'https://islam.zmo.de/s/westafrica' },
+		{ url: 'https://islam.zmo.de/s/afrique_ouest' },
+		{ url: 'https://github.com/fmadore/IwacSearch', label: 'IwacSearch', type: 'code' },
+		{
+			url: 'https://github.com/fmadore/IwacVisualizations',
+			label: 'IwacVisualizations',
+			type: 'code'
+		},
+		{ url: 'https://github.com/fmadore/IWAC-SEO', label: 'IWAC-SEO', type: 'code' },
+		{ url: 'https://github.com/fmadore/IWAC-theme', label: 'IWAC-theme', type: 'code' },
+		{ url: 'https://huggingface.co/datasets/fmadore/islam-west-africa-collection', type: 'data' }
+	],
 	reviews: [
 		{
 			text: 'Anaïs Wion, "Islam West Africa Collection: Dataset, Distant Reading, and Uses of AI for Discourse Analysis", <em>The Digital Orientalist</em> 23 September 2025.',

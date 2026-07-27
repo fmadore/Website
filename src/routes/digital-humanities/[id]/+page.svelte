@@ -5,6 +5,7 @@
 	import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
 	import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
 	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
+	import { groupProjectLinks, projectLinkText } from '$lib/utils/projectLinks';
 
 	import { base, resolve } from '$app/paths';
 
@@ -30,6 +31,9 @@
 
 	// Breadcrumb + project JSON-LD injection is handled by EntityDetailLayout
 	// (with this route's custom breadcrumb script id).
+
+	// The project's public addresses, grouped site / code / data.
+	const linkGroups = $derived(groupProjectLinks(project));
 
 	// Prepare details for DetailsGrid
 	const projectDetails: ProjectDetailItem[] = [
@@ -89,6 +93,34 @@
 					{@html project.description}
 				</section>
 			</div>
+
+			{#if linkGroups.length > 0}
+				<div class="scroll-reveal">
+					<!-- Where the project actually lives — a ledger of addresses, mono
+					     key on the left, the sites/repos/datasets of that kind on the
+					     right. Same data the CV prints. -->
+					<section class="section apparatus-section">
+						<div class="section-head">
+							<h2 class="section-title">Project links</h2>
+						</div>
+						<dl class="link-ledger">
+							{#each linkGroups as group (group.type)}
+								<div class="link-row">
+									<dt class="link-key">{group.key}</dt>
+									<dd class="link-values">
+										{#each group.links as link (link.url)}
+											<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external project address -->
+											<a href={link.url} target="_blank" rel="noopener noreferrer"
+												>{projectLinkText(link)}</a
+											>
+										{/each}
+									</dd>
+								</div>
+							{/each}
+						</dl>
+					</section>
+				</div>
+			{/if}
 
 			<div class="scroll-reveal">
 				{#if projectDetails.length > 0}
@@ -374,6 +406,70 @@
 
 	.image-link {
 		display: block;
+	}
+
+	/* Address ledger — hanging mono key, addresses in the right column, hairline
+	 * between rows. The DATA voice throughout: these are database columns. */
+	.link-ledger {
+		margin: 0;
+	}
+
+	.link-row {
+		display: grid;
+		grid-template-columns: 5rem 1fr;
+		gap: var(--space-2xs) var(--space-lg);
+		padding: var(--space-sm) 0;
+		border-top: var(--rule-hairline) solid var(--color-border);
+		align-items: baseline;
+	}
+
+	.link-row:first-child {
+		border-top: none;
+		padding-top: 0;
+	}
+
+	.link-key {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: var(--color-text-light);
+	}
+
+	.link-values {
+		margin: 0;
+		min-width: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2xs) var(--space-md);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-sm);
+		letter-spacing: 0.02em;
+	}
+
+	.link-values a {
+		color: var(--color-accent);
+		text-decoration: none;
+		font-weight: var(--font-weight-medium);
+		transition: color var(--duration-fast) var(--ease-out);
+	}
+
+	.link-values a:hover {
+		color: var(--color-accent-dark);
+	}
+
+	.link-values a:focus-visible {
+		outline: var(--border-width-medium) solid var(--color-accent);
+		outline-offset: var(--space-2xs);
+	}
+
+	/* Narrow viewports stack: the key becomes an overline above its addresses. */
+	@media (--sm-down) {
+		.link-row {
+			grid-template-columns: 1fr;
+			gap: var(--space-1);
+		}
 	}
 
 	/* Apparatus sections — award / publication / reviews. Serif prose under a
