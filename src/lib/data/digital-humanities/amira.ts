@@ -58,6 +58,11 @@ export const amira: DigitalHumanitiesProject = {
 			url: 'https://github.com/AM-Digital-Research-Environment/ResourceVisualizations',
 			label: 'ResourceVisualizations',
 			type: 'code'
+		},
+		{
+			url: 'https://github.com/AM-Digital-Research-Environment/DRE-SEO',
+			label: 'DRE-SEO',
+			type: 'code'
 		}
 	],
 	skills: [

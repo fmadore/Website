@@ -30,5 +30,13 @@ export const islamBurkinaFasoCollection: DigitalHumanitiesProject = {
 		url: 'https://doi.org/10.51185/journals/rhca.2021.e610'
 	},
 	order: 10,
+	// The LibraryPress@UF host is gone; an Internet Archive snapshot is all that
+	// remains of the original site, so it is labelled rather than shown bare.
+	links: [
+		{
+			url: 'https://web.archive.org/web/20240312164955/https://islam.domains.uflib.ufl.edu/s/bf/page/home',
+			label: 'islam.domains.uflib.ufl.edu (Internet Archive)'
+		}
+	],
 	skills: ['Omeka S', 'Tesseract', 'Metadata Standards', 'OpenRefine', 'Zotero', 'Linked Data']
 };

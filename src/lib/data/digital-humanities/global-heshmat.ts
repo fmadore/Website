@@ -37,7 +37,10 @@ export const globalHeshmat: DigitalHumanitiesProject = {
 	`,
 	imageUrl: `/images/digital-humanities/global-heshmat.webp`,
 	order: 3,
-	links: [{ url: 'https://heshmat.zmo.de/' }],
+	links: [
+		{ url: 'https://heshmat.zmo.de/' },
+		{ url: 'https://github.com/ZMO-Berlin/Global-Heshmat', label: 'Global-Heshmat', type: 'code' }
+	],
 	skills: [
 		'Svelte 5',
 		'SvelteKit',
