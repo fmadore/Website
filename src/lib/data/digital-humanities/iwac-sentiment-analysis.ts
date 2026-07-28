@@ -57,7 +57,7 @@ export const iwacSentimentAnalysis: DigitalHumanitiesProject = {
 	imageUrl: '/images/digital-humanities/iwac-sentiment-analysis.webp',
 	order: 2,
 	links: [
-		{ url: 'https://fmadore.github.io/IWAC-sentiment-analysis/' },
+		{ url: 'https://iwac.frederickmadore.com/sentiment-analysis/' },
 		{
 			url: 'https://github.com/fmadore/IWAC-sentiment-analysis',
 			label: 'IWAC-sentiment-analysis',
@@ -79,7 +79,7 @@ export const iwacSentimentAnalysis: DigitalHumanitiesProject = {
 		{
 			type: 'iframe',
 			id: 'iwac-sentiment-analysis-embed',
-			src: 'https://fmadore.github.io/IWAC-sentiment-analysis/',
+			src: 'https://iwac.frederickmadore.com/sentiment-analysis/',
 			title: 'IWAC Sentiment Analysis',
 			scrolling: 'yes',
 			allowfullscreen: true,
