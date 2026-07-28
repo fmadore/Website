@@ -25,7 +25,7 @@ export const zmoVisualisations: DigitalHumanitiesProject = {
 		<h3>How it's built</h3>
 		<p>Neither app has a build step: plain ES modules loaded straight by the browser, drawn with <a href="https://d3js.org/" target="_blank" rel="noopener noreferrer">D3</a>, no bundler and no install. Python pipelines fetch from zmo.de and write JSON into each app's data directory, and GitHub Actions rerun them monthly and commit the result, so both refresh without anyone touching them. The raw scraper output is committed too, which means a scrape produces a readable diff of exactly what changed on the website. The unit scraper fails loudly when a page yields no abstract or no projects, since the selectors it depends on come from ZMO's TYPO3 theme: a redesign should surface as a visible error rather than as a quietly shrinking word cloud.</p>
 	`,
-	imageUrl: '/images/digital-humanities/zmo_units_wordcloud.webp',
+	imageUrl: '/images/digital-humanities/zmo-visualisations.webp',
 	order: 6,
 	links: [
 		{ url: 'https://zmo-berlin.github.io/visualisations/en/' },
