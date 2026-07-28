@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { allDhProjects } from '$lib/data/digital-humanities';
-	import { formatCVYearRange } from '$lib/utils/cvFormatters';
+	import { formatCVYearRange, trimTerminalPeriod } from '$lib/utils/cvFormatters';
 	import { groupProjectLinks, projectLinkText } from '$lib/utils/projectLinks';
 	import CVSection from './CVSection.svelte';
 
@@ -58,15 +58,21 @@
 			<div class="mt-2 ml-4 text-sm">
 				{project.reviews.length === 1 ? 'Review:' : 'Reviews:'}
 				{#each project.reviews as review, i (review.url)}
+					{@const isLast = i === project.reviews.length - 1}
+					<!-- Citations are separated by semicolons, so all but the last shed
+					     their terminal full stop rather than reading "(2023).;". -->
 					<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 					<a
 						href={review.url}
 						target="_blank"
 						rel="noopener noreferrer"
 						class="text-primary hover:underline"
-						><!-- eslint-disable svelte/no-at-html-tags -- Safe: review.text is from trusted static project data files -->{@html review.text}<!-- eslint-enable svelte/no-at-html-tags --></a
-					><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < project.reviews.length - 1};
-					{/if}
+						><!-- eslint-disable svelte/no-at-html-tags -- Safe: review.text is from trusted static project data files -->{@html isLast
+							? review.text
+							: trimTerminalPeriod(review.text)}<!-- eslint-enable svelte/no-at-html-tags --></a
+					><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if !isLast}<span
+							class="review-sep">;&nbsp;</span
+						>{/if}
 				{/each}
 			</div>
 		{/if}

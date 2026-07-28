@@ -16,7 +16,10 @@ export const thyssen2023: Grant = {
 	amount: 20000,
 	currency: 'EUR',
 	status: 'Awarded',
-	coApplicants: ['Abdoulaye Sounaye']
+	coApplicants: ['Abdoulaye Sounaye'],
+	// The foundation has no per-grant page; the award is recorded in its 2023
+	// annual report (PDF).
+	url: 'https://www.fritz-thyssen-stiftung.de/cms/wp-content/uploads/2024/07/Jahresbericht-der-Fritz-Thyssen-Stiftung-2023.pdf'
 };
 
 export default thyssen2023;

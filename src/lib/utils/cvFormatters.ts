@@ -148,6 +148,18 @@ export function formatCVYearRange(startOrString: number | string, endYear?: numb
 }
 
 /**
+ * Drops a citation's terminal full stop so it can be joined to the next one
+ * with a semicolon — "… (2023).;" should read "… (2023);". Only the last
+ * citation in a run keeps its stop.
+ *
+ * Takes HTML, since CV citations carry `<em>` markup; the stop is always the
+ * final character, after any closing tag.
+ */
+export function trimTerminalPeriod(citation: string): string {
+	return citation.replace(/\.\s*$/, '');
+}
+
+/**
  * Formats an affiliation period ({ start, end } where null = ongoing)
  */
 export function formatAffiliationPeriod(period: AffiliationPeriod): string {
