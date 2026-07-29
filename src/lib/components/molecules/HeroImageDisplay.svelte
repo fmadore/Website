@@ -3,7 +3,7 @@
 	import { browser } from '$app/environment';
 	import { beforeNavigate } from '$app/navigation';
 	import { portalModal } from '$lib/actions/portalModal';
-	import { buildSrcset } from '$lib/utils/imageVariants';
+	import { buildSrcset, HERO_SIZES, resolveImagePath } from '$lib/utils/imageVariants';
 
 	let {
 		heroImage = undefined,
@@ -78,19 +78,8 @@
 	);
 	const altText = $derived((displayImage === heroImage ? heroImage?.alt : '') || defaultAlt);
 	const captionText = $derived(displayImage === heroImage ? heroImage?.caption : null);
-	const absoluteSrc = $derived(
-		displayImage && displayImage.src
-			? displayImage.src.startsWith('http://') || displayImage.src.startsWith('https://')
-				? displayImage.src
-				: (() => {
-						// Ensure it's treated as relative to the base path, removing any leading slash from src itself
-						const path = displayImage.src.startsWith('/')
-							? displayImage.src.substring(1)
-							: displayImage.src;
-						return `${base}/${path}`.replace(/\/\//g, '/'); // Replace double slashes just in case
-					})()
-			: null
-	);
+	// Shared with the activity hero preload so both resolve to the same URL.
+	const absoluteSrc = $derived(resolveImagePath(displayImage?.src, base) ?? null);
 
 	// Use the global flat-surface utility (surface-card) to ensure visual consistency.
 	// `.hero-entrance` plays an immediate mount animation (for above-the-fold
@@ -137,9 +126,7 @@
 				decoding="async"
 				width="330"
 				height="438"
-				sizes={heroSrcset
-					? '(max-width: 640px) 100vw, (max-width: 768px) 330px, (max-width: 1024px) 600px, 800px'
-					: undefined}
+				sizes={heroSrcset ? HERO_SIZES : undefined}
 				style={`max-height: ${maxHeight}; contain: layout style paint;`}
 			/>
 			<div class="overlay">

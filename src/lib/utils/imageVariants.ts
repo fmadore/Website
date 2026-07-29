@@ -10,7 +10,30 @@
 
 export const VARIANT_WIDTHS = [400, 800, 1600] as const;
 
+/**
+ * The `sizes` HeroImageDisplay renders alongside its srcset. Shared so a
+ * `<link rel="preload" as="image">` for the same hero can pass the identical
+ * value as `imagesizes` — the preload only gets used if the scanner picks the
+ * same srcset candidate the <img> later resolves to, and it cannot do that
+ * without matching sizes.
+ */
+export const HERO_SIZES =
+	'(max-width: 640px) 100vw, (max-width: 768px) 330px, (max-width: 1024px) 600px, 800px';
+
 const IMAGE_PATH_RE = /^(.*\/images\/)(.+)\.(webp|jpe?g|png|avif)$/i;
+
+/**
+ * Normalise a data-file image path to the URL an <img> will actually request:
+ * base-prefixed, no leading slash on the source, no doubled slashes. External
+ * URLs pass through untouched. Shared with the hero preload so both sides
+ * resolve to the same string.
+ */
+export function resolveImagePath(src: string | null | undefined, base: string): string | undefined {
+	if (!src) return undefined;
+	if (src.startsWith('http://') || src.startsWith('https://')) return src;
+	const path = src.startsWith('/') ? src.slice(1) : src;
+	return `${base}/${path}`.replace(/\/\//g, '/');
+}
 
 /**
  * Build the `srcset` for an image under /images/ (any base-prefixed or

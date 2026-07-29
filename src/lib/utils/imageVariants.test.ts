@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { buildSrcset, VARIANT_WIDTHS } from './imageVariants';
+import { buildSrcset, resolveImagePath, VARIANT_WIDTHS } from './imageVariants';
 
 describe('buildSrcset', () => {
 	it('builds variant URLs for images under /images/', () => {
@@ -35,5 +35,41 @@ describe('buildSrcset', () => {
 
 	it('never derives variants of a variant', () => {
 		expect(buildSrcset('/images/_r/foo-400.webp')).toBeUndefined();
+	});
+});
+
+describe('resolveImagePath', () => {
+	it('prefixes the base path', () => {
+		expect(resolveImagePath('images/activities/talk.webp', '/site')).toBe(
+			'/site/images/activities/talk.webp'
+		);
+	});
+
+	it('handles an empty base and a leading slash on either side', () => {
+		expect(resolveImagePath('images/activities/talk.webp', '')).toBe(
+			'/images/activities/talk.webp'
+		);
+		expect(resolveImagePath('/images/activities/talk.webp', '')).toBe(
+			'/images/activities/talk.webp'
+		);
+	});
+
+	it('passes external URLs through untouched', () => {
+		expect(resolveImagePath('https://example.com/images/foo.webp', '/site')).toBe(
+			'https://example.com/images/foo.webp'
+		);
+	});
+
+	it('returns undefined for empty and nullish input', () => {
+		expect(resolveImagePath('', '')).toBeUndefined();
+		expect(resolveImagePath(null, '')).toBeUndefined();
+		expect(resolveImagePath(undefined, '')).toBeUndefined();
+	});
+
+	// The hero preload feeds this straight into buildSrcset, so the two must
+	// agree on the URL an <img srcset> will resolve to.
+	it('produces a path buildSrcset can turn into the same variants the <img> uses', () => {
+		const resolved = resolveImagePath('images/activities/talk.webp', '')!;
+		expect(buildSrcset(resolved)).toContain('/images/_r/activities/talk-800.webp 800w');
 	});
 });

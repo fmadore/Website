@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
 	import { base } from '$app/paths';
+	import { buildSrcset, HERO_SIZES, resolveImagePath } from '$lib/utils/imageVariants';
 	import EntityDetailLayout from '$lib/components/common/EntityDetailLayout.svelte';
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
 	import ContentBody from '$lib/components/common/ContentBody.svelte';
@@ -68,11 +69,27 @@
 	// in the head leave a marker the client cannot walk (TypeError reading
 	// 'nodeType' of null in if.js). Source values come from trusted .ts files
 	// in src/lib/data/activities, so direct interpolation is safe here.
-	const heroImagePreloadHtml = $derived(
-		activity?.heroImage?.src
-			? `<link rel="preload" href="${encodeURI(`${base}/${activity.heroImage.src}`)}" as="image" fetchpriority="high">`
-			: ''
-	);
+	//
+	// imagesrcset/imagesizes are not optional decoration: HeroImageDisplay
+	// renders this hero with a srcset of _r/ variants, so the browser fetches
+	// e.g. `-800.webp` and never the full-size original. Preloading the bare
+	// href downloaded a second, larger copy that nothing on the page ever used.
+	// These three attributes have to mirror the <img> exactly for the scanner
+	// to resolve the same candidate, hence the shared helpers.
+	const heroImagePreloadHtml = $derived.by(() => {
+		const resolved = resolveImagePath(activity?.heroImage?.src, base);
+		if (!resolved) return '';
+		const srcset = buildSrcset(encodeURI(resolved));
+		const attrs = [
+			'rel="preload"',
+			'as="image"',
+			`href="${encodeURI(resolved)}"`,
+			srcset ? `imagesrcset="${srcset}"` : '',
+			srcset ? `imagesizes="${HERO_SIZES}"` : '',
+			'fetchpriority="high"'
+		].filter(Boolean);
+		return `<link ${attrs.join(' ')}>`;
+	});
 
 	// --- Content Parsing Logic (Keep as is, uses activity from data) ---
 	interface ContentSegment {

@@ -165,8 +165,13 @@ async function handleCacheFirst(request) {
 		return response;
 	} catch (error) {
 		console.warn('[SW] Cache-first fetch failed:', error);
-		// Return offline fallback if available
-		return caches.match('/offline.html') || new Response('Offline', { status: 503 });
+		// Rethrow rather than substituting a body. Everything routed here is a
+		// script, stylesheet or image, and this used to answer with the cached
+		// offline.html: a JS module request would receive an HTML document and
+		// die as "error loading dynamically imported module", which is how one
+		// blocked request for the Svelte runtime chunk took down a whole page.
+		// A genuine network error is both honest and retryable.
+		throw error;
 	}
 }
 
@@ -216,10 +221,15 @@ async function handleNetworkFirst(request, event) {
 			return cached;
 		}
 
-		// Return appropriate offline fallback
+		// Return appropriate offline fallback. Note the await: caches.match()
+		// returns a promise, so `caches.match(...) || fallback` always yielded
+		// the promise and the fallback below was unreachable — when offline.html
+		// was missing from the cache that resolved to undefined, and
+		// respondWith(undefined) fails the navigation outright.
 		if (request.destination === 'document') {
+			const offline = await caches.match('/offline.html');
 			return (
-				caches.match('/offline.html') ||
+				offline ||
 				new Response('You are offline', {
 					status: 503,
 					statusText: 'Service Unavailable',
