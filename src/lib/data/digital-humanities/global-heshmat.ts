@@ -49,5 +49,19 @@ export const globalHeshmat: DigitalHumanitiesProject = {
 		'WebGL',
 		'Interactive mapping',
 		'Data visualization'
+	],
+	embeddableContent: [
+		{
+			type: 'iframe',
+			id: 'global-heshmat-embed',
+			src: 'https://heshmat.zmo.de/',
+			title: 'The map',
+			description:
+				'<p>The 28 located works and the 11 still to be found. Filter by country or status, search by artwork, city or address, and select a marker for its images, metadata and sources.</p>',
+			scrolling: 'yes',
+			allowfullscreen: true,
+			showTitle: true,
+			containerClass: 'iframe-container-aspect iframe-container-aspect-16-9'
+		}
 	]
 };
