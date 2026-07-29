@@ -37,6 +37,17 @@ The component:
 - Displays a Moon icon in light mode and a Sun icon in dark mode
 - Uses Iconify (`@iconify/svelte`) for the icons
 
+### Why both icons are always rendered
+
+Which icon is visible is decided in CSS, from the `dark` class that the inline
+script in `app.html` puts on `<html>` before first paint — **not** by an
+`{#if currentTheme === 'light'}`. The store has no `localStorage` during
+prerendering, so it always reports `light` on the server; a conditional would
+therefore emit the light branch to every visitor, and anyone in midnight would
+hydrate the other branch. That is a structural mismatch, and Svelte responds by
+throwing away the server markup and re-rendering the whole header on every page
+load. Keep the two icons unconditional and let CSS choose.
+
 ## Stores
 
 The component uses `$lib/stores/themeStore.svelte`:

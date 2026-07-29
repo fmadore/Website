@@ -3,18 +3,19 @@
 	let { size = 18 } = $props();
 	import { getTheme, toggleTheme } from '$lib/stores/themeStore.svelte';
 	import Icon from '@iconify/svelte';
-	import { fade } from 'svelte/transition';
-	import { cubicOut } from 'svelte/easing';
-	import { motionDuration } from '$lib/utils/motion';
 
 	// Get reactive theme value
 	const currentTheme = $derived(getTheme());
-
-	// Icon swap timing — short enough to feel instant, long enough to read as
-	// a deliberate transition rather than a flicker.
-	const ICON_FADE = 160;
 </script>
 
+<!--
+	Both icons are always rendered and CSS decides which one shows, keyed off the
+	`dark` class that the inline script in app.html puts on <html> before first
+	paint. An `{#if currentTheme === 'light'}` cannot work here: the store has no
+	localStorage during prerendering, so the server always emits the light branch
+	and a visitor in midnight hydrates the other one — a structural mismatch that
+	made Svelte discard and re-render the whole header on every page load.
+-->
 <button
 	class="theme-toggle"
 	onclick={toggleTheme}
@@ -22,23 +23,12 @@
 	title={currentTheme === 'light' ? 'Midnight' : 'Daylight'}
 >
 	<span class="icon-stack">
-		{#if currentTheme === 'light'}
-			<span
-				class="icon-slot"
-				in:fade={{ duration: motionDuration(ICON_FADE), easing: cubicOut }}
-				out:fade={{ duration: motionDuration(ICON_FADE), easing: cubicOut }}
-			>
-				<Icon icon="mdi:moon-waning-crescent" width={size} height={size} />
-			</span>
-		{:else}
-			<span
-				class="icon-slot"
-				in:fade={{ duration: motionDuration(ICON_FADE), easing: cubicOut }}
-				out:fade={{ duration: motionDuration(ICON_FADE), easing: cubicOut }}
-			>
-				<Icon icon="mdi:white-balance-sunny" width={size} height={size} />
-			</span>
-		{/if}
+		<span class="icon-slot icon-slot--moon">
+			<Icon icon="mdi:moon-waning-crescent" width={size} height={size} />
+		</span>
+		<span class="icon-slot icon-slot--sun">
+			<Icon icon="mdi:white-balance-sunny" width={size} height={size} />
+		</span>
 	</span>
 </button>
 
@@ -94,6 +84,22 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
+		transition: opacity var(--duration-fast) var(--ease-out);
+	}
+
+	/* Moon in daylight, sun in midnight. Driven by the html class rather than
+	 * component state so the markup is identical on the server and the client;
+	 * see the note above the button. */
+	.icon-slot--sun {
+		opacity: 0;
+	}
+
+	:global(html.dark) .icon-slot--moon {
+		opacity: 0;
+	}
+
+	:global(html.dark) .icon-slot--sun {
+		opacity: 1;
 	}
 
 	.theme-toggle :global(svg) {
@@ -102,7 +108,8 @@
 
 	@media (prefers-reduced-motion: reduce) {
 		.theme-toggle,
-		.theme-toggle :global(svg) {
+		.theme-toggle :global(svg),
+		.icon-slot {
 			transition: none;
 		}
 	}

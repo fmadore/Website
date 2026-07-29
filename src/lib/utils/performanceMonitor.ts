@@ -63,6 +63,12 @@ class PerformanceMonitor {
 	}
 
 	private observeMetric(type: string, callback: (entry: PerformanceEntry) => void) {
+		// Firefox supports neither `layout-shift` nor `first-input`, and it warns
+		// on the console instead of throwing, so the catch below never sees it.
+		// Feature-detect first and stay silent on browsers that lack the entry.
+		const supported = PerformanceObserver.supportedEntryTypes;
+		if (!supported?.includes(type)) return;
+
 		try {
 			const observer = new PerformanceObserver((list) => {
 				for (const entry of list.getEntries()) {

@@ -20,22 +20,22 @@ const RUNTIME_CACHE = `runtime-v${version}`;
 // initial load and ballooned the network dependency tree. The fetch handler
 // below already caches JS/CSS/assets cache-first and navigations network-first
 // on demand, so any visited page still works offline without the upfront bulk.
-// The three latin font subsets are what offline.html (and any cached page)
-// renders with — a few dozen KB that keep the offline fallback on-brand.
-const ASSETS_TO_CACHE = [
-	'/',
-	'/offline.html',
-	'/manifest.webmanifest',
-	'/fonts/web/archivo-normal-latin.woff2',
-	'/fonts/web/newsreader-normal-latin.woff2',
-	'/fonts/web/spline-sans-mono-normal-latin.woff2'
-];
+// Fonts are deliberately absent: see the note on CACHE_FIRST_ROUTES below —
+// nothing here serves them, so precaching them would only cost install traffic.
+const ASSETS_TO_CACHE = ['/', '/offline.html', '/manifest.webmanifest'];
 
 // Cache strategies. Entries starting with '.' are file extensions and must
 // match the END of the pathname; everything else is a path-prefix substring.
 // (Substring-matching extensions is how '.json' used to match the '.js' rule,
 // which routed all JSON to cache-first and made stale-while-revalidate dead
 // code — data was served stale until the next deploy.)
+// Fonts are intentionally NOT listed. `<link rel="preload" as="font">` in
+// app.html starts the three latin subsets at parse time, but a request answered
+// by a service worker never consults the browser's preload cache, so Firefox
+// reported all three preloads as fetched-and-unused on every repeat visit. The
+// host already serves fonts with `max-age=2678400` (31 days) and a repeat visit
+// measured `transferSize: 0` either way, so letting them go straight to the HTTP
+// cache costs nothing and lets the preload actually be consumed.
 const CACHE_FIRST_ROUTES = [
 	'/images/',
 	'/icons/',
@@ -43,8 +43,6 @@ const CACHE_FIRST_ROUTES = [
 	'/app/',
 	'.css',
 	'.js',
-	'.woff2',
-	'.woff',
 	'.png',
 	'.jpg',
 	'.jpeg',
@@ -54,6 +52,9 @@ const CACHE_FIRST_ROUTES = [
 ];
 
 const STALE_WHILE_REVALIDATE_ROUTES = ['/api/', '.json'];
+
+// Matched in the fetch handler to skip service-worker handling entirely.
+const FONT_EXTENSIONS = ['.woff2', '.woff', '.ttf', '.otf'];
 
 // Bound the runtime cache so it can't grow without limit between deploys.
 const RUNTIME_CACHE_MAX_ENTRIES = 150;
@@ -127,6 +128,14 @@ sw.addEventListener('fetch', (event) => {
 		if (url.hostname === 'api.iconify.design') {
 			event.respondWith(handleCDNRequest(request));
 		}
+		return;
+	}
+
+	// Fonts go straight to the browser with no respondWith() at all. Any
+	// service-worker response — even a plain fetch() passthrough — bypasses the
+	// preload cache, which is what made the app.html font preloads read as
+	// fetched-but-unused. See the note on CACHE_FIRST_ROUTES.
+	if (request.destination === 'font' || FONT_EXTENSIONS.some((ext) => url.pathname.endsWith(ext))) {
 		return;
 	}
 
