@@ -214,6 +214,13 @@
 					b.publications.push(pub.title);
 				}
 
+				// Working papers - the numbered series is the venue
+				if (pub.type === 'working-paper' && (pub.series || pub.journal || pub.publisher)) {
+					const b = bucket(journals, (pub.series || pub.journal || pub.publisher)!);
+					b.count++;
+					b.publications.push(pub.title);
+				}
+
 				// Books, chapters, and encyclopedias - group by publisher
 				if (
 					pub.publisher &&

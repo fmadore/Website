@@ -4,6 +4,8 @@
 	import { truncateAbstract } from '$lib/utils/textUtils';
 	// Import the necessary functions from the new formatter
 	import { formatCitation, getAuthorsArray } from '$lib/utils/citationFormatter';
+	import { formatAuthorsWithEtAl } from '$lib/utils/nameUtils';
+	import { author as siteAuthor } from '$lib/data/siteConfig';
 	import { titleLangAttr } from '$lib/utils/languageUtils';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import BibliographyRow from '$lib/components/molecules/BibliographyRow.svelte';
@@ -100,6 +102,8 @@
 				return 'Book Chapter';
 			case 'special-issue':
 				return 'Special Issue · Co-edited';
+			case 'working-paper':
+				return 'Working Paper';
 			case 'report':
 				return 'Report';
 			case 'encyclopedia':
@@ -162,6 +166,7 @@
 			type === 'chapter' ||
 			type === 'encyclopedia' ||
 			type === 'report' ||
+			type === 'working-paper' ||
 			type === 'blogpost' ||
 			type === 'phd-dissertation' ||
 			type === 'masters-thesis' ||
@@ -194,18 +199,14 @@
 		// Handle advisors separately in the template as before
 		// Handle prefacedBy separately in the template as before
 
-		// Build the authorString
-		let builtString = '';
-		const listLength = items.length;
-		items.forEach((item, i) => {
-			builtString += item.name; // Add name
-			if (i < listLength - 1) {
-				// If not the last item
-				// Use ', ' for all but the last join, which is ' and '.
-				const separator = i === listLength - 2 ? ' and ' : ', ';
-				builtString += separator;
-			}
-		});
+		// Build the authorString: ", " between entries, " and " before the last.
+		// A collective byline (two dozen signatories) collapses to "et al." so
+		// the row stays a bibliography entry rather than a page of names; the
+		// site owner is held in view wherever they sit in the running order.
+		const builtString = formatAuthorsWithEtAl(
+			items.map((item) => item.name),
+			{ mustInclude: siteAuthor.name }
+		);
 
 		return {
 			displayList: items,

@@ -150,7 +150,9 @@
 			publication.type === 'bulletin-article';
 		const isThesis =
 			publication.type === 'phd-dissertation' || publication.type === 'masters-thesis';
-		const isReport = publication.type === 'report';
+		// Working papers are report-shaped for citation managers: an issuing
+		// body and a series number rather than a journal.
+		const isReport = publication.type === 'report' || publication.type === 'working-paper';
 		const extra = publication as unknown as Record<string, string | undefined>;
 
 		return buildHeadTags([
@@ -210,7 +212,11 @@
 				content: extra.institution || publication.publisher,
 				when: isReport
 			},
-			{ name: 'citation_technical_report_number', content: extra.reportNumber, when: isReport },
+			{
+				name: 'citation_technical_report_number',
+				content: extra.reportNumber ?? publication.issue,
+				when: isReport
+			},
 			// Dublin Core tags
 			{ name: 'DC.title', content: publication.title },
 			{ name: 'DC.description', content: publication.abstract },

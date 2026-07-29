@@ -31,7 +31,7 @@
 						{@const formattedAuthors = formatCVAuthorList(pub.authors)}
 						<CVEntry year={getCVDisplayYear(pub)}>
 							<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
-							{#if formattedAuthors}{@html formattedAuthors}{#if (pub.type === 'book' && pub.isEditedVolume) || pub.type === 'special-issue'}&nbsp;(eds.),{:else}.{/if}
+							{#if formattedAuthors}{@html formattedAuthors}{#if (pub.type === 'book' && pub.isEditedVolume) || pub.type === 'special-issue'}&nbsp;(eds.),{:else if !formattedAuthors.endsWith('.')}.{/if}
 							{/if}
 							{#if pub.type !== 'book' && pub.type !== 'blogpost'}"{pub.title}".{/if}
 							{#if (pub.type === 'article' || pub.type === 'bulletin-article') && pub.journal}
@@ -53,6 +53,10 @@
 										pub.publisher || ''}{#if city && publisher}{city}: {publisher}{:else if city}{city}{:else if publisher}{publisher}{/if}.{:else}.{/if}
 							{:else if pub.type === 'special-issue' && pub.journal}
 								<em>{pub.journal}</em>{formatVolumeIssueDisplay(pub.volume, pub.issue)}.
+							{:else if pub.type === 'working-paper'}
+								{#if pub.series || pub.journal}<em>{pub.series || pub.journal}</em
+									>{#if pub.issue}&nbsp;{pub.issue}{/if}{/if}{#if pub.pages}: {pub.pages}{/if}{#if pub.publisher && pub.publisher !== (pub.series || pub.journal)}.
+									{pub.publisher}{/if}.
 							{:else if pub.type === 'report'}
 								{#if pub.journal}<em>{pub.journal}</em>{formatVolumeIssueDisplay(
 										pub.volume,

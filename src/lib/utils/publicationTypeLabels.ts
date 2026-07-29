@@ -30,7 +30,8 @@ export const PUBLICATION_TYPE_BADGE_LABELS: Record<string, string> = {
 	encyclopedia: 'Encyclopedia Entry',
 	blogpost: 'Blog Post',
 	'masters-thesis': "Master's Thesis",
-	'phd-dissertation': 'PhD Dissertation'
+	'phd-dissertation': 'PhD Dissertation',
+	'working-paper': 'Working Paper'
 };
 
 /** Citation-style labels (used in bibliographies and citation exports). */
@@ -45,7 +46,8 @@ export const PUBLICATION_TYPE_CITATION_LABELS: Record<string, string> = {
 	blogpost: 'Blog Post',
 	'phd-dissertation': 'Ph.D. Dissertation',
 	'masters-thesis': "Master's Thesis",
-	'conference-proceedings': 'Conference Proceedings'
+	'conference-proceedings': 'Conference Proceedings',
+	'working-paper': 'Working Paper'
 };
 
 /**
@@ -62,7 +64,8 @@ export const PUBLICATION_TYPE_SEO_LABELS: Record<string, string> = {
 	encyclopedia: 'Encyclopedia entry',
 	blogpost: 'Blog post',
 	'masters-thesis': "Master's thesis",
-	'phd-dissertation': 'PhD dissertation'
+	'phd-dissertation': 'PhD dissertation',
+	'working-paper': 'Working paper'
 };
 
 /** Plural section headings for the CV page. */
@@ -73,6 +76,7 @@ export const PUBLICATION_TYPE_CV_HEADING_LABELS: Record<string, string> = {
 	chapter: 'Book Chapters',
 	report: 'Report',
 	encyclopedia: 'Encyclopedia Entry',
+	'working-paper': 'Working Papers',
 	'bulletin-article': 'Bulletin Articles',
 	blogpost: 'Blog Posts',
 	'conference-proceedings': 'Conference Proceedings'
@@ -90,7 +94,8 @@ export const PUBLICATION_TYPE_FILTER_LABELS: Record<string, string> = {
 	'masters-thesis': "Master's thesis",
 	'phd-dissertation': 'Ph.D. dissertation',
 	report: 'Report',
-	'special-issue': 'Special issue'
+	'special-issue': 'Special issue',
+	'working-paper': 'Working paper'
 };
 
 /** Short plural chip labels — the publications index's compact type row. */
@@ -105,7 +110,8 @@ export const PUBLICATION_TYPE_CHIP_LABELS: Record<string, string> = {
 	'masters-thesis': 'Theses',
 	'phd-dissertation': 'Dissertations',
 	report: 'Reports',
-	'special-issue': 'Special issues'
+	'special-issue': 'Special issues',
+	'working-paper': 'Working papers'
 };
 
 /** Sentence-case labels for the publications stacked-bar visualisation. */
@@ -120,7 +126,8 @@ export const PUBLICATION_TYPE_CHART_LABELS: Record<string, string> = {
 	encyclopedia: 'Encyclopedia entry',
 	blogpost: 'Blog post',
 	'masters-thesis': "Master's thesis",
-	'phd-dissertation': 'PhD dissertation'
+	'phd-dissertation': 'PhD dissertation',
+	'working-paper': 'Working paper'
 };
 
 /** Compact labels for the publications Gantt visualisation. */
@@ -135,7 +142,8 @@ export const PUBLICATION_TYPE_GANTT_LABELS: Record<string, string> = {
 	encyclopedia: 'Encyclopedia',
 	blogpost: 'Blog Post',
 	'masters-thesis': 'Thesis',
-	'phd-dissertation': 'Dissertation'
+	'phd-dissertation': 'Dissertation',
+	'working-paper': 'Working Paper'
 };
 
 /** Labels for the sidebar "relevant publications" type-filter buttons. */
@@ -148,7 +156,8 @@ export const PUBLICATION_TYPE_PANEL_LABELS: Record<string, string> = {
 	report: 'Report',
 	encyclopedia: 'Encyclopedia Entry',
 	blogpost: 'Blog Post',
-	dissertation: 'Dissertation'
+	dissertation: 'Dissertation',
+	'working-paper': 'Working Paper'
 };
 
 /** OpenURL/COinS `rft.genre` values per publication type. */
@@ -163,7 +172,10 @@ export const PUBLICATION_TYPE_COINS_GENRES: Record<string, string> = {
 	'phd-dissertation': 'dissertation',
 	'masters-thesis': 'dissertation',
 	'conference-proceedings': 'proceeding',
-	'bulletin-article': 'article'
+	'bulletin-article': 'article',
+	// A numbered working paper in an institutional series is report-shaped for
+	// OpenURL purposes — no journal, but an issuing body and a series number.
+	'working-paper': 'report'
 };
 
 /** Dublin Core `DC.type` values per publication type. */
@@ -178,7 +190,8 @@ export const PUBLICATION_TYPE_DC_TYPES: Record<string, string> = {
 	'phd-dissertation': 'Text',
 	'masters-thesis': 'Text',
 	'conference-proceedings': 'Text',
-	'bulletin-article': 'Text'
+	'bulletin-article': 'Text',
+	'working-paper': 'Text'
 };
 
 /**

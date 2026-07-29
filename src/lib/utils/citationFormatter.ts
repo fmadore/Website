@@ -146,6 +146,24 @@ export function formatCitation(publication: Publication): FormattedCitation {
 
 		detailsHtml = withFinalPeriod(details);
 		year = undefined; // Year is included in the full date
+	} else if (type === 'working-paper') {
+		// Format: *Series* Issue: Pages. Publisher.
+		// A working paper is identified by its series and number, not a journal;
+		// the issuing body follows as an imprint when it isn't the series itself.
+		let details = '';
+		const seriesTitle = publication.series || publication.journal;
+		if (seriesTitle) details += `<em>${seriesTitle}</em>`;
+		if (publication.volume) details += ` ${publication.volume}`;
+		if (publication.issue) details += ` ${publication.issue}`;
+		if (publication.pages) details += `: ${publication.pages}`;
+		if (publication.publisher && publication.publisher !== seriesTitle) {
+			if (details) details += '. ';
+			details += publication.placeOfPublication
+				? `${publication.placeOfPublication}: ${publication.publisher}`
+				: publication.publisher;
+		}
+		detailsHtml = withFinalPeriod(details);
+		year = publication.year;
 	} else if (type === 'report') {
 		// Format similar to article: *Publisher* Volume(Issue): Pages.
 		let details = '';

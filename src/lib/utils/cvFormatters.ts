@@ -1,7 +1,7 @@
 import type { Publication } from '$lib/types';
 import type { AffiliationPeriod } from '$lib/types/affiliation';
 import { author as siteAuthor } from '$lib/data/siteConfig';
-import { joinNames, splitNames } from '$lib/utils/nameUtils';
+import { formatAuthorsWithEtAl, joinNames, splitNames } from '$lib/utils/nameUtils';
 
 /**
  * Returns the year label to show in the CV gutter. Forthcoming publications
@@ -20,6 +20,10 @@ export function getCVDisplayYear(pub: Pick<Publication, 'date' | 'year'>): strin
  * Formats author list with the site owner in bold for CV display
  * Returns empty string if the site owner is the only author
  * Only bolds the name when there are multiple authors
+ *
+ * Collective work (a two-dozen-signatory position paper) collapses to
+ * "A, B, C et al." rather than running a full page of names down the ledger;
+ * the site owner is always held in view, however late they sign.
  */
 export function formatCVAuthorList(authorsInput: string[] | string | undefined): string {
 	if (!authorsInput) return '';
@@ -41,10 +45,10 @@ export function formatCVAuthorList(authorsInput: string[] | string | undefined):
 
 	// Multiple authors - bold the site owner's name, join CV-style
 	// (", " between entries, " and " before the last, no serial comma).
-	return joinNames(
-		authorsArray.map((author) =>
-			author === siteAuthor.name ? `<strong>${siteAuthor.name}</strong>` : author
-		)
+	const boldedAuthor = `<strong>${siteAuthor.name}</strong>`;
+	return formatAuthorsWithEtAl(
+		authorsArray.map((author) => (author === siteAuthor.name ? boldedAuthor : author)),
+		{ mustInclude: boldedAuthor }
 	);
 }
 
@@ -187,6 +191,7 @@ export function groupPublicationsByType(publications: Publication[]) {
 		'special-issue',
 		'article',
 		'chapter',
+		'working-paper',
 		'report',
 		'encyclopedia',
 		'bulletin-article',

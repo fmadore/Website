@@ -142,7 +142,10 @@ export function generateBibtex(publication: Publication): string {
 			case 'masters-thesis':
 				bibtexType = 'mastersthesis';
 				break;
+			// Working papers join reports as @techreport: the entry type that
+			// carries an issuing body (institution) plus a series number.
 			case 'report':
+			case 'working-paper':
 				bibtexType = 'techreport';
 				break;
 			case 'special-issue': // if it's an edited work, might be 'proceedings' or 'book'

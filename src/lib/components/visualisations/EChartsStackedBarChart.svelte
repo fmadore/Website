@@ -30,7 +30,7 @@ ECharts Stacked Bar Chart component
 		 * signal; the rest are the earthy --sys-viz-* ramp. */
 		/* Bare var(--sys-viz-*) tokens only — resolveColors() must return
 		 * concrete colours for ECharts' canvas renderer (no color-mix()). The
-		 * 11 keys reuse the 7-hue ramp; the dominant series (journal articles)
+		 * 12 keys reuse the 7-hue ramp; the dominant series (journal articles)
 		 * carries the pine signal. */
 		colors = [
 			'var(--sys-viz-1)', // article → Journal article — pine (signal)
@@ -43,7 +43,8 @@ ECharts Stacked Bar Chart component
 			'var(--sys-viz-2)', // masters-thesis — slate-blue (reuse)
 			'var(--sys-viz-3)', // phd-dissertation — olive (reuse)
 			'var(--sys-viz-4)', // report → Research report — ochre (reuse)
-			'var(--sys-viz-6)' // special-issue → Special issue — plum (reuse)
+			'var(--sys-viz-6)', // special-issue → Special issue — plum (reuse)
+			'var(--sys-viz-5)' // working-paper → Working paper — mauve (reuse)
 		]
 	}: {
 		data?: DataItem[];

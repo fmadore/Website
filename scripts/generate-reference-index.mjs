@@ -56,6 +56,7 @@ const TEMPLATE_IDS = new Set([
 	'blogpost-template-id',
 	'phd-dissertation-template-id',
 	'conference-proceedings-template-id',
+	'working-paper-template-id',
 	// src/lib/data/communications/index.ts → templateIds
 	'paper-template-id',
 	'panel-template-id',

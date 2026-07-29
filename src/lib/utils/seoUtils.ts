@@ -259,6 +259,11 @@ function publicationVenueInfo(publication: Publication) {
 	} else if (type === 'book' || type === 'report') {
 		if (publisher) venueInfo.push(publisher);
 		if (placeOfPublication) venueInfo.push(placeOfPublication);
+	} else if (type === 'working-paper') {
+		// The series is the venue; the issuing body follows only if distinct.
+		const seriesTitle = publication.series || journal;
+		if (seriesTitle) venueInfo.push(seriesTitle);
+		if (publisher && publisher !== seriesTitle) venueInfo.push(publisher);
 	} else if (type === 'encyclopedia') {
 		if (publication.encyclopediaTitle) venueInfo.push(publication.encyclopediaTitle);
 	} else if (type === 'masters-thesis' || type === 'phd-dissertation') {

@@ -68,7 +68,7 @@ function buildTools(): ToolDescriptor[] {
 	return [
 		{
 			name: 'search_publications',
-			description: `Search ${author.name}'s academic publications (books, journal articles, book chapters, edited volumes, reports, and encyclopedia entries). Filter by free-text query, publication type, and/or year. Returns matching publications with titles, years, types, authors, and URLs.`,
+			description: `Search ${author.name}'s academic publications (books, journal articles, book chapters, edited volumes, working papers, reports, and encyclopedia entries). Filter by free-text query, publication type, and/or year. Returns matching publications with titles, years, types, authors, and URLs.`,
 			inputSchema: {
 				type: 'object',
 				properties: {
@@ -90,7 +90,8 @@ function buildTools(): ToolDescriptor[] {
 							'phd-dissertation',
 							'masters-thesis',
 							'conference-proceedings',
-							'bulletin-article'
+							'bulletin-article',
+							'working-paper'
 						]
 					},
 					year: {

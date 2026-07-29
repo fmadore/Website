@@ -159,8 +159,8 @@
 			</p>
 			<h1 class="index-title">Publications</h1>
 			<p class="standfirst index-standfirst">
-				Books, journal articles, chapters, special issues and reports on Islam and Muslim societies
-				in West Africa — the full record, set as a working bibliography.
+				Books, journal articles, chapters, special issues, working papers and reports on Islam and
+				Muslim societies in West Africa — the full record, set as a working bibliography.
 			</p>
 		</div>
 

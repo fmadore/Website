@@ -22,7 +22,8 @@ const templateIds = [
 	'encyclopedia-template-id',
 	'blogpost-template-id',
 	'phd-dissertation-template-id',
-	'conference-proceedings-template-id'
+	'conference-proceedings-template-id',
+	'working-paper-template-id'
 ];
 
 // Directory-to-type mapping for sourceDirType extraction
@@ -36,7 +37,8 @@ const dirTypeMap: Record<string, string> = {
 	'./encyclopedia/': 'encyclopedia',
 	'./blogposts/': 'blogposts',
 	'./dissertations/': 'dissertations',
-	'./proceedings/': 'proceedings'
+	'./proceedings/': 'proceedings',
+	'./working-papers/': 'workingPapers'
 };
 
 // Use a single static glob import (excluding per-type template files)
@@ -52,6 +54,7 @@ const publicationModules = import.meta.glob(
 		'./blogposts/*.ts',
 		'./dissertations/*.ts',
 		'./proceedings/*.ts',
+		'./working-papers/*.ts',
 		'!./*/*-template.ts'
 	],
 	{ eager: true }

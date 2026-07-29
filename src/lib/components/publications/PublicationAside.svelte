@@ -64,8 +64,17 @@ key-term sizing, BibTeX download — is assembled here.
 
 		push('Type', typeLabel);
 
+		// A working paper's series plays the role a journal plays elsewhere, so it
+		// leads the volume/issue rows below rather than sitting with the imprint.
+		const isWorkingPaper = publication.type === 'working-paper';
+		if (isWorkingPaper) {
+			push('Series', publication.series);
+		}
+
 		// Journal-family fields.
-		if (['article', 'special-issue', 'bulletin-article'].includes(publication.type)) {
+		if (
+			['article', 'special-issue', 'bulletin-article', 'working-paper'].includes(publication.type)
+		) {
 			push('Journal', publication.journal);
 			push('Volume', publication.volume);
 			push('Issue', publication.issue);
@@ -85,7 +94,7 @@ key-term sizing, BibTeX download — is assembled here.
 
 		push('Publisher', publication.publisher);
 		push('Place', publication.placeOfPublication);
-		push('Series', publication.series);
+		if (!isWorkingPaper) push('Series', publication.series);
 
 		// Thesis fields.
 		if (['masters-thesis', 'phd-dissertation'].includes(publication.type)) {

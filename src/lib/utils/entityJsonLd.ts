@@ -56,6 +56,7 @@ function resolvePublicationJsonLdType(
 		case 'specialIssues':
 			return 'ScholarlyArticle';
 		case 'reports':
+		case 'workingPapers':
 			return 'Report';
 		case 'encyclopedia':
 			return 'Article';
