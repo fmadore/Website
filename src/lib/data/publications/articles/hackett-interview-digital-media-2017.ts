@@ -71,6 +71,14 @@ export const hackettInterviewDigitalMedia: Publication = {
 				'A Woman Is Not Created Mute: An Ethnography of Gender and Voice on Islamic Radio in Tanga, Tanzania',
 			source: 'Journal of the American Academy of Religion 94, no. 1: 52-80',
 			url: 'https://doi.org/10.1093/jaarel/lfag003'
+		},
+		{
+			authors: ['Chijioke Azuawusiefe'],
+			year: 2026,
+			title:
+				'Nollywood and Popular Religion: Productions of Prosperity, Gender, and the Supernatural in Nigerian Cinema',
+			source: 'Bloomington: Indiana University Press, 2026',
+			url: 'https://doi.org/10.2979/18936.0'
 		}
 	]
 };
