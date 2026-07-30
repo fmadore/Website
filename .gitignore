@@ -35,7 +35,10 @@ tests/example.spec.js
 /playwright/.cache/
 
 # Claude Code
-.claude/
+# Ignore the contents, not the directory itself — a "!" re-include cannot reach
+# inside an excluded directory, since git never descends into one.
+.claude/*
+!.claude/launch.json
 tmpclaude-*
 
 # Codex
