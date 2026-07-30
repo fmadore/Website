@@ -75,6 +75,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      # Assertions about the build OUTPUT, so they have to follow the build:
+      # that no heavy library has drifted into the static import graph, and that
+      # every URL the sitemap advertises actually ships as a page.
+      - name: Build output checks (bundle budget, prerender coverage)
+        run: npm run check:build
+
       - name: Upload build for E2E job
         uses: actions/upload-artifact@v7
         with:

@@ -1,0 +1,86 @@
+name: Citation watch
+
+# Monthly, not weekly: OpenAlex ingests new citations in batches, and a
+# bibliography does not change fast enough to justify a more frequent nudge.
+on:
+  schedule:
+    - cron: '43 7 1 * *' # 1st of the month, 07:43 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: citation-watch
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  watch:
+    name: Check for new citations and missing publications
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      # No `npm ci` and no build: the script reads the data files directly via
+      # Node's TypeScript type stripping and talks to OpenAlex over HTTP, so it
+      # needs neither dependencies nor a compiled site.
+      - name: Check citations
+        run: node scripts/check-citations.mjs --report=citation-report.md
+
+      - name: Decide whether there is anything to report
+        id: triage
+        run: |
+          if grep -q '^## .* new citation\|^## .* work' citation-report.md; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Compose issue body
+        if: steps.triage.outputs.found == 'true'
+        run: |
+          {
+            echo "Monthly sweep of OpenAlex for works citing this bibliography, and for works under the ORCID that are not yet on the site."
+            echo
+            cat citation-report.md
+            echo
+            echo "---"
+            echo "Each \`citedBy\` block is ready to paste into the named data file. Entries disappear from this issue once committed — the repository is the state, so there is nothing to tick off."
+            echo
+            echo "Reproduce locally with \`npm run check:citations\`."
+            echo "From [\`${{ github.workflow }}\`](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}), run ${{ github.run_number }}."
+          } > issue-body.md
+
+      # As with the link check: one long-lived issue, rewritten in place. The
+      # body shrinks as citations get committed, so the issue doubles as the
+      # remaining to-do list.
+      - name: Open or update the report issue
+        if: steps.triage.outputs.found == 'true'
+        uses: peter-evans/create-issue-from-file@v6
+        with:
+          title: 'New citations and missing publications'
+          content-filepath: issue-body.md
+          labels: bibliography, citations
+
+      - name: Close the report issue once clean
+        if: steps.triage.outputs.found == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          number=$(gh issue list --state open --label citations \
+            --json number,title \
+            --jq '.[] | select(.title == "New citations and missing publications") | .number' | head -n1)
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body "Every OpenAlex citation is now recorded and every indexed work is on the site. Closing."
+            gh issue close "$number"
+          else
+            echo "No open citation-watch issue; nothing to close."
+          fi

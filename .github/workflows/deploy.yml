@@ -69,6 +69,11 @@ jobs:
       - name: Build with SvelteKit
         run: npm run build
 
+      # Same output assertions the PR gate runs. Kept before the upload so a
+      # build that would ship a sitemap full of 404s never reaches Pages.
+      - name: Build output checks (bundle budget, prerender coverage)
+        run: npm run check:build
+
       - name: Create .nojekyll file
         run: touch build/.nojekyll
 

@@ -23,10 +23,32 @@ npm run test:e2e     # Run Playwright E2E smoke tests (builds + previews first)
 npm run test:e2e:ui  # Playwright tests with UI
 ```
 
+Checks that read the **build output** (run `npm run build` first):
+
+```bash
+npm run check:build     # bundle budget + prerender coverage (both run in CI)
+npm run check:bundle    # heavy libs stay dynamically imported; entry/route size budgets
+npm run check:prerender # every URL in sitemap.xml resolves to a page that shipped
+npm run check:links     # external links: DOIs via the Handle System, rest over HTTP
+npm run check:citations # OpenAlex sweep for new citations + works missing from the site
+```
+
 > **Testing layout**: Unit tests are co-located as `*.test.ts` next to the
 > module they cover (e.g. `src/lib/utils/vizAggregation.test.ts`) and run in a
 > plain Node environment via `vitest.config.ts`. E2E smoke tests live in
 > `tests-e2e/` and run against the production build (`playwright.config.ts`).
+>
+> **Scheduled workflows**: `link-check.yml` (weekly) and `citation-watch.yml`
+> (monthly) each maintain a single long-lived GitHub issue, rewritten in place
+> and closed automatically once clean — never one issue per run.
+
+### Prerendering
+
+The `[id]` routes each export `entries`, enumerating their dataset so every item
+is prerendered. Do not drop it: the index pages build their lists on the client,
+so the prerender crawler finds no anchors to follow, while `sitemap.xml` is
+generated from the datasets and would keep advertising URLs that ship no page.
+`npm run check:prerender` enforces this.
 
 ## Architecture
 

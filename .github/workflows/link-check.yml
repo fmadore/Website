@@ -1,0 +1,93 @@
+name: Link check
+
+# External links rot on the world's schedule, not on this repo's — so this runs
+# weekly rather than per-PR. Putting it in the PR gate would make CI red for
+# changes that touched nothing related, which is the fastest way to teach
+# yourself to ignore a failing check.
+on:
+  schedule:
+    - cron: '17 6 * * 1' # Mondays, 06:17 UTC — off the hour to dodge the cron rush
+  workflow_dispatch: # run on demand from the Actions tab
+
+concurrency:
+  group: link-check
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  issues: write # to open/update the report issue
+
+jobs:
+  check:
+    name: Check external links
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # The checker reads the BUILT site, not the sources: the *-template.ts
+      # scaffolds carry example.com placeholders that never ship, and prose
+      # links live inside Svelte components rather than the data files.
+      - name: Build
+        run: npm run build
+
+      - name: Check links
+        id: check
+        # `|| true` so a dead link doesn't abort the job before the issue is
+        # filed — the report itself is the deliverable. The script's exit code
+        # is captured for the steps below.
+        run: |
+          set +e
+          node scripts/check-links.mjs --report=link-report.md
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          set -e
+
+      - name: Compose issue body
+        if: steps.check.outputs.exit_code != '0'
+        run: |
+          {
+            echo "Weekly sweep of every outbound link on the built site."
+            echo
+            cat link-report.md
+            echo
+            echo "---"
+            echo "Reproduce locally with \`npm run check:links\` (after \`npm run build\`)."
+            echo "From [\`${{ github.workflow }}\`](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}), run ${{ github.run_number }}."
+          } > issue-body.md
+
+      # One long-lived issue, edited in place. A fresh issue per run would turn
+      # a slow-moving problem into a notification stream and get muted.
+      - name: Open or update the report issue
+        if: steps.check.outputs.exit_code != '0'
+        uses: peter-evans/create-issue-from-file@v6
+        with:
+          title: 'Dead external links'
+          content-filepath: issue-body.md
+          labels: maintenance, links
+
+      # When the last dead link is fixed, close the issue rather than leaving a
+      # stale one open — otherwise the tracker lies about the site's state.
+      - name: Close the report issue once clean
+        if: steps.check.outputs.exit_code == '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          number=$(gh issue list --state open --label links \
+            --search 'Dead external links in:title' \
+            --json number,title \
+            --jq '.[] | select(.title == "Dead external links") | .number' | head -n1)
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body "All external links resolve again as of run ${{ github.run_number }}. Closing."
+            gh issue close "$number"
+          else
+            echo "No open link-check issue; nothing to close."
+          fi
