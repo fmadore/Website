@@ -3,6 +3,9 @@ import { buildDhProjectJsonLd } from '$lib/utils/entityJsonLd';
 import { loadEntityDetail } from '$lib/utils/entityPageLoader';
 import type { PageLoad } from './$types';
 
+/** Every project gets a page — see the note in publications/[id]/+page.ts. */
+export const entries = () => allDhProjects.map(({ id }) => ({ id }));
+
 export const load: PageLoad = ({ params }) => {
 	const { entity: project, jsonLdString } = loadEntityDetail({
 		id: params.id,
