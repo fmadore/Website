@@ -92,6 +92,26 @@
 		<div class="featured-grid grid-stagger">
 			{#each processedProjects as project (project.id)}
 				<article class="featured-cell">
+					<p class="eyebrow featured-eyebrow">
+						{project.yearsLabel} · {project.badge}
+					</p>
+
+					<h2 class="featured-title">
+						<!-- eslint-disable svelte/no-navigation-without-resolve -- pre-resolved URL -->
+						<a
+							href={project.finalLinkUrl}
+							target={project.linkTarget}
+							rel={project.linkTarget === '_blank' ? 'noopener noreferrer' : null}
+						>
+							{project.title}
+						</a>
+						<!-- eslint-enable svelte/no-navigation-without-resolve -->
+					</h2>
+
+					<!-- The plate follows the headline in the source (the reading order
+					     the stacked mobile column gets); on the two-column layout it is
+					     ordered back above the eyebrow as the lead image of the cell.
+					     It is decorative here — the title carries the same link. -->
 					<!-- eslint-disable svelte/no-navigation-without-resolve -- pre-resolved URL -->
 					{#if project.imageUrl}
 						<a
@@ -114,22 +134,6 @@
 						</a>
 					{/if}
 					<!-- eslint-enable svelte/no-navigation-without-resolve -->
-
-					<p class="eyebrow featured-eyebrow">
-						{project.yearsLabel} · {project.badge}
-					</p>
-
-					<h2 class="featured-title">
-						<!-- eslint-disable svelte/no-navigation-without-resolve -- pre-resolved URL -->
-						<a
-							href={project.finalLinkUrl}
-							target={project.linkTarget}
-							rel={project.linkTarget === '_blank' ? 'noopener noreferrer' : null}
-						>
-							{project.title}
-						</a>
-						<!-- eslint-enable svelte/no-navigation-without-resolve -->
-					</h2>
 
 					<p class="featured-desc">{project.shortDescription}</p>
 
@@ -324,10 +328,25 @@
 		outline-offset: var(--space-2xs);
 	}
 
-	/* Two-column layout with the hairline divider between cells. */
+	/* Stacked (single column): a hairline closes each cell so the next project's
+	 * plate cannot read as the previous entry's closing image. */
+	@media (--md-down) {
+		.featured-cell + .featured-cell {
+			margin-top: var(--space-lg);
+			padding-top: var(--space-lg);
+			border-top: var(--rule-hairline) solid var(--color-border);
+		}
+	}
+
+	/* Two-column layout with the hairline divider between cells. The plate leads
+	 * the cell here — there is no preceding entry for it to be confused with. */
 	@media (--md) {
 		.featured-grid {
 			grid-template-columns: 1fr 1fr;
+		}
+
+		.featured-media {
+			order: -1;
 		}
 
 		.featured-cell:first-child {

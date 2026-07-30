@@ -148,107 +148,141 @@ key-term sizing, BibTeX download — is assembled here.
 
 <!-- ═══ ASIDE — THE METADATA ═══ -->
 <aside class="pub-aside">
-	{#if coverSrc}
-		<figure class="pub-cover">
-			<img class="plate pub-cover-img" src="{base}/{coverSrc}" alt={coverAlt} loading="lazy" />
-			<figcaption class="plate-caption">Fig. 1 — cover.</figcaption>
-		</figure>
-	{/if}
-
-	<!-- Metadata ledger — mono key/value hairline rows. -->
-	<div class="pub-meta">
-		<h2 class="pub-aside-label">Record</h2>
-		<dl class="pub-meta-ledger">
-			{#each metadataRows as row (row.key)}
-				<div class="pub-meta-row">
-					<dt class="pub-meta-key">{row.key}</dt>
-					<dd class="pub-meta-value" class:pub-meta-value--accent={row.accent}>
-						{#if row.href && row.external}
-							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
-							<a href={row.href} target="_blank" rel="noopener" class="pub-meta-link"
-								>{row.value} ↗</a
-							>
-						{:else if row.href}
-							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed internal path -->
-							<a href={row.href} class="pub-meta-link">{row.value} →</a>
-						{:else}
-							{row.value}
-						{/if}
-					</dd>
-				</div>
-			{/each}
-		</dl>
-	</div>
-
-	<!-- Tags -->
-	{#if tags.length > 0}
-		<div class="pub-tags">
-			<h2 class="pub-aside-label">Tags</h2>
-			<div class="chip-row">
-				{#each tags as tag (tag)}
-					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- tag search URL -->
-					<a class="chip" href="{base}/publications?tag={encodeURIComponent(tag)}">{tag}</a>
-				{/each}
-			</div>
-		</div>
-	{/if}
-
-	<!-- Key terms — real full-text frequencies, sized by rank. -->
-	{#if keyTerms.length > 0}
-		<div class="pub-key-terms">
-			<h2 class="pub-aside-label">Key Terms</h2>
-			<div class="key-terms">
-				{#each keyTerms as term (term.word)}
-					<span style="font-size: {term.size.toFixed(1)}px;">{term.word}</span>
-				{/each}
-			</div>
-			<p class="pub-key-terms-note">Most frequent terms from the full text</p>
-		</div>
-	{/if}
-
-	<!-- CTAs -->
-	<!-- eslint-disable svelte/no-navigation-without-resolve -- external publication links -->
-	<div class="pub-cta">
-		{#if publication.url}
-			<a
-				href={publication.url}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="btn btn-accent btn-block"
-			>
-				Access Publication ↗
-			</a>
+	<!-- Primary apparatus — what identifies and opens the record. Stays with the
+	     masthead when the rail dissolves into a single column. -->
+	<div class="pub-rail-primary">
+		{#if coverSrc}
+			<figure class="pub-cover">
+				<img class="plate pub-cover-img" src="{base}/{coverSrc}" alt={coverAlt} loading="lazy" />
+				<figcaption class="plate-caption">Fig. 1 — cover.</figcaption>
+			</figure>
 		{/if}
-		{#if publication.additionalUrls}
-			{#each publication.additionalUrls.filter((l) => l.url && l.label) as link (link.url)}
+
+		<!-- Metadata ledger — mono key/value hairline rows. -->
+		<div class="pub-meta">
+			<h2 class="pub-aside-label">Record</h2>
+			<dl class="pub-meta-ledger">
+				{#each metadataRows as row (row.key)}
+					<div class="pub-meta-row">
+						<dt class="pub-meta-key">{row.key}</dt>
+						<dd class="pub-meta-value" class:pub-meta-value--accent={row.accent}>
+							{#if row.href && row.external}
+								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
+								<a href={row.href} target="_blank" rel="noopener" class="pub-meta-link"
+									>{row.value} ↗</a
+								>
+							{:else if row.href}
+								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed internal path -->
+								<a href={row.href} class="pub-meta-link">{row.value} →</a>
+							{:else}
+								{row.value}
+							{/if}
+						</dd>
+					</div>
+				{/each}
+			</dl>
+		</div>
+
+		<!-- CTAs -->
+		<!-- eslint-disable svelte/no-navigation-without-resolve -- external publication links -->
+		<div class="pub-cta">
+			{#if publication.url}
 				<a
-					href={link.url}
+					href={publication.url}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="btn btn-outline-secondary btn-block"
+					class="btn btn-accent btn-block"
 				>
-					{link.label} ↗
+					Access Publication ↗
 				</a>
-			{/each}
-		{/if}
-		<button onclick={downloadBibtex} class="btn btn-outline-primary btn-block cursor-pointer">
-			Export BibTeX
-		</button>
+			{/if}
+			{#if publication.additionalUrls}
+				{#each publication.additionalUrls.filter((l) => l.url && l.label) as link (link.url)}
+					<a
+						href={link.url}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="btn btn-outline-secondary btn-block"
+					>
+						{link.label} ↗
+					</a>
+				{/each}
+			{/if}
+			<button onclick={downloadBibtex} class="btn btn-outline-primary btn-block cursor-pointer">
+				Export BibTeX
+			</button>
+		</div>
+		<!-- eslint-enable svelte/no-navigation-without-resolve -->
 	</div>
-	<!-- eslint-enable svelte/no-navigation-without-resolve -->
+
+	<!-- Secondary apparatus — indexing, read after the document itself. -->
+	{#if tags.length > 0 || keyTerms.length > 0}
+		<div class="pub-rail-secondary">
+			<!-- Tags -->
+			{#if tags.length > 0}
+				<div class="pub-tags">
+					<h2 class="pub-aside-label">Tags</h2>
+					<div class="chip-row">
+						{#each tags as tag (tag)}
+							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- tag search URL -->
+							<a class="chip" href="{base}/publications?tag={encodeURIComponent(tag)}">{tag}</a>
+						{/each}
+					</div>
+				</div>
+			{/if}
+
+			<!-- Key terms — real full-text frequencies, sized by rank. -->
+			{#if keyTerms.length > 0}
+				<div class="pub-key-terms">
+					<h2 class="pub-aside-label">Key Terms</h2>
+					<div class="key-terms">
+						{#each keyTerms as term (term.word)}
+							<span style="font-size: {term.size.toFixed(1)}px;">{term.word}</span>
+						{/each}
+					</div>
+					<p class="pub-key-terms-note">Most frequent terms from the full text</p>
+				</div>
+			{/if}
+		</div>
+	{/if}
 </aside>
 
 <style>
 	/* ── Aside ─────────────────────────────────────────────────────────────── */
-	.pub-aside {
+	.pub-aside,
+	.pub-rail-primary,
+	.pub-rail-secondary {
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-xl);
 		min-width: 0;
 	}
 
+	/* Below the two-column breakpoint the rail has no box of its own: its two
+	   groups become items of the page grid so the cover, the Record ledger and
+	   the access buttons sit with the masthead (order 1) while the indexing
+	   apparatus falls past the document (order 3). The body is order 2 — see
+	   /publications/[id]/+page.svelte. */
+	@media (--lg-down) {
+		.pub-aside {
+			display: contents;
+		}
+
+		.pub-rail-primary {
+			order: 1;
+		}
+
+		.pub-rail-secondary {
+			order: 3;
+		}
+	}
+
+	/* The rail occupies column two across both rows of the page grid (masthead
+	   and body), so it starts level with the eyebrow and can follow the scroll. */
 	@media (--lg) {
 		.pub-aside {
+			grid-column: 2;
+			grid-row: 1 / span 2;
 			position: sticky;
 			top: var(--space-xl);
 		}

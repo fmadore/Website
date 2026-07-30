@@ -114,30 +114,36 @@
 			<span class="pub-breadcrumb-current">{typeLabel}</span>
 		</nav>
 
-		<div class="pub-grid">
-			<!-- ═══ MAIN COLUMN ═══ -->
-			<article class="pub-main">
-				<header class="pub-header">
-					<p class="eyebrow pub-eyebrow">
-						<span>{typeLabel}</span>
+		<!-- The whole record is one article: masthead, body column and metadata
+		     rail. The masthead is a grid child of its own (rather than the first
+		     block of the body column) so that below the two-column breakpoint the
+		     rail's blocks can order themselves against it — cover and Record next
+		     to the title, ahead of the document. -->
+		<article class="pub-grid">
+			<!-- ═══ MASTHEAD ═══ -->
+			<header class="pub-header">
+				<p class="eyebrow pub-eyebrow">
+					<span>{typeLabel}</span>
+					<span class="pub-eyebrow-sep" aria-hidden="true">·</span>
+					<span>{publication.date}</span>
+					{#if isOpenAccess}
 						<span class="pub-eyebrow-sep" aria-hidden="true">·</span>
-						<span>{publication.date}</span>
-						{#if isOpenAccess}
-							<span class="pub-eyebrow-sep" aria-hidden="true">·</span>
-							<span>Open Access</span>
-						{/if}
-					</p>
-
-					<h1 class="pub-title">{publication.title}</h1>
-
-					{#if byline}
-						<p class="pub-byline">
-							{#if publication.prefacedBy}by {byline}. Preface by {publication.prefacedBy}{:else}by
-								{byline}{/if}
-						</p>
+						<span>Open Access</span>
 					{/if}
-				</header>
+				</p>
 
+				<h1 class="pub-title">{publication.title}</h1>
+
+				{#if byline}
+					<p class="pub-byline">
+						{#if publication.prefacedBy}by {byline}. Preface by {publication.prefacedBy}{:else}by
+							{byline}{/if}
+					</p>
+				{/if}
+			</header>
+
+			<!-- ═══ MAIN COLUMN ═══ -->
+			<div class="pub-main">
 				<!-- Abstract -->
 				{#if abstractParagraphs.length > 0}
 					<section class="section pub-section scroll-reveal" aria-labelledby="pub-abstract-head">
@@ -179,11 +185,11 @@
 						/>
 					</div>
 				{/if}
-			</article>
+			</div>
 
 			<!-- ═══ ASIDE — THE METADATA ═══ -->
 			<PublicationAside {publication} {typeLabel} {projectUrl} />
-		</div>
+		</article>
 	</div>
 </div>
 
@@ -226,23 +232,24 @@
 		color: var(--color-text-muted);
 	}
 
-	/* ── Two-column grid: main + 380px metadata rail ──────────────────────── */
+	/* ── Two-column grid: masthead + main + 380px metadata rail ───────────── */
 	.pub-grid {
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: var(--space-2xl);
 	}
 
-	@media (--lg) {
-		.pub-grid {
-			grid-template-columns: minmax(0, 1fr) 380px;
-			gap: var(--space-3xl);
-			align-items: start;
-		}
-	}
-
+	/* Both column-one blocks opt out of the automatic min-content floor, so a
+	   long title or a long metadata value can never widen the grid track. */
+	.pub-header,
 	.pub-main {
 		min-width: 0;
+	}
+
+	/* The grid row gap sets the rhythm below the masthead, so the body's first
+	   section must not stack its own top margin on top of it. */
+	.pub-main > :global(:first-child) {
+		margin-top: 0;
 	}
 
 	/* Consistent rhythm between the numbered sections. */
@@ -250,11 +257,36 @@
 		margin-top: var(--space-2xl);
 	}
 
-	/* ── Header ────────────────────────────────────────────────────────────── */
-	.pub-header {
-		margin-bottom: var(--space-xl);
+	/* Single column: the rail dissolves (see PublicationAside) and its blocks
+	   place themselves around the body — cover + Record + access at order 1,
+	   the document at order 2, tags + key terms at order 3. */
+	@media (--lg-down) {
+		.pub-main {
+			order: 2;
+		}
 	}
 
+	@media (--lg) {
+		.pub-grid {
+			grid-template-columns: minmax(0, 1fr) 380px;
+			column-gap: var(--space-3xl);
+			align-items: start;
+		}
+
+		/* Masthead over the body in column one; the rail spans both rows so it
+		   still starts level with the eyebrow. */
+		.pub-header {
+			grid-column: 1;
+			grid-row: 1;
+		}
+
+		.pub-main {
+			grid-column: 1;
+			grid-row: 2;
+		}
+	}
+
+	/* ── Masthead ──────────────────────────────────────────────────────────── */
 	.pub-eyebrow {
 		display: flex;
 		flex-wrap: wrap;
@@ -277,6 +309,16 @@
 		color: var(--color-text-emphasis);
 		margin: 0;
 		text-wrap: balance;
+	}
+
+	/* --font-size-4xl barely scales down (clamp floor ~47px), which a long
+	   bibliographic title turns into a screen and a half of headline before the
+	   cover. One step down in the narrow column; no further, since the section
+	   heads sit at --font-size-2xl and the masthead must stay above them. */
+	@media (--md-down) {
+		.pub-title {
+			font-size: var(--font-size-3xl);
+		}
 	}
 
 	/* Byline — the document voice, serif italic. */
