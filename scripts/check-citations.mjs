@@ -82,18 +82,65 @@ if (publications.length === 0) {
 // Matching helpers
 // ---------------------------------------------------------------------------
 
+/** The named entities publisher markup actually uses. */
+const ENTITIES = new Map([
+	['amp', '&'],
+	['lt', '<'],
+	['gt', '>'],
+	['quot', '"'],
+	['apos', "'"],
+	['nbsp', ' ']
+]);
+
+/** A code point a title can contain: in range, not a control, not a surrogate half. */
+const isTextCodePoint = (n) =>
+	Number.isInteger(n) && n >= 0x20 && n <= 0x10ffff && !(n >= 0xd800 && n <= 0xdfff);
+
+/**
+ * Decode HTML entities in a single pass over the string.
+ *
+ * A chain of `.replace()` calls cannot do this safely: expanding `&amp;` before
+ * `&lt;` walks `&amp;lt;` — which encodes the literal text "&lt;" — all the way
+ * down to `<`, inventing markup the source never contained. One pass with a
+ * lookup decodes each entity exactly once and never re-reads its own output.
+ */
+function decodeEntities(s) {
+	return s.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (match, body) => {
+		if (body[0] === '#') {
+			const hex = body[1] === 'x' || body[1] === 'X';
+			const code = Number.parseInt(hex ? body.slice(2) : body.slice(1), hex ? 16 : 10);
+			return isTextCodePoint(code) ? String.fromCodePoint(code) : match;
+		}
+		return ENTITIES.get(body.toLowerCase()) ?? match;
+	});
+}
+
+/**
+ * Remove tags until the string stops changing. One pass is not enough:
+ * deleting the inner tag of `<scr<b>ipt>` splices the outer one back together,
+ * so a single sweep can *produce* the markup it was meant to remove.
+ */
+function stripTags(s) {
+	let out = s;
+	let previous;
+	let passes = 0;
+	do {
+		previous = out;
+		out = out.replace(/<[^>]*>/g, '');
+	} while (out !== previous && ++passes < 100);
+	return out;
+}
+
 /**
  * OpenAlex titles carry publisher markup (`<i>ʿawra</i>`, `<sub>`, entities).
  * Strip it so a pasted `CitingWork` is plain text like every hand-written one.
+ *
+ * Stripping before decoding is deliberate: an escaped `&lt;i&gt;` was filed as
+ * visible text, and decoding first would promote it to a tag that the stripper
+ * then eats.
  */
 const cleanTitle = (s) =>
-	(s ?? '')
-		.replace(/<[^>]+>/g, '')
-		.replace(/&amp;/g, '&')
-		.replace(/&lt;/g, '<')
-		.replace(/&gt;/g, '>')
-		.replace(/&quot;/g, '"')
-		.replace(/&#39;/g, "'")
+	decodeEntities(stripTags(s ?? ''))
 		.replace(/\s+/g, ' ')
 		.trim();
 
@@ -342,7 +389,47 @@ const missing = ownWorks
 // Report
 // ---------------------------------------------------------------------------
 
-const esc = (s) => String(s).replace(/'/g, "\\'");
+/**
+ * Everything below turns API strings into a Markdown document that the
+ * workflow posts as a GitHub issue body, verbatim. A title is the one input
+ * here that someone else controls — OpenAlex indexes whatever a publisher
+ * files — so flatten it to inert text first: control characters (a newline
+ * ends a bullet early), backticks (which close the surrounding code fence),
+ * and any absurd length.
+ */
+function flatten(value, maxLength = 500) {
+	const text = String(value ?? '')
+		// eslint-disable-next-line no-control-regex
+		.replace(/[\u0000-\u001f\u007f]+/g, ' ')
+		.replace(/`/g, "'")
+		.replace(/\s+/g, ' ')
+		.trim();
+	return text.length > maxLength ? `${text.slice(0, maxLength - 1)}…` : text;
+}
+
+/**
+ * Escape a string for a single-quoted TypeScript literal.
+ *
+ * The backslash has to be doubled *first*. Escaping only the quote turns a
+ * title ending in a backslash into `'…\'`, whose closing quote is now itself
+ * escaped — the literal runs on into the following line and the pasted block
+ * no longer parses.
+ */
+const esc = (s) => flatten(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+
+/** Defuse the Markdown actives, for text rendered as prose rather than code. */
+const md = (s) => flatten(s).replace(/[\\`*_[\]<>#|]/g, (ch) => `\\${ch}`);
+
+/**
+ * Only what genuinely looks like a DOI URL reaches a data file. OpenAlex
+ * always spells this `https://doi.org/10.…`; anything else is dropped rather
+ * than pasted into the repository on trust.
+ */
+const safeDoiUrl = (raw) => {
+	const s = String(raw ?? '').trim();
+	return /^https:\/\/doi\.org\/10\.\d{4,9}\/[^\s"'<>\\]+$/i.test(s) ? s : undefined;
+};
+
 const lines = [];
 const totalNew = newCitations.reduce((n, e) => n + e.citing.length, 0);
 
@@ -364,10 +451,11 @@ if (totalNew) {
 		for (const c of citing) {
 			lines.push('{');
 			lines.push(`\tauthors: [${c.authors.map((a) => `'${esc(a)}'`).join(', ')}],`);
-			lines.push(`\tyear: ${c.year},`);
+			lines.push(`\tyear: ${Number(c.year) || 'undefined'},`);
 			lines.push(`\ttitle: '${esc(c.title)}',`);
 			if (c.source) lines.push(`\tsource: '${esc(c.source)}',`);
-			if (c.url) lines.push(`\turl: '${esc(c.url)}'`);
+			const url = safeDoiUrl(c.url);
+			if (url) lines.push(`\turl: '${esc(url)}'`);
 			lines.push('},');
 		}
 		lines.push('```', '');
@@ -382,8 +470,10 @@ if (missing.length) {
 		''
 	);
 	for (const w of missing) {
-		const doi = w.doi ? ` — ${w.doi}` : '';
-		lines.push(`- **${w.publication_year}** · ${w.title}${doi} _(${w.type})_`);
+		const url = safeDoiUrl(w.doi);
+		const doi = url ? ` — ${md(url)}` : '';
+		const year = Number(w.publication_year) || 'n.d.';
+		lines.push(`- **${year}** · ${md(cleanTitle(w.title))}${doi} _(${md(w.type)})_`);
 	}
 	lines.push('');
 }
