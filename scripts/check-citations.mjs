@@ -278,6 +278,12 @@ console.log(
 // Pass 1 — new citations
 // ---------------------------------------------------------------------------
 
+/** OpenAlex ids are URLs; the bare id is the last segment. */
+const workId = (work) =>
+	String(work?.id ?? '')
+		.split('/')
+		.pop();
+
 /** Link each OpenAlex work to a local publication: DOI first, then title. */
 function matchLocal(work) {
 	const doi = normDoi(work.doi);
@@ -300,7 +306,7 @@ for (const work of cited) {
 	if (!match) continue; // unmatched works are handled by pass 2
 
 	const known = new Set((match.record.citedBy ?? []).map((c) => normTitle(c.title)));
-	const openAlexId = work.id.split('/').pop();
+	const openAlexId = workId(work);
 
 	let citing;
 	try {
@@ -380,10 +386,42 @@ for (const work of cited) {
  */
 const REPORTABLE_TYPES = new Set(['article', 'book', 'book-chapter', 'dissertation', 'report']);
 
+/**
+ * OpenAlex work ids that duplicate something already on the site.
+ *
+ * A journal that supplies a translated title gets indexed twice: once as the
+ * record of account, carrying the DOI, and once as a bare title with no
+ * identifier at all. `matchLocal` cannot join them — there is no DOI to match
+ * on, and the two titles share almost no words once normalised — so the
+ * duplicate is reported as a missing publication every month.
+ *
+ * The list lives here rather than in `src/lib/data/publications/` on purpose:
+ * this is an artefact of one aggregator's deduplication, not a fact about the
+ * bibliography, and the data files should not have to carry it.
+ */
+const KNOWN_DUPLICATES = new Map([
+	[
+		'W3135158559',
+		"Cahiers d'études africaines' English title for hadj-cote-divoire-2018; " +
+			'the French record W2789989347 is the one carrying the DOI'
+	]
+]);
+
 const missing = ownWorks
 	.filter((w) => REPORTABLE_TYPES.has(w.type))
+	.filter((w) => !KNOWN_DUPLICATES.has(workId(w)))
 	.filter((w) => !matchLocal(w))
 	.sort((a, b) => (b.publication_year ?? 0) - (a.publication_year ?? 0));
+
+// A suppression that no longer suppresses anything is worse than none: it
+// reads as coverage while hiding nothing. Say so rather than let it rot.
+for (const [id, why] of KNOWN_DUPLICATES) {
+	if (!ownWorks.some((w) => workId(w) === id)) {
+		console.warn(
+			`[check-citations] stale KNOWN_DUPLICATES entry ${id} (${why}) — no longer indexed`
+		);
+	}
+}
 
 // ---------------------------------------------------------------------------
 // Report
