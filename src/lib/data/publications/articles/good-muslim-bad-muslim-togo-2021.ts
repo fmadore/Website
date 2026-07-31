@@ -68,7 +68,7 @@ export const goodMuslimBadMuslimTogo: Publication = {
 			year: 2025,
 			title: 'Komodifikasi Agama Dalam Politik Identitas',
 			source: 'Sidoarjo: Universitas Muhammadiyah Sidoarjo Press, 2025',
-			url: 'https://doi.org/10.21070/2025/978-623-464-117-2'
+			url: 'https://press.umsida.ac.id/index.php/umsidapress/article/view/978-623-464-117-2'
 		},
 		{
 			authors: ['Abel B.S. Gaiya'],

@@ -54,12 +54,12 @@
 		>, I show how vast, under-resourced collections can be made more accessible. This AI-assisted
 		approach transforms static archives into dynamic,
 		<a
-			href="https://islam.zmo.de/s/westafrica/page/visualisations"
+			href="https://islam.zmo.de/s/westafrica/page/explore"
 			target="_blank"
 			rel="noopener noreferrer">interactive visualisations</a
 		>, ranging from
 		<a
-			href="https://fmadore.github.io/IWAC-spatial-overview/"
+			href="https://islam.zmo.de/s/westafrica/page/spatial-exploration"
 			target="_blank"
 			rel="noopener noreferrer">network maps</a
 		> to word clouds, that facilitate independent hypothesis testing and cross-disciplinary dialogue.

@@ -97,7 +97,7 @@
 					through natural language prompts. Data visualisation transforms analyses into accessible
 					narratives: the
 					<a
-						href="https://islam.zmo.de/s/westafrica/page/visualisations"
+						href="https://islam.zmo.de/s/westafrica/page/explore"
 						target="_blank"
 						rel="noopener noreferrer">IWAC Dashboard</a
 					>
