@@ -16,8 +16,15 @@
 	import BaseMetaTags from '$lib/components/common/BaseMetaTags.svelte';
 	import { website } from '$lib/data/siteConfig';
 	import { getCitationGenre, getDcType } from '$lib/utils/publicationTypeLabels';
+	import { stripHtml } from '$lib/utils/textUtils';
 
 	let { publication }: { publication: Publication } = $props();
+
+	// Abstracts may carry inline markup (`<i>` around transliterated terms);
+	// the head tags Zotero and crawlers consume are plain text.
+	const plainAbstract = $derived(
+		publication.abstract ? stripHtml(publication.abstract) : publication.abstract
+	);
 
 	// Resolve URLs against the canonical site origin — at prerender time
 	// page.url.origin is the placeholder http://sveltekit-prerender, which must
@@ -219,7 +226,7 @@
 			},
 			// Dublin Core tags
 			{ name: 'DC.title', content: publication.title },
-			{ name: 'DC.description', content: publication.abstract },
+			{ name: 'DC.description', content: plainAbstract },
 			{ name: 'DC.publisher', content: publication.publisher },
 			{ name: 'DC.date', content: publication.dateISO || publication.date },
 			{ name: 'DC.type', content: getDcType(publication.type) },

@@ -41,7 +41,8 @@
 					class:drop-cap={index === 0}
 					class:mb-4={index < paragraphs.length - 1}
 				>
-					{paragraph}
+					<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: abstracts are trusted static data, and carry inline markup (<i> around transliterated terms). -->
+					{@html paragraph}
 				</p>
 			{/each}
 		</div>

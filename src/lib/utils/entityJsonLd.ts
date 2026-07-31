@@ -24,6 +24,15 @@ import type {
 } from '$lib/types/jsonld';
 import { formatAuthor, formatAuthors, formatPlaces, formatJsonLdDate } from '$lib/types/jsonld';
 import { author, address, website } from '$lib/data/siteConfig';
+import { stripHtml } from '$lib/utils/textUtils';
+
+/**
+ * Abstracts may carry inline markup (`<i>` around transliterated terms).
+ * schema.org `description` is a plain-text field, so strip it here.
+ */
+function plainAbstract(abstract: string | undefined): string | undefined {
+	return abstract ? stripHtml(abstract) : abstract;
+}
 
 /**
  * The site owner as a JSON-LD Person with the canonical site URL attached.
@@ -88,7 +97,7 @@ export function buildPublicationJsonLd(
 		'@type': resolvedType,
 		name: publication.title,
 		headline: publication.title,
-		description: publication.abstract,
+		description: plainAbstract(publication.abstract),
 		url: `${base}/publications/${publication.id}`,
 		copyrightYear: publication.year,
 		inLanguage: publication.language
@@ -240,7 +249,7 @@ export function buildCommunicationJsonLd(communication: Communication, base = ''
 		'@context': 'https://schema.org',
 		'@type': 'Event',
 		name: communication.title,
-		description: communication.abstract,
+		description: plainAbstract(communication.abstract),
 		url: `${base}/communications/${communication.id}`
 	};
 

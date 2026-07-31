@@ -152,7 +152,8 @@
 						</div>
 						<div class="pub-abstract">
 							{#each abstractParagraphs as paragraph, index (index)}
-								<p class="pub-abstract-p" class:drop-cap={index === 0}>{paragraph}</p>
+								<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: abstracts are trusted static data, and carry inline markup (<i> around transliterated terms). -->
+								<p class="pub-abstract-p" class:drop-cap={index === 0}>{@html paragraph}</p>
 							{/each}
 						</div>
 					</section>

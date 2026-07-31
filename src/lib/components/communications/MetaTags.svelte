@@ -5,8 +5,15 @@
 	import { type CoinsField, buildCoins, buildHeadTags, getFullUrl } from '$lib/utils/metaTags';
 	import BaseMetaTags from '$lib/components/common/BaseMetaTags.svelte';
 	import { website } from '$lib/data/siteConfig';
+	import { stripHtml } from '$lib/utils/textUtils';
 
 	let { communication }: { communication: Communication } = $props();
+
+	// Abstracts may carry inline markup (`<i>` around transliterated terms);
+	// the head tags Zotero and crawlers consume are plain text.
+	const plainAbstract = $derived(
+		communication.abstract ? stripHtml(communication.abstract) : communication.abstract
+	);
 
 	// Resolve URLs against the canonical site origin — at prerender time
 	// page.url.origin is the placeholder http://sveltekit-prerender, which must
@@ -78,7 +85,7 @@
 			// Panel-specific information
 			{ name: 'citation_panel_title', content: communication.panelTitle },
 			// Abstract/Description
-			{ name: 'citation_abstract', content: communication.abstract },
+			{ name: 'citation_abstract', content: plainAbstract },
 			// URLs
 			{ name: 'citation_public_url', content: currentUrl },
 			{ name: 'citation_abstract_html_url', content: currentUrl },
@@ -91,7 +98,7 @@
 			{ name: 'DC.title', content: communication.title },
 			{ name: 'DC.type', content: 'Event' },
 			{ name: 'DC.publisher', content: communication.conference },
-			{ name: 'DC.description', content: communication.abstract },
+			{ name: 'DC.description', content: plainAbstract },
 			{ name: 'DC.date', content: communication.dateISO },
 			{ name: 'DC.coverage', content: place },
 			{ name: 'DC.language', content: language },
@@ -101,13 +108,13 @@
 			{ name: 'og:title', content: communication.title },
 			{ name: 'og:type', content: 'article' },
 			{ name: 'og:url', content: currentUrl },
-			{ name: 'og:description', content: communication.abstract },
+			{ name: 'og:description', content: plainAbstract },
 			{ name: 'og:image', content: resolveUrl(communication.image) },
 			{ name: 'og:site_name', content: 'Frédérick Madore' },
 			// Twitter Card tags
 			{ name: 'twitter:card', content: 'summary_large_image' },
 			{ name: 'twitter:title', content: communication.title },
-			{ name: 'twitter:description', content: communication.abstract },
+			{ name: 'twitter:description', content: plainAbstract },
 			{ name: 'twitter:image', content: resolveUrl(communication.image) }
 		]);
 	});

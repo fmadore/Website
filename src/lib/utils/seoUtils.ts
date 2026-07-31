@@ -2,7 +2,7 @@ import type { Communication } from '$lib/types/communication';
 import type { Publication } from '$lib/types';
 import type { Activity } from '$lib/types/activity';
 import { author } from '$lib/data/siteConfig';
-import { smartTruncate } from '$lib/utils/textUtils';
+import { smartTruncate, stripHtml } from '$lib/utils/textUtils';
 import { COMMUNICATION_TYPE_SEO_LABELS, ACTIVITY_TYPE_SEO_LABELS } from '$lib/utils/typeUtils';
 import { PUBLICATION_TYPE_SEO_LABELS } from '$lib/utils/publicationTypeLabels';
 
@@ -87,7 +87,9 @@ function abstractSegment<T>(
 	getAbstract: (entity: T) => string | undefined
 ): SeoDescriptionSegment<T> {
 	return (entity, current) => {
-		const abstract = getAbstract(entity);
+		// Abstracts may carry inline markup; a SERP snippet must not.
+		const raw = getAbstract(entity);
+		const abstract = raw ? stripHtml(raw) : raw;
 		// If we have space and an abstract, add a summary
 		if (abstract && current.length < 120) {
 			const remainingSpace = SEO_DESCRIPTION_LIMIT - current.length - 1; // -1 for space
