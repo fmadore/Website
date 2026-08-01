@@ -3,6 +3,7 @@ import {
 	ENTITY_ARRAY_FILTER_KEYS,
 	filterEntityItems,
 	computeFacetCounts,
+	computeDisjunctiveFacetCounts,
 	toggleArrayValue,
 	normalizeYearRange,
 	type EntityArrayDimension,
@@ -171,12 +172,36 @@ describe('computeFacetCounts', () => {
 		expect(counts.tags).toEqual({ valid: 1 });
 		expect(counts.projects).toEqual({});
 	});
+});
 
-	it('reflects the filtered subset, matching the derived pipeline', () => {
-		const subset = filtered({ types: ['article'] });
-		const counts = computeFacetCounts(subset, dimensions);
-		expect(counts.types).toEqual({ article: 2 });
+describe('computeDisjunctiveFacetCounts', () => {
+	it('ignores the active values in the dimension being counted', () => {
+		const filters = { ...emptyFilters(), types: ['book'] };
+		const counts = computeDisjunctiveFacetCounts(items, filters, dimensions, matchesYearRange);
+		expect(counts.types).toEqual({ book: 1, article: 2, chapter: 1 });
+		expect(counts.tags).toEqual({ Islam: 1, Benin: 1 });
+	});
+
+	it('keeps every other active dimension and the year range applied', () => {
+		const filters = {
+			...emptyFilters(),
+			types: ['article'],
+			tags: ['Islam'],
+			yearRange: { min: 2015, max: 2020 }
+		};
+		const counts = computeDisjunctiveFacetCounts(items, filters, dimensions, matchesYearRange);
+
+		// Type counts ignore the active type but retain tag + year filters.
+		expect(counts.types).toEqual({ article: 1 });
+		// Tag counts ignore the active tag but retain type + year filters.
 		expect(counts.tags).toEqual({ Islam: 1 });
+		expect(counts.languages).toEqual({ English: 1 });
+	});
+
+	it('shows the number an OR selection would add instead of zero', () => {
+		const filters = { ...emptyFilters(), types: ['book'] };
+		const counts = computeDisjunctiveFacetCounts(items, filters, dimensions, matchesYearRange);
+		expect(counts.types.chapter).toBe(1);
 	});
 });
 

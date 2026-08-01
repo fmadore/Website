@@ -17,11 +17,11 @@
 </script>
 
 {#if visibleTags.length > 0}
-	<section class="tag-list-section scroll-reveal">
+	<section class="tag-list-section">
 		{#if showTitle}
 			<h2 class="tag-list-title">{sectionTitle}</h2>
 		{/if}
-		<div class="tag-list chip-row grid-stagger">
+		<div class="tag-list chip-row">
 			{#each visibleTags as tag (tag)}
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- tag search URL -->
 				<a class="chip" href="{base}{baseUrl}{encodeURIComponent(tag)}">{tag}</a>

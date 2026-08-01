@@ -214,7 +214,7 @@
 	pageType="CollectionPage"
 />
 
-<div class="entity-index page-enter" use:urlFilterSync={{ filters: af, setters: filters.setters }}>
+<div class="entity-index" use:urlFilterSync={{ filters: af, setters: filters.setters }}>
 	<!-- ═══ INDEX HERO ═══ -->
 	<header class="index-hero rule-masthead">
 		<div class="index-hero-lede">

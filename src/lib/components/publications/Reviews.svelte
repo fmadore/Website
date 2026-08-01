@@ -9,7 +9,7 @@
 </script>
 
 {#if sortedReviews.length > 0}
-	<section class="reviews-section section scroll-reveal">
+	<section class="reviews-section section">
 		<div class="section-head">
 			<h2 class="section-title">Reviews</h2>
 			<span class="dateline reviews-count">{sortedReviews.length}</span>
@@ -18,7 +18,7 @@
 		<!-- Each review: a serif-italic pull-quote (the document voice) closed by
 		     a mono attribution line — AUTHOR · VENUE · YEAR · DOI ↗ (the data
 		     voice). No cards, no stripes. -->
-		<div class="review-list grid-stagger">
+		<div class="review-list">
 			{#each sortedReviews as review (review.title + review.year + review.author)}
 				<article class="review">
 					{#if review.excerpt}

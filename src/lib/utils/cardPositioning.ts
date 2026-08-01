@@ -18,7 +18,6 @@ export interface CardPosition {
 	arrowLeft: string;
 	shouldPositionBelow: boolean;
 	cardMaxHeight: string | null;
-	hasOverflow: boolean;
 }
 
 /**
@@ -74,7 +73,6 @@ export function calculateCardPosition(
 	let cardTop: string | null = null;
 	let cardBottom: string | null = null;
 	let cardMaxHeight: string | null;
-	let hasOverflow: boolean;
 
 	if (shouldPositionBelow) {
 		const top = Math.round(refRect.bottom + gap);
@@ -84,13 +82,11 @@ export function calculateCardPosition(
 		// the card beyond the viewport bottom otherwise.
 		const availableSpace = Math.max(0, spaceBelow - gap - margin);
 		cardMaxHeight = `${availableSpace}px`;
-		hasOverflow = cardHeight > availableSpace;
 	} else {
 		const bottom = Math.round(viewportHeight - refRect.top + gap);
 		cardBottom = `${bottom}px`;
 		const availableSpace = Math.max(0, spaceAbove - gap - margin);
 		cardMaxHeight = `${availableSpace}px`;
-		hasOverflow = cardHeight > availableSpace;
 	}
 
 	return {
@@ -99,8 +95,7 @@ export function calculateCardPosition(
 		cardBottom,
 		arrowLeft,
 		shouldPositionBelow,
-		cardMaxHeight,
-		hasOverflow
+		cardMaxHeight
 	};
 }
 

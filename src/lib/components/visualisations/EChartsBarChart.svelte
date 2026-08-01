@@ -141,7 +141,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 	});
 </script>
 
-<div class="echarts-container scroll-reveal-scale">
+<div class="echarts-container">
 	<ChartToolbar chart={echartsInstance.chart} bind:showDecal filename={yAxisLabel || 'bar-chart'} />
 	<div bind:this={chartContainer} class="chart"></div>
 </div>

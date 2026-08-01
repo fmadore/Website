@@ -82,17 +82,8 @@
 	const absoluteSrc = $derived(resolveImagePath(displayImage?.src, base) ?? null);
 
 	// Use the global flat-surface utility (surface-card) to ensure visual consistency.
-	// `.hero-entrance` plays an immediate mount animation (for above-the-fold
-	// hero images on detail pages); `.scroll-reveal-scale` handles the
-	// scroll-driven reveal if the figure ever lives below the fold.
 	const combinedFigureClass = $derived(
-		[
-			'hero-figure',
-			`hero-figure--${variant}`,
-			framed ? 'surface-card hero-figure--framed' : '',
-			'hero-entrance',
-			'scroll-reveal-scale'
-		]
+		['hero-figure', `hero-figure--${variant}`, framed ? 'surface-card hero-figure--framed' : '']
 			.filter(Boolean)
 			.join(' ')
 	);
@@ -262,13 +253,6 @@
 	.zoom-icon {
 		font-size: var(--font-size-3xl);
 		margin-top: var(--space-2);
-	}
-
-	.zoom-icon svg {
-		filter: drop-shadow(
-			0 var(--space-0-5) var(--space-1)
-				color-mix(in srgb, var(--color-black) calc(var(--opacity-15) * 100%), transparent)
-		);
 	}
 
 	/* Hero image — the plate itself: square corners, a single hairline frame,

@@ -13,7 +13,7 @@ Atoms are the smallest, most basic components in the design system — the build
 - [ReferenceLink](./ReferenceLink.md) — `reference/ReferenceLink.svelte` — Citation-style reference link
 - [ReferencePreviewCard](./ReferencePreviewCard.md) — `reference/ReferencePreviewCard.svelte` — Rich preview card for referenced items
 
-Undocumented atoms in `src/lib/components/atoms/`: `NetworkStatusIndicator`, `RangeSlider`, `ToggleButton`, `TweenedCount`.
+Undocumented atoms in `src/lib/components/atoms/`: `NetworkStatusIndicator`, `RangeSlider`, `ToggleButton`.
 
 ## Characteristics of Atoms
 

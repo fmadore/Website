@@ -11,13 +11,13 @@
 </script>
 
 {#if communications.length > 0}
-	<section class="upcoming-section scroll-reveal">
+	<section class="upcoming-section">
 		<div class="upcoming-header">
 			<Icon icon="lucide:calendar" width="15" height="15" aria-hidden="true" />
 			<span class="eyebrow upcoming-header-label">Upcoming Talks and Events</span>
 		</div>
 
-		<ul class="entity-list grid-stagger">
+		<ul class="entity-list">
 			{#each communications as communication, index (communication.id)}
 				<CommunicationItem {communication} {index} />
 			{/each}

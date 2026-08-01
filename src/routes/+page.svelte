@@ -12,7 +12,7 @@
 	// Use the Person schema from page load data as additional schema
 	const additionalSchemas = $derived(data.personSchema ? [data.personSchema] : []);
 
-	// No JS preload for the portrait: the <img> below is in the prerendered
+	// No JS preload for the portrait: the image below is in the prerendered
 	// HTML with loading="eager" + fetchpriority="high", so the browser already
 	// requests it from the preload scanner — a link injected after hydration
 	// arrives long after the image has loaded.
@@ -27,10 +27,10 @@
 	{additionalSchemas}
 />
 
-<div class="container max-w-7xl py-8 page-enter">
+<div class="container max-w-7xl py-8">
 	<ProfileBanner />
 	<div class="home-grid">
-		<figure class="home-portrait scroll-reveal">
+		<figure class="home-portrait">
 			<img
 				class="plate"
 				src="{base}/images/Profile-picture.webp"
@@ -42,9 +42,7 @@
 				fetchpriority="high"
 			/>
 		</figure>
-		<!-- No scroll-reveal here: this column is several viewports tall, so a
-		     view()-timeline reveal would hold the whole prose at near-zero
-		     opacity until the user scrolls most of it (and fails WCAG contrast). -->
+		<!-- Keep this long prose column fully readable throughout scrolling. -->
 		<div class="home-main">
 			<ContentBody variant="default">
 				<p>
@@ -185,7 +183,7 @@
 				</p>
 			</ContentBody>
 		</div>
-		<div class="home-rail scroll-reveal">
+		<div class="home-rail">
 			<LatestActivities limit={3} />
 		</div>
 	</div>

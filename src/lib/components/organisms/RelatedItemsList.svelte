@@ -61,9 +61,9 @@
 </script>
 
 {#if relatedItems.length > 0}
-	<section class="{sectionClass} scroll-reveal">
+	<section class="{sectionClass} ">
 		<h2 class={titleClass}>{title}</h2>
-		<div class="{gridClass} grid-stagger">
+		<div class="{gridClass} ">
 			{#each relatedItems as item (item.id)}
 				{@const ItemComponent = itemComponent}
 				<div in:fade={{ duration: motionDuration(FADE_DURATION), easing: cubicOut }}>

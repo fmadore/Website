@@ -13,9 +13,6 @@
 .mt-4 {
 	margin-top: var(--space-md);
 }
-.mt-6 {
-	margin-top: var(--space-lg);
-}
 .mt-8 {
 	margin-top: var(--space-xl);
 }
@@ -75,9 +72,6 @@
 }
 
 /* Gap for flex and grid - Essential values */
-.gap-2 {
-	gap: var(--space-xs);
-}
 .gap-4 {
 	gap: var(--space-md);
 }

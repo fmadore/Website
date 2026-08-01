@@ -5,7 +5,7 @@
 	const siteLabel = website.domain.toUpperCase();
 </script>
 
-<header class="nameplate-hero page-enter">
+<header class="nameplate-hero">
 	<div class="hero-topbar">
 		<span class="hero-url">{siteLabel}</span>
 		<span class="hero-kicker">Historian &amp; Digital Humanist</span>

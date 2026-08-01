@@ -65,7 +65,6 @@
 			visibility var(--duration-normal) var(--ease-out),
 			transform var(--duration-normal) var(--ease-out);
 		pointer-events: none;
-		will-change: opacity, transform, visibility;
 	}
 
 	/* Solid fallback for browsers without backdrop-filter support. */
@@ -112,7 +111,6 @@
 			color var(--duration-fast) var(--ease-out),
 			transform var(--duration-fast) var(--ease-out);
 		position: relative;
-		will-change: transform, background-color;
 	}
 
 	:global(.dropdown-item:hover),
@@ -237,18 +235,11 @@
 			transition:
 				background-color var(--duration-instant) linear,
 				color var(--duration-instant) linear;
-			will-change: auto;
 		}
 
 		:global(.dropdown-item:hover),
 		:global(.dropdown-item:focus) {
 			transform: none;
 		}
-	}
-
-	/* ===== PERFORMANCE OPTIMIZATION ===== */
-	/* Remove will-change after animation completes for better memory usage */
-	.dropdown-menu:not(.active) {
-		will-change: auto;
 	}
 </style>

@@ -114,10 +114,10 @@
 	pageType="CollectionPage"
 />
 
-<div class="container py-8 page-enter">
+<div class="container py-8">
 	<div class="max-w-6xl mx-auto dh-page">
 		<!-- HERO — mono infrastructure eyebrow, Archivo masthead, serif standfirst. -->
-		<header class="dh-hero scroll-reveal">
+		<header class="dh-hero">
 			<p class="eyebrow dh-hero-eyebrow">
 				Infrastructure · {projectCount} projects · {earliestYear} —
 			</p>
@@ -189,7 +189,7 @@
 			{#if catalogueProjects.length === 0}
 				<p class="catalogue-empty">No projects match this skill.</p>
 			{:else}
-				<div class="catalogue-ledger grid-stagger" id="dh-catalogue">
+				<div class="catalogue-ledger" id="dh-catalogue">
 					{#each pagedProjects as project (project.id)}
 						<article class="dh-row">
 							<span class="dh-row-year" class:dh-row-year--current={project.ongoing}>

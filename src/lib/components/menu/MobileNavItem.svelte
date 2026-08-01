@@ -251,7 +251,6 @@
 		.mobile-nav-link,
 		.mobile-dropdown-link {
 			transition: color var(--duration-instant) linear;
-			will-change: auto;
 		}
 
 		.mobile-nav-link::before,

@@ -21,7 +21,7 @@
 
 	// The redesign renders panels as flat ruled sections rather than glass
 	// boxes: `.panel--ruled` (styled below) supplies the 3px section rule.
-	const baseClasses = 'panel panel--ruled scroll-reveal';
+	const baseClasses = 'panel panel--ruled ';
 	const variantClasses = {
 		default: 'panel-default',
 		activities: 'panel-activities',

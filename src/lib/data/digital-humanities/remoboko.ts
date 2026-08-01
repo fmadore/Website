@@ -43,10 +43,8 @@ export const remoboko: DigitalHumanitiesProject = {
 			title: 'Points of Interest Map',
 			description:
 				"<p>Interactive map showing the main locations mentioned in my recent book <a href='/publications/religious-activism-campuses' target='_blank' rel='noopener noreferrer'>Religious Activism on University Campuses in West Africa</a>.</p>",
-			scrolling: 'yes',
-			allowfullscreen: true,
 			showTitle: true,
-			containerClass: 'iframe-container-aspect iframe-container-aspect-16-9'
+			variant: 'responsive'
 		},
 		{
 			type: 'image',
@@ -64,10 +62,8 @@ export const remoboko: DigitalHumanitiesProject = {
 			title: 'Collaborators by Country',
 			description:
 				'<p>Geographical distribution of the 93 Remoboko research group collaborators across 24 different countries.</p>',
-			scrolling: 'yes',
-			allowfullscreen: true,
 			showTitle: true,
-			containerClass: 'iframe-container-aspect iframe-container-aspect-16-9'
+			variant: 'responsive'
 		},
 		{
 			type: 'iframe',
@@ -76,10 +72,8 @@ export const remoboko: DigitalHumanitiesProject = {
 			title: 'Collaborators Affiliations Map',
 			description:
 				'<p>Map displaying the institutional affiliations of Remoboko research group collaborators.</p>',
-			scrolling: 'yes',
-			allowfullscreen: true,
 			showTitle: true,
-			containerClass: 'iframe-container-aspect iframe-container-aspect-16-9'
+			variant: 'responsive'
 		},
 		{
 			type: 'iframe',
@@ -88,10 +82,8 @@ export const remoboko: DigitalHumanitiesProject = {
 			title: 'Publications and Activities Over Time',
 			description:
 				"<p>This stacked bar chart illustrates the evolution of Remoboko's scientific publications and activities from 2018 to 2024. It categorises publications and activities by type, showing the diverse contributions of members and collaborators across different formats each year.</p>",
-			scrolling: 'yes',
-			allowfullscreen: true,
 			showTitle: true,
-			containerClass: 'iframe-container-aspect iframe-container-aspect-16-9'
+			variant: 'responsive'
 		},
 		{
 			type: 'iframe',
@@ -100,10 +92,8 @@ export const remoboko: DigitalHumanitiesProject = {
 			title: 'Publications and Activities Treemap',
 			description:
 				"<p>This treemap provides a proportional breakdown of all Remoboko publications and activities by type, showing the relative weight of each category within the group's total output.</p>",
-			scrolling: 'yes',
-			allowfullscreen: true,
 			showTitle: true,
-			containerClass: 'iframe-container-aspect iframe-container-aspect-16-9'
+			variant: 'responsive'
 		},
 		{
 			type: 'image',

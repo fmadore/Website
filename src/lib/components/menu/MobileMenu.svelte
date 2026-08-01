@@ -141,7 +141,6 @@
 		/* Respect the iOS home-indicator safe area so the last link never
 		 * sits flush against the gesture zone. */
 		padding-bottom: env(safe-area-inset-bottom, 0);
-		will-change: transform;
 	}
 
 	.mobile-nav-container.active {
@@ -283,7 +282,6 @@
 		transition:
 			transform var(--duration-moderate) var(--ease-out),
 			opacity var(--duration-moderate) var(--ease-out);
-		will-change: opacity, transform;
 	}
 
 	.mobile-nav-container.active :global(.mobile-nav-item) {
@@ -360,21 +358,10 @@
 			transform: none !important;
 			transition: none !important;
 			transition-delay: 0ms !important;
-			will-change: auto;
 		}
 
 		.mobile-close-line {
 			transition: none;
 		}
-	}
-
-	/* ===== PERFORMANCE OPTIMIZATION ===== */
-	/* Remove will-change when menu is closed */
-	.mobile-nav-container:not(.active) {
-		will-change: auto;
-	}
-
-	.mobile-nav-container:not(.active) :global(.mobile-nav-item) {
-		will-change: auto;
 	}
 </style>

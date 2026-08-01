@@ -401,7 +401,7 @@ Uses D3.js circle packing for a balanced, overlap-free layout
 </script>
 
 <div
-	class="bubble-chart-container scroll-reveal-scale"
+	class="bubble-chart-container"
 	bind:clientWidth={containerWidth}
 	bind:clientHeight={containerHeight}
 >

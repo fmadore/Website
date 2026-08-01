@@ -157,7 +157,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 	});
 </script>
 
-<div class="echarts-container scroll-reveal-scale">
+<div class="echarts-container">
 	<ChartToolbar chart={echartsInstance.chart} bind:showDecal filename={title || 'doughnut-chart'} />
 	<div bind:this={chartContainer} class="chart"></div>
 </div>

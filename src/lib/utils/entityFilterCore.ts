@@ -92,6 +92,36 @@ export function computeFacetCounts<TItem>(
 	return result;
 }
 
+/**
+ * Facet counts for an OR-within/AND-across filter UI. Each dimension is
+ * counted after applying the year range and every *other* active dimension,
+ * so an unselected value reports how many results it would add.
+ */
+export function computeDisjunctiveFacetCounts<TItem>(
+	items: TItem[],
+	filters: EntityIndexFilters,
+	dimensions: Record<EntityArrayFilterKey, EntityArrayDimension<TItem>>,
+	matchesYearRange: (item: TItem, range: YearRange) => boolean
+): Record<EntityArrayFilterKey, Record<string, number>> {
+	const result = {} as Record<EntityArrayFilterKey, Record<string, number>>;
+
+	for (const countedKey of ENTITY_ARRAY_FILTER_KEYS) {
+		const eligibleItems = items.filter((item) => {
+			if (filters.yearRange && !matchesYearRange(item, filters.yearRange)) return false;
+			for (const key of ENTITY_ARRAY_FILTER_KEYS) {
+				if (key === countedKey) continue;
+				const active = filters[key];
+				if (active.length > 0 && !dimensions[key].match(item, active)) return false;
+			}
+			return true;
+		});
+
+		result[countedKey] = computeFacetCounts(eligibleItems, dimensions)[countedKey];
+	}
+
+	return result;
+}
+
 /** Immutable toggle: removes `value` if present, appends it otherwise. */
 export function toggleArrayValue(current: string[], value: string): string[] {
 	return current.includes(value) ? current.filter((v) => v !== value) : [...current, value];

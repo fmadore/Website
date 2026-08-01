@@ -13,6 +13,10 @@ const PORT = 4173;
 export default defineConfig({
 	testDir: 'tests-e2e',
 	fullyParallel: true,
+	// The visualisation pages initialize D3/ECharts/MapLibre chunks. Capping
+	// parallel browser contexts keeps those readiness checks deterministic on
+	// developer laptops and two-core CI runners without serializing the suite.
+	workers: 4,
 	forbidOnly: !!process.env.CI,
 	retries: process.env.CI ? 2 : 0,
 	reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
@@ -33,6 +37,26 @@ export default defineConfig({
 					? { launchOptions: { executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH } }
 					: {})
 			}
+		},
+		{
+			name: 'mobile-chromium',
+			testMatch: /responsive\.spec\.ts/,
+			use: {
+				...devices['Pixel 7'],
+				...(process.env.PLAYWRIGHT_CHROMIUM_PATH
+					? { launchOptions: { executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH } }
+					: {})
+			}
+		},
+		{
+			name: 'firefox',
+			testMatch: /cross-browser\.spec\.ts/,
+			use: { ...devices['Desktop Firefox'] }
+		},
+		{
+			name: 'webkit',
+			testMatch: /cross-browser\.spec\.ts/,
+			use: { ...devices['Desktop Safari'] }
 		}
 	],
 	webServer: {

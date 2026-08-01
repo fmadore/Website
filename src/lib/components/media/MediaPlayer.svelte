@@ -185,7 +185,7 @@
 	};
 </script>
 
-<div class="media-player {surface} scroll-reveal" role="region" aria-label="Media Player">
+<div class="media-player {surface} " role="region" aria-label="Media Player">
 	{#if title}
 		<div class="player-header">
 			<h3 class="player-title">{title}</h3>

@@ -125,7 +125,7 @@
 />
 
 <div
-	class="container py-8 page-enter"
+	class="container py-8"
 	use:urlFilterSync={{
 		filters: af,
 		setters: { setTags: filters.setters.setTags, setTypes: filters.setters.setTypes }
@@ -133,7 +133,7 @@
 >
 	<div class="max-w-6xl mx-auto activities-page">
 		<!-- HERO — mono log eyebrow, Archivo masthead, serif standfirst, year strip. -->
-		<header class="activities-hero scroll-reveal">
+		<header class="activities-hero">
 			<p class="eyebrow activities-hero-eyebrow">
 				Log · {totalCount} entries · {minYear} — {maxYear}
 			</p>
@@ -170,7 +170,7 @@
 									{group.total === 1 ? 'entry' : 'entries'}
 								</span>
 							</div>
-							<div class="year-group-entries grid-stagger">
+							<div class="year-group-entries">
 								{#each group.items as activity, itemIndex (activity.id)}
 									<ActivityItem {activity} eager={groupIndex === 0 && itemIndex === 0} />
 								{/each}
@@ -190,7 +190,7 @@
 			</main>
 
 			<!-- ASIDE — browse-by-year meter, tag facet, RSS/updated footer. -->
-			<aside class="activities-aside scroll-reveal">
+			<aside class="activities-aside">
 				<section class="aside-block">
 					<h2 class="aside-title">Browse by year</h2>
 					<ul class="year-meter">

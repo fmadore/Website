@@ -161,7 +161,7 @@ apparatus, and the ruled-section styling.
 
 <SEO title="{title} | Frédérick Madore" description={seoDescription} keywords={seoKeywords} />
 
-<div class="container py-8 page-enter">
+<div class="container py-8">
 	<Breadcrumb items={breadcrumbItems} />
 
 	<div class="project-grid">
@@ -186,12 +186,12 @@ apparatus, and the ruled-section styling.
 			<!-- Project narrative. Prose arrives through the slot; scoped styles
 			     below turn its <h2> headings into ruled section heads and
 			     drop-cap the opening paragraph. -->
-			<div class="project-prose scroll-reveal">
+			<div class="project-prose">
 				{@render children()}
 			</div>
 
 			{#if audioSrc}
-				<section class="section podcast-section scroll-reveal">
+				<section class="section podcast-section">
 					<div class="section-head">
 						<span class="section-no" aria-hidden="true">♪</span>
 						<h2 class="section-title">Podcast discussion</h2>
@@ -206,7 +206,7 @@ apparatus, and the ruled-section styling.
 				</section>
 			{/if}
 
-			<div class="related-content scroll-reveal">
+			<div class="related-content">
 				<RelevantPublications {projectName} limit={6} />
 				<div class="related-comms">
 					<RelevantCommunications {projectName} limit={6} />

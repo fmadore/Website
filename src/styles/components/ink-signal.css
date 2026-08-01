@@ -37,11 +37,6 @@
 	color: var(--color-text-emphasis);
 }
 
-.eyebrow--faint {
-	color: var(--color-text-light);
-	font-weight: var(--font-weight-medium);
-}
-
 /* Dateline — a mono date/label stamp, faint ink (17 JUN · CONFERENCE). */
 .dateline {
 	font-family: var(--font-family-mono);
@@ -50,16 +45,6 @@
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
 	color: var(--color-text-light);
-}
-
-.dateline-kind {
-	color: var(--color-accent);
-}
-
-/* An accent number inline in a data-voice run (14,700+ ITEMS). */
-.figure-accent {
-	color: var(--color-accent);
-	font-variant-numeric: tabular-nums;
 }
 
 /* ===========================================================================
@@ -93,15 +78,6 @@
 	text-transform: uppercase;
 	color: var(--color-text-emphasis);
 	margin: 0;
-}
-
-/* Compact nameplate — the persistent inner-page masthead name. */
-.nameplate--sm {
-	font-size: clamp(1.25rem, 1rem + 1vw, 1.7rem);
-	font-weight: 830;
-	font-variation-settings: var(--font-variation-wordmark);
-	line-height: 1;
-	white-space: nowrap;
 }
 
 /* ===========================================================================
@@ -186,11 +162,6 @@
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-1);
-}
-
-.ledger-key--current {
-	color: var(--color-accent);
-	font-weight: var(--font-weight-semibold);
 }
 
 /* A small status stamp under the key (ACTIVE / COMPLETED / UNDERGRADUATE). */
@@ -516,11 +487,6 @@
 	background: var(--color-primary);
 	border-color: var(--color-primary);
 	color: var(--color-text-inverted);
-}
-
-.pager-item--edge {
-	border-color: var(--color-primary);
-	color: var(--color-text-emphasis);
 }
 
 @media (prefers-reduced-motion: reduce) {

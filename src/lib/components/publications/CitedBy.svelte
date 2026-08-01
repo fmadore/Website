@@ -9,7 +9,7 @@
 </script>
 
 {#if sortedCitedBy && sortedCitedBy.length > 0}
-	<section class="cited-by-section section scroll-reveal">
+	<section class="cited-by-section section">
 		<div class="section-head">
 			<h2 class="section-title">Cited By</h2>
 			<span class="dateline cited-by-count">{sortedCitedBy.length} works</span>
@@ -17,7 +17,7 @@
 
 		<!-- Each citing work is a ledger record: mono year key left, serif
 		     content right, hairline between. A bibliography, not a card grid. -->
-		<div class="ledger ledger--ruled grid-stagger">
+		<div class="ledger ledger--ruled">
 			{#each sortedCitedBy as citingWork (citingWork.title + citingWork.year)}
 				<div class="ledger-row" style="--ledger-key-w: 5.5rem;">
 					<div class="ledger-key">{citingWork.year}</div>

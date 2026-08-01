@@ -13,7 +13,7 @@ Molecules are relatively simple combinations of atoms that form functional group
 - [DropdownMenu](./DropdownMenu.md) — `menu/DropdownMenu.svelte` — Dropdown menu component
 - [NavItemWithDropdown](./NavItemWithDropdown.md) — `menu/NavItemWithDropdown.svelte` — Navigation item with dropdown functionality
 
-Undocumented molecules in `src/lib/components/molecules/`: `AbstractSection`, `ActionLinks`, `BibliographyRow`, `DetailsGrid`, `HeroImageDisplay`, `IframeRenderer`, `Pagination`, `RelatedItemCard`, `TagCloud`, `TagList`.
+Undocumented molecules in `src/lib/components/molecules/`: `AbstractSection`, `ActionLinks`, `BibliographyRow`, `DetailsGrid`, `HeroImageDisplay`, `IframeRenderer`, `Pagination`, `RelatedItemCard`, `TagList`.
 
 ## Characteristics of Molecules
 

@@ -105,7 +105,7 @@
 	pageType="ProfilePage"
 />
 
-<div id="cv-content" class="cv-container p-8 max-w-6xl mx-auto page-enter">
+<div id="cv-content" class="cv-container p-8 max-w-6xl mx-auto">
 	<!-- Action Buttons - positioned in top right corner of CV -->
 	<div class="cv-actions">
 		<a href={resolve('/cv/timeline')} class="btn btn-secondary" aria-label="View Career Timeline">

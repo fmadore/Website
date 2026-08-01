@@ -22,15 +22,6 @@
 	border-radius: 0;
 }
 
-/* Reduced motion support for all navigation elements */
-@media (prefers-reduced-motion: reduce) {
-	* {
-		animation-duration: 0.01ms !important;
-		animation-iteration-count: 1 !important;
-		transition-duration: 0.01ms !important;
-	}
-}
-
 /* High contrast mode support */
 @media (prefers-contrast: high) {
 	/* Enhanced borders and outlines for better visibility */

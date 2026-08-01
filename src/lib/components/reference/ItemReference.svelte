@@ -5,7 +5,8 @@
 	 * Re‑written for improved readability, accessibility, and maintainability.
 	 * Migrated to Svelte 5 with improved mobile support; flat Ink + Signal styling.
 	 * ────────────────────────────────────────────────────────────────────
-	 * Usage: <ItemReference id="my‑item‑id" />
+	 * Usage: <ItemReference id="my‑item‑id" />. When a historical id exists in
+	 * both datasets, use `publication:id` or `communication:id` explicitly.
 	 */
 
 	import { browser } from '$app/environment';
@@ -36,8 +37,8 @@
 	}); /* ───────────────────────── Derived data ──────────────────────────── */
 	// Resolve the referenced item from the slim, build-time reference index. This
 	// avoids importing the full publications/communications datasets (~117 KiB)
-	// just to render a handful of inline citations. Publication ids take
-	// precedence over communications, matching the previous lookup order.
+	// just to render a handful of inline citations. Historical cross-dataset
+	// collisions are stored under explicit `publication:` / `communication:` keys.
 	const entry = $derived(referenceIndex[id]);
 	const item = $derived(entry);
 	const itemType = $derived(entry?.itemType);

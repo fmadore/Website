@@ -8,10 +8,8 @@ const config = {
 	},
 	kit: {
 		adapter: adapter({
-			// default options are shown
 			pages: 'build',
 			assets: 'build',
-			precompress: true, // Enable gzip/brotli compression for better performance
 			strict: true
 		}),
 		// Inline stylesheets into the prerendered HTML to eliminate
@@ -31,22 +29,11 @@ const config = {
 		},
 		// Make sure all pages are pre-rendered
 		prerender: {
-			entries: ['*'],
-			handleHttpError: ({ path, message }) => {
-				// If the error is a missing page, log a warning but allow build to continue
-				// This assumes your 404 handling takes care of it at runtime
-				// Note: The original logic for '/Website/' prefix is removed as base path is empty
-				console.warn(
-					`Potential 404 for ${path} - check routing and 404 handling. Message: ${message}`
-				);
-				return; // Allow build to continue
-
-				// If you prefer to fail the build on any error uncomment the line below:
-				// throw new Error(message);
-			}
+			entries: ['*']
 		},
 		serviceWorker: {
-			register: true
+			// PWAUpdatePrompt owns registration so updates can wait for consent.
+			register: false
 		}
 	},
 	extensions: ['.svelte']

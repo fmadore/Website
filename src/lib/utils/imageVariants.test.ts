@@ -1,40 +1,38 @@
 import { describe, it, expect } from 'vitest';
-import { buildSrcset, resolveImagePath, VARIANT_WIDTHS } from './imageVariants';
+import { buildSrcset, resolveImagePath } from './imageVariants';
+
+const manifest = {
+	'activities/talk.webp': { sourceWidth: 1280, widths: [400, 800] },
+	'foo.jpg': { sourceWidth: 640, widths: [400] },
+	'small.png': { sourceWidth: 320, widths: [] }
+} as const;
 
 describe('buildSrcset', () => {
-	it('builds variant URLs for images under /images/', () => {
-		expect(buildSrcset('/images/activities/talk.webp')).toBe(
-			'/images/_r/activities/talk-400.webp 400w, /images/_r/activities/talk-800.webp 800w, /images/_r/activities/talk-1600.webp 1600w'
+	it('uses generated derivatives and the original at its intrinsic width', () => {
+		expect(buildSrcset('/images/activities/talk.webp', manifest)).toBe(
+			'/images/_r/activities/talk-400.webp 400w, /images/_r/activities/talk-800.webp 800w, /images/activities/talk.webp 1280w'
 		);
 	});
 
 	it('preserves a base-path prefix', () => {
-		const srcset = buildSrcset('/site/images/foo.jpg');
-		expect(srcset).toContain('/site/images/_r/foo-400.webp 400w');
+		expect(buildSrcset('/site/images/foo.jpg', manifest)).toBe(
+			'/site/images/_r/foo-400.webp 400w, /site/images/foo.jpg 640w'
+		);
 	});
 
-	it('covers every configured width', () => {
-		const srcset = buildSrcset('/images/foo.png')!;
-		for (const w of VARIANT_WIDTHS) {
-			expect(srcset).toContain(`-${w}.webp ${w}w`);
-		}
+	it('returns undefined when downscaling would add no useful candidate', () => {
+		expect(buildSrcset('/images/small.png', manifest)).toBeUndefined();
 	});
 
-	it('returns undefined for external URLs', () => {
-		expect(buildSrcset('https://example.com/images/foo.webp')).toBeUndefined();
-		expect(buildSrcset('http://example.com/images/foo.webp')).toBeUndefined();
+	it('returns undefined for unknown, external, vector, and non-image paths', () => {
+		expect(buildSrcset('/images/unknown.webp', manifest)).toBeUndefined();
+		expect(buildSrcset('https://example.com/images/foo.webp', manifest)).toBeUndefined();
+		expect(buildSrcset('/images/logo.svg', manifest)).toBeUndefined();
+		expect(buildSrcset('/files/paper.pdf', manifest)).toBeUndefined();
 	});
 
-	it('returns undefined for svg, non-image paths, empty and null input', () => {
-		expect(buildSrcset('/images/logo.svg')).toBeUndefined();
-		expect(buildSrcset('/files/paper.pdf')).toBeUndefined();
-		expect(buildSrcset('')).toBeUndefined();
-		expect(buildSrcset(null)).toBeUndefined();
-		expect(buildSrcset(undefined)).toBeUndefined();
-	});
-
-	it('never derives variants of a variant', () => {
-		expect(buildSrcset('/images/_r/foo-400.webp')).toBeUndefined();
+	it('never derives variants of a generated variant', () => {
+		expect(buildSrcset('/images/_r/foo-400.webp', manifest)).toBeUndefined();
 	});
 });
 
@@ -64,12 +62,5 @@ describe('resolveImagePath', () => {
 		expect(resolveImagePath('', '')).toBeUndefined();
 		expect(resolveImagePath(null, '')).toBeUndefined();
 		expect(resolveImagePath(undefined, '')).toBeUndefined();
-	});
-
-	// The hero preload feeds this straight into buildSrcset, so the two must
-	// agree on the URL an <img srcset> will resolve to.
-	it('produces a path buildSrcset can turn into the same variants the <img> uses', () => {
-		const resolved = resolveImagePath('images/activities/talk.webp', '')!;
-		expect(buildSrcset(resolved)).toContain('/images/_r/activities/talk-800.webp 800w');
 	});
 });

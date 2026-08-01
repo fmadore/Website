@@ -39,7 +39,15 @@ export default defineConfig({
 			// Playwright smoke suite, not these plain-Node tests.
 			include: ['src/lib/utils/**/*.ts', 'src/lib/data/**/index.ts'],
 			exclude: ['src/lib/**/*.test.ts', 'src/lib/**/*.d.ts'],
-			reporter: ['text', 'html']
+			reporter: ['text', 'html'],
+			// A ratchet, not an aspirational target: new work may raise these
+			// floors, but must not silently reduce the verified pure-logic surface.
+			thresholds: {
+				statements: 52,
+				branches: 48,
+				functions: 59,
+				lines: 52
+			}
 		}
 	}
 });

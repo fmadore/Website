@@ -29,25 +29,25 @@
 	keywords="slides, presentations, slide decks, conference papers, lectures, reveal.js, Frédérick Madore"
 />
 
-<div class="page-container page-enter">
+<div class="page-container">
 	<Breadcrumb items={breadcrumbItems} />
 
-	<div class="scroll-reveal">
+	<div class="">
 		<PageHeader title="Slides" />
 	</div>
 
-	<div class="scroll-reveal">
+	<div class="">
 		<PageIntro>Decks from my talks and conference papers.</PageIntro>
 	</div>
 
 	{#if decks.length > 0}
-		<div class="deck-grid grid-stagger">
+		<div class="deck-grid">
 			{#each decks as communication, i (communication.id)}
 				<SlideDeckCard {communication} index={i} />
 			{/each}
 		</div>
 	{:else}
-		<div class="deck-empty scroll-reveal">
+		<div class="deck-empty">
 			<p class="deck-empty-title">No decks published yet.</p>
 			<p class="deck-empty-text">
 				Slide decks appear here as talks are presented. In the meantime, browse the

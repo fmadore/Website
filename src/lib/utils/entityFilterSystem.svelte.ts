@@ -22,7 +22,7 @@ import type { YearRange } from '$lib/types';
 import {
 	ENTITY_ARRAY_FILTER_KEYS,
 	filterEntityItems,
-	computeFacetCounts,
+	computeDisjunctiveFacetCounts,
 	toggleArrayValue,
 	normalizeYearRange,
 	type EntityIndexFilters,
@@ -70,9 +70,14 @@ export class EntityFilterSystem<TItem> {
 		filterEntityItems(this.items, this.activeFilters, this.dimensions, this.matchesYearRange)
 	);
 
-	/** Per-dimension value counts over the filtered items. */
+	/** Counts under all active filters except the dimension being counted. */
 	readonly counts: Record<EntityArrayFilterKey, Record<string, number>> = $derived.by(() =>
-		computeFacetCounts(this.filteredItems, this.dimensions)
+		computeDisjunctiveFacetCounts(
+			this.items,
+			this.activeFilters,
+			this.dimensions,
+			this.matchesYearRange
+		)
 	);
 
 	constructor(config: EntityFilterConfig<TItem>) {

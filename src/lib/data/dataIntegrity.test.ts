@@ -125,11 +125,8 @@ describe('dated datasets', () => {
 
 describe('cross-dataset invariants', () => {
 	it('publication and communication ids do not collide (shared reference index)', () => {
-		// The reference index (scripts/generate-reference-index.mjs) silently
-		// resolves cross-dataset collisions by keeping the publication, so an
-		// <ItemReference> intending the communication would show the article.
-		// One historical collision predates this check; its ids are public URLs,
-		// so renaming is an editorial decision. Any NEW collision fails here.
+		// One historical collision predates this check and its ids are public URLs.
+		// The reference index namespaces both records; any NEW collision still fails.
 		const knownCollisions = new Set(['islam-ivoirien-burkinabe-numerique-2016']);
 		const publicationIds = new Set(allPublications.map((p) => p.id));
 		const collisions = allCommunications

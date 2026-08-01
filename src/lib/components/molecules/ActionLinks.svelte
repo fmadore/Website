@@ -27,7 +27,7 @@
 </script>
 
 {#if primaryUrl || visibleAdditionalUrls.length > 0}
-	<section class="{sectionClass} scroll-reveal">
+	<section class="{sectionClass} ">
 		{#if primaryUrl && typeof primaryUrl === 'string' && primaryUrl !== 'undefined'}
 			<div class={primaryDivClass}>
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->

@@ -100,7 +100,7 @@
 
 <MetaTags {publication} />
 
-<div class="container py-8 page-enter">
+<div class="container py-8">
 	<div class="pub-shell">
 		<!-- Breadcrumb — mono, muted. Deliberate editorial variant of the shared
 		     <Breadcrumb> molecule: a back-link ("← Publications / Type") instead
@@ -146,7 +146,7 @@
 			<div class="pub-main">
 				<!-- Abstract -->
 				{#if abstractParagraphs.length > 0}
-					<section class="section pub-section scroll-reveal" aria-labelledby="pub-abstract-head">
+					<section class="section pub-section" aria-labelledby="pub-abstract-head">
 						<div class="section-head">
 							<h2 id="pub-abstract-head" class="section-title">Abstract</h2>
 						</div>

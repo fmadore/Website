@@ -34,7 +34,7 @@ nothing.
 </script>
 
 {#if tocEntries.length > 0}
-	<section class="section pub-section scroll-reveal" aria-labelledby="pub-toc-head">
+	<section class="section pub-section" aria-labelledby="pub-toc-head">
 		<div class="section-head">
 			<h2 id="pub-toc-head" class="section-title">Table of Contents</h2>
 		</div>

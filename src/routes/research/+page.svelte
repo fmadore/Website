@@ -98,7 +98,7 @@
 	pageType="CollectionPage"
 />
 
-<div class="container py-8 page-enter">
+<div class="container py-8">
 	<div class="max-w-6xl mx-auto">
 		<PageHeader title="Research" />
 
@@ -136,14 +136,14 @@
 
 		<!-- CURRENT PROJECTS — broadsheet dossier for the flagship, ruled ledger
 		     rows for any other still-running projects. -->
-		<section class="section section--flush lead-dossier scroll-reveal">
+		<section class="section section--flush lead-dossier">
 			<div class="section-head">
 				<h2 class="section-title">
 					{currentProjects.length > 1 ? 'Current projects' : 'Current project'}
 				</h2>
 			</div>
 
-			<div class="dossier-stack grid-stagger">
+			<div class="dossier-stack">
 				{#each currentProjects as project, i (project.id)}
 					<article class="dossier {i === 0 ? 'dossier--lead' : ''}">
 						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolvePath -->
@@ -180,12 +180,12 @@
 
 		<!-- CATALOGUE — concluded projects as ruled ledger entries. -->
 		{#if pastProjects.length > 0}
-			<section class="section catalogue scroll-reveal">
+			<section class="section catalogue">
 				<div class="section-head">
 					<h2 class="section-title">Earlier projects</h2>
 				</div>
 
-				<div class="ledger ledger--ruled grid-stagger">
+				<div class="ledger ledger--ruled">
 					{#each pastProjects as project (project.id)}
 						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolvePath -->
 						<a

@@ -66,8 +66,8 @@ jobs:
       - name: Type-check
         run: npm run check
 
-      - name: Unit tests (Vitest)
-        run: npm run test
+      - name: Unit tests and coverage floor (Vitest)
+        run: npm run test:coverage
 
       - name: Reference index freshness
         run: node scripts/generate-reference-index.mjs --check
@@ -126,13 +126,13 @@ jobs:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}
 
-      - name: Install Playwright browser
+      - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium firefox webkit
 
       - name: Install Playwright system dependencies
         if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps chromium
+        run: npx playwright install-deps chromium firefox webkit
 
       - name: Download build artifact
         uses: actions/download-artifact@v8

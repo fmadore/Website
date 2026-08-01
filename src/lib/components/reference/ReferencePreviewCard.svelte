@@ -35,7 +35,6 @@
 	let cardBottom = $state<string | null>(null);
 	let arrowLeft = $state('50%');
 	let cardMaxHeight = $state<string | null>(null);
-	let hasOverflow = $state(false);
 
 	const itemUrl = $derived(
 		item && itemType
@@ -68,7 +67,6 @@
 					arrowLeft = pos.arrowLeft;
 					shouldPositionBelow = pos.shouldPositionBelow;
 					cardMaxHeight = pos.cardMaxHeight;
-					hasOverflow = pos.hasOverflow;
 					isPositioned = true;
 				});
 			}, 50);
@@ -111,7 +109,6 @@
 	class:positioned={isPositioned}
 	class:position-below={shouldPositionBelow}
 	class:card-clicked={isClicked}
-	class:has-overflow={hasOverflow}
 	style:left={cardLeft}
 	style:top={cardTop}
 	style:bottom={cardBottom}
@@ -289,40 +286,6 @@
 	.preview-card {
 		scrollbar-width: thin;
 		scrollbar-color: color-mix(in srgb, var(--color-text-muted) 30%, transparent) transparent;
-	}
-
-	/* Fade indicator for scrollable content */
-	.preview-card::after {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		height: var(--space-10);
-		background: linear-gradient(
-			to bottom,
-			transparent 0%,
-			color-mix(in srgb, var(--color-surface-elevated) 80%, transparent) 70%,
-			var(--color-surface-elevated) 100%
-		);
-		pointer-events: none;
-		opacity: 0;
-		transition: opacity var(--duration-moderate) var(--ease-out);
-		border-radius: 0;
-	}
-
-	/* Show fade when scrollable using reactive class */
-	.preview-card.has-overflow::after {
-		opacity: 1;
-	}
-
-	:global(html.dark) .preview-card::after {
-		background: linear-gradient(
-			to bottom,
-			transparent 0%,
-			color-mix(in srgb, var(--color-surface-alt) 80%, transparent) 70%,
-			var(--color-surface-alt) 100%
-		);
 	}
 
 	/* The scan sits as a plate: square, a hairline rule beneath it, no gradient

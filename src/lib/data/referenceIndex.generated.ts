@@ -221,6 +221,25 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		},
 		"publisher": "Brill"
 	},
+	"communication:islam-ivoirien-burkinabe-numerique-2016": {
+		"id": "islam-ivoirien-burkinabe-numerique-2016",
+		"itemType": "communication",
+		"title": "L'islam ivoirien et burkinabé à l'ère du numérique: des communautés musulmanes 2.0?",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"type": "conference",
+		"date": "14 January 2016",
+		"dateISO": "2016-01-14",
+		"year": 2016,
+		"image": "images/communications/islam-ivoirien-burkinabe-numerique-2016.webp",
+		"heroImage": {
+			"src": "images/communications/islam-ivoirien-burkinabe-numerique-2016-hero.webp"
+		},
+		"conference": "3ème rencontre des Jeunes Chercheur.e.s en Études Africaines",
+		"location": "Paris Diderot University",
+		"country": "France"
+	},
 	"current-dynamics-islam-burkina-faso": {
 		"id": "current-dynamics-islam-burkina-faso",
 		"itemType": "communication",
@@ -916,24 +935,6 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"location": "University of Bayreuth",
 		"country": "Germany"
 	},
-	"islam-ivoirien-burkinabe-numerique-2016": {
-		"id": "islam-ivoirien-burkinabe-numerique-2016",
-		"itemType": "publication",
-		"title": "L'islam ivoirien et burkinabé à l'ère du numérique 2.0",
-		"authors": [
-			"Frédérick Madore"
-		],
-		"type": "article",
-		"date": "2016",
-		"dateISO": "2016",
-		"year": 2016,
-		"image": "images/publications/journal-des-anthropologues.webp",
-		"heroImage": {
-			"src": "images/publications/journal-des-anthropologues-hero.webp"
-		},
-		"journal": "Journal des anthropologues",
-		"publisher": "Association Française des Anthropologues"
-	},
 	"islam-medias-senat-burkina-faso-2016": {
 		"id": "islam-medias-senat-burkina-faso-2016",
 		"itemType": "publication",
@@ -1535,6 +1536,24 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"conference": "Workshop Media and 'Public' Islam in Africa & Elsewhere",
 		"location": "University of Florida",
 		"country": "United States"
+	},
+	"publication:islam-ivoirien-burkinabe-numerique-2016": {
+		"id": "islam-ivoirien-burkinabe-numerique-2016",
+		"itemType": "publication",
+		"title": "L'islam ivoirien et burkinabé à l'ère du numérique 2.0",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"type": "article",
+		"date": "2016",
+		"dateISO": "2016",
+		"year": 2016,
+		"image": "images/publications/journal-des-anthropologues.webp",
+		"heroImage": {
+			"src": "images/publications/journal-des-anthropologues-hero.webp"
+		},
+		"journal": "Journal des anthropologues",
+		"publisher": "Association Française des Anthropologues"
 	},
 	"publishing-islam-burkina-faso-collection-2022": {
 		"id": "publishing-islam-burkina-faso-collection-2022",

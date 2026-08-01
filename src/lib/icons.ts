@@ -6,8 +6,8 @@
  *
  * Icons are bundled directly into the JavaScript, eliminating network requests.
  *
- * Note: Some newer icons (like bluesky) may not be available in bundled packages
- * and will still be fetched from the API as a fallback.
+ * Brand icons that are not available in the installed packages (currently
+ * Bluesky) are bundled as local SVG data too, so no runtime fallback is needed.
  */
 
 import { addIcon } from '@iconify/svelte';

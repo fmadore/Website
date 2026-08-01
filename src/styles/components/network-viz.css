@@ -137,10 +137,6 @@
 	border-bottom-style: solid;
 }
 
-.viz-legend-line--dashed {
-	border-bottom-style: dashed;
-}
-
 .viz-legend-line--dotted {
 	border-bottom-style: dotted;
 }

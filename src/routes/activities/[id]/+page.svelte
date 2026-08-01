@@ -74,7 +74,7 @@
 	// renders this hero with a srcset of _r/ variants, so the browser fetches
 	// e.g. `-800.webp` and never the full-size original. Preloading the bare
 	// href downloaded a second, larger copy that nothing on the page ever used.
-	// These three attributes have to mirror the <img> exactly for the scanner
+	// These three attributes have to mirror the rendered image for the scanner
 	// to resolve the same candidate, hence the shared helpers.
 	const heroImagePreloadHtml = $derived.by(() => {
 		const resolved = resolveImagePath(activity?.heroImage?.src, base);
@@ -168,7 +168,7 @@
 				</div>
 
 				{#if activity.heroImage && activity.heroImage.src}
-					<div class="hero-image-wrapper mb-8 scroll-reveal">
+					<div class="hero-image-wrapper mb-8">
 						<HeroImageDisplay
 							heroImage={{
 								src: activity.heroImage.src,
@@ -187,7 +187,7 @@
 				{/if}
 
 				<!-- Main content (prose on paper, no card wrapper) -->
-				<div class="scroll-reveal">
+				<div class="">
 					<ContentBody variant="default">
 						<!-- Render parsed content segments -->
 						{#each contentSegments as segment, segmentIndex (segmentIndex)}
@@ -203,7 +203,7 @@
 				</div>
 
 				{#if activity.url || (activity.additionalUrls && activity.additionalUrls.length > 0)}
-					<div class="scroll-reveal">
+					<div class="">
 						<ActionLinks
 							primaryUrl={activity.url}
 							primaryLabel={activity.urlLabel ??
@@ -218,7 +218,7 @@
 				{/if}
 
 				{#if activity.pdfPath}
-					<div class="pdf-section mt-4 p-6 md:p-8 scroll-reveal">
+					<div class="pdf-section mt-4 p-6 md:p-8">
 						<h2 class="pdf-section-title editorial-section-title">
 							{activity.pdfTitle || 'Associated Document'}
 						</h2>
@@ -227,20 +227,20 @@
 							src="{base}/{activity.pdfPath}"
 							title="{activity.title} PDF Document"
 							height="800px"
-							containerClass="iframe-container iframe-container-fullwidth"
-							framed={false}
+							variant="document"
+							sandbox={null}
 						/>
 					</div>
 				{/if}
 
 				{#if formattedTags && formattedTags.length > 0}
-					<div class="mt-4 mb-6 scroll-reveal">
+					<div class="mt-4 mb-6">
 						<TagList tags={formattedTags} baseUrl="/activities?tag=" />
 					</div>
 				{/if}
 
 				<!-- RSS Feed Button -->
-				<div class="rss-button-wrapper scroll-reveal">
+				<div class="rss-button-wrapper">
 					<!-- eslint-disable svelte/no-navigation-without-resolve -- static asset -->
 					<a href="{base}/rss.xml" class="rss-feed-button">
 						<Icon icon="mdi:rss" width="16" height="16" aria-hidden="true" />

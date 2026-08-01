@@ -274,7 +274,7 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 	});
 </script>
 
-<div class="echarts-container scroll-reveal-scale">
+<div class="echarts-container">
 	<ChartToolbar chart={echartsInstance.chart} showDecalToggle={false} filename="project-timeline" />
 	<div bind:this={chartContainer} class="chart"></div>
 	<div class="legend-hint">

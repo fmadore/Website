@@ -13,7 +13,7 @@ src/lib/components/
 ├── atoms/               # Basic elements (Button, ToggleButton, RangeSlider, ...)
 ├── molecules/           # Simple compositions (Breadcrumb, TagList, Pagination, ...)
 ├── organisms/           # Complex UI (RelatedItemsList)
-├── common/              # Shared layout & display (Card, PageHeader, EntityListPageLayout, ...)
+├── common/              # Shared layout & display (Card, PageHeader, Footer, ...)
 ├── entity-index/        # Entity index facets and filter bar
 ├── activities/          # Activities feature components
 ├── communications/      # Communications feature components
@@ -57,8 +57,6 @@ Several documented components now live outside the folder their doc sits in; the
 ### Common (`docs/components/common/`)
 
 - [Card](./common/Card.md) — `common/Card.svelte`
-- [EntityListPageLayout](./common/EntityListPageLayout.md) — `common/EntityListPageLayout.svelte`
-- [FilteredListDisplay](./common/FilteredListDisplay.md) — `common/FilteredListDisplay.svelte`
 - [PageHeader](./common/PageHeader.md) — `common/PageHeader.svelte`
 
 ## Component Usage Guidelines

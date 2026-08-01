@@ -13,7 +13,6 @@
  * Spec: https://webmachinelearning.github.io/webmcp/ — `navigator.modelContext`.
  */
 
-import { browser } from '$app/environment';
 import { author, website } from '$lib/data/siteConfig';
 
 // ---------------------------------------------------------------------------
@@ -386,34 +385,31 @@ function buildTools(): ToolDescriptor[] {
 }
 
 /**
- * Registers WebMCP tools for the current document.
- * Must be called at component top-level (uses $effect).
+ * Registers WebMCP tools for the current document and returns a cleanup
+ * callback. The root layout dynamically imports this module only after
+ * feature detection, keeping the uncommon integration out of the main chunk.
  */
-export function useWebMcp(): void {
-	$effect(() => {
-		if (!browser) return;
+export function registerWebMcp(): () => void {
+	const modelContext = (navigator as Navigator & { modelContext?: ModelContext }).modelContext;
+	if (!modelContext || typeof modelContext.registerTool !== 'function') return () => {};
 
-		const modelContext = (navigator as Navigator & { modelContext?: ModelContext }).modelContext;
-		if (!modelContext || typeof modelContext.registerTool !== 'function') return;
+	const registrations: ToolRegistration[] = [];
+	for (const tool of buildTools()) {
+		try {
+			const registration = modelContext.registerTool(tool);
+			if (registration) registrations.push(registration);
+		} catch (err) {
+			if (import.meta.env.DEV) console.error('[WebMCP] Failed to register tool:', tool.name, err);
+		}
+	}
 
-		const registrations: ToolRegistration[] = [];
-		for (const tool of buildTools()) {
+	return () => {
+		for (const registration of registrations) {
 			try {
-				const registration = modelContext.registerTool(tool);
-				if (registration) registrations.push(registration);
-			} catch (err) {
-				if (import.meta.env.DEV) console.error('[WebMCP] Failed to register tool:', tool.name, err);
+				registration.unregister?.();
+			} catch {
+				// Ignore cleanup failures — the document is going away anyway.
 			}
 		}
-
-		return () => {
-			for (const registration of registrations) {
-				try {
-					registration.unregister?.();
-				} catch {
-					// Ignore cleanup failures — the document is going away anyway.
-				}
-			}
-		};
-	});
+	};
 }

@@ -67,7 +67,7 @@
 	pageType="CollectionPage"
 />
 
-<div class="container py-8 page-enter">
+<div class="container py-8">
 	<div class="max-w-6xl mx-auto">
 		<PageHeader title="Teaching" />
 
@@ -78,7 +78,7 @@
 
 		<!-- Courses as a pure ledger: term key + level status left, serif title +
 		     institution right, mono syllabus/list action. -->
-		<div class="ledger ledger--ruled grid-stagger" style="--ledger-key-w: 12rem">
+		<div class="ledger ledger--ruled" style="--ledger-key-w: 12rem">
 			{#each teachingItems as item (item.id)}
 				<div class="ledger-row ledger-row--meta course-row">
 					<span class="ledger-key">

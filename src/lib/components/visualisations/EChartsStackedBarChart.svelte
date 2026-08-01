@@ -209,7 +209,7 @@ ECharts Stacked Bar Chart component
 	});
 </script>
 
-<div class="echarts-container scroll-reveal">
+<div class="echarts-container">
 	<ChartToolbar
 		chart={echartsInstance.chart}
 		bind:showDecal

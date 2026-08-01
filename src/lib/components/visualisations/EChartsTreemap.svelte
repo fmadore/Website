@@ -343,7 +343,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 </script>
 
 <div
-	class="echarts-container scroll-reveal-scale"
+	class="echarts-container"
 	bind:this={outerEl}
 	style={resolvedHeight > 0 ? `width:${resolvedWidth}px;height:${resolvedHeight}px` : ''}
 >

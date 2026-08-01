@@ -60,10 +60,8 @@ export const zmoVisualisations: DigitalHumanitiesProject = {
 			title: 'Word cloud',
 			description:
 				"<p>The most frequent terms across ZMO's three research units. Pick a unit or view them combined, and adjust how many words are shown.</p>",
-			scrolling: 'yes',
-			allowfullscreen: true,
 			showTitle: true,
-			containerClass: 'iframe-container-aspect iframe-container-aspect-16-9'
+			variant: 'responsive'
 		},
 		{
 			type: 'iframe',
@@ -72,10 +70,8 @@ export const zmoVisualisations: DigitalHumanitiesProject = {
 			title: 'Publications dashboard',
 			description:
 				'<p>1,962 publications across five linked views. Click any column, bar, legend entry or author node to filter the whole dashboard; the choices stack.</p>',
-			scrolling: 'yes',
-			allowfullscreen: true,
 			showTitle: true,
-			containerClass: 'iframe-container-aspect iframe-container-aspect-16-9'
+			variant: 'responsive'
 		}
 	],
 	seoKeywords: [

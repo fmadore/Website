@@ -241,8 +241,8 @@ html.dark .entity-card:hover {
 /* ============================================================================
  * Editorial lead variant
  * ============================================================================
- * The first item in `FeaturedPublications` opts into this variant via the
- * `editorial` prop. It strips the card chrome (background, border, shadow,
+ * The lead item on the publication and communication indexes opts into this
+ * variant via the `editorial` prop. It strips the card chrome (background, border, shadow,
  * lift-on-hover) so the publication reads as content-on-paper, not
  * card-on-paper — a deliberate break in the uniform list rhythm. The brief
  * calls for "asymmetry over center alignment" and "break the grid

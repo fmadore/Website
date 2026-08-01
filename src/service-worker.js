@@ -76,10 +76,7 @@ sw.addEventListener('install', (event) => {
 					console.warn(`[SW] ${failed}/${ASSETS_TO_CACHE.length} assets failed to precache`);
 				}
 			})
-			.then(() => {
-				console.log('[SW] Installation complete');
-				sw.skipWaiting(); // Activate immediately
-			})
+			.then(() => console.log('[SW] Installation complete'))
 	);
 });
 
@@ -121,13 +118,9 @@ sw.addEventListener('fetch', (event) => {
 		return;
 	}
 
-	// Skip cross-origin requests (except CDN assets we want to cache).
-	// Fonts are self-hosted now, so the only cacheable third-party origin left
-	// is the iconify API fallback (bundled icons normally make it unnecessary).
+	// Cross-origin data and tiles already have service-specific browser caching;
+	// leave them outside this site's runtime-cache lifecycle.
 	if (url.origin !== sw.location.origin) {
-		if (url.hostname === 'api.iconify.design') {
-			event.respondWith(handleCDNRequest(request));
-		}
 		return;
 	}
 
@@ -242,26 +235,6 @@ async function handleNetworkFirst(request, event) {
 	}
 }
 
-// Handle CDN requests with longer caching
-async function handleCDNRequest(request) {
-	const cache = await caches.open(RUNTIME_CACHE);
-	const cached = await cache.match(request);
-
-	if (cached) {
-		return cached;
-	}
-
-	try {
-		const response = await fetch(request);
-		if (response.ok) {
-			putRuntime(cache, request, response.clone());
-		}
-		return response;
-	} catch {
-		return cached || new Response('CDN resource unavailable', { status: 503 });
-	}
-}
-
 // Helper functions to determine caching strategy
 function matchesRoute(pathname, route) {
 	return route.startsWith('.') ? pathname.endsWith(route) : pathname.includes(route);
@@ -285,42 +258,6 @@ async function putRuntime(cache, request, response) {
 		);
 	}
 }
-
-// Handle push notifications (if you plan to implement them)
-sw.addEventListener('push', (event) => {
-	if (!event.data) return;
-
-	const options = {
-		body: event.data.text(),
-		icon: '/icons/favicon.png',
-		badge: '/icons/favicon.png',
-		vibrate: [200, 100, 200],
-		tag: 'academic-update',
-		actions: [
-			{
-				action: 'view',
-				title: 'View',
-				icon: '/icons/action-view.png'
-			},
-			{
-				action: 'dismiss',
-				title: 'Dismiss',
-				icon: '/icons/action-dismiss.png'
-			}
-		]
-	};
-
-	event.waitUntil(sw.registration.showNotification('Academic Update', options));
-});
-
-// Handle notification clicks
-sw.addEventListener('notificationclick', (event) => {
-	event.notification.close();
-
-	if (event.action === 'view') {
-		event.waitUntil(sw.clients.openWindow('/'));
-	}
-});
 
 // Handle messages from clients
 sw.addEventListener('message', (event) => {

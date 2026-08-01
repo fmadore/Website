@@ -29,7 +29,7 @@
 	);
 </script>
 
-<article class="deck-card scroll-reveal-scale">
+<article class="deck-card">
 	<!-- The whole cover is the primary link to the talk; the stretched ::after
 	     makes it fully clickable while the launch link below stays separate. -->
 	<a class="deck-card-cover" href={detailHref} data-sveltekit-preload-code="tap">

@@ -381,13 +381,13 @@
 	keywords="publications, visualisations, citations, research analytics, Frédérick Madore"
 />
 
-<div class="viz-page-container page-enter">
+<div class="viz-page-container">
 	<Breadcrumb items={breadcrumbItems} />
-	<div class="scroll-reveal">
+	<div class="">
 		<PageHeader title="Publication Visualisations" />
 	</div>
 
-	<div class="scroll-reveal">
+	<div class="">
 		<PageIntro>
 			This page presents various visualisations of my publication data, offering insights into
 			citation trends, authorship patterns, and more.
@@ -635,7 +635,7 @@
 		<LocationMap data={publisherLocationData} basePath="/publications" itemLabel="publication" />
 	</VizSection>
 
-	<div class="section-divider scroll-reveal">
+	<div class="section-divider">
 		<h2 class="divider-heading">Citation statistics</h2>
 	</div>
 

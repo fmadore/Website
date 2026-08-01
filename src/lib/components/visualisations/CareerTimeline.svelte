@@ -451,7 +451,7 @@
 		height: var(--space-3);
 		border-radius: 50%;
 		border: var(--space-0-5) solid transparent;
-		box-shadow: 0 0 0 1px var(--color-border);
+		outline: var(--border-width-thin) solid var(--color-border);
 	}
 
 	.legend-label {

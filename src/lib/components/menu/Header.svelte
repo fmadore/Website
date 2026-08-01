@@ -232,7 +232,6 @@
 		z-index: var(--z-sticky);
 		transform: translateY(0);
 		transition: transform var(--duration-normal) var(--ease-out);
-		will-change: transform;
 	}
 
 	/* Scrolled state — the masthead stays solid; no opacity or shadow change. */

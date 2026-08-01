@@ -84,12 +84,12 @@
 </script>
 
 {#if processedProjects.length > 0}
-	<section class="featured section--flush scroll-reveal" aria-labelledby="dh-featured-heading">
+	<section class="featured section--flush" aria-labelledby="dh-featured-heading">
 		<div class="featured-head">
 			<span class="featured-label" id="dh-featured-heading">Featured</span>
 		</div>
 
-		<div class="featured-grid grid-stagger">
+		<div class="featured-grid">
 			{#each processedProjects as project (project.id)}
 				<article class="featured-cell">
 					<p class="eyebrow featured-eyebrow">

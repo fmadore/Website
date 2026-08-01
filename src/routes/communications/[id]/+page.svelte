@@ -154,7 +154,7 @@
 
 				<!-- Slide Deck — embedded inline when an embeddable deck URL is set -->
 				{#if communication.slidesUrl}
-					<section class="slides-section scroll-reveal" id="slides">
+					<section class="slides-section" id="slides">
 						<h2 class="editorial-section-title">Slides</h2>
 						<SlideDeckEmbed src={communication.slidesUrl} title={communication.title} />
 					</section>
@@ -165,9 +165,9 @@
 
 				<!-- Panel-specific information: Papers in Panel -->
 				{#if communication.type === 'panel' && communication.papers && communication.papers.length > 0}
-					<section class="panel-papers-section scroll-reveal">
+					<section class="panel-papers-section">
 						<h2 class="editorial-section-title">Papers in this Panel</h2>
-						<div class="panel-papers-grid grid-stagger">
+						<div class="panel-papers-grid">
 							{#each communication.papers as paper, index (paper.title + index)}
 								<div class="panel-paper-card">
 									<h3 class="panel-paper-title">{paper.title}</h3>
@@ -193,9 +193,9 @@
 
 				<!-- Participants Section -->
 				{#if communication.participants && communication.participants.length > 0}
-					<section class="participants-section scroll-reveal">
+					<section class="participants-section">
 						<h2 class="editorial-section-title">Participants</h2>
-						<div class="participants-grid grid-stagger">
+						<div class="participants-grid">
 							{#each communication.participants as participant, index (participant.name + index)}
 								<div class="participant-card">
 									<div class="participant-name">{participant.name}</div>
@@ -231,7 +231,7 @@
 
 				<!-- Map Location -->
 				{#if communication.coordinates}
-					<section class="map-section scroll-reveal" bind:this={mapSectionEl}>
+					<section class="map-section" bind:this={mapSectionEl}>
 						<h2 class="map-section-title editorial-section-title">Location</h2>
 						<div class="map-container-wrapper">
 							{#if MapVisualization}

@@ -228,7 +228,7 @@ ledger — ruled, gridded, set in the data voice.
 	}
 </script>
 
-<div class="viz-plate scroll-reveal-scale" bind:this={outerContainer}>
+<div class="viz-plate" bind:this={outerContainer}>
 	<ChartToolbar
 		chart={null}
 		onDownload={handleDownload}

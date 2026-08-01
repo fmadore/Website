@@ -58,7 +58,7 @@
 	{#if activityList.length === 0}
 		<p class="no-activities">No recent activities found.</p>
 	{:else}
-		<ul class="activities-list grid-stagger">
+		<ul class="activities-list">
 			{#each activityList as activity (activity.id)}
 				<li class="activity-item card-accent-border">
 					<div class="activity-meta">

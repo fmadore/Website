@@ -4,7 +4,7 @@ EntityDetailLayout - Shared shell for item detail pages
 
 Owns only what those routes genuinely share:
 
-  - the outer `container py-8 page-enter` wrapper plus an inner wrapper div
+  - the outer `container py-8 ` wrapper plus an inner wrapper div
     whose class differs per route (`wrapperClass`);
   - the <Breadcrumb> trail and the <PageHeader> masthead, exposed to the page
     as snippet parameters so each route keeps its exact DOM position for them
@@ -94,7 +94,7 @@ Usage:
 	<PageHeader {title} {date} {typeBadgeText} {authors} />
 {/snippet}
 
-<div class="container py-8 page-enter">
+<div class="container py-8">
 	<div class={wrapperClass}>
 		{@render children({ breadcrumb, header })}
 	</div>

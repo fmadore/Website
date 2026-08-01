@@ -4,14 +4,12 @@ Common components are reusable UI elements that don't fit neatly into the atomic
 
 ## Documented Components
 
-| Component                                         | Description                                                                     | Usage                              |
-| ------------------------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------- |
-| [Card](./Card.md)                                 | Versatile card component for displaying content with image, title, and sections | Entity displays, previews          |
-| [EntityListPageLayout](./EntityListPageLayout.md) | Layout component for list pages with sidebar and content                        | Publication/communication listings |
-| [FilteredListDisplay](./FilteredListDisplay.md)   | Component for displaying filtered lists with empty states                       | Data-driven listings               |
-| [PageHeader](./PageHeader.md)                     | Standard page header with title, metadata, and tags                             | Detail and section pages           |
+| Component                     | Description                                                                     | Usage                     |
+| ----------------------------- | ------------------------------------------------------------------------------- | ------------------------- |
+| [Card](./Card.md)             | Versatile card component for displaying content with image, title, and sections | Entity displays, previews |
+| [PageHeader](./PageHeader.md) | Standard page header with title, metadata, and tags                             | Detail and section pages  |
 
-Undocumented components in `src/lib/components/common/`: `BaseMetaTags`, `ContentBody`, `Footer`, `PWAUpdatePrompt`, `PageIntro`, `ProfileBanner`, `ProjectImageBanner`, `Sorter`.
+Undocumented components in `src/lib/components/common/`: `BaseMetaTags`, `ContentBody`, `Footer`, `PWAUpdatePrompt`, `PageIntro`, `ProfileBanner`, `Sorter`.
 
 ## Component Design Philosophy
 

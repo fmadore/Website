@@ -26,8 +26,8 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		width: calc(var(--space-6) + var(--space-1));
-		height: calc(var(--space-6) + var(--space-1));
+		width: var(--space-10);
+		height: var(--space-10);
 		background: transparent;
 		border: none;
 		cursor: pointer;
@@ -38,7 +38,8 @@
 	}
 
 	.hamburger-line {
-		width: 100%;
+		width: calc(var(--space-6) + var(--space-1));
+		align-self: center;
 		height: var(--border-width-medium);
 		background-color: var(--color-text);
 		transition:

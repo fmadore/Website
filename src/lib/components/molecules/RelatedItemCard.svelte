@@ -5,8 +5,8 @@
 		item,
 		itemUrl,
 		// Updated default classes to align with the global surface card + typography system
-		// Added scroll-reveal-scale for modern CSS scroll-driven animation
-		cardClass = 'related-item p-4 focus-outline scroll-reveal-scale',
+		// Added  for modern CSS scroll-driven animation
+		cardClass = 'related-item p-4 focus-outline ',
 		dateClass = 'related-date text-xs mb-1',
 		titleClass = 'related-title',
 		authorsClass = 'related-authors text-xs mt-2'

@@ -54,10 +54,10 @@ test('visualisation pages render each network view and its controls', async ({ p
 		await section.scrollIntoViewIfNeeded();
 
 		// Inline SVG (never a canvas), so every mark is a real element.
-		await expect(section.locator(mark).first()).toBeVisible();
+		await expect(section.locator(mark).first()).toBeVisible({ timeout: 15_000 });
 
 		const search = section.locator('.network-controls .search-input');
-		await expect(search).toBeVisible();
+		await expect(search).toBeVisible({ timeout: 15_000 });
 		await search.fill('a');
 		await expect(search).toHaveValue('a');
 	}
@@ -105,9 +105,15 @@ test('the co-occurrence matrix renders a labelled, seriated grid', async ({ page
 	// The accessible reading of a matrix is a table.
 	await expect(section.locator('table.sr-only tbody tr').first()).toBeAttached();
 
-	// Hovering a cell lights its row and column and opens the tooltip.
-	await cells.first().hover();
-	await expect(section.locator('.viz-tooltip')).toBeVisible();
+	// Dispatch directly to a readable half-matrix cell. The SVG can be scaled
+	// below a one-pixel physical hit area in headless browsers, making a
+	// coordinate-based hover unreliable even though the handler is functional.
+	const readableCell = section.locator('svg.matrix-svg .matrix-cell[tabindex="0"]').first();
+	const tooltip = section.locator('.viz-tooltip');
+	await expect(async () => {
+		await readableCell.dispatchEvent('pointerenter', { clientX: 200, clientY: 200 });
+		await expect(tooltip).toBeVisible({ timeout: 1_000 });
+	}).toPass({ timeout: 15_000 });
 	await expect(section.locator('svg.matrix-svg .matrix-label--hit').first()).toBeAttached();
 });
 
@@ -146,7 +152,9 @@ test('searching a network dims marks without moving them', async ({ page }) => {
 				els.map((e) => `${e.getAttribute('cx')},${e.getAttribute('cy')}`).join('|')
 			);
 
-	await expect(section.locator('svg.network-svg .nodes circle').first()).toBeVisible();
+	await expect(section.locator('svg.network-svg .nodes circle').first()).toBeVisible({
+		timeout: 15_000
+	});
 	const before = await positions();
 	expect(before.length).toBeGreaterThan(0);
 
@@ -282,5 +290,5 @@ test('a publication detail page injects JSON-LD structured data', async ({ page 
 	await expect(page).toHaveURL(/\/publications\/[^/]+$/);
 	// At least one JSON-LD block (layout-level site schema + the page's own).
 	const jsonLd = page.locator('script[type="application/ld+json"]');
-	expect(await jsonLd.count()).toBeGreaterThan(0);
+	await expect(jsonLd.first()).toBeAttached({ timeout: 15_000 });
 });

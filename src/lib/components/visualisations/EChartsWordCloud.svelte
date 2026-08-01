@@ -148,7 +148,7 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 	});
 </script>
 
-<div class="wordcloud-container scroll-reveal-scale" style:--wc-h="{height}px">
+<div class="wordcloud-container" style:--wc-h="{height}px">
 	{#if words.length === 0}
 		<div class="empty-state">
 			<p>No word frequency data available</p>

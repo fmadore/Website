@@ -89,14 +89,14 @@
 	<PageHeader title="Guest Lectures" />
 
 	{#each Object.entries(guestLecturesByInstitution) as [institution, lectures] (institution)}
-		<section class="section institution-section scroll-reveal">
+		<section class="section institution-section">
 			<div class="section-head">
 				<h2 class="section-title">{institution}</h2>
 			</div>
 
 			<!-- Lectures as a ledger: date key + level status left, serif title +
 			     course right. -->
-			<div class="ledger ledger--ruled grid-stagger" style="--ledger-key-w: 11rem">
+			<div class="ledger ledger--ruled" style="--ledger-key-w: 11rem">
 				{#each lectures as lecture (lecture.title + lecture.date)}
 					<div class="ledger-row lecture-row">
 						<span class="ledger-key">

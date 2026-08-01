@@ -227,13 +227,13 @@
 	keywords="conferences, presentations, visualisations, co-presenters, research projects, map, Frédérick Madore"
 />
 
-<div class="viz-page-container page-enter">
+<div class="viz-page-container">
 	<Breadcrumb items={breadcrumbItems} />
-	<div class="scroll-reveal">
+	<div class="">
 		<PageHeader title="Talks & Events Visualisations" />
 	</div>
 
-	<div class="scroll-reveal">
+	<div class="">
 		<PageIntro>
 			This page presents visualisations of my academic conference activity: conference papers,
 			workshops, seminars, lectures, panels organised, events organised, and podcasts.

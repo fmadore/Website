@@ -81,7 +81,7 @@ can still compose `VizChartCard` themselves.
 	} = $props();
 </script>
 
-<section class="visualization-section scroll-reveal" class:mb-12={!last}>
+<section class="visualization-section" class:mb-12={!last}>
 	<h2 class="section-heading">
 		{title}
 		{#if count}({count}){/if}

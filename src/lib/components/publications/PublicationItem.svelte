@@ -239,9 +239,9 @@
 	/>
 {:else}
 	<!-- li, not article: this branch renders as a direct child of the
-	     <ul class="entity-list"> in FeaturedPublications, and a ul may only
+	     <ul class="entity-list"> in publication lists, and a ul may only
 	     contain li children. -->
-	<li class="entity-list-item scroll-reveal-scale" class:editorial>
+	<li class="entity-list-item" class:editorial>
 		<div class="entity-card" class:entity-card--editorial={editorial} class:entity-card--row={row}>
 			<div class="entity-grid">
 				{#if publication.image}

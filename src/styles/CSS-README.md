@@ -30,7 +30,7 @@ The `src/app.css` file imports the global stylesheet in a fixed order so tokens 
 1. **Check existing layers first**: Reuse the Ink + Signal idiom classes (`.ledger`, `.section`, `.chip`, `.plate`, `.eyebrow`) and the utilities before writing new CSS.
 2. **Scope deliberately**: Component-specific visuals belong in the Svelte file's `<style>` block; shared UI patterns live under `styles/components/`; system-wide helpers go in `styles/utilities/`.
 3. **Lean on design tokens**: Reference values from `base/variables.css` instead of hard-coded numbers or hex values. This keeps daylight/midnight theming consistent.
-4. **Respect motion and accessibility**: Honor `prefers-reduced-motion`, `prefers-contrast`, and focus-visible treatments as `reset.css` and `animations.css` do. Motion is near-zero by design — the register is print, not app.
+4. **Respect motion and accessibility**: Honor `prefers-reduced-motion`, `prefers-contrast`, and focus-visible treatments. Motion is near-zero by design — the register is print, not app.
 5. **Document the change**: Update this README so future contributors know the intent behind the new styles.
 
 ## Base Styles
@@ -115,7 +115,7 @@ Midnight is **the microfilm negative** — the same printed page photographed as
 - **Links**: Ink text with a **static pine underline** in prose contexts (`text-decoration-color: var(--color-accent)`, 1px, offset 3px). Hover warms the text to pine and thickens the rule to 2px — nothing grows or sweeps. Outside prose, `.link-animated` gives a quiet hover-to-accent response without the underline
 - **Blockquotes**: Editorial indent — left margin, italic serif, softer colour. No background, no border stripe
 - **Emphasis**: `em`/`i`/`cite` are genuine Newsreader italics; inside h1–h3 they stay upright in the display face to avoid a voice collision
-- **Academic elements**: `.citation`, `.footnote`, `.abstract` (a serif-italic standfirst, no box), `.keywords`
+- **Academic elements**: `.citation`, `.abstract` (a serif-italic standfirst, no box), `.keywords`
 - **`.editorial-section-title`**: Archivo section head over a hairline rule, shared by detail-page sections
 - **Prose class**: `.prose` for long-form content (reading measure, relaxed leading, heading rhythm)
 - **Utilities**: Font family/size/weight, alignment, leading, tracking, transforms, truncation
@@ -144,19 +144,15 @@ Provides consistent styling across browsers: border-box sizing, margin/padding n
 - `.container-fluid`: Full-width container
 - `.section-sm`, `.section-lg`: Section padding variations (note: the bare `.section` class is owned by `ink-signal.css` as the ruled-section idiom)
 
-### Grid (`layout/grid.css`)
-
-- `.grid`, `.grid-cols-*` (1–12), responsive `sm:`/`md:`/`lg:`/`xl:` variants, `.col-span-*`, row templates, auto-flow control, and a specialized content grid
-
 ## UI Components
 
 ### Ink + Signal Idioms (`components/ink-signal.css`)
 
 The vocabulary of the design system, in one place. Every class belongs to exactly one voice — document (Archivo/Newsreader) or data (Spline Sans Mono):
 
-- **Data voice**: `.data-voice`, `.eyebrow` (accent mono kicker; `--ink`, `--faint` variants), `.dateline` / `.dateline-kind`, `.figure-accent`
+- **Data voice**: `.data-voice`, `.eyebrow` (accent mono label with an `--ink` variant), `.dateline`
 - **Rules**: `.rule-nameplate` (5px), `.rule-masthead` (4px), `.rule-section` (3px), `.rule-hairline` (1px) — ink-coloured border-tops
-- **Nameplate**: `.nameplate` (the masthead wordmark, wide heavy Archivo caps), `.nameplate--sm` (inner-page masthead)
+- **Nameplate**: `.nameplate` (the masthead wordmark, wide heavy Archivo caps)
 - **Section**: `.section` (3px ink rule + spacing — the standard content module), `.section-head`, `.section-no`, `.section-title`
 - **Ledger** — the universal record idiom: `.ledger`, `.ledger-row` (hanging mono key column left, serif content right, hairline per row; `--meta` three-column variant), `.ledger-key` / `--current`, `.ledger-status`, `.ledger-content`, `.ledger-title`, `.ledger-desc`, `.ledger-meta`. Column widths tune via `--ledger-key-w` / `--ledger-meta-w`
 - **Chips**: `.chip` (flat, square, 1px border, mono caps, `.chip-count` appended; `.chip--selected` = solid ink fill), `.chip-more` (accent mono text action), `.chip-row`
@@ -212,29 +208,9 @@ The `/activities` page as a dated press column: mono log eyebrow over an Archivo
 
 Shared utilities used across navigation components: `.sr-only`, focus-visible styles, reduced-motion and high-contrast support. Navigation itself (Header, DesktopNav, NavLink, DropdownMenu, MobileMenu, ThemeToggle, etc.) is styled with component-scoped CSS in the Svelte files.
 
-### Animations (`components/animations.css`)
+### Motion
 
-CSS-only animation system. Motion is nearly none by design — instant state changes, at most a short fade on entry:
-
-#### Mount-time entry
-
-- **`.page-enter`** / **`.body-enter`**: Subtle fade-up on page load
-- **`.heading-enter`**, **`.card-enter`**, **`.micro-enter`**: Same parametric keyframe with contextual distances/durations
-- **`.fade-in-up`**: Mount-time entrance for lazily loaded sections (e.g. deferred CV batches)
-- **`.stagger-1`** through **`.stagger-6`**: Sequential delay utilities (`backwards` fill keeps delayed elements hidden until they start)
-- **`.hero-entrance`**, **`.hero-sequence-photo/-title/-subtitle/-actions`**: Detail-page and profile hero sequences
-
-#### Scroll-driven entry (CSS-only)
-
-- **`.scroll-reveal`**: Fade-up on viewport entry via `animation-timeline: view()`
-- **`.scroll-reveal-scale`**: Subtle scale-in for cards and images
-- **`.grid-stagger`**: Staggered reveal of grid children via `:nth-child()` delays
-- **Browser support**: Chrome 115+, Firefox 110+; graceful fallback shows content immediately elsewhere
-
-#### Accessibility & Performance
-
-- All animations are disabled under `prefers-reduced-motion: reduce`
-- GPU-friendly (`opacity`/`transform` only, `will-change` on scroll-driven classes); reduced distances on mobile
+Page navigation uses one short Svelte opacity transition in the root layout. Component-scoped transitions are reserved for direct state feedback such as opening navigation or changing media controls, and each component owns its reduced-motion rule. There are no global entrance, scroll-reveal, or resting `will-change` utilities.
 
 ## Page-Specific Styles
 
@@ -246,7 +222,7 @@ The utility sheets are intentionally lean: each class exists because markup actu
 
 ### Spacing (`utilities/spacing.css`)
 
-Margin (`.mx-auto`, `.mt-*`, `.mb-*`, `.ml-*`), padding (`.p-*`, `.px-4`, `.py-8`), gap (`.gap-2/-4/-6`), and `.space-y-3` utilities on the 8-point grid. Values map to the semantic tokens.
+Margin (`.mx-auto`, `.mt-*`, `.mb-*`, `.ml-*`), padding (`.p-*`, `.px-4`, `.py-8`), gap (`.gap-4/-6`), and `.space-y-3` utilities on the 8-point grid. Values map to the semantic tokens.
 
 ### Colors (`utilities/colors.css`)
 

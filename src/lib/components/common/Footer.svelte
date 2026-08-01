@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import { socialGroups, author } from '$lib/data/siteConfig';
+	import { prefersReducedMotion } from '$lib/utils/motion';
 
 	const currentYear = new Date().getFullYear();
 
@@ -34,9 +35,8 @@
 		};
 	});
 
-	// Smooth scroll to top function
 	function scrollToTop() {
-		window.scrollTo({ top: 0, behavior: 'smooth' });
+		window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
 	}
 
 	// Handle keyboard events for scroll to top
@@ -50,27 +50,14 @@
 
 <footer class="site-footer" bind:this={footerElement}>
 	<div class="footer-container">
-		<section
-			class="footer-branding"
-			class:animate={isVisible}
-			aria-labelledby="footer-brand-heading"
-		>
+		<section class="footer-branding" aria-labelledby="footer-brand-heading">
 			<p class="footer-wordmark" id="footer-brand-heading">{author.fullName}</p>
 			<p class="footer-tagline">{author.position}</p>
 		</section>
 
-		<nav
-			class="footer-social-links"
-			class:animate={isVisible}
-			aria-label="Social and academic links"
-		>
+		<nav class="footer-social-links" aria-label="Social and academic links">
 			{#each socialGroups as group, groupIndex (group.title)}
-				<section
-					class="footer-link-group"
-					style="animation-delay: {groupIndex * 100}ms"
-					class:animate={isVisible}
-					aria-labelledby="group-{groupIndex}-title"
-				>
+				<section class="footer-link-group" aria-labelledby="group-{groupIndex}-title">
 					<!-- h2, not h3: pages whose content has no h2 (e.g. /teaching) would
 					     otherwise skip a heading level going into the footer. -->
 					<h2 class="footer-group-title" id="group-{groupIndex}-title">
@@ -78,13 +65,9 @@
 					</h2>
 					<!-- Use proper semantic list structure -->
 					<ul class="footer-links-grid">
-						{#each group.links as link, linkIndex (link.url)}
+						{#each group.links as link (link.url)}
 							{@const isExternal = link.url.startsWith('http') || link.url.startsWith('mailto:')}
-							<li
-								class="footer-link-item"
-								style="animation-delay: {(groupIndex * group.links.length + linkIndex) * 50}ms"
-								class:animate={isVisible}
-							>
+							<li class="footer-link-item">
 								<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 								<a
 									href={link.url}
@@ -108,7 +91,7 @@
 	</div>
 
 	<!-- Colophon rule — the fine-book signature line -->
-	<div class="footer-colophon" class:animate={isVisible}>
+	<div class="footer-colophon">
 		<span class="footer-copyright">© {currentYear} {author.fullName}</span>
 		<span class="footer-typecredit">Set in Archivo, Newsreader &amp; Spline Sans Mono.</span>
 	</div>
@@ -153,16 +136,7 @@
 	}
 
 	.footer-branding {
-		opacity: 0;
-		transform: translateY(var(--transform-distance-md));
-		transition:
-			opacity var(--duration-slower) var(--ease-out-quart),
-			transform var(--duration-slower) var(--ease-out-quart);
-	}
-
-	.footer-branding.animate {
-		opacity: 1;
-		transform: translateY(0);
+		min-width: 0;
 	}
 
 	/* Brand wordmark — Archivo, wide and heavy, uppercase. */
@@ -193,16 +167,6 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
 		gap: var(--space-8) var(--space-6);
-		opacity: 0;
-		transform: translateY(var(--transform-distance-md));
-		transition:
-			opacity var(--duration-slower) var(--ease-out-quart) var(--stagger-2),
-			transform var(--duration-slower) var(--ease-out-quart) var(--stagger-2);
-	}
-
-	.footer-social-links.animate {
-		opacity: 1;
-		transform: translateY(0);
 	}
 
 	.footer-link-group {
@@ -231,19 +195,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-2);
-	}
-
-	.footer-link-item {
-		opacity: 0;
-		transform: translateY(var(--transform-distance-xs));
-		transition:
-			opacity var(--duration-slow) var(--ease-out-quart),
-			transform var(--duration-slow) var(--ease-out-quart);
-	}
-
-	.footer-link-item.animate {
-		opacity: 1;
-		transform: translateY(0);
 	}
 
 	/* Links — Archivo at text weight, a grotesque set of section names, warming
@@ -295,12 +246,6 @@
 		flex-wrap: wrap;
 		border-top: var(--border-width-thin) solid
 			color-mix(in srgb, var(--color-footer-text) 20%, transparent);
-		opacity: 0;
-		transition: opacity var(--duration-slower) var(--ease-out-quart) var(--stagger-3);
-	}
-
-	.footer-colophon.animate {
-		opacity: 1;
 	}
 
 	.footer-copyright {

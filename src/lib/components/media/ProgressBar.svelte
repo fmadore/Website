@@ -67,10 +67,7 @@
 		aria-valuemax={duration}
 		aria-valuenow={currentTime}
 	>
-		<div
-			class="progress-fill"
-			style="width: {duration > 0 ? (currentTime / duration) * 100 : 0}%"
-		></div>
+		<div class="progress-fill" style:--progress={duration > 0 ? currentTime / duration : 0}></div>
 		<div
 			class="progress-thumb"
 			style="left: {duration > 0 ? (currentTime / duration) * 100 : 0}%"
@@ -93,18 +90,15 @@
 	/* Flat archival seek bar: ink track, pine fill, square, no glow. */
 	.progress-bar {
 		position: relative;
-		height: var(--space-1-5);
+		height: var(--space-2);
 		background: color-mix(in srgb, var(--color-text) calc(var(--opacity-15) * 100%), transparent);
 		border-radius: 0;
 		cursor: pointer;
-		transition:
-			height var(--duration-normal) var(--ease-out),
-			background-color var(--duration-normal) var(--ease-out);
+		transition: background-color var(--duration-normal) var(--ease-out);
 		overflow: hidden;
 	}
 
 	.progress-bar:hover {
-		height: var(--space-2);
 		background: color-mix(in srgb, var(--color-text) calc(var(--opacity-20) * 100%), transparent);
 	}
 
@@ -117,10 +111,13 @@
 		position: absolute;
 		top: 0;
 		left: 0;
+		width: 100%;
 		height: 100%;
 		background: var(--color-accent);
 		border-radius: 0;
-		transition: width var(--duration-instant) ease;
+		transform: scaleX(var(--progress));
+		transform-origin: left center;
+		transition: transform var(--duration-instant) ease;
 	}
 
 	.progress-thumb {

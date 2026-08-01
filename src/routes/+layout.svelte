@@ -11,25 +11,16 @@
 	import NetworkStatusIndicator from '$lib/components/atoms/NetworkStatusIndicator.svelte';
 	import '../app.css';
 	import type { LayoutProps } from './$types';
-	import { getGlobalState } from '$lib/stores/globalState.svelte';
-	import {
-		initPerformanceMonitoring,
-		assessConnectionQuality
-	} from '$lib/utils/performanceMonitor';
 	import { registerIcons } from '$lib/icons';
 	import { useGtm } from '$lib/utils/gtm.svelte';
 	import { useNetworkMonitor } from '$lib/utils/networkMonitor.svelte';
 	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
-	import { useWebMcp } from '$lib/utils/webmcp.svelte';
 
 	// Register all icons at app startup to avoid API calls
 	registerIcons();
 
 	// Destructure children and data from $props using LayoutProps
 	let { children, data }: LayoutProps = $props();
-
-	// Get access to global state
-	const globalState = getGlobalState();
 
 	// Global JSON-LD for WebSite and Person schemas
 	const globalJsonLd = $derived((data as { globalJsonLd?: string })?.globalJsonLd ?? '');
@@ -38,47 +29,34 @@
 	// Monitor network status
 	useNetworkMonitor();
 
-	// Register WebMCP tools so AI agents can query the site reliably
-	useWebMcp();
-
-	// Initialize performance monitoring
+	// WebMCP is experimental and uncommon. Keep its implementation out of the
+	// shared entry chunk and load it only in browsers that expose the API.
 	$effect(() => {
-		if (browser) {
-			initPerformanceMonitoring();
+		if (!browser || !('modelContext' in navigator)) return;
 
-			// Assess connection quality on load (dev-only diagnostic logging)
-			if (import.meta.env.DEV) {
-				setTimeout(() => {
-					console.log(`[PWA] Connection quality: ${assessConnectionQuality()}`);
-				}, 1000);
-			}
-		}
+		let disposed = false;
+		let unregister = () => {};
+		void import('$lib/utils/webmcp.svelte').then(({ registerWebMcp }) => {
+			if (disposed) return;
+			unregister = registerWebMcp();
+		});
+
+		return () => {
+			disposed = true;
+			unregister();
+		};
 	});
 
 	// Initialize GTM with lazy loading
 	const GTM_ID = 'G-DQ644SW7RG';
 	const { trackPageView } = useGtm(GTM_ID);
 
-	let isTransitioning = $state(false);
-
 	afterNavigate(() => {
-		// Set transitioning state
-		isTransitioning = true;
-
-		// Use the global state method to temporarily disable animations
-		globalState.temporarilyDisableAnimations(100);
-
-		// Remove transition state after page settles
-		setTimeout(() => {
-			isTransitioning = false;
-		}, 100);
-
-		// Track page views with Google Analytics
 		trackPageView();
 	});
 </script>
 
-<div class="layout-container" class:page-transitioning={isTransitioning}>
+<div class="layout-container">
 	<Header />
 
 	<main class="main-content-area">
@@ -112,13 +90,5 @@
 		/* Ensure main content (including sidebar dropdowns) appears above footer */
 		position: relative;
 		z-index: 2;
-	}
-
-	/* Route-level cross-fade wrapper.
-	 * Keeps layout stable during navigation (no collapsing height) and
-	 * hints the browser to promote the transitioning subtree for smoother
-	 * opacity interpolation. */
-	.route-transition-root {
-		will-change: opacity;
 	}
 </style>

@@ -77,3 +77,24 @@ test('a deep link with a filter query applies the filter on load', async ({ page
 	await expect(page.locator(bibItems)).toHaveCount(expected);
 	await expect(page.getByText(/1 filter active/)).toBeVisible();
 });
+
+test('type counts remain selectable totals when another type is active', async ({ page }) => {
+	await page.goto('/publications');
+
+	const booksChip = page.getByRole('button', { name: /^Books/ });
+	const chaptersChip = page.getByRole('button', { name: /^Chapters/ });
+	const bookCount = Number(await booksChip.locator('.chip-count').innerText());
+	const chapterCount = Number(await chaptersChip.locator('.chip-count').innerText());
+	await selectBooksChip(page, booksChip);
+
+	// Counts within a facet are disjunctive: the chapter count describes what
+	// selecting Chapters would add, rather than collapsing to zero under Books.
+	await expect(chaptersChip.locator('.chip-count')).toHaveText(String(chapterCount));
+	await chaptersChip.click();
+	await expect(page).toHaveURL(/type=book/);
+	await expect(page).toHaveURL(/type=chapter/);
+	const combinedCount = bookCount + chapterCount;
+	await expect(page.locator('.facet-summary-stat')).toContainText(`${combinedCount} matches`);
+	// The bibliography paginates at 12 while the summary reports the complete set.
+	await expect(page.locator(bibItems)).toHaveCount(Math.min(combinedCount, 12));
+});

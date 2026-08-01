@@ -50,8 +50,10 @@ export function sortItems<T extends SortableItem>(
 			const dateStrB = (b as Communication).dateISO || b.date;
 
 			// Handle potential missing dates, placing items without dates at the end
-			const dateA = dateStrA ? new Date(dateStrA).getTime() : 0;
-			const dateB = dateStrB ? new Date(dateStrB).getTime() : 0;
+			const parsedA = dateStrA ? Date.parse(dateStrA) : Number.NaN;
+			const parsedB = dateStrB ? Date.parse(dateStrB) : Number.NaN;
+			const dateA = Number.isFinite(parsedA) ? parsedA : 0;
+			const dateB = Number.isFinite(parsedB) ? parsedB : 0;
 
 			if (dateA === 0 && dateB === 0) return 0; // Both dates missing, keep original order
 			if (dateA === 0) return 1; // Put items without date A after B

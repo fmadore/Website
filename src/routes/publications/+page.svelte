@@ -81,7 +81,7 @@
 		if (pub.journal) parts.push(pub.journal);
 		if (pub.book) parts.push(pub.book);
 		if (pub.publisher) parts.push(pub.publisher);
-		const hay = parts.join('  ').toLowerCase();
+		const hay = parts.join(' ').toLowerCase();
 		// Every whitespace-separated term must appear somewhere (AND semantics).
 		return q
 			.toLowerCase()
@@ -150,7 +150,7 @@
 	pageType="CollectionPage"
 />
 
-<div class="entity-index page-enter" use:urlFilterSync={{ filters: af, setters: filters.setters }}>
+<div class="entity-index" use:urlFilterSync={{ filters: af, setters: filters.setters }}>
 	<!-- ═══ INDEX HERO ═══ -->
 	<header class="index-hero rule-masthead">
 		<div class="index-hero-lede">

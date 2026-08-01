@@ -70,7 +70,7 @@
 			{@render header()}
 
 			{#if project.heroImageUrl || project.imageUrl}
-				<div class="hero-image-wrapper mb-8 scroll-reveal">
+				<div class="hero-image-wrapper mb-8">
 					<HeroImageDisplay
 						heroImage={project.heroImageUrl
 							? { src: project.heroImageUrl, alt: project.title }
@@ -86,7 +86,7 @@
 				</div>
 			{/if}
 
-			<div class="scroll-reveal">
+			<div class="">
 				<section class="content-section drop-cap">
 					<!-- Safe: project.description is from trusted project data in src/lib/data/digital-humanities/ -->
 					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
@@ -95,7 +95,7 @@
 			</div>
 
 			{#if linkGroups.length > 0}
-				<div class="scroll-reveal">
+				<div class="">
 					<!-- Where the project actually lives — a ledger of addresses, mono
 					     key on the left, the sites/repos/datasets of that kind on the
 					     right. Same data the CV prints. -->
@@ -122,13 +122,13 @@
 				</div>
 			{/if}
 
-			<div class="scroll-reveal">
+			<div class="">
 				{#if projectDetails.length > 0}
 					<DetailsGrid details={projectDetails} />
 				{/if}
 			</div>
 
-			<div class="scroll-reveal">
+			<div class="">
 				{#if project.skills && project.skills.length > 0}
 					<section class="section">
 						<div class="section-head">
@@ -147,7 +147,7 @@
 			</div>
 
 			{#if project.embeddableContent && project.embeddableContent.length > 0}
-				<div class="scroll-reveal">
+				<div class="">
 					<section class="embeddable-section">
 						{#each project.embeddableContent as item (item.id)}
 							<div class="embeddable-item">
@@ -202,7 +202,7 @@
 				</div>
 			{/if}
 
-			<div class="scroll-reveal">
+			<div class="">
 				{#if project.award}
 					<section class="section apparatus-section">
 						<div class="section-head">
@@ -215,7 +215,7 @@
 				{/if}
 			</div>
 
-			<div class="scroll-reveal">
+			<div class="">
 				{#if project.publication}
 					<section class="section apparatus-section">
 						<div class="section-head">
@@ -238,7 +238,7 @@
 				{/if}
 			</div>
 
-			<div class="scroll-reveal">
+			<div class="">
 				{#if project.reviews && project.reviews.length > 0}
 					<section class="section apparatus-section">
 						<div class="section-head">

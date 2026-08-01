@@ -73,10 +73,12 @@
 		position: absolute;
 		bottom: calc(-1 * var(--space-0-5));
 		left: 0;
-		width: 0;
+		width: 100%;
 		height: var(--border-width-medium);
 		background-color: var(--color-accent);
-		transition: width var(--duration-fast) var(--ease-out);
+		transform: scaleX(0);
+		transform-origin: left center;
+		transition: transform var(--duration-fast) var(--ease-out);
 	}
 
 	.nav-link:hover {
@@ -85,7 +87,7 @@
 
 	.nav-link:hover::after,
 	.nav-link.active::after {
-		width: 100%;
+		transform: scaleX(1);
 	}
 
 	.nav-link.active {

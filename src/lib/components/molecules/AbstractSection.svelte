@@ -29,7 +29,7 @@
 </script>
 
 {#if abstract && paragraphs.length > 0}
-	<section class="{sectionClass} scroll-reveal">
+	<section class="{sectionClass} ">
 		<div class="abstract-head">
 			<span class="section-no" aria-hidden="true">§</span>
 			<h2 class={titleClass}>{titleText}</h2>

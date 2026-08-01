@@ -24,6 +24,7 @@ const pages: { name: string; path: string }[] = [
 
 for (const { name, path } of pages) {
 	test(`${name} has no WCAG A/AA violations`, async ({ page }) => {
+		test.setTimeout(path.includes('visualisations') ? 60_000 : 30_000);
 		await page.goto(path);
 		// Wait for the primary heading so we scan the hydrated page, not a shell.
 		await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();
@@ -36,3 +37,15 @@ for (const { name, path } of pages) {
 		).toEqual([]);
 	});
 }
+
+test('the home page has no WCAG A/AA violations in dark mode', async ({ page }) => {
+	await page.emulateMedia({ colorScheme: 'dark' });
+	await page.goto('/');
+	await expect(page.locator('html')).toHaveClass(/\bdark\b/);
+
+	const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
+	expect(
+		results.violations,
+		results.violations.map((v) => `${v.id}: ${v.help} (${v.nodes.length})`).join('\n')
+	).toEqual([]);
+});

@@ -277,7 +277,7 @@ background texture is now the whole subject of the chart.
 	}
 </script>
 
-<div class="viz-plate scroll-reveal-scale" bind:this={outerContainer}>
+<div class="viz-plate" bind:this={outerContainer}>
 	<ChartToolbar
 		chart={null}
 		onDownload={handleDownload}

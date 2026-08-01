@@ -4,20 +4,12 @@ export interface IframeEmbed {
 	title?: string;
 	src: string;
 	description?: string; // HTML content allowed
-	height?: string; // e.g., '650px', 'iframe-container-md' (maps to class)
-	aspectRatio?: '16-9' | '4-3' | '1-1' | '21-9'; // Maps to aspect ratio classes
-	containerClass?: string; // e.g., 'iframe-container-sm', 'iframe-container-no-margin'
-	scrolling?: 'yes' | 'no' | 'auto';
+	height?: string;
+	variant?: 'fixed' | 'responsive' | 'document';
 	allowfullscreen?: boolean;
+	/** External embeds are sandboxed by default; null explicitly opts out. */
+	sandbox?: string | null;
 	showTitle?: boolean; // Whether to display the iframe title above the embed
-	framed?: boolean; // Wrap the embed in a flat framed surface
-	frameVariant?:
-		| 'surface'
-		| 'surface-light'
-		| 'surface-medium'
-		| 'surface-heavy'
-		| 'surface-primary'
-		| 'surface-frosted'; // Flat surface variant (formerly the glass variants)
 }
 
 export interface ImageEmbed {

@@ -32,7 +32,7 @@
 	const imageSizes = '(max-width: 640px) 100vw, 300px';
 </script>
 
-<div class="card scroll-reveal-scale" class:card--editorial={editorial}>
+<div class="card" class:card--editorial={editorial}>
 	{#if imageUrl}
 		<div class="card-image">
 			{#if linkUrl}

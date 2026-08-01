@@ -13,13 +13,11 @@
 
 /* Layout components */
 @import './styles/layout/container.css';
-@import './styles/layout/grid.css';
 
 /* UI Components (global — used across most/all pages) */
 @import './styles/components/buttons.css';
 @import './styles/components/cards.css';
 @import './styles/components/navigation-utilities.css';
-@import './styles/components/animations.css';
 /* Ink + Signal structural idioms: nameplate, rules, sections, ledger,
  * chips, year-bars, key-terms, drop cap, plates, pagination. */
 @import './styles/components/ink-signal.css';

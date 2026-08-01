@@ -1,8 +1,7 @@
 /**
  * Network monitoring utility for SvelteKit PWA.
  *
- * Tracks online/offline status, updates global state,
- * and prevents PWA install prompts.
+ * Tracks online/offline status and updates global state.
  */
 
 import { browser } from '$app/environment';
@@ -30,19 +29,12 @@ export function useNetworkMonitor() {
 				if (import.meta.env.DEV) console.log('[PWA] Connection lost - offline mode active');
 			};
 
-			// Prevent install prompts completely
-			const preventInstallPrompt = (e: Event) => {
-				e.preventDefault();
-			};
-
 			window.addEventListener('online', handleOnline);
 			window.addEventListener('offline', handleOffline);
-			window.addEventListener('beforeinstallprompt', preventInstallPrompt);
 
 			return () => {
 				window.removeEventListener('online', handleOnline);
 				window.removeEventListener('offline', handleOffline);
-				window.removeEventListener('beforeinstallprompt', preventInstallPrompt);
 			};
 		}
 	});

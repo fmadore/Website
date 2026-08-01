@@ -14,7 +14,7 @@
 	} = $props();
 
 	// Combine classes based on variant, surface, and additional classes
-	const baseClasses = 'page-intro scroll-reveal';
+	const baseClasses = 'page-intro ';
 	const variantClasses = {
 		default: 'page-intro--default',
 		compact: 'page-intro--compact',

@@ -81,10 +81,8 @@ export const iwacSentimentAnalysis: DigitalHumanitiesProject = {
 			id: 'iwac-sentiment-analysis-embed',
 			src: 'https://iwac.frederickmadore.com/sentiment-analysis/',
 			title: 'IWAC Sentiment Analysis',
-			scrolling: 'yes',
-			allowfullscreen: true,
 			showTitle: true,
-			containerClass: 'iframe-container-aspect iframe-container-aspect-16-9'
+			variant: 'responsive'
 		}
 	]
 };

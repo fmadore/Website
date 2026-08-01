@@ -38,12 +38,6 @@
 	font-size: var(--font-size-lg);
 }
 
-/* Year-bar strip under the standfirst — output distribution, newest in accent. */
-.activities-hero-bars {
-	margin-top: var(--space-5);
-	max-width: 20rem;
-}
-
 /* ===========================================================================
  * LAYOUT — main log + browse aside, opened by a 3px rule
  * =========================================================================== */

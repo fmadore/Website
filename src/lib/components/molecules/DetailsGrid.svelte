@@ -24,7 +24,7 @@
 </script>
 
 {#if visibleDetails.length > 0}
-	<section class="details-section scroll-reveal" aria-labelledby="publication-details-heading">
+	<section class="details-section" aria-labelledby="publication-details-heading">
 		<h2 id="publication-details-heading" class="sr-only">Publication Details</h2>
 		<dl class="details-grid">
 			{#each visibleDetails as detail (detail.label)}

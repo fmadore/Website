@@ -22,8 +22,7 @@ export const burkinaFasoDigitalExhibits: DigitalHumanitiesProject = {
 			title: 'Hajj in Burkina Faso',
 			src: 'https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1StFgUqQxqOMlo6GqiKGQWP2GC92W1YG51vHvoNijDdQ&font=Default&lang=en&initial_zoom=2&height=650',
 			height: '650px', // Timeline JS requires specific height matching URL parameter
-			containerClass: 'iframe-container',
-			allowfullscreen: true,
+			variant: 'fixed',
 			showTitle: true
 		},
 		{
@@ -32,8 +31,7 @@ export const burkinaFasoDigitalExhibits: DigitalHumanitiesProject = {
 			title: 'Student activism in Burkina Faso',
 			src: 'https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1AmCWiL1QbMztXxJ48TXNUgaoodYc8aBFG-7dFsiz3jc&font=Default&lang=en&initial_zoom=2&height=650',
 			height: '650px', // Timeline JS requires specific height matching URL parameter
-			containerClass: 'iframe-container',
-			allowfullscreen: true,
+			variant: 'fixed',
 			showTitle: true
 		}
 	]
