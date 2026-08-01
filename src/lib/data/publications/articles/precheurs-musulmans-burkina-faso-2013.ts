@@ -88,7 +88,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 		},
 		{
 			authors: ['Abdoulaye Sounaye'],
-			year: 2021,
+			year: 2020,
 			title:
 				"Cross-Border Preaching between Northern Nigeria and Niger: Practices, Actors, and Implications of Wa'azi",
 			source:
