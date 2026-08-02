@@ -31,7 +31,9 @@ export default defineConfig({
 		}
 	},
 	test: {
-		include: ['src/**/*.{test,spec}.ts'],
+		// `scripts/` holds build-time tooling, not site code, so it is tested
+		// but deliberately left out of the coverage ratchet below.
+		include: ['src/**/*.{test,spec}.ts', 'scripts/**/*.{test,spec}.mjs'],
 		environment: 'node',
 		coverage: {
 			provider: 'v8',

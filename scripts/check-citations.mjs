@@ -16,9 +16,15 @@
  * Scholar's, so treat the numbers here as a floor, not a census.
  *
  * State lives in the repository, not in a cache file: "new" means *present in
- * OpenAlex and absent from the committed `citedBy` array*. Add a citation to
- * the data file and it stops being reported, with nothing to reset. That keeps
- * the issue a live to-do list instead of a notification feed.
+ * OpenAlex and absent from the committed `citedBy` array*, compared on DOI
+ * first and title only as a fallback. Add a citation to the data file and it
+ * stops being reported, with nothing to reset. That keeps the issue a live
+ * to-do list instead of a notification feed.
+ *
+ * Deciding which OpenAlex records are separate citations at all is the
+ * fiddly half of this, and lives in `citation-grouping.mjs`: one book arrives
+ * as a volume record, a dozen chapters and an index, and reporting all of them
+ * would bury the handful of entries that are really news.
  *
  * The report emits ready-to-paste `CitingWork` literals so acting on it is a
  * copy, not a retyping. It deliberately never edits data files itself —
@@ -36,6 +42,7 @@ import { globSync, writeFileSync } from 'node:fs';
 import { resolve, basename } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { argv, exit } from 'node:process';
+import { normDoi, normTitle, selectFreshCitations } from './citation-grouping.mjs';
 
 const ORCID = '0000-0003-0959-2092';
 const CONTACT = 'frederick_madore@outlook.com'; // OpenAlex "polite pool" identifier
@@ -144,47 +151,6 @@ const cleanTitle = (s) =>
 		.replace(/\s+/g, ' ')
 		.trim();
 
-/**
- * Titles must survive a round trip through two databases, so normalise hard:
- * strip diacritics (French titles are half this corpus), drop punctuation, and
- * collapse whitespace. Comparing raw strings would miss "Côte d'Ivoire" vs
- * "Cote d Ivoire" and every curly-vs-straight apostrophe.
- */
-const normTitle = (s) =>
-	(s ?? '')
-		.normalize('NFD')
-		.replace(/[̀-ͯ]/g, '')
-		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, ' ')
-		.trim();
-
-const normDoi = (s) =>
-	(s ?? '')
-		.toLowerCase()
-		.replace(/^https?:\/\/(dx\.)?doi\.org\//, '')
-		.trim();
-
-/**
- * The DOI of the containing volume, for chapter-level DOIs — or null when the
- * DOI does not look like a chapter of anything.
- *
- * Monographs are indexed chapter by chapter, each chapter carrying a DOI
- * derived from the book's: 10.1017/9781108690577.004, …005, …006. Left alone,
- * one book citing one article is reported as nine separate citations — the
- * single biggest source of noise in this report.
- *
- * The stem is only trusted when what remains ends in an ISBN-like run of
- * digits. Stripping the trailing number blindly would also turn
- * 10.4000/books.ifra.2073 into 10.4000/books.ifra — an OpenEdition *publisher*
- * prefix, not a volume — and collapse unrelated books from the same press into
- * a single citation.
- */
-function doiStem(doi) {
-	const stem = normDoi(doi).replace(/[.-]\d{1,4}$/, '');
-	if (stem === normDoi(doi)) return null; // nothing was stripped: not a chapter
-	return /\d{8,}$/.test(stem) ? stem : null;
-}
-
 /** Front and back matter carry DOIs but are not citations worth recording. */
 const MATTER = new Set([
 	'preface',
@@ -209,6 +175,21 @@ const MATTER = new Set([
 	'about the author',
 	'list of illustrations',
 	'list of abbreviations'
+]);
+
+/**
+ * Citing works that are indexed correctly but should not be reported, by DOI.
+ *
+ * The bar for adding a line here is high, and deliberately so: a hand-kept
+ * list only suppresses the instance in front of you, while a rule in
+ * `citation-grouping.mjs` suppresses the next one too. Duplicate volume
+ * records and chapters filed with the whole book's bibliography look like
+ * candidates for this list and are not — they are patterns, and they are
+ * handled there. What belongs here is what no rule could infer: facts about
+ * the world rather than about the metadata.
+ */
+const EXCLUDED_CITATIONS = new Map([
+	['10.2139/ssrn.4738316', 'withdrawn from SSRN at the request of the author or rights holder']
 ]);
 
 /**
@@ -297,6 +278,7 @@ function matchLocal(work) {
 }
 
 const newCitations = []; // { publication, citing[] }
+const excluded = new Set(); // EXCLUDED_CITATIONS entries that actually fired
 const cited = ownWorks
 	.filter((w) => w.cited_by_count > 0)
 	.sort((a, b) => b.cited_by_count - a.cited_by_count);
@@ -305,14 +287,23 @@ for (const work of cited) {
 	const match = matchLocal(work);
 	if (!match) continue; // unmatched works are handled by pass 2
 
-	const known = new Set((match.record.citedBy ?? []).map((c) => normTitle(c.title)));
+	// Match a recorded citation on its DOI before its title. Titles are the
+	// weaker key by far: OpenAlex files the short form a publisher supplied
+	// while the bibliography here carries the full one ("The Modernity of Islam
+	// in Burkina Faso" against "…: Contrasting Strategies in Two Emergent
+	// Movements"), and a journal that translates its titles supplies a
+	// different language altogether. Both entries carry the same DOI, so on
+	// titles alone a citation stays "new" for as long as it is recorded.
+	const recorded = match.record.citedBy ?? [];
+	const knownTitles = new Set(recorded.map((c) => normTitle(c.title)));
+	const knownDois = new Set(recorded.map((c) => normDoi(c.url)).filter((d) => d.startsWith('10.')));
 	const openAlexId = workId(work);
 
 	let citing;
 	try {
 		citing = await allWorks(
 			`cites:${openAlexId}`,
-			'id,doi,title,publication_year,authorships,primary_location'
+			'id,doi,title,type,publication_year,authorships,primary_location,referenced_works'
 		);
 	} catch (err) {
 		console.error(`[check-citations] could not fetch citations for ${openAlexId}: ${err.message}`);
@@ -322,8 +313,16 @@ for (const work of cited) {
 	const candidates = citing
 		.filter((c) => c.title)
 		.filter((c) => !MATTER.has(normTitle(c.title)))
+		// OpenAlex's own designation for front and back matter, which catches
+		// what MATTER's title list cannot enumerate ("List of contributors").
+		.filter((c) => c.type !== 'paratext')
 		// Self-citation is not news.
 		.filter((c) => !(c.authorships ?? []).some((a) => a.author?.orcid?.includes(ORCID)))
+		.filter((c) => {
+			const reason = EXCLUDED_CITATIONS.get(normDoi(c.doi));
+			if (reason) excluded.add(normDoi(c.doi));
+			return !reason;
+		})
 		.map((c) => ({
 			authors: (c.authorships ?? [])
 				.map((a) => a.author?.display_name)
@@ -332,47 +331,35 @@ for (const work of cited) {
 			title: cleanTitle(c.title),
 			source: c.primary_location?.source?.display_name ?? undefined,
 			url: c.doi ?? undefined,
-			_doi: normDoi(c.doi),
-			_known: known.has(normTitle(c.title))
+			// Grouping inputs, stripped before the entry reaches the report.
+			doi: normDoi(c.doi),
+			type: c.type,
+			container: c.primary_location?.raw_source_name ?? '',
+			refs: c.referenced_works ?? [],
+			known: knownDois.has(normDoi(c.doi)) || knownTitles.has(normTitle(c.title))
 		}));
 
-	// Group chapters under their volume. A chapter keys on its volume's DOI and
-	// the volume keys on its own, so the two land in the same bucket — without
-	// that, an already-recorded book never suppresses its own chapters.
-	const groups = new Map();
-	for (const c of candidates) {
-		const key = doiStem(c._doi) ?? c._doi ?? `title:${normTitle(c.title)}`;
-		if (!groups.has(key)) groups.set(key, []);
-		groups.get(key).push(c);
-	}
-
-	const fresh = [];
-	for (const group of groups.values()) {
-		const authorKey = (c) => c.authors.join('|').toLowerCase();
-		// A single-author monograph is one citation however many chapters cite
-		// back; an edited volume whose chapters have distinct authors genuinely
-		// contains several, so only collapse when the authors are uniform.
-		const collapse = group.length > 1 && new Set(group.map(authorKey)).size === 1;
-
-		if (collapse) {
-			// Already recorded at volume level? Then its chapters are not news
-			// either — this is what stops a book being re-reported chapter by
-			// chapter after it has been added to `citedBy`.
-			if (group.some((c) => c._known)) continue;
-			// The volume is the shortest DOI in the group.
-			fresh.push([...group].sort((a, b) => a._doi.length - b._doi.length)[0]);
-		} else {
-			fresh.push(...group.filter((c) => !c._known));
-		}
-	}
-
+	const fresh = selectFreshCitations(candidates);
 	for (const c of fresh) {
-		delete c._doi;
-		delete c._known;
+		delete c.doi;
+		delete c.type;
+		delete c.container;
+		delete c.refs;
+		delete c.known;
 	}
 	fresh.sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
 
 	if (fresh.length) newCitations.push({ publication: match, citing: fresh });
+}
+
+// A suppression that no longer suppresses anything reads as coverage while
+// hiding nothing. Say so rather than let the list rot.
+for (const [doi, why] of EXCLUDED_CITATIONS) {
+	if (!excluded.has(doi)) {
+		console.warn(
+			`[check-citations] stale EXCLUDED_CITATIONS entry ${doi} (${why}) — no longer cited`
+		);
+	}
 }
 
 // ---------------------------------------------------------------------------

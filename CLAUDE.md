@@ -35,7 +35,9 @@ npm run check:citations # OpenAlex sweep for new citations + works missing from 
 
 > **Testing layout**: Unit tests are co-located as `*.test.ts` next to the
 > module they cover (e.g. `src/lib/utils/vizAggregation.test.ts`) and run in a
-> plain Node environment via `vitest.config.ts`. E2E smoke tests live in
+> plain Node environment via `vitest.config.ts`. Pure logic extracted from
+> build scripts is tested the same way (`scripts/*.test.mjs`) but stays out of
+> the coverage ratchet, which measures site code only. E2E smoke tests live in
 > `tests-e2e/` and run against the production build (`playwright.config.ts`).
 >
 > **Scheduled workflows**: `link-check.yml` (weekly) and `citation-watch.yml`
