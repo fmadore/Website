@@ -1,21 +1,11 @@
 <script lang="ts">
 	import ResearchProjectLayout from '$lib/components/research/ResearchProjectLayout.svelte';
+	import { researchProject } from '$lib/data/research';
 	import RelevantGrants from '$lib/components/panels/RelevantGrants.svelte';
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
 </script>
 
-<ResearchProjectLayout
-	title="Digital Humanities and Artificial Intelligence in African Studies"
-	shortTitle="Digital Humanities and AI in African Studies"
-	slug="dh-ai-african-studies"
-	years="2025-2027"
-	imageSrc="IWAC.webp"
-	imageAlt="Digital Humanities and AI in African Studies"
-	seoDescription="Exploring how digital humanities and artificial intelligence can transform knowledge production in African studies through ethical, sustainable, and Africa-centred digital infrastructures."
-	seoKeywords="digital humanities, artificial intelligence, African studies, AI, DH, African epistemologies, Islam West Africa Collection, IWAC, LLM, OCR, NER, vibe coding"
-	projectName="Digital Humanities and AI in African Studies"
-	funder="Volkswagen Foundation · DFG Programme Point Sud"
->
+<ResearchProjectLayout {...researchProject('dh-ai-african-studies')}>
 	<p>
 		The convergence of digital humanities (DH) and artificial intelligence (AI) is transforming the
 		way knowledge is produced in African studies. This intersection provides unparalleled

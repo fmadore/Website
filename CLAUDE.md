@@ -62,7 +62,7 @@ All academic content is stored as TypeScript files in `src/lib/data/`. Each cont
 - An `index.ts` that aggregates items using `import.meta.glob()` and exports precomputed collections (`publicationsByType`, `publicationsByYear`, `allTags`, etc.)
 - **Use `loadData()` from `$lib/utils/dataLoader.ts`** for new data categories — it handles module extraction, template filtering, and validation
 
-**Data categories** (17 total): publications, communications, activities, digital-humanities, appointments, awards, education, editorial-memberships, fieldworks, grants, languages, media-appearances, peer-reviews, research-roles, affiliations, teaching, analysis
+**Data categories** (18 total): publications, communications, activities, research, digital-humanities, appointments, awards, education, editorial-memberships, fieldworks, grants, languages, media-appearances, peer-reviews, research-roles, affiliations, teaching, analysis
 
 **Navigation data**: `src/lib/data/navigation.ts` exports `navItems` used by the Header component.
 

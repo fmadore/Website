@@ -3,6 +3,7 @@ import { author, website, contact, address, socialLinks } from '$lib/data/siteCo
 import { publicationsByDate } from '$lib/data/publications/index';
 import { communicationsByDate } from '$lib/data/communications/index';
 import { allDhProjects } from '$lib/data/digital-humanities';
+import { allResearchProjects } from '$lib/data/research';
 
 // Prerender as a static text file for the agentic-browsing / llms.txt convention.
 export const prerender = true;
@@ -23,31 +24,6 @@ export const prerender = true;
  */
 
 const SITE = website.url;
-
-/** Curated research projects (mirrors the Research landing page). */
-const researchProjects: Array<{ id: string; title: string }> = [
-	{
-		id: 'islams-peripheries-dh-ai-west-africa-central-asia',
-		title:
-			"Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia"
-	},
-	{
-		id: 'dh-ai-african-studies',
-		title: 'Digital Humanities and Artificial Intelligence in African Studies'
-	},
-	{
-		id: 'religious-activism-campuses-togo-benin',
-		title: 'Religious Activism on Campuses in Togo and Benin'
-	},
-	{
-		id: 'muslim-minorities-southern-cities-benin-togo',
-		title: 'Muslim Minorities in Southern Cities of Benin and Togo'
-	},
-	{
-		id: 'youth-womens-islamic-activism-cote-divoire-burkina-faso',
-		title: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
-	}
-];
 
 /** Collapse whitespace so multi-line source strings render as single Markdown lines. */
 const oneLine = (value: string): string => value.replace(/\s+/g, ' ').trim();
@@ -106,8 +82,10 @@ export const GET: RequestHandler = async () => {
 	// Research projects.
 	lines.push('## Research projects');
 	lines.push('');
-	for (const project of researchProjects) {
-		lines.push(`- [${project.title}](${SITE}/research/${project.id})`);
+	for (const project of allResearchProjects) {
+		lines.push(
+			`- [${project.title}](${SITE}/research/${project.id}) (${project.years}): ${oneLine(project.shortDescription)}`
+		);
 	}
 	lines.push('');
 
@@ -145,6 +123,27 @@ export const GET: RequestHandler = async () => {
 	// Feeds and machine-readable data.
 	lines.push('## Feeds and data');
 	lines.push('');
+	lines.push(
+		`- [JSON API index](${SITE}/api/index.json): Discovery manifest for the static JSON API — lists every dataset, its size, and its URL.`
+	);
+	lines.push(
+		`- [Research projects (JSON)](${SITE}/api/research.json): Project records cross-referencing the publications, talks, grants, and fieldwork that belong to each.`
+	);
+	lines.push(
+		`- [Publications (JSON)](${SITE}/api/publications.json): Full publication records with identifiers, abstracts, citing works, and reviews.`
+	);
+	lines.push(
+		`- [Talks & events (JSON)](${SITE}/api/communications.json): Full communication records with venue, coordinates, and programme details.`
+	);
+	lines.push(
+		`- [Activities (JSON)](${SITE}/api/activities.json): News and activity entries, including the full body of each.`
+	);
+	lines.push(
+		`- [Digital humanities projects (JSON)](${SITE}/api/digital-humanities.json): Project records with skills, awards, and reviews.`
+	);
+	lines.push(
+		`- [CV (JSON)](${SITE}/api/cv.json): Career record — appointments, education, grants, awards, teaching, service, fieldwork, and languages.`
+	);
 	lines.push(`- [RSS feed](${SITE}/rss.xml): Latest activities and updates.`);
 	lines.push(`- [XML sitemap](${SITE}/sitemap.xml): Full list of indexable pages.`);
 	lines.push('');

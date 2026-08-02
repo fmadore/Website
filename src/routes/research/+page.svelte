@@ -4,6 +4,7 @@
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import SEO from '$lib/SEO.svelte';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
+	import { allResearchProjects } from '$lib/data/research';
 
 	// Helper to resolve dynamic research project paths
 	const resolvePath = (/** @type {string} */ path) => resolve(/** @type {any} */ (path));
@@ -11,51 +12,17 @@
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('Research', '/research');
 
-	// Research projects data
-	const researchProjects = [
-		{
-			id: 'islams-peripheries-dh-ai-west-africa-central-asia',
-			title: "Islam's 'Peripheries': DH & AI in West Africa and Central Asia",
-			years: '2026-2027',
-			current: true,
-			shortDescription:
-				'Applying AI and computational methods to compare Islamic discourse and responses to modernity in the multilingual archives of West Africa and Central Asia.',
-			imageUrl: `${base}/images/research/islams-peripheries.webp`
-		},
-		{
-			id: 'dh-ai-african-studies',
-			title: 'Digital Humanities and AI in African Studies',
-			years: '2025-',
-			current: true,
-			shortDescription:
-				'Exploring how DH and AI can transform knowledge production in African studies through ethical, sustainable, and Africa-centred digital infrastructures.',
-			imageUrl: `${base}/images/research/IWAC.webp`
-		},
-		{
-			id: 'religious-activism-campuses-togo-benin',
-			title: 'Religious Activism on Campuses in Togo and Benin',
-			years: '2021-2024',
-			shortDescription:
-				"Examining how Christian and Muslim student associations transformed university life at the Université de Lomé and the Université d'Abomey-Calavi.",
-			imageUrl: `${base}/images/research/campus-activism.webp`
-		},
-		{
-			id: 'muslim-minorities-southern-cities-benin-togo',
-			title: 'Muslim Minorities in Southern Cities of Benin and Togo',
-			years: '2018-2020',
-			shortDescription:
-				'Investigating the experiences and integration of Muslim minority communities in southern urban areas of Benin and Togo.',
-			imageUrl: `${base}/images/research/muslim-minorities.webp`
-		},
-		{
-			id: 'youth-womens-islamic-activism-cote-divoire-burkina-faso',
-			title: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
-			years: '2013-2018',
-			shortDescription:
-				"Analyzing the evolving roles of youth and women in Islamic movements and organizations in Côte d'Ivoire and Burkina Faso.",
-			imageUrl: `${base}/images/research/youth-women-activism.webp`
-		}
-	];
+	// Research projects, shared with the detail pages, /llms.txt and
+	// /api/research.json — this page renders the records, it does not own them.
+	// The card title falls back to the full title; `imageSrc` is a bare filename.
+	const researchProjects = allResearchProjects.map((p) => ({
+		id: p.id,
+		title: p.cardTitle ?? p.title,
+		years: p.years,
+		current: p.current,
+		shortDescription: p.shortDescription,
+		imageUrl: `${base}/images/research/${p.imageSrc}`
+	}));
 
 	// Current vs. concluded projects drive the page's two sections. The first
 	// current project gets the broadsheet dossier; any further current projects

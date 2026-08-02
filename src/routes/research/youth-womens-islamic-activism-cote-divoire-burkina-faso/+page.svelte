@@ -1,18 +1,12 @@
 <script lang="ts">
 	import ResearchProjectLayout from '$lib/components/research/ResearchProjectLayout.svelte';
+	import { researchProject } from '$lib/data/research';
 	import RelevantGrants from '$lib/components/panels/RelevantGrants.svelte';
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
 </script>
 
 <ResearchProjectLayout
-	title="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
-	shortTitle="Youth and Women's Islamic Activism"
-	slug="youth-womens-islamic-activism-cote-divoire-burkina-faso"
-	years="2013-2018"
-	imageSrc="youth-women-activism.webp"
-	imageAlt="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
-	projectName="Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
-	funder="Social Sciences and Humanities Research Council of Canada (SSHRC)"
+	{...researchProject('youth-womens-islamic-activism-cote-divoire-burkina-faso')}
 >
 	<p>
 		This research project is situated in the context of the increasing visibility of Islam in the

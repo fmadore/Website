@@ -29,59 +29,18 @@ apparatus, and the ruled-section styling.
 	import MediaPlayer from '$lib/components/media/MediaPlayer.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import ResearchProjectAside from '$lib/components/research/ResearchProjectAside.svelte';
-	import type { ProjectCta } from '$lib/components/research/ResearchProjectAside.svelte';
 	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
 	import { useGrantsJsonLd } from '$lib/utils/grantsJsonLd.svelte';
 	import { allGrants } from '$lib/data/grants/index';
-	import type { Grant } from '$lib/types';
+	import type { Grant, ResearchProject } from '$lib/types';
 	import { base } from '$app/paths';
 
-	interface Props {
-		/** Full title displayed in the page header */
-		title: string;
-		/** Short title for breadcrumb navigation */
-		shortTitle: string;
-		/** URL slug (e.g., 'dh-ai-african-studies') */
-		slug: string;
-		/** Project years (e.g., '2025-' or '2021-2024') */
-		years: string;
-		/** Image path relative to /images/research/ */
-		imageSrc: string;
-		/** Alt text for the image */
-		imageAlt: string;
-		/** SEO description (optional, defaults to title-based) */
-		seoDescription?: string;
-		/** SEO keywords (optional) */
-		seoKeywords?: string;
-		/** Audio source path for podcast (optional) */
-		audioSrc?: string;
-		/** Project name for filtering related content */
-		projectName: string;
-		/** Serif-italic deck under the title (optional). */
-		subtitle?: string;
-		/** Serif-italic caption under the aside plate (defaults to "Fig. 1 — {imageAlt}"). */
-		figCaption?: string;
-		/**
-		 * Co-directors / co-investigators. When omitted, the layout falls back to
-		 * the grant record's `coApplicants`.
-		 */
-		coDirectors?: string[];
-		/** Funder label for the eyebrow + ledger (defaults to the grant's funder). */
-		funder?: string;
-		/** Programme label for the ledger (e.g., 'Open Up · 2026–28'). */
-		programme?: string;
-		/** Regions / countries for the ledger (e.g., ['West Africa', 'Central Asia']). */
-		regions?: string[];
-		/** Source-language chips (e.g., ['Russian', 'Arabic', 'Hausa']). */
-		sourceLanguages?: string[];
-		/** Aside call-to-action buttons. */
-		ctas?: ProjectCta[];
-		/**
-		 * When false, the funder / co-director / grant apparatus is omitted from the
-		 * header eyebrow and aside ledger — used when the page already lists them in
-		 * its Funding panel and shouldn't repeat them in the rail.
-		 */
-		showFunding?: boolean;
+	/**
+	 * Every project record in `$lib/data/research` is spread straight into this
+	 * layout, so the props *are* the record — plus the narrative snippet, which
+	 * stays in the route page because it embeds components.
+	 */
+	interface Props extends ResearchProject {
 		/** Content snippet for the main body */
 		children: Snippet;
 	}
@@ -89,7 +48,7 @@ apparatus, and the ruled-section styling.
 	let {
 		title,
 		shortTitle,
-		slug,
+		id,
 		years,
 		imageSrc,
 		imageAlt,
@@ -112,7 +71,7 @@ apparatus, and the ruled-section styling.
 	// Build breadcrumb items
 	const breadcrumbItems = $derived([
 		{ label: 'Research', href: `${base}/research` },
-		{ label: shortTitle, href: `${base}/research/${slug}` }
+		{ label: shortTitle, href: `${base}/research/${id}` }
 	]);
 
 	// Inject breadcrumb JSON-LD structured data
