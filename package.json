@@ -6,6 +6,9 @@
 	"engines": {
 		"node": ">=24"
 	},
+	"workspaces": [
+		"mcp"
+	],
 	"scripts": {
 		"dev": "vite dev",
 		"predev": "npm run gen:images",
@@ -20,6 +23,9 @@
 		"check:bundle": "node scripts/check-bundle-budget.mjs",
 		"check:prerender": "node scripts/check-prerender.mjs",
 		"check:build": "npm run check:images && npm run check:bundle && npm run check:prerender",
+		"mcp:build": "npm run build -w mcp",
+		"mcp:check": "npm run check -w mcp",
+		"mcp:smoke": "npm run mcp:build && npm run smoke -w mcp",
 		"prepare": "svelte-kit sync",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
 		"check:tsgo": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --tsgo",

@@ -58,6 +58,12 @@ Every dataset document carries `{ version, dataset, url, count, items }` (`/api/
 
 Being static, these are read-only and offer no query interface — fetch a dataset and filter locally. Together the six payloads are ~165 KB gzipped, small enough to load whole. `/llms.txt` and `/robots.txt` both advertise the manifest.
 
+### MCP Server
+
+`mcp/` is an [MCP](https://modelcontextprotocol.io/) server over those documents: eleven tools for searching publications, talks, activities, research and DH projects, reading the CV, and generating citations. It runs locally over stdio and reads the published JSON at startup, so it has no data of its own to fall out of date. See [`mcp/README.md`](mcp/README.md) for the client config block.
+
+Citation output is not reimplemented there — the build aliases `$lib` and bundles the site's own `bibtexGenerator`, so what the server returns is byte-identical to the site's download button.
+
 ## Development
 
 ### Running Locally
