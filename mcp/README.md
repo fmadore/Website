@@ -9,21 +9,42 @@ humanities work, and CV instead of browsing for them.
 > [IWAC](https://islam.zmo.de/s/westafrica/) MCP server covers the West African source
 > archive he studies. Different corpora — connect both if you want both.
 
-## Setup
+## Install (Claude Desktop)
 
-Requires **Node 24 or newer**.
+Download **`frederickmadore-website.mcpb`** and double-click it. Claude Desktop opens an
+install dialog; click Install. That is the whole procedure — no config file to edit, no
+terminal, and no need to have Node installed, since Claude Desktop supplies its own
+runtime.
+
+The bundle is built by CI on every change: open the latest run under
+[Actions](https://github.com/fmadore/Website/actions) and download the `mcpb` artifact. To
+build it yourself, see [Commands](#commands) below.
+
+There is one optional setting, **Site address**, in the extension's configuration pane.
+Leave it blank unless you are developing against unpublished content.
+
+### Check it works
+
+Ask: _"What has Frédérick Madore published about religious activism on campuses?"_
+
+## Install (other clients)
+
+Anything that speaks MCP over stdio can run the server directly. This path uses the
+developer build rather than the bundle, so it needs **Node 24 or newer**.
 
 ```bash
 git clone https://github.com/fmadore/Website.git
 cd Website
-npm install          # also builds the MCP server
+npm install          # also builds the server
 ```
 
-Then add it to your MCP client, using the **absolute path** to the built file.
+**Claude Code:**
 
-### Claude Desktop
+```bash
+claude mcp add frederickmadore -- node /absolute/path/to/Website/mcp/dist/index.js
+```
 
-Edit `claude_desktop_config.json` — Settings → Developer → Edit Config:
+**Anything reading `mcpServers` JSON:**
 
 ```json
 {
@@ -35,18 +56,6 @@ Edit `claude_desktop_config.json` — Settings → Developer → Edit Config:
 	}
 }
 ```
-
-Restart Claude Desktop. The tools appear under the connectors icon.
-
-### Claude Code
-
-```bash
-claude mcp add frederickmadore -- node /absolute/path/to/Website/mcp/dist/index.js
-```
-
-### Check it works
-
-Ask: _"What has Frédérick Madore published about religious activism on campuses?"_
 
 ## Tools
 
@@ -93,10 +102,23 @@ WEBSITE_API_BASE=http://localhost:4173 node mcp/dist/index.js
 
 | Command             | What it does                                                                    |
 | ------------------- | ------------------------------------------------------------------------------- |
-| `npm run mcp:build` | Bundle the server to `mcp/dist/index.js`                                        |
+| `npm run mcp:build` | Bundle the developer server to `mcp/dist/index.js`                              |
+| `npm run mcp:pack`  | Build the installable `mcp/dist/frederickmadore-website.mcpb`                   |
 | `npm run mcp:check` | Type-check                                                                      |
-| `npm run mcp:smoke` | End-to-end test: drives the real server over the protocol against a local build |
+| `npm run mcp:smoke` | Build both, then drive each over the protocol against a local build of the site |
 | `npm test`          | Unit tests (search and ranking), run with the site's suite                      |
 
-`npm run mcp:smoke` needs `npm run build` at the repo root first. CI runs it on every pull
-request, so a renamed API field or a broken tool registration fails there.
+`npm run mcp:smoke` needs `npm run build` at the repo root first. It exercises the
+developer build _and_ the server unpacked back out of the `.mcpb` — the artifact people
+actually install — because building a bundle is not proof that it boots. CI runs the whole
+thing on every pull request, so a renamed API field, a broken tool registration, or a
+bundle that fails to start is caught there.
+
+### How the bundle is built
+
+`pack.mjs` inlines every dependency into one minified file (no `node_modules/` to ship),
+targets Node 20 rather than 24 since Claude Desktop supplies the runtime, and writes a
+`package.json` marking the output as ESM. The manifest's tool list is not hand-written: the
+script starts the freshly built server, asks it over the protocol what tools it has, and
+writes the answer. A hand-maintained list is a second source of truth that drifts the
+moment a tool is renamed.

@@ -84,11 +84,19 @@ jobs:
       - name: Build output checks (bundle budget, prerender coverage)
         run: npm run check:build
 
-      # Drives the MCP server as a real subprocess against the freshly built
-      # /api documents, so a renamed field or a broken tool registration fails
-      # here rather than in someone's editor.
-      - name: MCP server smoke test
+      # Builds both the developer bundle and the installable .mcpb, then drives
+      # each as a real subprocess against the freshly built /api documents — so
+      # a renamed field, a broken tool registration, or a bundle that does not
+      # boot fails here rather than on someone's desktop.
+      - name: MCP server build and smoke test
         run: npm run mcp:smoke
+
+      - name: Upload installable MCP bundle
+        uses: actions/upload-artifact@v7
+        with:
+          name: mcpb
+          path: mcp/dist/*.mcpb
+          retention-days: 30
 
       - name: Upload build for E2E job
         uses: actions/upload-artifact@v7

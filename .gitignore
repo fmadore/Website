@@ -56,3 +56,4 @@ scripts/__pycache__/convert-image.cpython-312.pyc
 
 # MCP server build output (mcp/)
 /mcp/dist/
+/mcp/bundle/

@@ -13,8 +13,12 @@
 
 const DEFAULT_BASE = 'https://www.frederickmadore.com';
 
-/** Trailing slashes would produce `//api/...` on join. */
-const apiBase = (process.env.WEBSITE_API_BASE ?? DEFAULT_BASE).replace(/\/+$/, '');
+/**
+ * Trailing slashes would produce `//api/...` on join. An empty value counts as
+ * unset: the MCPB bundle substitutes `${user_config.api_base}` into the
+ * environment, which yields `''` when the user leaves that setting blank.
+ */
+const apiBase = (process.env.WEBSITE_API_BASE?.trim() || DEFAULT_BASE).replace(/\/+$/, '');
 
 export type DatasetName =
 	| 'research'

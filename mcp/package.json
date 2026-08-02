@@ -17,6 +17,7 @@
 	"scripts": {
 		"build": "node build.mjs",
 		"check": "tsc --noEmit",
+		"pack": "node pack.mjs",
 		"smoke": "node smoke.mjs",
 		"prepare": "npm run build"
 	},
@@ -25,6 +26,7 @@
 		"zod": "^4.4.3"
 	},
 	"devDependencies": {
+		"@anthropic-ai/mcpb": "^2.1.2",
 		"esbuild": "^0.28.1"
 	}
 }
