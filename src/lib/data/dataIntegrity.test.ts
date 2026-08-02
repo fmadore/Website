@@ -4,6 +4,7 @@ import { allPublications } from '$lib/data/publications';
 import { allCommunications } from '$lib/data/communications';
 import { allActivities } from '$lib/data/activities';
 import { allDhProjects } from '$lib/data/digital-humanities';
+import { allResearchProjects } from '$lib/data/research';
 import { allAppointments } from '$lib/data/appointments';
 import { allAwards } from '$lib/data/awards';
 import { allEducation } from '$lib/data/education';
@@ -37,6 +38,7 @@ const datasets: Dataset[] = [
 	{ name: 'communications', items: allCommunications, atLeast: 40 },
 	{ name: 'activities', items: allActivities, atLeast: 10 },
 	{ name: 'digital-humanities', items: allDhProjects, atLeast: 3 },
+	{ name: 'research', items: allResearchProjects, atLeast: 4 },
 	{ name: 'appointments', items: allAppointments, atLeast: 2 },
 	{ name: 'awards', items: allAwards, atLeast: 2 },
 	{ name: 'education', items: allEducation, atLeast: 2 },
@@ -138,6 +140,22 @@ describe('cross-dataset invariants', () => {
 	it('every text-analysis entry references an existing publication', () => {
 		const publicationIds = new Set(allPublications.map((p) => p.id));
 		const orphaned = Object.keys(publicationAnalyses).filter((id) => !publicationIds.has(id));
+		expect(orphaned).toEqual([]);
+	});
+
+	it('every research project name is a live join key', () => {
+		// `projectName` is matched as free text against the `project` field on
+		// publications, communications, grants and fieldwork. A typo silently
+		// empties the project page's related panels and the API's cross-references
+		// rather than failing, so assert each name still reaches something.
+		const referenced = new Set(
+			[...allPublications, ...allCommunications, ...allGrants, ...allFieldworks]
+				.map((item) => (item as { project?: string }).project)
+				.filter((project): project is string => Boolean(project))
+		);
+		const orphaned = allResearchProjects
+			.filter((project) => !referenced.has(project.projectName))
+			.map((project) => project.id);
 		expect(orphaned).toEqual([]);
 	});
 

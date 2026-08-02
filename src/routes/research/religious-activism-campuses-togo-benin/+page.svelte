@@ -1,19 +1,10 @@
 <script lang="ts">
 	import ResearchProjectLayout from '$lib/components/research/ResearchProjectLayout.svelte';
+	import { researchProject } from '$lib/data/research';
 	import RelevantGrants from '$lib/components/panels/RelevantGrants.svelte';
 </script>
 
-<ResearchProjectLayout
-	title="Religious Activism on Campuses in Togo and Benin"
-	shortTitle="Religious Activism on Campuses"
-	slug="religious-activism-campuses-togo-benin"
-	years="2021-2024"
-	imageSrc="campus-activism.webp"
-	imageAlt="Religious Activism on Campuses in Togo and Benin"
-	audioSrc="notebooklm/religious_activism_campus.mp3"
-	projectName="Religious Activism on Campuses in Togo and Benin"
-	showFunding={false}
->
+<ResearchProjectLayout {...researchProject('religious-activism-campuses-togo-benin')}>
 	<p>
 		This project uncovers the neglected history of Christian and Muslim student associations at the
 		Université de Lomé (Togo) and the Université d'Abomey-Calavi (Benin), and examines their

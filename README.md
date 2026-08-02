@@ -35,7 +35,7 @@ This site is built with:
 - [SvelteKit 2](https://kit.svelte.dev/) with [Svelte 5 runes](https://svelte.dev/docs/svelte/what-are-runes) - Frontend framework, fully prerendered to static HTML
 - [TypeScript](https://www.typescriptlang.org/) (strict, `noUncheckedIndexedAccess`) - Language
 - Custom token-driven CSS system — the **Ink + Signal** design language (see `src/styles/CSS-README.md`)
-- Content as typed TypeScript data files in `src/lib/data/` (17 categories), auto-discovered via `import.meta.glob`
+- Content as typed TypeScript data files in `src/lib/data/` (18 categories), auto-discovered via `import.meta.glob`
 - Deployed to [GitHub Pages](https://pages.github.com/) via GitHub Actions
 
 ### Machine-Readable Data
@@ -45,6 +45,7 @@ The same `src/lib/data/` records that render the site are also published as stat
 | Endpoint                       | Contents                                                                                |
 | ------------------------------ | --------------------------------------------------------------------------------------- |
 | `/api/index.json`              | Discovery manifest — datasets, counts, year ranges, and related feeds                   |
+| `/api/research.json`           | Research projects, cross-referencing their publications, talks, grants, and fieldwork   |
 | `/api/publications.json`       | Publications with identifiers, abstracts, tables of contents, citing works, and reviews |
 | `/api/communications.json`     | Talks and events with venue, coordinates, and panel programmes                          |
 | `/api/activities.json`         | Activity entries, including the full body of each                                       |
@@ -53,7 +54,9 @@ The same `src/lib/data/` records that render the site are also published as stat
 
 Every dataset document carries `{ version, dataset, url, count, items }` (`/api/cv.json` carries `{ …, person, sections }` instead). Keys with no value are omitted rather than serialised as `null`; each item's `url` is its canonical page on this site, with external addresses collected in `links`. Serialisation lives in `src/lib/utils/apiPayload.ts` and the endpoints in `src/routes/api/`.
 
-Being static, these are read-only and offer no query interface — fetch a dataset and filter locally. Together the five payloads are ~160 KB gzipped, small enough to load whole. `/llms.txt` and `/robots.txt` both advertise the manifest.
+`/api/research.json` is the one to start a traversal from: research projects are the spine the rest of the corpus hangs off, and it resolves the free-text `project` label into arrays of publication, communication, grant, and fieldwork ids.
+
+Being static, these are read-only and offer no query interface — fetch a dataset and filter locally. Together the six payloads are ~165 KB gzipped, small enough to load whole. `/llms.txt` and `/robots.txt` both advertise the manifest.
 
 ## Development
 

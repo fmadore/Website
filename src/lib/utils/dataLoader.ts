@@ -21,6 +21,7 @@ import type { Language } from '$lib/types/language';
 import type { Activity } from '$lib/types/activity';
 import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
 import type { ProfessionalAffiliation } from '$lib/types/affiliation';
+import type { ResearchProject } from '$lib/types/research';
 import type { ResearchRole } from '$lib/types/researchRole';
 import type { TeachingExperience } from '$lib/types/teachingExperience';
 
@@ -43,6 +44,7 @@ type DataItem =
 	| Activity
 	| DigitalHumanitiesProject
 	| ProfessionalAffiliation
+	| ResearchProject
 	| ResearchRole
 	| TeachingExperience;
 

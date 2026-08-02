@@ -1,19 +1,11 @@
 <script lang="ts">
 	import ResearchProjectLayout from '$lib/components/research/ResearchProjectLayout.svelte';
+	import { researchProject } from '$lib/data/research';
 	import RelevantGrants from '$lib/components/panels/RelevantGrants.svelte';
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
 </script>
 
-<ResearchProjectLayout
-	title="Muslim Minorities in Southern Cities of Benin and Togo"
-	shortTitle="Muslim Minorities in Southern Cities"
-	slug="muslim-minorities-southern-cities-benin-togo"
-	years="2018-2020"
-	imageSrc="muslim-minorities.webp"
-	imageAlt="Muslim Minorities in Southern Cities of Benin and Togo"
-	audioSrc="notebooklm/muslim-minorities-southern-cties-Benin-Togo.mp3"
-	projectName="Muslim Minorities in Southern Cities of Benin and Togo"
->
+<ResearchProjectLayout {...researchProject('muslim-minorities-southern-cities-benin-togo')}>
 	<p>
 		Muslims in Benin and Togo rarely make international headlines, except when warnings are issued
 		about jihadist groups from the Sahel region encroaching on the Gulf of Guinea. This project

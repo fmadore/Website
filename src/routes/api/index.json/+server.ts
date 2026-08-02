@@ -4,6 +4,7 @@ import { allPublications, publicationsByDate } from '$lib/data/publications/inde
 import { allCommunications, communicationsByDate } from '$lib/data/communications/index';
 import { allActivities, activitiesByDate } from '$lib/data/activities';
 import { allDhProjects } from '$lib/data/digital-humanities';
+import { allResearchProjects } from '$lib/data/research';
 import { API_VERSION, compact, jsonResponse } from '$lib/utils/apiPayload';
 
 // Prerendered to build/api/index.json alongside the rest of the site.
@@ -41,6 +42,13 @@ export const GET: RequestHandler = async () => {
 			affiliation: `${address.department}, ${address.institution}`
 		},
 		datasets: [
+			compact({
+				name: 'research',
+				url: `${SITE}/api/research.json`,
+				description:
+					'Research projects — the spine of the corpus. Each carries its span, regions, source languages, funding, and the ids of the publications, talks, grants and fieldwork that belong to it.',
+				count: allResearchProjects.length
+			}),
 			compact({
 				name: 'publications',
 				url: `${SITE}/api/publications.json`,
@@ -93,6 +101,7 @@ export const GET: RequestHandler = async () => {
 			'Every dataset document carries { version, dataset, url, count, items }; /api/cv.json carries { version, dataset, url, person, sections } instead.',
 			'Keys with no value are omitted rather than serialised as null, so absent fields simply do not appear.',
 			'Item `url` is the canonical page on this site; external addresses are collected in `links`.',
+			'/api/research.json cross-references the other datasets by id — join on those rather than on the free-text `project` label.',
 			'These files are rebuilt with the site and served statically, so they are read-only: there is no query interface, fetch a whole dataset and filter locally.'
 		]
 	};

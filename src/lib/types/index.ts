@@ -16,4 +16,5 @@ export * from './analysis';
 export * from './affiliation';
 export * from './teachingExperience';
 export * from './digitalHumanities';
+export * from './research';
 export * from './researchRole';
