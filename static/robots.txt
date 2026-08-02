@@ -10,3 +10,7 @@ Sitemap: https://www.frederickmadore.com/sitemap.xml
 
 # LLM/AI agent guidance: https://www.frederickmadore.com/llms.txt
 # (Curated, machine-readable site map following the llms.txt convention)
+
+# Structured data: https://www.frederickmadore.com/api/index.json
+# (Discovery manifest for the static JSON API — publications, talks, activities,
+#  digital humanities projects, and CV, as the same records that render the site)

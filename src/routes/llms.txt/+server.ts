@@ -145,6 +145,24 @@ export const GET: RequestHandler = async () => {
 	// Feeds and machine-readable data.
 	lines.push('## Feeds and data');
 	lines.push('');
+	lines.push(
+		`- [JSON API index](${SITE}/api/index.json): Discovery manifest for the static JSON API — lists every dataset, its size, and its URL.`
+	);
+	lines.push(
+		`- [Publications (JSON)](${SITE}/api/publications.json): Full publication records with identifiers, abstracts, citing works, and reviews.`
+	);
+	lines.push(
+		`- [Talks & events (JSON)](${SITE}/api/communications.json): Full communication records with venue, coordinates, and programme details.`
+	);
+	lines.push(
+		`- [Activities (JSON)](${SITE}/api/activities.json): News and activity entries, including the full body of each.`
+	);
+	lines.push(
+		`- [Digital humanities projects (JSON)](${SITE}/api/digital-humanities.json): Project records with skills, awards, and reviews.`
+	);
+	lines.push(
+		`- [CV (JSON)](${SITE}/api/cv.json): Career record — appointments, education, grants, awards, teaching, service, fieldwork, and languages.`
+	);
 	lines.push(`- [RSS feed](${SITE}/rss.xml): Latest activities and updates.`);
 	lines.push(`- [XML sitemap](${SITE}/sitemap.xml): Full list of indexable pages.`);
 	lines.push('');

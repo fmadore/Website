@@ -38,6 +38,23 @@ This site is built with:
 - Content as typed TypeScript data files in `src/lib/data/` (17 categories), auto-discovered via `import.meta.glob`
 - Deployed to [GitHub Pages](https://pages.github.com/) via GitHub Actions
 
+### Machine-Readable Data
+
+The same `src/lib/data/` records that render the site are also published as static JSON, prerendered with everything else, so external tools never have to scrape HTML. Start at the discovery manifest, which lists each dataset with its size and URL:
+
+| Endpoint                       | Contents                                                                                |
+| ------------------------------ | --------------------------------------------------------------------------------------- |
+| `/api/index.json`              | Discovery manifest — datasets, counts, year ranges, and related feeds                   |
+| `/api/publications.json`       | Publications with identifiers, abstracts, tables of contents, citing works, and reviews |
+| `/api/communications.json`     | Talks and events with venue, coordinates, and panel programmes                          |
+| `/api/activities.json`         | Activity entries, including the full body of each                                       |
+| `/api/digital-humanities.json` | DH projects with skills, awards, and reviews                                            |
+| `/api/cv.json`                 | Career record keyed by section (appointments, grants, teaching, service, fieldwork, …)  |
+
+Every dataset document carries `{ version, dataset, url, count, items }` (`/api/cv.json` carries `{ …, person, sections }` instead). Keys with no value are omitted rather than serialised as `null`; each item's `url` is its canonical page on this site, with external addresses collected in `links`. Serialisation lives in `src/lib/utils/apiPayload.ts` and the endpoints in `src/routes/api/`.
+
+Being static, these are read-only and offer no query interface — fetch a dataset and filter locally. Together the five payloads are ~160 KB gzipped, small enough to load whole. `/llms.txt` and `/robots.txt` both advertise the manifest.
+
 ## Development
 
 ### Running Locally
