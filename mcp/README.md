@@ -11,14 +11,18 @@ humanities work, and CV instead of browsing for them.
 
 ## Install (Claude Desktop)
 
-Download **`frederickmadore-website.mcpb`** and double-click it. Claude Desktop opens an
-install dialog; click Install. That is the whole procedure — no config file to edit, no
-terminal, and no need to have Node installed, since Claude Desktop supplies its own
-runtime.
+Download **`frederickmadore-website.mcpb`** from the
+[latest release](https://github.com/fmadore/Website/releases?q=mcp-v) and double-click it.
+Claude Desktop opens an install dialog; click Install. That is the whole procedure — no
+config file to edit, no terminal, and no need to have Node installed, since Claude Desktop
+supplies its own runtime.
 
-The bundle is built by CI on every change: open the latest run under
-[Actions](https://github.com/fmadore/Website/actions) and download the `mcpb` artifact. To
-build it yourself, see [Commands](#commands) below.
+Claude Desktop will warn that the publisher is unverified. That is expected — see
+[Signing](#signing) for why, and what would change it.
+
+Every commit also builds the bundle: open the latest run under
+[Actions](https://github.com/fmadore/Website/actions) and download the `mcpb` artifact if
+you want an unreleased build. To build it yourself, see [Commands](#commands) below.
 
 There is one optional setting, **Site address**, in the extension's configuration pane.
 Leave it blank unless you are developing against unpublished content.
@@ -113,6 +117,44 @@ developer build _and_ the server unpacked back out of the `.mcpb` — the artifa
 actually install — because building a bundle is not proof that it boots. CI runs the whole
 thing on every pull request, so a renamed API field, a broken tool registration, or a
 bundle that fails to start is caught there.
+
+### Releasing
+
+Push a tag, or use Actions → **Release MCP bundle** → Run workflow:
+
+```bash
+git tag mcp-v0.1.0 && git push origin mcp-v0.1.0
+```
+
+The workflow type-checks, builds the site, builds and smoke-tests the bundle against real
+API documents, and only then publishes it as a release asset. Nothing ships that has not
+booted.
+
+### Signing
+
+The bundle is **unsigned**, so Claude Desktop shows an unverified-publisher warning on
+install.
+
+Self-signing would not fix this, and the pipeline deliberately refuses to do it. `mcpb`
+verifies a signature by shelling out to the OS trust store — `security verify-cert -p
+codeSign` on macOS, the PowerShell equivalent on Windows — and reports any certificate that
+chains to nothing trusted as `unsigned`. Since that is the same code Claude uses to load
+bundles, a self-signature would change the file size and nothing else.
+
+What removes the warning is a **code-signing certificate issued by a recognised CA**. Those
+cost money and require validating your identity or your institution's. If you obtain one,
+add it as repository secrets and the release workflow signs automatically with no code
+change:
+
+| Secret               | Contents                                  |
+| -------------------- | ----------------------------------------- |
+| `MCPB_CERT`          | Certificate, PEM                          |
+| `MCPB_KEY`           | Private key, PEM                          |
+| `MCPB_INTERMEDIATES` | Intermediate certificates, PEM (optional) |
+
+Locally, set `MCPB_CERT` and `MCPB_KEY` to file paths and run `npm run mcp:pack`. If the
+result does not verify, the signature is stripped and the build fails — shipping a bundle
+that carries a signature the loader ignores is worse than shipping an honest unsigned one.
 
 ### How the bundle is built
 

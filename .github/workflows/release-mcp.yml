@@ -1,0 +1,145 @@
+name: Release MCP bundle
+
+# Publishes the installable `.mcpb` as a GitHub Release asset, so installing it
+# means clicking a link on the Releases page rather than digging through a CI
+# run's artifacts.
+#
+# Two ways to fire it:
+#   - push a tag like `mcp-v0.1.0` (the tag names the release)
+#   - Actions → Release MCP bundle → Run workflow (version read from
+#     mcp/package.json, or overridden with the input)
+
+on:
+  push:
+    tags: ['mcp-v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (defaults to mcp/package.json)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-mcp-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Build, verify and publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check MCP server
+        run: npm run mcp:check
+
+      # The smoke suite drives the packed bundle against real API documents, so
+      # the site has to be built first. Nothing ships that has not booted.
+      - name: Build site
+        run: npm run build
+
+      # A code-signing certificate is optional, and this step no-ops without
+      # one. Self-signing is deliberately not attempted: the loader verifies
+      # against the OS trust store, so a certificate chaining to nothing trusted
+      # reports as unsigned anyway — it would be ceremony, not security.
+      #
+      # The secrets are read into env rather than interpolated into the script,
+      # and `secrets` is not available in a step-level `if`, hence the guard in
+      # the shell instead.
+      - name: Write signing certificate, if configured
+        env:
+          CERT: ${{ secrets.MCPB_CERT }}
+          KEY: ${{ secrets.MCPB_KEY }}
+          INTERMEDIATES: ${{ secrets.MCPB_INTERMEDIATES }}
+        run: |
+          if [ -z "$CERT" ] || [ -z "$KEY" ]; then
+            echo "No signing certificate configured — the bundle will ship unsigned."
+            exit 0
+          fi
+          umask 077
+          mkdir -p "$RUNNER_TEMP/signing"
+          printf '%s' "$CERT" > "$RUNNER_TEMP/signing/cert.pem"
+          printf '%s' "$KEY" > "$RUNNER_TEMP/signing/key.pem"
+          {
+            echo "MCPB_CERT=$RUNNER_TEMP/signing/cert.pem"
+            echo "MCPB_KEY=$RUNNER_TEMP/signing/key.pem"
+          } >> "$GITHUB_ENV"
+          if [ -n "$INTERMEDIATES" ]; then
+            printf '%s' "$INTERMEDIATES" > "$RUNNER_TEMP/signing/intermediates.pem"
+            echo "MCPB_INTERMEDIATES=$RUNNER_TEMP/signing/intermediates.pem" >> "$GITHUB_ENV"
+          fi
+          echo "Signing certificate configured."
+
+      - name: Build and verify the bundle
+        run: npm run mcp:smoke
+
+      - name: Resolve version and signature status
+        id: meta
+        env:
+          # Via env, not interpolated into the script: a workflow_dispatch input
+          # is attacker-controllable text.
+          INPUT_VERSION: ${{ inputs.version }}
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          if [ -n "$INPUT_VERSION" ]; then
+            version="$INPUT_VERSION"
+          elif [ "$REF_TYPE" = "tag" ]; then
+            version="${REF_NAME#mcp-v}"
+          else
+            version="$(node -p "require('./mcp/package.json').version")"
+          fi
+          case "$version" in
+            *[!0-9.A-Za-z+-]*|'') echo "Refusing implausible version: $version" >&2; exit 1 ;;
+          esac
+          {
+            echo "version=$version"
+            echo "tag=mcp-v$version"
+          } >> "$GITHUB_OUTPUT"
+
+          # `mcpb verify` exits non-zero on an unsigned bundle, and Actions runs
+          # bash with -o pipefail, so capture before testing.
+          report="$(npx mcpb verify mcp/dist/frederickmadore-website.mcpb 2>&1 || true)"
+          echo "$report"
+          if printf '%s' "$report" | grep -qiE 'not signed|self-signed'; then
+            echo 'signature=**Unsigned.** Claude Desktop will warn about an unverified publisher during install; that is expected.' >> "$GITHUB_OUTPUT"
+          else
+            echo 'signature=Signed with a code-signing certificate.' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.meta.outputs.tag }}
+          name: MCP server ${{ steps.meta.outputs.version }}
+          files: mcp/dist/frederickmadore-website.mcpb
+          fail_on_unmatched_files: true
+          body: |
+            MCP server over the academic record published at
+            [frederickmadore.com](https://www.frederickmadore.com) — search and cite
+            publications, talks, research projects, digital humanities work, and the CV.
+
+            ## Install
+
+            Download `frederickmadore-website.mcpb` below and double-click it. Claude Desktop
+            opens an install dialog; click Install. No config file to edit, no terminal, and
+            no Node install needed — the app supplies its own runtime.
+
+            For other MCP clients, see [`mcp/README.md`](https://github.com/fmadore/Website/blob/main/mcp/README.md).
+
+            ${{ steps.meta.outputs.signature }}
+
+            Every tool in this bundle was exercised against real data before publishing.

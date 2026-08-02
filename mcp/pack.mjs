@@ -142,3 +142,69 @@ process.stdout.write(validated);
 
 const { stdout: packed } = await run(mcpb, ['pack', stage, out]);
 process.stdout.write(packed);
+
+// ------------------------------------------------------------------ 5. sign
+
+/**
+ * Signing is optional and requires a real code-signing certificate.
+ *
+ * `mcpb sign --self-signed` exists, but it buys nothing: verification shells
+ * out to the OS trust store (`security verify-cert -p codeSign` on macOS, the
+ * equivalent PowerShell call on Windows), and a certificate that chains to
+ * nothing trusted comes back as status `unsigned` — indistinguishable from an
+ * unsigned bundle. Since this is the same code Claude uses to load bundles, a
+ * self-signature would be pure ceremony. So: sign with a real certificate when
+ * one is configured, and otherwise ship unsigned and say so.
+ *
+ * Set MCPB_CERT / MCPB_KEY to PEM file paths, optionally MCPB_INTERMEDIATES to
+ * a space-separated list. In CI these are written from repository secrets.
+ */
+const cert = process.env.MCPB_CERT?.trim();
+const key = process.env.MCPB_KEY?.trim();
+
+/** Run a command, returning its output whether or not it exits non-zero. */
+async function tryRun(command, args) {
+	try {
+		const { stdout, stderr } = await run(command, args);
+		return `${stdout}${stderr}`;
+	} catch (error) {
+		return `${error.stdout ?? ''}${error.stderr ?? ''}${error.stdout || error.stderr ? '' : error.message}`;
+	}
+}
+
+if (cert && key) {
+	const intermediates = (process.env.MCPB_INTERMEDIATES ?? '').trim().split(/\s+/).filter(Boolean);
+	process.stdout.write(
+		await tryRun(mcpb, [
+			'sign',
+			out,
+			'--cert',
+			cert,
+			'--key',
+			key,
+			...(intermediates.length > 0 ? ['--intermediate', ...intermediates] : [])
+		])
+	);
+
+	// `mcpb sign` reports success even when the result will not verify, so ask
+	// separately. Shipping a bundle that carries a signature the loader ignores
+	// is worse than shipping an honest unsigned one, so strip it and fail.
+	const report = await tryRun(mcpb, ['verify', out]);
+	process.stdout.write(report);
+
+	if (/not signed|self-signed/i.test(report)) {
+		await tryRun(mcpb, ['unsign', out]);
+		throw new Error(
+			'The signature does not verify against the OS trust store — the certificate ' +
+				'must chain to a trusted CA. The signature has been stripped; the bundle at ' +
+				`${out} is unsigned but usable.`
+		);
+	}
+	console.log('\nSigned and verified.');
+} else {
+	console.log(
+		'\nUnsigned. Set MCPB_CERT and MCPB_KEY to PEM paths to sign with a code-signing\n' +
+			'certificate. Self-signing is not offered: verification checks the OS trust store,\n' +
+			'so a self-signed bundle reports as unsigned regardless.'
+	);
+}
