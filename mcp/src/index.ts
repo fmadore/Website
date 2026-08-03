@@ -182,6 +182,17 @@ server.registerTool(
 	})
 );
 
+server.registerTool(
+	'get_activity',
+	{
+		title: 'Get an activity or news entry',
+		description:
+			'Full record for one activity, including its complete body text. Search only returns headlines, so this is how the writing itself is read.',
+		inputSchema: { id: z.string().describe('Activity id, as returned by search_activities.') }
+	},
+	tool(async ({ id }) => detail(await findItem('activities', id)))
+);
+
 // -------------------------------------------------------------------- research
 
 server.registerTool(
@@ -189,10 +200,18 @@ server.registerTool(
 	{
 		title: 'List research projects',
 		description:
-			'All research projects, current and concluded. Each lists the ids of the publications, talks, grants and fieldwork belonging to it — the fastest way to see the shape of a body of work before drilling in.',
+			'All research projects, current and concluded, with their summaries and the ids of the publications, talks, grants and fieldwork belonging to each — the fastest way to see the shape of a body of work before drilling in. Full narratives are omitted here; use get_research_project for those.',
 		inputSchema: {}
 	},
-	tool(async () => detail(await loadDataset('research')))
+	tool(async () => {
+		const projects = await loadDataset('research');
+		// Five projects with their full narratives is ~14 KB of prose that a
+		// caller orienting itself has not asked for. The summaries answer "which
+		// project?"; get_research_project answers "what is it about?".
+		return detail(
+			projects.map(({ body, ...summary }) => ({ ...summary, bodyChars: String(body ?? '').length }))
+		);
+	})
 );
 
 server.registerTool(
@@ -200,7 +219,7 @@ server.registerTool(
 	{
 		title: 'Get a research project',
 		description:
-			'One research project: span, regions, source languages, funding, and the cross-referenced ids of everything that belongs to it.',
+			"One research project in full: its complete narrative, span, regions, source languages, funding, and the cross-referenced ids of everything that belongs to it. This is where a project's substantive description lives.",
 		inputSchema: { id: z.string() }
 	},
 	tool(async ({ id }) => detail(await findItem('research', id)))

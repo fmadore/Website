@@ -79,7 +79,7 @@ async function exercise(entry) {
 		const names = tools.map((tool) => tool.name).sort();
 		console.log(`  tools (${names.length}): ${names.join(', ')}`);
 
-		check('all 11 tools registered', names.length === 11, `got ${names.length}`);
+		check('all 12 tools registered', names.length === 12, `got ${names.length}`);
 		check(
 			'every tool has a description',
 			tools.every((tool) => (tool.description ?? '').length > 20)
@@ -161,6 +161,65 @@ async function exercise(entry) {
 			text(reference).slice(0, 120)
 		);
 
+		// Every dataset's substantive writing has to be reachable, not merely
+		// indexed. Each of these fetches the full record and asserts the prose
+		// arrived — the failure this guards against is text that is searchable
+		// but that no tool will actually hand back.
+		const fullPublication = await client.callTool({
+			name: 'get_publication',
+			arguments: { id: book.id }
+		});
+		check(
+			'get_publication returns the abstract',
+			(JSON.parse(text(fullPublication)).abstract ?? '').length > 200
+		);
+
+		const talkId = JSON.parse(text(projects))[0].communications?.[0];
+		const fullTalk = await client.callTool({
+			name: 'get_communication',
+			arguments: { id: talkId }
+		});
+		check(
+			'get_communication returns the abstract',
+			(JSON.parse(text(fullTalk)).abstract ?? '').length > 200
+		);
+
+		const activities = await client.callTool({
+			name: 'search_activities',
+			arguments: { limit: 1 }
+		});
+		const activityId = text(activities).match(/id: (\S+)/)?.[1];
+		const fullActivity = await client.callTool({
+			name: 'get_activity',
+			arguments: { id: activityId }
+		});
+		check(
+			'get_activity returns the body text',
+			(JSON.parse(text(fullActivity)).content ?? '').length > 200
+		);
+
+		const fullProject = await client.callTool({
+			name: 'get_research_project',
+			arguments: { id: firstId }
+		});
+		check(
+			'get_research_project returns the narrative',
+			(JSON.parse(text(fullProject)).body ?? '').length > 1000,
+			`${(JSON.parse(text(fullProject)).body ?? '').length} chars`
+		);
+
+		const dhProjects = await client.callTool({ name: 'list_dh_projects', arguments: {} });
+		check(
+			'digital humanities projects carry their descriptions',
+			JSON.parse(text(dhProjects)).every((dh) => (dh.description ?? '').length > 200)
+		);
+
+		// The listing stays a listing: narratives are fetched, not broadcast.
+		check(
+			'list_research_projects omits the narratives',
+			JSON.parse(text(projects)).every((project) => project.body === undefined)
+		);
+
 		const missing = await client.callTool({
 			name: 'get_publication',
 			arguments: { id: 'no-such-publication' }
@@ -190,7 +249,7 @@ try {
 			'manifest declares the entry point that exists',
 			manifest.server.entry_point === 'server/index.js'
 		);
-		check('manifest tool list matches the server', manifest.tools.length === 11);
+		check('manifest tool list matches the server', manifest.tools.length === 12);
 	} else {
 		console.log('\n(no .mcpb built — run `npm run pack -w mcp` to include it)');
 	}

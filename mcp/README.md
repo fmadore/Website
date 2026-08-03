@@ -69,15 +69,20 @@ claude mcp add frederickmadore -- node /absolute/path/to/Website/mcp/dist/index.
 | `get_publication`        | One publication in full — abstract, DOI/ISBN/ISSN, table of contents, citing works, published reviews.          |
 | `search_communications`  | Search conference papers, lectures, seminars, workshops, panels, podcasts.                                      |
 | `get_communication`      | One talk in full, including panel programmes and participants.                                                  |
-| `search_activities`      | Search news and activity entries. These carry their full body text.                                             |
+| `search_activities`      | Search news and activity entries, matching against their full body text.                                        |
+| `get_activity`           | One activity in full, including its complete body text.                                                         |
 | `list_research_projects` | All research projects, each listing the ids of its publications, talks, grants and fieldwork.                   |
-| `get_research_project`   | One project: span, regions, source languages, funding, cross-references.                                        |
+| `get_research_project`   | One project in full: its complete narrative, span, regions, source languages, funding, cross-references.        |
 | `list_dh_projects`       | Digital archives, datasets and tools, with skills, awards and reviews.                                          |
 | `get_dh_project`         | One digital humanities project in full.                                                                         |
 | `get_cv`                 | The career record. Optionally one section (`grants`, `teaching`, `awards`, …).                                  |
 | `get_citation`           | BibTeX, or a plain-text reference.                                                                              |
 
 Search matches accent-insensitively, so `cote d'ivoire` reaches `Côte d'Ivoire`.
+
+Search returns headlines; the `get_*` tools return whole records. Every dataset carries its
+full text — publication and talk abstracts, activity bodies, project descriptions, and the
+research narratives — so nothing on the site is searchable but unreadable.
 
 ## How it works
 
