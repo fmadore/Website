@@ -1,9 +1,8 @@
 import { build } from 'esbuild';
-import { execFile } from 'node:child_process';
-import { existsSync } from 'node:fs';
-import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { cp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { promisify } from 'node:util';
+import { zipSync } from 'fflate';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
@@ -22,14 +21,21 @@ import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js'
  *     a second source of truth that silently drifts the moment a tool is
  *     renamed; this one cannot.
  *
- * The bundle ships unsigned, by decision. `mcpb` verifies a signature against
- * the OS trust store, so only a CA-issued code-signing certificate would clear
- * Claude Desktop's unverified-publisher warning, and one is not being bought.
- * `--self-signed` is not a workaround: a certificate chaining to nothing
- * trusted verifies as `unsigned` anyway.
+ * The bundle ships unsigned, by decision. Signature verification checks the OS
+ * trust store, so only a CA-issued code-signing certificate would clear Claude
+ * Desktop's unverified-publisher warning, and one is not being bought. A
+ * self-signed certificate is not a workaround — chaining to nothing trusted, it
+ * verifies as `unsigned` anyway.
+ *
+ * The archive is written with `fflate` directly rather than through the
+ * `@anthropic-ai/mcpb` CLI. That CLI packs with exactly this call (`zipSync`,
+ * level 9, Unix mode bits in the external attributes), but it also depends on
+ * `@inquirer/prompts` for its interactive `init` wizard, which drags in a
+ * `tmp` with two unfixed high-severity advisories. Nothing here ever runs
+ * `init`, so the whole chain was a vulnerable devDependency serving one
+ * `zipSync` call — 171 packages for a function this file can make itself.
  */
 
-const run = promisify(execFile);
 const here = (path) => fileURLToPath(new URL(path, import.meta.url));
 
 const stage = here('./bundle/');
@@ -131,20 +137,63 @@ await writeFile(
 	`${JSON.stringify(manifest, null, 2)}\n`
 );
 
-// -------------------------------------------------------- 4. validate and pack
+// ------------------------------------------------------- 4. validate the manifest
 
-// npm workspaces hoist binaries to the root, but a standalone install of this
-// package would keep them local — accept either.
-const mcpb = [here('./node_modules/.bin/mcpb'), here('../node_modules/.bin/mcpb')].find(
-	(candidate) => existsSync(candidate)
-);
-if (!mcpb) throw new Error('mcpb CLI not found — run `npm install`.');
+/**
+ * The manifest is generated above from a fixed template, so the risk is a field
+ * going missing in an edit, not arbitrary malformed input. These are the fields
+ * Claude Desktop needs to install and launch the bundle at all.
+ */
+const REQUIRED = [
+	['manifest_version', (m) => typeof m.manifest_version === 'string'],
+	['name', (m) => /^[a-z0-9][a-z0-9._-]*$/.test(m.name ?? '')],
+	['version', (m) => /^\d+\.\d+\.\d+/.test(m.version ?? '')],
+	['description', (m) => (m.description ?? '').length > 0],
+	['author.name', (m) => (m.author?.name ?? '').length > 0],
+	['server.type', (m) => ['node', 'python', 'binary', 'uv'].includes(m.server?.type)],
+	['server.entry_point', (m) => (m.server?.entry_point ?? '').length > 0],
+	['server.mcp_config.command', (m) => (m.server?.mcp_config?.command ?? '').length > 0],
+	['server.mcp_config.args', (m) => Array.isArray(m.server?.mcp_config?.args)]
+];
+
+const invalid = REQUIRED.filter(([, ok]) => !ok(manifest)).map(([field]) => field);
+if (invalid.length > 0)
+	throw new Error(`manifest.json is missing or malformed: ${invalid.join(', ')}`);
+
+// The declared entry point has to be a file that actually exists in the bundle,
+// or the extension installs and then fails to start.
+await stat(new URL(`./${manifest.server.entry_point}`, `file://${stage}`));
+
+console.log('manifest: valid');
+
+// ------------------------------------------------------------------- 5. pack
+
+const CONTENTS = ['manifest.json', 'icon.png', 'package.json', 'server/index.js'];
+
+const entries = {};
+for (const name of CONTENTS) {
+	const path = new URL(`./${name}`, `file://${stage}`);
+	const data = new Uint8Array(await readFile(path));
+	const { mode } = await stat(path);
+	// Unix permission bits live in the upper 16 of the external attributes, so
+	// the executable bit on the entry point survives the round trip.
+	entries[name] =
+		process.platform === 'win32' ? data : [data, { os: 3, attrs: (mode & 0o777) << 16 }];
+}
+
+const archive = zipSync(entries, { level: 9, mtime: new Date() });
 
 const out = here('./dist/frederickmadore-website.mcpb');
 await mkdir(here('./dist/'), { recursive: true });
+await writeFile(out, archive);
 
-const { stdout: validated } = await run(mcpb, ['validate', `${stage}manifest.json`]);
-process.stdout.write(validated);
-
-const { stdout: packed } = await run(mcpb, ['pack', stage, out]);
-process.stdout.write(packed);
+const shasum = createHash('sha1').update(archive).digest('hex');
+console.log(`\n${manifest.name}@${manifest.version}`);
+for (const name of CONTENTS) console.log(`  ${name}`);
+console.log(`\npackage size: ${(archive.length / 1024).toFixed(1)} KB`);
+console.log(`shasum:       ${shasum}`);
+console.log(`output:       ${out}`);
+console.log(
+	'\nUnsigned: clearing the unverified-publisher warning needs a CA-issued\n' +
+		'code-signing certificate, which this project does not use.'
+);

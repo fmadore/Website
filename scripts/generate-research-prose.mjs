@@ -54,6 +54,23 @@ const ENTITIES = {
 const decode = (text) => text.replace(/&[#a-z0-9]+;/gi, (entity) => ENTITIES[entity] ?? entity);
 
 /**
+ * Apply a removal until the string stops changing.
+ *
+ * Removing a pattern in a single pass can splice its own neighbours into a new
+ * match — `<<b>script>` loses the inner tag and becomes `<script>`. Repeating
+ * until nothing changes cannot leave one behind.
+ */
+function replaceToFixedPoint(text, pattern) {
+	let current = text;
+	let previous;
+	do {
+		previous = current;
+		current = current.replace(pattern, '');
+	} while (current !== previous);
+	return current;
+}
+
+/**
  * Extract the children of `<ResearchProjectLayout …>`. The opening tag can span
  * many lines and contain `{...spread}` expressions, so find its end by scanning
  * for the `>` that closes it rather than by regex.
@@ -108,7 +125,9 @@ function toPlainText(markup, file) {
 	}
 
 	// Comments first, so a commented-out component does not trip the check below.
-	text = text.replace(/<!--[\s\S]*?-->/g, '');
+	// Repeated to a fixed point: one pass over `<!--…-->` turns `<!--<!--x-->-->`
+	// into a fresh `<!--x-->` rather than removing it.
+	text = replaceToFixedPoint(text, /<!--[\s\S]*?-->/g);
 
 	for (const component of DROPPABLE_COMPONENTS) {
 		text = text.replace(new RegExp(`<${component}\\b[\\s\\S]*?/>`, 'g'), '');
@@ -124,7 +143,8 @@ function toPlainText(markup, file) {
 	text = text.replace(/<\/(p|h[1-6]|li|blockquote|figcaption)>/g, '\n\n');
 	text = text.replace(/<br\s*\/?>/g, '\n');
 
-	text = text.replace(/<[^>]+>/g, '');
+	// Likewise: stripping `<<b>script>` in one pass leaves `<script>` behind.
+	text = replaceToFixedPoint(text, /<[^>]*>/g);
 	text = decode(text);
 
 	return text

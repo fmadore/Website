@@ -26,7 +26,7 @@
 		"zod": "^4.4.3"
 	},
 	"devDependencies": {
-		"@anthropic-ai/mcpb": "^2.1.2",
-		"esbuild": "^0.28.1"
+		"esbuild": "^0.28.1",
+		"fflate": "^0.8.2"
 	}
 }

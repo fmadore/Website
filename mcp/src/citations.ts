@@ -38,16 +38,37 @@ function toPublication(item: Item): Publication {
 	} as unknown as Publication;
 }
 
-/** Strip the display formatter's markup down to plain text. */
+const ENTITIES: Record<string, string> = {
+	'&lt;': '<',
+	'&gt;': '>',
+	'&quot;': '"',
+	'&#39;': "'",
+	'&nbsp;': ' ',
+	'&amp;': '&'
+};
+
+/**
+ * Strip the display formatter's markup down to plain text.
+ *
+ * Two things here are deliberate rather than merely tidy:
+ *
+ *  - Tag removal repeats until the string stops changing. A single pass over
+ *    `<[^>]+>` turns `<<b>script>` into `<script>` — it removes the inner tag
+ *    and leaves a new one behind. Looping to a fixed point cannot.
+ *  - Entities are decoded in one pass through a lookup, not by chained
+ *    `replace` calls. Decoding `&amp;` first would turn `&amp;lt;` into `&lt;`
+ *    and then into `<`, reviving markup the caller had escaped.
+ */
 function stripHtml(html: string): string {
-	return html
-		.replace(/<[^>]+>/g, '')
-		.replace(/&amp;/g, '&')
-		.replace(/&lt;/g, '<')
-		.replace(/&gt;/g, '>')
-		.replace(/&quot;/g, '"')
-		.replace(/&#39;/g, "'")
-		.replace(/&nbsp;/g, ' ')
+	let text = html;
+	let previous: string;
+	do {
+		previous = text;
+		text = text.replace(/<[^>]*>/g, '');
+	} while (text !== previous);
+
+	return text
+		.replace(/&(?:amp|lt|gt|quot|nbsp|#39);/g, (entity) => ENTITIES[entity] ?? entity)
 		.replace(/\s+/g, ' ')
 		.trim();
 }

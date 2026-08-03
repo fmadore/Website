@@ -158,3 +158,11 @@ targets Node 20 rather than 24 since Claude Desktop supplies the runtime, and wr
 script starts the freshly built server, asks it over the protocol what tools it has, and
 writes the answer. A hand-maintained list is a second source of truth that drifts the
 moment a tool is renamed.
+
+The archive is written with `fflate` directly rather than through the `@anthropic-ai/mcpb`
+CLI. That CLI packs with exactly this call — `zipSync` at level 9, Unix mode bits in the
+external attributes — but it also pulls in `@inquirer/prompts` for its interactive `init`
+wizard, and with it a `tmp` carrying two unfixed high-severity advisories. Nothing here
+runs `init`, so that was 171 packages and a failing `npm audit` in exchange for one
+`zipSync` call. Manifest validation is a short required-field check in `pack.mjs`, which is
+the part that matters for a manifest generated from a fixed template.
