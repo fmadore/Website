@@ -17,8 +17,8 @@ Claude Desktop opens an install dialog; click Install. That is the whole procedu
 config file to edit, no terminal, and no need to have Node installed, since Claude Desktop
 supplies its own runtime.
 
-Claude Desktop will warn that the publisher is unverified. That is expected — see
-[Signing](#signing) for why, and what would change it.
+Claude Desktop will warn that the publisher is unverified. That is expected and permanent —
+see [Why the bundle is unsigned](#why-the-bundle-is-unsigned).
 
 Every commit also builds the bundle: open the latest run under
 [Actions](https://github.com/fmadore/Website/actions) and download the `mcpb` artifact if
@@ -130,31 +130,20 @@ The workflow type-checks, builds the site, builds and smoke-tests the bundle aga
 API documents, and only then publishes it as a release asset. Nothing ships that has not
 booted.
 
-### Signing
+### Why the bundle is unsigned
 
-The bundle is **unsigned**, so Claude Desktop shows an unverified-publisher warning on
-install.
+Claude Desktop warns that the publisher is unverified. That is deliberate and will not
+change.
 
-Self-signing would not fix this, and the pipeline deliberately refuses to do it. `mcpb`
-verifies a signature by shelling out to the OS trust store — `security verify-cert -p
-codeSign` on macOS, the PowerShell equivalent on Windows — and reports any certificate that
-chains to nothing trusted as `unsigned`. Since that is the same code Claude uses to load
-bundles, a self-signature would change the file size and nothing else.
+`mcpb` verifies a signature by shelling out to the OS trust store — `security verify-cert
+-p codeSign` on macOS, the PowerShell equivalent on Windows — so only a certificate issued
+by a recognised CA clears the warning. Those cost money annually and require validating
+your identity; this project does not buy one.
 
-What removes the warning is a **code-signing certificate issued by a recognised CA**. Those
-cost money and require validating your identity or your institution's. If you obtain one,
-add it as repository secrets and the release workflow signs automatically with no code
-change:
-
-| Secret               | Contents                                  |
-| -------------------- | ----------------------------------------- |
-| `MCPB_CERT`          | Certificate, PEM                          |
-| `MCPB_KEY`           | Private key, PEM                          |
-| `MCPB_INTERMEDIATES` | Intermediate certificates, PEM (optional) |
-
-Locally, set `MCPB_CERT` and `MCPB_KEY` to file paths and run `npm run mcp:pack`. If the
-result does not verify, the signature is stripped and the build fails — shipping a bundle
-that carries a signature the loader ignores is worse than shipping an honest unsigned one.
+`mcpb sign --self-signed` is not a workaround. A certificate chaining to nothing trusted
+verifies as `unsigned`, so the file gains ~2 KB and nothing else — including in Claude
+Desktop, which uses this same verification code. An honest unsigned bundle is better than
+a signature the loader ignores.
 
 ### How the bundle is built
 
