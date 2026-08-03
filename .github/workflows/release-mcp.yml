@@ -1,0 +1,105 @@
+name: Release MCP bundle
+
+# Publishes the installable `.mcpb` as a GitHub Release asset, so installing it
+# means clicking a link on the Releases page rather than digging through a CI
+# run's artifacts.
+#
+# Two ways to fire it:
+#   - push a tag like `mcp-v0.1.0` (the tag names the release)
+#   - Actions → Release MCP bundle → Run workflow (version read from
+#     mcp/package.json, or overridden with the input)
+
+on:
+  push:
+    tags: ['mcp-v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (defaults to mcp/package.json)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-mcp-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Build, verify and publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check MCP server
+        run: npm run mcp:check
+
+      # The smoke suite drives the packed bundle against real API documents, so
+      # the site has to be built first. Nothing ships that has not booted.
+      - name: Build site
+        run: npm run build
+
+      - name: Build and verify the bundle
+        run: npm run mcp:smoke
+
+      - name: Resolve version
+        id: meta
+        env:
+          # Via env, not interpolated into the script: a workflow_dispatch input
+          # is attacker-controllable text.
+          INPUT_VERSION: ${{ inputs.version }}
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          if [ -n "$INPUT_VERSION" ]; then
+            version="$INPUT_VERSION"
+          elif [ "$REF_TYPE" = "tag" ]; then
+            version="${REF_NAME#mcp-v}"
+          else
+            version="$(node -p "require('./mcp/package.json').version")"
+          fi
+          case "$version" in
+            *[!0-9.A-Za-z+-]*|'') echo "Refusing implausible version: $version" >&2; exit 1 ;;
+          esac
+          {
+            echo "version=$version"
+            echo "tag=mcp-v$version"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.meta.outputs.tag }}
+          name: MCP server ${{ steps.meta.outputs.version }}
+          files: mcp/dist/frederickmadore-website.mcpb
+          fail_on_unmatched_files: true
+          body: |
+            MCP server over the academic record published at
+            [frederickmadore.com](https://www.frederickmadore.com) — search and cite
+            publications, talks, research projects, digital humanities work, and the CV.
+
+            ## Install
+
+            Download `frederickmadore-website.mcpb` below and double-click it. Claude Desktop
+            opens an install dialog; click Install. No config file to edit, no terminal, and
+            no Node install needed — the app supplies its own runtime.
+
+            On first install Claude Desktop warns that the publisher is unverified. That is
+            expected: clearing it would require a paid CA-issued code-signing certificate,
+            which this project does not use.
+
+            For other MCP clients, see [`mcp/README.md`](https://github.com/fmadore/Website/blob/main/mcp/README.md).
+
+            Every tool in this bundle was exercised against real data before publishing.

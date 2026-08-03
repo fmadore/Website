@@ -31,9 +31,14 @@ export default defineConfig({
 		}
 	},
 	test: {
-		// `scripts/` holds build-time tooling, not site code, so it is tested
-		// but deliberately left out of the coverage ratchet below.
-		include: ['src/**/*.{test,spec}.ts', 'scripts/**/*.{test,spec}.mjs'],
+		// `scripts/` holds build-time tooling and `mcp/` is a separate package;
+		// both are tested here but deliberately left out of the coverage ratchet
+		// below, which measures site code only.
+		include: [
+			'src/**/*.{test,spec}.ts',
+			'scripts/**/*.{test,spec}.mjs',
+			'mcp/src/**/*.{test,spec}.ts'
+		],
 		environment: 'node',
 		coverage: {
 			provider: 'v8',

@@ -45,7 +45,7 @@ The same `src/lib/data/` records that render the site are also published as stat
 | Endpoint                       | Contents                                                                                |
 | ------------------------------ | --------------------------------------------------------------------------------------- |
 | `/api/index.json`              | Discovery manifest — datasets, counts, year ranges, and related feeds                   |
-| `/api/research.json`           | Research projects, cross-referencing their publications, talks, grants, and fieldwork   |
+| `/api/research.json`           | Research projects with their full narratives, cross-referencing publications and grants |
 | `/api/publications.json`       | Publications with identifiers, abstracts, tables of contents, citing works, and reviews |
 | `/api/communications.json`     | Talks and events with venue, coordinates, and panel programmes                          |
 | `/api/activities.json`         | Activity entries, including the full body of each                                       |
@@ -56,7 +56,17 @@ Every dataset document carries `{ version, dataset, url, count, items }` (`/api/
 
 `/api/research.json` is the one to start a traversal from: research projects are the spine the rest of the corpus hangs off, and it resolves the free-text `project` label into arrays of publication, communication, grant, and fieldwork ids.
 
+Every dataset carries its **full text**, not just metadata — publication and talk abstracts, complete activity bodies, project descriptions, and the research narratives. The last of those are authored as markup in `src/routes/research/<id>/+page.svelte`, so `scripts/generate-research-prose.mjs` projects them to plain text at prebuild (`npm run gen:prose`) and CI checks the committed result is fresh. Without it, the substantive writing about each project would be the only prose on the site an API consumer could not read.
+
 Being static, these are read-only and offer no query interface — fetch a dataset and filter locally. Together the six payloads are ~165 KB gzipped, small enough to load whole. `/llms.txt` and `/robots.txt` both advertise the manifest.
+
+### MCP Server
+
+`mcp/` is an [MCP](https://modelcontextprotocol.io/) server over those documents: twelve tools for searching publications, talks, activities, research and DH projects, reading the CV, and generating citations. It runs locally over stdio and reads the published JSON at startup, so it has no data of its own to fall out of date.
+
+It ships two ways. `npm run mcp:pack` produces `frederickmadore-website.mcpb` — an [MCP Bundle](https://github.com/anthropics/mcpb) that Claude Desktop installs on a double-click, with no config file to edit and no Node install required; CI attaches it to every run as the `mcpb` artifact. Other stdio clients point at the developer build in `mcp/dist/index.js`. See [`mcp/README.md`](mcp/README.md).
+
+Citation output is not reimplemented there — the build aliases `$lib` and bundles the site's own `bibtexGenerator`, so what the server returns is byte-identical to the site's download button.
 
 ## Development
 

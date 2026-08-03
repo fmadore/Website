@@ -1,5 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { allResearchProjects } from '$lib/data/research';
+import { researchProse } from '$lib/data/researchProse.generated';
 import { publicationsByDate } from '$lib/data/publications/index';
 import { communicationsByDate } from '$lib/data/communications/index';
 import { grantsByDate } from '$lib/data/grants';
@@ -46,8 +47,14 @@ const serialise = (project: ResearchProject) => {
 		...parseYears(project.years),
 		current: project.current ?? false,
 		shortDescription: project.shortDescription,
-		/** Longer editorial summary; the full narrative is on the project page. */
+		/** Editorial summary written for search engines. */
 		description: project.seoDescription,
+		/**
+		 * The project's full narrative as plain text, lifted out of its route page
+		 * at build time. Without this the substantive writing about each project
+		 * would be the only prose on the site an API consumer could not read.
+		 */
+		body: researchProse[project.id]?.body,
 		keywords: project.seoKeywords?.split(',').map((keyword) => keyword.trim()),
 		regions: project.regions,
 		sourceLanguages: project.sourceLanguages,
@@ -60,6 +67,8 @@ const serialise = (project: ResearchProject) => {
 		communications: communicationsByDate.filter((c) => c.project === projectName).map((c) => c.id),
 		grants: grantsByDate.filter((g) => g.project === projectName).map((g) => g.id),
 		fieldwork: fieldworksByDate.filter((f) => f.project === projectName).map((f) => f.id),
+		/** Publications and talks cited inline in `body`. */
+		references: researchProse[project.id]?.references,
 
 		image: absoluteUrl(`/images/research/${project.imageSrc}`),
 		audio: project.audioSrc ? absoluteUrl(project.audioSrc) : undefined,

@@ -53,3 +53,7 @@ scripts/__pycache__/convert-image.cpython-312.pyc
 
 # Vitest coverage output
 /coverage/
+
+# MCP server build output (mcp/)
+/mcp/dist/
+/mcp/bundle/

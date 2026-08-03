@@ -192,7 +192,12 @@ Entity-index pages instantiate `new EntityFilterSystem(config)` from `$lib/utils
 
 ### Citation/Bibliography
 
-Multi-format support via `citationFormatter.ts`: BibTeX, APA, MLA, Chicago
+Two modules, both pure (their only imports are types plus `nameUtils`, `date-formatter` and `publicationTypeLabels`), so `mcp/` bundles them rather than reimplementing them:
+
+- `bibtexGenerator.ts` — `generateBibtex()`, the only export format the site produces
+- `citationFormatter.ts` — `formatCitation()`, which builds the **display** reference as HTML, not an export format
+
+There is no APA/MLA/Chicago generator. Adding one belongs here, where the site and the MCP server both pick it up.
 
 ### SEO
 
