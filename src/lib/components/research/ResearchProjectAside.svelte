@@ -28,9 +28,11 @@
 		directors?: string[];
 		funderLabel?: string;
 		programme?: string;
-		/** Formatted grant figure (e.g., "€317,690"). */
+		/** Formatted grant figure(s) (e.g., "€317,690", "€53,670 + €60,410"). */
 		grantAmount?: string;
 		grantStatus?: string;
+		/** How many awards the figure covers — pluralises the ledger key. */
+		grantCount?: number;
 		regions?: string[];
 		sourceLanguages?: string[];
 		ctas?: ProjectCta[];
@@ -48,6 +50,7 @@
 		programme,
 		grantAmount,
 		grantStatus,
+		grantCount = 1,
 		regions,
 		sourceLanguages,
 		ctas,
@@ -105,7 +108,7 @@
 			{/if}
 			{#if showFunding && grantAmount}
 				<div class="stat-row">
-					<dt>Grant</dt>
+					<dt>{grantCount > 1 ? 'Grants' : 'Grant'}</dt>
 					<dd class="stat-value stat-value--accent">
 						{grantAmount}{#if grantStatus}
 							<span class="grant-status"> · {grantStatus}</span>{/if}

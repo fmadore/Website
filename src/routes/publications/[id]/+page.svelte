@@ -167,29 +167,33 @@
 
 				<!-- Cited by -->
 				<CitedBy {citedBy} />
-
-				<!-- More in this project -->
-				{#if relatedInProject.length > 0}
-					<div class="pub-section">
-						<RelatedItemsList
-							allItems={allPublications}
-							currentItemId={publication.id}
-							filterKey="project"
-							filterValue={publication.project}
-							title="More in this Project"
-							itemComponent={RelatedItemCard as unknown as ComponentType}
-							baseItemUrl="/publications/"
-							viewAllUrl="{base}/publications"
-							maxItems={3}
-							sectionClass="pub-related section"
-							titleClass="pub-related-title section-title"
-						/>
-					</div>
-				{/if}
 			</div>
 
 			<!-- ═══ ASIDE — THE METADATA ═══ -->
 			<PublicationAside {publication} {typeLabel} {projectUrl} />
+
+			<!-- ═══ MORE IN THIS PROJECT ═══
+			     A grid child of its own rather than the last block of the body, so
+			     that in a single column it falls past the rail's indexing apparatus
+			     (tags, key terms): the index stays with the record it indexes, and
+			     the rail of sibling work closes the page. -->
+			{#if relatedInProject.length > 0}
+				<div class="pub-related-block">
+					<RelatedItemsList
+						allItems={allPublications}
+						currentItemId={publication.id}
+						filterKey="project"
+						filterValue={publication.project}
+						title="More in this Project"
+						itemComponent={RelatedItemCard as unknown as ComponentType}
+						baseItemUrl="/publications/"
+						viewAllUrl="{base}/publications"
+						maxItems={3}
+						sectionClass="pub-related section section--flush"
+						titleClass="pub-related-title section-title"
+					/>
+				</div>
+			{/if}
 		</article>
 	</div>
 </div>
@@ -260,10 +264,15 @@
 
 	/* Single column: the rail dissolves (see PublicationAside) and its blocks
 	   place themselves around the body — cover + Record + access at order 1,
-	   the document at order 2, tags + key terms at order 3. */
+	   the document at order 2, tags + key terms at order 3, and the sibling work
+	   in this project last. */
 	@media (--lg-down) {
 		.pub-main {
 			order: 2;
+		}
+
+		.pub-related-block {
+			order: 4;
 		}
 	}
 
@@ -285,6 +294,18 @@
 			grid-column: 1;
 			grid-row: 2;
 		}
+
+		/* Below the body, still in the reading column. */
+		.pub-related-block {
+			grid-column: 1;
+			grid-row: 3;
+		}
+	}
+
+	/* The related-items heading is a bare .section-title with no .section-head
+	   wrapper to carry the rhythm, so it needs its own space above the cards. */
+	.pub-related-block :global(.section-title) {
+		margin-bottom: var(--space-md);
 	}
 
 	/* ── Masthead ──────────────────────────────────────────────────────────── */

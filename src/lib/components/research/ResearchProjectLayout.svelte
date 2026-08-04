@@ -80,16 +80,34 @@ apparatus, and the ruled-section styling.
 	// Inject MonetaryGrant JSON-LD for associated grants
 	useGrantsJsonLd(() => projectName);
 
-	/**
-	 * The project's headline grant record — the most recently started grant
-	 * associated with this project. Supplies funder, amount, status and
-	 * co-applicants for the metadata ledger without duplicating data on the page.
-	 */
-	const primaryGrant = $derived<Grant | undefined>(
+	/** Every grant attached to this project, most recently started first. */
+	const projectGrants = $derived<Grant[]>(
 		allGrants
 			.filter((grant) => grant.project === projectName)
-			.sort((a, b) => new Date(b.dateISOStart).getTime() - new Date(a.dateISOStart).getTime())[0]
+			.sort((a, b) => new Date(b.dateISOStart).getTime() - new Date(a.dateISOStart).getTime())
 	);
+
+	/**
+	 * The project's headline grant record — the most recently started grant
+	 * associated with this project. Supplies funder and co-applicants for the
+	 * metadata ledger without duplicating data on the page.
+	 */
+	const primaryGrant = $derived<Grant | undefined>(projectGrants[0]);
+
+	/**
+	 * The figures the ledger reports: every awarded grant carrying an amount,
+	 * oldest first, so a project carried by several awards states all of its
+	 * support (€53,670 + €60,410) rather than only the newest line. Listing
+	 * rather than summing keeps awards in different currencies honest and matches
+	 * the itemised Funding panel. A project with no award yet falls back to its
+	 * headline grant, so a submitted or turned-down record still reads with its
+	 * own status.
+	 */
+	const ledgerGrants = $derived.by((): Grant[] => {
+		const awarded = projectGrants.filter((grant) => grant.status === 'Awarded' && grant.amount);
+		if (awarded.length > 0) return awarded.reverse();
+		return primaryGrant?.amount ? [primaryGrant] : [];
+	});
 
 	// Funder: explicit prop wins, else the headline grant's funder.
 	const funderLabel = $derived(funder ?? primaryGrant?.funder);
@@ -99,15 +117,18 @@ apparatus, and the ruled-section styling.
 		coDirectors && coDirectors.length > 0 ? coDirectors : (primaryGrant?.coApplicants ?? [])
 	);
 
-	// Formatted grant figure (e.g., "€317,690") — omitted when the grant has no amount.
+	function formatGrantAmount(grant: Grant): string {
+		return new Intl.NumberFormat('en-US', {
+			style: 'currency',
+			currency: grant.currency || 'EUR',
+			maximumFractionDigits: 0
+		}).format(grant.amount ?? 0);
+	}
+
+	// Formatted grant figures (e.g., "€317,690", "€53,670 + €60,410") — omitted
+	// when no grant on the project carries an amount.
 	const grantAmount = $derived(
-		primaryGrant?.amount
-			? new Intl.NumberFormat('en-US', {
-					style: 'currency',
-					currency: primaryGrant.currency || 'EUR',
-					maximumFractionDigits: 0
-				}).format(primaryGrant.amount)
-			: undefined
+		ledgerGrants.length > 0 ? ledgerGrants.map(formatGrantAmount).join(' + ') : undefined
 	);
 
 	// Eyebrow tail: "· FUNDER" appended after the years when a funder is known
@@ -184,7 +205,8 @@ apparatus, and the ruled-section styling.
 				{funderLabel}
 				{programme}
 				{grantAmount}
-				grantStatus={primaryGrant?.status}
+				grantStatus={ledgerGrants[0]?.status}
+				grantCount={ledgerGrants.length}
 				{regions}
 				{sourceLanguages}
 				{ctas}
