@@ -75,8 +75,8 @@
 
 	// ── Map (lazy — maplibre-gl is only fetched when the reader asks for it) ─────
 	let MapVisualization:
-		| typeof import('$lib/components/visualisations/MapVisualization.svelte').default
-		| null = $state(null);
+		typeof import('$lib/components/visualisations/MapVisualization.svelte').default | null =
+		$state(null);
 	let mapLoadError = $state(false);
 	let showMap = $state(false);
 

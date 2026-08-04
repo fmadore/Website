@@ -5,13 +5,7 @@
  * Categories for timeline items, each with a distinct color
  */
 export type TimelineCategory =
-	| 'positions'
-	| 'education'
-	| 'grants'
-	| 'publications'
-	| 'presentations'
-	| 'awards'
-	| 'fieldwork';
+	'positions' | 'education' | 'grants' | 'publications' | 'presentations' | 'awards' | 'fieldwork';
 
 /**
  * A normalized item for display on the career timeline

@@ -121,11 +121,7 @@ export interface ThesisJsonLd extends BaseJsonLd {
 
 /** Union of all publication-related JSON-LD types */
 export type PublicationJsonLd =
-	| BookJsonLd
-	| ArticleJsonLd
-	| ReportJsonLd
-	| BlogPostingJsonLd
-	| ThesisJsonLd;
+	BookJsonLd | ArticleJsonLd | ReportJsonLd | BlogPostingJsonLd | ThesisJsonLd;
 
 // --- Communication-Specific Types ---
 

@@ -28,15 +28,7 @@ can still compose `VizChartCard` themselves.
 	import VizChartCard from './VizChartCard.svelte';
 
 	type Variant =
-		| 'stacked'
-		| 'network'
-		| 'arc'
-		| 'matrix'
-		| 'bubble'
-		| 'treemap'
-		| 'gantt'
-		| 'map'
-		| 'bigrams';
+		'stacked' | 'network' | 'arc' | 'matrix' | 'bubble' | 'treemap' | 'gantt' | 'map' | 'bigrams';
 
 	let {
 		title,

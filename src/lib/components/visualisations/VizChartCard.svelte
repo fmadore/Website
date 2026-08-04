@@ -9,15 +9,7 @@
 	 * {hasData}> ... {#snippet placeholder()}...{/snippet} </VizChartCard>.
 	 */
 	type Variant =
-		| 'stacked'
-		| 'network'
-		| 'arc'
-		| 'matrix'
-		| 'bubble'
-		| 'treemap'
-		| 'gantt'
-		| 'map'
-		| 'bigrams';
+		'stacked' | 'network' | 'arc' | 'matrix' | 'bubble' | 'treemap' | 'gantt' | 'map' | 'bigrams';
 
 	let {
 		variant,

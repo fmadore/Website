@@ -2,12 +2,7 @@
 	interface Props {
 		// Props
 		variant?:
-			| 'primary'
-			| 'secondary'
-			| 'outline-primary'
-			| 'outline-secondary'
-			| 'ghost'
-			| 'danger';
+			'primary' | 'secondary' | 'outline-primary' | 'outline-secondary' | 'ghost' | 'danger';
 		size?: 'sm' | 'base' | 'lg';
 		href?: string | undefined; // If provided, render as <a>
 		type?: 'button' | 'submit' | 'reset'; // Only used for <button>

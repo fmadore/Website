@@ -46,8 +46,8 @@
 	// the map sits at the very bottom of the page — well below the fold — so
 	// eagerly importing it on mount tanked PageSpeed for no visible benefit.
 	let MapVisualization:
-		| typeof import('$lib/components/visualisations/MapVisualization.svelte').default
-		| null = $state(null);
+		typeof import('$lib/components/visualisations/MapVisualization.svelte').default | null =
+		$state(null);
 	let mapLoaded = $state(false);
 	let mapSectionEl = $state<HTMLElement>();
 

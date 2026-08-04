@@ -21,11 +21,7 @@ const DEFAULT_BASE = 'https://www.frederickmadore.com';
 const apiBase = (process.env.WEBSITE_API_BASE?.trim() || DEFAULT_BASE).replace(/\/+$/, '');
 
 export type DatasetName =
-	| 'research'
-	| 'publications'
-	| 'communications'
-	| 'activities'
-	| 'digital-humanities';
+	'research' | 'publications' | 'communications' | 'activities' | 'digital-humanities';
 
 /** A record in any of the item datasets. Fields vary; only `id` is guaranteed. */
 export interface Item {
