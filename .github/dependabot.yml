@@ -2,9 +2,12 @@ version: 2
 updates:
   - package-ecosystem: 'npm'
     directory: '/'
+    # Monthly (runs on the 1st) rather than weekly — a personal site does not
+    # need a PR queue every Monday, and batching a month of bumps into one
+    # review keeps the signal-to-noise ratio worth reading. `day` is weekly-only
+    # and is therefore not set here.
     schedule:
-      interval: 'weekly'
-      day: 'monday'
+      interval: 'monthly'
     open-pull-requests-limit: 5
     reviewers:
       - 'fmadore'
@@ -67,8 +70,7 @@ updates:
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
-      interval: 'weekly'
-      day: 'monday'
+      interval: 'monthly'
     reviewers:
       - 'fmadore'
     labels:
