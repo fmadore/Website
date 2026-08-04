@@ -2,10 +2,10 @@
  * MapLibre Initialization Hook
  *
  * Centralized lifecycle management for MapLibre map components, mirroring
- * `useECharts`. Handles WebGL feature detection, container-layout waiting,
- * dynamic import (module + CSS + CSP worker via `loadMapLibre`), map
- * construction with the standard control set, theme-driven style swapping,
- * data updates, and cleanup.
+ * `useECharts`. Handles WebGL 2 feature detection, container-layout waiting,
+ * dynamic import (module + CSS + worker via `loadMapLibre`), map construction
+ * with the standard control set, theme-driven style swapping, data updates,
+ * and cleanup.
  *
  * Usage:
  * ```svelte
@@ -112,7 +112,7 @@ export function useMapLibre(options: UseMapLibreOptions): UseMapLibreReturn {
 			try {
 				if (!hasWebGLSupport()) {
 					importError =
-						'WebGL is not supported in your browser. Please enable hardware acceleration or try a different browser.';
+						'WebGL 2 is not supported in your browser. Please enable hardware acceleration or try a different browser.';
 					return;
 				}
 

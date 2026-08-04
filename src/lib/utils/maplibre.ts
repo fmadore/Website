@@ -1,43 +1,41 @@
 /**
  * Shared MapLibre GL JS loader + helpers.
  *
- * Centralises the dynamic import, CSS load, and — critically — the worker
- * configuration that every map component needs.
+ * Centralises the dynamic import and CSS load that every map component needs.
  *
- * ## Why `setWorkerUrl` with the CSP worker
+ * ## Why `setWorkerUrl` is still needed under v6
  *
- * `maplibre-gl`'s default bundle (`dist/maplibre-gl.js`) ships a UMD file with
- * a custom AMD `define()` wrapper that instantiates its Web Worker from a
- * `blob:` URL. Two things go wrong with that wrapper in this project:
+ * v6 is ESM-only: the v5 UMD bundle and its CSP variant
+ * (`maplibre-gl-csp-worker.js`, which this module used to import) are no longer
+ * published, and with them went the `blob:`-URL worker that Brave's shields
+ * blocked and that Rolldown's CJS/ESM interop mangled into
+ * `Export 'maplibre_gl_exports' is not defined in module`
+ * (maplibre/maplibre-gl-js#7339).
  *
- * 1. **Brave + other privacy browsers** — Shields/fingerprinting protection
- *    can block blob-URL workers, which manifests in the console as
- *    `Export 'maplibre_gl_exports' is not defined in module` because the
- *    worker fails to boot and the module's export wiring never completes.
- *    Plain static sites that load MapLibre from a CDN via `<script>` don't
- *    hit this because they never go through a bundler-generated chunk.
+ * v6 derives its worker URL from `import.meta.url` instead, but upstream is
+ * explicit that this only works for direct-from-CDN ESM: under a bundler
+ * `import.meta.url` points at the emitted chunk, so the sibling
+ * `maplibre-gl-worker.mjs` it computes does not exist. Skipping the call is not
+ * a loud failure — the map, its controls and the style all load, and only the
+ * vector tiles (which are parsed in the worker) silently never appear.
  *
- * 2. **Vite 8 / Rolldown** — the custom AMD wrapper interacts badly with
- *    Rolldown's CJS↔ESM interop and manual chunk splitting, producing the
- *    same "maplibre_gl_exports is not defined" error even outside Brave.
- *    Tracked upstream in maplibre/maplibre-gl-js#7339.
- *
- * The recommended workaround is to import the CSP-safe worker file as a URL
- * (Vite fingerprints and emits it as a static asset) and register it via
- * `setWorkerUrl` before any `Map` instance is constructed.
+ * `?worker&url` is load-bearing and not interchangeable with plain `?url`: the
+ * dist worker imports its sibling `maplibre-gl-shared.mjs`, which `?url` would
+ * emit the worker without, breaking it on first import in production builds
+ * only. `?worker&url` runs it through Vite's worker pipeline, which emits a
+ * self-contained chunk.
  */
 
 import { browser } from '$app/environment';
-// `?url` makes Vite emit the file as a hashed static asset and hand us its URL.
-// Must be a static import so Vite resolves it at build time.
-import cspWorkerUrl from 'maplibre-gl/dist/maplibre-gl-csp-worker.js?url';
+// Static import so Vite resolves and emits the worker chunk at build time.
+import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 
 export type MapLibreModule = typeof import('maplibre-gl');
 
 let loadPromise: Promise<MapLibreModule> | null = null;
 
 /**
- * Dynamically load MapLibre GL JS (module + CSS) and register the CSP worker.
+ * Dynamically load MapLibre GL JS (module + CSS) and register the worker.
  *
  * The returned promise is cached, so concurrent map components share a single
  * module load and the worker URL is only configured once.
@@ -53,11 +51,9 @@ export async function loadMapLibre(): Promise<MapLibreModule> {
 			import('maplibre-gl/dist/maplibre-gl.css')
 		]);
 
-		// setWorkerUrl is a named export in ESM. Call it once, before any Map is
-		// constructed, so every subsequent map uses our static worker URL.
-		if (typeof module.setWorkerUrl === 'function') {
-			module.setWorkerUrl(cspWorkerUrl);
-		}
+		// Must run before any Map is constructed, so every map uses the worker
+		// chunk Vite emitted rather than the path v6 guesses from import.meta.url.
+		module.setWorkerUrl(workerUrl);
 
 		// Prewarm spins up the worker + shared resources eagerly, so the first
 		// `new Map()` paints a frame or two sooner. Safe to no-op if unavailable.
@@ -84,13 +80,18 @@ export const MAP_STYLES = Object.freeze({
 });
 
 /**
- * Feature-detect WebGL support. MapLibre requires WebGL (1 or 2).
+ * Feature-detect WebGL 2 support.
+ *
+ * MapLibre v6 removed the WebGL 1 render path, so a context that only supports
+ * WebGL 1 is no longer enough. Probing for `webgl` as a fallback (as this did
+ * under v5) would report success and then let `new Map()` fail at construction,
+ * so the check deliberately has no fallback.
  */
 export function hasWebGLSupport(): boolean {
 	if (!browser) return false;
 	try {
 		const canvas = document.createElement('canvas');
-		return Boolean(canvas.getContext('webgl2') ?? canvas.getContext('webgl'));
+		return Boolean(canvas.getContext('webgl2'));
 	} catch {
 		return false;
 	}

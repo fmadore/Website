@@ -45,15 +45,13 @@ export default defineConfig({
 						return 'd3-core';
 					}
 
-					// NOTE: MapLibre GL used to be pinned to its own `maplibre` chunk here,
-					// but that triggers a Rolldown bug where the UMD↔ESM interop emits
-					// `export { maplibre_gl_exports as n }` without declaring the binding,
-					// producing the runtime error
-					//   "Export 'maplibre_gl_exports' is not defined in module"
-					// (surfaces most reliably in Brave because its shields block the
-					// fallback blob: worker and prevent the error from being swallowed).
-					// Letting Rolldown natural-split maplibre-gl avoids the faulty export.
-					// Tracked in maplibre/maplibre-gl-js#7339.
+					// NOTE: MapLibre GL is deliberately not pinned to a `maplibre` chunk.
+					// Under v5 pinning it hit a Rolldown bug in the UMD/ESM interop
+					// (maplibre/maplibre-gl-js#7339); v6 is ESM-only, so that bug is gone,
+					// but natural splitting already gives maplibre-gl its own chunk and
+					// keeps it off every route that has no map. There is nothing left to
+					// pin. Its Web Worker is emitted separately, out of `?worker&url` in
+					// `$lib/utils/maplibre.ts` — see that file before touching this.
 				}
 			}
 		}
