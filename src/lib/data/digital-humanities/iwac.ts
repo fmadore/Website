@@ -33,6 +33,13 @@ export const iwac: DigitalHumanitiesProject = {
 
 		<h4>A bilingual, adaptable interface</h4>
 		<p>The site itself is a custom Omeka S theme with a light/dark toggle and full French/English switching. It defines its colours and typography as a single set of design tokens, which the search and visualisation modules read as they run. A change to the site's brand colour then flows through to every chart and control without any change to their code.</p>
+
+		<h3>The collection as a dataset</h3>
+		<p>Omeka S is built for curating and browsing a collection, not for computing over one. A separate Python pipeline reads IWAC through Omeka's API and republishes it on <a href="https://huggingface.co/datasets/fmadore/islam-west-africa-collection" target="_blank" rel="noopener noreferrer">Hugging Face</a> as seven tables: newspaper articles, Islamic periodicals, archival documents, scholarly references, the index of people, places, organisations and events, audiovisual records, and photographs. Each loads into a notebook in a single line.</p>
+
+		<p>The tables carry columns the archive itself does not hold, computed once and stored rather than re-derived by each user: sentence embeddings for every text and image, lemmatised text, the topic assignments behind the thirty themes charted above, word counts and readability scores, the Islamic-calendar date of each article, and the three models' sentiment readings with their written justifications and a measure of how far they agree. The dashboards on the site read these same columns, so a figure published there and a figure computed by an outside researcher rest on the same numbers.</p>
+
+		<p>Rights vary item by item, and a good deal of the full text cannot be redistributed. The public dataset therefore masks text row by row instead of dropping it wholesale: an article keeps its text where the source item is public, which is the case for about three in five articles and nine in ten periodical issues. The computed columns are released for every row, since they were produced before masking and cannot reconstruct a page. This does mean the public dataset is a partial corpus, and not a random sample of one, since what is open tends to follow publisher and period. Counts taken from it describe what can be shared rather than what the collection holds.</p>
 	`,
 	imageUrl: `/images/digital-humanities/IWAC.webp`,
 	featured: true,
@@ -50,6 +57,11 @@ export const iwac: DigitalHumanitiesProject = {
 		},
 		{ url: 'https://github.com/fmadore/IWAC-SEO', label: 'IWAC-SEO', type: 'code' },
 		{ url: 'https://github.com/fmadore/IWAC-theme', label: 'IWAC-theme', type: 'code' },
+		{
+			url: 'https://github.com/fmadore/IWAC-Hugging-Face',
+			label: 'IWAC-Hugging-Face',
+			type: 'code'
+		},
 		{ url: 'https://huggingface.co/datasets/fmadore/islam-west-africa-collection', type: 'data' }
 	],
 	reviews: [
@@ -77,6 +89,9 @@ export const iwac: DigitalHumanitiesProject = {
 		'Rclone',
 		'spaCy',
 		'pandas',
+		'Hugging Face',
+		'Embeddings',
+		'Topic Modelling',
 		'Web scraping'
 	]
 };
