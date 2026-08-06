@@ -15,6 +15,10 @@ export const navItems: NavItem[] = [
 				path: `${base}/research/dh-ai-african-studies`
 			},
 			{
+				name: 'Digital Research Environment (Africa Multiple)',
+				path: `${base}/research/digital-research-environment`
+			},
+			{
 				name: 'Religious Activism on Campuses in Togo and Benin',
 				path: `${base}/research/religious-activism-campuses-togo-benin`
 			},

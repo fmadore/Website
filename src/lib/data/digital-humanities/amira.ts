@@ -9,7 +9,7 @@ export const amira: DigitalHumanitiesProject = {
 	description: `
 		<p>The Africa Multiple Interactive Research Atlas (AMIRA) is the public access point for the research metadata of the <a href="https://www.africamultiple.uni-bayreuth.de/" target="_blank" rel="noopener noreferrer">Africa Multiple Cluster of Excellence</a>. Built on <a href="https://omeka.org/s/" target="_blank" rel="noopener noreferrer">Omeka S</a> and hosted at <a href="https://data.africamultiple.uni-bayreuth.de/s/amira" target="_blank" rel="noopener noreferrer">data.africamultiple.uni-bayreuth.de/s/amira</a>, it makes the collections of the <a href="https://www.africamultiple.uni-bayreuth.de/en/1_1-About-Us/african-cluster-centres/index.html" target="_blank" rel="noopener noreferrer">Africa Multiple Research Centres</a> (AMRCs) — Université Joseph Ki-Zerbo in Ouagadougou, the University of Lagos, Moi University, and Rhodes University — and their partners searchable from one place. The Cluster is based at the <a href="https://www.uni-bayreuth.de/en" target="_blank" rel="noopener noreferrer">University of Bayreuth</a> and works with these four centres alongside its privileged partner, the Federal University of Bahia.</p>
 
-		<p>The atlas covers nearly 4,000 research items, more than 90 projects, around 1,400 associated people, and nearly 600 organisations and institutions, in 28 languages across 42 countries. Alongside the research items, it also brings together the Cluster's publications and other outputs, such as podcasts.</p>
+		<p>The atlas covers nearly 4,000 research items, more than 90 projects, around 1,600 associated people, and nearly 600 organisations and institutions, in 28 languages across 42 countries. Alongside the research items, it also brings together the Cluster's publications and other outputs, such as podcasts.</p>
 
 		<h3>The DRE behind AMIRA</h3>
 		<p>AMIRA is the visible layer of work carried out by the <a href="https://www.africamultiple.uni-bayreuth.de/en/1_5-Digital-Solutions1/index.html" target="_blank" rel="noopener noreferrer">Digital Research Environment (DRE)</a>, the digital infrastructure unit of the Cluster. The DRE designs and maintains the data systems that connect researchers across the AMRCs and partner institutions, grounded in the FAIR and CARE principles and a commitment to multiple knowledge systems.</p>
@@ -22,6 +22,11 @@ export const amira: DigitalHumanitiesProject = {
 			<li><strong><a href="https://github.com/AM-Digital-Research-Environment/DRESearch" target="_blank" rel="noopener noreferrer">DRE Search</a></strong> — a Typesense-backed search layer. Full-text search with autocomplete and faceted filtering across ten corpora (research items, projects, publications, people, research sections, organisations, genres, languages, locations, and subjects &amp; tags), plus a single federated search bar that queries all of them at once and groups suggestions by type.</li>
 			<li><strong><a href="https://github.com/fmadore/ResourceVisualizations" target="_blank" rel="noopener noreferrer">Resource Visualizations</a></strong> — an Omeka S module that adds interactive charts, maps, and network graphs (ECharts and MapLibre GL) to every resource page and to collection-wide overviews. These are the same visualisations developed for the Cluster's research dashboard, ported to Omeka S.</li>
 		</ul>
+
+		<h3>Querying AMIRA from an AI assistant</h3>
+		<p>A growing share of researchers reach a collection by asking an AI assistant a question rather than by searching a catalogue. The <a href="https://github.com/AM-Digital-Research-Environment/amira-mcp-server" target="_blank" rel="noopener noreferrer">AMIRA MCP server</a> is the mediated layer between the two: a read-only <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">Model Context Protocol</a> server that lets an assistant search the atlas, retrieve full records, search inside video and podcast transcripts, and follow relations across the collection, with every answer citing the AMIRA page it came from.</p>
+		<p>Its signature tool is <code>find_related</code>, which pivots from any entity — a subject, place, person, or project — to everything that co-occurs with it. Posing that kind of relational question would normally take both familiarity with the schema and a query language such as SPARQL; here it can be asked in plain language. The curatorial knowledge needed to query the atlas well (which tool to start from, that personal names resolve in either order, that the former free-text tags are folded into subjects) is carried in the tools' own descriptions, so it travels to any compliant client rather than living in a separate instruction file.</p>
+		<p>The design keeps the collection with the institution that assembled it: queries run against AMIRA's own servers rather than handing the data over, the protocol is an open standard rather than one vendor's API, and every tool is read-only and auditable. It ships with an offline-capable bundled snapshot, so the server also answers when the site is unreachable.</p>
 
 		<h3>What you can explore</h3>
 		<ul>
@@ -63,6 +68,11 @@ export const amira: DigitalHumanitiesProject = {
 			url: 'https://github.com/AM-Digital-Research-Environment/DRE-SEO',
 			label: 'DRE-SEO',
 			type: 'code'
+		},
+		{
+			url: 'https://github.com/AM-Digital-Research-Environment/amira-mcp-server',
+			label: 'amira-mcp-server',
+			type: 'code'
 		}
 	],
 	skills: [
@@ -75,6 +85,7 @@ export const amira: DigitalHumanitiesProject = {
 		'ECharts',
 		'MapLibre GL',
 		'MongoDB',
+		'Model Context Protocol',
 		'Data visualization',
 		'Network graphs'
 	]

@@ -5,7 +5,7 @@ export const religiousActivismCampuses: ResearchProject = {
 	title: 'Religious Activism on Campuses in Togo and Benin',
 	shortTitle: 'Religious Activism on Campuses',
 	years: '2021-2024',
-	order: 3,
+	order: 4,
 	shortDescription:
 		"Examining how Christian and Muslim student associations transformed university life at the Université de Lomé and the Université d'Abomey-Calavi.",
 	imageSrc: 'campus-activism.webp',

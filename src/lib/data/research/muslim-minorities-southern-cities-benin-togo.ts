@@ -5,7 +5,7 @@ export const muslimMinoritiesSouthernCities: ResearchProject = {
 	title: 'Muslim Minorities in Southern Cities of Benin and Togo',
 	shortTitle: 'Muslim Minorities in Southern Cities',
 	years: '2018-2020',
-	order: 4,
+	order: 5,
 	shortDescription:
 		'Investigating the experiences and integration of Muslim minority communities in southern urban areas of Benin and Togo.',
 	imageSrc: 'muslim-minorities.webp',
