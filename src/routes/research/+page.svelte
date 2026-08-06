@@ -72,9 +72,9 @@
 		<PageIntro>
 			Islam and Muslim societies in francophone West Africa since the 1960s: how youth, women, and
 			religious minorities have shaped activism, the media, and political life. I build the
-			collections I study and read them with AI. That work now reaches Central Asian archives, the
-			research infrastructure of the Africa Multiple Cluster, and the question of what computation
-			does to African studies.
+			collections I study, analyse them with digital humanities methods, and experiment with AI.
+			That work now reaches Central Asian collections, the research infrastructure of the Africa
+			Multiple Cluster, and the question of what these methods do to African studies.
 		</PageIntro>
 
 		<!-- Project-period timeline — one Gantt bar per project across the years. -->
