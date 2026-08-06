@@ -18,14 +18,14 @@ export const digitalResearchEnvironment: ResearchProject = {
 	shortDescription:
 		'Building and studying the data infrastructure that connects the Africa Multiple Cluster of Excellence, its four African research centres, and their partners.',
 	imageSrc: 'dre.webp',
-	imageAlt: 'Masthead of the Africa Multiple Interactive Research Atlas (AMIRA)',
+	imageAlt:
+		'The AMIRA home page: the atlas masthead beside a panel counting the research items, projects, people, organisations, and languages in the collection',
 	figCaption: 'Fig. 1 — AMIRA, the public metadata layer built by the DRE',
 	subtitle:
-		'The digital infrastructure unit of the Africa Multiple Cluster of Excellence at the University of Bayreuth, and a research programme on how African research data is described, modelled, and made findable.',
+		'A research programme on how African research data is described, modelled, and made findable.',
 	projectName: 'Digital Research Environment (University of Bayreuth)',
 	funder: 'Deutsche Forschungsgemeinschaft (EXC 2052)',
 	programme: 'Africa Multiple 2.0 · 2026–2032',
-	regions: ['Germany', 'Burkina Faso', 'Nigeria', 'Kenya', 'South Africa', 'Brazil'],
 	ctas: [
 		{
 			label: 'AMIRA',
