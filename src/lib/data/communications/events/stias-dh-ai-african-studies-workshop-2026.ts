@@ -35,26 +35,49 @@ export const stiasDHAIAfricanStudiesWorkshop2026: Communication = {
 		longitude: 18.8602
 	},
 	participants: [
-		{
-			name: 'Frédérick Madore',
-			role: 'Organizer',
-			affiliation: 'University of Bayreuth'
-		},
-		{
-			name: 'Vincent Hiribarren',
-			role: 'Organizer',
-			affiliation: "King's College London"
-		},
-		{
-			name: 'Emmanuel Ngue Um',
-			role: 'Organizer',
-			affiliation: 'University of Yaoundé 1'
-		},
+		{ name: 'Frédérick Madore', role: 'Organizer', affiliation: 'University of Bayreuth' },
+		{ name: 'Vincent Hiribarren', role: 'Organizer', affiliation: "King's College London" },
+		{ name: 'Emmanuel Ngue Um', role: 'Organizer', affiliation: 'University of Yaoundé 1' },
 		{
 			name: 'Menno van Zaanen',
 			role: 'Organizer',
 			affiliation: 'South African Centre for Digital Language Resources (SADiLaR)'
-		}
+		},
+		{ name: 'Aminata Kane', affiliation: 'Cheikh Anta Diop University' },
+		{ name: 'Augustin Ndione', affiliation: 'Cheikh Anta Diop University' },
+		{ name: 'Augustine A. Farinola', affiliation: 'University of Alberta' },
+		{
+			name: 'Benito Trollip',
+			affiliation: 'South African Centre for Digital Language Resources (SADiLaR)'
+		},
+		{ name: 'Bruno Allahissem', affiliation: 'Leiden University' },
+		{ name: 'Christine Mataranyika', affiliation: 'University of the Witwatersrand' },
+		{ name: 'Durgesh Nandini', affiliation: 'University of Bayreuth' },
+		{ name: 'Eliette Ngo Tjomb Assembe', affiliation: 'University of Yaoundé 1' },
+		{ name: 'Evelyne Amana', affiliation: 'University of Yaoundé I' },
+		{ name: 'Falimatou Pemgbou', affiliation: 'University of Ebolowa' },
+		{ name: 'Friederike Lüpke', affiliation: 'University of Helsinki' },
+		{ name: 'Hammed Olalekan Lawal', affiliation: 'University of Bayreuth' },
+		{ name: 'Iginio Gagliardone', affiliation: 'University of the Witwatersrand' },
+		{ name: 'Jelena Prokic', affiliation: 'Leiden University' },
+		{ name: 'Jiayu Yang', affiliation: 'University of Bayreuth' },
+		{ name: 'John Oluwafemi Daniel', affiliation: 'University of Ibadan' },
+		{ name: 'Jules Mansaly', affiliation: 'University of the Gambia' },
+		{ name: 'Karabo Mohapeloa', affiliation: 'University of the Witwatersrand' },
+		{ name: 'Khaoula Stiti', affiliation: 'Unaffiliated scholar' },
+		{ name: 'Lauren Coetzee', affiliation: 'University of Luxembourg' },
+		{ name: 'Leonard Kibet Kirui', affiliation: 'Moi University' },
+		{ name: 'Luca Bruls', affiliation: 'Leiden University' },
+		{ name: 'Lydia Kila Taban', affiliation: 'Masakhane' },
+		{ name: 'Matthew Sung', affiliation: 'Leiden University' },
+		{ name: 'Max Milella', affiliation: 'University of the Witwatersrand' },
+		{ name: 'Mirjam de Bruijn', affiliation: 'Leiden University' },
+		{ name: 'Mohamadou Konaté', affiliation: 'Joseph Ki-Zerbo University' },
+		{ name: 'Oreen Yousuf', affiliation: 'Uppsala University' },
+		{ name: 'Rachel Maina', affiliation: 'University of Wisconsin–Madison' },
+		{ name: 'Sanjin Muftić', affiliation: 'University of Cape Town Libraries' },
+		{ name: 'Sarah Oberbichler', affiliation: 'University of Luxembourg' },
+		{ name: 'Tajuddeen Gwadabe', affiliation: 'Masakhane' }
 	],
 	project: 'Digital Humanities and AI in African Studies'
 };
