@@ -26,6 +26,26 @@ export const allResearchProjects: ResearchProject[] = loadData<ResearchProject>(
 const byId = new Map(allResearchProjects.map((project) => [project.id, project]));
 
 /**
+ * `projectName` → route slug, for detail pages that link an item back to the
+ * project it belongs to. Derived from the dataset rather than hand-listed, so a
+ * new project is linked the moment its record exists — the earlier hardcoded
+ * map on the publication page had already fallen a project behind.
+ */
+const idByProjectName = new Map(
+	allResearchProjects.map((project) => [project.projectName, project.id])
+);
+
+/**
+ * The research page a publication or communication belongs to, as a path
+ * relative to the site root (no `base` prefix — callers add it). Returns
+ * undefined for items whose `project` names no research project.
+ */
+export function researchProjectPath(projectName: string | undefined): string | undefined {
+	const id = projectName ? idByProjectName.get(projectName) : undefined;
+	return id ? `/research/${id}` : undefined;
+}
+
+/**
  * Look up a project so its route page can spread the record into the layout.
  * Throws rather than returning undefined: a page under /research/<id> with no
  * record behind it is a build-time bug, and failing the build beats shipping a

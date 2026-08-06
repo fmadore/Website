@@ -6,8 +6,9 @@
 	import SlideDeckCard from '$lib/components/communications/SlideDeckCard.svelte';
 	import { base, resolve } from '$app/paths';
 	import { communicationsWithSlides } from '$lib/data/communications';
+	import JsonLd from '$lib/components/common/JsonLd.svelte';
 	import {
-		useBreadcrumbJsonLd,
+		buildBreadcrumbJsonLd,
 		createSubsectionBreadcrumbs
 	} from '$lib/utils/breadcrumbJsonLd.svelte';
 
@@ -20,7 +21,7 @@
 		'Slides',
 		'/conference-activity/slides'
 	);
-	useBreadcrumbJsonLd(() => breadcrumbItems, 'breadcrumb-json-ld-conf-activity-slides');
+	const breadcrumbJsonLd = $derived(buildBreadcrumbJsonLd(breadcrumbItems));
 </script>
 
 <SEO
@@ -29,6 +30,7 @@
 	keywords="slides, presentations, slide decks, conference papers, lectures, reveal.js, Frédérick Madore"
 />
 
+<JsonLd id="breadcrumb-json-ld-conf-activity-slides" json={breadcrumbJsonLd} />
 <div class="page-container">
 	<Breadcrumb items={breadcrumbItems} />
 

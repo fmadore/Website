@@ -14,7 +14,7 @@
 	import { registerIcons } from '$lib/icons';
 	import { useGtm } from '$lib/utils/gtm.svelte';
 	import { useNetworkMonitor } from '$lib/utils/networkMonitor.svelte';
-	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
+	import JsonLd from '$lib/components/common/JsonLd.svelte';
 
 	// Register all icons at app startup to avoid API calls
 	registerIcons();
@@ -24,7 +24,6 @@
 
 	// Global JSON-LD for WebSite and Person schemas
 	const globalJsonLd = $derived((data as { globalJsonLd?: string })?.globalJsonLd ?? '');
-	useJsonLdScript('global-json-ld', () => globalJsonLd);
 
 	// Monitor network status
 	useNetworkMonitor();
@@ -56,16 +55,24 @@
 	});
 </script>
 
+<JsonLd id="global-json-ld" json={globalJsonLd} />
+
 <div class="layout-container">
 	<Header />
 
 	<main class="main-content-area">
 		<div class="container py-6 md:py-10">
+			<!-- Enter-only fade. An `out:` transition here kept the outgoing branch
+			     alive waiting for an outro that never completed — the snippet inside
+			     it is owned by the router, which had already swapped in the next
+			     page — so every client-side navigation leaked a whole page's DOM and
+			     left its <svelte:head> content (canonical, og:url, JSON-LD) behind on
+			     top of the new page's. Without it the branch is torn down at once.
+			     The brief asks for a fade on page *enter* only, so nothing is lost. -->
 			{#key page.url.pathname}
 				<div
 					class="route-transition-root"
 					in:fade={{ duration: motionDuration(180), delay: motionDuration(30), easing: cubicOut }}
-					out:fade={{ duration: motionDuration(120), easing: cubicOut }}
 				>
 					{@render children()}
 				</div>

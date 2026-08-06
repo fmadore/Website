@@ -26,9 +26,30 @@ interface SitemapEntry {
 // Research project routes derived from the route tree so the sitemap can't
 // drift when a project page is added or removed.
 const researchRouteModules = import.meta.glob('/src/routes/research/*/+page.svelte');
+
+/**
+ * Routes under /research that only redirect elsewhere (a renamed project keeping
+ * its old URL alive). Prerendering turns them into a zero-delay meta refresh, so
+ * they do their job — but a sitemap should advertise the destination, not the
+ * forwarding address, and listing a redirect invites crawlers to spend budget
+ * rediscovering a page already listed under its real URL. Detected from the
+ * source rather than hand-listed so a future stub is excluded automatically.
+ */
+const redirectStubPaths = new Set(
+	Object.entries(
+		import.meta.glob('/src/routes/research/*/+page.server.ts', {
+			eager: true,
+			query: '?raw',
+			import: 'default'
+		}) as Record<string, string>
+	)
+		.filter(([, source]) => /\bredirect\s*\(/.test(source))
+		.map(([file]) => file.replace('/src/routes', '').replace('/+page.server.ts', ''))
+);
+
 const researchProjectPaths = Object.keys(researchRouteModules)
 	.map((file) => file.replace('/src/routes', '').replace('/+page.svelte', ''))
-	.filter((path) => !path.includes('['));
+	.filter((path) => !path.includes('[') && !redirectStubPaths.has(path));
 
 // Valid W3C datetime forms accepted by sitemap <lastmod>: YYYY, YYYY-MM, YYYY-MM-DD.
 const W3C_DATE = /^\d{4}(-\d{2}(-\d{2})?)?$/;

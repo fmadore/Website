@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { allCommunications } from '$lib/data/communications/index';
+	import { researchProjectPath } from '$lib/data/research';
 	import SEO from '$lib/SEO.svelte';
 	import { base } from '$app/paths';
 	import type { Communication } from '$lib/types/communication';
@@ -100,6 +101,9 @@
 			: []
 	);
 
+	// Internal research page for this talk's project, when the name matches one.
+	const projectPath = $derived(researchProjectPath(communication.project));
+
 	// Prepare details for the DetailsGrid component
 	const communicationDetails = $derived([
 		{ label: 'Event', value: communication.conference ?? '' },
@@ -111,7 +115,14 @@
 		{ label: 'Location', value: communication.location ?? '' },
 		{ label: 'Country', value: communication.country ?? '' },
 		{ label: 'Language', value: communication.language ?? '' },
-		{ label: 'Year', value: String(communication.year ?? '') }
+		{ label: 'Year', value: String(communication.year ?? '') },
+		{
+			label: 'Project',
+			value: communication.project ?? '',
+			link: projectPath ? `${base}${projectPath}` : undefined,
+			internal: true,
+			condition: !!communication.project
+		}
 	]);
 </script>
 

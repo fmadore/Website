@@ -6,6 +6,8 @@
 			label: string;
 			value: string | string[];
 			link?: string;
+			/** Same-site destination — stays in this tab instead of opening a new one. */
+			internal?: boolean;
 			condition?: boolean;
 		}>;
 	} = $props();
@@ -32,11 +34,11 @@
 					<dt class="detail-label">{detail.label}</dt>
 					<dd class="detail-value">
 						{#if detail.link && detail.link !== 'undefined' && typeof detail.link === 'string'}
-							<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
+							<!-- eslint-disable svelte/no-navigation-without-resolve -- external URL, or an internal path the caller has already prefixed with base -->
 							<a
 								href={detail.link}
-								target="_blank"
-								rel="noopener"
+								target={detail.internal ? undefined : '_blank'}
+								rel={detail.internal ? undefined : 'noopener'}
 								class="detail-link link-animated"
 							>
 								{Array.isArray(detail.value) ? detail.value.join(', ') : detail.value}

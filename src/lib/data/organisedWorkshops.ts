@@ -2,7 +2,7 @@
  * Organiser-role schema.org Event graph for the workshops Frédérick Madore
  * co-organises. Surfaces them to Google's event results and makes the
  * organiser attribution machine-readable. Consumed by the
- * conference-activity route via useJsonLdScript.
+ * conference-activity route, which renders it through `<JsonLd>`.
  */
 import { address, author, website } from '$lib/data/siteConfig';
 

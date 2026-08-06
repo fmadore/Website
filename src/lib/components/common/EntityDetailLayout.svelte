@@ -30,8 +30,12 @@ Usage:
 	import type { Snippet } from 'svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import { useBreadcrumbJsonLd, type BreadcrumbNavItem } from '$lib/utils/breadcrumbJsonLd.svelte';
-	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
+	import JsonLd from '$lib/components/common/JsonLd.svelte';
+	import {
+		buildBreadcrumbJsonLd,
+		BREADCRUMB_SCRIPT_ID,
+		type BreadcrumbNavItem
+	} from '$lib/utils/breadcrumbJsonLd.svelte';
 
 	interface Props {
 		/** Breadcrumb trail — also feeds the breadcrumb JSON-LD. */
@@ -72,19 +76,11 @@ Usage:
 		after
 	}: Props = $props();
 
-	// Script ids are static for the lifetime of a route component, so capturing
-	// their initial value here is deliberate (the hooks take a fixed id).
-	// svelte-ignore state_referenced_locally
-	const breadcrumbScriptId = breadcrumbJsonLdId;
-	// svelte-ignore state_referenced_locally
-	const entityScriptId = jsonLdScriptId;
-
-	// Inject breadcrumb JSON-LD structured data
-	useBreadcrumbJsonLd(() => breadcrumbItems, breadcrumbScriptId);
-
-	// Inject the entity's JSON-LD structured data
-	useJsonLdScript(entityScriptId, () => jsonLdString);
+	const breadcrumbJsonLd = $derived(buildBreadcrumbJsonLd(breadcrumbItems));
 </script>
+
+<JsonLd id={breadcrumbJsonLdId ?? BREADCRUMB_SCRIPT_ID} json={breadcrumbJsonLd} />
+<JsonLd id={jsonLdScriptId} json={jsonLdString} />
 
 {#snippet breadcrumb()}
 	<Breadcrumb items={breadcrumbItems} />

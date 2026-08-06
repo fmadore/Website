@@ -9,7 +9,8 @@
 	// Activity-list styles relocated from the global app.css.
 	import '$styles/components/activity-list.css';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
-	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
+	import JsonLd from '$lib/components/common/JsonLd.svelte';
+	import { buildBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
 
 	// Get the year parameter from the URL - reactive to route changes
 	let year = $derived(parseInt(page.params.year || ''));
@@ -39,11 +40,12 @@
 	]);
 
 	// Inject breadcrumb JSON-LD structured data (with unique ID for this page type)
-	useBreadcrumbJsonLd(() => breadcrumbItems, 'breadcrumb-json-ld-activities-year');
+	const breadcrumbJsonLd = $derived(buildBreadcrumbJsonLd(breadcrumbItems));
 </script>
 
 <SEO title={`Activities (${year}) | Frédérick Madore`} />
 
+<JsonLd id="breadcrumb-json-ld-activities-year" json={breadcrumbJsonLd} />
 <div class="container py-8">
 	<div class="flex flex-col">
 		<Breadcrumb items={breadcrumbItems} />

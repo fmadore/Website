@@ -7,8 +7,9 @@
 		combineSchemas,
 		type BreadcrumbItem
 	} from '$lib/utils/seoUtils';
+	import { page } from '$app/state';
 	import { getDefaultDescription, author, website } from '$lib/utils/siteHelpers';
-	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
+	import JsonLd from '$lib/components/common/JsonLd.svelte';
 
 	interface Props {
 		// SEO props
@@ -32,6 +33,13 @@
 		additionalSchemas?: object[];
 		// RSS feed autodiscovery (default: true for all pages)
 		includeRSSLink?: boolean;
+		/**
+		 * Keep this page out of search results while still letting crawlers follow
+		 * its links ("noindex, follow"). For drafts, holding pages, and thin
+		 * duplicates. A page set this way should also be left out of sitemap.xml —
+		 * the sitemap is generated separately and cannot read this prop.
+		 */
+		noindex?: boolean;
 	}
 
 	let {
@@ -47,8 +55,18 @@
 		datePublished,
 		dateModified,
 		additionalSchemas = [],
-		includeRSSLink = true
+		includeRSSLink = true,
+		noindex = false
 	}: Props = $props();
+
+	/**
+	 * Canonical defaults to this page's own address on the production origin.
+	 * Only the nine landing pages used to pass one, so every detail page
+	 * reported og:url as the bare site root and — because the WebPage schema
+	 * below is gated on it — shipped no page schema either. Query strings are
+	 * dropped deliberately: a filtered list canonicalises to the plain page.
+	 */
+	const canonicalUrl = $derived(canonical || `${website.url}${page.url.pathname}`);
 
 	// Generate JSON-LD for breadcrumbs and page schema
 	const jsonLdString = $derived.by(() => {
@@ -64,28 +82,17 @@
 			schemas.push(createBreadcrumbSchema(breadcrumbs));
 		}
 
-		// Add WebPage schema for main sections
-		if (breadcrumbs.length > 0 || canonical) {
-			const lastCrumb = breadcrumbs[breadcrumbs.length - 1];
-			const path = canonical
-				? new URL(canonical).pathname
-				: lastCrumb
-					? new URL(lastCrumb.url).pathname
-					: '';
-
-			if (path) {
-				schemas.push(
-					createWebPageSchema({
-						name: title,
-						description,
-						path,
-						type: pageType,
-						datePublished,
-						dateModified
-					})
-				);
-			}
-		}
+		// Add WebPage schema — every page has a canonical URL, so every page gets one.
+		schemas.push(
+			createWebPageSchema({
+				name: title,
+				description,
+				path: new URL(canonicalUrl).pathname,
+				type: pageType,
+				datePublished,
+				dateModified
+			})
+		);
 
 		// For ProfilePage, include the Person schema as the mainEntity target
 		// Only add default Person schema if one isn't already provided
@@ -95,10 +102,9 @@
 
 		return schemas.length > 0 ? combineSchemas(schemas) : '';
 	});
-
-	// Inject JSON-LD via DOM to avoid ESLint parsing issues with <script> in template
-	useJsonLdScript('seo-json-ld', () => jsonLdString);
 </script>
+
+<JsonLd id="seo-json-ld" json={jsonLdString} />
 
 <svelte:head>
 	<!-- Basic Meta Tags -->
@@ -107,9 +113,7 @@
 	<meta name="keywords" content={keywords} />
 
 	<!-- Canonical URL -->
-	{#if canonical}
-		<link rel="canonical" href={canonical} />
-	{/if}
+	<link rel="canonical" href={canonicalUrl} />
 
 	<!-- RSS Feed Autodiscovery -->
 	{#if includeRSSLink}
@@ -129,7 +133,7 @@
 
 	<!-- Open Graph / Facebook -->
 	<meta property="og:type" content={type} />
-	<meta property="og:url" content={canonical || website.url} />
+	<meta property="og:url" content={canonicalUrl} />
 	<meta property="og:title" content={title} />
 	<meta property="og:description" content={description} />
 	<meta property="og:image" content={ogImage} />
@@ -138,7 +142,7 @@
 
 	<!-- Twitter -->
 	<meta property="twitter:card" content="summary_large_image" />
-	<meta property="twitter:url" content={canonical || website.url} />
+	<meta property="twitter:url" content={canonicalUrl} />
 	<meta property="twitter:title" content={title} />
 	<meta property="twitter:description" content={description} />
 	<meta property="twitter:image" content={ogImage} />
@@ -148,9 +152,11 @@
 		<meta name="citation_author" content={author.name} />
 	{/if}
 	<meta name="author" content={author.name} />
-	<meta name="robots" content="index, follow" />
+	<meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
 	<meta
 		name="googlebot"
-		content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+		content={noindex
+			? 'noindex, follow'
+			: 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'}
 	/>
 </svelte:head>

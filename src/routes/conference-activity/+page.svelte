@@ -16,7 +16,7 @@
 	} from '$lib/utils/typeUtils';
 	import { areFiltersActive } from '$lib/utils/filterUtils';
 	import { allCommunications, communicationsByYear } from '$lib/data/communications';
-	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
+	import JsonLd from '$lib/components/common/JsonLd.svelte';
 	import { organisedWorkshopsJsonLd } from '$lib/data/organisedWorkshops';
 	import type { Communication } from '$lib/types/communication';
 
@@ -28,7 +28,6 @@
 
 	// Breadcrumbs + organiser-role schema.org Event graph.
 	const breadcrumbs = createSectionBreadcrumbs('Talks & Events', '/conference-activity');
-	useJsonLdScript('organised-workshops-json-ld', () => organisedWorkshopsJsonLd);
 
 	// ── Corpus figures for the index hero (computed from the real dataset) ──────
 	const totalEntries = allCommunications.length;
@@ -213,6 +212,8 @@
 	{breadcrumbs}
 	pageType="CollectionPage"
 />
+
+<JsonLd id="organised-workshops-json-ld" json={organisedWorkshopsJsonLd} />
 
 <div class="entity-index" use:urlFilterSync={{ filters: af, setters: filters.setters }}>
 	<!-- ═══ INDEX HERO ═══ -->

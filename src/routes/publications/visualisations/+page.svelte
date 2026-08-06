@@ -5,8 +5,9 @@
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import { base } from '$app/paths';
 	import { allPublications, publicationsByType } from '$lib/data/publications';
+	import JsonLd from '$lib/components/common/JsonLd.svelte';
 	import {
-		useBreadcrumbJsonLd,
+		buildBreadcrumbJsonLd,
 		createSubsectionBreadcrumbs
 	} from '$lib/utils/breadcrumbJsonLd.svelte';
 	import EChartsBarChart from '$lib/components/visualisations/EChartsBarChart.svelte';
@@ -372,7 +373,7 @@
 	);
 
 	// JSON-LD for Breadcrumbs - uses reusable utility
-	useBreadcrumbJsonLd(() => breadcrumbItems, 'breadcrumb-json-ld-pub-viz');
+	const breadcrumbJsonLd = $derived(buildBreadcrumbJsonLd(breadcrumbItems));
 </script>
 
 <SEO
@@ -381,6 +382,7 @@
 	keywords="publications, visualisations, citations, research analytics, Frédérick Madore"
 />
 
+<JsonLd id="breadcrumb-json-ld-pub-viz" json={breadcrumbJsonLd} />
 <div class="viz-page-container">
 	<Breadcrumb items={breadcrumbItems} />
 	<div class="">

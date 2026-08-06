@@ -1,58 +1,48 @@
 /**
  * Grants JSON-LD Utility
  *
- * A Svelte 5 runes-based utility for managing MonetaryGrant JSON-LD structured data.
- * Filters grants by project name and injects Schema.org MonetaryGrant schemas
- * into the document head for academic discoverability.
+ * Builds the Schema.org MonetaryGrant graph for a project's grants, for
+ * academic discoverability. Pure: the caller renders the result through
+ * `<JsonLd>` so it lands in the prerendered HTML.
  *
  * @see https://schema.org/MonetaryGrant
  *
  * @example
  * ```svelte
  * <script lang="ts">
- *   import { useGrantsJsonLd } from '$lib/utils/grantsJsonLd.svelte';
+ *   import JsonLd from '$lib/components/common/JsonLd.svelte';
+ *   import { buildGrantsJsonLd, GRANTS_SCRIPT_ID } from '$lib/utils/grantsJsonLd.svelte';
  *
- *   useGrantsJsonLd(() => 'Digital Humanities and AI in African Studies');
+ *   const grantsJsonLd = $derived(
+ *     buildGrantsJsonLd('Digital Humanities and AI in African Studies', pageUrl)
+ *   );
  * </script>
+ *
+ * <JsonLd id={GRANTS_SCRIPT_ID} json={grantsJsonLd} />
  * ```
  */
 
-import { browser } from '$app/environment';
-import { page } from '$app/state';
 import { allGrants } from '$lib/data/grants/index';
 import { createMonetaryGrantSchemas, combineSchemas } from '$lib/utils/seoUtils';
-import { useJsonLdScript } from './jsonLd.svelte';
 
-const GRANTS_SCRIPT_ID = 'grants-json-ld';
+export const GRANTS_SCRIPT_ID = 'grants-json-ld';
 
 /**
- * Svelte 5 runes-based hook for managing MonetaryGrant JSON-LD structured data.
+ * Builds the MonetaryGrant JSON-LD for a project's grants, or null when the
+ * project has none.
  *
- * Filters grants by the given project name, generates MonetaryGrant schemas
- * for awarded grants, and injects them as a combined @graph into the document head.
- *
- * @param projectNameGetter - A function that returns the project name (for reactivity)
- * @param scriptId - Optional custom script ID (defaults to 'grants-json-ld')
+ * Pure, so the caller can render it through `<JsonLd>` into `<svelte:head>`.
+ * `pageUrl` is passed in rather than read off `page.url`, which during
+ * prerendering carries an internal placeholder origin.
  */
-export function useGrantsJsonLd(
-	projectNameGetter: () => string,
-	scriptId: string = GRANTS_SCRIPT_ID
-): void {
-	useJsonLdScript(scriptId, () => {
-		if (!browser) return null;
+export function buildGrantsJsonLd(projectName: string, pageUrl: string): string | null {
+	if (!projectName) return null;
 
-		const projectName = projectNameGetter();
-		if (!projectName) return null;
+	const projectGrants = allGrants.filter((grant) => grant.project === projectName);
+	if (projectGrants.length === 0) return null;
 
-		const projectGrants = allGrants.filter((grant) => grant.project === projectName);
-		if (projectGrants.length === 0) return null;
+	const grantSchemas = createMonetaryGrantSchemas(projectGrants, pageUrl);
+	if (grantSchemas.length === 0) return null;
 
-		const origin = page.url.origin;
-		const pageUrl = `${origin}${page.url.pathname}`;
-
-		const grantSchemas = createMonetaryGrantSchemas(projectGrants, pageUrl);
-		if (grantSchemas.length === 0) return null;
-
-		return combineSchemas(grantSchemas);
-	});
+	return combineSchemas(grantSchemas);
 }

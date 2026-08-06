@@ -9,8 +9,9 @@
 		communicationsByType,
 		communicationsByProject
 	} from '$lib/data/communications';
+	import JsonLd from '$lib/components/common/JsonLd.svelte';
 	import {
-		useBreadcrumbJsonLd,
+		buildBreadcrumbJsonLd,
 		createSubsectionBreadcrumbs
 	} from '$lib/utils/breadcrumbJsonLd.svelte';
 	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
@@ -218,7 +219,7 @@
 		'Visualisations',
 		'/conference-activity/visualisations'
 	);
-	useBreadcrumbJsonLd(() => breadcrumbItems, 'breadcrumb-json-ld-conf-activity-viz');
+	const breadcrumbJsonLd = $derived(buildBreadcrumbJsonLd(breadcrumbItems));
 </script>
 
 <SEO
@@ -227,6 +228,7 @@
 	keywords="conferences, presentations, visualisations, co-presenters, research projects, map, Frédérick Madore"
 />
 
+<JsonLd id="breadcrumb-json-ld-conf-activity-viz" json={breadcrumbJsonLd} />
 <div class="viz-page-container">
 	<Breadcrumb items={breadcrumbItems} />
 	<div class="">

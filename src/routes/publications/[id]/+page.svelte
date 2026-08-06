@@ -5,8 +5,8 @@
 	import type { ComponentType } from 'svelte';
 	import type { PageData } from './$types';
 	import MetaTags from '$lib/components/publications/MetaTags.svelte';
-	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
-	import { useJsonLdScript } from '$lib/utils/jsonLd.svelte';
+	import JsonLd from '$lib/components/common/JsonLd.svelte';
+	import { buildBreadcrumbJsonLd, BREADCRUMB_SCRIPT_ID } from '$lib/utils/breadcrumbJsonLd.svelte';
 
 	import CitedBy from '$lib/components/publications/CitedBy.svelte';
 	import Reviews from '$lib/components/publications/Reviews.svelte';
@@ -15,6 +15,7 @@
 	import RelatedItemsList from '$lib/components/organisms/RelatedItemsList.svelte';
 	import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
 	import { allPublications } from '$lib/data/publications/index';
+	import { researchProjectPath } from '$lib/data/research';
 	import {
 		createPublicationSEODescription,
 		createPublicationSEOKeywords,
@@ -40,9 +41,8 @@
 		{ label: truncateTitle(publication.title), href: `${base}/publications/${publication.id}` }
 	]);
 
-	// JSON-LD injection using reusable utilities
-	useBreadcrumbJsonLd(() => breadcrumbItems);
-	useJsonLdScript('publication-json-ld', () => jsonLdString);
+	// Structured data — rendered into <svelte:head> below so it prerenders.
+	const breadcrumbJsonLd = $derived(buildBreadcrumbJsonLd(breadcrumbItems));
 
 	const typeLabel = $derived(getPublicationTypeBadge(publication.type));
 
@@ -51,16 +51,10 @@
 	// author's own open work). Shown as the third eyebrow token when present.
 	const isOpenAccess = $derived(Boolean(publication.doi || publication.url));
 
-	// Project URL mappings — internal research pages.
-	let projectMappings = $derived<Record<string, string>>({
-		'Religious Activism on Campuses in Togo and Benin': `${base}/research/religious-activism-campuses-togo-benin`,
-		"Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso": `${base}/research/youth-womens-islamic-activism-cote-divoire-burkina-faso`,
-		'Muslim Minorities in Southern Cities of Benin and Togo': `${base}/research/muslim-minorities-southern-cities-benin-togo`,
-		'Digital Humanities and AI in African Studies': `${base}/research/dh-ai-african-studies`
-	});
-	const projectUrl = $derived(
-		publication.project ? projectMappings[publication.project] : undefined
-	);
+	// Internal research page for this publication's project, resolved from the
+	// research dataset so a new project links itself.
+	const projectPath = $derived(researchProjectPath(publication.project));
+	const projectUrl = $derived(projectPath ? `${base}${projectPath}` : undefined);
 
 	// Byline — "by A, B and C".
 	function formatNameList(names: string[] | undefined): string {
@@ -100,13 +94,16 @@
 
 <MetaTags {publication} />
 
+<JsonLd id={BREADCRUMB_SCRIPT_ID} json={breadcrumbJsonLd} />
+<JsonLd id="publication-json-ld" json={jsonLdString} />
+
 <div class="container py-8">
 	<div class="pub-shell">
 		<!-- Breadcrumb — mono, muted. Deliberate editorial variant of the shared
 		     <Breadcrumb> molecule: a back-link ("← Publications / Type") instead
 		     of the Home/Section/Title trail, so it reads as document chrome on
-		     the bibliographic record. Breadcrumb JSON-LD still ships via
-		     useBreadcrumbJsonLd like every other detail page. -->
+		     the bibliographic record. Breadcrumb JSON-LD still ships above, like
+		     every other detail page. -->
 		<nav class="pub-breadcrumb" aria-label="Breadcrumb">
 			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed path -->
 			<a href="{base}/publications" class="pub-breadcrumb-link">← Publications</a>

@@ -29,10 +29,14 @@ apparatus, and the ruled-section styling.
 	import MediaPlayer from '$lib/components/media/MediaPlayer.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import ResearchProjectAside from '$lib/components/research/ResearchProjectAside.svelte';
-	import { useBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
-	import { useGrantsJsonLd } from '$lib/utils/grantsJsonLd.svelte';
+	import JsonLd from '$lib/components/common/JsonLd.svelte';
+	import { buildBreadcrumbJsonLd, BREADCRUMB_SCRIPT_ID } from '$lib/utils/breadcrumbJsonLd.svelte';
+	import { buildGrantsJsonLd, GRANTS_SCRIPT_ID } from '$lib/utils/grantsJsonLd.svelte';
 	import { allGrants } from '$lib/data/grants/index';
+	import { allPublications } from '$lib/data/publications/index';
+	import { allCommunications } from '$lib/data/communications/index';
 	import type { Grant, ResearchProject } from '$lib/types';
+	import { website } from '$lib/utils/siteHelpers';
 	import { base } from '$app/paths';
 
 	/**
@@ -74,11 +78,9 @@ apparatus, and the ruled-section styling.
 		{ label: shortTitle, href: `${base}/research/${id}` }
 	]);
 
-	// Inject breadcrumb JSON-LD structured data
-	useBreadcrumbJsonLd(() => breadcrumbItems);
-
-	// Inject MonetaryGrant JSON-LD for associated grants
-	useGrantsJsonLd(() => projectName);
+	// Structured data — rendered into <svelte:head> below so it prerenders.
+	const breadcrumbJsonLd = $derived(buildBreadcrumbJsonLd(breadcrumbItems));
+	const grantsJsonLd = $derived(buildGrantsJsonLd(projectName, `${website.url}/research/${id}`));
 
 	/** Every grant attached to this project, most recently started first. */
 	const projectGrants = $derived<Grant[]>(
@@ -137,9 +139,36 @@ apparatus, and the ruled-section styling.
 
 	// Caption under the aside plate.
 	const plateCaption = $derived(figCaption ?? `Fig. 1 — ${imageAlt}`);
+
+	/**
+	 * Whether each related-items panel has anything to list. A project whose
+	 * outputs are still in progress would otherwise print "No publications found
+	 * for this project" under a section rule, which reads as a fault rather than
+	 * as a project that hasn't published yet. Both datasets are already pulled in
+	 * by the panels themselves, so testing them here costs no extra bundle.
+	 */
+	const hasPublications = $derived(
+		allPublications.some((publication) => publication.project === projectName)
+	);
+	const hasCommunications = $derived(
+		allCommunications.some((communication) => communication.project === projectName)
+	);
 </script>
 
-<SEO title="{title} | Frédérick Madore" description={seoDescription} keywords={seoKeywords} />
+<!-- Research pages were the one detail type shipping no `ogImage`, so a shared
+     link fell back to the profile picture instead of the project plate; the
+     absolute `canonical` also stops og:url/twitter:url reporting the site root. -->
+<SEO
+	title="{title} | Frédérick Madore"
+	description={seoDescription}
+	keywords={seoKeywords}
+	canonical="{website.url}/research/{id}"
+	ogImage="{website.url}/images/research/{imageSrc}"
+	type="article"
+/>
+
+<JsonLd id={BREADCRUMB_SCRIPT_ID} json={breadcrumbJsonLd} />
+<JsonLd id={GRANTS_SCRIPT_ID} json={grantsJsonLd} />
 
 <div class="container py-8">
 	<Breadcrumb items={breadcrumbItems} />
@@ -186,12 +215,18 @@ apparatus, and the ruled-section styling.
 				</section>
 			{/if}
 
-			<div class="related-content">
-				<RelevantPublications {projectName} limit={6} />
-				<div class="related-comms">
-					<RelevantCommunications {projectName} limit={6} />
+			{#if hasPublications || hasCommunications}
+				<div class="related-content">
+					{#if hasPublications}
+						<RelevantPublications {projectName} limit={6} />
+					{/if}
+					{#if hasCommunications}
+						<div class="related-comms" class:related-comms--only={!hasPublications}>
+							<RelevantCommunications {projectName} limit={6} />
+						</div>
+					{/if}
 				</div>
-			</div>
+			{/if}
 		</div>
 
 		<!-- ASIDE COLUMN ------------------------------------------------------ -->
@@ -439,6 +474,11 @@ apparatus, and the ruled-section styling.
 
 	.related-comms {
 		margin-top: var(--space-xl);
+	}
+
+	/* Sole panel in the block — the section rule above already supplies the gap. */
+	.related-comms--only {
+		margin-top: 0;
 	}
 
 	/* ==========================================================================

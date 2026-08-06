@@ -3,8 +3,9 @@
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
+	import JsonLd from '$lib/components/common/JsonLd.svelte';
 	import {
-		useBreadcrumbJsonLd,
+		buildBreadcrumbJsonLd,
 		createSubsectionBreadcrumbs
 	} from '$lib/utils/breadcrumbJsonLd.svelte';
 
@@ -17,8 +18,7 @@
 		'/teaching/guest-lectures'
 	);
 
-	// JSON-LD for Breadcrumbs - uses reusable utility
-	useBreadcrumbJsonLd(() => breadcrumbItems, 'breadcrumb-json-ld-guest-lectures');
+	const breadcrumbJsonLd = $derived(buildBreadcrumbJsonLd(breadcrumbItems));
 
 	const guestLecturesByInstitution = {
 		'Universität Bayreuth': [
@@ -83,6 +83,8 @@
 	title="Guest Lectures | Frédérick Madore"
 	description="List of guest lectures delivered by Frédérick Madore."
 />
+
+<JsonLd id="breadcrumb-json-ld-guest-lectures" json={breadcrumbJsonLd} />
 
 <div class="container py-8">
 	<Breadcrumb items={breadcrumbItems} />
