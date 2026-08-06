@@ -20,8 +20,8 @@
 
 <SEO
 	title="Frédérick Madore | Historian | Digital Humanist"
-	description="Frédérick Madore, Data Curator at the Cluster of Excellence &quot;Africa Multiple&quot;, University of Bayreuth, and formerly Research Fellow at ZMO, studies Islam in francophone West Africa combining fieldwork, digital humanities, and AI-enhanced pipelines for computational analysis."
-	keywords="Frédérick Madore, Islam, West Africa, Digital Humanities, Research, University of Bayreuth, Cluster of Excellence Africa Multiple, ZMO, Leibniz-Zentrum Moderner Orient, historian"
+	description="Frédérick Madore, historian of Islam in francophone West Africa and Data Curator at the Cluster of Excellence &quot;Africa Multiple&quot;, University of Bayreuth. He builds open digital collections with Omeka S and AI, including the Islam West Africa Collection (IWAC) and AMIRA."
+	keywords="Frédérick Madore, Islam, West Africa, Digital Humanities, Artificial Intelligence, Omeka S, Islam West Africa Collection, IWAC, AMIRA, Africa Multiple Interactive Research Atlas, data curation, University of Bayreuth, Cluster of Excellence Africa Multiple, ZMO, Leibniz-Zentrum Moderner Orient, historian"
 	canonical="https://www.frederickmadore.com"
 	pageType="ProfilePage"
 	{additionalSchemas}
@@ -50,95 +50,123 @@
 						href="https://www.africamultiple.uni-bayreuth.de/en/index.html"
 						target="_blank"
 						rel="noopener noreferrer">Cluster of Excellence "Africa Multiple"</a
-					>, University of Bayreuth (Germany). In this role, I bridge the gap between technical
-					infrastructure and African Studies, supporting researchers in managing data according to
-					FAIR and CARE principles while ensuring that digital literacy and ethical standards are
-					integrated into our workflows. I also continue my research at the intersection of Islamic
-					studies,
+					>, University of Bayreuth (Germany), where I work at the point where research
+					infrastructure meets African Studies. I help design the systems that make research data
+					more findable and reusable under the FAIR and CARE principles, and I work with colleagues
+					on the digital literacy and ethical standards that curation demands. Alongside this, I
+					continue my own research at the intersection of Islamic studies,
 					<a href={resolve('/digital-humanities')} data-sveltekit-preload-data>digital humanities</a
 					>
-					(DH), and artificial intelligence (AI), exploring how emerging technologies can transform the
-					way we access, analyse, and interpret historical archives.
+					(DH), and artificial intelligence (AI).
 				</p>
 				<p>
-					My work combines over a decade of expertise on Islam in Francophone West Africa and
-					extensive fieldwork in the region. My <a
-						href={resolve('/research')}
-						data-sveltekit-preload-data>research</a
-					>
-					examines the diverse ways Muslim communities, notably youth and women, have engaged with politics,
-					education, and the public sphere in Benin, Burkina Faso, Côte d'Ivoire, and Togo since the 1960s—and
-					how computational methods can reveal new patterns across these histories. Previously, I was
-					a Research Fellow at
+					My <a href={resolve('/research')} data-sveltekit-preload-data>research</a> draws on
+					fifteen years of work on Islam in francophone West Africa and extensive fieldwork in the
+					region. It examines how Muslim communities, particularly youth and women, have engaged
+					with politics, education, and the public sphere in Benin, Burkina Faso, Côte d'Ivoire, and
+					Togo since the 1960s. Before Bayreuth, I was a Research Fellow at
 					<a href="https://www.zmo.de/en" target="_blank" rel="noopener noreferrer"
 						>Leibniz-Zentrum Moderner Orient (ZMO)</a
+					>
+					in Berlin, and before that a
+					<a
+						href="https://banting.fellowships-bourses.gc.ca/en/home-accueil.html"
+						target="_blank"
+						rel="noopener noreferrer">Banting Postdoctoral Fellow</a
+					>
+					at the
+					<a href="https://www.ufl.edu/" target="_blank" rel="noopener noreferrer"
+						>University of Florida</a
 					>.
 				</p>
 
-				<h2>DH, AI, and the <em>Islam West Africa Collection</em> (IWAC)</h2>
+				<h2>Digital Humanities and AI in African Studies</h2>
 				<p>
-					Since 2023, I have been developing the <a
-						href="https://islam.zmo.de/s/westafrica/"
-						target="_blank"
-						rel="noopener noreferrer"><em>Islam West Africa Collection</em> (IWAC)</a
-					>, an open-access database comprising over 14,500 items relating to Islam across the
-					region. I experiment with
-					<a
-						href="https://github.com/fmadore/iwac-ai-pipelines"
-						target="_blank"
-						rel="noopener noreferrer">AI-assisted workflows</a
-					> to process under-resourced African archives at scale.
-				</p>
-				<p>
-					I also explore how "vibe coding" and agentic AI tools can democratise the use of
-					computational methods by allowing social science scholars to prototype applications
-					through natural language prompts. Data visualisation transforms analyses into accessible
-					narratives: the
-					<a
-						href="https://islam.zmo.de/s/westafrica/page/explore"
-						target="_blank"
-						rel="noopener noreferrer">IWAC Dashboard</a
-					>
-					lets users explore the collection through interactive maps, networks, and word clouds, while
-					the
-					<a
-						href="https://fmadore.github.io/IWAC-sentiment-analysis/"
-						target="_blank"
-						rel="noopener noreferrer">IWAC Sentiment Analysis</a
-					>
-					reveal how newspapers portray Islam across the region.
-				</p>
-
-				<h2>Current Project</h2>
-				<p>
-					I am coordinating
+					More recently, I have started applying computational methods and AI to that material, to
+					see what they turn up once a corpus outgrows close reading, and where they mislead. The
+					same question now organises
 					<a href={resolve('/research/dh-ai-african-studies')} data-sveltekit-preload-data
-						><em>Digital Humanities and AI in African Studies</em></a
-					>, a collaborative research initiative comprising two international workshops in 2026 (<ItemReference
+						>a collaborative initiative I coordinate</a
+					>: two international workshops in 2026, in
+					<ItemReference
 						id="volkswagenstiftung-dh-ai-african-studies-workshop-2026"
 						label="Hanover"
 					/>
 					and
-					<ItemReference id="stias-dh-ai-african-studies-workshop-2026" label="Stellenbosch" />) and
+					<ItemReference id="stias-dh-ai-african-studies-workshop-2026" label="Stellenbosch" />, and
 					a
 					<a
 						href={resolve(
 							`/activities/dh-ai-african-studies-edited-volume` as `/activities/${string}`
 						)}
-						data-sveltekit-preload-data>forthcoming co-edited volume</a
+						data-sveltekit-preload-data>co-edited volume</a
 					>
-					to be published by Bielefeld University Press. This project brings together scholars from Africa,
-					Europe, and beyond to examine how computational tools can transform research methods while centring
+					forthcoming with Bielefeld University Press. It brings together scholars from Africa, Europe,
+					and beyond to examine how computational tools can change research practice without displacing
 					African knowledge systems.
+				</p>
+
+				<h2>The <em>Islam West Africa Collection</em> (IWAC)</h2>
+				<p>
+					Since 2023, I have been developing the <a
+						href="https://islam.zmo.de/s/westafrica/"
+						target="_blank"
+						rel="noopener noreferrer"><em>Islam West Africa Collection</em> (IWAC)</a
+					>, an open-access collection of more than 14,700 items on Islam across Benin, Burkina
+					Faso, Côte d'Ivoire, Niger, Nigeria, and Togo.
+					<a
+						href="https://github.com/fmadore/iwac-ai-pipelines"
+						target="_blank"
+						rel="noopener noreferrer">AI-assisted workflows</a
+					>
+					carry the heavy processing: OCR and handwriting recognition, audio transcription, named-entity
+					recognition, summarisation. Results are written back into the collection itself, so the machine-generated
+					metadata travels with the record. A separate experiment compares
+					<a
+						href="https://fmadore.github.io/IWAC-sentiment-analysis/"
+						target="_blank"
+						rel="noopener noreferrer">how three AI models read the tone</a
+					> of press coverage of Islam.
+				</p>
+
+				<h2>Omeka S Development & AMIRA</h2>
+				<p>
+					IWAC runs on <a href="https://omeka.org/s/" target="_blank" rel="noopener noreferrer"
+						>Omeka S</a
+					>, an open-source platform for digital collections, and so does most of my other digital
+					work. I design custom modules and themes for it: search layers, visualisations, structured
+					metadata, bilingual interfaces. All of it is open source, on
+					<a href="https://github.com/fmadore" target="_blank" rel="noopener noreferrer">GitHub</a>.
+				</p>
+				<p>
+					At Bayreuth I built <a
+						href="https://data.africamultiple.uni-bayreuth.de/s/amira"
+						target="_blank"
+						rel="noopener noreferrer">AMIRA</a
+					>, the Africa Multiple Interactive Research Atlas, on
+					<a
+						href={resolve('/digital-humanities/amira' as `/digital-humanities/${string}`)}
+						data-sveltekit-preload-data
+						>a custom theme, a federated search layer, and a visualisation module</a
+					>. Built with our Digital Research Environment, it makes the collections of the Africa
+					Multiple Research Centres in Burkina Faso, Kenya, Nigeria, and South Africa searchable
+					from one place: close to 4,000 research items, more than 90 projects, some 1,600 people,
+					and nearly 600 institutions. IWAC has a visualisation module of its own, which generates
+					its
+					<a
+						href="https://islam.zmo.de/s/westafrica/page/explore"
+						target="_blank"
+						rel="noopener noreferrer">interactive views</a
+					>: maps, networks of people and organisations, machine-derived themes, and charts of how
+					words rise and fall across the decades.
 				</p>
 
 				<h2>Books & Publications</h2>
 				<p>
 					My latest book, <em>Religious Activism on Campuses in Togo and Benin</em>
 					<ItemReference id="religious-activism-campuses" />, examines the emergence of Christian
-					and Muslim student associations in the 1970s and their subsequent reshaping of university
-					life in Lomé and Abomey-Calavi, challenging the prevailing secular ideologies. I am also
-					the author of
+					and Muslim student associations in the 1970s and how they reshaped university life in Lomé
+					and Abomey-Calavi, against prevailing secular ideologies. I am also the author of
 					<em>La construction d'une sphère publique musulmane en Afrique de l'Ouest</em>
 					<ItemReference id="sphere-publique-musulmane" /> and the co-editor of
 					<em>Religiosity on University Campuses in Africa</em>
@@ -161,25 +189,6 @@
 					>
 					to produce specialised Country of Origin Information (COI) reports for asylum and immigration
 					cases involving Benin, Côte d'Ivoire, and Togo.
-				</p>
-
-				<h2>Training & Affiliations</h2>
-				<p>
-					I hold a Ph.D. in History from <a
-						href="https://www.ulaval.ca/"
-						target="_blank"
-						rel="noopener noreferrer">Université Laval</a
-					>
-					and previously held a
-					<a
-						href="https://banting.fellowships-bourses.gc.ca/en/home-accueil.html"
-						target="_blank"
-						rel="noopener noreferrer">Banting Postdoctoral Fellowship</a
-					>
-					at the
-					<a href="https://www.ufl.edu/" target="_blank" rel="noopener noreferrer"
-						>University of Florida</a
-					>.
 				</p>
 			</ContentBody>
 		</div>
