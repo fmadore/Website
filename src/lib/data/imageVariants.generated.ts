@@ -876,7 +876,7 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 		widths: [400, 800]
 	},
 	'research/dre.webp': {
-		sourceWidth: 1280,
+		sourceWidth: 1600,
 		widths: [400, 800]
 	},
 	'research/islams-peripheries.webp': {
