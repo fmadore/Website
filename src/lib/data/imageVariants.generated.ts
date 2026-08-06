@@ -99,6 +99,14 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 		sourceWidth: 800,
 		widths: [400]
 	},
+	'communications/ai-africa-symposium-kansas-2026-hero.webp': {
+		sourceWidth: 1600,
+		widths: [400, 800]
+	},
+	'communications/ai-africa-symposium-kansas-2026.webp': {
+		sourceWidth: 800,
+		widths: [400]
+	},
 	'communications/ALMEDA-logo-hero.webp': {
 		sourceWidth: 1173,
 		widths: [400, 800]

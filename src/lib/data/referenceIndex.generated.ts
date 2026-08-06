@@ -23,6 +23,25 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"journal": "Émulations",
 		"publisher": "Presses universitaires de Louvain"
 	},
+	"ai-africa-symposium-kansas-2026": {
+		"id": "ai-africa-symposium-kansas-2026",
+		"itemType": "communication",
+		"title": "University of Kansas AI and Africa Symposium",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"type": "panel",
+		"date": "17 September 2026",
+		"dateISO": "2026-09-17",
+		"year": 2026,
+		"image": "images/communications/ai-africa-symposium-kansas-2026.webp",
+		"heroImage": {
+			"src": "images/communications/ai-africa-symposium-kansas-2026-hero.webp"
+		},
+		"conference": "AI and Africa Symposium",
+		"location": "University of Kansas, Lawrence",
+		"country": "United States"
+	},
 	"ai-archives-humanistica-2025": {
 		"id": "ai-archives-humanistica-2025",
 		"itemType": "communication",
