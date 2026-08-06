@@ -156,14 +156,14 @@ apparatus, and the ruled-section styling.
 </script>
 
 <!-- Research pages were the one detail type shipping no `ogImage`, so a shared
-     link fell back to the profile picture instead of the project plate; the
-     absolute `canonical` also stops og:url/twitter:url reporting the site root. -->
+     link fell back to the profile picture instead of the project plate. No
+     `canonical`: SEO.svelte defaults it to the page's own address, which for
+     this route is the same value. -->
 <SEO
 	title="{title} | Frédérick Madore"
 	description={seoDescription}
 	keywords={seoKeywords}
-	canonical="{website.url}/research/{id}"
-	ogImage="{website.url}/images/research/{imageSrc}"
+	ogImage="{base}/images/research/{imageSrc}"
 	type="article"
 />
 

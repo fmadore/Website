@@ -68,6 +68,21 @@
 	 */
 	const canonicalUrl = $derived(canonical || `${website.url}${page.url.pathname}`);
 
+	/**
+	 * Open Graph and Twitter want an absolute image URL. Scrapers mostly resolve
+	 * a relative one against the page, but it isn't guaranteed and the value is
+	 * read out of context often enough — a card cache, a chat unfurl, a feed
+	 * reader — for the guess to matter.
+	 *
+	 * Resolved rather than concatenated, because `paths.relative` is on: `base`
+	 * renders as `.` or `..` according to the page's depth, not as an empty
+	 * string, so gluing the origin to the front yields `https://host/../images/…`.
+	 * That does normalise in a compliant parser, but it is exactly the sort of
+	 * thing a naive one gets wrong. `new URL` does the same resolution a browser
+	 * would, at build time, and passes an already-absolute URL through untouched.
+	 */
+	const ogImageUrl = $derived(new URL(ogImage, canonicalUrl).href);
+
 	// Generate JSON-LD for breadcrumbs and page schema
 	const jsonLdString = $derived.by(() => {
 		const schemas: object[] = [...additionalSchemas];
@@ -136,7 +151,7 @@
 	<meta property="og:url" content={canonicalUrl} />
 	<meta property="og:title" content={title} />
 	<meta property="og:description" content={description} />
-	<meta property="og:image" content={ogImage} />
+	<meta property="og:image" content={ogImageUrl} />
 	<meta property="og:site_name" content={author.name} />
 	<meta property="og:locale" content="en_US" />
 
@@ -145,7 +160,7 @@
 	<meta property="twitter:url" content={canonicalUrl} />
 	<meta property="twitter:title" content={title} />
 	<meta property="twitter:description" content={description} />
-	<meta property="twitter:image" content={ogImage} />
+	<meta property="twitter:image" content={ogImageUrl} />
 
 	<!-- Scholar / Academic -->
 	{#if includeCitationAuthor}
