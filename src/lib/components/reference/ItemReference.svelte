@@ -182,8 +182,12 @@
 	<!-- Non-interactive positioning wrapper. The single interactive control is
 	     the <a> inside ReferenceLink, which carries the popup role, ARIA state,
 	     and all interaction handlers — so no button nests a link (WCAG 4.1.2). -->
-	<span bind:this={spanEl} class="item-reference {showPreview ? 'preview-visible' : ''}">
-		<ReferenceLink
+	<!-- Whitespace is significant here: this <span> sits inline in running prose,
+	     immediately followed by punctuation ("… (Madore, 2025), examines"). Any
+	     newline between the last child and </span> renders as a space before that
+	     comma, so the tags below deliberately abut. Do not reflow. -->
+	<span bind:this={spanEl} class="item-reference {showPreview ? 'preview-visible' : ''}"
+		><ReferenceLink
 			{item}
 			{itemType}
 			{id}
@@ -204,9 +208,7 @@
 				if (e.key === 'Escape') togglePreview(false);
 			}}
 			onclick={handleLinkClick}
-		/>
-		{#if showPreview}
-			<div
+		/>{#if showPreview}<div
 				use:portal
 				id="item-preview-{id}"
 				class="reference-preview-wrapper"
@@ -222,9 +224,8 @@
 					onpointerleave={handlePointerLeave}
 					onclose={() => togglePreview(false)}
 				/>
-			</div>
-		{/if}
-	</span>
+			</div>{/if}</span
+	>
 {:else}
 	<!-- Fallback if the ID is unknown -->
 	<span class="item-reference-error">[Ref: {id}?]</span>
