@@ -1949,6 +1949,22 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"location": "University of Maroua",
 		"country": "Cameroon"
 	},
+	"serveurs-mcp-glam-africains-stias-2026": {
+		"id": "serveurs-mcp-glam-africains-stias-2026",
+		"itemType": "communication",
+		"title": "Les serveurs MCP pour les GLAM africains : une voie d'avenir à l'ère de l'IA ?",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"type": "workshop",
+		"date": "22 September 2026",
+		"dateISO": "2026-09-22",
+		"year": 2026,
+		"image": "images/communications/point-sud-logo.svg",
+		"conference": "Humanités numériques et intelligence artificielle en études africaines : vers des pratiques durables et équitables",
+		"location": "Stellenbosch Institute for Advanced Study (STIAS), Stellenbosch",
+		"country": "South Africa"
+	},
 	"sphere-publique-musulmane": {
 		"id": "sphere-publique-musulmane",
 		"itemType": "publication",
