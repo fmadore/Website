@@ -58,8 +58,8 @@
 
 <SEO
 	title="Research | Frédérick Madore"
-	description="Research at the intersection of African history, Islamic studies, and digital humanities. Exploring Islam and Muslim societies in Francophone West Africa, with focus on youth, women, religious minorities, and computational methodologies."
-	keywords="African history, Islamic studies, digital humanities, West Africa, Muslim societies, youth activism, women, religious minorities, Benin, Togo, Côte d'Ivoire, Burkina Faso, computational methods, Islamic discourse, Muslim politics, Frédérick Madore"
+	description="Research projects by Frédérick Madore: Islam in francophone West Africa since the 1960s, AI and digital humanities, and African research infrastructure."
+	keywords="African history, Islamic studies, digital humanities, artificial intelligence, West Africa, Muslim societies, Muslim youth, Muslim women, religious minorities, religious activism, Benin, Burkina Faso, Côte d'Ivoire, Togo, Niger, Nigeria, Central Asia, Islam West Africa Collection, IWAC, Africa Multiple, research data infrastructure, computational methods, Islamic discourse, Muslim politics, Frédérick Madore"
 	canonical="https://www.frederickmadore.com/research"
 	{breadcrumbs}
 	pageType="CollectionPage"
@@ -70,13 +70,11 @@
 		<PageHeader title="Research" />
 
 		<PageIntro>
-			My research lies at the intersection of African history, Islamic Studies, and Digital
-			Humanities. I explore the contemporary history of Islam and Muslim societies in francophone
-			West Africa. I focus on how youth, women, and religious minorities have engaged with religious
-			activism, the media and political life from the 1960s to the present day. By combining
-			extensive fieldwork and archival research in Benin, Togo, Côte d'Ivoire, and Burkina Faso with
-			computational methodologies, I examine the evolving landscape of Islamic discourse and Muslim
-			politics.
+			Islam and Muslim societies in francophone West Africa since the 1960s: how youth, women, and
+			religious minorities have shaped activism, the media, and political life. I build the
+			collections I study and read them with AI. That work now reaches Central Asian archives, the
+			research infrastructure of the Africa Multiple Cluster, and the question of what computation
+			does to African studies.
 		</PageIntro>
 
 		<!-- Project-period timeline — one Gantt bar per project across the years. -->
@@ -161,10 +159,21 @@
 							style="--ledger-key-w: 8rem"
 						>
 							<span class="ledger-key">{formatPeriod(project.years)}</span>
-							<span class="ledger-content">
-								<span class="ledger-title">{project.title}</span>
-								<span class="ledger-desc">{project.shortDescription}</span>
-								<span class="ledger-action">Read more →</span>
+							<span class="entry-body">
+								<img
+									class="plate entry-plate"
+									src={project.imageUrl}
+									alt=""
+									width="160"
+									height="90"
+									loading="lazy"
+									decoding="async"
+								/>
+								<span class="ledger-content">
+									<span class="ledger-title">{project.title}</span>
+									<span class="ledger-desc">{project.shortDescription}</span>
+									<span class="ledger-action">Read more →</span>
+								</span>
 							</span>
 						</a>
 					{/each}
@@ -304,7 +313,37 @@
 	.ledger-entry {
 		text-decoration: none;
 		color: inherit;
+		/* The plate makes the row tall, so top-align the date key instead of
+		   baseline-aligning it against a replaced element. */
+		align-items: start;
 		transition: background var(--duration-fast) var(--ease-out);
+	}
+
+	/* Plate + text share the ledger's content column, so the entries carry the
+	   same image as the current-project dossiers at catalogue scale. */
+	.entry-body {
+		display: flex;
+		gap: var(--space-md);
+		align-items: flex-start;
+		min-width: 0;
+	}
+
+	.entry-plate {
+		flex: none;
+		width: 96px;
+		/* Echo the dossier plates; sources aren't all 16:9, so crop. */
+		aspect-ratio: 16 / 9;
+		height: auto;
+		object-fit: cover;
+	}
+
+	/* On narrow screens an 8rem key column beside a plate starves the text, so
+	   the date hangs above its entry rather than beside it. */
+	@media (--sm-down) {
+		.ledger-entry {
+			grid-template-columns: minmax(0, 1fr);
+			gap: var(--space-2);
+		}
 	}
 
 	.ledger-entry:hover {
@@ -341,6 +380,10 @@
 		/* The flagship reads one step louder than the other running projects. */
 		.dossier--lead .dossier-title {
 			font-size: var(--font-size-4xl);
+		}
+
+		.entry-plate {
+			width: 176px;
 		}
 	}
 
