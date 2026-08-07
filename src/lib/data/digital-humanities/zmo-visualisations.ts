@@ -5,7 +5,7 @@ export const zmoVisualisations: DigitalHumanitiesProject = {
 	title: 'ZMO Visualisations',
 	years: '2025',
 	shortDescription:
-		"Two static web apps built from data scraped monthly off the ZMO website: a word cloud of what each research unit writes about, and a dashboard over the institute's full publication register — 1,962 publications, 656 authors, 1994-2026 — in which every chart is also a filter.",
+		"Two static web apps built using data scraped monthly from the ZMO website: a word cloud showing the topics covered by each research unit, and a dashboard providing an overview of the institute's complete publication history since 1994.",
 	description: `
 		<p>An institute's website already holds a great deal of what it would want to say about itself: which themes its research units return to, what it has published and with whom. That material is spread across hundreds of pages and readable only one page at a time. These two apps read it computationally instead. Both are built for the <a href="https://www.zmo.de/en" target="_blank" rel="noopener noreferrer">Leibniz-Zentrum Moderner Orient (ZMO)</a> in Berlin, published in English and German, and both draw on data scraped from zmo.de rather than maintained by hand.</p>
 
