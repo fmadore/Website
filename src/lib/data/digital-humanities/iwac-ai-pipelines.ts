@@ -7,7 +7,7 @@ export const iwacAiPipelines: DigitalHumanitiesProject = {
 	shortDescription:
 		'Python workflows for processing the Islam West Africa Collection using Large Language Models—automating OCR, NER, transcription, and summarization at scale.',
 	description:
-		'<p>With over 14,500 items and 28 million words—the equivalent of more than 300 books—the <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer">Islam West Africa Collection</a> has long exceeded what any individual researcher could process manually. What began as years of fieldwork accumulation risked becoming "digital clutter": thousands of documents gathered but never fully accessible.</p>' +
+		'<p>With over 14,500 items and 30 million words—the equivalent of more than 300 books—the <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer">Islam West Africa Collection</a> has long exceeded what any individual researcher could process manually. What began as years of fieldwork accumulation risked becoming "digital clutter": thousands of documents gathered but never fully accessible.</p>' +
 		'<p>These open-source Python pipelines address that challenge by integrating Large Language Models (Google Gemini, OpenAI, Mistral) into document processing workflows. They automate labor-intensive tasks that would otherwise consume months of work—or simply never get done. The goal is not to replace scholarly judgment, but to make large documentary collections tractable so researchers can focus on interpretation rather than data wrangling.</p>' +
 		'<h3>What the pipelines do</h3>' +
 		'<ul>' +

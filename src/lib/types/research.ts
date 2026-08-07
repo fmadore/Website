@@ -44,7 +44,11 @@ export interface ResearchProject {
 	/**
 	 * Title for the landing-page card, where the full `title` runs too long but
 	 * `shortTitle` drops the context a reader scanning the list needs. Defaults
-	 * to `title`.
+	 * to `title` on the card.
+	 *
+	 * A search result has the same problem as a card, so the detail page's
+	 * `<title>` prefers this over `shortTitle` — which stays the breadcrumb
+	 * label, where brevity is what matters.
 	 */
 	cardTitle?: string;
 	/**

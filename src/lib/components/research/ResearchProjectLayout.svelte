@@ -52,6 +52,7 @@ apparatus, and the ruled-section styling.
 	let {
 		title,
 		shortTitle,
+		cardTitle,
 		id,
 		years,
 		imageSrc,
@@ -160,7 +161,7 @@ apparatus, and the ruled-section styling.
      `canonical`: SEO.svelte defaults it to the page's own address, which for
      this route is the same value. -->
 <SEO
-	title="{title} | Frédérick Madore"
+	title="{cardTitle ?? shortTitle} | Frédérick Madore"
 	description={seoDescription}
 	keywords={seoKeywords}
 	ogImage="{base}/images/research/{imageSrc}"

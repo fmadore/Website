@@ -123,7 +123,7 @@
 					recognition, summarisation. Results are written back into the collection itself, so the machine-generated
 					metadata travels with the record. A separate experiment compares
 					<a
-						href="https://fmadore.github.io/IWAC-sentiment-analysis/"
+						href="https://iwac.frederickmadore.com/sentiment-analysis/"
 						target="_blank"
 						rel="noopener noreferrer">how three AI models read the tone</a
 					> of press coverage of Islam.

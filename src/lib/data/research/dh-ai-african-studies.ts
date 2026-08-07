@@ -15,7 +15,7 @@ export const dhAiAfricanStudies: ResearchProject = {
 	projectName: 'Digital Humanities and AI in African Studies',
 	funder: 'Volkswagen Foundation · DFG Programme Point Sud',
 	seoDescription:
-		'Exploring how digital humanities and artificial intelligence can transform knowledge production in African studies through ethical, sustainable, and Africa-centred digital infrastructures.',
+		'How digital humanities and AI are changing knowledge production in African studies: two 2026 workshops, a co-edited volume, and AI pipelines built for the IWAC.',
 	seoKeywords:
 		'digital humanities, artificial intelligence, African studies, AI, DH, African epistemologies, Islam West Africa Collection, IWAC, LLM, OCR, NER, vibe coding'
 };
