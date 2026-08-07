@@ -2,6 +2,7 @@
 	import { allDhProjects } from '$lib/data/digital-humanities';
 	import { formatCVYearRange, trimTerminalPeriod } from '$lib/utils/cvFormatters';
 	import { groupProjectLinks, projectLinkText } from '$lib/utils/projectLinks';
+	import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
 	import CVSection from './CVSection.svelte';
 
 	// CV ordering: strictly most-recent-first, ignoring the DH-page's
@@ -34,9 +35,9 @@
 	emptyMessage="No digital humanities projects listed."
 >
 	{#snippet entry(project)}
-		<span class="font-medium">{project.title}</span>
+		<span class="font-medium">{typesetQuotes(project.title)}</span>
 		{#if project.shortDescription}
-			<div class="text-sm text-light">{project.shortDescription}</div>
+			<div class="text-sm text-light">{typesetQuotes(project.shortDescription)}</div>
 		{/if}
 		{#each groupProjectLinks(project) as group (group.type)}
 			<!-- Ledger of addresses: mono key, then the sites/repos/datasets it holds. -->
@@ -67,9 +68,9 @@
 						target="_blank"
 						rel="noopener noreferrer"
 						class="text-primary hover:underline"
-						><!-- eslint-disable svelte/no-at-html-tags -- Safe: review.text is from trusted static project data files -->{@html isLast
-							? review.text
-							: trimTerminalPeriod(review.text)}<!-- eslint-enable svelte/no-at-html-tags --></a
+						><!-- eslint-disable svelte/no-at-html-tags -- Safe: review.text is from trusted static project data files -->{@html typesetQuotesInHtml(
+							isLast ? review.text : trimTerminalPeriod(review.text)
+						)}<!-- eslint-enable svelte/no-at-html-tags --></a
 					><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if !isLast}<span
 							class="review-sep">;&nbsp;</span
 						>{/if}

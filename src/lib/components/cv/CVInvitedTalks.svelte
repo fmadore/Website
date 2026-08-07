@@ -2,6 +2,7 @@
 	import { communicationsByDate } from '$lib/data/communications';
 	import { formatCVAuthorList } from '$lib/utils/cvFormatters';
 	import { formatDayMonth } from '$lib/utils/date-formatter';
+	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVSection from './CVSection.svelte';
 
 	const invitedTalks = communicationsByDate.filter(
@@ -21,7 +22,8 @@
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
 		{#if formattedAuthors}{@html formattedAuthors}.
 		{/if}
-		"{comm.title}"{#if comm.conference}, <em>{comm.conference}</em>{/if}{#if comm.location}, {comm.location}{/if},
+		{quoteTitle(comm.title)}{#if comm.conference}, <em>{typesetQuotes(comm.conference)}</em
+			>{/if}{#if comm.location}, {typesetQuotes(comm.location)}{/if},
 		{formatDayMonth(comm.dateISO)}.
 	{/snippet}
 </CVSection>

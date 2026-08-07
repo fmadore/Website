@@ -2,6 +2,7 @@
 	import teaching from '$lib/data/teaching';
 	import guestLectures from '$lib/data/teaching/guest-lectures';
 	import { formatCVYearRange } from '$lib/utils/cvFormatters';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';
 
 	// Sort teaching by year (most recent first)
@@ -26,7 +27,8 @@
 		<div class="space-y-3 ledger">
 			{#each sortedTeaching as course (course.title + course.year)}
 				<CVEntry year={formatCVYearRange(course.year)} yearWidth="fixed">
-					<strong>{course.title}</strong>, {course.institution}, {course.level === 'undergraduate'
+					<strong>{typesetQuotes(course.title)}</strong>, {typesetQuotes(course.institution)}, {course.level ===
+					'undergraduate'
 						? 'Undergraduate'
 						: 'Graduate'}
 					{#if course.sections}
@@ -43,8 +45,8 @@
 		<div class="space-y-3 ledger">
 			{#each sortedGuestLectures as lecture (lecture.title + lecture.year)}
 				<CVEntry year={lecture.year}>
-					<strong>{lecture.title}</strong>, <em>{lecture.course}</em>, {lecture.institution}, {lecture.level ===
-					'undergraduate'
+					<strong>{typesetQuotes(lecture.title)}</strong>, <em>{typesetQuotes(lecture.course)}</em>,
+					{typesetQuotes(lecture.institution)}, {lecture.level === 'undergraduate'
 						? 'Undergraduate'
 						: 'Graduate'}.
 				</CVEntry>

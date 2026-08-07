@@ -2,6 +2,7 @@
 	import { fieldworksByDate } from '$lib/data/fieldworks';
 	import { researchRolesByDate } from '$lib/data/research-roles';
 	import { formatCVYearRange } from '$lib/utils/cvFormatters';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';
 
 	// Group fieldworks by location. Extract every year mentioned in the
@@ -50,7 +51,7 @@
 		<div class="space-y-3 ledger">
 			{#each displayFieldworks as item (item.location)}
 				<div class="cv-fieldwork-row">
-					<span class="cv-fieldwork-place">{item.location}</span>:
+					<span class="cv-fieldwork-place">{typesetQuotes(item.location)}</span>:
 					<span class="cv-fieldwork-years">{item.years.join(', ')}</span>.
 				</div>
 			{/each}
@@ -65,13 +66,15 @@
 		<div class="space-y-3 ledger">
 			{#each researchRolesByDate as role (role.id)}
 				<CVEntry year={formatCVYearRange(role.startYear, role.endYear)} yearWidth="fixed">
-					<span class="font-medium">{role.title}</span>, {role.institution}.
+					<span class="font-medium">{typesetQuotes(role.title)}</span>, {typesetQuotes(
+						role.institution
+					)}.
 					{#if Array.isArray(role.details)}
 						{#each role.details as detail (detail)}
-							<p class="text-sm mt-1">{detail}</p>
+							<p class="text-sm mt-1">{typesetQuotes(detail)}</p>
 						{/each}
 					{:else}
-						<p class="text-sm mt-1">{role.details}</p>
+						<p class="text-sm mt-1">{typesetQuotes(role.details)}</p>
 					{/if}
 				</CVEntry>
 			{/each}

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { awardsByDate } from '$lib/data/awards';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVSection from './CVSection.svelte';
 </script>
 
@@ -11,9 +12,11 @@
 	emptyMessage="No awards or honors listed."
 >
 	{#snippet entry(award)}
-		<span class="font-medium">{award.title}</span>, {award.institution}.
+		<span class="font-medium">{typesetQuotes(award.title)}</span>, {typesetQuotes(
+			award.institution
+		)}.
 		{#if award.details}
-			<p class="text-sm mt-1">{award.details}</p>
+			<p class="text-sm mt-1">{typesetQuotes(award.details)}</p>
 		{/if}
 	{/snippet}
 </CVSection>

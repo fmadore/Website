@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { appointmentsByDate } from '$lib/data/appointments';
 	import { formatCVYearRange } from '$lib/utils/cvFormatters';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';
 </script>
 
@@ -19,10 +20,10 @@
 					yearWidth="fixed"
 					current={appt.endYear === null}
 				>
-					<span class="font-medium">{appt.title}</span>,
-					{appt.institution}{#if appt.location}, {appt.location}{/if}.
+					<span class="font-medium">{typesetQuotes(appt.title)}</span>,
+					{typesetQuotes(appt.institution)}{#if appt.location}, {typesetQuotes(appt.location)}{/if}.
 					{#if appt.details}
-						<p class="text-sm mt-1">{appt.details}</p>
+						<p class="text-sm mt-1">{typesetQuotes(appt.details)}</p>
 					{/if}
 				</CVEntry>
 			{/each}

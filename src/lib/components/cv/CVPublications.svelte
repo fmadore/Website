@@ -10,6 +10,7 @@
 		getCVDisplayYear
 	} from '$lib/utils/cvFormatters';
 	import { getPublicationTypeDisplayName } from '$lib/utils/publicationTypeLabels';
+	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';
 
 	// Group publications using the utility function
@@ -33,51 +34,53 @@
 							<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
 							{#if formattedAuthors}{@html formattedAuthors}{#if (pub.type === 'book' && pub.isEditedVolume) || pub.type === 'special-issue'}&nbsp;(eds.),{:else if !formattedAuthors.endsWith('.')}.{/if}
 							{/if}
-							{#if pub.type !== 'book' && pub.type !== 'blogpost'}"{pub.title}".{/if}
+							{#if pub.type !== 'book' && pub.type !== 'blogpost'}{quoteTitle(pub.title)}.{/if}
 							{#if (pub.type === 'article' || pub.type === 'bulletin-article') && pub.journal}
-								<em>{pub.journal}</em>{formatVolumeIssueDisplay(
+								<em>{typesetQuotes(pub.journal)}</em>{formatVolumeIssueDisplay(
 									pub.volume,
 									pub.issue
 								)}{#if pub.pages}: {pub.pages}{/if}.
 							{:else if pub.type === 'chapter' && pub.book}
 								In {#if pub.editors}{formatEditorList(pub.editors)} (eds.),&nbsp;{/if}<em
-									>{pub.book}</em
-								>{#if pub.placeOfPublication || pub.publisher}.&nbsp;{@const city =
-										pub.placeOfPublication || ''}{@const publisher =
-										pub.publisher || ''}{#if city && publisher}{city}: {publisher}{:else if city}{city}{:else if publisher}{publisher}{/if}{/if}{#if pub.pages},
+									>{typesetQuotes(pub.book)}</em
+								>{#if pub.placeOfPublication || pub.publisher}.&nbsp;{@const city = typesetQuotes(
+										pub.placeOfPublication
+									)}{@const publisher = typesetQuotes(pub.publisher)}{#if city && publisher}{city}: {publisher}{:else if city}{city}{:else if publisher}{publisher}{/if}{/if}{#if pub.pages},
 									{pub.pages}{/if}.
 							{:else if pub.type === 'book'}
-								<em>{pub.title}</em
-								>{#if pub.placeOfPublication || pub.publisher}.&nbsp;{@const city =
-										pub.placeOfPublication || ''}{@const publisher =
-										pub.publisher || ''}{#if city && publisher}{city}: {publisher}{:else if city}{city}{:else if publisher}{publisher}{/if}.{:else}.{/if}
+								<em>{typesetQuotes(pub.title)}</em
+								>{#if pub.placeOfPublication || pub.publisher}.&nbsp;{@const city = typesetQuotes(
+										pub.placeOfPublication
+									)}{@const publisher = typesetQuotes(pub.publisher)}{#if city && publisher}{city}: {publisher}{:else if city}{city}{:else if publisher}{publisher}{/if}.{:else}.{/if}
 							{:else if pub.type === 'special-issue' && pub.journal}
-								<em>{pub.journal}</em>{formatVolumeIssueDisplay(pub.volume, pub.issue)}.
+								<em>{typesetQuotes(pub.journal)}</em>{formatVolumeIssueDisplay(
+									pub.volume,
+									pub.issue
+								)}.
 							{:else if pub.type === 'working-paper'}
-								{#if pub.series || pub.journal}<em>{pub.series || pub.journal}</em
+								{#if pub.series || pub.journal}<em>{typesetQuotes(pub.series || pub.journal)}</em
 									>{#if pub.issue}&nbsp;{pub.issue}{/if}{/if}{#if pub.pages}: {pub.pages}{/if}{#if pub.publisher && pub.publisher !== (pub.series || pub.journal)}.
-									{pub.publisher}{/if}.
+									{typesetQuotes(pub.publisher)}{/if}.
 							{:else if pub.type === 'report'}
-								{#if pub.journal}<em>{pub.journal}</em>{formatVolumeIssueDisplay(
+								{#if pub.journal}<em>{typesetQuotes(pub.journal)}</em>{formatVolumeIssueDisplay(
 										pub.volume,
 										pub.issue
-									)}{:else if pub.publisher}<em>{pub.publisher}</em>{formatVolumeIssueDisplay(
-										pub.volume,
-										pub.issue
-									)}{/if}{#if pub.pages}, {pub.pages}{/if}.
+									)}{:else if pub.publisher}<em>{typesetQuotes(pub.publisher)}</em
+									>{formatVolumeIssueDisplay(pub.volume, pub.issue)}{/if}{#if pub.pages}, {pub.pages}{/if}.
 							{:else if pub.type === 'encyclopedia' && pub.encyclopediaTitle}
-								In <em>{pub.encyclopediaTitle}</em>{#if pub.publisher}, {pub.publisher}{/if}.
-							{:else if pub.type === 'blogpost'}
-								"{pub.title}"{#if pub.publisher}. <em>{pub.publisher}</em>{/if}{#if pub.dateISO}, {formatBlogDate(
-										pub.dateISO
+								In <em>{typesetQuotes(pub.encyclopediaTitle)}</em>{#if pub.publisher}, {typesetQuotes(
+										pub.publisher
 									)}{/if}.
+							{:else if pub.type === 'blogpost'}
+								{quoteTitle(pub.title)}{#if pub.publisher}. <em>{typesetQuotes(pub.publisher)}</em
+									>{/if}{#if pub.dateISO}, {formatBlogDate(pub.dateISO)}{/if}.
 							{:else if pub.type === 'conference-proceedings'}
-								In <em>{pub.proceedingsTitle}</em>.
+								In <em>{typesetQuotes(pub.proceedingsTitle)}</em>.
 							{:else}
 								<!-- Generic fallback -->
-								{#if pub.journal}In <em>{pub.journal}</em>.{/if}
-								{#if pub.book}In <em>{pub.book}</em>.{/if}
-								{#if pub.publisher}{pub.publisher}.{/if}
+								{#if pub.journal}In <em>{typesetQuotes(pub.journal)}</em>.{/if}
+								{#if pub.book}In <em>{typesetQuotes(pub.book)}</em>.{/if}
+								{#if pub.publisher}{typesetQuotes(pub.publisher)}.{/if}
 							{/if}
 							{#if pub.doi}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
 									href="https://doi.org/{pub.doi}"
@@ -117,7 +120,8 @@
 											href={review.url}
 											target="_blank"
 											rel="noopener noreferrer"
-											class="text-primary review-link no-underline">{review.journal}</a
+											class="text-primary review-link no-underline"
+											>{typesetQuotes(review.journal)}</a
 										><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < pub.reviewedBy.length - 2},&nbsp;{:else if i === pub.reviewedBy.length - 2},&nbsp;and&nbsp;{:else}.{/if}
 									{/each}
 								</p>
@@ -136,7 +140,7 @@
 					{#each publicationsByType[pubType as Publication['type']] as pub (pub.id)}
 						<CVEntry year={getCVDisplayYear(pub)}>
 							<!-- Simplified display for other types -->
-							<span class="font-medium">{pub.title}</span>.
+							<span class="font-medium">{typesetQuotes(pub.title)}</span>.
 							{#if pub.type}<span class="pub-type-badge">{pub.type}</span>{/if}
 							{#if pub.url}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
 									href={pub.url}

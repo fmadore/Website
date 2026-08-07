@@ -2,6 +2,7 @@
 	import { communicationsByDate } from '$lib/data/communications';
 	import { formatCVAuthorList } from '$lib/utils/cvFormatters';
 	import { formatDayMonth } from '$lib/utils/date-formatter';
+	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVSection from './CVSection.svelte';
 
 	const organizedEvents = communicationsByDate.filter((comm) => comm.type === 'event');
@@ -22,6 +23,6 @@
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
 		{#if formattedAuthors}{@html formattedAuthors}.
 		{/if}
-		"{comm.title}"{#if comm.location}, {comm.location}{/if}, {dateDisplay}.
+		{quoteTitle(comm.title)}{#if comm.location}, {typesetQuotes(comm.location)}{/if}, {dateDisplay}.
 	{/snippet}
 </CVSection>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { grantsByDate } from '$lib/data/grants';
 	import { formatCVYearRange } from '$lib/utils/cvFormatters';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVSection from './CVSection.svelte';
 </script>
 
@@ -17,10 +18,10 @@
 				href={grant.url}
 				target="_blank"
 				rel="noopener noreferrer"
-				class="font-medium">{grant.title}</a
+				class="font-medium">{typesetQuotes(grant.title)}</a
 			><!-- eslint-enable svelte/no-navigation-without-resolve -->{:else}<span class="font-medium"
-				>{grant.title}</span
-			>{/if}, {grant.funder}.
+				>{typesetQuotes(grant.title)}</span
+			>{/if}, {typesetQuotes(grant.funder)}.
 		{#if grant.amount}
 			<div class="text-sm text-light">
 				{grant.amount.toLocaleString('en-US')}
@@ -37,7 +38,7 @@
 			</div>
 		{/if}
 		{#if grant.details}
-			<p class="text-sm">{grant.details}</p>
+			<p class="text-sm">{typesetQuotes(grant.details)}</p>
 		{/if}
 	{/snippet}
 </CVSection>

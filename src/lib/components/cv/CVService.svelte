@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { peerReviewsByDate } from '$lib/data/peer-reviews';
 	import { editorialMembershipsByDate } from '$lib/data/editorial-memberships';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';
 
 	// Filter out template/placeholder data
@@ -21,9 +22,9 @@
 		<div class="space-y-3 ledger">
 			{#each realEditorialMemberships as member (member.id)}
 				<CVEntry year={member.dateRangeString}>
-					{member.role}, <em>{member.journal}</em>.
+					{member.role}, <em>{typesetQuotes(member.journal)}</em>.
 					{#if member.details}
-						<div class="text-sm">{member.details}</div>
+						<div class="text-sm">{typesetQuotes(member.details)}</div>
 					{/if}
 				</CVEntry>
 			{/each}
@@ -37,10 +38,10 @@
 			{#each realPeerReviews as review (review.id)}
 				<CVEntry year={review.year}>
 					{#if review.count && review.count > 1}{review.count}&nbsp;{review.type}s{:else}{review.type}{/if}{#if review.journal}&nbsp;–&nbsp;<em
-							>{review.journal}</em
-						>{:else if review.publisher}&nbsp;–&nbsp;{review.publisher}{/if}.
+							>{typesetQuotes(review.journal)}</em
+						>{:else if review.publisher}&nbsp;–&nbsp;{typesetQuotes(review.publisher)}{/if}.
 					{#if review.details}
-						<div class="text-sm">{review.details}</div>
+						<div class="text-sm">{typesetQuotes(review.details)}</div>
 					{/if}
 					{#if review.publons_record}
 						<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->

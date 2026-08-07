@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { educationByDate } from '$lib/data/education';
+	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';
 
 	// Filter education items by type
@@ -19,12 +20,12 @@
 		<div class="space-y-3 ledger">
 			{#each degrees as edu (edu.id)}
 				<CVEntry year={edu.year}>
-					{edu.degree}.
-					{edu.institution}{#if edu.location}, {edu.location}{/if}.
+					{typesetQuotes(edu.degree)}.
+					{typesetQuotes(edu.institution)}{#if edu.location}, {typesetQuotes(edu.location)}{/if}.
 					{#if edu.thesisTitle}
-						<p class="text-sm mt-1">Dissertation: "{edu.thesisTitle}"</p>{/if}
+						<p class="text-sm mt-1">Dissertation: {quoteTitle(edu.thesisTitle)}</p>{/if}
 					{#if edu.details}
-						<p class="text-sm mt-1">{edu.details}</p>{/if}
+						<p class="text-sm mt-1">{typesetQuotes(edu.details)}</p>{/if}
 				</CVEntry>
 			{/each}
 		</div>
@@ -35,8 +36,10 @@
 		<div class="space-y-3 ledger">
 			{#each trainings as edu (edu.id)}
 				<CVEntry year={edu.year}>
-					"{edu.degree}".
-					{edu.institution}{#if edu.location}, {edu.location}{/if}{#if edu.details}, {edu.details}{/if}.
+					{quoteTitle(edu.degree)}.
+					{typesetQuotes(edu.institution)}{#if edu.location}, {typesetQuotes(
+							edu.location
+						)}{/if}{#if edu.details}, {typesetQuotes(edu.details)}{/if}.
 				</CVEntry>
 			{/each}
 		</div>
@@ -47,8 +50,10 @@
 		<div class="space-y-3 ledger">
 			{#each certificates as edu (edu.id)}
 				<CVEntry year={edu.year}>
-					{edu.degree}.
-					{edu.institution}{#if edu.location}, {edu.location}{/if}{#if edu.details}, {edu.details}{/if}.
+					{typesetQuotes(edu.degree)}.
+					{typesetQuotes(edu.institution)}{#if edu.location}, {typesetQuotes(
+							edu.location
+						)}{/if}{#if edu.details}, {typesetQuotes(edu.details)}{/if}.
 				</CVEntry>
 			{/each}
 		</div>
@@ -59,10 +64,10 @@
 		<div class="space-y-3 ledger">
 			{#each otherEducation as edu (edu.id)}
 				<CVEntry year={edu.year}>
-					{edu.degree}.
-					{edu.institution}{#if edu.location}, {edu.location}{/if}.
+					{typesetQuotes(edu.degree)}.
+					{typesetQuotes(edu.institution)}{#if edu.location}, {typesetQuotes(edu.location)}{/if}.
 					{#if edu.details}
-						<p class="text-sm mt-1">{edu.details}</p>{/if}
+						<p class="text-sm mt-1">{typesetQuotes(edu.details)}</p>{/if}
 				</CVEntry>
 			{/each}
 		</div>

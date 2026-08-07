@@ -9,7 +9,7 @@
 			organization: 'Communitology',
 			descriptions: [
 				'Provide research-driven analysis and expert testimony in asylum and immigration proceedings.',
-				"Prepare Country of Origin Information (COI) reports for cases on Benin, Côte d'Ivoire, and Togo."
+				'Prepare Country of Origin Information (COI) reports for cases on Benin, Côte d’Ivoire, and Togo.'
 			]
 		}
 	];

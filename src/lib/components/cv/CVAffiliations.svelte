@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { affiliationsByStartDate } from '$lib/data/affiliations';
 	import { formatAffiliationPeriod } from '$lib/utils/cvFormatters';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 </script>
 
 <section>
@@ -9,15 +10,17 @@
 		<div class="space-y-3 ledger">
 			{#each affiliationsByStartDate as aff (aff.id)}
 				<div class="cv-affiliation-row">
-					<span class="font-medium">{aff.name}</span>{#if aff.abbreviation}<span
+					<span class="font-medium">{typesetQuotes(aff.name)}</span>{#if aff.abbreviation}<span
 							>&nbsp;({aff.abbreviation})</span
-						>{/if}{#if aff.parentOrganization}<span>,&nbsp;{aff.parentOrganization}</span>{/if}.
+						>{/if}{#if aff.parentOrganization}<span
+							>,&nbsp;{typesetQuotes(aff.parentOrganization)}</span
+						>{/if}.
 					<span class="block cv-affiliation-period">{formatAffiliationPeriod(aff.period)}</span>
 					{#if aff.roles && aff.roles.length > 0}
 						<ul class="list-disc pl-8 mt-1 cv-affiliation-roles">
 							{#each aff.roles as role (role.title + role.period.start)}
 								<li>
-									{role.title} ({formatAffiliationPeriod(role.period)})
+									{typesetQuotes(role.title)} ({formatAffiliationPeriod(role.period)})
 								</li>
 							{/each}
 						</ul>

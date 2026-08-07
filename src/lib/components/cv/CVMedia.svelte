@@ -2,6 +2,7 @@
 	import { mediaAppearancesByDate } from '$lib/data/media-appearances';
 	import { communicationsByDate } from '$lib/data/communications';
 	import { formatDayMonth } from '$lib/utils/date-formatter';
+	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';
 
 	// Filter podcasts from communications
@@ -18,7 +19,8 @@
 			{#each podcasts as podcast (podcast.id)}
 				{@const podcastDate = new Date(podcast.dateISO)}
 				<CVEntry year={podcastDate.getFullYear()}>
-					"{podcast.title}"{#if podcast.conference}, <em>{podcast.conference}</em
+					{quoteTitle(podcast.title)}{#if podcast.conference}, <em
+							>{typesetQuotes(podcast.conference)}</em
 						>{/if}{#if podcast.episode}, ep. {podcast.episode}{/if}.
 					{formatDayMonth(podcast.dateISO)}.
 					{#if podcast.doi}
@@ -56,9 +58,11 @@
 				{@const mediaDate = new Date(media.dateISO)}
 				<CVEntry year={mediaDate.getFullYear()}>
 					{media.type === 'interview' ? 'Interviewed by' : 'Appeared in'}
-					<em>{media.outlet}</em>{#if media.program}, {media.program}{/if}.
+					<em>{typesetQuotes(media.outlet)}</em>{#if media.program}, {typesetQuotes(
+							media.program
+						)}{/if}.
 					{formatDayMonth(media.dateISO)}.
-					<span class="block text-sm text-light mt-1">Topic: {media.topic}</span>
+					<span class="block text-sm text-light mt-1">Topic: {typesetQuotes(media.topic)}</span>
 					{#if media.url}
 						<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 						<a
