@@ -4,6 +4,7 @@
 	import { beforeNavigate } from '$app/navigation';
 	import { portalModal } from '$lib/actions/portalModal';
 	import { buildSrcset, HERO_SIZES, resolveImagePath } from '$lib/utils/imageVariants';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	let {
 		heroImage = undefined,
@@ -76,8 +77,14 @@
 	const displayImage = $derived(
 		heroImage?.src ? heroImage : fallbackImage ? { src: fallbackImage, alt: defaultAlt } : null
 	);
-	const altText = $derived((displayImage === heroImage ? heroImage?.alt : '') || defaultAlt);
-	const captionText = $derived(displayImage === heroImage ? heroImage?.caption : null);
+	// Alt and caption are authored prose ("Fig. 1 — the author's fieldwork …"),
+	// so both take the display register; the caption prints on the page itself.
+	const altText = $derived(
+		typesetQuotes((displayImage === heroImage ? heroImage?.alt : '') || defaultAlt)
+	);
+	const captionText = $derived(
+		displayImage === heroImage && heroImage?.caption ? typesetQuotes(heroImage.caption) : null
+	);
 	// Shared with the activity hero preload so both resolve to the same URL.
 	const absoluteSrc = $derived(resolveImagePath(displayImage?.src, base) ?? null);
 

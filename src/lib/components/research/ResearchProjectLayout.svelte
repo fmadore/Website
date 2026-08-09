@@ -38,6 +38,7 @@ apparatus, and the ruled-section styling.
 	import type { Grant, ResearchProject } from '$lib/types';
 	import { website } from '$lib/utils/siteHelpers';
 	import { base } from '$app/paths';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	/**
 	 * Every project record in `$lib/data/research` is spread straight into this
@@ -139,7 +140,13 @@ apparatus, and the ruled-section styling.
 	const eyebrowFunder = $derived(showFunding && funderLabel ? funderLabel : undefined);
 
 	// Caption under the aside plate.
-	const plateCaption = $derived(figCaption ?? `Fig. 1 — ${imageAlt}`);
+	const plateCaption = $derived(typesetQuotes(figCaption ?? `Fig. 1 — ${imageAlt}`));
+
+	// Masthead prose. The narrative body arrives through the `children` snippet
+	// as literal markup authored in each route, so it is typeset at its source
+	// rather than here — there is no string to run through the typesetter.
+	const displayTitle = $derived(typesetQuotes(title));
+	const displaySubtitle = $derived(typesetQuotes(subtitle));
 
 	/**
 	 * Whether each related-items panel has anything to list. A project whose
@@ -185,9 +192,9 @@ apparatus, and the ruled-section styling.
 						>{eyebrowFunder}</span
 					>{/if}
 			</p>
-			<h1 class="project-title">{title}</h1>
-			{#if subtitle}
-				<p class="standfirst project-subtitle">{subtitle}</p>
+			<h1 class="project-title">{displayTitle}</h1>
+			{#if displaySubtitle}
+				<p class="standfirst project-subtitle">{displaySubtitle}</p>
 			{/if}
 		</header>
 

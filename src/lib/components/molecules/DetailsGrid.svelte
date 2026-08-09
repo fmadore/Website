@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+
 	let {
 		details = []
 	}: {
@@ -12,16 +14,24 @@
 		}>;
 	} = $props();
 
-	// Filter details based on the condition (if provided) and if the value exists
+	// Filter details based on the condition (if provided) and if the value exists.
+	// Values are record fields (event names, places, projects) that carry
+	// apostrophes and quoted titles, so they are flattened and typeset once here
+	// rather than at each of the two render branches below.
 	let visibleDetails = $derived(
-		details.filter(
-			(detail) =>
-				(detail.condition === undefined || detail.condition === true) &&
-				detail.value !== null &&
-				detail.value !== undefined &&
-				detail.value !== '' &&
-				(!Array.isArray(detail.value) || detail.value.length > 0)
-		)
+		details
+			.filter(
+				(detail) =>
+					(detail.condition === undefined || detail.condition === true) &&
+					detail.value !== null &&
+					detail.value !== undefined &&
+					detail.value !== '' &&
+					(!Array.isArray(detail.value) || detail.value.length > 0)
+			)
+			.map((detail) => ({
+				...detail,
+				text: typesetQuotes(Array.isArray(detail.value) ? detail.value.join(', ') : detail.value)
+			}))
 	);
 </script>
 
@@ -41,12 +51,12 @@
 								rel={detail.internal ? undefined : 'noopener'}
 								class="detail-link link-animated"
 							>
-								{Array.isArray(detail.value) ? detail.value.join(', ') : detail.value}
+								{detail.text}
 							</a>
 							<!-- eslint-enable svelte/no-navigation-without-resolve -->
 						{:else}
 							<span>
-								{Array.isArray(detail.value) ? detail.value.join(', ') : detail.value}
+								{detail.text}
 							</span>
 						{/if}
 					</dd>

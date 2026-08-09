@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Activity } from '$lib/stores/activities.svelte';
 	import { base, resolve } from '$app/paths';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	let { activity, eager = false }: { activity: Activity; eager?: boolean } = $props();
 
@@ -51,9 +52,13 @@
 		return activity.date;
 	});
 
+	// Prose from the data file, set in the display register.
+	const displayTitle = $derived(typesetQuotes(activity.title));
+	const displaySummary = $derived(typesetQuotes(activity.description));
+
 	// The plate thumbnail: prefer the hero image, fall back to the small image.
 	const thumbSrc = $derived(activity.heroImage?.src || activity.image || '');
-	const thumbAlt = $derived(activity.heroImage?.alt || activity.title);
+	const thumbAlt = $derived(typesetQuotes(activity.heroImage?.alt || activity.title));
 	const hasPhoto = $derived(Boolean(thumbSrc));
 
 	// Tag run — uppercase mono, dot-separated, capped with "+N" overflow.
@@ -61,7 +66,7 @@
 	const tagRun = $derived.by(() => {
 		const tags = activity.tags ?? [];
 		if (tags.length === 0) return '';
-		const shown = tags.slice(0, MAX_TAGS).join(' · ');
+		const shown = tags.slice(0, MAX_TAGS).map(typesetQuotes).join(' · ');
 		const extra = tags.length - MAX_TAGS;
 		return extra > 0 ? `${shown} · +${extra}` : shown;
 	});
@@ -99,9 +104,9 @@
 	{/if}
 
 	<div class="activity-body">
-		<h3 class="activity-title">{activity.title}</h3>
-		{#if activity.description}
-			<p class="activity-summary">{activity.description}</p>
+		<h3 class="activity-title">{displayTitle}</h3>
+		{#if displaySummary}
+			<p class="activity-summary">{displaySummary}</p>
 		{/if}
 		{#if tagRun}
 			<p class="activity-tagrun">{tagRun}</p>

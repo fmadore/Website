@@ -49,7 +49,7 @@
 					I am a Data Curator at the <a
 						href="https://www.africamultiple.uni-bayreuth.de/en/index.html"
 						target="_blank"
-						rel="noopener noreferrer">Cluster of Excellence "Africa Multiple"</a
+						rel="noopener noreferrer">Cluster of Excellence “Africa Multiple”</a
 					>, University of Bayreuth (Germany), where I work at the point where research
 					infrastructure meets African Studies. I help design the systems that make research data
 					more findable and reusable under the FAIR and CARE principles, and I work with colleagues
@@ -63,7 +63,7 @@
 					My <a href={resolve('/research')} data-sveltekit-preload-data>research</a> draws on
 					fifteen years of work on Islam in francophone West Africa and extensive fieldwork in the
 					region. It examines how Muslim communities, particularly youth and women, have engaged
-					with politics, education, and the public sphere in Benin, Burkina Faso, Côte d'Ivoire, and
+					with politics, education, and the public sphere in Benin, Burkina Faso, Côte d’Ivoire, and
 					Togo since the 1960s. Before Bayreuth, I was a Research Fellow at
 					<a href="https://www.zmo.de/en" target="_blank" rel="noopener noreferrer"
 						>Leibniz-Zentrum Moderner Orient (ZMO)</a
@@ -113,7 +113,7 @@
 						target="_blank"
 						rel="noopener noreferrer"><em>Islam West Africa Collection</em> (IWAC)</a
 					>, an open-access collection of more than 14,700 items on Islam across Benin, Burkina
-					Faso, Côte d'Ivoire, Niger, Nigeria, and Togo.
+					Faso, Côte d’Ivoire, Niger, Nigeria, and Togo.
 					<a
 						href="https://github.com/fmadore/iwac-ai-pipelines"
 						target="_blank"
@@ -167,14 +167,14 @@
 					<ItemReference id="religious-activism-campuses" />, examines the emergence of Christian
 					and Muslim student associations in the 1970s and how they reshaped university life in Lomé
 					and Abomey-Calavi, against prevailing secular ideologies. I am also the author of
-					<em>La construction d'une sphère publique musulmane en Afrique de l'Ouest</em>
+					<em>La construction d’une sphère publique musulmane en Afrique de l’Ouest</em>
 					<ItemReference id="sphere-publique-musulmane" /> and the co-editor of
 					<em>Religiosity on University Campuses in Africa</em>
 					<ItemReference id="religiosity-university-campuses" />. In addition, I have co-edited two
-					special journal issues: "Muslim Minorities in Africa, Part 1"
-					<ItemReference id="muslim-minorities-africa-1" /> & "Part 2"
-					<ItemReference id="muslim-minorities-africa-2" /> and "Les acteurs religieux africains à l'ère
-					du numérique"
+					special journal issues: “Muslim Minorities in Africa, Part 1”
+					<ItemReference id="muslim-minorities-africa-1" /> & “Part 2”
+					<ItemReference id="muslim-minorities-africa-2" /> and “Les acteurs religieux africains à l’ère
+					du numérique”
 					<ItemReference id="acteurs-religieux-numerique" />. My research has been
 					<a href={resolve('/publications')} data-sveltekit-preload-data>published</a> in eleven peer-reviewed
 					journals and seven edited volumes.
@@ -188,7 +188,7 @@
 						rel="noopener noreferrer">Communitology</a
 					>
 					to produce specialised Country of Origin Information (COI) reports for asylum and immigration
-					cases involving Benin, Côte d'Ivoire, and Togo.
+					cases involving Benin, Côte d’Ivoire, and Togo.
 				</p>
 			</ContentBody>
 		</div>

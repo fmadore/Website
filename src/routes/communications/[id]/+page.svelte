@@ -20,6 +20,7 @@
 		truncateTitle
 	} from '$lib/utils/seoUtils';
 	import { getCommunicationTypeBadge } from '$lib/utils/typeUtils';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import MetaTags from '$lib/components/communications/MetaTags.svelte';
 
 	// Get communication from the page data
@@ -181,19 +182,21 @@
 						<div class="panel-papers-grid">
 							{#each communication.papers as paper, index (paper.title + index)}
 								<div class="panel-paper-card">
-									<h3 class="panel-paper-title">{paper.title}</h3>
+									<h3 class="panel-paper-title">{typesetQuotes(paper.title)}</h3>
 									{#if paper.authors && paper.authors.length > 0}
 										<div class="panel-paper-authors">
 											{#each paper.authors as author, index (author.name + index)}
 												<span>
-													{author.name}{#if author.affiliation}&nbsp;({author.affiliation}){/if}{#if index < paper.authors.length - 1},&nbsp;{/if}
+													{typesetQuotes(author.name)}{#if author.affiliation}&nbsp;({typesetQuotes(
+															author.affiliation
+														)}){/if}{#if index < paper.authors.length - 1},&nbsp;{/if}
 												</span>
 											{/each}
 										</div>
 									{/if}
 									{#if paper.abstract}
 										<div class="panel-paper-abstract">
-											{paper.abstract}
+											{typesetQuotes(paper.abstract)}
 										</div>
 									{/if}
 								</div>
@@ -209,15 +212,15 @@
 						<div class="participants-grid">
 							{#each communication.participants as participant, index (participant.name + index)}
 								<div class="participant-card">
-									<div class="participant-name">{participant.name}</div>
+									<div class="participant-name">{typesetQuotes(participant.name)}</div>
 									{#if participant.role}
 										<div class="participant-role">
-											{participant.role}
+											{typesetQuotes(participant.role)}
 										</div>
 									{/if}
 									{#if participant.affiliation}
 										<div class="participant-affiliation">
-											{participant.affiliation}
+											{typesetQuotes(participant.affiliation)}
 										</div>
 									{/if}
 								</div>

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
+
 	let {
 		abstract = undefined,
 		sectionClass = 'abstract-section',
@@ -24,8 +26,12 @@
 			.filter((p) => p.length > 0);
 	}
 
-	// Get formatted paragraphs
-	const paragraphs = $derived(abstract ? formatAbstractParagraphs(abstract) : []);
+	// Get formatted paragraphs. Abstracts carry inline markup (<i> around
+	// transliterated terms) and render through {@html}, so they typeset with
+	// `typesetQuotesInHtml` — `typesetQuotes` would curl attribute quotes.
+	const paragraphs = $derived(
+		abstract ? formatAbstractParagraphs(abstract).map(typesetQuotesInHtml) : []
+	);
 </script>
 
 {#if abstract && paragraphs.length > 0}

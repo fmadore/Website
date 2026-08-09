@@ -20,6 +20,7 @@
 		truncateTitle
 	} from '$lib/utils/seoUtils';
 	import { formatPanelType } from '$lib/utils/typeUtils';
+	import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
 	import MetaTags from '$lib/components/activities/MetaTags.svelte';
 
 	// Get data from the load function
@@ -106,15 +107,24 @@
 					let lastIndex = 0;
 					let match;
 
+					// Each html segment is a run of the activity's own markup (links,
+					// <em>, headings), so it typesets with the HTML-aware entry point:
+					// `typesetQuotes` would curl the quotes around every href.
 					while ((match = regex.exec(rawContent)) !== null) {
 						if (match.index > lastIndex) {
-							segments.push({ type: 'html', value: rawContent.substring(lastIndex, match.index) });
+							segments.push({
+								type: 'html',
+								value: typesetQuotesInHtml(rawContent.substring(lastIndex, match.index))
+							});
 						}
 						segments.push({ type: 'ItemReference', id: match[1] });
 						lastIndex = regex.lastIndex;
 					}
 					if (lastIndex < rawContent.length) {
-						segments.push({ type: 'html', value: rawContent.substring(lastIndex) });
+						segments.push({
+							type: 'html',
+							value: typesetQuotesInHtml(rawContent.substring(lastIndex))
+						});
 					}
 					return segments;
 				})()
@@ -220,7 +230,7 @@
 				{#if activity.pdfPath}
 					<div class="pdf-section mt-4 p-6 md:p-8">
 						<h2 class="pdf-section-title editorial-section-title">
-							{activity.pdfTitle || 'Associated Document'}
+							{typesetQuotes(activity.pdfTitle) || 'Associated Document'}
 						</h2>
 						<IframeRenderer
 							id="activity-pdf-{activity.id}"

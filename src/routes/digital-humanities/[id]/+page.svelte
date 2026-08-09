@@ -6,6 +6,7 @@
 	import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
 	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
 	import { groupProjectLinks, projectLinkText } from '$lib/utils/projectLinks';
+	import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
 
 	import { base, resolve } from '$app/paths';
 
@@ -89,8 +90,9 @@
 			<div class="">
 				<section class="content-section drop-cap">
 					<!-- Safe: project.description is from trusted project data in src/lib/data/digital-humanities/ -->
+					<!-- Markup-bearing prose, so typesetQuotesInHtml, never typesetQuotes. -->
 					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-					{@html project.description}
+					{@html typesetQuotesInHtml(project.description)}
 				</section>
 			</div>
 
@@ -111,7 +113,7 @@
 										{#each group.links as link (link.url)}
 											<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external project address -->
 											<a href={link.url} target="_blank" rel="noopener noreferrer"
-												>{projectLinkText(link)}</a
+												>{typesetQuotes(projectLinkText(link))}</a
 											>
 										{/each}
 									</dd>
@@ -152,12 +154,14 @@
 						{#each project.embeddableContent as item (item.id)}
 							<div class="embeddable-item">
 								{#if item.showTitle && item.title}
-									<h3 class="embeddable-title">{item.title}</h3>
+									<h3 class="embeddable-title">{typesetQuotes(item.title)}</h3>
 								{/if}
 								{#if item.description}
-									<!-- Safe: item.description is from trusted project data -->
-									<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-									<p class="embeddable-description">{@html item.description}</p>
+									<p class="embeddable-description">
+										<!-- Safe: item.description is from trusted project data -->
+										<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+										{@html typesetQuotesInHtml(item.description)}
+									</p>
 								{/if}
 
 								{#if item.type === 'iframe'}
@@ -210,7 +214,7 @@
 						</div>
 						<!-- Safe: project.award is from trusted project data -->
 						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-						<p class="apparatus-text">{@html project.award}</p>
+						<p class="apparatus-text">{@html typesetQuotesInHtml(project.award)}</p>
 					</section>
 				{/if}
 			</div>
@@ -229,7 +233,7 @@
 								href={project.publication.url}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="link">{@html project.publication.text}</a
+								class="link">{@html typesetQuotesInHtml(project.publication.text)}</a
 							>
 							<!-- eslint-enable svelte/no-at-html-tags -->
 							<!-- eslint-enable svelte/no-navigation-without-resolve -->
@@ -254,13 +258,13 @@
 										href={review.url}
 										target="_blank"
 										rel="noopener noreferrer"
-										class="link font-medium">{@html review.text}</a
+										class="link font-medium">{@html typesetQuotesInHtml(review.text)}</a
 									>
 									<!-- eslint-enable svelte/no-at-html-tags -->
 									<!-- eslint-enable svelte/no-navigation-without-resolve -->
 									{#if review.quote}
 										<blockquote class="review-quote">
-											<p>{review.quote}</p>
+											<p>{typesetQuotes(review.quote)}</p>
 										</blockquote>
 									{/if}
 								</li>

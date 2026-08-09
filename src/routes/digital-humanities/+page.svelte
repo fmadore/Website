@@ -7,6 +7,7 @@
 	import FeaturedDHProjects from '$lib/components/digital-humanities/FeaturedDHProjects.svelte';
 	import Pagination from '$lib/components/molecules/Pagination.svelte';
 	import { allDhProjects } from '$lib/data/digital-humanities';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('Digital Humanities', '/digital-humanities');
@@ -79,6 +80,10 @@
 
 			return {
 				...project,
+				// Prose fields take the display register; everything else on the
+				// record (ids, urls, skill keys used as filter values) is left raw.
+				title: typesetQuotes(project.title),
+				shortDescription: typesetQuotes(project.shortDescription),
 				finalLinkUrl,
 				linkTarget,
 				actionText,

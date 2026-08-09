@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { NavItem } from '$lib/types/navigation';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	let {
 		items,
@@ -30,7 +31,7 @@
 						? `noopener noreferrer${item.rel ? ` ${item.rel}` : ''}`
 						: null}
 				>
-					{item.name}
+					{typesetQuotes(item.name)}
 				</a>
 				<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			</li>

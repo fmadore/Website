@@ -13,6 +13,7 @@ key-term sizing, BibTeX download — is assembled here.
 	import type { Publication } from '$lib/types';
 	import { getAnalysis, hasAnalysis } from '$lib/data/analysis';
 	import { generateBibtex } from '$lib/utils/bibtexGenerator';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	interface Props {
 		publication: Publication;
@@ -43,7 +44,9 @@ key-term sizing, BibTeX download — is assembled here.
 
 	// Cover image (aside plate). Prefer the dedicated cover; fall back to hero.
 	const coverSrc = $derived(publication.image ?? publication.heroImage?.src);
-	const coverAlt = $derived(publication.heroImage?.alt ?? `Cover of ${publication.title}`);
+	const coverAlt = $derived(
+		typesetQuotes(publication.heroImage?.alt ?? `Cover of ${publication.title}`)
+	);
 
 	// ── Metadata ledger rows — render only fields present in the data. ──────────
 	type MetaRow = {
@@ -56,9 +59,13 @@ key-term sizing, BibTeX download — is assembled here.
 
 	const metadataRows = $derived.by((): MetaRow[] => {
 		const rows: MetaRow[] = [];
+		// Ledger values are journal / publisher / university / advisor fields —
+		// prose, not identifiers — so they take the display register. The DOI row
+		// passes its raw value through as the href and only the printed copy is
+		// typeset (a curled apostrophe in a DOI would break the link).
 		const push = (key: string, value: string | undefined | null, extra: Partial<MetaRow> = {}) => {
 			if (value != null && String(value).trim() !== '') {
-				rows.push({ key, value: String(value), ...extra });
+				rows.push({ key, value: typesetQuotes(String(value)), ...extra });
 			}
 		};
 
@@ -224,8 +231,11 @@ key-term sizing, BibTeX download — is assembled here.
 					<h2 class="pub-aside-label">Tags</h2>
 					<div class="chip-row">
 						{#each tags as tag (tag)}
+							<!-- Label typeset; the href keeps the raw tag the filter matches. -->
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- tag search URL -->
-							<a class="chip" href="{base}/publications?tag={encodeURIComponent(tag)}">{tag}</a>
+							<a class="chip" href="{base}/publications?tag={encodeURIComponent(tag)}"
+								>{typesetQuotes(tag)}</a
+							>
 						{/each}
 					</div>
 				</div>

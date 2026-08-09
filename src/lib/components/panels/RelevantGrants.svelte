@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import { allGrants } from '$lib/data/grants/index';
 	import type { Grant } from '$lib/types';
 	import PanelBase from './PanelBase.svelte';
@@ -40,10 +41,10 @@
 		{#each grantList as grant (grant.id)}
 			<li class="grant-item">
 				<div class="grant-main">
-					<span class="grant-funder">{grant.funder}</span>
-					<span class="grant-program">{grant.title}</span>
+					<span class="grant-funder">{typesetQuotes(grant.funder)}</span>
+					<span class="grant-program">{typesetQuotes(grant.title)}</span>
 					{#if grant.projectTitle}
-						<span class="grant-project-title">{grant.projectTitle}</span>
+						<span class="grant-project-title">{typesetQuotes(grant.projectTitle)}</span>
 					{/if}
 				</div>
 				<div class="grant-meta">
@@ -58,7 +59,7 @@
 				{#if grant.coApplicants && grant.coApplicants.length > 0}
 					<div class="grant-coapplicants">
 						<span class="coapplicants-label">With:</span>
-						<span class="coapplicants-names">{grant.coApplicants.join(', ')}</span>
+						<span class="coapplicants-names">{typesetQuotes(grant.coApplicants.join(', '))}</span>
 					</div>
 				{/if}
 			</li>

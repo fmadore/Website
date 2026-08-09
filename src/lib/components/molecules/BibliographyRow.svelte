@@ -17,6 +17,7 @@
 	// PublicationItem and CommunicationItem adapt their entities onto these
 	// props so both record lists stay in visual lock-step.
 	import '$styles/components/bibliography.css';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	interface Props {
 		/** Internal detail link — pre-resolved via resolve() by the parent. */
@@ -75,6 +76,18 @@
 		yearLabel = null,
 		featured = false
 	}: Props = $props();
+
+	// Every string this row prints is prose from a data file, spelled however
+	// its source spells it. The row owns the typographic register so both lists
+	// that render through it — /publications and /conference-activity — stay in
+	// one voice. All plain text (no markup ever reaches these props), so
+	// `typesetQuotes` is the right entry point.
+	const displayTitle = $derived(typesetQuotes(title));
+	const displayKind = $derived(typesetQuotes(kindLabel));
+	const displayLanguage = $derived(languageNote ? typesetQuotes(languageNote) : '');
+	const displayByline = $derived(typesetQuotes(byline));
+	const displayStandfirst = $derived(typesetQuotes(standfirst));
+	const displayImageAlt = $derived(typesetQuotes(imageAlt));
 </script>
 
 <article
@@ -93,7 +106,7 @@
 				<img
 					class="plate bib-plate"
 					src={image}
-					alt={imageAlt}
+					alt={displayImageAlt}
 					width={imageWidth}
 					height={imageHeight}
 					{loading}
@@ -105,10 +118,10 @@
 
 	<div class="bib-body">
 		<p class="bib-kind" class:bib-kind--current={featured}>
-			<span>{kindLabel}</span>
-			{#if languageNote}
+			<span>{displayKind}</span>
+			{#if displayLanguage}
 				<span class="bib-kind-sep" aria-hidden="true">·</span>
-				<span class="bib-kind-lang">{languageNote}</span>
+				<span class="bib-kind-lang">{displayLanguage}</span>
 			{/if}
 		</p>
 
@@ -117,16 +130,16 @@
 		<h2 class="bib-title" class:bib-title--italic={italicTitle} lang={titleLang}>
 			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
 			<a {href} class="bib-title-link" data-sveltekit-preload-code="tap">
-				{title}
+				{displayTitle}
 			</a>
 		</h2>
 
-		{#if byline}
-			<p class="bib-byline">{byline}</p>
+		{#if displayByline}
+			<p class="bib-byline">{displayByline}</p>
 		{/if}
 
-		{#if featured && standfirst}
-			<p class="bib-standfirst">{standfirst}</p>
+		{#if featured && displayStandfirst}
+			<p class="bib-standfirst">{displayStandfirst}</p>
 		{/if}
 	</div>
 

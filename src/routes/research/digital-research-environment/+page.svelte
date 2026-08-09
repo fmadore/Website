@@ -57,7 +57,7 @@
 
 	<p>
 		Underneath the service is a research question: whose description counts. Good metadata makes a
-		researcher's work more discoverable, but the vocabularies that carry it are rarely neutral.
+		researcher’s work more discoverable, but the vocabularies that carry it are rarely neutral.
 		Subject terms, where they exist at all, tend to derive from Library of Congress Subject
 		Headings, often poorly suited to African sources and knowledge systems. We are working towards
 		taxonomies in African languages, and towards modelling the relations between entities rather
@@ -73,7 +73,7 @@
 		weakest part of it. We are experimenting with AI-assisted processing as an additional service:
 		OCR for print and handwriting, transcription of audio and video, summarisation, entity
 		extraction, tagging and classification. The models run locally, on open-source weights and the
-		Cluster's own hardware, which keeps the pipeline GDPR-compliant for material that is often
+		Cluster’s own hardware, which keeps the pipeline GDPR-compliant for material that is often
 		special-category personal data, and keeps costs down.
 	</p>
 

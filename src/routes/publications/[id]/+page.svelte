@@ -22,6 +22,7 @@
 		truncateTitle
 	} from '$lib/utils/seoUtils';
 	import { getPublicationTypeBadge } from '$lib/utils/publicationTypeLabels';
+	import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
 
 	interface Props {
 		data: PageData;
@@ -44,7 +45,9 @@
 	// Structured data — rendered into <svelte:head> below so it prerenders.
 	const breadcrumbJsonLd = $derived(buildBreadcrumbJsonLd(breadcrumbItems));
 
-	const typeLabel = $derived(getPublicationTypeBadge(publication.type));
+	// "Master's Thesis" carries an apostrophe, and this label prints in the
+	// breadcrumb and the masthead eyebrow as well as in the aside ledger.
+	const typeLabel = $derived(typesetQuotes(getPublicationTypeBadge(publication.type)));
 
 	// Open-access marker: any publication that exposes a DOI/URL we can send the
 	// reader to is treated as freely accessible here (the site only lists the
@@ -59,18 +62,26 @@
 	// Byline — "by A, B and C".
 	function formatNameList(names: string[] | undefined): string {
 		if (!names || names.length === 0) return '';
-		if (names.length === 1) return names[0] ?? '';
-		if (names.length === 2) return `${names[0]} and ${names[1]}`;
-		return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
+		if (names.length === 1) return typesetQuotes(names[0]);
+		if (names.length === 2) return typesetQuotes(`${names[0]} and ${names[1]}`);
+		return typesetQuotes(`${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`);
 	}
 	const byline = $derived(formatNameList(publication.authors));
 
-	// Abstract → paragraphs (mirrors AbstractSection's splitter).
+	// This route sets its own masthead rather than going through <PageHeader>,
+	// so the title and preface byline are typeset here.
+	const displayTitle = $derived(typesetQuotes(publication.title));
+	const displayPrefacedBy = $derived(typesetQuotes(publication.prefacedBy));
+
+	// Abstract → paragraphs (mirrors AbstractSection's splitter). Rendered via
+	// {@html} because abstracts carry inline markup, so they take the HTML-aware
+	// typesetter — `typesetQuotes` would curl quotes inside any attribute.
 	const abstractParagraphs = $derived(
 		(publication.abstract ?? '')
 			.split(/\n\s*\n|\n/)
 			.map((p) => p.trim())
 			.filter((p) => p.length > 0)
+			.map(typesetQuotesInHtml)
 	);
 
 	const reviews = $derived(publication.reviewedBy ?? []);
@@ -129,11 +140,11 @@
 					{/if}
 				</p>
 
-				<h1 class="pub-title">{publication.title}</h1>
+				<h1 class="pub-title">{displayTitle}</h1>
 
 				{#if byline}
 					<p class="pub-byline">
-						{#if publication.prefacedBy}by {byline}. Preface by {publication.prefacedBy}{:else}by
+						{#if displayPrefacedBy}by {byline}. Preface by {displayPrefacedBy}{:else}by
 							{byline}{/if}
 					</p>
 				{/if}

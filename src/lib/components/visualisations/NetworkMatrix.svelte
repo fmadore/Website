@@ -13,6 +13,7 @@ It is also the site's own idiom rather than a borrowed one: a matrix is a
 ledger — ruled, gridded, set in the data voice.
 -->
 <script lang="ts">
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import { getResolvedChartColors, colorWithOpacity } from '$lib/utils/chartColorUtils';
 	import { downloadSvgAsImage } from '$lib/utils/chartActions';
@@ -270,7 +271,7 @@ ledger — ruled, gridded, set in the data voice.
 							dominant-baseline="middle"
 							fill={colors.text}
 							font-family={colors.fontFamily}
-							font-size={fontSize}>{truncate(node.id, maxLabelChars)}</text
+							font-size={fontSize}>{typesetQuotes(truncate(node.id, maxLabelChars))}</text
 						>
 					{/each}
 
@@ -286,7 +287,7 @@ ledger — ruled, gridded, set in the data voice.
 							dominant-baseline="middle"
 							fill={colors.text}
 							font-family={colors.fontFamily}
-							font-size={fontSize}>{truncate(node.id, maxLabelChars)}</text
+							font-size={fontSize}>{typesetQuotes(truncate(node.id, maxLabelChars))}</text
 						>
 					{/each}
 				</g>
@@ -402,7 +403,7 @@ ledger — ruled, gridded, set in the data voice.
 		<tbody>
 			{#each matrix.nodes as node (node.id)}
 				<tr>
-					<th scope="row">{node.id}</th>
+					<th scope="row">{typesetQuotes(node.id)}</th>
 					<td>
 						{node.weight}
 						{node.weight === 1 ? copy.itemSingular : copy.itemPlural.toLowerCase()}

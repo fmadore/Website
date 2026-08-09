@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	let {
 		items = [],
@@ -8,6 +9,14 @@
 		items: { label: string; href: string }[];
 		showHomeLink?: boolean;
 	} = $props();
+
+	// The trailing crumb is the record's own (truncated) title, so it prints in
+	// the same register as the masthead below it. The same `items` array also
+	// feeds the breadcrumb JSON-LD, which is built by the caller from the raw
+	// labels — structured data keeps the source spelling.
+	const displayItems = $derived(
+		items.map((item) => ({ ...item, label: typesetQuotes(item.label) }))
+	);
 </script>
 
 <nav aria-label="Breadcrumb" class="breadcrumb">
@@ -18,9 +27,9 @@
 			</li>
 		{/if}
 
-		{#each items as item, i (item.href)}
+		{#each displayItems as item, i (item.href)}
 			<li>
-				{#if i === items.length - 1}
+				{#if i === displayItems.length - 1}
 					<span aria-current="page" class="breadcrumb-text">
 						{item.label}
 					</span>

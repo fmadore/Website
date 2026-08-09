@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Communication } from '$lib/types/communication';
 	import { resolve } from '$app/paths';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import Icon from '@iconify/svelte';
 
 	interface Props {
@@ -24,8 +25,9 @@
 	const typeLabel = $derived(typeLabels[communication.type ?? 'conference'] ?? 'Talk');
 	const detailHref = $derived(resolve(`/communications/${communication.id}`));
 	const slideNo = $derived(String(index + 1).padStart(2, '0'));
+	const displayTitle = $derived(typesetQuotes(communication.title));
 	const venueLine = $derived(
-		[communication.conference, communication.location].filter(Boolean).join(' · ')
+		typesetQuotes([communication.conference, communication.location].filter(Boolean).join(' · '))
 	);
 </script>
 
@@ -39,7 +41,7 @@
 		</span>
 
 		<h3 class="deck-card-title">
-			<span class="deck-card-title-text">{communication.title}</span>
+			<span class="deck-card-title-text">{displayTitle}</span>
 		</h3>
 
 		{#if venueLine}
@@ -56,7 +58,7 @@
 				href={communication.slidesUrl}
 				target="_blank"
 				rel="noopener noreferrer"
-				aria-label="Open the slide deck for {communication.title} in a new tab"
+				aria-label="Open the slide deck for {displayTitle} in a new tab"
 			>
 				<span>Open deck</span>
 				<Icon icon="lucide:arrow-up-right" width="13" height="13" />

@@ -8,6 +8,7 @@ nothing.
 -->
 <script lang="ts">
 	import type { Publication } from '$lib/types';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	interface Props {
 		publication: Publication;
@@ -27,9 +28,9 @@ nothing.
 	// "A, B and C" — same casting as the page byline.
 	function formatNameList(names: string[] | undefined): string {
 		if (!names || names.length === 0) return '';
-		if (names.length === 1) return names[0] ?? '';
-		if (names.length === 2) return `${names[0]} and ${names[1]}`;
-		return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
+		if (names.length === 1) return typesetQuotes(names[0]);
+		if (names.length === 2) return typesetQuotes(`${names[0]} and ${names[1]}`);
+		return typesetQuotes(`${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`);
 	}
 </script>
 
@@ -43,10 +44,10 @@ nothing.
 				<li class="pub-toc-item">
 					<span class="pub-toc-no">{String(index + 1).padStart(2, '0')}</span>
 					{#if typeof item === 'string'}
-						<span class="pub-toc-title">{item}</span>
+						<span class="pub-toc-title">{typesetQuotes(item)}</span>
 					{:else}
 						<span class="pub-toc-title">
-							{item.title}
+							{typesetQuotes(item.title)}
 							{#if item.authors && item.authors.length > 0}
 								<span class="pub-toc-authors">{formatNameList(item.authors)}</span>
 							{/if}

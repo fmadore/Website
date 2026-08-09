@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+
 	// Expects the item object and the pre-calculated URL from RelatedItemsList
 	// eslint-disable-next-line svelte/no-unused-props -- id is used for keying in parent components
 	let {
@@ -33,10 +35,10 @@
 		<div class={dateClass}>{item.date}</div>
 	{/if}
 	{#if item.title}
-		<h3 class={titleClass}>{item.title}</h3>
+		<h3 class={titleClass}>{typesetQuotes(item.title)}</h3>
 	{/if}
 	{#if item.authors && item.authors.length > 0}
-		<div class={authorsClass}>{item.authors.join(', ')}</div>
+		<div class={authorsClass}>{typesetQuotes(item.authors.join(', '))}</div>
 	{/if}
 </a>
 

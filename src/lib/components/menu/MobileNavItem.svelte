@@ -5,6 +5,7 @@
 	// `.mobile-nav-item` from the container's `.active` state).
 	import type { NavItem } from '$lib/types/navigation';
 	import { page } from '$app/state';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	let {
 		item,
@@ -43,7 +44,7 @@
 		aria-current={current ? 'page' : undefined}
 		onclick={onnavigate}
 	>
-		{item.name}
+		{typesetQuotes(item.name)}
 	</a>
 	<!-- eslint-enable svelte/no-navigation-without-resolve -->
 
@@ -64,7 +65,7 @@
 							? `noopener noreferrer${subItem.rel ? ` ${subItem.rel}` : ''}`
 							: null}
 					>
-						{subItem.name}
+						{typesetQuotes(subItem.name)}
 					</a>
 					<!-- eslint-enable svelte/no-navigation-without-resolve -->
 				</li>

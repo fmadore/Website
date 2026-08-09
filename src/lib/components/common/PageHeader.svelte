@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import TagList from '$lib/components/molecules/TagList.svelte'; // Use the one from molecules
 
 	let {
@@ -24,14 +25,18 @@
 		additionalClasses?: string;
 	} = $props();
 
-	// Helper function to format a list of names with "and" before the last one
+	// Helper function to format a list of names with "and" before the last one.
+	// Typeset on the way out: names carry apostrophes ("N'Dri", "King's College").
 	function formatNameList(names: string | string[] | undefined): string {
 		if (!names) return '';
-		if (typeof names === 'string') return names;
-		if (names.length === 1) return names[0] ?? '';
-		if (names.length === 2) return `${names[0]} and ${names[1]}`;
-		return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
+		if (typeof names === 'string') return typesetQuotes(names);
+		if (names.length === 1) return typesetQuotes(names[0]);
+		if (names.length === 2) return typesetQuotes(`${names[0]} and ${names[1]}`);
+		return typesetQuotes(`${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`);
 	}
+
+	// The masthead title — the one string every detail route funnels through here.
+	const displayTitle = $derived(typesetQuotes(title));
 </script>
 
 <header class="page-header mb-8 {additionalClasses}">
@@ -51,7 +56,7 @@
 			</p>
 		{/if}
 
-		<h1 class="page-title">{title}</h1>
+		<h1 class="page-title">{displayTitle}</h1>
 
 		{#if authors && authors.length > 0}
 			<div class="authors">

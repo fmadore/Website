@@ -36,7 +36,7 @@
 			<a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer"
 				>Model Context Protocol</a
 			> (MCP) server that gives any AI assistant a single interface onto both collections, with a companion
-			"skill" that encodes curatorial judgement: search strategies, transliteration variants, documented
+			“skill” that encodes curatorial judgement: search strategies, transliteration variants, documented
 			bias. A researcher should then be able to put one question in natural language to both collections
 			at once, without reading every language in them. The intended deliverable is a conversational assistant
 			on the project website, running on an open-source LLM.
@@ -54,7 +54,7 @@
 		</li>
 	</ol>
 
-	<h2>Two "Peripheral" Collections</h2>
+	<h2>Two “Peripheral” Collections</h2>
 	<p>
 		Both are held at <a href="https://www.zmo.de/en" target="_blank" rel="noopener noreferrer"
 			>Leibniz-Zentrum Moderner Orient (ZMO)</a

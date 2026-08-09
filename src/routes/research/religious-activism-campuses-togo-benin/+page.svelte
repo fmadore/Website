@@ -7,7 +7,7 @@
 <ResearchProjectLayout {...researchProject('religious-activism-campuses-togo-benin')}>
 	<p>
 		This project uncovers the neglected history of Christian and Muslim student associations at the
-		Université de Lomé (Togo) and the Université d'Abomey-Calavi (Benin), and examines their
+		Université de Lomé (Togo) and the Université d’Abomey-Calavi (Benin), and examines their
 		resilience and adaptability over five decades. While much of the literature has focused on the
 		role of student protests in triggering national conferences in Benin and Togo in the early
 		1990s, this study broadens the lens to include the significant but often overlooked religious
@@ -29,7 +29,7 @@
 		socio-political trends, while also highlighting the importance of translocal factors in shaping
 		the internal dynamics of these groups. Amidst the massification of university enrolments and
 		rising graduate unemployment in recent decades, faith-based associations have expanded their
-		role beyond religious guidance. Increasingly, they offer a "social curriculum", providing a
+		role beyond religious guidance. Increasingly, they offer a “social curriculum”, providing a
 		space for socialisation and a set of skills, norms and moral values that complement the secular
 		academic curriculum.
 	</p>

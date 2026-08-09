@@ -15,6 +15,7 @@ the peer/contributor edges become arcs in the gutter beside it. What was
 background texture is now the whole subject of the chart.
 -->
 <script lang="ts">
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import { getResolvedChartColors } from '$lib/utils/chartColorUtils';
 	import { downloadSvgAsImage } from '$lib/utils/chartActions';
@@ -401,7 +402,7 @@ background texture is now the whole subject of the chart.
 							dominant-baseline="middle"
 							fill={colors.text}
 							font-family={colors.fontFamily}
-							font-size={fontSize}>{row.id}</text
+							font-size={fontSize}>{typesetQuotes(row.id)}</text
 						>
 						<text
 							class="arc-count"
@@ -457,7 +458,7 @@ background texture is now the whole subject of the chart.
 	<ul class="sr-only">
 		{#each rows as row (row.id)}
 			<li>
-				{row.id}: {row.weight}
+				{typesetQuotes(row.id)}: {row.weight}
 				{row.weight === 1 ? copy.itemSingular : copy.itemPlural.toLowerCase()}
 			</li>
 		{/each}

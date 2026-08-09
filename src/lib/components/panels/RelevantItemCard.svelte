@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
 
 	// Props - same interface as the old ItemCard for compatibility
@@ -30,18 +31,20 @@
 
 	<h3 class="relevant-item-title">
 		<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
-		<a href={itemLink}>{item.title}</a>
+		<a href={itemLink}>{typesetQuotes(item.title)}</a>
 	</h3>
 
 	{#if item.authors && item.authors.length > 0}
 		<div class="relevant-item-authors">
-			{formatAuthors(item.authors)}
+			{typesetQuotes(formatAuthors(item.authors))}
 		</div>
 	{/if}
 
 	{#if item.abstract}
 		<div class="relevant-item-abstract">
-			{item.abstract.length > 120 ? item.abstract.substring(0, 120) + '...' : item.abstract}
+			{typesetQuotes(
+				item.abstract.length > 120 ? item.abstract.substring(0, 120) + '...' : item.abstract
+			)}
 		</div>
 	{/if}
 

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import type { ReferenceIndexEntry } from '$lib/types/referenceIndex';
 
 	let {
@@ -67,8 +68,13 @@
 		}
 	}
 
+	// The inline citation sits in running prose, so it takes the same register as
+	// the sentence around it — "(N'Dri, 2024)" would otherwise be the one
+	// straight apostrophe in a typeset paragraph.
 	const referenceText = $derived(
-		label ? label : item ? `(${getAuthorCitation(item)}, ${getYear(item)})` : `(${id})`
+		typesetQuotes(
+			label ? label : item ? `(${getAuthorCitation(item)}, ${getYear(item)})` : `(${id})`
+		)
 	);
 
 	const itemUrl = $derived(
@@ -80,7 +86,9 @@
 	// WCAG 2.5.3 (Label in Name): the accessible name must contain the visible
 	// link text, so the label leads with referenceText before the full title.
 	const ariaLabel = $derived(
-		item ? `${referenceText} — view ${itemType || 'item'}: ${item.title}` : `Reference ${id}`
+		item
+			? `${referenceText} — view ${itemType || 'item'}: ${typesetQuotes(item.title)}`
+			: `Reference ${id}`
 	);
 </script>
 

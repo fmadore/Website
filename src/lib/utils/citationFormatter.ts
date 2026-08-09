@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types/publication';
 import { formatDisplayDate, isForthcoming } from '$lib/utils/date-formatter';
 import { joinNames, splitNames } from '$lib/utils/nameUtils';
 import { PUBLICATION_TYPE_CITATION_LABELS } from '$lib/utils/publicationTypeLabels';
+import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
 
 // Human-readable labels for publication types (citation register).
 // Re-exported from the single type-label registry in publicationTypeLabels.
@@ -16,8 +17,12 @@ export function getAuthorsArray(authors: string[] | string | undefined): string[
 
 // New function to format author list. Citation style: ", " between entries,
 // " and " before the last (no serial comma) — the joinNames defaults.
+//
+// Typeset here, not in `joinNames`: nameUtils is shared with the BibTeX and
+// COinS generators, where a curled apostrophe in "N'Dri" would corrupt an
+// export. This is the display byline, so it takes the typographic register.
 export function formatAuthorList(authorsInput: string[] | string | undefined): string {
-	return joinNames(getAuthorsArray(authorsInput));
+	return typesetQuotes(joinNames(getAuthorsArray(authorsInput)));
 }
 
 // Helper function to format editor string (e.g., "Name1, Name2 and Name3")
@@ -215,7 +220,12 @@ export function formatCitation(publication: Publication): FormattedCitation {
 
 	return {
 		typeLabel,
-		detailsHtml,
+		// The details string is display copy assembled from journal / book /
+		// publisher / editor fields, each spelled however its source spells it.
+		// Typesetting here rather than at every call site keeps the site's lists,
+		// its detail pages and the MCP server's `reference` style in one register.
+		// `typesetQuotesInHtml` because the string carries <em> markup.
+		detailsHtml: typesetQuotesInHtml(detailsHtml),
 		year // Return the year separately (will be undefined for blogpost)
 	};
 }
@@ -255,5 +265,6 @@ export function formatCommunicationCitation(communication: {
 		parts.push(communication.date);
 	}
 
-	return parts.join(', ');
+	// Plain text (no markup), so the whole venue line typesets in one pass.
+	return typesetQuotes(parts.join(', '));
 }

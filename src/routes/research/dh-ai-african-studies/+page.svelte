@@ -10,7 +10,7 @@
 		Digital humanities (DH) and artificial intelligence (AI) are changing how knowledge is produced
 		in African studies. They make new kinds of analysis possible, and new narratives with them:
 		reimagining cultural heritage, widening access to diverse sources, amplifying marginalised
-		voices. As the field approaches an AI-driven "tipping point", the project explores methods for
+		voices. As the field approaches an AI-driven “tipping point”, the project explores methods for
 		designing, evaluating and sustaining digital infrastructures. These systems need to be grounded
 		in African epistemologies rather than retrofitted from Western models.
 	</p>
@@ -25,12 +25,12 @@
 		Europe and beyond, and opens dialogue between the Global North and South. Three themes organise
 		the work: transforming research methods through computational tools, building sustainable
 		infrastructures in resource-constrained settings, and centring African knowledge systems in
-		digital design. The move is from policy governance about AI to "practising with AI", and towards
+		digital design. The move is from policy governance about AI to “practising with AI”, and towards
 		the ethical development of DH across the continent.
 	</p>
 	<p>
-		My contribution addresses the practical "problem of scale" in African digital collections.
-		Tracing my own route from "digital hoarder" to "historian-programmer", I explore how far agentic
+		My contribution addresses the practical “problem of scale” in African digital collections.
+		Tracing my own route from “digital hoarder” to “historian-programmer”, I explore how far agentic
 		coding lowers the barrier to entry: the researcher specifies a problem in natural language, and
 		an AI agent writes, runs and debugs the code. Pipelines built on large language models (LLMs)
 		take over labour-intensive work such as optical character recognition (OCR) and named entity
@@ -70,11 +70,11 @@
 			rel="noopener noreferrer"><em>Islam West Africa Collection</em> (IWAC)</a
 		>, whose 30-million-word corpus tests the limits of AI in historical research <ItemReference
 			id="zmo-kitchen-talks-ai-islamic-african-studies"
-		/>. Working from Moretti's (2000) "<a
+		/>. Working from Moretti’s (2000) “<a
 			href="https://newleftreview.org/issues/ii1/articles/franco-moretti-conjectures-on-world-literature"
 			target="_blank"
 			rel="noopener noreferrer">distant reading</a
-		>", I treat AI as a "co-intelligence" (<a
+		>”, I treat AI as a “co-intelligence” (<a
 			href="https://www.penguinrandomhouse.com/books/741805/co-intelligence-by-ethan-mollick/"
 			target="_blank"
 			rel="noopener noreferrer">Mollick, 2024</a

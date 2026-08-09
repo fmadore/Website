@@ -4,6 +4,7 @@
 	import { truncateAbstract } from '$lib/utils/textUtils';
 	import { formatAuthorList, formatCommunicationCitation } from '$lib/utils/citationFormatter';
 	import { titleLangAttr } from '$lib/utils/languageUtils';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import BibliographyRow from '$lib/components/molecules/BibliographyRow.svelte';
 	import type { BibliographyAction } from '$lib/components/molecules/BibliographyRow.svelte';
@@ -83,8 +84,16 @@
 		return langs[0];
 	});
 
-	// Format the citation details
+	// Format the citation details (formatCommunicationCitation typesets its own
+	// output, so the venue line arrives in the display register already).
 	const citationDetails = $derived(formatCommunicationCitation(communication));
+
+	// The card branch renders the title and abstract directly; the bibliography
+	// branch hands them to BibliographyRow, which typesets what it prints.
+	const displayTitle = $derived(typesetQuotes(communication?.title) || 'Untitled Communication');
+	const displayAbstract = $derived(
+		communication?.abstract ? typesetQuotes(truncateAbstract(communication.abstract)) : ''
+	);
 
 	// ── Bibliography mode (Ink + Signal finding-aid row, shared with publications) ──
 	const detailHref = $derived(resolve(`/communications/${communication.id}`));
@@ -150,7 +159,7 @@
 						>
 							<img
 								src={communication.image}
-								alt={communication.title}
+								alt={displayTitle}
 								class="entity-cover-image"
 								width="200"
 								height="280"
@@ -181,7 +190,7 @@
 							class="entity-title-link"
 							data-sveltekit-preload-code="tap"
 						>
-							{communication?.title || 'Untitled Communication'}
+							{displayTitle}
 						</a>
 					</h2>
 					<div class="entity-details">
@@ -196,9 +205,9 @@
 						{/if}
 					</div>
 
-					{#if communication?.abstract}
+					{#if displayAbstract}
 						<div class="entity-abstract">
-							{truncateAbstract(communication.abstract)}
+							{displayAbstract}
 						</div>
 					{/if}
 

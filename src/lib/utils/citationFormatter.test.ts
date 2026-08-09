@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { getAuthorsArray, formatAuthorList, formatCitation } from './citationFormatter';
+import {
+	getAuthorsArray,
+	formatAuthorList,
+	formatCitation,
+	formatCommunicationCitation
+} from './citationFormatter';
 import type { Publication } from '$lib/types/publication';
 
 // Minimal fixture factory: supplies every required Publication field so tests
@@ -205,8 +210,11 @@ describe('formatCitation — dissertations and theses', () => {
 
 	it('formats a master’s thesis with university only', () => {
 		const result = formatCitation(pub({ type: 'masters-thesis', university: 'Université Laval' }));
+		// `typeLabel` is the raw registry value — callers use it as a badge/key.
+		// `detailsHtml` is display copy, so the same words take the typographic
+		// apostrophe there and nowhere else.
 		expect(result.typeLabel).toBe("Master's Thesis");
-		expect(result.detailsHtml).toBe("Master's Thesis, Université Laval.");
+		expect(result.detailsHtml).toBe('Master’s Thesis, Université Laval.');
 	});
 
 	it('falls back to the bare type label when no institution fields exist', () => {
@@ -302,5 +310,108 @@ describe('formatCitation — forthcoming date override', () => {
 
 	it('leaves the numeric year untouched for a normal date', () => {
 		expect(formatCitation(pub({ date: '2024', year: 2024 })).year).toBe(2024);
+	});
+});
+
+// ── Typographic register ────────────────────────────────────────────────────
+// The display formatters are where the site's quotation marks are normalised
+// (see typesetQuotes.ts). Two invariants matter: prose inside the citation is
+// curled, and the markup carrying it is not — a curled attribute quote would
+// be a broken link.
+
+describe('formatCitation — quotation marks', () => {
+	it('curls an apostrophe in a journal name', () => {
+		expect(
+			formatCitation(
+				pub({ type: 'article', journal: "Cahiers d'études africaines", volume: '236' })
+			).detailsHtml
+		).toBe('<em>Cahiers d’études africaines</em> 236.');
+	});
+
+	it('curls a quoted phrase in a host book title', () => {
+		expect(
+			formatCitation(
+				pub({
+					type: 'chapter',
+					book: 'Religions on Campus: The "Secular" University',
+					publisher: 'Brill'
+				})
+			).detailsHtml
+		).toContain('The “Secular” University');
+	});
+
+	it('curls an apostrophe in a thesis institution', () => {
+		expect(
+			formatCitation(
+				pub({
+					type: 'phd-dissertation',
+					university: "King's College London",
+					department: 'History'
+				})
+			).detailsHtml
+		).toContain('King’s College London');
+	});
+
+	it('converts guillemets and drops their inner space', () => {
+		expect(
+			formatCitation(pub({ type: 'article', journal: 'Les « imams chocos »' })).detailsHtml
+		).toBe('<em>Les “imams chocos”</em>.');
+	});
+
+	it('leaves the generated markup itself untouched', () => {
+		const { detailsHtml } = formatCitation(
+			pub({ type: 'article', journal: "Islam's Peripheries" })
+		);
+		expect(detailsHtml).toContain('Islam’s Peripheries');
+		// No curly mark leaked inside a tag.
+		expect(detailsHtml).not.toMatch(/<[^>]*[“”‘’][^>]*>/);
+	});
+});
+
+describe('formatAuthorList — quotation marks', () => {
+	it('curls apostrophes in names', () => {
+		expect(formatAuthorList(["Oba Christian Abel N'Dri", 'Frédérick Madore'])).toBe(
+			'Oba Christian Abel N’Dri and Frédérick Madore'
+		);
+	});
+});
+
+describe('formatCommunicationCitation', () => {
+	it('joins conference, location, country and date', () => {
+		expect(
+			formatCommunicationCitation({
+				title: 'A talk',
+				conference: 'ECAS 2025',
+				location: 'Prague',
+				country: 'Czechia',
+				date: '25 June 2025'
+			})
+		).toBe('ECAS 2025, Prague, Czechia, 25 June 2025');
+	});
+
+	it('omits the conference when it merely repeats the title', () => {
+		expect(
+			formatCommunicationCitation({ title: 'A talk', conference: 'A talk', location: 'Lomé' })
+		).toBe('Lomé');
+	});
+
+	it('appends the episode number to the conference', () => {
+		expect(
+			formatCommunicationCitation({ title: 'A talk', conference: 'Podcast Series', episode: 12 })
+		).toBe('Podcast Series, ep. 12');
+	});
+
+	it('curls the venue line', () => {
+		expect(
+			formatCommunicationCitation({
+				title: 'A talk',
+				conference: 'Workshop "Religions on Campus"',
+				country: "Côte d'Ivoire"
+			})
+		).toBe('Workshop “Religions on Campus”, Côte d’Ivoire');
+	});
+
+	it('returns an empty string when there is nothing to print', () => {
+		expect(formatCommunicationCitation({ title: 'A talk' })).toBe('');
 	});
 });

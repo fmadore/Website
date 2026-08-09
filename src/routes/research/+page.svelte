@@ -5,6 +5,7 @@
 	import SEO from '$lib/SEO.svelte';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import { allResearchProjects } from '$lib/data/research';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	// Helper to resolve dynamic research project paths
 	const resolvePath = (/** @type {string} */ path) => resolve(/** @type {any} */ (path));
@@ -15,12 +16,14 @@
 	// Research projects, shared with the detail pages, /llms.txt and
 	// /api/research.json — this page renders the records, it does not own them.
 	// The card title falls back to the full title; `imageSrc` is a bare filename.
+	// Both prose fields are typeset here, once, so the dossier lead and the
+	// ledger rows below print the same title in the same register.
 	const researchProjects = allResearchProjects.map((p) => ({
 		id: p.id,
-		title: p.cardTitle ?? p.title,
+		title: typesetQuotes(p.cardTitle ?? p.title),
 		years: p.years,
 		current: p.current,
-		shortDescription: p.shortDescription,
+		shortDescription: typesetQuotes(p.shortDescription),
 		imageUrl: `${base}/images/research/${p.imageSrc}`
 	}));
 

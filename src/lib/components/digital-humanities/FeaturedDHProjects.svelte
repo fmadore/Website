@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
 	import { base, resolve } from '$app/paths';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	/**
 	 * Featured DH projects — the "FEATURED" module of the Ink + Signal
@@ -71,6 +72,10 @@
 
 			return {
 				...project,
+				// Prose fields in the display register; ids, urls and the skill keys
+				// that drive the filter links stay raw.
+				title: typesetQuotes(project.title),
+				shortDescription: typesetQuotes(project.shortDescription),
 				imageUrl: `${base}${project.imageUrl.startsWith('/') ? project.imageUrl : '/' + project.imageUrl}`,
 				finalLinkUrl,
 				linkTarget,

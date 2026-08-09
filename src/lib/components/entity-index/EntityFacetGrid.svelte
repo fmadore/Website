@@ -6,6 +6,9 @@
 	// Styled by entity-index.css (imported by the page).
 	import RangeSlider from '$lib/components/atoms/RangeSlider.svelte';
 	import type { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
+	// Facet *labels* are typeset; the raw value stays the toggle key and the URL
+	// parameter, so filtering and deep links keep matching the data.
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	interface Props {
 		filters: EntityFilterSystem<TItem>;
@@ -81,7 +84,7 @@
 							onclick={() => filters.toggle('projects', project)}
 						>
 							<span class="facet-marker" class:facet-marker--on={active} aria-hidden="true"></span>
-							<span class="facet-name">{project}</span>
+							<span class="facet-name">{typesetQuotes(project)}</span>
 							<span class="facet-count">{filters.counts.projects[project] ?? 0}</span>
 						</button>
 					</li>
@@ -103,7 +106,7 @@
 							class:facet-row--active={af.authors.includes(author)}
 							onclick={() => filters.toggle('authors', author)}
 						>
-							<span class="facet-name">{author}</span>
+							<span class="facet-name">{typesetQuotes(author)}</span>
 							<span class="facet-count">{filters.counts.authors[author] ?? 0}</span>
 						</button>
 					</li>
@@ -130,7 +133,7 @@
 							class:facet-row--active={af.countries.includes(country)}
 							onclick={() => filters.toggle('countries', country)}
 						>
-							<span class="facet-name">{country}</span>
+							<span class="facet-name">{typesetQuotes(country)}</span>
 							<span class="facet-count">{filters.counts.countries[country] ?? 0}</span>
 						</button>
 					</li>
@@ -182,7 +185,7 @@
 						class:chip--selected={af.tags.includes(tag)}
 						onclick={() => filters.toggle('tags', tag)}
 					>
-						{tag} <span class="chip-count">{filters.counts.tags[tag] ?? 0}</span>
+						{typesetQuotes(tag)} <span class="chip-count">{filters.counts.tags[tag] ?? 0}</span>
 					</button>
 				{/each}
 			</div>

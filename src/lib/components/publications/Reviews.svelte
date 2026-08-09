@@ -1,11 +1,24 @@
 <script lang="ts">
 	import type { ReviewWork } from '$lib/types/publication';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	// Prop to receive the array of reviews.
 	let { reviewedBy = [] }: { reviewedBy?: ReviewWork[] } = $props();
 
-	// Sort the array by year descending (copy first — never mutate the prop).
-	const sortedReviews = $derived([...(reviewedBy ?? [])].sort((a, b) => b.year - a.year));
+	// Sort the array by year descending (copy first — never mutate the prop), then
+	// typeset the four prose fields. The excerpt is a quotation lifted from a
+	// review, so its inner marks are exactly what the typesetter exists for.
+	const sortedReviews = $derived(
+		[...(reviewedBy ?? [])]
+			.sort((a, b) => b.year - a.year)
+			.map((review) => ({
+				...review,
+				excerpt: typesetQuotes(review.excerpt),
+				author: typesetQuotes(review.author),
+				journal: typesetQuotes(review.journal),
+				title: typesetQuotes(review.title)
+			}))
+	);
 </script>
 
 {#if sortedReviews.length > 0}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import SEO from '$lib/SEO.svelte';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
@@ -106,8 +107,9 @@
 							<span class="ledger-status">{lecture.level}</span>
 						</span>
 						<span class="ledger-content">
-							<span class="ledger-title">{lecture.title}</span>
-							<span class="lecture-course">In course: <em>{lecture.course}</em></span>
+							<span class="ledger-title">{typesetQuotes(lecture.title)}</span>
+							<span class="lecture-course">In course: <em>{typesetQuotes(lecture.course)}</em></span
+							>
 						</span>
 					</div>
 				{/each}

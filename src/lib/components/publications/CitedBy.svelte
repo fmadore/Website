@@ -1,11 +1,23 @@
 <script lang="ts">
 	import type { CitingWork } from '$lib/types/publication';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	// Prop to receive the array of citing works.
 	let { citedBy = [] }: { citedBy?: CitingWork[] } = $props();
 
-	// Sort the array by year descending (copy first — never mutate the prop).
-	const sortedCitedBy = $derived([...(citedBy ?? [])].sort((a, b) => b.year - a.year));
+	// Sort the array by year descending (copy first — never mutate the prop) and
+	// typeset the display fields. These titles come from other people's work, so
+	// they arrive spelled every way a citation database spells them.
+	const sortedCitedBy = $derived(
+		[...(citedBy ?? [])]
+			.sort((a, b) => b.year - a.year)
+			.map((work) => ({
+				...work,
+				title: typesetQuotes(work.title),
+				authorLine: typesetQuotes(work.authors.join(', ')),
+				source: typesetQuotes(work.source)
+			}))
+	);
 </script>
 
 {#if sortedCitedBy && sortedCitedBy.length > 0}
@@ -33,7 +45,7 @@
 							{/if}
 						</p>
 						<p class="citation-authors">
-							{citingWork.authors.join(', ')}
+							{citingWork.authorLine}
 						</p>
 						{#if citingWork.source}
 							<p class="citation-source">

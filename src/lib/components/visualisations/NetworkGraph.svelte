@@ -20,6 +20,7 @@ Colour encodes the node/edge kind, size and link distance encode the weight;
 no two channels carry the same value.
 -->
 <script lang="ts">
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import Icon from '@iconify/svelte';
 	import { getResolvedChartColors } from '$lib/utils/chartColorUtils';
@@ -646,7 +647,8 @@ no two channels carry the same value.
 									fill={resolvedColors.text}
 									font-family={resolvedColors.fontFamily}
 									font-size={node.kind === 'center' ? fontSize + 2 : fontSize}
-									font-weight={node.kind === 'center' ? 700 : 400}>{node.label.text}</text
+									font-weight={node.kind === 'center' ? 700 : 400}
+									>{typesetQuotes(node.label.text)}</text
 								>
 							{/if}
 						</g>
@@ -689,7 +691,7 @@ no two channels carry the same value.
 	<ul class="sr-only">
 		{#each selection.nodes as node (node.id)}
 			<li>
-				{node.id}: {node.weight}
+				{typesetQuotes(node.id)}: {node.weight}
 				{node.weight === 1 ? labelCopy.itemSingular : labelCopy.itemSingular + 's'}
 			</li>
 		{/each}

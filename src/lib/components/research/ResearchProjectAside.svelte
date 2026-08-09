@@ -17,6 +17,7 @@
 	// ledger, source-language chips and CTA buttons. Split out of
 	// ResearchProjectLayout.svelte, which owns the grid placement (the
 	// `.project-aside` grid cell) and derives the grant-record values.
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	interface Props {
 		/** Fully-resolved plate image src. */
@@ -64,6 +65,15 @@
 			years || programme || (showFunding && (directors.length > 0 || funderLabel || grantAmount))
 		) || (regions?.length ?? 0) > 0
 	);
+
+	// Ledger and chip copy in the display register: co-director names carry
+	// apostrophes, funders and regions carry both ("Côte d'Ivoire").
+	const displayPlateAlt = $derived(typesetQuotes(plateAlt));
+	const displayPlateCaption = $derived(typesetQuotes(plateCaption));
+	const displayDirectors = $derived(typesetQuotes(directors.join(' · ')));
+	const displayFunder = $derived(typesetQuotes(funderLabel));
+	const displayProgramme = $derived(typesetQuotes(programme));
+	const displayRegions = $derived(typesetQuotes((regions ?? []).join(' · ')));
 </script>
 
 <div class="aside-inner">
@@ -71,13 +81,13 @@
 		<img
 			class="plate aside-plate"
 			src={plateSrc}
-			alt={plateAlt}
+			alt={displayPlateAlt}
 			width="380"
 			height="285"
 			loading="lazy"
 			decoding="async"
 		/>
-		<figcaption class="plate-caption">{plateCaption}</figcaption>
+		<figcaption class="plate-caption">{displayPlateCaption}</figcaption>
 	</figure>
 
 	{#if hasLedger}
@@ -91,19 +101,19 @@
 			{#if showFunding && directors.length > 0}
 				<div class="stat-row">
 					<dt>{directors.length > 1 ? 'Co-directors' : 'Co-director'}</dt>
-					<dd class="stat-value">{directors.join(' · ')}</dd>
+					<dd class="stat-value">{displayDirectors}</dd>
 				</div>
 			{/if}
 			{#if showFunding && funderLabel}
 				<div class="stat-row">
 					<dt>Funder</dt>
-					<dd class="stat-value">{funderLabel}</dd>
+					<dd class="stat-value">{displayFunder}</dd>
 				</div>
 			{/if}
 			{#if programme}
 				<div class="stat-row">
 					<dt>Programme</dt>
-					<dd class="stat-value">{programme}</dd>
+					<dd class="stat-value">{displayProgramme}</dd>
 				</div>
 			{/if}
 			{#if showFunding && grantAmount}
@@ -118,7 +128,7 @@
 			{#if regions && regions.length > 0}
 				<div class="stat-row">
 					<dt>Regions</dt>
-					<dd class="stat-value">{regions.join(' · ')}</dd>
+					<dd class="stat-value">{displayRegions}</dd>
 				</div>
 			{/if}
 		</dl>
@@ -129,7 +139,7 @@
 			<p class="aside-block-label">Source languages</p>
 			<div class="chip-row">
 				{#each sourceLanguages as lang (lang)}
-					<span class="chip">{lang}</span>
+					<span class="chip">{typesetQuotes(lang)}</span>
 				{/each}
 			</div>
 		</div>
@@ -146,7 +156,7 @@
 					target={cta.external ? '_blank' : undefined}
 					rel={cta.external ? 'noopener noreferrer' : undefined}
 				>
-					<span>{cta.label}</span>
+					<span>{typesetQuotes(cta.label)}</span>
 					{#if cta.external}<span class="cta-glyph" aria-hidden="true">↗</span>{/if}
 				</a>
 			{/each}

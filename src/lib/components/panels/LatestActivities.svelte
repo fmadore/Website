@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import { getActivities } from '../../stores/activities.svelte';
 	import type { Activity } from '$lib/types';
 	import { resolve } from '$app/paths';
@@ -73,13 +74,15 @@
 						href={resolve(`/activities/${activity.id}` as `/activities/${string}`)}
 						class="activity-title leading-relaxed"
 					>
-						{activity.title}
+						{typesetQuotes(activity.title)}
 					</a>
 					{#if activity.description}
 						<div class="activity-abstract leading-relaxed">
-							{activity.description.length > 100
-								? activity.description.substring(0, 100) + '...'
-								: activity.description}
+							{typesetQuotes(
+								activity.description.length > 100
+									? activity.description.substring(0, 100) + '...'
+									: activity.description
+							)}
 						</div>
 					{/if}
 				</li>

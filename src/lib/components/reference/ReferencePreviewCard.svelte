@@ -5,6 +5,7 @@
 	import { goto } from '$app/navigation';
 	import type { ReferenceIndexEntry } from '$lib/types/referenceIndex';
 	import { calculateCardPosition, getItemYear } from '$lib/utils/cardPositioning';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	let {
 		item,
@@ -128,7 +129,7 @@
 				<div class="card-image-container">
 					<img
 						src={imageSrc}
-						alt={item.title}
+						alt={typesetQuotes(item.title)}
 						class="card-image"
 						loading="lazy"
 						decoding="async"
@@ -139,9 +140,9 @@
 				</div>
 			{/if}
 			<div class="card-content">
-				<h4 class="card-title">{item.title}</h4>
+				<h4 class="card-title">{typesetQuotes(item.title)}</h4>
 				{#if item.authors && item.authors.length > 0}
-					<p class="card-authors">{item.authors.join(', ')}</p>
+					<p class="card-authors">{typesetQuotes(item.authors.join(', '))}</p>
 				{/if}
 
 				<!-- Dateline — a mono data stamp, not a filled badge. -->
@@ -151,13 +152,13 @@
 
 				{#if itemType === 'publication'}
 					{#if item.type === 'article' && 'journal' in item && item.journal}
-						<p class="card-meta"><em>{item.journal}</em></p>
+						<p class="card-meta"><em>{typesetQuotes(item.journal)}</em></p>
 					{:else if item.type === 'chapter' && 'book' in item && item.book}
-						<p class="card-meta">In: <em>{item.book}</em></p>
+						<p class="card-meta">In: <em>{typesetQuotes(item.book)}</em></p>
 					{:else if item.type === 'book' && 'publisher' in item && item.publisher}
-						<p class="card-meta">{item.publisher}</p>
+						<p class="card-meta">{typesetQuotes(item.publisher)}</p>
 					{:else if item.type === 'special-issue' && 'journal' in item && item.journal}
-						<p class="card-meta">Special Issue: <em>{item.journal}</em></p>
+						<p class="card-meta">Special Issue: <em>{typesetQuotes(item.journal)}</em></p>
 					{/if}
 				{:else if itemType === 'communication'}
 					{#if item.type}
@@ -173,28 +174,28 @@
 					{/if}
 					{#if item.type === 'event'}
 						{#if 'conference' in item && item.conference}
-							<p class="card-meta"><em>{item.conference}</em></p>
+							<p class="card-meta"><em>{typesetQuotes(item.conference)}</em></p>
 						{/if}
 						{#if 'location' in item && 'country' in item && item.location && item.country}
-							<p class="card-meta">{item.location}, {item.country}</p>
+							<p class="card-meta">{typesetQuotes(`${item.location}, ${item.country}`)}</p>
 						{:else if 'location' in item && item.location}
-							<p class="card-meta">{item.location}</p>
+							<p class="card-meta">{typesetQuotes(item.location)}</p>
 						{/if}
 					{:else if item.type === 'podcast'}
 						{#if 'conference' in item && item.conference}
-							<p class="card-meta"><em>{item.conference}</em></p>
+							<p class="card-meta"><em>{typesetQuotes(item.conference)}</em></p>
 						{/if}
 						{#if 'episode' in item && item.episode}
 							<p class="card-meta">Episode {item.episode}</p>
 						{/if}
 					{:else}
 						{#if 'conference' in item && item.conference}
-							<p class="card-meta"><em>{item.conference}</em></p>
+							<p class="card-meta"><em>{typesetQuotes(item.conference)}</em></p>
 						{/if}
 						{#if 'location' in item && 'country' in item && item.location && item.country}
-							<p class="card-meta">{item.location}, {item.country}</p>
+							<p class="card-meta">{typesetQuotes(`${item.location}, ${item.country}`)}</p>
 						{:else if 'location' in item && item.location}
-							<p class="card-meta">{item.location}</p>
+							<p class="card-meta">{typesetQuotes(item.location)}</p>
 						{/if}
 					{/if}
 				{/if}
