@@ -604,7 +604,7 @@ no two channels carry the same value.
 							role="img"
 							aria-label="{node.id}: {node.weight} {node.weight === 1
 								? labelCopy.itemSingular
-								: labelCopy.itemSingular + 's'}"
+								: labelCopy.itemPlural.toLowerCase()}"
 							onpointerenter={(e) => {
 								hoveredId = node.id;
 								positionTooltip(e.clientX, e.clientY, nodeTooltip(node));
@@ -692,7 +692,7 @@ no two channels carry the same value.
 		{#each selection.nodes as node (node.id)}
 			<li>
 				{typesetQuotes(node.id)}: {node.weight}
-				{node.weight === 1 ? labelCopy.itemSingular : labelCopy.itemSingular + 's'}
+				{node.weight === 1 ? labelCopy.itemSingular : labelCopy.itemPlural.toLowerCase()}
 			</li>
 		{/each}
 	</ul>

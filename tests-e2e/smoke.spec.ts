@@ -177,8 +177,17 @@ test('network marks are keyboard focusable', async ({ page }) => {
 	await expect(row).toHaveAttribute('tabindex', '0');
 	await expect(row).toHaveAttribute('aria-label', /.+/);
 
-	await row.focus();
-	await expect(section.locator('.viz-tooltip')).toBeVisible();
+	// The whole ledger is prerendered, so every assertion above is satisfied by
+	// the static markup and none of them waits for hydration. A focus landing
+	// before the handler is attached is lost for good — `focus` does not fire
+	// again on an already-focused element — so retry through blur/refocus until
+	// the page is live rather than racing it once.
+	const tooltip = section.locator('.viz-tooltip');
+	await expect(async () => {
+		await row.blur();
+		await row.focus();
+		await expect(tooltip).toBeVisible({ timeout: 1_000 });
+	}).toPass({ timeout: 15_000 });
 });
 
 test('rss.xml is served and is a well-formed feed', async ({ page, request }) => {
