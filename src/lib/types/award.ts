@@ -7,4 +7,5 @@ export interface Award {
 	dateISO: string; // Full date for sorting, e.g., '2023-01-01'
 	location?: string; // Optional location if relevant
 	details?: string; // Optional extra details
+	url?: string; // Optional link to the awarding body's announcement or award page
 }

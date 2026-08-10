@@ -66,7 +66,13 @@ export const GET: RequestHandler = async () => {
 					links: buildLinks([{ label: 'Grant', url: grant.url }])
 				})
 			),
-			awards: awardsByDate.map((item) => compact({ ...item })),
+			awards: awardsByDate.map((award) =>
+				compact({
+					...award,
+					url: undefined,
+					links: buildLinks([{ label: 'Award', url: award.url }])
+				})
+			),
 			teaching: {
 				courses: teaching.map((course) =>
 					compact({
