@@ -52,6 +52,21 @@ so the prerender crawler finds no anchors to follow, while `sitemap.xml` is
 generated from the datasets and would keep advertising URLs that ship no page.
 `npm run check:prerender` enforces this.
 
+### Generated data files
+
+The three `*.generated.ts` files in `src/lib/data/` (`referenceIndex`,
+`researchProse`, `imageVariants`) are committed, not built on the fly. `prebuild`
+regenerates all three, so a full `npm run build` covers it; after only touching
+`src/lib/data/` or adding an image, the generators alone are quicker:
+
+```bash
+npm run gen:refs && npm run gen:prose && npm run gen:images
+```
+
+`lint` and `check` pass on a stale index — CI does not. `deploy.yml` gates
+`referenceIndex`, `ci.yml` gates it and `researchProse`, both by rerunning the
+same scripts under `--check`, before the SvelteKit build.
+
 ## Architecture
 
 ### Data-Driven Content
