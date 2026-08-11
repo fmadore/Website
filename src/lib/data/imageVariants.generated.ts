@@ -139,6 +139,14 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 		sourceWidth: 600,
 		widths: [400]
 	},
+	'communications/cikm-2026-hero.webp': {
+		sourceWidth: 898,
+		widths: [400, 800]
+	},
+	'communications/cikm-2026.webp': {
+		sourceWidth: 599,
+		widths: [400]
+	},
 	'communications/ciram-2025-hero.webp': {
 		sourceWidth: 1280,
 		widths: [400, 800]

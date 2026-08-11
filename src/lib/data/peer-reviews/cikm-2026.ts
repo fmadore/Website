@@ -3,7 +3,7 @@ import type { PeerReview } from '$lib/types';
 
 export const cikm2026: PeerReview = {
 	id: 'cikm-2026',
-	journal: 'Conference on Information and Knowledge Management (CIKM 2026)',
+	journal: '35th International ACM Conference on Knowledge and Information Management (CIKM 2026)',
 	type: 'Conference Paper',
 	count: 3,
 	year: 2026,
