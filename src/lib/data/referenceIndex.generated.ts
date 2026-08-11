@@ -166,6 +166,30 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"location": "University of Luxembourg",
 		"country": "Luxembourg"
 	},
+	"beyond-keywords-entity-linking-cikm-2026": {
+		"id": "beyond-keywords-entity-linking-cikm-2026",
+		"itemType": "communication",
+		"title": "Beyond Keywords: Training-Free Entity Linking for Multilingual Research Metadata",
+		"authors": [
+			"Jiayu Yang",
+			"Durgesh Nandini",
+			"Mirco Schönfeld",
+			"Frédérick Madore",
+			"Neeraj Thandayan Viswajith",
+			"Oliver Baumann"
+		],
+		"type": "conference",
+		"date": "9 November 2026",
+		"dateISO": "2026-11-09",
+		"year": 2026,
+		"image": "images/communications/cikm-2026.webp",
+		"heroImage": {
+			"src": "images/communications/cikm-2026-hero.webp"
+		},
+		"conference": "35th International ACM Conference on Knowledge and Information Management (CIKM 2026)",
+		"location": "Auditorium Parco della Musica, Rome",
+		"country": "Italy"
+	},
 	"charting-new-territory-digital-humanities-ki-african-studies-2026": {
 		"id": "charting-new-territory-digital-humanities-ki-african-studies-2026",
 		"itemType": "publication",
@@ -2056,6 +2080,20 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"conference": "Workshop Perspectives in Motion: Conceptual Fields from the Global South",
 		"location": "Leibniz-Zentrum Moderner Orient",
 		"country": "Germany"
+	},
+	"trier-coder-interpreter-ia-historien-2026": {
+		"id": "trier-coder-interpreter-ia-historien-2026",
+		"itemType": "publication",
+		"title": "Trier, coder, interpréter : comment l’IA redistribue le travail de l’historien face à 30 000 sources sur l’islam ouest-africain",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"type": "article",
+		"date": "Forthcoming",
+		"dateISO": "2026",
+		"year": 2026,
+		"journal": "Journal of West African History",
+		"publisher": "Michigan State University Press"
 	},
 	"union-islamique-benin-elections": {
 		"id": "union-islamique-benin-elections",
