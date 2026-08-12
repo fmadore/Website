@@ -74,6 +74,13 @@ export const lutteTerrorismeSalafismeBeninTogo: Publication = {
 			title: 'De père en fils : la continuité des régimes togolais et gabonais',
 			source: 'Masters Thesis, Université de Montréal',
 			url: 'https://hdl.handle.net/1866/42365'
+		},
+		{
+			authors: ['Ibrahim Seyni Mamoudou'],
+			year: 2025,
+			title: 'Dialogue interreligieux et reconfiguration silencieuse du paysage religieux nigérien',
+			source: 'Akofena, vol. 18, no. 1, pp. 155-168',
+			url: 'https://doi.org/10.48734/akofena.n018.vol.1.13.2025'
 		}
 	]
 };
