@@ -1,7 +1,7 @@
 import type { Communication } from '$lib/types/communication';
 
-// Panel appearance: AI and Africa Symposium, University of Kansas (African Digital Humanities / AAAS-KASC)
-export const aiAfricaSymposiumKansas2026: Communication = {
+// Talk: invited panellist, AI and Africa Symposium, University of Kansas (African Digital Humanities / AAAS-KASC)
+export const talkAiAfricaSymposiumKansas2026: Communication = {
 	id: 'ai-africa-symposium-kansas-2026',
 	title: 'University of Kansas AI and Africa Symposium',
 	authors: ['Frédérick Madore'],
@@ -12,7 +12,7 @@ export const aiAfricaSymposiumKansas2026: Communication = {
 	panelTitle: 'Panel I: African History',
 	location: 'University of Kansas, Lawrence',
 	country: 'United States',
-	type: 'panel',
+	type: 'lecture',
 	language: 'English',
 	abstract:
 		'Featuring panels on African history and literature, the event explores AI models and discourses, as well as digital humanities methods and tools in the African context.',
@@ -78,4 +78,4 @@ export const aiAfricaSymposiumKansas2026: Communication = {
 	project: 'Digital Humanities and AI in African Studies'
 };
 
-export default aiAfricaSymposiumKansas2026;
+export default talkAiAfricaSymposiumKansas2026;

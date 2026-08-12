@@ -30,7 +30,7 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"authors": [
 			"Frédérick Madore"
 		],
-		"type": "panel",
+		"type": "lecture",
 		"date": "17 September 2026",
 		"dateISO": "2026-09-17",
 		"year": 2026,
