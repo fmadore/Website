@@ -120,8 +120,8 @@
 				<div class="stat-row">
 					<dt>{grantCount > 1 ? 'Grants' : 'Grant'}</dt>
 					<dd class="stat-value stat-value--accent">
-						{grantAmount}{#if grantStatus}
-							<span class="grant-status"> · {grantStatus}</span>{/if}
+						<span>{grantAmount}</span>
+						{#if grantStatus}<span class="grant-status">· {grantStatus}</span>{/if}
 					</dd>
 				</div>
 			{/if}
@@ -187,28 +187,44 @@
 		margin: 0 0 var(--space-lg);
 	}
 
+	/* Hanging-key ledger rather than a two-sided balance: the keys hang in a
+	 * fixed mono column and every value sets flush left under the one above.
+	 * Right-aligned values only looked balanced while they fit on one line — a
+	 * funder name or a run of grant figures wrapped into a ragged left edge. */
 	.aside-ledger .stat-row {
-		gap: var(--space-md);
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--space-1) var(--space-md);
 		padding: var(--space-2) 0;
 		border-bottom: var(--rule-hairline) solid var(--color-border);
 		align-items: baseline;
 	}
 
+	/* The key column only earns its keep once there is measure to spare: on a
+	 * phone it would eat a third of the line, so there the key stacks above. */
+	@media (--sm) {
+		.aside-ledger .stat-row {
+			grid-template-columns: 6.5rem minmax(0, 1fr);
+		}
+	}
+
+	/* Keys in the same quiet register as the "Source languages" label below. */
 	.aside-ledger dt {
-		flex-shrink: 0;
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-semibold);
 		text-transform: uppercase;
-		letter-spacing: 0.08em;
+		letter-spacing: 0.12em;
 		color: var(--color-text-light);
-		font-weight: var(--font-weight-medium);
 	}
 
 	.aside-ledger dd {
 		margin: 0;
-		text-align: right;
 	}
 
+	/* Keep "· Awarded" whole so the separator never strands at a line end. */
 	.grant-status {
 		font-weight: var(--font-weight-semibold);
+		white-space: nowrap;
 	}
 
 	/* Source-languages block. */
