@@ -14,16 +14,30 @@ export interface JsonLdPlace {
 
 export interface JsonLdOrganization {
 	'@type': 'Organization' | 'EducationalOrganization';
+	'@id'?: string;
 	name: string;
 	url?: string;
 }
 
 export interface JsonLdPerson {
 	'@type': 'Person';
+	'@id'?: string;
 	name: string;
 	url?: string;
 	jobTitle?: string;
 	affiliation?: JsonLdOrganization;
+}
+
+export interface JsonLdCountry {
+	'@type': 'Country';
+	'@id'?: string;
+	name: string;
+}
+
+export interface JsonLdOccupation {
+	'@type': 'Occupation';
+	'@id'?: string;
+	name: string;
 }
 
 export interface JsonLdEducationalCredential {
@@ -63,6 +77,7 @@ export interface JsonLdPublicationContainer {
 	issueNumber?: string;
 	isbn?: string;
 	author?: JsonLdPerson[];
+	editor?: JsonLdPerson[];
 }
 
 export interface JsonLdScholarlyArticleCitation {
@@ -91,6 +106,7 @@ export interface BookJsonLd extends BaseJsonLd {
 export interface ArticleJsonLd extends BaseJsonLd {
 	'@type': 'ScholarlyArticle' | 'Article';
 	author?: JsonLdPerson[];
+	editor?: JsonLdPerson[];
 	datePublished?: string;
 	isPartOf?: JsonLdPublicationContainer;
 	pagination?: string;
@@ -174,13 +190,15 @@ export interface PersonPageJsonLd {
 	'@id': string;
 	name: string;
 	honorificPrefix?: string;
+	description?: string;
 	url?: string;
 	image?: string;
 	email?: string;
 	jobTitle?: string;
+	hasOccupation?: JsonLdOccupation[];
 	worksFor?: JsonLdOrganization;
 	workLocation?: JsonLdPlace;
-	nationality?: string;
+	nationality?: JsonLdCountry;
 	alumniOf?: JsonLdOrganization[];
 	memberOf?: JsonLdOrganization[];
 	hasCredential?: JsonLdEducationalCredential[];

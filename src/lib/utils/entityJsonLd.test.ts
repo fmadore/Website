@@ -7,6 +7,7 @@ import {
 import type { Publication } from '$lib/types/publication';
 import type { Communication } from '$lib/types/communication';
 import type { Activity } from '$lib/types/activity';
+import { website } from '$lib/data/siteConfig';
 
 const BASE = 'https://example.com';
 
@@ -42,11 +43,19 @@ describe('buildPublicationJsonLd', () => {
 		expect(ld.author).toBeUndefined();
 	});
 
-	it('attaches the site URL to the primary author', () => {
-		const ld = buildPublicationJsonLd(pub({ authors: ['Frédérick Madore', 'Jane Doe'] }), BASE);
-		const authors = ld.author as Array<{ name: string; url?: string }>;
-		expect(authors[0]!.url).toBeTruthy();
-		expect(authors[1]!.url).toBeUndefined();
+	it('links the site owner while preserving co-authors', () => {
+		const ld = buildPublicationJsonLd(
+			pub({ authors: ['Jane Doe', 'Frédérick Madore', 'John Roe'] }),
+			BASE
+		);
+		const authors = ld.author as Array<{ '@id'?: string; name: string; url?: string }>;
+		expect(authors.map(({ name }) => name)).toEqual(['Jane Doe', 'Frédérick Madore', 'John Roe']);
+		expect(authors[1]).toMatchObject({
+			'@id': `${website.url}/#person`,
+			url: website.url
+		});
+		expect(authors[0]!.url).toBeUndefined();
+		expect(authors[2]!.url).toBeUndefined();
 	});
 });
 

@@ -31,6 +31,7 @@ export interface AuthorInfo {
 	fullName: string; // With title
 	position: string;
 	positionShort: string; // Without institution name
+	jobTitle: string; // Precise current role for Person JSON-LD
 	tagline: string; // Descriptive hero standfirst — subject + affiliation, not a role list
 	nationality: string; // Used in Person JSON-LD structured data
 }
@@ -40,6 +41,7 @@ export const author: AuthorInfo = {
 	fullName: 'Frédérick Madore, Ph.D.',
 	position: 'Historian | Digital Humanities & AI | Data Curator, University of Bayreuth',
 	positionShort: 'Historian & Data Curator',
+	jobTitle: 'Data Curator',
 	tagline:
 		'Historian of Islam in francophone West Africa, working with digital humanities and AI · Data Curator, Cluster of Excellence “Africa Multiple”, University of Bayreuth',
 	nationality: 'Canada'
@@ -77,6 +79,35 @@ export const address: Address = {
 	country: 'Germany',
 	mapsUrl: 'https://maps.app.goo.gl/ZLoe7FJALUqaQ23m6'
 };
+
+/**
+ * Stable external entities used to reconcile the Person schema with linked
+ * data. Keep volatile biography in the local CV datasets; this small list is
+ * only for durable identity concepts that benefit from an explicit `@id`.
+ */
+export const linkedData = {
+	person: {
+		wikidataId: 'Q55725595'
+	},
+	employer: {
+		name: address.institution,
+		url: 'https://www.uni-bayreuth.de/en/',
+		wikidataId: 'Q702482'
+	},
+	nationality: {
+		name: author.nationality,
+		wikidataId: 'Q16'
+	},
+	occupations: [
+		{ name: 'Historian', wikidataId: 'Q201788' },
+		{ name: 'Digital Humanist', wikidataId: 'Q107619185' }
+	]
+} as const;
+
+/** Human-edited profile metadata; update only when the biography changes. */
+export const profile = {
+	dateModified: '2026-08-12'
+} as const;
 
 export const contact = {
 	email: 'frederick.madore@uni-bayreuth.de'

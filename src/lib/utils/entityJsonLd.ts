@@ -35,17 +35,40 @@ function plainAbstract(abstract: string | undefined): string | undefined {
 }
 
 /**
- * The site owner as a JSON-LD Person with the canonical site URL attached.
+ * The site owner as the canonical Person node shared by the whole site.
  * Identity is checked against `author.name` from siteConfig — never a
  * hardcoded name string (see CLAUDE.md "Author/Affiliation Data").
  */
-function siteAuthorWithUrl(): JsonLdPerson {
-	return { ...formatAuthor(author.name), url: website.url };
+function siteAuthorIdentity(): JsonLdPerson {
+	return {
+		...formatAuthor(author.name),
+		'@id': `${website.url}/#person`,
+		url: website.url
+	};
 }
 
-/** Attach the canonical site URL to the site owner within an author list. */
-function withAuthorUrl(persons: JsonLdPerson[]): JsonLdPerson[] {
-	return persons.map((a) => (a.name === author.name ? { ...a, url: website.url } : a));
+/** Link only the site owner; preserve every other person and the original order. */
+function withSiteAuthorIdentity(persons: JsonLdPerson[]): JsonLdPerson[] {
+	return persons.map((person) => (person.name === author.name ? siteAuthorIdentity() : person));
+}
+
+/** Format a complete contributor list without collapsing co-authors or co-editors. */
+function formatPeopleWithSiteIdentity(names: string[]): JsonLdPerson[] {
+	return withSiteAuthorIdentity(formatAuthors(names));
+}
+
+/**
+ * Publication data stores container editors as a display string. Convert the
+ * documented comma/"and" separators to individual Person nodes before adding
+ * identity data, so a co-edited book never becomes one composite person.
+ */
+function formatEditorString(editors: string): JsonLdPerson[] {
+	return formatPeopleWithSiteIdentity(
+		editors
+			.split(/\s*(?:,|\band\b)\s*/u)
+			.map((name) => name.trim())
+			.filter(Boolean)
+	);
 }
 
 /** Publication as enriched by the data loader (adds the source directory). */
@@ -107,9 +130,9 @@ export function buildPublicationJsonLd(
 		jsonLdObject.spatialCoverage = formatPlaces(publication.country);
 	}
 
-	// Format common fields; attach the canonical site URL to the primary author.
+	// Format every contributor; only the site owner receives the canonical @id.
 	const finalAuthors = publication.authors
-		? withAuthorUrl(formatAuthors(publication.authors))
+		? formatPeopleWithSiteIdentity(publication.authors)
 		: undefined;
 
 	const formattedDatePublished = publication.dateISO
@@ -140,7 +163,7 @@ export function buildPublicationJsonLd(
 					const citationJson: JsonLdScholarlyArticleCitation = {
 						'@type': 'ScholarlyArticle',
 						name: reviewData.title,
-						author: formatAuthor(reviewData.author),
+						author: withSiteAuthorIdentity([formatAuthor(reviewData.author)])[0]!,
 						datePublished: String(reviewData.year),
 						url: reviewData.url
 					};
@@ -159,7 +182,11 @@ export function buildPublicationJsonLd(
 		case 'Article': {
 			// Articles, chapters, encyclopedia entries
 			const articleData = jsonLdObject as Partial<ArticleJsonLd>;
-			articleData.author = finalAuthors;
+			if (publication.isEditedWork) {
+				articleData.editor = finalAuthors;
+			} else {
+				articleData.author = finalAuthors;
+			}
 			articleData.datePublished = formattedDatePublished;
 			articleData.pagination = publication.pages;
 			articleData.publisher = publisherOrg;
@@ -180,11 +207,7 @@ export function buildPublicationJsonLd(
 				articleData.isPartOf = {
 					'@type': 'Book',
 					name: publication.book,
-					author: publication.editors
-						? formatAuthors(
-								Array.isArray(publication.editors) ? publication.editors : [publication.editors]
-							)
-						: undefined
+					editor: publication.editors ? formatEditorString(publication.editors) : undefined
 				};
 				articleData.publisher = publisherOrg;
 			} else if (publication.sourceDirType === 'encyclopedia' && publication.encyclopediaTitle) {
@@ -275,7 +298,7 @@ export function buildCommunicationJsonLd(communication: Communication, base = ''
 	}
 
 	if (communication.authors && communication.authors.length > 0) {
-		jsonLdObject.performer = withAuthorUrl(formatAuthors(communication.authors));
+		jsonLdObject.performer = formatPeopleWithSiteIdentity(communication.authors);
 	}
 
 	if (communication.heroImage?.src) {
@@ -315,7 +338,7 @@ export function buildDhProjectJsonLd(
 		url: project.linkUrl || `${base}/digital-humanities/${project.id}`
 	};
 
-	jsonLdObject.author = [siteAuthorWithUrl()];
+	jsonLdObject.author = [siteAuthorIdentity()];
 
 	if (project.heroImageUrl || project.imageUrl) {
 		jsonLdObject.image = `${base}/${project.heroImageUrl || project.imageUrl}`;
@@ -350,8 +373,8 @@ export function buildActivityJsonLd(activity: Activity, base = ''): BlogPostingJ
 
 	// Site owner as author, with position + affiliation for the blog register
 	jsonLdObject.author = {
-		...siteAuthorWithUrl(),
-		jobTitle: author.positionShort,
+		...siteAuthorIdentity(),
+		jobTitle: author.jobTitle,
 		affiliation: {
 			'@type': 'Organization',
 			name: address.institution

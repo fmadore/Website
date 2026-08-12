@@ -9,7 +9,7 @@ export const maHistUlaval: Education = {
 	year: 2013,
 	type: 'Degree',
 	details: '',
-	dateISO: '2013-09-01'
+	dateISO: '2013-03-31'
 };
 
 export default maHistUlaval;

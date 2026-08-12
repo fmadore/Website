@@ -4,9 +4,17 @@ import {
 	buildCommunicationJsonLd,
 	buildDhProjectJsonLd
 } from './entityJsonLd';
-import { createPersonSchema, createFullPersonSchema } from './jsonLdSchemas';
-import { website, contact, author, researchTopics } from '$lib/data/siteConfig';
+import { createPersonSchema, createFullPersonSchema, createWebPageSchema } from './jsonLdSchemas';
+import {
+	website,
+	contact,
+	author,
+	researchTopics,
+	linkedData,
+	profile
+} from '$lib/data/siteConfig';
 import { allAffiliations } from '$lib/data/affiliations';
+import { maHistUlaval } from '$lib/data/education/ma-hist-ulaval';
 import type { Publication } from '$lib/types/publication';
 import type { Communication } from '$lib/types/communication';
 import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
@@ -39,33 +47,73 @@ describe('buildPublicationJsonLd', () => {
 		).toBe('ScholarlyArticle');
 	});
 
-	it('attaches the canonical site URL to Frédérick Madore as author', () => {
+	it('links Frédérick to the canonical Person node while preserving every co-author', () => {
 		const result = buildPublicationJsonLd(
-			pub({ sourceDirType: 'articles', type: 'article', authors: ['Frédérick Madore', 'Jane Doe'] })
+			pub({
+				sourceDirType: 'articles',
+				type: 'article',
+				authors: ['Jane Doe', 'Frédérick Madore', 'John Roe']
+			})
 		);
-		const author = result.author as Array<{ name: string; url?: string }>;
-		expect(author[0]!).toMatchObject({ name: 'Frédérick Madore', url: website.url });
-		expect(author[1]!.url).toBeUndefined();
+		const authors = result.author as Array<{ '@id'?: string; name: string; url?: string }>;
+		expect(authors.map(({ name }) => name)).toEqual(['Jane Doe', 'Frédérick Madore', 'John Roe']);
+		expect(authors[1]!).toMatchObject({
+			'@id': `${website.url}/#person`,
+			name: 'Frédérick Madore',
+			url: website.url
+		});
+		expect(authors[0]!.url).toBeUndefined();
+		expect(authors[2]!.url).toBeUndefined();
 	});
 
-	it('uses editor (not author) for edited volumes and maps book reviews to citations', () => {
+	it('uses every editor (not author) for edited volumes and maps book reviews to citations', () => {
 		const result = buildPublicationJsonLd(
 			pub({
 				sourceDirType: 'books',
 				isEditedVolume: true,
-				authors: ['Jane Doe'],
+				authors: ['Jane Doe', 'Frédérick Madore'],
 				reviewedBy: [{ title: 'A Review', author: 'Critic', year: 2023, journal: 'JRA' }]
 			})
 		);
 		const book = result as {
 			author?: unknown;
-			editor?: unknown;
+			editor?: Array<{ '@id'?: string; name: string }>;
 			citation?: Array<{ '@type': string; isPartOf?: { name: string } }>;
 		};
 		expect(book.author).toBeUndefined();
-		expect(book.editor).toBeDefined();
+		expect(book.editor?.map(({ name }) => name)).toEqual(['Jane Doe', 'Frédérick Madore']);
+		expect(book.editor?.[1]?.['@id']).toBe(`${website.url}/#person`);
 		expect(book.citation?.[0]!['@type']).toBe('ScholarlyArticle');
 		expect(book.citation?.[0]!.isPartOf?.name).toBe('JRA');
+	});
+
+	it('models chapter container editors as separate people and links the site owner', () => {
+		const result = buildPublicationJsonLd(
+			pub({
+				sourceDirType: 'chapters',
+				type: 'chapter',
+				authors: ['Chapter Author'],
+				book: 'Collected Work',
+				editors: 'Jane Doe, Frédérick Madore and John Roe'
+			})
+		);
+		const editors = (result as { isPartOf?: { editor?: Array<{ '@id'?: string; name: string }> } })
+			.isPartOf?.editor;
+		expect(editors?.map(({ name }) => name)).toEqual(['Jane Doe', 'Frédérick Madore', 'John Roe']);
+		expect(editors?.[1]?.['@id']).toBe(`${website.url}/#person`);
+	});
+
+	it('models special-issue contributors as editors', () => {
+		const result = buildPublicationJsonLd(
+			pub({
+				sourceDirType: 'specialIssues',
+				type: 'special-issue',
+				isEditedWork: true,
+				authors: ['Frédérick Madore', 'Jane Doe']
+			})
+		) as { author?: unknown; editor?: Array<{ name: string }> };
+		expect(result.author).toBeUndefined();
+		expect(result.editor?.map(({ name }) => name)).toEqual(['Frédérick Madore', 'Jane Doe']);
 	});
 
 	it('serialises deterministically (stable property order)', () => {
@@ -86,13 +134,16 @@ describe('buildCommunicationJsonLd', () => {
 		expect(result.url).toBe('/b/communications/talk');
 	});
 
-	it('builds a Place from location + country and attaches presenter url', () => {
+	it('builds a Place and links the presenter to the canonical Person node', () => {
 		const result = buildCommunicationJsonLd(
 			comm({ location: 'Lomé', country: 'Togo', authors: ['Frédérick Madore'] })
 		);
 		expect(result.location).toMatchObject({ '@type': 'Place', name: 'Lomé, Togo' });
-		const performer = result.performer as Array<{ name: string; url?: string }>;
-		expect(performer[0]!.url).toBe(website.url);
+		const performer = result.performer as Array<{ '@id'?: string; name: string; url?: string }>;
+		expect(performer[0]).toMatchObject({
+			'@id': `${website.url}/#person`,
+			url: website.url
+		});
 	});
 
 	it('picks the first language from an array', () => {
@@ -135,6 +186,28 @@ describe('createFullPersonSchema', () => {
 		expect(full.jobTitle).toBe(base.jobTitle);
 		expect(full.worksFor).toEqual(base.worksFor);
 		expect(full.sameAs).toEqual(base.sameAs);
+	});
+
+	it('describes the current role and durable linked-data identities', () => {
+		expect(full.description).toBe(author.tagline);
+		expect(full.jobTitle).toBe('Data Curator');
+		expect(full.hasOccupation).toEqual([
+			{
+				'@type': 'Occupation',
+				'@id': `https://www.wikidata.org/entity/${linkedData.occupations[0].wikidataId}`,
+				name: 'Historian'
+			},
+			{
+				'@type': 'Occupation',
+				'@id': `https://www.wikidata.org/entity/${linkedData.occupations[1].wikidataId}`,
+				name: 'Digital Humanist'
+			}
+		]);
+		expect(full.worksFor).toMatchObject({
+			'@type': 'EducationalOrganization',
+			'@id': `https://www.wikidata.org/entity/${linkedData.employer.wikidataId}`,
+			name: linkedData.employer.name
+		});
 	});
 
 	it('uses an absolute image URL identical to the base schema (no conflicting values)', () => {
@@ -181,9 +254,30 @@ describe('createFullPersonSchema', () => {
 
 	it('sources editorial fields from siteConfig', () => {
 		expect(full.email).toBe(contact.email);
-		expect(full.nationality).toBe(author.nationality);
+		expect(full.nationality).toEqual({
+			'@type': 'Country',
+			'@id': `https://www.wikidata.org/entity/${linkedData.nationality.wikidataId}`,
+			name: author.nationality
+		});
 		expect(full.knowsAbout).toEqual(researchTopics);
 		expect(full.knowsAbout).toContain('Islam');
 		expect(full.knowsAbout).toContain('Digital Humanities');
+	});
+});
+
+describe('profile data', () => {
+	it('publishes the human-edited modification date on the ProfilePage', () => {
+		const page = createWebPageSchema({
+			name: author.name,
+			path: '/',
+			type: 'ProfilePage',
+			dateModified: profile.dateModified
+		});
+		expect(page.dateModified).toBe(profile.dateModified);
+		expect(page.mainEntity?.['@id']).toBe(`${website.url}/#person`);
+	});
+
+	it('records the verified M.A. completion date', () => {
+		expect(maHistUlaval.dateISO).toBe('2013-03-31');
 	});
 });

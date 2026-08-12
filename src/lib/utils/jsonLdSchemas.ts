@@ -11,7 +11,8 @@ import type { Grant } from '$lib/types/grant';
 import type {
 	PersonPageJsonLd,
 	JsonLdOrganization,
-	JsonLdEducationalCredential
+	JsonLdEducationalCredential,
+	JsonLdOccupation
 } from '$lib/types/jsonld';
 import {
 	author,
@@ -19,7 +20,8 @@ import {
 	website,
 	contact,
 	socialLinks,
-	researchTopics
+	researchTopics,
+	linkedData
 } from '$lib/data/siteConfig';
 import { allEducation } from '$lib/data/education';
 import { languagesByProficiency } from '$lib/data/languages';
@@ -72,14 +74,12 @@ export interface PersonSchema {
 	'@type': 'Person';
 	'@id': string;
 	name: string;
+	description?: string;
 	url: string;
 	image?: string;
 	jobTitle?: string;
-	worksFor?: {
-		'@type': 'Organization';
-		name: string;
-		url?: string;
-	};
+	hasOccupation?: JsonLdOccupation[];
+	worksFor?: JsonLdOrganization;
 	sameAs?: string[];
 }
 
@@ -153,6 +153,8 @@ export interface MonetaryGrantSchema {
 const SITE_URL = website.url;
 const SITE_NAME = author.name;
 const SITE_DESCRIPTION = getDefaultDescription();
+const wikidataEntityUrl = (id: string): string => `https://www.wikidata.org/entity/${id}`;
+const wikidataPageUrl = (id: string): string => `https://www.wikidata.org/wiki/${id}`;
 
 /**
  * Creates a WebSite schema - add to root layout for sitelinks eligibility
@@ -185,13 +187,20 @@ export function createPersonSchema(): PersonSchema {
 		'@type': 'Person',
 		'@id': `${SITE_URL}/#person`,
 		name: author.name,
+		description: author.tagline,
 		url: SITE_URL,
 		image: `${SITE_URL}/images/Profile-picture.webp`,
-		jobTitle: author.positionShort,
+		jobTitle: author.jobTitle,
+		hasOccupation: linkedData.occupations.map((occupation) => ({
+			'@type': 'Occupation',
+			'@id': wikidataEntityUrl(occupation.wikidataId),
+			name: occupation.name
+		})),
 		worksFor: {
-			'@type': 'Organization',
-			name: `${address.institution} (${address.institutionAbbreviation})`,
-			url: address.institutionUrl
+			'@type': 'EducationalOrganization',
+			'@id': wikidataEntityUrl(linkedData.employer.wikidataId),
+			name: linkedData.employer.name,
+			url: linkedData.employer.url
 		},
 		sameAs: [
 			socialLinks.linkedIn.url,
@@ -202,7 +211,7 @@ export function createPersonSchema(): PersonSchema {
 			socialLinks.researchGate.url,
 			'https://hcommons.org/members/fmadore/',
 			'https://zmo.academia.edu/FrederickMadore',
-			'https://www.wikidata.org/wiki/Q55725595'
+			wikidataPageUrl(linkedData.person.wikidataId)
 		]
 	};
 }
@@ -273,16 +282,22 @@ export function createFullPersonSchema(): PersonPageJsonLd {
 		'@id': person['@id'],
 		name: person.name,
 		honorificPrefix: 'Dr.',
+		description: person.description,
 		url: person.url,
 		image: person.image,
 		email: contact.email,
 		jobTitle: person.jobTitle,
+		hasOccupation: person.hasOccupation,
 		worksFor: person.worksFor,
 		workLocation: {
 			'@type': 'Place',
 			name: address.city
 		},
-		nationality: author.nationality,
+		nationality: {
+			'@type': 'Country',
+			'@id': wikidataEntityUrl(linkedData.nationality.wikidataId),
+			name: linkedData.nationality.name
+		},
 		alumniOf,
 		memberOf,
 		hasCredential,

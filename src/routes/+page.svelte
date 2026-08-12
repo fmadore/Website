@@ -5,6 +5,7 @@
 	import SEO from '$lib/SEO.svelte';
 	import { base, resolve } from '$app/paths';
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
+	import { profile } from '$lib/data/siteConfig';
 	import type { PageData } from './$types';
 
 	let { data } = $props<{ data: PageData }>();
@@ -24,6 +25,7 @@
 	keywords="Frédérick Madore, Islam, West Africa, Digital Humanities, Artificial Intelligence, Omeka S, Islam West Africa Collection, IWAC, AMIRA, Africa Multiple Interactive Research Atlas, data curation, University of Bayreuth, Cluster of Excellence Africa Multiple, ZMO, Leibniz-Zentrum Moderner Orient, historian"
 	canonical="https://www.frederickmadore.com"
 	pageType="ProfilePage"
+	dateModified={profile.dateModified}
 	{additionalSchemas}
 />
 
