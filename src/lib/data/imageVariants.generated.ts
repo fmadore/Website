@@ -600,8 +600,8 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 		widths: [400, 800]
 	},
 	'digital-humanities/iwac-sentiment-analysis.webp': {
-		sourceWidth: 600,
-		widths: [400]
+		sourceWidth: 1280,
+		widths: [400, 800]
 	},
 	'digital-humanities/IWAC.webp': {
 		sourceWidth: 1280,
