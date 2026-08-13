@@ -607,6 +607,10 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 		sourceWidth: 1280,
 		widths: [400, 800]
 	},
+	'digital-humanities/live-translation.webp': {
+		sourceWidth: 1280,
+		widths: [400, 800]
+	},
 	'digital-humanities/omeka-s-docker.webp': {
 		sourceWidth: 1280,
 		widths: [400, 800]
