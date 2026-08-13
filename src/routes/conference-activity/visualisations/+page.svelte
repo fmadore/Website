@@ -463,7 +463,7 @@
 		count={locationMapData.length > 0
 			? `${locationMapData.length} countries, ${totalMapped} activities`
 			: ''}
-		description="Geographic distribution of conference venues. Marker size indicates the number of activities per country; click a marker to see individual titles and cities."
+		description="Geographic distribution of conference venues. Switch between proportional markers and country shading; select a country to see individual titles and cities."
 		variant="map"
 		height="500px"
 		placeholderHeight="400px"

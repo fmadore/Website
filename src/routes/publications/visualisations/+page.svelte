@@ -627,7 +627,7 @@
 		count={publisherLocationData.length > 0
 			? `${publisherLocationData.length} countries, ${totalWithLocation} publications`
 			: ''}
-		description="Geographic distribution of publication venues. Marker size indicates publication count."
+		description="Geographic distribution of publication venues. Switch between proportional markers and country shading; select a country to see individual publications."
 		variant="map"
 		height="500px"
 		placeholderHeight="400px"

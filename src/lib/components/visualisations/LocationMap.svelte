@@ -10,10 +10,29 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 	import { COUNTRY_COORDINATES, type LocationDatum } from '$lib/data/geo';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { getResolvedChartColors } from '$lib/utils/chartColorUtils';
+	import {
+		buildChoroplethBins,
+		buildChoroplethFillExpression,
+		buildChoroplethPalette,
+		enrichCountryBoundaries,
+		mixRgbColors,
+		type CountryBoundaryCollection
+	} from '$lib/utils/choropleth';
+	import { toRgbString } from '$lib/utils/colorContrast';
 	import { prefersReducedMotion, type MapLibreModule } from '$lib/utils/maplibre';
 	import { useMapLibre } from '$lib/utils/useMapLibre.svelte';
 	import { createContainedPopup } from '$lib/utils/mapPopups';
-	import type { Popup } from 'maplibre-gl';
+	import { onMount } from 'svelte';
+	import type { Map as MapLibreMap, MapLayerMouseEvent, Popup } from 'maplibre-gl';
+
+	type MapViewMode = 'markers' | 'choropleth';
+	type ChoroplethStatus = 'idle' | 'loading' | 'ready' | 'error';
+
+	const VIEW_MODE_STORAGE_KEY = 'location-map-view-mode';
+	const COUNTRY_BOUNDARY_URL = `${base}/data/world-countries-110m.geojson`;
+	const CHOROPLETH_SOURCE_ID = 'location-country-boundaries';
+	const CHOROPLETH_BASE_LAYER_ID = 'location-country-outlines';
+	const CHOROPLETH_FILL_LAYER_ID = 'location-country-fills';
 
 	// Props
 	let {
@@ -34,6 +53,13 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 
 	// State
 	let activePopup: Popup | null = null;
+	let viewMode = $state<MapViewMode>('markers');
+	let choroplethStatus = $state<ChoroplethStatus>('idle');
+	let choroplethError = $state<string | null>(null);
+	let boundaryCache: CountryBoundaryCollection | null = null;
+	let boundaryPromise: Promise<CountryBoundaryCollection> | null = null;
+	let viewRenderId = 0;
+	let choroplethInteractionsRegistered = false;
 	// Imperative lookup keyed by country, only ever mutated from inside effects to
 	// add/remove MapLibre markers. Not used reactively in the template, so a plain
 	// Map (not SvelteMap) is appropriate.
@@ -54,6 +80,30 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 
 	// Filter data to only include countries with coordinates
 	const mappableData = $derived(data.filter((d) => COUNTRY_COORDINATES[d.country]));
+	const choroplethPalette = $derived(
+		buildChoroplethPalette(resolvedColors.surface, resolvedColors.accent, 5).map(toRgbString)
+	);
+	const choroplethBins = $derived(
+		buildChoroplethBins(
+			mappableData.map((datum) => datum.count),
+			choroplethPalette
+		)
+	);
+	const noDataColor = $derived(
+		toRgbString(mixRgbColors(resolvedColors.surface, resolvedColors.border, 0.2))
+	);
+	const legendTitle = $derived(
+		`${pluralizeItemLabel(2).charAt(0).toUpperCase()}${pluralizeItemLabel(2).slice(1)} per country`
+	);
+
+	onMount(() => {
+		try {
+			const savedMode = window.sessionStorage.getItem(VIEW_MODE_STORAGE_KEY);
+			if (savedMode === 'markers' || savedMode === 'choropleth') viewMode = savedMode;
+		} catch {
+			// Session storage may be unavailable in strict privacy contexts.
+		}
+	});
 
 	// Escape user-provided text so it's safe to interpolate into HTML strings
 	// (including attribute values). The popup content is currently populated
@@ -67,8 +117,14 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 			.replace(/'/g, '&#39;');
 	}
 
+	function pluralizeItemLabel(count: number): string {
+		if (count === 1) return itemLabel;
+		if (/[^aeiou]y$/i.test(itemLabel)) return `${itemLabel.slice(0, -1)}ies`;
+		return `${itemLabel}s`;
+	}
+
 	function pluralLabel(count: number): string {
-		return `${count} ${itemLabel}${count > 1 ? 's' : ''}`;
+		return `${count} ${pluralizeItemLabel(count)}`;
 	}
 
 	// Create popup content
@@ -135,19 +191,107 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		return content;
 	}
 
-	// Add markers to map
-	function addMarkers() {
+	function clearActivePopup() {
+		if (!activePopup) return;
+		activePopup.remove();
+		activePopup = null;
+	}
+
+	function clearMarkers() {
+		markers.forEach((marker) => marker.remove());
+		markers.clear();
+	}
+
+	function handleChoroplethClick(event: MapLayerMouseEvent) {
+		const iso3 = String(event.features?.[0]?.properties?.iso3 ?? '');
+		const datum = mappableData.find(
+			(candidate) => COUNTRY_COORDINATES[candidate.country]?.iso3 === iso3
+		);
+		const activeMap = ml.map;
+		const gl = ml.maplibregl;
+		if (!datum || !activeMap || !gl) return;
+
+		clearActivePopup();
+		activePopup = createContainedPopup(
+			gl,
+			activeMap,
+			mapContainer,
+			{
+				lngLat: [event.lngLat.lng, event.lngLat.lat],
+				className: 'map-popup location-map-popup',
+				offset: 8,
+				maxWidth: '300px'
+			},
+			createPopupContent(datum)
+		);
+		activePopup.addTo(activeMap);
+	}
+
+	function handleChoroplethMouseEnter() {
+		const activeMap = ml.map;
+		if (activeMap) activeMap.getCanvas().style.cursor = 'pointer';
+	}
+
+	function handleChoroplethMouseLeave() {
+		const activeMap = ml.map;
+		if (activeMap) activeMap.getCanvas().style.cursor = '';
+	}
+
+	function registerChoroplethInteractions(activeMap: MapLibreMap) {
+		if (choroplethInteractionsRegistered) return;
+		activeMap.on('click', CHOROPLETH_FILL_LAYER_ID, handleChoroplethClick);
+		activeMap.on('mouseenter', CHOROPLETH_FILL_LAYER_ID, handleChoroplethMouseEnter);
+		activeMap.on('mouseleave', CHOROPLETH_FILL_LAYER_ID, handleChoroplethMouseLeave);
+		choroplethInteractionsRegistered = true;
+	}
+
+	function unregisterChoroplethInteractions(activeMap: MapLibreMap) {
+		if (!choroplethInteractionsRegistered) return;
+		activeMap.off('click', CHOROPLETH_FILL_LAYER_ID, handleChoroplethClick);
+		activeMap.off('mouseenter', CHOROPLETH_FILL_LAYER_ID, handleChoroplethMouseEnter);
+		activeMap.off('mouseleave', CHOROPLETH_FILL_LAYER_ID, handleChoroplethMouseLeave);
+		activeMap.getCanvas().style.cursor = '';
+		choroplethInteractionsRegistered = false;
+	}
+
+	function clearChoropleth(activeMap: MapLibreMap) {
+		unregisterChoroplethInteractions(activeMap);
+		if (activeMap.getLayer(CHOROPLETH_FILL_LAYER_ID)) {
+			activeMap.removeLayer(CHOROPLETH_FILL_LAYER_ID);
+		}
+		if (activeMap.getLayer(CHOROPLETH_BASE_LAYER_ID)) {
+			activeMap.removeLayer(CHOROPLETH_BASE_LAYER_ID);
+		}
+		if (activeMap.getSource(CHOROPLETH_SOURCE_ID)) {
+			activeMap.removeSource(CHOROPLETH_SOURCE_ID);
+		}
+	}
+
+	function fitDataBounds(activeMap: MapLibreMap, gl: MapLibreModule) {
+		if (mappableData.length === 0) return;
+		const bounds = new gl.LngLatBounds();
+		for (const datum of mappableData) {
+			const coords = COUNTRY_COORDINATES[datum.country];
+			if (coords) bounds.extend([coords.lng, coords.lat]);
+		}
+		if (bounds.isEmpty()) return;
+		activeMap.fitBounds(bounds, {
+			padding: 60,
+			maxZoom: 5,
+			duration: prefersReducedMotion() ? 0 : 1200,
+			curve: 1.4
+		});
+	}
+
+	// Add the default proportional-marker view.
+	function addMarkers(fitBounds = true) {
 		const activeMap = ml.map;
 		const gl = ml.maplibregl;
 		if (!activeMap || !gl) return;
 
-		// Clear existing
-		markers.forEach((marker) => marker.remove());
-		markers.clear();
-		if (activePopup) {
-			activePopup.remove();
-			activePopup = null;
-		}
+		clearChoropleth(activeMap);
+		clearMarkers();
+		clearActivePopup();
 
 		mappableData.forEach((datum) => {
 			const coords = COUNTRY_COORDINATES[datum.country];
@@ -192,29 +336,144 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 			markers.set(datum.country, marker);
 		});
 
-		// Fit bounds if we have markers
-		if (mappableData.length > 0 && markers.size > 0) {
-			const bounds = new gl.LngLatBounds();
-			mappableData.forEach((datum) => {
-				const coords = COUNTRY_COORDINATES[datum.country];
-				if (coords) {
-					bounds.extend([coords.lng, coords.lat]);
-				}
+		if (fitBounds) fitDataBounds(activeMap, gl);
+	}
+
+	async function loadCountryBoundaries(): Promise<CountryBoundaryCollection> {
+		if (boundaryCache) return boundaryCache;
+		if (!boundaryPromise) {
+			boundaryPromise = fetch(COUNTRY_BOUNDARY_URL)
+				.then(async (response) => {
+					if (!response.ok) {
+						throw new Error(`Country boundaries returned HTTP ${response.status}.`);
+					}
+					const collection = (await response.json()) as CountryBoundaryCollection;
+					if (collection.type !== 'FeatureCollection' || !Array.isArray(collection.features)) {
+						throw new Error('Country boundary data has an invalid format.');
+					}
+					boundaryCache = collection;
+					return collection;
+				})
+				.catch((error) => {
+					boundaryPromise = null;
+					throw error;
+				});
+		}
+		return boundaryPromise;
+	}
+
+	async function addChoropleth(renderId: number) {
+		const activeMap = ml.map;
+		const gl = ml.maplibregl;
+		if (!activeMap || !gl) return;
+
+		// Markers remain as a useful fallback while the lazy boundary request is in flight.
+		if (!boundaryCache) addMarkers();
+		choroplethStatus = 'loading';
+		choroplethError = null;
+
+		try {
+			const boundaries = await loadCountryBoundaries();
+			if (renderId !== viewRenderId || viewMode !== 'choropleth' || ml.map !== activeMap) return;
+
+			clearMarkers();
+			clearActivePopup();
+			clearChoropleth(activeMap);
+
+			const enriched = enrichCountryBoundaries(boundaries, mappableData, COUNTRY_COORDINATES);
+			activeMap.addSource(CHOROPLETH_SOURCE_ID, {
+				type: 'geojson',
+				data: enriched
 			});
-			if (!bounds.isEmpty()) {
-				activeMap.fitBounds(bounds, {
-					padding: 60,
-					maxZoom: 5,
-					duration: prefersReducedMotion() ? 0 : 1200,
-					curve: 1.4
+
+			const beforeLabels = activeMap
+				.getStyle()
+				.layers?.find((layer) => layer.type === 'symbol')?.id;
+			const reducedMotion = prefersReducedMotion();
+			activeMap.addLayer(
+				{
+					id: CHOROPLETH_BASE_LAYER_ID,
+					type: 'fill',
+					source: CHOROPLETH_SOURCE_ID,
+					paint: {
+						'fill-color': noDataColor,
+						'fill-opacity': 0.18,
+						'fill-outline-color': toRgbString(resolvedColors.border),
+						'fill-layer-opacity': reducedMotion ? 1 : 0,
+						'fill-layer-opacity-transition': { duration: reducedMotion ? 0 : 220, delay: 0 }
+					}
+				},
+				beforeLabels
+			);
+			activeMap.addLayer(
+				{
+					id: CHOROPLETH_FILL_LAYER_ID,
+					type: 'fill',
+					source: CHOROPLETH_SOURCE_ID,
+					filter: ['==', ['get', 'hasData'], true],
+					paint: {
+						'fill-color': buildChoroplethFillExpression(choroplethBins, noDataColor),
+						'fill-opacity': 0.84,
+						'fill-outline-color': toRgbString(resolvedColors.border),
+						'fill-layer-opacity': reducedMotion ? 1 : 0,
+						'fill-layer-opacity-transition': { duration: reducedMotion ? 0 : 220, delay: 0 }
+					}
+				},
+				beforeLabels
+			);
+
+			registerChoroplethInteractions(activeMap);
+			choroplethStatus = 'ready';
+			fitDataBounds(activeMap, gl);
+
+			if (!reducedMotion) {
+				requestAnimationFrame(() => {
+					if (activeMap.getLayer(CHOROPLETH_BASE_LAYER_ID)) {
+						activeMap.setPaintProperty(CHOROPLETH_BASE_LAYER_ID, 'fill-layer-opacity', 1);
+					}
+					if (activeMap.getLayer(CHOROPLETH_FILL_LAYER_ID)) {
+						activeMap.setPaintProperty(CHOROPLETH_FILL_LAYER_ID, 'fill-layer-opacity', 1);
+					}
 				});
 			}
+		} catch (error) {
+			if (renderId !== viewRenderId || viewMode !== 'choropleth') return;
+			choroplethStatus = 'error';
+			choroplethError =
+				error instanceof Error ? error.message : 'Country boundaries could not be loaded.';
 		}
 	}
 
+	function renderMapView() {
+		const renderId = ++viewRenderId;
+		if (viewMode === 'markers') {
+			choroplethStatus = 'idle';
+			choroplethError = null;
+			addMarkers();
+			return;
+		}
+		void addChoropleth(renderId);
+	}
+
+	function selectViewMode(mode: MapViewMode) {
+		if (viewMode === mode) return;
+		viewMode = mode;
+		try {
+			window.sessionStorage.setItem(VIEW_MODE_STORAGE_KEY, mode);
+		} catch {
+			// The map still works when storage is blocked.
+		}
+	}
+
+	function retryChoropleth() {
+		boundaryPromise = null;
+		boundaryCache = null;
+		renderMapView();
+	}
+
 	// Shared MapLibre lifecycle (WebGL guard, dynamic import, controls, theme
-	// style swap, cleanup). Markers re-render via onStyleReady on theme change
-	// and via watchData/onDataChange on data change — never twice per toggle.
+	// style swap, cleanup). The active view re-renders after style, data, or
+	// mode changes; country boundaries are cached after their first lazy fetch.
 	const ml = useMapLibre({
 		getContainer: () => mapContainer,
 		getMapOptions: () => ({
@@ -227,16 +486,14 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		onInit: (m, gl) => {
 			m.addControl(new gl.AttributionControl({ compact: true }), 'bottom-right');
 		},
-		onStyleReady: () => addMarkers(),
-		watchData: () => data,
-		onDataChange: () => addMarkers(),
+		onStyleReady: () => renderMapView(),
+		watchData: () => ({ data, viewMode }),
+		onDataChange: () => renderMapView(),
 		onCleanup: () => {
-			if (activePopup) {
-				activePopup.remove();
-				activePopup = null;
-			}
-			markers.forEach((marker) => marker.remove());
-			markers.clear();
+			viewRenderId++;
+			clearActivePopup();
+			clearMarkers();
+			if (ml.map) clearChoropleth(ml.map);
 		}
 	});
 	const importError = $derived(ml.importError);
@@ -244,6 +501,48 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 
 <div class="map-wrapper">
 	<div bind:this={mapContainer} class="map-container">
+		{#if data.length > 0 && !importError}
+			<div class="map-mode-panel">
+				<div class="map-mode-toggle" role="group" aria-label="Map display mode">
+					<button
+						type="button"
+						class:active={viewMode === 'markers'}
+						aria-pressed={viewMode === 'markers'}
+						onclick={() => selectViewMode('markers')}>Markers</button
+					>
+					<button
+						type="button"
+						class:active={viewMode === 'choropleth'}
+						aria-pressed={viewMode === 'choropleth'}
+						onclick={() => selectViewMode('choropleth')}>Choropleth</button
+					>
+				</div>
+
+				{#if viewMode === 'choropleth' && choroplethStatus === 'loading'}
+					<p class="map-mode-status" aria-live="polite">Loading country boundaries…</p>
+				{:else if viewMode === 'choropleth' && choroplethStatus === 'error'}
+					<div class="map-mode-status map-mode-error" aria-live="polite">
+						<span>Country shading is unavailable. {choroplethError}</span>
+						<button type="button" onclick={retryChoropleth}>Try again</button>
+					</div>
+				{/if}
+			</div>
+
+			{#if viewMode === 'choropleth' && choroplethStatus === 'ready' && choroplethBins.length > 0}
+				<div class="choropleth-legend" aria-label={legendTitle}>
+					<span class="legend-title">{legendTitle}</span>
+					<ul class="legend-scale">
+						{#each choroplethBins as bin (bin.min)}
+							<li>
+								<span class="legend-swatch" style={`background-color: ${bin.color}`}></span>
+								<span>{bin.label}</span>
+							</li>
+						{/each}
+					</ul>
+				</div>
+			{/if}
+		{/if}
+
 		{#if importError}
 			<div class="map-error">
 				<p>Error loading map: {importError}</p>
@@ -277,6 +576,127 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		overflow: hidden;
 		z-index: 1;
 		isolation: isolate;
+	}
+
+	.map-mode-panel {
+		position: absolute;
+		inset-block-start: var(--space-sm);
+		inset-inline-start: var(--space-sm);
+		z-index: 2;
+		max-width: min(250px, calc(100% - 5rem));
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-xs);
+	}
+
+	.map-mode-toggle {
+		display: inline-flex;
+		background: var(--color-surface-elevated);
+		border: var(--border-width-thin) solid var(--color-border);
+	}
+
+	.map-mode-toggle button {
+		min-height: 2rem;
+		padding: var(--space-2xs) var(--space-sm);
+		border: 0;
+		border-inline-end: var(--border-width-thin) solid var(--color-border);
+		background: transparent;
+		color: var(--color-text-muted);
+		font: inherit;
+		line-height: 1;
+		cursor: pointer;
+	}
+
+	.map-mode-toggle button:last-child {
+		border-inline-end: 0;
+	}
+
+	.map-mode-toggle button:hover {
+		color: var(--color-text);
+		background: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface-elevated));
+	}
+
+	.map-mode-toggle button.active {
+		background: var(--color-accent);
+		color: var(--color-surface);
+	}
+
+	.map-mode-toggle button:focus-visible,
+	.map-mode-status button:focus-visible {
+		outline: 2px solid var(--color-focus);
+		outline-offset: 2px;
+		position: relative;
+		z-index: 1;
+	}
+
+	.map-mode-status {
+		margin: var(--space-2xs) 0 0;
+		padding: var(--space-xs) var(--space-sm);
+		background: var(--color-surface-elevated);
+		border: var(--border-width-thin) solid var(--color-border);
+		color: var(--color-text-muted);
+		line-height: var(--line-height-normal);
+		overflow-wrap: anywhere;
+	}
+
+	.map-mode-error {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: var(--space-2xs);
+		color: var(--color-danger);
+	}
+
+	.map-mode-status button {
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: currentColor;
+		font: inherit;
+		text-decoration: underline;
+		text-underline-offset: 0.18em;
+		cursor: pointer;
+	}
+
+	.choropleth-legend {
+		position: absolute;
+		inset-inline-start: var(--space-sm);
+		inset-block-end: var(--space-sm);
+		z-index: 2;
+		width: min(270px, calc(100% - var(--space-lg)));
+		padding: var(--space-xs) var(--space-sm);
+		background: var(--color-surface-elevated);
+		border: var(--border-width-thin) solid var(--color-border);
+		color: var(--color-text);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-xs);
+	}
+
+	.legend-title {
+		display: block;
+		margin-bottom: var(--space-2xs);
+		color: var(--color-text-muted);
+		line-height: var(--line-height-tight);
+	}
+
+	.legend-scale {
+		display: flex;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.legend-scale li {
+		flex: 1;
+		min-width: 0;
+		font-variant-numeric: tabular-nums;
+		line-height: 1;
+	}
+
+	.legend-swatch {
+		display: block;
+		height: 0.5rem;
+		margin-bottom: var(--space-2xs);
+		border-block: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
 	}
 
 	.map-error {
@@ -443,6 +863,28 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 	@media (--sm-down) {
 		.map-container {
 			min-height: 300px;
+		}
+
+		.map-mode-panel {
+			inset-block-start: var(--space-xs);
+			inset-inline-start: var(--space-xs);
+			max-width: calc(100% - 4.5rem);
+		}
+
+		.map-mode-toggle button {
+			padding-inline: var(--space-xs);
+		}
+
+		.choropleth-legend {
+			inset-inline-start: var(--space-xs);
+			inset-block-end: var(--space-xs);
+			width: calc(100% - var(--space-md));
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(.location-marker) {
+			transition: none;
 		}
 	}
 </style>

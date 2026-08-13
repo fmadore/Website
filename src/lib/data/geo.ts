@@ -8,23 +8,23 @@
 // `publisherLocation` or an activity's `location.country`. Unmapped countries
 // are silently dropped from the map with a visible "N not shown" note.
 
-export type CountryCoordinates = { lat: number; lng: number };
+export type CountryCoordinates = { lat: number; lng: number; iso3: string };
 
 export const COUNTRY_COORDINATES: Record<string, CountryCoordinates> = {
 	// Publications — publisher locations
-	Belgium: { lat: 50.8503, lng: 4.3517 },
-	Canada: { lat: 45.4215, lng: -75.6972 },
-	France: { lat: 48.8566, lng: 2.3522 },
-	Germany: { lat: 52.52, lng: 13.405 },
-	Netherlands: { lat: 52.3676, lng: 4.9041 },
-	Senegal: { lat: 14.7167, lng: -17.4677 },
-	Switzerland: { lat: 46.9481, lng: 7.4474 },
-	'United Kingdom': { lat: 51.5074, lng: -0.1278 },
-	'United States': { lat: 38.9072, lng: -77.0369 },
+	Belgium: { lat: 50.8503, lng: 4.3517, iso3: 'BEL' },
+	Canada: { lat: 45.4215, lng: -75.6972, iso3: 'CAN' },
+	France: { lat: 48.8566, lng: 2.3522, iso3: 'FRA' },
+	Germany: { lat: 52.52, lng: 13.405, iso3: 'DEU' },
+	Netherlands: { lat: 52.3676, lng: 4.9041, iso3: 'NLD' },
+	Senegal: { lat: 14.7167, lng: -17.4677, iso3: 'SEN' },
+	Switzerland: { lat: 46.9481, lng: 7.4474, iso3: 'CHE' },
+	'United Kingdom': { lat: 51.5074, lng: -0.1278, iso3: 'GBR' },
+	'United States': { lat: 38.9072, lng: -77.0369, iso3: 'USA' },
 
 	// Activities — presentation / workshop locations
-	'South Africa': { lat: -25.7479, lng: 28.2293 },
-	Sweden: { lat: 59.3293, lng: 18.0686 }
+	'South Africa': { lat: -25.7479, lng: 28.2293, iso3: 'ZAF' },
+	Sweden: { lat: 59.3293, lng: 18.0686, iso3: 'SWE' }
 };
 
 /**
