@@ -24,7 +24,21 @@ export const COUNTRY_COORDINATES: Record<string, CountryCoordinates> = {
 
 	// Activities — presentation / workshop locations
 	'South Africa': { lat: -25.7479, lng: 28.2293, iso3: 'ZAF' },
-	Sweden: { lat: 59.3293, lng: 18.0686, iso3: 'SWE' }
+	Sweden: { lat: 59.3293, lng: 18.0686, iso3: 'SWE' },
+	Benin: { lat: 6.3703, lng: 2.3912, iso3: 'BEN' },
+	'Burkina Faso': { lat: 12.3714, lng: -1.5197, iso3: 'BFA' },
+	Cameroon: { lat: 3.848, lng: 11.5021, iso3: 'CMR' },
+	"Côte d'Ivoire": { lat: 5.36, lng: -4.0083, iso3: 'CIV' },
+	'Czech Republic': { lat: 50.0755, lng: 14.4378, iso3: 'CZE' },
+	Italy: { lat: 41.9028, lng: 12.4964, iso3: 'ITA' },
+	Luxembourg: { lat: 49.6116, lng: 6.1319, iso3: 'LUX' },
+	Mali: { lat: 12.6392, lng: -8.0029, iso3: 'MLI' },
+	Niger: { lat: 13.5116, lng: 2.1254, iso3: 'NER' },
+	Poland: { lat: 52.2297, lng: 21.0122, iso3: 'POL' },
+	// Natural Earth has a United Kingdom boundary rather than a separate
+	// Scotland feature, so the choropleth joins Scotland to GBR while its marker
+	// remains anchored in Edinburgh.
+	Scotland: { lat: 55.9533, lng: -3.1883, iso3: 'GBR' }
 };
 
 /**
