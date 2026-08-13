@@ -19,6 +19,7 @@
 		"preview": "vite preview",
 		"gen:refs": "node scripts/generate-reference-index.mjs",
 		"gen:prose": "node scripts/generate-research-prose.mjs",
+		"shot": "node scripts/screenshot.mjs",
 		"check:links": "node scripts/check-links.mjs",
 		"check:citations": "node scripts/check-citations.mjs",
 		"check:bundle": "node scripts/check-bundle-budget.mjs",

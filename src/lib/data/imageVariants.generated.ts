@@ -579,6 +579,10 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 		sourceWidth: 1280,
 		widths: [400, 800]
 	},
+	'digital-humanities/genocide-at-the-security-council.webp': {
+		sourceWidth: 1280,
+		widths: [400, 800]
+	},
 	'digital-humanities/global-heshmat.webp': {
 		sourceWidth: 1280,
 		widths: [400, 800]
