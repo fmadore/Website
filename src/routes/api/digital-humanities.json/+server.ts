@@ -24,12 +24,23 @@ const serialise = (project: DigitalHumanitiesProject) =>
 		skills: project.skills,
 		award: project.award,
 		featured: project.featured,
+		seoTitle: project.seoTitle,
+		seoDescription: project.seoDescription,
+		seoKeywords: project.seoKeywords,
 
 		// Scholarly apparatus: the article describing the project, and its reviews.
 		publication: project.publication,
 		reviews: project.reviews,
 
 		image: project.imageUrl ? absoluteUrl(project.imageUrl) : undefined,
+		heroImage: project.heroImageUrl ? absoluteUrl(project.heroImageUrl) : undefined,
+		embeddableContent: project.embeddableContent?.map((embed) =>
+			compact({
+				...embed,
+				src: absoluteUrl(embed.src),
+				linkUrl: embed.type === 'image' && embed.linkUrl ? absoluteUrl(embed.linkUrl) : undefined
+			})
+		),
 		links: buildLinks([
 			{ label: 'Project', url: project.linkUrl },
 			// `links` carries a `type` ('site' | 'code' | 'data'); the label defaults

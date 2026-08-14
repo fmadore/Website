@@ -70,12 +70,20 @@ const serialise = (pub: Publication) =>
 		tags: pub.tags,
 		country: pub.country,
 		project: pub.project,
+		featured: pub.featured,
 
 		// Scholarly apparatus
 		citedBy: pub.citedBy,
 		reviewedBy: pub.reviewedBy,
 
 		image: pub.image ? absoluteUrl(pub.image) : undefined,
+		heroImage: pub.heroImage
+			? compact({
+					src: absoluteUrl(pub.heroImage.src),
+					alt: pub.heroImage.alt,
+					caption: pub.heroImage.caption
+				})
+			: undefined,
 		links: buildLinks(
 			[
 				{ label: 'Source', url: pub.url },

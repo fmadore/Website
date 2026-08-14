@@ -42,6 +42,7 @@ const serialise = (project: ResearchProject) => {
 		url: absoluteUrl(`/research/${project.id}`),
 		title: project.title,
 		shortTitle: project.shortTitle,
+		cardTitle: project.cardTitle,
 		subtitle: project.subtitle,
 		years: project.years,
 		...parseYears(project.years),
@@ -61,6 +62,8 @@ const serialise = (project: ResearchProject) => {
 		coDirectors: project.coDirectors,
 		funder: project.funder,
 		programme: project.programme,
+		projectName: project.projectName,
+		showFunding: project.showFunding,
 
 		// Cross-references, by id, into the other datasets.
 		publications: publicationsByDate.filter((p) => p.project === projectName).map((p) => p.id),
@@ -71,7 +74,10 @@ const serialise = (project: ResearchProject) => {
 		references: researchProse[project.id]?.references,
 
 		image: absoluteUrl(`/images/research/${project.imageSrc}`),
+		imageAlt: project.imageAlt,
+		figCaption: project.figCaption,
 		audio: project.audioSrc ? absoluteUrl(project.audioSrc) : undefined,
+		ctas: project.ctas?.map((cta) => compact({ ...cta, href: absoluteUrl(cta.href) })),
 		links: buildLinks((project.ctas ?? []).map((cta) => ({ label: cta.label, url: cta.href })))
 	});
 };

@@ -23,6 +23,8 @@ const apiBase = (process.env.WEBSITE_API_BASE?.trim() || DEFAULT_BASE).replace(/
 export type DatasetName =
 	'research' | 'publications' | 'communications' | 'activities' | 'digital-humanities';
 
+export type ApiDocumentName = DatasetName | 'cv' | 'index';
+
 /** A record in any of the item datasets. Fields vary; only `id` is guaranteed. */
 export interface Item {
 	id: string;
@@ -39,7 +41,7 @@ interface DatasetPayload {
 	items: Item[];
 }
 
-export interface CvPayload {
+export interface CvPayload extends Record<string, unknown> {
 	version: number;
 	person: Record<string, unknown>;
 	sections: Record<string, unknown>;
@@ -76,6 +78,11 @@ async function fetchDocument<T>(path: string): Promise<T> {
 	pending.catch(() => cache.delete(path));
 	cache.set(path, pending);
 	return pending;
+}
+
+/** Load one complete API document for exposure as an MCP resource. */
+export async function loadApiDocument(name: ApiDocumentName): Promise<unknown> {
+	return fetchDocument<unknown>(name);
 }
 
 /** All items in a dataset, in the order the site publishes them (newest first). */

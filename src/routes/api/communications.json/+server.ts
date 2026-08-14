@@ -42,6 +42,13 @@ const serialise = (comm: Communication) =>
 		project: comm.project,
 
 		image: comm.image ? absoluteUrl(comm.image) : undefined,
+		heroImage: comm.heroImage
+			? compact({
+					src: absoluteUrl(comm.heroImage.src),
+					alt: comm.heroImage.alt,
+					caption: comm.heroImage.caption
+				})
+			: undefined,
 		links: buildLinks(
 			[
 				{ label: comm.urlLabel ?? 'Presentation', url: comm.url },

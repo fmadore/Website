@@ -3,8 +3,8 @@ import { createHash } from 'node:crypto';
 import { cp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { zipSync } from 'fflate';
-import { Client } from '@modelcontextprotocol/sdk/client/index.js';
-import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
+import { Client } from '@modelcontextprotocol/client';
+import { StdioClientTransport } from '@modelcontextprotocol/client/stdio';
 
 /**
  * Builds the `.mcpb` bundle — a zip Claude Desktop installs on a double-click,
@@ -73,7 +73,10 @@ await cp(here('../static/icons/icon-512.png'), new URL('./icon.png', `file://${s
 
 // ------------------------------------------------- 2. ask the server its tools
 
-const client = new Client({ name: 'pack', version: '0.0.0' });
+const client = new Client(
+	{ name: 'pack', version: '0.0.0' },
+	{ versionNegotiation: { mode: 'auto' } }
+);
 await client.connect(new StdioClientTransport({ command: process.execPath, args: [entry] }));
 const { tools } = await client.listTools();
 await client.close();

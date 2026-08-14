@@ -62,9 +62,9 @@ Being static, these are read-only and offer no query interface — fetch a datas
 
 ### MCP Server
 
-`mcp/` is an [MCP](https://modelcontextprotocol.io/) server over those documents: twelve tools for searching publications, talks, activities, research and DH projects, reading the CV, and generating citations. It runs locally over stdio and reads the published JSON at startup, so it has no data of its own to fall out of date.
+`mcp/` is an [MCP](https://modelcontextprotocol.io/) server over those documents: twelve tools for searching publications, talks, activities, research and DH projects, reading the CV, and generating citations, plus seven resources exposing the API documents themselves. It serves both the current `2026-07-28` protocol and legacy 2025-era clients over stdio or stateless Streamable HTTP. The data is read from the published JSON and cached in memory, so the server has no second source of truth to drift.
 
-It ships two ways. `npm run mcp:pack` produces `frederickmadore-website.mcpb` — an [MCP Bundle](https://github.com/anthropics/mcpb) that Claude Desktop installs on a double-click, with no config file to edit and no Node install required; CI attaches it to every run as the `mcpb` artifact. Other stdio clients point at the developer build in `mcp/dist/index.js`. See [`mcp/README.md`](mcp/README.md).
+It ships two ways. `npm run mcp:pack` produces `frederickmadore-website.mcpb` — an [MCP Bundle](https://github.com/anthropics/mcpb) that Claude Desktop installs on a double-click, with no config file to edit and no Node install required; CI attaches it to every run as the `mcpb` artifact. Other stdio clients point at `mcp/dist/index.js`; remote deployments run `mcp/dist/http.js`. See [`mcp/README.md`](mcp/README.md).
 
 Citation output is not reimplemented there — the build aliases `$lib` and bundles the site's own `bibtexGenerator`, so what the server returns is byte-identical to the site's download button.
 

@@ -112,4 +112,10 @@ describe('search', () => {
 		expect(hits).toHaveLength(1);
 		expect(total).toBe(3);
 	});
+
+	it('supports stable offset pagination', () => {
+		expect(run({ limit: 1, offset: 1 }).hits.map((item) => item.id)).toEqual([
+			'cote-divoire-article'
+		]);
+	});
 });

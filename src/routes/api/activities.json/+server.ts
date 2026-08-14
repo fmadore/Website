@@ -27,6 +27,13 @@ const serialise = (activity: Activity) =>
 		tags: activity.tags,
 
 		image: activity.image ? absoluteUrl(activity.image) : undefined,
+		heroImage: activity.heroImage
+			? compact({
+					src: absoluteUrl(activity.heroImage.src),
+					alt: activity.heroImage.alt,
+					caption: activity.heroImage.caption
+				})
+			: undefined,
 		links: buildLinks(
 			[
 				{ label: activity.urlLabel ?? 'Source', url: activity.url },

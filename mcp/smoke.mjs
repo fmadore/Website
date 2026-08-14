@@ -1,13 +1,13 @@
 import { createServer } from 'node:http';
-import { execFile } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { promisify } from 'node:util';
-import { Client } from '@modelcontextprotocol/sdk/client/index.js';
-import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
+import { Client, StreamableHTTPClientTransport } from '@modelcontextprotocol/client';
+import { StdioClientTransport } from '@modelcontextprotocol/client/stdio';
+import { createMcpHandler } from '@modelcontextprotocol/server';
+import { unzipSync } from 'fflate';
 
 /**
  * End-to-end smoke test.
@@ -28,7 +28,6 @@ import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js'
  * Requires `npm run build` at the repo root first.
  */
 
-const run = promisify(execFile);
 const here = (path) => fileURLToPath(new URL(path, import.meta.url));
 const buildDir = here('../build/');
 
@@ -57,7 +56,11 @@ const http = createServer(async (req, res) => {
 await new Promise((resolve) => http.listen(0, '127.0.0.1', resolve));
 const base = `http://127.0.0.1:${http.address().port}`;
 
-const text = (result) => result.content.map((part) => part.text).join('\n');
+const text = (result) =>
+	result.content
+		.filter((part) => part.type === 'text')
+		.map((part) => part.text)
+		.join('\n');
 
 const publications = JSON.parse(
 	await readFile(new URL('api/publications.json', `file://${buildDir}`), 'utf8')
@@ -65,7 +68,10 @@ const publications = JSON.parse(
 const book = publications.items.find((item) => item.type === 'book');
 
 async function exercise(entry) {
-	const client = new Client({ name: 'smoke', version: '0.0.0' });
+	const client = new Client(
+		{ name: 'smoke', version: '0.0.0' },
+		{ versionNegotiation: { mode: 'auto' } }
+	);
 	await client.connect(
 		new StdioClientTransport({
 			command: process.execPath,
@@ -75,7 +81,9 @@ async function exercise(entry) {
 	);
 
 	try {
-		const { tools } = await client.listTools();
+		check('stdio negotiates the 2026-07-28 era', client.getProtocolEra() === 'modern');
+		const toolList = await client.listTools();
+		const { tools } = toolList;
 		const names = tools.map((tool) => tool.name).sort();
 		console.log(`  tools (${names.length}): ${names.join(', ')}`);
 
@@ -83,6 +91,34 @@ async function exercise(entry) {
 		check(
 			'every tool has a description',
 			tools.every((tool) => (tool.description ?? '').length > 20)
+		);
+		check(
+			'every tool has an output schema',
+			tools.every((tool) => tool.outputSchema)
+		);
+		check(
+			'every tool is annotated read-only and non-destructive',
+			tools.every(
+				(tool) =>
+					tool.annotations?.readOnlyHint === true && tool.annotations?.destructiveHint === false
+			)
+		);
+		check(
+			'modern tool list advertises a public cache policy',
+			toolList.ttlMs === 3_600_000 && toolList.cacheScope === 'public'
+		);
+
+		const resourceList = await client.listResources();
+		check('all 7 API documents are exposed as resources', resourceList.resources.length === 7);
+		check(
+			'modern resource list advertises a public cache policy',
+			resourceList.ttlMs === 3_600_000 && resourceList.cacheScope === 'public'
+		);
+		const dhResource = await client.readResource({ uri: 'website://api/digital-humanities' });
+		const dhPayload = JSON.parse(dhResource.contents[0].text);
+		check(
+			'digital-humanities resource includes embed metadata',
+			dhPayload.items.some((item) => item.embeddableContent?.length)
 		);
 
 		const byQuery = await client.callTool({
@@ -93,6 +129,11 @@ async function exercise(entry) {
 			'search_publications finds campus work',
 			/id: /.test(text(byQuery)),
 			text(byQuery).slice(0, 120)
+		);
+		check(
+			'search returns structured pagination metadata',
+			byQuery.structuredContent?.count > 0 &&
+				typeof byQuery.structuredContent?.has_more === 'boolean'
 		);
 
 		// The corpus is francophone; a query without diacritics must still reach it.
@@ -188,7 +229,7 @@ async function exercise(entry) {
 			name: 'search_activities',
 			arguments: { limit: 1 }
 		});
-		const activityId = text(activities).match(/id: (\S+)/)?.[1];
+		const activityId = activities.structuredContent?.items?.[0]?.id;
 		const fullActivity = await client.callTool({
 			name: 'get_activity',
 			arguments: { id: activityId }
@@ -228,6 +269,48 @@ async function exercise(entry) {
 	} finally {
 		await client.close().catch(() => {});
 	}
+
+	const legacy = new Client({ name: 'legacy-smoke', version: '0.0.0' });
+	await legacy.connect(
+		new StdioClientTransport({
+			command: process.execPath,
+			args: [entry],
+			env: { ...process.env, WEBSITE_API_BASE: base }
+		})
+	);
+	try {
+		check('stdio remains compatible with 2025-era clients', legacy.getProtocolEra() === 'legacy');
+		check('legacy client can list tools', (await legacy.listTools()).tools.length === 12);
+	} finally {
+		await legacy.close().catch(() => {});
+	}
+}
+
+async function exerciseHttp() {
+	process.env.WEBSITE_API_BASE = base;
+	const { createWebsiteServer } = await import('./dist/server.js');
+	const handler = createMcpHandler(createWebsiteServer);
+	const client = new Client(
+		{ name: 'http-smoke', version: '0.0.0' },
+		{ versionNegotiation: { mode: 'auto' } }
+	);
+	const transport = new StreamableHTTPClientTransport(new URL('http://test.local/mcp'), {
+		fetch: (url, init) => handler.fetch(new Request(url, init))
+	});
+
+	try {
+		await client.connect(transport);
+		check('Streamable HTTP negotiates the 2026-07-28 era', client.getProtocolEra() === 'modern');
+		check('Streamable HTTP lists all tools', (await client.listTools()).tools.length === 12);
+		const result = await client.callTool({
+			name: 'search_publications',
+			arguments: { query: 'campus', limit: 1 }
+		});
+		check('Streamable HTTP calls a tool', result.structuredContent?.count === 1);
+	} finally {
+		await client.close().catch(() => {});
+		await handler.close();
+	}
 }
 
 let unpacked;
@@ -235,13 +318,23 @@ try {
 	console.log('\n── developer build (dist/index.js) ──');
 	await exercise(here('./dist/index.js'));
 
+	console.log('\n── stateless Streamable HTTP (dist/server.js) ──');
+	await exerciseHttp();
+
 	const bundle = here('./dist/frederickmadore-website.mcpb');
 	if (existsSync(bundle)) {
 		console.log('\n── installed bundle (unpacked from .mcpb) ──');
 		unpacked = await mkdtemp(join(tmpdir(), 'mcpb-'));
-		// `unzip` is present on CI runners and dev machines alike; if it is not,
-		// say so rather than silently skipping the artifact users install.
-		await run('unzip', ['-q', bundle, '-d', unpacked]);
+		const archive = unzipSync(new Uint8Array(await readFile(bundle)));
+		for (const [name, contents] of Object.entries(archive)) {
+			const segments = name.split('/').filter(Boolean);
+			if (segments.length === 0 || segments.some((segment) => segment === '..')) {
+				throw new Error(`Unsafe path in MCPB archive: ${name}`);
+			}
+			const output = join(unpacked, ...segments);
+			await mkdir(dirname(output), { recursive: true });
+			await writeFile(output, contents);
+		}
 		await exercise(join(unpacked, 'server', 'index.js'));
 
 		const manifest = JSON.parse(await readFile(join(unpacked, 'manifest.json'), 'utf8'));

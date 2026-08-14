@@ -43,6 +43,7 @@ export interface SearchOptions {
 	yearFrom?: number;
 	yearTo?: number;
 	limit?: number;
+	offset?: number;
 }
 
 export interface SearchResult {
@@ -58,7 +59,16 @@ export interface SearchResult {
  * which is already newest-first.
  */
 export function search(items: Item[], options: SearchOptions): SearchResult {
-	const { query, fields, weighted = [], filters = {}, yearFrom, yearTo, limit = 25 } = options;
+	const {
+		query,
+		fields,
+		weighted = [],
+		filters = {},
+		yearFrom,
+		yearTo,
+		limit = 25,
+		offset = 0
+	} = options;
 	const terms = query ? normalise(query).split(/\s+/).filter(Boolean) : [];
 
 	const scored: Array<{ item: Item; score: number; index: number }> = [];
@@ -92,7 +102,10 @@ export function search(items: Item[], options: SearchOptions): SearchResult {
 	});
 
 	scored.sort((a, b) => b.score - a.score || a.index - b.index);
-	return { hits: scored.slice(0, limit).map((entry) => entry.item), total: scored.length };
+	return {
+		hits: scored.slice(offset, offset + limit).map((entry) => entry.item),
+		total: scored.length
+	};
 }
 
 function countOccurrences(text: string, term: string): number {

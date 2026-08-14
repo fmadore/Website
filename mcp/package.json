@@ -1,6 +1,6 @@
 {
 	"name": "@fmadore/website-mcp",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "MCP server over the static JSON API of frederickmadore.com — publications, talks, research projects, activities, and CV.",
 	"license": "MIT",
 	"author": "Frédérick Madore",
@@ -12,21 +12,24 @@
 		"dist"
 	],
 	"engines": {
-		"node": ">=24"
+		"node": ">=20"
 	},
 	"scripts": {
 		"build": "node build.mjs",
+		"start:http": "node dist/http.js",
 		"check": "tsc --noEmit",
 		"pack": "node pack.mjs",
 		"smoke": "node smoke.mjs",
 		"prepare": "npm run build"
 	},
 	"dependencies": {
-		"@modelcontextprotocol/sdk": "^1.30.0",
+		"@modelcontextprotocol/node": "^2.0.0",
+		"@modelcontextprotocol/server": "^2.0.0",
 		"zod": "^4.4.3"
 	},
 	"devDependencies": {
-		"esbuild": "^0.28.1",
+		"@modelcontextprotocol/client": "^2.0.0",
+		"esbuild": "^0.28.2",
 		"fflate": "^0.8.3"
 	}
 }

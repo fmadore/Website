@@ -34,7 +34,7 @@ Ask: _"What has Frédérick Madore published about religious activism on campuse
 ## Install (other clients)
 
 Anything that speaks MCP over stdio can run the server directly. This path uses the
-developer build rather than the bundle, so it needs **Node 24 or newer**.
+developer build rather than the bundle, so it needs **Node 20 or newer**.
 
 ```bash
 git clone https://github.com/fmadore/Website.git
@@ -79,10 +79,20 @@ claude mcp add frederickmadore -- node /absolute/path/to/Website/mcp/dist/index.
 | `get_citation`           | BibTeX, or a plain-text reference.                                                                              |
 
 Search matches accent-insensitively, so `cote d'ivoire` reaches `Côte d'Ivoire`.
+Search results are paginated with `limit` and `offset`, and every tool returns both a
+readable text block and schema-validated structured content.
 
 Search returns headlines; the `get_*` tools return whole records. Every dataset carries its
 full text — publication and talk abstracts, activity bodies, project descriptions, and the
 research narratives — so nothing on the site is searchable but unreadable.
+
+## Resources
+
+The same seven API documents are also exposed as MCP resources under `website://api/`:
+the discovery manifest, research, publications, communications, activities, digital
+humanities projects, and the CV. Tools are the efficient path for filtered questions;
+resources are the complete, URI-addressable datasets for clients that want the data plane
+directly.
 
 ## How it works
 
@@ -90,6 +100,25 @@ The server reads the site's published JSON documents (`/api/*.json`) over HTTP a
 them in memory for the life of the process. There is no database, no search index, and no
 data of its own: the corpus is a few hundred records, so a linear scan is cheaper than the
 machinery needed to avoid one. Restart the server to pick up new content.
+
+The server uses the stable TypeScript SDK v2. `serveStdio()` and `createMcpHandler()` serve
+both the stateless `2026-07-28` protocol and legacy 2025-era clients from the same server
+factory, so the tool and resource surfaces cannot diverge between transports. Modern
+`tools/list`, `resources/list`, and `resources/read` responses advertise a one-hour public
+cache hint.
+
+### Streamable HTTP
+
+Build and run the stateless remote endpoint locally:
+
+```bash
+npm run mcp:build
+npm run start:http -w mcp
+```
+
+The MCP endpoint is `http://localhost:7860/mcp`; `/` and `/healthz` return a small health
+document. Set `PORT`, `WEBSITE_API_BASE`, and (for a public deployment outside Hugging Face)
+`ALLOWED_HOSTS` as needed. `SPACE_HOST` is accepted automatically on Hugging Face Spaces.
 
 `get_citation` is not reimplemented here — the build aliases `$lib` and bundles the site's
 own `bibtexGenerator` and `citationFormatter`, so the BibTeX this returns is byte-identical
@@ -111,7 +140,7 @@ WEBSITE_API_BASE=http://localhost:4173 node mcp/dist/index.js
 
 | Command             | What it does                                                                    |
 | ------------------- | ------------------------------------------------------------------------------- |
-| `npm run mcp:build` | Bundle the developer server to `mcp/dist/index.js`                              |
+| `npm run mcp:build` | Build the stdio, HTTP, and shared server bundles in `mcp/dist/`                 |
 | `npm run mcp:pack`  | Build the installable `mcp/dist/frederickmadore-website.mcpb`                   |
 | `npm run mcp:check` | Type-check                                                                      |
 | `npm run mcp:smoke` | Build both, then drive each over the protocol against a local build of the site |
@@ -119,16 +148,17 @@ WEBSITE_API_BASE=http://localhost:4173 node mcp/dist/index.js
 
 `npm run mcp:smoke` needs `npm run build` at the repo root first. It exercises the
 developer build _and_ the server unpacked back out of the `.mcpb` — the artifact people
-actually install — because building a bundle is not proof that it boots. CI runs the whole
-thing on every pull request, so a renamed API field, a broken tool registration, or a
-bundle that fails to start is caught there.
+actually install — and drives the same factory over stateless Streamable HTTP. Both modern
+and legacy protocol eras are covered. CI runs the whole thing on every pull request, so a
+renamed API field, a broken tool registration, or a bundle that fails to start is caught
+there.
 
 ### Releasing
 
 Push a tag, or use Actions → **Release MCP bundle** → Run workflow:
 
 ```bash
-git tag mcp-v0.1.0 && git push origin mcp-v0.1.0
+git tag mcp-v0.2.0 && git push origin mcp-v0.2.0
 ```
 
 The workflow type-checks, builds the site, builds and smoke-tests the bundle against real
