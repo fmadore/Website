@@ -30,7 +30,9 @@ npm run check:build     # bundle budget + prerender coverage (both run in CI)
 npm run check:bundle    # heavy libs stay dynamically imported; entry/route size budgets
 npm run check:prerender # every URL in sitemap.xml resolves to a page that shipped
 npm run check:links     # external links: DOIs via the Handle System, rest over HTTP
-npm run check:citations # OpenAlex sweep for new citations + works missing from the site
+npm run check:citations # OpenAlex sweep for new citations + works missing from the site,
+                        # then a full-text sweep of Google Books, HAL and Wikipedia
+                        # (add --skip-discovery for the OpenAlex passes alone)
 ```
 
 > **Testing layout**: Unit tests are co-located as `*.test.ts` next to the
@@ -43,6 +45,16 @@ npm run check:citations # OpenAlex sweep for new citations + works missing from 
 > **Scheduled workflows**: `link-check.yml` (weekly) and `citation-watch.yml`
 > (monthly) each maintain a single long-lived GitHub issue, rewritten in place
 > and closed automatically once clean — never one issue per run.
+>
+> **Citation sources**: OpenAlex is the citation spine — keyed by DOI, it
+> answers who cites what and resolves by committing a `citedBy` entry. Google
+> Books, HAL and Wikipedia (`citation-discovery.mjs`) search running text for
+> the author's name instead, which is the only way to see the monographs and
+> francophone grey literature the citation graph never records. They are
+> discovery, not record: the report keeps them apart, does not emit paste-ready
+> literals for them, and a lead that is not a citation is dismissed in
+> `scripts/citation-discovery-ack.json` — the one piece of watcher state that
+> is not simply the data files themselves.
 
 ### Prerendering
 

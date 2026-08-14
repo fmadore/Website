@@ -35,25 +35,31 @@ jobs:
       - name: Check citations
         run: node scripts/check-citations.mjs --report=citation-report.md
 
+      # The script states its own verdict on the first line rather than leaving
+      # this step to infer one from the headings — which quietly stopped being
+      # true the moment a new section was added.
       - name: Decide whether there is anything to report
         id: triage
         run: |
-          if grep -q '^## .* new citation\|^## .* work' citation-report.md; then
+          if head -n1 citation-report.md | grep -q 'citation-watch: findings'; then
             echo "found=true" >> "$GITHUB_OUTPUT"
-          else
+          elif head -n1 citation-report.md | grep -q 'citation-watch: clean'; then
             echo "found=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::citation-report.md carries no verdict marker — check-citations.mjs changed shape."
+            exit 1
           fi
 
       - name: Compose issue body
         if: steps.triage.outputs.found == 'true'
         run: |
           {
-            echo "Monthly sweep of OpenAlex for works citing this bibliography, and for works under the ORCID that are not yet on the site."
+            echo "Monthly sweep of OpenAlex for works citing this bibliography and for works under the ORCID that are not yet on the site, plus a full-text sweep of Google Books, HAL and Wikipedia for citations no index recorded."
             echo
             cat citation-report.md
             echo
             echo "---"
-            echo "Each \`citedBy\` block is ready to paste into the named data file. Entries disappear from this issue once committed — the repository is the state, so there is nothing to tick off."
+            echo "Each \`citedBy\` block is ready to paste into the named data file. Entries disappear from this issue once committed — the repository is the state, so there is nothing to tick off. Full-text leads are not paste-ready: verify them, then either record the citation or dismiss the lead in \`scripts/citation-discovery-ack.json\`."
             echo
             echo "Reproduce locally with \`npm run check:citations\`."
             echo "From [\`${{ github.workflow }}\`](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}), run ${{ github.run_number }}."
