@@ -29,7 +29,7 @@
  * rather than against three live APIs that change under you.
  */
 import { normDoi, normTitle } from './citation-grouping.mjs';
-import { cleanTitle } from './citation-text.mjs';
+import { cleanTitle, flatten } from './citation-text.mjs';
 
 /**
  * The spellings of a name to search for.
@@ -214,6 +214,12 @@ export function selectFreshWorks(hits, { knownDois, knownTitles, acknowledged, o
 }
 
 /**
+ * Well past the longest URL any of these three services produces, and far short
+ * of anything that would bloat an issue body.
+ */
+const MAX_HREF_LENGTH = 2000;
+
+/**
  * A discovery URL, validated and escaped for use as a Markdown link target —
  * or undefined when it does not look like one, in which case the caller falls
  * back to plain text.
@@ -227,9 +233,22 @@ export function selectFreshWorks(hits, { knownDois, knownTitles, acknowledged, o
  * link early, but parens are ordinary in what these sources return —
  * disambiguated Wikipedia titles ("Tabaski (fête)") carry them by convention —
  * and rejecting them silently demoted correct links to plain text.
+ *
+ * Normalising through `flatten` before the test rather than testing the raw
+ * string is what makes the pattern sufficient. `\s` excludes the whitespace
+ * controls but not the rest of C0, so on its own the test would pass a URL
+ * carrying a NUL or an ANSI escape straight into the report — and into the
+ * terminal the script prints to. Ordering matters: normalise, then validate,
+ * so a string only reaches the report if it still looks like a URL *after* the
+ * dangerous characters have been taken out of it.
  */
 export function markdownHref(raw) {
-	const s = String(raw ?? '').trim();
+	// Flattening with a ceiling one above the limit means a URL within it is
+	// never truncated, and one beyond it always lands over the limit — so the
+	// length test below catches it. A truncated URL would still satisfy the
+	// pattern, and a link to the wrong page is worse than no link.
+	const s = flatten(raw, MAX_HREF_LENGTH + 1);
+	if (s.length > MAX_HREF_LENGTH) return undefined;
 	if (!/^https:\/\/[^\s"'<>\\]+$/i.test(s)) return undefined;
 	return s.replace(/\(/g, '%28').replace(/\)/g, '%29');
 }

@@ -69,3 +69,28 @@ export const cleanTitle = (s) =>
 	decodeEntities(stripTags(s ?? ''))
 		.replace(/\s+/g, ' ')
 		.trim();
+
+/**
+ * Reduce a string from an API to inert single-line text, for anything that will
+ * be rendered into the report.
+ *
+ * Every string these four services return is written by someone else — OpenAlex
+ * indexes whatever a publisher files, and Google Books, HAL and Wikipedia index
+ * whatever anyone wrote — and the report is posted verbatim as a GitHub issue
+ * body. So: control characters (a newline ends a bullet early, and an ANSI
+ * escape is live in the terminal the script also prints to), backticks (which
+ * close the surrounding code fence), and any absurd length.
+ *
+ * `\s` would not be enough on its own: it covers space, tab and the newlines
+ * but leaves the rest of C0 — NUL, ESC, DEL — intact. `\p{Cc}` is every
+ * control character in both C0 and C1, named rather than spelled out as a
+ * numeric range.
+ */
+export function flatten(value, maxLength = 500) {
+	const text = String(value ?? '')
+		.replace(/\p{Cc}+/gu, ' ')
+		.replace(/`/g, "'")
+		.replace(/\s+/g, ' ')
+		.trim();
+	return text.length > maxLength ? `${text.slice(0, maxLength - 1)}…` : text;
+}

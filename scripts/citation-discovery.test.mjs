@@ -290,6 +290,33 @@ describe('markdownHref', () => {
 		expect(markdownHref('https://example.org/a b')).toBeUndefined();
 		expect(markdownHref(undefined)).toBeUndefined();
 	});
+
+	// Testing the raw string would let these through: the pattern excludes \s,
+	// which is not the same as excluding the control characters. Normalising
+	// first means a control character is either stripped, or turns into the
+	// space that makes the URL fail the pattern — never emitted either way.
+	it('never emits a control character, wherever it sits in the URL', () => {
+		const NUL = String.fromCharCode(0);
+		const ESC = String.fromCharCode(27);
+
+		// Trailing: normalised away, leaving a URL that is still correct.
+		expect(markdownHref(`https://example.org/page${NUL}`)).toBe('https://example.org/page');
+
+		// Embedded: becomes a space, which the pattern rejects outright.
+		expect(markdownHref(`https://example.org/${ESC}[31m/page`)).toBeUndefined();
+
+		for (const raw of [`https://a.org/${NUL}b`, `https://a.org/b${ESC}`, `https://a.org/${ESC}`]) {
+			const out = markdownHref(raw);
+			if (out !== undefined) expect(out).not.toMatch(/\p{Cc}/u);
+		}
+	});
+
+	it('refuses an over-long URL rather than emitting a truncated one', () => {
+		// Truncating would still satisfy the pattern, and a link to the wrong
+		// page is worse than no link at all.
+		expect(markdownHref(`https://example.org/${'x'.repeat(4000)}`)).toBeUndefined();
+		expect(markdownHref(`https://example.org/${'x'.repeat(100)}`)).toBeDefined();
+	});
 });
 
 describe('selectFreshMentions', () => {

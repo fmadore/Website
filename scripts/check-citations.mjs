@@ -55,7 +55,7 @@ import { resolve, basename } from 'node:path';
 import { pathToFileURL, fileURLToPath } from 'node:url';
 import { argv, exit, env } from 'node:process';
 import { normDoi, normTitle, selectFreshCitations } from './citation-grouping.mjs';
-import { cleanTitle } from './citation-text.mjs';
+import { cleanTitle, flatten } from './citation-text.mjs';
 import {
 	nameVariants,
 	normaliseGoogleBooks,
@@ -615,22 +615,12 @@ if (skipDiscovery) {
 // ---------------------------------------------------------------------------
 
 /**
- * Everything below turns API strings into a Markdown document that the
- * workflow posts as a GitHub issue body, verbatim. A title is the one input
- * here that someone else controls — OpenAlex indexes whatever a publisher
- * files — so flatten it to inert text first: control characters (a newline
- * ends a bullet early), backticks (which close the surrounding code fence),
- * and any absurd length.
+ * Everything below turns API strings into a Markdown document that the workflow
+ * posts as a GitHub issue body, verbatim. Every string that reaches it from one
+ * of the four services goes through `flatten` first — see `citation-text.mjs`
+ * for why — and then through one of the escapers here, chosen by where in the
+ * document it lands: a TypeScript literal, Markdown prose, or a link target.
  */
-function flatten(value, maxLength = 500) {
-	const text = String(value ?? '')
-		// eslint-disable-next-line no-control-regex
-		.replace(/[\u0000-\u001f\u007f]+/g, ' ')
-		.replace(/`/g, "'")
-		.replace(/\s+/g, ' ')
-		.trim();
-	return text.length > maxLength ? `${text.slice(0, maxLength - 1)}…` : text;
-}
 
 /**
  * Escape a string for a single-quoted TypeScript literal.
