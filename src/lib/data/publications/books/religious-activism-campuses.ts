@@ -87,6 +87,13 @@ The history of these associations reveals the campus as a microcosm reflecting w
 	],
 	citedBy: [
 		{
+			authors: ['Wikipedia contributors'],
+			year: 2026,
+			title: 'Union for the Republic (Togo)',
+			source: 'Wikipedia (English), consulted 15 August 2026',
+			url: 'https://en.wikipedia.org/wiki/Union_for_the_Republic_(Togo)'
+		},
+		{
 			authors: ['Leonardo A. Villalón', 'Mamadou Bodian', 'Abdourahmane Idrissa'],
 			year: 2025,
 			title:

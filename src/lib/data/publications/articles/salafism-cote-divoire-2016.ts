@@ -39,6 +39,13 @@ export const salafismCoteDIvoire: Publication = {
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	citedBy: [
 		{
+			authors: ['Wikipedia contributors'],
+			year: 2026,
+			title: 'Sunniten',
+			source: 'Wikipedia (German), consulted 15 August 2026',
+			url: 'https://de.wikipedia.org/wiki/Sunniten'
+		},
+		{
 			authors: ['Issouf Binaté'],
 			year: 2023,
 			title:

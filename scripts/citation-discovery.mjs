@@ -135,10 +135,10 @@ export function normaliseHal(payload) {
 /**
  * MediaWiki `list=search` response → discovery hits.
  *
- * Kept separate from the two bibliographic sources throughout: a Wikipedia
- * article citing this work is real reach, but it is not a `CitingWork` and
- * will never be recorded in one, so it is never de-duplicated against
- * `citedBy` and never resolves by being committed.
+ * Kept separate from the two bibliographic sources throughout, because a
+ * Wikipedia article is a different kind of reach and belongs under its own
+ * heading — but it resolves the same way: recorded against the work it cites,
+ * it stops being reported.
  */
 export function normaliseWikipedia(payload, lang) {
 	return (payload?.query?.search ?? [])
@@ -254,16 +254,47 @@ export function markdownHref(raw) {
 }
 
 /**
- * Wikipedia mentions worth reporting: acknowledgement is the only filter there
- * is, since nothing in the repository ever comes to represent one.
+ * A URL reduced to a form two spellings of the same address share.
+ *
+ * The report renders an article URL with its parentheses percent-encoded, so
+ * "Union_for_the_Republic_%28Togo%29" is what gets copied out of the issue,
+ * while the same article arrives from the API as
+ * "Union_for_the_Republic_(Togo)". Compared raw those are two different
+ * strings, and a citation recorded from the issue would never match the hit it
+ * came from — leaving it reported every month, which is exactly the failure
+ * this comparison exists to prevent.
  */
-export function selectFreshMentions(hits, acknowledged) {
+export function normUrl(raw) {
+	let s = String(raw ?? '').trim();
+	try {
+		s = decodeURIComponent(s);
+	} catch {
+		// Malformed escapes: compare what we were given rather than throwing.
+	}
+	return s.replace(/\/+$/, '').toLowerCase();
+}
+
+/**
+ * Wikipedia mentions worth reporting.
+ *
+ * A mention resolves the same way every other finding does — record it against
+ * the work it cites and it stops being reported. That was not true when this
+ * was written: the assumption then was that nothing in the repository could
+ * ever represent a Wikipedia article, so acknowledgement was the only exit.
+ * Recording one as a `CitingWork` turns out to be perfectly reasonable, and
+ * once it is recorded the repository is the state here too. Acknowledgement is
+ * now only for articles that name the author without citing him.
+ *
+ * Matched on URL rather than title: a mention's title is the article's name,
+ * which two language editions can share, while the URL is unique per wiki.
+ */
+export function selectFreshMentions(hits, { acknowledged, knownUrls }) {
 	const seen = new Set();
 	return hits
 		.filter((hit) => {
 			if (seen.has(hit.key) || acknowledged.has(hit.key)) return false;
 			seen.add(hit.key);
-			return true;
+			return !knownUrls.has(normUrl(hit.url));
 		})
 		.sort((a, b) => a.lang.localeCompare(b.lang) || a.title.localeCompare(b.title));
 }

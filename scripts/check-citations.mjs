@@ -64,7 +64,8 @@ import {
 	isOwnWork,
 	selectFreshWorks,
 	selectFreshMentions,
-	markdownHref
+	markdownHref,
+	normUrl
 } from './citation-discovery.mjs';
 
 const ORCID = '0000-0003-0959-2092';
@@ -412,12 +413,16 @@ const acknowledged = new Set(Object.keys(ackEntries));
  */
 const allKnownDois = new Set();
 const allKnownTitles = new Set();
+const allKnownUrls = new Set();
 for (const { record } of publications) {
 	for (const c of record.citedBy ?? []) {
 		const doi = normDoi(c.url);
 		if (doi.startsWith('10.')) allKnownDois.add(doi);
 		const title = normTitle(c.title);
 		if (title) allKnownTitles.add(title);
+		// Wikipedia mentions carry no DOI and share titles across languages, so
+		// the article URL is what marks one as already recorded.
+		if (c.url) allKnownUrls.add(normUrl(c.url));
 	}
 }
 
@@ -446,16 +451,51 @@ const own = (hit) => isOwnWork(hit, { variants, localTitles, localIsbns });
 const discoveryErrors = [];
 const pause = (ms) => new Promise((r) => setTimeout(r, ms));
 
+/**
+ * Statuses worth trying again. 429 is the one that matters: unauthenticated
+ * Google Books is throttled per IP, and a GitHub runner shares its IP with
+ * every other job on the host, so the quota can be spent before this script
+ * ever runs. The first live run lost the whole monograph channel to one.
+ */
+const RETRY_STATUSES = new Set([429, 500, 502, 503, 504]);
+const RETRY_ATTEMPTS = 3;
+const RETRY_BACKOFF_MS = [2_000, 8_000];
+
+/** `Retry-After` in either of its spellings, capped so a silly value cannot stall the job. */
+function retryAfterMs(res, fallback) {
+	const header = res.headers.get('retry-after');
+	if (!header) return fallback;
+	const seconds = Number(header);
+	const ms = Number.isFinite(seconds)
+		? seconds * 1000
+		: Number.isFinite(Date.parse(header))
+			? Date.parse(header) - Date.now()
+			: NaN;
+	return Number.isFinite(ms) && ms > 0 ? Math.min(ms, 30_000) : fallback;
+}
+
 async function getJson(url, headers = {}) {
-	const res = await fetch(url, {
-		headers: {
-			'user-agent': `frederickmadore.com citation watcher (mailto:${CONTACT})`,
-			...headers
-		},
-		signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS)
-	});
-	if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-	return res.json();
+	let last;
+	for (let attempt = 0; attempt < RETRY_ATTEMPTS; attempt++) {
+		const res = await fetch(url, {
+			headers: {
+				'user-agent': `frederickmadore.com citation watcher (mailto:${CONTACT})`,
+				...headers
+			},
+			signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS)
+		});
+		if (res.ok) return res.json();
+
+		last = new Error(`${res.status} ${res.statusText}`);
+		if (!RETRY_STATUSES.has(res.status) || attempt === RETRY_ATTEMPTS - 1) throw last;
+
+		const wait = retryAfterMs(res, RETRY_BACKOFF_MS[attempt]);
+		console.warn(
+			`[check-citations] ${res.status} from ${new URL(url).host}, retrying in ${wait}ms`
+		);
+		await pause(wait);
+	}
+	throw last;
 }
 
 /**
@@ -589,7 +629,7 @@ if (skipDiscovery) {
 		acknowledged,
 		own
 	});
-	freshMentions = selectFreshMentions(wiki, acknowledged);
+	freshMentions = selectFreshMentions(wiki, { acknowledged, knownUrls: allKnownUrls });
 
 	console.log(
 		`[check-citations] discovery: ${books.length} Google Books + ${hal.length} HAL raw → ${freshWorks.length} lead(s); ` +
@@ -727,13 +767,13 @@ if (freshMentions.length) {
 	lines.push(
 		`## ${freshMentions.length} Wikipedia article${freshMentions.length === 1 ? '' : 's'} naming the author`,
 		'',
-		'Found with CirrusSearch `insource:`, which matches the wikitext, so these are usually citation templates in a reference list. Reach rather than citation: nothing in the repository represents one, so acknowledge each in `scripts/citation-discovery-ack.json` once seen — otherwise it is reported every month.',
+		'Found with CirrusSearch `insource:`, which matches the wikitext, so these are usually citation templates in a reference list. Verify what is actually being cited, then record it in the `citedBy` array of that work — with the article URL as `url`, which is what marks it as recorded — and it stops appearing here. An article that names the author without citing him is not a citation: dismiss it in `scripts/citation-discovery-ack.json`.',
 		''
 	);
 	for (const hit of freshMentions) {
 		lines.push(`- \`${hit.lang}\` · ${link(hit.title, hit.url)}`);
 		if (hit.snippet) lines.push(`  > ${md(hit.snippet)}`);
-		lines.push(`  · acknowledge with \`"${md(hit.key)}": "seen"\``);
+		lines.push(`  · not a citation? dismiss with \`"${md(hit.key)}": "names but does not cite"\``);
 	}
 	lines.push('');
 }

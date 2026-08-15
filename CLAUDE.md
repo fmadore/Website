@@ -51,10 +51,14 @@ npm run check:citations # OpenAlex sweep for new citations + works missing from 
 > Books, HAL and Wikipedia (`citation-discovery.mjs`) search running text for
 > the author's name instead, which is the only way to see the monographs and
 > francophone grey literature the citation graph never records. They are
-> discovery, not record: the report keeps them apart, does not emit paste-ready
-> literals for them, and a lead that is not a citation is dismissed in
-> `scripts/citation-discovery-ack.json` — the one piece of watcher state that
-> is not simply the data files themselves.
+> discovery, not record: the report keeps them apart and does not emit
+> paste-ready literals for them, since a full-text hit cannot say which
+> publication it cites. Every finding still resolves the same way — record it in
+> the `citedBy` of the work it cites (for a Wikipedia mention, with the article
+> URL as `url`, which is what marks it recorded) and it stops being reported.
+> Only a lead that is _not_ a citation needs
+> `scripts/citation-discovery-ack.json` — the one piece of watcher state that is
+> not simply the data files themselves.
 
 ### Prerendering
 

@@ -8,7 +8,8 @@ import {
 	isOwnWork,
 	selectFreshWorks,
 	selectFreshMentions,
-	markdownHref
+	markdownHref,
+	normUrl
 } from './citation-discovery.mjs';
 
 /**
@@ -324,7 +325,13 @@ describe('selectFreshMentions', () => {
 		source: 'wikipedia',
 		key: `wikipedia:${lang}:${title}`,
 		lang,
-		title
+		title,
+		url: `https://${lang}.wikipedia.org/wiki/${title.replace(/ /g, '_')}`
+	});
+
+	const opts = (acked = [], known = []) => ({
+		acknowledged: new Set(acked),
+		knownUrls: new Set(known.map(normUrl))
 	});
 
 	it('drops acknowledged articles and de-duplicates repeated hits', () => {
@@ -335,7 +342,7 @@ describe('selectFreshMentions', () => {
 				mention('fr', 'Seen already'),
 				mention('en', 'Islam in Togo')
 			],
-			new Set(['wikipedia:fr:Seen already'])
+			opts(['wikipedia:fr:Seen already'])
 		);
 		expect(out.map((h) => h.key)).toEqual([
 			'wikipedia:en:Islam in Togo',
@@ -344,10 +351,44 @@ describe('selectFreshMentions', () => {
 	});
 
 	it('keeps the same article title on two wikis, which are two mentions', () => {
-		const out = selectFreshMentions(
-			[mention('fr', 'Tabaski'), mention('en', 'Tabaski')],
-			new Set()
-		);
+		const out = selectFreshMentions([mention('fr', 'Tabaski'), mention('en', 'Tabaski')], opts());
 		expect(out).toHaveLength(2);
+	});
+
+	// Recording the citation is what resolves a mention, exactly as it resolves
+	// every other finding — this is what stops it being reported every month.
+	it('drops a mention already recorded as a citation', () => {
+		const out = selectFreshMentions(
+			[mention('de', 'Sunniten')],
+			opts([], ['https://de.wikipedia.org/wiki/Sunniten'])
+		);
+		expect(out).toEqual([]);
+	});
+
+	// The issue renders the URL with its parens escaped, so that is the spelling
+	// copied into the data file. It still has to match the hit it came from.
+	it('matches a recorded URL whose parentheses were percent-encoded', () => {
+		const out = selectFreshMentions(
+			[mention('en', 'Union for the Republic (Togo)')],
+			opts([], ['https://en.wikipedia.org/wiki/Union_for_the_Republic_%28Togo%29'])
+		);
+		expect(out).toEqual([]);
+	});
+});
+
+describe('normUrl', () => {
+	it('reconciles the escaped and unescaped spellings of one address', () => {
+		expect(normUrl('https://en.wikipedia.org/wiki/Union_for_the_Republic_%28Togo%29')).toBe(
+			normUrl('https://en.wikipedia.org/wiki/Union_for_the_Republic_(Togo)')
+		);
+	});
+
+	it('ignores a trailing slash and case', () => {
+		expect(normUrl('https://Example.org/Page/')).toBe('https://example.org/page');
+	});
+
+	it('falls back to the raw string on malformed escapes rather than throwing', () => {
+		expect(() => normUrl('https://example.org/%E0%A4%A')).not.toThrow();
+		expect(normUrl('https://example.org/%E0%A4%A')).toBe('https://example.org/%e0%a4%a');
 	});
 });
