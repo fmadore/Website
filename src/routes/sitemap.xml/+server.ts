@@ -82,6 +82,7 @@ export const GET: RequestHandler = async () => {
 		{ path: '/conference-activity/slides', priority: 0.8, changefreq: 'monthly' },
 		{ path: '/conference-activity/visualisations', priority: 0.8, changefreq: 'monthly' },
 		{ path: '/teaching/guest-lectures', priority: 0.8, changefreq: 'monthly' },
+		{ path: '/style-guide', priority: 0.5, changefreq: 'monthly' },
 		// RSS Feeds - important for content syndication and discoverability
 		{ path: '/rss.xml', priority: 0.5, changefreq: 'weekly' },
 		{ path: '/publications/rss.xml', priority: 0.5, changefreq: 'weekly' }

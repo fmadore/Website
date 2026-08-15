@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
+	import { resolve } from '$app/paths';
 	import { socialGroups, author } from '$lib/data/siteConfig';
 	import { prefersReducedMotion } from '$lib/utils/motion';
 
@@ -93,7 +94,10 @@
 	<!-- Colophon rule — the fine-book signature line -->
 	<div class="footer-colophon">
 		<span class="footer-copyright">© {currentYear} {author.fullName}</span>
-		<span class="footer-typecredit">Set in Archivo, Newsreader &amp; Spline Sans Mono.</span>
+		<!-- The type credit doubles as the door to the living style guide. -->
+		<a class="footer-typecredit" href={resolve('/style-guide')}>
+			Set in Archivo, Newsreader &amp; Spline Sans Mono.
+		</a>
 	</div>
 
 	<!-- Scroll indicator -->
@@ -262,6 +266,17 @@
 		font-style: italic;
 		font-size: var(--font-size-sm);
 		color: var(--color-footer-text-muted);
+		text-decoration: none;
+		transition: color var(--duration-fast) var(--ease-out);
+	}
+
+	.footer-typecredit:hover {
+		color: var(--sys-color-pine-bright);
+	}
+
+	.footer-typecredit:focus-visible {
+		outline: var(--border-width-medium) solid var(--sys-color-pine-bright);
+		outline-offset: var(--border-width-medium);
 	}
 
 	/* Scroll-to-top — a square ink control, no round, no shadow. */
