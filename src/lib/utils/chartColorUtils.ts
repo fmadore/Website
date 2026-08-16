@@ -286,7 +286,7 @@ export const CHART_COLOR_FALLBACKS = {
 	primary: '#191509', // ink (--color-primary) — dominant structural series colour
 	primaryDark: '#0e0b04', // ink-deep (--color-primary-dark)
 	text: '#191509', // ink (--color-text)
-	textLight: '#93896f', // faint ink (--color-text-light)
+	textLight: '#6b634e', // faint ink (--color-text-light) — ≥4.5:1 on every paper surface
 	border: '#c9c0aa', // border (--color-border)
 	surface: '#f3eee0', // paper-100 (--color-surface)
 	surfaceRgb: '250, 247, 239', // warm paper #faf7ef (--color-surface-rgb is unset, so this fallback renders)

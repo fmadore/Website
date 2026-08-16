@@ -146,7 +146,9 @@
 		// palette tokens resolve to), so every colour handed to a paint property
 		// is normalised to rgb() first.
 		const labelColor = toRgbString(colors.white || '#ffffff');
-		const strokeColor = toRgbString(colors.surface || '#ffffff');
+		// Warm paper surface, never pure white — a white fallback is the wrong
+		// temperature on daylight and badly wrong on the microfilm ground.
+		const strokeColor = toRgbString(colors.surface || '#f3eee0');
 		const clusterColor = toRgbString(colors.primary);
 		const pointColors = {
 			lecture: toRgbString(colors.accent),

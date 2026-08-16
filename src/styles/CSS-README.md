@@ -2,7 +2,7 @@
 
 This document outlines the CSS architecture used in this project. The CSS is organized using a modular approach with a focus on maintainability, scalability, and reusability.
 
-> **🖋 Design system: Ink + Signal (2026-07).** The press archive, read computationally. Warm paper + ink with a single **pine (warm teal)** accent in daylight; a warm near-black **microfilm negative** with cream type at midnight. **Two type voices, strictly cast:** Archivo (display), Newsreader (prose serif), Spline Sans Mono (data voice). **Square corners, no shadows, no glass, no gradients** — hierarchy is drawn in rules (5px masthead, 3px section, 1px hairline) and ledger rows. Structural idioms live in [`components/ink-signal.css`](./components/ink-signal.css); the full brief is in [`.impeccable.md`](../../.impeccable.md). Source of truth for tokens: [`base/variables.css`](./base/variables.css) and [`base/dark.css`](./base/dark.css).
+> **🖋 Design system: Ink + Signal (2026-07).** The press archive, read computationally. Warm paper + ink with a single **pine (warm teal)** accent in daylight; a warm near-black **microfilm negative** with cream type at midnight. **Two type voices, strictly cast:** Archivo (display), Newsreader (prose serif), Spline Sans Mono (data voice). **Square corners, no shadows, no glass; gradients only where they encode data** — hierarchy is drawn in rules (5px masthead, 3px section, 1px hairline) and ledger rows. Structural idioms live in [`components/ink-signal.css`](./components/ink-signal.css); the design system of record is [`DESIGN.md`](../../DESIGN.md) with the narrative brief in [`.impeccable.md`](../../.impeccable.md), and the living reference renders at `/style-guide`. Source of truth for tokens: [`base/variables.css`](./base/variables.css) and [`base/dark.css`](./base/dark.css).
 
 ## Directory Structure
 
@@ -156,8 +156,14 @@ The vocabulary of the design system, in one place. Every class belongs to exactl
 - **Section**: `.section` (3px ink rule + spacing — the standard content module), `.section-head`, `.section-no`, `.section-title`
 - **Ledger** — the universal record idiom: `.ledger`, `.ledger-row` (hanging mono key column left, serif content right, hairline per row; `--meta` three-column variant), `.ledger-key` / `--current`, `.ledger-status`, `.ledger-content`, `.ledger-title`, `.ledger-desc`, `.ledger-meta`. Column widths tune via `--ledger-key-w` / `--ledger-meta-w`
 - **Chips**: `.chip` (flat, square, 1px border, mono caps, `.chip-count` appended; `.chip--selected` = solid ink fill), `.chip-more` (accent mono text action), `.chip-row`
-- **Data as ornament**: `.year-bars` / `.year-bar` / `.year-bar--current` (output distribution as ink bars, accent on the newest year), `.hbar` / `.hbar--current` (horizontal proportion meter — a hard-stop `linear-gradient` fill via `--pct`, the **only** gradient in the system), `.key-terms` (frequency-scaled term cloud), `.stat-ledger` / `.stat-row` / `.stat-value`
+- **Data as ornament**: `.year-bars` / `.year-bar` / `.year-bar--current` (output distribution as ink bars, accent on the newest year), `.hbar` / `.hbar--current` (horizontal proportion meter — a hard-stop `linear-gradient` fill via `--pct`), `.key-terms` (frequency-scaled term cloud), `.stat-ledger` / `.stat-row` / `.stat-value`
 - **Editorial**: `.drop-cap` (accent Archivo initial), `.plate` / `.plate-caption` (images as plates: 1px border, square, serif-italic caption), `.standfirst` (serif-italic deck)
+
+> **Gradients are permitted only where they encode data.** Three exist, all data
+> encodings: `.hbar` above, the `VolumeControl` track (same hard-stop technique,
+> inline), and the `NetworkMatrix` density-scale legend (a genuinely continuous
+> ramp). A gradient that encodes nothing remains banned.
+
 - **Pagination**: `.pager` / `.pager-item` (mono, square, ink fill on the current page)
 
 ### Buttons (`components/buttons.css`)

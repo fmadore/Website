@@ -86,7 +86,7 @@ export const COLORS = {
 	TEXT_EMPHASIS: [25, 21, 9] as [number, number, number], // #191509 — Ink (headings, name)
 	TEXT: [58, 53, 42] as [number, number, number], // #3a352a — Soft ink (prose body)
 	TEXT_LIGHT: [92, 84, 66] as [number, number, number], // #5c5442 — Muted ink (secondary prose)
-	TEXT_MUTED: [147, 137, 111] as [number, number, number], // #93896f — Faint ink (labels, keys)
+	TEXT_MUTED: [107, 99, 78] as [number, number, number], // #6b634e — Faint ink (labels, keys)
 	BORDER: [201, 192, 170] as [number, number, number], // #c9c0aa — Default border / section-adjacent
 	HAIRLINE: [220, 212, 190] as [number, number, number], // #dcd4be — Row hairline separators
 	BACKGROUND_LIGHT: [250, 247, 239] as [number, number, number] // #faf7ef — Warm paper

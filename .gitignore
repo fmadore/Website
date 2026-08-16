@@ -57,3 +57,8 @@ scripts/__pycache__/convert-image.cpython-312.pyc
 # MCP server build output (mcp/)
 /mcp/dist/
 /mcp/bundle/
+
+# Impeccable local state. PRODUCT.md, DESIGN.md and .impeccable/{config,design}.json
+# are the shared design record and ARE committed; these two are per-machine.
+/.impeccable/config.local.json
+/.impeccable/hook.cache.json

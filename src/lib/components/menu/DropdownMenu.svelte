@@ -68,13 +68,6 @@
 		pointer-events: none;
 	}
 
-	/* Solid fallback for browsers without backdrop-filter support. */
-	@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-		.dropdown-menu {
-			background: var(--color-background);
-		}
-	}
-
 	.dropdown-menu.active {
 		opacity: 1;
 		visibility: visible;

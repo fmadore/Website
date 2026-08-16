@@ -449,7 +449,7 @@
 	.legend-color {
 		width: var(--space-3);
 		height: var(--space-3);
-		border-radius: 50%;
+		border-radius: var(--border-radius-full);
 		border: var(--space-0-5) solid transparent;
 		outline: var(--border-width-thin) solid var(--color-border);
 	}

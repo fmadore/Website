@@ -130,7 +130,10 @@
  * scarcity (Access publication, Explore project, subscribe). */
 .btn-accent {
 	background: var(--color-accent);
-	color: var(--sys-color-paper);
+	/* Must be the semantic inverted token, not raw paper: the accent brightens to
+	 * pine-bright on midnight, where paper text falls to 2.2:1. Inverted resolves
+	 * to paper on daylight (6.0:1) and film ground on midnight (7.8:1). */
+	color: var(--color-text-inverted);
 	border-color: var(--color-accent);
 }
 
@@ -185,7 +188,7 @@
 
 .btn-outline-accent:hover:not(:disabled) {
 	background: var(--color-accent);
-	color: var(--sys-color-paper);
+	color: var(--color-text-inverted);
 	border-color: var(--color-accent);
 }
 
@@ -204,7 +207,7 @@
 /* Danger — destructive actions. */
 .btn-danger {
 	background: var(--color-danger);
-	color: var(--sys-color-paper);
+	color: var(--color-text-inverted);
 	border-color: var(--color-danger);
 }
 

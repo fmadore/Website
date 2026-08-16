@@ -313,7 +313,8 @@
 	.scroll-to-top:hover {
 		background: var(--color-accent);
 		border-color: var(--color-accent);
-		color: var(--sys-color-paper);
+		/* Semantic inverted, not raw paper — the accent brightens on midnight. */
+		color: var(--color-text-inverted);
 	}
 
 	/* Responsive design improvements */

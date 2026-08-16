@@ -65,7 +65,7 @@
 	.tooltip-category-indicator {
 		width: var(--space-2);
 		height: var(--space-2);
-		border-radius: 50%;
+		border-radius: var(--border-radius-full);
 	}
 
 	.tooltip-category {
