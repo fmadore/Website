@@ -205,6 +205,16 @@
 		}
 	}
 
+	/* Touch targets — 34px with a pointer is precise enough; a coarse pointer
+	 * gets the 44px guideline. Keyed to input method, not viewport width. */
+	@media (--touch) {
+		.page-btn {
+			min-width: 44px;
+			min-height: 44px;
+			padding: var(--space-2) var(--space-3);
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
 		.page-btn {
 			transition: none;

@@ -126,7 +126,7 @@ One critique per family representative covers the family; spot-check the sibling
       alignment, hairline consistency, rule-weight hierarchy (5px/3px/1px used correctly),
       spacing scale adherence, density (peer-respecting, not padded). A fix here propagates
       to ~20 routes. _Done when:_ templates pass at all four breakpoints in both themes.
-- [ ] **1.3 Responsive sweep.** `/impeccable adapt` on the same templates plus header/nav:
+- [x] **1.3 Responsive sweep.** `/impeccable adapt` on the same templates plus header/nav:
       filter bar and facet grid on touch, ledger collapse behaviour under 640px, touch
       targets ≥44px, mobile menu. _Done when:_ the entity index pages are fully usable on a
       375px viewport with touch emulation.
@@ -280,6 +280,42 @@ a deliberate design decision to make in **2.4**, pinned by a test meanwhile.
 `css-select`, `css-tree` and `domutils` are installed in the plugin's skill directory — and
 degraded means it reports an undercount, not a clean bill. It was installed for this run; **a
 plugin update will wipe it**. Always confirm the detector is not degraded before trusting silence.
+
+**2026-08-16 — 1.3 responsive sweep (`/impeccable adapt`) — done.** Taken out of order, ahead of
+1.1/1.2, because the audit scored responsive the weakest dimension (2/4) and the only one with a
+concrete defect list. Two systemic findings, both fixed at the system level rather than per page.
+
+**(a) The ledger broke on a narrow measure — the flagship idiom, on the page that documents it.**
+`.ledger-row` carried no responsive rule at all. The three-column variant computed to
+`144px 0px 192px` at 375px: the fixed key and meta tracks held their widths and the _content_
+column — the record itself — collapsed to **0px**, clipping the title. Four pages had each
+re-implemented the collapse locally under their own class name (`.course-row`, `.lecture-row`,
+`.ledger-entry`, …), and the two consumers that had not — `CitedBy` and the style guide's own demo
+rows — were simply broken. The collapse now lives on `.ledger-row` / `.ledger-row--meta` in
+`ink-signal.css`, so every consumer inherits it; `.ledger-meta` also drops its right alignment once
+stacked, which otherwise reads as a stray fragment. Note the block sits _after_ the element rules
+deliberately — same specificity, so it only wins by source order (it silently lost when placed
+above).
+
+**(b) Touch targets: 15 controls under the 44px guideline at 375px, 6 of them under 24px.**
+The worst were the filter controls, which are baseline-aligned text affordances with `padding: 0`
+and so measured **16–20px tall**: `.facet-toggle` (130×16), `.sort-opt` (42×16), `.bib-action`
+(28×16), `.language-opt` (21×20). Fixed by keying the sizing to **input method rather than
+viewport width** — `@media (--touch)`, a custom-media query the system had *defined but never
+used in a single file*. A touchscreen laptop needs the room; a narrow desktop window does not.
+Verified: desktop is byte-for-byte unchanged (chips still 31px at 6px/8px padding, ledger still
+`144px 984px`, `pointer: coarse` false), while the coarse-pointer pass now reports **15 → 1**
+control under 44px.
+
+The one remaining is `.footer-typecredit` (287×23), a credit link inside a sentence — the
+SC 2.5.8 *inline* exception, correctly exempt. Left alone deliberately.
+
+Also raised unconditionally to 44px (these only ever render on touch surfaces or are primary
+navigation): the hamburger (was 40px — `responsive.spec.ts` pinned that value, so its assertion
+moved to 44), the mobile panel's close button and site title, and mobile dropdown links.
+
+Nothing here is a WCAG failure — SC 2.5.8 AA requires only 24×24, and the spacing exception likely
+covered several. This is the roadmap's own 44px standing rule, which is above the legal floor.
 
 **2026-08-16 — 0.4 detector hook — enabled.** `.impeccable/config.json` written, local consent
 recorded. UI edits from here on are auto-scanned for anti-patterns. No ignores configured yet;

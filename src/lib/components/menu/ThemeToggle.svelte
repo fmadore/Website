@@ -114,6 +114,14 @@
 		}
 	}
 
+	/* Coarse pointers get the 44px guideline; the pointer size is unchanged. */
+	@media (--touch) {
+		.theme-toggle {
+			min-width: 44px;
+			min-height: 44px;
+		}
+	}
+
 	@media (prefers-contrast: high) {
 		.theme-toggle {
 			border-width: var(--border-width-medium);

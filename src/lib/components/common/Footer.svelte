@@ -213,6 +213,14 @@
 		transition: color var(--duration-fast) var(--ease-out);
 	}
 
+	/* Coarse pointers get the 44px guideline. */
+	@media (--touch) {
+		.footer-link {
+			min-height: var(--space-11);
+			align-items: center;
+		}
+	}
+
 	.footer-link-icon {
 		display: inline-flex;
 		align-items: center;

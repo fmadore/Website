@@ -310,6 +310,17 @@
 		color: var(--color-accent);
 	}
 
+	/* The wordmark is the home link — a primary navigation affordance, not
+	 * inline prose — so it takes the 44px guideline on coarse pointers. The
+	 * masthead's own height is unchanged; only the hit box grows. */
+	@media (--touch) {
+		.header-logo :global(.site-title) {
+			display: inline-flex;
+			align-items: center;
+			min-height: var(--space-11);
+		}
+	}
+
 	.header-logo :global(.site-title:focus-visible) {
 		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--space-1);

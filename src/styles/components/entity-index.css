@@ -121,7 +121,8 @@
 .pub-search-input {
 	flex: 1;
 	min-width: 0;
-	/* WCAG 2.5.8: interactive targets need ≥24px in both dimensions. */
+	/* WCAG 2.5.8 requires ≥24px; a coarse pointer gets the 44px guideline
+	 * (see the note in ink-signal.css on keying this to input method). */
 	min-height: 24px;
 	border: none;
 	background: transparent;
@@ -272,6 +273,46 @@
 
 .sort-opt--active {
 	color: var(--color-accent);
+}
+
+/* Touch targets — the filter controls are baseline-aligned text affordances
+ * with no hit padding, which measures 16-20px tall on a phone. Coarse pointers
+ * get real padding (and therefore real spacing between neighbours); the
+ * pointer layout is untouched, so desk density is preserved. See the note in
+ * ink-signal.css for why this is keyed to input method, not viewport width. */
+@media (--touch) {
+	.filter-bar-controls {
+		align-items: center;
+		row-gap: var(--space-2);
+	}
+
+	.pub-search-input {
+		min-height: 44px;
+	}
+
+	.language-opt,
+	.sort-opt {
+		padding: var(--space-2-5) var(--space-2);
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
+	}
+
+	/* Keep the active underline tight to the label rather than to the new
+	 * padded box, so the indicator still reads as an underline. */
+	.language-opt {
+		padding-bottom: calc(var(--space-2-5) - var(--space-0-5));
+		border-bottom-width: var(--border-width-medium);
+	}
+
+	.facet-toggle {
+		padding: var(--space-2-5) var(--space-2);
+		min-height: 44px;
+		align-items: center;
+		/* Cancel the inline padding's left offset so the control stays flush
+		 * with the column edge it opens. */
+		margin-left: calc(-1 * var(--space-2));
+	}
 }
 
 .sort-sep {

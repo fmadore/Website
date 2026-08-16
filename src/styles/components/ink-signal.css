@@ -209,6 +209,31 @@
 	text-align: right;
 }
 
+/* On a narrow measure the fixed key and meta tracks leave the content column
+ * nothing: the three-column variant computes to `144px 0px 192px`, so the
+ * record — the actual content — collapses to zero width and its title clips.
+ * Stack instead, which is what a ledger does on a narrow column anyway: the
+ * hanging key becomes a label line above the content it keys.
+ *
+ * This belongs on the idiom, not on each consumer. Four pages had each
+ * re-implemented the collapse locally under their own class name, and the two
+ * that had not (CitedBy, and the style-guide's own demo rows) were broken.
+ *
+ * Placed after the element rules above deliberately: these carry the same
+ * specificity, so the override only wins by source order. */
+@media (--sm-down) {
+	.ledger-row,
+	.ledger-row--meta {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--space-2);
+	}
+
+	/* Right-aligned meta reads as a stray fragment once stacked. */
+	.ledger-meta {
+		text-align: left;
+	}
+}
+
 /* ===========================================================================
  * CHIPS — flat, square, mono caps, count appended
  * =========================================================================== */
@@ -493,5 +518,37 @@
 	.chip,
 	.pager-item {
 		transition: none;
+	}
+}
+
+/* ===========================================================================
+ * TOUCH TARGETS
+ *
+ * The print register is dense by design, and dense is correct for a pointer:
+ * a mono chip at 30px is precise enough with a mouse and keeps the page
+ * scannable. A coarse pointer is a different context, not a smaller one, so
+ * the fix is keyed to the input method (`--touch`) rather than to viewport
+ * width — a touchscreen laptop needs the room and a narrow desktop window
+ * does not.
+ *
+ * 44px is the platform guideline; WCAG 2.2 SC 2.5.8 requires only 24px. These
+ * controls cleared 24px already, so this is deliberately above the floor.
+ * =========================================================================== */
+@media (--touch) {
+	.chip {
+		padding: var(--space-2-5) var(--space-3);
+		min-height: 44px;
+	}
+
+	.chip-more {
+		padding: var(--space-2-5) 0;
+		min-height: 44px;
+	}
+
+	.pager-item {
+		padding: var(--space-3) var(--space-3-5);
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
 	}
 }

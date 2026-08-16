@@ -205,6 +205,21 @@
 	color: var(--color-accent);
 }
 
+/* Touch targets — "Cite" and its siblings are 16px-tall mono text actions on a
+ * phone. Padding on coarse pointers only; the pointer layout is untouched. */
+@media (--touch) {
+	.bib-action {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		padding-block: var(--space-2-5);
+	}
+
+	.bib-action--primary {
+		padding: var(--space-2-5) var(--space-2);
+	}
+}
+
 /* The primary action (open-access / DOI / slides) carries a hairline box to
  * read as the lead affordance, the way the mockup frames it. */
 .bib-action--primary {

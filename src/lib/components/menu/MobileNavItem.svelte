@@ -162,7 +162,8 @@
 	.mobile-dropdown-link {
 		display: flex;
 		align-items: center;
-		min-height: 2.5rem;
+		/* 44px — this list is only ever rendered inside the touch panel. */
+		min-height: var(--space-11);
 		padding: var(--space-2) 0 var(--space-2) var(--space-4);
 		color: var(--color-text-light);
 		text-decoration: none;

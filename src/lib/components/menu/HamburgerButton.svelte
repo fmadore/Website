@@ -26,8 +26,11 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		width: var(--space-10);
-		height: var(--space-10);
+		/* 44px — the platform touch guideline. This is the primary navigation
+		 * affordance on small viewports, so it takes the larger target
+		 * unconditionally rather than only on coarse pointers. */
+		width: var(--space-11);
+		height: var(--space-11);
 		background: transparent;
 		border: none;
 		cursor: pointer;

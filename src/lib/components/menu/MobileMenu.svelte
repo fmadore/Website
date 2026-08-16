@@ -183,6 +183,8 @@
 	:global(.mobile-site-title) {
 		display: inline-flex;
 		align-items: center;
+		/* 44px — the home link inside the touch panel. */
+		min-height: var(--space-11);
 		font-family: var(--font-family-display);
 		font-variation-settings: var(--font-variation-wordmark);
 		font-size: clamp(1.15rem, 0.95rem + 0.9vw, 1.5rem);
@@ -217,8 +219,10 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		width: calc(var(--space-8) + var(--space-1));
-		height: calc(var(--space-8) + var(--space-1));
+		/* 44px — the platform touch guideline. This panel is a touch surface by
+		 * definition, so the close control takes it unconditionally. */
+		width: var(--space-11);
+		height: var(--space-11);
 		position: relative;
 		flex-shrink: 0;
 	}
