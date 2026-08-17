@@ -88,11 +88,11 @@ The history of these associations reveals the campus as a microcosm reflecting w
 	citedBy: [
 		{
 			authors: ['Michael Fisch'],
-			year: 2025,
+			year: 2026,
 			title:
-				'Dreihundertdreißig Jahre Wissenschaft zu Qur’ān und Islam: Ein Verzeichnis von 1694 bis 2024 unter Berücksichtigung angrenzender Gebiete Erster Band mit Quellen von 1694 bis 1974',
-			source: 'Islamkundliche Untersuchungen 355. Berlin: De Gruyter, 2025',
-			url: 'https://doi.org/10.1515/9783112205570'
+				'Dreihundertdreißig Jahre Wissenschaft zu Qur’ān und Islam: Ein Verzeichnis von 1694 bis 2024 unter Berücksichtigung angrenzender Gebiete Dritter Band mit Quellen von 2005 bis 2024',
+			source: 'Berlin: De Gruyter, 2026',
+			url: 'https://doi.org/10.1515/9783112205020'
 		},
 		{
 			authors: ['Wikipedia contributors'],
