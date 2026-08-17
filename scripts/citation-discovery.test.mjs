@@ -11,6 +11,7 @@ import {
 	markdownHref,
 	normUrl
 } from './citation-discovery.mjs';
+import { normTitle } from './citation-grouping.mjs';
 
 /**
  * Fixtures mirror the payload shapes these three APIs actually return — Solr
@@ -193,6 +194,33 @@ describe('isOwnWork', () => {
 		expect(
 			isOwnWork({ title: 'Retitled edition', authors: [], isbns: ['978-3-11-142790-4'] }, context)
 		).toBe(true);
+	});
+
+	// Google Books files his co-edited special issue under the series title with
+	// the site's title inside it, and names no author on the record — so this is
+	// the only check that can recognise it.
+	it('recognises his own work filed under a title that contains the site’s', () => {
+		expect(
+			isOwnWork(
+				{
+					title: "Émulations n° 24 : Les acteurs religieux africains à l'ère du numérique",
+					authors: []
+				},
+				{
+					...context,
+					localTitles: new Set([normTitle("Les acteurs religieux africains à l'ère du numérique")])
+				}
+			)
+		).toBe(true);
+	});
+
+	it('does not let a short title swallow an unrelated work', () => {
+		expect(
+			isOwnWork(
+				{ title: 'Islam and the state in Benin and beyond', authors: [] },
+				{ ...context, localTitles: new Set(['islam']) }
+			)
+		).toBe(false);
 	});
 
 	it('leaves a genuine citing work alone', () => {

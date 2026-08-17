@@ -162,6 +162,13 @@ export function normaliseWikipedia(payload, lang) {
 // ---------------------------------------------------------------------------
 
 /**
+ * How long a local title must be before a hit containing it counts as the same
+ * work. Long enough that the overlap cannot be coincidence; short enough to
+ * catch a real one. Normalised characters, so spaces count and punctuation does not.
+ */
+const MIN_CONTAINED_TITLE = 25;
+
+/**
  * Is this hit the author's own work rather than someone citing it?
  *
  * A name search returns his own books before anything else, and Google Books
@@ -172,7 +179,21 @@ export function normaliseWikipedia(payload, lang) {
  */
 export function isOwnWork(hit, { variants, localTitles, localIsbns }) {
 	if (matchesAuthor(hit.authors, variants)) return true;
-	if (localTitles.has(normTitle(hit.title))) return true;
+
+	const title = normTitle(hit.title);
+	if (localTitles.has(title)) return true;
+
+	// A publisher often files a work under a title that *contains* the one the
+	// site uses. Google Books holds the co-edited special issue as "Émulations
+	// n° 24 : Les acteurs religieux africains à l'ère du numérique" while the
+	// site calls it by its own title alone, and the record names no author at
+	// all — so neither of the checks above sees it, and his own edited volume
+	// is reported as a lead every month. The length floor keeps a short title
+	// from swallowing unrelated works whose name happens to contain it.
+	for (const local of localTitles) {
+		if (local.length >= MIN_CONTAINED_TITLE && title.includes(local)) return true;
+	}
+
 	const bareIsbn = (s) => String(s ?? '').replace(/[^0-9xX]/g, '');
 	return (hit.isbns ?? []).some((i) => localIsbns.has(bareIsbn(i)));
 }

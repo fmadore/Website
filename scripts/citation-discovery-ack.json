@@ -1,4 +1,8 @@
 {
 	"note": "Discovery leads that have been looked at and are NOT citations. Google Books, HAL and Wikipedia are searched by author name, so they surface bibliography entries, name-checks and false positives alongside real citations, and a lead that is not a citation has nothing in the repository that could come to represent it. This file is that representation. Anything that IS a citation — including a Wikipedia article that cites the work — does not belong here: record it in the citedBy array of the work it cites, with the source URL as url, and it stops being reported on its own. Each key is printed next to its lead in the citation-watch issue, ready to paste; the value is why, for whoever reads this in two years. check-citations.mjs warns about entries that no longer match anything, so stale lines get noticed rather than accumulating.",
-	"acknowledged": {}
+	"acknowledged": {
+		"books:wUraEQAAQBAJ": "The Oxford Handbook of Islamic Reform — already recorded at the level that cites, Østebø's chapter 'Islamic Reform in Africa', in salafism-cote-divoire-2016. The volume record is the same citation seen from outside, not a second one",
+		"books:NPuAEQAAQBAJ": "Faith in the Balance — already recorded at the level that cites, Elischer's chapter 'Burkina Faso: State and Religious Authority in Turbulent Times', in rivalites-collaborations-islamiques-cote-ivoire-burkina-faso-2018",
+		"books:tZk5AQAAMAAJ": "Sessional Papers of the Dominion of Canada (1901) — a different Madore entirely (Joseph Adolphe), caught by the surname"
+	}
 }
