@@ -72,6 +72,23 @@ jobs:
             echo "From [\`${{ github.workflow }}\`](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}), run ${{ github.run_number }}."
           } > issue-body.md
 
+      # `create-issue-from-file` edits an existing issue only when it is handed
+      # one. Without `issue-number` it POSTs a new issue on every single run —
+      # which is how #146, #157 and #160 came to be three copies of the same
+      # report, each superseding the last in silence. Look the open one up
+      # first; an empty result means there is none yet, and the action falls
+      # back to creating it.
+      - name: Find the open report issue
+        id: existing
+        if: steps.triage.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          number=$(gh issue list --state open --label citations \
+            --json number,title \
+            --jq '.[] | select(.title == "New citations and missing publications") | .number' | head -n1)
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+
       # As with the link check: one long-lived issue, rewritten in place. The
       # body shrinks as citations get committed, so the issue doubles as the
       # remaining to-do list.
@@ -79,6 +96,7 @@ jobs:
         if: steps.triage.outputs.found == 'true'
         uses: peter-evans/create-issue-from-file@v6
         with:
+          issue-number: ${{ steps.existing.outputs.number }}
           title: 'New citations and missing publications'
           content-filepath: issue-body.md
           labels: bibliography, citations

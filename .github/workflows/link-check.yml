@@ -65,11 +65,27 @@ jobs:
           } > issue-body.md
 
       # One long-lived issue, edited in place. A fresh issue per run would turn
-      # a slow-moving problem into a notification stream and get muted.
+      # a slow-moving problem into a notification stream and get muted — which
+      # is exactly what this did until the lookup below was added, because
+      # `create-issue-from-file` creates rather than edits unless it is given
+      # an `issue-number`. An empty result means there is no open report yet,
+      # and the action creates one.
+      - name: Find the open report issue
+        id: existing
+        if: steps.check.outputs.exit_code != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          number=$(gh issue list --state open --label links \
+            --json number,title \
+            --jq '.[] | select(.title == "Dead external links") | .number' | head -n1)
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+
       - name: Open or update the report issue
         if: steps.check.outputs.exit_code != '0'
         uses: peter-evans/create-issue-from-file@v6
         with:
+          issue-number: ${{ steps.existing.outputs.number }}
           title: 'Dead external links'
           content-filepath: issue-body.md
           labels: maintenance, links
