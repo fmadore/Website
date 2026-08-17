@@ -301,14 +301,14 @@ above).
 The worst were the filter controls, which are baseline-aligned text affordances with `padding: 0`
 and so measured **16–20px tall**: `.facet-toggle` (130×16), `.sort-opt` (42×16), `.bib-action`
 (28×16), `.language-opt` (21×20). Fixed by keying the sizing to **input method rather than
-viewport width** — `@media (--touch)`, a custom-media query the system had *defined but never
-used in a single file*. A touchscreen laptop needs the room; a narrow desktop window does not.
+viewport width** — `@media (--touch)`, a custom-media query the system had _defined but never
+used in a single file_. A touchscreen laptop needs the room; a narrow desktop window does not.
 Verified: desktop is byte-for-byte unchanged (chips still 31px at 6px/8px padding, ledger still
 `144px 984px`, `pointer: coarse` false), while the coarse-pointer pass now reports **15 → 1**
 control under 44px.
 
 The one remaining is `.footer-typecredit` (287×23), a credit link inside a sentence — the
-SC 2.5.8 *inline* exception, correctly exempt. Left alone deliberately.
+SC 2.5.8 _inline_ exception, correctly exempt. Left alone deliberately.
 
 Also raised unconditionally to 44px (these only ever render on touch surfaces or are primary
 navigation): the hamburger (was 40px — `responsive.spec.ts` pinned that value, so its assertion
