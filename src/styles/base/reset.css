@@ -41,7 +41,10 @@ body {
 	scroll-behavior: smooth;
 	background-color: var(--color-background);
 	color: var(--color-text);
-	font-family: var(--font-family-sans);
+	/* The reading default is the PROSE voice. typography.css restates this on
+	 * `body`, but the reset must not name a fourth family: anything inheriting
+	 * before that rule applies would land in a face the system does not have. */
+	font-family: var(--font-family-serif);
 	line-height: var(--line-height-body);
 }
 

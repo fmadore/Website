@@ -50,10 +50,6 @@
 	margin: 0 0 var(--space-md);
 }
 
-.index-standfirst {
-	max-width: 52ch;
-}
-
 /* Year-bar strip — real per-year output as ink bars, newest in pine. */
 .index-hero-bars {
 	display: flex;

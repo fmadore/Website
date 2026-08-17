@@ -220,7 +220,9 @@ The single accent. There is no third colour role in the UI.
 
 **Display Font:** Archivo (variable, with `system-ui` fallback)
 **Body Font:** Newsreader (with Georgia, Cambria, Times fallbacks)
-**Label/Mono Font:** Spline Sans Mono (with SF Mono, Consolas fallbacks)
+**Label/Mono Font:** Spline Sans Mono (with Newsreader, then SF Mono/Consolas, as fallbacks)
+
+There are three families and no fourth. A `--font-family-sans` system stack was removed once measurement showed nothing needed it — form controls take `font: inherit` from the reset — while it was silently supplying the default inside chart containers and the network plate, where any mark that forgot to name its own family left the system. Newsreader sits inside the mono stack deliberately: Spline Sans Mono lacks the Yoruba underdots (`ẹ`, `ọ`) that occur in author names in the data, and a hole in the primary face should be filled by a font this site already ships rather than by Courier New. All three families carry the full French set.
 
 **Character:** A grotesque cut for headlines against a serif designed for news text, with a mono reserved strictly for machine-indexed strings. Archivo is set wide and heavy on its width axis for a compressed-broadsheet feel; Newsreader carries the reading with its optical-size axis live and genuine italics for subtitles and captions. All three ship full Latin Extended, which is a requirement rather than a bonus — French and West African diacritics appear in titles, names, and quotations throughout.
 
@@ -230,13 +232,15 @@ The scale is deliberately forked. Body and UI steps follow a minor third (1.2) t
 
 - **Nameplate** (Archivo, 850, `clamp(2.5rem, 1.6rem + 4.2vw, 5rem)`, line-height 0.9, `wdth` 123, uppercase): The home masthead wordmark. One per site.
 - **Display** (Archivo, 830, `clamp(2.93rem, …, 3.296rem)`, line-height 1, `wdth` 116): `h1` — page and index hero titles.
-- **Headline** (Archivo, 780/750, `clamp(1.875rem, …, 2.109rem)`, line-height 1.02–1.05, `wdth` 112): `h2` and the section head that follows a 3px rule.
+- **Headline** (Archivo, `wdth` 112): two steps — `h2` at 780, `clamp(2.344rem, …, 2.637rem)`, line-height 1.02, the section head that follows a 3px rule; `h3` at 750, `clamp(1.875rem, …, 2.109rem)`, line-height 1.05.
 - **Title** (Newsreader, 500, `clamp(1.5rem, …, 1.6875rem)`, line-height 1.35): The record title inside a ledger row, and `h4`–`h5`.
-- **Body** (Newsreader, 400, `clamp(1.0625rem, …, 1.125rem)`, line-height 1.6): All prose. Reading measure is capped at 65ch (66ch for ledger descriptions, 60ch for a standfirst).
+- **Body** (Newsreader, 400, `clamp(1.0625rem, …, 1.125rem)`, line-height 1.6): All prose, capped by the measure roles below.
 - **Standfirst** (Newsreader italic, `clamp(1.225rem, …, 1.35rem)`, line-height 1.5): The serif-italic deck under a page title, and plate captions at the small step.
 - **Label** (Spline Sans Mono, 500–700, `clamp(0.625rem, …, 0.6944rem)`, letter-spacing 0.06–0.16em, uppercase, tabular numerals): Every machine-indexed string — eyebrows, datelines, counts, navigation, filters, chips, DOIs, pagination, ledger keys, button text. **`h6` belongs to this tier, not to Title:** the smallest heading level in this system is functionally a metadata label, and `typography.css` casts it mono, uppercase, and letterspaced by design. It is the one heading element in the data voice, and the exception is deliberate rather than a violation of the Two Voices Rule.
 
 ### Named Rules
+
+**The Measured Line Rule.** Reading measure is stated in characters, never in `ch`. A `ch` is the advance width of the digit zero; Newsreader's average character is only ~0.68–0.73 of that, so a cap written as `65ch` sets 87–95 characters — half again the intended line. Three calibrated roles own every prose cap: `--measure-prose` (50ch → ~69 characters) for body copy, ledger descriptions, abstracts and CV entries; `--measure-standfirst` (42ch → ~61) for the italic deck under a title; `--measure-note` (40ch → ~55) for captions and fine print. Never write a raw `ch` value into a component, and verify a change by counting characters in the rendered line — `/style-guide` measures all three live. Monospace is the exception: 1ch is exactly one character there, so ledger key columns may be sized in `ch` literally. Metadata that is scanned rather than read — bylines, citation and venue lines — is deliberately left uncapped.
 
 **The Two Voices Rule.** Every string on every page belongs to exactly one voice. The document voice (Archivo, Newsreader) carries what the scholar writes; the data voice (Spline Sans Mono) carries what the machine indexes. If a string could plausibly be a database column, it is mono. No mono headlines, no serif metadata. Blurring the two is this system's only unforgivable error.
 
@@ -250,7 +254,7 @@ The spatial model is an 8-point grid built on a 4px baseline, exposed as both a 
 
 **The ledger** is the standard record layout: a CSS grid of a hanging mono key column (default 7rem, tunable per instance) and a serif content column, with a 1px hairline on every row and baseline alignment between the columns. A three-column variant adds a right-aligned mono meta column (default 12rem). **The section** is the standard content module: a 3px ink rule, 12px of padding, then an Archivo head, with 48px separating one section from the next.
 
-Density is a deliberate value. Scholars scan, and dense, well-set information reads faster than sparse pages — do not pad with whitespace where structured information would serve the reader better. Reading measure is the one place the system refuses density: prose stays at 65ch regardless of available width.
+Density is a deliberate value. Scholars scan, and dense, well-set information reads faster than sparse pages — do not pad with whitespace where structured information would serve the reader better. Reading measure is the one place the system refuses density: prose holds ~69 characters a line however wide the column gets (see The Measured Line Rule).
 
 ### Named Rules
 
@@ -349,6 +353,7 @@ Components are **typeset, not manufactured**: they read as set type and printer'
 - **Don't** set a headline in mono or metadata in serif, and don't let the mono face become a page-wide theme.
 - **Don't** introduce a second accent, or spend pine on large filled areas beyond the single hero button.
 - **Don't** use `rgba()` for transparency, hardcode a hex or spacing value, or write a pixel media query — use tokens, `color-mix()`, and custom media.
+- **Don't** write a raw `ch` cap on prose, and don't read a `ch` number as a character count. Reach for `--measure-prose`, `--measure-standfirst`, or `--measure-note`, and check the result by counting characters in the rendered line.
 - **Don't** add a `border-left` accent stripe, a rounded card with a soft shadow, or any of the templated-academic-CMS patterns this system was built against.
 - **Don't** animate beyond an instant colour or border change; the register is print, and the most a page may do on arrival is a short fade.
 - **Don't** reintroduce glassmorphism in any form. The former `.glass-*` classes were neutralised and then renamed to `.surface-*`; that migration is complete, and the only remaining mentions are historical comments in `surfaces.css` and `CSS-README.md`. Use `.surface-*`, and never add a `backdrop-filter`.

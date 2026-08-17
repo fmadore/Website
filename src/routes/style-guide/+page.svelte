@@ -99,6 +99,68 @@
 		'--font-size-5xl'
 	];
 
+	/* ===== Reading measure — the three prose roles.
+	 * `ch` is the advance width of "0", not the width of one character, so the
+	 * ch number in a token says nothing directly about how long a line reads.
+	 * This block therefore MEASURES each role in the live font rather than
+	 * restating its token, and re-documents itself if a token changes. ===== */
+	const measureRoles = [
+		{
+			token: '--measure-prose',
+			role: 'Prose',
+			size: '--font-size-base',
+			use: 'body copy, ledger descriptions, abstracts, CV entries'
+		},
+		{
+			token: '--measure-standfirst',
+			role: 'Standfirst',
+			size: '--font-size-lead',
+			use: 'the italic deck under a page title'
+		},
+		{
+			token: '--measure-note',
+			role: 'Note',
+			size: '--font-size-sm',
+			use: 'captions, review sources, the footer'
+		}
+	];
+
+	let measured = $state<Record<string, { ch: string; px: number; chars: number }>>({});
+
+	$effect(() => {
+		const probe = document.createElement('div');
+		probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;left:-9999px;';
+		probe.style.fontFamily = 'var(--font-family-serif)';
+		document.body.appendChild(probe);
+
+		// A representative line of this site's prose: English and French, with
+		// the diacritics that actually occur in the corpus.
+		const sample =
+			"Cet article examine l'activisme religieux des étudiants musulmans sur les campus " +
+			'universitaires du Togo et du Bénin. Drawing on fieldwork in Lomé and Cotonou, it traces ' +
+			'how these associations negotiated their place within a secular state.';
+
+		const next: Record<string, { ch: string; px: number; chars: number }> = {};
+		for (const role of measureRoles) {
+			probe.style.fontSize = `var(${role.size})`;
+			// 1 — resolve the cap to px against this role's own font size.
+			probe.textContent = '';
+			probe.style.width = `var(${role.token})`;
+			const capPx = probe.getBoundingClientRect().width;
+			// 2 — average character width of real prose in the same font.
+			probe.style.width = 'auto';
+			probe.textContent = sample;
+			const avgChar = probe.getBoundingClientRect().width / sample.length;
+			next[role.token] = {
+				ch: getComputedStyle(document.documentElement).getPropertyValue(role.token).trim(),
+				px: Math.round(capPx),
+				chars: Math.round(capPx / avgChar)
+			};
+		}
+		probe.remove();
+		measured = next;
+	});
+
 	/* ===== Rules ===== */
 	const ruleSpecs = [
 		{ class: 'rule-nameplate', token: '--rule-nameplate · 5px', use: 'the nameplate' },
@@ -246,6 +308,32 @@
 						<span class="scale-token">{token}</span>
 						<span class="scale-sample scale-sample--display" style="font-size: var({token})">
 							Signal — major third (1.25)
+						</span>
+					</div>
+				{/each}
+			</div>
+
+			<h3 class="eyebrow eyebrow--ink guide-subhead">Reading measure — counted, not assumed</h3>
+			<p class="guide-note">
+				A <span class="data-voice">ch</span> is the advance width of the digit zero, not the width
+				of one character. Newsreader's average character measures about
+				<span class="data-voice">0.7ch</span>, so a cap written as
+				<span class="data-voice">65ch</span> sets nearer ninety characters a line — past the forty-five
+				to seventy-five that keeps a line scannable. Reason in characters and let the token carry the
+				arithmetic. The counts below are measured in your browser, in the live font, at each role's own
+				size.
+			</p>
+			<div class="ledger ledger--ruled">
+				{#each measureRoles as role (role.token)}
+					<div class="ledger-row ledger-row--meta">
+						<span class="ledger-key">{role.role}</span>
+						<span class="ledger-content">
+							<span class="ledger-title">{role.token}</span>
+							<span class="ledger-desc">{role.use}</span>
+						</span>
+						<span class="ledger-meta">
+							{measured[role.token]?.ch ?? '—'} ·
+							<strong>{measured[role.token]?.chars ?? '—'} chars</strong>
 						</span>
 					</div>
 				{/each}
@@ -484,7 +572,7 @@
 		font-size: var(--font-size-base);
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text-soft);
-		max-width: var(--text-max-width-reading);
+		max-width: var(--measure-prose);
 		margin: 0 0 var(--space-lg);
 	}
 
@@ -493,7 +581,7 @@
 		font-size: var(--font-size-sm);
 		line-height: var(--line-height-caption);
 		color: var(--color-text-light);
-		max-width: 55ch;
+		max-width: var(--measure-note);
 		margin: var(--space-sm) 0 0;
 	}
 

@@ -81,7 +81,7 @@
 
 	/* Editorial empty state — prose on paper, not a dashed placeholder box. */
 	.deck-empty {
-		max-width: 48ch;
+		max-width: var(--measure-prose);
 		margin-top: var(--space-2xl);
 	}
 

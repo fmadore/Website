@@ -47,7 +47,7 @@
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text-soft);
 		margin-bottom: var(--space-xl);
-		max-width: var(--text-max-width-reading);
+		max-width: var(--measure-standfirst);
 	}
 
 	.page-intro--compact {

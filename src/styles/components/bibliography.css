@@ -172,7 +172,7 @@
 	line-height: var(--line-height-relaxed);
 	color: var(--color-text-soft);
 	margin: var(--space-1-5) 0 0;
-	max-width: 62ch;
+	max-width: var(--measure-prose);
 }
 
 /* Right-aligned mono action column — DOI / OPEN ACCESS / CITE (publications),

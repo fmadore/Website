@@ -224,7 +224,7 @@ ECharts Stacked Bar Chart component
 		height: 100%;
 		display: block;
 		position: relative;
-		font-family: var(--font-family-sans);
+		font-family: var(--font-family-mono);
 	}
 
 	.chart {

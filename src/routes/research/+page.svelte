@@ -291,7 +291,7 @@
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text-soft);
 		margin: 0 0 var(--space-md);
-		max-width: 60ch;
+		max-width: var(--measure-prose);
 	}
 
 	.dossier-action {

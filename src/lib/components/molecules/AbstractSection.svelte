@@ -96,7 +96,7 @@
 		font-size: var(--font-size-base);
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text);
-		max-width: 66ch;
+		max-width: var(--measure-prose);
 		text-align: left;
 		hyphens: none;
 	}

@@ -76,7 +76,7 @@ There are no `--shadow-*` tokens. Depth comes from ink density and rule weight, 
 
 #### Typography Tokens — two voices
 
-- **Font families**: `--font-family-display` (Archivo — nameplate, h1–h3, section heads, big data numbers), `--font-family-serif` (Newsreader — all prose, h4–h5, captions, italics; the reading default), `--font-family-mono` (Spline Sans Mono — the data voice: eyebrows, datelines, counts, nav, chips, DOIs, pagination; **never body copy**). `--font-family-sans` is a neutral system stack kept only as a form-control fallback.
+- **Font families**: `--font-family-display` (Archivo — nameplate, h1–h3, section heads, big data numbers), `--font-family-serif` (Newsreader — all prose, h4–h5, captions, italics; the reading default), `--font-family-mono` (Spline Sans Mono — the data voice: eyebrows, datelines, counts, nav, chips, DOIs, pagination; **never body copy**). There is no fourth family: `--font-family-sans` was removed once nothing used it — form controls take `font: inherit` from the reset, so its stated purpose never existed, while chart containers and the network plate were quietly inheriting it.
 - **Archivo width axis**: `--font-variation-nameplate/-display/-display-md/-display-sm/-wordmark` presets for the wide, heavy display cut
 - **Type scale**: Fluid `clamp()` steps with forked ratios — Minor Third (1.2) for body/UI, Major Third (1.25) for display; plus `--font-size-nameplate` and `--font-size-display` for mastheads and index heroes
 - **Semantic sizes**: `--font-size-2xs` through `--font-size-5xl`, `--font-size-heading-1..6`

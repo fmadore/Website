@@ -373,6 +373,7 @@ apparatus, and the ruled-section styling.
 	.project-prose :global(li) {
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text);
+		max-width: var(--measure-prose);
 	}
 
 	.project-prose :global(p) {

@@ -127,7 +127,7 @@
 				Infrastructure · {projectCount} projects · {earliestYear} —
 			</p>
 			<h1 class="dh-hero-title">Digital Humanities</h1>
-			<p class="standfirst dh-hero-standfirst">
+			<p class="standfirst">
 				Not an end in itself, but a response to a concrete problem. After years of fieldwork across
 				West Africa, I had accumulated thousands of documents that exceeded what traditional methods
 				could process. These projects turn that accumulation into open research infrastructure —
@@ -273,10 +273,6 @@
 		line-height: 0.98;
 		color: var(--color-text-emphasis);
 		margin: 0 0 var(--space-md);
-	}
-
-	.dh-hero-standfirst {
-		max-width: 74ch;
 	}
 
 	/* ===== CATALOGUE ===== */
@@ -429,7 +425,7 @@
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text-soft);
 		margin: 0;
-		max-width: 68ch;
+		max-width: var(--measure-prose);
 	}
 
 	.dh-row-tech {

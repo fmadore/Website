@@ -357,7 +357,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 		height: 100%;
 		display: block;
 		position: relative;
-		font-family: var(--font-family-sans);
+		font-family: var(--font-family-mono);
 	}
 
 	.chart {

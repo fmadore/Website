@@ -98,7 +98,7 @@
 		font-weight: var(--font-weight-normal);
 		line-height: var(--line-height-snug);
 		color: var(--color-text-soft);
-		max-width: 60ch;
+		max-width: var(--measure-standfirst);
 		margin: 0;
 	}
 

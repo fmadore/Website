@@ -163,7 +163,7 @@
 		font-size: var(--font-size-base);
 		color: var(--color-footer-text-muted);
 		margin: var(--space-3) 0 0;
-		max-width: 40ch;
+		max-width: var(--measure-note);
 		line-height: var(--line-height-snug);
 	}
 

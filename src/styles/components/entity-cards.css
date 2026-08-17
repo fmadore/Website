@@ -159,6 +159,7 @@ img.entity-cover-image[width][height] {
 	font-size: var(--font-size-sm);
 	margin-bottom: var(--space-md);
 	line-height: var(--line-height-relaxed);
+	max-width: var(--measure-prose);
 }
 
 .entity-tags {
@@ -315,7 +316,7 @@ html.dark .entity-card--editorial:hover {
 	font-size: var(--font-size-lg);
 	line-height: var(--line-height-relaxed);
 	color: var(--color-text);
-	max-width: 65ch;
+	max-width: var(--measure-prose);
 	margin-bottom: var(--space-lg);
 }
 

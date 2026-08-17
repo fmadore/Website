@@ -114,7 +114,7 @@
 			},
 			"body": {
 				"displayName": "Body",
-				"purpose": "All prose, capped at a 65ch reading measure."
+				"purpose": "All prose, capped by --measure-prose at ~69 characters a line."
 			},
 			"standfirst": {
 				"displayName": "Standfirst",

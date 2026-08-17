@@ -484,7 +484,7 @@
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text-soft);
 		margin: 0;
-		max-width: 66ch;
+		max-width: var(--measure-prose);
 	}
 
 	.apparatus-text :global(a),

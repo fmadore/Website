@@ -174,7 +174,7 @@ ECharts WordCloud - Word frequency visualization for publication text analysis
 		justify-content: center;
 		align-items: stretch;
 		position: relative;
-		font-family: var(--font-family-sans);
+		font-family: var(--font-family-mono);
 	}
 
 	@media (--md-down) {

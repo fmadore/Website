@@ -312,7 +312,7 @@ small {
 
 /* Prose typography for long-form content */
 .prose {
-	max-width: var(--text-max-width-reading);
+	max-width: var(--measure-prose);
 	line-height: var(--line-height-relaxed);
 	font-size: var(--font-size-lg);
 }

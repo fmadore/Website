@@ -196,7 +196,7 @@
 	line-height: var(--line-height-relaxed);
 	color: var(--color-text-soft);
 	margin: 0;
-	max-width: 66ch;
+	max-width: var(--measure-prose);
 }
 
 .ledger-meta {
@@ -474,7 +474,7 @@
 	font-size: var(--font-size-lg);
 	line-height: var(--line-height-normal);
 	color: var(--color-text-soft);
-	max-width: 60ch;
+	max-width: var(--measure-standfirst);
 	margin: 0;
 }
 

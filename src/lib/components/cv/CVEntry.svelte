@@ -71,6 +71,15 @@
 		line-height: var(--line-height-relaxed);
 	}
 
+	/* The reading measure goes on the prose, not on the column. CV entries carry
+	 * the site's longest descriptions — over 140 characters a line uncapped — but
+	 * the column also holds mono address rows, and narrowing those only makes
+	 * them wrap, which stacks 15px link targets closer than the 24px WCAG 2.5.8
+	 * asks for. Cap what is read; leave what is scanned. */
+	.cv-entry-content :global(.text-sm) {
+		max-width: var(--measure-prose);
+	}
+
 	/* On narrow viewports the two columns stack: key becomes an overline. */
 	@media (--sm-down) {
 		.cv-entry {

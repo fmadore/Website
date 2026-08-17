@@ -60,7 +60,7 @@
 		font-size: var(--font-size-lg);
 		color: var(--color-text-soft);
 		margin: 0 0 var(--space-sm);
-		max-width: 60ch;
+		max-width: var(--measure-prose);
 	}
 
 	.error-path {

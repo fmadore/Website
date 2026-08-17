@@ -192,7 +192,7 @@
 	line-height: var(--line-height-relaxed);
 	color: var(--color-text-soft);
 	margin: 0;
-	max-width: 62ch;
+	max-width: var(--measure-prose);
 }
 
 /* Tag run — the data voice: uppercase mono, dot-separated. */

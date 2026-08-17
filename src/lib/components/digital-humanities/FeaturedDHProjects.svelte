@@ -262,6 +262,7 @@
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text-soft);
 		margin: 0;
+		max-width: var(--measure-prose);
 	}
 
 	/* Stat row — the data voice, headline figure in the accent. */

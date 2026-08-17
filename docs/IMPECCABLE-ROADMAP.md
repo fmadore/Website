@@ -115,17 +115,35 @@ One critique per family representative covers the family; spot-check the sibling
 
 ## Phase 1 — Foundations (system-wide leverage before per-page work)
 
-- [ ] **1.1 Typography.** `/impeccable typeset` on the global type system, using
+- [x] **1.1 Typography.** `/impeccable typeset` on the global type system, using
       `/style-guide` as the bench: two-voice casting sweep (hunt any string in the wrong
-      voice), body/display scale ratios, Newsreader measure (45–75ch) on prose pages,
-      Archivo `wdth`/weight at masthead vs section tiers, French diacritics rendering in all
-      three families, mono letterspacing at small sizes in both themes. _Done when:_ no
+      voice), body/display scale ratios, Newsreader measure (45–75 **characters**) on prose
+      pages, Archivo `wdth`/weight at masthead vs section tiers, French diacritics rendering
+      in all three families, mono letterspacing at small sizes in both themes. _Done when:_ no
       voice-blurring remains and the guide's type section matches shipped reality.
 - [ ] **1.2 Layout rhythm.** `/impeccable layout` on the three shared templates —
       EntityListPageLayout, EntityDetailLayout, and the ledger idiom itself: hanging-column
       alignment, hairline consistency, rule-weight hierarchy (5px/3px/1px used correctly),
       spacing scale adherence, density (peer-respecting, not padded). A fix here propagates
       to ~20 routes. _Done when:_ templates pass at all four breakpoints in both themes.
+- [ ] **1.4 Tracking scale.** Raised by 1.1, deliberately deferred to keep that commit
+      reviewable. The data voice carries **125 hardcoded `em` letter-spacing values across
+      eleven distinct steps** (0.02, 0.04, 0.06, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14,
+      0.16) while the three tracking tokens (`--tracking-heading/-eyebrow/-caps`) are
+      vestigial — none of them matches the values actually in use, and 0.09/0.11/0.13 are
+      near-certainly unintended neighbours of 0.1/0.12/0.14. Define a role scale keyed to
+      size (mono tracks looser as it gets smaller), migrate the idiom layer first
+      (`ink-signal.css`, `entity-index.css`, `activity-list.css`, `bibliography.css`), then
+      the components. Pair with `/impeccable extract`. _Done when:_ no component sets a raw
+      `em` tracking value and the guide documents the scale.
+- [ ] **1.5 Midnight type compensation.** Also raised by 1.1: `dark.css` makes **no
+      typographic adjustment whatsoever** — not tracking, weight, nor smoothing. Light type
+      on a dark ground optically bolds and tightens, so midnight currently renders the same
+      metrics daylight does and the small mono caps are the likely casualty. The brief calls
+      midnight its own designed pass, so this is a gap, not a simplification. Needs visual
+      judgement rather than a computed-style read, so it wants a session where rendering can
+      actually be seen. _Done when:_ midnight either carries a deliberate compensation or
+      documents, with evidence, why none is warranted.
 - [x] **1.3 Responsive sweep.** `/impeccable adapt` on the same templates plus header/nav:
       filter bar and facet grid on touch, ledger collapse behaviour under 640px, touch
       targets ≥44px, mobile menu. _Done when:_ the entity index pages are fully usable on a
@@ -321,5 +339,77 @@ covered several. This is the roadmap's own 44px standing rule, which is above th
 recorded. UI edits from here on are auto-scanned for anti-patterns. No ignores configured yet;
 if it trips on `.hbar`'s gradient, that is the expected first false positive — add an
 `ignore-value` for it rather than changing the bar.
+
+**2026-08-17 — 1.1 typography (`/impeccable typeset`) — done.** Three findings, two fixed here
+and two deferred as 1.4/1.5. The mechanical scan (`--scope type`) was clean before and after;
+everything below came from the design assessment, which is the point the reference makes about
+a clean scan being a floor rather than proof.
+
+**(a) The reading measure was uncalibrated across the whole site — and the error was conceptual,
+not sloppy.** `ch` is the advance width of the digit **zero**, not of one character. Newsreader's
+average character measures **0.68–0.73ch** (it narrows against the lining figures as the `opsz`
+axis opens at display sizes), so every `ch` cap in the codebase was setting roughly 40% more
+characters than its number implied. `--text-max-width-reading: 65ch` was rendering **87–95
+characters**. The method was validated with a monospace control that returned a ratio of exactly
+1.000, so this is measurement, not estimate. A Playwright sweep over twelve routes, restricted to
+true text leaves, found **24 of 33 prose blocks over 75 characters**; CV entry descriptions ran to
+**147**. Below that sat ~25 hand-tuned values spanning eleven different numbers (40/48/52/55/60/62/
+64/65/66/68/74ch) — a collection of arbitrary values rather than a scale, and several prose blocks
+(`.project-prose`, CV descriptions, `.entity-abstract`, `.featured-desc`) had no cap at all.
+
+Replaced with three calibrated role tokens — `--measure-prose` 50ch (~69 chars), `--measure-standfirst`
+42ch (~61), `--measure-note` 40ch (~55) — applied by role across 24 files, with the ch↔character ratio
+documented at the token. `.standfirst` now carries the measure once in `ink-signal.css`, so
+`.index-standfirst` (52ch) and `.dh-hero-standfirst` (74ch), which existed only to fight the idiom,
+were deleted along with their markup classes. Result: **24 → 0** genuine prose blocks over 75; every
+one now lands between 52 and 71. `/style-guide` gained a "Reading measure — counted, not assumed"
+block that measures all three roles live in the browser rather than restating the token, matching how
+the guide already documents colour.
+
+**Deliberately left uncapped** (recorded in `DESIGN.md` as part of the new rule): bylines, and the
+citation/venue lines in `.entity-details` and CV Education/Publications entries. Those are scanned
+metadata, wrap to 1–2 lines, and capping them would add lines to a reference list for no reading gain.
+The sweep still reports them, correctly, as over 75.
+
+**(b) A fourth voice was wired into the system.** `--font-family-sans` — a system stack the brief says
+does not exist — was set in **9 places**: the `body` reset and, more consequentially, all seven ECharts
+containers plus `.viz-plate`. It was inert today only because every SVG `<text>` and every ECharts
+`textStyle` happens to name its own family; anything added without one would have silently left the
+system. The token's stated justification ("fallback for form controls") was false — the reset already
+gives controls `font: inherit`. Retired the token outright and pointed the viz containers at the data
+voice, which is what chart chrome is.
+
+**(c) Glyph coverage, measured rather than assumed.** All three families carry the full French set, so
+the roadmap's original question resolves clean. Widening it to the actual corpus found a real gap:
+**Spline Sans Mono lacks the Yoruba underdots `ẹ` and `ọ`**, which occur in author names in the data
+(`Kọ́lá Túbọ̀sún`, `Adéjọkẹ Rafiat Adétòrò`), and co-author labels render in the mono data voice.
+Newsreader is now spliced into the mono stack ahead of the system fallbacks, so a hole in the primary
+face is filled by a font the site already ships rather than by Courier New. Digits and Latin are fully
+covered by Spline, so the tabular grid is untouched. (The U+0300/U+0301 "misses" my first probe reported
+were an artifact — combining marks are zero-width, so a width test cannot see them.)
+
+**One regression, caught by the suite and worth recording.** Capping `.cv-entry-content` — the whole
+ledger column — made the mono `.dh-links` address rows wrap, which stacked 15px link targets closer than
+24px and failed **WCAG 2.5.8** on `/cv`. `npm run test:e2e` caught it. The fix is the general lesson:
+the measure belongs on what is _read_, not on the column that contains it. Retargeted to
+`.cv-entry-content :global(.text-sm)`, leaving scanned metadata full width; all 8 a11y tests pass.
+
+**Also noted:** `<h6>` is used **nowhere** in the codebase. The 0.2 audit spent real effort resolving an
+h6 contradiction "as documentation, not code" across `DESIGN.md`, `CLAUDE.md` and the sidecar — the
+element it documents is dead CSS. Left as is (the rule is still correct if h6 is ever used), but the
+next doc pass should say so.
+
+**Corrected in `DESIGN.md`:** the Headline tier claimed `h2` was `clamp(1.875rem…2.109rem)`; that is
+`h3`'s size — `h2` is `--font-size-3xl` (`clamp(2.344rem…2.637rem)`). Both steps are now recorded, along
+with a new **Measured Line Rule** and a Don't against raw `ch` caps.
+
+**Method note:** the bundled detector's parser dependencies were **gone** — the v4 plugin update wiped
+them exactly as the 0.2 caveat predicted. Reinstalled (`npm install --no-save --omit=dev --omit=optional`
+in the plugin root) before trusting any scan. Also worth knowing: the degraded path only triggers for
+HTML/URL scans, so a silent CSS/Svelte scan is not evidence the deps are present — check directly.
+
+**Ship gate:** `format`, `lint`, `check` (1101 files, 0 errors), `test` (701 unit), `build`,
+`check:build` (bundle 102.8/140 KiB, 196 sitemap URLs resolve), `test:e2e` (32 passed) — all green.
+Detector clean across all 35 changed files.
 
 <!-- e.g. 2026-08-17 — 0.2 audit — score 82/100, 0 P0, 4 P1 (assigned: 1.3 ×2, 2.2, 5.1) -->

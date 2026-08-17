@@ -153,7 +153,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		min-height: 260px;
 		display: block;
 		position: relative;
-		font-family: var(--font-family-sans);
+		font-family: var(--font-family-mono);
 	}
 
 	.chart {

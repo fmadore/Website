@@ -169,7 +169,7 @@ ECharts Doughnut/Pie Chart - A doughnut chart for visualizing categorical data
 		min-height: 400px;
 		display: block;
 		position: relative;
-		font-family: var(--font-family-sans);
+		font-family: var(--font-family-mono);
 	}
 
 	.chart {

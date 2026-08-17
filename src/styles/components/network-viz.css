@@ -17,7 +17,11 @@
 	display: flex;
 	flex-direction: column;
 	position: relative;
-	font-family: var(--font-family-sans);
+	/* Everything inside a viz plate — SVG <text>, legends, tooltips — is
+	 * machine-indexed data, so the plate's inherited default is the DATA voice.
+	 * It used to be the system sans, a fourth family the design system does not
+	 * have: any mark that forgot to set its own family silently left the system. */
+	font-family: var(--font-family-mono);
 }
 
 .viz-plate:fullscreen {

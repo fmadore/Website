@@ -151,13 +151,27 @@
 	 * prose, h4–h6, subtitles, captions, quotes. This is the reading default.
 	 * Mono (data voice): Spline Sans Mono — metadata ONLY, never body copy.
 	 * Eyebrows, datelines, counts, nav, filters, chips, DOIs, pagination.
-	 * Sans: a neutral system stack, fallback for form controls only — the
-	 * visual language has no humanist sans. */
-	--font-family-sans:
-		'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
+	 *
+	 * There are three families and no fourth. A `--font-family-sans` system
+	 * stack used to sit here "for form controls", but the reset gives controls
+	 * `font: inherit`, so nothing ever needed it — what it did instead was give
+	 * the chart containers and the network plate a default outside the system.
+	 * Do not reintroduce it; a string with no voice is a bug, not a fallback.
+	 *
+	 * Glyph coverage was measured, not assumed. All three faces carry the full
+	 * French set. Newsreader and Archivo also carry the Yoruba underdots (ẹ, ọ)
+	 * that appear in author names in the data; Spline Sans Mono does NOT, so a
+	 * name set in the data voice would drop those two letters to whatever the
+	 * OS offers — Courier New on Windows — mid-word. Newsreader is therefore
+	 * spliced into the mono stack ahead of the system monospace fallbacks: a
+	 * hole in the primary face is filled by a font this site already ships and
+	 * loads, keeping the page warm rather than dropping into a terminal face.
+	 * Digits and Latin are fully covered by Spline, so the tabular grid the
+	 * data voice depends on is never affected. */
 	--font-family-serif: 'Newsreader', 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
 	--font-family-display: 'Archivo', 'system-ui', 'Segoe UI', 'Helvetica Neue', 'Arial', sans-serif;
-	--font-family-mono: 'Spline Sans Mono', 'SF Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
+	--font-family-mono:
+		'Spline Sans Mono', 'Newsreader', 'SF Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
 
 	/* Archivo width-axis presets. The nameplate/section heads are set on a
 	 * wide, heavy cut (a compressed-broadsheet feel); weight is carried by
@@ -237,8 +251,26 @@
 	--font-weight-semibold: 600;
 	--font-weight-bold: 700;
 
-	/* ===== ACADEMIC TEXT STYLING ===== */
-	--text-max-width-reading: 65ch;
+	/* ===== READING MEASURE =====
+	 * `ch` is the advance width of "0", NOT the width of one character. In
+	 * Newsreader the average character measures ~0.68–0.73ch — the letterforms
+	 * narrow against the lining figures as the opsz axis opens up at display
+	 * sizes — so a `65ch` cap actually sets 87–95 characters per line, well past
+	 * the 45–75 that keeps a line scannable.
+	 *
+	 * These three roles are calibrated to land inside that band at the size each
+	 * is set in. Always reason in characters; the raw ch number is a means, not
+	 * the target. Verified against rendered text, not assumed:
+	 *   --measure-prose       50ch → ~69 chars at body size   (ratio ≈ 0.725)
+	 *   --measure-standfirst  42ch → ~61 chars at deck size   (ratio ≈ 0.683)
+	 *   --measure-note        40ch → ~55 chars at small size  (ratio ≈ 0.73)
+	 *
+	 * The mono data voice is exempt: monospace makes 1ch exactly one character,
+	 * so ledger keys and metadata columns may be sized in ch literally.
+	 */
+	--measure-prose: 50ch;
+	--measure-standfirst: 42ch;
+	--measure-note: 40ch;
 	/* ===== SPACING SYSTEM ===== */
 	/* 
 	 * 8-point grid system for consistent rhythm

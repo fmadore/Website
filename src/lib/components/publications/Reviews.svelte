@@ -121,7 +121,7 @@
 		font-size: var(--font-size-lg);
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text-soft);
-		max-width: 62ch;
+		max-width: var(--measure-prose);
 	}
 
 	.review-quote::before {
@@ -195,7 +195,7 @@
 		font-size: var(--font-size-sm);
 		line-height: var(--line-height-snug);
 		color: var(--color-text-light);
-		max-width: 64ch;
+		max-width: var(--measure-note);
 	}
 
 	.review-ref-link {

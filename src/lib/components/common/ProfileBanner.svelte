@@ -66,7 +66,7 @@
 		font-size: var(--font-size-lead);
 		line-height: var(--line-height-snug);
 		color: var(--color-text-soft);
-		max-width: 60ch;
+		max-width: var(--measure-standfirst);
 		margin: 0 0 var(--space-5);
 	}
 

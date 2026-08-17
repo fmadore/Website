@@ -359,7 +359,7 @@
 		line-height: var(--line-height-normal);
 		color: var(--color-text-soft);
 		margin: var(--space-md) 0 0;
-		max-width: 52ch;
+		max-width: var(--measure-standfirst);
 	}
 
 	/* ── Abstract ──────────────────────────────────────────────────────────── */
@@ -368,7 +368,7 @@
 		font-size: var(--font-size-lg);
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text);
-		max-width: 68ch;
+		max-width: var(--measure-prose);
 	}
 
 	.pub-abstract-p {
