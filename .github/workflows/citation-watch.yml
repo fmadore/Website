@@ -34,6 +34,13 @@ jobs:
       # needs neither dependencies nor a compiled site.
       - name: Check citations
         run: node scripts/check-citations.mjs --report=citation-report.md
+        env:
+          # Optional. Google Books is the monograph channel and the one source
+          # here that is rate-limited per IP, which on a shared runner is a
+          # coin flip — the first live run lost it to a 429. A key raises the
+          # quota; it costs nothing and unlocks no paid feature. Unset, the
+          # script simply calls the API without one.
+          GOOGLE_BOOKS_API_KEY: ${{ secrets.GOOGLE_BOOKS_API_KEY }}
 
       # The script states its own verdict on the first line rather than leaving
       # this step to infer one from the headings — which quietly stopped being
