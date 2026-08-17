@@ -423,7 +423,7 @@
 		grid-template-columns: 5rem 1fr;
 		gap: var(--space-2xs) var(--space-lg);
 		padding: var(--space-sm) 0;
-		border-top: var(--rule-hairline) solid var(--color-border);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 		align-items: baseline;
 	}
 
@@ -511,7 +511,7 @@
 	.review-item {
 		font-family: var(--font-family-serif);
 		padding: var(--space-md) 0;
-		border-top: var(--rule-hairline) solid var(--color-border);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	.review-item:first-child {

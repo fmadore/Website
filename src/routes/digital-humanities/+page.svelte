@@ -278,7 +278,7 @@
 	/* ===== CATALOGUE ===== */
 	.catalogue {
 		border-top: var(--rule-section) solid var(--color-primary);
-		padding-top: var(--space-sm);
+		padding-top: var(--rule-gap);
 	}
 
 	/* Header row: mono label on the left, skill-filter chips filling the rest. */
@@ -355,11 +355,11 @@
 		grid-template-columns: 1fr;
 		gap: var(--space-2) var(--space-lg);
 		padding: var(--space-md) 0;
-		border-top: var(--rule-hairline) solid var(--color-border);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	.dh-row:last-child {
-		border-bottom: var(--rule-hairline) solid var(--color-border);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	/* Year key — accent mono for ongoing work, quiet ink for closed spans. */

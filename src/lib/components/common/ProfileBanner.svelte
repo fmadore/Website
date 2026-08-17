@@ -33,7 +33,7 @@
 		gap: var(--space-4);
 		padding-bottom: var(--space-3);
 		margin-bottom: var(--space-5);
-		border-bottom: var(--rule-hairline) solid var(--color-border);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);

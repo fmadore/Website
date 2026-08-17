@@ -61,7 +61,7 @@
 	border-top: var(--rule-section) solid var(--color-primary);
 }
 .rule-hairline {
-	border-top: var(--rule-hairline) solid var(--color-border);
+	border-top: var(--rule-hairline) solid var(--color-hairline);
 }
 
 /* ===========================================================================
@@ -86,7 +86,7 @@
 
 .section {
 	border-top: var(--rule-section) solid var(--color-primary);
-	padding-top: var(--space-sm);
+	padding-top: var(--rule-gap);
 	margin-top: var(--space-2xl);
 }
 
@@ -138,7 +138,7 @@
 	grid-template-columns: var(--ledger-key-w, 7rem) 1fr;
 	gap: var(--space-md) var(--space-lg);
 	padding: var(--space-md) 0;
-	border-top: var(--rule-hairline) solid var(--color-border);
+	border-top: var(--rule-hairline) solid var(--color-hairline);
 	align-items: baseline;
 }
 
@@ -149,7 +149,7 @@
 
 /* Close the ledger with a hairline under the last row. */
 .ledger--ruled > .ledger-row:last-child {
-	border-bottom: var(--rule-hairline) solid var(--color-border);
+	border-bottom: var(--rule-hairline) solid var(--color-hairline);
 }
 
 .ledger-key {

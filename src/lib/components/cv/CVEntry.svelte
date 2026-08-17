@@ -37,7 +37,7 @@
 		grid-template-columns: var(--cv-key-w, 6rem) 1fr;
 		gap: var(--space-2) var(--space-5);
 		padding: var(--space-2-5) 0;
-		border-top: var(--rule-hairline) solid var(--color-border-light);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 		align-items: baseline;
 	}
 

@@ -102,7 +102,7 @@
 	.view-all-container {
 		margin-top: var(--space-lg);
 		padding-top: var(--space-lg);
-		border-top: var(--border-width-thin) solid var(--color-border-light);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 		text-align: left;
 	}
 

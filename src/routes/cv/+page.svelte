@@ -222,7 +222,7 @@
 	 */
 	.cv-container {
 		background: var(--color-background);
-		border: var(--rule-hairline) solid var(--color-border);
+		border: var(--border-width-thin) solid var(--color-border);
 		border-radius: 0;
 		box-shadow: none;
 		position: relative;
@@ -266,7 +266,7 @@
 
 	:global(.cv-section-wrapper > section) {
 		border-top: var(--rule-section) solid var(--color-primary);
-		padding-top: var(--space-sm);
+		padding-top: var(--rule-gap);
 		margin-top: var(--space-2xl);
 		margin-bottom: 0;
 	}
@@ -298,7 +298,7 @@
 		color: var(--color-text-muted);
 		margin: var(--space-lg) 0 var(--space-1);
 		padding-bottom: var(--space-1-5);
-		border-bottom: var(--rule-hairline) solid var(--color-border-light);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	/* Empty-state note. */
@@ -321,7 +321,7 @@
 
 	/* Close each ledger with a hairline under its final CVEntry row. */
 	:global(#cv-content .ledger > :last-child .cv-entry) {
-		border-bottom: var(--rule-hairline) solid var(--color-border-light);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	/* Year keys inside the fixed-width bare rows (older markup path). */
@@ -403,11 +403,11 @@
 		}
 
 		:global(#cv-content .cv-entry) {
-			border-top: var(--rule-hairline) solid var(--color-border) !important;
+			border-top: var(--rule-hairline) solid var(--color-hairline) !important;
 		}
 
 		:global(#cv-content h4) {
-			border-bottom: var(--rule-hairline) solid var(--color-border) !important;
+			border-bottom: var(--rule-hairline) solid var(--color-hairline) !important;
 		}
 
 		/* Remove hover effects and transitions */

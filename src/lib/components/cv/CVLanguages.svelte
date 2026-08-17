@@ -25,11 +25,11 @@
 	/* Ledger row: serif language name left, mono proficiency stamp right. */
 	.cv-language-row {
 		padding: var(--space-2-5) 0;
-		border-top: var(--rule-hairline) solid var(--color-border-light);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	.cv-language-row:last-child {
-		border-bottom: var(--rule-hairline) solid var(--color-border-light);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	.cv-language-name {

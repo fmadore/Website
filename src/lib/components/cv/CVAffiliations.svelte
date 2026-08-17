@@ -37,14 +37,14 @@
 	/* Affiliation ledger row — serif name/body, hairline between rows. */
 	.cv-affiliation-row {
 		padding: var(--space-2-5) 0;
-		border-top: var(--rule-hairline) solid var(--color-border-light);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 		font-family: var(--font-family-serif);
 		color: var(--color-text-soft);
 		line-height: var(--line-height-relaxed);
 	}
 
 	.cv-affiliation-row:last-child {
-		border-bottom: var(--rule-hairline) solid var(--color-border-light);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	/* Period — DATA voice: mono, letterspaced, quiet ink. */

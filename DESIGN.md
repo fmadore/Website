@@ -205,7 +205,7 @@ The single accent. There is no third colour role in the UI.
 - **Warm Paper** (`#faf7ef`): The daylight page ground. **Raised Paper** (`#fffdf7`) for elevated sheet tiles, **Paper Surface** (`#f3eee0`) and **Sunken Paper** (`#ece4d1`) for muted and recessed surfaces.
 - **Film Ground** (`#171310`): The midnight page ground — warm near-black, never slate. **Raised Film** (`#1f1a14`) and **Sunken Film** (`#252017`) sit deliberately close in value to it.
 - **Cream** (`#efe7d6`) with **Soft** (`#cbc0a6`), **Muted** (`#b3a88d`) and **Faint** (`#948a73`) steps: the midnight type ramp, mirroring the ink ramp exactly.
-- **Hairline** (`#dcd4be`) / **Border** (`#c9c0aa`) / **Strong Border** (`#a39b86`), and their film counterparts (`#383126` / `#453d2f` / `#5a5140`): row separators, plate edges, and outlined controls.
+- **Hairline** (`--color-hairline`, `#dcd4be` / `#383126`) / **Border** (`--color-border`, `#c9c0aa` / `#453d2f`) / **Strong Border** (`--color-border-dark`, `#a39b86` / `#5a5140`): row separators, plate edges, and outlined controls respectively — one token per job, in that order of weight. See The Hairline Pairing Rule under Layout.
 - **Deep Warm Red** (`#a3341c`) and **Muted Olive** (`#5c6b3a`): errors and confirmations only. Warm-tinted so they read as ink annotations rather than web toast, and used only in form validation.
 
 ### Named Rules
@@ -258,7 +258,14 @@ Density is a deliberate value. Scholars scan, and dense, well-set information re
 
 ### Named Rules
 
-**The Rule Hierarchy.** Four weights, all ink-coloured (cream on midnight) and never gray: 5px opens the nameplate, 4px a masthead, 3px a section, 1px separates entries. Reach for rule weight before size or colour when establishing hierarchy.
+**The Rule Hierarchy.** Four weights: 5px opens the nameplate, 4px a masthead, 3px a section, 1px separates entries. The three heavy weights are ink-coloured (cream on midnight) and never gray; the 1px tier takes `--color-hairline` (see the pairing rule below). Reach for rule weight before size or colour when establishing hierarchy. Every ruled module puts the same `--rule-gap` (12px) between the rule and the content it opens, so hierarchy is carried by the rule's weight alone and never by the interval — vary the weight, never the gap.
+
+**The Hairline Pairing Rule.** A rule and a box edge share a 1px width and nothing else, and they take different tokens:
+
+- a **rule** separates, and is the lightest mark on the page: `var(--rule-hairline) solid var(--color-hairline)`
+- a **box edge** encloses an object, and sits one step darker: `var(--border-width-thin) solid var(--color-border)`
+
+Never cross the pair. The failure is silent — a separator drawn in the edge colour simply reads as a plate and flattens the ramp, with nothing to catch it — which is exactly how the ledger, the bibliography and the facet rules spent three months one step too dark while the CV and the panels drew the same role correctly. `--rule-*` inside a `border:` shorthand is the tell that a box edge has borrowed the rule tier. The one sanctioned exception is `.bib-item--lead`, which marks the featured entry with a deliberately heavier `--color-border-dark` rule.
 
 **The Ledger Default Rule.** Anything dated or keyed — a publication, appointment, activity, metadata field, facet — renders as a ledger row, not a card. A card is the exception and needs a reason.
 

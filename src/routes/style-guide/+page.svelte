@@ -33,7 +33,7 @@
 		},
 		{
 			label: 'Borders & hairlines',
-			tokens: ['--color-border', '--color-border-light', '--color-border-dark']
+			tokens: ['--color-border', '--color-hairline', '--color-border-dark']
 		},
 		{
 			label: 'Functional',
@@ -160,6 +160,27 @@
 		probe.remove();
 		measured = next;
 	});
+
+	/* ===== The hairline pairing =====
+	 * A rule and a box edge are different jobs on the same 1px width, and the
+	 * failure mode is silent: draw a separator in --color-border and it simply
+	 * reads as a plate edge, flattening the ramp with nothing to catch it. Both
+	 * tokens are already in `resolved` above, so the hexes printed here are the
+	 * ones actually painting, in whichever theme is on. */
+	const pairings = [
+		{
+			mark: 'A rule — separates',
+			decl: 'var(--rule-hairline) solid var(--color-hairline)',
+			token: '--color-hairline',
+			use: 'ledger rows, entry separators, facet labels'
+		},
+		{
+			mark: 'A box edge — encloses',
+			decl: 'var(--border-width-thin) solid var(--color-border)',
+			token: '--color-border',
+			use: 'cards, image plates, inputs, chips'
+		}
+	];
 
 	/* ===== Rules ===== */
 	const ruleSpecs = [
@@ -359,6 +380,35 @@
 					<div class="rule-spec">
 						<div class={spec.class}></div>
 						<span class="rule-spec-label">{spec.token} — {spec.use}</span>
+					</div>
+				{/each}
+			</div>
+
+			<h3 class="eyebrow eyebrow--ink guide-subhead">The rule → content interval</h3>
+			<p class="guide-note">
+				Every ruled module — masthead, section, hairline — puts the same
+				<code>--rule-gap</code> between the rule and what it opens, so only the rule's
+				<em>weight</em> carries hierarchy. Vary the weight, never the gap.
+			</p>
+
+			<h3 class="eyebrow eyebrow--ink guide-subhead">A rule is not a border</h3>
+			<p class="guide-note">
+				The two share a 1px width and nothing else. A rule separates and is the lightest mark on the
+				page; a box edge encloses an object and sits one step darker. Crossing the pair fails
+				silently — a separator drawn in the edge colour just looks like a plate — so the tokens are
+				named to be paired, and the three heavy weights above take
+				<code>--color-primary</code> instead.
+			</p>
+
+			<div class="pairing-specs">
+				{#each pairings as p (p.token)}
+					<div class="pairing-spec">
+						<div class="pairing-demo" data-mark={p.token}></div>
+						<div class="pairing-body">
+							<span class="pairing-mark">{p.mark}</span>
+							<code>{p.decl}</code>
+							<span class="pairing-use">{p.use} · {resolved[p.token] ?? '—'}</span>
+						</div>
 					</div>
 				{/each}
 			</div>
@@ -646,7 +696,7 @@
 	}
 
 	.voice-specimen {
-		border-top: var(--rule-hairline) solid var(--color-border);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 		padding-top: var(--space-sm);
 		min-width: 0;
 	}
@@ -684,7 +734,7 @@
 		gap: var(--space-1) var(--space-lg);
 		align-items: baseline;
 		padding: var(--space-sm) 0;
-		border-top: var(--rule-hairline) solid var(--color-border-light);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	@media (--md) {
@@ -726,6 +776,58 @@
 	.rule-spec-label {
 		display: block;
 		margin-top: var(--space-2);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		letter-spacing: 0.04em;
+		color: var(--color-text-light);
+	}
+
+	/* ===== The rule / border pairing =====
+	 * Each specimen is drawn with the declaration it documents, so the demo
+	 * cannot drift from the rule it states. */
+	.pairing-specs {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-lg);
+		margin-top: var(--space-md);
+	}
+
+	@media (--md) {
+		.pairing-specs {
+			grid-template-columns: 1fr 1fr;
+			gap: var(--space-2xl);
+		}
+	}
+
+	.pairing-demo {
+		height: var(--space-lg);
+	}
+
+	.pairing-demo[data-mark='--color-hairline'] {
+		border-top: var(--rule-hairline) solid var(--color-hairline);
+	}
+
+	.pairing-demo[data-mark='--color-border'] {
+		border: var(--border-width-thin) solid var(--color-border);
+	}
+
+	.pairing-body {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-1);
+		margin-top: var(--space-2);
+	}
+
+	.pairing-mark {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-semibold);
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--color-text-emphasis);
+	}
+
+	.pairing-use {
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		letter-spacing: 0.04em;

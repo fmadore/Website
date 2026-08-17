@@ -19,7 +19,7 @@
 	display: grid;
 	grid-template-columns: 1fr;
 	gap: var(--space-lg);
-	padding-top: var(--space-md);
+	padding-top: var(--rule-gap);
 }
 
 @media (--md) {
@@ -62,9 +62,15 @@
 }
 
 /* ═══ FILTER BAR ═══ */
+/* The apparatus module. It is a peer of .bibliography — the page reads
+ * masthead (4px) → controls (3px) → record (3px), with the facet grid a 1px
+ * subdivision of this one. It previously carried a ruled module's padding with
+ * no rule, which left the only major region on the page undrawn and 16px of
+ * orphan space above it. */
 .filter-bar {
-	margin-top: var(--space-xl);
-	padding-top: var(--space-md);
+	margin-top: var(--space-2xl);
+	padding-top: var(--rule-gap);
+	border-top: var(--rule-section) solid var(--color-primary);
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-md);
@@ -148,8 +154,8 @@
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-sm);
-	padding-top: var(--space-sm);
-	border-top: var(--rule-hairline) solid var(--color-border);
+	padding-top: var(--rule-gap);
+	border-top: var(--rule-hairline) solid var(--color-hairline);
 }
 
 @media (--md) {
@@ -318,7 +324,7 @@
 /* ═══ FACET GRID ═══ */
 .facet-grid {
 	margin-top: var(--space-lg);
-	padding-top: var(--space-lg);
+	padding-top: var(--rule-gap);
 	display: grid;
 	grid-template-columns: 1fr;
 	gap: var(--space-xl);
@@ -372,7 +378,7 @@
 	color: var(--color-text-emphasis);
 	margin: 0 0 var(--space-2);
 	padding-bottom: var(--space-2);
-	border-bottom: var(--rule-hairline) solid var(--color-border);
+	border-bottom: var(--rule-hairline) solid var(--color-hairline);
 }
 
 .facet-label--years {
@@ -496,7 +502,7 @@
 .facet-summary {
 	margin-top: var(--space-md);
 	padding-top: var(--space-2);
-	border-top: var(--rule-hairline) solid var(--color-border);
+	border-top: var(--rule-hairline) solid var(--color-hairline);
 	display: flex;
 	flex-wrap: wrap;
 	align-items: baseline;
@@ -541,7 +547,7 @@
 
 /* Hairline between entries (ink-coloured, never gray-on-gray). */
 .bib-item {
-	border-top: var(--rule-hairline) solid var(--color-border);
+	border-top: var(--rule-hairline) solid var(--color-hairline);
 }
 
 .bib-item:first-child {
@@ -572,7 +578,7 @@
 /* ═══ BIBLIOGRAPHY / RECORD ═══ */
 .bibliography {
 	margin-top: var(--space-2xl);
-	padding-top: var(--space-md);
+	padding-top: var(--rule-gap);
 }
 
 @media (--sm-down) {

@@ -100,7 +100,7 @@
 	 * of quoted opinion, ruled like the ledger but quote-led. */
 	.review {
 		padding: var(--space-lg) 0;
-		border-top: var(--rule-hairline) solid var(--color-border);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	.review:first-child {

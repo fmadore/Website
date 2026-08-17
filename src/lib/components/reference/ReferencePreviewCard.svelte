@@ -351,7 +351,7 @@
 	.view-more-container {
 		margin-top: var(--space-md);
 		padding-top: var(--space-sm);
-		border-top: var(--rule-hairline) solid var(--color-border-light);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	.view-more-hint {

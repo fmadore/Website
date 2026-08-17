@@ -308,7 +308,7 @@ key-term sizing, BibTeX download — is assembled here.
 		color: var(--color-text-emphasis);
 		margin: 0 0 var(--space-sm);
 		padding-bottom: var(--space-2);
-		border-bottom: var(--rule-hairline) solid var(--color-border);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	/* Cover plate. */
@@ -332,11 +332,11 @@ key-term sizing, BibTeX download — is assembled here.
 		align-items: baseline;
 		gap: var(--space-3);
 		padding: var(--space-2) 0;
-		border-top: var(--rule-hairline) solid var(--color-border);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	.pub-meta-row:last-child {
-		border-bottom: var(--rule-hairline) solid var(--color-border);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	.pub-meta-key {

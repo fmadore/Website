@@ -183,7 +183,7 @@
 
 	.aside-ledger {
 		padding-top: var(--space-md);
-		border-top: var(--rule-hairline) solid var(--color-border);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 		margin: 0 0 var(--space-lg);
 	}
 
@@ -196,7 +196,7 @@
 		grid-template-columns: minmax(0, 1fr);
 		gap: var(--space-1) var(--space-md);
 		padding: var(--space-2) 0;
-		border-bottom: var(--rule-hairline) solid var(--color-border);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 		align-items: baseline;
 	}
 

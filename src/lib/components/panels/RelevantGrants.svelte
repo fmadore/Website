@@ -86,7 +86,7 @@
 	 * DATA mono voice. No pills, no tinted boxes. */
 	.grant-item {
 		padding: var(--space-sm) 0;
-		border-bottom: var(--rule-hairline) solid var(--color-border-light);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	.grant-item:last-child {

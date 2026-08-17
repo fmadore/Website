@@ -28,7 +28,7 @@
 	--sys-color-film-ground: #171310; /* warm near-black page ground */
 	--sys-color-film-100: #1f1a14; /* subtle raised film surface */
 	--sys-color-film-200: #252017; /* muted film surface */
-	--sys-color-film-hairline: #383126; /* 1px separators (dark) */
+	--sys-color-film-hairline: #383126; /* 1px rule tier (dark) */
 	--sys-color-film-border: #453d2f; /* borders (dark) */
 	--sys-color-film-border-strong: #5a5140; /* stronger borders (dark) */
 	--sys-color-cream-faint: #948a73; /* faint cream (dark) (≥4.5:1 on all film surfaces) */
@@ -102,9 +102,13 @@
 	--color-surface-alt: var(--sys-color-paper-200);
 	--color-surface-elevated: var(--sys-color-paper-raised);
 
-	/* ===== BORDER COLORS ===== */
-	--color-border: #c9c0aa; /* default borders, image plates */
-	--color-border-light: #dcd4be; /* 1px row separators (hairlines) */
+	/* ===== BORDER COLORS =====
+	 * Two jobs, two tokens — see THE HAIRLINE PAIRING RULE at --rule-hairline.
+	 * A *rule* separates (lightest); a *border* is the edge of a box. Drawing a
+	 * separator in --color-border makes it read as a plate edge and flattens the
+	 * ramp, which is exactly the drift this split exists to prevent. */
+	--color-hairline: #dcd4be; /* THE 1px rule tier — pairs with --rule-hairline */
+	--color-border: #c9c0aa; /* box edges: cards, plates, inputs, chips */
 	--color-border-dark: #a39b86; /* stronger borders, outline buttons */
 	--color-border-focus: var(--color-accent);
 
@@ -359,11 +363,25 @@
 
 	/* ===== RULE WEIGHTS =====
 	 * Hierarchy is drawn in rules, ink-coloured (cream on midnight), never gray.
-	 * 5px nameplate → 4px masthead → 3px section → 1px hairline. */
+	 * 5px nameplate → 4px masthead → 3px section → 1px hairline.
+	 *
+	 * THE HAIRLINE PAIRING RULE. The three heavy weights take --color-primary;
+	 * the 1px tier takes --color-hairline. A rule is a *separator* and is the
+	 * lightest mark on the page — lighter than a plate's edge, which defines an
+	 * object. So:
+	 *     a rule      → var(--rule-hairline) solid var(--color-hairline)
+	 *     a box edge  → var(--border-width-thin) solid var(--color-border)
+	 * Never cross the pair. --rule-* in a `border:` shorthand is the tell that a
+	 * box edge has borrowed the rule tier. */
 	--rule-hairline: 1px;
 	--rule-section: 3px;
 	--rule-masthead: 4px;
 	--rule-nameplate: 5px;
+
+	/* Gap between a rule and the content it opens. One value for every ruled
+	 * module — masthead, section, hairline — so the rule→content interval is a
+	 * constant and only the rule's WEIGHT carries hierarchy. */
+	--rule-gap: var(--space-sm);
 
 	/* Shadows do not exist in Ink + Signal — depth is drawn in rules and ink
 	 * density, so there are no shadow tokens. Never add `box-shadow` (or new

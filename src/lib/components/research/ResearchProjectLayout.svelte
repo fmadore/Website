@@ -431,7 +431,7 @@ apparatus, and the ruled-section styling.
 	/* <h2> → section head opened by a 3px section rule. */
 	.project-prose :global(h2) {
 		border-top: var(--rule-section) solid var(--color-primary);
-		padding-top: var(--space-sm);
+		padding-top: var(--rule-gap);
 		margin: var(--space-2xl) 0 var(--space-md);
 		font-family: var(--font-family-display);
 		font-variation-settings: var(--font-variation-display-sm);
@@ -478,7 +478,7 @@ apparatus, and the ruled-section styling.
 	.related-content {
 		margin-top: var(--space-2xl);
 		border-top: var(--rule-section) solid var(--color-primary);
-		padding-top: var(--space-sm);
+		padding-top: var(--rule-gap);
 	}
 
 	.related-comms {

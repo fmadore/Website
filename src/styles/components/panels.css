@@ -19,7 +19,7 @@
 
 .panel-header {
 	padding: 0 0 var(--space-md) 0;
-	border-bottom: var(--rule-hairline) solid var(--color-border);
+	border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	background: transparent;
 	position: relative;
 }
@@ -44,7 +44,7 @@
 
 .panel-footer {
 	padding: var(--space-lg) 0 0 0;
-	border-top: var(--border-width-thin) solid var(--color-border-light);
+	border-top: var(--rule-hairline) solid var(--color-hairline);
 	background: transparent;
 	margin-top: var(--space-lg);
 }
@@ -72,7 +72,7 @@
 
 .view-all-container {
 	padding: var(--space-lg) 0 0 0;
-	border-top: var(--border-width-thin) solid var(--color-border-light);
+	border-top: var(--rule-hairline) solid var(--color-hairline);
 	margin-top: var(--space-lg);
 	text-align: center;
 }

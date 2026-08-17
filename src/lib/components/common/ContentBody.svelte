@@ -143,8 +143,8 @@
 		padding: var(--space-md) var(--space-lg);
 		background: transparent;
 		border: none;
-		border-top: var(--rule-hairline) solid var(--color-border);
-		border-bottom: var(--rule-hairline) solid var(--color-border);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 		border-radius: 0;
 		font-style: italic;
 		color: var(--color-text-soft);

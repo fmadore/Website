@@ -377,7 +377,7 @@ html.dark .entity-card--editorial:hover {
 	border-radius: 0;
 	box-shadow: none;
 	padding: 0 0 var(--space-lg);
-	border-bottom: var(--border-width-thin) solid var(--color-border-light);
+	border-bottom: var(--rule-hairline) solid var(--color-hairline);
 }
 
 .entity-card--row:hover {

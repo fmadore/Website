@@ -134,7 +134,7 @@
 		gap: var(--space-xs);
 		margin-bottom: var(--space-2);
 		padding-bottom: var(--space-2);
-		border-bottom: var(--rule-hairline) solid var(--color-border-light);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	/* Type — a mono "kind" marker, no pill. Neutral by default. */

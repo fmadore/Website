@@ -55,9 +55,21 @@ A design token system with foundation → semantic layering:
 
 #### Rule Weights
 
-Hierarchy is drawn in rules, ink-coloured (cream on midnight), never gray:
+Hierarchy is drawn in rules, never gray:
 
 - `--rule-nameplate` (5px) → `--rule-masthead` (4px) → `--rule-section` (3px) → `--rule-hairline` (1px)
+- The three heavy weights take `--color-primary` (ink; cream on midnight). **The 1px tier takes `--color-hairline`** — see the pairing rule below.
+- `--rule-gap` (12px) is the interval between any rule and the content it opens. One value for every ruled module, so only the rule's _weight_ carries hierarchy.
+
+**The hairline pairing.** A rule and a box edge share a 1px width and nothing else:
+
+| Job                       | Declaration                                               |
+| ------------------------- | --------------------------------------------------------- |
+| A **rule** — separates    | `var(--rule-hairline) solid var(--color-hairline)`        |
+| A **box edge** — encloses | `var(--border-width-thin) solid var(--color-border)`      |
+| An **outlined control**   | `var(--border-width-thin) solid var(--color-border-dark)` |
+
+Never cross the pair: a separator drawn in `--color-border` silently reads as a plate edge. `--rule-*` inside a `border:` shorthand means a box edge has borrowed the rule tier.
 
 #### Border Radius — corners are square
 

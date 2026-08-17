@@ -79,7 +79,7 @@
 	 * reveal transition (opacity/transform + stagger) lives in MobileMenu,
 	 * driven by the container's `.active` class. */
 	.mobile-nav-item {
-		border-bottom: var(--rule-hairline) solid var(--color-border);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	/*
@@ -152,7 +152,7 @@
 	}
 
 	.mobile-dropdown-item {
-		border-top: var(--rule-hairline) solid var(--color-border);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	.mobile-dropdown-item:first-child {

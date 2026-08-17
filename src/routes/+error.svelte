@@ -38,7 +38,7 @@
 	.error-block {
 		max-width: 42rem;
 		border-top: var(--rule-section) solid var(--color-primary);
-		padding-top: var(--space-lg);
+		padding-top: var(--rule-gap);
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;

@@ -114,7 +114,7 @@
 	gap: var(--space-4) var(--space-5);
 	align-items: start;
 	padding: var(--space-5) 0;
-	border-top: var(--rule-hairline) solid var(--color-border);
+	border-top: var(--rule-hairline) solid var(--color-hairline);
 	text-decoration: none;
 	color: inherit;
 }
@@ -254,7 +254,7 @@
 	font-size: var(--font-size-lg);
 	color: var(--color-text-muted);
 	padding: var(--space-10) 0;
-	border-top: var(--rule-hairline) solid var(--color-border);
+	border-top: var(--rule-hairline) solid var(--color-hairline);
 	margin: 0;
 }
 
@@ -291,7 +291,7 @@
 	color: var(--color-text-emphasis);
 	margin: 0 0 var(--space-3);
 	padding-bottom: var(--space-2);
-	border-bottom: var(--rule-hairline) solid var(--color-border-dark);
+	border-bottom: var(--rule-hairline) solid var(--color-hairline);
 }
 
 /* --- Browse-by-year meter: mono year | proportion bar | count. --- */
@@ -303,7 +303,7 @@
 
 .year-meter li {
 	margin: 0;
-	border-top: var(--rule-hairline) solid var(--color-border-light);
+	border-top: var(--rule-hairline) solid var(--color-hairline);
 }
 
 .year-meter li:first-child {

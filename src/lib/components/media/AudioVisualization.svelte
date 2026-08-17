@@ -50,7 +50,7 @@
 		justify-content: center;
 		padding: var(--space-4);
 		background: var(--color-surface-elevated);
-		border: var(--border-width-thin) solid var(--color-border-light);
+		border: var(--border-width-thin) solid var(--color-border);
 		min-height: 120px;
 		position: relative;
 		overflow: hidden;

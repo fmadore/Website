@@ -46,8 +46,8 @@ html.dark {
 	--color-surface-elevated: var(--sys-color-film-200);
 
 	/* Borders */
+	--color-hairline: var(--sys-color-film-hairline);
 	--color-border: var(--sys-color-film-border);
-	--color-border-light: var(--sys-color-film-hairline);
 	--color-border-dark: var(--sys-color-film-border-strong);
 	--color-border-focus: var(--color-accent);
 

@@ -79,7 +79,7 @@ describe('PDF CV tokens match variables.css', () => {
 		['TEXT_LIGHT', '--sys-color-ink-muted'],
 		['TEXT_MUTED', '--sys-color-ink-faint'],
 		['BORDER', '--color-border'],
-		['HAIRLINE', '--color-border-light'],
+		['HAIRLINE', '--color-hairline'],
 		['BACKGROUND_LIGHT', '--sys-color-paper']
 	];
 

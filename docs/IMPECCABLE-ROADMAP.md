@@ -62,19 +62,19 @@ phases 2–5 can interleave. After a session, tick the box and append a dated ou
 
 One critique per family representative covers the family; spot-check the siblings.
 
-| Family             | Routes                                                                                               | Shared chrome                                                        |
-| ------------------ | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Home               | `/`                                                                                                  | ProfileBanner, ruled sections                                        |
-| Entity index       | `/publications`, `/conference-activity`, `/activities`                                               | EntityListPageLayout, FilteredListDisplay, EntityFilterBar/FacetGrid |
-| Entity detail      | `/publications/[id]`, `/communications/[id]`, `/activities/[id]`, `/digital-humanities/[id]`         | EntityDetailLayout, DetailsGrid, RelatedItemsList                    |
-| Research           | `/research` + 6 static project pages                                                                 | PageHeader, PageIntro, inline components                             |
-| Digital humanities | `/digital-humanities`                                                                                | card grid                                                            |
-| CV                 | `/cv`, `/cv/timeline`                                                                                | cv/ components, PDF export                                           |
-| Teaching           | `/teaching`, `/teaching/guest-lectures`                                                              | ledgers                                                              |
-| Visualisations     | `/publications/visualisations`, `/conference-activity/visualisations`, `/conference-activity/slides` | ECharts/MapLibre/network SVG plates                                  |
-| Archive            | `/activities/year/[year]`                                                                            | ledger                                                               |
-| Reference          | `/style-guide`                                                                                       | the guide itself                                                     |
-| System             | `+error.svelte` (404), footer, header/nav                                                            | global chrome                                                        |
+| Family             | Routes                                                                                               | Shared chrome                                                  |
+| ------------------ | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Home               | `/`                                                                                                  | ProfileBanner, ruled sections                                  |
+| Entity index       | `/publications`, `/conference-activity`, `/activities`                                               | entity-index.css, EntityFilterBar/FacetGrid, activity-list.css |
+| Entity detail      | `/publications/[id]`, `/communications/[id]`, `/activities/[id]`, `/digital-humanities/[id]`         | EntityDetailLayout, DetailsGrid, RelatedItemsList              |
+| Research           | `/research` + 6 static project pages                                                                 | PageHeader, PageIntro, inline components                       |
+| Digital humanities | `/digital-humanities`                                                                                | card grid                                                      |
+| CV                 | `/cv`, `/cv/timeline`                                                                                | cv/ components, PDF export                                     |
+| Teaching           | `/teaching`, `/teaching/guest-lectures`                                                              | ledgers                                                        |
+| Visualisations     | `/publications/visualisations`, `/conference-activity/visualisations`, `/conference-activity/slides` | ECharts/MapLibre/network SVG plates                            |
+| Archive            | `/activities/year/[year]`                                                                            | ledger                                                         |
+| Reference          | `/style-guide`                                                                                       | the guide itself                                               |
+| System             | `+error.svelte` (404), footer, header/nav                                                            | global chrome                                                  |
 
 ---
 
@@ -121,7 +121,7 @@ One critique per family representative covers the family; spot-check the sibling
       pages, Archivo `wdth`/weight at masthead vs section tiers, French diacritics rendering
       in all three families, mono letterspacing at small sizes in both themes. _Done when:_ no
       voice-blurring remains and the guide's type section matches shipped reality.
-- [ ] **1.2 Layout rhythm.** `/impeccable layout` on the three shared templates —
+- [x] **1.2 Layout rhythm.** `/impeccable layout` on the three shared templates —
       EntityListPageLayout, EntityDetailLayout, and the ledger idiom itself: hanging-column
       alignment, hairline consistency, rule-weight hierarchy (5px/3px/1px used correctly),
       spacing scale adherence, density (peer-respecting, not padded). A fix here propagates
@@ -411,5 +411,75 @@ HTML/URL scans, so a silent CSS/Svelte scan is not evidence the deps are present
 **Ship gate:** `format`, `lint`, `check` (1101 files, 0 errors), `test` (701 unit), `build`,
 `check:build` (bundle 102.8/140 KiB, 196 sitemap URLs resolve), `test:e2e` (32 passed) — all green.
 Detector clean across all 35 changed files.
+
+**2026-08-17 — 1.2 layout rhythm (`/impeccable layout`) — done.** Note first that two of the three
+named targets do not exist: `EntityListPageLayout` and `FilteredListDisplay` were dissolved at some
+point and the index pages now compose `entity-index.css` + `EntityFilterBar`/`EntityFacetGrid`
+directly. CLAUDE.md still lists both under "Component Organization" and should be corrected on the
+next doc pass. `EntityDetailLayout` and `.ledger-row` are real. The mechanical scan (`--scope layout`)
+was clean before and after; all three findings came from the design pass.
+
+**(a) The 1px rule tier was drawn in two different colours, split by page family — and the flagship
+idiom was in the wrong one.** 39 rule-tier declarations used `--color-border`; 25 used
+`--color-border-light`. `.ledger-row` — the universal record idiom — was in the first group, so
+`/teaching` and `/cv`, two adjacent record listings, drew the same structural mark in visibly
+different colours, and the style guide's own `.scale-row` demonstrated a third position. Both values
+were introduced in the **same commit** (777c13e5), so this was never a two-tier decision that drifted;
+it was inconsistency baked in at the redesign.
+
+Three independent sources say separators are the lighter value: the token comment
+(`/* 1px row separators (hairlines) */`), DESIGN.md's colour list, and — decisively — the **PDF CV
+generator**, a hand-maintained shipped artifact that defines `BORDER: #c9c0aa` and
+`HAIRLINE: #dcd4be — Row hairline separators` as separate constants. The web CV already matched the
+PDF; the ledger did not. Resolved on that evidence, not on the 39-vs-25 majority: a rule separates and
+is the lightest mark on the page, a plate edge defines an object and sits a step darker, which is also
+what print typography does.
+
+The cause was the token's **name**: `--color-border-light` reads as "a lighter border," so reaching for
+`--color-border` on a rule never felt wrong. Renamed to **`--color-hairline`**, which pairs by name with
+`--rule-hairline` and makes the correct declaration self-evident. 64 declarations now follow one rule:
+`--rule-hairline` + `--color-hairline` for a rule, `--border-width-thin` + `--color-border` for a box
+edge. Fixed both directions of the crossing — four separators that used the box-edge width token, and
+three box edges (`.cv-container`, `VizChartCard`, `AudioVisualization`) drawn in the rule colour or
+using `--rule-*` in a `border:` shorthand. One sanctioned exception recorded: `.bib-item--lead`, which
+marks the featured entry with a deliberately heavier `--color-border-dark` rule.
+
+**(b) The filter bar was the one unruled module on the index pages.** Every other region pairs a rule
+with its top padding — hero 4px, facet grid 1px, bibliography 3px, filter-bar-bottom 1px — while
+`.filter-bar` carried `padding-top: 16px` with `border-top: 0` at **all four breakpoints**, leaving the
+page's primary interactive region undrawn and 16px of orphan space above it. In a system whose stated
+hierarchy is drawn in rules, that is the one region you cannot find by weight. Given a 3px rule, so the
+stack now reads **4px masthead → 3px controls → 1px facet subdivision → 3px record**: rule weight alone
+now says there are two major modules under the masthead, with the facet grid subordinate to the first.
+
+**(c) The rule → content interval had four values for one role.** The `.section` idiom and DESIGN.md
+both specify 12px, and six modules obeyed; `.index-hero` and `.bibliography` used 16px, `.facet-grid`
+and `+error.svelte` used 24px. Extracted as **`--rule-gap`** and applied to all eight ruled modules, so
+hierarchy is carried by the rule's weight and never by the interval. Verified 4px/3px/1px/3px with a
+constant 12px gap at 375 / 768 / 1024 / 1440, both themes, no overflow.
+
+**Guard added.** `src/styles/hairlinePairing.test.ts` parses every authored CSS and Svelte `<style>`
+source and asserts the pairing in both directions plus the `--rule-gap` interval. This is the piece
+that was missing: crossing the pair fails _silently_ — a separator in the edge colour just looks like a
+plate — which is how 39 declarations sat one step off for three months with lint, check and the browser
+all green. Each of the three assertions was **verified to fail** by reintroducing the real defect, and
+the suite guards its own glob so it cannot pass vacuously.
+
+**Also removed:** a dead `prefers-reduced-motion` block in `VizChartCard` cancelling a
+`transform` that no longer exists anywhere in the file (the lift was removed in c74df27b), and a dead
+`:global(html.dark)` border-colour override in the same file that restated the light value — the tokens
+already flip. Fixing the latter surfaced that the card's rest→hover darkening had collapsed; restored
+as `--color-border` → `--color-border-dark`.
+
+**Declined:** nothing proposed by the skill conflicted with the brief this session.
+
+**Ship gate:** `format`, `lint`, `check` (1102 files, 0 errors), `test` (708 unit, +7), `build`,
+`check:build` (bundle 102.8/140 KiB, 196 sitemap URLs resolve), `test:e2e` (32 passed) — all green.
+Detector clean across all 46 changed files; parser deps confirmed present before trusting it.
+
+**Method note:** screenshots time out on this renderer, so every claim above rests on computed-style
+reads taken after swapping the `html` class and disabling transitions. That is sufficient for rule
+weights, colours and intervals — all discrete values — but it is why 1.5 (midnight type compensation),
+which needs optical judgement, still cannot be done in this kind of session.
 
 <!-- e.g. 2026-08-17 — 0.2 audit — score 82/100, 0 P0, 4 P1 (assigned: 1.3 ×2, 2.2, 5.1) -->

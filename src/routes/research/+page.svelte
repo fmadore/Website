@@ -226,7 +226,7 @@
 		justify-content: space-between;
 		margin-top: var(--space-2);
 		padding-top: var(--space-2);
-		border-top: var(--rule-hairline) solid var(--color-border);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		letter-spacing: 0.1em;

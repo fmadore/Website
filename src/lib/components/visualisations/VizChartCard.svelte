@@ -55,7 +55,7 @@
 		position: relative;
 		border-radius: 0;
 		background: var(--color-background);
-		border: var(--border-width-thin) solid var(--color-border-light);
+		border: var(--border-width-thin) solid var(--color-border);
 		transition: border-color var(--duration-fast) var(--ease-out);
 	}
 
@@ -66,7 +66,7 @@
 	}
 
 	.chart-wrapper:hover {
-		border-color: var(--color-border);
+		border-color: var(--color-border-dark);
 	}
 
 	.stacked-chart {
@@ -125,22 +125,6 @@
 		justify-content: center;
 		text-align: center;
 		contain: layout style;
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.chart-wrapper:hover {
-			transform: none;
-		}
-	}
-
-	:global(html.dark) .chart-wrapper,
-	:global(html.dark) .placeholder-message {
-		background: var(--color-background);
-		border-color: var(--color-border-light);
-	}
-
-	:global(html.dark) .chart-wrapper:hover {
-		border-color: var(--color-border);
 	}
 
 	@media (--md-down) {

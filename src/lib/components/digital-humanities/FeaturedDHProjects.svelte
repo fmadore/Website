@@ -185,7 +185,7 @@
 	/* Section opens on a 3px rule with a mono "FEATURED" label. */
 	.featured {
 		border-top: var(--rule-section) solid var(--color-primary);
-		padding-top: var(--space-sm);
+		padding-top: var(--rule-gap);
 		margin-bottom: var(--space-2xl);
 	}
 
@@ -206,7 +206,7 @@
 	.featured-grid {
 		display: grid;
 		grid-template-columns: 1fr;
-		border-top: var(--rule-hairline) solid var(--color-border);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 		padding-top: var(--space-lg);
 	}
 
@@ -340,7 +340,7 @@
 		.featured-cell + .featured-cell {
 			margin-top: var(--space-lg);
 			padding-top: var(--space-lg);
-			border-top: var(--rule-hairline) solid var(--color-border);
+			border-top: var(--rule-hairline) solid var(--color-hairline);
 		}
 	}
 
@@ -357,7 +357,7 @@
 
 		.featured-cell:first-child {
 			padding-right: var(--space-xl);
-			border-right: var(--rule-hairline) solid var(--color-border);
+			border-right: var(--rule-hairline) solid var(--color-hairline);
 		}
 
 		.featured-cell:last-child {

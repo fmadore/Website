@@ -48,7 +48,7 @@
 		color: var(--color-text-emphasis);
 		margin: 0 0 var(--space-sm) 0;
 		padding-bottom: var(--space-2);
-		border-bottom: var(--rule-hairline) solid var(--color-border);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 		line-height: var(--line-height-snug);
 	}
 

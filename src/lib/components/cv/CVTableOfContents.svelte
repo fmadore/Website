@@ -277,7 +277,7 @@
 		color: var(--color-text-muted);
 		margin: 0 0 var(--space-2);
 		padding: 0 var(--space-1) var(--space-2);
-		border-bottom: var(--rule-hairline) solid var(--color-border-light);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	@keyframes tocSlideUp {

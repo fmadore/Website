@@ -425,7 +425,7 @@ small {
 	color: var(--color-text-emphasis);
 	margin: 0 0 var(--space-md);
 	padding-bottom: var(--space-sm);
-	border-bottom: var(--rule-hairline) solid var(--color-border);
+	border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	line-height: 1.05;
 }
 

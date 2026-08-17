@@ -114,7 +114,7 @@
 		align-items: center;
 		margin-top: var(--space-xl);
 		padding-top: var(--space-md);
-		border-top: var(--rule-hairline) solid var(--color-border);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	/* Count readout — the data voice. */
@@ -147,7 +147,7 @@
 		text-transform: uppercase;
 		color: var(--color-text-soft);
 		background: transparent;
-		border: var(--rule-hairline) solid var(--color-border-dark);
+		border: var(--border-width-thin) solid var(--color-border-dark);
 		border-radius: 0;
 		cursor: pointer;
 		transition:

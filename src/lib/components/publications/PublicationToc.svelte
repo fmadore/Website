@@ -85,7 +85,7 @@ nothing.
 		align-items: baseline;
 		gap: var(--space-sm);
 		padding: var(--space-sm) 0;
-		border-top: var(--rule-hairline) solid var(--color-border);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 		break-inside: avoid;
 	}
 

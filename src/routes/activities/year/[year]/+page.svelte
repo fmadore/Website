@@ -102,7 +102,7 @@
 	.empty-state {
 		padding: var(--space-8) 0;
 		color: var(--color-text-light);
-		border-top: var(--rule-hairline) solid var(--color-border);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 		font-family: var(--font-family-serif);
 	}
 </style>

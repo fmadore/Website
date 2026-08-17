@@ -69,7 +69,7 @@
 		align-items: baseline;
 		gap: var(--space-sm);
 		border-top: var(--rule-section) solid var(--color-primary);
-		padding-top: var(--space-sm);
+		padding-top: var(--rule-gap);
 		margin-bottom: var(--space-lg);
 	}
 

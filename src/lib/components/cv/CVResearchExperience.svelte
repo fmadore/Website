@@ -88,14 +88,14 @@
 	/* Fieldwork ledger row — serif place, mono years, hairline between rows. */
 	.cv-fieldwork-row {
 		padding: var(--space-2-5) 0;
-		border-top: var(--rule-hairline) solid var(--color-border-light);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 		font-family: var(--font-family-serif);
 		color: var(--color-text-soft);
 		line-height: var(--line-height-relaxed);
 	}
 
 	.cv-fieldwork-row:last-child {
-		border-bottom: var(--rule-hairline) solid var(--color-border-light);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	.cv-fieldwork-place {

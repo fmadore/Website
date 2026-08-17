@@ -58,6 +58,6 @@
 		content: '';
 		display: block;
 		margin-top: var(--space-lg);
-		border-top: var(--rule-hairline) solid var(--color-border);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 	}
 </style>

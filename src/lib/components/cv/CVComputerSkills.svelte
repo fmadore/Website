@@ -40,11 +40,11 @@
 	/* Ledger row: mono category key, serif skills content, hairline between. */
 	.cv-skill-row {
 		padding: var(--space-2-5) 0;
-		border-top: var(--rule-hairline) solid var(--color-border-light);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	.cv-skill-row:last-child {
-		border-bottom: var(--rule-hairline) solid var(--color-border-light);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	/* Category — DATA voice: mono uppercase, letterspaced, quiet ink. */
