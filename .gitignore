@@ -62,3 +62,6 @@ scripts/__pycache__/convert-image.cpython-312.pyc
 # are the shared design record and ARE committed; these two are per-machine.
 /.impeccable/config.local.json
 /.impeccable/hook.cache.json
+
+# Local audit report from scripts/audit-publications.mjs
+/publications-audit.md

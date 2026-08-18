@@ -8,26 +8,37 @@
 //   node scripts/sync-talks-to-vault.mjs           # dry run (prints plan)
 //   node scripts/sync-talks-to-vault.mjs --write   # write to the vault
 //
-// Vault path is read from $OBSIDIAN_VAULT, falling back to the known location.
+// Requires OBSIDIAN_VAULT. There is no default: this file is committed to a
+// public repository, and a hardcoded fallback would publish a local path.
 
-import ts from 'typescript';
-import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import {
+	BEGIN,
+	END,
+	vaultRoot,
+	walkData as walk,
+	loadModule,
+	normKey,
+	noteIndex,
+	sanitizeFilename,
+	hyphenTag,
+	yamlStr,
+	spliceGenerated
+} from './vault-sync-lib.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SITE_ROOT = path.resolve(__dirname, '..');
 const DATA_DIR = path.join(SITE_ROOT, 'src/lib/data/communications');
 
-const VAULT = process.env.OBSIDIAN_VAULT || 'C:/Users/frede/Obsidian/Coffre';
+const VAULT = vaultRoot();
 const OUT_DIR = path.join(VAULT, 'Université/Communications');
 const AUTEURS_DIR = path.join(VAULT, 'Zotero/Auteurs');
 const CONCEPTS_DIR = path.join(VAULT, 'Zotero/Concepts');
 const PROJECTS_DIR = path.join(VAULT, 'Tâches et projets/Projects');
 
 const WRITE = process.argv.includes('--write');
-const BEGIN = '%% begin generated (website sync) %%';
-const END = '%% end generated (website sync) %%';
 
 // Talks whose subject is a workshop I built a hub for — link the hub too.
 const HUB_BY_ID = {
@@ -48,89 +59,6 @@ const SUBTYPE_FOLDER = {
 	podcasts: 'Podcasts',
 	talks: 'Talks'
 };
-
-// ---- helpers ---------------------------------------------------------------
-
-function walk(dir) {
-	const out = [];
-	for (const name of readdirSync(dir)) {
-		const full = path.join(dir, name);
-		if (statSync(full).isDirectory()) out.push(...walk(full));
-		else if (
-			name.endsWith('.ts') &&
-			name !== 'index.ts' &&
-			!name.endsWith('.svelte.ts') &&
-			!/template|filters/i.test(name)
-		)
-			out.push(full);
-	}
-	return out;
-}
-
-async function loadModule(file) {
-	const src = readFileSync(file, 'utf8');
-	const js = ts.transpileModule(src, {
-		compilerOptions: {
-			module: ts.ModuleKind.ESNext,
-			target: ts.ScriptTarget.ES2022,
-			verbatimModuleSyntax: false
-		}
-	}).outputText;
-	const mod = await import('data:text/javascript,' + encodeURIComponent(js));
-	return mod.default ?? Object.values(mod)[0];
-}
-
-// Normalise a name/title for matching: lowercase, straighten quotes, drop colons
-// (Windows filenames can't contain them), collapse whitespace.
-function normKey(s) {
-	return String(s)
-		.toLowerCase()
-		.replace(/[''`]/g, "'")
-		.replace(/[""]/g, '"')
-		.replace(/:/g, '')
-		.replace(/\s+/g, ' ')
-		.trim();
-}
-
-// map (normKey -> real basename) of .md notes in a dir; recurse for nested dirs
-function noteIndex(dir, recurse = false) {
-	const map = new Map();
-	if (!existsSync(dir)) return map;
-	for (const f of readdirSync(dir)) {
-		const full = path.join(dir, f);
-		if (statSync(full).isDirectory()) {
-			if (recurse) for (const [k, v] of noteIndex(full, true)) if (!map.has(k)) map.set(k, v);
-		} else if (f.endsWith('.md')) {
-			map.set(normKey(f.slice(0, -3)), f.slice(0, -3));
-		}
-	}
-	return map;
-}
-
-function sanitizeFilename(str) {
-	const clean = str
-		.replace(/[\\/:*?"<>|#^[\]]/g, '')
-		.replace(/\s+/g, ' ')
-		.trim();
-	if (clean.length <= 90) return clean;
-	const cut = clean.slice(0, 90);
-	const lastSpace = cut.lastIndexOf(' ');
-	return (lastSpace > 60 ? cut.slice(0, lastSpace) : cut).trim();
-}
-
-function hyphenTag(tag) {
-	return tag
-		.toLowerCase()
-		.replace(/&/g, 'and')
-		.replace(/[^a-z0-9À-ſ]+/g, '-')
-		.replace(/^-+|-+$/g, '');
-}
-
-function yamlStr(s) {
-	// Escape backslashes first, then double quotes, so a value containing a
-	// literal backslash can't defeat the quote escaping and break the YAML.
-	return '"' + String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
-}
 
 // ---- rendering -------------------------------------------------------------
 
@@ -251,13 +179,6 @@ function renderGenerated(c, ctx) {
 	);
 	L.push(END);
 	return L.join('\n');
-}
-
-function spliceGenerated(existing, generated) {
-	const s = existing.indexOf(BEGIN);
-	const e = existing.indexOf(END);
-	if (s === -1 || e === -1) return null; // no marker: caller decides
-	return existing.slice(0, s) + generated + existing.slice(e + END.length);
 }
 
 // ---- main ------------------------------------------------------------------

@@ -6,52 +6,18 @@
 //
 //   node scripts/audit-publications.mjs
 
-import ts from 'typescript';
-import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
+import { vaultRoot, walkData, loadModule, normTitle } from './vault-sync-lib.mjs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SITE_ROOT = path.resolve(__dirname, '..');
 const DATA_DIR = path.join(SITE_ROOT, 'src/lib/data/publications');
-const VAULT = process.env.OBSIDIAN_VAULT || 'C:/Users/frede/Obsidian/Coffre';
+const VAULT = vaultRoot();
 const ZOTERO_DIR = path.join(VAULT, 'Zotero');
-const REPORT =
-	process.env.AUDIT_OUT ||
-	'C:/Users/frede/AppData/Local/Temp/claude/C--Users-frede-Obsidian-Coffre/3a9af119-3853-4370-aec0-4a8c29a4778a/scratchpad/publications-audit.md';
+const REPORT = process.env.AUDIT_OUT || path.join(SITE_ROOT, 'publications-audit.md');
 
-function walk(d) {
-	const o = [];
-	for (const n of readdirSync(d)) {
-		const f = path.join(d, n);
-		if (statSync(f).isDirectory()) o.push(...walk(f));
-		else if (
-			n.endsWith('.ts') &&
-			n !== 'index.ts' &&
-			!n.endsWith('.svelte.ts') &&
-			!/template|filters/i.test(n)
-		)
-			o.push(f);
-	}
-	return o;
-}
-
-async function load(f) {
-	const js = ts.transpileModule(readFileSync(f, 'utf8'), {
-		compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 }
-	}).outputText;
-	const mod = await import('data:text/javascript,' + encodeURIComponent(js));
-	return mod.default ?? Object.values(mod).find((v) => v && v.id && v.title);
-}
-
-const stripDia = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '');
-const normTitle = (s) =>
-	stripDia(String(s || ''))
-		.toLowerCase()
-		.replace(/[''`]/g, "'")
-		.replace(/[^a-z0-9 ]+/g, ' ')
-		.replace(/\s+/g, ' ')
-		.trim();
 // Anchored to the host so only a real doi.org URL is treated as a DOI — an
 // unanchored /doi\.org/ would also match e.g. https://evil.example/?doi.org.
 const DOI_URL_RE = /^https?:\/\/(dx\.)?doi\.org\//i;
@@ -114,11 +80,11 @@ for (const f of readdirSync(ZOTERO_DIR)) {
 }
 
 // ---- load site publications ----
-const files = walk(DATA_DIR);
+const files = walkData(DATA_DIR);
 const pubs = [];
 for (const f of files) {
 	try {
-		const p = await load(f);
+		const p = await loadModule(f);
 		if (p && p.title) pubs.push(p);
 	} catch (err) {
 		console.error('load failed:', path.basename(f), err.message);

@@ -41,7 +41,11 @@
 		"test:all": "npm run lint && npm run check && npm run test && npm run test:e2e",
 		"test:e2e": "playwright test",
 		"test:e2e:ui": "playwright test --ui",
-		"serve:https": "npx serve build -l 8080 --ssl-cert localhost.pem --ssl-key localhost-key.pem"
+		"serve:https": "npx serve build -l 8080 --ssl-cert localhost.pem --ssl-key localhost-key.pem",
+		"sync:talks": "node scripts/sync-talks-to-vault.mjs",
+		"sync:projects": "node scripts/sync-projects-to-vault.mjs",
+		"sync:publications": "node scripts/sync-publications-to-vault.mjs",
+		"sync:vault": "npm run sync:publications -- --write && npm run sync:projects -- --write && npm run sync:talks -- --write"
 	},
 	"devDependencies": {
 		"@axe-core/playwright": "^4.12.1",
