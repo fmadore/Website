@@ -28,6 +28,7 @@ export const talkDormantDigitalCollectionsAiTriageDga2026: Communication = {
 		'West Africa',
 		'Archives'
 	],
+	slidesUrl: 'https://slides.frederickmadore.com/talks/2026-05-06-dga-dormant-collections/',
 	url: 'https://asienforschung.de/events/roundtable-2-digital-humanities-und-kuenstliche-intelligenz-in-den-regionalwissenschaften/',
 	image: 'images/communications/dormant-digital-collections-ai-triage-dga-2026.webp',
 	heroImage: {

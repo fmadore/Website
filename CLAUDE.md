@@ -35,6 +35,15 @@ npm run check:citations # OpenAlex sweep for new citations + works missing from 
                         # (add --skip-discovery for the OpenAlex passes alone)
 ```
 
+Checks and generators that reach the **deck site** (no build needed):
+
+```bash
+npm run check:slides         # every published deck is linked from a talk, every
+                             # slidesUrl resolves, every cover poster is mirrored
+npm run gen:posters          # mirror each deck's cover slide into static/images
+npm run gen:posters -- --check  # report stale/missing posters, write nothing
+```
+
 > **Testing layout**: Unit tests are co-located as `*.test.ts` next to the
 > module they cover (e.g. `src/lib/utils/vizAggregation.test.ts`) and run in a
 > plain Node environment via `vitest.config.ts`. Pure logic extracted from
@@ -42,9 +51,21 @@ npm run check:citations # OpenAlex sweep for new citations + works missing from 
 > the coverage ratchet, which measures site code only. E2E smoke tests live in
 > `tests-e2e/` and run against the production build (`playwright.config.ts`).
 >
-> **Scheduled workflows**: `link-check.yml` (weekly) and `citation-watch.yml`
-> (monthly) each maintain a single long-lived GitHub issue, rewritten in place
-> and closed automatically once clean — never one issue per run.
+> **Scheduled workflows**: `link-check.yml` (weekly), `slides-check.yml`
+> (weekly) and `citation-watch.yml` (monthly) each maintain a single long-lived
+> GitHub issue, rewritten in place and closed automatically once clean — never
+> one issue per run. All three reach the network and none belongs in the PR
+> gate: they fail for reasons a given branch neither caused nor can fix.
+>
+> **Slide decks**: decks live in a separate repo and deploy to
+> `slides.frederickmadore.com` on their own schedule; this site links one by
+> setting `slidesUrl` on a communication, which is also what puts it in the
+> Slides gallery. Nothing connects the two at build time, so `check:slides`
+> reconciles them against the deck site's `sitemap.xml` (the deck repo's
+> `talks/talks.json` is a build input and is not published). Cover posters are
+> mirrored from each deck's `social-card.png` by `gen:posters`, committed like
+> the other generated artefacts, and deliberately kept out of `prebuild` — a
+> build that fetches is a build that fails on someone else's outage.
 >
 > **Citation sources**: OpenAlex is the citation spine — keyed by DOI, it
 > answers who cites what and resolves by committing a `citedBy` entry. Google

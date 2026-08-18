@@ -1,0 +1,136 @@
+name: Slides check
+
+# The decks live in a second repository and deploy on their own schedule, so
+# drift here is never caused by a commit to this one: a deck goes live, and the
+# talk that should link it stays untouched until someone notices. That makes a
+# push trigger the wrong shape — a PR touching CSS would go red for a deck the
+# author neither published nor can fix from that branch. It also reaches the
+# network, which is the other reason link-check.yml runs on a timer rather than
+# in the PR gate.
+on:
+  schedule:
+    - cron: '43 7 * * 3' # Wednesdays, 07:43 UTC — off the hour, and off link-check's day
+  workflow_dispatch: # run on demand from the Actions tab
+  # The deck repo can close the loop by firing this after a successful Pages
+  # deploy, turning the weekly sweep into a backstop rather than the only signal.
+  repository_dispatch:
+    types: [decks-deployed]
+
+concurrency:
+  group: slides-check
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  issues: write # to open/update the report issue
+
+jobs:
+  check:
+    name: Reconcile published decks with the talks that link them
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      # No build step: both checks read the typed data files and static/images
+      # directly, so this job is a checkout, an install and two small fetches.
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Reconcile decks against talks
+        id: decks
+        # `|| true` so a finding doesn't abort the job before the issue is
+        # filed — the report is the deliverable. Exit 2 means the deck site
+        # could not be read; that is inconclusive, not a finding, and must not
+        # overwrite the issue with a list of false "unlinked deck" reports.
+        run: |
+          set +e
+          node scripts/check-slides.mjs --report=slides-report.md
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          set -e
+
+      - name: Fail loudly when the deck site could not be read
+        if: steps.decks.outputs.exit_code == '2'
+        run: |
+          echo "::error::Could not read the deck sitemap; the reconciliation did not run."
+          exit 1
+
+      # Cover posters drift separately: a deck can stay correctly linked while
+      # its title slide is re-cut, leaving the mirrored poster stale.
+      - name: Check the mirrored cover posters
+        id: posters
+        if: steps.decks.outputs.exit_code != '2'
+        run: |
+          set +e
+          node scripts/generate-slide-posters.mjs --check > poster-report.txt 2>&1
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          set -e
+          cat poster-report.txt
+
+      - name: Compose issue body
+        if: steps.decks.outputs.exit_code == '1' || steps.posters.outputs.exit_code == '1'
+        run: |
+          {
+            echo "Weekly reconciliation of <https://slides.frederickmadore.com> against the talks that link it."
+            echo
+            cat slides-report.md
+            if [ "${{ steps.posters.outputs.exit_code }}" = "1" ]; then
+              echo
+              echo "### Cover posters"
+              echo
+              echo '```'
+              cat poster-report.txt
+              echo '```'
+            fi
+            echo
+            echo "---"
+            echo "Reproduce locally with \`npm run check:slides\` and \`npm run gen:posters -- --check\`."
+            echo "From [\`${{ github.workflow }}\`](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}), run ${{ github.run_number }}."
+          } > issue-body.md
+
+      # One long-lived issue, edited in place — same reasoning as link-check.yml:
+      # a fresh issue per run turns a slow-moving problem into a notification
+      # stream and gets muted. An empty result means the action creates one.
+      - name: Find the open report issue
+        id: existing
+        if: steps.decks.outputs.exit_code == '1' || steps.posters.outputs.exit_code == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          number=$(gh issue list --state open --label slides \
+            --json number,title \
+            --jq '.[] | select(.title == "Slide decks out of sync") | .number' | head -n1)
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+
+      - name: Open or update the report issue
+        if: steps.decks.outputs.exit_code == '1' || steps.posters.outputs.exit_code == '1'
+        uses: peter-evans/create-issue-from-file@v6
+        with:
+          issue-number: ${{ steps.existing.outputs.number }}
+          title: 'Slide decks out of sync'
+          content-filepath: issue-body.md
+          labels: maintenance, slides
+
+      # When the last deck is wired up, close the issue rather than leaving a
+      # stale one open — otherwise the tracker lies about the site's state.
+      - name: Close the report issue once clean
+        if: steps.decks.outputs.exit_code == '0' && steps.posters.outputs.exit_code == '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          number=$(gh issue list --state open --label slides \
+            --search 'Slide decks out of sync in:title' \
+            --json number,title \
+            --jq '.[] | select(.title == "Slide decks out of sync") | .number' | head -n1)
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body "Every published deck is linked and every cover poster matches, as of run ${{ github.run_number }}. Closing."
+            gh issue close "$number"
+          else
+            echo "No open slides-check issue; nothing to close."
+          fi

@@ -19,8 +19,10 @@
 		"preview": "vite preview",
 		"gen:refs": "node scripts/generate-reference-index.mjs",
 		"gen:prose": "node scripts/generate-research-prose.mjs",
+		"gen:posters": "node scripts/generate-slide-posters.mjs",
 		"shot": "node scripts/screenshot.mjs",
 		"check:links": "node scripts/check-links.mjs",
+		"check:slides": "node scripts/check-slides.mjs",
 		"check:citations": "node scripts/check-citations.mjs",
 		"check:bundle": "node scripts/check-bundle-budget.mjs",
 		"check:prerender": "node scripts/check-prerender.mjs",
@@ -45,7 +47,8 @@
 		"sync:talks": "node scripts/sync-talks-to-vault.mjs",
 		"sync:projects": "node scripts/sync-projects-to-vault.mjs",
 		"sync:publications": "node scripts/sync-publications-to-vault.mjs",
-		"sync:vault": "npm run sync:publications -- --write && npm run sync:projects -- --write && npm run sync:talks -- --write"
+		"sync:vault": "npm run sync:publications -- --write && npm run sync:projects -- --write && npm run sync:sections -- --write && npm run sync:talks -- --write",
+		"sync:sections": "node scripts/sync-sections-to-vault.mjs"
 	},
 	"devDependencies": {
 		"@axe-core/playwright": "^4.12.1",

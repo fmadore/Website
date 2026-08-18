@@ -491,6 +491,26 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 		sourceWidth: 600,
 		widths: [400]
 	},
+	'communications/slides/2026-05-06-dga-dormant-collections.webp': {
+		sourceWidth: 1280,
+		widths: [400, 800]
+	},
+	'communications/slides/2026-06-15-luxembourg-beyond-keywords.webp': {
+		sourceWidth: 1280,
+		widths: [400, 800]
+	},
+	'communications/slides/2026-06-29-erlangen-islam-peripheries.webp': {
+		sourceWidth: 1280,
+		widths: [400, 800]
+	},
+	'communications/slides/2026-06-30-paris-reaf-dh-ia-afrique.webp': {
+		sourceWidth: 1280,
+		widths: [400, 800]
+	},
+	'communications/slides/2026-07-01-rhodes-reconfiguring-archive.webp': {
+		sourceWidth: 1280,
+		widths: [400, 800]
+	},
 	'communications/union-islamique-benin-elections-hero.webp': {
 		sourceWidth: 900,
 		widths: [400, 800]

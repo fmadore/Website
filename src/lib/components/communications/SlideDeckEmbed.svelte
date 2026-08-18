@@ -1,5 +1,8 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
+	import { base } from '$app/paths';
+	import { imageVariantManifest } from '$lib/data/imageVariants.generated';
+	import { buildSrcset, resolveImagePath } from '$lib/utils/imageVariants';
 
 	interface Props {
 		/** Embeddable deck URL (e.g. https://slides.frederickmadore.com/talks/<slug>/). */
@@ -11,8 +14,8 @@
 	let { src, title }: Props = $props();
 
 	// The reveal.js runtime (CSS + fonts + JS) is heavy, so the iframe is not
-	// mounted until the reader asks for it. A typographic facade stands in until
-	// then — keeps the detail page light and lets the deck load on intent.
+	// mounted until the reader asks for it. The deck's own cover slide stands in
+	// until then — keeps the detail page light and lets the deck load on intent.
 	let activated = $state(false);
 	let stageEl = $state<HTMLDivElement | null>(null);
 
@@ -24,6 +27,31 @@
 			return 'Slides';
 		}
 	});
+
+	// The deck site renders a 1280x720 shot of every cover slide;
+	// scripts/generate-slide-posters.mjs mirrors it into static/images, so the
+	// facade opens on the actual title slide rather than an empty stage.
+	// Presence in the variant manifest is the existence check — a deck whose
+	// poster was never mirrored simply falls back to the plain facade, and
+	// `npm run check:slides` is what reports it.
+	const posterPath = $derived.by(() => {
+		let slug: string | undefined;
+		try {
+			const segments = new URL(src).pathname.split('/').filter(Boolean);
+			if (segments[0] === 'talks') slug = segments[1];
+		} catch {
+			return undefined;
+		}
+		if (!slug) return undefined;
+		const key = `communications/slides/${slug}.webp`;
+		return key in imageVariantManifest ? `images/${key}` : undefined;
+	});
+	const posterSrc = $derived(resolveImagePath(posterPath, base));
+	const posterSrcset = $derived(buildSrcset(posterSrc));
+	// Measured against the detail page's content column: the stage caps at
+	// 1150px and sits at roughly 85vw below that. Overstating a slot only costs
+	// bytes; understating it picks a candidate too small and renders soft.
+	const POSTER_SIZES = '(min-width: 1200px) 1150px, 85vw';
 
 	function activate() {
 		activated = true;
@@ -75,9 +103,29 @@
 				onclick={activate}
 				aria-label="Load and view the slide deck for {title}"
 			>
-				<span class="deck-facade-play"><Icon icon="lucide:play" width="18" height="18" /></span>
-				<span class="deck-facade-label">View slides</span>
-				<span class="deck-facade-hint">Loads the interactive deck</span>
+				<span class="deck-facade-plate">
+					{#if posterSrc}
+						<!-- Decorative: the button's aria-label already names the deck. -->
+						<img
+							class="deck-poster"
+							src={posterSrc}
+							srcset={posterSrcset}
+							sizes={posterSrcset ? POSTER_SIZES : undefined}
+							alt=""
+							width="1280"
+							height="720"
+							loading="lazy"
+							decoding="async"
+						/>
+					{/if}
+				</span>
+				<!-- Caption strip, the plate idiom: the affordance sits below the
+				     image on its own ground rather than washing over it. -->
+				<span class="deck-facade-bar">
+					<span class="deck-facade-play"><Icon icon="lucide:play" width="16" height="16" /></span>
+					<span class="deck-facade-label">View slides</span>
+					<span class="deck-facade-hint">Loads the interactive deck</span>
+				</span>
 			</button>
 		{/if}
 	</div>
@@ -177,24 +225,18 @@
 		display: block;
 	}
 
-	/* Facade: typographic stand-in (no heavy iframe) until the reader opts in. */
+	/* Facade: the deck's own cover slide as a plate, with the affordance on a
+	 * caption strip beneath it — no heavy iframe until the reader opts in. */
 	.deck-facade {
 		position: absolute;
 		inset: 0;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: var(--space-2xs);
-		padding: var(--space-lg);
+		display: grid;
+		grid-template-rows: 1fr auto;
+		padding: 0;
 		border: 0;
 		cursor: pointer;
+		text-align: left;
 		background: var(--color-surface-alt);
-		transition: background-color var(--duration-fast) var(--ease-out);
-	}
-
-	.deck-facade:hover {
-		background: color-mix(in srgb, var(--color-accent) 6%, var(--color-surface-alt));
 	}
 
 	.deck-facade:focus-visible {
@@ -202,31 +244,65 @@
 		outline-offset: -4px;
 	}
 
+	/* The plate itself. min-height:0 lets the row shrink instead of overflowing. */
+	.deck-facade-plate {
+		position: relative;
+		min-height: 0;
+		overflow: hidden;
+		background: var(--color-surface-alt);
+	}
+
+	/* A faithful reproduction: the cover is not tinted, dimmed or theme-flipped
+	 * in midnight — a plate reads the same in both, like every other scan on
+	 * the site. */
+	.deck-poster {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center top;
+	}
+
+	/* Caption strip — ledger-like: play plate, display-voice label, mono hint. */
+	.deck-facade-bar {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		padding: var(--space-sm) var(--space-md);
+		background: var(--color-surface-alt);
+		border-top: var(--border-width-thin) solid var(--color-border);
+		transition: background-color var(--duration-fast) var(--ease-out);
+	}
+
+	.deck-facade:hover .deck-facade-bar {
+		background: color-mix(in srgb, var(--color-accent) 6%, var(--color-surface-alt));
+	}
+
 	/* Play glyph — a square accent-bordered plate, no circle, no scale. */
 	.deck-facade-play {
 		display: grid;
 		place-items: center;
-		width: var(--space-2xl);
-		height: var(--space-2xl);
-		margin-bottom: var(--space-2xs);
+		flex-shrink: 0;
+		width: var(--space-xl);
+		height: var(--space-xl);
 		border-radius: 0;
 		color: var(--color-accent);
 		background: var(--color-surface);
 		border: var(--border-width-thin) solid var(--color-accent);
-		transition: color var(--duration-fast) var(--ease-out);
 	}
 
 	/* Label — the display voice; hint — the data voice. */
 	.deck-facade-label {
 		font-family: var(--font-family-display);
 		font-variation-settings: var(--font-variation-display-sm);
-		font-size: var(--font-size-lg);
+		font-size: var(--font-size-base);
 		font-weight: 700;
 		letter-spacing: -0.01em;
 		color: var(--color-text-emphasis);
 	}
 
 	.deck-facade-hint {
+		margin-left: auto;
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		text-transform: uppercase;
@@ -234,10 +310,16 @@
 		color: var(--color-text-muted);
 	}
 
+	/* The hint is a nicety; the label carries the meaning. */
+	@media (--sm-down) {
+		.deck-facade-hint {
+			display: none;
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
 		.deck-chrome-btn,
-		.deck-facade,
-		.deck-facade-play {
+		.deck-facade-bar {
 			transition: none;
 		}
 	}
