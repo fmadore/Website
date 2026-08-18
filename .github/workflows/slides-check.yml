@@ -9,10 +9,17 @@ name: Slides check
 # in the PR gate.
 on:
   schedule:
-    - cron: '43 7 * * 3' # Wednesdays, 07:43 UTC — off the hour, and off link-check's day
+    # Daily, not weekly: the job is a checkout plus two small fetches, and the
+    # thing it catches is introduced by a deploy elsewhere that this repo gets
+    # no signal about. Cheap enough to run often, so run often.
+    - cron: '43 7 * * *' # 07:43 UTC — off the hour, to dodge the cron rush
   workflow_dispatch: # run on demand from the Actions tab
-  # The deck repo can close the loop by firing this after a successful Pages
-  # deploy, turning the weekly sweep into a backstop rather than the only signal.
+  # Left wired but unused. The deck repo could fire this after a successful
+  # Pages deploy, but cross-repo dispatch needs a PAT with Contents:write on
+  # THIS repo stored as a secret over there — a standing push credential, and a
+  # silent failure when it expires. That is a poor trade against a sweep that
+  # already runs daily. Worth revisiting only if both repos move under a GitHub
+  # App, where the token is short-lived and scoped to the dispatch itself.
   repository_dispatch:
     types: [decks-deployed]
 
@@ -77,7 +84,7 @@ jobs:
         if: steps.decks.outputs.exit_code == '1' || steps.posters.outputs.exit_code == '1'
         run: |
           {
-            echo "Weekly reconciliation of <https://slides.frederickmadore.com> against the talks that link it."
+            echo "Daily reconciliation of <https://slides.frederickmadore.com> against the talks that link it."
             echo
             cat slides-report.md
             if [ "${{ steps.posters.outputs.exit_code }}" = "1" ]; then

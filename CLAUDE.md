@@ -52,10 +52,14 @@ npm run gen:posters -- --check  # report stale/missing posters, write nothing
 > `tests-e2e/` and run against the production build (`playwright.config.ts`).
 >
 > **Scheduled workflows**: `link-check.yml` (weekly), `slides-check.yml`
-> (weekly) and `citation-watch.yml` (monthly) each maintain a single long-lived
+> (daily) and `citation-watch.yml` (monthly) each maintain a single long-lived
 > GitHub issue, rewritten in place and closed automatically once clean — never
 > one issue per run. All three reach the network and none belongs in the PR
 > gate: they fail for reasons a given branch neither caused nor can fix.
+> `slides-check` runs daily because it is cheap (no build) and because the drift
+> it catches originates in the deck repo, which this one gets no signal about;
+> closing that loop properly would mean a standing push credential in the deck
+> repo, which is not worth the latency it saves.
 >
 > **Slide decks**: decks live in a separate repo and deploy to
 > `slides.frederickmadore.com` on their own schedule; this site links one by
