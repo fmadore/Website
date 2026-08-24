@@ -180,16 +180,29 @@
 		border-color: var(--color-primary);
 	}
 
+	/* Disabled step — the colour carries the dimming. --color-text-faint was
+	 * never a real token, so this rule was invalid at computed-value time and
+	 * fell back to inherit: disabled Prev/Next drew in full body ink. A plain
+	 * token swap would not fix it either, since --color-text-light and
+	 * --color-text-muted resolve to the same faint ink in daylight; the
+	 * color-mix is what steps below the enabled --color-text-soft in both
+	 * themes.
+	 *
+	 * The blanket `opacity: 0.6` that used to sit here is gone: multiplied
+	 * against the mix it drove the label to ~1.6:1, past quiet and into
+	 * illegible. The border is dimmed on its own instead, so the box still
+	 * reads disabled while the label stays readable. */
 	.page-btn:disabled {
-		color: var(--color-text-faint);
+		color: color-mix(in srgb, var(--color-text-light) 55%, transparent);
+		border-color: color-mix(in srgb, var(--color-border-dark) 55%, transparent);
 		cursor: not-allowed;
-		opacity: 0.6;
 	}
 
+	/* Elision mark — quieter than the buttons it sits between. */
 	.page-gap {
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
-		color: var(--color-text-faint);
+		color: color-mix(in srgb, var(--color-text-light) 55%, transparent);
 		padding: 0 var(--space-1);
 	}
 
