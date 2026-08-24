@@ -157,12 +157,19 @@
 					{/if}
 
 					{#if project.skills && project.skills.length > 0}
-						<div class="chip-row featured-tech">
-							{#each project.skills as skill (skill)}
-								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- skill filter URL -->
-								<a class="chip chip--tech" href={skillHref(skill)}>{skill}</a>
+						<!-- Methods as apparatus, in the same run as the stat row above it —
+						     see .apparatus-line in ink-signal.css. Each term still activates
+						     the catalogue’s skill filter. -->
+						<!-- eslint-disable svelte/no-navigation-without-resolve -- skill filter URLs -->
+						<p class="apparatus-line featured-tech">
+							{#each project.skills as skill, i (skill)}
+								{#if i > 0}
+									<span class="apparatus-line-sep" aria-hidden="true">·</span>
+								{/if}
+								<a class="no-underline" href={skillHref(skill)}>{skill}</a>
 							{/each}
-						</div>
+						</p>
+						<!-- eslint-enable svelte/no-navigation-without-resolve -->
 					{/if}
 
 					<!-- eslint-disable svelte/no-navigation-without-resolve -- pre-resolved URL -->
@@ -290,28 +297,18 @@
 		color: var(--color-accent);
 	}
 
+	/* Matches the apparatus-line separator below it. --color-text-faint is not a
+	 * real token, so this rule was inheriting the stat colour and drawing no
+	 * distinction at all. */
 	.featured-stat-sep {
-		color: var(--color-text-faint);
+		color: color-mix(in srgb, var(--color-text-light) 55%, transparent);
 	}
 
+	/* The cell’s flex gap already separates this from the stat row, and the
+	 * run’s links carry their own block padding, so the trim keeps it reading
+	 * as the next line of the stat block rather than a detached second group. */
 	.featured-tech {
-		margin-top: var(--space-1);
-		gap: var(--space-1-5);
-	}
-
-	/* Tech chip — a filter link (activates the skill filter), tighter than the
-	 * catalogue filter chips. */
-	.chip--tech {
-		font-size: var(--font-size-2xs);
-		letter-spacing: 0.08em;
-		padding: var(--space-0-5) var(--space-1-5);
-		color: var(--color-text-light);
-		text-decoration: none;
-	}
-
-	.chip--tech:hover {
-		color: var(--color-accent);
-		border-color: var(--color-accent);
+		margin-top: calc(-1 * var(--space-1));
 	}
 
 	.featured-action {

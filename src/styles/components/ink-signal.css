@@ -328,6 +328,81 @@
 }
 
 /* ===========================================================================
+ * APPARATUS LINE — a record's own keywords, set as a typeset run
+ *
+ * Chips above are the *facet* idiom: a control the reader operates to filter a
+ * list. A record's own keyword list is something else — apparatus, metadata
+ * annotating the entry, which merely happens to be linked. Setting apparatus
+ * as controls is what turned a 13-skill catalogue row into a 244px wall of
+ * 44px boxes on a phone, taller than the title and description it annotates.
+ *
+ * So it is set as running type in the data voice: interpunct-separated terms
+ * that wrap like the text they are. Each term stays whole (`nowrap`), and the
+ * break opportunities are the spaces flanking the separators.
+ *
+ * Mark up the terms as <a class="no-underline">. The run is a <p>, so without
+ * that opt-out the global prose-link rule in typography.css wins on specificity
+ * and pine-underlines every term at rest — a hundred underlines where the point
+ * was a quiet apparatus.
+ *
+ * The links keep the WCAG 2.5.8 inline-target exemption (their size is
+ * constrained by the leading of the run), but they are still tapped, so the
+ * hit area is grown with vertical padding rather than left at the bare ~13px
+ * line box. Padding, not a border: the target grows, nothing is drawn.
+ * =========================================================================== */
+
+.apparatus-line {
+	margin: 0;
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-medium);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	line-height: 1.3;
+	color: var(--color-text-light);
+}
+
+.apparatus-line a {
+	display: inline-block;
+	white-space: nowrap;
+	padding-block: var(--space-1);
+	color: inherit;
+	text-decoration: none;
+	transition: color var(--duration-fast) var(--ease-out);
+}
+
+.apparatus-line a:hover {
+	color: var(--color-accent);
+	text-decoration: underline;
+	text-decoration-thickness: var(--border-width-thin);
+	text-underline-offset: 0.3em;
+}
+
+.apparatus-line a:focus-visible {
+	outline: var(--border-width-medium) solid var(--color-accent);
+	outline-offset: var(--space-2xs);
+	color: var(--color-text-emphasis);
+}
+
+/* The gap before the separator is drawn, not typed: Svelte trims the source
+ * whitespace between a term and the following {#if} block, so only the space
+ * after the interpunct survives into the DOM. That surviving space is also the
+ * run’s sole soft-wrap opportunity, which is exactly where a typeset keyword
+ * run should break — after the separator, never between a term and its own.
+ *
+ * 0.68em matches what the surviving space actually measures: the mono face
+ * advances a space by a full 0.6em character width, plus the 0.08em tracking.
+ * Anything smaller sets the interpunct closer to the term on its left than the
+ * one on its right, which reads as a typo rather than a divider. */
+.apparatus-line-sep {
+	margin-inline-start: 0.68em;
+	/* One step quieter than the terms it divides. Mixed rather than picked off
+	 * the scale because the next token down (--color-text-muted) is only quieter
+	 * in midnight — in daylight it and --color-text-light are the same ink. */
+	color: color-mix(in srgb, var(--color-text-light) 55%, transparent);
+}
+
+/* ===========================================================================
  * YEAR-BAR STRIP — output distribution as ink bars, accent on the newest year
  * =========================================================================== */
 
@@ -516,7 +591,8 @@
 
 @media (prefers-reduced-motion: reduce) {
 	.chip,
-	.pager-item {
+	.pager-item,
+	.apparatus-line a {
 		transition: none;
 	}
 }
@@ -543,6 +619,13 @@
 	.chip-more {
 		padding: var(--space-2-5) 0;
 		min-height: 44px;
+	}
+
+	/* The apparatus line has no box to enlarge, so its terms take the room in
+	 * leading instead: 6px of block padding on the ~13px line box (10px type at
+	 * 1.3) measures 25px, clearing the 24px WCAG floor without drawing anything. */
+	.apparatus-line a {
+		padding-block: var(--space-1-5);
 	}
 
 	.pager-item {

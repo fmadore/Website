@@ -230,12 +230,19 @@
 							</div>
 
 							{#if project.skills && project.skills.length > 0}
-								<div class="chip-row dh-row-tech">
-									{#each project.skills as skill (skill)}
-										<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- skill filter URL -->
-										<a class="chip chip--tech" href={skillHref(skill)}>{skill}</a>
+								<!-- The record's own methods, set as apparatus rather than as a row of
+								     filter controls — see .apparatus-line in ink-signal.css. Each term
+								     still activates the skill filter. -->
+								<!-- eslint-disable svelte/no-navigation-without-resolve -- skill filter URLs -->
+								<p class="apparatus-line dh-row-tech">
+									{#each project.skills as skill, i (skill)}
+										{#if i > 0}
+											<span class="apparatus-line-sep" aria-hidden="true">·</span>
+										{/if}
+										<a class="no-underline" href={skillHref(skill)}>{skill}</a>
 									{/each}
-								</div>
+								</p>
+								<!-- eslint-enable svelte/no-navigation-without-resolve -->
 							{/if}
 						</article>
 					{/each}
@@ -428,20 +435,14 @@
 		max-width: var(--measure-prose);
 	}
 
+	/* Sits under the body on the stacked column; the row grid supplies the
+	 * separation, and the negative block trims the link padding’s own leading
+	 * so the run starts on the description’s rhythm rather than below it. */
 	.dh-row-tech {
-		gap: var(--space-1-5);
-		align-items: flex-start;
+		margin-block-start: calc(-1 * var(--space-1));
 	}
 
-	/* Tech chip — smaller, quieter than a filter chip. */
-	.chip--tech {
-		font-size: var(--font-size-2xs);
-		letter-spacing: 0.08em;
-		padding: var(--space-0-5) var(--space-1-5);
-		color: var(--color-text-light);
-	}
-
-	/* On desktop the row becomes three columns: year | body | right-aligned tech. */
+	/* On desktop the row becomes three columns: year | body | methods. */
 	@media (--md) {
 		.dh-row {
 			grid-template-columns: 96px 1fr 320px;
@@ -449,8 +450,10 @@
 			align-items: start;
 		}
 
+		/* In the right-hand column the run keeps a flush left edge: a wrapping
+		 * keyword run is running text, and running text is not set ragged-left. */
 		.dh-row-tech {
-			justify-content: flex-end;
+			margin-block-start: 0;
 		}
 	}
 </style>
