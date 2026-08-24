@@ -100,6 +100,14 @@ export const religiosityUniversityCampuses: Publication = {
 			source:
 				'In Using Positive Psychology Interventions to Promote Well-Being Among Students in Higher-Education Institutions: Understanding Their Cognitive And Social Impact, edited by Peter J. O. Aloka, 117-34. Cham: Springer Nature Switzerland, 2025',
 			url: 'https://doi.org/10.1007/978-3-031-88793-2_7'
+		},
+		{
+			authors: ['Leonardo A. Villalón'],
+			year: 2026,
+			title: 'Islam',
+			source:
+				'In Elgar Encyclopedia of African Politics, edited by Anne M. Kjær, Moses Khisa, and Xichavo Alecia Ndlovu. Cheltenham: Edward Elgar Publishing, 2026',
+			url: 'https://doi.org/10.4337/9781035309306.00047'
 		}
 	]
 };
