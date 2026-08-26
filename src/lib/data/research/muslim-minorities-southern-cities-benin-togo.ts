@@ -11,7 +11,8 @@ export const muslimMinoritiesSouthernCities: ResearchProject = {
 	imageSrc: 'muslim-minorities.webp',
 	imageAlt: 'Muslim Minorities in Southern Cities of Benin and Togo',
 	audioSrc: 'notebooklm/muslim-minorities-southern-cties-Benin-Togo.mp3',
-	projectName: 'Muslim Minorities in Southern Cities of Benin and Togo'
+	projectName: 'Muslim Minorities in Southern Cities of Benin and Togo',
+	programme: 'Banting Postdoctoral Fellowships'
 };
 
 export default muslimMinoritiesSouthernCities;
