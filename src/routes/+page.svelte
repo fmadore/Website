@@ -114,7 +114,7 @@
 						href="https://islam.zmo.de/s/westafrica/"
 						target="_blank"
 						rel="noopener noreferrer"><em>Islam West Africa Collection</em> (IWAC)</a
-					>, an open-access collection of more than 14,700 items on Islam across Benin, Burkina
+					>, an open-access collection of more than 17,500 items on Islam across Benin, Burkina
 					Faso, Côte d’Ivoire, Niger, Nigeria, and Togo.
 					<a
 						href="https://github.com/fmadore/iwac-ai-pipelines"
