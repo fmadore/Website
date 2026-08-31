@@ -1863,6 +1863,30 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"location": "University of Florida",
 		"country": "United States"
 	},
+	"responsible-ai-access-mcp-server-2026": {
+		"id": "responsible-ai-access-mcp-server-2026",
+		"itemType": "communication",
+		"title": "Responsible AI Access to Research Repositories: An MCP Server for African Studies Data",
+		"authors": [
+			"Frédérick Madore",
+			"Oliver Baumann",
+			"Durgesh Nandini",
+			"Neeraj Thandayan Viswajith",
+			"Jiayu Yang",
+			"Mirco Schönfeld"
+		],
+		"type": "poster",
+		"date": "25 September 2026",
+		"dateISO": "2026-09-25",
+		"year": 2026,
+		"image": "images/communications/responsible-ai-access-mcp-server-2026.webp",
+		"heroImage": {
+			"src": "images/communications/responsible-ai-access-mcp-server-2026.webp"
+		},
+		"conference": "AI Day 2026, Research Center for AI in Science and Society (RAIS²)",
+		"location": "University of Bayreuth",
+		"country": "Germany"
+	},
 	"retour-note-synthese-dh-ia-reaf-2026": {
 		"id": "retour-note-synthese-dh-ia-reaf-2026",
 		"itemType": "communication",

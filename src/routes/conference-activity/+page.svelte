@@ -224,8 +224,9 @@
 			</p>
 			<h1 class="index-title">Talks &amp; Events</h1>
 			<p class="standfirst">
-				Conference papers, workshops, seminars, lectures and panels given since {minYear} to audiences
-				in {countryCount} countries across Africa, Europe and North America — the full speaking record.
+				Conference papers, workshops, seminars, lectures, posters and panels given since {minYear} to
+				audiences in {countryCount} countries across Africa, Europe and North America — the full speaking
+				record.
 			</p>
 		</div>
 

@@ -15,6 +15,7 @@ const templateIds = [
 	'paper-template-id',
 	'panel-template-id',
 	'talk-template-id',
+	'poster-template-id',
 	'event-template-id',
 	'podcast-template-id'
 ];
@@ -25,6 +26,7 @@ const communicationModules = import.meta.glob<ModuleType>(
 	[
 		'./papers/*.ts',
 		'./panels/*.ts',
+		'./posters/*.ts',
 		'./talks/*.ts',
 		'./events/*.ts',
 		'./podcasts/*.ts',

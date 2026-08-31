@@ -73,7 +73,7 @@ export const GET: RequestHandler = async () => {
 		`- [Activities](${SITE}/activities): News, talks, workshops, and other scholarly activities.`
 	);
 	lines.push(
-		`- [Talks & Events](${SITE}/conference-activity): Conference papers, invited lectures, seminars, workshops, panels, podcasts, and presentation slides.`
+		`- [Talks & Events](${SITE}/conference-activity): Conference papers, invited lectures, seminars, workshops, panels, posters, podcasts, and presentation slides.`
 	);
 	lines.push(`- [Teaching](${SITE}/teaching): Courses, guest lectures, and syllabi.`);
 	lines.push(`- [CV](${SITE}/cv): Full curriculum vitae.`);

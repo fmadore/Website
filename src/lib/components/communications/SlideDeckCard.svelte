@@ -18,6 +18,7 @@
 		seminar: 'Seminar',
 		lecture: 'Lecture',
 		panel: 'Panel',
+		poster: 'Poster',
 		event: 'Academic event',
 		podcast: 'Podcast'
 	};

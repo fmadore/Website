@@ -61,6 +61,7 @@
 		seminar: 'Seminar',
 		lecture: 'Lecture',
 		panel: 'Panel',
+		poster: 'Poster',
 		event: 'Academic Event',
 		podcast: 'Podcast'
 	};

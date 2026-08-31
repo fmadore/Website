@@ -39,6 +39,7 @@
 			seminar: 'Seminar',
 			lecture: 'Lecture',
 			panel: 'Panel',
+			poster: 'Poster Presentation',
 			event: 'Academic Event'
 		};
 		return typeMap[type] || type;

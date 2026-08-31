@@ -27,7 +27,8 @@ export type Communication = {
 		latitude: number; // Latitude
 		longitude: number; // Longitude
 	};
-	type?: 'conference' | 'workshop' | 'seminar' | 'lecture' | 'panel' | 'event' | 'podcast'; // Type of communication
+	type?:
+		'conference' | 'workshop' | 'seminar' | 'lecture' | 'panel' | 'poster' | 'event' | 'podcast'; // Type of communication
 	language?: string | string[]; // Language(s) of the communication - can be a single language or multiple languages
 	papers?: Array<{
 		// Papers presented at the panel

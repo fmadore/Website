@@ -28,6 +28,7 @@
 			seminar: 'Seminar',
 			lecture: 'Lecture',
 			panel: 'Panel Discussion',
+			poster: 'Poster Presentation',
 			event: 'Presentation'
 		};
 		return typeMap[communication.type || 'conference'] || 'Presentation';

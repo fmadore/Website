@@ -238,7 +238,7 @@
 	<div class="">
 		<PageIntro>
 			This page presents visualisations of my academic conference activity: conference papers,
-			workshops, seminars, lectures, panels organised, events organised, and podcasts.
+			workshops, seminars, lectures, posters, panels organised, events organised, and podcasts.
 		</PageIntro>
 	</div>
 

@@ -195,6 +195,7 @@ const COMMUNICATION_SEO_KEYWORDS: SeoKeywordConfig<Communication> = {
 		'academic presentation',
 		(communication) => communication.type === 'conference' && 'conference paper',
 		(communication) => communication.type === 'workshop' && 'workshop presentation',
+		(communication) => communication.type === 'poster' && 'poster presentation',
 		// Subject-matter keywords based on typical content
 		'Islam',
 		'West Africa',

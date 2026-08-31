@@ -195,7 +195,7 @@ export function createWebsiteServer(): McpServer {
 		{
 			title: 'Search talks and events',
 			description:
-				'Search conference papers, invited lectures, seminars, workshops, panels and podcast appearances. Searches titles, abstracts, conference names and locations.',
+				'Search conference papers, invited lectures, seminars, workshops, panels, posters and podcast appearances. Searches titles, abstracts, conference names and locations.',
 			inputSchema: z
 				.object({
 					query: z.string().max(500).optional(),
@@ -203,7 +203,7 @@ export function createWebsiteServer(): McpServer {
 						.string()
 						.optional()
 						.describe(
-							"'conference', 'workshop', 'seminar', 'lecture', 'panel', 'event', 'podcast'."
+							"'conference', 'workshop', 'seminar', 'lecture', 'panel', 'poster', 'event', 'podcast'."
 						),
 					country: z.string().optional().describe('Country the event took place in.'),
 					project: z.string().optional(),

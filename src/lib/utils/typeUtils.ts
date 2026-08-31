@@ -19,6 +19,7 @@ export const COMMUNICATION_TYPE_BADGE_LABELS: Record<string, string> = {
 	seminar: 'Seminar',
 	lecture: 'Lecture',
 	panel: 'Panel',
+	poster: 'Poster Presentation',
 	event: 'Academic Event'
 };
 
@@ -28,6 +29,7 @@ export const COMMUNICATION_TYPE_SEO_LABELS: Record<string, string> = {
 	seminar: 'Seminar',
 	lecture: 'Lecture',
 	panel: 'Panel discussion',
+	poster: 'Poster presentation',
 	event: 'Academic event'
 };
 
@@ -38,6 +40,7 @@ export const COMMUNICATION_TYPE_LIST_LABELS: Record<string, string> = {
 	seminar: 'Seminar',
 	lecture: 'Lecture',
 	panel: 'Panel organised',
+	poster: 'Poster',
 	event: 'Academic event',
 	podcast: 'Podcast'
 };
@@ -49,6 +52,7 @@ export const COMMUNICATION_TYPE_CHIP_LABELS: Record<string, string> = {
 	seminar: 'Seminars',
 	lecture: 'Lectures',
 	panel: 'Panels',
+	poster: 'Posters',
 	event: 'Events',
 	podcast: 'Podcasts'
 };
@@ -60,6 +64,7 @@ export const COMMUNICATION_TYPE_CHART_LABELS: Record<string, string> = {
 	seminar: 'Seminar',
 	lecture: 'Lecture',
 	panel: 'Panel organised',
+	poster: 'Poster',
 	event: 'Academic event organised',
 	podcast: 'Podcast'
 };

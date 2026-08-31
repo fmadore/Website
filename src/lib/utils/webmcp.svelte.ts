@@ -191,7 +191,7 @@ function buildTools(): ToolDescriptor[] {
 		},
 		{
 			name: 'search_communications',
-			description: `Search ${author.name}'s talks and events (conference papers, invited lectures, seminars, workshops, panels, and podcasts). Filter by free-text query, type, and/or year. Returns matching talks with titles, dates, venues, and URLs.`,
+			description: `Search ${author.name}'s talks and events (conference papers, invited lectures, seminars, workshops, panels, posters, and podcasts). Filter by free-text query, type, and/or year. Returns matching talks with titles, dates, venues, and URLs.`,
 			inputSchema: {
 				type: 'object',
 				properties: {
@@ -203,7 +203,16 @@ function buildTools(): ToolDescriptor[] {
 					type: {
 						type: 'string',
 						description: 'Restrict to a type of talk or event.',
-						enum: ['conference', 'workshop', 'seminar', 'lecture', 'panel', 'event', 'podcast']
+						enum: [
+							'conference',
+							'workshop',
+							'seminar',
+							'lecture',
+							'panel',
+							'poster',
+							'event',
+							'podcast'
+						]
 					},
 					year: {
 						type: 'integer',

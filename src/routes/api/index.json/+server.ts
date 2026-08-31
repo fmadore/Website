@@ -61,7 +61,7 @@ export const GET: RequestHandler = async () => {
 				name: 'communications',
 				url: `${SITE}/api/communications.json`,
 				description:
-					'Conference papers, invited lectures, seminars, workshops, panels and podcasts, with venue, coordinates and programme details.',
+					'Conference papers, invited lectures, seminars, workshops, panels, posters and podcasts, with venue, coordinates and programme details.',
 				count: allCommunications.length,
 				years: yearRange(communicationsByDate)
 			}),
