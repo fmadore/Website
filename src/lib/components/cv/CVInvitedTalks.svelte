@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { communicationsByDate } from '$lib/data/communications';
 	import type { Communication } from '$lib/types/communication';
-	import { formatCVAuthorList } from '$lib/utils/cvFormatters';
+	import { formatCVAuthorList, terminalPeriod } from '$lib/utils/cvFormatters';
 	import { formatDayMonth } from '$lib/utils/date-formatter';
 	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVSection from './CVSection.svelte';
@@ -27,7 +27,7 @@
 	{#snippet entry(comm)}
 		{@const formattedAuthors = formatCVAuthorList(comm.authors)}
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
-		{#if formattedAuthors}{@html formattedAuthors}.
+		{#if formattedAuthors}{@html formattedAuthors}{terminalPeriod(formattedAuthors)}
 		{/if}
 		{quoteTitle(comm.title)}{#if venue(comm)}, <em>{typesetQuotes(venue(comm))}</em
 			>{/if}{#if comm.location}, {typesetQuotes(comm.location)}{/if},

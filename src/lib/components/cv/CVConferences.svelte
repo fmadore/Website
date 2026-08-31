@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { communicationsByDate } from '$lib/data/communications';
-	import { formatCVAuthorList } from '$lib/utils/cvFormatters';
+	import { formatCVAuthorList, terminalPeriod } from '$lib/utils/cvFormatters';
 	import { formatDayMonth } from '$lib/utils/date-formatter';
 	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';
@@ -24,7 +24,7 @@
 					{@const formattedAuthors = formatCVAuthorList(comm.authors)}
 					<CVEntry year={commDate.getFullYear()}>
 						<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
-						{#if formattedAuthors}{@html formattedAuthors}.
+						{#if formattedAuthors}{@html formattedAuthors}{terminalPeriod(formattedAuthors)}
 						{/if}
 						{quoteTitle(comm.panelTitle || comm.title)}{#if comm.conference}, <em
 								>{typesetQuotes(comm.conference)}</em
@@ -45,7 +45,7 @@
 					{@const formattedAuthors = formatCVAuthorList(comm.authors)}
 					<CVEntry year={commDate.getFullYear()}>
 						<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
-						{#if formattedAuthors}{@html formattedAuthors}.
+						{#if formattedAuthors}{@html formattedAuthors}{terminalPeriod(formattedAuthors)}
 						{/if}
 						{quoteTitle(comm.title)}{#if comm.conference}, <em>{typesetQuotes(comm.conference)}</em
 							>{/if}{#if comm.location}, {typesetQuotes(comm.location)}{/if},
@@ -64,7 +64,7 @@
 					{@const formattedAuthors = formatCVAuthorList(comm.authors)}
 					<CVEntry year={commDate.getFullYear()}>
 						<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
-						{#if formattedAuthors}{@html formattedAuthors}.
+						{#if formattedAuthors}{@html formattedAuthors}{terminalPeriod(formattedAuthors)}
 						{/if}
 						{quoteTitle(comm.title)}{#if comm.conference}, <em>{typesetQuotes(comm.conference)}</em
 							>{/if}{#if comm.location}, {typesetQuotes(comm.location)}{/if},

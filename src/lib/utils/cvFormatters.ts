@@ -164,6 +164,18 @@ export function trimTerminalPeriod(citation: string): string {
 }
 
 /**
+ * The full stop that closes a CV byline — empty when the byline already ends
+ * in one. A collapsed byline reads "A, B, C et al."; that stop belongs to the
+ * abbreviation, so a caller adding its own would print "et al.."
+ *
+ * Takes HTML, since CV bylines carry `<strong>` markup; the stop is always the
+ * final character, after any closing tag.
+ */
+export function terminalPeriod(formattedAuthors: string): string {
+	return formattedAuthors.endsWith('.') ? '' : '.';
+}
+
+/**
  * Formats an affiliation period ({ start, end } where null = ongoing)
  */
 export function formatAffiliationPeriod(period: AffiliationPeriod): string {

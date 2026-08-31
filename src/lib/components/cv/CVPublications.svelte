@@ -6,6 +6,7 @@
 		formatVolumeIssueDisplay,
 		formatCVAuthorList,
 		formatEditorList,
+		terminalPeriod,
 		formatBlogDate,
 		getCVDisplayYear
 	} from '$lib/utils/cvFormatters';
@@ -30,9 +31,10 @@
 				<div class="space-y-3 ledger">
 					{#each publicationsByType[pubType] as pub (pub.id)}
 						{@const formattedAuthors = formatCVAuthorList(pub.authors)}
+						{@const authorStop = terminalPeriod(formattedAuthors)}
 						<CVEntry year={getCVDisplayYear(pub)}>
 							<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
-							{#if formattedAuthors}{@html formattedAuthors}{#if (pub.type === 'book' && pub.isEditedVolume) || pub.type === 'special-issue'}&nbsp;(eds.),{:else if !formattedAuthors.endsWith('.')}.{/if}
+							{#if formattedAuthors}{@html formattedAuthors}{#if (pub.type === 'book' && pub.isEditedVolume) || pub.type === 'special-issue'}&nbsp;(eds.),{:else}{authorStop}{/if}
 							{/if}
 							{#if pub.type !== 'book' && pub.type !== 'blogpost'}{quoteTitle(pub.title)}.{/if}
 							{#if (pub.type === 'article' || pub.type === 'bulletin-article') && pub.journal}

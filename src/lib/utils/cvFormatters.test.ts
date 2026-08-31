@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { formatCVAuthorList, formatEditorList, trimTerminalPeriod } from './cvFormatters';
+import {
+	formatCVAuthorList,
+	formatEditorList,
+	terminalPeriod,
+	trimTerminalPeriod
+} from './cvFormatters';
 import { author as siteAuthor } from '$lib/data/siteConfig';
 
 describe('formatCVAuthorList', () => {
@@ -30,6 +35,32 @@ describe('formatCVAuthorList', () => {
 
 	it('splits a string input on " and "', () => {
 		expect(formatCVAuthorList('Jane Doe and John Smith')).toBe('Jane Doe and John Smith');
+	});
+
+	it('collapses a collective byline to "et al.", holding the site owner in view', () => {
+		expect(formatCVAuthorList([siteAuthor.name, 'B', 'C', 'D', 'E', 'F'])).toBe(
+			`<strong>${siteAuthor.name}</strong>, B, C et al.`
+		);
+		expect(formatCVAuthorList(['A', 'B', 'C', 'D', siteAuthor.name, 'F'])).toBe(
+			`A, B, …, <strong>${siteAuthor.name}</strong> et al.`
+		);
+	});
+});
+
+describe('terminalPeriod', () => {
+	it('supplies the closing stop for a byline that lacks one', () => {
+		expect(terminalPeriod('Jane Doe and John Smith')).toBe('.');
+		expect(terminalPeriod(`A, B and <strong>${siteAuthor.name}</strong>`)).toBe('.');
+	});
+
+	it('withholds the stop from a byline already closed by "et al."', () => {
+		expect(terminalPeriod('A, B, C et al.')).toBe('');
+	});
+
+	// The pairing this exists for: no CV byline may ever render "et al..".
+	it('never doubles the stop on a collapsed byline', () => {
+		const byline = formatCVAuthorList([siteAuthor.name, 'B', 'C', 'D', 'E', 'F']);
+		expect(`${byline}${terminalPeriod(byline)}`).not.toContain('et al..');
 	});
 });
 
