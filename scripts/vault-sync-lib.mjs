@@ -8,7 +8,7 @@
 // commit by construction rather than by discipline.
 
 import ts from 'typescript';
-import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
 
 export const BEGIN = '%% begin generated (website sync) %%';
@@ -36,12 +36,42 @@ export function vaultRoot() {
 	return dir;
 }
 
+/**
+ * Directory entries with their kind already attached, or nothing at all when
+ * the directory is absent.
+ *
+ * `readdirSync` reports what each entry is, so a walk never needs a follow-up
+ * `statSync`: checking a path and then acting on it is a TOCTOU race, and the
+ * second syscall per entry buys nothing. The one behavioural difference is that
+ * a symlinked directory is no longer descended into, which neither the data
+ * tree nor the vault has.
+ */
+function listDir(dir) {
+	try {
+		return readdirSync(dir, { withFileTypes: true });
+	} catch (err) {
+		if (err.code !== 'ENOENT') throw err;
+		return [];
+	}
+}
+
+/** A file's contents, or null when it is gone — never existsSync-then-read. */
+function readFileIfPresent(file) {
+	try {
+		return readFileSync(file, 'utf8');
+	} catch (err) {
+		if (err.code !== 'ENOENT') throw err;
+		return null;
+	}
+}
+
 /** Every data record under `dir`, skipping barrels, templates and filter modules. */
 export function walkData(dir) {
 	const out = [];
-	for (const name of readdirSync(dir)) {
+	for (const entry of readdirSync(dir, { withFileTypes: true })) {
+		const name = entry.name;
 		const full = path.join(dir, name);
-		if (statSync(full).isDirectory()) out.push(...walkData(full));
+		if (entry.isDirectory()) out.push(...walkData(full));
 		else if (
 			name.endsWith('.ts') &&
 			name !== 'index.ts' &&
@@ -190,13 +220,13 @@ export function spliceGenerated(existing, generated) {
 /** Map of normKey(basename) → basename for the .md notes in a directory. */
 export function noteIndex(dir, recurse = false) {
 	const map = new Map();
-	if (!existsSync(dir)) return map;
-	for (const f of readdirSync(dir)) {
-		const full = path.join(dir, f);
-		if (statSync(full).isDirectory()) {
-			if (recurse) for (const [k, v] of noteIndex(full, true)) if (!map.has(k)) map.set(k, v);
-		} else if (f.endsWith('.md')) {
-			map.set(normKey(f.slice(0, -3)), f.slice(0, -3));
+	for (const entry of listDir(dir)) {
+		if (entry.isDirectory()) {
+			if (recurse)
+				for (const [k, v] of noteIndex(path.join(dir, entry.name), true))
+					if (!map.has(k)) map.set(k, v);
+		} else if (entry.name.endsWith('.md')) {
+			map.set(normKey(entry.name.slice(0, -3)), entry.name.slice(0, -3));
 		}
 	}
 	return map;
@@ -209,13 +239,14 @@ export function noteIndex(dir, recurse = false) {
  */
 export function noteIndexByKey(dir, key) {
 	const map = new Map();
-	if (!existsSync(dir)) return map;
 	const walk = (d) => {
-		for (const f of readdirSync(d)) {
-			const full = path.join(d, f);
-			if (statSync(full).isDirectory()) walk(full);
-			else if (f.endsWith('.md')) {
-				const value = readFrontmatter(readFileSync(full, 'utf8'))[key];
+		for (const entry of listDir(d)) {
+			const full = path.join(d, entry.name);
+			if (entry.isDirectory()) walk(full);
+			else if (entry.name.endsWith('.md')) {
+				const raw = readFileIfPresent(full);
+				if (raw === null) continue;
+				const value = readFrontmatter(raw)[key];
 				if (value && !map.has(value)) map.set(value, full);
 			}
 		}
@@ -225,6 +256,24 @@ export function noteIndexByKey(dir, key) {
 }
 
 // ---- HTML → Markdown -------------------------------------------------------
+
+/**
+ * Apply a removal until the string stops changing.
+ *
+ * Removing a pattern in a single pass can splice what is left on either side
+ * of a match into a new one — `<!<!--x-->-- y -->` loses the inner comment and
+ * closes up into a fresh `<!-- y -->`. Repeating until the string stops
+ * changing cannot leave one behind.
+ */
+export function replaceToFixedPoint(text, pattern) {
+	let current = String(text);
+	let previous;
+	do {
+		previous = current;
+		current = current.replace(pattern, '');
+	} while (current !== previous);
+	return current;
+}
 
 const ENTITIES = {
 	'&amp;': '&',

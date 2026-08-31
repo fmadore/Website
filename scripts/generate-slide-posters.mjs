@@ -27,14 +27,7 @@
  * Exit code is 1 when a cover could not be fetched, or when --check finds a
  * missing or stale poster; else 0.
  */
-import {
-	readFileSync,
-	writeFileSync,
-	mkdirSync,
-	existsSync,
-	readdirSync,
-	unlinkSync
-} from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, unlinkSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
@@ -109,7 +102,14 @@ async function mirror(communications) {
 
 		// webp encoding is deterministic for the same input and options, so a
 		// byte comparison is a sufficient staleness test — no sidecar hash.
-		const current = existsSync(out) ? readFileSync(out) : null;
+		// Read it outright rather than existsSync-then-read: the pair is a TOCTOU
+		// race, and ENOENT already means exactly 'there is no poster yet'.
+		let current = null;
+		try {
+			current = readFileSync(out);
+		} catch (err) {
+			if (err.code !== 'ENOENT') throw err;
+		}
 		if (current && current.equals(webp)) {
 			unchanged += 1;
 			continue;
@@ -128,9 +128,10 @@ async function mirror(communications) {
 	// A poster whose talk lost its slidesUrl is dead weight in the repo.
 	// Reported always; removed only when asked, so an in-progress rename cannot
 	// silently delete work.
-	const orphans = existsSync(POSTER_DIR)
-		? readdirSync(POSTER_DIR).filter((name) => name.endsWith('.webp') && !expected.has(name))
-		: [];
+	const orphans = readdirSync(POSTER_DIR, { withFileTypes: true })
+		.filter((entry) => entry.isFile() && entry.name.endsWith('.webp'))
+		.map((entry) => entry.name)
+		.filter((name) => !expected.has(name));
 	for (const name of orphans) {
 		if (PRUNE && !CHECK_ONLY) {
 			unlinkSync(path.join(POSTER_DIR, name));

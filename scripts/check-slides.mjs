@@ -72,14 +72,62 @@ async function readSitemap() {
 	return response.text();
 }
 
+/**
+ * The sitemap is the one input here that does not come out of this repository,
+ * and what is read from it lands in a Markdown report the workflow posts as a
+ * GitHub issue body. So both fields taken from it are rebuilt character by
+ * character from a local alphabet rather than trusted: a value that is not a
+ * deck slug or an ISO date is one this site could never have published, and
+ * dropping it costs nothing, while pasting it into the report could forge a
+ * heading, a link, or the `slidesUrl` line offered for copying into a data file.
+ */
+const SLUG_ALPHABET = 'abcdefghijklmnopqrstuvwxyz0123456789-';
+const DIGITS = '0123456789';
+
+/** A deck slug rebuilt from SLUG_ALPHABET, or null when it is not one. */
+function safeSlug(raw) {
+	const value = String(raw ?? '');
+	if (value.length === 0 || value.length > 128) return null;
+	let out = '';
+	for (const char of value) {
+		const i = SLUG_ALPHABET.indexOf(char);
+		if (i === -1) return null;
+		out += SLUG_ALPHABET.charAt(i);
+	}
+	return out;
+}
+
+/** A `<lastmod>` rebuilt as YYYY-MM-DD, or null when it is not one. */
+function safeDate(raw) {
+	const value = String(raw ?? '').trim();
+	if (!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(value)) return null;
+	let out = '';
+	for (const char of value) out += char === '-' ? '-' : DIGITS.charAt(DIGITS.indexOf(char));
+	return out;
+}
+
 /** Every deck URL in the sitemap, as slug -> { date }. */
 function parsePublished(xml) {
 	const decks = new Map();
+	let rejected = 0;
 	for (const block of xml.match(/<url>[\s\S]*?<\/url>/g) ?? []) {
 		const loc = block.match(/<loc>([^<]+)<\/loc>/)?.[1];
-		const slug = loc ? deckSlug(loc.trim()) : null;
-		if (!slug) continue;
-		decks.set(slug, { date: block.match(/<lastmod>([^<]+)<\/lastmod>/)?.[1]?.trim() ?? null });
+		const raw = loc ? deckSlug(loc.trim()) : null;
+		if (!raw) continue;
+		const slug = safeSlug(raw);
+		// Counted rather than dropped in silence: a deck skipped here would
+		// otherwise never be reconciled and never explained either.
+		if (!slug) {
+			rejected += 1;
+			continue;
+		}
+		decks.set(slug, { date: safeDate(block.match(/<lastmod>([^<]+)<\/lastmod>/)?.[1]) });
+	}
+	if (rejected > 0) {
+		console.error(
+			`Ignored ${rejected} sitemap entry/entries whose slug is not [a-z0-9-]: the deck site ` +
+				`published something this check will not repeat into a report.`
+		);
 	}
 	return decks;
 }

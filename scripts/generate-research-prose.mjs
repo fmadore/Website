@@ -56,9 +56,9 @@ const decode = (text) => text.replace(/&[#a-z0-9]+;/gi, (entity) => ENTITIES[ent
 /**
  * Apply a removal until the string stops changing.
  *
- * Removing a pattern in a single pass can splice its own neighbours into a new
- * match — `<<b>script>` loses the inner tag and becomes `<script>`. Repeating
- * until nothing changes cannot leave one behind.
+ * Removing a pattern in a single pass can splice what is left on either side
+ * of a match into a new one — `<<b>script>` loses the inner tag and closes up
+ * into `<script>`. Repeating until nothing changes cannot leave one behind.
  */
 function replaceToFixedPoint(text, pattern) {
 	let current = text;
@@ -125,8 +125,8 @@ function toPlainText(markup, file) {
 	}
 
 	// Comments first, so a commented-out component does not trip the check below.
-	// Repeated to a fixed point: one pass over `<!--…-->` turns `<!--<!--x-->-->`
-	// into a fresh `<!--x-->` rather than removing it.
+	// Repeated to a fixed point: a single pass over `<!--…-->` closes
+	// `<!<!--x-->-- y -->` up into a fresh comment.
 	text = replaceToFixedPoint(text, /<!--[\s\S]*?-->/g);
 
 	for (const component of DROPPABLE_COMPONENTS) {

@@ -43,7 +43,8 @@ import {
 	spliceGenerated,
 	splitNote,
 	htmlToMarkdown,
-	decodeEntities
+	decodeEntities,
+	replaceToFixedPoint
 } from './vault-sync-lib.mjs';
 
 const SITE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -109,7 +110,10 @@ function slugOf(source, file) {
  * use; an unknown component raises rather than silently costing a paragraph.
  */
 function proseToMarkdown(markup, file, refLink) {
-	let text = markup.replace(/<!--[\s\S]*?-->/g, '');
+	// Comments go first, so a commented-out component does not trip the unknown
+	// component check below. Repeated to a fixed point: a single pass over
+	// `<!--…-->` closes `<!<!--x-->-- y -->` up into a fresh comment.
+	let text = replaceToFixedPoint(markup, /<!--[\s\S]*?-->/g);
 
 	text = text.replace(/<ItemReference\b[\s\S]*?\/>/g, (tag) => {
 		const id = tag.match(/id="([^"]+)"/)?.[1];
