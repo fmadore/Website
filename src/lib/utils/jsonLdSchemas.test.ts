@@ -273,8 +273,22 @@ describe('profile data', () => {
 			type: 'ProfilePage',
 			dateModified: profile.dateModified
 		});
-		expect(page.dateModified).toBe(profile.dateModified);
+		// Google's Profile page report validates this as a DateTime and rejects a
+		// bare date, so the plain editorial value is widened on the way out.
+		expect(page.dateModified).toBe(`${profile.dateModified}T00:00:00Z`);
 		expect(page.mainEntity?.['@id']).toBe(`${website.url}/#person`);
+	});
+
+	it('leaves an already-timestamped date alone', () => {
+		const page = createWebPageSchema({
+			name: author.name,
+			path: '/',
+			type: 'ProfilePage',
+			datePublished: '2026-08-12T09:30:00+02:00',
+			dateModified: '2026-08-12T09:30:00+02:00'
+		});
+		expect(page.datePublished).toBe('2026-08-12T09:30:00+02:00');
+		expect(page.dateModified).toBe('2026-08-12T09:30:00+02:00');
 	});
 
 	it('records the verified M.A. completion date', () => {

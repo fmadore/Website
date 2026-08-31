@@ -104,7 +104,11 @@ export const linkedData = {
 	]
 } as const;
 
-/** Human-edited profile metadata; update only when the biography changes. */
+/**
+ * Human-edited profile metadata; update only when the biography changes.
+ * A plain `YYYY-MM-DD` is the intended form — `createWebPageSchema` widens it
+ * to the full ISO 8601 date-time Google's Profile page report demands.
+ */
 export const profile = {
 	dateModified: '2026-08-12'
 } as const;

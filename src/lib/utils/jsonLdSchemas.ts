@@ -335,6 +335,20 @@ export function createBreadcrumbSchema(items: BreadcrumbItem[]): BreadcrumbListS
 }
 
 /**
+ * Widens a bare `YYYY-MM-DD` to a full ISO 8601 date-time in UTC.
+ *
+ * schema.org tolerates a plain `Date` for these fields, but Google's Profile
+ * page report validates `dateCreated`/`dateModified` as `DateTime` and rejects
+ * a date-only value ("Invalid date/time value for dateModified"). Editors
+ * should keep writing plain dates — the time is the fiction here, so it is
+ * pinned to midnight UTC rather than invented per timezone. Anything already
+ * carrying a time (and therefore an offset) is passed through untouched.
+ */
+function toSchemaDateTime(value: string): string {
+	return /^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T00:00:00Z` : value;
+}
+
+/**
  * Creates a WebPage schema for individual pages
  * Links to the website and breadcrumb for complete semantic structure
  * For ProfilePage types, automatically includes mainEntity reference to Person
@@ -361,8 +375,8 @@ export function createWebPageSchema(options: {
 			'@id': `${SITE_URL}/#website`
 		},
 		inLanguage: 'en-US',
-		...(datePublished && { datePublished }),
-		...(dateModified && { dateModified })
+		...(datePublished && { datePublished: toSchemaDateTime(datePublished) }),
+		...(dateModified && { dateModified: toSchemaDateTime(dateModified) })
 	};
 
 	// ProfilePage requires mainEntity to reference the Person being profiled
