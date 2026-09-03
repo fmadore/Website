@@ -4,8 +4,8 @@ export const serveursMcpGlamAfricainsStias2026: Communication = {
 	id: 'serveurs-mcp-glam-africains-stias-2026',
 	title: "Les serveurs MCP pour les GLAM africains : une voie d'avenir à l'ère de l'IA ?",
 	authors: ['Frédérick Madore'],
-	date: '22 September 2026',
-	dateISO: '2026-09-22',
+	date: '23 September 2026',
+	dateISO: '2026-09-23',
 	year: 2026,
 	conference:
 		'Humanités numériques et intelligence artificielle en études africaines : vers des pratiques durables et équitables',
