@@ -31,6 +31,7 @@ Reste la question que l'atelier doit poser. Une telle médiation protège-t-elle
 		'Archives',
 		'STIAS'
 	],
+	slidesUrl: 'https://slides.frederickmadore.com/talks/2026-09-23-stellenbosch-mcp-glam-africains/',
 	url: 'https://fmadore.github.io/stias-dh-ai-workshop-2026/',
 	urlLabel: 'Workshop Website',
 	image: 'images/communications/point-sud-logo.svg',

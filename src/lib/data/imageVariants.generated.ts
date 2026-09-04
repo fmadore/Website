@@ -515,6 +515,10 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 		sourceWidth: 1280,
 		widths: [400, 800]
 	},
+	'communications/slides/2026-09-23-stellenbosch-mcp-glam-africains.webp': {
+		sourceWidth: 1280,
+		widths: [400, 800]
+	},
 	'communications/union-islamique-benin-elections-hero.webp': {
 		sourceWidth: 900,
 		widths: [400, 800]

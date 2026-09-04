@@ -2024,8 +2024,8 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 			"Frédérick Madore"
 		],
 		"type": "workshop",
-		"date": "22 September 2026",
-		"dateISO": "2026-09-22",
+		"date": "23 September 2026",
+		"dateISO": "2026-09-23",
 		"year": 2026,
 		"image": "images/communications/point-sud-logo.svg",
 		"conference": "Humanités numériques et intelligence artificielle en études africaines : vers des pratiques durables et équitables",
