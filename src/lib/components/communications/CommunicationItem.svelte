@@ -8,6 +8,7 @@
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import BibliographyRow from '$lib/components/molecules/BibliographyRow.svelte';
 	import type { BibliographyAction } from '$lib/components/molecules/BibliographyRow.svelte';
+	import Icon from '@iconify/svelte';
 	// Entity-card styles (relocated from the global app.css so they only load on
 	// pages that render publication/communication list items).
 	import '$styles/components/entity-cards.css';
@@ -117,6 +118,7 @@
 			list.push({
 				href: `https://doi.org/${communication.doi}`,
 				label: 'DOI ↗',
+				icon: 'academicons:doi',
 				// The first action in the column is the primary one (as before).
 				primary: list.length === 0
 			});
@@ -232,6 +234,7 @@
 									rel="noopener noreferrer"
 									class="entity-link-btn btn btn-outline-primary btn-sm"
 								>
+									<Icon icon="academicons:doi" aria-hidden="true" />
 									DOI
 								</a>
 								<!-- eslint-enable svelte/no-navigation-without-resolve -->

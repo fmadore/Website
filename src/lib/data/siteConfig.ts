@@ -123,7 +123,8 @@ export const website = {
 	rssPath: '/rss.xml'
 };
 
-// Social links with icons for Iconify
+// Social links with icons for Iconify (registered in $lib/icons.ts; academic
+// profiles use the Academicons set so the trio shares one optical weight)
 export const socialLinks = {
 	email: {
 		name: 'Email',
@@ -146,7 +147,7 @@ export const socialLinks = {
 	orcid: {
 		name: 'ORCID',
 		url: 'https://orcid.org/0000-0003-0959-2092',
-		icon: 'simple-icons:orcid',
+		icon: 'academicons:orcid',
 		username: '0000-0003-0959-2092'
 	} as SocialLink,
 	googleScholar: {
@@ -157,7 +158,7 @@ export const socialLinks = {
 	researchGate: {
 		name: 'ResearchGate',
 		url: 'https://www.researchgate.net/profile/Frederick-Madore',
-		icon: 'simple-icons:researchgate'
+		icon: 'academicons:researchgate'
 	} as SocialLink,
 	bluesky: {
 		name: 'Bluesky',

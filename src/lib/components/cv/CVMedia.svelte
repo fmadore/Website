@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Icon from '@iconify/svelte';
 	import { mediaAppearancesByDate } from '$lib/data/media-appearances';
 	import { communicationsByDate } from '$lib/data/communications';
 	import { formatDayMonth } from '$lib/utils/date-formatter';
@@ -25,7 +26,13 @@
 					{formatDayMonth(podcast.dateISO)}.
 					{#if podcast.doi}
 						<span class="block text-sm text-light mt-1"
-							>DOI:
+							><Icon
+								icon="academicons:doi"
+								width="1.2em"
+								height="1.2em"
+								inline
+								aria-hidden="true"
+							/> DOI:
 							<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 							<a
 								href="https://doi.org/{podcast.doi}"

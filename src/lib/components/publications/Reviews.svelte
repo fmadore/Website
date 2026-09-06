@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Icon from '@iconify/svelte';
 	import type { ReviewWork } from '$lib/types/publication';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
@@ -58,7 +59,8 @@
 								href="https://doi.org/{review.doi}"
 								target="_blank"
 								rel="noopener"
-								class="review-doi">DOI ↗</a
+								class="review-doi"
+								><Icon icon="academicons:doi" class="review-doi-icon" aria-hidden="true" />DOI ↗</a
 							>
 						{/if}
 					</p>
@@ -186,6 +188,13 @@
 	.review-doi:hover {
 		color: var(--color-accent-dark);
 		text-decoration: underline;
+	}
+
+	.review-doi :global(.review-doi-icon) {
+		width: 1.2em;
+		height: 1.2em;
+		vertical-align: -0.25em;
+		margin-inline-end: var(--space-1);
 	}
 
 	/* The full review reference — quiet serif, the bibliographic record. */

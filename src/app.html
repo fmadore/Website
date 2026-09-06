@@ -150,6 +150,18 @@
 			href="%sveltekit.assets%/fonts/web/spline-sans-mono-normal-latin.woff2"
 			crossorigin
 		/>
+		<!-- Newsreader italic is the standfirst/byline face, so every page requests
+		     it; without a preload it is only discovered once the stylesheet is
+		     parsed, ~100 ms behind the three faces above. Preloading it took
+		     ~0.5 s off Lighthouse's simulated First Contentful Paint on every
+		     page measured (see lighthouserc.yml). -->
+		<link
+			rel="preload"
+			as="font"
+			type="font/woff2"
+			href="%sveltekit.assets%/fonts/web/newsreader-italic-latin.woff2"
+			crossorigin
+		/>
 		<style>
 			/* Archivo italic vietnamese */
 			@font-face {

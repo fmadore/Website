@@ -5,6 +5,12 @@
 		label: string;
 		/** Marks the pine "current thing" action (DOI / Open Access / Slides). */
 		primary?: boolean;
+		/**
+		 * Registered Iconify name of the mark printed before the label — the
+		 * scholarly-infrastructure glyph for the destination ('academicons:doi',
+		 * 'academicons:open-access'). Omit for actions with no such mark.
+		 */
+		icon?: string;
 	}
 </script>
 
@@ -17,6 +23,7 @@
 	// PublicationItem and CommunicationItem adapt their entities onto these
 	// props so both record lists stay in visual lock-step.
 	import '$styles/components/bibliography.css';
+	import Icon from '@iconify/svelte';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	interface Props {
@@ -154,6 +161,9 @@
 				class="bib-action"
 				class:bib-action--primary={action.primary}
 			>
+				{#if action.icon}
+					<Icon icon={action.icon} class="bib-action-icon" aria-hidden="true" />
+				{/if}
 				{action.label}
 			</a>
 		{/each}

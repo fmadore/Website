@@ -1,0 +1,61 @@
+# Lighthouse CI — the PageSpeed Insights lab audit, run against the production
+# build in the PR gate (.github/workflows/ci.yml, `lighthouse` job) and locally
+# with `npm run check:lighthouse` after `npm run build`. One file, both places.
+#
+# Mobile with simulated throttling (Lighthouse's default), which is the profile
+# PageSpeed Insights reports in its lab section — so a number here is the number
+# the site is judged on, minus the runner's CPU.
+ci:
+  collect:
+    # `serve` hosts the build the way GitHub Pages and the Playwright suite do
+    # (/publications resolves to publications.html). LHCI's own static server
+    # would 404 on every clean URL.
+    startServerCommand: npx serve build --listen 4173 --no-port-switching
+    startServerReadyPattern: Accepting connections
+    # One page per template that carries its own weight: the nameplate home,
+    # the two bibliography ledgers, a publication record, and the CV (the
+    # densest DOM on the site).
+    url:
+      - http://localhost:4173/
+      - http://localhost:4173/publications
+      - http://localhost:4173/publications/religious-activism-campuses
+      - http://localhost:4173/conference-activity
+      - http://localhost:4173/cv
+    # Three runs per page; the assertions below pick the run they trust.
+    numberOfRuns: 3
+    settings:
+      # Chrome refuses to start as root (containers) without --no-sandbox; a
+      # no-op on GitHub's runners.
+      chromeFlags: --no-sandbox
+  assert:
+    assertions:
+      # ── Category floors — the four PageSpeed headline scores ──────────────
+      # Performance takes the best of the three runs: CPU time on a shared
+      # runner is the one input the simulation cannot normalise, and a single
+      # slow run must not fail a PR. The floor sits under the current mobile
+      # scores (84–91 measured) so it catches a step change, not the noise.
+      categories:performance: [error, { minScore: 0.8, aggregationMethod: optimistic }]
+      # Accessibility scores 100 everywhere but /cv, which sits at 95 on one
+      # pre-existing audit (target-size: the small links in the CV's
+      # digital-humanities rows). The floor leaves room for that page.
+      categories:accessibility: [error, { minScore: 0.9 }]
+      categories:best-practices: [error, { minScore: 0.95 }]
+      categories:seo: [error, { minScore: 0.95 }]
+
+      # ── Core Web Vitals, lab ──────────────────────────────────────────────
+      largest-contentful-paint: [error, { maxNumericValue: 4500, aggregationMethod: optimistic }]
+      cumulative-layout-shift: [error, { maxNumericValue: 0.1 }]
+      total-blocking-time: [error, { maxNumericValue: 400, aggregationMethod: optimistic }]
+
+      # ── Resource budgets — the sensitive tripwires ────────────────────────
+      # A category score moves a few points when a webfont or a render-blocking
+      # stylesheet lands; these fail outright. Measured on the five pages above
+      # (transfer sizes, gzip): fonts 4–5 files / ≤345 KB, 2 stylesheets,
+      # scripts ≤196 KB, document ≤23 KB, 37–60 requests. Raise a budget only
+      # with the regression named in the commit.
+      resource-summary:font:count: [error, { maxNumericValue: 5 }]
+      resource-summary:font:size: [error, { maxNumericValue: 360000 }]
+      resource-summary:stylesheet:count: [error, { maxNumericValue: 2 }]
+      resource-summary:script:size: [error, { maxNumericValue: 250000 }]
+      resource-summary:document:size: [error, { maxNumericValue: 40000 }]
+      resource-summary:total:count: [error, { maxNumericValue: 70 }]

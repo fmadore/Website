@@ -29,6 +29,10 @@ Checks that read the **build output** (run `npm run build` first):
 npm run check:build     # bundle budget + prerender coverage (both run in CI)
 npm run check:bundle    # heavy libs stay dynamically imported; entry/route size budgets
 npm run check:prerender # every URL in sitemap.xml resolves to a page that shipped
+npm run check:lighthouse # Lighthouse (mobile, the PageSpeed Insights lab profile) on five
+                        # representative pages, asserted against lighthouserc.yml — score
+                        # floors, Core Web Vitals and resource budgets. Serves `build/` with
+                        # `serve` like the E2E suite; ci.yml runs it on every PR
 npm run check:links     # external links: DOIs via the Handle System, rest over HTTP
 npm run check:citations # OpenAlex sweep for new citations + works missing from the site,
                         # then a full-text sweep of Google Books, HAL and Wikipedia
@@ -50,6 +54,15 @@ npm run gen:posters -- --check  # report stale/missing posters, write nothing
 > build scripts is tested the same way (`scripts/*.test.mjs`) but stays out of
 > the coverage ratchet, which measures site code only. E2E smoke tests live in
 > `tests-e2e/` and run against the production build (`playwright.config.ts`).
+>
+> **Lighthouse gate**: `lighthouserc.yml` is the single source of truth for the
+> PageSpeed budget; CI (`ci.yml`, `lighthouse` job) and `check:lighthouse` read
+> the same file. The resource budgets (font/stylesheet counts, script bytes,
+> request count) are the sensitive tripwires — a category score moves a few
+> points for a webfont or a render-blocking stylesheet, a budget fails outright.
+> Raise a budget only with the regression named in the commit. Icons are
+> per-glyph path data from `@iconify-icons/*` registered in `src/lib/icons.ts`
+> (never an icon font): a few hundred bytes each, prerendered into the HTML.
 >
 > **Scheduled workflows**: `link-check.yml` (weekly), `slides-check.yml`
 > (daily) and `citation-watch.yml` (monthly) each maintain a single long-lived

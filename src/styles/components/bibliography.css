@@ -190,6 +190,9 @@
 }
 
 .bib-action {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-1);
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-2xs);
 	font-weight: var(--font-weight-semibold);
@@ -209,8 +212,6 @@
  * phone. Padding on coarse pointers only; the pointer layout is untouched. */
 @media (--touch) {
 	.bib-action {
-		display: inline-flex;
-		align-items: center;
 		min-height: 44px;
 		padding-block: var(--space-2-5);
 	}
@@ -218,6 +219,15 @@
 	.bib-action--primary {
 		padding: var(--space-2-5) var(--space-2);
 	}
+}
+
+/* The scholarly-infrastructure mark (DOI, open access) before an action label:
+ * an inline SVG glyph in currentColor, so it takes the accent on hover with the
+ * text. Sized a step above the mono caps so the mark reads at 2xs. */
+.bib-action-icon {
+	width: 1.25em;
+	height: 1.25em;
+	flex-shrink: 0;
 }
 
 /* The primary action (open-access / DOI / slides) carries a hairline box to

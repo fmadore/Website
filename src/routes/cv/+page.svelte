@@ -449,13 +449,7 @@
 			word-break: break-all;
 		}
 
-		/* DOI links - show cleaner format */
-		:global(#cv-content a.doi-link)::after {
-			content: ' (https://doi.org/' attr(href) ')';
-			font-size: 0.75em;
-			font-weight: normal;
-			color: var(--color-text-light);
-		}
+		/* DOI links print their own identifier as link text, so no href suffix. */
 
 		/* Hide action buttons in print */
 		.cv-actions {

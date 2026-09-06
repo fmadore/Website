@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Icon from '@iconify/svelte';
 	import { publicationsByDate } from '$lib/data/publications';
 	import type { Publication } from '$lib/types';
 	import {
@@ -89,23 +90,9 @@
 									target="_blank"
 									rel="noopener noreferrer"
 									class="doi-link"
-									><img
-										src="https://zenodo.org/badge/DOI/{pub.doi}.svg"
-										alt="DOI: {pub.doi}"
-										class="doi-badge-img"
-										width="150"
-										height="20"
-										loading="lazy"
-										decoding="async"
-										onerror={(e) => {
-											const img = e.currentTarget as HTMLImageElement;
-											img.style.display = 'none';
-											const fallback = img.nextElementSibling as HTMLElement;
-											if (fallback) {
-												fallback.style.display = 'inline-flex';
-											}
-										}}
-									/><span class="doi-badge-fallback">DOI: {pub.doi}</span></a
+									><Icon icon="academicons:doi" class="doi-link-icon" aria-hidden="true" /><span
+										class="doi-link-text">doi:{pub.doi}</span
+									></a
 								><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
 							{#if pub.url && !pub.doi}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
 									href={pub.url}
@@ -161,32 +148,34 @@
 </section>
 
 <style>
+	/* DOI — the Academicons mark and the identifier in the data voice. An
+	 * inline SVG in place of the former Zenodo badge image, which cost one
+	 * third-party request per publication and reserved a width that varied
+	 * with each badge. The `.doi-link` hook is load-bearing: the PDF generator
+	 * and the print stylesheet both key off it. */
 	.doi-link {
 		display: inline-flex;
 		align-items: center;
+		gap: var(--space-1);
 		margin-left: var(--space-2);
-	}
-
-	.doi-badge-img {
-		height: var(--space-5);
-		/* The width/height attributes reserve layout space before load (badge
-		 * width varies per DOI); once loaded, the intrinsic ratio takes over. */
-		width: auto;
-	}
-
-	/* DOI fallback (shown only if the Zenodo badge image fails) — square ink
-	 * stamp with mono data-voice figures. */
-	.doi-badge-fallback {
-		display: none;
-		padding: var(--space-1) var(--space-2);
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
-		font-weight: var(--font-weight-semibold);
+		font-weight: var(--font-weight-medium);
 		letter-spacing: 0.04em;
-		color: var(--color-text-inverted);
-		background-color: var(--color-primary);
-		border-radius: 0;
-		align-items: center;
+		color: var(--color-text-soft);
+		text-decoration: none;
+		transition: color var(--duration-fast) var(--ease-out);
+	}
+
+	.doi-link:hover {
+		color: var(--color-accent);
+		text-decoration: underline;
+	}
+
+	.doi-link :global(.doi-link-icon) {
+		width: 1.25em;
+		height: 1.25em;
+		flex-shrink: 0;
 	}
 
 	/* "Other" type tag — square, mono uppercase, hairline outline. */

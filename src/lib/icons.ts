@@ -5,6 +5,16 @@
  * to api.iconify.design, improving LCP and reducing critical path latency.
  *
  * Icons are bundled directly into the JavaScript, eliminating network requests.
+ * Each icon is a few hundred bytes of path data imported from its per-icon
+ * module, so only the glyphs listed here reach the bundle — never a whole
+ * icon font. That is also why the academic marks come from
+ * `@iconify-icons/academicons` rather than the Academicons webfont/CSS: the
+ * font would add a render-blocking stylesheet and a ~30 KB font file to
+ * every page for the same eight glyphs.
+ *
+ * Academic identifiers (ORCID, Google Scholar, ResearchGate, DOI, open access,
+ * Publons) all come from the Academicons set so they share one optical weight
+ * wherever they sit side by side (footer, CV, bibliography actions).
  *
  * Brand icons that are not available in the installed packages (currently
  * Bluesky) are bundled as local SVG data too, so no runtime fallback is needed.
@@ -31,12 +41,13 @@ import mdiFilePdfBox from '@iconify-icons/mdi/file-pdf-box';
 import mdiWeb from '@iconify-icons/mdi/web';
 import mdiArrowUp from '@iconify-icons/mdi/arrow-up';
 
-// Simple Icons (brand icons)
-import simpleIconsOrcid from '@iconify-icons/simple-icons/orcid';
-import simpleIconsResearchgate from '@iconify-icons/simple-icons/researchgate';
-
-// Academicons
+// Academicons (academic identifiers and scholarly-infrastructure marks)
 import academiconsGoogleScholar from '@iconify-icons/academicons/google-scholar';
+import academiconsOrcid from '@iconify-icons/academicons/orcid';
+import academiconsResearchgate from '@iconify-icons/academicons/researchgate';
+import academiconsDoi from '@iconify-icons/academicons/doi';
+import academiconsOpenAccess from '@iconify-icons/academicons/open-access';
+import academiconsPublons from '@iconify-icons/academicons/publons';
 
 // Lucide icons
 import lucideFilter from '@iconify-icons/lucide/filter';
@@ -103,12 +114,15 @@ export function registerIcons(): void {
 	addIcon('mdi:arrow-up', mdiArrowUp);
 
 	// Simple Icons
-	addIcon('simple-icons:orcid', simpleIconsOrcid);
-	addIcon('simple-icons:researchgate', simpleIconsResearchgate);
 	addIcon('simple-icons:bluesky', blueskyIcon);
 
 	// Academicons
 	addIcon('academicons:google-scholar', academiconsGoogleScholar);
+	addIcon('academicons:orcid', academiconsOrcid);
+	addIcon('academicons:researchgate', academiconsResearchgate);
+	addIcon('academicons:doi', academiconsDoi);
+	addIcon('academicons:open-access', academiconsOpenAccess);
+	addIcon('academicons:publons', academiconsPublons);
 
 	// Lucide icons
 	addIcon('lucide:filter', lucideFilter);
@@ -162,11 +176,14 @@ export {
 	mdiFilePdfBox,
 	mdiWeb,
 	// Simple Icons
-	simpleIconsOrcid,
-	simpleIconsResearchgate,
 	blueskyIcon,
 	// Academicons
 	academiconsGoogleScholar,
+	academiconsOrcid,
+	academiconsResearchgate,
+	academiconsDoi,
+	academiconsOpenAccess,
+	academiconsPublons,
 	// Lucide
 	lucideFilter,
 	lucideStar,

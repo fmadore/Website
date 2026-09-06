@@ -153,10 +153,21 @@
 	);
 
 	// Right-aligned action column: the freely-accessible copy (DOI or URL) as
-	// the primary action; BibliographyRow appends the internal "Cite" link.
+	// the primary action, opened by the matching Academicons mark (the DOI
+	// glyph for a resolver link, the open-access lock for a plain URL);
+	// BibliographyRow appends the internal "Cite" link.
 	const bibActions = $derived<BibliographyAction[]>(
 		isOpenAccess && openHref
-			? [{ href: openHref, label: publication.doi ? 'DOI ↗' : 'Open Access ↗', primary: true }]
+			? [
+					publication.doi
+						? { href: openHref, label: 'DOI ↗', primary: true, icon: 'academicons:doi' }
+						: {
+								href: openHref,
+								label: 'Open Access ↗',
+								primary: true,
+								icon: 'academicons:open-access'
+							}
+				]
 			: []
 	);
 	interface DisplayListItem {

@@ -10,6 +10,7 @@ key-term sizing, BibTeX download — is assembled here.
 -->
 <script lang="ts">
 	import { base } from '$app/paths';
+	import Icon from '@iconify/svelte';
 	import type { Publication } from '$lib/types';
 	import { getAnalysis, hasAnalysis } from '$lib/data/analysis';
 	import { generateBibtex } from '$lib/utils/bibtexGenerator';
@@ -55,6 +56,8 @@ key-term sizing, BibTeX download — is assembled here.
 		href?: string;
 		external?: boolean;
 		accent?: boolean;
+		/** Registered Iconify mark printed before the value (the DOI glyph). */
+		icon?: string;
 	};
 
 	const metadataRows = $derived.by((): MetaRow[] => {
@@ -120,7 +123,8 @@ key-term sizing, BibTeX download — is assembled here.
 			push('DOI', publication.doi, {
 				href: `https://doi.org/${publication.doi}`,
 				external: true,
-				accent: true
+				accent: true,
+				icon: 'academicons:doi'
 			});
 		}
 
@@ -176,7 +180,11 @@ key-term sizing, BibTeX download — is assembled here.
 							{#if row.href && row.external}
 								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 								<a href={row.href} target="_blank" rel="noopener" class="pub-meta-link"
-									>{row.value} ↗</a
+									>{#if row.icon}<Icon
+											icon={row.icon}
+											class="pub-meta-icon"
+											aria-hidden="true"
+										/>{/if}{row.value} ↗</a
 								>
 							{:else if row.href}
 								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed internal path -->
@@ -373,6 +381,15 @@ key-term sizing, BibTeX download — is assembled here.
 
 	.pub-meta-link:hover {
 		text-decoration: underline;
+	}
+
+	/* The DOI mark — an inline SVG in currentColor ahead of the identifier,
+	   sized to the mono value it labels. */
+	.pub-meta-value :global(.pub-meta-icon) {
+		width: 1.2em;
+		height: 1.2em;
+		vertical-align: -0.25em;
+		margin-inline-end: var(--space-1);
 	}
 
 	.pub-meta-value:not(.pub-meta-value--accent) .pub-meta-link:hover {

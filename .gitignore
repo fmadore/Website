@@ -54,6 +54,9 @@ scripts/__pycache__/convert-image.cpython-312.pyc
 # Vitest coverage output
 /coverage/
 
+# Lighthouse CI output (npm run check:lighthouse / the ci.yml lighthouse job)
+/.lighthouseci/
+
 # MCP server build output (mcp/)
 /mcp/dist/
 /mcp/bundle/

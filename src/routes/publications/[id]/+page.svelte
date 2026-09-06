@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
+	import Icon from '@iconify/svelte';
 	import { base } from '$app/paths';
 	import type { Publication } from '$lib/types';
 	import type { ComponentType } from 'svelte';
@@ -136,7 +137,10 @@
 					<span>{publication.date}</span>
 					{#if isOpenAccess}
 						<span class="pub-eyebrow-sep" aria-hidden="true">·</span>
-						<span>Open Access</span>
+						<span class="pub-eyebrow-oa">
+							<Icon icon="academicons:open-access" class="pub-eyebrow-icon" aria-hidden="true" />
+							Open Access
+						</span>
 					{/if}
 				</p>
 
@@ -327,6 +331,19 @@
 
 	.pub-eyebrow-sep {
 		color: var(--color-text-muted);
+	}
+
+	/* Open-access token — the Academicons lock ahead of the word, inline SVG in
+	   the eyebrow's own colour. */
+	.pub-eyebrow-oa {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-1);
+	}
+
+	.pub-eyebrow-oa :global(.pub-eyebrow-icon) {
+		width: 1.2em;
+		height: 1.2em;
 	}
 
 	.pub-title {
