@@ -5,7 +5,11 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
-	import { allPublications, publicationsByYear, allTags } from '$lib/data/publications/index';
+	import {
+		allPublicationSummaries as allPublications,
+		publicationSummariesByYear as publicationsByYear,
+		publicationSummaryTags as allTags
+	} from '$lib/data/publications/summaries';
 	import { allCommunications } from '$lib/data/communications/index';
 	import { activitiesByDate } from '$lib/data/activities';
 

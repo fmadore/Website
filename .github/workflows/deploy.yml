@@ -66,6 +66,9 @@ jobs:
       - name: Reference index freshness
         run: node scripts/generate-reference-index.mjs --check
 
+      - name: Publication summaries freshness
+        run: node scripts/generate-publication-summaries.mjs --check
+
       - name: Build with SvelteKit
         run: npm run build
 

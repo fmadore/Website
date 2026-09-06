@@ -191,7 +191,7 @@ export function formatAffiliationPeriod(period: AffiliationPeriod): string {
 /**
  * Groups publications by type and returns them in a structured format
  */
-export function groupPublicationsByType(publications: Publication[]) {
+export function groupPublicationsByType<T extends Pick<Publication, 'type'>>(publications: T[]) {
 	// Filter out theses
 	const filteredPublications = publications.filter(
 		(pub) => pub.type !== 'phd-dissertation' && pub.type !== 'masters-thesis'
@@ -221,7 +221,7 @@ export function groupPublicationsByType(publications: Publication[]) {
 			acc[type].push(pub);
 			return acc;
 		},
-		{} as Record<Publication['type'] | 'other', Publication[]>
+		{} as Record<Publication['type'] | 'other', T[]>
 	);
 
 	// Get types present in the data that are also in our desired order

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { publicationsByDate } from '$lib/data/publications';
+	import { publicationSummariesByDate as publicationsByDate } from '$lib/data/publications/summaries';
 	import type { Publication } from '$lib/types';
 	import {
 		groupPublicationsByType,

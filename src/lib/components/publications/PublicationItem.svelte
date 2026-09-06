@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Publication } from '$lib/types/publication';
+	import type { PublicationSummary } from '$lib/types/publication';
 	import { base, resolve } from '$app/paths';
 	import { buildSrcset, resolveImagePath } from '$lib/utils/imageVariants';
 	import { truncateAbstract } from '$lib/utils/textUtils';
@@ -17,7 +17,8 @@
 	import '$styles/components/entity-cards.css';
 
 	interface Props {
-		publication: Publication;
+		/** A summary: the list never needs the abstract or the citation list. */
+		publication: PublicationSummary;
 		onfilterrequest?: (event: { type: string; value: string }) => void;
 		index?: number; // Index for loading optimization
 		/**
@@ -71,7 +72,7 @@
 	const imageLoading = $derived((index ?? 0) < 3 ? 'eager' : 'lazy');
 
 	// Citation count for the inline badge
-	const citationCount = $derived(publication.citedBy?.length ?? 0);
+	const citationCount = $derived(publication.citedByCount);
 
 	// The card branch prints the title twice — once as the heading link, once
 	// inside the citation as a quoted work — so both go through the typesetter
@@ -82,7 +83,7 @@
 	const headingTitle = $derived(typesetQuotes(publication.title));
 	const citationTitle = $derived(quoteTitle(publication.title));
 	const displayAbstract = $derived(
-		publication.abstract ? typesetQuotes(truncateAbstract(publication.abstract)) : ''
+		publication.abstractExcerpt ? typesetQuotes(truncateAbstract(publication.abstractExcerpt)) : ''
 	);
 
 	// Reactive computation using the citation formatter
@@ -159,7 +160,7 @@
 	// A one-line standfirst under the title: a trimmed abstract if present.
 	// BibliographyRow typesets what it is handed.
 	const bibStandfirst = $derived(
-		publication.abstract ? truncateAbstract(publication.abstract, 180) : ''
+		publication.abstractExcerpt ? truncateAbstract(publication.abstractExcerpt, 180) : ''
 	);
 
 	// Right-aligned action column: the freely-accessible copy (DOI or URL) as

@@ -11,7 +11,10 @@
 	import { sortItems } from '$lib/utils/sortUtils';
 	import { areFiltersActive } from '$lib/utils/filterUtils';
 	import { getAuthorsArray } from '$lib/utils/citationFormatter';
-	import { allPublications, publicationsByYear } from '$lib/data/publications';
+	import {
+		allPublicationSummaries as allPublications,
+		publicationSummariesByYear as publicationsByYear
+	} from '$lib/data/publications/summaries';
 	import {
 		PUBLICATION_TYPE_FILTER_LABELS as typeLabels,
 		PUBLICATION_TYPE_CHIP_LABELS as typeChipLabels

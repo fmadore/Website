@@ -11,6 +11,7 @@ scripts/venv
 # Generated artifacts
 src/lib/data/referenceIndex.generated.ts
 src/lib/data/researchProse.generated.ts
+src/lib/data/publications/summaries.generated.ts
 
 # Vendored public-domain geographic data
 static/data/world-countries-110m.geojson

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { allPublications } from '../../data/publications/index';
+	import { allPublicationSummaries } from '$lib/data/publications/summaries';
 	import RelevantItemsList from '$lib/components/panels/RelevantItemsList.svelte';
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
 	import { formatAuthorsCompact as formatAuthors } from '$lib/utils/nameUtils';
@@ -20,12 +20,23 @@
 	// Add state for selected type filter
 	let selectedType = $state<string | null>(null);
 
-	// Filter publications by project name
+	// Filter publications by project name. The summaries suffice: the card
+	// prints at most 120 characters of the abstract, which the excerpt covers.
 	let publicationList = $derived<RelevantItem[]>(
-		allPublications
+		allPublicationSummaries
 			.filter((pub) => pub.project === projectName)
 			.sort((a, b) => new Date(b.dateISO).getTime() - new Date(a.dateISO).getTime())
-			.slice(0, limit) as RelevantItem[]
+			.slice(0, limit)
+			.map((pub) => ({
+				id: pub.id,
+				project: pub.project,
+				type: pub.type,
+				date: pub.date,
+				dateISO: pub.dateISO,
+				title: pub.title,
+				authors: pub.authors,
+				abstract: pub.abstractExcerpt
+			}))
 	);
 
 	// Get unique publication types for the type filter

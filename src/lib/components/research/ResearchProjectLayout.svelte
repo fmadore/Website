@@ -33,7 +33,7 @@ apparatus, and the ruled-section styling.
 	import { buildBreadcrumbJsonLd, BREADCRUMB_SCRIPT_ID } from '$lib/utils/breadcrumbJsonLd.svelte';
 	import { buildGrantsJsonLd, GRANTS_SCRIPT_ID } from '$lib/utils/grantsJsonLd.svelte';
 	import { allGrants } from '$lib/data/grants/index';
-	import { allPublications } from '$lib/data/publications/index';
+	import { allPublicationSummaries as allPublications } from '$lib/data/publications/summaries';
 	import { allCommunications } from '$lib/data/communications/index';
 	import type { Grant, ResearchProject } from '$lib/types';
 	import { website } from '$lib/utils/siteHelpers';

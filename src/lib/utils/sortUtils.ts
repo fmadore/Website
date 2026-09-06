@@ -1,10 +1,17 @@
-import type { Publication } from '$lib/types/publication';
+import type { Publication, PublicationSummary } from '$lib/types/publication';
 import type { Communication } from '$lib/types/communication';
 import { isForthcoming } from '$lib/utils/date-formatter';
 
 // Generic type for items that can be sorted (must have date and title)
 // Use union type for items we know we'll sort
-type SortableItem = Publication | Communication;
+type SortableItem = Publication | PublicationSummary | Communication;
+
+/** Citation tally: a summary carries the count, a full record the list. */
+function citationCount(item: SortableItem): number {
+	const asSummary = item as Partial<PublicationSummary>;
+	if (typeof asSummary.citedByCount === 'number') return asSummary.citedByCount;
+	return (item as Publication).citedBy?.length ?? 0;
+}
 
 /**
  * Sorts an array of items either by date (descending) or title (ascending).
@@ -26,12 +33,7 @@ export function sortItems<T extends SortableItem>(
 			return titleA.localeCompare(titleB);
 		});
 	} else if (sortBy === 'citations') {
-		sortedItems.sort((a, b) => {
-			// Safely access citedBy length, defaulting to 0 if undefined
-			const citationsA = (a as Publication).citedBy?.length || 0;
-			const citationsB = (b as Publication).citedBy?.length || 0;
-			return citationsB - citationsA; // Descending order
-		});
+		sortedItems.sort((a, b) => citationCount(b) - citationCount(a)); // Descending order
 	} else {
 		// Default to sorting by date (descending)
 		sortedItems.sort((a, b) => {

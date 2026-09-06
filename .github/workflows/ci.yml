@@ -75,6 +75,11 @@ jobs:
       - name: Reference index freshness
         run: node scripts/generate-reference-index.mjs --check
 
+      # The list pages render a committed projection of the publications
+      # dataset; a data edit has to be regenerated into it.
+      - name: Publication summaries freshness
+        run: node scripts/generate-publication-summaries.mjs --check
+
       # The research narratives are authored in the route pages and projected
       # into a committed module, so an edit to the prose has to be regenerated.
       - name: Research prose freshness

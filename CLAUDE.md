@@ -108,18 +108,30 @@ generated from the datasets and would keep advertising URLs that ship no page.
 
 ### Generated data files
 
-The three `*.generated.ts` files in `src/lib/data/` (`referenceIndex`,
-`researchProse`, `imageVariants`) are committed, not built on the fly. `prebuild`
-regenerates all three, so a full `npm run build` covers it; after only touching
-`src/lib/data/` or adding an image, the generators alone are quicker:
+The four `*.generated.ts` files in `src/lib/data/` (`referenceIndex`,
+`publications/summaries`, `researchProse`, `imageVariants`) are committed, not
+built on the fly. `prebuild` regenerates all four, so a full `npm run build`
+covers it; after only touching `src/lib/data/` or adding an image, the
+generators alone are quicker:
 
 ```bash
-npm run gen:refs && npm run gen:prose && npm run gen:images
+npm run gen:refs && npm run gen:summaries && npm run gen:prose && npm run gen:images
 ```
 
 `lint` and `check` pass on a stale index — CI does not. `deploy.yml` gates
-`referenceIndex`, `ci.yml` gates it and `researchProse`, both by rerunning the
-same scripts under `--check`, before the SvelteKit build.
+`referenceIndex` and the publication summaries, `ci.yml` gates those and
+`researchProse`, all by rerunning the same scripts under `--check`, before the
+SvelteKit build.
+
+**Publication summaries**: `/publications`, `/cv`, the research pages and the
+style guide read `data/publications/summaries.ts` — a projection of every
+record minus `abstract`, `citedBy`, `tableOfContents` and `heroImage` (the
+first two were 63% of the dataset's bytes, and `citedBy` grows with every
+citation the watcher records), plus `abstractExcerpt`, `citedByCount` and
+`tocAuthors`. Only the publication page and the visualisations import the full
+`index.ts`. `summaries.test.ts` proves the projection faithful against the full
+dataset, excerpt truncation included; a list row must never truncate an
+abstract past `ABSTRACT_EXCERPT_LENGTH` (`summaryConfig.ts`).
 
 ## Architecture
 

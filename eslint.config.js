@@ -12,7 +12,11 @@ const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 export default ts.config(
 	// Generated artifacts — committed but not hand-edited.
 	{
-		ignores: ['src/lib/data/referenceIndex.generated.ts', 'src/lib/data/researchProse.generated.ts']
+		ignores: [
+			'src/lib/data/referenceIndex.generated.ts',
+			'src/lib/data/researchProse.generated.ts',
+			'src/lib/data/publications/summaries.generated.ts'
+		]
 	},
 	includeIgnoreFile(gitignorePath),
 	js.configs.recommended,

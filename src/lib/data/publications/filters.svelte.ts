@@ -6,20 +6,22 @@
  * is handled via dimension match functions.
  */
 
-import type { Publication, YearRange, TableOfContentsEntry } from '$lib/types';
+import type { PublicationSummary, YearRange } from '$lib/types';
 import {
-	allPublications as baseAllPublications,
-	publicationsByType,
-	publicationsByYear,
-	allTags
-} from './index';
+	allPublicationSummaries,
+	publicationSummariesByType,
+	publicationSummariesByYear,
+	publicationSummaryTags
+} from './summaries';
 import { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
 import { SvelteSet } from 'svelte/reactivity';
 import { PUBLICATION_TYPE_FILTER_LABELS as typeLabels } from '$lib/utils/publicationTypeLabels';
 
-type Pub = Publication & { sourceDirType: string };
+// The index filters over the summaries: every facet, count and sort key below
+// is a summary field, so the page never pays for abstracts or citation lists.
+type Pub = PublicationSummary;
 
-const allPublications: Pub[] = baseAllPublications;
+const allPublications: Pub[] = allPublicationSummaries;
 
 // --- Domain-specific helpers ---
 
@@ -34,12 +36,9 @@ function extractEditors(publication: Pub): string[] {
 	return [];
 }
 
+/** Table-of-contents contributors, projected into the summary by the generator. */
 function extractTocAuthors(publication: Pub): string[] {
-	if (!publication.tableOfContents) return [];
-	return publication.tableOfContents.flatMap((entry) => {
-		if (typeof entry === 'string') return [];
-		return (entry as TableOfContentsEntry).authors || [];
-	});
+	return publication.tocAuthors;
 }
 
 // --- Computed unique values ---
@@ -159,15 +158,15 @@ export const publicationFilters = new EntityFilterSystem<Pub>({
 		}
 	},
 	filterOptions: {
-		types: Object.keys(publicationsByType).sort((a, b) => {
+		types: Object.keys(publicationSummariesByType).sort((a, b) => {
 			const labelA = typeLabels[a] || a;
 			const labelB = typeLabels[b] || b;
 			return labelA.localeCompare(labelB);
 		}),
-		years: Object.keys(publicationsByYear)
+		years: Object.keys(publicationSummariesByYear)
 			.map(Number)
 			.sort((a, b) => b - a),
-		tags: byFrequencyThenAlpha(allTags, tagFrequency),
+		tags: byFrequencyThenAlpha(publicationSummaryTags, tagFrequency),
 		languages: uniqueLanguages,
 		authors: byFrequencyThenAlpha(allAuthors, authorFrequency),
 		countries: allCountries,
