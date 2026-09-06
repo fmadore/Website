@@ -56,9 +56,9 @@ function cacheKey(buffer) {
 
 function renderClientManifest(images) {
 	const entries = Object.entries(images)
-		.map(([path, { sourceWidth, widths }]) => {
+		.map(([path, { sourceWidth, sourceHeight, widths }]) => {
 			const quotedPath = path.replaceAll('\\', '\\\\').replaceAll("'", "\\'");
-			return `\t'${quotedPath}': {\n\t\tsourceWidth: ${sourceWidth},\n\t\twidths: [${widths.join(', ')}]\n\t}`;
+			return `\t'${quotedPath}': {\n\t\tsourceWidth: ${sourceWidth},\n\t\tsourceHeight: ${sourceHeight},\n\t\twidths: [${widths.join(', ')}]\n\t}`;
 		})
 		.join(',\n');
 
@@ -67,6 +67,7 @@ function renderClientManifest(images) {
  */
 export interface ImageVariantManifestEntry {
 \treadonly sourceWidth: number;
+\treadonly sourceHeight: number;
 \treadonly widths: readonly number[];
 }
 
@@ -106,13 +107,16 @@ for (const file of files) {
 	const relNoExt = rel.slice(0, -extension.length);
 	const sourceBuffer = await readFile(file);
 	const metadata = await sharp(sourceBuffer).metadata();
-	if (!metadata.width) {
-		throw new Error(`Unable to determine the intrinsic width of ${rel}`);
+	if (!metadata.width || !metadata.height) {
+		throw new Error(`Unable to determine the intrinsic size of ${rel}`);
 	}
 
 	const widths = VARIANT_WIDTHS.filter((width) => width < metadata.width);
 	const sourceCacheKey = cacheKey(sourceBuffer);
-	clientImages[rel] = { sourceWidth: metadata.width, widths };
+	// Width and height both ship: an <img> that carries them reserves its box
+	// before the bytes arrive, which is what keeps a lazily loaded cover from
+	// shifting the layout (Lighthouse's unsized-images / CLS).
+	clientImages[rel] = { sourceWidth: metadata.width, sourceHeight: metadata.height, widths };
 	nextCache.images[rel] = { cacheKey: sourceCacheKey, widths };
 
 	const previous = previousCache.images?.[rel];

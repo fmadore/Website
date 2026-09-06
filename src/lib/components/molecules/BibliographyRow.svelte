@@ -24,7 +24,14 @@
 	// props so both record lists stay in visual lock-step.
 	import '$styles/components/bibliography.css';
 	import Icon from '@iconify/svelte';
+	import { base } from '$app/paths';
+	import { buildSrcset, resolveImagePath } from '$lib/utils/imageVariants';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+
+	// The plate column is 80px wide (56px under --sm-down), so even a 3× phone
+	// needs no more than the 400w derivative — never the detail-page-sized
+	// source. `sizes` states that width so the browser can pick it.
+	const PLATE_SIZES = '(max-width: 640px) 56px, 80px';
 
 	interface Props {
 		/** Internal detail link — pre-resolved via resolve() by the parent. */
@@ -95,6 +102,11 @@
 	const displayByline = $derived(typesetQuotes(byline));
 	const displayStandfirst = $derived(typesetQuotes(standfirst));
 	const displayImageAlt = $derived(typesetQuotes(imageAlt));
+
+	// Base-relative source (data files store `images/…`), plus the generated
+	// downscaled candidates when the manifest has them.
+	const plateSrc = $derived(resolveImagePath(image, base));
+	const plateSrcset = $derived(buildSrcset(plateSrc));
 </script>
 
 <article
@@ -112,7 +124,9 @@
 			<a {href} data-sveltekit-preload-code="tap" class="bib-plate-link">
 				<img
 					class="plate bib-plate"
-					src={image}
+					src={plateSrc}
+					srcset={plateSrcset}
+					sizes={plateSrcset ? PLATE_SIZES : undefined}
 					alt={displayImageAlt}
 					width={imageWidth}
 					height={imageHeight}

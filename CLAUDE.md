@@ -287,7 +287,9 @@ All three render inline SVG (never canvas), so marks are focusable and CSS-theme
 
 ### Heavy Libraries (Code Split)
 
-ECharts, D3, MapLibre, and jsPDF are split into separate chunks via `build.rolldownOptions` in Vite config. Use dynamic imports for visualization components. ECharts is tree-shaken via `echartsCore.ts`; `GraphChart` is deliberately absent (networks are SVG, see above).
+ECharts, D3, MapLibre, and jsPDF are split into separate chunks via `build.rolldownOptions.output.codeSplitting` in Vite config. Use dynamic imports for visualization components. ECharts is tree-shaken via `echartsCore.ts`; `GraphChart` is deliberately absent (networks are SVG, see above).
+
+The same `codeSplitting` block also consolidates what every page loads: a `framework` group (Svelte, Kit, and the bundler helpers) and an entries-aware `shared` group for small utilities and components reused across routes. Rolldown's automatic splitting otherwise emits one file per shared module, and the index pages were fetching ~30 scripts, most under 2 KB — each a round trip on PageSpeed's simulated mobile network. `npm run check:bundle` guards the boundary: a group captures its modules' dependencies too, so the `shared` allow/deny lists in `vite.config.ts` must never admit a module that reaches a dataset or a heavy library.
 
 ## Design Context
 

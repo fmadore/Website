@@ -14,7 +14,13 @@ key-term sizing, BibTeX download — is assembled here.
 	import type { Publication } from '$lib/types';
 	import { getAnalysis, hasAnalysis } from '$lib/data/analysis';
 	import { generateBibtex } from '$lib/utils/bibtexGenerator';
+	import { buildSrcset, imageDimensions, resolveImagePath } from '$lib/utils/imageVariants';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+
+	// The rail is 380px wide from --lg up; below that the cover spans the
+	// single column. The intrinsic size reserves the plate's box before the
+	// lazily loaded bytes arrive, so the record never shifts around it.
+	const COVER_SIZES = '(max-width: 1024px) 100vw, 380px';
 
 	interface Props {
 		publication: Publication;
@@ -44,7 +50,11 @@ key-term sizing, BibTeX download — is assembled here.
 	});
 
 	// Cover image (aside plate). Prefer the dedicated cover; fall back to hero.
-	const coverSrc = $derived(publication.image ?? publication.heroImage?.src);
+	const coverSrc = $derived(
+		resolveImagePath(publication.image ?? publication.heroImage?.src, base)
+	);
+	const coverSrcset = $derived(buildSrcset(coverSrc));
+	const coverSize = $derived(imageDimensions(coverSrc));
 	const coverAlt = $derived(
 		typesetQuotes(publication.heroImage?.alt ?? `Cover of ${publication.title}`)
 	);
@@ -164,7 +174,17 @@ key-term sizing, BibTeX download — is assembled here.
 	<div class="pub-rail-primary">
 		{#if coverSrc}
 			<figure class="pub-cover">
-				<img class="plate pub-cover-img" src="{base}/{coverSrc}" alt={coverAlt} loading="lazy" />
+				<img
+					class="plate pub-cover-img"
+					src={coverSrc}
+					srcset={coverSrcset}
+					sizes={coverSrcset ? COVER_SIZES : undefined}
+					width={coverSize?.width}
+					height={coverSize?.height}
+					alt={coverAlt}
+					loading="lazy"
+					decoding="async"
+				/>
 				<figcaption class="plate-caption">Fig. 1 — cover.</figcaption>
 			</figure>
 		{/if}

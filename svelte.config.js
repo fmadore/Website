@@ -13,10 +13,14 @@ const config = {
 			strict: true
 		}),
 		// Inline stylesheets into the prerendered HTML to eliminate
-		// render-blocking CSS requests. 20KB covers the shared app stylesheet
-		// (~14KB) plus route CSS; the caching trade-off is minor because GitHub
-		// Pages caps Cache-Control at max-age=600 anyway.
-		inlineStyleThreshold: 20480,
+		// render-blocking CSS requests. The shared app stylesheet has grown to
+		// ~68KB raw (~11KB compressed), so the former 20KB ceiling had quietly
+		// pushed it back out to a render-blocking <link> on every page — one
+		// extra round trip before first paint. 72KB keeps it inline (route CSS
+		// is far smaller); the caching trade-off is minor because GitHub Pages
+		// caps Cache-Control at max-age=600 anyway. Only the MapLibre sheet
+		// (~83KB, loaded with the map) stays external.
+		inlineStyleThreshold: 72 * 1024,
 		paths: {
 			base: ''
 		},

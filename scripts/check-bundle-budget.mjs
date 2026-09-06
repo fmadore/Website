@@ -2,7 +2,7 @@
  * Bundle budget guard.
  *
  * ECharts, D3, MapLibre and jsPDF are deliberately code-split (see
- * `build.rolldownOptions.manualChunks` in vite.config.ts) because each is
+ * `build.rolldownOptions.output.codeSplitting` in vite.config.ts) because each is
  * enormous and each is needed on exactly one or two pages. Nothing currently
  * enforces that: a stray top-level `import { … } from 'echarts'` in a shared
  * component would silently pull 600 KiB into the code every visitor downloads,
@@ -19,7 +19,7 @@
  *      is — grown past its budget?
  *
  * Heavy chunks are identified by content signature rather than by filename,
- * because output filenames are content-hashed and the manualChunks names never
+ * because output filenames are content-hashed and the codeSplitting group names never
  * reach disk.
  *
  * Usage:
@@ -52,7 +52,7 @@ const ROUTE_BUDGET_KIB = 850;
 /**
  * Signatures that identify a heavy library inside a minified chunk. Matched
  * against chunk contents because the emitted filenames are content hashes and
- * the manualChunks names never reach disk.
+ * the codeSplitting group names never reach disk.
  */
 const HEAVY = [
 	{ name: 'ECharts', re: /"echarts"|echartsInstance|zrender/ },

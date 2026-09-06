@@ -1,11 +1,27 @@
 import { describe, it, expect } from 'vitest';
-import { buildSrcset, resolveImagePath } from './imageVariants';
+import { buildSrcset, imageDimensions, resolveImagePath } from './imageVariants';
 
 const manifest = {
-	'activities/talk.webp': { sourceWidth: 1280, widths: [400, 800] },
-	'foo.jpg': { sourceWidth: 640, widths: [400] },
-	'small.png': { sourceWidth: 320, widths: [] }
+	'activities/talk.webp': { sourceWidth: 1280, sourceHeight: 720, widths: [400, 800] },
+	'foo.jpg': { sourceWidth: 640, sourceHeight: 480, widths: [400] },
+	'small.png': { sourceWidth: 320, sourceHeight: 320, widths: [] }
 } as const;
+
+describe('imageDimensions', () => {
+	it('reads the intrinsic size from the manifest, base path or not', () => {
+		expect(imageDimensions('/images/activities/talk.webp', manifest)).toEqual({
+			width: 1280,
+			height: 720
+		});
+		expect(imageDimensions('./images/foo.jpg', manifest)).toEqual({ width: 640, height: 480 });
+	});
+
+	it('is undefined for unknown, external and vector paths', () => {
+		expect(imageDimensions('/images/unknown.webp', manifest)).toBeUndefined();
+		expect(imageDimensions('https://example.com/images/foo.jpg', manifest)).toBeUndefined();
+		expect(imageDimensions('/images/logo.svg', manifest)).toBeUndefined();
+	});
+});
 
 describe('buildSrcset', () => {
 	it('uses generated derivatives and the original at its intrinsic width', () => {

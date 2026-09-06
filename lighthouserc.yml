@@ -50,12 +50,14 @@ ci:
       # ── Resource budgets — the sensitive tripwires ────────────────────────
       # A category score moves a few points when a webfont or a render-blocking
       # stylesheet lands; these fail outright. Measured on the five pages above
-      # (transfer sizes, gzip): fonts 4–5 files / ≤345 KB, 2 stylesheets,
-      # scripts ≤196 KB, document ≤23 KB, 37–60 requests. Raise a budget only
-      # with the regression named in the commit.
+      # (transfer sizes, gzip): fonts 4–5 files / ≤345 KB, scripts ≤196 KB,
+      # 37–60 requests. The document carries the inlined app stylesheet
+      # (~11 KB compressed) on top of ≤23 KB of page, so ≤35 KB; the one
+      # stylesheet request left is the 1 KB error-page sheet. Raise a budget
+      # only with the regression named in the commit.
       resource-summary:font:count: [error, { maxNumericValue: 5 }]
       resource-summary:font:size: [error, { maxNumericValue: 360000 }]
       resource-summary:stylesheet:count: [error, { maxNumericValue: 2 }]
       resource-summary:script:size: [error, { maxNumericValue: 250000 }]
-      resource-summary:document:size: [error, { maxNumericValue: 40000 }]
+      resource-summary:document:size: [error, { maxNumericValue: 48000 }]
       resource-summary:total:count: [error, { maxNumericValue: 70 }]

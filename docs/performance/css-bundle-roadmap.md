@@ -84,11 +84,14 @@ extend.
    nameplate/heading system is global. A `prose.css` imported by `ContentBody`
    would move ~5K out of the critical path.
 
-5. **Re-measure and consider full inlining.** Once the global sheet is under
-   ~20 KB raw, it drops below `inlineStyleThreshold` (20480) and SvelteKit will
-   inline it into every prerendered page — eliminating the render-blocking
-   request entirely (the preloaded-then-disabled `<link>` pattern remains for
-   caching). That is the end-state: **zero render-blocking stylesheets**.
+5. ✅ **Full inlining.** _Done (September 2026), by raising the ceiling rather
+   than by shrinking the sheet._ `inlineStyleThreshold` is now 72 KB, so the
+   global sheet (~68 KB raw / ~11 KB compressed) is inlined into every
+   prerendered page again — it had silently crossed the old 20 KB ceiling and
+   become a render-blocking `<link>` on every page (one extra round trip,
+   ~150 ms of simulated mobile delay in Lighthouse). The disabled-`<link>`
+   pattern remains for caching. Steps 2 and 4 still pay off: every byte cut
+   from the sheet is now a byte cut from every HTML document.
 
 ## Guardrails
 
@@ -109,16 +112,19 @@ the bottom, and reports covered byte ranges of the `assets/0.*.css` entry.
 
 ## Related follow-ups outside the CSS bundle
 
-- **Responsive images (`srcset`).** Sources are now capped (800w covers /
-  1280w heroes, WebP q80 — see `scripts/optimize-images.mjs`), but list views
-  still download detail-page-sized files (e.g. covers shown at ~100–200 px).
-  A sharp-based prebuild step emitting 480w/960w variants plus `srcset`/`sizes`
-  in `BibliographyRow`, `ActivityItem`, entity cards and the research/DH cards
-  would clear the remaining `image-delivery` flags (~100–350 KB per list page).
+- **Responsive images (`srcset`).** Sources are capped (800w covers / 1280w
+  heroes, WebP q80 — see `scripts/optimize-images.mjs`) and
+  `scripts/generate-image-variants.mjs` emits 400w/800w/1600w derivatives plus a
+  manifest that now records each source's intrinsic height as well as width.
+  `BibliographyRow` (both bibliography lists) and the publication-page cover
+  use them since September 2026; `ActivityItem`, entity cards and the
+  research/DH cards still download detail-page-sized files and are the
+  remaining `image-delivery` flags.
 - **GitHub Pages cache TTL.** Pages caps `Cache-Control` at `max-age=600`;
   PageSpeed will keep flagging "efficient cache policy" for fonts/images until
   the site fronts Pages with a CDN that allows long-lived immutable caching
   (e.g. Cloudflare) or moves hosts. Not fixable in-repo.
-- **Zenodo DOI badges on `/cv`** are now lazy-loaded and dimensioned, but they
-  remain ~25 third-party requests; self-hosting the badge SVGs (or rendering
-  the existing styled text fallback by default) would remove the dependency.
+- ✅ **Zenodo DOI badges on `/cv`** are gone (September 2026): the entries print
+  the identifier next to the Academicons DOI mark, an inline SVG registered in
+  `src/lib/icons.ts`, so the page no longer makes a third-party request per
+  publication.

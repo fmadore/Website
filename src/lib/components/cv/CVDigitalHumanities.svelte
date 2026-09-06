@@ -113,4 +113,13 @@
 	 * (accent) and long URLs already wrap via the base reset's overflow-wrap.
 	 * The `.link-url` class they may carry is read by the CV page's print
 	 * rules, which skip appending an href to text that is already the URL. */
+
+	/* Coarse pointers get the 24px minimum target (WCAG 2.5.8): the mono 2xs
+	 * addresses are ~14px tall on their own. Padding only — the pointer layout
+	 * and the print/PDF output are untouched. */
+	@media (--touch) {
+		.dh-links a {
+			padding-block: var(--space-1-5);
+		}
+	}
 </style>

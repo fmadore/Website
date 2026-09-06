@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Communication } from '$lib/types/communication';
-	import { resolve } from '$app/paths';
+	import { base, resolve } from '$app/paths';
+	import { buildSrcset, resolveImagePath } from '$lib/utils/imageVariants';
 	import { truncateAbstract } from '$lib/utils/textUtils';
 	import { formatAuthorList, formatCommunicationCitation } from '$lib/utils/citationFormatter';
 	import { titleLangAttr } from '$lib/utils/languageUtils';
@@ -99,6 +100,12 @@
 
 	// ── Bibliography mode (Ink + Signal finding-aid row, shared with publications) ──
 	const detailHref = $derived(resolve(`/communications/${communication.id}`));
+
+	// Card cover: the plate column is capped at 12rem (9rem under --sm-down),
+	// so the 400w derivative covers every pixel density; `sizes` says so.
+	const CARD_COVER_SIZES = '(max-width: 640px) 144px, 192px';
+	const coverSrc = $derived(resolveImagePath(communication.image, base));
+	const coverSrcset = $derived(buildSrcset(coverSrc));
 	const kindLabel = $derived(typeLabels[communication.type ?? 'conference'] ?? 'Talk');
 	// Venue line (conference · city · country) — the finding-aid byline.
 	const venueLine = $derived(citationDetails);
@@ -161,7 +168,9 @@
 							data-sveltekit-preload-code="tap"
 						>
 							<img
-								src={communication.image}
+								src={coverSrc}
+								srcset={coverSrcset}
+								sizes={coverSrcset ? CARD_COVER_SIZES : undefined}
 								alt={displayTitle}
 								class="entity-cover-image"
 								width="200"

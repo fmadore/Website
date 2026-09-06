@@ -3,952 +3,1189 @@
  */
 export interface ImageVariantManifestEntry {
 	readonly sourceWidth: number;
+	readonly sourceHeight: number;
 	readonly widths: readonly number[];
 }
 
 export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestEntry>> = {
 	'activities/amira-launch-2026-hero.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 703,
 		widths: [400, 800]
 	},
 	'activities/amira-launch-2026.webp': {
 		sourceWidth: 800,
+		sourceHeight: 439,
 		widths: [400]
 	},
 	'activities/asa-panel-discussion.webp': {
 		sourceWidth: 1237,
+		sourceHeight: 732,
 		widths: [400, 800]
 	},
 	'activities/charting-new-territory-workshop-hannover-hero.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 703,
 		widths: [400, 800]
 	},
 	'activities/De-Gruyter-ZMO.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 1707,
 		widths: [400, 800]
 	},
 	'activities/dga-roundtable-2026-hero.webp': {
 		sourceWidth: 1200,
+		sourceHeight: 627,
 		widths: [400, 800]
 	},
 	'activities/dh-digital-history-luxembourg-2026-hero.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 964,
 		widths: [400, 800]
 	},
 	'activities/ECAS-2025.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 905,
 		widths: [400, 800]
 	},
 	'activities/ecole-nationale-des-chartes.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1195,
 		widths: [400, 800]
 	},
 	'activities/ENIUGH-hero.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 963,
 		widths: [400, 800]
 	},
 	'activities/humanistica-2025-dakar-hero.webp': {
 		sourceWidth: 1200,
+		sourceHeight: 903,
 		widths: [400, 800]
 	},
 	'activities/humanistica-2025-dakar.webp': {
 		sourceWidth: 400,
+		sourceHeight: 301,
 		widths: []
 	},
 	'activities/jmas-review-hero.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 1921,
 		widths: [400, 800]
 	},
 	'activities/puidoux.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 964,
 		widths: [400, 800]
 	},
 	'activities/research-africa-reviews-hero.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 528,
 		widths: [400, 800]
 	},
 	'activities/The-Digital-Orientalist-hero.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 709,
 		widths: [400, 800]
 	},
 	'activities/The-Digital-Orientalist.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 709,
 		widths: [400, 800]
 	},
 	'activities/tracing-islamic-knowledge-production.webp': {
 		sourceWidth: 1200,
+		sourceHeight: 600,
 		widths: [400, 800]
 	},
 	'activities/uppsala-2025-hero.webp': {
 		sourceWidth: 1200,
+		sourceHeight: 1600,
 		widths: [400, 800]
 	},
 	'activities/VolkswagenStiftung-logo.webp': {
 		sourceWidth: 548,
+		sourceHeight: 177,
 		widths: [400]
 	},
 	'activities/volkswagenstiftung-open-up-kickoff-2026-hero.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 960,
 		widths: [400, 800]
 	},
 	'activities/zmo-farewell-hero.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 964,
 		widths: [400, 800]
 	},
 	'communications/acfas_81e.webp': {
 		sourceWidth: 800,
+		sourceHeight: 400,
 		widths: [400]
 	},
 	'communications/ai-africa-symposium-kansas-2026-hero.webp': {
 		sourceWidth: 1600,
+		sourceHeight: 1131,
 		widths: [400, 800]
 	},
 	'communications/ai-africa-symposium-kansas-2026.webp': {
 		sourceWidth: 800,
+		sourceHeight: 566,
 		widths: [400]
 	},
 	'communications/ALMEDA-logo-hero.webp': {
 		sourceWidth: 1173,
+		sourceHeight: 573,
 		widths: [400, 800]
 	},
 	'communications/ALMEDA-logo.webp': {
 		sourceWidth: 1173,
+		sourceHeight: 573,
 		widths: [400, 800]
 	},
 	'communications/associations-chretiennes-islamiques-campus-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1200,
 		widths: [400, 800]
 	},
 	'communications/associations-chretiennes-islamiques-campus.webp': {
 		sourceWidth: 600,
+		sourceHeight: 800,
 		widths: [400]
 	},
 	'communications/c2dh-hero.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 661,
 		widths: [400, 800]
 	},
 	'communications/c2dh.webp': {
 		sourceWidth: 800,
+		sourceHeight: 413,
 		widths: [400]
 	},
 	'communications/CAAS-logo-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 900,
 		widths: [400, 800]
 	},
 	'communications/CAAS-logo.webp': {
 		sourceWidth: 600,
+		sourceHeight: 600,
 		widths: [400]
 	},
 	'communications/cikm-2026-hero.webp': {
 		sourceWidth: 898,
+		sourceHeight: 900,
 		widths: [400, 800]
 	},
 	'communications/cikm-2026.webp': {
 		sourceWidth: 599,
+		sourceHeight: 600,
 		widths: [400]
 	},
 	'communications/ciram-2025-hero.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 1657,
 		widths: [400, 800]
 	},
 	'communications/ciram-2025.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 1657,
 		widths: [400, 800]
 	},
 	'communications/current-dynamics-islam-burkina-faso-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1035,
 		widths: [400, 800]
 	},
 	'communications/current-dynamics-islam-burkina-faso.webp': {
 		sourceWidth: 600,
+		sourceHeight: 690,
 		widths: [400]
 	},
 	'communications/DH-islam-burkina-faso-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 458,
 		widths: [400, 800]
 	},
 	'communications/DH-islam-burkina-faso.webp': {
 		sourceWidth: 600,
+		sourceHeight: 305,
 		widths: [400]
 	},
 	'communications/digital-hoarding-open-archives-warsaw-2026-hero.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 1811,
 		widths: [400, 800]
 	},
 	'communications/digital-hoarding-open-archives-warsaw-2026.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 1811,
 		widths: [400, 800]
 	},
 	'communications/distam-2024-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 653,
 		widths: [400, 800]
 	},
 	'communications/distam-2024.webp': {
 		sourceWidth: 600,
+		sourceHeight: 435,
 		widths: [400]
 	},
 	'communications/dormant-digital-collections-ai-triage-dga-2026-hero.webp': {
 		sourceWidth: 917,
+		sourceHeight: 686,
 		widths: [400, 800]
 	},
 	'communications/dormant-digital-collections-ai-triage-dga-2026.webp': {
 		sourceWidth: 917,
+		sourceHeight: 686,
 		widths: [400, 800]
 	},
 	'communications/ecas-2023-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 490,
 		widths: [400, 800]
 	},
 	'communications/ecas-2023.webp': {
 		sourceWidth: 600,
+		sourceHeight: 327,
 		widths: [400]
 	},
 	'communications/ecas-2025-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 568,
 		widths: [400, 800]
 	},
 	'communications/ecas-2025.webp': {
 		sourceWidth: 600,
+		sourceHeight: 378,
 		widths: [400]
 	},
 	'communications/EHESS-2025-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1272,
 		widths: [400, 800]
 	},
 	'communications/EHESS-2025.webp': {
 		sourceWidth: 600,
+		sourceHeight: 848,
 		widths: [400]
 	},
 	'communications/elites-musulmanes-cote-divoire-burkina-faso-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1272,
 		widths: [400, 800]
 	},
 	'communications/elites-musulmanes-cote-divoire-burkina-faso.webp': {
 		sourceWidth: 600,
+		sourceHeight: 848,
 		widths: [400]
 	},
 	'communications/emancipation-feminine-militantisme-islamique-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1273,
 		widths: [400, 800]
 	},
 	'communications/emancipation-feminine-militantisme-islamique.webp': {
 		sourceWidth: 600,
+		sourceHeight: 848,
 		widths: [400]
 	},
 	'communications/ENIUGH-hero.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 1700,
 		widths: [400, 800]
 	},
 	'communications/ENIUGH.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 1700,
 		widths: [400, 800]
 	},
 	'communications/evolutions-nouvelles-formes-islam-afrique-ouest-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1164,
 		widths: [400, 800]
 	},
 	'communications/evolutions-nouvelles-formes-islam-afrique-ouest.webp': {
 		sourceWidth: 600,
+		sourceHeight: 776,
 		widths: [400]
 	},
 	'communications/formation-recherche-en-ligne-ouagadougou.jpeg': {
 		sourceWidth: 1024,
+		sourceHeight: 554,
 		widths: [400, 800]
 	},
 	'communications/Gaston_Berger_University_logo-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 885,
 		widths: [400, 800]
 	},
 	'communications/Gaston_Berger_University_logo.webp': {
 		sourceWidth: 600,
+		sourceHeight: 590,
 		widths: [400]
 	},
 	'communications/generations-imam-benin-2021-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1271,
 		widths: [400, 800]
 	},
 	'communications/generations-imam-benin-2021.webp': {
 		sourceWidth: 600,
+		sourceHeight: 847,
 		widths: [400]
 	},
 	'communications/humanistica-2025-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 198,
 		widths: [400, 800]
 	},
 	'communications/humanistica-2025.webp': {
 		sourceWidth: 600,
+		sourceHeight: 132,
 		widths: [400]
 	},
 	'communications/interfaith-coexistence-campuses.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 964,
 		widths: [400, 800]
 	},
 	'communications/islam-algorithms-ai-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 450,
 		widths: [400, 800]
 	},
 	'communications/islam-algorithms-ai.webp': {
 		sourceWidth: 600,
+		sourceHeight: 300,
 		widths: [400]
 	},
 	'communications/islam-burkina-cote-ivoire-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1390,
 		widths: [400, 800]
 	},
 	'communications/islam-burkina-cote-ivoire.webp': {
 		sourceWidth: 600,
+		sourceHeight: 927,
 		widths: [400]
 	},
 	'communications/islam-burkina-faso-collection-omeka-2022-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1273,
 		widths: [400, 800]
 	},
 	'communications/islam-burkina-faso-collection-omeka-2022.webp': {
 		sourceWidth: 600,
+		sourceHeight: 848,
 		widths: [400]
 	},
 	'communications/islam-ivoirien-burkinabe-numerique-2016-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1275,
 		widths: [400, 800]
 	},
 	'communications/islam-ivoirien-burkinabe-numerique-2016.webp': {
 		sourceWidth: 600,
+		sourceHeight: 850,
 		widths: [400]
 	},
 	'communications/islam-peripheries-dh-ai-west-africa-central-asia-2026-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 506,
 		widths: [400, 800]
 	},
 	'communications/islam-peripheries-dh-ai-west-africa-central-asia-2026.webp': {
 		sourceWidth: 600,
+		sourceHeight: 338,
 		widths: [400]
 	},
 	'communications/islam-peripheries-open-up-2026-hero.webp': {
 		sourceWidth: 781,
+		sourceHeight: 591,
 		widths: [400]
 	},
 	'communications/islam-peripheries-open-up-2026.webp': {
 		sourceWidth: 781,
+		sourceHeight: 591,
 		widths: [400]
 	},
 	'communications/islam-university-campuses-cote-divoire-2019-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1258,
 		widths: [400, 800]
 	},
 	'communications/islam-university-campuses-cote-divoire-2019.webp': {
 		sourceWidth: 600,
+		sourceHeight: 839,
 		widths: [400]
 	},
 	'communications/lasdel-logo-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 900,
 		widths: [400, 800]
 	},
 	'communications/lasdel-logo.webp': {
 		sourceWidth: 600,
+		sourceHeight: 600,
 		widths: [400]
 	},
 	'communications/MANSA-logo-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 989,
 		widths: [400, 800]
 	},
 	'communications/MANSA-logo.webp': {
 		sourceWidth: 600,
+		sourceHeight: 659,
 		widths: [400]
 	},
 	'communications/militantisme-islamique-campus-lome-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1200,
 		widths: [400, 800]
 	},
 	'communications/militantisme-islamique-campus-lome.webp': {
 		sourceWidth: 600,
+		sourceHeight: 800,
 		widths: [400]
 	},
 	'communications/militantisme-islamique-feminin-burkina-2019-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1273,
 		widths: [400, 800]
 	},
 	'communications/militantisme-islamique-feminin-burkina-2019.webp': {
 		sourceWidth: 600,
+		sourceHeight: 848,
 		widths: [400]
 	},
 	'communications/muslim-intellectuals-francophone-salafis-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 695,
 		widths: [400, 800]
 	},
 	'communications/muslim-intellectuals-francophone-salafis.webp': {
 		sourceWidth: 600,
+		sourceHeight: 463,
 		widths: [400]
 	},
 	'communications/paris-cite-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 343,
 		widths: [400, 800]
 	},
 	'communications/paris-cite.webp': {
 		sourceWidth: 600,
+		sourceHeight: 228,
 		widths: [400]
 	},
 	'communications/perspectives-in-motion-hero.webp': {
 		sourceWidth: 874,
+		sourceHeight: 1240,
 		widths: [400, 800]
 	},
 	'communications/perspectives-in-motion.webp': {
 		sourceWidth: 874,
+		sourceHeight: 1240,
 		widths: [400, 800]
 	},
 	'communications/point-de-passage-frontieres-religieuses-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1297,
 		widths: [400, 800]
 	},
 	'communications/point-de-passage-frontieres-religieuses.webp': {
 		sourceWidth: 600,
+		sourceHeight: 864,
 		widths: [400]
 	},
 	'communications/poster-launch-IWAC-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1274,
 		widths: [400, 800]
 	},
 	'communications/poster-launch-IWAC.webp': {
 		sourceWidth: 600,
+		sourceHeight: 849,
 		widths: [400]
 	},
 	'communications/public-islam-cote-ivoire-burkina-faso-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1256,
 		widths: [400, 800]
 	},
 	'communications/public-islam-cote-ivoire-burkina-faso.webp': {
 		sourceWidth: 600,
+		sourceHeight: 837,
 		widths: [400]
 	},
 	'communications/publishing-islam-burkina-faso-collection-2022-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 636,
 		widths: [400, 800]
 	},
 	'communications/publishing-islam-burkina-faso-collection-2022.webp': {
 		sourceWidth: 600,
+		sourceHeight: 424,
 		widths: [400]
 	},
 	'communications/puidoux-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 559,
 		widths: [400, 800]
 	},
 	'communications/puidoux.webp': {
 		sourceWidth: 600,
+		sourceHeight: 372,
 		widths: [400]
 	},
 	'communications/reaf-2026-hero.webp': {
 		sourceWidth: 977,
+		sourceHeight: 432,
 		widths: [400, 800]
 	},
 	'communications/reaf-2026.webp': {
 		sourceWidth: 977,
+		sourceHeight: 432,
 		widths: [400, 800]
 	},
 	'communications/recherche-documentaire-zotero-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 395,
 		widths: [400, 800]
 	},
 	'communications/recherche-documentaire-zotero.webp': {
 		sourceWidth: 600,
+		sourceHeight: 263,
 		widths: [400]
 	},
 	'communications/reconfiguring-archive-amira-2026.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 767,
 		widths: [400, 800]
 	},
 	'communications/REMOBOKO-final-conference.webp': {
 		sourceWidth: 1024,
+		sourceHeight: 679,
 		widths: [400, 800]
 	},
 	'communications/representations-islam-muslims-togo-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 450,
 		widths: [400, 800]
 	},
 	'communications/representations-islam-muslims-togo.webp': {
 		sourceWidth: 600,
+		sourceHeight: 300,
 		widths: [400]
 	},
 	'communications/responsible-ai-access-mcp-server-2026.webp': {
 		sourceWidth: 1200,
+		sourceHeight: 627,
 		widths: [400, 800]
 	},
 	'communications/SADILAR-hero.webp': {
 		sourceWidth: 940,
+		sourceHeight: 470,
 		widths: [400, 800]
 	},
 	'communications/SADILAR.webp': {
 		sourceWidth: 940,
+		sourceHeight: 470,
 		widths: [400, 800]
 	},
 	'communications/salafisme-pentecotisme-campus-benin-togo-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1482,
 		widths: [400, 800]
 	},
 	'communications/salafisme-pentecotisme-campus-benin-togo.webp': {
 		sourceWidth: 600,
+		sourceHeight: 988,
 		widths: [400]
 	},
 	'communications/salafisme-securitisation-benin-togo-2022-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 900,
 		widths: [400, 800]
 	},
 	'communications/salafisme-securitisation-benin-togo-2022.webp': {
 		sourceWidth: 600,
+		sourceHeight: 600,
 		widths: [400]
 	},
 	'communications/slides/2026-05-06-dga-dormant-collections.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 720,
 		widths: [400, 800]
 	},
 	'communications/slides/2026-06-15-luxembourg-beyond-keywords.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 720,
 		widths: [400, 800]
 	},
 	'communications/slides/2026-06-29-erlangen-islam-peripheries.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 720,
 		widths: [400, 800]
 	},
 	'communications/slides/2026-06-30-paris-reaf-dh-ia-afrique.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 720,
 		widths: [400, 800]
 	},
 	'communications/slides/2026-07-01-rhodes-reconfiguring-archive.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 720,
 		widths: [400, 800]
 	},
 	'communications/slides/2026-09-23-stellenbosch-mcp-glam-africains.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 720,
 		widths: [400, 800]
 	},
 	'communications/union-islamique-benin-elections-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 675,
 		widths: [400, 800]
 	},
 	'communications/union-islamique-benin-elections.webp': {
 		sourceWidth: 600,
+		sourceHeight: 450,
 		widths: [400]
 	},
 	'communications/University_of_Texas_at_Austin_seal-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 900,
 		widths: [400, 800]
 	},
 	'communications/University_of_Texas_at_Austin_seal.webp': {
 		sourceWidth: 600,
+		sourceHeight: 600,
 		widths: [400]
 	},
 	'communications/VWST-logo.webp': {
 		sourceWidth: 548,
+		sourceHeight: 177,
 		widths: [400]
 	},
 	'communications/workshop-Dakar-2019-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 674,
 		widths: [400, 800]
 	},
 	'communications/workshop-Dakar-2019.webp': {
 		sourceWidth: 600,
+		sourceHeight: 449,
 		widths: [400]
 	},
 	'communications/workshop-religion-in-higher-educational-institutions-2021-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 600,
 		widths: [400, 800]
 	},
 	'communications/workshop-religion-in-higher-educational-institutions-2021.webp': {
 		sourceWidth: 600,
+		sourceHeight: 400,
 		widths: [400]
 	},
 	'communications/workshop-religions-on-campus-2022-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 600,
 		widths: [400, 800]
 	},
 	'communications/workshop-religions-on-campus-2022.webp': {
 		sourceWidth: 600,
+		sourceHeight: 400,
 		widths: [400]
 	},
 	'communications/young-muslims-civic-engagement-burkina-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1161,
 		widths: [400, 800]
 	},
 	'communications/young-muslims-civic-engagement-burkina.webp': {
 		sourceWidth: 600,
+		sourceHeight: 774,
 		widths: [400]
 	},
 	'communications/yovo-historian-benin-togo-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 675,
 		widths: [400, 800]
 	},
 	'communications/yovo-historian-benin-togo.webp': {
 		sourceWidth: 600,
+		sourceHeight: 450,
 		widths: [400]
 	},
 	'communications/zmo-kitchen-talks-logo.webp': {
 		sourceWidth: 224,
+		sourceHeight: 225,
 		widths: []
 	},
 	'communications/zmo-kitchen-talks-podcast-2025.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 960,
 		widths: [400, 800]
 	},
 	'communications/zzf-logo-hero.webp': {
 		sourceWidth: 900,
+		sourceHeight: 1309,
 		widths: [400, 800]
 	},
 	'communications/zzf-logo.webp': {
 		sourceWidth: 600,
+		sourceHeight: 872,
 		widths: [400]
 	},
 	'digital-humanities/amira.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 695,
 		widths: [400, 800]
 	},
 	'digital-humanities/burkina-faso-digital-exhibits.webp': {
 		sourceWidth: 1200,
+		sourceHeight: 679,
 		widths: [400, 800]
 	},
 	'digital-humanities/dh-ai-african-studies.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 800,
 		widths: [400, 800]
 	},
 	'digital-humanities/genocide-at-the-security-council.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 800,
 		widths: [400, 800]
 	},
 	'digital-humanities/global-heshmat.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 729,
 		widths: [400, 800]
 	},
 	'digital-humanities/islam-burkinafaso-banner.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 533,
 		widths: [400, 800]
 	},
 	'digital-humanities/iwac-ai-pipelines.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 746,
 		widths: [400, 800]
 	},
 	'digital-humanities/iwac-mcp-server.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 816,
 		widths: [400, 800]
 	},
 	'digital-humanities/iwac-sentiment-analysis.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 800,
 		widths: [400, 800]
 	},
 	'digital-humanities/IWAC.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 696,
 		widths: [400, 800]
 	},
 	'digital-humanities/live-translation.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 821,
 		widths: [400, 800]
 	},
 	'digital-humanities/omeka-s-docker.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 732,
 		widths: [400, 800]
 	},
 	'digital-humanities/remoboko.webp': {
 		sourceWidth: 1000,
+		sourceHeight: 480,
 		widths: [400, 800]
 	},
 	'digital-humanities/zmo-ai-pipelines.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 787,
 		widths: [400, 800]
 	},
 	'digital-humanities/zmo-visualisations.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 826,
 		widths: [400, 800]
 	},
 	'Profile-picture.webp': {
 		sourceWidth: 300,
+		sourceHeight: 300,
 		widths: []
 	},
 	'publications/acteurs-religieux-numerique-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1203,
 		widths: [400]
 	},
 	'publications/acteurs-religieux-numerique.webp': {
 		sourceWidth: 600,
+		sourceHeight: 902,
 		widths: [400]
 	},
 	'publications/africa-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1200,
 		widths: [400]
 	},
 	'publications/africa-today-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1204,
 		widths: [400]
 	},
 	'publications/africa-today.webp': {
 		sourceWidth: 600,
+		sourceHeight: 903,
 		widths: [400]
 	},
 	'publications/africa.webp': {
 		sourceWidth: 600,
+		sourceHeight: 900,
 		widths: [400]
 	},
 	'publications/bulletin-franco-paix-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1035,
 		widths: [400]
 	},
 	'publications/bulletin-franco-paix.webp': {
 		sourceWidth: 600,
+		sourceHeight: 776,
 		widths: [400]
 	},
 	'publications/Cahiers-détudes-africaines-229-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1201,
 		widths: [400]
 	},
 	'publications/Cahiers-détudes-africaines-229.webp': {
 		sourceWidth: 600,
+		sourceHeight: 901,
 		widths: [400]
 	},
 	'publications/canadian-journal-of-african-studies-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1138,
 		widths: [400]
 	},
 	'publications/canadian-journal-of-african-studies.webp': {
 		sourceWidth: 600,
+		sourceHeight: 854,
 		widths: [400]
 	},
 	'publications/digital-history-bielefeld-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 800,
 		widths: [400]
 	},
 	'publications/digital-history-bielefeld.webp': {
 		sourceWidth: 800,
+		sourceHeight: 800,
 		widths: [400]
 	},
 	'publications/dissertation-cote-ivoire-burkina-faso-2018-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1035,
 		widths: [400]
 	},
 	'publications/dissertation-cote-ivoire-burkina-faso-2018.webp': {
 		sourceWidth: 600,
+		sourceHeight: 776,
 		widths: [400]
 	},
 	'publications/encyclopaedia-of-islam-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1180,
 		widths: [400]
 	},
 	'publications/encyclopaedia-of-islam.webp': {
 		sourceWidth: 600,
+		sourceHeight: 885,
 		widths: [400]
 	},
 	'publications/imams-ouagadougou-2020-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1148,
 		widths: [400]
 	},
 	'publications/imams-ouagadougou-2020.webp': {
 		sourceWidth: 600,
+		sourceHeight: 861,
 		widths: [400]
 	},
 	'publications/islam-politique-ouagadougou-2013-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1035,
 		widths: [400]
 	},
 	'publications/islam-politique-ouagadougou-2013.webp': {
 		sourceWidth: 600,
+		sourceHeight: 776,
 		widths: [400]
 	},
 	'publications/journal-des-anthropologues-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1185,
 		widths: [400]
 	},
 	'publications/journal-des-anthropologues.webp': {
 		sourceWidth: 600,
+		sourceHeight: 889,
 		widths: [400]
 	},
 	'publications/journal-of-religion-in-africa-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1200,
 		widths: [400]
 	},
 	'publications/journal-of-religion-in-africa.webp': {
 		sourceWidth: 600,
+		sourceHeight: 900,
 		widths: [400]
 	},
 	'publications/muslim-minorities-africa-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1212,
 		widths: [400]
 	},
 	'publications/muslim-minorities-africa.webp': {
 		sourceWidth: 600,
+		sourceHeight: 908,
 		widths: [400]
 	},
 	'publications/muslim-ngos-burkina-faso-2016.avif': {
 		sourceWidth: 410,
+		sourceHeight: 648,
 		widths: [400]
 	},
 	'publications/plan-brouillon-2021-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1199,
 		widths: [400]
 	},
 	'publications/plan-brouillon-2021.webp': {
 		sourceWidth: 600,
+		sourceHeight: 899,
 		widths: [400]
 	},
 	'publications/religieux-internet-burkina-faso-2019-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1200,
 		widths: [400]
 	},
 	'publications/religieux-internet-burkina-faso-2019.webp': {
 		sourceWidth: 600,
+		sourceHeight: 900,
 		widths: [400]
 	},
 	'publications/religion-internet-burkina-faso-2024-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1202,
 		widths: [400]
 	},
 	'publications/religion-internet-burkina-faso-2024.webp': {
 		sourceWidth: 600,
+		sourceHeight: 901,
 		widths: [400]
 	},
 	'publications/religions-numeriques-afrique-2018-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1002,
 		widths: [400]
 	},
 	'publications/religions-numeriques-afrique-2018.webp': {
 		sourceWidth: 600,
+		sourceHeight: 751,
 		widths: [400]
 	},
 	'publications/religiosity-university-campuses-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1152,
 		widths: [400]
 	},
 	'publications/religiosity-university-campuses.webp': {
 		sourceWidth: 600,
+		sourceHeight: 864,
 		widths: [400]
 	},
 	'publications/religious-activism-campuses-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1188,
 		widths: [400]
 	},
 	'publications/religious-activism-campuses.webp': {
 		sourceWidth: 600,
+		sourceHeight: 891,
 		widths: [400]
 	},
 	'publications/repenser-categorisation-religieuse-benin.webp': {
 		sourceWidth: 331,
+		sourceHeight: 500,
 		widths: []
 	},
 	'publications/revue-d-histoire-contemporaine-de-l-afrique-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 788,
 		widths: [400]
 	},
 	'publications/revue-d-histoire-contemporaine-de-l-afrique.webp': {
 		sourceWidth: 600,
+		sourceHeight: 591,
 		widths: [400]
 	},
 	'publications/salafisme-cote-ivoire-2017-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1035,
 		widths: [400]
 	},
 	'publications/salafisme-cote-ivoire-2017.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1035,
 		widths: [400]
 	},
 	'publications/sphere-publique-musulmane-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1200,
 		widths: [400]
 	},
 	'publications/sphere-publique-musulmane.webp': {
 		sourceWidth: 600,
+		sourceHeight: 900,
 		widths: [400]
 	},
 	'publications/the-journal-of-modern-african-studies-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1200,
 		widths: [400]
 	},
 	'publications/the-journal-of-modern-african-studies.webp': {
 		sourceWidth: 600,
+		sourceHeight: 900,
 		widths: [400]
 	},
 	'publications/Theologiques-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1203,
 		widths: [400]
 	},
 	'publications/Theologiques.webp': {
 		sourceWidth: 600,
+		sourceHeight: 902,
 		widths: [400]
 	},
 	'publications/three-questions-madore-2022-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 452,
 		widths: [400]
 	},
 	'publications/three-questions-madore-2022.webp': {
 		sourceWidth: 600,
+		sourceHeight: 339,
 		widths: [400]
 	},
 	'publications/zmo-bulletin-44-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1131,
 		widths: [400]
 	},
 	'publications/zmo-bulletin-44.webp': {
 		sourceWidth: 600,
+		sourceHeight: 848,
 		widths: [400]
 	},
 	'publications/zmo-bulletin-46-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1131,
 		widths: [400]
 	},
 	'publications/zmo-bulletin-46.webp': {
 		sourceWidth: 600,
+		sourceHeight: 848,
 		widths: [400]
 	},
 	'publications/zmo-bulletin-48-conversation-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1131,
 		widths: [400]
 	},
 	'publications/zmo-bulletin-48-conversation.webp': {
 		sourceWidth: 600,
+		sourceHeight: 848,
 		widths: [400]
 	},
 	'publications/zmo-bulletin-48-decentering-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 622,
 		widths: [400]
 	},
 	'publications/zmo-bulletin-48-decentering.webp': {
 		sourceWidth: 600,
+		sourceHeight: 466,
 		widths: [400]
 	},
 	'publications/zmo-jahrbuch-hero.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1040,
 		widths: [400]
 	},
 	'publications/zmo-jahrbuch.webp': {
 		sourceWidth: 800,
+		sourceHeight: 1040,
 		widths: [400]
 	},
 	'research/campus-activism.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 960,
 		widths: [400, 800]
 	},
 	'research/dre.webp': {
 		sourceWidth: 1600,
+		sourceHeight: 869,
 		widths: [400, 800]
 	},
 	'research/islams-peripheries.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 1280,
 		widths: [400, 800]
 	},
 	'research/IWAC.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 720,
 		widths: [400, 800]
 	},
 	'research/muslim-minorities.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 622,
 		widths: [400, 800]
 	},
 	'research/youth-women-activism.webp': {
 		sourceWidth: 1280,
+		sourceHeight: 960,
 		widths: [400, 800]
 	},
 	'teaching/guest-lecture.webp': {
 		sourceWidth: 1920,
+		sourceHeight: 1274,
 		widths: [400, 800, 1600]
 	},
 	'teaching/university-of-florida-logo.png': {
 		sourceWidth: 226,
+		sourceHeight: 43,
 		widths: []
 	},
 	'teaching/uottawa.png': {
 		sourceWidth: 179,
+		sourceHeight: 48,
 		widths: []
 	}
 };

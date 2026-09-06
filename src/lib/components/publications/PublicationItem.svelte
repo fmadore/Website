@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Publication } from '$lib/types/publication';
-	import { resolve } from '$app/paths';
+	import { base, resolve } from '$app/paths';
+	import { buildSrcset, resolveImagePath } from '$lib/utils/imageVariants';
 	import { truncateAbstract } from '$lib/utils/textUtils';
 	// Import the necessary functions from the new formatter
 	import { formatCitation, getAuthorsArray } from '$lib/utils/citationFormatter';
@@ -87,6 +88,15 @@
 	// Reactive computation using the citation formatter
 	const formattedCitation = $derived(formatCitation(publication)); // Define structure for display list items
 	const publicationHref = $derived(resolve('/publications/[id]', { id: publication.id }));
+
+	// Card cover: capped at 12rem (9rem under --sm-down), 16rem for the
+	// editorial lead — so the 400w derivative serves the cards and the 800w
+	// the lead, whatever the pixel density; `sizes` states those widths.
+	const coverSrc = $derived(resolveImagePath(publication.image, base));
+	const coverSrcset = $derived(buildSrcset(coverSrc));
+	const coverSizes = $derived(
+		editorial ? '(max-width: 640px) 144px, 256px' : '(max-width: 640px) 144px, 192px'
+	);
 	const tagFilterBase = $derived(`${resolve('/publications')}?tag=`);
 
 	// ── Bibliography mode helpers ──────────────────────────────────────────────
@@ -274,7 +284,9 @@
 						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
 						<a href={publicationHref} data-sveltekit-preload-code="tap">
 							<img
-								src={publication.image}
+								src={coverSrc}
+								srcset={coverSrcset}
+								sizes={coverSrcset ? coverSizes : undefined}
 								alt={headingTitle}
 								class="entity-cover-image"
 								width="200"
