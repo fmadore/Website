@@ -27,6 +27,7 @@ export const madoreIslamPolitiqueOuagadougou2013: Publication = {
 		'West Africa'
 	],
 	url: 'https://corpus.ulaval.ca/jspui/handle/20.500.11794/24012',
+	openAccess: true,
 	image: 'images/publications/islam-politique-ouagadougou-2013.webp',
 	heroImage: {
 		src: 'images/publications/islam-politique-ouagadougou-2013-hero.webp',

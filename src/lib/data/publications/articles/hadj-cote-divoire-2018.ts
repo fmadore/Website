@@ -30,6 +30,7 @@ export const hadjCoteDIvoire: Publication = {
 		'West Africa'
 	],
 	url: 'https://doi.org/10.4000/etudesafricaines.21880',
+	openAccess: true,
 	image: 'images/publications/Cahiers-détudes-africaines-229.webp',
 	heroImage: {
 		src: 'images/publications/Cahiers-détudes-africaines-229-hero.webp',

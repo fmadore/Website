@@ -65,6 +65,8 @@ export interface BaseJsonLd {
 	copyrightYear?: number;
 	inLanguage?: string;
 	spatialCoverage?: JsonLdPlace[];
+	/** schema.org's open-access flag. Emitted only when the work is free to read. */
+	isAccessibleForFree?: boolean;
 }
 
 // --- Publication-Specific Types ---

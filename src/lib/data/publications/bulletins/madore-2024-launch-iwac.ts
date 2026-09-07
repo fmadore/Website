@@ -19,6 +19,7 @@ export const madore2024LaunchIwac: Publication = {
 		"On 9 November 2023, the Islam West Africa Collection (IWAC) was officially launched at the offices of Media in Cooperation and Transition (MiCT) in Berlin. Directed by Frédérick Madore (ZMO), the IWAC is a collaborative, open-access digital database that currently contains over 5,000 archival documents, newspaper articles, Islamic publications of various kinds, audio and video recordings, and photographs on Islam and Muslims in Burkina Faso, Benin, Niger, Nigeria, Togo, and Côte d'Ivoire. The site also indexes over 800 relevant bibliographic references. This project was funded by the Berlin Senate Department for Science, Health, and Care.",
 	tags: ['Event Report', 'Digital Humanities', 'Islam', 'IWAC', 'West Africa', 'Archives'],
 	url: 'https://doi.org/10.58144/20240415-000',
+	openAccess: true,
 	image: 'images/publications/zmo-bulletin-44.webp',
 	heroImage: {
 		src: 'images/publications/zmo-bulletin-44-hero.webp',

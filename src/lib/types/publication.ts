@@ -56,6 +56,13 @@ export type Publication = {
 	doi?: string; // DOI for articles
 	abstract?: string; // Abstract or description (optional)
 	url?: string; // Optional: external URL if applicable
+	/**
+	 * True only when the full text is freely readable — a repository copy, a
+	 * gold/diamond OA journal, an OA book. NOT implied by having a `doi` or a
+	 * `url`: most `url`s point at a publisher's catalogue page, which is a
+	 * paywall, not open access. Authored per record; never derived.
+	 */
+	openAccess?: boolean;
 	additionalUrls?: Array<{ label: string; url: string }>; // Additional URLs with labels
 	tags?: string[]; // Optional tags for categorization
 	image?: string; // Optional cover image path

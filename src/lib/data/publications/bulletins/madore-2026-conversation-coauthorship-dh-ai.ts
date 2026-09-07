@@ -16,6 +16,7 @@ export const madore2026ConversationCoauthorshipDhAi: Publication = {
 	pageCount: 1,
 	language: 'English',
 	doi: '10.58144/20260430-000',
+	openAccess: true,
 	abstract:
 		'On 18–20 February 2026, twenty-six researchers from sixteen countries gathered at the Xplanatorium Herrenhausen in Hanover for "Charting New Territory: Digital Humanities and AI in African Studies," a scoping workshop funded by the VolkswagenStiftung and organised by Frédérick Madore and Vincent Hiribarren (King\'s College London). Participants included linguists, literary scholars, historians, art historians, anthropologists, archivists, AI governance specialists, Islamic studies scholars, and digital humanities practitioners working across the African continent, Europe, and North America.',
 	tags: ['Workshop Report', 'Digital Humanities', 'Artificial Intelligence', 'African Studies'],

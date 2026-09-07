@@ -12,6 +12,7 @@ export const chartingNewTerritoryDigitalHumanitiesKiAfricanStudies: Publication 
 	publisher: 'Digital History Bielefeld',
 	language: 'German',
 	doi: '10.58079/15z9p',
+	openAccess: true,
 	tags: [
 		'Digital Humanities',
 		'Artificial Intelligence',

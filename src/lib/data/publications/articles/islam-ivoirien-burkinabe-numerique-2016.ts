@@ -28,6 +28,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 		'West Africa'
 	],
 	url: 'https://doi.org/10.4000/jda.6525',
+	openAccess: true,
 	image: 'images/publications/journal-des-anthropologues.webp',
 	heroImage: {
 		src: 'images/publications/journal-des-anthropologues-hero.webp',

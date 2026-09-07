@@ -25,6 +25,7 @@ export const planBrouillonStructurerIdees: Publication = {
 		'Decolonial Approach'
 	],
 	url: 'https://scienceetbiencommun.pressbooks.pub/projetthese/chapter/faire-une-table-des-matieres/',
+	openAccess: true,
 	image: 'images/publications/plan-brouillon-2021.webp',
 	heroImage: {
 		src: 'images/publications/plan-brouillon-2021-hero.webp',

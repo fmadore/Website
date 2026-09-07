@@ -27,6 +27,7 @@ export const islamBurkinaCollection: Publication = {
 		'IWAC'
 	],
 	url: 'https://doi.org/10.51185/journals/rhca.2021.e610',
+	openAccess: true,
 	image: 'images/publications/revue-d-histoire-contemporaine-de-l-afrique.webp',
 	heroImage: {
 		src: 'images/publications/revue-d-histoire-contemporaine-de-l-afrique-hero.webp',

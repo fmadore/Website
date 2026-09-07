@@ -29,6 +29,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Africa"
 		],
 		"url": "https://doi.org/10.14428/emulations.024",
+		"openAccess": true,
 		"doi": "10.14428/emulations.024",
 		"image": "images/publications/acteurs-religieux-numerique.webp",
 		"isEditedWork": true,
@@ -145,6 +146,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"publisher": "Digital History Bielefeld",
 		"language": "German",
 		"doi": "10.58079/15z9p",
+		"openAccess": true,
 		"tags": [
 			"Digital Humanities",
 			"Artificial Intelligence",
@@ -236,6 +238,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Universities"
 		],
 		"url": "https://doi.org/10.58144/20241107-000",
+		"openAccess": true,
 		"image": "images/publications/religiosity-university-campuses.webp",
 		"country": [
 			"Togo"
@@ -286,6 +289,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"placeOfPublication": "Berlin",
 		"publisherLocation": "Germany",
 		"language": "English",
+		"openAccess": true,
 		"tags": [
 			"Digital Humanities",
 			"Artificial Intelligence",
@@ -416,6 +420,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Research Methodology"
 		],
 		"url": "https://doi.org/10.14428/emulations.024.008",
+		"openAccess": true,
 		"image": "images/publications/acteurs-religieux-numerique.webp",
 		"abstractExcerpt": "On October 21st, 2017, the editors of this special issue conducted an interview with Rosalind I. J. Hackett, one of the pioneering scholars in the field of media and religion in Africa. The interview took place via Skype ",
 		"citedByCount": 6,
@@ -452,6 +457,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"West Africa"
 		],
 		"url": "https://doi.org/10.4000/etudesafricaines.21880",
+		"openAccess": true,
 		"image": "images/publications/Cahiers-détudes-africaines-229.webp",
 		"country": [
 			"Côte d'Ivoire"
@@ -533,6 +539,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Religion"
 		],
 		"url": "https://doi.org/10.58144/20241107-000",
+		"openAccess": true,
 		"image": "images/publications/religiosity-university-campuses.webp",
 		"citedByCount": 1,
 		"tocAuthors": [],
@@ -565,6 +572,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"IWAC"
 		],
 		"url": "https://doi.org/10.51185/journals/rhca.2021.e610",
+		"openAccess": true,
 		"image": "images/publications/revue-d-histoire-contemporaine-de-l-afrique.webp",
 		"country": [
 			"Burkina Faso"
@@ -603,6 +611,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"West Africa"
 		],
 		"url": "https://doi.org/10.4000/jda.6525",
+		"openAccess": true,
 		"image": "images/publications/journal-des-anthropologues.webp",
 		"country": [
 			"Côte d'Ivoire",
@@ -685,6 +694,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"West Africa"
 		],
 		"url": "https://doi.org/10.58144/20241107-000",
+		"openAccess": true,
 		"image": "images/publications/religiosity-university-campuses.webp",
 		"country": [
 			"Côte d'Ivoire"
@@ -756,6 +766,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"pageCount": 6,
 		"language": "French",
 		"url": "https://dandurand.uqam.ca/publication/lutte-contre-le-terrorisme-et-securitisation-du-salafisme-au-benin-et-au-togo-instrumentalisations-diverses-dune-menace-etrangere/",
+		"openAccess": true,
 		"image": "images/publications/bulletin-franco-paix.webp",
 		"tags": [
 			"Benin",
@@ -803,6 +814,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Archives"
 		],
 		"url": "https://doi.org/10.58144/20240415-000",
+		"openAccess": true,
 		"image": "images/publications/zmo-bulletin-44.webp",
 		"project": "Digital Humanities and AI in African Studies",
 		"abstractExcerpt": "On 9 November 2023, the Islam West Africa Collection (IWAC) was officially launched at the offices of Media in Cooperation and Transition (MiCT) in Berlin. Directed by Frédérick Madore (ZMO), the IWAC is a collaborative, ",
@@ -835,6 +847,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Decolonial Approach"
 		],
 		"url": "https://doi.org/10.58144/20250401-000",
+		"openAccess": true,
 		"image": "images/publications/zmo-bulletin-46.webp",
 		"project": "",
 		"abstractExcerpt": "The workshop organised by the Religion and Intellectual Culture unit at ZMO explored how non-Western epistemologies hallenge and enrich dominant paradigms in decolonial knowledge production. Opening remarks by Arpan Roy, ",
@@ -859,6 +872,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"pageCount": 1,
 		"language": "English",
 		"doi": "10.58144/20260430-000",
+		"openAccess": true,
 		"tags": [
 			"Workshop Report",
 			"Digital Humanities",
@@ -897,6 +911,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Religion"
 		],
 		"url": "",
+		"openAccess": true,
 		"image": "images/publications/zmo-bulletin-48-decentering.webp",
 		"project": "",
 		"abstractExcerpt": "The cross-regional workshop, organised by the Religion and Intellectual Culture unit, convened scholars from Indonesia, the United States, South Africa, the Netherlands, Senegal and Germany. The participants examined how ",
@@ -930,6 +945,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Open Access"
 		],
 		"doi": "10.58144/20260302-000",
+		"openAccess": true,
 		"image": "images/publications/zmo-jahrbuch.webp",
 		"project": "Digital Humanities and AI in African Studies",
 		"abstractExcerpt": "This article traces the evolution of the Islam West Africa Collection (IWAC) from a private Zotero database into an open-access digital resource hosted at ZMO, and its emerging role as a testing ground for digital humanit",
@@ -963,6 +979,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"West Africa"
 		],
 		"url": "https://corpus.ulaval.ca/jspui/handle/20.500.11794/24012",
+		"openAccess": true,
 		"image": "images/publications/islam-politique-ouagadougou-2013.webp",
 		"advisors": [
 			"Muriel Gomez-Perez"
@@ -1164,6 +1181,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Decolonial Approach"
 		],
 		"url": "https://scienceetbiencommun.pressbooks.pub/projetthese/chapter/faire-une-table-des-matieres/",
+		"openAccess": true,
 		"image": "images/publications/plan-brouillon-2021.webp",
 		"abstractExcerpt": "Ce chapitre fournit quelques conseils afin de vous préparer adéquatement à la rédaction du brouillon à travers trois étapes : la planification avec l’élaboration d’un plan structuré et détaillé contenant les idées princip",
 		"citedByCount": 0,
@@ -1202,6 +1220,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"West Africa"
 		],
 		"url": "https://doi.org/10.7202/1028465ar",
+		"openAccess": true,
 		"image": "images/publications/Theologiques.webp",
 		"country": [
 			"Burkina Faso"
@@ -1314,6 +1333,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Religion"
 		],
 		"url": "https://www.liberation.fr/debats/2018/09/19/religions-numeriques-en-afrique_1816717/",
+		"openAccess": true,
 		"image": "images/publications/religions-numeriques-afrique-2018.webp",
 		"abstractExcerpt": "Questions à Pamela Millet-Mouity, doctorante en Socio-anthropologie politique et religieuse à l'EHESS-Paris, et à Frédérick Madore, chercheur postdoctoral Banting à l'University of Florida. Ils viennent de coordonner un n",
 		"citedByCount": 0,
@@ -1341,6 +1361,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"series": "Afrikanische Studien/African Studies 64",
 		"doi": "10.58144/20241107-000",
 		"url": "https://doi.org/10.58144/20241107-000",
+		"openAccess": true,
 		"tags": [
 			"Religion",
 			"Education",
@@ -1398,6 +1419,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"series": "ZMO-Studien 48",
 		"doi": "10.1515/9783111428895",
 		"url": "https://doi.org/10.1515/9783111428895",
+		"openAccess": true,
 		"tags": [
 			"Religion",
 			"Education",
@@ -1487,6 +1509,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Research Methodology"
 		],
 		"url": "https://doi.org/10.14428/emulations.024.001",
+		"openAccess": true,
 		"image": "images/publications/acteurs-religieux-numerique.webp",
 		"abstractExcerpt": "Depuis l'étude pionnière d'O'Leary (1996) et surtout à partir des années 2000, tout un champ de recherche s'est développé sur la façon dont la religion s'inscrit dans les médias numériques – sites web, forums, blogues, mé",
 		"citedByCount": 4,
@@ -1547,6 +1570,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"pageCount": 419,
 		"language": "French",
 		"url": "http://hdl.handle.net/20.500.11794/33246",
+		"openAccess": true,
 		"tags": [
 			"Côte d'Ivoire",
 			"Burkina Faso",
@@ -1634,6 +1658,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"West Africa"
 		],
 		"url": "https://shs.hal.science/halshs-01691275",
+		"openAccess": true,
 		"image": "images/publications/salafisme-cote-ivoire-2017.webp",
 		"country": [
 			"Côte d'Ivoire"
@@ -1663,6 +1688,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"series": "Religions, cultures et sociétés",
 		"doi": "10.58144/20241205-000",
 		"url": "https://doi.org/10.58144/20241205-000",
+		"openAccess": true,
 		"tags": [
 			"Islam",
 			"Burkina Faso",
@@ -1744,6 +1770,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Universities"
 		],
 		"url": "https://doi.org/10.58079/tldm",
+		"openAccess": true,
 		"image": "images/publications/three-questions-madore-2022.webp",
 		"country": [
 			"Benin",

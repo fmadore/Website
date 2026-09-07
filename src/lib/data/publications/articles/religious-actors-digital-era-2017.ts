@@ -27,6 +27,7 @@ export const religiousActorsDigitalEra: Publication = {
 		'Research Methodology'
 	],
 	url: 'https://doi.org/10.14428/emulations.024.001',
+	openAccess: true,
 	image: 'images/publications/acteurs-religieux-numerique.webp',
 	heroImage: {
 		src: 'images/publications/acteurs-religieux-numerique-hero.webp',

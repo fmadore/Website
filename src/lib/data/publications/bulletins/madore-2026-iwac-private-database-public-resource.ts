@@ -28,6 +28,7 @@ export const madore2026IwacPrivateDatabasePublicResource: Publication = {
 		'Open Access'
 	],
 	doi: '10.58144/20260302-000',
+	openAccess: true,
 	image: 'images/publications/zmo-jahrbuch.webp',
 	heroImage: {
 		src: 'images/publications/zmo-jahrbuch-hero.webp',

@@ -24,6 +24,7 @@ export const acteursReligieuxNumerique: Publication = {
 		'Africa'
 	],
 	url: 'https://doi.org/10.14428/emulations.024',
+	openAccess: true,
 	doi: '10.14428/emulations.024',
 	image: 'images/publications/acteurs-religieux-numerique.webp',
 	heroImage: {

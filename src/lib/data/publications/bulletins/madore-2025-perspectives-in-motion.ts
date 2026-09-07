@@ -26,6 +26,7 @@ export const madore2025PerspectivesInMotion: Publication = {
 		'Decolonial Approach'
 	],
 	url: 'https://doi.org/10.58144/20250401-000',
+	openAccess: true,
 	image: 'images/publications/zmo-bulletin-46.webp',
 	heroImage: {
 		src: 'images/publications/zmo-bulletin-46-hero.webp',

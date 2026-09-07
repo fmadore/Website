@@ -50,10 +50,10 @@
 	// breadcrumb and the masthead eyebrow as well as in the aside ledger.
 	const typeLabel = $derived(typesetQuotes(getPublicationTypeBadge(publication.type)));
 
-	// Open-access marker: any publication that exposes a DOI/URL we can send the
-	// reader to is treated as freely accessible here (the site only lists the
-	// author's own open work). Shown as the third eyebrow token when present.
-	const isOpenAccess = $derived(Boolean(publication.doi || publication.url));
+	// Open-access marker, shown as the third eyebrow token. An authored fact on
+	// the record (`openAccess`), never inferred from having a DOI or a URL —
+	// most bare URLs point at a publisher's catalogue page, which is a paywall.
+	const isOpenAccess = $derived(publication.openAccess === true);
 
 	// Internal research page for this publication's project, resolved from the
 	// research dataset so a new project links itself.
@@ -137,10 +137,16 @@
 					<span>{publication.date}</span>
 					{#if isOpenAccess}
 						<span class="pub-eyebrow-sep" aria-hidden="true">·</span>
-						<span class="pub-eyebrow-oa">
-							<Icon icon="academicons:open-access" class="pub-eyebrow-icon" aria-hidden="true" />
-							Open Access
-						</span>
+						<!-- No whitespace between the mark and the word: a text node there
+						     collapses to a mono space on top of the mark's own margin, which
+						     doubled the gap. -->
+						<span class="pub-eyebrow-oa"
+							><Icon
+								icon="academicons:open-access"
+								class="pub-eyebrow-icon"
+								aria-hidden="true"
+							/>Open Access</span
+						>
 					{/if}
 				</p>
 
@@ -334,16 +340,26 @@
 	}
 
 	/* Open-access token — the Academicons lock ahead of the word, inline SVG in
-	   the eyebrow's own colour. */
+	   the eyebrow's own colour. Deliberately NOT a flex box: the eyebrow aligns
+	   its tokens on the baseline, and an inline-flex box donates its first
+	   child's baseline — the glyph's bottom edge — which dropped the mark below
+	   the mono caps. As inline text the span keeps its own baseline and the
+	   glyph is seated against it by `vertical-align`. */
 	.pub-eyebrow-oa {
-		display: inline-flex;
-		align-items: center;
-		gap: var(--space-1);
+		white-space: nowrap;
 	}
 
+	/* The Academicons lock is a 1:2 glyph (viewBox 256×512) whose ink fills the
+	   middle 75% of its box, so `width: auto` keeps it from carrying half a box
+	   of dead space beside the word. Centring the box on the cap band then falls
+	   out of the geometry: the caps are 0.75em tall and sit on the baseline, so
+	   their midpoint is 0.375em above it, and a 1.15em box hits that midpoint at
+	   `vertical-align: 1.15em / 2 − 0.375em = −0.2em`. */
 	.pub-eyebrow-oa :global(.pub-eyebrow-icon) {
-		width: 1.2em;
-		height: 1.2em;
+		width: auto;
+		height: 1.15em;
+		vertical-align: -0.2em;
+		margin-right: 0.45em;
 	}
 
 	.pub-title {

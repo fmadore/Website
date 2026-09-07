@@ -145,9 +145,10 @@
 		}
 	});
 
-	// A DOI/URL means we can send the reader to the freely-accessible copy — the
-	// site only lists the author's own open work. Same rule as the detail page.
-	const isOpenAccess = $derived(Boolean(publication.doi || publication.url));
+	// Open access is an authored fact (`openAccess`), never inferred from having
+	// a link: most bare `url`s go to a publisher's catalogue page, which is a
+	// paywall. Same rule as the detail page.
+	const isOpenAccess = $derived(publication.openAccess === true);
 	const openHref = $derived(
 		publication.doi ? `https://doi.org/${publication.doi}` : (publication.url ?? undefined)
 	);
@@ -163,24 +164,25 @@
 		publication.abstractExcerpt ? truncateAbstract(publication.abstractExcerpt, 180) : ''
 	);
 
-	// Right-aligned action column: the freely-accessible copy (DOI or URL) as
-	// the primary action, opened by the matching Academicons mark (the DOI
-	// glyph for a resolver link, the open-access lock for a plain URL);
-	// BibliographyRow appends the internal "Cite" link.
-	const bibActions = $derived<BibliographyAction[]>(
-		isOpenAccess && openHref
-			? [
-					publication.doi
-						? { href: openHref, label: 'DOI ↗', primary: true, icon: 'academicons:doi' }
-						: {
-								href: openHref,
-								label: 'Open Access ↗',
-								primary: true,
-								icon: 'academicons:open-access'
-							}
-				]
-			: []
+	// Right-aligned action column: one primary action naming where the link
+	// actually goes, marked with the matching glyph — the DOI mark for a
+	// resolver link, the open-access lock for a free full text, the globe for a
+	// publisher's catalogue page. BibliographyRow appends the internal "Cite".
+	const bibAction = $derived<BibliographyAction | null>(
+		!openHref
+			? null
+			: publication.doi
+				? { href: openHref, label: 'DOI ↗', primary: true, icon: 'academicons:doi' }
+				: isOpenAccess
+					? {
+							href: openHref,
+							label: 'Open Access ↗',
+							primary: true,
+							icon: 'academicons:open-access'
+						}
+					: { href: openHref, label: 'Publisher ↗', primary: true, icon: 'mdi:web' }
 	);
+	const bibActions = $derived<BibliographyAction[]>(bibAction ? [bibAction] : []);
 	interface DisplayListItem {
 		name: string;
 		isClickable: boolean;

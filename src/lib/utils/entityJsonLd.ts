@@ -123,7 +123,10 @@ export function buildPublicationJsonLd(
 		description: plainAbstract(publication.abstract),
 		url: `${base}/publications/${publication.id}`,
 		copyrightYear: publication.year,
-		inLanguage: publication.language
+		inLanguage: publication.language,
+		// Only asserted, never denied: a record without the flag is one whose
+		// access we have not recorded, not one we know to be paywalled.
+		isAccessibleForFree: publication.openAccess === true ? true : undefined
 	};
 
 	if (publication.country && publication.country.length > 0) {

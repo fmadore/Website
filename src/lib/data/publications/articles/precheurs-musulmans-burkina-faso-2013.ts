@@ -32,6 +32,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 		'West Africa'
 	],
 	url: 'https://doi.org/10.7202/1028465ar',
+	openAccess: true,
 	image: 'images/publications/Theologiques.webp',
 	heroImage: {
 		src: 'images/publications/Theologiques-hero.webp',

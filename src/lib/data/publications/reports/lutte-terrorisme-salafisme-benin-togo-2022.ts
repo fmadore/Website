@@ -17,6 +17,7 @@ export const lutteTerrorismeSalafismeBeninTogo: Publication = {
 	pageCount: 6,
 	language: 'French',
 	url: 'https://dandurand.uqam.ca/publication/lutte-contre-le-terrorisme-et-securitisation-du-salafisme-au-benin-et-au-togo-instrumentalisations-diverses-dune-menace-etrangere/',
+	openAccess: true,
 	image: 'images/publications/bulletin-franco-paix.webp',
 	heroImage: {
 		src: 'images/publications/bulletin-franco-paix-hero.webp',

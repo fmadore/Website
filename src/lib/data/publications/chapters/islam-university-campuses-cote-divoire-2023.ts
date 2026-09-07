@@ -32,6 +32,7 @@ export const islamUniversityCampusesCoteDIvoire: Publication = {
 		'West Africa'
 	],
 	url: 'https://doi.org/10.58144/20241107-000',
+	openAccess: true,
 	image: 'images/publications/religiosity-university-campuses.webp',
 	heroImage: {
 		src: 'images/publications/religiosity-university-campuses-hero.webp',

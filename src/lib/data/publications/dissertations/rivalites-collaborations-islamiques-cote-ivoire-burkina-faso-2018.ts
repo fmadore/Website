@@ -14,6 +14,7 @@ export const rivalitesCollaborationsIslam: Publication = {
 	pageCount: 419,
 	language: 'French',
 	url: 'http://hdl.handle.net/20.500.11794/33246',
+	openAccess: true,
 	tags: [
 		"Côte d'Ivoire",
 		'Burkina Faso',
