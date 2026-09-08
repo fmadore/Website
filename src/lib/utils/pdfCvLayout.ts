@@ -17,6 +17,9 @@ import { FONT_SIZE, SPACING, RULE, COLORS, LETTER_SPACING } from '$lib/utils/pdf
 
 type JsPdf = import('jspdf').jsPDF;
 
+/** Points to millimetres — the sheet is laid out in mm, type is set in pt. */
+const PT_TO_MM = 25.4 / 72;
+
 /** The three Ink + Signal voices resolved to registered jsPDF family names. */
 export interface CvPdfVoices {
 	DISPLAY: string;
@@ -223,7 +226,11 @@ export class CvPdfLayout {
 		pdf.setFontSize(FONT_SIZE.SECTION_HEADING);
 		pdf.setFont(this.voices.DISPLAY, 'bold');
 		pdf.setTextColor(...COLORS.TEXT_EMPHASIS);
-		pdf.text(title, this.margin, this.y);
+		// Seated by its top edge, not its baseline: jsPDF's default baseline
+		// put the 13pt caps ~3.3mm *above* `y`, which is more than the 3.2mm
+		// rule gap — so the rule struck through the head it was meant to open.
+		pdf.text(title, this.margin, this.y, { baseline: 'top' });
+		this.y += FONT_SIZE.SECTION_HEADING * PT_TO_MM;
 
 		pdf.setTextColor(...COLORS.TEXT); // Reset text color
 		this.y += SPACING.SECTION_BOTTOM;
@@ -270,22 +277,47 @@ export class CvPdfLayout {
 		y: number,
 		columnWidth: number,
 		current: boolean = false
-	): void {
+	): number {
 		const { pdf } = this;
 		pdf.setFont(this.voices.MONO, 'normal');
 		pdf.setFontSize(FONT_SIZE.YEAR);
 		// Available width = column minus the x inset minus a ~1mm gutter
 		// before the content column.
 		const maxWidth = columnWidth - (x - this.margin) - 1;
-		const width = pdf.getTextWidth(label);
-		if (width > maxWidth && maxWidth > 0) {
-			pdf.setFontSize(Math.max(6, (FONT_SIZE.YEAR * maxWidth) / width));
+		const text = label.toUpperCase();
+		// A key wider than its column wraps at its spaces, as the web key does —
+		// "2024, 2015, 2014" becomes two lines. Only a single unbreakable word
+		// wider than the column ("FORTHCOMING") shrinks, and no further than 6pt.
+		// Shrinking a multi-year key had left it running under the content.
+		const words = text.split(' ');
+		const widest = Math.max(...words.map((w) => pdf.getTextWidth(w)));
+		if (widest > maxWidth && maxWidth > 0) {
+			pdf.setFontSize(Math.max(6, (FONT_SIZE.YEAR * maxWidth) / widest));
 		}
+		const lines: string[] = [];
+		let line = '';
+		for (const word of words) {
+			const candidate = line ? `${line} ${word}` : word;
+			if (line && maxWidth > 0 && pdf.getTextWidth(candidate) > maxWidth) {
+				lines.push(line);
+				line = word;
+			} else {
+				line = candidate;
+			}
+		}
+		if (line) lines.push(line);
 		pdf.setTextColor(...(current ? COLORS.ACCENT : COLORS.TEXT_MUTED));
-		pdf.text(label.toUpperCase(), x, y);
+		let lineY = y;
+		for (const [i, l] of lines.entries()) {
+			lineY = y + i * SPACING.LINE_HEIGHT_TIGHT;
+			pdf.text(l, x, lineY);
+		}
 		pdf.setTextColor(...COLORS.TEXT);
 		pdf.setFont(this.voices.SERIF, 'normal');
 		pdf.setFontSize(FONT_SIZE.BODY); // reset for following body text
+		// The baseline of the key's last line, so a multi-line key can hold the
+		// row open past a one-line content column.
+		return lineY;
 	}
 
 	/**
@@ -360,8 +392,16 @@ export class CvPdfLayout {
 		this.rule(RULE.HAIRLINE, COLORS.HAIRLINE);
 		this.y += SPACING.ENTRY_PAD_TOP + SPACING.LINE_HEIGHT_TIGHT;
 
-		// Year/Category column (auto-shrinks long labels like "Forthcoming")
-		this.drawYearLabel(year, this.margin + 2, this.y, currentColumnWidth, isCurrent);
+		// Year/Category column (wraps a multi-year key; shrinks only an
+		// unbreakable word like "Forthcoming"). Its last baseline holds the row
+		// open when the key runs longer than the content beside it.
+		const keyBottom = this.drawYearLabel(
+			year,
+			this.margin + 2,
+			this.y,
+			currentColumnWidth,
+			isCurrent
+		);
 
 		// Render main text
 		if (mainFragments.length > 0) {
@@ -404,6 +444,9 @@ export class CvPdfLayout {
 			this.y += idx < paragraphFragments.length - 1 ? SPACING.PARAGRAPH_GAP : 0;
 		});
 
+		// A wrapped key may run past a one-line content column; the row ends
+		// where its longer column ends.
+		this.y = Math.max(this.y, keyBottom);
 		this.y += SPACING.ENTRY_GAP;
 	}
 }

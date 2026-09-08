@@ -56,17 +56,29 @@
 	// positioned and sized to its span across the full research axis — the
 	// periods themselves are the ornament, not a per-year density. Current
 	// projects read in pine, concluded ones in ink.
-	const CAREER_START = 2013;
-	const CAREER_END = 2027;
-	const AXIS_SPAN = CAREER_END - CAREER_START;
+	//
+	// The axis is read off the records, never hardcoded: a constant end year
+	// once sat at 2027 while a project ran to 2028, and its bar overshot the
+	// axis it was supposed to be drawn on. An open-ended period ("2026-") has no
+	// end of its own, so it runs to the latest year any closed period names —
+	// or to the present, if every closed project has already ended.
 	const parseSpan = (/** @type {string} */ years) => {
 		const [rawStart = '', rawEnd] = years.split('-');
 		const start = parseInt(rawStart, 10);
-		const end = rawEnd ? parseInt(rawEnd, 10) : CAREER_END;
-		return { start, end: Number.isNaN(end) ? CAREER_END : end };
+		const end = rawEnd ? parseInt(rawEnd, 10) : Number.NaN;
+		return { start, end: Number.isNaN(end) ? null : end };
 	};
+	const spans = researchProjects.map((p) => parseSpan(p.years));
+	const CAREER_START = Math.min(...spans.map((s) => s.start));
+	const CAREER_END = Math.max(
+		new Date().getFullYear(),
+		...spans.flatMap((s) => (s.end === null ? [] : [s.end]))
+	);
+	const AXIS_SPAN = Math.max(1, CAREER_END - CAREER_START);
 	const timelineBars = researchProjects.map((p) => {
-		const { start, end } = parseSpan(p.years);
+		const span = parseSpan(p.years);
+		const start = span.start;
+		const end = span.end ?? CAREER_END;
 		const left = ((start - CAREER_START) / AXIS_SPAN) * 100;
 		const width = Math.max(((end - start) / AXIS_SPAN) * 100, 4);
 		return { title: p.title, current: !!p.current, left, width };
@@ -243,7 +255,7 @@
 <style>
 	/* Project-period timeline — Gantt bars, one per project, under the intro.
 	 * The periods themselves are the ornament: each bar spans its project's
-	 * years across a shared 2013–2027 axis, current work in pine. */
+	 * years across one axis read off the records, current work in pine. */
 	.periods {
 		margin: var(--space-xl) 0 var(--space-2xl);
 	}

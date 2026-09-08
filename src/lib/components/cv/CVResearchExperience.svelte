@@ -53,7 +53,11 @@
 				<!-- The years are the key and the place is the record. Set inline
 				     as "Place: years" this was the one dated list on the sheet
 				     that hung nothing in the gutter. -->
-				<CVEntry year={item.years.join(', ')}>
+				<!-- A fieldwork key lists every year on site ("2024, 2015, 2014"), which
+				     the 6.5rem year gutter cannot hold on one line: on paper it wrapped a
+				     year per line, three rows tall beside a one-line place. The wide key
+				     column (the same one Computer Skills hangs its categories in) holds it. -->
+				<CVEntry year={item.years.join(', ')} wide>
 					<span class="cv-fieldwork-place">{typesetQuotes(item.location)}</span>
 				</CVEntry>
 			{/each}
