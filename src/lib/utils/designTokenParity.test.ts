@@ -76,6 +76,7 @@ describe('PDF CV tokens match variables.css', () => {
 		['PRIMARY_DARK', '--color-primary-dark'],
 		['ACCENT', '--color-accent'],
 		['TEXT_EMPHASIS', '--color-text-emphasis'],
+		['TEXT', '--color-text'],
 		['TEXT_LIGHT', '--sys-color-ink-muted'],
 		['TEXT_MUTED', '--sys-color-ink-faint'],
 		['BORDER', '--color-border'],
@@ -90,13 +91,19 @@ describe('PDF CV tokens match variables.css', () => {
 	}
 
 	/**
-	 * `TEXT` (#3a352a) is the one value that traces to no token: it is a
-	 * deliberate print-only softening sitting between --color-text (#191509)
-	 * and --color-text-soft (#5c5442). Pinned here so it stays a recorded
-	 * decision rather than becoming another silent drift.
+	 * There are no exceptions left. `TEXT` was one: `#3a352a`, a warm grey that
+	 * traced to no token, defined only in `pdfDesignTokens.ts` and pinned here
+	 * by the 2026-08 audit pending a decision. The decision (roadmap 2.4) was to
+	 * retire it — the system owns three ink steps, the exported CV is the same
+	 * document as the web CV, and the web CV sets its body in `--color-text`.
+	 * The mapping above now covers every entry in COLORS, and this test asserts
+	 * that it keeps doing so: a new hand-copied constant has to be bound to a
+	 * token or deliberately listed, not merely added.
 	 */
-	it('TEXT is the documented print-only body ink', () => {
-		expect(COLORS.TEXT).toEqual([58, 53, 42]);
+	it('binds every PDF colour constant to a token', () => {
+		const mapped = new Set(mapping.map(([constant]) => constant));
+		const unbound = Object.keys(COLORS).filter((key) => !mapped.has(key as keyof typeof COLORS));
+		expect(unbound).toEqual([]);
 	});
 });
 

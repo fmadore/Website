@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { SvelteSet } from 'svelte/reactivity';
+	import { SvelteMap, SvelteSet } from 'svelte/reactivity';
 
 	/**
 	 * Static source of truth for all CV sections.
@@ -28,6 +28,15 @@
 
 	/** Sections currently present in the DOM */
 	let visibleIds = new SvelteSet<string>();
+	/**
+	 * Ledger rows counted per section. Data is the only ornament this system
+	 * allows, and a contents list that says how many records each section holds
+	 * is apparatus rather than chrome — a peer scanning for "how much teaching?"
+	 * gets the answer before jumping. Counted off the rendered DOM rather than
+	 * imported from the datasets: the ToC then reports what the page actually
+	 * shipped, and the eighteen data modules stay out of this chunk.
+	 */
+	let entryCounts = new SvelteMap<string, number>();
 	/** Currently active (in-viewport) section id */
 	let activeId = $state<string>('');
 	/** Panel open state */
@@ -42,9 +51,11 @@
 		// --- Scan DOM for section elements and update visibleIds ---
 		function scanSections() {
 			for (const s of TOC_SECTIONS) {
-				if (!visibleIds.has(s.id) && document.getElementById(s.id)) {
-					visibleIds.add(s.id);
-				}
+				const el = document.getElementById(s.id);
+				if (!el) continue;
+				visibleIds.add(s.id);
+				const count = el.querySelectorAll('.cv-entry').length;
+				if (entryCounts.get(s.id) !== count) entryCounts.set(s.id, count);
 			}
 		}
 		scanSections();
@@ -189,7 +200,10 @@
 							onclick={() => scrollTo(section.id)}
 							aria-current={activeId === section.id ? 'true' : undefined}
 						>
-							{section.label}
+							<span class="cv-toc-label">{section.label}</span>
+							{#if entryCounts.get(section.id)}
+								<span class="cv-toc-count">{entryCounts.get(section.id)}</span>
+							{/if}
 						</button>
 					</li>
 				{/each}
@@ -214,7 +228,6 @@
 	.cv-toc-fab {
 		width: var(--space-12);
 		height: var(--space-12);
-		border-radius: 0;
 		border: var(--border-width-thin) solid var(--color-primary);
 		display: flex;
 		align-items: center;
@@ -251,15 +264,12 @@
 		position: absolute;
 		bottom: calc(var(--space-12) + var(--space-2));
 		left: 0;
-		width: 208px;
+		width: 15rem;
 		max-height: 60vh;
 		overflow-y: auto;
 		padding: var(--space-3);
-		border-radius: 0;
 		background: var(--color-surface-elevated);
 		border: var(--border-width-thin) solid var(--color-border-dark);
-		box-shadow: none;
-		animation: tocSlideUp var(--duration-normal) ease forwards;
 	}
 
 	:global(html.dark) .cv-toc-panel {
@@ -280,17 +290,6 @@
 		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
 
-	@keyframes tocSlideUp {
-		from {
-			opacity: 0;
-			transform: translateY(var(--space-2));
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
 	/* ===================== LIST & LINKS ===================== */
 	.cv-toc-list {
 		list-style: none;
@@ -301,15 +300,18 @@
 		gap: var(--space-px);
 	}
 
-	/* TOC entry — DATA voice: mono, uppercase, letterspaced. A square accent tick
+	/* TOC entry — DATA voice: mono, uppercase, letterspaced, with the section's
+	 * own row count set as a tabular figure on the right. A square accent tick
 	 * marks the active section; no rounded pill, no tinted fill. */
 	.cv-toc-link {
-		display: block;
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: var(--space-2);
 		width: 100%;
 		text-align: left;
 		background: none;
 		border: none;
-		border-radius: 0;
 		padding: var(--space-1) var(--space-2);
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
@@ -319,12 +321,13 @@
 		line-height: var(--line-height-snug);
 		color: var(--color-text-light);
 		cursor: pointer;
-		transition: color var(--duration-normal) var(--ease-out);
+		transition: color var(--duration-fast) var(--ease-out);
 		position: relative;
 	}
 
-	/* Active-section tick — a solid accent bar, zero-scaled until active so the
-	 * highlight slides between sections rather than popping. */
+	/* Active-section tick — a solid accent bar. It used to scale in from zero
+	 * over 300ms so the highlight "slid" between sections; the register is
+	 * print, and a state change here is instant. */
 	.cv-toc-link::before {
 		content: '';
 		position: absolute;
@@ -333,13 +336,7 @@
 		bottom: var(--space-1);
 		width: var(--border-width-medium);
 		background: var(--color-accent);
-		border-radius: 0;
 		opacity: 0;
-		transform: scaleY(0);
-		transform-origin: center;
-		transition:
-			transform var(--duration-normal) var(--ease-out),
-			opacity var(--duration-normal) var(--ease-out);
 	}
 
 	.cv-toc-link:hover {
@@ -353,12 +350,31 @@
 
 	.cv-toc-link.active::before {
 		opacity: 1;
-		transform: scaleY(1);
 	}
 
 	.cv-toc-link:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--border-width-thin);
+	}
+
+	/* The section's own row count — tabular so the column aligns down the list. */
+	.cv-toc-count {
+		font-variant-numeric: tabular-nums;
+		font-weight: var(--font-weight-normal);
+		color: var(--color-text-muted);
+	}
+
+	.cv-toc-link.active .cv-toc-count {
+		color: inherit;
+	}
+
+	/* Coarse pointers get the 44px standing minimum: these are 20px mono caps
+	 * stacked a pixel apart, which is the tightest target list on the site. */
+	@media (--touch) {
+		.cv-toc-link {
+			min-height: var(--space-11);
+			align-items: center;
+		}
 	}
 
 	/* ===================== PRINT & A11Y ===================== */
@@ -370,13 +386,8 @@
 
 	@media (prefers-reduced-motion: reduce) {
 		.cv-toc-link,
-		.cv-toc-link::before,
 		.cv-toc-fab {
 			transition: none;
-		}
-
-		.cv-toc-panel {
-			animation: none;
 		}
 	}
 </style>

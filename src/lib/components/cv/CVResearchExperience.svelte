@@ -48,12 +48,14 @@
 	<!-- Fieldwork Subsection -->
 	<h4>Fieldwork</h4>
 	{#if displayFieldworks.length > 0}
-		<div class="space-y-3 ledger">
+		<div class="space-y-3 ledger ledger--tight ledger--ruled">
 			{#each displayFieldworks as item (item.location)}
-				<div class="cv-fieldwork-row">
-					<span class="cv-fieldwork-place">{typesetQuotes(item.location)}</span>:
-					<span class="cv-fieldwork-years">{item.years.join(', ')}</span>.
-				</div>
+				<!-- The years are the key and the place is the record. Set inline
+				     as "Place: years" this was the one dated list on the sheet
+				     that hung nothing in the gutter. -->
+				<CVEntry year={item.years.join(', ')}>
+					<span class="cv-fieldwork-place">{typesetQuotes(item.location)}</span>
+				</CVEntry>
 			{/each}
 		</div>
 	{:else}
@@ -63,9 +65,9 @@
 	<!-- Research Roles Subsection -->
 	<h4>Research Roles</h4>
 	{#if researchRolesByDate.length > 0}
-		<div class="space-y-3 ledger">
+		<div class="space-y-3 ledger ledger--tight ledger--ruled">
 			{#each researchRolesByDate as role (role.id)}
-				<CVEntry year={formatCVYearRange(role.startYear, role.endYear)} yearWidth="fixed">
+				<CVEntry year={formatCVYearRange(role.startYear, role.endYear)}>
 					<span class="font-medium">{typesetQuotes(role.title)}</span>, {typesetQuotes(
 						role.institution
 					)}.
@@ -85,29 +87,10 @@
 </section>
 
 <style>
-	/* Fieldwork ledger row — serif place, mono years, hairline between rows. */
-	.cv-fieldwork-row {
-		padding: var(--space-2-5) 0;
-		border-top: var(--rule-hairline) solid var(--color-hairline);
-		font-family: var(--font-family-serif);
-		color: var(--color-text-soft);
-		line-height: var(--line-height-relaxed);
-	}
-
-	.cv-fieldwork-row:last-child {
-		border-bottom: var(--rule-hairline) solid var(--color-hairline);
-	}
-
+	/* The place — DOCUMENT voice; the years hang in the key column. */
 	.cv-fieldwork-place {
+		font-family: var(--font-family-serif);
 		font-weight: var(--font-weight-medium);
 		color: var(--color-text-emphasis);
-	}
-
-	.cv-fieldwork-years {
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-sm);
-		letter-spacing: 0.02em;
-		font-variant-numeric: tabular-nums;
-		color: var(--color-text-light);
 	}
 </style>

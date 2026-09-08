@@ -10,7 +10,6 @@
 	items={grantsByDate}
 	year={(grant) => formatCVYearRange(grant.startYear, grant.endYear)}
 	key={(grant) => grant.id}
-	yearWidth="fixed"
 	emptyMessage="No grants or fellowships listed."
 >
 	{#snippet entry(grant)}

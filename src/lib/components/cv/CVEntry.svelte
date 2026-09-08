@@ -3,26 +3,34 @@
 
 	let {
 		year,
-		yearWidth = 'auto',
+		wide = false,
 		current = false,
 		children
 	}: {
+		/** The hanging key: a year, a year range, a period, a classification. */
 		year: string | number;
-		yearWidth?: 'auto' | 'fixed';
-		/** Mark this row's year key as the current/ongoing record (accent). */
+		/** Widen the key column for a classification key (e.g. a skills category). */
+		wide?: boolean;
+		/** Mark this row's key as the current/ongoing record (accent). */
 		current?: boolean;
 		children: Snippet;
 	} = $props();
 </script>
 
 <!--
-	Ledger row — the universal CV record. A hanging mono year/date key sits in the
-	left column, serif content in the right, with a hairline rule between rows.
-	The .cv-entry / .cv-entry-year / .cv-entry-content class hooks are load-bearing:
-	the PDF generator reads them to reconstruct each entry, so they are preserved.
+	Ledger row — the universal CV record, and the shared `.ledger-row` idiom
+	rather than a local copy of it. The CV wraps its rows in
+	`.ledger.ledger--tight.ledger--ruled` (see CVSection and the hand-rolled
+	sections), so the grid, the hairline, the key voice and the narrow-measure
+	collapse all come from ink-signal.css; only the accent key, the reading
+	measure and the wide key column are local.
+
+	The .cv-entry / .cv-entry-year / .cv-entry-content class hooks are
+	load-bearing and ride alongside the idiom classes: the PDF generator reads
+	them to reconstruct each entry, and the print stylesheet keys off them.
 -->
-<div class="cv-entry" class:cv-entry--fixed={yearWidth === 'fixed'}>
-	<div class="cv-entry-year" class:cv-entry-year--current={current}>
+<div class="ledger-row cv-entry" class:cv-entry--wide={wide}>
+	<div class="ledger-key cv-entry-year" class:cv-entry-year--current={current}>
 		{year}
 	</div>
 	<div class="cv-entry-content">
@@ -31,35 +39,22 @@
 </div>
 
 <style>
-	/* Ledger row: narrow mono key column, serif content column, hairline between. */
-	.cv-entry {
-		display: grid;
-		grid-template-columns: var(--cv-key-w, 6rem) 1fr;
-		gap: var(--space-2) var(--space-5);
-		padding: var(--space-2-5) 0;
-		border-top: var(--rule-hairline) solid var(--color-hairline);
-		align-items: baseline;
+	/* A classification key ("Data analysis & visualisation") needs more column
+	 * than a year does. The narrow-measure collapse still applies: below
+	 * `--sm-down` the idiom stacks and the width is moot. */
+	.cv-entry--wide {
+		--ledger-key-w: 15rem;
 	}
 
-	/* Fixed-width variant leaves room for year ranges ("2019–2024", "Forthcoming"). */
-	.cv-entry--fixed {
-		--cv-key-w: 6.5rem;
-	}
-
-	/* Year/date key — DATA voice: mono, letterspaced, quiet ink, tabular figures.
-	 * Long labels ("Forthcoming") wrap within the key column rather than overrun
-	 * into the content column. */
+	/* Tabular figures keep year columns aligned down a 250-row sheet; the
+	 * idiom's key does not assume numerals. */
 	.cv-entry-year {
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-medium);
-		letter-spacing: 0.04em;
 		font-variant-numeric: tabular-nums;
-		color: var(--color-text-light);
-		line-height: var(--line-height-snug);
 	}
 
-	/* Current/ongoing record — accent, the site's scarce signal colour. */
+	/* Current/ongoing record — accent, the site's scarce signal colour. Two
+	 * keys on the whole page carry it: the standing appointment and the
+	 * running affiliation. */
 	.cv-entry-year--current {
 		color: var(--color-accent);
 		font-weight: var(--font-weight-semibold);
@@ -72,19 +67,11 @@
 	}
 
 	/* The reading measure goes on the prose, not on the column. CV entries carry
-	 * the site's longest descriptions — over 140 characters a line uncapped — but
-	 * the column also holds mono address rows, and narrowing those only makes
-	 * them wrap, which stacks 15px link targets closer than the 24px WCAG 2.5.8
-	 * asks for. Cap what is read; leave what is scanned. */
+	 * the site's longest descriptions — over 140 characters a line uncapped —
+	 * but the column also holds mono address rows, and narrowing those only
+	 * makes them wrap, which stacks 15px link targets closer than the 24px WCAG
+	 * 2.5.8 asks for. Cap what is read; leave what is scanned. */
 	.cv-entry-content :global(.text-sm) {
 		max-width: var(--measure-prose);
-	}
-
-	/* On narrow viewports the two columns stack: key becomes an overline. */
-	@media (--sm-down) {
-		.cv-entry {
-			grid-template-columns: 1fr;
-			gap: var(--space-1);
-		}
 	}
 </style>

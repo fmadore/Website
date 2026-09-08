@@ -1,4 +1,5 @@
 import type { jsPDF } from 'jspdf';
+import { COLORS } from '$lib/utils/pdfDesignTokens';
 
 export interface TextFragment {
 	text: string;
@@ -211,7 +212,9 @@ export const renderRichText = (
 	defaultLineHeight: number,
 	baseFont: string = defaultBaseFont,
 	boldColor?: [number, number, number],
-	textColor: [number, number, number] = [0, 0, 0]
+	// Ink, never pure black: nothing in this palette is #000, on screen or on
+	// paper (DESIGN.md, The Warm Ground Rule).
+	textColor: [number, number, number] = [...COLORS.TEXT]
 ): number => {
 	let currentX = x;
 	let currentY = y;
@@ -279,6 +282,10 @@ export const renderRichText = (
 
 /**
  * Calculates the height required for rich text without rendering it.
+ *
+ * The default font must be the same one `renderRichText` will use: this
+ * measured in Helvetica while the CV rendered in Newsreader, so every line
+ * count that decided a page break was taken against the wrong metrics.
  */
 export const measureRichTextHeight = (
 	pdf: jsPDF,
@@ -286,7 +293,7 @@ export const measureRichTextHeight = (
 	width: number,
 	fontSize: number,
 	lineHeight: number,
-	baseFont: string = 'helvetica'
+	baseFont: string = defaultBaseFont
 ): number => {
 	let currentX = 0; // Relative X
 	let lines = 1;

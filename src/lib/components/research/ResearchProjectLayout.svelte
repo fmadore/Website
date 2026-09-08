@@ -1,43 +1,40 @@
 <!--
-ResearchProjectLayout - Shared layout for research project pages
+ResearchProjectLayout — the shell for a research-project dossier.
 
-Ink + Signal dossier layout (mockup 2b). A two-column record:
+A research project is a record like any other, so this is a *composition* over
+`<RecordLayout>` rather than a second implementation of it. The shell supplies
+the breadcrumb, the mono-eyebrow/Archivo masthead, the `minmax(0,1fr) 380px`
+grid with its sticky rail and its single-column order choreography, and the
+JSON-LD apparatus. What is left here is what only a research project has:
 
-  MAIN (1fr)                              ASIDE (380px)
-  ┌───────────────────────────────┐      ┌─────────────────────┐
-  │ eyebrow · years · funder      │      │ Fig. 1 — plate      │
-  │ H1 (Archivo)                  │      │ metadata ledger     │
-  │ serif-italic subtitle         │      │ source languages    │
-  │ prose (drop-cap first ¶,      │      │ CTA buttons         │
-  │   <h2> → ruled sections)      │      └─────────────────────┘
-  │ relevant publications / comms │
-  └───────────────────────────────┘
+  - the masthead deck (a `.standfirst`, where a bibliographic record has a
+    byline) passed through RecordLayout's `deck` snippet;
+  - the narrative slot — prose authored as markup in each route page, cast here
+    into ruled `<h2>` sections with a drop-capped opening paragraph;
+  - the derivation of the apparatus rail's values from the project's real grant
+    record (`allGrants`, filtered by `projectName`), rendered by
+    `<ResearchProjectAside>` into the rail;
+  - the podcast player and the related-work panels that close the page.
 
-The metadata ledger (PERIOD / CO-DIRECTOR / FUNDER / PROGRAMME / GRANT /
-REGIONS) is assembled from the project's real grant record (allGrants, filtered
-by projectName) plus a handful of optional props. Every row renders only when
-its value exists — projects with no co-director, programme or grant simply drop
-those rows. The prose still arrives through the `children` snippet, so each
-project page keeps its own narrative; the layout only supplies the frame, the
-apparatus, and the ruled-section styling.
+Every rail row renders only when its value exists — projects with no
+co-director, programme or grant simply drop those rows.
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import SEO from '$lib/SEO.svelte';
+	import RecordLayout, { type EyebrowToken } from '$lib/components/common/RecordLayout.svelte';
 	import RelevantPublications from '$lib/components/panels/RelevantPublications.svelte';
 	import RelevantCommunications from '$lib/components/panels/RelevantCommunications.svelte';
 	import MediaPlayer from '$lib/components/media/MediaPlayer.svelte';
-	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import ResearchProjectAside from '$lib/components/research/ResearchProjectAside.svelte';
-	import JsonLd from '$lib/components/common/JsonLd.svelte';
-	import { buildBreadcrumbJsonLd, BREADCRUMB_SCRIPT_ID } from '$lib/utils/breadcrumbJsonLd.svelte';
-	import { buildGrantsJsonLd, GRANTS_SCRIPT_ID } from '$lib/utils/grantsJsonLd.svelte';
+	import { GRANTS_SCRIPT_ID, buildGrantsJsonLd } from '$lib/utils/grantsJsonLd.svelte';
 	import { allGrants } from '$lib/data/grants/index';
 	import { allPublicationSummaries as allPublications } from '$lib/data/publications/summaries';
 	import { allCommunications } from '$lib/data/communications/index';
 	import type { Grant, ResearchProject } from '$lib/types';
 	import { website } from '$lib/utils/siteHelpers';
 	import { base } from '$app/paths';
+	import { formatProjectPeriod } from '$lib/utils/projectPeriod';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	/**
@@ -74,14 +71,13 @@ apparatus, and the ruled-section styling.
 		children
 	}: Props = $props();
 
-	// Build breadcrumb items
+	// Breadcrumb trail — the shell prints an editorial back-link from `section`;
+	// this array is what feeds the breadcrumb JSON-LD, unchanged.
 	const breadcrumbItems = $derived([
 		{ label: 'Research', href: `${base}/research` },
 		{ label: shortTitle, href: `${base}/research/${id}` }
 	]);
 
-	// Structured data — rendered into <svelte:head> below so it prerenders.
-	const breadcrumbJsonLd = $derived(buildBreadcrumbJsonLd(breadcrumbItems));
 	const grantsJsonLd = $derived(buildGrantsJsonLd(projectName, `${website.url}/research/${id}`));
 
 	/** Every grant attached to this project, most recently started first. */
@@ -135,12 +131,19 @@ apparatus, and the ruled-section styling.
 		ledgerGrants.length > 0 ? ledgerGrants.map(formatGrantAmount).join(' + ') : undefined
 	);
 
-	// Eyebrow tail: "· FUNDER" appended after the years when a funder is known
-	// and the funding apparatus isn't being deferred to the Funding panel.
-	const eyebrowFunder = $derived(showFunding && funderLabel ? funderLabel : undefined);
-
-	// Caption under the aside plate.
-	const plateCaption = $derived(typesetQuotes(figCaption ?? `Fig. 1 — ${imageAlt}`));
+	/**
+	 * Masthead eyebrow: the project period, formatted — so an open-ended record
+	 * reads "Since 2026" here exactly as it does in the research index, instead
+	 * of printing its raw `2026-` with the hyphen left dangling.
+	 *
+	 * The funder deliberately stays out of it and prints in the rail's Funder
+	 * row. It is the one masthead fact whose value can run to a full sentence
+	 * ("Social Sciences and Humanities Research Council of Canada (SSHRC)"), and
+	 * an eyebrow token is `white-space: nowrap` so that a short one — a type
+	 * label, a date — never breaks across two lines; a funder set there would
+	 * simply overrun a 375px viewport.
+	 */
+	const eyebrow = $derived.by((): EyebrowToken[] => [{ label: formatProjectPeriod(years) }]);
 
 	// Masthead prose. The narrative body arrives through the `children` snippet
 	// as literal markup authored in each route, so it is typeset at its source
@@ -175,186 +178,93 @@ apparatus, and the ruled-section styling.
 	type="article"
 />
 
-<JsonLd id={BREADCRUMB_SCRIPT_ID} json={breadcrumbJsonLd} />
-<JsonLd id={GRANTS_SCRIPT_ID} json={grantsJsonLd} />
+{#snippet deck()}
+	{#if displaySubtitle}
+		<p class="standfirst project-subtitle">{displaySubtitle}</p>
+	{/if}
+{/snippet}
 
-<div class="container py-8">
-	<Breadcrumb items={breadcrumbItems} />
+{#snippet railPrimary()}
+	<ResearchProjectAside
+		plateSrc="{base}/images/research/{imageSrc}"
+		plateAlt={imageAlt}
+		plateCaption={figCaption}
+		{years}
+		{directors}
+		{funderLabel}
+		{programme}
+		{grantAmount}
+		grantStatus={ledgerGrants[0]?.status}
+		grantCount={ledgerGrants.length}
+		{regions}
+		{sourceLanguages}
+		{ctas}
+		{showFunding}
+	/>
+{/snippet}
 
-	<div class="project-grid">
-		<!-- HEADER — a direct grid child so the title leads on mobile and sits
-		     top-left on desktop, with the apparatus rail spanning alongside it. -->
-		<header class="project-header">
-			<p class="eyebrow project-eyebrow">
-				<span>Research Project</span>
-				{#if years}<span class="eyebrow-sep" aria-hidden="true">·</span><span>{years}</span>{/if}
-				{#if eyebrowFunder}<span class="eyebrow-sep" aria-hidden="true">·</span><span
-						>{eyebrowFunder}</span
-					>{/if}
-			</p>
-			<h1 class="project-title">{displayTitle}</h1>
-			{#if displaySubtitle}
-				<p class="standfirst project-subtitle">{displaySubtitle}</p>
-			{/if}
-		</header>
-
-		<!-- MAIN COLUMN ------------------------------------------------------- -->
-		<div class="project-main">
-			<!-- Project narrative. Prose arrives through the slot; scoped styles
-			     below turn its <h2> headings into ruled section heads and
-			     drop-cap the opening paragraph. -->
-			<div class="project-prose">
-				{@render children()}
+{#snippet related()}
+	<div class="related-content">
+		{#if hasPublications}
+			<RelevantPublications {projectName} limit={6} />
+		{/if}
+		{#if hasCommunications}
+			<div class="related-comms" class:related-comms--only={!hasPublications}>
+				<RelevantCommunications {projectName} limit={6} />
 			</div>
+		{/if}
+	</div>
+{/snippet}
 
-			{#if audioSrc}
-				<section class="section podcast-section">
-					<div class="section-head">
-						<span class="section-no" aria-hidden="true">♪</span>
-						<h2 class="section-title">Podcast discussion</h2>
-					</div>
-					<MediaPlayer
-						src="{base}/{audioSrc}"
-						type="audio"
-						title="Google NotebookLM Podcast Discussion"
-						surface=""
-						showControls={true}
-					/>
-				</section>
-			{/if}
-
-			{#if hasPublications || hasCommunications}
-				<div class="related-content">
-					{#if hasPublications}
-						<RelevantPublications {projectName} limit={6} />
-					{/if}
-					{#if hasCommunications}
-						<div class="related-comms" class:related-comms--only={!hasPublications}>
-							<RelevantCommunications {projectName} limit={6} />
-						</div>
-					{/if}
-				</div>
-			{/if}
+<RecordLayout
+	section={{ label: 'Research', href: `${base}/research` }}
+	breadcrumbCurrent="Project"
+	{eyebrow}
+	title={displayTitle}
+	{deck}
+	{breadcrumbItems}
+	jsonLdScriptId={GRANTS_SCRIPT_ID}
+	jsonLdString={grantsJsonLd ?? undefined}
+	{railPrimary}
+	related={hasPublications || hasCommunications ? related : undefined}
+>
+	{#snippet main()}
+		<!-- Project narrative. Prose arrives through the slot; scoped styles
+		     below turn its <h2> headings into ruled section heads and
+		     drop-cap the opening paragraph. -->
+		<div class="project-prose">
+			{@render children()}
 		</div>
 
-		<!-- ASIDE COLUMN ------------------------------------------------------ -->
-		<aside class="project-aside" aria-label="Project details">
-			<ResearchProjectAside
-				plateSrc="{base}/images/research/{imageSrc}"
-				plateAlt={imageAlt}
-				{plateCaption}
-				{years}
-				{directors}
-				{funderLabel}
-				{programme}
-				{grantAmount}
-				grantStatus={ledgerGrants[0]?.status}
-				grantCount={ledgerGrants.length}
-				{regions}
-				{sourceLanguages}
-				{ctas}
-				{showFunding}
-			/>
-		</aside>
-	</div>
-</div>
+		{#if audioSrc}
+			<section class="section">
+				<div class="section-head">
+					<span class="section-no" aria-hidden="true">♪</span>
+					<h2 class="section-title">Podcast discussion</h2>
+				</div>
+				<MediaPlayer
+					src="{base}/{audioSrc}"
+					type="audio"
+					title="Google NotebookLM Podcast Discussion"
+					surface=""
+					showControls={true}
+				/>
+			</section>
+		{/if}
+	{/snippet}
+</RecordLayout>
 
 <style>
 	/* ==========================================================================
-	 * GRID — main record + 380px apparatus rail, stacking on mobile
+	 * MASTHEAD DECK — the standfirst under the title
+	 *
+	 * `.standfirst` (ink-signal.css) already sets the serif italic, the soft ink
+	 * and `--measure-standfirst`; these two declarations bring it to the same
+	 * size and offset as the byline a bibliographic record prints in this slot.
 	 * ======================================================================== */
-	.project-grid {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-xl);
-	}
-
-	/* On a single column (mobile/tablet) the title leads, the apparatus rail
-	 * follows so the plate and key facts sit near the top, and the dossier prose
-	 * comes last. */
-	@media (--lg-down) {
-		.project-header {
-			order: 0;
-		}
-		.project-aside {
-			order: 1;
-		}
-		.project-main {
-			order: 2;
-		}
-	}
-
-	/* On desktop the header sits top-left, the prose fills the row below it, and
-	 * the apparatus rail spans both rows down the right. */
-	@media (--lg) {
-		.project-grid {
-			grid-template-columns: minmax(0, 1fr) 380px;
-			grid-template-rows: auto 1fr;
-			column-gap: var(--space-16);
-			row-gap: var(--space-lg);
-			align-items: start;
-		}
-		.project-header {
-			grid-column: 1;
-			grid-row: 1;
-		}
-		.project-main {
-			grid-column: 1;
-			grid-row: 2;
-		}
-		.project-aside {
-			grid-column: 2;
-			grid-row: 1 / span 2;
-		}
-	}
-
-	.project-main {
-		min-width: 0;
-	}
-
-	/* ==========================================================================
-	 * HEADER — eyebrow · title · standfirst
-	 * ======================================================================== */
-	/* Spacing between header, prose and rail is handled by the grid gaps. */
-	.project-header {
-		margin-bottom: 0;
-	}
-
-	.project-eyebrow {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: baseline;
-		gap: var(--space-2);
-		margin-bottom: var(--space-sm);
-		text-transform: uppercase;
-	}
-
-	.eyebrow-sep {
-		color: var(--color-text-muted);
-	}
-
-	.project-title {
-		font-family: var(--font-family-display);
-		font-variation-settings: var(--font-variation-display);
-		color: var(--color-text-emphasis);
-		font-weight: 800;
-		font-size: var(--font-size-3xl);
-		line-height: 1;
-		letter-spacing: -0.015em;
-		margin: 0;
-		max-width: 20ch;
-		text-wrap: balance;
-	}
-
 	.project-subtitle {
 		margin-top: var(--space-md);
 		font-size: var(--font-size-xl);
-	}
-
-	@media (--md) {
-		.project-title {
-			font-size: var(--font-size-4xl);
-		}
 	}
 
 	/* ==========================================================================
@@ -363,24 +273,38 @@ apparatus, and the ruled-section styling.
 	 * Each project page authors its body as paragraphs, lists and <h2> heads.
 	 * Here the first paragraph gets a drop cap, and every <h2> is drawn as a
 	 * ruled section head: a 3px rule and an Archivo title.
+	 *
+	 * Links are deliberately unstyled here: the site-wide prose-link idiom in
+	 * typography.css already gives any <a> inside a <p> or <li> ink text with a
+	 * pine underline, and the local rule this block used to carry only overrode
+	 * the text colour — making every citation in the narrative a solid pine
+	 * link, which is ~15 accent marks on the longest page.
 	 * ======================================================================== */
 	.project-prose {
 		color: var(--color-text);
 		font-family: var(--font-family-serif);
 	}
 
-	.project-prose :global(p),
-	.project-prose :global(li) {
+	/* Direct children only. `<RelevantGrants>` is authored inside this slot on
+	   five of the six projects, and a descendant selector reached into the
+	   Funding panel: its grant rows were being given the prose measure, the
+	   prose line-height and a stray bottom margin inside a flex column that
+	   already sets its own gap. The panel is apparatus, not prose. */
+	.project-prose > :global(p),
+	.project-prose > :global(ul) > :global(li),
+	.project-prose > :global(ol) > :global(li) {
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text);
 		max-width: var(--measure-prose);
 	}
 
-	.project-prose :global(p) {
+	.project-prose > :global(p) {
 		margin: 0 0 var(--space-md);
 	}
 
-	/* Opening paragraph — larger ink and a pine Archivo drop cap. */
+	/* Opening paragraph — larger ink and a pine Archivo drop cap. This restates
+	   `.drop-cap` rather than using it: the prose arrives as a snippet authored
+	   in the route page, so the layout has no element here to put a class on. */
 	.project-prose :global(> p:first-child) {
 		font-size: var(--font-size-lg);
 		color: var(--color-text-emphasis);
@@ -397,28 +321,6 @@ apparatus, and the ruled-section styling.
 		color: var(--color-accent);
 	}
 
-	/* Prose links — pine with a hairline underline (inline-citation idiom). */
-	.project-prose :global(a) {
-		color: var(--color-accent);
-		text-decoration: underline;
-		text-decoration-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
-		text-decoration-thickness: var(--border-width-thin);
-		text-underline-offset: 0.16em;
-		transition:
-			color var(--duration-fast) var(--ease-out),
-			text-decoration-color var(--duration-fast) var(--ease-out);
-	}
-
-	.project-prose :global(a:hover) {
-		color: var(--color-accent-dark);
-		text-decoration-color: var(--color-accent);
-	}
-
-	.project-prose :global(a:focus-visible) {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-2xs);
-	}
-
 	.project-prose :global(strong) {
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
@@ -428,8 +330,12 @@ apparatus, and the ruled-section styling.
 		font-style: italic;
 	}
 
-	/* <h2> → section head opened by a 3px section rule. */
-	.project-prose :global(h2) {
+	/* <h2> → section head opened by a 3px section rule. Direct children only: a
+	   descendant selector also caught the Funding panel's own `.panel-title`,
+	   which then printed a second 3px rule under the panel's and swapped the
+	   mono label for an Archivo headline — the one place on the site where that
+	   panel did not look like itself. */
+	.project-prose > :global(h2) {
 		border-top: var(--rule-section) solid var(--color-primary);
 		padding-top: var(--rule-gap);
 		margin: var(--space-2xl) 0 var(--space-md);
@@ -443,7 +349,7 @@ apparatus, and the ruled-section styling.
 	}
 
 	/* <h3> — quiet serif subhead inside a section. */
-	.project-prose :global(h3) {
+	.project-prose > :global(h3) {
 		font-family: var(--font-family-serif);
 		font-size: var(--font-size-xl);
 		font-weight: var(--font-weight-semibold);
@@ -453,30 +359,27 @@ apparatus, and the ruled-section styling.
 
 	/* Ordered lists — the "innovations" enumeration reads as a ledger of
 	   numbered items; keep the markers but give them room. */
-	.project-prose :global(ul),
-	.project-prose :global(ol) {
+	.project-prose > :global(ul),
+	.project-prose > :global(ol) {
 		margin: 0 0 var(--space-lg);
 		padding-left: var(--space-lg);
 	}
 
-	.project-prose :global(li) {
+	.project-prose > :global(ul) > :global(li),
+	.project-prose > :global(ol) > :global(li) {
 		margin-bottom: var(--space-sm);
 	}
 
-	.project-prose :global(li::marker) {
+	.project-prose > :global(ul) > :global(li::marker),
+	.project-prose > :global(ol) > :global(li::marker) {
 		color: var(--color-text-light);
 		font-family: var(--font-family-mono);
 	}
 
 	/* ==========================================================================
-	 * PODCAST + RELATED — closing sections on the main column
+	 * RELATED WORK — the closing block, opened by its own section rule
 	 * ======================================================================== */
-	.podcast-section {
-		margin-top: var(--space-2xl);
-	}
-
 	.related-content {
-		margin-top: var(--space-2xl);
 		border-top: var(--rule-section) solid var(--color-primary);
 		padding-top: var(--rule-gap);
 	}
@@ -488,18 +391,5 @@ apparatus, and the ruled-section styling.
 	/* Sole panel in the block — the section rule above already supplies the gap. */
 	.related-comms--only {
 		margin-top: 0;
-	}
-
-	/* ==========================================================================
-	 * ASIDE — the apparatus rail; contents live in ResearchProjectAside.svelte
-	 * ======================================================================== */
-	.project-aside {
-		min-width: 0;
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.project-prose :global(a) {
-			transition: none;
-		}
 	}
 </style>

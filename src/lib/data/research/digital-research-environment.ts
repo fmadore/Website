@@ -20,7 +20,7 @@ export const digitalResearchEnvironment: ResearchProject = {
 	imageSrc: 'dre.webp',
 	imageAlt:
 		'The AMIRA home page: the atlas masthead beside a panel counting the research items, projects, people, organisations, and languages in the collection',
-	figCaption: 'Fig. 1 — AMIRA, the public metadata layer built by the DRE',
+	figCaption: 'AMIRA, the public metadata layer built by the DRE',
 	subtitle:
 		'A research programme on how African research data is described, modelled, and made findable.',
 	projectName: 'Digital Research Environment (University of Bayreuth)',

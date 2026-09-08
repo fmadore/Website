@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, type Component } from 'svelte';
+	import Icon from '@iconify/svelte';
 	import SEO from '$lib/SEO.svelte';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import PdfGenerator from '$lib/components/cv/PdfGenerator.svelte';
@@ -108,21 +109,8 @@
 <div id="cv-content" class="cv-container p-8 max-w-6xl mx-auto">
 	<!-- Action Buttons - positioned in top right corner of CV -->
 	<div class="cv-actions">
-		<a href={resolve('/cv/timeline')} class="btn btn-secondary" aria-label="View Career Timeline">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				width="20"
-				height="20"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-			>
-				<path d="M3 3v18h18" />
-				<path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" />
-			</svg>
+		<a href={resolve('/cv/timeline')} class="btn btn-secondary">
+			<Icon icon="lucide:trending-up" width="20" height="20" aria-hidden="true" />
 			<span>Timeline</span>
 		</a>
 		<PdfGenerator />
@@ -223,8 +211,6 @@
 	.cv-container {
 		background: var(--color-background);
 		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: 0;
-		box-shadow: none;
 		position: relative;
 		margin-top: var(--space-lg);
 		margin-bottom: var(--space-2xl);
@@ -272,7 +258,12 @@
 	}
 
 	/*
-	 * Section heading — DOCUMENT voice (Archivo display).
+	 * Section heading — DOCUMENT voice (Archivo display). These two rules are
+	 * `.section` and `.section-title` from ink-signal.css, applied by descendant
+	 * selector rather than by class: the seventeen `<h3>`s live in seventeen
+	 * components, and `section > h3` is the contract the PDF generator reads the
+	 * sheet by. Keep the values in step with the idiom — if they ever diverge,
+	 * the divergence is the bug.
 	 */
 	:global(#cv-content h3) {
 		font-family: var(--font-family-display);
@@ -319,30 +310,34 @@
 		margin-top: var(--space-2);
 	}
 
-	/* Close each ledger with a hairline under its final CVEntry row. */
-	:global(#cv-content .ledger > :last-child .cv-entry) {
-		border-bottom: var(--rule-hairline) solid var(--color-hairline);
-	}
+	/* The ledger closes itself: every CV ledger carries `.ledger--ruled`, so the
+	 * final row's bottom hairline comes from the idiom rather than from a
+	 * `:last-child .cv-entry` reach-in here. */
 
-	/* Year keys inside the fixed-width bare rows (older markup path). */
-	:global(#cv-content .font-semibold.text-nowrap) {
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-xs);
-		letter-spacing: 0.04em;
-		color: var(--color-text-light);
-		font-weight: var(--font-weight-medium);
-	}
-
-	/* Links — accent, underline on hover only (the single hover this page needs). */
-	:global(#cv-content a) {
-		color: var(--color-accent);
-		text-decoration: none;
-		transition: color var(--duration-fast) ease;
-	}
-
-	:global(#cv-content a:hover) {
-		color: var(--color-accent-dark);
-		text-decoration: underline;
+	/*
+	 * Links — the site's own link language, not a local dialect.
+	 *
+	 * This page carried `#cv-content a { color: var(--color-accent) }`, which
+	 * inverted it: site-wide a link is *ink* with a pine underline in prose, and
+	 * here it was pine text with no underline. On the page with by far the most
+	 * links on the site — 41 DOIs, plus [Link]s, review journals, award and
+	 * grant titles, project addresses and five contact handles — that put pine
+	 * on ten to fifteen strings per screen. The accent means "the current
+	 * thing"; a CV's two hundred addresses are not current, and at that density
+	 * it meant nothing at all.
+	 *
+	 * The id selector was also the reason two components' own quiet colours
+	 * were dead: `.doi-link` (soft ink) and `.verification-badge` (muted ink)
+	 * are 0-1-0 and lost to a 1-0-1 page rule, so both rendered accent instead
+	 * of what their author wrote. `:where()` drops this to 0-0-1 so a component
+	 * class wins by simply existing, which is what those rules assumed.
+	 *
+	 * What is left: the base `a` (ink, pine on hover) and, inside `<p>`/`<li>`,
+	 * typography.css's pine prose underline. Pine on the sheet is now the
+	 * dateline and the one standing appointment.
+	 */
+	:global(#cv-content :where(a)) {
+		transition: color var(--duration-fast) var(--ease-out);
 	}
 
 	:global(#cv-content a:focus-visible) {
@@ -359,21 +354,18 @@
 		text-decoration: underline;
 	}
 
-	/* Print styles */
+	/*
+	 * Print styles. The `!important`s are deliberate and are the one place this
+	 * codebase sanctions them beyond third-party overrides: a print sheet has to
+	 * beat component-scoped declarations it cannot otherwise reach.
+	 */
 	@media print {
-		/* Hide the PDF button when printing */
-		:global(.pdf-generator-wrapper),
-		:global(button[onclick*='print']) {
-			display: none !important;
-		}
-
-		/* Disable animations for print */
+		/* The page-enter fade is the only animation these carry. */
 		.cv-container,
 		:global(.cv-section-wrapper),
 		:global(.cv-lazy-section) {
 			animation: none !important;
 			opacity: 1 !important;
-			transform: none !important;
 		}
 
 		/* Optimize for print — flat sheet, no border, ledger rules preserved. */
@@ -381,20 +373,16 @@
 			max-width: 100% !important;
 			padding: var(--space-10) !important;
 			margin: 0 !important;
-			box-shadow: none !important;
-			border-radius: 0 !important;
 			border: none !important;
 			background: var(--color-white) !important;
 		}
 
-		/* Flatten surface tiles onto plain print paper */
+		/* Drop the surface tints; the stock is the ground. */
 		:global(.surface),
 		:global(.surface-card),
 		:global(.surface-panel),
 		:global(.cv-section-wrapper) {
 			background: var(--color-white) !important;
-			backdrop-filter: none !important;
-			box-shadow: none !important;
 		}
 
 		/* Keep the ledger's ink rules in print: section rule + row hairlines. */
@@ -410,17 +398,13 @@
 			border-bottom: var(--rule-hairline) solid var(--color-hairline) !important;
 		}
 
-		/* Remove hover effects and transitions */
-		:global(.cv-section-wrapper:hover) {
-			background: var(--color-white) !important;
-			transform: none !important;
-			box-shadow: none !important;
-		}
-
-		/* Ensure good contrast */
+		/* Ink on stock, not pure black on pure white: the browser-printed sheet
+		 * and the exported PDF are the same document and must be set in the same
+		 * ink. The ground stays `--color-white` because a printed ground is the
+		 * paper itself — painting warm paper onto warm paper only spends toner. */
 		:global(body) {
 			background: var(--color-white) !important;
-			color: var(--color-black) !important;
+			color: var(--color-primary) !important;
 		}
 
 		/* Page breaks */

@@ -482,14 +482,51 @@
 				</div>
 			</div>
 
+			<h3 class="eyebrow eyebrow--ink guide-subhead">
+				The tight ledger — a page that is all ledger
+			</h3>
+			<p class="guide-note">
+				<span class="data-voice">.ledger--tight</span> is the same idiom one density step down, for a
+				document whose whole body is records. The CV sets around 250 rows across seventeen sections on
+				a single sheet, and at the default row padding that is roughly a screen and a half of added paper
+				carrying no information — so the key column narrows to 6.5rem, the row padding drops a step, and
+				the key sets one size smaller. Nothing else changes: the voices, the hairline, the accent on a
+				current key and the narrow-measure collapse all still come from the idiom above. Reach for it
+				when a page is a ledger; never to squeeze a list that is merely long.
+			</p>
+
+			<div class="ledger ledger--tight ledger--ruled">
+				<div class="ledger-row">
+					<span class="ledger-key">2024—</span>
+					<span class="ledger-content">
+						<span class="ledger-desc">
+							Research Fellow, Leibniz-Zentrum Moderner Orient, Berlin.
+						</span>
+					</span>
+				</div>
+				<div class="ledger-row">
+					<span class="ledger-key">2021—24</span>
+					<span class="ledger-content">
+						<span class="ledger-desc">
+							A CV row sets its record as one continuous line of type, so the content column holds
+							running text rather than a title and a description.
+						</span>
+					</span>
+				</div>
+			</div>
+			<p class="guide-caption">
+				The tight variant beside the default above: same key, same hairline, one step closer.
+			</p>
+
 			<h3 class="eyebrow eyebrow--ink guide-subhead">The meta-ledger — a catalogue entry</h3>
 			<p class="guide-note">
 				A distinct idiom, not a variant. The ledger above sets a <em>record</em>: mono key against
 				serif content, because the content is something the scholar wrote. The meta-ledger sets a
 				record’s <em>catalogue entry</em> — journal, DOI, place, date — where both columns are strings
 				a database could hold, so both are the data voice, over a key column narrowed to 5.5rem for the
-				380px metadata rail. It is what the “Record” block prints on a publication or a talk, above the
-				rail’s label and action stack.
+				380px metadata rail. It is what the “Record” block prints on a publication or a talk — and the
+				“Project” block on a research project, whose period, funder, programme, grant and regions are
+				a catalogue entry by the same test — above the rail’s label and action stack.
 			</p>
 
 			<div class="guide-rail">

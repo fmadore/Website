@@ -5,7 +5,7 @@
 </script>
 
 <ResearchProjectLayout {...researchProject('islams-peripheries-dh-ai-west-africa-central-asia')}>
-	<p class="lead">
+	<p>
 		Co-directed with <a
 			href="https://www.zmo.de/en/people/dr-aksana-ismailbekova"
 			target="_blank"

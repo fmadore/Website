@@ -152,6 +152,30 @@
 	border-bottom: var(--rule-hairline) solid var(--color-hairline);
 }
 
+/* Tight ledger — the same idiom one density step down, for a page that is
+ * nothing but ledger. The CV sets ~250 rows on a single sheet across
+ * seventeen sections; at the default row padding that is roughly a screen
+ * and a half of added paper carrying no information. Density is a stated
+ * value here (PRODUCT.md principle 3), so the CV takes the tight variant
+ * rather than reimplementing the row, which is what it did before.
+ *
+ * Only rhythm changes: the key column narrows to fit a year or a year range,
+ * the row padding drops a step, and the key sets one size smaller. Voice,
+ * colour, hairline and the narrow-measure collapse all still come from the
+ * idiom above. */
+.ledger--tight {
+	--ledger-key-w: 6.5rem;
+}
+
+.ledger--tight > .ledger-row {
+	gap: var(--space-2) var(--space-5);
+	padding: var(--space-2-5) 0;
+}
+
+.ledger--tight > .ledger-row > .ledger-key {
+	font-size: var(--font-size-xs);
+}
+
 .ledger-key {
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-sm);
@@ -244,8 +268,11 @@
  * so both columns are the data voice, at a narrower 5.5rem key sized for the
  * 380px rail rather than the reading column.
  *
- * Consumers: the "Record" block on /publications/[id] and /communications/[id],
- * rendered by <RecordLedger>.
+ * Consumers: the "Record" block on /publications/[id] and /communications/[id]
+ * and the "Project" block on /research/<id>, all rendered by <RecordLedger>. A
+ * research project's period, funder, programme, grant figure and regions pass
+ * the same test — every one of them is a string a database could hold — which
+ * is why that rail no longer sets them in a `.stat-ledger` of its own.
  * =========================================================================== */
 
 /* Section label inside a metadata rail — data voice over a hairline. */

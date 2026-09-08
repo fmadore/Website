@@ -29,7 +29,7 @@
 		{#each presentPublicationTypes as pubType (pubType)}
 			{#if publicationsByType[pubType] && publicationsByType[pubType].length > 0}
 				<h4>{getPublicationTypeDisplayName(pubType)}</h4>
-				<div class="space-y-3 ledger">
+				<div class="space-y-3 ledger ledger--tight ledger--ruled">
 					{#each publicationsByType[pubType] as pub (pub.id)}
 						{@const formattedAuthors = formatCVAuthorList(pub.authors)}
 						{@const authorStop = terminalPeriod(formattedAuthors)}
@@ -124,7 +124,7 @@
 		<!-- Optional: Section for other publication types -->
 		{#if otherPublicationTypes.length > 0}
 			<h4>Other</h4>
-			<div class="space-y-3 ledger">
+			<div class="space-y-3 ledger ledger--tight ledger--ruled">
 				{#each otherPublicationTypes as pubType (pubType)}
 					{#each publicationsByType[pubType as Publication['type']] as pub (pub.id)}
 						<CVEntry year={getCVDisplayYear(pub)}>

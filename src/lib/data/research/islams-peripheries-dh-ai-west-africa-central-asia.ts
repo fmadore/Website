@@ -15,7 +15,7 @@ export const islamsPeripheries: ResearchProject = {
 	imageAlt:
 		'Collage of three documents: a Central Asian newspaper page in Perso-Arabic script, and two West African Islamic magazine covers in Arabic and French',
 	figCaption:
-		'Fig. 1 — Documents from the two collections: the Central Asian press, and West African Islamic magazines in Arabic and French',
+		'Documents from the two collections: the Central Asian press, and West African Islamic magazines in Arabic and French',
 	subtitle:
 		'Experimenting with AI on two multilingual collections, West African and Central Asian Islam, to read them at a scale close reading cannot reach, and to find where the methods mislead.',
 	projectName:

@@ -20,7 +20,7 @@
 	<!-- Editorial Board Memberships Section -->
 	{#if realEditorialMemberships.length > 0}
 		<h4>Editorial Board Memberships</h4>
-		<div class="space-y-3 ledger">
+		<div class="space-y-3 ledger ledger--tight ledger--ruled">
 			{#each realEditorialMemberships as member (member.id)}
 				<CVEntry year={member.dateRangeString}>
 					{member.role}, <em>{typesetQuotes(member.journal)}</em>.
@@ -35,7 +35,7 @@
 	<!-- Peer Review Section -->
 	{#if realPeerReviews.length > 0}
 		<h4>Peer Review Activities</h4>
-		<div class="space-y-3 ledger">
+		<div class="space-y-3 ledger ledger--tight ledger--ruled">
 			{#each realPeerReviews as review (review.id)}
 				<CVEntry year={review.year}>
 					{#if review.count && review.count > 1}{review.count}&nbsp;{review.type}s{:else}{review.type}{/if}{#if review.journal}&nbsp;–&nbsp;<em

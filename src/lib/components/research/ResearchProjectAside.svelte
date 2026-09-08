@@ -1,29 +1,38 @@
-<script module lang="ts">
-	/** A call-to-action button in the aside. */
-	export interface ProjectCta {
-		/** Button label (rendered in mono caps). */
-		label: string;
-		/** Destination URL. */
-		href: string;
-		/** External link — opens in a new tab and appends a ↗ glyph. */
-		external?: boolean;
-		/** Primary CTA — solid pine fill (at most one per project). */
-		primary?: boolean;
-	}
-</script>
-
 <script lang="ts">
-	// The apparatus rail of a research-project dossier: Fig. 1 plate, metadata
-	// ledger, source-language chips and CTA buttons. Split out of
-	// ResearchProjectLayout.svelte, which owns the grid placement (the
-	// `.project-aside` grid cell) and derives the grant-record values.
+	// The apparatus rail of a research-project dossier: the Fig. 1 plate, the
+	// project's catalogue entry, its source-language chips and its actions.
+	//
+	// Built entirely from the shared rail idioms — `.rail-plate` / `.plate` /
+	// `.plate-caption`, <RecordLedger> over `.meta-ledger`, `.rail-label` +
+	// `.chip-row`, and `.rail-cta` + `.btn` — so this rail and the ones on
+	// /publications/[id] and /communications/[id] cannot drift apart again. It
+	// previously re-implemented all four under `aside-*` names, which is how it
+	// came to draw its ledger with a 6.5rem key at one size step and its buttons
+	// with a hand-rolled border while the record rails used the system's.
+	//
+	// <ResearchProjectLayout> owns the grid placement (RecordLayout's
+	// `railPrimary` slot) and derives every value below from the grant record.
+	import RecordLedger, { type MetaRow } from '$lib/components/molecules/RecordLedger.svelte';
+	import type { ProjectCtaLink } from '$lib/types/research';
+	import { buildSrcset } from '$lib/utils/imageVariants';
+	import { formatProjectPeriod } from '$lib/utils/projectPeriod';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+
+	// The rail is 380px wide from --lg up; below that the plate spans the single
+	// column. Same contract as the record rails.
+	const PLATE_SIZES = '(max-width: 1024px) 100vw, 380px';
 
 	interface Props {
 		/** Fully-resolved plate image src. */
 		plateSrc: string;
 		plateAlt: string;
-		plateCaption: string;
+		/**
+		 * The authored caption for the plate, without the `Fig. 1 — ` stamp.
+		 * Omitted when the record carries none: the plate then prints no caption
+		 * at all rather than restating the headline, which is what the old
+		 * `Fig. 1 — {imageAlt}` fallback did on four of the six projects.
+		 */
+		plateCaption?: string;
 		years?: string;
 		/** Co-directors / co-investigators (already resolved from props/grant). */
 		directors?: string[];
@@ -36,7 +45,7 @@
 		grantCount?: number;
 		regions?: string[];
 		sourceLanguages?: string[];
-		ctas?: ProjectCta[];
+		ctas?: ProjectCtaLink[];
 		/** When false, the funder / co-director / grant rows are omitted. */
 		showFunding?: boolean;
 	}
@@ -58,249 +67,103 @@
 		showFunding = true
 	}: Props = $props();
 
-	// Whether the aside has a metadata ledger worth rendering. Funding-derived
-	// rows only count when they're not being deferred to the Funding panel.
-	const hasLedger = $derived(
-		Boolean(
-			years || programme || (showFunding && (directors.length > 0 || funderLabel || grantAmount))
-		) || (regions?.length ?? 0) > 0
-	);
-
-	// Ledger and chip copy in the display register: co-director names carry
-	// apostrophes, funders and regions carry both ("Côte d'Ivoire").
+	const plateSrcset = $derived(buildSrcset(plateSrc));
 	const displayPlateAlt = $derived(typesetQuotes(plateAlt));
 	const displayPlateCaption = $derived(typesetQuotes(plateCaption));
-	const displayDirectors = $derived(typesetQuotes(directors.join(' · ')));
-	const displayFunder = $derived(typesetQuotes(funderLabel));
-	const displayProgramme = $derived(typesetQuotes(programme));
-	const displayRegions = $derived(typesetQuotes((regions ?? []).join(' · ')));
+
+	/**
+	 * The project's catalogue entry. Every value is a string a database could
+	 * hold — a period, a funder, a programme, a figure, a list of regions — so
+	 * the block is a meta-ledger rather than a ledger, exactly as on a
+	 * bibliographic record. Rows render only when their value exists.
+	 *
+	 * The grant figure is deliberately NOT accented: in this idiom pine marks
+	 * the row that leaves the record (a DOI, a live project page), and the one
+	 * accent in this rail is the project's own primary destination below.
+	 */
+	const metadataRows = $derived.by((): MetaRow[] => {
+		const rows: MetaRow[] = [];
+		const push = (key: string, value: string | undefined) => {
+			if (value != null && value.trim() !== '') {
+				rows.push({ key, value: typesetQuotes(value) });
+			}
+		};
+
+		push('Period', years ? formatProjectPeriod(years) : undefined);
+		if (showFunding && directors.length > 0) {
+			push(directors.length > 1 ? 'Co-directors' : 'Co-director', directors.join(' · '));
+		}
+		if (showFunding) push('Funder', funderLabel);
+		push('Programme', programme);
+		if (showFunding && grantAmount) {
+			push(
+				grantCount > 1 ? 'Grants' : 'Grant',
+				grantStatus ? `${grantAmount} · ${grantStatus}` : grantAmount
+			);
+		}
+		if (regions && regions.length > 0) push('Regions', regions.join(' · '));
+
+		return rows;
+	});
 </script>
 
-<div class="aside-inner">
-	<figure class="aside-figure">
+{#if plateSrc}
+	<figure class="rail-plate">
 		<img
-			class="plate aside-plate"
+			class="plate project-plate"
 			src={plateSrc}
-			alt={displayPlateAlt}
+			srcset={plateSrcset}
+			sizes={plateSrcset ? PLATE_SIZES : undefined}
 			width="380"
 			height="285"
+			alt={displayPlateAlt}
 			loading="lazy"
 			decoding="async"
 		/>
-		<figcaption class="plate-caption">{displayPlateCaption}</figcaption>
+		{#if displayPlateCaption}
+			<figcaption class="plate-caption">Fig. 1 — {displayPlateCaption}</figcaption>
+		{/if}
 	</figure>
+{/if}
 
-	{#if hasLedger}
-		<dl class="stat-ledger aside-ledger">
-			{#if years}
-				<div class="stat-row">
-					<dt>Period</dt>
-					<dd class="stat-value">{years}</dd>
-				</div>
-			{/if}
-			{#if showFunding && directors.length > 0}
-				<div class="stat-row">
-					<dt>{directors.length > 1 ? 'Co-directors' : 'Co-director'}</dt>
-					<dd class="stat-value">{displayDirectors}</dd>
-				</div>
-			{/if}
-			{#if showFunding && funderLabel}
-				<div class="stat-row">
-					<dt>Funder</dt>
-					<dd class="stat-value">{displayFunder}</dd>
-				</div>
-			{/if}
-			{#if programme}
-				<div class="stat-row">
-					<dt>Programme</dt>
-					<dd class="stat-value">{displayProgramme}</dd>
-				</div>
-			{/if}
-			{#if showFunding && grantAmount}
-				<div class="stat-row">
-					<dt>{grantCount > 1 ? 'Grants' : 'Grant'}</dt>
-					<dd class="stat-value stat-value--accent">
-						<span>{grantAmount}</span>
-						{#if grantStatus}<span class="grant-status">· {grantStatus}</span>{/if}
-					</dd>
-				</div>
-			{/if}
-			{#if regions && regions.length > 0}
-				<div class="stat-row">
-					<dt>Regions</dt>
-					<dd class="stat-value">{displayRegions}</dd>
-				</div>
-			{/if}
-		</dl>
-	{/if}
+<RecordLedger rows={metadataRows} label="Project" />
 
-	{#if sourceLanguages && sourceLanguages.length > 0}
-		<div class="aside-block">
-			<p class="aside-block-label">Source languages</p>
-			<div class="chip-row">
-				{#each sourceLanguages as lang (lang)}
-					<span class="chip">{typesetQuotes(lang)}</span>
-				{/each}
-			</div>
-		</div>
-	{/if}
-
-	{#if ctas && ctas.length > 0}
-		<div class="aside-ctas">
-			<!-- eslint-disable svelte/no-navigation-without-resolve -- CTA hrefs are external / pre-built absolute project URLs -->
-			{#each ctas as cta (cta.href)}
-				<a
-					class="cta"
-					class:cta--primary={cta.primary}
-					href={cta.href}
-					target={cta.external ? '_blank' : undefined}
-					rel={cta.external ? 'noopener noreferrer' : undefined}
-				>
-					<span>{typesetQuotes(cta.label)}</span>
-					{#if cta.external}<span class="cta-glyph" aria-hidden="true">↗</span>{/if}
-				</a>
+{#if sourceLanguages && sourceLanguages.length > 0}
+	<div>
+		<h2 class="rail-label">Source languages</h2>
+		<div class="chip-row">
+			{#each sourceLanguages as lang (lang)}
+				<span class="chip">{typesetQuotes(lang)}</span>
 			{/each}
-			<!-- eslint-enable svelte/no-navigation-without-resolve -->
 		</div>
-	{/if}
-</div>
+	</div>
+{/if}
+
+{#if ctas && ctas.length > 0}
+	<!-- The one pine fill is the project's own destination; every mirror below it
+	     is an outline (Scarcity Rule). -->
+	<div class="rail-cta">
+		<!-- eslint-disable svelte/no-navigation-without-resolve -- CTA hrefs are external / pre-built absolute project URLs -->
+		{#each ctas as cta (cta.href)}
+			<a
+				class="btn btn-block {cta.primary ? 'btn-accent' : 'btn-outline-secondary'}"
+				href={cta.href}
+				target={cta.external ? '_blank' : undefined}
+				rel={cta.external ? 'noopener noreferrer' : undefined}
+			>
+				{typesetQuotes(cta.label)}{cta.external ? ' ↗' : ''}
+			</a>
+		{/each}
+		<!-- eslint-enable svelte/no-navigation-without-resolve -->
+	</div>
+{/if}
 
 <style>
-	@media (--lg) {
-		.aside-inner {
-			position: sticky;
-			top: var(--space-xl);
-		}
-	}
-
-	.aside-figure {
-		margin: 0 0 var(--space-lg);
-	}
-
-	.aside-plate {
+	/* The research plates are variously shaped (16:9, 4:3, square, 2:1) and the
+	 * records carry no per-image dimensions, so the rail crops them all to one
+	 * ratio rather than letting the rail's height jump between projects. */
+	.project-plate {
 		aspect-ratio: 4 / 3;
-	}
-
-	.aside-ledger {
-		padding-top: var(--space-md);
-		border-top: var(--rule-hairline) solid var(--color-hairline);
-		margin: 0 0 var(--space-lg);
-	}
-
-	/* Hanging-key ledger rather than a two-sided balance: the keys hang in a
-	 * fixed mono column and every value sets flush left under the one above.
-	 * Right-aligned values only looked balanced while they fit on one line — a
-	 * funder name or a run of grant figures wrapped into a ragged left edge. */
-	.aside-ledger .stat-row {
-		display: grid;
-		grid-template-columns: minmax(0, 1fr);
-		gap: var(--space-1) var(--space-md);
-		padding: var(--space-2) 0;
-		border-bottom: var(--rule-hairline) solid var(--color-hairline);
-		align-items: baseline;
-	}
-
-	/* The key column only earns its keep once there is measure to spare: on a
-	 * phone it would eat a third of the line, so there the key stacks above. */
-	@media (--sm) {
-		.aside-ledger .stat-row {
-			grid-template-columns: 6.5rem minmax(0, 1fr);
-		}
-	}
-
-	/* Keys in the same quiet register as the "Source languages" label below. */
-	.aside-ledger dt {
-		font-size: var(--font-size-2xs);
-		font-weight: var(--font-weight-semibold);
-		text-transform: uppercase;
-		letter-spacing: 0.12em;
-		color: var(--color-text-light);
-	}
-
-	.aside-ledger dd {
-		margin: 0;
-	}
-
-	/* Keep "· Awarded" whole so the separator never strands at a line end. */
-	.grant-status {
-		font-weight: var(--font-weight-semibold);
-		white-space: nowrap;
-	}
-
-	/* Source-languages block. */
-	.aside-block {
-		margin: 0 0 var(--space-lg);
-	}
-
-	.aside-block-label {
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-2xs);
-		font-weight: var(--font-weight-semibold);
-		text-transform: uppercase;
-		letter-spacing: 0.12em;
-		color: var(--color-text-light);
-		margin: 0 0 var(--space-sm);
-	}
-
-	/* ==========================================================================
-	 * CTA BUTTONS — mono caps, square. Primary = solid pine fill.
-	 * ======================================================================== */
-	.aside-ctas {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-sm);
-	}
-
-	.cta {
-		display: flex;
-		align-items: baseline;
-		justify-content: space-between;
-		gap: var(--space-sm);
-		padding: var(--space-sm) var(--space-md);
-		border: var(--border-width-thin) solid var(--color-border-dark);
-		background: transparent;
-		color: var(--color-text-emphasis);
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-2xs);
-		font-weight: var(--font-weight-semibold);
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-		text-decoration: none;
-		transition:
-			border-color var(--duration-fast) var(--ease-out),
-			background var(--duration-fast) var(--ease-out),
-			color var(--duration-fast) var(--ease-out);
-	}
-
-	.cta:hover {
-		border-color: var(--color-primary);
-		background: color-mix(in srgb, var(--color-primary) 6%, transparent);
-	}
-
-	.cta:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-2xs);
-	}
-
-	.cta--primary {
-		background: var(--color-accent);
-		border-color: var(--color-accent);
-		color: var(--color-text-inverted);
-	}
-
-	.cta--primary:hover {
-		background: var(--color-accent-dark);
-		border-color: var(--color-accent-dark);
-		color: var(--color-text-inverted);
-	}
-
-	.cta-glyph {
-		flex-shrink: 0;
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.cta {
-			transition: none;
-		}
+		height: auto;
 	}
 </style>

@@ -52,10 +52,12 @@ export const LETTER_SPACING = {
 } as const;
 
 /** Rule weights (mm line width) — hierarchy is drawn in rules, not boxes.
- * Mirrors `--rule-section` (3px) and `--rule-hairline` (1px) on screen. At A4
- * mm scale, 3px ≈ 0.8mm reads as the heavy masthead/section rule and 1px ≈
- * 0.25mm as the hairline entry separator. */
+ * Mirrors the on-screen rule tiers at A4 mm scale (1px ≈ 0.26mm at 96dpi):
+ * `--rule-masthead` 4px ≈ 1.05mm, `--rule-section` 3px ≈ 0.8mm,
+ * `--rule-hairline` 1px ≈ 0.25mm. Every rule in the document takes one of
+ * these; a rule drawn at a hand-typed width is drift. */
 export const RULE = {
+	MASTHEAD: 1.05, // Rule opening the letterhead (≈ --rule-masthead 4px)
 	SECTION: 0.8, // Heavy ink rule opening each section (≈ --rule-section 3px)
 	HAIRLINE: 0.25, // Hairline separating entries (≈ --rule-hairline 1px)
 	FOOTER: 0.2 // Faint footer rule
@@ -77,14 +79,30 @@ export const SPACING = {
 	PARAGRAPH_GAP: 1 // Gap between paragraphs in same entry
 } as const;
 
-/** Ink + Signal palette — ink on warm paper, pine (warm teal) accent. RGB triples
- * mirror the daylight anchors in `variables.css` (`--sys-color-*`). */
+/**
+ * Ink + Signal palette — ink on warm paper, pine (warm teal) accent. RGB triples
+ * mirror the daylight anchors in `variables.css` (`--sys-color-*`), and
+ * `designTokenParity.test.ts` binds every entry below to the token it names, so
+ * a palette change here fails loudly instead of drifting quietly.
+ *
+ * `TEXT` was the one orphan: `#3a352a`, a twelfth warm grey that traced to no
+ * token, sitting between ink and muted ink and defined only in this file. The
+ * 2026-08 audit pinned it and deferred the decision; the decision is that it
+ * goes. The system owns exactly three ink steps — ink, muted, faint — and the
+ * printed CV is the same document as the web CV, which sets its body prose in
+ * full `--color-text`. A softened body ink is a screen habit (it exists to take
+ * the edge off backlit black), and softening in print is the wrong direction
+ * anyway: reduce ink and small type on stock loses more than it gains. Mapping
+ * it to `--color-text` also raises the exported body from 11.4:1 to 17.1:1 on
+ * paper. PRIMARY, TEXT_EMPHASIS and TEXT now share one value because their
+ * three source tokens do — that agreement is the point, not a redundancy.
+ */
 export const COLORS = {
 	PRIMARY: [25, 21, 9] as [number, number, number], // #191509 — Ink (rules, heads, fills)
 	PRIMARY_DARK: [14, 11, 4] as [number, number, number], // #0e0b04 — Deepest ink
 	ACCENT: [30, 106, 86] as [number, number, number], // #1e6a56 — Pine (sole accent)
 	TEXT_EMPHASIS: [25, 21, 9] as [number, number, number], // #191509 — Ink (headings, name)
-	TEXT: [58, 53, 42] as [number, number, number], // #3a352a — Soft ink (prose body)
+	TEXT: [25, 21, 9] as [number, number, number], // #191509 — Ink (prose body)
 	TEXT_LIGHT: [92, 84, 66] as [number, number, number], // #5c5442 — Muted ink (secondary prose)
 	TEXT_MUTED: [107, 99, 78] as [number, number, number], // #6b634e — Faint ink (labels, keys)
 	BORDER: [201, 192, 170] as [number, number, number], // #c9c0aa — Default border / section-adjacent
@@ -92,5 +110,8 @@ export const COLORS = {
 	BACKGROUND_LIGHT: [250, 247, 239] as [number, number, number] // #faf7ef — Warm paper
 } as const;
 
-/** Year column width for two-column layout entries */
-export const yearColumnWidth = 18 as const; // Compact year column
+/** The ledger's hanging key column (mm). Two widths, matching the two the web
+ * CV hangs: a date key (`--ledger-key-w` at the tight density) and the wide
+ * classification key `.cv-entry--wide` uses for a skills category. */
+export const yearColumnWidth = 18 as const; // Compact date key
+export const wideColumnWidth = 55 as const; // Classification key

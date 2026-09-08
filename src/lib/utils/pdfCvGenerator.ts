@@ -9,17 +9,22 @@
  * `pdfCvLayout.ts`.
  *
  * Mirrors the on-screen CV's two-voice, rule-drawn language in print:
- * - Nameplate letterhead: a pine mono "CURRICULUM VITAE" data-voice
- *   eyebrow above an Archivo/helvetica name headline, a mono dateline, closed
- *   by a full-width ink hairline
+ * - Letterhead: a 4px-equivalent masthead rule, an ink mono "CURRICULUM VITAE"
+ *   document label above the Archivo name headline, the pine mono dateline
+ *   (`.cv-date`, the edition stamp), closed by a hairline
  * - Section heads in the DISPLAY voice (Archivo → helvetica bold), each opened
  *   by a heavy 3px-equivalent ink rule — no boxes, no shadows, no accent stripes
  * - Subsection labels (BOOKS, ARTICLES…) in the DATA voice (mono uppercase,
- *   letterspaced, quiet ink) over a hairline
- * - Prose body in the SERIF voice (Newsreader → times); year/date keys in the
- *   DATA voice (mono), the sole pine reserved for the current/ongoing key
+ *   letterspaced, quiet ink)
+ * - Prose body in the SERIF voice (Newsreader → times); the hanging key in the
+ *   DATA voice (mono, faint ink), the sole other pine reserved for the
+ *   current/ongoing key
  * - Ledger rows separated by ink hairlines, exactly like the web CVEntry
  * - Two-column contact block with mono small-caps labels; clickable links in ink
+ *
+ * Every rule in the document takes a weight from `RULE` and every colour a
+ * constant from `COLORS`, which `designTokenParity.test.ts` binds back to
+ * `variables.css`; `pdfCvLayout.test.ts` pins the voice each string is cast in.
  *
  * Voice→font mapping, palette and type sizes live in $lib/utils/pdfDesignTokens,
  * kept in sync with the site's Ink + Signal design tokens.
@@ -37,9 +42,11 @@ import {
 	FONTS,
 	FONT_SIZE,
 	SPACING,
+	RULE,
 	COLORS,
 	LETTER_SPACING,
-	yearColumnWidth
+	yearColumnWidth,
+	wideColumnWidth
 } from '$lib/utils/pdfDesignTokens';
 import {
 	CvPdfLayout,
@@ -86,12 +93,16 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 
 	// ============================================
 	// HEADER DESIGN — left-aligned editorial letterhead, mirroring the
-	// on-screen CVHeader: a primary-ink letterspaced "CURRICULUM VITAE"
-	// eyebrow (the document label) sits above the serif name (the
-	// subject); the date follows; a full-width hairline closes the block.
+	// on-screen CVHeader: a 4px-equivalent masthead rule opens the sheet, an
+	// ink "CURRICULUM VITAE" document label and the Archivo name sit under it,
+	// the pine dateline follows (the one string on the page that is genuinely
+	// "current"), and a hairline closes the block.
 	// ============================================
 
-	// Eyebrow — "CURRICULUM VITAE", small-caps, primary ink, letterspaced
+	layout.rule(RULE.MASTHEAD, COLORS.PRIMARY);
+	layout.y += SPACING.SECTION_RULE_GAP + 2;
+
+	// Document label — "CURRICULUM VITAE", small-caps, primary ink, letterspaced
 	pdf.setFontSize(FONT_SIZE.EYEBROW);
 	pdf.setFont(MONO, 'bold');
 	pdf.setTextColor(...COLORS.PRIMARY);
@@ -100,32 +111,34 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 	pdf.setCharSpace(LETTER_SPACING.NONE);
 	layout.y += 7;
 
-	// Name — large serif headline, deep ink (the subject of the page)
+	// Name — large display headline, deep ink (the subject of the page)
 	pdf.setFontSize(FONT_SIZE.NAME);
 	pdf.setFont(DISPLAY, 'bold');
 	pdf.setTextColor(...COLORS.TEXT_EMPHASIS);
 	pdf.text('Frédérick Madore, PhD', margin, layout.y);
-	layout.y += 5.5;
+	layout.y += 6;
 
-	// Date — dateline in the data voice (mono)
+	// Dateline — the accent mono eyebrow, mirroring `.cv-date` string for
+	// string, including its uppercase. This is the edition stamp: the one
+	// place in the export where pine means what the brief says it means.
 	pdf.setFontSize(FONT_SIZE.DATE);
-	pdf.setFont(MONO, 'normal');
-	pdf.setTextColor(...COLORS.TEXT_MUTED);
+	pdf.setFont(MONO, 'bold');
+	pdf.setTextColor(...COLORS.ACCENT);
+	pdf.setCharSpace(LETTER_SPACING.EYEBROW);
 	const dateText =
 		cvDateElement?.textContent?.trim() ||
-		today.toLocaleDateString('en-GB', {
+		`As of ${today.toLocaleDateString('en-GB', {
 			year: 'numeric',
 			month: 'long',
 			day: 'numeric'
-		});
-	pdf.text(dateText, margin, layout.y);
+		})}`;
+	pdf.text(dateText.toUpperCase(), margin, layout.y);
+	pdf.setCharSpace(LETTER_SPACING.NONE);
 	layout.y += 6;
 
-	// Hairline rule under header block — full-width neutral hairline,
-	// matching the section dividers below.
-	pdf.setDrawColor(...COLORS.BORDER);
-	pdf.setLineWidth(0.2);
-	pdf.line(margin, layout.y, pageWidth - margin, layout.y);
+	// Hairline closing the title block — the lightest tier, so the masthead
+	// rule above it and the section rules below it both read as heavier.
+	layout.rule(RULE.HAIRLINE, COLORS.HAIRLINE);
 	layout.y += SPACING.HEADER_BOTTOM;
 
 	// ============================================
@@ -194,14 +207,11 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 		}
 	});
 
-	// Move y position to the max of left and right columns
-	layout.y = Math.max(layout.y, rightY) + SPACING.SECTION_TOP;
-
-	// Separator line before content
-	pdf.setDrawColor(...COLORS.BORDER);
-	pdf.setLineWidth(0.3);
-	pdf.line(margin, layout.y, pageWidth - margin, layout.y);
-	layout.y += SPACING.SECTION_TOP;
+	// Move y position to the max of left and right columns. No separator is
+	// drawn here: the first section opens with its own heavy rule seven
+	// millimetres below, and two rules that close to each other read as one
+	// undecided one.
+	layout.y = Math.max(layout.y, rightY);
 
 	pdf.setTextColor(...COLORS.TEXT); // Reset to default text color
 
@@ -281,7 +291,12 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 
 							if (yearDiv && contentDiv) {
 								const year = yearDiv.textContent?.trim() || '';
-								layout.renderLedgerEntry(year, contentDiv, yearColumnWidth);
+								layout.renderLedgerEntry(
+									year,
+									contentDiv,
+									entry.classList.contains('cv-entry--wide') ? wideColumnWidth : yearColumnWidth,
+									yearDiv.classList.contains('cv-entry-year--current')
+								);
 							}
 						});
 						break;
@@ -299,26 +314,11 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 			const flexEntries = section.querySelectorAll('.cv-entry, .flex.gap-4');
 			if (flexEntries.length > 0) {
 				flexEntries.forEach((entry) => {
-					// Check for language badge layout (Languages section)
-					const languageBadge = entry.querySelector('.language-badge');
-					if (languageBadge) {
-						const languageName = entry.querySelector('div.flex-1')?.textContent?.trim() || '';
-						const proficiency = languageBadge.textContent?.trim() || '';
-
-						if (languageName) {
-							layout.checkPageBreak(SPACING.LINE_HEIGHT + SPACING.ENTRY_GAP);
-							pdf.setFontSize(FONT_SIZE.BODY);
-							pdf.setFont(DISPLAY, 'bold');
-							pdf.setTextColor(...COLORS.PRIMARY);
-							pdf.text(languageName, margin + 2, layout.y);
-							pdf.setTextColor(...COLORS.TEXT);
-
-							pdf.setFont(SERIF, 'normal');
-							pdf.text(proficiency, margin + yearColumnWidth, layout.y);
-							layout.y += SPACING.LINE_HEIGHT + SPACING.ENTRY_GAP;
-						}
-						return; // Skip to next entry
-					}
+					// Languages and Computer Skills used to be hand-rolled flex rows
+					// with their own export branch, which set the language in the
+					// DISPLAY voice and its proficiency in the SERIF one — the exact
+					// inverse of both the screen and the Two Voices Rule. Both are
+					// ordinary ledger rows now and take the path below.
 
 					// Check for year column - CVEntry uses .cv-entry-year/.cv-entry-content
 					const firstDiv =
@@ -338,29 +338,38 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 							// Layout with year column
 							const year = firstDiv.textContent?.trim() || '';
 
-							// Check if it's a wide column (e.g. Computer Skills w-60)
-							const isWideColumn = firstDiv.classList.contains('w-60');
-							const currentColumnWidth = isWideColumn ? 65 : yearColumnWidth;
+							// A classification key (Computer Skills) takes the wide gutter.
+							const isWideColumn = entry.classList.contains('cv-entry--wide');
 
-							layout.renderLedgerEntry(year, contentDiv, currentColumnWidth);
+							layout.renderLedgerEntry(
+								year,
+								contentDiv,
+								isWideColumn ? wideColumnWidth : yearColumnWidth,
+								firstDiv.classList.contains('cv-entry-year--current')
+							);
 						} else {
-							// Layout without year column (Languages, Computer Skills, etc.)
+							// Keyed row whose key carries no `.cv-entry-year` class. No CV
+							// section produces one today; kept as the fallback for a future
+							// hand-rolled section, cast in the key's voice rather than the
+							// display one so a new section cannot inherit the old error.
 							const label = firstDiv.textContent?.trim() || '';
 							const valueFragments = trimFragments(extractRichText(contentDiv));
 
 							if (label || valueFragments.length > 0) {
-								pdf.setFontSize(FONT_SIZE.BODY);
-								pdf.setFont(DISPLAY, 'bold');
-								pdf.setTextColor(...COLORS.PRIMARY);
+								pdf.setFontSize(FONT_SIZE.YEAR);
+								pdf.setFont(MONO, 'normal');
+								pdf.setTextColor(...COLORS.TEXT_MUTED);
 
 								// Render Label
-								const labelLines = pdf.splitTextToSize(label, yearColumnWidth);
+								const labelLines = pdf.splitTextToSize(label.toUpperCase(), yearColumnWidth);
 								labelLines.forEach((line: string, index: number) => {
 									pdf.text(line, margin + 2, layout.y + index * SPACING.LINE_HEIGHT_TIGHT);
 								});
 
 								const labelHeight = labelLines.length * SPACING.LINE_HEIGHT_TIGHT;
 								pdf.setTextColor(...COLORS.TEXT);
+								pdf.setFont(SERIF, 'normal');
+								pdf.setFontSize(FONT_SIZE.BODY);
 
 								// Render Value (Rich Text)
 								let valueHeight = 0;

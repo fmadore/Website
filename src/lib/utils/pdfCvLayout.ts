@@ -187,32 +187,43 @@ export class CvPdfLayout {
 		pdf.setTextColor(...COLORS.TEXT);
 	}
 
+	/** Draw a full-content-width rule at the current cursor. */
+	rule(weight: number, colour: readonly [number, number, number]): void {
+		const { pdf } = this;
+		pdf.setDrawColor(...colour);
+		pdf.setLineWidth(weight);
+		pdf.line(this.margin, this.y, this.pageWidth - this.margin, this.y);
+	}
+
 	/**
-	 * Section heading — serif title-case over a full-width hairline,
-	 * mirroring the on-screen CV's serif h3 headings (e.g.
-	 * "Professional Appointments"). Title case (not uppercase) keeps the
-	 * editorial, fine-book register rather than a templated CMS label.
+	 * Section head — a heavy ink rule, `--rule-gap`, then the title in the
+	 * DISPLAY voice, exactly as `.cv-section-wrapper > section` draws it on
+	 * screen. It used to set the title first and then draw a 0.2mm rule
+	 * *underneath* it in the border colour: with the letterhead line, the
+	 * pre-content separator and the footer all also at 0.2–0.3mm in that same
+	 * colour, the export had four rules of one weight and no hierarchy at all,
+	 * while RULE.SECTION and SPACING.SECTION_RULE_GAP — defined here for
+	 * exactly this — went unused. Rule weight is how this system says what
+	 * opens what.
 	 */
 	addSection(title: string): void {
 		const { pdf } = this;
 		// Check if we need a new page (need space for heading + some content).
 		// 60 prevents headers from appearing alone at the bottom of the page:
-		// section top spacing + header + hairline rule + section bottom spacing
+		// section top spacing + rule + header + section bottom spacing
 		// + at least one content item.
 		this.checkPageBreak(60);
 		this.y += SPACING.SECTION_TOP;
 
-		// Section heading — serif, deep ink, title case
+		this.rule(RULE.SECTION, COLORS.PRIMARY);
+		this.y += SPACING.SECTION_RULE_GAP;
+
+		// Section heading — DISPLAY voice, deep ink, title case. Title case (not
+		// uppercase) keeps the editorial register rather than a CMS label.
 		pdf.setFontSize(FONT_SIZE.SECTION_HEADING);
 		pdf.setFont(this.voices.DISPLAY, 'bold');
 		pdf.setTextColor(...COLORS.TEXT_EMPHASIS);
 		pdf.text(title, this.margin, this.y);
-		this.y += 2.5;
-
-		// Hairline rule under section heading — full content width
-		pdf.setDrawColor(...COLORS.BORDER);
-		pdf.setLineWidth(0.2);
-		pdf.line(this.margin, this.y, this.pageWidth - this.margin, this.y);
 
 		pdf.setTextColor(...COLORS.TEXT); // Reset text color
 		this.y += SPACING.SECTION_BOTTOM;
@@ -240,26 +251,40 @@ export class CvPdfLayout {
 	}
 
 	/*
-	 * Year/gutter label — primary ink, bold. Numeric years ("2026") sit at
-	 * FONT_SIZE.BODY; long word labels ("Forthcoming", "à paraître")
-	 * would overrun the fixed gutter and collide with the entry text, so
-	 * they auto-shrink to fit the column instead of widening it. This
-	 * keeps every entry's content indentation identical.
+	 * The hanging key — the DATA voice, faint ink, exactly as `.ledger-key` /
+	 * `.cv-entry-year` sets it on screen. It was cast in the DISPLAY voice at
+	 * body size in full ink: a bold Archivo "2019-24" is a headline standing
+	 * where the page hangs a mono stamp, which is the one error the Two Voices
+	 * Rule calls unforgivable, and the export was the only place it survived.
+	 *
+	 * `current` marks the standing record (an ongoing appointment) in pine, the
+	 * one accent the web CV spends on a key. Numeric years sit at FONT_SIZE.YEAR;
+	 * long word labels ("Forthcoming", a skills category) would overrun the
+	 * fixed gutter and collide with the entry text, so they auto-shrink to fit
+	 * the column instead of widening it, keeping every entry's content
+	 * indentation identical.
 	 */
-	drawYearLabel(label: string, x: number, y: number, columnWidth: number): void {
+	drawYearLabel(
+		label: string,
+		x: number,
+		y: number,
+		columnWidth: number,
+		current: boolean = false
+	): void {
 		const { pdf } = this;
-		pdf.setFont(this.voices.DISPLAY, 'bold');
-		pdf.setFontSize(FONT_SIZE.BODY);
+		pdf.setFont(this.voices.MONO, 'normal');
+		pdf.setFontSize(FONT_SIZE.YEAR);
 		// Available width = column minus the x inset minus a ~1mm gutter
 		// before the content column.
 		const maxWidth = columnWidth - (x - this.margin) - 1;
 		const width = pdf.getTextWidth(label);
 		if (width > maxWidth && maxWidth > 0) {
-			pdf.setFontSize(Math.max(6.5, (FONT_SIZE.BODY * maxWidth) / width));
+			pdf.setFontSize(Math.max(6, (FONT_SIZE.YEAR * maxWidth) / width));
 		}
-		pdf.setTextColor(...COLORS.PRIMARY);
-		pdf.text(label, x, y);
+		pdf.setTextColor(...(current ? COLORS.ACCENT : COLORS.TEXT_MUTED));
+		pdf.text(label.toUpperCase(), x, y);
 		pdf.setTextColor(...COLORS.TEXT);
+		pdf.setFont(this.voices.SERIF, 'normal');
 		pdf.setFontSize(FONT_SIZE.BODY); // reset for following body text
 	}
 
@@ -268,7 +293,12 @@ export class CvPdfLayout {
 	 * italicised detail lines) — the shared shape between subsection entries
 	 * and top-level entries.
 	 */
-	renderLedgerEntry(year: string, contentDiv: Element, currentColumnWidth: number): void {
+	renderLedgerEntry(
+		year: string,
+		contentDiv: Element,
+		currentColumnWidth: number,
+		isCurrent: boolean = false
+	): void {
 		const { pdf, contentWidth } = this;
 		// Get main text and nested detail lines separately
 		const clone = contentDiv.cloneNode(true) as HTMLElement;
@@ -317,11 +347,21 @@ export class CvPdfLayout {
 				) + SPACING.LINE_HEIGHT_TIGHT;
 		});
 
-		estimatedHeight += SPACING.ENTRY_GAP;
+		// The hairline and the space between it and the row's first baseline are
+		// part of the row for page-break purposes.
+		estimatedHeight += SPACING.ENTRY_GAP + SPACING.ENTRY_PAD_TOP + SPACING.LINE_HEIGHT_TIGHT;
 		this.checkPageBreak(estimatedHeight);
 
+		// The row's own hairline, drawn above it exactly as `.cv-entry`'s
+		// `border-top` does on screen. The docstring claimed "ledger rows
+		// separated by ink hairlines, exactly like the web CVEntry" while
+		// RULE.HAIRLINE and SPACING.ENTRY_PAD_TOP sat unused and the export
+		// shipped an unruled list.
+		this.rule(RULE.HAIRLINE, COLORS.HAIRLINE);
+		this.y += SPACING.ENTRY_PAD_TOP + SPACING.LINE_HEIGHT_TIGHT;
+
 		// Year/Category column (auto-shrinks long labels like "Forthcoming")
-		this.drawYearLabel(year, this.margin + 2, this.y, currentColumnWidth);
+		this.drawYearLabel(year, this.margin + 2, this.y, currentColumnWidth, isCurrent);
 
 		// Render main text
 		if (mainFragments.length > 0) {
@@ -334,8 +374,10 @@ export class CvPdfLayout {
 				FONT_SIZE.BODY,
 				SPACING.LINE_HEIGHT_TIGHT
 			);
-			// Tighter gap when detail lines follow
-			this.y += paragraphFragments.length > 0 ? SPACING.PARAGRAPH_GAP : SPACING.LINE_HEIGHT;
+			// Tighter gap when detail lines follow. The trailing line that used
+			// to close a detail-free entry now lives above the next row's
+			// hairline instead, so the inter-row interval is unchanged.
+			this.y += paragraphFragments.length > 0 ? SPACING.PARAGRAPH_GAP : 0;
 		}
 
 		// Render detail lines (reviews, amounts, co-applicants, etc.)
@@ -357,9 +399,9 @@ export class CvPdfLayout {
 			);
 
 			pdf.setTextColor(...COLORS.TEXT);
-			// Tight gap between detail lines, larger after last one
-			this.y +=
-				idx < paragraphFragments.length - 1 ? SPACING.PARAGRAPH_GAP : SPACING.LINE_HEIGHT_TIGHT;
+			// Tight gap between detail lines; the last one closes on the next
+			// row's hairline.
+			this.y += idx < paragraphFragments.length - 1 ? SPACING.PARAGRAPH_GAP : 0;
 		});
 
 		this.y += SPACING.ENTRY_GAP;

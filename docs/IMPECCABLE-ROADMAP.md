@@ -166,10 +166,12 @@ the job-to-be-done: find and cite the work.
       DOI — critiqued and fixed later the same day.)_
 - [x] **2.3 Conference activity index + communications detail** — includes the slides
       embed on detail pages. _(Detail done 2026-09-08; the index shares 2.2's facet fix.)_
-- [ ] **2.4 CV + timeline** — the scan-heavy page; ledger discipline and the PDF export
+- [x] **2.4 CV + timeline** — the scan-heavy page; ledger discipline and the PDF export
       (whose colours must match the current palette — verify, it has drifted before).
-- [ ] **2.5 Research index + the 6 project pages** — the static pages drift most easily;
-      check them against each other for internal consistency.
+      _(Done 2026-09-08, 19/36 → 28/36 on a 36-point scale; the PDF `TEXT` orphan retired.)_
+- [x] **2.5 Research index + the 6 project pages** — the static pages drift most easily;
+      check them against each other for internal consistency. _(Done 2026-09-08, 17/32 →
+      25/32; the project pages now compose `RecordLayout`. Seven routes, not six.)_
 - [ ] **2.6 Digital humanities index + detail** — card grid vs ledger tension; plates.
 - [ ] **2.7 Activities index + year archive + detail.**
 - [ ] **2.8 Teaching + guest lectures.**
@@ -682,6 +684,160 @@ route from the page body to the publication record (the only one is a prose link
 paragraph); `RelevantItemsList`, `RelevantItemCard` and `cards.css`'s `.card-accent-border` are
 now unreachable from any route and should be deleted; the home portrait ships a single raw
 `<img>` with no srcset into a 288–352px slot (5.1).
+
+**Correction to the 2.1 entry (orchestrator, same day):** `RelevantItemsList` and
+`RelevantItemCard` are _not_ dead — `ResearchProjectLayout` still reaches them through
+`RelevantPublications` / `RelevantCommunications`, so only the `cards.css` comment naming
+`LatestActivities` as a consumer is stale. Nothing deleted.
+
+**2026-09-08 — 2.5 research index + project pages (`/impeccable critique` → adopt → polish) —
+17/32 as found → 25/32.** Same scale as 2.1 (heuristics 7 and 10 `n/a`). Nine findings; seven
+fixed, two declined to data that is authored rather than laid out. The headline is the one 2.3
+predicted: `ResearchProjectLayout` was not a variant of the record shell but a **second copy of
+it**, agreeing with `RecordLayout` on every structural decision that mattered —
+`minmax(0,1fr) 380px`, sticky rail, `display: contents` order choreography below `--lg` — and
+disagreeing only where neither had a reason: a row gap of 24 against 48, a column gap written
+`--space-16` in one file and `--space-3xl` in the other (**the same 64px**), an h1 at weight 800
+against 820, and a deck whose `.standfirst` + two overrides computes to exactly `.record-byline`.
+Three of 2.3's four blocking differences dissolved on inspection — the "no breadcrumb" difference
+was a _different_ breadcrumb, and the record's editorial back-link is the one the system settled
+on; the undivided rail is `railPrimary` with `railSecondary` omitted, which the shell already
+supported — so the layout is now a **composition** over `RecordLayout`, and the only extension
+that took is an optional **`deck` snippet**: a snippet rather than a string because the caller owns
+the idiom class, which is why the change adds no CSS to the shell and leaves `/publications/[id]`
+and `/communications/[id]` byte-identical but for an empty render anchor. **2.3's fifth claim was
+wrong and is reversed:** the rail's `.stat-ledger` was that class in name only — it overrode the
+flex row into a grid, added hairlines, padding and its own key width, keeping nothing but the font
+stack — and what it actually sets (Period / Co-director / Funder / Programme / Grant / Regions) is
+six strings a database could hold in a 380px rail, which is `.meta-ledger` by the idiom's own
+stated test. It is now `<RecordLedger label="Project">`, and the rail's plate, label, chips and
+buttons likewise moved onto `.rail-plate` / `.rail-label` / `.chip-row` / `.rail-cta` + `.btn`,
+retiring ~150 lines of `aside-*` reimplementation. Three defects surfaced in the move. **The
+Funding panel had been drawing two stacked 3px rules on five of six pages:**
+`.project-prose :global(h2)` at (0,2,1) beat `.panel-title` at (0,1,0), so `<RelevantGrants>`
+printed a second section rule 12px under its own and swapped its mono label for an Archivo
+headline — the descendant selectors are now direct-child selectors, which also stops the panel's
+grant rows inheriting the prose measure and a stray margin inside a flex column that already sets
+its gap. **The same project read as two different periods depending on the page:** the index
+formatted `2026-` as "Since 2026" while the masthead and the rail printed it raw with the hyphen
+dangling; `formatProjectPeriod` (`utils/projectPeriod.ts`, 6 tests, one of which asserts no
+project on the site can print a trailing hyphen) is now shared by both. And **the funder had to
+leave the masthead**: an eyebrow token is `white-space: nowrap`, which is right for "Journal
+Article" and fatal for "Social Sciences and Humanities Research Council of Canada (SSHRC)" — it
+now prints in the rail's Funder row, where a catalogue entry belongs, and on the index entry's
+credit line, which wraps. **The index now does what its own comment had said for months** and the
+code had abandoned: one broadsheet dossier for the flagship and ruled ledger rows for every other
+project, current and concluded, from one shared snippet, so the Ledger Default Rule holds and the
+section head is the only thing distinguishing running work from finished. Each row closes with
+what funds or hosts the project — real apparatus from the record at no bundle cost — and
+`Read more →`, five pine stamps nested inside five links, is gone because the row _is_ the link.
+Each dossier had also shipped **three links to one URL under three accessible names** (plate alt,
+title, action), the defect 2.2 fixed on the bibliography row; the plate stays clickable for the
+mouse and leaves the tab order and the accessibility tree. Pine on the index: **12 → 5**
+(browser-verified: three period bars, one dateline, one `Explore project →`). In the narrative,
+deleting `.project-prose :global(a)` — dead but for `color: accent`, since the site-wide rule at
+(0,3,2) already won every underline property — returns ~15 citations from solid pine text to the
+ink-plus-pine-underline idiom every other prose page uses. Also: all six research plates had been
+shipping their 1280px source (the index entry plates into a 96px box), though 400/800 variants
+were generated and committed; both sizes now carry `srcset` and a truthful `sizes`. **Orchestrator
+follow-up after the browser pass:** the two authored captions carried their own `Fig. 1 —` stamp
+in the data, so the DRE page printed `Fig. 1 — Fig. 1 — AMIRA…`; the stamp is stripped from both
+records and the `figCaption` type now says the rail adds it. **Declined:** per-project output
+counts on the index — the best remaining apparatus and the item's own question — because they
+mean importing two datasets into a route that loads none, and `check:bundle` reads a build the
+agent could not produce; the four vacuous plate captions and the four alt texts that repeat the
+title, both in authored records — the code no longer fabricates a caption, so those four plates
+now print none; and three `craft-floor.md` defaults the brief overrides (its eyebrow ban, its
+glyph-as-icon ban, its 65–75ch measure). **Left for later:** `PageHeader` draws a page-level
+separator with the box-edge token at 1px where the Rule Hierarchy implies a 4px masthead rule — a
+~15-route change, for 2.11; four of six records carry no `subtitle` and no `figCaption` and four
+narratives are unsectioned paragraph runs, which is authoring, not layout, and is the whole of the
+gap to the 28/32 target; per-project output counts want the first session with a build.
+
+**2026-09-08 — 2.4 CV + timeline (`/impeccable critique` → fix → polish) — 19/36 as found →
+28/36.** Scale note: heuristic 10 is `n/a` (a reference document has no help surface) but **7 is
+scored**, unlike 2.1 — `/cv` has real accelerators — so the applicable max is 36 and the 28/32
+target reads as 31.5/36. The session does not reach it and the gap is named. **The headline is
+that the page with the most links on the site painted every one of them pine.**
+`#cv-content a { color: var(--color-accent) }` inverted the site's own link language — ink text
+with a pine underline in prose — across 42 DOI stamps, the `[Link]`/`[Listen]` actions, review
+journals, award and grant titles, project addresses and five contact handles: ten to fifteen
+accent marks per screen, one per row down the publications run, on a document where nothing is
+"the current thing" except one post. The id selector was also why two components' quiet colours
+were dead — `.doi-link` (soft ink) and `.verification-badge` (muted ink) are `0-1-0` and lost to
+a `1-0-1` page rule — so both rendered accent instead of what their author wrote. Replaced by
+`:where()` at `0-0-1`, with **nothing substituted**: the base `a` and the global prose underline
+now apply as everywhere else, and pine on the sheet is the dateline plus the one standing
+appointment (browser-verified: exactly two accent strings on `#cv-content`, DOI stamps in soft
+ink). Deliberately not extended to the three open-ended affiliations: an accent marking half a
+section marks nothing. **Ledger discipline was the item's other half, and 1.3's finding was still
+standing here:** the CV wrapped rows in the shared `.ledger` container but drew the row itself
+**five** ways — `.cv-entry` plus four bespoke classes with their own padding, hairline and
+last-child rule — and four of them hung **no key at all**. `CVEntry` is now the shared
+`.ledger-row` in a new **`.ledger--tight`** density variant extracted to `ink-signal.css` and
+documented on `/style-guide` § 4 (justified, not merely smaller: ~250 rows across seventeen
+sections, where the default padding costs a screen and a half of blank paper). Languages key on
+proficiency with the language as serif content — it was drawn inverted, the mono stamp pushed to
+the right margin; Affiliations hang the membership period that used to sit indented **inside**
+the row; Fieldwork hangs its years; Computer Skills takes a wide classification key.
+`yearWidth="auto"|"fixed"` was a 0.5rem distinction nothing needed and is gone, so one key
+column runs down the whole sheet (browser-verified: 219 ledger rows on two key widths, 6.5rem and
+the wide 15rem; every row stacks at 375 with no overflow). **The sheet's own title was the
+least-ruled thing on it** — seventeen 3px section rules and no masthead — and the contact block
+closed with the box-edge pair where a separator belongs, the silent crossing 1.2's guard exists to
+catch; `CVHeader` now opens on `--rule-masthead` and closes on the hairline pair, and its contact
+block moved from **serif to the data voice** (an institutional address is the plainest database
+column on the site, and `.dh-links` already casts addresses mono further down the same page).
+**The PDF export's tokens described an Ink + Signal sheet the generator never drew.** By grep:
+`COLORS.ACCENT`, `RULE.SECTION`, `RULE.HAIRLINE`, `SPACING.SECTION_RULE_GAP`,
+`SPACING.ENTRY_PAD_TOP` and `FONT_SIZE.YEAR` had **zero uses**, while the module docstring
+claimed a pine eyebrow, heavy ink section rules and "ledger rows separated by ink hairlines,
+exactly like the web CVEntry". What shipped was four rules all at 0.2–0.3mm in one colour, the
+section rule _underlining_ its head instead of opening it, no row separators at all, no pine
+anywhere, and — the only place on the site this survived — **the hanging key cast in the display
+voice**, bold Archivo at body size in full ink where the page hangs a faint mono stamp, with
+Languages exactly inverted against the screen. All corrected against the tokens that already
+existed; the trailing line that closed a row moved above the next row's hairline, so adding a
+separator to every row costs under one page. The export embeds the real faces (eight TTFs, all
+three voices) and no font files or import shapes changed, so jsPDF's lazy chunk boundary is
+untouched. **The `TEXT` orphan (0.2's deferred decision) is retired:** `#3a352a` traced to no
+token and existed only in the exporter; the system owns three ink steps, the printed CV is the
+same document as the web CV, and the web CV sets its body in `--color-text` — a softened body
+ink is a screen habit and softening in print is the wrong direction anyway. Mapped to
+`--color-text` (11.4:1 → 17.1:1 on paper), and `designTokenParity.test.ts` now has **no
+exceptions**, its pin replaced by an assertion that the mapping covers every entry in `COLORS`.
+The browser print sheet was forcing pure black on `body`, so the two exports of one document were
+set in two palettes; it takes ink now. **New guard `pdfCvLayout.test.ts` (12 tests):** the export
+is a shipped design artifact no browser check ever sees, and prose in a docstring is not a guard
+— that docstring was wrong on four counts for months. `CvPdfLayout` takes its jsPDF by injection,
+so a recording stand-in pins the voice of every string, the rule tiers as three distinct
+descending weights, that the section rule precedes its head, and that pine appears on an ongoing
+key and only there; **verified to fail** by reinstating the display-voice key. Also found and
+fixed: `measureRichTextHeight` defaulted to Helvetica metrics while `renderRichText` rendered in
+Newsreader, so every page-break line count was taken against the wrong font; and `renderRichText`'s
+text colour defaulted to pure black. **Elsewhere:** the PDF button swallowed failures into a
+DEV-only console line — indistinguishable from a blocked download — and now reports "Export
+failed — retry" in an `aria-live` control, carried by words because DESIGN restricts
+`--color-danger` to form validation; the table of contents gained per-section row counts read off
+the DOM, lost a 300ms slide-up and a `scaleY` tick transform, and got 44px touch rows — it was
+~20px and 1.3's sweep missed it; `/cv/timeline` dropped a `resize` listener that padded a ~380px
+chart to 70% of viewport height, and its standfirst stopped saying "hover" for marks that are
+`tabindex="0"`. **Orchestrator follow-up after the browser pass:** the ongoing appointment's key
+printed `2026-` with a dangling hyphen while `formatAffiliationPeriod` prints an en dash, so the
+key column mixed two dashes — `formatCVYearRange` now emits the en dash too (`2021–25`, `2026–`;
+zero hyphenated keys on the sheet), which the agent had flagged but left as out of scope. **The
+PDF itself was not opened in a browser this session** — its design is pinned by the new
+recording test, not by eyes; the owner should download it once. **Declined:** the craft floor's
+eyebrow ban, its 65–75ch measure floor (Measured Line Rule), its "mono as costume" default (the
+data voice is the brief's, and an address _is_ metadata), `--color-danger` for the failed export,
+and replacing the ToC's inline SVGs with mono `§`/`✕` stamps — defensible under the brief but
+needing eyes, so flagged rather than shipped. **Left for later:** the ToC's labels differ from the
+headings they jump to (3.1); the staged lazy load populates the ToC over 400ms with no
+indication; linked award and grant titles are now bold ink with no underline, weaker as an
+affordance than pine text — the honest fix is the site-wide link idiom in 4.2; and
+`CareerTimeline.svelte` (2.9) has a fixed 900px width inside two nested scroll containers, the
+inner one hiding its own scrollbar, a `role="img"` wrapper around `role="button"` marks, and no
+Space-key handling.
 
 **Method note on the detector, correcting 0.2/1.1 and one of today's agents.** v4.1.1's engines
 import no external parser, so the "install the deps or it runs degraded" caveat is obsolete. What

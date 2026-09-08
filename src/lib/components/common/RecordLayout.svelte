@@ -8,7 +8,9 @@ it. The shell owns everything that is true of *any* record:
   - the editorial breadcrumb — a back-link ("← Publications / Journal Article")
     rather than the Home/Section/Title trail of the <Breadcrumb> molecule, so it
     reads as document chrome on a record;
-  - the masthead: mono eyebrow tokens, Archivo h1, serif-italic byline;
+  - the masthead: mono eyebrow tokens, Archivo h1, and either a serif-italic
+    byline (a bibliographic record) or a `deck` snippet (a research project's
+    standfirst) in the same slot;
   - the two-column grid — reading column plus a sticky 380px metadata rail —
     and the single-column choreography below --lg, where the rail dissolves
     (`display: contents`) and its two blocks order themselves around the body:
@@ -70,6 +72,13 @@ Usage:
 		title: string;
 		/** Formatted byline ("A, B and C"); omit for an unattributed record. */
 		byline?: string;
+		/**
+		 * Masthead deck, printed under the title where a bibliographic record
+		 * prints its byline. A snippet rather than a string because the caller
+		 * owns the idiom class it sets — a research project's `.standfirst`, say
+		 * — and the shell has no styling of its own to lend it.
+		 */
+		deck?: Snippet;
 		/** Trailing byline clause, printed after a full stop (e.g. "Preface by X"). */
 		bylineSuffix?: string;
 		/** Breadcrumb trail feeding the breadcrumb JSON-LD. */
@@ -95,6 +104,7 @@ Usage:
 		title,
 		byline,
 		bylineSuffix,
+		deck,
 		breadcrumbItems,
 		jsonLdScriptId,
 		jsonLdString,
@@ -162,6 +172,8 @@ Usage:
 						by {byline}{#if bylineSuffix}. {bylineSuffix}{/if}
 					</p>
 				{/if}
+
+				{@render deck?.()}
 			</header>
 
 			<!-- ═══ MAIN COLUMN ═══ -->

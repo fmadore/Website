@@ -26,10 +26,10 @@
 </header>
 
 <!-- Contact Info Section -->
-<section class="text-sm text-light cv-contact-section mb-8">
+<section class="cv-contact-section mb-8">
 	<!-- Address -->
 	<div class="cv-contact-group">
-		<Icon icon="mdi:map-marker" class="text-light shrink-0" width="20" height="20" />
+		<Icon icon="mdi:map-marker" class="text-light shrink-0" width="16" height="16" />
 		<div>
 			{address.institution}<br />
 			{#if address.department}
@@ -49,7 +49,7 @@
 	<div class="cv-links-group">
 		{#each cvLinks as link (link.url)}
 			<div class="cv-link-item">
-				<Icon icon={link.icon} class="text-light shrink-0" width="20" height="20" />
+				<Icon icon={link.icon} class="text-light shrink-0" width="16" height="16" />
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 				<a href={link.url} target="_blank" rel="noopener noreferrer">{link.displayUrl}</a>
 			</div>
@@ -62,8 +62,15 @@
 	 * Editorial title block — the CV masthead, matching every other index
 	 * page: an accent mono dateline, the page name "Curriculum Vitae" in the
 	 * Archivo display voice, and the subject as a serif-italic standfirst.
+	 *
+	 * The 4px rule is the masthead tier. Without it the sheet's own title was
+	 * the least-ruled thing on a page whose seventeen sections each open with
+	 * a 3px rule — hierarchy inverted. Now the sheet reads 4px masthead →
+	 * 3px section → 1px entry, top to bottom.
 	 */
 	.cv-header {
+		border-top: var(--rule-masthead) solid var(--color-primary);
+		padding-top: var(--rule-gap);
 		margin-bottom: var(--space-6);
 	}
 
@@ -102,14 +109,26 @@
 		margin: 0;
 	}
 
-	/* Contact section layout — closes the title block with a hairline rule,
-	 * mirroring the page-header convention used across the site. */
+	/* Contact section — the letterhead's apparatus, and therefore the DATA
+	 * voice: an institutional address and a set of handles are the plainest
+	 * database columns on the site, and `.dh-links` already sets project
+	 * addresses this way further down the same page. It was serif, which is
+	 * the one error the Two Voices Rule calls unforgivable.
+	 *
+	 * Closed by a rule, so it takes the hairline pair — it had the box-edge
+	 * pair, one step too dark, which is the silent crossing the pairing rule
+	 * exists to catch. */
 	.cv-contact-section {
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-6);
 		padding-bottom: var(--space-6);
-		border-bottom: var(--border-width-thin) solid var(--color-border);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-xs);
+		letter-spacing: 0.04em;
+		line-height: var(--line-height-relaxed);
+		color: var(--color-text-light);
 	}
 
 	.cv-contact-group {

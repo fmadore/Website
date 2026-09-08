@@ -13,11 +13,10 @@
 <section>
 	<h3>Professional Appointments</h3>
 	{#if appointmentsByDate.length > 0}
-		<div class="space-y-3 ledger">
+		<div class="space-y-3 ledger ledger--tight ledger--ruled">
 			{#each appointmentsByDate as appt (appt.id)}
 				<CVEntry
 					year={formatCVYearRange(appt.startYear, appt.endYear)}
-					yearWidth="fixed"
 					current={appt.endYear === null}
 				>
 					<span class="font-medium">{typesetQuotes(appt.title)}</span>,

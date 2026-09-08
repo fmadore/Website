@@ -6,7 +6,6 @@
 	import SEO from '$lib/SEO.svelte';
 	import { getAllTimelineItems } from '$lib/utils/timelineData';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
-	import { onMount } from 'svelte';
 
 	// Get all timeline items
 	const items = getAllTimelineItems();
@@ -15,18 +14,6 @@
 	const breadcrumbs = createSectionBreadcrumbs('CV', '/cv', {
 		name: 'Career Timeline',
 		path: '/cv/timeline'
-	});
-
-	// Responsive height
-	let chartHeight = $state(600);
-
-	onMount(() => {
-		const updateHeight = () => {
-			chartHeight = window.innerHeight * 0.7;
-		};
-		updateHeight();
-		window.addEventListener('resize', updateHeight);
-		return () => window.removeEventListener('resize', updateHeight);
 	});
 </script>
 
@@ -47,13 +34,19 @@
 	/>
 
 	<PageIntro>
-		An interactive visualization of my academic journey, highlighting positions held, education
-		completed, grants received, and key scholarly outputs over time. Hover over items for details.
+		The same record as the CV, plotted against time: positions held, education completed, grants
+		received, and key scholarly outputs, one lane per category. Select an item — by pointer or by
+		keyboard — for its details.
 	</PageIntro>
 
 	<ContentBody variant="wide">
+		<!-- The chart states its own height from the number of category lanes it
+		     draws. It previously took `window.innerHeight * 0.7` as a min-height,
+		     re-measured on every resize event: on a 900px window that padded a
+		     ~380px chart out to 630px, so a third of the plate was empty paper
+		     and a listener ran to keep it that way. -->
 		<div class="timeline-container">
-			<CareerTimeline {items} height={chartHeight} />
+			<CareerTimeline {items} height={0} />
 		</div>
 	</ContentBody>
 </div>
@@ -75,8 +68,8 @@
 		background: transparent;
 	}
 
+	/* Square, like every other edge in the system. */
 	.timeline-container::-webkit-scrollbar-thumb {
 		background-color: var(--color-border);
-		border-radius: var(--border-radius-sm);
 	}
 </style>

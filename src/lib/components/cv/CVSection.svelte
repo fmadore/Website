@@ -7,7 +7,6 @@
 		items = [] as T[],
 		year,
 		key,
-		yearWidth = 'auto',
 		emptyMessage,
 		conditional = false,
 		entry
@@ -16,7 +15,6 @@
 		items?: T[];
 		year: (item: T) => string | number;
 		key: (item: T) => string | number;
-		yearWidth?: 'auto' | 'fixed';
 		emptyMessage?: string;
 		conditional?: boolean;
 		entry: Snippet<[T]>;
@@ -28,16 +26,16 @@
 <!--
 	CV section — a ruled ledger module. The <section> + <h3> structure and
 	the .space-y-3 entry wrapper are load-bearing DOM hooks for the PDF generator,
-	so they are preserved; the ledger look comes from #cv-content styles in
-	+page.svelte (which number the h3 and rule each row) plus CVEntry.
+	so they are preserved; the ledger itself is the shared `.ledger` idiom at its
+	tight density (see ink-signal.css), closed by `--ruled`.
 -->
 {#if !conditional || hasItems}
 	<section>
 		<h3>{title}</h3>
 		{#if hasItems}
-			<div class="space-y-3 ledger">
+			<div class="space-y-3 ledger ledger--tight ledger--ruled">
 				{#each items as item (key(item))}
-					<CVEntry year={year(item)} {yearWidth}>
+					<CVEntry year={year(item)}>
 						{@render entry(item)}
 					</CVEntry>
 				{/each}

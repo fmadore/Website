@@ -5,6 +5,8 @@
 	import SEO from '$lib/SEO.svelte';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import { allResearchProjects } from '$lib/data/research';
+	import { buildSrcset } from '$lib/utils/imageVariants';
+	import { formatProjectPeriod } from '$lib/utils/projectPeriod';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	// Helper to resolve dynamic research project paths
@@ -18,20 +20,36 @@
 	// The card title falls back to the full title; `imageSrc` is a bare filename.
 	// Both prose fields are typeset here, once, so the dossier lead and the
 	// ledger rows below print the same title in the same register.
-	const researchProjects = allResearchProjects.map((p) => ({
-		id: p.id,
-		title: typesetQuotes(p.cardTitle ?? p.title),
-		years: p.years,
-		current: p.current,
-		shortDescription: typesetQuotes(p.shortDescription),
-		imageUrl: `${base}/images/research/${p.imageSrc}`
-	}));
+	//
+	// `period` and `credit` are formatted here for the same reason: they are the
+	// two apparatus values this page prints, and each project's own masthead
+	// prints them from the same record. `formatProjectPeriod` is shared with that
+	// masthead so "2026-" can never read one way here and another there.
+	const researchProjects = allResearchProjects.map((p) => {
+		const imageUrl = `${base}/images/research/${p.imageSrc}`;
+		return {
+			id: p.id,
+			title: typesetQuotes(p.cardTitle ?? p.title),
+			years: p.years,
+			period: formatProjectPeriod(p.years),
+			// What is funding or hosting the work — the funder when the record
+			// names one, otherwise the programme. Real apparatus, from the record,
+			// at no extra bundle cost.
+			credit: typesetQuotes(p.funder ?? p.programme),
+			current: p.current,
+			shortDescription: typesetQuotes(p.shortDescription),
+			imageUrl,
+			imageSrcset: buildSrcset(imageUrl)
+		};
+	});
 
 	// Current vs. concluded projects drive the page's two sections. The first
 	// current project gets the broadsheet dossier; any further current projects
 	// sit beside it as ruled ledger rows, and only genuinely concluded projects
 	// fall under "Earlier projects".
 	const currentProjects = researchProjects.filter((p) => p.current);
+	const leadProject = currentProjects[0];
+	const otherCurrentProjects = currentProjects.slice(1);
 	const pastProjects = researchProjects.filter((p) => !p.current);
 
 	// Project-period timeline (Gantt-style): one horizontal bar per project,
@@ -54,9 +72,10 @@
 		return { title: p.title, current: !!p.current, left, width };
 	});
 
-	// Present a span nicely: "2026 – 2027", or "Since 2025" for open-ended work.
-	const formatPeriod = (/** @type {string} */ years) =>
-		years.endsWith('-') ? `Since ${years.slice(0, -1)}` : years.replace('-', ' – ');
+	// The dossier plate is the reading column's own width until --md, then a
+	// little over half of it; the ledger entry plates never exceed 176px.
+	const DOSSIER_PLATE_SIZES = '(max-width: 768px) 100vw, 45vw';
+	const ENTRY_PLATE_SIZES = '(max-width: 768px) 96px, 176px';
 </script>
 
 <SEO
@@ -80,7 +99,10 @@
 			Multiple Cluster, and the question of what these methods do to African studies.
 		</PageIntro>
 
-		<!-- Project-period timeline — one Gantt bar per project across the years. -->
+		<!-- Project-period timeline — one Gantt bar per project across the years.
+		     Ornamental rather than navigational: every span it draws is printed as
+		     a date in the ledger below, which is why it is hidden from assistive
+		     technology instead of being given labels that would repeat the list. -->
 		<section class="periods" aria-hidden="true">
 			<p class="eyebrow eyebrow--ink periods-label">
 				Project periods · {CAREER_START}–{CAREER_END}
@@ -97,94 +119,126 @@
 			</div>
 			<div class="period-legend">
 				<span>{CAREER_START}</span>
-				<span>Project periods</span>
 				<span>{CAREER_END}</span>
 			</div>
 		</section>
 
-		<!-- CURRENT PROJECTS — broadsheet dossier for the flagship, ruled ledger
-		     rows for any other still-running projects. -->
-		<section class="section section--flush lead-dossier">
-			<div class="section-head">
-				<h2 class="section-title">
-					{currentProjects.length > 1 ? 'Current projects' : 'Current project'}
-				</h2>
-			</div>
+		<!-- CURRENT PROJECTS — a broadsheet dossier for the flagship, ruled ledger
+		     rows for the rest. The section head is what says this work is running,
+		     so no row repeats it as a status stamp. -->
+		{#if leadProject}
+			<section class="section section--flush">
+				<div class="section-head">
+					<h2 class="section-title">
+						{currentProjects.length > 1 ? 'Current projects' : 'Current project'}
+					</h2>
+				</div>
 
-			<div class="dossier-stack">
-				{#each currentProjects as project, i (project.id)}
-					<article class="dossier {i === 0 ? 'dossier--lead' : ''}">
-						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolvePath -->
-						<a class="dossier-plate-link" href={resolvePath(`/research/${project.id}`)}>
-							<img
-								class="plate dossier-plate"
-								src={project.imageUrl}
-								alt={project.title}
-								width="1280"
-								height="720"
-								loading="lazy"
-								decoding="async"
-							/>
-						</a>
+				<article class="dossier">
+					<!-- The plate is a second route to a page the headline and the
+					     action below already link. It stays clickable for the mouse
+					     and is taken out of the accessibility tree and the tab order,
+					     so the destination is announced once, not three times. -->
+					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolvePath -->
+					<a
+						class="dossier-plate-link"
+						href={resolvePath(`/research/${leadProject.id}`)}
+						tabindex="-1"
+						aria-hidden="true"
+					>
+						<img
+							class="plate dossier-plate"
+							src={leadProject.imageUrl}
+							srcset={leadProject.imageSrcset}
+							sizes={leadProject.imageSrcset ? DOSSIER_PLATE_SIZES : undefined}
+							alt=""
+							width="1280"
+							height="720"
+							loading="lazy"
+							decoding="async"
+						/>
+					</a>
 
-						<div class="dossier-body">
-							<p class="eyebrow dossier-dateline">
-								{formatPeriod(project.years)}{project.years.endsWith('-') ? '' : ' · Ongoing'}
-							</p>
-							<h3 class="dossier-title">
-								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolvePath -->
-								<a href={resolvePath(`/research/${project.id}`)}>{project.title}</a>
-							</h3>
-							<p class="dossier-desc">{project.shortDescription}</p>
+					<div class="dossier-body">
+						<p class="eyebrow dossier-dateline">
+							<span>{leadProject.period}</span>
+							{#if leadProject.credit}<span class="eyebrow-sep" aria-hidden="true">·</span><span
+									>{leadProject.credit}</span
+								>{/if}
+						</p>
+						<h3 class="dossier-title">
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolvePath -->
-							<a class="dossier-action" href={resolvePath(`/research/${project.id}`)}>
-								Explore project →
-							</a>
-						</div>
-					</article>
-				{/each}
-			</div>
-		</section>
+							<a class="link-animated" href={resolvePath(`/research/${leadProject.id}`)}
+								>{leadProject.title}</a
+							>
+						</h3>
+						<p class="dossier-desc">{leadProject.shortDescription}</p>
+						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolvePath -->
+						<a class="dossier-action" href={resolvePath(`/research/${leadProject.id}`)}>
+							Explore project →
+						</a>
+					</div>
+				</article>
+
+				{#if otherCurrentProjects.length > 0}
+					<div class="ledger ledger--ruled catalogue">
+						{#each otherCurrentProjects as project (project.id)}
+							{@render entry(project)}
+						{/each}
+					</div>
+				{/if}
+			</section>
+		{/if}
 
 		<!-- CATALOGUE — concluded projects as ruled ledger entries. -->
 		{#if pastProjects.length > 0}
-			<section class="section catalogue">
+			<section class="section">
 				<div class="section-head">
 					<h2 class="section-title">Earlier projects</h2>
 				</div>
 
 				<div class="ledger ledger--ruled">
 					{#each pastProjects as project (project.id)}
-						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolvePath -->
-						<a
-							class="ledger-row ledger-entry"
-							href={resolvePath(`/research/${project.id}`)}
-							style="--ledger-key-w: 8rem"
-						>
-							<span class="ledger-key">{formatPeriod(project.years)}</span>
-							<span class="entry-body">
-								<img
-									class="plate entry-plate"
-									src={project.imageUrl}
-									alt=""
-									width="160"
-									height="90"
-									loading="lazy"
-									decoding="async"
-								/>
-								<span class="ledger-content">
-									<span class="ledger-title">{project.title}</span>
-									<span class="ledger-desc">{project.shortDescription}</span>
-									<span class="ledger-action">Read more →</span>
-								</span>
-							</span>
-						</a>
+						{@render entry(project)}
 					{/each}
 				</div>
 			</section>
 		{/if}
 	</div>
 </div>
+
+<!-- One ledger entry, used by both sections so a running project and a concluded
+     one are set identically — the section head above is the only thing that
+     distinguishes them. The whole row is the link; the period hangs in the key
+     column and the funder or programme closes the entry in the data voice. -->
+{#snippet entry(/** @type {(typeof researchProjects)[number]} */ project)}
+	<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolvePath -->
+	<a
+		class="ledger-row ledger-entry"
+		href={resolvePath(`/research/${project.id}`)}
+		style="--ledger-key-w: 8rem"
+	>
+		<span class="ledger-key">{project.period}</span>
+		<span class="entry-body">
+			<img
+				class="plate entry-plate"
+				src={project.imageUrl}
+				srcset={project.imageSrcset}
+				sizes={project.imageSrcset ? ENTRY_PLATE_SIZES : undefined}
+				alt=""
+				width="176"
+				height="99"
+				loading="lazy"
+				decoding="async"
+			/>
+			<span class="ledger-content">
+				<span class="ledger-title">{project.title}</span>
+				<span class="ledger-desc">{project.shortDescription}</span>
+				{#if project.credit}<span class="dateline entry-credit">{project.credit}</span>{/if}
+			</span>
+		</span>
+	</a>
+{/snippet}
 
 <style>
 	/* Project-period timeline — Gantt bars, one per project, under the intro.
@@ -234,13 +288,7 @@
 		color: var(--color-text-light);
 	}
 
-	/* ---- Current-project dossiers — plate + headline, one per running project ---- */
-	.dossier-stack {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-2xl);
-	}
-
+	/* ---- The lead dossier — plate + headline for the flagship project ---- */
 	.dossier {
 		display: grid;
 		grid-template-columns: 1fr;
@@ -260,8 +308,18 @@
 		object-fit: cover;
 	}
 
+	/* Same shape as the masthead eyebrow on the project's own page: period,
+	   then what funds or hosts the work, separated by a mono interpunct. */
 	.dossier-dateline {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: var(--space-2);
 		margin-bottom: var(--space-sm);
+	}
+
+	.eyebrow-sep {
+		color: var(--color-text-muted);
 	}
 
 	.dossier-title {
@@ -276,15 +334,6 @@
 		text-wrap: balance;
 	}
 
-	.dossier-title a {
-		color: inherit;
-		text-decoration: none;
-	}
-
-	.dossier-title a:hover {
-		color: var(--color-accent);
-	}
-
 	.dossier-desc {
 		font-family: var(--font-family-serif);
 		font-size: var(--font-size-lg);
@@ -294,6 +343,8 @@
 		max-width: var(--measure-prose);
 	}
 
+	/* The page's single accent action. Every other route into a project is the
+	   ledger row itself, so pine still means "the current thing". */
 	.dossier-action {
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
@@ -308,7 +359,9 @@
 		color: var(--color-accent-dark);
 	}
 
-	/* ---- Ledger entries (earlier projects) ---- */
+	/* ---- Ledger entries ---- */
+	/* The rows under the dossier open a second block inside the same section, so
+	   they need the interval the section rule gives the dossier above them. */
 	.catalogue {
 		margin-top: var(--space-2xl);
 	}
@@ -323,7 +376,7 @@
 	}
 
 	/* Plate + text share the ledger's content column, so the entries carry the
-	   same image as the current-project dossiers at catalogue scale. */
+	   same image as the lead dossier at catalogue scale. */
 	.entry-body {
 		display: flex;
 		gap: var(--space-md);
@@ -334,19 +387,15 @@
 	.entry-plate {
 		flex: none;
 		width: 96px;
-		/* Echo the dossier plates; sources aren't all 16:9, so crop. */
+		/* Echo the dossier plate; sources aren't all 16:9, so crop. */
 		aspect-ratio: 16 / 9;
 		height: auto;
 		object-fit: cover;
 	}
 
-	/* On narrow screens an 8rem key column beside a plate starves the text, so
-	   the date hangs above its entry rather than beside it. */
-	@media (--sm-down) {
-		.ledger-entry {
-			grid-template-columns: minmax(0, 1fr);
-			gap: var(--space-2);
-		}
+	/* What funds or hosts the project, closing the entry in the data voice. */
+	.entry-credit {
+		margin-top: var(--space-1);
 	}
 
 	.ledger-entry:hover {
@@ -362,16 +411,6 @@
 		outline-offset: calc(-1 * var(--border-width-medium));
 	}
 
-	.ledger-action {
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-2xs);
-		font-weight: var(--font-weight-semibold);
-		letter-spacing: 0.13em;
-		text-transform: uppercase;
-		color: var(--color-accent);
-		margin-top: var(--space-1);
-	}
-
 	@media (--md) {
 		/* Broadsheet: plate left, headline column right. */
 		.dossier {
@@ -380,8 +419,7 @@
 			align-items: center;
 		}
 
-		/* The flagship reads one step louder than the other running projects. */
-		.dossier--lead .dossier-title {
+		.dossier-title {
 			font-size: var(--font-size-4xl);
 		}
 

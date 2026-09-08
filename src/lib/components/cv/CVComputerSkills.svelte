@@ -1,4 +1,6 @@
 <script lang="ts">
+	import CVEntry from './CVEntry.svelte';
+
 	const computerSkills = [
 		{
 			category: 'Data analysis & visualisation',
@@ -21,47 +23,26 @@
 	];
 </script>
 
+<!--
+	A classified ledger rather than a dated one: the key is a category, so the
+	row takes the wide key column. `cv-entry--wide` is a PDF-generator hook —
+	the exporter widens its own gutter to match.
+-->
 <section>
 	<h3>Computer Skills</h3>
-	<div class="space-y-3 ledger">
+	<div class="space-y-3 ledger ledger--tight ledger--ruled">
 		{#each computerSkills as skill (skill.category)}
-			<!-- .w-60 is a PDF-generator hook marking the category (key) column. -->
-			<div class="flex gap-4 items-baseline cv-skill-row">
-				<div class="font-semibold w-60 cv-skill-category">{skill.category}</div>
-				<div class="flex-1 cv-skill-list">
-					{skill.skills}
-				</div>
-			</div>
+			<CVEntry year={skill.category} wide>
+				<span class="cv-skill-list">{skill.skills}</span>
+			</CVEntry>
 		{/each}
 	</div>
 </section>
 
 <style>
-	/* Ledger row: mono category key, serif skills content, hairline between. */
-	.cv-skill-row {
-		padding: var(--space-2-5) 0;
-		border-top: var(--rule-hairline) solid var(--color-hairline);
-	}
-
-	.cv-skill-row:last-child {
-		border-bottom: var(--rule-hairline) solid var(--color-hairline);
-	}
-
-	/* Category — DATA voice: mono uppercase, letterspaced, quiet ink. */
-	.cv-skill-category {
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-2xs);
-		font-weight: var(--font-weight-semibold);
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-		color: var(--color-text-light);
-		line-height: var(--line-height-snug);
-	}
-
 	/* Skills — DOCUMENT voice: serif body. */
 	.cv-skill-list {
 		font-family: var(--font-family-serif);
 		color: var(--color-text-soft);
-		line-height: var(--line-height-relaxed);
 	}
 </style>

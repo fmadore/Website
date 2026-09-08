@@ -67,6 +67,7 @@ export interface ResearchProject {
 	/** Serif-italic deck under the title. */
 	subtitle?: string;
 	/** Serif-italic caption under the aside plate (defaults to "Fig. 1 — {imageAlt}"). */
+	/** Authored plate caption. Without the `Fig. 1 — ` stamp: the rail adds it. */
 	figCaption?: string;
 	/**
 	 * Name used to gather related publications, communications and grants. Matches
