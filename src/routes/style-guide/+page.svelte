@@ -227,6 +227,16 @@
 	const yearCounts = yearRange.map((year) => publicationsByYear[year]?.length ?? 0);
 	const maxYearCount = Math.max(...yearCounts);
 
+	/* Newest-first tallies for the year-meter demo in § 6 — the same publication
+	 * data the bar strip above it draws, read as a ledger instead of a strip. */
+	const meterYears = [...pubYears]
+		.reverse()
+		.slice(0, 6)
+		.map((year) => {
+			const count = publicationsByYear[year]?.length ?? 0;
+			return { year, count, pct: maxYearCount > 0 ? (count / maxYearCount) * 100 : 0 };
+		});
+
 	const stats = [
 		{ label: 'Publications', value: allPublications.length, accent: true },
 		{ label: 'Communications', value: allCommunications.length },
@@ -504,12 +514,39 @@
 				</dl>
 				<div class="rail-cta">
 					<span class="btn btn-accent btn-block">Access Publication ↗</span>
-					<span class="btn btn-outline-primary btn-block">Export BibTeX</span>
 				</div>
 			</div>
 			<p class="guide-caption">
 				Pine marks only the row that leaves the record — a DOI, a live project page — and only one
 				control in the stack carries the accent fill.
+			</p>
+
+			<h3 class="eyebrow eyebrow--ink guide-subhead">The cite block — the citation itself</h3>
+			<p class="guide-note">
+				A record page holds every field of its own citation, so it prints the citation. The
+				reference is set as real text in the document voice — the sentence a reader would type — and
+				the controls beneath it are the data voice, because copying and exporting are machine
+				errands. Setting the text rather than hiding it behind the button is also the fallback: a
+				clipboard the browser denies still leaves something to select. Confirmation replaces the
+				label and takes pine for as long as it is true, then returns.
+			</p>
+			<div class="guide-rail">
+				<div class="cite-block">
+					<p class="rail-label">Cite</p>
+					<p class="cite-reference">
+						Madore, Frédérick. (2026). Muslim Minorities in Africa. Islamic Africa 12 (1): 1–24.
+						https://doi.org/10.1163/21540993-01201007
+					</p>
+					<div class="cite-actions">
+						<span class="btn btn-outline-primary btn-block">Copy reference</span>
+						<span class="btn btn-outline-secondary btn-block">Export BibTeX</span>
+					</div>
+				</div>
+			</div>
+			<p class="guide-caption">
+				The same reference string the MCP server returns for its <span class="data-voice"
+					>reference</span
+				> style — one formatter, so the page and an assistant can never disagree about the same work.
 			</p>
 		</section>
 
@@ -624,6 +661,34 @@
 					{/each}
 				</div>
 			</div>
+
+			<h3 class="eyebrow eyebrow--ink guide-subhead">The year meter</h3>
+			<p class="guide-note">
+				The same distribution read as a ledger rather than a strip: a mono year, an
+				<code>.hbar</code> proportion bar, a tabular count. The bar is one of the system's three
+				sanctioned gradients — a hard stop whose position <em>is</em> the value, set with
+				<code>style="--pct: 62%"</code> — so it encodes rather than decorates. The newest row takes pine
+				on both key and bar, which is the accent's own definition. Use it wherever a list of years would
+				otherwise be a row of buttons that says only which years exist.
+			</p>
+			<ul class="year-meter meter-demo">
+				{#each meterYears as row (row.year)}
+					<li>
+						<div class="year-meter-row">
+							<span class="year-meter-key" class:year-meter-key--current={row.year === lastYear}>
+								{row.year}
+							</span>
+							<span
+								class="hbar"
+								class:hbar--current={row.year === lastYear}
+								style="--pct: {row.pct}%"
+								aria-hidden="true"
+							></span>
+							<span class="year-meter-count">{row.count}</span>
+						</div>
+					</li>
+				{/each}
+			</ul>
 		</section>
 
 		<!-- ================================================================
@@ -946,6 +1011,11 @@
 			grid-template-columns: 2fr 1fr;
 			gap: var(--space-2xl);
 		}
+	}
+
+	/* The meter is a rail idiom; showing it at page width would misstate it. */
+	.meter-demo {
+		max-width: 20rem;
 	}
 
 	/* ===== Plate ===== */

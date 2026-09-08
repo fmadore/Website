@@ -280,6 +280,38 @@
 	gap: var(--space-3);
 }
 
+/* ── The cite block — a record's citation, printed and exportable ──────────
+ *
+ * A record page holds every field of its own citation; this is where it prints
+ * the citation itself. The reference is set as real text, in the document voice
+ * because it is the reference a reader would type, and the controls beneath it
+ * are the data voice because they are machine errands (put it on the clipboard,
+ * export it as BibTeX). Setting the text rather than hiding it behind the copy
+ * button is also the fallback: a denied clipboard still leaves something to
+ * select. Consumers: the rail on /publications/[id]. */
+.cite-block {
+	display: flex;
+	flex-direction: column;
+}
+
+.cite-reference {
+	margin: 0 0 var(--space-md);
+	font-family: var(--font-family-serif);
+	font-size: var(--font-size-sm);
+	line-height: var(--line-height-relaxed);
+	color: var(--color-text-soft);
+	max-width: var(--measure-note);
+	/* The trailing DOI address is one unbreakable word longer than the 380px
+	 * rail; without this it overflows the column rather than wrapping. */
+	overflow-wrap: break-word;
+}
+
+.cite-actions {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+}
+
 .meta-ledger {
 	margin: 0;
 }
@@ -577,6 +609,86 @@
 		var(--color-accent) 0 var(--pct, 0%),
 		transparent var(--pct, 0%) 100%
 	);
+}
+
+/* ---------------------------------------------------------------------------
+ * YEAR METER — the browse-by-year ledger: mono year, proportion bar, count.
+ *
+ * The row idiom that consumes `.hbar`. A list of years is a ledger like any
+ * other record list, so it is set as one — hanging mono key, hairline between
+ * rows, tabular count right — with the bar carrying the distribution the row
+ * would otherwise leave unstated. A year list rendered as buttons says only
+ * "these years exist"; the meter says how much is in each, which is the one
+ * ornament this system permits.
+ *
+ * Newest year takes pine on both the key and the bar (`--current`): it is the
+ * accent's own definition. Set the fill with `style="--pct: 62%"`.
+ *
+ * Consumers: the /activities aside, the home page's latest-activities rail.
+ * ------------------------------------------------------------------------- */
+
+.year-meter {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.year-meter li {
+	margin: 0;
+	border-top: var(--rule-hairline) solid var(--color-hairline);
+}
+
+.year-meter li:first-child {
+	border-top: none;
+}
+
+.year-meter-row {
+	display: grid;
+	grid-template-columns: 3.25rem 1fr auto;
+	align-items: center;
+	gap: var(--space-3);
+	padding: var(--space-2) 0;
+	text-decoration: none;
+	color: var(--color-text-soft);
+	transition: color var(--duration-fast) var(--ease-out);
+}
+
+.year-meter-row:hover {
+	color: var(--color-text-emphasis);
+}
+
+.year-meter-row:hover .hbar {
+	filter: brightness(1.08);
+}
+
+.year-meter-row:focus-visible {
+	outline: var(--border-width-medium) solid var(--color-accent);
+	outline-offset: var(--space-1);
+}
+
+.year-meter-key {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-medium);
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.04em;
+	color: var(--color-text-soft);
+}
+
+.year-meter-key--current {
+	color: var(--color-accent);
+	font-weight: var(--font-weight-semibold);
+}
+
+.year-meter-count {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-semibold);
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.08em;
+	color: var(--color-text-light);
+	min-width: 2ch;
+	text-align: right;
 }
 
 /* ===========================================================================
@@ -896,7 +1008,8 @@
 	.apparatus-line a,
 	.facet-combobox-field,
 	.facet-combobox-option,
-	.facet-combobox-mark {
+	.facet-combobox-mark,
+	.year-meter-row {
 		transition: none;
 	}
 }
@@ -951,6 +1064,13 @@
 
 	.facet-combobox-option {
 		padding: var(--space-2-5) var(--space-2);
+		min-height: 44px;
+	}
+
+	/* The meter row is a whole-row link; grow it in leading rather than drawing
+	 * anything, so the ledger keeps its hairline rhythm on a coarse pointer. */
+	.year-meter-row {
+		padding: var(--space-2-5) 0;
 		min-height: 44px;
 	}
 }

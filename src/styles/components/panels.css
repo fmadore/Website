@@ -25,7 +25,12 @@
 }
 
 /* Panel title — the DATA voice: a mono, letterspaced caps label opening a
- * ruled sidebar section (Latest activities, The corpus in numbers). */
+ * ruled sidebar section (Latest activities, The corpus in numbers).
+ *
+ * One size at every breakpoint, deliberately: a narrow viewport used to raise
+ * this to --font-size-xl, which set a letterspaced mono string at the Title
+ * step — a mono headline, the one thing the Two Voices Rule forbids. A data
+ * label is small because it is a label, not because the screen is wide. */
 .panel-title {
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-xs);
@@ -165,10 +170,6 @@
 	.panel {
 		padding: var(--space-lg);
 		margin-bottom: var(--space-lg);
-	}
-
-	.panel-title {
-		font-size: var(--font-size-xl);
 	}
 }
 

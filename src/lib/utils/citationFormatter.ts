@@ -268,3 +268,86 @@ export function formatCommunicationCitation(communication: {
 	// Plain text (no markup), so the whole venue line typesets in one pass.
 	return typesetQuotes(parts.join(', '));
 }
+
+// ── The plain-text display reference ─────────────────────────────────────────
+//
+// `formatCitation` builds the *display* reference as HTML fragments the page
+// assembles around its own heading. A reference a reader can copy, paste or be
+// handed by an assistant is a different artefact: one flat string, whole,
+// carrying the title the page prints above it.
+//
+// It lives here rather than in the page or in `mcp/` because both consume it —
+// the site's "Copy reference" control and the MCP server's `reference` citation
+// style — and a second implementation would guarantee the two eventually
+// disagree about the same work.
+
+const REFERENCE_ENTITIES: Record<string, string> = {
+	'&lt;': '<',
+	'&gt;': '>',
+	'&quot;': '"',
+	'&#39;': "'",
+	'&nbsp;': ' ',
+	'&amp;': '&'
+};
+
+/**
+ * Strip the display formatter's markup down to plain text.
+ *
+ * Two things here are deliberate rather than merely tidy:
+ *
+ *  - Tag removal repeats until the string stops changing. A single pass over
+ *    `<[^>]+>` turns `<<b>script>` into `<script>` — it removes the inner tag
+ *    and leaves a new one behind. Looping to a fixed point cannot.
+ *  - Entities are decoded in one pass through a lookup, not by chained
+ *    `replace` calls. Decoding `&amp;` first would turn `&amp;lt;` into `&lt;`
+ *    and then into `<`, reviving markup the caller had escaped.
+ */
+function stripReferenceMarkup(html: string): string {
+	let text = html;
+	let previous: string;
+	do {
+		previous = text;
+		text = text.replace(/<[^>]*>/g, '');
+	} while (text !== previous);
+
+	return text
+		.replace(/&(?:amp|lt|gt|quot|nbsp|#39);/g, (entity) => REFERENCE_ENTITIES[entity] ?? entity)
+		.replace(/\s+/g, ' ')
+		.trim();
+}
+
+export interface ReferenceTextOptions {
+	/** Close with the bracketed type label — "[Journal Article]". */
+	typeLabel?: boolean;
+	/** Close with the resolvable DOI address, for a reference meant to be pasted. */
+	doi?: boolean;
+}
+
+/**
+ * The site's display reference as one plain-text string:
+ * `Authors. (Year). Title. Venue details.`
+ *
+ * The title is typeset like the details already are, so a copied reference
+ * never mixes a straight apostrophe in the title against a curled one in the
+ * journal name of the same line.
+ */
+export function formatReferenceText(
+	publication: Publication,
+	options: ReferenceTextOptions = {}
+): string {
+	const { typeLabel: label, detailsHtml, year } = formatCitation(publication);
+	const authors = formatAuthorList(publication.authors);
+
+	return [
+		authors && `${authors}.`,
+		year && `(${year}).`,
+		`${typesetQuotes(publication.title)}.`,
+		stripReferenceMarkup(detailsHtml),
+		options.typeLabel && `[${label}]`,
+		options.doi && publication.doi ? `https://doi.org/${publication.doi}` : ''
+	]
+		.filter(Boolean)
+		.join(' ')
+		.replace(/\s+/g, ' ')
+		.trim();
+}

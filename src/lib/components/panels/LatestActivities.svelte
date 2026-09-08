@@ -5,13 +5,14 @@
 	import { resolve } from '$app/paths';
 	import PanelBase from './PanelBase.svelte';
 	import Button from '../atoms/Button.svelte';
-	// Activity-list styles (relocated from the global app.css); loaded wherever
-	// the activities list markup appears — this panel and the /activities routes.
-	import '$styles/components/activity-list.css';
+	// No route-scoped stylesheet: the rail is built entirely from the global
+	// idiom layer (`.ledger*`, `.year-meter*`, `.hbar`, `.rail-label` in
+	// ink-signal.css) plus panels.css, so the home page no longer downloads
+	// `activity-list.css` for markup it does not render.
 
 	// Props - limit the number of activities to show
 	let {
-		limit = 4,
+		limit = 5,
 		showYearFilters = true
 	}: {
 		limit?: number;
@@ -24,70 +25,65 @@
 	// Local activities array - derived from store and limited
 	let activityList = $derived(activities.slice(0, limit));
 
-	// Unique years for the year filter
-	let years = $derived(
-		[...new Set(activities.map((activity: Activity) => activity.year))].sort(
-			(a: number, b: number) => b - a
-		)
-	);
+	// Years present in the log, newest first, with their tallies. The counts are
+	// what turn a row of year links into a meter: the bar encodes real output
+	// per year rather than decorating the list.
+	let yearRows = $derived.by(() => {
+		const counts: Record<number, number> = {};
+		for (const activity of activities as Activity[]) {
+			counts[activity.year] = (counts[activity.year] ?? 0) + 1;
+		}
+		const max = Math.max(1, ...Object.values(counts));
+		return Object.entries(counts)
+			.map(([year, count]) => ({ year: Number(year), count, pct: (count / max) * 100 }))
+			.sort((a, b) => b.year - a.year);
+	});
 
-	// Format activity type for display
-	function formatActivityType(type: string): string {
-		const typeMap: Record<string, string> = {
-			conference: 'Conference',
-			workshop: 'Workshop',
-			publication: 'Publication',
-			lecture: 'Lecture',
-			event: 'Event',
-			grant: 'Grant'
-		};
-		return typeMap[type.toLowerCase()] || type;
-	}
+	let newestYear = $derived(yearRows[0]?.year);
 
-	// Add a date formatting helper for '12 December 2024'
-	function formatDateDMY(dateString: string): string {
+	/** Day + abbreviated month — '08 Sep', uppercased by the ledger key. */
+	function formatDayMonth(dateString: string): string {
 		const date = new Date(dateString);
 		if (isNaN(date.getTime())) return dateString;
-		const day = date.getDate();
-		const month = date.toLocaleString('en-GB', { month: 'long' });
-		const year = date.getFullYear();
-		return `${day} ${month} ${year}`;
+		const day = String(date.getDate()).padStart(2, '0');
+		return `${day} ${date.toLocaleString('en-GB', { month: 'short' })}`;
+	}
+
+	function formatYear(dateString: string): string {
+		const date = new Date(dateString);
+		return isNaN(date.getTime()) ? '' : String(date.getFullYear());
 	}
 </script>
+
+{#snippet panelHeader()}
+	<div class="log-head">
+		<h2 class="panel-title">Latest activities</h2>
+		<span class="log-tally">{activities.length} in the log</span>
+	</div>
+{/snippet}
 
 {#snippet panelContent()}
 	{#if activityList.length === 0}
 		<p class="no-activities">No recent activities found.</p>
 	{:else}
-		<ul class="activities-list">
+		<ol class="ledger log-ledger">
 			{#each activityList as activity (activity.id)}
-				<li class="activity-item card-accent-border">
-					<div class="activity-meta">
-						{#if activity.type}
-							<span class="activity-type" data-type={activity.type}>
-								{formatActivityType(activity.type)}
-							</span>
-						{/if}
-						<span class="activity-date">{formatDateDMY(activity.date)}</span>
-					</div>
+				<li>
 					<a
+						class="ledger-row log-row"
 						href={resolve(`/activities/${activity.id}` as `/activities/${string}`)}
-						class="activity-title leading-relaxed"
 					>
-						{typesetQuotes(activity.title)}
+						<span class="ledger-key">
+							<span>{formatDayMonth(activity.date)}</span>
+							<span class="ledger-status">{formatYear(activity.date)}</span>
+						</span>
+						<span class="ledger-content">
+							<span class="ledger-title log-title">{typesetQuotes(activity.title)}</span>
+						</span>
 					</a>
-					{#if activity.description}
-						<div class="activity-abstract leading-relaxed">
-							{typesetQuotes(
-								activity.description.length > 100
-									? activity.description.substring(0, 100) + '...'
-									: activity.description
-							)}
-						</div>
-					{/if}
 				</li>
 			{/each}
-		</ul>
+		</ol>
 
 		<div class="view-all-container">
 			<Button href={resolve('/activities')} variant="outline-secondary" size="base">
@@ -98,112 +94,106 @@
 {/snippet}
 
 {#snippet panelFooter()}
-	{#if showYearFilters && years.length > 0}
-		<span class="filter-label">Browse by year:</span>
-		<div class="year-filters">
-			{#each years as year (year)}
-				<Button
-					href={resolve(`/activities/year/${year}` as `/activities/year/${string}`)}
-					variant="outline-secondary"
-					size="sm"
-					additionalClasses="year-filter-button"
-				>
-					{year}
-				</Button>
+	{#if showYearFilters && yearRows.length > 0}
+		<h3 class="rail-label">Browse by year</h3>
+		<ul class="year-meter">
+			{#each yearRows as row (row.year)}
+				<li>
+					<a
+						class="year-meter-row"
+						href={resolve(`/activities/year/${row.year}` as `/activities/year/${string}`)}
+						aria-label="{row.year} — {row.count} {row.count === 1 ? 'activity' : 'activities'}"
+					>
+						<span class="year-meter-key" class:year-meter-key--current={row.year === newestYear}>
+							{row.year}
+						</span>
+						<span
+							class="hbar"
+							class:hbar--current={row.year === newestYear}
+							style="--pct: {row.pct}%"
+							aria-hidden="true"
+						></span>
+						<span class="year-meter-count" aria-hidden="true">{row.count}</span>
+					</a>
+				</li>
 			{/each}
-		</div>
+		</ul>
 	{/if}
 {/snippet}
 
 <PanelBase
-	title="Latest Activities"
 	variant="activities"
 	showFooter={true}
+	header={panelHeader}
 	content={panelContent}
 	footer={panelFooter}
 />
 
 <style>
-	/* Meta line — the DATA voice: a mono "kind" marker and a mono dateline,
-	 * hairline-ruled beneath, like a finding-aid entry header. */
-	.activity-meta {
+	/* Panel head — the mono label and the log's own tally sharing one baseline.
+	 * The tally is the apparatus half of the label: "Latest activities" states
+	 * what the block is, "35 in the log" states what stands behind it. */
+	.log-head {
 		display: flex;
-		flex-direction: row;
+		flex-wrap: wrap;
 		align-items: baseline;
 		justify-content: space-between;
-		gap: var(--space-xs);
-		margin-bottom: var(--space-2);
-		padding-bottom: var(--space-2);
-		border-bottom: var(--rule-hairline) solid var(--color-hairline);
+		gap: var(--space-2) var(--space-3);
 	}
 
-	/* Type — a mono "kind" marker, no pill. Neutral by default. */
-	.activity-type {
+	.log-head :global(.panel-title) {
+		margin-bottom: 0;
+	}
+
+	.log-tally {
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
-		text-transform: uppercase;
-		font-weight: var(--font-weight-semibold);
-		letter-spacing: 0.1em;
-		color: var(--color-text-light);
-		flex-shrink: 0;
-		white-space: nowrap;
-		line-height: var(--line-height-snug);
-	}
-
-	/* Publications — the headline output — carry the lone pine accent so
-	 * the panel reads with one confident accent (.impeccable.md, principle 2). */
-	.activity-type[data-type='publication'] {
-		color: var(--color-accent);
-	}
-
-	.activity-date {
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-2xs);
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		color: var(--color-text-light);
-		text-align: right;
-		line-height: var(--line-height-snug);
-		min-width: 0;
-	}
-
-	/* Title — the DOCUMENT voice: Newsreader serif. */
-	.activity-title {
-		display: block;
-		font-family: var(--font-family-serif);
-		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-medium);
-		color: var(--color-text-emphasis);
+		font-variant-numeric: tabular-nums;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--color-text-light);
+		white-space: nowrap;
+	}
+
+	/* The log itself — ledger rows, not cards. The same records render as
+	 * hairline-separated rows on /activities; a rail that restated them as
+	 * bordered tiles made the home page disagree with its own destination and
+	 * spent an accent on every hover border. Key column is narrower than the
+	 * 7rem default because the rail is 22rem, not a reading column. */
+	.log-ledger {
+		--ledger-key-w: 4.5rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.log-row {
+		gap: var(--space-2) var(--space-4);
 		text-decoration: none;
-		margin-bottom: var(--space-xs);
+		color: inherit;
+	}
+
+	.log-row:focus-visible {
+		outline: var(--border-width-medium) solid var(--color-accent);
+		outline-offset: var(--space-1);
+	}
+
+	/* Set one step below the reading column: the rail is apparatus pointing at
+	 * the record, and must not compete with the prose it sits beside. */
+	.log-title {
+		font-size: var(--font-size-base);
 		transition: color var(--duration-fast) var(--ease-out);
-		line-height: var(--line-height-snug);
 	}
 
-	.activity-title:hover {
+	.log-row:hover .log-title {
 		color: var(--color-accent);
-	}
-
-	.activity-abstract {
-		font-family: var(--font-family-serif);
-		font-size: var(--font-size-sm);
-		color: var(--color-text-soft);
-		margin-top: var(--space-xs);
-		line-height: var(--line-height-relaxed);
-	}
-
-	/* Responsive design */
-	@media (--sm-down) {
-		.activity-title {
-			font-size: var(--font-size-base);
-		}
 	}
 
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
-		.activity-title,
-		.activity-type {
-			transition: none !important;
+		.log-title {
+			transition: none;
 		}
 	}
 </style>

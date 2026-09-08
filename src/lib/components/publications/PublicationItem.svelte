@@ -4,14 +4,21 @@
 	import { buildSrcset, resolveImagePath } from '$lib/utils/imageVariants';
 	import { truncateAbstract } from '$lib/utils/textUtils';
 	// Import the necessary functions from the new formatter
-	import { formatCitation, getAuthorsArray } from '$lib/utils/citationFormatter';
+	import {
+		formatCitation,
+		formatReferenceText,
+		getAuthorsArray
+	} from '$lib/utils/citationFormatter';
 	import { formatAuthorsWithEtAl } from '$lib/utils/nameUtils';
 	import { author as siteAuthor } from '$lib/data/siteConfig';
 	import { titleLangAttr } from '$lib/utils/languageUtils';
 	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import BibliographyRow from '$lib/components/molecules/BibliographyRow.svelte';
-	import type { BibliographyAction } from '$lib/components/molecules/BibliographyRow.svelte';
+	import type {
+		BibliographyAction,
+		BibliographyNote
+	} from '$lib/components/molecules/BibliographyRow.svelte';
 	// Entity-card styles (relocated from the global app.css so they only load on
 	// pages that render publication/communication list items).
 	import '$styles/components/entity-cards.css';
@@ -164,23 +171,29 @@
 		publication.abstractExcerpt ? truncateAbstract(publication.abstractExcerpt, 180) : ''
 	);
 
+	// Open access is a fact about the record, so it prints in the kind eyebrow
+	// beside the type — exactly where the record page's masthead prints it. As
+	// an action label it could only appear when there was no DOI to name
+	// instead, which silently withheld it from 21 of the 27 open-access records.
+	const bibNotes = $derived<BibliographyNote[]>(
+		isOpenAccess ? [{ label: 'Open Access', icon: 'academicons:open-access' }] : []
+	);
+
 	// Right-aligned action column: one primary action naming where the link
-	// actually goes, marked with the matching glyph — the DOI mark for a
-	// resolver link, the open-access lock for a free full text, the globe for a
-	// publisher's catalogue page. BibliographyRow appends the internal "Cite".
+	// actually goes, marked for the kind of address it is — the DOI glyph for a
+	// resolver, the globe for a web address. The label says what is at the end
+	// of it. BibliographyRow appends the "Cite" control.
 	const bibAction = $derived<BibliographyAction | null>(
 		!openHref
 			? null
 			: publication.doi
 				? { href: openHref, label: 'DOI ↗', primary: true, icon: 'academicons:doi' }
-				: isOpenAccess
-					? {
-							href: openHref,
-							label: 'Open Access ↗',
-							primary: true,
-							icon: 'academicons:open-access'
-						}
-					: { href: openHref, label: 'Publisher ↗', primary: true, icon: 'mdi:web' }
+				: {
+						href: openHref,
+						label: isOpenAccess ? 'Full Text ↗' : 'Publisher ↗',
+						primary: true,
+						icon: 'mdi:web'
+					}
 	);
 	const bibActions = $derived<BibliographyAction[]>(bibAction ? [bibAction] : []);
 	interface DisplayListItem {
@@ -259,6 +272,7 @@
 		href={publicationHref}
 		{kindLabel}
 		{languageNote}
+		kindNotes={bibNotes}
 		title={publication.title}
 		titleLang={titleLangAttr(publication.language)}
 		italicTitle={isItalicTitle}
@@ -270,7 +284,7 @@
 		imageHeight={280}
 		loading={imageLoading}
 		actions={bibActions}
-		detailLabel="Cite"
+		reference={() => formatReferenceText(publication, { doi: true })}
 		citedCount={citationCount}
 		{yearLabel}
 		{featured}

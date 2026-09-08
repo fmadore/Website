@@ -13,6 +13,8 @@ The other half of the old <PublicationAside> — tags and key terms — is
 	import type { Publication } from '$lib/types';
 	import RecordLedger, { type MetaRow } from '$lib/components/molecules/RecordLedger.svelte';
 	import { generateBibtex } from '$lib/utils/bibtexGenerator';
+	import { formatReferenceText } from '$lib/utils/citationFormatter';
+	import { copyText } from '$lib/utils/clipboard';
 	import { buildSrcset, imageDimensions, resolveImagePath } from '$lib/utils/imageVariants';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
@@ -122,6 +124,43 @@ The other half of the old <PublicationAside> — tags and key terms — is
 		return rows;
 	});
 
+	// ── Access ─────────────────────────────────────────────────────────────────
+	// The curated address first: a `url` points at the version the author chose
+	// (a PDF, a repository copy). Failing that the DOI is the access route, not
+	// merely an identifier — three records carry one with no `url` beside it,
+	// and they used to print no access control at all.
+	const accessHref = $derived(
+		publication.url ?? (publication.doi ? `https://doi.org/${publication.doi}` : undefined)
+	);
+	const extraLinks = $derived(
+		(publication.additionalUrls ?? []).filter((link) => link.url && link.label)
+	);
+
+	// ── Cite ───────────────────────────────────────────────────────────────────
+	// The record page held every field of the citation and never printed the
+	// citation: a peer had to reassemble it from the ledger by hand, or take the
+	// BibTeX and read it. The reference is set here as real text — selectable,
+	// and the fallback if the clipboard is ever denied — with the copy control
+	// beside the export that was already here.
+	const reference = $derived(formatReferenceText(publication, { doi: true }));
+
+	let copyState = $state<'idle' | 'copied' | 'failed'>('idle');
+	let resetTimer: ReturnType<typeof setTimeout> | undefined;
+
+	const COPY_LABELS = {
+		idle: 'Copy reference',
+		copied: 'Reference copied ✓',
+		failed: 'Copy failed — select the text above'
+	} as const;
+
+	async function copyReference() {
+		copyState = (await copyText(reference)) ? 'copied' : 'failed';
+		clearTimeout(resetTimer);
+		resetTimer = setTimeout(() => (copyState = 'idle'), 2400);
+	}
+
+	$effect(() => () => clearTimeout(resetTimer));
+
 	function downloadBibtex() {
 		if (!publication) return;
 		const bibtexString = generateBibtex(publication);
@@ -156,21 +195,22 @@ The other half of the old <PublicationAside> — tags and key terms — is
 
 <RecordLedger rows={metadataRows} />
 
-<!-- CTAs -->
-<!-- eslint-disable svelte/no-navigation-without-resolve -- external publication links -->
-<div class="rail-cta">
-	{#if publication.url}
-		<a
-			href={publication.url}
-			target="_blank"
-			rel="noopener noreferrer"
-			class="btn btn-accent btn-block"
-		>
-			Access Publication ↗
-		</a>
-	{/if}
-	{#if publication.additionalUrls}
-		{#each publication.additionalUrls.filter((l) => l.url && l.label) as link (link.url)}
+<!-- CTAs. The block is only printed when it has a control: the rail is a flex
+     column with its own gap, so an empty stack reads as a stray interval. -->
+{#if accessHref || extraLinks.length > 0}
+	<!-- eslint-disable svelte/no-navigation-without-resolve -- external publication links -->
+	<div class="rail-cta">
+		{#if accessHref}
+			<a
+				href={accessHref}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="btn btn-accent btn-block"
+			>
+				Access Publication ↗
+			</a>
+		{/if}
+		{#each extraLinks as link (link.url)}
 			<a
 				href={link.url}
 				target="_blank"
@@ -180,9 +220,32 @@ The other half of the old <PublicationAside> — tags and key terms — is
 				{link.label} ↗
 			</a>
 		{/each}
-	{/if}
-	<button onclick={downloadBibtex} class="btn btn-outline-primary btn-block cursor-pointer">
-		Export BibTeX
-	</button>
+	</div>
+	<!-- eslint-enable svelte/no-navigation-without-resolve -->
+{/if}
+
+<!-- ═══ CITE ═══
+     The record's own citation, printed and exportable. Separated from the
+     access stack above because "open it" and "cite it" are two errands, and the
+     second is the one this site exists to serve. -->
+<div class="cite-block">
+	<h2 class="rail-label">Cite</h2>
+	<p class="cite-reference">{reference}</p>
+	<div class="cite-actions">
+		<button
+			type="button"
+			onclick={copyReference}
+			aria-live="polite"
+			class="btn btn-outline-primary btn-block cursor-pointer"
+		>
+			{COPY_LABELS[copyState]}
+		</button>
+		<button
+			type="button"
+			onclick={downloadBibtex}
+			class="btn btn-outline-secondary btn-block cursor-pointer"
+		>
+			Export BibTeX
+		</button>
+	</div>
 </div>
-<!-- eslint-enable svelte/no-navigation-without-resolve -->

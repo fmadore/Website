@@ -46,7 +46,7 @@
 	display: grid;
 	grid-template-columns: 1fr;
 	gap: var(--space-8);
-	padding-top: var(--space-6);
+	padding-top: var(--rule-gap);
 	border-top: var(--rule-section) solid var(--color-primary);
 }
 
@@ -294,70 +294,9 @@
 	border-bottom: var(--rule-hairline) solid var(--color-hairline);
 }
 
-/* --- Browse-by-year meter: mono year | proportion bar | count. --- */
-.year-meter {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-}
-
-.year-meter li {
-	margin: 0;
-	border-top: var(--rule-hairline) solid var(--color-hairline);
-}
-
-.year-meter li:first-child {
-	border-top: none;
-}
-
-.year-meter-row {
-	display: grid;
-	grid-template-columns: 3.25rem 1fr auto;
-	align-items: center;
-	gap: var(--space-3);
-	padding: var(--space-2) 0;
-	text-decoration: none;
-	color: var(--color-text-soft);
-	transition: color var(--duration-fast) var(--ease-out);
-}
-
-.year-meter-row:hover {
-	color: var(--color-text-emphasis);
-}
-
-.year-meter-row:hover .hbar {
-	filter: brightness(1.08);
-}
-
-.year-meter-row:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-accent);
-	outline-offset: var(--space-1);
-}
-
-.year-meter-key {
-	font-family: var(--font-family-mono);
-	font-size: var(--font-size-sm);
-	font-weight: var(--font-weight-medium);
-	font-variant-numeric: tabular-nums;
-	letter-spacing: 0.04em;
-	color: var(--color-text-soft);
-}
-
-.year-meter-key--current {
-	color: var(--color-accent);
-	font-weight: var(--font-weight-semibold);
-}
-
-.year-meter-count {
-	font-family: var(--font-family-mono);
-	font-size: var(--font-size-2xs);
-	font-weight: var(--font-weight-semibold);
-	font-variant-numeric: tabular-nums;
-	letter-spacing: 0.08em;
-	color: var(--color-text-light);
-	min-width: 2ch;
-	text-align: right;
-}
+/* --- Browse-by-year meter: moved to `ink-signal.css` (`.year-meter*`) when
+ * the home page's latest-activities rail adopted it, so the two surfaces draw
+ * one idiom rather than two copies. Documented on /style-guide § 6. --- */
 
 /* --- Tag facet: flat mono chips (selected = solid ink fill). --- */
 .aside-tags {
@@ -371,7 +310,7 @@
 	align-items: baseline;
 	justify-content: space-between;
 	gap: var(--space-3);
-	padding-top: var(--space-4);
+	padding-top: var(--rule-gap);
 	border-top: var(--rule-section) solid var(--color-primary);
 }
 

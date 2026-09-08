@@ -3,6 +3,7 @@ import {
 	getAuthorsArray,
 	formatAuthorList,
 	formatCitation,
+	formatReferenceText,
 	formatCommunicationCitation
 } from './citationFormatter';
 import type { Publication } from '$lib/types/publication';
@@ -413,5 +414,68 @@ describe('formatCommunicationCitation', () => {
 
 	it('returns an empty string when there is nothing to print', () => {
 		expect(formatCommunicationCitation({ title: 'A talk' })).toBe('');
+	});
+});
+
+describe('formatReferenceText', () => {
+	const article = pub({
+		type: 'article',
+		title: 'Muslim Minorities in Africa',
+		authors: ['Frédérick Madore', 'Dorothea Schulz'],
+		journal: 'Islamic Africa',
+		volume: '12',
+		issue: '1',
+		pages: '1-24',
+		doi: '10.1163/21540993-01201007'
+	});
+
+	it('assembles authors, year, title and venue into one plain-text line', () => {
+		expect(formatReferenceText(article)).toBe(
+			'Frédérick Madore and Dorothea Schulz. (2024). Muslim Minorities in Africa. Islamic Africa 12 (1): 1-24.'
+		);
+	});
+
+	it('strips the display formatter’s markup rather than printing it', () => {
+		expect(formatReferenceText(article)).not.toContain('<em>');
+	});
+
+	it('appends the resolvable DOI only when asked', () => {
+		expect(formatReferenceText(article, { doi: true })).toContain(
+			'https://doi.org/10.1163/21540993-01201007'
+		);
+		expect(formatReferenceText(article)).not.toContain('doi.org');
+	});
+
+	it('omits the DOI address when the record has no DOI', () => {
+		const noDoi = pub({ type: 'article', journal: 'Africa', doi: undefined });
+		expect(formatReferenceText(noDoi, { doi: true })).not.toContain('doi.org');
+	});
+
+	// The MCP server's `reference` citation style is this call: the server and
+	// the page's copy control must never assemble the same work differently.
+	it('closes with the bracketed type label for the MCP reference style', () => {
+		expect(formatReferenceText(article, { typeLabel: true })).toBe(
+			'Frédérick Madore and Dorothea Schulz. (2024). Muslim Minorities in Africa. Islamic Africa 12 (1): 1-24. [Journal Article]'
+		);
+	});
+
+	it('typesets the title, so it matches the register of the venue beside it', () => {
+		expect(
+			formatReferenceText(
+				pub({ type: 'article', title: "Women's Activism in Côte d'Ivoire", journal: 'Africa' })
+			)
+		).toContain('Women’s Activism in Côte d’Ivoire');
+	});
+
+	it('does not revive markup an escaped entity had neutralised', () => {
+		const escaped = pub({ type: 'article', journal: '&amp;lt;script&amp;gt;' });
+		expect(formatReferenceText(escaped)).toContain('&lt;script&gt;');
+		expect(formatReferenceText(escaped)).not.toContain('<script>');
+	});
+
+	it('prints a bare author, year and title when the record carries no venue', () => {
+		expect(formatReferenceText(pub({ type: 'article', title: 'A Title' }))).toBe(
+			'Frédérick Madore. (2024). A Title.'
+		);
 	});
 });

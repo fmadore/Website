@@ -30,7 +30,7 @@
 	 * the current/forthcoming record, a mono eyebrow labels it. */
 	.upcoming-section {
 		margin-bottom: var(--space-2xl);
-		padding-top: var(--space-sm);
+		padding-top: var(--rule-gap);
 		border-top: var(--rule-section) solid var(--color-accent);
 	}
 

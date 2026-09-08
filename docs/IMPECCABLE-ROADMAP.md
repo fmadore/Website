@@ -156,12 +156,14 @@ Per family: `/impeccable critique` → targeted fixes (`layout` / `typeset` / `d
 Re-critique if the score is below target (set the target from the 2.1 result). Ordered by
 the job-to-be-done: find and cite the work.
 
-- [ ] **2.1 Home** (`/`) — the masthead page; the assert/reassure balance lives here.
+- [x] **2.1 Home** (`/`) — the masthead page; the assert/reassure balance lives here.
+      _(Done 2026-09-08 at 25/32 against a proposed Phase 2 target of 28/32; the gap is
+      named in the log — the corpus counts module and the prose-link pine density, 4.2.)_
 - [x] **2.2 Publications index + detail** — the citation path, the single most important
       flow. Include the bibliography row, BibTeX action, and DOI rendering in scope.
-      _(Index done 2026-09-08 — facet apparatus. The detail page was refactored onto the
-      shared record shell in 2.3; a critique of the bibliography row / BibTeX / DOI path
-      itself is still owed.)_
+      _(Index done 2026-09-08 — facet apparatus; the detail page was refactored onto the
+      shared record shell in 2.3; the citation path itself — row, cite action, BibTeX,
+      DOI — critiqued and fixed later the same day.)_
 - [x] **2.3 Conference activity index + communications detail** — includes the slides
       embed on detail pages. _(Detail done 2026-09-08; the index shares 2.2's facet fix.)_
 - [ ] **2.4 CV + timeline** — the scan-heavy page; ledger discipline and the PDF export
@@ -568,5 +570,129 @@ undivided rail, its own gap values); `EntityDetailLayout` is down to two consume
 (744 unit, +24), `build`, `check:build` (shared JS 106.2/140 KiB; 197 sitemap URLs resolve),
 `test:e2e` (32 passed, 1 skipped). Detector clean on every changed file; the detector's parser
 deps were absent again after the plugin update and the Svelte/CSS scan path was confirmed to run.
+
+**2026-09-08 — 2.2 publications citation path (`/impeccable critique` → fix → polish) — done.**
+Eight findings; all fixed bar one held back by file scope. The headline is that the flow the
+site exists to serve ended in a promise: the index row's trailing action was labelled **`CITE`**
+and was an `<a>` to the record page, which then printed no citation either — a `Record` ledger
+of atomised fields and an `Export BibTeX` download you must open to read. Meanwhile
+`mcp/src/citations.ts` had assembled a plain-text display reference for assistants since it
+shipped, so the one consumer of this record that could not get a reference out of it was the
+site. Resolved by moving that assembly into **`formatReferenceText`** in `citationFormatter.ts` —
+where CLAUDE.md and the MCP file's own comment both said it belonged — and having `citationFor`
+delegate to it, so page and server can never disagree about the same work. `generateBibtex()` is
+untouched; the `reference` style changed in exactly one deliberate respect, **the title is now
+typeset**, ending a mixed register where a straight apostrophe in the title sat against a curled
+one in the journal name of the same line. `mcp` `tsc --noEmit` and `npm run build` both green.
+`CITE` is now a real control — a `Button bare` so `.bib-action` styles it without `!important` —
+that copies the reference and **reports its own result** (`Cite → Copied ✓ → Cite`, or
+`Copy failed`, because a control must not claim a copy a denied clipboard never made);
+`clipboard.ts` is the async API with a selection-copy fallback and no dependency. The record page
+gained the **`.cite-block`** idiom (rail label, the reference set as real serif text, then
+`Copy reference` + `Export BibTeX`), which also separates the two errands the rail was conflating
+— `rail-cta` opens the record, `cite-block` cites it — and setting the text rather than hiding it
+behind the button is the fallback when the clipboard is refused. One rule resolved three findings
+at once: **facts belong in the kind eyebrow, destinations in the action column.** `Open Access`
+was an action _label_, reachable only in the `else` branch after `publication.doi`, so it was
+withheld from **21 of the 27** open-access records — precisely those a peer most wants it for —
+while the detail masthead printed it for all of them; it is now an eyebrow note in soft ink,
+matching the masthead, and the action column keeps one entry naming where the address goes
+(`DOI ↗` / `Full Text ↗` / `Publisher ↗`). The row's third link to its own page went with it
+(plate, title and `Cite` all resolved to the same URL under three different accessible names).
+**Pine scarcity failed on the detail page by repetition rather than by any single wrong
+decision:** an edited volume with twelve chapters and three reviews carried ~23 accent marks,
+twelve of them ToC numerals. Entry numbers are ledger keys and take faint ink (the same move 2.3
+made for participant roles), a review's DOI is somebody else's identifier and takes emphasis ink
+— leaving exactly one accented DOI per page, meaning "this work's" — and the hanging review
+quotation mark is a printer's mark, not a signal. ~23 → ~8. Also fixed: three records carrying a
+DOI with no `url` printed **no access control at all** (the rail now falls back to the resolver,
+as the index row already did), and the CTA stack is printed only when it holds one.
+**Browser-verified** (computed reads, midnight): every row's action is a `<button>`, DOI-carrying
+OA records print `· OPEN ACCESS` in the eyebrow, a real click flips the label to `COPIED ✓`
+inside an `aria-live="polite"` control, the cite block's reference wraps inside the 380px rail.
+**Declined:** the craft floor's eyebrow ban and glyph-as-icon ban (the brief casts both), its
+65–75ch measure (Measured Line Rule), and `--color-danger` for the failed copy — DESIGN
+restricts danger to form validation, so the failure is carried by words. **Left for later:** the
+empty-results state does not state the corpus size once cleared (fold into 3.1).
+
+**2026-09-08 — 2.1 home (`/impeccable critique` → fix → polish) — 22/32 as found → 25/32.**
+Scale: Nielsen's ten, heuristics 7 and 10 marked `n/a` (a static reading page has no
+accelerator or help surface), so the applicable maximum is 32. **Proposed Phase 2 target:
+28/32** — no dimension below 3, three at 4. 2.1 deliberately does not reach it, and the gap is
+named rather than papered over. Ten findings, eight fixed. The headline is the item's own
+subject: **the masthead asserted twice and the apparatus never answered.** The site holds 56
+publications, 84 communications, 35 activities and a tracked citation graph, and the home page
+rendered none of it as data — the record's scale appeared only as English words inside sentences
+("more than 17,500 items"), precisely the claim PRODUCT.md says must be demonstrated rather than
+asserted. The one machine-voiced block, "Latest Activities", rendered dated records as
+`.card-accent-border` tiles with a pine hover border — a **Ledger Default Rule** violation that
+also made the home page disagree with `/activities`, which draws the same records as
+hairline-separated ledger rows. Rebuilt as five `.ledger-row`s on a 4.5rem key (`08 SEP` over
+`2026`), one type step below the reading column because a rail points at a record rather than
+being one; the label gained the log's own tally (`35 IN THE LOG`) and the three year buttons
+became the **year meter** — mono year, `.hbar` proportion bar, tabular count, newest row in pine.
+Three real data marks where there were none, at zero bundle cost from a dataset the page already
+loaded, and the rail is now built purely from the global idiom layer so the home page **stopped
+downloading `activity-list.css`**. The meter moved to `ink-signal.css` with a `--touch` 44px row
+and is documented on `/style-guide` § 6, which also closes one of 0.3's three gaps: `.hbar`, the
+system's most misreadable element because it is its one sanctioned gradient, is now explained on
+the guide as a hard stop whose position _is_ the value. **The measure was the worst on the site
+and 1.1 never saw it:** the sweep capped `.prose`, but this page uses `.content-body`, which
+carried no measure — so at 1440 an 832px track held 1,100 words at `--font-size-lg`, the
+**Standfirst** tier, with a lead paragraph at `--font-size-xl`, the **Title** tier: about 98
+characters a line, with ~380px of empty paper beside every section and the 3px rules overhanging
+their own text by half. Type returned to its documented tiers, `--measure-prose` applied, and the
+shell narrowed from `max-w-7xl` (an index width borrowed by a reading page) to 58rem — measure,
+gutter, rail — so the surplus goes back into the masthead. The grid now steps twice (18rem rail
+at `--md`, 22rem at `--lg`), fixing a band where it **inverted**: at a 768px container it computed
+to a 320px reading column against a 352px sidebar. **Pine, counted:** ~28 static accent marks
+down the page, ~8 on the first screen. The kicker was demoted to ink — a standing description of
+a person is the opposite of "the current thing" — the activity-type stamp and three card hover
+borders went, and one accent was added on the newest year, leaving **one** chrome accent on the
+first screen. The ~26 prose links remain and are the honest remaining failure: that is the
+site-wide `typography.css`/`ContentBody` idiom, **assigned to 4.2** rather than changed from a
+single page. Also fixed: `.panel-title` rose to `--font-size-xl` under `--sm-down`, a mono
+headline on a phone; `.hero-kicker` was `display: none` at `--sm-down`, taking the one line that
+says what this person _is_ off the exact viewport where the standfirst runs to five lines; and
+`ContentBody`'s inset started every section rule 32px inside the nameplate rule above it. **The
+1.2 guard was widened and immediately earned it.** Two ruled modules sat at 16px instead of
+`--rule-gap`, both invisible to `hairlinePairing.test.ts` for structural reasons — the home page
+declares its padding _above_ the border and the guard only scanned forward; `.panel--ruled` used
+the `padding` shorthand and the guard only matched `padding-top`. Now ±4 lines and both
+spellings, each blind spot **verified to fail** when reintroduced. It found four more:
+`.activities-layout` (24px), `.aside-footer` (16px) and `UpcomingCommunications` (right value,
+wrong token) are fixed, and `.site-footer` is a named single-declaration exception — its 4px rule
+_closes_ the page rather than opening a module, so the interval beneath it is the colophon's
+page-end margin and 2.11 owns it. **Browser-verified** (computed reads; screenshots timed out
+on this renderer again): nameplate wraps to two lines at 1440 inside the 58rem shell — the one
+visible change the owner should judge by eye; grid `480px 352px` at 1440 and `369px 288px` at
+768; kicker in ink and visible at 375; panel title mono at 12px; meter rows 44px on touch; no
+horizontal overflow. **Declined:** the corpus stat ledger that would properly answer the
+reassure half — every honest count costs bundle weight on the LCP-critical landing page, and the
+free candidate (`referenceIndex.generated`, already loaded) is a render-only projection with
+collision-keyed entries reporting 44/79 against 46/80 source files, so it would print a number
+disagreeing with `/publications`. The right fix is a **fifth build-time generator emitting a
+counts constant** under a `--check` gate; likewise a masthead edition stamp, since
+`profile.dateModified` is hand-maintained and already reads 2026-08-12. Also declined: a
+portrait `plate-caption` (the photograph's provenance is not recorded and inventing it is out of
+the question), and four `craft-floor.md` defaults the brief overrides — its ban on eyebrows, its
+refusal of the "hero-metric template" against DESIGN.md's named **Stat Ledger**, its 65–75ch
+measure floor, and its glyph-as-icon ban. **Left for later:** the mid-task peer still has no
+route from the page body to the publication record (the only one is a prose link in the eighth
+paragraph); `RelevantItemsList`, `RelevantItemCard` and `cards.css`'s `.card-accent-border` are
+now unreachable from any route and should be deleted; the home portrait ships a single raw
+`<img>` with no srcset into a 288–352px slot (5.1).
+
+**Method note on the detector, correcting 0.2/1.1 and one of today's agents.** v4.1.1's engines
+import no external parser, so the "install the deps or it runs degraded" caveat is obsolete. What
+_does_ silently produce `[]` is scanning a file **outside the project root** (the scratchpad):
+an in-project probe carrying `border-radius`, `box-shadow`, `rgba()` and a decorative gradient
+returned a radius finding and four colour findings, as `.svelte` and as `.css`. It flagged
+neither the shadow nor the gradient — so the CLI is a floor for radius and off-palette colour,
+`hairlinePairing.test.ts` and the design-philosophy auditor remain the real guards for the rest,
+and the 0.4 hook is the better per-edit signal.
+
+**Ship gate for both (one commit):** `format`, `lint`, `check` (1091 files, 0 errors), `test`
+(752 unit, +8), `build`, `check:build`, `test:e2e`, plus `mcp` `check` and `build`.
 
 <!-- e.g. 2026-08-17 — 0.2 audit — score 82/100, 0 P0, 4 P1 (assigned: 1.3 ×2, 2.2, 5.1) -->

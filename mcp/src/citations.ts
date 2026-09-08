@@ -1,6 +1,6 @@
 import type { Publication } from '$lib/types/publication';
 import { generateBibtex } from '$lib/utils/bibtexGenerator';
-import { formatCitation, formatAuthorList } from '$lib/utils/citationFormatter';
+import { formatReferenceText } from '$lib/utils/citationFormatter';
 import type { Item } from './datasets.js';
 
 /**
@@ -11,9 +11,11 @@ import type { Item } from './datasets.js';
  * them straight in. Reimplementing them here would guarantee the server and the
  * site's own download button eventually disagree.
  *
- * Only BibTeX and the site's display reference exist today — the site has no
- * APA/MLA/Chicago generator to share. Adding one is a change to `src/lib/utils`,
- * after which it lands here for free.
+ * The plain-text assembly this file used to own moved into `citationFormatter`
+ * as `formatReferenceText` when the site grew a "Copy reference" control of its
+ * own: two implementations of one reference is exactly the drift the note above
+ * warns about. Only BibTeX and that display reference exist — there is still no
+ * APA/MLA/Chicago generator, and adding one remains a change to `src/lib/utils`.
  */
 
 export type CitationStyle = 'bibtex' | 'reference';
@@ -38,59 +40,10 @@ function toPublication(item: Item): Publication {
 	} as unknown as Publication;
 }
 
-const ENTITIES: Record<string, string> = {
-	'&lt;': '<',
-	'&gt;': '>',
-	'&quot;': '"',
-	'&#39;': "'",
-	'&nbsp;': ' ',
-	'&amp;': '&'
-};
-
-/**
- * Strip the display formatter's markup down to plain text.
- *
- * Two things here are deliberate rather than merely tidy:
- *
- *  - Tag removal repeats until the string stops changing. A single pass over
- *    `<[^>]+>` turns `<<b>script>` into `<script>` — it removes the inner tag
- *    and leaves a new one behind. Looping to a fixed point cannot.
- *  - Entities are decoded in one pass through a lookup, not by chained
- *    `replace` calls. Decoding `&amp;` first would turn `&amp;lt;` into `&lt;`
- *    and then into `<`, reviving markup the caller had escaped.
- */
-function stripHtml(html: string): string {
-	let text = html;
-	let previous: string;
-	do {
-		previous = text;
-		text = text.replace(/<[^>]*>/g, '');
-	} while (text !== previous);
-
-	return text
-		.replace(/&(?:amp|lt|gt|quot|nbsp|#39);/g, (entity) => ENTITIES[entity] ?? entity)
-		.replace(/\s+/g, ' ')
-		.trim();
-}
-
 export function citationFor(item: Item, style: CitationStyle): string {
 	const publication = toPublication(item);
 
 	if (style === 'bibtex') return generateBibtex(publication);
 
-	const { typeLabel, detailsHtml, year } = formatCitation(publication);
-	const authors = formatAuthorList(publication.authors);
-	const details = stripHtml(detailsHtml);
-
-	return [
-		authors && `${authors}.`,
-		year && `(${year}).`,
-		`${publication.title}.`,
-		details,
-		`[${typeLabel}]`
-	]
-		.filter(Boolean)
-		.join(' ')
-		.replace(/\s+/g, ' ')
-		.trim();
+	return formatReferenceText(publication, { typeLabel: true });
 }

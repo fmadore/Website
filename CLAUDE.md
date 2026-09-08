@@ -276,7 +276,7 @@ Entity-index pages instantiate `new EntityFilterSystem(config)` from `$lib/utils
 Two modules, both pure (their only imports are types plus `nameUtils`, `date-formatter` and `publicationTypeLabels`), so `mcp/` bundles them rather than reimplementing them:
 
 - `bibtexGenerator.ts` — `generateBibtex()`, the only export format the site produces
-- `citationFormatter.ts` — `formatCitation()`, which builds the **display** reference as HTML, not an export format
+- `citationFormatter.ts` — `formatCitation()`, which builds the **display** reference as HTML, not an export format; and `formatReferenceText()`, the same reference as plain text — what the index row's `Cite` button and the record rail's "Copy reference" put on the clipboard (via `utils/clipboard.ts`), and what `mcp/src/citations.ts` hands to assistants. One formatter, two products: page and server can never disagree about the same work.
 
 There is no APA/MLA/Chicago generator. Adding one belongs here, where the site and the MCP server both pick it up.
 

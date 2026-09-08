@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { author, website } from '$lib/data/siteConfig';
 
-	// Display the site domain as a quiet mono dateline.
-	const siteLabel = website.domain.toUpperCase();
+	// Display the site domain as a quiet mono dateline. The `www.` is dropped:
+	// a masthead dateline names the publication, and the subdomain is transport.
+	const siteLabel = website.domain.replace(/^www\./, '').toUpperCase();
 </script>
 
 <header class="nameplate-hero">
@@ -28,9 +29,10 @@
 	/* Slim dateline strip — site URL left, role kicker right. */
 	.hero-topbar {
 		display: flex;
+		flex-wrap: wrap;
 		justify-content: space-between;
 		align-items: baseline;
-		gap: var(--space-4);
+		gap: var(--space-2) var(--space-4);
 		padding-bottom: var(--space-3);
 		margin-bottom: var(--space-5);
 		border-bottom: var(--rule-hairline) solid var(--color-hairline);
@@ -42,8 +44,12 @@
 		color: var(--color-text-light);
 	}
 
+	/* The role line is ink, not pine. Pine marks what is *current*; a standing
+	 * description of the person is the most permanent string on the page, and
+	 * spending the accent on it left the masthead's one accent meaning nothing.
+	 * The first pine a reader meets is now on the newest record in the rail. */
 	.hero-kicker {
-		color: var(--color-accent);
+		color: var(--color-text-emphasis);
 		text-align: right;
 	}
 
@@ -77,9 +83,13 @@
 		border-top: var(--rule-nameplate) solid var(--color-primary);
 	}
 
+	/* Narrow viewports wrap the dateline rather than dropping the kicker. It was
+	 * `display: none` here, which took the one line that says what this person
+	 * *is* off the very viewport where the standfirst below runs to five lines
+	 * and the masthead has to do its work fastest. */
 	@media (--sm-down) {
 		.hero-kicker {
-			display: none;
+			text-align: left;
 		}
 	}
 </style>

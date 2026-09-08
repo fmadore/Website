@@ -126,6 +126,9 @@
 		max-width: var(--measure-prose);
 	}
 
+	/* The hanging quotation mark is a printer's mark, not a signal: it says
+	 * "quoted matter", which is neither current nor active. Drawn in light ink
+	 * so a page of three reviews does not spend three accents on punctuation. */
 	.review-quote::before {
 		content: '\201C';
 		position: absolute;
@@ -134,7 +137,7 @@
 		font-family: var(--font-family-serif);
 		font-size: var(--font-size-3xl);
 		line-height: 1;
-		color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+		color: color-mix(in srgb, var(--color-primary) 35%, transparent);
 	}
 
 	/* Attribution — the data voice: mono caps, dot-separated, DOI stamped. */
@@ -179,14 +182,19 @@
 		color: var(--color-text-muted);
 	}
 
+	/* A review's DOI is somebody else's identifier — a supporting address, not
+	 * this record's. Pine is reserved for the record's own DOI in the rail, so
+	 * the ramp stays readable: one accented DOI per page means "this work".
+	 * Here the mark and the emphasis ink carry it, as on the author link beside. */
 	.review-doi {
-		color: var(--color-accent);
+		color: var(--color-text-emphasis);
+		font-weight: var(--font-weight-semibold);
 		text-decoration: none;
 		transition: color var(--duration-fast) var(--ease-out);
 	}
 
 	.review-doi:hover {
-		color: var(--color-accent-dark);
+		color: var(--color-accent);
 		text-decoration: underline;
 	}
 

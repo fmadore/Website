@@ -29,7 +29,7 @@
 	{additionalSchemas}
 />
 
-<div class="container max-w-7xl py-8">
+<div class="container home-shell py-8">
 	<ProfileBanner />
 	<div class="home-grid">
 		<figure class="home-portrait">
@@ -46,7 +46,7 @@
 		</figure>
 		<!-- Keep this long prose column fully readable throughout scrolling. -->
 		<div class="home-main">
-			<ContentBody variant="default">
+			<ContentBody variant="default" additionalClasses="home-prose">
 				<p>
 					I am a Data Curator at the <a
 						href="https://www.africamultiple.uni-bayreuth.de/en/index.html"
@@ -195,12 +195,23 @@
 			</ContentBody>
 		</div>
 		<div class="home-rail">
-			<LatestActivities limit={3} />
+			<LatestActivities limit={5} />
 		</div>
 	</div>
 </div>
 
 <style>
+	/* The page is a reading column beside a rail, so it is set to the width that
+	 * serves that — the measure, a gutter, and a 22rem rail — rather than to the
+	 * 80rem index width it used to borrow. At 1280 the old container left the
+	 * reading column 832px wide against a ~450px measure: nearly 400px of empty
+	 * paper per section, with the 3px section rules overhanging the text they
+	 * open by half their length. Narrowing the shell turns that surplus back
+	 * into a masthead that fills its viewport. */
+	.home-shell {
+		max-width: 58rem;
+	}
+
 	/* Asymmetric editorial grid: prose + sections in the wide column, the
 	 * portrait plate and the latest-activities ledger in the rail. On mobile the
 	 * source order (portrait → prose → activities) puts the photo up top, right
@@ -212,11 +223,15 @@
 		margin-top: var(--space-2xl);
 	}
 
+	/* Tablet keeps the two columns but on a narrower rail. The rail was a flat
+	 * 22rem from --md up, which at a 768px container left the reading column
+	 * 320px — narrower than the sidebar beside it, and about 44 characters of
+	 * prose. The rail is never wider than the record it points at. */
 	@media (--md) {
 		.home-grid {
-			grid-template-columns: minmax(0, 1fr) 22rem;
+			grid-template-columns: minmax(0, 1fr) 18rem;
 			grid-template-rows: auto 1fr;
-			column-gap: var(--space-3xl);
+			column-gap: var(--space-xl);
 			row-gap: var(--space-xl);
 			align-items: start;
 		}
@@ -237,26 +252,51 @@
 		}
 	}
 
-	/* Lead paragraph — the standfirst of the page body, one step larger. */
-	.home-main :global(.content-body > p:first-of-type),
-	.home-main :global(.prose > p:first-of-type) {
-		font-size: var(--font-size-xl);
+	@media (--lg) {
+		.home-grid {
+			grid-template-columns: minmax(0, 1fr) 22rem;
+			column-gap: var(--space-3xl);
+		}
+	}
+
+	/* The prose sits directly on the paper, so ContentBody's inset is pure
+	 * indent — and it pushed each section rule 32px in from the nameplate rule
+	 * above it, so the two tiers of the same rule system started at different
+	 * places. Zeroed: the rules stack flush, which is the whole point of drawing
+	 * hierarchy in them. */
+	.home-main :global(.home-prose) {
+		padding: 0;
+	}
+
+	/* Lead paragraph — the standfirst tier (Newsreader, one step above body).
+	 * It was set at --font-size-xl, which is the Title step: a Newsreader
+	 * paragraph at record-title size. */
+	.home-main :global(.home-prose > p:first-of-type) {
+		font-size: var(--font-size-lg);
 		line-height: var(--line-height-normal);
 		color: var(--color-text-emphasis);
 	}
 
-	/* Body copy sits one step up from the site base — the homepage intro is meant
-	 * to be read, not scanned. The lead paragraph above stays a step larger. */
-	.home-main :global(.content-body > p) {
-		font-size: var(--font-size-lg);
+	/* Body copy at the Body step. It ran at --font-size-lg — the Standfirst
+	 * tier — for 1,100 words, which is what put the measure at ~98 characters:
+	 * the type was a step too large for a column this wide, in both directions. */
+	.home-main :global(.home-prose > p) {
+		font-size: var(--font-size-base);
 		line-height: var(--line-height-relaxed);
+		/* The Measured Line Rule. `.content-body` never carried a measure — only
+		 * `.prose` did — so this column was the last uncapped long-form text on
+		 * the site, and the one a peer lands on first. */
+		max-width: var(--measure-prose);
 	}
 
 	/* Each content section opens with a 3px ink rule above the Archivo title —
-	 * hierarchy drawn in rules, so the page scans as a set of sections. */
-	.home-main :global(.content-body > h2) {
+	 * hierarchy drawn in rules, so the page scans as a set of sections. The
+	 * interval below the rule is --rule-gap like every other ruled module; it
+	 * was --space-md here, a drift the pairing guard could not see because the
+	 * padding is declared above the border. */
+	.home-main :global(.home-prose > h2) {
 		margin-top: var(--space-2xl);
-		padding-top: var(--space-md);
+		padding-top: var(--rule-gap);
 		border-top: var(--rule-section) solid var(--color-primary);
 	}
 

@@ -26,7 +26,7 @@
  * (code-split per route) rather than bundled here, to keep the render-blocking
  * global stylesheet small:
  *   - components/entity-cards.css  → PublicationItem / CommunicationItem
- *   - components/activity-list.css → LatestActivities + /activities routes
+ *   - components/activity-list.css → /activities routes
  *   - components/panels.css        → PanelBase / RelevantItemsList /
  *                                    RelevantPublications (home + research)
  */

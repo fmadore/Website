@@ -89,12 +89,16 @@ nothing.
 		break-inside: avoid;
 	}
 
+	/* The entry number is a ledger key, so it takes the ledger key's faint ink.
+	 * It carried pine, which on a twelve-chapter volume printed the accent
+	 * twelve times down one column — the Scarcity Rule failing by repetition
+	 * rather than by any single wrong decision. */
 	.pub-toc-no {
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
 		letter-spacing: 0.08em;
-		color: var(--color-accent);
+		color: var(--color-text-light);
 		line-height: var(--line-height-snug);
 	}
 

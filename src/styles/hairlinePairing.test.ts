@@ -99,24 +99,47 @@ describe('the hairline pairing', () => {
 	});
 
 	it('gives every ruled module the same rule → content interval', () => {
-		// A heavy rule followed within four lines by a padding-top that is not
-		// --rule-gap: the interval has drifted and hierarchy is being carried by
-		// spacing instead of by the rule's weight.
+		// A heavy rule declared near a top padding that is not --rule-gap: the
+		// interval has drifted and hierarchy is being carried by spacing instead
+		// of by the rule's weight.
+		//
+		// Both directions and both spellings, learned from two modules this guard
+		// missed for a month. `.panel--ruled` set the interval with the `padding`
+		// shorthand, which the old `padding-top:` probe never saw; the home page's
+		// section rule declared its padding *above* the border, which a
+		// forward-only scan never reached. Scan the whole block either side.
+		/**
+		 * One sanctioned exception, matched on its exact declaration so a second,
+		 * unconsidered one cannot hide behind it: `.site-footer` carries the 4px
+		 * masthead rule that *closes* the page rather than opening a module. The
+		 * interval beneath it is the colophon's page-end margin, and squeezing it
+		 * to 12px would collapse the endpaper.
+		 */
+		const sanctioned = [
+			'lib/components/common/Footer.svelte — padding: var(--space-12) 0 var(--space-8) 0;'
+		];
+
 		const drifted: string[] = [];
+		const RULE = /border-top:\s*var\(--rule-(section|masthead|nameplate)\)/;
+		const PAD = /(^|[^-])padding(-top)?:\s*(?!0[;\s])/;
 		for (const { file, source } of sources) {
 			const lines = source.split('\n');
 			lines.forEach((line, i) => {
-				if (!/border-top:\s*var\(--rule-(section|masthead|nameplate)\)/.test(line)) return;
-				for (let j = i + 1; j <= Math.min(i + 4, lines.length - 1); j++) {
-					const next = lines[j] ?? '';
-					if (!/padding-top:/.test(next)) continue;
-					if (!/var\(--rule-gap\)/.test(next)) {
-						drifted.push(`${file}:${j + 1} — ${next.trim()}`);
+				if (!RULE.test(line)) return;
+				for (let j = Math.max(0, i - 4); j <= Math.min(i + 4, lines.length - 1); j++) {
+					if (j === i) continue;
+					const near = lines[j] ?? '';
+					if (!PAD.test(near)) continue;
+					if (!/var\(--rule-gap\)/.test(near)) {
+						drifted.push(`${file} — ${near.trim()}`);
 					}
-					break;
 				}
 			});
 		}
-		expect(drifted).toEqual([]);
+
+		expect(drifted.filter((hit) => !sanctioned.includes(hit))).toEqual([]);
+		// The exception itself must still exist — if the footer is restyled, drop
+		// it from `sanctioned` rather than leaving dead cover behind.
+		expect(drifted).toEqual(sanctioned);
 	});
 });

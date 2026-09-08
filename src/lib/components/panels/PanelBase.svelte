@@ -63,7 +63,9 @@
 		border: none;
 		border-top: var(--rule-section) solid var(--color-primary);
 		border-radius: 0;
-		padding: var(--space-md) 0 0 0;
+		/* --rule-gap, like every other ruled module: hierarchy is carried by the
+		 * rule's weight, never by the interval beneath it. */
+		padding: var(--rule-gap) 0 0 0;
 		overflow: visible;
 	}
 </style>

@@ -123,6 +123,25 @@
 	color: var(--color-text-muted);
 }
 
+/* A record fact stamped after the kind — "Open Access" and its lock. Emphasis
+ * ink rather than pine: it is a standing property of the record, not the
+ * current thing, and it prints on roughly half the list. */
+.bib-kind-note {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-1);
+	color: var(--color-text-soft);
+}
+
+/* Height only, like the action marks: several of these glyphs are narrow (the
+ * open-access lock is a 1:2 viewBox) and a square box would pad them with dead
+ * space the flex gap then reads as a wider gap. */
+.bib-kind-icon {
+	width: auto;
+	height: 1.15em;
+	flex-shrink: 0;
+}
+
 /* Serif title — the document voice. Books/edited works go italic. */
 .bib-title {
 	font-family: var(--font-family-serif);
@@ -246,6 +265,22 @@
 	color: var(--color-accent);
 }
 
+/* The cite control — a button, because it produces the citation rather than
+ * going somewhere. It reserves the width of its longest state so a confirmation
+ * never resizes the action track and reflows the entry beside it, and it is
+ * right-aligned inside that reserved box so the column edge stays true. */
+.bib-cite {
+	min-width: 7.5em;
+	justify-content: flex-end;
+	text-align: right;
+}
+
+/* Confirmed: pine for the one thing that just happened, and only for as long as
+ * it is true (the label returns to "Cite" after a moment). */
+.bib-cite--confirmed {
+	color: var(--color-accent);
+}
+
 .bib-cited {
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-2xs);
@@ -289,6 +324,15 @@
 		justify-content: flex-start;
 		gap: var(--space-2) var(--space-3);
 		margin-top: var(--space-2);
+	}
+
+	/* Stacked, the actions read left to right, so the width the cite control
+	 * reserves against its own confirmation would open a gap in the middle of
+	 * the line instead of holding a column edge. */
+	.bib-cite {
+		min-width: 0;
+		justify-content: flex-start;
+		text-align: left;
 	}
 
 	.bib-row--featured .bib-year {
