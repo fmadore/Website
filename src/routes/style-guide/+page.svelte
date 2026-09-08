@@ -383,6 +383,38 @@
 					</div>
 				{/each}
 			</div>
+
+			<h3 class="eyebrow eyebrow--ink guide-subhead">Record prose — a narrative cast in rules</h3>
+			<p class="guide-note">
+				<span class="data-voice">.record-prose</span> is the reading column of a record whose body
+				is authored markup rather than fields — a research project's narrative, a digital-humanities
+				project's description. Paragraphs and list items take
+				<span class="data-voice">--measure-prose</span>, the lead paragraph steps up one size and
+				one ink, <span class="data-voice">h2</span> is drawn as a ruled section head at the same
+				weight and the same <span class="data-voice">--rule-gap</span> as
+				<span class="data-voice">.section-title</span>, and
+				<span class="data-voice">h3</span> is a quiet serif subhead inside it. It matches direct
+				children only, because a narrative slot can hold whole components and a descendant selector
+				reaches into them. Links are left to the site-wide prose idiom, and the opening flourish is
+				not part of it — compose <span class="data-voice">.drop-cap</span> when the narrative should open
+				with one.
+			</p>
+
+			<div class="record-prose drop-cap guide-prose-demo">
+				<p>
+					The lead paragraph opens the record: one size up, one ink step darker, and an Archivo
+					initial floated into it. Everything after it returns to the reading tier and holds the
+					prose measure however wide the column gets.
+				</p>
+				<h2>A section head, opened by its rule</h2>
+				<p>
+					The head takes the same three-pixel rule and the same twelve-pixel interval as an
+					apparatus section further down the page, so a narrative and the record's Award or Reviews
+					blocks are drawn at one weight.
+				</p>
+				<h3>A subhead inside it</h3>
+				<p>Quiet serif, no rule: it divides a section rather than opening one.</p>
+			</div>
 		</section>
 
 		<!-- ================================================================
@@ -413,6 +445,27 @@
 				Every ruled module — masthead, section, hairline — puts the same
 				<code>--rule-gap</code> between the rule and what it opens, so only the rule's
 				<em>weight</em> carries hierarchy. Vary the weight, never the gap.
+			</p>
+
+			<h3 class="eyebrow eyebrow--ink guide-subhead">The section note</h3>
+			<p class="guide-note">
+				<span class="data-voice">.section-note</span> is the one line of prose a two-word
+				<span class="data-voice">.section-title</span> cannot carry — it names what the records
+				below <em>are</em> when that is not self-evident, as on
+				<span class="data-voice">/teaching</span>, whose “Guest lectures” ledger is keyed by host
+				institution rather than by lecture. It is the document voice because it is written rather
+				than indexed, and it takes <span class="data-voice">--measure-prose</span> like any other prose.
+				A section whose head already says everything takes none.
+			</p>
+
+			<!-- A span, not a heading: the demo should not add a phantom entry to
+			     the guide's own document outline. -->
+			<div class="section-head">
+				<span class="section-title">Guest lectures</span>
+				<span class="dateline">9 lectures · 2016–2022</span>
+			</div>
+			<p class="section-note">
+				Invited talks in colleagues’ courses, indexed here by host institution.
 			</p>
 
 			<h3 class="eyebrow eyebrow--ink guide-subhead">A rule is not a border</h3>
@@ -481,6 +534,34 @@
 					<span class="ledger-meta">Meta →</span>
 				</div>
 			</div>
+
+			<h3 class="eyebrow eyebrow--ink guide-subhead">The row action — where the record goes</h3>
+			<p class="guide-note">
+				<span class="data-voice">.ledger-action</span> is the meta column’s link: a mono stamp
+				naming the destination, quiet ink at rest and pine only under the pointer. The rule it
+				follows is the one the bibliography row settled — a <em>fact</em> about the record belongs
+				in the key or the eyebrow, a <em>destination</em> in the action column. It stays unaccented
+				at rest on purpose: a syllabus from 2020 is not “the current thing”, and pine that marks
+				everything marks nothing. It clears 24px on every pointer and 44px on a coarse one, and
+				<span class="data-voice">.ledger-action--standalone</span> is the same stamp closing a whole ledger
+				rather than one of its rows.
+			</p>
+
+			<div class="ledger ledger--ruled" style="--ledger-key-w: 9rem; --ledger-meta-w: 9rem">
+				<div class="ledger-row ledger-row--meta">
+					<span class="ledger-key">
+						Fall 2020
+						<span class="ledger-status">Undergraduate</span>
+					</span>
+					<span class="ledger-content">
+						<span class="ledger-title">A record with somewhere to go</span>
+					</span>
+					<span class="ledger-meta">
+						<span class="ledger-action">Syllabus PDF ↗</span>
+					</span>
+				</div>
+			</div>
+			<span class="ledger-action ledger-action--standalone">All 9 guest lectures →</span>
 
 			<h3 class="eyebrow eyebrow--ink guide-subhead">
 				The tight ledger — a page that is all ledger
@@ -815,6 +896,13 @@
 
 	.guide-subhead {
 		margin-top: var(--space-xl);
+	}
+
+	/* The demo's own first section head carries the idiom's 48px interval, which
+	 * on a page of demos would read as a gap in the guide rather than in the
+	 * specimen; the demo block itself needs only the note's interval above it. */
+	.guide-prose-demo > :global(h2:first-of-type) {
+		margin-top: var(--space-lg);
 	}
 
 	/* The combobox fills its facet column on the index pages; here it gets a

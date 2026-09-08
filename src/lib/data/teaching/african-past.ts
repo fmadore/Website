@@ -7,5 +7,7 @@ export const africanPast: TeachingExperience = {
 	institution: 'University of Ottawa (Canada)',
 	level: 'undergraduate',
 	period: 'Fall 2020',
+	description:
+		'An introduction to the major themes and debates in African history, from ancient empires to colonial rule and independence.',
 	syllabusUrl: '/files/syllabus_the_african_past__fall_2020.pdf'
 };

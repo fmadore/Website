@@ -123,6 +123,24 @@
 	margin: 0;
 }
 
+/* Section note — the one line of prose a two-word section head cannot carry.
+ * Its job is to name what the records below are when that is not self-evident
+ * (a "Guest lectures" ledger whose rows are host institutions, not lectures),
+ * so it is the document voice: it is written, not indexed. Serif, at reading
+ * measure, sitting between the head and the first record.
+ *
+ * `.section-description` in `VizSection.svelte` is the older, component-scoped
+ * copy of this idiom — same voice, same colour, no measure cap — and should
+ * converge on it. */
+.section-note {
+	font-family: var(--font-family-serif);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-relaxed);
+	color: var(--color-text-soft);
+	max-width: var(--measure-prose);
+	margin: 0 0 var(--space-md);
+}
+
 /* ===========================================================================
  * LEDGER — the universal record idiom
  * Hanging mono key/date column left, serif content right, hairline per row.
@@ -231,6 +249,61 @@
 	text-transform: uppercase;
 	color: var(--color-text-emphasis);
 	text-align: right;
+}
+
+/* The row's action — where the record's address goes, stamped in the data
+ * voice. It is a destination, not a fact about the record, which is why it
+ * lives in the meta column and never in the key: a fact belongs in the key or
+ * the eyebrow, a destination in the action column.
+ *
+ * Quiet ink at rest, pine only under the pointer. A syllabus from 2020 is not
+ * "the current thing", so a permanently accented row action spends the accent
+ * on nothing; the underlined-link idiom is likewise wrong here, because the
+ * label is already a mono stamp rather than running text.
+ *
+ * `.bib-action` in `bibliography.css` is the older, page-scoped copy of this
+ * idiom (same voice, same 24/44px floors) and should converge on it. */
+.ledger-action {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-1);
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--color-text-soft);
+	text-decoration: none;
+	white-space: nowrap;
+	/* WCAG 2.5.8 floor (24px) on every pointer: the mono caps are 16px tall. */
+	min-height: var(--space-6);
+	transition: color var(--duration-fast) var(--ease-out);
+}
+
+.ledger-action:hover {
+	color: var(--color-accent);
+}
+
+.ledger-action:focus-visible {
+	outline: var(--border-width-medium) solid var(--color-accent);
+	outline-offset: var(--space-2xs);
+}
+
+/* The same stamp closing a ledger rather than ending one of its rows — a
+ * section's "and the rest of them" link, hung under the last hairline. */
+.ledger-action--standalone {
+	display: flex;
+	width: fit-content;
+	margin-top: var(--space-md);
+}
+
+/* Touch targets — a 16px mono text action on a phone. Padding on coarse
+ * pointers only; the pointer layout is untouched. */
+@media (--touch) {
+	.ledger-action {
+		min-height: 44px;
+		padding-block: var(--space-2-5);
+	}
 }
 
 /* On a narrow measure the fixed key and meta tracks leave the content column
@@ -815,6 +888,114 @@
 	color: var(--color-text-soft);
 	max-width: var(--measure-standfirst);
 	margin: 0;
+}
+
+/* ===========================================================================
+ * RECORD PROSE — an authored narrative cast into ruled sections
+ *
+ * The reading column of a record whose body arrives as authored markup rather
+ * than as fields: a research project's narrative, a digital-humanities
+ * project's description. Paragraphs and list items take the reading measure,
+ * `<h2>` is drawn as a ruled section head, and `<h3>` is a quiet serif subhead
+ * inside it — so a narrative and the apparatus sections beneath it (Award,
+ * Reviews) are opened by the same 3px rule at the same interval.
+ *
+ * Direct children only, deliberately. A narrative slot can hold whole
+ * components (`<RelevantGrants>` on five research pages), and a descendant
+ * selector reaches into them: it gave a funding panel's grant rows the prose
+ * measure and turned its mono label into an Archivo headline under a second
+ * 3px rule.
+ *
+ * Links are deliberately unstyled: the site-wide prose-link idiom in
+ * `typography.css` already gives any `<a>` inside a `<p>` or `<li>` ink text
+ * with a pine underline, and a local colour override here is what turned every
+ * citation in a narrative into solid pine text.
+ *
+ * The opening flourish is not part of this idiom — compose `.drop-cap`
+ * alongside it when the narrative should open with one.
+ *
+ * Consumers: `/digital-humanities/[id]`. `.project-prose` in
+ * `ResearchProjectLayout.svelte` is the older, component-scoped copy of the
+ * same idiom and should converge on it.
+ * =========================================================================== */
+
+.record-prose {
+	font-family: var(--font-family-serif);
+	color: var(--color-text);
+}
+
+.record-prose > p,
+.record-prose > ul > li,
+.record-prose > ol > li {
+	line-height: var(--line-height-relaxed);
+	color: var(--color-text);
+	max-width: var(--measure-prose);
+}
+
+.record-prose > p {
+	margin: 0 0 var(--space-md);
+}
+
+/* Opening paragraph — one step up in size and ink, the lead of the record. */
+.record-prose > p:first-child {
+	font-size: var(--font-size-lg);
+	color: var(--color-text-emphasis);
+}
+
+.record-prose > p:last-child {
+	margin-bottom: 0;
+}
+
+.record-prose strong {
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-text-emphasis);
+}
+
+.record-prose em {
+	font-style: italic;
+}
+
+/* <h2> → a section head opened by a 3px section rule, at the same size and the
+ * same `--rule-gap` as `.section-title`. */
+.record-prose > h2 {
+	border-top: var(--rule-section) solid var(--color-primary);
+	padding-top: var(--rule-gap);
+	margin: var(--space-2xl) 0 var(--space-md);
+	font-family: var(--font-family-display);
+	font-variation-settings: var(--font-variation-display-sm);
+	font-size: var(--font-size-2xl);
+	font-weight: 750;
+	letter-spacing: -0.01em;
+	line-height: 1.05;
+	color: var(--color-text-emphasis);
+}
+
+/* <h3> — quiet serif subhead inside a section. */
+.record-prose > h3 {
+	font-family: var(--font-family-serif);
+	font-size: var(--font-size-xl);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: normal;
+	font-variation-settings: normal;
+	color: var(--color-text-emphasis);
+	margin: var(--space-lg) 0 var(--space-sm);
+}
+
+.record-prose > ul,
+.record-prose > ol {
+	margin: 0 0 var(--space-lg);
+	padding-left: var(--space-lg);
+}
+
+.record-prose > ul > li,
+.record-prose > ol > li {
+	margin-bottom: var(--space-sm);
+}
+
+.record-prose > ul > li::marker,
+.record-prose > ol > li::marker {
+	color: var(--color-text-light);
+	font-family: var(--font-family-mono);
 }
 
 /* ===========================================================================

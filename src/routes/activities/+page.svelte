@@ -7,10 +7,13 @@
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
 	import Pagination from '$lib/components/molecules/Pagination.svelte';
 	import { activityFilters } from '$lib/data/activities/filters.svelte';
+	import FacetCombobox from '$lib/components/entity-index/FacetCombobox.svelte';
+	import { visibleFacetOptions } from '$lib/components/entity-index/facetSearch';
 	import { urlFilterSync } from '$lib/actions/urlFilterSync.svelte';
 	import { areFiltersActive } from '$lib/utils/filterUtils';
 	import { ACTIVITY_TYPE_BADGE_LABELS } from '$lib/utils/typeUtils';
 	import { formatShortDateMono } from '$lib/utils/date-formatter';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	// Page-specific CSS relocated from the global app.css (this page renders the
 	// activities log, the browse-by-year meter, and the tag facet).
 	import '$styles/components/activity-list.css';
@@ -35,11 +38,12 @@
 	let filtered = $derived(filters.filteredItems);
 	const anyFiltering = $derived(areFiltersActive(af));
 
-	// Human-readable list of the active filters for the log's filter note.
-	const activeFilterLabels = $derived([
-		...af.types.map((t) => ACTIVITY_TYPE_BADGE_LABELS[t] ?? t),
-		...af.tags
-	]);
+	// Human-readable list of the active filters for the log's filter note. Tag
+	// values are authored strings and carry apostrophes, so they are typeset
+	// here exactly as the chips that switch them off are.
+	const activeFilterLabels = $derived(
+		[...af.types.map((t) => ACTIVITY_TYPE_BADGE_LABELS[t] ?? t), ...af.tags].map(typesetQuotes)
+	);
 
 	// --- Hero apparatus: total count + year span across ALL activities. ---
 	const totalCount = $derived(activities.length);
@@ -68,9 +72,12 @@
 			b[1] === a[1] ? a[0].localeCompare(b[0]) : b[1] - a[1]
 		)
 	);
-	let showAllTags = $state(false);
-	const visibleTags = $derived(showAllTags ? tagCounts : tagCounts.slice(0, PRIMARY_TAGS));
-	const overflowTagCount = $derived(Math.max(0, tagCounts.length - PRIMARY_TAGS));
+	const rankedTags = $derived(tagCounts.map(([tag]) => tag));
+	// The frequency-ranked head stays printed as chips (real data as ornament);
+	// the tail — 95 tags over 33 entries — is reached by typing rather than by
+	// dumping the whole vocabulary into a 320px column. Any selected value the
+	// cut would hide is merged back so it stays switchable off in place.
+	const visibleTags = $derived(visibleFacetOptions(rankedTags, PRIMARY_TAGS, af.tags));
 
 	// --- Type facet (aside): the activity kinds, labelled, with counts over the
 	// filtered set — same convention as the entity-index facet grids. ---
@@ -132,25 +139,37 @@
 	}}
 >
 	<div class="max-w-6xl mx-auto activities-page">
-		<!-- HERO — mono log eyebrow, Archivo masthead, serif standfirst, year strip. -->
+		<!-- HERO — mono log eyebrow (tally + span), Archivo masthead, serif
+		     standfirst, all opened by the 4px rule the two sibling indexes open on.
+		     The year distribution is not drawn here as a bar strip: the aside's
+		     browse meter already draws it, with counts and a link per year, and a
+		     second copy of the same data would be ornament rather than apparatus. -->
 		<header class="activities-hero">
 			<p class="eyebrow activities-hero-eyebrow">
 				Log · {totalCount} entries · {minYear} — {maxYear}
 			</p>
 			<h1 class="activities-hero-title">Activities</h1>
-			<p class="standfirst activities-hero-standfirst">
+			<p class="standfirst">
 				Talks, workshops, conferences, grants and publications, most recent first.
 			</p>
 		</header>
 
 		<!-- Two columns opened by a 3px rule: the log, then the browse aside. -->
 		<div class="activities-layout">
-			<!-- MAIN — a press-column log grouped by year, hairline-separated rows. -->
-			<main class="activities-log" id="activities-log">
+			<!-- The log — a press column grouped by year, hairline-separated rows.
+			     A <div>, not a <main>: the app shell already opens one around every
+			     route, and a second (nested) main is invalid and leaves the document
+			     with two main landmarks for a screen reader to choose between. -->
+			<div class="activities-log" id="activities-log">
+				<!-- The narrowing, stated: what is filtering, how much of the log
+				     survives it, and the way out. The count is the half that was
+				     missing — a filtered log that reports no match figure leaves the
+				     reader to count the rows themselves. -->
 				{#if anyFiltering}
 					<p class="filter-note" aria-live="polite">
 						<span class="filter-note-label">Filtered by</span>
 						<span class="filter-note-value">{activeFilterLabels.join(' · ')}</span>
+						<span class="filter-note-count">{filtered.length} of {totalCount}</span>
 						<button type="button" class="filter-note-clear" onclick={filters.clearAllFilters}>
 							Clear ✕
 						</button>
@@ -158,7 +177,18 @@
 				{/if}
 
 				{#if filtered.length === 0}
-					<p class="log-empty">No activities match the current filters.</p>
+					<!-- Empty state: name the corpus that is still there, and carry the
+					     control back to it. The filter note above also clears, but it is
+					     scrolled past on a phone, where the log is the whole column. -->
+					<div class="log-empty">
+						<p class="log-empty-line">No activities match the current filters.</p>
+						<p class="log-empty-note">
+							The log holds {totalCount} entries, {minYear} — {maxYear}.
+						</p>
+						<button type="button" class="log-empty-clear" onclick={filters.clearAllFilters}>
+							Clear all ✕
+						</button>
+					</div>
 				{:else}
 					{#each pageGroups as group, groupIndex (group.year)}
 						<section class="year-group" aria-label="Activities from {group.year}">
@@ -170,11 +200,17 @@
 									{group.total === 1 ? 'entry' : 'entries'}
 								</span>
 							</div>
-							<div class="year-group-entries">
+							<!-- An <ol>, like `.bib-list` on the two sibling indexes: the
+							     hairline between entries and the key/plate track widths are
+							     the list's to set, so year-group spacing stays under its
+							     control and every row hangs on the same two columns. -->
+							<ol class="log-list">
 								{#each group.items as activity, itemIndex (activity.id)}
-									<ActivityItem {activity} eager={groupIndex === 0 && itemIndex === 0} />
+									<li class="log-item">
+										<ActivityItem {activity} eager={groupIndex === 0 && itemIndex === 0} />
+									</li>
 								{/each}
-							</div>
+							</ol>
 						</section>
 					{/each}
 
@@ -187,7 +223,7 @@
 						scrollTargetId="activities-log"
 					/>
 				{/if}
-			</main>
+			</div>
 
 			<!-- ASIDE — browse-by-year meter, tag facet, RSS/updated footer. -->
 			<aside class="activities-aside">
@@ -255,7 +291,7 @@
 							>
 								All <span class="chip-count">{tagCounts.length}</span>
 							</button>
-							{#each visibleTags as [tag, count] (tag)}
+							{#each visibleTags as tag (tag)}
 								<button
 									type="button"
 									class="chip"
@@ -263,20 +299,20 @@
 									aria-pressed={af.tags.includes(tag)}
 									onclick={() => filters.toggle('tags', tag)}
 								>
-									{tag} <span class="chip-count">{count}</span>
+									{typesetQuotes(tag)}
+									<span class="chip-count">{filters.counts.tags[tag] ?? 0}</span>
 								</button>
 							{/each}
-							{#if overflowTagCount > 0}
-								<button
-									type="button"
-									class="chip-more"
-									aria-expanded={showAllTags}
-									onclick={() => (showAllTags = !showAllTags)}
-								>
-									{showAllTags ? 'Fewer tags ↑' : `All ${tagCounts.length} tags ↓`}
-								</button>
-							{/if}
 						</div>
+						{#if rankedTags.length > PRIMARY_TAGS}
+							<FacetCombobox
+								options={rankedTags}
+								counts={filters.counts.tags}
+								selected={af.tags}
+								label="tags"
+								ontoggle={(value) => filters.toggle('tags', value)}
+							/>
+						{/if}
 					</section>
 				{/if}
 

@@ -16,4 +16,10 @@ export interface TeachingExperience {
 	period?: string;
 	syllabusUrl?: string;
 	sections?: string;
+	/**
+	 * What the course covers, in the scholar's own words. Held on the record
+	 * rather than in a route: `/teaching` prints it as the ledger description,
+	 * `/api/cv.json` publishes it, and the CV's citation-style line omits it.
+	 */
+	description?: string;
 }

@@ -129,10 +129,7 @@ export function getActivityTypeBadge(type: string | undefined): string {
  * Formats a panel type for display by capitalizing the first letter.
  * Used for activity panel types.
  *
- * @example
- * formatPanelType('conference') // Returns: 'Conference'
+ * Retired 2026-09-08: the activity record's masthead read `panelType` through
+ * this while its index row read `type` through the shared label map, so one
+ * record printed two kinds ("Media" / "Podcast"). The map is the one source.
  */
-export function formatPanelType(panelType: string | undefined): string {
-	if (!panelType) return '';
-	return panelType.charAt(0).toUpperCase() + panelType.slice(1);
-}

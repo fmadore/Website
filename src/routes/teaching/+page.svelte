@@ -1,61 +1,70 @@
-<script>
+<script lang="ts">
 	import SEO from '$lib/SEO.svelte';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
-	import { base, resolve } from '$app/paths'; // base for images/files, resolve for hrefs
+	import { base, resolve } from '$app/paths'; // base for files, resolve for hrefs
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import teaching from '$lib/data/teaching';
+	import guestLectures from '$lib/data/teaching/guest-lectures';
 
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('Teaching', '/teaching');
 
-	// Unified teaching items data for cards
-	const teachingItems = [
-		{
-			id: 'african-past',
-			type: 'course',
-			title: 'The African Past',
-			institution: 'University of Ottawa (Canada)',
-			level: 'undergraduate',
-			period: 'fall 2020',
-			description:
-				'An introduction to the major themes and debates in African history, from ancient empires to colonial rule and independence.',
-			imageUrl: `${base}/images/teaching/uottawa.png`,
-			syllabusUrl: `${base}/files/syllabus_the_african_past__fall_2020.pdf`
-		},
-		{
-			id: 'francophone-west-africa',
-			type: 'course',
-			title: 'Francophone West Africa',
-			institution: 'University of Florida (United States)',
-			level: 'undergraduate',
-			period: 'spring 2020',
-			description:
-				'From the French conquest in the 19th century to the emergence of jihadi groups in the Sahel today, this course traces how colonial rule and its aftermath have shaped francophone West Africa, using case studies from lesser-known countries such as Burkina Faso, Benin and Togo.',
-			imageUrl: `${base}/images/teaching/university-of-florida-logo.png`,
-			syllabusUrl: `${base}/files/syllabus-francophone-west-africa.pdf`
-		},
-		{
-			id: 'dissertation-historique',
-			type: 'course',
-			title: 'Dissertation historique [Historical writing]',
-			institution: 'Université Laval (Canada)',
-			level: 'undergraduate',
-			period: '8 sections; fall 2013-winter 2018',
-			description:
-				'Guidance and workshops on research methodologies and the craft of historical writing.',
-			imageUrl: `${base}/images/teaching/universite-Laval-logo.svg`
-		},
-		{
-			id: 'guest-lecturer',
-			type: 'guest_lecture', // Differentiate this type
-			title: 'Guest Lecturer',
-			institution: 'Various Institutions',
-			description:
-				'A list of invited talks and lectures delivered at various academic institutions.',
-			imageUrl: `${base}/images/teaching/guest-lecture.webp`,
-			linkUrl: resolve('/teaching/guest-lectures')
+	/**
+	 * The courses come from `$lib/data/teaching`, which is also what `/cv` and
+	 * `/api/cv.json` read. This page used to hold its own copy of the same four
+	 * records, and the two had drifted: the guest-lecture list printed eight
+	 * entries against the dataset's nine, named the host institutions without
+	 * their countries, and lower-cased the terms. One record, one place.
+	 *
+	 * Sorted newest-first on the same key `CVTeaching` uses, over a copy —
+	 * the exported array is shared module state.
+	 */
+	const courses = [...teaching].sort((a, b) => {
+		const yearA = parseInt(a.year.split('-')[0] ?? a.year, 10);
+		const yearB = parseInt(b.year.split('-')[0] ?? b.year, 10);
+		return yearB - yearA;
+	});
+
+	/**
+	 * The one fact the ledger keys make you scan for. A count of institutions
+	 * would only restate what three visible rows already say; the reach of the
+	 * record does not survive a glance, so that is what the dateline carries —
+	 * and it makes the two section datelines parallel, count then span.
+	 */
+	const courseYears = courses.flatMap((course) => course.year.split('-')).sort();
+	const courseSpan = `${courseYears[0]}–${courseYears[courseYears.length - 1]}`;
+
+	/**
+	 * Guest lectures are indexed here by host institution rather than listed:
+	 * the full list is its own page, and what this page owes the reader is the
+	 * shape of it — who hosted, over which years, how many times. Every figure
+	 * is counted off the dataset, so the index cannot drift from the list.
+	 */
+	const hosts = guestLectures.reduce<
+		{ institution: string; count: number; from: string; to: string }[]
+	>((acc, lecture) => {
+		const host = acc.find((h) => h.institution === lecture.institution);
+		if (host) {
+			host.count += 1;
+			host.from = lecture.year < host.from ? lecture.year : host.from;
+			host.to = lecture.year > host.to ? lecture.year : host.to;
+		} else {
+			acc.push({
+				institution: lecture.institution,
+				count: 1,
+				from: lecture.year,
+				to: lecture.year
+			});
 		}
-	];
+		return acc;
+	}, []);
+
+	const lectureYears = guestLectures.map((lecture) => lecture.year).sort();
+	const lectureSpan = `${lectureYears[0]}–${lectureYears[lectureYears.length - 1]}`;
+
+	const guestLecturesHref = resolve('/teaching/guest-lectures');
 </script>
 
 <SEO
@@ -76,52 +85,119 @@
 			Africa, Digital Humanities, West African history.
 		</PageIntro>
 
-		<!-- Courses as a pure ledger: term key + level status left, serif title +
-		     institution right, mono syllabus/list action. -->
-		<div class="ledger ledger--ruled" style="--ledger-key-w: 12rem">
-			{#each teachingItems as item (item.id)}
-				<div class="ledger-row ledger-row--meta course-row">
-					<span class="ledger-key">
-						{#if item.period}
-							<span class="course-term">{item.period}</span>
-						{/if}
-						{#if item.type === 'course' && item.level}
-							<span class="ledger-status">{item.level}</span>
-						{:else if item.type === 'guest_lecture'}
-							<span class="ledger-status">Invited talks</span>
-						{/if}
-					</span>
+		<!-- COURSES — a pure ledger: term key + level status left, serif title,
+		     institution and description right, mono syllabus action in the meta
+		     column. The section opens on the 3px rule, which is the page's own
+		     hierarchy: two modules under the masthead, courses then lectures. -->
+		<section class="section section--flush">
+			<div class="section-head">
+				<h2 class="section-title">Courses taught</h2>
+				<span class="dateline">{courses.length} courses · {courseSpan}</span>
+			</div>
 
-					<span class="ledger-content">
-						<span class="ledger-title">{item.title}</span>
-						<span class="course-institution">{item.institution}</span>
-						<span class="ledger-desc">{item.description}</span>
-					</span>
+			<div class="ledger ledger--ruled course-ledger">
+				{#each courses as course (course.id)}
+					<div class="ledger-row ledger-row--meta">
+						<span class="ledger-key">
+							{course.period ?? course.year}
+							<span class="ledger-status"
+								>{course.level}{#if course.sections}
+									· {course.sections}{/if}</span
+							>
+						</span>
 
-					<span class="ledger-meta course-action">
-						{#if item.type === 'course' && item.syllabusUrl}
-							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- static asset URL -->
-							<a href={item.syllabusUrl} target="_blank" rel="noopener noreferrer">
-								Syllabus PDF ↗
-							</a>
-						{:else if item.type === 'guest_lecture' && item.linkUrl}
-							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved URL -->
-							<a href={item.linkUrl}>View list →</a>
-						{/if}
-					</span>
-				</div>
-			{/each}
-		</div>
+						<span class="ledger-content">
+							<span class="ledger-title">{typesetQuotes(course.title)}</span>
+							<span class="course-institution">{course.institution}</span>
+							{#if course.description}
+								<span class="ledger-desc">{course.description}</span>
+							{/if}
+						</span>
+
+						<span class="ledger-meta">
+							{#if course.syllabusUrl}
+								<!-- eslint-disable svelte/no-navigation-without-resolve -- base-prefixed static asset -->
+								<!-- Named for the record it belongs to: two rows carry the same
+								     visible stamp, and a link list that reads "Syllabus PDF"
+								     twice names neither course. The visible label leads the
+								     accessible name, so speech input still matches it. -->
+								<a
+									class="ledger-action"
+									href={`${base}${course.syllabusUrl}`}
+									target="_blank"
+									rel="noopener noreferrer"
+									aria-label={`Syllabus PDF — ${course.title}`}
+								>
+									Syllabus PDF ↗
+								</a>
+								<!-- eslint-enable svelte/no-navigation-without-resolve -->
+							{/if}
+						</span>
+					</div>
+				{/each}
+			</div>
+		</section>
+
+		<!-- GUEST LECTURES — the second view of the same section. Indexed by host
+		     rather than listed: years, institution and count are all counted off
+		     the dataset the full list renders, so the two cannot disagree. -->
+		<section class="section">
+			<div class="section-head">
+				<h2 class="section-title">Guest lectures</h2>
+				<span class="dateline">{guestLectures.length} lectures · {lectureSpan}</span>
+			</div>
+
+			<p class="section-note">
+				Invited talks in colleagues’ courses, indexed here by host institution.
+			</p>
+
+			<div class="ledger ledger--ruled host-ledger">
+				{#each hosts as host (host.institution)}
+					<div class="ledger-row ledger-row--meta">
+						<span class="ledger-key">
+							{host.from === host.to ? host.from : `${host.from}–${host.to}`}
+						</span>
+						<span class="ledger-content">
+							<span class="ledger-title">{host.institution}</span>
+						</span>
+						<span class="ledger-meta">
+							{host.count}
+							{host.count === 1 ? 'lecture' : 'lectures'}
+						</span>
+					</div>
+				{/each}
+			</div>
+
+			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved URL -->
+			<a class="ledger-action ledger-action--standalone" href={guestLecturesHref}>
+				All {guestLectures.length} guest lectures →
+			</a>
+		</section>
 	</div>
 </div>
 
 <style>
-	/* The term key sits in the mono data voice, one line above the level status. */
-	.course-term {
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-sm);
-		color: var(--color-text-light);
-		letter-spacing: 0.02em;
+	/* Per-instance ledger tuning, in CSS rather than inline so the mid-band
+	 * rule below can win: an inline custom property beats every selector.
+	 * The key holds a full academic term ("Fall 2013 – Winter 2018") and the
+	 * meta column one action stamp. */
+	.course-ledger {
+		--ledger-key-w: 13rem;
+		--ledger-meta-w: 9rem;
+	}
+
+	.host-ledger {
+		--ledger-meta-w: 8rem;
+	}
+
+	/* Between the ledger's own stacking point (640px) and --md, three tracks
+	 * share ~600px. The fixed ones give the record back its room; the key
+	 * wraps to two lines there, which is what a hanging key does. */
+	@media (--md-down) {
+		.course-ledger {
+			--ledger-key-w: 8.5rem;
+			--ledger-meta-w: 7rem;
+		}
 	}
 
 	/* Institution — serif byline under the course title. */
@@ -132,36 +208,14 @@
 		color: var(--color-text-soft);
 	}
 
-	/* The action column carries the accent link; align its top to the title. */
-	.course-action {
-		text-align: right;
-	}
-
-	.course-action a {
-		color: var(--color-accent);
-		text-decoration: none;
-		white-space: nowrap;
-	}
-
-	.course-action a:hover {
-		color: var(--color-accent-dark);
-	}
-
-	.course-action a:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-2xs);
-	}
-
-	/* On narrow screens the three-column ledger collapses to a single column;
-	   the action drops under the content and left-aligns with it. */
-	@media (--md-down) {
-		.course-row {
-			grid-template-columns: 1fr;
-			gap: var(--space-sm);
-		}
-
-		.course-action {
-			text-align: left;
-		}
-	}
+	/* `.section-note` is not declared here. It began as a local class on this
+	 * page and is now the idiom in `ink-signal.css`: a serif line between a
+	 * section head and its records is general, and `VizSection` had already
+	 * written the same rule under a second name.
+	 *
+	 * The narrow-measure collapse is NOT redeclared here either. `.course-row` used to
+	 * carry its own copy at `--md-down`, written before 1.3 moved the collapse
+	 * onto `.ledger-row` itself at `--sm-down` — so this page stacked between
+	 * 640 and 767px while every other ledger on the site did not. The idiom
+	 * owns it; the page inherits it. */
 </style>

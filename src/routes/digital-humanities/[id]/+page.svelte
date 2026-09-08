@@ -1,46 +1,43 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
 	import MetaTags from '$lib/components/digital-humanities/MetaTags.svelte';
-	import EntityDetailLayout from '$lib/components/common/EntityDetailLayout.svelte';
-	import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
-	import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
+	import RecordLayout, { type EyebrowToken } from '$lib/components/common/RecordLayout.svelte';
+	import DhProjectRail from '$lib/components/digital-humanities/DhProjectRail.svelte';
 	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
-	import { groupProjectLinks, projectLinkText } from '$lib/utils/projectLinks';
+	import { formatProjectPeriod } from '$lib/utils/projectPeriod';
 	import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
 
-	import { base, resolve } from '$app/paths';
+	import { base } from '$app/paths';
 
-	import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
+	import type { PageData } from './$types';
 
-	// Define the type for project details items
-	type ProjectDetailItem = {
-		label: string;
-		value: string | string[];
-		link?: string;
-		condition?: boolean;
-	};
+	let { data }: { data: PageData } = $props();
 
-	let { data } = $props<{ data: { project: DigitalHumanitiesProject } }>();
-	let project = $derived(data.project);
-	const jsonLdString = $derived(data.jsonLdString as string | undefined);
+	const project = $derived(data.project);
+	const jsonLdString = $derived(data.jsonLdString);
 
-	// Breadcrumbs
-	let breadcrumbItems = $derived([
+	// Breadcrumb trail — the shell prints an editorial back-link from `section`;
+	// this array is what feeds the breadcrumb JSON-LD, unchanged.
+	const breadcrumbItems = $derived([
 		{ label: 'Digital Humanities', href: `${base}/digital-humanities` },
 		{ label: project.title, href: `${base}/digital-humanities/${project.id}` }
 	]);
 
-	// Breadcrumb + project JSON-LD injection is handled by EntityDetailLayout
-	// (with this route's custom breadcrumb script id).
+	/**
+	 * Masthead eyebrow: the project's period, formatted — so an open-ended
+	 * record reads "Since 2023" here as it does in the catalogue, rather than
+	 * printing its raw `2023-` with the hyphen left dangling, which is what the
+	 * page header did before.
+	 */
+	const eyebrow = $derived.by((): EyebrowToken[] => [
+		{ label: formatProjectPeriod(project.years) }
+	]);
 
-	// The project's public addresses, grouped site / code / data.
-	const linkGroups = $derived(groupProjectLinks(project));
+	const displayTitle = $derived(typesetQuotes(project.title));
 
-	// Prepare details for DetailsGrid
-	const projectDetails: ProjectDetailItem[] = [
-		// Example of adding another detail:
-		// { label: 'Project Lead', value: project.leadName, condition: !!project.leadName },
-	];
+	const embeds = $derived(project.embeddableContent ?? []);
+	const reviews = $derived(project.reviews ?? []);
+	const skills = $derived(project.skills ?? []);
 </script>
 
 <SEO
@@ -54,430 +51,227 @@
 <!-- Zotero/COinS metadata — mirrors the other detail routes' MetaTags. -->
 <MetaTags {project} />
 
-<EntityDetailLayout
+{#snippet railPrimary()}
+	<DhProjectRail {project} />
+{/snippet}
+
+<!-- The record's own methods, in the block that falls *past* the narrative in a
+     single column: an index belongs after the thing it indexes. Chips rather
+     than an apparatus run, because here each term is a control — it filters the
+     catalogue — which is the distinction the two idioms draw. -->
+{#snippet railSecondary()}
+	<div>
+		<h2 class="rail-label">Methods</h2>
+		<div class="chip-row">
+			{#each skills as skill (skill)}
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- skill filter URL -->
+				<a class="chip" href="{base}/digital-humanities?skill={encodeURIComponent(skill)}"
+					>{typesetQuotes(skill)}</a
+				>
+			{/each}
+		</div>
+	</div>
+{/snippet}
+
+<RecordLayout
+	section={{ label: 'Digital Humanities', href: `${base}/digital-humanities` }}
+	breadcrumbCurrent="Project"
+	{eyebrow}
+	title={displayTitle}
 	{breadcrumbItems}
-	breadcrumbJsonLdId="breadcrumb-json-ld-dh-project"
 	jsonLdScriptId="dh-project-json-ld"
 	{jsonLdString}
-	title={project.title}
-	typeBadgeText="Digital Humanities"
-	date={project.years}
-	wrapperClass="content-wrapper"
+	{railPrimary}
+	railSecondary={skills.length > 0 ? railSecondary : undefined}
 >
-	{#snippet children({ breadcrumb, header })}
-		<article class="project-detail-article max-w-6xl mx-auto">
-			{@render breadcrumb()}
+	{#snippet main()}
+		<!-- ═══ NARRATIVE ═══
+		     Authored markup from the record, cast into ruled sections by the
+		     `.record-prose` idiom and opened by a drop cap. Markup-bearing prose,
+		     so typesetQuotesInHtml, never typesetQuotes. -->
+		<!-- Safe: project.description is trusted data in src/lib/data/digital-humanities/ -->
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+		<div class="record-prose drop-cap">{@html typesetQuotesInHtml(project.description)}</div>
 
-			{@render header()}
+		<!-- ═══ EMBEDDED WORK ═══
+		     The project shown rather than described: a live visualisation, a
+		     timeline, a scan. Each item keeps its own id, so the embed markup and
+		     the sandboxing are exactly what <IframeRenderer> shipped before. -->
+		{#if embeds.length > 0}
+			<div class="embeds">
+				{#each embeds as item, index (item.id)}
+					{@const figure = `Fig. ${index + 1}`}
+					<figure class="embed">
+						{#if item.type === 'iframe'}
+							<IframeRenderer {...item} />
+						{:else if item.type === 'image'}
+							{#if item.linkUrl}
+								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
+								<a href={item.linkUrl} target="_blank" rel="noopener noreferrer" class="embed-link">
+									<img
+										src={item.src}
+										alt={item.alt}
+										class="plate"
+										width="800"
+										height="600"
+										loading="lazy"
+										decoding="async"
+									/>
+								</a>
+							{:else}
+								<img
+									src={item.src}
+									alt={item.alt}
+									class="plate"
+									width="800"
+									height="600"
+									loading="lazy"
+									decoding="async"
+								/>
+							{/if}
+						{/if}
 
-			{#if project.heroImageUrl || project.imageUrl}
-				<div class="hero-image-wrapper mb-8">
-					<HeroImageDisplay
-						heroImage={project.heroImageUrl
-							? { src: project.heroImageUrl, alt: project.title }
-							: undefined}
-						fallbackImage={project.imageUrl}
-						defaultAlt={project.title}
-						variant="featured"
-						framed={false}
-						fetchpriority="high"
-						loading="eager"
-						maxHeight="60vh"
-					/>
-				</div>
-			{/if}
-
-			<div class="">
-				<section class="content-section drop-cap">
-					<!-- Safe: project.description is from trusted project data in src/lib/data/digital-humanities/ -->
-					<!-- Markup-bearing prose, so typesetQuotesInHtml, never typesetQuotes. -->
-					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-					{@html typesetQuotesInHtml(project.description)}
-				</section>
-			</div>
-
-			{#if linkGroups.length > 0}
-				<div class="">
-					<!-- Where the project actually lives — a ledger of addresses, mono
-					     key on the left, the sites/repos/datasets of that kind on the
-					     right. Same data the CV prints. -->
-					<section class="section apparatus-section">
-						<div class="section-head">
-							<h2 class="section-title">Project links</h2>
-						</div>
-						<dl class="link-ledger">
-							{#each linkGroups as group (group.type)}
-								<div class="link-row">
-									<dt class="link-key">{group.key}</dt>
-									<dd class="link-values">
-										{#each group.links as link (link.url)}
-											<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external project address -->
-											<a href={link.url} target="_blank" rel="noopener noreferrer"
-												>{typesetQuotes(projectLinkText(link))}</a
-											>
-										{/each}
-									</dd>
-								</div>
-							{/each}
-						</dl>
-					</section>
-				</div>
-			{/if}
-
-			<div class="">
-				{#if projectDetails.length > 0}
-					<DetailsGrid details={projectDetails} />
-				{/if}
-			</div>
-
-			<div class="">
-				{#if project.skills && project.skills.length > 0}
-					<section class="section">
-						<div class="section-head">
-							<h2 class="section-title">Methods &amp; tools</h2>
-						</div>
-						<div class="chip-row">
-							{#each project.skills as skill (skill)}
-								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- skill filter URL -->
-								<a class="chip" href="{base}/digital-humanities?skill={encodeURIComponent(skill)}"
-									>{skill}</a
-								>
-							{/each}
-						</div>
-					</section>
-				{/if}
-			</div>
-
-			{#if project.embeddableContent && project.embeddableContent.length > 0}
-				<div class="">
-					<section class="embeddable-section">
-						{#each project.embeddableContent as item (item.id)}
-							<div class="embeddable-item">
+						<!-- Title and description sit *under* the embed, as a plate's
+						     caption does: the figure is the primary source and the words
+						     annotate it. The stamp numbers the figures of this record,
+						     which is real information rather than a fabricated caption —
+						     eight of them on the longest page. -->
+						<figcaption class="embed-caption">
+							<p class="embed-title">
 								{#if item.showTitle && item.title}
-									<h3 class="embeddable-title">{typesetQuotes(item.title)}</h3>
+									{figure} — {typesetQuotes(item.title)}
+								{:else}
+									{figure}
 								{/if}
-								{#if item.description}
-									<p class="embeddable-description">
-										<!-- Safe: item.description is from trusted project data -->
-										<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-										{@html typesetQuotesInHtml(item.description)}
-									</p>
-								{/if}
+							</p>
+							{#if item.description}
+								<!-- Safe: item.description is trusted project data -->
+								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+								<div class="embed-desc">{@html typesetQuotesInHtml(item.description)}</div>
+							{/if}
+						</figcaption>
+					</figure>
+				{/each}
+			</div>
+		{/if}
 
-								{#if item.type === 'iframe'}
-									<div class="iframe-wrapper">
-										<IframeRenderer {...item} />
-									</div>
-								{:else if item.type === 'image'}
-									{#if item.linkUrl}
-										<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
-										<a
-											href={item.linkUrl}
-											target="_blank"
-											rel="noopener noreferrer"
-											class="image-link"
-										>
-											<img
-												src={item.src}
-												alt={item.alt}
-												class="plate responsive-image"
-												width="800"
-												height="600"
-												loading="lazy"
-												decoding="async"
-											/>
-										</a>
-										<!-- eslint-enable svelte/no-navigation-without-resolve -->
-									{:else}
-										<img
-											src={item.src}
-											alt={item.alt}
-											class="plate responsive-image"
-											width="800"
-											height="600"
-											loading="lazy"
-											decoding="async"
-										/>
-									{/if}
-								{/if}
-							</div>
-						{/each}
-					</section>
+		<!-- ═══ APPARATUS ═══ what the project earned, cited and was reviewed in.
+		     Each block prints only when the record carries it. -->
+		{#if project.award}
+			<section class="section">
+				<div class="section-head">
+					<h2 class="section-title">Award</h2>
 				</div>
-			{/if}
+				<!-- Safe: project.award is trusted project data -->
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+				<p class="apparatus-text">{@html typesetQuotesInHtml(project.award)}</p>
+			</section>
+		{/if}
 
-			<div class="">
-				{#if project.award}
-					<section class="section apparatus-section">
-						<div class="section-head">
-							<h2 class="section-title">Award</h2>
-						</div>
-						<!-- Safe: project.award is from trusted project data -->
-						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-						<p class="apparatus-text">{@html typesetQuotesInHtml(project.award)}</p>
-					</section>
-				{/if}
-			</div>
+		{#if project.publication}
+			<section class="section">
+				<div class="section-head">
+					<h2 class="section-title">Related publication</h2>
+				</div>
+				<p class="apparatus-text">
+					<!-- Safe: project.publication.text is trusted project data -->
+					<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
+					<!-- eslint-disable svelte/no-at-html-tags -->
+					<a href={project.publication.url} target="_blank" rel="noopener noreferrer"
+						>{@html typesetQuotesInHtml(project.publication.text)}</a
+					>
+					<!-- eslint-enable svelte/no-at-html-tags -->
+					<!-- eslint-enable svelte/no-navigation-without-resolve -->
+				</p>
+			</section>
+		{/if}
 
-			<div class="">
-				{#if project.publication}
-					<section class="section apparatus-section">
-						<div class="section-head">
-							<h2 class="section-title">Related publication</h2>
-						</div>
-						<p class="apparatus-text">
-							<!-- Safe: project.publication.text is from trusted project data -->
-							<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
-							<!-- eslint-disable svelte/no-at-html-tags -->
-							<a
-								href={project.publication.url}
-								target="_blank"
-								rel="noopener noreferrer"
-								class="link">{@html typesetQuotesInHtml(project.publication.text)}</a
-							>
-							<!-- eslint-enable svelte/no-at-html-tags -->
-							<!-- eslint-enable svelte/no-navigation-without-resolve -->
-						</p>
-					</section>
-				{/if}
-			</div>
-
-			<div class="">
-				{#if project.reviews && project.reviews.length > 0}
-					<section class="section apparatus-section">
-						<div class="section-head">
-							<h2 class="section-title">Reviews</h2>
-						</div>
-						<ul class="reviews-list">
-							{#each project.reviews as review (review.url)}
-								<li class="review-item">
-									<!-- Safe: review.text is from trusted project data -->
+		{#if reviews.length > 0}
+			<section class="section">
+				<div class="section-head">
+					<h2 class="section-title">Reviews</h2>
+				</div>
+				<!-- A review is a dated record of somebody else's judgement, so it is
+				     set as a ledger entry: the reference, then the passage quoted. -->
+				<div class="ledger ledger--ruled">
+					{#each reviews as review (review.url)}
+						<article class="ledger-row review-row">
+							<div class="ledger-content">
+								<p class="apparatus-text">
+									<!-- Safe: review.text is trusted project data -->
 									<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 									<!-- eslint-disable svelte/no-at-html-tags -->
-									<a
-										href={review.url}
-										target="_blank"
-										rel="noopener noreferrer"
-										class="link font-medium">{@html typesetQuotesInHtml(review.text)}</a
+									<a href={review.url} target="_blank" rel="noopener noreferrer"
+										>{@html typesetQuotesInHtml(review.text)}</a
 									>
 									<!-- eslint-enable svelte/no-at-html-tags -->
 									<!-- eslint-enable svelte/no-navigation-without-resolve -->
-									{#if review.quote}
-										<blockquote class="review-quote">
-											<p>{typesetQuotes(review.quote)}</p>
-										</blockquote>
-									{/if}
-								</li>
-							{/each}
-						</ul>
-					</section>
-				{/if}
-			</div>
-		</article>
+								</p>
+								{#if review.quote}
+									<blockquote class="review-quote">{typesetQuotes(review.quote)}</blockquote>
+								{/if}
+							</div>
+						</article>
+					{/each}
+				</div>
+			</section>
+		{/if}
 	{/snippet}
-
-	{#snippet after()}
-		<!-- Back link — quiet editorial text link, left-aligned like the
-		     header back-links on other detail pages. -->
-		<div class="mt-8 max-w-6xl mx-auto">
-			<a href={resolve('/digital-humanities')} class="back-to-index">
-				← Back to Digital Humanities projects
-			</a>
-		</div>
-	{/snippet}
-</EntityDetailLayout>
+</RecordLayout>
 
 <style>
-	/* Back link — mono data-voice affordance matching the header back-link. */
-	.back-to-index {
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-2xs);
-		font-weight: var(--font-weight-medium);
-		text-transform: uppercase;
-		letter-spacing: 0.14em;
-		color: var(--color-text-light);
-		text-decoration: none;
-		transition: color var(--duration-fast) var(--ease-out);
-	}
-
-	.back-to-index:hover {
-		color: var(--color-accent);
-	}
-
-	.back-to-index:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-2xs);
-	}
-
-	/* Article container - consistent with activity and research pages */
-	.project-detail-article {
-		position: relative;
-	}
-
-	/* Content section — prose on paper, no tile. The drop-cap idiom opens it. */
-	.content-section {
-		margin-bottom: var(--space-xl);
-	}
-
-	.content-section :global(p) {
-		margin-bottom: var(--space-lg);
-		line-height: var(--line-height-relaxed);
-		color: var(--color-text);
-	}
-
-	.content-section :global(p:last-child) {
-		margin-bottom: 0;
-	}
-
-	/* Lead paragraph — slightly larger, full-ink colour; the drop-cap on the
-	 * section carries the opening flourish. */
-	.content-section :global(p:first-child) {
-		font-size: var(--font-size-lg);
-		font-weight: var(--font-weight-normal);
-		color: var(--color-text-emphasis);
-		line-height: var(--line-height-relaxed);
-	}
-
-	.content-section :global(a) {
-		color: var(--color-accent);
-		text-decoration: none;
-		font-weight: var(--font-weight-medium);
-		transition: color var(--duration-fast) var(--ease-out);
-	}
-
-	.content-section :global(a:hover) {
-		color: var(--color-accent-dark);
-		/* No text-decoration needed - typography.css handles animated underlines */
-	}
-
-	/* Ensure buttons maintain their proper colors */
-	.content-section :global(.btn) {
-		color: inherit;
-	}
-
-	.content-section :global(.btn-primary) {
-		color: var(--color-white);
-	}
-
-	.content-section :global(.btn-primary:hover) {
-		color: var(--color-white);
-		text-decoration: none;
-	}
-
-	/* Embeddable content section */
-	.embeddable-section {
-		margin-bottom: var(--space-xl);
+	/* ═══ EMBEDDED WORK ═══
+	 * A run of plates and live embeds inside the reading column. The section
+	 * rules above and below it come from `.record-prose`'s heads and the
+	 * apparatus sections, so the run needs only its own interval. */
+	.embeds {
 		margin-top: var(--space-2xl);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2xl);
 	}
 
-	.embeddable-item {
-		margin-bottom: var(--space-2xl);
+	.embed {
+		margin: 0;
 	}
 
-	.embeddable-item:last-child {
-		margin-bottom: 0;
+	/* <IframeRenderer> closes its frame with 32px of its own, which was the
+	 * interval between one embed and the next when the words sat above the
+	 * frame. They sit below it now, so the figure's gap does that job and the
+	 * frame must close on its caption. Three classes deep deliberately: the
+	 * component's own rule is also (0,2,0), so a two-class selector here would
+	 * be decided by bundle order rather than by specificity. */
+	.embeds .embed :global(.iframe-frame) {
+		margin-block-end: 0;
 	}
 
-	.embeddable-title {
-		font-family: var(--font-family-display);
-		font-variation-settings: var(--font-variation-display-sm);
-		font-size: var(--font-size-xl);
-		font-weight: 720;
-		letter-spacing: -0.01em;
-		color: var(--color-text-emphasis);
-		margin-bottom: var(--space-sm);
-		line-height: var(--line-height-tight);
-	}
-
-	.embeddable-description {
-		font-family: var(--font-family-serif);
-		color: var(--color-text-soft);
-		margin-bottom: var(--space-md);
-		line-height: var(--line-height-relaxed);
-	}
-
-	/* The iframe carries its own toolbar chrome; no tile wrapper needed. */
-	.iframe-wrapper {
-		margin: var(--space-lg) 0;
-	}
-
-	/* Image plate — a documentary scan set flat and square (.plate idiom).
-	 * The link (when present) opens the larger view; the plate does not lift. */
-	.responsive-image {
-		max-width: 100%;
-		height: auto;
-	}
-
-	.image-link {
+	.embed-link {
 		display: block;
 	}
 
-	/* Address ledger — hanging mono key, addresses in the right column, hairline
-	 * between rows. The DATA voice throughout: these are database columns. */
-	.link-ledger {
-		margin: 0;
-	}
-
-	.link-row {
-		display: grid;
-		grid-template-columns: 5rem 1fr;
-		gap: var(--space-2xs) var(--space-lg);
-		padding: var(--space-sm) 0;
-		border-top: var(--rule-hairline) solid var(--color-hairline);
-		align-items: baseline;
-	}
-
-	.link-row:first-child {
-		border-top: none;
-		padding-top: 0;
-	}
-
-	.link-key {
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-2xs);
-		font-weight: var(--font-weight-bold);
-		text-transform: uppercase;
-		letter-spacing: 0.14em;
-		color: var(--color-text-light);
-	}
-
-	.link-values {
-		margin: 0;
-		min-width: 0;
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-2xs) var(--space-md);
-		font-family: var(--font-family-mono);
+	/* Caption under the figure — the plate caption idiom, with the embed's own
+	 * title set first in the same serif italic and one weight up. */
+	.embed-caption {
+		margin-top: var(--space-2);
+		font-family: var(--font-family-serif);
+		font-style: italic;
 		font-size: var(--font-size-sm);
-		letter-spacing: 0.02em;
+		line-height: var(--line-height-caption);
+		color: var(--color-text-light);
+		max-width: var(--measure-note);
 	}
 
-	.link-values a {
-		color: var(--color-accent);
-		text-decoration: none;
-		font-weight: var(--font-weight-medium);
-		transition: color var(--duration-fast) var(--ease-out);
+	.embed-title {
+		margin: 0;
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-text-soft);
 	}
 
-	.link-values a:hover {
-		color: var(--color-accent-dark);
+	.embed-desc :global(p) {
+		margin: var(--space-1) 0 0;
 	}
 
-	.link-values a:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-2xs);
-	}
-
-	/* Narrow viewports stack: the key becomes an overline above its addresses. */
-	@media (--sm-down) {
-		.link-row {
-			grid-template-columns: 1fr;
-			gap: var(--space-1);
-		}
-	}
-
-	/* Apparatus sections — award / publication / reviews. Serif prose under a
-	 * §-numbered section rule; no tile, no glass. */
+	/* ═══ APPARATUS ═══ serif prose under a section rule; no tile, no glass. */
 	.apparatus-text {
 		font-family: var(--font-family-serif);
 		font-size: var(--font-size-base);
@@ -487,49 +281,23 @@
 		max-width: var(--measure-prose);
 	}
 
-	.apparatus-text :global(a),
-	.reviews-list :global(a.link) {
-		color: var(--color-accent);
-		text-decoration: none;
-		font-weight: var(--font-weight-medium);
+	/* A review row hangs no key — the reference is the record — so it collapses
+	 * to the single content column the narrow-measure ledger already uses. */
+	.review-row {
+		grid-template-columns: minmax(0, 1fr);
 	}
 
-	.apparatus-text :global(a:hover),
-	.reviews-list :global(a.link:hover) {
-		color: var(--color-accent-dark);
-	}
-
-	/* Reviews list */
-	.reviews-list {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.review-item {
-		font-family: var(--font-family-serif);
-		padding: var(--space-md) 0;
-		border-top: var(--rule-hairline) solid var(--color-hairline);
-	}
-
-	.review-item:first-child {
-		border-top: none;
-		padding-top: 0;
-	}
-
-	/*
-	 * Review quote — indented italic pull-quote with a leading quote glyph.
-	 */
+	/* The quoted passage — indented serif italic. The hanging quotation mark is
+	 * a printer's mark, not a signal, so it takes ink rather than the accent. */
 	.review-quote {
 		margin: var(--space-sm) 0 0 var(--space-md);
-		padding: var(--space-2xs) 0 var(--space-2xs) var(--space-md);
-		font-size: var(--font-size-sm);
-		color: var(--color-text-light);
-		font-style: italic;
+		padding-left: var(--space-md);
 		font-family: var(--font-family-serif);
+		font-style: italic;
+		font-size: var(--font-size-sm);
 		line-height: var(--line-height-relaxed);
+		color: var(--color-text-light);
+		max-width: var(--measure-note);
 		position: relative;
 	}
 
@@ -538,16 +306,9 @@
 		position: absolute;
 		left: calc(-1 * var(--space-xs));
 		top: calc(-1 * var(--space-2xs));
-		font-size: var(--font-size-2xl);
-		color: color-mix(in srgb, var(--color-accent) 45%, transparent);
 		font-family: var(--font-family-serif);
+		font-size: var(--font-size-2xl);
 		line-height: 1;
-	}
-
-	/* Responsive adjustments */
-	@media (--sm) {
-		.embeddable-title {
-			font-size: var(--font-size-2xl);
-		}
+		color: var(--color-text-muted);
 	}
 </style>

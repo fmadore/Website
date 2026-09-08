@@ -29,12 +29,14 @@
 
 <script lang="ts">
 	// Bibliography-row idiom (Ink + Signal): the shared finding-aid ledger entry
-	// used by both the /publications and /conference-activity lists. Grid:
-	// year | cover | body | actions. The year column is filled once per
-	// year-group by the parent; the cover column is reserved on every row (a
-	// catalogue shelf) and holds a plate whenever the entry has one.
-	// PublicationItem and CommunicationItem adapt their entities onto these
-	// props so both record lists stay in visual lock-step.
+	// used by the /publications, /conference-activity and /activities lists.
+	// Grid: year | cover | body | actions. The year column is filled once per
+	// year-group by the parent (the activities log fills it on every row — its
+	// records are dated to the day and the year is carried by the group head);
+	// the cover column is reserved on every row (a catalogue shelf) and holds a
+	// plate whenever the entry has one. PublicationItem, CommunicationItem and
+	// ActivityItem adapt their entities onto these props so the three record
+	// lists stay in visual lock-step.
 	import '$styles/components/bibliography.css';
 	import Icon from '@iconify/svelte';
 	import { base } from '$app/paths';
@@ -45,8 +47,10 @@
 
 	// The plate column is 80px wide (56px under --sm-down), so even a 3× phone
 	// needs no more than the 400w derivative — never the detail-page-sized
-	// source. `sizes` states that width so the browser can pick it.
-	const PLATE_SIZES = '(max-width: 640px) 56px, 80px';
+	// source. `sizes` states that width so the browser can pick it. A list that
+	// widens the column (`--bib-cover-w`) must restate it through `plateSizes`,
+	// or the browser picks a candidate for a narrower box than it renders.
+	const DEFAULT_PLATE_SIZES = '(max-width: 640px) 56px, 80px';
 
 	interface Props {
 		/** Internal detail link — pre-resolved via resolve() by the parent. */
@@ -66,6 +70,20 @@
 		byline?: string;
 		/** One-line serif standfirst — printed only on the featured lead. */
 		standfirst?: string;
+		/**
+		 * A serif deck printed on *every* row, where `standfirst` prints only on
+		 * the featured lead (and wins on a row that is both). The activities log
+		 * is a dated record whose entries each carry a one-sentence description;
+		 * withholding it from all but the lead would drop the only prose the row
+		 * has, and a log entry's title alone rarely says what happened.
+		 */
+		summary?: string;
+		/**
+		 * The record's own keyword run, set as a mono `.apparatus-line` under the
+		 * body — apparatus annotating the entry, not a control the reader operates
+		 * (the facets are where a list is narrowed).
+		 */
+		apparatus?: string;
 		/** Plate image; the column stays reserved (blank) when absent. */
 		image?: string | null;
 		imageAlt?: string;
@@ -73,6 +91,12 @@
 		imageHeight?: number;
 		/** Override for the plate aspect ratio (e.g. '1 / 1' for event seals). */
 		plateAspect?: string | null;
+		/**
+		 * `sizes` for the plate, stated in the same widths the list's
+		 * `--bib-cover-w` renders. Only a list that widens that column needs to
+		 * pass it; the default describes the shared 80px / 56px shelf.
+		 */
+		plateSizes?: string;
 		loading?: 'eager' | 'lazy';
 		/** External actions (DOI / Open Access / Slides / Materials). */
 		actions?: BibliographyAction[];
@@ -93,6 +117,13 @@
 		citedCount?: number;
 		/** Hanging year, printed once per year-group by the parent. */
 		yearLabel?: string | number | null;
+		/**
+		 * Heading level of the row title. 2 by default, because on /publications
+		 * and /conference-activity the rows sit directly under the page h1 with no
+		 * intermediate head. /activities groups its log under a real `<h2>` per
+		 * year, so there the entry is a level below.
+		 */
+		headingLevel?: 2 | 3;
 		/** The current/featured lead — pine eyebrow, larger year, standfirst. */
 		featured?: boolean;
 	}
@@ -107,17 +138,21 @@
 		italicTitle = false,
 		byline = '',
 		standfirst = '',
+		summary = '',
+		apparatus = '',
 		image = null,
 		imageAlt = '',
 		imageWidth = 200,
 		imageHeight = 280,
 		plateAspect = null,
+		plateSizes = DEFAULT_PLATE_SIZES,
 		loading = 'lazy',
 		actions = [],
 		reference = undefined,
 		detailLabel = '',
 		citedCount = 0,
 		yearLabel = null,
+		headingLevel = 2,
 		featured = false
 	}: Props = $props();
 
@@ -131,6 +166,7 @@
 	const displayLanguage = $derived(languageNote ? typesetQuotes(languageNote) : '');
 	const displayByline = $derived(typesetQuotes(byline));
 	const displayStandfirst = $derived(typesetQuotes(standfirst));
+	const displaySummary = $derived(typesetQuotes(summary));
 	const displayImageAlt = $derived(typesetQuotes(imageAlt));
 
 	// Base-relative source (data files store `images/…`), plus the generated
@@ -181,7 +217,7 @@
 					class="plate bib-plate"
 					src={plateSrc}
 					srcset={plateSrcset}
-					sizes={plateSrcset ? PLATE_SIZES : undefined}
+					sizes={plateSrcset ? plateSizes : undefined}
 					alt={displayImageAlt}
 					width={imageWidth}
 					height={imageHeight}
@@ -213,21 +249,37 @@
 			{/each}
 		</p>
 
-		<!-- h2, not h3: on the list pages these rows sit directly under the page
-		     h1 with no intermediate h2, so h3 would skip a heading level. -->
-		<h2 class="bib-title" class:bib-title--italic={italicTitle} lang={titleLang}>
+		<!-- h2 by default: on /publications and /conference-activity these rows sit
+		     directly under the page h1 with no intermediate h2, so h3 would skip a
+		     level. The activities log heads each year group with a real h2, so it
+		     asks for h3 (see `headingLevel`). -->
+		<svelte:element
+			this={`h${headingLevel}`}
+			class="bib-title"
+			class:bib-title--italic={italicTitle}
+			lang={titleLang}
+		>
 			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
 			<a {href} class="bib-title-link" data-sveltekit-preload-code="tap">
 				{displayTitle}
 			</a>
-		</h2>
+		</svelte:element>
 
 		{#if displayByline}
 			<p class="bib-byline">{displayByline}</p>
 		{/if}
 
+		<!-- At most one deck per row. The lead's trimmed abstract wins where both
+		     are supplied, so a featured activity would still read as a lead
+		     rather than printing two serif paragraphs under one title. -->
 		{#if featured && displayStandfirst}
 			<p class="bib-standfirst">{displayStandfirst}</p>
+		{:else if displaySummary}
+			<p class="bib-standfirst">{displaySummary}</p>
+		{/if}
+
+		{#if apparatus}
+			<p class="apparatus-line bib-apparatus">{apparatus}</p>
 		{/if}
 	</div>
 

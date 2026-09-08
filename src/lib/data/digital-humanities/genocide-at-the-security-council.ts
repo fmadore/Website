@@ -9,7 +9,7 @@ export const genocideAtTheSecurityCouncil: DigitalHumanitiesProject = {
 	description: `
 		<p>Between 1992 and 2023 the UN Security Council heard 106,302 speeches. Someone said the word <em>genocide</em> in 3,273 of them, 3.08% of the corpus, 6,092 times in all. The material is the <a href="https://doi.org/10.7910/DVN/KGVSYH" target="_blank" rel="noopener noreferrer">UN Security Council Debates</a> corpus (Schoenfeld, Eckhard, Patz, van Meegdenburg &amp; Pires, v6.1, CC0): 6,582 meetings, 66.4 million words, public domain. <a href="https://fmadore.github.io/genocide-at-the-security-council/" target="_blank" rel="noopener noreferrer">Genocide at the Security Council</a> asks who said it, about what, and what the word was doing there.</p>
 
-		<h3>Six views</h3>
+		<h2>Six views</h2>
 		<ul>
 			<li><strong>Overview</strong>: the question, the headline counts, and the annual series read two ways at once, as raw occurrences and as a share of speeches</li>
 			<li><strong>Chronology</strong>: every term and lexical register over time, plotted against 35 reference dates traced to primary sources</li>
@@ -21,7 +21,7 @@ export const genocideAtTheSecurityCouncil: DigitalHumanitiesProject = {
 
 		<p>Every chart says what it answers, how to read its marks and what it does not show, and names the script that produced the file behind it. Take any figure away as CSV with its provenance, or as SVG or PNG with the filters drawn into the image.</p>
 
-		<h3>How it is built</h3>
+		<h2>How it is built</h2>
 
 		<p>Python does the counting, from the raw Dataverse download through to the finished tables. The dashboard is a static <a href="https://svelte.dev/" target="_blank" rel="noopener noreferrer">SvelteKit</a> site with <a href="https://echarts.apache.org/" target="_blank" rel="noopener noreferrer">ECharts</a> figures and a <a href="https://maplibre.org/" target="_blank" rel="noopener noreferrer">MapLibre</a> locator map. The choices that need human judgement, among them the genocide lexicon and the reference dates, sit in versioned config files where anyone can inspect them and argue with them.</p>
 

@@ -3,7 +3,7 @@
  *
  * Reading surfaces use a solid --color-surface background, not glass.
  * Glass is reserved for chrome (header, filter sidebar) and hero surfaces
- * (ProfileBanner, HeroImageDisplay). List items scan better on an opaque
+ * (ProfileBanner, the record rails). List items scan better on an opaque
  * surface with a 1-px border and a shadow that animates on hover.
  *
  * Hover is quiet: a single border warm-up toward primary plus the title's

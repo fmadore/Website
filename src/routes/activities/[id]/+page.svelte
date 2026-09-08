@@ -1,25 +1,37 @@
 <script lang="ts">
+	// The log entry as a record.
+	//
+	// This page used to be the site's last <EntityDetailLayout> consumer bar one:
+	// a <PageHeader> masthead, a 330px-capped hero image in the reading column,
+	// the entry's prose inside a <ContentBody> whose 24px inset started it a rule
+	// short of the masthead above it, then a stack of buttons, tag pills and an
+	// RSS chip trailing off the bottom. Every other record on the site — a
+	// publication, a talk, a research project — is drawn by <RecordLayout>, and a
+	// log entry is a record like any of them: it has a kind, a date, a plate, an
+	// address and an index. It now composes the same shell, so the reader who
+	// arrives here from /publications finds the apparatus where they left it.
+	//
+	// The masthead also stopped disagreeing with the index about what this is:
+	// the badge read `panelType` ("Media", "News") while the log row beside it
+	// read `type` through the shared label map ("Podcast", "News"). One record,
+	// one kind, one label — the map.
 	import SEO from '$lib/SEO.svelte';
 	import { base } from '$app/paths';
-	import { buildSrcset, HERO_SIZES, resolveImagePath } from '$lib/utils/imageVariants';
-	import EntityDetailLayout from '$lib/components/common/EntityDetailLayout.svelte';
+	import { buildSrcset, resolveImagePath } from '$lib/utils/imageVariants';
+	import RecordLayout, { type EyebrowToken } from '$lib/components/common/RecordLayout.svelte';
+	import ActivityRecordRail, {
+		RAIL_PLATE_SIZES
+	} from '$lib/components/activities/ActivityRecordRail.svelte';
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
-	import ContentBody from '$lib/components/common/ContentBody.svelte';
 	import type { PageData } from './$types';
-	import { browser } from '$app/environment';
-	import Icon from '@iconify/svelte';
 
-	// Added imports for consistency
-	import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
-	import TagList from '$lib/components/molecules/TagList.svelte';
-	import ActionLinks from '$lib/components/molecules/ActionLinks.svelte';
 	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
 	import {
 		createActivitySEODescription,
 		createActivitySEOKeywords,
 		truncateTitle
 	} from '$lib/utils/seoUtils';
-	import { formatPanelType } from '$lib/utils/typeUtils';
+	import { ACTIVITY_TYPE_BADGE_LABELS } from '$lib/utils/typeUtils';
 	import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
 	import MetaTags from '$lib/components/activities/MetaTags.svelte';
 
@@ -38,32 +50,27 @@
 		{ label: truncateTitle(activity.title), href: `${base}/activities/${activity.id}` }
 	]);
 
-	// Breadcrumb + activity JSON-LD injection is handled by EntityDetailLayout.
+	// Breadcrumb + activity JSON-LD injection is handled by RecordLayout, under
+	// the same two script ids EntityDetailLayout used.
 
-	// Optimize animations for better performance
-	$effect(() => {
-		if (browser) {
-			const optimizeAnimations = () => {
-				const animatedElements = document.querySelectorAll('[data-animate]');
-				animatedElements.forEach((el) => {
-					const element = el as HTMLElement;
-					element.style.willChange = 'transform, opacity';
-					element.style.transform = 'translateZ(0)';
-					// DO NOT add contain property - it creates stacking context issues with mobile menu
-				});
-			};
+	// The record's kind, from the map the log rows and the type facet both read.
+	const kindLabel = $derived(
+		activity.type ? (ACTIVITY_TYPE_BADGE_LABELS[activity.type] ?? activity.type) : 'Activity'
+	);
 
-			// Use requestIdleCallback for better performance
-			if ('requestIdleCallback' in window) {
-				window.requestIdleCallback(optimizeAnimations);
-			} else {
-				setTimeout(optimizeAnimations, 0);
-			}
-		}
+	// Masthead: kind and dateline. Nothing else about a log entry is a fact the
+	// eyebrow can carry — its destination belongs in the rail's action stack.
+	const eyebrow = $derived.by((): EyebrowToken[] => {
+		const tokens: EyebrowToken[] = [{ label: kindLabel }];
+		if (activity.date) tokens.push({ label: activity.date });
+		return tokens;
 	});
 
-	// Format the tags for display - using optional chaining for cleaner syntax
-	const formattedTags = $derived(activity?.tags ?? []);
+	const displayTitle = $derived(typesetQuotes(activity.title));
+	// The one-sentence description the log prints beside every entry. The record
+	// page had been dropping it entirely — the summary was visible on the index
+	// and on nothing else.
+	const displayDescription = $derived(typesetQuotes(activity.description ?? ''));
 
 	// Hero image preload as a string. Using {@html} instead of {#if} inside
 	// <svelte:head> avoids a Svelte 5 hydration bug where falsy {#if} blocks
@@ -71,14 +78,15 @@
 	// 'nodeType' of null in if.js). Source values come from trusted .ts files
 	// in src/lib/data/activities, so direct interpolation is safe here.
 	//
-	// imagesrcset/imagesizes are not optional decoration: HeroImageDisplay
-	// renders this hero with a srcset of _r/ variants, so the browser fetches
-	// e.g. `-800.webp` and never the full-size original. Preloading the bare
-	// href downloaded a second, larger copy that nothing on the page ever used.
-	// These three attributes have to mirror the rendered image for the scanner
-	// to resolve the same candidate, hence the shared helpers.
+	// imagesrcset/imagesizes are not optional decoration: the rail renders this
+	// plate with a srcset of _r/ variants, so the browser fetches e.g.
+	// `-800.webp` and never the full-size original. Preloading the bare href
+	// downloaded a second, larger copy that nothing on the page ever used. These
+	// three attributes have to mirror the rendered image for the scanner to
+	// resolve the same candidate, hence the shared helpers and the `sizes`
+	// string exported by the rail itself.
 	const heroImagePreloadHtml = $derived.by(() => {
-		const resolved = resolveImagePath(activity?.heroImage?.src, base);
+		const resolved = resolveImagePath(activity?.heroImage?.src ?? activity?.image, base);
 		if (!resolved) return '';
 		const srcset = buildSrcset(encodeURI(resolved));
 		const attrs = [
@@ -86,7 +94,7 @@
 			'as="image"',
 			`href="${encodeURI(resolved)}"`,
 			srcset ? `imagesrcset="${srcset}"` : '',
-			srcset ? `imagesizes="${HERO_SIZES}"` : '',
+			srcset ? `imagesizes="${RAIL_PLATE_SIZES}"` : '',
 			'fetchpriority="high"'
 		].filter(Boolean);
 		return `<link ${attrs.join(' ')}>`;
@@ -131,6 +139,8 @@
 			: []
 	);
 	// --- End Content Parsing Logic ---
+
+	const tags = $derived(activity.tags?.filter(Boolean) ?? []);
 </script>
 
 <svelte:head>
@@ -156,197 +166,94 @@
 <!-- MetaTags Component for Zotero blog post detection -->
 <MetaTags {activity} />
 
-{#if activity}
-	<EntityDetailLayout
-		{breadcrumbItems}
-		jsonLdScriptId="activity-json-ld"
-		{jsonLdString}
-		title={activity.title}
-		date={activity.date}
-		typeBadgeText={formatPanelType(activity.panelType)}
-		wrapperClass="content-wrapper max-w-6xl mx-auto"
-	>
-		{#snippet children({ breadcrumb, header })}
-			{#if activity}
-				<!-- Separate page header section - no animation to prevent flash -->
-				<div>
-					{@render breadcrumb()}
+<!-- The tag block is a grid child with its own gap, so it is passed only when it
+     prints something: an empty block would read as a stray interval. -->
+{#snippet deck()}
+	{#if displayDescription}
+		<p class="standfirst record-deck">{displayDescription}</p>
+	{/if}
+{/snippet}
+
+{#snippet indexRail()}
+	<div class="act-tags">
+		<h2 class="rail-label">Tags</h2>
+		<div class="chip-row">
+			{#each tags as tag (tag)}
+				<!-- Label typeset; the href keeps the raw tag the filter matches. -->
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- tag search URL -->
+				<a class="chip" href="{base}/activities?tag={encodeURIComponent(tag)}"
+					>{typesetQuotes(tag)}</a
+				>
+			{/each}
+		</div>
+	</div>
+{/snippet}
+
+<RecordLayout
+	section={{ label: 'Activities', href: `${base}/activities` }}
+	breadcrumbCurrent={kindLabel}
+	{eyebrow}
+	title={displayTitle}
+	{deck}
+	{breadcrumbItems}
+	jsonLdScriptId="activity-json-ld"
+	{jsonLdString}
+	railSecondary={tags.length > 0 ? indexRail : undefined}
+>
+	{#snippet main()}
+		<!-- The entry itself, set as prose on the paper rather than inside a
+		     bordered wrapper: `.prose` carries the site's reading measure, heading
+		     rhythm and link idiom, and starts flush with the masthead's rule. -->
+		{#if contentSegments.length > 0}
+			<div class="prose">
+				{#each contentSegments as segment, segmentIndex (segmentIndex)}
+					{#if segment.type === 'html'}
+						<!-- Safe: content is from trusted activity data files in src/lib/data/activities/ -->
+						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+						{@html segment.value}
+					{:else if segment.type === 'ItemReference' && segment.id}
+						<ItemReference id={segment.id} />
+					{/if}
+				{/each}
+			</div>
+		{/if}
+
+		<!-- An associated document, embedded. The rail's "View document ↓" jumps
+		     here; before, the section had no anchor and nothing linked to it. -->
+		{#if activity.pdfPath}
+			<section class="section act-section" id="document" aria-labelledby="act-document-head">
+				<div class="section-head">
+					<h2 id="act-document-head" class="section-title">
+						{typesetQuotes(activity.pdfTitle) || 'Associated Document'}
+					</h2>
 				</div>
+				<IframeRenderer
+					id="activity-pdf-{activity.id}"
+					src="{base}/{activity.pdfPath}"
+					title="{activity.title} PDF Document"
+					height="800px"
+					variant="document"
+					sandbox={null}
+				/>
+			</section>
+		{/if}
+	{/snippet}
 
-				<div>
-					{@render header()}
-				</div>
-
-				{#if activity.heroImage && activity.heroImage.src}
-					<div class="hero-image-wrapper mb-8">
-						<HeroImageDisplay
-							heroImage={{
-								src: activity.heroImage.src,
-								alt: activity.heroImage.alt ?? activity.title,
-								caption: activity.heroImage.caption
-							}}
-							fallbackImage={activity.image}
-							defaultAlt={activity.title}
-							variant="featured"
-							framed={true}
-							fetchpriority="high"
-							loading="eager"
-							maxHeight="60vh"
-						/>
-					</div>
-				{/if}
-
-				<!-- Main content (prose on paper, no card wrapper) -->
-				<div class="">
-					<ContentBody variant="default">
-						<!-- Render parsed content segments -->
-						{#each contentSegments as segment, segmentIndex (segmentIndex)}
-							{#if segment.type === 'html'}
-								<!-- Safe: content is from trusted activity data files in src/lib/data/activities/ -->
-								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-								{@html segment.value}
-							{:else if segment.type === 'ItemReference' && segment.id}
-								<ItemReference id={segment.id} />
-							{/if}
-						{/each}
-					</ContentBody>
-				</div>
-
-				{#if activity.url || (activity.additionalUrls && activity.additionalUrls.length > 0)}
-					<div class="">
-						<ActionLinks
-							primaryUrl={activity.url}
-							primaryLabel={activity.urlLabel ??
-								(activity.panelType === 'publication' ? 'Read Publication' : 'Visit Activity')}
-							additionalUrls={activity.additionalUrls}
-							sectionClass="action-links mt-4"
-							primaryButtonClass="btn btn-primary"
-							secondaryButtonClass="btn btn-outline-primary"
-							primaryDivClass="mb-4"
-						/>
-					</div>
-				{/if}
-
-				{#if activity.pdfPath}
-					<div class="pdf-section mt-4 p-6 md:p-8">
-						<h2 class="pdf-section-title editorial-section-title">
-							{typesetQuotes(activity.pdfTitle) || 'Associated Document'}
-						</h2>
-						<IframeRenderer
-							id="activity-pdf-{activity.id}"
-							src="{base}/{activity.pdfPath}"
-							title="{activity.title} PDF Document"
-							height="800px"
-							variant="document"
-							sandbox={null}
-						/>
-					</div>
-				{/if}
-
-				{#if formattedTags && formattedTags.length > 0}
-					<div class="mt-4 mb-6">
-						<TagList tags={formattedTags} baseUrl="/activities?tag=" />
-					</div>
-				{/if}
-
-				<!-- RSS Feed Button -->
-				<div class="rss-button-wrapper">
-					<!-- eslint-disable svelte/no-navigation-without-resolve -- static asset -->
-					<a href="{base}/rss.xml" class="rss-feed-button">
-						<Icon icon="mdi:rss" width="16" height="16" aria-hidden="true" />
-						RSS Feed
-					</a>
-					<!-- eslint-enable svelte/no-navigation-without-resolve -->
-				</div>
-			{/if}
-		{/snippet}
-	</EntityDetailLayout>
-{/if}
+	{#snippet railPrimary()}
+		<ActivityRecordRail {activity} {kindLabel} hasDocument={Boolean(activity.pdfPath)} />
+	{/snippet}
+</RecordLayout>
 
 <style>
-	/* Hero image wrapper - ensure it doesn't interfere with modal stacking */
-	.hero-image-wrapper {
-		position: relative;
-		z-index: auto; /* Ensure no stacking context issues */
-		isolation: auto; /* Prevent isolation that could interfere with modal */
+	/* The description sits where a bibliographic record prints its byline, so it
+	   takes the same interval above it. */
+	.record-deck {
+		margin: var(--space-md) 0 0;
 	}
 
-	/* Responsive hero image optimization */
-	:global(.hero-image-wrapper .hero-image) {
-		width: 100%;
-		height: auto;
-		max-width: 330px; /* Match the displayed dimensions from PageSpeed Insights */
-		max-height: 438px;
-		object-fit: cover;
-		border-radius: 0;
-	}
-
-	@media (--md) {
-		:global(.hero-image-wrapper .hero-image) {
-			max-width: 600px;
-			max-height: auto;
-		}
-	}
-
-	@media (--lg) {
-		:global(.hero-image-wrapper .hero-image) {
-			max-width: 800px;
-		}
-	}
-
-	/* PDF callout — a flat paper document plate: hairline border, square
-		 * corners, no shadow, no hover lift. It's an enclosure, not an
-		 * affordance. */
-	.pdf-section {
-		position: relative;
-		content-visibility: auto;
-		contain-intrinsic-size: 800px;
-		border-radius: 0;
-		background: var(--color-surface);
-		border: var(--border-width-thin) solid var(--color-border);
-	}
-
-	.pdf-section-title {
-		margin-top: 0;
-	}
-
-	/* RSS Feed Button — the data voice: a flat square mono chip. */
-	.rss-button-wrapper {
-		margin-top: var(--space-4);
-	}
-
-	.rss-feed-button {
-		display: inline-flex;
-		align-items: center;
-		gap: var(--space-2);
-		padding: var(--space-1-5) var(--space-2-5);
-		border: var(--border-width-thin) solid var(--color-border);
-		border-radius: 0;
-		color: var(--color-text-soft);
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-2xs);
-		font-weight: var(--font-weight-semibold);
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		text-decoration: none;
-		transition:
-			border-color var(--duration-fast) var(--ease-out),
-			color var(--duration-fast) var(--ease-out);
-	}
-
-	.rss-feed-button:hover {
-		border-color: var(--color-accent);
-		color: var(--color-accent);
-	}
-
-	.rss-feed-button:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-0-5);
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.rss-feed-button {
-			transition: none;
-		}
+	/* Consistent rhythm between the reading column's blocks — the same step
+	   /communications/[id] sets between its sections. */
+	.act-section {
+		margin-top: var(--space-2xl);
 	}
 </style>

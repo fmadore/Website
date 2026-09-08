@@ -1,9 +1,10 @@
 /* ═══════════════════════════════════════════════════════════════════════════
  * BIBLIOGRAPHY ROW — the finding-aid ledger entry (Ink + Signal)
  *
- * Shared by the /publications and /conference-activity finding-aid lists
- * (PublicationItem + CommunicationItem, `bibliography` mode). Kept in one place
- * so the two record lists stay in visual lock-step.
+ * Shared by the /publications, /conference-activity and /activities finding-aid
+ * lists (PublicationItem + CommunicationItem in `bibliography` mode, and
+ * ActivityItem). Kept in one place so the three record lists stay in visual
+ * lock-step.
  *
  * Grid: [year] [cover] [body] [actions]. Every row reserves the same four
  * tracks so titles stay aligned down the list even when an entry has no cover.
@@ -183,6 +184,12 @@
 	line-height: var(--line-height-snug);
 	color: var(--color-text-light);
 	margin: var(--space-0-5) 0 0;
+}
+
+/* The record's own keyword run, in the `.apparatus-line` idiom (ink-signal.css)
+ * — this only sets its interval inside the body column. */
+.bib-apparatus {
+	margin-top: var(--space-1-5);
 }
 
 .bib-standfirst {

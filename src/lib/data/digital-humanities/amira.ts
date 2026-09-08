@@ -11,11 +11,11 @@ export const amira: DigitalHumanitiesProject = {
 
 		<p>The atlas covers nearly 4,000 research items, more than 90 projects, around 1,600 associated people, and nearly 600 organisations and institutions, in 28 languages across 42 countries. Alongside the research items, it also brings together the Cluster's publications and other outputs, such as podcasts.</p>
 
-		<h3>The DRE behind AMIRA</h3>
+		<h2>The DRE behind AMIRA</h2>
 		<p>AMIRA is the visible layer of work carried out by the <a href="https://www.africamultiple.uni-bayreuth.de/en/1_5-Digital-Solutions1/index.html" target="_blank" rel="noopener noreferrer">Digital Research Environment (DRE)</a>, the digital infrastructure unit of the Cluster. The DRE designs and maintains the data systems that connect researchers across the AMRCs and partner institutions, grounded in the FAIR and CARE principles and a commitment to multiple knowledge systems.</p>
 		<p>Two principles shape the atlas. Curation is a joint effort: each centre describes the data it knows best, and the DRE runs the shared infrastructure that connects them. And storage stays distributed by default — data remains in its local repository, while Bayreuth holds the metadata layer that points to it. Research data becomes findable without being relocated. AMIRA is where that metadata comes together.</p>
 
-		<h3>How it's built</h3>
+		<h2>How it's built</h2>
 		<p>AMIRA is built from three components I developed for Omeka S. They share one design system, so the search, the charts, and the pages all follow the same brand and the same light/dark theme:</p>
 		<ul>
 			<li><strong><a href="https://github.com/AM-Digital-Research-Environment/DRE-theme" target="_blank" rel="noopener noreferrer">DRE-theme</a></strong> — a custom Omeka S theme. A "Scholarly Modernism" design system in the Cluster's Uni-Grün identity, built on OKLCH design tokens, with first-class light and dark modes.</li>
@@ -23,12 +23,12 @@ export const amira: DigitalHumanitiesProject = {
 			<li><strong><a href="https://github.com/fmadore/ResourceVisualizations" target="_blank" rel="noopener noreferrer">Resource Visualizations</a></strong> — an Omeka S module that adds interactive charts, maps, and network graphs (ECharts and MapLibre GL) to every resource page and to collection-wide overviews. These are the same visualisations developed for the Cluster's research dashboard, ported to Omeka S.</li>
 		</ul>
 
-		<h3>Querying AMIRA from an AI assistant</h3>
+		<h2>Querying AMIRA from an AI assistant</h2>
 		<p>A growing share of researchers reach a collection by asking an AI assistant a question rather than by searching a catalogue. The <a href="https://github.com/AM-Digital-Research-Environment/amira-mcp-server" target="_blank" rel="noopener noreferrer">AMIRA MCP server</a> is the mediated layer between the two: a read-only <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">Model Context Protocol</a> server that lets an assistant search the atlas, retrieve full records, search inside video and podcast transcripts, and follow relations across the collection, with every answer citing the AMIRA page it came from.</p>
 		<p>Its signature tool is <code>find_related</code>, which pivots from any entity — a subject, place, person, or project — to everything that co-occurs with it. Posing that kind of relational question would normally take both familiarity with the schema and a query language such as SPARQL; here it can be asked in plain language. The curatorial knowledge needed to query the atlas well (which tool to start from, that personal names resolve in either order, that the former free-text tags are folded into subjects) is carried in the tools' own descriptions, so it travels to any compliant client rather than living in a separate instruction file.</p>
 		<p>The design keeps the collection with the institution that assembled it: queries run against AMIRA's own servers rather than handing the data over, the protocol is an open standard rather than one vendor's API, and every tool is read-only and auditable. It ships with an offline-capable bundled snapshot, so the server also answers when the site is unreachable.</p>
 
-		<h3>What you can explore</h3>
+		<h2>What you can explore</h2>
 		<ul>
 			<li><strong>Search</strong>: full-text search with autocomplete and per-corpus facets, plus a federated search that spans every corpus at once</li>
 			<li><strong>Who</strong>: the people associated with the collections, and nearly 600 organisations (institutions and groups), linked through their projects, roles, affiliations, and co-authorships</li>
@@ -41,7 +41,7 @@ export const amira: DigitalHumanitiesProject = {
 			<li><strong>Publications</strong>: bibliographic analytics over the Cluster's bibliography — authors, venues, keywords, and co-authorship networks</li>
 		</ul>
 
-		<h3>Interface</h3>
+		<h2>Interface</h2>
 		<p>Light and dark modes, a public Omeka S REST API behind every page, and a save-as-image button on each chart.</p>
 	`,
 	imageUrl: `/images/digital-humanities/amira.webp`,

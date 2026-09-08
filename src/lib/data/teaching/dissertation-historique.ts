@@ -7,5 +7,7 @@ export const dissertationHistorique: TeachingExperience = {
 	institution: 'Universit\u00e9 Laval (Canada)',
 	level: 'undergraduate',
 	sections: '8 sections',
-	period: 'Fall 2013-Winter 2018'
+	period: 'Fall 2013 – Winter 2018',
+	description:
+		'Guidance and workshops on research methodologies and the craft of historical writing.'
 };

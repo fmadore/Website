@@ -172,9 +172,12 @@ the job-to-be-done: find and cite the work.
 - [x] **2.5 Research index + the 6 project pages** — the static pages drift most easily;
       check them against each other for internal consistency. _(Done 2026-09-08, 17/32 →
       25/32; the project pages now compose `RecordLayout`. Seven routes, not six.)_
-- [ ] **2.6 Digital humanities index + detail** — card grid vs ledger tension; plates.
-- [ ] **2.7 Activities index + year archive + detail.**
-- [ ] **2.8 Teaching + guest lectures.**
+- [x] **2.6 Digital humanities index + detail** — card grid vs ledger tension; plates.
+      _(Done 2026-09-08, 16/32 → 26/32; plate-carrying ledger, detail on `RecordLayout`.)_
+- [x] **2.7 Activities index + year archive + detail.** _(Done 2026-09-08, 17/32 → 26/32;
+      the last `EntityDetailLayout` consumer moved to `RecordLayout`, the shell deleted.)_
+- [x] **2.8 Teaching + guest lectures.** _(Done 2026-09-08, 16/32 → 28/32; both pages now
+      derive from the dataset instead of a drifted hardcoded copy.)_
 - [ ] **2.9 Visualisation pages** — critique the plate chrome, legends, and tooltips
       against the brief ("data as ornament" means the viz itself must be exemplary). Pair
       with the `dataviz` skill for chart-internal review (palette from `--sys-viz-*`,
@@ -838,6 +841,152 @@ affordance than pine text — the honest fix is the site-wide link idiom in 4.2;
 `CareerTimeline.svelte` (2.9) has a fixed 900px width inside two nested scroll containers, the
 inner one hiding its own scrollbar, a `role="img"` wrapper around `role="button"` marks, and no
 Space-key handling.
+
+**2026-09-08 — orchestrator notes between sessions.** Two owner reports landed mid-batch and
+were fixed directly (commit `c3c42987`): the research index drew its period strip on a
+hardcoded 2013–2027 axis while a project runs to 2028, so its bar overshot the axis — the axis
+now spans the records; and in the PDF export jsPDF seats text on its baseline, so the 13pt
+section head rose above the 3.2mm rule gap and **the rule struck through every section title**
+— heads are now seated by their top edge — while a multi-year fieldwork key shrank under the
+content column; keys wrap at spaces, only an unbreakable word shrinks, and the fieldwork rows
+take the wide key so `2024, 2015, 2014` sits on one line. Both checked on the generated PDF
+(17 pages, downloaded with a Playwright script against the dev server — the method 2.4 lacked).
+The same commit accidentally carried the 2.6 agent's staged deletion of `FeaturedDHProjects.svelte`
+without the page edit that stops importing it, so **HEAD was broken for one commit**; the
+next commit repairs it. Lesson: `git add <paths>` still commits whatever is already staged —
+check `git diff --cached` first. All three agents of the 2.6/2.7/2.8 batch were then cut off by
+an API rate limit mid-edit and resumed as fresh agents told to read the partial diff first.
+
+**2026-09-08 — 2.8 teaching + guest lectures (`/impeccable critique` → fix → polish) — 16/32
+as found → 28/32.** Same scale as 2.1 (heuristics 7 and 10 `n/a`). **The headline is that both
+pages held a hardcoded second copy of a dataset `/cv` and `/api/cv.json` already read, and
+both copies had drifted** — `/teaching/guest-lectures` printed **eight rows against the
+dataset's nine** (the January 2017 and February 2016 deliveries of one lecture merged into a
+single date string), dropped the country from every host institution while the courses ledger
+one click away kept it, and `/teaching` lower-cased the terms and conflated two facts into one
+key (`8 sections; fall 2013-winter 2018`). Nothing could catch it, because nothing connected the
+two. Both routes now derive from `$lib/data/teaching`; the three course descriptions moved from
+the route's inline copy onto the records verbatim (checked against `git show HEAD:`), where
+`/api/cv.json` publishes them and the CV's citation-style line does not. **1.3's finding was
+still standing on exactly these two pages:** `.course-row` and `.lecture-row` each carried a
+private copy of the ledger's narrow collapse at `--md-down`, written before 1.3 moved it onto
+`.ledger-row` at `--sm-down`, so these two stacked between 640 and 767px while every other
+ledger on the site did not; `.lecture-date` restated `.ledger-key`'s font at a different
+tracking, and `.institution-section` gave a `.section` a 48px bottom margin on top of the 48px
+it already sets. All four classes are gone. **The apparatus was absent on a page whose whole job
+is to be counted**: two surfaces holding three courses and nine lectures told you neither
+figure, and the index's route to the sub-page was a fake record row reading "Guest Lecturer ·
+Various Institutions". `/teaching` is now two ruled sections — `Courses taught · 3 courses ·
+2013–2020` and `Guest lectures · 9 lectures · 2016–2022` — the second indexed **by host
+institution** (who hosted, over which years, how many times), every figure counted off the same
+array the full list renders, so a tenth lecture changes six printed figures with no edit. Two
+idioms extracted: **`.ledger-action`** (the meta column's destination stamp, quiet ink at rest
+and pine only under the pointer — a syllabus from 2020 is not "the current thing" — with the
+24px/44px floors and a convergence note on `.bib-action`) and **`.section-note`** (the one
+line of prose a two-word head cannot carry, which earns extraction because `VizSection` had
+already written the same rule under a second name). Both on `/style-guide`, § 4 and § 3. Pine
+at rest on both pages is **zero**, which is the right answer: nothing here is current. Also
+fixed: the guest-lecture note described the lectures where the rows are hosts; the courses
+dateline restated three visible rows and now carries the span; two syllabus links shared the
+accessible name `Syllabus PDF` and are now named for their course with the visible label
+leading (Label in Name). **Declined:** a year meter on the lectures (nine records over seven
+years with a hole at 2021 encode nothing); a closing return link (2.3 settled the breadcrumb as
+the back affordance); the craft floor's eyebrow ban, glyph-as-icon ban and 65–75ch measure.
+**Left for later:** neither page has a designed empty state (3.2); `CVTeaching.svelte` sorts
+both shared arrays in place, a latent cross-page mutation; `Footer.svelte`'s comment naming
+`/teaching` as a page with no `h2` is stale.
+
+**2026-09-08 — 2.7 activities index + year archive + detail (`/impeccable critique` → fix →
+polish) — 17/32 as found → 26/32.** Same scale as 2.1. Resumed from a predecessor cut off
+mid-edit; its idea was right and half-landed, and the index it left **did not compile**
+(`typesetQuotes` called with no import). **The headline is that one section was drawn as four
+templates.** The index set a bespoke masthead (`--font-size-5xl`/800/0.98 on the wide display
+axis) against `.index-title`'s (`--font-size-display`/830/0.95 on the narrow one) and opened on
+no rule at all; the year archive was a fourth template — a `PageHeader` with nothing above it,
+every year as a horizontally scrolling `.pager` strip reporting no counts, entries in a bare
+`<div>` drawing no separator; and `/activities/[id]` was the last `EntityDetailLayout` consumer
+on the site. The index and the record even disagreed about what a record _is_: the row read
+`type` through the shared label map ("Podcast") while the masthead badge read `panelType`
+through `formatPanelType` ("Media") — the map is now the one source and `formatPanelType` is
+retired. **The row is now the shared finding-aid ledger entry** the two sibling indexes already
+draw: `ActivityItem` renders `<BibliographyRow>` with three additions the log's record earns —
+a day + month hanging key (the year is carried by the group `<h2>`), a `summary` deck on every
+row, and the keyword run as a mono `.apparatus-line`; the old local grid dropped the plate track
+on rows without a photograph, so titles stepped left and right down the list. `BibliographyRow`
+gained `summary`, `apparatus`, `headingLevel` and `plateSizes` props, every default the former
+literal, so `/publications` and `/conference-activity` render byte-identical DOM. **The year
+archive is now the index scoped to one year** — same masthead, same ledger, same browse meter in
+the same ruled aside, with the accent on the year being read rather than the newest, and the
+`.year-step` closing the log on a 3px rule (`← 2024 · All activities · 2026 →`). **The record is
+a record:** `RecordLayout` with a new `ActivityRecordRail` mirroring `CommunicationRecordRail` —
+event plate, a `RecordLedger` of Type / Date / **Year →** (the one ledger value that goes
+somewhere, and what finally makes the archive reachable from a record) and the single
+`btn-accent`; it also stopped dropping the record's own one-sentence summary, which the log
+printed and the record page never did. Retired in the move: a dead `[data-animate]` `$effect`,
+the `ContentBody` inset that started the prose a rule short of the masthead, the `.pdf-section`
+box around `IframeRenderer`'s own plate, and the whole-log RSS chip trailing off a single
+record; the PDF section gained the `#document` anchor the rail's "View document ↓" jumps to.
+Also fixed: both empty states are designed states; the filter note states what survived
+(`3 of 33`); and **both index pages shipped a nested `<main>`** inside the shell's own. **Declined:**
+hero year-bars on the index (the aside meter already draws the distribution with counts and
+links); a wider plate under `--sm-down` without eyes; the craft floor's four overridden defaults.
+The detector's one finding (`broken-image` on a guarded dynamic `src`) is a false positive left
+standing. **Left for later:** below `--lg` the aside still falls past the log, so a phone reaches
+the year meter and the facets only after the whole page where `/publications` collapses its facets
+behind a toggle at the top — structural, belongs with the entity-index family.
+
+**2026-09-08 — 2.6 digital humanities index + detail (`/impeccable critique` → rebuild →
+polish) — 16/32 as found → 26/32.** Same scale as 2.1 and 2.5. Resumed from a predecessor
+whose index rework was kept nearly whole. **Two headline findings.** First, `/digital-humanities/[id]`
+was the last full-page detail route not built as a record: no rail, a 60vh hero where every
+sibling sets a rail plate, addresses and methods interleaved inside the document, a
+`DetailsGrid` fed a permanently empty array since it was written, a bottom back-link duplicating
+the breadcrumb, and the raw `2023-` printed as a dateline. Second, and worse, **the narrative had
+no reading measure at all** — inside a 1152px `max-w-6xl` column the longest prose on the site
+ran at roughly **150 characters a line**; 1.1's sweep never reached this template. Rebuilt on
+`RecordLayout` from the route side, `SEO`/`MetaTags`/JSON-LD/`IframeRenderer` unchanged. **A
+digital project's catalogue entry is its addresses**: a bibliographic record has a journal, a
+publisher, an ISBN, a DOI, and a project has none of them — what it has is a period, now in the
+masthead eyebrow as on a research project, and a set of public addresses, which pass the
+meta-ledger's stated test and are now set as one in the rail (`Site` / `Code` / `Data` hanging in
+the mono column, addresses stacked beside them), retiring the bespoke `.link-ledger`. **The
+accent marks the live project once:** a single `site` link becomes the rail's one `btn-accent`;
+with two or three no one of them is the front door, so the button is withheld and the Site row
+takes the accent; the four records that are a pipeline, a dataset or an Omeka module carry no
+pine at all. Chrome pine per record page: **3**. Methods moved to `railSecondary` as chips;
+embeds became figures stamped `Fig. 1 — … Fig. 8 —` from their authored titles, with
+`IframeRenderer`'s own 32px bottom margin zeroed three classes deep because its rule is also
+(0,2,0); reviews became a keyless ledger with the quotation mark demoted from pine to muted ink.
+**New idiom `.record-prose`** in `ink-signal.css`, documented on `/style-guide` § 2: the reading
+column of a record whose body is authored markup — measure on paragraphs and list items, a lead
+one size and one ink up, `<h2>` drawn as a ruled section head, `<h3>` a quiet serif subhead,
+direct children only. `.project-prose` in `ResearchProjectLayout` is the older copy, named as
+needing to converge. **The narratives were promoted a heading level** (`h3`→`h2`, `h4`→`h3`
+across fifteen records, verified to live only inside `description`), closing an h1→h3 skip on
+all sixteen pages. **On the index**, the predecessor's rework stands: one broadsheet dossier,
+ruled ledger entries from a shared snippet, `FacetCombobox` over the sixty-method tail, `srcset`
+at both plate scales, and the external/internal link branch deleted because **no record sets
+`linkUrl`** — it had offered `Visit site ↗` as dead code since it was written, and every entry
+now addresses its own record page (which is what the IWAC entry-point note requires). Card grid
+vs ledger, decided on the records: all sixteen carry `years`, `links`, `skills`, `order` and an
+image, so dated + keyed + uniformly shaped is the Ledger Default Rule exactly — a plate-carrying
+ledger, the plate sharing the content column rather than becoming a card around it. **The
+deleted featured component is worth recording:** it carried a hardcoded `STATS` map ("14,700+
+items", "4,600+ index entries") hand-copied out of each project's prose — a second uncheckable
+copy of the corpus figures on the site whose whole position is that the record is
+machine-maintained. Four fixes on top: `1 projects` on any single-method filter, a hero eyebrow
+printing `2018 —` beside entries printing `Since 2018`, a dead `.dh-page` class. **Declined:** a
+masthead deck from `shortDescription` (it restates the authored lead); a plate caption and a
+descriptive `alt` (no record authors either); extending `RecordLedger` for multi-address rows; the
+`sizes` off-by-one at exactly 768px, shared byte-for-byte with the research index; the craft
+floor's three overridden defaults. **Left for later:** the prose-link pine density on the longest
+narrative (4.2); the interface says "methods" while the data key and URL parameter say `skills`;
+no per-project scale figure survives the deleted map — the honest fix is a field on the record.
+
+**Sweep after 2.6/2.7 (orchestrator):** `EntityDetailLayout`, `DetailsGrid`, `HeroImageDisplay`
+and `ActionLinks` reached zero importers between the two items and are deleted, along with
+`formatPanelType`. Every detail route on the site is now a `RecordLayout` record with its own
+rail; CLAUDE.md's component map says so.
 
 **Method note on the detector, correcting 0.2/1.1 and one of today's agents.** v4.1.1's engines
 import no external parser, so the "install the deps or it runs degraded" caveat is obsolete. What

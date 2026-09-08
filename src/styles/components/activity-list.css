@@ -1,9 +1,14 @@
 /* Activity list styles — Ink + Signal.
  *
- * The /activities page is a dated press column: a mono log eyebrow over an
- * Archivo masthead, then year-grouped entries as hairline-separated rows —
- * a mono date/kind column, an optional image plate, serif title + summary,
- * a mono tag run. A quiet ruled aside carries browse-by-year + tag facets.
+ * Shared by /activities (the whole log) and /activities/year/[year] (the same
+ * log scoped to one year): a mono log eyebrow over an Archivo masthead under a
+ * 4px rule, then year-grouped <BibliographyRow> entries, with a quiet ruled
+ * aside carrying the browse-by-year meter and the tag/type facets.
+ *
+ * The entry row itself lives in `bibliography.css` — the finding-aid ledger
+ * entry all three index pages share. Only the tracks that differ here (a wider
+ * key for the day + month stamp, a landscape plate column) and the aside are
+ * set below.
  *
  * Two voices, strictly cast: Archivo (masthead, year headers), Newsreader
  * (titles, summaries, standfirst), Spline Sans Mono (eyebrow, datelines,
@@ -14,28 +19,37 @@
  * HERO
  * =========================================================================== */
 
+/* The masthead opens on the 4px rule tier, like every other index hero on the
+ * site (`.index-hero.rule-masthead`). It previously carried none at all, so the
+ * page's own title was the one region the rule hierarchy did not draw. */
 .activities-hero {
+	padding-top: var(--rule-gap);
+	border-top: var(--rule-masthead) solid var(--color-primary);
 	margin-bottom: var(--space-8);
 }
 
+/* The eyebrow counts entries and names a year span, so it takes the tabular
+ * figures `.index-eyebrow` uses on the two sibling indexes. */
 .activities-hero-eyebrow {
-	margin-bottom: var(--space-3);
+	font-variant-numeric: tabular-nums;
+	margin-bottom: var(--space-sm);
 }
 
-/* Masthead — the display voice, large. */
+/* Masthead — the display voice, large. Cut to the same tokens as `.index-title`
+ * on /publications and /conference-activity: the three index pages are one
+ * family and were set in three different mastheads (this one a step smaller, a
+ * weight lighter and on the wide display axis rather than the narrower one).
+ * The standfirst under it takes the global `.standfirst` unchanged — the local
+ * override only restated the idiom's own size and dropped nothing else. */
 .activities-hero-title {
 	font-family: var(--font-family-display);
-	font-variation-settings: var(--font-variation-display);
-	font-size: var(--font-size-5xl);
-	font-weight: 800;
-	line-height: 0.98;
+	font-variation-settings: var(--font-variation-display-sm);
+	font-size: var(--font-size-display);
+	font-weight: 830;
+	line-height: 0.95;
 	letter-spacing: -0.02em;
 	color: var(--color-text-emphasis);
-	margin: 0 0 var(--space-4);
-}
-
-.activities-hero-standfirst {
-	font-size: var(--font-size-lg);
+	margin: 0 0 var(--space-md);
 }
 
 /* ===========================================================================
@@ -103,108 +117,36 @@
 	color: var(--color-text-light);
 }
 
-.year-group-entries {
-	display: block;
+/* --- Entry rows -----------------------------------------------------------
+ * The row itself is <BibliographyRow> (bibliography.css), the finding-aid
+ * ledger entry /publications and /conference-activity already share. The log
+ * only sets the two tracks that differ here — a wider key, because an activity
+ * hangs a day + month stamp rather than a year, and a landscape plate column,
+ * because these are event photographs rather than portrait covers — and draws
+ * the hairline between entries, exactly as `.bib-list` does on its own pages.
+ * ------------------------------------------------------------------------- */
+
+.log-list {
+	--bib-year-w: 4.75rem;
+	--bib-cover-w: 120px;
+
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }
 
-/* --- Entry row: date/kind | (plate) | body, hairline rule above each. --- */
-.activity-row-link {
-	display: grid;
-	grid-template-columns: 7rem 1fr;
-	gap: var(--space-4) var(--space-5);
-	align-items: start;
-	padding: var(--space-5) 0;
+.log-item {
+	margin: 0;
 	border-top: var(--rule-hairline) solid var(--color-hairline);
-	text-decoration: none;
-	color: inherit;
 }
 
-.activity-row-link.has-photo {
-	grid-template-columns: 7rem 150px 1fr;
-}
-
-.activity-row-link:hover .activity-title {
-	color: var(--color-accent);
-}
-
-.activity-row-link:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-accent);
-	outline-offset: var(--space-1);
-}
-
-/* Date / kind — the data voice: compact day+month, kind in pine. */
-.activity-dateline {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-1);
-	font-family: var(--font-family-mono);
-	font-variant-numeric: tabular-nums;
-}
-
-.activity-day {
-	font-size: var(--font-size-2xs);
-	font-weight: var(--font-weight-medium);
-	letter-spacing: 0.1em;
-	text-transform: uppercase;
-	color: var(--color-text-light);
-}
-
-.activity-kind {
-	font-size: var(--font-size-2xs);
-	font-weight: var(--font-weight-semibold);
-	letter-spacing: 0.11em;
-	text-transform: uppercase;
-	color: var(--color-accent);
-}
-
-/* Image plate — a square-cornered, hairline-bordered thumbnail. */
-.activity-plate-wrap {
-	width: 150px;
-}
-
-.activity-plate {
-	width: 150px;
-	height: 96px;
-	object-fit: cover;
-}
-
-/* Body — the prose voice. */
-.activity-body {
-	min-width: 0;
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-1-5);
-}
-
-.activity-title {
-	font-family: var(--font-family-serif);
-	font-size: var(--font-size-xl);
-	font-weight: var(--font-weight-medium);
-	line-height: var(--line-height-snug);
-	color: var(--color-text-emphasis);
-	margin: 0;
-	transition: color var(--duration-fast) var(--ease-out);
-}
-
-.activity-summary {
-	font-family: var(--font-family-serif);
-	font-size: var(--font-size-base);
-	line-height: var(--line-height-relaxed);
-	color: var(--color-text-soft);
-	margin: 0;
-	max-width: var(--measure-prose);
-}
-
-/* Tag run — the data voice: uppercase mono, dot-separated. */
-.activity-tagrun {
-	font-family: var(--font-family-mono);
-	font-size: var(--font-size-2xs);
-	font-weight: var(--font-weight-medium);
-	letter-spacing: 0.09em;
-	text-transform: uppercase;
-	color: var(--color-text-light);
-	margin: var(--space-1) 0 0;
-	line-height: var(--line-height-normal);
+/* On the index every row keeps its hairline, the first one included: it is what
+ * the year head opens its group over. The year archive heads no groups and its
+ * ledger starts directly under the layout's 3px section rule, where a hairline
+ * 12px below would draw the same boundary twice — `.bib-list` drops its first
+ * rule on /publications for exactly that reason. */
+.log-list--flush > .log-item:first-child {
+	border-top: none;
 }
 
 /* Filter note — the active tag facet, above the log. */
@@ -229,6 +171,13 @@
 	color: var(--color-text-emphasis);
 }
 
+/* How much of the log survived the narrowing — tabular so the figure holds its
+ * column as the reader toggles chips. */
+.filter-note-count {
+	font-variant-numeric: tabular-nums;
+	color: var(--color-text-light);
+}
+
 /* Rendered as a <button> since the filter system took over from ?tag= links —
  * strip the UA chrome so it keeps reading as a mono text affordance. */
 .filter-note-clear {
@@ -242,20 +191,97 @@
 	color: var(--color-accent);
 	text-decoration: none;
 	font-weight: var(--font-weight-semibold);
+	/* WCAG 2.5.8 floor (24px): 16px mono caps, the same shortfall 2.4 found on
+	 * `.bib-action` once a neighbour stopped supplying the spacing exception. */
+	min-height: var(--space-6);
+	display: inline-flex;
+	align-items: center;
 }
 
 .filter-note-clear:hover {
 	color: var(--color-accent-dark);
 }
 
-/* Empty state — the prose voice. */
+.filter-note-clear:focus-visible {
+	outline: var(--border-width-medium) solid var(--color-accent);
+	outline-offset: var(--space-1);
+}
+
+@media (--touch) {
+	.filter-note-clear {
+		min-height: 44px;
+	}
+}
+
+/* Empty state — a designed state, not an absence: the statement in the prose
+ * voice, the corpus still standing behind it in the data voice, and the control
+ * back to it. Set to match `.bib-empty` on the two sibling indexes. */
 .log-empty {
-	font-family: var(--font-family-serif);
-	font-size: var(--font-size-lg);
-	color: var(--color-text-muted);
-	padding: var(--space-10) 0;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--space-md);
+	padding: var(--space-2xl) 0;
 	border-top: var(--rule-hairline) solid var(--color-hairline);
+}
+
+.log-empty-line {
 	margin: 0;
+	font-family: var(--font-family-serif);
+	font-style: italic;
+	font-size: var(--font-size-lg);
+	color: var(--color-text-soft);
+}
+
+.log-empty-note {
+	margin: 0;
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-medium);
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--color-text-light);
+}
+
+/* The way out, in the data voice — like the filter note's own clear and
+ * `.facet-clear` on the sibling indexes. A reset native button on the index,
+ * where the way out is to drop the filters; a link on the year archive, where
+ * it is the whole log. */
+.log-empty-clear {
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	text-decoration: none;
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--color-accent);
+	/* WCAG 2.5.8 floor (24px) on every pointer; 44px on a coarse one below.
+	 * inline-flex, not inline: `min-height` is inert on an inline box, and the
+	 * archive renders this as an <a>. */
+	display: inline-flex;
+	align-items: center;
+	min-height: var(--space-6);
+	transition: color var(--duration-fast) var(--ease-out);
+}
+
+.log-empty-clear:hover {
+	color: var(--color-accent-dark);
+}
+
+.log-empty-clear:focus-visible {
+	outline: var(--border-width-medium) solid var(--color-accent);
+	outline-offset: var(--space-1);
+}
+
+@media (--touch) {
+	.log-empty-clear {
+		min-height: 44px;
+	}
 }
 
 /* ===========================================================================
@@ -338,29 +364,55 @@
 }
 
 /* ===========================================================================
- * RESPONSIVE — stack the row's date/plate above the body on narrow screens
+ * YEAR ARCHIVE — the prev/next pair closing /activities/year/[year]
+ *
+ * The aside's year meter is the full apparatus (every year, its count, its
+ * share); this is the step to the neighbouring year without going back up to
+ * it, and it is what the log's last row hands the reader.
  * =========================================================================== */
 
-@media (--sm-down) {
-	.activity-row-link,
-	.activity-row-link.has-photo {
-		grid-template-columns: 1fr;
-		gap: var(--space-3);
-	}
+.year-step {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-3);
+	margin-top: var(--space-8);
+	padding-top: var(--rule-gap);
+	border-top: var(--rule-section) solid var(--color-primary);
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: 0.11em;
+	text-transform: uppercase;
+}
 
-	.activity-dateline {
-		flex-direction: row;
-		gap: var(--space-2);
-	}
+.year-step-link {
+	color: var(--color-text-soft);
+	text-decoration: none;
+	font-variant-numeric: tabular-nums;
+	transition: color var(--duration-fast) var(--ease-out);
+}
 
-	.activity-plate-wrap,
-	.activity-plate {
-		width: 100%;
-	}
+.year-step-link:hover {
+	color: var(--color-accent);
+}
 
-	.activity-plate {
-		height: auto;
-		aspect-ratio: 150 / 96;
+.year-step-link:focus-visible {
+	outline: var(--border-width-medium) solid var(--color-accent);
+	outline-offset: var(--space-1);
+}
+
+/* Keeps "All activities" centred when only one neighbour exists. */
+.year-step-gap {
+	visibility: hidden;
+}
+
+@media (--touch) {
+	.year-step-link {
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
 	}
 }
 
@@ -369,8 +421,9 @@
  * =========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-	.activity-title,
-	.year-meter-row {
+	.year-meter-row,
+	.year-step-link,
+	.log-empty-clear {
 		transition: none;
 	}
 }
