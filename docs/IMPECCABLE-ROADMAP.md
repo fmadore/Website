@@ -693,6 +693,12 @@ neither the shadow nor the gradient — so the CLI is a floor for radius and off
 and the 0.4 hook is the better per-edit signal.
 
 **Ship gate for both (one commit):** `format`, `lint`, `check` (1091 files, 0 errors), `test`
-(752 unit, +8), `build`, `check:build`, `test:e2e`, plus `mcp` `check` and `build`.
+(752 unit, +8), `build`, `check:build`, plus `mcp` `check` and `build`. **`test:e2e` caught a
+regression the agents' gates could not:** the new cite button reserves the width of its
+"Copied ✓" state, so its box came to abut the DOI link's and axe flagged **target-size** on
+`/publications` in both themes (2 of 33) — the row actions are 16px mono caps that had only ever
+passed on the spacing exception. Fixed in a follow-up commit by giving `.bib-action` the 24px
+WCAG 2.5.8 floor on every pointer (the chips already do this), 12/12 a11y + filter specs green
+after a rebuild. Lesson for the orchestrator: read the e2e count before pushing, not after.
 
 <!-- e.g. 2026-08-17 — 0.2 audit — score 82/100, 0 P0, 4 P1 (assigned: 1.3 ×2, 2.2, 5.1) -->

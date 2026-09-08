@@ -220,6 +220,12 @@
 	color: var(--color-text-soft);
 	text-decoration: none;
 	white-space: nowrap;
+	/* WCAG 2.5.8 floor (24px) on every pointer. The mono caps are 16px tall,
+	 * and the actions passed only on the spacing exception — until the cite
+	 * control reserved the width of its "Copied ✓" state and its box came to
+	 * abut the DOI link's, at which point axe flagged both. Clearing 24px in
+	 * height settles it without relying on the interval between neighbours. */
+	min-height: var(--space-6);
 	transition: color var(--duration-fast) var(--ease-out);
 }
 
